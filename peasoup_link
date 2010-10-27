@@ -1,0 +1,61 @@
+#!/bin/sh
+
+
+if [ "X${TOOLCHAIN}" = "X" ]; then 
+	echo TOOLCHAIN environment variable should be set.; 
+	exit -1;
+elif [ "X${STRATA}" = "X" ]; then 
+	echo STRATA environment variable should be set. ;
+	exit -1;
+elif [ "X${NICECAP_HOME}" = "X" ]; then 
+	echo NICECAP_HOME environment variable should be set.; 
+	exit -1;
+elif [ "X${STRATA_HOME}" = "X" ]; then 
+	echo STRATA_HOME environment variable should be set.; 
+	exit -1;
+elif [ "X${STRATAFIER}" = "X" ]; then 
+	echo STRATAFIER environment variable should be set.; 
+	exit -1;
+fi ;
+
+next=0
+for i in  $*; do
+
+        if [ $next = 1 ]; then
+                exe=$i
+                break
+        fi
+
+        if [ $i = -o ]; then
+                next=1
+        fi
+
+done
+
+echo exe is $exe
+
+
+# generate the executeable 
+gcc -Bstatic -static $*
+
+if [ ! -f $exe ] 
+then
+	echo Failed to link exe $exe	
+	exit -1
+fi
+mv $exe $exe.ncexe
+
+
+#echo SPEC=$SPEC
+#
+## Note, we skip the SMP-analyze part if we're running spec... that's done from run_strata.sh
+#if [ ! $SPEC"X" = "X" ]
+#then
+#	${SMPSA_HOME}/SMP-analyze.sh $exe.ncexe
+#	if [ ! -f $exe.ncexe.annot ]; then echo Failed to generate annotations file; exit -2; fi
+#fi
+
+${STRATAFIER}/do_stratafy.sh $exe.ncexe
+mv new.exe $exe.stratafied
+${PEASOUP_HOME}/generate_exe.sh $exe $PWD/$exe.stratafied $PWD/$exe.ncexe $PWD/$exe.ncexe.annot
+

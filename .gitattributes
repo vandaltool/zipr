@@ -1,0 +1,23 @@
+* text=auto !eol
+/Makefile -text
+/block_copy.c -text
+/chopzero.c -text
+/fptest.c -text
+/generate_exe.sh -text
+/getsyms.sh -text
+/globalfield.c -text
+/hanoi.c -text
+/hanoi_heap_overrun.c -text
+/hanoi_nostrata.c -text
+/hanoi_overrun.c -text
+/hanoi_overrun_tainted.c -text
+/hanoi_overrun_taintedenv.c -text
+/hanoi_stack_overrun.c -text
+/hello.c -text
+/ld_script -text
+/malloc.c -text
+/memcpy.c -text
+/myhanoi.c -text
+/peasoup_link -text
+/print_ptr.c -text
+/recover_example.c -text
