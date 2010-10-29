@@ -2,6 +2,7 @@
 /Makefile -text
 /block_copy.c -text
 /chopzero.c -text
+/concolic_test_handshake.c -text
 /fptest.c -text
 /generate_exe.sh -text
 /getsyms.sh -text
@@ -21,3 +22,4 @@
 /peasoup_link -text
 /print_ptr.c -text
 /recover_example.c -text
+/test_controller.sh -text
