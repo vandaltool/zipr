@@ -1,6 +1,5 @@
 #!/bin/sh
 # This script depends on having the following environment variables defined
-# DIABLO_HOME - The path of the diablo installation
 # STRATA - The path to the strata installation
 # An example of these environment variables and their settings are listed in
 # the sample file: $STRATA/security_startup_rc
