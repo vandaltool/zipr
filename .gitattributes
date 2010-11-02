@@ -3,6 +3,7 @@
 /block_copy.c -text
 /chopzero.c -text
 /concolic_test_handshake.c -text
+/do_concolic.sh -text
 /fptest.c -text
 /generate_exe.sh -text
 /getsyms.sh -text
