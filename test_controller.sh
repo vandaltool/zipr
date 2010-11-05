@@ -23,3 +23,5 @@ for i in `ipcs -q|grep $whoami |cut -d" " -f 2`;
 do
 	ipcrm -q $i
 done
+
+rm test_controller

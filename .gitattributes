@@ -2,6 +2,7 @@
 /Makefile -text
 /block_copy.c -text
 /chopzero.c -text
+/cmd_args.005.cpp -text
 /concolic_test_handshake.c -text
 /do_concolic.sh -text
 /fptest.c -text

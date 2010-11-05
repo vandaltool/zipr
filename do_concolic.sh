@@ -15,7 +15,7 @@ for i in `ipcs -q|grep $whoami |cut -d" " -f 2`;
 do
 	ipcrm -q $i
 done
-STRATA_GRACE=1 controller --start $start_ea $strata_exe
+STRATA_GRACE=1 controller --start $start_ea --stop 80489c3 $strata_exe 
 
 echo cleaning up
 killall -q controller
