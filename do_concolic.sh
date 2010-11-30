@@ -1,21 +1,28 @@
 #!/bin/sh
 
 exe=$1
-
-$STRATAFIER/do_stratafy.sh $exe
-
-strata_exe=new.exe
+shift
+extra_args=$*
+strata_exe=$exe.stratafied
+annot=$exe.ncexe.annot
 
 whoami=`whoami`
 
-start_ea=`nm $exe|egrep " main$"|cut -f1 -d" "`
+
+# get a starting pc
+line=`cat $annot|egrep " FUNC GLOBAL main"|sed "s/  */ /g"`
+start_ea=`echo $line |cut -d" " -f1`
+
+# get an ending pc
+line=`cat $annot|egrep " FUNC GLOBAL exit"|sed "s/  */ /g"`
+stop_ea=`echo $line |cut -d" " -f1`
 
 echo  Removing all ipc queues.
 for i in `ipcs -q|grep $whoami |cut -d" " -f 2`; 
 do
 	ipcrm -q $i
 done
-STRATA_GRACE=1 controller --start $start_ea --stop 80489c3 $strata_exe 
+STRATA_GRACE=1 controller $extra_args --start $start_ea --stop $stop_ea $strata_exe 
 
 echo cleaning up
 killall -q controller

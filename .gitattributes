@@ -2,7 +2,7 @@
 /Makefile -text
 /block_copy.c -text
 /chopzero.c -text
-/cmd_args.005.cpp -text
+/cmd_args_005.c -text
 /concolic_test_handshake.c -text
 /do_concolic.sh -text
 /fptest.c -text
@@ -22,6 +22,7 @@
 /memcpy.c -text
 /myhanoi.c -text
 /peasoup_link -text
+/peasoup_link++ -text
 /print_ptr.c -text
 /recover_example.c -text
 /test_controller.sh -text

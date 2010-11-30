@@ -77,7 +77,7 @@ int lookup_month(char * month)
 }
 
 
-int parse_date(char * str, Date * d)
+int parse_date(char * str, struct Date * d)
 {
     int curr_index = 0;
 
@@ -149,7 +149,7 @@ int main(int argc, char * argv[])
 {
     if (argc != 2) return 0;
 
-    Date d;
+    struct Date d;
     int r;
     if (parse_date(argv[1], &d)) {
         

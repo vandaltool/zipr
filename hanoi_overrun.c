@@ -69,8 +69,7 @@ int main (int argc, char **argv)
 
 	printf("The users' group id is %d, should be 0\n", user_group_id_number);
 
-	
 
-	exit(0); 
+	return 0;
 }
 

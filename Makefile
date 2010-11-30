@@ -2,10 +2,10 @@
 
 
 
-CC=gcc 
-CXX=g++
+CC=gcc -fno-stack-protector
+CXX=g++ -fno-stack-protector
 
-all: env_check chopzero hanoi hanoi_overrun hanoi_heap_overrun hanoi_stack_overrun print_ptr malloc block_copy hello hanoi_overrun_tainted hanoi_overrun_taintedenv memcpy
+all: env_check chopzero hanoi hanoi_overrun hanoi_heap_overrun hanoi_stack_overrun print_ptr malloc block_copy hello hanoi_overrun_tainted hanoi_overrun_taintedenv memcpy cmd_args_005
 
 
 
@@ -158,6 +158,10 @@ hello: hello.o ${STRATA}/lib/x86_linux/libstrata_normal.a .PHONY
 	./peasoup_link hello.o -o hello
 	${SMPSA_HOME}/SMP-analyze.sh hello.ncexe
 
+cmd_args_005: cmd_args_005.o ${STRATA}/lib/x86_linux/libstrata_normal.a .PHONY
+	./peasoup_link++ cmd_args_005.o -o cmd_args_005
+	${SMPSA_HOME}/SMP-analyze.sh cmd_args_005.ncexe
+
 .PHONY: env_check chopzero
 
 .c.o:
@@ -196,6 +200,10 @@ double_free_suite:
 
 clean:
 	rm -f *.o *.syms *.map chopzero hanoi hanoi_overrun hanoi_heap_overrun malloc block_copy print_ptr hanoi_stack_overrun
-	rm -f *.exe *.dis *.data *.idb *.log *.ncexe *.annot *.readelf temp.* *.temp *.stratafied *.asm *.SMPobjdump *.id0 *.id1
+	rm -f *.exe *.dis *.data *.idb *.log *.ncexe *.annot *.readelf temp.* *.temp *.stratafied *.asm *.SMPobjdump *.id0 *.id1 *.til *.nam
+	rm -Rf concolic.files_*
+	rm strata.log.*
+
+concclean:
 	rm -Rf concolic.files_*
 	rm strata.log.*
