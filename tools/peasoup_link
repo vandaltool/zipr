@@ -57,5 +57,5 @@ mv $exe $exe.ncexe
 
 ${STRATAFIER}/do_stratafy.sh $exe.ncexe
 mv new.exe $exe.stratafied
-${PEASOUP_HOME}/generate_exe.sh $exe $PWD/$exe.stratafied $PWD/$exe.ncexe $PWD/$exe.ncexe.annot
+${PEASOUP_HOME}/tools/generate_exe.sh $exe $PWD/$exe.stratafied $PWD/$exe.ncexe $PWD/$exe.ncexe.annot
 
