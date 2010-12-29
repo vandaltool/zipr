@@ -27,7 +27,9 @@ examples/recover_example.c -text
 tools/do_concolic.sh -text
 tools/generate_exe.sh -text
 tools/getsyms.sh -text
-tools/peasoup_analyze.sh -text
 tools/peasoup_link -text
 tools/peasoup_link++ -text
+tools/ps_analyze.sh -text
+tools/ps_comp.sh -text
+tools/ps_link.sh -text
 tools/test_controller.sh -text

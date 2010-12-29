@@ -23,6 +23,7 @@ if [ -z $2 ]; then
 fi
 
 orig_exe=$1
+newname=a
 
 if [ -z $2 ]; then
 stratafied_exe=$orig_exe
@@ -33,15 +34,15 @@ fi
 echo "Original program: $orig_exe   New program: $stratafied_exe"
 
 name=`basename $orig_exe`
-newdir=$name.$$
+newdir=peasoup_executable_directory.$name.$$
 
 echo "Switching to directory $newdir"
 
 mkdir $newdir
-cp $orig_exe $newdir/$name.orig
+cp $orig_exe $newdir/$newname.ncexe
 cd $newdir
 
-sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $name.orig $name.stratafied
+sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied
 
 # We've now got a stratafied program
 
@@ -50,16 +51,23 @@ sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $name.orig $nam
 
 
 current_dir=`pwd`
-peasoup_binary=$name.peasoup
+peasoup_binary=$name.sh
 
 echo "#!/bin/sh" >> $peasoup_binary
 echo "" >> $peasoup_binary
-echo "#for some reason, pc confinment is broker"
-echo "#STRATA_PC_CONFINE=1 $current_dir/$name.stratafied \$*" >> $peasoup_binary
-echo "$current_dir/$name.stratafied \$*" >> $peasoup_binary
+echo "$PEASOUP_HOME/tools/ps_run.sh $current_dir \$*" >> $peasoup_binary 
+
+#echo "#for some reason, pc confinement is brokern"
+#echo "#STRATA_PC_CONFINE=1 $current_dir/$name.stratafied \$*" >> $peasoup_binary
+#echo "$current_dir/$name.stratafied \$*" >> $peasoup_binary
+
 
 chmod +x $peasoup_binary
 
+
+$SMPSA_HOME/SMP-analyze.sh a.ncexe
+$PEASOUP_HOME/tools/do_concolic.sh a
+
 cd -
 
-cp $newdir/$name.peasoup $stratafied_exe
+cp $newdir/$name.sh $stratafied_exe
