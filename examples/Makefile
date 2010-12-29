@@ -162,6 +162,14 @@ cmd_args_005: cmd_args_005.o ${STRATA}/lib/x86_linux/libstrata_normal.a .PHONY
 	${PEASOUP_HOME}/tools/peasoup_link++ cmd_args_005.o -o cmd_args_005
 	${SMPSA_HOME}/SMP-analyze.sh cmd_args_005.ncexe
 
+dumbledore: dumbledore.o ${STRATA}/lib/x86_linux/libstrata_normal.a .PHONY
+	${PEASOUP_HOME}/tools/peasoup_link++ dumbledore.o -o dumbledore
+	${SMPSA_HOME}/SMP-analyze.sh dumbledore.ncexe
+
+dumbledore_cmd: dumbledore_cmd.o ${STRATA}/lib/x86_linux/libstrata_normal.a .PHONY
+	${PEASOUP_HOME}/tools/peasoup_link++ dumbledore_cmd.o -o dumbledore_cmd
+	${SMPSA_HOME}/SMP-analyze.sh dumbledore_cmd.ncexe
+
 .PHONY: env_check 
 
 .c.o:
@@ -199,10 +207,11 @@ double_free_suite:
 	cd double_free_tests; make
 
 clean:
-	rm -f *.o *.syms *.map chopzero hanoi hanoi_overrun hanoi_heap_overrun malloc block_copy print_ptr hanoi_stack_overrun
+	rm -f *.o *.syms *.map chopzero hanoi hanoi_overrun hanoi_heap_overrun malloc block_copy print_ptr hanoi_stack_overrun dumbledore a.out memcpy hanoi_overrun_taintedenv dumbledore_cmd hanoi_overrun_tainted hello cmd_args_005
 	rm -f *.exe *.dis *.data *.idb *.log *.ncexe *.annot *.readelf temp.* *.temp *.stratafied *.asm *.SMPobjdump *.id0 *.id1 *.til *.nam
 	rm -Rf concolic.files_*
 	rm -f strata.log.*
+	rm -f *.sym
 
 concclean:
 	rm -Rf concolic.files_*
