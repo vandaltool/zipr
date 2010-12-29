@@ -39,7 +39,7 @@ for i in `ipcs -q|grep $whoami |cut -d" " -f 2`;
 do
 	ipcrm -q $i
 done
-STRATA_GRACE=1 controller $extra_args --start $start_ea --stop $stop_ea $strata_exe --symbols $sym
+STRATA_GRACE=1 controller $extra_args --start $start_ea --stop $stop_ea --symbols $sym $strata_exe
 
 echo cleaning up
 killall -q controller

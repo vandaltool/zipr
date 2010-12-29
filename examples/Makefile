@@ -5,7 +5,7 @@
 CC=gcc -fno-stack-protector
 CXX=g++ -fno-stack-protector
 
-all: env_check hanoi hanoi_overrun hanoi_heap_overrun hanoi_stack_overrun print_ptr malloc block_copy hello hanoi_overrun_tainted hanoi_overrun_taintedenv memcpy cmd_args_005
+all: env_check hanoi hanoi_overrun hanoi_heap_overrun hanoi_stack_overrun print_ptr malloc block_copy hello hanoi_overrun_tainted hanoi_overrun_taintedenv memcpy cmd_args_005 dumbledore dumbledore_cmd
 
 
 
@@ -173,7 +173,8 @@ dumbledore_cmd: dumbledore_cmd.o ${STRATA}/lib/x86_linux/libstrata_normal.a .PHO
 .PHONY: env_check 
 
 .c.o:
-	$(CC) -O3 -fomit-frame-pointer $< -c
+	# $(CC) -O3 -fomit-frame-pointer $< -c
+	$(CC) $< -c
 
 .cpp.o:
 	$(CXX) -O3 $< -c
