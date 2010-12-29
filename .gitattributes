@@ -1,5 +1,6 @@
 * text=auto !eol
 /Makefile -text
+chopzero_src/Makefile -text
 chopzero_src/chopzero.c -text
 examples/Makefile -text
 examples/block_copy.c -text
