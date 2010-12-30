@@ -30,6 +30,7 @@ tools/getsyms.sh -text
 tools/peasoup_link -text
 tools/peasoup_link++ -text
 tools/ps_analyze.sh -text
+tools/ps_comp++.sh -text
 tools/ps_comp.sh -text
 tools/ps_link.sh -text
 tools/ps_run.sh -text
