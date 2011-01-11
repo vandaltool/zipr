@@ -2,6 +2,16 @@
 /Makefile -text
 chopzero_src/Makefile -text
 chopzero_src/chopzero.c -text
+demos/demo.jan_21_2011/Makefile -text
+demos/demo.jan_21_2011/dumbledore.c -text
+demos/demo.jan_21_2011/dumbledore.exploits/Makefile -text
+demos/demo.jan_21_2011/dumbledore.exploits/attack-gradeA.no_strata.c -text
+demos/demo.jan_21_2011/dumbledore.exploits/attack-gradeB.no_strata.c -text
+demos/demo.jan_21_2011/dumbledore.exploits/badA.txt -text
+demos/demo.jan_21_2011/dumbledore.exploits/badB.txt -text
+demos/demo.jan_21_2011/dumbledore.good_inputs/good.txt -text
+demos/demo.jan_21_2011/dumbledore_cmd.c -text
+demos/demo.jan_21_2011/ps_demo.sh -text
 examples/Makefile -text
 examples/block_copy.c -text
 examples/cmd_args_005.c -text
