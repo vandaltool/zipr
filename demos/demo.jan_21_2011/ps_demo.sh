@@ -6,6 +6,17 @@ if [ "${PEASOUP_HOME}x" = "x" ]; then
 	exit 1
 fi
 
+if [ "${STRATA}x" = "x" ]; then
+	echo "environment variable: STRATA is empty. "
+	echo "STRATA must be defined to point at a valid Strata security branch"
+	exit 1
+fi
+
+# if the executable hasn't been built, then build it!
+if [ ! -f dumbledore.original ]; then
+	make
+fi
+
 TOOLBASE=${PEASOUP_HOME}/tools
 
 # A pause function
@@ -97,8 +108,20 @@ Pause
 
 Pause
 
-echo "GDB step through...."
 # 6) Demonstrate add_pc_confinement.sh
+# add_pc_confinement.sh needs to have a second copy of the exe for some reason
+cp dumbledore.original tmp
+
+# clear the screen
+clear
+echo "Program shepherding.  Adding confinement information to the binary.\n"
+echo "add_confinement_section.sh dumbledore.original tmp\n"
+bash ${STRATA}/tools/pc_confinement/add_confinement_section.sh dumbledore.original tmp
+
+Pause
+
+clear
+echo "GDB step through...."
 # 7) Run dumbledore.protected in gdb with bad input with bp set at confined_targ_fetch(), fetching a good instruction, and show it when catching the bad instruction.
 # 8) Run dumbledore.protected on bad input #2, show that we did not defeat the exploit
 

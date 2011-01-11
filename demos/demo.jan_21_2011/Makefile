@@ -12,4 +12,4 @@ dumbledore_cmd.original: dumbledore_cmd.o
 	${TOOLBASE}/ps_comp.sh  $<
 
 clean:
-	rm *.o dumbledore.original dumbledore_cmd.original dumbledore.protected dumbledore_cmd.protected
+	rm *.o dumbledore.original dumbledore_cmd.original dumbledore.protected dumbledore_cmd.protected tmp
