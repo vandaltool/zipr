@@ -36,13 +36,15 @@ echo "Original program: $orig_exe   New program: $stratafied_exe"
 name=`basename $orig_exe`
 newdir=peasoup_executable_directory.$name.$$
 
-echo "Switching to directory $newdir"
 
 mkdir $newdir
 cp $orig_exe $newdir/$newname.ncexe
 cd $newdir
 
-sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied
+
+echo -n Creating stratafied executable...
+sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied > /dev/null 2>&1 
+echo Done. 
 
 # We've now got a stratafied program
 
@@ -57,17 +59,22 @@ echo "#!/bin/sh" >> $peasoup_binary
 echo "" >> $peasoup_binary
 echo "$PEASOUP_HOME/tools/ps_run.sh $current_dir \$*" >> $peasoup_binary 
 
-#echo "#for some reason, pc confinement is brokern"
-#echo "#STRATA_PC_CONFINE=1 $current_dir/$name.stratafied \$*" >> $peasoup_binary
-#echo "$current_dir/$name.stratafied \$*" >> $peasoup_binary
 
 
 chmod +x $peasoup_binary
 
 
+echo Running IDA Pro static analysis phase ...
 $SMPSA_HOME/SMP-analyze.sh a.ncexe
-$PEASOUP_HOME/tools/do_concolic.sh a
+echo Done.
 
-cd -
+echo Running concolic testing to generate inputs ...
+$PEASOUP_HOME/tools/do_concolic.sh a 2>&1 |egrep -e "INPUT VECTOR:" -e "1: argc ="
+# >/dev/null 2>&1 
+echo Done.
+
+
+
+cd - > /dev/null 2>&1
 
 cp $newdir/$name.sh $stratafied_exe
