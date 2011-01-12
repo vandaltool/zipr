@@ -71,11 +71,11 @@ Pause
 # clear the screen
 clear
 echo "Running PEASOUP analysis phase...\n"
-echo "${TOOLBASE}/ps_analyze.sh dumbledore.original dumbledore.protected\n"
+echo "${TOOLBASE}/ps_analyze.sh dumbledore_cmd.original dumbledore_cmd.protected\n"
 
 Pause
 
-${TOOLBASE}/ps_analyze.sh dumbledore.original dumbledore.protected
+${TOOLBASE}/ps_analyze.sh dumbledore_cmd.original dumbledore_cmd.protected
 
 Pause
 
