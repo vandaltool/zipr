@@ -1,0 +1,19 @@
+# Author: Michele Co, mc2zk@virginia.edu
+# This is a script for running the gdb portion of the demo
+# run on the code injection input
+# invoked on gdb commandline by run_gdb.sh
+
+# load the symbol file
+symbol-file stratafier.o.exe
+
+# add a bp for confined_targ_fetch
+b confined_targ_fetch
+
+# the condition should be where the code injection starts
+cond 1 PC==0x80c80ce
+
+# clear the screen using the shell command: clear
+shell clear
+
+# list the function confined_targ_fetch() for the audience to see
+list confined_targ_fetch
