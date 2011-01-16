@@ -7,6 +7,7 @@ demos/demo.jan_21_2011/dumbledore.c -text
 demos/demo.jan_21_2011/dumbledore.exploits/Makefile -text
 demos/demo.jan_21_2011/dumbledore.exploits/attack-gradeA.no_strata.c -text
 demos/demo.jan_21_2011/dumbledore.exploits/attack-gradeB.no_strata.c -text
+demos/demo.jan_21_2011/dumbledore.exploits/attack-strata_parm1.c -text
 demos/demo.jan_21_2011/dumbledore.exploits/attack-strata_tracing.c -text
 demos/demo.jan_21_2011/dumbledore.exploits/badA.txt -text
 demos/demo.jan_21_2011/dumbledore.exploits/badB.txt -text
