@@ -16,6 +16,7 @@ demos/demo.jan_21_2011/dumbledore_cmd.c -text
 demos/demo.jan_21_2011/gdb.demo.script -text
 demos/demo.jan_21_2011/ps_demo.sh -text
 demos/demo.jan_21_2011/run_gdb.sh -text
+demos/demo.jan_21_2011/test_infinite.sh -text
 examples/Makefile -text
 examples/block_copy.c -text
 examples/cmd_args_005.c -text

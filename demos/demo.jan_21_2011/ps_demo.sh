@@ -79,6 +79,17 @@ ${TOOLBASE}/ps_analyze.sh dumbledore_cmd.original dumbledore_cmd.protected
 
 Pause
 
+clear
+echo "GraCE finds interesting test input which causes infinite loop\n"
+echo "Input: \340^A@@^F*nj^B^D.^Az^\b^H^A^BB^B^P^Z^F ^P"
+
+echo
+Pause
+
+# test the infinite looping input
+sh test_infinite.sh
+
+Pause
 # clear the screen
 clear
 
@@ -115,7 +126,7 @@ cp dumbledore.original tmp
 # clear the screen
 clear
 echo "Program shepherding.  Adding confinement information to the binary.\n"
-bash ${STRATA}/tools/pc_confinement/add_confinement_section.sh dumbledore.original tmp
+bash ${STRATA}/tools/pc_confinement/add_confinement_section.sh dumbledore.original tmp | egrep -v EOF
 
 Pause
 
@@ -125,11 +136,14 @@ echo "GDB step through...."
 
 
 Pause
+clear
 
 # 8) Run dumbledore.protected on bad input #2, show that we did not defeat the exploit
-echo "Running dumbledore.protected with arc injection attack input\n"
-badBinput=`cat dumbledore.exploits/badB.txt`
-echo "Input: $badBinput\n\n"
+#echo "Running dumbledore.protected with arc injection attack input\n"
+#badBinput=`cat dumbledore.exploits/badB.txt`
+#echo "Input: $badBinput\n\n"
 
-./dumbledore.protected < dumbledore.exploits/badB.txt
+#Pause
+
+#./dumbledore.protected < dumbledore.exploits/badB.txt
 

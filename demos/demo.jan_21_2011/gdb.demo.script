@@ -17,3 +17,5 @@ shell clear
 
 # list the function confined_targ_fetch() for the audience to see
 list confined_targ_fetch
+list
+list 
