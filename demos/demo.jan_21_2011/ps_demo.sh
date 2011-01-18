@@ -128,15 +128,18 @@ clear
 echo "Program shepherding.  Adding confinement information to the binary.\n"
 bash ${STRATA}/tools/pc_confinement/add_confinement_section.sh dumbledore.original tmp | egrep -v EOF
 
-Pause
+echo
+echo
 
-clear
-echo "GDB step through...."
+#Pause
+
+#clear
+#echo "GDB step through...."
 # 7) Run dumbledore.protected in gdb with bad input with bp set at confined_targ_fetch(), fetching a good instruction, and show it when catching the bad instruction.
 
 
-Pause
-clear
+#Pause
+#clear
 
 # 8) Run dumbledore.protected on bad input #2, show that we did not defeat the exploit
 #echo "Running dumbledore.protected with arc injection attack input\n"
