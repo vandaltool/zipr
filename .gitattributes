@@ -3,6 +3,7 @@
 chopzero_src/Makefile -text
 chopzero_src/chopzero.c -text
 demos/demo.jan_21_2011/Makefile -text
+demos/demo.jan_21_2011/demo_analyze.sh -text
 demos/demo.jan_21_2011/dumbledore.c -text
 demos/demo.jan_21_2011/dumbledore.exploits/Makefile -text
 demos/demo.jan_21_2011/dumbledore.exploits/attack-gradeA.no_strata.c -text

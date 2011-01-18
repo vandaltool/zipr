@@ -75,7 +75,11 @@ echo "${TOOLBASE}/ps_analyze.sh dumbledore_cmd.original dumbledore_cmd.protected
 
 Pause
 
-${TOOLBASE}/ps_analyze.sh dumbledore_cmd.original dumbledore_cmd.protected
+#${TOOLBASE}/ps_analyze.sh dumbledore_cmd.original dumbledore_cmd.protected
+
+# NOTE:  Trying to save time on demo by using intermediate build objects
+./demo_analyze.sh
+
 
 Pause
 
