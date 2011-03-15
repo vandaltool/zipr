@@ -9,7 +9,7 @@ LD=DO_NOT_USE
 
 .SUFFIXES: .o .c .cpp .exe
 
-exes=hanoi.exe hanoi_overrun.exe hanoi_heap_overrun.exe hanoi_stack_overrun.exe print_ptr.exe malloc.exe block_copy.exe hello.exe hanoi_overrun_tainted.exe hanoi_overrun_taintedenv.exe memcpy.exe cmd_args_005.exe dumbledore.exe dumbledore_cmd.exe
+exes=hanoi.exe hanoi_overrun.exe hanoi_heap_overrun.exe hanoi_stack_overrun.exe print_ptr.exe malloc.exe block_copy.exe hello.exe hanoi_overrun_tainted.exe hanoi_overrun_taintedenv.exe memcpy.exe cmd_args_005.exe dumbledore_stdin.exe dumbledore_cmd.exe dumbledore_file.exe
 
 
 all: env_check  ${exes}
@@ -31,6 +31,8 @@ all: env_check  ${exes}
 
 chopzero:
 	@ if [ ! -f chopzero ]; then gcc chopzero.c -o chopzero -O3 ; fi
+
+$(exes): ${STRATA}/lib/x86_linux/libstrata.a
 
 
 

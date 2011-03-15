@@ -22,8 +22,10 @@ examples/Makefile -text
 examples/block_copy.c -text
 examples/cmd_args_005.c -text
 examples/concolic_test_handshake.c -text
-examples/dumbledore.c -text
 examples/dumbledore_cmd.c -text
+examples/dumbledore_file.c -text
+examples/dumbledore_file_with_fopen_check.c -text
+examples/dumbledore_stdin.c -text
 examples/fptest.c -text
 examples/globalfield.c -text
 examples/hanoi.c -text

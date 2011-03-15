@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <sys/mman.h>
 #include <string.h>
@@ -17,7 +16,7 @@ void readString(char *s) {
 
    for (;;) 
    {
-      c = getchar();
+      c = fgetc(f);
       if ((c == EOF) || (c == '\n')) 
          break;
       buf[i] = c;
@@ -32,8 +31,8 @@ void readString(char *s) {
 
 int main(void) 
 {
-   mprotect((void*)((unsigned int)Name & 0xfffff000), 1,
-            PROT_READ | PROT_WRITE | PROT_EXEC);
+   f = fopen("data.txt", "r");
+
    readString(Name);
 
    if (strcmp(Name, "Wizard in Training") == 0) 
@@ -42,6 +41,6 @@ int main(void)
    printf("Thank you, %s.\n", Name);
    printf("I recommend that you get a grade of %c on this assignment.\n", grade);
 
-   exit(0);
+//   exit(0);
 }
 
