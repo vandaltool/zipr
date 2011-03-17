@@ -3,7 +3,6 @@
 #
 # Argument is the directory created to store the stratafied binary
 #
-cd $1
 
 $STRATA_REWRITE/tools/transforms/p1transform a.ncexe a.ncexe.annot
 
@@ -42,7 +41,7 @@ do
   for i in `ls $CONCOLIC/input*.json`
   do
     # run with bad SPRI transform
-    STRATA_SPRI_FILE=$BSPRI_BAD $GRACE_HOME/concolic/bin/replayer --stdout --stderr --engine=sdt ./a.ncexe $i
+    STRATA_SPRI_FILE=$BSPRI_BAD $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout --stderr --engine=sdt ./a.stratafied $i
   done
 
   mv grace_replay grace_replay.$fn
