@@ -52,6 +52,7 @@ FILTERED_OUT=$P1_DIR/a.ncexe.p1.filteredout
 touch $FILTERED_OUT
 while read fn;
 do
+  DIVERGE="no"
   echo "Evaluating candidate fn: $fn"
   BSPRI_BAD=$P1_DIR/bspri/a.ncexe.xform.p1.bad.$fn.bspri
   for i in `ls $CONCOLIC/input*.json`
@@ -75,6 +76,8 @@ do
 
       rm stdout.$input.$fn
       rm stderr.$input.$fn 2>/dev/null
+      
+      DIVERGE="yes"
       break
     fi
     fi
@@ -94,12 +97,12 @@ do
     rm stderr.$input.$fn
   done
 
-  echo "Evaluating candidate fn: $fn  BED detected no divergence -- remove fn from candidate set"
-  echo $fn >> $FILTERED_OUT
-  rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
-  rm p1.xform/aspri/a.ncexe.xform.p1.bad.$fn.aspri
-  # here we need to do a whole bunch of diffs to see if we've detected the bad xform
-  # if none of the inputs detect the bad xform, remove from candidate set of fns to P1 transform
+  if [ "$DIVERGE" -eq "no" ]; then
+    echo "Evaluating candidate fn: $fn  BED detected no divergence -- remove fn from candidate set"
+    echo $fn >> $FILTERED_OUT
+    rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
+    rm p1.xform/aspri/a.ncexe.xform.p1.bad.$fn.aspri
+  fi
 
 done < $CANDIDATE_FNS
 
