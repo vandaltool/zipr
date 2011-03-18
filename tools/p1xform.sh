@@ -97,7 +97,7 @@ do
     rm stderr.$input.$fn
   done
 
-  if [ "$DIVERGE" -eq "no" ]; then
+  if [ "$DIVERGE" == "no" ]; then
     echo "Evaluating candidate fn: $fn  BED detected no divergence -- remove fn from candidate set"
     echo $fn >> $FILTERED_OUT
     rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
