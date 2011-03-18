@@ -43,7 +43,6 @@ do
   $GRACE_HOME/concolic/bin/replayer --stdout=replay.baseline/stdout.$input --stderr=replay.baseline/stderr.$input --engine=ptrace ./a.ncexe $i
 done
 
-echo "Running replayer to get baseline outputs"
 P1_DIR=p1.xform
 # remove any candidate functions not covered
 CANDIDATE_FNS=$P1_DIR/a.ncexe.p1.candidates
@@ -59,18 +58,22 @@ do
 
     # if the output differs, stop right away, move to next function
     diff stdout.$input.$fn replay.baseline/stdout.$input
-    if [ ! -eq 0 ]; then
+    if [ ! $? -eq 0 ]; then
+      echo "Evaluating candidate fn: $fn  TSET=0 Remove from candidate set (STDOUT differ)"
       rm stdout.$input.$fn
       rm stderr.$input.$fn
-      rm p1.xform/bspri/a.ncexe.xform.p1.bad.$fn.bspri
+      rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
+      rm p1.xform/bspri/a.ncexe.xform.p1.$fn.bspri
       break
     fi
 
     diff stderr.$input.$fn replay.baseline/stderr.$input
-    if [ ! -eq 0 ]; then
+    if [ ! $? -eq 0 ]; then
+      echo "Evaluating candidate fn: $fn  TSET=0 Remove from candidate set (STDERR differ)"
       rm stdout.$input.$fn
       rm stderr.$input.$fn
-      rm p1.xform/bspri/a.ncexe.xform.p1.bad.$fn.bspri
+      rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
+      rm p1.xform/bspri/a.ncexe.xform.p1.$fn.bspri
       break
     fi
 
