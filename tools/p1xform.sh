@@ -59,34 +59,40 @@ do
     # if the output differs, stop right away, move to next function
     if [ ! -z replay.baseline/stdout.$input ];
     then
+    echo "Diffing stdout.$input.$fn vs. replay.baseline/stdout.$input"
     diff stdout.$input.$fn replay.baseline/stdout.$input
     if [ ! $? -eq 0 ]; then
       echo "Evaluating candidate fn: $fn  BED detected divergence -- good"
+
+      echo "original"
+      cat replay.baseline/stdout.$input
+      echo "bad"
+      cat stdout.$input.$fn
+
       rm stdout.$input.$fn
-      rm stderr.$input.$fn
+      rm stderr.$input.$fn 2>/dev/null
       break
     fi
     fi
 
-    if [ ! -z replay.baseline/stderr.$input ];
-    then
-    diff stderr.$input.$fn replay.baseline/stderr.$input
-    if [ ! $? -eq 0 ]; then
-      echo "Evaluating candidate fn: $fn  BED detected divergence -- good"
-      rm stdout.$input.$fn
-      rm stderr.$input.$fn
-      break
-    fi
-    fi
-
-    echo "Evaluating candidate fn: $fn  BED detected no divergence -- remove fn from candidate set"
-    rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
-    rm p1.xform/bspri/a.ncexe.xform.p1.$fn.bspri
+#    if [ ! -z replay.baseline/stderr.$input ];
+#    then
+#    diff stderr.$input.$fn replay.baseline/stderr.$input
+#    if [ ! $? -eq 0 ]; then
+#      echo "Evaluating candidate fn: $fn  BED detected divergence -- good"
+#      rm stdout.$input.$fn
+#      rm stderr.$input.$fn
+#      break
+#    fi
+#    fi
 
     rm stdout.$input.$fn
     rm stderr.$input.$fn
   done
 
+  echo "Evaluating candidate fn: $fn  BED detected no divergence -- remove fn from candidate set"
+  rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
+  rm p1.xform/bspri/a.ncexe.xform.p1.$fn.bspri
   # here we need to do a whole bunch of diffs to see if we've detected the bad xform
   # if none of the inputs detect the bad xform, remove from candidate set of fns to P1 transform
 
