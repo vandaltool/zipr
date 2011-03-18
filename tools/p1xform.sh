@@ -57,6 +57,8 @@ do
     STRATA_SPRI_FILE=$BSPRI_BAD $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input.$fn --stderr=stderr.$input.$fn --engine=sdt ./a.stratafied $i
 
     # if the output differs, stop right away, move to next function
+    if [ ! -z replay.baseline/stdout.$input ];
+    then
     diff stdout.$input.$fn replay.baseline/stdout.$input
     if [ ! $? -eq 0 ]; then
       echo "Evaluating candidate fn: $fn  BED detected divergence -- good"
@@ -64,13 +66,17 @@ do
       rm stderr.$input.$fn
       break
     fi
+    fi
 
+    if [ ! -z replay.baseline/stderr.$input ];
+    then
     diff stderr.$input.$fn replay.baseline/stderr.$input
     if [ ! $? -eq 0 ]; then
       echo "Evaluating candidate fn: $fn  BED detected divergence -- good"
       rm stdout.$input.$fn
       rm stderr.$input.$fn
       break
+    fi
     fi
 
     echo "Evaluating candidate fn: $fn  BED detected no divergence -- remove fn from candidate set"
