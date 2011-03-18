@@ -59,23 +59,23 @@ do
     # if the output differs, stop right away, move to next function
     diff stdout.$input.$fn replay.baseline/stdout.$input
     if [ ! $? -eq 0 ]; then
-      echo "Evaluating candidate fn: $fn  TSET=0 Remove from candidate set (STDOUT differ)"
+      echo "Evaluating candidate fn: $fn  BED detected divergence -- good"
       rm stdout.$input.$fn
       rm stderr.$input.$fn
-      rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
-      rm p1.xform/bspri/a.ncexe.xform.p1.$fn.bspri
-      break
+      continue
     fi
 
     diff stderr.$input.$fn replay.baseline/stderr.$input
     if [ ! $? -eq 0 ]; then
-      echo "Evaluating candidate fn: $fn  TSET=0 Remove from candidate set (STDERR differ)"
+      echo "Evaluating candidate fn: $fn  BED detected divergence -- good"
       rm stdout.$input.$fn
       rm stderr.$input.$fn
-      rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
-      rm p1.xform/bspri/a.ncexe.xform.p1.$fn.bspri
-      break
+      continue
     fi
+
+    echo "Evaluating candidate fn: $fn  BED detected no divergence -- remove fn from candidate set"
+    rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
+    rm p1.xform/bspri/a.ncexe.xform.p1.$fn.bspri
 
     rm stdout.$input.$fn
     rm stderr.$input.$fn
