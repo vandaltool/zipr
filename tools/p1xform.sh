@@ -45,7 +45,11 @@ done
 
 P1_DIR=p1.xform
 # remove any candidate functions not covered
+
 CANDIDATE_FNS=$P1_DIR/a.ncexe.p1.candidates
+FILTERED_OUT=$P1_DIR/a.ncexe.p1.filteredout
+
+touch $FILTERED_OUT
 while read fn;
 do
   echo "Evaluating candidate fn: $fn"
@@ -91,8 +95,9 @@ do
   done
 
   echo "Evaluating candidate fn: $fn  BED detected no divergence -- remove fn from candidate set"
+  echo $fn >> $FILTERED_OUT
   rm p1.xform/aspri/a.ncexe.xform.p1.$fn.aspri
-  rm p1.xform/bspri/a.ncexe.xform.p1.$fn.bspri
+  rm p1.xform/aspri/a.ncexe.xform.p1.bad.$fn.aspri
   # here we need to do a whole bunch of diffs to see if we've detected the bad xform
   # if none of the inputs detect the bad xform, remove from candidate set of fns to P1 transform
 
