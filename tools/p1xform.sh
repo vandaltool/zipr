@@ -62,7 +62,7 @@ do
       echo "Evaluating candidate fn: $fn  BED detected divergence -- good"
       rm stdout.$input.$fn
       rm stderr.$input.$fn
-      continue
+      break
     fi
 
     diff stderr.$input.$fn replay.baseline/stderr.$input
@@ -70,7 +70,7 @@ do
       echo "Evaluating candidate fn: $fn  BED detected divergence -- good"
       rm stdout.$input.$fn
       rm stderr.$input.$fn
-      continue
+      break
     fi
 
     echo "Evaluating candidate fn: $fn  BED detected no divergence -- remove fn from candidate set"
