@@ -5,16 +5,29 @@
 #
 
 CURRENT_DIR=`pwd`
+
 P1_DIR=$CURRENT_DIR/p1.xform
 
-$PEASOUP_HOME/tools/p1xform.genspri.sh $P1_DIR $CURRENT_DIR/a.ncexe $CURRENT_DIR/a.ncexe.annot
+mkdir $P1_DIR
 
-$PEASOUP_HOME/tools/generate_io_baseline.sh $CURRENT_DIR a.ncexe concolic.files_a.stratafied_0001
+ASPRI_DIR=$P1_DIR/aspri
+BSPRI_DIR=$P1_DIR/bspri
+
+echo ""
+echo "=========================================="
+echo "p1xform.sh script started in $CURRENT_DIR"
+echo "P1 transform directory: $P1_DIR"
+echo "=========================================="
+
+$PEASOUP_HOME/tools/p1xform.genspri.sh $P1_DIR $CURRENT_DIR/a.ncexe $CURRENT_DIR/a.ncexe.annot > $P1_DIR/genspri.out 2> $P1_DIR/genspri.err
+
+$PEASOUP_HOME/tools/generate_io_baseline.sh $CURRENT_DIR a.ncexe concolic.files_a.stratafied_0001 > gen_baseline.out 2> gen_baseline.err
 
 #
 # remove any candidate functions not covered
 # this will go away once GrACE gives us the instruction coverage information
 #
+CONCOLIC=concolic.files_a.stratafied_0001
 
 CANDIDATE_FNS=$P1_DIR/a.ncexe.p1.candidates
 FILTERED_OUT=$P1_DIR/a.ncexe.p1.filteredout
@@ -76,8 +89,12 @@ do
 
 done < $CANDIDATE_FNS
 
-$PEASOUP_HOME/tools/p1xform.pbed.sh $P1_DIR $KEEPS $CONCOLIC $ASPRI $BSPRI
+echo "====================================================="
+echo "1st pass: DONE EVALUATING CANDIDATE FUNCTIONS"
+echo "====================================================="
 
-$PEASOUP_HOME/tools/p1xform.doxform.sh $P1_DIR/a.ncexe.p1.final $ASPRI
+$PEASOUP_HOME/tools/p1xform.pbed.sh $P1_DIR $KEEPS $CONCOLIC $ASPRI_DIR $BSPRI_DIR
+
+$PEASOUP_HOME/tools/p1xform.doxform.sh $P1_DIR/a.ncexe.p1.final $ASPRI_DIR
 
 

@@ -13,7 +13,12 @@ ANNOT=$3    # full path of annotations for the original binary
 
 cd $P1_DIR
 
-$STRATA_REWRITE/tools/transforms/p1transform $BINARY $ANNOT
+echo "XXX: Current Directory: $P1_DIR"
+pwd
+
+echo "CMD: $STRATA_REWRITE/tools/transforms/p1transform $BINARY $ANNOT"
+
+$STRATA_REWRITE/tools/transforms/p1transform $BINARY $ANNOT 
 
 ASPRI_DIR=$P1_DIR/aspri
 BSPRI_DIR=$P1_DIR/bspri
