@@ -45,6 +45,8 @@ examples/recover_example.c -text
 tools/do_concolic.sh -text
 tools/generate_exe.sh -text
 tools/getsyms.sh -text
+tools/p1xform.doxform.sh -text
+tools/p1xform.pbed.sh -text
 tools/p1xform.sh -text
 tools/peasoup_link -text
 tools/peasoup_link++ -text
