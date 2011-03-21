@@ -1,51 +1,20 @@
 #!/bin/sh
 
 #
-# Argument is the directory created to store the stratafied binary
+# Run script from top-level directory created by the peasoup script
 #
 
-# produce list of candidate functions
-# produce list of non-candidate functions
-# produce bad asm SPRI rules for candidate functions
-# produce good asm SPRI rules for candidate functions
-$STRATA_REWRITE/tools/transforms/p1transform a.ncexe a.ncexe.annot
+CURRENT_DIR=`pwd`
+P1_DIR=$CURRENT_DIR/p1.xform
 
-P1_DIR=p1.xform
-ASPRI=aspri
-BSPRI=bspri
+$PEASOUP_HOME/tools/p1xform.genspri.sh $P1_DIR $CURRENT_DIR/a.ncexe $CURRENT_DIR/a.ncexe.annot
 
-# 
-# Split out into own scripts
-# Create binary SPRI files for good & bad transformation
+$PEASOUP_HOME/tools/generate_io_baseline.sh $CURRENT_DIR a.ncexe concolic.files_a.stratafied_0001
+
 #
-cd $P1_DIR
-mkdir $BSPRI
-mkdir $ASPRI
-for i in `ls *p1*.aspri`
-do
-  base=`basename $i .aspri`
-  $STRATA_REWRITE/tools/spasm/spasm $i bspri/"$base".bspri  
-  mv $i aspri
-done
-
-cd -
-
-echo Current dir:
-pwd
-
-# get output for all inputs on the normal program
-echo "Running replayer to get baseline outputs"
-CONCOLIC=concolic.files_a.stratafied_0001
-
-mkdir replay.baseline
-for i in `ls $CONCOLIC/input*.json`
-do
-  # format input file is:  input_0001.json
-  input=`basename $i .json`
-  $GRACE_HOME/concolic/bin/replayer --stdout=replay.baseline/stdout.$input --stderr=replay.baseline/stderr.$input --engine=ptrace ./a.ncexe $i
-done
-
 # remove any candidate functions not covered
+# this will go away once GrACE gives us the instruction coverage information
+#
 
 CANDIDATE_FNS=$P1_DIR/a.ncexe.p1.candidates
 FILTERED_OUT=$P1_DIR/a.ncexe.p1.filteredout
