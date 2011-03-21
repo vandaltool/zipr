@@ -107,7 +107,8 @@ do
 
 done < $CANDIDATE_FNS
 
+$PEASOUP_HOME/tools/p1xform.pbed.sh $P1_DIR $KEEPS $CONCOLIC $ASPRI $BSPRI
 
-$PEASOUP_HOME/tools/p1xform.pbed.sh $P1_DIR $CANDIDATE_FNS $CONCOLIC $ASPRI $BSPRI
+$PEASOUP_HOME/tools/p1xform.doxform.sh $P1_DIR/a.ncexe.p1.final $ASPRI
 
 
