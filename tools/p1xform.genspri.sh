@@ -10,6 +10,9 @@ ANNOT=$3    # full path of annotations for the original binary
 # produce good asm SPRI rules for candidate functions
 #
 # to do: split the above into distinct commands/options combinations
+
+cd $P1_DIR
+
 $STRATA_REWRITE/tools/transforms/p1transform $BINARY $ANNOT
 
 ASPRI_DIR=$P1_DIR/aspri
@@ -18,6 +21,7 @@ BSPRI_DIR=$P1_DIR/bspri
 mkdir $ASPRI_DIR
 mkdir $BSPRI_DIR
 
+echo ""
 echo "==================================================="
 echo "Generating initial spri files"
 echo "   output aspri dir: $P1_DIR/$ASPRI"
@@ -32,3 +36,5 @@ do
   $STRATA_REWRITE/tools/spasm/spasm $i $BSPRI_DIR/"$base".bspri  
 done
 
+echo "Done generating initial spri files"
+echo "==================================================="
