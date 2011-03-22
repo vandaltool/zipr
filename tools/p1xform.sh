@@ -93,9 +93,15 @@ echo "====================================================="
 echo "1st pass: DONE EVALUATING CANDIDATE FUNCTIONS"
 echo "====================================================="
 
+echo "====================================================="
+echo "Run BED"
+echo "====================================================="
 cd $CURRENT_DIR
 $PEASOUP_HOME/tools/p1xform.pbed.sh $P1_DIR $KEEPS $CONCOLIC $BSPRI_DIR
 
+echo "====================================================="
+echo "Produce final transformed binary"
+echo "====================================================="
 cd $CURRENT_DIR
 $PEASOUP_HOME/tools/p1xform.doxform.sh $P1_DIR/p1.final $P1_DIR $ASPRI_DIR
 
