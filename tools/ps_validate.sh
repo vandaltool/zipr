@@ -26,13 +26,28 @@ do
   if [ ! -z replay.baseline/stdout.$input ];
   then
     if [ ! $? -eq 0 ]; then
-      echo "ps_validate.sh: divergence detected for input $i"
+      echo "ps_validate.sh: divergence detected for input $i (stdout)"
 
-      echo "Baseline file:"
+      echo "Baseline file (stdout):"
       cat replay.baseline/stdout.$input
 
-      echo "Output stdout:$input.$fn:"
-      cat stdout.$input.$fn
+      echo "Output stdout (stdout):$input:"
+      cat stdout.$input
+
+      exit 1
+    fi
+  fi
+
+  if [ ! -z replay.baseline/stderr.$input ];
+  then
+    if [ ! $? -eq 0 ]; then
+      echo "ps_validate.sh: divergence detected for input $i (stderr)"
+
+      echo "Baseline file (stderr):"
+      cat replay.baseline/stderr.$input
+
+      echo "Output stderr (stderr):$input:"
+      cat stderr.$input
 
       exit 1
     fi
