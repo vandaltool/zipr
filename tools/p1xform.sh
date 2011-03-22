@@ -97,6 +97,6 @@ cd $CURRENT_DIR
 $PEASOUP_HOME/tools/p1xform.pbed.sh $P1_DIR $KEEPS $CONCOLIC $BSPRI_DIR
 
 cd $CURRENT_DIR
-$PEASOUP_HOME/tools/p1xform.doxform.sh $P1_DIR/p1.final $ASPRI_DIR
+$PEASOUP_HOME/tools/p1xform.doxform.sh $P1_DIR/p1.final $P1_DIR $ASPRI_DIR
 
 

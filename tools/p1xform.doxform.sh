@@ -7,12 +7,16 @@
 #   Binary spri file specification for P1 xform 
 #
 
-echo "=========================================="
-echo "Running p1xform.pbed.sh"
-echo "=========================================="
-
 FNS=$1             # file containing name of functions to evaluate
-ASPRI_DIR=$2       # directory with assembly SPRI rules
+P1_DIR=$2       # directory with assembly SPRI rules
+ASPRI_DIR=$3       # directory with assembly SPRI rules
+
+echo "=========================================="
+echo "Running p1xform.doxform.sh"
+echo "            FNS: $FNS"
+echo "         P1_DIR: $P1_DIR"
+echo "      ASPRI_DIR: $ASPRI_DIR"
+echo "=========================================="
 
 NEW_ASPRI_FILE=$ASPRI_DIR/p1.final.aspri
 touch $NEW_ASPRI_FILE
@@ -22,4 +26,5 @@ do
   cat $ASPRI_DIR/p1.$fn.aspri >> $NEW_ASPRI_FILE
 done < $FNS
 
-$STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE p1.final.bspri
+echo "p1xform.doxform.sh: issuing cmd: $STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE p1.final.bspri"
+$STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE $P1_DIR/p1.final.bspri
