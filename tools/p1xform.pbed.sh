@@ -13,8 +13,7 @@
 P1DIR=$1           # top-level P1 xform directory 
 FNS=$2             # file containing name of functions to evaluate
 CONCOLIC=$3        # directory with inputs
-ASPRI=$4           # directory with assembly SPRI rules
-BSPRI=$5           # directory with binary SPRI rules
+BSPRI=$4           # directory with binary SPRI rules
 
 echo "=========================================="
 echo "Running p1xform.pbed.sh"
@@ -25,7 +24,7 @@ echo "ASPRI=$4"
 echo "BSPRI=$5"
 echo "=========================================="
 
-P1_GOOD_FILE=$P1DIR/a.ncexe.p1.final
+P1_GOOD_FILE=$P1DIR/p1.final
 touch $P1_GOOD_FILE
 
 while read fn;
@@ -33,7 +32,7 @@ do
   echo "Checking for divergence on function $fn"
 
   DIVERGE="no"
-  BSPRI_GOOD="$P1DIR/$BSPRI/a.ncexe.xform.p1.$fn.bspri"
+  BSPRI_GOOD="$BSPRI/p1.$fn.bspri"
 
   for i in `ls $CONCOLIC/input*.json`
   do

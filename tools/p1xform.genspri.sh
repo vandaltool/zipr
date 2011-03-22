@@ -1,8 +1,8 @@
 #!/bin/sh
 
 P1_DIR=$1   # directory where to stash away all things related to the P1 xform 
-BINARY=$2   # full path of subject binary program
-ANNOT=$3    # full path of annotations for the original binary
+BINARY=$2   # path of subject binary program
+ANNOT=$3    # path of annotations for the original binary
 
 # produce list of candidate functions
 # produce list of non-candidate functions
@@ -11,29 +11,24 @@ ANNOT=$3    # full path of annotations for the original binary
 #
 # to do: split the above into distinct commands/options combinations
 
-cd $P1_DIR
-
-echo "XXX: Current Directory: $P1_DIR"
-pwd
-
-echo "CMD: $STRATA_REWRITE/tools/transforms/p1transform $BINARY $ANNOT"
-
 $STRATA_REWRITE/tools/transforms/p1transform $BINARY $ANNOT 
 
 ASPRI_DIR=$P1_DIR/aspri
 BSPRI_DIR=$P1_DIR/bspri
 
-mkdir $ASPRI_DIR
-mkdir $BSPRI_DIR
+mkdir $ASPRI_DIR 2>/dev/null
+mkdir $BSPRI_DIR 2>/dev/null
 
 echo ""
 echo "==================================================="
 echo "Generating initial spri files"
-echo "   output aspri dir: $P1_DIR/$ASPRI"
-echo "   output bspri dir: $P1_DIR/$BSPRI"
+echo "   output aspri dir: $ASPRI_DIR"
+echo "   output bspri dir: $BSPRI_DIR"
 echo "==================================================="
 
+# move files produced by the p1transform tool
 mv *.aspri $ASPRI_DIR
+mv p1.*candid* $P1_DIR
 
 for i in `ls $ASPRI_DIR/*p1*.aspri`
 do

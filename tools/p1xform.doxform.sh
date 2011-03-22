@@ -14,12 +14,12 @@ echo "=========================================="
 FNS=$1             # file containing name of functions to evaluate
 ASPRI_DIR=$2       # directory with assembly SPRI rules
 
-NEW_ASPRI_FILE=$ASPRI_DIR/a.ncexe.p1.final.aspri
+NEW_ASPRI_FILE=$ASPRI_DIR/p1.final.aspri
 touch $NEW_ASPRI_FILE
 
 while read fn;
 do
-  cat $ASPRI_DIR/a.ncexe.xform.p1.$fn.aspri >> $NEW_ASPRI_FILE
+  cat $ASPRI_DIR/p1.$fn.aspri >> $NEW_ASPRI_FILE
 done < $FNS
 
-$STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE a.ncexe.p1.final.bspri
+$STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE p1.final.bspri

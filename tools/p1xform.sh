@@ -1,12 +1,12 @@
 #!/bin/sh
 
 #
-# Run script from top-level directory created by the peasoup script
+# Run this script from top-level directory created by the peasoup script
 #
 
 CURRENT_DIR=`pwd`
 
-P1_DIR=$CURRENT_DIR/p1.xform
+P1_DIR=p1.xform
 
 mkdir $P1_DIR
 
@@ -19,7 +19,7 @@ echo "p1xform.sh script started in $CURRENT_DIR"
 echo "P1 transform directory: $P1_DIR"
 echo "=========================================="
 
-$PEASOUP_HOME/tools/p1xform.genspri.sh $P1_DIR $CURRENT_DIR/a.ncexe $CURRENT_DIR/a.ncexe.annot > $P1_DIR/genspri.out 2> $P1_DIR/genspri.err
+$PEASOUP_HOME/tools/p1xform.genspri.sh $P1_DIR a.ncexe a.ncexe.annot > $P1_DIR/genspri.out 2> $P1_DIR/genspri.err
 
 $PEASOUP_HOME/tools/generate_io_baseline.sh $CURRENT_DIR a.ncexe concolic.files_a.stratafied_0001 > gen_baseline.out 2> gen_baseline.err
 
@@ -29,18 +29,18 @@ $PEASOUP_HOME/tools/generate_io_baseline.sh $CURRENT_DIR a.ncexe concolic.files_
 #
 CONCOLIC=concolic.files_a.stratafied_0001
 
-CANDIDATE_FNS=$P1_DIR/a.ncexe.p1.candidates
-FILTERED_OUT=$P1_DIR/a.ncexe.p1.filteredout
+CANDIDATE_FNS=$P1_DIR/p1.candidates
+FILTERED_OUT=$P1_DIR/p1.fn_coverage.filtered_out
 touch $FILTERED_OUT
 
-KEEPS=$P1_DIR/a.ncexe.p1.keep
+KEEPS=$P1_DIR/p1.keep
 touch $KEEPS
 
 while read fn;
 do
   DIVERGE="no"
   echo "Evaluating candidate fn: $fn"
-  BSPRI_BAD="$P1_DIR/bspri/a.ncexe.xform.p1.bad.$fn.bspri"
+  BSPRI_BAD="$P1_DIR/bspri/p1.bad.$fn.bspri"
   echo "BSPRI_BAD=$BSPRI_BAD"
 
   for i in `ls $CONCOLIC/input*.json`
@@ -93,8 +93,10 @@ echo "====================================================="
 echo "1st pass: DONE EVALUATING CANDIDATE FUNCTIONS"
 echo "====================================================="
 
-$PEASOUP_HOME/tools/p1xform.pbed.sh $P1_DIR $KEEPS $CONCOLIC $ASPRI_DIR $BSPRI_DIR
+cd $CURRENT_DIR
+$PEASOUP_HOME/tools/p1xform.pbed.sh $P1_DIR $KEEPS $CONCOLIC $BSPRI_DIR
 
-$PEASOUP_HOME/tools/p1xform.doxform.sh $P1_DIR/a.ncexe.p1.final $ASPRI_DIR
+cd $CURRENT_DIR
+$PEASOUP_HOME/tools/p1xform.doxform.sh $P1_DIR/p1.final $ASPRI_DIR
 
 
