@@ -45,26 +45,27 @@ do
     # if the output differs, stop right away, move to next function
     if [ ! -z replay.baseline/stdout.$input ];
     then
-    echo "Diffing stdout.$input.$fn vs. replay.baseline/stdout.$input"
-    diff stdout.$input.$fn replay.baseline/stdout.$input
-    if [ ! $? -eq 0 ]; then
-      echo "BED: divergence detected for fn: $fn on input $i"
-      echo "Baseline file:"
-      cat replay.baseline/stdout.$input
-      echo "Output stdout:$input.$fn:"
-      cat stdout.$input.$fn
+      echo "Diffing stdout.$input.$fn vs. replay.baseline/stdout.$input"
+      diff stdout.$input.$fn replay.baseline/stdout.$input
+      if [ ! $? -eq 0 ]; then
+        echo "BED: divergence detected for fn: $fn on input $i"
+        echo "Baseline file:"
+        cat replay.baseline/stdout.$input
+        echo "Output stdout:$input.$fn:"
+        cat stdout.$input.$fn
 
-      rm stdout.$input.$fn 2>/dev/null
-      rm stderr.$input.$fn 2>/dev/null
-      DIVERGE="yes"
-      break
+        rm stdout.$input.$fn 2>/dev/null
+        rm stderr.$input.$fn 2>/dev/null
+        DIVERGE="yes"
+        break
+      fi
     fi
-    fi
+
+    # remove tmp files
+    rm stdout.$input.$fn 2>/dev/null
+    rm stderr.$input.$fn 2>/dev/null
   done
 
-  # remove tmp files
-  rm stdout.$input.$fn 2>/dev/null
-  rm stderr.$input.$fn 2>/dev/null
 
   if [ "$DIVERGE" = "no" ]; then
     echo $fn >> $P1_GOOD_FILE
