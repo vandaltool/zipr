@@ -19,12 +19,14 @@ echo "=========================================="
 
 for i in `ls $INPUT_DIR/input*.json`
 do
+  echo ""
   input=`basename $i .json`
-  echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input.$fn --stderr=stderr.$input.$fn --engine=sdt ./a.stratafied $i"
+  echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt ./a.stratafied $i"
     STRATA_SPRI_FILE="$BSPRI" "$GRACE_HOME/concolic/bin/replayer" --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt ./a.stratafied $i
 
   if [ ! -z replay.baseline/stdout.$input ];
   then
+    diff replay.baseline/stdout.$input stdout.$input
     if [ ! $? -eq 0 ]; then
       echo "ps_validate.sh: divergence detected for input $i (stdout)"
 
@@ -40,6 +42,7 @@ do
 
   if [ ! -z replay.baseline/stderr.$input ];
   then
+    diff replay.baseline/stderr.$input stderr.$input
     if [ ! $? -eq 0 ]; then
       echo "ps_validate.sh: divergence detected for input $i (stderr)"
 
@@ -60,4 +63,5 @@ do
   rm stderr.$input 2>/dev/null
 done
 
+echo "ps_validate.sh: All inputs validated"
 exit 0
