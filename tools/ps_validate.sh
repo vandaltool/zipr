@@ -3,6 +3,8 @@
 #
 # Assumption: we're in the top level directory created by the peasoup toolchain
 #
+# Validate SPRI transform against a suite of input/output pairs
+#
 
 STRATAFIED_BINARY=$1        # stratafied subject program
 BSPRI=$2                    # transformation specificiation SPRI file

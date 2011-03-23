@@ -22,9 +22,9 @@ ORIG_VAL=$?
 STRATA_SPRI_FILE="$BSPRI" $STRATAFIED_BINARY > a0.strata.out 2> a0.strata.err
 STRATA_VAL=$?
 
-if [ ! "$ORIG_VAL" = "$STRATA_VAL" ];
-  echo "ps_validate_ss.sh: BSPRI=$BSPRI: does not validate" 
-  exit 1
-then
+if [ "$ORIG_VAL" = "$STRATA_VAL" ]; then
   exit 0
+else
+  echo "ps_validate_ss.sh: BSPRI=$BSPRI: does not validate ($ORIG_VAL/$STRATA_VAL)" 
+  exit 1
 fi
