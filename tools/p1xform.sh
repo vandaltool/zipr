@@ -105,17 +105,19 @@ echo "====================================================="
 cd $CURRENT_DIR
 $PEASOUP_HOME/tools/p1xform.doxform.sh $P1_DIR/p1.final $P1_DIR $ASPRI_DIR
 
+echo "====================================================="
+echo "Validate final transformed binary"
+echo "====================================================="
 if [ -f $P1_DIR/p1.final.bspri ]; then
-  $PEASOUP_HOME/tools/ps_validate.sh ./a.stratafied $P1_DIR/p1.final.bspri $CONCOLIC replay.baseline
+  $PEASOUP_HOME/tools/ps_validate.sh ./a.stratafied $P1_DIR/p1.final.bspri $CONCOLIC replay.baseline > ps_validate.out 2> ps_validate.err
   if [ $? -eq 0 ]; then
     echo "Successfully validated p1-transformed functions against inputs"
     echo "The following functions were transformed:"
     cat $P1_DIR/p1.final
   else
     echo "Did not successfully validate p1-transformed functions against inputs"
-    mv $P1_DIR/p1.final.bspri $P1_DIR/p1.final.bspri.bad
   fi
 else
   echo "Unable to use p1 transform -- no rules produced"
 fi
-$
+

@@ -34,50 +34,17 @@ while read fn;
 do
   echo "Checking for divergence on function $fn"
 
-#  DIVERGE="no"
   BSPRI_GOOD="$BSPRI_DIR/p1.$fn.bspri"
+
+  $PEASOUP_HOME/tools/ps_validate_ss.sh ./a.ncexe ./a.stratafied $BSPRI_GOOD 
+  if [ ! $? -eq 0 ]; then
+    continue
+  fi
 
   $PEASOUP_HOME/tools/ps_validate.sh ./a.stratafied $BSPRI_GOOD $INPUT_DIR replay.baseline
   if [ $? -eq 0 ]; then
     echo $fn >> $P1_GOOD_FILE
   fi
-
-#  for i in `ls $INPUT_DIR/input*.json`
-#  do
-#    echo "Doing BED on function $fn"
-#
-#    input=`basename $i .json`
-#    echo "p1xform.pbed.sh: cmd: STRATA_SPRI_FILE=$BSPRI_GOOD $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input.$fn --stderr=stderr.$input.$fn --engine=sdt ./a.stratafied $i"
-#    STRATA_SPRI_FILE="$BSPRI_GOOD" $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input.$fn --stderr=stderr.$input.$fn --engine=sdt ./a.stratafied $i
-#
-#    # if the output differs, stop right away, move to next function
-#    if [ ! -z replay.baseline/stdout.$input ];
-#    then
-#      echo "Diffing stdout.$input.$fn vs. replay.baseline/stdout.$input"
-#      diff stdout.$input.$fn replay.baseline/stdout.$input
-#      if [ ! $? -eq 0 ]; then
-#        echo "BED: divergence detected for fn: $fn on input $i"
-#        echo "Baseline file:"
-#        cat replay.baseline/stdout.$input
-#        echo "Output stdout:$input.$fn:"
-#        cat stdout.$input.$fn
-#
-#        rm stdout.$input.$fn 2>/dev/null
-#        rm stderr.$input.$fn 2>/dev/null
-#        DIVERGE="yes"
-#        break
-#      fi
-#    fi
-
-    # remove tmp files
-#    rm stdout.$input.$fn 2>/dev/null
-#    rm stderr.$input.$fn 2>/dev/null
-#  done
-
-
-#  if [ "$DIVERGE" = "no" ]; then
-#    echo $fn >> $P1_GOOD_FILE
-#  fi
 
 done < $FNS
 
