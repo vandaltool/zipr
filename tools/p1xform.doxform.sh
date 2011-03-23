@@ -34,4 +34,5 @@ $STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE $FINAL_BSPRI_FILE
 
 if [ -z $FINAL_BSPRI_FILE ]; then
   echo "p1xform.doxform.sh: Warning: no transforms specified for P1 algorithm"
+  rm $FINAL_BSPRI_FILE
 fi
