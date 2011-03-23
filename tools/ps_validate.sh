@@ -4,14 +4,14 @@
 # Assumption: we're in the top level directory created by the peasoup toolchain
 #
 
-BINARY=$1                   # subject program
+STRATAFIED_BINARY=$1        # stratafied subject program
 BSPRI=$2                    # transformation specificiation SPRI file
 INPUT_DIR=$3                # directory containing inputs
 BASELINE_OUTPUT_DIR=$4      # directory containing expected outputs
 
 echo "=========================================="
 echo "Running ps_validate.sh"
-echo "                BINARY: $BINARY"
+echo "                STRATAFIED_BINARY: $STRATAFIED_BINARY"
 echo "                 BSPRI: $BSPRI"
 echo "             INPUT_DIR: $INPUT_DIR"
 echo "   BASELINE_OUTPUT_DIR: $BASELINE_OUTPUT_DIR"
@@ -22,9 +22,9 @@ do
   echo ""
   input=`basename $i .json`
   echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt ./a.stratafied $i"
-    STRATA_SPRI_FILE="$BSPRI" "$GRACE_HOME/concolic/bin/replayer" --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt ./a.stratafied $i
+    STRATA_SPRI_FILE="$BSPRI" "$GRACE_HOME/concolic/bin/replayer" --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i
 
-  if [ ! -z replay.baseline/stdout.$input ];
+  if [ -f replay.baseline/stdout.$input ];
   then
     diff replay.baseline/stdout.$input stdout.$input
     if [ ! $? -eq 0 ]; then
@@ -40,7 +40,7 @@ do
     fi
   fi
 
-  if [ ! -z replay.baseline/stderr.$input ];
+  if [ -f replay.baseline/stderr.$input ];
   then
     diff replay.baseline/stderr.$input stderr.$input
     if [ ! $? -eq 0 ]; then
