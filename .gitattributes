@@ -58,5 +58,6 @@ tools/ps_comp.sh -text
 tools/ps_link.sh -text
 tools/ps_run.sh -text
 tools/ps_validate.sh -text
+tools/ps_validate_ss.sh -text
 tools/test_controller.sh -text
 tools/validate.sh -text
