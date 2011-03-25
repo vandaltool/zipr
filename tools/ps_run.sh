@@ -15,12 +15,11 @@ shift;
 #
 STRATA_DOUBLE_FREE=1 					\
 	STRATA_HEAPRAND=1 				\
-# PC_CONFINE needs to be told the SPRI ranges
-#	STRATA_PC_CONFINE=1 				\
-#	STRATA_PC_CONFINE_XOR=1				\
-#	STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024		\
+	STRATA_PC_CONFINE=1 				\
+	STRATA_PC_CONFINE_XOR=1				\
+	STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024		\
 	STRATA_ANNOT_FILE=$datapath/a.ncexe.annot 	\
-	STRATA_SPRI_FILE=$datapath/p1.xform/p1.final.bspri 	\
+#	STRATA_SPRI_FILE=$datapath/p1.xform/p1.final.bspri 	\
 	$datapath/a.stratafied $*
 
 
