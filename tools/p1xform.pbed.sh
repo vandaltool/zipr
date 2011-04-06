@@ -16,16 +16,16 @@ P1DIR=$1        # top-level P1 xform directory
 FNS=$2          # file containing name of functions to evaluate
 INPUT_DIR=$3    # directory with inputs
 BSPRI_DIR=$4    # directory with binary SPRI rules
+P1_GOOD_FILE=$5 # final output file containing list of transformed functions
 
-P1_GOOD_FILE=$P1DIR/p1.final
 touch $P1_GOOD_FILE
+
 echo "=========================================="
 echo "Running p1xform.pbed.sh"
 echo "P1DIR=$1"
 echo "FNS=$2" 
 echo "INPUT_DIR=$3"
-echo "ASPRI=$4"
-echo "BSPRI=$5"
+echo "BSPRI=$4"
 echo "------------------------------------------"
 echo "Output File: $P1_GOOD_FILE"
 echo "=========================================="
