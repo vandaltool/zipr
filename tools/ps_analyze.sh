@@ -15,7 +15,7 @@ if [ ! -f  $PEASOUP_HOME/tools/getsyms.sh ]; then echo PEASOUP_HOME is set poorl
 if [ "$SMPSA_HOME"X = X ]; then echo Please set SMPSA_HOME; exit 1; fi
 if [ ! -f  $SMPSA_HOME/SMP-analyze.sh ]; then echo SMPSA_HOME is set poorly, please fix.; exit 1; fi
 if [ "$STRATA_HOME"X = X ]; then echo Please set STRATA_HOME; exit 1; fi
-if [ "$STRATA_REWRITE"X = X ]; then echo Please set STRATA_REWRITE; exit 1; fi
+# if [ "$STRATA_REWRITE"X = X ]; then echo Please set STRATA_REWRITE; exit 1; fi
 if [ ! -f  $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh ]; then echo STRATA_HOME is set poorly, please fix.; exit 1; fi
 
 if [ -z $2 ]; then
@@ -37,7 +37,6 @@ echo "Original program: $orig_exe   New program: $stratafied_exe"
 
 name=`basename $orig_exe`
 newdir=peasoup_executable_directory.$name.$$
-
 
 mkdir $newdir
 cp $orig_exe $newdir/$newname.ncexe
@@ -81,13 +80,13 @@ echo Done.
 # P1 transform 
 #
 
-echo Starting the P1 transform
-date
+#echo Starting the P1 transform
+#date
 
-$PEASOUP_HOME/tools/p1xform.sh $newdir > p1xform.out 2> p1xform.err
+#$PEASOUP_HOME/tools/p1xform.sh $newdir > p1xform.out 2> p1xform.err
 
-date
-echo Done with the P1 transform
+#date
+#echo Done with the P1 transform
 
 # go back to original directory
 cd - > /dev/null 2>&1
