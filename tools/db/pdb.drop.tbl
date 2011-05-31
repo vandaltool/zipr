@@ -1,0 +1,3 @@
+DROP TABLE program_dependency;
+DROP TABLE program_info;
+DROP TABLE file_info;

@@ -42,6 +42,11 @@ examples/memcpy.c -text
 examples/myhanoi.c -text
 examples/print_ptr.c -text
 examples/recover_example.c -text
+tools/db/pdb.create.tbl -text
+tools/db/pdb.drop.tbl -text
+tools/db/pdb_register -text
+tools/db/pdb_setup -text
+tools/db/pdb_teardown -text
 tools/do_concolic.sh -text
 tools/generate_exe.sh -text
 tools/generate_io_baseline.sh -text
