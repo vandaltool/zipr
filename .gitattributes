@@ -44,6 +44,7 @@ examples/print_ptr.c -text
 examples/recover_example.c -text
 tools/db/pdb.create.tbl -text
 tools/db/pdb.drop.tbl -text
+tools/db/pdb_info -text
 tools/db/pdb_register -text
 tools/db/pdb_setup -text
 tools/db/pdb_teardown -text

@@ -21,6 +21,11 @@ log_error()
   exit 1
 }
 
+log_message()
+{
+  echo "pdb_register: MESSAGE: $1"
+}
+
 #####################################################
 
 if [ -z $PROGRAM_NAME ]; then
@@ -45,7 +50,9 @@ fi
 
 MD5HASH=`md5sum $FILENAME | cut -f1 -d' '`
 
+#============================================
 # Update program_info table
+#============================================
 
 # -q: quiet mode
 # -t: tuple only
@@ -60,16 +67,18 @@ fi
 # Update original program id
 psql -q -t -c "UPDATE program_info SET orig_program_id = '$PROGRAM_ID' WHERE program_id = '$PROGRAM_ID';"
 
-#
-# Update program_file_info table
-#
+#============================================
+# Update file_info table
+#============================================
 
 FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash) VALUES ('$URL', '$ARCH', '$MD5HASH') RETURNING file_id;" | sed "s/^[ \t]*//"`
 
 # Update original file id
 psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID' WHERE file_id = '$FILE_ID';"
 
-#
+log_message "To do: if shared libs, then need to add them to this table"
+
+#============================================
 # Update program_dependency table
-#
+#============================================
 FILE_ID=`psql -q -t -c "INSERT INTO program_dependency (program_id, file_id) VALUES ('$PROGRAM_ID', '$FILE_ID')"`
