@@ -7,9 +7,9 @@
 #
 
 STRATAFIED_BINARY=$1        # stratafied subject program
-BSPRI=$2                    # transformation specificiation SPRI file
+BSPRI=$2                    # transformation specification SPRI file
 INPUT_DIR=$3                # directory containing inputs
-BASELINE_OUTPUT_DIR=$4      # directory containing expected outputs
+BASELINE_OUTPUT_DIR=$INPUT_DIR/file_input
 
 echo "=========================================="
 echo "Running ps_validate.sh"
@@ -19,21 +19,37 @@ echo "             INPUT_DIR: $INPUT_DIR"
 echo "   BASELINE_OUTPUT_DIR: $BASELINE_OUTPUT_DIR"
 echo "=========================================="
 
+#
+# name of files describing inputs is of the form: input_0001.json, input_0002.json, ...
+#
+
 for i in `ls $INPUT_DIR/input*.json`
 do
   echo ""
   input=`basename $i .json`
+  input_number=`echo $input | sed "s/input_//"`
+
+  # make sure the output files exist
+  touch stdout.$input
+  touch stderr.$input
+
   echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt ./a.stratafied $i"
     STRATA_SPRI_FILE="$BSPRI" "$GRACE_HOME/concolic/bin/replayer" --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i
 
-  if [ -f replay.baseline/stdout.$input ];
+  BASELINE_OUTPUT_STDOUT=$BASELINE_OUTPUT_DIR/run_$input_number/stdout
+  BASELINE_OUTPUT_STDERR=$BASELINE_OUTPUT_DIR/run_$input_number/stderr
+
+  echo "$BASELINE_OUTPUT_STDOUT"
+  echo "$BASELINE_OUTPUT_STDERR"
+  
+  if [ -f $BASELINE_OUTPUT_STDOUT ];
   then
-    diff replay.baseline/stdout.$input stdout.$input
+    diff stdout.$input $BASELINE_OUTPUT_STDOUT
     if [ ! $? -eq 0 ]; then
-      echo "ps_validate.sh: divergence detected for input $i (stdout)"
+      echo "ps_validate.sh: divergence detected for input: $i (stdout)"
 
       echo "Baseline file (stdout):"
-      cat replay.baseline/stdout.$input
+      cat $BASELINE_OUTPUT_STDOUT
 
       echo "Output stdout (stdout):$input:"
       cat stdout.$input
@@ -42,14 +58,14 @@ do
     fi
   fi
 
-  if [ -f replay.baseline/stderr.$input ];
+  if [ -f $BASELINE_OUTPUT_STDERR ];
   then
-    diff replay.baseline/stderr.$input stderr.$input
+    diff stderr.$input $BASELINE_OUTPUT_STDERR
     if [ ! $? -eq 0 ]; then
-      echo "ps_validate.sh: divergence detected for input $i (stderr)"
+      echo "ps_validate.sh: divergence detected for input: $i (stderr)"
 
       echo "Baseline file (stderr):"
-      cat replay.baseline/stderr.$input
+      cat $BASELINE_OUTPUT_STDERR
 
       echo "Output stderr (stderr):$input:"
       cat stderr.$input

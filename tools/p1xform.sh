@@ -21,7 +21,8 @@ echo "=========================================="
 
 $PEASOUP_HOME/tools/p1xform.genspri.sh $P1_DIR a.ncexe a.ncexe.annot > $P1_DIR/genspri.out 2> $P1_DIR/genspri.err
 
-$PEASOUP_HOME/tools/generate_io_baseline.sh $CURRENT_DIR a.ncexe concolic.files_a.stratafied_0001 > gen_baseline.out 2> gen_baseline.err
+# NOT NEEDED ANYMORE????
+#$PEASOUP_HOME/tools/generate_io_baseline.sh $CURRENT_DIR a.ncexe concolic.files_a.stratafied_0001 > gen_baseline.out 2> gen_baseline.err
 
 #
 # remove any candidate functions not covered
@@ -34,12 +35,14 @@ CANDIDATE_FNS=$P1_DIR/p1.candidates
 FILTERED_OUT=$P1_DIR/p1.fn_coverage.filtered_out
 KEEPS=$P1_DIR/p1.keep
 FINAL_XFORM_FNS=$P1_DIR/p1.final
+EXECUTED_ADDRESS_FILE=$CONCOLIC/executed_address_list.txt
 
-grep "^0x" $CONCOLIC/trace_manager.run_*.log | cut -f2 -d":" | sort | uniq > tmp.$$ 
-$STRATA_REWRITE/tools/cover/cover a.ncexe a.ncexe.annot tmp.$$ $COVERAGE_FNS
+#grep "^0x" $CONCOLIC/trace_manager.run_*.log | cut -f2 -d":" | sort | uniq > tmp.$$ 
+#$STRATA_REWRITE/tools/cover/cover a.ncexe a.ncexe.annot tmp.$$ $COVERAGE_FNS
+$STRATA_REWRITE/tools/cover/cover a.ncexe a.ncexe.annot $EXECUTED_ADDRESS_FILE $COVERAGE_FNS
 grep -v "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $CANDIDATE_FNS
 grep  "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $FILTERED_OUT
-rm tmp.$$
+#rm tmp.$$
 
 cp $CANDIDATE_FNS $KEEPS
 
