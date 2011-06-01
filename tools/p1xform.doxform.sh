@@ -7,9 +7,9 @@
 #   Binary spri file specification for P1 xform 
 #
 
-FNS=$1             # file containing name of functions to evaluate
-P1_DIR=$2       # directory with assembly SPRI rules
-ASPRI_DIR=$3       # directory with assembly SPRI rules
+FNS=$1          # file containing name of functions to transform
+P1_DIR=$2       # NOT USED!!!
+ASPRI_DIR=$3    # directory with assembly SPRI rules
 FINAL_BSPRI_FILE=$P1_DIR/p1.final.bspri
 
 echo "=========================================="
@@ -29,7 +29,7 @@ do
   cat $ASPRI_DIR/p1.$fn.aspri >> $NEW_ASPRI_FILE
 done < $FNS
 
-echo "p1xform.doxform.sh: issuing cmd: $STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE p1.final.bspri"
+echo "p1xform.doxform.sh: issuing cmd: $STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE $FINAL_BSPRI_FILE"
 $STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE $FINAL_BSPRI_FILE
 
 if [ -z $FINAL_BSPRI_FILE ]; then
