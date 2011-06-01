@@ -1,0 +1,14 @@
+#
+# pdb_create_program_tables <programName>
+#
+# WARNING: <programName> must convert non-alphanumeric characters to alphanumeric
+
+PROGRAM_NAME=$1
+
+DB_SCRIPT=$$.script.tmp
+
+cat pdb.createprogram.tbl | sed "s/#PROGNAME#/$PROGRAM_NAME/g" > $DB_SCRIPT
+
+psql -f $DB_SCRIPT
+
+rm $DB_SCRIPT

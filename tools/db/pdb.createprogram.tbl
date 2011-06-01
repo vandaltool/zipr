@@ -1,0 +1,25 @@
+CREATE TABLE #PROGNAME#_address
+(
+  address_id         SERIAL PRIMARY KEY,
+  file_id            integer REFERENCES file_info,
+  vaddress_offset    text
+);
+
+CREATE TABLE #PROGNAME#_function
+(
+  function_id        SERIAL PRIMARY KEY,
+  file_id            integer REFERENCES file_info,
+  name               text,
+  stack_frame_size   integer
+);
+
+CREATE TABLE #PROGNAME#_instruction
+(
+  address_id                integer REFERENCES #PROGNAME#_address,
+  parent_function_id        integer REFERENCES #PROGNAME#_function,
+  file_id                   integer REFERENCES file_info,
+  orig_address_id           integer REFERENCES #PROGNAME#_address,
+  fallthrough_address_id    integer REFERENCES #PROGNAME#_address,
+  target_address_id         integer REFERENCES #PROGNAME#_address,
+  data                      text
+);
