@@ -1,0 +1,26 @@
+Must define env var
+STRATA_REWRITE
+
+#####
+Install cmake on the system
+
+######
+When configuring ELFIO-1.0.3, be sure to point the install directory at the root of wherever you put the SVN module, e.g.,
+
+cd ELFIO-1.0.3
+./configure --prefix=$STRATA_REWRITE
+make
+make install
+
+####
+Compile the beaengine
+cmake .
+make
+
+####
+cd annotation
+make everything
+
+###
+cd tools
+make everything

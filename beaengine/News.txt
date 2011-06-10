@@ -1,0 +1,3 @@
+1. cdq bug fix (stm122)
+2. ArgPosition field added to manage position of 8 bits registers.
+3. bugfix on the BranchType field for jnbe instruction. (ap0x)

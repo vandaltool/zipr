@@ -1,0 +1,48 @@
+2002-05-25  Serge Lamikhov-Center
+
+	* tutorial.docbook, tutorial.pdf: The document revised by Allan Finch
+
+2002-04-21  Serge Lamikhov-Center
+
+	* ELFOImpl.cpp: Call segment's AddRef() on creation
+
+	* Write.cpp: Call Release() for the code section
+
+	* tutorial.tex, tutorial.pdf: Minor changes
+
+2002-04-20  Serge Lamikhov-Center
+
+	* configure.in, configure: Release version number changed
+
+	* tutorial.pdf, tutorial.tex, Write.cpp:
+	Tutorial is updated; Write.cpp has a minor modification
+
+2002-03-10  Serge Lamikhov-Center
+
+	* Makefile.am: Autotools work for the whole source tree
+
+2002-03-09  Serge Lamikhov-Center
+
+	* ELFIImpl.h: Correct inheritance from ELFIReaderImpl
+
+	* ELFIImpl.cpp: MSC_VER branch corrected
+
+2002-03-02  Serge Lamikhov-Center
+
+	* ILFI.h: All readers' interfaces derive from IELFISection now
+
+2002-02-27  Serge Lamikhov-Center
+
+	* WriteObj2: WriteObj2 example added
+
+	* ELFIImpl.cpp, ChangeLog: min finction adjusted for sizeof type
+
+2001-12-09  Serge Lamikhov-Center
+
+	* configure.in: AC_C_CONST verification removed
+
+2001-12-07  Serge Lamikhov-Center
+
+	* makefile: old version of makefile removed
+
+	* autotools: autoconf and automake scripts added

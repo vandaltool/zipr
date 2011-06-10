@@ -1,0 +1,25 @@
+Tool to convert an assembly SPRI file into a binary SPRI file
+
+Intended usage:
+Specifying SPRI rules at the assembly language provide a higher and easier level of abstraction for developers. Consider the following transformation where we want to pad the stack frame:
+
+Transformation:    sub esp,10 --> sub esp, 250;    // pad the stack with 240 bytes
+
+The binary equivalent of this transformation would require specifying the opcodes correctly, i.e., a 6-byte opcode for sub instead of the original 3 bytes. Specifying this transformation at the assembly level is much simpler and less error prone; all we need to do is replace "10" with "250". 
+
+Legend:
+.  means "current PC"
+-> means "map to"
+** denotes instructions to be found at specified address
+
+Format for assembly SPRI file:
+	0x08ff0000 -> .
+	. ** sub esp, 9
+	. ** sub esp, 1
+	. -> 0x08ff0003
+
+Format for binary SPRI file:
+	0x08ff0000 -> 0xffff0000
+	0xffff0000 ** 3 83 ec 09
+	0xffff0003 ** 3 83 ec 01
+	0xffff0006 -> 0x08ff0003

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#sanity check
+if [ $STRATA_REWRITE"X" = "X" ]; then
+        echo Please set STRATA_REWRITE properly
+        exit
+fi
+
+cd $STRATA_REWRITE
+
+# build ELF utility library
+echo "Build ELFIO library"
+cd $STRATA_REWRITE/ELFIO-1.0.3
+./configure --prefix=$STRATA_REWRITE
+
+# build dissassembler library
+echo "Build BEA Engine library"
+cd $STRATA_REWRITE/beaengine
+cmake .
+
+# make everything
+cd $STRATA_REWRITE
+echo "Build transformer library + associated tools"
+make clean all -f Makefile

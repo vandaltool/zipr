@@ -1,0 +1,5 @@
+  0x08000000    ->    .
+	. ** sub esp, 1 ; this is a comment in asm
+. ** sub esp, 9
+. ** sub esp, 2048
+	.	 ->	0x08000003
