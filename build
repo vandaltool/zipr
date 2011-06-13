@@ -1,24 +1,24 @@
 #!/bin/sh
 
 #sanity check
-if [ $STRATA_REWRITE"X" = "X" ]; then
-        echo Please set STRATA_REWRITE properly
+if [ $SECURITY_TRANSFORMS_HOME"X" = "X" ]; then
+        echo Please set SECURITY_TRANSFORMS_HOME properly
         exit
 fi
 
-cd $STRATA_REWRITE
+cd $SECURITY_TRANSFORMS_HOME
 
 # build ELF utility library
 echo "Build ELFIO library"
-cd $STRATA_REWRITE/ELFIO-1.0.3
-./configure --prefix=$STRATA_REWRITE
+cd $SECURITY_TRANSFORMS_HOME/ELFIO-1.0.3
+./configure --prefix=$SECURITY_TRANSFORMS_HOME
 
 # build dissassembler library
 echo "Build BEA Engine library"
-cd $STRATA_REWRITE/beaengine
+cd $SECURITY_TRANSFORMS_HOME/beaengine
 cmake .
 
 # make everything
-cd $STRATA_REWRITE
+cd $SECURITY_TRANSFORMS_HOME
 echo "Build transformer library + associated tools"
 make clean all -f Makefile
