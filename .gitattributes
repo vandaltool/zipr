@@ -139,6 +139,7 @@ beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/link
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/progress.make -text
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/progress.marks -text
 /build.sh -text
+/distclean.sh -text
 examples/Makefile -text
 examples/dumbledore.c -text
 examples/dumbledore_cmd.c -text
