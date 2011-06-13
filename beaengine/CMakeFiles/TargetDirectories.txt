@@ -1,1 +1,0 @@
-/home/jdh8d/peasoup/uva/stack_rewrite/beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir

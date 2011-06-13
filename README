@@ -1,10 +1,15 @@
 Must define env var
-STRATA_REWRITE
+SECURITY_TRANSFORM_HOME
 
 #####
 Install cmake on the system
 
-######
+######################## ######################## ########################
+# To build this, use "./build.sh" 
+######################## ######################## ########################
+
+
+
 When configuring ELFIO-1.0.3, be sure to point the install directory at the root of wherever you put the SVN module, e.g.,
 
 cd ELFIO-1.0.3
