@@ -2,16 +2,16 @@
 class Function_t : public BaseObj_t
 {
     public:
-        set<Instructions*>& GetInstructions();
+        std::set<Instruction_t*>& GetInstructions();
 
         int GetStackFrameSize();
-        string GetName();
+        std::string GetName();
 
         void SetStackFrameSize(int);
-        void SetName(string);
+        void SetName(std::string);
     private:
-        set<Instruction*> my_insns;
+        std::set<Instruction_t> my_insns;
         int stack_frame_size;
-        string name;
-}
+        std::string name;
+};
 

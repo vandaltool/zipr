@@ -2,15 +2,18 @@
 // The Digital Object Identifier for Peasoup.
 class doip_t
 {
-        doip(db_id_t did, int conf, string program, string comment)
+        doip_t(db_id_t did, int conf, std::string program, std::string comment);
+
+#if 0
         operator<<();        // output
         operator==();        // comparison operators
                              // compare confidence levels of two datum
         operator<();
+#endif
    
     private:
         db_id_t did;
         int confidence;
-        string program;
-        string comment;
-}
+        std::string program;
+        std::string comment;
+};

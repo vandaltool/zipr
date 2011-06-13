@@ -1,10 +1,16 @@
+
+
+typedef int virtual_offset_t;
+typedef int db_id_t;
+
+
 // A base class for something that all objects have, for now just a DOIP.
 class BaseObj_t
 {
     public:
         BaseObj_t(doip_t* doip);
 
-        static SetInterface(DB_interface_t *dbintr);
+        static void SetInterface(DBinterface_t *dbintr);
 
         // get and set the ID
         db_id_t GetBaseID();
@@ -16,7 +22,7 @@ class BaseObj_t
     private:
         doip_t* doip;
         db_id_t base_id;    // -1 means not yet in the DB.
-        static DB_interface_t *dbintr;
+        static DBinterface_t *dbintr;
 
 };
 
