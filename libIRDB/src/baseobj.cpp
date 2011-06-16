@@ -25,21 +25,3 @@ void BaseObj_t::SetInterface(DBinterface_t *dbi)
 	dbintr=dbi;
 }
 
-
-/* 
- * Set the Base ID for this object 
- */
-db_id_t BaseObj_t::GetBaseID()
-{
-	return base_id;
-}
-
-/* 
- * get the Base ID for this object 
- */
-void BaseObj_t::SetBaseID(db_id_t bid)
-{
-	base_id=bid;
-}
-
-

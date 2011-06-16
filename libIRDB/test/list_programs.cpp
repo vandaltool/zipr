@@ -21,17 +21,17 @@ main(int argc, char* argv[])
 	pqxxDB_t pqxx_interface;
 	BaseObj_t::SetInterface(&pqxx_interface);
 
-	for(int i=0; true ; i++)
+	for(int i=1; true ; i++)
 	{
 		try 
 		{
 			/* try to load the program ID */
-			ProgramID_t pid(i);
+			VariantID_t pid(i);
 			cout<<pid<<endl;
 		}
 		catch (DatabaseError_t pnide)
 		{
-			if(pnide.GetErrorCode()==DatabaseError_t::ProgramNotInDatabase)
+			if(pnide.GetErrorCode()==DatabaseError_t::VariantNotInDatabase)
 				break;
 			else
 			{

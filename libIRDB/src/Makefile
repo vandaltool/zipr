@@ -2,9 +2,11 @@
 LIB=../lib/libIRDB.a
 
 
-OBJS=baseobj.o  programid.o pqxxdb.o dbinterface.o
+OBJS=baseobj.o  variantid.o pqxxdb.o dbinterface.o function.o variantir.o file.o instruction.o
 
 all: $(OBJS)
+
+$(OBJS): ../include/*.hpp *.hpp
 
 clean:
 	rm $(OBJS)

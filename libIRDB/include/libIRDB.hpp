@@ -16,9 +16,9 @@ namespace libIRDB
 #include <address.hpp>
 #include <instruction.hpp>
 #include <function.hpp>
-#include <programid.hpp>
+#include <variantid.hpp>
 #include <file.hpp>
-#include <programir.hpp>
+#include <variantir.hpp>
 #include <pqxxdb.hpp>
 
 };

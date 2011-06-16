@@ -14,8 +14,10 @@ class BaseObj_t
         static void SetInterface(DBinterface_t *dbintr);
 
         // get and set the ID
-        db_id_t GetBaseID();
-        void SetBaseID(db_id_t);
+        db_id_t GetBaseID() const {return base_id; }
+        db_id_t GetDoipID() const { return doip ? doip->GetBaseID() : NOT_IN_DATABASE; }
+        db_id_t SetDoipID(doip_t *dp) { doip=dp; }
+        void SetBaseID(db_id_t id) {base_id=id; }
    
         // A derived class must provide functionality to write to the database.
         virtual void WriteToDB()=0;    

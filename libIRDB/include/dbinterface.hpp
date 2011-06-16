@@ -2,7 +2,7 @@
 class DatabaseError_t
 {
 	public: 
-		enum DatabaseErrorType_t {ProgramNotInDatabase};
+		enum DatabaseErrorType_t {VariantNotInDatabase, VariantTableNotRegistered};
 		DatabaseError_t(DatabaseErrorType_t the_err) : err(the_err) {}
 		DatabaseErrorType_t GetErrorCode() const { return err; }
 	private:

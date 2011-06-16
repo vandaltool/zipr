@@ -2,7 +2,10 @@
 // The Digital Object Identifier for Peasoup.
 class doip_t
 {
-        doip_t(db_id_t did, int conf, std::string program, std::string comment);
+	public: 
+        	doip_t(db_id_t did, int conf, std::string tool_name , std::string comment);
+
+		db_id_t GetBaseID() const { return did; }
 
 #if 0
         operator<<();        // output
@@ -14,6 +17,6 @@ class doip_t
     private:
         db_id_t did;
         int confidence;
-        std::string program;
+        std::string tool_name;
         std::string comment;
 };
