@@ -96,20 +96,22 @@ void P1Transform::rewrite(wahoo::Function *f, FILE* fp)
       if (instr->isAllocSite())
       {
         regmatch_t pmatch[5];
+     
         if(regexec(&m_stack_alloc_pattern, buf, 5, pmatch, 0)==0)
         {
           fprintf(stderr,"FOUND MATCH FOR STACK ALLOC PATTERN\n");
           char new_instr[2048];
           char matched[1024];
+          // extract K from: sub esp, K
           if (pmatch[1].rm_so >= 0 && pmatch[1].rm_eo >= 0) 
           {
             int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
             strncpy(matched, &buf[pmatch[1].rm_so], mlen);
             matched[mlen] = '\0';
 
-            sscanf(matched,"%x", &stack_frame_size);
-            new_stack_frame_size = stack_frame_size + stack_frame_padding;
-            sprintf(new_instr, "sub esp, 0x%x", new_stack_frame_size);
+            sscanf(matched,"%x", &stack_frame_size); // extract K
+            new_stack_frame_size = stack_frame_size + stack_frame_padding; // add padding
+            sprintf(new_instr, "sub esp, 0x%x", new_stack_frame_size); 
             addSimpleRewriteRule(f, buf, instr->getSize(), instr->getAddress(), new_instr);
             stackAlloc = true;
           }
@@ -123,6 +125,7 @@ void P1Transform::rewrite(wahoo::Function *f, FILE* fp)
         int k;
         regmatch_t pmatch[10];
         memset(pmatch, 0,sizeof(regmatch_t) * 10);
+        // matched: lea <anything> dword [<stuff>]
         if(regexec(&m_lea_hack_pattern, buf, 5, pmatch, 0)==0)
         {
           fprintf(stderr,"FOUND LEA HACK\n");
@@ -387,13 +390,12 @@ vector<wahoo::Function*> P1Transform::getNonCandidateFunctions()
   return p1NonCandidates;
 }
 
-// return new stack frame size
-// we currently allocate 2x the original space and make
+// return stack frame size padding
 // sure we pad by at least 8 bytes
 int P1Transform::getStackFramePadding(wahoo::Function *p_fn)
 {
   // @todo: add some random variation
-  int stack_frame_padding = 2 * p_fn->getSize();
+  int stack_frame_padding = p_fn->getSize();
   if (stack_frame_padding < 8) stack_frame_padding = 8;
 
   return stack_frame_padding;
