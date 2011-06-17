@@ -9,6 +9,7 @@ class P1Transform : public Rewriter
     void rewrite(char *); 
     void rewrite(wahoo::Function*, FILE *); 
 
+    // deprecated
     void badRewrite(wahoo::Function*, FILE*);
     void badRewrite(char *);
 
@@ -17,9 +18,10 @@ class P1Transform : public Rewriter
 
   private:
     bool isCandidate(wahoo::Function*);
-    int getStackFramePadding(wahoo::Function*);
+    int getStackFramePadding(wahoo::Function*); 
 
   private:
+    // regex patterns for detecting and transforming stack instruction references
     regex_t m_stack_ebp_pattern;
     regex_t m_stack_alloc_pattern;
     regex_t m_stack_dealloc_pattern;

@@ -38,6 +38,6 @@ class Rewriter
     map<app_iaddr_t, wahoo::Instruction*> m_instructions;
 
   private:
-    ElfReader*    m_elfReader;
-    FILE*         m_spri;
+    ElfReader*    m_elfReader;   
+    FILE*         m_spri; 
 };

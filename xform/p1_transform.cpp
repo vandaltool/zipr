@@ -63,6 +63,13 @@ P1Transform::P1Transform(char *p_elf, char *p_annot, char *p_spri) : Rewriter(p_
   }
 }
 
+//
+// Implement P1 transform for one function
+//
+//   Use pattern matching to rewrite instructions
+//   Commit all rewritten instrutions if all is well
+//   Write rules to file
+//
 void P1Transform::rewrite(wahoo::Function *f, FILE* fp)
 {
     app_iaddr_t addr = f->getAddress();
@@ -306,7 +313,10 @@ void P1Transform::rewrite(wahoo::Function *f, FILE* fp)
 
 }
 
-// rewrite all candidate functions
+//
+// Iterate other candidate functions
+// Emit SPASM rules for each valid function
+//
 void P1Transform::rewrite(char *p_filenamePrefix)
 {
   int num_func_successful = 0;
@@ -327,7 +337,7 @@ void P1Transform::rewrite(char *p_filenamePrefix)
 bool P1Transform::isCandidate(wahoo::Function *p_fn)
 {
   if (!p_fn) return false;
-  if (p_fn->isSafe()) return false;
+  if (p_fn->isSafe()) return false; // we don't transform MEDS-safe functions
 
   // strict policy: we only attempt the P1 transform on functions
   // that we think have exactly 1 allocation and deallocation site
@@ -339,7 +349,9 @@ bool P1Transform::isCandidate(wahoo::Function *p_fn)
   return false;
 }
 
+//
 // return candidate functions for the P1 transform
+//
 vector<wahoo::Function*> P1Transform::getCandidateFunctions()
 {
   vector<wahoo::Function*> p1Candidates;
@@ -357,7 +369,9 @@ vector<wahoo::Function*> P1Transform::getCandidateFunctions()
   return p1Candidates;
 }
 
+//
 // return non-candidate functions for the P1 transform
+//
 vector<wahoo::Function*> P1Transform::getNonCandidateFunctions()
 {
   vector<wahoo::Function*> p1NonCandidates;
@@ -390,6 +404,8 @@ int P1Transform::getStackFramePadding(wahoo::Function *p_fn)
 // the goals behind a bad transforms are:
 //   - to make sure BED flags the fn
 //   - to assess confidence in the fn (TSET)
+//
+// [now DEPRECATED with instruction coverage info]
 //
 void P1Transform::badRewrite(wahoo::Function *p_fn, FILE *p_aspri)
 {
