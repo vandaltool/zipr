@@ -86,6 +86,7 @@ ELFIO-1.0.3/missing -text
 ELFIO-1.0.3/mkinstalldirs -text
 /Makefile -text
 /README -text
+/README.p1 -text
 beaengine/CMakeFiles/CMakeCCompiler.cmake -text
 beaengine/CMakeFiles/CMakeCXXCompiler.cmake -text
 beaengine/CMakeFiles/CMakeDetermineCompilerABI_C.bin -text
