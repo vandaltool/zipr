@@ -20,4 +20,12 @@ int main(int argc, char **argv)
     nullTransform = new NullTransform(argv[1], argv[2], argv[3]);
 
   nullTransform->rewrite();
+
+  vector<wahoo::Function*> ncf = nullTransform->getNonCandidateFunctions();
+  vector<wahoo::Function*> cf = nullTransform->getCandidateFunctions();
+  vector<wahoo::Function*> af = nullTransform->getAllFunctions();
+
+  std::cout << "#functions: " << af.size() << std::endl;
+  std::cout << "#candidate functions: " << cf.size() << std::endl;
+  std::cout << "#non-candidate functions: " << ncf.size() << std::endl;
 }

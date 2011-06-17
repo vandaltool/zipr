@@ -31,6 +31,8 @@ void goodTransform(char *progName, char *annot)
     fprintf(fp2,"%s\n", nonCandidateFunctions[i]->getName().c_str());
   }
   fclose(fp2);
+
+  fprintf(stderr,"P1xform: #candidate fns: %d  #non-candidate fns: %d\n", candidateFunctions.size(), nonCandidateFunctions.size());
 }
 
 void badTransform(char *progName, char *annot)
@@ -48,6 +50,5 @@ int main(int argc, char **argv)
   }
 
   goodTransform(argv[1], argv[2]);
-//  badTransform(argv[1], argv[2]); 
 }
 
