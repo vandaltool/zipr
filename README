@@ -13,7 +13,7 @@ Install cmake on the system
 When configuring ELFIO-1.0.3, be sure to point the install directory at the root of wherever you put the SVN module, e.g.,
 
 cd ELFIO-1.0.3
-./configure --prefix=$STRATA_REWRITE
+./configure --prefix=$SECURITY_TRANSFORMS_HOME
 make
 make install
 
@@ -23,7 +23,7 @@ cmake .
 make
 
 ####
-cd annotation
+cd xform
 make everything
 
 ###
