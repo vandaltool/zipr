@@ -29,8 +29,8 @@ do
   cat $ASPRI_DIR/p1.$fn.aspri >> $NEW_ASPRI_FILE
 done < $FNS
 
-echo "p1xform.doxform.sh: issuing cmd: $STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE $FINAL_BSPRI_FILE"
-$STRATA_REWRITE/tools/spasm/spasm $NEW_ASPRI_FILE $FINAL_BSPRI_FILE
+echo "p1xform.doxform.sh: issuing cmd: $SECURITY_TRANSFORMS/tools/spasm/spasm $NEW_ASPRI_FILE $FINAL_BSPRI_FILE"
+$SECURITY_TRANSFORMS/tools/spasm/spasm $NEW_ASPRI_FILE $FINAL_BSPRI_FILE
 
 if [ -z $FINAL_BSPRI_FILE ]; then
   echo "p1xform.doxform.sh: Warning: no transforms specified for P1 algorithm"
