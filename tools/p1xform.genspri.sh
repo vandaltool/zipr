@@ -11,7 +11,7 @@ ANNOT=$3    # path of annotations for the original binary
 #
 # to do: split the above into distinct commands/options combinations
 
-$SECURITY_TRANSFORMS/tools/transforms/p1transform $BINARY $ANNOT 
+$SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform $BINARY $ANNOT 
 
 ASPRI_DIR=$P1_DIR/aspri
 BSPRI_DIR=$P1_DIR/bspri
@@ -33,7 +33,7 @@ mv p1.*candid* $P1_DIR
 for i in `ls $ASPRI_DIR/*p1*.aspri`
 do
   base=`basename $i .aspri`
-  $SECURITY_TRANSFORMS/tools/spasm/spasm $i $BSPRI_DIR/"$base".bspri  
+  $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $i $BSPRI_DIR/"$base".bspri  
 done
 
 echo "Done generating initial spri files"

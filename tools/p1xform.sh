@@ -38,8 +38,8 @@ FINAL_XFORM_FNS=$P1_DIR/p1.final
 EXECUTED_ADDRESS_FILE=$CONCOLIC/executed_address_list.txt
 
 #grep "^0x" $CONCOLIC/trace_manager.run_*.log | cut -f2 -d":" | sort | uniq > tmp.$$ 
-#$SECURITY_TRANSFORMS/tools/cover/cover a.ncexe a.ncexe.annot tmp.$$ $COVERAGE_FNS
-$SECURITY_TRANSFORMS/tools/cover/cover a.ncexe a.ncexe.annot $EXECUTED_ADDRESS_FILE $COVERAGE_FNS
+#$SECURITY_TRANSFORMS_HOME/tools/cover/cover a.ncexe a.ncexe.annot tmp.$$ $COVERAGE_FNS
+$SECURITY_TRANSFORMS_HOME/tools/cover/cover a.ncexe a.ncexe.annot $EXECUTED_ADDRESS_FILE $COVERAGE_FNS
 grep -v "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $CANDIDATE_FNS
 grep  "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $FILTERED_OUT
 #rm tmp.$$
