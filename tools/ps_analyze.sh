@@ -8,6 +8,8 @@
 #     peasoup_analyze.sh <original_binary> [ <new_binary> ] 
 #
 # Version 1 - prepares binary for PC confinement
+# Version 2 - runs Grace
+# Version 3 - runs p1 transform
 
 
 if [ "$PEASOUP_HOME"X = X ]; then echo Please set PEASOUP_HOME; exit 1; fi
@@ -15,8 +17,8 @@ if [ ! -f  $PEASOUP_HOME/tools/getsyms.sh ]; then echo PEASOUP_HOME is set poorl
 if [ "$SMPSA_HOME"X = X ]; then echo Please set SMPSA_HOME; exit 1; fi
 if [ ! -f  $SMPSA_HOME/SMP-analyze.sh ]; then echo SMPSA_HOME is set poorly, please fix.; exit 1; fi
 if [ "$STRATA_HOME"X = X ]; then echo Please set STRATA_HOME; exit 1; fi
-# if [ "$STRATA_REWRITE"X = X ]; then echo Please set STRATA_REWRITE; exit 1; fi
 if [ ! -f  $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh ]; then echo STRATA_HOME is set poorly, please fix.; exit 1; fi
+if [ "$SECURITY_TRANSFORMS_HOME"X = X ]; then echo Please set SECURITY_TRANSFORMS; exit 1; fi
 
 if [ -z $2 ]; then
   echo "Usage: $0 <original_binary> <new_binary>"
@@ -52,7 +54,6 @@ echo Done.
 # Let's output the modified binary
 # This binary will really be a shell script that calls the newly stratafied binary
 
-
 current_dir=`pwd`
 peasoup_binary=$name.sh
 
@@ -71,11 +72,15 @@ echo Done.
 
 echo Running concolic testing to generate inputs ...
 #$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,instance_times,trace
-$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer
+$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,trace,inputs 
 # 2>&1 |egrep -e "INPUT VECTOR:" -e "1: argc ="
 # >/dev/null 2>&1 
 echo Done.
 
+
+#
+# Uncomment this part to test the P1 xform
+#
 
 #
 # P1 transform 
@@ -83,9 +88,7 @@ echo Done.
 
 #echo Starting the P1 transform
 #date
-
 #$PEASOUP_HOME/tools/p1xform.sh $newdir > p1xform.out 2> p1xform.err
-
 #date
 #echo Done with the P1 transform
 
