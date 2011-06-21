@@ -56,6 +56,7 @@ tools/generate_io_baseline.sh -text
 tools/getlibs.sh -text
 tools/getsyms.sh -text
 tools/p1xform.doxform.sh -text
+tools/p1xform.filter.sh -text
 tools/p1xform.genspri.sh -text
 tools/p1xform.pbed.sh -text
 tools/p1xform.sh -text
