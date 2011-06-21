@@ -1,3 +1,4 @@
+frame_dummy
 .init_proc
 __do_global_dtors_aux
 __pthread_initialize_minimal
