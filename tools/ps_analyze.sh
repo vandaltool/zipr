@@ -82,15 +82,29 @@ echo Done.
 # Uncomment this part to test the P1 xform
 #
 
+#-----------------------------------------
+# Start P1 transform 
+#-----------------------------------------
 #
-# P1 transform 
-#
-
 #echo Starting the P1 transform
 #date
 #$PEASOUP_HOME/tools/p1xform.sh $newdir > p1xform.out 2> p1xform.err
+#
+#echo $current_dir/$newdir/p1.xform/p1.final
+#
+#if [ -f $current_dir/p1.xform/p1.final ]; then
+#  echo List of functions transformed:
+#  cat $current_dir/p1.xform/p1.final
+#else
+#  echo P1 was unable to transform the subject program
+#fi
+#
 #date
 #echo Done with the P1 transform
+
+#-----------------------------------------
+# End P1 transform 
+#-----------------------------------------
 
 # go back to original directory
 cd - > /dev/null 2>&1

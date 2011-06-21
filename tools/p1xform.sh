@@ -1,6 +1,7 @@
 #!/bin/sh
 
 #
+# This is the main driver script for the P1 transform
 # Run this script from top-level directory created by the peasoup script
 #
 
@@ -21,9 +22,6 @@ echo "=========================================="
 
 $PEASOUP_HOME/tools/p1xform.genspri.sh $P1_DIR a.ncexe a.ncexe.annot > $P1_DIR/genspri.out 2> $P1_DIR/genspri.err
 
-# NOT NEEDED ANYMORE????
-#$PEASOUP_HOME/tools/generate_io_baseline.sh $CURRENT_DIR a.ncexe concolic.files_a.stratafied_0001 > gen_baseline.out 2> gen_baseline.err
-
 #
 # remove any candidate functions not covered
 # this will go away once GrACE gives us the instruction coverage information
@@ -36,15 +34,19 @@ FILTERED_OUT=$P1_DIR/p1.fn_coverage.filtered_out
 KEEPS=$P1_DIR/p1.keep
 FINAL_XFORM_FNS=$P1_DIR/p1.final
 EXECUTED_ADDRESS_FILE=$CONCOLIC/executed_address_list.txt
+LIBC_FILTER=$PEASOUP_HOME/tools/p1xform.filter.libc.txt
 
-#grep "^0x" $CONCOLIC/trace_manager.run_*.log | cut -f2 -d":" | sort | uniq > tmp.$$ 
-#$SECURITY_TRANSFORMS_HOME/tools/cover/cover a.ncexe a.ncexe.annot tmp.$$ $COVERAGE_FNS
+#
+# Prune out functions that do not have sufficient coverage
+# Any function whose coverage metric starts with 0.0, e.g. 0.09, 0.0123, is pruned out
+# We effectively prune out any functions whose coverage is not at least 10% 
+#
 $SECURITY_TRANSFORMS_HOME/tools/cover/cover a.ncexe a.ncexe.annot $EXECUTED_ADDRESS_FILE $COVERAGE_FNS
 grep -v "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $CANDIDATE_FNS
 grep  "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $FILTERED_OUT
 #rm tmp.$$
 
-cp $CANDIDATE_FNS $KEEPS
+$PEASOUP_HOME/tools/p1xform.filter.sh $CANDIDATE_FNS $LIBC_FILTER > $KEEPS
 
 echo "====================================================="
 echo "Run BED"
