@@ -18,7 +18,8 @@ if [ "$SMPSA_HOME"X = X ]; then echo Please set SMPSA_HOME; exit 1; fi
 if [ ! -f  $SMPSA_HOME/SMP-analyze.sh ]; then echo SMPSA_HOME is set poorly, please fix.; exit 1; fi
 if [ "$STRATA_HOME"X = X ]; then echo Please set STRATA_HOME; exit 1; fi
 if [ ! -f  $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh ]; then echo STRATA_HOME is set poorly, please fix.; exit 1; fi
-if [ "$SECURITY_TRANSFORMS_HOME"X = X ]; then echo Please set SECURITY_TRANSFORMS; exit 1; fi
+# mc2zk commenting this line out temporarily until SECURITY_TRANSFORMS development is merged to the trunk
+#if [ "$SECURITY_TRANSFORMS_HOME"X = X ]; then echo Please set SECURITY_TRANSFORMS; exit 1; fi
 
 if [ -z $2 ]; then
   echo "Usage: $0 <original_binary> <new_binary>"
