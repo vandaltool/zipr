@@ -31,3 +31,7 @@ do
 done
 
 gcc $baseflags $*
+retval=$?
+# return gcc's exit code
+exit $retval
+

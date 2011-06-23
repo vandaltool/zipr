@@ -111,3 +111,7 @@ cd - > /dev/null 2>&1
 
 cp $newdir/$name.sh $stratafied_exe
 
+# return the exit code of the copy as the final return value 
+# So that a predictable return value is returned
+retval=$?
+exit $retval

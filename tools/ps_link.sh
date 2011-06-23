@@ -29,4 +29,5 @@ do
 done
 
 gcc -Bstatic -static $* 
-
+retval=$?
+exit $retval
