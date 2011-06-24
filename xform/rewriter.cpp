@@ -17,6 +17,7 @@ Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath, char *p_spriFile
 
   // parse file and build up all the data structures
   readAnnotationFile(p_annotationFilePath);
+  readElfFile(p_elfPath);
 }
 
 Rewriter::~Rewriter()
@@ -279,6 +280,14 @@ void Rewriter::readAnnotationFile(char p_filename[])
 
               			assert(strcmp(scope,"LOCAL")==0);
 
+                        	if (!m_instructions[addr])
+                        	{
+                                	// unknown size, unknown function
+                                	wahoo::Instruction* instr = new wahoo::Instruction(addr, -1, NULL);
+                                	m_instructions[addr] = instr;
+                        	}
+
+
                     		switch(annot_type)
                     		{
 					/* No Meta Data Updates */
@@ -529,6 +538,32 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
 	fclose(fin);
 
   // for each instruction in a function, dissassemble and stash away assembly string
+	dissassemble();
+}
+
+/*
+* Read MEDS annotation file and populate relevant hash table & data structures
+*/
+void Rewriter::readElfFile(char p_filename[])
+{
+	char buf[1000];
+	sprintf(buf, "objdump -d --prefix-addresses %s | grep \"^[0-9]\"", p_filename);
+	FILE* pin=popen(buf, "r");
+	int addr;
+
+	assert(pin);
+
+	fscanf(pin, "%x", &addr);
+	fgets(buf,sizeof(buf),pin);
+	do 
+	{
+		if(m_instructions[addr]==NULL)
+			m_instructions[addr]=new wahoo::Instruction(addr,-1,NULL);
+		fscanf(pin,"%x", &addr);
+		fgets(buf,sizeof(buf),pin);
+	} while(!feof(pin));
+
+	pclose(pin);
 
 	dissassemble();
 }
@@ -539,42 +574,31 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
 */
 void Rewriter::dissassemble()
 {
-  // for every instruction, grab from ELF
-  // disassemble
+  	// for every instruction, grab from ELF
+  	// disassemble
 
- fprintf(stderr,"Rewriter::dissassemble(): #functions: %d   0x%x\n", m_functions.size(), (int*)&m_functions);
- for (map<app_iaddr_t, wahoo::Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
-  {
-    app_iaddr_t addr = it->first;
-    wahoo::Function* f = it->second;
+	vector<wahoo::Instruction*> instructions=getAllInstructions(); 
 
-    for (int j = 0; j < f->getInstructions().size(); ++j)
-    {
-      wahoo::Instruction *instr = f->getInstructions()[j];
+    	for (int j = 0; j < instructions.size(); ++j)
+    	{
+      		wahoo::Instruction *instr = instructions[j];
 
-      // disassemble using BeaEngine
-      DISASM disasm;
-      memset(&disasm, 0, sizeof(DISASM));
+      		// disassemble using BeaEngine
+      		DISASM disasm;
+      		memset(&disasm, 0, sizeof(DISASM));
 
-//      disasm.Options = Tabulation + NasmSyntax + PrefixedNumeral;
-      disasm.Options = NasmSyntax + PrefixedNumeral;
-      disasm.Archi = 32;
-//      disasm.EIP = (int) getElfReader()->getInstructionBuffer(instr->getAddress());
-      disasm.EIP = (UIntPtr) getElfReader()->getInstructionBuffer(instr->getAddress());
-      disasm.VirtualAddr = addr;
-      int instr_len = Disasm(&disasm);
+      		disasm.Options = NasmSyntax + PrefixedNumeral;
+      		disasm.Archi = 32;
+      		disasm.EIP = (UIntPtr) getElfReader()->getInstructionBuffer(instr->getAddress());
+      		disasm.VirtualAddr = instr->getAddress();
 
-      instr->setAsm(string(disasm.CompleteInstr));  
+      		int instr_len = Disasm(&disasm);
 
+      		instr->setAsm(string(disasm.CompleteInstr));  
 
-//      if (instr->getSize() <= 0) // MEDS plugin didn't record the size
-      instr->setSize(instr_len);
-      instr->setData((void*)disasm.EIP);
-//      instr->setData((void*)disasm.EIP, instr_len);
-
-//      fprintf(stderr,"0x%08x: %s\n", addr, instr->getAsm().c_str());
-    }
-  }
+      		instr->setSize(instr_len);
+      		instr->setData((void*)disasm.EIP);
+    	}
 }
 
 void Rewriter::addSimpleRewriteRule(wahoo::Function* p_func, char *p_origInstr, int p_origSize, app_iaddr_t p_origAddress, char *p_newInstr)

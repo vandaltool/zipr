@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <map>
 using namespace libIRDB;
+using namespace std;
 
 // Create a Variant from the database
 VariantIR_t::VariantIR_t(VariantID_t newprogid) : BaseObj_t(NULL)
@@ -38,15 +39,15 @@ std::map<db_id_t,File_t*> VariantIR_t::ReadFilesFromDB()
 	{
 // file_info.file_id, file_info.url, file_info.hash, file_info.arch, file_info.type, file_info.doip_id
 
-		db_id_t file_id=atoi(dbintr->GetResultColumn("file_info.file_id").c_str());
-		std::string url=dbintr->GetResultColumn("file_info.url");
-		std::string hash=dbintr->GetResultColumn("file_info.hash");
-		std::string type=dbintr->GetResultColumn("file_info.type");
-		db_id_t doipid=atoi(dbintr->GetResultColumn("file_info.doip_id").c_str());
+		db_id_t file_id=atoi(dbintr->GetResultColumn("file_id").c_str());
+		std::string url=dbintr->GetResultColumn("url");
+		std::string hash=dbintr->GetResultColumn("hash");
+		std::string type=dbintr->GetResultColumn("type");
+		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
 
 		File_t *newfile=new File_t(file_id,url,hash,type,doipid);
 
-std::cout<<"Found file "<<file_id<<"."<<std::endl;
+//std::cout<<"Found file "<<file_id<<"."<<std::endl;
 
 		idMap[file_id]=newfile;
 
@@ -80,9 +81,9 @@ std::map<db_id_t,Function_t*> VariantIR_t::ReadFuncsFromDB
 		int sfsize=atoi(dbintr->GetResultColumn("stack_frame_size").c_str());
 		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
 
-		Function_t *newfunc=new Function_t(fid,name,sfsize);
+		Function_t *newfunc=new Function_t(fid,name,sfsize, fileMap[file_id]);
 
-std::cout<<"Found function "<<name<<"."<<std::endl;
+//std::cout<<"Found function "<<name<<"."<<std::endl;
 
 		idMap[fid]=newfunc;
 
@@ -119,7 +120,7 @@ std::map<db_id_t,AddressID_t*> VariantIR_t::ReadAddrsFromDB  (         std::map<
 
 		AddressID_t *newaddr=new AddressID_t(aid,file_id,vaddr);
 
-std::cout<<"Found address "<<aid<<"."<<std::endl;
+//std::cout<<"Found address "<<aid<<"."<<std::endl;
 
 		idMap[aid]=newaddr;
 
@@ -141,7 +142,7 @@ std::map<db_id_t,Instruction_t*> VariantIR_t::ReadInsnsFromDB (      std::map<db
 	std::map<db_id_t,db_id_t> fallthroughs;
 	std::map<db_id_t,db_id_t> targets;
 
-	std::string q= "select * from " + progid.address_table_name + " ; ";
+	std::string q= "select * from " + progid.instruction_table_name + " ; ";
 
 
 	dbintr->IssueQuery(q);
@@ -166,7 +167,7 @@ std::map<db_id_t,Instruction_t*> VariantIR_t::ReadInsnsFromDB (      std::map<db
 		db_id_t file_id=atoi(dbintr->GetResultColumn("file_id").c_str());
 		db_id_t orig_address_id=atoi(dbintr->GetResultColumn("orig_address_id").c_str());
 		db_id_t fallthrough_address_id=atoi(dbintr->GetResultColumn("fallthrough_address_id").c_str());
-		db_id_t targ_address_id=atoi(dbintr->GetResultColumn("targ_address_id").c_str());
+		db_id_t targ_address_id=atoi(dbintr->GetResultColumn("target_address_id").c_str());
 		std::string data=(dbintr->GetResultColumn("data"));
 		std::string comment=(dbintr->GetResultColumn("comment"));
 		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
@@ -174,13 +175,14 @@ std::map<db_id_t,Instruction_t*> VariantIR_t::ReadInsnsFromDB (      std::map<db
 		Instruction_t *newinsn=new Instruction_t(instruction_id,
 			addrMap[aid],
 			funcMap[parent_func_id],
+			file_id,
 			orig_address_id,
 			data, comment, doipid);
 	
 		if(funcMap[parent_func_id])
 			funcMap[parent_func_id]->GetInstructions().insert(newinsn);
 
-std::cout<<"Found address "<<aid<<"."<<std::endl;
+//std::cout<<"Found address "<<aid<<"."<<std::endl;
 
 		idMap[instruction_id]=newinsn;
 		fallthroughs[instruction_id]=fallthrough_address_id;
@@ -209,6 +211,27 @@ std::cout<<"Found address "<<aid<<"."<<std::endl;
 
 void VariantIR_t::WriteToDB()
 {
+
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ progid.instruction_table_name + string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ progid.function_table_name    + string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ progid.address_table_name     + string(" cascade;"));
+	
+
+	string q=string("");
+	db_id_t j=0;
+	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i, ++j)
+		q+=(*i)->WriteToDB(&progid,j);
+	dbintr->IssueQuery(q);
+
+	q=string("");
+	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i,++j)
+		q+=(*i)->WriteToDB(&progid,j);
+	dbintr->IssueQuery(q);
+
+	q=string("");
+	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i,++j)
+		q+=(*i)->WriteToDB(&progid,j);
+	dbintr->IssueQuery(q);
 }
 
 

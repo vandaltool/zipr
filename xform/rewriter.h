@@ -20,6 +20,7 @@ class Rewriter
 
   protected:
     void readAnnotationFile(char []);
+    void readElfFile(char []);
     ElfReader *getElfReader() { return m_elfReader; }
     FILE* getAsmSpri() { return m_spri; };
     void setAsmSpri(FILE *p_spri) { m_spri = p_spri; };

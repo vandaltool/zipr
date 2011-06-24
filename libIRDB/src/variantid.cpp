@@ -4,6 +4,7 @@
 #include <utils.hpp>
 #include <stdlib.h>
 using namespace libIRDB;
+using namespace std;
 
 
 /*
@@ -27,9 +28,9 @@ void VariantID_t::CreateTables()
 	dbintr->IssueQuery(
 		"CREATE TABLE " + address_table_name + 
 		" ( "
-		"  address_id         	integer PRIMARY KEY, "
+		"  address_id         	SERIAL  PRIMARY KEY, "
 		"  file_id            	integer REFERENCES file_info, "
-		"  vaddress_offset    	text, "
+		"  vaddress_offset    	integer, "
 		"  doip_id		integer DEFAULT -1 "
 		");"
 	);
@@ -37,7 +38,7 @@ void VariantID_t::CreateTables()
 	dbintr->IssueQuery(
 		"CREATE TABLE " + function_table_name + 
 		" ( "
-  		"	function_id        	integer PRIMARY KEY, "
+  		"	function_id        	SERIAL  PRIMARY KEY, "
   		"	file_id            	integer REFERENCES file_info, "
   		"	name               	text, "
   		"	stack_frame_size   	integer, "
@@ -48,6 +49,7 @@ void VariantID_t::CreateTables()
 	dbintr->IssueQuery(
 		"CREATE TABLE " + instruction_table_name + 
 		" ( "
+		"instruction_id		   SERIAL PRIMARY KEY, "
   		"address_id                integer REFERENCES " + address_table_name + ", " +
   		"parent_function_id        integer, "
   		"file_id                   integer REFERENCES file_info, "
@@ -137,13 +139,75 @@ bool VariantID_t::Register()
 	CreateTables();
 }    
 
-VariantID_t VariantID_t::Clone()
+VariantID_t* VariantID_t::Clone()
 {
 	assert(IsRegistered());	// cannot clone something that's not registered 
 
-	VariantID_t ret;
-	ret.orig_pid=orig_pid;
-	ret.name=name+"_cloneof"+to_string(GetBaseID());
+	// create the new program id 
+	VariantID_t *ret=new VariantID_t;
+	
+	// set the inhereted fields 
+	ret->SetName(name+"_cloneof"+to_string(GetBaseID()));
+	ret->orig_pid=orig_pid;
+
+	// register the new VID to the database. 
+	ret->Register();
+	// and write it to the database
+	ret->WriteToDB();
+
+	// clone the tables 	
+	std::string q;
+
+	// first drop the old values 
+	q="drop table ";
+	q+=ret->instruction_table_name;
+	q+=" ; ";
+	dbintr->IssueQuery(q);
+
+	q="drop table ";
+	q+=ret->address_table_name;
+	q+=" ; ";
+	dbintr->IssueQuery(q);
+
+	q="drop table ";
+	q+=ret->function_table_name;
+	q+=" ; ";
+	dbintr->IssueQuery(q);
+
+
+	// next issue SQL to clone each table
+	q="select * into ";
+	q+=ret->address_table_name;
+	q+=" from ";
+	q+=address_table_name;
+	q+=" ;";
+	dbintr->IssueQuery(q);
+
+	q="select * into ";
+	q+=ret->instruction_table_name;
+	q+=" from ";
+	q+=instruction_table_name;
+	q+=" ;";
+	dbintr->IssueQuery(q);
+	
+	q="select * into ";
+	q+=ret->function_table_name;
+	q+=" from ";
+	q+=function_table_name;
+	q+=" ;";
+	dbintr->IssueQuery(q);
+
+
+	// lastly update the variant_dependency table to make a copy of the rows in which 
+	// the old variant depended upon.  The new rows will indicate that the 
+	// new variant also depends on those files 
+	q="insert into variant_dependency (variant_id, file_id, doip_id) select '";
+	q+=to_string(ret->GetBaseID());
+	q+="', file_id, doip_id from variant_dependency where variant_id='";
+	q+=to_string(GetBaseID());
+	q+="';";
+	dbintr->IssueQuery(q);
+
 	return ret;
 }       
 
@@ -164,7 +228,6 @@ void VariantID_t::WriteToDB()
 	dbintr->IssueQuery(q);
 }
 
-
 std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid)
 {
 
@@ -179,3 +242,23 @@ std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid)
 	return out;
 }
 
+
+void VariantID_t::DropFromDB()
+{
+	assert(IsRegistered());
+
+	string q;
+
+	q =string("drop table ")+instruction_table_name + string(" cascade;");
+	q+=string("drop table ")+address_table_name     + string(" cascade;");
+	q+=string("drop table ")+function_table_name    + string(" cascade;");
+	q+=string("delete from variant_dependency where variant_id = '") + to_string(GetBaseID()) + string("';");
+	q+=string("delete from variant_info where variant_id = '") + to_string(GetBaseID()) + string("';");
+
+	dbintr->IssueQuery(q);
+
+	SetBaseID(NOT_IN_DATABASE);
+	orig_pid=NOT_IN_DATABASE;
+	name=instruction_table_name=address_table_name=function_table_name=string("");
+        schema_ver=CURRENT_SCHEMA;
+}

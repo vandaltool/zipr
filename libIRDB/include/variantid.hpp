@@ -10,14 +10,20 @@ class VariantID_t : public BaseObj_t
         bool IsRegistered();               
         bool Register();    // accesses DB
 
-        VariantID_t Clone();       // accesses DB
+        VariantID_t* Clone();       // accesses DB
 
 	void WriteToDB();
+
+	void DropFromDB();
 
 	void SetName(std::string newname) { name=newname;}
 
 	friend std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid);
 	friend class VariantIR_t;
+	friend class Function_t;
+	friend class AddressID_t;
+	friend class Instruction_t;
+
     private:
         schema_version_t schema_ver;
         db_id_t orig_pid;       // matches pid if this is an "original"

@@ -9,16 +9,17 @@ class Instruction_t : public BaseObj_t
 {
     public:
 
-	Instruction_t(db_id_t id, AddressID_t *addr, Function_t *func, db_id_t orig_id, 
+	Instruction_t(db_id_t id, AddressID_t *addr, Function_t *func, db_id_t file_id, db_id_t orig_id, 
 		std::string data, std::string comment, db_id_t doip_id);
 
-        AddressID_t* GetAddress() {assert(0);}
-        Function_t* GetFunction() {assert(0);}
-        AddressID_t GetOriginalAddressID() {assert(0);}
-        Instruction_t* &GetFallthrough() {assert(0);}
-        Instruction_t* GetDataBits() {assert(0);}
+        AddressID_t* GetAddress() { return my_address; }
+        Function_t* GetFunction() { return my_function; }
+        db_id_t GetOriginalAddressID() { return orig_address_id; }
+        Instruction_t* GetFallthrough() { return fallthrough; }
+        Instruction_t* GetTarget() { return target; }
+        std::string GetDataBits() { return data; }
 
-        void SetAddress(AddressID_t* ) {assert(0); }
+        void SetAddress(AddressID_t* newaddr) { my_address=newaddr; }
         void SetFunction(Function_t*) {assert(0); }
         void SetOriginalAddressID(AddressID_t ) {assert(0); }
         void SetFallthrough(Instruction_t* i) {fallthrough=i;}
@@ -26,12 +27,16 @@ class Instruction_t : public BaseObj_t
         void SetDataBits(std::string orig ) {assert(0); }       
 
 	void WriteToDB() { assert(0); }
+        std::string WriteToDB(VariantID_t *vid, db_id_t newid);
+
 
     private:
         AddressID_t *my_address;
         Function_t *my_function;
+        db_id_t 	file_id;        	// const, should not change.
         db_id_t 	orig_address_id;        // const, should not change.
         Instruction_t* fallthrough;
         Instruction_t* target;
         std::string data;
+        std::string comment;
 };

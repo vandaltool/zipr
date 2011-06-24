@@ -4,6 +4,7 @@
 #include <string>
 
 using namespace libIRDB;
+using namespace std;
 
 pqxxDB_t::pqxxDB_t() : DBinterface_t(), conn(), txn(conn)
 {
@@ -22,7 +23,14 @@ void pqxxDB_t::MoveToNextRow()
 }
 std::string pqxxDB_t::GetResultColumn(std::string colname)
 {
-	return results_iter[colname].as<std::string>();
+	if(results_iter[colname].is_null())
+		return std::string("");
+
+	pqxx::binarystring bin_str(results_iter[colname]);
+
+	return bin_str.str();
+
+//	return results_iter[colname].as<std::string>();
 }
 bool pqxxDB_t::IsDone()
 {

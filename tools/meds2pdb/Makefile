@@ -33,5 +33,5 @@ clean:
 	rm -f *.o core meds2pdb
 
 meds2pdb: $(OBJS) meds2pdb.cpp
-	$(CC) -o meds2pdb $(INCLUDE) meds2pdb.cpp $(OBJS) $(LIBS)
+	$(CC) $(CFLAGS) -o meds2pdb $(INCLUDE) meds2pdb.cpp $(OBJS) $(LIBS)
 

@@ -39,7 +39,7 @@ void insert_instructions(string programName, int fileID, vector<wahoo::Instructi
   //    (1) get address, insert into address table
   //    (2) populate instruction table
 
-  const int STRIDE = 40;
+  const int STRIDE = 1000;
   int count = 0;
 
   for (int i = 0; i < instructions.size(); i += STRIDE)
@@ -51,7 +51,7 @@ void insert_instructions(string programName, int fileID, vector<wahoo::Instructi
 
     string instructionTable = programName + "_" + "instruction";
     string query2 = "INSERT INTO " + instructionTable;
-    query2 += " (address_id, parent_function_id, file_id, orig_address_id, data, asm) VALUES ";
+    query2 += " (address_id, parent_function_id, file_id, orig_address_id, data, comment) VALUES ";
 
     for (int j = i; j < i + STRIDE; ++j)
     {
@@ -66,7 +66,7 @@ void insert_instructions(string programName, int fileID, vector<wahoo::Instructi
       query += "(";
       query += txn.quote(j) + ",";
       query += txn.quote(fileID) + ",";
-      sprintf(buf,"0x%08X", addr);
+      sprintf(buf,"%d", addr);
       query += txn.quote(string(buf));
       query += ")";
 
@@ -136,6 +136,7 @@ int main(int argc, char **argv)
   char *elfFile = argv[2];
   char *md5hash = argv[3];
   char *annotFile = argv[4];
+  char *spriFile=strdup("spri.out");
 
   cout << "program name:" << programName << endl;
   cout << "elf file:" << elfFile << endl;
@@ -145,7 +146,7 @@ int main(int argc, char **argv)
   connection conn;
   work txn(conn);
 
-  Rewriter *rewriter = new Rewriter(elfFile, annotFile, "spri.out");
+  Rewriter *rewriter = new Rewriter(elfFile, annotFile, spriFile);
 
   int fileID = get_file_id(programName, md5hash);
   if (fileID < 0)
@@ -182,7 +183,6 @@ int main(int argc, char **argv)
       int functionSize = f->getSize();
       int function_id = j;
 
-      cout << functionName << " size: " << functionSize << endl;
       if (j != i) query += ",";
       query += "(";
       query += txn.quote(function_id) + ",";

@@ -2,7 +2,7 @@
 LIB=../lib/libIRDB.a
 
 
-OBJS=baseobj.o  variantid.o pqxxdb.o dbinterface.o function.o variantir.o file.o instruction.o
+OBJS=baseobj.o  variantid.o pqxxdb.o dbinterface.o function.o variantir.o file.o instruction.o address.o
 
 all: $(OBJS)
 
