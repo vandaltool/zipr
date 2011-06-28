@@ -201,7 +201,7 @@ std::map<db_id_t,Instruction_t*> VariantIR_t::ReadInsnsFromDB (      std::map<db
 			instr->SetFallthrough(idMap[fallthroughid]);
 		db_id_t targetid=targets[instr->GetBaseID()];
 		if(idMap[targetid])	
-			instr->SetTarget(idMap[fallthroughid]);
+			instr->SetTarget(idMap[targetid]);
 	}
 
 

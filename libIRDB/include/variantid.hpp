@@ -24,6 +24,8 @@ class VariantID_t : public BaseObj_t
 	friend class AddressID_t;
 	friend class Instruction_t;
 
+	db_id_t GetOriginalVariantID() const { return orig_pid;}
+
     private:
         schema_version_t schema_ver;
         db_id_t orig_pid;       // matches pid if this is an "original"
