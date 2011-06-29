@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 # This script depends on having the following environment variables defined
 # STRATA - The path to the strata installation
 # An example of these environment variables and their settings are listed in
@@ -71,6 +71,49 @@ echo Running IDA Pro static analysis phase ...
 $SMPSA_HOME/SMP-analyze.sh a.ncexe
 echo Done.
 
+
+#
+# Populate IR Database
+#
+if [ ! "X" = "X"$PGUSER ]; then
+	echo "Registering with IR database: program: $orig_exe server:$PGHOST db:$PGDATABASE"
+	
+	DB_PROGRAM_NAME=`echo $orig_exe.$$ | sed "s/[\.;+\\-\ ]/_/g"`
+	
+	MD5HASH=`md5sum a.ncexe | cut -f1 -d' '`
+	$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME $current_dir	# register the program.
+	varid=$?
+	
+	$PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $DB_PROGRAM_NAME # create the tables for the program.
+	
+	echo "RUNNING MEDS2PDB:"
+	date
+	time $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME a.ncexe $MD5HASH a.ncexe.annot 	# import meds information
+	date
+
+	if [ $varid > 0 ]; then
+		$SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid		# create a clone
+		cloneid=$?
+	
+		if [ $cloneid > 0 ]; then
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $cloneid		# finish the initial IR 
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid		# fix call insns so they are OK for spri emitting
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid			# perform ILR 
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.ncexe.aspri	# generate the spri code
+		fi
+	fi
+	echo	-------------------------------------------------------------------------------
+	echo    ---------            Orig Variant ID is $varid         ------------------------
+	echo	-------------------------------------------------------------------------------
+	echo    ---------            Cloned Variant ID is $cloneid     ------------------------
+	echo	-------------------------------------------------------------------------------
+
+fi
+
+
+#
+# Run concolic engine
+#
 echo Running concolic testing to generate inputs ...
 #$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,instance_times,trace
 $PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,trace,inputs 
@@ -86,7 +129,6 @@ echo Done.
 #-----------------------------------------
 # Start P1 transform 
 #-----------------------------------------
-#
 #echo Starting the P1 transform
 #date
 #$PEASOUP_HOME/tools/p1xform.sh $newdir > p1xform.out 2> p1xform.err

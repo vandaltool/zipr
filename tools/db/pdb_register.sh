@@ -1,3 +1,5 @@
+#!/bin/sh 
+
 #
 # pdb_register <peasoup_program_name> <peasoup_program_directory> 
 #
@@ -18,7 +20,7 @@ usage()
 log_error()
 {
   echo "pdb_register: ERROR: $1"
-  exit 1
+  exit -1
 }
 
 log_message()
@@ -51,21 +53,21 @@ fi
 MD5HASH=`md5sum $FILENAME | cut -f1 -d' '`
 
 #============================================
-# Update program_info table
+# Update variant_info table
 #============================================
 
 # -q: quiet mode
 # -t: tuple only
 # -c: run command
 
-PROGRAM_ID=`psql -q -t -c "INSERT INTO program_info (name) VALUES ('$PROGRAM_NAME') RETURNING program_id;" | sed "s/^[ \t]*//"`
+PROGRAM_ID=`psql -q -t -c "INSERT INTO variant_info (schema_version_id,name,address_table_name,function_table_name,instruction_table_name) VALUES ('1', '$PROGRAM_NAME', '${PROGRAM_NAME}_ADDRESS', '${PROGRAM_NAME}_function', '${PROGRAM_NAME}_instruction') RETURNING variant_id;" | sed "s/^[ \t]*//"`
 
 if [ ! $? -eq 0 ]; then
   log_error "Failed to register program"
 fi
 
 # Update original program id
-psql -q -t -c "UPDATE program_info SET orig_program_id = '$PROGRAM_ID' WHERE program_id = '$PROGRAM_ID';"
+psql -q -t -c "UPDATE variant_info SET orig_variant_id = '$PROGRAM_ID' WHERE variant_id = '$PROGRAM_ID';"
 
 #============================================
 # Update file_info table
@@ -73,12 +75,11 @@ psql -q -t -c "UPDATE program_info SET orig_program_id = '$PROGRAM_ID' WHERE pro
 
 FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash) VALUES ('$URL', '$ARCH', '$MD5HASH') RETURNING file_id;" | sed "s/^[ \t]*//"`
 
-# Update original file id
-psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID' WHERE file_id = '$FILE_ID';"
-
 log_message "To do: if shared libs, then need to add them to this table"
 
 #============================================
 # Update program_dependency table
 #============================================
-FILE_ID=`psql -q -t -c "INSERT INTO program_dependency (program_id, file_id) VALUES ('$PROGRAM_ID', '$FILE_ID')"`
+FILE_ID=`psql -q -t -c "INSERT INTO variant_dependency (variant_id, file_id) VALUES ('$PROGRAM_ID', '$FILE_ID')"`
+
+exit $PROGRAM_ID

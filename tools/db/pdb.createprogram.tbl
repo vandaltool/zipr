@@ -1,25 +1,30 @@
 CREATE TABLE #PROGNAME#_address
 (
-  address_id         SERIAL PRIMARY KEY,
-  file_id            integer REFERENCES file_info,
-  vaddress_offset    text
+  address_id         	SERIAL PRIMARY KEY,
+  file_id            	integer REFERENCES file_info,
+  vaddress_offset    	integer,
+  doip_id		integer DEFAULT -1
 );
 
 CREATE TABLE #PROGNAME#_function
 (
-  function_id        SERIAL PRIMARY KEY,
-  file_id            integer REFERENCES file_info,
-  name               text,
-  stack_frame_size   integer
+  function_id        	SERIAL PRIMARY KEY,
+  file_id            	integer REFERENCES file_info,
+  name               	text,
+  stack_frame_size   	integer,
+  doip_id	   	integer DEFAULT -1
 );
 
 CREATE TABLE #PROGNAME#_instruction
 (
+  instruction_id	    SERIAL PRIMARY KEY,
   address_id                integer REFERENCES #PROGNAME#_address,
-  parent_function_id        integer REFERENCES #PROGNAME#_function,
+  parent_function_id        integer,
   file_id                   integer REFERENCES file_info,
-  orig_address_id           integer REFERENCES #PROGNAME#_address,
-  fallthrough_address_id    integer REFERENCES #PROGNAME#_address,
-  target_address_id         integer REFERENCES #PROGNAME#_address,
-  data                      text
+  orig_address_id           integer,
+  fallthrough_address_id    integer,
+  target_address_id         integer,
+  data                      bytea,
+  comment                   text,
+  doip_id		    integer DEFAULT -1
 );
