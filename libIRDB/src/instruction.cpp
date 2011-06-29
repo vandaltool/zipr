@@ -5,6 +5,20 @@
 using namespace libIRDB;
 using namespace std;
 
+Instruction_t::Instruction_t() :
+	BaseObj_t(NULL), 
+	data(""),
+	comment(""),
+	file_id(NOT_IN_DATABASE)
+{
+	SetBaseID(NOT_IN_DATABASE);
+	my_address=NULL;
+	my_function=NULL;
+	orig_address_id=NOT_IN_DATABASE;
+	fallthrough=NULL;
+	target=NULL;
+}
+
 Instruction_t::Instruction_t(db_id_t id, 
 		AddressID_t *addr, 
 		Function_t *func, 

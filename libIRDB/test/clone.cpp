@@ -46,6 +46,10 @@ main(int argc, char* argv[])
 		exit(-1);
         }
 
+	db_id_t newpid_id=newpidp->GetBaseID();
+
 	delete pidp;
 	delete newpidp;
+
+	exit(newpid_id);
 }

@@ -138,10 +138,10 @@ int main(int argc, char **argv)
   char *annotFile = argv[4];
   char *spriFile=strdup("spri.out");
 
-  cout << "program name:" << programName << endl;
-  cout << "elf file:" << elfFile << endl;
-  cout << "hash-md5:" << md5hash << endl;
-  cout << "annotation file:" << annotFile << endl;
+  cerr << "program name:" << programName << endl;
+  cerr << "elf file:" << elfFile << endl;
+  cerr << "hash-md5:" << md5hash << endl;
+  cerr << "annotation file:" << annotFile << endl;
 
   connection conn;
   work txn(conn);
@@ -155,14 +155,14 @@ int main(int argc, char **argv)
     return 1;
   }
   else
-    cout << "File id is: " << fileID << endl;
+    cerr << "File id is: " << fileID << endl;
 
   // get functions & instructions from MEDS
   vector<wahoo::Function*> functions = rewriter->getAllFunctions();
   vector<wahoo::Instruction*> instructions = rewriter->getAllInstructions();
 
-  cout << "Number of functions: " << functions.size() << endl;
-  cout << "Number of instructions: " << instructions.size() << endl;
+  cerr << "Number of functions: " << functions.size() << endl;
+  cerr << "Number of instructions: " << instructions.size() << endl;
 
   // bulk insert of function information into the DB
   const int STRIDE = 25;

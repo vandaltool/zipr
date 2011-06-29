@@ -67,6 +67,7 @@ void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 	string complete_instr=string(disasm.CompleteInstr);
 	string address_string=string(disasm.Argument1.ArgMnemonic);
 
+	
 	fout << "\t"+label+"\t ** ";
 
         if(
@@ -159,7 +160,7 @@ bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn)
 		return true;
 		
 	// if there's a target, but it is different, return true
-	if(newTG && newTG->GetOriginalAddressID()!=oldFT->GetBaseID())
+	if(newTG && newTG->GetOriginalAddressID()!=oldTG->GetBaseID())
 		return true;
 
 	// data bits themselves changed
@@ -183,7 +184,11 @@ We need to emit a rule of this form
 #endif
 
 
-	fout << addressify(newinsn) <<" -> ."<<endl;
+	fout << "#"<<endl;
+	fout << "# Orig addr: "<<addressify(newinsn)<<" addr_id: "<< newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
+	fout << "#"<<endl;
+	if(addressify(newinsn).c_str()[0]=='0')
+		fout << addressify(newinsn) <<" -> ."<<endl;
 
 	emit_spri_instruction(newinsn, fout);
 
@@ -191,6 +196,8 @@ We need to emit a rule of this form
 	/* if there's a fallthrough instruction, jump to it. */
 	if(newinsn->GetFallthrough())
 		fout << ". -> " << labelfy(newinsn->GetFallthrough())<<endl;
+
+	fout<<endl;
 
 }
 
@@ -296,7 +303,7 @@ main(int argc, char* argv[])
 	string filename;
 	ostream *fout;
 	if(argc==3)
-		fout=new ofstream(argv[3], ios::out);
+		fout=new ofstream(argv[2], ios::out);
 	else
 		fout=&cerr;
 
@@ -338,6 +345,10 @@ main(int argc, char* argv[])
         }
 
 	cout<<"Done!"<<endl;
+
+	if(fout!=&cerr)
+		((ofstream*)fout)->close();
+		
 
 	delete varidp;
 	delete varirp;

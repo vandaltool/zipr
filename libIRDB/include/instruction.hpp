@@ -9,6 +9,8 @@ class Instruction_t : public BaseObj_t
 {
     public:
 
+	Instruction_t();
+
 	Instruction_t(db_id_t id, AddressID_t *addr, Function_t *func, db_id_t file_id, db_id_t orig_id, 
 		std::string data, std::string comment, db_id_t doip_id);
 
@@ -17,14 +19,16 @@ class Instruction_t : public BaseObj_t
         db_id_t GetOriginalAddressID() { return orig_address_id; }
         Instruction_t* GetFallthrough() { return fallthrough; }
         Instruction_t* GetTarget() { return target; }
-        std::string GetDataBits() { return data; }
+        std::string GetDataBits()  { return data; }
+        std::string GetComment()   { return comment; }
 
-        void SetAddress(AddressID_t* newaddr) { my_address=newaddr; }
-        void SetFunction(Function_t*) {assert(0); }
-        void SetOriginalAddressID(AddressID_t ) {assert(0); }
-        void SetFallthrough(Instruction_t* i) {fallthrough=i;}
-        void SetTarget(Instruction_t* i) {target=i; }
-        void SetDataBits(std::string orig ) {assert(0); }       
+        void SetAddress(AddressID_t* newaddr)  { my_address=newaddr; }
+        void SetFunction(Function_t* func   )  { my_function=func;}
+        void SetOriginalAddressID(AddressID_t) {assert(0); /* you shouldn't do this! */}
+        void SetFallthrough(Instruction_t* i)  {fallthrough=i;}
+        void SetTarget(Instruction_t* i)       {target=i; }
+        void SetDataBits(std::string orig )    { data=orig;}
+        void SetComment(std::string orig )     { comment=orig;}
 
 	void WriteToDB() { assert(0); }
         std::string WriteToDB(VariantID_t *vid, db_id_t newid);

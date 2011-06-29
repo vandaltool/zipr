@@ -212,13 +212,38 @@ std::map<db_id_t,Instruction_t*> VariantIR_t::ReadInsnsFromDB (      std::map<db
 void VariantIR_t::WriteToDB()
 {
 
+#define MAX(a,b) (((a)>(b)) ? (a) : (b))
+
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ progid.instruction_table_name + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ progid.function_table_name    + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ progid.address_table_name     + string(" cascade;"));
 	
 
-	string q=string("");
+
+	/* find the highest database ID */
 	db_id_t j=0;
+	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
+	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
+	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
+
+
+	/* for anything that's not yet in the DB, assign an ID to it */
+	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
+	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
+	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
+
+
+	/* and now that everything has an ID, let's write to the DB */
+	string q=string("");
 	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i, ++j)
 		q+=(*i)->WriteToDB(&progid,j);
 	dbintr->IssueQuery(q);

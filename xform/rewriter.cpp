@@ -42,6 +42,9 @@ void Rewriter::readAnnotationFile(char p_filename[])
 	int bitvector_size_bits=0;
 	int line=0;
 
+	wahoo::Function *nullfn = new wahoo::Function("ThisIsNotAFunction", 0, 0);
+	m_functions[0]=nullfn;
+
 	constants_hash=	Hashtable_create(constants_compute_hash, constants_key_compare);
 	stackrefs_hash=	Hashtable_create(stackrefs_compute_hash, stackrefs_key_compare);
 	framerestores_hash=	Hashtable_create(framerestores_compute_hash, framerestores_key_compare);
