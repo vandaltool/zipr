@@ -20,7 +20,7 @@ INCLUDEDIR=${DIR}/include
 INCLUDE=-I${INCLUDEDIR} -I. -I${DIR}/beaengine/include
 LIB=libxform.a
 
-OBJS= instruction_descriptor.o function_descriptor.o elfreader.o null_transform.o rewriter.o spri_alloc.o gen_hash.o constant_hash.o funclist_hash.o instrmap_hash.o framerestore_hash.o stackref_hash.o p1_transform.o a2bspri.o
+OBJS= instruction_descriptor.o function_descriptor.o elfreader.o null_transform.o rewriter.o spri_alloc.o gen_hash.o constant_hash.o funclist_hash.o instrmap_hash.o framerestore_hash.o stackref_hash.o p1_transform.o
 
 .SUFFIXES: .o .c .cpp
 
