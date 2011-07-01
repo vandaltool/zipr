@@ -17,15 +17,13 @@
 #
 
 CC=g++
-CFLAGS= -DUBUNTU -g
-INCLUDE=-I. -I../../xform
-LIBS=-L../../lib -L../../xform -lxform
+CFLAGS= -static -DUBUNTU -Wall -O3
 
-.SUFFIXES: .o .c .cpp
+INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include
+LIBS=-L../../xform -lxform -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d
 
 .cpp.o .c.o:
 	$(CC) $(CFLAGS) $(INCLUDE) -c $<
-
 
 all: spasm
 	echo build complete
@@ -33,5 +31,5 @@ all: spasm
 clean:
 	rm -f *.o core spasm
 
-spasm: $(OBJS) spasm.c
-	$(CC) -o spasm $(INCLUDE) spasm.c $(OBJS) $(LIBS)
+spasm: $(OBJS) spasm.cpp Makefile spasm.h spasm_main.cpp ben_lib.cpp ben_lib.h
+	$(CC) -o spasm $(INCLUDE) $(CFLAGS) spasm_main.cpp  spasm.cpp ben_lib.cpp $(OBJS) $(LIBS)

@@ -1,5 +1,27 @@
-  0x08000000    ->    .
-	. ** sub esp, 1 ; this is a comment in asm
-. ** sub esp, 9
-. ** sub esp, 2048
-	.	 ->	0x08000003
+;
+; Test ASPRI (SPAM) file
+;
+##
+#more comment tests
+#
+
+0x00000010 -> . ; Spasm entry point
+. ** sub esp, 10
+L1 ** mov ebx, 10 ;
+. ** nop
+. ** sub esp, 15
+. ** jmp L1
+L2 -> L1
+. -> L2
+. -> 0x00000029
+. -| 0x00000013
+. ** jmp L2
+. ** nop
+. ** nop
+. ** nop
+. ** nop
+. ** nop
+. ** jmp L3
+. ** nop
+. ** nop
+L3 ** mov esp, 19
