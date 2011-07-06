@@ -530,7 +530,7 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
             else
                 comments += " ; ";
 
-            comments += "<" + address + ">";
+            comments += "src addr = <" + address + ">";
 
             spriline = symMap[address]+" ";
         }
@@ -547,6 +547,13 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
         //resolve them.
         if(op.compare("**") != 0)
         {
+
+	    //If the current disassembled instruction is not nop, then something is out of sync
+	    if(bin[bintop].hex_str.compare("1 90") !=0)
+		throw SpasmException(string("ERROR: Bug detected in getSPRI, bin out of sync with spasm lines. ") +
+				     "Expected a place holder nop (1 90) for a SPRI redirect, but found " + bin[bintop].hex_str +". " +
+				     "Sync error occurs on line " + strLineNum + " of the SPASM input file");
+
             //non-entry point redirects require one byte of memory
             incSize = 1;
 
@@ -566,7 +573,7 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
                 else
                     comments += " ; ";
                 
-                comments += "<" + rhs + ">";
+                comments += "dest addr = <" + rhs + ">";
 
                 spriline += symMap[rhs]+" ";
             }       
