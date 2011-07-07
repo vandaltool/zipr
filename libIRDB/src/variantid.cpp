@@ -129,9 +129,9 @@ bool VariantID_t::Register()
 	if(NOT_IN_DATABASE==orig_pid)
 		orig_pid=newid;
 
-	address_table_name="AddressTable_Variant"+to_string(GetBaseID());
-	function_table_name="FunctionTable_Variant"+to_string(GetBaseID());
-	instruction_table_name="InstructionTable_Variant"+to_string(GetBaseID());
+	address_table_name="AddressTable_Variant"+to_string(GetBaseID())+"_address";
+	function_table_name="FunctionTable_Variant"+to_string(GetBaseID())+"_function";
+	instruction_table_name="InstructionTable_Variant"+to_string(GetBaseID())+"_instruction";
 
 	BaseObj_t::dbintr->MoveToNextRow();
 	assert(BaseObj_t::dbintr->IsDone());

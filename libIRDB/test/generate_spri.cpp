@@ -106,6 +106,67 @@ void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 	else
 	{
 		/* no target, just emit the instrution */
+
+		/* beaEngine kinda sucks and does some non-nasmness. */
+		
+		/* in this case, we look for an "lea <reg>, dword [ addr ]" and remove the "dword" part */
+		if(strstr(disasm.CompleteInstr,"lea ") != NULL )
+		{
+			char* a=strstr(disasm.CompleteInstr, "dword ");
+			if(a!=NULL)
+			{
+				a[0]=' ';	 // d
+				a[1]=' ';	 // w
+				a[2]=' ';	 // o
+				a[3]=' ';	 // r
+				a[4]=' ';	 // d
+			}
+		}
+
+		/* In this case, we look for "mov*x dstreg, srcreg" and convert srcreg to an appropriate size */
+		if(	strstr(disasm.CompleteInstr, "movzx ") || 
+			strstr(disasm.CompleteInstr, "movsx ") )
+		{
+			if( disasm.Instruction.Opcode==0xfbe || disasm.Instruction.Opcode==0xfb6 ) 
+			{
+				char* comma=strstr(disasm.CompleteInstr, ",");
+				assert(comma);
+				if(comma[2]=='e' && comma[3]=='a' && comma[4]=='x') // eax -> al 
+					comma[2]=' ', comma[3],'a', comma[4]='l';
+				if(comma[2]=='e' && comma[3]=='b' && comma[4]=='x') // ebx -> bl 
+					comma[2]=' ', comma[3],'b', comma[4]='l';
+				if(comma[2]=='e' && comma[3]=='c' && comma[4]=='x') // ecx -> cl 
+					comma[2]=' ', comma[3],'c', comma[4]='l';
+				if(comma[2]=='e' && comma[3]=='d' && comma[4]=='x') // edx -> dl 
+					comma[2]=' ', comma[3],'d', comma[4]='l';
+				if(comma[2]=='e' && comma[3]=='s' && comma[4]=='p') // esp -> ah 
+					comma[2]=' ', comma[3],'a', comma[4]='h';
+				if(comma[2]=='e' && comma[3]=='b' && comma[4]=='p') // ebp -> bh 
+					comma[2]=' ', comma[3],'b', comma[4]='h';
+				if(comma[2]=='e' && comma[3]=='s' && comma[4]=='i') // esi -> ch 
+					comma[2]=' ', comma[3],'c', comma[4]='l';
+				if(comma[2]=='e' && comma[3]=='d' && comma[4]=='i') // edi -> dh 
+					comma[2]=' ', comma[3],'d', comma[4]='l';
+			}
+			else if( disasm.Instruction.Opcode==0xfbf || disasm.Instruction.Opcode==0xfb7 ) 
+			{
+				char* comma=strstr(disasm.CompleteInstr, ",");
+				assert(comma);
+				if(strstr(&comma[2], "word [") == NULL)  // if it's not a memory operation 
+				{
+					assert(comma[2]=='e');
+					comma[2]=' ';
+				}
+			}
+			else
+				assert(0); // wtf?
+		}
+		// look for an fld st0, st0, and convert it to fld st0 
+		else if(strcmp("fld st0 , st0", disasm.CompleteInstr)==0)
+		{
+			disasm.CompleteInstr[8]='\0';
+		}
+			
 		fout<<disasm.CompleteInstr;
 	}
 	fout<<endl;
