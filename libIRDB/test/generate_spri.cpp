@@ -51,14 +51,16 @@ static string addressify(Instruction_t* insn)
 //
 void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 {
+	Instruction_t* old_insn=insnMap[newinsn];
+
 	// disassemble using BeaEngine
 	DISASM disasm;
 	memset(&disasm, 0, sizeof(DISASM));
 
-	disasm.Options = NasmSyntax + PrefixedNumeral;
+	disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
 	disasm.Archi = 32;
 	disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
-	disasm.VirtualAddr = newinsn->GetAddress()->GetVirtualOffset();
+	disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
 
 	/* Disassemble the instruction */
 	int instr_len = Disasm(&disasm);
@@ -244,6 +246,7 @@ We need to emit a rule of this form
 	. -> fallthrough label
 #endif
 
+	Instruction_t* old_insn=insnMap[newinsn];
 
 	fout << "#"<<endl;
 	fout << "# Orig addr: "<<addressify(newinsn)<<" addr_id: "<< newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
@@ -256,7 +259,27 @@ We need to emit a rule of this form
 
 	/* if there's a fallthrough instruction, jump to it. */
 	if(newinsn->GetFallthrough())
+	{	
 		fout << ". -> " << labelfy(newinsn->GetFallthrough())<<endl;
+	}
+	else
+	{
+		DISASM disasm;
+		disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
+		disasm.Archi = 32;
+		disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
+		disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
+
+		/* Disassemble the instruction */
+		int instr_len = Disasm(&disasm);
+
+		if( disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType ) 
+		{
+			assert(old_insn);	/* it's an error to insert a new, non-unconditional branch instruction
+						 * and not specify it's fallthrough */
+			fout << ". -> 0x" << std::hex << old_insn->GetAddress()->GetVirtualOffset()+instr_len <<endl;
+		}
+	}
 
 	fout<<endl;
 
