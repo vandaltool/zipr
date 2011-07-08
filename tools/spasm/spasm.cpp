@@ -340,6 +340,8 @@ static void resolveSymbols(const string &mapFile)
         throw SpasmException("ERROR: Nasm map file "+mapFile +" does not exist. Indicates a Nasm failure.");           
     }  
 
+    cout<<"Resolving Symbols .... ";
+
     string line;
     vector<string> tokens;
     while(mapFileStream.good())
@@ -383,9 +385,10 @@ static void resolveSymbols(const string &mapFile)
         if(symMap.find(tokens[2]) != symMap.end())
       	{
             symMap[tokens[2]] = tokens[1];
-            cout<<"SYMBOL RESOLVED: symbol "<<tokens[2]<<" to address "<<tokens[1]<<endl;
+//            cout<<"SYMBOL RESOLVED: symbol "<<tokens[2]<<" to address "<<tokens[1]<<endl;
         }
     } 
+    cout<<"Done!"<<endl;
 
     mapFileStream.close();
 }

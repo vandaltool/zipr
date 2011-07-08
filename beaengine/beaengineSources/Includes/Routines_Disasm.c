@@ -774,7 +774,8 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     /* =============== if Arg1.IsMemoryType, add decoration-example == "dword ptr ds:[" */
     if ((GV.MemDecoration >0) && (GV.MemDecoration < 99)) {
         if (GV.SYNTAX_ == NasmSyntax) {
-            (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+	    if(strstr((*pMyDisasm).Instruction.Mnemonic, "lea")==0) 
+		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
             if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
