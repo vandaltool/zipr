@@ -63,7 +63,7 @@ clean:
 	rm -Rf peasoup_executable_directory.*
 	rm -f strata.log.*
 	rm -f *.sym
-	# if [ ! "X" = "X"${PGUSER} ]; then sh ../tools/db/drop_my_tables.sh; sh ../tools/db/pdb_setup.sh; fi
+	if [ ! "X" = "X"${PGUSER} ]; then sh ../tools/db/drop_my_tables.sh; sh ../tools/db/pdb_setup.sh; fi
 
 concclean:
 	rm -Rf concolic.files_*

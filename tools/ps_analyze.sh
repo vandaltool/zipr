@@ -71,6 +71,16 @@ echo Running IDA Pro static analysis phase ...
 $SMPSA_HOME/SMP-analyze.sh a.ncexe
 echo Done.
 
+#
+# Run concolic engine
+#
+echo Running concolic testing to generate inputs ...
+#$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,instance_times,trace
+$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,trace,inputs 
+# 2>&1 |egrep -e "INPUT VECTOR:" -e "1: argc ="
+# >/dev/null 2>&1 
+echo Done.
+
 
 #
 # Populate IR Database
@@ -99,7 +109,8 @@ if [ ! "X" = "X"$PGUSER ]; then
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $cloneid		# finish the initial IR 
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid		# fix call insns so they are OK for spri emitting
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid			# perform ILR 
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.ncexe.aspri	# generate the spri code
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri	# generate the aspri code
+			$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri	# generate the bspri code
 		fi
 	fi
 	echo	-------------------------------------------------------------------------------
@@ -110,16 +121,6 @@ if [ ! "X" = "X"$PGUSER ]; then
 
 fi
 
-
-#
-# Run concolic engine
-#
-echo Running concolic testing to generate inputs ...
-#$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,instance_times,trace
-$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,trace,inputs 
-# 2>&1 |egrep -e "INPUT VECTOR:" -e "1: argc ="
-# >/dev/null 2>&1 
-echo Done.
 
 
 #
@@ -132,16 +133,16 @@ echo Done.
 #echo Starting the P1 transform
 #date
 #$PEASOUP_HOME/tools/p1xform.sh $newdir > p1xform.out 2> p1xform.err
-#
+
 #echo $current_dir/$newdir/p1.xform/p1.final
-#
+
 #if [ -f $current_dir/p1.xform/p1.final ]; then
 #  echo List of functions transformed:
 #  cat $current_dir/p1.xform/p1.final
 #else
 #  echo P1 was unable to transform the subject program
 #fi
-#
+
 #date
 #echo Done with the P1 transform
 

@@ -1,19 +1,16 @@
 #!/bin/bash
 
-psql << 'EOF'
-CREATE LANGUAGE plpgsql;
-CREATE OR REPLACE FUNCTION drop_tables(username IN VARCHAR) RETURNS void AS $$
-DECLARE
-    statements CURSOR FOR
-        SELECT tablename FROM pg_tables
-        WHERE tableowner = username;
-BEGIN
-    FOR stmt IN statements LOOP
-        EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(stmt.tablename) || ' CASCADE;';
-    END LOOP;
-END;
-$$
-LANGUAGE plpgsql;
-EOF
 
-psql -c "SELECT drop_tables('$PGUSER');"
+functables=`psql -t -q -c "select function_table_name from variant_info"`
+insntables=`psql -t -q -c "select instruction_table_name from variant_info"`
+addrtables=`psql -t -q -c "select address_table_name from variant_info"`
+othertables="variant_dependency variant_info file_info doip"
+
+for  i in $insntables $addrtables $functables $othertables
+do
+	echo --------------------------------------------------------------------------
+	echo -n Dropping table $i..." "
+	psql -t -q -c "drop table $i cascade;"
+	echo Done.
+	echo --------------------------------------------------------------------------
+done
