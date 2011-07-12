@@ -9,7 +9,7 @@ all: $(OBJS)
 $(OBJS): ../include/*.hpp *.hpp
 
 clean:
-	rm $(OBJS)
+	rm -f $(OBJS)
 
 .cpp.o:
 	g++ -g -c -I../include $<
