@@ -18,8 +18,7 @@ if [ "$SMPSA_HOME"X = X ]; then echo Please set SMPSA_HOME; exit 1; fi
 if [ ! -f  $SMPSA_HOME/SMP-analyze.sh ]; then echo SMPSA_HOME is set poorly, please fix.; exit 1; fi
 if [ "$STRATA_HOME"X = X ]; then echo Please set STRATA_HOME; exit 1; fi
 if [ ! -f  $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh ]; then echo STRATA_HOME is set poorly, please fix.; exit 1; fi
-# mc2zk commenting this line out temporarily until SECURITY_TRANSFORMS development is merged to the trunk
-#if [ "$SECURITY_TRANSFORMS_HOME"X = X ]; then echo Please set SECURITY_TRANSFORMS; exit 1; fi
+if [ "$SECURITY_TRANSFORMS_HOME"X = X ]; then echo Please set SECURITY_TRANSFORMS; exit 1; fi
 
 if [ -z $2 ]; then
   echo "Usage: $0 <original_binary> <new_binary>"
@@ -88,7 +87,7 @@ echo Done.
 if [ ! "X" = "X"$PGUSER ]; then
 	echo "Registering with IR database: program: $orig_exe server:$PGHOST db:$PGDATABASE"
 	
-	DB_PROGRAM_NAME=`echo $orig_exe.$$ | sed "s/[\.;+\\-\ ]/_/g"`
+	DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[\.;+\\-\ ]/_/g"`
 	
 	MD5HASH=`md5sum a.ncexe | cut -f1 -d' '`
 	$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME $current_dir	# register the program.
