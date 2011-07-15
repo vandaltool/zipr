@@ -17,7 +17,18 @@ class VariantIR_t : public BaseObj_t
         std::set<AddressID_t*>&    GetAddresses() { return addrs; }
         std::set<File_t*>&    GetFiles() { return files; }
 
+	// generate the spri rules into the output file, fout.
+	void generate_spri(std::ostream &fout);
+
+	// generate spri, assume that orig_varirp is the original variant. 
+	void generate_spri(VariantIR_t *orig_varirp, std::ostream &fout);
+
+
     private:
+
+	// a pointer to the original variants IR, NULL means not yet loaded.
+	VariantIR_t* orig_variant_ir_p;
+
 
         void ReadFromDB();  //accesses DB
 

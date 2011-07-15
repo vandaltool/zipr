@@ -9,9 +9,11 @@ using namespace std;
 // Create a Variant from the database
 VariantIR_t::VariantIR_t(VariantID_t newprogid) : BaseObj_t(NULL)
 {
+	orig_variant_ir_p=NULL;
 	progid=newprogid;	
 	if(progid.IsRegistered())
 		ReadFromDB();
+
 }
   
 // DB operations
