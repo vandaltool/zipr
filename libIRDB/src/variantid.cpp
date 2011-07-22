@@ -24,6 +24,9 @@ VariantID_t::VariantID_t() :
 
 void VariantID_t::CreateTables()
 {
+/*
+ * WARNING!  If you edit these tables, you must also edit $PEASOUP_HOME/tools/db/*.tbl
+ */
 
 	dbintr->IssueQuery(
 		"CREATE TABLE " + address_table_name + 
@@ -52,13 +55,13 @@ void VariantID_t::CreateTables()
 		"instruction_id		   SERIAL PRIMARY KEY, "
   		"address_id                integer REFERENCES " + address_table_name + ", " +
   		"parent_function_id        integer, "
-  		"file_id                   integer REFERENCES file_info, "
   		"orig_address_id           integer, "
   		"fallthrough_address_id    integer, "
   		"target_address_id         integer, "
   		"data                      bytea, "
   		"comment                   text, "
-  		"doip_id		    integer DEFAULT -1 "
+		"is_indirect_target 	   boolean DEFAULT true, "
+  		"doip_id		   integer DEFAULT -1 "
 		");"
 	);
 }
@@ -129,9 +132,9 @@ bool VariantID_t::Register()
 	if(NOT_IN_DATABASE==orig_pid)
 		orig_pid=newid;
 
-	address_table_name="AddressTable_Variant"+to_string(GetBaseID())+"_address";
-	function_table_name="FunctionTable_Variant"+to_string(GetBaseID())+"_function";
-	instruction_table_name="InstructionTable_Variant"+to_string(GetBaseID())+"_instruction";
+	address_table_name="Variant"+to_string(GetBaseID())+"_address";
+	function_table_name="Variant"+to_string(GetBaseID())+"_function";
+	instruction_table_name="Variant"+to_string(GetBaseID())+"_instruction";
 
 	BaseObj_t::dbintr->MoveToNextRow();
 	assert(BaseObj_t::dbintr->IsDone());

@@ -23,6 +23,8 @@ class VariantIR_t : public BaseObj_t
 	// generate spri, assume that orig_varirp is the original variant. 
 	void generate_spri(VariantIR_t *orig_varirp, std::ostream &fout);
 
+	void SetBaseIDS();
+
 
     private:
 

@@ -8,8 +8,7 @@ using namespace std;
 Instruction_t::Instruction_t() :
 	BaseObj_t(NULL), 
 	data(""),
-	comment(""),
-	file_id(NOT_IN_DATABASE)
+	comment("")
 {
 	SetBaseID(NOT_IN_DATABASE);
 	my_address=NULL;
@@ -17,21 +16,22 @@ Instruction_t::Instruction_t() :
 	orig_address_id=NOT_IN_DATABASE;
 	fallthrough=NULL;
 	target=NULL;
+	indTarg=true;
 }
 
 Instruction_t::Instruction_t(db_id_t id, 
 		AddressID_t *addr, 
 		Function_t *func, 
-		db_id_t my_file_id, 
 		db_id_t orig_id, 
                 std::string thedata, 
 		std::string my_comment, 
+		bool my_indTarg, 
 		db_id_t doip_id) :
 
 	BaseObj_t(NULL), 
 	data(thedata),
 	comment(my_comment),
-	file_id(my_file_id)
+	indTarg(my_indTarg)
 {
 	SetBaseID(id);
 	my_address=addr;
@@ -64,18 +64,18 @@ string Instruction_t::WriteToDB(VariantID_t *vid, db_id_t newid)
 
         string q=
 		string("insert into ")+vid->instruction_table_name +
-                string(" (instruction_id, address_id, parent_function_id, file_id, orig_address_id, fallthrough_address_id, target_address_id, data, comment, doip_id) ")+
+                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, target_address_id, data, comment, is_indirect_target, doip_id) ")+
                 string(" VALUES (") +
                 string("'") + to_string(GetBaseID())            	+ string("', ") +
                 string("'") + to_string(my_address->GetBaseID())   	+ string("', ") +
                 string("'") + to_string(func_id)            		+ string("', ") +
-                string("'") + to_string(file_id)            		+ string("', ") +
                 string("'") + to_string(orig_address_id)         	+ string("', ") +
                 string("'") + to_string(ft_id)         			+ string("', ") +
                 string("'") + to_string(targ_id)         		+ string("', ") +
                 string("E'") + pqxx::escape_binary(data) + "'::bytea"   + string(" , ") + // no ticks for this field
 											  // also need to append ::bytea
                 string("'") + comment                              	+ string("', ") +
+                string("'") + to_string((int)indTarg)                   + string("', ") +
                 string("'") + to_string(GetDoipID())            	+ string("') ; ") ;
 
 	return q;

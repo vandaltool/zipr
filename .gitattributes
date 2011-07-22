@@ -177,6 +177,7 @@ libIRDB/test/create_variant.cpp -text
 libIRDB/test/create_variantir.cpp -text
 libIRDB/test/drop_variant.cpp -text
 libIRDB/test/fill_in_cfg.cpp -text
+libIRDB/test/fill_in_indtargs.cpp -text
 libIRDB/test/fix_calls.cpp -text
 libIRDB/test/generate_spri.cpp -text
 libIRDB/test/ilr.cpp -text

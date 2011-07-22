@@ -9,6 +9,10 @@ class pqxxDB_t : public DBinterface_t
 		std::string GetResultColumn(std::string colname);
 		bool IsDone();
 		void Commit();
+
+		pqxx::connection& GetConnection() { return conn; }
+		pqxx::work& GetTransaction() { return txn; }
+
 	private:
 		pqxx::connection conn;
 		pqxx::work txn;

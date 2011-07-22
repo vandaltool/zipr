@@ -51,7 +51,7 @@ void insert_instructions(string programName, int fileID, vector<wahoo::Instructi
 
     string instructionTable = programName + "_" + "instruction";
     string query2 = "INSERT INTO " + instructionTable;
-    query2 += " (address_id, parent_function_id, file_id, orig_address_id, data, comment) VALUES ";
+    query2 += " (address_id, parent_function_id, orig_address_id, data, comment) VALUES ";
 
     for (int j = i; j < i + STRIDE; ++j)
     {
@@ -85,7 +85,6 @@ void insert_instructions(string programName, int fileID, vector<wahoo::Instructi
       query2 += "(";
       query2 += txn.quote(address_id) + ","; // j is the address id
       query2 += txn.quote(parent_function_id) + ","; 
-      query2 += txn.quote(fileID) + ","; 
       query2 += txn.quote(orig_address_id) + ","; 
 
       // encode instruction binary data information

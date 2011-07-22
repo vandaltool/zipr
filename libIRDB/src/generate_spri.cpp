@@ -19,6 +19,8 @@ using namespace std;
 //
 static map<Instruction_t*,Instruction_t*> insnMap;
 
+
+
 //
 // create a label for the given instruction
 //
@@ -248,11 +250,21 @@ We need to emit a rule of this form
 
 	Instruction_t* old_insn=insnMap[newinsn];
 
-	fout << "#"<<endl;
 	fout << "# Orig addr: "<<addressify(newinsn)<<" addr_id: "<< newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
-	fout << "#"<<endl;
 	if(addressify(newinsn).c_str()[0]=='0')
-		fout << addressify(newinsn) <<" -> ."<<endl;
+	{
+		if(old_insn->GetIsIndirectTarget())
+		{
+			fout << addressify(newinsn) <<" -> ."<<endl;
+		}
+		else
+		{
+			fout << "# eliding, no indirect targets"<<endl;
+			fout << addressify(newinsn) <<" -> . " <<endl; 
+			fout << ". -> 0x0" << endl;
+		}
+		
+	}
 
 	emit_spri_instruction(newinsn, fout);
 
@@ -284,6 +296,7 @@ We need to emit a rule of this form
 	fout<<endl;
 
 }
+
 
 
 //
