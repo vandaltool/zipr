@@ -27,8 +27,8 @@ CREATE TABLE file_info
   hash             text,
   arch             text,
   type		   text DEFAULT 'ELF-Static',
+  elfoid	   OID,
   doip_id          integer DEFAULT -1
-
 );
 
 CREATE TABLE variant_dependency

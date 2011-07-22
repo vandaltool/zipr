@@ -1,3 +1,9 @@
+-- 
+-- 
+--  WARNING!  If you edit these tables, you must also edit the API in $SECURITY_TRANSFORMS_HOME/libIRDB/src/variantid.cpp
+-- 
+-- 
+
 CREATE TABLE #PROGNAME#_address
 (
   address_id         	SERIAL PRIMARY KEY,
@@ -20,11 +26,11 @@ CREATE TABLE #PROGNAME#_instruction
   instruction_id	    SERIAL PRIMARY KEY,
   address_id                integer REFERENCES #PROGNAME#_address,
   parent_function_id        integer,
-  file_id                   integer REFERENCES file_info,
   orig_address_id           integer,
   fallthrough_address_id    integer,
   target_address_id         integer,
   data                      bytea,
   comment                   text,
+  is_indirect_target	    boolean DEFAULT true,
   doip_id		    integer DEFAULT -1
 );

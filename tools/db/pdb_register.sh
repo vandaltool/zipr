@@ -14,7 +14,7 @@ PROGRAM_PEASOUP_DIR=$2
 
 usage()
 {
-  echo "pdb_register <peasoup_program_name> <peasoup_program_directory>"
+  echo "pdb_register <peasoup_program_name> <peasoup_program_directory> "
 }
 
 log_error()
@@ -73,7 +73,9 @@ psql -q -t -c "UPDATE variant_info SET orig_variant_id = '$PROGRAM_ID' WHERE var
 # Update file_info table
 #============================================
 
-FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash) VALUES ('$URL', '$ARCH', '$MD5HASH') RETURNING file_id;" | sed "s/^[ \t]*//"`
+
+oid=`psql  -t -c "\lo_import '$FILENAME' 'original executable that was passed to ps_analyze.sh'" |cut -d" " -f2`
+FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash, elfoid) VALUES ('$URL', '$ARCH', '$MD5HASH', '$oid') RETURNING file_id;" | sed "s/^[ \t]*//"`
 
 log_message "To do: if shared libs, then need to add them to this table"
 

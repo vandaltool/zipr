@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh 
 # This script depends on having the following environment variables defined
 # STRATA - The path to the strata installation
 # An example of these environment variables and their settings are listed in
@@ -11,6 +11,19 @@
 # Version 2 - runs Grace
 # Version 3 - runs p1 transform
 
+
+
+
+log()
+{
+	if [ ! -z "$VERBOSE" ]; then
+		cat $1
+	fi
+}
+
+if [ ! -z "$VERBOSE" ]; then
+	set -x
+fi
 
 if [ "$PEASOUP_HOME"X = X ]; then echo Please set PEASOUP_HOME; exit 1; fi
 if [ ! -f  $PEASOUP_HOME/tools/getsyms.sh ]; then echo PEASOUP_HOME is set poorly, please fix.; exit 1; fi
@@ -46,7 +59,8 @@ cd $newdir
 
 
 echo -n Creating stratafied executable...
-sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied > /dev/null 2>&1 
+sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied > pc_confinement.out  2>&1 
+log pc_confinement.out
 echo Done. 
 
 # We've now got a stratafied program
@@ -75,9 +89,8 @@ echo Done.
 #
 echo Running concolic testing to generate inputs ...
 #$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,instance_times,trace
-$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,trace,inputs 
-# 2>&1 |egrep -e "INPUT VECTOR:" -e "1: argc ="
-# >/dev/null 2>&1 
+$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,trace,inputs  > do_concolic.out 2>&1
+log do_concolic.out
 echo Done.
 
 
@@ -90,26 +103,34 @@ if [ ! "X" = "X"$PGUSER ]; then
 	DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[\.;+\\-\ ]/_/g"`
 	
 	MD5HASH=`md5sum a.ncexe | cut -f1 -d' '`
-	$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME $current_dir	# register the program.
+	$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME $current_dir  > pdb_register.out 2>&1 # register the program.
 	varid=$?
-	
-	$PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $DB_PROGRAM_NAME # create the tables for the program.
-	
-	echo "RUNNING MEDS2PDB:"
-	date
-	time $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME a.ncexe $MD5HASH a.ncexe.annot 	# import meds information
-	date
+	log pdb_register.out
+
+	$PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $DB_PROGRAM_NAME  > pdb_create_program_tables.out 2>&1 # create the tables for the program.
+	log pdb_create_program_tables.out
+	time $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME a.ncexe $MD5HASH a.ncexe.annot 	 > meds2pdb.out 2>&1 # import meds information
+	log meds2pdb.out
 
 	if [ $varid > 0 ]; then
-		$SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid		# create a clone
+		$SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	> fill_in_cfg.out 	2>&1	# finish the initial IR by setting target/fallthrough 
+		log fill_in_cfg.out
+		$SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./a.ncexe    > fill_in_indtargs.out 	2>&1 	# analyze for indirect branch targets 
+		log fill_in_indtargs.out
+		$SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid				> clone.out 		2>&1 	# create a clone
 		cloneid=$?
+		log clone.out
 	
 		if [ $cloneid > 0 ]; then
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $cloneid		# finish the initial IR 
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid		# fix call insns so they are OK for spri emitting
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid			# perform ILR 
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri	# generate the aspri code
-			$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri	# generate the bspri code
+															# paths for direct control transfers insns.
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	> fix_calls.out 2>&1 		# fix call insns so they are OK for spri emitting
+			log fix_calls.out
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid > ilr.out 2>&1 				# perform ILR 
+			log ilr.out
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri	> spri.out 2>&1 # generate the aspri code
+			log spri.out
+			$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri	> spasm.out 2>&1 	# generate the bspri code
+			log spasm.out
 		fi
 	fi
 	echo	-------------------------------------------------------------------------------
