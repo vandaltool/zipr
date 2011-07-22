@@ -3,9 +3,36 @@
 #include <libIRDB.hpp>
 #include <iostream>
 #include <stdlib.h>
+#include <string.h>
+
+#include "beaengine/BeaEngine.h"
 
 using namespace libIRDB;
 using namespace std;
+
+//
+// returns true iff instruction is MUL or IMUL
+//
+bool isMultiplyInstruction(Instruction_t *p_instruction)
+{
+	if (!p_instruction)
+		return false;
+
+	DISASM disasm;
+	memset(&disasm, 0, sizeof(DISASM));
+
+	disasm.Options = NasmSyntax + PrefixedNumeral;
+	disasm.Archi = 32;
+	disasm.EIP = (UIntPtr) p_instruction->GetDataBits().c_str();
+	disasm.VirtualAddr = p_instruction->GetAddress()->GetVirtualOffset();
+
+	Disasm(&disasm); // dissassemble the instruction
+
+	// look for "mul ..." or "imul ..."
+	string disassembly = string(disasm.CompleteInstr);
+	size_t found_pos = disassembly.find("mul");
+        return (found_pos == 0 || found_pos == 1); // we expect mul or imul to be the first word in the string
+}
 
 main(int argc, char* argv[])
 {
@@ -46,6 +73,10 @@ main(int argc, char* argv[])
 
 	cout<<"Do stuff to variant "<<*pidp<< "." <<endl;
 
+	// For now, the overflow handler will consist of a HLT instruction
+//	Instruction_t* overflowHandler = addOverflowHandler(virp);
+
+        int numberMul = 0;
 //	set<AddressID_t*> newaddressset;
 	for(
 		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
@@ -54,8 +85,50 @@ main(int argc, char* argv[])
 	   )
 	{
 		Instruction_t* insn=*it;
-                cout << "address: " << insn->GetAddress()
-                     << " comment: " << insn->GetComment() << endl;
+                
+		if (isMultiplyInstruction(insn) && insn->GetFunction())
+		{
+			numberMul++;
+			cout << "found MUL: address: " << insn->GetAddress()
+	                     << " comment: " << insn->GetComment()
+	                     << " in function: " << insn->GetFunction()->GetName() << endl;
+			// for now, insert overflow check to all IMUL instructions
+			// later, we'll want to be more judicious about where to insert overflow checks
+//			addOverflowCheck(virp, insn, overflowHandler);
+		}
+
+		
+/*
+                size_t found = insn->GetComment().find(string("mul"));
+                if (found != string::npos)
+		{
+			numberMul++;
+                	string dataBits = insn->GetDataBits();
+			cout << "found MUL: address: " << insn->GetAddress()
+	                     << " comment: " << insn->GetComment()
+	                     << " dataBits: " << insn->GetDataBits();
+
+			if (insn->GetFunction())
+			{
+	                	cout << " in function: " << insn->GetFunction()->GetName() << endl;
+			}
+			else
+	                	cout << " in function: unknown" << endl;
+		
+		}
+*/
+
+
+                //
+                // look for IMUL or MUL
+                // then do something (initially just count them)
+		//      define new instruction at some new address id:   <addressOfHalt> HLT 
+		//               no targets, fallthrough is itself
+                
+		//      insert jo <addressOfhalt>      TARGET = <addressOfHalt> "jump overflow"
+		//      fallthrough is what the old fallthrough would have been 
+                //
+
 /*
 		AddressID_t *newaddr=new AddressID_t;
 		newaddr->SetFileID(insn->GetAddress()->GetFileID());
@@ -66,9 +139,10 @@ main(int argc, char* argv[])
 
 //	virp->GetAddresses()=newaddressset;
 
-	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
+//	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
 //	virp->WriteToDB();
 
+	cout<<"Found " << numberMul << " MUL or IMUL instructions" << endl;
 	pqxx_interface.Commit();
 	cout<<"Done!"<<endl;
 
