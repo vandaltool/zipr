@@ -45,7 +45,6 @@ examples/recover_example.c -text
 tools/Makefile -text
 tools/db/Makefile -text
 tools/db/drop_my_tables.sh -text
-tools/db/large_object_insert.cpp -text
 tools/db/pdb.create.tbl -text
 tools/db/pdb.createprogram.tbl -text
 tools/db/pdb.drop.tbl -text
