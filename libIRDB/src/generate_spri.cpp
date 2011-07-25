@@ -15,17 +15,36 @@ using namespace std;
 
 
 //
+// the set of insturctions that have control 
+// transfers to them (including fallthrough type control transfers) from instructions that do not need a spri rule.
+//
+set<Instruction_t*> unmoved_insn_targets;
+	
+
+//
 // map an instruction from the new variant back to the old variant;
 //
 static map<Instruction_t*,Instruction_t*> insnMap;
 
+//
+// does this instruction need a spri rule 
+//
+static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn);
 
+
+//
+// return the address as a string for this instruction
+//
+static string addressify(Instruction_t* insn);
 
 //
 // create a label for the given instruction
 //
 static string labelfy(Instruction_t* insn)
 {
+	if(!needs_spri_rule(insn, insnMap[insn]))
+		return addressify(insn);
+
 	return string("Label_insn_") + to_string(insn->GetBaseID());
 }
 
@@ -221,18 +240,18 @@ static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn)
 		return true;
 
 	// if there's a fallthrough, but it is different, return true
-	if(newFT && newFT->GetOriginalAddressID()!=oldFT->GetBaseID())
+	if(newFT && newFT->GetOriginalAddressID()!=oldFT->GetAddress()->GetBaseID())
 		return true;
 		
 	// if there's a target, but it is different, return true
-	if(newTG && newTG->GetOriginalAddressID()!=oldTG->GetBaseID())
+	if(newTG && newTG->GetOriginalAddressID()!=oldTG->GetAddress()->GetBaseID())
 		return true;
 
 	// data bits themselves changed
 	if(newinsn->GetDataBits() != oldinsn->GetDataBits())
 		return true;
 
-	
+	return false;
 }
 
 //
@@ -250,10 +269,15 @@ We need to emit a rule of this form
 
 	Instruction_t* old_insn=insnMap[newinsn];
 
-	fout << "# Orig addr: "<<addressify(newinsn)<<" addr_id: "<< newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
+	fout << "# Orig addr: "<<addressify(newinsn)<<" addr_id: "<< std::dec << newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
 	if(addressify(newinsn).c_str()[0]=='0')
 	{
-		if(old_insn->GetIsIndirectTarget())
+		if(
+		   // if it's an indirect branch target 
+		   old_insn->GetIsIndirectTarget() || 
+		   // or the target of an unmodified instruction 
+		   unmoved_insn_targets.find(newinsn) != unmoved_insn_targets.end()
+		  )
 		{
 			fout << addressify(newinsn) <<" -> ."<<endl;
 		}
@@ -378,6 +402,37 @@ void VariantIR_t::generate_spri(ostream &fout)
 	this->generate_spri(orig_variant_ir_p,fout);
 }
 
+
+//
+// generate_unmoved_insn_targets_set --  create the set of insturctions that have control 
+// transfers to them (including fallthrough type control transfers) from instructions that do not need a spri rule.
+//
+static void generate_unmoved_insn_targets_set(VariantIR_t* varirp)
+{
+	for(
+		set<Instruction_t*>::const_iterator it=varirp->GetInstructions().begin();
+		it!=varirp->GetInstructions().end();
+		++it
+	   )
+	{
+		Instruction_t *insn=*it;
+
+		if(
+			// this instruction corresponds to an old instructino 
+			insnMap[insn] && 
+			// and we need a spri rule for it 
+			!needs_spri_rule(insn, insnMap[insn])
+		  )
+		{
+			unmoved_insn_targets.insert(insn->GetTarget());
+			unmoved_insn_targets.insert(insn->GetFallthrough());
+		}
+
+	}
+
+}
+
+
 void VariantIR_t::generate_spri(VariantIR_t *orig_varirp, ostream &fout)
 {
 
@@ -385,8 +440,12 @@ void VariantIR_t::generate_spri(VariantIR_t *orig_varirp, ostream &fout)
 	// give 'this' a name
 	VariantIR_t *varirp=this;
 
-	// generate the map needed for this transform.
+	// generate the map from new instruction to old instruction needed for this transform.
 	generate_insn_to_insn_maps(varirp, orig_varirp);
+
+	// generate unmoved_insn_targets_set --  the set of insturctions that have control 
+	// transfers to them (including fallthrough type control transfers) from instructions that do not need a spri rule.
+	generate_unmoved_insn_targets_set(varirp);
 
 	//
 	// for each instruction, compare the new instruction with the original instruction and see if 
