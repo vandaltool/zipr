@@ -42,9 +42,9 @@ orig_exe=$1
 newname=a
 
 if [ -z $2 ]; then
-stratafied_exe=$orig_exe
+	stratafied_exe=$orig_exe
 else
-stratafied_exe=$2
+	stratafied_exe=$2
 fi
 
 date
@@ -55,6 +55,7 @@ newdir=peasoup_executable_directory.$name.$$
 
 mkdir $newdir
 cp $orig_exe $newdir/$newname.ncexe
+rm $stratafied_exe
 cd $newdir
 
 
