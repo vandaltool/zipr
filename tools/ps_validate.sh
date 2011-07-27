@@ -5,11 +5,15 @@
 #
 # Validate SPRI transform against a suite of input/output pairs
 #
+# TODO: validate against all files created by the original run, not just stdout, stderr
+#
 
-STRATAFIED_BINARY=$1        # stratafied subject program
-BSPRI=$2                    # transformation specification SPRI file
-INPUT_DIR=$3                # directory containing inputs
-BASELINE_OUTPUT_DIR=$INPUT_DIR/file_input
+# Inputs
+STRATAFIED_BINARY=$1        # stratafied subject program (a.stratafied)
+BSPRI=$2                    # transformation specification SPRI file (some bspri file)
+INPUT_DIR=$3                # directory containing inputs (.../concolic.files_a.stratafied_0001)
+
+BASELINE_OUTPUT_DIR=$INPUT_DIR/sandboxed-files
 
 echo "=========================================="
 echo "Running ps_validate.sh"
