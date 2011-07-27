@@ -23,6 +23,11 @@ fi
 # Run the program with the proper env. vars set., and the arguments to the program specified
 #
 
+if [ ! -z $VERBOSE ]; then
+	echo STRATA_SPRI_FILE=$STRATA_SPRI_FILE STRATA_DOUBLE_FREE=1 STRATA_HEAPRAND=1 STRATA_PC_CONFINE=1 STRATA_PC_CONFINE_XOR=1 STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024 STRATA_ANNOT_FILE=$datapath/a.ncexe.annot $datapath/a.stratafied "$@"
+fi
+
+
 STRATA_DOUBLE_FREE=1 					\
 	STRATA_HEAPRAND=1 				\
 	STRATA_PC_CONFINE=1 				\
@@ -30,5 +35,7 @@ STRATA_DOUBLE_FREE=1 					\
 	STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024		\
 	STRATA_ANNOT_FILE=$datapath/a.ncexe.annot 	\
 	$datapath/a.stratafied "$@"
+
+
 
 

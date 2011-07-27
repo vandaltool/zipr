@@ -7,6 +7,9 @@ strata_exe=$exe.stratafied
 annot=$exe.ncexe.annot
 sym=$exe.sym
 
+
+
+
 whoami=`whoami`
 
 # 
@@ -39,7 +42,12 @@ for i in `ipcs -q|grep $whoami |cut -d" " -f 2`;
 do
 	ipcrm -q $i
 done
+
+
+oldulimit=`ulimit -S -t`
+ulimit -S -t 61
 STRATA_GRACE=1 controller $extra_args --start $start_ea --stop $stop_ea --symbols $sym --outputs replay,coverage,instruction_addresses $strata_exe
+ulimit -S -t $oldulimit
 
 echo cleaning up
 killall -q controller

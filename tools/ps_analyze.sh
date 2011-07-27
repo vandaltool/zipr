@@ -90,7 +90,7 @@ echo Done.
 #
 echo Running concolic testing to generate inputs ...
 #$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,instance_times,trace
-$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,trace,inputs  > do_concolic.out 2>&1
+$PEASOUP_HOME/tools/do_concolic.sh a  --timeout 60 --iteration-timeout 30 --iterations 25 --logging tracer,trace,inputs  > do_concolic.out 2>&1
 log do_concolic.out
 echo Done.
 
