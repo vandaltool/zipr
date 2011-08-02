@@ -67,8 +67,6 @@ examples/memcpy.c -text
 examples/myhanoi.c -text
 examples/print_ptr.c -text
 examples/recover_example.c -text
-tools/Makefile -text
-tools/db/Makefile -text
 tools/db/drop_my_tables.sh -text
 tools/db/pdb.create.tbl -text
 tools/db/pdb.createprogram.tbl -text
