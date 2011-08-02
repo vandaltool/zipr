@@ -76,7 +76,7 @@ static vector<spasmline_t> getSpasmLines(const string &inputFile)
     int lineCount = 0;
 
     string commentOnlyRegex = "^[[:blank:]]*(;|#).*$";
-    string entryRedirectRegex = "^[[:blank:]]*0x[[:xdigit:]]+[[:blank:]]+->[[:blank:]]+[.][[:blank:]]*((;|#).*)?$";
+    string entryRedirectRegex = "^[[:blank:]]*0x[[:xdigit:]]+[[:blank:]]+->[[:blank:]]+([.]|[a-zA-Z0-9_]*)[[:blank:]]*((;|#).*)?$";
     string otherRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+->[[:blank:]]+((0x[[:xdigit:]]+)|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]*((;|#).*)?$";
     string insertRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+[-][|][[:blank:]]+0x[[:xdigit:]]+[[:blank:]]*((;|#).*)?$";
     string instructionRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+[*][*][[:blank:]]+.*$";
@@ -500,6 +500,8 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
         string op = spasmlines[i].op;
         string rhs = spasmlines[i].rhs;
 
+        string spriline = "";
+
         //No non-symbols are allowed as addresses in spasm except for entry points
         //which require no memory space, so push the instruction alone
         //no symbols are allowed on the rhs for these spasm instructions, therefore
@@ -510,12 +512,25 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
             spri.push_back("");//ensures a space separates spri entry points
             //remove 0x of the address (not necessary but makes all addresses uniform)
             //rhs is replaced with current vpc
-            spri.push_back(address.substr(2)+" "+op+" "+vpcstr+" "+comments);
+	    spriline = address.substr(2)+" "+op+" ";
+
+	    //rhs has a dot symbol
+	    if(rhs[0] == '.')
+		spriline += vpcstr+" "+comments;
+	    //rhs is a user defined symbol, and must be resolved
+	    else
+	    {
+		if (symMap.find(rhs) == symMap.end())
+		    throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol defined on aspri line " + strLineNum); 
+		
+		spriline += symMap[rhs]+" "+comments;
+	    }
+
+	    spri.push_back(spriline);
             continue;
         }
 
         bin_instruction_t binLine = bin[bintop];
-        string spriline = "";
 
         //If the address is a symbol, replace with resolved symbol address
         //a symbol does not begin with a 0 and is not '.'. At this point
@@ -539,8 +554,7 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
         }
         //else if '.' use vpc
         else
-        {
-            
+        {            
             spriline = string(vpcstr+" ");
         }
         
