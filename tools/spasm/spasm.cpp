@@ -76,7 +76,7 @@ static vector<spasmline_t> getSpasmLines(const string &inputFile)
     int lineCount = 0;
 
     string commentOnlyRegex = "^[[:blank:]]*(;|#).*$";
-    string entryRedirectRegex = "^[[:blank:]]*0x[[:xdigit:]]+[[:blank:]]+->[[:blank:]]+([.]|[a-zA-Z0-9_]*)[[:blank:]]*((;|#).*)?$";
+    string entryRedirectRegex = "^[[:blank:]]*0x[[:xdigit:]]+[[:blank:]]+->[[:blank:]]+([.]|[a-zA-Z0-9_]*|0x[:xdigi:]+)[[:blank:]]*((;|#).*)?$";
     string otherRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+->[[:blank:]]+((0x[[:xdigit:]]+)|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]*((;|#).*)?$";
     string insertRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+[-][|][[:blank:]]+0x[[:xdigit:]]+[[:blank:]]*((;|#).*)?$";
     string instructionRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+[*][*][[:blank:]]+.*$";
@@ -516,15 +516,19 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
 
 	    //rhs has a dot symbol
 	    if(rhs[0] == '.')
-		spriline += vpcstr+" "+comments;
+		spriline += vpcstr+" ";
+	    else if(rhs[0] == '0')
+		spriline += rhs.substr(2)+" ";
 	    //rhs is a user defined symbol, and must be resolved
 	    else
 	    {
 		if (symMap.find(rhs) == symMap.end())
 		    throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol defined on aspri line " + strLineNum); 
 		
-		spriline += symMap[rhs]+" "+comments;
+		spriline += symMap[rhs]+" ";
 	    }
+
+	    spriline += comments;
 
 	    spri.push_back(spriline);
             continue;
