@@ -57,6 +57,12 @@ main(int argc, char* argv[])
 		AddressID_t *newaddr=new AddressID_t;
 		newaddr->SetFileID(insn->GetAddress()->GetFileID());
 		insn->SetAddress(newaddr);
+
+		if (insn->GetIndirectBranchTargetAddress())
+		{
+			newaddressset.insert(insn->GetIndirectBranchTargetAddress());
+		}
+
 		newaddressset.insert(newaddr);
 	}
 

@@ -67,6 +67,16 @@ static string addressify(Instruction_t* insn)
 
 }
 
+static string getPostCallbackLabel(Instruction_t *newinsn)
+{
+	if (!newinsn)
+		return string("");
+	else
+	{
+		return "post_callback_" + labelfy(newinsn);
+	}
+}
+
 //
 // emit this instruction as spri code.
 //
@@ -90,8 +100,17 @@ static void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 	string complete_instr=string(disasm.CompleteInstr);
 	string address_string=string(disasm.Argument1.ArgMnemonic);
 
-	
-	fout << "\t"+label+"\t ** ";
+        /* Emit any callback functions */
+	if (!newinsn->GetCallback().empty())
+	{
+		fout << "\t"+label+"\t () " << newinsn->GetCallback() << endl;
+		fout << "\t"+ getPostCallbackLabel(newinsn)+" ** ";
+//		fout << "\t. ** ";
+	}
+	else
+	{
+		fout << "\t"+label+"\t ** ";
+	}
 
         if(
                 (disasm.Instruction.BranchType!=0) &&                  // it is a branch
@@ -117,7 +136,6 @@ static void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 			/* sanity, no segment registers for absolute mode */
 			assert(disasm.Argument1.SegmentReg==0);
 
-			/* emit */
 			fout<<final;
 		}
 		else 	/* this instruction has a target, but it's not in the DB */
@@ -270,11 +288,14 @@ We need to emit a rule of this form
 	Instruction_t* old_insn=insnMap[newinsn];
 
 	fout << "# Orig addr: "<<addressify(newinsn)<<" addr_id: "<< std::dec << newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
+	if (newinsn->GetIndirectBranchTargetAddress())
+		fout << "# Orig addr: "<<addressify(newinsn)<<" indirect branch target: "<<newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() << endl;
+
 	if(addressify(newinsn).c_str()[0]=='0')
 	{
 		if(
 		   // if it's an indirect branch target 
-		   old_insn->GetIsIndirectTarget() || 
+		   old_insn->GetIndirectBranchTargetAddress() || 
 		   // or the target of an unmodified instruction 
 		   unmoved_insn_targets.find(newinsn) != unmoved_insn_targets.end()
 		  )
@@ -288,6 +309,11 @@ We need to emit a rule of this form
 			fout << ". -> 0x0" << endl;
 		}
 		
+	}
+	else if (newinsn->GetIndirectBranchTargetAddress()) 
+	{
+		fout << "0x" << std::hex << newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() <<" -> ."<<endl;
+		fout << ". -> "<< getPostCallbackLabel(newinsn) <<endl;
 	}
 
 	emit_spri_instruction(newinsn, fout);

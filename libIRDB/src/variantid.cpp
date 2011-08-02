@@ -59,8 +59,9 @@ void VariantID_t::CreateTables()
   		"fallthrough_address_id    integer, "
   		"target_address_id         integer, "
   		"data                      bytea, "
+  		"callback                  text, "
   		"comment                   text, "
-		"is_indirect_target 	   boolean DEFAULT true, "
+		"ind_target_address_id 	   integer DEFAULT -1, "
   		"doip_id		   integer DEFAULT -1 "
 		");"
 	);

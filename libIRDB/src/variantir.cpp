@@ -159,6 +159,7 @@ std::map<db_id_t,Instruction_t*> VariantIR_t::ReadInsnsFromDB (      std::map<db
 //  fallthrough_address_id    integer,
 //  target_address_id         integer,
 //  data                      bytea,
+//  callback                  text,
 //  comment                   text,
 //  doip_id                   integer DEFAULT -1
 
@@ -170,17 +171,22 @@ std::map<db_id_t,Instruction_t*> VariantIR_t::ReadInsnsFromDB (      std::map<db
 		db_id_t fallthrough_address_id=atoi(dbintr->GetResultColumn("fallthrough_address_id").c_str());
 		db_id_t targ_address_id=atoi(dbintr->GetResultColumn("target_address_id").c_str());
 		std::string data=(dbintr->GetResultColumn("data"));
+		std::string callback=(dbintr->GetResultColumn("callback"));
 		std::string comment=(dbintr->GetResultColumn("comment"));
-		std::string isIndStr=(dbintr->GetResultColumn("is_indirect_target"));
-		bool indTarg= isIndStr==std::string("t");
+		db_id_t indirect_branch_target_address_id = atoi(dbintr->GetResultColumn("ind_target_address_id").c_str());
 		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
 
+		std::string isIndStr=(dbintr->GetResultColumn("ind_target_address_id"));
+
+                AddressID_t* indTarg = NULL;
+		if (indirect_branch_target_address_id != NOT_IN_DATABASE) 
+			indTarg = addrMap[indirect_branch_target_address_id];
 
 		Instruction_t *newinsn=new Instruction_t(instruction_id,
 			addrMap[aid],
 			funcMap[parent_func_id],
 			orig_address_id,
-			data, comment, indTarg, doipid);
+			data, callback, comment, indTarg, doipid);
 	
 		if(funcMap[parent_func_id])
 			funcMap[parent_func_id]->GetInstructions().insert(newinsn);

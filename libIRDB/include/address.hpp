@@ -10,6 +10,16 @@ class AddressID_t : public BaseObj_t
 	AddressID_t(db_id_t myid, db_id_t myfileID, virtual_offset_t voff) : BaseObj_t(NULL), fileID(myfileID), virtual_offset(voff) 
 		{ SetBaseID(myid); }
 
+	AddressID_t& operator=(const AddressID_t &rhs) {
+		if (this != &rhs)
+		{
+			this->fileID = rhs.fileID;	
+			this->virtual_offset = rhs.virtual_offset;	
+		}
+
+		return *this;
+ 	}
+
         db_id_t GetFileID() const { return fileID; }
         void SetFileID(int thefileID) { fileID=thefileID; }
 

@@ -60,9 +60,16 @@ void mark_targets(VariantIR_t *virp)
 
 		/* lookup in the list of targets */
 		if(targets.find(addr)!=targets.end())
-			insn->SetIsIndirectTarget(true);
+		{
+			AddressID_t* newaddr = new AddressID_t;
+			newaddr->SetFileID(insn->GetAddress()->GetFileID());
+			newaddr->SetVirtualOffset(insn->GetAddress()->GetVirtualOffset());
+			
+			insn->SetIndirectBranchTargetAddress(newaddr);
+			virp->GetAddresses().insert(newaddr);
+		}
 		else
-			insn->SetIsIndirectTarget(false);
+			insn->SetIndirectBranchTargetAddress(NULL);
 		
 	}
 

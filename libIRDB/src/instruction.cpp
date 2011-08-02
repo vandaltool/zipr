@@ -8,6 +8,7 @@ using namespace std;
 Instruction_t::Instruction_t() :
 	BaseObj_t(NULL), 
 	data(""),
+	callback(""),
 	comment("")
 {
 	SetBaseID(NOT_IN_DATABASE);
@@ -16,7 +17,7 @@ Instruction_t::Instruction_t() :
 	orig_address_id=NOT_IN_DATABASE;
 	fallthrough=NULL;
 	target=NULL;
-	indTarg=true;
+	indTarg=NULL;
 }
 
 Instruction_t::Instruction_t(db_id_t id, 
@@ -24,12 +25,14 @@ Instruction_t::Instruction_t(db_id_t id,
 		Function_t *func, 
 		db_id_t orig_id, 
                 std::string thedata, 
+		std::string my_callback, 
 		std::string my_comment, 
-		bool my_indTarg, 
+		AddressID_t *my_indTarg, 
 		db_id_t doip_id) :
 
 	BaseObj_t(NULL), 
 	data(thedata),
+	callback(my_callback),
 	comment(my_comment),
 	indTarg(my_indTarg)
 {
@@ -62,9 +65,13 @@ string Instruction_t::WriteToDB(VariantID_t *vid, db_id_t newid)
 	if(target)
 		targ_id=target->GetBaseID();
 
+	db_id_t indirect_bt_id=NOT_IN_DATABASE;
+	if(indTarg)
+		indirect_bt_id=indTarg->GetBaseID();
+
         string q=
 		string("insert into ")+vid->instruction_table_name +
-                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, target_address_id, data, comment, is_indirect_target, doip_id) ")+
+                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, target_address_id, data, callback, comment, ind_target_address_id, doip_id) ")+
                 string(" VALUES (") +
                 string("'") + to_string(GetBaseID())            	+ string("', ") +
                 string("'") + to_string(my_address->GetBaseID())   	+ string("', ") +
@@ -74,8 +81,9 @@ string Instruction_t::WriteToDB(VariantID_t *vid, db_id_t newid)
                 string("'") + to_string(targ_id)         		+ string("', ") +
                 string("E'") + pqxx::escape_binary(data) + "'::bytea"   + string(" , ") + // no ticks for this field
 											  // also need to append ::bytea
+                string("'") + callback                              	+ string("', ") +
                 string("'") + comment                              	+ string("', ") +
-                string("'") + to_string((int)indTarg)                   + string("', ") +
+                string("'") + to_string(indirect_bt_id)                 + string("', ") +
                 string("'") + to_string(GetDoipID())            	+ string("') ; ") ;
 
 	return q;
