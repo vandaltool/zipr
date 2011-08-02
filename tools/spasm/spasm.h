@@ -6,7 +6,7 @@
 #include <exception>
 
 
-void a2bspri(const std::string &input, const std::string &output) throw(std::exception);
+void a2bspri(const std::string &input, const std::string &output, const std::string &elfFile) throw(std::exception);
 
 class SpasmException: public std::exception
 {
@@ -28,7 +28,6 @@ class SpasmException: public std::exception
         {
 
         }
-
 
         virtual const char* what() const throw()
         {

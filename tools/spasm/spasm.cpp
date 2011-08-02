@@ -42,17 +42,49 @@ typedef struct bin_instruction {
 static unsigned int const ORG_PC = 0xff000000;
 static unsigned int vpc = ORG_PC; 
 static map<string,string> symMap; 
+static map<string,string> callbackMap; 
 
 static vector<spasmline_t> getSpasmLines(const string &inputFile);
 static vector<string> getAssembly(const vector<spasmline_t> &lines);
 static void assemble(const vector<string> &assembly, const string &assemblyFile);
 static void resolveSymbols(const string &mapFile);
 static vector<bin_instruction_t> parseBin(const string &binFile);
-static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines);
+static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines, const string &symbolFilename);
 static void printVector(const string &outputFile, const vector<string> &lines);
 
-void a2bspri(const string &input, const string &output) throw(exception)
+//
+// @todo: need to cache results
+//
+static string getCallbackAddress(const string &symbolFilename, const string &symbol) throw(exception)
 {
+  string symbolFullName = symbolFilename + "+" + symbol;
+  map<string,string>::iterator callbackMapIterator;
+
+  if(callbackMap.find(symbolFullName) != callbackMap.end())
+  {
+    return callbackMap[symbolFullName];
+  }
+
+// nm -a stratafier.o.exe | egrep " integer_overflow_detector$" | cut -f1 -d' '
+  string command = "nm -a " + symbolFilename + " | egrep \" " + symbol + "$\" | cut -f1 -d' '";
+  char* address = new char[128];
+
+  FILE *fp = popen(command.c_str(), "r");
+
+  fscanf(fp,"%s", address);
+  string addressString = string(address);
+
+  pclose(fp);
+  delete [] address; 
+
+  callbackMap[symbolFullName] = addressString;
+
+  return addressString;
+}
+
+void a2bspri(const string &input, const string &output, const string &symbolFilename) throw(exception)
+{
+
     vector<spasmline_t> spasmlines = getSpasmLines(input);
 
     vector<string> assembly = getAssembly(spasmlines);    
@@ -63,7 +95,7 @@ void a2bspri(const string &input, const string &output) throw(exception)
 
     vector<bin_instruction_t> binInstr = parseBin(input+".asm.bin");
     
-    vector<string> spriLines = getSPRI(binInstr,spasmlines);
+    vector<string> spriLines = getSPRI(binInstr,spasmlines, symbolFilename);
 
     printVector(output,spriLines);
 }
@@ -80,32 +112,38 @@ static vector<spasmline_t> getSpasmLines(const string &inputFile)
     string otherRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+->[[:blank:]]+((0x[[:xdigit:]]+)|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]*((;|#).*)?$";
     string insertRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+[-][|][[:blank:]]+0x[[:xdigit:]]+[[:blank:]]*((;|#).*)?$";
     string instructionRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+[*][*][[:blank:]]+.*$";
+    string callbackRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*|0x[[:xdigit:]]+)[[:blank:]]+[(][)][[:blank:]]+.*$";
 
-    regex_t coPattern, erPattern, orPattern, irPattern, insPattern;
+    regex_t coPattern, erPattern, orPattern, irPattern, insPattern, cbPattern;
 
     if (regcomp(&coPattern, commentOnlyRegex.c_str(), REG_EXTENDED) != 0)
     {
-        throw SpasmException("ERROR: program bug, regex compliation failure for commentOnlyRegex in getSpasmLines");
+        throw SpasmException("ERROR: program bug, regex compilation failure for commentOnlyRegex in getSpasmLines");
     }
     
     if (regcomp(&erPattern, entryRedirectRegex.c_str(), REG_EXTENDED) != 0)
     {
-        throw SpasmException("ERROR: program bug, regex compliation failure for entryRedirectRegex in getSpasmLines");
+        throw SpasmException("ERROR: program bug, regex compilation failure for entryRedirectRegex in getSpasmLines");
     }
 
     if (regcomp(&orPattern, otherRedirectRegex.c_str(), REG_EXTENDED) != 0)
     {
-        throw SpasmException("ERROR: program bug, regex compliation failure for otherRedirectRegex in getSpasmLines");
+        throw SpasmException("ERROR: program bug, regex compilation failure for otherRedirectRegex in getSpasmLines");
     }
 
     if (regcomp(&irPattern, insertRedirectRegex.c_str(), REG_EXTENDED) != 0)
     {
-        throw SpasmException("ERROR: program bug, regex compliation failure for insertRedirectRegex in getSpasmLines");
+        throw SpasmException("ERROR: program bug, regex compilation failure for insertRedirectRegex in getSpasmLines");
     }
 
     if (regcomp(&insPattern, instructionRegex.c_str(), REG_EXTENDED) != 0)
     {
-        throw SpasmException("ERROR: program bug, regex compliation failure for instructionRegex in getSpasmLines");
+        throw SpasmException("ERROR: program bug, regex compilation failure for instructionRegex in getSpasmLines");
+    }
+
+    if (regcomp(&cbPattern, callbackRegex.c_str(), REG_EXTENDED) != 0)
+    {
+        throw SpasmException("ERROR: program bug, regex compilation failure for callbackRegex in getSpasmLines");
     }
 
     ifstream myfile;
@@ -157,7 +195,7 @@ static vector<spasmline_t> getSpasmLines(const string &inputFile)
         }
 		
         if(regexec(&erPattern,line.c_str(),0,NULL,0)==0 || regexec(&orPattern,line.c_str(),0,NULL,0)==0 ||
-           regexec(&irPattern,line.c_str(),0,NULL,0)==0 || regexec(&insPattern,line.c_str(),0,NULL,0)==0)
+           regexec(&irPattern,line.c_str(),0,NULL,0)==0 || regexec(&insPattern,line.c_str(),0,NULL,0)==0 || regexec(&cbPattern, line.c_str(),0,NULL,0)==0)
         {
             trim(tokens[1]);
             trim(tokens[2]);
@@ -260,6 +298,20 @@ static vector<string> getAssembly(const vector<spasmline_t> &lines)
             //terminating redirects require one byte of space which is reserved with nop
             lineRH = "nop";
         }
+        else if(lineOp.compare("()")==0)
+	{
+		// this is a callback
+/*
+		assemblyLine = "; ";
+		assemblyLine += lineAddr;
+		assemblyLine += " () ";
+		assemblyLine += " needToResolveAddressFor: ";
+*/
+            string callback = lineRH;
+            lineRH = "nop";
+            lineRH += " ;";
+            lineRH += callback;
+	}
 
         assemblyLine += lineRH;
         assembly.push_back(assemblyLine);
@@ -461,7 +513,7 @@ static vector<bin_instruction_t> parseBin(const string &binFile)
 //Each instruction in bin maps to the next non-comment only line in spasmlines.
 //Some mappings serve only as memory place holders for redirect operators, and therefore
 //the instruction, and a SPRI redirection instruction is pushed onto the returned vector.
-static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines)
+static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines, const string &symbolFilename)
 {
     //check vector sizes??
 
@@ -564,14 +616,23 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
         
         spriline += op+" ";
 
+        // handle callback handlers
+        if (op.compare("()") == 0)
+        {
+            incSize = 1;
+            string callbackAddress = getCallbackAddress(symbolFilename, rhs);
+            if (callbackAddress.empty())
+                throw SpasmException(string("ERROR: could not resolve address for callback handler: " + rhs + " in symbol file: " + symbolFilename)); 	    
+            spriline += callbackAddress;
+        }
         //terminating and non-terminating redirects may have symbols on the right hand side
         //resolve them.
-        if(op.compare("**") != 0)
+        else if(op.compare("**") != 0)
         {
 
 	    //If the current disassembled instruction is not nop, then something is out of sync
 	    if(bin[bintop].hex_str.compare("1 90") !=0)
-		throw SpasmException(string("ERROR: Bug detected in getSPRI, bin out of sync with spasm lines. ") +
+      throw SpasmException(string("ERROR: Bug detected in getSPRI, bin out of sync with spasm lines. ") +
 				     "Expected a place holder nop (1 90) for a SPRI redirect, but found " + bin[bintop].hex_str +". " +
 				     "Sync error occurs on line " + strLineNum + " of the SPASM input file");
 
