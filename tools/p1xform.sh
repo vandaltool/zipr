@@ -20,6 +20,9 @@ echo "p1xform.sh script started in $CURRENT_DIR"
 echo "P1 transform directory: $P1_DIR"
 echo "=========================================="
 
+echo "==========================================================="
+echo "Generate P1 transformation for each function in the program"
+echo "==========================================================="
 $PEASOUP_HOME/tools/p1xform.genspri.sh $P1_DIR a.ncexe a.ncexe.annot > $P1_DIR/genspri.out 2> $P1_DIR/genspri.err
 
 #
@@ -46,6 +49,7 @@ grep -v "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $CANDIDATE_FNS
 grep  "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $FILTERED_OUT
 #rm tmp.$$
 
+# Prune out libc functions
 $PEASOUP_HOME/tools/p1xform.filter.sh $CANDIDATE_FNS $LIBC_FILTER > $KEEPS
 
 echo "====================================================="

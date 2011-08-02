@@ -126,11 +126,16 @@ if [ ! "X" = "X"$PGUSER ]; then
 															# paths for direct control transfers insns.
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	> fix_calls.out 2>&1 		# fix call insns so they are OK for spri emitting
 			log fix_calls.out
+
+
+			$SECURITY_TRANSFORMS_HOME/tools/transforms/integerbugtransform.exe $cloneid > integerbugtransform.out 2>&1
+			log integerbugtransform.out
+
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid > ilr.out 2>&1 				# perform ILR 
 			log ilr.out
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri	> spri.out 2>&1 # generate the aspri code
 			log spri.out
-			$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri	> spasm.out 2>&1 	# generate the bspri code
+			$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe > spasm.out 2>&1 	# generate the bspri code
 			log spasm.out
 		fi
 	fi
@@ -151,6 +156,22 @@ fi
 #-----------------------------------------
 # Start P1 transform 
 #-----------------------------------------
+#echo Starting the P1 transform
+#date
+#$PEASOUP_HOME/tools/p1xform.sh $newdir > p1xform.out 2> p1xform.err
+
+#echo $current_dir/$newdir/p1.xform/p1.final
+
+#if [ -f $current_dir/p1.xform/p1.final ]; then
+#  echo List of functions transformed:
+#  cat $current_dir/p1.xform/p1.final
+#else
+#  echo P1 was unable to transform the subject program
+#fi
+
+#date
+#echo Done with the P1 transform
+
 #echo Starting the P1 transform
 #date
 #$PEASOUP_HOME/tools/p1xform.sh $newdir > p1xform.out 2> p1xform.err
