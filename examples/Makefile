@@ -6,14 +6,17 @@ LD=DO_NOT_USE
 .SUFFIXES: .o .c .cpp .exe
 
 #exes=dumbledore_cmd.exe test1.exe
-exes=test1.exe
+exes=overflow1.exe #overflow2.exe
+#exes=dumbledore_cmd.exe
+
 
 all: env_check  ${exes}
 
 .PHONY: env_check 
 
 .o.exe:
-	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
+#	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
+	gcc $< -o $@ 
 	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@
 
 .c.o:
@@ -50,6 +53,8 @@ clean:
 	rm -Rf peasoup_executable_directory.*
 	rm -f strata.log.*
 	rm -f *.sym
+	${PEASOUP_HOME}/tools/db/drop_my_tables.sh
+	${PEASOUP_HOME}/tools/db/pdb_setup.sh
 
 concclean:
 	rm -Rf concolic.files_*

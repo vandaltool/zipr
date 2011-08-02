@@ -144,6 +144,7 @@ beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/progress.marks -text
 examples/Makefile -text
 examples/dumbledore.c -text
 examples/dumbledore_cmd.c -text
+examples/overflow1.c -text
 examples/test1.c -text
 libIRDB/Makefile -text
 libIRDB/include/address.hpp -text
