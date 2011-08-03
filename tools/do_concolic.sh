@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh 
 
 exe=$1
 shift
@@ -46,7 +46,8 @@ done
 
 oldulimit=`ulimit -S -t`
 ulimit -S -t 61
-STRATA_GRACE=1 controller $extra_args --start $start_ea --stop $stop_ea --symbols $sym --outputs replay,coverage,instruction_addresses $strata_exe
+echo STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym -o replay,coverage,instruction_addresses $strata_exe
+     STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym -o replay,coverage,instruction_addresses $strata_exe
 ulimit -S -t $oldulimit
 
 echo cleaning up
