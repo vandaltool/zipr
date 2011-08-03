@@ -1,0 +1,8 @@
+#
+#
+# This is a help.txt file
+# It contains information about 
+# the usage of this program 
+# and arguments that may be passed.
+#
+#
