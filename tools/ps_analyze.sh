@@ -110,40 +110,51 @@ if [ ! "X" = "X"$PGUSER ]; then
 
 	$PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $DB_PROGRAM_NAME  > pdb_create_program_tables.out 2>&1 # create the tables for the program.
 	log pdb_create_program_tables.out
-	time $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME a.ncexe $MD5HASH a.ncexe.annot 	 > meds2pdb.out 2>&1 # import meds information
-	log meds2pdb.out
 
-	if [ $varid > 0 ]; then
-		$SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	> fill_in_cfg.out 	2>&1	# finish the initial IR by setting target/fallthrough 
-		log fill_in_cfg.out
-		$SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./a.ncexe    > fill_in_indtargs.out 	2>&1 	# analyze for indirect branch targets 
-		log fill_in_indtargs.out
-		$SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid				> clone.out 		2>&1 	# create a clone
-		cloneid=$?
-		log clone.out
+    # check to see if annot file exists before doing anything
+    if [ -f a.ncexe.annot ]; then
+
+	    time $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME a.ncexe $MD5HASH a.ncexe.annot 	 > meds2pdb.out 2>&1 # import meds information
+	    log meds2pdb.out
+
+	    if [ $varid > 0 ]; then
+		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	> fill_in_cfg.out 	2>&1	# finish the initial IR by setting target/fallthrough 
+		    log fill_in_cfg.out
+		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./a.ncexe    > fill_in_indtargs.out 	2>&1 	# analyze for indirect branch targets 
+		    log fill_in_indtargs.out
+		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid				> clone.out 		2>&1 	# create a clone
+		    cloneid=$?
+		    log clone.out
 	
-		if [ $cloneid > 0 ]; then
+		    if [ $cloneid > 0 ]; then
 															# paths for direct control transfers insns.
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	> fix_calls.out 2>&1 		# fix call insns so they are OK for spri emitting
-			log fix_calls.out
+			    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	> fix_calls.out 2>&1 		# fix call insns so they are OK for spri emitting
+			    log fix_calls.out
 
 
-			$SECURITY_TRANSFORMS_HOME/tools/transforms/integerbugtransform.exe $cloneid > integerbugtransform.out 2>&1
-			log integerbugtransform.out
+			    $SECURITY_TRANSFORMS_HOME/tools/transforms/integerbugtransform.exe $cloneid > integerbugtransform.out 2>&1
+			    log integerbugtransform.out
 
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid > ilr.out 2>&1 				# perform ILR 
-			log ilr.out
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri	> spri.out 2>&1 # generate the aspri code
-			log spri.out
-			$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe > spasm.out 2>&1 	# generate the bspri code
-			log spasm.out
-		fi
-	fi
-	echo	-------------------------------------------------------------------------------
-	echo    ---------            Orig Variant ID is $varid         ------------------------
-	echo	-------------------------------------------------------------------------------
-	echo    ---------            Cloned Variant ID is $cloneid     ------------------------
-	echo	-------------------------------------------------------------------------------
+			    $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid > ilr.out 2>&1 				# perform ILR 
+			    log ilr.out
+			    $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri	> spri.out 2>&1 # generate the aspri code
+			    log spri.out
+			    $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe > spasm.out 2>&1 	# generate the bspri code
+			    log spasm.out
+		    fi
+	    fi
+	    echo	-------------------------------------------------------------------------------
+	    echo    ---------            Orig Variant ID is $varid         ------------------------
+	    echo	-------------------------------------------------------------------------------
+	    echo    ---------            Cloned Variant ID is $cloneid     ------------------------
+	    echo	-------------------------------------------------------------------------------
+
+    else
+        # annotations file didn't exist
+        echo "ERROR: annot file does not exist.  Not performing IRDB step"
+        echo "Unable to create protected executable"
+        exit -1
+    fi
 
 fi
 
