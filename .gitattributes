@@ -2,6 +2,7 @@
 /Makefile -text
 chopzero_src/Makefile -text
 chopzero_src/chopzero.c -text
+demos/Makefile -text
 demos/demo.aug_9_2011/Makefile -text
 demos/demo.aug_9_2011/dumbledore.c -text
 demos/demo.aug_9_2011/dumbledore.exploits/Makefile -text
