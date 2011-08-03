@@ -125,6 +125,7 @@ Pause
 clear
 
 echo "Heap overflow example: another non-malicious input"
+echo "Program detects disallowed user input and prints error message."
 echo "Input: /etc/passwd\n\n"
 echo "./heap_overflow.original /etc/passwd\n"
 
@@ -152,6 +153,7 @@ clear
 # 7) Run PS_analyzed heap overflow
 echo "NEW since 6-month review: Heap Randomization"
 echo "Running PEASOUP-protected heap_overflow on malicious input"
+echo "Execution is altered from original.  Information not leaked."
 echo "Input: 012345678901234567890123/etc/passwd\n\n"
 echo "./heap_overflow.protected 012345678901234567890123/etc/passwd\n"
 
