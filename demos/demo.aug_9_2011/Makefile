@@ -17,7 +17,7 @@ dumbledore.protected: dumbledore.original
 	TVHEADLESS=1 ${TOOLBASE}/ps_analyze.sh dumbledore.original dumbledore.protected
 
 .c.o:
-	${TOOLBASE}/ps_comp.sh  $<
+	gcc -fno-stack-protector -c -w -g  $<
 
 clean:
 	rm -f *.o heap_overflow.original heap_overflow.protected dumbledore.original dumbledore_cmd.original dumbledore.protected dumbledore_cmd.protected tmp
