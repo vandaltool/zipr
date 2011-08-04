@@ -54,13 +54,13 @@ clear
 
 echo "Running dumbledore.original with CODE INJECTION input.\nReported grade will be changed from D to A.\n"
 
-bad_input=`cat dumbledore.exploits/badA.txt`
+bad_input=`cat dumbledore.exploits/badA.dynamic.txt`
 echo "Input: ${bad_input}\n\n"
-echo "./dumbledore.original < dumbledore.exploits/badA.txt\n"
+echo "./dumbledore.original < dumbledore.exploits/badA.dynamic.txt\n"
 
 Pause
 
-./dumbledore.original < dumbledore.exploits/badA.txt
+./dumbledore.original < dumbledore.exploits/badA.dynamic.txt
 
 Pause
 clear
@@ -70,13 +70,13 @@ echo "At 6-month review: Instruction Set Randomization"
 echo "Running PEASOUP-protected dumbledore on CODE INJECTION input.\n"
 echo "PEASOUP detects the code injection.\n" 
 
-bad_input=`cat dumbledore.exploits/badA.txt`
+bad_input=`cat dumbledore.exploits/badA.dynamic.txt`
 echo "Input: ${bad_input}\n\n"
-echo "./dumbledore.protected < dumbledore.exploits/badA.txt\n"
+echo "./dumbledore.protected < dumbledore.exploits/badA.dynamic.txt\n"
 
 Pause
 
-./dumbledore.protected < dumbledore.exploits/badA.txt
+./dumbledore.protected < dumbledore.exploits/badA.dynamic.txt
 
 Pause
 # clear the screen
@@ -86,13 +86,13 @@ clear
 echo "Running dumbledore.original with ARC INJECTION input\n"
 echo "Input will cause username check to be bypassed."
 echo "Reported grade will be B, instead of the expected D.\n"
-bad_input=`cat dumbledore.exploits/badB.txt`
+bad_input=`cat dumbledore.exploits/badB.dynamic.txt`
 echo  "Input: ${bad_input}\n\n"
-echo "./dumbledore.original < dumbledore.exploits/badB.txt\n"
+echo "./dumbledore.original < dumbledore.exploits/badB.dynamic.txt\n"
 
 Pause
 
-./dumbledore.original < dumbledore.exploits/badB.txt
+./dumbledore.original < dumbledore.exploits/badB.dynamic.txt
 
 Pause 
 clear
@@ -100,13 +100,13 @@ clear
 # 5) Run dumbledore.protected on bad input #2, show that we did not defeat the exploit
 echo "NEW since 6-month review: Instruction Layout Randomization"
 echo "Running PEASOUP-protected dumbledore with arc injection attack input\n\n"
-badBinput=`cat dumbledore.exploits/badB.txt`
+badBinput=`cat dumbledore.exploits/badB.dynamic.txt`
 echo "Input: ${badBinput}\n\n"
-echo "./dumbledore.protected < dumbledore.exploits/badB.txt\n"
+echo "./dumbledore.protected < dumbledore.exploits/badB.dynamic.txt\n"
 
 Pause
 
-./dumbledore.protected < dumbledore.exploits/badB.txt
+./dumbledore.protected < dumbledore.exploits/badB.dynamic.txt
 
 
 Pause

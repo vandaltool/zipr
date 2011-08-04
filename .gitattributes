@@ -4,6 +4,8 @@ chopzero_src/Makefile -text
 chopzero_src/chopzero.c -text
 demos/Makefile -text
 demos/demo.aug_9_2011/Makefile -text
+demos/demo.aug_9_2011/demo_heaprand.sh -text
+demos/demo.aug_9_2011/demo_ilr.sh -text
 demos/demo.aug_9_2011/dumbledore.c -text
 demos/demo.aug_9_2011/dumbledore.exploits/Makefile -text
 demos/demo.aug_9_2011/dumbledore.exploits/attack-gradeA.dynamic.no_strata.c -text
@@ -21,6 +23,7 @@ demos/demo.aug_9_2011/dumbledore.exploits/badB.txt -text
 demos/demo.aug_9_2011/dumbledore.good_inputs/good.txt -text
 demos/demo.aug_9_2011/heap_overflow.c -text
 demos/demo.aug_9_2011/help.txt -text
+demos/demo.aug_9_2011/malloc.c -text
 demos/demo.aug_9_2011/ps_demo.sh -text
 demos/demo.aug_9_2011/sample.txt -text
 demos/demo.jan_21_2011/Makefile -text
