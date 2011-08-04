@@ -6,11 +6,15 @@ demos/Makefile -text
 demos/demo.aug_9_2011/Makefile -text
 demos/demo.aug_9_2011/dumbledore.c -text
 demos/demo.aug_9_2011/dumbledore.exploits/Makefile -text
+demos/demo.aug_9_2011/dumbledore.exploits/attack-gradeA.dynamic.no_strata.c -text
 demos/demo.aug_9_2011/dumbledore.exploits/attack-gradeA.no_strata.c -text
 demos/demo.aug_9_2011/dumbledore.exploits/attack-gradeB.no_strata.c -text
 demos/demo.aug_9_2011/dumbledore.exploits/attack-strata_parm1.c -text
 demos/demo.aug_9_2011/dumbledore.exploits/attack-strata_tracing.c -text
+demos/demo.aug_9_2011/dumbledore.exploits/badA.dynamic.txt -text
+demos/demo.aug_9_2011/dumbledore.exploits/badA.static.txt -text
 demos/demo.aug_9_2011/dumbledore.exploits/badA.txt -text
+demos/demo.aug_9_2011/dumbledore.exploits/badB.static.txt -text
 demos/demo.aug_9_2011/dumbledore.exploits/badB.txt -text
 demos/demo.aug_9_2011/dumbledore.good_inputs/good.txt -text
 demos/demo.aug_9_2011/heap_overflow.c -text
