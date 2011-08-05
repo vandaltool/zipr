@@ -88,13 +88,37 @@ static void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 	DISASM disasm;
 	memset(&disasm, 0, sizeof(DISASM));
 
-	disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
+	disasm.Options = NasmSyntax + PrefixedNumeral; //  + ShowSegmentRegs;
 	disasm.Archi = 32;
 	disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
 	disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
 
 	/* Disassemble the instruction */
 	int instr_len = Disasm(&disasm);
+
+
+	/* if this instruction has a prefix, re-disassemble it showing the segment regs */
+	if(
+		disasm.Prefix.FSPrefix || 
+		disasm.Prefix.SSPrefix || 
+		disasm.Prefix.GSPrefix || 
+		disasm.Prefix.ESPrefix || 
+		disasm.Prefix.CSPrefix || 
+		disasm.Prefix.DSPrefix 
+	  )
+	
+	{
+		memset(&disasm, 0, sizeof(DISASM));
+
+		disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
+		disasm.Archi = 32;
+		disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
+		disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
+
+		/* Disassemble the instruction */
+		int instr_len = Disasm(&disasm);
+	}
+
 
 	string label=labelfy(newinsn);
 	string complete_instr=string(disasm.CompleteInstr);

@@ -148,6 +148,10 @@ void infer_targets(Elf32_Shdr *shdr, FILE* fp, VariantIR_t *virp)
 		/* loaded, but contains instruction.  we'll look through the VariantIR for this section. */
 		return;
 
+	/* if the type is NOBITS, then there's no actual data to look through */
+	if(shdr->sh_type==SHT_NOBITS)
+		return;
+
 	char* data=(char*)malloc(shdr->sh_size);
 
 	fseek(fp,shdr->sh_offset, SEEK_SET);

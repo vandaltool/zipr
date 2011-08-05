@@ -320,9 +320,11 @@ void __bea_callspec__ D9_(PDISASM pMyDisasm)
                 #endif
                 (*pMyDisasm).Argument2.AccessMode = WRITE;
             }
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Argument1.ArgMnemonic, (*pRegistersFPU)[0]);
-            #endif
+    		if (GV.SYNTAX_ != NasmSyntax) {
+            		#ifndef BEA_LIGHT_DISASSEMBLY
+               		(void) strcpy ((*pMyDisasm).Argument1.ArgMnemonic, (*pRegistersFPU)[0]);
+            		#endif
+		}
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+FPU_REG+REGS[0];
             (*pMyDisasm).Argument1.ArgSize = 80;
             #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1337,9 +1339,11 @@ void __bea_callspec__ DD_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fucom ");
                 #endif
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Argument2.ArgMnemonic, (*pRegistersFPU)[0]);
-                #endif
+    		if (GV.SYNTAX_ != NasmSyntax) {
+                	#ifndef BEA_LIGHT_DISASSEMBLY
+                   	(void) strcpy ((*pMyDisasm).Argument2.ArgMnemonic, (*pRegistersFPU)[0]);
+                	#endif
+		}
                 (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+FPU_REG+REGS[0];
                 (*pMyDisasm).Argument2.ArgSize = 80;
                 #ifndef BEA_LIGHT_DISASSEMBLY
