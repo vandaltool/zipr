@@ -88,6 +88,7 @@ dyna_examples/recover_example.c -text
 dyna_examples/sdiff.stock -text
 dyna_examples/wc.stock -text
 dyna_examples/whoami.stock -text
+dyna_examples/xcalc.stock -text
 dyna_examples/xeyes.stock -text
 examples/Makefile -text
 examples/block_copy.c -text

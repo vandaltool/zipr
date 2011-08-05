@@ -10,7 +10,7 @@ CFLAGS=-O2
 
 exes=hanoi.exe hanoi_overrun.exe hanoi_heap_overrun.exe hanoi_stack_overrun.exe print_ptr.exe malloc.exe block_copy.exe hello.exe hanoi_overrun_tainted.exe hanoi_overrun_taintedenv.exe memcpy.exe cmd_args_005.exe dumbledore_stdin.exe dumbledore_cmd.exe dumbledore_file.exe
 
-protected_exes=awk.protected bzip2.protected cal.protected cat.protected clear.protected date.protected df.protected diff.protected du.protected expr.protected find.protected grep.protected hostname.protected ipcs.protected less.protected ls.protected nasm.protected objdump.protected ps.protected sdiff.protected wc.protected whoami.protected xeyes.protected
+protected_exes=awk.protected bzip2.protected cal.protected cat.protected clear.protected date.protected df.protected diff.protected du.protected expr.protected find.protected grep.protected hostname.protected ipcs.protected less.protected ls.protected nasm.protected objdump.protected ps.protected sdiff.protected wc.protected whoami.protected xeyes.protected xcalc.protected
 
 all: env_check  ${exes}  ${protected_exes}
 
