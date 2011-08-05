@@ -135,6 +135,7 @@ tools/p1xform.filter.sh -text
 tools/p1xform.genspri.sh -text
 tools/p1xform.pbed.sh -text
 tools/p1xform.sh -text
+tools/p1xform_v2.sh -text
 tools/peasoup_link -text
 tools/peasoup_link++ -text
 tools/ps_analyze.sh -text
