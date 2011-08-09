@@ -7,7 +7,7 @@ LD=DO_NOT_USE
 
 .SUFFIXES: .o .c .cpp .exe
 
-exes=hanoi++.exe newdel.exe newdel_broke1.exe newdel_broke2.exe newdel_broke3.exe newdel_broke4.exe
+exes=hanoi++.exe newdel.exe newdel_broke1.exe newdel_broke2.exe newdel_broke3.exe newdel_broke4.exe newdel_broke5.exe  newdel_broke6.exe  newdel_broke7.exe 
 
 
 all: env_check  ${exes}
