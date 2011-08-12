@@ -109,6 +109,9 @@ void Rewriter::readAnnotationFile(char p_filename[])
 				else
 					fn->setUnsafe();
 
+				if (strstr(remainder, "USEFP"))
+					fn->setUseFramePointer(true);
+
 				m_functions[addr] = fn;
 
 				line++;

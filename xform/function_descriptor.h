@@ -36,6 +36,9 @@ class Function
     void setOutArgsRegionSize(int p_size) { m_outArgsRegionSize = p_size; }
     int getOutArgsRegionSize() { return m_outArgsRegionSize; }
 
+    void setUseFramePointer(bool p_useFP) { m_useFP = p_useFP; }
+    bool getUseFramePointer() { return m_useFP; }
+
     void addInstruction(wahoo::Instruction *);
     void addStackAllocationInstruction(wahoo::Instruction *);
     void addStackDeallocationInstruction(wahoo::Instruction *);
@@ -58,6 +61,7 @@ class Function
     app_iaddr_t    m_address;
     int            m_size;
     bool           m_isSafe;
+    bool           m_useFP;
     int            m_outArgsRegionSize;
 
     vector<wahoo::Instruction*> m_allInstructions;

@@ -8,6 +8,7 @@ wahoo::Function::Function()
   m_address = -1;
   m_size = -1;
   m_isSafe = false;
+  m_useFP = false;
   m_outArgsRegionSize = 0;
   m_functionID = -1;
 }
@@ -18,6 +19,7 @@ wahoo::Function::Function(string p_name, app_iaddr_t p_start, int p_size)
   m_address = p_start;
   m_size = p_size;
   m_isSafe = false;
+  m_useFP = false;
   m_outArgsRegionSize = 0;
   m_functionID = -1;
 }
