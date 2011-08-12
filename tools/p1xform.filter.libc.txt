@@ -1,3 +1,5 @@
+
+ 
 abort
 access
 add_alias2
@@ -6,6 +8,7 @@ add_module
 add_name_to_object
 add_to_global
 alias_compare
+__alloc_dir
 arena_get2
 argz_add_sep
 argz_count
@@ -19,6 +22,7 @@ backtrace_helper
 backtrace_symbols_fd
 base_from_cb_data
 base_from_object
+brk
 bsearch
 btowc
 buffered_vfprintf
@@ -29,7 +33,9 @@ call_init
 calloc
 cancel_handler
 cancel_handler_0
+check_free
 check_match.8236
+check_one_fd
 classify_object_over_fdes
 clearenv
 close
@@ -65,6 +71,7 @@ _dl_allocate_tls_storage
 _dl_aux_init
 _dl_build_local_scope
 _dl_cache_libcmp
+_dl_cache_libcmp FUNC_SAFE
 _dl_call_pltexit
 _dl_catch_error
 _dl_check_all_versions
@@ -91,10 +98,12 @@ _dl_fixup
 _dl_get_origin
 _dl_get_tls_static_info
 _dl_higher_prime_number
+_dl_important_hwcaps
 __dlinfo
 dlinfo_doit
 _dl_init
 _dl_initial_error_catch_tsd
+_dl_init_paths
 __dl_iterate_phdr
 dl_iterate_phdr
 _dl_load_cache_lookup
@@ -147,6 +156,7 @@ _dl_tlsdesc_resolve_rel_fixup
 _dl_tlsdesc_return
 _dl_tlsdesc_undefweak
 _dl_tls_get_addr_soft
+_dl_tls_get_addr_soft FUNC_SAFE
 _dl_tls_setup
 _dl_try_allocate_static_tls
 _dl_unload_cache
@@ -177,6 +187,8 @@ enlarge_userbuf
 enter.8284
 execute_cfa_program
 execute_stack_op
+exit
+_exit
 __exit_thread
 expand_dynamic_string_token
 fclose
@@ -224,11 +236,15 @@ free_mem_8
 free_mem_9
 free_modules_db
 free_slotinfo
+FUNC GLOBAL
+FUNC_UNSAFE USEFP
 funlockfile
 __fxprintf
+__fxstat64
 __gcc_personality_v0
 __gconv
 __gconv_alias_compare
+__gconv_btwoc_ascii
 __gconv_close
 __gconv_close_transform
 __gconv_compare_alias
@@ -272,6 +288,7 @@ geteuid
 getgid
 get_nprocs
 get_nprocs_conf
+getpagesize
 get_phys_pages
 getpid
 getrlimit
@@ -295,6 +312,7 @@ _i18n_number_rewrite_1
 __i686.get_pc_thunk.cx
 init
 init_dwarf_reg_size_table
+__init_misc
 .init_proc
 insert_module
 intel_02_known_compare
@@ -306,13 +324,16 @@ _int_memalign
 _int_realloc
 _IO_adjust_column
 _IO_adjust_wcolumn
+_IO_cleanup
 _IO_default_doallocate
 _IO_default_finish
 _IO_default_imbue
+_IO_default_pbackfail
 _IO_default_read
 _IO_default_seek
 _IO_default_seekoff
 _IO_default_seekpos
+_IO_default_setbuf
 _IO_default_showmanyc
 _IO_default_stat
 _IO_default_sync
@@ -339,12 +360,14 @@ _IO_file_xsgetn
 _IO_file_xsgetn_maybe_mmap
 _IO_file_xsgetn_mmap
 _IO_flush_all
+_IO_flush_all_lockp
 _IO_free_backup_area
 _IO_free_wbackup_area
 _IO_fwide
 _IO_getline
 _IO_getline_info
 _IO_helper_overflow
+_IO_helper_overflow_0
 _IO_init
 _IO_init_marker
 _IO_init_wmarker
@@ -354,6 +377,7 @@ _IO_iter_file
 _IO_iter_next
 _IO_least_marker
 _IO_least_wmarker
+_IO_link_in
 _IO_list_lock
 _IO_list_resetlock
 _IO_list_unlock
@@ -361,17 +385,21 @@ _IO_marker_delta
 _IO_marker_difference
 _IO_mem_finish
 _IO_mem_sync
+_IO_new_do_write
 _IO_new_file_attach
 _IO_new_file_close_it
 _IO_new_file_finish
 _IO_new_file_fopen
 _IO_new_file_init
+_IO_new_file_overflow
 _IO_new_file_seekoff
 _IO_new_file_setbuf
 _IO_new_file_sync
 _IO_new_file_write
 _IO_new_file_xsputn
 ion: init
+_IO_no_init
+_IO_old_init
 _IO_padn
 _IO_remove_marker
 _IO_seekmark
@@ -385,6 +413,7 @@ _IO_str_count
 _IO_str_finish
 _IO_str_init_readonly
 _IO_str_init_static
+_IO_str_init_static_internal
 _IO_str_overflow
 _IO_str_pbackfail
 _IO_str_seekoff
@@ -397,6 +426,7 @@ _IO_switch_to_main_get_area
 _IO_switch_to_main_wget_area
 _IO_switch_to_wbackup_area
 _IO_switch_to_wget_mode
+_IO_un_link
 _IO_unsave_markers
 _IO_unsave_wmarkers
 _IO_wdefault_doallocate
@@ -424,10 +454,12 @@ isinfl
 isnan
 isnanl
 _itoa
+_itoa_word
 _itowa
 known_compare
 __libc_alloca_cutoff
 __libc_check_standard_fds
+__libc_csu_fini
 __libc_csu_init
 __libc_csu_irel
 __libc_disable_asynccancel
@@ -437,10 +469,14 @@ __libc_dlsym
 __libc_dlsym_private
 __libc_enable_asynccancel
 __libc_fatal
+__libc_init_first
+__libc_init_secure
+__libc_message
 __libc_register_dlfcn_hook
 __libc_register_dl_open_hook
 __libc_setup_tls
 __libc_sigaction
+__libc_start_main
 linear_search_fdes
 __lll_lock_wait_private
 __lll_unlock_wake_private
@@ -470,6 +506,7 @@ _L_lock_1873
 _L_lock_188
 _L_lock_2074
 _L_lock_2134
+_L_lock_22
 _L_lock_22_0
 _L_lock_22_1
 _L_lock_2333
@@ -478,6 +515,7 @@ _L_lock_2406
 _L_lock_25
 _L_lock_2556
 _L_lock_2617
+_L_lock_2794
 _L_lock_2858
 _L_lock_3299
 _L_lock_3331
@@ -514,6 +552,7 @@ _L_lock_7835
 _L_lock_8621
 _L_lock_8669
 _L_lock_8935
+_L_lock_907
 _L_lock_9188
 _L_lock_931
 _L_lock_9317
@@ -580,6 +619,7 @@ _L_unlock_2333
 _L_unlock_2341
 _L_unlock_237
 _L_unlock_241
+_L_unlock_26
 _L_unlock_2652
 _L_unlock_2682
 _L_unlock_27
@@ -588,6 +628,7 @@ _L_unlock_287
 _L_unlock_2921
 _L_unlock_3009
 _L_unlock_308
+_L_unlock_3211
 _L_unlock_3376
 _L_unlock_3433
 _L_unlock_345
@@ -607,6 +648,7 @@ _L_unlock_4724
 _L_unlock_478
 _L_unlock_4872
 _L_unlock_522
+_L_unlock_541
 _L_unlock_599
 _L_unlock_619
 _L_unlock_64
@@ -621,6 +663,8 @@ _L_unlock_8041
 _L_unlock_8403
 _L_unlock_85
 _L_unlock_8630
+_L_unlock_8683
+_L_unlock_8695
 _L_unlock_8831
 _L_unlock_8945
 _L_unlock_8996
@@ -629,6 +673,7 @@ _L_unlock_9083
 _L_unlock_9198
 _L_unlock_9246
 _L_unlock_9325
+_L_unlock_9433
 _L_unlock_9516
 _L_unlock_9534
 _L_unlock_9559
@@ -645,10 +690,12 @@ _L_unlock_9996
 madvise
 main
 mALLINFo
+malloc
 __malloc_assert
 malloc_check
 __malloc_check_init
 malloc_consolidate
+malloc_hook_ini
 malloc_info
 malloc_printerr
 malloc_usable_size
@@ -666,9 +713,12 @@ memalign
 memalign_hook_ini
 memchr
 memcmp
+memcpy
 memmove
+mempcpy
 memset
 __mktime_internal
+mmap
 mmap64
 mmap_remap_check
 __mpn_addmul_1
@@ -678,12 +728,15 @@ __mpn_construct_double
 __mpn_construct_float
 __mpn_construct_long_double
 __mpn_divrem
+__mpn_extract_double
 __mpn_extract_long_double
 __mpn_impn_mul_n
 __mpn_impn_mul_n_basecase
 __mpn_impn_sqr_n
 __mpn_impn_sqr_n_basecase
+__mpn_lshift
 __mpn_mul
+__mpn_mul_1
 __mpn_mul_n
 __mpn_rshift
 __mpn_submul_1
@@ -695,6 +748,7 @@ msort_with_tmp
 munmap
 munmap_chunk
 new_composite_name
+new_do_write
 new_exp
 new_heap
 next_line
@@ -757,6 +811,7 @@ raise
 rangecmp
 ranged_convert
 rawmemchr
+rawmemchr FUNC_SAFE
 read
 read_alias_file
 read_encoded_value_with_base
@@ -767,6 +822,7 @@ realloc
 realloc_hook_ini
 __register_frame
 __register_frame_info
+__register_frame_info_bases
 __register_frame_info_table
 __register_frame_info_table_bases
 __register_frame_table
@@ -775,8 +831,10 @@ remove_slotinfo
 round_and_return
 round_and_return_0
 round_and_return_1
+__run_exit_handlers
 save_for_backup
 save_for_wbackup
+sbrk
 sched_yield
 search_object
 __secure_getenv
@@ -784,6 +842,7 @@ send
 setenv
 __setfpucw
 setitimer
+_setjmp
 setlocale
 setlogmask
 setname
@@ -795,17 +854,22 @@ size_of_encoded_value
 socket
 sprintf
 sscanf
+_start
 stpcpy
 strcasecmp
 strcasecmp_l
+strcat
 strchr
+strchrnul
 strcmp
+strcpy
 strdup
 strerror
 strerror_r
 __strftime_internal
 strftime_l
 strip
+strlen FUNC_SAFE
 strncasecmp_l
 strncmp
 strncpy
@@ -861,6 +925,24 @@ tcgetattr
 tdelete
 tdestroy
 tdestroy_recurse
+.term_proc
+test_xxx_1
+test_xxx_10
+test_xxx_11
+test_xxx_12
+test_xxx_13
+test_xxx_14
+test_xxx_14a
+test_xxx_14b
+test_xxx_15
+test_xxx_2
+test_xxx_3
+test_xxx_4
+test_xxx_5
+test_xxx_6
+test_xxx_7
+test_xxx_8
+test_xxx_9
 tfind
 ThisIsNotAFunction
 time
@@ -883,6 +965,7 @@ tzset_internal
 __tzset_parse_tz
 __tzstring
 __uflow
+uname
 __underflow
 _Unwind_Backtrace
 _Unwind_DebugHook
@@ -908,6 +991,7 @@ _Unwind_SetGR
 _Unwind_SetIP
 _Unwind_SetSpColumn
 update_vars
+update_vars FUNC_SAFE
 uw_frame_state_for
 uw_init_context_1
 uw_install_context_1
@@ -915,6 +999,7 @@ uw_update_context
 uw_update_context_1
 vasprintf
 vdprintf
+vfprintf
 vfscanf
 vsprintf
 vsscanf
@@ -935,6 +1020,8 @@ wmemmove
 wmempcpy
 wmemset
 __woverflow
+write
+__write_nocancel
 writev
 __wuflow
 __wunderflow
