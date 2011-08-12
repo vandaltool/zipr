@@ -15,27 +15,26 @@
 #
 
 
-PROGS=nulltransform p1transform integerbugtransform.exe
 CC=g++
 CFLAGS= -g
-INCLUDE=-I. -I../../include -I../../libIRDB/include -I../../xform -I../../beaengine/include -I$(SECURITY_TRANSFORMS_HOME)/libIRDB/include
-LIB_IRDB=-L$(SECURITY_TRANSFORMS_HOME)/libIRDB/lib -lIRDB -lpqxx
-LIBS=-L../../lib -L../../xform -lxform -lELFIO -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d $(LIB_IRDB)
+INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include
+LIBS=-L../../lib -L../../xform -lxform -lELFIO -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d
 
-.SUFFIXES: .o .c .exe .cpp
+.SUFFIXES: .o .c .cpp
 
-.cpp.exe:  $< 
-	$(CC) -g $< $(INCLUDE) $(LIBS) -o $@
+.cpp.o .c.o:
+	$(CC) $(CFLAGS) $(INCLUDE) -c $<
 
-all: $(PROGS)
+
+all: nulltransform p1transform
 	echo build complete
 
 clean:
-	rm -f *.o core $(PROGS)
+	rm -f *.o core nulltransform p1transform
 
-nulltransform: nulltransform.cpp
+nulltransform: $(OBJS) nulltransform.cpp
 	$(CC) -o nulltransform $(INCLUDE) nulltransform.cpp $(OBJS) $(LIBS)
 
-p1transform: p1transform.cpp
+p1transform: $(OBJS) p1transform.cpp
 	$(CC) -o p1transform $(INCLUDE) p1transform.cpp $(OBJS) $(LIBS)
 

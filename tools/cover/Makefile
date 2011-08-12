@@ -30,7 +30,7 @@ all: cover
 	echo build complete
 
 clean:
-	rm -f *.o core nulltransform p1transform
+	rm -f *.o core cover
 
 cover: $(OBJS) cover.cpp
 	$(CC) -o cover $(INCLUDE) cover.cpp $(OBJS) $(LIBS)

@@ -170,7 +170,7 @@ int main(int argc, char **argv)
   {  
     string functionTable = string(programName) + "_" + "function";
     string query = "INSERT INTO " + functionTable;
-    query += " (function_id, file_id, name, stack_frame_size) VALUES ";
+    query += " (function_id, file_id, name, stack_frame_size, out_args_region_size, use_frame_pointer) VALUES ";//*
 
     for (int j = i; j < i + STRIDE; ++j)
     {
@@ -181,13 +181,17 @@ int main(int argc, char **argv)
       app_iaddr_t functionAddress = f->getAddress();
       int functionSize = f->getSize();
       int function_id = j;
+      int outArgsRegionSize = f->getOutArgsRegionSize();//*
+      bool useFP = f->getUseFramePointer();//*
 
       if (j != i) query += ",";
       query += "(";
       query += txn.quote(function_id) + ",";
       query += txn.quote(fileID) + ",";
       query += txn.quote(functionName) + ",";
-      query += txn.quote(functionSize) + ")";
+      query += txn.quote(functionSize) + ",";
+      query += txn.quote(outArgsRegionSize) + ",";
+      query += txn.quote(useFP) + ")";
 
       f->setFunctionID(function_id);
     }
