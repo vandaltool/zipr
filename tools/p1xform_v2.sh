@@ -14,23 +14,11 @@ P1_DIR=p1.xform/$fname
 
 mkdir -p $P1_DIR
 
-echo "The directory containing spri files: $P1_DIR"
-
-echo ""
-echo "=========================================="
-echo "p1xform.sh script started in $CURRENT_DIR"
-echo "P1 transform directory: $P1_DIR"
-echo "=========================================="
-
-#generate the aspri code
-#$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $pidp $P1_DIR/a.irdb.aspri > $P1_DIR/spri.out 2>&1
-
-#cat $P1_DIR/spri.out
-
 #generate the bspri code
-$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $P1_DIR/a.irdb.aspri $P1_DIR/a.irdb.bspri stratafier.o.exe > $P1_DIR/spasm.out 2>&1
+$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $P1_DIR/a.irdb.aspri $P1_DIR/a.irdb.bspri $P1_DIR/stratafier.o.exe > $P1_DIR/spasm.out 2>&1
 
 cat $P1_DIR/spasm.out
+
 #
 # remove any candidate functions not covered
 # this will go away once GrACE gives us the instruction coverage information

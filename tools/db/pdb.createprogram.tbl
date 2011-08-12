@@ -18,6 +18,8 @@ CREATE TABLE #PROGNAME#_function
   file_id            	integer REFERENCES file_info,
   name               	text,
   stack_frame_size   	integer,
+  out_args_region_size	integer,
+  use_frame_pointer	boolean,
   doip_id	   	integer DEFAULT -1
 );
 

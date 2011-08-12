@@ -125,29 +125,34 @@ if [ ! "X" = "X"$PGUSER ]; then
 		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid				> clone.out 		2>&1 	# create a clone
 		    cloneid=$?
 		    log clone.out
-	
+	echo "clone id is: $cloneid"
 		    if [ $cloneid > 0 ]; then
 															# paths for direct control transfers insns.
-			    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	> fix_calls.out 2>&1 		# fix call insns so they are OK for spri emitting
-			    log fix_calls.out
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	> fix_calls.out 2>&1 		# fix call insns so they are OK for spri emitting
+			log fix_calls.out
+			
+			mkdir p1.xform
+			$PEASOUP_HOME/tools/cover.sh > cover.out 2>&1 #determine suitable coverage for functions to be p1-transformed
+			
+#			$SECURITY_TRANSFORMS_HOME/xform/kmd9q_p1xform/p1_transform_v2.exe $cloneid p1.xform/p1.candidates > p1_transform.out 2>&1 
+#			log p1_transform.out
+#			$SECURITY_TRANSFORMS_HOME/tools/transforms/integerbugtransform.exe $cloneid > integerbugtransform.out 2>&1
+#			log integerbugtransform.out
 
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid > ilr.out 2>&1 				# perform ILR 
+#			log ilr.out
 
-			    $SECURITY_TRANSFORMS_HOME/tools/transforms/integerbugtransform.exe $cloneid > integerbugtransform.out 2>&1
-			    log integerbugtransform.out
-
-			    $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid > ilr.out 2>&1 				# perform ILR 
-			    log ilr.out
-			    $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri	> spri.out 2>&1 # generate the aspri code
-			    log spri.out
-			    $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe > spasm.out 2>&1 	# generate the bspri code
-			    log spasm.out
-		    fi
-	    fi
-	    echo	-------------------------------------------------------------------------------
-	    echo    ---------            Orig Variant ID is $varid         ------------------------
-	    echo	-------------------------------------------------------------------------------
-	    echo    ---------            Cloned Variant ID is $cloneid     ------------------------
-	    echo	-------------------------------------------------------------------------------
+			$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri	> spri.out 2>&1 # generate the aspri code
+			log spri.out
+			$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe > spasm.out 2>&1 	# generate the bspri code
+			log spasm.out
+		fi
+	fi
+	echo	-------------------------------------------------------------------------------
+	echo    ---------            Orig Variant ID is $varid         ------------------------
+	echo	-------------------------------------------------------------------------------
+	echo    ---------            Cloned Variant ID is $cloneid     ------------------------
+	echo	-------------------------------------------------------------------------------
 
     else
         # annotations file didn't exist
