@@ -89,6 +89,36 @@ bool isMultiplyInstruction32(Instruction_t *p_instruction)
 }
 
 //
+// Returns true iff instruction is mul or imul
+//
+bool isAddSubInstruction32(Instruction_t *p_instruction)
+{
+	if (!p_instruction)
+		return false;
+
+	DISASM disasm;
+	memset(&disasm, 0, sizeof(DISASM));
+
+	disasm.Options = NasmSyntax + PrefixedNumeral;
+	disasm.Archi = 32;
+	disasm.EIP = (UIntPtr) p_instruction->GetDataBits().c_str();
+	disasm.VirtualAddr = p_instruction->GetAddress()->GetVirtualOffset();
+
+	Disasm(&disasm); // dissassemble the instruction
+
+	// look for "mul ..." or "imul ..."
+	string disassembly = string(disasm.CompleteInstr);
+
+	size_t found_pos = disassembly.find("add");
+	if (found_pos == 0) return true;
+
+	found_pos = disassembly.find("sub");
+	if (found_pos == 0) return true;
+
+	return false;
+}
+
+//
 //      jno <originalFallthroughInstruction>
 //      pushf
 //      pusha
@@ -99,7 +129,7 @@ bool isMultiplyInstruction32(Instruction_t *p_instruction)
 //      popa
 //      popf
 //
-void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction)
+void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, std::string p_detector)
 {
 	assert(p_virp && p_instruction);
 	
@@ -200,11 +230,12 @@ fprintf(stderr,"post detector return set to: 0x%x\n", postDetectorReturn);
         dataBits[2] = 0x24;
         dataBits[3] = 0x04;
         poparg_i->SetDataBits(dataBits);
-        poparg_i->SetComment(getAssembly(poparg_i) + " -- with callback to integer_overflow_detector()");
+        poparg_i->SetComment(getAssembly(poparg_i) + " -- with callback to " + p_detector);
 	poparg_i->SetFallthrough(popa_i); 
 	*callback_return_a = *poparg_a;
 	poparg_i->SetIndirectBranchTargetAddress(callback_return_a);  
-	poparg_i->SetCallback("integer_overflow_detector"); 
+//	poparg_i->SetCallback("mul_overflow_detector_32"); 
+	poparg_i->SetCallback(p_detector); 
 
         // popa   
         dataBits.resize(1);
@@ -279,7 +310,7 @@ main(int argc, char* argv[])
 
 	assert(virp && pidp);
 
-        int numberMul = 0;
+        int numMul = 0, numAddSub = 0;
 	for(
 		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
 		it!=virp->GetInstructions().end(); 
@@ -288,24 +319,33 @@ main(int argc, char* argv[])
 	{
 		Instruction_t* insn=*it;
                 
-		if (isMultiplyInstruction32(insn) && insn->GetFunction() 
-		/*	&& insn->GetFunction()->GetName().find("test_") != string::npos */ )
+		if (!insn->GetFunction()) continue;
+
+		if (isMultiplyInstruction32(insn))
 		{
-			numberMul++;
-			cout << "found MUL: address: " << insn->GetAddress()
+			numMul++;
+			cout << "found Mul: address: " << insn->GetAddress()
 	                     << " comment: " << insn->GetComment()
 	                     << " in function: " << insn->GetFunction()->GetName() << endl;
 			// for now, insert overflow check to all IMUL instructions
 			// later, we'll want to be more judicious about where to insert overflow checks
-			addOverflowCheck(virp, insn);
+			addOverflowCheck(virp, insn, "mul_overflow_detector_32");
+		}
+		else if (isAddSubInstruction32(insn))
+		{
+			numAddSub++;
+			cout << "found Add/Sub: address: " << insn->GetAddress()
+	                     << " comment: " << insn->GetComment()
+	                     << " in function: " << insn->GetFunction()->GetName() << endl;
+			addOverflowCheck(virp, insn, "addsub_overflow_detector_32");
 		}
 	}
-
 
 	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
 	virp->WriteToDB();
 
-	cout<<"Found " << numberMul << " MUL or IMUL instructions" << endl;
+	cout<<"Found " << numMul << " Mul instructions" << endl;
+	cout<<"Found " << numAddSub << " Add/Sub instructions" << endl;
 	pqxx_interface.Commit();
 	cout<<"Done!"<<endl;
 
