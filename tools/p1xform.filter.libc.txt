@@ -11,6 +11,7 @@ argz_add_sep
 argz_count
 argz_create_sep
 argz_stringify
+asprintf
 __assert_fail
 __atomic_writev_replacement
 backtrace
@@ -43,11 +44,13 @@ __ctype_b_loc
 __ctype_tolower_loc
 __ctype_toupper_loc
 __current_locale_name
+__cxa_atexit
 dcgettext
 __dcigettext
 decide_maybe_mmap
 __default_morecore
 __deregister_frame
+__deregister_frame_info
 __deregister_frame_info_bases
 derivation_compare
 __dladdr
@@ -76,6 +79,7 @@ _dl_debug_printf
 _dl_debug_printf_c
 _dl_debug_state
 _dl_debug_vdprintf
+_dl_discover_osversion
 _dl_dprintf
 _dl_dst_count
 _dl_dst_substitute
@@ -189,12 +193,14 @@ find_derivation
 find_module
 find_module_idx
 fini
+fini init
 _fitoa
 _fitoa_word
 fopen
 __fopen_internal
 __fopen_maybe_mmap
 fork
+fprintf
 fputs_unlocked
 frame_downheap
 frame_dummy
@@ -261,6 +267,7 @@ getcwd
 __getdents64
 getdtablesize
 getegid
+getenv
 geteuid
 getgid
 get_nprocs
@@ -275,6 +282,7 @@ getuid
 group_number
 group_number_0
 __guess_grouping
+hack_digit.12123
 handle_amd
 handle_i486
 handle_intel
@@ -293,6 +301,7 @@ intel_02_known_compare
 intel_check_word
 __internal_atexit
 _int_free
+_int_malloc
 _int_memalign
 _int_realloc
 _IO_adjust_column
@@ -312,6 +321,7 @@ _IO_default_underflow
 _IO_default_write
 _IO_default_xsgetn
 _IO_default_xsputn
+_IO_doallocbuf
 _IO_file_close
 _IO_file_close_mmap
 _IO_file_doallocate
@@ -357,12 +367,17 @@ _IO_new_file_finish
 _IO_new_file_fopen
 _IO_new_file_init
 _IO_new_file_seekoff
+_IO_new_file_setbuf
+_IO_new_file_sync
 _IO_new_file_write
+_IO_new_file_xsputn
+ion: init
 _IO_padn
 _IO_remove_marker
 _IO_seekmark
 _IO_seekoff_unlocked
 _IO_seekwmark
+_IO_setb
 _IO_sgetn
 _IO_sputbackc
 _IO_sputbackwc
@@ -404,7 +419,9 @@ _IO_wpadn
 _IO_wsetb
 isatty
 is_dst
+isinf
 isinfl
+isnan
 isnanl
 _itoa
 _itowa
@@ -422,6 +439,7 @@ __libc_enable_asynccancel
 __libc_fatal
 __libc_register_dlfcn_hook
 __libc_register_dl_open_hook
+__libc_setup_tls
 __libc_sigaction
 linear_search_fdes
 __lll_lock_wait_private
@@ -625,6 +643,7 @@ _L_unlock_9951
 _L_unlock_9970
 _L_unlock_9996
 madvise
+main
 mALLINFo
 __malloc_assert
 malloc_check
@@ -722,6 +741,7 @@ phys_pages_info
 plural_eval
 plural_lookup
 posix_memalign
+printf
 __printf_fphex
 print_search_path
 profil
@@ -746,6 +766,7 @@ read_sleb128
 realloc
 realloc_hook_ini
 __register_frame
+__register_frame_info
 __register_frame_info_table
 __register_frame_info_table_bases
 __register_frame_table
@@ -761,6 +782,7 @@ search_object
 __secure_getenv
 send
 setenv
+__setfpucw
 setitimer
 setlocale
 setlogmask
@@ -771,6 +793,8 @@ sigprocmask
 __sigsetjmp
 size_of_encoded_value
 socket
+sprintf
+sscanf
 stpcpy
 strcasecmp
 strcasecmp_l
@@ -892,6 +916,7 @@ uw_update_context_1
 vasprintf
 vdprintf
 vfscanf
+vsprintf
 vsscanf
 vsyslog
 wcrtomb
