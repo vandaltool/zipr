@@ -1,8 +1,9 @@
-
 class Function_t; // forward decls.
 
 #define MAX_INSN_SIZE 32	// x86 really declares this as 16, but we'll allow 
 				// for bigger instructions, maybe from other machines?
+
+#define NASM_BIT_WIDTH "BITS 32"
 
 // The basic instruction of a variant.
 class Instruction_t : public BaseObj_t
@@ -22,6 +23,7 @@ class Instruction_t : public BaseObj_t
         std::string GetDataBits()  { return data; }
         std::string GetCallback()  { return callback; }
         std::string GetComment()   { return comment; }
+  
 
         void SetAddress(AddressID_t* newaddr)  { my_address=newaddr; }
         void SetFunction(Function_t* func   )  { my_function=func;}
@@ -37,7 +39,8 @@ class Instruction_t : public BaseObj_t
 
 	void WriteToDB() { assert(0); }
         std::string WriteToDB(VariantID_t *vid, db_id_t newid);
-
+        int Disassemble(DISASM &d); 
+        bool Assemble(std::string assembly);
 
     private:
         AddressID_t *my_address;

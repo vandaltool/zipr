@@ -1,7 +1,8 @@
-
 #include <libIRDB.hpp>
 #include <utils.hpp>
 #include <stdlib.h>
+#include <fstream>
+
 using namespace libIRDB;
 using namespace std;
 
@@ -42,6 +43,84 @@ Instruction_t::Instruction_t(db_id_t id,
 	orig_address_id=orig_id;
 	fallthrough=NULL;
 	target=NULL;
+}
+
+int Instruction_t::Disassemble(DISASM &disasm){
+ 
+  memset(&disasm, 0, sizeof(DISASM));
+  
+  disasm.Options = NasmSyntax + PrefixedNumeral;
+  disasm.Archi = 32;
+  disasm.EIP = (UIntPtr) GetDataBits().c_str();
+  disasm.VirtualAddr = GetAddress()->GetVirtualOffset();
+  int instr_len = Disasm(&disasm);
+  
+  //SetDataBits(disasm.EIP);
+
+  return instr_len;  
+}
+
+// 
+// Given an instruction in assembly, returns the raw bits in a string
+// On error, return the empty string
+//
+bool Instruction_t::Assemble(string assembly)
+{
+   const string assemblyFile = "tmp.asm"; 
+   const string binaryOutputFile = "tmp.bin";
+
+   //remove any preexisting assembly or nasm generated files
+   string command = "rm -f " + assemblyFile;
+   system(command.c_str());
+   command = "rm -f "+assemblyFile+".bin";
+   system(command.c_str());
+
+   ofstream asmFile;
+   asmFile.open(assemblyFile.c_str());
+   if(!asmFile.is_open())
+   {
+     return false;
+   }
+
+   asmFile<<NASM_BIT_WIDTH<<endl; // define to be 32
+
+   asmFile<<assembly<<endl;
+   asmFile.close();
+
+   command = "nasm " + assemblyFile + " -o "+ binaryOutputFile;
+   system(command.c_str());
+
+    ifstream binreader;
+    unsigned int filesize;
+    binreader.open(binaryOutputFile.c_str(),ifstream::in|ifstream::binary);
+
+    if(!binreader.is_open())
+    {
+      return false;
+    }
+
+    binreader.seekg(0,ios::end);
+
+    filesize = binreader.tellg();
+
+    binreader.seekg(0,ios::beg);
+
+    if (filesize == 0) return false;
+
+    unsigned char *memblock = new unsigned char[filesize];
+
+    binreader.read((char*)memblock,filesize);
+    binreader.close();
+
+    string rawBits;
+    rawBits.resize(filesize);
+    for (int i = 0; i < filesize; ++i)
+      rawBits[i] = memblock[i];
+
+    // should erase those 2 files here
+
+    this->SetDataBits(rawBits);
+    return true;
 }
 
 

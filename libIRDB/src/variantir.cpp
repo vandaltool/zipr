@@ -76,15 +76,25 @@ std::map<db_id_t,Function_t*> VariantIR_t::ReadFuncsFromDB
 
 	while(!dbintr->IsDone())
 	{
-// function_id | file_id | name | stack_frame_size | doip_id
+// function_id | file_id | name | stack_frame_size | out_args_region_size | use_frame_pointer | doip_id
 
 		db_id_t fid=atoi(dbintr->GetResultColumn("function_id").c_str());
 		db_id_t file_id=atoi(dbintr->GetResultColumn("file_id").c_str());
 		std::string name=dbintr->GetResultColumn("name");
 		int sfsize=atoi(dbintr->GetResultColumn("stack_frame_size").c_str());
+		int oasize=atoi(dbintr->GetResultColumn("out_args_region_size").c_str());
+// postgresql encoding of boolean can be 'true', '1', 'T', 'y'
+                bool useFP=false;
+		const char *useFPstr= dbintr->GetResultColumn("use_frame_pointer").c_str();
+                if (strlen(useFPstr) > 0)
+		{
+			if (useFPstr[0] == 't' || useFPstr[0] == 'T' || useFPstr[0] == '1' || useFPstr[0] == 'y' || useFPstr[0] == 'Y')
+				useFP = true;
+		}
+
 		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
 
-		Function_t *newfunc=new Function_t(fid,name,sfsize, fileMap[file_id]);
+		Function_t *newfunc=new Function_t(fid,name,sfsize,oasize,useFP,fileMap[file_id]);
 
 //std::cout<<"Found function "<<name<<"."<<std::endl;
 

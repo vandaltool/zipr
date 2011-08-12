@@ -2,9 +2,10 @@
 #include <string>
 #include <set>
 #include <assert.h>
-#include <string>
+#include <string.h>
 #include <iostream>
 #include <pqxx/pqxx>
+#include "beaengine/BeaEngine.h"
 
 namespace libIRDB 
 {

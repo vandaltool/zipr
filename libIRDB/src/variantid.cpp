@@ -45,7 +45,9 @@ void VariantID_t::CreateTables()
   		"	file_id            	integer REFERENCES file_info, "
   		"	name               	text, "
   		"	stack_frame_size   	integer, "
-  		"	doip_id	   	integer DEFAULT -1 "
+  		"	doip_id	   	integer DEFAULT -1, "
+		"       out_args_region_size    integer, "
+		"       use_frame_pointer    integer "
 		"); "
 	);
 
