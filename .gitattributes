@@ -202,7 +202,7 @@ tools/spasm/tst.s -text
 tools/transforms/Makefile -text
 tools/transforms/integerbugtransform.cpp -text
 tools/transforms/nulltransform.cpp -text
-tools/transforms/p1transform.cpp -text
+tools/transforms/p1transform.cpp.deprecated -text
 xform/Makefile -text
 xform/all.h -text
 xform/aspri.h -text

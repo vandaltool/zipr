@@ -35,6 +35,6 @@ clean:
 nulltransform: $(OBJS) nulltransform.cpp
 	$(CC) -o nulltransform $(INCLUDE) nulltransform.cpp $(OBJS) $(LIBS)
 
-p1transform: $(OBJS) p1transform.cpp
-	$(CC) -o p1transform $(INCLUDE) p1transform.cpp $(OBJS) $(LIBS)
+#p1transform: $(OBJS) p1transform.cpp
+#	$(CC) -o p1transform $(INCLUDE) p1transform.cpp $(OBJS) $(LIBS)
 
