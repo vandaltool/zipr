@@ -1,5 +1,3 @@
-
-
 #include <libIRDB.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -10,6 +8,12 @@
 using namespace libIRDB;
 using namespace std;
 
+//
+// todo:
+//       getAssembly is now part of the interface for an instruction -- reuse if needed
+//       accept white list
+//       move utility functions to instruction interface
+//
 
 //
 // return available offset 
@@ -121,9 +125,11 @@ bool isAddSubInstruction32(Instruction_t *p_instruction)
 //      jno <originalFallthroughInstruction>
 //      pusha
 //      pushf
+//      push_arg
 //      push L1
 //      ... setup detector ...
-//  L1: popf
+//  L1: pop_arg
+//      popf
 //      popa
 //
 void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, std::string p_detector)
@@ -137,8 +143,8 @@ void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, std::st
 	AddressID_t *pushf_a =new AddressID_t;
 	AddressID_t *pusharg_a =new AddressID_t;
 	AddressID_t *pushret_a =new AddressID_t;
-	AddressID_t *popf_a =new AddressID_t;
 	AddressID_t *poparg_a =new AddressID_t;
+	AddressID_t *popf_a =new AddressID_t;
 	AddressID_t *popa_a =new AddressID_t;
 
 	jno_a->SetFileID(p_instruction->GetAddress()->GetFileID());
@@ -146,8 +152,8 @@ void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, std::st
 	pushf_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pusharg_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pushret_a->SetFileID(p_instruction->GetAddress()->GetFileID());
-	popf_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	poparg_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	popf_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	popa_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 
 	Instruction_t* jno_i = new Instruction_t;
@@ -155,22 +161,22 @@ void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, std::st
 	Instruction_t* pushf_i = new Instruction_t;
 	Instruction_t* pusharg_i = new Instruction_t;
 	Instruction_t* pushret_i = new Instruction_t;
-	Instruction_t* popf_i = new Instruction_t;
 	Instruction_t* poparg_i = new Instruction_t;
+	Instruction_t* popf_i = new Instruction_t;
 	Instruction_t* popa_i = new Instruction_t;
 
 	// pin the popf instruction to a free address
 	virtual_offset_t postDetectorReturn = getAvailableAddress(p_virp);
 fprintf(stderr,"post detector return set to: 0x%x\n", postDetectorReturn);
-	popf_a->SetVirtualOffset(postDetectorReturn);
+	poparg_a->SetVirtualOffset(postDetectorReturn);
 
         jno_i->SetAddress(jno_a);
         pusha_i->SetAddress(pusha_a);
         pushf_i->SetAddress(pushf_a);
         pusharg_i->SetAddress(pusharg_a);
         pushret_i->SetAddress(pushret_a);
-        popf_i->SetAddress(popf_a);
         poparg_i->SetAddress(poparg_a);
+        popf_i->SetAddress(popf_a);
         popa_i->SetAddress(popa_a);
 
         // handle the original mul or imul instruction
@@ -224,9 +230,7 @@ fprintf(stderr,"post detector return set to: 0x%x\n", postDetectorReturn);
         poparg_i->SetDataBits(dataBits);
         poparg_i->SetComment(getAssembly(poparg_i) + " -- with callback to " + p_detector);
 	poparg_i->SetFallthrough(popa_i); 
-	*callback_return_a = *poparg_a;
-	poparg_i->SetIndirectBranchTargetAddress(callback_return_a);  
-//	poparg_i->SetCallback("mul_overflow_detector_32"); 
+	poparg_i->SetIndirectBranchTargetAddress(poparg_a);  
 	poparg_i->SetCallback(p_detector); 
 
         // popf   
