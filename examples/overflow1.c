@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
   if (argc != 2)
   {
-    fprintf(stderr,"usage: %s <number>\n", argv[0]);
+    printf("usage: %s <number>\n", argv[0]);
     return 1;
   }
 

@@ -226,7 +226,7 @@ int main(int argc, char **argv)
   test_xxx_11();
 
   retvalue = test_xxx_12(10, buf);
-  printf("xxx_12: %d %s\n", retvalue, buf);
+  printf("xxx_12 (recursive): %d %s\n", retvalue, buf);
 
   struct point pt;
   pt.x = 1.0;
