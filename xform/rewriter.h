@@ -7,7 +7,7 @@ using namespace std;
 class Rewriter
 {
   public:
-    Rewriter(char *p_elf, char *p_annotationFile, char *p_spriFile);
+    Rewriter(char *p_elf, char *p_annotationFile);
     ~Rewriter();
 
     virtual vector<wahoo::Function*> getAllFunctions();

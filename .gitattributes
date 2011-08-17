@@ -230,13 +230,8 @@ xform/instrmap_hash.h -text
 xform/instruction_descriptor.cpp -text
 xform/instruction_descriptor.h -text
 xform/instrument.h -text
-xform/kmd9q_p1xform/Makefile -text
-xform/kmd9q_p1xform/p1_transform_v2.cpp -text
-xform/kmd9q_p1xform/p1_transform_v2.h -text
 xform/null_transform.cpp -text
 xform/null_transform.h -text
-xform/p1_transform.cpp -text
-xform/p1_transform.h -text
 xform/read_annot_file.c -text
 xform/rewriter.cpp -text
 xform/rewriter.h -text

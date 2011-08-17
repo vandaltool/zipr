@@ -10,10 +10,9 @@
 
 using namespace std;
 
-Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath, char *p_spriFilePath)
+Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath)
 {
   m_elfReader = new ElfReader(p_elfPath);
-  m_spri = fopen(p_spriFilePath, "w+");
 
   // parse file and build up all the data structures
   readAnnotationFile(p_annotationFilePath);
@@ -22,7 +21,6 @@ Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath, char *p_spriFile
 
 Rewriter::~Rewriter()
 {
-  fclose(m_spri);
 }
 
 /*
