@@ -24,7 +24,7 @@ $SECURITY_TRANSFORMS_HOME/tools/cover/cover a.ncexe a.ncexe.annot $EXECUTED_ADDR
 grep -v "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $CANDIDATE_FNS_PRE_LIBC
 grep  "0\.0" $COVERAGE_FNS | cut -f1 -d" " > $FILTERED_OUT
 
-if [ -f $COVERAGE_FNS ]; then
+if [ ! -f $COVERAGE_FNS ]; then
 	return 1
 fi
 
