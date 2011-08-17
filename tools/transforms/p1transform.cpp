@@ -5,31 +5,6 @@
 using namespace libIRDB;
 using namespace std;
 
-/*
-static set<std::string> getFunctionList(char *p_filename)
-{
-	set<std::string> functionList;
-
-	ifstream candidateFile;
-	candidateFile.open(p_filename);
-
-	if(candidateFile.is_open())
-	{
-		while(!candidateFile.eof())
-		{
-			string functionName;
-			getline(candidateFile, functionName);
-
-			functionList.insert(functionName);
-		}
-
-		candidateFile.close();
-	}
-
-	return functionList;
-}
-*/
-
 P1Transform::P1Transform()
 {
   /* Initialize regular expressions */
