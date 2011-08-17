@@ -15,6 +15,11 @@ argz_stringify
 asprintf
 __assert_fail
 __atomic_writev_replacement
+atoi
+atof
+atol
+atoll
+atoq
 backtrace
 backtrace_helper
 backtrace_symbols_fd
@@ -232,9 +237,8 @@ free_mem_8
 free_mem_9
 free_modules_db
 free_slotinfo
-FUNC GLOBAL
-FUNC_UNSAFE USEFP
 funlockfile
+fwrite
 __fxprintf
 __fxstat64
 __gcc_personality_v0
@@ -528,6 +532,7 @@ _L_lock_39_0
 _L_lock_3984
 _L_lock_4055
 _L_lock_4159
+_L_lock_42
 _L_lock_43
 _L_lock_47
 _L_lock_4709
@@ -569,6 +574,7 @@ _L_unlock_10013
 _L_unlock_1004
 _L_unlock_10242
 _L_unlock_107
+_L_unlock_108
 _L_unlock_11058
 _L_unlock_112
 _L_unlock_11210
@@ -923,23 +929,6 @@ tdelete
 tdestroy
 tdestroy_recurse
 .term_proc
-test_xxx_1
-test_xxx_10
-test_xxx_11
-test_xxx_12
-test_xxx_13
-test_xxx_14
-test_xxx_14a
-test_xxx_14b
-test_xxx_15
-test_xxx_2
-test_xxx_3
-test_xxx_4
-test_xxx_5
-test_xxx_6
-test_xxx_7
-test_xxx_8
-test_xxx_9
 tfind
 ThisIsNotAFunction
 time

@@ -137,12 +137,9 @@ tools/generate_exe.sh -text
 tools/generate_io_baseline.sh -text
 tools/getlibs.sh -text
 tools/getsyms.sh -text
-tools/p1xform.doxform.sh -text
 tools/p1xform.filter.libc.txt -text
 tools/p1xform.filter.sh -text
-tools/p1xform.genspri.sh -text
 tools/p1xform.pbed.sh -text
-tools/p1xform.sh -text
 tools/p1xform_v2.sh -text
 tools/peasoup_link -text
 tools/peasoup_link++ -text
