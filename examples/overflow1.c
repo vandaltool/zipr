@@ -25,15 +25,22 @@ int main(int argc, char **argv)
 
   printf("main(): enter\n");
 
+  if (argc != 2)
+  {
+    fprintf(stderr,"usage: %s <number>\n", argv[0]);
+    return 1;
+  }
+
   int value = atoi(argv[1]);
 
+  printf("addsub: value_overflow=%d\n", test_addsub_overflow(value));
   printf("mul: value_overflow=%d\n", test_mul32_overflow(value));
 
-  printf("addsub: value_overflow=%d\n", test_addsub_overflow(value));
 
   char *x = test_sign_unsign(value);
   sprintf(x,"x");
   printf("x=%s\n", x);
 
   printf("----------------------------\n\n");
+  return 0;
 }
