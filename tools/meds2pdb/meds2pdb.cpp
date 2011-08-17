@@ -135,7 +135,6 @@ int main(int argc, char **argv)
   char *elfFile = argv[2];
   char *md5hash = argv[3];
   char *annotFile = argv[4];
-  char *spriFile=strdup("spri.out");
 
   cerr << "program name:" << programName << endl;
   cerr << "elf file:" << elfFile << endl;
@@ -145,7 +144,7 @@ int main(int argc, char **argv)
   connection conn;
   work txn(conn);
 
-  Rewriter *rewriter = new Rewriter(elfFile, annotFile, spriFile);
+  Rewriter *rewriter = new Rewriter(elfFile, annotFile);
 
   int fileID = get_file_id(programName, md5hash);
   if (fileID < 0)

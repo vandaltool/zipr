@@ -5,6 +5,8 @@
 
 #include "beaengine/BeaEngine.h"
 
+#include "transformutils.h"
+
 using namespace libIRDB;
 using namespace std;
 
@@ -18,7 +20,7 @@ using namespace std;
 //
 // return available offset 
 //
-virtual_offset_t getAvailableAddress(VariantIR_t *p_virp)
+static virtual_offset_t getAvailableAddress(VariantIR_t *p_virp)
 {
 	// traverse all instructions
 	// grab address
@@ -53,70 +55,59 @@ static int counter = -16;
 //
 // Given an instruction, returns its disassembly
 //
-string getAssembly(Instruction_t *p_instruction)
+static string getAssembly(Instruction_t *p_instruction)
 {
 	DISASM disasm;
-	memset(&disasm, 0, sizeof(DISASM));
 
-	disasm.Archi = 32;
-	disasm.EIP = (UIntPtr) p_instruction->GetDataBits().c_str();
-	disasm.VirtualAddr = p_instruction->GetAddress()->GetVirtualOffset();
-
-	Disasm(&disasm); // dissassemble the instruction
-
+	p_instruction->Disassemble(disasm);
 	return string(disasm.CompleteInstr);
 }
 
 //
 // Returns true iff instruction is mul or imul
 //
-bool isMultiplyInstruction32(Instruction_t *p_instruction)
+static bool isMultiplyInstruction32(Instruction_t *p_instruction)
 {
 	if (!p_instruction)
 		return false;
 
 	DISASM disasm;
-	memset(&disasm, 0, sizeof(DISASM));
 
-	disasm.Options = NasmSyntax + PrefixedNumeral;
-	disasm.Archi = 32;
-	disasm.EIP = (UIntPtr) p_instruction->GetDataBits().c_str();
-	disasm.VirtualAddr = p_instruction->GetAddress()->GetVirtualOffset();
-
-	Disasm(&disasm); // dissassemble the instruction
+	p_instruction->Disassemble(disasm);
 
 	// look for "mul ..." or "imul ..."
-	string disassembly = string(disasm.CompleteInstr);
-	size_t found_pos = disassembly.find("mul");
-        return (found_pos == 0 || found_pos == 1); // we expect mul or imul to be the first word in the string
+	// beaengine adds space at the end of the mnemonic string
+	return strcasestr(disasm.Instruction.Mnemonic, "mul ") != NULL;
 }
 
 //
 // Returns true iff instruction is mul or imul
 //
-bool isAddSubInstruction32(Instruction_t *p_instruction)
+static bool isAddSubNonEspInstruction32(Instruction_t *p_instruction)
 {
 	if (!p_instruction)
 		return false;
 
 	DISASM disasm;
-	memset(&disasm, 0, sizeof(DISASM));
 
-	disasm.Options = NasmSyntax + PrefixedNumeral;
-	disasm.Archi = 32;
-	disasm.EIP = (UIntPtr) p_instruction->GetDataBits().c_str();
-	disasm.VirtualAddr = p_instruction->GetAddress()->GetVirtualOffset();
+	// look for "add ..." or "sub ..."
+	p_instruction->Disassemble(disasm);
 
-	Disasm(&disasm); // dissassemble the instruction
-
-	// look for "mul ..." or "imul ..."
-	string disassembly = string(disasm.CompleteInstr);
-
-	size_t found_pos = disassembly.find("add");
-	if (found_pos == 0) return true;
-
-	found_pos = disassembly.find("sub");
-	if (found_pos == 0) return true;
+	// beaengine adds space at the end of the mnemonic string
+	if (strcasestr(disasm.Instruction.Mnemonic, "add "))
+	{
+		return true;
+	}
+	else if (strcasestr(disasm.Instruction.Mnemonic, "sub "))
+	{
+		if (strcasestr(disasm.Argument1.ArgMnemonic,"esp") &&
+			(disasm.Argument2.ArgType & 0xFFFF0000 & (CONSTANT_TYPE | ABSOLUTE_)))
+		{
+			// optimization: filter out "sub esp, K"
+			return false;
+		}
+		return true;
+	}
 
 	return false;
 }
@@ -132,7 +123,7 @@ bool isAddSubInstruction32(Instruction_t *p_instruction)
 //      popf
 //      popa
 //
-void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, std::string p_detector)
+static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, std::string p_detector)
 {
 	assert(p_virp && p_instruction);
 	
@@ -165,9 +156,8 @@ void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, std::st
 	Instruction_t* popf_i = new Instruction_t;
 	Instruction_t* popa_i = new Instruction_t;
 
-	// pin the popf instruction to a free address
+	// pin the poparg instruction 
 	virtual_offset_t postDetectorReturn = getAvailableAddress(p_virp);
-fprintf(stderr,"post detector return set to: 0x%x\n", postDetectorReturn);
 	poparg_a->SetVirtualOffset(postDetectorReturn);
 
         jno_i->SetAddress(jno_a);
@@ -267,23 +257,27 @@ fprintf(stderr,"post detector return set to: 0x%x\n", postDetectorReturn);
 	p_virp->GetInstructions().insert(popf_i);
 	p_virp->GetInstructions().insert(poparg_i);
 	p_virp->GetInstructions().insert(popa_i);
-
-	fprintf(stderr,"sanity check address of popf: 0x%x %u   fileID:%d\n", popf_a->GetVirtualOffset(), popf_a->GetVirtualOffset(), popf_a->GetFileID());
-	fprintf(stderr,"sanity check address of pushf: 0x%x %u   fileID:%d\n", pushf_a->GetVirtualOffset(), pushf_a->GetVirtualOffset(), pushf_a->GetFileID());
-
 }
 
 main(int argc, char* argv[])
 {
 
-	if(argc!=2)
+	if(argc < 2)
 	{
-		cerr<<"Usage: integerbugtransform.exe <variant_id>"<<endl;
+		cerr<<"Usage: integerbugtransform.exe <variant_id> <filtered_functions>"<<endl;
 		exit(-1);
 	}
 
 	VariantID_t *pidp=NULL;
 	VariantIR_t *virp=NULL;
+
+	set<string> filteredFunctions; 
+
+	if (argc == 3)
+	{ 
+		filteredFunctions = getFunctionList(argv[2]);
+
+	}
 
 	/* setup the interface to the sql server */
 	pqxxDB_t pqxx_interface;
@@ -299,8 +293,6 @@ main(int argc, char* argv[])
 
 		// read the db  
 		virp=new VariantIR_t(*pidp);
-
-
 	}
 	catch (DatabaseError_t pnide)
 	{
@@ -321,6 +313,9 @@ main(int argc, char* argv[])
                 
 		if (!insn->GetFunction()) continue;
 
+		if (filteredFunctions.find(insn->GetFunction()->GetName()) != filteredFunctions.end())
+	                continue;
+
 		if (isMultiplyInstruction32(insn))
 		{
 			numMul++;
@@ -331,7 +326,7 @@ main(int argc, char* argv[])
 			// later, we'll want to be more judicious about where to insert overflow checks
 			addOverflowCheck(virp, insn, "mul_overflow_detector_32");
 		}
-		else if (isAddSubInstruction32(insn))
+		else if (isAddSubNonEspInstruction32(insn))
 		{
 			numAddSub++;
 			cout << "found Add/Sub: address: " << insn->GetAddress()

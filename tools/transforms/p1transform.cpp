@@ -1,12 +1,34 @@
 #include "beaengine/BeaEngine.h"
 #include "p1transform.h"
-
-//
-// @todo: white listing, break out into own function, read file only 1x
-//
+#include "transformutils.h"
 
 using namespace libIRDB;
 using namespace std;
+
+/*
+static set<std::string> getFunctionList(char *p_filename)
+{
+	set<std::string> functionList;
+
+	ifstream candidateFile;
+	candidateFile.open(p_filename);
+
+	if(candidateFile.is_open())
+	{
+		while(!candidateFile.eof())
+		{
+			string functionName;
+			getline(candidateFile, functionName);
+
+			functionList.insert(functionName);
+		}
+
+		candidateFile.close();
+	}
+
+	return functionList;
+}
+*/
 
 P1Transform::P1Transform()
 {
@@ -293,7 +315,6 @@ bool P1Transform::rewrite(libIRDB::VariantIR_t *virp, libIRDB::Function_t *f, st
       return false;
     } 
   else{
-    fprintf(stderr,"Setting rewriteFunction to true; should rewite this function %s\n", f->GetName().c_str());
     rewriteFunction=true;
   }
   return rewriteFunction;
@@ -331,7 +352,7 @@ int main(int argc, char **argv)
 {
   if(argc!=3)
     {
-      cerr<<"Usage: [the executable] <variantid> [file containing white list of functions to transform]"<<endl;
+      cerr<<"Usage: [the executable] <variantid> [file containing name of blacklisted functions]"<<endl;
       exit(-1);
     }
   
@@ -361,7 +382,14 @@ int main(int argc, char **argv)
       exit(-1);
     }
   
-  P1Transform *p1GoodTransform = new P1Transform();
+  P1Transform *p1Transform = new P1Transform();
+
+	set<std::string> blackListOfFunctions;
+
+	if (argc == 3)
+	{
+		blackListOfFunctions = getFunctionList(argv[2]);
+	}
 
   vector<std::string> functionsTransformed;
   try {
@@ -375,30 +403,13 @@ int main(int argc, char **argv)
 	Function_t* func=*it;
 	map<libIRDB::Instruction_t*, std::string> undoList;
 	
-	string funcName = func->GetName().c_str();
-	bool continueValue = false;
+	if (blackListOfFunctions.find(func->GetName()) != blackListOfFunctions.end())
+		continue;
 
-	string line;
-	ifstream candidateFile;
-	candidateFile.open(argv[2]);
-	if(candidateFile.is_open())
-	{
-	  while(!candidateFile.eof()){
-	    getline(candidateFile, line);
-	    if((line.find(funcName,0))!= string::npos){
-	      continueValue=true;
-	    }
-	  }
-	  candidateFile.close();
-	}
-	
-	if(!continueValue)
-	  continue;
-	
-	fprintf(stderr, "P1: Looking at function: %s\n", func->GetName().c_str());
+	cerr << "P1: Looking at function: " << func->GetName() << endl;
 	
 	//perform the p1 transform on the given variant's function
-	bool rewriteFunction = p1GoodTransform->rewrite(virp,func,undoList); 
+	bool rewriteFunction = p1Transform->rewrite(virp,func,undoList); 
 	
 	if (!rewriteFunction)
 	  {

@@ -20,14 +20,18 @@ CC=g++
 CFLAGS= -g
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ 
 LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx 
+OBJS=transformutils.o
 
 .SUFFIXES: .o .c .exe .cpp
 
-all: $(PROGS)
+all: $(OBJS) $(PROGS)
 	echo build complete
 
+.o: $<
+	$(CC) -g -c $@
+
 .cpp.exe:  $<
-	$(CC) -g $< $(INCLUDE) $(LIBS) -o $@
+	$(CC) -g $< $(INCLUDE) $(LIBS) $(OBJS) -o $@
 
 clean:
 	rm -f *.o core $(PROGS)

@@ -18,7 +18,7 @@ int main(int argc, char **argv)
   cout << "coverage file:" << argv[3] << endl;
   cout << "output file:" << argv[4] << endl;
 
-  Rewriter *rewriter = new Rewriter(argv[1], argv[2], "spri.out");
+  Rewriter *rewriter = new Rewriter(argv[1], argv[2]);
 
   map<wahoo::Function*, double> coverage = rewriter->getFunctionCoverage(argv[3]);
   if (coverage.empty())
