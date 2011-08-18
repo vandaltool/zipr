@@ -144,7 +144,13 @@ if [ ! "X" = "X"$PGUSER ]; then
 				echo "No coverage file -- do not attempt P1 transform" > p1transform.out
 			fi
 
-			$SECURITY_TRANSFORMS_HOME/tools/transforms/integerbugtransform.exe $cloneid p1.xform/p1.filtered_out > integerbugtransform.out 2>&1
+			# reuse black list from p1 step (if present) o/w blacklist libc
+			if [ -f p1.xform/p1.coverage ]; then
+				BLACK_LIST=p1.xform/p1.filtered_out
+			else
+				BLACK_LIST="$PEASOUP_HOME/tools/p1xform.filter.libc.txt"
+			fi
+			$SECURITY_TRANSFORMS_HOME/tools/transforms/integerbugtransform.exe $cloneid "$BLACK_LIST" > integerbugtransform.out 2>&1
 			log integerbugtransform.out
 
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid > ilr.out 2>&1 				# perform ILR 
