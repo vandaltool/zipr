@@ -39,9 +39,9 @@ do
   touch stdout.$input
   touch stderr.$input
 
-  echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt ./a.stratafied $i"
-#    STRATA_SPRI_FILE="$BSPRI" "$GRACE_HOME/concolic/bin/replayer" --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i
-    STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIME "$GRACE_HOME/concolic/bin/replayer" --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i || exit 2
+  echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt ./a.stratafied $i"
+  STRATA_SPRI_FILE="$BSPRI" "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i
+#    STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=120 --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i || exit 2
 
   BASELINE_OUTPUT_STDOUT=$BASELINE_OUTPUT_DIR/run_$input_number/stdout
   BASELINE_OUTPUT_STDERR=$BASELINE_OUTPUT_DIR/run_$input_number/stderr
