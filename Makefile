@@ -3,6 +3,7 @@ all:
 	cd beaengine; make all
 	cd libIRDB; make all
 	cd xform; make all
+	cd libIRDB; make all
 	cd tools; make all
 
 clean:

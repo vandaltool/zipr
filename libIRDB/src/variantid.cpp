@@ -58,8 +58,8 @@ void VariantID_t::CreateTables()
   		"address_id                integer REFERENCES " + address_table_name + ", " +
   		"parent_function_id        integer, "
   		"orig_address_id           integer, "
-  		"fallthrough_address_id    integer, "
-  		"target_address_id         integer, "
+  		"fallthrough_address_id    integer DEFAULT -1, "
+  		"target_address_id         integer DEFAULT -1, "
   		"data                      bytea, "
   		"callback                  text, "
   		"comment                   text, "

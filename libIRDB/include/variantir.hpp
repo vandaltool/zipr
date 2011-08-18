@@ -41,13 +41,18 @@ class VariantIR_t : public BaseObj_t
         VariantID_t progid;
 
 	std::map<db_id_t,File_t*> ReadFilesFromDB();
-	std::map<db_id_t,Function_t*> ReadFuncsFromDB ( 	std::map<db_id_t,File_t*> fileMap) ;
-	std::map<db_id_t,AddressID_t*> ReadAddrsFromDB  ( 	std::map<db_id_t,File_t*> fileMap, 
-									std::map<db_id_t,Function_t*> funcMap) ;
-	std::map<db_id_t,Instruction_t*> ReadInsnsFromDB (	std::map<db_id_t,File_t*> fileMap, 
-									std::map<db_id_t,Function_t*> funcMap,
-									std::map<db_id_t,AddressID_t*> addrMap
-									) ;
+	std::map<db_id_t,AddressID_t*> ReadAddrsFromDB(std::map<db_id_t,File_t*> fileMap);
+	std::map<db_id_t,Function_t*> ReadFuncsFromDB
+		(
+		 	std::map<db_id_t,File_t*> fileMap,
+			std::map<db_id_t,AddressID_t*> addrMap
+		);
+	std::map<db_id_t,Instruction_t*> ReadInsnsFromDB 
+		(	
+			std::map<db_id_t,File_t*> fileMap, 
+			std::map<db_id_t,Function_t*> funcMap,
+			std::map<db_id_t,AddressID_t*> addrMap
+		) ;
 
 };
 

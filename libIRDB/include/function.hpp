@@ -5,7 +5,8 @@ class Function_t : public BaseObj_t
 	
 	Function_t() : BaseObj_t(NULL) {}	// create a new function not in the db 
 
-	Function_t(db_id_t id, std::string name, int size, int oa_size, bool use_fp, File_t *file);	// create a function that's already in the DB  
+	// create a function that's already in the DB  
+	Function_t(db_id_t id, std::string name, int size, int oa_size, bool use_fp, Instruction_t *entry);	
 
         std::set<Instruction_t*>& GetInstructions() { return my_insns; }
 
@@ -17,8 +18,8 @@ class Function_t : public BaseObj_t
         void SetName(std::string newname)	 { name=newname; }
         void SetOutArgsRegionSize(int oa_size) {out_args_region_size=oa_size;}
 
-	void SetFile(File_t* file) {my_file=file;}
-	File_t* GetFile() { return my_file;}
+	void SetEntryPoint(Instruction_t *insn) {entry_point=insn;}
+	Instruction_t* GetEntryPoint() { return entry_point;}
 
 	void WriteToDB();		// we need the variant ID to write into a program.
 	std::string WriteToDB(VariantID_t *vid, db_id_t newid);
@@ -28,7 +29,7 @@ class Function_t : public BaseObj_t
 
 
     private:
-	File_t *my_file;
+	Instruction_t *entry_point;
         std::set<Instruction_t*> my_insns;
         int stack_frame_size;
         std::string name;

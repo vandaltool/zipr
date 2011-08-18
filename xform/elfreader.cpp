@@ -21,10 +21,11 @@ ElfReader::ElfReader(char *p_elfFile)
     {    // For all sections
         const IELFISection* pSec = m_reader->GetSection( i );
         m_sections.push_back(pSec);
-
+#if 0
         std::cout << "Sec. name: " << pSec->GetName() 
                   << " Sec. offset: " << pSec->GetOffset() 
                   << " Sec. size: " << pSec->GetSize() << std::endl;
+#endif
 
     }
     std::cout << std::endl;

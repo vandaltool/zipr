@@ -6,6 +6,26 @@
 using namespace libIRDB;
 using namespace std;
 
+static map<Function_t*,db_id_t> entry_points;
+
+
+static void UpdateEntryPoints(std::map<db_id_t,Instruction_t*> 	&insnMap)
+{
+	/* for each function, look up the instruction that's the entry point */
+	for(	static map<Function_t*,db_id_t>::const_iterator it=entry_points.begin();
+		it!=entry_points.end();
+		++it
+	   )
+	{
+		Function_t* func=(*it).first;
+		db_id_t func_entry_id=(*it).second;
+
+		assert(insnMap[func_entry_id]);
+		func->SetEntryPoint(insnMap[func_entry_id]);
+	}
+		
+}
+
 // Create a Variant from the database
 VariantIR_t::VariantIR_t(VariantID_t newprogid) : BaseObj_t(NULL)
 {
@@ -19,10 +39,14 @@ VariantIR_t::VariantIR_t(VariantID_t newprogid) : BaseObj_t(NULL)
 // DB operations
 void VariantIR_t::ReadFromDB()
 {
+	entry_points.clear();
+
 	std::map<db_id_t,File_t*>	fileMap=ReadFilesFromDB();
-	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(fileMap);
-	std::map<db_id_t,AddressID_t*> 	addrMap=ReadAddrsFromDB(fileMap,funcMap);
+	std::map<db_id_t,AddressID_t*> 	addrMap=ReadAddrsFromDB(fileMap);
+	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(fileMap, addrMap);
 	std::map<db_id_t,Instruction_t*> 	insnMap=ReadInsnsFromDB(fileMap,funcMap,addrMap);
+
+	UpdateEntryPoints(insnMap);
 }
 
 std::map<db_id_t,File_t*> VariantIR_t::ReadFilesFromDB()
@@ -64,13 +88,13 @@ std::map<db_id_t,File_t*> VariantIR_t::ReadFilesFromDB()
 
 std::map<db_id_t,Function_t*> VariantIR_t::ReadFuncsFromDB
 	(
-		std::map<db_id_t,File_t*> fileMap
+		std::map<db_id_t,File_t*> fileMap,
+        	std::map<db_id_t,AddressID_t*> addrMap
 	)
 {
 	std::map<db_id_t,Function_t*> idMap;
 
 	std::string q= "select * from " + progid.function_table_name + " ; ";
-
 
 	dbintr->IssueQuery(q);
 
@@ -79,7 +103,7 @@ std::map<db_id_t,Function_t*> VariantIR_t::ReadFuncsFromDB
 // function_id | file_id | name | stack_frame_size | out_args_region_size | use_frame_pointer | doip_id
 
 		db_id_t fid=atoi(dbintr->GetResultColumn("function_id").c_str());
-		db_id_t file_id=atoi(dbintr->GetResultColumn("file_id").c_str());
+		db_id_t entry_point_id=atoi(dbintr->GetResultColumn("entry_point_id").c_str());
 		std::string name=dbintr->GetResultColumn("name");
 		int sfsize=atoi(dbintr->GetResultColumn("stack_frame_size").c_str());
 		int oasize=atoi(dbintr->GetResultColumn("out_args_region_size").c_str());
@@ -94,8 +118,9 @@ std::map<db_id_t,Function_t*> VariantIR_t::ReadFuncsFromDB
 
 		db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
 
-		Function_t *newfunc=new Function_t(fid,name,sfsize,oasize,useFP,fileMap[file_id]);
-
+		Function_t *newfunc=new Function_t(fid,name,sfsize,oasize,useFP,NULL); 
+		entry_points[newfunc]=entry_point_id;
+		
 //std::cout<<"Found function "<<name<<"."<<std::endl;
 
 		idMap[fid]=newfunc;
@@ -108,8 +133,11 @@ std::map<db_id_t,Function_t*> VariantIR_t::ReadFuncsFromDB
 	return idMap;
 }
 
-std::map<db_id_t,AddressID_t*> VariantIR_t::ReadAddrsFromDB  (         std::map<db_id_t,File_t*> fileMap,
-                                                                        std::map<db_id_t,Function_t*> funcMap) 
+
+std::map<db_id_t,AddressID_t*> VariantIR_t::ReadAddrsFromDB  
+	(
+	std::map<db_id_t,File_t*> fileMap
+	) 
 {
 	std::map<db_id_t,AddressID_t*> idMap;
 
@@ -146,10 +174,12 @@ std::map<db_id_t,AddressID_t*> VariantIR_t::ReadAddrsFromDB  (         std::map<
 }
 
 
-std::map<db_id_t,Instruction_t*> VariantIR_t::ReadInsnsFromDB (      std::map<db_id_t,File_t*> fileMap,
-                                                                        std::map<db_id_t,Function_t*> funcMap,
-                                                                        std::map<db_id_t,AddressID_t*> addrMap
-                                                                        ) 
+std::map<db_id_t,Instruction_t*> VariantIR_t::ReadInsnsFromDB 
+	(      
+	std::map<db_id_t,File_t*> fileMap,
+        std::map<db_id_t,Function_t*> funcMap,
+        std::map<db_id_t,AddressID_t*> addrMap
+        ) 
 {
 	std::map<db_id_t,Instruction_t*> idMap;
 	std::map<db_id_t,db_id_t> fallthroughs;
@@ -272,6 +302,9 @@ void VariantIR_t::SetBaseIDS()
 		j=MAX(j,(*i)->GetBaseID());
 	for(std::set<File_t*>::const_iterator i=files.begin(); i!=files.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
+
+	/* increment past the max ID so we don't duplicate */
+	j++;
 
 	/* for anything that's not yet in the DB, assign an ID to it */
 	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i)
