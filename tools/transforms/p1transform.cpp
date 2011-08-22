@@ -407,7 +407,7 @@ int main(int argc, char **argv)
 	    }
 	  
 	  fprintf(stderr, "P1: generating aspri file: %s\n", filename.c_str());
-	  virp->generate_spri(aspriFile); // p1.xform/<function_name>/a.irdb.aspri
+	  virp->GenerateSPRI(aspriFile); // p1.xform/<function_name>/a.irdb.aspri
 	  aspriFile.close();
 	  
 	  char new_instr[1024];

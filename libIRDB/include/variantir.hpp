@@ -18,10 +18,10 @@ class VariantIR_t : public BaseObj_t
         std::set<File_t*>&    GetFiles() { return files; }
 
 	// generate the spri rules into the output file, fout.
-	void generate_spri(std::ostream &fout);
+	void GenerateSPRI(std::ostream &fout);
 
 	// generate spri, assume that orig_varirp is the original variant. 
-	void generate_spri(VariantIR_t *orig_varirp, std::ostream &fout);
+	void GenerateSPRI(VariantIR_t *orig_varirp, std::ostream &fout);
 
 	void SetBaseIDS();
 

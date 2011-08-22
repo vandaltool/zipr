@@ -4994,6 +4994,7 @@ void __bea_callspec__ loop_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "loop ");
     #endif
     if (!Security(1, pMyDisasm)) return;
+    (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
     if (GV.OperandSize >= 32) {
         MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
         CalculateRelativeAddress(&MyAddress,(Int64) GV.NB_PREFIX+2+MyNumber, pMyDisasm);
@@ -5044,6 +5045,7 @@ void __bea_callspec__ loopne_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "loopne ");
     #endif
     if (!Security(1, pMyDisasm)) return;
+    (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
     if (GV.OperandSize >= 32) {
         MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
         CalculateRelativeAddress(&MyAddress,(Int64) GV.NB_PREFIX+2+MyNumber, pMyDisasm);
@@ -5094,6 +5096,7 @@ void __bea_callspec__ loope_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "loope ");
     #endif
     if (!Security(1, pMyDisasm)) return;
+    (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
     if (GV.OperandSize >= 32) {
         MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
         CalculateRelativeAddress(&MyAddress,(Int64) GV.NB_PREFIX+2+MyNumber, pMyDisasm);

@@ -27,7 +27,7 @@ main(int argc, char* argv[])
 	if(argc==3)
 		fout=new ofstream(argv[2], ios::out);
 	else
-		fout=&cerr;
+		fout=&cout;
 
 
 	VariantID_t *varidp=NULL;
@@ -40,29 +40,29 @@ main(int argc, char* argv[])
 	try 
 	{
 
-		cout<<"Looking up variant "<<string(argv[1])<<" from database." << endl;
+		cerr<<"Looking up variant "<<string(argv[1])<<" from database." << endl;
 		varidp=new VariantID_t(atoi(argv[1]));
 
 		assert(varidp->IsRegistered()==true);
 
 		// read the db  
-		cout<<"Reading variant "<<string(argv[1])<<" from database." << endl;
+		cerr<<"Reading variant "<<string(argv[1])<<" from database." << endl;
 		varirp=new VariantIR_t(*varidp);
 
-		cout<<"Reading variant "<<varidp->GetOriginalVariantID()<<" from database." << endl;
+		cerr<<"Reading variant "<<varidp->GetOriginalVariantID()<<" from database." << endl;
 
-		varirp->generate_spri(*fout);
+		varirp->GenerateSPRI(*fout);
 
 	}
 	catch (DatabaseError_t pnide)
 	{
-		cout<<"Unexpected database error: "<<pnide<<endl;
+		cerr<<"Unexpected database error: "<<pnide<<endl;
 		exit(-1);
         }
 
-	cout<<"Done!"<<endl;
+	cerr<<"Done!"<<endl;
 
-	if(fout!=&cerr)
+	if(fout!=&cout)
 		((ofstream*)fout)->close();
 		
 

@@ -364,8 +364,10 @@ static void assemble(const vector<string> &assembly, const string &assemblyFile)
     }
 	asmFile.close();
 		
-	command = "nasm " + assemblyFile + " -o "+assemblyFile+".bin";
+	command = "nasm -O1 -w-number-overflow " + assemblyFile + " -o "+assemblyFile+".bin";
+	cout<<"Running nasm ("<<command<<")...";
 	system(command.c_str());
+	cout<<endl;
 
     //see if the file was created
     ifstream filetest;

@@ -37,6 +37,17 @@ static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn);
 //
 static string addressify(Instruction_t* insn);
 
+
+//
+// determine if this branch has a short offset that can't be represented as a long branch
+//
+static int needs_short_branch_rewrite(const DISASM &disasm)
+{
+	return   strstr(disasm.Instruction.Mnemonic, "jecxz" ) || strstr(disasm.Instruction.Mnemonic, "loop" ) || 
+		 strstr(disasm.Instruction.Mnemonic, "loopne") || strstr(disasm.Instruction.Mnemonic, "loope") ;
+}
+
+
 //
 // create a label for the given instruction
 //
@@ -67,21 +78,28 @@ static string addressify(Instruction_t* insn)
 
 }
 
+static string get_short_branch_label(Instruction_t *newinsn)
+{
+	if (!newinsn)
+		return string("");
+	else
+		return "short_jump_" + labelfy(newinsn);
+}
+
 static string getPostCallbackLabel(Instruction_t *newinsn)
 {
 	if (!newinsn)
 		return string("");
 	else
-	{
 		return "post_callback_" + labelfy(newinsn);
-	}
 }
 
 //
 // emit this instruction as spri code.
 //
-static void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
+static string emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 {
+	string original_target;
 	Instruction_t* old_insn=insnMap[newinsn];
 
 	// disassemble using BeaEngine
@@ -129,13 +147,15 @@ static void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 	{
 		fout << "\t"+label+"\t () " << newinsn->GetCallback() << endl;
 		fout << "\t"+ getPostCallbackLabel(newinsn)+" ** ";
-//		fout << "\t. ** ";
 	}
 	else
 	{
 		fout << "\t"+label+"\t ** ";
 	}
 
+	/* emit the actual instruction from the database */
+
+	/* if it's a brnach instruction, we have extra work to do */
         if(
                 (disasm.Instruction.BranchType!=0) &&                  // it is a branch
                 (disasm.Instruction.BranchType!=RetType) &&            // and not a return
@@ -144,12 +164,25 @@ static void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 	{
 
 		/* if we have a target instruction in the database */
-		if(newinsn->GetTarget())
+		if(newinsn->GetTarget() || needs_short_branch_rewrite(disasm))
 		{
 			/* change the target to be symbolic */
 	
 			/* first get the new target */
-			string new_target=labelfy(newinsn->GetTarget());
+			string new_target;
+			if(newinsn->GetTarget())
+				new_target=labelfy(newinsn->GetTarget());
+			/* if this is a short branch, write this branch to jump to the next insn */
+			if(needs_short_branch_rewrite(disasm))
+			{
+				new_target=get_short_branch_label(newinsn);
+
+				/* also get the real target if it's a short branch */
+				if(newinsn->GetTarget())
+					original_target=labelfy(newinsn->GetTarget());
+				else
+					original_target=address_string;
+			}
 
 			/* find the location in the disassembled string of the old target */
 			int start=complete_instr.find(address_string,0);
@@ -235,6 +268,10 @@ static void emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 		fout<<disasm.CompleteInstr;
 	}
 	fout<<endl;
+
+
+	return original_target;
+
 }
 
 //
@@ -311,7 +348,7 @@ We need to emit a rule of this form
 
 	Instruction_t* old_insn=insnMap[newinsn];
 
-	fout << "# Orig addr: "<<addressify(newinsn)<<" addr_id: "<< std::dec << newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
+	fout << "# Orig addr: "<<addressify(newinsn)<<" insn_id: "<< std::dec << newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
 	if (newinsn->GetIndirectBranchTargetAddress())
 		fout << "# Orig addr: "<<addressify(newinsn)<<" indirect branch target: "<<newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() << endl;
 
@@ -340,7 +377,7 @@ We need to emit a rule of this form
 		fout << ". -> "<< getPostCallbackLabel(newinsn) <<endl;
 	}
 
-	emit_spri_instruction(newinsn, fout);
+	string original_target=emit_spri_instruction(newinsn, fout);
 
 
 	/* if there's a fallthrough instruction, jump to it. */
@@ -368,6 +405,14 @@ We need to emit a rule of this form
 	}
 
 	fout<<endl;
+
+	/* if the original target string is set, we need to emit 
+	 * a rule for this instruction so that short branches can always be resolved 
+	 */
+	if(!original_target.empty())
+	{
+		fout << "\t" << get_short_branch_label(newinsn) << "\t -> \t " << original_target << endl;
+	}
 
 }
 
@@ -437,9 +482,9 @@ static void generate_insn_to_insn_maps(VariantIR_t *varirp, VariantIR_t *orig_va
 }
 
 //
-// generate spri for the entire database
+// GenerateSPRI -  spri for the entire database
 //
-void VariantIR_t::generate_spri(ostream &fout)
+void VariantIR_t::GenerateSPRI(ostream &fout)
 {
 	if(orig_variant_ir_p==NULL)
 	{
@@ -449,7 +494,7 @@ void VariantIR_t::generate_spri(ostream &fout)
 	}
 
 
-	this->generate_spri(orig_variant_ir_p,fout);
+	this->GenerateSPRI(orig_variant_ir_p,fout);
 }
 
 
@@ -483,7 +528,7 @@ static void generate_unmoved_insn_targets_set(VariantIR_t* varirp)
 }
 
 
-void VariantIR_t::generate_spri(VariantIR_t *orig_varirp, ostream &fout)
+void VariantIR_t::GenerateSPRI(VariantIR_t *orig_varirp, ostream &fout)
 {
 
 	
