@@ -32,6 +32,7 @@ if [ ! -f  $SMPSA_HOME/SMP-analyze.sh ]; then echo SMPSA_HOME is set poorly, ple
 if [ "$STRATA_HOME"X = X ]; then echo Please set STRATA_HOME; exit 1; fi
 if [ ! -f  $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh ]; then echo STRATA_HOME is set poorly, please fix.; exit 1; fi
 if [ "$SECURITY_TRANSFORMS_HOME"X = X ]; then echo Please set SECURITY_TRANSFORMS; exit 1; fi
+if [ "$IDAROOT"X = X ]; then echo Please set IDAROOT; exit 1; fi
 
 if [ -z $2 ]; then
   echo "Usage: $0 <original_binary> <new_binary>"
@@ -82,7 +83,18 @@ chmod +x $peasoup_binary
 
 
 echo Running IDA Pro static analysis phase ...
-$SMPSA_HOME/SMP-analyze.sh a.ncexe
+# This line is added to turn off screen output to display 
+case "$IDAROOT" in
+    *idapro5* )
+        echo "IDA 5.* detected."
+        $SMPSA_HOME/SMP-analyze.sh a.ncexe
+        ;;
+    *idapro6* )
+        # only works on IDA 6.0+
+        echo "IDA 6.* detected."
+        screen -D -L -ln -m -a -T xterm sh -x $SMPSA_HOME/SMP-analyze.sh a.ncexe 
+        ;;
+esac
 echo Done.
 
 #
