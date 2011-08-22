@@ -115,7 +115,7 @@ if [ ! "X" = "X"$PGUSER ]; then
 	
 	DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[\.;+\\-\ ]/_/g"`
 	
-	MD5HASH=`md5sum a.ncexe | cut -f1 -d' '`
+	MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 	$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME $current_dir  > pdb_register.out 2>&1 # register the program.
 	varid=$?
 	log pdb_register.out
@@ -124,15 +124,15 @@ if [ ! "X" = "X"$PGUSER ]; then
 	log pdb_create_program_tables.out
 
     # check to see if annot file exists before doing anything
-    if [ -f a.ncexe.annot ]; then
+    if [ -f $newname.ncexe.annot ]; then
 
-	    time $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME a.ncexe $MD5HASH a.ncexe.annot 	 > meds2pdb.out 2>&1 # import meds information
+	    time $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME $newname.ncexe $MD5HASH $newname.ncexe.annot 	 > meds2pdb.out 2>&1 # import meds information
 	    log meds2pdb.out
 
 	    if [ $varid -gt 0 ]; then
 		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	> fill_in_cfg.out 	2>&1	# finish the initial IR by setting target/fallthrough 
 		    log fill_in_cfg.out
-		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./a.ncexe    > fill_in_indtargs.out 	2>&1 	# analyze for indirect branch targets 
+		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./$newname.ncexe    > fill_in_indtargs.out 	2>&1 	# analyze for indirect branch targets 
 		    log fill_in_indtargs.out
 		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid				> clone.out 		2>&1 	# create a clone
 		    cloneid=$?
