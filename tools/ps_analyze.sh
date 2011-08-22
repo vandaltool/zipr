@@ -117,7 +117,7 @@ if [ ! "X" = "X"$PGUSER ]; then
 	    time $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME a.ncexe $MD5HASH a.ncexe.annot 	 > meds2pdb.out 2>&1 # import meds information
 	    log meds2pdb.out
 
-	    if [ $varid > 0 ]; then
+	    if [ $varid -gt 0 ]; then
 		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	> fill_in_cfg.out 	2>&1	# finish the initial IR by setting target/fallthrough 
 		    log fill_in_cfg.out
 		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./a.ncexe    > fill_in_indtargs.out 	2>&1 	# analyze for indirect branch targets 
@@ -126,7 +126,7 @@ if [ ! "X" = "X"$PGUSER ]; then
 		    cloneid=$?
 		    log clone.out
 	echo "clone id is: $cloneid"
-		    if [ $cloneid > 0 ]; then
+		    if [ $cloneid -gt 0 ]; then
 															# paths for direct control transfers insns.
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	> fix_calls.out 2>&1 		# fix call insns so they are OK for spri emitting
 			log fix_calls.out
