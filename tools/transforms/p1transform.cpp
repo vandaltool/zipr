@@ -306,21 +306,23 @@ int P1Transform::getStackFramePadding(libIRDB::Function_t *p_fn)
   return stack_frame_padding;
 }
 
-static void undo(map<libIRDB::Instruction_t*, string> undoList)
+static void undo(map<libIRDB::Instruction_t*, string> undoList, libIRDB::Function_t *func)
 {
-  // rollback any changes
-  for(
-      map<Instruction_t*, std::string>::const_iterator mit=undoList.begin();
-      mit != undoList.end();
-      ++mit)
-    {
-      Instruction_t* insn = mit->first;
-      std::string dataBits = mit->second;
+	// rollback any changes
+	fprintf(stderr,"P1: undo transform: %d instructions to rollback for function %s\n", undoList.size(), func->GetName().c_str());
+
+	for(
+	  map<Instruction_t*, std::string>::const_iterator mit=undoList.begin();
+	  mit != undoList.end();
+	  ++mit)
+	{
+		Instruction_t* insn = mit->first;
+		std::string dataBits = mit->second;
   
-      DISASM disasm;
-      insn->Disassemble(disasm);
-      insn->SetDataBits(dataBits);
-    }
+		DISASM disasm;
+		insn->Disassemble(disasm);
+		insn->SetDataBits(dataBits);
+	}
 }
 
 int main(int argc, char **argv)
@@ -388,8 +390,7 @@ int main(int argc, char **argv)
 	
 	if (!rewriteFunction)
 	  {
-	    fprintf(stderr,"P1: undo transform: %d instructions to rollback for function %s\n", undoList.size(), func->GetName().c_str());
-	    undo(undoList);
+	    undo(undoList, func);
 	  }
 	else {
 	  string dirname = "p1.xform/" + func->GetName();
@@ -428,7 +429,7 @@ int main(int argc, char **argv)
 	    functionsTransformed.push_back(func->GetName()); 
 	  }     
 	  else {
-	    undo(undoList);
+	    undo(undoList, func);
 	  }
 	}
       }
