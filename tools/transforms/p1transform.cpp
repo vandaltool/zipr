@@ -379,12 +379,14 @@ int main(int argc, char **argv)
       {
 	Function_t* func=*it;
 	map<libIRDB::Instruction_t*, std::string> undoList;
+	cerr << "P1: looking at function: " << func->GetName() << endl;
 	
 	if (blackListOfFunctions.find(func->GetName()) != blackListOfFunctions.end())
+	{
+		cerr << "P1: filtering out: " << func->GetName() << endl;
 		continue;
+	}
 
-	cerr << "P1: Looking at function: " << func->GetName() << endl;
-	
 	//perform the p1 transform on the given variant's function
 	bool rewriteFunction = p1Transform->rewrite(virp,func,undoList); 
 	
