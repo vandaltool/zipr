@@ -313,10 +313,8 @@ main(int argc, char* argv[])
                 
 		if (!insn->GetFunction()) continue;
 
-		cerr << "INTXFORM: looking at fn: " << insn->GetFunction()->GetName() << endl;
 		if (filteredFunctions.find(insn->GetFunction()->GetName()) != filteredFunctions.end())
 		{
-			cerr << "INTXFORM: filtered out fn: " << insn->GetFunction()->GetName() << endl;
 	                continue;
 		}
 
