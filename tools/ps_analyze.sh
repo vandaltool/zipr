@@ -59,7 +59,6 @@ cp $orig_exe $newdir/$newname.ncexe
 rm $stratafied_exe
 cd $newdir
 
-
 echo -n Creating stratafied executable...
 sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied > pc_confinement.out  2>&1 
 log pc_confinement.out
@@ -143,27 +142,12 @@ if [ ! "X" = "X"$PGUSER ]; then
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	> fix_calls.out 2>&1 		# fix call insns so they are OK for spri emitting
 			log fix_calls.out
 			
-			mkdir p1.xform
-			$PEASOUP_HOME/tools/cover.sh > cover.out 2>&1 #determine suitable coverage for functions to be p1-transformed
+#			$PEASOUP_HOME/tools/cover.sh > cover.out 2>&1 #determine suitable coverage for functions to be p1-transformed
 			
-			# look for the coverage file, if absent, something didn't work (for now probably GraCE)
-			if [ -f p1.xform/p1.coverage ]; then
-				date > p1transform.out
-				$SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe $cloneid p1.xform/p1.filtered_out >> p1transform.out 2>&1 
-				date >> p1transform.out
-				log p1transform.out
-			else
-				echo "No coverage file -- do not attempt P1 transform" > p1transform.out
-			fi
-
-			# reuse black list from p1 step (if present) o/w blacklist libc
-			if [ -f p1.xform/p1.coverage ]; then
-				BLACK_LIST=p1.xform/p1.filtered_out
-			else
-				BLACK_LIST="$PEASOUP_HOME/tools/p1xform.filter.libc.txt"
-			fi
-			$SECURITY_TRANSFORMS_HOME/tools/transforms/integerbugtransform.exe $cloneid "$BLACK_LIST" > integerbugtransform.out 2>&1
-			log integerbugtransform.out
+			# Note to jdh8d: not sure how you want to handle redirecting stdout/stderr & logging
+			# so for now I don't do anything special
+			$PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot
+			$PEASOUP_HOME/tools/do_integertransform.sh $cloneid
 
 			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid > ilr.out 2>&1 				# perform ILR 
 #			log ilr.out

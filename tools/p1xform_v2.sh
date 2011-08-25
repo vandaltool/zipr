@@ -26,7 +26,7 @@ cat $P1_DIR/spasm.out
 CONCOLIC=concolic.files_a.stratafied_0001
 
 echo "====================================================="
-echo "Validate final transformed binary"
+echo "P1: Validating transformed binary..."
 echo "====================================================="
 if [ -f $P1_DIR/a.irdb.bspri ]; then
   $PEASOUP_HOME/tools/ps_validate.sh ./a.stratafied $P1_DIR/a.irdb.bspri $CONCOLIC > ps_validate.out 2> ps_validate.err
