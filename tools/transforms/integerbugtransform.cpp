@@ -94,25 +94,21 @@ static bool isAddSubNonEspInstruction32(Instruction_t *p_instruction)
 	// look for "addl ..." or "subl ..."
 	p_instruction->Disassemble(disasm);
 
-fprintf(stderr,"INT DEBUG: inst: 0x%x [%s] [%s]\n", p_instruction->GetAddress(), disasm.Instruction.Mnemonic, p_instruction->GetComment().c_str());
+//fprintf(stderr,"INT DEBUG: inst: 0x%x [%s] [%s]\n", p_instruction->GetAddress(), disasm.Instruction.Mnemonic, p_instruction->GetComment().c_str());
 
 	// beaengine adds space at the end of the mnemonic string
-	if (strcasestr(disasm.Instruction.Mnemonic, "add ")
-	 || strcasestr(disasm.Instruction.Mnemonic, "addl"))
+	if (strcasestr(disasm.Instruction.Mnemonic, "add "))
 	{
 		return true;
 	}
-	else if (strcasestr(disasm.Instruction.Mnemonic, "sub ") 
-	  || strcasestr(disasm.Instruction.Mnemonic, "subl"))
+	else if (strcasestr(disasm.Instruction.Mnemonic, "sub ")) 
 	{
-/*
 		if (strcasestr(disasm.Argument1.ArgMnemonic,"esp") &&
 			(disasm.Argument2.ArgType & 0xFFFF0000 & (CONSTANT_TYPE | ABSOLUTE_)))
 		{
 			// optimization: filter out "sub esp, K"
 			return false;
 		}
-*/
 		return true;
 	}
 
