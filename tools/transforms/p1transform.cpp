@@ -329,7 +329,7 @@ int main(int argc, char **argv)
 {
   if(argc!=3)
     {
-      cerr<<"Usage: [the executable] <variantid> [file containing name of blacklisted functions]"<<endl;
+      cerr<<"Usage: p1transform.exe <variantid> [file containing name of blacklisted functions]"<<endl;
       exit(-1);
     }
   

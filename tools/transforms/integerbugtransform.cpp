@@ -15,8 +15,8 @@ using namespace std;
 //       getAssembly is now part of the interface for an instruction -- reuse if needed
 //       accept white list
 //       move utility functions to instruction interface
+//       since we filter by functions, we should loop over functions first, then look at instrutions
 //
-
 //
 // return available offset 
 //
@@ -91,21 +91,28 @@ static bool isAddSubNonEspInstruction32(Instruction_t *p_instruction)
 	DISASM disasm;
 
 	// look for "add ..." or "sub ..."
+	// look for "addl ..." or "subl ..."
 	p_instruction->Disassemble(disasm);
 
+fprintf(stderr,"INT DEBUG: inst: 0x%x [%s] [%s]\n", p_instruction->GetAddress(), disasm.Instruction.Mnemonic, p_instruction->GetComment().c_str());
+
 	// beaengine adds space at the end of the mnemonic string
-	if (strcasestr(disasm.Instruction.Mnemonic, "add "))
+	if (strcasestr(disasm.Instruction.Mnemonic, "add ")
+	 || strcasestr(disasm.Instruction.Mnemonic, "addl"))
 	{
 		return true;
 	}
-	else if (strcasestr(disasm.Instruction.Mnemonic, "sub "))
+	else if (strcasestr(disasm.Instruction.Mnemonic, "sub ") 
+	  || strcasestr(disasm.Instruction.Mnemonic, "subl"))
 	{
+/*
 		if (strcasestr(disasm.Argument1.ArgMnemonic,"esp") &&
 			(disasm.Argument2.ArgType & 0xFFFF0000 & (CONSTANT_TYPE | ABSOLUTE_)))
 		{
 			// optimization: filter out "sub esp, K"
 			return false;
 		}
+*/
 		return true;
 	}
 
@@ -218,7 +225,7 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
         dataBits.resize(1);
         dataBits[0] = 0x58;
         poparg_i->SetDataBits(dataBits);
-        poparg_i->SetComment(getAssembly(poparg_i) + " -- with callback to " + p_detector);
+        poparg_i->SetComment(getAssembly(poparg_i) + " -- with callback to " + p_detector + " orig: " + p_instruction->GetComment()) ;
 	poparg_i->SetFallthrough(popa_i); 
 	poparg_i->SetIndirectBranchTargetAddress(poparg_a);  
 	poparg_i->SetCallback(p_detector); 
@@ -302,21 +309,32 @@ main(int argc, char* argv[])
 
 	assert(virp && pidp);
 
-        int numMul = 0, numAddSub = 0;
-	for(
-		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-		it!=virp->GetInstructions().end(); 
-		++it
-	   )
-	{
-		Instruction_t* insn=*it;
-                
-		if (!insn->GetFunction()) continue;
 
-		if (filteredFunctions.find(insn->GetFunction()->GetName()) != filteredFunctions.end())
-		{
-	                continue;
-		}
+        int numMul = 0, numAddSub = 0;
+
+    for(
+        set<Function_t*>::const_iterator itf=virp->GetFunctions().begin();
+        itf!=virp->GetFunctions().end();
+        ++itf
+        )
+      {
+
+        Function_t* func=*itf;
+
+	cerr << "looking at function: " << func->GetName() << endl;
+	if (filteredFunctions.find(func->GetName()) != filteredFunctions.end())
+	{
+		cerr << "filtering function: " << func->GetName() << endl;
+                continue;
+	}
+
+
+  for(
+      set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
+      it!=func->GetInstructions().end();
+      ++it)
+    {
+      Instruction_t* insn=*it;
 
 		if (isMultiplyInstruction32(insn))
 		{
@@ -338,6 +356,7 @@ main(int argc, char* argv[])
 		}
 	}
 
+}
 	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
 	virp->WriteToDB();
 
