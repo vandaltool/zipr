@@ -1,6 +1,6 @@
 
 
-#include <libIRDB.hpp>
+#include <libIRDB-core.hpp>
 #include <utils.hpp> // to_string function from libIRDB
 #include <iostream>
 #include <fstream>

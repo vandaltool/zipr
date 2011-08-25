@@ -1,4 +1,4 @@
-#include <libIRDB.hpp>
+#include <all.hpp>
 #include <utils.hpp>
 #include <stdlib.h>
 using namespace libIRDB;

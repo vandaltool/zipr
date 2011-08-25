@@ -19,7 +19,7 @@ PROGS=p1transform.exe integerbugtransform.exe nulltransform.exe
 CC=g++
 CFLAGS= -g
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ 
-LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx 
+LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB-core -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx 
 OBJS=transformutils.o
 
 .SUFFIXES: .o .c .exe .cpp

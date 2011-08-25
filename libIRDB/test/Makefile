@@ -5,10 +5,10 @@ PROGS=print_variant.exe list_programs.exe create_variant.exe create_variantir.ex
 
 all: $(PROGS)
 
-$(PROGS): ../lib/libIRDB.a
+$(PROGS): ../lib/libIRDB-core.a
 
-.cpp.exe:  $< ../lib/libIRDB.a
-	g++ -g $< -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@
+.cpp.exe:  $< ../lib/libIRDB-core.a
+	g++ -g $< -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@
 
 clean:
 	rm -f $(PROGS)

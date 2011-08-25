@@ -1,6 +1,6 @@
 
 
-#include <libIRDB.hpp>
+#include <libIRDB-core.hpp>
 #include <iostream>
 #include <stdlib.h>
 

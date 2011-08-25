@@ -1,6 +1,5 @@
 
-#include <libIRDB.hpp>
-using namespace libIRDB;
+#include <all.hpp>
 
 
 /*

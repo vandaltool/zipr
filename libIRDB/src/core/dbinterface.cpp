@@ -1,5 +1,5 @@
 
-#include <libIRDB.hpp>
+#include <all.hpp>
 #include <iostream>
 #include <stdlib.h>
 
