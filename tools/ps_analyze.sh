@@ -1,182 +1,338 @@
-#!/bin/sh 
-# This script depends on having the following environment variables defined
-# STRATA - The path to the strata installation
-# An example of these environment variables and their settings are listed in
-# the sample file: $STRATA/security_startup_rc
+#!/bin/bash 
+#
+# ps_analyze.sh - analyze a program and transform it for peasoupification to prevent exploit.
+#
+# This script depends on having many environment variables defined, but it should check that they are defined properly for you.
 #
 # Usage:
-#     peasoup_analyze.sh <original_binary> [ <new_binary> ] 
+#     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
-# Version 1 - prepares binary for PC confinement
-# Version 2 - runs Grace
-# Version 3 - runs p1 transform
 
 
-
-
-log()
+#
+# check that the remaining options are validly parsable, and record what they are.
+#
+check_options()
 {
-	if [ ! -z "$VERBOSE" ]; then
-		cat $1
+
+	# 
+	# fill in better option parsing later.
+	#
+	if [ ! -z $1 ]; then
+		echo Cannot parse option $1
+		exit 1
 	fi
+	
 }
 
+
+#
+# subroutine to determine if a particular phase of ps_analyze is on.
+#
+is_step_on()
+{
+	# for now, all steps are on 
+	return 1
+}
+
+#
+# get_step_error_code
+#
+is_step_error()
+{
+	#
+	# fill in with better info later
+	#
+	return 0
+}
+
+#
+# Detect if this step of the computation is on, and execute it.
+#
+perform_step()
+{
+	step=$1
+	shift
+	command="$*"
+
+	is_step_on $step
+	if [ $? -eq 0 ]; then 
+		return 0
+	fi
+
+	logfile=logs/$step.log
+
+	if [ ! -z "$VERBOSE" ]; then
+		TEE=" 2>&1 | tee $logfile"
+	else
+		TEE=" > $logfile 2>&1"
+	fi
+
+	echo -n Performing step "$step" ...
+	starttime=`date`
+
+	# run the command and redirect to a file.  if verbose is on, also redirect to stdout.
+	eval $command $TEE
+	
+	# record the exit command of $command.  We need the funky pipestatus thing to ensure we don't get the
+	# exit code for TEE.
+	command_exit=${PIPESTATUS[0]}
+
+	is_step_error $step $command_exit
+	if [ $? -ne 0 ]; then
+		echo command failed!
+	else
+		echo Done.  Successful.
+	fi
+
+	echo "# attribute start_time=$starttime" >> $logfile
+	echo "# attribute end_time=`date`" >> $logfile
+	echo "# attribute peasoup_step_name=$step" >> $logfile
+	echo "# attribute peasoup_step_number=$stepnum" >> $logfile
+	echo "# attribute peasoup_step_exitcode=$command_exit" >> $logfile
+
+	# move to the next step 
+	stepnum=`expr $stepnum + 1`
+
+	all_logs="$all_logs $logfile"
+
+	return $command_exit
+}
+
+
+#
+# create a log for ps_analyze
+#
+report_logs()
+{
+	logfile=logs/ps_analyze.log
+
+	echo "# attribute start_time=$ps_starttime" >> $logfile
+	echo "# attribute end_time=`date`" >> $logfile
+	echo "# attribute peasoup_step_name=all_peasoup" >> $logfile
+
+	for i in $all_logs
+	do
+		echo >> $logfile
+		echo ------------------------------------------------------- >> $logfile
+		echo ----- From $i ------------------- >> $logfile
+		echo ------------------------------------------------------- >> $logfile
+		cat $i |sed "s/^# attribute */# attribute renamed_for_ps/" >> $logfile
+		echo ------------------------------------------------------- >> $logfile
+		echo >> $logfile
+	done
+}
+
+
+
+#
+# check if the list of environment variables passed are all defined.
+#
+check_environ_vars()
+{
+
+	while [ true ]; 
+	do
+
+		# done?
+		if [ -z $1 ]; then
+			return;
+		fi
+
+        	# create the $ENVNAME string in varg
+        	varg="\$$1"
+
+        	# find out the environment variable's setting
+        	eval val=$varg
+
+		if [ -z $val ]; then echo Please set $1; exit 1; fi
+
+		shift 
+	done
+
+}
+
+#
+# Check that the filenames passed are valid.
+#
+check_files()
+{
+
+	while [ true ]; 
+	do
+
+		# done?
+		if [ -z $1 ]; then
+			return;
+		fi
+
+		if [ ! -f $1 ]; then 
+			echo PEASOUP ERROR:  $1  not found.  Is there an environment var set incorrectly?
+			exit 1; 
+		fi
+
+		shift 
+	done
+
+}
+
+
+ps_starttime=`date`
+
+#
+# turn on debugging output if it's requested.
+#
 if [ ! -z "$VERBOSE" ]; then
 	set -x
 fi
 
-if [ "$PEASOUP_HOME"X = X ]; then echo Please set PEASOUP_HOME; exit 1; fi
-if [ ! -f  $PEASOUP_HOME/tools/getsyms.sh ]; then echo PEASOUP_HOME is set poorly, please fix.; exit 1; fi
-if [ "$SMPSA_HOME"X = X ]; then echo Please set SMPSA_HOME; exit 1; fi
-if [ ! -f  $SMPSA_HOME/SMP-analyze.sh ]; then echo SMPSA_HOME is set poorly, please fix.; exit 1; fi
-if [ "$STRATA_HOME"X = X ]; then echo Please set STRATA_HOME; exit 1; fi
-if [ ! -f  $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh ]; then echo STRATA_HOME is set poorly, please fix.; exit 1; fi
-if [ "$SECURITY_TRANSFORMS_HOME"X = X ]; then echo Please set SECURITY_TRANSFORMS; exit 1; fi
-if [ "$IDAROOT"X = X ]; then echo Please set IDAROOT; exit 1; fi
 
+#
+# stepnum used for counting how many steps peasoup executes
+# 
+stepnum=0
+
+
+#
+# Check for proper environment variables and files that are necessary to peasoupify a program.
+#
+check_environ_vars PEASOUP_HOME SMPSA_HOME STRATA_HOME SECURITY_TRANSFORMS_HOME IDAROOT
+check_files $PEASOUP_HOME/tools/getsyms.sh $SMPSA_HOME/SMP-analyze.sh  $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh 
+
+
+#
+# Check/parse options
+#
 if [ -z $2 ]; then
-  echo "Usage: $0 <original_binary> <new_binary>"
+  echo "Usage: $0 <original_binary> <new_binary> <options>"
   exit 1
 fi
 
+#
+# record the original program's name
+#
 orig_exe=$1
 newname=a
+shift
 
-if [ -z $2 ]; then
-	stratafied_exe=$orig_exe
-else
-	stratafied_exe=$2
-fi
+#
+# record the new program's name
+#
+stratafied_exe=$1
+shift
 
-date
-echo "Original program: $orig_exe   New program: $stratafied_exe"
+#
+# finish argument parsing
+#
+check_options $*
 
+
+#
+# new program
+#
 name=`basename $orig_exe`
 newdir=peasoup_executable_directory.$name.$$
 
+# create a working dir for all our files using the pid
 mkdir $newdir
+
+# store the original executable as a.ncexe
 cp $orig_exe $newdir/$newname.ncexe
-rm $stratafied_exe
+
+# make sure we overwrite out output file one way or another
+rm -f $stratafied_exe
+
+# and switch to that dir
 cd $newdir
 
-echo -n Creating stratafied executable...
-sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied > pc_confinement.out  2>&1 
-log pc_confinement.out
-echo Done. 
+# next, create a location for our log files
+mkdir logs 	
 
-# We've now got a stratafied program
+#
+# create a stratafied binary that does pc confinement.
+#
+perform_step stratafy_with_pc_confine sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
 
+#
 # Let's output the modified binary
 # This binary will really be a shell script that calls the newly stratafied binary
-
-current_dir=`pwd`
-peasoup_binary=$name.sh
-
-echo "#!/bin/sh" >> $peasoup_binary
-echo "" >> $peasoup_binary
-echo "$PEASOUP_HOME/tools/ps_run.sh $current_dir \"\$@\"" >> $peasoup_binary 
+#
+perform_step create_binary_script $PEASOUP_HOME/tools/do_makepeasoupbinary.sh $name 
 
 
-
-chmod +x $peasoup_binary
-
-
-echo Running IDA Pro static analysis phase ...
-# This line is added to turn off screen output to display 
-case "$IDAROOT" in
-    *idapro5* )
-        echo "IDA 5.* detected."
-        $SMPSA_HOME/SMP-analyze.sh a.ncexe
-        ;;
-    *idapro6* )
-        # only works on IDA 6.0+
-        echo "IDA 6.* detected."
-        screen -D -L -ln -m -a -T xterm sh -x $SMPSA_HOME/SMP-analyze.sh a.ncexe 
-        ;;
-esac
-echo Done.
+#
+# Running IDA Pro static analysis phase ...
+#
+perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 
 #
 # Run concolic engine
 #
-echo Running concolic testing to generate inputs ...
-#$PEASOUP_HOME/tools/do_concolic.sh a  --iterations 25 --logging tracer,instance_times,trace
-$PEASOUP_HOME/tools/do_concolic.sh a  -t 600 -u 60 -i 25 -l tracer,trace,inputs  > do_concolic.out 2>&1
-log do_concolic.out
-echo Done.
+perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600 -u 60 -i 25 -l tracer,trace,inputs  > do_concolic.out 2>&1
+
+
+##
+## Populate IR Database
+##
+
+#
+# get some simple info for the program
+#	
+DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[\.;+\\-\ ]/_/g"`
+MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
+
+#
+# register the program
+#
+perform_step pdb_register "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`"
+varid=$?
 
 
 #
-# Populate IR Database
+# create the tables for the program
 #
-if [ ! "X" = "X"$PGUSER ]; then
-	echo "Registering with IR database: program: $orig_exe server:$PGHOST db:$PGDATABASE"
-	
-	DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[\.;+\\-\ ]/_/g"`
-	
-	MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
-	$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME $current_dir  > pdb_register.out 2>&1 # register the program.
-	varid=$?
-	log pdb_register.out
+perform_step pdb_create_tables $PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $DB_PROGRAM_NAME  
 
-	$PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $DB_PROGRAM_NAME  > pdb_create_program_tables.out 2>&1 # create the tables for the program.
-	log pdb_create_program_tables.out
+#
+# check to see if annot file exists before doing anything, and also that we've created a variant.
+#
+if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 
-    # check to see if annot file exists before doing anything
-    if [ -f $newname.ncexe.annot ]; then
+	# import meds info to table
+	perform_step meds2pdb $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME $newname.ncexe $MD5HASH $newname.ncexe.annot 	 
 
-	    time $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME $newname.ncexe $MD5HASH $newname.ncexe.annot 	 > meds2pdb.out 2>&1 # import meds information
-	    log meds2pdb.out
+	# build basic IR
+	perform_step fill_in_cfg $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
+	perform_step fill_in_indtargs $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./$newname.ncexe    
 
-	    if [ $varid -gt 0 ]; then
-		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	> fill_in_cfg.out 	2>&1	# finish the initial IR by setting target/fallthrough 
-		    log fill_in_cfg.out
-		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./$newname.ncexe    > fill_in_indtargs.out 	2>&1 	# analyze for indirect branch targets 
-		    log fill_in_indtargs.out
-		    $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid				> clone.out 		2>&1 	# create a clone
-		    cloneid=$?
-		    log clone.out
-	echo "clone id is: $cloneid"
-		    if [ $cloneid -gt 0 ]; then
-															# paths for direct control transfers insns.
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	> fix_calls.out 2>&1 		# fix call insns so they are OK for spri emitting
-			log fix_calls.out
-			
-#			$PEASOUP_HOME/tools/cover.sh > cover.out 2>&1 #determine suitable coverage for functions to be p1-transformed
-			
-			# Note to jdh8d: not sure how you want to handle redirecting stdout/stderr & logging
-			# so for now I don't do anything special
-			$PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot
-			$PEASOUP_HOME/tools/do_integertransform.sh $cloneid
+	# finally create a clone so we can do some transforms 
+	perform_step clone $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid				
+	cloneid=$?
 
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid > ilr.out 2>&1 				# perform ILR 
-#			log ilr.out
+	if [ $cloneid -gt 0 ]; then
+		# do the basic tranforms we're performing for peasoup 
+		perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
+#		perform_step cover $PEASOUP_HOME/tools/cover.sh 
+		perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot
+		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid
+		perform_step ilr $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
 
-			$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri	> spri.out 2>&1 # generate the aspri code
-			log spri.out
-			$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe > spasm.out 2>&1 	# generate the bspri code
-			log spasm.out
-		fi
+		# generate aspri, and assemble it to bspri
+		perform_step generate_spri $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri
+		perform_step spasm $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe 
 	fi
-	echo	-------------------------------------------------------------------------------
-	echo    ---------            Orig Variant ID is $varid         ------------------------
-	echo	-------------------------------------------------------------------------------
-	echo    ---------            Cloned Variant ID is $cloneid     ------------------------
-	echo	-------------------------------------------------------------------------------
-
-    else
-        # annotations file didn't exist
-        echo "ERROR: annot file does not exist.  Not performing IRDB step"
-        echo "Unable to create protected executable"
-        exit -1
-    fi
-
 fi
+
+#
+# create a report for all of ps_analyze.
+#
+report_logs
 
 # go back to original directory
 cd - > /dev/null 2>&1
 
 cp $newdir/$name.sh $stratafied_exe
+
 
 # return the exit code of the copy as the final return value 
 # So that a predictable return value is returned

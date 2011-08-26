@@ -133,7 +133,9 @@ tools/db/pdb_register.sh -text
 tools/db/pdb_setup.sh -text
 tools/db/pdb_teardown.sh -text
 tools/do_concolic.sh -text
+tools/do_idapro.sh -text
 tools/do_integertransform.sh -text
+tools/do_makepeasoupbinary.sh -text
 tools/do_p1transform.sh -text
 tools/generate_exe.sh -text
 tools/generate_io_baseline.sh -text
