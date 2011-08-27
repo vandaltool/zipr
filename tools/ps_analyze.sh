@@ -62,21 +62,19 @@ perform_step()
 
 	logfile=logs/$step.log
 
-	if [ ! -z "$VERBOSE" ]; then
-		TEE=" 2>&1 | tee $logfile"
-	else
-		TEE=" > $logfile 2>&1"
-	fi
-
 	echo -n Performing step "$step" ...
 	starttime=`date`
 
-	# run the command and redirect to a file.  if verbose is on, also redirect to stdout.
-	eval $command $TEE
+	# If verbose is on, tee to a file 
+	if [ ! -z "$VERBOSE" ]; then
+		$command 2>&1 | tee $logfile
+		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
+	else
+		$command > $logfile 2>&1 
+		command_exit=$?
+	fi
 	
-	# record the exit command of $command.  We need the funky pipestatus thing to ensure we don't get the
-	# exit code for TEE.
-	command_exit=${PIPESTATUS[0]}
+	echo command exit status for step $step is $command_exit
 
 	is_step_error $step $command_exit
 	if [ $? -ne 0 ]; then
