@@ -6,7 +6,7 @@
 #
 for i in $*
 do
-	echo $i|egrep "^-";	# check for starting with a - 
+	echo $i|egrep "^-" > /dev/null;	# check for starting with a - 
 	if [ 0 -eq  $? ] ; then 
 		echo $i|egrep "^-o" > /dev/null;	# check for starting with a -o 
 		dasho=$?

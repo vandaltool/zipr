@@ -7,21 +7,21 @@ CXX=DO_NOT_USE
 CFLAGS=DO_NOT_USE
 LD=DO_NOT_USE
 
-.SUFFIXES: .o .c .cpp .exe
+.SUFFIXES: .o .c .cpp .stock .protected
 
-exes=hanoi.exe hanoi_overrun.exe hanoi_heap_overrun.exe hanoi_stack_overrun.exe print_ptr.exe malloc.exe block_copy.exe hello.exe hanoi_overrun_tainted.exe hanoi_overrun_taintedenv.exe memcpy.exe cmd_args_005.exe dumbledore_stdin.exe dumbledore_cmd.exe dumbledore_file.exe
+exes=hanoi.protected hanoi_overrun.protected hanoi_heap_overrun.protected hanoi_stack_overrun.protected print_ptr.protected malloc.protected block_copy.protected hello.protected hanoi_overrun_tainted.protected hanoi_overrun_taintedenv.protected memcpy.protected cmd_args_005.protected dumbledore_stdin.protected dumbledore_cmd.protected dumbledore_file.protected
 
+ilr=on
 
 all: env_check  ${exes}
 
-
-
 .PHONY: env_check 
 
-
-.o.exe:
+.o.stock:
 	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
-	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@
+
+.stock.protected:
+	${PEASOUP_HOME}/tools/ps_analyze.sh  $< $@ --step ilr=${ilr}
 
 .c.o:
 	${PEASOUP_HOME}/tools/ps_comp.sh $< 
@@ -58,7 +58,7 @@ env_check:
 
 clean:
 	rm -f *.o *.syms *.map chopzero hanoi hanoi_overrun hanoi_heap_overrun malloc block_copy print_ptr hanoi_stack_overrun dumbledore a.out memcpy hanoi_overrun_taintedenv dumbledore_cmd hanoi_overrun_tainted hello cmd_args_005
-	rm -f *.exe *.dis *.data *.idb *.log *.ncexe *.annot *.readelf temp.* *.temp *.stratafied *.asm *.SMPobjdump *.id0 *.id1 *.til *.nam
+	rm -f *.exe *.dis *.data *.idb *.log *.ncexe *.annot *.readelf temp.* *.temp *.stratafied *.asm *.SMPobjdump *.id0 *.id1 *.til *.nam *.stock *.protected
 	rm -Rf concolic.files_*
 	rm -Rf peasoup_executable_directory.*
 	rm -f strata.log.*

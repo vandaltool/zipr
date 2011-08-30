@@ -8,6 +8,16 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+check_step_option()
+{
+	echo $1|egrep "=off$|=on$" > /dev/null
+	if [ $? -ne 0 ]; then
+		echo Malformed option: $1;
+		exit -4;
+	fi
+	
+}
+
 
 #
 # check that the remaining options are validly parsable, and record what they are.
@@ -16,11 +26,44 @@ check_options()
 {
 
 	# 
-	# fill in better option parsing later.
-	#
+	# loop to process options.
+	# 
+
+	# Note that we use `"$@"' to let each command-line parameter expand to a 
+	# separate word. The quotes around `$@' are essential!
+	# We need TEMP as the `eval set --' would nuke the return value of getopt.
+	TEMP=`getopt -o s: --long step: -n 'ps_analyze.sh' -- "$@"`
+
+	# error check #
+	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
+
+	# Note the quotes around `$TEMP': they are essential!
+	eval set -- "$TEMP"
+
+	while true ; do
+		case "$1" in
+		-s|--step) 
+			echo "found option --step with argument $2"
+			check_step_option $2
+			phases_off=" $phases_off $2 "
+			shift 2 
+			;;
+		--) 	shift 
+			break 
+			;;
+		*) 	echo "Internal error!" 
+		 	exit -2 
+			;;
+		esac
+	done
+
+	# report errors if found
 	if [ ! -z $1 ]; then
-		echo Cannot parse option $1
-		exit 1
+		echo Unparsed parameters:
+	fi
+	for arg do echo '--> '"\`$arg'" ; done
+	if [ ! -z $1 ]; then
+		exit -3;	
 	fi
 	
 }
@@ -31,19 +74,75 @@ check_options()
 #
 is_step_on()
 {
-	# for now, all steps are on 
+	step=$1
+
+	echo $phases_off|egrep "$step=off" > /dev/null
+	if [ $? -eq 0 ] ; then
+		return 0
+	fi
+
+	# for now, all steps are on unless explicitly set to off
 	return 1
 }
 
 #
-# get_step_error_code
+# is_step_error decide based on the step (in $1) and the exit code (in $2) if there was a failure.
 #
 is_step_error()
 {
-	#
-	# fill in with better info later
-	#
-	return 0
+	my_step=$1
+	my_error=$2
+
+
+	case $my_step in
+		# registering the program should return the variant ID, 0 or negative is error.
+		pdb_register)
+			if [ $my_error -gt 0 ]; then
+				return 0;
+			fi
+			return 1;
+		;;
+		# cloning the program should return the variant ID, 0 or negative is error.
+		clone)
+			if [ $my_error -gt 0 ]; then
+				return 0;
+			fi
+			return 1;
+		;;
+		*)
+			if [ $my_error -eq 0 ]; then
+				# if not otherwise specified, programs should return 0
+				return 0;
+			fi
+			return 1;
+	esac
+}
+
+#
+# return the severity of the error for the step in $1
+#
+stop_if_error()
+{
+	my_step=$1
+
+
+	case $my_step in
+		# getting the annotation file right is necessary-ish
+		meds_static)
+			return 1;
+		;;
+		# registering the program is necessary 
+		pdb_register)
+			return 2;
+		;;
+		# cloning is necessary 
+		clone)
+			return 3;
+		;;
+		# other steps are optional
+		*)
+			return 0;
+	esac
 }
 
 #
@@ -57,6 +156,7 @@ perform_step()
 
 	is_step_on $step
 	if [ $? -eq 0 ]; then 
+		echo Skipping step $step.
 		return 0
 	fi
 
@@ -74,11 +174,16 @@ perform_step()
 		command_exit=$?
 	fi
 	
-	echo command exit status for step $step is $command_exit
-
 	is_step_error $step $command_exit
 	if [ $? -ne 0 ]; then
-		echo command failed!
+		echo Done.  Command failed!
+
+		# check if we need to exit
+		stop_if_error $step
+		if [ $? -lt $error_threshold ]; then 
+			echo The $step step is necessary, but failed.  Exiting ps_analyze early.
+			exit -1;
+		fi
 	else
 		echo Done.  Successful.
 	fi
@@ -174,15 +279,24 @@ check_files()
 
 }
 
-
-ps_starttime=`date`
-
 #
 # turn on debugging output if it's requested.
 #
 if [ ! -z "$VERBOSE" ]; then
 	set -x
 fi
+
+
+#
+# set the threshold value.  if a step errors with a more severe error (1=most severe, >1 lesser severe)
+# than the error_threshold, we exit.
+#
+error_threshold=1
+
+#
+# record when we started processing:
+#
+ps_starttime=`date`
 
 
 #
@@ -307,6 +421,10 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 	perform_step clone $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid				
 	cloneid=$?
 
+	
+	#	
+	# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
+	#
 	if [ $cloneid -gt 0 ]; then
 		# do the basic tranforms we're performing for peasoup 
 		perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
