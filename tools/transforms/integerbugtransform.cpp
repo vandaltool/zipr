@@ -126,6 +126,18 @@ static bool isAddSubNonEspInstruction32(Instruction_t *p_instruction)
 //      popf
 //      popa
 //
+//      jo <OCH>
+//      jc <OCH>
+//      jmp <originalFallthroughInstruction>
+// OCH: pusha
+//      pushf
+//      push_arg
+//      push L1
+//      ... setup detector ...
+//  L1: pop_arg
+//      popf
+//      popa
+//
 static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, std::string p_detector)
 {
 	assert(p_virp && p_instruction);
@@ -133,6 +145,9 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
         string dataBits;
 
 	AddressID_t *jno_a =new AddressID_t;
+	AddressID_t *jo_a =new AddressID_t;
+	AddressID_t *jc_a =new AddressID_t;
+	AddressID_t *jmporigfallthrough_a =new AddressID_t;
 	AddressID_t *pusha_a =new AddressID_t;
 	AddressID_t *pushf_a =new AddressID_t;
 	AddressID_t *pusharg_a =new AddressID_t;
@@ -141,7 +156,10 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
 	AddressID_t *popf_a =new AddressID_t;
 	AddressID_t *popa_a =new AddressID_t;
 
-	jno_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+//	jno_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	jo_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	jc_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	jmporigfallthrough_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pusha_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pushf_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pusharg_a->SetFileID(p_instruction->GetAddress()->GetFileID());
@@ -150,7 +168,10 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
 	popf_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	popa_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 
-	Instruction_t* jno_i = new Instruction_t;
+//	Instruction_t* jno_i = new Instruction_t;
+	Instruction_t* jo_i = new Instruction_t;
+	Instruction_t* jc_i = new Instruction_t;
+	Instruction_t* jmporigfallthrough_i = new Instruction_t;
 	Instruction_t* pusha_i = new Instruction_t;
 	Instruction_t* pushf_i = new Instruction_t;
 	Instruction_t* pusharg_i = new Instruction_t;
@@ -163,7 +184,10 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
 	virtual_offset_t postDetectorReturn = getAvailableAddress(p_virp);
 	poparg_a->SetVirtualOffset(postDetectorReturn);
 
-        jno_i->SetAddress(jno_a);
+//        jno_i->SetAddress(jno_a);
+        jo_i->SetAddress(jo_a);
+        jc_i->SetAddress(jc_a);
+        jmporigfallthrough_i->SetAddress(jmporigfallthrough_a);
         pusha_i->SetAddress(pusha_a);
         pushf_i->SetAddress(pushf_a);
         pusharg_i->SetAddress(pusharg_a);
@@ -174,9 +198,37 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
 
         // handle the original mul or imul instruction
 	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
-        p_instruction->SetFallthrough(jno_i); 
+        p_instruction->SetFallthrough(jo_i); 
 
+        // jo OCH
+        dataBits.resize(2);
+        dataBits[0] = 0x70;
+        dataBits[1] = 0x15; // value doesn't matter, we will fill it in later
+        jo_i->SetDataBits(dataBits);
+        jo_i->SetComment(getAssembly(jo_i));
+//	jo_i->SetFallthrough(jc_i); 
+	jo_i->SetFallthrough(jmporigfallthrough_i); 
+	jo_i->SetTarget(pusha_i); 
+
+        // jc OCH
+        dataBits.resize(2);
+        dataBits[0] = 0x72;
+        dataBits[1] = 0x15; // value doesn't matter, we will fill it in later
+        jc_i->SetDataBits(dataBits);
+        jc_i->SetComment(getAssembly(jc_i));
+	jc_i->SetFallthrough(jmporigfallthrough_i); 
+	jc_i->SetTarget(pusha_i); 
+        
+        // jmp <originalFallThrough>
+        dataBits.resize(2);
+        dataBits[0] = 0xEB;
+        dataBits[1] = 0x15; // value doesn't matter, we will fill it in later
+        jmporigfallthrough_i->SetDataBits(dataBits);
+        jmporigfallthrough_i->SetComment(getAssembly(jmporigfallthrough_i));
+	jmporigfallthrough_i->SetTarget(nextOrig_i); 
+        
         // jno IO
+/*
         dataBits.resize(2);
         dataBits[0] = 0x71;
         dataBits[1] = 0x15; // value doesn't matter, we will fill it in later
@@ -184,6 +236,7 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
         jno_i->SetComment(getAssembly(jno_i));
 	jno_i->SetFallthrough(pusha_i); 
 	jno_i->SetTarget(nextOrig_i); 
+*/
 
         // pusha   
         dataBits.resize(1);
@@ -242,7 +295,9 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
 	popa_i->SetFallthrough(nextOrig_i); 
 
         // add new address to IR
-	p_virp->GetAddresses().insert(jno_a);
+	p_virp->GetAddresses().insert(jo_a);
+	p_virp->GetAddresses().insert(jc_a);
+	p_virp->GetAddresses().insert(jmporigfallthrough_a);
 	p_virp->GetAddresses().insert(pusha_a);
 	p_virp->GetAddresses().insert(pusharg_a);
 	p_virp->GetAddresses().insert(pushf_a);
@@ -252,7 +307,9 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
 	p_virp->GetAddresses().insert(popa_a);
 
         // add new instructions to IR
-	p_virp->GetInstructions().insert(jno_i);
+	p_virp->GetInstructions().insert(jo_i);
+	p_virp->GetInstructions().insert(jc_i);
+	p_virp->GetInstructions().insert(jmporigfallthrough_i);
 	p_virp->GetInstructions().insert(pusha_i);
 	p_virp->GetInstructions().insert(pusharg_i);
 	p_virp->GetInstructions().insert(pushf_i);

@@ -443,9 +443,9 @@ int main(int argc, char **argv)
       exit(-1);
     }
   
-  cout << "List of functions transformed: count = " << functionsTransformed.size() << endl;
+  cout << "# attribute number_functions_transformed=" << functionsTransformed.size() << endl;
   for (int i = 0; i < functionsTransformed.size(); ++i)
-    cout << "function: " << functionsTransformed[i] << endl;
+    cout << "# attribute function_name=" << functionsTransformed[i] << endl;
   
   return 0;
 }
