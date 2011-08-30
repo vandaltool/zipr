@@ -160,4 +160,5 @@ tools/ps_validate.sh -text
 tools/ps_validate_ss.deprecated.sh -text
 tools/set_dyna_link.sh -text
 tools/test_controller.sh -text
+tools/update_env_var.sh -text
 tools/validate.sh -text

@@ -43,7 +43,6 @@ check_options()
 	while true ; do
 		case "$1" in
 		-s|--step) 
-			echo "found option --step with argument $2"
 			check_step_option $2
 			phases_off=" $phases_off $2 "
 			shift 2 
@@ -216,11 +215,12 @@ report_logs()
 
 	for i in $all_logs
 	do
+		stepname=`basename $i .log`
 		echo >> $logfile
 		echo ------------------------------------------------------- >> $logfile
 		echo ----- From $i ------------------- >> $logfile
 		echo ------------------------------------------------------- >> $logfile
-		cat $i |sed "s/^# ATTRIBUTE */# ATTRIBUTE renamed_for_ps/" >> $logfile
+		cat $i |sed "s/^# ATTRIBUTE */# ATTRIBUTE ps_$i_/" >> $logfile
 		echo ------------------------------------------------------- >> $logfile
 		echo >> $logfile
 	done
@@ -291,7 +291,7 @@ fi
 # set the threshold value.  if a step errors with a more severe error (1=most severe, >1 lesser severe)
 # than the error_threshold, we exit.
 #
-error_threshold=1
+error_threshold=0
 
 #
 # record when we started processing:
@@ -370,6 +370,16 @@ perform_step stratafy_with_pc_confine sh $STRATA_HOME/tools/pc_confinement/strat
 # This binary will really be a shell script that calls the newly stratafied binary
 #
 perform_step create_binary_script $PEASOUP_HOME/tools/do_makepeasoupbinary.sh $name 
+perform_step heaprand 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_HEAPRAND 1
+perform_step double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
+perform_step pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
+perform_step isr 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
+
+
+STRATA_DOUBLE_FREE=0
+STRATA_HEAPRAND=0
+STRATA_PC_CONFINE=0
+STRATA_PC_CONFINE_XOR=0
 
 
 #
