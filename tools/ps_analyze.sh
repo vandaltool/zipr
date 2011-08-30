@@ -83,11 +83,11 @@ perform_step()
 		echo Done.  Successful.
 	fi
 
-	echo "# attribute start_time=$starttime" >> $logfile
-	echo "# attribute end_time=`date`" >> $logfile
-	echo "# attribute peasoup_step_name=$step" >> $logfile
-	echo "# attribute peasoup_step_number=$stepnum" >> $logfile
-	echo "# attribute peasoup_step_exitcode=$command_exit" >> $logfile
+	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
+	echo "# ATTRIBUTE end_time=`date`" >> $logfile
+	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
+	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
+	echo "# ATTRIBUTE peasoup_step_exitcode=$command_exit" >> $logfile
 
 	# move to the next step 
 	stepnum=`expr $stepnum + 1`
@@ -105,9 +105,9 @@ report_logs()
 {
 	logfile=logs/ps_analyze.log
 
-	echo "# attribute start_time=$ps_starttime" >> $logfile
-	echo "# attribute end_time=`date`" >> $logfile
-	echo "# attribute peasoup_step_name=all_peasoup" >> $logfile
+	echo "# ATTRIBUTE start_time=$ps_starttime" >> $logfile
+	echo "# ATTRIBUTE end_time=`date`" >> $logfile
+	echo "# ATTRIBUTE peasoup_step_name=all_peasoup" >> $logfile
 
 	for i in $all_logs
 	do
@@ -115,7 +115,7 @@ report_logs()
 		echo ------------------------------------------------------- >> $logfile
 		echo ----- From $i ------------------- >> $logfile
 		echo ------------------------------------------------------- >> $logfile
-		cat $i |sed "s/^# attribute */# attribute renamed_for_ps/" >> $logfile
+		cat $i |sed "s/^# ATTRIBUTE */# ATTRIBUTE renamed_for_ps/" >> $logfile
 		echo ------------------------------------------------------- >> $logfile
 		echo >> $logfile
 	done
