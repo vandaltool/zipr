@@ -4,8 +4,10 @@
 
 CC=gcc
 CXX=g++
-CFLAGS=-O
+CFLAGS=-O -w
+CXXFLAGS=-O -w
 LD=gcc
+LDFLAGS=
 
 .SUFFIXES: .o .c .cpp .stock .protected
 
@@ -21,16 +23,17 @@ all: env_check  ${exes}
 
 
 .o.stock:
-	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
+	${LD} ${LDFLAGS} $< -o $@ 
 
 .stock.protected:
 	${PEASOUP_HOME}/tools/ps_analyze.sh  $< $@ --step ilr=${ilr}
 
 .c.o:
 	${PEASOUP_HOME}/tools/ps_comp.sh $< 
+	${CC} ${CFLAGS} -c $< 
 
 .cpp.o:
-	${PEASOUP_HOME}/tools/ps_comp++.sh $< 
+	${CXX} ${CXXFLAGS} -c $< 
 
 chopzero:
 	@ if [ ! -f chopzero ]; then gcc chopzero.c -o chopzero -O3 ; fi

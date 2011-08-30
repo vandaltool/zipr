@@ -7,6 +7,9 @@ c++_examples/newdel_broke1.cpp -text
 c++_examples/newdel_broke2.cpp -text
 c++_examples/newdel_broke3.cpp -text
 c++_examples/newdel_broke4.cpp -text
+c++_examples/newdel_broke5.cpp -text
+c++_examples/newdel_broke6.cpp -text
+c++_examples/newdel_broke7.cpp -text
 chopzero_src/Makefile -text
 chopzero_src/chopzero.c -text
 demos/Makefile -text
