@@ -94,26 +94,29 @@ int main(int argc, char **argv)
 
   switch(selector)
   {
+    // good inputs here
     case 0:
-      bufptr = integer_overflow_into_malloc_2(4, 4);
-    break;
+      bufptr = integer_overflow_into_malloc_2(1, 4);
+      bufptr = integer_overflow_into_malloc_1(1);
+      bufptr = integer_underflow(10, buf);
+      result = signed_error_bypass_check(10);
+      bufptr = trunc_error(10, 10);
+
+    // bad inputs here
     case 1:
       bufptr = integer_overflow_into_malloc_2(2000000000, 4);
-    break;
+      break;
     case 2:
-      bufptr = integer_overflow_into_malloc_1(4);
-    break;
-    case 3:
       bufptr = integer_overflow_into_malloc_1(4000000000);
-    break;
+      break;
+    case 3:
+      bufptr = integer_underflow(1, buf);
+      break;
     case 4:
-      bufptr = integer_underflow(10, buf);
-    break;
-    case 5:
-      result = signed_error_bypass_check(2048);
-    break;
-    case 6:
       result = signed_error_bypass_check(4000000000);
-    break;
+      break;
+    case 5:
+      bufptr = trunc_error(65000, 10);
+      break;
   }
 }
