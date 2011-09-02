@@ -1,5 +1,7 @@
-#define MAX_INT 2147483647
-#define MAX_UINT 4294967295
+#include <stdio.h>
+
+#define INT_MAX 2147483647
+#define UINT_MAX 4294967295
 
 int int_fussy_overflow(int x, int y)
 {
@@ -58,6 +60,23 @@ char* integer_underflow(unsigned len, char *src)
   return comm;
 }
 
+#define BUFF_SIZE 10
+
+// if len is < 0, this will bypass the check 
+// which will result in an overflow of buf[] 
+char* sign_error_buffer_overflow(int len, char *src)
+{
+  printf("sign_error_buffer_overflow(): %d\n", len);
+  char buf[BUFF_SIZE];
+  if (len < BUFF_SIZE) {
+    printf("Copying %u bytes into buffer of size %u\n", len, BUFF_SIZE);
+    return memcpy(buf, src, len);
+  }
+  else {
+    return NULL;
+  }
+}
+
 char* signed_error(int size)
 {
   printf("signed_error(): %d\n", size);
@@ -87,6 +106,24 @@ char* trunc_error(unsigned size, int numElements)
   return malloc(len * numElements);
 }
 
+short sign_extend_char_short(char c)
+{
+  short s;
+  return s = c;
+}
+
+short sign_extend_char_long(char c)
+{
+  long l;
+  return l = c;
+}
+
+short sign_extend_short_long(short s)
+{
+  long l;
+  return l = s;
+}
+
 int main(int argc, char **argv)
 {
   int selector = 0;
@@ -109,9 +146,10 @@ int main(int argc, char **argv)
       bufptr = integer_underflow(10, buf);
       result = signed_error_bypass_check(10);
       bufptr = trunc_error(10, 10);
+      signed_overflow(2, 3);
       break;
 
-    // bad inputs here
+    // "bad" inputs here
     case 1:
       bufptr = integer_overflow_into_malloc_2(2000000000, 4);
       break;
@@ -128,10 +166,16 @@ int main(int argc, char **argv)
       bufptr = trunc_error(65000, 10);
       break;
     case 6:
-      int_fussy_overflow(MAX_INT,MAX_INT);
+      int_fussy_overflow(INT_MAX,INT_MAX);
       break;
     case 7:
-      signed_overflow(MAX_INT, MAX_INT);
+      signed_overflow(INT_MAX, INT_MAX);
+      break;
+    case 8:
+      signed_overflow(INT_MAX, INT_MAX);
+      break;
+    case 9:
+      sign_error_buffer_overflow(-1, buf);
       break;
   }
 }

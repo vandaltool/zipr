@@ -1,0 +1,21 @@
+#TYPE1# #FUNCTION_NAME#(#TYPE1# x, #TYPE2# y)
+{
+  #TYPE1# result = x * y;
+  printf("result = #FORMAT_SPECIFIER#\n", result);
+  return result;
+}
+
+main()
+{
+  #TYPE1# x = 127;
+  #TYPE2# y = 0xFFFFFFFF;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x0FFFFFFF;
+  y = 0x0FFFFFFF;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x0000007F;
+  y = 0x0000007F;
+  #FUNCTION_NAME#(x, y);
+}
