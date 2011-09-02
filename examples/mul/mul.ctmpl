@@ -1,3 +1,6 @@
+#define INT_MAX 2147483647
+#define UINT_MAX 4294967295
+
 #TYPE1# #FUNCTION_NAME#(#TYPE1# x, #TYPE2# y)
 {
   #TYPE1# result = x * y;
@@ -7,15 +10,94 @@
 
 main()
 {
-  #TYPE1# x = 127;
-  #TYPE2# y = 0xFFFFFFFF;
+  #TYPE1# x;
+  #TYPE2# y;
+
+  x = 0x7f;
+  y = 0x7f;
   #FUNCTION_NAME#(x, y);
 
-  x = 0x0FFFFFFF;
-  y = 0x0FFFFFFF;
+  x = 0x7f;
+  y = 0xff;
   #FUNCTION_NAME#(x, y);
 
-  x = 0x0000007F;
-  y = 0x0000007F;
+  x = 0x7f;
+  y = 0x7fff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7f;
+  y = 0xffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7f;
+  y = 0x7fffffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7f;
+  y = 0xffffffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fff;
+  y = 0x7f;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fff;
+  y = 0xff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fff;
+  y = 0x7fff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fff;
+  y = 0xffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fff;
+  y = 0x7fffffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fff;
+  y = 0xffffffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fffffff;
+  y = 0x7f;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fffffff;
+  y = 0xff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fffffff;
+  y = 0x7fff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fffffff;
+  y = 0xffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fffffff;
+  y = 0x7fffffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0x7fffffff;
+  y = 0xffffffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0xff;
+  y = 0xff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0xffff;
+  y = 0xffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 0xffffffff;
+  y = 0xffffffff;
+  #FUNCTION_NAME#(x, y);
+
+  x = 255;
+  y = 255;
   #FUNCTION_NAME#(x, y);
 }

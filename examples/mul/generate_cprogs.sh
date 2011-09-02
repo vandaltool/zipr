@@ -39,7 +39,7 @@ create_prog()
 
 	gcc -w $progname.c -o $progname.orig.exe
 	
-	$PEASOUP_HOME/tools/ps_analyze.sh --step ilr=off --step p1transform=off $progname.orig.exe $progname.protected.exe
+	$PEASOUP_HOME/tools/ps_analyze.sh $progname.orig.exe $progname.protected.exe --step ilr=off --step p1transform=off --step concolic=off
 }
 
 for type1 in $types
