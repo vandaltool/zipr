@@ -15,14 +15,14 @@ class Instruction_t : public BaseObj_t
 	Instruction_t(db_id_t id, AddressID_t *addr, Function_t *func, db_id_t orig_id, 
 		std::string data, std::string callback, std::string comment, AddressID_t *my_indTarg, db_id_t doip_id);
 
-        AddressID_t* GetAddress() { return my_address; }
-        Function_t* GetFunction() { return my_function; }
-        db_id_t GetOriginalAddressID() { return orig_address_id; }
-        Instruction_t* GetFallthrough() { return fallthrough; }
-        Instruction_t* GetTarget() { return target; }
-        std::string GetDataBits()  { return data; }
-        std::string GetCallback()  { return callback; }
-        std::string GetComment()   { return comment; }
+        AddressID_t* GetAddress() const { return my_address; } 
+        Function_t* GetFunction() const { return my_function; } 
+        db_id_t GetOriginalAddressID() const { return orig_address_id; } 
+        Instruction_t* GetFallthrough() const { return fallthrough; } 
+        Instruction_t* GetTarget() const { return target; } 
+        std::string GetDataBits()  const { return data; } 
+        std::string GetCallback()  const { return callback; } 
+        std::string GetComment()   const { return comment; } 
   
 
         void SetAddress(AddressID_t* newaddr)  { my_address=newaddr; }
@@ -41,6 +41,8 @@ class Instruction_t : public BaseObj_t
         std::string WriteToDB(VariantID_t *vid, db_id_t newid);
         int Disassemble(DISASM &d); 
         bool Assemble(std::string assembly);
+
+	bool IsFunctionExit() const;
 
     private:
         AddressID_t *my_address;

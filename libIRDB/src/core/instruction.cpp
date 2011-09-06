@@ -169,3 +169,27 @@ string Instruction_t::WriteToDB(VariantID_t *vid, db_id_t newid)
 	return q;
 }
 
+
+/* return true if this instructino exits the function -- true if there's no function, because each instruction is it's own function? */
+bool Instruction_t::IsFunctionExit() const 
+{ 
+	if(!my_function) 
+		return true;  
+
+	/* if there's a target that's outside this function */
+	Instruction_t *target=GetTarget();
+	if(target && !is_in_set(my_function->GetInstructions(),target))
+		return true;
+
+	/* if there's a fallthrough that's outside this function */
+	Instruction_t *ft=GetFallthrough();
+	if(fallthrough && !is_in_set(my_function->GetInstructions(),ft))
+		return true;
+
+	/* some instructions have no next-isntructions defined in the db, and we call them function exits */
+	if(!target && !fallthrough)
+		return true;
+
+	return false;
+}
+

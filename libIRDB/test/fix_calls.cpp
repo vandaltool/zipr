@@ -45,7 +45,7 @@ void fix_call(Instruction_t* insn, VariantIR_t *virp)
 	/* set the fields in the new instruction */
 	callinsn->SetAddress(calladdr);
 	callinsn->SetTarget(insn->GetTarget());
-	callinsn->SetFallthrough(insn->GetFallthrough());
+	callinsn->SetFallthrough(NULL);
 	callinsn->SetFunction(insn->GetFunction());
 	callinsn->SetComment(insn->GetComment()+" Jump part");
 
