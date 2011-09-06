@@ -1,7 +1,60 @@
 #!/bin/bash
 
 #types="char short int long unsigned+char unsigned+short unsigned+int unsigned+long";
-types="int char"
+types="char short"
+sharedlib_gccflags="-O -O2 -fomit-frame-pointer"
+
+#types="int char"
+
+#
+# The flags passed to the compiler
+#
+# note use of + to denote multiple parameters together.
+# (but you can't use + as an argument to gcc.)
+#
+
+create_test()
+{
+	my_benchname=$1
+	my_benchflag=$2
+	my_gccflag=$3
+	my_libtype=$4
+
+        #
+        # demangle the internal representation of the benchflags and gcc flags
+        # substitute a + with a space
+        #
+        real_benchflag=`echo $my_benchflag | sed "s/+/ /g"`
+        real_gccflag=`echo $my_gccflag | sed "s/+/ /g"`
+
+        #
+        # mangle the benchflags and gccflags for filename display. 
+        #
+        disp_benchflag=$my_benchflag
+        disp_gccflag=$my_gccflag
+
+        #
+        # if the name is empty, reset to a nice string for naming.  Note:  This means you should not use "empty" as a parameter.
+        #
+        if [ $my_benchflag"X" = "X" ]; then disp_benchflag="nobenchflag"; fi;
+        if [ $my_gccflag"X"   = "X" ]; then disp_gccflag="nogccflag";   fi;
+
+	scriptname=$my_benchname.$disp_gccflag.$disp_benchflag.test.sh
+
+        #
+        # demangle the internal representation of the benchflags and gcc flags
+        # substitute a + with a space
+        #
+        real_gccflag=`echo $my_gccflag | sed "s/+/ /g"`
+
+        cat mul.shtmpl                       | \
+                sed "s/@BENCHNAME@/$my_benchname/g"     | \
+                sed "s/@LIBTYPE@/$my_libtype/g"         | \
+                sed "s/@COMPFLAGS@/$real_gccflag/g"     \
+                        > $scriptname
+
+	added_files="$scriptname $added_files"
+}
 
 create_prog()
 {
@@ -29,7 +82,7 @@ create_prog()
 	"unsigned+long") format_specifier="%ul" ;;
 	esac
 
-        # create the program.
+        # create the source .c program.
         cat mul.ctmpl                       | \
                 sed "s/#FUNCTION_NAME#/$function_name/g" | \
                 sed "s/#FORMAT_SPECIFIER#/$format_specifier/g"     | \
@@ -37,9 +90,11 @@ create_prog()
                 sed "s/#TYPE2#/$real_type2/g"     \
                         > $progname.c
 
-	gcc -w $progname.c -o $progname.orig.exe
-	
-	$PEASOUP_HOME/tools/ps_analyze.sh $progname.orig.exe $progname.protected.exe --step ilr=off --step p1transform=off --step concolic=off
+	for gccflag in $sharedlib_gccflags
+	do
+		create_test $progname_c "" "$gccflag" shared_lib
+	done
+
 }
 
 for type1 in $types
@@ -48,6 +103,11 @@ do
 	do
 		progname_c=mul.$type1.$type2
 		# actually create the .c program
-		create_prog $progname_c "$type1" "$type2" static_lib
+		create_prog $progname_c "$type1" "$type2" 
+
 	done
 done
+
+chmod +x *.sh
+
+echo "would have added: $added_files"

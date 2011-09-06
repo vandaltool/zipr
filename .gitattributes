@@ -147,6 +147,7 @@ examples/dumbledore_cmd.c -text
 examples/integerbug.c -text
 examples/mul/generate_cprogs.sh -text
 examples/mul/mul.ctmpl -text
+examples/mul/mul.shtmpl -text
 examples/overflow1.c -text
 examples/test1.c -text
 libIRDB/Makefile -text
