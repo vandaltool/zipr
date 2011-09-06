@@ -298,7 +298,7 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
         popf_i->SetDataBits(dataBits);
         popf_i->SetComment(getAssembly(popf_i));
 	popf_i->SetFallthrough(popa_i); 
-	popf_i->SetCallback("integer_overflow_detector"); 
+//	popf_i->SetCallback("integer_overflow_detector"); 
 
         // popa   
         dataBits.resize(1);
