@@ -64,7 +64,7 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN STRATAFIER_OBJCOPY IDAROOT 
 # path to source
 testloc=`pwd`
 
-orig=orig$$.exe
+orig=$BENCHNAME.$$.exe
 
 # compile
 gcc ${testloc}/$BENCHNAME.c  $COMPFLAGS -o $orig || cleanup 2 "gcc failed"

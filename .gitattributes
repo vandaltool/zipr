@@ -148,6 +148,7 @@ examples/integerbug.c -text
 examples/mul/generate_cprogs.sh -text
 examples/mul/mul.ctmpl -text
 examples/mul/mul.shtmpl -text
+examples/mul/run_tests.sh -text
 examples/overflow1.c -text
 examples/test1.c -text
 libIRDB/Makefile -text

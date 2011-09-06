@@ -1,7 +1,8 @@
 #!/bin/bash
 
-#types="char short int long unsigned+char unsigned+short unsigned+int unsigned+long";
-types="char short"
+types="char short int long unsigned+char unsigned+short unsigned+int unsigned+long";
+#types="char short"
+#sharedlib_gccflags="-O -O2 -fomit-frame-pointer"
 sharedlib_gccflags="-O -O2 -fomit-frame-pointer"
 
 #types="int char"
@@ -92,7 +93,7 @@ create_prog()
 
 	for gccflag in $sharedlib_gccflags
 	do
-		create_test $progname_c "" "$gccflag" shared_lib
+		create_test $progname "" "$gccflag" shared_lib
 	done
 
 }
