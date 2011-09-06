@@ -410,8 +410,9 @@ main(int argc, char* argv[])
 	                     << " in function: " << insn->GetFunction()->GetName() << endl;
 			// for now, insert overflow check to all IMUL instructions
 			// later, we'll want to be more judicious about where to insert overflow checks
-			addOverflowCheck(virp, insn, "mul_overflow_detector_32");
+			addOverflowCheck(virp, insn, std::string("mul_overflow_detector_32"));
 		}
+/*
 		else if (isAddSubNonEspInstruction32(insn))
 		{
 			numAddSub++;
@@ -420,6 +421,7 @@ main(int argc, char* argv[])
 	                     << " in function: " << insn->GetFunction()->GetName() << endl;
 			addOverflowCheck(virp, insn, "addsub_overflow_detector_32");
 		}
+*/
 	}
 
 }
