@@ -180,6 +180,19 @@ static void addOverflowCheck(VariantIR_t *p_virp, Instruction_t *p_instruction, 
 	Instruction_t* popf_i = new Instruction_t;
 	Instruction_t* popa_i = new Instruction_t;
 
+	Function_t* origFunction = p_instruction->GetFunction();
+
+	jo_i->SetFunction(origFunction);
+	jc_i->SetFunction(origFunction);;
+	jmporigfallthrough_i->SetFunction(origFunction);;
+	pusha_i->SetFunction(origFunction);;
+	pushf_i->SetFunction(origFunction);;
+	pusharg_i->SetFunction(origFunction);;
+	pushret_i->SetFunction(origFunction);;
+	poparg_i->SetFunction(origFunction);;
+	popf_i->SetFunction(origFunction);;
+	popa_i->SetFunction(origFunction);;
+
 	// pin the poparg instruction 
 	virtual_offset_t postDetectorReturn = getAvailableAddress(p_virp);
 	poparg_a->SetVirtualOffset(postDetectorReturn);
