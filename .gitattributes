@@ -151,6 +151,7 @@ examples/mul/mul.shtmpl -text
 examples/mul/run_tests.sh -text
 examples/overflow1.c -text
 examples/test1.c -text
+examples/test2.c -text
 libIRDB/Makefile -text
 libIRDB/include/cfg/BasicBlock.hpp -text
 libIRDB/include/cfg/CFG.hpp -text
