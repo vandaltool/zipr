@@ -66,7 +66,7 @@ size_t __bea_callspec__ SIB_3(ARGTYPE*, size_t, PDISASM);
 void __bea_callspec__ CompleteInstructionFields (PDISASM);
 void __bea_callspec__ EbGb(PDISASM);
 void __bea_callspec__ EvGv(PDISASM);
-void __bea_callspec__ EvIb(PDISASM);
+void __bea_callspec__ EvIb(PDISASM, int signed_byte);
 void __bea_callspec__ ExGx(PDISASM);
 void __bea_callspec__ EvIv(PDISASM);
 void __bea_callspec__ EbIb(PDISASM);

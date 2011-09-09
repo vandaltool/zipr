@@ -279,7 +279,7 @@ void __bea_callspec__ EvIv(PDISASM pMyDisasm)
 /* ====================================================================
  *
  * ==================================================================== */
-void __bea_callspec__ EvIb(PDISASM pMyDisasm)
+void __bea_callspec__ EvIb(PDISASM pMyDisasm, int signed_byte)
 {
     Int8 MyNumber;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
@@ -297,9 +297,15 @@ void __bea_callspec__ EvIb(PDISASM pMyDisasm)
         if (!Security(0, pMyDisasm)) return;
 		if (GV.OperandSize == 32) {
 			#ifndef BEA_LIGHT_DISASSEMBLY
-			MyNumber = *((Int8*)(UIntPtr) (GV.EIP_-1));
+			if(signed_byte)
+				MyNumber = *((Int8*)(UIntPtr) (GV.EIP_-1));
+			else
+				MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
 			if (MyNumber > 0) {
-                (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64)*((Int8*)(UIntPtr) (GV.EIP_-1)));
+				if(signed_byte)
+                			(void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.8X",(Int64)*((Int8*)(UIntPtr) (GV.EIP_-1)));
+				else
+                			(void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64)*((UInt8*)(UIntPtr) (GV.EIP_-1)));
 			}
 			else {
                 (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.8X",(Int64)*((Int8*)(IntPtr) (GV.EIP_-1)));
@@ -308,9 +314,15 @@ void __bea_callspec__ EvIb(PDISASM pMyDisasm)
 		}
 		else {
 			#ifndef BEA_LIGHT_DISASSEMBLY
-			MyNumber = *((Int8*)(UIntPtr) (GV.EIP_-1));
+			if(signed_byte)
+				MyNumber = *((Int8*)(UIntPtr) (GV.EIP_-1));
+			else
+				MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
 			if (MyNumber > 0) {
-                (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64)*((Int8*)(UIntPtr) (GV.EIP_-1)));
+				if(signed_byte)
+                			(void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.8X",(Int64)*((Int8*)(UIntPtr) (GV.EIP_-1)));
+				else
+                			(void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64)*((UInt8*)(UIntPtr) (GV.EIP_-1)));
 			}
 			else {
                 (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.16lX",(Int64)*((Int8*)(IntPtr) (GV.EIP_-1)));

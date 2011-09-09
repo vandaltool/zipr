@@ -88,7 +88,7 @@ void __bea_callspec__ G2_EbIb(PDISASM pMyDisasm)
 void __bea_callspec__ G2_EvIb(PDISASM pMyDisasm)
 {
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    EvIb(pMyDisasm);
+    EvIb(pMyDisasm, 0);
     if (GV.REGOPCODE == 0) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SHIFT_ROTATE;
         #ifndef BEA_LIGHT_DISASSEMBLY

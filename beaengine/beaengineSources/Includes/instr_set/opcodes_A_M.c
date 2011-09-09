@@ -2911,9 +2911,9 @@ void __bea_callspec__ imul_GvEvIb(PDISASM pMyDisasm)
         GV.EIP_+= GV.DECALAGE_EIP+3;
         if (!Security(0, pMyDisasm)) return;
         GV.third_arg = 1;
-        (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_- 1));
+        (*pMyDisasm).Instruction.Immediat = *((Int8*)(UIntPtr) (GV.EIP_- 1));
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument3.ArgMnemonic, "%.2X",(Int64) *((UInt8*)(UIntPtr) (GV.EIP_- 1)));
+           (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument3.ArgMnemonic, "%.8X",(Int64) *((Int8*)(UIntPtr) (GV.EIP_- 1)));
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
@@ -2928,9 +2928,9 @@ void __bea_callspec__ imul_GvEvIb(PDISASM pMyDisasm)
         GV.EIP_+= GV.DECALAGE_EIP+3;
         if (!Security(0, pMyDisasm)) return;
         GV.third_arg = 1;
-        (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_- 1));
+        (*pMyDisasm).Instruction.Immediat = *((Int8*)(UIntPtr) (GV.EIP_- 1));
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument3.ArgMnemonic, "%.2X",(Int64) *((UInt8*)(UIntPtr) (GV.EIP_- 1)));
+           (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument3.ArgMnemonic, "%.8X",(Int64) *((Int8*)(UIntPtr) (GV.EIP_- 1)));
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
