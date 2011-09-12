@@ -1570,6 +1570,12 @@ void __bea_callspec__ cmp_eAX_Iv(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ cmpsb_(PDISASM pMyDisasm)
 {
+    if ((*pMyDisasm).Prefix.RepnePrefix == SuperfluousPrefix) {
+        (*pMyDisasm).Prefix.RepnePrefix = InUsePrefix;
+    }
+    if ((*pMyDisasm).Prefix.RepPrefix == SuperfluousPrefix) {
+        (*pMyDisasm).Prefix.RepPrefix = InUsePrefix;
+    }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+STRING_INSTRUCTION;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpsb ");
@@ -1590,6 +1596,12 @@ void __bea_callspec__ cmpsb_(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ cmps_(PDISASM pMyDisasm)
 {
+    if ((*pMyDisasm).Prefix.RepnePrefix == SuperfluousPrefix) {
+        (*pMyDisasm).Prefix.RepnePrefix = InUsePrefix;
+    }
+    if ((*pMyDisasm).Prefix.RepPrefix == SuperfluousPrefix) {
+        (*pMyDisasm).Prefix.RepPrefix = InUsePrefix;
+    }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+STRING_INSTRUCTION;
     (*pMyDisasm).Argument1.ArgType = MEMORY_TYPE;
     (*pMyDisasm).Argument1.Memory.BaseRegister = REG7;

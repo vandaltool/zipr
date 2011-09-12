@@ -257,8 +257,6 @@ void add_new_instructions(VariantIR_t *virp)
 			/* is the missed instruction in this section */
 			if(first<=missed_address && missed_address<=second)
 			{
-				/* found */
-				found=true;
 			        char* data=(char*)malloc(sechdrs[secndx].sh_size+16);	 /* +16 to account for a bogus-y instruction that wraps past the end of the section */
 				memset(data,0, sechdrs[secndx].sh_size+16);		 /* bogus bits are always 0 */
 
@@ -278,6 +276,21 @@ void add_new_instructions(VariantIR_t *virp)
                 		disasm.VirtualAddr = missed_address;
                 		int instr_len = Disasm(&disasm);
 
+
+/* bea docs say OUT_OF_RANGE and UNKNOWN_OPCODE are defined, but they aren't */
+#define OUT_OF_RANGE (0)
+#define UNKNOWN_OPCODE (1) 
+
+				/* if we found the instruction, but can't disassemble it, then we skip out for now */
+				if(instr_len==OUT_OF_RANGE || instr_len==UNKNOWN_OPCODE)
+					break;
+
+				/* intel instructions have a max size of 16 */
+				assert(1<=instr_len && instr_len<=16);
+
+
+				/* here we are certain we found the instruction  */
+				found=true;
 
 				/* get the new bits for an instruction */
 				string newinsnbits;
