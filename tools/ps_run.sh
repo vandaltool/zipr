@@ -16,13 +16,6 @@ datapath=$1
 shift;
 
 #
-# Set SPRI file to use (should be generated from the IRDB).
-#
-if [ -f $datapath/a.irdb.bspri ]; then
-	export STRATA_SPRI_FILE=$datapath/a.irdb.bspri
-fi
-
-#
 # Run the program with the proper env. vars set., and the arguments to the program specified
 #
 
@@ -40,6 +33,14 @@ STRATA_PARTIAL_INLINING=0
 STRATA_LOG=detectors				
 STRATA_OUTPUT_FILE=$datapath/diagnostics.out	
 	$datapath/a.stratafied"
+
+#
+# Set SPRI file to use (should be generated from the IRDB).
+#
+if [ -f $datapath/a.irdb.bspri ]; then
+	command="STRATA_SPRI_FILE=$datapath/a.irdb.bspri $command"
+fi
+
 
 if [ ! -z $VERBOSE ]; then
 	echo $command
