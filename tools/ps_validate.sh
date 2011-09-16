@@ -55,9 +55,11 @@ do
     if [ ! $? -eq 0 ]; then
       echo "ps_validate.sh: divergence detected for input: $i (stdout)"
 
+      echo "-----------------------------------------"
       echo "Baseline file (stdout):"
       cat $BASELINE_OUTPUT_STDOUT
 
+      echo "-----------------------------------------"
       echo "Output stdout (stdout):$input:"
       cat stdout.$input
 
@@ -71,9 +73,11 @@ do
     if [ ! $? -eq 0 ]; then
       echo "ps_validate.sh: divergence detected for input: $i (stderr)"
 
+      echo "-----------------------------------------"
       echo "Baseline file (stderr):"
       cat $BASELINE_OUTPUT_STDERR
 
+      echo "-----------------------------------------"
       echo "Output stderr (stderr):$input:"
       cat stderr.$input
 
