@@ -162,7 +162,7 @@ perform_step()
 	logfile=logs/$step.log
 
 	echo -n Performing step "$step" ...
-	starttime=`date`
+	starttime=`date --iso-8601=seconds`
 
 	# If verbose is on, tee to a file 
 	if [ ! -z "$VERBOSE" ]; then
@@ -188,7 +188,7 @@ perform_step()
 	fi
 
 	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`date`" >> $logfile
+	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_exitcode=$command_exit" >> $logfile
@@ -210,7 +210,7 @@ report_logs()
 	logfile=logs/ps_analyze.log
 
 	echo "# ATTRIBUTE start_time=$ps_starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`date`" >> $logfile
+	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=all_peasoup" >> $logfile
 
 	for i in $all_logs
@@ -296,7 +296,7 @@ error_threshold=0
 #
 # record when we started processing:
 #
-ps_starttime=`date`
+ps_starttime=`date --iso-8601=seconds`
 
 
 #
