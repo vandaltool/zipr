@@ -94,13 +94,22 @@ void get_instruction_targets(VariantIR_t *virp)
 
                 assert(instr_len==insn->GetDataBits().size());
 
+
+
+/* we are moving the marking of callsite indirects into fix calls
+ * which has a better notion of whether the callsite indicates an 
+ * indirect branch target at the next instruction 
+ */
+#if 0
 		/* calls indicate an indirect target, pc+sizeof(instruction) */
 		if(disasm.Instruction.BranchType==CallType)
 		{
 			possible_target(disasm.VirtualAddr+instr_len);
 		}
+		else 
+#endif
 		/* other branches can't indicate an indirect branch target */
-		else if(disasm.Instruction.BranchType)
+		if(disasm.Instruction.BranchType)
 			continue;
 
 		/* otherwise, any immediate is a possible branch target */
@@ -170,7 +179,7 @@ void infer_targets(Elf32_Shdr *shdr, FILE* fp, VariantIR_t *virp)
 
 void print_targets()
 {
-	int j=1;
+	int j=0;
 	for(
 		set<int>::iterator it=targets.begin();
 		it!=targets.end();
@@ -230,6 +239,7 @@ void fill_in_indtargs(VariantIR_t* virp, string elf_file)
 		infer_targets(&sechdrs[secndx], fp, virp);
 
 	
+	cout<<"# ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
 	cout<<"Targets from data sections are: " << endl;
 	print_targets();
 
@@ -240,6 +250,7 @@ void fill_in_indtargs(VariantIR_t* virp, string elf_file)
 	possible_target(elfhdr.e_entry);
 
 
+	cout<<"# ATTRIBUTE total_indirect_targets_pass2="<<std::dec<<targets.size()<<endl;
 	cout<<"All targets from data sections are: " << endl;
 	print_targets();
 

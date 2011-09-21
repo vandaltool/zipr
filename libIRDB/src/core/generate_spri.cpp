@@ -356,7 +356,7 @@ We need to emit a rule of this form
 	{
 		if(
 		   // if it's an indirect branch target 
-		   old_insn->GetIndirectBranchTargetAddress() || 
+		   newinsn->GetIndirectBranchTargetAddress() || 
 		   // or the target of an unmodified instruction 
 		   unmoved_insn_targets.find(newinsn) != unmoved_insn_targets.end()
 		  )
@@ -366,8 +366,7 @@ We need to emit a rule of this form
 		else
 		{
 			fout << "# eliding, no indirect targets"<<endl;
-			fout << addressify(newinsn) <<" -> . " <<endl; 
-			fout << ". -> 0x0" << endl;
+			fout << addressify(newinsn) <<" -> 0 " <<endl; 
 		}
 		
 	}

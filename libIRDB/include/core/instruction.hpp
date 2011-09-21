@@ -44,6 +44,10 @@ class Instruction_t : public BaseObj_t
 
 	bool IsFunctionExit() const;
 
+	static bool SetsStackPointer(DISASM *disasm);
+	static bool SetsStackPointer(ARGTYPE* arg);
+
+
     private:
         AddressID_t *my_address;
         Function_t *my_function;

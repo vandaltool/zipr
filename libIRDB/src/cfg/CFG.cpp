@@ -74,6 +74,10 @@ void ControlFlowGraph_t::Build(Function_t* func)
 		Instruction_t* insn=*it;
 		BasicBlock_t* newblock=new BasicBlock_t;
 
+		/* record the entry block */
+		if(insn==func->GetEntryPoint())
+			entry=newblock;
+
 		assert( insn && newblock );
 
 		blocks.insert(newblock);

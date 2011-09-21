@@ -46,6 +46,8 @@ main(int argc, char* argv[])
 
 	cout<<"Applying ILR to variant "<<*pidp<< "." <<endl;
 
+	long long unmoved_instr=0, moved_instr=0;
+
 	set<AddressID_t*> newaddressset;
 	for(
 		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
@@ -60,13 +62,21 @@ main(int argc, char* argv[])
 
 		if (insn->GetIndirectBranchTargetAddress())
 		{
+			unmoved_instr++;
 			newaddressset.insert(insn->GetIndirectBranchTargetAddress());
 		}
+		else
+			moved_instr++;
 
 		newaddressset.insert(newaddr);
 	}
 
 	virp->GetAddresses()=newaddressset;
+
+
+	cout << "# ATTRIBUTE unmoved_instructions="<<std::dec<<unmoved_instr<<endl;
+	cout << "# ATTRIBUTE moved_instructions="<<std::dec<<moved_instr<<endl;
+	cout << "# ATTRIBUTE moved_ratio="<<std::dec<<(float)moved_instr/(moved_instr+unmoved_instr)<<endl;
 
 	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
 	virp->WriteToDB();

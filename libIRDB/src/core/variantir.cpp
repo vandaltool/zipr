@@ -272,17 +272,39 @@ void VariantIR_t::WriteToDB()
 	/* and now that everything has an ID, let's write to the DB */
 	string q=string("");
 	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i)
+	{
 		q+=(*i)->WriteToDB(&progid,j);
+		if(q.size()>1024*1024)
+		{
+			dbintr->IssueQuery(q);
+			q=string("");
+		}
+			
+	}
 	dbintr->IssueQuery(q);
 
 	q=string("");
 	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i)
+	{
 		q+=(*i)->WriteToDB(&progid,j);
+		if(q.size()>1024*1024)
+		{
+			dbintr->IssueQuery(q);
+			q=string("");
+		}
+	}
 	dbintr->IssueQuery(q);
 
 	q=string("");
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
+	{	
 		q+=(*i)->WriteToDB(&progid,j);
+		if(q.size()>1024*1024)
+		{
+			dbintr->IssueQuery(q);
+			q=string("");
+		}
+	}
 	dbintr->IssueQuery(q);
 }
 

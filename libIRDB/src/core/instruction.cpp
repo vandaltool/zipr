@@ -193,3 +193,35 @@ bool Instruction_t::IsFunctionExit() const
 	return false;
 }
 
+
+bool Instruction_t::SetsStackPointer(ARGTYPE* arg)
+{
+	if(arg->AccessMode!=WRITE)
+		return false;
+	int access_type=arg->ArgType & 0xFFFF0000;
+
+	if(access_type==REGISTER_TYPE + GENERAL_REG +REG4)
+		return true;
+	return false;
+	
+}
+
+bool Instruction_t::SetsStackPointer(DISASM* disasm)
+{
+	if(strstr(disasm->Instruction.Mnemonic, "push")!=NULL)
+		return true;
+	if(strstr(disasm->Instruction.Mnemonic, "pop")!=NULL)
+		return true;
+	if(strstr(disasm->Instruction.Mnemonic, "call")!=NULL)
+		return true;
+	if(disasm->Instruction.ImplicitModifiedRegs==REGISTER_TYPE+GENERAL_REG+REG4)
+		return true;
+
+
+	if(SetsStackPointer(&disasm->Argument1)) return true;
+	if(SetsStackPointer(&disasm->Argument2)) return true;
+	if(SetsStackPointer(&disasm->Argument3)) return true;
+
+	return false;
+
+}
