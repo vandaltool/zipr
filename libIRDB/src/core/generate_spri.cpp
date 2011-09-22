@@ -366,7 +366,7 @@ We need to emit a rule of this form
 		else
 		{
 			fout << "# eliding, no indirect targets"<<endl;
-			fout << addressify(newinsn) <<" -> 0 " <<endl; 
+			fout << addressify(newinsn) <<" -> 0x0 " <<endl; 
 		}
 		
 	}
