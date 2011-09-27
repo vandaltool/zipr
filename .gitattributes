@@ -145,6 +145,7 @@ examples/Makefile -text
 examples/dumbledore.c -text
 examples/dumbledore_cmd.c -text
 examples/integerbug.c -text
+examples/ls_manual_tests.sh -text
 examples/mul/generate_cprogs.sh -text
 examples/mul/mul.ctmpl -text
 examples/mul/mul.shtmpl -text
