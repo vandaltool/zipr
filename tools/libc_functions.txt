@@ -10,6 +10,8 @@ add_module
 add_name_to_object
 add_to_global
 alias_compare
+alloca
+__alloca
 __alloc_dir
 arena_get2
 argz_add_sep
@@ -39,6 +41,7 @@ bsearch
 btowc
 buffered_vfprintf
 buffer_free
+__builtin_alloca
 bzero
 cache_rpath
 call_dl_lookup
