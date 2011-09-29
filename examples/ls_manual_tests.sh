@@ -1,63 +1,65 @@
 #!/bin/sh
 
-mkdir tmp.$$
-cd tmp.$$
-mkdir subdir
-echo "hello" > subdir/hello
-cp /etc/passwd passwd
+# input/output specification for testing
+#
+# assumptions:
+#      - deterministic tests
+#      - will be run from the top-level subdirectory created by ps_analyze.sh
+#
+# gotchas:
+#      - when ls reports an error, it uses argv[0]. This causes problems as we rename the program name
+#        we filter out the lines that use argv[0] as a workaround
+#      - timestamp info will differ b/c we're copying files around as part of manual_test_import
+#
 
-# test 1
-ls > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar > o1" --prog foobar --outfile o1
+echo "hello" > i1
 
-# test 2
+# basic functionality -- don't bother with comparing outputs
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar" --prog foobar 
+
+# test invalid options
+ls -MX i1 | grep -vi invalid | grep -vi usage > o1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -MX i1 | grep -vi invalid | grep -vi usage > o1" --prog foobar --infile i1 --outfile o1
+
+# test help 
+ls --help | grep -vi report | grep -vi usage > o1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar --help | grep -vi report | grep -vi usage > o1" --prog foobar --outfile o1
+
+# test some option flags
+ls -kfsZqp i1 > o1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -kfsZqp i1 > o1" --prog foobar --infile i1 --outfile o1
+
+# test --ignore
+ls --ignore=hello i1 > o1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar --ignore=hello i1 > o1" --prog foobar --infile i1 --outfile o1
+
+# test whole bunch of options -- output is non-deterministic so we just make sure we have the same number of lines
+ls -ltarHksbBiXR i1 | wc -l > o1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -ltarHksbBiXR i1 | wc -l > o1" --prog foobar --infile i1 --outfile o1
+
+# cleanup
+rm i1 o1
+
+exit 0
+
+#
+# enough testing for now
+#
+
+ls -aw i1 > o1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -aw i1 > o1" --prog foobar --infile i1 --outfile o1
+
 ls -R . > o1
 $PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -R . > o1" --prog foobar --outfile o1
 
-# test 3
-ls i1 > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar i1 > o1" --prog foobar --infile i1 --outfile o1
+ls -hBG . > o1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -hBG . > o1" --prog foobar --outfile o1
 
-# test 4
-ls -aw . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -aw . > o1" --prog foobar --outfile o1
-
-# test 5
-ls -chBG . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -chBG . > o1" --prog foobar --outfile o1
-
-# test 6
-ls -s . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -s . > o1" --prog foobar --outfile o1
-
-# test 7
 ls -m . > o1
 $PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -m . > o1" --prog foobar --outfile o1
 
-# test 8: invalid option
-ls -MX . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -MX . > o1" --prog foobar --outfile o1
-
-# test 9
-ls --help > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar --help > o1" --prog foobar --outfile o1
-
-# test 10
-ls -Zlt . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -Zlt . > o1" --prog foobar --outfile o1
-
-# test 11
 ls -X . > o1
 $PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -X . > o1" --prog foobar --outfile o1
 
-# test 12
 ls -x . > o1
 $PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -x . > o1" --prog foobar --outfile o1
-
-# test 13
-ls -kif . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -kif . > o1" --prog foobar --outfile o1
-
-# test 14
-ls --ignore=hello . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar --ignore=hello . > o1" --prog foobar --outfile o1
