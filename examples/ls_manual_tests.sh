@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# input/output specification for testing
+#
+# input/output specification for testing ls
 #
 # assumptions:
 #      - deterministic tests
@@ -12,54 +13,31 @@
 #      - timestamp info will differ b/c we're copying files around as part of manual_test_import
 #
 
-echo "hello" > i1
+echo "hello" > inputfile1
 
 # basic functionality -- don't bother with comparing outputs
 $PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar" --prog foobar 
 
 # test invalid options
-ls -MX i1 | grep -vi invalid | grep -vi usage > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -MX i1 | grep -vi invalid | grep -vi usage > o1" --prog foobar --infile i1 --outfile o1
+ls -MX inputfile1 | grep -vi invalid | grep -vi usage > outputfile1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -MX inputfile1 | grep -vi invalid | grep -vi usage > outputfile1" --prog foobar --infile inputfile1 --outfile outputfile1 --name invalid_options
 
 # test help 
-ls --help | grep -vi report | grep -vi usage > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar --help | grep -vi report | grep -vi usage > o1" --prog foobar --outfile o1
+ls --help | grep -vi report | grep -vi usage > outputfile1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar --help | grep -vi report | grep -vi usage > outputfile1" --prog foobar --outfile outputfile1 --name usage
 
 # test some option flags
-ls -kfsZqp i1 > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -kfsZqp i1 > o1" --prog foobar --infile i1 --outfile o1
+ls -kfsZqp inputfile1 > outputfile1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -kfsZqp inputfile1 > outputfile1" --prog foobar --infile inputfile1 --outfile outputfile1 --name flag_combo1
 
 # test --ignore
-ls --ignore=hello i1 > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar --ignore=hello i1 > o1" --prog foobar --infile i1 --outfile o1
+ls --ignore=hello inputfile1 > outputfile1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar --ignore=hello inputfile1 > outputfile1" --prog foobar --infile inputfile1 --outfile outputfile1 --name ignore
 
 # test whole bunch of options -- output is non-deterministic so we just make sure we have the same number of lines
-ls -ltarHksbBiXR i1 | wc -l > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -ltarHksbBiXR i1 | wc -l > o1" --prog foobar --infile i1 --outfile o1
+# also when something goes wrong during testing, the program usually just crashes
+ls -ltarHksbBiXR inputfile1 | wc -l > outputfile1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -ltarHksbBiXR inputfile1 | wc -l > outputfile1" --prog foobar --infile inputfile1 --outfile outputfile1 --name shload_flags
 
 # cleanup
-rm i1 o1
-
-exit 0
-
-#
-# enough testing for now
-#
-
-ls -aw i1 > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -aw i1 > o1" --prog foobar --infile i1 --outfile o1
-
-ls -R . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -R . > o1" --prog foobar --outfile o1
-
-ls -hBG . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -hBG . > o1" --prog foobar --outfile o1
-
-ls -m . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -m . > o1" --prog foobar --outfile o1
-
-ls -X . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -X . > o1" --prog foobar --outfile o1
-
-ls -x . > o1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./foobar -x . > o1" --prog foobar --outfile o1
+rm inputfile1 outputfile1
