@@ -1,5 +1,7 @@
 
+a64l
 abort
+abs
 accept
 access
 add_alias2
@@ -79,6 +81,7 @@ derivation_compare
 dgettext
 dirfd
 dirname
+div
 __dladdr
 _dl_addr
 __dladdr1
@@ -202,9 +205,11 @@ do_release_shlib
 do_sym
 do_unshift
 dprintf
+drand48
 dup
 dup2
 dup3
+ecvt
 endgrent
 endhostent
 endpwent
@@ -604,6 +609,8 @@ _itoa
 _itoa_word
 _itowa
 known_compare
+labs
+ldiv
 __libc_alloca_cutoff
 __libc_check_standard_fds
 __libc_csu_fini
@@ -626,6 +633,8 @@ __libc_sigaction
 __libc_start_main
 linear_search_fdes
 listen
+llabs
+lldiv
 __lll_lock_wait_private
 __lll_unlock_wake_private
 _L_lock_102
@@ -851,12 +860,14 @@ malloc_usable_size
 mallopt
 match_symbol
 maybe_split_for_insert
+mblen
 mbrlen
 mbrtowc
 mbsnrtowcs
 mbsrtowcs
 __mbsrtowcs_l
 mbstowcs
+mbtowc
 mem2chunk_check
 mem2mem_check
 memalign
@@ -982,6 +993,7 @@ qsort
 qsort_r
 _quicksort
 raise
+rand
 rangecmp
 ranged_convert
 rawmemchr
@@ -1054,6 +1066,7 @@ size_of_encoded_value
 snprintf
 socket
 sprintf
+srand
 sscanf
 ssignal
 _start
@@ -1110,6 +1123,7 @@ __strtold_internal
 strtold_l
 ____strtold_l_internal
 __strtol_internal
+strtoll
 strtol_l
 ____strtol_l_internal
 __strtoll_internal
@@ -1121,6 +1135,7 @@ str_to_mpn_1
 strtoq
 strtoul
 __strtoul_internal
+strtoull
 strtoul_l
 ____strtoul_l_internal
 __strtoull_internal
@@ -1138,6 +1153,7 @@ sysconf
 __sysconf_check_spec
 syslog
 __syslog_chk
+system
 sYSTRIm
 T.144
 tcgetattr
@@ -1229,6 +1245,7 @@ wcsnlen
 wcsrtombs
 wcstombs
 wcswidth
+wctomb
 wctrans
 wctype
 wmemcpy
