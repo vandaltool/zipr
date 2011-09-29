@@ -85,6 +85,7 @@ dgettext
 dirfd
 dirname
 div
+__divdi3
 __dladdr
 _dl_addr
 __dladdr1
@@ -889,6 +890,7 @@ __mktime_internal
 mmap
 mmap64
 mmap_remap_check
+__moddi3
 __mpn_addmul_1
 __mpn_add_n
 __mpn_cmp
@@ -1190,7 +1192,9 @@ tzset
 tzset_internal
 __tzset_parse_tz
 __tzstring
+__udivdi3
 __uflow
+__umoddi3
 uname
 __underflow
 ungetc
