@@ -9,6 +9,7 @@
 
 PROGRAM_NAME=$1
 PROGRAM_PEASOUP_DIR=$2
+VARIANT_ID_OUTPUT=$3
 
 #####################################################
 
@@ -84,4 +85,7 @@ log_message "To do: if shared libs, then need to add them to this table"
 #============================================
 FILE_ID=`psql -q -t -c "INSERT INTO variant_dependency (variant_id, file_id) VALUES ('$PROGRAM_ID', '$FILE_ID')"`
 
-exit $PROGRAM_ID
+rm $VARIANT_ID_OUTPUT 2>/dev/null
+echo $PROGRAM_ID > $VARIANT_ID_OUTPUT
+
+exit 0
