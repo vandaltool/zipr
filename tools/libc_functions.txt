@@ -30,12 +30,14 @@ base_from_cb_data
 base_from_object
 basename
 bcmp
+bcopy
 bind
 brk
 bsearch
 btowc
 buffered_vfprintf
 buffer_free
+bzero
 cache_rpath
 call_dl_lookup
 call_init
@@ -243,6 +245,8 @@ ferror
 ferror_unlocked
 fflush
 fflush_unlocked
+ffs
+ffsl
 fgetc
 fgetc_unlocked
 fgetgrent
@@ -261,6 +265,8 @@ find_module_idx
 fini
 _fitoa
 _fitoa_word
+fls
+flsl
 fnmatch
 fopen
 __fopen_internal
@@ -420,6 +426,7 @@ _i18n_number_rewrite_0
 _i18n_number_rewrite_1
 __i686.get_pc_thunk.bx
 __i686.get_pc_thunk.cx
+index
 inet
 inet_addr
 inet_aton
@@ -854,12 +861,16 @@ mem2chunk_check
 mem2mem_check
 memalign
 memalign_hook_ini
+memccpy
 memchr
 memcmp
 memcpy
 memmove
 mempcpy
 memset
+memset_pattern16
+memset_pattern4
+memset_pattern8
 __mktime_internal
 mmap
 mmap64
@@ -999,6 +1010,7 @@ remove_slotinfo
 rename
 resolver
 rewind
+rindex
 rmdir
 round_and_return
 round_and_return_0
@@ -1063,7 +1075,11 @@ strftime
 __strftime_internal
 strftime_l
 strip
+strlcat
+strlcpy
 strlen
+strmode
+strncasecmp
 strncasecmp_l
 strncat
 strncmp
@@ -1075,6 +1091,7 @@ strpbrk
 strptime
 strrchr
 strsep
+strsignal
 strspn
 strstr
 strtod
@@ -1086,6 +1103,7 @@ __strtof_internal
 strtof_l
 ____strtof_l_internal
 strtok
+strtok_r
 strtol
 strtold
 __strtold_internal
@@ -1114,6 +1132,7 @@ sub_807C262
 sub_80930D3
 sub_8093231
 sub_80942F0
+swab
 __syscall_error
 sysconf
 __sysconf_check_spec
