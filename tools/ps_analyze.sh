@@ -94,20 +94,6 @@ is_step_error()
 
 
 	case $my_step in
-		# registering the program should return the variant ID, 0 or negative is error.
-		pdb_register)
-			if [ $my_error -gt 0 ]; then
-				return 0;
-			fi
-			return 1;
-		;;
-		# cloning the program should return the variant ID, 0 or negative is error.
-		clone)
-			if [ $my_error -gt 0 ]; then
-				return 0;
-			fi
-			return 1;
-		;;
 		*)
 			if [ $my_error -eq 0 ]; then
 				# if not otherwise specified, programs should return 0
@@ -406,8 +392,8 @@ MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 #
 # register the program
 #
-perform_step pdb_register "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`"
-varid=$?
+perform_step pdb_register "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
+varid=`cat registered.id`
 
 
 #
@@ -428,8 +414,8 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 	perform_step fill_in_indtargs $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./$newname.ncexe    
 
 	# finally create a clone so we can do some transforms 
-	perform_step clone $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid				
-	cloneid=$?
+	perform_step clone $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
+	cloneid=`cat clone.id`
 
 	
 	#	
