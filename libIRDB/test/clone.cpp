@@ -2,6 +2,8 @@
 
 #include <libIRDB-core.hpp>
 #include <iostream>
+#include <fstream>
+
 #include <stdlib.h>
 
 using namespace libIRDB;
@@ -10,9 +12,9 @@ using namespace std;
 main(int argc, char* argv[])
 {
 
-	if(argc!=2)
+	if(argc!=3)
 	{
-		cerr<<"Usage: clone <vid>"<<endl;
+		cerr<<"Usage: clone <vid> <output.id>"<<endl;
 		exit(-1);
 	}
 
@@ -39,6 +41,17 @@ main(int argc, char* argv[])
 		// commit the changes to the db if all went well 
 		pqxx_interface.Commit();
 
+		db_id_t newpid_id=newpidp->GetBaseID();
+		ofstream f;
+		f.open(argv[2]);
+		if(!f.is_open())
+		{
+			cerr<<"Cannot open output file"<<endl;
+			exit(-1);
+		}
+		f<<std::dec<<newpid_id<<endl;
+		f.close();
+
 	}
 	catch (DatabaseError_t pnide)
 	{
@@ -46,10 +59,10 @@ main(int argc, char* argv[])
 		exit(-1);
         }
 
-	db_id_t newpid_id=newpidp->GetBaseID();
 
 	delete pidp;
 	delete newpidp;
 
-	exit(newpid_id);
+
+	exit(0);
 }
