@@ -130,6 +130,7 @@ examples/myhanoi.c -text
 examples/print_ptr.c -text
 examples/recover_example.c -text
 stock_examples/Makefile -text
+stock_examples/apache2.stock -text
 stock_examples/awk.stock -text
 stock_examples/bzip2.stock -text
 stock_examples/cal.stock -text
@@ -142,12 +143,14 @@ stock_examples/du.stock -text
 stock_examples/expr.stock -text
 stock_examples/find.stock -text
 stock_examples/firefox-bin.stock -text
+stock_examples/gnash.stock -text
 stock_examples/grep.stock -text
 stock_examples/hostname.stock -text
 stock_examples/ipcs.stock -text
 stock_examples/less.stock -text
 stock_examples/lighttpd.stock -text
 stock_examples/ls.stock -text
+stock_examples/mplayer.stock -text
 stock_examples/nasm.stock -text
 stock_examples/objdump.stock -text
 stock_examples/ps.stock -text
@@ -157,6 +160,7 @@ stock_examples/whoami.stock -text
 stock_examples/xcalc.stock -text
 stock_examples/xeyes.stock -text
 stock_examples/xpdf.stock -text
+stock_examples/xpdfsrc.stock -text
 tools/cover.sh -text
 tools/db/drop_my_tables.sh -text
 tools/db/pdb.create.tbl -text
