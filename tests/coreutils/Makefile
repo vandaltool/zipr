@@ -1,0 +1,17 @@
+progs=cat.peasoup ls.peasoup
+
+ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off"
+
+all:	${progs}
+	
+ls.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${PEASOUP_HOME}/stock_examples/coreutils-7.4.shared/ls ls.peasoup ${ps_analyze_flags} --manual_test_script `pwd`/ls_manual_tests.sh
+
+cat.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${PEASOUP_HOME}/stock_examples/coreutils-7.4.shared/cat cat.peasoup ${ps_analyze_flags} --manual_test_script `pwd`/cat_manual_tests.sh
+
+clean:
+	rm -f ${progs}
+	rm -Rf peasoup_executable_directory.*
+	${PEASOUP_HOME}/tools/db/drop_my_tables.sh
+	${PEASOUP_HOME}/tools/db/pdb_setup.sh
