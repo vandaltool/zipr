@@ -8,6 +8,9 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+# List steps that are turned off by default here
+phases_off="manual_test=off"
+
 check_step_option()
 {
 	echo $1|egrep "=off$|=on$" > /dev/null
@@ -32,7 +35,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s: --long step: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s: --long step: --long manual_test_script: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -45,6 +48,10 @@ check_options()
 		-s|--step) 
 			check_step_option $2
 			phases_off=" $phases_off $2 "
+			shift 2 
+			;;
+		--manual_test_script) 
+			manual_test_script=$2
 			shift 2 
 			;;
 		--) 	shift 
@@ -379,6 +386,7 @@ perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600 -u 60 -i 25 -l tracer,trace,inputs  > do_concolic.out 2>&1
 
 
+
 ##
 ## Populate IR Database
 ##
@@ -394,7 +402,6 @@ MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 #
 perform_step pdb_register "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
 varid=`cat registered.id`
-
 
 #
 # create the tables for the program
@@ -417,15 +424,25 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 	perform_step clone $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
 	cloneid=`cat clone.id`
 
-	
 	#	
 	# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
 	#
 	if [ $cloneid -gt 0 ]; then
 		# do the basic tranforms we're performing for peasoup 
 		perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
-#		perform_step cover $PEASOUP_HOME/tools/cover.sh 
-		perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot
+
+		#
+		# Run script to setup manual tests
+		#
+		perform_step manual_test $PEASOUP_HOME/tools/do_manualtests.sh $manual_test_script
+
+		is_step_on manual_test
+		if [ $? -eq 0 ]; then 
+			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/p1xform_v2.sh
+		else
+			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh
+		fi
+		
 		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid
 		perform_step ilr $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
 

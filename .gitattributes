@@ -361,6 +361,7 @@ stock_examples/xcalc.stock -text
 stock_examples/xeyes.stock -text
 stock_examples/xpdf.stock -text
 stock_examples/xpdfsrc.stock -text
+tools/bed_manual.sh -text
 tools/cover.sh -text
 tools/db/drop_my_tables.sh -text
 tools/db/pdb.create.tbl -text
@@ -375,6 +376,7 @@ tools/do_concolic.sh -text
 tools/do_idapro.sh -text
 tools/do_integertransform.sh -text
 tools/do_makepeasoupbinary.sh -text
+tools/do_manualtests.sh -text
 tools/do_p1transform.sh -text
 tools/generate_exe.sh -text
 tools/generate_io_baseline.sh -text
@@ -394,6 +396,8 @@ tools/ps_link.sh -text
 tools/ps_run.sh -text
 tools/ps_validate.sh -text
 tools/ps_validate_ss.deprecated.sh -text
+tools/run_one_test.sh -text
+tools/run_stratafied.tmpl.sh -text
 tools/set_dyna_link.sh -text
 tools/test_controller.sh -text
 tools/update_env_var.sh -text

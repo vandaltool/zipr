@@ -5,18 +5,19 @@
 #
 # Assume we are in the top-level sub-directory created by ps_analyze.sh
 #
-# --cmd "cat"            'the command
-# --args "i1 > o1"       'the rest of the command line
-# --infile i1 ... in     'input file descriptions
-# --outfile o1 ... on    'output file descriptions
-# --stdout               'stash away stdout
-# --stderr               'stash away stderr
+# Usage: manual_test_import.sh [--name testname] [--infile in]* [--outfile out]*
+# --name testname         'name of the input/output specification
+# --infile in             'input file descriptions
+# --outfile  out          'output file descriptions
+# --prog cat              'the name of the program in the command
+# --cmd "cat in > out"    'the command to invoke for the test
 #
 
 # extract from arguments
 
 INFILES=""
 OUTFILES=""
+NAME=""
 while [ $# -gt 0 ]
 do
   case "$1" in
@@ -24,11 +25,13 @@ do
 	"--prog")	PROG=$2; shift;;
 	"--infile")	INFILES="$2 $INFILES"; shift;;
 	"--outfile")	OUTFILES="$2 $OUTFILES"; shift;;
+	"--name")	NAME=$2; shift;;
  	*) break;;
   esac
   shift
 done
 
+echo "NAME = $NAME"
 echo "INFILES = $INFILES"
 echo "OUTFILES = $OUTFILES"
 echo "PROG = $PROG"
@@ -48,7 +51,11 @@ echo "CMD = $CMD"
 # setup test directory
 
 PWD=`pwd`
-TEST_DIR=${PWD}/test.$$
+if [ -z $NAME ]; then
+  TEST_DIR=${PWD}/manual_tests/test.$$
+else
+  TEST_DIR=${PWD}/manual_tests/$NAME
+fi
 TEST_SPEC_DIR=${TEST_DIR}/spec
 SPEC_INPUT_DIR=$TEST_SPEC_DIR/input
 SPEC_OUTPUT_DIR=$TEST_SPEC_DIR/output
@@ -92,7 +99,7 @@ do
   echo " rm $TEST_XFORMED_OUTPUT_DIR/$i 2>/dev/null" >> $TEST_XFORMED_CMD_SCRIPT
 done
 
-# stage in input 
+# stage in input (if any)
 for i in $INFILES
 do
   echo " cp $SPEC_INPUT_DIR/$i ." >> $TEST_XFORMED_CMD_SCRIPT
@@ -101,11 +108,13 @@ done
 # run command (check for seg faults)
 # @todo: we should really register the program exit code and check against it
 echo "STRATA_SPRI_FILE=\$1 $CMD" >> $TEST_XFORMED_CMD_SCRIPT
-echo "if [ \$? -eq 139 ]; then" >> $TEST_XFORMED_CMD_SCRIPT
-echo "  exit \$?" >> $TEST_XFORMED_CMD_SCRIPT
+echo "status=\$?" >> $TEST_XFORMED_CMD_SCRIPT
+echo "echo \$status" >> $TEST_XFORMED_CMD_SCRIPT
+echo "if [ \$status -eq 139 ]; then" >> $TEST_XFORMED_CMD_SCRIPT
+echo "  exit \$status" >> $TEST_XFORMED_CMD_SCRIPT
 echo "fi" >> $TEST_XFORMED_CMD_SCRIPT
 
-# stage/move output files
+# stage/move output files (if any)
 for i in $OUTFILES
 do
   echo " mv $i $TEST_XFORMED_OUTPUT_DIR" >> $TEST_XFORMED_CMD_SCRIPT

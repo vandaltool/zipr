@@ -7,17 +7,14 @@
 
 CURRENT_DIR=`pwd`
 
-pidp=$1
-fname=$2
+variantid=$1
+aspri=$2
+bspri=$3
 
 P1_DIR=p1.xform/$fname
 
-mkdir -p $P1_DIR
-
 #generate the bspri code
-$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $P1_DIR/a.irdb.aspri $P1_DIR/a.irdb.bspri $P1_DIR/stratafier.o.exe > $P1_DIR/spasm.out 2>&1
-
-cat $P1_DIR/spasm.out
+$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $P1_DIR/stratafier.o.exe
 
 #
 # remove any candidate functions not covered
@@ -28,8 +25,8 @@ CONCOLIC=concolic.files_a.stratafied_0001
 echo "====================================================="
 echo "P1: Validating transformed binary..."
 echo "====================================================="
-if [ -f $P1_DIR/a.irdb.bspri ]; then
-  $PEASOUP_HOME/tools/ps_validate.sh ./a.stratafied $P1_DIR/a.irdb.bspri $CONCOLIC > ps_validate.out 2> ps_validate.err
+if [ -f $bspri ]; then
+  $PEASOUP_HOME/tools/ps_validate.sh ./a.stratafied $bspri $CONCOLIC > ps_validate.out 2> ps_validate.err
   if [ $? -eq 0 ]; then
       echo "Successfully validated p1-transformed functions against inputs"
       exit 0;
