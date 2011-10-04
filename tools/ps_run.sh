@@ -46,7 +46,8 @@ if [ ! -z $VERBOSE ]; then
 	echo $command
 fi
 
-eval $command \""$@"\"
+#eval $command \""$@"\"  This treats everything as one argument which is not what we want
+eval $command "$@"
 
 SAVE_EXIT_CODE=$?
 

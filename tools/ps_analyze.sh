@@ -8,9 +8,6 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
-# List steps that are turned off by default here
-phases_off="manual_test=off"
-
 check_step_option()
 {
 	echo $1|egrep "=off$|=on$" > /dev/null
@@ -62,6 +59,12 @@ check_options()
 			;;
 		esac
 	done
+
+	if [ -z $manual_test_script ]; then
+		phases_off=" $phases_off manual_test=off"
+	else
+		phases_off=" $phases_off manual_test=on"
+	fi
 
 	# report errors if found
 	if [ ! -z $1 ]; then
