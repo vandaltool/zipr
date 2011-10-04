@@ -201,6 +201,8 @@ libIRDB/test/list_programs.cpp -text
 libIRDB/test/print_variant.cpp -text
 libIRDB/test/read_variantir.cpp -text
 libIRDB/test/unfix_calls.cpp -text
+tests/coreutils/cat_manual_tests.sh -text
+tests/coreutils/ls_manual_tests.sh -text
 tools/Makefile -text
 tools/cover/Makefile -text
 tools/cover/cover.cpp -text
