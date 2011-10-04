@@ -10,6 +10,10 @@ ls.peasoup:
 cat.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${PEASOUP_HOME}/stock_examples/coreutils-7.4.shared/cat cat.peasoup ${ps_analyze_flags} --manual_test_script `pwd`/cat_manual_tests.sh
 
+bzip2.peasoup:
+	echo `pwd`
+	${PEASOUP_HOME}/tools/ps_analyze.sh `which bzip2` bzip2.peasoup ${ps_analyze_flags} --manual_test_script `pwd`/bzip2_manual_tests.sh
+
 clean:
 	rm -f ${progs}
 	rm -Rf peasoup_executable_directory.*
