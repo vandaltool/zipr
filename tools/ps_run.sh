@@ -46,7 +46,7 @@ if [ ! -z $VERBOSE ]; then
 	echo $command
 fi
 
-eval $command "$@"
+eval $command \""$@"\"
 
 SAVE_EXIT_CODE=$?
 
