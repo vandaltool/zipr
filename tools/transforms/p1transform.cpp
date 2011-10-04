@@ -284,11 +284,11 @@ bool P1Transform::rewrite(libIRDB::VariantIR_t *virp, libIRDB::Function_t *f, st
       fprintf(stderr,"Could not process function <%s>: no stack allocation routine found\n", f->GetName().c_str());
       return false;
     } 
-  else if (!stackDealloc)
-    {
-      fprintf(stderr,"Could not process function <%s>: no stack deallocation routine found\n", f->GetName().c_str());
-      return false;
-    } 
+//  else if (!stackDealloc)
+  //  {
+ //     fprintf(stderr,"Could not process function <%s>: no stack deallocation routine found\n", f->GetName().c_str());
+//      return false;
+ //   } 
   else{
     rewriteFunction=true;
   }
@@ -327,16 +327,21 @@ static void undo(map<libIRDB::Instruction_t*, string> undoList, libIRDB::Functio
 
 int main(int argc, char **argv)
 {
-  if(argc!=3)
+  if(argc!=4)
     {
-      cerr<<"Usage: p1transform.exe <variantid> [file containing name of blacklisted functions]"<<endl;
+      cerr<<"Usage: p1transform.exe <variantid> <bed_script> <file containing name of blacklisted functions>"<<endl;
       exit(-1);
     }
+else
+{
+ cout << "bed_script: " << argv[2] << " blacklist: " << argv[3] << endl;
+}
   
   VariantID_t *pidp=NULL;
   VariantIR_t *virp=NULL;
   
   int progid = atoi(argv[1]);
+  char *BED_script = argv[2];
   
   //setup the interface to the sql server 
   pqxxDB_t pqxx_interface;
@@ -345,7 +350,7 @@ int main(int argc, char **argv)
   try
     {
       // read the variant ID using variant id number = atoi(argv[1])
-      pidp=new VariantID_t(atoi(argv[1]));
+      pidp=new VariantID_t(progid);
       
       // verify that we read it correctly.
       assert(pidp->IsRegistered()==true);
@@ -363,12 +368,14 @@ int main(int argc, char **argv)
 
 	set<std::string> blackListOfFunctions;
 
-	if (argc == 3)
-	{
-		blackListOfFunctions = getFunctionList(argv[2]);
-	}
+	blackListOfFunctions = getFunctionList(argv[3]);
 
   vector<std::string> functionsTransformed;
+  int numFuncProcessed = 0;
+  int numFuncFiltered = 0;
+  int numFuncBEDfailed = 0;
+  int numFuncBEDpassed = 0;
+  int numFunP1skipped = 0;
   try {
     //iterate through the functions that compose a particular variant
     for(
@@ -380,10 +387,11 @@ int main(int argc, char **argv)
 	Function_t* func=*it;
 	map<libIRDB::Instruction_t*, std::string> undoList;
 	cerr << "P1: looking at function: " << func->GetName() << endl;
-	
+	numFuncProcessed++; 
 	if (blackListOfFunctions.find(func->GetName()) != blackListOfFunctions.end())
 	{
 		cerr << "P1: filtering out: " << func->GetName() << endl;
+   		numFuncFiltered++;
 		continue;
 	}
 
@@ -392,6 +400,7 @@ int main(int argc, char **argv)
 	
 	if (!rewriteFunction)
 	  {
+		numFunP1skipped++;
 	    undo(undoList, func);
 	  }
 	else {
@@ -399,22 +408,25 @@ int main(int argc, char **argv)
 	  string cmd = "mkdir -p " + dirname;
 	  system(cmd.c_str());
 	  
-	  string filename = dirname + "/a.irdb.aspri";
+	  string aspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.aspri";
+	  string bspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.bspri";
 	  ofstream aspriFile;
-	  aspriFile.open(filename.c_str());
+	  aspriFile.open(aspri_filename.c_str());
 	  if(!aspriFile.is_open())
 	    {
-	      fprintf(stderr, "P1: Could not open: %s\n", filename.c_str());
+	      fprintf(stderr, "P1: Could not open: %s\n", aspri_filename.c_str());
 	      continue;
 	    }
 	  
-	  fprintf(stderr, "P1: generating aspri file: %s\n", filename.c_str());
+	  fprintf(stderr, "P1: generating aspri file: %s\n", aspri_filename.c_str());
 	  virp->GenerateSPRI(aspriFile); // p1.xform/<function_name>/a.irdb.aspri
 	  aspriFile.close();
 	  
 	  char new_instr[1024];
 	  //This script generates the aspri and bspri files; it also runs BED
-	  sprintf(new_instr, "$PEASOUP_HOME/tools/p1xform_v2.sh %d %s", progid, func->GetName().c_str());
+//	  sprintf(new_instr, "$PEASOUP_HOME/tools/p1xform_v2.sh %d %s", progid, func->GetName().c_str());
+
+	  sprintf(new_instr, "%s %d %s %s", BED_script, progid, aspri_filename.c_str(), bspri_filename.c_str());
 	  
 	  //If OK=BED(func), then commit 
 	  fprintf (stderr, "P1: about to execute\n", new_instr);
@@ -429,11 +441,16 @@ int main(int argc, char **argv)
 	    //Run BED; if passed, commit to DB
 	    virp->WriteToDB();
 	    functionsTransformed.push_back(func->GetName()); 
+	    fprintf (stderr, "P1: successfully transformed function: %s\n", func->GetName().c_str());
+		numFuncBEDpassed++;
 	  }     
 	  else {
+    		numFuncBEDfailed++;
 	    undo(undoList, func);
 	  }
 	}
+      
+        cerr << "P1: " << func->GetName() << " processed: " << numFuncProcessed << "/" << virp->GetFunctions().size() << " filtered: " << numFuncFiltered << " BED-passed: " << numFuncBEDpassed << " BED-failed: " << numFuncBEDfailed << " P1-skipped: " << numFunP1skipped << endl;
       }
     pqxx_interface.Commit();      
   }
@@ -443,9 +460,14 @@ int main(int argc, char **argv)
       exit(-1);
     }
   
-  cout << "# attribute number_functions_transformed=" << functionsTransformed.size() << endl;
+  // dump out statistics
+  cout << "# ATTRIBUTE number_functions_transformed=" << functionsTransformed.size() << endl;
   for (int i = 0; i < functionsTransformed.size(); ++i)
-    cout << "# attribute function_name=" << functionsTransformed[i] << endl;
+    cout << "# ATTRIBUTE function_name=" << functionsTransformed[i] << endl;
+  cout << "# ATTRIBUTE number_functions_filtered=" << numFuncFiltered<< endl;
+  cout << "# ATTRIBUTE number_functions_P1_skipped=" << numFunP1skipped << endl;
+  cout << "# ATTRIBUTE number_functions_BED_passed=" << numFuncBEDpassed << endl;
+  cout << "# ATTRIBUTE number_functions_BED_failed=" << numFuncBEDfailed << endl;
   
   return 0;
 }
