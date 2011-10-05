@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/home/jdh8d/peasoup/uva/security_transforms.trunk/tests/coreutils/peasoup_executable_directory.bzip2.8335/ps_run.sh /home/jdh8d/peasoup/uva/security_transforms.trunk/tests/coreutils/peasoup_executable_directory.bzip2.8335 "$@"
