@@ -1,0 +1,47 @@
+infile is a.ncexe
+outfile is tmp.exe.6597
+stratafier_file is
+Executable sections are .init .text __libc_freeres_fn .fini
+a.ncexe-.init 8048138 000030
+a.ncexe-.text 8048170 05e9dc
+a.ncexe-__libc_freeres_fn 80a6b50 000b57
+a.ncexe-.fini 80a76a8 00001c
+EOF 0 0
+cp tmp.exe.6597 ./exe_copy.temp
+cp /home/jdh8d/peasoup/uva/stratafier/stratafier.o ./strata_exe.temp
+Original entry point is 0x8048170
+ld --section-start .note.ABI-tag=0x90c90d4 --section-start .init=0x90c90f4 /home/jdh8d/peasoup/uva/stratafier/stratafier.o -T/home/jdh8d/peasoup/uva/stratafier/test_ld_script -o /home/jdh8d/peasoup/uva/stratafier/stratafier.o.exe -static
+/home/jdh8d/peasoup/uva/stratafier/strata_to_data /home/jdh8d/peasoup/uva/stratafier/stratafier.o.exe strata.linked.data 0x90c9000
+address=90c9000
+Found nobits seg .bss
+Found nobits seg __libc_freeres_ptrs
+ls: cannot access new.exe: No such file or directory
+/home/jdh8d/peasoup/uva/binutils-2.19/binutils/objcopy --add-segment .strata=PT_LOAD,0x90c9000,0,0,7,1000 --add-section .strata=strata.linked.data --change-section-address .strata=0x90c9000 --set-section-flags .strata=alloc ./exe_copy.temp new.exe
+Adding segment name=.strata, properties=PT_LOAD,0x90c9000,0,0,7,1000adding segment .strata with type=1, vaddr=90c9000, filesz=0, memsz=0, flags=7, align=4096
+Adding .strata as section 0
+
+objcopy --set-start 0x090c9220 new.exe
+infile is a.ncexe
+outfile is tmp.exe.6597
+stratafier_file is stratafier.o.exe
+Executable sections are .init .text __libc_freeres_fn .fini
+[STRATA TRANSLATED START: 090c9290]
+a.ncexe-.init 8048138 000030
+a.ncexe-.text 8048170 05e9dc
+a.ncexe-__libc_freeres_fn 80a6b50 000b57
+a.ncexe-.fini 80a76a8 00001c
+strata_translated_startup 090c9290 7
+EOF 0 0
+cp tmp.exe.6597 ./exe_copy.temp
+cp /home/jdh8d/peasoup/uva/stratafier/stratafier.o ./strata_exe.temp
+Original entry point is 0x8048170
+ld --section-start .note.ABI-tag=0x90c90d4 --section-start .init=0x90c90f4 /home/jdh8d/peasoup/uva/stratafier/stratafier.o -T/home/jdh8d/peasoup/uva/stratafier/test_ld_script -o /home/jdh8d/peasoup/uva/stratafier/stratafier.o.exe -static
+/home/jdh8d/peasoup/uva/stratafier/strata_to_data /home/jdh8d/peasoup/uva/stratafier/stratafier.o.exe strata.linked.data 0x90c9000
+address=90c9000
+Found nobits seg .bss
+Found nobits seg __libc_freeres_ptrs
+/home/jdh8d/peasoup/uva/binutils-2.19/binutils/objcopy --add-segment .strata=PT_LOAD,0x90c9000,3677042,3677042,7,1000 --add-section .strata=strata.linked.data --change-section-address .strata=0x90c9000 --set-section-flags .strata=alloc ./exe_copy.temp new.exe
+Adding segment name=.strata, properties=PT_LOAD,0x90c9000,3677042,3677042,7,1000adding segment .strata with type=1, vaddr=90c9000, filesz=57110594, memsz=57110594, flags=7, align=4096
+Adding .strata as section 0
+
+objcopy --set-start 0x090c9220 new.exe

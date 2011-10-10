@@ -1,0 +1,152 @@
++ error_threshold=0
++ date --iso-8601=seconds
++ ps_starttime=2011-10-10T06:20:31-0700
++ stepnum=0
++ check_environ_vars PEASOUP_HOME SMPSA_HOME STRATA_HOME SECURITY_TRANSFORMS_HOME IDAROOT
++ [ true ]
++ [ -z PEASOUP_HOME ]
++ varg=$PEASOUP_HOME
++ eval val=$PEASOUP_HOME
++ val=/home/jdh8d/peasoup/uva/peasoup.home.trunk
++ [ -z /home/jdh8d/peasoup/uva/peasoup.home.trunk ]
++ shift
++ [ true ]
++ [ -z SMPSA_HOME ]
++ varg=$SMPSA_HOME
++ eval val=$SMPSA_HOME
++ val=/home/jdh8d/peasoup/uva/SMPStaticAnalyzer
++ [ -z /home/jdh8d/peasoup/uva/SMPStaticAnalyzer ]
++ shift
++ [ true ]
++ [ -z STRATA_HOME ]
++ varg=$STRATA_HOME
++ eval val=$STRATA_HOME
++ val=/home/jdh8d/peasoup/uva/strata_head
++ [ -z /home/jdh8d/peasoup/uva/strata_head ]
++ shift
++ [ true ]
++ [ -z SECURITY_TRANSFORMS_HOME ]
++ varg=$SECURITY_TRANSFORMS_HOME
++ eval val=$SECURITY_TRANSFORMS_HOME
++ val=/home/jdh8d/peasoup/uva/security_transforms.trunk
++ [ -z /home/jdh8d/peasoup/uva/security_transforms.trunk ]
++ shift
++ [ true ]
++ [ -z IDAROOT ]
++ varg=$IDAROOT
++ eval val=$IDAROOT
++ val=/home/jdh8d/peasoup/uva/idapro61/ida
++ [ -z /home/jdh8d/peasoup/uva/idapro61/ida ]
++ shift
++ [ true ]
++ [ -z ]
++ return
++ check_files /home/jdh8d/peasoup/uva/peasoup.home.trunk/tools/getsyms.sh /home/jdh8d/peasoup/uva/SMPStaticAnalyzer/SMP-analyze.sh /home/jdh8d/peasoup/uva/strata_head/tools/pc_confinement/stratafy_with_pc_confine.sh
++ [ true ]
++ [ -z /home/jdh8d/peasoup/uva/peasoup.home.trunk/tools/getsyms.sh ]
++ [ ! -f /home/jdh8d/peasoup/uva/peasoup.home.trunk/tools/getsyms.sh ]
++ shift
++ [ true ]
++ [ -z /home/jdh8d/peasoup/uva/SMPStaticAnalyzer/SMP-analyze.sh ]
++ [ ! -f /home/jdh8d/peasoup/uva/SMPStaticAnalyzer/SMP-analyze.sh ]
++ shift
++ [ true ]
++ [ -z /home/jdh8d/peasoup/uva/strata_head/tools/pc_confinement/stratafy_with_pc_confine.sh ]
++ [ ! -f /home/jdh8d/peasoup/uva/strata_head/tools/pc_confinement/stratafy_with_pc_confine.sh ]
++ shift
++ [ true ]
++ [ -z ]
++ return
++ [ -z CWE_839_Example_1_bad ]
++ orig_exe=CWE_839_Example_1_bad.ncexe
++ newname=a
++ shift
++ stratafied_exe=CWE_839_Example_1_bad
++ shift
++ check_options
++ getopt -o s: --long step: --long manual_test_script: -n ps_analyze.sh --
++ TEMP= --
++ [ 0 != 0 ]
++ eval set --  --
++ set -- --
++ true
++ shift
++ break
++ [ -z ]
++ phases_off=  manual_test=off
++ [ ! -z ]
++ [ ! -z ]
++ basename CWE_839_Example_1_bad.ncexe
++ name=CWE_839_Example_1_bad.ncexe
++ newdir=peasoup_executable_directory.CWE_839_Example_1_bad.ncexe.6585
++ mkdir peasoup_executable_directory.CWE_839_Example_1_bad.ncexe.6585
++ cp CWE_839_Example_1_bad.ncexe peasoup_executable_directory.CWE_839_Example_1_bad.ncexe.6585/a.ncexe
++ rm -f CWE_839_Example_1_bad
++ cd peasoup_executable_directory.CWE_839_Example_1_bad.ncexe.6585
++ mkdir logs
++ perform_step stratafy_with_pc_confine sh /home/jdh8d/peasoup/uva/strata_head/tools/pc_confinement/stratafy_with_pc_confine.sh a.ncexe a.stratafied
++ step=stratafy_with_pc_confine
++ shift
++ command=sh /home/jdh8d/peasoup/uva/strata_head/tools/pc_confinement/stratafy_with_pc_confine.sh a.ncexe a.stratafied
++ is_step_on stratafy_with_pc_confine
++ step=stratafy_with_pc_confine
++ echo manual_test=off
++ egrep stratafy_with_pc_confine=off
++ [ 1 -eq 0 ]
++ return 1
++ [ 1 -eq 0 ]
++ logfile=logs/stratafy_with_pc_confine.log
++ echo -n Performing step stratafy_with_pc_confine ...
+Performing step stratafy_with_pc_confine ...+ date --iso-8601=seconds
++ starttime=2011-10-10T06:20:31-0700
++ [ ! -z 1 ]
++ sh /home/jdh8d/peasoup/uva/strata_head/tools/pc_confinement/stratafy_with_pc_confine.sh a.ncexe a.stratafied+ 
+tee logs/stratafy_with_pc_confine.log
+infile is a.ncexe
+outfile is tmp.exe.6597
+stratafier_file is
+Executable sections are .init .text __libc_freeres_fn .fini
+a.ncexe-.init 8048138 000030
+a.ncexe-.text 8048170 05e9dc
+a.ncexe-__libc_freeres_fn 80a6b50 000b57
+a.ncexe-.fini 80a76a8 00001c
+EOF 0 0
+cp tmp.exe.6597 ./exe_copy.temp
+cp /home/jdh8d/peasoup/uva/stratafier/stratafier.o ./strata_exe.temp
+Original entry point is 0x8048170
+ld --section-start .note.ABI-tag=0x90c90d4 --section-start .init=0x90c90f4 /home/jdh8d/peasoup/uva/stratafier/stratafier.o -T/home/jdh8d/peasoup/uva/stratafier/test_ld_script -o /home/jdh8d/peasoup/uva/stratafier/stratafier.o.exe -static
+/home/jdh8d/peasoup/uva/stratafier/strata_to_data /home/jdh8d/peasoup/uva/stratafier/stratafier.o.exe strata.linked.data 0x90c9000
+address=90c9000
+Found nobits seg .bss
+Found nobits seg __libc_freeres_ptrs
+ls: cannot access new.exe: No such file or directory
+/home/jdh8d/peasoup/uva/binutils-2.19/binutils/objcopy --add-segment .strata=PT_LOAD,0x90c9000,0,0,7,1000 --add-section .strata=strata.linked.data --change-section-address .strata=0x90c9000 --set-section-flags .strata=alloc ./exe_copy.temp new.exe
+Adding segment name=.strata, properties=PT_LOAD,0x90c9000,0,0,7,1000adding segment .strata with type=1, vaddr=90c9000, filesz=0, memsz=0, flags=7, align=4096
+Adding .strata as section 0
+
+objcopy --set-start 0x090c9220 new.exe
+infile is a.ncexe
+outfile is tmp.exe.6597
+stratafier_file is stratafier.o.exe
+Executable sections are .init .text __libc_freeres_fn .fini
+[STRATA TRANSLATED START: 090c9290]
+a.ncexe-.init 8048138 000030
+a.ncexe-.text 8048170 05e9dc
+a.ncexe-__libc_freeres_fn 80a6b50 000b57
+a.ncexe-.fini 80a76a8 00001c
+strata_translated_startup 090c9290 7
+EOF 0 0
+cp tmp.exe.6597 ./exe_copy.temp
+cp /home/jdh8d/peasoup/uva/stratafier/stratafier.o ./strata_exe.temp
+Original entry point is 0x8048170
+ld --section-start .note.ABI-tag=0x90c90d4 --section-start .init=0x90c90f4 /home/jdh8d/peasoup/uva/stratafier/stratafier.o -T/home/jdh8d/peasoup/uva/stratafier/test_ld_script -o /home/jdh8d/peasoup/uva/stratafier/stratafier.o.exe -static
+/home/jdh8d/peasoup/uva/stratafier/strata_to_data /home/jdh8d/peasoup/uva/stratafier/stratafier.o.exe strata.linked.data 0x90c9000
+address=90c9000
+Found nobits seg .bss
+Found nobits seg __libc_freeres_ptrs
+/home/jdh8d/peasoup/uva/binutils-2.19/binutils/objcopy --add-segment .strata=PT_LOAD,0x90c9000,3677042,3677042,7,1000 --add-section .strata=strata.linked.data --change-section-address .strata=0x90c9000 --set-section-flags .strata=alloc ./exe_copy.temp new.exe
+Adding segment name=.strata, properties=PT_LOAD,0x90c9000,3677042,3677042,7,1000adding segment .strata with type=1, vaddr=90c9000, filesz=57110594, memsz=57110594, flags=7, align=4096
+Adding .strata as section 0
+
+objcopy --set-start 0x090c9220 new.exe
+/home/jdh8d/peasoup/uva/peasoup.home.trunk/tools/ps_analyze.sh: 1: Bad substitution
