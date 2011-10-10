@@ -171,6 +171,8 @@ examples/integerbugs/C1_Number_Handling/CWE_190/bad.dat -text
 examples/integerbugs/C1_Number_Handling/CWE_190/data.txt -text
 examples/integerbugs/C1_Number_Handling/CWE_190/modular_bug_finding_example_1.c -text
 examples/integerbugs/C1_Number_Handling/CWE_190/modular_bug_finding_example_2.c -text
+examples/integerbugs/C1_Number_Handling/CWE_191/CWE_191_Example_1_bad.c -text
+examples/integerbugs/C1_Number_Handling/CWE_191/CWE_191_Example_2_bad.c -text
 examples/integerbugs/C1_Number_Handling/CWE_194/CVE-2007-4988_CWE_194_ImageMagick/CVE-2007-4988_CWE_194_ImageMagick.docx -text
 examples/integerbugs/C1_Number_Handling/CWE_194/CVE-2007-4988_CWE_194_ImageMagick/ImageMagick-6.3.4-10.tar.gz -text
 examples/integerbugs/C1_Number_Handling/CWE_194/CWE_194_Example_1_bad.c -text
