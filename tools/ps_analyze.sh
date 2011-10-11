@@ -397,7 +397,7 @@ perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600 -u 60 -i 25 -
 #
 # get some simple info for the program
 #	
-DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[\.;+\\-\ ]/_/g"`
+DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
 MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 
 #
