@@ -12,7 +12,7 @@ PROGRAM_NAME=`basename $PROGRAM_NAME`
 
 DB_SCRIPT=$$.script.tmp
 
-PROGRAM_NAME=`echo $PROGRAM_NAME | sed "s/[\.;+\\-\ ]/_/g"`
+PROGRAM_NAME=`echo $PROGRAM_NAME | sed "s/[\.;,+\\ -\ ]/_/g"`
 
 cat $PEASOUP_HOME/tools/db/pdb.createprogram.tbl | sed "s/#PROGNAME#/$PROGRAM_NAME/g" > $DB_SCRIPT
 
