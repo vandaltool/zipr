@@ -12,8 +12,14 @@
 #        we filter out the lines that use argv[0] as a workaround
 #      - timestamp info will differ b/c we're copying files around as part of manual_test_import
 #
+# NOTE: put the most complicated tests (those that are most likely to fail) first!
 
 echo "hello" > inputfile1
+
+# test whole bunch of options -- output is non-deterministic so we just make sure we have the same number of lines
+# also when something goes wrong during testing, the program usually just crashes
+ls -ltarHksbBiXR inputfile1 | wc -l > outputfile1
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./ls -ltarHksbBiXR inputfile1 | wc -l > outputfile1" --prog foobar --infile inputfile1 --outfile outputfile1 --name shload_flags
 
 # basic functionality -- don't bother with comparing outputs
 $PEASOUP_HOME/tools/manual_test_import.sh --cmd "./ls" --prog ls 

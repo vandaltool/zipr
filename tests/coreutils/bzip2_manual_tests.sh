@@ -4,6 +4,9 @@ echo "hello" > inputfile1
 cp `which ls` > ls.orig
 bzip2 -k -c ls.orig > ls.orig.bz2
 
+# should really be of the form
+#$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./BZIP2 -k -1 inputfile1 -c > outputfile1 2> err" --prog BZIP2=`which bzip2` --infile inputfile1=inputfile1 --outfile outputfile1=outfile1 --outfile err --name bzip2.k1
+
 # test compression level 1
 bzip2 inputfile1 -k -1 -c > outputfile1 2> err
 $PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -1 inputfile1 -c > outputfile1 2> err" --prog bzip2 --infile inputfile1 --outfile outputfile1 --outfile err --name bzip2.k1

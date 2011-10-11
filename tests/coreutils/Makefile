@@ -7,6 +7,9 @@ all:	${progs}
 ls.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${PEASOUP_HOME}/stock_examples/coreutils-7.4.shared/ls ls.peasoup ${ps_analyze_flags} --manual_test_script `pwd`/ls_manual_tests.sh
 
+ls.peasoup.static:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${PEASOUP_HOME}/stock_examples/coreutils-7.4.static/ls ls.peasoup.static ${ps_analyze_flags} --manual_test_script `pwd`/ls_manual_tests.sh
+
 cat.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${PEASOUP_HOME}/stock_examples/coreutils-7.4.shared/cat cat.peasoup ${ps_analyze_flags} --manual_test_script `pwd`/cat_manual_tests.sh
 
