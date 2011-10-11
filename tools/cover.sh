@@ -11,9 +11,10 @@ FILTER_FILE=$4                       # list of known functions to blacklist, e.g
 # outputs
 OUTPUT_COVERAGE_FILE=$5              # output file with coverage info per function
 OUTPUT_BLACKLIST_FILE=$6             # output file with list of functions to blacklist
-
 # other
-#CANDIDATE_FNS_PRE_FILTER=$P1_DIR/p1.candidates.prelibc
+
+
+CANDIDATE_FNS_PRE_LIBC=`dirname $6`/p1.candidates.prelibc
 
 #
 # Prune out functions that do not have sufficient coverage
@@ -32,8 +33,8 @@ if [ ! -f $OUTPUT_COVERAGE_FILE ]; then
 	return 1
 fi
 
-#grep -v "0\.0" $OUTPUT_COVERAGE_FILE | cut -f1 -d" " > $CANDIDATE_FNS_PRE_LIBC
-grep  "0\.0" $OUTPUT_COVERAGE_FILE | cut -f1 -d" " > $OUTPUT_BLACKLIST_FILE
+grep -v "0\.000" $OUTPUT_COVERAGE_FILE | cut -f1 -d" " > $CANDIDATE_FNS_PRE_LIBC
+grep  "0\.000" $OUTPUT_COVERAGE_FILE | cut -f1 -d" " > $OUTPUT_BLACKLIST_FILE
 
 # Filter out functions that:
 #   1. are not sufficiently covered
@@ -41,6 +42,5 @@ grep  "0\.0" $OUTPUT_COVERAGE_FILE | cut -f1 -d" " > $OUTPUT_BLACKLIST_FILE
 cat $FILTER_FILE >> $OUTPUT_BLACKLIST_FILE
 sort $OUTPUT_BLACKLIST_FILE | uniq > tmp.$$
 mv tmp.$$ $OUTPUT_BLACKLIST_FILE
-rm tmp.$$
 
 return 0

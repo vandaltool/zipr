@@ -17,7 +17,7 @@
 
 INFILES=""
 OUTFILES=""
-NAME=""
+TEST_NAME=""
 while [ $# -gt 0 ]
 do
   case "$1" in
@@ -25,13 +25,13 @@ do
 	"--prog")	PROG=$2; shift;;
 	"--infile")	INFILES="$2 $INFILES"; shift;;
 	"--outfile")	OUTFILES="$2 $OUTFILES"; shift;;
-	"--name")	NAME=$2; shift;;
+	"--name")	TEST_NAME=$2; shift;;
  	*) break;;
   esac
   shift
 done
 
-echo "NAME = $NAME"
+echo "TEST_NAME = $TEST_NAME"
 echo "INFILES = $INFILES"
 echo "OUTFILES = $OUTFILES"
 echo "PROG = $PROG"
@@ -51,14 +51,18 @@ echo "CMD = $CMD"
 # setup test directory
 
 PWD=`pwd`
-if [ -z $NAME ]; then
+if [ -z $TEST_NAME ]; then
   TEST_DIR=${PWD}/manual_tests/test.$$
+  TEST_NAME=test.$$
 else
-  TEST_DIR=${PWD}/manual_tests/$NAME
+  TEST_DIR=${PWD}/manual_tests/$TEST_NAME
 fi
 TEST_SPEC_DIR=${TEST_DIR}/spec
 SPEC_INPUT_DIR=$TEST_SPEC_DIR/input
 SPEC_OUTPUT_DIR=$TEST_SPEC_DIR/output
+TEST_ORIG_COVERAGE=$TEST_SPEC_DIR/coverage
+TEST_ORIG_CMD_SCRIPT=$TEST_SPEC_DIR/generate_cover_orig_cmd.sh
+
 TEST_DIR_XFORMED=$TEST_DIR/transformed
 TEST_XFORMED_CMD_SCRIPT=$TEST_DIR_XFORMED/test_new_cmd.sh
 TEST_XFORMED_OUTPUT_DIR=$TEST_DIR_XFORMED/output
@@ -66,6 +70,7 @@ TEST_XFORMED_OUTPUT_DIR=$TEST_DIR_XFORMED/output
 mkdir -p $SPEC_INPUT_DIR
 mkdir -p $SPEC_OUTPUT_DIR
 mkdir -p $TEST_XFORMED_OUTPUT_DIR
+mkdir -p $TEST_ORIG_COVERAGE
 
 # copy input files
 for i in $INFILES
@@ -78,6 +83,35 @@ for i in $OUTFILES
 do
   cp $i $SPEC_OUTPUT_DIR
 done
+
+#---------------------------------------
+# Original cmd/program
+#---------------------------------------
+#
+# create script to run original command with coverage info
+#
+
+touch $TEST_ORIG_CMD_SCRIPT
+
+# cleanup input/output files
+for i in $INFILES
+do
+  echo " rm $i 2>/dev/null" >> $TEST_ORIG_CMD_SCRIPT
+done
+
+for i in $OUTFILES
+do
+  echo " rm $i 2>/dev/null" >> $TEST_ORIG_CMD_SCRIPT
+  echo " rm $TEST_ORIG_OUTPUT_DIR/$i 2>/dev/null" >> $TEST_ORIG_CMD_SCRIPT
+done
+
+# stage in input (if any)
+for i in $INFILES
+do
+  echo " cp $SPEC_INPUT_DIR/$i ." >> $TEST_ORIG_CMD_SCRIPT
+done
+
+echo "\$PEASOUP_HOME/tools/manual_cover.sh $TEST_ORIG_COVERAGE/executed_addresses.txt -- $CMD" >> $TEST_ORIG_CMD_SCRIPT
 
 #---------------------------------------
 # Transformed cmd/program
@@ -123,4 +157,5 @@ chmod +x $TEST_XFORMED_CMD_SCRIPT
 
 cp $PEASOUP_HOME/tools/run_stratafied.tmpl.sh $TEST_DIR_XFORMED/$PROG
 chmod +x $TEST_DIR_XFORMED/$PROG
+chmod +x $TEST_ORIG_CMD_SCRIPT
 
