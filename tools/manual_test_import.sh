@@ -159,6 +159,9 @@ for i in $OUTFILES
 do
   echo " mv $i $TEST_XFORMED_OUTPUT_DIR" >> $TEST_XFORMED_CMD_SCRIPT
 done
+
+echo " exit \$status" >> $TEST_XFORMED_CMD_SCRIPT
+
 chmod +x $TEST_XFORMED_CMD_SCRIPT
 
 cp $PEASOUP_HOME/tools/run_stratafied.tmpl.sh $TEST_DIR_XFORMED/$PROG
