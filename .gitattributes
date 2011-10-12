@@ -393,6 +393,7 @@ tools/peasoup_link -text
 tools/peasoup_link++ -text
 tools/pin/LICENSE -text
 tools/pin/itraceunique.cpp -text
+tools/pin/itraceunique.so -text
 tools/pin/pin -text
 tools/ps_analyze.sh -text
 tools/ps_comp++.sh -text
