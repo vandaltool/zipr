@@ -16,12 +16,18 @@ if [ ! $? -eq 0 ]; then
   exit 1
 fi
 
+echo "Inside do_manual_cover.sh"
+
 touch $AGGREGATE_COVERAGE
 
 for testname in `ls $MANUAL_TEST_DIR`
 do
   echo "do moi: $MANUAL_TEST_DIR/$testname/spec/$COVER_SCRIPT"
+
+  cd $MANUAL_TEST_DIR/$testname/spec/
   $MANUAL_TEST_DIR/$testname/spec/$COVER_SCRIPT
+  cd -
+
   cat $MANUAL_TEST_DIR/$testname/spec/coverage/executed_addresses.txt >> $AGGREGATE_COVERAGE
 done
 

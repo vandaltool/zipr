@@ -31,6 +31,8 @@ do
   shift
 done
 
+TEST_TIMEOUT=30
+
 echo "TEST_NAME = $TEST_NAME"
 echo "INFILES = $INFILES"
 echo "OUTFILES = $OUTFILES"
@@ -93,6 +95,8 @@ done
 
 touch $TEST_ORIG_CMD_SCRIPT
 
+echo "#!/bin/sh" >> $TEST_ORIG_CMD_SCRIPT
+
 # cleanup input/output files
 for i in $INFILES
 do
@@ -112,6 +116,8 @@ do
 done
 
 echo "\$PEASOUP_HOME/tools/manual_cover.sh $TEST_ORIG_COVERAGE/executed_addresses.txt -- $CMD" >> $TEST_ORIG_CMD_SCRIPT
+
+cp a.ncexe $TEST_SPEC_DIR/$PROG
 
 #---------------------------------------
 # Transformed cmd/program
@@ -141,7 +147,7 @@ done
 
 # run command (check for seg faults)
 # @todo: we should really register the program exit code and check against it
-echo "STRATA_SPRI_FILE=\$1 $CMD" >> $TEST_XFORMED_CMD_SCRIPT
+echo "STRATA_SPRI_FILE=\$1 timeout $TEST_TIMEOUT $CMD" >> $TEST_XFORMED_CMD_SCRIPT
 echo "status=\$?" >> $TEST_XFORMED_CMD_SCRIPT
 echo "echo \$status" >> $TEST_XFORMED_CMD_SCRIPT
 echo "if [ \$status -eq 139 ]; then" >> $TEST_XFORMED_CMD_SCRIPT
