@@ -21,19 +21,19 @@ $PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -9 inputfile1 --stdo
 
 # test on larger file (like ls)
 bzip2 -k -8 -c ls.orig > ls.orig.bz2 2> err
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -8 ls.orig 2> err" --prog bzip2 --infile ls.orig --outfile err --outfile ls.orig.bz2 --name bzip2.ls
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -8 -c ls.orig > ls.orig.bz2 2> err" --prog bzip2 --infile ls.orig --outfile err --outfile ls.orig.bz2 --name bzip2.ls
 
 # test small memory footprint option
 bzip2 -k -s -c ls.orig > ls.orig.bz2 2> err
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -s ls.orig 2> err" --prog bzip2 --infile ls.orig --outfile err --outfile ls.orig.bz2 --name bzip2.ls
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -s -c ls.orig > ls.orig.bz2 2> err" --prog bzip2 --infile ls.orig --outfile err --outfile ls.orig.bz2 --name bzip2.footprint
 
 # test integrity check
 bzip2 -t ls.orig.bz2 
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -t ls.orig.bz2" --prog bzip2 --name bzip2.integrity --infile ls.orig.bz2
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -t ls.orig.bz2" --prog bzip2 --name bzip2.integrity --infile ls.orig.bz2 --name bzip2.integrity
 
 # test help 
 bzip2 --help 2>&1| grep -vi bzip2 | grep -vi stratafied > outputfile1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 --help 2>&1 | grep -vi bzip2 | grep -vi stratafied > outputfile1" --prog bzip2 --outfile outputfile1 --name usage
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 --help 2>&1 | grep -vi bzip2 | grep -vi stratafied > outputfile1" --prog bzip2 --outfile outputfile1 --name bzip2.usage
 
 # cleanup
 rm inputfile1 outputfile1 err ls.orig ls.orig.bz2
