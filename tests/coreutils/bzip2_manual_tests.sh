@@ -9,31 +9,38 @@ bzip2 -k -c ls.orig > ls.orig.bz2
 
 # test compression level 1
 bzip2 inputfile1 -k -1 -c > outputfile1 2> err
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -1 inputfile1 -c > outputfile1 2> err" --prog bzip2 --infile inputfile1 --outfile outputfile1 --outfile err --name bzip2.k1
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -1 inputfile1 -c > outputfile1 2> err" --prog bzip2 --infile inputfile1 --outfile outputfile1 --outfile err --name bzip2.k1 --exitcode $exitcode
 
 # test compression level 5
 bzip2 inputfile1 -k -5 -c > outputfile1 2> err
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -5 inputfile1 -c > outputfile1 2> err" --prog bzip2 --infile inputfile1 --outfile outputfile1 --outfile err --name bzip2.k5
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -5 inputfile1 -c > outputfile1 2> err" --prog bzip2 --infile inputfile1 --outfile outputfile1 --outfile err --name bzip2.k5 --exitcode $exitcode
 
 # test compression level 9
 bzip2 inputfile1 -k -9 --stdout > outputfile1 2> err
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -9 inputfile1 --stdout > outputfile1 2> err" --prog bzip2 --infile inputfile1 --outfile outputfile1 --outfile err --name bzip2.k9
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -9 inputfile1 --stdout > outputfile1 2> err" --prog bzip2 --infile inputfile1 --outfile outputfile1 --outfile err --name bzip2.k9 --exitcode $exitcode
 
 # test on larger file (like ls)
 bzip2 -k -8 -c ls.orig > ls.orig.bz2 2> err
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -8 -c ls.orig > ls.orig.bz2 2> err" --prog bzip2 --infile ls.orig --outfile err --outfile ls.orig.bz2 --name bzip2.ls
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -8 -c ls.orig > ls.orig.bz2 2> err" --prog bzip2 --infile ls.orig --outfile err --outfile ls.orig.bz2 --name bzip2.ls --exitcode $exitcode
 
 # test small memory footprint option
 bzip2 -k -s -c ls.orig > ls.orig.bz2 2> err
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -s -c ls.orig > ls.orig.bz2 2> err" --prog bzip2 --infile ls.orig --outfile err --outfile ls.orig.bz2 --name bzip2.footprint
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -k -s -c ls.orig > ls.orig.bz2 2> err" --prog bzip2 --infile ls.orig --outfile err --outfile ls.orig.bz2 --name bzip2.footprint --exitcode $exitcode
 
 # test integrity check
 bzip2 -t ls.orig.bz2 
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -t ls.orig.bz2" --prog bzip2 --name bzip2.integrity --infile ls.orig.bz2 --name bzip2.integrity
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 -t ls.orig.bz2" --prog bzip2 --name bzip2.integrity --infile ls.orig.bz2 --name bzip2.integrity --exitcode $exitcode
 
 # test help 
 bzip2 --help 2>&1| grep -vi bzip2 | grep -vi stratafied > outputfile1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 --help 2>&1 | grep -vi bzip2 | grep -vi stratafied > outputfile1" --prog bzip2 --outfile outputfile1 --name bzip2.usage
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./bzip2 --help 2>&1 | grep -vi bzip2 | grep -vi stratafied > outputfile1" --prog bzip2 --outfile outputfile1 --name bzip2.usage --exitcode $exitcode
 
 # cleanup
 rm inputfile1 outputfile1 err ls.orig ls.orig.bz2
