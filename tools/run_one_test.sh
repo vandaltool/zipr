@@ -15,6 +15,9 @@ BSPRI=$2
 SPEC_DIR=$TEST_DIR/spec
 XFORMED_DIR=$TEST_DIR/transformed
 
+ORIG_EXIT_CODE_FILE=$SPEC_DIR/exitcode/exitcode.txt
+XFORMED_EXIT_CODE_FILE=$XFORMED_DIR/exitcode/exitcode.txt
+
 echo "running test $TEST_DIR from $XFORMED_DIR using bspri file: $BSPRI"
 cd $XFORMED_DIR
 ./test_new_cmd.sh $BSPRI
@@ -24,6 +27,15 @@ if [ $status -eq 139 ]; then
   exit $status 
 else
   echo "test command status code: $status"
+fi
+
+# compare exit codes when exit code file is found
+if [ -f $ORIG_EXIT_CODE_FILE ]; then
+	diff $ORIG_EXIT_CODE_FILE $XFORMED_EXIT_CODE_FILE
+	if [ ! $? -eq 0 ]; then
+		echo "test $TEST_DIR: exit codes do not match"
+		exit 1
+	fi
 fi
 
 cd output
@@ -37,6 +49,7 @@ if [ "$num_files_orig" != "$num_files_xformed" ]; then
   exit 1
 fi
 
+# compare outputs
 for i in `ls`
 do
   diff $i $SPEC_DIR/output/$i
@@ -50,6 +63,7 @@ do
     exit 1
   fi
 done
+
 
 echo "Test $1 passed"
 exit 0
