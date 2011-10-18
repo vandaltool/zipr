@@ -296,6 +296,7 @@ tools/transforms/integerbugtransform.cpp -text
 tools/transforms/nulltransform.cpp -text
 tools/transforms/p1transform.cpp -text
 tools/transforms/p1transform.h -text
+tools/transforms/sample_meds_int.annot -text
 tools/transforms/transformutils.cpp -text
 tools/transforms/transformutils.h -text
 xform/Makefile -text
