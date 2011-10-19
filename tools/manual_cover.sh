@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Coverage tool for manual tests
 #
 # Usage:
@@ -17,6 +19,6 @@ shift
 FULL_COMMAND=$*
 
 # We use pin for extracting coverage info
-$PEASOUP_HOME/tools/pin/pin -t $PEASOUP_HOME/tools/pin/itraceunique.so -- $FULL_COMMAND
+setarch i386 -RL $PEASOUP_HOME/tools/pin/pin -t $PEASOUP_HOME/tools/pin/itraceunique.so -- $FULL_COMMAND
 
 cat itrace.out | grep -v eof > $OUTPUT_FILE

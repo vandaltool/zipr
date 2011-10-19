@@ -22,7 +22,7 @@ touch $AGGREGATE_COVERAGE
 
 for testname in `ls $MANUAL_TEST_DIR`
 do
-  echo "do moi: $MANUAL_TEST_DIR/$testname/spec/$COVER_SCRIPT"
+  echo "do_manual_cover.sh: $MANUAL_TEST_DIR/$testname/spec/$COVER_SCRIPT"
 
   cd $MANUAL_TEST_DIR/$testname/spec/
   $MANUAL_TEST_DIR/$testname/spec/$COVER_SCRIPT

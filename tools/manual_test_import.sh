@@ -33,7 +33,7 @@ do
   shift
 done
 
-TEST_TIMEOUT=30
+TEST_TIMEOUT=60
 
 echo "TEST_NAME = $TEST_NAME"
 echo "INFILES = $INFILES"
@@ -119,7 +119,7 @@ done
 for i in $OUTFILES
 do
   echo " rm $i 2>/dev/null" >> $TEST_ORIG_CMD_SCRIPT
-  echo " rm $TEST_ORIG_OUTPUT_DIR/$i 2>/dev/null" >> $TEST_ORIG_CMD_SCRIPT
+  echo " rm $SPEC_OUTPUT_DIR/$i 2>/dev/null" >> $TEST_ORIG_CMD_SCRIPT
 done
 
 # stage in input (if any)
@@ -139,6 +139,8 @@ cp a.ncexe $TEST_SPEC_DIR/$PROG
 # create script to run transformed command
 #
 touch $TEST_XFORMED_CMD_SCRIPT
+
+echo "#!/bin/sh" >> $TEST_XFORMED_CMD_SCRIPT
 
 # cleanup input/output files
 for i in $INFILES
@@ -163,7 +165,7 @@ done
 
 # run command (check for seg faults)
 # @todo: we should really register the program exit code and check against it
-echo "STRATA_SPRI_FILE=\$1 timeout $TEST_TIMEOUT $CMD" >> $TEST_XFORMED_CMD_SCRIPT
+echo "STRATA_SPRI_FILE=\$1 timeout $TEST_TIMEOUT setarch i386 -RL $CMD" >> $TEST_XFORMED_CMD_SCRIPT
 echo "status=\$?" >> $TEST_XFORMED_CMD_SCRIPT
 echo "echo \$status" >> $TEST_XFORMED_CMD_SCRIPT
 
