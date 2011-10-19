@@ -110,86 +110,85 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 	virtual_offset_t postDetectorReturn = getAvailableAddress(m_variantIR);
 	poparg_a->SetVirtualOffset(postDetectorReturn);
 
-        jno_i->SetAddress(jno_a);
-        jmporigfallthrough_i->SetAddress(jmporigfallthrough_a);
-        pusha_i->SetAddress(pusha_a);
-        pushf_i->SetAddress(pushf_a);
-        pusharg_i->SetAddress(pusharg_a);
-        pushret_i->SetAddress(pushret_a);
-        poparg_i->SetAddress(poparg_a);
-        popf_i->SetAddress(popf_a);
-        popa_i->SetAddress(popa_a);
+	jno_i->SetAddress(jno_a);
+	jmporigfallthrough_i->SetAddress(jmporigfallthrough_a);
+	pusha_i->SetAddress(pusha_a);
+	pushf_i->SetAddress(pushf_a);
+	pusharg_i->SetAddress(pusharg_a);
+	pushret_i->SetAddress(pushret_a);
+	poparg_i->SetAddress(poparg_a);
+	popf_i->SetAddress(popf_a);
+	popa_i->SetAddress(popa_a);
 
-        // set fallthrough for the original instruction
+	// set fallthrough for the original instruction
 	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
-        p_instruction->SetFallthrough(jno_i); 
+	p_instruction->SetFallthrough(jno_i); 
 
-        // jno IO
-        dataBits.resize(2);
-        dataBits[0] = 0x71;
-        dataBits[1] = 0x15; // value doesn't matter, we will fill it in later
-        jno_i->SetDataBits(dataBits);
-        jno_i->SetComment(jno_i->getDisassembly());
+	// jno IO
+	dataBits.resize(2);
+	dataBits[0] = 0x71;
+	dataBits[1] = 0x15; // value doesn't matter, we will fill it in later
+	jno_i->SetDataBits(dataBits);
+	jno_i->SetComment(jno_i->getDisassembly());
 	jno_i->SetFallthrough(pusha_i); 
 	jno_i->SetTarget(nextOrig_i); 
 
-        // pusha   
-        dataBits.resize(1);
-        dataBits[0] = 0x60;
-        pusha_i->SetDataBits(dataBits);
-        pusha_i->SetComment(pusha_i->getDisassembly());
+	// pusha   
+	dataBits.resize(1);
+	dataBits[0] = 0x60;
+	pusha_i->SetDataBits(dataBits);
+	pusha_i->SetComment(pusha_i->getDisassembly());
 	pusha_i->SetFallthrough(pusharg_i); 
 
-        // pushf   
-        dataBits.resize(1);
-        dataBits[0] = 0x9c;
-        pushf_i->SetDataBits(dataBits);
-        pushf_i->SetComment(pushf_i->getDisassembly());
+	// pushf   
+	dataBits.resize(1);
+	dataBits[0] = 0x9c;
+	pushf_i->SetDataBits(dataBits);
+	pushf_i->SetComment(pushf_i->getDisassembly());
 	pushf_i->SetFallthrough(pusharg_i); 
 
-        // push arg
-        dataBits.resize(5);
-        dataBits[0] = 0x68;
+	// push arg
+	dataBits.resize(5);
+	dataBits[0] = 0x68;
 	virtual_offset_t *tmp = (virtual_offset_t *) &dataBits[1];
 	*tmp = p_instruction->GetAddress()->GetVirtualOffset();
-        pusharg_i->SetDataBits(dataBits);
-        pusharg_i->SetComment(pusharg_i->getDisassembly());
+	pusharg_i->SetDataBits(dataBits);
+	pusharg_i->SetComment(pusharg_i->getDisassembly());
 	pusharg_i->SetFallthrough(pushret_i); 
 
-        // pushret   
-        dataBits.resize(5);
-        dataBits[0] = 0x68;
+	// pushret   
+	dataBits.resize(5);
+	dataBits[0] = 0x68;
 	tmp = (virtual_offset_t *) &dataBits[1];
 	*tmp = postDetectorReturn;
-        pushret_i->SetDataBits(dataBits);
-        pushret_i->SetComment(pushret_i->getDisassembly());
+	pushret_i->SetDataBits(dataBits);
+	pushret_i->SetComment(pushret_i->getDisassembly());
 	pushret_i->SetFallthrough(poparg_i); 
 
 	// poparg
-        dataBits.resize(1);
-        dataBits[0] = 0x58;
-        poparg_i->SetDataBits(dataBits);
-        poparg_i->SetComment(poparg_i->getDisassembly() + " -- with callback to " + p_detector + " orig: " + p_instruction->GetComment()) ;
+	dataBits.resize(1);
+	dataBits[0] = 0x58;
+	poparg_i->SetDataBits(dataBits);
+	poparg_i->SetComment(poparg_i->getDisassembly() + " -- with callback to " + p_detector + " orig: " + p_instruction->GetComment()) ;
 	poparg_i->SetFallthrough(popa_i); 
 	poparg_i->SetIndirectBranchTargetAddress(poparg_a);  
 	poparg_i->SetCallback(p_detector); 
 
-        // popf   
-        dataBits.resize(1);
-        dataBits[0] = 0x9d;
-        popf_i->SetDataBits(dataBits);
-        popf_i->SetComment(popf_i->getDisassembly());
+	// popf   
+	dataBits.resize(1);
+	dataBits[0] = 0x9d;
+	popf_i->SetDataBits(dataBits);
+	popf_i->SetComment(popf_i->getDisassembly());
 	popf_i->SetFallthrough(popa_i); 
-//	popf_i->SetCallback("integer_overflow_detector"); 
 
-        // popa   
-        dataBits.resize(1);
-        dataBits[0] = 0x61;
-        popa_i->SetDataBits(dataBits);
-        popa_i->SetComment(popa_i->getDisassembly());
+	// popa   
+	dataBits.resize(1);
+	dataBits[0] = 0x61;
+	popa_i->SetDataBits(dataBits);
+	popa_i->SetComment(popa_i->getDisassembly());
 	popa_i->SetFallthrough(nextOrig_i); 
 
-        // add new address to IR
+	// add new address to IR
 	m_variantIR->GetAddresses().insert(jno_a);
 	m_variantIR->GetAddresses().insert(jmporigfallthrough_a);
 	m_variantIR->GetAddresses().insert(pusha_a);
@@ -200,7 +199,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 	m_variantIR->GetAddresses().insert(poparg_a);
 	m_variantIR->GetAddresses().insert(popa_a);
 
-        // add new instructions to IR
+	// add new instructions to IR
 	m_variantIR->GetInstructions().insert(jno_i);
 	m_variantIR->GetInstructions().insert(jmporigfallthrough_i);
 	m_variantIR->GetInstructions().insert(pusha_i);
