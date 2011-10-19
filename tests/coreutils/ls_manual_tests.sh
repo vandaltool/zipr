@@ -35,7 +35,7 @@ $PEASOUP_HOME/tools/manual_test_import.sh --cmd "./ls --ignore=hello inputfile1 
 # test invalid options
 ls -MX inputfile1 
 exitcode=$?
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./ls inputfile1" --prog ls --infile inputfile1 --name ls.invalid_options --exitcode $exitcode
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./ls -MX inputfile1" --prog ls --infile inputfile1 --name ls.invalid_options --exitcode $exitcode
 
 # test help 
 exitcode=$?

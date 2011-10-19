@@ -7,19 +7,23 @@ echo "hello" > inputfile1
 
 # test lots of options
 cat -Abetvsnu inputfile1 > outputfile1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./cat -Abetvsnu inputfile1 > outputfile1" --prog cat  --infile inputfile1 --outfile outputfile1 --name cat.shload_options
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./cat -Abetvsnu inputfile1 > outputfile1" --prog cat  --infile inputfile1 --outfile outputfile1 --name shload_options --exitcode $exitcode
 
 # test basic
 cat inputfile1 > outputfile1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./cat inputfile1 > outputfile1" --prog cat  --infile inputfile1 --outfile outputfile1 --name cat.basic
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./cat inputfile1 > outputfile1" --prog cat  --infile inputfile1 --outfile outputfile1 --name basic --exitcode $exitcode
 
 # test invalid options
 cat -MX inputfile1 2>&1 | grep -vi cat > outputfile1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./cat -MX inputfile1 2>&1 | grep -vi stratafied | grep -vi cat > outputfile1" --prog cat --infile inputfile1 --outfile outputfile1 --name cat.invalid_options
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./cat -MX inputfile1 2>&1 | grep -vi stratafied | grep -vi cat > outputfile1" --prog cat --infile inputfile1 --outfile outputfile1 --name invalid_options --exitcode $exitcode
 
 # test help 
 cat --help --version 2>&1 | grep -vi cat > outputfile1
-$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./cat --help --version 2>&1 | grep -vi stratafied | grep -vi cat > outputfile1" --prog cat --outfile outputfile1 --name cat.usage
+exitcode=$?
+$PEASOUP_HOME/tools/manual_test_import.sh --cmd "./cat --help --version 2>&1 | grep -vi stratafied | grep -vi cat > outputfile1" --prog cat --outfile outputfile1 --name usage --exitcode $exitcode
 
 # cleanup
 rm inputfile1 outputfile1
