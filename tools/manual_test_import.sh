@@ -119,7 +119,6 @@ done
 for i in $OUTFILES
 do
   echo " rm $i 2>/dev/null" >> $TEST_ORIG_CMD_SCRIPT
-  echo " rm $SPEC_OUTPUT_DIR/$i 2>/dev/null" >> $TEST_ORIG_CMD_SCRIPT
 done
 
 # stage in input (if any)
