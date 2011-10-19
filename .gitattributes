@@ -273,6 +273,14 @@ libIRDB/test/list_programs.cpp -text
 libIRDB/test/print_variant.cpp -text
 libIRDB/test/read_variantir.cpp -text
 libIRDB/test/unfix_calls.cpp -text
+libMEDSannotation/Makefile -text
+libMEDSannotation/include/MEDS_AnnotationParser.hpp -text
+libMEDSannotation/include/MEDS_InstructionCheckAnnotation.hpp -text
+libMEDSannotation/include/VirtualOffset.hpp -text
+libMEDSannotation/src/MEDS_AnnotationParser.cpp -text
+libMEDSannotation/src/MEDS_InstructionCheckAnnotation.cpp -text
+libMEDSannotation/src/Makefile -text
+libMEDSannotation/src/VirtualOffset.cpp -text
 libintegertransform/Makefile -text
 libintegertransform/include/integertransform.hpp -text
 libintegertransform/src/Makefile -text
