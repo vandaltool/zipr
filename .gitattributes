@@ -273,6 +273,10 @@ libIRDB/test/list_programs.cpp -text
 libIRDB/test/print_variant.cpp -text
 libIRDB/test/read_variantir.cpp -text
 libIRDB/test/unfix_calls.cpp -text
+libintegertransform/Makefile -text
+libintegertransform/include/integertransform.hpp -text
+libintegertransform/src/Makefile -text
+libintegertransform/src/integertransform.cpp -text
 tests/coreutils/Makefile -text
 tests/coreutils/bzip2_manual_tests.sh -text
 tests/coreutils/cat_manual_tests.sh -text
