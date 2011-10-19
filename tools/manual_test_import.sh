@@ -169,6 +169,7 @@ echo "echo \$status" >> $TEST_XFORMED_CMD_SCRIPT
 
 if [ ! -z $EXIT_CODE ]; then
 	echo "echo \$status > $TEST_XFORMED_EXIT_CODE_FILE" >> $TEST_XFORMED_CMD_SCRIPT
+	echo "echo expected exit status: $EXIT_CODE" >> $TEST_XFORMED_CMD_SCRIPT
 fi
 
 echo "if [ \$status -eq 139 ]; then" >> $TEST_XFORMED_CMD_SCRIPT
