@@ -17,6 +17,10 @@ class IntegerTransform
 	public:
 		IntegerTransform(VariantID_t *, VariantIR_t*, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions); 
 		int execute();
+	
+	private:
+		void addOverflowCheck(libIRDB::Instruction_t *p_instruction, std::string p_handlerName);
+		virtual_offset_t getAvailableAddress(VariantIR_t *p_virp);
 
 	private:
 		VariantID_t            *m_variantID;
