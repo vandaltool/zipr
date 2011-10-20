@@ -19,8 +19,13 @@ class IntegerTransform
 		int execute();
 	
 	private:
-		void addOverflowCheck(libIRDB::Instruction_t *p_instruction, std::string p_handlerName);
+		void addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
+
 		virtual_offset_t getAvailableAddress(VariantIR_t *p_virp);
+
+		// utility functions
+		bool isMultiplyInstruction32(libIRDB::Instruction_t*);
+		bool isAddSubNonEspInstruction32(libIRDB::Instruction_t*);
 
 	private:
 		VariantID_t            *m_variantID;
@@ -28,5 +33,12 @@ class IntegerTransform
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *m_annotations;
 		set<std::string>       *m_filteredFunctions;
 };
+
+// make sure these match the function names in $STRATA/src/posix/x86_linux/detector_number_handling/overflow_detector.c
+
+#define	INTEGER_OVERFLOW_DETECTOR            "integer_overflow_detector"
+#define	ADDSUB_OVERFLOW_DETECTOR_SIGNED_32   "addsub_overflow_detector_signed_32"
+#define	ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_32 "addsub_overflow_detector_unsigned_32"
+#define	MUL_OVERFLOW_DETECTOR_32             "mul_overflow_detector_32"
 
 #endif

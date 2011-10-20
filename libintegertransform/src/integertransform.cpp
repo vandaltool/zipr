@@ -23,6 +23,8 @@ int IntegerTransform::execute()
 	{
 		Function_t* func=*itf;
 
+		cerr << "integertransform: looking at function: " << func->GetName() << endl;
+
 		if (m_filteredFunctions->find(func->GetName()) != m_filteredFunctions->end())
 			continue;
 
@@ -33,20 +35,49 @@ int IntegerTransform::execute()
 		{
 			Instruction_t* insn=*it;
 
-			// lookup address
-			// see if there's an annotation
-			//   if so perform the instrumentation check
+			if (insn && insn->GetAddress())
+			{
+				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
+				if (irdb_vo == 0) continue;
 
+				VirtualOffset vo(irdb_vo);
+
+				MEDS_InstructionCheckAnnotation annotation = (*m_annotations)[vo];
+				if (!annotation.isValid()) continue;
+
+				if (annotation.isOverflow())
+				{
+					cerr << "integertransform: overflow annotation" << annotation.toString();
+					addOverflowCheck(insn, annotation);
+				}
+				else if (annotation.isUnderflow())
+				{
+					cerr << "integertransform: underflow annotation" << annotation.toString();
+				}
+				else if (annotation.isTruncation())
+				{
+					cerr << "integertransform: truncation annotation" << annotation.toString();
+
+				}
+				else if (annotation.isSignedness())
+				{
+					cerr << "integertransform: signedness annotation" << annotation.toString();
+				}
+				else
+					cerr << "integertransform: unknown annotation" << annotation.toString();
+			}
 		} // end iterate over all instructions in a function
 	} // end iterate over all functions
 
-	m_variantIR->WriteToDB();
+	cerr << "integertransform: testing: do not write new variant to DB" << endl;
+//	m_variantIR->WriteToDB();
 
 	// for now just be happy
 	return 0;
 }
 
 //
+//      <instruction to instrument>
 //      jno <originalFallthroughInstruction>
 //      pusha
 //      pushf
@@ -57,15 +88,15 @@ int IntegerTransform::execute()
 //      popf
 //      popa
 //
-void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::string p_detector)
+void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
 {
+cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->GetComment() << endl;
 	assert(m_variantIR && p_instruction);
 	
+	string detector; // name of SPRI/STRATA callback handler function
 	string dataBits;
 
-	AddressID_t *jno_a =new AddressID_t;
-	AddressID_t *jo_a =new AddressID_t;
-	AddressID_t *jmporigfallthrough_a =new AddressID_t;
+	AddressID_t *jncond_a =new AddressID_t;
 	AddressID_t *pusha_a =new AddressID_t;
 	AddressID_t *pushf_a =new AddressID_t;
 	AddressID_t *pusharg_a =new AddressID_t;
@@ -74,8 +105,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 	AddressID_t *popf_a =new AddressID_t;
 	AddressID_t *popa_a =new AddressID_t;
 
-	jno_a->SetFileID(p_instruction->GetAddress()->GetFileID());
-	jmporigfallthrough_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	jncond_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pusha_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pushf_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pusharg_a->SetFileID(p_instruction->GetAddress()->GetFileID());
@@ -84,8 +114,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 	popf_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	popa_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 
-	Instruction_t* jno_i = new Instruction_t;
-	Instruction_t* jmporigfallthrough_i = new Instruction_t;
+	Instruction_t* jncond_i = new Instruction_t;
 	Instruction_t* pusha_i = new Instruction_t;
 	Instruction_t* pushf_i = new Instruction_t;
 	Instruction_t* pusharg_i = new Instruction_t;
@@ -96,8 +125,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 
 	Function_t* origFunction = p_instruction->GetFunction();
 
-	jno_i->SetFunction(origFunction);
-	jmporigfallthrough_i->SetFunction(origFunction);
+	jncond_i->SetFunction(origFunction);
 	pusha_i->SetFunction(origFunction);
 	pushf_i->SetFunction(origFunction);
 	pusharg_i->SetFunction(origFunction);
@@ -110,8 +138,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 	virtual_offset_t postDetectorReturn = getAvailableAddress(m_variantIR);
 	poparg_a->SetVirtualOffset(postDetectorReturn);
 
-	jno_i->SetAddress(jno_a);
-	jmporigfallthrough_i->SetAddress(jmporigfallthrough_a);
+	jncond_i->SetAddress(jncond_a);
 	pusha_i->SetAddress(pusha_a);
 	pushf_i->SetAddress(pushf_a);
 	pusharg_i->SetAddress(pusharg_a);
@@ -122,23 +149,48 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 
 	// set fallthrough for the original instruction
 	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
-	p_instruction->SetFallthrough(jno_i); 
+	p_instruction->SetFallthrough(jncond_i); 
 
-	// jno IO
+
+	// jncond 
 	dataBits.resize(2);
-	dataBits[0] = 0x71;
-	dataBits[1] = 0x15; // value doesn't matter, we will fill it in later
-	jno_i->SetDataBits(dataBits);
-	jno_i->SetComment(jno_i->getDisassembly());
-	jno_i->SetFallthrough(pusha_i); 
-	jno_i->SetTarget(nextOrig_i); 
+	if (isMultiplyInstruction32(p_instruction))
+	{
+		dataBits[0] = 0x71; // jno
+		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
+		detector = string(MUL_OVERFLOW_DETECTOR_32);
+	cerr << "integertransform: MUL OVERFLOW 32" << endl;
+	}
+	else if (p_annotation.isSigned())
+	{
+		dataBits[0] = 0x71; // jno
+		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
+
+		detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+	cerr << "integertransform: ADD/SUB OVERFLOW SIGNED 32" << endl;
+	}
+	else if (p_annotation.isUnsigned())
+	{
+		dataBits[0] = 0x73; // jnc
+		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
+
+		detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_32);
+	cerr << "integertransform: ADD/SUB OVERFLOW UNSIGNED 32" << endl;
+	}
+
+
+	jncond_i->SetDataBits(dataBits);
+	jncond_i->SetComment(jncond_i->getDisassembly());
+	jncond_i->SetFallthrough(pusha_i); 
+	jncond_i->SetTarget(nextOrig_i); 
+	p_instruction->SetFallthrough(jncond_i); 
 
 	// pusha   
 	dataBits.resize(1);
 	dataBits[0] = 0x60;
 	pusha_i->SetDataBits(dataBits);
 	pusha_i->SetComment(pusha_i->getDisassembly());
-	pusha_i->SetFallthrough(pusharg_i); 
+	pusha_i->SetFallthrough(pushf_i); 
 
 	// pushf   
 	dataBits.resize(1);
@@ -169,10 +221,10 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 	dataBits.resize(1);
 	dataBits[0] = 0x58;
 	poparg_i->SetDataBits(dataBits);
-	poparg_i->SetComment(poparg_i->getDisassembly() + " -- with callback to " + p_detector + " orig: " + p_instruction->GetComment()) ;
+	poparg_i->SetComment(poparg_i->getDisassembly() + " -- with callback to " + detector + " orig: " + p_instruction->GetComment()) ;
 	poparg_i->SetFallthrough(popa_i); 
 	poparg_i->SetIndirectBranchTargetAddress(poparg_a);  
-	poparg_i->SetCallback(p_detector); 
+	poparg_i->SetCallback(detector); 
 
 	// popf   
 	dataBits.resize(1);
@@ -189,8 +241,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 	popa_i->SetFallthrough(nextOrig_i); 
 
 	// add new address to IR
-	m_variantIR->GetAddresses().insert(jno_a);
-	m_variantIR->GetAddresses().insert(jmporigfallthrough_a);
+	m_variantIR->GetAddresses().insert(jncond_a);
 	m_variantIR->GetAddresses().insert(pusha_a);
 	m_variantIR->GetAddresses().insert(pusharg_a);
 	m_variantIR->GetAddresses().insert(pushf_a);
@@ -200,8 +251,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 	m_variantIR->GetAddresses().insert(popa_a);
 
 	// add new instructions to IR
-	m_variantIR->GetInstructions().insert(jno_i);
-	m_variantIR->GetInstructions().insert(jmporigfallthrough_i);
+	m_variantIR->GetInstructions().insert(jncond_i);
 	m_variantIR->GetInstructions().insert(pusha_i);
 	m_variantIR->GetInstructions().insert(pusharg_i);
 	m_variantIR->GetInstructions().insert(pushf_i);
@@ -209,6 +259,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, std::strin
 	m_variantIR->GetInstructions().insert(popf_i);
 	m_variantIR->GetInstructions().insert(poparg_i);
 	m_variantIR->GetInstructions().insert(popa_i);
+cerr << "void IntegerTransform::addOverflowCheck(): exit" << endl;
 }
 
 virtual_offset_t IntegerTransform::getAvailableAddress(VariantIR_t *p_virp)
@@ -242,12 +293,10 @@ static int counter = -16;
 // availableAddressOffset + 16;
 }
 
-#ifdef NOTYET
-
 //
 // Returns true iff instruction is mul or imul
 //
-static bool isMultiplyInstruction32(Instruction_t *p_instruction)
+bool IntegerTransform::isMultiplyInstruction32(Instruction_t *p_instruction)
 {
 	if (!p_instruction)
 		return false;
@@ -264,7 +313,7 @@ static bool isMultiplyInstruction32(Instruction_t *p_instruction)
 //
 // Returns true iff instruction is mul or imul
 //
-static bool isAddSubNonEspInstruction32(Instruction_t *p_instruction)
+bool IntegerTransform::isAddSubNonEspInstruction32(Instruction_t *p_instruction)
 {
 	if (!p_instruction)
 		return false;
@@ -274,8 +323,6 @@ static bool isAddSubNonEspInstruction32(Instruction_t *p_instruction)
 	// look for "add ..." or "sub ..."
 	// look for "addl ..." or "subl ..."
 	p_instruction->Disassemble(disasm);
-
-//fprintf(stderr,"INT DEBUG: inst: 0x%x [%s] [%s]\n", p_instruction->GetAddress(), disasm.Instruction.Mnemonic, p_instruction->GetComment().c_str());
 
 	// beaengine adds space at the end of the mnemonic string
 	if (strcasestr(disasm.Instruction.Mnemonic, "add "))
@@ -295,4 +342,3 @@ static bool isAddSubNonEspInstruction32(Instruction_t *p_instruction)
 
 	return false;
 }
-#endif
