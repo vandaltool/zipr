@@ -47,28 +47,25 @@ int IntegerTransform::execute()
 
 				if (annotation.isOverflow())
 				{
-					cerr << "integertransform: overflow annotation" << annotation.toString();
-					addOverflowCheck(insn, annotation);
+					cerr << "integertransform: overflow annotation: " << annotation.toString();
+					handleOverflowCheck(insn, annotation);
 				}
 				else if (annotation.isUnderflow())
 				{
-					cerr << "integertransform: underflow annotation" << annotation.toString();
-					//
-					// NOT SURE IF THIS IS CORRECT
-					//
-					addOverflowCheck(insn, annotation);
+					cerr << "integertransform: underflow annotation: " << annotation.toString();
+					handleOverflowCheck(insn, annotation);
 				}
 				else if (annotation.isTruncation())
 				{
-					cerr << "integertransform: truncation annotation" << annotation.toString();
+					cerr << "integertransform: truncation annotation: " << annotation.toString();
 
 				}
 				else if (annotation.isSignedness())
 				{
-					cerr << "integertransform: signedness annotation" << annotation.toString();
+					cerr << "integertransform: signedness annotation: " << annotation.toString();
 				}
 				else
-					cerr << "integertransform: unknown annotation" << annotation.toString();
+					cerr << "integertransform: unknown annotation: " << annotation.toString();
 			}
 		} // end iterate over all instructions in a function
 	} // end iterate over all functions
@@ -78,6 +75,16 @@ int IntegerTransform::execute()
 
 	// for now just be happy
 	return 0;
+}
+
+void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+{
+	if (isMultiplyInstruction32(p_instruction))
+		addOverflowCheck(p_instruction, p_annotation);
+	else if (p_annotation.getBitWidth() == 32)
+	{
+		addOverflowCheck(p_instruction, p_annotation);
+	}
 }
 
 //
