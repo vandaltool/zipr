@@ -53,6 +53,10 @@ int IntegerTransform::execute()
 				else if (annotation.isUnderflow())
 				{
 					cerr << "integertransform: underflow annotation" << annotation.toString();
+					//
+					// NOT SURE IF THIS IS CORRECT
+					//
+					addOverflowCheck(insn, annotation);
 				}
 				else if (annotation.isTruncation())
 				{
@@ -70,7 +74,7 @@ int IntegerTransform::execute()
 	} // end iterate over all functions
 
 	cerr << "integertransform: testing: do not write new variant to DB" << endl;
-//	m_variantIR->WriteToDB();
+	m_variantIR->WriteToDB();
 
 	// for now just be happy
 	return 0;
