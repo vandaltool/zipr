@@ -19,6 +19,7 @@ class IntegerTransform
 		int execute();
 	
 	private:
+		void handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
 		void addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
 
 		virtual_offset_t getAvailableAddress(VariantIR_t *p_virp);
