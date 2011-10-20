@@ -151,7 +151,6 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
 	p_instruction->SetFallthrough(jncond_i); 
 
-
 	// jncond 
 	dataBits.resize(2);
 	if (isMultiplyInstruction32(p_instruction))
@@ -177,7 +176,6 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 		detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_32);
 	cerr << "integertransform: ADD/SUB OVERFLOW UNSIGNED 32" << endl;
 	}
-
 
 	jncond_i->SetDataBits(dataBits);
 	jncond_i->SetComment(jncond_i->getDisassembly());
