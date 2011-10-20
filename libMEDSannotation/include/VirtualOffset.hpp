@@ -13,6 +13,7 @@ class VirtualOffset
 		VirtualOffset();
 		VirtualOffset(const std::string &p_offset, const std::string &p_libraryName);
 		VirtualOffset(const std::string &p_offset);
+		VirtualOffset(const int p_offset);
 
 		ApplicationAddress getOffset() const;
 		std::string getLibraryName() const;

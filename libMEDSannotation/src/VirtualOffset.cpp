@@ -21,6 +21,10 @@ VirtualOffset::VirtualOffset(const std::string &p_offset)
 	m_libraryName = std::string(DEFAULT_LIBRARY_NAME);
 }
 
+VirtualOffset::VirtualOffset(const int p_offset)
+{
+	m_offset = p_offset;
+}
 
 ApplicationAddress VirtualOffset::getOffset() const
 {

@@ -67,11 +67,10 @@ void MEDS_InstructionCheckAnnotation::parse()
 		m_isTruncation = true;
 
 	// signed vs. unsigned
-	if (m_rawInputLine.find(MEDS_ANNOT_SIGNED)!=string::npos)
-		m_isSigned = true;
-
 	if (m_rawInputLine.find(MEDS_ANNOT_UNSIGNED)!=string::npos)
 		m_isUnsigned = true;
+	else if (m_rawInputLine.find(MEDS_ANNOT_SIGNED)!=string::npos)
+		m_isSigned = true;
 
 	m_isValid = true;
 	

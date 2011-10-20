@@ -38,6 +38,8 @@ class MEDS_InstructionCheckAnnotation
 		// virtual offset
 		VirtualOffset getVirtualOffset() const;
 
+		std::string& toString() { return m_rawInputLine; }
+
 	private:
 		void parse();
 
