@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project>
+<cwe_entry_id>209</cwe_entry_id>
+<derived_from_id>0</derived_from_id>
+<name>TC_C_209_v317</name>
+<language_id>2</language_id>
+<generation_method_id>1</generation_method_id>
+<run_command>Release/TC_C_209_v317 </run_command>
+<build_command>make</build_command>
+<run_directory/>
+<build_directory/>
+<line_count>1178</line_count>
+<annotations>
+<name>CROSSOVER_POINT</name>
+<name>TC_C_209_v317\src\business.c</name>
+<lineNumber>438</lineNumber>
+</annotations>
+<annotations>
+<name>INTERACTION_POINT</name>
+<name>TC_C_209_v317\src\business.c</name>
+<lineNumber>526</lineNumber>
+</annotations>
+<annotations>
+<name>TRIGGER_POINT</name>
+<name>TC_C_209_v317\src\business.c</name>
+<lineNumber>448</lineNumber>
+</annotations>
+<description/>
+<id>185</id>
+</project>

@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><io_pair io_pair_category_id="2"><name>TC_C_394_base_bad1</name><input>5/2/2010 5/6/2010</input><input_mode_id>2</input_mode_id><output>infinite loop</output><output_mode_id>2</output_mode_id><id>42</id><description>Using a date outside of 2011 causes an infinite loop.</description></io_pair>
