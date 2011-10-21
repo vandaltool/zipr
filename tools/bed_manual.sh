@@ -41,6 +41,6 @@ do
   fi
 done
 
-echo "BED says: all tests passed for $MANUAL_TEST_DIR"
+echo "BED says: all tests passed"
 
 exit 0
