@@ -325,6 +325,11 @@ static void undo(map<libIRDB::Instruction_t*, string> undoList, libIRDB::Functio
 	}
 }
 
+void sigusr1Handler(int signum)
+{
+  P1Transform::timeExpired = true;
+}
+
 int main(int argc, char **argv)
 {
   if(argc!=4)
@@ -376,6 +381,9 @@ else
   int numFuncBEDfailed = 0;
   int numFuncBEDpassed = 0;
   int numFunP1skipped = 0;
+
+  signal(SIGUSR1, sigusr1Handler);
+
   try {
     //iterate through the functions that compose a particular variant
     for(
@@ -384,6 +392,13 @@ else
 	++it
 	)
       {
+	  if (P1Transform::timeExpired)
+	  {
+	    cerr << "P1Transform::rewrite(): Time expired -- commit transforms" << endl;
+	    // time expired -- commit what we have so far
+        break;
+	  }
+
 	Function_t* func=*it;
 	map<libIRDB::Instruction_t*, std::string> undoList;
 	cerr << "P1: looking at function: " << func->GetName() << endl;

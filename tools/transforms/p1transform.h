@@ -14,7 +14,9 @@ class P1Transform
   
   void rewrite(char *);
   bool rewrite(libIRDB::VariantIR_t*, libIRDB::Function_t*, std::map< libIRDB::Instruction_t*, std::string>&);
-  
+
+  static bool timeExpired;
+
  private:
   int getStackFramePadding(libIRDB::Function_t*);
   
@@ -26,5 +28,6 @@ class P1Transform
   regex_t m_fancy_ebp_pattern;
   regex_t m_stack_esp_pattern;
   regex_t m_fancy_esp_pattern;
-  
 };
+
+bool P1Transform::timeExpired = false;
