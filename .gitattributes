@@ -95,6 +95,7 @@ dry_run_examples/TC_C_121_v922/io-specifications/io-TC_C_121_v922-fileName-b.xml
 dry_run_examples/TC_C_121_v922/io-specifications/io-TC_C_121_v922-fileName-bad-f.xml -text
 dry_run_examples/TC_C_121_v922/io-specifications/io-TC_C_121_v922-fileName-c.xml -text
 dry_run_examples/TC_C_121_v922/metaData.xml -text
+dry_run_examples/TC_C_121_v922/src/Makefile -text
 dry_run_examples/TC_C_121_v922/src/solitaire.c -text
 dry_run_examples/TC_C_121_v922/testData/keya_good -text
 dry_run_examples/TC_C_121_v922/testData/keyb_good -text
@@ -102,8 +103,6 @@ dry_run_examples/TC_C_121_v922/testData/keyc_good -text
 dry_run_examples/TC_C_121_v922/testData/keyd_good -text
 dry_run_examples/TC_C_121_v922/testData/keye_good -text
 dry_run_examples/TC_C_121_v922/testData/keyf_bad -text
-dry_run_examples/TC_C_170_v905/.cproject -text
-dry_run_examples/TC_C_170_v905/.project -text
 dry_run_examples/TC_C_170_v905/Debug/makefile -text
 dry_run_examples/TC_C_170_v905/Debug/objects.mk -text
 dry_run_examples/TC_C_170_v905/Debug/sources.mk -text
@@ -119,6 +118,7 @@ dry_run_examples/TC_C_170_v905/io-specifications/io-TC_C_170_v905_G2.xml -text
 dry_run_examples/TC_C_170_v905/io-specifications/io-TC_C_170_v905_G3.xml -text
 dry_run_examples/TC_C_170_v905/io-specifications/io-TC_C_170_v905_G4.xml -text
 dry_run_examples/TC_C_170_v905/metaData.xml -text
+dry_run_examples/TC_C_170_v905/src/Makefile -text
 dry_run_examples/TC_C_170_v905/src/solitaire.c -text
 dry_run_examples/TC_C_170_v905/testData/key -text
 dry_run_examples/TC_C_191_v304/Release/makefile -text
@@ -135,6 +135,7 @@ dry_run_examples/TC_C_191_v304/io-specifications/io-TC_C_191_304_Good5.xml -text
 dry_run_examples/TC_C_191_v304/io-specifications/io-good.xml -text
 dry_run_examples/TC_C_191_v304/io-specifications/io-large[!!-~]input[!!-~]value.xml -text
 dry_run_examples/TC_C_191_v304/metaData.xml -text
+dry_run_examples/TC_C_191_v304/src/Makefile -text
 dry_run_examples/TC_C_191_v304/src/recaman.c -text
 dry_run_examples/TC_C_196_v459/Release/makefile -text
 dry_run_examples/TC_C_196_v459/Release/objects.mk -text
@@ -144,6 +145,7 @@ dry_run_examples/TC_C_196_v459/Release/src/subdir.mk -text
 dry_run_examples/TC_C_196_v459/io-specifications/io-Long[!!-~]File[!!-~]Name.xml -text
 dry_run_examples/TC_C_196_v459/io-specifications/io-good.xml -text
 dry_run_examples/TC_C_196_v459/metaData.xml -text
+dry_run_examples/TC_C_196_v459/src/Makefile -text
 dry_run_examples/TC_C_196_v459/src/countlines.c -text
 dry_run_examples/TC_C_196_v459/testData/1.java -text
 dry_run_examples/TC_C_196_v459/testData/2.java -text
@@ -168,6 +170,7 @@ dry_run_examples/TC_C_209_v317/io-specifications/io-TC_C_209_good3.xml -text
 dry_run_examples/TC_C_209_v317/io-specifications/io-TC_C_209_good4.xml -text
 dry_run_examples/TC_C_209_v317/io-specifications/io-TC_C_209_good5.xml -text
 dry_run_examples/TC_C_209_v317/metaData.xml -text
+dry_run_examples/TC_C_209_v317/src/Makefile -text
 dry_run_examples/TC_C_209_v317/src/business.c -text
 dry_run_examples/TC_C_209_v317/testData/calculator.xlsx -text
 dry_run_examples/TC_C_209_v317/testData/holiday.2011 -text
@@ -198,6 +201,7 @@ dry_run_examples/TC_C_394_v256/io-specifications/io-TC_C_394_base_good.xml -text
 dry_run_examples/TC_C_394_v256/io-specifications/io-TC_C_394_base_good1.xml -text
 dry_run_examples/TC_C_394_v256/io-specifications/io-TC_C_394_base_good2.xml -text
 dry_run_examples/TC_C_394_v256/metaData.xml -text
+dry_run_examples/TC_C_394_v256/src/Makefile -text
 dry_run_examples/TC_C_394_v256/src/business.c -text
 dry_run_examples/TC_C_394_v256/src/interfile.c -text
 dry_run_examples/TC_C_394_v256/src/interfile.h -text
