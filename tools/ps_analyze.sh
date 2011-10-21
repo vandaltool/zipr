@@ -8,6 +8,9 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+# Make default 5 minutes
+PN_TIMEOUT_VALUE=300
+
 check_step_option()
 {
 	echo $1|egrep "=off$|=on$" > /dev/null
@@ -441,9 +444,9 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 
 		is_step_on manual_test
 		if [ $? -eq 0 ]; then 
-			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/p1xform_v2.sh
+			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/p1xform_v2.sh $PN_TIMEOUT_VALUE
 		else
-			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh
+			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh $PN_TIMEOUT_VALUE
 		fi
 		
 		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid
