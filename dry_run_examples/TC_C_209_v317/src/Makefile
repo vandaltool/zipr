@@ -2,6 +2,7 @@
 # Reconstruction of how binaries may be built
 
 SS_CC = gcc
+SS_CFLAGS = -static
 COMMON_FLAGS=-O0 -Wall -fmessage-length=0 -fno-stack-protector
 DEBUG_FLAGS=-g3
 SRCS=business.c
@@ -12,13 +13,13 @@ business_debug.o: $(SRCS)
 	$(SS_CC)  $(COMMON_FLAGS) $(DEBUG_FLAGS) -c $< -o $@
 
 business_debug: business_debug.o
-	$(SS_CC)  $(COMMON_FLAGS) $(DEBUG_FLAGS) $< -o $@
+	$(SS_CC)  $(COMMON_FLAGS) $(SS_CFLAGs) $(DEBUG_FLAGS) $< -o $@
 
 business_release.o: $(SRCS)
 	$(SS_CC)  $(COMMON_FLAGS) -std=c99 -c $< -o $@
 
 business_release: business_release.o
-	$(SS_CC)  $(COMMON_FLAGS) -std=c99 $< -o $@
+	$(SS_CC)  $(COMMON_FLAGS) $(SS_CFLAGS) -std=c99 $< -o $@
 
 clean:
 	rm -f *.o business_debug business_release
