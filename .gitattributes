@@ -86,6 +86,7 @@ dry_run_examples/TC_C_121_v922/Debug/objects.mk -text
 dry_run_examples/TC_C_121_v922/Debug/sources.mk -text
 dry_run_examples/TC_C_121_v922/Debug/src/solitaire.d -text
 dry_run_examples/TC_C_121_v922/Debug/src/subdir.mk -text
+dry_run_examples/TC_C_121_v922/README -text
 dry_run_examples/TC_C_121_v922/Release/makefile -text
 dry_run_examples/TC_C_121_v922/Release/objects.mk -text
 dry_run_examples/TC_C_121_v922/Release/sources.mk -text
@@ -108,6 +109,7 @@ dry_run_examples/TC_C_170_v905/Debug/objects.mk -text
 dry_run_examples/TC_C_170_v905/Debug/sources.mk -text
 dry_run_examples/TC_C_170_v905/Debug/src/solitaire.d -text
 dry_run_examples/TC_C_170_v905/Debug/src/subdir.mk -text
+dry_run_examples/TC_C_170_v905/README -text
 dry_run_examples/TC_C_170_v905/Release/makefile -text
 dry_run_examples/TC_C_170_v905/Release/objects.mk -text
 dry_run_examples/TC_C_170_v905/Release/sources.mk -text
@@ -119,8 +121,10 @@ dry_run_examples/TC_C_170_v905/io-specifications/io-TC_C_170_v905_G3.xml -text
 dry_run_examples/TC_C_170_v905/io-specifications/io-TC_C_170_v905_G4.xml -text
 dry_run_examples/TC_C_170_v905/metaData.xml -text
 dry_run_examples/TC_C_170_v905/src/Makefile -text
+dry_run_examples/TC_C_170_v905/src/key -text
 dry_run_examples/TC_C_170_v905/src/solitaire.c -text
 dry_run_examples/TC_C_170_v905/testData/key -text
+dry_run_examples/TC_C_191_v304/README -text
 dry_run_examples/TC_C_191_v304/Release/makefile -text
 dry_run_examples/TC_C_191_v304/Release/objects.mk -text
 dry_run_examples/TC_C_191_v304/Release/sources.mk -text
@@ -137,6 +141,7 @@ dry_run_examples/TC_C_191_v304/io-specifications/io-large[!!-~]input[!!-~]value.
 dry_run_examples/TC_C_191_v304/metaData.xml -text
 dry_run_examples/TC_C_191_v304/src/Makefile -text
 dry_run_examples/TC_C_191_v304/src/recaman.c -text
+dry_run_examples/TC_C_196_v459/README -text
 dry_run_examples/TC_C_196_v459/Release/makefile -text
 dry_run_examples/TC_C_196_v459/Release/objects.mk -text
 dry_run_examples/TC_C_196_v459/Release/sources.mk -text
@@ -158,6 +163,7 @@ dry_run_examples/TC_C_209_v317/Debug/objects.mk -text
 dry_run_examples/TC_C_209_v317/Debug/sources.mk -text
 dry_run_examples/TC_C_209_v317/Debug/src/business.d -text
 dry_run_examples/TC_C_209_v317/Debug/src/subdir.mk -text
+dry_run_examples/TC_C_209_v317/README -text
 dry_run_examples/TC_C_209_v317/Release/makefile -text
 dry_run_examples/TC_C_209_v317/Release/objects.mk -text
 dry_run_examples/TC_C_209_v317/Release/sources.mk -text
@@ -188,6 +194,7 @@ dry_run_examples/TC_C_394_v256/Debug/src/business.d -text
 dry_run_examples/TC_C_394_v256/Debug/src/interfile.d -text
 dry_run_examples/TC_C_394_v256/Debug/src/interfile_2.d -text
 dry_run_examples/TC_C_394_v256/Debug/src/subdir.mk -text
+dry_run_examples/TC_C_394_v256/README -text
 dry_run_examples/TC_C_394_v256/Release/makefile -text
 dry_run_examples/TC_C_394_v256/Release/objects.mk -text
 dry_run_examples/TC_C_394_v256/Release/sources.mk -text
