@@ -15,7 +15,7 @@ INPUT_DIR=$3                # directory containing inputs (.../concolic.files_a.
 
 BASELINE_OUTPUT_DIR=$INPUT_DIR/sandboxed-files
 
-REPLAYER_TIMEOUT=120         # timeout value for the replayer -- for now 120 seconds per input
+REPLAYER_TIMEOUT=120        # timeout value for when replaying input -- for now 120 seconds per input
 
 echo "=========================================="
 echo "Running ps_validate.sh"
@@ -29,6 +29,8 @@ echo "=========================================="
 # name of files describing inputs is of the form: input_0001.json, input_0002.json, ...
 #
 
+echo "ps_validate: BED: warning: @todo: need to handle files other than stdout, stderr"
+
 for i in `ls $INPUT_DIR/input*.json`
 do
   echo ""
@@ -40,8 +42,8 @@ do
   touch stderr.$input
 
   echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT $GRACE_HOME/concolic/bin/replayer --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt ./a.stratafied $i"
-  STRATA_SPRI_FILE="$BSPRI" "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i
-#    STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=120 --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i || exit 2
+#  STRATA_SPRI_FILE="$BSPRI" "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i
+  STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=120 --symbols=a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i || exit 2
 
   BASELINE_OUTPUT_STDOUT=$BASELINE_OUTPUT_DIR/run_$input_number/stdout
   BASELINE_OUTPUT_STDERR=$BASELINE_OUTPUT_DIR/run_$input_number/stderr
