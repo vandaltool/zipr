@@ -709,11 +709,39 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
 {
   map<wahoo::Function*, double> coverage;
 
+  ifstream infile;
+  infile.open(p_instructionFile, ifstream::in);
+
+  if(!infile.is_open())
+  {
+    cerr << "File containing instructions visited not found:" << p_instructionFile << endl;
+    return coverage;
+  }
+
+  set<app_iaddr_t> visitedInstructions;
+
+  while (infile.good())
+  {
+    int address = 0;
+    string tmp;
+    
+    infile>>tmp;
+    infile>>hex>>address;
+
+    // cerr<<"address = "<<address<<endl;
+
+    visitedInstructions.insert((app_iaddr_t) address);
+  }
+
+/*
+
   FILE *fp = fopen(p_instructionFile, "r");
   if (!fp) {
     cerr << "File containing instructions visited not found:" << p_instructionFile << endl;
     return coverage;
   }
+
+  cerr<<"func cover checkpoint2"<<endl;
 
   set<app_iaddr_t> visitedInstructions;
 
@@ -721,10 +749,16 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
   {
     int address = 0;
     fscanf(fp, "%x\n", &address);
+
+    cerr<<"address = "<<address<<endl;
+
     visitedInstructions.insert((app_iaddr_t) address);
   }
 
+  cerr<<"func cover checkpoint3"<<endl;
+
   fclose(fp);
+*/
 
   vector<wahoo::Instruction*> allInstructions = getAllInstructions();
 
