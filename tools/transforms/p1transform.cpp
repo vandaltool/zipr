@@ -410,6 +410,15 @@ else
 		continue;
 	}
 
+    // filter out _L_lock_*
+    // filter out _L_unlock_*
+	if (func->GetName().find("_L_lock_") == 0 || func->GetName().find("_L_unlock_") == 0)
+	{
+		cerr << "P1: filtering out: " << func->GetName() << endl;
+   		numFuncFiltered++;
+		continue;
+	}
+
 	//perform the p1 transform on the given variant's function
 	bool rewriteFunction = p1Transform->rewrite(virp,func,undoList); 
 	
