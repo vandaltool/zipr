@@ -9,9 +9,17 @@ all: $(PROGS)
 $(PROGS): ../lib/libIRDB-core.a ../lib/libIRDB-cfg.a 
 
 read_ehframe.exe: unwind-pe.h
+	g++ -g read_ehframe.cpp -DTEST -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@
 
-.cpp.exe:  $< ../lib/libIRDB-core.a ../lib/libIRDB-cfg.a
+fill_in_indtargs.exe: read_ehframe.o fill_in_indtargs.o
+	g++ -g fill_in_indtargs.o read_ehframe.o -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@
+
+
+.o.exe:  $< ../lib/libIRDB-core.a ../lib/libIRDB-cfg.a
 	g++ -g $< -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@
+
+.cpp.o:  $< 
+	g++ -g $< -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@ -c
 
 clean:
 	rm -f $(PROGS)

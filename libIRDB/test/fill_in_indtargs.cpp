@@ -199,7 +199,7 @@ void print_targets()
 }
 
 
-void fill_in_indtargs(VariantIR_t* virp, string elf_file)
+void fill_in_indtargs(VariantIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
 {
         Elf32_Off sec_hdr_off, sec_off;
         Elf32_Half secnum, strndx, secndx;
@@ -239,9 +239,11 @@ void fill_in_indtargs(VariantIR_t* virp, string elf_file)
 		infer_targets(&sechdrs[secndx], fp, virp);
 
 	
-	cout<<"# ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
+	cout<<"========================================="<<endl;
 	cout<<"Targets from data sections are: " << endl;
+	cout<<"# ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
 	print_targets();
+	cout<<"========================================="<<endl;
 
 	/* look through the instructions in the program for targets */
 	get_instruction_targets(virp);
@@ -250,9 +252,21 @@ void fill_in_indtargs(VariantIR_t* virp, string elf_file)
 	possible_target(elfhdr.e_entry);
 
 
+	cout<<"========================================="<<endl;
+	cout<<"All targets from data+instruction sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass2="<<std::dec<<targets.size()<<endl;
-	cout<<"All targets from data sections are: " << endl;
 	print_targets();
+	cout<<"========================================="<<endl;
+
+	/* Read the exception handler frame so that those indirect branches are accounted for */
+	void read_ehframe(VariantIR_t* virp, pqxxDB_t& pqxx_interface);
+        read_ehframe(virp, pqxx_interface);
+
+	cout<<"========================================="<<endl;
+	cout<<"All targets from data+instruction+eh_header sections are: " << endl;
+	cout<<"# ATTRIBUTE total_indirect_targets_pass3="<<std::dec<<targets.size()<<endl;
+	print_targets();
+	cout<<"========================================="<<endl;
 
 	/* set the IR to have some instructions marked as IB targets */
 	mark_targets(virp);
@@ -293,8 +307,8 @@ main(int argc, char* argv[])
 		// read the db  
 		virp=new VariantIR_t(*pidp);
 
-
-		fill_in_indtargs(virp,argv[2]);
+		// find all indirect branch targets
+		fill_in_indtargs(virp,argv[2], pqxx_interface);
 
 		// write the DB back and commit our changes 
 		virp->WriteToDB();

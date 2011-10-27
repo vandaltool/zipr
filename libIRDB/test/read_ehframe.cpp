@@ -16,7 +16,6 @@
 using namespace libIRDB;
 using namespace std;
 
-pqxxDB_t pqxx_interface;
 
 void* eh_frame_addr;
 char* eh_frame_data;
@@ -163,11 +162,11 @@ File_t* find_file(VariantIR_t* virp, db_id_t fileid)
         return NULL;
 }
 
-struct object *all_objects;
+struct object *all_objects=NULL;
 
 void register_frame_info(void *begin, struct object *ob)
 {
-	memset(&all_objects,0,sizeof(struct object));
+	memset(ob,0,sizeof(struct object));
 
   	ob->pc_begin = (void *)-1;
   	ob->tbase = 0;
@@ -186,7 +185,7 @@ void register_frame_info(void *begin, struct object *ob)
 
 struct dwarf_cie * get_cie (struct dwarf_fde *f)
 {
-  	return (dwarf_cie*)((void *)&f->CIE_delta - f->CIE_delta);
+  	return (struct dwarf_cie*)((int)&f->CIE_delta - (int)f->CIE_delta);
 }
 
 fde * next_fde (fde *f)
@@ -458,6 +457,12 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 		     		<<"cs_len+cs_start+info->Start: "<< cs_len+cs_start+info->Start << "\t"
 		     		<<"cs_lp+info->LPstart: "<< cs_lp +info->LPStart<< "\t"
 		     		<<"cs_action: "<< cs_action << endl;
+
+#ifndef TEST
+			void possible_target(int p);
+			possible_target(cs_lp+info->Start);
+
+#endif
 		}
     	}
 
@@ -636,7 +641,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
   	return;
 }
 
-void read_ehframe(VariantIR_t* virp)
+void read_ehframe(VariantIR_t* virp, pqxxDB_t& pqxx_interface)
 {
 
 	/* get first instruction */
@@ -733,6 +738,8 @@ void read_ehframe(VariantIR_t* virp)
 	free(eh_frame_data);
 
 }
+
+#ifdef TEST
 //
 // main rountine; convert calls into push/jump statements 
 //
@@ -762,6 +769,7 @@ main(int argc, char* argv[])
 	VariantIR_t *virp=NULL;
 
 	/* setup the interface to the sql server */
+	pqxxDB_t pqxx_interface;
 	BaseObj_t::SetInterface(&pqxx_interface);
 
 	cout<<"Reading variant "<<string(argv[1])<<" from database." << endl;
@@ -785,9 +793,9 @@ main(int argc, char* argv[])
 
 	assert(virp && pidp);
 	
-	cout<<"Fixing calls->push/jmp in variant "<<*pidp<< "." <<endl;
+	cout<<"Reading EH frame and gcc except table in variant "<<*pidp<< "." <<endl;
 
-	read_ehframe(virp);
+	read_ehframe(virp,pqxx_interface);
 
 	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
 //	virp->WriteToDB();
@@ -798,3 +806,4 @@ main(int argc, char* argv[])
 	delete pidp;
 	delete virp;
 }
+#endif
