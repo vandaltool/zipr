@@ -326,6 +326,16 @@ orig_exe=$1
 newname=a
 shift
 
+
+#
+# sanity check incoming arg.
+#
+if [ ! -f $orig_exe ]; then
+	echo ps_analyze cannot find file named $orig_exe.
+	echo exiting...	
+	exit -2
+fi
+
 #
 # record the new program's name
 #
