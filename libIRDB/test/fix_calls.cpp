@@ -8,6 +8,7 @@
 #include "beaengine/BeaEngine.h"
 #include <assert.h>
 #include <string.h>
+#include <elf.h>
 
 
 
@@ -19,6 +20,9 @@ long long target_not_in_function=0;
 long long call_to_not_entry=0;
 long long thunk_check=0;
 long long found_pattern=0;
+
+pqxxDB_t pqxx_interface;
+
 
 
 bool check_entry(bool &found, ControlFlowGraph_t* cfg)
@@ -113,7 +117,7 @@ bool call_needs_fix(Instruction_t* insn)
 	/* determine what the stack ref. would look like */
 	if(func->GetUseFramePointer())
 	{
-		pattern="[ebp]";
+		pattern="[ebp+0x04]";
 	}
 	else
 	{
@@ -128,9 +132,10 @@ bool call_needs_fix(Instruction_t* insn)
 		++it
 	   )
 	{
+		Instruction_t* itrinsn=*it;
 		/* if the disassembly contains the string mentioned */
 		DISASM disasm;
-		insn->Disassemble(disasm);
+		itrinsn->Disassemble(disasm);
 		if(strstr(disasm.CompleteInstr, pattern.c_str())!=NULL) 
 		{
 			found_pattern++;
@@ -276,6 +281,150 @@ bool is_call(Instruction_t* insn)
 	return (disasm.Instruction.BranchType==CallType);
 }
 
+File_t* find_file(VariantIR_t* virp, db_id_t fileid)
+{
+
+        set<File_t*> &files=virp->GetFiles();
+
+        for(
+                set<File_t*>::iterator it=files.begin();
+                it!=files.end();
+                ++it
+           )
+        {
+                File_t* thefile=*it;
+                if(thefile->GetBaseID()==fileid)
+                        return thefile;
+        }
+        return NULL;
+}
+
+
+static map<db_id_t,bool> has_eh_frame_section_cache;
+
+bool has_eh_frame_section(VariantIR_t* virp, Instruction_t* insn)
+{
+	db_id_t fileid=insn->GetAddress()->GetFileID();
+
+
+	/* if we haven't yet looked at this file */
+	if(has_eh_frame_section_cache.find(fileid) == has_eh_frame_section_cache.end())
+	{
+
+		/* find the file in the IR */
+		File_t* filep=find_file(virp,fileid);
+		assert(filep);
+
+		/* get the OID of the file */
+		int elfoid=filep->GetELFOID();
+		
+
+		/* parse out the elf headers, and strtab */
+		Elf32_Ehdr elfhdr;
+		Elf32_Off sec_hdr_off, sec_off;
+		Elf32_Half secnum, strndx, secndx;
+		Elf32_Word secsize;
+	
+		pqxx::largeobjectaccess loa(pqxx_interface.GetTransaction(), elfoid, PGSTD::ios::in);
+
+
+		/* Read ELF header */
+		loa.cread((char*)&elfhdr, sizeof(Elf32_Ehdr)* 1);
+
+		sec_hdr_off = elfhdr.e_shoff;
+		secnum = elfhdr.e_shnum;
+		strndx = elfhdr.e_shstrndx;
+
+		/* Read Section headers */
+		Elf32_Shdr *sechdrs=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*secnum);
+		loa.seek(sec_hdr_off, std::ios_base::beg);
+		loa.cread((char*)sechdrs, sizeof(Elf32_Shdr)* secnum);
+
+	
+        	/* Read Section String Table */
+        	sec_off = sechdrs[strndx].sh_offset;
+        	secsize = sechdrs[strndx].sh_size;
+        	loa.seek(sec_off, std::ios_base::beg);
+        	char* strtab = (char *)malloc(secsize);
+        	loa.cread(strtab, 1 * secsize);
+
+        	/* Locate desired section */
+        	bool found=false;
+        	for (secndx=1; secndx<secnum; secndx++)
+        	{
+                	char *p=&strtab[ sechdrs[secndx].sh_name];
+                	if (strcmp(".eh_frame",p)==0)
+                	{
+                        	found = true;
+                        	break;
+                	};
+        	}
+
+		/* record our results */
+		has_eh_frame_section_cache[fileid]=found;
+
+		/* clean up memory */
+		free(sechdrs);
+		free(strtab);
+	}
+
+
+	return has_eh_frame_section_cache[fileid];
+
+}
+
+
+//
+// fix_all_calls - convert calls to push/jump pairs in the IR.  if fix_all is true, all calls are converted, 
+// else we attempt to detect the calls it is safe to convert.
+//
+void fix_all_calls(VariantIR_t* virp, bool print_stats, bool fix_all)
+{
+
+
+	long long fixed_calls=0, not_fixed_calls=0, not_calls=0;
+
+	for(
+		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
+		it!=virp->GetInstructions().end(); 
+		++it
+	   )
+	{
+
+		Instruction_t* insn=*it;
+
+		if(is_call(insn)) 
+		{
+			if(fix_all || has_eh_frame_section(virp,insn) || call_needs_fix(insn))
+			{
+				fixed_calls++;
+				fix_call(insn, virp);
+			}
+			else
+				not_fixed_calls++;
+		}
+		else
+		{
+			not_calls++;
+		}
+	}
+
+
+	if(print_stats)
+	{
+		cout << "# ATTRIBUTE fixed_calls="<<std::dec<<fixed_calls<<endl;
+		cout << "# ATTRIBUTE no_fix_needed_calls="<<std::dec<<not_fixed_calls<<endl;
+		cout << "# ATTRIBUTE other_instructions="<<std::dec<<not_calls<<endl;
+		cout << "# ATTRIBUTE fixed_ratio="<<std::dec<<(fixed_calls/((float)(not_fixed_calls+fixed_calls)))<<endl;
+		cout << "# ATTRIBUTE remaining_ratio="<<std::dec<<(not_fixed_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))<<endl;
+		cout << "# ATTRIBUTE no_target_insn="<<std::dec<< no_target_insn << endl;
+		cout << "# ATTRIBUTE target_not_in_function="<<std::dec<< target_not_in_function << endl;
+		cout << "# ATTRIBUTE call_to_not_entry="<<std::dec<< call_to_not_entry << endl;
+		cout << "# ATTRIBUTE thunk_check="<<std::dec<< thunk_check << endl;
+		cout << "# ATTRIBUTE found_pattern="<<std::dec<< found_pattern << endl;
+	}
+}
+
 
 //
 // main rountine; convert calls into push/jump statements 
@@ -283,17 +432,29 @@ bool is_call(Instruction_t* insn)
 main(int argc, char* argv[])
 {
 
-	if(argc!=2)
+	bool fix_all=false;
+
+	if(argc!=2 && argc !=3)
 	{
-		cerr<<"Usage: fix_calls <id>"<<endl;
+		cerr<<"Usage: fix_calls <id> (--fix-all) "<<endl;
 		exit(-1);
+	}
+
+	if(argc==3)
+	{
+		if(strcmp("--fix-all", argv[2])!=0)
+		{
+			cerr<<"Unrecognized option: "<<argv[2]<<endl;
+			exit(-1);
+		}
+		else
+			fix_all=true;
 	}
 
 	VariantID_t *pidp=NULL;
 	VariantIR_t *virp=NULL;
 
 	/* setup the interface to the sql server */
-	pqxxDB_t pqxx_interface;
 	BaseObj_t::SetInterface(&pqxx_interface);
 
 	cout<<"Reading variant "<<string(argv[1])<<" from database." << endl;
@@ -316,46 +477,11 @@ main(int argc, char* argv[])
         }
 
 	assert(virp && pidp);
-
+	
 	cout<<"Fixing calls->push/jmp in variant "<<*pidp<< "." <<endl;
 
-	long long fixed_calls=0, not_fixed_calls=0, not_calls=0;
+	fix_all_calls(virp,true,fix_all);
 
-	for(
-		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-		it!=virp->GetInstructions().end(); 
-		++it
-	   )
-	{
-
-		Instruction_t* insn=*it;
-		if(is_call(insn)) 
-		{
-			if(call_needs_fix(insn))
-			{
-				fixed_calls++;
-				fix_call(insn, virp);
-			}
-			else
-				not_fixed_calls++;
-		}
-		else
-		{
-			not_calls++;
-		}
-	}
-
-
-	cout << "# ATTRIBUTE fixed_calls="<<std::dec<<fixed_calls<<endl;
-	cout << "# ATTRIBUTE no_fix_needed_calls="<<std::dec<<not_fixed_calls<<endl;
-	cout << "# ATTRIBUTE other_instructions="<<std::dec<<not_calls<<endl;
-	cout << "# ATTRIBUTE fixed_ratio="<<std::dec<<(fixed_calls/((float)(not_fixed_calls+fixed_calls)))<<endl;
-	cout << "# ATTRIBUTE remaining_ratio="<<std::dec<<(not_fixed_calls/((float)(not_fixed_calls+fixed_calls+not_calls)))<<endl;
-	cout << "# ATTRIBUTE no_target_insn="<<std::dec<< no_target_insn << endl;
-	cout << "# ATTRIBUTE target_not_in_function="<<std::dec<< target_not_in_function << endl;
-	cout << "# ATTRIBUTE call_to_not_entry="<<std::dec<< call_to_not_entry << endl;
-	cout << "# ATTRIBUTE thunk_check="<<std::dec<< thunk_check << endl;
-	cout << "# ATTRIBUTE found_pattern="<<std::dec<< found_pattern << endl;
 
 	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
 	virp->WriteToDB();

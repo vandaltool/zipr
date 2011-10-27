@@ -260,6 +260,7 @@ libIRDB/src/core/pqxxdb.cpp -text
 libIRDB/src/core/variantid.cpp -text
 libIRDB/src/core/variantir.cpp -text
 libIRDB/test/Makefile -text
+libIRDB/test/calc_conflicts.cpp -text
 libIRDB/test/clone.cpp -text
 libIRDB/test/create_variant.cpp -text
 libIRDB/test/create_variantir.cpp -text
@@ -271,8 +272,10 @@ libIRDB/test/generate_spri.cpp -text
 libIRDB/test/ilr.cpp -text
 libIRDB/test/list_programs.cpp -text
 libIRDB/test/print_variant.cpp -text
+libIRDB/test/read_ehframe.cpp -text
 libIRDB/test/read_variantir.cpp -text
 libIRDB/test/unfix_calls.cpp -text
+libIRDB/test/unwind-pe.h -text
 libMEDSannotation/Makefile -text
 libMEDSannotation/include/MEDS_AnnotationParser.hpp -text
 libMEDSannotation/include/MEDS_InstructionCheckAnnotation.hpp -text
