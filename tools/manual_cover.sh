@@ -21,4 +21,6 @@ FULL_COMMAND=$*
 # We use pin for extracting coverage info
 setarch i386 -RL $PEASOUP_HOME/tools/pin/pin -t $PEASOUP_HOME/tools/pin/itraceunique.so -- $FULL_COMMAND
 
-cat itrace.out | grep -v eof > $OUTPUT_FILE
+mv itrace.out $OUTPUT_FILE
+
+#cat itrace.out | grep -v eof > $OUTPUT_FILE

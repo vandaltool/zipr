@@ -129,7 +129,7 @@ done
 
 echo "\$PEASOUP_HOME/tools/manual_cover.sh $TEST_ORIG_COVERAGE/executed_addresses.txt -- $CMD" >> $TEST_ORIG_CMD_SCRIPT
 
-cp a.ncexe $TEST_SPEC_DIR/$PROG
+ln -s a.ncexe $TEST_SPEC_DIR/$PROG 
 
 #---------------------------------------
 # Transformed cmd/program
