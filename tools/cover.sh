@@ -4,15 +4,14 @@
 #
 
 # inputs
-ORIGINAL_BINARY=$1                   # a.ncexe
-ANNOTATION_FILE=$2                   # a.ncexe.annot
-EXECUTED_ADDRESS_FILE=$3             # from GrACE, list of executed addresses
-FILTER_FILE=$4                       # list of known functions to blacklist, e.g. libc
+ORIGINAL_BINARY=$1              # a.ncexe
+ANNOTATION_FILE=$2              # a.ncexe.annot
+EXECUTED_ADDRESS_FILE=$3        # list of executed addresses (e.g. Grace or manual)
+FILTER_FILE=$4                  # list of known functions to blacklist, e.g. libc
 # outputs
-OUTPUT_COVERAGE_FILE=$5              # output file with coverage info per function
-OUTPUT_BLACKLIST_FILE=$6             # output file with list of functions to blacklist
+OUTPUT_COVERAGE_FILE=$5         # output file with coverage info per function
+OUTPUT_BLACKLIST_FILE=$6        # output file with list of functions to blacklist
 # other
-
 
 CANDIDATE_FNS_PRE_LIBC=`dirname $6`/p1.candidates.prelibc
 

@@ -5,7 +5,7 @@
 # Run this script from top-level directory created by the peasoup script
 #
 
-CURRENT_DIR=`pwd`
+TOP_LEVEL=`pwd`
 
 variantid=$1
 aspri=$2
@@ -20,13 +20,13 @@ $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $P1_DIR/stratafier.o.e
 # remove any candidate functions not covered
 # this will go away once GrACE gives us the instruction coverage information
 #
-CONCOLIC=concolic.files_a.stratafied_0001
+CONCOLIC=$TOP_LEVEL/concolic.files_a.stratafied_0001
 
 echo "====================================================="
 echo "P1: Validating transformed binary..."
 echo "====================================================="
 if [ -f $bspri ]; then
-  $PEASOUP_HOME/tools/ps_validate.sh ./a.stratafied $bspri $CONCOLIC > ps_validate.out 2> ps_validate.err
+  $PEASOUP_HOME/tools/ps_validate.sh ${TOP_LEVEL}/a.stratafied $bspri $CONCOLIC > ps_validate.out 2> ps_validate.err
   if [ $? -eq 0 ]; then
       echo "Successfully validated p1-transformed functions against inputs"
       exit 0;
