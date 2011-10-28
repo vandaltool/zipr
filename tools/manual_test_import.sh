@@ -129,7 +129,7 @@ done
 
 echo "\$PEASOUP_HOME/tools/manual_cover.sh $TEST_ORIG_COVERAGE/executed_addresses.txt -- $CMD" >> $TEST_ORIG_CMD_SCRIPT
 
-ln -s a.ncexe $TEST_SPEC_DIR/$PROG 
+ln -s $PWD/a.ncexe $TEST_SPEC_DIR/$PROG 
 
 #---------------------------------------
 # Transformed cmd/program
@@ -190,4 +190,5 @@ chmod +x $TEST_XFORMED_CMD_SCRIPT
 cp $PEASOUP_HOME/tools/run_stratafied.tmpl.sh $TEST_DIR_XFORMED/$PROG
 chmod +x $TEST_DIR_XFORMED/$PROG
 chmod +x $TEST_ORIG_CMD_SCRIPT
+
 
