@@ -3,9 +3,12 @@
 #
 # BED: Behavioral Equivalence Detector
 #
+# Usage: bed_manual.sh <variantID> <ASPRI_file> <BSPRI_file>
+#
 # Use user-specified input/output pair 
 # Assume we are in the Peasoup sub-directory created by ps_analyze.sh
 #
+
 
 PEASOUP_DIR=`pwd`
 MANUAL_TEST_DIR=$PEASOUP_DIR/manual_tests
