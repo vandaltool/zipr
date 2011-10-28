@@ -401,8 +401,6 @@ perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 #
 perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600 -u 60 -i 25 -l tracer,trace,inputs  > do_concolic.out 2>&1
 
-
-
 ##
 ## Populate IR Database
 ##
@@ -450,13 +448,14 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 		#
 		# Run script to setup manual tests
 		#
-		perform_step manual_test $PEASOUP_HOME/tools/do_manualtests.sh $manual_test_script
+		perform_step manual_test $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script
 
 		is_step_on manual_test
 		if [ $? -eq 0 ]; then 
 			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/p1xform_v2.sh $PN_TIMEOUT_VALUE
 		else
-			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh $PN_TIMEOUT_VALUE
+#			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh $PN_TIMEOUT_VALUE
+			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_blackbox.sh $PN_TIMEOUT_VALUE
 		fi
 		
 		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid
@@ -477,7 +476,6 @@ report_logs
 cd - > /dev/null 2>&1
 
 cp $newdir/$name.sh $stratafied_exe
-
 
 # return the exit code of the copy as the final return value 
 # So that a predictable return value is returned
