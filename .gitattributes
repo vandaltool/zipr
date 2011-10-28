@@ -568,6 +568,7 @@ stock_examples/xcalc.stock -text
 stock_examples/xeyes.stock -text
 stock_examples/xpdf.stock -text
 stock_examples/xpdfsrc.stock -text
+tools/bed_blackbox.sh -text
 tools/bed_manual.sh -text
 tools/cover.sh -text
 tools/db/drop_my_tables.sh -text
