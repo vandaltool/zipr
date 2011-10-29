@@ -292,6 +292,16 @@ libintegertransform/tests/Makefile -text
 libintegertransform/tests/clark1.c -text
 libintegertransform/tests/int32overflow.c -text
 libintegertransform/tests/sample_meds_int.annot -text
+libtransform/Makefile -text
+libtransform/include/integertransform.hpp -text
+libtransform/src/Makefile -text
+libtransform/src/integertransform.cpp -text
+libtransform/tests/Makefile -text
+libtransform/tests/clark1.c -text
+libtransform/tests/int16overflow.c -text
+libtransform/tests/int32overflow.c -text
+libtransform/tests/mul.c -text
+libtransform/tests/sample_meds_int.annot -text
 tests/coreutils/Makefile -text
 tests/coreutils/bzip2_manual_tests.sh -text
 tests/coreutils/cat_manual_tests.sh -text
