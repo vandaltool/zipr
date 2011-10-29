@@ -45,18 +45,18 @@ main(int argc, char **argv)
 
 		assert(virp && pidp);
 
-			cerr << "Parse annotation file" << endl;
+		cerr << "Parse annotation file" << endl;
 		// parse MEDS integer annotations
 		ifstream annotationFile(annotationFilename, ifstream::in);
 		MEDS_AnnotationParser annotationParser(annotationFile);
-			cerr << "Done parsing annotation file" << endl;
+		cerr << "Done parsing annotation file" << endl;
 
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotationParser.getAnnotations();
 			cerr << "Got all annotations" << endl;
 
 		// do the transformation
 			cerr << "Do the integer transform" << endl;
-		IntegerTransform integerTransform(pidp, virp, &annotations, &filteredFunctions);
+		libTransform::IntegerTransform integerTransform(pidp, virp, &annotations, &filteredFunctions);
 		int exitcode = integerTransform.execute();
 		if (exitcode == 0)
 		{
