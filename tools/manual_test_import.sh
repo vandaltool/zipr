@@ -19,6 +19,7 @@ INFILES=""
 OUTFILES=""
 TEST_NAME=""
 EXIT_CODE=""
+CLEANUP=""
 while [ $# -gt 0 ]
 do
   case "$1" in
@@ -28,6 +29,7 @@ do
 	"--outfile")	OUTFILES="$2 $OUTFILES"; shift;;
 	"--name")	TEST_NAME=$2; shift;;
 	"--exitcode")	EXIT_CODE=$2; shift;;
+        "--cleanup")    CLEANUP="$2 CLEANUP"; shift;;
  	*) break;;
   esac
   shift
@@ -148,6 +150,12 @@ do
 done
 
 for i in $OUTFILES
+do
+  echo " rm $i 2>/dev/null" >> $TEST_XFORMED_CMD_SCRIPT
+  echo " rm $TEST_XFORMED_OUTPUT_DIR/$i 2>/dev/null" >> $TEST_XFORMED_CMD_SCRIPT
+done
+
+for i in $CLEANUP
 do
   echo " rm $i 2>/dev/null" >> $TEST_XFORMED_CMD_SCRIPT
   echo " rm $TEST_XFORMED_OUTPUT_DIR/$i 2>/dev/null" >> $TEST_XFORMED_CMD_SCRIPT
