@@ -2,9 +2,11 @@
 #include <cstdio>
 #include <string>
 
+#include "MEDS_Register.hpp"
 #include "MEDS_InstructionCheckAnnotation.hpp"
 
 using namespace std;
+using namespace MEDS_Annotation;
 
 /*
 Example format (as of 10/18/2011) -- subject to change:
@@ -29,6 +31,11 @@ MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation(const std::stri
 	m_isSignedness = false;
 	m_isSigned = false;
 	m_isUnsigned = false;
+	m_isUnknownSign = true;
+	m_bitWidth = -1;
+	m_truncationFromWidth = -1;
+	m_truncationToWidth = -1;
+	m_register = Register::UNKNOWN;
 
 	parse();
 }
@@ -43,7 +50,7 @@ void MEDS_InstructionCheckAnnotation::parse()
 	//  field 3 - INSTR
 	//  field 4 - CHECK
 	//  field 5 - {OVERFLOW | UNDERFLOW | SIGNEDNESS | TRUNCATION }  
-	//  field 6 - {SIGNED | UNSIGNED | 16 | 32}
+	//  field 6 - {SIGNED | UNSIGNED | UNKNOWNSIGN | 16 | 32}
 	//  field 7 - {<register> | <memory reference>}
 
 	if (m_rawInputLine.find(MEDS_ANNOT_INSTR)==string::npos || m_rawInputLine.find(MEDS_ANNOT_CHECK)==string::npos) 
@@ -52,6 +59,9 @@ void MEDS_InstructionCheckAnnotation::parse()
 	// get offset
 	VirtualOffset vo(m_rawInputLine);
 	m_virtualOffset = vo;
+
+	// The annotation format is very simple so we don't bother with any fancy parsing
+	// Later, this may need to be changed
 
 	// get check type
 	if (m_rawInputLine.find(MEDS_ANNOT_OVERFLOW)!=string::npos)
@@ -68,9 +78,34 @@ void MEDS_InstructionCheckAnnotation::parse()
 
 	// signed vs. unsigned
 	if (m_rawInputLine.find(MEDS_ANNOT_UNSIGNED)!=string::npos)
+	{
 		m_isUnsigned = true;
+		m_isUnknownSign = false;
+	}
 	else if (m_rawInputLine.find(MEDS_ANNOT_SIGNED)!=string::npos)
+	{
 		m_isSigned = true;
+		m_isUnknownSign = false;
+	}
+	else if (m_rawInputLine.find(MEDS_ANNOT_UNKNOWNSIGN)!=string::npos)
+	{
+		m_isUnsigned = false;
+		m_isSigned = false;
+		m_isUnknownSign = true;
+	}
+
+	// get bit width information for overflow & underflow
+	if (m_isOverflow || m_isUnderflow)
+	{
+		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d", &m_bitWidth);
+	}
+	else if (m_isTruncation) // get bid width from/to information for truncation
+	{
+		char buf[1024] = "";
+		// [ADDR] [SIZE] INSTR CHECK TRUNCATION UNKNOWNSIGN 32 EAX 16 AX ZZ mov     [esp+2Ah], ax
+		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s %d", &m_truncationFromWidth, buf, &m_truncationToWidth);
+		m_register = Register::getRegister(string(buf));
+	}
 
 	m_isValid = true;
 	

@@ -6,6 +6,9 @@
 #include "MEDS_InstructionCheckAnnotation.hpp"
 #include "VirtualOffset.hpp"
 
+namespace MEDS_Annotation
+{
+
 class MEDS_AnnotationParser
 {
 	public:
@@ -15,5 +18,7 @@ class MEDS_AnnotationParser
 	private:
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> m_annotations;
 };
+
+}
 
 #endif

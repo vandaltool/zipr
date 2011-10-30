@@ -4,6 +4,7 @@
 #define MAX_BUF_SIZE 2048
 
 using namespace std;
+using namespace MEDS_Annotation;
 
 MEDS_AnnotationParser::MEDS_AnnotationParser(istream &p_inputStream)
 {

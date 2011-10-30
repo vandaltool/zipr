@@ -1,7 +1,7 @@
 
 LIB=../lib/libMEDSannotation.a
 
-OBJS=VirtualOffset.o MEDS_AnnotationParser.o MEDS_InstructionCheckAnnotation.o 
+OBJS=VirtualOffset.o MEDS_Register.o MEDS_AnnotationParser.o MEDS_InstructionCheckAnnotation.o 
 
 all: $(OBJS)
 
