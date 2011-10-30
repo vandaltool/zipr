@@ -35,8 +35,10 @@ TRANSFORMED_PROGRAM="$PEASOUP_DIR/$NAME"
 
 # invoke the user-supplied test script
 # pass as argument the transformed program
-$SCRIPT_NAME $TRANSFORMED_PROGRAM
+echo "blackbox BED: Invoking: $SCRIPT_NAME $TRANSFORMED_PROGRAM"
+eval $SCRIPT_NAME $TRANSFORMED_PROGRAM
 status=$? 
+echo "blackbox BED: Done with: $SCRIPT_NAME $TRANSFORMED_PROGRAM: status: $status"
 
 cd $PEASOUP_DIR
 
