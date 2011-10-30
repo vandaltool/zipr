@@ -144,8 +144,8 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 		Instruction_t* pop_eax_i = allocateNewInstruction(fileID, func);
 
 		// start instrumentation
-		addPushRegister(push_ecx_i, ECX, push_eax_i);
-		addPushRegister(push_eax_i, EAX, movzx_i);
+		addPushRegister(push_ecx_i, Register::ECX, push_eax_i);
+		addPushRegister(push_eax_i, Register::EAX, movzx_i);
 
 		// movzx ecx, word [esp + 2]    ; copy upper 16 bits into ecx (zero-extend)
 		dataBits.resize(7);
@@ -180,10 +180,10 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 		addInstruction(jecxz2_i, dataBits, addCallbackHandler(string(TRUNCATION_DETECTOR), pop_eax_i), pop_eax_i);
 
 		//     pop eax                      ; restore eax
-		addPopRegister(pop_eax_i, EAX, pop_ecx_i);
+		addPopRegister(pop_eax_i, Register::EAX, pop_ecx_i);
 
 		//     pop ecx                      ; restore ecx
-		addPopRegister(pop_ecx_i, ECX, p_instruction);
+		addPopRegister(pop_ecx_i, Register::ECX, p_instruction);
 	}
 	else if (p_annotation.isUnsigned())
 	{

@@ -1,6 +1,7 @@
 #include "transform.hpp"
 
 using namespace libTransform;
+using namespace MEDS_Annotation;
 
 Transform::Transform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
 {
@@ -23,25 +24,25 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 	m_variantIR->GetInstructions().insert(p_instr);
 }
 
-void Transform::addPushRegister(Instruction_t *p_instr, Register p_reg, Instruction_t *p_fallThrough)
+void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
 {
 	string dataBits;
 	dataBits.resize(2);
 
 	dataBits[0] = 0x66;
-	if (p_reg == EAX)
+	if (p_reg == Register::EAX)
 	{
 		dataBits[1] = 0x50; 
 	} 
-	else if (p_reg == EBX)
+	else if (p_reg == Register::EBX)
 	{
 		dataBits[1] = 0x53; 
 	} 
-	else if (p_reg == ECX)
+	else if (p_reg == Register::ECX)
 	{
 		dataBits[1] = 0x51; 
 	}
-	else if (p_reg == EDX)
+	else if (p_reg == Register::EDX)
 	{
 		dataBits[1] = 0x52; 
 	}
@@ -53,25 +54,25 @@ void Transform::addPushRegister(Instruction_t *p_instr, Register p_reg, Instruct
 	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }
 
-void Transform::addPopRegister(Instruction_t *p_instr, Register p_reg, Instruction_t *p_fallThrough)
+void Transform::addPopRegister(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
 {
 	string dataBits;
 	dataBits.resize(2);
 
 	dataBits[0] = 0x66;
-	if (p_reg == EAX)
+	if (p_reg == Register::EAX)
 	{
 		dataBits[1] = 0x58; 
 	} 
-	else if (p_reg == EBX)
+	else if (p_reg == Register::EBX)
 	{
 		dataBits[1] = 0x5b; 
 	} 
-	else if (p_reg == ECX)
+	else if (p_reg == Register::ECX)
 	{
 		dataBits[1] = 0x59; 
 	}
-	else if (p_reg == EDX)
+	else if (p_reg == Register::EDX)
 	{
 		dataBits[1] = 0x5a; 
 	}

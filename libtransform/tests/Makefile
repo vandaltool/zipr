@@ -17,7 +17,7 @@ all: env_check  ${exes}
 
 .o.exe:
 #	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
-	gcc $< -o $@ 
+	gcc -g $< -o $@ 
 	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@ --step ilr=off --step concolic=off --step p1transform=off
 
 .c.o:

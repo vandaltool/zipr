@@ -1,12 +1,11 @@
+
 int main(int argc, char **argv)
 {
-  int a = atoi(argv[1]);
-  int b = atoi(argv[2]);
+  unsigned a = (unsigned) atoi(argv[1]);
+  unsigned b = (unsigned) atoi(argv[2]);
+  unsigned d = a * b;
+  printf("%u * %u = %u\n", a, b, d);
 
-  int c = a * b;
+  printf("hello, how are you?");
 
-  printf("%d * %d = %d\n", a, b, c);
-
-  unsigned d = (unsigned)a * (unsigned)b;
-  printf("%u * %u = %u\n", (unsigned)a, (unsigned)b, d);
 }

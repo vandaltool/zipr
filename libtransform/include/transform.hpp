@@ -7,11 +7,13 @@
 
 #include <libIRDB-core.hpp>
 
-using namespace std;
-using namespace libIRDB;
 
 #include "MEDS_InstructionCheckAnnotation.hpp"
 #include "VirtualOffset.hpp"
+
+using namespace std;
+using namespace libIRDB;
+using namespace MEDS_Annotation;
 
 namespace libTransform
 {
@@ -22,12 +24,9 @@ class Transform {
 		Transform(VariantID_t *, VariantIR_t *, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions);
 
 	protected:
-		enum Register { EAX, EBX, ECX, EDX, AX, BX, CX, DX };
-
-	protected:
 		void addInstruction(Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target);
-		void addPushRegister(Instruction_t *p_instr, Register, Instruction_t *p_fallThrough);
-		void addPopRegister(Instruction_t *p_instr, Register, Instruction_t *p_fallThrough);
+		void addPushRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
+		void addPopRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		Instruction_t* addCallbackHandler(string p_detector, Instruction_t *p_instr);
 
 
@@ -37,8 +36,8 @@ class Transform {
 
 		VariantID_t* getVariantID() { return m_variantID; }
 		VariantIR_t* getVariantIR() { return m_variantIR; }
-		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations();
-		set<std::string>* getFilteredFunctions();;
+		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
+		set<std::string>* getFilteredFunctions() { return m_filteredFunctions; }
 
 	private:
 		VariantID_t            *m_variantID;
