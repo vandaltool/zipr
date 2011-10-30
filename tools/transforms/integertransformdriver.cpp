@@ -71,10 +71,10 @@ main(int argc, char **argv)
 			}
 
 			fprintf(stderr, "integertransformdriver: generating aspri file: %s\n", aspri_filename.c_str());
-			virp->GenerateSPRI(aspriFile); // p1.xform/<function_name>/a.irdb.aspri
+			virp->GenerateSPRI(aspriFile); 
 			aspriFile.close();
 
-//			pqxx_interface.Commit();
+			pqxx_interface.Commit();
 			delete virp;
 			delete pidp;
 		}
