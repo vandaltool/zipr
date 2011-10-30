@@ -24,7 +24,7 @@ else
   else
     cp $test_script manual_test_wrapper
 	echo $newname > new_command_name
-    ln -s $name.sh $newname
   fi
 
+  ln -s $name.sh $newname
 fi

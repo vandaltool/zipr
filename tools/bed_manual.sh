@@ -44,6 +44,9 @@ do
   fi
 done
 
-echo "BED says: all tests passed"
+echo "BED says: all tests passed: copyping $bspri into $PEASOUP_DIR"
+
+# copy bspri file
+cp $bspri $PEASOUP_DIR
 
 exit 0
