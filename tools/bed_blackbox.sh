@@ -38,8 +38,8 @@ TRANSFORMED_PROGRAM="$PEASOUP_DIR/$NAME"
 echo "blackbox BED: Invoking: $SCRIPT_NAME $TRANSFORMED_PROGRAM"
 eval $SCRIPT_NAME $TRANSFORMED_PROGRAM
 status=$? 
-echo "blackbox BED: Done with: $SCRIPT_NAME $TRANSFORMED_PROGRAM: status: $status"
 
 cd $PEASOUP_DIR
 
+echo "blackbox BED: Done with: $SCRIPT_NAME $TRANSFORMED_PROGRAM: status: $status"
 exit $status
