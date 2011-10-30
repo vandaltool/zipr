@@ -307,6 +307,8 @@ libtransform/tests/int16overflow.c -text
 libtransform/tests/int32overflow.c -text
 libtransform/tests/mul.c -text
 libtransform/tests/sample_meds_int.annot -text
+libtransform/tests/simpletest.c -text
+libtransform/tests/unsigned_add.c -text
 tests/coreutils/Makefile -text
 tests/coreutils/bzip2_manual_tests.sh -text
 tests/coreutils/cat_manual_tests.sh -text

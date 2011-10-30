@@ -82,7 +82,17 @@ void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const M
 		addOverflowCheck(p_instruction, p_annotation);
 	else if (p_annotation.getBitWidth() == 32)
 	{
-		addOverflowCheck(p_instruction, p_annotation);
+		if (p_annotation.isUnderflow() || p_annotation.isOverflow())
+		{
+			if (p_annotation.isSigned() || p_annotation.isUnsigned())
+			{
+				addOverflowCheck(p_instruction, p_annotation);
+			}
+			else
+			{
+				cerr << "integertransform: unknown sign: do not instrument" << endl;
+			}
+		}
 	}
 }
 
@@ -216,7 +226,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->GetComment() << endl;
 	assert(getVariantIR() && p_instruction);
 	
-	string detector(TRUNCATION_DETECTOR);
+	string detector(INTEGER_OVERFLOW_DETECTOR);
 	string dataBits;
 
 	AddressID_t *jncond_a =new AddressID_t;
@@ -298,6 +308,12 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 
 		detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_32);
 	cerr << "integertransform: ADD/SUB OVERFLOW UNSIGNED 32" << endl;
+	}
+	else
+	{
+	cerr << "integertransform: ADD/SUB OVERFLOW UNKONWN 32: do nothing for now" << endl;
+	return;
+
 	}
 
 	jncond_i->SetDataBits(dataBits);
