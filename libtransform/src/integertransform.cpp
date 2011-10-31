@@ -69,7 +69,6 @@ int IntegerTransform::execute()
 		} // end iterate over all instructions in a function
 	} // end iterate over all functions
 
-	cerr << "integertransform: testing: do not write new variant to DB" << endl;
 	getVariantIR()->WriteToDB();
 
 	// for now just be happy
@@ -79,7 +78,9 @@ int IntegerTransform::execute()
 void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
 {
 	if (isMultiplyInstruction32(p_instruction))
+	{
 		addOverflowCheck(p_instruction, p_annotation);
+	}
 	else if (p_annotation.getBitWidth() == 32)
 	{
 		if (p_annotation.isUnderflow() || p_annotation.isOverflow())
@@ -90,7 +91,8 @@ void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const M
 			}
 			else
 			{
-				cerr << "integertransform: unknown sign: do not instrument" << endl;
+			// call anyways, just assume it's signed
+				addOverflowCheck(p_instruction, p_annotation);
 			}
 		}
 	}
@@ -210,7 +212,7 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 //      jno <originalFallthroughInstruction> | jnc <originalFallthroughInstruction>
 //      pusha
 //      pushf
-//      push_arg
+//      push_arg <address original instruction>
 //      push L1
 //      ... setup detector ...
 //  L1: pop_arg
@@ -311,9 +313,11 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	}
 	else
 	{
-	cerr << "integertransform: ADD/SUB OVERFLOW UNKONWN 32: do nothing for now" << endl;
-	return;
+		dataBits[0] = 0x71; // jno
+		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
 
+		detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+	cerr << "integertransform: ADD/SUB OVERFLOW UNKONWN 32: assume signed for now" << endl;
 	}
 
 	jncond_i->SetDataBits(dataBits);
@@ -359,7 +363,7 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	dataBits[0] = 0x58;
 	poparg_i->SetDataBits(dataBits);
 	poparg_i->SetComment(poparg_i->getDisassembly() + " -- with callback to " + detector + " orig: " + p_instruction->GetComment()) ;
-	poparg_i->SetFallthrough(popa_i); 
+	poparg_i->SetFallthrough(popf_i); 
 	poparg_i->SetIndirectBranchTargetAddress(poparg_a);  
 	poparg_i->SetCallback(detector); 
 
