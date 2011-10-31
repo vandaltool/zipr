@@ -1,5 +1,12 @@
 #include <stdio.h>
 
+#TYPE1# doAdd(#TYPE1# a, #TYPE2# b)
+{
+  volatile #TYPE1# result = a + b;
+  printf ("result: #FORMAT_SPECIFIER#\n", result);
+  return result;
+}
+
 // pass in 2 arguments
 main(int argc, char **argv)
 {
@@ -14,7 +21,6 @@ main(int argc, char **argv)
 
   x = #FUNCTION_NAME1#(argv[1], NULL, 10);
   y = #FUNCTION_NAME2#(argv[2], NULL, 10);
-  result = x + y;
-  printf ("result: #FORMAT_SPECIFIER# %x\n", result, result);
+  result = doAdd(x, y);
 }
 

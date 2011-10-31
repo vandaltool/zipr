@@ -305,6 +305,7 @@ libtransform/tests/Makefile -text
 libtransform/tests/clark1.c -text
 libtransform/tests/int16overflow.c -text
 libtransform/tests/int32overflow.c -text
+libtransform/tests/integer/addsuboverflow/Makefile -text
 libtransform/tests/integer/addsuboverflow/acrossfunctions/Makefile -text
 libtransform/tests/integer/addsuboverflow/acrossfunctions/addsub.ctmpl -text
 libtransform/tests/integer/addsuboverflow/acrossfunctions/addsub.shtmpl -text
