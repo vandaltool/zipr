@@ -21,10 +21,6 @@ class IntegerTransform : public Transform
 		void addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
 		void handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
 		void addTruncationCheck32to16(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
-
-		// utility functions
-		bool isMultiplyInstruction32(libIRDB::Instruction_t*);
-		bool isAddSubNonEspInstruction32(libIRDB::Instruction_t*);
 };
 
 };

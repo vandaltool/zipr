@@ -134,9 +134,8 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 		//     not ecx                      ; flip all bits (all 1's bcomes all 0's)
 		//     jecxz continue               ; originally all 1's, all good
 		//
-		//         pusha, pushf, push_arg, push L
-		//         <invoke handler here>
-		//     L:  pop_arg, popf, popa
+		//     <invoke handler here>
+		//     nop
 		//
 		// continue: 
 		//     pop eax                      ; restore eax
@@ -152,6 +151,7 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 		Instruction_t* jecxz_i = allocateNewInstruction(fileID, func);
 		Instruction_t* not_ecx_i = allocateNewInstruction(fileID, func);
 		Instruction_t* jecxz2_i = allocateNewInstruction(fileID, func);
+		Instruction_t* nop_i = allocateNewInstruction(fileID, func);
 		Instruction_t* pop_ecx_i = allocateNewInstruction(fileID, func);
 		Instruction_t* pop_eax_i = allocateNewInstruction(fileID, func);
 
@@ -189,7 +189,11 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 		dataBits[0] = 0x67;
 		dataBits[1] = 0xe3; 
 		dataBits[2] = 0x00; // value doesn't matter here -- will be filled in later
-		addInstruction(jecxz2_i, dataBits, addCallbackHandler(string(TRUNCATION_DETECTOR), pop_eax_i), pop_eax_i);
+		addInstruction(jecxz2_i, dataBits, nop_i, pop_eax_i);
+
+		//     nop
+		addNop(nop_i, pop_eax_i);
+		addCallbackHandler(string(TRUNCATION_DETECTOR), p_instruction, nop_i, pop_eax_i);
 
 		//     pop eax                      ; restore eax
 		addPopRegister(pop_eax_i, Register::EAX, pop_ecx_i);
@@ -232,6 +236,7 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	string dataBits;
 
 	AddressID_t *jncond_a =new AddressID_t;
+	/*
 	AddressID_t *pusha_a =new AddressID_t;
 	AddressID_t *pushf_a =new AddressID_t;
 	AddressID_t *pusharg_a =new AddressID_t;
@@ -239,8 +244,10 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	AddressID_t *poparg_a =new AddressID_t;
 	AddressID_t *popf_a =new AddressID_t;
 	AddressID_t *popa_a =new AddressID_t;
+	*/
 
 	jncond_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	/*
 	pusha_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pushf_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	pusharg_a->SetFileID(p_instruction->GetAddress()->GetFileID());
@@ -248,8 +255,10 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	poparg_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	popf_a->SetFileID(p_instruction->GetAddress()->GetFileID());
 	popa_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	*/
 
 	Instruction_t* jncond_i = new Instruction_t;
+	/*
 	Instruction_t* pusha_i = new Instruction_t;
 	Instruction_t* pushf_i = new Instruction_t;
 	Instruction_t* pusharg_i = new Instruction_t;
@@ -257,10 +266,12 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	Instruction_t* poparg_i = new Instruction_t;
 	Instruction_t* popf_i = new Instruction_t;
 	Instruction_t* popa_i = new Instruction_t;
+	*/
 
 	Function_t* origFunction = p_instruction->GetFunction();
 
 	jncond_i->SetFunction(origFunction);
+	/*
 	pusha_i->SetFunction(origFunction);
 	pushf_i->SetFunction(origFunction);
 	pusharg_i->SetFunction(origFunction);
@@ -268,12 +279,16 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	poparg_i->SetFunction(origFunction);
 	popf_i->SetFunction(origFunction);
 	popa_i->SetFunction(origFunction);
+	*/
 
 	// pin the poparg instruction 
+	/*
 	virtual_offset_t postDetectorReturn = getAvailableAddress();
 	poparg_a->SetVirtualOffset(postDetectorReturn);
+	*/
 
 	jncond_i->SetAddress(jncond_a);
+	/*
 	pusha_i->SetAddress(pusha_a);
 	pushf_i->SetAddress(pushf_a);
 	pusharg_i->SetAddress(pusharg_a);
@@ -281,6 +296,7 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	poparg_i->SetAddress(poparg_a);
 	popf_i->SetAddress(popf_a);
 	popa_i->SetAddress(popa_a);
+	*/
 
 	// set fallthrough for the original instruction
 	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
@@ -322,10 +338,17 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 
 	jncond_i->SetDataBits(dataBits);
 	jncond_i->SetComment(jncond_i->getDisassembly());
-	jncond_i->SetFallthrough(pusha_i); 
 	jncond_i->SetTarget(nextOrig_i); 
+//	jncond_i->SetFallthrough(pusha_i);  // this is set in addCallBackhandler
+
 	p_instruction->SetFallthrough(jncond_i); 
 
+	addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i);
+
+	getVariantIR()->GetAddresses().insert(jncond_a);
+	getVariantIR()->GetInstructions().insert(jncond_i);
+
+#ifdef OLD
 	// pusha   
 	dataBits.resize(1);
 	dataBits[0] = 0x60;
@@ -400,52 +423,7 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	getVariantIR()->GetInstructions().insert(popf_i);
 	getVariantIR()->GetInstructions().insert(poparg_i);
 	getVariantIR()->GetInstructions().insert(popa_i);
+#endif
 cerr << "void IntegerTransform::addOverflowCheck(): exit" << endl;
 }
 
-//
-// Returns true iff instruction is MUL (according to BeaEngine)
-//
-bool IntegerTransform::isMultiplyInstruction32(Instruction_t *p_instruction)
-{
-	if (!p_instruction)
-		return false;
-
-	DISASM disasm;
-
-	p_instruction->Disassemble(disasm);
-
-	// beaengine adds space at the end of the mnemonic string
-	return strcasestr(disasm.Instruction.Mnemonic, "MUL ") != NULL;
-}
-
-//
-// Returns true iff instruction is ADD or SUB (according to BeaEngine)
-//
-bool IntegerTransform::isAddSubNonEspInstruction32(Instruction_t *p_instruction)
-{
-	if (!p_instruction)
-		return false;
-
-	DISASM disasm;
-
-	p_instruction->Disassemble(disasm);
-
-	// beaengine adds space at the end of the mnemonic string
-	if (strcasestr(disasm.Instruction.Mnemonic, "ADD "))
-	{
-		return true;
-	}
-	else if (strcasestr(disasm.Instruction.Mnemonic, "SUB ")) 
-	{
-		if (strcasestr(disasm.Argument1.ArgMnemonic,"esp") &&
-			(disasm.Argument2.ArgType & 0xFFFF0000 & (CONSTANT_TYPE | ABSOLUTE_)))
-		{
-			// optimization: filter out "sub esp, K"
-			return false;
-		}
-		return true;
-	}
-
-	return false;
-}

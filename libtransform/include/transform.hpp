@@ -27,7 +27,13 @@ class Transform {
 		void addInstruction(Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addPushRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addPopRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
-		Instruction_t* addCallbackHandler(string p_detector, Instruction_t *p_instr);
+		void addPusha(Instruction_t *p_instr, Instruction_t *p_fallThrough);
+		void addPushf(Instruction_t *p_instr, Instruction_t *p_fallThrough);
+		void addPopa(Instruction_t *p_instr, Instruction_t *p_fallThrough);
+		void addPopf(Instruction_t *p_instr, Instruction_t *p_fallThrough);
+		void addNop(Instruction_t *p_instr, Instruction_t *p_fallThrough);
+
+		void addCallbackHandler(string p_detector, Instruction_t *p_instrumented, Instruction_t *p_instr, Instruction_t *_fallThrough);
 
 
 		Instruction_t* allocateNewInstruction(db_id_t p_fileID, Function_t* p_func);
@@ -39,6 +45,8 @@ class Transform {
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
 		set<std::string>* getFilteredFunctions() { return m_filteredFunctions; }
 
+		bool isMultiplyInstruction32(libIRDB::Instruction_t*);
+		bool isAddSubNonEspInstruction32(libIRDB::Instruction_t*);
 	private:
 		VariantID_t            *m_variantID;
 		VariantIR_t            *m_variantIR;
