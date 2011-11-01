@@ -460,7 +460,12 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 
 #ifndef TEST
 			void possible_target(int p);
+
+			/* the landing pad is a possible target if an exception is thrown */ 
 			possible_target(cs_lp+info->Start);
+
+			/* and the return address is a possible oddity if it's used for walking the stack */
+			possible_target(cs_len+cs_start+info->Start);
 
 #endif
 		}
@@ -607,6 +612,10 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
           		pc_range = ((_Unwind_Ptr *) this_fde->pc_begin)[1];
 			cout<<"absptr pc_begin 0x"<<std::hex<<(pc_begin+offset)<<"\t";
 			cout<<"absptr pc_end 0x"<<std::hex<<(pc_begin+pc_range+offset)<<endl;
+#ifndef TEST
+			extern void range(int, int);
+			range(pc_begin,pc_begin+pc_range);
+#endif
           		if (pc_begin == 0)
             			continue;
         	}
@@ -619,8 +628,13 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
                                             		this_fde->pc_begin, &pc_begin);
           		read_encoded_value_with_base (encoding & 0x0F, 0, p, &pc_range);
 
-			cout<<"!absptr pc_begin 0x"<<std::hex<<(offset+pc_begin)<<"\t";
-			cout<<"!absptr pc_end 0x"<<std::hex<<(offset+pc_begin+pc_range)<<endl;
+			cout<<"!absptr pc_begin 0x"<<std::hex<<(pc_begin)<<"\t";
+			cout<<"!absptr pc_end 0x"<<std::hex<<(pc_begin+pc_range)<<endl;
+
+#ifndef TEST
+			extern void range(int, int);
+			range(pc_begin,pc_begin+pc_range);
+#endif
 
           		/* Take care to ignore link-once functions that were removed.
              		In these cases, the function address will be NULL, but if

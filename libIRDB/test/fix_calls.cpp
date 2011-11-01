@@ -57,6 +57,7 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 bool call_needs_fix(Instruction_t* insn)
 {
 	Instruction_t *target=insn->GetTarget();
+	Instruction_t *fallthru=insn->GetFallthrough();
 	DISASM disasm;
 
 	string pattern;;
@@ -74,6 +75,16 @@ bool call_needs_fix(Instruction_t* insn)
 		/* then we need to fix it */
 		return true;
 	}
+
+	/* no fallthrough instruction, something is odd here */
+	if(!fallthru)
+		return true;
+
+	/* if the location after the call is marked as an IBT, then 
+	 * this location might be used for walking the stack 
+  	 */
+	if(fallthru->GetIndirectBranchTargetAddress()!=NULL)
+		return true;
 
 
 	Function_t* func=target->GetFunction();
@@ -300,79 +311,6 @@ File_t* find_file(VariantIR_t* virp, db_id_t fileid)
 }
 
 
-static map<db_id_t,bool> has_eh_frame_section_cache;
-
-bool has_eh_frame_section(VariantIR_t* virp, Instruction_t* insn)
-{
-	db_id_t fileid=insn->GetAddress()->GetFileID();
-
-
-	/* if we haven't yet looked at this file */
-	if(has_eh_frame_section_cache.find(fileid) == has_eh_frame_section_cache.end())
-	{
-
-		/* find the file in the IR */
-		File_t* filep=find_file(virp,fileid);
-		assert(filep);
-
-		/* get the OID of the file */
-		int elfoid=filep->GetELFOID();
-		
-
-		/* parse out the elf headers, and strtab */
-		Elf32_Ehdr elfhdr;
-		Elf32_Off sec_hdr_off, sec_off;
-		Elf32_Half secnum, strndx, secndx;
-		Elf32_Word secsize;
-	
-		pqxx::largeobjectaccess loa(pqxx_interface.GetTransaction(), elfoid, PGSTD::ios::in);
-
-
-		/* Read ELF header */
-		loa.cread((char*)&elfhdr, sizeof(Elf32_Ehdr)* 1);
-
-		sec_hdr_off = elfhdr.e_shoff;
-		secnum = elfhdr.e_shnum;
-		strndx = elfhdr.e_shstrndx;
-
-		/* Read Section headers */
-		Elf32_Shdr *sechdrs=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*secnum);
-		loa.seek(sec_hdr_off, std::ios_base::beg);
-		loa.cread((char*)sechdrs, sizeof(Elf32_Shdr)* secnum);
-
-	
-        	/* Read Section String Table */
-        	sec_off = sechdrs[strndx].sh_offset;
-        	secsize = sechdrs[strndx].sh_size;
-        	loa.seek(sec_off, std::ios_base::beg);
-        	char* strtab = (char *)malloc(secsize);
-        	loa.cread(strtab, 1 * secsize);
-
-        	/* Locate desired section */
-        	bool found=false;
-        	for (secndx=1; secndx<secnum; secndx++)
-        	{
-                	char *p=&strtab[ sechdrs[secndx].sh_name];
-                	if (strcmp(".eh_frame",p)==0)
-                	{
-                        	found = true;
-                        	break;
-                	};
-        	}
-
-		/* record our results */
-		has_eh_frame_section_cache[fileid]=found;
-
-		/* clean up memory */
-		free(sechdrs);
-		free(strtab);
-	}
-
-
-	return has_eh_frame_section_cache[fileid];
-
-}
-
 
 //
 // fix_all_calls - convert calls to push/jump pairs in the IR.  if fix_all is true, all calls are converted, 
@@ -395,7 +333,7 @@ void fix_all_calls(VariantIR_t* virp, bool print_stats, bool fix_all)
 
 		if(is_call(insn)) 
 		{
-			if(fix_all || has_eh_frame_section(virp,insn) || call_needs_fix(insn))
+			if(fix_all || call_needs_fix(insn))
 			{
 				fixed_calls++;
 				fix_call(insn, virp);

@@ -20,9 +20,64 @@ int bad_fallthrough_count=0;
 using namespace libIRDB;
 using namespace std;
 
+void possible_target(int p);
 
 set< pair <int,int>  > bounds;
 set<int> targets;
+
+set< pair< int, int> > ranges;
+
+void range(int start, int end)
+{ 	
+	pair<int,int> foo(start,end);
+	ranges.insert(foo);
+}
+
+bool is_in_range(int p)
+{
+	for(
+		set< pair <int,int>  >::iterator it=ranges.begin();
+		it!=ranges.end();
+		++it
+	   )
+	{
+		pair<int,int> bound=*it;
+		int start=bound.first;
+		int end=bound.second;
+		if(start<=p && p<=end)
+			return true;
+	}
+	return false;
+}
+
+void process_ranges(VariantIR_t* virp)
+{
+        for(
+                set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
+                it!=virp->GetInstructions().end();
+                ++it
+           )
+	{
+                Instruction_t *insn=*it;
+                DISASM disasm;
+                memset(&disasm, 0, sizeof(DISASM));
+
+                disasm.Options = NasmSyntax + PrefixedNumeral;
+                disasm.Archi = 32;
+                disasm.EIP = (UIntPtr) insn->GetDataBits().c_str();
+                disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
+                int instr_len = Disasm(&disasm);
+
+                assert(instr_len==insn->GetDataBits().size());
+
+                /* calls indicate an indirect target, pc+sizeof(instruction) */
+                if(disasm.Instruction.BranchType==CallType)
+                {
+			if(is_in_range(disasm.VirtualAddr+instr_len))
+                        	possible_target(disasm.VirtualAddr+instr_len);
+                }
+	}
+}
 
 void possible_target(int p)
 {
@@ -242,7 +297,7 @@ void fill_in_indtargs(VariantIR_t* virp, string elf_file, pqxxDB_t &pqxx_interfa
 	cout<<"========================================="<<endl;
 	cout<<"Targets from data sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
-	print_targets();
+//	print_targets();
 	cout<<"========================================="<<endl;
 
 	/* look through the instructions in the program for targets */
@@ -255,7 +310,7 @@ void fill_in_indtargs(VariantIR_t* virp, string elf_file, pqxxDB_t &pqxx_interfa
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass2="<<std::dec<<targets.size()<<endl;
-	print_targets();
+//	print_targets();
 	cout<<"========================================="<<endl;
 
 	/* Read the exception handler frame so that those indirect branches are accounted for */
@@ -265,6 +320,15 @@ void fill_in_indtargs(VariantIR_t* virp, string elf_file, pqxxDB_t &pqxx_interfa
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction+eh_header sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass3="<<std::dec<<targets.size()<<endl;
+//	print_targets();
+	cout<<"========================================="<<endl;
+
+
+	/* now process the ranges that have exception handling */
+	process_ranges(virp);
+	cout<<"========================================="<<endl;
+	cout<<"All targets from data+instruction+eh_header sections+eh_header_ranges are: " << endl;
+	cout<<"# ATTRIBUTE total_indirect_targets_pass4="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
 
