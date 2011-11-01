@@ -464,6 +464,7 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 		fi
 		
 		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid
+		perform_step calc_conflicts $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
 		perform_step ilr $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
 
 		# generate aspri, and assemble it to bspri

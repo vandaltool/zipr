@@ -606,6 +606,7 @@ tools/pin/ia32/lib-ext/EXTLICENSE -text
 tools/pin/itraceunique.cpp -text
 tools/pin/itraceunique.so -text
 tools/pin/pin -text
+tools/ps_analyze-ilronly.sh -text
 tools/ps_analyze.sh -text
 tools/ps_comp++.sh -text
 tools/ps_comp.sh -text
