@@ -326,8 +326,11 @@ libtransform/tests/integer/addsuboverflow/intraframe/generate_addsub_tests.sh -t
 libtransform/tests/integer/addsuboverflow/intraframe/run_tests.sh -text
 libtransform/tests/mul.c -text
 libtransform/tests/sample_meds_int.annot -text
+libtransform/tests/signed_add.c -text
+libtransform/tests/signed_mul.c -text
 libtransform/tests/simpletest.c -text
 libtransform/tests/unsigned_add.c -text
+libtransform/tests/unsigned_mul.c -text
 tests/coreutils/Makefile -text
 tests/coreutils/bzip2_manual_tests.sh -text
 tests/coreutils/cat_manual_tests.sh -text
