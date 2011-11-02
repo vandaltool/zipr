@@ -61,6 +61,13 @@ int Instruction_t::Disassemble(DISASM &disasm){
   return instr_len;  
 }
 
+std::string Instruction_t::getDisassembly()
+{
+  DISASM disasm;
+  Disassemble(disasm);
+  return std::string(disasm.CompleteInstr);
+}
+
 // 
 // Given an instruction in assembly, returns the raw bits in a string
 // On error, return the empty string

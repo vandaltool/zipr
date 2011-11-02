@@ -21,7 +21,7 @@ class AddressID_t : public BaseObj_t
  	}
 
         db_id_t GetFileID() const { return fileID; }
-        void SetFileID(int thefileID) { fileID=thefileID; }
+        void SetFileID(db_id_t thefileID) { fileID=thefileID; }
 
         virtual_offset_t GetVirtualOffset() { return virtual_offset; }
         void SetVirtualOffset(virtual_offset_t voff) { virtual_offset=voff; }
