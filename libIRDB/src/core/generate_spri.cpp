@@ -529,12 +529,10 @@ static void generate_unmoved_insn_targets_set(VariantIR_t* varirp)
 
 void VariantIR_t::GenerateSPRI(VariantIR_t *orig_varirp, ostream &fout)
 {
-
-	
 	// give 'this' a name
 	VariantIR_t *varirp=this;
 
-	SetBaseIDS();
+	SetBaseIDS(); // need unique ID to generate unique label name
 
 	// generate the map from new instruction to old instruction needed for this transform.
 	generate_insn_to_insn_maps(varirp, orig_varirp);
