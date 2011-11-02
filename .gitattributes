@@ -287,14 +287,6 @@ libMEDSannotation/src/MEDS_InstructionCheckAnnotation.cpp -text
 libMEDSannotation/src/MEDS_Register.cpp -text
 libMEDSannotation/src/Makefile -text
 libMEDSannotation/src/VirtualOffset.cpp -text
-libintegertransform/Makefile -text
-libintegertransform/include/integertransform.hpp -text
-libintegertransform/src/Makefile -text
-libintegertransform/src/integertransform.cpp -text
-libintegertransform/tests/Makefile -text
-libintegertransform/tests/clark1.c -text
-libintegertransform/tests/int32overflow.c -text
-libintegertransform/tests/sample_meds_int.annot -text
 libtransform/Makefile -text
 libtransform/include/integertransform.hpp -text
 libtransform/include/transform.hpp -text
