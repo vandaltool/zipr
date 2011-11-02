@@ -15,11 +15,11 @@
 #
 
 
-PROGS=p1transform.exe integerbugtransform.exe nulltransform.exe
+PROGS=p1transform.exe integerbugtransform.exe nulltransform.exe integertransformdriver.exe
 CC=g++
 CFLAGS= -g
-INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ 
-LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB-core -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx 
+INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../../libtransform/include/
+LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB-core -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx  -L../../libMEDSannotation/lib -lMEDSannotation -L../../libtransform/lib -ltransform
 OBJS=transformutils.o
 
 .SUFFIXES: .o .c .exe .cpp
