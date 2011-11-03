@@ -19,6 +19,7 @@ REPLAYER_TIMEOUT=120        # timeout value for when replaying input -- for now 
 
 TOP_LEVEL=`pwd`
 
+rm -fr replay 2>/dev/null
 mkdir replay 2>/dev/null
 
 echo "=========================================="
