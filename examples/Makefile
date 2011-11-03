@@ -16,8 +16,8 @@ all: env_check  ${exes}
 .PHONY: env_check 
 
 .o.exe:
-#	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
-	gcc $< -o $@ 
+	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
+#	gcc $< -o $@ 
 	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@
 
 .c.o:

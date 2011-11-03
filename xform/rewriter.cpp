@@ -720,6 +720,14 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
 
   set<app_iaddr_t> visitedInstructions;
 
+  infile.seekg(0,ios::end);
+  size_t size = infile.tellg();
+  if( size == 0)
+  {
+      cerr << "File containing instructions visited is empty is empty\n"<<endl;
+      return coverage;
+  }
+
   while (infile.good())
   {
     int address = 0;
@@ -727,8 +735,6 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
     
     infile>>tmp;
     infile>>hex>>address;
-
-    // cerr<<"address = "<<address<<endl;
 
     visitedInstructions.insert((app_iaddr_t) address);
   }

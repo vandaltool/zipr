@@ -1,4 +1,4 @@
-progs=discrete_xform.peasoup integration_simp.peasoup sieve.peasoup knapsack.peasoup dumbledore_cmd_nop.peasoup dumbledore_cmd_O3.peasoup quick_sort.peasoup hanoi.peasoup merge_sort.peasoup k1.peasoup banner_nop.peasoup banner_O3.peasoup cal_nop.peasoup cal_O3.peasoup
+progs=discrete_xform.peasoup integration_simp.peasoup sieve.peasoup knapsack.peasoup dumbledore_cmd_nop.peasoup dumbledore_cmd_O3.peasoup quick_sort.peasoup hanoi.peasoup merge_sort.peasoup k1.peasoup banner_nop.peasoup banner_O3.peasoup cal_nop.peasoup cal_O3.peasoup cal_O3_concolic.peasoup
 
 ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off"
 
