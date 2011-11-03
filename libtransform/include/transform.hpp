@@ -24,7 +24,10 @@ class Transform {
 		Transform(VariantID_t *, VariantIR_t *, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions);
 
 	protected:
+
 		void addInstruction(Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target);
+	    Instruction_t* carefullyInsertBefore(Instruction_t* &p_target, Instruction_t* &p_new);
+
 		void addPushRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addPopRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addPusha(Instruction_t *p_instr, Instruction_t *p_fallThrough);

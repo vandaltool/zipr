@@ -140,7 +140,7 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 		// continue: 
 		//     pop eax                      ; restore eax
 		//     pop ecx                      ; restore ecx
-		//     mov [esp+2Ah], ax
+		//     mov [esp+2Ah], ax            ; instrumented instruction
 
 		db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 		Function_t* func = p_instruction->GetFunction();
@@ -157,49 +157,59 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 
 		// start instrumentation
 		addPushRegister(push_ecx_i, Register::ECX, push_eax_i);
+		cerr << "push_ecx: " << push_ecx_i->getDisassembly() << endl;
+
+		// insert start of instrumentation before the instrument instruction
+		Instruction_t* instrumentedInstr = carefullyInsertBefore(p_instruction, push_ecx_i);
+		push_ecx_i->SetFallthrough(push_eax_i);
+
 		addPushRegister(push_eax_i, Register::EAX, movzx_i);
+		cerr << "push_eax: " << push_eax_i->getDisassembly() << endl;
 
 		// movzx ecx, word [esp + 2]    ; copy upper 16 bits into ecx (zero-extend)
-		dataBits.resize(7);
-		dataBits[0] = 0x67;
-		dataBits[1] = 0x66; 
-		dataBits[2] = 0x0f;
-		dataBits[3] = 0xb7;
-		dataBits[4] = 0x4c; 
-		dataBits[5] = 0x24;
-		dataBits[6] = 0x02;
+		dataBits.resize(5);
+		dataBits[0] = 0x0f;
+		dataBits[1] = 0xb7;
+		dataBits[2] = 0x4c; 
+		dataBits[3] = 0x24;
+		dataBits[4] = 0x02;
 		addInstruction(movzx_i, dataBits, jecxz_i, NULL);
+		cerr << "movzx ecx, word [esp + 2]: " << movzx_i->getDisassembly() << endl;
 
 		//     jecxz continue               ; all 0's, all good
-		dataBits.resize(3);
-		dataBits[0] = 0x67;
-		dataBits[1] = 0xe3; 
-		dataBits[2] = 0x00; // value doesn't matter here -- will be filled in later
+		dataBits.resize(2);
+		dataBits[0] = 0xe3; 
+		dataBits[1] = 0x00; // value doesn't matter here -- will be filled in later
 		addInstruction(jecxz_i, dataBits, not_ecx_i, pop_eax_i);
+		cerr << "jecxz: " << jecxz_i->getDisassembly() << endl;
 
 		//     not ecx                      ; flip all bits (all 1's bcomes all 0's)
-		dataBits.resize(3);
-		dataBits[0] = 0x66;
-		dataBits[1] = 0xf7; 
-		dataBits[2] = 0xd1; 
+		dataBits.resize(2);
+		dataBits[0] = 0xf7; 
+		dataBits[1] = 0xd1; 
 		addInstruction(not_ecx_i, dataBits, jecxz2_i, NULL);
+		cerr << "not ecx: " << not_ecx_i->getDisassembly() << endl;
 
 		//     jecxz continue               ; all 0's, all good
-		dataBits.resize(3);
-		dataBits[0] = 0x67;
-		dataBits[1] = 0xe3; 
-		dataBits[2] = 0x00; // value doesn't matter here -- will be filled in later
+		dataBits.resize(2);
+		dataBits[0] = 0xe3; 
+		dataBits[1] = 0x00; // value doesn't matter here -- will be filled in later
 		addInstruction(jecxz2_i, dataBits, nop_i, pop_eax_i);
+		cerr << "jecxz2: " << jecxz2_i->getDisassembly() << endl;
 
 		//     nop
 		addNop(nop_i, pop_eax_i);
-		addCallbackHandler(string(TRUNCATION_DETECTOR), p_instruction, nop_i, pop_eax_i);
+		addCallbackHandler(string(TRUNCATION_DETECTOR), instrumentedInstr, nop_i, pop_eax_i);
+		cerr << "nop: " << nop_i->getDisassembly() << endl;
 
 		//     pop eax                      ; restore eax
 		addPopRegister(pop_eax_i, Register::EAX, pop_ecx_i);
+		cerr << "pop eax: " << pop_eax_i->getDisassembly() << endl;
 
 		//     pop ecx                      ; restore ecx
-		addPopRegister(pop_ecx_i, Register::ECX, p_instruction);
+		addPopRegister(pop_ecx_i, Register::ECX, instrumentedInstr);
+		cerr << "pop ecx: " << pop_ecx_i->getDisassembly() << endl;
+
 	}
 	else if (p_annotation.isUnsigned())
 	{

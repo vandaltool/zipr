@@ -24,27 +24,55 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 	m_variantIR->GetInstructions().insert(p_instr);
 }
 
+Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_targetInstr, Instruction_t * &p_newInstr)
+{
+	db_id_t fileID = p_targetInstr->GetAddress()->GetFileID();
+	Function_t* func = p_targetInstr->GetFunction();
+
+	assert(p_targetInstr && p_newInstr && p_targetInstr->GetAddress());
+
+	// duplicate old instruction
+	Instruction_t* dupInstr = allocateNewInstruction(p_targetInstr->GetAddress()->GetFileID(), p_targetInstr->GetFunction());
+	dupInstr->SetDataBits(p_targetInstr->GetDataBits());
+	dupInstr->SetComment(p_targetInstr->GetComment());
+	dupInstr->SetCallback(p_targetInstr->GetCallback());
+	dupInstr->SetFallthrough(p_targetInstr->GetFallthrough());
+	dupInstr->SetTarget(p_targetInstr->GetTarget());
+
+	// replace old with new instruction
+	p_targetInstr->SetDataBits(p_newInstr->GetDataBits());
+	p_targetInstr->SetComment(p_newInstr->GetComment());
+	p_targetInstr->SetCallback(p_newInstr->GetCallback());
+	p_targetInstr->SetFallthrough(dupInstr);
+	p_targetInstr->SetIndirectBranchTargetAddress(dupInstr->GetIndirectBranchTargetAddress());
+
+	// clear indirect branch target address of duplicated old instruction
+	dupInstr->SetIndirectBranchTargetAddress(NULL);
+
+    p_newInstr = p_targetInstr;
+	return dupInstr;
+}
+
 void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
 {
 	string dataBits;
-	dataBits.resize(2);
+	dataBits.resize(1);
 
-	dataBits[0] = 0x66;
 	if (p_reg == Register::EAX)
 	{
-		dataBits[1] = 0x50; 
+		dataBits[0] = 0x50; 
 	} 
 	else if (p_reg == Register::EBX)
 	{
-		dataBits[1] = 0x53; 
+		dataBits[0] = 0x53; 
 	} 
 	else if (p_reg == Register::ECX)
 	{
-		dataBits[1] = 0x51; 
+		dataBits[0] = 0x51; 
 	}
 	else if (p_reg == Register::EDX)
 	{
-		dataBits[1] = 0x52; 
+		dataBits[0] = 0x52; 
 	}
 	else
 	{
@@ -57,24 +85,23 @@ void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p
 void Transform::addPopRegister(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
 {
 	string dataBits;
-	dataBits.resize(2);
+	dataBits.resize(1);
 
-	dataBits[0] = 0x66;
 	if (p_reg == Register::EAX)
 	{
-		dataBits[1] = 0x58; 
+		dataBits[0] = 0x58; 
 	} 
 	else if (p_reg == Register::EBX)
 	{
-		dataBits[1] = 0x5b; 
+		dataBits[0] = 0x5b; 
 	} 
 	else if (p_reg == Register::ECX)
 	{
-		dataBits[1] = 0x59; 
+		dataBits[0] = 0x59; 
 	}
 	else if (p_reg == Register::EDX)
 	{
-		dataBits[1] = 0x5a; 
+		dataBits[0] = 0x5a; 
 	}
 	else
 	{
@@ -214,9 +241,11 @@ cerr << "void Transform::addCallbackHandler(): enter: " << p_instruction->GetCom
 
 	// link callback handler sequence to instrumented instruction
 	p_instruction->SetFallthrough(pusha_i);
+	p_instruction->SetComment(p_instruction->GetComment() + " -- Link to callback handler sequence");
 
 	// pusha   
 	addPusha(pusha_i, pushf_i);
+	pusha_i->SetComment(pusha_i->GetComment() + " -- start of callback handler sequence");
 
 	// pushf   
 	addPushf(pushf_i, pusharg_i);
