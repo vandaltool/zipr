@@ -41,9 +41,14 @@ int IntegerTransform::execute()
 				VirtualOffset vo(irdb_vo);
 
 				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
-				if (!annotation.isValid()) continue;
-
-				if (annotation.isOverflow())
+				if (!annotation.isValid()) 
+				{
+					// even if no annotation but is a multiply, we instrument it
+					if (isMultiplyInstruction32(insn))
+						handleOverflowCheck(insn, annotation);
+					continue;
+				}
+				else if (annotation.isOverflow())
 				{
 					cerr << "integertransform: overflow annotation: " << annotation.toString();
 					handleOverflowCheck(insn, annotation);
