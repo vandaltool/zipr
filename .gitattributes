@@ -98,6 +98,7 @@ dry_run_examples/TC_C_121_v922/io-specifications/io-TC_C_121_v922-fileName-bad-f
 dry_run_examples/TC_C_121_v922/io-specifications/io-TC_C_121_v922-fileName-c.xml -text
 dry_run_examples/TC_C_121_v922/metaData.xml -text
 dry_run_examples/TC_C_121_v922/src/Makefile -text
+dry_run_examples/TC_C_121_v922/src/input.txt -text
 dry_run_examples/TC_C_121_v922/src/solitaire.c -text
 dry_run_examples/TC_C_121_v922/testData/keya_good -text
 dry_run_examples/TC_C_121_v922/testData/keyb_good -text
