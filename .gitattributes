@@ -122,8 +122,12 @@ dry_run_examples/TC_C_170_v905/io-specifications/io-TC_C_170_v905_G3.xml -text
 dry_run_examples/TC_C_170_v905/io-specifications/io-TC_C_170_v905_G4.xml -text
 dry_run_examples/TC_C_170_v905/metaData.xml -text
 dry_run_examples/TC_C_170_v905/src/Makefile -text
+dry_run_examples/TC_C_170_v905/src/barney.txt -text
+dry_run_examples/TC_C_170_v905/src/betty.txt -text
+dry_run_examples/TC_C_170_v905/src/fred.txt -text
 dry_run_examples/TC_C_170_v905/src/key -text
 dry_run_examples/TC_C_170_v905/src/solitaire.c -text
+dry_run_examples/TC_C_170_v905/src/wilma.txt -text
 dry_run_examples/TC_C_170_v905/testData/key -text
 dry_run_examples/TC_C_191_v304/README -text
 dry_run_examples/TC_C_191_v304/Release/makefile -text
