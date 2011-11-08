@@ -8,6 +8,7 @@ Set dates to the following:
 1) Bad
 
 5/2/2010 5/6/2010
+io-specifications directory indicates that the expected output/result for the above input is infinite looping.  However, infinite looping does not result for me.  An index variable, i, wraps around due to a loop with an improper check, which causes an out of bounds array access, which then leads to a segmentation fault due to dereferencing a bogus pointer. 
 
 2) Bad
 
