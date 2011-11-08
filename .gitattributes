@@ -200,6 +200,15 @@ dry_run_examples/TC_C_209_v317/io-specifications/io-TC_C_209_good5.xml -text
 dry_run_examples/TC_C_209_v317/metaData.xml -text
 dry_run_examples/TC_C_209_v317/src/Makefile -text
 dry_run_examples/TC_C_209_v317/src/business.c -text
+dry_run_examples/TC_C_209_v317/src/testData/calculator.xlsx -text
+dry_run_examples/TC_C_209_v317/src/testData/holiday.2011 -text
+dry_run_examples/TC_C_209_v317/src/testData/holiday.2012 -text
+dry_run_examples/TC_C_209_v317/src/testData/input1.txt -text
+dry_run_examples/TC_C_209_v317/src/testData/input2.txt -text
+dry_run_examples/TC_C_209_v317/src/testData/input3.txt -text
+dry_run_examples/TC_C_209_v317/src/testData/input4.txt -text
+dry_run_examples/TC_C_209_v317/src/testData/input5.txt -text
+dry_run_examples/TC_C_209_v317/src/testData/inputb.txt -text
 dry_run_examples/TC_C_209_v317/testData/calculator.xlsx -text
 dry_run_examples/TC_C_209_v317/testData/holiday.2011 -text
 dry_run_examples/TC_C_209_v317/testData/holiday.2012 -text
