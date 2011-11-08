@@ -35,7 +35,7 @@ medsannot:
 	ar -r $(LIB) $(OBJS) 
 
 clean:
-	rm -f *.o core
+	rm -f *.o core *.a
 
 stackref_hash.o gen_hash.o: *.h stackref_hash.c gen_hash.c
 	$(CC) $(CFLAGS) $(INCLUDE) -fomit-frame-pointer -c $*.c
