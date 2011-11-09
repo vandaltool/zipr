@@ -342,6 +342,7 @@ tests/simple/jack_tests/cal.c -text
 tests/simple/jack_tests/grep.c -text
 tests/simple/jack_tests/k1.c -text
 tests/simple/jack_tests/od.c -text
+tests/simple/sieve.exe -text
 tools/Makefile -text
 tools/cover/Makefile -text
 tools/cover/cover.cpp -text
