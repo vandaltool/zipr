@@ -732,9 +732,7 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
   while (infile.good())
   {
     int address = 0;
-    string tmp;
     
-    infile>>tmp;
     infile>>hex>>address;
 
     visitedInstructions.insert((app_iaddr_t) address);
