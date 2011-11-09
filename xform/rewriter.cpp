@@ -722,6 +722,7 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
 
   infile.seekg(0,ios::end);
   size_t size = infile.tellg();
+  infile.seekg(ios::beg);
   if( size == 0)
   {
       cerr << "File containing instructions visited is empty is empty\n"<<endl;
