@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "integertransform.hpp"
 
 using namespace libTransform;
@@ -44,7 +45,7 @@ int IntegerTransform::execute()
 				if (!annotation.isValid()) 
 				{
 					// even if no annotation but is a multiply, we instrument it
-					if (isMultiplyInstruction32(insn))
+					if (isMultiplyInstruction(insn))
 						handleOverflowCheck(insn, annotation);
 					continue;
 				}
@@ -66,7 +67,8 @@ int IntegerTransform::execute()
 				}
 				else if (annotation.isSignedness())
 				{
-					cerr << "integertransform: signedness annotation: " << annotation.toString();
+					cerr << "integertransform: signedness annotation: " << annotation.toString() << endl;
+					handleSignedness(insn, annotation);
 				}
 				else
 					cerr << "integertransform: unknown annotation: " << annotation.toString();
@@ -80,26 +82,83 @@ int IntegerTransform::execute()
 	return 0;
 }
 
+void IntegerTransform::handleSignedness(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+{
+	if (p_annotation.getBitWidth() == 16 && p_annotation.isSigned())
+	{
+		cerr << "handleSignedness(): calling addSignednessCheck16" << endl;
+		addSignednessCheck16(p_instruction, p_annotation);
+	}
+	else
+		cerr << "handleSignedness(): case not yet handled" << endl;
+}
+
+//                                                                <save flags>
+//                                                                TEST ax, ax
+//                                                                jns L1
+//                                                                invoke conversion handler
+//                                                        L1:     <restore flags>
+//
+// 8048576      5 INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov     [esp+28h], ax
+
+void IntegerTransform::addSignednessCheck16(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+{
+	// sanity checks
+    assert(getVariantIR() && p_instruction);
+	assert (p_annotation.isValid() && Register::is16bit(p_annotation.getRegister()));
+
+    db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+    Function_t* func = p_instruction->GetFunction();
+
+	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
+	Instruction_t* test_i = allocateNewInstruction(fileID, func);
+	Instruction_t* jns_i = allocateNewInstruction(fileID, func);
+	Instruction_t* nop_i = allocateNewInstruction(fileID, func);
+	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
+
+	addPushf(pushf_i, test_i);
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
+	pushf_i->SetFallthrough(test_i); // do I need this here again b/c carefullyInsertBefore breaks the link?
+	addTestRegister(test_i, p_annotation.getRegister(), jns_i);
+	addJns(jns_i, nop_i, popf_i);
+	addNop(nop_i, popf_i);
+	addCallbackHandler(string(SIGNEDNESS_DETECTOR_16), originalInstrumentInstr, nop_i, popf_i);
+	addPopf(popf_i, originalInstrumentInstr);
+}
+
 void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
 {
-	if (isMultiplyInstruction32(p_instruction))
+	if (isMultiplyInstruction(p_instruction))
 	{
-		addOverflowCheck(p_instruction, p_annotation);
+		addOverflowCheck32(p_instruction, p_annotation);
 	}
-	else if (p_annotation.getBitWidth() == 32)
+	else if (p_annotation.isUnderflow() || p_annotation.isOverflow())
 	{
-		if (p_annotation.isUnderflow() || p_annotation.isOverflow())
+		addOverflowCheck32(p_instruction, p_annotation);
+	/*	
+		if (p_annotation.getBitWidth() == 16)
+		{
+			if (p_annotation.isSigned())
+			{
+				if (isAddSubNonEspInstruction(p_instruction))
+				{
+					addAddSubSignedOverflowCheck16(p_instruction, p_annotation);
+				}
+			}
+		}
+		else if (p_annotation.getBitWidth() == 32)
 		{
 			if (p_annotation.isSigned() || p_annotation.isUnsigned())
 			{
-				addOverflowCheck(p_instruction, p_annotation);
+				addOverflowCheck32(p_instruction, p_annotation);
 			}
 			else
 			{
-			// call anyways, just assume it's signed
-				addOverflowCheck(p_instruction, p_annotation);
+				// call anyways, just assume it's signed
+				addOverflowCheck32(p_instruction, p_annotation);
 			}
 		}
+		*/
 	}
 }
 
@@ -226,9 +285,51 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 	}
 }
 
+// 8048565      6 INSTR CHECK OVERFLOW SIGNED 16  [ESP]+38 ZZ add     word ptr [esp+26h], 1
+// 804856b      6 INSTR CHECK OVERFLOW UNSIGNED 16  [ESP]+36 ZZ add     word ptr [esp+24h], 1
+//
+// 80483bb      4 INSTR CHECK OVERFLOW UNKNOWNSIGN 16  AX ZZ add     ax, 7FBCh
+// 80483d5      3 INSTR CHECK UNDERFLOW SIGNED 16  CX ZZ sub     cx, ax
+//
+// for registers:
+//          <save flags>
+//          TEST <r16>, <r16>
+//          jns L1
+//          invoke overflow16_handler
+//          L1:     <restore flags>
+//
+
+
+void IntegerTransform::addAddSubSignedOverflowCheck16(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+{
+	// sanity checks
+    assert(getVariantIR() && p_instruction);
+	assert (p_annotation.isValid() && Register::is16bit(p_annotation.getRegister()));
+
+	string detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
+
+    db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+    Function_t* func = p_instruction->GetFunction();
+
+	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
+	Instruction_t* test_i = allocateNewInstruction(fileID, func);
+	Instruction_t* jns_i = allocateNewInstruction(fileID, func);
+	Instruction_t* nop_i = allocateNewInstruction(fileID, func);
+	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
+
+	addPushf(pushf_i, test_i);
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
+	pushf_i->SetFallthrough(test_i); // do I need this here again b/c carefullyInsertBefore breaks the link?
+	addTestRegister(test_i, p_annotation.getRegister(), jns_i);
+	addJns(jns_i, nop_i, popf_i);
+	addNop(nop_i, popf_i);
+	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i);
+	addPopf(popf_i, originalInstrumentInstr);
+}
+
 //
 //      <instruction to instrument>
-//      jno <originalFallthroughInstruction> | jnc <originalFallthroughInstruction>
+//      jno <originalFallthroughInstruction> 
 //      pusha
 //      pushf
 //      push_arg <address original instruction>
@@ -242,9 +343,9 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 //            imul, mul -- always check using jno
 //            add, sub  -- use signedness information annotation to emit either jno, jnc
 //
-void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+void IntegerTransform::addOverflowCheck32(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
 {
-cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->GetComment() << endl;
+cerr << "void IntegerTransform::addOverflowCheck32(): enter: " << p_instruction->GetComment() << endl;
 	assert(getVariantIR() && p_instruction);
 	
 	string detector(INTEGER_OVERFLOW_DETECTOR);
@@ -319,7 +420,7 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 
 	// jncond 
 	dataBits.resize(2);
-	if (isMultiplyInstruction32(p_instruction))
+	if (isMultiplyInstruction(p_instruction))
 	{
 		dataBits[0] = 0x71; // jno
 		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
@@ -331,7 +432,10 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 		dataBits[0] = 0x71; // jno
 		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
 
-		detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+		if (p_annotation.getBitWidth() == 32)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+		else if (p_annotation.getBitWidth() == 16)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
 	cerr << "integertransform: ADD/SUB OVERFLOW SIGNED 32" << endl;
 	}
 	else if (p_annotation.isUnsigned())
@@ -339,7 +443,10 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 		dataBits[0] = 0x73; // jnc
 		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
 
-		detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_32);
+		if (p_annotation.getBitWidth() == 32)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_32);
+		else if (p_annotation.getBitWidth() == 16)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_16);
 	cerr << "integertransform: ADD/SUB OVERFLOW UNSIGNED 32" << endl;
 	}
 	else
@@ -347,7 +454,10 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 		dataBits[0] = 0x71; // jno
 		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
 
-		detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+		if (p_annotation.getBitWidth() == 32)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+		else if (p_annotation.getBitWidth() == 16)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
 	cerr << "integertransform: ADD/SUB OVERFLOW UNKONWN 32: assume signed for now" << endl;
 	}
 
@@ -439,6 +549,6 @@ cerr << "void IntegerTransform::addOverflowCheck(): enter: " << p_instruction->G
 	getVariantIR()->GetInstructions().insert(poparg_i);
 	getVariantIR()->GetInstructions().insert(popa_i);
 #endif
-cerr << "void IntegerTransform::addOverflowCheck(): exit" << endl;
+cerr << "void IntegerTransform::addOverflowCheck32(): exit" << endl;
 }
 

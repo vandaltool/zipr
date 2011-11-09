@@ -20,6 +20,8 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 	p_instr->SetFallthrough(p_fallThrough); 
 	p_instr->SetTarget(p_target); 
 
+cerr << "Transform::addInstruction: " << p_instr->GetComment() << endl;
+
 	m_variantIR->GetAddresses().insert(p_instr->GetAddress());
 	m_variantIR->GetInstructions().insert(p_instr);
 }
@@ -116,9 +118,6 @@ void Transform::addPusha(Instruction_t *p_pusha_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x60;
-	p_pusha_i->SetDataBits(dataBits);
-	p_pusha_i->SetComment(p_pusha_i->getDisassembly());
-	p_pusha_i->SetFallthrough(p_fallThrough); 
 	return addInstruction(p_pusha_i, dataBits, p_fallThrough, NULL);
 }
 
@@ -127,9 +126,6 @@ void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x9c;
-	p_pushf_i->SetDataBits(dataBits);
-	p_pushf_i->SetComment(p_pushf_i->getDisassembly());
-	p_pushf_i->SetFallthrough(p_fallThrough); 
 	return addInstruction(p_pushf_i, dataBits, p_fallThrough, NULL);
 }
 
@@ -138,9 +134,6 @@ void Transform::addPopf(Instruction_t *p_popf_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x9d;
-	p_popf_i->SetDataBits(dataBits);
-	p_popf_i->SetComment(p_popf_i->getDisassembly());
-	p_popf_i->SetFallthrough(p_fallThrough); 
 	return addInstruction(p_popf_i, dataBits, p_fallThrough, NULL);
 }
 
@@ -149,9 +142,6 @@ void Transform::addPopa(Instruction_t *p_popa_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x61;
-	p_popa_i->SetDataBits(dataBits);
-	p_popa_i->SetComment(p_popa_i->getDisassembly());
-	p_popa_i->SetFallthrough(p_fallThrough); 
 	return addInstruction(p_popa_i, dataBits, p_fallThrough, NULL);
 }
 
@@ -160,9 +150,6 @@ void Transform::addNop(Instruction_t *p_nop_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x90;
-	p_nop_i->SetDataBits(dataBits);
-	p_nop_i->SetComment(p_nop_i->getDisassembly());
-	p_nop_i->SetFallthrough(p_fallThrough); 
 	return addInstruction(p_nop_i, dataBits, p_fallThrough, NULL);
 }
 
@@ -290,7 +277,7 @@ cerr << "void Transform::addCallbackHandler(): exit" << endl;
 //
 // Returns true iff instruction is MUL (according to BeaEngine)
 //
-bool Transform::isMultiplyInstruction32(Instruction_t *p_instruction)
+bool Transform::isMultiplyInstruction(Instruction_t *p_instruction)
 {
 	if (!p_instruction)
 		return false;
@@ -306,7 +293,7 @@ bool Transform::isMultiplyInstruction32(Instruction_t *p_instruction)
 //
 // Returns true iff instruction is ADD or SUB (according to BeaEngine)
 //
-bool Transform::isAddSubNonEspInstruction32(Instruction_t *p_instruction)
+bool Transform::isAddSubNonEspInstruction(Instruction_t *p_instruction)
 {
 	if (!p_instruction)
 		return false;
@@ -332,4 +319,130 @@ bool Transform::isAddSubNonEspInstruction32(Instruction_t *p_instruction)
 	}
 
 	return false;
+}
+
+void Transform::addTestRegister8(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
+{
+	string dataBits;
+	dataBits.resize(2);
+	if (p_reg == Register::AL)
+	{
+		dataBits[0] = 0x84;
+		dataBits[1] = 0xc0;
+	}
+	else if (p_reg == Register::BL)
+	{
+		dataBits[0] = 0x84;
+		dataBits[1] = 0xdb;
+	}
+	else if (p_reg == Register::CL)
+	{
+		dataBits[0] = 0x84;
+		dataBits[1] = 0xc9;
+	}
+	else if (p_reg == Register::DL)
+	{
+		dataBits[0] = 0x84;
+		dataBits[1] = 0xd2;
+	}
+	else
+	{
+		cerr << "Transform::addTestRegister8(): unhandled register" << endl;
+		return;
+	}
+
+	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+}
+
+void Transform::addTestRegister16(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
+{
+	string dataBits;
+	dataBits.resize(3);
+	if (p_reg == Register::AX)
+	{
+		dataBits[0] = 0x66;
+		dataBits[1] = 0x85;
+		dataBits[2] = 0xc0;
+	}
+	else if (p_reg == Register::BX)
+	{
+		dataBits[0] = 0x66;
+		dataBits[1] = 0x85;
+		dataBits[2] = 0xdb;
+	}
+	else if (p_reg == Register::CX)
+	{
+		dataBits[0] = 0x66;
+		dataBits[1] = 0x85;
+		dataBits[2] = 0xc9;
+	}
+	else if (p_reg == Register::DX)
+	{
+		dataBits[0] = 0x66;
+		dataBits[1] = 0x85;
+		dataBits[2] = 0xd2;
+	}
+	else
+	{
+		cerr << "Transform::addTestRegister16(): unhandled register" << endl;
+		return;
+	}
+
+	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+}
+
+// same as 16 bit version? hmm, weird
+void Transform::addTestRegister32(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
+{
+	string dataBits;
+	dataBits.resize(2);
+	if (p_reg == Register::EAX)
+	{
+		dataBits[0] = 0x85;
+		dataBits[1] = 0xc0;
+	}
+	else if (p_reg == Register::EBX)
+	{
+		dataBits[0] = 0x85;
+		dataBits[1] = 0xdb;
+	}
+	else if (p_reg == Register::ECX)
+	{
+		dataBits[0] = 0x85;
+		dataBits[1] = 0xc9;
+	}
+	else if (p_reg == Register::EDX)
+	{
+		dataBits[0] = 0x85;
+		dataBits[1] = 0xd2;
+	}
+	else
+	{
+		cerr << "Transform::addTestRegister32(): unhandled register" << endl;
+		return;
+	}
+
+	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+}
+
+
+void Transform::addTestRegister(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
+{
+	if (Register::is8bit(p_reg))
+		addTestRegister8(p_instr, p_reg, p_fallThrough);
+	else if (Register::is16bit(p_reg))
+		addTestRegister16(p_instr, p_reg, p_fallThrough);
+	else if (Register::is32bit(p_reg))
+		addTestRegister32(p_instr, p_reg, p_fallThrough);
+}
+
+
+// jump not signed
+void Transform::addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x79;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+	return addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
