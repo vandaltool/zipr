@@ -195,7 +195,7 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 		//     push eax                     ; copy value of eax (since ax is used in instruction)
 		//     movzx ecx, word [esp + 2]    ; copy upper 16 bits into ecx (zero-extend)
 		//     jecxz continue               ; all 0's, all good
-		//     not ecx                      ; flip all bits (all 1's bcomes all 0's)
+		//     not ecx                      ; flip all bits (all 1's becomes all 0's)
 		//     jecxz continue               ; originally all 1's, all good
 		//
 		//     <invoke handler here>
@@ -277,10 +277,12 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 	}
 	else if (p_annotation.isUnsigned())
 	{
+		cerr << "TRUNCATION: 32->16: need to handle unsigned case" << endl;
 		// need to check upper 16 bits are all 0's
 	}
 	else
 	{
+		cerr << "TRUNCATION: error: unknown sign type in annotation" << endl;
 		// error
 	}
 }
