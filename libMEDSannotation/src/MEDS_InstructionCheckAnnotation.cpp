@@ -97,7 +97,14 @@ void MEDS_InstructionCheckAnnotation::parse()
 	// get bit width information for overflow & underflow
 	if (m_isOverflow || m_isUnderflow)
 	{
-		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d", &m_bitWidth);
+	// 8048565      6 INSTR CHECK OVERFLOW SIGNED 16  [ESP]+38 ZZ add     word ptr [esp+26h], 1
+	// 804856b      6 INSTR CHECK OVERFLOW UNSIGNED 16  [ESP]+36 ZZ add     word ptr [esp+24h], 1
+	// 80483bb      4 INSTR CHECK OVERFLOW UNKNOWNSIGN 16  AX ZZ add     ax, 7FBCh
+	// 80483d5      3 INSTR CHECK UNDERFLOW SIGNED 16  CX ZZ sub     cx, ax
+
+		char buf[1024] = "";
+		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
+		m_register = Register::getRegister(string(buf));
 	}
 	else if (m_isTruncation) // get bid width from/to information for truncation
 	{
@@ -105,7 +112,16 @@ void MEDS_InstructionCheckAnnotation::parse()
 		// [ADDR] [SIZE] INSTR CHECK TRUNCATION UNKNOWNSIGN 32 EAX 16 AX ZZ mov     [esp+2Ah], ax
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s %d", &m_truncationFromWidth, buf, &m_truncationToWidth);
 		m_register = Register::getRegister(string(buf));
+	} 
+	else if (m_isSignedness)
+	{
+		char buf[1024] = "";
+		// [ADDR] [SIZE] INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov     [esp+28h], ax
+		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
+		m_register = Register::getRegister(string(buf));
+	cerr << "SIGNEDNESS DETECTED: bitwidth: " << m_bitWidth << "  reg:" << string(buf) << endl;
 	}
+
 
 	m_isValid = true;
 	

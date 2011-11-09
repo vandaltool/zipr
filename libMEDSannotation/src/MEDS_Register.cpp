@@ -35,3 +35,17 @@ Register::RegisterName Register::getRegister(std::string p_reg)
 		return UNKNOWN;
 }
 
+bool Register::is8bit(Register::RegisterName reg)
+{
+	return reg == AL || reg == BL || reg == CL || reg == DL;
+}
+
+bool Register::is16bit(Register::RegisterName reg)
+{
+	return reg == AX || reg == BX || reg == CX || reg == DX;
+}
+
+bool Register::is32bit(Register::RegisterName reg)
+{
+	return reg == EAX || reg == EBX || reg == ECX || reg == EDX;
+}
