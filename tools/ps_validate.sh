@@ -48,17 +48,46 @@ do
   cd $input_number
 
   # make sure the output files exist
-  touch stdout.$input
-  touch stderr.$input
+ touch stdout.$input
+ touch stderr.$input
+
+ #run replayer from top level to keep the sandbox layout the same as produced by the concolic test engine
+ cd ../..
+
+  rm -rf grace_replay
+  rm -f stdout.* stderr.*
 
   echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT $GRACE_HOME/concolic/bin/replayer --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i"
   STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i || exit 2
 
+  mv stderr.$input replay/$input_number/stderr.$input
+  mv stdout.$input replay/$input_number/stdout.$input
+
+
+  if [ -d "grace_replay" ];then
+      echo "ps_validate.sh: Discovered output files, validating contents"
+      cp -r grace_replay/ replay/$input_number/
+      cp $BASELINE_OUTPUT_DIR/run_$input_number/* replay/$input_number/grace_replay/replay_0001/
+      diff -r $BASELINE_OUTPUT_DIR/run_$input_number/ replay/$input_number/grace_replay/replay_0001 >diff_tmp
+      if [ ! $? -eq 0 ]; then
+	  echo "ps_validate.sh: divergence detected on program produced output files"
+	  echo "Diff output:"
+	  cat diff_tmp
+	  rm diff_tmp
+	  exit 1
+      fi
+      rm diff_tmp
+  fi
+
+  cd replay/$input_number
+
   BASELINE_OUTPUT_STDOUT=$BASELINE_OUTPUT_DIR/run_$input_number/stdout
   BASELINE_OUTPUT_STDERR=$BASELINE_OUTPUT_DIR/run_$input_number/stderr
 
+
   echo "$BASELINE_OUTPUT_STDOUT"
   echo "$BASELINE_OUTPUT_STDERR"
+
   
   if [ -f $BASELINE_OUTPUT_STDOUT ];
   then
@@ -101,11 +130,11 @@ do
 #  rm stdout.$input 2>/dev/null
 #  rm stderr.$input 2>/dev/null
 
-  cd -
+  cd ..
 
 done
 
-cd -
+cd ..
 
 echo "ps_validate.sh: All inputs validated"
 exit 0
