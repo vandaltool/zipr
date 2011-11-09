@@ -9,7 +9,8 @@
 #
 
 # Make default 5 minutes
-PN_TIMEOUT_VALUE=300
+#PN_TIMEOUT_VALUE=300
+PN_TIMEOUT_VALUE=9999999
 
 check_step_option()
 {
@@ -399,7 +400,7 @@ perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 #
 # Run concolic engine
 #
-perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600 -u 60 -i 25 -l tracer,trace,inputs  > do_concolic.out 2>&1
+perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600  -u 60 -i 25 -l trace,inputs  > do_concolic.out 2>&1
 
 ##
 ## Populate IR Database
