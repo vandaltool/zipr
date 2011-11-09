@@ -58,11 +58,28 @@ do
   rm -f stdout.* stderr.*
 
   echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT $GRACE_HOME/concolic/bin/replayer --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i"
-  STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --engine=sdt $STRATAFIED_BINARY $i || exit 2
+  STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i || exit 2
 
   mv stderr.$input replay/$input_number/stderr.$input
   mv stdout.$input replay/$input_number/stdout.$input
+  mv exit_status replay/$input_number/exit_status
 
+#first verify the exit status 
+  abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
+
+  echo "Exit status baseline file: $INPUT_DIR/exit_code.run_$abridged_number.log
+  diff replay/$input_number/exit_status $INPUT_DIR/exit_code.run_$abridged_number.log"
+
+  if [ ! $? -eq 0 ]; then
+      echo "ps_validate.sh: divergence detected on program exit status"
+      echo "expected: "
+      cat $INPUT_DIR/exit_code.run_$abridged_number.log
+      echo "observed: "
+      cat replay/$input_number/exit_status
+      exit 1
+  fi
+
+  #next check program produced output files, if any exist
 
   if [ -d "grace_replay" ];then
       echo "ps_validate.sh: Discovered output files, validating contents"
