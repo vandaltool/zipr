@@ -374,3 +374,66 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 	getVariantIR()->GetInstructions().insert(jncond_i);
 }
 
+#ifdef INPROGRESS
+void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+{
+	assert(getVariantIR() && p_instruction);
+	assort(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
+
+	string detector; 
+	string dataBits;
+
+	cerr << "integertransform: addTruncationCheck(): stub: " << p_annotation.toString() << endl;
+
+	// Truncation unsigned
+	// 80484ed      3 INSTR CHECK TRUNCATION UNSIGNED 32 EAX 8 AL ZZ mov     [ebp+var_4], al
+	if (p.annotation.isUnsigned() && p_annotation.getTruncationFromWidth() == 32)
+	{
+		// for 8 bit on AL
+		//           <save flags>
+		//           test eax, 0xFFFFFF00 (for 8 bit) # 0xFFFF0000 (for 16 bit)
+		//           jz <originalInstruction>
+		//           (invoke truncation handler) nop
+		// continue:
+		//           <restore flags>
+		//           <originalInstruction>
+
+		db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+		Function_t* func = p_instruction->GetFunction();
+
+		Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
+		Instruction_t* test_i = allocateNewInstruction(fileID, func);
+		Instruction_t* jz_i = allocateNewInstruction(fileID, func);
+		Instruction_t* nop_i = allocateNewInstruction(fileID, func);
+		Instruction_t* popf_i = allocateNewInstruction(fileID, func);
+
+		addPushf(pushf_i, test_i);
+		Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
+		pushf_i->SetFallthrough(test_i); // do I need this here again b/c carefullyInsertBefore breaks the link?
+
+		string detector;
+		unsigned mask = 0;
+		if (p_annotation.getTruncationToWidth() == 16)
+		{
+			mask = 0xFFFF0000;	
+			detector = string(TRUNCATION_DETECTOR_32_16);
+		}
+		else if (p_annotation.getTruncationToWidth() == 8)
+		{
+			mask = 0xFFFFFF00;	
+			detector = string(TRUNCATION_DETECTOR_32_8);
+		}
+			
+		addTestRegister(test_i, p_annotation.getRegister(), mask, jz_i);
+		addJz(jz_i, nop_i, popf_i);
+		addNop(nop_i, popf_i);
+		addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i);
+		addPopf(popf_i, originalInstrumentInstr);
+	}
+	else
+	{
+		cerr << "TRUNCATION: error: annotation not yet handled: "  << p_annotation.toString() << endl;
+		// error
+	}
+}
+#endif
