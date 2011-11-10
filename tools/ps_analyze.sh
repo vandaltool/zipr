@@ -9,8 +9,8 @@
 #
 
 # Make default 5 minutes
-#PN_TIMEOUT_VALUE=300
-PN_TIMEOUT_VALUE=9999999
+PN_TIMEOUT_VALUE=300
+#PN_TIMEOUT_VALUE=9999999
 
 check_step_option()
 {
