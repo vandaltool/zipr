@@ -149,11 +149,7 @@ void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const M
 
 void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
 {
-	if (p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 16)
-	{
-		addTruncationCheck32to16(p_instruction, p_annotation);
-	}
-	else if (p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8)
+	if (p_annotation.getTruncationFromWidth() == 32 && (p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8))
 	{
 		addTruncationCheck(p_instruction, p_annotation);
 	}
