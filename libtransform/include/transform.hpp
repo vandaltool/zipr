@@ -42,6 +42,7 @@ class Transform {
 
 		void addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
+		void addNot(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 
 		Instruction_t* allocateNewInstruction(db_id_t p_fileID, Function_t* p_func);
 

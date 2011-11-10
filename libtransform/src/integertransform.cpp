@@ -384,56 +384,70 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
 	string detector; 
-	string dataBits;
 
 	// Truncation unsigned
 	// 80484ed      3 INSTR CHECK TRUNCATION UNSIGNED 32 EAX 8 AL ZZ mov     [ebp+var_4], al
-	if (p_annotation.isUnsigned() && p_annotation.getTruncationFromWidth() == 32)
+	// Unsigned:  example: for signed truncation - 8 bit on AL
+	//			it's ok if 24 upper bits are all 1's or all 0's
+	//
+	//           <save flags>
+	//           test eax, 0xFFFFFF00 (for 8 bit) 
+	//           jz <continue>      # upper 24 bits are 0's
+	//
+	//			# to support SIGNED add these 3 lines
+	//           not eax
+	//           test eax, 0xFFFFFF00 (for 8 bit) 
+	//           jz <continue>      # upper 24 bits are 1's
+	//           
+	//           (invoke truncation handler) nop
+	// continue:
+	//           <restore flags>
+	//           <originalInstruction>
+	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+	Function_t* func = p_instruction->GetFunction();
+
+	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
+	Instruction_t* test_i = allocateNewInstruction(fileID, func);
+	Instruction_t* jz_i = allocateNewInstruction(fileID, func);
+	Instruction_t* nop_i = allocateNewInstruction(fileID, func);
+	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
+
+	addPushf(pushf_i, test_i);
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
+	pushf_i->SetFallthrough(test_i); // do I need this here again b/c carefullyInsertBefore breaks the link?
+
+	unsigned mask = 0;
+	if (p_annotation.getTruncationToWidth() == 16)
 	{
-		// for 8 bit on AL
-		//           <save flags>
-		//           test eax, 0xFFFFFF00 (for 8 bit) # 0xFFFF0000 (for 16 bit)
-		//           jz <originalInstruction>
-		//           (invoke truncation handler) nop
-		// continue:
-		//           <restore flags>
-		//           <originalInstruction>
-
-		db_id_t fileID = p_instruction->GetAddress()->GetFileID();
-		Function_t* func = p_instruction->GetFunction();
-
-		Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
-		Instruction_t* test_i = allocateNewInstruction(fileID, func);
-		Instruction_t* jz_i = allocateNewInstruction(fileID, func);
-		Instruction_t* nop_i = allocateNewInstruction(fileID, func);
-		Instruction_t* popf_i = allocateNewInstruction(fileID, func);
-
-		addPushf(pushf_i, test_i);
-		Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-		pushf_i->SetFallthrough(test_i); // do I need this here again b/c carefullyInsertBefore breaks the link?
-
-		string detector;
-		unsigned mask = 0;
-		if (p_annotation.getTruncationToWidth() == 16)
-		{
-			mask = 0xFFFF0000;	
-			detector = string(TRUNCATION_DETECTOR_32_16);
-		}
-		else if (p_annotation.getTruncationToWidth() == 8)
-		{
-			mask = 0xFFFFFF00;	
-			detector = string(TRUNCATION_DETECTOR_32_8);
-		}
+		mask = 0xFFFF0000;	
+		detector = string(TRUNCATION_DETECTOR_32_16);
+	}
+	else if (p_annotation.getTruncationToWidth() == 8)
+	{
+		mask = 0xFFFFFF00;	
+		detector = string(TRUNCATION_DETECTOR_32_8);
+	}
 			
-		addTestRegisterMask(test_i, p_annotation.getRegister(), mask, jz_i);
-		addJz(jz_i, nop_i, popf_i);
-		addNop(nop_i, popf_i);
-		addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i);
-		addPopf(popf_i, originalInstrumentInstr);
+	addTestRegisterMask(test_i, p_annotation.getRegister(), mask, jz_i);
+	if (p_annotation.isSigned() || p_annotation.isUnsigned())
+	{
+		//   not eax
+		//   test eax, 0xFFFFFF00 (for 8 bit) 
+		//   jz <continue>      # upper 24 bits are 1's
+		Instruction_t* su_not_i = allocateNewInstruction(fileID, func);
+		Instruction_t* su_test_i = allocateNewInstruction(fileID, func);
+		Instruction_t* su_jz_i = allocateNewInstruction(fileID, func);
+
+		addJz(jz_i, su_not_i, popf_i);
+		addNot(su_not_i, p_annotation.getRegister(), su_test_i);
+		addTestRegisterMask(su_test_i, p_annotation.getRegister(), mask, su_jz_i);
+
+		addJz(su_jz_i, nop_i, popf_i);
 	}
 	else
-	{
-		cerr << "TRUNCATION: error: annotation not yet handled: "  << p_annotation.toString() << endl;
-		// error
-	}
+		addJz(jz_i, nop_i, popf_i);
+
+	addNop(nop_i, popf_i);
+	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i);
+	addPopf(popf_i, originalInstrumentInstr);
 }

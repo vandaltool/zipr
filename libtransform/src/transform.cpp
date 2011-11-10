@@ -499,3 +499,86 @@ void Transform::addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Inst
 	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
 	return addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
+
+// not <reg> -- negate register
+void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
+{
+	string dataBits;
+	dataBits.resize(2); 
+
+	if (p_reg == Register::EAX)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[0] = 0xd0;
+	}
+	else if (p_reg == Register::EBX)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xd3;
+	}
+	else if (p_reg == Register::ECX)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xd1;
+	}
+	else if (p_reg == Register::EDX)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xd2;
+	}
+	else if (p_reg == Register::AX)
+	{
+		dataBits.resize(3); 
+		dataBits[0] = 0x66;
+		dataBits[1] = 0xf7;
+		dataBits[2] = 0xd0;
+	}
+	else if (p_reg == Register::BX)
+	{
+		dataBits.resize(3); 
+		dataBits[0] = 0x66;
+		dataBits[1] = 0xf7;
+		dataBits[2] = 0xd3;
+	}
+	else if (p_reg == Register::CX)
+	{
+		dataBits.resize(3); 
+		dataBits[0] = 0x66;
+		dataBits[1] = 0xf7;
+		dataBits[2] = 0xd1;
+	}
+	else if (p_reg == Register::DX)
+	{
+		dataBits.resize(3); 
+		dataBits[0] = 0x66;
+		dataBits[1] = 0xf7;
+		dataBits[2] = 0xd2;
+	}
+	else if (p_reg == Register::AL)
+	{
+		dataBits[0] = 0xf6;
+		dataBits[1] = 0xd0;
+	}
+	else if (p_reg == Register::BL)
+	{
+		dataBits[0] = 0xf6;
+		dataBits[1] = 0xd3;
+	}
+	else if (p_reg == Register::CL)
+	{
+		dataBits[0] = 0xf6;
+		dataBits[1] = 0xd1;
+	}
+	else if (p_reg == Register::DL)
+	{
+		dataBits[0] = 0xf6;
+		dataBits[1] = 0xd2;
+	}
+	else
+	{
+		cerr << "Transform::addNot(): unhandled register" << endl;
+		return;
+	}
+
+	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+}
