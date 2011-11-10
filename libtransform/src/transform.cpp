@@ -431,13 +431,71 @@ void Transform::addTestRegister(Instruction_t *p_instr, Register::RegisterName p
 		addTestRegister32(p_instr, p_reg, p_fallThrough);
 }
 
+void Transform::addTestRegisterMask(Instruction_t *p_instr, Register::RegisterName p_reg, unsigned p_mask, Instruction_t *p_fallThrough)
+{
+	if (Register::is32bit(p_reg))
+		addTestRegisterMask32(p_instr, p_reg, p_mask, p_fallThrough);
+}
 
-// jump not signed
+void Transform::addTestRegisterMask32(Instruction_t *p_instr, Register::RegisterName p_reg, unsigned p_mask, Instruction_t *p_fallThrough)
+{
+	string dataBits;
+	dataBits.resize(6); // all but EAX take 6 bytes
+	unsigned *tmp;
+
+	if (p_reg == Register::EAX)
+	{
+		dataBits.resize(5);
+		dataBits[0] = 0xa9;
+		tmp = (unsigned *) &dataBits[1];
+		*tmp = p_mask;
+	}
+	else if (p_reg == Register::EBX)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xc3;
+		tmp = (unsigned *) &dataBits[2];
+		*tmp = p_mask;
+	}
+	else if (p_reg == Register::ECX)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xc1;
+		tmp = (unsigned *) &dataBits[2];
+		*tmp = p_mask;
+	}
+	else if (p_reg == Register::EDX)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xc2;
+		tmp = (unsigned *) &dataBits[2];
+		*tmp = p_mask;
+	}
+	else
+	{
+		cerr << "Transform::addTestRegisterMask32(): unhandled register" << endl;
+		return;
+	}
+
+	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+}
+
+// jns - jump not signed
 void Transform::addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
 	string dataBits;
 	dataBits.resize(2);
 	dataBits[0] = 0x79;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+	return addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+}
+
+// jz - jump zero
+void Transform::addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x74;
 	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
 	return addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }

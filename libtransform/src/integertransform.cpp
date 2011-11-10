@@ -153,6 +153,10 @@ void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS
 	{
 		addTruncationCheck32to16(p_instruction, p_annotation);
 	}
+	else if (p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8)
+	{
+		addTruncationCheck(p_instruction, p_annotation);
+	}
 	else
 	{
 		cerr << "integertransform: TRUNCATION annotation not yet handled: " << p_annotation.toString() << endl;
@@ -374,20 +378,17 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 	getVariantIR()->GetInstructions().insert(jncond_i);
 }
 
-#ifdef INPROGRESS
 void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
 {
 	assert(getVariantIR() && p_instruction);
-	assort(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
+	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
 	string detector; 
 	string dataBits;
 
-	cerr << "integertransform: addTruncationCheck(): stub: " << p_annotation.toString() << endl;
-
 	// Truncation unsigned
 	// 80484ed      3 INSTR CHECK TRUNCATION UNSIGNED 32 EAX 8 AL ZZ mov     [ebp+var_4], al
-	if (p.annotation.isUnsigned() && p_annotation.getTruncationFromWidth() == 32)
+	if (p_annotation.isUnsigned() && p_annotation.getTruncationFromWidth() == 32)
 	{
 		// for 8 bit on AL
 		//           <save flags>
@@ -424,7 +425,7 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 			detector = string(TRUNCATION_DETECTOR_32_8);
 		}
 			
-		addTestRegister(test_i, p_annotation.getRegister(), mask, jz_i);
+		addTestRegisterMask(test_i, p_annotation.getRegister(), mask, jz_i);
 		addJz(jz_i, nop_i, popf_i);
 		addNop(nop_i, popf_i);
 		addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i);
@@ -436,4 +437,3 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 		// error
 	}
 }
-#endif

@@ -23,6 +23,7 @@ class IntegerTransform : public Transform
 		void handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
 		void addTruncationCheck32to16(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
 		void addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
+		void addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation);
 };
 
 };
@@ -40,6 +41,8 @@ class IntegerTransform : public Transform
 #define	MUL_OVERFLOW_DETECTOR_16             "mul_overflow_detector_16"
 #define	MUL_OVERFLOW_DETECTOR_8              "mul_overflow_detector_8"
 #define	TRUNCATION_DETECTOR                  "truncation_detector"
+#define	TRUNCATION_DETECTOR_32_16            "truncation_detector_32_16"
+#define	TRUNCATION_DETECTOR_32_8             "truncation_detector_32_8"
 #define	SIGNEDNESS_DETECTOR_32               "signedness_detector_32"
 #define	SIGNEDNESS_DETECTOR_16               "signedness_detector_16"
 #define	SIGNEDNESS_DETECTOR_8                "signedness_detector_8"
