@@ -60,20 +60,6 @@ main(int argc, char **argv)
 		int exitcode = integerTransform.execute();
 		if (exitcode == 0)
 		{
-			cerr << "Do not commit to DB for now" << endl;
-			string aspri_filename("test.int.aspri");
-			ofstream aspriFile;
-			aspriFile.open(aspri_filename.c_str());
-			if(!aspriFile.is_open())
-			{
-				fprintf(stderr, "integertransformdriver: Could not open: %s\n", aspri_filename.c_str());
-				throw;
-			}
-
-			fprintf(stderr, "integertransformdriver: generating aspri file: %s\n", aspri_filename.c_str());
-			virp->GenerateSPRI(aspriFile); 
-			aspriFile.close();
-
 			pqxx_interface.Commit();
 			delete virp;
 			delete pidp;
