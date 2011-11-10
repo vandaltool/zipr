@@ -20,8 +20,6 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 	p_instr->SetFallthrough(p_fallThrough); 
 	p_instr->SetTarget(p_target); 
 
-cerr << "Transform::addInstruction: " << p_instr->GetComment() << endl;
-
 	m_variantIR->GetAddresses().insert(p_instr->GetAddress());
 	m_variantIR->GetInstructions().insert(p_instr);
 }
@@ -205,7 +203,6 @@ virtual_offset_t Transform::getAvailableAddress()
 
 void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumentedInstruction, Instruction_t *p_instruction, Instruction_t *p_fallThrough)
 {
-cerr << "void Transform::addCallbackHandler(): enter: " << p_instruction->GetComment() << endl;
 	assert(getVariantIR() && p_instruction);
 	
 	string dataBits;
@@ -269,8 +266,6 @@ cerr << "void Transform::addCallbackHandler(): enter: " << p_instruction->GetCom
 
 	// popa   
 	addPopa(popa_i, p_fallThrough);
-
-cerr << "void Transform::addCallbackHandler(): exit" << endl;
 }
 
 

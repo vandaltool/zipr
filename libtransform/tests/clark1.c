@@ -38,6 +38,7 @@ int main() {
 
    printf("Input value: %hu Signed copy: %hd\n ", us15, s15copy);
 
+   s15copy = us15;
    ++s15copy;  /* OVERFLOW ERROR */
 
    ++us15copy; /* Check for overflow, but no error */
