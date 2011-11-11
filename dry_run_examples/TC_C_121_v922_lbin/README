@@ -1,0 +1,14 @@
+
+
+"Good inputs" (key 25 or fewer chars):
+
+Release/TC_C_121_v922 ../testData/keya_good < input.txt
+Release/TC_C_121_v922 ../testData/keyb_good < input.txt
+Release/TC_C_121_v922 ../testData/keyc_good < input.txt
+Release/TC_C_121_v922 ../testData/keye_good < input.txt
+
+Bad inputs (key longer than 25):
+
+Release/TC_C_121_v922 ../testData/keyf_bad < input.txt
+
+(Causes a segmentation fault/DOS)
