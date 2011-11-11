@@ -396,6 +396,7 @@ integerbug_examples/C1_Number_Handling/CWE_839/CWE_839_Example_1_bad.c -text
 integerbug_examples/C1_Number_Handling/CWE_839/CWE_839_Example_1_bad.conf -text
 integerbug_examples/C1_Number_Handling/CWE_839/CWE_839_Example_1_bad.ncexe.conf -text
 integerbug_examples/C1_Number_Handling/CWE_839/Makefile -text
+integerbug_examples/smartfuzz/Makefile -text
 integerbug_examples/smartfuzz/simpletest.c -text
 stock_examples/Makefile -text
 stock_examples/apache2.stock -text
