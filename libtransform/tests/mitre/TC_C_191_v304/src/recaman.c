@@ -94,14 +94,13 @@ int main(void)
 	else if (value >= 0) {
 		signed short stuff[100];//STONESOUP:feature-SIGNED_SHORT
 
-printf("debug1");
 		short y = (short)(-(-32700-value))/(short)350;//STONESOUP:CROSSOVER_POINT
-printf("debug2");
 		short x[2]={0, y};
 
 		*(stuff+x[1]) = value;//STONESOUP:TRIGGER_POINT   //STONESOUP:feature-BUFFER_ADDRESS_ARRAY_INDEX
 
-		printf("debug: value: %d %d\n", value, *(stuff+x[1])); // this causes the detection
+// CLARK: if you uncomment the printf below, we will get a successful detection
+//		printf("debug: value: %d %d\n", value, *(stuff+x[1])); // this causes the detection
 
 		printf("%d\n\n", recaman(*(stuff+x[1])));
 	}
