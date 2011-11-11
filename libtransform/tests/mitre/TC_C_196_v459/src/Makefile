@@ -22,5 +22,10 @@ countlines_release.o: $(SRCS)
 countlines_release: countlines_release.o
 	$(SS_CC)  $(COMMON_FLAGS) $(SS_CFLAGS) -std=c99 $< -o $@
 
+
+countlines.peasoup:    countlines_debug
+    $(PEASOUP_HOME)/tools/ps_analyze.sh countlines_debug countlines.peasoup --step ilr=off --step p1transform=off --step concolic=off
+
 clean:
 	rm -f *.o countlines_debug countlines_release
+	rm -fr *peasoup*
