@@ -1,13 +1,14 @@
+//  ./simpletest.exe -2343434
+//  
+
 int main (int argc, char** argv)
 {
-	printf("%x \n", &argv[1]); 
 	int i = atol(argv[1]);
-	printf("%x \n", &i); 
 	unsigned int j = 0;
 
 	if (i < 10)
 	{
-		j = i; 
+		j = i;   // there should be a signedness error here  unsigned <-- signed
 		if ( j > 50) 
 		{
 		 printf("Surprise! \n"); 
