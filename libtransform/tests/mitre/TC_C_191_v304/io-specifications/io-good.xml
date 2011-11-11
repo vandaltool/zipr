@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><io_pair io_pair_category_id="1"><name>good</name><input>000010</input><input_mode_id>2</input_mode_id><output>*************************************&#13;
+*** Recaman's Sequence Generator  ***&#13;
+*************************************&#13;
+&#13;
+Enter a sequence number [ &gt;= 0 ]: 11&#13;
+&#13;</output><output_mode_id>2</output_mode_id><description>Input must go through pipe.</description></io_pair>
