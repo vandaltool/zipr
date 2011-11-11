@@ -1,6 +1,6 @@
 # DO NOT EDIT - This Makefile automatically generated
-include ../../Makefile.options
-include $(wildcard Makefile.options)
+#include ../../Makefile.options
+#include $(wildcard Makefile.options)
 
 all: runall
 
@@ -12,9 +12,9 @@ dumbledore_store_wrap_around_error.ncexe: dumbledore_store_wrap_around_error.c
 	@echo $(CC) $(CFLAGS)  $< -o $@ $(LINKOPT) >dumbledore_store_wrap_around_error.conf
 
 dumbledore_store_wrap_around_error: dumbledore_store_wrap_around_error.ncexe
-	sh $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ 2>&1  | tee dumbledore_store_wrap_around_error.ps_analyze.log
+	sh $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --step ilr=off --step p1transform=off --step concolic=off 2>&1  | tee dumbledore_store_wrap_around_error.ps_analyze.log
 	cp dumbledore_store_wrap_around_error.conf dumbledore_store_wrap_around_error.ncexe.conf
-	@echo sh $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ >> dumbledore_store_wrap_around_error.conf
+	@echo sh $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --step ilr=off --step p1transform=off --step concolic=off >> dumbledore_store_wrap_around_error.conf
 
 dumbledore_store_wrap_around_error.run: dumbledore_store_wrap_around_error
 	../../../scripts/test.pl $(TESTFLAGS) dumbledore_store_wrap_around_error.ncexe
@@ -24,7 +24,7 @@ wrap_around_error.ncexe: wrap_around_error.c
 	@echo $(CC) $(CFLAGS)  $< -o $@ $(LINKOPT) >wrap_around_error.conf
 
 wrap_around_error: wrap_around_error.ncexe
-	sh $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ 2>&1  | tee wrap_around_error.ps_analyze.log
+	sh $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --step ilr=off --step p1transform=off --step concolic=off 2>&1  | tee wrap_around_error.ps_analyze.log
 	cp wrap_around_error.conf wrap_around_error.ncexe.conf
 	@echo sh $(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ >> wrap_around_error.conf
 
