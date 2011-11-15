@@ -16,10 +16,11 @@
 
 
 PROGS=p1transform.exe integerbugtransform.exe nulltransform.exe integertransformdriver.exe
+
 CC=g++
-CFLAGS= -g
+CFLAGS= -g -Wall
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../../libtransform/include/
-LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB-core -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx  -L../../libMEDSannotation/lib -lMEDSannotation -L../../libtransform/lib -ltransform
+LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB-core -lIRDB-cfg -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx  -L../../libMEDSannotation/lib -lMEDSannotation -L../../libtransform/lib -ltransform
 OBJS=transformutils.o
 
 .SUFFIXES: .o .c .exe .cpp
@@ -36,3 +37,7 @@ all: $(OBJS) $(PROGS)
 clean:
 	rm -f *.o core $(PROGS)
 
+
+pntransform: PNTransformDriver.cpp PNStackLayoutInference.hpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp
+	$(CC) -g -O3 PNMain.cpp PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp $(INCLUDE) $(LIBS) -o pntransform.exe
+	cp pntransform.exe p1transform.exe
