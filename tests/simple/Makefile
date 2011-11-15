@@ -1,4 +1,4 @@
-progs=discrete_xform.peasoup integration_simp.peasoup sieve.peasoup knapsack.peasoup dumbledore_cmd_nop.peasoup dumbledore_cmd_O3.peasoup quick_sort.peasoup hanoi.peasoup merge_sort.peasoup k1.peasoup banner_nop.peasoup banner_O3.peasoup cal_nop.peasoup cal_O3.peasoup cal_O3_concolic.peasoup print_file_concolic.peasoup
+progs=discrete_xform.peasoup integration_simp.peasoup sieve.peasoup knapsack.peasoup dumbledore_cmd_nop.peasoup dumbledore_cmd_O3.peasoup quick_sort.peasoup hanoi.peasoup merge_sort.peasoup k1.peasoup banner_nop.peasoup banner_O3.peasoup banner_O3_concolic.peasoup cal_nop.peasoup cal_O3.peasoup cal_O3_concolic.peasoup print_file_concolic.peasoup cal_nop_concolic.peasoup
 
 ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off"
 
@@ -19,14 +19,25 @@ sieve_concolic.peasoup:
 knapsack.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/knapsack_problem.exe knapsack.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/knapsack_test.sh
 
+knapsack_concolic.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/knapsack_problem.exe knapsack_concolic.peasoup ${ps_analyze_concolic_flags}
+
+
 dumbledore_cmd_nop.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_nop.exe dumbledore_cmd_nop.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_test.sh
+
+dumbledore_cmd_nop_concolic.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_nop.exe dumbledore_cmd_nop.peasoup ${ps_analyze_concolic_flags} 
+
 
 dumbledore_cmd_O3.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_O3.exe dumbledore_cmd_O3.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_test.sh
 
 dumbledore_cmd_O3_concolic.peasoup:
-	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_O3.exe dumbledore_cmd_O3.peasoup ${ps_analyze_concolic_flags} 
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_O3.exe dumbledore_cmd_O3.peasoup ${ps_analyze_concolic_flags}
+
+factor_concolic.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh /usr/bin/factor factor_concolic.peasoup ${ps_analyze_concolic_flags}
 
 quick_sort.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/quick_sort.exe quick_sort.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/quick_sort_test.sh
@@ -37,6 +48,9 @@ quick_sort_concolic.peasoup:
 
 hanoi.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/hanoi.exe hanoi.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/hanoi_test.sh
+
+hanoi_concolic.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/hanoi.exe hanoi_concolic.peasoup ${ps_analyze_concolic_flags}
 
 merge_sort.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/merge_sort.exe merge_sort.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/merge_sort_test.sh
@@ -55,19 +69,28 @@ banner_O3.peasoup:
 banner_O3_concolic.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/banner_O3.exe banner_O3_concolic.peasoup ${ps_analyze_concolic_flags}
 
+banner_nop_concolic.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/banner_nop.exe banner_nop_concolic.peasoup ${ps_analyze_concolic_flags}
+
 cal_O3.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/cal_O3.exe cal_O3.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/cal_test.sh
 
 cal_O3_concolic.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/cal_O3.exe cal_O3_concolic.peasoup ${ps_analyze_concolic_flags}
 
+cal_nop_concolic.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/cal_nop.exe cal_nop_concolic.peasoup ${ps_analyze_concolic_flags}
 
 cal_nop.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/cal_nop.exe cal_nop.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/cal_test.sh
 
-print_file_concolic.peasoup:
-	g++ print_file.cpp -o print_file.exe
-	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/print_file.exe print_file_concolic.peasoup ${ps_analyze_concolic_flags}
+print_file2_concolic.peasoup:
+	g++ print_file2.cpp -o print_file2.exe
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/print_file2.exe print_file2_concolic.peasoup ${ps_analyze_concolic_flags}
+
+print_file1_concolic.peasoup:
+	g++ print_file1.cpp -o print_file1.exe
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/print_file1.exe print_file1_concolic.peasoup ${ps_analyze_concolic_flags}
 
 
 clean:
