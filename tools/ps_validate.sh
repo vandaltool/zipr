@@ -57,6 +57,14 @@ do
   rm -rf grace_replay
   rm -f stdout.* stderr.*
 
+  abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
+  #if there is no exit code for the input number, skip for now.
+  if [ ! -f "$INPUT_DIR/exit_code.run_$abridged_number.log" ]; then
+      echo "ps_validate.sh: No baseline data for input $input_number"
+      continue;
+  fi
+
+
   echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT $GRACE_HOME/concolic/bin/replayer --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i"
   STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i || exit 2
 
@@ -65,15 +73,9 @@ do
   mv exit_status replay/$input_number/exit_status
 
 #first verify the exit status 
-  abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
+
 
   echo "Exit status baseline file: $INPUT_DIR/exit_code.run_$abridged_number.log"
-  #if there is no exit code for the input number, skip for now.
-  if [ ! -f "$INPUT_DIR/exit_code.run_$abridged_number.log" ]; then
-      echo "ps_validate.sh: No baseline data for input $input_number"
-      continue;
-  fi
-
   diff replay/$input_number/exit_status $INPUT_DIR/exit_code.run_$abridged_number.log
 
   if [ ! $? -eq 0 ]; then
@@ -89,7 +91,7 @@ do
 
   if [ -d "grace_replay" ];then
       echo "ps_validate.sh: Discovered output files, validating contents"
-      cp -r grace_replay/ replay/$input_number/
+      mv  grace_replay/ replay/$input_number/
       cp $BASELINE_OUTPUT_DIR/run_$input_number/* replay/$input_number/grace_replay/replay_0001/
       diff -r $BASELINE_OUTPUT_DIR/run_$input_number/ replay/$input_number/grace_replay/replay_0001 >diff_tmp
       if [ ! $? -eq 0 ]; then
