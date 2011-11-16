@@ -294,6 +294,11 @@ libtransform/src/Makefile -text
 libtransform/src/integertransform.cpp -text
 libtransform/src/transform.cpp -text
 libtransform/tests/Makefile -text
+libtransform/tests/austin/array.c -text
+libtransform/tests/austin/branch.c -text
+libtransform/tests/austin/malloc.c -text
+libtransform/tests/austin/memcpy.c -text
+libtransform/tests/austin/memset.c -text
 libtransform/tests/clark1.c -text
 libtransform/tests/int16overflow.c -text
 libtransform/tests/int32overflow.c -text
