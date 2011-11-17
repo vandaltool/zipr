@@ -392,6 +392,9 @@ tests/simple/quick_sort.exe -text
 tests/simple/sieve.exe -text
 tests/simple/sudoku.cpp -text
 tests/simple/sudoku_test.sh -text
+tests/spec/Makefile -text
+tests/spec/soplex.exe -text
+tests/spec/soplex_test.sh -text
 tools/Makefile -text
 tools/cover/Makefile -text
 tools/cover/cover.cpp -text
