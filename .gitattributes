@@ -390,6 +390,8 @@ tests/simple/print_file1.cpp -text
 tests/simple/print_file2.cpp -text
 tests/simple/quick_sort.exe -text
 tests/simple/sieve.exe -text
+tests/simple/sudoku.cpp -text
+tests/simple/sudoku_test.sh -text
 tools/Makefile -text
 tools/cover/Makefile -text
 tools/cover/cover.cpp -text

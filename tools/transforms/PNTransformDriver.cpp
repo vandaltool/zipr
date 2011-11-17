@@ -804,6 +804,24 @@ bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
 	    }
 */
 
+	    //Check if the dealloc amount is 0. In unoptimized code, sometimes the
+	    //compiler will reset esp, and then add 0 to esp
+	    //In this case, do not deallocate the stack
+
+	    int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+	    matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+
+	    // extract displacement 
+	    int offset = strtol(matched.c_str(),NULL,0);
+
+	    cerr<<"PNTransformDriver: Dealloc Amount = "<<offset<<endl;
+
+	    if(offset == 0)
+	    {
+		cerr<<"PNTransformDriver: Dealloc of 0 detected, ignoring instruction"<<endl;
+		continue;
+	    }
+
 	    stringstream ss;
 	    ss << hex <<layout->GetAlteredAllocSize();
 

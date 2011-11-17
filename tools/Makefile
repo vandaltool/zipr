@@ -9,3 +9,4 @@ clean:
 	cd transforms; make clean
 	cd meds2pdb; make clean
 	cd cover; make clean
+

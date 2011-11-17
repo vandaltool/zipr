@@ -1,8 +1,8 @@
-progs=discrete_xform.peasoup integration_simp.peasoup sieve.peasoup knapsack.peasoup dumbledore_cmd_nop.peasoup dumbledore_cmd_O3.peasoup quick_sort.peasoup hanoi.peasoup merge_sort.peasoup k1.peasoup banner_nop.peasoup banner_O3.peasoup banner_O3_concolic.peasoup cal_nop.peasoup cal_O3.peasoup cal_O3_concolic.peasoup print_file_concolic.peasoup cal_nop_concolic.peasoup
+progs=discrete_xform.peasoup integration_simp.peasoup sieve.peasoup knapsack.peasoup dumbledore_cmd_nop.peasoup dumbledore_cmd_O3.peasoup quick_sort.peasoup hanoi.peasoup merge_sort.peasoup k1.peasoup banner_nop.peasoup banner_O3.peasoup banner_O3_concolic.peasoup cal_nop.peasoup cal_O3.peasoup cal_O3_concolic.peasoup print_file_concolic.peasoup cal_nop_concolic.peasoup sudoku_black.peasoup
 
 ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off"
 
-ps_analyze_concolic_flags="--step ilr=on --step integertransform=off --step manual_test=off --step concolic=on --step isr=off"
+ps_analyze_concolic_flags="--step ilr=on --step integertransform=on --step manual_test=off --step concolic=on --step isr=off"
 
 discrete_xform.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/discrete_fourier_transform.exe discrete_xform.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/discrete_xform_test.sh
@@ -32,6 +32,11 @@ dumbledore_cmd_nop_concolic.peasoup:
 
 dumbledore_cmd_O3.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_O3.exe dumbledore_cmd_O3.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_test.sh
+
+sudoku_black.peasoup:
+	g++  sudoku.cpp -o sudoku.exe
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/sudoku.exe sudoku_black.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/sudoku_test.sh
+
 
 dumbledore_cmd_O3_concolic.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_O3.exe dumbledore_cmd_O3.peasoup ${ps_analyze_concolic_flags}
