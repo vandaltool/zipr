@@ -80,7 +80,7 @@ if [ ! -f $orig ]; then cleanup 3 "Failed to create $orig"; fi
 
 $PEASOUP_HOME/tools/ps_analyze.sh $orig $orig.protected --step ilr=off --step p1transform=off --step concolic=off --step isr=off
 
-${testloc}/$orig.protected 0 0 | grep -i "overflow detected" | grep -i "add"
+${testloc}/$orig.protected 0 0 | grep -i "detected" | grep -i "peasoup" | grep -i "policy"
 if [ $? -eq 0 ]; then
         cleanup 4 "False positive detected"
 fi
@@ -99,7 +99,7 @@ case $ARG1_TYPE in
 		;;
 esac
 
-${testloc}/$orig.protected $arg1 $arg2 | grep -i "overflow detected" | grep -i "add"
+${testloc}/$orig.protected $arg1 $arg2 | grep -i "detected" | grep -i "peasoup" | grep -i "policy"
 if [ ! $? -eq 0 ]; then
 	cleanup 5 "Did not detect add/sub overflow for arguments: $arg1($ARG1_TYPE) $arg2($ARG2_TYPE)"
 else
