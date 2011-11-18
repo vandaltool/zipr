@@ -12,6 +12,8 @@
 #include <string>
 #include <set>
 #include <cstdlib>
+#include <map>
+#include <sstream>
 
 using namespace std;
 using namespace libIRDB;
@@ -39,17 +41,57 @@ set<string> getFunctionList(char *p_filename)
 	return functionList;
 }
 
+map<string,double> getCoverageMap(char *filename)
+{
+    map<string,double> coverage_map;
+
+    ifstream coverage_file;
+    coverage_file.open(filename);
+    
+    if(coverage_file.is_open())
+    {
+	while(!coverage_file.eof())
+	{
+	    //TODO: there is no sanity checking of this file
+
+	    string line;
+	    getline(coverage_file, line);
+	    stringstream ss;
+	    ss.str(line);
+	    string func_name,tmp;
+	    double coverage;
+
+	    ss >>func_name;
+
+	    if(func_name.compare("") == 0)
+		continue;
+
+	    ss >>tmp;
+
+	    coverage = strtod(tmp.c_str(),NULL);
+
+	    cout<<"func: "<<func_name<<" coverage: "<<coverage<<endl;
+
+	    coverage_map[func_name] = coverage;
+	}
+	
+	coverage_file.close();
+    }    
+    return coverage_map;
+}
+
 
 int main(int argc, char **argv)
 {
-    if(argc!=4)
+    if(argc!=6)
     {
-	cerr<<"Usage: p1transform.exe <variantid> <bed_script> <file containing name of blacklisted functions>"<<endl;
+	cerr<<"Usage: p1transform.exe <variantid> <bed_script> <file containing name of blacklisted functions> <coverage file> <p1 threshold>"<<endl;
 	exit(-1);
     }
     else
     {
-	cout << "bed_script: " << argv[2] << " blacklist: " << argv[3] << endl;
+	cout << "bed_script: " << argv[2] << " blacklist: " << argv[3] << 
+	    " coverage: "<<argv[4]<<" p1 threshold: "<<argv[5]<<endl;
     }
 
     VariantID_t *pidp=NULL;
@@ -82,6 +124,20 @@ int main(int argc, char **argv)
     set<std::string> blackListOfFunctions;
 
     blackListOfFunctions = getFunctionList(argv[3]);
+
+    map<string,double> coverage_map = getCoverageMap(argv[4]);
+
+    double p1threshold = strtod(argv[5],NULL);
+
+
+    if(p1threshold > 1 || p1threshold <0)
+    {
+	cerr<<"usage: p1 threshold must be a value greater than or equal to 0 or less than or equal to 1"<<endl;
+	exit(-1);
+    }
+
+    cout<<"P1threshold parsed = "<<p1threshold<<endl;
+
 /*
     vector<std::string> functionsTransformed;
     int numFuncProcessed = 0;
@@ -110,7 +166,7 @@ int main(int argc, char **argv)
 	transform_driver.AddInference(scaled_offset_inference);
 	transform_driver.AddInference(p1);
 
-	transform_driver.GenerateTransforms(virp,BED_script,progid);
+	transform_driver.GenerateTransforms(virp,BED_script,progid,coverage_map,p1threshold);
 
 /*
         cerr << "P1: " << func->GetName() << " processed: " << numFuncProcessed << "/" << virp->GetFunctions().size() << " filtered: " << numFuncFiltered << " BED-passed: " << numFuncBEDpassed << " BED-failed: " << numFuncBEDfailed << " P1-skipped: " << numFunP1skipped << endl;

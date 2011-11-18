@@ -37,7 +37,7 @@ public:
     virtual void AddBlacklist(std::set<std::string> &blacklist);
     virtual void AddBlacklistFunction(std::string &func_name);
     
-    virtual void GenerateTransforms(libIRDB::VariantIR_t *virp, std::string BED_script, int progid);
+    virtual void GenerateTransforms(libIRDB::VariantIR_t *virp, std::string BED_script, int progid, std::map<std::string,double>coverage_map, double p1threshold);
 };
 
 #endif

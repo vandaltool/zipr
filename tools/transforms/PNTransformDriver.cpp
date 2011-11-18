@@ -5,6 +5,7 @@
 #include <fstream>
 #include "beaengine/BeaEngine.h"
 #include <cmath>
+#include <map>
 
 using namespace std;
 using namespace libIRDB;
@@ -19,7 +20,7 @@ void sigusr1Handler(int signum);
 //TODO: Use CFG class for all instruction looping
 //TODO: if stack access instruction are encountered before stack allocation, ignore them, after using CFG
 
-//Used for sorting layotus by number of memory objects in descending order
+//Used for sorting layouts by number of memory objects in descending order
 //TODO: change name to reflect descending order
 static bool CompareBoundaryNumbers(PNStackLayout *a, PNStackLayout *b)
 {
@@ -169,7 +170,7 @@ void PNTransformDriver::GenerateTransforms2(VariantIR_t *virp,vector<Function_t*
 
 
 //TODO: break into smaller functions
-void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script, int progid)
+void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script, int progid,map<string,double>coverage_map, double p1threshold)
 {
     int total_funcs = 0;
     int blacklist_funcs = 0;
@@ -250,7 +251,13 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 	//on the number of memory objects detected (in descending order). Then try each layout
 	//as a basis for transformation until one succeeds or all layouts in each level of the
 	//hierarchy have been exhausted. 
-	for(unsigned int level=0;level<transform_hierarchy.size()&&!success;level++)
+
+	//TODO: the code is horribly hacked for T and E, so this hiearchy is not even used
+	//and it is assumed it is not used, but if you were to use it, this
+	//would cause strange behavior given that I am checking a threshold for
+	//p1 below. I assume that the one hierarchy level contains all transfroms
+	//And the layout with the fewest memory objects is p1.
+	for(unsigned int level=0;level<transform_hierarchy.size() && !success;level++)
 	{
 
 	    if(PNTransformDriver::timeExpired)
@@ -272,6 +279,49 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 	    }
 
 	    sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
+
+	    //Check if function has coverage, if not, p1,
+	    //check if function is above coverage threshold, if not, p1
+	    //force p1 by creating a new layouts vector consisting only of p1
+
+	    //See if the function is in the coverage map
+	    if(coverage_map.find(func->GetName()) != coverage_map.end())
+	    {
+		//if coverage exists, if it is above the p1threshold,
+		//do nothing, otherwise, resize layouts to have just
+		//the p1 layout in it (the layout with the fewest objects)
+		double func_coverage = coverage_map[func->GetName()];
+
+		if(func_coverage <= p1threshold)
+		{
+		    //resize layouts, layouts is sorted by memory objects
+		    //infered, take the last element of the vector
+		    //(fewest number of memory objects), and make this
+		    //the only layout
+		    PNStackLayout* tmp = layouts[layouts.size()-1];
+		    layouts.clear();
+		    layouts.push_back(tmp);
+
+		    cout<<"PNTransformDriver: Function "<<func->GetName()<< 
+			"has insufficient coverage, using p1"<<endl;
+		}
+	    }
+	    //If the function is not in the map, assume no coverage, and 
+	    //resize layouts to have just
+	    //the p1 layout in it (the layout with the fewest objects)
+	    else
+	    {
+		//resize layouts, layouts is sorted by memory objects
+		//infered, take the last element of the vector
+		//(fewest number of memory objects), and make this
+		//the only layout
+		PNStackLayout* tmp = layouts[layouts.size()-1];
+		layouts.clear();
+		layouts.push_back(tmp);
+
+		cout<<"PNTransformDriver: Function "<<func->GetName()<<
+		    "does not have a coverage entry, using p1"<<endl;
+	    }
 
 	    for(unsigned int i=0;i<layouts.size();i++)
 	    {
