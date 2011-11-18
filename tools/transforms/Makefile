@@ -25,7 +25,7 @@ OBJS=transformutils.o
 
 .SUFFIXES: .o .c .exe .cpp
 
-all: $(OBJS) $(PROGS)
+all: pntransform $(OBJS) $(PROGS)
 	echo build complete
 
 .o: $<
