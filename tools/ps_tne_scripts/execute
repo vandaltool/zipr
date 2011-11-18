@@ -1,0 +1,89 @@
+#
+# (c) 2011 The MITRE Corporation.  ALL RIGHTS RESERVED.
+#
+
+# ss_execute <test_case> <time_limit> <sw_dir> <cmd_line> <run_directory> -> <status>
+
+# performer would call their execution code here
+#
+# returns status
+#
+# We cannot put any messages to stdout from this script except the return value
+
+# For now, put the path to the environment file needed by ps_analyze and ps_run
+# in an environment variable of its own. This is to try and make it obvious
+# what this path is for and the fact that it is local layout dependant
+export PEASOUP_ENV_PATH='/ps0/testbot/uva-svn/strata_env'
+
+# Set the environment for Peasoup
+eval 'source $PEASOUP_ENV_PATH'
+
+LOG_COMMAND="$GRACE_HOME/concolic/src/util/linux/ps_log_tne.py"
+GEN_MESSAGE_COMMAND="$GRACE_HOME/concolic/src/util/linux/general_message.py"
+
+l_message_1_1="execute script called for test case: $1"
+l_message_1_2="time limit: $2"
+l_message_1_3="sw dir: $3"
+l_message_1_4="command line: $4"
+l_message_1_5="run dir: $5"
+l_message_1_6="initial dir: $PWD"
+
+message_1="$l_message_1_1
+$l_message_1_2
+$l_message_1_3
+$l_message_1_4
+$l_message_1_5
+$l_message_1_6"
+
+# Log the call and its contents
+python $LOG_COMMAND -n $1 -t "Execute parameters" -m "$message_1"
+
+# Send a general message that execute was called
+python $GEN_MESSAGE_COMMAND -n $1 -t "Execute called" -m "execute script called for test case i/o pair"
+
+# cd to sw_dir
+cd $3
+python $LOG_COMMAND -n $1 -t "Execute script" -m "sw dir: $PWD"
+
+
+# cd to run_directory
+cd $5
+python $LOG_COMMAND -n $1 -t "Execute script" -m "run dir: $PWD"
+
+
+# Split the provided command line into an array at white spaces
+cmdline=($4)
+# The first item in the array is <path>/<name of exe>
+execpath=${cmdline[0]}
+python $LOG_COMMAND -n $1 -t "Execute script" -m "derived execution path: $execpath"
+
+# Check to make sure the executable exists
+# TODO: When we start saving the analyzed executable outside the VM
+# for resets, this will change to retrieve the protected executable if it
+# isn't there. Right now, just fail.
+if [ -e "${execpath}.peasoup" ]; then
+	python $LOG_COMMAND -n $1 -t "Execute script" -m "Peasoup executable found"
+else
+	echo "failure"
+	python $LOG_COMMAND -n $1 -t "Execute script" -m "Peasoup executable not found. Exiting execution attempt"
+	exit
+fi
+
+# log and execute cmd_line
+# Use the name <name>.peasoup to find the run script, then
+# insert the rest of the provided arguments
+python $LOG_COMMAND -n $1 -t "Execute script" -m "command executed: $execpath.peasoup ${cmdline[@]:1}"
+eval $execpath.peasoup ${cmdline[@]:1}
+PS_RUN_STATUS="$?"
+python $LOG_COMMAND -n $1 -t "Execute script" -m "execution complete with status: $PS_RUN_STATUS"
+
+# Send a general message that execution has finished
+python $GEN_MESSAGE_COMMAND -n $1 -t "Execution complete" -m "execution done for test case i/o pair"
+
+
+# TODO: Decide on proper exit criteria - This is too coarse
+# This return is the only place where we can have messages to stdout
+if [ "$PS_RUN_STATUS" == "0" ]; then echo "success" ; fi
+if [ "$PS_RUN_STATUS" != "0" ]; then echo "failure" ; fi
+
+

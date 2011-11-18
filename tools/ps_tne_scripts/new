@@ -1,0 +1,38 @@
+#
+# (c) 2011 The MITRE Corporation.  ALL RIGHTS RESERVED.
+#
+# new <test_case> <sw_dir> -> <status>
+
+# do nothing, claim success
+#
+# returns status
+
+#bash general_message "$1 Starting new test case"
+
+# For now, put the path to the environment file needed by ps_analyze and ps_run
+# in an environment variable of its own. This is to try and make it obvious
+# what this path is for and the fact that it is local layout dependant
+export PEASOUP_ENV_PATH='/ps0/testbot/uva-svn/strata_env'
+
+# Set the environment for Peasoup
+eval 'source $PEASOUP_ENV_PATH'
+
+LOG_COMMAND="$GRACE_HOME/concolic/src/util/linux/ps_log_tne.py"
+GEN_MESSAGE_COMMAND="$GRACE_HOME/concolic/src/util/linux/general_message.py"
+
+# Log that we are starting a new test case
+l_message_1="Starting new subject: $1"
+l_message_2="Initial dir: $PWD"
+l_message_3="sw dir: $2"
+
+message="$l_message_1
+$l_message_2
+$l_message_3"
+
+python $LOG_COMMAND -n $1 -t "New test subject" -m "$message"
+
+# Send a message that we are starting a new test case
+python $GEN_MESSAGE_COMMAND -n $1 -t "New test subject" -m "$message"
+
+echo "success"
+

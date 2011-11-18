@@ -1,0 +1,102 @@
+#
+# (c) 2011 The MITRE Corporation.  ALL RIGHTS RESERVED.
+#
+# bash analyze <test_case> <sw_dir> <run_command> <run_directory> <build_command> <build_directory> -> <status>
+
+# compile the source if it is available
+#
+# returns status
+#
+# We cannot put any messages to stdout from this script except the return value
+
+# For now, put the path to the environment file needed by ps_analyze and ps_run
+# in an environment variable of its own. This is to try and make it obvious
+# what this path is for and the fact that it is local layout dependant
+export PEASOUP_ENV_PATH='/ps0/testbot/uva-svn/strata_env'
+# Set the environment for Peasoup, then run it
+eval 'source $PEASOUP_ENV_PATH'
+
+LOG_COMMAND="$GRACE_HOME/concolic/src/util/linux/ps_log_tne.py"
+GEN_MESSAGE_COMMAND="$GRACE_HOME/concolic/src/util/linux/general_message.py"
+
+# Log the call and its contents
+# Build log message
+l_message_1_1="analyze script called for test case $1 with arguments"
+l_message_1_2="sw dir: $2"
+l_message_1_3="run command: $3"
+l_message_1_4="run dir: $4"
+l_message_1_5="build command: $5"
+l_message_1_6="build dir: $6"
+l_message_1_7="analyze called from dir: $PWD"
+
+message_1="${l_message_1_1}
+${l_message_1_2}
+${l_message_1_3}
+${l_message_1_4}
+${l_message_1_5}
+${l_message_1_6}
+${l_message_1_7}"
+
+python $LOG_COMMAND -n $1 -t "Analyze parameters" -m "$message_1"
+
+# Send a general message that analyze was called
+python $GEN_MESSAGE_COMMAND -n $1 -t "Analyze called" -m "analyze script called for test case"
+
+
+# we are starting in <test_case_dir>
+# get to <sw_dir>
+cd $2
+python $LOG_COMMAND -n $1 -t "Analyze script" -m "In sw dir: $PWD"
+
+# get to <build_directory> relative to <sw_dir>
+cd $6
+python $LOG_COMMAND -n $1 -t "Analyze script" -m "In build dir: $PWD"
+
+# Process the run command to get the <path>/<name of exe>
+cmdline=($3)
+execpath=${cmdline[0]}
+
+## The TH passes the wrong path. This is a bug in the TH which is supposed to be
+## fixed by T&E. For now, we correct by taking just the executable name using the
+## following statement.
+execcmd=`basename $execpath`
+
+## TOOD: Enhance Grace to be able to use the 'ignored arguments' since 
+## T&E will always call the executable with them
+
+# build the package
+# we aren't building for binaries
+# eval $5
+
+# Move to the <run_directory>
+# This is currently set to . by MITRE, so is useless and violates the specification
+# given in Mitre's API document
+cd $4
+l_message_2_1="In run dir: $PWD"
+l_message_2_2="Constructed command: $execpath"
+l_message_2_3="Constructed basename: $execcmd"
+
+message_2="$l_message_2_1
+$l_message_2_2
+$l_message_2_3"
+
+python $LOG_COMMAND -n $1 -t "Analyze script" -m "$message_2"
+
+python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase beginning"
+
+$PEASOUP_HOME/tools/ps_analyze.sh $execcmd $execcmd.peasoup
+PS_ANALYZE_STATUS="$?"
+python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase done with exit status: $PS_ANALYZE_STATUS"
+
+# Send a general message that analyze is done
+python $GEN_MESSAGE_COMMAND -n $1 -t "Analyze complete" -m "analyze script finished"
+
+# TODO: We need to decide on a better result value
+# This return is the only place where we can have messages to stdout
+if [ "$PS_ANALYZE_STATUS" == "0" ]; then echo "success" ; fi
+if [ "$PS_ANALYZE_STATUS" != "0" ]; then echo "skip" ; fi
+
+
+
+
+
