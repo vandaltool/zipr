@@ -369,6 +369,7 @@ tests/coreutils/bzip2_manual_tests.sh -text
 tests/coreutils/cat_manual_tests.sh -text
 tests/coreutils/ls_manual_tests.sh -text
 tests/simple/Makefile -text
+tests/simple/aes.cpp -text
 tests/simple/banner_O3.exe -text
 tests/simple/banner_nop.exe -text
 tests/simple/banner_test.sh -text
