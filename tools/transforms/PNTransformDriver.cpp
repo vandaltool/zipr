@@ -14,6 +14,7 @@ bool PNTransformDriver::timeExpired = false;
 void sigusr1Handler(int signum);
 
 //TODO: use of pointers?
+//TODO: time expired is handled in a hackish way
 
 //TODO: Use CFG class for all instruction looping
 //TODO: if stack access instruction are encountered before stack allocation, ignore them, after using CFG
@@ -251,6 +252,13 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 	//hierarchy have been exhausted. 
 	for(unsigned int level=0;level<transform_hierarchy.size()&&!success;level++)
 	{
+
+	    if(PNTransformDriver::timeExpired)
+	    {
+		cerr<<"PNTransformDriver: Time Expired --commit transforms" <<endl;
+		break;
+	    }
+
 	    vector<PNStackLayout*> layouts = GenerateInferences(func, level);
 
 	    //TODO: this is a quick hack and will fail if p1 doesn't have a transform
@@ -279,6 +287,13 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 		    layouts[i]->Shuffle();//one final shuffle
 		}
 		layouts[i]->AddPadding();
+
+
+		if(PNTransformDriver::timeExpired)
+		{
+		    cerr<<"PNTransformDriver: Time Expired --commit transforms" <<endl;
+		    break;
+		}
 			
 		if(!Rewrite((layouts[i]), func))
 		{
@@ -468,6 +483,13 @@ bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Varian
 
     for(int i=0;i<reps;i++)
     {
+	if(PNTransformDriver::timeExpired)
+	{
+	    cerr<<"PNTransformDriver: Time Expired -- aborting shuffle validation" <<endl;
+	    undo(undo_list,func);
+	    return false;
+	}
+		
 	cerr<<"PNTransformDriver: ShuffleValidation(): Shuffle attempt "<<i+1<<endl;
 
 	layout->Shuffle();
