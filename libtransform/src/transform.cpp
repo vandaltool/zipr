@@ -108,7 +108,7 @@ void Transform::addPopRegister(Instruction_t *p_instr, Register::RegisterName p_
 		return;
 	}
 
-	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }
 
 void Transform::addPusha(Instruction_t *p_pusha_i, Instruction_t *p_fallThrough)
@@ -116,7 +116,7 @@ void Transform::addPusha(Instruction_t *p_pusha_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x60;
-	return addInstruction(p_pusha_i, dataBits, p_fallThrough, NULL);
+	addInstruction(p_pusha_i, dataBits, p_fallThrough, NULL);
 }
 
 void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
@@ -124,7 +124,7 @@ void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x9c;
-	return addInstruction(p_pushf_i, dataBits, p_fallThrough, NULL);
+	addInstruction(p_pushf_i, dataBits, p_fallThrough, NULL);
 }
 
 void Transform::addPopf(Instruction_t *p_popf_i, Instruction_t *p_fallThrough)
@@ -132,7 +132,7 @@ void Transform::addPopf(Instruction_t *p_popf_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x9d;
-	return addInstruction(p_popf_i, dataBits, p_fallThrough, NULL);
+	addInstruction(p_popf_i, dataBits, p_fallThrough, NULL);
 }
 
 void Transform::addPopa(Instruction_t *p_popa_i, Instruction_t *p_fallThrough)
@@ -140,7 +140,7 @@ void Transform::addPopa(Instruction_t *p_popa_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x61;
-	return addInstruction(p_popa_i, dataBits, p_fallThrough, NULL);
+	addInstruction(p_popa_i, dataBits, p_fallThrough, NULL);
 }
 
 void Transform::addNop(Instruction_t *p_nop_i, Instruction_t *p_fallThrough)
@@ -148,7 +148,8 @@ void Transform::addNop(Instruction_t *p_nop_i, Instruction_t *p_fallThrough)
 	string dataBits;
 	dataBits.resize(1);
 	dataBits[0] = 0x90;
-	return addInstruction(p_nop_i, dataBits, p_fallThrough, NULL);
+	p_nop_i->SetComment(string("NOP"));
+	addInstruction(p_nop_i, dataBits, p_fallThrough, NULL);
 }
 
 Instruction_t* Transform::allocateNewInstruction(db_id_t p_fileID, Function_t* p_func)
@@ -346,7 +347,7 @@ void Transform::addTestRegister8(Instruction_t *p_instr, Register::RegisterName 
 		return;
 	}
 
-	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }
 
 void Transform::addTestRegister16(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
@@ -383,7 +384,7 @@ void Transform::addTestRegister16(Instruction_t *p_instr, Register::RegisterName
 		return;
 	}
 
-	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }
 
 // same as 16 bit version? hmm, weird
@@ -417,7 +418,7 @@ void Transform::addTestRegister32(Instruction_t *p_instr, Register::RegisterName
 		return;
 	}
 
-	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }
 
 
@@ -477,7 +478,7 @@ void Transform::addTestRegisterMask32(Instruction_t *p_instr, Register::Register
 		return;
 	}
 
-	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }
 
 // jns - jump not signed
@@ -487,7 +488,7 @@ void Transform::addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Ins
 	dataBits.resize(2);
 	dataBits[0] = 0x79;
 	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
-	return addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
 
 // jz - jump zero
@@ -497,7 +498,8 @@ void Transform::addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Inst
 	dataBits.resize(2);
 	dataBits[0] = 0x74;
 	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
-	return addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
 
 // not <reg> -- negate register
@@ -509,7 +511,7 @@ void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Ins
 	if (p_reg == Register::EAX)
 	{
 		dataBits[0] = 0xf7;
-		dataBits[0] = 0xd0;
+		dataBits[1] = 0xd0;
 	}
 	else if (p_reg == Register::EBX)
 	{
@@ -580,5 +582,5 @@ void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Ins
 		return;
 	}
 
-	return addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }

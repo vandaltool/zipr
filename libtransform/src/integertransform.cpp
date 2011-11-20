@@ -435,15 +435,21 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 		Instruction_t* su_jz_i = allocateNewInstruction(fileID, func);
 
 		addJz(jz_i, su_not_i, popf_i);
+		jz_i->SetComment(string("jz - SIGNED or UNSIGNED TRUNC"));
 		addNot(su_not_i, p_annotation.getRegister(), su_test_i);
+		su_not_i->SetComment(string("NOT"));
 		addTestRegisterMask(su_test_i, p_annotation.getRegister(), mask, su_jz_i);
 
 		addJz(su_jz_i, nop_i, popf_i);
 	}
 	else
+	{
 		addJz(jz_i, nop_i, popf_i);
+		jz_i->SetComment(string("jz - UNKNOWN TRUNC"));
+	}
 
 	addNop(nop_i, popf_i);
+	nop_i->SetComment(string("NOP NOP"));
 	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i);
 	addPopf(popf_i, originalInstrumentInstr);
 }
