@@ -43,17 +43,14 @@ int IntegerTransform::execute()
 
 				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
 				if (!annotation.isValid()) 
-				{
-					// even if no annotation but is a multiply, we instrument it
-					if (isMultiplyInstruction(insn))
-						handleOverflowCheck(insn, annotation);
-				}
-				else if (annotation.isOverflow())
+					continue;
+				
+				if (annotation.isOverflow() && !annotation.isNoFlag())
 				{
 					cerr << "integertransform: overflow annotation: " << annotation.toString() << endl;
 					handleOverflowCheck(insn, annotation);
 				}
-				else if (annotation.isUnderflow())
+				else if (annotation.isUnderflow() && !annotation.isNoFlag())
 				{
 					cerr << "integertransform: underflow annotation: " << annotation.toString() << endl;
 					handleOverflowCheck(insn, annotation);
