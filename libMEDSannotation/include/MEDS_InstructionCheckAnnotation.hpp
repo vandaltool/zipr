@@ -19,6 +19,7 @@ namespace MEDS_Annotation
 #define MEDS_ANNOT_SIGNED       "SIGNED"
 #define MEDS_ANNOT_UNSIGNED     "UNSIGNED"
 #define MEDS_ANNOT_UNKNOWNSIGN  "UNKNOWNSIGN"
+#define MEDS_ANNOT_NOFLAG       "NOFLAG"
 
 using namespace std;
 using namespace MEDS_Annotation;
@@ -46,6 +47,9 @@ class MEDS_InstructionCheckAnnotation
 		bool isSigned() const { return m_isSigned; }
 		bool isUnknownSign() const { return m_isUnknownSign; }
 
+		// overflow with no flags, e.g. lea
+		bool isNoFlag() const { return m_isNoFlag; }
+
 		// get bitwidth
 		int getBitWidth() const { return m_bitWidth; }
 		int getTruncationFromWidth() const { return m_truncationFromWidth; }
@@ -71,6 +75,7 @@ class MEDS_InstructionCheckAnnotation
 		bool           m_isSigned;
 		bool           m_isUnsigned;
 		bool           m_isUnknownSign;
+		bool           m_isNoFlag;
 		int            m_bitWidth;
 		int            m_truncationFromWidth;
 		int            m_truncationToWidth;

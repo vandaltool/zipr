@@ -32,6 +32,7 @@ MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation(const std::stri
 	m_isSigned = false;
 	m_isUnsigned = false;
 	m_isUnknownSign = true;
+	m_isNoFlag = true;
 	m_bitWidth = -1;
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
@@ -61,6 +62,7 @@ void MEDS_InstructionCheckAnnotation::parse()
 	m_virtualOffset = vo;
 
 	// The annotation format is very simple so we don't bother with any fancy parsing
+	//   8048913      3 INSTR CHECK OVERFLOW NOFLAGSIGNED 32 EDX+ECX ZZ lea     eax, [edx+ecx]
 	// Later, this may need to be changed
 
 	// get check type
@@ -75,6 +77,9 @@ void MEDS_InstructionCheckAnnotation::parse()
 		
 	if (m_rawInputLine.find(MEDS_ANNOT_TRUNCATION)!=string::npos)
 		m_isTruncation = true;
+
+	if (m_rawInputLine.find(MEDS_ANNOT_NOFLAG)!=string::npos)
+		m_isNoFlag = true;
 
 	// signed vs. unsigned
 	if (m_rawInputLine.find(MEDS_ANNOT_UNSIGNED)!=string::npos)
