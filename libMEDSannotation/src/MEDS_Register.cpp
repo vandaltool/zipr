@@ -15,6 +15,14 @@ Register::RegisterName Register::getRegister(std::string p_reg)
 		return ECX;
 	else if (strcasecmp(p_reg.c_str(), "EDX") == 0)
 		return EDX;
+	else if (strcasecmp(p_reg.c_str(), "EDI") == 0)
+		return EDI;
+	else if (strcasecmp(p_reg.c_str(), "ESI") == 0)
+		return ESI;
+	else if (strcasecmp(p_reg.c_str(), "EBP") == 0)
+		return EBP;
+	else if (strcasecmp(p_reg.c_str(), "ESP") == 0)
+		return ESP;
 	else if (strcasecmp(p_reg.c_str(), "AX") == 0)
 		return AX;
 	else if (strcasecmp(p_reg.c_str(), "BX") == 0)
