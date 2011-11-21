@@ -32,7 +32,7 @@ MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation(const std::stri
 	m_isSigned = false;
 	m_isUnsigned = false;
 	m_isUnknownSign = true;
-	m_isNoFlag = true;
+	m_isNoFlag = false;
 	m_bitWidth = -1;
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
