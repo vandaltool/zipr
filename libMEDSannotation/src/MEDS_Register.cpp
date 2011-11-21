@@ -31,6 +31,14 @@ Register::RegisterName Register::getRegister(std::string p_reg)
 		return CX;
 	else if (strcasecmp(p_reg.c_str(), "DX") == 0)
 		return DX;
+	else if (strcasecmp(p_reg.c_str(), "AH") == 0)
+		return AL;
+	else if (strcasecmp(p_reg.c_str(), "BH") == 0)
+		return BL;
+	else if (strcasecmp(p_reg.c_str(), "CH") == 0)
+		return CL;
+	else if (strcasecmp(p_reg.c_str(), "DH") == 0)
+		return DL;
 	else if (strcasecmp(p_reg.c_str(), "AL") == 0)
 		return AL;
 	else if (strcasecmp(p_reg.c_str(), "BL") == 0)
@@ -45,7 +53,8 @@ Register::RegisterName Register::getRegister(std::string p_reg)
 
 bool Register::is8bit(Register::RegisterName reg)
 {
-	return reg == AL || reg == BL || reg == CL || reg == DL;
+	return reg == AL || reg == BL || reg == CL || reg == DL ||
+		reg == AH || reg == BH || reg == CH || reg == DH;
 }
 
 bool Register::is16bit(Register::RegisterName reg)
