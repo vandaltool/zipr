@@ -99,11 +99,16 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 {
 	// sanity checks
     assert(getVariantIR() && p_instruction);
-	assert (p_annotation.isValid() && (
-		(p_annotation.getBitWidth() == 32 && Register::is32bit(p_annotation.getRegister())) || 
-		(p_annotation.getBitWidth() == 16 && Register::is16bit(p_annotation.getRegister())) || 
-		(p_annotation.getBitWidth() == 8 && Register::is8bit(p_annotation.getRegister()))
-		));
+	assert (p_annotation.isValid());
+	if (
+		!(p_annotation.getBitWidth() == 32 && Register::is32bit(p_annotation.getRegister())) && 
+		!(p_annotation.getBitWidth() == 16 && Register::is16bit(p_annotation.getRegister())) && 
+		!(p_annotation.getBitWidth() == 8 && Register::is8bit(p_annotation.getRegister()))
+		)
+	{
+      cerr << "addSignednessCheck(): Unexpected bit width and register combination: skipping instrumetnation for: " << p_annotation.toString() << endl;
+	  return;
+	}
 
     db_id_t fileID = p_instruction->GetAddress()->GetFileID();
     Function_t* func = p_instruction->GetFunction();
