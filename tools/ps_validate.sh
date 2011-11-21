@@ -55,7 +55,7 @@ do
   #if baseline exited with 139, ignore input
   grep 139 $INPUT_DIR/exit_code.run_$abridged_number.log
   if [ $? -eq 0 ]; then
-      echo "Baseline exit status was 139, ignoring input"
+      echo "Baseline exit status was 139 for input $i, ignoring input"
       continue
   fi
 
