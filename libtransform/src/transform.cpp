@@ -472,6 +472,20 @@ void Transform::addTestRegisterMask32(Instruction_t *p_instr, Register::Register
 		tmp = (unsigned *) &dataBits[2];
 		*tmp = p_mask;
 	}
+	else if (p_reg == Register::ESI)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xc6;
+		tmp = (unsigned *) &dataBits[2];
+		*tmp = p_mask;
+	}
+	else if (p_reg == Register::EDI)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xc7;
+		tmp = (unsigned *) &dataBits[2];
+		*tmp = p_mask;
+	}
 	else
 	{
 		cerr << "Transform::addTestRegisterMask32(): unhandled register" << endl;
@@ -527,6 +541,16 @@ void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Ins
 	{
 		dataBits[0] = 0xf7;
 		dataBits[1] = 0xd2;
+	}
+	else if (p_reg == Register::ESI)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xd6;
+	}
+	else if (p_reg == Register::EDI)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xd7;
 	}
 	else if (p_reg == Register::AX)
 	{

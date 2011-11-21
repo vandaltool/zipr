@@ -423,9 +423,9 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	addTestRegisterMask(test_i, p_annotation.getRegister(), mask, jz_i);
 	if (p_annotation.isSigned() || p_annotation.isUnsigned())
 	{
-		//   not eax
-		//   test eax, 0xFFFFFF00 (for 8 bit) 
-		//   jz <continue>      # upper 24 bits are 1's
+		//   not <reg>
+		//   test <reg>, 0xFFFFFF00 (for 8 bit) 
+		//   jz <continue>     # upper 24 bits are 1's
 		Instruction_t* su_not_i = allocateNewInstruction(fileID, func);
 		Instruction_t* su_test_i = allocateNewInstruction(fileID, func);
 		Instruction_t* su_jz_i = allocateNewInstruction(fileID, func);
