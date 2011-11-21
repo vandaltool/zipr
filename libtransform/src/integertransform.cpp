@@ -43,10 +43,7 @@ int IntegerTransform::execute()
 
 				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
 				if (!annotation.isValid()) 
-				{
-					cerr << "integertransform: invalid annotation: " << annotation.toString() << endl;
 					continue;
-				}
 				
 				if (annotation.isOverflow() && !annotation.isNoFlag())
 				{
