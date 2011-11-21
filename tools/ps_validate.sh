@@ -80,7 +80,7 @@ do
   diff replay/$input_number/exit_status $INPUT_DIR/exit_code.run_$abridged_number.log
 
   if [ ! $? -eq 0 ]; then
-      echo "ps_validate.sh: divergence detected on program exit status"
+      echo "ps_validate.sh: divergence detected for input: $i (exit status)"
       echo "expected: "
       cat $INPUT_DIR/exit_code.run_$abridged_number.log
       echo "observed: "
@@ -96,7 +96,7 @@ do
       cp $BASELINE_OUTPUT_DIR/run_$input_number/* replay/$input_number/grace_replay/replay_0001/
       diff -r $BASELINE_OUTPUT_DIR/run_$input_number/ replay/$input_number/grace_replay/replay_0001 >diff_tmp
       if [ ! $? -eq 0 ]; then
-	  echo "ps_validate.sh: divergence detected on program produced output files"
+	  echo "ps_validate.sh: divergence detected for input: $i (output files)"
 	  echo "Diff output:"
 	  cat diff_tmp
 	  rm diff_tmp
