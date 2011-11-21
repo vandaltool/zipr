@@ -152,7 +152,6 @@ int main (int argc, char *argv[])
 			return(EXIT_FAILURE);
 		}
 	}
-#ifdef foobar
 	// Open the file in readonly mode.
 
 	fp = fopen(filename, "r");
@@ -300,7 +299,6 @@ int main (int argc, char *argv[])
 
 	if (DEBUG) printf("\nDEBUG: The file '%s' contains %d total lines, of which %d are code.\n\n", filename, total_lines, lines_of_code);
 	printf("\nRESULT: %d", lines_of_code);
-#endif
 	return(EXIT_SUCCESS);
 }
 

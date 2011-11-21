@@ -43,11 +43,13 @@ int IntegerTransform::execute()
 
 				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
 				if (!annotation.isValid()) 
+				{
+					cerr << "integertransform: invalid annotation: " << annotation.toString() << endl;
 					continue;
+				}
 				
 				if (annotation.isOverflow() && !annotation.isNoFlag())
 				{
-					cerr << "integertransform: overflow annotation: " << annotation.toString() << endl;
 					handleOverflowCheck(insn, annotation);
 				}
 				else if (annotation.isUnderflow() && !annotation.isNoFlag())
@@ -156,12 +158,11 @@ void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS
 	}
 }
 
+#ifdef NO_LONGER_USED
 void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
 {
 	string detector; // name of SPRI/STRATA callback handler function
 	string dataBits;
-
-	cerr << "integertransform: addTruncationCheck(): stub: " << p_annotation.toString() << endl;
 
 	if (p_annotation.isUnknownSign() || p_annotation.isSigned())
 	{
@@ -268,6 +269,7 @@ void IntegerTransform::addTruncationCheck32to16(Instruction_t *p_instruction, co
 		// error
 	}
 }
+#endif
 
 //
 //      <instruction to instrument>

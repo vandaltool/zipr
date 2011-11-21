@@ -35,7 +35,6 @@ int main(int argc, char* argv[])
 	for(; i < 5; i ++)
 
 	{
-			
 		if(cap <= 100)// compiler emits unsigned comparison code here, but cap is signed
 		   printf("%d is no larger than 100\n", cap);
 		else
