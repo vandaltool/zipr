@@ -36,34 +36,37 @@ echo "=========================================="
 
 echo "ps_validate.sh: BED: warning: @todo: need to handle files other than stdout, stderr"
 
-cd replay
-
 for i in `ls $INPUT_DIR/input*.json`
 do
+
+ #Ben Modification: run replayer from top level to keep the sandbox layout the same as produced by the concolic test engine. This makes output comparison easier
   echo "Testing input spec: $i"
   input=`basename $i .json`
   input_number=`echo $input | sed "s/input_//"`
 
-  mkdir $input_number 2>/dev/null
-  cd $input_number
-
-  # make sure the output files exist
- touch stdout.$input
- touch stderr.$input
-
- #run replayer from top level to keep the sandbox layout the same as produced by the concolic test engine
- cd ../..
-
-  rm -rf grace_replay
-  rm -f stdout.* stderr.*
 
   abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
   #if there is no exit code for the input number, skip for now.
   if [ ! -f "$INPUT_DIR/exit_code.run_$abridged_number.log" ]; then
-      echo "ps_validate.sh: No baseline data for input $input_number"
+      echo "ps_validate.sh: No baseline data for input $input_number, missing exit status"
       continue;
   fi
+  echo "Exit status baseline file: $INPUT_DIR/exit_code.run_$abridged_number.log"
+  #if baseline exited with 139, ignore input
+  grep 139 $INPUT_DIR/exit_code.run_$abridged_number.log
+  if [ $? -eq 0 ]; then
+      echo "Baseline exit status was 139, ignoring input"
+      continue
+  fi
 
+  mkdir replay/$input_number 2>/dev/null
+# make sure the output files exist
+  touch replay/$input_number/stdout.$input
+  touch replay/$input_number/stderr.$input
+
+  #cleanup any previous runs
+  rm -rf grace_replay
+  rm -f stdout.* stderr.* exit_status
 
   echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT $GRACE_HOME/concolic/bin/replayer --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i"
   STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i || exit 2
@@ -74,8 +77,6 @@ do
 
 #first verify the exit status 
 
-
-  echo "Exit status baseline file: $INPUT_DIR/exit_code.run_$abridged_number.log"
   diff replay/$input_number/exit_status $INPUT_DIR/exit_code.run_$abridged_number.log
 
   if [ ! $? -eq 0 ]; then
@@ -109,11 +110,9 @@ do
   BASELINE_OUTPUT_STDOUT=$BASELINE_OUTPUT_DIR/run_$input_number/stdout
   BASELINE_OUTPUT_STDERR=$BASELINE_OUTPUT_DIR/run_$input_number/stderr
 
-
   echo "$BASELINE_OUTPUT_STDOUT"
   echo "$BASELINE_OUTPUT_STDERR"
 
-  
   if [ -f $BASELINE_OUTPUT_STDOUT ];
   then
     echo ""
@@ -155,11 +154,9 @@ do
 #  rm stdout.$input 2>/dev/null
 #  rm stderr.$input 2>/dev/null
 
-  cd ..
+  cd ../..
 
 done
-
-cd ..
 
 echo "ps_validate.sh: All inputs validated"
 exit 0
