@@ -55,5 +55,6 @@ bool Register::is16bit(Register::RegisterName reg)
 
 bool Register::is32bit(Register::RegisterName reg)
 {
-	return reg == EAX || reg == EBX || reg == ECX || reg == EDX;
+	return reg == EAX || reg == EBX || reg == ECX || reg == EDX || 
+		reg == ESI || reg == EDI || reg == ESP || reg == EBP;
 }
