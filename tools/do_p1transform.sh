@@ -14,7 +14,8 @@ TIMEOUT_VALUE=$5
 
 # configuration variables
 P1_DIR=p1.xform
-EXECUTED_ADDRESSES=concolic.files_a.stratafied_0001/executed_address_list.txt
+CONCOLIC_DIR=concolic.files_a.stratafied_0001
+EXECUTED_ADDRESSES=$CONCOLIC_DIR/executed_address_list.txt
 EXECUTED_ADDRESSES_MANUAL=manual_coverage.txt
 EXECUTED_ADDRESSES_FINAL=final.coverage.txt
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt
@@ -49,6 +50,44 @@ cat $EXECUTED_ADDRESSES_FINAL | sed 's/.*\(0x.*\)/\1/' >tmp
 mv tmp $EXECUTED_ADDRESSES_FINAL
 
 $PEASOUP_HOME/tools/cover.sh $ORIGINAL_BINARY $MEDS_ANNOTATION_FILE $EXECUTED_ADDRESSES_FINAL $LIBC_FILTER $COVERAGE_FILE $BLACK_LIST
+
+baseline_flag=0
+#delete the coverage file if all baseline exit status results are 139
+for i in `ls $CONCOLIC_DIR/input*.json`
+do
+  input=`basename $i .json`
+  input_number=`echo $input | sed "s/input_//"`
+
+  abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
+
+  #if there is no exit code for the input number, skip for now.
+  if [ ! -f "$CONCOLIC_DIR/exit_code.run_$abridged_number.log" ]; then
+      echo "do_p1transform.sh: No baseline data for input $input_number, missing exit status"
+      continue;
+  fi
+  echo "Exit status baseline file: $CONCOLIC_DIR/exit_code.run_$abridged_number.log"
+  #if baseline exited with 139, ignore input
+  grep 139 $CONCOLIC_DIR/exit_code.run_$abridged_number.log
+  if [ $? -eq 0 ]; then
+      echo "Baseline exit status was 139 for input $i, ignoring input"
+      continue
+  fi
+
+  echo "do_p1transform.sh: Found at least one grace produced valid baseline comparison output"
+  #at this point we know we have baseline data to compare against
+  #we assume that if exit status was produced, baseline information is available
+  #if I find one, break the loop
+  baseline_flag=`expr $baseline_flag + 1`
+  break
+done
+
+#if no baseline comparison output exists, delete the coverage file
+if [ $baseline_flag -eq 0 ]; then
+    echo "do_p1transform.sh: no valid baseline comparison output, deleting coverage file"
+    rm $COVERAGE_FILE
+    touch $COVERAGE_FILE
+fi
+
 
 if [ $? -eq 0 ]; then
 	if [ -f $COVERAGE_FILE ]; then

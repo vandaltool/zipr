@@ -5,7 +5,10 @@
 #
 # Validate SPRI transform against a suite of input/output pairs
 #
-# TODO: validate against all files created by the original run, not just stdout, stderr
+# TODO: I assume that pwd is the peasoup directory containing the stratafied
+# and original. Perhaps this should be passed in in the future. Also
+# this script will exit in some cases without cd'ing back to the original
+# directory it started in.
 #
 
 # Inputs
@@ -17,6 +20,8 @@ BASELINE_OUTPUT_DIR=$INPUT_DIR/sandboxed-files
 
 REPLAYER_TIMEOUT=120        # timeout value for when replaying input -- for now 120 seconds per input
 
+ORIG_PROG=a.ncexe
+baseline_cnt=0
 TOP_LEVEL=`pwd`
 
 rm -fr replay 2>/dev/null
@@ -58,6 +63,10 @@ do
       echo "Baseline exit status was 139 for input $i, ignoring input"
       continue
   fi
+
+  #at this point we know we have baseline data to compare against
+  #we assume that if exit status was produced, baseline information is available
+  baseline_cnt=`expr $baseline_cnt + 1`
 
   mkdir replay/$input_number 2>/dev/null
 # make sure the output files exist
@@ -157,6 +166,36 @@ do
   cd ../..
 
 done
+
+#if no baseline run was found, run the original program with no input
+#If the original program doesn't segfault (139), compare the original run
+#exit status against the transformed program exist status
+if [ $baseline_cnt -eq 0 ];then
+
+    echo "ps_validate.sh: No valid baseline to compare against, performing simple no args sanity check instead"
+
+    timeout $REPLAYER_TIMEOUT ./$ORIG_PROG &>/dev/null
+    status=$?
+    if [ $status -ne 139 ];then
+	echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT $GRACE_HOME/concolic/bin/replayer --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i"
+	STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i || exit 2
+
+	#just in case there is a replayer failure, create an exit status file
+	touch exit_status
+	echo "Subject exited with status $status" >tmp
+	diff tmp exit_status
+	rm tmp
+
+    #if the status was 139, print a message
+    else
+	echo "ps_validate.sh: original program exits with 139 status with no input."
+	#fall through for now, exit 0
+	#this is done because it is assumed that if we reach this point p1 
+	#is the transform in question being validated, which is enfoced
+	#prior to the call to do_p1transform. The coverage file is deleted
+	#if we are in this scenario.
+    fi
+fi
 
 echo "ps_validate.sh: All inputs validated"
 exit 0
