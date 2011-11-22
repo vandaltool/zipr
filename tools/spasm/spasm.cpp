@@ -108,7 +108,7 @@ static vector<spasmline_t> getSpasmLines(const string &inputFile)
     int lineCount = 0;
 
     string commentOnlyRegex = "^[[:blank:]]*(;|#).*$";
-    string entryRedirectRegex = "^[[:blank:]]*0x[[:xdigit:]]+[[:blank:]]+->[[:blank:]]+([.]|[a-zA-Z0-9_]*|0x[:xdigi:]+)[[:blank:]]*((;|#).*)?$";
+    string entryRedirectRegex = "^[[:blank:]]*0x[[:xdigit:]]+[[:blank:]]+->[[:blank:]]+([.]|[a-zA-Z0-9_]*|0x[:xdigit:]+)[[:blank:]]*((;|#).*)?$";
     string otherRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+->[[:blank:]]+((0x[[:xdigit:]]+)|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]*((;|#).*)?$";
     string insertRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+[-][|][[:blank:]]+0x[[:xdigit:]]+[[:blank:]]*((;|#).*)?$";
     string instructionRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+[*][*][[:blank:]]+.*$";
