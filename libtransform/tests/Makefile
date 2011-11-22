@@ -22,7 +22,7 @@ all: env_check  ${exes}
 	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off
 
 .c.o:
-	gcc -O3 -c -w $< 
+	gcc -O2 -c $< 
 #	${PEASOUP_HOME}/tools/ps_comp.sh $< 
 
 .cpp.o:

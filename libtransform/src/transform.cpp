@@ -74,8 +74,25 @@ void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p
 	{
 		dataBits[0] = 0x52; 
 	}
+	else if (p_reg == Register::ESI)
+	{
+		dataBits[0] = 0x56; 
+	}
+	else if (p_reg == Register::EDI)
+	{
+		dataBits[0] = 0x57; 
+	}
+	else if (p_reg == Register::EBP)
+	{
+		dataBits[0] = 0x55; 
+	}
+	else if (p_reg == Register::ESP)
+	{
+		dataBits[0] = 0x54; 
+	}
 	else
 	{
+		cerr << "Transform::addPushRegister: unhandled register";
 		return;
 	}
 
@@ -103,8 +120,25 @@ void Transform::addPopRegister(Instruction_t *p_instr, Register::RegisterName p_
 	{
 		dataBits[0] = 0x5a; 
 	}
+	else if (p_reg == Register::ESI)
+	{
+		dataBits[0] = 0x5e; 
+	}
+	else if (p_reg == Register::EDI)
+	{
+		dataBits[0] = 0x5f; 
+	}
+	else if (p_reg == Register::EBP)
+	{
+		dataBits[0] = 0x5d; 
+	}
+	else if (p_reg == Register::ESP)
+	{
+		dataBits[0] = 0x5c; 
+	}
 	else
 	{
+		cerr << "Transform::addPopRegister: unhandled register";
 		return;
 	}
 
@@ -341,6 +375,26 @@ void Transform::addTestRegister8(Instruction_t *p_instr, Register::RegisterName 
 		dataBits[0] = 0x84;
 		dataBits[1] = 0xd2;
 	}
+	else if (p_reg == Register::AH)
+	{
+		dataBits[0] = 0x84;
+		dataBits[1] = 0xe4;
+	}
+	else if (p_reg == Register::BH)
+	{
+		dataBits[0] = 0x84;
+		dataBits[1] = 0xff;
+	}
+	else if (p_reg == Register::CH)
+	{
+		dataBits[0] = 0x84;
+		dataBits[1] = 0xed;
+	}
+	else if (p_reg == Register::DH)
+	{
+		dataBits[0] = 0x84;
+		dataBits[1] = 0xf6;
+	}
 	else
 	{
 		cerr << "Transform::addTestRegister8(): unhandled register" << endl;
@@ -387,7 +441,7 @@ void Transform::addTestRegister16(Instruction_t *p_instr, Register::RegisterName
 	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }
 
-// same as 16 bit version? hmm, weird
+// test <reg32>, <reg32>
 void Transform::addTestRegister32(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
 {
 	string dataBits;
@@ -411,6 +465,26 @@ void Transform::addTestRegister32(Instruction_t *p_instr, Register::RegisterName
 	{
 		dataBits[0] = 0x85;
 		dataBits[1] = 0xd2;
+	}
+	else if (p_reg == Register::ESI)
+	{
+		dataBits[0] = 0x85;
+		dataBits[1] = 0xf6;
+	}
+	else if (p_reg == Register::EDI)
+	{
+		dataBits[0] = 0x85;
+		dataBits[1] = 0xff;
+	}
+	else if (p_reg == Register::EBP)
+	{
+		dataBits[0] = 0x85;
+		dataBits[1] = 0xed;
+	}
+	else if (p_reg == Register::ESP)
+	{
+		dataBits[0] = 0x85;
+		dataBits[1] = 0xe4;
 	}
 	else
 	{
@@ -600,6 +674,27 @@ void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Ins
 		dataBits[0] = 0xf6;
 		dataBits[1] = 0xd2;
 	}
+	else if (p_reg == Register::AH)
+	{
+		dataBits[0] = 0xf6;
+		dataBits[1] = 0xd4;
+	}
+	else if (p_reg == Register::BH)
+	{
+		dataBits[0] = 0xf6;
+		dataBits[1] = 0xd7;
+	}
+	else if (p_reg == Register::CH)
+	{
+		dataBits[0] = 0xf6;
+		dataBits[1] = 0xd5;
+	}
+	else if (p_reg == Register::DH)
+	{
+		dataBits[0] = 0xf6;
+		dataBits[1] = 0xd6;
+	}
+
 	else
 	{
 		cerr << "Transform::addNot(): unhandled register" << endl;

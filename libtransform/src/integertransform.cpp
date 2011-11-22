@@ -102,8 +102,9 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 	assert (p_annotation.isValid());
 	if (
 		!(p_annotation.getBitWidth() == 32 && Register::is32bit(p_annotation.getRegister())) && 
-		!(p_annotation.getBitWidth() == 16 && Register::is16bit(p_annotation.getRegister())) && 
-		!(p_annotation.getBitWidth() == 8 && Register::is8bit(p_annotation.getRegister()))
+		!(p_annotation.getBitWidth() == 16 && (Register::is16bit(p_annotation.getRegister()) ||
+			p_annotation.getRegister() == Register::ESI || p_annotation.getRegister() == Register::EDI || p_annotation.getRegister() == Register::EBP)) && 
+		!(p_annotation.getBitWidth() == 8 && Register::is8bit(p_annotation.getRegister())) 
 		)
 	{
       cerr << "addSignednessCheck(): Unexpected bit width and register combination: skipping instrumetnation for: " << p_annotation.toString() << endl;
