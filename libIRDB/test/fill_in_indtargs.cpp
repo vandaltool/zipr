@@ -253,6 +253,74 @@ void print_targets()
 	cout<<endl;
 }
 
+/* 
+ *
+ * add_num_handle_fn_watches - 
+ *
+ *  This function is a quick and dirty way to ensure that 
+ *  certain function call watches are not interfered with by ILR
+ *  This is done by marking the functions of interest as indirect targets
+ *  so that they receive a spri rule of the form <original_addr> -> <newaddr>
+ * 
+ *  Current function list:  
+ *      fread, fread_unlocked, 
+ *      fwrite, fwrite_unlocked, 
+ *      strncpy, strncat, strncmp, strxfrm
+ *      memcpy, memmove, memcmp, memchr, memrchr, memset
+ *      wcsncpy, wcsncat, wcsncmp, wcsxfrm
+ *      wmemcpy, wmemmove, wmemcmp, wmemchr, memset
+ *
+ */
+void add_num_handle_fn_watches(VariantIR_t * virp)
+{
+    /* Loop over the set of functions */
+    for(
+        set<Function_t*>::const_iterator it=virp->GetFunctions().begin();
+            it!=virp->GetFunctions().end();
+            ++it
+        )
+    {
+        Function_t *func=*it;
+        char *funcname=(char *)func->GetName().c_str();
+        virtual_offset_t the_offset=func->GetEntryPoint()->GetAddress()->GetVirtualOffset();
+
+        /* macro to facilitate the checking */
+#define CHECK_FN(fname)                         \
+        if(strcmp(#fname, funcname)==0)         \
+        {                                       \
+            possible_target(the_offset);        \
+        }
+
+        /* 
+         * if one that we want to watch, 
+         * mark it as a possible target 
+         */
+        CHECK_FN(fread);
+        CHECK_FN(_IO_fread);
+        CHECK_FN(fread_unlocked);
+        CHECK_FN(fwrite);
+        CHECK_FN(_IO_fwrite);
+        CHECK_FN(fwrite_unlocked);
+        CHECK_FN(strncpy);
+        CHECK_FN(strncmp);
+        CHECK_FN(strxfrm);
+        CHECK_FN(memcpy);
+        CHECK_FN(memmove);
+        CHECK_FN(memcmp);
+        CHECK_FN(memchr);
+        CHECK_FN(memrchr);
+        CHECK_FN(memset);
+        CHECK_FN(wcsncpy);
+        CHECK_FN(wcsxfrm);
+        CHECK_FN(wmemcpy);
+        CHECK_FN(wmemmove);
+        CHECK_FN(wmemcmp);
+        CHECK_FN(wmemchr);
+        CHECK_FN(wmemset);
+        
+    }
+
+}
 
 void fill_in_indtargs(VariantIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
 {
@@ -331,6 +399,9 @@ void fill_in_indtargs(VariantIR_t* virp, string elf_file, pqxxDB_t &pqxx_interfa
 	cout<<"# ATTRIBUTE total_indirect_targets_pass4="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
+
+    /* Add functions containing unsigned int params to the list */
+    add_num_handle_fn_watches(virp);
 
 	/* set the IR to have some instructions marked as IB targets */
 	mark_targets(virp);
