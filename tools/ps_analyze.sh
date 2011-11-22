@@ -78,6 +78,8 @@ check_options()
 	if [ ! -z $1 ]; then
 		exit -3;	
 	fi
+
+	phases_off="$phases_off isr=off"
 	
 }
 
@@ -191,6 +193,7 @@ perform_step()
 	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
+	echo "# ATTRIBUTE peasoup_step_command=$command " >> $logfile
 	echo "# ATTRIBUTE peasoup_step_exitcode=$command_exit" >> $logfile
 
 	# move to the next step 
@@ -482,7 +485,7 @@ report_logs
 # go back to original directory
 cd - > /dev/null 2>&1
 
-cp $newdir/$name.sh $stratafied_exe
+perform_step copy_exe cp $newdir/$name.sh $stratafied_exe
 
 # return the exit code of the copy as the final return value 
 # So that a predictable return value is returned
