@@ -598,10 +598,18 @@ void Rewriter::dissassemble()
 
       		int instr_len = Disasm(&disasm);
 
-      		instr->setAsm(string(disasm.CompleteInstr));  
-
-      		instr->setSize(instr_len);
-      		instr->setData((void*)disasm.EIP);
+		if(instr_len>0)
+		{
+      			instr->setAsm(string(disasm.CompleteInstr));  
+      			instr->setSize(instr_len);
+      			instr->setData((void*)disasm.EIP);
+		}
+		else
+		{
+			/* bogus intruction, remove it */
+			m_instructions[instr->getAddress()]=NULL;
+			delete instr;
+		}
     	}
 }
 

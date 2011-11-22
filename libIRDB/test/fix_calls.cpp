@@ -191,6 +191,13 @@ void fix_call(Instruction_t* insn, VariantIR_t *virp)
 	if(insn->GetAddress()->GetVirtualOffset()==0)
 		return;
 
+	/* if the first byte isn't a call opcode, there's some odd prefixing and we aren't handling it.
+	 * this comes up most frequently in a call gs:0x10 instruction where an override prefix specifes the gs: part.
+	 */
+	if( insn->GetDataBits()[0]!=0xff && insn->GetDataBits()[0]!=0xe8 && insn->GetDataBits()[0]!=0x9a )
+		return;
+
+
 	virtual_offset_t next_addr=insn->GetAddress()->GetVirtualOffset() + insn->GetDataBits().length();
 
 	/* create a new instruction and a new addresss for it that do not correspond to any original program address */

@@ -786,8 +786,17 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     /* =============== if Arg1.IsMemoryType, add decoration-example == "dword ptr ds:[" */
     if ((GV.MemDecoration >0) && (GV.MemDecoration < 99)) {
         if (GV.SYNTAX_ == NasmSyntax) {
-	    if(strstr((*pMyDisasm).Instruction.Mnemonic, "lea")==0) 
+	    if(
+		strstr((*pMyDisasm).Instruction.Mnemonic, "lea")==0 && 	        /* lea */
+		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT0")==0 &&   /* prefetchT0 */
+		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT1")==0 &&   /* prefetchT1 */
+		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT2")==0 &&   /* prefetchT2 */
+		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchNTA")==0     /* prefetchNTA */
+	      )  
+	  {
+		/* don't get the nasm prefix for size */
 		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+	  }
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
             if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
@@ -851,8 +860,15 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     /* =============== if Arg2.IsMemoryType, add decoration-example == "dword ptr ds:[" */
     if ((GV.MemDecoration >100) && (GV.MemDecoration < 199)) {
         GV.MemDecoration -= 100;
-        if (GV.SYNTAX_ == NasmSyntax) {
-            (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+	   if (GV.SYNTAX_ == NasmSyntax) {
+     		if (
+		strstr((*pMyDisasm).Instruction.Mnemonic, "lea")==0 && 	        /* lea */
+		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT0")==0 &&   /* prefetchT0 */
+		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT1")==0 &&   /* prefetchT1 */
+		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchT2")==0 &&   /* prefetchT2 */
+		strstr((*pMyDisasm).Instruction.Mnemonic, "prefetchNTA")==0     /* prefetchNTA */
+	      )   
+            	(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
             if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");

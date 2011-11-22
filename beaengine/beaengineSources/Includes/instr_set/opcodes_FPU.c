@@ -286,7 +286,7 @@ void __bea_callspec__ D9_(PDISASM pMyDisasm)
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
             (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+FPUCONTROL;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fstenv ");
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fnstenv ");
             #endif
             (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+FPU_REG+REG0;
             (*pMyDisasm).Argument2.ArgSize = 80;

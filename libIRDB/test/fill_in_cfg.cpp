@@ -233,6 +233,7 @@ void add_new_instructions(VariantIR_t *virp)
 
         	/* Read Section headers */
         	Elf32_Shdr *sechdrs=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*secnum);
+		assert(sechdrs);
         	loa.seek(sec_hdr_off, std::ios_base::beg);
         	loa.cread((char*)sechdrs, sizeof(Elf32_Shdr)* secnum);
 
@@ -258,6 +259,7 @@ void add_new_instructions(VariantIR_t *virp)
 			if(first<=missed_address && missed_address<=second)
 			{
 			        char* data=(char*)malloc(sechdrs[secndx].sh_size+16);	 /* +16 to account for a bogus-y instruction that wraps past the end of the section */
+				assert(data);
 				memset(data,0, sechdrs[secndx].sh_size+16);		 /* bogus bits are always 0 */
 
 				/* grab the data from the ELF file for this section */
@@ -279,7 +281,7 @@ void add_new_instructions(VariantIR_t *virp)
 
 /* bea docs say OUT_OF_RANGE and UNKNOWN_OPCODE are defined, but they aren't */
 #define OUT_OF_RANGE (0)
-#define UNKNOWN_OPCODE (1) 
+#define UNKNOWN_OPCODE (-1) 
 
 				/* if we found the instruction, but can't disassemble it, then we skip out for now */
 				if(instr_len==OUT_OF_RANGE || instr_len==UNKNOWN_OPCODE)
@@ -320,6 +322,7 @@ void add_new_instructions(VariantIR_t *virp)
 
 				cout<<"Found new instruction, "<<newinsn->GetComment()<<", at "<<std::hex<<newinsn->GetAddress()->GetVirtualOffset()<<" in file "<<"<no name yet>"<<"."<<endl; 
 				found_instructions++;
+				free(data);
 			}
 		
 		}
@@ -329,6 +332,7 @@ void add_new_instructions(VariantIR_t *virp)
 	
 			cout<<"Cannot find address "<<std::hex<<missed_address<<" in file "<<"<no name yet>"<<"."<<endl; 
 		} 
+		free(sechdrs);
 	}
 	cout<<"Found a total of "<<std::dec<<found_instructions<<" new instructions."<<endl;
 
