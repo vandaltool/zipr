@@ -88,6 +88,9 @@ if [ $baseline_flag -eq 0 ]; then
     touch $COVERAGE_FILE
 fi
 
+#just in case something went wrong, touch the coverage file. An empty coverage file is permissible, but a missing one will cause PN to crash
+
+touch $COVERAGE_FILE
 
 if [ $? -eq 0 ]; then
 	if [ -f $COVERAGE_FILE ]; then
