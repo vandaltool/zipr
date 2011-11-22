@@ -194,7 +194,7 @@ void fix_call(Instruction_t* insn, VariantIR_t *virp)
 	/* if the first byte isn't a call opcode, there's some odd prefixing and we aren't handling it.
 	 * this comes up most frequently in a call gs:0x10 instruction where an override prefix specifes the gs: part.
 	 */
-	if( insn->GetDataBits()[0]!=0xff && insn->GetDataBits()[0]!=0xe8 && insn->GetDataBits()[0]!=0x9a )
+	if( (insn->GetDataBits()[0]!=(char)0xff) && (insn->GetDataBits()[0]!=(char)0xe8) && (insn->GetDataBits()[0]!=(char)0x9a) )
 		return;
 
 
