@@ -72,6 +72,7 @@ void OffsetInference::GetInstructions(vector<Instruction_t*> &instructions,Basic
 }
 */
 
+ //TODO: I am always assuming lower case reg expressions, perhaps I should tolower all strings
 PNStackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 {
     int stack_frame_size = 0;
@@ -471,6 +472,10 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	    //if we find a dealloc, set a flag indicating as such
 	    dealloc_flag = true;
 	}
+	else if(disasm_str.find("leave") != string::npos)
+	{
+	    dealloc_flag = true;
+	}
 	else
 	{
 	    cerr<<"OffsetInference: FindAllOffsets: No Pattern Match"<<endl;
@@ -480,6 +485,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     //if no dealloc is found, set all inferences to null
     if(!dealloc_flag)
     {
+	cerr<<"OffsetInference: FindAllOffsets: No dealloc pattern found, generating a null inference"<<endl;
 	pn_direct_offsets = NULL;
 	pn_scaled_offsets = NULL;
 	pn_all_offsets = NULL;
