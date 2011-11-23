@@ -171,6 +171,8 @@ PNStackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *fun
 //TODO: what about moving esp into a register?
 
 //TODO: Try catches for exceptions thrown by PNStackLayout, for now asserts will fail in PNStackLayout
+
+//TODO: For t&e this function will 
 void OffsetInference::FindAllOffsets(Function_t *func)
 {
     PNStackLayout *pn_all_offsets = NULL;
@@ -197,6 +199,10 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     BasicBlock_t *block = cfg.GetEntry();
 
     pn_all_offsets = SetupLayout(block,func);
+
+    //TODO: this is just for t&e, remove for other versions,
+    //for t&e don't produce an inference if not dealloc is found
+    bool dealloc_flag=false;
 
     if(pn_all_offsets != NULL)
     {
@@ -460,10 +466,24 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 		}		    
 	    }
 	}
+	else if(regexec(&(pn_regex.regex_stack_dealloc), disasm_str.c_str(), max, pmatch, 0)==0)
+	{
+	    //if we find a dealloc, set a flag indicating as such
+	    dealloc_flag = true;
+	}
 	else
 	{
 	    cerr<<"OffsetInference: FindAllOffsets: No Pattern Match"<<endl;
 	}
+    }
+
+    //if no dealloc is found, set all inferences to null
+    if(!dealloc_flag)
+    {
+	pn_direct_offsets = NULL;
+	pn_scaled_offsets = NULL;
+	pn_all_offsets = NULL;
+	pn_p1_offsets = NULL;
     }
 
     direct[func->GetName()] = pn_direct_offsets;

@@ -504,6 +504,7 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 }
 
 
+//TODO: rewrite, this was a hackish solution to clean up the code for the hierarchy, which isn't even used for T&E
 vector<PNStackLayout*> PNTransformDriver::GenerateInferences(Function_t *func,int level)
 {
     vector<PNStackLayout*> layouts;
