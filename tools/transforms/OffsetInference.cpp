@@ -485,7 +485,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     //if no dealloc is found, set all inferences to null
     if(!dealloc_flag)
     {
-	cerr<<"OffsetInference: FindAllOffsets: No dealloc pattern found, generating a null inference"<<endl;
+	cerr<<"OffsetInference: FindAllOffsets: No Dealloc Pattern Found, returning null inference"<<endl;
 	pn_direct_offsets = NULL;
 	pn_scaled_offsets = NULL;
 	pn_all_offsets = NULL;
