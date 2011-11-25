@@ -1,0 +1,7 @@
+pdb_register: MESSAGE: To do: if shared libs, then need to add them to this table
+# ATTRIBUTE start_time=2011-11-25T12:19:28-0800
+# ATTRIBUTE end_time=2011-11-25T12:19:28-0800
+# ATTRIBUTE peasoup_step_name=pdb_register
+# ATTRIBUTE peasoup_step_number=7
+# ATTRIBUTE peasoup_step_command=/home/jdh8d/peasoup/uva/peasoup_home.trunk/tools/db/pdb_register.sh cat_shared_orig_29280 /home/jdh8d/peasoup/uva/security_transforms.trunk/libtransform/tests/false_positives/peasoup_executable_directory.cat.shared.orig.29280 registered.id 
+# ATTRIBUTE peasoup_step_exitcode=0

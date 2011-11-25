@@ -1,0 +1,6 @@
+# ATTRIBUTE start_time=2011-11-25T12:18:33-0800
+# ATTRIBUTE end_time=2011-11-25T12:18:33-0800
+# ATTRIBUTE peasoup_step_name=copy_exe
+# ATTRIBUTE peasoup_step_number=18
+# ATTRIBUTE peasoup_step_command=cp ls.shared.orig.sh ../ls.shared.orig.peasoup 
+# ATTRIBUTE peasoup_step_exitcode=0

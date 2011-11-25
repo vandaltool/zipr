@@ -1,0 +1,4 @@
+*** PEASOUP: 32bit Sign error detected at: 0x0 nextPC:0xf0001a50 esp:0xbf979d1c eax:0xbf979c9c ebx:0xbf979b8c ecx:0xf480e8 edx:0x2 POLICY: controlled exit
+*** PEASOUP: 32bit Sign error detected at: 0x0 nextPC:0xf0001a40 esp:0xbf979d1c eax:0xbf979c9c ebx:0xbf979b8c ecx:0xf480e8 edx:0x2 POLICY: controlled exit
+*** PEASOUP: 32bit Sign error detected at: 0x0 nextPC:0xf0001a90 esp:0xbf979d1c eax:0xbf979c9c ebx:0xbf979b8c ecx:0x0 edx:0x8000 POLICY: controlled exit
+*** PEASOUP: Add/Sub overflow detected at: 0x8049909 nextPC:0xf0001aa0 esp:0xbf979d1c eax:0x0 ebx:0xbf979b90 ecx:0x4 edx:0x8000 POLICY: controlled exit

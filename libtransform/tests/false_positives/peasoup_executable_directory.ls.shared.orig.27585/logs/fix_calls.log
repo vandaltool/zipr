@@ -1,0 +1,20 @@
+Reading variant 294 from database.
+Fixing calls->push/jmp in variant (variant_id=294:schema=1:orig_pid=293:name=ls_shared_orig_27585_cloneof293:ATN=Variant294_address:FTN=Variant294_function:ITN=Variant294_instruction).
+# ATTRIBUTE fixed_calls=27
+# ATTRIBUTE no_fix_needed_calls=901
+# ATTRIBUTE other_instructions=19935
+# ATTRIBUTE fixed_ratio=0.0290948
+# ATTRIBUTE remaining_ratio=0.0431865
+# ATTRIBUTE no_target_insn=19
+# ATTRIBUTE target_not_in_function=0
+# ATTRIBUTE call_to_not_entry=2
+# ATTRIBUTE thunk_check=2
+# ATTRIBUTE found_pattern=0
+Writing variant (variant_id=294:schema=1:orig_pid=293:name=ls_shared_orig_27585_cloneof293:ATN=Variant294_address:FTN=Variant294_function:ITN=Variant294_instruction) back to database.
+Done!
+# ATTRIBUTE start_time=2011-11-25T12:18:13-0800
+# ATTRIBUTE end_time=2011-11-25T12:18:17-0800
+# ATTRIBUTE peasoup_step_name=fix_calls
+# ATTRIBUTE peasoup_step_number=13
+# ATTRIBUTE peasoup_step_command=/home/jdh8d/peasoup/uva/security_transforms.trunk/libIRDB/test/fix_calls.exe 294 
+# ATTRIBUTE peasoup_step_exitcode=0

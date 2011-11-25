@@ -1,0 +1,10 @@
+Looking up variant 296 from database.
+Reading variant 296 from database.
+Reading variant 295 from database.
+Done!
+# ATTRIBUTE start_time=2011-11-25T12:19:45-0800
+# ATTRIBUTE end_time=2011-11-25T12:19:46-0800
+# ATTRIBUTE peasoup_step_name=generate_spri
+# ATTRIBUTE peasoup_step_number=16
+# ATTRIBUTE peasoup_step_command=/home/jdh8d/peasoup/uva/security_transforms.trunk/libIRDB/test/generate_spri.exe 296 a.irdb.aspri 
+# ATTRIBUTE peasoup_step_exitcode=0
