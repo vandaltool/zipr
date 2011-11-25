@@ -1,6 +1,0 @@
-# ATTRIBUTE start_time=2011-11-25T12:17:35-0800
-# ATTRIBUTE end_time=2011-11-25T12:17:35-0800
-# ATTRIBUTE peasoup_step_name=heaprand
-# ATTRIBUTE peasoup_step_number=2
-# ATTRIBUTE peasoup_step_command=/home/jdh8d/peasoup/uva/peasoup_home.trunk/tools/update_env_var.sh STRATA_HEAPRAND 1 
-# ATTRIBUTE peasoup_step_exitcode=0

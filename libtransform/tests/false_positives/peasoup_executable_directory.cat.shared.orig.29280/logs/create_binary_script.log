@@ -1,6 +1,0 @@
-# ATTRIBUTE start_time=2011-11-25T12:19:22-0800
-# ATTRIBUTE end_time=2011-11-25T12:19:22-0800
-# ATTRIBUTE peasoup_step_name=create_binary_script
-# ATTRIBUTE peasoup_step_number=1
-# ATTRIBUTE peasoup_step_command=/home/jdh8d/peasoup/uva/peasoup_home.trunk/tools/do_makepeasoupbinary.sh cat.shared.orig 
-# ATTRIBUTE peasoup_step_exitcode=0

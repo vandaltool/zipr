@@ -1,0 +1,50 @@
+infile is a.ncexe
+outfile is tmp.exe.823
+stratafier_file is
+Executable sections are .init .plt .text .fini
+a.ncexe-.init 804964c 000030
+a.ncexe-.plt 804967c 000650
+a.ncexe-.text 8049cd0 0120dc
+a.ncexe-.fini 805bdac 00001c
+EOF 0 0
+cp tmp.exe.823 ./exe_copy.temp.928
+cp /home/jdh8d/peasoup/uva/stratafier/stratafier.914.o ./strata_exe.temp.928
+Original entry point is 0x8049cd0
+ld --section-start .note.ABI-tag=0x90610c4 --section-start .init=0x90610e4 /home/jdh8d/peasoup/uva/stratafier/stratafier.914.o -T/home/jdh8d/peasoup/uva/stratafier/test_ld_script -o stratafier.o.exe.914 -static
+/home/jdh8d/peasoup/uva/stratafier/strata_to_data stratafier.o.exe.914 strata.linked.data.928 0x9060ff0
+address=9060ff0
+Found nobits seg .bss
+Found nobits seg __libc_freeres_ptrs
+/home/jdh8d/peasoup/uva/binutils-2.19/binutils/objcopy --add-segment .strata=PT_LOAD,0x9060ff0,0,0,7,1000 --add-section .strata=strata.linked.data.928 --change-section-address .strata=0x9060ff0 --set-section-flags .strata=alloc --set-start 0x09061210 ./exe_copy.temp.928 new.exe
+Adding segment name=.strata, properties=PT_LOAD,0x9060ff0,0,0,7,1000adding segment .strata with type=1, vaddr=9060ff0, filesz=0, memsz=0, flags=7, align=4096
+Adding .strata as section 0
+
+infile is a.ncexe
+outfile is tmp.exe.823
+stratafier_file is stratafier.o.exe
+Executable sections are .init .plt .text .fini
+[STRATA TRANSLATED START: 09061280]
+a.ncexe-.init 804964c 000030
+a.ncexe-.plt 804967c 000650
+a.ncexe-.text 8049cd0 0120dc
+a.ncexe-.fini 805bdac 00001c
+strata_translated_startup 09061280 7
+EOF 0 0
+cp tmp.exe.823 ./exe_copy.temp.1220
+cp /home/jdh8d/peasoup/uva/stratafier/stratafier.1208.o ./strata_exe.temp.1220
+Original entry point is 0x8049cd0
+ld --section-start .note.ABI-tag=0x90610c4 --section-start .init=0x90610e4 /home/jdh8d/peasoup/uva/stratafier/stratafier.1208.o -T/home/jdh8d/peasoup/uva/stratafier/test_ld_script -o stratafier.o.exe.1208 -static
+/home/jdh8d/peasoup/uva/stratafier/strata_to_data stratafier.o.exe.1208 strata.linked.data.1220 0x9060ff0
+address=9060ff0
+Found nobits seg .bss
+Found nobits seg __libc_freeres_ptrs
+/home/jdh8d/peasoup/uva/binutils-2.19/binutils/objcopy --add-segment .strata=PT_LOAD,0x9060ff0,0,0,7,1000 --add-section .strata=strata.linked.data.1220 --change-section-address .strata=0x9060ff0 --set-section-flags .strata=alloc --set-start 0x09061210 ./exe_copy.temp.1220 new.exe
+Adding segment name=.strata, properties=PT_LOAD,0x9060ff0,0,0,7,1000adding segment .strata with type=1, vaddr=9060ff0, filesz=0, memsz=0, flags=7, align=4096
+Adding .strata as section 0
+
+# ATTRIBUTE start_time=2011-11-25T13:54:46-0800
+# ATTRIBUTE end_time=2011-11-25T13:54:50-0800
+# ATTRIBUTE peasoup_step_name=stratafy_with_pc_confine
+# ATTRIBUTE peasoup_step_number=0
+# ATTRIBUTE peasoup_step_command=sh /home/jdh8d/peasoup/uva/strata_head/tools/pc_confinement/stratafy_with_pc_confine.sh a.ncexe a.stratafied 
+# ATTRIBUTE peasoup_step_exitcode=0

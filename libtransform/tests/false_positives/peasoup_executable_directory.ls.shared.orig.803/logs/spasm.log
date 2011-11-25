@@ -1,0 +1,8 @@
+Running nasm (nasm -O1 -w-number-overflow a.irdb.aspri.asm -o a.irdb.aspri.asm.bin)...
+Resolving Symbols .... Done!
+# ATTRIBUTE start_time=2011-11-25T13:55:38-0800
+# ATTRIBUTE end_time=2011-11-25T13:55:44-0800
+# ATTRIBUTE peasoup_step_name=spasm
+# ATTRIBUTE peasoup_step_number=17
+# ATTRIBUTE peasoup_step_command=/home/jdh8d/peasoup/uva/security_transforms.trunk/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe 
+# ATTRIBUTE peasoup_step_exitcode=0

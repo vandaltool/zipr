@@ -1,8 +1,0 @@
-IDA 6.* detected.
-/home/jdh8d/peasoup/uva/peasoup_home.trunk/tools/do_idapro.sh: line 5: 28072 Segmentation fault      screen -D -L -ln -m -a -T xterm sh -x $SMPSA_HOME/SMP-analyze.sh a.ncexe
-# ATTRIBUTE start_time=2011-11-25T12:17:35-0800
-# ATTRIBUTE end_time=2011-11-25T12:17:46-0800
-# ATTRIBUTE peasoup_step_name=meds_static
-# ATTRIBUTE peasoup_step_number=6
-# ATTRIBUTE peasoup_step_command=/home/jdh8d/peasoup/uva/peasoup_home.trunk/tools/do_idapro.sh 
-# ATTRIBUTE peasoup_step_exitcode=0

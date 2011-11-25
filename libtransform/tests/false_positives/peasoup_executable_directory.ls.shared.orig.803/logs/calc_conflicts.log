@@ -1,0 +1,15 @@
+New Variant, after reading registration, is: (variant_id=300:schema=1:orig_pid=299:name=ls_shared_orig_803_cloneof299:ATN=Variant300_address:FTN=Variant300_function:ITN=Variant300_instruction)
+# ATTRIBUTE num_addresses=76448
+# ATTRIBUTE num_conflicts=7
+# ATTRIBUTE total_conflicts=19549
+# ATTRIBUTE ave_conflicts=0.255716
+# ATTRIBUTE ave_bytes_conflicted=9.15655e-05
+# ATTRIBUTE total_executable_bytes = 75640
+# ATTRIBUTE ave_conflicts_within_exe=0.258448
+# ATTRIBUTE ave_bytes_conflicted_within_exe=9.25436e-05
+# ATTRIBUTE start_time=2011-11-25T13:55:34-0800
+# ATTRIBUTE end_time=2011-11-25T13:55:35-0800
+# ATTRIBUTE peasoup_step_name=calc_conflicts
+# ATTRIBUTE peasoup_step_number=15
+# ATTRIBUTE peasoup_step_command=/home/jdh8d/peasoup/uva/security_transforms.trunk/libIRDB/test/calc_conflicts.exe 300 a.ncexe 
+# ATTRIBUTE peasoup_step_exitcode=0
