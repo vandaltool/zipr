@@ -73,6 +73,8 @@ int main(void)
 	fputs("Enter a sequence number [ >= 0 ]: ", stdout);
 	fflush(stdout);
 
+	fputs("A0", stdout);
+	fflush(stdout);
 
 	char *end, buff [7];
 	char* rBuff = fgets(buff, sizeof buff, stdin);//STONESOUP:INTERACTION_POINT    //STONESOUP:feature-PIPE
@@ -80,11 +82,15 @@ int main(void)
 		value = -1;
 		return 1;
 	}
+	fputs("A", stdout);
+	fflush(stdout);
 	value = (short) strtol(buff, &end, 10);
 	fflush(stdin);
 	if(!(!isspace(*buff) && end != buff && (*end == '\n' || *end == '\0')))
 		return 1;
 
+	fputs("B", stdout);
+	fflush(stdout);
 
 	//-1 is the "magic" value that will quit out of the while loop
 	if (value == -1) {
@@ -92,6 +98,8 @@ int main(void)
 	}
 	//Otherwise, send the value to the recaman function if its greater than zero
 	else if (value >= 0) {
+	fputs("C", stdout);
+	fflush(stdout);
 		signed short stuff[100];//STONESOUP:feature-SIGNED_SHORT
 
 		short y = (short)(-(-32700-value))/(short)350;//STONESOUP:CROSSOVER_POINT
@@ -100,7 +108,7 @@ int main(void)
 		*(stuff+x[1]) = value;//STONESOUP:TRIGGER_POINT   //STONESOUP:feature-BUFFER_ADDRESS_ARRAY_INDEX
 
 // CLARK: if you uncomment the printf below, we will get a successful detection
-//		printf("debug: value: %d %d\n", value, *(stuff+x[1])); // this causes the detection
+		printf("debug: value: %d %d\n", value, *(stuff+x[1])); // this causes the detection
 
 		printf("%d\n\n", recaman(*(stuff+x[1])));
 	}

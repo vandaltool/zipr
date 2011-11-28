@@ -22,7 +22,7 @@ recaman_release: recaman_release.o
 	$(SS_CC)  $(COMMON_FLAGS) $(SS_CFLAGs) -std=c99 $< -o $@ 
 
 recaman.peasoup:	recaman_debug
-	$(PEASOUP_HOME)/tools/ps_analyze.sh recaman_debug recaman.peasoup --step ilr=off --step p1transform=on --step concolic=on
+	$(PEASOUP_HOME)/tools/ps_analyze.sh recaman_debug recaman.peasoup --step ilr=off --step p1transform=off --step concolic=off --step signconv_func_monitor=on --step integertransform=off
 
 clean:
 	rm -f *.o recaman_debug recaman_release 
