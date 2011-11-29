@@ -33,7 +33,7 @@
 
 
 EXPORT extern FILE *yyin;
-EXPORT int yylineno = 1;
+EXPORT int yylineno = 1; 
 
 typedef struct _Stack {
   YY_BUFFER_STATE buf;
@@ -99,8 +99,8 @@ static unsigned char* esc(unsigned char* s)
   return u;
 }
  
-/* strndup -- allocate a string, copy n characters into it and add \0 */
-static unsigned char* strndup(const unsigned char *s, size_t n)
+/* u_strndup -- allocate a string, copy n characters into it and add \0 */
+static unsigned char* u_strndup(const unsigned char *s, size_t n)
 {
   unsigned char *t = malloc(n + 1);
   if (!t) errexit("Out of memory\n");
@@ -145,9 +145,9 @@ nl		\n|\r\n|\r
 <INITIAL,INIT>"</"({name})?	{BEGIN(MARKUP); yylval.s=strdup(yytext+2); return END;}
 <INITIAL,INIT>{data}		{yylval.s=strdup(yytext); return TEXT;}
 <INITIAL,INIT>{nl}		{yylval.s=strdup(yytext); yylineno++; return TEXT;}
-<INITIAL,INIT>{comment}	{yylval.s=strndup(yytext+4,yyleng-7); lns(yytext); return COMMENT;}
+<INITIAL,INIT>{comment}	{yylval.s=u_strndup(yytext+4,yyleng-7); lns(yytext); return COMMENT;}
 <INITIAL,INIT>{doctype}	{BEGIN(DECL); lns(yytext+9); return DOCTYPE;}
-<INITIAL,INIT>"<?"[^>]*">"	{yylval.s=strndup(yytext+2,yyleng-3); lns(yytext); return PROCINS;}
+<INITIAL,INIT>"<?"[^>]*">"	{yylval.s=u_strndup(yytext+2,yyleng-3); lns(yytext); return PROCINS;}
 
 <MARKUP>{name}		{yylval.s = strdup(yytext); return NAME;}
 <MARKUP>"="		{BEGIN(VALUE); return '=';}

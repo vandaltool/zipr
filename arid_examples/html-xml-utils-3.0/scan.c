@@ -1081,7 +1081,7 @@ static unsigned char* esc(unsigned char* s)
 }
  
 /* strndup -- allocate a string, copy n characters into it and add \0 */
-static unsigned char* strndup(const unsigned char *s, size_t n)
+static unsigned char* u_strndup(const unsigned char *s, size_t n)
 {
   unsigned char *t = malloc(n + 1);
   if (!t) errexit("Out of memory\n");
@@ -1362,7 +1362,7 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 148 "scan.l"
-{yylval.s=strndup(yytext+4,yyleng-7); lns(yytext); return COMMENT;}
+{yylval.s=u_strndup(yytext+4,yyleng-7); lns(yytext); return COMMENT;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
@@ -1372,7 +1372,7 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 150 "scan.l"
-{yylval.s=strndup(yytext+2,yyleng-3); lns(yytext); return PROCINS;}
+{yylval.s=u_strndup(yytext+2,yyleng-3); lns(yytext); return PROCINS;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP

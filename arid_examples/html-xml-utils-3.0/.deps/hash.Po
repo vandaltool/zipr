@@ -1,21 +1,24 @@
-hash.o hash.o: hash.c config.h /usr/include/stdlib.h \
-  /usr/include/features.h /usr/include/sys/cdefs.h \
-  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
-  /usr/include/gnu/stubs-32.h \
-  /usr/lib/gcc/i386-redhat-linux/4.1.2/include/stddef.h \
-  /usr/include/sys/types.h /usr/include/bits/types.h \
-  /usr/include/bits/typesizes.h /usr/include/time.h /usr/include/endian.h \
-  /usr/include/bits/endian.h /usr/include/sys/select.h \
-  /usr/include/bits/select.h /usr/include/bits/sigset.h \
-  /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
-  /usr/include/bits/pthreadtypes.h /usr/include/alloca.h \
-  /usr/include/assert.h export.h heap.e
+hash.o: hash.c config.h /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/bits/predefs.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-32.h \
+ /usr/lib/gcc/i486-linux-gnu/4.4.3/include/stddef.h \
+ /usr/include/sys/types.h /usr/include/bits/types.h \
+ /usr/include/bits/typesizes.h /usr/include/time.h /usr/include/endian.h \
+ /usr/include/bits/endian.h /usr/include/bits/byteswap.h \
+ /usr/include/sys/select.h /usr/include/bits/select.h \
+ /usr/include/bits/sigset.h /usr/include/bits/time.h \
+ /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h \
+ /usr/include/alloca.h /usr/include/bits/stdlib.h /usr/include/assert.h \
+ export.h heap.e
 
 config.h:
 
 /usr/include/stdlib.h:
 
 /usr/include/features.h:
+
+/usr/include/bits/predefs.h:
 
 /usr/include/sys/cdefs.h:
 
@@ -25,7 +28,7 @@ config.h:
 
 /usr/include/gnu/stubs-32.h:
 
-/usr/lib/gcc/i386-redhat-linux/4.1.2/include/stddef.h:
+/usr/lib/gcc/i486-linux-gnu/4.4.3/include/stddef.h:
 
 /usr/include/sys/types.h:
 
@@ -38,6 +41,8 @@ config.h:
 /usr/include/endian.h:
 
 /usr/include/bits/endian.h:
+
+/usr/include/bits/byteswap.h:
 
 /usr/include/sys/select.h:
 
@@ -52,6 +57,8 @@ config.h:
 /usr/include/bits/pthreadtypes.h:
 
 /usr/include/alloca.h:
+
+/usr/include/bits/stdlib.h:
 
 /usr/include/assert.h:
 

@@ -8,17 +8,17 @@
 bin_PROGRAMS =		addid \
 			cexport cite count extract htmlclean htmlprune incl\
 			index mkbib multitoc normalize num pipe xselect\
-			toc uncdata unent unpipe wls xmlns xref\
+			toc uncdata unpipe wls xmlns xref\
 			xml2asc asc2xml
 bin_SCRIPTS = 		cite-mkbib printlinks
 
 man_MANS =		asc2xml.1 cexport.1 cite-mkbib.1 cite.1\
 			count.1 htmlclean.1 htmlprune.1 incl.1 index.1\
 			mkbib.1 multitoc.1 normalize.1 num.1 pipe.1 toc.1\
-			unent.1 unpipe.1 wls.1 xml2asc.1 xmlns.1\
+			unpipe.1 wls.1 xml2asc.1 xmlns.1\
 			xref.1
 
-EXTRA_DIST = 		$(man_MANS) dtd.hash unent.hash export.h\
+EXTRA_DIST = 		$(man_MANS) dtd.hash export.h\
 			$(bin_SCRIPTS) $(BUILT_SOURCES)
 
 LDADD =			@LIBOBJS@
@@ -27,7 +27,7 @@ AM_LFLAGS =		@lex_opt_flags@
 
 BUILT_SOURCES = 	connectsock.e heap.e types.e dtd.e errexit.e\
 			tree.e genid.e html.e url.e openurl.e scan.e\
-			textwrap.e scan.c html.c html.h dtd.c unent.c\
+			textwrap.e scan.c html.c html.h dtd.c\
 			class.e selector.e hash.e
 
 asc2xml_SOURCES =	asc2xml.c
@@ -64,7 +64,6 @@ toc_SOURCES =		html.y scan.l dtd.c openurl.c errexit.c url.c class.c\
 			connectsock.c heap.c tree.c types.c genid.c toc.c\
 			hash.c
 uncdata_SOURCES =	uncdata.c
-unent_SOURCES =		unent.c
 unpipe_SOURCES =	unpipe.c heap.c errexit.c openurl.c url.c\
 			connectsock.c
 wls_SOURCES =		wls.c html.y scan.l openurl.c url.c\
@@ -90,8 +89,6 @@ SUFFIXES =		.e
 dtd.c: dtd.hash
 	gperf -a -c -C -o -t -p -T -k '1,2,$$' -N lookup_element $< >$@
 
-unent.c: unent.hash
-	gperf -a -c -C -o -t -p -k '1,2,$$' -D -N lookup_entity $< >$@
 
 # html.h: html.c
 scan.o: html.h scan.c
