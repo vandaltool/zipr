@@ -1,0 +1,130 @@
+%{						/* -*-indented-text-*- */
+
+/*
+ * Copyright © 1994-2000 World Wide Web Consortium
+ * See http://www.w3.org/Consortium/Legal/copyright-software-19980720.html
+ *
+ * Author: Bert Bos <bert@w3.org>
+ * Created: 5 Nov 1998
+ * $Id: dtd.hash,v 1.11 2003/01/21 19:48:46 bbos Exp $
+ *
+ * Input file for gperf, to generate a perfect hash function
+ * for all HTML tags, and to store each element's type.
+ *
+ * mixed = element accepts text content
+ * empty = element is empty
+ * stag = start tag is required
+ * etag = end tag is required
+ * pre = element is preformatted
+ * break_before, break_after = pretty-print with a newline before/after the elt
+ * parents = array of possible parents, first one is preferred parent
+ *
+ * The DTD is strict HTML 4.0
+ *
+ */
+#include <config.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include "export.h"
+#include "types.e"
+
+#define MAXNAMELEN 10				/* Max. len. of elt. name */
+EXPORTDEF(MAXNAMELEN)
+
+EXPORT typedef struct _ElementType {
+  char *name;
+  Boolean mixed, empty, stag, etag, pre, break_before, break_after;
+  char *parents[60];
+} ElementType;
+
+/* lookup_element -- look up the string in the hash table */
+EXPORT const ElementType * lookup_element(register const char *str,
+					  register unsigned int len);
+
+
+%}
+ElementType {}
+
+%%
+# name     mixed empty stag etag pre b a parents
+# ----     ----- ----- ---- ---- --- - - -------
+%data,		1, 0, 1, 0, 0, 0, 0, {"p", NULL}
+a,		1, 0, 1, 1, 0, 0, 0, {"p", "abbr", "acronym", "address", "b", "bdo", "big", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+abbr,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+acronym,	1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+address,	1, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+area,		0, 1, 1, 0, 0, 0, 0, {"map", NULL}
+b,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+base,		0, 1, 1, 0, 0, 1, 1, {"head", NULL}
+bdo,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+big,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+blockquote,	0, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+body,		0, 0, 0, 0, 0, 1, 1, {"html", NULL}
+br,		0, 1, 1, 0, 0, 0, 1, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+button,		1, 0, 1, 1, 0, 1, 1, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+caption,	1, 0, 1, 1, 0, 1, 1, {"table", NULL}
+cite,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+code,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+col,		0, 1, 1, 0, 0, 0, 0, {"colgroup", "table", NULL}
+colgroup,	0, 0, 1, 1, 0, 1, 1, {"table", NULL}
+dd,		1, 0, 1, 0, 0, 1, 1, {"dl", NULL}
+del,		1, 0, 1, 1, 0, 0, 0, {"p", "body", "a", "abbr", "acronym", "address", "b", "bdo", "big", "blockquote", "button", "caption", "cite", "code", "colgroup", "dd", "dfn", "div", "dl", "dt", "em", "fieldset", "form", "h1", "h2", "h3", "h4", "h5", "h6", "i", "kbd", "label", "legend", "li", "map", "noscript", "object", "ol", "optgroup", "option", "pre", "q", "samp", "select", "small", "span", "strong", "sub", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "tt", "ul", "var", NULL}
+dfn,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+div,		1, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+dl,		0, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+dt,		1, 0, 1, 0, 0, 1, 1, {"dl", NULL}
+em,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+fieldset,	1, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+form,		0, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "dd", "del", "div", "fieldset", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+h1,		1, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+h2,		1, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+h3,		1, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+h4,		1, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+h5,		1, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+h6,		1, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+head,		0, 0, 0, 0, 0, 1, 1, {"html", NULL}
+hr,		0, 1, 1, 0, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+html,		0, 0, 0, 0, 0, 1, 1, {NULL, NULL}
+i,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+img,		0, 1, 1, 0, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+input,		0, 1, 1, 0, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+ins,		1, 0, 1, 1, 0, 0, 0, {"p", "body", "a", "abbr", "acronym", "address", "b", "bdo", "big", "blockquote", "button", "caption", "cite", "code", "colgroup", "dd", "dfn", "div", "dl", "dt", "em", "fieldset", "form", "h1", "h2", "h3", "h4", "h5", "h6", "i", "kbd", "label", "legend", "li", "map", "noscript", "object", "ol", "optgroup", "option", "pre", "q", "samp", "select", "small", "span", "strong", "sub", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "tt", "ul", "var", NULL}
+kbd,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+label,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+legend,		1, 0, 1, 1, 0, 1, 1, {"fieldset", NULL}
+li,		1, 0, 1, 0, 0, 1, 1, {"ul", "ol", NULL}
+link,		0, 1, 1, 0, 0, 1, 1, {"head", NULL}
+map,		0, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+meta,		0, 1, 1, 0, 0, 1, 1, {"head", NULL}
+noscript,	0, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+object,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "head", "i", "ins", "kbd", "label", "legend", "li", "object", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+ol,		0, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+optgroup,	0, 0, 1, 1, 0, 1, 1, {"select", NULL}
+option,		1, 0, 1, 0, 0, 1, 1, {"select", "optgroup", NULL}
+p,		1, 0, 1, 0, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+param,		0, 1, 1, 0, 0, 1, 1, {"object", NULL}
+pre,		1, 0, 1, 1, 1, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+q,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+samp,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+script,		1, 0, 1, 1, 1, 0, 0, {"p", "body", "a", "abbr", "acronym", "address", "b", "bdo", "big", "blockquote", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+select,		0, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+small,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+span,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+strong,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+style,		1, 0, 1, 1, 1, 1, 1, {"head", NULL}
+sub,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+sup,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+table,		0, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+tbody,		0, 0, 0, 0, 0, 1, 1, {"table", NULL}
+td,		1, 0, 1, 0, 0, 1, 1, {"tr", NULL}
+textarea,	1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+tfoot,		0, 0, 1, 0, 0, 1, 1, {"table", NULL}
+th,		1, 0, 1, 0, 0, 1, 1, {"tr", NULL}
+thead,		0, 0, 1, 0, 0, 1, 1, {"table", NULL}
+title,		1, 0, 1, 1, 0, 1, 1, {"head", NULL}
+tr,		0, 0, 1, 0, 0, 1, 1, {"tbody", "tfoot", "thead", NULL}
+tt,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+ul,		0, 0, 1, 1, 0, 1, 1, {"body", "blockquote", "button", "dd", "del", "div", "fieldset", "form", "ins", "li", "map", "noscript", "object", "td", "th", NULL}
+var,		1, 0, 1, 1, 0, 0, 0, {"p", "a", "abbr", "acronym", "address", "b", "bdo", "big", "button", "caption", "cite", "code", "dd", "del", "dfn", "div", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "i", "ins", "kbd", "label", "legend", "li", "object", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "td", "th", "tt", "var", NULL}
+%%

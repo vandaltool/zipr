@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# Script that combines the functions of cite and mkbib
+#
+# Copyright © 1994-2000 World Wide Web Consortium
+# See http://www.w3.org/Consortium/Legal/copyright-software-19980720.html
+#
+# Author: Bert Bos <bert@w3.org>
+# Created: 29 Mar 2000
+# Version: $Id: cite-mkbib,v 1.3 2003/08/07 21:01:23 bbos Exp $
+
+USAGE="Usage: cite-mkbib [-b base] [-p pattern] [-s sep] bibfile [file]"
+
+AUX=${TMPDIR:-/tmp}/cm1-$$
+TMP=${TMPDIR:-/tmp}/cm2-$$
+trap "rm $AUX $TMP 2>/dev/null" 0
+
+
+# usage -- print usage message and exit
+usage () { echo "$USAGE" >&2; exit 2; }
+
+
+
+# Parse command line
+while [ $# -ne 0 ]; do
+  case "$1" in
+    -b) base="-b '$2'"; shift 2;;
+    -p) pattern="-p '$2'"; shift 2;;
+    -s) sep="-s '$2'"; shift 2;;
+    -*) usage;;
+    --) shift; break;;
+    *) break;
+  esac
+done
+if [ $# -lt 1 -o $# -gt 2 ]; then usage; fi
+bibfile="$1"
+shift
+
+# Call cite and mkbib
+eval cite "$base" "$pattern" -a $AUX "'$bibfile'" "$@" >$TMP &&
+eval mkbib "$sep" -a $AUX "'$bibfile'" $TMP
+

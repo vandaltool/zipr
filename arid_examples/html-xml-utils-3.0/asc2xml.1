@@ -1,0 +1,26 @@
+.de d \" begin display
+.sp
+.in +4
+.nf
+..
+.de e \" end display
+.in -4
+.fi
+.sp
+..
+.TH man 1 "31 Mar 2000"
+.SH NAME
+asc2xml \- convert &#nnn; entities to UTF-8
+.SH SYNOPSIS
+.B asc2xml
+.SH DESCRIPTION
+.LP
+Reads an ASCII or ISO-8859-1 (Latin-1) text from standard input and
+writes to standard output encoded as UTF-8.
+.SH "SEE ALSO"
+.BR xml2asc (1),
+.BR UTF-8
+(RFC 2279)
+.SH BUGS
+.LP
+None known.

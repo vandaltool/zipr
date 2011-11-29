@@ -1,0 +1,90 @@
+.de d \" begin display
+.sp
+.in +4
+.nf
+..
+.de e \" end display
+.in -4
+.fi
+.sp
+..
+.TH man 1 "18 Mar 2000"
+.SH NAME
+incl \- expand included HTML or XML files
+.SH SYNOPSIS
+.B incl
+.RB "[\| " \-x " \|]"
+.RB "[\| " \-a
+.IR attribute " \|]"
+.RB "[\| " \-c
+.IR class " \|]"
+.RB "[\| " \-b
+.IR base " \|]"
+.RB "[\| " file\-or\-URL " \|]"
+.SH DESCRIPTION
+.LP
+The
+.B incl
+command copies an HTML or XML file to standard output, looking for
+elements with a certain attribute (by default a \fBclass\fP attribute
+that includes the word "include"). Such an element is replaced by
+the file whose name is given as the content of the element. For
+example, the \fIspan\fP element in
+.d
+ ...<span class="include">foo.html</span>...
+.e
+will be replaced by the content of the file \fIfoo.html\fP.
+.SH OPTIONS
+The following options are supported:
+.TP 10
+.B \-x
+Use XML conventions: empty elements are written with a slash at the
+end: <IMG\ /> Also causes the name of the attribute (see option
+\fB\-a\fP) to become case-sensitive.
+.TP
+.BI \-a " attribute"
+Sets the name of the attribute to look for. Default is \fBclass\fP.
+Note that the name is case-insensitive, unless option \fB\-x\fP is
+given.
+.TP
+.BI \-c " class"
+Sets the keyword to look for. Default is \fBinclude\fP. The attribute
+is considered to contain a space-separated list of words. If one of
+those words is the given \fIclass\fP, the element is replaced by the
+file whose name is given as the element's content.
+.TP
+.BI \-b " base"
+Sets the base URL for resolving relative URLs. By default the file
+given as argument is the base URL.
+.SH OPERANDS
+The following operand is supported:
+.TP 10
+.I file\-or\-URL
+The name of an HTML or XML file or the URL of one. If absent, standard
+input is read instead.
+.SH "EXIT STATUS"
+The following exit values are returned:
+.TP 10
+.B 0
+Successful completion.
+.TP
+.B >0
+An error occurred in the parsing of one of the HTML or XML files.
+.SH "SEE ALSO"
+.BR xml2asc (1),
+.BR UTF-8
+(RFC 2279),
+.BR normalize (1),
+.BR num (1),
+.BR toc (1),
+.BR htmlprune (1).
+.BR unent (1)
+.BR asc2xml (1)
+.SH BUGS
+.LP
+Assumes UTF-8 as input. Doesn't expand character entities. Instead
+pipe the input through
+.BR unent (1)
+and
+.BR asc2xml (1)
+to convert it to UTF-8.

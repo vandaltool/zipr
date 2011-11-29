@@ -1,0 +1,138 @@
+.de d \" begin display
+.sp
+.in +4
+.nf
+..
+.de e \" end display
+.in -4
+.fi
+.sp
+..
+.TH man 1 "19 Mar 2000"
+.SH NAME
+cite \- replace bibliographic references by hyperlinks
+.SH SYNOPSIS
+.B cite
+.RB "[\| " \-b
+.IR base " \|]"
+.RB "[\| " \-p
+.IR pattern " \|]"
+.RB "[\| " \-a
+.IR auxfile " \|]"
+.RB "[\| " \-m
+.IR marker " \|]"
+.IR bibfile " [\| " HTMLfile " \|]"
+.SH DESCRIPTION
+.LP
+The
+.B cite
+commands copies the
+.I HTMLfile
+to standard output, looking for strings of the form [[\fIlabel\fP]].
+The label may not include white space and the double pair of square
+brackets must enclose the label without any spaces in between. If
+.B cite
+finds the label in the
+.IR bibfile ","
+the string is replaced by the
+.IR pattern "."
+The pattern can include certain variables. If the label is not found
+in
+.IR bibfile ","
+it is left unchanged.
+.PP
+The default pattern replaces the string with a hyperlink, but if the
+.B \-p
+option is used, the replacement can be any pattern. The input doesn't
+even have to be HTML.
+.SH OPTIONS
+The following options are supported:
+.TP 10
+.BI \-p " pattern"
+Specifies the pattern by which the string [[\fIlabel\fP]] is replaced.
+The pattern may include the variables
+.B %b
+(which will be replaced by the value of the
+.B \-b
+option) and
+.B %L
+(which will be replaced by the
+.IR label ")."
+The default pattern is
+.d
+<a href="%b#%L" rel="biblioentry">[%L]</a>
+.e
+.TP
+.BI \-b " base"
+Sets the value for the
+.B %b
+variable in the pattern. Typically this is set to a relative or
+absolute URL. By default this value is an empty string.
+.TP
+.BI \-a " auxfile"
+All labels that have been found and replaced are also written to a
+file. This is so that
+.BR mkbib (1)
+can find them and create a bibliography. The default
+.I auxfile
+is constructed from the name of the
+.I HTMLfile
+by removing the last extension (if any) and replacing it by ".aux".
+If no
+.I HTMLfile
+is given, the default name is "aux.aux".
+.TP
+.BI \-m " marker"
+By default, the program looks for "[[name]]", but it can be
+made to look for "[[#name]]" where # is some string, usually a
+symbol such as '!' or '='. This allows references to be
+classified, e.g., "[[!name]]" for normative references and
+"[[name]]" for non-normative references.
+.SH OPERANDS
+The following operands are supported:
+.TP 10
+.I bibfile
+The name of a bibliographic database must be given. It must be a file
+in
+.BR refer (1)
+format and every entry must have at least a
+.B %L
+field, which is used as label. (Entries without such a field will be
+ignored.)
+.TP
+.I HTMLfile
+The name of the input file is optional. If absent,
+.B cite
+will read from stdin. The file in fact does not have to be an HTML
+file, but the default pattern (see the
+.B \-p
+option) assumes HTML.
+.SH "EXIT STATUS"
+The following exit values are returned:
+.TP 10
+.B 0
+Successful completion.
+.TP
+.B > 0
+An error occurred. Usually this is because a file could not be opened.
+Very rarely it may also be an out of memory error.
+.SH "SEE ALSO"
+.BR mkbib (1)
+.BR xml2asc (1),
+.BR UTF-8
+(RFC 2279),
+.BR normalize (1),
+.BR num (1),
+.BR toc (1),
+.BR htmlprune (1).
+.BR unent (1)
+.BR asc2xml (1)
+.SH BUGS
+.LP
+.BR refer (1)
+does not require the
+.B %L
+(label) field to be present in every entry. Hoewever,
+.B cite
+does not implement refer's keyword search and requires a key instead.
+

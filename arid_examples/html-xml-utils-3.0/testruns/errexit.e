@@ -1,0 +1,1 @@
+ int errexit(char *format,...);

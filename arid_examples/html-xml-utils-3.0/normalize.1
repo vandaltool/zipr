@@ -1,0 +1,77 @@
+.TH man 1 "2 Dec 1998"
+.SH NAME
+normalize \- pretty-print an HTML file
+.SH SYNOPSIS
+.B normalize
+.RB "[\| " \-x " \|]"
+.RB "[\| " \-e " \|]"
+.RB "[\| " \-d " \|]"
+.RB "[\| " \-i
+.IR indent " \|]"
+.RB "[\| " \-l
+.IR line\-length " \|]"
+.RB "[\| " file " \|]"
+.SH DESCRIPTION
+.LP
+The
+.B normalize
+command pretty-prints an HTML file, and also tries to fix small
+errors. The output is the same HTML, but with a maximum line length
+and with optional indentation to indicate the nesting level of each
+line.
+.SH OPTIONS
+The following options are supported:
+.TP 10
+.B \-x
+Use XML conventions: empty elements are written with a slash at the
+end: <IMG\ />. Implies \-e.
+.TP
+.B \-e
+Always insert endtags, even if HTML does not require them. (For
+example, </p> and </li>.)
+.TP
+.B \-d
+Omit the DOCTYPE from the output.
+.TP
+.BI \-i " indent"
+Set the number of spaces to indent each nesting level. Default is 2.
+Not all elements cause an indent. In general, elements that can occur
+in a block environment are started on a new line and cause an indent,
+but inline elements, such as EM and SPAN do not cause an indent.
+.TP
+.BI \-l " line\-length"
+Sets the maximum length of lines.
+.B normalize
+will wrap lines so that all lines are as long as possible, but no
+longer than this length. Default is 72. Words that are longer than the
+line length will not be broken, and will extend past this length. A
+\"word\" is a sequence of characters delimited by white space.) The
+content of the STYLE, SCRIPT and PRE elements will not be
+line-wrapped.
+.SH OPERANDS
+The following operand is supported:
+.TP 10
+.I file
+The name of an HTML file. If absent, standard input is read instead.
+.SH "EXIT STATUS"
+The following exit values are returned:
+.TP 10
+.B 0
+Successful completion.
+.TP
+.B >0
+An error occurred in the parsing of the HTML file.
+.B normalize
+will try to correct the error and produce output anyway.
+.SH "SEE ALSO"
+.BR xml2asc (1),
+.BR UTF-8
+(RFC 2279)
+.SH BUGS
+.LP
+The error recovery for incorrect HTML is primitive.
+.LP
+.B normalize
+will not omit an end tag if the white space after it could possibly be
+significant. E.g., it will not remove the first </p> from
+"<div><p>text</p> <p>text</p></div>".
