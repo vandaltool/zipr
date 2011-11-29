@@ -1,0 +1,162 @@
+.de d \" begin display
+.sp
+.in +4
+.nf
+..
+.de e \" end display
+.in -4
+.fi
+.sp
+..
+.TH man 1 "11 Sep 2001"
+.SH NAME
+index \- insert an index into an HTML document
+.SH SYNOPSIS
+.B index
+.RB "[\| " \-t " \|]"
+.RB "[\| " \-x " \|]"
+.RB "[\| " \-b
+.IR base " \|]"
+.RB "[\| " \-i
+.IR indexdb " \|]"
+.RB "[--]"
+.RB "[\| " file\-or\-URL " \|]"
+.SH DESCRIPTION
+.LP
+The
+.B index
+looks for terms to be indexed in a document, collects them, turns them
+into target anchors and creates a sorted index as an HTML list, which
+is inserted at the place of a placeholder in the document. The
+resulting document is written to standard output.
+.LP
+The index is inserted at the place of a comment of the form
+.d
+<!--index-->
+.e
+or between two comments of the form
+.d
+<!--begin-index-->
+...
+<!--end-index-->
+.e
+In the latter case, all existing content between the two comments is
+removed first.
+.LP
+Index terms are either elements of type \fI<dfn>\fP or elements with a
+class attribute of \fI"index".\fP (For backward compatibility, also
+class attributes \fI"index-inst"\fP and \fI"index-def"\fP are
+recognized.) \fI<dfn>\fP elements (and class \fI"index-def"\fP) are
+considered more important than elements with class \fI"index"\fP and
+will appear in bold in the generated index.
+.LP
+By default, the contents of the element are taken as the index term.
+Here are two examples of occurences of the index term "shoe":
+.d
+... A <dfn>shoe</dfn> is a piece of clothing that...
+... completed by a leather <span class="index">shoe</span>...
+.e
+.LP
+If the term to be indexed is not equal to the contents of the element,
+the \fItitle\fP attribute can be used to give the correct term:
+.d
+... <dfn title="shoe">Shoes</dfn> are pieces of clothing that...
+... with two leather <span class="index" title="shoe">shoes</span>...
+.e
+.LP
+The \fItitle\fP attribute must also be used when the index term is a
+subterm of another. Subterms appear indented in the index, under their
+head term. To define a subterm, use a \fItitle\fP attribute with an
+exclamation mark ("!") between the term and the subterm, like this:
+.d
+<dfn title="shoe!leather">...</dfn>
+<dfn title="shoe!invention of">...</dfn>
+<em class="index" title="shoe!protective!steel nosed">...</em>
+.e
+As the last example above shows, there can be multiple levels of
+sub-subterms.
+.LP
+The \fItitle\fP attribute also allows multiple index terms to be
+assiciated with a single occurrence. The multiple terms are separated
+with a vertical bar ("|"). Compare the following examples with the
+ones above:
+.d
+<dfn title="shoe|boot">...</dfn>
+<dfn title="shoe!invention of|inventions!shoe">...</dfn>
+.e
+These two elements both insert two terms into the index. Note that the
+second example above combines subterms and multiple terms.
+.LP
+It is possible to run index on a file that already has an index. The
+old target anchors and the old index will be removed before being
+re-generated.
+.SH OPTIONS
+The following options are supported:
+.TP 10
+.B \-t
+By default,
+.B index
+adds an ID attribute to the element that contains the occurrence of a
+term and also inserts an \fI<a>\fP element inside it with a \fIname\fP
+attribute equal to the ID. This is to allow old browsers that ignore
+ID attributes, such as
+Netscape 4, to find the target as well. The
+.B \-t
+option suppresses the \fI<a>\fP element.
+.TP
+.B \-x
+This option turns on XML syntax conventions: empty elements will end
+in \fI/>\fP instead of \fI>\fP as in HTML.
+.B \-x
+implies
+.B \-t.
+.TP
+.BI \-i " indexdb"
+.B index
+can read an initial index from a file and write the merged collection
+of index terms back to that file. This allows an index to span several
+documents. The
+.B \-i
+option is used to give the name of the file that contains the index.
+.TP
+.BI \-b " base"
+This option is useful in combination with
+.B \-i
+to give the base URL reference of the document. By default,
+.B index
+will store links to occurrences in the \fIindexdb\fP file in the form
+\fIfilename#anchor\fP, but when
+.B \-b
+is given, the links will look like \fIbase#anchor\fP instead.
+.SH OPERANDS
+The following operand is supported:
+.TP 10
+.I file\-or\-URL
+The name of an HTML or XML file or the URL of one. If absent, or if
+the file is "-", standard input is read instead.
+.SH "EXIT STATUS"
+The following exit values are returned:
+.TP 10
+.B 0
+Successful completion.
+.TP
+.B >0
+An error occurred in the parsing the HTML file.
+.SH "SEE ALSO"
+.BR xml2asc (1),
+.BR UTF-8
+(RFC 2279),
+.BR normalize (1),
+.BR num (1),
+.BR toc (1),
+.BR htmlprune (1).
+.BR unent (1)
+.BR asc2xml (1)
+.SH BUGS
+.LP
+Assumes UTF-8 as input. Doesn't expand character entities. Instead
+pipe the input through
+.BR unent (1)
+and
+.BR asc2xml (1)
+to convert it to UTF-8.

@@ -1,0 +1,10 @@
+ void set_indent(int n);
+ void set_linelen(int n);
+ void flush();
+ void outc(unsigned char c, Boolean preformatted);
+ void out(unsigned char *s, Boolean preformatted);
+ void outn(unsigned char *s, size_t n, Boolean preformatted);
+ void outln(unsigned char *s, Boolean preformatted);
+ void outbreak();
+ void inc_indent(void);
+ void dec_indent(void);

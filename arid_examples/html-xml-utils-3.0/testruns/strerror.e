@@ -1,0 +1,1 @@
+ char *strerror(int errnum);
