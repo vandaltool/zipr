@@ -358,8 +358,6 @@ arid_examples/html-xml-utils-3.0/textwrap.c -text
 arid_examples/html-xml-utils-3.0/textwrap.e -text
 arid_examples/html-xml-utils-3.0/tfind.c -text
 arid_examples/html-xml-utils-3.0/timing_runs.sh -text
-arid_examples/html-xml-utils-3.0/tmp/arid.uva.logs.tar.gz -text
-arid_examples/html-xml-utils-3.0/tmp/arid.uva.rerun.no_ulimit.tar.gz -text
 arid_examples/html-xml-utils-3.0/toc.1 -text
 arid_examples/html-xml-utils-3.0/toc.c -text
 arid_examples/html-xml-utils-3.0/tree.c -text
