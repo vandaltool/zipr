@@ -66,4 +66,8 @@ if [ $SAVE_EXIT_CODE = 139 ]; then
 	echo Detected fault, aborting program, POLICY: Controlled exit
 	exit 0
 fi
+if [ $SAVE_EXIT_CODE = 136 ]; then
+	echo Detected number handling issue, aborting program, POLICY: Controlled exit
+	exit 0
+fi
 exit $SAVE_EXIT_CODE
