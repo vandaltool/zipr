@@ -36,13 +36,18 @@ class Transform {
 		void addPopf(Instruction_t *p_instr, Instruction_t *p_fallThrough);
 		void addNop(Instruction_t *p_instr, Instruction_t *p_fallThrough);
 
-		void addCallbackHandler(string p_detector, Instruction_t *p_instrumented, Instruction_t *p_instr, Instruction_t *_fallThrough);
+		void addCallbackHandler(string p_detector, Instruction_t *p_instrumented, Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_original = NULL);
 		void addTestRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegisterMask(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
 
 		void addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addNot(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
+
+		void addAddRegisters(Instruction_t *p_instr, Register::RegisterName p_regTgt, Register::RegisterName p_regSrc, Instruction_t *p_fallThrough);
+		void addAddRegisterConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constantValue, Instruction_t *p_fallThrough);
+		void addMulRegisterConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constantValue, Instruction_t *p_fallThrough);
+		void addMovRegisters(Instruction_t *p_instr, Register::RegisterName p_regTgt, Register::RegisterName p_regSrc, Instruction_t *p_fallThrough);
 
 		Instruction_t* allocateNewInstruction(db_id_t p_fileID, Function_t* p_func);
 
@@ -55,12 +60,14 @@ class Transform {
 
 		bool isMultiplyInstruction(libIRDB::Instruction_t*);
 		bool isAddSubNonEspInstruction(libIRDB::Instruction_t*);
+		Register::RegisterName getTargetRegister(libIRDB::Instruction_t*);
 
 	private:
 		void addTestRegister8(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegister16(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegister32(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegisterMask32(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
+		bool hasTargetRegister(libIRDB::Instruction_t*);
 
 		VariantID_t            *m_variantID;
 		VariantIR_t            *m_variantIR;

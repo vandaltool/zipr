@@ -236,7 +236,7 @@ virtual_offset_t Transform::getAvailableAddress()
 	return 0xf0000000 + counter;
 }
 
-void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumentedInstruction, Instruction_t *p_instruction, Instruction_t *p_fallThrough)
+void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumentedInstruction, Instruction_t *p_instruction, Instruction_t *p_fallThrough, Instruction_t *p_originalInstruction)
 {
 	assert(getVariantIR() && p_instruction);
 	
@@ -273,7 +273,10 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	dataBits.resize(5);
 	dataBits[0] = 0x68;
 	virtual_offset_t *tmp = (virtual_offset_t *) &dataBits[1];
-	*tmp = p_instrumentedInstruction->GetAddress()->GetVirtualOffset();
+	if (p_originalInstruction)
+		*tmp = p_originalInstruction->GetAddress()->GetVirtualOffset();
+	else
+		*tmp = p_instrumentedInstruction->GetAddress()->GetVirtualOffset();
 	pusharg_i->SetDataBits(dataBits);
 	pusharg_i->SetComment(pusharg_i->getDisassembly());
 	pusharg_i->SetFallthrough(pushret_i); 
@@ -303,6 +306,30 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	addPopa(popa_i, p_fallThrough);
 }
 
+// returns true if BeaEngine says arg1 of the instruction is a register 
+bool Transform::hasTargetRegister(Instruction_t *p_instruction)
+{
+	if (!p_instruction)
+		return false;
+
+	DISASM disasm;
+	p_instruction->Disassemble(disasm);
+	
+	return disasm.Argument1.ArgType & 0xFFFF0000 & REGISTER_TYPE;
+}
+
+Register::RegisterName Transform::getTargetRegister(Instruction_t *p_instruction)
+{
+	if (hasTargetRegister(p_instruction))
+	{
+		DISASM disasm;
+		p_instruction->Disassemble(disasm);
+
+		return Register::getRegister(disasm.Argument1.ArgMnemonic);
+	}
+	else
+		return Register::UNKNOWN;
+}
 
 //
 // Returns true iff instruction is MUL (according to BeaEngine)
@@ -313,7 +340,6 @@ bool Transform::isMultiplyInstruction(Instruction_t *p_instruction)
 		return false;
 
 	DISASM disasm;
-
 	p_instruction->Disassemble(disasm);
 
 	// beaengine adds space at the end of the mnemonic string
@@ -703,3 +729,68 @@ void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Ins
 
 	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }
+
+// add r1, r2
+void Transform::addAddRegisters(Instruction_t *p_instr, Register::RegisterName p_regTgt, Register::RegisterName p_regSrc, Instruction_t *p_fallThrough)
+{
+	// too many combinations, just use the assembler
+	string assembly = "add " + Register::toString(p_regTgt) + ", " + Register::toString(p_regSrc);
+	if (!p_instr->Assemble(assembly))
+	{
+		cerr << "addAddRegisters(): error in assembling instruction: " << assembly << endl;
+		return;
+	}
+
+	cerr << "addAddRegisters(): " << p_instr->getDisassembly() << endl;
+	p_instr->SetFallthrough(p_fallThrough);
+}
+
+// add r1, constant
+void Transform::addAddRegisterConstant(Instruction_t *p_instr, Register::RegisterName p_reg, int p_constantValue, Instruction_t *p_fallThrough)
+{
+	// too many combinations, just use the assembler
+	char buf[256];
+	sprintf(buf, "add %s, %d", Register::toString(p_reg).c_str(), p_constantValue);
+	string assembly(buf);
+	if (!p_instr->Assemble(assembly))
+	{
+		cerr << "Transform::addAddConstant(): error in assembling instruction: " << assembly << endl;
+		return;
+	}
+
+	cerr << "Transform::addAddConstant(): " << p_instr->getDisassembly() << endl;
+	p_instr->SetFallthrough(p_fallThrough);
+}
+
+// imul r1, constant
+void Transform::addMulRegisterConstant(Instruction_t *p_instr, Register::RegisterName p_reg, int p_constantValue, Instruction_t *p_fallThrough)
+{
+	// too many combinations, just use the assembler
+	char buf[256];
+	sprintf(buf, "imul %s, %d", Register::toString(p_reg).c_str(), p_constantValue);
+	string assembly(buf);
+	if (!p_instr->Assemble(assembly))
+	{
+		cerr << "Transform::addMulRegisterConstant(): error in assembling instruction: " << assembly << endl;
+		return;
+	}
+
+	cerr << "Transform::addMulRegisterConstant(): " << p_instr->getDisassembly() << endl;
+	p_instr->SetFallthrough(p_fallThrough);
+}
+
+
+// mov r1, r2
+void Transform::addMovRegisters(Instruction_t *p_instr, Register::RegisterName p_regTgt, Register::RegisterName p_regSrc, Instruction_t *p_fallThrough)
+{
+	// too many combinations, just use the assembler
+	string assembly = "mov " + Register::toString(p_regTgt) + ", " + Register::toString(p_regSrc);
+	if (!p_instr->Assemble(assembly))
+	{
+		cerr << "addMovRegisters(): error in assembling instruction: " << assembly << endl;
+		return;
+	}
+	p_instr->SetFallthrough(p_fallThrough);
+	cerr << "addMovRegisters(): " << p_instr->getDisassembly() << endl;
+}
+

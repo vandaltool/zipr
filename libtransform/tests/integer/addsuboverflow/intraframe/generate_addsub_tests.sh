@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #types="char short int long unsigned+char unsigned+short unsigned+int unsigned+long";
-types="unsigned+int int"  
+types="int unsigned+int"  
+#types="int"  
 #sharedlib_gccflags="-O -O2 -w"
 #sharedlib_gccflags="-w -O2"
 sharedlib_gccflags="-w"
