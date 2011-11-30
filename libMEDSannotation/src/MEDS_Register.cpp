@@ -5,6 +5,11 @@
 
 using namespace MEDS_Annotation;
 
+Register::RegisterName Register::getRegister(char *p_reg)
+{
+	return Register::getRegister(std::string(p_reg));
+}
+
 Register::RegisterName Register::getRegister(std::string p_reg)
 {
 	if (strcasecmp(p_reg.c_str(), "EAX") == 0)
@@ -51,19 +56,45 @@ Register::RegisterName Register::getRegister(std::string p_reg)
 		return UNKNOWN;
 }
 
-bool Register::is8bit(Register::RegisterName reg)
+bool Register::is8bit(Register::RegisterName p_reg)
 {
-	return reg == AL || reg == BL || reg == CL || reg == DL ||
-		reg == AH || reg == BH || reg == CH || reg == DH;
+	return p_reg == AL || p_reg == BL || p_reg == CL || p_reg == DL ||
+		p_reg == AH || p_reg == BH || p_reg == CH || p_reg == DH;
 }
 
-bool Register::is16bit(Register::RegisterName reg)
+bool Register::is16bit(Register::RegisterName p_reg)
 {
-	return reg == AX || reg == BX || reg == CX || reg == DX;
+	return p_reg == AX || p_reg == BX || p_reg == CX || p_reg == DX;
 }
 
-bool Register::is32bit(Register::RegisterName reg)
+bool Register::is32bit(Register::RegisterName p_reg)
 {
-	return reg == EAX || reg == EBX || reg == ECX || reg == EDX || 
-		reg == ESI || reg == EDI || reg == ESP || reg == EBP;
+	return p_reg == EAX || p_reg == EBX || p_reg == ECX || p_reg == EDX || 
+		p_reg == ESI || p_reg == EDI || p_reg == ESP || p_reg == EBP;
+}
+
+std::string Register::toString(Register::RegisterName p_reg)
+{
+	if (p_reg == UNKNOWN) return std::string("UNKNOWN");
+	else if (p_reg == EAX) return std::string("EAX");
+	else if (p_reg == EBX) return std::string("EBX");
+	else if (p_reg == ECX) return std::string("ECX");
+	else if (p_reg == EDX) return std::string("EDX");
+	else if (p_reg == EDI) return std::string("EDI");
+	else if (p_reg == ESI) return std::string("ESI");
+	else if (p_reg == EBP) return std::string("EBP");
+	else if (p_reg == ESP) return std::string("ESP");
+	else if (p_reg == AX) return std::string("AX");
+	else if (p_reg == BX) return std::string("BX");
+	else if (p_reg == CX) return std::string("CX");
+	else if (p_reg == DX) return std::string("DX");
+	else if (p_reg == AH) return std::string("AH");
+	else if (p_reg == BH) return std::string("BH");
+	else if (p_reg == CH) return std::string("CH");
+	else if (p_reg == DH) return std::string("DH");
+	else if (p_reg == AL) return std::string("AL");
+	else if (p_reg == BL) return std::string("BL");
+	else if (p_reg == CL) return std::string("CL");
+	else if (p_reg == DL) return std::string("DL");
+	else return std::string("UNEXPECTED REGISTER VALUE");
 }

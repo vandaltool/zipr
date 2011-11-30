@@ -30,28 +30,35 @@ using namespace MEDS_Annotation;
 class MEDS_InstructionCheckAnnotation
 {
 	public:
-		MEDS_InstructionCheckAnnotation() { m_isValid = false; }
+		MEDS_InstructionCheckAnnotation();
 		MEDS_InstructionCheckAnnotation(const string &p_rawLine);
 
 		// valid annotation?
 		bool isValid() const { return m_isValid; }
+		void setValid() { m_isValid = true; }
 
 		// integer vulnerability types
 		bool isOverflow() const { return m_isOverflow; }
 		bool isUnderflow() const { return m_isUnderflow; }
 		bool isTruncation() const { return m_isTruncation; }
 		bool isSignedness() const { return m_isSignedness; }
+		void setOverflow() { m_isOverflow = true; }
 
 		// signed vs. unsigned
 		bool isUnsigned() const { return m_isUnsigned; }
 		bool isSigned() const { return m_isSigned; }
 		bool isUnknownSign() const { return m_isUnknownSign; }
 
+		void setSigned() { m_isSigned = true; }
+		void setUnsigned() { m_isUnsigned = true; }
+		void setUnknownSign() { m_isUnknownSign = true; }
+
 		// overflow with no flags, e.g. lea
 		bool isNoFlag() const { return m_isNoFlag; }
 
 		// get bitwidth
 		int getBitWidth() const { return m_bitWidth; }
+		void setBitWidth(int p_bitWidth) { m_bitWidth = p_bitWidth; }
 		int getTruncationFromWidth() const { return m_truncationFromWidth; }
 		int getTruncationToWidth() const { return m_truncationToWidth; }
 
@@ -61,9 +68,12 @@ class MEDS_InstructionCheckAnnotation
 		// virtual offset
 		VirtualOffset getVirtualOffset() const;
 
+		const string getTarget() const { return m_target; }
+
 		const string& toString() const { return m_rawInputLine; }
 
 	private:
+		void init();
 		void parse();
 
 	private:
@@ -82,6 +92,7 @@ class MEDS_InstructionCheckAnnotation
 		VirtualOffset  m_virtualOffset;
 		bool           m_isValid;
 		MEDS_Annotation::Register::RegisterName       m_register;
+		string         m_target;
 };
 
 }

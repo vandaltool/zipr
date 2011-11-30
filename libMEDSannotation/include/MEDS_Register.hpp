@@ -10,9 +10,11 @@ class Register {
 public:
   enum RegisterName { UNKNOWN, EAX, EBX, ECX, EDX, ESI, EDI, EBP, ESP, AX, BX, CX, DX, AH, BH, CH, DH, AL, BL, CL, DL };
   static RegisterName getRegister(std::string);
+  static RegisterName getRegister(char *str);
   static bool is32bit(RegisterName);
   static bool is16bit(RegisterName);
   static bool is8bit(RegisterName);
+  static std::string toString(RegisterName);
 };
 
 }

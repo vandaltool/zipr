@@ -21,10 +21,9 @@ Example format (as of 10/18/2011) -- subject to change:
 8048492 5 INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov [esp+26h], ax 
 */
 
-MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation(const std::string &p_rawInputLine)
+void MEDS_InstructionCheckAnnotation::init()
 {
 	m_isValid = false;
-	m_rawInputLine = p_rawInputLine;
 	m_isOverflow = false;
 	m_isUnderflow = false;
 	m_isTruncation = false;
@@ -37,8 +36,18 @@ MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation(const std::stri
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
 	m_register = Register::UNKNOWN;
+}
 
+MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation(const std::string &p_rawInputLine)
+{
+	init();
+	m_rawInputLine = p_rawInputLine;
 	parse();
+}
+
+MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation()
+{
+	init();
 }
 
 // parse and set all the member variables
@@ -109,27 +118,31 @@ void MEDS_InstructionCheckAnnotation::parse()
 
 		char buf[1024] = "";
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
-		m_register = Register::getRegister(string(buf));
+		m_target = string(buf);
+		if (m_isNoFlag)
+		{
+			m_register = Register::getRegister(m_target);
+		}
 	}
 	else if (m_isTruncation) // get bid width from/to information for truncation
 	{
 		char buf[1024] = "";
 		// [ADDR] [SIZE] INSTR CHECK TRUNCATION UNKNOWNSIGN 32 EAX 16 AX ZZ mov     [esp+2Ah], ax
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s %d", &m_truncationFromWidth, buf, &m_truncationToWidth);
-		m_register = Register::getRegister(string(buf));
+		m_target = string(buf);
+		m_register = Register::getRegister(m_target);
 	} 
 	else if (m_isSignedness)
 	{
 		char buf[1024] = "";
 		// [ADDR] [SIZE] INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov     [esp+28h], ax
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
-		m_register = Register::getRegister(string(buf));
+		m_target = string(buf);
+		m_register = Register::getRegister(m_target);
 	cerr << "SIGNEDNESS DETECTED: bitwidth: " << m_bitWidth << "  reg:" << string(buf) << endl;
 	}
 
-
 	m_isValid = true;
-	
 }
 
 VirtualOffset MEDS_InstructionCheckAnnotation::getVirtualOffset() const
