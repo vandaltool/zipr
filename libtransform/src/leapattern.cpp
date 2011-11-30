@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <sstream>
 
-#include "leapattern.h"
+#include "leapattern.hpp"
 
 using namespace std;
 using namespace libTransform;

@@ -1,6 +1,6 @@
 #include <assert.h>
 #include "integertransform.hpp"
-#include "leapattern.h"
+#include "leapattern.hpp"
 
 using namespace libTransform;
 
