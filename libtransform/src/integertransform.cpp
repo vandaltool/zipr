@@ -223,7 +223,7 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 	}
 	else if (leaPattern.isRegisterTimesConstant())
 	{
-cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg*constant pattern: not yet handled" << endl; return;
+//cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg*constant pattern: not yet handled" << endl; return;
 		Register::RegisterName reg1 = leaPattern.getRegister1();
 		int value = leaPattern.getConstant();
 		Register::RegisterName target = getTargetRegister(p_instruction);
@@ -330,9 +330,6 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 {
 	cerr << "integertransform: reg+constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
-	cerr << "integertransform: reg+constant: register: skipping " << endl;
-	return;
-
 	//
 	// Original instruction is of the form:
 	//   lea r3, [r1+constant]          
@@ -393,54 +390,54 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 
 void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3)
 {
-	cerr << "integertransform: reg+constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
-// should we even attempt to instrument if we're not sure about the signedness for this pattern?
-
-// need to use the correct PC (the one for the original lea instruction) when printing detector message
-
-	// Original instruction is of the form:            lea r3, [r1+constant]          
+	cerr << "integertransform: reg*constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
+	//
+	// Original instruction is of the form:
+	//   lea r3, [r1*constant]          
+	//
 	// Instrumentation:
 	//   pushf                  ;     save flags
-	//   add r1, constant       ;     r1 = r1 + constant;
+	//   mov r3, r1             ;     r3 = r1
+	//   imul r3, constant      ;     r3 = r1 * constant;
 	//   <check for overflow>   ;     reuse overflow code
-	//   mov r3, r1             ;     r3 = r1  (replaces lea r3, [r1+constant])
-	//                          ;     possible optimization: do nothing if r3 == r1
 	//   popf                   ;     restore flags
 	//
-
+	// Note: if r3 == r1, code still works (though inefficiently)
+	//
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
 
 	Instruction_t* fallthrough = p_instruction->GetFallthrough();
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
-	Instruction_t* mulR1Constant_i = allocateNewInstruction(fileID, func);
 	Instruction_t* movR3R1_i = allocateNewInstruction(fileID, func);
+	Instruction_t* mulR3Constant_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
 
-	MEDS_InstructionCheckAnnotation mulR1Constant_annot;
-	mulR1Constant_annot.setValid();
-	mulR1Constant_annot.setBitWidth(32);
-	mulR1Constant_annot.setOverflow();
+	MEDS_InstructionCheckAnnotation mulR3Constant_annot;
+	mulR3Constant_annot.setValid();
+	mulR3Constant_annot.setBitWidth(32);
+	mulR3Constant_annot.setOverflow();
 	if (p_annotation.isSigned())
-		mulR1Constant_annot.setSigned();
+		mulR3Constant_annot.setSigned();
 	else if (p_annotation.isUnsigned())
-		mulR1Constant_annot.setUnsigned();
+		mulR3Constant_annot.setUnsigned();
 	else
-		mulR1Constant_annot.setUnknownSign();
+		mulR3Constant_annot.setUnknownSign();
 
 	string msg = "Originally: " + p_instruction->getDisassembly();
 
-	addPushf(pushf_i, mulR1Constant_i);
-	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(mulR1Constant_i); // do I need this?
+	AddressID_t *originalAddress = p_instruction->GetAddress();
 
-	addMulRegisterConstant(mulR1Constant_i, p_reg1, p_constantValue, movR3R1_i);
-	addMovRegisters(movR3R1_i, p_reg3, p_reg1, popf_i);
+	addPushf(pushf_i, movR3R1_i);
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
+	pushf_i->SetFallthrough(movR3R1_i); // do I need this?
+
+	addMovRegisters(movR3R1_i, p_reg3, p_reg1, mulR3Constant_i);
+	addMulRegisterConstant(mulR3Constant_i, p_reg3, p_constantValue, popf_i);
 	addPopf(popf_i, fallthrough);
 
-	movR3R1_i->SetComment(msg);
-	addOverflowCheck(mulR1Constant_i, mulR1Constant_annot);
-	return;
+	mulR3Constant_i->SetComment(msg);
+	addOverflowCheck(mulR3Constant_i, mulR3Constant_annot, originalAddress);
 }
 
 void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
