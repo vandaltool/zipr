@@ -488,7 +488,7 @@ report_logs
 # go back to original directory
 cd - > /dev/null 2>&1
 
-cp $newdir/$name.sh ../$stratafied_exe
+cp $newdir/$name.sh $stratafied_exe
 
 # return success if we created a script to invoke the pgm. 
 if [ -f $stratafied_exe ]; then 
