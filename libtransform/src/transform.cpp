@@ -236,7 +236,7 @@ virtual_offset_t Transform::getAvailableAddress()
 	return 0xf0000000 + counter;
 }
 
-void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumentedInstruction, Instruction_t *p_instruction, Instruction_t *p_fallThrough, Instruction_t *p_originalInstruction)
+void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumentedInstruction, Instruction_t *p_instruction, Instruction_t *p_fallThrough, AddressID_t *p_addressOriginalInstruction)
 {
 	assert(getVariantIR() && p_instruction);
 	
@@ -273,8 +273,8 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	dataBits.resize(5);
 	dataBits[0] = 0x68;
 	virtual_offset_t *tmp = (virtual_offset_t *) &dataBits[1];
-	if (p_originalInstruction)
-		*tmp = p_originalInstruction->GetAddress()->GetVirtualOffset();
+	if (p_addressOriginalInstruction)
+		*tmp = p_addressOriginalInstruction->GetVirtualOffset();
 	else
 		*tmp = p_instrumentedInstruction->GetAddress()->GetVirtualOffset();
 	pusharg_i->SetDataBits(dataBits);
