@@ -7,7 +7,6 @@
 
 #include <libIRDB-core.hpp>
 
-
 #include "MEDS_InstructionCheckAnnotation.hpp"
 #include "VirtualOffset.hpp"
 
@@ -36,7 +35,8 @@ class Transform {
 		void addPopf(Instruction_t *p_instr, Instruction_t *p_fallThrough);
 		void addNop(Instruction_t *p_instr, Instruction_t *p_fallThrough);
 
-		void addCallbackHandler(string p_detector, Instruction_t *p_instrumented, Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_original = NULL);
+		void addCallbackHandler(string p_detector, Instruction_t *p_instrumented, Instruction_t *p_instr, Instruction_t *p_fallThrough, AddressID_t *p_addressOriginal = NULL);
+
 		void addTestRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegisterMask(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
 
