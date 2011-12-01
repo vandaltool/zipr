@@ -479,7 +479,6 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 	fi
 fi
 
-perform_step copy_exe cp $name.sh ../$stratafied_exe
 
 #
 # create a report for all of ps_analyze.
@@ -489,6 +488,7 @@ report_logs
 # go back to original directory
 cd - > /dev/null 2>&1
 
+cp $newdir/$name.sh ../$stratafied_exe
 
 # return success if we created a script to invoke the pgm. 
 if [ -f $stratafied_exe ]; then 
