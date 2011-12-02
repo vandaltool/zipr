@@ -384,6 +384,7 @@ perform_step stratafy_with_pc_confine sh $STRATA_HOME/tools/pc_confinement/strat
 #
 perform_step create_binary_script $PEASOUP_HOME/tools/do_makepeasoupbinary.sh $name 
 perform_step heaprand 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_HEAPRAND 1
+perform_step controlled_exit 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONTROLLED_EXIT 1
 perform_step double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
 perform_step pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
 perform_step isr 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
