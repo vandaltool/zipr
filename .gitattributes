@@ -1035,6 +1035,7 @@ tools/generate_exe.sh -text
 tools/generate_io_baseline.sh -text
 tools/getlibs.sh -text
 tools/getsyms.sh -text
+tools/grace_utils.sh -text
 tools/libc_functions.txt -text
 tools/manual_cover.sh -text
 tools/manual_test_import.sh -text
