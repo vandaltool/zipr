@@ -3,6 +3,11 @@
 using namespace libTransform;
 using namespace MEDS_Annotation;
 
+// make sure these match values in detector_handlers.h in the strata library
+#define POLICY_DEFAULT  0   // use default strata policy
+#define POLICY_CONTINUE 1   // override strata policy 
+#define POLICY_EXIT     2   // override strata policy
+
 Transform::Transform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
 {
 	m_variantID = p_variantID;                  // Current variant ID
@@ -248,9 +253,11 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
  	// create and register new instructions (and addresses)
 	Instruction_t* pusha_i = allocateNewInstruction(fileID, func);
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
+	Instruction_t* pushPolicy_i = allocateNewInstruction(fileID, func);
 	Instruction_t* pusharg_i = allocateNewInstruction(fileID, func);
 	Instruction_t* pushret_i = allocateNewInstruction(fileID, func);
 	Instruction_t* poparg_i = allocateNewInstruction(fileID, func);
+	Instruction_t* popPolicy_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popa_i = allocateNewInstruction(fileID, func);
 
@@ -267,7 +274,20 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	pusha_i->SetComment(pusha_i->GetComment() + " -- start of callback handler sequence");
 
 	// pushf   
-	addPushf(pushf_i, pusharg_i);
+	addPushf(pushf_i, pushPolicy_i);
+
+	// push detector exit policy
+	//     0 - default
+	//     1 - continue
+	//     2 - exit
+	dataBits.resize(5);
+	dataBits[0] = 0x68;
+	int policy = POLICY_DEFAULT; 
+	int *tmpi = (int *) &dataBits[1];
+	*tmpi = policy;
+	pushPolicy_i->SetDataBits(dataBits);
+	pushPolicy_i->SetComment(pushPolicy_i->getDisassembly());
+	pushPolicy_i->SetFallthrough(pusharg_i); 
 
 	// push (PC of instrumented instruction)
 	dataBits.resize(5);
@@ -295,9 +315,15 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	dataBits[0] = 0x58;
 	poparg_i->SetDataBits(dataBits);
 	poparg_i->SetComment(poparg_i->getDisassembly() + " -- with callback to " + p_detector + " orig: " + p_instruction->GetComment()) ;
-	poparg_i->SetFallthrough(popf_i); 
+	poparg_i->SetFallthrough(popPolicy_i); 
 	poparg_i->SetIndirectBranchTargetAddress(poparg_i->GetAddress());  
 	poparg_i->SetCallback(p_detector); 
+
+	// popPolicy
+	dataBits.resize(1);
+	dataBits[0] = 0x58;
+	popPolicy_i->SetDataBits(dataBits);
+	popPolicy_i->SetFallthrough(popf_i); 
 
 	// popf   
 	addPopf(popf_i, popa_i);

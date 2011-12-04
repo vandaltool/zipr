@@ -211,7 +211,12 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		int value = leaPattern.getConstant();
 		Register::RegisterName target = getTargetRegister(p_instruction);
 
-		if (reg1 == Register::UNKNOWN || target == Register::UNKNOWN)
+		if (p_annotation.isUnsigned() && value < 0)
+		{
+			cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg+neg constant pattern: skip this annotation type (prone to false positives)" << endl;
+			return;
+		}
+		else if (reg1 == Register::UNKNOWN || target == Register::UNKNOWN)
 		{
 			cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg+constant pattern: error retrieving register:" << "reg1: " << Register::toString(reg1) << " target: " << Register::toString(target) << endl;
 			return;
@@ -634,7 +639,6 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	}
 
 	addNop(nop_i, popf_i);
-	nop_i->SetComment(string("NOP NOP"));
 	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_instruction->GetAddress());
 	addPopf(popf_i, originalInstrumentInstr);
 }
