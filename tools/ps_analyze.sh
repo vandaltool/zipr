@@ -496,5 +496,5 @@ cp $newdir/$name.sh $stratafied_exe
 if [ -f $stratafied_exe ]; then 
 	exit 0;
 else
-	exit -1
+	exit 255;
 fi
