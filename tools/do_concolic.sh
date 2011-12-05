@@ -44,8 +44,8 @@ do
 done
 
 
-echo STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym -o replay,coverage,instruction_addresses $strata_exe
-     STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym -o replay,coverage,instruction_addresses $strata_exe
+echo STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym -o replay,coverage,instruction_addresses,exit_codes $strata_exe
+     STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym -o replay,coverage,instruction_addresses,exit_codes $strata_exe
 
 echo cleaning up
 killall -q controller
