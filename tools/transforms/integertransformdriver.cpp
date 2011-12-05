@@ -10,12 +10,42 @@ using namespace std;
 
 void usage()
 {
-	cerr << "Usage: integertransformdriver.exe <variant_id> <annotation_file> <filtered_functions>"<<endl;
+	cerr << "Usage: integertransformdriver.exe <variant_id> <annotation_file> <filtered_functions> <integer.warning.addresses>"<<endl;
+}
+
+std::set<VirtualOffset> getInstructionWarnings(char *warningFilePath)
+{
+	std::set<VirtualOffset> warnings;
+	ifstream warningsFile;
+
+	warningsFile.open(warningFilePath);
+
+	if (warningsFile.is_open())
+	{
+		while (!warningsFile.eof())
+		{
+			string address;
+			getline(warningsFile, address);
+
+			if (!address.empty())
+			{
+				VirtualOffset vo(address);
+				warnings.insert(vo);
+
+				cerr << "Detected warning address at: 0x" << hex << vo.getOffset() << endl;
+			}
+		}
+	}
+
+	warningsFile.close();
+
+	cerr << "Detected a total of " << warnings.size() << " addresses" << endl;
+	return warnings;
 }
 
 main(int argc, char **argv)
 {
-	if(argc < 3)
+	if(argc < 4)
 	{
 		usage();
 		exit(1);
@@ -25,6 +55,7 @@ main(int argc, char **argv)
 	int variantID = atoi(argv[1]);
 	char *annotationFilename = argv[2];
 	set<string> filteredFunctions = getFunctionList(argv[3]);
+	char *integerWarnings = argv[4];
 
 	VariantID_t *pidp=NULL;
 	VariantIR_t *virp=NULL;
@@ -51,12 +82,14 @@ main(int argc, char **argv)
 		MEDS_AnnotationParser annotationParser(annotationFile);
 		cerr << "Done parsing annotation file" << endl;
 
+		std::set<VirtualOffset> warnings = getInstructionWarnings(integerWarnings); // keep track of instructions that should be instrumented as warnings (upon detection, print diagnostic & continue)
+
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotationParser.getAnnotations();
 			cerr << "Got all annotations" << endl;
 
 		// do the transformation
 			cerr << "Do the integer transform" << endl;
-		libTransform::IntegerTransform integerTransform(pidp, virp, &annotations, &filteredFunctions);
+		libTransform::IntegerTransform integerTransform(pidp, virp, &annotations, &filteredFunctions, &warnings);
 		int exitcode = integerTransform.execute();
 		if (exitcode == 0)
 		{
