@@ -664,6 +664,7 @@ dry_run_examples/TC_Java_190_h26/src/stonesoup/ISBNChecker.java -text
 dry_run_examples/TC_Java_190_h26/src/stonesoup/Main.java -text
 dry_run_examples/TC_Java_190_h26/testData/ISBNCheckerGoodInput.launch -text
 dry_run_examples/TC_Java_190_h26/testData/ISBNCheckerWrongInput.launch -text
+dyna_examples/000.c -text
 dyna_examples/Makefile -text
 dyna_examples/block_copy.c -text
 dyna_examples/cmd_args_005.c -text

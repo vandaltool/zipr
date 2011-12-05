@@ -37,11 +37,9 @@ STRATA_PARTIAL_INLINING=0
 	$datapath/a.stratafied"
 
 #
-# log to stderr if verbose is set, else log to a file
+#  we just always need to log to a file.
 #
-if [ ! -z $VERBOSE ]; then
-	command="STRATA_OUTPUT_FILE=$datapath/diagnostics.out $command"
-fi
+command="STRATA_OUTPUT_FILE=$datapath/diagnostics.out $command"
 
 #
 # Set SPRI file to use (should be generated from the IRDB).
@@ -60,6 +58,11 @@ eval $command \"\$@\"
 SAVE_EXIT_CODE=$?
 
 if [ -f $datapath/diagnostics.out ]; then
+	echo "--------------------------------------------------------"
+	echo "-          PEASOUP DETECTED AND CONFINED ERRORS        -"
+	echo "- (and possibly detected that some errors were benign) -"
+	echo "-                    (Summarized below)                -"
+	echo "--------------------------------------------------------"
 	cat $datapath/diagnostics.out
 fi
 

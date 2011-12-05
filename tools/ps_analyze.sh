@@ -407,7 +407,7 @@ perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 #
 # Run concolic engine
 #
-perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600  -u 60 -i 25 -l trace,inputs  > do_concolic.out 2>&1
+perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600  -u 60 -i 25 -l trace,inputs  
 
 ##
 ## Populate IR Database
@@ -417,6 +417,7 @@ perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600  -u 60 -i 25 
 # get some simple info for the program
 #	
 DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
+DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
 MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 
 #
