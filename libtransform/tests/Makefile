@@ -19,11 +19,12 @@ all: env_check  ${exes}
 #	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
 #	gcc -g $< -o $@ 
 	gcc $< -o $@ 
-	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off
+	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup 
 #	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off
 
 .c.o:
-	gcc -O2 -c $< 
+#	gcc -O2 -c $< 
+	gcc -c $< 
 #	${PEASOUP_HOME}/tools/ps_comp.sh $< 
 
 .cpp.o:
