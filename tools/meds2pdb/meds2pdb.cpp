@@ -33,7 +33,8 @@ int get_file_id(char *progName, char *md5hash)
   string query = "SELECT file_id FROM file_info WHERE hash=";
   query += txn.quote(string(md5hash));
   query += " AND url LIKE";
-  query += txn.quote(string("%") + string(progName) + string("%"));
+	/* the plus 7 here is to drop "psprog_" from the name */
+  query += txn.quote(string("%") + string(progName+7) + string("%"));
 
   result r = txn.exec(query);
 
