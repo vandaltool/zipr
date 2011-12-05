@@ -814,3 +814,37 @@ void Transform::addMovRegisters(Instruction_t *p_instr, Register::RegisterName p
 	cerr << "addMovRegisters(): " << p_instr->getDisassembly() << endl;
 }
 
+void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constant, Instruction_t *p_fallThrough)
+{
+    p_instr->SetFallthrough(p_fallThrough);
+
+	char buf[128];
+	sprintf(buf,"mov %s, %d", Register::toString(p_regTgt).c_str(), p_constant);
+
+    string assembly(buf);
+    if (!p_instr->Assemble(assembly))
+    {
+        cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
+        return;
+    }
+
+	p_instr->SetComment("Saturating arithmetic");
+}
+
+void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned int p_constant, Instruction_t *p_fallThrough)
+{
+    p_instr->SetFallthrough(p_fallThrough);
+
+	char buf[128];
+	sprintf(buf,"mov %s, %u", Register::toString(p_regTgt).c_str(), p_constant);
+
+    string assembly(buf);
+    if (!p_instr->Assemble(assembly))
+    {
+        cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
+        return;
+    }
+
+	p_instr->SetComment("Saturating arithmetic");
+}
+

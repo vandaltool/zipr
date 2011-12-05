@@ -57,7 +57,7 @@ int IntegerTransform::execute()
 				}
 				else if (annotation.isUnderflow() && !annotation.isNoFlag())
 				{
-					handleOverflowCheck(insn, annotation, policy);
+					handleUnderflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isTruncation())
 				{
@@ -153,7 +153,17 @@ void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const M
 		addOverflowCheck(p_instruction, p_annotation, p_policy);
 	}
 	else
-		cerr << "integertransform: OVERFLOW/UNDERFLOW type not yet handled" << p_annotation.toString() << endl;
+		cerr << "integertransform: OVERFLOW type not yet handled" << p_annotation.toString() << endl;
+}
+
+void IntegerTransform::handleUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+{
+	if (p_annotation.isUnderflow())
+	{
+		addUnderflowCheck(p_instruction, p_annotation, p_policy);
+	}
+	else
+		cerr << "integertransform: UNDERFLOW type not yet handled" << p_annotation.toString() << endl;
 }
 
 /*
@@ -563,7 +573,120 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 	if (p_addressOriginalInstruction)
 		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy, p_addressOriginalInstruction);
 	else
-		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
+	{
+		// implement saturating arithmetic, e.g.:
+		// mov <reg>, value
+		Register::RegisterName targetReg = getTargetRegister(p_instruction);
+		p_instruction->GetAddress()->GetFileID();
+		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+
+		addCallbackHandler(detector, p_instruction, jncond_i, saturate_i, p_policy);
+		addOverflowSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
+	}
+
+
+	getVariantIR()->GetAddresses().insert(jncond_a);
+	getVariantIR()->GetInstructions().insert(jncond_i);
+}
+
+//
+//      <instruction to instrument>
+//      jno <originalFallthroughInstruction> 
+//      pusha
+//      pushf
+//      push_arg <address original instruction>
+//      push L1
+//      ... setup detector ...
+//  L1: pop_arg
+//      popf
+//      popa
+//
+// 20111024 Current policy:
+//            add, sub  -- use signedness information annotation to emit either jno, jnc
+//
+void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+{
+cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
+
+	assert(getVariantIR() && p_instruction);
+	
+	string detector(INTEGER_OVERFLOW_DETECTOR);
+	string dataBits;
+
+	// old style of setting up these params
+	// update to cleaner style
+	Function_t* origFunction = p_instruction->GetFunction();
+	AddressID_t *jncond_a =new AddressID_t;
+	jncond_a->SetFileID(p_instruction->GetAddress()->GetFileID());
+	Instruction_t* jncond_i = new Instruction_t;
+	jncond_i->SetFunction(origFunction);
+	jncond_i->SetAddress(jncond_a);
+
+	// set fallthrough for the original instruction
+	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
+	p_instruction->SetFallthrough(jncond_i); 
+
+	// jncond 
+	dataBits.resize(2);
+	if (isMultiplyInstruction(p_instruction))
+	{
+		dataBits[0] = 0x71; // jno
+		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
+		if (p_annotation.getBitWidth() == 32)
+			detector = string(MUL_OVERFLOW_DETECTOR_32);
+		else if (p_annotation.getBitWidth() == 16)
+			detector = string(MUL_OVERFLOW_DETECTOR_16);
+		else if (p_annotation.getBitWidth() == 8)
+			detector = string(MUL_OVERFLOW_DETECTOR_8);
+		cerr << "integertransform: MUL OVERFLOW: " << detector << endl;
+	}
+	else if (p_annotation.isSigned())
+	{
+		dataBits[0] = 0x71; // jno
+		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
+
+		if (p_annotation.getBitWidth() == 32)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+		else if (p_annotation.getBitWidth() == 16)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
+		else if (p_annotation.getBitWidth() == 8)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_8);
+		cerr << "integertransform: SIGNED OVERFLOW: " << detector << endl;
+	}
+	else if (p_annotation.isUnsigned())
+	{
+		dataBits[0] = 0x73; // jnc
+		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
+
+		if (p_annotation.getBitWidth() == 32)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_32);
+		else if (p_annotation.getBitWidth() == 16)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_16);
+		else if (p_annotation.getBitWidth() == 8)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_8);
+		cerr << "integertransform: UNSIGNED OVERFLOW: " << detector << endl;
+	}
+	else
+	{
+		dataBits[0] = 0x71; // jno
+		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
+
+		if (p_annotation.getBitWidth() == 32)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+		else if (p_annotation.getBitWidth() == 16)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
+		else if (p_annotation.getBitWidth() == 8)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_8);
+	cerr << "integertransform: ADD/SUB OVERFLOW UNKONWN: assume signed for now: " << detector << endl;
+	}
+
+	jncond_i->SetDataBits(dataBits);
+	jncond_i->SetComment(jncond_i->getDisassembly());
+	jncond_i->SetTarget(nextOrig_i); 
+
+	p_instruction->SetFallthrough(jncond_i); 
+
+	addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
 
 	getVariantIR()->GetAddresses().insert(jncond_a);
 	getVariantIR()->GetInstructions().insert(jncond_i);
@@ -647,3 +770,45 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->GetAddress());
 	addPopf(popf_i, originalInstrumentInstr);
 }
+
+void IntegerTransform::addOverflowSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
+{
+	assert(getVariantIR() && p_instruction);
+
+	p_instruction->SetFallthrough(p_fallthrough);
+
+	if (p_annotation.isUnsigned())
+	{
+		// use MAX_UNSIGNED for the bit width
+		switch (p_annotation.getBitWidth())
+		{
+			case 32:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFFFFFFFF, p_fallthrough);
+				break;
+			case 16:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFFFF, p_fallthrough);
+				break;
+			case 8:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFF, p_fallthrough);
+				break;
+		}
+	}
+	else
+	{
+		// treat unknown and signed the same way for overflows
+		// use MAX_SIGNED for the bit width
+		switch (p_annotation.getBitWidth())
+		{
+			case 32:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7FFFFFFF, p_fallthrough);
+				break;
+			case 16:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7FFF, p_fallthrough);
+				break;
+			case 8:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7F, p_fallthrough);
+				break;
+		}
+	}
+}
+
