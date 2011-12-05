@@ -3,11 +3,6 @@
 using namespace libTransform;
 using namespace MEDS_Annotation;
 
-// make sure these match values in detector_handlers.h in the strata library
-#define POLICY_DEFAULT  0   // use default strata policy
-#define POLICY_CONTINUE 1   // override strata policy 
-#define POLICY_EXIT     2   // override strata policy
-
 Transform::Transform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
 {
 	m_variantID = p_variantID;                  // Current variant ID
@@ -241,7 +236,7 @@ virtual_offset_t Transform::getAvailableAddress()
 	return 0xf0000000 + counter;
 }
 
-void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumentedInstruction, Instruction_t *p_instruction, Instruction_t *p_fallThrough, AddressID_t *p_addressOriginalInstruction)
+void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumentedInstruction, Instruction_t *p_instruction, Instruction_t *p_fallThrough, int p_policy, AddressID_t *p_addressOriginalInstruction)
 {
 	assert(getVariantIR() && p_instruction);
 	
@@ -282,9 +277,8 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	//     2 - exit
 	dataBits.resize(5);
 	dataBits[0] = 0x68;
-	int policy = POLICY_DEFAULT; 
 	int *tmpi = (int *) &dataBits[1];
-	*tmpi = policy;
+	*tmpi = p_policy;
 	pushPolicy_i->SetDataBits(dataBits);
 	pushPolicy_i->SetComment(pushPolicy_i->getDisassembly());
 	pushPolicy_i->SetFallthrough(pusharg_i); 

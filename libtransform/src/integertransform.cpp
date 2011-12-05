@@ -4,8 +4,9 @@
 
 using namespace libTransform;
 
-IntegerTransform::IntegerTransform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
+IntegerTransform::IntegerTransform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
 {
+	m_warnings = p_warnings;
 }
 
 // iterate through all functions
@@ -23,8 +24,6 @@ int IntegerTransform::execute()
 	{
 		Function_t* func=*itf;
 
-		cerr << "integertransform: looking at function: " << func->GetName() << endl;
-
 		if (getFilteredFunctions()->find(func->GetName()) != getFilteredFunctions()->end())
 			continue;
 
@@ -37,10 +36,16 @@ int IntegerTransform::execute()
 
 			if (insn && insn->GetAddress())
 			{
+				int policy = POLICY_DEFAULT;
 				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
 				if (irdb_vo == 0) continue;
 
 				VirtualOffset vo(irdb_vo);
+
+				if (m_warnings && m_warnings->count(vo))
+				{
+					policy = POLICY_CONTINUE;
+				}
 
 				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
 				if (!annotation.isValid()) 
@@ -48,20 +53,20 @@ int IntegerTransform::execute()
 				
 				if (annotation.isOverflow())
 				{
-					handleOverflowCheck(insn, annotation);
+					handleOverflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isUnderflow() && !annotation.isNoFlag())
 				{
-					handleOverflowCheck(insn, annotation);
+					handleOverflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isTruncation())
 				{
-					handleTruncation(insn, annotation);
+					handleTruncation(insn, annotation, policy);
 
 				}
 				else if (annotation.isSignedness())
 				{
-					handleSignedness(insn, annotation);
+					handleSignedness(insn, annotation, policy);
 				}
 				else
 					cerr << "integertransform: unknown annotation: " << annotation.toString() << endl;
@@ -75,10 +80,10 @@ int IntegerTransform::execute()
 	return 0;
 }
 
-void IntegerTransform::handleSignedness(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+void IntegerTransform::handleSignedness(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	if (p_annotation.isSigned())
-		addSignednessCheck(p_instruction, p_annotation);
+		addSignednessCheck(p_instruction, p_annotation, p_policy);
 	else
 		cerr << "handleSignedness(): case not yet handled" << endl;
 }
@@ -93,7 +98,7 @@ void IntegerTransform::handleSignedness(Instruction_t *p_instruction, const MEDS
 //
 // handle 8, 16, 32 bit
 
-void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	// sanity checks
     assert(getVariantIR() && p_instruction);
@@ -133,19 +138,19 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 	else if (p_annotation.getBitWidth() == 8)
 		detector = string(SIGNEDNESS_DETECTOR_8);
 
-	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_instruction->GetAddress());
+	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->GetAddress());
 	addPopf(popf_i, originalInstrumentInstr);
 }
 
-void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	if (p_annotation.isOverflow() && p_annotation.isNoFlag())
 	{
-		addOverflowCheckNoFlag(p_instruction, p_annotation);
+		addOverflowCheckNoFlag(p_instruction, p_annotation, p_policy);
 	}
 	else if (isMultiplyInstruction(p_instruction) || p_annotation.isUnderflow() || p_annotation.isOverflow())
 	{
-		addOverflowCheck(p_instruction, p_annotation);
+		addOverflowCheck(p_instruction, p_annotation, p_policy);
 	}
 	else
 		cerr << "integertransform: OVERFLOW/UNDERFLOW type not yet handled" << p_annotation.toString() << endl;
@@ -170,7 +175,7 @@ void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const M
      rprpc:  <reg>+<reg>+-<constant>
      rprtc:  <reg>+<reg>*<constant>
 */
-void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	LEAPattern leaPattern(p_annotation);
 
@@ -200,7 +205,7 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		else
 		{
 //			cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg+reg pattern: skipping" << endl; return;
-			addOverflowCheckNoFlag_RegPlusReg(p_instruction, p_annotation, reg1, reg2, target);
+			addOverflowCheckNoFlag_RegPlusReg(p_instruction, p_annotation, reg1, reg2, target, p_policy);
 		}
 	}
 	else if (leaPattern.isRegisterPlusConstant())
@@ -223,7 +228,7 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		}
 		else
 		{
-			addOverflowCheckNoFlag_RegPlusConstant(p_instruction, p_annotation, reg1, value, target);
+			addOverflowCheckNoFlag_RegPlusConstant(p_instruction, p_annotation, reg1, value, target, p_policy);
 		}
 	}
 	else if (leaPattern.isRegisterTimesConstant())
@@ -240,7 +245,7 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		}
 		else
 		{
-			addOverflowCheckNoFlag_RegTimesConstant(p_instruction, p_annotation, reg1, value, target);
+			addOverflowCheckNoFlag_RegTimesConstant(p_instruction, p_annotation, reg1, value, target, p_policy);
 		}
 	}
 	else
@@ -252,7 +257,7 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 
 // Example annotation to handle
 // 804852e      3 INSTR CHECK OVERFLOW NOFLAGSIGNED 32 EDX+EAX ZZ lea     eax, [edx+eax] Reg1: EDX Reg2: EAX
-void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const Register::RegisterName& p_reg2, const Register::RegisterName& p_reg3)
+void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const Register::RegisterName& p_reg2, const Register::RegisterName& p_reg3, int p_policy)
 {
 // should we even attempt to instrument if we're not sure about the signedness for this pattern?
 
@@ -328,10 +333,10 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 	addPopf(popf_i, fallthrough);
 
 	addRR_i->SetComment(msg);
-	addOverflowCheck(addRR_i, addRR_annot, originalAddress);
+	addOverflowCheck(addRR_i, addRR_annot, p_policy, originalAddress);
 }
 
-void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3)
+void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3, int p_policy)
 {
 	cerr << "integertransform: reg+constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
@@ -390,10 +395,10 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 	addPopf(popf_i, fallthrough);
 
 	addR3Constant_i->SetComment(msg);
-	addOverflowCheck(addR3Constant_i, addR3Constant_annot, originalAddress);
+	addOverflowCheck(addR3Constant_i, addR3Constant_annot, p_policy, originalAddress);
 }
 
-void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3)
+void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3, int p_policy)
 {
 	cerr << "integertransform: reg*constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 	//
@@ -442,14 +447,14 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 	addPopf(popf_i, fallthrough);
 
 	mulR3Constant_i->SetComment(msg);
-	addOverflowCheck(mulR3Constant_i, mulR3Constant_annot, originalAddress);
+	addOverflowCheck(mulR3Constant_i, mulR3Constant_annot, p_policy, originalAddress);
 }
 
-void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	if (p_annotation.getTruncationFromWidth() == 32 && (p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8))
 	{
-		addTruncationCheck(p_instruction, p_annotation);
+		addTruncationCheck(p_instruction, p_annotation, p_policy);
 	}
 	else
 	{
@@ -473,7 +478,7 @@ void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS
 //            imul, mul -- always check using jno
 //            add, sub  -- use signedness information annotation to emit either jno, jnc
 //
-void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, AddressID_t *p_addressOriginalInstruction)
+void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy, AddressID_t *p_addressOriginalInstruction)
 {
 cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
 
@@ -556,15 +561,15 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 	p_instruction->SetFallthrough(jncond_i); 
 
 	if (p_addressOriginalInstruction)
-		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_addressOriginalInstruction);
+		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy, p_addressOriginalInstruction);
 	else
-		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i);
+		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
 
 	getVariantIR()->GetAddresses().insert(jncond_a);
 	getVariantIR()->GetInstructions().insert(jncond_i);
 }
 
-void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation)
+void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	assert(getVariantIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
@@ -639,6 +644,6 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	}
 
 	addNop(nop_i, popf_i);
-	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_instruction->GetAddress());
+	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->GetAddress());
 	addPopf(popf_i, originalInstrumentInstr);
 }

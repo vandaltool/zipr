@@ -35,7 +35,7 @@ class Transform {
 		void addPopf(Instruction_t *p_instr, Instruction_t *p_fallThrough);
 		void addNop(Instruction_t *p_instr, Instruction_t *p_fallThrough);
 
-		void addCallbackHandler(string p_detector, Instruction_t *p_instrumented, Instruction_t *p_instr, Instruction_t *p_fallThrough, AddressID_t *p_addressOriginal = NULL);
+		void addCallbackHandler(string p_detector, Instruction_t *p_instrumented, Instruction_t *p_instr, Instruction_t *p_fallThrough, int p_policy, AddressID_t *addressOriginal = NULL);
 
 		void addTestRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegisterMask(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
@@ -75,6 +75,12 @@ class Transform {
 		set<std::string>       *m_filteredFunctions;
 };
 
+// make sure these match values in detector_handlers.h in the strata library
+#define POLICY_DEFAULT  0   // use default strata policy
+#define POLICY_CONTINUE 1   // override strata policy 
+#define POLICY_EXIT     2   // override strata policy
+
 }
 
 #endif
+
