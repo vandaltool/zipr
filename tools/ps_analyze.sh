@@ -11,6 +11,7 @@
 # Make default 5 minutes
 PN_TIMEOUT_VALUE=300
 #PN_TIMEOUT_VALUE=9999999
+CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
 check_step_option()
 {
@@ -470,7 +471,7 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 			fi
 		fi
 		
-		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid
+		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $CONCOLIC_DIR
 		perform_step calc_conflicts $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
 		perform_step ilr $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
 

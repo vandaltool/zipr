@@ -31,7 +31,7 @@ execute_pn()
 {
 	echo "P1: issuing command: $SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe $1 $2 $3 $4 $5 with timeout value=$TIMEOUT_VALUE"
 
-	# On timeout send SIGUSR1
+	# On timeout send SIGUSR1 (signal #10)
 	timeout -10 $TIMEOUT_VALUE $PN_BINARY $1 $2 $3 $4 $5
 }
 
@@ -46,9 +46,11 @@ touch $EXECUTED_ADDRESSES_FINAL
 cat $EXECUTED_ADDRESSES_MANUAL >> $EXECUTED_ADDRESSES_FINAL
 cat $EXECUTED_ADDRESSES >> $EXECUTED_ADDRESSES_FINAL
 
+# sanity filter, keep only well formed addresses
 cat $EXECUTED_ADDRESSES_FINAL | sed 's/.*\(0x.*\)/\1/' >tmp
 mv tmp $EXECUTED_ADDRESSES_FINAL
 
+# produce coverage file
 $PEASOUP_HOME/tools/cover.sh $ORIGINAL_BINARY $MEDS_ANNOTATION_FILE $EXECUTED_ADDRESSES_FINAL $LIBC_FILTER $COVERAGE_FILE $BLACK_LIST
 
 baseline_flag=0
