@@ -40,30 +40,7 @@ echo "             INPUT_DIR: $INPUT_DIR"
 echo "   BASELINE_OUTPUT_DIR: $BASELINE_OUTPUT_DIR"
 echo "=========================================="
 
-#
-# Do the NULL case
-# Make sure we handle the case where program expects input off stdin
-#
-TMP=tmp.int.$$
-rm -f $TMP
-touch $TMP
-STRATA_DETECTOR_POLICY="continue" STRATA_SPRI_FILE=$BSPRI STRATA_LOG=detectors STRATA_OUTPUT_FILE=integer.diagnostics timeout 60 $STRATAFIED_BINARY < $TMP
-
-echo "Here's the diagnostics from running the NULL input case"
 touch $INTEGER_WARN_INSTRUCTIONS
-cat integer.diagnostics | sed 's/.*diagnosis.*PC:\(.*\)/\1/' | cut -d' ' -f1 >> $INTEGER_WARN_INSTRUCTIONS
-
-rm $TMP
-
-#
-# Looks like the replayer is not compatible with strata + bspri
-#
-
-exit 0
-
-#===================================
-# FUNCTIONALITY BELOW DISABLED
-#===================================
 
 #
 # name of files describing inputs is of the form: input_0001.json, input_0002.json, ...
@@ -90,12 +67,26 @@ do
   rm -rf grace_replay
   rm -f stdout.* stderr.* exit_status
 
-  echo "STRATA_DETECTOR_POLICY="continue" STRATA_LOG="detectors" STRATA_OUTPUT_FILE="integer.diagnostics.$input_number" STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i"
-  STRATA_DETECTOR_POLICY="continue" STRATA_LOG="detectors" STRATA_OUTPUT_FILE="integer.diagnostics.$input_number" STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i 
+  integer_diagnostics="integer.diagnostics.$input_number"
+
+  STRATA_PC_CONFINE=1 STRATA_DETECTOR_POLICY="continue" STRATA_LOG="detectors" STRATA_OUTPUT_FILE=$integer_diagnostics STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i 
+
+  # classify input: if segfault or failed PC confinement, then don't treat C1/Integer Detector for a given instruction as a false positive
+  grep -i "status 139" exit_status
+  if [ ! $? -eq 0 ]; then
+    grep -i "PC failed confinement" $integer_diagnostics
+    if [ ! $? -eq 0 ]; then
+      cat $integer_diagnostics | grep -i diagnos | grep class | grep C1 | sed 's/.*diagnosis.*PC:\(.*\)/\1/' | cut -d' ' -f1 >> $INTEGER_WARN_INSTRUCTIONS
+    fi
+  fi
 
   mv stderr.$input $REPLAY_DIR/$input_number/stderr.$input
   mv stdout.$input $REPLAY_DIR/$input_number/stdout.$input
   mv exit_status $REPLAY_DIR/$input_number/exit_status
-  mv integer.diagnostics.$input_number $REPLAY_DIR/$input_number/
+  mv $integer_diagnostics $REPLAY_DIR/$input_number/
 
 done
+
+rm -f tmp.integer.$$
+sort $INTEGER_WARN_INSTRUCTIONS > tmp.integer.$$
+mv tmp.integer.$$ $INTEGER_WARN_INSTRUCTIONS

@@ -29,11 +29,11 @@ echo "INT: transforming binary: cloneid=$CLONE_ID annotationInfoFile=$ANNOT_INFO
 # This is designed to prevent false positives
 #
 # Comment out this block of code if you don't want to even attempt to detect false positives
-#. $PEASOUP_HOME/tools/grace_utils.sh || echo "INT: could not locate grace utility scripts"
-#get_grace_number_inputs_executed $CONCOLIC_DIR
-#if [ ! $? -eq 0 ]; then
-#	echo "INT: Grace executed at least 1 input"
-#
+. $PEASOUP_HOME/tools/grace_utils.sh || echo "INT: could not locate grace utility scripts"
+get_grace_number_inputs_executed $CONCOLIC_DIR
+if [ ! $? -eq 0 ]; then
+	echo "INT: Grace executed at least 1 input"
+
 	echo "INT: Clone program"
 	$SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $CLONE_ID clone.id
 	tempcloneid=`cat clone.id`
@@ -60,7 +60,7 @@ echo "INT: transforming binary: cloneid=$CLONE_ID annotationInfoFile=$ANNOT_INFO
 	else
 		echo "Error generating integer transforms -- skip replay step to detect false positives"
 	fi
-#fi
+fi
 
 # restore working dir (just in case)
 cd $TOP_DIR   
