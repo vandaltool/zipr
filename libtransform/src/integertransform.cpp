@@ -119,7 +119,7 @@ int IntegerTransform::execute()
 
 void IntegerTransform::handleSignedness(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	if (p_annotation.isSigned())
+	if (p_annotation.isSigned() || p_annotation.isUnsigned())
 		addSignednessCheck(p_instruction, p_annotation, p_policy);
 	else
 		cerr << "handleSignedness(): case not yet handled" << endl;
@@ -187,7 +187,10 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
 
 		addCallbackHandler(detector, originalInstrumentInstr, nop_i, saturate_i, p_policy, p_instruction->GetAddress());
-		addMaxSaturation(saturate_i, p_annotation.getRegister(), p_annotation, popf_i);
+		if (p_annotation.isSigned())
+			addMaxSaturation(saturate_i, p_annotation.getRegister(), p_annotation, popf_i);
+		else
+			addZeroSaturation(saturate_i, p_annotation.getRegister(), popf_i);
 	}
 	else
 	{
@@ -750,6 +753,8 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	assert(getVariantIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
+return;
+
 cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	string detector; 
 
@@ -946,5 +951,14 @@ void IntegerTransform::addMinSaturation(Instruction_t *p_instruction, Register::
 				break;
 		}
 	}
+}
+
+void IntegerTransform::addZeroSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, Instruction_t *p_fallthrough)
+{
+	assert(getVariantIR() && p_instruction);
+
+	p_instruction->SetFallthrough(p_fallthrough);
+
+	addMovRegisterUnsignedConstant(p_instruction, p_reg, 0, p_fallthrough);
 }
 
