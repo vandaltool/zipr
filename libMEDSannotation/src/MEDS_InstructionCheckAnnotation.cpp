@@ -136,6 +136,7 @@ void MEDS_InstructionCheckAnnotation::parse()
 	{
 		char buf[1024] = "";
 		// [ADDR] [SIZE] INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov     [esp+28h], ax
+		// [ADDR] [SIZE] INSTR CHECK SIGNEDNESS UNSIGNED 16 AX ZZ mov   [esp+28h], ax
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
 		m_target = string(buf);
 		m_register = Register::getRegister(m_target);
