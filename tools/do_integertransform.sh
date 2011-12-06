@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# do_integertransform.sh <cloneId> <concolicDir>
+# do_integertransform.sh <cloneId> <concolicDir> <timeout>
 #
 # pre: we are in the top-level directory created by ps_analyze.sh
 #
@@ -8,10 +8,16 @@
 # input
 CLONE_ID=$1
 CONCOLIC_DIR=$2
+TIMEOUT=$3
 
 # configuration variables
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system library functions
 ANNOT_INFO=a.ncexe.infoannot                         # new annotation for integer checks
+
+if [ -z $TIMEOUT ] ;
+then
+TIMEOUT=300                           # 5 mns
+fi
 
 TOP_DIR=`pwd`
 INTEGER_ASPRI=a.irdb.integer.aspri
@@ -21,6 +27,11 @@ INTEGER_WARNINGS_FILE=${TOP_DIR}/integer.warnings.addresses
 touch $INTEGER_WARNINGS_FILE
 
 echo "INT: transforming binary: cloneid=$CLONE_ID annotationInfoFile=$ANNOT_INFO"
+
+if [ ! -f $ANNOT_INFO ]; then
+	echo "INT: no info annotation file found -- skip integer gransform"
+	return 1
+fi
 
 # Sanity check -- did Grace produce anything?
 #
@@ -52,13 +63,13 @@ if [ ! $? -eq 0 ]; then
 	if [ $? -eq 0 ]; then
 		# produce list of instruction addresses that trigger an integer detector
 		echo "INT: false positives detection activated"
-		$PEASOUP_HOME/tools/integer_replay.sh $TOP_DIR/a.stratafied $CONCOLIC_DIR $TOP_DIR/$INTEGER_BSPRI $INTEGER_WARNINGS_FILE
+		timeout $TIMEOUT $PEASOUP_HOME/tools/integer_replay.sh $TOP_DIR/a.stratafied $CONCOLIC_DIR $TOP_DIR/$INTEGER_BSPRI $INTEGER_WARNINGS_FILE
 		sort $INTEGER_WARNINGS_FILE | uniq > $INTEGER_WARNINGS_FILE.$$
 		mv $INTEGER_WARNINGS_FILE.$$ $INTEGER_WARNINGS_FILE
 
 		cd $TOP_DIR   # restore working dir (just in case)
 	else
-		echo "Error generating integer transforms -- skip replay step to detect false positives"
+		echo "Error generating integer transforms -- skip replay step to detect benign false positives"
 	fi
 fi
 
@@ -66,4 +77,5 @@ fi
 cd $TOP_DIR   
 
 # Transform program but for each instruction present in the list above, use a "CONTINUE" policy to emit a warning (instead of the default CONTROLLED EXIT policy)
-$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE
+echo "INT: Final integer transform"
+$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic

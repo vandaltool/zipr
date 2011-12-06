@@ -8,9 +8,10 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
-# Make default 5 minutes
-PN_TIMEOUT_VALUE=300
-#PN_TIMEOUT_VALUE=9999999
+# Make default 10 minutes
+PN_TIMEOUT_VALUE=600
+INTEGER_TRANSFORM_TIMEOUT_VALUE=600
+
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
 check_step_option()
@@ -407,8 +408,7 @@ perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 #
 # Run concolic engine
 #
-perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600  -u 60 -i 25 -l trace,inputs  
-
+perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600  -u 60 -i 75 -l trace,inputs  
 ##
 ## Populate IR Database
 ##
@@ -472,7 +472,7 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 			fi
 		fi
 		
-		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $CONCOLIC_DIR
+		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE
 		perform_step calc_conflicts $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
 		perform_step ilr $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
 

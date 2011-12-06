@@ -86,7 +86,3 @@ do
   mv $integer_diagnostics $REPLAY_DIR/$input_number/
 
 done
-
-rm -f tmp.integer.$$
-sort $INTEGER_WARN_INSTRUCTIONS > tmp.integer.$$
-mv tmp.integer.$$ $INTEGER_WARN_INSTRUCTIONS
