@@ -329,7 +329,7 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 		{
 		    //TODO: pass in the rep count
 		    //TODO: make member variables?
-		    if(!ShuffleValidation(2,layouts[i],virp,func,BED_script,progid))
+		    if(!ShuffleValidation(1,layouts[i],virp,func,BED_script,progid))
 		    {
 			cerr<<"PNTransformDriver: Shuffle Validation Failure"<<endl;
 			continue;

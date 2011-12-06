@@ -10,7 +10,7 @@ using namespace std;
 
 void usage()
 {
-	cerr << "Usage: integertransformdriver.exe <variant_id> <annotation_file> <filtered_functions> <integer.warning.addresses>"<<endl;
+	cerr << "Usage: integertransformdriver.exe <variant_id> <annotation_file> <filtered_functions> <integer.warning.addresses> [--saturate]"<<endl;
 }
 
 std::set<VirtualOffset> getInstructionWarnings(char *warningFilePath)
@@ -41,6 +41,17 @@ std::set<VirtualOffset> getInstructionWarnings(char *warningFilePath)
 
 	cerr << "Detected a total of " << warnings.size() << " addresses" << endl;
 	return warnings;
+}
+
+bool isSaturatingArithmeticOn(int argc, char **argv)
+{
+	for (int i = 0; i < argc; ++i)
+	{
+		if (strncasecmp(argv[i], "--saturat", strlen("--saturat")) == 0)
+			return true;
+	}
+
+	return false;
 }
 
 main(int argc, char **argv)
@@ -90,6 +101,7 @@ main(int argc, char **argv)
 		// do the transformation
 			cerr << "Do the integer transform" << endl;
 		libTransform::IntegerTransform integerTransform(pidp, virp, &annotations, &filteredFunctions, &warnings);
+		integerTransform.setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
 		int exitcode = integerTransform.execute();
 		if (exitcode == 0)
 		{
