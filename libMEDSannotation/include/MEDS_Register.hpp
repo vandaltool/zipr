@@ -14,6 +14,7 @@ public:
   static bool is32bit(RegisterName);
   static bool is16bit(RegisterName);
   static bool is8bit(RegisterName);
+  static int getBitWidth(RegisterName);
   static std::string toString(RegisterName);
 };
 

@@ -98,3 +98,42 @@ std::string Register::toString(Register::RegisterName p_reg)
 	else if (p_reg == DL) return std::string("DL");
 	else return std::string("UNEXPECTED REGISTER VALUE");
 }
+
+int Register::getBitWidth(Register::RegisterName p_reg)
+{
+	switch (p_reg)
+	{
+		case EAX:
+		case EBX:
+		case ECX:
+		case EDX:
+		case EDI:
+		case ESI:
+		case EBP:
+		case ESP:
+			return 32;
+			break;
+
+		case AX:				
+		case BX:				
+		case CX:				
+		case DX:				
+			return 16;
+			break;
+
+		case AH:				
+		case BH:				
+		case CH:				
+		case DH:				
+		case AL:				
+		case BL:				
+		case CL:				
+		case DL:				
+			return 8;
+			break;
+
+		default:
+			return -1;
+			break;
+	}
+}
