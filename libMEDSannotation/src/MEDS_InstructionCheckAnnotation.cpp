@@ -139,7 +139,6 @@ void MEDS_InstructionCheckAnnotation::parse()
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
 		m_target = string(buf);
 		m_register = Register::getRegister(m_target);
-	cerr << "SIGNEDNESS DETECTED: bitwidth: " << m_bitWidth << "  reg:" << string(buf) << endl;
 	}
 
 	m_isValid = true;
