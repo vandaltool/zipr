@@ -13,17 +13,19 @@
 
 //
 // Saturating arithmetic implemented for:
-//      - SIGNEDNESS
+//      - SIGNEDNESS SIGNED
 //      - OVERFLOW (when destination is a register)
 //      - UNDERFLOW (when destination is a register)
+//      - TRUNCATION
 //
 // ============= TO DO ============= 
 // Saturating arithmetic to do:
 //      - OVERFLOW (dest. is not a register)
 //      - UNDERFLOW (dest. is not a register)
-//      - TRUNCATION
+//      - SIGNEDNESS UNSIGNED
 //
 // Instrumentation:
+//      - SIGNEDNESS UNSIGNED
 //      - TRUNCATION (16->8)   no test cases available
 //      - LEA                  only reg32+reg32 case implemented
 //
@@ -753,8 +755,6 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	assert(getVariantIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
-return;
-
 cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	string detector; 
 
@@ -765,7 +765,7 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 	//
 	//             <save flags>
 	//             test eax, 0xFFFFFF00   ; (for 8 bit) 
-	//             jz <continue> | <SAT>  ; upper 24 bits are 0's 
+	//             jz <continue>          ; upper 24 bits are 0's 
 	//
 	//             ; to support SIGNED add these lines
 	//             push eax               ; save eax
@@ -774,7 +774,6 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 	//             jz <L1>                ; upper 24 bits are 1's
 	//             (invoke truncation handler) nop ; [[ if unsigned, skip the pop eax ]]
 	//       L1:   pop eax
-	//
 	//      SAT:   saturating-arithmetic  ; optional
 	//
 	// continue:   <restore flags>
@@ -782,20 +781,22 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 	//
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
+	AddressID_t *saveAddress = p_instruction->GetAddress();
 
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
 	Instruction_t* test_i = allocateNewInstruction(fileID, func);
 	Instruction_t* jz_i = allocateNewInstruction(fileID, func);
-	Instruction_t* nop_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
 	Instruction_t* saturate_i = NULL;
 	
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 		saturate_i = allocateNewInstruction(fileID, func);
 
+	cerr << "TRUNCATION: original fallthrough instruction: " << p_instruction->GetComment() << endl;
 	addPushf(pushf_i, test_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
 	pushf_i->SetFallthrough(test_i); // do I need this here again b/c carefullyInsertBefore breaks the link?
+	cerr << "TRUNCATION: original fallthrough instruction: " << originalInstrumentInstr->GetComment() << endl;
 
 	unsigned mask = 0;
 	if (p_annotation.getTruncationToWidth() == 16)
@@ -810,75 +811,91 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 	}
 			
 	addTestRegisterMask(test_i, p_annotation.getRegister(), mask, jz_i);
+
+	// add saturation instruction
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+		addMaxSaturation(saturate_i, p_annotation.getRegister(), p_annotation, popf_i);
+
 	if (p_annotation.isUnsigned())
 	{
+		Instruction_t* nop_i = allocateNewInstruction(fileID, func);
+		addJz(jz_i, nop_i, popf_i);
+
 		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 		{
-			addJz(jz_i, nop_i, saturate_i);
+			addNop(nop_i, saturate_i);
+			nop_i->SetComment("UNSIGNED TRUNC: fallthrough: saturating arithmetic instruction");
+			addCallbackHandler(detector, originalInstrumentInstr, nop_i, saturate_i, p_policy, saveAddress);
 		}
 		else
 		{
-			addJz(jz_i, nop_i, popf_i);
+			addNop(nop_i, popf_i);
+			nop_i->SetComment(string("UNSIGNED TRUNC: fallthrough: popf"));
+			addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, saveAddress);
 		}
-		jz_i->SetComment(string("jz - UNSIGNED TRUNC"));
+
 	}
 	else
 	{
 		// signed or unknown sign
 
-	//             ; to support SIGNED add these 3 lines
-	//             push eax                 ; save eax
-	//             not eax
-	//             test eax, 0xFFFFFF00     ;(for 8 bit) 
-	//             jz <L1>                  ; upper 24 bits are 1's
-	//           
-	//             (invoke truncation handler) nop
+    //             <save flags>
+    //             test eax, 0xFFFFFF00   ; (for 8 bit) 
 	//
-	//       L1:   pop eax
+	//      for UNSIGNED:
+    //             jz <continue>          ; upper 24 bits are 0's, fallthrough is nop 
+	//             (HANDLER) nop
+	//             <link to sat>
 	//
-	//      SAT:   saturating-arithmetic    ; optional
-	// continue:
-	//             <restore flags>
-	//             mov [ebp+var_4], al      ; <originalInstruction>
+	//      for SIGNED:
+    //             jz <continue>          ; upper 24 bits are 0's, fallthrough is push eax
+    //             push eax               ; save eax
+    //             not eax
+    //             test eax, 0xFFFFFF00   ; (for 8 bit) 
+	//             jnz <detect>           ; 
 	//
+    //             pop eax
+    // continue:   <restore flags>
+    //             mov [ebp+var_4], al  ; <originalInstruction>
+	//             ...
+	//
+	//   detect:   (HANDLER) pop eax
+	//      sat:   <saturating arithmetic>
+	//             <link to continue>
+
 		Instruction_t* su_pushreg_i = allocateNewInstruction(fileID, func);
 		Instruction_t* su_not_i = allocateNewInstruction(fileID, func);
 		Instruction_t* su_test_i = allocateNewInstruction(fileID, func);
-		Instruction_t* su_jz_i = allocateNewInstruction(fileID, func);
-		Instruction_t* su_popreg_i = allocateNewInstruction(fileID, func);
+		Instruction_t* su_jnz_i = allocateNewInstruction(fileID, func);
+		Instruction_t* su_popreg1_i = allocateNewInstruction(fileID, func);
+		Instruction_t* su_popreg2_i = allocateNewInstruction(fileID, func);
 
 		addJz(jz_i, su_pushreg_i, popf_i);
+		jz_i->SetComment(string("jz - SIGNED or UNKNOWN TRUNC"));
 
 		addPushRegister(su_pushreg_i, p_annotation.getRegister(), su_not_i);
-		jz_i->SetComment(string("jz - SIGNED or UNKNOWN TRUNC"));
 		addNot(su_not_i, p_annotation.getRegister(), su_test_i);
-		addTestRegisterMask(su_test_i, p_annotation.getRegister(), mask, su_jz_i);
+		addTestRegisterMask(su_test_i, p_annotation.getRegister(), mask, su_jnz_i);
 
-		addJz(su_jz_i, nop_i, su_popreg_i); // fallthrough, target
-		addNop(nop_i, su_popreg_i);
-
+		addJnz(su_jnz_i, su_popreg1_i, su_popreg2_i); // fallthrough, target
+		addPopRegister(su_popreg1_i, p_annotation.getRegister(), popf_i);
+	
 		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
-			addPopRegister(su_popreg_i, p_annotation.getRegister(), saturate_i);
+		{
+			addPopRegister(su_popreg2_i, p_annotation.getRegister(), saturate_i);
+			addCallbackHandler(detector, originalInstrumentInstr, su_popreg2_i, saturate_i, p_policy, saveAddress);
+		}
 		else
-			addPopRegister(su_popreg_i, p_annotation.getRegister(), popf_i);
-	}
+		{
+			addPopRegister(su_popreg2_i, p_annotation.getRegister(), popf_i);
+			addCallbackHandler(detector, originalInstrumentInstr, su_popreg2_i, popf_i, p_policy, saveAddress);
+		}
 
-	if (p_annotation.isUnsigned())
-	{
-		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
-			addNop(nop_i, saturate_i);
-		else
-			addNop(nop_i, popf_i);
 	}
-
-	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
-	{
-		addMaxSaturation(saturate_i, p_annotation.getRegister(), p_annotation, popf_i);
-	}
-
-	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->GetAddress());
 
 	addPopf(popf_i, originalInstrumentInstr);
+
+    cerr << "addTruncationCheck(): --- END ---" << endl;
 }
 
 void IntegerTransform::addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
@@ -890,7 +907,7 @@ void IntegerTransform::addMaxSaturation(Instruction_t *p_instruction, Register::
 	if (p_annotation.isUnsigned())
 	{
 		// use MAX_UNSIGNED for the bit width
-		switch (p_annotation.getBitWidth())
+		switch (Register::getBitWidth(p_reg))
 		{
 			case 32:
 				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFFFFFFFF, p_fallthrough);
@@ -901,13 +918,16 @@ void IntegerTransform::addMaxSaturation(Instruction_t *p_instruction, Register::
 			case 8:
 				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFF, p_fallthrough);
 				break;
+			default:
+				cerr << "IntegerTransform::addMaxSaturation(): invalid bit width: " << p_annotation.getBitWidth() << endl;
+				break;
 		}
 	}
 	else
 	{
 		// treat unknown and signed the same way for overflows
 		// use MAX_SIGNED for the bit width
-		switch (p_annotation.getBitWidth())
+		switch (Register::getBitWidth(p_reg))
 		{
 			case 32:
 				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7FFFFFFF, p_fallthrough);
@@ -917,6 +937,9 @@ void IntegerTransform::addMaxSaturation(Instruction_t *p_instruction, Register::
 				break;
 			case 8:
 				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7F, p_fallthrough);
+				break;
+			default:
+				cerr << "IntegerTransform::addMaxSaturation(): invalid bit width: " << p_annotation.getBitWidth() << endl;
 				break;
 		}
 	}
@@ -938,7 +961,7 @@ void IntegerTransform::addMinSaturation(Instruction_t *p_instruction, Register::
 	{
 		// treat unknown and signed the same way for overflows
 		// use MIN_SIGNED for the bit width
-		switch (p_annotation.getBitWidth())
+		switch (Register::getBitWidth(p_reg))
 		{
 			case 32:
 				addMovRegisterSignedConstant(p_instruction, p_reg, 0x80000000, p_fallthrough);
@@ -948,6 +971,9 @@ void IntegerTransform::addMinSaturation(Instruction_t *p_instruction, Register::
 				break;
 			case 8:
 				addMovRegisterSignedConstant(p_instruction, p_reg, 0x80, p_fallthrough);
+				break;
+			default:
+				cerr << "IntegerTransform::addMaxSaturation(): invalid bit width: " << p_annotation.getBitWidth() << endl;
 				break;
 		}
 	}

@@ -637,6 +637,17 @@ void Transform::addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Inst
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
 
+// jnz - jump not zero
+void Transform::addJnz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x75;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+}
+
 // not <reg> -- negate register
 void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
 {
@@ -829,6 +840,7 @@ void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::R
         return;
     }
 
+	cerr << "addMovRegisterSignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
 }
 
@@ -846,6 +858,7 @@ void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register:
         return;
     }
 
+	cerr << "addMovRegisterUnsignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
 }
 
