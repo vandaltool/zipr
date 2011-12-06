@@ -2,6 +2,31 @@
 #include "integertransform.hpp"
 #include "leapattern.hpp"
 
+//
+// MEDS has the following annotation types:
+//     - OVERFLOW (SIGNED|UNSIGNED|UNKNOWN) (32,16,8)
+//     - UNDERFLOW (SIGNED|UNSIGNED|UNKNOWN) (32,16,8)
+//     - SIGNEDNESS SIGNED (32,16,8)
+//     - TRUNCATION (SIGNED|UNSIGNED|UNKNOWN) (32,16,8)
+//     - XXX_NOFLAG (Many forms, handles LEA)
+//
+
+//
+// Saturating arithmetic implemented for:
+//      - SIGNEDNESS
+//      - OVERFLOW (when destination is a register)
+//      - UNDERFLOW (when destination is a register)
+//
+// ============= TO DO ============= 
+// Saturating arithmetic to do:
+//      - OVERFLOW (dest. is not a register)
+//      - UNDERFLOW (dest. is not a register)
+//      - TRUNCATION
+//
+// Instrumentation:
+//      - TRUNCATION (16->8)   no test cases available
+//      - LEA                  only reg32+reg32 case implemented
+//
 using namespace libTransform;
 
 IntegerTransform::IntegerTransform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
@@ -100,16 +125,16 @@ void IntegerTransform::handleSignedness(Instruction_t *p_instruction, const MEDS
 		cerr << "handleSignedness(): case not yet handled" << endl;
 }
 
-//                                                                <save flags>
-//                                                                TEST ax, ax
-//                                                                jns L1
-//                                                                invoke conversion handler
-//                                                        L1:     <restore flags>
+// 8048576 5 INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov     [esp+28h], ax
+//             <save flags>
+//             TEST ax, ax
+//             jns L1
+//             invoke conversion handler
+// (optional)  mov ax, MAX_16     ; saturating arithmetic (Max for bit width/sign/unsigned) 
+//  
+//       L1:   <restore flags>
+//             mov [esp+28h], ax
 //
-// 8048576      5 INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov     [esp+28h], ax
-//
-// handle 8, 16, 32 bit
-
 void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	// sanity checks
@@ -152,13 +177,13 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 	else if (p_annotation.getBitWidth() == 8)
 		detector = string(SIGNEDNESS_DETECTOR_8);
 
+	// sanity filter
 	if (p_annotation.getRegister() == Register::UNKNOWN)
 		p_policy = POLICY_DEFAULT;
 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
-		// implement saturating arithmetic, e.g.:
-		// mov <reg>, value
+		// implement saturating arithmetic on register, i.e.: mov <reg>, value
 		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
 
 		addCallbackHandler(detector, originalInstrumentInstr, nop_i, saturate_i, p_policy, p_instruction->GetAddress());
@@ -519,9 +544,9 @@ void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS
 //
 void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy, AddressID_t *p_addressOriginalInstruction)
 {
-cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
-
 	assert(getVariantIR() && p_instruction);
+
+cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	
 	string detector(INTEGER_OVERFLOW_DETECTOR);
 	string dataBits;
@@ -725,26 +750,31 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	assert(getVariantIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
+cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	string detector; 
 
 	// Truncation unsigned
-	// 80484ed      3 INSTR CHECK TRUNCATION UNSIGNED 32 EAX 8 AL ZZ mov     [ebp+var_4], al
-	// Unsigned:  example: for signed truncation - 8 bit on AL
-	//			it's ok if 24 upper bits are all 1's or all 0's
+	// 80484ed 3 INSTR CHECK TRUNCATION UNSIGNED 32 EAX 8 AL ZZ mov     [ebp+var_4], al
+	// Unsigned: example: for signed truncation - 8 bit on AL
+	//			   it's ok if 24 upper bits are all 1's or all 0's
 	//
-	//           <save flags>
-	//           test eax, 0xFFFFFF00 (for 8 bit) 
-	//           jz <continue>      # upper 24 bits are 0's
+	//             <save flags>
+	//             test eax, 0xFFFFFF00   ; (for 8 bit) 
+	//             jz <continue> | <SAT>  ; upper 24 bits are 0's 
 	//
-	//			# to support SIGNED add these 3 lines
-	//           not eax
-	//           test eax, 0xFFFFFF00 (for 8 bit) 
-	//           jz <continue>      # upper 24 bits are 1's
-	//           
-	//           (invoke truncation handler) nop
-	// continue:
-	//           <restore flags>
-	//           <originalInstruction>
+	//             ; to support SIGNED add these lines
+	//             push eax               ; save eax
+	//             not eax
+	//             test eax, 0xFFFFFF00   ;(for 8 bit) 
+	//             jz <L1>                ; upper 24 bits are 1's
+	//             (invoke truncation handler) nop ; [[ if unsigned, skip the pop eax ]]
+	//       L1:   pop eax
+	//
+	//      SAT:   saturating-arithmetic  ; optional
+	//
+	// continue:   <restore flags>
+	//             mov [ebp+var_4], al  ; <originalInstruction>
+	//
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
 
@@ -753,6 +783,10 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	Instruction_t* jz_i = allocateNewInstruction(fileID, func);
 	Instruction_t* nop_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
+	Instruction_t* saturate_i = NULL;
+	
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+		saturate_i = allocateNewInstruction(fileID, func);
 
 	addPushf(pushf_i, test_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
@@ -771,31 +805,74 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	}
 			
 	addTestRegisterMask(test_i, p_annotation.getRegister(), mask, jz_i);
-	if (p_annotation.isSigned() || p_annotation.isUnsigned())
+	if (p_annotation.isUnsigned())
 	{
-		//   not <reg>
-		//   test <reg>, 0xFFFFFF00 (for 8 bit) 
-		//   jz <continue>     # upper 24 bits are 1's
-		Instruction_t* su_not_i = allocateNewInstruction(fileID, func);
-		Instruction_t* su_test_i = allocateNewInstruction(fileID, func);
-		Instruction_t* su_jz_i = allocateNewInstruction(fileID, func);
-
-		addJz(jz_i, su_not_i, popf_i);
-		jz_i->SetComment(string("jz - SIGNED or UNSIGNED TRUNC"));
-		addNot(su_not_i, p_annotation.getRegister(), su_test_i);
-		su_not_i->SetComment(string("NOT"));
-		addTestRegisterMask(su_test_i, p_annotation.getRegister(), mask, su_jz_i);
-
-		addJz(su_jz_i, nop_i, popf_i);
+		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+		{
+			addJz(jz_i, nop_i, saturate_i);
+		}
+		else
+		{
+			addJz(jz_i, nop_i, popf_i);
+		}
+		jz_i->SetComment(string("jz - UNSIGNED TRUNC"));
 	}
 	else
 	{
-		addJz(jz_i, nop_i, popf_i);
-		jz_i->SetComment(string("jz - UNKNOWN TRUNC"));
+		// signed or unknown sign
+
+	//             ; to support SIGNED add these 3 lines
+	//             push eax                 ; save eax
+	//             not eax
+	//             test eax, 0xFFFFFF00     ;(for 8 bit) 
+	//             jz <L1>                  ; upper 24 bits are 1's
+	//           
+	//             (invoke truncation handler) nop
+	//
+	//       L1:   pop eax
+	//
+	//      SAT:   saturating-arithmetic    ; optional
+	// continue:
+	//             <restore flags>
+	//             mov [ebp+var_4], al      ; <originalInstruction>
+	//
+		Instruction_t* su_pushreg_i = allocateNewInstruction(fileID, func);
+		Instruction_t* su_not_i = allocateNewInstruction(fileID, func);
+		Instruction_t* su_test_i = allocateNewInstruction(fileID, func);
+		Instruction_t* su_jz_i = allocateNewInstruction(fileID, func);
+		Instruction_t* su_popreg_i = allocateNewInstruction(fileID, func);
+
+		addJz(jz_i, su_pushreg_i, popf_i);
+
+		addPushRegister(su_pushreg_i, p_annotation.getRegister(), su_not_i);
+		jz_i->SetComment(string("jz - SIGNED or UNKNOWN TRUNC"));
+		addNot(su_not_i, p_annotation.getRegister(), su_test_i);
+		addTestRegisterMask(su_test_i, p_annotation.getRegister(), mask, su_jz_i);
+
+		addJz(su_jz_i, nop_i, su_popreg_i); // fallthrough, target
+		addNop(nop_i, su_popreg_i);
+
+		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+			addPopRegister(su_popreg_i, p_annotation.getRegister(), saturate_i);
+		else
+			addPopRegister(su_popreg_i, p_annotation.getRegister(), popf_i);
 	}
 
-	addNop(nop_i, popf_i);
+	if (p_annotation.isUnsigned())
+	{
+		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+			addNop(nop_i, saturate_i);
+		else
+			addNop(nop_i, popf_i);
+	}
+
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+	{
+		addMaxSaturation(saturate_i, p_annotation.getRegister(), p_annotation, popf_i);
+	}
+
 	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->GetAddress());
+
 	addPopf(popf_i, originalInstrumentInstr);
 }
 
