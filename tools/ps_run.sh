@@ -67,6 +67,12 @@ if [ -f $datapath/diagnostics.out ]; then
 		echo "-               (Summarized below)                     -"
 		echo "--------------------------------------------------------"
 		cat $datapath/diagnostics.out
+
+		# report detector warnings to test manager
+		while read line
+		do
+    			$GRACE_HOME/concolic/src/util/linux/general_message.py -m "$line"
+		done < $datapath/diagnostics.out
 	fi
 fi
 
