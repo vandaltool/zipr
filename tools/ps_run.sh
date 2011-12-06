@@ -57,13 +57,17 @@ eval $command \"\$@\"
 
 SAVE_EXIT_CODE=$?
 
+
 if [ -f $datapath/diagnostics.out ]; then
-	echo "--------------------------------------------------------"
-	echo "-          PEASOUP DETECTED AND CONFINED ERRORS        -"
-	echo "- (and possibly detected that some errors were benign) -"
-	echo "-                    (Summarized below)                -"
-	echo "--------------------------------------------------------"
-	cat $datapath/diagnostics.out
+	len=`cat $datapath/diagnostics.out | wc -l` 
+	if [ $len -gt 0 ]; then 
+		echo "--------------------------------------------------------"
+		echo "-        PEASOUP DETECTED AND CONFINED ERRORS          -"
+		echo "- (and possibly detected that some errors were benign) -"
+		echo "-               (Summarized below)                     -"
+		echo "--------------------------------------------------------"
+		cat $datapath/diagnostics.out
+	fi
 fi
 
 exit $SAVE_EXIT_CODE
