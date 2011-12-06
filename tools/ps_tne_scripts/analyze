@@ -84,7 +84,8 @@ python $LOG_COMMAND -n $1 -t "Analyze script" -m "$message_2"
 
 python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase beginning"
 
-$PEASOUP_HOME/tools/ps_analyze.sh $execcmd $execcmd.peasoup
+# 4 hour timeout
+$PEASOUP_HOME/tools/ps_analyze.sh $execcmd $execcmd.peasoup --timeout 14400
 PS_ANALYZE_STATUS="$?"
 python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase done with exit status: $PS_ANALYZE_STATUS"
 
@@ -93,8 +94,9 @@ python $GEN_MESSAGE_COMMAND -n $1 -t "Analyze complete" -m "analyze script finis
 
 # TODO: We need to decide on a better result value
 # This return is the only place where we can have messages to stdout
-if [ "$PS_ANALYZE_STATUS" == "0" ]; then echo "success" ; fi
-if [ "$PS_ANALYZE_STATUS" != "0" ]; then echo "skip" ; fi
+if [ "$PS_ANALYZE_STATUS" == "0" ]; then echo "success" ;
+elif [ "$PS_ANALYZE_STATUS" == "142" ]; then echo "timeout" ; 
+else echo "skip" ; fi
 
 
 

@@ -8,6 +8,40 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+# alarm handler
+THIS_PID=$$
+handle_alarm()
+{
+	# reset handler
+	trap - ALRM
+
+	#
+	# create a report for all of ps_analyze.
+	#
+	report_logs
+
+	# go back to original directory
+	cd - > /dev/null 2>&1
+
+	# stop ps_analyze
+	kill -9 $THIS_PID
+
+	# exit timer process: SIGALRM + 128
+	exit 142
+}
+
+set_timer()
+{
+	# set handler
+	trap "handle_alarm" ALRM
+
+	# wait
+	sleep $1& wait
+
+	# signal the alarm
+	kill -ALRM $$
+}
+
 # Make default 10 minutes
 PN_TIMEOUT_VALUE=600
 INTEGER_TRANSFORM_TIMEOUT_VALUE=600
@@ -38,7 +72,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s: --long step: --long manual_test_script: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t: --long step: --long timeout: --long manual_test_script: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -55,6 +89,10 @@ check_options()
 			;;
 		--manual_test_script) 
 			manual_test_script=$2
+			shift 2 
+			;;
+		-t|--timeout) 
+			set_timer $2 & TIMER_PID=$!
 			shift 2 
 			;;
 		--) 	shift 
@@ -492,6 +530,11 @@ report_logs
 cd - > /dev/null 2>&1
 
 cp $newdir/$name.sh $stratafied_exe
+
+# we're done; cancel timer
+if [ ! -z $TIMER_PID ]; then
+	kill -9 $TIMER_PID
+fi
 
 # return success if we created a script to invoke the pgm. 
 if [ -f $stratafied_exe ]; then 
