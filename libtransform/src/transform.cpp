@@ -275,12 +275,13 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	//     0 - default
 	//     1 - continue
 	//     2 - exit
+	//     3 - saturating arithmetic
 	dataBits.resize(5);
 	dataBits[0] = 0x68;
 	int *tmpi = (int *) &dataBits[1];
 	*tmpi = p_policy;
 	pushPolicy_i->SetDataBits(dataBits);
-	pushPolicy_i->SetComment(pushPolicy_i->getDisassembly());
+	pushPolicy_i->SetComment(pushPolicy_i->getDisassembly() + string(" - policy spec"));
 	pushPolicy_i->SetFallthrough(pusharg_i); 
 
 	// push (PC of instrumented instruction)

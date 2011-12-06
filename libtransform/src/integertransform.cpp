@@ -4,9 +4,9 @@
 
 using namespace libTransform;
 
-IntegerTransform::IntegerTransform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
+IntegerTransform::IntegerTransform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
 {
-	m_warnings = p_warnings;
+	m_benignFalsePositives = p_benignFalsePositives;
 }
 
 // iterate through all functions
@@ -16,6 +16,11 @@ IntegerTransform::IntegerTransform(VariantID_t *p_variantID, VariantIR_t *p_vari
 //       add instrumentation
 int IntegerTransform::execute()
 {
+	if (getSaturatingArithmetic())
+		cerr << "IntegerTransform: Saturating Arithmetic is enabled" << endl;
+	else
+		cerr << "IntegerTransform: Saturating Arithmetic is disabled" << endl;
+
 	for(
 	  set<Function_t*>::const_iterator itf=getVariantIR()->GetFunctions().begin();
 	  itf!=getVariantIR()->GetFunctions().end();
@@ -36,15 +41,22 @@ int IntegerTransform::execute()
 
 			if (insn && insn->GetAddress())
 			{
-				int policy = POLICY_DEFAULT;
+				int policy = POLICY_DEFAULT; // use Strata default settings
 				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
 				if (irdb_vo == 0) continue;
 
 				VirtualOffset vo(irdb_vo);
 
-				if (m_warnings && m_warnings->count(vo))
+				if (m_benignFalsePositives && m_benignFalsePositives->count(vo))
 				{
+					// potential benign false positives
 					policy = POLICY_CONTINUE;
+				}
+				else if (getSaturatingArithmetic())
+				{
+					// saturating arithmetic is enabled
+					// only use if instruction is not a potential false positive
+					policy = POLICY_CONTINUE_SATURATING_ARITHMETIC;
 				}
 
 				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
@@ -113,6 +125,8 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
       cerr << "addSignednessCheck(): Unexpected bit width and register combination: skipping instrumentation for: " << p_annotation.toString() << endl;
 	  return;
 	}
+	else
+      cerr << "addSignednessCheck(): " << p_annotation.toString() << " policy: " << p_policy << endl;
 
     db_id_t fileID = p_instruction->GetAddress()->GetFileID();
     Function_t* func = p_instruction->GetFunction();
@@ -138,7 +152,22 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 	else if (p_annotation.getBitWidth() == 8)
 		detector = string(SIGNEDNESS_DETECTOR_8);
 
-	addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->GetAddress());
+	if (p_annotation.getRegister() == Register::UNKNOWN)
+		p_policy = POLICY_DEFAULT;
+
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+	{
+		// implement saturating arithmetic, e.g.:
+		// mov <reg>, value
+		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+
+		addCallbackHandler(detector, originalInstrumentInstr, nop_i, saturate_i, p_policy, p_instruction->GetAddress());
+		addMaxSaturation(saturate_i, p_annotation.getRegister(), p_annotation, popf_i);
+	}
+	else
+	{
+		addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->GetAddress());
+	}
 	addPopf(popf_i, originalInstrumentInstr);
 }
 
@@ -490,7 +519,7 @@ void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS
 //
 void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy, AddressID_t *p_addressOriginalInstruction)
 {
-cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
+cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 
 	assert(getVariantIR() && p_instruction);
 	
@@ -524,19 +553,6 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 			detector = string(MUL_OVERFLOW_DETECTOR_8);
 		cerr << "integertransform: MUL OVERFLOW: " << detector << endl;
 	}
-	else if (p_annotation.isSigned())
-	{
-		dataBits[0] = 0x71; // jno
-		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
-
-		if (p_annotation.getBitWidth() == 32)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
-		else if (p_annotation.getBitWidth() == 16)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
-		else if (p_annotation.getBitWidth() == 8)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_8);
-		cerr << "integertransform: SIGNED OVERFLOW: " << detector << endl;
-	}
 	else if (p_annotation.isUnsigned())
 	{
 		dataBits[0] = 0x73; // jnc
@@ -550,7 +566,7 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_8);
 		cerr << "integertransform: UNSIGNED OVERFLOW: " << detector << endl;
 	}
-	else
+	else 
 	{
 		dataBits[0] = 0x71; // jno
 		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
@@ -561,7 +577,7 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
 		else if (p_annotation.getBitWidth() == 8)
 			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_8);
-	cerr << "integertransform: ADD/SUB OVERFLOW UNKONWN: assume signed for now: " << detector << endl;
+		cerr << "integertransform: SIGNED OVERFLOW: " << detector << endl;
 	}
 
 	jncond_i->SetDataBits(dataBits);
@@ -570,20 +586,27 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 
 	p_instruction->SetFallthrough(jncond_i); 
 
+	Register::RegisterName targetReg = getTargetRegister(p_instruction);
+	if (targetReg == Register::UNKNOWN)
+		p_policy = POLICY_DEFAULT;
+
 	if (p_addressOriginalInstruction)
+	{
 		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy, p_addressOriginalInstruction);
-	else
+	}
+	else if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		// implement saturating arithmetic, e.g.:
 		// mov <reg>, value
-		Register::RegisterName targetReg = getTargetRegister(p_instruction);
-		p_instruction->GetAddress()->GetFileID();
 		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
 
 		addCallbackHandler(detector, p_instruction, jncond_i, saturate_i, p_policy);
-		addOverflowSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
+		addMaxSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
 	}
-
+	else
+	{
+		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
+	}
 
 	getVariantIR()->GetAddresses().insert(jncond_a);
 	getVariantIR()->GetInstructions().insert(jncond_i);
@@ -606,7 +629,7 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 //
 void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
+cerr << "IntegerTransform::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
 
 	assert(getVariantIR() && p_instruction);
 	
@@ -628,17 +651,18 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 
 	// jncond 
 	dataBits.resize(2);
-	if (isMultiplyInstruction(p_instruction))
+	if (p_annotation.isUnsigned())
 	{
-		dataBits[0] = 0x71; // jno
+		dataBits[0] = 0x73; // jnc
 		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
+
 		if (p_annotation.getBitWidth() == 32)
-			detector = string(MUL_OVERFLOW_DETECTOR_32);
+			detector = string(UNDERFLOW_DETECTOR_UNSIGNED_32);
 		else if (p_annotation.getBitWidth() == 16)
-			detector = string(MUL_OVERFLOW_DETECTOR_16);
+			detector = string(UNDERFLOW_DETECTOR_UNSIGNED_16);
 		else if (p_annotation.getBitWidth() == 8)
-			detector = string(MUL_OVERFLOW_DETECTOR_8);
-		cerr << "integertransform: MUL OVERFLOW: " << detector << endl;
+			detector = string(UNDERFLOW_DETECTOR_UNSIGNED_8);
+		cerr << "integertransform: UNSIGNED OVERFLOW: " << detector << endl;
 	}
 	else if (p_annotation.isSigned())
 	{
@@ -646,25 +670,13 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
 
 		if (p_annotation.getBitWidth() == 32)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+			detector = string(UNDERFLOW_DETECTOR_SIGNED_32);
 		else if (p_annotation.getBitWidth() == 16)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
+			detector = string(UNDERFLOW_DETECTOR_SIGNED_16);
 		else if (p_annotation.getBitWidth() == 8)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_8);
-		cerr << "integertransform: SIGNED OVERFLOW: " << detector << endl;
-	}
-	else if (p_annotation.isUnsigned())
-	{
-		dataBits[0] = 0x73; // jnc
-		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
+			detector = string(UNDERFLOW_DETECTOR_SIGNED_8);
 
-		if (p_annotation.getBitWidth() == 32)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_32);
-		else if (p_annotation.getBitWidth() == 16)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_16);
-		else if (p_annotation.getBitWidth() == 8)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_8);
-		cerr << "integertransform: UNSIGNED OVERFLOW: " << detector << endl;
+		cerr << "integertransform: SIGNED UNDERFLOW: " << detector << endl;
 	}
 	else
 	{
@@ -672,12 +684,12 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 		dataBits[1] = 0x00; // value doesn't matter, we will fill it in later
 
 		if (p_annotation.getBitWidth() == 32)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_32);
+			detector = string(UNDERFLOW_DETECTOR_32);
 		else if (p_annotation.getBitWidth() == 16)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
+			detector = string(UNDERFLOW_DETECTOR_16);
 		else if (p_annotation.getBitWidth() == 8)
-			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_8);
-	cerr << "integertransform: ADD/SUB OVERFLOW UNKONWN: assume signed for now: " << detector << endl;
+			detector = string(UNDERFLOW_DETECTOR_8);
+		cerr << "integertransform: UNDERFLOW UNKONWN: assume signed for now: " << detector << endl;
 	}
 
 	jncond_i->SetDataBits(dataBits);
@@ -686,7 +698,23 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 
 	p_instruction->SetFallthrough(jncond_i); 
 
-	addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
+	Register::RegisterName targetReg = getTargetRegister(p_instruction);
+	if (targetReg == Register::UNKNOWN)
+		p_policy = POLICY_DEFAULT;
+
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+	{
+		// implement saturating arithmetic, e.g.:
+		// mov <reg>, value
+		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+
+		addCallbackHandler(detector, p_instruction, jncond_i, saturate_i, p_policy);
+		addMinSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
+	}
+	else
+	{
+		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
+	}
 
 	getVariantIR()->GetAddresses().insert(jncond_a);
 	getVariantIR()->GetInstructions().insert(jncond_i);
@@ -771,7 +799,7 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	addPopf(popf_i, originalInstrumentInstr);
 }
 
-void IntegerTransform::addOverflowSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
+void IntegerTransform::addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
 {
 	assert(getVariantIR() && p_instruction);
 
@@ -807,6 +835,37 @@ void IntegerTransform::addOverflowSaturation(Instruction_t *p_instruction, Regis
 				break;
 			case 8:
 				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7F, p_fallthrough);
+				break;
+		}
+	}
+}
+
+
+void IntegerTransform::addMinSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
+{
+	assert(getVariantIR() && p_instruction);
+
+	p_instruction->SetFallthrough(p_fallthrough);
+
+	if (p_annotation.isUnsigned())
+	{
+		// use MIN_UNSIGNED
+		addMovRegisterUnsignedConstant(p_instruction, p_reg, 0, p_fallthrough);
+	}
+	else
+	{
+		// treat unknown and signed the same way for overflows
+		// use MIN_SIGNED for the bit width
+		switch (p_annotation.getBitWidth())
+		{
+			case 32:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x80000000, p_fallthrough);
+				break;
+			case 16:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x8000, p_fallthrough);
+				break;
+			case 8:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x80, p_fallthrough);
 				break;
 		}
 	}

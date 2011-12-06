@@ -79,9 +79,10 @@ class Transform {
 };
 
 // make sure these match values in detector_handlers.h in the strata library
-#define POLICY_DEFAULT  0   // use default strata policy
-#define POLICY_CONTINUE 1   // override strata policy 
-#define POLICY_EXIT     2   // override strata policy
+#define POLICY_DEFAULT                            0   
+#define POLICY_CONTINUE                           1  
+#define POLICY_EXIT                               2   
+#define POLICY_CONTINUE_SATURATING_ARITHMETIC     3   
 
 }
 

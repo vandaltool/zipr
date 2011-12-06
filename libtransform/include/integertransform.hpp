@@ -17,6 +17,9 @@ class IntegerTransform : public Transform
 	public:
 		IntegerTransform(VariantID_t *, VariantIR_t*, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
 		int execute();
+
+		void setSaturatingArithmetic(bool p_satArithmetic) { m_saturatingArithmetic = p_satArithmetic; }
+		bool getSaturatingArithmetic() { return m_saturatingArithmetic; }
 	
 	private:
 		void handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
@@ -35,10 +38,12 @@ class IntegerTransform : public Transform
 		void addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName&, int p_constantValue, const Register::RegisterName&, int p_policy);
 		void addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName&, int p_constantValue, const Register::RegisterName&, int p_policy);
 
-		void addOverflowSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
+		void addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
+		void addMinSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
 
 	private:
-		std::set<VirtualOffset> *m_warnings;
+		std::set<VirtualOffset>*  m_benignFalsePositives;
+		bool                      m_saturatingArithmetic;
 };
 
 // make sure these match the function names in $STRATA/src/posix/x86_linux/detector_number_handling/overflow_detector.c
@@ -59,7 +64,15 @@ class IntegerTransform : public Transform
 #define	SIGNEDNESS_DETECTOR_32               "signedness_detector_32"
 #define	SIGNEDNESS_DETECTOR_16               "signedness_detector_16"
 #define	SIGNEDNESS_DETECTOR_8                "signedness_detector_8"
-
+#define UNDERFLOW_DETECTOR_32                "underflow_detector_32"
+#define UNDERFLOW_DETECTOR_16                "underflow_detector_16"
+#define UNDERFLOW_DETECTOR_8                 "underflow_detector_8"
+#define UNDERFLOW_DETECTOR_UNSIGNED_32       "underflow_detector_unsigned_32"
+#define UNDERFLOW_DETECTOR_UNSIGNED_16       "underflow_detector_unsigned_16"
+#define UNDERFLOW_DETECTOR_UNSIGNED_8        "underflow_detector_unsigned_8"
+#define UNDERFLOW_DETECTOR_SIGNED_32         "underflow_detector_signed_32"
+#define UNDERFLOW_DETECTOR_SIGNED_16         "underflow_detector_signed_16"
+#define UNDERFLOW_DETECTOR_SIGNED_8          "underflow_detector_signed_8"
 }
 
 #endif

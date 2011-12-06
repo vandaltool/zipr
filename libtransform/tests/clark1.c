@@ -36,13 +36,13 @@ int main() {
 
    }
 
-   printf("Input value: %hu Signed copy: %hd\n ", us15, s15copy);
-
    s15copy = us15;
+   printf("Input value: %hu Signed copy: %hd\n ", us15, s15copy);
    ++s15copy;  /* OVERFLOW ERROR */
 
    ++us15copy; /* Check for overflow, but no error */
 
+   printf("Signed short gets unsigned value: %hd\n", us15copy);
    s15inccopy = us15copy; /* SIGNEDNESS ERROR */
 
    printf(" (Overflow) Signed copy then increment: %hd\n", s15copy);
