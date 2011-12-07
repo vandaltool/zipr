@@ -71,7 +71,17 @@ if [ -f $datapath/diagnostics.out ]; then
 		# report detector warnings to test manager
 		while read line
 		do
-    			$GRACE_HOME/concolic/src/util/linux/general_message.py -m "$line"
+			case $line in
+			POLICY:\ controlled\ exit*)
+				$GRACE_HOME/concolic/src/util/linux/controlled_exit.py -m "$line"
+				;;
+			POLICY:\ continue\ execution*)
+				$GRACE_HOME/concolic/src/util/linux/continue_execution.py -m "$line"
+				;;
+			*)
+				$GRACE_HOME/concolic/src/util/linux/general_message.py -m "$line"
+				;;
+			esac
 		done < $datapath/diagnostics.out
 	fi
 fi
