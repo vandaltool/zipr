@@ -42,9 +42,10 @@ set_timer()
 	kill -ALRM $$
 }
 
-# Make default 10 minutes
-PN_TIMEOUT_VALUE=600
-INTEGER_TRANSFORM_TIMEOUT_VALUE=600
+# DEFAULT TIMEOUT VALUE
+CONCOLIC_TIMEOUT_VALUE=900
+PN_TIMEOUT_VALUE=1800
+INTEGER_TRANSFORM_TIMEOUT_VALUE=900
 
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
@@ -446,7 +447,8 @@ perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 #
 # Run concolic engine
 #
-perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t 600  -u 60 -i 75 -l trace,inputs  
+perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t $CONCOLIC_TIMEOUT_VALUE -u 60 -l trace,inputs  
+
 ##
 ## Populate IR Database
 ##
