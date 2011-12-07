@@ -7,6 +7,9 @@
 #
 # returns status
 
+# store test case name so called scripts can use it
+export TNE_TEST_CASE="$1"
+
 #bash general_message "$1 Starting new test case"
 
 # For now, put the path to the environment file needed by ps_analyze and ps_run

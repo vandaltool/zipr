@@ -9,6 +9,9 @@
 #
 # We cannot put any messages to stdout from this script except the return value
 
+# store test case name so called scripts can use it
+export TNE_TEST_CASE="$1"
+
 # For now, put the path to the environment file needed by ps_analyze and ps_run
 # in an environment variable of its own. This is to try and make it obvious
 # what this path is for and the fact that it is local layout dependant
