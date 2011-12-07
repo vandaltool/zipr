@@ -10,22 +10,18 @@
 //     - TRUNCATION (SIGNED|UNSIGNED|UNKNOWN) (32,16,8)
 //     - XXX_NOFLAG (Many forms, handles LEA)
 //
-
-//
 // Saturating arithmetic implemented for:
-//      - SIGNEDNESS SIGNED
 //      - OVERFLOW (when destination is a register)
 //      - UNDERFLOW (when destination is a register)
+//      - SIGNEDNESS 
 //      - TRUNCATION
 //
 // ============= TO DO ============= 
 // Saturating arithmetic to do:
 //      - OVERFLOW (dest. is not a register)
 //      - UNDERFLOW (dest. is not a register)
-//      - SIGNEDNESS UNSIGNED
 //
 // Instrumentation:
-//      - SIGNEDNESS UNSIGNED
 //      - TRUNCATION (16->8)   no test cases available
 //      - LEA                  only reg32+reg32 case implemented
 //
@@ -758,7 +754,6 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	string detector; 
 
-	// Truncation unsigned
 	// 80484ed 3 INSTR CHECK TRUNCATION UNSIGNED 32 EAX 8 AL ZZ mov     [ebp+var_4], al
 	// Unsigned: example: for signed truncation - 8 bit on AL
 	//			   it's ok if 24 upper bits are all 1's or all 0's
@@ -791,22 +786,30 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 		saturate_i = allocateNewInstruction(fileID, func);
 
-	cerr << "TRUNCATION: original fallthrough instruction: " << p_instruction->GetComment() << endl;
 	addPushf(pushf_i, test_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
 	pushf_i->SetFallthrough(test_i); // do I need this here again b/c carefullyInsertBefore breaks the link?
-	cerr << "TRUNCATION: original fallthrough instruction: " << originalInstrumentInstr->GetComment() << endl;
 
 	unsigned mask = 0;
 	if (p_annotation.getTruncationToWidth() == 16)
 	{
 		mask = 0xFFFF0000;	
-		detector = string(TRUNCATION_DETECTOR_32_16);
+		if (p_annotation.isUnsigned())
+			detector = string(TRUNCATION_DETECTOR_UNSIGNED_32_16);
+		else if (p_annotation.isSigned())
+			detector = string(TRUNCATION_DETECTOR_SIGNED_32_16);
+		else
+			detector = string(TRUNCATION_DETECTOR_32_16);
 	}
 	else if (p_annotation.getTruncationToWidth() == 8)
 	{
 		mask = 0xFFFFFF00;	
-		detector = string(TRUNCATION_DETECTOR_32_8);
+		if (p_annotation.isUnsigned())
+			detector = string(TRUNCATION_DETECTOR_UNSIGNED_32_8);
+		else if (p_annotation.isSigned())
+			detector = string(TRUNCATION_DETECTOR_SIGNED_32_8);
+		else
+			detector = string(TRUNCATION_DETECTOR_32_8);
 	}
 			
 	addTestRegisterMask(test_i, p_annotation.getRegister(), mask, jz_i);
