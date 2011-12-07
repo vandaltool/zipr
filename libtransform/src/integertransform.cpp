@@ -767,17 +767,16 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 	//             test eax, 0xFFFFFF00   ; (for 8 bit) 
 	//             jz <continue>          ; upper 24 bits are 0's 
 	//
-	//             ; to support SIGNED add these lines
 	//             push eax               ; save eax
 	//             not eax
 	//             test eax, 0xFFFFFF00   ;(for 8 bit) 
 	//             jz <L1>                ; upper 24 bits are 1's
-	//             (invoke truncation handler) nop ; [[ if unsigned, skip the pop eax ]]
+	//             (invoke truncation handler) nop ; 
 	//       L1:   pop eax
 	//      SAT:   saturating-arithmetic  ; optional
 	//
 	// continue:   <restore flags>
-	//             mov [ebp+var_4], al  ; <originalInstruction>
+	//             mov [ebp+var_4], al    ; <originalInstruction>
 	//
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
@@ -816,6 +815,7 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 		addMaxSaturation(saturate_i, p_annotation.getRegister(), p_annotation, popf_i);
 
+/*
 	if (p_annotation.isUnsigned())
 	{
 		Instruction_t* nop_i = allocateNewInstruction(fileID, func);
@@ -836,8 +836,9 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 
 	}
 	else
-	{
-		// signed or unknown sign
+*/
+
+	// signed / unsigned / unknown
 
     //             <save flags>
     //             test eax, 0xFFFFFF00   ; (for 8 bit) 
@@ -863,34 +864,32 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 	//      sat:   <saturating arithmetic>
 	//             <link to continue>
 
-		Instruction_t* su_pushreg_i = allocateNewInstruction(fileID, func);
-		Instruction_t* su_not_i = allocateNewInstruction(fileID, func);
-		Instruction_t* su_test_i = allocateNewInstruction(fileID, func);
-		Instruction_t* su_jnz_i = allocateNewInstruction(fileID, func);
-		Instruction_t* su_popreg1_i = allocateNewInstruction(fileID, func);
-		Instruction_t* su_popreg2_i = allocateNewInstruction(fileID, func);
+	Instruction_t* su_pushreg_i = allocateNewInstruction(fileID, func);
+	Instruction_t* su_not_i = allocateNewInstruction(fileID, func);
+	Instruction_t* su_test_i = allocateNewInstruction(fileID, func);
+	Instruction_t* su_jnz_i = allocateNewInstruction(fileID, func);
+	Instruction_t* su_popreg1_i = allocateNewInstruction(fileID, func);
+	Instruction_t* su_popreg2_i = allocateNewInstruction(fileID, func);
 
-		addJz(jz_i, su_pushreg_i, popf_i);
-		jz_i->SetComment(string("jz - SIGNED or UNKNOWN TRUNC"));
+	addJz(jz_i, su_pushreg_i, popf_i);
+	jz_i->SetComment(string("jz - SIGNED or UNKNOWN TRUNC"));
 
-		addPushRegister(su_pushreg_i, p_annotation.getRegister(), su_not_i);
-		addNot(su_not_i, p_annotation.getRegister(), su_test_i);
-		addTestRegisterMask(su_test_i, p_annotation.getRegister(), mask, su_jnz_i);
+	addPushRegister(su_pushreg_i, p_annotation.getRegister(), su_not_i);
+	addNot(su_not_i, p_annotation.getRegister(), su_test_i);
+	addTestRegisterMask(su_test_i, p_annotation.getRegister(), mask, su_jnz_i);
 
-		addJnz(su_jnz_i, su_popreg1_i, su_popreg2_i); // fallthrough, target
-		addPopRegister(su_popreg1_i, p_annotation.getRegister(), popf_i);
-	
-		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
-		{
-			addPopRegister(su_popreg2_i, p_annotation.getRegister(), saturate_i);
-			addCallbackHandler(detector, originalInstrumentInstr, su_popreg2_i, saturate_i, p_policy, saveAddress);
-		}
-		else
-		{
-			addPopRegister(su_popreg2_i, p_annotation.getRegister(), popf_i);
-			addCallbackHandler(detector, originalInstrumentInstr, su_popreg2_i, popf_i, p_policy, saveAddress);
-		}
+	addJnz(su_jnz_i, su_popreg1_i, su_popreg2_i); // fallthrough, target
+	addPopRegister(su_popreg1_i, p_annotation.getRegister(), popf_i);
 
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+	{
+		addPopRegister(su_popreg2_i, p_annotation.getRegister(), saturate_i);
+		addCallbackHandler(detector, originalInstrumentInstr, su_popreg2_i, saturate_i, p_policy, saveAddress);
+	}
+	else
+	{
+		addPopRegister(su_popreg2_i, p_annotation.getRegister(), popf_i);
+		addCallbackHandler(detector, originalInstrumentInstr, su_popreg2_i, popf_i, p_policy, saveAddress);
 	}
 
 	addPopf(popf_i, originalInstrumentInstr);
