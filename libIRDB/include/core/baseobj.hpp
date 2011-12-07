@@ -16,7 +16,7 @@ class BaseObj_t
         // get and set the ID
         db_id_t GetBaseID() const {return base_id; }
         db_id_t GetDoipID() const { return doip ? doip->GetBaseID() : NOT_IN_DATABASE; }
-        db_id_t SetDoipID(doip_t *dp) { doip=dp; }
+        void SetDoipID(doip_t *dp) { doip=dp; }
         void SetBaseID(db_id_t id) {base_id=id; }
    
         // A derived class must provide functionality to write to the database.

@@ -5,6 +5,7 @@ class pqxxDB_t : public DBinterface_t
 	public:
 		pqxxDB_t();
 		void IssueQuery(std::string query);
+		void IssueQuery(std::stringstream & query);
 		void MoveToNextRow();
 		std::string GetResultColumn(std::string colname);
 		bool IsDone();
@@ -20,8 +21,3 @@ class pqxxDB_t : public DBinterface_t
 		pqxx::result::const_iterator results_iter;
 
 };
-		
-
-	
-	
-	

@@ -6,7 +6,7 @@
 using namespace libIRDB;
 using namespace std;
 
-pqxxDB_t::pqxxDB_t() : DBinterface_t(), conn(), txn(conn)
+pqxxDB_t::pqxxDB_t() : DBinterface_t(), txn(conn)
 {
 	/* no other init needed */
 }
@@ -16,11 +16,19 @@ void pqxxDB_t::IssueQuery(std::string query)
 	results=txn.exec(query);
 	results_iter=results.begin();
 }
+
+void pqxxDB_t::IssueQuery(std::stringstream & query)
+{
+	results=txn.exec(query);
+	results_iter=results.begin();
+}
+
 void pqxxDB_t::MoveToNextRow()
 {
 	assert(!IsDone());
 	++results_iter;
 }
+
 std::string pqxxDB_t::GetResultColumn(std::string colname)
 {
 	if(results_iter[colname].is_null())
@@ -32,6 +40,7 @@ std::string pqxxDB_t::GetResultColumn(std::string colname)
 
 //	return results_iter[colname].as<std::string>();
 }
+
 bool pqxxDB_t::IsDone()
 {
 	return results_iter==results.end();

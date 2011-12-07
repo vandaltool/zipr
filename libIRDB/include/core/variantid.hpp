@@ -16,7 +16,12 @@ class VariantID_t : public BaseObj_t
 
 	void DropFromDB();
 
+	std::string GetName() { return name; }
 	void SetName(std::string newname) { name=newname;}
+
+	std::string GetAddressTableName() { return address_table_name; }
+	std::string GetFunctionTableName() { return function_table_name; }
+	std::string GetInstructionTableName() { return instruction_table_name; }
 
 	friend std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid);
 	friend class VariantIR_t;
