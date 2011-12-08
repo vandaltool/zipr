@@ -103,7 +103,7 @@ do
       echo "ps_validate.sh: Discovered output files, validating contents"
       mv  grace_replay/ replay/$input_number/
       cp $BASELINE_OUTPUT_DIR/run_$input_number/* replay/$input_number/grace_replay/replay_0001/
-      diff -r $BASELINE_OUTPUT_DIR/run_$input_number/ replay/$input_number/grace_replay/replay_0001 >diff_tmp
+      diff -r -B -I stratafied $BASELINE_OUTPUT_DIR/run_$input_number/ replay/$input_number/grace_replay/replay_0001 >diff_tmp
       if [ ! $? -eq 0 ]; then
 	  echo "ps_validate.sh: divergence detected for input: $i (output files)"
 	  echo "Diff output:"
@@ -127,7 +127,7 @@ do
     echo ""
 	pwd
 	echo "diffing stdout.$input $BASELINE_OUTPUT_STDOUT"
-    diff stdout.$input $BASELINE_OUTPUT_STDOUT
+    diff -B -I stratafied stdout.$input $BASELINE_OUTPUT_STDOUT
     if [ ! $? -eq 0 ]; then
       echo "ps_validate.sh: divergence detected for input: $i (stdout)"
 
@@ -143,7 +143,7 @@ do
 
   if [ -f $BASELINE_OUTPUT_STDERR ];
   then
-    diff stderr.$input $BASELINE_OUTPUT_STDERR
+    diff -B -I stratafied stderr.$input $BASELINE_OUTPUT_STDERR
     if [ ! $? -eq 0 ]; then
       echo "ps_validate.sh: divergence detected for input: $i (stderr)"
 
