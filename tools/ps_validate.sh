@@ -63,6 +63,12 @@ do
       echo "Baseline exit status was 139 for input $i, ignoring input"
       continue
   fi
+  #if baseline exited with 134, ignore input
+  grep 134 $INPUT_DIR/exit_code.run_$abridged_number.log
+  if [ $? -eq 0 ]; then
+      echo "Baseline exit status was 134 for input $i, ignoring input"
+      continue
+  fi
 
   #at this point we know we have baseline data to compare against
   #we assume that if exit status was produced, baseline information is available
