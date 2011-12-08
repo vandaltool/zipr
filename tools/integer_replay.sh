@@ -69,7 +69,7 @@ do
 
   integer_diagnostics="integer.diagnostics.$input_number"
 
-  STRATA_PC_CONFINE=1 STRATA_DETECTOR_POLICY="continue" STRATA_LOG="detectors" STRATA_OUTPUT_FILE=$integer_diagnostics STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i 
+STRATA_NUM_HANDLE=1 STRATA_DOUBLE_FREE=1 STRATA_HEAPRAND=1 STRATA_CONTROLLED_EXIT=1 STRATA_PC_CONFINE=1 STRATA_DETECTOR_POLICY="continue" STRATA_LOG="detectors" STRATA_OUTPUT_FILE=$integer_diagnostics STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i 
 
   # classify input: if segfault or failed PC confinement, then don't treat C1/Integer Detector for a given instruction as a false positive
 
@@ -80,6 +80,11 @@ do
   fi
   #if exited with 134, ignore input
   grep -i "status 134" exit_status
+  if [ $? -eq 0 ]; then
+     continue
+  fi
+  #if exited with 200 (Peasoup exit status code on error), ignore input
+  grep -i "status 200" exit_status
   if [ $? -eq 0 ]; then
      continue
   fi
