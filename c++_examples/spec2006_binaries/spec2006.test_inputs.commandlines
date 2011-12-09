@@ -1,0 +1,23 @@
+# SPEC 2006 commandlines for C++ benchmarks (test inputs only)
+
+# dealII
+dealII 8 > log 2>> dealII.err
+
+# namd
+namd --input namd.input --iterations 1 --output namd.out > namd.stdout 2>> namd.err
+
+# omnetpp
+omnetpp omnetpp.ini > omnetpp.log 2>> omnetpp.err
+
+# astar
+astar lake.cfg > lake.out 2>> lake.err
+
+# xalancbmk
+xalan -v test.xml xalanc.xsl > test.out 2>> test.err
+
+# soplex
+soplex -m10000 test.mps > test.out 2>> test.stderr
+
+# povray
+povray SPEC-benchmark-test.ini > SPEC-benchmark-test.stdout 2>> SPEC-benchmark-test.stderr
+

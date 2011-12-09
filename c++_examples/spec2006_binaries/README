@@ -1,0 +1,28 @@
+This directory contains binaries and test inputs for the 7 C++ SPEC 2006 CPU benchmarks.
+
+dealII
+namd
+omnetpp
+astar
+xalanc
+soplex
+povray
+
+All benchmarks were built with the following flags
+CC               = gcc
+COPTIMIZE        = -O2
+CXX              = g++
+CXXOPTIMIZE      = -O2
+EXTRA_CFLAGS     = -m32
+EXTRA_CXXFLAGS   = -m32
+EXTRA_FFLAGS     = -m32
+FC               = gfortran
+FOPTIMIZE        = -O2
+FPBASE           = yes
+LDCFLAGS         =
+LDCXXFLAGS       =
+LDFFLAGS         =
+
+
+
+(Statically linked used LDCXXFLAGS=-static and the produced binary was verified to be statically linked using the "file" utility)
