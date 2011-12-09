@@ -37,6 +37,22 @@ execute_pn()
 
 mkdir $P1_DIR
 
+# if C++ skip
+file a.ncexe | grep -i static | grep -i link | grep -i execut
+if [ $? -eq 0 ]; then
+  nm -a a.ncexe | grep __gnu_cxx
+  if [ $? -eq 0 ]; then
+     echo "P1: Statically-linked C++ program detected -- skipping"
+	 exit 1
+  fi
+else
+  ldd a.ncexe | grep "libstdc++"
+  if [ $? -eq 0 ]; then
+     echo "P1: Dynamically-linked C++ program detected -- skipping"
+	 exit 1
+  fi
+fi
+
 # generate coverage info for manually-specified tests (if any)
 $PEASOUP_HOME/tools/do_manual_cover.sh
 
