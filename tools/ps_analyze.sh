@@ -444,6 +444,10 @@ STRATA_PC_CONFINE_XOR=0
 #
 perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 
+#
+# Run concolic engine
+#
+perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t $CONCOLIC_TIMEOUT_VALUE -u 60 -l trace,inputs  
 
 ##
 ## Populate IR Database
@@ -462,7 +466,6 @@ MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 perform_step pdb_register "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
 varid=`cat registered.id`
 
-
 #
 # create the tables for the program
 #
@@ -476,7 +479,6 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 	# import meds info to table
 	perform_step meds2pdb $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME $newname.ncexe $MD5HASH $newname.ncexe.annot 	 
 
-
 	# build basic IR
 	perform_step fill_in_cfg $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
 	perform_step fill_in_indtargs $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./$newname.ncexe    
@@ -484,11 +486,6 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 	# finally create a clone so we can do some transforms 
 	perform_step clone $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
 	cloneid=`cat clone.id`
-
-	#
-	# Run concolic engine
-	#
-	perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -v $varid -t $CONCOLIC_TIMEOUT_VALUE -u 60 -l trace,inputs  
 
 	#	
 	# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
