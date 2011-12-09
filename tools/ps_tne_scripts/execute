@@ -104,7 +104,7 @@ if [ ! -z $TIMER_PID ]; then
 	# if it's gone, report a timeout
 	kill -0 $TIMER_PID &> /dev/null
 	if [ "$?" == "0" ]; then
-        	kill -9 $TIMER_PID
+		kill -9 $TIMER_PID
 	else
 		echo "timeout"
 		exit
