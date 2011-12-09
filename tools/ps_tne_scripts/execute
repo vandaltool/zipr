@@ -38,6 +38,21 @@ $l_message_1_4
 $l_message_1_5
 $l_message_1_6"
 
+# prevent unbounded subject execution
+# usage: set_timer <seconds>
+set_timer()
+{
+	# wait
+	sleep $1& wait
+
+	# FIXME: crazy hack
+	# kill the subject
+	pkill a.stratafied
+}
+
+# set timer for 1 hour
+set_timer 3600 2> /dev/null & TIMER_PID=$!
+
 # Log the call and its contents
 python $LOG_COMMAND -n $1 -t "Execute parameters" -m "$message_1"
 
@@ -83,10 +98,17 @@ python $LOG_COMMAND -n $1 -t "Execute script" -m "execution complete with status
 # Send a general message that execution has finished
 python $GEN_MESSAGE_COMMAND -n $1 -t "Execution complete" -m "execution done for test case i/o pair"
 
+# we're done; cancel timer
+if [ ! -z $TIMER_PID ]; then
+	# if the timer process is still running, kill it;
+	# if it's gone, report a timeout
+	kill -0 $TIMER_PID &> /dev/null
+	if [ "$?" == "0" ]; then
+        	kill -9 $TIMER_PID
+	else
+		echo "timeout"
+		exit
+	fi
+fi
 
-# TODO: Decide on proper exit criteria - This is too coarse
-# This return is the only place where we can have messages to stdout
-if [ "$PS_RUN_STATUS" == "0" ]; then echo "success" ; fi
-if [ "$PS_RUN_STATUS" != "0" ]; then echo "failure" ; fi
-
-
+echo "success"
