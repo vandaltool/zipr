@@ -33,6 +33,16 @@ if [ ! -f $ANNOT_INFO ]; then
 	return 1
 fi
 
+# if C++ skip
+#file a.ncexe | grep -i static | grep -i link | grep -i execut
+#if [ $? -eq 0 ]; then
+#  nm -a a.ncexe | grep __gnu_cxx
+#  if [ $? -eq 0 ]; then
+#     echo "INT: Statically-linked C++ program detected -- skipping"
+#     exit 1
+#  fi
+#fi
+
 # Sanity check -- did Grace produce anything?
 #
 # If so, we run the integer transform on Grace-generated inputs on a cloned copy
