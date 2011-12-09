@@ -61,12 +61,12 @@ SAVE_EXIT_CODE=$?
 if [ -f $datapath/diagnostics.out ]; then
 	len=`cat $datapath/diagnostics.out | wc -l` 
 	if [ $len -gt 0 ]; then 
-		echo "--------------------------------------------------------"
-		echo "-        PEASOUP DETECTED AND CONFINED ERRORS          -"
-		echo "- (and possibly detected that some errors were benign) -"
-		echo "-               (Summarized below)                     -"
-		echo "--------------------------------------------------------"
-		cat $datapath/diagnostics.out
+		#echo "--------------------------------------------------------"
+		#echo "-        PEASOUP DETECTED AND CONFINED ERRORS          -"
+		#echo "- (and possibly detected that some errors were benign) -"
+		#echo "-               (Summarized below)                     -"
+		#echo "--------------------------------------------------------"
+		#cat $datapath/diagnostics.out
 
 		# report detector warnings to test manager
 		while read line
