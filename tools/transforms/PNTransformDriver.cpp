@@ -235,7 +235,10 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 	    continue;
 	}
 
-	    // filter out _L_lock_*
+    // @todo: specify regex patterns in black list file instead
+	//        of special-casing here
+
+	// filter out _L_lock_*
     // filter out _L_unlock_*
 	if (func->GetName().find("_L_lock_") == 0 ||
 	    func->GetName().find("_L_unlock_") == 0)
@@ -244,6 +247,33 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 	    blacklist_funcs++;
 	    continue;
 	}
+
+	// filter out C++ stuff
+	if (func->GetName().find("__gnu_") == 0 ||
+	    func->GetName().find("cxx_") == 0 ||
+	    func->GetName().find("_cxx") == 0 ||
+	    func->GetName().find("_GLOBAL_") == 0 ||
+	    func->GetName().find("_Unwind") == 0 ||
+	    func->GetName().find("__timepunct") == 0 ||
+	    func->GetName().find("streambuf_") == 0 ||
+	    func->GetName().find("char_traits") == 0 ||
+	    func->GetName().find("_iterator") == 0 ||
+	    func->GetName().find("basic_ios") == 0 ||
+	    func->GetName().find("basic_ostream") == 0 ||
+	    func->GetName().find("basic_istream") == 0 ||
+	    func->GetName().find("__timepunct") == 0 ||
+	    func->GetName().find("__numpunct") == 0 ||
+	    func->GetName().find("__moneypunct") == 0 ||
+	    func->GetName().find("ios_") == 0 ||
+	    func->GetName().find("__PRETTY_FUNCTION__") == 0 ||
+	    func->GetName().find("__cxa") == 0
+		)
+	{
+	    cerr << "P1: filtering out: " << func->GetName() << endl;
+	    blacklist_funcs++;
+	    continue;
+	}
+
 
 	total_funcs++;
 
