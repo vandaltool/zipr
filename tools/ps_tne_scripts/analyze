@@ -88,7 +88,7 @@ python $LOG_COMMAND -n $1 -t "Analyze script" -m "$message_2"
 python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase beginning"
 
 # 4 hour timeout
-$PEASOUP_HOME/tools/ps_analyze.sh $execcmd $execcmd.peasoup --timeout 14400
+$PEASOUP_HOME/tools/ps_analyze.sh $execcmd $execcmd.peasoup --timeout 14400 >& ps_analyze_log.txt
 PS_ANALYZE_STATUS="$?"
 python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase done with exit status: $PS_ANALYZE_STATUS"
 
