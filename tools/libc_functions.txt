@@ -3128,3 +3128,8 @@ __xstat64
 ___xstat64
 __xstat64_conv
 zopen
+_Z41__static_initialization_and_destruction_0ii
+_GLOBAL__I_main
+__bss_start
+__init_array_start
+__init_array_end
