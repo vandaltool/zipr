@@ -773,7 +773,7 @@ void Transform::addAddRegisters(Instruction_t *p_instr, Register::RegisterName p
 		return;
 	}
 
-	cerr << "addAddRegisters(): " << p_instr->getDisassembly() << endl;
+//	cerr << "addAddRegisters(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetFallthrough(p_fallThrough);
 }
 
@@ -790,7 +790,7 @@ void Transform::addAddRegisterConstant(Instruction_t *p_instr, Register::Registe
 		return;
 	}
 
-	cerr << "Transform::addAddConstant(): " << p_instr->getDisassembly() << endl;
+//	cerr << "Transform::addAddConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetFallthrough(p_fallThrough);
 }
 
@@ -807,7 +807,7 @@ void Transform::addMulRegisterConstant(Instruction_t *p_instr, Register::Registe
 		return;
 	}
 
-	cerr << "Transform::addMulRegisterConstant(): " << p_instr->getDisassembly() << endl;
+//	cerr << "Transform::addMulRegisterConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetFallthrough(p_fallThrough);
 }
 
@@ -823,7 +823,7 @@ void Transform::addMovRegisters(Instruction_t *p_instr, Register::RegisterName p
 		return;
 	}
 	p_instr->SetFallthrough(p_fallThrough);
-	cerr << "addMovRegisters(): " << p_instr->getDisassembly() << endl;
+//	cerr << "addMovRegisters(): " << p_instr->getDisassembly() << endl;
 }
 
 void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constant, Instruction_t *p_fallThrough)
@@ -840,7 +840,7 @@ void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::R
         return;
     }
 
-	cerr << "addMovRegisterSignedConstant(): " << p_instr->getDisassembly() << endl;
+//	cerr << "addMovRegisterSignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
 }
 
@@ -858,7 +858,7 @@ void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register:
         return;
     }
 
-	cerr << "addMovRegisterUnsignedConstant(): " << p_instr->getDisassembly() << endl;
+//	cerr << "addMovRegisterUnsignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
 }
 
