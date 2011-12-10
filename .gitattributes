@@ -301,6 +301,7 @@ libtransform/tests/austin/branch.c -text
 libtransform/tests/austin/malloc.c -text
 libtransform/tests/austin/memcpy.c -text
 libtransform/tests/austin/memset.c -text
+libtransform/tests/c++/prog.c -text
 libtransform/tests/clark1.c -text
 libtransform/tests/false_positives/cat.err -text
 libtransform/tests/false_positives/cat.out -text
