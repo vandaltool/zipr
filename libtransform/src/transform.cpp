@@ -44,12 +44,13 @@ Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_targetInstr, I
 	p_targetInstr->SetComment(p_newInstr->GetComment());
 	p_targetInstr->SetCallback(p_newInstr->GetCallback());
 	p_targetInstr->SetFallthrough(dupInstr);
-//	p_targetInstr->SetIndirectBranchTargetAddress(dupInstr->GetIndirectBranchTargetAddress());
 
-	// clear indirect branch target address of duplicated old instruction
-	dupInstr->SetIndirectBranchTargetAddress(NULL);
+	// no no, p_targetInstr gets new contents
+	// clear the indirect branch target 
+	// p_targetInstr->SetIndirectBranchTargetAddress(NULL);
 
-    p_newInstr = p_targetInstr;
+
+    	p_newInstr = p_targetInstr;
 	return dupInstr;
 }
 
