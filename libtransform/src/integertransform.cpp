@@ -88,14 +88,17 @@ int IntegerTransform::execute()
 				
 				if (annotation.isOverflow())
 				{
+					// nb: safe with respect to esp (except for lea)
 					handleOverflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isUnderflow() && !annotation.isNoFlag())
 				{
+					// nb: safe with respect to esp
 					handleUnderflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isTruncation())
 				{
+					// nb: safe with respect to esp
 					handleTruncation(insn, annotation, policy);
 
 				}
@@ -256,6 +259,13 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		return;
 	}
 
+	if (leaPattern.getRegister1() == Register::UNKNOWN ||
+		leaPattern.getRegister1() == Register::ESP)
+	{
+		cerr << "IntegerTransform::addOverflowCheckNoFlag(): destination register is unknown, esp or ebp -- skipping: " << p_annotation.toString() << endl;
+		return;
+	}
+	
 	if (leaPattern.isRegisterPlusRegister())
 	{
 		Register::RegisterName reg1 = leaPattern.getRegister1();
@@ -267,16 +277,18 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 			cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg+reg pattern: error retrieving register:" << "reg1: " << Register::toString(reg1) << " reg2: " << Register::toString(reg2) << " target: " << Register::toString(target) << endl;
 			return;
 		}
+		else if (reg2 == Register::ESP)
+		{
+			cerr << "IntegerTransform::addOverflowCheckNoFlag(): source register is esp or ebp -- skipping: " << p_annotation.toString() << endl;
+			return;
+		}
 		else
 		{
-//			cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg+reg pattern: skipping" << endl; return;
 			addOverflowCheckNoFlag_RegPlusReg(p_instruction, p_annotation, reg1, reg2, target, p_policy);
 		}
 	}
 	else if (leaPattern.isRegisterPlusConstant())
 	{
-//cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg+constant pattern: not yet handled" << endl; return;
-
 		Register::RegisterName reg1 = leaPattern.getRegister1();
 		int value = leaPattern.getConstant();
 		Register::RegisterName target = getTargetRegister(p_instruction);
@@ -298,7 +310,6 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 	}
 	else if (leaPattern.isRegisterTimesConstant())
 	{
-//cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg*constant pattern: not yet handled" << endl; return;
 		Register::RegisterName reg1 = leaPattern.getRegister1();
 		int value = leaPattern.getConstant();
 		Register::RegisterName target = getTargetRegister(p_instruction);
