@@ -285,7 +285,10 @@ void add_new_instructions(VariantIR_t *virp)
 
 				/* if we found the instruction, but can't disassemble it, then we skip out for now */
 				if(instr_len==OUT_OF_RANGE || instr_len==UNKNOWN_OPCODE)
+				{
+					free(data);
 					break;
+				}
 
 				/* intel instructions have a max size of 16 */
 				assert(1<=instr_len && instr_len<=16);
