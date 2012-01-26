@@ -1408,7 +1408,7 @@ void __bea_callspec__ movhps_VM(PDISASM pMyDisasm)
         GV.SSE_ = 0;
     }
     else {
-        GV.MemDecoration = Arg2qword;
+        GV.MemDecoration = Arg2fword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
         GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
         if (GV.MOD_== 0x3) {
@@ -1448,7 +1448,7 @@ void __bea_callspec__ movhps_MV(PDISASM pMyDisasm)
         GV.SSE_ = 0;
     }
     else {
-        GV.MemDecoration = Arg1qword;
+        GV.MemDecoration = Arg1fword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhps ");
@@ -1503,7 +1503,8 @@ void __bea_callspec__ movlps_VM(PDISASM pMyDisasm)
         GV.SSE_ = 0;
     }
     else {
-        GV.MemDecoration = Arg2qword;
+	GV.MemDecoration = Arg2fword; 
+
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
         if (GV.MOD_== 0x3) {
             #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1542,7 +1543,7 @@ void __bea_callspec__ movlps_MV(PDISASM pMyDisasm)
         GV.SSE_ = 0;
     }
     else {
-        GV.MemDecoration = Arg1qword;
+        GV.MemDecoration = Arg1fword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlps ");
@@ -1730,7 +1731,7 @@ void __bea_callspec__ movups_VW(PDISASM pMyDisasm)
     /* ========= 0xf3 */
     else if (GV.PrefRepe == 1) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
-        GV.MemDecoration = Arg2dword;
+        GV.MemDecoration = Arg2fword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movss ");
@@ -3817,7 +3818,7 @@ void __bea_callspec__ pshufw_(PDISASM pMyDisasm)
     /* ========= 0xf3 */
     if (GV.PrefRepe == 1) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
-        GV.MemDecoration = Arg2dqword;
+        GV.MemDecoration = Arg2fword; 
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufhw ");
         #endif
@@ -3883,7 +3884,7 @@ void __bea_callspec__ pshufw_(PDISASM pMyDisasm)
 
     }
     else {
-        GV.MemDecoration = Arg2qword;
+        GV.MemDecoration = Arg2fword;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufw ");
         #endif
