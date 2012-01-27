@@ -205,9 +205,12 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     //for t&e don't produce an inference if not dealloc is found
     bool dealloc_flag=false;
 
+    //TODO: hacked to this location because I now need it to check for
+    //deallocations of different size than the stack frame size. 
+    unsigned int stack_frame_size = 0;
     if(pn_all_offsets != NULL)
     {
-	unsigned int stack_frame_size = pn_all_offsets->GetOriginalAllocSize();
+	stack_frame_size = pn_all_offsets->GetOriginalAllocSize();
 	unsigned int saved_regs_size = pn_all_offsets->GetSavedRegsSize();
 	int out_args_size = func->GetOutArgsRegionSize();
 	assert(out_args_size >=0);
@@ -234,6 +237,9 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     //Checking that GetInstructions hasn't screwed up
     assert(instructions.size() != 0);
 */
+
+    //TODO: hack to count the number of times the stack is allocated 
+    int alloc_count = 0;
     for(
 	set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
 	it!=func->GetInstructions().end() && pn_all_offsets != NULL;
@@ -325,6 +331,17 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	}
 	else 
 */
+	if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
+	{
+	    alloc_count++;
+	}
+
+	if(alloc_count > 1)
+	{
+	    cerr<<"OffsetInference: stack allocation exceeded 1, abandon inference"<<endl;
+	    break;
+	}
+
 	if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 	    cerr<<"OffsetInference: FindAllOffsets(): Found ESP Scaled Instruction"<<endl;
@@ -471,6 +488,22 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	{
 	    //if we find a dealloc, set a flag indicating as such
 	    dealloc_flag = true;
+
+	    //TODO: if the amount to dealloc is not equal to the stack frame size
+	    //exit inference
+	    int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+	    matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+
+	    // extract displacement 
+	    int offset = strtol(matched.c_str(),NULL,0);
+
+	    if(offset != stack_frame_size)
+	    {
+		cerr<<"OffsetInference: stack deallocation detected with different size of allocation, abandon inference"<<endl;
+		dealloc_flag = false;
+		break;
+	    }
+
 	}
 	else if(disasm_str.find("leave") != string::npos)
 	{
@@ -483,7 +516,8 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     }
 
     //if no dealloc is found, set all inferences to null
-    if(!dealloc_flag)
+    //TODO: this was hacked together quickly, one flag is preferable. 
+    if(!dealloc_flag || alloc_count>1)
     {
 	cerr<<"OffsetInference: FindAllOffsets: No Dealloc Pattern Found, returning null inference"<<endl;
 	pn_direct_offsets = NULL;

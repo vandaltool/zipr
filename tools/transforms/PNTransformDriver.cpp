@@ -385,7 +385,7 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 		else
 		{
 		    cerr<<"PNTransformDriver: Final Transformation Success: "<<layouts[i]->ToString()<<endl;
-		    virp->WriteToDB();
+		    //virp->WriteToDB();
 		    transformed_history[layouts[i]->GetLayoutName()].push_back(layouts[i]);
 		    success = true;
 		    undo_list.clear();
@@ -396,6 +396,8 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 	}
 	
     }
+
+    virp->WriteToDB();
 
 	    /*
 	    for(unsigned int i=0;i<layouts.size();i++)
