@@ -461,6 +461,14 @@ tests/coreutils/Makefile -text
 tests/coreutils/bzip2_manual_tests.sh -text
 tests/coreutils/cat_manual_tests.sh -text
 tests/coreutils/ls_manual_tests.sh -text
+tests/mplayer/Makefile -text
+tests/mplayer/faxspin.avi -text
+tests/mplayer/faxspin.err -text
+tests/mplayer/faxspin.out -text
+tests/mplayer/help.err -text
+tests/mplayer/help.out -text
+tests/mplayer/mplayer -text
+tests/mplayer/mplayer_wrapper.sh -text
 tests/simple/Makefile -text
 tests/simple/aes.cpp -text
 tests/simple/banner_O3.exe -text

@@ -1,0 +1,9 @@
+mplayer: could not connect to socket
+mplayer: No such file or directory
+Failed to open LIRC support. You will not be able to use your remote control.
+open: No such file or directory
+[MGA] Couldn't open: /dev/mga_vid
+open: No such file or directory
+[MGA] Couldn't open: /dev/mga_vid
+[VO_TDFXFB] Can't open /dev/fb0: Permission denied.
+[VO_3DFX] Unable to open /dev/3dfx.
