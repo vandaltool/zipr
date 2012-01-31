@@ -4,6 +4,13 @@ PEASOUP_APP_WRAPPER_SCRIPT=$1
 PEASOUP_APP_BASENAME=`basename $PEASOUP_APP_WRAPPER_SCRIPT`
 PEASOUP_APP_PACKAGE=`pwd`/$PEASOUP_APP_BASENAME.peasoup.tar
 
+error()
+{
+  echo "$0: $1"
+  echo
+  usage
+}
+
 usage()
 {
   echo "usage: $0 <peasoup_program>"
@@ -14,9 +21,12 @@ verify_peasoup_app()
 {
   grep ps_run.sh $PEASOUP_APP_WRAPPER_SCRIPT >/dev/null 2>/dev/null
   if [ ! $? -eq 0 ]; then
-    echo "$PEASOUP_APP_WRAPPER_SCRIPT is not a PEASOUP program"
-	echo
-	usage
+    error "$PEASOUP_APP_WRAPPER_SCRIPT is not a PEASOUP program"
+  fi
+
+  ps_run=`grep ps_run $PEASOUP_APP_WRAPPER_SCRIPT | cut -d' ' -f1`
+  if [ ! -f $ps_run ]; then
+    error "$PEASOUP_APP_WRAPPER_SCRIPT appears corrupted -- could not locate $ps_run"
   fi
 }
 
