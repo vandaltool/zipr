@@ -1,12 +1,31 @@
-#!/bin/sh
+#!/bin/bash
+
+PEASOUP_APP_WRAPPER_SCRIPT=$1
+PEASOUP_APP_BASENAME=`basename $PEASOUP_APP_WRAPPER_SCRIPT`
+PEASOUP_APP_PACKAGE=`pwd`/$PEASOUP_APP_BASENAME.peasoup.tar
+
+usage()
+{
+  echo "usage: $0 <peasoup_program>"
+  exit 1
+}
+
+verify_peasoup_app()
+{
+  grep ps_run.sh $PEASOUP_APP_WRAPPER_SCRIPT >/dev/null 2>/dev/null
+  if [ ! $? -eq 0 ]; then
+    echo "$PEASOUP_APP_WRAPPER_SCRIPT is not a PEASOUP program"
+	echo
+	usage
+  fi
+}
 
 #
 # Script to package up a Peasoupified binary
 #
 
-PEASOUP_APP_WRAPPER_SCRIPT=$1
-PEASOUP_APP_BASENAME=`basename $PEASOUP_APP_WRAPPER_SCRIPT`
-PEASOUP_APP_PACKAGE=`pwd`/$PEASOUP_APP_BASENAME.peasoup.tar
+
+verify_peasoup_app
 
 rm $PEASOUP_APP_PACKAGE.gz 2>/dev/null
 
