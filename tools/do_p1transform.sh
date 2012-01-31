@@ -99,11 +99,13 @@ do
   break
 done
 
-#if no baseline comparison output exists, delete the coverage file
-if [ $baseline_flag -eq 0 ]; then
+#if no baseline comparison output exists, delete the coverage file (when using Grace)
+if [ ! -f $EXECUTED_ADDRESSES_MANUAL ]; then
+  if [ $baseline_flag -eq 0 ]; then
     echo "do_p1transform.sh: no valid baseline comparison output, deleting coverage file"
     rm $COVERAGE_FILE
     touch $COVERAGE_FILE
+  fi
 fi
 
 #just in case something went wrong, touch the coverage file. An empty coverage file is permissible, but a missing one will cause PN to crash

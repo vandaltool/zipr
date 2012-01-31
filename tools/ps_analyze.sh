@@ -73,7 +73,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t: --long step: --long timeout: --long manual_test_script: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t: --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -90,6 +90,10 @@ check_options()
 			;;
 		--manual_test_script) 
 			manual_test_script=$2
+			shift 2 
+			;;
+		--manual_test_coverage_file) 
+			manual_test_coverage_file=$2
 			shift 2 
 			;;
 		-t|--timeout) 
@@ -497,7 +501,7 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 		#
 		# Run script to setup manual tests
 		#
-		perform_step manual_test $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script
+		perform_step manual_test $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script $manual_test_coverage_file
 
 		is_step_on manual_test
 		if [ $? -eq 0 ]; then 
