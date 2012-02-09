@@ -1078,13 +1078,7 @@ tools/p1xform.pbed.deprecated.sh -text
 tools/p1xform_v2.sh -text
 tools/peasoup_link -text
 tools/peasoup_link++ -text
-tools/pin/LICENSE -text
-tools/pin/ia32/bin/pinbin -text
-tools/pin/ia32/bin/pindb -text
-tools/pin/ia32/lib-ext/EXTLICENSE -text
 tools/pin/itraceunique.cpp -text
-tools/pin/itraceunique.so -text
-tools/pin/pin -text
 tools/ps_analyze-ilronly.sh -text
 tools/ps_analyze-lib.sh -text
 tools/ps_analyze.sh -text
