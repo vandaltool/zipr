@@ -1,4 +1,5 @@
 #include <string>
+#include <cstdio>
 
 #include "function_descriptor.h"
 

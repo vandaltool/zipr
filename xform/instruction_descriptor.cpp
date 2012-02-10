@@ -23,6 +23,7 @@ wahoo::Instruction::Instruction(app_iaddr_t p_address, int p_size, Function* p_f
   m_address = p_address;
   m_size = p_size;
   m_function = p_func;
+  m_isVisited = false;
 
   m_allocSite = false;
   m_deallocSite = false;

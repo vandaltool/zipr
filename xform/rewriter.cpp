@@ -781,7 +781,9 @@ map<wahoo::Function*, double> Rewriter::getFunctionCoverage(char *p_instructionF
     if (!instr) continue;
 
     if (visitedInstructions.count(instr->getAddress()))
-      instr->setVisited();
+    {
+	instr->setVisited();
+    }
   }
 
   // now all instructions have been marked as visited or not
