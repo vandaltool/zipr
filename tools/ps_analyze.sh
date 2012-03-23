@@ -43,7 +43,6 @@ set_timer()
 }
 
 # DEFAULT TIMEOUT VALUE
-CONCOLIC_TIMEOUT_VALUE=900
 INTEGER_TRANSFORM_TIMEOUT_VALUE=900
 PN_TIMEOUT_VALUE=9000
 
@@ -451,7 +450,7 @@ perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 #
 # Run concolic engine
 #
-perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a  -t $CONCOLIC_TIMEOUT_VALUE -u 60 -l trace,inputs  
+perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a --config $DIR/grace.config
 
 ##
 ## Populate IR Database

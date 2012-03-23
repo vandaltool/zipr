@@ -37,22 +37,8 @@ if [ ! -f $sym ]; then
 	exit 1;
 fi
 
-echo  Removing all ipc queues.
-for i in `ipcs -q|grep $whoami |cut -d" " -f 2`; 
-do
-	ipcrm -q $i
-done
+
+echo STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym $strata_exe
+     STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym $strata_exe
 
 
-echo STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym -o replay,coverage,instruction_addresses,exit_codes $strata_exe
-     STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym -o replay,coverage,instruction_addresses,exit_codes $strata_exe
-
-echo cleaning up
-killall -q controller
-killall -q $strata_exe
-
-echo  Removing all ipc queues.
-for i in `ipcs -q|grep $whoami |cut -d" " -f 2`; 
-do
-	ipcrm -q $i
-done
