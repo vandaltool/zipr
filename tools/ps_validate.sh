@@ -185,13 +185,20 @@ if [ $baseline_cnt -eq 0 ];then
 #TODO: need to remove EMPTY_JSON, used only until duc provides empty functionality to grace.
 
 #check to see if the sym file exists, if not create it.
-if [ ! -e $TOP_LEVEL/a.sym ]; then
-    $GRACE_HOME/concolic/src/util/linux/objdump_to_grace $STRATAFIED_BINARY
-fi
+    if [ ! -e $TOP_LEVEL/a.sym ]; then
+	$GRACE_HOME/concolic/src/util/linux/objdump_to_grace $STRATAFIED_BINARY
+    fi
 
-#could optimize, save the orig_prog status for no inputs only once
-    timeout $REPLAYER_TIMEOUT ./$ORIG_PROG &>/dev/null
-    orig_status=$?
+#only generate the original program exit status for no input if it doesn't
+#already exist
+    if [ ! -e $TOP_LEVEL/orig_status ]; then
+	timeout $REPLAYER_TIMEOUT ./$ORIG_PROG &>/dev/null
+	orig_status=$?
+	echo "$orig_status" >$TOP_LEVEL/orig_status
+    else
+	orig_status=`cat $TOP_LEVEL/orig_status`
+    fi
+
     if [ $orig_status -ne 139 ];then
 	echo "STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $EMPTY_JSON || exit 2"
 	STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $EMPTY_JSON || exit 2
