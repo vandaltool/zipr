@@ -24,6 +24,8 @@ ORIG_PROG=a.ncexe
 baseline_cnt=0
 TOP_LEVEL=`pwd`
 
+EMPTY_JSON=$PEASOUP_HOME/tools/empty.json
+
 rm -fr replay 2>/dev/null
 mkdir replay 2>/dev/null
 
@@ -180,26 +182,46 @@ if [ $baseline_cnt -eq 0 ];then
 
     echo "ps_validate.sh: No valid baseline to compare against, performing simple no args sanity check instead"
 
+#TODO: need to remove EMPTY_JSON, used only until duc provides empty functionality to grace.
+
+#check to see if the sym file exists, if not create it.
+if [ ! -e $TOP_LEVEL/a.sym ]; then
+    $GRACE_HOME/concolic/src/util/linux/objdump_to_grace $STRATAFIED_BINARY
+fi
+
+#could optimize, save the orig_prog status for no inputs only once
     timeout $REPLAYER_TIMEOUT ./$ORIG_PROG &>/dev/null
-    status=$?
-    if [ $status -ne 139 ];then
-	echo "ps_validate.sh: cmd: STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT $GRACE_HOME/concolic/bin/replayer --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i"
-	STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i || exit 2
+    orig_status=$?
+    if [ $orig_status -ne 139 ];then
+	echo "STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $EMPTY_JSON || exit 2"
+	STRATA_SPRI_FILE="$BSPRI" timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $EMPTY_JSON || exit 2
+#	echo "STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT  $TOP_LEVEL/a.stratafied" 
+#	STRATA_SPRI_FILE=$BSPRI timeout $REPLAYER_TIMEOUT  $TOP_LEVEL/a.stratafied 
+##	timeout $REPLAYER_TIMEOUT ./ps_run.sh $TOP_LEVEL
+#	trans_status=$?
+
+#	if [ $orig_status -ne $trans_status ]; then
+#	    echo "Status values do not equal, orig_status $orig_status, trans_status $trans_status"
+#	    exit 1
+	    #else fall through, exit 0, 
+#	fi
 
 	#just in case there is a replayer failure, create an exit status file
 	touch exit_status
-	echo "Subject exited with status $status" >tmp
+	echo "Subject exited with status $orig_status" >tmp
 	diff tmp exit_status
-	rm tmp
+	diff_status=$?
+	rm -f tmp
+	if [ $diff_status -ne 0 ]; then
+	    echo "ps_validate.sh: Status values do not equal"
+	    exit 1
+	fi
+	#else fall through, exit 0
 
     #if the status was 139, print a message
     else
 	echo "ps_validate.sh: original program exits with 139 status with no input."
 	#fall through for now, exit 0
-	#this is done because it is assumed that if we reach this point p1 
-	#is the transform in question being validated, which is enfoced
-	#prior to the call to do_p1transform. The coverage file is deleted
-	#if we are in this scenario.
     fi
 fi
 
