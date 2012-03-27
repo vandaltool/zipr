@@ -14,7 +14,7 @@ bspri=$3
 P1_DIR=p1.xform/$fname
 
 #generate the bspri code
-$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $P1_DIR/stratafier.o.exe
+$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $TOP_LEVEL/stratafier.o.exe
 
 #
 # remove any candidate functions not covered
