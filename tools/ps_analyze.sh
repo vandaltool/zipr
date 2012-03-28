@@ -451,7 +451,7 @@ perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
 #
 # Run concolic engine
 #
-perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a --config $DIR/grace.config
+perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a -z $DIR/grace.config
 
 ##
 ## Populate IR Database
