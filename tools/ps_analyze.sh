@@ -432,6 +432,7 @@ perform_step controlled_exit 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONT
 perform_step double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
 perform_step pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
 perform_step isr 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
+perform_step watchdog 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_WATCHDOG 30
 
 # turn on sign conversion function monitoring
 perform_step signconv_func_monitor $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
