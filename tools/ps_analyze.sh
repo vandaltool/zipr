@@ -8,6 +8,9 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+# default watchdog value is 30 seconds
+watchdog_val=30
+
 # alarm handler
 THIS_PID=$$
 handle_alarm()
@@ -72,7 +75,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t: --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t:w: --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -82,6 +85,11 @@ check_options()
 
 	while true ; do
 		case "$1" in
+        -w|--watchdog)
+            # This is the watchdog value
+            watchdog_val=$2
+            shift 2
+            ;;
 		-s|--step) 
 			check_step_option $2
 			phases_off=" $phases_off $2 "
@@ -432,7 +440,7 @@ perform_step controlled_exit 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONT
 perform_step double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
 perform_step pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
 perform_step isr 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
-perform_step watchdog 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_WATCHDOG 30
+perform_step watchdog 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_WATCHDOG $watchdog_val
 
 # turn on sign conversion function monitoring
 perform_step signconv_func_monitor $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
