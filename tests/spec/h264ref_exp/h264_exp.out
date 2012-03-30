@@ -1,0 +1,81 @@
+Setting Default Parameters...
+Parsing Configfile /home/jdh8d/peasoup/uva/bdr7fv_pntransform_10082011/tests/spec/h264ref_exp/foreman_test_encoder_baseline.cfg.....................................................................................................
+
+------------------------------- JM 9.3 (FRExt) --------------------------------
+ Input YUV file                    : foreman_qcif.yuv 
+ Output H.264 bitstream            : foreman_qcif.264 
+ YUV Format                        : YUV 4:2:0 
+ Frames to be encoded I-P/B        : 25/0
+ PicInterlace / MbInterlace        : 0/0
+ Transform8x8Mode                  : 0
+-------------------------------------------------------------------------------
+  Frame  Bit/pic WP QP   SnrY    SnrU    SnrV    Time(ms) MET(ms) Frm/Fld   I D
+-------------------------------------------------------------------------------
+0000(NVB)     176 
+0000(IDR)   21952 0 28  37.383  41.260  42.850        0       0     FRM    99
+0001(P)      3024 0 28  36.868  41.036  42.720        0       0     FRM     0
+0002(P)      4120 0 28  36.875  40.936  42.683        0       0     FRM     2
+0003(P)      4552 0 28  36.851  40.950  42.670        0       0     FRM     2
+0004(P)      4944 0 28  36.848  40.815  42.407        0       0     FRM     2
+0005(P)      4448 0 28  36.775  40.691  42.386        0       0     FRM     1
+0006(P)      3944 0 28  36.689  40.740  42.206        0       0     FRM     1
+0007(P)      4040 0 28  36.698  40.821  42.262        0       0     FRM     0
+0008(P)      4104 0 28  36.751  40.824  42.114        0       0     FRM     0
+0009(P)      4576 0 28  36.724  40.773  41.954        0       0     FRM     1
+0010(P)      4504 0 28  36.701  40.618  41.919        0       0     FRM     1
+0011(P)      4120 0 28  36.695  40.745  41.882        0       0     FRM     0
+0012(P)      5120 0 28  36.709  40.792  42.289        0       0     FRM     0
+0013(P)      5680 0 28  36.651  40.754  42.503        0       0     FRM     1
+0014(P)      5784 0 28  36.617  40.751  42.436        0       0     FRM     1
+0015(P)      5528 0 28  36.598  40.758  42.418        0       0     FRM     0
+0016(P)      4608 0 28  36.413  40.683  42.375        0       0     FRM     0
+0017(P)      4384 0 28  36.410  40.609  42.341        0       0     FRM     0
+0018(P)      3840 0 28  36.437  40.610  42.225        0       0     FRM     2
+0019(P)      3432 0 28  36.484  40.704  42.084        0       0     FRM     0
+0020(P)      3048 0 28  36.505  40.650  42.206        0       0     FRM     0
+0021(P)      3304 0 28  36.571  40.518  42.277        0       0     FRM     1
+0022(P)      3880 0 28  36.568  40.456  42.220        0       0     FRM     1
+0023(P)      3640 0 28  36.518  40.410  42.155        0       0     FRM     2
+0024(P)      3928 0 28  36.469  40.600  42.122        0       0     FRM     0
+-------------------------------------------------------------------------------
+ Total Frames:  25 (25) 
+ Leaky BucketRateFile does not have valid entries;
+ using rate calculated from avg. rate 
+ Number Leaky Buckets: 8 
+     Rmin     Bmin     Fmin 
+   149400    21952    21952 
+   186750    21952    21952 
+   224100    21952    21952 
+   261450    21952    21952 
+   298800    21952    21952 
+   336150    21952    21952 
+   373500    21952    21952 
+   410850    21952    21952 
+-------------------------------------------------------------------------------
+ Freq. for encoded bitstream       : 30
+ Hadamard transform                : Used
+ Image format                      : 176x144
+ Error robustness                  : Off
+ Search range                      : 16
+ Total number of references        : 10
+ References for P slices           : 10
+ Total encoding time for the seq.  : 0.000 sec 
+ Total ME time for sequence        : 0.000 sec 
+ Sequence type                     : IPPP (QP: I 28, P 28) 
+ Entropy coding method             : CAVLC
+ Profile/Level IDC                 : (66,30)
+ Search range restrictions         : none
+ RD-optimized mode decision        : used
+ Data Partitioning Mode            : 1 partition 
+ Output File Format                : H.264 Bit Stream File Format 
+ Residue Color Transform           : not used
+------------------ Average data all frames  -----------------------------------
+ SNR Y(dB)                         : 36.67
+ SNR U(dB)                         : 40.74
+ SNR V(dB)                         : 42.31
+ Total bits                        : 124680 (I 21952, P 102552, NVB 176) 
+ Bit rate (kbit/s)  @ 30.00 Hz     : 149.62
+ Bits to avoid Startcode Emulation : 0 
+ Bits for parameter sets           : 176 
+-------------------------------------------------------------------------------
+Exit JM 9 (FRExt) encoder ver 9.3 

@@ -1,6 +1,6 @@
-progs=discrete_xform.peasoup integration_simp.peasoup sieve.peasoup knapsack.peasoup dumbledore_cmd_nop.peasoup dumbledore_cmd_O3.peasoup quick_sort.peasoup hanoi.peasoup merge_sort.peasoup k1.peasoup banner_nop.peasoup banner_O3.peasoup banner_O3_concolic.peasoup cal_nop.peasoup cal_O3.peasoup cal_O3_concolic.peasoup print_file_concolic.peasoup cal_nop_concolic.peasoup sudoku_black.peasoup aes_black.peasoup pdfcrack_concolic.peasoup 7za_black.peasoup
+progs=discrete_xform.peasoup integration_simp.peasoup sieve.peasoup knapsack.peasoup dumbledore_cmd_nop.peasoup dumbledore_cmd_O3.peasoup quick_sort.peasoup hanoi.peasoup merge_sort.peasoup k1.peasoup banner_nop.peasoup banner_O3.peasoup banner_O3_concolic.peasoup cal_nop.peasoup cal_O3.peasoup cal_O3_concolic.peasoup print_file_concolic.peasoup cal_nop_concolic.peasoup sudoku_black.peasoup aes_black.peasoup pdfcrack_concolic.peasoup 7za_black.peasoup simple_overflow.peasoup simple_overflow_concolic.peasoup dumbledore_cmd_O3_black.peasoup
 
-ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off"
+ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off --step p1transform=on"
 
 ps_analyze_concolic_flags="--step ilr=on --step integertransform=off --step manual_test=off --step concolic=on --step isr=off"
 
@@ -9,6 +9,12 @@ discrete_xform.peasoup:
 
 integration_simp.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/integration_simp.exe integration_simp.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/integration_simp_test.sh
+
+simple_overflow.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/simple_overflow.exe simple_overflow.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/true_wrapper.sh
+
+simple_overflow_concolic.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/simple_overflow.exe simple_overflow.peasoup ${ps_analyze_concolic_flags}
 
 sieve.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/sieve.exe sieve.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/sieve_test.sh
@@ -29,9 +35,14 @@ dumbledore_cmd_nop.peasoup:
 dumbledore_cmd_nop_concolic.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_nop.exe dumbledore_cmd_nop.peasoup ${ps_analyze_concolic_flags} 
 
+dumbledore_cmd_O3_concolic.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_O3.exe dumbledore_cmd_O3.peasoup ${ps_analyze_concolic_flags}
 
 dumbledore_cmd_O3.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_O3.exe dumbledore_cmd_O3.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_test.sh
+
+dumbledore_cmd_O3_black.peasoup:
+	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_cmd_O3.exe dumbledore_cmd_O3_black.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/dumbledore_wrapper.sh 
 
 7za_black.peasoup:
 	${PEASOUP_HOME}/tools/ps_analyze.sh ${SECURITY_TRANSFORMS_HOME}/tests/simple/_7za 7za_black.peasoup ${ps_analyze_flags} --manual_test_script ${SECURITY_TRANSFORMS_HOME}/tests/simple/7za_test.sh

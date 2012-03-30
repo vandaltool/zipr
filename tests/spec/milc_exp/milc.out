@@ -1,0 +1,94 @@
+SU3 with improved KS action
+Microcanonical simulation with refreshing
+MIMD version 6
+Machine = Scalar processor, with 1 nodes
+R algorithm
+type 0 for no prompts  or 1 for prompts
+nflavors 2
+nx 12
+ny 12
+nz 12
+nt 12
+iseed 1234
+LAYOUT = Hypercubes, options = EVENFIRST,
+Made lattice
+Made nn gathers
+Made 3nn gathers
+Finished setup
+
+
+warms 0
+trajecs 1
+traj_between_meas 1
+beta 5.6
+mass 0.125
+u0 1
+microcanonical_time_step 0.2
+steps_per_trajectory 1
+max_cg_iterations 100
+error_per_site 0.125
+error_for_propagator 0.125
+fresh 
+forget 
+unit gauge configuration loaded
+CHECK PLAQ: 3.000000e+00 3.000000e+00
+Unitarity checked.  Max deviation 0.00e+00
+Symanzik 1x1 + 1x2 + 1x1x1 action
+loop coefficients: nloop rep loop_coeff  multiplicity
+                    0 0      1.000000e+00     6
+                    1 0      -5.000000e-02     12
+                    2 0      0.000000e+00     16
+"O(a^2): couplings(pi)=0, Naik term, No O(a^2) errors, tadpole weights"
+path coefficients: npath  path_coeff  multiplicity
+                    0      6.250000e-01     8
+                    1      -4.166667e-02     8
+                    2      -6.250000e-02     48
+                    3      1.562500e-02     192
+                    4      -2.604167e-03     384
+                    5      -6.250000e-02     48
+WARMUPS COMPLETED
+PLAQ:	2.563478	2.563361
+P_LOOP:	1.735574e+00	1.420632e-02
+G_LOOP:  0  0  4   	2.563684e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	2.562348e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	2.562455e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	2.564402e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	2.564092e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	2.563536e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	2.336492e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	2.336054e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	2.336753e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	2.338294e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	2.338805e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	2.338501e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	2.336978e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	2.339804e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	2.338190e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	2.336462e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	2.340427e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	2.335318e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	2.347589e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	2.346182e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	2.344348e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	2.346051e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	2.344964e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	2.345461e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	2.347358e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	2.344247e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	2.345479e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	2.344307e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	2.342783e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	2.344414e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	2.349002e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	2.344916e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	2.347443e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	2.347916e+00	( 1 5 4 6 2 3  )
+GACTION: 2.222088e+00
+PBP: mass 1.250000e-01     1.002753e-01  3.418597e-01 ( 1 of 1 )
+FACTION: mass = 1.250000e-01,  1.451180e+00 ( 1 of 1 )
+RUNNING COMPLETED
+average cg iters for step= 4.000000e+00
+total_iters = 8
+
+
+get_i: EOF on STDIN while expecting warms.

@@ -1,0 +1,2 @@
+-C /home/jdh8d/peasoup/uva/spec2006/benchspec/CPU2006/482.sphinx3/run/run_base_test_i386-m32-gcc42-nn.0000
+-o an4.log -e an4.err ../run_base_test_i386-m32-gcc42-nn.0000/sphinx_livepretend_base.i386-m32-gcc42-nn ctlfile . args.an4
