@@ -722,8 +722,12 @@ tools/transforms/PNTransformDriver.cpp -text
 tools/transforms/PNTransformDriver.hpp -text
 tools/transforms/Range.cpp -text
 tools/transforms/Range.hpp -text
+tools/transforms/Rewrite_Utility.cpp -text
+tools/transforms/Rewrite_Utility.hpp -text
 tools/transforms/ScaledOffsetInference.cpp -text
 tools/transforms/ScaledOffsetInference.hpp -text
+tools/transforms/StackLayout.cpp -text
+tools/transforms/StackLayout.hpp -text
 tools/transforms/integerbugtransform.cpp -text
 tools/transforms/integertransformdriver.cpp -text
 tools/transforms/nulltransform.cpp -text

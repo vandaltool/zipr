@@ -1,43 +1,62 @@
 #ifndef __PNSTACKLAYOUT
 #define __PNSTACKLAYOUT
 #include "PNRange.hpp"
+#include "StackLayout.hpp"
 #include <string>
 #include <vector>
 #include <exception>
 
+const int MIN_PADDING = 4096;
+const int MAX_PADDING = MIN_PADDING*2;
+const int ALIGNMENT_BYTE_SIZE = 4;
+
 class PNStackLayout
 {
 protected:
-    std::vector<PNRange*> mem_objects;
-    unsigned int frame_alloc_size;
-    unsigned int saved_regs_size;
-    unsigned int altered_alloc_size;
     std::string pn_layout_name;
-    std::string function_name;
     bool isPadded;
     bool isShuffled;
-    bool has_out_args;
-    unsigned int out_args_size;
+    bool isaligned;//should only be used internally, since I don't know if the raw stack is aligned.
+    //TODO: Storing pointers here but I did away with pointers in StackLayout since I was worried about
+    //possible memory leaks. I need pointers to return null, but I can achieve this functionality
+    //through aliasing. Consider removing the pointers for consistency. 
+    std::vector<PNRange*> mem_objects;
 
-    virtual unsigned int GetClosestIndex(int loc) const;
-    virtual unsigned int GetRandomPadding();
+    //NOTE: I chose composition over inheritence here, as I wanted to make it impossible to change the
+    //layout after a PNStackLayout has been created. The issue was if a new boundary was added
+    //after the layout had been padded/shuffled/etc, it would cause problems. This is avoided by
+    //this structure, but it is important to make a deap copy of the passed in stack_layout, which
+    //is achieved through the copy constructor for StackLayout. 
+    StackLayout stack_layout;
+    unsigned int altered_alloc_size;
+
+    virtual unsigned int GetRandomPadding(unsigned int obj_size);
+    virtual void AddCanaryPadding();
 
 public:
-    //frame_alloc_size is the amount subtracted from esp to set up the stack
-    //saved regs size is the size in bits of the number of registers pushed after ebp but before the stack alloc instruction
+    PNStackLayout(StackLayout stack_layout);
+    PNStackLayout(const PNStackLayout &stack_layout);
 
-//TODO: change the code such that only inserts are allowed in the stack alloc region, create two frame sizes, local and total
-    PNStackLayout(const std::string &layout_name, const std::string &function_name, 
-		  unsigned int frame_alloc_size, unsigned int saved_regs_size, unsigned int out_args_size);
     virtual ~PNStackLayout();
-    virtual void InsertESPOffset(int offset);
-    virtual void InsertEBPOffset(int offset);
+
     virtual void Shuffle();
-    virtual void AddPadding();
+    //TODO: the max min and alignment size should also be optionally specified. 
+    virtual void AddRandomPadding(bool isaligned=false);
+    //Adds on to previous padding and does not change any previous displacement
+    //changes. If you wish to only add DMZ padding, you must clear any previous
+    //padding. 
+    //TODO: should I worry about alignment here? 
+
+    //DMZ padding is defined as the space between the original variable location
+    //and the end of the local variable region. The theory is, if the variable
+    //boundaries are correct, then this region should be untouched from any 
+    //memory access. 
+    virtual void AddDMZPadding();
     virtual bool IsPadded() const;
     virtual bool IsShuffled() const;
     virtual bool CanShuffle() const;
-    virtual bool P1Reduction() const;
+    //Remove any transformations, leaves the PNStackLayout as if the object had just been constructed.
+    virtual void ResetLayout();
     virtual unsigned int GetNumberOfMemoryObjects() const;
     virtual PNRange* GetClosestRangeEBP(int loc) const;
     virtual PNRange* GetClosestRangeESP(int loc) const;
@@ -48,9 +67,13 @@ public:
     virtual std::string GetLayoutName() const;
     virtual std::string GetFunctionName() const;
     virtual unsigned int GetOutArgsSize() const;
-
-    //TODO: intended to be temporary
-    virtual std::vector<PNRange*> GetMemoryObjects();
+    virtual bool HasFramePointer() const;
+    virtual int GetNewOffsetESP(int ebp_offset) const;
+    virtual int GetNewOffsetEBP(int ebp_offset) const;
+    virtual PNStackLayout GetCanaryLayout() const;
+    virtual std::vector<PNRange*> GetRanges() {return mem_objects;}
+    virtual bool IsCanarySafe() const {return stack_layout.is_canary_safe;}
+    virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
 };
 
 #endif

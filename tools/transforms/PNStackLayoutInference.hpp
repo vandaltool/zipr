@@ -3,6 +3,7 @@
 #define __PNSTACKLAYOUTINFERENCE
 #include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
+#include "StackLayout.hpp"
 #include "PNStackLayout.hpp"
 #include <string>
 

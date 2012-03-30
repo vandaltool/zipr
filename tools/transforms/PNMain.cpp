@@ -12,8 +12,6 @@
 #include <string>
 #include <set>
 #include <cstdlib>
-#include <map>
-#include <sstream>
 
 using namespace std;
 using namespace libIRDB;
@@ -80,7 +78,6 @@ map<string,double> getCoverageMap(char *filename)
     return coverage_map;
 }
 
-
 int main(int argc, char **argv)
 {
     if(argc!=6)
@@ -95,7 +92,6 @@ int main(int argc, char **argv)
     }
 
     VariantID_t *pidp=NULL;
-    VariantIR_t *virp=NULL;
   
     int progid = atoi(argv[1]);
     char *BED_script = argv[2];
@@ -111,9 +107,6 @@ int main(int argc, char **argv)
       
 	// verify that we read it correctly.
 	assert(pidp->IsRegistered()==true);
-      
-	// read the IR from the db
-	virp=new VariantIR_t(*pidp);
     }
     catch (DatabaseError_t pnide)
     {
@@ -122,21 +115,17 @@ int main(int argc, char **argv)
     }
     
     set<std::string> blackListOfFunctions;
-
     blackListOfFunctions = getFunctionList(argv[3]);
-
     map<string,double> coverage_map = getCoverageMap(argv[4]);
-
     double p1threshold = strtod(argv[5],NULL);
 
-
-    if(p1threshold > 1 || p1threshold <0)
+   if(p1threshold > 1 || p1threshold <0)
     {
 	cerr<<"usage: p1 threshold must be a value greater than or equal to 0 or less than or equal to 1"<<endl;
 	exit(-1);
     }
 
-    cout<<"P1threshold parsed = "<<p1threshold<<endl;
+   cout<<"P1threshold parsed = "<<p1threshold<<endl;
 
 /*
     vector<std::string> functionsTransformed;
@@ -150,7 +139,7 @@ int main(int argc, char **argv)
     string report;
     try 
     {
-	PNTransformDriver transform_driver;
+	PNTransformDriver transform_driver(pidp,BED_script);
 
 	transform_driver.AddBlacklist(blackListOfFunctions);
 	OffsetInference *offset_inference = new OffsetInference();
@@ -160,13 +149,13 @@ int main(int argc, char **argv)
 
 	//Add new boundary inferences here
 
-
 	transform_driver.AddInference(offset_inference);
 	transform_driver.AddInference(direct_offset_inference);
 	transform_driver.AddInference(scaled_offset_inference);
-	transform_driver.AddInference(p1);
+	transform_driver.AddInference(p1,1);
 
-	transform_driver.GenerateTransforms(virp,BED_script,progid,coverage_map,p1threshold);
+	transform_driver.GenerateTransforms(coverage_map,p1threshold,1);
+	//transform_driver.GenerateTransforms();
 
 /*
         cerr << "P1: " << func->GetName() << " processed: " << numFuncProcessed << "/" << virp->GetFunctions().size() << " filtered: " << numFuncFiltered << " BED-passed: " << numFuncBEDpassed << " BED-failed: " << numFuncBEDfailed << " P1-skipped: " << numFunP1skipped << endl;
@@ -178,6 +167,7 @@ int main(int argc, char **argv)
 	cout<<"Unexpected database error: "<<pnide<<endl;
 	exit(-1);
     }
+
 //TODO: Catch all other exceptions?
     
     return 0;

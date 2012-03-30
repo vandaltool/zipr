@@ -9,7 +9,20 @@ using namespace std;
 //Is throwing an exception a better option?
 PNRegularExpressions::PNRegularExpressions()
 {
-   /* match lea <anything> dword [<stuff>]*/
+  
+    if (regcomp(&regex_and_esp, "[[:blank:]]*and[[:blank:]]+esp[[:blank:]]*,[[:blank:]]*(.+)[[:blank:]]*", REG_EXTENDED | REG_ICASE) != 0)
+    {
+	fprintf(stderr,"Error: regular expression for and esp to compile\n");
+	exit(1);
+    }
+
+    if (regcomp(&regex_ret, "ret", REG_EXTENDED | REG_ICASE) != 0)
+    {
+	fprintf(stderr,"Error: regular expression for ret failed to compile\n");
+	exit(1);
+    }
+
+    /* match lea <anything> dword [<stuff>]*/
     if (regcomp(&regex_lea_hack, "(.*lea.*,.*)dword(.*)", REG_EXTENDED | REG_ICASE) != 0)
     {
 	fprintf(stderr,"Error: regular expression for lea hack failed to compile\n");
@@ -57,6 +70,13 @@ PNRegularExpressions::PNRegularExpressions()
     if (regcomp(&regex_stack_dealloc, "[[:blank:]]*add[[:blank:]]+esp[[:blank:]]*,[[:blank:]]*(.+)[[:blank:]]*", REG_EXTENDED | REG_ICASE) != 0)
     {
 	fprintf(stderr,"Error: regular expression for <add esp, K> failed to compile\n");
+	exit(1);
+    }
+
+   // stack deallocation that does not use an offset
+    if (regcomp(&regex_stack_dealloc_implicit, "([[:blank:]]*mov[[:blank:]]+esp[[:blank:]]*,[[:blank:]]*ebp[[:blank:]]*)|([[:blank:]]*leave[[:blank:]]*)", REG_EXTENDED | REG_ICASE) != 0)
+    {
+	fprintf(stderr,"Error: regular expression for stack_dealloc_implicit failed to compile\n");
 	exit(1);
     }
 

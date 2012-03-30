@@ -5,46 +5,64 @@
 #include <fstream>
 #include "beaengine/BeaEngine.h"
 #include <cmath>
-#include <map>
 
 using namespace std;
 using namespace libIRDB;
 
+void sigusr1Handler(int signum);
 bool PNTransformDriver::timeExpired = false;
 
-void sigusr1Handler(int signum);
+//TODO: Error message functions?
 
 //TODO: use of pointers?
-//TODO: time expired is handled in a hackish way
 
 //TODO: Use CFG class for all instruction looping
 //TODO: if stack access instruction are encountered before stack allocation, ignore them, after using CFG
 
-//Used for sorting layouts by number of memory objects in descending order
+//Used for sorting layotus by number of memory objects in descending order
 //TODO: change name to reflect descending order
 static bool CompareBoundaryNumbers(PNStackLayout *a, PNStackLayout *b)
 {
     return (a->GetNumberOfMemoryObjects() > b->GetNumberOfMemoryObjects());
 }
 
+PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
+{
+    //TODO: throw exception?
+    assert(pidp != NULL);
+
+    srand(time(NULL));
+
+    //TODO: throw exception?
+    this->pidp = pidp;
+    orig_progid = pidp->GetOriginalVariantID();
+    orig_virp = new VariantIR_t(*pidp);
+    this->BED_script = BED_script;
+}
+
+PNTransformDriver::~PNTransformDriver()
+{
+    delete orig_virp;
+}
+
 //TODO: redesign the way inferences are added
 void PNTransformDriver::AddInference(PNStackLayoutInference *inference, int level)
 {
 //TODO: throw exceptions
-    if(level < 1)
+    if(level < 0)
 	assert(false);
     if(inference == NULL)
 	assert(false);
 
     //if the level does not already exist, add empty vectors in transform_hierarchy
     //until it does
-    while((int)transform_hierarchy.size() < level)
+    while((int)transform_hierarchy.size()-1 < level)
     {
 	vector<PNStackLayoutInference*> tmp;
 	transform_hierarchy.push_back(tmp);
     }
 
-    transform_hierarchy[level-1].push_back(inference);
+    transform_hierarchy[level].push_back(inference);
 }
 
 void PNTransformDriver::AddBlacklist(set<string> &blacklist)
@@ -168,57 +186,231 @@ void PNTransformDriver::GenerateTransforms2(VariantIR_t *virp,vector<Function_t*
 }
 */
 
-
-//TODO: break into smaller functions
-void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script, int progid,map<string,double>coverage_map, double p1threshold)
+ //Assumed no coverage is used, and the entire hierarchy of transforms should be attempted on all functions
+void PNTransformDriver::GenerateTransforms()
 {
-    int total_funcs = 0;
-    int blacklist_funcs = 0;
-    vector<string> not_transformable;
-    vector<PNStackLayout*> failed;
+    map<string,double> empty_map;
+    GenerateTransforms(empty_map,0,0);
+}
+
+void PNTransformDriver::GenerateTransformsInit()
+{
+    //TODO: have a thread safe timeExpired
+    timeExpired = false;
+    signal(SIGUSR1, sigusr1Handler);
+    total_funcs = 0;
+    blacklist_funcs = 0;
+    not_transformable.clear();
+    failed.clear();    
+}
+
+bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t *func)
+{
+    bool success = false;
+
+    cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is canary safe, attempting canary rewrite"<<endl;
+    layout->Shuffle();
+    layout->AddRandomPadding();
 
 /*
-    vector<Function_t*> funcs;
+    pqxxDB_t pqxx_interface;
+
+    //appears to be necessary if clone is to have all changes in the original variant
+    orig_virp->WriteToDB();
+    VariantID_t *new_pidp = pidp->Clone();
+
+    assert(new_pidp->IsRegistered() == true);
+
+    pqxx_interface.Commit();
+    VariantIR_t *new_virp = new VariantIR_t(*new_pidp);
+
+    set<Function_t*> func_set = new_virp->GetFunctions();
+
+    Function_t* targ_func = NULL;
+
+    //Find function
     for(
-	set<Function_t*>::const_iterator it=virp->GetFunctions().begin();
-	it!=virp->GetFunctions().end();
+	set<Function_t*>::const_iterator it=new_virp->GetFunctions().begin();
+	it != new_virp->GetFunctions().end();
 	++it
 	)
-
     {
-	Function_t *func = *it;
-	if(blacklist.find(func->GetName()) != blacklist.end())
+	if((*it)->GetName().compare(func->GetName()) == 0)
 	{
-	    cerr<<"PNTransformDriver: Blacklisted Function "<<func->GetName()<<endl;
-	    continue;
+	    targ_func = *it;
+	    break;
 	}
-	funcs.push_back(func);
+
     }
 
-      GenerateTransforms2(virp,funcs,BED_script,progid);
-
-
+    assert(targ_func != NULL);
+		    
+    if(!Canary_Rewrite(new_virp,layout,targ_func))
 */
+    if(!Canary_Rewrite(orig_virp,layout,func))
+    {
+	//Experimental code
+	undo(undo_list,func);
 
-    signal(SIGUSR1, sigusr1Handler);
+	//TODO: error message
+	cerr<<"PNTransformDriver: canary_rewrite failure"<<endl;
+    }
+    else
+    {
+	//if(!Validate(new_virp,targ_func))
+	if(!Validate(orig_virp,func))
+	{
+	    //Experimental code
+	    undo(undo_list,func);
+
+	    //TODO: error message
+	    cerr<<"PNTransformDriver: canary validation failure, rolling back"<<endl;
+	}
+	else
+	{
+	    cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
+	    transformed_history[layout->GetLayoutName()].push_back(layout);
+	    success = true;
+	    //TODO: message
+	    cerr<<"PNTransformDriver: Canary rewrite and validation successful, rewriting original variant"<<endl;
+	    //Canary_Rewrite(orig_virp,layout,func);
+	}
+    }
+    //cleanup??
+    undo_list.clear();//TODO: handle undo better?
+		    
+    //TODO: cleanup new_virp? I don't want to double free.
+    //new_pidp->DropFromDB();
+
+    //delete new_pidp;
+
+    return success;
+}
+
+bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_t *func)
+{
+    bool success = false;
+
+    cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is not canary safe, attempting shuffle validation"<<endl;
+
+    if(!ShuffleValidation(2,layout,func))
+    {
+	cerr<<"PNTransformDriver: Shuffle Validation Failure"<<endl;
+	return success;
+    }
+
+    layout->Shuffle();//one final shuffle
+    layout->AddRandomPadding();
+			
+    if(!Sans_Canary_Rewrite(layout,func))
+    {
+	undo(undo_list,func);
+	cerr<<"PNTransformDriver: Rewrite Failure: "<<layout->GetLayoutName()<<" Failed to Rewrite "<<func->GetName()<<endl;
+    }
+    else if(!Validate(orig_virp, func))
+    {
+	undo(undo_list,func);
+	cerr<<"PNTransformDriver: Validation Failure: "<<layout->GetLayoutName()<<" Failed to Validate "<<func->GetName()<<endl;
+    }
+    else
+    {
+	cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
+	transformed_history[layout->GetLayoutName()].push_back(layout);
+	success = true;
+	undo_list.clear();
+    }
+
+    //orig_virp->WriteToDB();
+
+    return success;
+}
+
+bool PNTransformDriver::LayoutRandTransformHandler(PNStackLayout *layout, Function_t *func)
+{
+    bool success = false;
+    cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is not padding safe, attempting layout randomization only"<<endl;
+
+    if(!ShuffleValidation(2,layout,func))
+    {
+	cerr<<"PNTransformDriver: Validation Failure: "<<layout->GetLayoutName()<<" Failed to Validate "<<func->GetName()<<endl;
+    }
+    else
+    {
+	layout->Shuffle();
+	//TODO: do I need to check for success at this point?
+	Sans_Canary_Rewrite(layout,func);
+	cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
+	transformed_history[layout->GetLayoutName()].push_back(layout);
+	success = true;
+	undo_list.clear();
+    }
+
+    //orig_virp->WriteToDB();
+    return success;
+}
+
+bool PNTransformDriver::IsBlacklisted(Function_t *func)
+{
+    // @todo: specify regex patterns in black list file instead
+    //        of special-casing here
+
+    // filter out _L_lock_*
+    // filter out _L_unlock_*
+    if (func->GetName().find("_L_lock_") == 0 ||
+	func->GetName().find("_L_unlock_") == 0 ||
+	func->GetName().find("__gnu_")  != string::npos ||
+	func->GetName().find("cxx_") != string::npos||
+	func->GetName().find("_cxx")  != string::npos ||
+	func->GetName().find("_GLOBAL_")  != string::npos ||
+	func->GetName().find("_Unwind")  != string::npos ||
+	func->GetName().find("__timepunct")  != string::npos ||
+	func->GetName().find("__timepunct")  != string::npos ||
+	func->GetName().find("__numpunct") != string::npos||
+	func->GetName().find("__moneypunct")  != string::npos ||
+	func->GetName().find("__PRETTY_FUNCTION__")  != string::npos ||
+	func->GetName().find("__cxa")  != string::npos ||
+	blacklist.find(func->GetName()) != blacklist.end())
+    {
+	cerr<<"PNTransformDriver: Blacklisted Function "<<func->GetName()<<endl;
+	blacklist_funcs++;
+	return true;
+    }
+    return false;
+}
+
+
+//TODO: break into smaller functions
+//threshold_level is the hierarchy level to start at if the coverage for a function is less than the threshold.
+//Set this value to a negative integer to abort transformation of the function if the threshold is not met. 
+void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, double threshold, int threshold_level)
+{
+    if(transform_hierarchy.size() == 0)
+    {
+	cerr<<"PNTransformDriver: No Transforms have been registered, aborting GenerateTransforms"<<endl;
+	return;
+    }
+
+    GenerateTransformsInit();
+
+    if(threshold < 0)
+	threshold = 0;
+    else if(threshold > 1)
+	threshold = 1;
+
+    if(threshold_level >= transform_hierarchy.size())
+	threshold_level = transform_hierarchy.size()-1;
+
     //For each function
     //Loop through each level, find boundaries for each, sort based on
     //the number of boundaries, attempt transform in order until successful
     //or until all inferences have been exhausted
     for(
-	set<Function_t*>::const_iterator it=virp->GetFunctions().begin();
-	it!=virp->GetFunctions().end();
+	set<Function_t*>::const_iterator it=orig_virp->GetFunctions().begin();
+	it!=orig_virp->GetFunctions().end()&&!timeExpired;
 	++it
 	)
 
     {
-
-	if(PNTransformDriver::timeExpired)
-	{
-	    cerr<<"PNTransformDriver: Time Expired --commit transforms" <<endl;
-	    break;
-	}
-
 	Function_t *func = *it;
 	bool success = false;
 
@@ -227,215 +419,138 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 
 	cerr<<"PNTransformDriver: Function: "<<func->GetName()<<endl;
 
-	//Check if in black list
-	if(blacklist.find(func->GetName()) != blacklist.end())
-	{
-	    cerr<<"PNTransformDriver: Blacklisted Function "<<func->GetName()<<endl;
-	    blacklist_funcs++;
+	//Check if in blacklist
+	if(IsBlacklisted(func))
 	    continue;
-	}
 
-    // @todo: specify regex patterns in black list file instead
-	//        of special-casing here
-
-	// filter out _L_lock_*
-    // filter out _L_unlock_*
-	if (func->GetName().find("_L_lock_") == 0 ||
-	    func->GetName().find("_L_unlock_") == 0)
-	{
-	    cerr << "P1: filtering out: " << func->GetName() << endl;
-	    blacklist_funcs++;
-	    continue;
-	}
-
-	// filter out C++ stuff
-	if (func->GetName().find("__gnu_")  != string::npos ||
-            func->GetName().find("cxx_") != string::npos||
-            func->GetName().find("_cxx")  != string::npos ||
-            func->GetName().find("_GLOBAL_")  != string::npos ||
-            func->GetName().find("_Unwind")  != string::npos ||
-            func->GetName().find("__timepunct")  != string::npos ||
-            func->GetName().find("__timepunct")  != string::npos ||
-            func->GetName().find("__numpunct") != string::npos||
-            func->GetName().find("__moneypunct")  != string::npos ||
-            func->GetName().find("__PRETTY_FUNCTION__")  != string::npos ||
-            func->GetName().find("__cxa")  != string::npos
-        )
-	{
-	    cerr << "P1: filtering out: " << func->GetName() << endl;
-	    blacklist_funcs++;
-	    continue;
-	}
-
+	cerr<<"#########################Intermediate Report#########################"<<endl;
+	Print_Report();
 
 	total_funcs++;
+
+	unsigned int level=0;
+
+	//see if the function is in the coverage map
+	if(coverage_map.find(func->GetName()) != coverage_map.end())
+	{
+	    //if coverage exists, if it is above or equal to the threshold
+	    //do nothing, otherwise set hierachy to start at the level
+	    //passed. 
+	    double func_coverage = coverage_map[func->GetName()];
+
+	    if(func_coverage < threshold)
+	    {
+		level = threshold_level;
+
+		if(threshold_level < 0)
+		{
+		    cout<<"PNTransformDriver: Function "<<func->GetName()<<
+		    " has insufficient coverage, aborting transformation"<<endl;
+		    continue;
+		}
+		else
+		{
+		    cout<<"PNTransformDriver: Function "<<func->GetName()<<
+		    " has insufficient coverage, starting at hierarchy at "
+		    " level "<<threshold_level<<endl;
+		}
+
+	    }
+	}
+	else
+	{
+	    level = threshold_level;
+
+		if(threshold_level < 0)
+		{
+		    cout<<"PNTransformDriver: Function "<<func->GetName()<<
+		    " has insufficient coverage, aborting transformation"<<endl;
+		    continue;
+		}
+		else
+		{
+		    cout<<"PNTransformDriver: Function "<<func->GetName()<<
+		    " has insufficient coverage, starting at hierarchy at "
+		    " level "<<threshold_level<<endl;
+		}
+	}
 
 	//Get a layout inference for each level of the hierarchy. Sort these layouts based on
 	//on the number of memory objects detected (in descending order). Then try each layout
 	//as a basis for transformation until one succeeds or all layouts in each level of the
 	//hierarchy have been exhausted. 
 
-	//TODO: the code is horribly hacked for T and E, so this hiearchy is not even used
-	//and it is assumed it is not used, but if you were to use it, this
-	//would cause strange behavior given that I am checking a threshold for
-	//p1 below. I assume that the one hierarchy level contains all transfroms
-	//And the layout with the fewest memory objects is p1.
-	for(unsigned int level=0;level<transform_hierarchy.size() && !success;level++)
+	//TODO: need to properly handle not_transformable and functions failing all transforms. 
+	int null_inf_count = 0;
+	int starting_level = level;
+	for(;level<transform_hierarchy.size()&&!success&&!timeExpired;level++)
 	{
-
-	    if(PNTransformDriver::timeExpired)
-	    {
-		cerr<<"PNTransformDriver: Time Expired --commit transforms" <<endl;
-		break;
-	    }
-
 	    vector<PNStackLayout*> layouts = GenerateInferences(func, level);
-
-	    //TODO: this is a quick hack and will fail if p1 doesn't have a transform
-	    //but everything else does
+ 
 	    if(layouts.size() == 0)
 	    {
-		if(transform_hierarchy.size()-1 == level)
+		null_inf_count++;
+
+		//TODO: doesn't work if coverage forces the use of some hierarchy level
+		if(transform_hierarchy.size()-starting_level == null_inf_count)
 		    not_transformable.push_back(func->GetName());
+		//TODO: is there a better way of checking this?
+		else if(transform_hierarchy.size()-1 == level)
+		    failed.push_back(func);
 
 		continue;
 	    }
 
 	    sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
 
-	    //Check if function has coverage, if not, p1,
-	    //check if function is above coverage threshold, if not, p1
-	    //force p1 by creating a new layouts vector consisting only of p1
-
-	    //See if the function is in the coverage map
-	    if(coverage_map.find(func->GetName()) != coverage_map.end())
+	    for(unsigned int i=0;i<layouts.size()&&!timeExpired;i++)
 	    {
-		//if coverage exists, if it is above the p1threshold,
-		//do nothing, otherwise, resize layouts to have just
-		//the p1 layout in it (the layout with the fewest objects)
-		double func_coverage = coverage_map[func->GetName()];
-
-		if(func_coverage <= p1threshold)
+		if(layouts[i]->IsCanarySafe())
 		{
-		    //resize layouts, layouts is sorted by memory objects
-		    //infered, take the last element of the vector
-		    //(fewest number of memory objects), and make this
-		    //the only layout
-		    PNStackLayout* tmp = layouts[layouts.size()-1];
-		    layouts.clear();
-		    layouts.push_back(tmp);
-
-		    cout<<"PNTransformDriver: Function "<<func->GetName()<< 
-			"has insufficient coverage, using p1"<<endl;
+		    success = CanaryTransformHandler(layouts[i],func);
+		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
+			failed.push_back(func);
+		    else if(success)
+			break;
 		}
-	    }
-	    //If the function is not in the map, assume no coverage, and 
-	    //resize layouts to have just
-	    //the p1 layout in it (the layout with the fewest objects)
-	    else
-	    {
-		//resize layouts, layouts is sorted by memory objects
-		//infered, take the last element of the vector
-		//(fewest number of memory objects), and make this
-		//the only layout
-		PNStackLayout* tmp = layouts[layouts.size()-1];
-		layouts.clear();
-		layouts.push_back(tmp);
 
-		cout<<"PNTransformDriver: Function "<<func->GetName()<<
-		    "does not have a coverage entry, using p1"<<endl;
-	    }
-
-	    for(unsigned int i=0;i<layouts.size();i++)
-	    {
-		if(layouts[i]->CanShuffle())
+		else if(layouts[i]->IsPaddingSafe())
 		{
-		    //TODO: pass in the rep count
-		    //TODO: make member variables?
-		    if(!ShuffleValidation(1,layouts[i],virp,func,BED_script,progid))
-		    {
-			cerr<<"PNTransformDriver: Shuffle Validation Failure"<<endl;
-			continue;
-		    }
-		    layouts[i]->Shuffle();//one final shuffle
-		}
-		layouts[i]->AddPadding();
+		    success = PaddingTransformHandler(layouts[i],func);
+		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
+			failed.push_back(func);
+		    else if(success)
+			break;
 
-
-		if(PNTransformDriver::timeExpired)
-		{
-		    cerr<<"PNTransformDriver: Time Expired --commit transforms" <<endl;
-		    break;
 		}
-			
-		if(!Rewrite((layouts[i]), func))
-		{
-		    undo(undo_list,func);
-		    cerr<<"PNTransformDriver: Rewrite Failure: "<<layouts[i]->GetLayoutName()<<" Failed to Rewrite "<<func->GetName()<<endl;
-		    continue;
-		}
-		else if(!Validate(virp,func,BED_script,progid))
-		{
-		    if(transform_hierarchy.size()-1 == level && i == layouts.size()-1)
-			failed.push_back(layouts[i]);
-
-		    undo(undo_list,func);
-		    cerr<<"PNTransformDriver: Validation Failure: "<<layouts[i]->GetLayoutName()<<" Failed to Validate "<<func->GetName()<<endl;
-		}
+		//if not canary or padding safe, the layout can only be randomized
 		else
 		{
-		    cerr<<"PNTransformDriver: Final Transformation Success: "<<layouts[i]->ToString()<<endl;
-		    //virp->WriteToDB();
-		    transformed_history[layouts[i]->GetLayoutName()].push_back(layouts[i]);
-		    success = true;
-		    undo_list.clear();
-		    break;
+		    success = LayoutRandTransformHandler(layouts[i],func);
+		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
+			failed.push_back(func);
+		    else if(success)
+			break;
 		}
-		
 	    }
-	}
-	
+	}	
     }
 
-    virp->WriteToDB();
+    if(timeExpired)
+	cerr<<"Time Expired: Commit Changes"<<endl;
 
-	    /*
-	    for(unsigned int i=0;i<layouts.size();i++)
-	    {
-		cerr<<"PNTransformDriver: Attempting Transform With Layout "<<layouts[i]->GetLayoutName()<<endl;
+    orig_virp->WriteToDB();
 
-		(layouts[i])->Shuffle();
+    cerr<<"############################Final Report############################"<<endl;
+    Print_Report();
+}
 
-		//(layouts[i])->AddPadding();
-
-		if(!Rewrite((layouts[i]), func))
-		{
-		    undo(undo_list,func);
-		    cerr<<"PNTransformDriver: Rewrite Failure: "<<layouts[i]->GetLayoutName()<<" Failed to Rewrite "<<func->GetName()<<endl;
-		    continue;
-		}
-		else if(!Validate(virp,func,BED_script,progid))
-		{
-		    undo(undo_list,func);
-		    cerr<<"PNTransformDriver: Validation Failure: "<<layouts[i]->GetLayoutName()<<" Failed to Validate "<<func->GetName()<<endl;
-		}
-		else
-		{
-		    cerr<<"PNTransformDriver: Transformation Success: "<<layouts[i]->ToString()<<endl;
-		    virp->WriteToDB();
-		    transformed_history[layouts[i]->GetLayoutName()].push_back(layouts[i]);
-		    success = true;
-		    undo_list.clear();
-		    break;
-		}
-
-	    }
-	    */
-
+void PNTransformDriver::Print_Report()
+{
     cerr<<endl;
     cerr<<"############################SUMMARY############################"<<endl;
 
-    cerr<<"PNTransformDriver: Functions Transformed"<<endl;
+    cerr<<"Functions Transformed"<<endl;
 
     map<string,vector<PNStackLayout*> >::const_iterator it;
     int total_transformed = 0;
@@ -455,25 +570,25 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
     }
 
     cerr<<"-----------------------------------------------"<<endl;
-    cerr<<"PNTransformDriver: Non-Transformable Functions"<<endl;
+    cerr<<"Non-Transformable Functions"<<endl;
 
-    for(int i=0;i<not_transformable.size();++i)
+    for(unsigned int i=0;i<not_transformable.size();++i)
     {
 	cerr<<"\t"<<not_transformable[i]<<endl;
     }
 
     cerr<<"-----------------------------------------------"<<endl;
-    cerr<<"PNTransformDriver: Functions Failing All Validation"<<endl;
+    cerr<<"Functions Failing All Validation"<<endl;
 
-    for(int i=0;i<failed.size();++i)
+    for(unsigned int i=0;i<failed.size();++i)
     {
-	cerr<<"\t"<<failed[i]->GetFunctionName()<<"\t\tOut Args Size: "<<failed[i]->GetOutArgsSize()<<endl;
+	cerr<<"\t"<<failed[i]->GetName()<<endl;
     }
 
     cerr<<"----------------------------------------------"<<endl;
-    cerr<<"PNTransformDriver: Statistics by Transform"<<endl;
+    cerr<<"Statistics by Transform"<<endl;
 
-    for(int i=0;i<history_keys.size();++i)
+    for(unsigned int i=0;i<history_keys.size();++i)
     {
 	cerr<<"\tLayout: "<<history_keys[i]<<endl;
 	vector<PNStackLayout*> layouts = transformed_history[history_keys[i]];
@@ -485,9 +600,9 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 	int p1reductions = 0;
 	double mem_obj_avg = 0.0;
 	double mem_obj_dev = 0.0;
-	for(int laynum=0;laynum<layouts.size();++laynum)
+	for(unsigned int laynum=0;laynum<layouts.size();++laynum)
 	{
-	    if(layouts[laynum]->P1Reduction())
+	    if(layouts[laynum]->GetNumberOfMemoryObjects()==1)
 		p1reductions++;
 
 	    unsigned int num_objects = layouts[laynum]->GetNumberOfMemoryObjects();
@@ -501,7 +616,7 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
 	}
 	mem_obj_avg = mem_obj_avg/(double)layouts.size();
 
-	for(int laynum=0;laynum<layouts.size();++laynum)
+	for(unsigned int laynum=0;laynum<layouts.size();++laynum)
 	{
 	    mem_obj_dev += pow((((double)layouts[laynum]->GetNumberOfMemoryObjects())-mem_obj_avg),2);
 	}
@@ -522,14 +637,13 @@ void PNTransformDriver::GenerateTransforms(VariantIR_t *virp, string BED_script,
     }
 
     cerr<<"----------------------------------------------"<<endl;
-    cerr<<"PNTransformDriver: Non-Blacklisted Functions \t"<<total_funcs<<endl;
-    cerr<<"PNTransformDriver: Blacklisted Functions \t"<<blacklist_funcs<<endl;
-    cerr<<"PNTransformDriver: Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
-    cerr<<"PNTransformDriver: Transformed \t\t\t"<<total_transformed<<endl;
+    cerr<<"Non-Blacklisted Functions \t"<<total_funcs<<endl;
+    cerr<<"Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
+    cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
+    cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
 }
 
 
-//TODO: rewrite, this was a hackish solution to clean up the code for the hierarchy, which isn't even used for T&E
 vector<PNStackLayout*> PNTransformDriver::GenerateInferences(Function_t *func,int level)
 {
     vector<PNStackLayout*> layouts;
@@ -553,31 +667,109 @@ vector<PNStackLayout*> PNTransformDriver::GenerateInferences(Function_t *func,in
     return layouts;
 }
 
-bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,VariantIR_t *virp,Function_t *func,string BED_script,int progid)
+/*
+bool PNTransformDriver::LayoutValidation(PNStackLayout *layout)
 {
+    //create a clone
+    VariantID_t *curpidp=NULL;
+    VariantID_t *newpidp=NULL;
+
+    VariantIR_t *newvirp=NULL;
+
+    pqxxDB_t pqxx_interface;
+    try
+    {
+        curpidp = new VariantID_t(progid);
+	newpidp=curpidp->Clone();
+	assert(newpidp->IsRegistered()==true);
+
+	pqxx_interface.Commit();
+	
+	newvirp=new VariantIR_t(*newpidp);
+    }
+    catch(DatabaseError_t pnide)
+    {
+	cout<<"Unexpected database error: "<<pnide<<endl;
+	exit(-1);
+    }
+
+    //pull out the function for the given layout
+
+    Function_t *target_func = NULL;
+   for(
+	set<Function_t*>::const_iterator it=newvirp->GetFunctions().begin();
+	it!=newvirp->GetFunctions().end();
+	++it
+	)
+    {
+        Function_t *func = *it;
+
+	if(func->GetName().compare(layout->GetFunctionName())==0)
+	{
+	    target_func = func;
+	    break;
+	}
+    }
+
+    assert(target_func != NULL);
+
+    //add DMZ padding
+    layout->AddDMZPadding();
+
+    //rewrite binary to include DMZ padding
+    Rewrite(layout, target_func);
+
+    //find location for DMZ prologue
+    //find locations for DMZ epilogue
+    //insert new instructions
+    //validate
+    bool result = Validate(newvirp,target_func,BED_script,newpidp->GetBaseID());
+
+    //reset layout
+    layout->ResetLayout();
+
+    //destroy clone1
+    
+    try
+    {
+        newpidp->DropFromDB();
+
+	pqxx_interface.Commit();
+    }
+    catch(DatabaseError_t pnide)
+    {
+	cout<<"Unexpected database error: "<<pnide<<endl;
+	exit(-1);
+    }
+    
+    return result;
+}
+*/
+
+bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Function_t *func)
+{
+    if(!layout->CanShuffle())
+	return true;
+
     cerr<<"PNTransformDriver: ShuffleValidation(): "<<layout->GetLayoutName()<<endl;
 
     for(int i=0;i<reps;i++)
     {
-	if(PNTransformDriver::timeExpired)
-	{
-	    cerr<<"PNTransformDriver: Time Expired -- aborting shuffle validation" <<endl;
-	    undo(undo_list,func);
+	if(timeExpired)
 	    return false;
-	}
-		
+
 	cerr<<"PNTransformDriver: ShuffleValidation(): Shuffle attempt "<<i+1<<endl;
 
 	layout->Shuffle();
 
-	if(!Rewrite(layout, func))
+	if(!Sans_Canary_Rewrite(layout, func))
 	{
 	    undo(undo_list,func);
 	    cerr<<"PNTransformDriver: ShuffleValidation(): Rewrite Failure: attempt: "<<i+1<<" "<<
 		layout->GetLayoutName()<<" Failed to Rewrite "<<func->GetName()<<endl;
 	    return false;
 	}
-	else if(!Validate(virp,func,BED_script,progid))
+	else if(!Validate(orig_virp,func))
 	{
 	    undo(undo_list,func);
 	    cerr<<"PNTransformDriver: ShuffleValidation(): Validation Failure: attempt: "<<i+1<<" "<<
@@ -593,7 +785,7 @@ bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Varian
     return true;
 }
 
-bool PNTransformDriver::Validate(VariantIR_t *virp, Function_t *func, string BED_script, int progid)
+bool PNTransformDriver::Validate(VariantIR_t *virp, Function_t *func)
 {
     cerr<<"PNTransformDriver: Validate(): Validating function "<<func->GetName()<<endl;
 
@@ -609,21 +801,18 @@ bool PNTransformDriver::Validate(VariantIR_t *virp, Function_t *func, string BED
     if(!aspriFile.is_open())
     {
 	assert(false);
-	//TODO: throw exception
-	//return false;
     }
     
+    cerr<<"Pre genreate SPRI"<<endl;
     virp->GenerateSPRI(aspriFile); // p1.xform/<function_name>/a.irdb.aspri
+    cerr<<"Post genreate SPRI"<<endl;
     aspriFile.close();
 
     char new_instr[1024];
     //This script generates the aspri and bspri files; it also runs BED
-//	  sprintf(new_instr, "$PEASOUP_HOME/tools/p1xform_v2.sh %d %s", progid, func->GetName().c_str());
+    sprintf(new_instr, "%s %d %s %s", BED_script.c_str(), orig_progid, aspri_filename.c_str(), bspri_filename.c_str());
     
-    sprintf(new_instr, "%s %d %s %s", BED_script.c_str(), progid, aspri_filename.c_str(), bspri_filename.c_str());
-    
-    //If OK=BED(func), then commit 
-    
+    //If OK=BED(func), then commit  
     int rt=system(new_instr);
     int actual_exit = -1, actual_signal = -1;
     if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
@@ -633,6 +822,381 @@ bool PNTransformDriver::Validate(VariantIR_t *virp, Function_t *func, string BED
     return (retval == 0);
 }
 
+int canary_tmp = 0xaabbcc00;
+
+unsigned int PNTransformDriver::GetRandomCanary()
+{
+    stringstream canary;
+    for(int i=0;i<8;i++)
+    {
+	canary<<hex<<(rand()%16);	
+    }
+    unsigned int ret_val;
+    sscanf(canary.str().c_str(),"%x",&ret_val);
+
+    return ret_val;
+}
+
+bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_layout, Function_t *func)
+{
+    if(!orig_layout->IsCanarySafe())
+	return Sans_Canary_Rewrite(orig_layout,func);
+
+    PNStackLayout tmp = orig_layout->GetCanaryLayout();
+    PNStackLayout *layout = &tmp;
+    vector<canary> canaries;
+
+    vector<PNRange*> mem_objects = layout->GetRanges();
+
+    for(unsigned int i=0;i<mem_objects.size();i++)
+    {
+/*
+	canary c1,c2;
+	//sub 4 because we want 4 bytes below the end of the object to insert
+	//a canary.
+	c1.esp_offset = mem_objects[i]->GetOffset() + mem_objects[i]->GetDisplacement() + mem_objects[i]->GetPaddingSize() + mem_objects[i]->GetSize()-4;
+
+	c2.esp_offset = mem_objects[i]->GetOffset() + mem_objects[i]->GetDisplacement() + mem_objects[i]->GetSize();
+
+	//TODO: make this random
+	c1.canary_val = canary_tmp;
+	canary_tmp++;
+	c2.canary_val = canary_tmp;
+	canary_tmp++;
+
+	//bytes to frame pointer or return address (depending on if a frame
+	//pointer is used) from the stack pointer
+	c1.ret_offset = (layout->GetAlteredAllocSize()+layout->GetSavedRegsSize());
+	//if frame pointer is used, add 4 bytes to get to the return address
+	if(layout->HasFramePointer())
+	    c1.ret_offset += 4;
+
+	c2.ret_offset = c1.ret_offset;
+	//Now with the total size, subtract off the esp offset to the canary
+	c1.ret_offset = c1.ret_offset - c1.esp_offset;
+	c2.ret_offset = c2.ret_offset - c2.esp_offset;
+	//The number should be positive, but we want negative so 
+	//convert to negative
+	c1.ret_offset = c1.ret_offset*-1;
+	c2.ret_offset = c2.ret_offset*-1;
+	
+	canaries.push_back(c1);
+	canaries.push_back(c2);
+*/
+	canary c;
+	c.esp_offset = mem_objects[i]->GetOffset() + mem_objects[i]->GetDisplacement() + mem_objects[i]->GetSize();
+
+	//TODO: make this random
+	//c.canary_val = canary_tmp;
+	c.canary_val = GetRandomCanary();
+
+	//bytes to frame pointer or return address (depending on if a frame
+	//pointer is used) from the stack pointer
+	c.ret_offset = (layout->GetAlteredAllocSize()+layout->GetSavedRegsSize());
+	//if frame pointer is used, add 4 bytes to get to the return address
+	if(layout->HasFramePointer())
+	    c.ret_offset += 4;
+
+	//Now with the total size, subtract off the esp offset to the canary
+	c.ret_offset = c.ret_offset - c.esp_offset;
+	//The number should be positive, but we want negative so 
+	//convert to negative
+	c.ret_offset = c.ret_offset*-1;
+	
+	canaries.push_back(c);
+//	canary_tmp++;
+    }
+    
+    bool stack_alloc = false;
+    int max = PNRegularExpressions::MAX_MATCHES;
+    regmatch_t pmatch[max];
+    memset(pmatch, 0,sizeof(regmatch_t) * max);
+
+    for(
+	set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
+	it!=func->GetInstructions().end();
+	++it
+	)
+    {
+	Instruction_t* instr=*it;
+
+	string matched="";
+	string disasm_str = "";
+	DISASM disasm;
+
+	instr->Disassemble(disasm);
+	disasm_str = disasm.CompleteInstr;
+
+	cerr<<"PNTransformDriver: Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
+
+	if(!stack_alloc && regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+	{
+	    cerr << "PNTransformDriver: Canary Rewrite: Transforming Stack Alloc"<<endl;
+
+	    //TODO: determine size of alloc, and check if consistent with alloc size?
+
+	    stringstream ss;
+	    ss << hex << layout->GetAlteredAllocSize();
+	    
+	    disasm_str = "sub esp, 0x"+ss.str();
+
+	    cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;	    
+	    //undo_list[instr] = instr->GetDataBits();
+	    undo_list[instr] = copyInstruction(instr);
+	    if(!instr->Assemble(disasm_str))
+		return false;
+
+	    stack_alloc = true;
+
+	    for(unsigned int i=0;i<canaries.size();i++)
+	    {
+		ss.str("");
+
+		ss<<"mov dword [esp+0x"<<hex<<canaries[i].esp_offset<<"], 0x"<<hex<<canaries[i].canary_val;
+		instr = insertAssemblyAfter(virp,instr,ss.str());
+	    }
+	}
+	else if(regexec(&(pn_regex.regex_ret), disasm_str.c_str(),5,pmatch,0)==0)
+	{
+	    //undo_list[instr] = instr->GetDataBits();
+	    undo_list[instr] = copyInstruction(instr);
+
+	    //TODO: make only one exit code
+	    Instruction_t *exit_code = getExitCode(virp,copyInstruction(virp,instr));
+
+	    //insert canary checks
+	    //
+	    //may need to save flags register
+
+	    for(unsigned int i=0;i<canaries.size();i++)
+	    {
+		instr = insertCanaryCheckBefore(virp,instr,canaries[i].canary_val,canaries[i].ret_offset, exit_code);	
+	    }
+	}
+	else
+	{
+	    if(!Instruction_Rewrite(layout,instr))
+		return false;
+	}
+    }
+
+    return true;
+}
+
+bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *func)
+{
+    //TODO: add return value
+    cerr<<"PNTransformDriver: Sans Canary Rewrite for Function = "<<func->GetName()<<endl;
+
+    for(
+	set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
+	it!=func->GetInstructions().end();
+	++it
+	)
+    {
+	Instruction_t* instr=*it;
+
+	if(!Instruction_Rewrite(layout,instr))
+	    return false;
+    }
+
+    return true;
+}
+
+inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instruction_t *instr)
+{
+    int max = PNRegularExpressions::MAX_MATCHES;
+    regmatch_t pmatch[max];
+    memset(pmatch, 0,sizeof(regmatch_t) * max);
+
+    string matched="";
+    string disasm_str = "";
+    DISASM disasm;
+
+    instr->Disassemble(disasm);
+    disasm_str = disasm.CompleteInstr;
+    
+    //the disassmebly of lea has extra tokens not accepted by nasm, remove those tokens
+    if(regexec(&(pn_regex.regex_lea_hack), disasm_str.c_str(), max, pmatch, 0)==0)
+    {
+	cerr<<"PNTransformDriver: Transforming LEA Instruction"<<endl;
+	matched = "";
+	for (int k = 1; k < 5; ++k)
+	{
+	    if (pmatch[k].rm_so >= 0 && pmatch[k].rm_eo >= 0) 
+	    {
+		int mlen = pmatch[k].rm_eo - pmatch[k].rm_so;
+		matched.append(disasm_str.substr(pmatch[k].rm_so,mlen));
+	    }
+	}
+	disasm_str = matched;
+	cerr<<"PNTransformDriver: New LEA Instruction = "<<disasm_str<<endl;
+	matched = "";
+    }
+	    
+
+    if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+    {
+	cerr << "PNTransformDriver: Transforming Stack Alloc"<<endl;
+
+	//TODO: determine size of alloc, and check if consistent with alloc size?
+
+	stringstream ss;
+	ss << hex << layout->GetAlteredAllocSize();
+	    
+	disasm_str = "sub esp, 0x"+ss.str();
+
+	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;	    
+	//undo_list[instr] = instr->GetDataBits();
+	undo_list[instr] = copyInstruction(instr);
+	if(!instr->Assemble(disasm_str))
+	    return false;
+
+	//stack_alloc = true;
+    } 
+    else if(regexec(&(pn_regex.regex_esp_only), disasm_str.c_str(), max, pmatch, 0)==0) 
+    {
+	cerr<<"PNTransformDriver: Transforming ESP Only Instruction ([esp])"<<endl;
+
+	PNRange *closest = layout->GetClosestRangeESP(0);
+
+	if(closest == NULL)
+	{
+	    //There should always be a closet range to esp+0
+	    assert(false);
+	}
+
+	int new_offset = closest->GetDisplacement();
+
+	assert(new_offset >= 0);
+
+	if(new_offset == 0)
+	{
+	    cerr<<"PNTransformDriver: Displacement of [esp] is Zero, Ignoring Transformation"<<endl;
+	    return true;
+	}
+
+	stringstream ss;
+	ss<<hex<<new_offset;
+
+	matched = "esp+0x"+ss.str();
+	int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;	
+	disasm_str.replace(pmatch[1].rm_so,mlen,matched);
+		
+	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+	//undo_list[instr] = instr->GetDataBits();
+	undo_list[instr] = copyInstruction(instr);
+	if(!instr->Assemble(disasm_str.c_str()))
+	    return false;	    
+	    
+    }
+//TODO: the regular expression order does matter, scaled must come first, change the regex so this doesn't matter  
+    else if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
+	    regexec(&(pn_regex.regex_esp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)
+    {
+	cerr<<"PNTransformDriver: Transforming ESP Relative Instruction"<<endl;
+
+	int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+	matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+
+	// extract displacement 
+	int offset = strtol(matched.c_str(),NULL,0);
+
+	//TODO: I don't think this can happen but just in case
+	assert(offset >= 0);
+
+	int new_offset = layout->GetNewOffsetESP(offset);
+	    
+	stringstream ss;
+	ss<<hex<<new_offset;
+
+	matched = "0x"+ss.str();
+		
+	disasm_str.replace(pmatch[1].rm_so,mlen,matched);
+		
+	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+	//undo_list[instr] = instr->GetDataBits();
+	undo_list[instr] = copyInstruction(instr);
+	if(!instr->Assemble(disasm_str.c_str()))
+	    return false;
+    }
+    //TODO: the regular expression order does matter, scaled must come first, change the regex so this doesn't matter
+    else if(regexec(&(pn_regex.regex_ebp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
+	    regexec(&(pn_regex.regex_ebp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)
+    {
+	cerr<<"PNTransformDriver: Transforming EBP Relative Instruction"<<endl;
+
+	int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+	matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+
+	// extract displacement 
+	int offset = strtol(matched.c_str(),NULL,0);
+
+	cerr<<"PNTransformDriver: Offset = "<<offset<<endl;
+
+	int new_offset = layout->GetNewOffsetEBP(offset);
+
+	if(new_offset == offset)
+	{
+	    cerr<<"PNTransformDriver: No offset transformation necessary, skipping instruction"<<endl;
+	    return true;
+	}
+
+	stringstream ss;
+	ss<<hex<<new_offset;
+
+	matched = "0x"+ss.str();
+		
+	disasm_str.replace(pmatch[1].rm_so,mlen,matched);
+		
+	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+	//undo_list[instr] = instr->GetDataBits();
+	undo_list[instr] = copyInstruction(instr);
+	if(!instr->Assemble(disasm_str.c_str()))
+	    return false;
+		
+    }
+
+    else if(regexec(&(pn_regex.regex_stack_dealloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+    {
+	cerr<<"PNTransformDriver: Transforming Stack Dealloc Instruction"<<endl;
+
+	//Check if the dealloc amount is 0. In unoptimized code, sometimes the
+	//compiler will reset esp, and then add 0 to esp
+	//In this case, do not deallocate the stack
+
+	int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+	matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+
+	// extract displacement 
+	int offset = strtol(matched.c_str(),NULL,0);
+
+	cerr<<"PNTransformDriver: Dealloc Amount = "<<offset<<endl;
+
+	if(offset == 0)
+	{
+	    cerr<<"PNTransformDriver: Dealloc of 0 detected, ignoring instruction"<<endl;
+	    return true;
+	}
+
+	stringstream ss;
+	ss << hex <<layout->GetAlteredAllocSize();
+
+	disasm_str = "add esp, 0x"+ss.str();
+		
+	//undo_list[instr] = instr->GetDataBits();
+	undo_list[instr] = copyInstruction(instr);
+	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+	if (!instr->Assemble(disasm_str)) 
+	    return false;
+    }
+    else
+	cerr<<"PNTransformDriver: No Pattern Match"<<endl;
+
+    return true;
+}
+
+/*
 //TODO: this is a naive rewrite, more analysis is needed
 //TODO: check if pmatch actually has a match
 bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
@@ -691,6 +1255,7 @@ bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
 	    cerr << "PNTransformDriver: Transforming Stack Alloc"<<endl;
 
 	    //TODO: what should I do in this case?
+	    //TODO: transform the instruction but never decrease the size of the allocation
 	    if(stack_alloc)
 	    {
 		cerr <<"PNTransformDriver: Stack Alloc Previously Found, Ignoring Instruction"<<endl;
@@ -713,21 +1278,10 @@ bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
 	{
 	    cerr<<"PNTransformDriver: Transforming ESP Only Instruction ([esp])"<<endl;
 
-/*
-	    if(!stack_alloc)
-	    {
-		cerr<<"PNTransformDriver: No Stack Alloc, Aborting Transformation"<<endl;
-		return false;
-	    }
-*/
 	    PNRange *closest = layout->GetClosestRangeESP(0);
 
 	    if(closest == NULL)
 	    {
-		/*
-		cerr<<"PNTransformDriver: No Displacement Found"<<endl;
-		return false;
-		*/
 		//There should always be a closet range to esp+0
 		assert(false);
 	    }
@@ -761,14 +1315,6 @@ bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
 	{
 	    cerr<<"PNTransformDriver: Transforming ESP Relative Instruction"<<endl;
 
-/*
-	    if(!stack_alloc)
-	    {
-		cerr<<"PNTransformDriver: No Stack Alloc, Aborting Transformation"<<endl;
-		return false;
-	    }
-*/
-
 	    int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
 	    matched = disasm_str.substr(pmatch[1].rm_so,mlen);
 
@@ -778,38 +1324,12 @@ bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
 	    //TODO: I don't think this can happen but just in case
 	    assert(offset >= 0);
 
-	    //If the esp relative address goes outside of the frame, then
-	    //we have a situation where esp is accessing incoming args
-	    //(such as fomit-frame-pointer). In this case we simply add
-	    //to the offset the size of the altered frame.
-	    if(offset >= layout->GetOriginalAllocSize())
-	    {
-		//Get the number of bytes beyond the stack frame
-		offset = offset-layout->GetOriginalAllocSize();
-		//add those bytes to the altered stack size
-		offset += layout->GetAlteredAllocSize();
-		stringstream ss;
-		ss<<hex<<offset;
+	    int new_offset = layout->GetNewOffsetESP(offset);
+	    
+	    stringstream ss;
+	    ss<<hex<<new_offset;
 
-		matched = "0x"+ss.str();
-	    }
-	    else
-	    {
-		PNRange *closest = layout->GetClosestRangeESP(offset);
-
-		if(closest == NULL)
-		{
-		    cerr<<"PNTransformDriver: No Displacement Found"<<endl;
-		    return false;
-		}
-
-		//TODO: put all functionality for getting new offset in PNStackLayout?
-		int new_offset = closest->GetDisplacement() + offset;
-		stringstream ss;
-		ss<<hex<<new_offset;
-
-		matched = "0x"+ss.str();
-	    }
+	    matched = "0x"+ss.str();
 		
 	    disasm_str.replace(pmatch[1].rm_so,mlen,matched);
 		
@@ -824,14 +1344,6 @@ bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
 	{
 	    cerr<<"PNTransformDriver: Transforming EBP Relative Instruction"<<endl;
 
-/*
-	    if(!stack_alloc)
-	    {
-		cerr<<"PNTransformDriver: No Stack Alloc, Aborting Transformation"<<endl;
-		return false;
-	    }
-*/
-
 	    int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
 	    matched = disasm_str.substr(pmatch[1].rm_so,mlen);
 
@@ -840,42 +1352,13 @@ bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
 
 	    cerr<<"PNTransformDriver: Offset = "<<offset<<endl;
 
-/*
-	    //TODO: I think get closest ebp should throw and exception in this situation but for now
-	    //I want to see if this happens at all.
-	    if(((int)layout->GetOriginalAllocSize()+(int)layout->GetSavedRegsSize())-offset < 0)
-		assert(false);
-*/
+	    int new_offset = layout->GetNewOffsetEBP(offset);
 
-	    PNRange *closest = layout->GetClosestRangeEBP(offset);
-
-/*
-	    if(((int)layout->GetOriginalAllocSize())-offset < 0 && closest == NULL)
+	    if(new_offset == offset)
 	    {
-		cerr<<"PNTransformDiver: Detected a Negative ESP Relative Offset and No Corresponding Range, Ignoring Instruction"<<endl;
-		//	return false;	
-		
-		//In this situation the inference must not handle negative offsets or didn't detect it, we will
-		//not transform it, and continue transforming the rest of the function.
+		cerr<<"PNTransformDriver: No offset transformation necessary, skipping instruction"<<endl;
 		continue;
 	    }
-*/
-
-	    if(closest == NULL)
-	    {
-		cerr<<"PNTransformDriver: No Displacement Found"<<endl;
-		//Continue to transform for now.
-		continue;
-	    }
-
-	    //TODO: put all functionality for getting new offset in PNStackLayout?
-	    cerr<<"PNTransformDriver: closest displacement = "<<closest->GetDisplacement()<<endl;
-
-	    int new_offset = ((int)layout->GetOriginalAllocSize() + (int)layout->GetSavedRegsSize() - offset);
-	    new_offset += closest->GetDisplacement();
-	    new_offset = ((int)layout->GetAlteredAllocSize() + (int)layout->GetSavedRegsSize()) - new_offset;
-
-	    assert(new_offset >= 0);
 
 	    stringstream ss;
 	    ss<<hex<<new_offset;
@@ -894,13 +1377,6 @@ bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
 	else if(regexec(&(pn_regex.regex_stack_dealloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 	    cerr<<"PNTransformDriver: Transforming Stack Dealloc Instruction"<<endl;
-/*
-	    if(!stack_alloc)
-	    {
-		cerr<<"PNTransformDriver: No Stack Alloc, Aborting Transformation"<<endl;
-		return false;
-	    }
-*/
 
 	    //Check if the dealloc amount is 0. In unoptimized code, sometimes the
 	    //compiler will reset esp, and then add 0 to esp
@@ -938,6 +1414,9 @@ bool PNTransformDriver::Rewrite(PNStackLayout *layout, Function_t *func)
     return true;
 }
 
+*/
+
+ /*
 void PNTransformDriver::undo(map<Instruction_t*, string> undo_list, Function_t *func)
 {
     //rollback any changes
@@ -953,6 +1432,33 @@ void PNTransformDriver::undo(map<Instruction_t*, string> undo_list, Function_t *
 	DISASM disasm;
 	insn->Disassemble(disasm);
 	insn->SetDataBits(dataBits);
+    }
+
+    undo_list.clear();
+}
+*/
+
+  //TODO: there is a memory leak, I need to write a undo_list clear to properly cleanup
+void PNTransformDriver::undo(map<Instruction_t*, Instruction_t*> undo_list, Function_t *func)
+{
+    //rollback any changes
+    cerr<<"PNTransformDriver: Undo Transform: "<<undo_list.size()<<" instructions to rollback for function "<<func->GetName()<<endl;
+    for(
+	map<Instruction_t*, Instruction_t*>::const_iterator mit=undo_list.begin();
+	mit != undo_list.end();
+	++mit)
+    {
+	Instruction_t* alt = mit->first;
+	Instruction_t* orig = mit->second;
+  
+	copyInstruction(orig,alt);
+	//TODO: apparently there is a issue with this delete.
+	//When using the padding/shuffle transformation PN terminates
+	//for some reason with no segfault. Removing this delete
+	//solves the issue. Using the canary transformation, I haven't
+	//observed the same issue however there are fewer undos when
+	//using the canary transform. 
+//	delete orig;
     }
 
     undo_list.clear();

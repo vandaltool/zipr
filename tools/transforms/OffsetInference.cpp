@@ -17,6 +17,9 @@ using namespace libIRDB;
 
 //TODO: what if func is null?
 
+//TODO: The inferences generated are highly conservative in what functions
+//are considered transformable. Look at how the dealloc_flag and alloc_count
+
 OffsetInference::~OffsetInference()
 {
     //It is assumed that all pointers in the maps are unique
@@ -72,12 +75,12 @@ void OffsetInference::GetInstructions(vector<Instruction_t*> &instructions,Basic
 }
 */
 
- //TODO: I am always assuming lower case reg expressions, perhaps I should tolower all strings
-PNStackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
+StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 {
     int stack_frame_size = 0;
     int saved_regs_size = 0;
     int out_args_size = func->GetOutArgsRegionSize();
+    bool has_frame_pointer = false;
 
     int max = PNRegularExpressions::MAX_MATCHES;
     regmatch_t pmatch[max];
@@ -91,7 +94,6 @@ PNStackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *fun
 	++it
 	)
     {
-
 	string matched;
 
 	Instruction_t* instr=*it;
@@ -108,6 +110,7 @@ PNStackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *fun
 	if(regexec(&(pn_regex.regex_push_ebp), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 	    cerr << "OffsetInference: SetupLayout(): Push EBP Found"<<endl;
+	    has_frame_pointer = true;//if I see push ebp at all, then the frame pointer exists
 
 	    if(stack_frame_size != 0)
 	    {
@@ -161,7 +164,7 @@ PNStackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *fun
 		    " Saved Regs Size = "<<saved_regs_size<<" out args size = "<<out_args_size<<endl;
 
 		//There is now enough information to create the PNStackLayout objects
-		return new PNStackLayout("All Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,out_args_size);
+		return new StackLayout("All Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,has_frame_pointer,out_args_size);
 	    }
 	}
     }
@@ -172,26 +175,28 @@ PNStackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *fun
 //TODO: what about moving esp into a register?
 
 //TODO: Try catches for exceptions thrown by PNStackLayout, for now asserts will fail in PNStackLayout
-
-//TODO: For t&e this function will 
 void OffsetInference::FindAllOffsets(Function_t *func)
 {
-    PNStackLayout *pn_all_offsets = NULL;
-    PNStackLayout *pn_direct_offsets = NULL;
-    PNStackLayout *pn_scaled_offsets = NULL;
-    PNStackLayout *pn_p1_offsets = NULL;
+    StackLayout *pn_all_offsets = NULL;
+    StackLayout *pn_direct_offsets = NULL;
+    StackLayout *pn_scaled_offsets = NULL;
+    StackLayout *pn_p1_offsets = NULL;
     //int out_args_size;
 
     int max = PNRegularExpressions::MAX_MATCHES;
     regmatch_t pmatch[max];
     memset(pmatch, 0,sizeof(regmatch_t) * max);  
-    //int stack_frame_size = 0;
-    //int saved_regs_size = 0;
+    unsigned int stack_frame_size = 0;
+    unsigned int saved_regs_size = 0;
 
 /*
     out_args_size = func->GetOutArgsRegionSize();
     assert(out_args_size >= 0);
 */
+
+    //TODO: hack for T&E to make inferences more conservative
+    bool dealloc_flag=false;
+    int alloc_count=0;
 
     cerr<<"OffsetInference: FindAllOffsets(): Looking at Function = "<<func->GetName()<<endl;
 
@@ -201,24 +206,26 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 
     pn_all_offsets = SetupLayout(block,func);
 
-    //TODO: this is just for t&e, remove for other versions,
-    //for t&e don't produce an inference if not dealloc is found
-    bool dealloc_flag=false;
-
-    //TODO: hacked to this location because I now need it to check for
-    //deallocations of different size than the stack frame size. 
-    unsigned int stack_frame_size = 0;
     if(pn_all_offsets != NULL)
     {
-	stack_frame_size = pn_all_offsets->GetOriginalAllocSize();
-	unsigned int saved_regs_size = pn_all_offsets->GetSavedRegsSize();
+	stack_frame_size = pn_all_offsets->GetAllocSize();
+	saved_regs_size = pn_all_offsets->GetSavedRegsSize();
 	int out_args_size = func->GetOutArgsRegionSize();
+	bool has_frame_pointer = pn_all_offsets->HasFramePointer();
 	assert(out_args_size >=0);
 
-	pn_direct_offsets = new PNStackLayout("Direct Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,out_args_size);
-	pn_scaled_offsets = new PNStackLayout("Scaled Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,out_args_size);
+	pn_direct_offsets = new StackLayout("Direct Offset Inference", func->GetName(),stack_frame_size,saved_regs_size,has_frame_pointer,out_args_size);
+	pn_scaled_offsets = new StackLayout("Scaled Offset Inference", func->GetName(),stack_frame_size,saved_regs_size,has_frame_pointer,out_args_size);
 	//do not consider out args for p1
-	pn_p1_offsets = new PNStackLayout("p1 Layout",func->GetName(),stack_frame_size,saved_regs_size,0);
+	pn_p1_offsets = new StackLayout("P1 Offset Inference", func->GetName(),stack_frame_size,saved_regs_size,has_frame_pointer,0);
+    }
+    else
+    {
+	direct[func->GetName()] = NULL;
+	scaled[func->GetName()] = NULL;
+	all_offsets[func->GetName()] = NULL;
+	p1[func->GetName()] = NULL;
+	return;
     }
 
     //Just checking that the entry point has no predecessors
@@ -237,12 +244,9 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     //Checking that GetInstructions hasn't screwed up
     assert(instructions.size() != 0);
 */
-
-    //TODO: hack to count the number of times the stack is allocated 
-    int alloc_count = 0;
     for(
 	set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
-	it!=func->GetInstructions().end() && pn_all_offsets != NULL;
+	it!=func->GetInstructions().end();
 	++it
 	)
 	/*
@@ -331,18 +335,24 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	}
 	else 
 */
-	if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
+	if(regexec(&(pn_regex.regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
+	{
+	    cerr<<"OffsetInference: FindAllOffsets(): Layout is not canary safe"<<endl;
+	    pn_direct_offsets->SetCanarySafe(false);
+	    pn_scaled_offsets->SetCanarySafe(false);
+	    pn_all_offsets->SetCanarySafe(false);
+	    pn_p1_offsets->SetCanarySafe(false);
+	}
+	else if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 	    alloc_count++;
+	    if(alloc_count >1)
+	    {
+		cerr<<"OffsetInference: stack allocation exceeded 1, abandon inference"<<endl;
+		break;
+	    }
 	}
-
-	if(alloc_count > 1)
-	{
-	    cerr<<"OffsetInference: stack allocation exceeded 1, abandon inference"<<endl;
-	    break;
-	}
-
-	if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 	    cerr<<"OffsetInference: FindAllOffsets(): Found ESP Scaled Instruction"<<endl;
 /*
@@ -505,7 +515,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	    }
 
 	}
-	else if(disasm_str.find("leave") != string::npos)
+	else if(regexec(&(pn_regex.regex_stack_dealloc_implicit), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 	    dealloc_flag = true;
 	}
@@ -517,19 +527,64 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 
     //if no dealloc is found, set all inferences to null
     //TODO: this was hacked together quickly, one flag is preferable. 
-    if(!dealloc_flag || alloc_count>1)
+    if(alloc_count>1)
     {
-	cerr<<"OffsetInference: FindAllOffsets: No Dealloc Pattern Found, returning null inference"<<endl;
-	pn_direct_offsets = NULL;
-	pn_scaled_offsets = NULL;
-	pn_all_offsets = NULL;
-	pn_p1_offsets = NULL;
+	cerr<<"OffsetInference: FindAllOffsets: Multiple stack allocations found, returning null inferences"<<endl;
+	direct[func->GetName()] = NULL;
+	scaled[func->GetName()] = NULL;
+	all_offsets[func->GetName()] = NULL;
+	p1[func->GetName()] = NULL;
+	return;
+    }
+    else
+    {
+	//TODO: I need to revist this such that you can pass a pointer to PNStackLayout,
+	//and handle NULL accordingly.
+
+	if(!dealloc_flag)
+	{
+	    pn_direct_offsets->SetPaddingSafe(false);
+	    pn_scaled_offsets->SetPaddingSafe(false);
+	    pn_all_offsets->SetPaddingSafe(false);
+	    pn_p1_offsets->SetPaddingSafe(false);
+	}
+
+	direct[func->GetName()] = new PNStackLayout(*pn_direct_offsets);
+	scaled[func->GetName()] = new PNStackLayout(*pn_scaled_offsets);
+	all_offsets[func->GetName()] = new PNStackLayout(*pn_all_offsets);
+	p1[func->GetName()] = new PNStackLayout(*pn_p1_offsets);
+
+	if(!dealloc_flag)
+	{
+	    cerr<<"OffsetInference: FindAllOffsets: No Stack Deallocation Found"<<endl;  
+	    if(!direct[func->GetName()]->CanShuffle())
+	    {
+		cerr<<"OffsetInference: FindAllOffsets: direct offset inference cannot be shuffled, generating null inference"<<endl;
+		direct[func->GetName()] = NULL;
+	    }
+
+	    if(!scaled[func->GetName()]->CanShuffle())
+	    {
+		cerr<<"OffsetInference: FindAllOffsets: scaled offset inference cannot be shuffled, generating null inference"<<endl;
+		scaled[func->GetName()] = NULL;
+	    }
+
+	    if(!all_offsets[func->GetName()]->CanShuffle())
+	    {
+		cerr<<"OffsetInference: FindAllOffsets: all offset inference cannot be shuffled, generating null inference"<<endl;
+		all_offsets[func->GetName()] = NULL;
+	    }
+
+	    p1[func->GetName()] = NULL;
+	    cerr<<"OffsetInference: FindAllOffsets: p1 inference by default cannot be shuffled, generating null inference"<<endl;
+	}
     }
 
-    direct[func->GetName()] = pn_direct_offsets;
-    scaled[func->GetName()] = pn_scaled_offsets;
-    all_offsets[func->GetName()] = pn_all_offsets;
-    p1[func->GetName()] = pn_p1_offsets;
+    //memory clean up
+    delete pn_direct_offsets;
+    delete pn_scaled_offsets;
+    delete pn_all_offsets;
+    delete pn_p1_offsets;
 }
 
 //If map entry exists, return it, else perform boundary detection

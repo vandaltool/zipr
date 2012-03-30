@@ -38,6 +38,6 @@ clean:
 	rm -f *.o core $(PROGS)
 
 
-pntransform: PNTransformDriver.cpp PNStackLayoutInference.hpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp
-	$(CC) -g -O3 PNMain.cpp PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp $(INCLUDE) $(LIBS) -o pntransform.exe
+pntransform: PNTransformDriver.cpp PNStackLayoutInference.hpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp StackLayout.cpp Rewrite_Utility.cpp
+	$(CC) $(CFLAGS) PNMain.cpp PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp StackLayout.cpp Rewrite_Utility.cpp $(INCLUDE) $(LIBS) -o pntransform.exe
 	cp pntransform.exe p1transform.exe

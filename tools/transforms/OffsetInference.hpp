@@ -19,7 +19,7 @@ protected:
     virtual void FindAllOffsets(libIRDB::Function_t *func);
     virtual PNStackLayout* GetLayout(std::map<std::string,PNStackLayout*> &mymap, libIRDB::Function_t *func);
     //  virtual void GetInstructions(std::vector<libIRDB::Instruction_t*> &instructions,libIRDB::BasicBlock_t *block,std::set<libIRDB::BasicBlock_t*> &block_set);
-    virtual PNStackLayout* SetupLayout(libIRDB::BasicBlock_t *entry, libIRDB::Function_t *func);
+    virtual StackLayout* SetupLayout(libIRDB::BasicBlock_t *entry, libIRDB::Function_t *func);
 public:
     virtual ~OffsetInference();
     virtual PNStackLayout* GetPNStackLayout(libIRDB::Function_t *func);

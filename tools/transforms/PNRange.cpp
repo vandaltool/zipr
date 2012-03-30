@@ -20,6 +20,12 @@ PNRange::PNRange(const PNRange &range) : Range(range)
     displacement = range.displacement;
 }
 
+PNRange::PNRange(const Range &range) : Range(range)
+{
+    padding_size = 0;
+    displacement = 0;
+}
+
 
 PNRange::PNRange() : Range()
 {
@@ -44,6 +50,12 @@ void PNRange::SetDisplacement(int offset)
 void PNRange::SetPaddingSize(unsigned int pad_size)
 {
     padding_size = pad_size;
+}
+
+void PNRange::Reset()
+{
+    padding_size = 0;
+    displacement = 0;
 }
 
 string PNRange::ToString() const
