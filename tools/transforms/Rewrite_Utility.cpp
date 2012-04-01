@@ -184,8 +184,21 @@ Instruction_t* getExitCode(VariantIR_t* virp, Instruction_t* fallthrough)
     Instruction_t* mov_ebx = insertAssemblyAfter(virp,exit_code,"mov ebx, 666");
     insertAssemblyAfter(virp,mov_ebx,"int 0x80");
 */
-    exit_code->SetCallback("buffer_overflow_exit");
-    exit_code->SetFallthrough(fallthrough);
+    setInstructionAssembly(virp,exit_code,"pushf",NULL,NULL);
+    stringstream ss;
+    ss<<"push dword 0x";
+    ss<<hex<<POLICY_EXIT;
+    Instruction_t *policy_push = insertAssemblyAfter(virp,exit_code,ss.str(),NULL);
+    ss.str("");
+    ss<<"push dword 0x";
+    ss<<hex<<fallthrough->GetAddress()->GetVirtualOffset();
+    Instruction_t *addr_push = insertAssemblyAfter(virp,policy_push,ss.str(),NULL);
+    //I am not planning on returning, but pass the address at which the overflow was detected.
+    Instruction_t *ret_push = insertAssemblyAfter(virp,addr_push,ss.str(),NULL);
+    Instruction_t *callback = insertAssemblyAfter(virp,ret_push,"nop",NULL);
+
+    callback->SetCallback("buffer_overflow_detector");
+    callback->SetFallthrough(fallthrough);
     return exit_code;
 }
 

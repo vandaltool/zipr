@@ -961,12 +961,14 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 	    //undo_list[instr] = instr->GetDataBits();
 	    undo_list[instr] = copyInstruction(instr);
 
-	    //TODO: make only one exit code
+	    //This could probably be done once, but having the original instruction
+	    //allows me to produce messages that indicate more precisely where
+	    //the overflow occurred. 
 	    Instruction_t *exit_code = getExitCode(virp,copyInstruction(virp,instr));
 
 	    //insert canary checks
 	    //
-	    //may need to save flags register
+	    //TODO: may need to save flags register
 
 	    for(unsigned int i=0;i<canaries.size();i++)
 	    {
@@ -1054,6 +1056,18 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 	//stack_alloc = true;
     } 
+    else if(regexec(&(pn_regex.regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
+    {
+	cerr<<"PNTransformDriver: Transforming AND ESP instruction"<<endl;
+
+	disasm_str = "nop";
+
+	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+
+	undo_list[instr] = copyInstruction(instr);
+	if(!instr->Assemble(disasm_str))
+	    return false;
+    }
     else if(regexec(&(pn_regex.regex_esp_only), disasm_str.c_str(), max, pmatch, 0)==0) 
     {
 	cerr<<"PNTransformDriver: Transforming ESP Only Instruction ([esp])"<<endl;
