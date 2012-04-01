@@ -599,7 +599,6 @@ tests/simple/quick_sort.exe -text
 tests/simple/sieve.exe -text
 tests/simple/simple_overflow.c -text
 tests/simple/simple_overflow.exe -text
-tests/simple/simple_overflow.peasoup -text
 tests/simple/sudoku.cpp -text
 tests/simple/sudoku_test.sh -text
 tests/simple/true_wrapper.sh -text
