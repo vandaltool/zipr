@@ -216,9 +216,10 @@ if [ $baseline_cnt -eq 0 ];then
 	#just in case there is a replayer failure, create an exit status file
 	touch exit_status
 	echo "Subject exited with status $orig_status" >tmp
-	diff tmp exit_status
+	cat exit_status | grep "Subject exited with status" >tmp2
+	diff tmp tmp2
 	diff_status=$?
-	rm -f tmp
+	rm -f tmp tmp2
 	if [ $diff_status -ne 0 ]; then
 	    echo "ps_validate.sh: Status values do not equal"
 	    exit 1
