@@ -7,7 +7,7 @@ strata_exe=$exe.stratafied
 annot=$exe.ncexe.annot
 sym=$exe.sym
 
-
+GRACE_TIMEOUT_VALUE=1800
 
 
 whoami=`whoami`
@@ -39,6 +39,6 @@ fi
 
 
 echo STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym $strata_exe
-     STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym $strata_exe
+     STRATA_GRACE=1 pgrp_timeout $GRACE_TIMEOUT_VALUE $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym $strata_exe
 
 
