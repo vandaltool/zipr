@@ -93,15 +93,19 @@ do
   mv exit_status replay/$input_number/exit_status
 
 #first verify the exit status 
+  cat replay/$input_number/exit_status | grep "Subject exited with status">exit_status1
+  cat $INPUT_DIR/exit_code.run_$abridged_number.log | grep "Subject exited with status">exit_status2
+  #diff replay/$input_number/exit_status $INPUT_DIR/exit_code.run_$abridged_number.log
+  diff exit_status1 exit_status2
+  diff_result=$?
+  rm -f exit_status1 exit_status2
 
-  diff replay/$input_number/exit_status $INPUT_DIR/exit_code.run_$abridged_number.log
-
-  if [ ! $? -eq 0 ]; then
+  if [ ! $diff_result -eq 0 ]; then
       echo "ps_validate.sh: divergence detected for input: $i (exit status)"
-      echo "expected: "
-      cat $INPUT_DIR/exit_code.run_$abridged_number.log
-      echo "observed: "
-      cat replay/$input_number/exit_status
+      #echo "expected: "
+      #cat $INPUT_DIR/exit_code.run_$abridged_number.log
+      #echo "observed: "
+      #cat replay/$input_number/exit_status
       exit 1
   fi
 
