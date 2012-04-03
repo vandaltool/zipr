@@ -12,9 +12,11 @@ done
 functables=`psql -t -q -c "select function_table_name from variant_info"`
 insntables=`psql -t -q -c "select instruction_table_name from variant_info"`
 addrtables=`psql -t -q -c "select address_table_name from variant_info"`
+grace_inpttables=`psql -t -q -c "select tablename from pg_tables where tablename like '%_input';"`
+grace_covgtables=`psql -t -q -c "select tablename from pg_tables where tablename like '%_coverage';"`
 othertables="variant_dependency variant_info file_info doip"
 
-for  i in $insntables $addrtables $functables $othertables
+for  i in $insntables $addrtables $functables $grace_inpttables $grace_covgtables $othertables
 do
 	echo --------------------------------------------------------------------------
 	echo -n Dropping table $i..." "
