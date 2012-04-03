@@ -39,6 +39,7 @@ fi
 
 
 echo STRATA_GRACE=1 $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym $strata_exe
-     STRATA_GRACE=1 pgrp_timeout $GRACE_TIMEOUT_VALUE $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym $strata_exe
+     STRATA_GRACE=1 $GRACE_HOME/concolic/bin/pgrp-timeout $GRACE_TIMEOUT_VALUE $GRACE_HOME/concolic/src/util/linux/run $extra_args  -s $sym $strata_exe
+
 
 
