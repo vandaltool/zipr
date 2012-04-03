@@ -106,6 +106,10 @@ int IntegerTransform::execute()
 				{
 					handleSignedness(insn, annotation, policy);
 				}
+				else if (annotation.isInfiniteLoop())
+				{
+					handleInfiniteLoop(insn, annotation, POLICY_EXIT);
+				}
 				else
 					cerr << "integertransform: unknown annotation: " << annotation.toString() << endl;
 			}
@@ -534,6 +538,14 @@ void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS
 	{
 		cerr << "integertransform: TRUNCATION annotation not yet handled: " << p_annotation.toString() << endl;
 	}
+}
+
+void IntegerTransform::handleInfiniteLoop(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+{
+	assert(getVariantIR() && p_instruction);
+
+    // simple add infinite loop callback handler to  instruction 
+	addCallbackHandler(string(INFINITE_LOOP_DETECTOR), p_instruction, p_instruction, p_instruction->GetFallthrough(), p_policy, p_instruction->GetAddress());
 }
 
 //

@@ -26,6 +26,7 @@ class IntegerTransform : public Transform
 		void handleUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void handleSignedness(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
+		void handleInfiniteLoop(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 
 		void addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
@@ -81,6 +82,7 @@ class IntegerTransform : public Transform
 #define UNDERFLOW_DETECTOR_SIGNED_32         "underflow_detector_signed_32"
 #define UNDERFLOW_DETECTOR_SIGNED_16         "underflow_detector_signed_16"
 #define UNDERFLOW_DETECTOR_SIGNED_8          "underflow_detector_signed_8"
+#define INFINITE_LOOP_DETECTOR               "infinite_loop_detector"
 }
 
 #endif
