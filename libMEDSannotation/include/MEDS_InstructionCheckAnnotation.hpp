@@ -20,6 +20,7 @@ namespace MEDS_Annotation
 #define MEDS_ANNOT_UNSIGNED     "UNSIGNED"
 #define MEDS_ANNOT_UNKNOWNSIGN  "UNKNOWNSIGN"
 #define MEDS_ANNOT_NOFLAG       "NOFLAG"
+#define MEDS_ANNOT_INFINITELOOP "INFINITELOOP"
 
 using namespace std;
 using namespace MEDS_Annotation;
@@ -56,6 +57,8 @@ class MEDS_InstructionCheckAnnotation
 		// overflow with no flags, e.g. lea
 		bool isNoFlag() const { return m_isNoFlag; }
 
+		bool isInfiniteLoop() const { return m_isInfiniteLoop; }
+
 		// get bitwidth
 		int getBitWidth() const { return m_bitWidth; }
 		void setBitWidth(int p_bitWidth) { m_bitWidth = p_bitWidth; }
@@ -86,6 +89,7 @@ class MEDS_InstructionCheckAnnotation
 		bool           m_isUnsigned;
 		bool           m_isUnknownSign;
 		bool           m_isNoFlag;
+		bool           m_isInfiniteLoop;
 		int            m_bitWidth;
 		int            m_truncationFromWidth;
 		int            m_truncationToWidth;

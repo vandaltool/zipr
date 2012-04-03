@@ -32,6 +32,7 @@ void MEDS_InstructionCheckAnnotation::init()
 	m_isUnsigned = false;
 	m_isUnknownSign = true;
 	m_isNoFlag = false;
+	m_isInfiniteLoop = false;
 	m_bitWidth = -1;
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
@@ -106,6 +107,13 @@ void MEDS_InstructionCheckAnnotation::parse()
 		m_isUnsigned = false;
 		m_isSigned = false;
 		m_isUnknownSign = true;
+	}
+
+    // check for infinite loop annotation
+	// 8048565      3 INSTR INFINITELOOP
+	if (m_rawInputLine.find(MEDS_ANNOT_INFINITELOOP)!=string::npos)
+	{
+		m_isInfiniteLoop = true;
 	}
 
 	// get bit width information for overflow & underflow
