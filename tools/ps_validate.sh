@@ -43,18 +43,19 @@ echo "=========================================="
 
 echo "ps_validate.sh: BED: warning: @todo: need to handle files other than stdout, stderr"
 
-for i in `ls $INPUT_DIR/input*.json`
+for i in `ls $INPUT_DIR/generated_input*.json`
 do
 
  #Ben Modification: run replayer from top level to keep the sandbox layout the same as produced by the concolic test engine. This makes output comparison easier
   echo "Testing input spec: $i"
   input=`basename $i .json`
-  input_number=`echo $input | sed "s/input_//"`
+  input_number=`echo $input | sed "s/generated_input_//"`
 
 
   abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
   #if there is no exit code for the input number, skip for now.
-  if [ ! -f "$INPUT_DIR/exit_code.run_$abridged_number.log" ]; then
+  echo  "$INPUT_DIR/exit_code.run_$abridged_number.log"
+  if [ ! -e "$INPUT_DIR/exit_code.run_$abridged_number.log" ]; then
       echo "ps_validate.sh: No baseline data for input $input_number, missing exit status"
       continue;
   fi
