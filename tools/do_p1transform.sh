@@ -71,10 +71,10 @@ $PEASOUP_HOME/tools/cover.sh $ORIGINAL_BINARY $MEDS_ANNOTATION_FILE $EXECUTED_AD
 
 baseline_flag=0
 #delete the coverage file if all baseline exit status results are 139
-for i in `ls $CONCOLIC_DIR/input*.json`
+for i in `ls $CONCOLIC_DIR/generated_input*.json`
 do
   input=`basename $i .json`
-  input_number=`echo $input | sed "s/input_//"`
+  input_number=`echo $input | sed "s/generated_input_//"`
 
   abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
 
