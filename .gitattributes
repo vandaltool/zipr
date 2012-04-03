@@ -716,6 +716,7 @@ dyna_examples/hanoi_overrun_tainted.c -text
 dyna_examples/hanoi_overrun_taintedenv.c -text
 dyna_examples/hanoi_stack_overrun.c -text
 dyna_examples/hello.c -text
+dyna_examples/long.c -text
 dyna_examples/malloc.c -text
 dyna_examples/memcpy.c -text
 dyna_examples/myhanoi.c -text

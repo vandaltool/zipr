@@ -11,7 +11,7 @@ LDFLAGS=
 
 .SUFFIXES: .o .c .cpp .stock .protected
 
-exes=hanoi.protected hanoi_overrun.protected hanoi_heap_overrun.protected hanoi_stack_overrun.protected print_ptr.protected malloc.protected block_copy.protected hello.protected hanoi_overrun_tainted.protected hanoi_overrun_taintedenv.protected memcpy.protected cmd_args_005.protected dumbledore_stdin.protected dumbledore_cmd.protected dumbledore_file.protected 000.protected
+exes=hanoi.protected hanoi_overrun.protected hanoi_heap_overrun.protected hanoi_stack_overrun.protected print_ptr.protected malloc.protected block_copy.protected hello.protected hanoi_overrun_tainted.protected hanoi_overrun_taintedenv.protected memcpy.protected cmd_args_005.protected dumbledore_stdin.protected dumbledore_cmd.protected dumbledore_file.protected 000.protected long.protected
 
 ilr=on
 stratafy_with_pc_confine=on
@@ -33,6 +33,8 @@ integertransform=on
 ilr=on
 generate_spri=on
 spasm=on
+concolic=on
+watchdog=on
 
 
 
@@ -67,6 +69,8 @@ all: env_check  ${exes}
 		--step integertransform=${integertransform}\
 		--step generate_spri=${generate_spri}\
 		--step spasm=${spasm}\
+		--step watchdog=${watchdog}\
+		--step concolic=${concolic}\
 
 
 .c.o:
