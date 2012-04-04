@@ -204,9 +204,12 @@ void PNTransformDriver::GenerateTransformsInit()
     failed.clear();    
 }
 
-bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t *func)
+bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t *func, bool validate)
 {
     bool success = false;
+
+    if(!validate)
+	cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is flagged to be transformed without validation"<<endl;
 
     cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is canary safe, attempting canary rewrite"<<endl;
     layout->Shuffle();
@@ -258,7 +261,7 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
     else
     {
 	//if(!Validate(new_virp,targ_func))
-	if(!Validate(orig_virp,func))
+	if(validate && !Validate(orig_virp,func))
 	{
 	    //Experimental code
 	    undo(undo_list,func);
@@ -287,13 +290,16 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
     return success;
 }
 
-bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_t *func)
+bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_t *func, bool validate)
 {
     bool success = false;
 
+    if(!validate)
+	cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is flagged to be transformed without validation"<<endl;
+
     cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is not canary safe, attempting shuffle validation"<<endl;
 
-    if(!ShuffleValidation(2,layout,func))
+    if(validate && !ShuffleValidation(2,layout,func))
     {
 	cerr<<"PNTransformDriver: Shuffle Validation Failure"<<endl;
 	return success;
@@ -307,7 +313,7 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
 	undo(undo_list,func);
 	cerr<<"PNTransformDriver: Rewrite Failure: "<<layout->GetLayoutName()<<" Failed to Rewrite "<<func->GetName()<<endl;
     }
-    else if(!Validate(orig_virp, func))
+    else if(validate && !Validate(orig_virp, func))
     {
 	undo(undo_list,func);
 	cerr<<"PNTransformDriver: Validation Failure: "<<layout->GetLayoutName()<<" Failed to Validate "<<func->GetName()<<endl;
@@ -325,12 +331,15 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
     return success;
 }
 
-bool PNTransformDriver::LayoutRandTransformHandler(PNStackLayout *layout, Function_t *func)
+bool PNTransformDriver::LayoutRandTransformHandler(PNStackLayout *layout, Function_t *func,bool validate)
 {
+    if(!validate)
+	cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is flagged to be transformed without validation"<<endl;
+
     bool success = false;
     cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is not padding safe, attempting layout randomization only"<<endl;
 
-    if(!ShuffleValidation(2,layout,func))
+    if(validate && !ShuffleValidation(2,layout,func))
     {
 	cerr<<"PNTransformDriver: Validation Failure: "<<layout->GetLayoutName()<<" Failed to Validate "<<func->GetName()<<endl;
     }
@@ -429,6 +438,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 	total_funcs++;
 
 	unsigned int level=0;
+	double func_coverage = 0;
 
 	//see if the function is in the coverage map
 	if(coverage_map.find(func->GetName()) != coverage_map.end())
@@ -436,7 +446,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 	    //if coverage exists, if it is above or equal to the threshold
 	    //do nothing, otherwise set hierachy to start at the level
 	    //passed. 
-	    double func_coverage = coverage_map[func->GetName()];
+	    func_coverage = coverage_map[func->GetName()];
 
 	    if(func_coverage < threshold)
 	    {
@@ -503,20 +513,24 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 
 	    sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
 
+//TODO: for TNE if there is no coverage for a function, perform the transform (which should be p1 at this point) blindly
+//May need to reconsider this in the future. 
 	    for(unsigned int i=0;i<layouts.size()&&!timeExpired;i++)
 	    {
 		if(layouts[i]->IsCanarySafe())
 		{
-		    success = CanaryTransformHandler(layouts[i],func);
+	
+		    success = CanaryTransformHandler(layouts[i],func,(func_coverage != 0));
 		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 			failed.push_back(func);
 		    else if(success)
 			break;
+
 		}
 
 		else if(layouts[i]->IsPaddingSafe())
 		{
-		    success = PaddingTransformHandler(layouts[i],func);
+		    success = PaddingTransformHandler(layouts[i],func,(func_coverage != 0));
 		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 			failed.push_back(func);
 		    else if(success)
@@ -526,7 +540,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		//if not canary or padding safe, the layout can only be randomized
 		else
 		{
-		    success = LayoutRandTransformHandler(layouts[i],func);
+		    success = LayoutRandTransformHandler(layouts[i],func,(func_coverage!=0));
 		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 			failed.push_back(func);
 		    else if(success)
@@ -903,6 +917,8 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 	//convert to negative
 	c.ret_offset = c.ret_offset*-1;
 	
+	cerr << "c.canary_val = " << c.canary_val << "  c.ret_offset = " <<  c.ret_offset << endl;
+
 	canaries.push_back(c);
 //	canary_tmp++;
     }
@@ -964,7 +980,8 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 	    //This could probably be done once, but having the original instruction
 	    //allows me to produce messages that indicate more precisely where
 	    //the overflow occurred. 
-	    Instruction_t *exit_code = getExitCode(virp,copyInstruction(virp,instr));
+//	    Instruction_t *exit_code = getExitCode(virp,copyInstruction(virp,instr));
+	    Instruction_t *exit_code = getExitCode(virp,instr);
 
 	    //insert canary checks
 	    //

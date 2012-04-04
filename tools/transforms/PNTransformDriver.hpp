@@ -48,9 +48,9 @@ protected:
     virtual bool Sans_Canary_Rewrite(PNStackLayout *orig_layout, libIRDB::Function_t *func);
     inline bool Instruction_Rewrite(PNStackLayout *layout, libIRDB::Instruction_t *instr);
     virtual void Print_Report();
-    virtual bool CanaryTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func);
-    virtual bool PaddingTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func);
-    virtual bool LayoutRandTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func);
+    virtual bool CanaryTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
+    virtual bool PaddingTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
+    virtual bool LayoutRandTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func, bool validate);
     virtual void GenerateTransformsInit();
     virtual bool IsBlacklisted(libIRDB::Function_t *func);
     virtual unsigned int GetRandomCanary();
