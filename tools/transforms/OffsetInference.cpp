@@ -341,13 +341,12 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	    //Right now I am going to enforce in PNTransformDriver that
 	    //the alignment instruction is removed. 
 
-/*
+
 	    cerr<<"OffsetInference: FindAllOffsets(): Layout is not canary safe"<<endl;
 	    pn_direct_offsets->SetCanarySafe(false);
 	    pn_scaled_offsets->SetCanarySafe(false);
 	    pn_all_offsets->SetCanarySafe(false);
 	    pn_p1_offsets->SetCanarySafe(false);
-*/
 	}
 	else if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
