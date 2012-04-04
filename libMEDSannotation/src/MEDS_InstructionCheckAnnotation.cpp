@@ -19,6 +19,7 @@ Example format (as of 10/18/2011) -- subject to change:
 80483fd 3 INSTR CHECK UNDERFLOW SIGNED 32 EAX ZZ sub eax, 1 
 8048492 5 INSTR CHECK TRUNCATION 32 EAX 16 AX ZZ mov [esp+26h], ax 
 8048492 5 INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov [esp+26h], ax 
+8048892 4 INSTR INFINITELOOP add     [ebp+var_25], 1
 */
 
 void MEDS_InstructionCheckAnnotation::init()
@@ -59,13 +60,19 @@ void MEDS_InstructionCheckAnnotation::parse()
 	//	field 1 - instruction address
 	//  field 2 - instruction size (ignore)
 	//  field 3 - INSTR
-	//  field 4 - CHECK
+	//  field 4 - CHECK | INFINITELOOP
 	//  field 5 - {OVERFLOW | UNDERFLOW | SIGNEDNESS | TRUNCATION }  
 	//  field 6 - {SIGNED | UNSIGNED | UNKNOWNSIGN | 16 | 32}
 	//  field 7 - {<register> | <memory reference>}
 
-	if (m_rawInputLine.find(MEDS_ANNOT_INSTR)==string::npos || m_rawInputLine.find(MEDS_ANNOT_CHECK)==string::npos) 
+	if (m_rawInputLine.find(MEDS_ANNOT_INSTR)==string::npos)
 		return;
+
+	if (m_rawInputLine.find(MEDS_ANNOT_INFINITELOOP)==string::npos &&
+	    m_rawInputLine.find(MEDS_ANNOT_CHECK)==string::npos) 
+	{
+		return;
+	}
 
 	// get offset
 	VirtualOffset vo(m_rawInputLine);
