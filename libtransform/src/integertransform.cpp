@@ -568,7 +568,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 {
 	assert(getVariantIR() && p_instruction);
 
-//cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	
 	string detector(INTEGER_OVERFLOW_DETECTOR);
 	string dataBits;
@@ -598,7 +598,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 			detector = string(MUL_OVERFLOW_DETECTOR_16);
 		else if (p_annotation.getBitWidth() == 8)
 			detector = string(MUL_OVERFLOW_DETECTOR_8);
-//		cerr << "integertransform: MUL OVERFLOW: " << detector << endl;
+		cerr << "integertransform: MUL OVERFLOW: " << detector << endl;
 	}
 	else if (p_annotation.isUnsigned())
 	{
@@ -611,7 +611,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_16);
 		else if (p_annotation.getBitWidth() == 8)
 			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_8);
-//		cerr << "integertransform: UNSIGNED OVERFLOW: " << detector << endl;
+		cerr << "integertransform: UNSIGNED OVERFLOW: " << detector << endl;
 	}
 	else 
 	{
@@ -624,7 +624,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_16);
 		else if (p_annotation.getBitWidth() == 8)
 			detector = string(ADDSUB_OVERFLOW_DETECTOR_SIGNED_8);
-//		cerr << "integertransform: SIGNED OVERFLOW: " << detector << endl;
+		cerr << "integertransform: SIGNED OVERFLOW: " << detector << endl;
 	}
 
 	jncond_i->SetDataBits(dataBits);
@@ -635,7 +635,7 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
 	if (targetReg == Register::UNKNOWN)
-		p_policy = POLICY_DEFAULT;
+		p_policy = POLICY_EXIT;
 
 	if (p_addressOriginalInstruction)
 	{
