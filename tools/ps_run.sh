@@ -64,7 +64,8 @@ if [ -f $datapath/diagnostics.out ]; then
 	if [ $len -gt 0 ]; then 
 
         # make output more concise
-	    uniq $datapath/diagnostics.out > tmp.$$
+		wc -l $datapath/diagnostics.out
+	    sort $datapath/diagnostics.out | uniq > tmp.$$
 		mv tmp.$$ $datapath/diagnostics.out
 
 		#echo "--------------------------------------------------------"
