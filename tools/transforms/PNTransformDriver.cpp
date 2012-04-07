@@ -1075,6 +1075,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
     } 
     else if(regexec(&(pn_regex.regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
     {
+/*
 	cerr<<"PNTransformDriver: Transforming AND ESP instruction"<<endl;
 
 	disasm_str = "nop";
@@ -1084,6 +1085,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	undo_list[instr] = copyInstruction(instr);
 	if(!instr->Assemble(disasm_str))
 	    return false;
+*/
     }
     else if(regexec(&(pn_regex.regex_esp_only), disasm_str.c_str(), max, pmatch, 0)==0) 
     {
