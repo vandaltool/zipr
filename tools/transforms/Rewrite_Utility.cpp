@@ -221,6 +221,7 @@ Instruction_t* insertCanaryCheckBefore(VariantIR_t* virp,Instruction_t *first, u
     Instruction_t* cpy = copyInstruction(virp,first);
     setInstructionAssembly(virp,first,ss.str(),cpy,NULL);
     insertDataBitsAfter(virp,first,getJnzDataBits(),fail_code);
+    first->SetComment("Canary Check: "+first->GetComment());
 
     return cpy;
 }

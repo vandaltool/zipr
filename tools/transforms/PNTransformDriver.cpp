@@ -30,7 +30,6 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
 {
     //TODO: throw exception?
     assert(pidp != NULL);
-
     srand(time(NULL));
 
     //TODO: throw exception?
@@ -840,10 +839,12 @@ int canary_tmp = 0xaabbcc00;
 
 unsigned int PNTransformDriver::GetRandomCanary()
 {
+    //TODO: check for bias.
     stringstream canary;
+    canary.str("");
     for(int i=0;i<8;i++)
     {
-	canary<<hex<<(rand()%16);	
+	canary<<hex<<(rand()%16);
     }
     unsigned int ret_val;
     sscanf(canary.str().c_str(),"%x",&ret_val);
@@ -902,6 +903,7 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 
 	//TODO: make this random
 	//c.canary_val = canary_tmp;
+	c.canary_val = 0;
 	c.canary_val = GetRandomCanary();
 
 	//bytes to frame pointer or return address (depending on if a frame
@@ -970,6 +972,7 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 
 		ss<<"mov dword [esp+0x"<<hex<<canaries[i].esp_offset<<"], 0x"<<hex<<canaries[i].canary_val;
 		instr = insertAssemblyAfter(virp,instr,ss.str());
+		instr->SetComment("Canary Setup: "+ss.str());
 	    }
 	}
 	else if(regexec(&(pn_regex.regex_ret), disasm_str.c_str(),5,pmatch,0)==0)

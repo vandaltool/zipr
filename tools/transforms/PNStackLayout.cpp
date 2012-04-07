@@ -58,7 +58,9 @@ unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 
 PNStackLayout::PNStackLayout(StackLayout stack_layout) : stack_layout(stack_layout)
 {
-    srand(time(NULL));
+    //PNTransformDriver sets up the seed, I need a better way of handling this
+    //but for now assume it has been properly seeded. 
+    //srand(time(NULL));
 
     this->stack_layout = stack_layout;
     isPadded = false;
