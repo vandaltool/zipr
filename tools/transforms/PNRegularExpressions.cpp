@@ -41,7 +41,7 @@ PNRegularExpressions::PNRegularExpressions()
 	exit(1);
     }
 
-    if(regcomp(&regex_ebp_scaled,".*\\[ebp[+].*+[-](.+)\\].*",REG_EXTENDED | REG_ICASE) !=0)
+    if(regcomp(&regex_ebp_scaled,".*\\[ebp[+].*[-](.+)\\].*",REG_EXTENDED | REG_ICASE) !=0)
     {
 	fprintf(stderr,"Error: regular expression for ebp scaled addresses failed\n");
 	exit(1);
@@ -91,5 +91,18 @@ PNRegularExpressions::PNRegularExpressions()
 	fprintf(stderr,"Error: regular expression for push (anything) failed to compile\n");
 	exit(1);
     }
+
+    //looking for scaled accesses using ebp as the index
+    //eg. [ecx + ebp*1 - 0x21]
+    //Unlike other expressions, there are two pattern matches here
+    //the first is the scaling factor (if one exists), the second is the
+    //offset.
+    if (regcomp(&regex_scaled_ebp_index, ".*\\[.*[+]ebp[*]?(.*)[-](.+)\\].*", REG_EXTENDED | REG_ICASE) != 0)
+    {
+	fprintf(stderr,"Error: regular expression for scaled ebp index failed to compile\n");
+	exit(1);
+    }
+
+
 
 }

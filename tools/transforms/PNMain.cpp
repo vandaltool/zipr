@@ -16,6 +16,11 @@
 using namespace std;
 using namespace libIRDB;
 
+//TODO: PN will now p1 if no coverage is available,
+//this is not desired for black box testing. 
+//Find a solution. 
+
+
 set<string> getFunctionList(char *p_filename)
 {
 	set<string> functionList;

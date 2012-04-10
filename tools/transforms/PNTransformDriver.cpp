@@ -839,6 +839,7 @@ int canary_tmp = 0xaabbcc00;
 
 unsigned int PNTransformDriver::GetRandomCanary()
 {
+
     //TODO: check for bias.
     stringstream canary;
     canary.str("");
@@ -1192,7 +1193,47 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	    return false;
 		
     }
+    //if we get an instruction where ebp is the index, transform it using the
+    //offset as the lookup (the second pattern matched), however, it is assumed
+    //that only p1 is performed in these cases. 
+    //TODO: if this is encountered, insert a switch statement to evaluate at runtime
+    //which offset to use. e.g., [ecx+ebp*1-0x21], at run time evaluate ecx+0x21,
+    //and determine which reange it falls into, and jump to an instruction which
+    //uses the correct offset. 
+    else if(regexec(&(pn_regex.regex_scaled_ebp_index), disasm_str.c_str(), 5, pmatch, 0)==0)
+    {
+	cerr<<"PNTransformDriver: Transforming Scaled EBP Indexed Instruction"<<endl;
 
+	int mlen = pmatch[2].rm_eo - pmatch[2].rm_so;
+	matched = disasm_str.substr(pmatch[2].rm_so,mlen);
+
+	// extract displacement 
+	int offset = strtol(matched.c_str(),NULL,0);
+
+	cerr<<"PNTransformDriver: Offset = "<<offset<<endl;
+
+	int new_offset = layout->GetNewOffsetEBP(offset);
+
+	if(new_offset == offset)
+	{
+	    cerr<<"PNTransformDriver: No offset transformation necessary, skipping instruction"<<endl;
+	    return true;
+	}
+
+	stringstream ss;
+	ss<<hex<<new_offset;
+
+	matched = "0x"+ss.str();
+		
+	disasm_str.replace(pmatch[2].rm_so,mlen,matched);
+		
+	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+	//undo_list[instr] = instr->GetDataBits();
+	undo_list[instr] = copyInstruction(instr);
+	if(!instr->Assemble(disasm_str.c_str()))
+	    return false;
+
+    }
     else if(regexec(&(pn_regex.regex_stack_dealloc), disasm_str.c_str(), 5, pmatch, 0)==0)
     {
 	cerr<<"PNTransformDriver: Transforming Stack Dealloc Instruction"<<endl;

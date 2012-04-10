@@ -160,6 +160,8 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 		//extract K 
 		stack_frame_size = strtol(matched.c_str(),NULL,0);
 
+		//TODO: use stringstream to see if the size can be parsed as an int, if not, return NULL. Then check for non integer values when looking for offsets. 
+
 		cerr<<"OffsetInference: LayoutSetup(): Stack alloc Size = "<<stack_frame_size<<
 		    " Saved Regs Size = "<<saved_regs_size<<" out args size = "<<out_args_size<<endl;
 
@@ -197,6 +199,10 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     //TODO: hack for T&E to make inferences more conservative
     bool dealloc_flag=false;
     int alloc_count=0;
+
+    //TODO: a hack for when ebp is used as an index. If found
+    //only p1 should be attempted. 
+    bool PN_safe = true;
 
     cerr<<"OffsetInference: FindAllOffsets(): Looking at Function = "<<func->GetName()<<endl;
 
@@ -524,14 +530,26 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	{
 	    dealloc_flag = true;
 	}
+	//TODO: this is a hack for cases when ebp is used as an index,
+	//in these cases, only attempt P1 for now, but in the future
+	//dynamic checks can be used to dermine what object is referred to. 
+	else if(regexec(&(pn_regex.regex_scaled_ebp_index), disasm_str.c_str(), 5, pmatch, 0)==0)
+	{
+	    PN_safe = false;
+	    //TODO: at this point I could probably break the loop, 
+	}
 	else
 	{
 	    cerr<<"OffsetInference: FindAllOffsets: No Pattern Match"<<endl;
 	}
     }
 
+//TODO: everything is horribly hacked and messy, redo this function. 
+
     //if no dealloc is found, set all inferences to null
     //TODO: this was hacked together quickly, one flag is preferable. 
+    //TODO: there might be a memory leak here, see the objects deleted
+    //at the end of this function.
     if(alloc_count>1)
     {
 	cerr<<"OffsetInference: FindAllOffsets: Multiple stack allocations found, returning null inferences"<<endl;
@@ -546,6 +564,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	//TODO: I need to revist this such that you can pass a pointer to PNStackLayout,
 	//and handle NULL accordingly.
 
+	//TODO: this has become to hacky, redo. 
 	if(!dealloc_flag)
 	{
 	    pn_direct_offsets->SetPaddingSafe(false);
@@ -554,6 +573,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	    pn_p1_offsets->SetPaddingSafe(false);
 	}
 
+	//TODO: causes a memory leak since I may reset to NULL, redo
 	direct[func->GetName()] = new PNStackLayout(*pn_direct_offsets);
 	scaled[func->GetName()] = new PNStackLayout(*pn_scaled_offsets);
 	all_offsets[func->GetName()] = new PNStackLayout(*pn_all_offsets);
@@ -582,6 +602,14 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 
 	    p1[func->GetName()] = NULL;
 	    cerr<<"OffsetInference: FindAllOffsets: p1 inference by default cannot be shuffled, generating null inference"<<endl;
+	}
+	
+	if(!PN_safe)
+	{
+	    cerr<<"OffsetInference: FindAllOffsets: Function not pn_safe, using only p1 (p1 may have been previously disabled)"<<endl;
+	    direct[func->GetName()] = NULL;
+	    scaled[func->GetName()] = NULL;
+	    all_offsets[func->GetName()] = NULL;
 	}
     }
 
