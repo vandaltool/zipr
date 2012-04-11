@@ -43,13 +43,13 @@ echo "=========================================="
 
 echo "ps_validate.sh: BED: warning: @todo: need to handle files other than stdout, stderr"
 
-for i in `ls $INPUT_DIR/generated_input*.json`
+for i in `ls $INPUT_DIR/*.json`
 do
 
  #Ben Modification: run replayer from top level to keep the sandbox layout the same as produced by the concolic test engine. This makes output comparison easier
   echo "Testing input spec: $i"
   input=`basename $i .json`
-  input_number=`echo $input | sed "s/generated_input_//"`
+  input_number=`echo $input | sed "s/.*input_//"`
 
 
   abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
