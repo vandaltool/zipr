@@ -6,7 +6,7 @@
 #include <vector>
 #include <exception>
 
-const int MIN_PADDING = 4096;
+const int MIN_PADDING = 512;
 const int MAX_PADDING = MIN_PADDING*2;
 const int ALIGNMENT_BYTE_SIZE = 4;
 
