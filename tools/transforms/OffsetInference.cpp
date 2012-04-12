@@ -201,6 +201,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     memset(pmatch, 0,sizeof(regmatch_t) * max);  
     unsigned int stack_frame_size = 0;
     unsigned int saved_regs_size = 0;
+    int ret_cnt = 0;
 
 /*
     out_args_size = func->GetOutArgsRegionSize();
@@ -356,6 +357,10 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	{
 	    dealloc_flag = true;
 	    //TODO: there needs to be a check of lea esp, [ebp-<const>] to make sure const is not in the current stack frame. 
+	}
+	else if(regexec(&(pn_regex.regex_ret), disasm_str.c_str(), max, pmatch, 0)==0)
+	{
+	    ++ret_cnt;
 	}
 	else if(regexec(&(pn_regex.regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
@@ -600,6 +605,12 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     }
     else
     {
+
+	if(!dealloc_flag && ret_cnt == 0)
+	{
+	    cerr<<"OffsetInference: FindAllOffsets: Function is missing stack deallocaiton, but does not return, assuming transformable"<<endl;
+	    dealloc_flag = true;
+	}
 	//TODO: I need to revist this such that you can pass a pointer to PNStackLayout,
 	//and handle NULL accordingly.
 

@@ -16,7 +16,7 @@ PNRegularExpressions::PNRegularExpressions()
 	exit(1);
     }
 
-    if (regcomp(&regex_ret, "ret", REG_EXTENDED | REG_ICASE) != 0)
+    if (regcomp(&regex_ret, "^ret$", REG_EXTENDED | REG_ICASE) != 0)
     {
 	fprintf(stderr,"Error: regular expression for ret failed to compile\n");
 	exit(1);
