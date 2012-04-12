@@ -1,10 +1,12 @@
 
 #include "OffsetInference.hpp"
+#include "General_Utility.hpp"
 #include "beaengine/BeaEngine.h"
 #include <cassert>
 #include <iostream>
 #include <cstdlib>
 #include <set>
+
 
 using namespace std;
 using namespace libIRDB;
@@ -77,7 +79,7 @@ void OffsetInference::GetInstructions(vector<Instruction_t*> &instructions,Basic
 
 StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 {
-    int stack_frame_size = 0;
+    unsigned int stack_frame_size = 0;
     int saved_regs_size = 0;
     int out_args_size = func->GetOutArgsRegionSize();
     bool has_frame_pointer = false;
@@ -145,12 +147,12 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 
 	    //TODO: Is this the way this situation should be handled?
 	    //The first esp sub instruction is considered the stack allocation, all other subs are ignored
+	    //Given that I return when the first one is found, this is probably a useless check. 
 	    if(stack_frame_size != 0)
 	    {
 		cerr <<"OffsetInference: FindAllOffsets(): Stack Alloc Previously Found, Ignoring Instruction"<<endl;
 		continue;
 	    }
-	    
 
 	    //extract K from: sub esp, K 
 	    if (pmatch[1].rm_so >= 0 && pmatch[1].rm_eo >= 0) 
@@ -158,9 +160,18 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
 		matched = disasm_str.substr(pmatch[1].rm_so,mlen);
 		//extract K 
-		stack_frame_size = strtol(matched.c_str(),NULL,0);
+		//stack_frame_size = strtol(matched.c_str(),NULL,0);
+		if(str2uint(stack_frame_size, matched.c_str())!= SUCCESS)
+		{
+		    //If this occurs, then the found stack size is not a 
+		    //constant integer, so it must be a register. 
+		    
+		    //TODO: is this what I really want to do?
+		    cerr<<"OffsetInference: LayoutSetup(): Found non-integral stack allocation ("<<matched<<") before integral stack allocation, generating a null layout inference for function "<<func->GetName()<<endl; 
+		    return NULL;
+		}
 
-		//TODO: use stringstream to see if the size can be parsed as an int, if not, return NULL. Then check for non integer values when looking for offsets. 
+		//else
 
 		cerr<<"OffsetInference: LayoutSetup(): Stack alloc Size = "<<stack_frame_size<<
 		    " Saved Regs Size = "<<saved_regs_size<<" out args size = "<<out_args_size<<endl;
@@ -341,7 +352,12 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	}
 	else 
 */
-	if(regexec(&(pn_regex.regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
+	if(regexec(&(pn_regex.regex_stack_dealloc_implicit), disasm_str.c_str(), max, pmatch, 0)==0)
+	{
+	    dealloc_flag = true;
+	    //TODO: there needs to be a check of lea esp, [ebp-<const>] to make sure const is not in the current stack frame. 
+	}
+	else if(regexec(&(pn_regex.regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 	    //TODO: decide how to better handle this option.
 	    //Right now I am going to enforce in PNTransformDriver that
@@ -356,12 +372,33 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	}
 	else if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
+	    //check if the stack allocation uses an integral offset. 
+
+	    //extract K from: sub esp, K 
+	    if (pmatch[1].rm_so >= 0 && pmatch[1].rm_eo >= 0) 
+	    {
+		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+		matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+		//extract K 
+		unsigned int scheck;
+		if(str2uint(scheck, matched.c_str()) != SUCCESS)
+		{
+		    //If this occurs, then the found stack size is not a 
+		    //constant integer, so it must be a register. 
+
+		    PN_safe = false;
+		    continue;
+		    
+		}
+	    }
+
 	    alloc_count++;
 	    if(alloc_count >1)
 	    {
-		cerr<<"OffsetInference: stack allocation exceeded 1, abandon inference"<<endl;
+		cerr<<"OffsetInference: integral stack allocations exceeded 1, abandon inference"<<endl;
 		break;
 	    }
+
 	}
 	else if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
@@ -518,7 +555,10 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	    // extract displacement 
 	    int offset = strtol(matched.c_str(),NULL,0);
 
-	    if(offset != stack_frame_size)
+	    //NOTE: I have seen cases where there is an add esp, 0x0000000
+	    //in unoptimized code. In this case, the compiler must have
+	    //restored the stack already, ignore the instruction. 
+	    if(offset != stack_frame_size && offset != 0)
 	    {
 		cerr<<"OffsetInference: stack deallocation detected with different size of allocation, abandon inference"<<endl;
 		dealloc_flag = false;
@@ -526,10 +566,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	    }
 
 	}
-	else if(regexec(&(pn_regex.regex_stack_dealloc_implicit), disasm_str.c_str(), max, pmatch, 0)==0)
-	{
-	    dealloc_flag = true;
-	}
+	
 	//TODO: this is a hack for cases when ebp is used as an index,
 	//in these cases, only attempt P1 for now, but in the future
 	//dynamic checks can be used to dermine what object is referred to. 
@@ -552,12 +589,14 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     //at the end of this function.
     if(alloc_count>1)
     {
-	cerr<<"OffsetInference: FindAllOffsets: Multiple stack allocations found, returning null inferences"<<endl;
+
+	cerr<<"OffsetInference: FindAllOffsets: Multiple non-integral stack allocations found, returning null inferences"<<endl;
 	direct[func->GetName()] = NULL;
 	scaled[func->GetName()] = NULL;
 	all_offsets[func->GetName()] = NULL;
 	p1[func->GetName()] = NULL;
 	return;
+
     }
     else
     {

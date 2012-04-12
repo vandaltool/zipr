@@ -704,6 +704,8 @@ tools/spasm/test.aspri -text
 tools/spasm/tst.s -text
 tools/transforms/DirectOffsetInference.cpp -text
 tools/transforms/DirectOffsetInference.hpp -text
+tools/transforms/General_Utility.cpp -text
+tools/transforms/General_Utility.hpp -text
 tools/transforms/Makefile -text
 tools/transforms/OffsetInference.cpp -text
 tools/transforms/OffsetInference.hpp -text

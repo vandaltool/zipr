@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <fstream>
 #include "beaengine/BeaEngine.h"
+#include "General_Utility.hpp"
 #include <cmath>
 
 using namespace std;
@@ -948,11 +949,29 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 
 	cerr<<"PNTransformDriver: Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
 
+	//TODO: is the stack_alloc flag necessary anymore? 
 	if(!stack_alloc && regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 	    cerr << "PNTransformDriver: Canary Rewrite: Transforming Stack Alloc"<<endl;
 
 	    //TODO: determine size of alloc, and check if consistent with alloc size?
+
+	    //extract K from: sub esp, K 
+	    if (pmatch[1].rm_so >= 0 && pmatch[1].rm_eo >= 0) 
+	    {
+		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+		matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+		//extract K 
+		unsigned int ssize;
+		if(str2uint(ssize, matched.c_str()) != SUCCESS)
+		{
+		    //If this occurs, then the found stack size is not a 
+		    //constant integer, so it must be a register. 
+
+		    cerr<<"PNTransformDriver: Canary Rewrite: Stack alloc of non-integral type ("<<matched<<"), ignoring instruction "<<endl;
+		    continue;		    
+		}
+	    }
 
 	    stringstream ss;
 	    ss << hex << layout->GetAlteredAllocSize();
@@ -1018,6 +1037,12 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 	)
     {
 	Instruction_t* instr=*it;
+	string disasm_str = "";
+	DISASM disasm;
+	instr->Disassemble(disasm);
+	disasm_str = disasm.CompleteInstr;
+
+	cerr<<"PNTransformDriver: Sans_Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
 
 	if(!Instruction_Rewrite(layout,instr))
 	    return false;
@@ -1063,6 +1088,24 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	cerr << "PNTransformDriver: Transforming Stack Alloc"<<endl;
 
 	//TODO: determine size of alloc, and check if consistent with alloc size?
+
+
+	//extract K from: sub esp, K 
+	if (pmatch[1].rm_so >= 0 && pmatch[1].rm_eo >= 0) 
+	{
+	    int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+	    matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+	    //extract K 
+	    unsigned int ssize;
+	    if(str2uint(ssize, matched.c_str()) != SUCCESS)
+	    {
+		//If this occurs, then the found stack size is not a 
+		//constant integer, so it must be a register. 
+
+		cerr<<"PNTransformDriver: Stack alloc of non-integral type ("<<matched<<"), ignoring instruction"<<endl;
+		return true;		    
+	    }
+	}
 
 	stringstream ss;
 	ss << hex << layout->GetAlteredAllocSize();
@@ -1158,6 +1201,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	    return false;
     }
     //TODO: the regular expression order does matter, scaled must come first, change the regex so this doesn't matter
+    //for lea esp, [ebp-<const>] it is assumed the <const> will not be in the stack frame, so it should be ignored.
+    //this should be validated prior to rewrite (i.e., this is a TODO, it hasn't been done yet).
     else if(regexec(&(pn_regex.regex_ebp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
 	    regexec(&(pn_regex.regex_ebp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)
     {

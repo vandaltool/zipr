@@ -74,7 +74,7 @@ PNRegularExpressions::PNRegularExpressions()
     }
 
    // stack deallocation that does not use an offset
-    if (regcomp(&regex_stack_dealloc_implicit, "([[:blank:]]*mov[[:blank:]]+esp[[:blank:]]*,[[:blank:]]*ebp[[:blank:]]*)|([[:blank:]]*leave[[:blank:]]*)", REG_EXTENDED | REG_ICASE) != 0)
+    if (regcomp(&regex_stack_dealloc_implicit, "([[:blank:]]*mov[[:blank:]]+esp[[:blank:]]*,[[:blank:]]*ebp[[:blank:]]*)|([[:blank:]]*leave[[:blank:]]*)|([[:blank:]]*lea[[:blank:]]*esp[[:blank:]]*,[[:blank:]]*\\[ebp[-].*\\][[:blank:]]*)", REG_EXTENDED | REG_ICASE) != 0)
     {
 	fprintf(stderr,"Error: regular expression for stack_dealloc_implicit failed to compile\n");
 	exit(1);
