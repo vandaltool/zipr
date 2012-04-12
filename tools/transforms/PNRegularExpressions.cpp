@@ -103,6 +103,11 @@ PNRegularExpressions::PNRegularExpressions()
 	exit(1);
     }
 
+   if (regcomp(&regex_call, "^call (.*)$", REG_EXTENDED | REG_ICASE) != 0)
+    {
+	fprintf(stderr,"Error: regular expression for call failed to compile\n");
+	exit(1);
+    }
 
 
 }

@@ -18,6 +18,8 @@ StackLayout::StackLayout(const std::string &layout_name, const std::string &func
     has_out_args = out_args_size > 0;
     is_canary_safe = true;
     is_padding_safe = true;
+    //TODO: is static stack hacked in for TNE, needs a redesign 
+    is_static_stack = true;//innocent 'til proven guilty.
 
     //The initial layout is one entry the size of the stack frame.
     //The size is minus the out args size, if greater than 0
@@ -61,6 +63,7 @@ StackLayout::StackLayout(const StackLayout &layout)
     has_out_args = layout.out_args_size > 0;
     is_canary_safe = layout.is_canary_safe;
     is_padding_safe = layout.is_padding_safe;
+    is_static_stack = layout.is_static_stack;
 
     for(unsigned int i=0;i<layout.mem_objects.size();i++)
     {

@@ -997,6 +997,8 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 	}
 	else if(regexec(&(pn_regex.regex_ret), disasm_str.c_str(),5,pmatch,0)==0)
 	{
+	    cerr<<"PNTransformDriver: Canary Rewrite: inserting ret canary check"<<endl;
+
 	    //undo_list[instr] = instr->GetDataBits();
 	    undo_list[instr] = copyInstruction(instr);
 
@@ -1015,6 +1017,28 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 		instr = insertCanaryCheckBefore(virp,instr,canaries[i].canary_val,canaries[i].ret_offset, exit_code);	
 	    }
 	}
+	//if the stack is not believed to be static, I can't check the canary using esp.
+	//for now don't do a canary check on calls in these situations. 
+	else if(layout->IsStaticStack() && regexec(&(pn_regex.regex_call), disasm_str.c_str(),5,pmatch,0)==0)
+	{
+	    
+	    cerr<<"PNTransformDriver: Canary Rewrite: inserting call canary check"<<endl;
+	    undo_list[instr] = copyInstruction(instr);
+
+	    //This could probably be done once, but having the original instruction
+	    //allows me to produce messages that indicate more precisely where
+	    //the overflow occurred. 
+	    Instruction_t *exit_code = getExitCode(virp,instr);
+
+	    //insert canary checks
+	    //
+	    //TODO: may need to save flags register
+	    for(unsigned int i=0;i<canaries.size();i++)
+	    {
+		instr = insertCanaryCheckBefore(virp,instr,canaries[i].canary_val,canaries[i].esp_offset, exit_code);	
+	    }
+	}
+	//TODO: message if not static stack?
 	else
 	{
 	    if(!Instruction_Rewrite(layout,instr))

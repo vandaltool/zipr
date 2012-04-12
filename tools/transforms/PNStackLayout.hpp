@@ -74,6 +74,7 @@ public:
     virtual std::vector<PNRange*> GetRanges() {return mem_objects;}
     virtual bool IsCanarySafe() const {return stack_layout.is_canary_safe;}
     virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
+    virtual bool IsStaticStack()const {return stack_layout.is_static_stack;}
 };
 
 #endif

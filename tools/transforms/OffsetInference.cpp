@@ -389,8 +389,14 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 		if(str2uint(scheck, matched.c_str()) != SUCCESS)
 		{
 		    //If this occurs, then the found stack size is not a 
-		    //constant integer, so it must be a register. 
+		    //constant integer, so it must be a register.
 
+		    //even though I am specifying only p1 should be performed
+		    //I am still going to set this flag for all transforms.
+		    pn_direct_offsets->SetStaticStack(false);
+		    pn_scaled_offsets->SetStaticStack(false);
+		    pn_all_offsets->SetStaticStack(false);
+		    pn_p1_offsets->SetStaticStack(false);
 		    PN_safe = false;
 		    continue;
 		    
@@ -595,7 +601,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
     if(alloc_count>1)
     {
 
-	cerr<<"OffsetInference: FindAllOffsets: Multiple non-integral stack allocations found, returning null inferences"<<endl;
+	cerr<<"OffsetInference: FindAllOffsets: Multiple integral stack allocations found, returning null inferences"<<endl;
 	direct[func->GetName()] = NULL;
 	scaled[func->GetName()] = NULL;
 	all_offsets[func->GetName()] = NULL;
