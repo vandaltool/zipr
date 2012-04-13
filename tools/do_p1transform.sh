@@ -93,17 +93,11 @@ do
 	continue;
     fi
 
-	#don't consider inputs that cause 139 and 134 return values
-        #if baseline exited with 139, ignore input
-    grep 139 exit_status
-    if [ $? -eq 0 ]; then
-	continue
-    fi
+    status=`cat exit_status | grep "Subject exited" | sed "s/.*status //"`
 
-	#I am not sure why 134 is filtered, but this was present in the ps_validate.sh script
-	#before the most recent modification
-    grep 134 exit_status
-    if [ $? -eq 0 ]; then
+    #don't consider inputs that cause the program to exit in exit coes
+    #132-140 inclusive
+    if [ $status -ge 132 ] && [ $status -le 140 ]; then
 	continue
     fi
     
