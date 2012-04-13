@@ -89,5 +89,6 @@ cd $TOP_DIR
 
 # Transform program but for each instruction present in the list above, use a "CONTINUE" policy to emit a warning (instead of the default CONTROLLED EXIT policy)
 echo "INT: Final integer transform"
-#$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic
-$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE 
+$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic
+
+#$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE 
