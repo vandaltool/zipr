@@ -43,6 +43,8 @@ class IntegerTransform : public Transform
 		void addMinSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
 		void addZeroSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, Instruction_t *p_fallthrough);
 
+		bool isBlacklisted(Function_t *func);
+
 	private:
 		std::set<VirtualOffset>*  m_benignFalsePositives;
 		bool                      m_saturatingArithmetic;

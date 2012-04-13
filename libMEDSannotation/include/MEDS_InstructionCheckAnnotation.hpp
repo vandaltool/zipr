@@ -21,6 +21,7 @@ namespace MEDS_Annotation
 #define MEDS_ANNOT_UNKNOWNSIGN  "UNKNOWNSIGN"
 #define MEDS_ANNOT_NOFLAG       "NOFLAG"
 #define MEDS_ANNOT_INFINITELOOP "INFINITELOOP"
+#define MEDS_ANNOT_SEVERE       "SEVERE"
 
 using namespace std;
 using namespace MEDS_Annotation;
@@ -43,6 +44,7 @@ class MEDS_InstructionCheckAnnotation
 		bool isUnderflow() const { return m_isUnderflow; }
 		bool isTruncation() const { return m_isTruncation; }
 		bool isSignedness() const { return m_isSignedness; }
+		bool isSevere() const { return m_isSevere; }
 		void setOverflow() { m_isOverflow = true; }
 
 		// signed vs. unsigned
@@ -90,6 +92,7 @@ class MEDS_InstructionCheckAnnotation
 		bool           m_isUnknownSign;
 		bool           m_isNoFlag;
 		bool           m_isInfiniteLoop;
+		bool           m_isSevere;
 		int            m_bitWidth;
 		int            m_truncationFromWidth;
 		int            m_truncationToWidth;

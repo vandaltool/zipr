@@ -20,6 +20,16 @@ MEDS_AnnotationParser::MEDS_AnnotationParser(istream &p_inputStream)
 		if (annot.isValid())
 		{
 			VirtualOffset vo = annot.getVirtualOffset();
+
+/*
+			if (annot.isSignedness() && m_annotations[vo].isValid())
+			{
+				// skip it if the current annot is signed & already exists for this instruction
+				// @todo: handle multiple annotations per instruction
+				continue;
+			}
+*/
+
 			m_annotations[vo] = annot;
 		}
 	}

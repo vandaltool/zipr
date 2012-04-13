@@ -55,6 +55,17 @@ int IntegerTransform::execute()
 		if (getFilteredFunctions()->find(func->GetName()) != getFilteredFunctions()->end())
 			continue;
 
+
+/*
+		if (isBlacklisted(func))
+		{
+			cerr << "Heuristic filter: " << func->GetName() << endl;
+			continue;
+		}
+*/
+
+		cerr << "Integer xform: " << func->GetName() << endl;
+
 		for(
 		  set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
 		  it!=func->GetInstructions().end();
@@ -69,6 +80,7 @@ int IntegerTransform::execute()
 				if (irdb_vo == 0) continue;
 
 				VirtualOffset vo(irdb_vo);
+
 
 				if (m_benignFalsePositives && m_benignFalsePositives->count(vo))
 				{
@@ -98,9 +110,30 @@ int IntegerTransform::execute()
 				}
 				else if (annotation.isTruncation())
 				{
-					// nb: safe with respect to esp
 					handleTruncation(insn, annotation, policy);
-
+#ifdef SEVERE_SUPPORT
+					if (annotation.isSevere())
+					{
+						// 20120410 truncations can be marked as "severe", i.e., we must use either a terminating
+						//          or saturating instrumentation policy
+						if (policy == POLICY_CONTINUE_SATURATING_ARITHMETIC ||
+							policy == POLICY_EXIT)
+						{
+							cerr << "integertransform: truncations: use saturation or terminating policy";
+							handleTruncation(insn, annotation, policy);
+						}
+						else
+						{
+							cerr << "integertransform: truncations: use termination policy";
+							handleTruncation(insn, annotation, POLICY_EXIT);
+						}
+					}
+					else
+					{
+						cerr << "integertransform: truncations: use default policy";
+						handleTruncation(insn, annotation, POLICY_DEFAULT);
+					}
+#endif
 				}
 				else if (annotation.isSignedness())
 				{
@@ -155,6 +188,8 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
       cerr << "addSignednessCheck(): Unexpected bit width and register combination: skipping instrumentation for: " << p_annotation.toString() << endl;
 	  return;
 	}
+
+    cerr << "addSignednessCheck(): annot: " << p_annotation.toString() << endl;
 
     db_id_t fileID = p_instruction->GetAddress()->GetFileID();
     Function_t* func = p_instruction->GetFunction();
@@ -530,13 +565,17 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 
 void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	if (p_annotation.getTruncationFromWidth() == 32 && (p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8))
+	if (p_annotation.isUnknownSign())
+	{
+		cerr << "integertransform: TRUNCATION is of unknown sign -- skip: " << p_annotation.toString() << "fromWidth: " << p_annotation.getTruncationFromWidth() << " toWidth: " << p_annotation.getTruncationToWidth() << endl;
+	}
+	else if (p_annotation.getTruncationFromWidth() == 32 && (p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8))
 	{
 		addTruncationCheck(p_instruction, p_annotation, p_policy);
 	}
 	else
 	{
-		cerr << "integertransform: TRUNCATION annotation not yet handled: " << p_annotation.toString() << endl;
+		cerr << "integertransform: TRUNCATION annotation not yet handled: " << p_annotation.toString() << "fromWidth: " << p_annotation.getTruncationFromWidth() << " toWidth: " << p_annotation.getTruncationToWidth() << endl;
 	}
 }
 
@@ -767,12 +806,13 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 	getVariantIR()->GetInstructions().insert(jncond_i);
 }
 
+
 void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	assert(getVariantIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
-//cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	string detector; 
 
 	// 80484ed 3 INSTR CHECK TRUNCATION UNSIGNED 32 EAX 8 AL ZZ mov     [ebp+var_4], al
@@ -1011,3 +1051,20 @@ void IntegerTransform::addZeroSaturation(Instruction_t *p_instruction, Register:
 	addMovRegisterUnsignedConstant(p_instruction, p_reg, 0, p_fallthrough);
 }
 
+bool IntegerTransform::isBlacklisted(Function_t *func)
+{
+	if (!func) return false;
+
+	const char *funcName = func->GetName().c_str();
+	if (strcasestr(funcName, "hash") ||
+		strcasestr(funcName, "compress") ||
+		strcasestr(funcName, "encode") ||
+		strcasestr(funcName, "decode") ||
+		strcasestr(funcName, "crypt"))
+//		|| strcasestr(funcName, "sort"))
+	{
+		return true;
+	}
+	else
+		return false;
+}

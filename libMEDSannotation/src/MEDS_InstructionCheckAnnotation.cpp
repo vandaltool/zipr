@@ -34,6 +34,7 @@ void MEDS_InstructionCheckAnnotation::init()
 	m_isUnknownSign = true;
 	m_isNoFlag = false;
 	m_isInfiniteLoop = false;
+	m_isSevere = false;
 	m_bitWidth = -1;
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
@@ -144,8 +145,15 @@ void MEDS_InstructionCheckAnnotation::parse()
 		char buf[1024] = "";
 		// [ADDR] [SIZE] INSTR CHECK TRUNCATION UNKNOWNSIGN 32 EAX 16 AX ZZ mov     [esp+2Ah], ax
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s %d", &m_truncationFromWidth, buf, &m_truncationToWidth);
+
 		m_target = string(buf);
 		m_register = Register::getRegister(m_target);
+
+		// 20120410 STARS added SEVERE field to TRUNC annotations to specify that we must use a terminating/saturating policy
+		if (m_rawInputLine.find(MEDS_ANNOT_SEVERE)!=string::npos)
+		{
+			m_isSevere = true;
+		}
 	} 
 	else if (m_isSignedness)
 	{
