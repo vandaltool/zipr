@@ -75,6 +75,9 @@ input_cnt=0
 #run all .json inputs through the replayer
 for i in `ls $CONCOLIC_DIR/*.json`
 do
+    rm -f stdout.* stderr.* exit_status
+    rm -rf grace_replay/
+
     #check to see if the sym file exists, if not create it.
     if [ ! -e $TOP_LEVEL/a.sym ]; then
 	$GRACE_HOME/concolic/src/util/linux/objdump_to_grace $STRATAFIED_BINARY
@@ -114,7 +117,8 @@ do
 
     input_cnt=`expr $input_cnt + 1`
 done
-
+rm -f stdout.* stderr.* exit_status
+rm -rf grace_replay/
 echo "Finished replaying .json files: Replayed $input_cnt inputs"
 
 touch $EXECUTED_ADDRESSES_CONCOLIC
