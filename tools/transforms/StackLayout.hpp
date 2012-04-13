@@ -20,6 +20,7 @@ protected:
     bool is_canary_safe;
     bool is_padding_safe;
     bool is_static_stack;
+    bool is_recursive;
     std::string layout_name;
 
     virtual unsigned int GetClosestIndex(int loc) const;
@@ -43,6 +44,7 @@ public:
     //TODO: handle this better. 
     virtual void SetPaddingSafe(bool val){ is_padding_safe = val; is_canary_safe = is_canary_safe && val;}
     virtual void SetStaticStack(bool val){ is_static_stack = val; }
+    virtual void SetRecursive(bool val){ is_recursive = val; }
     friend class PNStackLayout;
 };
 

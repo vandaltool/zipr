@@ -34,7 +34,20 @@ static bool CompareRangeDisplacedOffset(PNRange *a, PNRange *b)
 
 unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 {
-    int pad = (rand() % (MAX_PADDING+1-MIN_PADDING)) + MIN_PADDING;
+    int max,min;
+
+    max = MAX_PADDING;
+    min = MIN_PADDING;
+
+
+    if(stack_layout.is_recursive)
+    {
+	max = RECURSIVE_MAX_PADDING;
+	min = RECURSIVE_MIN_PADDING;
+    }
+
+
+    int pad = (rand() % (max+1-min)) + min;
     if(isaligned)
     {
 //TODO: if previously padded, and not aligned, this will not gurantee alignment, so 

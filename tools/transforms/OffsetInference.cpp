@@ -222,6 +222,10 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 
     BasicBlock_t *block = cfg.GetEntry();
 
+    //TODO: this is an addition for TNE to detect direct recursion,
+    //in the future the call graph should be analyzed to find all recursion. 
+    Instruction_t *first_instr = *(block->GetInstructions().begin());
+
     pn_all_offsets = SetupLayout(block,func);
 
     if(pn_all_offsets != NULL)
@@ -585,6 +589,21 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	{
 	    PN_safe = false;
 	    //TODO: at this point I could probably break the loop, 
+	}
+	//TODO: a hack for TNE to check for direct recursion to dial down padding
+	else if(regexec(&(pn_regex.regex_call), disasm_str.c_str(), 5, pmatch, 0)==0)
+	{
+	    if(instr->GetTarget() != NULL && instr->GetTarget()->GetAddress() != NULL)
+	    {
+		if(instr->GetTarget()->GetAddress()->GetVirtualOffset() == first_instr->GetAddress()->GetVirtualOffset())
+		{
+		    cerr<<"OffsetInference: function contains a direct recursive call"<<endl;
+		    pn_direct_offsets->SetRecursive(true);
+		    pn_scaled_offsets->SetRecursive(true);
+		    pn_all_offsets->SetRecursive(true);
+		    pn_p1_offsets->SetRecursive(true);
+		}
+	    }
 	}
 	else
 	{
