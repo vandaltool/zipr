@@ -173,6 +173,8 @@ void IntegerTransform::handleSignedness(Instruction_t *p_instruction, const MEDS
 //       L1:   <restore flags>
 //             mov [esp+28h], ax
 //
+// 20120414 We may want to saturate the destination instead. This would mean putting the saturation code
+//          after the instruction being instrumented
 void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	// sanity checks
