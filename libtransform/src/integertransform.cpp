@@ -56,13 +56,11 @@ int IntegerTransform::execute()
 			continue;
 
 
-/*
 		if (isBlacklisted(func))
 		{
 			cerr << "Heuristic filter: " << func->GetName() << endl;
 			continue;
 		}
-*/
 
 		cerr << "Integer xform: " << func->GetName() << endl;
 
@@ -1063,7 +1061,6 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 		strcasestr(funcName, "encode") ||
 		strcasestr(funcName, "decode") ||
 		strcasestr(funcName, "crypt"))
-//		|| strcasestr(funcName, "sort"))
 	{
 		return true;
 	}
