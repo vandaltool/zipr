@@ -65,7 +65,8 @@ if [ -f $datapath/diagnostics.out ]; then
 
         # make output more concise
 #		wc -l $datapath/diagnostics.out
-	    sort $datapath/diagnostics.out | uniq > tmp.$$
+#	    sort $datapath/diagnostics.out | uniq > tmp.$$
+	    cat $datapath/diagnostics.out | uniq > tmp.$$
 		mv tmp.$$ $datapath/diagnostics.out
 
 		#echo "--------------------------------------------------------"
