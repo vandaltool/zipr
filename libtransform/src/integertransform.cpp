@@ -96,11 +96,6 @@ int IntegerTransform::execute()
 				if (!annotation.isValid()) 
 					continue;
 				
-				if (annotation.isUnknownSign())
-				{
-					cerr << "integertransform: annotation has unknown sign: skipping";
-					continue;
-				}
 
 				if (annotation.isOverflow())
 				{
@@ -114,10 +109,20 @@ int IntegerTransform::execute()
 				}
 				else if (annotation.isTruncation())
 				{
+					if (annotation.isUnknownSign())
+					{
+						cerr << "integertransform: annotation has unknown sign: skipping";
+						continue;
+					}
 					handleTruncation(insn, annotation, policy);
 				}
 				else if (annotation.isSignedness())
 				{
+					if (annotation.isUnknownSign())
+					{
+						cerr << "integertransform: annotation has unknown sign: skipping";
+						continue;
+					}
 					handleSignedness(insn, annotation, policy);
 				}
 				else if (annotation.isInfiniteLoop())
