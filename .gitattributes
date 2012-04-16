@@ -420,6 +420,12 @@ c++_examples/newdel_broke4.cpp -text
 c++_examples/newdel_broke5.cpp -text
 c++_examples/newdel_broke6.cpp -text
 c++_examples/newdel_broke7.cpp -text
+c++_examples/newdelete1.cpp -text
+c++_examples/newdelete2.cpp -text
+c++_examples/newdelete3.cpp -text
+c++_examples/newdelete4.cpp -text
+c++_examples/newdelete5.cpp -text
+c++_examples/newdelete6.cpp -text
 c++_examples/spec2006_binaries/README -text
 c++_examples/spec2006_binaries/dynamically_linked/README -text
 c++_examples/spec2006_binaries/dynamically_linked/SPEC-benchmark-test.ini -text
