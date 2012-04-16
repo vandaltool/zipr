@@ -96,6 +96,12 @@ int IntegerTransform::execute()
 				if (!annotation.isValid()) 
 					continue;
 				
+				if (annotation.isUnknownSign())
+				{
+					cerr << "integertransform: annotation has unknown sign: skipping";
+					continue;
+				}
+
 				if (annotation.isOverflow())
 				{
 					// nb: safe with respect to esp (except for lea)
@@ -109,29 +115,6 @@ int IntegerTransform::execute()
 				else if (annotation.isTruncation())
 				{
 					handleTruncation(insn, annotation, policy);
-#ifdef SEVERE_SUPPORT
-					if (annotation.isSevere())
-					{
-						// 20120410 truncations can be marked as "severe", i.e., we must use either a terminating
-						//          or saturating instrumentation policy
-						if (policy == POLICY_CONTINUE_SATURATING_ARITHMETIC ||
-							policy == POLICY_EXIT)
-						{
-							cerr << "integertransform: truncations: use saturation or terminating policy";
-							handleTruncation(insn, annotation, policy);
-						}
-						else
-						{
-							cerr << "integertransform: truncations: use termination policy";
-							handleTruncation(insn, annotation, POLICY_EXIT);
-						}
-					}
-					else
-					{
-						cerr << "integertransform: truncations: use default policy";
-						handleTruncation(insn, annotation, POLICY_DEFAULT);
-					}
-#endif
 				}
 				else if (annotation.isSignedness())
 				{
@@ -148,8 +131,6 @@ int IntegerTransform::execute()
 	} // end iterate over all functions
 
 	getVariantIR()->WriteToDB();
-
-	// for now just be happy
 	return 0;
 }
 
