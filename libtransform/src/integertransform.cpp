@@ -1060,7 +1060,13 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 		strcasestr(funcName, "compress") ||
 		strcasestr(funcName, "encode") ||
 		strcasestr(funcName, "decode") ||
-		strcasestr(funcName, "crypt"))
+		strcasestr(funcName, "crypt") ||
+		strcasestr(funcName, "yyparse") ||
+		strcasestr(funcName, "yyerror") ||
+		strcasestr(funcName, "yydestruct") ||
+		strcasestr(funcName, "yyrestart") ||
+		strcasestr(funcName, "yylex") ||
+		strcasestr(funcName, "yy_"))
 	{
 		return true;
 	}
