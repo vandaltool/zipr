@@ -1066,7 +1066,8 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 		strcasestr(funcName, "yydestruct") ||
 		strcasestr(funcName, "yyrestart") ||
 		strcasestr(funcName, "yylex") ||
-		strcasestr(funcName, "yy_"))
+		strcasestr(funcName, "yy_") ||
+		strcasestr(funcName, "random"))
 	{
 		return true;
 	}
