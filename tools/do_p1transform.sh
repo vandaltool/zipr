@@ -76,6 +76,9 @@ input_cnt=0
 #run all .json inputs through the replayer
 for i in `ls $CONCOLIC_DIR/*.json`
 do
+    rm -f exit_status stdout.* stderr.*
+    rm -rf grace_replay/
+
     if [ $input_cnt -ge $INPUT_CUTOFF ]; then
 	break
     fi
@@ -119,6 +122,10 @@ do
 
     input_cnt=`expr $input_cnt + 1`
 done
+
+rm -f exit_status stdout.* stderr.*
+rm -rf grace_replay/
+
 
 echo "Finished replaying .json files: Replayed $input_cnt inputs"
 
