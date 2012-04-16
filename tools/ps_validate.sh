@@ -63,10 +63,10 @@ do
     mv tmp input_test/exit_status
     mv grace_replay/ input_test/.
 
-    diff -r input_test/ $BASELINE_DIR/$i &>diff_out
+    echo "diff -r input_test/ $BASELINE_DIR/$i "
+    diff -r input_test/ $BASELINE_DIR/$i
     if [ ! $? -eq 0 ]; then
 	echo "ps_validate.sh: divergence detected for input: $i"
-	cat diff_out
 	exit 1
     fi
     
