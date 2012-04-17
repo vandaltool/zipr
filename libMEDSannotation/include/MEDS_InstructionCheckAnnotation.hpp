@@ -22,6 +22,7 @@ namespace MEDS_Annotation
 #define MEDS_ANNOT_NOFLAG       "NOFLAG"
 #define MEDS_ANNOT_INFINITELOOP "INFINITELOOP"
 #define MEDS_ANNOT_SEVERE       "SEVERE"
+#define MEDS_ANNOT_FLOWS_INTO_CRITICAL_SINK  "SINKMALLOC"
 
 using namespace std;
 using namespace MEDS_Annotation;
@@ -77,6 +78,10 @@ class MEDS_InstructionCheckAnnotation
 
 		const string& toString() const { return m_rawInputLine; }
 
+		// data flow
+		// @todo: expand the set, allow getter functions to retrieve name of sink
+		bool flowsIntoCriticalSink() const { return m_flowsIntoCriticalSink; }
+
 	private:
 		void init();
 		void parse();
@@ -98,6 +103,7 @@ class MEDS_InstructionCheckAnnotation
 		int            m_truncationToWidth;
 		VirtualOffset  m_virtualOffset;
 		bool           m_isValid;
+		bool           m_flowsIntoCriticalSink;
 		MEDS_Annotation::Register::RegisterName       m_register;
 		string         m_target;
 };

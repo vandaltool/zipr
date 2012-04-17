@@ -35,6 +35,7 @@ void MEDS_InstructionCheckAnnotation::init()
 	m_isNoFlag = false;
 	m_isInfiniteLoop = false;
 	m_isSevere = false;
+	m_flowsIntoCriticalSink = false;
 	m_bitWidth = -1;
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
@@ -99,6 +100,9 @@ void MEDS_InstructionCheckAnnotation::parse()
 	if (m_rawInputLine.find(MEDS_ANNOT_NOFLAG)!=string::npos)
 		m_isNoFlag = true;
 
+	if (m_rawInputLine.find(MEDS_ANNOT_FLOWS_INTO_CRITICAL_SINK)!=string::npos)
+		m_flowsIntoCriticalSink = true;
+
 	// signed vs. unsigned
 	if (m_rawInputLine.find(MEDS_ANNOT_UNSIGNED)!=string::npos)
 	{
@@ -131,6 +135,8 @@ void MEDS_InstructionCheckAnnotation::parse()
 	// 804856b      6 INSTR CHECK OVERFLOW UNSIGNED 16  [ESP]+36 ZZ add     word ptr [esp+24h], 1
 	// 80483bb      4 INSTR CHECK OVERFLOW UNKNOWNSIGN 16  AX ZZ add     ax, 7FBCh
 	// 80483d5      3 INSTR CHECK UNDERFLOW SIGNED 16  CX ZZ sub     cx, ax
+    // 804d51d      2 INSTR CHECK OVERFLOW UNSIGNED 32  EBX ZZ add     ebx, eax
+
 
 		char buf[1024] = "";
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
