@@ -660,7 +660,10 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
 	if (targetReg == Register::UNKNOWN)
+	{
+		cerr << "integertransform: OVERFLOW: unknown register -- policy exit" << endl;
 		p_policy = POLICY_EXIT;
+	}
 
 	if (p_addressOriginalInstruction)
 	{
@@ -673,7 +676,15 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
 
 		addCallbackHandler(detector, p_instruction, jncond_i, saturate_i, p_policy);
-		addMaxSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
+		if (p_annotation.flowsIntoCriticalSink() && p_annotation.getBitWidth() == 32)
+		{
+			cerr << "integertransform: OVERFLOW UNSIGNED 32: CRITICAL SINK: saturate" << endl;
+			addSaturation(saturate_i, targetReg, 0x000FFFFF, p_annotation, nextOrig_i);
+		}
+		else
+		{
+			addMaxSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
+		}
 	}
 	else
 	{
@@ -701,7 +712,7 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 //
 void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-//cerr << "IntegerTransform::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
+	cerr << "IntegerTransform::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
 
 	assert(getVariantIR() && p_instruction);
 	
@@ -734,7 +745,7 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 			detector = string(UNDERFLOW_DETECTOR_UNSIGNED_16);
 		else if (p_annotation.getBitWidth() == 8)
 			detector = string(UNDERFLOW_DETECTOR_UNSIGNED_8);
-//		cerr << "integertransform: UNSIGNED OVERFLOW: " << detector << endl;
+		cerr << "integertransform: UNSIGNED OVERFLOW: " << detector << endl;
 	}
 	else if (p_annotation.isSigned())
 	{
@@ -748,7 +759,7 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 		else if (p_annotation.getBitWidth() == 8)
 			detector = string(UNDERFLOW_DETECTOR_SIGNED_8);
 
-//		cerr << "integertransform: SIGNED UNDERFLOW: " << detector << endl;
+		cerr << "integertransform: SIGNED UNDERFLOW: " << detector << endl;
 	}
 	else
 	{
@@ -761,7 +772,7 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 			detector = string(UNDERFLOW_DETECTOR_16);
 		else if (p_annotation.getBitWidth() == 8)
 			detector = string(UNDERFLOW_DETECTOR_8);
-//		cerr << "integertransform: UNDERFLOW UNKONWN: assume signed for now: " << detector << endl;
+		cerr << "integertransform: UNDERFLOW UNKONWN: assume signed for now: " << detector << endl;
 	}
 
 	jncond_i->SetDataBits(dataBits);
@@ -772,7 +783,10 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
 	if (targetReg == Register::UNKNOWN)
+	{
+		cerr << "integertransform: UNDERFLOW: unknown register -- use default instrumentation policy" << endl;
 		p_policy = POLICY_DEFAULT;
+	}
 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
@@ -1026,6 +1040,15 @@ void IntegerTransform::addMinSaturation(Instruction_t *p_instruction, Register::
 				break;
 		}
 	}
+}
+
+void IntegerTransform::addSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, unsigned p_value, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
+{
+	assert(getVariantIR() && p_instruction);
+
+	p_instruction->SetFallthrough(p_fallthrough);
+
+	addMovRegisterUnsignedConstant(p_instruction, p_reg, p_value, p_fallthrough);
 }
 
 void IntegerTransform::addZeroSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, Instruction_t *p_fallthrough)
