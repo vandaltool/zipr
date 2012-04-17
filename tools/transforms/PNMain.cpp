@@ -13,6 +13,8 @@
 #include <set>
 #include <cstdlib>
 
+bool DO_CANARIES = true;
+
 using namespace std;
 using namespace libIRDB;
 
@@ -85,15 +87,20 @@ map<string,double> getCoverageMap(char *filename)
 
 int main(int argc, char **argv)
 {
-    if(argc!=6)
+    //TODO: hack for TNE, a value representing if canaries should be attempted
+    //is passed in as the 6th arg, look into a config file in the future. 
+    if(argc!=7)
     {
-	cerr<<"Usage: p1transform.exe <variantid> <bed_script> <file containing name of blacklisted functions> <coverage file> <p1 threshold>"<<endl;
+	cerr<<"Usage: p1transform.exe <variantid> <bed_script> <file containing name of blacklisted functions> <coverage file> <p1 threshold> <0 for canaries off, non-zero for canaries on>"<<endl;
 	exit(-1);
     }
     else
     {
+	if(strcmp(argv[6],"0") == 0)
+	    DO_CANARIES=false;
+	    
 	cout << "bed_script: " << argv[2] << " blacklist: " << argv[3] << 
-	    " coverage: "<<argv[4]<<" p1 threshold: "<<argv[5]<<endl;
+	    " coverage: "<<argv[4]<<" p1 threshold: "<<argv[5]<<" do_canaries: "<<DO_CANARIES<<endl;
     }
 
     VariantID_t *pidp=NULL;

@@ -10,6 +10,9 @@
 using namespace std;
 using namespace libIRDB;
 
+//TODO: this var is a hack for TNE
+extern bool DO_CANARIES;
+
 void sigusr1Handler(int signum);
 bool PNTransformDriver::timeExpired = false;
 
@@ -206,6 +209,13 @@ void PNTransformDriver::GenerateTransformsInit()
 
 bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t *func, bool validate)
 {
+    //TODO: hack for TNE: if not doing canaries, use padding transform handler instead
+    if(!DO_CANARIES)
+    {
+	cerr<<"PNTransformDriver: canary transformations turned off, attempting padding transformation."<<endl;
+	return PaddingTransformHandler(layout, func, validate);	
+    }
+
     bool success = false;
 
     if(!validate)
@@ -517,6 +527,10 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 //May need to reconsider this in the future. 
 	    for(unsigned int i=0;i<layouts.size()&&!timeExpired;i++)
 	    {
+
+		//TODO: I need to have the ability to make transformations optional
+		//the approach taken now is a last minute hack for TNE
+
 		if(layouts[i]->IsCanarySafe())
 		{
 	
