@@ -48,6 +48,8 @@ set_timer()
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=900
 PN_TIMEOUT_VALUE=9000
+#non-zero to use canaries in PN/P1, 0 to turn off canaries
+DO_CANARIES=1
 
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
@@ -513,14 +515,14 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 
 		is_step_on manual_test
 		if [ $? -eq 0 ]; then 
-			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/p1xform_v2.sh $PN_TIMEOUT_VALUE
+			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/p1xform_v2.sh $PN_TIMEOUT_VALUE $DO_CANARIES
 		else
 			grep manual_test_import $manual_test_script
 			if [ $? -eq 0 ];
 			then
-				perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh $PN_TIMEOUT_VALUE
+				perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh $PN_TIMEOUT_VALUE $DO_CANARIES
 			else
-				perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_blackbox.sh $PN_TIMEOUT_VALUE
+				perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_blackbox.sh $PN_TIMEOUT_VALUE $DO_CANARIES
 			fi
 		fi
 		

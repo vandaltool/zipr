@@ -11,6 +11,7 @@ ORIGINAL_BINARY=$2
 MEDS_ANNOTATION_FILE=$3
 BED_SCRIPT=$4
 TIMEOUT_VALUE=$5
+DO_CANARIES=$6
 REPLAYER_TIMEOUT=120
 TOP_LEVEL=`pwd`
 BASELINE_DIR=$TOP_LEVEL/replayer_baseline
@@ -39,10 +40,10 @@ echo "P1: transforming binary: cloneid=$CLONE_ID bed_script=$BED_SCRIPT timeout_
 
 execute_pn()
 {
-	echo "P1: issuing command: $SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe $1 $2 $3 $4 $5 with timeout value=$TIMEOUT_VALUE"
+	echo "P1: issuing command: $SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe $1 $2 $3 $4 $5 $6 with timeout value=$TIMEOUT_VALUE"
 
 	# On timeout send SIGUSR1 (signal #10)
-	timeout -10 $TIMEOUT_VALUE $PN_BINARY $1 $2 $3 $4 $5
+	timeout -10 $TIMEOUT_VALUE $PN_BINARY $1 $2 $3 $4 $5 $6
 }
 
 mkdir $P1_DIR
@@ -147,6 +148,6 @@ $PEASOUP_HOME/tools/cover.sh $ORIGINAL_BINARY $MEDS_ANNOTATION_FILE $EXECUTED_AD
 
 touch $COVERAGE_FILE
 
-execute_pn $CLONE_ID $BED_SCRIPT $LIBC_FILTER $COVERAGE_FILE $P1THRESHOLD $TIMEOUT_VALUE
+execute_pn $CLONE_ID $BED_SCRIPT $LIBC_FILTER $COVERAGE_FILE $P1THRESHOLD $DO_CANARIES
 
 exit 0
