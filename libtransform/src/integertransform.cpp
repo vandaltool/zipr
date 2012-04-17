@@ -524,7 +524,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 
 	MEDS_InstructionCheckAnnotation mulR3Constant_annot;
 	mulR3Constant_annot.setValid();
-	mulR3Constant_annot.setBitWidth(32);
+	mulR3Constant_annot.setBitWidth(32); 
 	mulR3Constant_annot.setOverflow();
 	if (p_annotation.isSigned())
 		mulR3Constant_annot.setSigned();
@@ -675,14 +675,22 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 		// mov <reg>, value
 		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
 
-		addCallbackHandler(detector, p_instruction, jncond_i, saturate_i, p_policy);
 		if (p_annotation.flowsIntoCriticalSink() && p_annotation.getBitWidth() == 32)
 		{
-			cerr << "integertransform: OVERFLOW UNSIGNED 32: CRITICAL SINK: saturate" << endl;
-			addSaturation(saturate_i, targetReg, 0x000FFFFF, p_annotation, nextOrig_i);
+			cerr << "integertransform: OVERFLOW UNSIGNED 32: CRITICAL SINK: saturate by masking" << endl;
+
+			db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+			Function_t* func = p_instruction->GetFunction();
+			Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
+			Instruction_t* popf_i = allocateNewInstruction(fileID, func);
+			addCallbackHandler(detector, p_instruction, jncond_i, pushf_i, p_policy);
+			addPushf(pushf_i, saturate_i);
+			addAndRegister32Mask(saturate_i, targetReg, 0x00FFFFFF, popf_i);
+			addPopf(popf_i, nextOrig_i);
 		}
 		else
 		{
+			addCallbackHandler(detector, p_instruction, jncond_i, saturate_i, p_policy);
 			addMaxSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
 		}
 	}

@@ -863,3 +863,21 @@ void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register:
 	p_instr->SetComment("Saturating arithmetic");
 }
 
+void Transform::addAndRegister32Mask(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned int p_mask, Instruction_t *p_fallThrough)
+{
+    p_instr->SetFallthrough(p_fallThrough);
+
+	char buf[128];
+	sprintf(buf,"and %s, 0x%08X", Register::toString(p_regTgt).c_str(), p_mask);
+
+    string assembly(buf);
+    cerr << "addAndRegisterMask(): assembling instruction: " << assembly << endl;
+    if (!p_instr->Assemble(assembly))
+    {
+        cerr << "addAndRegisterMask(): error in assembling instruction: " << assembly << endl;
+        return;
+    }
+
+	p_instr->SetComment("Saturating arithmetic by masking");
+}
+

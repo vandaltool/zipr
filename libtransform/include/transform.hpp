@@ -65,6 +65,7 @@ class Transform {
 
 		void addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned p_constant, Instruction_t *p_fallThrough);
 		void addMovRegisterSignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constant, Instruction_t *p_fallThrough);
+		void addAndRegister32Mask(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned int p_mask, Instruction_t *p_fallThrough);
 
 	private:
 		void addTestRegister8(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
