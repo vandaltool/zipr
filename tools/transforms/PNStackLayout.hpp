@@ -32,7 +32,7 @@ protected:
     StackLayout stack_layout;
     unsigned int altered_alloc_size;
 
-    virtual unsigned int GetRandomPadding(unsigned int obj_size);
+    
     virtual void AddCanaryPadding();
 
 public:
@@ -77,6 +77,10 @@ public:
     virtual bool IsCanarySafe() const {return stack_layout.is_canary_safe;}
     virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
     virtual bool IsStaticStack()const {return stack_layout.is_static_stack;}
+
+    //This previously was a protected func, moved out for TNE,
+    //to support dynamic array padding, the name is a bit confusing. 
+    virtual unsigned int GetRandomPadding(unsigned int obj_size=0);
 };
 
 #endif

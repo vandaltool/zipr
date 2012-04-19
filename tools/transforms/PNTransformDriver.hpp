@@ -44,7 +44,9 @@ protected:
     virtual bool ShuffleValidation(int reps, PNStackLayout *layout,libIRDB::Function_t *func);
     //virtual void GenerateTransforms2(libIRDB::VariantIR_t *virp,std::vector<libIRDB::Function_t*> funcs,std::string BED_script, int progid);
     //virtual bool ValidateLayout(PNStackLayout *layout,std::string BED_script,int progid);
-    virtual bool Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_layout,libIRDB::Function_t *func);
+//    virtual bool Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_layout,libIRDB::Function_t *func);
+    //altered for TNE hack for dyn array padding, assuming all virp is orig_virp
+    virtual bool Canary_Rewrite( PNStackLayout *orig_layout,libIRDB::Function_t *func);
     virtual bool Sans_Canary_Rewrite(PNStackLayout *orig_layout, libIRDB::Function_t *func);
     inline bool Instruction_Rewrite(PNStackLayout *layout, libIRDB::Instruction_t *instr);
     virtual void Print_Report();

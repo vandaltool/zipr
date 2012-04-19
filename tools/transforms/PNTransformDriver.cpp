@@ -260,7 +260,8 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 		    
     if(!Canary_Rewrite(new_virp,layout,targ_func))
 */
-    if(!Canary_Rewrite(orig_virp,layout,func))
+    //if(!Canary_Rewrite(orig_virp,layout,func))
+    if(!Canary_Rewrite(layout,func))
     {
 	//Experimental code
 	undo(undo_list,func);
@@ -868,8 +869,11 @@ unsigned int PNTransformDriver::GetRandomCanary()
     return ret_val;
 }
 
-bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_layout, Function_t *func)
+bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *func)
 {
+    //TODO: hack for TNE, assuming all virp is orig_virp now. 
+    VariantIR_t *virp = orig_virp;
+
     if(!orig_layout->IsCanarySafe())
 	return Sans_Canary_Rewrite(orig_layout,func);
 
@@ -964,7 +968,8 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 	cerr<<"PNTransformDriver: Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
 
 	//TODO: is the stack_alloc flag necessary anymore? 
-	if(!stack_alloc && regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+	//if(!stack_alloc && regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+	if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 	    cerr << "PNTransformDriver: Canary Rewrite: Transforming Stack Alloc"<<endl;
 
@@ -982,10 +987,18 @@ bool PNTransformDriver::Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_la
 		    //If this occurs, then the found stack size is not a 
 		    //constant integer, so it must be a register. 
 
-		    cerr<<"PNTransformDriver: Canary Rewrite: Stack alloc of non-integral type ("<<matched<<"), ignoring instruction "<<endl;
+		    //cerr<<"PNTransformDriver: Canary Rewrite: Stack alloc of non-integral type ("<<matched<<"), ignoring instruction "<<endl;
+
+		    //TODO: hack for TNE, assuming that isntruction_rewrite
+		    //will add padding to dynamic arrays. 
+		    Instruction_Rewrite(layout,instr);
 		    continue;		    
 		}
 	    }
+
+	    //TODO: I need a check to see if the previous amount is equal to
+	    //the expect stack frame, a check is done is the inference
+	    //generation now, so it should be okay without it,
 
 	    stringstream ss;
 	    ss << hex << layout->GetAlteredAllocSize();
@@ -1091,6 +1104,8 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 
 inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instruction_t *instr)
 {
+    VariantIR_t* virp = orig_virp;
+
     int max = PNRegularExpressions::MAX_MATCHES;
     regmatch_t pmatch[max];
     memset(pmatch, 0,sizeof(regmatch_t) * max);
@@ -1140,7 +1155,20 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		//If this occurs, then the found stack size is not a 
 		//constant integer, so it must be a register. 
 
-		cerr<<"PNTransformDriver: Stack alloc of non-integral type ("<<matched<<"), ignoring instruction"<<endl;
+		//cerr<<"PNTransformDriver: Stack alloc of non-integral type ("<<matched<<"), ignoring instruction"<<endl;
+
+		undo_list[instr] = copyInstruction(instr);
+		//TODO: hack for TNE, padd the allocation by adding a random
+		//amount to the register used to subtract from esp. 
+
+	        stringstream ss;
+		//TODO: make this padding random.
+		ss<<"add "<<matched<<" , "<<hex<<layout->GetRandomPadding();//"0x500";
+
+		cerr<<"PNTransformDriver: adding padding to dynamic stack allocation"<<endl;
+		cerr<<"PNTransformDriver: inserted instruction = "<<ss.str()<<endl;
+		Instruction_t *new_instr = insertAssemblyBefore(virp,instr,ss.str(),NULL);
+		new_instr->SetComment("Dynamic array padding:" +ss.str());
 		return true;		    
 	    }
 	}
