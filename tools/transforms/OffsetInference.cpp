@@ -6,7 +6,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <set>
-
+#include <fstream>
 
 using namespace std;
 using namespace libIRDB;
@@ -402,6 +402,17 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 		    pn_all_offsets->SetStaticStack(false);
 		    pn_p1_offsets->SetStaticStack(false);
 		    PN_safe = false;
+
+		    //TODO: this output should be removed after TNE
+		    //only used to give Jason an indication that a 
+		    //non-static func has been detected. 
+
+		    ofstream dynstackfile;
+		    dynstackfile.open("dynamic_stack.log",fstream::out|fstream::app);
+
+		    dynstackfile<<func->GetName()<<" : "<<hex<<instr->GetAddress()->GetVirtualOffset()<<" : "<<disasm_str<<endl;
+		    dynstackfile.close();
+
 		    continue;
 		    
 		}
