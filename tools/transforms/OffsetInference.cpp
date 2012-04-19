@@ -409,17 +409,20 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 
 		    ofstream dynstackfile;
 		    dynstackfile.open("dynamic_stack.log",fstream::out|fstream::app);
-		    //I don't think this can happen, but I really don't want
-		    //to add a null pointer exception to TNE
-		    if(instr == NULL || instr->GetAddress() == NULL)
+		    if(dynstackfile.is_open())
 		    {
-			dynstackfile<<func->GetName()<<" : "<<disasm_str<<endl;
+			//I don't think this can happen, but I really don't want
+			//to add a null pointer exception to TNE
+			if(instr == NULL || instr->GetAddress() == NULL)
+			{
+			    dynstackfile<<func->GetName()<<" : "<<disasm_str<<endl;
+			}
+			else
+			{
+			    dynstackfile<<func->GetName()<<" : "<<hex<<instr->GetAddress()->GetVirtualOffset()<<" : "<<disasm_str<<endl;
+			}
+			dynstackfile.close();
 		    }
-		    else
-		    {
-			dynstackfile<<func->GetName()<<" : "<<hex<<instr->GetAddress()->GetVirtualOffset()<<" : "<<disasm_str<<endl;
-		    }
-		    dynstackfile.close();
 
 		    continue;
 		    
