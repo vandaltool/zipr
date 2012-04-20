@@ -30,6 +30,9 @@ using namespace libTransform;
 IntegerTransform::IntegerTransform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
 {
 	m_benignFalsePositives = p_benignFalsePositives;
+	m_saturatingArithmetic = false;
+	m_pathManipulationDetected = false;
+
 }
 
 // iterate through all functions
@@ -43,6 +46,9 @@ int IntegerTransform::execute()
 		cerr << "IntegerTransform: Saturating Arithmetic is enabled" << endl;
 	else
 		cerr << "IntegerTransform: Saturating Arithmetic is disabled" << endl;
+
+	if (isPathManipulationDetected())
+		cerr << "IntegerTransform: Exit on truncation" << endl;
 
 	for(
 	  set<Function_t*>::const_iterator itf=getVariantIR()->GetFunctions().begin();
@@ -79,23 +85,28 @@ int IntegerTransform::execute()
 
 				VirtualOffset vo(irdb_vo);
 
-
-				if (m_benignFalsePositives && m_benignFalsePositives->count(vo))
-				{
-					// potential benign false positives
-					policy = POLICY_CONTINUE;
-				}
-				else if (getSaturatingArithmetic())
+				if (getSaturatingArithmetic())
 				{
 					// saturating arithmetic is enabled
 					// only use if instruction is not a potential false positive
 					policy = POLICY_CONTINUE_SATURATING_ARITHMETIC;
 				}
 
+				// overwrite the above if needed
+				if (isPathManipulationDetected())
+				{
+					policy = POLICY_EXIT;
+				}
+
+				if (m_benignFalsePositives && m_benignFalsePositives->count(vo))
+				{
+					// potential benign false positives
+					policy = POLICY_CONTINUE;
+				}
+
 				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
 				if (!annotation.isValid()) 
 					continue;
-				
 
 				if (annotation.isOverflow())
 				{
@@ -114,7 +125,7 @@ int IntegerTransform::execute()
 						cerr << "integertransform: annotation has unknown sign: skipping";
 						continue;
 					}
-					handleTruncation(insn, annotation, policy);
+						handleTruncation(insn, annotation, policy);
 				}
 				else if (annotation.isSignedness())
 				{
@@ -782,6 +793,19 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 			detector = string(UNDERFLOW_DETECTOR_8);
 		cerr << "integertransform: UNDERFLOW UNKONWN: assume signed for now: " << detector << endl;
 	}
+
+#ifdef XXX
+	if (p_annotation.getBitWidth() == 8 && (p_annotation.isUnsigned() || p_annotation.isUnknownSign()))
+	{
+		// special case 8-bit unknown or unsigned underflows b/c of gcc codegen
+		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+		{
+			cerr << "integertransform: 8-bit UNDERFLOW: gcc (saturation disabled): " << endl;
+			p_policy = POLICY_DEFAULT;
+		}
+	}
+#endif
+
 
 	jncond_i->SetDataBits(dataBits);
 	jncond_i->SetComment(jncond_i->getDisassembly());

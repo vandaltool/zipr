@@ -20,6 +20,8 @@ class IntegerTransform : public Transform
 
 		void setSaturatingArithmetic(bool p_satArithmetic) { m_saturatingArithmetic = p_satArithmetic; }
 		bool getSaturatingArithmetic() { return m_saturatingArithmetic; }
+		void setPathManipulationDetected(bool p_pathManip) { m_pathManipulationDetected = p_pathManip; }
+		bool isPathManipulationDetected() { return m_pathManipulationDetected; }
 	
 	private:
 		void handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
@@ -49,6 +51,7 @@ class IntegerTransform : public Transform
 	private:
 		std::set<VirtualOffset>*  m_benignFalsePositives;
 		bool                      m_saturatingArithmetic;
+		bool                      m_pathManipulationDetected;
 };
 
 // make sure these match the function names in $STRATA/src/posix/x86_linux/detector_number_handling/overflow_detector.c
