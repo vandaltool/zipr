@@ -336,6 +336,20 @@ check_files()
 
 }
 
+check_for_iconv()
+{
+	my_name=$1
+	nm $my_name|grep iconv_open  > /dev/null 2> /dev/null 
+	
+	if [ $? = 0 ]; then
+		echo Found iconv in executable, we should skip this test.
+		echo SKIP
+		echo Skip
+		echo skip
+		exit 255
+	fi
+}
+
 #
 # turn on debugging output if it's requested.
 #
@@ -418,11 +432,15 @@ mkdir $newdir
 # store the original executable as a.ncexe
 cp $orig_exe $newdir/$newname.ncexe
 
+
+
 # make sure we overwrite out output file one way or another
 rm -f $stratafied_exe
 
 # and switch to that dir
 cd $newdir
+
+check_for_iconv $newname.ncexe
 
 # next, create a location for our log files
 mkdir logs 	
