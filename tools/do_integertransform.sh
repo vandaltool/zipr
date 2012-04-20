@@ -89,6 +89,20 @@ cd $TOP_DIR
 
 # Transform program but for each instruction present in the list above, use a "CONTINUE" policy to emit a warning (instead of the default CONTROLLED EXIT policy)
 echo "INT: Final integer transform"
-$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic
 
-#$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE 
+# for path manipulation routines, e.g. cwe191, use termination instead of saturation on truncation
+path_manip="realpath mkdir mkdirat rmdir rmdirat chmod chown unlink unlinkat"    # add to list of path manip functions here
+
+for i in $path_manip
+do
+  nm a.ncexe | grep $i >/dev/null 2>/dev/null
+  if [ $? -eq 0 ]; then
+     echo "detected path manipulation function: $i"
+     PATH_MANIP_DETECTED="--path-manip-detected"
+  fi
+done
+
+# --path-manip-detected will override the saturating arithmetic policy
+# but we still need to leave --saturating-arithmetic alone for now
+$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic $PATH_MANIP_DETECTED
+
