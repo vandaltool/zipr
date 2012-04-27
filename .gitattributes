@@ -729,7 +729,6 @@ tools/transforms/ScaledOffsetInference.cpp -text
 tools/transforms/ScaledOffsetInference.hpp -text
 tools/transforms/StackLayout.cpp -text
 tools/transforms/StackLayout.hpp -text
-tools/transforms/integerbugtransform.cpp -text
 tools/transforms/integertransformdriver.cpp -text
 tools/transforms/nulltransform.cpp -text
 tools/transforms/sample_meds_int.annot -text

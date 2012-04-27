@@ -15,7 +15,7 @@
 #
 
 
-PROGS=p1transform.exe integerbugtransform.exe nulltransform.exe integertransformdriver.exe
+PROGS=p1transform.exe nulltransform.exe integertransformdriver.exe
 
 CC=g++
 CFLAGS= -g -Wall
