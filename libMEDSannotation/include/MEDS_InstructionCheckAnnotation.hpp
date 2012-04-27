@@ -23,6 +23,7 @@ namespace MEDS_Annotation
 #define MEDS_ANNOT_INFINITELOOP "INFINITELOOP"
 #define MEDS_ANNOT_SEVERE       "SEVERE"
 #define MEDS_ANNOT_FLOWS_INTO_CRITICAL_SINK  "SINKMALLOC"
+#define MEDS_ANNOT_MEMSET       "MEMSET"
 
 using namespace std;
 using namespace MEDS_Annotation;
@@ -60,7 +61,13 @@ class MEDS_InstructionCheckAnnotation
 		// overflow with no flags, e.g. lea
 		bool isNoFlag() const { return m_isNoFlag; }
 
+        // infinite loop annotation?
 		bool isInfiniteLoop() const { return m_isInfiniteLoop; }
+
+		// memset annoatoin?
+		bool isMemset() const { return m_isMemset; }
+		int getStackOffset() const { return m_stackOffset; }
+		int getObjectSize() const { return m_objectSize; }
 
 		// get bitwidth
 		int getBitWidth() const { return m_bitWidth; }
@@ -70,6 +77,7 @@ class MEDS_InstructionCheckAnnotation
 
 		// get register
 		MEDS_Annotation::Register::RegisterName getRegister() const { return m_register; }
+
 
 		// virtual offset
 		VirtualOffset getVirtualOffset() const;
@@ -97,10 +105,13 @@ class MEDS_InstructionCheckAnnotation
 		bool           m_isUnknownSign;
 		bool           m_isNoFlag;
 		bool           m_isInfiniteLoop;
+		bool           m_isMemset;
 		bool           m_isSevere;
 		int            m_bitWidth;
 		int            m_truncationFromWidth;
 		int            m_truncationToWidth;
+		int            m_stackOffset;
+		int            m_objectSize;
 		VirtualOffset  m_virtualOffset;
 		bool           m_isValid;
 		bool           m_flowsIntoCriticalSink;

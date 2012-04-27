@@ -20,6 +20,7 @@ Example format (as of 10/18/2011) -- subject to change:
 8048492 5 INSTR CHECK TRUNCATION 32 EAX 16 AX ZZ mov [esp+26h], ax 
 8048492 5 INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov [esp+26h], ax 
 8048892 4 INSTR INFINITELOOP add     [ebp+var_25], 1
+8048293 3 INSTR MEMSET STACKOFFSET 12 SIZE 24 ZZ call memset
 */
 
 void MEDS_InstructionCheckAnnotation::init()
@@ -35,11 +36,14 @@ void MEDS_InstructionCheckAnnotation::init()
 	m_isNoFlag = false;
 	m_isInfiniteLoop = false;
 	m_isSevere = false;
+	m_isMemset = false;
 	m_flowsIntoCriticalSink = false;
 	m_bitWidth = -1;
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
 	m_register = Register::UNKNOWN;
+	m_stackOffset = -1;
+	m_objectSize = -1;
 }
 
 MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation(const std::string &p_rawInputLine)
@@ -62,7 +66,7 @@ void MEDS_InstructionCheckAnnotation::parse()
 	//	field 1 - instruction address
 	//  field 2 - instruction size (ignore)
 	//  field 3 - INSTR
-	//  field 4 - CHECK | INFINITELOOP
+	//  field 4 - CHECK | INFINITELOOP | MEMSET
 	//  field 5 - {OVERFLOW | UNDERFLOW | SIGNEDNESS | TRUNCATION }  
 	//  field 6 - {SIGNED | UNSIGNED | UNKNOWNSIGN | 16 | 32}
 	//  field 7 - {<register> | <memory reference>}
@@ -71,7 +75,8 @@ void MEDS_InstructionCheckAnnotation::parse()
 		return;
 
 	if (m_rawInputLine.find(MEDS_ANNOT_INFINITELOOP)==string::npos &&
-	    m_rawInputLine.find(MEDS_ANNOT_CHECK)==string::npos) 
+	    m_rawInputLine.find(MEDS_ANNOT_CHECK)==string::npos &&
+	    m_rawInputLine.find(MEDS_ANNOT_MEMSET)==string::npos) 
 	{
 		return;
 	}
@@ -100,8 +105,12 @@ void MEDS_InstructionCheckAnnotation::parse()
 	if (m_rawInputLine.find(MEDS_ANNOT_NOFLAG)!=string::npos)
 		m_isNoFlag = true;
 
+	if (m_rawInputLine.find(MEDS_ANNOT_MEMSET)!=string::npos)
+		m_isMemset = true;
+
 	if (m_rawInputLine.find(MEDS_ANNOT_FLOWS_INTO_CRITICAL_SINK)!=string::npos)
 		m_flowsIntoCriticalSink = true;
+
 
 	// signed vs. unsigned
 	if (m_rawInputLine.find(MEDS_ANNOT_UNSIGNED)!=string::npos)
@@ -169,6 +178,16 @@ void MEDS_InstructionCheckAnnotation::parse()
 		sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %*s %d %s", &m_bitWidth, buf);
 		m_target = string(buf);
 		m_register = Register::getRegister(m_target);
+	}
+
+	if (m_isMemset)
+	{
+		// 8048293 3 INSTR MEMSET STACKOFFSET 12 SIZE 24 ZZ call memset
+		if (m_rawInputLine.find("STACKOFFSET")!=string::npos)
+		{
+			char buf[1024] = "";
+			sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %d %*s %d", &m_stackOffset, &m_objectSize);
+		}
 	}
 
 	m_isValid = true;
