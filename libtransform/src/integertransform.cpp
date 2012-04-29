@@ -120,11 +120,14 @@ int IntegerTransform::execute()
 				}
 				else if (annotation.isTruncation())
 				{
+				/*
 					if (annotation.isUnknownSign())
 					{
 						cerr << "integertransform: annotation has unknown sign: skipping";
 						continue;
 					}
+					2012/04/25 commented out to see if we would pick up the other 785s
+					*/
 						handleTruncation(insn, annotation, policy);
 				}
 				else if (annotation.isSignedness())
@@ -562,11 +565,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 
 void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	if (p_annotation.isUnknownSign())
-	{
-		cerr << "integertransform: TRUNCATION is of unknown sign -- skip: " << p_annotation.toString() << "fromWidth: " << p_annotation.getTruncationFromWidth() << " toWidth: " << p_annotation.getTruncationToWidth() << endl;
-	}
-	else if (p_annotation.getTruncationFromWidth() == 32 && (p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8))
+	if (p_annotation.getTruncationFromWidth() == 32 && (p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8))
 	{
 		addTruncationCheck(p_instruction, p_annotation, p_policy);
 	}
