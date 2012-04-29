@@ -64,8 +64,10 @@ class MEDS_InstructionCheckAnnotation
         // infinite loop annotation?
 		bool isInfiniteLoop() const { return m_isInfiniteLoop; }
 
-		// memset annoatoin?
+		// memset annotation?
 		bool isMemset() const { return m_isMemset; }
+		bool isEspOffset() const { return m_isEspOffset; }
+		bool isEbpOffset() const { return m_isEbpOffset; }
 		int getStackOffset() const { return m_stackOffset; }
 		int getObjectSize() const { return m_objectSize; }
 
@@ -110,6 +112,8 @@ class MEDS_InstructionCheckAnnotation
 		int            m_bitWidth;
 		int            m_truncationFromWidth;
 		int            m_truncationToWidth;
+		bool           m_isEspOffset;
+		bool           m_isEbpOffset;
 		int            m_stackOffset;
 		int            m_objectSize;
 		VirtualOffset  m_virtualOffset;

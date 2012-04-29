@@ -44,6 +44,8 @@ void MEDS_InstructionCheckAnnotation::init()
 	m_register = Register::UNKNOWN;
 	m_stackOffset = -1;
 	m_objectSize = -1;
+	m_isEspOffset = false;
+	m_isEbpOffset = false;
 }
 
 MEDS_InstructionCheckAnnotation::MEDS_InstructionCheckAnnotation(const std::string &p_rawInputLine)
@@ -182,11 +184,20 @@ void MEDS_InstructionCheckAnnotation::parse()
 
 	if (m_isMemset)
 	{
-		// 8048293 3 INSTR MEMSET STACKOFFSET 12 SIZE 24 ZZ call memset
+		// 8048293 3 INSTR MEMSET STACKOFFSET_EBP 12 SIZE 24 ZZ call memset
+		// 8048293 3 INSTR MEMSET STACKOFFSET_ESP 12 SIZE 24 ZZ call memset
 		if (m_rawInputLine.find("STACKOFFSET")!=string::npos)
 		{
 			char buf[1024] = "";
 			sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %*s %d %*s %d", &m_stackOffset, &m_objectSize);
+			if (m_rawInputLine.find("STACKOFFSET_EBP")!=string::npos)
+			{
+				m_isEbpOffset = true;
+			}
+			else if (m_rawInputLine.find("STACKOFFSET_ESP")!=string::npos)
+			{
+				m_isEspOffset = true;
+			}
 		}
 	}
 
