@@ -1,4 +1,5 @@
 
+
 #include <iostream>
 #include "PNStackLayoutInference.hpp"
 #include "P1Inference.hpp"
@@ -7,16 +8,22 @@
 #include "DirectOffsetInference.hpp"
 #include "PNTransformDriver.hpp"
 
+#include "PrecedenceBoundaryInference.hpp"
+#include "AnnotationBoundaryGenerator.hpp"
+#include "MEDS_AnnotationParser.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <set>
 #include <cstdlib>
 
+
 bool DO_CANARIES = true;
 
 using namespace std;
 using namespace libIRDB;
+using namespace MEDS_Annotation;
 
 //TODO: PN will now p1 if no coverage is available,
 //this is not desired for black box testing. 
@@ -154,19 +161,32 @@ int main(int argc, char **argv)
 	PNTransformDriver transform_driver(pidp,BED_script);
 
 	transform_driver.AddBlacklist(blackListOfFunctions);
+	
 	OffsetInference *offset_inference = new OffsetInference();
+
+	//TODO: hard coding the file in for now. 
+	ifstream annotationFile("a.ncexe.infoannot", ifstream::in);
+	AnnotationBoundaryGenerator *abgen = new AnnotationBoundaryGenerator(new MEDS_AnnotationParser(annotationFile));
+
+	PrecedenceBoundaryInference *aggressive_memset_inference = new PrecedenceBoundaryInference(offset_inference,abgen);
+	
 	DirectOffsetInference *direct_offset_inference = new DirectOffsetInference(offset_inference);
 	ScaledOffsetInference *scaled_offset_inference = new ScaledOffsetInference(offset_inference);
 	P1Inference *p1 = new P1Inference(offset_inference);
+        PrecedenceBoundaryInference *conservative_memset_inference = new PrecedenceBoundaryInference(p1, abgen);
 
 	//Add new boundary inferences here
 
-	transform_driver.AddInference(offset_inference);
-	transform_driver.AddInference(direct_offset_inference);
-	transform_driver.AddInference(scaled_offset_inference);
-	transform_driver.AddInference(p1,1);
+	//TODO: in addition to a hierarchy there should be equivalence classes, a failure in one member, is a failure for all. 
 
-	transform_driver.GenerateTransforms(coverage_map,p1threshold,1);
+	transform_driver.AddInference(aggressive_memset_inference);
+	transform_driver.AddInference(offset_inference,1);
+	transform_driver.AddInference(direct_offset_inference,1);
+	transform_driver.AddInference(scaled_offset_inference,1);
+	transform_driver.AddInference(conservative_memset_inference,2);
+	transform_driver.AddInference(p1,2);
+
+	transform_driver.GenerateTransforms(coverage_map,p1threshold,2);
 	//transform_driver.GenerateTransforms();
 
 /*

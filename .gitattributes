@@ -702,6 +702,8 @@ tools/spasm/spasm.h -text
 tools/spasm/spasm_main.cpp -text
 tools/spasm/test.aspri -text
 tools/spasm/tst.s -text
+tools/transforms/AnnotationBoundaryGenerator.cpp -text
+tools/transforms/AnnotationBoundaryGenerator.hpp -text
 tools/transforms/DirectOffsetInference.cpp -text
 tools/transforms/DirectOffsetInference.hpp -text
 tools/transforms/General_Utility.cpp -text
@@ -721,6 +723,9 @@ tools/transforms/PNStackLayout.hpp -text
 tools/transforms/PNStackLayoutInference.hpp -text
 tools/transforms/PNTransformDriver.cpp -text
 tools/transforms/PNTransformDriver.hpp -text
+tools/transforms/PrecedenceBoundaryGenerator.hpp -text
+tools/transforms/PrecedenceBoundaryInference.cpp -text
+tools/transforms/PrecedenceBoundaryInference.hpp -text
 tools/transforms/Range.cpp -text
 tools/transforms/Range.hpp -text
 tools/transforms/Rewrite_Utility.cpp -text

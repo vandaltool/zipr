@@ -39,7 +39,6 @@ unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
     max = MAX_PADDING;
     min = MIN_PADDING;
 
-
     if(stack_layout.is_recursive)
     {
 	max = RECURSIVE_MAX_PADDING;
@@ -57,6 +56,16 @@ unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 	pad = pad - obj_size;
     }
 
+    //Finally, add padding equivalent to the original stack frame size
+    //this helps protect against very large overflows/underflows.
+    //align the original stack frame if not aligned, adding more bytes if necessary
+    //TODO: should this be scaled down if the func is recursive?
+
+    //if the original frame size is not aligned, then add as many bytes as necessary to align it
+    //for example, if 3 bytes over alignment, and the alignment stride is 8, then add 8 - 3, or 5 bytes. 
+    pad += (ALIGNMENT_BYTE_SIZE - (stack_layout.frame_alloc_size % ALIGNMENT_BYTE_SIZE));
+    pad += stack_layout.frame_alloc_size; 
+	    
     return pad;
 }
 

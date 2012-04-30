@@ -18,7 +18,7 @@
 PROGS=p1transform.exe nulltransform.exe integertransformdriver.exe
 
 CC=g++
-CFLAGS= -g -Wall
+CFLAGS= -g -O3 -Wall
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../../libtransform/include/
 LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB-core -lIRDB-cfg -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx  -L../../libMEDSannotation/lib -lMEDSannotation -L../../libtransform/lib -ltransform
 OBJS=transformutils.o
@@ -38,6 +38,6 @@ clean:
 	rm -f *.o core $(PROGS)
 
 
-pntransform: PNTransformDriver.cpp PNStackLayoutInference.hpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp StackLayout.cpp Rewrite_Utility.cpp General_Utility.cpp
-	$(CC) $(CFLAGS) PNMain.cpp PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp StackLayout.cpp Rewrite_Utility.cpp General_Utility.cpp $(INCLUDE) $(LIBS) -o pntransform.exe
+pntransform: PNTransformDriver.cpp PNStackLayoutInference.hpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp StackLayout.cpp Rewrite_Utility.cpp General_Utility.cpp AnnotationBoundaryGenerator.cpp PrecedenceBoundaryInference.cpp 
+	$(CC) $(CFLAGS) PNMain.cpp PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp StackLayout.cpp Rewrite_Utility.cpp General_Utility.cpp  AnnotationBoundaryGenerator.cpp PrecedenceBoundaryInference.cpp $(INCLUDE) $(LIBS) -o pntransform.exe
 	cp pntransform.exe p1transform.exe

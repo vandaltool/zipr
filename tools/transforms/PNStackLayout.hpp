@@ -77,6 +77,10 @@ public:
     virtual bool IsCanarySafe() const {return stack_layout.is_canary_safe;}
     virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
     virtual bool IsStaticStack()const {return stack_layout.is_static_stack;}
+    //memory leak?
+    //virtual StackLayout* GetStackLayout() { return new StackLayout(stack_layout); }
+
+    virtual StackLayout GetStackLayout() { return StackLayout(stack_layout); }
 
     //This previously was a protected func, moved out for TNE,
     //to support dynamic array padding, the name is a bit confusing. 

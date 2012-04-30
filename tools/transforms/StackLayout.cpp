@@ -166,7 +166,7 @@ void StackLayout::InsertEBPOffset(int offset)
     //The size of the saved regs must be taken into consideration when transforming
     //the EBP offset to an esp relative offset
     cerr<<"StackLayout: InsertEBPOffset(): Offset="<<offset<<" frame alloc size="<<frame_alloc_size<<" saved regs size="<<saved_regs_size<<endl;
-    int esp_conversion = ((int)frame_alloc_size+(int)saved_regs_size) - offset;
+    int esp_conversion = EBPToESP(offset);//((int)frame_alloc_size+(int)saved_regs_size) - offset;
 
     //It is possible to have ebp offsets that extend beyond the stack pointer. I haven't seen it
     //but still. If this occurs, ignore the insert. We currently do not handle this case
@@ -211,4 +211,11 @@ unsigned int StackLayout::GetSavedRegsSize()
 unsigned int StackLayout::GetOutArgsRegionSize()
 {
     return out_args_size;
+}
+
+//TODO: maybe this should be an unsigned int, since I am assuming it is
+//positive. 
+int StackLayout::EBPToESP(int offset)
+{
+    return ((int)frame_alloc_size+(int)saved_regs_size) - offset;
 }

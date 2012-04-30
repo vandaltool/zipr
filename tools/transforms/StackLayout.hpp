@@ -23,8 +23,6 @@ protected:
     bool is_recursive;
     std::string layout_name;
 
-    virtual unsigned int GetClosestIndex(int loc) const;
-
 public:
 
 //NOTE: the following todo came from PNStackLayout where the insert functionality used to be, I am not sure what it means
@@ -35,6 +33,7 @@ public:
     StackLayout(const StackLayout &layout);
     virtual void InsertESPOffset(int offset);
     virtual void InsertEBPOffset(int offset);
+    virtual int EBPToESP(int offset);
 
     virtual unsigned int GetAllocSize();
     virtual unsigned int GetSavedRegsSize();
@@ -45,6 +44,8 @@ public:
     virtual void SetPaddingSafe(bool val){ is_padding_safe = val; is_canary_safe = is_canary_safe && val;}
     virtual void SetStaticStack(bool val){ is_static_stack = val; }
     virtual void SetRecursive(bool val){ is_recursive = val; }
+    virtual std::vector<Range> GetRanges() { return mem_objects; }
+    virtual unsigned int GetClosestIndex(int loc) const;
     friend class PNStackLayout;
 };
 
