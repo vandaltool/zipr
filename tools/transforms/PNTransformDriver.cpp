@@ -524,6 +524,10 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 
 	    sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
 
+	    //TODO: it is assumed now that the threshold_level is a level at which no validation need be done
+	    //but what if no threshold level is desired or provided? Hack for post TNE testing. 
+	    bool do_validate = (func_coverage != 0 && level != threshold_level);
+
 //TODO: for TNE if there is no coverage for a function, perform the transform (which should be p1 at this point) blindly
 //May need to reconsider this in the future. 
 	    for(unsigned int i=0;i<layouts.size()&&!timeExpired;i++)
@@ -535,7 +539,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		if(layouts[i]->IsCanarySafe())
 		{
 	
-		    success = CanaryTransformHandler(layouts[i],func,(func_coverage != 0));
+		    success = CanaryTransformHandler(layouts[i],func,do_validate);//(func_coverage != 0));
 		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 			failed.push_back(func);
 		    else if(success)
@@ -545,7 +549,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 
 		else if(layouts[i]->IsPaddingSafe())
 		{
-		    success = PaddingTransformHandler(layouts[i],func,(func_coverage != 0));
+		    success = PaddingTransformHandler(layouts[i],func,do_validate);//(func_coverage != 0));
 		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 			failed.push_back(func);
 		    else if(success)
@@ -555,7 +559,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		//if not canary or padding safe, the layout can only be randomized
 		else
 		{
-		    success = LayoutRandTransformHandler(layouts[i],func,(func_coverage!=0));
+		    success = LayoutRandTransformHandler(layouts[i],func,do_validate);//(func_coverage!=0));
 		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 			failed.push_back(func);
 		    else if(success)
