@@ -81,17 +81,51 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 	    cur.SetOffset(slayout.EBPToESP(-1*ranges[i].GetOffset()));
 	}
 	espranges.push_back(cur);
-
-	
     }
 
     sort(espranges.begin(),espranges.end(),CompareRangeBaseOffset);
 
-    //insert all the precedence boundaries
-    for(int i=0;i<espranges.size();i++)
+
+    //get transitive closure of offsets
+    //TODO: should this be done in the generator? Requires knowing layout.
+    vector<Range> closure_ranges;
+
+    Range cur;
+    cur.SetOffset(espranges[0].GetOffset());
+    cur.SetSize(espranges[0].GetSize());
+   
+    //TODO: handle this better
+    if(espranges.size() == 1)
+	closure_ranges.push_back(cur);
+
+    for(int i=1;i<espranges.size();i++)
     {
-	precedence_layout.InsertESPOffset(espranges[i].GetOffset());
-	precedence_layout.InsertESPOffset(espranges[i].GetOffset()+espranges[i].GetSize());
+	int next_offset = espranges[i].GetOffset();
+	unsigned int next_size = espranges[i].GetSize();
+
+	//if the next element's offset falls in the current range's boundary
+	//and its size exceeds the current range's boundary, then expand the
+	//current range to include this range.
+	if((next_offset >= cur.GetOffset()) && 
+	   (next_offset < (cur.GetSize()+cur.GetOffset())) &&
+	   ((next_offset+next_size) > (cur.GetOffset()+cur.GetSize())))
+	{
+	    cur.SetSize(next_size + (next_offset-cur.GetOffset()));
+	}
+	else if(next_offset > (cur.GetOffset() + cur.GetSize()))
+	{
+	    closure_ranges.push_back(cur);
+	    cur.SetOffset(next_offset);
+	    cur.SetSize(next_size);
+	}
+	//else the next bound is completely inside the cur, so ignore. 
+    }
+
+    //insert all the precedence boundaries
+    for(int i=0;i<closure_ranges.size();i++)
+    {
+	precedence_layout.InsertESPOffset(closure_ranges[i].GetOffset());
+	precedence_layout.InsertESPOffset(closure_ranges[i].GetOffset()+closure_ranges[i].GetSize());
     }
 
     for(int i=0;i<pnranges.size();i++)
@@ -100,10 +134,10 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 	//if not found, -1 is returned, and in this case we want to insert
 	//the offset into the inference. Otherwise, the location exists inside
 	//one of the precedence boundaries, and therefore we should not insert. 
-	if(GetClosestIndex(espranges,pnranges[i].GetOffset()) < 0)
+	if(GetClosestIndex(closure_ranges,pnranges[i].GetOffset()) < 0)
 	    precedence_layout.InsertESPOffset(pnranges[i].GetOffset());
 
-	if(GetClosestIndex(espranges,pnranges[i].GetOffset()+pnranges[i].GetSize()) < 0)
+	if(GetClosestIndex(closure_ranges,pnranges[i].GetOffset()+pnranges[i].GetSize()) < 0)
 	    precedence_layout.InsertESPOffset(pnranges[i].GetOffset()+pnranges[i].GetSize());
     }
 

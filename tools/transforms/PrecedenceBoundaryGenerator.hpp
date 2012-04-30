@@ -3,6 +3,7 @@
 #include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
 #include "Range.hpp"
+#include "StackLayout.hpp"
 
 class PrecedenceBoundaryGenerator
 {
