@@ -141,6 +141,31 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 	    precedence_layout.InsertESPOffset(pnranges[i].GetOffset()+pnranges[i].GetSize());
     }
 
+    //Since I am using annotations about calls to find offsets, there better
+    //be an out arguments region, if not, consider the loweset object the out
+    //args region and produce a new precedence_layout
+    //TODO: in the future I may want the option in stack layout to set
+    //the out args region after the fact. 
+    if(precedence_layout.GetOutArgsRegionSize() == 0)
+    {
+	vector<Range> inserted_ranges = precedence_layout.GetRanges();
+
+	sort(inserted_ranges.begin(),inserted_ranges.end(),CompareRangeBaseOffset);
+
+	unsigned int args_size =  inserted_ranges[0].GetOffset()+inserted_ranges[0].GetSize();
+
+	StackLayout revised_playout(GetInferenceName(),base_layout->GetFunctionName(),base_layout->GetOriginalAllocSize(),
+				  base_layout->GetSavedRegsSize(), base_layout->HasFramePointer(), args_size);
+
+	for(int i=1;i<inserted_ranges.size();i++)
+	{
+	    	revised_playout.InsertESPOffset(inserted_ranges[i].GetOffset()+inserted_ranges[i].GetSize());
+	}
+
+	return new PNStackLayout(revised_playout);
+    }
+
+    
     return new PNStackLayout(precedence_layout);
 }
 

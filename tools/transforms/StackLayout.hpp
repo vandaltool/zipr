@@ -45,6 +45,7 @@ public:
     virtual void SetStaticStack(bool val){ is_static_stack = val; }
     virtual void SetRecursive(bool val){ is_recursive = val; }
     virtual std::vector<Range> GetRanges() { return mem_objects; }
+    //TODO: why is this public
     virtual unsigned int GetClosestIndex(int loc) const;
     friend class PNStackLayout;
 };
