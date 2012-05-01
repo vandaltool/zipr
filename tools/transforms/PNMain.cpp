@@ -185,7 +185,7 @@ int main(int argc, char **argv)
 	transform_driver.AddInference(offset_inference,1);
 	transform_driver.AddInference(direct_offset_inference,1);
 	transform_driver.AddInference(scaled_offset_inference,1);
-	transform_driver.AddInference(conservative_memset_inference,1);
+	transform_driver.AddInference(conservative_memset_inference,2);
 	transform_driver.AddInference(p1,2);
 
 	transform_driver.GenerateTransforms(coverage_map,p1threshold,2);

@@ -50,6 +50,7 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 
     vector<Range> ranges = pbgen->GetBoundaries(func);
     
+    cerr<<"PrecedenceBoundaryInference: ranges found = "<<ranges.size()<<endl;
     if(ranges.size() == 0)
 	return NULL;
 
@@ -160,9 +161,12 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 	    	revised_playout.InsertESPOffset(inserted_ranges[i].GetOffset()+inserted_ranges[i].GetSize());
 	}
 
+	revised_playout.SetCanarySafe(false);
+
 	return new PNStackLayout(revised_playout);
     }
 
+    precedence_layout.SetCanarySafe(false);
     
     return new PNStackLayout(precedence_layout);
 }
