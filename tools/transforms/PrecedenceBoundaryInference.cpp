@@ -94,10 +94,6 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
     cur.SetOffset(espranges[0].GetOffset());
     cur.SetSize(espranges[0].GetSize());
    
-    //TODO: handle this better
-    if(espranges.size() == 1)
-	closure_ranges.push_back(cur);
-
     for(int i=1;i<espranges.size();i++)
     {
 	int next_offset = espranges[i].GetOffset();
@@ -120,6 +116,8 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 	}
 	//else the next bound is completely inside the cur, so ignore. 
     }
+
+    closure_ranges.push_back(cur);
 
     //insert all the precedence boundaries
     for(int i=0;i<closure_ranges.size();i++)
