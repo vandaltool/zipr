@@ -166,10 +166,12 @@ int main(int argc, char **argv)
 
 	//TODO: hard coding the file in for now. 
 	ifstream annotationFile("a.ncexe.infoannot", ifstream::in);
+	assert(annotationFile.is_open());
+
 	AnnotationBoundaryGenerator *abgen = new AnnotationBoundaryGenerator(new MEDS_AnnotationParser(annotationFile));
 
 	PrecedenceBoundaryInference *aggressive_memset_inference = new PrecedenceBoundaryInference(offset_inference,abgen);
-	
+
 	DirectOffsetInference *direct_offset_inference = new DirectOffsetInference(offset_inference);
 	ScaledOffsetInference *scaled_offset_inference = new ScaledOffsetInference(offset_inference);
 	P1Inference *p1 = new P1Inference(offset_inference);
@@ -183,7 +185,7 @@ int main(int argc, char **argv)
 	transform_driver.AddInference(offset_inference,1);
 	transform_driver.AddInference(direct_offset_inference,1);
 	transform_driver.AddInference(scaled_offset_inference,1);
-	transform_driver.AddInference(conservative_memset_inference,2);
+	transform_driver.AddInference(conservative_memset_inference,1);
 	transform_driver.AddInference(p1,2);
 
 	transform_driver.GenerateTransforms(coverage_map,p1threshold,2);
