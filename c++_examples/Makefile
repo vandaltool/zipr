@@ -1,10 +1,5 @@
 
 
-CC=DO_NOT_USE
-CXX=DO_NOT_USE
-CFLAGS=DO_NOT_USE
-LD=DO_NOT_USE
-
 .SUFFIXES: .o .c .cpp .stock .protected
 
 exes=hanoi++.protected newdel.protected newdel_broke1.protected newdel_broke2.protected newdel_broke3.protected newdel_broke4.protected newdel_broke5.protected  newdel_broke6.protected  newdel_broke7.protected  throw.protected newdelete1.protected newdelete2.protected newdelete3.protected newdelete4.protected newdelete5.protected newdelete6.protected 
@@ -18,16 +13,16 @@ all: env_check  ${exes}
 .PHONY: env_check 
 
 .stock.protected:
-	${PEASOUP_HOME}/tools/ps_analyze.sh  $< $@
+	${PEASOUP_HOME}/tools/ps_analyze.sh  $< $@ --step concolic=off 
 
 .o.stock:
-	g++ -static -Bstatic $< -o $@ 
+	g++ $< -o $@ 
 
 .c.o:
-	${PEASOUP_HOME}/tools/ps_comp.sh $< 
+	$(CC) -c $< 
 
 .cpp.o:
-	${PEASOUP_HOME}/tools/ps_comp++.sh $< 
+	$(CXX) -c $< 
 
 chopzero:
 	@ if [ ! -f chopzero ]; then gcc chopzero.c -o chopzero -O3 ; fi
