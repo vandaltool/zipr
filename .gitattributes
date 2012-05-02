@@ -59,6 +59,7 @@ ELFIO-1.0.3/Examples/tutorial/Makefile.am -text
 ELFIO-1.0.3/Examples/tutorial/tutorial.cpp -text
 ELFIO-1.0.3/INSTALL -text
 ELFIO-1.0.3/Makefile.am -text
+ELFIO-1.0.3/Makefile.in -text
 ELFIO-1.0.3/NEWS -text
 ELFIO-1.0.3/README -text
 ELFIO-1.0.3/aclocal.m4 -text
