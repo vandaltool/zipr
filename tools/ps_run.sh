@@ -94,4 +94,8 @@ if [ -f $datapath/diagnostics.out ]; then
 	fi
 fi
 
+# final check, in case we couldn't catch the signal
+if [ $SAVE_EXIT_CODE = 139 ]; then
+	exit 200
+fi
 exit $SAVE_EXIT_CODE

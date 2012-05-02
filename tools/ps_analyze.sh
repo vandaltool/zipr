@@ -336,18 +336,23 @@ check_files()
 
 }
 
-check_for_iconv()
+check_for_bad_funcs()
 {
 	my_name=$1
-	nm $my_name|grep iconv_open  > /dev/null 2> /dev/null 
+	bad_funcs="htons ntohs ntohl htonl iconv_open"
+
+	for ducs_i in $bad_funcs
+	do
+		nm $my_name|grep $ducs_i  > /dev/null 2> /dev/null 
 	
-	if [ $? = 0 ]; then
-		echo Found iconv in executable, we should skip this test.
-		echo SKIP
-		echo Skip
-		echo skip
-		exit 255
-	fi
+		if [ $? = 0 ]; then
+			echo "Found bad function ($ducs_i) in executable, we should skip this test."
+			echo SKIP
+			echo Skip
+			echo skip
+			exit 255
+		fi
+	done
 }
 
 #
@@ -440,7 +445,7 @@ rm -f $stratafied_exe
 # and switch to that dir
 cd $newdir
 
-check_for_iconv $newname.ncexe
+check_for_bad_funcs $newname.ncexe
 
 # next, create a location for our log files
 mkdir logs 	
