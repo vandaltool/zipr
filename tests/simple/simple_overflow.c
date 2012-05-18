@@ -10,7 +10,7 @@ void overflow(char *in)
     char buf[5];
     i = 0;
 
-    
+    // char *p = (char*)alloca((int)in[i]);
     while(in[i] != '\n' && in[i] != '\0')
     {
 	buf[i] = in[i];
@@ -28,6 +28,6 @@ int main(int argc, char *argv[])
 
     overflow(argv[1]);
     printf("Finished\n");
-    exit(64);
+//    exit(64);
     return 0;
 }
