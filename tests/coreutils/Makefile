@@ -1,6 +1,6 @@
 progs=cat_nop.peasoup cat_O3.peasoup ls_nop.peasoup ls_O3.peasoup bzip2_nop.peasoup bzip2_O2.peasoup bzip2_O3_black.peasoup  bzip2_O3_white.peasoup ls_O3_black.peasoup rm_O3_black.peasoup tail_O3_black.peasoup rmdir_O3_black.peasoup readlink_O3_black.peasoup pr_O3_black.peasoup mkdir_O3_black.peasoup ln_O3_black.peasoup install_O3_black.peasoup du_O3_black.peasoup df_O3_black.peasoup dd_O3_black.peasoup cp_O3_black.peasoup chown_O3_black.peasoup chmod_O3_black.peasoup chgrp_O3_black.peasoup touch_O3_black.peasoup mv_O3_black.peasoup
 
-ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off"
+ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off --step heaprand=off --step double_free=off --step watchdog=off"
 
 ps_analyze_concolic_flags="--step ilr=off --step integertransform=off --step manual_test=off --step concolic=off --step isr=off"
 
