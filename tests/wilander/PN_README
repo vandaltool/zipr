@@ -39,6 +39,8 @@ PN may have issues with test 2 and 8 since the all offsets inference can't be us
 
 Also note I did modify the source code a bit for PN. There were some checks provide by Wilander to make sure a test is still valid. These tests used a propolice dummy variable. In some situations these checks still make sense, but in light of variable reordering, in some cases this check is meaningless. A check is still needed to make sure the attack is still possible, so I commented out these checks when necessary and placed my own check in. 
 
+Note the flags in the make file. Wilander makes some indirect function calls. Normally MEDS will change these instructions, and PN will not see the call. I have turned off as many MEDS options as possible including this one so that a canary check is inserted before these calls. 
+
 Anyway, I think that pretty much sums it up. 
 
 Good luck!
