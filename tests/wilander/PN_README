@@ -1,0 +1,44 @@
+So you want to run wilander on PN...GOOD LUCK!
+
+Okay it isn't that bad, but it does require some conderations.
+
+First, wilander has to be compiled using the make file given, if not, the compiler does some things that actually screw up the vulnerabilities. Compiling in this way actually statically links the executable.
+
+This is an issue only because there is no way to do validation with Wilander. The expected behavior is an overflow, so a successful transformation thwarts that, which alters behavior, but we wan this. So what you have to do is just blindly accept all transformations. In the current security transforms trunk, under tests/simple is a scipt, true_wrapper.sh, this wrapper does just that, blindly returns true. The make file expects this script to be there. 
+
+To avoid transforming a bunch of libraries you are likely to transform incorrectly, modify PN such that the black list functionality is reversed. In the current PN version there is a IsBlacklisted subroutine. Modify it to only transform if found in the blacklist (make sure to comment out any other hard coded blacklisted functions). Then alter the blacklist txt file in PEASOUP_HOME/tools to include just the following functions:
+
+parameter_func_pointer
+parameter_longjmp_buf
+vuln_stack_return_addr
+vuln_stack_function_ptr
+vuln_stack_longjmp_buf
+vuln_stack_base_ptr
+
+Okay, now you will only transform the functions that should be transformed. 
+
+One additional complication is that overflow 2 and 8 actually cannot be transformed with the all offsets inference. All the rest can. So you need to modify PNMain to only use the scaled offset inference, so you can test these two inferences. 
+
+There will likely be other changes required to PN, such as making sure you transform even if no coverage is available, but that all depends on the current version of PN, and it is always changing. Just run it and check the p1transform log to see if everything was transformed as expected, and if not, there should be a message indicating why. 
+
+In case you forgot, the PN relevant tests are
+-4
+-3
+-2
+-1
+1
+2
+3
+4
+7
+8
+9
+10
+
+PN may have issues with test 2 and 8 since the all offsets inference can't be used. Most of the time PN with canaries should detect an issue if the attack is still possible. If the program segfaults, this is actually expected in a few cases, specifically test 7 and 9. Since Pn does not always align the stack, this can causes garbage to end up in a pointer, which is dereferenced. Had execution continued the canary checks would have caught the attack, but the program segfaults trying to write to the nonsense memory location. 
+
+Also note I did modify the source code a bit for PN. There were some checks provide by Wilander to make sure a test is still valid. These tests used a propolice dummy variable. In some situations these checks still make sense, but in light of variable reordering, in some cases this check is meaningless. A check is still needed to make sure the attack is still possible, so I commented out these checks when necessary and placed my own check in. 
+
+Anyway, I think that pretty much sums it up. 
+
+Good luck!

@@ -606,6 +606,17 @@ tests/spec/sphinx_run/sphinx_livepretend_base.i386-m32-gcc42-nn -text
 tests/spec/sphinx_run/test -text
 tests/spec/sphinx_run/total_considered.out -text
 tests/spec/sphinx_test.sh -text
+tests/wilander/Makefile -text
+tests/wilander/PN_README -text
+tests/wilander/README -text
+tests/wilander/dynamic_testbed_john_wilander.nicecap.c -text
+tests/wilander/dynamic_testbed_john_wilander.original.c -text
+tests/wilander/dynamic_testbed_john_wilander.original_with_checkpoints.c -text
+tests/wilander/dynamic_testbed_john_wilander.with_strata.c -text
+tests/wilander/rev_memcpy.c -text
+tests/wilander/rev_memcpy.h -text
+tests/wilander/rev_memcpy.h.gch -text
+tests/wilander/wilander_test.sh -text
 tools/Makefile -text
 tools/cover/Makefile -text
 tools/cover/cover.cpp -text
