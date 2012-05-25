@@ -49,7 +49,9 @@ set_timer()
 INTEGER_TRANSFORM_TIMEOUT_VALUE=900
 PN_TIMEOUT_VALUE=9000000
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
-DO_CANARIES=1
+#DO_CANARIES=1
+#on for on and off for off
+DO_CANARIES=on
 
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
