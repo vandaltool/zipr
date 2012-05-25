@@ -93,6 +93,8 @@ do
     #input_number=`echo $input | sed "s/.*input_//"`
    # abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
 
+    echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage $STRATAFIED_BINARY $i"
+
     #generate baseline from the stratafied program, if only to prevent discrepencies when a program prints its own name. 
     #also I want to be as consistent as possible to avoid replayer issues. 
     timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage $STRATAFIED_BINARY $i || continue
@@ -148,6 +150,9 @@ $PEASOUP_HOME/tools/cover.sh $ORIGINAL_BINARY $MEDS_ANNOTATION_FILE $EXECUTED_AD
 
 touch $COVERAGE_FILE
 
-execute_pn $CLONE_ID $BED_SCRIPT $LIBC_FILTER $COVERAGE_FILE $P1THRESHOLD $DO_CANARIES
+#execute_pn $CLONE_ID $BED_SCRIPT $LIBC_FILTER $COVERAGE_FILE $P1THRESHOLD $DO_CANARIES
 
+echo "$PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER"
+
+$PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER
 exit 0
