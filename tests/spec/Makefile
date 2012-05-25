@@ -3,6 +3,7 @@ progs=bzip_black.peasoup mcf_black.peasoup libquantum_black.peasoup sjeng_black.
 ps_analyze_flags=" --step ilr=off\
                --step stratafy_with_pc_confine=on\
                --step create_binary_script=on\
+	       --step watchdog=off\
                --step heaprand=off\
                --step concolic=off\
                --step double_free=off\
