@@ -1,6 +1,9 @@
 
 
 #include <iostream>
+#include <limits.h>
+//#include <unistd.h>
+#include <getopt.h>
 #include "PNStackLayoutInference.hpp"
 #include "P1Inference.hpp"
 #include "OffsetInference.hpp"
@@ -25,6 +28,39 @@ using namespace std;
 using namespace libIRDB;
 using namespace MEDS_Annotation;
 
+enum
+{
+  VARIANT_ID_OPTION = CHAR_MAX+1,
+  BED_SCRIPT_OPTION,
+  BLACKLIST_OPTION,
+  COVERAGE_FILE_OPTION,
+  PN_THRESHOLD_OPTION,
+  CANARIES_OPTION,
+  APRIORI_OPTION
+};
+
+
+
+static struct option const long_options[] = 
+{
+    {"variant_id",required_argument, NULL, VARIANT_ID_OPTION},
+    {"bed_script",required_argument, NULL, BED_SCRIPT_OPTION},
+    {"blacklist",required_argument, NULL, BLACKLIST_OPTION},
+    {"coverage_file",required_argument, NULL, COVERAGE_FILE_OPTION},
+    {"pn_threshold",required_argument, NULL, PN_THRESHOLD_OPTION},
+    {"canaries", required_argument, NULL, CANARIES_OPTION},
+    {"apriori_layout_file",required_argument, NULL, APRIORI_OPTION},
+    {NULL, 0, NULL, 0}
+};
+
+static double p1threshold;
+
+void pn_init()
+{
+    DO_CANARIES=true;
+    p1threshold=0.0;
+}
+
 //TODO: PN will now p1 if no coverage is available,
 //this is not desired for black box testing. 
 //Find a solution. 
@@ -33,6 +69,9 @@ using namespace MEDS_Annotation;
 set<string> getFunctionList(char *p_filename)
 {
 	set<string> functionList;
+
+	if(p_filename == NULL)
+	    return functionList;
 
 	ifstream candidateFile;
 	candidateFile.open(p_filename);
@@ -56,6 +95,9 @@ set<string> getFunctionList(char *p_filename)
 map<string,double> getCoverageMap(char *filename)
 {
     map<string,double> coverage_map;
+
+    if(filename == NULL)
+	return coverage_map;
 
     ifstream coverage_file;
     coverage_file.open(filename);
@@ -92,28 +134,86 @@ map<string,double> getCoverageMap(char *filename)
     return coverage_map;
 }
 
+void usage()
+{
+    printf("Usage TBD, exiting\n");
+    exit(-1);
+}
+
 int main(int argc, char **argv)
 {
-    //TODO: hack for TNE, a value representing if canaries should be attempted
-    //is passed in as the 6th arg, look into a config file in the future. 
-    if(argc!=7)
-    {
-	cerr<<"Usage: p1transform.exe <variantid> <bed_script> <file containing name of blacklisted functions> <coverage file> <p1 threshold> <0 for canaries off, non-zero for canaries on>"<<endl;
-	exit(-1);
-    }
-    else
-    {
-	if(strcmp(argv[6],"0") == 0)
-	    DO_CANARIES=false;
-	    
-	cout << "bed_script: " << argv[2] << " blacklist: " << argv[3] << 
-	    " coverage: "<<argv[4]<<" p1 threshold: "<<argv[5]<<" do_canaries: "<<DO_CANARIES<<endl;
-    }
-
     VariantID_t *pidp=NULL;
   
-    int progid = atoi(argv[1]);
-    char *BED_script = argv[2];
+    int c;
+    int progid=0;
+    char *BED_script=NULL;
+    char *blacklist_file=NULL;
+    char *coverage_file=NULL;
+    while((c = getopt_long(argc, argv, "", long_options, NULL)) != -1)
+    {
+	switch(c)
+	{
+	case VARIANT_ID_OPTION:
+	{
+	    progid = atoi(optarg);
+	    break;
+	}
+	case BED_SCRIPT_OPTION:
+	{
+	    BED_script = optarg;
+	    break;
+	}
+	case BLACKLIST_OPTION:
+	{
+	    blacklist_file = optarg;
+	    break;
+	}
+	case COVERAGE_FILE_OPTION:
+	{
+	    coverage_file = optarg;
+	    break;
+	}
+	case PN_THRESHOLD_OPTION:
+	{
+	    p1threshold = strtod(optarg,NULL);
+	    if(p1threshold <0 || p1threshold >1)
+	    {
+		//TODO: print a message call usage
+		usage();
+	    }
+	    break;
+	}
+	case CANARIES_OPTION:
+	{
+	    if(strcasecmp("on",optarg)==0)
+	    {
+		DO_CANARIES=true;
+	    }
+	    else if(strcasecmp("off",optarg)==0)
+	    {
+		DO_CANARIES=false;
+	    }
+	    else
+	    {
+		//TODO: print error message and usage
+		usage();
+	    }
+	    break;
+	}
+	case '?':
+	{
+	    //error message already printed by getopt_long
+	    //TODO: exit?
+	    usage();
+	    break;
+	}
+	default:
+	{
+	    //TODO: invalid argument, and print usage
+	    usage();
+	}
+	}
+    }
 
     //setup the interface to the sql server 
     pqxxDB_t pqxx_interface;
@@ -134,15 +234,8 @@ int main(int argc, char **argv)
     }
     
     set<std::string> blackListOfFunctions;
-    blackListOfFunctions = getFunctionList(argv[3]);
-    map<string,double> coverage_map = getCoverageMap(argv[4]);
-    double p1threshold = strtod(argv[5],NULL);
-
-   if(p1threshold > 1 || p1threshold <0)
-    {
-	cerr<<"usage: p1 threshold must be a value greater than or equal to 0 or less than or equal to 1"<<endl;
-	exit(-1);
-    }
+    blackListOfFunctions = getFunctionList(blacklist_file);
+    map<string,double> coverage_map = getCoverageMap(coverage_file);
 
    cout<<"P1threshold parsed = "<<p1threshold<<endl;
 
@@ -187,7 +280,8 @@ int main(int argc, char **argv)
 	transform_driver.AddInference(scaled_offset_inference,1);
 	transform_driver.AddInference(conservative_memset_inference,2);
 	transform_driver.AddInference(p1,2);
-
+	
+	//TODO: I need an option for this
 	transform_driver.GenerateTransforms(coverage_map,p1threshold,2);
 	//transform_driver.GenerateTransforms();
 
