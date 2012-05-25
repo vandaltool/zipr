@@ -47,7 +47,7 @@ set_timer()
 
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=900
-PN_TIMEOUT_VALUE=9000
+PN_TIMEOUT_VALUE=9000000
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 DO_CANARIES=1
 
@@ -556,6 +556,7 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 		# generate aspri, and assemble it to bspri
 		perform_step generate_spri $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri
 		perform_step spasm $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe 
+		perform_step fast_spri $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 	fi
 fi
 

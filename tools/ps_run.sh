@@ -45,8 +45,8 @@ command="STRATA_OUTPUT_FILE=$datapath/diagnostics.out $command"
 #
 # Set SPRI file to use (should be generated from the IRDB).
 #
-if [ -f $datapath/a.irdb.bspri ]; then
-	command="STRATA_SPRI_FILE=$datapath/a.irdb.bspri $command"
+if [ -f $datapath/a.irdb.fbspri ]; then
+	command="STRATA_SPRI_FILE=$datapath/a.irdb.fbspri $command"
 fi
 
 
