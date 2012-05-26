@@ -557,6 +557,7 @@ tests/spec/mcf_exp/mcf.out -text
 tests/spec/mcf_test.sh -text
 tests/spec/milc -text
 tests/spec/milc_exp/milc.out -text
+tests/spec/milc_test.sh -text
 tests/spec/perlbench -text
 tests/spec/sjeng -text
 tests/spec/sjeng_exp/sjeng.out -text
