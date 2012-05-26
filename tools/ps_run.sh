@@ -47,6 +47,10 @@ command="STRATA_OUTPUT_FILE=$datapath/diagnostics.out $command"
 #
 if [ -f $datapath/a.irdb.fbspri ]; then
 	command="STRATA_SPRI_FILE=$datapath/a.irdb.fbspri $command"
+else
+    if [ -f $datapath/a.irdb.bspri ]; then
+	command="STRATA_SPRI_FILE=$datapath/a.irdb.bspri $command"
+    fi
 fi
 
 
