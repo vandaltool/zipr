@@ -16,6 +16,8 @@ P1_DIR=p1.xform/$fname
 #generate the bspri code
 $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $TOP_LEVEL/stratafier.o.exe
 
+$PEASOUP_HOME/tools/fast_spri.sh $bspri $TOP_LEVEL/a.irdb.fbspri
+
 #
 # remove any candidate functions not covered
 # this will go away once GrACE gives us the instruction coverage information
@@ -26,7 +28,7 @@ echo "====================================================="
 echo "P1: Validating transformed binary..."
 echo "====================================================="
 if [ -f $bspri ]; then
-  $PEASOUP_HOME/tools/ps_validate.sh ${TOP_LEVEL}/a.stratafied $bspri $CONCOLIC > ps_validate.out 2> ps_validate.err
+  $PEASOUP_HOME/tools/ps_validate.sh ${TOP_LEVEL}/a.stratafied $TOP_LEVEL/a.irdb.fbspri $CONCOLIC > ps_validate.out 2> ps_validate.err
   if [ $? -eq 0 ]; then
       echo "Successfully validated p1-transformed functions against inputs"
       exit 0;

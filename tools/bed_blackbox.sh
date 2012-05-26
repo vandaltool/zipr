@@ -28,7 +28,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 # toolchain expects a BSPRI file at this location
-cp $bspri $PEASOUP_DIR/a.irdb.bspri
+$PEASOUP_HOME/tools/fast_spri.sh $bspri $PEASOUP_DIR/a.irdb.fbspri
 
 NAME=`cat new_command_name`
 TRANSFORMED_PROGRAM="$PEASOUP_DIR/$NAME"
