@@ -5,6 +5,10 @@ PROTO2_SRCS=rev_memcpy.c dynamic_testbed.john_wilander.original.c
 PROTO2_LIBS=${STRATA}/lib/x86_linux/libstrata.a
 progs=wilander_pn
 
+#turning off fix_calls can cause problems in other programs so only
+#turn it off for those vulnerable wilander functions. I believe it is safe
+#in these cases, and allows for PN to catch more  attacks. 
+
 ps_analyze_flags=" --step ilr=off\
                --step concolic=off\
 	       --step fix_calls=off\
