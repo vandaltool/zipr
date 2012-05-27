@@ -77,10 +77,20 @@ void PNTransformDriver::AddBlacklist(set<string> &blacklist)
     }
 }
 
-void PNTransformDriver::AddBlacklistFunction(string &func_name)
+void PNTransformDriver::AddBlacklistFunction(string func_name)
 {
     blacklist.insert(func_name);
 }
+
+void PNTransformDriver::AddAlwaysAndOnlyValidateList(std::set<std::string> &always_validate_list)
+{
+    set<string>::iterator it;
+    for(it = always_validate_list.begin();it != always_validate_list.end();it++)
+    {
+	this->always_validate_list.insert(*it);
+    }
+}
+
 
 /*
 void PNTransformDriver::GenerateTransforms2(VariantIR_t *virp,vector<Function_t*> funcs,string BED_script, int progid)
@@ -193,7 +203,7 @@ void PNTransformDriver::GenerateTransforms2(VariantIR_t *virp,vector<Function_t*
 void PNTransformDriver::GenerateTransforms()
 {
     map<string,double> empty_map;
-    GenerateTransforms(empty_map,0,0);
+    GenerateTransforms(empty_map,0,0,-1);
 }
 
 void PNTransformDriver::GenerateTransformsInit()
@@ -376,6 +386,7 @@ bool PNTransformDriver::IsBlacklisted(Function_t *func)
 
     // filter out _L_lock_*
     // filter out _L_unlock_*
+/*
     if (func->GetName().find("_L_lock_") == 0 ||
 	func->GetName().find("_L_unlock_") == 0 ||
 	func->GetName().find("__gnu_")  != string::npos ||
@@ -390,6 +401,8 @@ bool PNTransformDriver::IsBlacklisted(Function_t *func)
 	func->GetName().find("__PRETTY_FUNCTION__")  != string::npos ||
 	func->GetName().find("__cxa")  != string::npos ||
 	blacklist.find(func->GetName()) != blacklist.end())
+*/
+    if(blacklist.find(func->GetName()) != blacklist.end())
     {
 	cerr<<"PNTransformDriver: Blacklisted Function "<<func->GetName()<<endl;
 	blacklist_funcs++;
@@ -402,13 +415,15 @@ bool PNTransformDriver::IsBlacklisted(Function_t *func)
 //TODO: break into smaller functions
 //threshold_level is the hierarchy level to start at if the coverage for a function is less than the threshold.
 //Set this value to a negative integer to abort transformation of the function if the threshold is not met. 
-void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, double threshold, int threshold_level)
+void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, double threshold, int threshold_level, int never_validate_level)
 {
     if(transform_hierarchy.size() == 0)
     {
 	cerr<<"PNTransformDriver: No Transforms have been registered, aborting GenerateTransforms"<<endl;
 	return;
     }
+
+    this->never_validate_level = never_validate_level;
 
     GenerateTransformsInit();
 
@@ -451,6 +466,8 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 	unsigned int level=0;
 	double func_coverage = 0;
 
+	//TODO: check a priori map, if in the map, ignore coverage
+
 	//see if the function is in the coverage map
 	if(coverage_map.find(func->GetName()) != coverage_map.end())
 	{
@@ -458,42 +475,25 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 	    //do nothing, otherwise set hierachy to start at the level
 	    //passed. 
 	    func_coverage = coverage_map[func->GetName()];
-
-	    if(func_coverage < threshold)
-	    {
-		level = threshold_level;
-
-		if(threshold_level < 0)
-		{
-		    cout<<"PNTransformDriver: Function "<<func->GetName()<<
-		    " has insufficient coverage, aborting transformation"<<endl;
-		    continue;
-		}
-		else
-		{
-		    cout<<"PNTransformDriver: Function "<<func->GetName()<<
-		    " has insufficient coverage, starting at hierarchy at "
-		    " level "<<threshold_level<<endl;
-		}
-
-	    }
 	}
-	else
+
+	if(func_coverage < threshold)
 	{
 	    level = threshold_level;
 
-		if(threshold_level < 0)
-		{
-		    cout<<"PNTransformDriver: Function "<<func->GetName()<<
+	    if(threshold_level < 0)
+	    {
+		cout<<"PNTransformDriver: Function "<<func->GetName()<<
 		    " has insufficient coverage, aborting transformation"<<endl;
-		    continue;
-		}
-		else
-		{
-		    cout<<"PNTransformDriver: Function "<<func->GetName()<<
+		continue;
+	    }
+	    else
+	    {
+		cout<<"PNTransformDriver: Function "<<func->GetName()<<
 		    " has insufficient coverage, starting at hierarchy at "
 		    " level "<<threshold_level<<endl;
-		}
+	    }
+
 	}
 
 	//Get a layout inference for each level of the hierarchy. Sort these layouts based on
@@ -526,7 +526,32 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 
 	    //TODO: it is assumed now that the threshold_level is a level at which no validation need be done
 	    //but what if no threshold level is desired or provided? Hack for post TNE testing. 
-	    bool do_validate = (func_coverage != 0 && level != threshold_level);
+	    //bool do_validate = (func_coverage != 0 && level != threshold_level);
+	    bool do_validate = true;
+	    if(always_validate_list.size() != 0)
+	    {
+		if(always_validate_list.find(func->GetName()) == always_validate_list.end())
+		{
+		    do_validate = false;
+		}
+		
+	    }
+	    else
+	    {
+		do_validate = (level != never_validate_level);
+	    }
+	    
+
+
+/*
+	    bool do_validate = func->GetName().compare("MAIN_parseCommandLine") == 0 || func->GetName().compare("MAIN_printInfo") == 0 || func->GetName().compare("BZ2_decompress") == 0 || func->GetName().compare("fallbackSort") == 0 || func->GetName().compare("BZ2_hbMakeCodeLengths")==0 || func->GetName().compare("BZ2_compressBlock")==0 || 
+		func->GetName().compare("quantum_bmeasure")==0 ||  func->GetName().compare("main")==0 || func->GetName().compare("quantum_hadamard")==0 || func->GetName().compare("muln")==0 || func->GetName().compare("quantum_cond_phase")==0 ||func->GetName().compare("quantum_gate1")==0 ||
+		func->GetName().compare("main")==0 ||  func->GetName().compare("think")==0 ||  func->GetName().compare("search")==0 ||  func->GetName().compare("comp_to_san")==0 ||  func->GetName().compare("display_board")==0 ||  func->GetName().compare("run_autotest")==0 ||  func->GetName().compare("search_root")==0 || func->GetName().compare("qsearch")==0 ||
+		func->GetName().compare("add_basic_path")==0 || func->GetName().compare("make_loop_table")==0 || func->GetName().compare("imp_gauge_force")==0 || func->GetName().compare("char_num")==0 || func->GetName().compare("f_meas_imp")==0 || func->GetName().compare("dslash_fn")==0 || func->GetName().compare("load_longlinks")==0 || func->GetName().compare("eo_fermion_force")==0 || func->GetName().compare("g_measure")==0 || func->GetName().compare("coldlat")==0||func->GetName().compare("mult_adj_su3_mat_4vec")==0 || func->GetName().compare("ploop")==0 ||
+		func->GetName().compare("main")==0 || func->GetName().compare("dict_read")==0 || func->GetName().compare("vithist_rescore")==0 || func->GetName().compare("subvq_init")==0 || func->GetName().compare("mdef_init")==0 || func->GetName().compare("bio_readhdr")==0
+		|| func->GetName().compare("std_eval")==0 
+		|| func->GetName().compare("unlimit") == 0;
+*/
 
 //TODO: for TNE if there is no coverage for a function, perform the transform (which should be p1 at this point) blindly
 //May need to reconsider this in the future. 

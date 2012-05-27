@@ -36,6 +36,8 @@ enum
   COVERAGE_FILE_OPTION,
   PN_THRESHOLD_OPTION,
   CANARIES_OPTION,
+  ALWAYS_ONLY_VALIDATE_OPTION,
+  NO_P1_VALIDATE_OPTION,
   APRIORI_OPTION
 };
 
@@ -49,6 +51,8 @@ static struct option const long_options[] =
     {"coverage_file",required_argument, NULL, COVERAGE_FILE_OPTION},
     {"pn_threshold",required_argument, NULL, PN_THRESHOLD_OPTION},
     {"canaries", required_argument, NULL, CANARIES_OPTION},
+    {"always_only_validate",required_argument, NULL, ALWAYS_ONLY_VALIDATE_OPTION},
+    {"no_p1_validate",no_argument,NULL,NO_P1_VALIDATE_OPTION},
     {"apriori_layout_file",required_argument, NULL, APRIORI_OPTION},
     {NULL, 0, NULL, 0}
 };
@@ -149,6 +153,8 @@ int main(int argc, char **argv)
     char *BED_script=NULL;
     char *blacklist_file=NULL;
     char *coverage_file=NULL;
+    char *always_only_validate=NULL;
+    bool validate_p1=true;
     while((c = getopt_long(argc, argv, "", long_options, NULL)) != -1)
     {
 	switch(c)
@@ -200,6 +206,16 @@ int main(int argc, char **argv)
 	    }
 	    break;
 	}
+	case ALWAYS_ONLY_VALIDATE_OPTION:
+	{
+	    always_only_validate=optarg;
+	    break;
+	}
+	case NO_P1_VALIDATE_OPTION:
+	{
+	    validate_p1 = false;
+	    break;
+	} 
 	case '?':
 	{
 	    //error message already printed by getopt_long
@@ -230,11 +246,12 @@ int main(int argc, char **argv)
     catch (DatabaseError_t pnide)
     {
 	cout<<"Unexpected database error: "<<pnide<<endl;
-	exit(-1);
-    }
+	exit(-1);    }
     
     set<std::string> blackListOfFunctions;
     blackListOfFunctions = getFunctionList(blacklist_file);
+    set<std::string> aoValidateFunctions;
+    aoValidateFunctions = getFunctionList(always_only_validate);
     map<string,double> coverage_map = getCoverageMap(coverage_file);
 
    cout<<"P1threshold parsed = "<<p1threshold<<endl;
@@ -254,6 +271,7 @@ int main(int argc, char **argv)
 	PNTransformDriver transform_driver(pidp,BED_script);
 
 	transform_driver.AddBlacklist(blackListOfFunctions);
+	transform_driver.AddAlwaysAndOnlyValidateList(aoValidateFunctions);
 	
 	OffsetInference *offset_inference = new OffsetInference();
 
@@ -281,8 +299,10 @@ int main(int argc, char **argv)
 	transform_driver.AddInference(conservative_memset_inference,2);
 	transform_driver.AddInference(p1,2);
 	
-	//TODO: I need an option for this
-	transform_driver.GenerateTransforms(coverage_map,p1threshold,2);
+	if(!validate_p1)
+	    transform_driver.GenerateTransforms(coverage_map,p1threshold,2,2);
+	else
+	    transform_driver.GenerateTransforms(coverage_map,p1threshold,2,-1);
 	//transform_driver.GenerateTransforms();
 
 /*
