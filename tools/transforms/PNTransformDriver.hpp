@@ -27,7 +27,7 @@ protected:
     std::vector< std::vector<PNStackLayoutInference*> > transform_hierarchy;
     PNRegularExpressions pn_regex;
     std::set<std::string> blacklist;
-    std::set<std::string> always_validate_list;
+    std::set<std::string> only_validate_list;
     int never_validate_level;
     //std::map<libIRDB::Instruction_t*,std::string> undo_list;
     std::map<libIRDB::Instruction_t*,libIRDB::Instruction_t*> undo_list;
@@ -74,7 +74,7 @@ public:
     virtual void AddInference(PNStackLayoutInference *inference, int level=0);
     virtual void AddBlacklist(std::set<std::string> &blacklist);
     virtual void AddBlacklistFunction(std::string func_name);
-    virtual void AddAlwaysAndOnlyValidateList(std::set<std::string> &always_validate_list);
+    virtual void AddOnlyValidateList(std::set<std::string> &only_validate_list);
     virtual void GenerateTransforms();
     virtual void GenerateTransforms(std::map<std::string,double> coverage_map, double threshold, int threshold_level, int never_validate_level);
 };

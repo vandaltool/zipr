@@ -84,12 +84,12 @@ void PNTransformDriver::AddBlacklistFunction(string func_name)
     blacklist.insert(func_name);
 }
 
-void PNTransformDriver::AddAlwaysAndOnlyValidateList(std::set<std::string> &always_validate_list)
+void PNTransformDriver::AddOnlyValidateList(std::set<std::string> &only_validate_list)
 {
     set<string>::iterator it;
-    for(it = always_validate_list.begin();it != always_validate_list.end();it++)
+    for(it = only_validate_list.begin();it != only_validate_list.end();it++)
     {
-	this->always_validate_list.insert(*it);
+	this->only_validate_list.insert(*it);
     }
 }
 
@@ -534,20 +534,18 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 	    //but what if no threshold level is desired or provided? Hack for post TNE testing. 
 	    //bool do_validate = (func_coverage != 0 && level != threshold_level);
 	    bool do_validate = true;
-	    if(always_validate_list.size() != 0)
+	    if(only_validate_list.size() != 0)
 	    {
-		if(always_validate_list.find(func->GetName()) == always_validate_list.end())
+		if(only_validate_list.find(func->GetName()) == only_validate_list.end())
 		{
 		    do_validate = false;
 		}
 		
 	    }
-	    else
-	    {
-		do_validate = (level != never_validate_level);
-	    }
-	    
 
+	    do_validate = do_validate && (level != never_validate_level);
+	    
+	    
 
 /*
 	    bool do_validate = func->GetName().compare("MAIN_parseCommandLine") == 0 || func->GetName().compare("MAIN_printInfo") == 0 || func->GetName().compare("BZ2_decompress") == 0 || func->GetName().compare("fallbackSort") == 0 || func->GetName().compare("BZ2_hbMakeCodeLengths")==0 || func->GetName().compare("BZ2_compressBlock")==0 || 
