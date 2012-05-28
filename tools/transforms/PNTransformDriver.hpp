@@ -42,6 +42,7 @@ protected:
     virtual bool Validate(libIRDB::VariantIR_t *virp, libIRDB::Function_t *func);
     //virtual void undo(std::map<libIRDB::Instruction_t*,std::string> undo_list, libIRDB::Function_t *func);
     virtual void undo(std::map<libIRDB::Instruction_t*,libIRDB::Instruction_t*> undo_list, libIRDB::Function_t *func);
+    virtual void reset_undo();
     virtual std::vector<PNStackLayout*> GenerateInferences(libIRDB::Function_t *func, int level);
     virtual bool ShuffleValidation(int reps, PNStackLayout *layout,libIRDB::Function_t *func);
     //virtual void GenerateTransforms2(libIRDB::VariantIR_t *virp,std::vector<libIRDB::Function_t*> funcs,std::string BED_script, int progid);

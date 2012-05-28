@@ -12,6 +12,8 @@ using namespace libIRDB;
 
 //TODO: this var is a hack for TNE
 extern bool DO_CANARIES;
+extern set<Instruction_t*>inserted_instr;
+extern set<AddressID_t*>inserted_addr;
 
 void sigusr1Handler(int signum);
 bool PNTransformDriver::timeExpired = false;
@@ -301,8 +303,10 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 	}
     }
     //cleanup??
-    undo_list.clear();//TODO: handle undo better?
-		    
+    //undo_list.clear();//TODO: handle undo better?
+
+    reset_undo();
+
     //TODO: cleanup new_virp? I don't want to double free.
     //new_pidp->DropFromDB();
 
@@ -344,7 +348,8 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
 	cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
 	transformed_history[layout->GetLayoutName()].push_back(layout);
 	success = true;
-	undo_list.clear();
+	//undo_list.clear();
+	reset_undo();
     }
 
     //orig_virp->WriteToDB();
@@ -372,7 +377,8 @@ bool PNTransformDriver::LayoutRandTransformHandler(PNStackLayout *layout, Functi
 	cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
 	transformed_history[layout->GetLayoutName()].push_back(layout);
 	success = true;
-	undo_list.clear();
+	//undo_list.clear();
+	reset_undo();
     }
 
     //orig_virp->WriteToDB();
@@ -1045,10 +1051,12 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	    for(unsigned int i=0;i<canaries.size();i++)
 	    {
 		ss.str("");
-
 		ss<<"mov dword [esp+0x"<<hex<<canaries[i].esp_offset<<"], 0x"<<hex<<canaries[i].canary_val;
 		instr = insertAssemblyAfter(virp,instr,ss.str());
-		instr->SetComment("Canary Setup: "+ss.str());
+		if(i==0)
+		    instr->SetComment("Canary Setup Entry: "+ss.str());
+		else
+		    instr->SetComment("Canary Setup: "+ss.str());
 	    }
 	}
 	else if(regexec(&(pn_regex.regex_ret), disasm_str.c_str(),5,pmatch,0)==0)
@@ -1678,7 +1686,36 @@ void PNTransformDriver::undo(map<Instruction_t*, Instruction_t*> undo_list, Func
 //	delete orig;
     }
 
+
+
+    for(set<Instruction_t*>::const_iterator it=inserted_instr.begin();
+	it != inserted_instr.end();
+	++it
+	)
+    {
+	orig_virp->GetInstructions().erase(*it);
+	delete *it;
+    }
+
+    for(set<AddressID_t*>::const_iterator it=inserted_addr.begin();
+	it != inserted_addr.end();
+	++it
+	)
+    {
+	orig_virp->GetAddresses().erase(*it);
+	delete *it;
+    }
+
+
+    reset_undo();
+    //undo_list.clear();
+}
+
+void PNTransformDriver::reset_undo()
+{
     undo_list.clear();
+    inserted_instr.clear();
+    inserted_addr.clear();
 }
 
 void sigusr1Handler(int signum)

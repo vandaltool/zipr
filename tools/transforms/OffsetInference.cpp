@@ -403,6 +403,13 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 		    pn_p1_offsets->SetStaticStack(false);
 		    PN_safe = false;
 
+		    //Consider this case not canary safe for now
+		    //TODO: can I make this canary safe?
+		    pn_direct_offsets->SetCanarySafe(false);
+		    pn_scaled_offsets->SetCanarySafe(false);
+		    pn_all_offsets->SetCanarySafe(false);
+		    pn_p1_offsets->SetCanarySafe(false);
+
 		    //TODO: this output should be removed after TNE
 		    //only used to give Jason an indication that a 
 		    //non-static func has been detected. 

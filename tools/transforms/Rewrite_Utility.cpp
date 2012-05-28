@@ -2,6 +2,9 @@
 using namespace std;
 using namespace libIRDB;
 
+set<Instruction_t*>inserted_instr; //used to undo inserted instructions
+set<AddressID_t*>inserted_addr; //used to undo inserted addresses
+
 void setExitCode(VariantIR_t* virp, Instruction_t* exit_code);
 
 //For all insertBefore functions:
@@ -107,6 +110,10 @@ Instruction_t* allocateNewInstruction(VariantIR_t* virp, db_id_t p_fileID,Functi
 
 	virp->GetInstructions().insert(instr);
 	virp->GetAddresses().insert(a);
+
+	inserted_instr.insert(instr);
+	inserted_addr.insert(a);
+	
 	return instr;
 }
 
