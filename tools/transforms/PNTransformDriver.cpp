@@ -237,42 +237,6 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
     layout->Shuffle();
     layout->AddRandomPadding();
 
-/*
-    pqxxDB_t pqxx_interface;
-
-    //appears to be necessary if clone is to have all changes in the original variant
-    orig_virp->WriteToDB();
-    VariantID_t *new_pidp = pidp->Clone();
-
-    assert(new_pidp->IsRegistered() == true);
-
-    pqxx_interface.Commit();
-    VariantIR_t *new_virp = new VariantIR_t(*new_pidp);
-
-    set<Function_t*> func_set = new_virp->GetFunctions();
-
-    Function_t* targ_func = NULL;
-
-    //Find function
-    for(
-	set<Function_t*>::const_iterator it=new_virp->GetFunctions().begin();
-	it != new_virp->GetFunctions().end();
-	++it
-	)
-    {
-	if((*it)->GetName().compare(func->GetName()) == 0)
-	{
-	    targ_func = *it;
-	    break;
-	}
-
-    }
-
-    assert(targ_func != NULL);
-		    
-    if(!Canary_Rewrite(new_virp,layout,targ_func))
-*/
-    //if(!Canary_Rewrite(orig_virp,layout,func))
     if(!Canary_Rewrite(layout,func))
     {
 	//Experimental code
@@ -299,18 +263,10 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 	    success = true;
 	    //TODO: message
 	    cerr<<"PNTransformDriver: Canary rewrite and validation successful, rewriting original variant"<<endl;
-	    //Canary_Rewrite(orig_virp,layout,func);
 	}
     }
-    //cleanup??
-    //undo_list.clear();//TODO: handle undo better?
 
     reset_undo(func->GetName());
-
-    //TODO: cleanup new_virp? I don't want to double free.
-    //new_pidp->DropFromDB();
-
-    //delete new_pidp;
 
     return success;
 }
@@ -545,20 +501,6 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 
 	    do_validate = do_validate && (level != never_validate_level);
 	    
-	    
-
-/*
-	    bool do_validate = func->GetName().compare("MAIN_parseCommandLine") == 0 || func->GetName().compare("MAIN_printInfo") == 0 || func->GetName().compare("BZ2_decompress") == 0 || func->GetName().compare("fallbackSort") == 0 || func->GetName().compare("BZ2_hbMakeCodeLengths")==0 || func->GetName().compare("BZ2_compressBlock")==0 || 
-		func->GetName().compare("quantum_bmeasure")==0 ||  func->GetName().compare("main")==0 || func->GetName().compare("quantum_hadamard")==0 || func->GetName().compare("muln")==0 || func->GetName().compare("quantum_cond_phase")==0 ||func->GetName().compare("quantum_gate1")==0 ||
-		func->GetName().compare("main")==0 ||  func->GetName().compare("think")==0 ||  func->GetName().compare("search")==0 ||  func->GetName().compare("comp_to_san")==0 ||  func->GetName().compare("display_board")==0 ||  func->GetName().compare("run_autotest")==0 ||  func->GetName().compare("search_root")==0 || func->GetName().compare("qsearch")==0 ||
-		func->GetName().compare("add_basic_path")==0 || func->GetName().compare("make_loop_table")==0 || func->GetName().compare("imp_gauge_force")==0 || func->GetName().compare("char_num")==0 || func->GetName().compare("f_meas_imp")==0 || func->GetName().compare("dslash_fn")==0 || func->GetName().compare("load_longlinks")==0 || func->GetName().compare("eo_fermion_force")==0 || func->GetName().compare("g_measure")==0 || func->GetName().compare("coldlat")==0||func->GetName().compare("mult_adj_su3_mat_4vec")==0 || func->GetName().compare("ploop")==0 ||
-		func->GetName().compare("main")==0 || func->GetName().compare("dict_read")==0 || func->GetName().compare("vithist_rescore")==0 || func->GetName().compare("subvq_init")==0 || func->GetName().compare("mdef_init")==0 || func->GetName().compare("bio_readhdr")==0
-		|| func->GetName().compare("std_eval")==0 
-		|| func->GetName().compare("unlimit") == 0;
-*/
-
-//TODO: for TNE if there is no coverage for a function, perform the transform (which should be p1 at this point) blindly
-//May need to reconsider this in the future. 
 	    for(unsigned int i=0;i<layouts.size()&&!timeExpired;i++)
 	    {
 
