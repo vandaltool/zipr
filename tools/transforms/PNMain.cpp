@@ -21,9 +21,6 @@
 #include <set>
 #include <cstdlib>
 
-
-bool DO_CANARIES = true;
-
 using namespace std;
 using namespace libIRDB;
 using namespace MEDS_Annotation;
@@ -61,7 +58,6 @@ static double p1threshold;
 
 void pn_init()
 {
-    DO_CANARIES=true;
     p1threshold=0.0;
 }
 
@@ -155,6 +151,7 @@ int main(int argc, char **argv)
     char *coverage_file=NULL;
     char *only_validate=NULL;
     bool validate_p1=true;
+    bool do_canaries=true;
     while((c = getopt_long(argc, argv, "", long_options, NULL)) != -1)
     {
 	switch(c)
@@ -193,11 +190,11 @@ int main(int argc, char **argv)
 	{
 	    if(strcasecmp("on",optarg)==0)
 	    {
-		DO_CANARIES=true;
+		do_canaries=true;
 	    }
 	    else if(strcasecmp("off",optarg)==0)
 	    {
-		DO_CANARIES=false;
+		do_canaries=false;
 	    }
 	    else
 	    {
@@ -272,6 +269,7 @@ int main(int argc, char **argv)
 
 	transform_driver.AddBlacklist(blackListOfFunctions);
 	transform_driver.AddOnlyValidateList(onlyValidateFunctions);
+	transform_driver.SetDoCanaries(do_canaries);
 	
 	OffsetInference *offset_inference = new OffsetInference();
 

@@ -23,6 +23,7 @@ protected:
     libIRDB::VariantIR_t *orig_virp;
     std::string BED_script;
     int orig_progid;
+    bool do_canaries;
     
     std::vector< std::vector<PNStackLayoutInference*> > transform_hierarchy;
     PNRegularExpressions pn_regex;
@@ -76,6 +77,7 @@ public:
     virtual void AddBlacklist(std::set<std::string> &blacklist);
     virtual void AddBlacklistFunction(std::string func_name);
     virtual void AddOnlyValidateList(std::set<std::string> &only_validate_list);
+    virtual void SetDoCanaries(bool do_canaries);
     virtual void GenerateTransforms();
     virtual void GenerateTransforms(std::map<std::string,double> coverage_map, double threshold, int threshold_level, int never_validate_level);
 };

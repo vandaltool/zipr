@@ -11,7 +11,6 @@ using namespace std;
 using namespace libIRDB;
 
 //TODO: this var is a hack for TNE
-extern bool DO_CANARIES;
 extern map<string, set<Instruction_t*> > inserted_instr;
 extern map<string, set<AddressID_t*> > inserted_addr;
 
@@ -43,6 +42,7 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
     orig_progid = pidp->GetOriginalVariantID();
     orig_virp = new VariantIR_t(*pidp);
     this->BED_script = BED_script;
+    do_canaries = true;
 }
 
 PNTransformDriver::~PNTransformDriver()
@@ -68,6 +68,11 @@ void PNTransformDriver::AddInference(PNStackLayoutInference *inference, int leve
     }
 
     transform_hierarchy[level].push_back(inference);
+}
+
+void PNTransformDriver::SetDoCanaries(bool do_canaries)
+{
+    this->do_canaries = do_canaries;
 }
 
 void PNTransformDriver::AddBlacklist(set<string> &blacklist)
@@ -222,7 +227,7 @@ void PNTransformDriver::GenerateTransformsInit()
 bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t *func, bool validate)
 {
     //TODO: hack for TNE: if not doing canaries, use padding transform handler instead
-    if(!DO_CANARIES)
+    if(!do_canaries)
     {
 	cerr<<"PNTransformDriver: canary transformations turned off, attempting padding transformation."<<endl;
 	return PaddingTransformHandler(layout, func, validate);	
