@@ -35,6 +35,7 @@ enum
   CANARIES_OPTION,
   ONLY_VALIDATE_OPTION,
   NO_P1_VALIDATE_OPTION,
+  ALIGN_STACK_OPTION,
   APRIORI_OPTION
 };
 
@@ -51,6 +52,7 @@ static struct option const long_options[] =
     {"only_validate",required_argument, NULL, ONLY_VALIDATE_OPTION},
     {"no_p1_validate",no_argument,NULL,NO_P1_VALIDATE_OPTION},
     {"apriori_layout_file",required_argument, NULL, APRIORI_OPTION},
+    {"align_stack",no_argument,NULL,ALIGN_STACK_OPTION},
     {NULL, 0, NULL, 0}
 };
 
@@ -152,6 +154,7 @@ int main(int argc, char **argv)
     char *only_validate=NULL;
     bool validate_p1=true;
     bool do_canaries=true;
+    bool align_stack=false;
     while((c = getopt_long(argc, argv, "", long_options, NULL)) != -1)
     {
 	switch(c)
@@ -213,6 +216,11 @@ int main(int argc, char **argv)
 	    validate_p1 = false;
 	    break;
 	} 
+	case ALIGN_STACK_OPTION:
+	{
+	    align_stack = true;
+	    break;
+	}
 	case '?':
 	{
 	    //error message already printed by getopt_long
@@ -227,7 +235,6 @@ int main(int argc, char **argv)
 	}
 	}
     }
-
     //setup the interface to the sql server 
     pqxxDB_t pqxx_interface;
     BaseObj_t::SetInterface(&pqxx_interface);
@@ -270,6 +277,7 @@ int main(int argc, char **argv)
 	transform_driver.AddBlacklist(blackListOfFunctions);
 	transform_driver.AddOnlyValidateList(onlyValidateFunctions);
 	transform_driver.SetDoCanaries(do_canaries);
+	transform_driver.SetDoAlignStack(align_stack);
 	
 	OffsetInference *offset_inference = new OffsetInference();
 

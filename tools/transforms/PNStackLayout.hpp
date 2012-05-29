@@ -10,7 +10,7 @@ const int MIN_PADDING = 4096;
 const int MAX_PADDING = MIN_PADDING*2;
 const int RECURSIVE_MIN_PADDING = 64;
 const int RECURSIVE_MAX_PADDING = RECURSIVE_MAX_PADDING*2;
-const int ALIGNMENT_BYTE_SIZE = 4;
+const int ALIGNMENT_BYTE_SIZE = 8;
 
 class PNStackLayout
 {

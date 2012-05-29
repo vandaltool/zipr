@@ -261,6 +261,8 @@ void PNStackLayout::AddRandomPadding(bool isaligned)
 {
     this->isaligned = isaligned;
 
+    cerr<<"ALIGNMENT IS "<<isaligned<<endl;
+
     sort(mem_objects.begin(),mem_objects.end(),CompareRangeDisplacedOffset);
     //counts the additional padding added, does not take into consideration previous padding
     unsigned int total_padding = GetRandomPadding(0);

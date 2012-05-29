@@ -43,6 +43,7 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
     orig_virp = new VariantIR_t(*pidp);
     this->BED_script = BED_script;
     do_canaries = true;
+    do_align = false;
 }
 
 PNTransformDriver::~PNTransformDriver()
@@ -73,6 +74,11 @@ void PNTransformDriver::AddInference(PNStackLayoutInference *inference, int leve
 void PNTransformDriver::SetDoCanaries(bool do_canaries)
 {
     this->do_canaries = do_canaries;
+}
+
+void PNTransformDriver::SetDoAlignStack(bool align_stack)
+{
+    this->do_align = align_stack;
 }
 
 void PNTransformDriver::AddBlacklist(set<string> &blacklist)
@@ -240,7 +246,7 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 
     cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is canary safe, attempting canary rewrite"<<endl;
     layout->Shuffle();
-    layout->AddRandomPadding();
+    layout->AddRandomPadding(do_align);
 
     if(!Canary_Rewrite(layout,func))
     {
@@ -292,7 +298,7 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
     }
 
     layout->Shuffle();//one final shuffle
-    layout->AddRandomPadding();
+    layout->AddRandomPadding(do_align);
 			
     if(!Sans_Canary_Rewrite(layout,func))
     {
@@ -1034,6 +1040,11 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 	        stringstream ss;
 		//TODO: make this padding random.
+		//TODO: I am uncertain how alignment will work in this situation
+		//if the layout is aligned, this will return a padding amount
+		//divisible by the alignment stride, however, without knowing
+		//the size of the object, this may not ensure alignment, it is
+		//up to the compiler to handle that else where. 
 		ss<<"add "<<matched<<" , "<<hex<<layout->GetRandomPadding();//"0x500";
 
 		cerr<<"PNTransformDriver: adding padding to dynamic stack allocation"<<endl;
