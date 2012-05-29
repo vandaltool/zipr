@@ -12,8 +12,8 @@ using namespace libIRDB;
 
 //TODO: this var is a hack for TNE
 extern bool DO_CANARIES;
-extern set<Instruction_t*>inserted_instr;
-extern set<AddressID_t*>inserted_addr;
+extern map<string, set<Instruction_t*> > inserted_instr;
+extern map<string, set<AddressID_t*> > inserted_addr;
 
 void sigusr1Handler(int signum);
 bool PNTransformDriver::timeExpired = false;
@@ -276,7 +276,7 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
     if(!Canary_Rewrite(layout,func))
     {
 	//Experimental code
-	undo(undo_list,func);
+	undo(func);
 
 	//TODO: error message
 	cerr<<"PNTransformDriver: canary_rewrite failure"<<endl;
@@ -287,7 +287,7 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 	if(validate && !Validate(orig_virp,func))
 	{
 	    //Experimental code
-	    undo(undo_list,func);
+	    undo(func);
 
 	    //TODO: error message
 	    cerr<<"PNTransformDriver: canary validation failure, rolling back"<<endl;
@@ -305,7 +305,7 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
     //cleanup??
     //undo_list.clear();//TODO: handle undo better?
 
-    reset_undo();
+    reset_undo(func->GetName());
 
     //TODO: cleanup new_virp? I don't want to double free.
     //new_pidp->DropFromDB();
@@ -335,12 +335,12 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
 			
     if(!Sans_Canary_Rewrite(layout,func))
     {
-	undo(undo_list,func);
+	undo(func);
 	cerr<<"PNTransformDriver: Rewrite Failure: "<<layout->GetLayoutName()<<" Failed to Rewrite "<<func->GetName()<<endl;
     }
     else if(validate && !Validate(orig_virp, func))
     {
-	undo(undo_list,func);
+	undo(func);
 	cerr<<"PNTransformDriver: Validation Failure: "<<layout->GetLayoutName()<<" Failed to Validate "<<func->GetName()<<endl;
     }
     else
@@ -349,7 +349,7 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
 	transformed_history[layout->GetLayoutName()].push_back(layout);
 	success = true;
 	//undo_list.clear();
-	reset_undo();
+	reset_undo(func->GetName());
     }
 
     //orig_virp->WriteToDB();
@@ -378,7 +378,7 @@ bool PNTransformDriver::LayoutRandTransformHandler(PNStackLayout *layout, Functi
 	transformed_history[layout->GetLayoutName()].push_back(layout);
 	success = true;
 	//undo_list.clear();
-	reset_undo();
+	reset_undo(func->GetName());
     }
 
     //orig_virp->WriteToDB();
@@ -826,21 +826,21 @@ bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Functi
 
 	if(!Sans_Canary_Rewrite(layout, func))
 	{
-	    undo(undo_list,func);
+	    undo(func);
 	    cerr<<"PNTransformDriver: ShuffleValidation(): Rewrite Failure: attempt: "<<i+1<<" "<<
 		layout->GetLayoutName()<<" Failed to Rewrite "<<func->GetName()<<endl;
 	    return false;
 	}
 	else if(!Validate(orig_virp,func))
 	{
-	    undo(undo_list,func);
+	    undo(func);
 	    cerr<<"PNTransformDriver: ShuffleValidation(): Validation Failure: attempt: "<<i+1<<" "<<
 		layout->GetLayoutName()<<" Failed to Validate "<<func->GetName()<<endl;
 	    return false;
 	}
 	else
 	{
-	    undo(undo_list,func);
+	    undo(func);
 	}
     }
 
@@ -884,8 +884,6 @@ bool PNTransformDriver::Validate(VariantIR_t *virp, Function_t *func)
     return (retval == 0);
 }
 
-int canary_tmp = 0xaabbcc00;
-
 unsigned int PNTransformDriver::GetRandomCanary()
 {
 
@@ -918,45 +916,11 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 
     for(unsigned int i=0;i<mem_objects.size();i++)
     {
-/*
-	canary c1,c2;
-	//sub 4 because we want 4 bytes below the end of the object to insert
-	//a canary.
-	c1.esp_offset = mem_objects[i]->GetOffset() + mem_objects[i]->GetDisplacement() + mem_objects[i]->GetPaddingSize() + mem_objects[i]->GetSize()-4;
 
-	c2.esp_offset = mem_objects[i]->GetOffset() + mem_objects[i]->GetDisplacement() + mem_objects[i]->GetSize();
-
-	//TODO: make this random
-	c1.canary_val = canary_tmp;
-	canary_tmp++;
-	c2.canary_val = canary_tmp;
-	canary_tmp++;
-
-	//bytes to frame pointer or return address (depending on if a frame
-	//pointer is used) from the stack pointer
-	c1.ret_offset = (layout->GetAlteredAllocSize()+layout->GetSavedRegsSize());
-	//if frame pointer is used, add 4 bytes to get to the return address
-	if(layout->HasFramePointer())
-	    c1.ret_offset += 4;
-
-	c2.ret_offset = c1.ret_offset;
-	//Now with the total size, subtract off the esp offset to the canary
-	c1.ret_offset = c1.ret_offset - c1.esp_offset;
-	c2.ret_offset = c2.ret_offset - c2.esp_offset;
-	//The number should be positive, but we want negative so 
-	//convert to negative
-	c1.ret_offset = c1.ret_offset*-1;
-	c2.ret_offset = c2.ret_offset*-1;
-	
-	canaries.push_back(c1);
-	canaries.push_back(c2);
-*/
 	canary c;
 	c.esp_offset = mem_objects[i]->GetOffset() + mem_objects[i]->GetDisplacement() + mem_objects[i]->GetSize();
 
 	//TODO: make this random
-	//c.canary_val = canary_tmp;
-	c.canary_val = 0;
 	c.canary_val = GetRandomCanary();
 
 	//bytes to frame pointer or return address (depending on if a frame
@@ -975,7 +939,6 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	cerr << "c.canary_val = " << c.canary_val << "  c.ret_offset = " <<  c.ret_offset << endl;
 
 	canaries.push_back(c);
-//	canary_tmp++;
     }
     
     bool stack_alloc = false;
@@ -1040,7 +1003,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 
 	    cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;	    
 	    //undo_list[instr] = instr->GetDataBits();
-	    undo_list[instr] = copyInstruction(instr);
+	    //undo_list[instr] = copyInstruction(instr);
+	    undo_list[func->GetName()][instr] = copyInstruction(instr);
 	    if(!instr->Assemble(disasm_str))
 		return false;
 
@@ -1062,7 +1026,10 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	    cerr<<"PNTransformDriver: Canary Rewrite: inserting ret canary check"<<endl;
 
 	    //undo_list[instr] = instr->GetDataBits();
-	    undo_list[instr] = copyInstruction(instr);
+	    //undo_list[instr] = copyInstruction(instr);
+	    undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+
+
 
 	    //This could probably be done once, but having the original instruction
 	    //allows me to produce messages that indicate more precisely where
@@ -1085,7 +1052,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	{
 	    
 	    cerr<<"PNTransformDriver: Canary Rewrite: inserting call canary check"<<endl;
-	    undo_list[instr] = copyInstruction(instr);
+	    //undo_list[instr] = copyInstruction(instr);
+	    undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 
 	    //This could probably be done once, but having the original instruction
 	    //allows me to produce messages that indicate more precisely where
@@ -1192,7 +1160,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 		//cerr<<"PNTransformDriver: Stack alloc of non-integral type ("<<matched<<"), ignoring instruction"<<endl;
 
-		undo_list[instr] = copyInstruction(instr);
+		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 		//TODO: hack for TNE, padd the allocation by adding a random
 		//amount to the register used to subtract from esp. 
 
@@ -1215,7 +1183,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;	    
 	//undo_list[instr] = instr->GetDataBits();
-	undo_list[instr] = copyInstruction(instr);
+	//undo_list[instr] = copyInstruction(instr);
+	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 	if(!instr->Assemble(disasm_str))
 	    return false;
 
@@ -1266,7 +1235,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		
 	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 	//undo_list[instr] = instr->GetDataBits();
-	undo_list[instr] = copyInstruction(instr);
+	//undo_list[instr] = copyInstruction(instr);
+	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+
 	if(!instr->Assemble(disasm_str.c_str()))
 	    return false;	    
 	    
@@ -1297,7 +1268,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		
 	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 	//undo_list[instr] = instr->GetDataBits();
-	undo_list[instr] = copyInstruction(instr);
+	//undo_list[instr] = copyInstruction(instr);
+	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+
 	if(!instr->Assemble(disasm_str.c_str()))
 	    return false;
     }
@@ -1334,7 +1307,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		
 	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 	//undo_list[instr] = instr->GetDataBits();
-	undo_list[instr] = copyInstruction(instr);
+	//undo_list[instr] = copyInstruction(instr);
+	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+
 	if(!instr->Assemble(disasm_str.c_str()))
 	    return false;
 		
@@ -1375,7 +1350,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		
 	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 	//undo_list[instr] = instr->GetDataBits();
-	undo_list[instr] = copyInstruction(instr);
+	//undo_list[instr] = copyInstruction(instr);
+	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 	if(!instr->Assemble(disasm_str.c_str()))
 	    return false;
 
@@ -1408,7 +1384,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	disasm_str = "add esp, 0x"+ss.str();
 		
 	//undo_list[instr] = instr->GetDataBits();
-	undo_list[instr] = copyInstruction(instr);
+	//undo_list[instr] = copyInstruction(instr);
+	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 	if (!instr->Assemble(disasm_str)) 
 	    return false;
@@ -1662,13 +1639,14 @@ void PNTransformDriver::undo(map<Instruction_t*, string> undo_list, Function_t *
 */
 
   //TODO: there is a memory leak, I need to write a undo_list clear to properly cleanup
-void PNTransformDriver::undo(map<Instruction_t*, Instruction_t*> undo_list, Function_t *func)
+  //void PNTransformDriver::undo(map<Instruction_t*, Instruction_t*> undo_list, Function_t *func)
+void PNTransformDriver::undo( Function_t *func)
 {
     //rollback any changes
-    cerr<<"PNTransformDriver: Undo Transform: "<<undo_list.size()<<" instructions to rollback for function "<<func->GetName()<<endl;
+    cerr<<"PNTransformDriver: Undo Transform: "<<undo_list[func->GetName()].size()<<" instructions to rollback for function "<<func->GetName()<<endl;
     for(
-	map<Instruction_t*, Instruction_t*>::const_iterator mit=undo_list.begin();
-	mit != undo_list.end();
+	map<Instruction_t*, Instruction_t*>::const_iterator mit=undo_list[func->GetName()].begin();
+	mit != undo_list[func->GetName()].end();
 	++mit)
     {
 	Instruction_t* alt = mit->first;
@@ -1686,8 +1664,8 @@ void PNTransformDriver::undo(map<Instruction_t*, Instruction_t*> undo_list, Func
 
 
 
-    for(set<Instruction_t*>::const_iterator it=inserted_instr.begin();
-	it != inserted_instr.end();
+    for(set<Instruction_t*>::const_iterator it=inserted_instr[func->GetName()].begin();
+	it != inserted_instr[func->GetName()].end();
 	++it
 	)
     {
@@ -1695,8 +1673,8 @@ void PNTransformDriver::undo(map<Instruction_t*, Instruction_t*> undo_list, Func
 	delete *it;
     }
 
-    for(set<AddressID_t*>::const_iterator it=inserted_addr.begin();
-	it != inserted_addr.end();
+    for(set<AddressID_t*>::const_iterator it=inserted_addr[func->GetName()].begin();
+	it != inserted_addr[func->GetName()].end();
 	++it
 	)
     {
@@ -1705,15 +1683,15 @@ void PNTransformDriver::undo(map<Instruction_t*, Instruction_t*> undo_list, Func
     }
 
 
-    reset_undo();
+    reset_undo(func->GetName());
     //undo_list.clear();
 }
 
-void PNTransformDriver::reset_undo()
+void PNTransformDriver::reset_undo(string func)
 {
-    undo_list.clear();
-    inserted_instr.clear();
-    inserted_addr.clear();
+    undo_list.erase(func);
+    inserted_instr.erase(func);
+    inserted_addr.erase(func);
 }
 
 void sigusr1Handler(int signum)
