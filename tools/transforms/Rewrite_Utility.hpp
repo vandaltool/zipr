@@ -4,10 +4,15 @@ using namespace libIRDB;
 using namespace std;
 
 // make sure these match values in detector_handlers.h in the strata library
-#define POLICY_DEFAULT                            0   
-#define POLICY_CONTINUE                           1  
-#define POLICY_EXIT                               2   
-#define POLICY_CONTINUE_SATURATING_ARITHMETIC     3   
+enum mitigation_policy 
+{
+	P_NONE=0, 
+	P_CONTINUE_EXECUTION, 
+	P_CONTROLLED_EXIT, 
+	P_CONTINUE_EXECUTION_SATURATING_ARITHMETIC, 
+	P_CONTINUE_EXECUTION_WARNONLY
+};
+
 
 //The "first" instruction will have its contents replaced and a duplicate of "first" will be in the follow of first. 
 //This duplicate is returned since the user already has a pointer to first. 
@@ -36,7 +41,7 @@ void setInstructionAssembly(VariantIR_t* virp,Instruction_t *p_instr, string p_a
 string getJnsDataBits();
 string getJzDataBits();
 string getJnzDataBits();
-Instruction_t* getExitCode(VariantIR_t* virp, Instruction_t* fallthrough);
+Instruction_t* getHandlerCode(VariantIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy );
 
 //The esp offset is allowed to be negative, and is handled properly.
 //Returns the pointer for the copied "first" instruction, which is at the

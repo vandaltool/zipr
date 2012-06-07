@@ -290,7 +290,7 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 	}
     }
 
-    reset_undo(func->GetName());
+    //reset_undo(func->GetName());
 
     return success;
 }
@@ -329,7 +329,7 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
 	transformed_history[layout->GetLayoutName()].push_back(layout);
 	success = true;
 	//undo_list.clear();
-	reset_undo(func->GetName());
+	//reset_undo(func->GetName());
     }
 
     //orig_virp->WriteToDB();
@@ -358,7 +358,7 @@ bool PNTransformDriver::LayoutRandTransformHandler(PNStackLayout *layout, Functi
 	transformed_history[layout->GetLayoutName()].push_back(layout);
 	success = true;
 	//undo_list.clear();
-	reset_undo(func->GetName());
+	//reset_undo(func->GetName());
     }
 
     //orig_virp->WriteToDB();
@@ -498,7 +498,9 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 	    {
 		null_inf_count++;
 
-		//TODO: doesn't work if coverage forces the use of some hierarchy level
+		//If the number of null inferences encountered equals the number of inferences
+		//that are possible (based on the starting level which may not be 0), then
+		//the function is not transformable. 
 		if(transform_hierarchy.size()-starting_level == null_inf_count)
 		    not_transformable.push_back(func->GetName());
 		//TODO: is there a better way of checking this?
@@ -510,9 +512,9 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 
 	    sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
 
-	    //TODO: it is assumed now that the threshold_level is a level at which no validation need be done
-	    //but what if no threshold level is desired or provided? Hack for post TNE testing. 
-	    //bool do_validate = (func_coverage != 0 && level != threshold_level);
+	    //TODO: for now, only validate if the only_validate_list doesn't have any contents and
+	    //the level does not equal the never_validate level. I may want to allow the only validate
+	    //list to be empty, in which case a pointer is better, to check for NULL.
 	    bool do_validate = true;
 	    if(only_validate_list.size() != 0)
 	    {
@@ -522,9 +524,10 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		}
 		
 	    }
-
 	    do_validate = do_validate && (level != never_validate_level);
 	    
+
+	    //Go through each layout in the level of the hierarchy in order. 
 	    for(unsigned int i=0;i<layouts.size()&&!timeExpired;i++)
 	    {
 
@@ -534,7 +537,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		if(layouts[i]->IsCanarySafe())
 		{
 	
-		    success = CanaryTransformHandler(layouts[i],func,do_validate);//(func_coverage != 0));
+		    success = CanaryTransformHandler(layouts[i],func,do_validate);
 		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 			failed.push_back(func);
 		    else if(success)
@@ -544,7 +547,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 
 		else if(layouts[i]->IsPaddingSafe())
 		{
-		    success = PaddingTransformHandler(layouts[i],func,do_validate);//(func_coverage != 0));
+		    success = PaddingTransformHandler(layouts[i],func,do_validate);
 		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 			failed.push_back(func);
 		    else if(success)
@@ -554,7 +557,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		//if not canary or padding safe, the layout can only be randomized
 		else
 		{
-		    success = LayoutRandTransformHandler(layouts[i],func,do_validate);//(func_coverage!=0));
+		    success = LayoutRandTransformHandler(layouts[i],func,do_validate);
 		    if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 			failed.push_back(func);
 		    else if(success)
@@ -567,6 +570,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
     if(timeExpired)
 	cerr<<"Time Expired: Commit Changes"<<endl;
 
+    //finalize transformation, commit to database
     orig_virp->WriteToDB();
 
     cerr<<"############################Final Report############################"<<endl;
@@ -921,8 +925,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	    //This could probably be done once, but having the original instruction
 	    //allows me to produce messages that indicate more precisely where
 	    //the overflow occurred. 
-//	    Instruction_t *exit_code = getExitCode(virp,copyInstruction(virp,instr));
-	    Instruction_t *exit_code = getExitCode(virp,instr);
+	    Instruction_t *handler_code = getHandlerCode(virp,instr,P_CONTROLLED_EXIT);
 
 	    //insert canary checks
 	    //
@@ -930,7 +933,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 
 	    for(unsigned int i=0;i<canaries.size();i++)
 	    {
-		instr = insertCanaryCheckBefore(virp,instr,canaries[i].canary_val,canaries[i].ret_offset, exit_code);	
+		instr = insertCanaryCheckBefore(virp,instr,canaries[i].canary_val,canaries[i].ret_offset, handler_code);	
 	    }
 	}
 	//if the stack is not believed to be static, I can't check the canary using esp.
@@ -945,14 +948,14 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	    //This could probably be done once, but having the original instruction
 	    //allows me to produce messages that indicate more precisely where
 	    //the overflow occurred. 
-	    Instruction_t *exit_code = getExitCode(virp,instr);
+	    Instruction_t *handler_code = getHandlerCode(virp,instr,P_CONTROLLED_EXIT);
 
 	    //insert canary checks
 	    //
 	    //TODO: may need to save flags register
 	    for(unsigned int i=0;i<canaries.size();i++)
 	    {
-		instr = insertCanaryCheckBefore(virp,instr,canaries[i].canary_val,canaries[i].esp_offset, exit_code);	
+		instr = insertCanaryCheckBefore(virp,instr,canaries[i].canary_val,canaries[i].esp_offset, handler_code);	
 	    }
 	}
 	//TODO: message if not static stack?
@@ -1052,7 +1055,6 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		//amount to the register used to subtract from esp. 
 
 	        stringstream ss;
-		//TODO: make this padding random.
 		//TODO: I am uncertain how alignment will work in this situation
 		//if the layout is aligned, this will return a padding amount
 		//divisible by the alignment stride, however, without knowing
@@ -1294,11 +1296,13 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
   //void PNTransformDriver::undo(map<Instruction_t*, Instruction_t*> undo_list, Function_t *func)
 void PNTransformDriver::undo( Function_t *func)
 {
+    string func_name = func->GetName();
+
     //rollback any changes
-    cerr<<"PNTransformDriver: Undo Transform: "<<undo_list[func->GetName()].size()<<" instructions to rollback for function "<<func->GetName()<<endl;
+    cerr<<"PNTransformDriver: Undo Transform: "<<undo_list[func_name].size()<<" instructions to rollback for function "<<func_name<<endl;
     for(
-	map<Instruction_t*, Instruction_t*>::const_iterator mit=undo_list[func->GetName()].begin();
-	mit != undo_list[func->GetName()].end();
+	map<Instruction_t*, Instruction_t*>::const_iterator mit=undo_list[func_name].begin();
+	mit != undo_list[func_name].end();
 	++mit)
     {
 	Instruction_t* alt = mit->first;
@@ -1314,10 +1318,8 @@ void PNTransformDriver::undo( Function_t *func)
 //	delete orig;
     }
 
-
-
-    for(set<Instruction_t*>::const_iterator it=inserted_instr[func->GetName()].begin();
-	it != inserted_instr[func->GetName()].end();
+    for(set<Instruction_t*>::const_iterator it=inserted_instr[func_name].begin();
+	it != inserted_instr[func_name].end();
 	++it
 	)
     {
@@ -1325,26 +1327,32 @@ void PNTransformDriver::undo( Function_t *func)
 	delete *it;
     }
 
-    for(set<AddressID_t*>::const_iterator it=inserted_addr[func->GetName()].begin();
-	it != inserted_addr[func->GetName()].end();
+    for(set<AddressID_t*>::const_iterator it=inserted_addr[func_name].begin();
+	it != inserted_addr[func_name].end();
 	++it
 	)
     {
 	orig_virp->GetAddresses().erase(*it);
 	delete *it;
     }
+    //reset_undo(func->GetName());
 
-
-    reset_undo(func->GetName());
+    undo_list.erase(func_name);
+    inserted_instr.erase(func_name);
+    inserted_addr.erase(func_name);
     //undo_list.clear();
 }
 
+/*
 void PNTransformDriver::reset_undo(string func)
 {
     undo_list.erase(func);
     inserted_instr.erase(func);
     inserted_addr.erase(func);
 }
+*/
+
+
 
 void sigusr1Handler(int signum)
 {

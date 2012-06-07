@@ -183,19 +183,19 @@ string getJnzDataBits()
     return dataBits;    
 }
 
-Instruction_t* getExitCode(VariantIR_t* virp, Instruction_t* fallthrough)
+Instruction_t* getHandlerCode(VariantIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy)
 {
-    Instruction_t *exit_code = allocateNewInstruction(virp,fallthrough);
+    Instruction_t *handler_code = allocateNewInstruction(virp,fallthrough);
 /*
     setInstructionAssembly(virp,exit_code,"mov eax, 1",exit_code,NULL);
     Instruction_t* mov_ebx = insertAssemblyAfter(virp,exit_code,"mov ebx, 666");
     insertAssemblyAfter(virp,mov_ebx,"int 0x80");
 */
-    setInstructionAssembly(virp,exit_code,"pushf",NULL,NULL);
+    setInstructionAssembly(virp,handler_code,"pushf",NULL,NULL);
     stringstream ss;
     ss<<"push dword 0x";
-    ss<<hex<<POLICY_EXIT;
-    Instruction_t *policy_push = insertAssemblyAfter(virp,exit_code,ss.str(),NULL);
+    ss<<hex<<policy;
+    Instruction_t *policy_push = insertAssemblyAfter(virp,handler_code,ss.str(),NULL);
     ss.str("");
     ss<<"push dword 0x";
     ss<<hex<<fallthrough->GetAddress()->GetVirtualOffset();
@@ -206,7 +206,7 @@ Instruction_t* getExitCode(VariantIR_t* virp, Instruction_t* fallthrough)
 
     callback->SetCallback("buffer_overflow_detector");
     callback->SetFallthrough(fallthrough);
-    return exit_code;
+    return handler_code;
 }
 
 Instruction_t* insertCanaryCheckBefore(VariantIR_t* virp,Instruction_t *first, unsigned int canary_val, int esp_offset, Instruction_t *fail_code)
