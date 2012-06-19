@@ -536,6 +536,7 @@ tests/spec/gcc_exp/expr2.s -text
 tests/spec/gcc_exp/g23.s -text
 tests/spec/gcc_exp/s04.s -text
 tests/spec/gcc_exp/scilab.s -text
+tests/spec/gcc_test.sh -text
 tests/spec/gobmk -text
 tests/spec/h264ref -text
 tests/spec/h264ref_exp/act.err -text
