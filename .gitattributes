@@ -527,6 +527,15 @@ tests/spec/bzip_exp/input_combined.out -text
 tests/spec/bzip_exp/input_program.out -text
 tests/spec/bzip_test.sh -text
 tests/spec/gcc -text
+tests/spec/gcc_exp/166.s -text
+tests/spec/gcc_exp/200.s -text
+tests/spec/gcc_exp/c-typeck.s -text
+tests/spec/gcc_exp/cp-decl.s -text
+tests/spec/gcc_exp/expr.s -text
+tests/spec/gcc_exp/expr2.s -text
+tests/spec/gcc_exp/g23.s -text
+tests/spec/gcc_exp/s04.s -text
+tests/spec/gcc_exp/scilab.s -text
 tests/spec/gobmk -text
 tests/spec/h264ref -text
 tests/spec/h264ref_exp/act.err -text
