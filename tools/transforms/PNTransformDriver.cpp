@@ -1060,7 +1060,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		//divisible by the alignment stride, however, without knowing
 		//the size of the object, this may not ensure alignment, it is
 		//up to the compiler to handle that else where. 
-		ss<<"add "<<matched<<" , "<<hex<<layout->GetRandomPadding();//"0x500";
+		ss<<"add "<<matched<<" , 0x"<<hex<<layout->GetRandomPadding();//"0x500";
 
 		cerr<<"PNTransformDriver: adding padding to dynamic stack allocation"<<endl;
 		cerr<<"PNTransformDriver: inserted instruction = "<<ss.str()<<endl;
