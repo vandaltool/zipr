@@ -22,6 +22,7 @@ shift;
 
 
 command="
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$datapath
 STRATA_LOG=detectors
 STRATA_WATCHDOG=0
 STRATA_NUM_HANDLE=0

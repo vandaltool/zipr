@@ -439,6 +439,18 @@ mkdir $newdir
 # store the original executable as a.ncexe
 cp $orig_exe $newdir/$newname.ncexe
 
+#
+# setup libstrata.so.  We'll setup two versions, one with symbols so we can debug, and a stripped, faster-loading version.
+# by default, use the faster version.  copy in the .symbosl version for debugging
+#
+cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
+cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
+strip $newdir/libstrata.so.nosymbols
+cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
+
+# also, add newdir to the ld-library path for analysis.
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/$newdir
+
 
 
 # make sure we overwrite out output file one way or another
