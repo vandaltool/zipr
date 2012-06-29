@@ -108,7 +108,7 @@ do
 
     #don't consider inputs that cause the program to exit in exit coes
     #132-140 inclusive
-    if [ $status -ge 132 ] && [ $status -le 140 ]; then
+    if [ "$status" -ge 132 ] && [ "$status" -le 140 ]; then
 	continue
     fi
     
