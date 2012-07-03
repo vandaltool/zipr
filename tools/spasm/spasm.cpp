@@ -51,18 +51,31 @@ static void resolveSymbols(const string &mapFile);
 static vector<bin_instruction_t> parseBin(const string &binFile);
 static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines, const string &symbolFilename);
 static void printVector(const string &outputFile, const vector<string> &lines);
+static int getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception);
 
 //
 // @todo: need to cache results
 //
 static string getCallbackAddress(const string &symbolFilename, const string &symbol) throw(exception)
 {
+	char buf[30];
+	int diff=getSymbolAddress(symbolFilename, symbol)
+	     - getSymbolAddress(symbolFilename, "strata_init");
+	sprintf(buf,"%x", diff);
+	string s(buf);
+	return s;
+}
+
+
+static int getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception)
+{
+
   string symbolFullName = symbolFilename + "+" + symbol;
   map<string,string>::iterator callbackMapIterator;
 
   if(callbackMap.find(symbolFullName) != callbackMap.end())
   {
-    return callbackMap[symbolFullName];
+    return strtol(callbackMap[symbolFullName].c_str(),NULL,16);
   }
 
 // nm -a stratafier.o.exe | egrep " integer_overflow_detector$" | cut -f1 -d' '
@@ -79,7 +92,7 @@ static string getCallbackAddress(const string &symbolFilename, const string &sym
 
   callbackMap[symbolFullName] = addressString;
 
-  return addressString;
+  return strtol(addressString.c_str(),NULL,16);
 }
 
 void a2bspri(const string &input, const string &output, const string &symbolFilename) throw(exception)

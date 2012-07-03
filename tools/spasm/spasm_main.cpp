@@ -1,20 +1,48 @@
 #include "spasm.h"
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstdlib>
 
 using namespace std;
 
+bool fexists(string filename)
+{
+  ifstream ifile(filename.c_str());
+  return ifile;
+}
+
 ///Utility SPASM's main
 int main(int argc, char *argv[])
 {
-    if(argc != 4)
+    string input, output, elf;
+
+    if(argc == 4)
+    {
+    	elf = string(argv[3]);
+	if(!fexists(elf))
+	{
+		cerr<<"Symbol file "<<elf<<" does not exist.  SPASM will not be able to process callbacks properly."<<endl;
+	}
+    }
+    else if(argc == 5) 
+    {
+    	elf = string(argv[3]);
+	if(!fexists(elf))
+	{
+    		elf = string(argv[4]);
+		if(!fexists(elf))
+			cerr<<"Symbol files ("<<argv[3] << " and " << argv[4] << 
+				") do not exist.  SPASM will not be able to process callbacks properly."<<endl;
+	}
+		
+    }
+    else 
     {
         cerr<<"SPASM Usage:\n<input file> <output file> <symbol file> \n"<<endl;
         exit(1);
     }
 
-    string input, output, elf;
 
     input = string(argv[1]);
     output = string(argv[2]);
