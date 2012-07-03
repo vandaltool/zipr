@@ -10,6 +10,7 @@
 
 # default watchdog value is 30 seconds
 watchdog_val=30
+errors=0
 
 # alarm handler
 THIS_PID=$$
@@ -241,6 +242,7 @@ perform_step()
 			echo The $step step is necessary, but failed.  Exiting ps_analyze early.
 			exit -1;
 		fi
+		errors=1
 	else
 		echo Done.  Successful.
 	fi
@@ -569,7 +571,7 @@ if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
 
 		# generate aspri, and assemble it to bspri
 		perform_step generate_spri $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri
-		perform_step spasm $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe 
+		perform_step spasm $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe libstrata.so.symbols
 		perform_step fast_spri $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 	fi
 fi
@@ -592,6 +594,13 @@ fi
 
 # return success if we created a script to invoke the pgm. 
 if [ -f $stratafied_exe ]; then 
+	if [ $errors = 1 ]; then
+		echo
+		echo
+		echo "*****************************"
+		echo "*Warning: Some steps failed!*"
+		echo "*****************************"
+	fi
 	exit 0;
 else
 	exit 255;
