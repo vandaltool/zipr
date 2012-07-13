@@ -61,7 +61,8 @@ MD5HASH=`md5sum $FILENAME | cut -f1 -d' '`
 # -t: tuple only
 # -c: run command
 
-PROGRAM_ID=`psql -q -t -c "INSERT INTO variant_info (schema_version_id,name,address_table_name,function_table_name,instruction_table_name) VALUES ('1', '$PROGRAM_NAME', '${PROGRAM_NAME}_ADDRESS', '${PROGRAM_NAME}_function', '${PROGRAM_NAME}_instruction') RETURNING variant_id;" | sed "s/^[ \t]*//"`
+
+PROGRAM_ID=`psql -q -t -c "INSERT INTO variant_info (schema_version_id,name) VALUES ('2', '$PROGRAM_NAME') RETURNING variant_id;" | sed "s/^[ \t]*//"`
 
 if [ ! $? -eq 0 ]; then
   log_error "Failed to register program"
@@ -76,9 +77,12 @@ psql -q -t -c "UPDATE variant_info SET orig_variant_id = '$PROGRAM_ID' WHERE var
 
 
 oid=`psql  -t -c "\lo_import '$FILENAME' 'original executable that was passed to ps_analyze.sh'" |cut -d" " -f2`
-FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash, elfoid) VALUES ('$URL', '$ARCH', '$MD5HASH', '$oid') RETURNING file_id;" | sed "s/^[ \t]*//"`
+FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash, elfoid, address_table_name,function_table_name,instruction_table_name) VALUES ('$URL', '$ARCH', '$MD5HASH', '$oid', '${PROGRAM_NAME}_address', '${PROGRAM_NAME}_function', '${PROGRAM_NAME}_instruction') RETURNING file_id;" | sed "s/^[ \t]*//"`
 
-log_message "To do: if shared libs, then need to add them to this table"
+# Update original file id
+psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID' WHERE file_id = '$FILE_ID';"
+
+
 
 #============================================
 # Update program_dependency table

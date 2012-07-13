@@ -13,22 +13,23 @@ CREATE TABLE variant_info
   variant_id       		SERIAL PRIMARY KEY,       
   name             		text    NOT NULL CHECK (name <> ''),
   orig_variant_id  		integer DEFAULT -1,
-  address_table_name 		text,
-  function_table_name 		text,
-  instruction_table_name 	text,
   doip_id                   	integer DEFAULT -1
 
 );
 
 CREATE TABLE file_info
 (
-  file_id          SERIAL PRIMARY KEY,
-  url              text NOT NULL CHECK (url <> ''),
-  hash             text,
-  arch             text,
-  type		   text DEFAULT 'ELF-Static',
-  elfoid	   OID,
-  doip_id          integer DEFAULT -1
+  file_id          		SERIAL PRIMARY KEY,
+  orig_file_id     		integer DEFAULT -1,
+  url              		text NOT NULL CHECK (url <> ''),
+  hash             		text,
+  arch             		text,
+  type		   		text DEFAULT 'ELF-Static',
+  elfoid	   		OID,
+  address_table_name 		text,
+  function_table_name 		text,
+  instruction_table_name 	text,
+  doip_id          		integer DEFAULT -1
 );
 
 CREATE TABLE variant_dependency
@@ -36,6 +37,5 @@ CREATE TABLE variant_dependency
   variant_id       integer REFERENCES variant_info,
   file_id          integer REFERENCES file_info,
   doip_id          integer DEFAULT -1
-
 );
 

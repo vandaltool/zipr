@@ -46,6 +46,15 @@ set_timer()
 	kill -ALRM $$
 }
 
+fail_gracefully()
+{
+	if [ ! -z $TIMER_PID ]; then
+		kill -9 $TIMER_PID
+	fi
+	echo $1
+	exit 255
+}
+
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=900
 PN_TIMEOUT_VALUE=9000000
@@ -183,7 +192,6 @@ stop_if_error()
 {
 	my_step=$1
 
-
 	case $my_step in
 		# getting the annotation file right is necessary-ish
 		meds_static)
@@ -196,6 +204,10 @@ stop_if_error()
 		# cloning is necessary 
 		clone)
 			return 3;
+		;;
+		# cloning is necessary 
+		spasm)
+			return 4;
 		;;
 		# other steps are optional
 		*)
@@ -232,13 +244,20 @@ perform_step()
 		command_exit=$?
 	fi
 	
+	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
+	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
+	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
+	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
+	echo "# ATTRIBUTE peasoup_step_command=$command " >> $logfile
+	echo "# ATTRIBUTE peasoup_step_exitcode=$command_exit" >> $logfile
+
 	is_step_error $step $command_exit
 	if [ $? -ne 0 ]; then
 		echo Done.  Command failed!
 
 		# check if we need to exit
 		stop_if_error $step
-		if [ $? -lt $error_threshold ]; then 
+		if [ $? -gt $error_threshold ]; then 
 			echo The $step step is necessary, but failed.  Exiting ps_analyze early.
 			exit -1;
 		fi
@@ -246,13 +265,6 @@ perform_step()
 	else
 		echo Done.  Successful.
 	fi
-
-	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
-	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
-	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
-	echo "# ATTRIBUTE peasoup_step_command=$command " >> $logfile
-	echo "# ATTRIBUTE peasoup_step_exitcode=$command_exit" >> $logfile
 
 	# move to the next step 
 	stepnum=`expr $stepnum + 1`
@@ -527,54 +539,66 @@ perform_step pdb_create_tables $PEASOUP_HOME/tools/db/pdb_create_program_tables.
 #
 # check to see if annot file exists before doing anything, and also that we've created a variant.
 #
-if [ -f $newname.ncexe.annot  -a $varid -gt 0 ]; then
+if [ ! -f $newname.ncexe.annot  ] ; then 
+	fail_gracefully "idapro step failed, exiting early.  Is IDAPRO installed? "
+fi
 
-	# import meds info to table
-	perform_step meds2pdb $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME $newname.ncexe $MD5HASH $newname.ncexe.annot 	 
+if [ ! $varid -gt 0 ]; then
+	fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
+fi
 
-	# build basic IR
-	perform_step fill_in_cfg $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
-	perform_step fill_in_indtargs $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./$newname.ncexe    
+# import meds info to table
+perform_step meds2pdb $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME $newname.ncexe $MD5HASH $newname.ncexe.annot 	 
 
-	# finally create a clone so we can do some transforms 
-	perform_step clone $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
-	cloneid=`cat clone.id`
+# build basic IR
+perform_step fill_in_cfg $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
+perform_step fill_in_indtargs $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./$newname.ncexe    
 
-	#	
-	# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
-	#
-	if [ $cloneid -gt 0 ]; then
-		# do the basic tranforms we're performing for peasoup 
-		perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
+# finally create a clone so we can do some transforms 
+perform_step clone $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
+cloneid=`cat clone.id`
 
-		#
-		# Run script to setup manual tests
-		#
-		perform_step manual_test $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script $manual_test_coverage_file
+#	
+# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
+#
+if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
+	fail_gracefully "Failed to create variant.  Is postgres running properly?"
+fi
 
-		is_step_on manual_test
-		if [ $? -eq 0 ]; then 
-			perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/p1xform_v2.sh $PN_TIMEOUT_VALUE $DO_CANARIES
-		else
-			grep manual_test_import $manual_test_script
-			if [ $? -eq 0 ];
-			then
-				perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh $PN_TIMEOUT_VALUE $DO_CANARIES
-			else
-				perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_blackbox.sh $PN_TIMEOUT_VALUE $DO_CANARIES
-			fi
-		fi
-		
-		perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE
-		perform_step calc_conflicts $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
-		perform_step ilr $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
+# do the basic tranforms we're performing for peasoup 
+perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
 
-		# generate aspri, and assemble it to bspri
-		perform_step generate_spri $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri
-		perform_step spasm $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe libstrata.so.symbols
-		perform_step fast_spri $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
+#
+# Run script to setup manual tests
+#
+perform_step manual_test $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script $manual_test_coverage_file
+
+
+# FIXME BEN:  Please isolate these diff steps into a single script.  Pass $? if you need to.
+#
+# Do P1/Pn transform.
+#
+is_step_on manual_test
+if [ $? -eq 0 ]; then 
+	perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/p1xform_v2.sh $PN_TIMEOUT_VALUE $DO_CANARIES
+else
+	grep manual_test_import $manual_test_script
+	if [ $? -eq 0 ];
+	then
+		perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh $PN_TIMEOUT_VALUE $DO_CANARIES
+	else
+		perform_step p1transform $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_blackbox.sh $PN_TIMEOUT_VALUE $DO_CANARIES
 	fi
 fi
+		
+perform_step integertransform $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE
+#perform_step calc_conflicts $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
+perform_step ilr $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
+
+# generate aspri, and assemble it to bspri
+perform_step generate_spri $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri
+perform_step spasm $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe libstrata.so.symbols
+perform_step fast_spri $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 
 
 #
