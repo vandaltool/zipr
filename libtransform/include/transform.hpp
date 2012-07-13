@@ -20,7 +20,7 @@ namespace libTransform
 class Transform {
 
 	public:
-		Transform(VariantID_t *, VariantIR_t *, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions);
+		Transform(VariantID_t *, FileIR_t *, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions);
 
 	protected:
 
@@ -55,7 +55,7 @@ class Transform {
 		virtual_offset_t getAvailableAddress();
 
 		VariantID_t* getVariantID() { return m_variantID; }
-		VariantIR_t* getVariantIR() { return m_variantIR; }
+		FileIR_t* getVariantIR() { return m_variantIR; }
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
 		set<std::string>* getFilteredFunctions() { return m_filteredFunctions; }
 
@@ -75,7 +75,7 @@ class Transform {
 		bool hasTargetRegister(libIRDB::Instruction_t*);
 
 		VariantID_t            *m_variantID;
-		VariantIR_t            *m_variantIR;
+		FileIR_t            *m_variantIR;
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *m_annotations;
 		set<std::string>       *m_filteredFunctions;
 };

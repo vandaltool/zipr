@@ -60,8 +60,8 @@ main(int argc, char* argv[])
         }
 
 
-	delete pidp;
 	delete newpidp;
+	delete pidp;
 
 
 	exit(0);

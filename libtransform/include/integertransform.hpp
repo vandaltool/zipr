@@ -15,7 +15,7 @@ using namespace libIRDB;
 class IntegerTransform : public Transform
 {
 	public:
-		IntegerTransform(VariantID_t *, VariantIR_t*, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
+		IntegerTransform(VariantID_t *, FileIR_t*, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
 		int execute();
 
 		void setSaturatingArithmetic(bool p_satArithmetic) { m_saturatingArithmetic = p_satArithmetic; }

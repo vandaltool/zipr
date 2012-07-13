@@ -420,7 +420,7 @@ We need to emit a rule of this form
 //
 // generate a map from new instructions to old instructions
 //
-static void generate_insn_to_insn_maps(VariantIR_t *varirp, VariantIR_t *orig_varirp)
+static void generate_insn_to_insn_maps(FileIR_t *varirp, FileIR_t *orig_varirp)
 {
 	static map<Instruction_t*,Instruction_t*> new_insnMap;
 	insnMap=new_insnMap; // re-init the global instruction map.
@@ -483,13 +483,13 @@ static void generate_insn_to_insn_maps(VariantIR_t *varirp, VariantIR_t *orig_va
 //
 // GenerateSPRI -  spri for the entire database
 //
-void VariantIR_t::GenerateSPRI(ostream &fout)
+void FileIR_t::GenerateSPRI(ostream &fout)
 {
 	if(orig_variant_ir_p==NULL)
 	{
 		VariantID_t orig_varidp(progid.GetOriginalVariantID());
 		assert(orig_varidp.IsRegistered()==true);
-		orig_variant_ir_p=new VariantIR_t(orig_varidp);
+		orig_variant_ir_p=new FileIR_t(orig_varidp);
 	}
 
 
@@ -501,7 +501,7 @@ void VariantIR_t::GenerateSPRI(ostream &fout)
 // generate_unmoved_insn_targets_set --  create the set of insturctions that have control 
 // transfers to them (including fallthrough type control transfers) from instructions that do not need a spri rule.
 //
-static void generate_unmoved_insn_targets_set(VariantIR_t* varirp)
+static void generate_unmoved_insn_targets_set(FileIR_t* varirp)
 {
 	for(
 		set<Instruction_t*>::const_iterator it=varirp->GetInstructions().begin();
@@ -527,10 +527,10 @@ static void generate_unmoved_insn_targets_set(VariantIR_t* varirp)
 }
 
 
-void VariantIR_t::GenerateSPRI(VariantIR_t *orig_varirp, ostream &fout)
+void FileIR_t::GenerateSPRI(FileIR_t *orig_varirp, ostream &fout)
 {
 	// give 'this' a name
-	VariantIR_t *varirp=this;
+	FileIR_t *varirp=this;
 
 	SetBaseIDS(); // need unique ID to generate unique label name
 

@@ -28,7 +28,7 @@ pqxxDB_t pqxx_interface;
 void populate_instruction_map
 	(
 		map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
-		VariantIR_t *virp
+		FileIR_t *virp
 	)
 {
 	/* start from scratch each time */
@@ -57,7 +57,7 @@ void populate_instruction_map
 void set_fallthrough
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
-	DISASM *disasm, Instruction_t *insn, VariantIR_t *virp
+	DISASM *disasm, Instruction_t *insn, FileIR_t *virp
 	)
 {
 	assert(disasm);
@@ -105,7 +105,7 @@ void set_fallthrough
 void set_target
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
-	DISASM *disasm, Instruction_t *insn, VariantIR_t *virp
+	DISASM *disasm, Instruction_t *insn, FileIR_t *virp
 	)
 {
 
@@ -173,9 +173,9 @@ void set_target
 	}
 }
 
-File_t* find_file(VariantIR_t* virp, db_id_t fileid)
+File_t* find_file(FileIR_t* virp, db_id_t fileid)
 {
-
+#if 0
 	set<File_t*> &files=virp->GetFiles();
 
 	for(
@@ -189,9 +189,13 @@ File_t* find_file(VariantIR_t* virp, db_id_t fileid)
 			return thefile;
 	}
 	return NULL;
+#endif
+	assert(virp->GetFile()->GetBaseID()==fileid);
+	return virp->GetFile();
+
 }
 
-void add_new_instructions(VariantIR_t *virp)
+void add_new_instructions(FileIR_t *virp)
 {
 	int found_instructions=0;
 	for(
@@ -341,7 +345,7 @@ void add_new_instructions(VariantIR_t *virp)
 
 }
 
-void fill_in_cfg(VariantIR_t *virp)
+void fill_in_cfg(FileIR_t *virp)
 {
 	int round=0;
 	
@@ -438,7 +442,7 @@ main(int argc, char* argv[])
 	}
 
 	VariantID_t *pidp=NULL;
-	VariantIR_t * virp=NULL;
+	FileIR_t * virp=NULL;
 
 	try 
 	{
@@ -452,7 +456,7 @@ main(int argc, char* argv[])
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
 		// read the db  
-		virp=new VariantIR_t(*pidp);
+		virp=new FileIR_t(*pidp);
 
 		fill_in_cfg(virp);
 
@@ -470,6 +474,6 @@ main(int argc, char* argv[])
 	assert(virp && pidp);
 
 
-	delete pidp;
 	delete virp;
+	delete pidp;
 }

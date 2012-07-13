@@ -3,7 +3,7 @@
 using namespace libTransform;
 using namespace MEDS_Annotation;
 
-Transform::Transform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
+Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
 {
 	m_variantID = p_variantID;                  // Current variant ID
 	m_variantIR = p_variantIR;                  // IR (off the database) for variant

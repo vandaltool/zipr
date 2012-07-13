@@ -22,4 +22,4 @@ fill_in_indtargs.exe: read_ehframe.o fill_in_indtargs.o
 	g++ -g $< -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@ -c
 
 clean:
-	rm -f $(PROGS)
+	rm -f $(PROGS) *.o

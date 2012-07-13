@@ -40,7 +40,7 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
     //TODO: throw exception?
     this->pidp = pidp;
     orig_progid = pidp->GetOriginalVariantID();
-    orig_virp = new VariantIR_t(*pidp);
+    orig_virp = new FileIR_t(*pidp);
     this->BED_script = BED_script;
     do_canaries = true;
     do_align = false;
@@ -106,7 +106,7 @@ void PNTransformDriver::AddOnlyValidateList(std::set<std::string> &only_validate
 
 
 /*
-void PNTransformDriver::GenerateTransforms2(VariantIR_t *virp,vector<Function_t*> funcs,string BED_script, int progid)
+void PNTransformDriver::GenerateTransforms2(FileIR_t *virp,vector<Function_t*> funcs,string BED_script, int progid)
 {
     for(int i=0;i<funcs.size();++i)
     {
@@ -738,7 +738,7 @@ bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Functi
     return true;
 }
 
-bool PNTransformDriver::Validate(VariantIR_t *virp, Function_t *func)
+bool PNTransformDriver::Validate(FileIR_t *virp, Function_t *func)
 {
     cerr<<"PNTransformDriver: Validate(): Validating function "<<func->GetName()<<endl;
 
@@ -794,7 +794,7 @@ unsigned int PNTransformDriver::GetRandomCanary()
 bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *func)
 {
     //TODO: hack for TNE, assuming all virp is orig_virp now. 
-    VariantIR_t *virp = orig_virp;
+    FileIR_t *virp = orig_virp;
 
     if(!orig_layout->IsCanarySafe())
 	return Sans_Canary_Rewrite(orig_layout,func);
@@ -997,7 +997,7 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 
 inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instruction_t *instr)
 {
-    VariantIR_t* virp = orig_virp;
+    FileIR_t* virp = orig_virp;
 
     int max = PNRegularExpressions::MAX_MATCHES;
     regmatch_t pmatch[max];

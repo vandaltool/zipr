@@ -17,7 +17,7 @@ main(int argc, char* argv[])
 	}
 
 	VariantID_t *pidp=NULL;
-	VariantIR_t *virp=NULL;
+	FileIR_t *virp=NULL;
 
 	/* setup the interface to the sql server */
 	pqxxDB_t pqxx_interface;
@@ -32,7 +32,7 @@ main(int argc, char* argv[])
 		assert(pidp->IsRegistered()==true);
 
 		// read the db  
-		virp=new VariantIR_t(*pidp);
+		virp=new FileIR_t(*pidp);
 
 
 	}
@@ -84,6 +84,6 @@ main(int argc, char* argv[])
 	pqxx_interface.Commit();
 	cout<<"Done!"<<endl;
 
-	delete pidp;
 	delete virp;
+	delete pidp;
 }

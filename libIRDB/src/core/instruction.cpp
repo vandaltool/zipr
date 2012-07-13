@@ -132,9 +132,9 @@ bool Instruction_t::Assemble(string assembly)
 }
 
 
-string Instruction_t::WriteToDB(VariantID_t *vid, db_id_t newid)
+string Instruction_t::WriteToDB(File_t *fid, db_id_t newid)
 {
-	assert(vid);
+	assert(fid);
 	assert(my_address);
 
 	if(GetBaseID()==NOT_IN_DATABASE)
@@ -157,7 +157,7 @@ string Instruction_t::WriteToDB(VariantID_t *vid, db_id_t newid)
 		indirect_bt_id=indTarg->GetBaseID();
 
         string q=
-		string("insert into ")+vid->instruction_table_name +
+		string("insert into ")+fid->instruction_table_name +
                 string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, target_address_id, data, callback, comment, ind_target_address_id, doip_id) ")+
                 string(" VALUES (") +
                 string("'") + to_string(GetBaseID())            	+ string("', ") +

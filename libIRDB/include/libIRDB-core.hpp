@@ -13,6 +13,7 @@ namespace libIRDB
 {
 
 class VariantID_t; // forward decl for many classes
+class File_t; // forward decl for many classes
 
 #include <core/basetypes.hpp>
 #include <core/dbinterface.hpp>
@@ -23,7 +24,7 @@ class VariantID_t; // forward decl for many classes
 #include <core/file.hpp>
 #include <core/function.hpp>
 #include <core/variantid.hpp>
-#include <core/variantir.hpp>
+#include <core/fileir.hpp>
 #include <core/pqxxdb.hpp>
 
 };

@@ -28,7 +28,7 @@ pqxxDB_t pqxx_interface;
 long long num_addresses=0,num_conflicts=0,tot_conflicts=0;
 long long total_bytes=0;
 
-void count_conflicts (VariantIR_t* virp)
+void count_conflicts (FileIR_t* virp)
 {
 	map<int,int> conflict_map;
 
@@ -134,7 +134,7 @@ main(int argc, char* argv[])
 	}
 
 	VariantID_t *pidp=NULL;
-	VariantIR_t * virp=NULL;
+	FileIR_t * virp=NULL;
 
 	try 
 	{
@@ -148,7 +148,7 @@ main(int argc, char* argv[])
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
 		// read the db  
-		virp=new VariantIR_t(*pidp);
+		virp=new FileIR_t(*pidp);
 
 		get_total(argv[2]);
 		count_conflicts(virp);
@@ -172,6 +172,6 @@ main(int argc, char* argv[])
 	cout<<"# ATTRIBUTE ave_bytes_conflicted_within_exe="<<std::dec<<((double)num_conflicts/total_bytes)<<endl;
 
 
-	delete pidp;
 	delete virp;
+	delete pidp;
 }

@@ -13,10 +13,10 @@
 using namespace libIRDB;
 using namespace std;
 
-void unfix_call(Instruction_t* insn, VariantIR_t *virp);
+void unfix_call(Instruction_t* insn, FileIR_t *virp);
 bool is_push(Instruction_t* insn);
 
-void unfix_calls(VariantIR_t* virp)
+void unfix_calls(FileIR_t* virp)
 {
 	for(
 		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
@@ -30,7 +30,7 @@ void unfix_calls(VariantIR_t* virp)
 	}
 }
 
-void unfix_call(Instruction_t* insn, VariantIR_t *virp)
+void unfix_call(Instruction_t* insn, FileIR_t *virp)
 {
 	/* we need a push instruction */
 	assert(insn);
@@ -93,7 +93,7 @@ main(int argc, char* argv[])
 	}
 
 	VariantID_t *pidp=NULL;
-	VariantIR_t *virp=NULL;
+	FileIR_t *virp=NULL;
 
 	/* setup the interface to the sql server */
 	pqxxDB_t pqxx_interface;
@@ -108,7 +108,7 @@ main(int argc, char* argv[])
 		assert(pidp->IsRegistered()==true);
 
 		// read the db  
-		virp=new VariantIR_t(*pidp);
+		virp=new FileIR_t(*pidp);
 
 
 	}
@@ -130,6 +130,6 @@ main(int argc, char* argv[])
 	pqxx_interface.Commit();
 	cout<<"Done!"<<endl;
 
-	delete pidp;
 	delete virp;
+	delete pidp;
 }

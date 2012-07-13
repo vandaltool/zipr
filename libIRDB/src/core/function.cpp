@@ -22,15 +22,15 @@ void Function_t::WriteToDB()
 	assert(0);
 }
 
-string Function_t::WriteToDB(VariantID_t *vid, db_id_t newid)
+string Function_t::WriteToDB(File_t *fid, db_id_t newid)
 {
-	assert(vid);
+	assert(fid);
 	assert(entry_point);
 
 	if(GetBaseID()==NOT_IN_DATABASE)
 		SetBaseID(newid);
 
-	string q=string("insert into ")+vid->function_table_name + 
+	string q=string("insert into ")+fid->function_table_name + 
 		string(" (function_id, entry_point_id, name, stack_frame_size, out_args_region_size, use_frame_pointer, doip_id) ")+
 		string(" VALUES (") + 
 		string("'") + to_string(GetBaseID()) 		  + string("', ") + 

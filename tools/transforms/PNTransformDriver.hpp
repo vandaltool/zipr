@@ -20,7 +20,7 @@ class PNTransformDriver
 {
 protected:
     libIRDB::VariantID_t *pidp;
-    libIRDB::VariantIR_t *orig_virp;
+    libIRDB::FileIR_t *orig_virp;
     std::string BED_script;
     int orig_progid;
     bool do_canaries;
@@ -42,15 +42,15 @@ protected:
 
     //   virtual bool Rewrite(PNStackLayout *layout, libIRDB::Function_t *func);
 //    virtual bool LayoutValidation(PNStackLayout *layout);
-    virtual bool Validate(libIRDB::VariantIR_t *virp, libIRDB::Function_t *func);
+    virtual bool Validate(libIRDB::FileIR_t *virp, libIRDB::Function_t *func);
     //virtual void undo(std::map<libIRDB::Instruction_t*,std::string> undo_list, libIRDB::Function_t *func);
     virtual void undo( libIRDB::Function_t *func);
     //virtual void reset_undo(std::string func);
     virtual std::vector<PNStackLayout*> GenerateInferences(libIRDB::Function_t *func, int level);
     virtual bool ShuffleValidation(int reps, PNStackLayout *layout,libIRDB::Function_t *func);
-    //virtual void GenerateTransforms2(libIRDB::VariantIR_t *virp,std::vector<libIRDB::Function_t*> funcs,std::string BED_script, int progid);
+    //virtual void GenerateTransforms2(libIRDB::FileIR_t *virp,std::vector<libIRDB::Function_t*> funcs,std::string BED_script, int progid);
     //virtual bool ValidateLayout(PNStackLayout *layout,std::string BED_script,int progid);
-//    virtual bool Canary_Rewrite(VariantIR_t *virp, PNStackLayout *orig_layout,libIRDB::Function_t *func);
+//    virtual bool Canary_Rewrite(FileIR_t *virp, PNStackLayout *orig_layout,libIRDB::Function_t *func);
     //altered for TNE hack for dyn array padding, assuming all virp is orig_virp
     virtual bool Canary_Rewrite( PNStackLayout *orig_layout,libIRDB::Function_t *func);
     virtual bool Sans_Canary_Rewrite(PNStackLayout *orig_layout, libIRDB::Function_t *func);

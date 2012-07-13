@@ -167,7 +167,7 @@ bool call_needs_fix(Instruction_t* insn)
 
 
 
-void fix_call(Instruction_t* insn, VariantIR_t *virp)
+void fix_call(Instruction_t* insn, FileIR_t *virp)
 {
 	/* record the possibly new indirect branch target if this call gets fixed */
 	Instruction_t* newindirtarg=insn->GetFallthrough();
@@ -299,9 +299,9 @@ bool is_call(Instruction_t* insn)
 	return (disasm.Instruction.BranchType==CallType);
 }
 
-File_t* find_file(VariantIR_t* virp, db_id_t fileid)
+File_t* find_file(FileIR_t* virp, db_id_t fileid)
 {
-
+#if 0
         set<File_t*> &files=virp->GetFiles();
 
         for(
@@ -315,6 +315,10 @@ File_t* find_file(VariantIR_t* virp, db_id_t fileid)
                         return thefile;
         }
         return NULL;
+#endif
+        assert(virp->GetFile()->GetBaseID()==fileid);
+        return virp->GetFile();
+
 }
 
 
@@ -323,7 +327,7 @@ File_t* find_file(VariantIR_t* virp, db_id_t fileid)
 // fix_all_calls - convert calls to push/jump pairs in the IR.  if fix_all is true, all calls are converted, 
 // else we attempt to detect the calls it is safe to convert.
 //
-void fix_all_calls(VariantIR_t* virp, bool print_stats, bool fix_all)
+void fix_all_calls(FileIR_t* virp, bool print_stats, bool fix_all)
 {
 
 
@@ -397,7 +401,7 @@ main(int argc, char* argv[])
 	}
 
 	VariantID_t *pidp=NULL;
-	VariantIR_t *virp=NULL;
+	FileIR_t *virp=NULL;
 
 	/* setup the interface to the sql server */
 	BaseObj_t::SetInterface(&pqxx_interface);
@@ -411,7 +415,7 @@ main(int argc, char* argv[])
 		assert(pidp->IsRegistered()==true);
 
 		// read the db  
-		virp=new VariantIR_t(*pidp);
+		virp=new FileIR_t(*pidp);
 
 
 	}
@@ -434,6 +438,6 @@ main(int argc, char* argv[])
 	pqxx_interface.Commit();
 	cout<<"Done!"<<endl;
 
-	delete pidp;
 	delete virp;
+	delete pidp;
 }

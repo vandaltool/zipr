@@ -50,7 +50,7 @@ bool is_in_range(int p)
 	return false;
 }
 
-void process_ranges(VariantIR_t* virp)
+void process_ranges(FileIR_t* virp)
 {
         for(
                 set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
@@ -102,7 +102,7 @@ void handle_argument(ARGTYPE *arg)
 		possible_target(arg->Memory.Displacement);
 }
 
-void mark_targets(VariantIR_t *virp)
+void mark_targets(FileIR_t *virp)
 {
         for(
                 set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
@@ -129,7 +129,7 @@ void mark_targets(VariantIR_t *virp)
 	}
 
 }
-void get_instruction_targets(VariantIR_t *virp)
+void get_instruction_targets(FileIR_t *virp)
 {
         for(
                 set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
@@ -180,7 +180,7 @@ void get_instruction_targets(VariantIR_t *virp)
 
 }
 
-void get_executable_bounds(Elf32_Shdr *shdr, FILE* fp, VariantIR_t *virp)
+void get_executable_bounds(Elf32_Shdr *shdr, FILE* fp, FileIR_t *virp)
 {
 	int flags = shdr->sh_flags;
 
@@ -200,7 +200,7 @@ void get_executable_bounds(Elf32_Shdr *shdr, FILE* fp, VariantIR_t *virp)
 
 }
 
-void infer_targets(Elf32_Shdr *shdr, FILE* fp, VariantIR_t *virp)
+void infer_targets(Elf32_Shdr *shdr, FILE* fp, FileIR_t *virp)
 {
 	int flags = shdr->sh_flags;
 
@@ -271,7 +271,7 @@ void print_targets()
  *      wmemcpy, wmemmove, wmemcmp, wmemchr, memset
  *
  */
-void add_num_handle_fn_watches(VariantIR_t * virp)
+void add_num_handle_fn_watches(FileIR_t * virp)
 {
     /* Loop over the set of functions */
     for(
@@ -322,7 +322,7 @@ void add_num_handle_fn_watches(VariantIR_t * virp)
 
 }
 
-void fill_in_indtargs(VariantIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
+void fill_in_indtargs(FileIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
 {
         Elf32_Off sec_hdr_off, sec_off;
         Elf32_Half secnum, strndx, secndx;
@@ -382,7 +382,7 @@ void fill_in_indtargs(VariantIR_t* virp, string elf_file, pqxxDB_t &pqxx_interfa
 	cout<<"========================================="<<endl;
 
 	/* Read the exception handler frame so that those indirect branches are accounted for */
-	void read_ehframe(VariantIR_t* virp, pqxxDB_t& pqxx_interface);
+	void read_ehframe(FileIR_t* virp, pqxxDB_t& pqxx_interface);
         read_ehframe(virp, pqxx_interface);
 
 	cout<<"========================================="<<endl;
@@ -425,7 +425,7 @@ main(int argc, char* argv[])
 
 
 	VariantID_t *pidp=NULL;
-	VariantIR_t * virp=NULL;
+	FileIR_t * virp=NULL;
 
 	try 
 	{
@@ -440,7 +440,7 @@ main(int argc, char* argv[])
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
 		// read the db  
-		virp=new VariantIR_t(*pidp);
+		virp=new FileIR_t(*pidp);
 
 		// find all indirect branch targets
 		fill_in_indtargs(virp,argv[2], pqxx_interface);

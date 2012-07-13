@@ -144,9 +144,9 @@ struct lsda_header_info
 
 
 
-File_t* find_file(VariantIR_t* virp, db_id_t fileid)
+File_t* find_file(FileIR_t* virp, db_id_t fileid)
 {
-
+#if 0
         set<File_t*> &files=virp->GetFiles();
 
         for(
@@ -160,6 +160,10 @@ File_t* find_file(VariantIR_t* virp, db_id_t fileid)
                         return thefile;
         }
         return NULL;
+#endif
+        assert(virp->GetFile()->GetBaseID()==fileid);
+        return virp->GetFile();
+
 }
 
 struct object *all_objects=NULL;
@@ -655,7 +659,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
   	return;
 }
 
-void read_ehframe(VariantIR_t* virp, pqxxDB_t& pqxx_interface)
+void read_ehframe(FileIR_t* virp, pqxxDB_t& pqxx_interface)
 {
 
 	/* get first instruction */
@@ -780,7 +784,7 @@ main(int argc, char* argv[])
 	}
 
 	VariantID_t *pidp=NULL;
-	VariantIR_t *virp=NULL;
+	FileIR_t *virp=NULL;
 
 	/* setup the interface to the sql server */
 	pqxxDB_t pqxx_interface;
@@ -795,7 +799,7 @@ main(int argc, char* argv[])
 		assert(pidp->IsRegistered()==true);
 
 		// read the db  
-		virp=new VariantIR_t(*pidp);
+		virp=new FileIR_t(*pidp);
 
 
 	}
@@ -817,7 +821,7 @@ main(int argc, char* argv[])
 //	pqxx_interface.Commit();
 	cout<<"Done!"<<endl;
 
-	delete pidp;
 	delete virp;
+	delete pidp;
 }
 #endif

@@ -27,7 +27,7 @@
 //
 using namespace libTransform;
 
-IntegerTransform::IntegerTransform(VariantID_t *p_variantID, VariantIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
+IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
 {
 	m_benignFalsePositives = p_benignFalsePositives;
 	m_saturatingArithmetic = false;

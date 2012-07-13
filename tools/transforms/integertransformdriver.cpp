@@ -80,7 +80,7 @@ main(int argc, char **argv)
 	char *integerWarnings = argv[4];
 
 	VariantID_t *pidp=NULL;
-	VariantIR_t *virp=NULL;
+	FileIR_t *virp=NULL;
 
 	/* setup the interface to the sql server */
 	pqxxDB_t pqxx_interface;
@@ -94,7 +94,7 @@ main(int argc, char **argv)
 
 		// read the db  
 			cerr << "Reading IR DB" << endl;
-		virp=new VariantIR_t(*pidp);
+		virp=new FileIR_t(*pidp);
 
 		assert(virp && pidp);
 

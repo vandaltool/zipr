@@ -22,7 +22,7 @@ class Function_t : public BaseObj_t
 	Instruction_t* GetEntryPoint() { return entry_point;}
 
 	void WriteToDB();		// we need the variant ID to write into a program.
-	std::string WriteToDB(VariantID_t *vid, db_id_t newid);
+	std::string WriteToDB(File_t *fid, db_id_t newid);
 
         bool GetUseFramePointer() { return use_fp; }
         void SetUseFramePointer(bool useFP) { use_fp = useFP; }

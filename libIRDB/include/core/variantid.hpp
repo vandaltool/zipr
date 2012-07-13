@@ -1,5 +1,5 @@
 
-#define CURRENT_SCHEMA 1
+#define CURRENT_SCHEMA 2
 
 class VariantID_t : public BaseObj_t
 {
@@ -10,26 +10,29 @@ class VariantID_t : public BaseObj_t
         bool IsRegistered();               
         bool Register();    // accesses DB
 
-        VariantID_t* Clone();       // accesses DB
+        VariantID_t* Clone(bool deep=true);       // accesses DB
 
 	void WriteToDB();
 
 	void DropFromDB();
 
+        std::set<File_t*>&    GetFiles() { return files; }
+
 	std::string GetName() { return name; }
 	void SetName(std::string newname) { name=newname;}
 
-	std::string GetAddressTableName() { return address_table_name; }
-	std::string GetFunctionTableName() { return function_table_name; }
-	std::string GetInstructionTableName() { return instruction_table_name; }
+	File_t* GetMainFile() const;
 
 	friend std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid);
-	friend class VariantIR_t;
+	friend class FileIR_T;
 	friend class Function_t;
 	friend class AddressID_t;
 	friend class Instruction_t;
 
 	db_id_t GetOriginalVariantID() const { return orig_pid;}
+	
+	void CloneFiles(std::set<File_t*>& files);
+	File_t* CloneFile(File_t* fptr);
 
     private:
         schema_version_t schema_ver;
@@ -37,11 +40,14 @@ class VariantID_t : public BaseObj_t
                                 // Variant and not a cloned variant.
 
         std::string name;
-        std::string address_table_name;
-        std::string function_table_name;
-        std::string instruction_table_name;
 
 	void CreateTables();	// create the address, function and instruction tables 
+
+        std::set<File_t*> files;
+
+        void  ReadFilesFromDB();
+
+
 
 
 };

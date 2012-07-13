@@ -31,7 +31,7 @@ main(int argc, char* argv[])
 
 
 	VariantID_t *varidp=NULL;
-	VariantIR_t *varirp=NULL;
+	FileIR_t *varirp=NULL;
 
 	/* setup the interface to the sql server */
 	pqxxDB_t pqxx_interface;
@@ -47,7 +47,7 @@ main(int argc, char* argv[])
 
 		// read the db  
 		cerr<<"Reading variant "<<string(argv[1])<<" from database." << endl;
-		varirp=new VariantIR_t(*varidp);
+		varirp=new FileIR_t(*varidp);
 
 		cerr<<"Reading variant "<<varidp->GetOriginalVariantID()<<" from database." << endl;
 
@@ -66,8 +66,8 @@ main(int argc, char* argv[])
 		((ofstream*)fout)->close();
 		
 
-	delete varidp;
 	delete varirp;
+	delete varidp;
 }
 
 

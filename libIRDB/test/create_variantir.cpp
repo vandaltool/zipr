@@ -23,7 +23,7 @@ main(int argc, char* argv[])
 
 
 	VariantID_t *pidp=NULL;
-	VariantIR_t * virp=NULL;
+	FileIR_t * virp=NULL;
 	try 
 	{
 		pidp=new VariantID_t();
@@ -44,7 +44,7 @@ main(int argc, char* argv[])
 
 		cout<<"New Variant, after writing to DB, is: "<<*pidp << endl;
 
-		virp=new VariantIR_t(*pidp);
+		virp=new FileIR_t(*pidp);
 
 
 		// commit the changes to the db if all went well 
@@ -58,6 +58,6 @@ main(int argc, char* argv[])
 		exit(-1);
         }
 
-	delete pidp;
 	delete virp;
+	delete pidp;
 }

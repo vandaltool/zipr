@@ -1,12 +1,12 @@
 // A variant of a problem, this
 // may be an original variant
 // (i.e., and unmodified Variant) or a modified variant.
-class VariantIR_t : public BaseObj_t
+class FileIR_t : public BaseObj_t
 {
     public:
 
         // Create a Variant from the database
-        VariantIR_t(VariantID_t progid);
+        FileIR_t(const VariantID_t &newprogid, File_t* fid=NULL);
   
         // DB operations
         void WriteToDB();
@@ -15,21 +15,21 @@ class VariantIR_t : public BaseObj_t
         std::set<Function_t*>& GetFunctions() { return funcs; }
         std::set<Instruction_t*>& GetInstructions() { return insns; }
         std::set<AddressID_t*>&    GetAddresses() { return addrs; }
-        std::set<File_t*>&    GetFiles() { return files; }
 
 	// generate the spri rules into the output file, fout.
 	void GenerateSPRI(std::ostream &fout);
 
 	// generate spri, assume that orig_varirp is the original variant. 
-	void GenerateSPRI(VariantIR_t *orig_varirp, std::ostream &fout);
+	void GenerateSPRI(FileIR_t *orig_varirp, std::ostream &fout);
 
 	void SetBaseIDS();
 
+	File_t* GetFile() { return fileptr; }
 
     private:
 
 	// a pointer to the original variants IR, NULL means not yet loaded.
-	VariantIR_t* orig_variant_ir_p;
+	FileIR_t* orig_variant_ir_p;
 
 
         void ReadFromDB();  //accesses DB
@@ -37,19 +37,16 @@ class VariantIR_t : public BaseObj_t
         std::set<Function_t*> funcs;
         std::set<Instruction_t*> insns;
         std::set<AddressID_t*> addrs;
-        std::set<File_t*> files;
         VariantID_t progid;
+	File_t* fileptr;
 
-	std::map<db_id_t,File_t*> ReadFilesFromDB();
-	std::map<db_id_t,AddressID_t*> ReadAddrsFromDB(std::map<db_id_t,File_t*> fileMap);
+	std::map<db_id_t,AddressID_t*> ReadAddrsFromDB();
 	std::map<db_id_t,Function_t*> ReadFuncsFromDB
 		(
-		 	std::map<db_id_t,File_t*> fileMap,
 			std::map<db_id_t,AddressID_t*> addrMap
 		);
 	std::map<db_id_t,Instruction_t*> ReadInsnsFromDB 
 		(	
-			std::map<db_id_t,File_t*> fileMap, 
 			std::map<db_id_t,Function_t*> funcMap,
 			std::map<db_id_t,AddressID_t*> addrMap
 		) ;

@@ -27,7 +27,7 @@ class AddressID_t : public BaseObj_t
         void SetVirtualOffset(virtual_offset_t voff) { virtual_offset=voff; }
 
 	void WriteToDB() { assert(0); }
-        std::string WriteToDB(VariantID_t *vid, db_id_t newid);
+        std::string WriteToDB(File_t *vid, db_id_t newid);
 
 
     private:

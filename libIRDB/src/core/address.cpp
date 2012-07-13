@@ -6,14 +6,14 @@ using namespace libIRDB;
 using namespace std;
 
 
-string AddressID_t::WriteToDB(VariantID_t *vid, db_id_t newid)
+string AddressID_t::WriteToDB(File_t *fid, db_id_t newid)
 {
-        assert(vid);
+        assert(fid);
 	
 	if(GetBaseID()==NOT_IN_DATABASE)
 		SetBaseID(newid);
 
-        string q=string("insert into ")+vid->address_table_name +
+        string q=string("insert into ")+fid->address_table_name +
 		string("(address_id , file_id , vaddress_offset , doip_id)") +
 		string(" values ") +
 		string("(") + 

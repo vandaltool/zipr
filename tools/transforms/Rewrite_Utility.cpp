@@ -5,14 +5,14 @@ using namespace libIRDB;
 map<string, set<Instruction_t*> > inserted_instr; //used to undo inserted instructions
 map<string, set<AddressID_t*> > inserted_addr; //used to undo inserted addresses
 
-void setExitCode(VariantIR_t* virp, Instruction_t* exit_code);
+void setExitCode(FileIR_t* virp, Instruction_t* exit_code);
 
 //For all insertBefore functions:
 //The "first" instruction will have its contents replaced and a duplicate of "first" will be in the follow of first. 
 //This duplicate is returned since the user already has a pointer to first.
 //To insert before an instruction is the same as modifying the original instruction, and inserting after it
 //a copy of the original instruction 
-Instruction_t* insertAssemblyBefore(VariantIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target)
+Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target)
 {
     Instruction_t* next = copyInstruction(virp,first);
     setInstructionAssembly(virp,first,assembly,next,target);
@@ -20,17 +20,17 @@ Instruction_t* insertAssemblyBefore(VariantIR_t* virp, Instruction_t* first, str
     return next;
 }
 
-Instruction_t* insertAssemblyBefore(VariantIR_t* virp, Instruction_t* first, string assembly)
+Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string assembly)
 {
     return insertAssemblyBefore(virp,first,assembly,NULL);
 }
 
-Instruction_t* insertDataBitsBefore(VariantIR_t* virp, Instruction_t* first, string dataBits)
+Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits)
 {
     return insertDataBitsBefore(virp,first,dataBits,NULL);
 }
 
-Instruction_t* insertDataBitsBefore(VariantIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target)
+Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target)
 {
     Instruction_t* next = copyInstruction(virp,first);
     setInstructionDataBits(virp,first,dataBits,next,target);
@@ -38,7 +38,7 @@ Instruction_t* insertDataBitsBefore(VariantIR_t* virp, Instruction_t* first, str
     return next;    
 }
 
-Instruction_t* insertAssemblyAfter(VariantIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target)
+Instruction_t* insertAssemblyAfter(FileIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target)
 {
     Instruction_t *new_instr = allocateNewInstruction(virp,first);
     setInstructionAssembly(virp,new_instr,assembly,first->GetFallthrough(), target);
@@ -46,13 +46,13 @@ Instruction_t* insertAssemblyAfter(VariantIR_t* virp, Instruction_t* first, stri
     return new_instr;
 }
 
-Instruction_t* insertAssemblyAfter(VariantIR_t* virp, Instruction_t* first, string assembly)
+Instruction_t* insertAssemblyAfter(FileIR_t* virp, Instruction_t* first, string assembly)
 {
     return insertAssemblyAfter(virp,first,assembly,NULL);
 
 }
 
-Instruction_t* insertDataBitsAfter(VariantIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target)
+Instruction_t* insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target)
 {
     Instruction_t *new_instr = allocateNewInstruction(virp,first);
     setInstructionDataBits(virp,new_instr,dataBits,first->GetFallthrough(), target);
@@ -61,7 +61,7 @@ Instruction_t* insertDataBitsAfter(VariantIR_t* virp, Instruction_t* first, stri
     return new_instr;
 }
 
-Instruction_t* insertDataBitsAfter(VariantIR_t* virp, Instruction_t* first, string dataBits)
+Instruction_t* insertDataBitsAfter(FileIR_t* virp, Instruction_t* first, string dataBits)
 {
     return insertDataBitsAfter(virp,first,dataBits,NULL);
 }
@@ -76,7 +76,7 @@ Instruction_t* copyInstruction(Instruction_t* instr)
     return cpy;
 }
 
-Instruction_t* copyInstruction(VariantIR_t* virp, Instruction_t* instr)
+Instruction_t* copyInstruction(FileIR_t* virp, Instruction_t* instr)
 {
     Instruction_t* cpy = allocateNewInstruction(virp,instr);
 
@@ -98,7 +98,7 @@ void copyInstruction(Instruction_t* src, Instruction_t* dest)
     dest->SetTarget(src->GetTarget());
 }
 
-Instruction_t* allocateNewInstruction(VariantIR_t* virp, db_id_t p_fileID,Function_t* func)
+Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_t* func)
 {
 	Instruction_t *instr = new Instruction_t();
 	AddressID_t *a =new AddressID_t();
@@ -117,14 +117,14 @@ Instruction_t* allocateNewInstruction(VariantIR_t* virp, db_id_t p_fileID,Functi
 	return instr;
 }
 
-Instruction_t* allocateNewInstruction(VariantIR_t* virp, Instruction_t *template_instr)
+Instruction_t* allocateNewInstruction(FileIR_t* virp, Instruction_t *template_instr)
 {
     Function_t *func = template_instr->GetFunction();
     db_id_t fileID = template_instr->GetAddress()->GetFileID();
     return allocateNewInstruction(virp, fileID, func);
 }
 
-void setInstructionAssembly(VariantIR_t* virp,Instruction_t *p_instr, string p_assembly, Instruction_t *p_fallThrough, Instruction_t *p_target)
+void setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, string p_assembly, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
     if (p_instr == NULL) return;
     
@@ -138,7 +138,7 @@ void setInstructionAssembly(VariantIR_t* virp,Instruction_t *p_instr, string p_a
     virp->GetInstructions().insert(p_instr);
 }
 
-void setInstructionDataBits(VariantIR_t* virp, Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target)
+void setInstructionDataBits(FileIR_t* virp, Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
     if (p_instr == NULL) return;
     
@@ -183,7 +183,7 @@ string getJnzDataBits()
     return dataBits;    
 }
 
-Instruction_t* getHandlerCode(VariantIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy)
+Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy)
 {
     Instruction_t *handler_code = allocateNewInstruction(virp,fallthrough);
 /*
@@ -209,7 +209,7 @@ Instruction_t* getHandlerCode(VariantIR_t* virp, Instruction_t* fallthrough, mit
     return handler_code;
 }
 
-Instruction_t* insertCanaryCheckBefore(VariantIR_t* virp,Instruction_t *first, unsigned int canary_val, int esp_offset, Instruction_t *fail_code)
+Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsigned int canary_val, int esp_offset, Instruction_t *fail_code)
 {
     stringstream ss;
 
