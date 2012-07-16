@@ -7,42 +7,10 @@
 using namespace libIRDB;
 using namespace std;
 
-main(int argc, char* argv[])
+void do_ilr(VariantID_t *pidp, FileIR_t* firp)
 {
 
-	if(argc!=2)
-	{
-		cerr<<"Usage: ilr <id>"<<endl;
-		exit(-1);
-	}
-
-	VariantID_t *pidp=NULL;
-	FileIR_t *virp=NULL;
-
-	/* setup the interface to the sql server */
-	pqxxDB_t pqxx_interface;
-	BaseObj_t::SetInterface(&pqxx_interface);
-
-	cout<<"Reading variant "<<string(argv[1])<<" from database." << endl;
-	try 
-	{
-
-		pidp=new VariantID_t(atoi(argv[1]));
-
-		assert(pidp->IsRegistered()==true);
-
-		// read the db  
-		virp=new FileIR_t(*pidp);
-
-
-	}
-	catch (DatabaseError_t pnide)
-	{
-		cout<<"Unexpected database error: "<<pnide<<endl;
-		exit(-1);
-        }
-
-	assert(virp && pidp);
+	assert(firp && pidp);
 
 	cout<<"Applying ILR to variant "<<*pidp<< "." <<endl;
 
@@ -50,8 +18,8 @@ main(int argc, char* argv[])
 
 	set<AddressID_t*> newaddressset;
 	for(
-		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-		it!=virp->GetInstructions().end(); 
+		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end(); 
 		++it
 	   )
 	{
@@ -71,19 +39,70 @@ main(int argc, char* argv[])
 		newaddressset.insert(newaddr);
 	}
 
-	virp->GetAddresses()=newaddressset;
+	firp->GetAddresses()=newaddressset;
 
 
+	cout << "# ATTRIBUTE filename="<<firp->GetFile()->GetURL()<<endl;
 	cout << "# ATTRIBUTE unmoved_instructions="<<std::dec<<unmoved_instr<<endl;
 	cout << "# ATTRIBUTE moved_instructions="<<std::dec<<moved_instr<<endl;
 	cout << "# ATTRIBUTE moved_ratio="<<std::dec<<(float)moved_instr/(moved_instr+unmoved_instr)<<endl;
 
 	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
-	virp->WriteToDB();
+	firp->WriteToDB();
+}
+main(int argc, char* argv[])
+{
 
-	pqxx_interface.Commit();
+	if(argc!=2)
+	{
+		cerr<<"Usage: ilr <id>"<<endl;
+		exit(-1);
+	}
+
+	VariantID_t *pidp=NULL;
+	FileIR_t *firp=NULL;
+
+	/* setup the interface to the sql server */
+	pqxxDB_t pqxx_interface;
+	BaseObj_t::SetInterface(&pqxx_interface);
+
+	cout<<"Reading variant "<<string(argv[1])<<" from database." << endl;
+	try 
+	{
+
+		pidp=new VariantID_t(atoi(argv[1]));
+		assert(pidp->IsRegistered()==true);
+
+
+                for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+                        it!=pidp->GetFiles().end();
+                        ++it
+                    )
+                {
+                        File_t* this_file=*it;
+                        assert(this_file);
+
+			// read the db  
+			firp=new FileIR_t(*pidp,this_file);
+			
+			// do the ILRing. 
+			do_ilr(pidp, firp);
+
+			delete firp;
+		}
+
+
+		pqxx_interface.Commit();
+
+	}
+	catch (DatabaseError_t pnide)
+	{
+		cout<<"Unexpected database error: "<<pnide<<endl;
+		exit(-1);
+        }
+
 	cout<<"Done!"<<endl;
 
-	delete virp;
 	delete pidp;
 }
+

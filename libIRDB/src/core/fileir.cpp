@@ -12,7 +12,7 @@ static map<Function_t*,db_id_t> entry_points;
 static void UpdateEntryPoints(std::map<db_id_t,Instruction_t*> 	&insnMap)
 {
 	/* for each function, look up the instruction that's the entry point */
-	for(	static map<Function_t*,db_id_t>::const_iterator it=entry_points.begin();
+	for(	map<Function_t*,db_id_t>::const_iterator it=entry_points.begin();
 		it!=entry_points.end();
 		++it
 	   )
@@ -22,6 +22,7 @@ static void UpdateEntryPoints(std::map<db_id_t,Instruction_t*> 	&insnMap)
 
 		assert(insnMap[func_entry_id]);
 		func->SetEntryPoint(insnMap[func_entry_id]);
+//		cout<<"Function named "<<func->GetName()<< " getting entry point set to "<<insnMap[func_entry_id]->GetComment()<<"."<<endl;
 	}
 		
 }

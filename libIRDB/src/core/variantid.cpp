@@ -343,7 +343,18 @@ void VariantID_t::DropFromDB()
 
 File_t* VariantID_t::GetMainFile() const
 {
-	return *(files.begin());
+	for(
+		set<File_t*>::iterator it=files.begin();
+		it!=files.end();
+		++it
+	   )
+	{
+		const char* name=(*it)->GetURL().c_str();
+		if(strstr(name,"a.ncexe")!=NULL)
+			return *it;
+	}
+	/* we should have found the main file somewhere. */
+	assert(0);
 }
 
 

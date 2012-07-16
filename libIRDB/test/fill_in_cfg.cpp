@@ -28,7 +28,7 @@ pqxxDB_t pqxx_interface;
 void populate_instruction_map
 	(
 		map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
-		FileIR_t *virp
+		FileIR_t *firp
 	)
 {
 	/* start from scratch each time */
@@ -37,8 +37,8 @@ void populate_instruction_map
 
 	/* for each instruction in the IR */
 	for(
-		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-		it!=virp->GetInstructions().end(); 
+		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end(); 
 		++it
 	   )
 	{
@@ -57,7 +57,7 @@ void populate_instruction_map
 void set_fallthrough
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
-	DISASM *disasm, Instruction_t *insn, FileIR_t *virp
+	DISASM *disasm, Instruction_t *insn, FileIR_t *firp
 	)
 {
 	assert(disasm);
@@ -105,7 +105,7 @@ void set_fallthrough
 void set_target
 	(
 	map< pair<db_id_t,virtual_offset_t>, Instruction_t*> &insnMap,
-	DISASM *disasm, Instruction_t *insn, FileIR_t *virp
+	DISASM *disasm, Instruction_t *insn, FileIR_t *firp
 	)
 {
 
@@ -173,10 +173,10 @@ void set_target
 	}
 }
 
-File_t* find_file(FileIR_t* virp, db_id_t fileid)
+File_t* find_file(FileIR_t* firp, db_id_t fileid)
 {
 #if 0
-	set<File_t*> &files=virp->GetFiles();
+	set<File_t*> &files=firp->GetFiles();
 
 	for(
 		set<File_t*>::iterator it=files.begin();
@@ -190,12 +190,12 @@ File_t* find_file(FileIR_t* virp, db_id_t fileid)
 	}
 	return NULL;
 #endif
-	assert(virp->GetFile()->GetBaseID()==fileid);
-	return virp->GetFile();
+	assert(firp->GetFile()->GetBaseID()==fileid);
+	return firp->GetFile();
 
 }
 
-void add_new_instructions(FileIR_t *virp)
+void add_new_instructions(FileIR_t *firp)
 {
 	int found_instructions=0;
 	for(
@@ -211,7 +211,7 @@ void add_new_instructions(FileIR_t *virp)
 		db_id_t missed_fileid=(*it).first;
 		
 		/* figure out which file we're looking at */
-		File_t* filep=find_file(virp,missed_fileid);
+		File_t* filep=find_file(firp,missed_fileid);
 		assert(filep);
 
 		/* get the OID of the file */
@@ -323,8 +323,8 @@ void add_new_instructions(FileIR_t *virp)
 				/* fallthrough/target/is indirect will be set later */
 
 				/* insert into the IR */
-				virp->GetInstructions().insert(newinsn);
-				virp->GetAddresses().insert(newaddr);
+				firp->GetInstructions().insert(newinsn);
+				firp->GetAddresses().insert(newaddr);
 
 
 				cout<<"Found new instruction, "<<newinsn->GetComment()<<", at "<<std::hex<<newinsn->GetAddress()->GetVirtualOffset()<<" in file "<<"<no name yet>"<<"."<<endl; 
@@ -345,7 +345,7 @@ void add_new_instructions(FileIR_t *virp)
 
 }
 
-void fill_in_cfg(FileIR_t *virp)
+void fill_in_cfg(FileIR_t *firp)
 {
 	int round=0;
 	
@@ -357,14 +357,14 @@ void fill_in_cfg(FileIR_t *virp)
 		missed_instructions.clear();
 
 		map< pair<db_id_t,virtual_offset_t>, Instruction_t*> insnMap;
-		populate_instruction_map(insnMap, virp);
+		populate_instruction_map(insnMap, firp);
 
-		cout << "Found "<<virp->GetInstructions().size()<<" instructions." <<endl;
+		cout << "Found "<<firp->GetInstructions().size()<<" instructions." <<endl;
 
 		/* for each instruction, disassemble it and set the target/fallthrough */
 		for(
-			set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-			it!=virp->GetInstructions().end(); 
+			set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+			it!=firp->GetInstructions().end(); 
 			++it
 	   	   )
 		{
@@ -380,8 +380,8 @@ void fill_in_cfg(FileIR_t *virp)
 	
 			assert(instr_len==insn->GetDataBits().size());
 	
-			set_fallthrough(insnMap, &disasm, insn, virp);
-			set_target(insnMap, &disasm, insn, virp);
+			set_fallthrough(insnMap, &disasm, insn, firp);
+			set_target(insnMap, &disasm, insn, firp);
 			
 		}
 		if(bad_target_count>0)
@@ -390,7 +390,7 @@ void fill_in_cfg(FileIR_t *virp)
 			cout<<"Found "<<bad_fallthrough_count<<" bad fallthroughs at round "<<round<<endl;
 		cout<<"Missed instruction count="<<missed_instructions.size()<<endl;
 
-		add_new_instructions(virp);
+		add_new_instructions(firp);
 
 		round++;
 
@@ -412,14 +412,14 @@ void fill_in_cfg(FileIR_t *virp)
 
 
 	/* set the base IDs for all instructions */
-	virp->SetBaseIDS();
+	firp->SetBaseIDS();
 
 	/* for each instruction, set the original address id to be that of the address id, as fill_in_cfg is 
 	 * designed to work on only original programs.
 	 */
 	for(
-		std::set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-		it!=virp->GetInstructions().end(); 
+		std::set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end(); 
 		++it
    	   )
 	{
@@ -432,6 +432,7 @@ void fill_in_cfg(FileIR_t *virp)
 }
 
 
+
 main(int argc, char* argv[])
 {
 
@@ -442,7 +443,7 @@ main(int argc, char* argv[])
 	}
 
 	VariantID_t *pidp=NULL;
-	FileIR_t * virp=NULL;
+	FileIR_t * firp=NULL;
 
 	try 
 	{
@@ -455,13 +456,27 @@ main(int argc, char* argv[])
 
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
-		// read the db  
-		virp=new FileIR_t(*pidp);
+		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+			it!=pidp->GetFiles().end();
+			++it
+		    )
+		{
+			File_t* this_file=*it;
+			assert(this_file);
 
-		fill_in_cfg(virp);
+			cout<<"Filling in cfg for "<<this_file->GetURL()<<endl;
 
-		// write the DB back and commit our changes 
-		virp->WriteToDB();
+			// read the db  
+			firp=new FileIR_t(*pidp, this_file);
+			fill_in_cfg(firp);
+
+			// write the DB back and commit our changes 
+			firp->WriteToDB();
+			delete firp;
+
+		}
+
+
 		pqxx_interface.Commit();
 
 	}
@@ -471,9 +486,8 @@ main(int argc, char* argv[])
 		exit(-1);
         }
 
-	assert(virp && pidp);
+	assert(firp && pidp);
 
 
-	delete virp;
 	delete pidp;
 }

@@ -27,6 +27,7 @@ set<int> targets;
 
 set< pair< int, int> > ranges;
 
+
 void range(int start, int end)
 { 	
 	pair<int,int> foo(start,end);
@@ -50,11 +51,11 @@ bool is_in_range(int p)
 	return false;
 }
 
-void process_ranges(FileIR_t* virp)
+void process_ranges(FileIR_t* firp)
 {
         for(
-                set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-                it!=virp->GetInstructions().end();
+                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
                 ++it
            )
 	{
@@ -102,11 +103,11 @@ void handle_argument(ARGTYPE *arg)
 		possible_target(arg->Memory.Displacement);
 }
 
-void mark_targets(FileIR_t *virp)
+void mark_targets(FileIR_t *firp)
 {
         for(
-                set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-                it!=virp->GetInstructions().end();
+                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
                 ++it
            )
         {
@@ -121,7 +122,7 @@ void mark_targets(FileIR_t *virp)
 			newaddr->SetVirtualOffset(insn->GetAddress()->GetVirtualOffset());
 			
 			insn->SetIndirectBranchTargetAddress(newaddr);
-			virp->GetAddresses().insert(newaddr);
+			firp->GetAddresses().insert(newaddr);
 		}
 		else
 			insn->SetIndirectBranchTargetAddress(NULL);
@@ -129,11 +130,11 @@ void mark_targets(FileIR_t *virp)
 	}
 
 }
-void get_instruction_targets(FileIR_t *virp)
+void get_instruction_targets(FileIR_t *firp)
 {
         for(
-                set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-                it!=virp->GetInstructions().end();
+                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
                 ++it
            )
         {
@@ -180,7 +181,7 @@ void get_instruction_targets(FileIR_t *virp)
 
 }
 
-void get_executable_bounds(Elf32_Shdr *shdr, FILE* fp, FileIR_t *virp)
+void get_executable_bounds(Elf32_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *firp)
 {
 	int flags = shdr->sh_flags;
 
@@ -200,7 +201,7 @@ void get_executable_bounds(Elf32_Shdr *shdr, FILE* fp, FileIR_t *virp)
 
 }
 
-void infer_targets(Elf32_Shdr *shdr, FILE* fp, FileIR_t *virp)
+void infer_targets(Elf32_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *firp)
 {
 	int flags = shdr->sh_flags;
 
@@ -218,10 +219,12 @@ void infer_targets(Elf32_Shdr *shdr, FILE* fp, FileIR_t *virp)
 
 	char* data=(char*)malloc(shdr->sh_size);
 
-	fseek(fp,shdr->sh_offset, SEEK_SET);
+	//fseek(fp,shdr->sh_offset, SEEK_SET);
+        loa.seek(shdr->sh_offset, std::ios_base::beg);
 
-	int res=fread(data, shdr->sh_size, 1, fp);
-	assert(res==1);
+
+	//int res=fread(data, shdr->sh_size, 1, fp);
+	loa.cread((char*)data, shdr->sh_size* 1);
 
 	for(int i=0;i<=shdr->sh_size-sizeof(void*);i++)
 	{
@@ -271,12 +274,12 @@ void print_targets()
  *      wmemcpy, wmemmove, wmemcmp, wmemchr, memset
  *
  */
-void add_num_handle_fn_watches(FileIR_t * virp)
+void add_num_handle_fn_watches(FileIR_t * firp)
 {
     /* Loop over the set of functions */
     for(
-        set<Function_t*>::const_iterator it=virp->GetFunctions().begin();
-            it!=virp->GetFunctions().end();
+        set<Function_t*>::const_iterator it=firp->GetFunctions().begin();
+            it!=firp->GetFunctions().end();
             ++it
         )
     {
@@ -322,44 +325,52 @@ void add_num_handle_fn_watches(FileIR_t * virp)
 
 }
 
-void fill_in_indtargs(FileIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
+void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
 {
+	// reset global vars
+	bounds.clear();
+	ranges.clear();
+	targets.clear();
+
         Elf32_Off sec_hdr_off, sec_off;
         Elf32_Half secnum, strndx, secndx;
         Elf32_Word secsize;
-        FILE *fp;
 
-        fp = fopen(elf_file.c_str(),"rb");
+        //fp = fopen(elf_file.c_str(),"rb");
+	int elfoid=firp->GetFile()->GetELFOID();
+	pqxx::largeobjectaccess loa(pqxx_interface.GetTransaction(), elfoid, PGSTD::ios::in);
 
-	if(!fp)
-	{
-		cerr<<"Cannot open "<<elf_file<<"."<<endl;
-		exit(-1);
-	}
+
+	// if(!fp)
+	// {
+	// 	cerr<<"Cannot open "<<elf_file<<"."<<endl;
+	// 	exit(-1);
+	// }
 
 	/* allcoate memory  */
         Elf32_Ehdr elfhdr;
 
         /* Read ELF header */
-        int res=fread(&elfhdr, sizeof(Elf32_Ehdr), 1, fp);
-        assert(res==1);
+        //int res=fread(&elfhdr, sizeof(Elf32_Ehdr), 1, fp);
+        loa.cread((char*)&elfhdr, sizeof(Elf32_Ehdr)* 1);
         sec_hdr_off = elfhdr.e_shoff;
         secnum = elfhdr.e_shnum;
         strndx = elfhdr.e_shstrndx;
 
         /* Read Section headers */
         Elf32_Shdr *sechdrs=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*secnum);
-        fseek(fp, sec_hdr_off, SEEK_SET);
-        res=fread(sechdrs, sizeof(Elf32_Shdr), secnum, fp);
-        assert(res==secnum);
+        //fseek(fp, sec_hdr_off, SEEK_SET);
+        loa.seek(sec_hdr_off, std::ios_base::beg);
+        //res=fread(sechdrs, sizeof(Elf32_Shdr), secnum, fp);
+        loa.cread((char*)sechdrs, sizeof(Elf32_Shdr)* secnum);
 
 	/* look through each section and record bounds */
         for (secndx=1; secndx<secnum; secndx++)
-		get_executable_bounds(&sechdrs[secndx], fp, virp);
+		get_executable_bounds(&sechdrs[secndx], loa, firp);
 
 	/* look through each section and look for target possibilities */
         for (secndx=1; secndx<secnum; secndx++)
-		infer_targets(&sechdrs[secndx], fp, virp);
+		infer_targets(&sechdrs[secndx], loa, firp);
 
 	
 	cout<<"========================================="<<endl;
@@ -369,7 +380,7 @@ void fill_in_indtargs(FileIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
 	cout<<"========================================="<<endl;
 
 	/* look through the instructions in the program for targets */
-	get_instruction_targets(virp);
+	get_instruction_targets(firp);
 
 	/* mark the entry point as a target */
 	possible_target(elfhdr.e_entry);
@@ -382,8 +393,8 @@ void fill_in_indtargs(FileIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
 	cout<<"========================================="<<endl;
 
 	/* Read the exception handler frame so that those indirect branches are accounted for */
-	void read_ehframe(FileIR_t* virp, pqxxDB_t& pqxx_interface);
-        read_ehframe(virp, pqxx_interface);
+	void read_ehframe(FileIR_t* firp, pqxxDB_t& pqxx_interface);
+        read_ehframe(firp, pqxx_interface);
 
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction+eh_header sections are: " << endl;
@@ -393,7 +404,7 @@ void fill_in_indtargs(FileIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
 
 
 	/* now process the ranges that have exception handling */
-	process_ranges(virp);
+	process_ranges(firp);
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction+eh_header sections+eh_header_ranges are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass4="<<std::dec<<targets.size()<<endl;
@@ -401,10 +412,10 @@ void fill_in_indtargs(FileIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
 	cout<<"========================================="<<endl;
 
     /* Add functions containing unsigned int params to the list */
-    add_num_handle_fn_watches(virp);
+    add_num_handle_fn_watches(firp);
 
 	/* set the IR to have some instructions marked as IB targets */
-	mark_targets(virp);
+	mark_targets(firp);
 	
 }
 
@@ -415,9 +426,9 @@ void fill_in_indtargs(FileIR_t* virp, string elf_file, pqxxDB_t &pqxx_interface)
 main(int argc, char* argv[])
 {
 
-	if(argc!=3)
+	if(argc!=2)
 	{
-		cerr<<"Usage: fill_in_indtargs <id> <elffile>"<<endl;
+		cerr<<"Usage: fill_in_indtargs <id>"<<endl;
 		exit(-1);
 	}
 
@@ -425,7 +436,7 @@ main(int argc, char* argv[])
 
 
 	VariantID_t *pidp=NULL;
-	FileIR_t * virp=NULL;
+	FileIR_t * firp=NULL;
 
 	try 
 	{
@@ -439,14 +450,26 @@ main(int argc, char* argv[])
 
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
 
-		// read the db  
-		virp=new FileIR_t(*pidp);
+                for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+                        it!=pidp->GetFiles().end();
+                        ++it
+                    )
+                {
+                        File_t* this_file=*it;
+                        assert(this_file);
 
-		// find all indirect branch targets
-		fill_in_indtargs(virp,argv[2], pqxx_interface);
+			// read the db  
+			firp=new FileIR_t(*pidp, this_file);
 
-		// write the DB back and commit our changes 
-		virp->WriteToDB();
+			// find all indirect branch targets
+			fill_in_indtargs(firp, pqxx_interface);
+	
+			// write the DB back and commit our changes 
+
+			firp->WriteToDB();
+			delete firp;
+		}
+
 		pqxx_interface.Commit();
 
 	}
@@ -456,9 +479,8 @@ main(int argc, char* argv[])
 		exit(-1);
         }
 
-	assert(virp && pidp);
+	assert(firp && pidp);
 
 
 	delete pidp;
-	delete virp;
 }

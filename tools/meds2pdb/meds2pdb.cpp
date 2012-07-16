@@ -4,11 +4,17 @@
 #include <string.h>
 #include "rewriter.h"
 #include <pqxx/pqxx>
+#include <stdlib.h>
 
 using namespace std;
 using namespace pqxx;
 
 #include <sstream>
+
+string functionTable;
+string addressTable;
+string instructionTable;
+
 
 template <class T>
 inline std::string my_to_string (const T& t)
@@ -48,7 +54,7 @@ int get_file_id(char *progName, char *md5hash)
 
 
 // insert addresses & instructions into DB
-void insert_instructions(string programName, int fileID, vector<wahoo::Instruction*> instructions, vector<wahoo::Function*> functions)
+void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, vector<wahoo::Function*> functions)
 {
   cerr << "Inserting instructions in the DB"<<endl;
   connection conn;
@@ -62,11 +68,9 @@ void insert_instructions(string programName, int fileID, vector<wahoo::Instructi
   for (int i = 0; i < instructions.size(); i ++ )
   {
     char buf[128];
-    string addressTable = programName + "_" + "address";
     string query = "INSERT INTO " + addressTable;
     query += " (address_id, file_id, vaddress_offset) VALUES ";
 
-    string instructionTable = programName + "_" + "instruction";
     string query2 = "INSERT INTO " + instructionTable;
     query2 += " (instruction_id,address_id, parent_function_id, orig_address_id, data, comment) VALUES ";
 
@@ -136,7 +140,7 @@ void insert_instructions(string programName, int fileID, vector<wahoo::Instructi
 }
 
 
-void insert_functions( string programName, int fileID, const vector<wahoo::Function*> &functions  )
+void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
 {
   connection conn;
   work txn(conn);
@@ -146,7 +150,6 @@ void insert_functions( string programName, int fileID, const vector<wahoo::Funct
   int count = 0;
   for (int i = 0; i < functions.size(); i += STRIDE)
   {  
-    string functionTable = string(programName) + "_" + "function";
     string query = "INSERT INTO " + functionTable;
     query += " (function_id, name, stack_frame_size, out_args_region_size, use_frame_pointer) VALUES ";
 
@@ -181,7 +184,7 @@ void insert_functions( string programName, int fileID, const vector<wahoo::Funct
   txn.commit(); // must commit o/w everything will be rolled back
 }
 
-void update_functions( string programName, int fileID, const vector<wahoo::Function*> &functions  )
+void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
 {
   connection conn;
   work txn(conn);
@@ -200,7 +203,6 @@ void update_functions( string programName, int fileID, const vector<wahoo::Funct
       	bool useFP = f->getUseFramePointer();
 	int insnid=address_to_instructionid_map[functionAddress];
 
-    	string functionTable = string(programName) + "_" + "function";
     	query += "update " + functionTable;
 	query += " set entry_point_id = " + txn.quote(my_to_string(insnid));
     	query += " where function_id = " + txn.quote(my_to_string(function_id));
@@ -213,45 +215,55 @@ void update_functions( string programName, int fileID, const vector<wahoo::Funct
   txn.commit(); // must commit o/w everything will be rolled back
 }
 
+
+
 int main(int argc, char **argv)
 {
-  if (argc < 5)
-  {
-    cerr << "usage: " << argv[0] << " <programName> <elfFile> <md5ElfFile> <annotationFile> " << endl;
-    return 1;
-  }
+  	if (argc != 7)
+  	{
+    		cerr << "usage: " << argv[0] << " <annotations file> <file id> <func tab name> <insn tab name> <addr tab name> <elf file>" << endl;
+    		return 1;
+  	}
 
-  char *programName = argv[1];
-  char *elfFile = argv[2];
-  char *md5hash = argv[3];
-  char *annotFile = argv[4];
+  	char *annotFile = argv[1];
+  	char *fid=argv[2];
+  	char *myFunctionTable=argv[3];
+  	char *myInstructionTable=argv[4];
+  	char *myAddressTable=argv[5];
+  	char *elfFile=argv[6];
 
-  cerr << "program name:" << programName << endl;
-  cerr << "elf file:" << elfFile << endl;
-  cerr << "hash-md5:" << md5hash << endl;
-  cerr << "annotation file:" << annotFile << endl;
+	cout<<"Annotation file: "<< annotFile<<endl;
+	cout<<"File ID: "<< fid<<endl;
+	cout<<"FTN:: "<< myFunctionTable<<endl;
+	cout<<"ITN: "<< myInstructionTable<<endl;
+	cout<<"ATN: "<< myAddressTable<<endl;
 
-
-  Rewriter *rewriter = new Rewriter(elfFile, annotFile);
-
-  int fileID = get_file_id(programName, md5hash);
-  if (fileID < 0)
-  {
-    cerr << argv[0] << ": Error retrieving file id for: " << programName << endl;
-    return 1;
-  }
-  else
-    cerr << "File id is: " << fileID << endl;
-
-  // get functions & instructions from MEDS
-  vector<wahoo::Function*> functions = rewriter->getAllFunctions();
-  vector<wahoo::Instruction*> instructions = rewriter->getAllInstructions();
-
-  cerr << "Number of functions: " << functions.size() << endl;
-  cerr << "Number of instructions: " << instructions.size() << endl;
+	// set global vars for importing.
+	functionTable=myFunctionTable;
+	addressTable=myAddressTable;
+	instructionTable=myInstructionTable;
 
 
-  insert_functions(programName, fileID, functions);
-  insert_instructions(programName, fileID, instructions, functions);
-  update_functions(programName, fileID, functions);
+  	Rewriter *rewriter = new Rewriter(elfFile, annotFile);
+
+  	int fileID = atoi(fid);
+	if(fileID<=0)
+	{
+		cerr << "Bad fileID: " << fid <<endl;
+		exit(1);
+	}
+
+  	// get functions & instructions from MEDS
+  	vector<wahoo::Function*> functions = rewriter->getAllFunctions();
+  	vector<wahoo::Instruction*> instructions = rewriter->getAllInstructions();
+
+  	cerr << "Number of functions: " << functions.size() << endl;
+  	cerr << "Number of instructions: " << instructions.size() << endl;
+
+
+  	insert_functions(fileID, functions);
+  	insert_instructions(fileID, instructions, functions);
+  	update_functions(fileID, functions);
+
+	exit(0);
 }

@@ -167,7 +167,7 @@ bool call_needs_fix(Instruction_t* insn)
 
 
 
-void fix_call(Instruction_t* insn, FileIR_t *virp)
+void fix_call(Instruction_t* insn, FileIR_t *firp)
 {
 	/* record the possibly new indirect branch target if this call gets fixed */
 	Instruction_t* newindirtarg=insn->GetFallthrough();
@@ -243,8 +243,8 @@ void fix_call(Instruction_t* insn, FileIR_t *virp)
 	callinsn->SetDataBits(newbits);
 
 	/* add the new insn and new address into the list of valid calls and addresses */
-	virp->GetAddresses().insert(calladdr);
-	virp->GetInstructions().insert(callinsn);
+	firp->GetAddresses().insert(calladdr);
+	firp->GetInstructions().insert(callinsn);
 
 	/* Convert the old call instruction into a push return_address instruction */
 	insn->SetFallthrough(callinsn);
@@ -271,7 +271,7 @@ void fix_call(Instruction_t* insn, FileIR_t *virp)
 
 		/* set the insturction and include this address in the list of addrs */
 		newindirtarg->SetIndirectBranchTargetAddress(newaddr);
-		virp->GetAddresses().insert(newaddr);
+		firp->GetAddresses().insert(newaddr);
 	}
 
 	
@@ -299,10 +299,10 @@ bool is_call(Instruction_t* insn)
 	return (disasm.Instruction.BranchType==CallType);
 }
 
-File_t* find_file(FileIR_t* virp, db_id_t fileid)
+File_t* find_file(FileIR_t* firp, db_id_t fileid)
 {
 #if 0
-        set<File_t*> &files=virp->GetFiles();
+        set<File_t*> &files=firp->GetFiles();
 
         for(
                 set<File_t*>::iterator it=files.begin();
@@ -316,8 +316,8 @@ File_t* find_file(FileIR_t* virp, db_id_t fileid)
         }
         return NULL;
 #endif
-        assert(virp->GetFile()->GetBaseID()==fileid);
-        return virp->GetFile();
+        assert(firp->GetFile()->GetBaseID()==fileid);
+        return firp->GetFile();
 
 }
 
@@ -327,15 +327,15 @@ File_t* find_file(FileIR_t* virp, db_id_t fileid)
 // fix_all_calls - convert calls to push/jump pairs in the IR.  if fix_all is true, all calls are converted, 
 // else we attempt to detect the calls it is safe to convert.
 //
-void fix_all_calls(FileIR_t* virp, bool print_stats, bool fix_all)
+void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 {
 
 
 	long long fixed_calls=0, not_fixed_calls=0, not_calls=0;
 
 	for(
-		set<Instruction_t*>::const_iterator it=virp->GetInstructions().begin();
-		it!=virp->GetInstructions().end(); 
+		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end(); 
 		++it
 	   )
 	{
@@ -347,7 +347,7 @@ void fix_all_calls(FileIR_t* virp, bool print_stats, bool fix_all)
 			if(fix_all || call_needs_fix(insn))
 			{
 				fixed_calls++;
-				fix_call(insn, virp);
+				fix_call(insn, firp);
 			}
 			else
 				not_fixed_calls++;
@@ -401,7 +401,7 @@ main(int argc, char* argv[])
 	}
 
 	VariantID_t *pidp=NULL;
-	FileIR_t *virp=NULL;
+	FileIR_t *firp=NULL;
 
 	/* setup the interface to the sql server */
 	BaseObj_t::SetInterface(&pqxx_interface);
@@ -411,11 +411,31 @@ main(int argc, char* argv[])
 	{
 
 		pidp=new VariantID_t(atoi(argv[1]));
+		cout<<"Fixing calls->push/jmp in variant "<<*pidp<< "." <<endl;
 
 		assert(pidp->IsRegistered()==true);
 
-		// read the db  
-		virp=new FileIR_t(*pidp);
+                for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+                        it!=pidp->GetFiles().end();
+                        ++it
+                    )
+                {
+                        File_t* this_file=*it;
+                        assert(this_file);
+
+			// read the db  
+			firp=new FileIR_t(*pidp,this_file);
+	
+			assert(firp && pidp);
+	
+			fix_all_calls(firp,true,fix_all);
+			firp->WriteToDB();
+			cout<<"Done!"<<endl;
+			delete firp;
+
+		}
+		cout<<"Writing variant "<<*pidp<<" back to database." << endl;
+		pqxx_interface.Commit();
 
 
 	}
@@ -425,19 +445,8 @@ main(int argc, char* argv[])
 		exit(-1);
         }
 
-	assert(virp && pidp);
-	
-	cout<<"Fixing calls->push/jmp in variant "<<*pidp<< "." <<endl;
-
-	fix_all_calls(virp,true,fix_all);
 
 
-	cout<<"Writing variant "<<*pidp<<" back to database." << endl;
-	virp->WriteToDB();
 
-	pqxx_interface.Commit();
-	cout<<"Done!"<<endl;
-
-	delete virp;
 	delete pidp;
 }

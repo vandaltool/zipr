@@ -12,6 +12,7 @@ class File_t : public BaseObj_t
         std::string GetAddressTableName() { return address_table_name; }
         std::string GetFunctionTableName() { return function_table_name; }
         std::string GetInstructionTableName() { return instruction_table_name; }
+        std::string GetURL() { return url; }
 
 	void CreateTables();
 
