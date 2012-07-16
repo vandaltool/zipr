@@ -27,6 +27,7 @@ integertransform=on
 ilr=on
 generate_spri=on
 spasm=on
+concolic=on
 
 
 all: env_check  ${protected_exes}
@@ -51,6 +52,7 @@ all: env_check  ${protected_exes}
                 --step fill_in_cfg=${fill_in_cfg}\
                 --step fill_in_indtargs=${fill_in_indtargs}\
                 --step clone=${clone}\
+                --step concolic=${concolic}\
                 --step fix_calls=${fix_calls}\
                 --step p1transform=${p1transform}\
                 --step integertransform=${integertransform}\

@@ -5,17 +5,21 @@
 #
 # WARNING: <programName> must convert non-alphanumeric characters to alphanumeric
 
-PROGRAM_NAME=$1
 
 # remove any path name
-PROGRAM_NAME=`basename $PROGRAM_NAME`
 
-DB_SCRIPT=$$.script.tmp
+create_table()
+{
+	atn=$1
+	ftn=$2
+	itn=$3
 
-PROGRAM_NAME=`echo $PROGRAM_NAME | sed "s/[^a-zA-Z0-9]/_/g"`
+	DB_SCRIPT=$$.script.tmp
+	cat $PEASOUP_HOME/tools/db/pdb.createprogram.tbl | sed "s/#PROGNAME#/$PROGRAM_NAME/g" > $DB_SCRIPT
+	psql -f $DB_SCRIPT
+	rm $DB_SCRIPT
+}
 
-cat $PEASOUP_HOME/tools/db/pdb.createprogram.tbl | sed "s/#PROGNAME#/$PROGRAM_NAME/g" > $DB_SCRIPT
+vid=$1
 
-psql -f $DB_SCRIPT
-
-rm $DB_SCRIPT
+psql -q -t  -c "select address_table_name,function_table_name,instruction_table_name from file_info where variant_id='$vid'"

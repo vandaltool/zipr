@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh   -x
 
 #
 # pdb_register <peasoup_program_name> <peasoup_program_directory> 
@@ -71,24 +71,89 @@ fi
 # Update original program id
 psql -q -t -c "UPDATE variant_info SET orig_variant_id = '$PROGRAM_ID' WHERE variant_id = '$PROGRAM_ID';"
 
+
+
+#============================================
+# create the tables for this file
+#============================================
+create_table()
+{
+	atn=$1
+	ftn=$2
+	itn=$3
+
+	echo Creating tables $atn, $ftn, and $itn.
+
+	DB_SCRIPT=$$.script.tmp
+	cat $PEASOUP_HOME/tools/db/pdb.createprogram.tbl |  \
+		sed "s/#ATN#/$atn/g" | \
+		sed "s/#FTN#/$ftn/g" | \
+		sed "s/#ITN#/$itn/g"  \
+		> $DB_SCRIPT
+	psql -f $DB_SCRIPT || exit 1
+	rm $DB_SCRIPT
+}
+
 #============================================
 # Update file_info table
 #============================================
 
+update_file_info()
+{
+	pn=$1
+	url=$2
+	arch=$3
+	md5=$4
+	fn=$5
+	pid=$6
+	comment=$7
 
-oid=`psql  -t -c "\lo_import '$FILENAME' 'original executable that was passed to ps_analyze.sh'" |cut -d" " -f2`
-FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash, elfoid, address_table_name,function_table_name,instruction_table_name) VALUES ('$URL', '$ARCH', '$MD5HASH', '$oid', '${PROGRAM_NAME}_address', '${PROGRAM_NAME}_function', '${PROGRAM_NAME}_instruction') RETURNING file_id;" | sed "s/^[ \t]*//"`
+	echo Adding $fn to IRDB.
 
-# Update original file id
-psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID' WHERE file_id = '$FILE_ID';"
+	pn=pn_${pn}_$pid
+	pn=`echo $pn | sed "s/[^a-zA-Z0-9]/_/g"`
+	
+	oid=`psql  -t -c "\lo_import '$fn' '$comment'" |cut -d" " -f2`
+	FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash, elfoid, address_table_name,function_table_name,instruction_table_name) VALUES ('$url', '$arch', '$md5', '$oid', '${pn}_address', '${pn}_function', '${pn}_instruction') RETURNING file_id;" | sed "s/^[ \t]*//"`
+
+	# Update original file id
+	psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID' WHERE file_id = '$FILE_ID';" || exit 1
+
+	# update the variant dependency table
+	psql -q -t -c "INSERT INTO variant_dependency (variant_id, file_id) VALUES ('$pid', '$FILE_ID')" || exit 1
+
+	create_table ${pn}_address ${pn}_function ${pn}_instruction
+
+	echo Importing $fn.annot into IRDB via meds2pdb 
+	$SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb ${fn}.annot $FILE_ID ${pn}_function ${pn}_instruction ${pn}_address $fn || exit 1
+}
+
+
 
 
 
 #============================================
-# Update program_dependency table
+# insert a.ncexe into the table
 #============================================
-FILE_ID=`psql -q -t -c "INSERT INTO variant_dependency (variant_id, file_id) VALUES ('$PROGRAM_ID', '$FILE_ID')"`
+update_file_info $PROGRAM_NAME $URL $ARCH $MD5HASH $FILENAME $PROGRAM_ID "original executable that was passed to ps_analyze.sh"
 
+#============================================
+# insert each of the shared libraries into the table
+#============================================
+for i in `cat shared_libs`; do
+	echo registering $i	
+	myname=$i
+	myurl="file://pleaseEditPdbRegisterScript/$i"
+	mymd5="pleaseEditPdbRegisterScript"
+	myfn=`pwd`/shared_objects/$i
+
+	update_file_info $myname $myurl $ARCH $mymd5 $myfn $PROGRAM_ID ".so for a.ncexe, $i"
+done
+
+
+#============================================
+# write out the program id so we have it for later.
+#============================================
 rm $VARIANT_ID_OUTPUT 2>/dev/null
 echo $PROGRAM_ID > $VARIANT_ID_OUTPUT
 

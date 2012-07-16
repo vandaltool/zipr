@@ -209,6 +209,9 @@ stop_if_error()
 		spasm)
 			return 4;
 		;;
+		gather_libraries)
+			return 4;
+		;;
 		# other steps are optional
 		*)
 			return 0;
@@ -343,8 +346,7 @@ check_files()
 		fi
 
 		if [ ! -f $1 ]; then 
-			echo PEASOUP ERROR:  $1  not found.  Is there an environment var set incorrectly?
-			exit 1; 
+			fail_gracefully "PEASOUP ERROR:  $1  not found.  Is there an environment var set incorrectly?"
 		fi
 
 		shift 
@@ -408,8 +410,7 @@ check_files $PEASOUP_HOME/tools/getsyms.sh $SMPSA_HOME/SMP-analyze.sh  $STRATA_H
 # Check/parse options
 #
 if [ -z $2 ]; then
-  echo "Usage: $0 <original_binary> <new_binary> <options>"
-  exit 1
+  fail_gracefully "Usage: $0 <original_binary> <new_binary> <options>"
 fi
 
 #
@@ -424,9 +425,7 @@ shift
 # sanity check incoming arg.
 #
 if [ ! -f $orig_exe ]; then
-	echo ps_analyze cannot find file named $orig_exe.
-	echo exiting...	
-	exit -2
+	fail_gracefully "ps_analyze cannot find file named $orig_exe."
 fi
 
 #
@@ -498,6 +497,10 @@ perform_step watchdog 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_WATCHDOG $w
 # turn on sign conversion function monitoring
 perform_step signconv_func_monitor $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
 
+
+#
+# turn off runtime prrotections for BED. turn off runtime prrotections for BED. turn off runtime prrotections for BED.
+#
 STRATA_DOUBLE_FREE=0
 STRATA_HEAPRAND=0
 STRATA_PC_CONFINE=0
@@ -505,9 +508,18 @@ STRATA_PC_CONFINE_XOR=0
 
 
 #
+# copy the .so files for this exe into a working directory.
+#
+perform_step gather_libraries $PEASOUP_HOME/tools/do_gatherlibs.sh
+
+
+#
 # Running IDA Pro static analysis phase ...
 #
 perform_step meds_static $PEASOUP_HOME/tools/do_idapro.sh
+if [ ! -f $newname.ncexe.annot  ] ; then 
+	fail_gracefully "idapro step failed, exiting early.  Is IDAPRO installed? "
+fi
 
 #
 # Run concolic engine
@@ -530,29 +542,13 @@ MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 #
 perform_step pdb_register "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
 varid=`cat registered.id`
-
-#
-# create the tables for the program
-#
-perform_step pdb_create_tables $PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $DB_PROGRAM_NAME  
-
-#
-# check to see if annot file exists before doing anything, and also that we've created a variant.
-#
-if [ ! -f $newname.ncexe.annot  ] ; then 
-	fail_gracefully "idapro step failed, exiting early.  Is IDAPRO installed? "
-fi
-
 if [ ! $varid -gt 0 ]; then
 	fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
 fi
 
-# import meds info to table
-perform_step meds2pdb $SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb $DB_PROGRAM_NAME $newname.ncexe $MD5HASH $newname.ncexe.annot 	 
-
 # build basic IR
 perform_step fill_in_cfg $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
-perform_step fill_in_indtargs $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid ./$newname.ncexe    
+perform_step fill_in_indtargs $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid 
 
 # finally create a clone so we can do some transforms 
 perform_step clone $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id

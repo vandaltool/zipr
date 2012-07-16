@@ -45,7 +45,9 @@ while [ $found = 1 ] ; do
 	fi
 done
 
-for i in $alreadyFound; do
-	echo $i resolve to `resolve $i`
+for i in $alreadyFound ; do
+	if [ ! $1 = $i ]; then 
+		echo `resolve $i` 
+	fi
 done
 
