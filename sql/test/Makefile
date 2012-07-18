@@ -1,12 +1,15 @@
 
+generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
+
 all: libsqlfw test1.exe test2.exe
 
-test2.exe: test2.o sqlfw.c
+test2.exe: libsqlfw sqlite3.o test2.o sqlfw.c
 	gcc test2.o sqlite3.o -o test2.exe -L. -lsqlfw
+	$(generate_signatures) test2.exe
 	
-test1.exe: test1.o sqlfw.c
+test1.exe: libsqlfw sqlite3.o test1.o sqlfw.c
 	gcc test1.o sqlite3.o -o test1.exe -L. -lsqlfw
-#	gcc test1.o sqlite3.o -o test1.exe -lpthread
+	$(generate_signatures) test1.exe
 
 test1.o: test1.c
 	gcc -c test1.c
@@ -14,7 +17,8 @@ test1.o: test1.c
 test2.o: test2.c
 	gcc -c test2.c
 
-sqlite3.o: sqlite3.c sqlite3.h sqlfw.c
+#sqlite3.o: sqlite3.c sqlite3.h sqlfw.c
+sqlite3.o: sqlfw.c
 	cp ../sqlite-autoconf-3071300/sqlite3.c .
 	cp ../sqlite-autoconf-3071300/sqlite3.h .
 	cat sqlfw.c >> sqlite3.c
@@ -24,4 +28,5 @@ libsqlfw: sqlite3.o
 	gcc -shared -o libsqlfw.so sqlite3.o 
 
 clean:
-	rm *.o *.tmp
+	-rm *.o *.tmp
+	-rm sqlite3.c sqlite3.h
