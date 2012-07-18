@@ -46,7 +46,10 @@ int main(int argc, char *argv[])
 
     input = string(argv[1]);
     output = string(argv[2]);
-    elf = string(argv[3]);
+
+	cout<<"Input:"<<input<<endl;
+	cout<<"Output:"<<output<<endl;
+	cout<<"Symbols:"<<elf<<endl;
 
     try
     {
