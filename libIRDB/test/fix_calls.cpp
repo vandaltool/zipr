@@ -185,7 +185,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
         int instr_len = Disasm(&disasm);
 
 
-	/* if this instruction is an inserted call instruction and we don't need to 
+	/* if this instruction is an inserted call instruction than we don't need to 
 	 * convert it for correctness' sake.
 	 */
 	if(insn->GetAddress()->GetVirtualOffset()==0)
@@ -258,6 +258,13 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	newbits[4]=(next_addr>>24) & 0xff;
 	insn->SetDataBits(newbits);
 	insn->SetComment(insn->GetComment()+" Push part");
+
+	/* create a relocation for this instruction */
+	Relocation_t* reloc=new Relocation_t;
+	reloc->SetOffset(1);
+	reloc->SetType("32-bit");
+	insn->GetRelocations().insert(reloc);
+	firp->GetRelocations().insert(reloc);
 
 
 	/* If the fallthrough is not marked as indirectly branchable-to, then mark it so */

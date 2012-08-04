@@ -173,6 +173,13 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid)
                 string("'") + to_string(indirect_bt_id)                 + string("', ") +
                 string("'") + to_string(GetDoipID())            	+ string("') ; ") ;
 
+	// for each relocation in this instruction 
+	for(set<Relocation_t*>::iterator it=relocs.begin(); it!=relocs.end(); ++it)
+	{
+		Relocation_t* reloc=*it;
+		q+=reloc->WriteToDB(fid,this);
+	}
+
 	return q;
 }
 

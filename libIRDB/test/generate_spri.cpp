@@ -31,7 +31,7 @@ main(int argc, char* argv[])
 
 
 	VariantID_t *varidp=NULL;
-	FileIR_t *varirp=NULL;
+	FileIR_t *firp=NULL;
 
 	/* setup the interface to the sql server */
 	pqxxDB_t pqxx_interface;
@@ -45,13 +45,22 @@ main(int argc, char* argv[])
 
 		assert(varidp->IsRegistered()==true);
 
-		// read the db  
-		cerr<<"Reading variant "<<string(argv[1])<<" from database." << endl;
-		varirp=new FileIR_t(*varidp);
 
-		cerr<<"Reading variant "<<varidp->GetOriginalVariantID()<<" from database." << endl;
+                for(set<File_t*>::iterator it=varidp->GetFiles().begin();
+                        it!=varidp->GetFiles().end();
+                        ++it
+                    )
+                {
+                        File_t* this_file=*it;
+                        assert(this_file);
+			cerr<<"Reading variant "<<string(argv[1])<<":"<<this_file->GetURL()
+			   <<" from database." << endl;
 
-		varirp->GenerateSPRI(*fout);
+			// read the db  
+			firp=new FileIR_t(*varidp,this_file);
+			firp->GenerateSPRI(*fout);
+			delete firp;
+		}
 
 	}
 	catch (DatabaseError_t pnide)
@@ -66,7 +75,6 @@ main(int argc, char* argv[])
 		((ofstream*)fout)->close();
 		
 
-	delete varirp;
 	delete varidp;
 }
 

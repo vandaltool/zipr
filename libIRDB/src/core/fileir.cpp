@@ -51,6 +51,7 @@ void FileIR_t::ReadFromDB()
 	std::map<db_id_t,AddressID_t*> 	addrMap=ReadAddrsFromDB();
 	std::map<db_id_t,Function_t*> 	funcMap=ReadFuncsFromDB(addrMap);
 	std::map<db_id_t,Instruction_t*> 	insnMap=ReadInsnsFromDB(funcMap,addrMap);
+	ReadRelocsFromDB(insnMap);
 
 	UpdateEntryPoints(insnMap);
 }
@@ -58,7 +59,7 @@ void FileIR_t::ReadFromDB()
 
 std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 	(
-        	std::map<db_id_t,AddressID_t*> addrMap
+        	std::map<db_id_t,AddressID_t*> &addrMap
 	)
 {
 	std::map<db_id_t,Function_t*> idMap;
@@ -144,8 +145,8 @@ std::map<db_id_t,AddressID_t*> FileIR_t::ReadAddrsFromDB
 
 std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB 
 	(      
-        std::map<db_id_t,Function_t*> funcMap,
-        std::map<db_id_t,AddressID_t*> addrMap
+        std::map<db_id_t,Function_t*> &funcMap,
+        std::map<db_id_t,AddressID_t*> &addrMap
         ) 
 {
 	std::map<db_id_t,Instruction_t*> idMap;
@@ -224,6 +225,36 @@ std::map<db_id_t,Instruction_t*> FileIR_t::ReadInsnsFromDB
 	return idMap;
 }
 
+void FileIR_t::ReadRelocsFromDB
+	(
+		std::map<db_id_t,Instruction_t*> 	&insnMap
+	)
+{
+	std::string q= "select * from " + fileptr->relocs_table_name + " ; ";
+	dbintr->IssueQuery(q);
+
+	while(!dbintr->IsDone())
+	{
+                db_id_t reloc_id=atoi(dbintr->GetResultColumn("reloc_id").c_str());
+                int reloc_offset=atoi(dbintr->GetResultColumn("reloc_offset").c_str());
+                std::string reloc_type=(dbintr->GetResultColumn("reloc_type"));
+                db_id_t instruction_id=atoi(dbintr->GetResultColumn("instruction_id").c_str());
+                db_id_t doipid=atoi(dbintr->GetResultColumn("doip_id").c_str());
+
+		Relocation_t *reloc=new Relocation_t(reloc_id,reloc_offset,reloc_type);
+
+		assert(insnMap[instruction_id]!=NULL);
+
+		insnMap[instruction_id]->GetRelocations().insert(reloc);
+		relocs.insert(reloc);
+
+		dbintr->MoveToNextRow();
+	}
+
+}
+
+
+
 
 void FileIR_t::WriteToDB()
 {
@@ -235,6 +266,7 @@ void FileIR_t::WriteToDB()
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->instruction_table_name + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->function_table_name    + string(" cascade;"));
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->address_table_name     + string(" cascade;"));
+	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     + string(" cascade;"));
 
 	/* and now that everything has an ID, let's write to the DB */
 	string q=string("");
@@ -272,9 +304,9 @@ void FileIR_t::WriteToDB()
 			q=string("");
 		}
 	}
+
 	dbintr->IssueQuery(q);
 }
-
 
 
 void FileIR_t::SetBaseIDS()
@@ -288,6 +320,8 @@ void FileIR_t::SetBaseIDS()
 	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
+		j=MAX(j,(*i)->GetBaseID());
+	for(std::set<Relocation_t*>::const_iterator i=relocs.begin(); i!=relocs.end(); ++i)
 		j=MAX(j,(*i)->GetBaseID());
 
 	/* increment past the max ID so we don't duplicate */
@@ -303,4 +337,21 @@ void FileIR_t::SetBaseIDS()
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
 		if((*i)->GetBaseID()==NOT_IN_DATABASE)
 			(*i)->SetBaseID(j++);
+	for(std::set<Relocation_t*>::const_iterator i=relocs.begin(); i!=relocs.end(); ++i)
+		if((*i)->GetBaseID()==NOT_IN_DATABASE)
+			(*i)->SetBaseID(j++);
+}
+
+std::string Relocation_t::WriteToDB(File_t* fid, Instruction_t* myinsn)
+{
+	string q;
+        q ="insert into " + fid->relocs_table_name;
+	q+="(reloc_id,reloc_offset,reloc_type,instruction_id,doip_id) "+
+                string(" VALUES (") +
+                string("'") + to_string(GetBaseID())          + string("', ") +
+                string("'") + to_string(offset)               + string("', ") +
+                string("'") + (type)                          + string("', ") +
+                string("'") + to_string(myinsn->GetBaseID())  + string("', ") +
+                string("'") + to_string(GetDoipID())          + string("') ; ") ;
+	return q;	
 }

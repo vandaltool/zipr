@@ -2,13 +2,19 @@
 #include <all.hpp>
 #include <utils.hpp>
 #include <stdlib.h>
+#include <fstream>
+#include <iostream>
+
 using namespace libIRDB;
+using namespace std;
+
 
 
 File_t::File_t(db_id_t myfile_id, db_id_t my_orig_fid, std::string myurl, std::string myhash, std::string myarch, int myoid, 
-		std::string atn, std::string ftn, std::string itn, db_id_t mydoipid) :
+		std::string atn, std::string ftn, std::string itn, std::string rtn, db_id_t mydoipid) :
 	BaseObj_t(NULL), url(myurl), hash(myhash), arch(myarch), elfoid(myoid),
-	address_table_name(atn), function_table_name(ftn), instruction_table_name(itn), orig_fid(my_orig_fid)
+	address_table_name(atn), function_table_name(ftn), instruction_table_name(itn), 
+	relocs_table_name(rtn), orig_fid(my_orig_fid)
 {
 	SetBaseID(myfile_id);
 
@@ -17,47 +23,27 @@ File_t::File_t(db_id_t myfile_id, db_id_t my_orig_fid, std::string myurl, std::s
 
 void File_t::CreateTables()
 {
-/*
- * WARNING!  If you edit these tables, you must also edit $PEASOUP_HOME/tools/db/*.tbl
- */
 
-	dbintr->IssueQuery(
-		"CREATE TABLE " + address_table_name + 
-		" ( "
-		"  address_id         	SERIAL  PRIMARY KEY, "
-		"  file_id            	integer REFERENCES file_info, "
-		"  vaddress_offset    	integer, "
-		"  doip_id		integer DEFAULT -1 "
-		");"
-	);
+	// to avoid duplicate schemas for the DB, we're calling 
+	// the script that has the table creation schema in it  
+	string home(getenv("PEASOUP_HOME"));
+	string tmpfile= "db_script."+to_string(getpid());
 
-	dbintr->IssueQuery(
-		"CREATE TABLE " + function_table_name + 
-		" ( "
-  		"	function_id        	SERIAL  PRIMARY KEY, "
-  		"	file_id            	integer REFERENCES file_info, "
-  		"	name               	text, "
-  		"	stack_frame_size   	integer, "
-  		"	doip_id	   	integer DEFAULT -1, "
-		"       out_args_region_size    integer, "
-		"       use_frame_pointer    integer "
-		"); "
-	);
+	string command=home+"/tools/db/pdb_create_program_tables.sh "+
+		address_table_name+" "+
+		function_table_name+" "+
+		instruction_table_name+" "+
+		relocs_table_name+" "+
+		tmpfile;
 
-	dbintr->IssueQuery(
-		"CREATE TABLE " + instruction_table_name + 
-		" ( "
-		"instruction_id		   SERIAL PRIMARY KEY, "
-  		"address_id                integer REFERENCES " + address_table_name + ", " +
-  		"parent_function_id        integer, "
-  		"orig_address_id           integer, "
-  		"fallthrough_address_id    integer DEFAULT -1, "
-  		"target_address_id         integer DEFAULT -1, "
-  		"data                      bytea, "
-  		"callback                  text, "
-  		"comment                   text, "
-		"ind_target_address_id 	   integer DEFAULT -1, "
-  		"doip_id		   integer DEFAULT -1 "
-		");"
-	);
+	system(command.c_str());
+
+
+	std::ifstream t(tmpfile.c_str());
+	std::stringstream buffer;
+	buffer << t.rdbuf();
+
+
+	dbintr->IssueQuery(buffer.str().c_str());	
+
 }

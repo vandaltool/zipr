@@ -15,62 +15,13 @@ VariantID_t::VariantID_t() :
         schema_ver=CURRENT_SCHEMA;
         orig_pid=-1;       
         name="";
-#if 0
-        address_table_name="";
-        function_table_name="";
-        instruction_table_name="";
-#endif
 }
 
 
 void VariantID_t::CreateTables()
 {
-assert(0);
-#if 0
-/*
- * WARNING!  If you edit these tables, you must also edit $PEASOUP_HOME/tools/db/*.tbl
- */
-
-	dbintr->IssueQuery(
-		"CREATE TABLE " + address_table_name + 
-		" ( "
-		"  address_id         	SERIAL  PRIMARY KEY, "
-		"  file_id            	integer REFERENCES file_info, "
-		"  vaddress_offset    	integer, "
-		"  doip_id		integer DEFAULT -1 "
-		");"
-	);
-
-	dbintr->IssueQuery(
-		"CREATE TABLE " + function_table_name + 
-		" ( "
-  		"	function_id        	SERIAL  PRIMARY KEY, "
-  		"	file_id            	integer REFERENCES file_info, "
-  		"	name               	text, "
-  		"	stack_frame_size   	integer, "
-  		"	doip_id	   	integer DEFAULT -1, "
-		"       out_args_region_size    integer, "
-		"       use_frame_pointer    integer "
-		"); "
-	);
-
-	dbintr->IssueQuery(
-		"CREATE TABLE " + instruction_table_name + 
-		" ( "
-		"instruction_id		   SERIAL PRIMARY KEY, "
-  		"address_id                integer REFERENCES " + address_table_name + ", " +
-  		"parent_function_id        integer, "
-  		"orig_address_id           integer, "
-  		"fallthrough_address_id    integer DEFAULT -1, "
-  		"target_address_id         integer DEFAULT -1, "
-  		"data                      bytea, "
-  		"callback                  text, "
-  		"comment                   text, "
-		"ind_target_address_id 	   integer DEFAULT -1, "
-  		"doip_id		   integer DEFAULT -1 "
-		");"
-	);
-#endif
+	// note:  this tables are now part of File_t.
+	assert(0);
 }
 
 VariantID_t::VariantID_t(db_id_t pid) : BaseObj_t(NULL)
@@ -214,6 +165,7 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 	std::string atn="atnfid"+to_string(newfid);
 	std::string ftn="ftnfid"+to_string(newfid);
 	std::string itn="itnfid"+to_string(newfid);
+	std::string rtn="rtnfid"+to_string(newfid);
 
 	q ="update file_info set address_table_name='";
 	q+=atn;
@@ -221,13 +173,16 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 	q+=ftn;
 	q+="', instruction_table_name='";
 	q+=itn;
+	q+="', relocs_table_name='";
+	q+=rtn;
 	q+="' where file_id='";
 	q+=to_string(newfid);
 	q+="' ; ";
 	
         dbintr->IssueQuery(q);
 
-	File_t* newfile=new File_t(newfid, fptr->orig_fid, fptr->url, fptr->hash, fptr->arch, fptr->elfoid, atn, ftn, itn, fptr->GetDoipID());
+	File_t* newfile=new File_t(newfid, fptr->orig_fid, fptr->url, fptr->hash, fptr->arch, fptr->elfoid, 
+					atn, ftn, itn, rtn, fptr->GetDoipID());
 
 	newfile->CreateTables();
 
@@ -244,6 +199,11 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
 
         q="drop table ";
         q+=ftn;
+        q+=" ; ";
+        dbintr->IssueQuery(q);
+
+        q="drop table ";
+        q+=rtn;
         q+=" ; ";
         dbintr->IssueQuery(q);
 
@@ -269,6 +229,15 @@ File_t* VariantID_t::CloneFile(File_t* fptr)
         q+=fptr->function_table_name;
         q+=" ;";
         dbintr->IssueQuery(q);
+
+        q="select * into ";
+        q+=rtn;
+        q+=" from ";
+        q+=fptr->relocs_table_name;
+        q+=" ;";
+        dbintr->IssueQuery(q);
+
+	// update the variant dependency table to represent the deep clone 
 
 	// update the variant dependency table to represent the deep clone 
 	q =     "update variant_dependency set file_id='" + 
@@ -307,11 +276,6 @@ std::ostream& libIRDB::operator<<(std::ostream& out, const VariantID_t& pid)
 		"schema="<<pid.schema_ver<<":"
 		"orig_pid="<<pid.orig_pid<<":"
 		"name="<<pid.name<<":"
-#if 0
-		"ATN="<<pid.address_table_name<<":"
-		"FTN="<<pid.function_table_name<<":"
-		"ITN="<<pid.instruction_table_name<<
-#endif
 		")" ;
 	return out;
 }
@@ -322,11 +286,6 @@ void VariantID_t::DropFromDB()
 	assert(IsRegistered());
 
 	string q;
-#if 0
-	q =string("drop table ")+instruction_table_name + string(" cascade;");
-	q+=string("drop table ")+address_table_name     + string(" cascade;");
-	q+=string("drop table ")+function_table_name    + string(" cascade;");
-#endif
 	q+=string("delete from variant_dependency where variant_id = '") + to_string(GetBaseID()) + string("';");
 	q+=string("delete from variant_info where variant_id = '") + to_string(GetBaseID()) + string("';");
 
@@ -334,9 +293,6 @@ void VariantID_t::DropFromDB()
 
 	SetBaseID(NOT_IN_DATABASE);
 	orig_pid=NOT_IN_DATABASE;
-#if 0
-	name=instruction_table_name=address_table_name=function_table_name=string("");
-#endif
         schema_ver=CURRENT_SCHEMA;
 }
 
@@ -363,7 +319,7 @@ void VariantID_t::ReadFilesFromDB()
 {
 
 	std::string q= "select  file_info.orig_file_id, file_info.address_table_name, file_info.instruction_table_name, "
-		" file_info.function_table_name, file_info.file_id, file_info.url, file_info.hash,"
+		" file_info.function_table_name, file_info.relocs_table_name, file_info.file_id, file_info.url, file_info.hash,"
 		" file_info.arch, file_info.type, file_info.elfoid, file_info.doip_id "
 		" from file_info,variant_dependency "
 		" where variant_dependency.variant_id = '" + to_string(GetBaseID()) + "' AND "
@@ -385,10 +341,11 @@ void VariantID_t::ReadFilesFromDB()
         	std::string atn=(BaseObj_t::dbintr->GetResultColumn("address_table_name"));
         	std::string ftn=(BaseObj_t::dbintr->GetResultColumn("function_table_name"));
         	std::string itn=(BaseObj_t::dbintr->GetResultColumn("instruction_table_name"));
+        	std::string rtn=(BaseObj_t::dbintr->GetResultColumn("relocs_table_name"));
 
 
 
-		File_t *newfile=new File_t(file_id,orig_fid,url,hash,type,oid,atn,ftn,itn,doipid);
+		File_t *newfile=new File_t(file_id,orig_fid,url,hash,type,oid,atn,ftn,itn,rtn,doipid);
 
 //std::cout<<"Found file "<<file_id<<"."<<std::endl;
 

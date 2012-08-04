@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
+#include <vector>
 
 using namespace std;
 
@@ -11,6 +12,13 @@ bool fexists(string filename)
   ifstream ifile(filename.c_str());
   return ifile;
 }
+
+void usage()
+{
+    cerr<<"SPASM usage:\n-s <symbol file> <input files>"<<endl;
+    exit(1);
+}
+
 
 ///Utility SPASM's main
 int main(int argc, char *argv[])
@@ -43,17 +51,17 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-
     input = string(argv[1]);
     output = string(argv[2]);
-
 	cout<<"Input:"<<input<<endl;
 	cout<<"Output:"<<output<<endl;
 	cout<<"Symbols:"<<elf<<endl;
 
+	vector<string> input_list;
+	input_list.push_back(input);
     try
     {
-        a2bspri(input,output,elf);
+	a2bspri(input_list,elf);
     }
     catch (SpasmException err)
     {

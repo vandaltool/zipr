@@ -13,6 +13,10 @@
 using namespace libIRDB;
 using namespace std;
 
+// forward decls for this file 
+static string qualified_addressify(FileIR_t* fileIRp, Instruction_t *insn);
+static string labelfy(Instruction_t* insn);
+
 
 //
 // the set of insturctions that have control 
@@ -51,12 +55,41 @@ static int needs_short_branch_rewrite(const DISASM &disasm)
 //
 // create a label for the given instruction
 //
+static string qualified_labelfy(FileIR_t* fileIRp, Instruction_t* insn)
+{
+	if(!needs_spri_rule(insn, insnMap[insn]))
+		return qualified_addressify(fileIRp, insn);
+
+	return labelfy(insn);
+}
+
+static int label_offset=0;
+
+static void update_label_offset(FileIR_t *firp)
+{
+	int max=0;
+	for(set<Instruction_t*>::iterator it=firp->GetInstructions().begin();
+            it!=firp->GetInstructions().end();
+	    ++it)
+	{
+		Instruction_t *insn=*it;
+		if(insn->GetBaseID()>max)
+			max=insn->GetBaseID()+100;
+	}
+	label_offset+=max;
+}
+
+static int IDToSPRIID(int id)
+{
+	return id+label_offset;
+}
+
 static string labelfy(Instruction_t* insn)
 {
 	if(!needs_spri_rule(insn, insnMap[insn]))
 		return addressify(insn);
 
-	return string("Label_insn_") + to_string(insn->GetBaseID());
+	return string("LI_") + to_string(IDToSPRIID(insn->GetBaseID()));
 }
 
 
@@ -78,12 +111,49 @@ static string addressify(Instruction_t* insn)
 
 }
 
+static string URLToFile(string url)
+{
+	int loc=0;
+
+	loc=url.find('/');
+	while(loc!=string::npos)
+	{
+		url=url.substr(loc+1,url.length()-loc-1);
+
+		loc=url.find('/');
+	}
+	// maybe need to check filename for odd characters 
+
+	return url;
+}
+
+static string qualify(FileIR_t* fileIRp)
+{
+	return URLToFile(fileIRp->GetFile()->GetURL()) + "+" ;
+}
+
+static string qualify_address(FileIR_t* fileIRp, int addr)
+{
+	stringstream ss;
+	ss<< qualify(fileIRp) << "0x" << std::hex << (addr);
+	return ss.str();
+}
+
+static string qualified_addressify(FileIR_t* fileIRp, Instruction_t *insn)
+{
+	string address=addressify(insn);
+	if(address.c_str()[0]=='0')
+		return qualify(fileIRp) + address;
+	return address;	
+	
+}
+
 static string get_short_branch_label(Instruction_t *newinsn)
 {
 	if (!newinsn)
 		return string("");
 	else
-		return "short_jump_" + labelfy(newinsn);
+		return "sj_" + labelfy(newinsn);
 }
 
 static string getPostCallbackLabel(Instruction_t *newinsn)
@@ -91,13 +161,19 @@ static string getPostCallbackLabel(Instruction_t *newinsn)
 	if (!newinsn)
 		return string("");
 	else
-		return "post_callback_" + labelfy(newinsn);
+		return "pcb_" + labelfy(newinsn);
+}
+
+
+static void emit_relocation(FileIR_t* fileIRp, ostream& fout, int offset, string type, Instruction_t* insn) 
+{
+	fout<<"\t"<<labelfy(insn)<<" rl " << offset << " "<< type <<  " " << URLToFile(fileIRp->GetFile()->GetURL()) <<endl;
 }
 
 //
 // emit this instruction as spri code.
 //
-static string emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
+static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, ostream& fout)
 {
 	string original_target;
 	Instruction_t* old_insn=insnMap[newinsn];
@@ -166,6 +242,7 @@ static string emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 		/* if we have a target instruction in the database */
 		if(newinsn->GetTarget() || needs_short_branch_rewrite(disasm))
 		{
+// assert(0); // may need relocation info if target() is in the DB, but not being rewritten
 			/* change the target to be symbolic */
 	
 			/* first get the new target */
@@ -189,16 +266,25 @@ static string emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 
 			/* and build up a new string that has the label of the target instead of the address */
 			string final=complete_instr.substr(0,start) + new_target + complete_instr.substr(start+address_string.length());
+
 	
 			/* sanity, no segment registers for absolute mode */
 			assert(disasm.Argument1.SegmentReg==0);
 
-			fout<<final;
+			fout<<final<<endl;
+
+			if (new_target.c_str()[0]=='0')
+			{
+				// if we're jumping to an absolute address vrs a label, we will need a relocation for this jump instruction
+				emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
+			}
 		}
 		else 	/* this instruction has a target, but it's not in the DB */
 		{
 			/* so we'll just emit the instruction and let it go back to the application text. */	
-			fout<<complete_instr;
+			fout<<complete_instr<<endl;
+// needs relocation info.
+			assert(0);			
 		}
 	}
 	else
@@ -266,10 +352,14 @@ static string emit_spri_instruction(Instruction_t *newinsn, ostream& fout)
 		}
 			
 		fout<<disasm.CompleteInstr;
+		fout<<endl;
 	}
-	fout<<endl;
 
-
+	for(set<Relocation_t*>::iterator it=newinsn->GetRelocations().begin(); it!=newinsn->GetRelocations().end(); ++it)
+	{
+		Relocation_t* this_reloc=*it;
+		emit_relocation(fileIRp, fout, this_reloc->GetOffset(),this_reloc->GetType(), newinsn);
+	}
 	return original_target;
 
 }
@@ -336,15 +426,9 @@ static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn)
 //
 // emit the spri rule to redirect this instruction.
 //
-static void emit_spri_rule(Instruction_t* newinsn, ostream& fout)
+static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& fout)
 {
 
-#if 0
-We need to emit a rule of this form
-	L_insn_id -> .	
-	. ** data bits with pc rel address taken care of.
-	. -> fallthrough label
-#endif
 
 	Instruction_t* old_insn=insnMap[newinsn];
 
@@ -361,28 +445,28 @@ We need to emit a rule of this form
 		   unmoved_insn_targets.find(newinsn) != unmoved_insn_targets.end()
 		  )
 		{
-			fout << addressify(newinsn) <<" -> ."<<endl;
+			fout << qualified_addressify(fileIRp, newinsn) <<" -> ."<<endl;
 		}
 		else
 		{
 			fout << "# eliding, no indirect targets"<<endl;
-			fout << addressify(newinsn) <<" -> 0x0 " <<endl; 
+			fout << qualified_addressify(fileIRp, newinsn) <<" -> 0x0 " <<endl; 
 		}
 		
 	}
 	else if (newinsn->GetIndirectBranchTargetAddress()) 
 	{
-		fout << "0x" << std::hex << newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() <<" -> ."<<endl;
+		fout << qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset()) <<" -> ."<<endl;
 		fout << ". -> "<< getPostCallbackLabel(newinsn) <<endl;
 	}
 
-	string original_target=emit_spri_instruction(newinsn, fout);
+	string original_target=emit_spri_instruction(fileIRp, newinsn, fout);
 
 
 	/* if there's a fallthrough instruction, jump to it. */
 	if(newinsn->GetFallthrough())
 	{	
-		fout << ". -> " << labelfy(newinsn->GetFallthrough())<<endl;
+		fout << ". -> " << qualified_labelfy(fileIRp,newinsn->GetFallthrough())<<endl;
 	}
 	else
 	{
@@ -399,7 +483,7 @@ We need to emit a rule of this form
 		{
 			assert(old_insn);	/* it's an error to insert a new, non-unconditional branch instruction
 						 * and not specify it's fallthrough */
-			fout << ". -> 0x" << std::hex << old_insn->GetAddress()->GetVirtualOffset()+instr_len <<endl;
+			fout << ". -> " << qualify(fileIRp)<< "0x" << std::hex << old_insn->GetAddress()->GetVirtualOffset()+instr_len <<endl;
 		}
 	}
 
@@ -410,6 +494,9 @@ We need to emit a rule of this form
 	 */
 	if(!original_target.empty())
 	{
+		/* qualify this target if necessary */
+		if(original_target.c_str()[0]=='0')
+			original_target=qualify(fileIRp)+original_target;
 		fout << "\t" << get_short_branch_label(newinsn) << "\t -> \t " << original_target << endl;
 	}
 
@@ -420,7 +507,7 @@ We need to emit a rule of this form
 //
 // generate a map from new instructions to old instructions
 //
-static void generate_insn_to_insn_maps(FileIR_t *varirp, FileIR_t *orig_varirp)
+static void generate_insn_to_insn_maps(FileIR_t *fileIRp, FileIR_t *orig_fileIRp)
 {
 	static map<Instruction_t*,Instruction_t*> new_insnMap;
 	insnMap=new_insnMap; // re-init the global instruction map.
@@ -435,8 +522,8 @@ static void generate_insn_to_insn_maps(FileIR_t *varirp, FileIR_t *orig_varirp)
 
 	/* loop through each insn in the original program */
 	for(
-		std::set<Instruction_t*>::const_iterator it=orig_varirp->GetInstructions().begin();
-		it!=orig_varirp->GetInstructions().end();
+		std::set<Instruction_t*>::const_iterator it=orig_fileIRp->GetInstructions().begin();
+		it!=orig_fileIRp->GetInstructions().end();
 		++it
 	   )
 	{
@@ -458,8 +545,8 @@ static void generate_insn_to_insn_maps(FileIR_t *varirp, FileIR_t *orig_varirp)
 
 	/* loop through the new variant and create the final mapping of new insn to old insn */
 	for(
-		std::set<Instruction_t*>::const_iterator it=varirp->GetInstructions().begin();
-		it!=varirp->GetInstructions().end();
+		std::set<Instruction_t*>::const_iterator it=fileIRp->GetInstructions().begin();
+		it!=fileIRp->GetInstructions().end();
 		++it
 	   )
 	{
@@ -485,15 +572,31 @@ static void generate_insn_to_insn_maps(FileIR_t *varirp, FileIR_t *orig_varirp)
 //
 void FileIR_t::GenerateSPRI(ostream &fout)
 {
-	if(orig_variant_ir_p==NULL)
+	VariantID_t orig_varidp(progid.GetOriginalVariantID());
+	assert(orig_varidp.IsRegistered()==true);
+
+	for(
+		set<File_t*>::iterator it=orig_varidp.GetFiles().begin();
+		it!=orig_varidp.GetFiles().end();
+		++it
+	   )
 	{
-		VariantID_t orig_varidp(progid.GetOriginalVariantID());
-		assert(orig_varidp.IsRegistered()==true);
-		orig_variant_ir_p=new FileIR_t(orig_varidp);
+                        File_t* the_file=*it;
+
+			if(the_file->GetBaseID()==fileptr->orig_fid)
+			{
+				fout <<"# Generating spri for "<< the_file->GetURL()<<endl;
+
+				orig_variant_ir_p=new FileIR_t(orig_varidp,the_file);
+				this->GenerateSPRI(orig_variant_ir_p,fout);
+				delete orig_variant_ir_p;
+				orig_variant_ir_p=NULL;
+			}
+	
 	}
 
 
-	this->GenerateSPRI(orig_variant_ir_p,fout);
+
 }
 
 
@@ -501,11 +604,11 @@ void FileIR_t::GenerateSPRI(ostream &fout)
 // generate_unmoved_insn_targets_set --  create the set of insturctions that have control 
 // transfers to them (including fallthrough type control transfers) from instructions that do not need a spri rule.
 //
-static void generate_unmoved_insn_targets_set(FileIR_t* varirp)
+static void generate_unmoved_insn_targets_set(FileIR_t* fileIRp)
 {
 	for(
-		set<Instruction_t*>::const_iterator it=varirp->GetInstructions().begin();
-		it!=varirp->GetInstructions().end();
+		set<Instruction_t*>::const_iterator it=fileIRp->GetInstructions().begin();
+		it!=fileIRp->GetInstructions().end();
 		++it
 	   )
 	{
@@ -527,27 +630,27 @@ static void generate_unmoved_insn_targets_set(FileIR_t* varirp)
 }
 
 
-void FileIR_t::GenerateSPRI(FileIR_t *orig_varirp, ostream &fout)
+void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout)
 {
 	// give 'this' a name
-	FileIR_t *varirp=this;
+	FileIR_t *fileIRp=this;
 
 	SetBaseIDS(); // need unique ID to generate unique label name
 
 	// generate the map from new instruction to old instruction needed for this transform.
-	generate_insn_to_insn_maps(varirp, orig_varirp);
+	generate_insn_to_insn_maps(fileIRp, orig_fileIRp);
 
-	// generate unmoved_insn_targets_set --  the set of insturctions that have control 
+	// generate unmoved_insn_targets_set --  the set of instructions that have control 
 	// transfers to them (including fallthrough type control transfers) from instructions that do not need a spri rule.
-	generate_unmoved_insn_targets_set(varirp);
+	generate_unmoved_insn_targets_set(fileIRp);
 
 	//
 	// for each instruction, compare the new instruction with the original instruction and see if 
 	// they are the same.  If so, do nothing, otherwise emit a rewrite rule for this instruction.
 	//
 	for(
-		std::set<Instruction_t*>::const_iterator it=varirp->GetInstructions().begin();
-		it!=varirp->GetInstructions().end();
+		std::set<Instruction_t*>::const_iterator it=fileIRp->GetInstructions().begin();
+		it!=fileIRp->GetInstructions().end();
 		++it
 	   )
 	{
@@ -558,9 +661,10 @@ void FileIR_t::GenerateSPRI(FileIR_t *orig_varirp, ostream &fout)
 
 		if(needs_spri_rule(newinsn,oldinsn))
 		{
-			emit_spri_rule(newinsn,fout);
+			emit_spri_rule(fileIRp,newinsn,fout);
 		}
 	}
+	update_label_offset(fileIRp);
 
 }
 

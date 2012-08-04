@@ -276,11 +276,11 @@ void print_targets()
  */
 void add_num_handle_fn_watches(FileIR_t * firp)
 {
-    /* Loop over the set of functions */
+    	/* Loop over the set of functions */
     for(
-        set<Function_t*>::const_iterator it=firp->GetFunctions().begin();
-            it!=firp->GetFunctions().end();
-            ++it
+       	set<Function_t*>::const_iterator it=firp->GetFunctions().begin();
+       	it!=firp->GetFunctions().end();
+        ++it
         )
     {
         Function_t *func=*it;
@@ -336,16 +336,8 @@ void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
         Elf32_Half secnum, strndx, secndx;
         Elf32_Word secsize;
 
-        //fp = fopen(elf_file.c_str(),"rb");
 	int elfoid=firp->GetFile()->GetELFOID();
 	pqxx::largeobjectaccess loa(pqxx_interface.GetTransaction(), elfoid, PGSTD::ios::in);
-
-
-	// if(!fp)
-	// {
-	// 	cerr<<"Cannot open "<<elf_file<<"."<<endl;
-	// 	exit(-1);
-	// }
 
 	/* allcoate memory  */
         Elf32_Ehdr elfhdr;
@@ -359,9 +351,7 @@ void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
 
         /* Read Section headers */
         Elf32_Shdr *sechdrs=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*secnum);
-        //fseek(fp, sec_hdr_off, SEEK_SET);
         loa.seek(sec_hdr_off, std::ios_base::beg);
-        //res=fread(sechdrs, sizeof(Elf32_Shdr), secnum, fp);
         loa.cread((char*)sechdrs, sizeof(Elf32_Shdr)* secnum);
 
 	/* look through each section and record bounds */
@@ -376,7 +366,6 @@ void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
 	cout<<"========================================="<<endl;
 	cout<<"Targets from data sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
-//	print_targets();
 	cout<<"========================================="<<endl;
 
 	/* look through the instructions in the program for targets */
@@ -389,7 +378,6 @@ void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass2="<<std::dec<<targets.size()<<endl;
-//	print_targets();
 	cout<<"========================================="<<endl;
 
 	/* Read the exception handler frame so that those indirect branches are accounted for */
@@ -399,7 +387,6 @@ void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction+eh_header sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass3="<<std::dec<<targets.size()<<endl;
-//	print_targets();
 	cout<<"========================================="<<endl;
 
 
@@ -411,12 +398,32 @@ void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
 	print_targets();
 	cout<<"========================================="<<endl;
 
-    /* Add functions containing unsigned int params to the list */
-    add_num_handle_fn_watches(firp);
+	/* now process the ranges that have exception handling */
+	void check_for_thunks(FileIR_t* firp);
+	check_for_thunks(firp);
+	cout<<"========================================="<<endl;
+	cout<<"# ATTRIBUTE total_indirect_targets_pass5="<<std::dec<<targets.size()<<endl;
+	print_targets();
+	cout<<"========================================="<<endl;
+
+
+
+
+
+
+    	/* Add functions containing unsigned int params to the list */
+    	add_num_handle_fn_watches(firp);
+	/* now process the ranges that have exception handling */
+	cout<<"========================================="<<endl;
+	cout<<"# ATTRIBUTE total_indirect_targets_pass6="<<std::dec<<targets.size()<<endl;
+	print_targets();
+	cout<<"========================================="<<endl;
+
+
+
 
 	/* set the IR to have some instructions marked as IB targets */
 	mark_targets(firp);
-	
 }
 
 

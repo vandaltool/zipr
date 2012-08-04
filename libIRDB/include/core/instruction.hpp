@@ -40,10 +40,12 @@ class Instruction_t : public BaseObj_t
 	void WriteToDB() { assert(0); }
         std::string WriteToDB(File_t *fid, db_id_t newid);
         int Disassemble(DISASM &d); 
-		std::string getDisassembly();
+	std::string getDisassembly();
         bool Assemble(std::string assembly);
 
 	bool IsFunctionExit() const;
+
+	std::set<Relocation_t*>& GetRelocations() { return relocs; }
 
 	static bool SetsStackPointer(DISASM *disasm);
 	static bool SetsStackPointer(ARGTYPE* arg);
@@ -59,4 +61,5 @@ class Instruction_t : public BaseObj_t
         std::string callback;    // name of callback handler (if any)
         std::string comment;
 	AddressID_t* indTarg;
+	std::set<Relocation_t*> relocs;
 };
