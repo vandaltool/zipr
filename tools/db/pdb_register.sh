@@ -78,20 +78,8 @@ psql -q -t -c "UPDATE variant_info SET orig_variant_id = '$PROGRAM_ID' WHERE var
 #============================================
 create_table()
 {
-	atn=$1
-	ftn=$2
-	itn=$3
-
-	echo Creating tables $atn, $ftn, and $itn.
-
-	DB_SCRIPT=$$.script.tmp
-	cat $PEASOUP_HOME/tools/db/pdb.createprogram.tbl |  \
-		sed "s/#ATN#/$atn/g" | \
-		sed "s/#FTN#/$ftn/g" | \
-		sed "s/#ITN#/$itn/g"  \
-		> $DB_SCRIPT
-	psql -f $DB_SCRIPT || exit 1
-	rm $DB_SCRIPT
+	$PEASOUP_HOME/tools/db/pdb_create_program_tables.sh $1 $2 $3 $4 db.tmp.$$
+	psql -q -t -c "`cat db.tmp.$$`"
 }
 
 #============================================
@@ -114,7 +102,7 @@ update_file_info()
 	pn=`echo $pn | sed "s/[^a-zA-Z0-9]/_/g"`
 	
 	oid=`psql  -t -c "\lo_import '$fn' '$comment'" |cut -d" " -f2`
-	FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash, elfoid, address_table_name,function_table_name,instruction_table_name) VALUES ('$url', '$arch', '$md5', '$oid', '${pn}_address', '${pn}_function', '${pn}_instruction') RETURNING file_id;" | sed "s/^[ \t]*//"`
+	FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash, elfoid, address_table_name,function_table_name,instruction_table_name,relocs_table_name) VALUES ('$url', '$arch', '$md5', '$oid', '${pn}_address', '${pn}_function', '${pn}_instruction', '${pn}_relocs') RETURNING file_id;" | sed "s/^[ \t]*//"`
 
 	# Update original file id
 	psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID' WHERE file_id = '$FILE_ID';" || exit 1
@@ -122,7 +110,7 @@ update_file_info()
 	# update the variant dependency table
 	psql -q -t -c "INSERT INTO variant_dependency (variant_id, file_id) VALUES ('$pid', '$FILE_ID')" || exit 1
 
-	create_table ${pn}_address ${pn}_function ${pn}_instruction
+	create_table ${pn}_address ${pn}_function ${pn}_instruction ${pn}_relocs
 
 	echo Importing $fn.annot into IRDB via meds2pdb 
 	$SECURITY_TRANSFORMS_HOME/tools/meds2pdb/meds2pdb ${fn}.annot $FILE_ID ${pn}_function ${pn}_instruction ${pn}_address $fn || exit 1

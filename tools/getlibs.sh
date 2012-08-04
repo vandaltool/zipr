@@ -1,5 +1,7 @@
 #!/bin/sh
 
+orig_file=$1
+
 remove_dups()
 {
 	rm -f /tmp/dups.$$
@@ -12,10 +14,11 @@ remove_dups()
 
 resolve(){
 
-	file=`ldconfig -p |grep "$1 ("|head  -1|sed "s/.*=>//"`
+	#file=`ldconfig -p |grep "$1 ("|head  -1|sed "s/.*=>//"`
+	file=`ldd $orig_file |grep "$1 ("|sed -e "s/.*=>//" -e "s/(.*)//"`
 	if [ ! -z "$file" -a -e $file ]; then
 		echo -n
-		echo $file
+		realpath $file
 	else
 		echo $1
 	fi

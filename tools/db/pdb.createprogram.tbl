@@ -6,34 +6,43 @@
 
 CREATE TABLE #ATN#
 (
-  address_id         	SERIAL PRIMARY KEY,
-  file_id            	integer REFERENCES file_info,
-  vaddress_offset    	integer,
-  doip_id		integer DEFAULT -1
+  address_id         	SERIAL PRIMARY KEY,		-- key
+  file_id            	integer REFERENCES file_info,	-- which file this address is part of
+  vaddress_offset    	integer,			-- the offset into the file
+  doip_id		integer DEFAULT -1 		-- the DOIP
 );
 
 CREATE TABLE #FTN#
 (
-  function_id        	SERIAL PRIMARY KEY,
+  function_id        	SERIAL PRIMARY KEY,		-- key
   entry_point_id        integer, 			-- id of the address that is the entry point of this function. 
-  name               	text,
-  stack_frame_size   	integer,
-  out_args_region_size	integer,
-  use_frame_pointer	boolean,
-  doip_id	   	integer DEFAULT -1
+  name               	text,				-- name of this function
+  stack_frame_size   	integer,			-- believed stack frame size
+  out_args_region_size	integer,			-- believed out arg size
+  use_frame_pointer	boolean,			-- believed whether this function uses the FP
+  doip_id	   	integer DEFAULT -1 		-- the DOIP
 );
 
 CREATE TABLE #ITN#
 (
-  instruction_id	    SERIAL PRIMARY KEY,
-  address_id                integer REFERENCES #ATN#,
-  parent_function_id        integer,
-  orig_address_id           integer,
-  fallthrough_address_id    integer DEFAULT -1,
-  target_address_id         integer DEFAULT -1,
-  data                      bytea,
-  callback                  text,
-  comment                   text,
-  ind_target_address_id	    integer DEFAULT -1,
-  doip_id		    integer DEFAULT -1
+  instruction_id	    SERIAL PRIMARY KEY,		-- key
+  address_id                integer REFERENCES #ATN#,	-- which address this instruction si at
+  parent_function_id        integer,			-- does this instruction belong to a func, if so, which
+  orig_address_id           integer,			-- where did this instruction come from in the orig pgm.
+  fallthrough_address_id    integer DEFAULT -1,		-- the fallthrough address (if can fall through)
+  target_address_id         integer DEFAULT -1,		-- the target address (if direct) 
+  data                      bytea,			-- the actual bytes of the instruction 
+  callback                  text,			-- a callback registered for this instruction
+  comment                   text,			-- a comment for human debugging
+  ind_target_address_id	    integer DEFAULT -1,		-- is this instruction jumped to indirectly, if so, it's using this addr
+  doip_id		    integer DEFAULT -1 		-- the DOIP
+);
+
+CREATE TABLE #RTN#
+(
+  reloc_id	    SERIAL PRIMARY KEY, -- id in the table
+  reloc_offset 	    integer,		-- how far into the instruction is the relocation
+  reloc_type	    text,		-- what type is the relocation.
+  instruction_id    integer,		-- the instruction for this reloc 
+  doip_id	    integer DEFAULT -1	-- the DOIP
 );

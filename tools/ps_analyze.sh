@@ -561,6 +561,11 @@ if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
 	fail_gracefully "Failed to create variant.  Is postgres running properly?"
 fi
 
+#fuck
+#echo perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
+#exit 0
+#end
+
 # do the basic tranforms we're performing for peasoup 
 perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
 

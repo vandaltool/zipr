@@ -23,7 +23,6 @@ shift;
 
 command="
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$datapath
-STRATA_LOG=detectors
 STRATA_WATCHDOG=0
 STRATA_NUM_HANDLE=0
 STRATA_DOUBLE_FREE=0
@@ -39,9 +38,14 @@ STRATA_PARTIAL_INLINING=0
 	$datapath/a.stratafied"
 
 #
-#  we just always need to log to a file.
+#  If STRATA_LOG is clear, no additional logging was requested, and we just always need to log to a file.
 #
-command="STRATA_OUTPUT_FILE=$datapath/diagnostics.out $command"
+if [ -z $STRATA_LOG ]; then
+	command="STRATA_LOG=detectors STRATA_OUTPUT_FILE=$datapath/diagnostics.out $command"
+else
+	# otherwise, we add detectors to the strata_log list, and log to stderr	
+	command="STRATA_LOG=$STRATA_LOG,detectors $command"
+fi
 
 #
 # Set SPRI file to use (should be generated from the IRDB).

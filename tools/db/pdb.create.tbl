@@ -29,6 +29,7 @@ CREATE TABLE file_info
   address_table_name 		text,
   function_table_name 		text,
   instruction_table_name 	text,
+  relocs_table_name 		text,
   doip_id          		integer DEFAULT -1
 );
 

@@ -1,25 +1,25 @@
-#!/bin/sh 
+#!/bin/sh  -x
 
 #
-# pdb_create_program_tables <programName>
+# pdb_create_program_tables <atn> <ftn> <itn> <rtn> file
 #
-# WARNING: <programName> must convert non-alphanumeric characters to alphanumeric
 
 
 # remove any path name
 
-create_table()
-{
-	atn=$1
-	ftn=$2
-	itn=$3
+atn=$1
+ftn=$2
+itn=$3
+rtn=$4
+file=$5
 
-	DB_SCRIPT=$$.script.tmp
-	cat $PEASOUP_HOME/tools/db/pdb.createprogram.tbl | sed "s/#PROGNAME#/$PROGRAM_NAME/g" > $DB_SCRIPT
-	psql -f $DB_SCRIPT
-	rm $DB_SCRIPT
-}
+echo Creating tables $atn, $ftn, $itn, and $rtn.
 
-vid=$1
+DB_SCRIPT=$file
+cat $PEASOUP_HOME/tools/db/pdb.createprogram.tbl |  \
+                sed "s/#ATN#/$atn/g" | \
+                sed "s/#FTN#/$ftn/g" | \
+                sed "s/#ITN#/$itn/g" | \
+                sed "s/#RTN#/$rtn/g"  \
+                > $DB_SCRIPT
 
-psql -q -t  -c "select address_table_name,function_table_name,instruction_table_name from file_info where variant_id='$vid'"
