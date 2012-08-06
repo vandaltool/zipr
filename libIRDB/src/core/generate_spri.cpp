@@ -284,7 +284,8 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			/* so we'll just emit the instruction and let it go back to the application text. */	
 			fout<<complete_instr<<endl;
 // needs relocation info.
-			assert(0);			
+			assert(complete_instr.compare("call 0x00000000")==0 || 
+			       complete_instr.compare("jmp 0x00000000")==0);			
 		}
 	}
 	else
