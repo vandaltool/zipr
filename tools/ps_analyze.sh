@@ -524,7 +524,7 @@ fi
 #
 # Run concolic engine
 #
-perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a -z $DIR/grace.conf
+perform_step concolic $PEASOUP_HOME/tools/do_concolic.sh a -z $PEASOUP_UMBRELLA_DIR/grace.conf
 
 ##
 ## Populate IR Database
