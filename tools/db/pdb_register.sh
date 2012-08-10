@@ -102,10 +102,14 @@ update_file_info()
 	pn=`echo $pn | sed "s/[^a-zA-Z0-9]/_/g"`
 	
 	oid=`psql  -t -c "\lo_import '$fn' '$comment'" |cut -d" " -f2`
-	FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash, elfoid, address_table_name,function_table_name,instruction_table_name,relocs_table_name) VALUES ('$url', '$arch', '$md5', '$oid', '${pn}_address', '${pn}_function', '${pn}_instruction', '${pn}_relocs') RETURNING file_id;" | sed "s/^[ \t]*//"`
+	FILE_ID=`psql -q -t -c "INSERT INTO file_info (url, arch, hash, elfoid) VALUES ('$url', '$arch', '$md5', '$oid') RETURNING file_id;" | sed "s/^[ \t]*//"`
+
+	# the sing the program name is a problem if the prog. name is over 40 chars.
+	# just use a pid and fid.
+	pn=table_${pid}_${FILE_ID}
 
 	# Update original file id
-	psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID' WHERE file_id = '$FILE_ID';" || exit 1
+	psql -q -t -c "UPDATE file_info SET orig_file_id = '$FILE_ID', address_table_name = '${pn}_address', function_table_name = '${pn}_function', instruction_table_name = '${pn}_instruction', relocs_table_name = '${pn}_relocs' WHERE file_id = '$FILE_ID';" || exit 1
 
 	# update the variant dependency table
 	psql -q -t -c "INSERT INTO variant_dependency (variant_id, file_id) VALUES ('$pid', '$FILE_ID')" || exit 1
