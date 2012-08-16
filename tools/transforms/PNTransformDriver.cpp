@@ -896,9 +896,12 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	    //undo_list[instr] = instr->GetDataBits();
 	    //undo_list[instr] = copyInstruction(instr);
 	    undo_list[func->GetName()][instr] = copyInstruction(instr);
+
+		virp->RegisterAssembly(instr,disasm_str);
+/*
 	    if(!instr->Assemble(disasm_str))
 		return false;
-
+*/
 	    stack_alloc = true;
 
 	    for(unsigned int i=0;i<canaries.size();i++)
@@ -1079,8 +1082,13 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//undo_list[instr] = instr->GetDataBits();
 	//undo_list[instr] = copyInstruction(instr);
 	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+
+	virp->RegisterAssembly(instr,disasm_str);
+
+/*
 	if(!instr->Assemble(disasm_str))
 	    return false;
+*/
 
 	//stack_alloc = true;
     } 
@@ -1132,8 +1140,12 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//undo_list[instr] = copyInstruction(instr);
 	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 
+	virp->RegisterAssembly(instr,disasm_str);
+
+/*
 	if(!instr->Assemble(disasm_str.c_str()))
 	    return false;	    
+*/
 	    
     }
 //TODO: the regular expression order does matter, scaled must come first, change the regex so this doesn't matter  
@@ -1165,8 +1177,12 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//undo_list[instr] = copyInstruction(instr);
 	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 
+	virp->RegisterAssembly(instr,disasm_str);
+
+/*
 	if(!instr->Assemble(disasm_str.c_str()))
 	    return false;
+*/
     }
     //TODO: the regular expression order does matter, scaled must come first, change the regex so this doesn't matter
     //for lea esp, [ebp-<const>] it is assumed the <const> will not be in the stack frame, so it should be ignored.
@@ -1204,8 +1220,12 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//undo_list[instr] = copyInstruction(instr);
 	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 
+	virp->RegisterAssembly(instr,disasm_str);
+
+/*
 	if(!instr->Assemble(disasm_str.c_str()))
 	    return false;
+*/
 		
     }
     //if we get an instruction where ebp is the index, transform it using the
@@ -1246,9 +1266,13 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//undo_list[instr] = instr->GetDataBits();
 	//undo_list[instr] = copyInstruction(instr);
 	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+
+	virp->RegisterAssembly(instr,disasm_str);
+
+/*
 	if(!instr->Assemble(disasm_str.c_str()))
 	    return false;
-
+*/
     }
     else if(regexec(&(pn_regex.regex_stack_dealloc), disasm_str.c_str(), 5, pmatch, 0)==0)
     {
@@ -1281,8 +1305,12 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//undo_list[instr] = copyInstruction(instr);
 	undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 	cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+
+	virp->RegisterAssembly(instr,disasm_str);
+/*
 	if (!instr->Assemble(disasm_str)) 
 	    return false;
+*/
     }
     else
 	cerr<<"PNTransformDriver: No Pattern Match"<<endl;

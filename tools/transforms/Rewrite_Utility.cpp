@@ -129,7 +129,9 @@ void setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, string p_asse
     if (p_instr == NULL) return;
     
     ///TODO: what if bad assembly?
-    p_instr->Assemble(p_assembly);
+	virp->RegisterAssembly(p_instr,p_assembly);
+
+//    p_instr->Assemble(p_assembly);
     p_instr->SetComment(p_instr->getDisassembly());
     p_instr->SetFallthrough(p_fallThrough); 
     p_instr->SetTarget(p_target); 
