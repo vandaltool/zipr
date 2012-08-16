@@ -3,6 +3,7 @@
 #include <utils.hpp>
 #include <stdlib.h>
 #include <map>
+#include <fstream>
 using namespace libIRDB;
 using namespace std;
 
@@ -56,6 +57,95 @@ void FileIR_t::ReadFromDB()
 	UpdateEntryPoints(insnMap);
 }
 
+
+void FileIR_t::AssembleRegistry()
+{
+	if(assembly_registry.size() == 0)
+		return;
+
+	const string assemblyFile = "tmp.asm";
+	const string binaryOutputFile = "tmp.bin";
+
+	string command = "rm -f " + assemblyFile;
+	system(command.c_str());
+	
+	ofstream asmFile;
+	asmFile.open(assemblyFile.c_str());
+	if(!asmFile.is_open())
+		assert(false);
+
+	asmFile<<"BITS 32"<<endl; //TODO: probably should use a defined val
+
+	//in case the map is some how updated again, the instructions are placed
+	//in a vector so the number and order of instructions are guaranteed
+	vector<Instruction_t*> instructions;
+	for(registry_type::iterator it = assembly_registry.begin();
+		it != assembly_registry.end();
+		it++
+		)
+	{
+		instructions.push_back(it->first);
+		asmFile<<it->second<<endl;
+	}
+	asmFile.close();
+
+	//after assembly, clear registry
+	assembly_registry.clear();
+
+	command = "nasm " + assemblyFile + " -o " + binaryOutputFile;
+	system(command.c_str());
+
+	DISASM disasm;
+	memset(&disasm, 0, sizeof(DISASM));
+
+
+	ifstream binreader;
+	unsigned int filesize;
+	binreader.open(binaryOutputFile.c_str(),ifstream::in|ifstream::binary);
+
+	if(!binreader.is_open())
+		assert(false);
+
+	binreader.seekg(0,ios::end);
+	filesize = binreader.tellg();
+	binreader.seekg(0,ios::beg);
+
+	unsigned char *binary_stream = new unsigned char[filesize];
+
+	binreader.read((char*)binary_stream,filesize);
+	binreader.close();
+
+	unsigned int instr_index = 0;
+	//for(unsigned int index=0; index < filesize; instr_index++)
+	unsigned int index = 0;
+	while(index < filesize)
+	{
+		disasm.EIP = (int) &binary_stream[index];
+		int instr_len = Disasm(&disasm);
+		string rawBits;
+		rawBits.resize(instr_len);
+		for(int i=0;i<instr_len;i++,index++)
+		{
+			rawBits[i] = binary_stream[index];
+		}
+
+		//if this worked, all the instructions should have been covered
+		assert(instr_index < instructions.size());
+		instructions[instr_index]->SetDataBits(rawBits);
+
+		instr_index++;
+	}
+
+	assert(instr_index == instructions.size());
+
+	delete [] binary_stream;
+
+}
+
+void FileIR_t::RegisterAssembly(Instruction_t *instr, string assembly)
+{
+	assembly_registry[instr] = assembly;
+}
 
 std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 	(
@@ -254,10 +344,11 @@ void FileIR_t::ReadRelocsFromDB
 }
 
 
-
-
 void FileIR_t::WriteToDB()
 {
+	//Resolve (assemble) any instructions in the registry.
+	AssembleRegistry();
+
 	/* assign each item a unique ID */
 	SetBaseIDS();
 

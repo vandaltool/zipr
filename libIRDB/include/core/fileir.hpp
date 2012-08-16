@@ -1,3 +1,5 @@
+
+
 // A variant of a problem, this
 // may be an original variant
 // (i.e., and unmodified Variant) or a modified variant.
@@ -27,11 +29,21 @@ class FileIR_t : public BaseObj_t
 
 	File_t* GetFile() { return fileptr; }
 
+	// Used for modifying a large number of instructions. AssembleRegistry
+	// assembles the assembly isntructions for each registered instruction
+	// and clears the registry. RegisterAssembly registers the instruction
+	// to be assembled later. 
+	void AssembleRegistry();
+	void RegisterAssembly(Instruction_t *instr, std::string assembly);
+
     private:
+
+	typedef std::map<Instruction_t*,std::string> registry_type;
 
 	// a pointer to the original variants IR, NULL means not yet loaded.
 	FileIR_t* orig_variant_ir_p;
 
+	registry_type assembly_registry;
 
         void ReadFromDB();  //accesses DB
 

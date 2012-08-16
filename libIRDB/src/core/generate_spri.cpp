@@ -633,6 +633,9 @@ static void generate_unmoved_insn_targets_set(FileIR_t* fileIRp)
 
 void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout)
 {
+	//Resolve (assemble) any instructions in the registry.
+	AssembleRegistry();
+
 	// give 'this' a name
 	FileIR_t *fileIRp=this;
 
