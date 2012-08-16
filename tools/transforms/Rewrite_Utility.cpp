@@ -111,8 +111,13 @@ Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_
 	virp->GetInstructions().insert(instr);
 	virp->GetAddresses().insert(a);
 
-	inserted_instr[func->GetName()].insert(instr);
-	inserted_addr[func->GetName()].insert(a);
+	string name = "1_null_func_dummy_1";
+
+	if(func != NULL)
+		name = func->GetName();
+
+	inserted_instr[name].insert(instr);
+	inserted_addr[name].insert(a);
 	
 	return instr;
 }
