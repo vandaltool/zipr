@@ -15,6 +15,7 @@ void setExitCode(FileIR_t* virp, Instruction_t* exit_code);
 Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target)
 {
     Instruction_t* next = copyInstruction(virp,first);
+	virp->ChangeRegistryKey(first,next);
     setInstructionAssembly(virp,first,assembly,next,target);
 
     return next;
