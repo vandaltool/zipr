@@ -1,7 +1,7 @@
 
 #include <all.hpp>
 #include <utils.hpp>
-#include <stdlib.h>
+#include <cstdlib>
 #include <map>
 #include <fstream>
 using namespace libIRDB;
@@ -63,8 +63,8 @@ void FileIR_t::AssembleRegistry()
 	if(assembly_registry.size() == 0)
 		return;
 
-	const string assemblyFile = "tmp.asm";
-	const string binaryOutputFile = "tmp.bin";
+	string assemblyFile = "tmp.asm";
+	string binaryOutputFile = "tmp.bin";
 
 	string command = "rm -f " + assemblyFile;
 	system(command.c_str());
@@ -92,7 +92,7 @@ void FileIR_t::AssembleRegistry()
 	//after assembly, clear registry
 	assembly_registry.clear();
 
-	command = "nasm " + assemblyFile + " -o " + binaryOutputFile;
+	command = string("nasm ") + assemblyFile + string(" -o ") + binaryOutputFile;
 	system(command.c_str());
 
 	DISASM disasm;
@@ -103,8 +103,7 @@ void FileIR_t::AssembleRegistry()
 	unsigned int filesize;
 	binreader.open(binaryOutputFile.c_str(),ifstream::in|ifstream::binary);
 
-	if(!binreader.is_open())
-		assert(false);
+	assert(binreader.is_open());
 
 	binreader.seekg(0,ios::end);
 	filesize = binreader.tellg();
