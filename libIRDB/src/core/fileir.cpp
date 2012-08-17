@@ -58,6 +58,16 @@ void FileIR_t::ReadFromDB()
 }
 
 
+void  FileIR_t::ChangeRegistryKey(Instruction_t *orig, Instruction_t *updated)
+{
+	if(assembly_registry.find(orig) != assembly_registry.end())
+	{
+		assembly_registry[updated] = assembly_registry[orig];
+
+		assembly_registry.erase(orig);
+	}
+}
+
 void FileIR_t::AssembleRegistry()
 {
 	if(assembly_registry.size() == 0)
@@ -94,7 +104,7 @@ void FileIR_t::AssembleRegistry()
 
 	command = string("nasm ") + assemblyFile + string(" -o ") + binaryOutputFile;
 	system(command.c_str());
-
+	
 	DISASM disasm;
 	memset(&disasm, 0, sizeof(DISASM));
 

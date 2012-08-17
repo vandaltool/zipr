@@ -35,8 +35,15 @@ class FileIR_t : public BaseObj_t
 	// to be assembled later. 
 	void AssembleRegistry();
 	void RegisterAssembly(Instruction_t *instr, std::string assembly);
+	//Needed for inserting assembly before an instruction. 
+	//if orig is not registered, the function returns, otherwise
+	//the instruction/assembly mapping of orig->assembly is altered to
+	//updated->assembly
+	//removes the mapping for orig->assembly from the map. 
+	void ChangeRegistryKey(Instruction_t* orig, Instruction_t* updated);
 
     private:
+	#define ASM_REG_MAX_SIZE 500000
 
 	typedef std::map<Instruction_t*,std::string> registry_type;
 
