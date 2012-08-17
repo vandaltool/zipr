@@ -76,7 +76,7 @@ void FileIR_t::AssembleRegistry()
 	string assemblyFile = "tmp.asm";
 	string binaryOutputFile = "tmp.bin";
 
-	string command = "rm -f " + assemblyFile;
+	string command = "rm -f " + assemblyFile + " " + binaryOutputFile;
 	system(command.c_str());
 	
 	ofstream asmFile;
