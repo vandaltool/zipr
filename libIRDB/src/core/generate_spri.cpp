@@ -284,8 +284,17 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			/* so we'll just emit the instruction and let it go back to the application text. */	
 			fout<<complete_instr<<endl;
 // needs relocation info.
-			assert(complete_instr.compare("call 0x00000000")==0 || 
-			       complete_instr.compare("jmp 0x00000000")==0);			
+			if(complete_instr.compare("call 0x00000000")==0 ||
+			   complete_instr.compare("jmp 0x00000000")==0
+ 			  )
+			{
+				// just ignore these bogus instructions.
+			}
+			else
+			{
+				// assert this is the "main" file and no relocation is necessary.
+				assert(strstr(fileIRp->GetFile()->GetURL().c_str(),"a.ncexe")!=0);
+			}
 		}
 	}
 	else
