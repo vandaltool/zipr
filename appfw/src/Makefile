@@ -21,4 +21,4 @@ libappfw: extract_sql sqlite3.o pg_hook.o appfw.o
 	gcc -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so sqlite3.o pg_hook.o appfw.o 
 
 clean:
-	\rm -r *.o *.tmp *.so sqlite3.c sqlite3.h sqlite-autoconf-3071300
+	rm -fr *.o *.tmp *.so sqlite3.c sqlite3.h sqlite-autoconf-3071300
