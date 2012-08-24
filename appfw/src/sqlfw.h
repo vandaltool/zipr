@@ -5,5 +5,6 @@
 
 extern void sqlfw_init();
 extern int sqlfw_verify(const char *zSql, char **pzErrMsg);
+extern void sqlfw_establish_taint(const char *query, char *taint);
 
 #endif

@@ -39,7 +39,7 @@ static void sqlfw_taint_range(char *taint, char taintValue, int from, int len)
     taint[i] = taintValue;
 }
 
-static void sqlfw_establish_taint(const char *query, char *taint)
+void sqlfw_establish_taint(const char *query, char *taint)
 {
   int i, j, pos;
   int tainted_marking = 1;
@@ -108,6 +108,7 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 //  fprintf(stderr, "sqlite3_fw(): enter: query string length: %d\n", strlen(zSql));
 
   // show query
+  /*
   fprintf(stderr, "[appfw]: %s\n", zSql);
 
   fprintf(stderr, "[appfw]: ");
@@ -119,6 +120,7 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 	else
       fprintf(stderr, "-");
   fprintf(stderr,"\n");
+  */
 
   pParse->rc = SQLITE_OK;
   pParse->zTail = zSql;
