@@ -11,24 +11,29 @@
 #include "appfw.h"
 #include "sqlfw.h"
 
-static const char *dbname = "appfw.db";  
-static sqlite3 *peasoup_db = NULL;
-//extern int fw_numPatterns = 0;
-//extern char **fw_sigs;
+static const char *dbPathEnv = "APPFW_DB";
+static sqlite3 *peasoupDB = NULL;
+static int sqlfw_initialized = 0;
 
 // read in signature file
 // environment variable specifies signature file location
 void sqlfw_init()
 {
-  static int initialized = 0;
-
-  if (initialized) return;
+  if (sqlfw_isInitialized()) return;
 
   appfw_init();
 
-  sqlite3_open(dbname, &peasoup_db);
+  if (appfw_isInitialized() && getenv(dbPathEnv))
+  {
+    if (sqlite3_open(getenv(dbPathEnv), &peasoupDB) == SQLITE_OK)
+      sqlfw_initialized = 1;
+  }
+}
 
-  initialized = 1;
+// returns whether initialized
+int sqlfw_isInitialized()
+{
+  return sqlfw_initialized;
 }
 
 // mark parts of string as tainted
@@ -47,7 +52,7 @@ void sqlfw_establish_taint(const char *query, char *taint)
   int patternFound;
   char **fw_sigs = appfw_getSignatures();
 
-  if (!fw_sigs)
+  if (!fw_sigs || !sqlfw_isInitialized())
     return;
 
   // set taint markings to 'tainted' by default
@@ -98,12 +103,15 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
   int j, k;
   int beg, end;
 
+  if (!peasoupDB)
+    return 0;
+
   sqlfw_establish_taint(zSql, tainted);
 
 //  pParse = sqlite3StackAllocZero(db, sizeof(*pParse));
   pParse = sqlite3MallocZero(sizeof(*pParse));
 
-  pParse->db = peasoup_db;
+  pParse->db = peasoupDB;
 
 //  fprintf(stderr, "sqlite3_fw(): enter: query string length: %d\n", strlen(zSql));
 

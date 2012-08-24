@@ -9,15 +9,15 @@
 static const char *sigFileEnv = "APPFW_SIGNATURE_FILE";
 static int fw_numPatterns = 0;
 static char **fw_sigs = NULL;
+static int appfw_initialized = 0;
 
 // read in signature file
 // environment variable specifies signature file location
 void appfw_init()
 {
-  static int initialized = 0;
   int numSigs = 0;
 
-  if (initialized) return;
+  if (appfw_isInitialized()) return;
 
   char *signatureFile = getenv(sigFileEnv);
   if (!signatureFile)
@@ -42,13 +42,18 @@ void appfw_init()
 
     fw_numPatterns = numSigs;
     fclose(sigF);
+    appfw_initialized = 1;
   }
   else
   {
     appfw_error("could not open signature file");
+    appfw_initialized = 0;
   }
+}
 
-  initialized = 1;
+int appfw_isInitialized()
+{
+  return appfw_initialized;
 }
 
 // returns # of signature patterns
