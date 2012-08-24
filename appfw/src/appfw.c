@@ -4,12 +4,11 @@
 
 #include "appfw.h"
 
-//static sqlite3 *peasoup_db = NULL;
 #define MAX_SIGNATURE_SIZE 1024
 
-static int fw_numPatterns = 0;
-static char **fw_sigs;
 static const char *sigFileEnv = "APPFW_SIGNATURE_FILE";
+static int fw_numPatterns = 0;
+static char **fw_sigs = NULL;
 
 // read in signature file
 // environment variable specifies signature file location
@@ -26,7 +25,6 @@ void appfw_init()
     appfw_error("no signature file found");
   }
 
-//  fw_sigs = sqlite3MallocZero(sizeof(char*) * 20000); // allow for 20000 signature patterns
   fw_sigs = malloc(sizeof(char*) * 20000); // allow for 20000 signature patterns
 
   FILE *sigF = fopen(signatureFile, "r");
@@ -53,16 +51,19 @@ void appfw_init()
   initialized = 1;
 }
 
+// returns # of signature patterns
 int appfw_getNumSignatures()
 {
   return fw_numPatterns;
 }
 
+// returns signature patterns
 char **appfw_getSignatures()
 {
   return fw_sigs;
 }
 
+// generic error message
 void appfw_error(const char *msg)
 {
   fprintf(stderr,"[appfw]: %s\n", msg);

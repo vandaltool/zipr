@@ -47,6 +47,9 @@ static void sqlfw_establish_taint(const char *query, char *taint)
   int patternFound;
   char **fw_sigs = appfw_getSignatures();
 
+  if (!fw_sigs)
+    return;
+
   // set taint markings to 'tainted' by default
   sqlfw_taint_range(taint, tainted_marking, 0, strlen(query));
 
