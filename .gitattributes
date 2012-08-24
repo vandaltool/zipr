@@ -87,6 +87,15 @@ ELFIO-1.0.3/mkinstalldirs -text
 /Makefile -text
 /README -text
 /README.p1 -text
+appfw/src/Makefile -text
+appfw/src/appfw.c -text
+appfw/src/appfw.h -text
+appfw/src/pg_hook.c -text
+appfw/src/sqlfw.c -text
+appfw/src/sqlfw.h -text
+appfw/src/test/Makefile -text
+appfw/src/test/testpg1.c -text
+appfw/src/test/testpg2.c -text
 beaengine/CMakeFiles/CMakeCCompiler.cmake -text
 beaengine/CMakeFiles/CMakeCXXCompiler.cmake -text
 beaengine/CMakeFiles/CMakeDetermineCompilerABI_C.bin -text
