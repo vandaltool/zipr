@@ -135,9 +135,9 @@ void setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, string p_asse
     if (p_instr == NULL) return;
     
     ///TODO: what if bad assembly?
-	virp->RegisterAssembly(p_instr,p_assembly);
+//	virp->RegisterAssembly(p_instr,p_assembly);
 
-//    p_instr->Assemble(p_assembly);
+    p_instr->Assemble(p_assembly);
     p_instr->SetComment(p_instr->getDisassembly());
     p_instr->SetFallthrough(p_fallThrough); 
     p_instr->SetTarget(p_target); 
@@ -199,11 +199,12 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
     Instruction_t* mov_ebx = insertAssemblyAfter(virp,exit_code,"mov ebx, 666");
     insertAssemblyAfter(virp,mov_ebx,"int 0x80");
 */
-    setInstructionAssembly(virp,handler_code,"pushf",NULL,NULL);
+    setInstructionAssembly(virp,handler_code,"pusha",NULL,NULL);
+    Instruction_t* pushf = insertAssemblyAfter(virp,handler_code,"pushf",NULL);
     stringstream ss;
     ss<<"push dword 0x";
     ss<<hex<<policy;
-    Instruction_t *policy_push = insertAssemblyAfter(virp,handler_code,ss.str(),NULL);
+    Instruction_t *policy_push = insertAssemblyAfter(virp,pushf,ss.str(),NULL);
     ss.str("");
     ss<<"push dword 0x";
     ss<<hex<<fallthrough->GetAddress()->GetVirtualOffset();
@@ -213,7 +214,12 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
     Instruction_t *callback = insertAssemblyAfter(virp,ret_push,"nop",NULL);
 
     callback->SetCallback("buffer_overflow_detector");
-    callback->SetFallthrough(fallthrough);
+    
+
+    Instruction_t *popf = insertAssemblyAfter(virp,callback,"popf",NULL);
+    Instruction_t *popa = insertAssemblyAfter(virp,popf,"popa",NULL);
+    popa->SetFallthrough(fallthrough);
+    
     return handler_code;
 }
 
