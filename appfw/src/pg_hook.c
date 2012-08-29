@@ -10,6 +10,7 @@
 
 PGresult* PQexec(PGconn* p_conn, const char *p_query)
 {
+  char taint[MAX_QUERY_LENGTH];
   static PGresult* (*my_pgExec)(PGconn*, const char *) = NULL;
   if (!my_pgExec)
     my_pgExec = dlsym(RTLD_NEXT, "PQexec");
@@ -17,30 +18,33 @@ PGresult* PQexec(PGconn* p_conn, const char *p_query)
   sqlfw_init(); // will do this automagically later 
 
   char *errMsg = NULL;
-  if (sqlfw_verify(p_query, &errMsg))
+  if (sqlfw_verify_taint(p_query, taint, &errMsg))
   {
     PGresult *ret = my_pgExec(p_conn, p_query);
 	return ret;
   }
   else
   {
-    int i;
-    char taint[strlen(p_query)+32];
-    sqlfw_establish_taint(p_query, taint);
 
     // show query and taint markings
-    fprintf(stderr, "[appfw]: PQexec(): SQL Command Injection detected in query: %s\n", p_query);
+//    fprintf(stderr, "[appfw]: PQexec(): SQL Command Injection detected in query: %s\n", p_query);
 
 #ifdef SHOW_TAINT_MARKINGS
-    fprintf(stderr, "[appfw]:                                    taint markings: ");
-	for (i = 0; i < strlen(p_query); ++i)
-	{
-      if (taint[i])
-	    fprintf(stderr,"^");
-	  else
-	    fprintf(stderr,"-");
-	}
-	fprintf(stderr,"\n");
+    sqlfw_display_taint("SQL Injection detected", p_query, taint);
+	/*
+    fprintf(stderr, "[appfw]:                                         taint markings: ");
+    for (i = 0; i < strlen(p_query); ++i)
+    {
+      if (taint[i] == APPFW_BLESSED)
+        fprintf(stderr," ");
+      else if (taint[i] == APPFW_SECURITY_VIOLATION)
+        fprintf(stderr,"X");
+      else
+        fprintf(stderr,"-");
+
+    }
+    fprintf(stderr,"\n");
+	*/
 #endif
 
 	// error policy: issue bad query on purpose so that we return what PG would have returned

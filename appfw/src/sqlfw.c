@@ -47,8 +47,8 @@ static void sqlfw_taint_range(char *taint, char taintValue, int from, int len)
 void sqlfw_establish_taint(const char *query, char *taint)
 {
   int i, j, pos;
-  int tainted_marking = 1;
-  int not_tainted_marking = 0;
+  int tainted_marking = APPFW_TAINTED;
+  int not_tainted_marking = APPFW_BLESSED;
   int patternFound;
   char **fw_sigs = appfw_getSignatures();
 
@@ -58,8 +58,7 @@ void sqlfw_establish_taint(const char *query, char *taint)
   // set taint markings to 'tainted' by default
   sqlfw_taint_range(taint, tainted_marking, 0, strlen(query));
 
-  // use simple linear scan for now
-  // list of signature patterns are sorted in reverse length order already
+  // use simple linear scan for now // list of signature patterns are sorted in reverse length order already
   // unset taint when match is found
   pos = 0;
   while (pos < strlen(query))
@@ -92,6 +91,16 @@ void sqlfw_establish_taint(const char *query, char *taint)
 ** Look for tainted SQL tokens/keywords
 */
 int sqlfw_verify(const char *zSql, char **pzErrMsg){
+  char tainted[MAX_QUERY_LENGTH];
+  return sqlfw_verify_taint(zSql, tainted, pzErrMsg);
+}
+
+/*
+** Run the original sqlite parser on the given SQL string.  
+** Look for tainted SQL tokens/keywords
+** Sets the taint array
+*/
+int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
   Parse *pParse;
   int nErr = 0;                   /* Number of errors encountered */
   int i;                          /* Loop counter */
@@ -99,14 +108,13 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
   int tokenType;                  /* type of the next token */
   int lastTokenParsed = -1;       /* type of the previous token */
   int mxSqlLen = MAX_QUERY_LENGTH;            /* Max length of an SQL string */
-  char tainted[MAX_QUERY_LENGTH];
   int j, k;
   int beg, end;
 
   if (!peasoupDB)
     return 0;
 
-  sqlfw_establish_taint(zSql, tainted);
+  sqlfw_establish_taint(zSql, p_taint);
 
 //  pParse = sqlite3StackAllocZero(db, sizeof(*pParse));
   pParse = sqlite3MallocZero(sizeof(*pParse));
@@ -123,7 +131,7 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 
   // show taint
   for (i = 0; i < strlen(zSql); ++i)
-    if (tainted[i])
+    if (p_taint[i])
       fprintf(stderr, "X");
 	else
       fprintf(stderr, "-");
@@ -162,9 +170,10 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
       }
       case TK_SEMI: {
         pParse->zTail = &zSql[i];
-		if (tainted[i])
+		if (p_taint[i])
 		{
 //          fprintf(stderr,"TAINTED SEMI-COLON DETECTED -- VERY BAD\n");
+          p_taint[i] = APPFW_SECURITY_VIOLATION;
 		  goto abort_parse;
 		}
 
@@ -197,12 +206,12 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 // ----------------------------------XXXXXX--XX---------XX
 //
 // This would be detected b/c:
-//   OR is tainted
-//   -- is tainted
-//   = is tainted
+//   OR is p_taint
+//   -- is p_taint
+//   = is p_taint
                    
         switch (tokenType) {
-		// so here we would need to add all the token types that should not be tainted
+		// so here we would need to add all the token types that should not be p_taint
 		// this would be any SQL keywords
 		  case TK_OR:
 		  case TK_AND:
@@ -234,15 +243,20 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 		  case TK_GROUP:
 		  case TK_JOIN:
 		  case TK_USING:
+		  {
+		    int taint_detected = 0;
 		    for (j = beg; j <= end; ++j)
 			{
-              if (tainted[j])
+              if (p_taint[j])
 			  {
-//		          fprintf(stderr, "TAINTED -- VERY VERY BAD\n");
-				  goto abort_parse;
-				  break;
+			      taint_detected = 1;
+                  p_taint[j] = APPFW_SECURITY_VIOLATION;
 			  }
 			}
+
+			if (taint_detected)
+			  goto abort_parse;
+	      }
 		  break;
 		}
         break;
@@ -251,10 +265,12 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 
 	if (end + 2 < strlen(zSql))
 	{
+	  // detect p_taint comments (assume it's --), this may not be true for various SQL variants
 	  if (zSql[end+1] == '-' && zSql[end+2] == '-' &&
-	     (tainted[end+1] || tainted[end+2]))
+	     (p_taint[end+1] || p_taint[end+2]))
 	  {
-//        fprintf(stderr, "TAINTED COMMENT -- VERY BAD\n");
+        p_taint[end+1] = APPFW_SECURITY_VIOLATION;
+        p_taint[end+2] = APPFW_SECURITY_VIOLATION;
 		goto abort_parse;
 	  }
 	}
@@ -267,3 +283,19 @@ abort_parse:
   return 0;
 }
 
+void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
+{
+	int i;
+	fprintf(stderr,"%s: %s\n", p_msg, p_query);
+	fprintf(stderr,"%s: ", p_msg);
+	for (i = 0; i < strlen(p_query); ++i)
+	{
+		if (p_taint[i] == APPFW_BLESSED)
+			fprintf(stderr," ");
+		else if (p_taint[i] == APPFW_SECURITY_VIOLATION)
+			fprintf(stderr,"X");
+		else
+			fprintf(stderr,"-");
+	}
+	fprintf(stderr,"\n");
+}
