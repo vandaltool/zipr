@@ -16,9 +16,12 @@ appfw.o: appfw.c
 
 pg_hook.o: pg_hook.c
 	gcc -DSHOW_TAINT_MARKINGS -I/usr/include/postgresql -c pg_hook.c
+
+mysql_hook.o: mysql_hook.c
+	gcc -DSHOW_TAINT_MARKINGS -I/usr/include/mysql -c mysql_hook.c
 	
-libappfw: extract_sql sqlite3.o pg_hook.o appfw.o
-	gcc -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so sqlite3.o pg_hook.o appfw.o 
+libappfw: extract_sql sqlite3.o pg_hook.o mysql_hook.o appfw.o
+	gcc -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so sqlite3.o mysql_hook.o pg_hook.o appfw.o 
 
 clean:
 	rm -fr *.o *.tmp *.so sqlite3.c sqlite3.h sqlite-autoconf-3071300

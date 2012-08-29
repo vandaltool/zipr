@@ -90,6 +90,7 @@ ELFIO-1.0.3/mkinstalldirs -text
 appfw/src/Makefile -text
 appfw/src/appfw.c -text
 appfw/src/appfw.h -text
+appfw/src/mysql_hook.c -text
 appfw/src/pg_hook.c -text
 appfw/src/sqlfw.c -text
 appfw/src/sqlfw.h -text
