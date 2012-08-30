@@ -221,7 +221,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
         /* Emit any callback functions */
 	if (!newinsn->GetCallback().empty())
 	{
-		fout << "\t"+label+"\t () " << newinsn->GetCallback() << endl;
+		fout << "\t"+label+"\t () " << newinsn->GetCallback() << " # acts as a call <callback> insn" << endl;
 		fout << "\t"+ getPostCallbackLabel(newinsn)+" ** ";
 	}
 	else
@@ -230,9 +230,16 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 	}
 
 	/* emit the actual instruction from the database */
+	if( 
+	   strstr(disasm.CompleteInstr,"jmp far")!=0 || 
+	   strstr(disasm.CompleteInstr,"call far")!=0
+	  )
+	{
+		fout<<"\t hlt " << endl;
+	}
 
-	/* if it's a brnach instruction, we have extra work to do */
-        if(
+	/* if it's a branch instruction, we have extra work to do */
+        else if(
                 (disasm.Instruction.BranchType!=0) &&                  // it is a branch
                 (disasm.Instruction.BranchType!=RetType) &&            // and not a return
                 (disasm.Argument1.ArgType & CONSTANT_TYPE)!=0          // and has a constant argument type 1
@@ -242,7 +249,6 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		/* if we have a target instruction in the database */
 		if(newinsn->GetTarget() || needs_short_branch_rewrite(disasm))
 		{
-// assert(0); // may need relocation info if target() is in the DB, but not being rewritten
 			/* change the target to be symbolic */
 	
 			/* first get the new target */
@@ -292,8 +298,18 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			}
 			else
 			{
-				// assert this is the "main" file and no relocation is necessary.
-				assert(strstr(fileIRp->GetFile()->GetURL().c_str(),"a.ncexe")!=0);
+				if(
+			   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
+			   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
+				  )
+				{
+					emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
+				}
+				else
+				{
+					// assert this is the "main" file and no relocation is necessary.
+					assert(strstr(fileIRp->GetFile()->GetURL().c_str(),"a.ncexe")!=0);
+				}
 			}
 		}
 	}
@@ -446,6 +462,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 	if (newinsn->GetIndirectBranchTargetAddress())
 		fout << "# Orig addr: "<<addressify(newinsn)<<" indirect branch target: "<<newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() << endl;
 
+	/* if there's a corresponding "old" instruction (i.e., in Variant 0, aka from the binary) */
 	if(addressify(newinsn).c_str()[0]=='0')
 	{
 		if(
@@ -462,12 +479,19 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 			fout << "# eliding, no indirect targets"<<endl;
 			fout << qualified_addressify(fileIRp, newinsn) <<" -> 0x0 " <<endl; 
 		}
+
+		// not yet handling callbacks on original instructions.
+		// this may be tricky because it seems we are overloading the indirect branch 
+		// target address to mean two things for instructions with callbacks.  Good luck if 
+		// you're reading this. 
+		assert(newinsn->GetCallback().empty());
 		
 	}
 	else if (newinsn->GetIndirectBranchTargetAddress()) 
 	{
 		fout << qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset()) <<" -> ."<<endl;
-		fout << ". -> "<< getPostCallbackLabel(newinsn) <<endl;
+		if(!newinsn->GetCallback().empty())
+			fout << ". -> "<< getPostCallbackLabel(newinsn) <<endl;
 	}
 
 	string original_target=emit_spri_instruction(fileIRp, newinsn, fout);

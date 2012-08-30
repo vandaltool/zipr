@@ -213,6 +213,12 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	callinsn->SetFunction(insn->GetFunction());
 	callinsn->SetComment(insn->GetComment()+" Jump part");
 
+	// We need the control transfer instruction to be from the orig program because 
+	// if for some reason it's fallthrough/target isn't in the DB, we need to correctly 
+	// emit fallthrough/target rules
+	callinsn->SetOriginalAddressID(insn->GetOriginalAddressID());
+	insn->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
+
 	/* set the new instruction's data bits to be a jmp instead of a call */
 	string newbits=insn->GetDataBits();
 	switch((unsigned char)newbits[0])
