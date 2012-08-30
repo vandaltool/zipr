@@ -1034,6 +1034,7 @@ stock_examples/du.stock -text
 stock_examples/expr.stock -text
 stock_examples/find.stock -text
 stock_examples/firefox-bin.stock -text
+stock_examples/gcc-4.4.stock -text
 stock_examples/gnash.stock -text
 stock_examples/grep.stock -text
 stock_examples/hostname.stock -text

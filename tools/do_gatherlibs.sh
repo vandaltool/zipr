@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh  -x
 
 #
 # note:  no trailing slashes, as the comparison will fail.

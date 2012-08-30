@@ -197,20 +197,12 @@ stop_if_error()
 		meds_static)
 			return 1;
 		;;
-		# registering the program is necessary 
-		pdb_register)
+		# DB operations are necessary 
+		pdb_register|clone|fix_calls|fill_in_indtargs|spasm,fast_spri,generate_spri)
 			return 2;
 		;;
-		# cloning is necessary 
-		clone)
-			return 3;
-		;;
-		# cloning is necessary 
-		spasm)
-			return 4;
-		;;
 		gather_libraries)
-			return 4;
+			return 3;
 		;;
 		# other steps are optional
 		*)
@@ -560,11 +552,6 @@ cloneid=`cat clone.id`
 if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
 	fail_gracefully "Failed to create variant.  Is postgres running properly?"
 fi
-
-#fuck
-#echo perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
-#exit 0
-#end
 
 # do the basic tranforms we're performing for peasoup 
 perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
