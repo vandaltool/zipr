@@ -17,7 +17,7 @@
 #
 
 CC=g++
-CFLAGS= -g# -DUBUNTU -Wall -O3
+CFLAGS= -Wall -g# -DUBUNTU -Wall -O3
 
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include
 LIBS=-L../../xform -lxform -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d

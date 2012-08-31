@@ -22,6 +22,22 @@
 
 using namespace std;
 
+static string regularAddressRegex = "0x[[:xdigit:]]+";
+static string offsetAddressRegex = "[a-zA-Z0-9\\._-]+[[:blank:]]*[+][[:blank:]]*0x[[:xdigit:]]+|[a-zA-Z0-9\\._]+[[:blank:]]*[+][[:blank:]]*[[:xdigit:]]+";
+
+static string allAddressRegex = regularAddressRegex + "|" + offsetAddressRegex;
+ 
+static string commentOnlyRegex = "^[[:blank:]]*(;|#).*$";
+static string entryRedirectRegex = "^[[:blank:]]*("+allAddressRegex + ")[[:blank:]]+(->)[[:blank:]]+([.]|[a-zA-Z0-9_]*|" + allAddressRegex + ")[[:blank:]]*((;|#).*)?$";
+static string otherRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+(->)[[:blank:]]+(("+ allAddressRegex + ")|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]*((;|#).*)?$";
+static string insertRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([-][|])[[:blank:]]+("+allAddressRegex + ")[[:blank:]]*((;|#).*)?$";
+static string instructionRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([*][*])[[:blank:]]+.*$";
+static string callbackRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([(][)])[[:blank:]]+.*$";
+static string relocRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([r][l])[[:blank:]]+.*$";
+
+static regex_t coPattern, erPattern, orPattern, irPattern, insPattern, cbPattern, rlPattern;
+
+
 //TODO: if I am getting rid of the requirement for 0x address prefixes, make sure comments reflec this
 
 typedef struct spasmline {
@@ -47,13 +63,33 @@ static unsigned int vpc = ORG_PC;
 static map<string,string> symMap; 
 static map<string,string> callbackMap; 
 
-static vector<spasmline_t> getSpasmLines(const string &inputFile);
-static vector<string> getAssembly(const vector<spasmline_t> &lines);
-static void assemble(const vector<string> &assembly, const string &assemblyFile);
+static ifstream sl_stream;
+static unsigned int sl_line_cnt=0;
+ 
+static void initSpasmLines(const string &inputFile);
+static bool getNextSpasmLine(spasmline_t &spasm_line);
+static void resetSpasmLines();
+
+static void assemble(const string &assemblyFile);
+
+static unsigned int bin_index =0;
+static unsigned int bin_fsize=0;
+static unsigned char *memblock = NULL;
+static unsigned int assem_cnt =0;
+
+static void initBin(const string &binFile);
+static bool getNextBin(bin_instruction_t &bin);
+
+static void printSPRI(const string &symbolFilename, const string &outFile);
+
+
+//static vector<spasmline_t> getSpasmLines(const string &inputFile);
+//static vector<string> getAssembly(const vector<spasmline_t> &lines);
+//static void assemble(const vector<string> &assembly, const string &assemblyFile);
 static void resolveSymbols(const string &mapFile);
-static vector<bin_instruction_t> parseBin(const string &binFile);
-static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines, const string &symbolFilename);
-static void printVector(const string &outputFile, const vector<string> &lines);
+//static vector<bin_instruction_t> parseBin(const string &binFile);
+//static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines, const string &symbolFilename);
+//static void printVector(const string &outputFile, const vector<string> &lines);
 static int getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception);
 
 //
@@ -103,55 +139,52 @@ void a2bspri(const vector<string> &input, const string &symbolFilename) throw(ex
     for(unsigned int i=0;i<input.size();i++)
     {
 	symMap.clear();
-	vector<spasmline_t> spasmlines = getSpasmLines(input[i]);
+	
+	initSpasmLines(input[i]);
 
-	vector<string> assembly = getAssembly(spasmlines);    
+	assemble(string(input[i]+".asm"));
 
-	assemble(assembly,input[i]+".asm");
+	initBin(string(input[i]+".asm.bin"));
     
 	resolveSymbols(input[i]+".asm.map");
 
-	vector<bin_instruction_t> binInstr = parseBin(input[i]+".asm.bin");
-    
-	vector<string> spriLines = getSPRI(binInstr,spasmlines, symbolFilename);
-
-	//if the input file ends with .aspri, strip suffix and replace with .bspri
 	string output = input[i];
 	size_t pos = output.find(".aspri");
 	if(pos != string::npos)
-	{
 	    output = output.substr(0,pos);
-	}
-	//else just append .bspri
-
+	
 	output += ".bspri";
+	
 
-	printVector(output,spriLines);
+	resetSpasmLines();
+	cout<<"Printing spri to file "<<output<<"...";
+
+	printSPRI(symbolFilename,output);
+
+	cout<<"Done!"<<endl;
+
     }
+
+
+//TODO: cleanup, I don't currently clean up anything on exit or exception
+    //clean memblock, close streams
+/*
+regfree(&erPattern);
+regfree(&irPattern);
+regfree(&orPattern);
+regfree(&coPattern);
+regfree(&insPattern);
+regfree(&rlPattern);
+*/
+
 }
 
 
-static vector<spasmline_t> getSpasmLines(const string &inputFile)
+static void initSpasmLines(const string &inputFile)
 {
-    vector<spasmline_t> lines;
 
-    int lineCount = 0;
-
-    string regularAddressRegex = "0x[[:xdigit:]]+";
-    string offsetAddressRegex = "[a-zA-Z0-9\\._-]+[[:blank:]]*[+][[:blank:]]*0x[[:xdigit:]]+|[a-zA-Z0-9\\._]+[[:blank:]]*[+][[:blank:]]*[[:xdigit:]]+";
-
-    string allAddressRegex = regularAddressRegex + "|" + offsetAddressRegex;
+    sl_line_cnt = 0;
  
-    string commentOnlyRegex = "^[[:blank:]]*(;|#).*$";
-    string entryRedirectRegex = "^[[:blank:]]*("+allAddressRegex + ")[[:blank:]]+(->)[[:blank:]]+([.]|[a-zA-Z0-9_]*|" + allAddressRegex + ")[[:blank:]]*((;|#).*)?$";
-    string otherRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+(->)[[:blank:]]+(("+ allAddressRegex + ")|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]*((;|#).*)?$";
-    string insertRedirectRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([-][|])[[:blank:]]+("+allAddressRegex + ")[[:blank:]]*((;|#).*)?$";
-    string instructionRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([*][*])[[:blank:]]+.*$";
-    string callbackRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([(][)])[[:blank:]]+.*$";
-    string relocRegex = "^[[:blank:]]*([.]|[a-zA-Z][a-zA-Z0-9_]*)[[:blank:]]+([r][l])[[:blank:]]+.*$";
-
-    regex_t coPattern, erPattern, orPattern, irPattern, insPattern, cbPattern, rlPattern;
-
 #define COMPILE_REGEX(pattern,the_string)				\
     if (regcomp(&pattern, the_string.c_str(), REG_EXTENDED) != 0)	\
     {									\
@@ -167,123 +200,149 @@ static vector<spasmline_t> getSpasmLines(const string &inputFile)
     COMPILE_REGEX(coPattern,commentOnlyRegex);
     COMPILE_REGEX(cbPattern,callbackRegex);
 
-    ifstream myfile;
-    myfile.open(inputFile.c_str());
+
+    sl_stream.open(inputFile.c_str());
      
-    if(!myfile.is_open())
+    if(!sl_stream.is_open())
     {
         throw SpasmException("ERROR: input file " + inputFile + " could not be opened.");              
     }
 
-    while(myfile.good())
+}
+static void resetSpasmLines()
+{
+    sl_line_cnt = 0;
+    sl_stream.seekg(0,ios::beg);
+    sl_stream.clear();
+}
+
+static bool getNextSpasmLine(spasmline_t &spasmline)
+{
+
+    assert(sl_stream.is_open());
+     
+    if(!sl_stream.good())
+	return false;
+
+    sl_line_cnt++;
+
+    string line;
+    getline(sl_stream,line);
+    vector<string> tokens;
+
+    spasmline.address = "";
+    spasmline.op = "";
+    spasmline.rhs = "";
+    spasmline.comment = "";
+    spasmline.commentOnly = false;
+    spasmline.lineNum = sl_line_cnt;
+
+    regmatch_t pmatch[5];
+
+    trim(line);
+
+    if(line.length() == 0)
+	return getNextSpasmLine(spasmline);
+
+    //comment only line check
+    if(regexec(&coPattern, line.c_str(), 0, NULL, 0)==0)
     {
-        lineCount++;
+	spasmline.commentOnly = true;
+	//The comment is the entire line
+	spasmline.comment = line;
+    }		
+    else if(regexec(&erPattern,line.c_str(),5,pmatch,0)==0 || 
+       regexec(&orPattern,line.c_str(),5,pmatch,0)==0 ||
+       regexec(&irPattern,line.c_str(),5,pmatch,0)==0 || 
+       regexec(&insPattern,line.c_str(),5,pmatch,0)==0 || 
+       regexec(&cbPattern, line.c_str(),5,pmatch,0)==0 ||
+       regexec(&rlPattern, line.c_str(),5,pmatch,0)==0)
+    {
+	int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+	spasmline.address = line.substr(pmatch[1].rm_so,mlen);
 
-	spasmline_t spasmline;
-        string line;
-	getline(myfile,line);
-        vector<string> tokens;
+	mlen = pmatch[2].rm_eo - pmatch[2].rm_so;
+	spasmline.op = line.substr(pmatch[2].rm_so,mlen);
 
-        spasmline.address = "";
-        spasmline.op = "";
-        spasmline.rhs = "";
-        spasmline.comment = "";
-        spasmline.commentOnly = false;
-        spasmline.lineNum = lineCount;
+	spasmline.rhs = line.substr(pmatch[2].rm_eo);
 
-        stringstream ss;
-        ss<<lineCount;
-        string strLineNum = ss.str();
+	//There may be an inline comment, search rhs for ';'and split rhs accordingly
+	for(unsigned int i=0;i<spasmline.rhs.length();i++)
+	{
+	    if(spasmline.rhs[i] == ';' || spasmline.rhs[i] == '#')
+	    {
+		spasmline.comment = spasmline.rhs.substr(i);
+		//yea I am changing part of the guard in a loop, but I am breaking immediately
+		spasmline.rhs = spasmline.rhs.substr(0,i);
 
-	regmatch_t pmatch[5];
+		break;
+	    }
+	}
 
-	trim(line);
-
-	if(line.length() == 0)
-	    continue;
-
-        //comment only line check
-        if(regexec(&coPattern, line.c_str(), 0, NULL, 0)==0)
-        {
-            spasmline.commentOnly = true;
-            //The comment is the entire line
-            spasmline.comment = line;
-
-            lines.push_back(spasmline);
-
-            continue;
-        }
-		
-        if(regexec(&erPattern,line.c_str(),5,pmatch,0)==0 || 
-	   regexec(&orPattern,line.c_str(),5,pmatch,0)==0 ||
-           regexec(&irPattern,line.c_str(),5,pmatch,0)==0 || 
-	   regexec(&insPattern,line.c_str(),5,pmatch,0)==0 || 
-	   regexec(&cbPattern, line.c_str(),5,pmatch,0)==0 ||
-	   regexec(&rlPattern, line.c_str(),5,pmatch,0)==0)
-        {
-	    int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
-	    spasmline.address = line.substr(pmatch[1].rm_so,mlen);
-
-	    mlen = pmatch[2].rm_eo - pmatch[2].rm_so;
-	    spasmline.op = line.substr(pmatch[2].rm_so,mlen);
-
-	    spasmline.rhs = line.substr(pmatch[2].rm_eo);
-
-            //There may be an inline comment, search rhs for ';'and split rhs accordingly
-            for(unsigned int i=0;i<spasmline.rhs.length();i++)
-            {
-                if(spasmline.rhs[i] == ';' || spasmline.rhs[i] == '#')
-                {
-                    spasmline.comment = spasmline.rhs.substr(i);
-                    //yea I am changing part of the guard in a loop, but I am breaking immediately
-                    spasmline.rhs = spasmline.rhs.substr(0,i);
-
-                    break;
-                }
-            }
-
-        }
-        else
-        {
-            myfile.close();
-            throw SpasmException("ERROR: improperly formatted spasm line at " + strLineNum);
-        }
-
-	trim(spasmline.comment);
-	trim(spasmline.rhs);
-	trim(spasmline.op);
-	trim(spasmline.address);
-        
-	lines.push_back(spasmline);
     }
-    
-    regfree(&erPattern);
-    regfree(&irPattern);
-    regfree(&orPattern);
-    regfree(&coPattern);
-    regfree(&insPattern);
-    regfree(&rlPattern);
-    myfile.close();
+    else
+    {
+	//TODO: close stream on failure?
+	stringstream ss;
+	ss<<sl_line_cnt;
+	throw SpasmException("ERROR: improperly formatted spasm line at " + ss.str());
+    }
 
-    return lines;
+    trim(spasmline.comment);
+    trim(spasmline.rhs);
+    trim(spasmline.op);
+    trim(spasmline.address);
+  
+    return true;
 }
 
 
-static vector<string> getAssembly(const vector<spasmline_t> &lines)
+
+//initSpasmLines must be called before assembly.
+//Assembly in the spasm lines are placed in the given file. 
+//The assembly file is then
+//assembled into a raw binary file using the nasm assembler. The produced
+//raw binary file is assemblyFile+".bin".
+//In addition to the raw binary file, a nasm produced symbol map file is
+//generated with the name assemblyFile+".map".
+//
+//TODO: it is currently assumed the assemblyFile string will have a .asm
+//postfix, perhaps a check should be done as I don't think nasm will accept
+//other extensions.
+//
+//[in]  assemblyFile    the file that will hold nasm assembly
+//static void assemble(const vector<string> &assembly, const string &assemblyFile)
+static void assemble(const string &assemblyFile)
 {
-    vector<string> assembly;
+    assem_cnt = 0;
 
-    for(unsigned int i=0;i<lines.size();i++)
+    //remove any preexisting assembly or nasm generated files
+    string command = "rm -f " + assemblyFile;
+    system(command.c_str());
+    command = "rm -f "+assemblyFile+".bin";
+    system(command.c_str());
+    command = "rm -f "+assemblyFile+".map";
+    system(command.c_str());
+
+
+    ofstream asmFile;
+    asmFile.open(assemblyFile.c_str());
+    if(!asmFile.is_open())
     {
-        spasmline_t sline = lines[i];
+        throw SpasmException("ERROR: Could not create a prelim assembly file for writing");                 
+    }
+     
+    asmFile<<NASM_BIT_WIDTH<<endl;
+    asmFile<<"ORG 0x"<<hex<<vpc<<endl;
+    asmFile<<"[map symbols "<<assemblyFile<<".map]"<<endl;
 
+    spasmline_t sline;
+
+    while(getNextSpasmLine(sline))
+    {
 	// skip comments and relocations */
-        if(sline.commentOnly || sline.op==string("rl"))
-            continue;
-
-        stringstream ss;
-        ss << sline.lineNum;
-        string strLineNum = ss.str();
+	if(sline.commentOnly || (sline.op.compare("rl")==0))
+	    continue;
 
         string assemblyLine = "";
 			
@@ -303,7 +362,10 @@ static vector<string> getAssembly(const vector<spasmline_t> &lines)
         {
             if(symMap.find(lineAddr) != symMap.end())
             {
-                throw SpasmException("ERROR: multiple symbolic destination detected for symbol "+lineAddr+ " on line " + strLineNum);
+		stringstream ss;
+		ss << sline.lineNum;
+		cout<<sline.op<<endl;
+                throw SpasmException("ERROR: multiple symbolic destination detected for symbol "+lineAddr+ " on line " + ss.str());
             }
 
             symMap[lineAddr] = "";
@@ -343,61 +405,20 @@ static vector<string> getAssembly(const vector<spasmline_t> &lines)
 	}
 
         assemblyLine += lineRH;
-        assembly.push_back(assemblyLine);
+
+	asmFile<<assemblyLine<<endl;
+	assem_cnt++;
     }
 
-    return assembly;
-}
-
-
-//Given a vector of assembly lines, the lines are placed in a file with
-//the name provided in the assemblyFile string. The assembly file is then
-//assembled into a raw binary file using the nasm assembler. The produced
-//raw binary file is assemblyFile+".bin".
-//In addition to the raw binary file, a nasm produced symbol map file is
-//generated with the name assemblyFile+".map".
-//
-//TODO: it is currently assumed the assemblyFile string will have a .asm
-//postfix, perhaps a check should be done as I don't think nasm will accept
-//other extensions.
-//
-//[in]  assembly        the vector of assembly instructions to assemble
-//[in]  assemblyFile    the file that will hold nasm assembly
-static void assemble(const vector<string> &assembly, const string &assemblyFile)
-{
-    //remove any preexisting assembly or nasm generated files
-    string command = "rm -f " + assemblyFile;
-    system(command.c_str());
-    command = "rm -f "+assemblyFile+".bin";
-    system(command.c_str());
-    command = "rm -f "+assemblyFile+".map";
-    system(command.c_str());
-
-    ofstream asmFile;
-    asmFile.open(assemblyFile.c_str());
-    if(!asmFile.is_open())
-    {
-        throw SpasmException("ERROR: Could not create a prelim assembly file for writing");                 
-    }
-     
-    asmFile<<NASM_BIT_WIDTH<<endl;
-
-    char orgDirective[50];
-    sprintf(orgDirective, "ORG 0x%x", vpc);
-    asmFile<<orgDirective<<endl;
-    asmFile<<"[map symbols "<<assemblyFile<<".map]"<<endl;
-    
-    for(unsigned int i=0;i<assembly.size();i++)
-    {
-        asmFile<<assembly[i]<<endl;       
-    }
     asmFile.close();
-		
+
+//TODO: check if system fails, make a func call to handle system
     command = "nasm -O1 -w-number-overflow " + assemblyFile + " -o "+assemblyFile+".bin";
     cout<<"Running nasm ("<<command<<")...";
     system(command.c_str());
-    cout<<endl;
+    cout<<"Done!"<<endl;
 
+    
     //see if the file was created
     ifstream filetest;
     filetest.open(string(assemblyFile+".bin").c_str());
@@ -406,10 +427,9 @@ static void assemble(const vector<string> &assembly, const string &assemblyFile)
     {
         throw SpasmException("Nasm failed to assemble, review error output and " + assemblyFile);
     } 
-    filetest.close();   
+    filetest.close(); 
+
 }
-
-
 
 static void resolveSymbols(const string &mapFile)
 {
@@ -476,12 +496,9 @@ static void resolveSymbols(const string &mapFile)
     mapFileStream.close();
 }
 
-static vector<bin_instruction_t> parseBin(const string &binFile)
+static void initBin(const string &binFile)
 {
-    vector<bin_instruction_t> instr_lines;
-
     ifstream binreader;
-    unsigned int filesize;
     binreader.open(binFile.c_str(),ifstream::in|ifstream::binary);
 
     if(!binreader.is_open())
@@ -491,98 +508,97 @@ static vector<bin_instruction_t> parseBin(const string &binFile)
 
     binreader.seekg(0,ios::end);
 
-    filesize = binreader.tellg();
+    bin_fsize = binreader.tellg();
    
     binreader.seekg(0,ios::beg);
 
-    unsigned char *memblock = new unsigned char[filesize];
+    memblock = new unsigned char[bin_fsize];
 
-    binreader.read((char*)memblock,filesize);
+    binreader.read((char*)memblock,bin_fsize);
     binreader.close();
 
+}
+
+static bool hasNextBin()
+{
+    return bin_index < bin_fsize;
+}
+
+static bool getNextBin(bin_instruction_t &bin)
+{
     DISASM disasm;
     memset(&disasm, 0, sizeof(DISASM));
 
     disasm.Options = NasmSyntax +  PrefixedNumeral;
     disasm.Archi = 32;
 
-    unsigned int index = 0;
+    if(bin_index >= bin_fsize)
+	return false;
 
-    while(index < filesize)
-    {    
-        bin_instruction_t instr;
-        disasm.EIP = (int) &memblock[index];
-        int instr_len = Disasm(&disasm);
+    disasm.EIP = (int) &memblock[bin_index];
+    int instr_len = Disasm(&disasm);
 
-        instr.size = (unsigned int) instr_len;
+    bin.size = (unsigned int) instr_len;
 
-        char tempstr[50];
-        sprintf(tempstr, "%x",instr.size);
-        instr.hex_str = string(tempstr);
-        for(unsigned int i=0;i<instr.size;i++)
-        {
-            instr.raw_bin[i] = memblock[index+i];
-            sprintf(tempstr,"%02x",(int)memblock[index+i]);
-            instr.hex_str += " " + string(tempstr);
-        }
-
-        instr_lines.push_back(instr);
-
-        index += instr.size;
+    char tempstr[50];
+    sprintf(tempstr, "%x",bin.size);
+    bin.hex_str = string(tempstr);
+    for(unsigned int i=0;i<bin.size;i++)
+    {
+	bin.raw_bin[i] = memblock[bin_index+i];
+	sprintf(tempstr,"%02x",(int)memblock[bin_index+i]);
+	bin.hex_str += " " + string(tempstr);
     }
 
-    delete [] memblock;
+    bin_index += bin.size;
     
-    return instr_lines;
+    return true;
 }
 
-//This function takes in a vector of bin_instruction_t and spasmline_t
-//and produces a string vector of SPRI instructions.
-//The spasmlines vector must be greater than or equal to the size of the bin vector.
-//The spasmlines vector may be larger because it may contain comment only lines
-//Ignoring the comment only lines, the bin and spasmline vectors should be equal in size. (BEN: I don't believe this statement is true anymore)
-//Each instruction in bin maps to the next non-comment only line in spasmlines.
-//Some mappings serve only as memory place holders for redirect operators, and therefore
-//the instruction, and a SPRI redirection instruction is pushed onto the returned vector.
-static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines, const string &symbolFilename)
+
+//It is assumed the initSpasmLines and initBin has been called at some point before function entry
+static void printSPRI(const string &symbolFilename, const string &outFileName)
 {
-    //check vector sizes??
-
-    vector<string> spri;
-
-    unsigned int bintop =0;
-
-    for(unsigned int i=0;i<spasmlines.size();i++)
+    unsigned int pop_bin_cnt=0;
+    ofstream outFile;
+    outFile.open(outFileName.c_str());
+    if(!outFile.is_open())
     {
-        stringstream ss;
-        ss <<spasmlines[i].lineNum;
-        string strLineNum = ss.str();
-	ss.str("");
+        throw SpasmException("ERROR: could not write to the output file " + outFileName);
+    }  
+
+    resetSpasmLines();
+
+    spasmline_t sline;
+
+    while(getNextSpasmLine(sline))
+    {
         int incSize = 0;
 
         string comments = "";
-        if(!spasmlines[i].comment.empty())
+        if(!sline.comment.empty())
         {
             comments = "#";
-            comments += spasmlines[i].comment.substr(1);
+            comments += sline.comment.substr(1);
         }
 
-        if(spasmlines[i].commentOnly)
+        if(sline.commentOnly)
         {
             //The first character is a comment symbol, replace with a spri comment symbol
             //and push the comment
-            spri.push_back(comments);
+	    outFile<<comments<<endl;
             continue;
         }
 
+	stringstream ss;
 	ss<<hex<<vpc;
 
 	string vpcstr = ss.str();
 	ss.str("");
 
-        string address = spasmlines[i].address;
-        string op = spasmlines[i].op;
-        string rhs = spasmlines[i].rhs;
+        string address = sline.address;
+        string op = sline.op;
+        string rhs = sline.rhs;
 
         string spriline = "";
 
@@ -595,7 +611,7 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
 	// if (is address and not a relocaion) 
 	if((address.find("+") != string::npos || address[0] == '0'))
         {
-            spri.push_back("");//ensures a space separates spri entry points
+	    outFile<<endl;//ensures a space separates spri entry points
             //remove 0x of the address (not necessary but makes all addresses uniform)
             //rhs is replaced with current vpc
 	    //spriline = address.substr(2)+" "+op+" ";
@@ -612,16 +628,18 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
 	    //rhs is a user defined symbol, and must be resolved
 	    else
 	    {
+		stringstream ss;
+		ss <<sline.lineNum;
 		assert(op.compare("->")==0 || op.compare("-|")==0);
 		if (symMap.find(rhs) == symMap.end())
-		    throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol defined on aspri line " + strLineNum); 
+		    throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol defined on aspri line " + ss.str()); 
 		
 		spriline += symMap[rhs]+" ";
 	    }
 
 	    spriline += comments;
 
-	    spri.push_back(spriline);
+	    outFile<<spriline<<endl;
             continue;
         }
 
@@ -633,7 +651,10 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
         {
             if(symMap.find(address) == symMap.end())
             {
-                throw SpasmException("ERROR: unresolved symbol " + address + " for symbol defined on aspri line " + strLineNum); 
+		stringstream ss;
+		ss <<sline.lineNum;
+
+                throw SpasmException("ERROR: unresolved symbol " + address + " for symbol defined on aspri line " + ss.str()); 
             }
 
             if(comments.empty())
@@ -658,7 +679,7 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
 	{
 	    spriline += rhs;
 	    spriline += "\t"+comments;
-	    spri.push_back(spriline);
+	    outFile<<spriline<<endl;
 	    continue;
 	}
 
@@ -666,8 +687,10 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
 	//checking after results in buffer overrun of bin. It is assumed from this point on
 	//that all operators require binary in the bin, whether or not it is actually used 
 	//to generate the spri for its corresponding spri line. 
-	assert(bintop < bin.size());
-        bin_instruction_t binLine = bin[bintop];
+
+	bin_instruction_t binLine;
+	pop_bin_cnt++;
+	assert(getNextBin(binLine));
 
         // handle callback handlers
         if (op.compare("()") == 0)
@@ -683,10 +706,12 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
         else if(op.compare("->") == 0 ||  op.compare("-|") ==0)
         {
 	    //If the current disassembled instruction is not nop, then something is out of sync
-	    if(bin[bintop].hex_str.compare("1 90") !=0)
+	    stringstream ss;
+	    ss <<sline.lineNum;
+	    if(binLine.hex_str.compare("1 90") !=0)
 		throw SpasmException(string("ERROR: Bug detected in getSPRI, bin out of sync with spasm lines. ") +
-				     "Expected a place holder nop (1 90) for a SPRI redirect, but found " + bin[bintop].hex_str +". " +
-				     "Sync error occurs on line " + strLineNum + " of the SPASM input file");
+				     "Expected a place holder nop (1 90) for a SPRI redirect, but found " + binLine.hex_str +". " +
+				     "Sync error occurs on line " + ss.str() + " of the SPASM input file");
 
             //non-entry point redirects require one byte of memory
             incSize = 1;
@@ -698,7 +723,9 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
             {
                 if(symMap.find(rhs) == symMap.end())
                 {
-                    throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol referenced on aspri line " + strLineNum); 
+		    stringstream ss;
+		    ss <<sline.lineNum;
+                    throw SpasmException("ERROR: unresolved symbol " + rhs + " for symbol referenced on aspri line " + ss.str()); 
                 }
 
                 if(comments.empty())
@@ -722,40 +749,24 @@ static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector
 
             comments +=rhs;
 
-            incSize = bin[bintop].size;
+            incSize = binLine.size;
 
-            spriline += bin[bintop].hex_str + " ";
+            spriline += binLine.hex_str + " ";
         }
 
         spriline += "\t"+comments;
 
-        spri.push_back(spriline);
+        outFile<<spriline<<endl;
 
         vpc += incSize;
-
-        bintop++;
     }
 
     //At this point all binary instructions should have been covered
-    assert(bintop == bin.size());
-
-    return spri;  
-}
-
-static void printVector(const string &outputFile, const vector<string> &lines)
-{
-    ofstream outFile;
-    outFile.open(outputFile.c_str());
-    if(!outFile.is_open())
-    {
-        throw SpasmException("ERROR: could not write to the output file " + outputFile);
-    }  
-
-    for(unsigned int i=0;i<lines.size();i++)
-    {
-        outFile<<lines[i]<<endl;
-    }
+    //double sanity checks, just in case
+    assert(pop_bin_cnt == assem_cnt);
+    assert(!hasNextBin());
 
     outFile.close();
+ 
 }
 
