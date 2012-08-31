@@ -410,6 +410,8 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 		    pn_all_offsets->SetCanarySafe(false);
 		    pn_p1_offsets->SetCanarySafe(false);
 
+		    cerr<<"OffsetInferece:  instruction contains a dynamic stack allocation, not pn_safe"<<endl;
+
 		    //TODO: this output should be removed after TNE
 		    //only used to give Jason an indication that a 
 		    //non-static func has been detected. 
@@ -624,6 +626,7 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	else if(regexec(&(pn_regex.regex_scaled_ebp_index), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 	    PN_safe = false;
+	    cerr<<"OffsetInference: instruction contains an ebp index, not pn_safe"<<endl;
 	    //TODO: at this point I could probably break the loop, 
 	}
 	//TODO: a hack for TNE to check for direct recursion to dial down padding
