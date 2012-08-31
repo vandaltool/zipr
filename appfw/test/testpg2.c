@@ -31,9 +31,6 @@ int main(int argc, char *argv[])
    char *user = "ps1";
    char *password = "";
    char *database = "testing";
-
-//     sprintf(conninfo, "dbname = %s", getenv("PGDATABASE"));
-
    
 	if (argc < 2)
 	{
@@ -54,7 +51,6 @@ int main(int argc, char *argv[])
    }
   printf("Connection to database - OK\n");
  
-   
    /* send SQL query */
    char query[512];
    char *fmtString = "SELECT * FROM users_1796 WHERE first LIKE '%s'";
