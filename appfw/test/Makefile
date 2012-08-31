@@ -2,7 +2,7 @@ APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so
 
 generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
-all: testpg1.exe testpg2.exe testmysql.exe
+all: testpg1.exe testpg2.exe testmysql.exe testsqlite.exe
 
 testpg2.o: testpg2.c
 	gcc -I/usr/include/postgresql -c testpg2.c
@@ -12,6 +12,9 @@ testpg1.o: testpg1.c
 
 testmysql.o: testmysql.c
 	gcc -I/usr/include/mysql -c testmysql.c
+
+testsqlite.o: testsqlite.c
+	gcc -c testsqlite.c
 
 testpg1.exe: testpg1.o
 	gcc testpg1.o -o testpg1.exe -lpq
@@ -25,6 +28,10 @@ testmysql.exe: testmysql.o
 	gcc testmysql.o -o testmysql.exe -lmysqlclient
 	$(generate_signatures) testmysql.exe
 
+testsqlite.exe: testsqlite.o
+	gcc testsqlite.o -o testsqlite.exe -lsqlite3
+	$(generate_signatures) testsqlite.exe
+
 clean:
 	rm -rf *.o *.tmp *.exe peasoup_executable_directory* test*.peasoup messages_to_tne.log ps_tne_logfile.txt testpg*.exe.sigs appfw.db
 
@@ -37,4 +44,5 @@ run: all
 	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg1.exe.sigs ./testpg1.exe "' or 1=1; --"
 	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg2.exe.sigs ./testpg2.exe "' or 1=1; --"
 	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testmysql.exe.sigs ./testmysql.exe "David' or '0'='0"
+	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testsqlite.exe.sigs ./testsqlite.exe "David' or '0'='0"
 

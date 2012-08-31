@@ -5,14 +5,14 @@
 //   (c) verify SQL query for potential injections by looking for
 //       SQL tokens in untrusted portion of query
 //
-// Reuse sqlite3 parser for parsing query strings
+// Reuse appfw_sqlite3 parser for parsing query strings
 //
 
 #include "appfw.h"
 #include "sqlfw.h"
 
 static const char *dbPathEnv = "APPFW_DB";
-static sqlite3 *peasoupDB = NULL;
+static appfw_sqlite3 *peasoupDB = NULL;
 static int sqlfw_initialized = 0;
 
 // read in signature file
@@ -25,7 +25,7 @@ void sqlfw_init()
 
   if (appfw_isInitialized() && getenv(dbPathEnv))
   {
-    if (sqlite3_open(getenv(dbPathEnv), &peasoupDB) == SQLITE_OK)
+    if (appfw_sqlite3_open(getenv(dbPathEnv), &peasoupDB) == SQLITE_OK)
       sqlfw_initialized = 1;
   }
 }
@@ -116,12 +116,12 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
 
   sqlfw_establish_taint(zSql, p_taint);
 
-//  pParse = sqlite3StackAllocZero(db, sizeof(*pParse));
-  pParse = sqlite3MallocZero(sizeof(*pParse));
+//  pParse = appfw_sqlite3StackAllocZero(db, sizeof(*pParse));
+  pParse = appfw_sqlite3MallocZero(sizeof(*pParse));
 
   pParse->db = peasoupDB;
 
-//  fprintf(stderr, "sqlite3_fw(): enter: query string length: %d\n", strlen(zSql));
+//  fprintf(stderr, "appfw_sqlite3_fw(): enter: query string length: %d\n", strlen(zSql));
 
   // show query
   /*
@@ -141,7 +141,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
   pParse->rc = SQLITE_OK;
   pParse->zTail = zSql;
   i = 0;
-  pEngine = sqlite3ParserAlloc((void*(*)(size_t))sqlite3Malloc);
+  pEngine = appfw_sqlite3ParserAlloc((void*(*)(size_t))appfw_sqlite3Malloc);
   if( pEngine==0 ){
     fprintf(stderr,"Failed to allocated space for pEngine\n");
     return 0;
@@ -149,7 +149,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
 
   while( zSql[i]!=0 ){
     pParse->sLastToken.z = &zSql[i];
-    pParse->sLastToken.n = sqlite3GetToken((unsigned char*)&zSql[i],&tokenType);
+    pParse->sLastToken.n = appfw_sqlite3GetToken((unsigned char*)&zSql[i],&tokenType);
 
 	beg = i;
     i += pParse->sLastToken.n;
@@ -188,7 +188,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
 		*/
 
-        sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
+        appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
         lastTokenParsed = tokenType;
         if( pParse->rc!=SQLITE_OK ){

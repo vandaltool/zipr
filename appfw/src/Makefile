@@ -4,12 +4,12 @@ all: libappfw
 
 extract_sql:
 	tar -zxvf ../../third_party/sqlite-autoconf-3071300.tar.gz --no-anchored --wildcards 'sqlite3.[ch]'
-	cp ./sqlite-autoconf-3071300/sqlite3.c .
-	cp ./sqlite-autoconf-3071300/sqlite3.h .
+	cat ./sqlite-autoconf-3071300/sqlite3.c | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.c
+	cat ./sqlite-autoconf-3071300/sqlite3.h | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.h
 
-sqlite3.o: sqlite3.c sqlite3.h sqlfw.c
-	cat sqlfw.c >> sqlite3.c
-	gcc -fPIC -DSQLITE_OS_UNIX=1 -DSQLITE_THREADSAFE=0 -DSQLITE_DEBUG=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_4_BYTE_ALIGNED_MALLOC -c sqlite3.c
+appfw_sqlite3.o: extract_sql sqlfw.c
+	cat sqlfw.c >> appfw_sqlite3.c
+	gcc -fPIC -DSQLITE_OS_UNIX=1 -DSQLITE_THREADSAFE=0 -DSQLITE_DEBUG=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_4_BYTE_ALIGNED_MALLOC -c appfw_sqlite3.c
 
 appfw.o: appfw.c
 	gcc -c appfw.c
@@ -19,9 +19,12 @@ pg_hook.o: pg_hook.c
 
 mysql_hook.o: mysql_hook.c
 	gcc -DSHOW_TAINT_MARKINGS -I/usr/include/mysql -c mysql_hook.c
+
+sqlite3_hook.o: sqlite3_hook.c
+	gcc -DSHOW_TAINT_MARKINGS -c sqlite3_hook.c
 	
-libappfw: extract_sql sqlite3.o pg_hook.o mysql_hook.o appfw.o
-	gcc -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so sqlite3.o mysql_hook.o pg_hook.o appfw.o 
+libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o
+	gcc -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so appfw_sqlite3.o mysql_hook.o pg_hook.o appfw.o sqlite3_hook.o
 
 clean:
 	rm -fr *.o *.tmp *.so sqlite3.c sqlite3.h sqlite-autoconf-3071300
