@@ -649,6 +649,10 @@ tools/cover/Makefile -text
 tools/cover/cover.cpp -text
 tools/meds2pdb/Makefile -text
 tools/meds2pdb/meds2pdb.cpp -text
+tools/memcover/General_Utility.cpp -text
+tools/memcover/General_Utility.hpp -text
+tools/memcover/Makefile -text
+tools/memcover/memcover.cpp -text
 tools/spasm/Makefile -text
 tools/spasm/ben_lib.cpp -text
 tools/spasm/ben_lib.h -text
