@@ -11,6 +11,27 @@
 #define INPUT_ERR_NUM 1
 #define DB_ERR_NUM 2
 
+#define EAX 0x1
+#define ECX 0x2
+#define EDX 0x3
+#define EBX 0x4
+#define ESP 0x5
+#define EBP 0x6
+#define ESI 0x7
+#define EDI 0x8
+#define SCALE_ONE 0x1
+#define SCALE_TWO 0x2
+#define SCALE_FOUR 0x3
+#define SCALE_EIGHT 0x4
+#define SIZE_BYTE 0x1
+#define SIZE_WORD 0x2
+#define SIZE_DWORD 0x3
+#define SIZE_QWORD 0x4
+#define SIZE_TWORD 0x5
+#define SIZE_128 0x6
+
+#define UNDEFINED 0x0
+
 using namespace std;
 using namespace libIRDB;
 
@@ -56,36 +77,37 @@ void usage()
   REG14 = 0x4000,
   REG15 = 0x8000
 */
+
 unsigned int encode_reg(unsigned int reg)
 {
     switch(reg)
     {
     case REG0:
-	return 0x1;
+	return EAX;
 	break;
     case REG1:
-	return 0x2;
+	return ECX;
 	break;
     case REG2:
-	return 0x3;
+	return EDX;
 	break;
     case REG3:
-	return 0x4;
+	return EBX;
 	break;
     case REG4:
-	return 0x5;
+	return ESP;
 	break;
     case REG5:
-	return 0x6;
+	return EBP;
 	break;
     case REG6:
-	return 0x7;
+	return ESI;
 	break;
     case REG7:
-	return 0x8;
+	return EDI;
 	break;
     case 0:
-	return 0x0;
+	return UNDEFINED;
 	break;
     default:
 	assert(false);
@@ -99,19 +121,19 @@ unsigned int encode_scale(unsigned int scale)
     switch(scale)
     {
     case 1:
-	return 0x1;
+	return SCALE_ONE;
 	break;
     case 2:
-	return 0x2;
+	return SCALE_TWO;
 	break;
     case 4:
-	return 0x3;
+	return SCALE_FOUR;
 	break;
     case 8:
-	return 0x4;
+	return SCALE_EIGHT;
 	break;
     case 0:
-	return 0x0;
+	return UNDEFINED;
 	break;
     default:
 	assert(false);
@@ -120,6 +142,71 @@ unsigned int encode_scale(unsigned int scale)
 
 }
 
+unsigned int encode_size(unsigned int size)
+{
+    switch(size)
+    {
+    case 0:
+	return UNDEFINED;
+	break;
+    case 8:
+	return SIZE_BYTE;
+	break;
+    case 16:
+	return SIZE_WORD;
+	break;
+    case 32:
+	return SIZE_DWORD;
+	break;
+    case 64:
+	return SIZE_QWORD;
+	break;
+    case 80:
+	return SIZE_TWORD;
+	break;
+    case 128:
+	return SIZE_128;
+	break;
+    default:
+	cerr<<"size: "<<size<<endl;
+	assert(false);
+	break;
+    }
+}
+
+
+unsigned int encode_operand(const ARGTYPE &arg)
+{
+    int encoding;
+
+    if((arg.ArgType&0xFFFF0000) != MEMORY_TYPE)
+    {
+	return 0;
+    }
+
+    encoding = encode_size(arg.ArgSize);
+
+    //TODO: warn if size is 0
+/*
+    if(encoding == 0)
+    {
+	cerr<<lib_name<<"+"<<addr<<":"<<disasm.CompleteInstr<<" no access size provided"<<endl;
+    }
+*/
+    encoding = encoding <<4;
+    encoding |= arg.AccessMode;
+    encoding <<= 4;
+    encoding |= encode_reg(arg.Memory.BaseRegister);
+    encoding <<= 4;
+    encoding |= encode_reg(arg.Memory.IndexRegister);
+    encoding <<= 2;
+    encoding |= encode_scale(arg.Memory.Scale);
+    encoding <<= 2;
+    if(arg.Memory.Displacement != 0)
+	encoding |= 0x1; 
+	    
+    return encoding;
+}
 
 
 void process(FileIR_t *fir_p)
@@ -137,19 +224,21 @@ void process(FileIR_t *fir_p)
 
 	DISASM disasm;
 	instr->Disassemble(disasm); //calls memset for me, no worries
-	string instr_mn = disasm.Instruction.Mnemonic;
-	trim(instr_mn);
-	unsigned int addr = 0;
-	unsigned int func_addr = 0;
-	unsigned int op1_code=0,op2_code=0;
-	long long displ = 0;
-	
 	
 	//TODO: There may be some cases I have to check for first. 
 
 	if(((disasm.Argument1.ArgType&0xFFFF0000) != MEMORY_TYPE) && 
 	   ((disasm.Argument2.ArgType&0xFFFF0000) != MEMORY_TYPE))
 	    continue;
+
+	string instr_mn = disasm.Instruction.Mnemonic;
+	trim(instr_mn);
+	PREFIXINFO prefix = disasm.Prefix;
+	unsigned int addr = 0;
+	unsigned int func_addr = 0;
+	unsigned int op1_code=0,op2_code=0;
+	long long displ = 0;
+	string lib_name = URLToFile(fir_p->GetFile()->GetURL());
 
 	if(instr->GetAddress())
 	{
@@ -161,6 +250,7 @@ void process(FileIR_t *fir_p)
 	    continue;
 	}
 
+
 	if(instr->GetFunction() && instr->GetFunction()->GetEntryPoint() &&
 	   instr->GetFunction()->GetEntryPoint()->GetAddress())
 	{
@@ -169,51 +259,37 @@ void process(FileIR_t *fir_p)
 
 	if(instr_mn.compare("lea") == 0)
 	{
-	    //TODO: set instr category to reflect lea
 	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x44;
+	}
+
+	//push pop call ret
+
+	if(prefix.RepPrefix == InUsePrefix)
+	{
+	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF3FFF)|(0x1<<14);
+	}
+	else if(prefix.RepnePrefix == InUsePrefix)
+	{
+	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF3FFF)|(0x2<<14);
 	}
 
 	//TODO: record if pop or push, ret or call. 
 	//TODO: record in instr category/encoding the numb of operands
 
-	if((disasm.Argument1.ArgType&0xFFFF0000) == MEMORY_TYPE)
-	{
-	    op1_code = disasm.Argument1.AccessMode;
-	    op1_code = op1_code <<4;
-	    op1_code = op1_code | encode_reg(disasm.Argument1.Memory.BaseRegister);
-	    op1_code = op1_code <<4;
-	    op1_code = op1_code | encode_reg(disasm.Argument1.Memory.IndexRegister);
-	    op1_code = op1_code <<2;
-	    op1_code = op1_code | encode_scale(disasm.Argument1.Memory.Scale);
-	    op1_code = op1_code <<2;
-	    if(disasm.Argument1.Memory.Displacement != 0)
-	    {
-		op1_code = op1_code | 0x1;
-		displ = disasm.Argument1.Memory.Displacement;
-	    }
-	    
-	}
+	op1_code = encode_operand(disasm.Argument1);
+	op2_code = encode_operand(disasm.Argument2);
 
-	if((disasm.Argument2.ArgType&0xFFFF0000) == MEMORY_TYPE)
-	{
-	    op2_code = op1_code | disasm.Argument2.AccessMode;
-	    op2_code = op2_code <<4;
-	    op2_code = op2_code | encode_reg(disasm.Argument2.Memory.BaseRegister);
-	    op2_code = op2_code <<4;
-	    op2_code = op2_code | encode_reg(disasm.Argument2.Memory.IndexRegister);
-	    op2_code = op2_code <<2;
-	    op2_code = op2_code | encode_scale(disasm.Argument2.Memory.Scale);
-	    op2_code = op2_code <<2;
-	    if(disasm.Argument2.Memory.Displacement != 0)
-	    {
-		assert(displ == 0); //only one displ allowed
-		op2_code = op2_code | 0x1;
+	//nand, both args can't have displacements, if this happens I need to know why. 
+	assert(!(((op1_code&0x00000001)==0x1)&&((op2_code&0x00000001)==0x1)));
 
-		displ = disasm.Argument2.Memory.Displacement;
-	    }
-	}
+	if(disasm.Argument1.Memory.Displacement != 0)
+	    displ = disasm.Argument1.Memory.Displacement;
+	else if(disasm.Argument2.Memory.Displacement != 0)
+	    displ = disasm.Argument2.Memory.Displacement;
+	else
+	    displ = 0;
 
-	annot_ofstream<<URLToFile(fir_p->GetFile()->GetURL())<<":"<<hex<<addr<<":"<<hex<<func_addr<<":"<<hex<<disasm.Instruction.Category<<":"<<hex<<op1_code<<":"<<hex<<op2_code<<":";
+	annot_ofstream<<lib_name<<":"<<hex<<addr<<":"<<hex<<func_addr<<":"<<hex<<disasm.Instruction.Category<<":"<<hex<<op1_code<<":"<<hex<<op2_code<<":";
 	if(displ < 0)
 	{
 	    displ = displ *-1;
