@@ -168,7 +168,6 @@ unsigned int encode_size(unsigned int size)
 	return SIZE_128;
 	break;
     default:
-	cerr<<"size: "<<size<<endl;
 	assert(false);
 	break;
     }
@@ -183,6 +182,11 @@ unsigned int encode_operand(const ARGTYPE &arg)
     {
 	return 0;
     }
+
+    //TODO: make this optimization optional
+    //for the stack, absolute accesses are not useful. 
+    if(arg.Memory.BaseRegister == 0 && arg.Memory.IndexRegister == 0 && arg.Memory.Displacement != 0)
+	return 0;
 
     encoding = encode_size(arg.ArgSize);
 
@@ -224,15 +228,28 @@ void process(FileIR_t *fir_p)
 
 	DISASM disasm;
 	instr->Disassemble(disasm); //calls memset for me, no worries
+	string instr_mn = disasm.Instruction.Mnemonic;
+	trim(instr_mn);
 	
 	//TODO: There may be some cases I have to check for first. 
 
-	if(((disasm.Argument1.ArgType&0xFFFF0000) != MEMORY_TYPE) && 
-	   ((disasm.Argument2.ArgType&0xFFFF0000) != MEMORY_TYPE))
+	//TODO: encode operands first, then check if both are 0, if so ignore instruction. 
+
+
+/*
+	if((disasm.Argument1.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG) && (LOWORD(disasm.Argument1.ArgType)==REG4)&& disasm.Argument1.AccessMode==WRITE)||
+	   ((disasm.Argument2.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG)&& (LOWORD(disasm.Argument2.ArgType)==REG4) && disasm.Argument2.AccessMode==WRITE)
+	   {
+	       
+	   }
+*/
+	if((((disasm.Argument1.ArgType&0xFFFF0000) != MEMORY_TYPE) && 
+	   ((disasm.Argument2.ArgType&0xFFFF0000) != MEMORY_TYPE)) || 
+	   instr_mn.compare("call")!=0 ||
+	   instr_mn.compare("leave")!=0) 
 	    continue;
 
-	string instr_mn = disasm.Instruction.Mnemonic;
-	trim(instr_mn);
+
 	PREFIXINFO prefix = disasm.Prefix;
 	unsigned int addr = 0;
 	unsigned int func_addr = 0;
@@ -240,16 +257,16 @@ void process(FileIR_t *fir_p)
 	long long displ = 0;
 	string lib_name = URLToFile(fir_p->GetFile()->GetURL());
 
-	if(instr->GetAddress())
+	assert(instr->GetAddress());
+
+	addr = instr->GetAddress()->GetVirtualOffset();
+
+	if(addr == 0)
 	{
-	    addr = instr->GetAddress()->GetVirtualOffset();
-	}
-	else
-	{
+	    cerr<<"no addr: "<<disasm.CompleteInstr<<endl;
 	    //TODO: mark instruction for instrumentation and continue;
 	    continue;
 	}
-
 
 	if(instr->GetFunction() && instr->GetFunction()->GetEntryPoint() &&
 	   instr->GetFunction()->GetEntryPoint()->GetAddress())
@@ -261,8 +278,27 @@ void process(FileIR_t *fir_p)
 	{
 	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x44;
 	}
-
-	//push pop call ret
+	else if(instr_mn.find("push") != string::npos)
+	{
+	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x45;
+	}
+	else if(instr_mn.find("pop") != string::npos)
+	{
+	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x46;
+	}
+	else if(instr_mn.compare("ret") == 0)
+	{
+	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x47;
+	}
+	else if(instr_mn.compare("call") == 0)
+	{
+	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x48;
+	}
+	else if(instr_mn.compare("leave") == 0)
+	{
+	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x49;
+	}
+	//TODO: calls.
 
 	if(prefix.RepPrefix == InUsePrefix)
 	{
@@ -289,7 +325,7 @@ void process(FileIR_t *fir_p)
 	else
 	    displ = 0;
 
-	annot_ofstream<<lib_name<<":"<<hex<<addr<<":"<<hex<<func_addr<<":"<<hex<<disasm.Instruction.Category<<":"<<hex<<op1_code<<":"<<hex<<op2_code<<":";
+	annot_ofstream<<"MEM_ACCESS:"lib_name<<":"<<hex<<addr<<":"<<hex<<func_addr<<":"<<hex<<disasm.Instruction.Category<<":"<<hex<<op1_code<<":"<<hex<<op2_code<<":";
 	if(displ < 0)
 	{
 	    displ = displ *-1;
@@ -298,7 +334,6 @@ void process(FileIR_t *fir_p)
 
 	annot_ofstream<<hex<<displ<<endl;
 	
-
     }
 }
 
