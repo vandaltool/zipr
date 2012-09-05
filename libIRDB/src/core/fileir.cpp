@@ -43,6 +43,29 @@ FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) : BaseObj_t(NULL)
 		ReadFromDB();
 
 }
+
+FileIR_t::~FileIR_t()
+{
+	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i)
+	{
+		delete *i;
+	}
+
+	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
+	{
+		delete *i;
+	}
+
+	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i)
+	{
+		delete *i;
+	}
+
+	for(std::set<Relocation_t*>::const_iterator i=relocs.begin(); i!=relocs.end(); ++i)
+	{
+		delete *i;
+	}
+}
   
 // DB operations
 void FileIR_t::ReadFromDB()
