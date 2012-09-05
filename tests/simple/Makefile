@@ -1,6 +1,6 @@
 progs=discrete_xform.peasoup integration_simp.peasoup sieve.peasoup knapsack.peasoup dumbledore_cmd_nop.peasoup dumbledore_cmd_O3.peasoup quick_sort.peasoup hanoi.peasoup merge_sort.peasoup k1.peasoup banner_nop.peasoup banner_O3.peasoup banner_O3_concolic.peasoup cal_nop.peasoup cal_O3.peasoup cal_O3_concolic.peasoup print_file_concolic.peasoup cal_nop_concolic.peasoup sudoku_black.peasoup aes_black.peasoup pdfcrack_concolic.peasoup 7za_black.peasoup simple_overflow.peasoup simple_overflow_concolic.peasoup dumbledore_cmd_O3_black.peasoup
 
-ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off --step p1transform=on --step heaprand=off --step double_free=off"
+ps_analyze_flags="--step ilr=off --step integertransform=off --step manual_test=on --step concolic=off --step isr=off --step p1transform=on --step heaprand=off --step double_free=off --step signconv_func_monitor=off --step watchdog=off"
 
 ps_analyze_concolic_flags="--step ilr=on --step integertransform=on --step manual_test=off --step concolic=on --step isr=on"
 
