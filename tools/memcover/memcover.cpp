@@ -32,6 +32,8 @@
 
 #define UNDEFINED 0x0
 
+#define LOWORD(a) ((0x0000FFFF)&(a))
+
 using namespace std;
 using namespace libIRDB;
 
@@ -212,8 +214,101 @@ unsigned int encode_operand(const ARGTYPE &arg)
     return encoding;
 }
 
+inline bool is_esp_dest(ARGTYPE &arg)
+{
+    return ((arg.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG) && (LOWORD(arg.ArgType)==REG4)&& arg.AccessMode==WRITE);
+}
 
-void process(FileIR_t *fir_p)
+struct stack_alt_encoding
+{
+    unsigned int instr_code;
+    long long constant;
+};
+
+struct mem_ref_encoding
+{
+    unsigned int instr_code;
+    unsigned int op1_code;
+    unsigned int op2_code;
+    long long displ;
+};
+
+bool encode_stack_alt(DISASM &disasm,stack_alt_encoding &out_encoding)
+{
+    ARGTYPE mod_src;
+
+    if(is_esp_dest(disasm.Argument1))
+	mod_src = disasm.Argument2;
+    else if(is_esp_dest(disasm.Argument2))
+	mod_src = disasm.Argument1;
+    else
+	return false;
+
+    memset(&out_encoding,0,sizeof(stack_alt_encoding));
+
+    if((mod_src.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG))
+    {
+	unsigned int reg_code = encode_reg(LOWORD(mod_src.ArgType));
+
+	//TODO: encode reg. 
+    }
+    else if(mod_src.ArgType == MEMORY_TYPE)
+    {
+	unsigned int base_code = encode_reg(mod_src.Memory.BaseRegister);
+	unsigned int index_code = encode_reg(mod_src.Memory.IndexRegister);
+	unsigned int scale_code = encode_scale(mod_src.Memory.Scale);
+	out_encoding.consant = mod_src.Memory.Displacement;
+    
+	//TODO: encode it all.
+    }
+    else
+    {
+	out_encoding.constant = disasm.Instruction.Immediat;
+    }
+
+    string instr_mn = disasm.Instruction.Mnemonic;
+    trim(instr_mn);
+
+    if(instr_mn.compare("and")==0)
+    {
+	//todo: encode and
+    }
+    else if(instr_mn.compare("add")==0)
+    {
+	//todo: encode add
+    }
+    else if(instr_mn.compare("sub")==0)
+    {
+	//todo: encode sub
+    }
+    else if(instr_mn.compare("leave")==0)
+    {
+	//todo: encode leave
+    }
+    else if(instr_mn.compare("mov")==0)
+    {
+	//todo: encode mov
+    }
+    else if(instr_mn.compare("lea")==0)
+    {
+	//todo: encode lea
+    }
+    else if(instr_mn.compare("inc")==0)
+    {
+	//todo: incode inc
+    }
+    else
+    {
+	cout<<disasm.CompleteInstr<<endl;
+	//I want to know when this happens so I can add a new encoding
+	assert(false);
+    }
+
+    return true;
+}
+
+
+void process_instructions(FileIR_t *fir_p)
 {
     vector<Instruction_t*> no_addr_instrs;
 
@@ -235,14 +330,25 @@ void process(FileIR_t *fir_p)
 
 	//TODO: encode operands first, then check if both are 0, if so ignore instruction. 
 
+	stack_alt_encoding sa_code;
 
-/*
-	if((disasm.Argument1.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG) && (LOWORD(disasm.Argument1.ArgType)==REG4)&& disasm.Argument1.AccessMode==WRITE)||
-	   ((disasm.Argument2.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG)&& (LOWORD(disasm.Argument2.ArgType)==REG4) && disasm.Argument2.AccessMode==WRITE)
+	encode_stack_alt(disasm,sa_code);
+	//TODO: encode stack_alt
+	//TODO: encode mem_ref
+
+	/*
+	if(((disasm.Argument1.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG) && (LOWORD(disasm.Argument1.ArgType)==REG4)&& disasm.Argument1.AccessMode==WRITE)||
+	   ((disasm.Argument2.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG)&& (LOWORD(disasm.Argument2.ArgType)==REG4) && disasm.Argument2.AccessMode==WRITE))
 	   {
-	       
+	       cout<<"esp mod: "<<disasm.CompleteInstr<<endl;
 	   }
-*/
+
+
+	if(disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4)
+	{
+	    cout<<"Implicit esp: "<<disasm.CompleteInstr<<endl;
+	}
+	*/
 	if((((disasm.Argument1.ArgType&0xFFFF0000) != MEMORY_TYPE) && 
 	   ((disasm.Argument2.ArgType&0xFFFF0000) != MEMORY_TYPE)) || 
 	   instr_mn.compare("call")!=0 ||
@@ -325,7 +431,7 @@ void process(FileIR_t *fir_p)
 	else
 	    displ = 0;
 
-	annot_ofstream<<"MEM_ACCESS:"lib_name<<":"<<hex<<addr<<":"<<hex<<func_addr<<":"<<hex<<disasm.Instruction.Category<<":"<<hex<<op1_code<<":"<<hex<<op2_code<<":";
+	annot_ofstream<<"MEM_ACCESS:"<<lib_name<<":"<<hex<<addr<<":"<<hex<<func_addr<<":"<<hex<<disasm.Instruction.Category<<":"<<hex<<op1_code<<":"<<hex<<op2_code<<":";
 	if(displ < 0)
 	{
 	    displ = displ *-1;
@@ -394,7 +500,7 @@ int main(int argc, char **argv)
 	    cout<<"Done!"<<endl;
 
 	    cout<<"Processing FileIR...";	    
-	    process(fir_p);
+	    process_instructions(fir_p);
 	    cout<<"Done!"<<endl;
 	    
 	}
