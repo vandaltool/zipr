@@ -89,7 +89,7 @@ Instruction_t* copyInstruction(FileIR_t* virp, Instruction_t* instr)
 
 	//In case the fallthrough is null, generate spri has to have a 
 	//place to jump, which is determined by the original address. 
-	cpy->SetOriginalAddressID(instr->GetOriginalAddressID());
+//	cpy->SetOriginalAddressID(instr->GetOriginalAddressID());
 
     return cpy;
 }
