@@ -100,7 +100,15 @@ void FileIR_t::AssembleRegistry()
 	string binaryOutputFile = "tmp.bin";
 
 	string command = "rm -f " + assemblyFile + " " + binaryOutputFile;
-	system(command.c_str());
+	int rt = system(command.c_str());
+	
+	int actual_exit = -1;
+	int actual_signal = -1;
+
+	if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
+    else actual_signal = WTERMSIG(rt);
+
+	assert(actual_exit == 0);
 	
 	ofstream asmFile;
 	asmFile.open(assemblyFile.c_str());
@@ -109,28 +117,27 @@ void FileIR_t::AssembleRegistry()
 
 	asmFile<<"BITS 32"<<endl; //TODO: probably should use a defined val
 
-	//in case the map is some how updated again, the instructions are placed
-	//in a vector so the number and order of instructions are guaranteed
-	vector<Instruction_t*> instructions;
 	for(registry_type::iterator it = assembly_registry.begin();
 		it != assembly_registry.end();
 		it++
 		)
 	{
-		instructions.push_back(it->first);
 		asmFile<<it->second<<endl;
 	}
 	asmFile.close();
 
-	//after assembly, clear registry
-	assembly_registry.clear();
-
 	command = string("nasm ") + assemblyFile + string(" -o ") + binaryOutputFile;
-	system(command.c_str());
+	rt = system(command.c_str());
+
+	actual_exit = -1;
+	actual_signal = -1;
+    if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
+    else actual_signal = WTERMSIG(rt);
+
+	assert(actual_exit == 0);
 	
 	DISASM disasm;
 	memset(&disasm, 0, sizeof(DISASM));
-
 
 	ifstream binreader;
 	unsigned int filesize;
@@ -150,8 +157,14 @@ void FileIR_t::AssembleRegistry()
 	unsigned int instr_index = 0;
 	//for(unsigned int index=0; index < filesize; instr_index++)
 	unsigned int index = 0;
+	registry_type::iterator reg_val =  assembly_registry.begin();
+
 	while(index < filesize)
 	{
+		//the number of registered instructions should not be exceeded
+		assert(reg_val != assembly_registry.end());
+		Instruction_t *instr = reg_val->first;
+
 		disasm.EIP = (int) &binary_stream[index];
 		int instr_len = Disasm(&disasm);
 		string rawBits;
@@ -161,16 +174,14 @@ void FileIR_t::AssembleRegistry()
 			rawBits[i] = binary_stream[index];
 		}
 
-		//if this worked, all the instructions should have been covered
-		assert(instr_index < instructions.size());
-		instructions[instr_index]->SetDataBits(rawBits);
-
-		instr_index++;
+		instr->SetDataBits(rawBits);
+		reg_val++;
 	}
 
-	assert(instr_index == instructions.size());
+	assert(reg_val == assembly_registry.end());
 
 	delete [] binary_stream;
+	assembly_registry.clear();
 
 }
 
