@@ -6,6 +6,8 @@
 #include <beaengine/BeaEngine.h>
 #include <libIRDB-core.hpp>
 #include "General_Utility.hpp"
+#include "Rewrite_Utility.hpp"
+#include <sstream>
 
 #define ARG_CNT 3
 #define INPUT_ERR_NUM 1
@@ -112,7 +114,7 @@ unsigned int encode_reg(unsigned int reg)
 	return UNDEFINED;
 	break;
     default:
-	assert(false);
+		assert(false);
 	break;
     }
 
@@ -219,11 +221,6 @@ inline bool is_esp_dest(ARGTYPE &arg)
     return ((arg.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG) && (LOWORD(arg.ArgType)==REG4)&& arg.AccessMode==WRITE);
 }
 
-struct stack_alt_encoding
-{
-    unsigned int instr_code;
-    long long constant;
-};
 
 struct mem_ref_encoding
 {
@@ -235,14 +232,20 @@ struct mem_ref_encoding
 
 bool encode_stack_alt(DISASM &disasm,stack_alt_encoding &out_encoding)
 {
+
+
     ARGTYPE mod_src;
 
     if(is_esp_dest(disasm.Argument1))
 	mod_src = disasm.Argument2;
     else if(is_esp_dest(disasm.Argument2))
 	mod_src = disasm.Argument1;
-    else
-	return false;
+    else if(disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4)
+	{
+	    //cout<<"Implicit esp: "<<disasm.CompleteInstr<<endl;
+	}
+	else
+		return false;
 
     memset(&out_encoding,0,sizeof(stack_alt_encoding));
 
@@ -257,7 +260,7 @@ bool encode_stack_alt(DISASM &disasm,stack_alt_encoding &out_encoding)
 	unsigned int base_code = encode_reg(mod_src.Memory.BaseRegister);
 	unsigned int index_code = encode_reg(mod_src.Memory.IndexRegister);
 	unsigned int scale_code = encode_scale(mod_src.Memory.Scale);
-	out_encoding.consant = mod_src.Memory.Displacement;
+	out_encoding.constant = mod_src.Memory.Displacement;
     
 	//TODO: encode it all.
     }
@@ -268,6 +271,8 @@ bool encode_stack_alt(DISASM &disasm,stack_alt_encoding &out_encoding)
 
     string instr_mn = disasm.Instruction.Mnemonic;
     trim(instr_mn);
+
+	//cout<<disasm.CompleteInstr<<endl;
 
     if(instr_mn.compare("and")==0)
     {
@@ -295,22 +300,29 @@ bool encode_stack_alt(DISASM &disasm,stack_alt_encoding &out_encoding)
     }
     else if(instr_mn.compare("inc")==0)
     {
-	//todo: incode inc
+	//todo: encode inc
     }
+	else if(instr_mn.compare("dec")==0)
+	{
+		//todo: encode dec
+	}
     else
     {
-	cout<<disasm.CompleteInstr<<endl;
 	//I want to know when this happens so I can add a new encoding
-	assert(false);
+	//assert(false);
     }
 
     return true;
 }
 
-
 void process_instructions(FileIR_t *fir_p)
 {
-    vector<Instruction_t*> no_addr_instrs;
+	//using maps since I believe inserting instructions while iterating
+	//will cause issues. 
+	map<Instruction_t*,DISASM> post_esp_checks;
+	map<Instruction_t*,DISASM> ret_esp_checks;
+	map<Instruction_t*,DISASM> mem_refs;
+	map<Instruction_t*,DISASM> func_entries;
 
     for(
 	set<Instruction_t*>::const_iterator it=fir_p->GetInstructions().begin();
@@ -318,43 +330,127 @@ void process_instructions(FileIR_t *fir_p)
 	++it
 	)
     {
-	Instruction_t* instr = *it;
-	assert(instr);
+		Instruction_t* instr = *it;
+		assert(instr);
 
-	DISASM disasm;
-	instr->Disassemble(disasm); //calls memset for me, no worries
-	string instr_mn = disasm.Instruction.Mnemonic;
-	trim(instr_mn);
-	
-	//TODO: There may be some cases I have to check for first. 
+		DISASM disasm;
+		instr->Disassemble(disasm); //calls memset for me, no worries
+		string instr_mn = disasm.Instruction.Mnemonic;
+		trim(instr_mn);
 
-	//TODO: encode operands first, then check if both are 0, if so ignore instruction. 
+		//is esp a destination, or is esp implicitly modified?
+		if(is_esp_dest(disasm.Argument1) || is_esp_dest(disasm.Argument2) ||
+		   disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4)
+		{
+			assert(instr_mn.compare("ret") != 0);
+			post_esp_checks[instr] = disasm;
+		}
 
-	stack_alt_encoding sa_code;
+		if(instr_mn.compare("ret")==0)
+			ret_esp_checks[instr] = disasm;
 
-	encode_stack_alt(disasm,sa_code);
-	//TODO: encode stack_alt
-	//TODO: encode mem_ref
+		if(((disasm.Argument1.ArgType&0xFFFF0000) != MEMORY_TYPE) && 
+		   ((disasm.Argument2.ArgType&0xFFFF0000) != MEMORY_TYPE))
+			mem_refs[instr] = disasm;
 
-	/*
-	if(((disasm.Argument1.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG) && (LOWORD(disasm.Argument1.ArgType)==REG4)&& disasm.Argument1.AccessMode==WRITE)||
-	   ((disasm.Argument2.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG)&& (LOWORD(disasm.Argument2.ArgType)==REG4) && disasm.Argument2.AccessMode==WRITE))
-	   {
-	       cout<<"esp mod: "<<disasm.CompleteInstr<<endl;
-	   }
-
-
-	if(disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4)
-	{
-	    cout<<"Implicit esp: "<<disasm.CompleteInstr<<endl;
+		//TODO: missing calls
 	}
-	*/
-	if((((disasm.Argument1.ArgType&0xFFFF0000) != MEMORY_TYPE) && 
-	   ((disasm.Argument2.ArgType&0xFFFF0000) != MEMORY_TYPE)) || 
-	   instr_mn.compare("call")!=0 ||
-	   instr_mn.compare("leave")!=0) 
-	    continue;
 
+	for(
+		set<Function_t*>::const_iterator it=fir_p->GetFunctions().begin();
+		it!=fir_p->GetFunctions().end();
+		++it
+		)
+	{
+		Function_t *func = *it;
+		ControlFlowGraph_t cfg(func);
+		BasicBlock_t *block = cfg.GetEntry();
+
+		Instruction_t *first_instr = *(block->GetInstructions().begin());
+
+		DISASM disasm;
+		first_instr->Disassemble(disasm); //calls memset for me, no worries
+
+		func_entries[instr] = disasm;
+	}
+
+	for(
+		map<Instruction_t*,disasm>::const_iterator it=post_esp_checks.begin();
+		it!=post_esp_checks.end();
+		++it
+		)
+	{
+		//Execute the instruction then call the post_esp_check callback
+		//The esp is checked after execution to avoid calculating esp
+		//through shadow execution. Will not work for ret instructions. 
+		Instruction_t *instr = *it;
+		Instruction_t *tmp;
+
+		tmp = insertAssemblyAfter(fir_p,instr,"pusha");
+		tmp = insertAssemblyAfter(fir_p,tmp,"pushf");
+		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
+		tmp->SetCallback("post_esp_check");
+		tmp = insertAssemblyAfter(fir_p,instr,"popf");
+		tmp = insertAssemblyAfter(fir_p,instr,"popa");
+	}
+
+	for(
+		map<Instruction_t*,disasm>::const_iterator it=ret_esp_checks.begin();
+		it!=ret_esp_checks.end();
+		++it
+		)
+	{
+		Instruction_t *instr = *it;
+		
+		//because rets redirect execution, a post_esp_check callback cannot be made
+		//here a special ret callback is used as a solution, checked prior to execution
+		//of the original instruction. No need for shadow execution as ret has a consistant behavior.
+
+		//Note the use of insertAssemblyBefore, read in reverse order. 
+		insertAssemblyBefore(fir_p,instr,"popa");
+		insertAssemblyBefore(fir_p,instr,"popf");
+		insertAssemblyBefore(fir_p,instr,"nop");
+		instr->SetCallback("ret_esp_check");
+		insertAssemblyBefore(fir_p,instr,"pushf");
+		insertAssemblyBefore(fir_p,instr,"pusha");
+	}
+	
+	for(
+		map<Instruction_t*,disasm>::const_iterator it=mem_refs.begin();
+		it!=mem_refs.end();
+		++it
+		)
+	{
+		Instruction_t *instr = *it;
+
+//Note the use of insertAssemblyBefore, read in reverse order. 
+		insertAssemblyBefore(fir_p,instr,"popa");
+		insertAssemblyBefore(fir_p,instr,"popf");
+		insertAssemblyBefore(fir_p,instr,"add esp, 0x18");
+		insertAssemblyBefore(fir_p,instr,"nop");
+		insertAssemblyBefore(fir_p,instr,"push 0xAA");
+		insertAssemblyBefore(fir_p,instr,"push 0xBB");
+		insertAssemblyBefore(fir_p,instr,"push 0xCC");
+		insertAssemblyBefore(fir_p,instr,"push 0xDD");
+		insertAssemblyBefore(fir_p,instr,"push 0xEE");
+		insertAssemblyBefore(fir_p,instr,"push 0xFF");
+		insertAssemblyBefore(fir_p,instr,"pushf");
+		insertAssemblyBefore(fir_p,instr,"pusha");
+	}
+
+	for(
+		map<Instruction_t*,disasm>::const_iterator it=func_entries.begin();
+		it!=func_entries.end();
+		++it
+		)
+	{
+		insertAssemblyBefore(fir_p,instr,"popa");
+		insertAssemblyBefore(fir_p,instr,"popf");
+		insertAssemblyBefore(fir_p,instr,"nop");
+		instr->SetCallback("func_entry");
+		insertAssemblyBefore(fir_p,instr,"pushf");
+		insertAssemblyBefore(fir_p,instr,"pusha");
+	}
 
 	PREFIXINFO prefix = disasm.Prefix;
 	unsigned int addr = 0;
@@ -369,7 +465,7 @@ void process_instructions(FileIR_t *fir_p)
 
 	if(addr == 0)
 	{
-	    cerr<<"no addr: "<<disasm.CompleteInstr<<endl;
+//	    cerr<<"no addr: "<<disasm.CompleteInstr<<endl;
 	    //TODO: mark instruction for instrumentation and continue;
 	    continue;
 	}
@@ -394,16 +490,17 @@ void process_instructions(FileIR_t *fir_p)
 	}
 	else if(instr_mn.compare("ret") == 0)
 	{
+		//TODO: call ret_esp_check
+
 	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x47;
 	}
 	else if(instr_mn.compare("call") == 0)
 	{
+
+
 	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x48;
 	}
-	else if(instr_mn.compare("leave") == 0)
-	{
-	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x49;
-	}
+
 	//TODO: calls.
 
 	if(prefix.RepPrefix == InUsePrefix)
@@ -421,6 +518,21 @@ void process_instructions(FileIR_t *fir_p)
 	op1_code = encode_operand(disasm.Argument1);
 	op2_code = encode_operand(disasm.Argument2);
 
+
+/*
+	insertAssemblyBefore(fir_p,instr,"popa");
+	insertAssemblyBefore(fir_p,instr,"popf");
+	insertAssemblyBefore(fir_p,instr,"add esp, 0x20");
+	insertAssemblyBefore(fir_p,instr,"nop");
+	insertAssemblyBefore(fir_p,instr,"push 0xAA");
+	insertAssemblyBefore(fir_p,instr,"push 0xBB");
+	insertAssemblyBefore(fir_p,instr,"push 0xCC");
+	insertAssemblyBefore(fir_p,instr,"push 0xDD");
+	insertAssemblyBefore(fir_p,instr,"push 0xEE");
+	insertAssemblyBefore(fir_p,instr,"pushf");
+	insertAssemblyBefore(fir_p,instr,"pusha");
+*/
+
 	//nand, both args can't have displacements, if this happens I need to know why. 
 	assert(!(((op1_code&0x00000001)==0x1)&&((op2_code&0x00000001)==0x1)));
 
@@ -431,6 +543,7 @@ void process_instructions(FileIR_t *fir_p)
 	else
 	    displ = 0;
 
+/*
 	annot_ofstream<<"MEM_ACCESS:"<<lib_name<<":"<<hex<<addr<<":"<<hex<<func_addr<<":"<<hex<<disasm.Instruction.Category<<":"<<hex<<op1_code<<":"<<hex<<op2_code<<":";
 	if(displ < 0)
 	{
@@ -439,8 +552,41 @@ void process_instructions(FileIR_t *fir_p)
 	}
 
 	annot_ofstream<<hex<<displ<<endl;
+*/
 	
     }
+
+	cout<<"mem_refs: "<<set_mr_callback.size()<<endl;
+	cout<<"set stacks: "<<set_sa_callback.size()<<endl;
+
+	for(int i=0;i<set_mr_callback.size();i++)
+	{
+		Instruction_t *instr = set_mr_callback[i];
+
+		insertAssemblyBefore(fir_p,instr,"popa");
+		insertAssemblyBefore(fir_p,instr,"popf");
+		insertAssemblyBefore(fir_p,instr,"add esp, 0x18");
+		insertAssemblyBefore(fir_p,instr,"nop");
+		insertAssemblyBefore(fir_p,instr,"push 0xAA");
+		insertAssemblyBefore(fir_p,instr,"push 0xBB");
+		insertAssemblyBefore(fir_p,instr,"push 0xCC");
+		insertAssemblyBefore(fir_p,instr,"push 0xDD");
+		insertAssemblyBefore(fir_p,instr,"push 0xEE");
+		insertAssemblyBefore(fir_p,instr,"push 0xFF");
+		insertAssemblyBefore(fir_p,instr,"pushf");
+		insertAssemblyBefore(fir_p,instr,"pusha");
+	}
+
+	for(int i=0;i<set_sa_callback.size();i++)
+	{
+		Instruction_t *instr = set_sa_callback[i];
+
+		insertAssemblyBefore(fir_p,instr,"nop");
+		insertAssemblyBefore(fir_p,instr,"nop");
+		insertAssemblyBefore(fir_p,instr,"nop");
+		insertAssemblyBefore(fir_p,instr,"nop");
+		insertAssemblyBefore(fir_p,instr,"nop");
+	}
 }
 
 
@@ -461,6 +607,7 @@ int main(int argc, char **argv)
 	exit(INPUT_ERR_NUM);
     }
     
+/*
     annot_ofstream.open(argv[2]);
     
     if(!annot_ofstream.is_open())
@@ -468,7 +615,7 @@ int main(int argc, char **argv)
 	cerr<<"Could not open file "<<argv[2]<<" for writing"<<endl;
 	exit(INPUT_ERR_NUM);
     }
-
+*/
  
     pqxxDB_t pqxx_interface;
     BaseObj_t::SetInterface(&pqxx_interface);
@@ -490,6 +637,8 @@ int main(int argc, char **argv)
 	    ++it,++file_cnt
 	    )
 	{
+		stringstream ss;
+		ss.str("");
 	    File_t* this_file_p=*it;
 	    assert(this_file_p);
 	    cout<<"File "<<file_cnt<<endl;
@@ -502,10 +651,16 @@ int main(int argc, char **argv)
 	    cout<<"Processing FileIR...";	    
 	    process_instructions(fir_p);
 	    cout<<"Done!"<<endl;
-	    
+		ss<<file_cnt;
+		annot_ofstream.open(string("annot_test"+ss.str()).c_str());
+		fir_p->GenerateSPRI(annot_ofstream);
+	    annot_ofstream.close();
+
+		delete fir_p;
 	}
 
-	annot_ofstream.close();
+	
+	
 	pqxx_interface.Commit();
     }
     catch(DatabaseError_t dberr)

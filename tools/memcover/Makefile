@@ -39,4 +39,4 @@ clean:
 
 
 memcover: 
-	$(CC) $(CFLAGS) memcover.cpp General_Utility.cpp $(INCLUDE) $(LIBS) -o memcover.exe
+	$(CC) $(CFLAGS) memcover.cpp General_Utility.cpp Rewrite_Utility.cpp $(INCLUDE) $(LIBS) -o memcover.exe
