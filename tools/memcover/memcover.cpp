@@ -380,6 +380,8 @@ void process_instructions(FileIR_t *fir_p)
 		func_entries[first_instr] = disasm;
 	}
 
+
+
 	for(
 		map<Instruction_t*,DISASM>::const_iterator it=post_esp_checks.begin();
 		it!=post_esp_checks.end();
@@ -395,9 +397,10 @@ void process_instructions(FileIR_t *fir_p)
 		tmp = insertAssemblyAfter(fir_p,instr,"pusha");
 		tmp = insertAssemblyAfter(fir_p,tmp,"pushf");
 		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
-		tmp->SetCallback("post_esp_check");
-		tmp = insertAssemblyAfter(fir_p,instr,"popf");
-		tmp = insertAssemblyAfter(fir_p,instr,"popa");
+		//tmp->SetCallback("post_esp_check");
+		tmp = insertAssemblyAfter(fir_p,tmp,"popf");
+		tmp = insertAssemblyAfter(fir_p,tmp,"popa");
+
 	}
 
 	for(
@@ -406,8 +409,8 @@ void process_instructions(FileIR_t *fir_p)
 		++it
 		)
 	{
-		Instruction_t *instr = it->first;
-		
+		Instruction_t *instr = it->first;	
+
 		//because rets redirect execution, a post_esp_check callback cannot be made
 		//here a special ret callback is used as a solution, checked prior to execution
 		//of the original instruction. No need for shadow execution as ret has a consistant behavior.
@@ -416,9 +419,10 @@ void process_instructions(FileIR_t *fir_p)
 		insertAssemblyBefore(fir_p,instr,"popa");
 		insertAssemblyBefore(fir_p,instr,"popf");
 		insertAssemblyBefore(fir_p,instr,"nop");
-		instr->SetCallback("ret_esp_check");
+//		instr->SetCallback("ret_esp_check");
 		insertAssemblyBefore(fir_p,instr,"pushf");
 		insertAssemblyBefore(fir_p,instr,"pusha");
+
 	}
 
 	for(
@@ -427,14 +431,16 @@ void process_instructions(FileIR_t *fir_p)
 		++it
 		)
 	{
+
 		Instruction_t *instr = it->first;
 
 		insertAssemblyBefore(fir_p,instr,"popa");
 		insertAssemblyBefore(fir_p,instr,"popf");
 		insertAssemblyBefore(fir_p,instr,"nop");
-		instr->SetCallback("func_entry");
+//		instr->SetCallback("func_entry");
 		insertAssemblyBefore(fir_p,instr,"pushf");
 		insertAssemblyBefore(fir_p,instr,"pusha");
+
 	}
 	
 	for(
@@ -445,6 +451,7 @@ void process_instructions(FileIR_t *fir_p)
 	{
 		Instruction_t *instr = it->first;
 		DISASM disasm = it->second;
+
 
 		PREFIXINFO prefix = disasm.Prefix;
 		unsigned int addr = 0;
@@ -495,6 +502,7 @@ void process_instructions(FileIR_t *fir_p)
 
 		//TODO: if rep, should I have a post rep check?
 
+
 		stringstream ss;
 		ss.str("");
 
@@ -505,33 +513,34 @@ void process_instructions(FileIR_t *fir_p)
 		insertAssemblyBefore(fir_p,instr,"popf");
 		insertAssemblyBefore(fir_p,instr,"add esp, 0x18");
 		insertAssemblyBefore(fir_p,instr,"nop");
-		instr->SetCallback("mem_ref");
+		//	instr->SetCallback("mem_ref");
 		
 		ss<<hex<<addr;
-		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
 		ss.str("");
 
 		ss<<hex<<func_addr;
-		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
 		ss.str("");
 
 		ss<<hex<<disasm.Instruction.Category;
-		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
 		ss.str("");
 
 		ss<<hex<<op1_code;
-		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
 		ss.str("");
 
 		ss<<hex<<op2_code;
-		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
 		ss.str("");
 
 		ss<<hex<<displ;
-		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
 		ss.str("");
 		insertAssemblyBefore(fir_p,instr,"pushf");
 		insertAssemblyBefore(fir_p,instr,"pusha");
+
 	}
 }
 
@@ -553,7 +562,7 @@ int main(int argc, char **argv)
 	exit(INPUT_ERR_NUM);
     }
     
-/*
+
     annot_ofstream.open(argv[2]);
     
     if(!annot_ofstream.is_open())
@@ -561,7 +570,7 @@ int main(int argc, char **argv)
 	cerr<<"Could not open file "<<argv[2]<<" for writing"<<endl;
 	exit(INPUT_ERR_NUM);
     }
-*/
+
  
     pqxxDB_t pqxx_interface;
     BaseObj_t::SetInterface(&pqxx_interface);
@@ -598,14 +607,14 @@ int main(int argc, char **argv)
 	    process_instructions(fir_p);
 	    cout<<"Done!"<<endl;
 		ss<<file_cnt;
-		annot_ofstream.open(string("annot_test"+ss.str()).c_str());
+		//annot_ofstream.open(string("annot_test"+ss.str()).c_str());
 		fir_p->GenerateSPRI(annot_ofstream);
-	    annot_ofstream.close();
+	    //annot_ofstream.close();
 
 		delete fir_p;
 	}
 
-	
+	annot_ofstream.close();
 	
 	pqxx_interface.Commit();
     }
