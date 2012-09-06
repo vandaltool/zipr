@@ -221,6 +221,7 @@ inline bool is_esp_dest(ARGTYPE &arg)
     return ((arg.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG) && (LOWORD(arg.ArgType)==REG4)&& arg.AccessMode==WRITE);
 }
 
+/*
 
 struct mem_ref_encoding
 {
@@ -314,6 +315,7 @@ bool encode_stack_alt(DISASM &disasm,stack_alt_encoding &out_encoding)
 
     return true;
 }
+*/
 
 void process_instructions(FileIR_t *fir_p)
 {
@@ -363,19 +365,23 @@ void process_instructions(FileIR_t *fir_p)
 		)
 	{
 		Function_t *func = *it;
+
+		/*
 		ControlFlowGraph_t cfg(func);
 		BasicBlock_t *block = cfg.GetEntry();
+		*/
 
-		Instruction_t *first_instr = *(block->GetInstructions().begin());
+		//TODO: I am not sure if this is reliable is using the control flow graph. 
+		Instruction_t *first_instr = func->GetEntryPoint();
 
 		DISASM disasm;
 		first_instr->Disassemble(disasm); //calls memset for me, no worries
 
-		func_entries[instr] = disasm;
+		func_entries[first_instr] = disasm;
 	}
 
 	for(
-		map<Instruction_t*,disasm>::const_iterator it=post_esp_checks.begin();
+		map<Instruction_t*,DISASM>::const_iterator it=post_esp_checks.begin();
 		it!=post_esp_checks.end();
 		++it
 		)
@@ -383,7 +389,7 @@ void process_instructions(FileIR_t *fir_p)
 		//Execute the instruction then call the post_esp_check callback
 		//The esp is checked after execution to avoid calculating esp
 		//through shadow execution. Will not work for ret instructions. 
-		Instruction_t *instr = *it;
+		Instruction_t *instr = it->first;
 		Instruction_t *tmp;
 
 		tmp = insertAssemblyAfter(fir_p,instr,"pusha");
@@ -395,12 +401,12 @@ void process_instructions(FileIR_t *fir_p)
 	}
 
 	for(
-		map<Instruction_t*,disasm>::const_iterator it=ret_esp_checks.begin();
+		map<Instruction_t*,DISASM>::const_iterator it=ret_esp_checks.begin();
 		it!=ret_esp_checks.end();
 		++it
 		)
 	{
-		Instruction_t *instr = *it;
+		Instruction_t *instr = it->first;
 		
 		//because rets redirect execution, a post_esp_check callback cannot be made
 		//here a special ret callback is used as a solution, checked prior to execution
@@ -414,36 +420,15 @@ void process_instructions(FileIR_t *fir_p)
 		insertAssemblyBefore(fir_p,instr,"pushf");
 		insertAssemblyBefore(fir_p,instr,"pusha");
 	}
-	
-	for(
-		map<Instruction_t*,disasm>::const_iterator it=mem_refs.begin();
-		it!=mem_refs.end();
-		++it
-		)
-	{
-		Instruction_t *instr = *it;
-
-//Note the use of insertAssemblyBefore, read in reverse order. 
-		insertAssemblyBefore(fir_p,instr,"popa");
-		insertAssemblyBefore(fir_p,instr,"popf");
-		insertAssemblyBefore(fir_p,instr,"add esp, 0x18");
-		insertAssemblyBefore(fir_p,instr,"nop");
-		insertAssemblyBefore(fir_p,instr,"push 0xAA");
-		insertAssemblyBefore(fir_p,instr,"push 0xBB");
-		insertAssemblyBefore(fir_p,instr,"push 0xCC");
-		insertAssemblyBefore(fir_p,instr,"push 0xDD");
-		insertAssemblyBefore(fir_p,instr,"push 0xEE");
-		insertAssemblyBefore(fir_p,instr,"push 0xFF");
-		insertAssemblyBefore(fir_p,instr,"pushf");
-		insertAssemblyBefore(fir_p,instr,"pusha");
-	}
 
 	for(
-		map<Instruction_t*,disasm>::const_iterator it=func_entries.begin();
+		map<Instruction_t*,DISASM>::const_iterator it=func_entries.begin();
 		it!=func_entries.end();
 		++it
 		)
 	{
+		Instruction_t *instr = it->first;
+
 		insertAssemblyBefore(fir_p,instr,"popa");
 		insertAssemblyBefore(fir_p,instr,"popf");
 		insertAssemblyBefore(fir_p,instr,"nop");
@@ -451,141 +436,102 @@ void process_instructions(FileIR_t *fir_p)
 		insertAssemblyBefore(fir_p,instr,"pushf");
 		insertAssemblyBefore(fir_p,instr,"pusha");
 	}
-
-	PREFIXINFO prefix = disasm.Prefix;
-	unsigned int addr = 0;
-	unsigned int func_addr = 0;
-	unsigned int op1_code=0,op2_code=0;
-	long long displ = 0;
-	string lib_name = URLToFile(fir_p->GetFile()->GetURL());
-
-	assert(instr->GetAddress());
-
-	addr = instr->GetAddress()->GetVirtualOffset();
-
-	if(addr == 0)
-	{
-//	    cerr<<"no addr: "<<disasm.CompleteInstr<<endl;
-	    //TODO: mark instruction for instrumentation and continue;
-	    continue;
-	}
-
-	if(instr->GetFunction() && instr->GetFunction()->GetEntryPoint() &&
-	   instr->GetFunction()->GetEntryPoint()->GetAddress())
-	{
-	    func_addr = instr->GetFunction()->GetEntryPoint()->GetAddress()->GetVirtualOffset();
-	}
-
-	if(instr_mn.compare("lea") == 0)
-	{
-	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x44;
-	}
-	else if(instr_mn.find("push") != string::npos)
-	{
-	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x45;
-	}
-	else if(instr_mn.find("pop") != string::npos)
-	{
-	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x46;
-	}
-	else if(instr_mn.compare("ret") == 0)
-	{
-		//TODO: call ret_esp_check
-
-	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x47;
-	}
-	else if(instr_mn.compare("call") == 0)
-	{
-
-
-	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x48;
-	}
-
-	//TODO: calls.
-
-	if(prefix.RepPrefix == InUsePrefix)
-	{
-	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF3FFF)|(0x1<<14);
-	}
-	else if(prefix.RepnePrefix == InUsePrefix)
-	{
-	    disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF3FFF)|(0x2<<14);
-	}
-
-	//TODO: record if pop or push, ret or call. 
-	//TODO: record in instr category/encoding the numb of operands
-
-	op1_code = encode_operand(disasm.Argument1);
-	op2_code = encode_operand(disasm.Argument2);
-
-
-/*
-	insertAssemblyBefore(fir_p,instr,"popa");
-	insertAssemblyBefore(fir_p,instr,"popf");
-	insertAssemblyBefore(fir_p,instr,"add esp, 0x20");
-	insertAssemblyBefore(fir_p,instr,"nop");
-	insertAssemblyBefore(fir_p,instr,"push 0xAA");
-	insertAssemblyBefore(fir_p,instr,"push 0xBB");
-	insertAssemblyBefore(fir_p,instr,"push 0xCC");
-	insertAssemblyBefore(fir_p,instr,"push 0xDD");
-	insertAssemblyBefore(fir_p,instr,"push 0xEE");
-	insertAssemblyBefore(fir_p,instr,"pushf");
-	insertAssemblyBefore(fir_p,instr,"pusha");
-*/
-
-	//nand, both args can't have displacements, if this happens I need to know why. 
-	assert(!(((op1_code&0x00000001)==0x1)&&((op2_code&0x00000001)==0x1)));
-
-	if(disasm.Argument1.Memory.Displacement != 0)
-	    displ = disasm.Argument1.Memory.Displacement;
-	else if(disasm.Argument2.Memory.Displacement != 0)
-	    displ = disasm.Argument2.Memory.Displacement;
-	else
-	    displ = 0;
-
-/*
-	annot_ofstream<<"MEM_ACCESS:"<<lib_name<<":"<<hex<<addr<<":"<<hex<<func_addr<<":"<<hex<<disasm.Instruction.Category<<":"<<hex<<op1_code<<":"<<hex<<op2_code<<":";
-	if(displ < 0)
-	{
-	    displ = displ *-1;
-	    annot_ofstream<<"-";
-	}
-
-	annot_ofstream<<hex<<displ<<endl;
-*/
 	
-    }
-
-	cout<<"mem_refs: "<<set_mr_callback.size()<<endl;
-	cout<<"set stacks: "<<set_sa_callback.size()<<endl;
-
-	for(int i=0;i<set_mr_callback.size();i++)
+	for(
+		map<Instruction_t*,DISASM>::const_iterator it=mem_refs.begin();
+		it!=mem_refs.end();
+		++it
+		)
 	{
-		Instruction_t *instr = set_mr_callback[i];
+		Instruction_t *instr = it->first;
+		DISASM disasm = it->second;
 
+		PREFIXINFO prefix = disasm.Prefix;
+		unsigned int addr = 0;
+		unsigned int func_addr = 0;
+		unsigned int op1_code=0,op2_code=0;
+		unsigned int displ = 0;
+		string instr_mn = disasm.Instruction.Mnemonic;
+		trim(instr_mn);
+		string lib_name = URLToFile(fir_p->GetFile()->GetURL());
+
+		assert(instr->GetAddress());
+		addr = instr->GetAddress()->GetVirtualOffset();
+
+		//I am not sure if any of these situations exist, but I want to avoid yucky segfaults
+		if(instr->GetFunction() && instr->GetFunction()->GetEntryPoint() &&
+		   instr->GetFunction()->GetEntryPoint()->GetAddress())
+		{
+			//TODO: this might not work for dyn libs
+			func_addr = instr->GetFunction()->GetEntryPoint()->GetAddress()->GetVirtualOffset();
+		}
+
+		op1_code = encode_operand(disasm.Argument1);
+		op2_code = encode_operand(disasm.Argument2);
+
+		assert(!(((op1_code&0x00000001)==0x1)&&((op2_code&0x00000001)==0x1)));
+ 
+		//TODO: I am type casting to unsigned int, will this cause problems?
+		if(disasm.Argument1.Memory.Displacement != 0)
+			displ = (unsigned int)disasm.Argument1.Memory.Displacement;
+		else if(disasm.Argument2.Memory.Displacement != 0)
+			displ = (unsigned int)disasm.Argument2.Memory.Displacement;
+		else
+			displ = 0;
+
+		if(instr_mn.compare("lea") == 0)
+		{
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x44;
+		}
+
+		if(prefix.RepPrefix == InUsePrefix)
+		{
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF3FFF)|(0x1<<14);
+		}
+		else if(prefix.RepnePrefix == InUsePrefix)
+		{
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF3FFF)|(0x2<<14);
+		}
+
+		//TODO: if rep, should I have a post rep check?
+
+		stringstream ss;
+		ss.str("");
+
+		//TODO: addr can equal 0 make sure its handled.
+		
+//Note the use of insertAssemblyBefore, read in reverse order. 
 		insertAssemblyBefore(fir_p,instr,"popa");
 		insertAssemblyBefore(fir_p,instr,"popf");
 		insertAssemblyBefore(fir_p,instr,"add esp, 0x18");
 		insertAssemblyBefore(fir_p,instr,"nop");
-		insertAssemblyBefore(fir_p,instr,"push 0xAA");
-		insertAssemblyBefore(fir_p,instr,"push 0xBB");
-		insertAssemblyBefore(fir_p,instr,"push 0xCC");
-		insertAssemblyBefore(fir_p,instr,"push 0xDD");
-		insertAssemblyBefore(fir_p,instr,"push 0xEE");
-		insertAssemblyBefore(fir_p,instr,"push 0xFF");
+		instr->SetCallback("mem_ref");
+		
+		ss<<hex<<addr;
+		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		ss.str("");
+
+		ss<<hex<<func_addr;
+		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		ss.str("");
+
+		ss<<hex<<disasm.Instruction.Category;
+		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		ss.str("");
+
+		ss<<hex<<op1_code;
+		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		ss.str("");
+
+		ss<<hex<<op2_code;
+		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		ss.str("");
+
+		ss<<hex<<displ;
+		insertAssemblyBefore(fir_p,instr,"push "+ss.str());
+		ss.str("");
 		insertAssemblyBefore(fir_p,instr,"pushf");
 		insertAssemblyBefore(fir_p,instr,"pusha");
-	}
-
-	for(int i=0;i<set_sa_callback.size();i++)
-	{
-		Instruction_t *instr = set_sa_callback[i];
-
-		insertAssemblyBefore(fir_p,instr,"nop");
-		insertAssemblyBefore(fir_p,instr,"nop");
-		insertAssemblyBefore(fir_p,instr,"nop");
-		insertAssemblyBefore(fir_p,instr,"nop");
-		insertAssemblyBefore(fir_p,instr,"nop");
 	}
 }
 
