@@ -425,22 +425,47 @@ void process_instructions(FileIR_t *fir_p)
 		++it
 		)
 	{
-		Instruction_t *instr = it->first;	
+		Instruction_t *instr = it->first;
+		Instruction_t *orig_ft = instr;
 		Instruction_t *tmp;
+		stringstream ss;
+		ss.str("");
+		unsigned int ra = get_next_addr();
+		ss<<hex<<ra;
+
+		insertAssemblyBefore(fir_p,instr,"pushad");
+
+		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
+		tmp->SetCallback("ret_esp_check");
+		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
+		tmp->GetAddress()->SetVirtualOffset(ra);
+		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
+
 		//because rets redirect execution, a post_esp_check callback cannot be made
 		//here a special ret callback is used as a solution, checked prior to execution
 		//of the original instruction. No need for shadow execution as ret has a consistant behavior.
 
 
+/*
 		//Note the use of insertAssemblyBefore, read in reverse order. 
 		insertAssemblyBefore(fir_p,instr,"popad");
 		insertAssemblyBefore(fir_p,instr,"popfd");
-		insertAssemblyBefore(fir_p,instr,"nop");
-//		instr->SetCallback("ret_esp_check");
-		tmp = insertAssemblyBefore(fir_p,instr,"pushfd");
-//		tmp->SetCallback("buffer_overflow_detector");
+		tmp = insertAssemblyBefore(fir_p,instr,"nop");
+		//TOOD: okay this is ugly, but I have to set data after it no longer
+		//points to the original instruction.
+		tmp->GetAddress()->SetVirtualOffset(ra);
+		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+		tmp = insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
+		//TOOD: okay this is ugly, but I have to set the callback after
+		//the instruction no longer points to the original.
+		//tmp->SetCallback("ret_esp_check");
+		tmp->SetCallback("post_esp_check");
+		insertAssemblyBefore(fir_p,instr,"pushfd");
 		insertAssemblyBefore(fir_p,instr,"pushad");
-
+*/
 	}
 
 	for(
@@ -451,16 +476,36 @@ void process_instructions(FileIR_t *fir_p)
 	{
 
 		Instruction_t *instr = it->first;
+		Instruction_t *tmp;
+		Instruction_t *ft = instr->GetFallthrough();
 
+		stringstream ss;
+		ss.str("");
+		unsigned int ra = get_next_addr();
+		ss<<hex<<ra;
+
+		insertAssemblyBefore(fir_p,instr,"pushad");
+
+		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
+		tmp->SetCallback("func_entry");
+		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
+		tmp->GetAddress()->SetVirtualOffset(ra);
+		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
+
+/*
 		insertAssemblyBefore(fir_p,instr,"popa");
 		insertAssemblyBefore(fir_p,instr,"popf");
 		insertAssemblyBefore(fir_p,instr,"nop");
 //		instr->SetCallback("func_entry");
 		insertAssemblyBefore(fir_p,instr,"pushf");
 		insertAssemblyBefore(fir_p,instr,"pusha");
-
+*/
 	}
-	
+
+
 	for(
 		map<Instruction_t*,DISASM>::const_iterator it=mem_refs.begin();
 		it!=mem_refs.end();
@@ -468,6 +513,7 @@ void process_instructions(FileIR_t *fir_p)
 		)
 	{
 		Instruction_t *instr = it->first;
+		Instruction_t *tmp;
 		DISASM disasm = it->second;
 
 
@@ -523,41 +569,51 @@ void process_instructions(FileIR_t *fir_p)
 
 		stringstream ss;
 		ss.str("");
-
 		//TODO: addr can equal 0 make sure its handled.
 		
 //Note the use of insertAssemblyBefore, read in reverse order. 
-		insertAssemblyBefore(fir_p,instr,"popa");
-		insertAssemblyBefore(fir_p,instr,"popf");
-		insertAssemblyBefore(fir_p,instr,"add esp, 0x18");
-		insertAssemblyBefore(fir_p,instr,"nop");
-		//	instr->SetCallback("mem_ref");
-		
-		ss<<hex<<addr;
-		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
-		ss.str("");
+		insertAssemblyBefore(fir_p,instr,"pushad");
 
-		ss<<hex<<func_addr;
-		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
-		ss.str("");
+		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
 
-		ss<<hex<<disasm.Instruction.Category;
-		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
-		ss.str("");
-
-		ss<<hex<<op1_code;
-		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
+		ss<<hex<<displ;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
 		ss.str("");
 
 		ss<<hex<<op2_code;
-		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
 		ss.str("");
 
-		ss<<hex<<displ;
-		insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
+		ss<<hex<<op1_code;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
 		ss.str("");
-		insertAssemblyBefore(fir_p,instr,"pushf");
-		insertAssemblyBefore(fir_p,instr,"pusha");
+
+		ss<<hex<<disasm.Instruction.Category;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+
+		ss<<hex<<func_addr;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+
+		ss<<hex<<addr;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+
+		unsigned int ra = get_next_addr();
+		ss<<hex<<ra;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+
+		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
+		tmp->SetCallback("mem_ref");
+
+		tmp = insertAssemblyAfter(fir_p,tmp,"add esp, 0x18");
+		tmp->GetAddress()->SetVirtualOffset(ra);
+		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+
+		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
+		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
 
 	}
 }
