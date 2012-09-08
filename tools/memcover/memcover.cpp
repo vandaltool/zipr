@@ -317,6 +317,14 @@ bool encode_stack_alt(DISASM &disasm,stack_alt_encoding &out_encoding)
 }
 */
 
+static int counter = -16;
+
+virtual_offset_t get_next_addr()
+{
+	counter += 16;
+	return 0xf0000000 + counter;
+}
+
 void process_instructions(FileIR_t *fir_p)
 {
 	//using maps since I believe inserting instructions while iterating
@@ -394,12 +402,20 @@ void process_instructions(FileIR_t *fir_p)
 		Instruction_t *instr = it->first;
 		Instruction_t *tmp;
 
-		tmp = insertAssemblyAfter(fir_p,instr,"pusha");
-		tmp = insertAssemblyAfter(fir_p,tmp,"pushf");
+		stringstream ss;
+		ss.str("");
+		unsigned int ra = get_next_addr();
+		ss<<hex<<ra;
+
+		tmp = insertAssemblyAfter(fir_p,instr,"pushad");
+		tmp = insertAssemblyAfter(fir_p,tmp,"pushfd");
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
 		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
-		//tmp->SetCallback("post_esp_check");
-		tmp = insertAssemblyAfter(fir_p,tmp,"popf");
-		tmp = insertAssemblyAfter(fir_p,tmp,"popa");
+		tmp->SetCallback("post_esp_check");
+		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
+		tmp->GetAddress()->SetVirtualOffset(ra);
+		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
 
 	}
 
@@ -410,18 +426,20 @@ void process_instructions(FileIR_t *fir_p)
 		)
 	{
 		Instruction_t *instr = it->first;	
-
+		Instruction_t *tmp;
 		//because rets redirect execution, a post_esp_check callback cannot be made
 		//here a special ret callback is used as a solution, checked prior to execution
 		//of the original instruction. No need for shadow execution as ret has a consistant behavior.
 
+
 		//Note the use of insertAssemblyBefore, read in reverse order. 
-		insertAssemblyBefore(fir_p,instr,"popa");
-		insertAssemblyBefore(fir_p,instr,"popf");
+		insertAssemblyBefore(fir_p,instr,"popad");
+		insertAssemblyBefore(fir_p,instr,"popfd");
 		insertAssemblyBefore(fir_p,instr,"nop");
 //		instr->SetCallback("ret_esp_check");
-		insertAssemblyBefore(fir_p,instr,"pushf");
-		insertAssemblyBefore(fir_p,instr,"pusha");
+		tmp = insertAssemblyBefore(fir_p,instr,"pushfd");
+//		tmp->SetCallback("buffer_overflow_detector");
+		insertAssemblyBefore(fir_p,instr,"pushad");
 
 	}
 
