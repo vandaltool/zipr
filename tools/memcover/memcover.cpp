@@ -359,8 +359,8 @@ void process_instructions(FileIR_t *fir_p)
 		if(instr_mn.compare("ret")==0)
 			ret_esp_checks[instr] = disasm;
 
-		if(((disasm.Argument1.ArgType&0xFFFF0000) != MEMORY_TYPE) && 
-		   ((disasm.Argument2.ArgType&0xFFFF0000) != MEMORY_TYPE))
+		if(((disasm.Argument1.ArgType&0xFFFF0000) == MEMORY_TYPE) ||
+		   ((disasm.Argument2.ArgType&0xFFFF0000) == MEMORY_TYPE))
 			mem_refs[instr] = disasm;
 
 		//TODO: missing calls
@@ -379,7 +379,7 @@ void process_instructions(FileIR_t *fir_p)
 		BasicBlock_t *block = cfg.GetEntry();
 		*/
 
-		//TODO: I am not sure if this is reliable is using the control flow graph. 
+		//TODO: I am not sure if this is as reliable as using the control flow graph. 
 		Instruction_t *first_instr = func->GetEntryPoint();
 
 		DISASM disasm;
@@ -390,12 +390,16 @@ void process_instructions(FileIR_t *fir_p)
 
 
 
+
+
+
 	for(
 		map<Instruction_t*,DISASM>::const_iterator it=post_esp_checks.begin();
 		it!=post_esp_checks.end();
 		++it
 		)
 	{
+/*
 		//Execute the instruction then call the post_esp_check callback
 		//The esp is checked after execution to avoid calculating esp
 		//through shadow execution. Will not work for ret instructions. 
@@ -417,6 +421,33 @@ void process_instructions(FileIR_t *fir_p)
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
 
+*/
+		Instruction_t *instr = it->first;
+		Instruction_t *orig_ft = instr;
+		Instruction_t *tmp;
+
+		unsigned int addr = instr->GetAddress()->GetVirtualOffset();
+		stringstream ss;
+		ss.str("");
+		unsigned int ra = get_next_addr();
+		
+
+		tmp = insertAssemblyAfter(fir_p,instr,"pushad");
+
+		tmp = insertAssemblyAfter(fir_p,tmp,"pushfd");
+		ss<<hex<<addr;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+		ss<<hex<<ra;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
+		tmp->SetCallback("post_esp_check");
+		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
+		tmp->GetAddress()->SetVirtualOffset(ra);
+		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
+		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
+
 	}
 
 	for(
@@ -428,28 +459,38 @@ void process_instructions(FileIR_t *fir_p)
 		Instruction_t *instr = it->first;
 		Instruction_t *orig_ft = instr;
 		Instruction_t *tmp;
+
+		unsigned int addr = instr->GetAddress()->GetVirtualOffset();
 		stringstream ss;
 		ss.str("");
 		unsigned int ra = get_next_addr();
-		ss<<hex<<ra;
+		
 
 		insertAssemblyBefore(fir_p,instr,"pushad");
 
 		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
+		ss<<hex<<addr;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+		ss<<hex<<ra;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
 		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
 		tmp->SetCallback("ret_esp_check");
-		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
+		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
 		tmp->GetAddress()->SetVirtualOffset(ra);
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
 
+/*
 		//because rets redirect execution, a post_esp_check callback cannot be made
 		//here a special ret callback is used as a solution, checked prior to execution
 		//of the original instruction. No need for shadow execution as ret has a consistant behavior.
 
 
-/*
+		
+
+
 		//Note the use of insertAssemblyBefore, read in reverse order. 
 		insertAssemblyBefore(fir_p,instr,"popad");
 		insertAssemblyBefore(fir_p,instr,"popfd");
@@ -468,6 +509,8 @@ void process_instructions(FileIR_t *fir_p)
 */
 	}
 
+/*
+
 	for(
 		map<Instruction_t*,DISASM>::const_iterator it=func_entries.begin();
 		it!=func_entries.end();
@@ -482,30 +525,28 @@ void process_instructions(FileIR_t *fir_p)
 		stringstream ss;
 		ss.str("");
 		unsigned int ra = get_next_addr();
-		ss<<hex<<ra;
+		unsigned int func_addr = instr->GetAddress()->GetVirtualOffset();//instr->GetFunction()->GetEntryPoint()->GetAddress()->GetVirtualOffset();
 
 		insertAssemblyBefore(fir_p,instr,"pushad");
 
 		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
+		ss<<hex<<func_addr;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+		ss<<hex<<ra;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
 		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
 		tmp->SetCallback("func_entry");
-		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
+		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
 		tmp->GetAddress()->SetVirtualOffset(ra);
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
 
-/*
-		insertAssemblyBefore(fir_p,instr,"popa");
-		insertAssemblyBefore(fir_p,instr,"popf");
-		insertAssemblyBefore(fir_p,instr,"nop");
-//		instr->SetCallback("func_entry");
-		insertAssemblyBefore(fir_p,instr,"pushf");
-		insertAssemblyBefore(fir_p,instr,"pusha");
-*/
 	}
 
-
+*/
 	for(
 		map<Instruction_t*,DISASM>::const_iterator it=mem_refs.begin();
 		it!=mem_refs.end();
@@ -616,6 +657,48 @@ void process_instructions(FileIR_t *fir_p)
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
 
 	}
+
+
+
+	//TODO: there is no reason to loop through this again.
+
+	//NOTE: this must be done after all other instrumentation (since it inserts before). 
+	for(
+		map<Instruction_t*,DISASM>::const_iterator it=func_entries.begin();
+		it!=func_entries.end();
+		++it
+		)
+	{
+
+		Instruction_t *instr = it->first;
+		Instruction_t *tmp;
+		Instruction_t *ft = instr->GetFallthrough();
+
+		stringstream ss;
+		ss.str("");
+		unsigned int ra = get_next_addr();
+		unsigned int func_addr = instr->GetAddress()->GetVirtualOffset();//instr->GetFunction()->GetEntryPoint()->GetAddress()->GetVirtualOffset();
+
+		insertAssemblyBefore(fir_p,instr,"pushad");
+
+		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
+		ss<<hex<<func_addr;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+		ss<<hex<<ra;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
+		tmp->SetCallback("func_entry");
+		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
+		tmp->GetAddress()->SetVirtualOffset(ra);
+		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
+		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
+
+	}
+
+
 }
 
 
