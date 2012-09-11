@@ -184,13 +184,13 @@ unsigned int encode_operand(const ARGTYPE &arg)
 
     if((arg.ArgType&0xFFFF0000) != MEMORY_TYPE)
     {
-	return 0;
+		return 0;
     }
 
     //TODO: make this optimization optional
     //for the stack, absolute accesses are not useful. 
     if(arg.Memory.BaseRegister == 0 && arg.Memory.IndexRegister == 0 && arg.Memory.Displacement != 0)
-	return 0;
+		return 0;
 
     encoding = encode_size(arg.ArgSize);
 
@@ -207,9 +207,9 @@ unsigned int encode_operand(const ARGTYPE &arg)
     encoding |= encode_reg(arg.Memory.BaseRegister);
     encoding <<= 4;
     encoding |= encode_reg(arg.Memory.IndexRegister);
-    encoding <<= 2;
+    encoding <<= 4;
     encoding |= encode_scale(arg.Memory.Scale);
-    encoding <<= 2;
+    encoding <<= 4;
     if(arg.Memory.Displacement != 0)
 	encoding |= 0x1; 
 	    
@@ -220,102 +220,6 @@ inline bool is_esp_dest(ARGTYPE &arg)
 {
     return ((arg.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG) && (LOWORD(arg.ArgType)==REG4)&& arg.AccessMode==WRITE);
 }
-
-/*
-
-struct mem_ref_encoding
-{
-    unsigned int instr_code;
-    unsigned int op1_code;
-    unsigned int op2_code;
-    long long displ;
-};
-
-bool encode_stack_alt(DISASM &disasm,stack_alt_encoding &out_encoding)
-{
-
-
-    ARGTYPE mod_src;
-
-    if(is_esp_dest(disasm.Argument1))
-	mod_src = disasm.Argument2;
-    else if(is_esp_dest(disasm.Argument2))
-	mod_src = disasm.Argument1;
-    else if(disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4)
-	{
-	    //cout<<"Implicit esp: "<<disasm.CompleteInstr<<endl;
-	}
-	else
-		return false;
-
-    memset(&out_encoding,0,sizeof(stack_alt_encoding));
-
-    if((mod_src.ArgType&0xFFFF0000) == (REGISTER_TYPE+GENERAL_REG))
-    {
-	unsigned int reg_code = encode_reg(LOWORD(mod_src.ArgType));
-
-	//TODO: encode reg. 
-    }
-    else if(mod_src.ArgType == MEMORY_TYPE)
-    {
-	unsigned int base_code = encode_reg(mod_src.Memory.BaseRegister);
-	unsigned int index_code = encode_reg(mod_src.Memory.IndexRegister);
-	unsigned int scale_code = encode_scale(mod_src.Memory.Scale);
-	out_encoding.constant = mod_src.Memory.Displacement;
-    
-	//TODO: encode it all.
-    }
-    else
-    {
-	out_encoding.constant = disasm.Instruction.Immediat;
-    }
-
-    string instr_mn = disasm.Instruction.Mnemonic;
-    trim(instr_mn);
-
-	//cout<<disasm.CompleteInstr<<endl;
-
-    if(instr_mn.compare("and")==0)
-    {
-	//todo: encode and
-    }
-    else if(instr_mn.compare("add")==0)
-    {
-	//todo: encode add
-    }
-    else if(instr_mn.compare("sub")==0)
-    {
-	//todo: encode sub
-    }
-    else if(instr_mn.compare("leave")==0)
-    {
-	//todo: encode leave
-    }
-    else if(instr_mn.compare("mov")==0)
-    {
-	//todo: encode mov
-    }
-    else if(instr_mn.compare("lea")==0)
-    {
-	//todo: encode lea
-    }
-    else if(instr_mn.compare("inc")==0)
-    {
-	//todo: encode inc
-    }
-	else if(instr_mn.compare("dec")==0)
-	{
-		//todo: encode dec
-	}
-    else
-    {
-	//I want to know when this happens so I can add a new encoding
-	//assert(false);
-    }
-
-    return true;
-}
-*/
 
 static int counter = -16;
 
@@ -333,6 +237,7 @@ void process_instructions(FileIR_t *fir_p)
 	map<Instruction_t*,DISASM> ret_esp_checks;
 	map<Instruction_t*,DISASM> mem_refs;
 	map<Instruction_t*,DISASM> func_entries;
+	map<Instruction_t*,DISASM> post_rep_checks;
 
     for(
 	set<Instruction_t*>::const_iterator it=fir_p->GetInstructions().begin();
@@ -347,10 +252,12 @@ void process_instructions(FileIR_t *fir_p)
 		instr->Disassemble(disasm); //calls memset for me, no worries
 		string instr_mn = disasm.Instruction.Mnemonic;
 		trim(instr_mn);
+		PREFIXINFO prefix = disasm.Prefix;
 
 		//is esp a destination, or is esp implicitly modified?
 		if(is_esp_dest(disasm.Argument1) || is_esp_dest(disasm.Argument2) ||
-		   disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4)
+		   disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4 ||
+		   instr_mn.compare("call") == 0)
 		{
 			assert(instr_mn.compare("ret") != 0);
 			post_esp_checks[instr] = disasm;
@@ -363,7 +270,10 @@ void process_instructions(FileIR_t *fir_p)
 		   ((disasm.Argument2.ArgType&0xFFFF0000) == MEMORY_TYPE))
 			mem_refs[instr] = disasm;
 
-		//TODO: missing calls
+		if(prefix.RepPrefix == InUsePrefix ||prefix.RepnePrefix == InUsePrefix)
+		{
+			post_rep_checks[instr] = disasm;
+		}
 	}
 
 	for(
@@ -388,9 +298,36 @@ void process_instructions(FileIR_t *fir_p)
 		func_entries[first_instr] = disasm;
 	}
 
+	//NOTE: post checks must be placed first.
+	for(
+		map<Instruction_t*,DISASM>::const_iterator it=post_rep_checks.begin();
+		it!=post_rep_checks.end();
+		++it
+		)
+	{
+		Instruction_t *instr = it->first;
+		Instruction_t *tmp;
 
-
-
+		unsigned int addr = instr->GetAddress()->GetVirtualOffset();
+		stringstream ss;
+		ss.str("");
+		unsigned int ra = get_next_addr();
+		
+		insertAssemblyBefore(fir_p,instr,"pushad");
+		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
+		ss<<hex<<addr;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		ss.str("");
+		ss<<hex<<ra;
+		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
+		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
+		tmp->SetCallback("post_rep_check");
+		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
+		tmp->GetAddress()->SetVirtualOffset(ra);
+		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
+		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
+		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
+	}
 
 
 	for(
@@ -423,7 +360,6 @@ void process_instructions(FileIR_t *fir_p)
 
 */
 		Instruction_t *instr = it->first;
-		Instruction_t *orig_ft = instr;
 		Instruction_t *tmp;
 
 		unsigned int addr = instr->GetAddress()->GetVirtualOffset();
@@ -433,7 +369,6 @@ void process_instructions(FileIR_t *fir_p)
 		
 
 		tmp = insertAssemblyAfter(fir_p,instr,"pushad");
-
 		tmp = insertAssemblyAfter(fir_p,tmp,"pushfd");
 		ss<<hex<<addr;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
@@ -457,7 +392,6 @@ void process_instructions(FileIR_t *fir_p)
 		)
 	{
 		Instruction_t *instr = it->first;
-		Instruction_t *orig_ft = instr;
 		Instruction_t *tmp;
 
 		unsigned int addr = instr->GetAddress()->GetVirtualOffset();
@@ -467,7 +401,6 @@ void process_instructions(FileIR_t *fir_p)
 		
 
 		insertAssemblyBefore(fir_p,instr,"pushad");
-
 		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
 		ss<<hex<<addr;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
@@ -509,44 +442,6 @@ void process_instructions(FileIR_t *fir_p)
 */
 	}
 
-/*
-
-	for(
-		map<Instruction_t*,DISASM>::const_iterator it=func_entries.begin();
-		it!=func_entries.end();
-		++it
-		)
-	{
-
-		Instruction_t *instr = it->first;
-		Instruction_t *tmp;
-		Instruction_t *ft = instr->GetFallthrough();
-
-		stringstream ss;
-		ss.str("");
-		unsigned int ra = get_next_addr();
-		unsigned int func_addr = instr->GetAddress()->GetVirtualOffset();//instr->GetFunction()->GetEntryPoint()->GetAddress()->GetVirtualOffset();
-
-		insertAssemblyBefore(fir_p,instr,"pushad");
-
-		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
-		ss<<hex<<func_addr;
-		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
-		ss.str("");
-		ss<<hex<<ra;
-		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
-		ss.str("");
-		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
-		tmp->SetCallback("func_entry");
-		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
-		tmp->GetAddress()->SetVirtualOffset(ra);
-		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
-		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
-		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
-
-	}
-
-*/
 	for(
 		map<Instruction_t*,DISASM>::const_iterator it=mem_refs.begin();
 		it!=mem_refs.end();
@@ -659,8 +554,7 @@ void process_instructions(FileIR_t *fir_p)
 	}
 
 
-
-	//TODO: there is no reason to loop through this again.
+	//TODO: do I need to loop again for this?
 
 	//NOTE: this must be done after all other instrumentation (since it inserts before). 
 	for(
@@ -669,10 +563,8 @@ void process_instructions(FileIR_t *fir_p)
 		++it
 		)
 	{
-
 		Instruction_t *instr = it->first;
 		Instruction_t *tmp;
-		Instruction_t *ft = instr->GetFallthrough();
 
 		stringstream ss;
 		ss.str("");
@@ -695,10 +587,7 @@ void process_instructions(FileIR_t *fir_p)
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
 		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
-
 	}
-
-
 }
 
 
