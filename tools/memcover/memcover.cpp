@@ -313,8 +313,8 @@ void process_instructions(FileIR_t *fir_p)
 		ss.str("");
 		unsigned int ra = get_next_addr();
 		
-		insertAssemblyBefore(fir_p,instr,"pushad");
-		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
+		tmp = insertAssemblyAfter(fir_p,instr,"pushad");
+		tmp = insertAssemblyAfter(fir_p,tmp,"pushfd");
 		ss<<hex<<addr;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
 		ss.str("");
