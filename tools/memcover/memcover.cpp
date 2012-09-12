@@ -490,6 +490,14 @@ void process_instructions(FileIR_t *fir_p)
 		{
 			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x44;
 		}
+		if(instr_mn.find("push") != string::npos)
+		{
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x45;
+		}
+		if(instr_mn.find("pop") != string::npos)
+		{
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x46;
+		}
 
 		if(prefix.RepPrefix == InUsePrefix)
 		{
