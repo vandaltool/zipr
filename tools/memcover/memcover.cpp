@@ -239,6 +239,7 @@ void process_instructions(FileIR_t *fir_p)
 	map<Instruction_t*,DISASM> func_entries;
 	map<Instruction_t*,DISASM> post_rep_checks;
 
+
     for(
 	set<Instruction_t*>::const_iterator it=fir_p->GetInstructions().begin();
 	it!=fir_p->GetInstructions().end();
@@ -320,9 +321,8 @@ void process_instructions(FileIR_t *fir_p)
 		ss.str("");
 		ss<<hex<<ra;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
-		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
-		tmp->SetCallback("post_rep_check");
 		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
+		tmp->SetCallback("post_rep_check");
 		tmp->GetAddress()->SetVirtualOffset(ra);
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
 		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
@@ -336,6 +336,7 @@ void process_instructions(FileIR_t *fir_p)
 		++it
 		)
 	{
+
 /*
 		//Execute the instruction then call the post_esp_check callback
 		//The esp is checked after execution to avoid calculating esp
@@ -375,9 +376,9 @@ void process_instructions(FileIR_t *fir_p)
 		ss.str("");
 		ss<<hex<<ra;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
-		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
-		tmp->SetCallback("post_esp_check");
+   
 		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
+		tmp->SetCallback("post_esp_check");
 		tmp->GetAddress()->SetVirtualOffset(ra);
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
 		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
@@ -398,7 +399,6 @@ void process_instructions(FileIR_t *fir_p)
 		stringstream ss;
 		ss.str("");
 		unsigned int ra = get_next_addr();
-		
 
 		insertAssemblyBefore(fir_p,instr,"pushad");
 		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
@@ -407,13 +407,13 @@ void process_instructions(FileIR_t *fir_p)
 		ss.str("");
 		ss<<hex<<ra;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
-		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
-		tmp->SetCallback("ret_esp_check");
 		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
+		tmp->SetCallback("ret_esp_check");
 		tmp->GetAddress()->SetVirtualOffset(ra);
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
 		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
+
 
 /*
 		//because rets redirect execution, a post_esp_check callback cannot be made
@@ -451,7 +451,6 @@ void process_instructions(FileIR_t *fir_p)
 		Instruction_t *instr = it->first;
 		Instruction_t *tmp;
 		DISASM disasm = it->second;
-
 
 		PREFIXINFO prefix = disasm.Prefix;
 		unsigned int addr = 0;
@@ -548,17 +547,12 @@ void process_instructions(FileIR_t *fir_p)
 		ss<<hex<<ra;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
 		ss.str("");
-
-		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
-		tmp->SetCallback("mem_ref");
-
 		tmp = insertAssemblyAfter(fir_p,tmp,"add esp, 0x18");
+		tmp->SetCallback("mem_ref");
 		tmp->GetAddress()->SetVirtualOffset(ra);
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
-
 		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
-
 	}
 
 
@@ -588,13 +582,13 @@ void process_instructions(FileIR_t *fir_p)
 		ss<<hex<<ra;
 		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
 		ss.str("");
-		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
-		tmp->SetCallback("func_entry");
 		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
+		tmp->SetCallback("func_entry");
 		tmp->GetAddress()->SetVirtualOffset(ra);
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
 		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
+
 	}
 }
 
@@ -667,7 +661,6 @@ int main(int argc, char **argv)
 
 		delete fir_p;
 	}
-
 	annot_ofstream.close();
 	
 	pqxx_interface.Commit();
