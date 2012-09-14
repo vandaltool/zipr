@@ -9,32 +9,40 @@
 #include "Rewrite_Utility.hpp"
 #include <sstream>
 
+
 #define ARG_CNT 3
 #define INPUT_ERR_NUM 1
 #define DB_ERR_NUM 2
-
-#define EAX 0x1
-#define ECX 0x2
-#define EDX 0x3
-#define EBX 0x4
-#define ESP 0x5
-#define EBP 0x6
-#define ESI 0x7
-#define EDI 0x8
-#define SCALE_ONE 0x1
-#define SCALE_TWO 0x2
-#define SCALE_FOUR 0x3
-#define SCALE_EIGHT 0x4
-#define SIZE_BYTE 0x1
-#define SIZE_WORD 0x2
-#define SIZE_DWORD 0x3
-#define SIZE_QWORD 0x4
-#define SIZE_TWORD 0x5
-#define SIZE_128 0x6
-
 #define UNDEFINED 0x0
 
 #define LOWORD(a) ((0x0000FFFF)&(a))
+
+#define	EAX 0x1
+#define	ECX 0x2
+#define	EDX 0x3
+#define	EBX 0x4
+#define	ESP 0x5
+#define	EBP 0x6
+#define	ESI 0x7
+#define	EDI 0x8
+
+#define	SCALE_ONE 0x1
+#define	SCALE_TWO 0x2
+#define	SCALE_FOUR 0x3
+#define	SCALE_EIGHT 0x4
+
+#define	SIZE_BYTE 0x1
+#define	SIZE_WORD 0x2
+#define	SIZE_DWORD 0x3
+#define	SIZE_QWORD 0x4
+#define	SIZE_TWORD 0x5
+#define	SIZE_128 0x6
+
+#define	LEA_INSTRUCTION 0x44
+#define	PUSH_INSTRUCTION  0x45
+#define	POP_INSTRUCTION  0x46
+#define	LEAVE_INSTRUCTION  0x47
+#define	RET_INSTRUCTION 0x48
 
 using namespace std;
 using namespace libIRDB;
@@ -44,7 +52,7 @@ static ofstream annot_ofstream;
 
 static string URLToFile(string url)
 {
-	int loc=0;
+	unsigned int loc=0;
 
 	loc=url.find('/');
 	while(loc!=string::npos)
@@ -64,6 +72,8 @@ void usage()
 }
 
 /*
+  As defined by the beaengine disassembler.
+
   REG0 = 0x1,  EAX 1
   REG1 = 0x2,  ECX 2
   REG2 = 0x4,  EDX 3
@@ -81,7 +91,6 @@ void usage()
   REG14 = 0x4000,
   REG15 = 0x8000
 */
-
 unsigned int encode_reg(unsigned int reg)
 {
     switch(reg)
@@ -146,6 +155,7 @@ unsigned int encode_scale(unsigned int scale)
 
 }
 
+//Size is encoded in bits in beaengine.
 unsigned int encode_size(unsigned int size)
 {
     switch(size)
@@ -222,10 +232,13 @@ inline bool is_esp_dest(ARGTYPE &arg)
 }
 
 static int counter = -16;
-
 virtual_offset_t get_next_addr()
 {
 	counter += 16;
+	//If we ever get to FF000000 then
+	//this could cause serious problems. 
+	assert(counter != 0x0F000000);
+
 	return 0xf0000000 + counter;
 }
 
@@ -238,7 +251,6 @@ void process_instructions(FileIR_t *fir_p)
 	map<Instruction_t*,DISASM> mem_refs;
 	map<Instruction_t*,DISASM> func_entries;
 	map<Instruction_t*,DISASM> post_rep_checks;
-
 
     for(
 	set<Instruction_t*>::const_iterator it=fir_p->GetInstructions().begin();
@@ -257,25 +269,26 @@ void process_instructions(FileIR_t *fir_p)
 
 		//is esp a destination, or is esp implicitly modified?
 		//NOTE: leaves are now special cased and shadowed in the
-		//memref callback. No need to check esp after anymore. 
+		//memref callback. No need to check esp after leave instructions
+		//anymore. 
 		if(instr_mn.compare("leave") != 0 &&
 		   (is_esp_dest(disasm.Argument1) || 
 			is_esp_dest(disasm.Argument2) ||
-		   disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4 ||
+			disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4 ||
 			instr_mn.compare("call") == 0))
 		{
 			assert(instr_mn.compare("ret") != 0);
 			post_esp_checks[instr] = disasm;
 		}
 
-/*
-		if(instr_mn.compare("ret")==0)
-			ret_esp_checks[instr] = disasm;
-*/
-
+		//Leaves were never considered mem references by beaengine. 
+		//They are mem references here, special cased inside the mem_ref call
+		//back so they are appropriately shadowed. 
+		//TODO: I could encode leave prior to the callback to make the callback
+		//more efficient. 
 		if(instr_mn.compare("leave")==0 || 
-		   ((disasm.Argument1.ArgType&0xFFFF0000) == MEMORY_TYPE) ||
-			((disasm.Argument2.ArgType&0xFFFF0000) == MEMORY_TYPE))
+		   (disasm.Argument1.ArgType&0xFFFF0000) == MEMORY_TYPE ||
+		   (disasm.Argument2.ArgType&0xFFFF0000) == MEMORY_TYPE)
 			mem_refs[instr] = disasm;
 
 		if(prefix.RepPrefix == InUsePrefix ||prefix.RepnePrefix == InUsePrefix)
@@ -343,30 +356,6 @@ void process_instructions(FileIR_t *fir_p)
 		++it
 		)
 	{
-
-/*
-		//Execute the instruction then call the post_esp_check callback
-		//The esp is checked after execution to avoid calculating esp
-		//through shadow execution. Will not work for ret instructions. 
-		Instruction_t *instr = it->first;
-		Instruction_t *tmp;
-
-		stringstream ss;
-		ss.str("");
-		unsigned int ra = get_next_addr();
-		ss<<hex<<ra;
-
-		tmp = insertAssemblyAfter(fir_p,instr,"pushad");
-		tmp = insertAssemblyAfter(fir_p,tmp,"pushfd");
-		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
-		tmp = insertAssemblyAfter(fir_p,tmp,"nop");
-		tmp->SetCallback("post_esp_check");
-		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
-		tmp->GetAddress()->SetVirtualOffset(ra);
-		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
-		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
-
-*/
 		Instruction_t *instr = it->first;
 		Instruction_t *tmp;
 
@@ -375,7 +364,6 @@ void process_instructions(FileIR_t *fir_p)
 		ss.str("");
 		unsigned int ra = get_next_addr();
 		
-
 		tmp = insertAssemblyAfter(fir_p,instr,"pushad");
 		tmp = insertAssemblyAfter(fir_p,tmp,"pushfd");
 		ss<<hex<<addr;
@@ -390,63 +378,6 @@ void process_instructions(FileIR_t *fir_p)
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
 		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
-
-	}
-
-	for(
-		map<Instruction_t*,DISASM>::const_iterator it=ret_esp_checks.begin();
-		it!=ret_esp_checks.end();
-		++it
-		)
-	{
-		Instruction_t *instr = it->first;
-		Instruction_t *tmp;
-
-		unsigned int addr = instr->GetAddress()->GetVirtualOffset();
-		stringstream ss;
-		ss.str("");
-		unsigned int ra = get_next_addr();
-
-		insertAssemblyBefore(fir_p,instr,"pushad");
-		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
-		ss<<hex<<addr;
-		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
-		ss.str("");
-		ss<<hex<<ra;
-		tmp = insertAssemblyAfter(fir_p,tmp,"push 0x"+ss.str());
-		tmp = insertAssemblyAfter(fir_p,tmp,"pop eax");
-		tmp->SetCallback("ret_esp_check");
-		tmp->GetAddress()->SetVirtualOffset(ra);
-		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
-		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
-		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
-
-
-/*
-		//because rets redirect execution, a post_esp_check callback cannot be made
-		//here a special ret callback is used as a solution, checked prior to execution
-		//of the original instruction. No need for shadow execution as ret has a consistant behavior.
-
-
-		
-
-
-		//Note the use of insertAssemblyBefore, read in reverse order. 
-		insertAssemblyBefore(fir_p,instr,"popad");
-		insertAssemblyBefore(fir_p,instr,"popfd");
-		tmp = insertAssemblyBefore(fir_p,instr,"nop");
-		//TOOD: okay this is ugly, but I have to set data after it no longer
-		//points to the original instruction.
-		tmp->GetAddress()->SetVirtualOffset(ra);
-		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
-		tmp = insertAssemblyBefore(fir_p,instr,"push 0x"+ss.str());
-		//TOOD: okay this is ugly, but I have to set the callback after
-		//the instruction no longer points to the original.
-		//tmp->SetCallback("ret_esp_check");
-		tmp->SetCallback("post_esp_check");
-		insertAssemblyBefore(fir_p,instr,"pushfd");
-		insertAssemblyBefore(fir_p,instr,"pushad");
-*/
 	}
 
 
@@ -489,7 +420,6 @@ void process_instructions(FileIR_t *fir_p)
 
 		assert(!(((op1_code&0x00000001)==0x1)&&((op2_code&0x00000001)==0x1)));
  
-		//TODO: I am type casting to unsigned int, will this cause problems?
 		if(disasm.Argument1.Memory.Displacement != 0)
 			displ = (unsigned int)disasm.Argument1.Memory.Displacement;
 		else if(disasm.Argument2.Memory.Displacement != 0)
@@ -497,36 +427,23 @@ void process_instructions(FileIR_t *fir_p)
 		else
 			displ = 0;
 
-
-//TODO: make these values constants
 		if(instr_mn.compare("lea") == 0)
-		{
-			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x44;
-		}
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|LEA_INSTRUCTION;
 		else if(instr_mn.find("push") != string::npos)
-		{
-			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x45;
-		}
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|PUSH_INSTRUCTION;
 		else if(instr_mn.find("pop") != string::npos)
-		{
-			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x46;
-		}
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|POP_INSTRUCTION;
 		else if(instr_mn.compare("leave")==0)
-			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000) | 0x47;
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000) | LEAVE_INSTRUCTION;
 		else if(instr_mn.compare("ret")==0)
-			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000) | 0x48;
+		{
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000) | RET_INSTRUCTION;
+		}
 		
-
-
-
 		if(prefix.RepPrefix == InUsePrefix)
-		{
 			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF3FFF)|(0x1<<14);
-		}
 		else if(prefix.RepnePrefix == InUsePrefix)
-		{
 			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF3FFF)|(0x2<<14);
-		}
 
 		//TODO: if rep, should I have a post rep check?
 
@@ -535,7 +452,7 @@ void process_instructions(FileIR_t *fir_p)
 		ss.str("");
 		//TODO: addr can equal 0 make sure its handled.
 		
-//Note the use of insertAssemblyBefore, read in reverse order. 
+//Note the use of insertAssemblyBefore, before the use of insertAssemblyAfter
 		insertAssemblyBefore(fir_p,instr,"pushad");
 
 		tmp = insertAssemblyAfter(fir_p,instr,"pushfd");
@@ -609,7 +526,6 @@ void process_instructions(FileIR_t *fir_p)
 		tmp->SetIndirectBranchTargetAddress(tmp->GetAddress());
 		tmp = insertAssemblyAfter(fir_p,tmp,"popfd");
 		tmp = insertAssemblyAfter(fir_p,tmp,"popad");
-
 	}
 }
 
