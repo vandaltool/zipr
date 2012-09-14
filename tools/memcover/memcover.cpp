@@ -256,19 +256,26 @@ void process_instructions(FileIR_t *fir_p)
 		PREFIXINFO prefix = disasm.Prefix;
 
 		//is esp a destination, or is esp implicitly modified?
-		if(is_esp_dest(disasm.Argument1) || is_esp_dest(disasm.Argument2) ||
+		//NOTE: leaves are now special cased and shadowed in the
+		//memref callback. No need to check esp after anymore. 
+		if(instr_mn.compare("leave") != 0 &&
+		   (is_esp_dest(disasm.Argument1) || 
+			is_esp_dest(disasm.Argument2) ||
 		   disasm.Instruction.ImplicitModifiedRegs == REGISTER_TYPE+GENERAL_REG+REG4 ||
-		   instr_mn.compare("call") == 0)
+			instr_mn.compare("call") == 0))
 		{
 			assert(instr_mn.compare("ret") != 0);
 			post_esp_checks[instr] = disasm;
 		}
 
+/*
 		if(instr_mn.compare("ret")==0)
 			ret_esp_checks[instr] = disasm;
+*/
 
-		if(((disasm.Argument1.ArgType&0xFFFF0000) == MEMORY_TYPE) ||
-		   ((disasm.Argument2.ArgType&0xFFFF0000) == MEMORY_TYPE))
+		if(instr_mn.compare("leave")==0 || 
+		   ((disasm.Argument1.ArgType&0xFFFF0000) == MEMORY_TYPE) ||
+			((disasm.Argument2.ArgType&0xFFFF0000) == MEMORY_TYPE))
 			mem_refs[instr] = disasm;
 
 		if(prefix.RepPrefix == InUsePrefix ||prefix.RepnePrefix == InUsePrefix)
@@ -442,6 +449,11 @@ void process_instructions(FileIR_t *fir_p)
 */
 	}
 
+
+	//TODO: should I give ret a different access value? To do so requires
+	//setting an operand for ret, which really doesn't work. Presently, 
+	//the callback handles special casing ret and using a special
+	//access type. 
 	for(
 		map<Instruction_t*,DISASM>::const_iterator it=mem_refs.begin();
 		it!=mem_refs.end();
@@ -485,18 +497,27 @@ void process_instructions(FileIR_t *fir_p)
 		else
 			displ = 0;
 
+
+//TODO: make these values constants
 		if(instr_mn.compare("lea") == 0)
 		{
 			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x44;
 		}
-		if(instr_mn.find("push") != string::npos)
+		else if(instr_mn.find("push") != string::npos)
 		{
 			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x45;
 		}
-		if(instr_mn.find("pop") != string::npos)
+		else if(instr_mn.find("pop") != string::npos)
 		{
 			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000)|0x46;
 		}
+		else if(instr_mn.compare("leave")==0)
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000) | 0x47;
+		else if(instr_mn.compare("ret")==0)
+			disasm.Instruction.Category = (disasm.Instruction.Category&0xFFFF0000) | 0x48;
+		
+
+
 
 		if(prefix.RepPrefix == InUsePrefix)
 		{
