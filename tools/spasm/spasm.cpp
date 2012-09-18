@@ -125,6 +125,10 @@ static int getSymbolAddress(const string &symbolFilename, const string &symbol) 
     fscanf(fp,"%s", address);
     string addressString = string(address);
 
+	//TODO: throw exception if address is not found. 
+	//for now assert the address string isn't empty
+	assert(!addressString.empty());
+
     pclose(fp);
     delete [] address; 
 
