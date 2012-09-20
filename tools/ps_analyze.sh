@@ -8,9 +8,21 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+
 # default watchdog value is 30 seconds
 watchdog_val=30
 errors=0
+
+# DEFAULT TIMEOUT VALUE
+INTEGER_TRANSFORM_TIMEOUT_VALUE=900
+PN_TIMEOUT_VALUE=9000000
+
+#non-zero to use canaries in PN/P1, 0 to turn off canaries
+#DO_CANARIES=1
+#on for on and off for off
+DO_CANARIES=on
+CONCOLIC_DIR=concolic.files_a.stratafied_0001
+
 
 # alarm handler
 THIS_PID=$$
@@ -55,15 +67,19 @@ fail_gracefully()
 	exit 255
 }
 
-# DEFAULT TIMEOUT VALUE
-INTEGER_TRANSFORM_TIMEOUT_VALUE=900
-PN_TIMEOUT_VALUE=9000000
-#non-zero to use canaries in PN/P1, 0 to turn off canaries
-#DO_CANARIES=1
-#on for on and off for off
-DO_CANARIES=on
 
-CONCOLIC_DIR=concolic.files_a.stratafied_0001
+adjust_lib_path()
+{
+	NEWPATH=
+	for i in `echo $LD_LIBRARY_PATH | sed 's/:/ /g'`
+	do
+		NEWPATH=$NEWPATH:`realpath $i`	
+	done
+
+
+	# also, add newdir to the ld-library path for analysis.
+	LD_LIBRARY_PATH=$NEWPATH:$PWD/$newdir
+}
 
 check_step_option()
 {
@@ -453,8 +469,8 @@ cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
 strip $newdir/libstrata.so.nosymbols
 cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
 
-# also, add newdir to the ld-library path for analysis.
-LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/$newdir
+
+adjust_lib_path 
 
 
 
