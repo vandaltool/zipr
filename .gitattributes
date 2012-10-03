@@ -95,6 +95,8 @@ appfw/src/pg_hook.c -text
 appfw/src/sqlfw.c -text
 appfw/src/sqlfw.h -text
 appfw/test/Makefile -text
+appfw/test/mysql/Makefile -text
+appfw/test/mysql/testmysql.c -text
 appfw/test/postgres/Makefile -text
 appfw/test/postgres/postgres.test.sh -text
 appfw/test/postgres/setup.sql -text
