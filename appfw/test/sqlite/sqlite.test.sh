@@ -53,6 +53,7 @@ cleanup()
 	fi
 
 	cd $TESTLOC
+	rm -f $tmp 2>/dev/null
 	make clean
 	cd -
 
@@ -83,7 +84,7 @@ sqlite3 $dbname < ./teardown.sql 2>/dev/null   # in case we have leftover from p
 sqlite3 $dbname < ./setup.sql
 
 # good query
-rm -f $tmp
+rm -f $tmp 2>/dev/null
 ./testsqlite.exe.peasoup David > $tmp 2>&1
 grep -i "last = Hyde" $tmp
 if [ ! $? -eq 0 ]; then
