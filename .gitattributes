@@ -87,6 +87,7 @@ ELFIO-1.0.3/mkinstalldirs -text
 /Makefile -text
 /README -text
 /README.p1 -text
+appfw/Makefile -text
 appfw/src/Makefile -text
 appfw/src/appfw.c -text
 appfw/src/appfw.h -text
