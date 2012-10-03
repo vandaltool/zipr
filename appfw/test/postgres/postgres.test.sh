@@ -81,7 +81,7 @@ fi
 #
 
 # test good queries
-rm -f $tmp
+rm -f $tmp 2>/dev/null
 ./testpg1.exe.peasoup bob > $tmp 2>&1
 grep -i query $tmp | grep -i success
 if [ ! $? -eq 0 ]; then
@@ -121,7 +121,8 @@ fi
 #
 # testpg2.exe.peasoup
 #
-psql -f ./setup_sql
+psql -f ./teardown.sql 2>/dev/null # in case we have remnmants from a previous testing run
+psql -f ./setup.sql
 
 # good query
 rm -f $tmp
@@ -132,14 +133,15 @@ if [ ! $? -eq 0 ]; then
 	cleanup 7 "False positive detected: query for testpg2.exe.peasoup should have succeeded"
 fi
 
+# attack query
 rm -f $tmp
-./testpg2.exe "David' or '0'='0"
+./testpg2.exe "David' or '0'='0" > $tmp 2>&1
 grep -i William $tmp
-if [ $? -eq 0 ]; then
+if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 7 "False negative detected: attack query for testpg2.exe.peasoup should have failed"
 fi
 
-psql -f ./teardown_sql
+psql -f ./teardown.sql
 
 cleanup 0 "Successfully detected Postgres SQL Injection"
