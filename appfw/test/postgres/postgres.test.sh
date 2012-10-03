@@ -93,7 +93,7 @@ rm -f $tmp
 grep -i query $tmp | grep -i success
 if [ ! $? -eq 0 ]; then
 	cat $tmp
-	cleanup 4 "False positive detected: query for testpg1.exe.peasoup should have succeeded"
+	cleanup 3 "False positive detected: query for testpg1.exe.peasoup should have succeeded"
 fi
 
 # test attack queries
@@ -101,20 +101,45 @@ rm -f $tmp
 ./testpg1.exe.peasoup "' or 1 = 1;--" > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
-	cleanup 8 "False negative detected: attack query for testpg1.exe.peasoup should have been detected"
+	cleanup 4 "False negative detected: attack query for testpg1.exe.peasoup should have been detected"
 fi
 
 rm -f $tmp
 ./testpg1.exe.peasoup "' and /* */ 1 = 1 /* */; /*--*/" > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
-	cleanup 16 "False negative detected: attack query for testpg1.exe.peasoup should have been detected"
+	cleanup 5 "False negative detected: attack query for testpg1.exe.peasoup should have been detected"
 fi
 
 rm -f $tmp
 ./testpg1.exe.peasoup "%' or 1 = 1; -- select *" > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
-	cleanup 32 "False negative detected: attack query for testpg1.exe.peasoup should have been detected"
+	cleanup 6 "False negative detected: attack query for testpg1.exe.peasoup should have been detected"
 fi
+
+#
+# testpg2.exe.peasoup
+#
+psql -f ./setup_sql
+
+# good query
+rm -f $tmp
+./testpg2.exe.peasoup David > $tmp 2>&1
+grep -i "David Hyde" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 7 "False positive detected: query for testpg2.exe.peasoup should have succeeded"
+fi
+
+rm -f $tmp
+./testpg2.exe "David' or '0'='0"
+grep -i William $tmp
+if [ $? -eq 0 ]; then
+	cat $tmp
+	cleanup 7 "False negative detected: attack query for testpg2.exe.peasoup should have failed"
+fi
+
+psql -f ./teardown_sql
+
 cleanup 0 "Successfully detected Postgres SQL Injection"

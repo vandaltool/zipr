@@ -27,11 +27,6 @@ int main(int argc, char *argv[])
    PGconn *conn;
    PGresult *result;
 
-   char *server = "localhost";
-   char *user = "ps1";
-   char *password = "";
-   char *database = "testing";
-   
 	if (argc < 2)
 	{
 		printf("You should give an entry parameter!\n");
