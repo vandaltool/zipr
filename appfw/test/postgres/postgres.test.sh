@@ -55,10 +55,10 @@ cleanup()
 	fi
 
 	cd $TESTLOC
+ 	rm -f $tmp 2>/dev/null
 	make clean
 	cd -
 
- 	rm -f $tmp
 	exit $exit_code
 }
 
@@ -85,6 +85,7 @@ rm -f $tmp 2>/dev/null
 ./testpg1.exe.peasoup bob > $tmp 2>&1
 grep -i query $tmp | grep -i success
 if [ ! $? -eq 0 ]; then
+	cat $tmp
 	cleanup 2 "False positive detected: query for testpg1.exe.peasoup should have succeeded"
 fi
 
@@ -101,6 +102,7 @@ rm -f $tmp
 ./testpg1.exe.peasoup "' or 1 = 1;--" > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
+	cat $tmp
 	cleanup 4 "False negative detected: attack query for testpg1.exe.peasoup should have been detected"
 fi
 
@@ -108,6 +110,7 @@ rm -f $tmp
 ./testpg1.exe.peasoup "' and /* */ 1 = 1 /* */; /*--*/" > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
+	cat $tmp
 	cleanup 5 "False negative detected: attack query for testpg1.exe.peasoup should have been detected"
 fi
 
@@ -115,6 +118,7 @@ rm -f $tmp
 ./testpg1.exe.peasoup "%' or 1 = 1; -- select *" > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
+	cat $tmp
 	cleanup 6 "False negative detected: attack query for testpg1.exe.peasoup should have been detected"
 fi
 
