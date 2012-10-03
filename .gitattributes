@@ -95,6 +95,11 @@ appfw/src/pg_hook.c -text
 appfw/src/sqlfw.c -text
 appfw/src/sqlfw.h -text
 appfw/test/Makefile -text
+appfw/test/postgres/Makefile -text
+appfw/test/postgres/postgres.test.sh -text
+appfw/test/postgres/testpg1.c -text
+appfw/test/postgres/testpg2.c -text
+appfw/test/postgres/testpg3.c -text
 appfw/test/testpg1.c -text
 appfw/test/testpg2.c -text
 beaengine/CMakeFiles/CMakeCCompiler.cmake -text
