@@ -94,7 +94,6 @@ appfw/src/mysql_hook.c -text
 appfw/src/pg_hook.c -text
 appfw/src/sqlfw.c -text
 appfw/src/sqlfw.h -text
-appfw/test/Makefile -text
 appfw/test/mysql/Makefile -text
 appfw/test/mysql/runtest -text
 appfw/test/mysql/testmysql.c -text
