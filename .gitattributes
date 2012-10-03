@@ -103,6 +103,8 @@ appfw/test/postgres/setup.sql -text
 appfw/test/postgres/teardown.sql -text
 appfw/test/postgres/testpg1.c -text
 appfw/test/postgres/testpg2.c -text
+appfw/test/sqlite/Makefile -text
+appfw/test/sqlite/testsqlite.c -text
 beaengine/CMakeFiles/CMakeCCompiler.cmake -text
 beaengine/CMakeFiles/CMakeCXXCompiler.cmake -text
 beaengine/CMakeFiles/CMakeDetermineCompilerABI_C.bin -text
