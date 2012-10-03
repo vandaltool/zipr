@@ -97,6 +97,8 @@ appfw/src/sqlfw.h -text
 appfw/test/Makefile -text
 appfw/test/postgres/Makefile -text
 appfw/test/postgres/postgres.test.sh -text
+appfw/test/postgres/setup.sql -text
+appfw/test/postgres/teardown.sql -text
 appfw/test/postgres/testpg1.c -text
 appfw/test/postgres/testpg2.c -text
 appfw/test/testpg1.c -text
