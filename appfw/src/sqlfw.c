@@ -73,7 +73,7 @@ void sqlfw_establish_taint(const char *query, char *taint)
 	  int length_signature = strlen(fw_sigs[i]);
 	  if (length_signature >= 1 && length_signature <= (strlen(query) - pos))
 	  {
-	    if (strncmp(&query[pos], fw_sigs[i], strlen(fw_sigs[i])) == 0)
+	    if (strncasecmp(&query[pos], fw_sigs[i], strlen(fw_sigs[i])) == 0)
 	    {
 		  sqlfw_taint_range(taint, not_tainted_marking, pos, strlen(fw_sigs[i]));
 //		  fprintf(stderr,"matched pattern #%d: pos: %d [%s]\n", i, pos, fw_sigs[i]);

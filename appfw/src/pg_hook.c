@@ -26,26 +26,10 @@ PGresult* PQexec(PGconn* p_conn, const char *p_query)
   else
   {
 
-    // show query and taint markings
-//    fprintf(stderr, "[appfw]: PQexec(): SQL Command Injection detected in query: %s\n", p_query);
-
 #ifdef SHOW_TAINT_MARKINGS
     sqlfw_display_taint("SQL Injection detected", p_query, taint);
-	/*
-    fprintf(stderr, "[appfw]:                                         taint markings: ");
-    for (i = 0; i < strlen(p_query); ++i)
-    {
-      if (taint[i] == APPFW_BLESSED)
-        fprintf(stderr," ");
-      else if (taint[i] == APPFW_SECURITY_VIOLATION)
-        fprintf(stderr,"X");
-      else
-        fprintf(stderr,"-");
-
-    }
-    fprintf(stderr,"\n");
-	*/
 #endif
+
 
 	// error policy: issue bad query on purpose so that we return what PG would have returned
     PGresult *ret = my_pgExec(p_conn, "not a query force error");
