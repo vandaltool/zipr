@@ -54,6 +54,17 @@ bool isSaturatingArithmeticOn(int argc, char **argv)
 	return false;
 }
 
+bool isWarningsOnly(int argc, char **argv)
+{
+	for (int i = 0; i < argc; ++i)
+	{
+		if (strncasecmp(argv[i], "--warning", strlen("--warning")) == 0)
+			return true;
+	}
+
+	return false;
+}
+
 bool isPathManipDetected(int argc, char **argv)
 {
 	for (int i = 0; i < argc; ++i)
@@ -88,39 +99,41 @@ main(int argc, char **argv)
 
 	try 
 	{
-			cerr << "Getting variand id" << endl;
 		pidp=new VariantID_t(variantID);
 		assert(pidp->IsRegistered()==true);
 
 		// read the db  
-			cerr << "Reading IR DB" << endl;
 		virp=new FileIR_t(*pidp);
 
 		assert(virp && pidp);
 
-		cerr << "Parse annotation file" << endl;
 		// parse MEDS integer annotations
 		ifstream annotationFile(annotationFilename, ifstream::in);
 		MEDS_AnnotationParser annotationParser(annotationFile);
-		cerr << "Done parsing annotation file" << endl;
 
 		std::set<VirtualOffset> warnings = getInstructionWarnings(integerWarnings); // keep track of instructions that should be instrumented as warnings (upon detection, print diagnostic & continue)
 
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotationParser.getAnnotations();
-			cerr << "Got all annotations" << endl;
 
 		// do the transformation
-			cerr << "Do the integer transform" << endl;
 		libTransform::IntegerTransform integerTransform(pidp, virp, &annotations, &filteredFunctions, &warnings);
 		integerTransform.setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
 		integerTransform.setPathManipulationDetected(isPathManipDetected(argc, argv));
+		integerTransform.setWarningsOnly(isWarningsOnly(argc, argv));
+
 		int exitcode = integerTransform.execute();
 		if (exitcode == 0)
 		{
+			virp->WriteToDB();
 			pqxx_interface.Commit();
 			delete virp;
 			delete pidp;
 		}
+		else
+		{
+			cerr << programName << ": integer transform failed" << endl;
+		}
+
 		return exitcode;
 	}
 	catch (DatabaseError_t pnide)
