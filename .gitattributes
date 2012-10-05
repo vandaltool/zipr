@@ -400,10 +400,6 @@ libtransform/tests/signed_mul.c -text
 libtransform/tests/simpletest.c -text
 libtransform/tests/unsigned_add.c -text
 libtransform/tests/unsigned_mul.c -text
-sql/test/Makefile -text
-sql/test/sqlfw.c -text
-sql/test/test1.c -text
-sql/test/test2.c -text
 tests/coreutils/Makefile -text
 tests/coreutils/bzip2-1.0.6/CHANGES -text
 tests/coreutils/bzip2-1.0.6/LICENSE -text
