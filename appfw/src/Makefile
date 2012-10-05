@@ -27,4 +27,4 @@ libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o
 	gcc -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so appfw_sqlite3.o mysql_hook.o pg_hook.o appfw.o sqlite3_hook.o
 
 clean:
-	rm -fr *.o *.tmp *.so sqlite3.c sqlite3.h sqlite-autoconf-3071300 
+	rm -fr *.o *.tmp *.so appfw_sqlite3.c appfw_sqlite3.h sqlite-autoconf-3071300 
