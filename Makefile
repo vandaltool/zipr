@@ -6,6 +6,7 @@ all:
 	cd libMEDSannotation; make all
 	cd libtransform; make all
 	cd tools; make all
+	cd appfw; make all
 
 clean:
 	cd ELFIO-1.0.3; make clean
@@ -15,3 +16,4 @@ clean:
 	cd libMEDSannotation; make clean
 	cd libtransform; make clean
 	cd tools; make clean
+	cd appfw; make clean
