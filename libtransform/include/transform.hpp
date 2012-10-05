@@ -23,7 +23,6 @@ class Transform {
 		Transform(VariantID_t *, FileIR_t *, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions);
 
 	protected:
-
 		void addInstruction(Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target);
 	    Instruction_t* carefullyInsertBefore(Instruction_t* &p_target, Instruction_t* &p_new);
 
@@ -56,7 +55,6 @@ class Transform {
 
 		VariantID_t* getVariantID() { return m_variantID; }
 		FileIR_t* getVariantIR() { return m_variantIR; }
-		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
 		set<std::string>* getFilteredFunctions() { return m_filteredFunctions; }
 
 		bool isMultiplyInstruction(libIRDB::Instruction_t*);
@@ -76,7 +74,6 @@ class Transform {
 
 		VariantID_t            *m_variantID;
 		FileIR_t            *m_variantIR;
-		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *m_annotations;
 		set<std::string>       *m_filteredFunctions;
 };
 
@@ -85,6 +82,8 @@ class Transform {
 #define POLICY_CONTINUE                           1  
 #define POLICY_EXIT                               2   
 #define POLICY_CONTINUE_SATURATING_ARITHMETIC     3   
+
+#define DEBUG_CALLBACK_HANDLER "debug_handler"
 
 }
 

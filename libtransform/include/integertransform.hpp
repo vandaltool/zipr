@@ -18,10 +18,12 @@ class IntegerTransform : public Transform
 		IntegerTransform(VariantID_t *, FileIR_t*, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
 		int execute();
 
-		void setSaturatingArithmetic(bool p_satArithmetic) { m_saturatingArithmetic = p_satArithmetic; }
-		bool getSaturatingArithmetic() { return m_saturatingArithmetic; }
+		void setSaturatingArithmetic(bool p_satArithmetic) { m_policySaturatingArithmetic = p_satArithmetic; }
+		bool isSaturatingArithmetic() { return m_policySaturatingArithmetic; }
 		void setPathManipulationDetected(bool p_pathManip) { m_pathManipulationDetected = p_pathManip; }
 		bool isPathManipulationDetected() { return m_pathManipulationDetected; }
+		void setWarningsOnly(bool p_warn) { m_policyWarningsOnly = p_warn; }
+		bool isWarningsOnly() { return m_policyWarningsOnly; }
 	
 	private:
 		void handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
@@ -48,10 +50,14 @@ class IntegerTransform : public Transform
 
 		bool isBlacklisted(Function_t *func);
 
+		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
+
 	private:
 		std::set<VirtualOffset>*  m_benignFalsePositives;
-		bool                      m_saturatingArithmetic;
+		bool                      m_policySaturatingArithmetic;
+		bool                      m_policyWarningsOnly;
 		bool                      m_pathManipulationDetected;
+		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *m_annotations;
 };
 
 // make sure these match the function names in $STRATA/src/posix/x86_linux/detector_number_handling/overflow_detector.c

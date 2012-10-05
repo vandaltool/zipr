@@ -30,9 +30,11 @@ using namespace libTransform;
 IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
 {
 	m_benignFalsePositives = p_benignFalsePositives;
-	m_saturatingArithmetic = false;
+	m_policySaturatingArithmetic = false;
+	m_policyWarningsOnly = false;
 	m_pathManipulationDetected = false;
 
+	m_annotations = p_annotations;              
 }
 
 // iterate through all functions
@@ -42,13 +44,16 @@ IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_variant
 //       add instrumentation
 int IntegerTransform::execute()
 {
-	if (getSaturatingArithmetic())
+	if (isSaturatingArithmetic())
 		cerr << "IntegerTransform: Saturating Arithmetic is enabled" << endl;
 	else
 		cerr << "IntegerTransform: Saturating Arithmetic is disabled" << endl;
 
 	if (isPathManipulationDetected())
 		cerr << "IntegerTransform: Exit on truncation" << endl;
+
+	if (isWarningsOnly())
+		cerr << "IntegerTransform: Warnings only mode" << endl;
 
 	for(
 	  set<Function_t*>::const_iterator itf=getVariantIR()->GetFunctions().begin();
@@ -61,14 +66,13 @@ int IntegerTransform::execute()
 		if (getFilteredFunctions()->find(func->GetName()) != getFilteredFunctions()->end())
 			continue;
 
-
 		if (isBlacklisted(func))
 		{
 			cerr << "Heuristic filter: " << func->GetName() << endl;
 			continue;
 		}
 
-		cerr << "Integer xform: " << func->GetName() << endl;
+		cerr << "Integer xform: processing fn: " << func->GetName() << endl;
 
 		for(
 		  set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
@@ -85,11 +89,17 @@ int IntegerTransform::execute()
 
 				VirtualOffset vo(irdb_vo);
 
-				if (getSaturatingArithmetic())
+				if (isSaturatingArithmetic())
 				{
 					// saturating arithmetic is enabled
 					// only use if instruction is not a potential false positive
 					policy = POLICY_CONTINUE_SATURATING_ARITHMETIC;
+				}
+
+				// takes precedence over saturation if conflict
+				if (isWarningsOnly())
+				{
+					policy = POLICY_CONTINUE;
 				}
 
 				// overwrite the above if needed
@@ -120,15 +130,7 @@ int IntegerTransform::execute()
 				}
 				else if (annotation.isTruncation())
 				{
-				/*
-					if (annotation.isUnknownSign())
-					{
-						cerr << "integertransform: annotation has unknown sign: skipping";
-						continue;
-					}
-					2012/04/25 commented out to see if we would pick up the other 785s
-					*/
-						handleTruncation(insn, annotation, policy);
+					handleTruncation(insn, annotation, policy);
 				}
 				else if (annotation.isSignedness())
 				{
@@ -149,7 +151,6 @@ int IntegerTransform::execute()
 		} // end iterate over all instructions in a function
 	} // end iterate over all functions
 
-	getVariantIR()->WriteToDB();
 	return 0;
 }
 
@@ -669,7 +670,7 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 	p_instruction->SetFallthrough(jncond_i); 
 
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
-	if (targetReg == Register::UNKNOWN)
+	if (targetReg == Register::UNKNOWN && p_policy != POLICY_CONTINUE)
 	{
 		cerr << "integertransform: OVERFLOW: unknown register -- policy exit" << endl;
 		p_policy = POLICY_EXIT;

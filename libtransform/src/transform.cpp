@@ -7,7 +7,6 @@ Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_variantIR, std::map<V
 {
 	m_variantID = p_variantID;                  // Current variant ID
 	m_variantIR = p_variantIR;                  // IR (off the database) for variant
-	m_annotations = p_annotations;              // MEDS annotations
 	m_filteredFunctions = p_filteredFunctions;  // Blacklisted funtions
 }
 
@@ -240,7 +239,7 @@ virtual_offset_t Transform::getAvailableAddress()
 void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumentedInstruction, Instruction_t *p_instruction, Instruction_t *p_fallThrough, int p_policy, AddressID_t *p_addressOriginalInstruction)
 {
 	assert(getVariantIR() && p_instruction);
-	
+
 	string dataBits;
 
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
