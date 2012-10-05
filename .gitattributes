@@ -1112,6 +1112,7 @@ tools/ps_validate_ss.deprecated.sh -text
 tools/run_one_test.sh -text
 tools/run_stratafied.tmpl.sh -text
 tools/set_dyna_link.sh -text
+tools/signatures/sqlite.sigs -text
 tools/test_controller.sh -text
 tools/update_env_var.sh -text
 tools/validate.sh -text
