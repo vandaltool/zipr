@@ -3,7 +3,8 @@
 #
 # note:  no trailing slashes, as the comparison will fail.
 #
-safe_dir_list="/lib /lib/tls/i686/cmov /usr/lib /lib/i686/cmov /usr/local/lib"
+safe_dir_list="/lib /lib/tls/i686/cmov /usr/lib /lib/i686/cmov /lib/i386-linux-gnu \
+	/usr/local/lib /usr/lib/i386-linux-gnu"
 #safe_dir_list="/lib /usr/lib"
 
 is_safe()
