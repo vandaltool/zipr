@@ -23,6 +23,7 @@ PN_TIMEOUT_VALUE=9000000
 DO_CANARIES=on
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
+#intxform_warnings_only=1
 
 # alarm handler
 THIS_PID=$$
@@ -67,7 +68,6 @@ fail_gracefully()
 	exit 255
 }
 
-
 adjust_lib_path()
 {
 	NEWPATH=
@@ -105,7 +105,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t:w: --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t:w: --long integer_warnings_only --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -132,6 +132,11 @@ check_options()
 		--manual_test_coverage_file) 
 			manual_test_coverage_file=$2
 			shift 2 
+			;;
+		--integer_warnings_only)
+			echo "integer transfor: warnings only enabled"
+			intxform_warnings_only=1
+			shift 
 			;;
 		-t|--timeout) 
 			set_timer $2 & TIMER_PID=$!
@@ -484,6 +489,11 @@ check_for_bad_funcs $newname.ncexe
 
 # next, create a location for our log files
 mkdir logs 	
+
+#
+# analyze binary for string signatures
+#
+perform_step appfw $PEASOUP_HOME/tools/do_appfw.sh $newname.ncexe
 
 #
 # create a stratafied binary that does pc confinement.

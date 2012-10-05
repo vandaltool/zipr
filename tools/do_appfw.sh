@@ -3,7 +3,7 @@
 program=$1
 
 # generate string signatures off the binary
-$PEASOUP_HOME/tools/generate_string_signatures.sh $program $program.sigs
+$PEASOUP_HOME/tools/generate_string_signatures.sh "$program" "$program.sigs"
 
 # copy application firewall library 
 # for now, it's only SQL

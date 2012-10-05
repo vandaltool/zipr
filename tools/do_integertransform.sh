@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# do_integertransform.sh <cloneId> <concolicDir> <timeout>
+# do_integertransform.sh <cloneId> <concolicDir> <timeout> <saturation>
 #
 # pre: we are in the top-level directory created by ps_analyze.sh
 #
@@ -9,6 +9,7 @@
 CLONE_ID=$1
 CONCOLIC_DIR=$2
 TIMEOUT=$3
+WARNINGS_ONLY=$4 # 0 or 1
 
 # configuration variables
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system library functions
@@ -104,5 +105,11 @@ done
 
 # --path-manip-detected will override the saturating arithmetic policy
 # but we still need to leave --saturating-arithmetic alone for now
-$SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic $PATH_MANIP_DETECTED
+if [ $WARNINGS_ONLY -eq "1" ]; then
+  echo "intxform: warning only mode"
+  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
+else
+  echo "intxform: saturating arithmetic is enabled"
+  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic $PATH_MANIP_DETECTED
+fi
 

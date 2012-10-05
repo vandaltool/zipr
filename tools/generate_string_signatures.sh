@@ -6,9 +6,10 @@
 #    The output string patterns are stored in a file in reverse-length order
 #
 # Usage:
-#    generate_signatures <filename>
+#    generate_signatures <filename> <signatures>
 #
 #    $1       'input file
+#    $2       'output file (optional, defaults to $1.sigs)
 #
 # Output:
 #    The file <$1.sigs> will contain a set of string patterns, one per line,
@@ -46,20 +47,30 @@
 # 20120713 Anh - decent working prototype, simple splitting format string specifiers
 #
 
+defaultSigs=$PEASOUP_HOME/tools/signatures/sqlite.sigs
 inputFile=$1
-finalSigFile=$1.sigs
+if [ -z $2 ];then
+  finalSigFile=$1.sigs
+else
+  finalSigFile=$2
+fi
 tmpFile=$1.$$.tmp
 tmpFile2=$1.$$.2.tmp
 tmpFile3=$1.$$.3.tmp
+tmpFile4=$1.$$.4.tmp
+tmpFile5=$1.$$.5.tmp
 tmpSymbols=$1.$$.sym.tmp
 
 # setup/cleanup
 rm $finalSigFile 2>/dev/null
-rm $tmpFile $tmpFile2 $tmpFile3 $tmpSymbols 2>/dev/null
-touch $tmpFile2 $tmpFile3 $finalSigFile
+rm $tmpFile $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $tmpSymbols 2>/dev/null
+touch $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $finalSigFile
 
 # get strings & symbols
-strings $inputFile | sort -f | uniq -i > $tmpFile                                            # get strings
+strings $inputFile | sort -f | uniq -i > $tmpFile2                     # get strings
+cat $defaultSigs >> $tmpFile2                                          # add signatures from sqlite itself
+sort -f $tmpFile2 | uniq -i > $tmpFile                                 
+
 nm -a $inputFile | grep -v " U " | grep -v " w " | sort | uniq | cut -d' ' -f3 > $tmpSymbols # get symbol names
 
 #
@@ -67,35 +78,57 @@ nm -a $inputFile | grep -v " U " | grep -v " w " | sort | uniq | cut -d' ' -f3 >
 # and add them to the list of patterns
 #
 
-# @todo: verify these patterns
+# @todo: this is a hack until we use regular expressions
 
 #
 # look for %s, %d and other format specifiers
-# we currently only handle 2 delimiters in string
 #
 # @todo make this a function and call a whole bunch of time
 # until no more delimeters are found
 #
+# @todo don't do it here, instead use regex in library code
+# to get patterns
+#     SELECT * from table where userid='%s'     --> %s should become a regex pattern that matches all valid strings
+#     SELECT * from table where userid='%d'     --> %s should become a regex pattern that matches all valid numbers
+#
 
 # grab lhs and rhs
-grep "%[0-9]*s" $tmpFile | sed "s/%[0-9]*s/#/g" | cut -d'#' -f1 >> $tmpFile2
-grep "%[0-9]*s" $tmpFile | sed "s/%[0-9]*s/#/g" | cut -d'#' -f2 >> $tmpFile3
-grep "%[0-9]*[l,ll]*d" $tmpFile | sed "s/%[0-9]*[l,ll]*d/#/g" | cut -d'#' -f1 >> $tmpFile2
-grep "%[0-9]*[l,ll]*d" $tmpFile | sed "s/%[0-9]*[l,ll]*d/#/g" | cut -d'#' -f2 >> $tmpFile3
-grep "%[0-9,.]*f" $tmpFile | sed "s/%[0-9,.]*f/#/g" | cut -d'#' -f1 >> $tmpFile2
-grep "%[0-9,.]*f" $tmpFile | sed "s/%[0-9,.]*f/#/g" | cut -d'#' -f2 >> $tmpFile3
-
-# do it one more time to split the previous rhs into 2 parts
-grep "%[0-9]*s" $tmpFile3 | sed "s/%[0-9]*s/#/g" | cut -d'#' -f1 >> $tmpFile2
-grep "%[0-9]*s" $tmpFile3 | sed "s/%[0-9]*s/#/g" | cut -d'#' -f2 >> $tmpFile3
-grep "%[0-9]*[l,ll]*d" $tmpFile3 | sed "s/%[0-9]*[l,ll]*d/#/g" | cut -d'#' -f1 >> $tmpFile2
-grep "%[0-9]*[l,ll]*d" $tmpFile3 | sed "s/%[0-9]*[l,ll]*d/#/g" | cut -d'#' -f2 >> $tmpFile3
-grep "%[0-9,.]*f" $tmpFile3 | sed "s/%[0-9,.]*f/#/g" | cut -d'#' -f1 >> $tmpFile2
-grep "%[0-9,.]*f" $tmpFile3 | sed "s/%[0-9,.]*s/#/g" | cut -d'#' -f2 >> $tmpFile3
-
+grep "%[-]*[0-9]*s" $tmpFile | sed "s/%[-]*[0-9]*s/#/" | cut -d'#' -f1 >> $tmpFile2
+grep "%[-]*[0-9]*s" $tmpFile | sed "s/%[-]*[0-9]*s/#/" | cut -d'#' -f2 >> $tmpFile3
+grep "%[0-9]*[l,ll]*d" $tmpFile | sed "s/%[0-9]*[l,ll]*d/#/" | cut -d'#' -f1 >> $tmpFile2
+grep "%[0-9]*[l,ll]*d" $tmpFile | sed "s/%[0-9]*[l,ll]*d/#/" | cut -d'#' -f2 >> $tmpFile3
+grep "%[0-9,.]*f" $tmpFile | sed "s/%[0-9,.]*f/#/" | cut -d'#' -f1 >> $tmpFile2
+grep "%[0-9,.]*f" $tmpFile | sed "s/%[0-9,.]*f/#/" | cut -d'#' -f2 >> $tmpFile3
 cat $tmpFile3 >> $tmpFile2
 
-# add to signature list
+# do it one more time to split the previous rhs into 2 parts
+grep "%[0-9]*s" $tmpFile3 | sed "s/%[0-9]*s/#/" | cut -d'#' -f1 >> $tmpFile2
+grep "%[0-9]*s" $tmpFile3 | sed "s/%[0-9]*s/#/" | cut -d'#' -f2 >> $tmpFile4
+grep "%[0-9]*[l,ll]*d" $tmpFile3 | sed "s/%[0-9]*[l,ll]*d/#/" | cut -d'#' -f1 >> $tmpFile2
+grep "%[0-9]*[l,ll]*d" $tmpFile3 | sed "s/%[0-9]*[l,ll]*d/#/" | cut -d'#' -f2 >> $tmpFile4
+grep "%[0-9,.]*f" $tmpFile3 | sed "s/%[0-9,.]*f/#/" | cut -d'#' -f1 >> $tmpFile2
+grep "%[0-9,.]*f" $tmpFile3 | sed "s/%[0-9,.]*s/#/" | cut -d'#' -f2 >> $tmpFile4
+cat $tmpFile4 >> $tmpFile2
+
+# and yet one more time for good measure
+grep "%[0-9]*s" $tmpFile4 | sed "s/%[0-9]*s/#/" | cut -d'#' -f1 >> $tmpFile2
+grep "%[0-9]*s" $tmpFile4 | sed "s/%[0-9]*s/#/" | cut -d'#' -f2 >> $tmpFile5
+grep "%[0-9]*[l,ll]*d" $tmpFile4 | sed "s/%[0-9]*[l,ll]*d/#/" | cut -d'#' -f1 >> $tmpFile2
+grep "%[0-9]*[l,ll]*d" $tmpFile4 | sed "s/%[0-9]*[l,ll]*d/#/" | cut -d'#' -f2 >> $tmpFile5
+grep "%[0-9,.]*f" $tmpFile4 | sed "s/%[0-9,.]*f/#/" | cut -d'#' -f1 >> $tmpFile2
+grep "%[0-9,.]*f" $tmpFile4 | sed "s/%[0-9,.]*s/#/" | cut -d'#' -f2 >> $tmpFile5
+cat $tmpFile5 >> $tmpFile2
+
+##
+## @todo: if as a result of breaking up format strings, we get for example
+##        a SQL keyword, e.g., table, drop, we shouldn't add it to the list of
+##        string patterns
+##
+## another policy in general could be to not have patterns specifiers that are
+## too small in length
+##
+
+# get rid of duplicate entries
 sort $tmpFile2 | uniq >> $tmpFile
 
 #
@@ -123,8 +156,9 @@ sort -n -r $finalSigFile > $tmpFile
 # get rid of the length field
 cut -f2- -d' ' $tmpFile | uniq -i > $finalSigFile
 
-exit 0
 # et voila, output file $finalSigFile contains the final reverse sorted set of patterns
 
 # now cleanup
-rm $tmpFile $tmpFile1 $tmpFile2 $tmpSymbols
+rm $tmpFile $tmpFile1 $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $tmpSymbols
+
+exit 0
