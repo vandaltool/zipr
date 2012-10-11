@@ -6,6 +6,7 @@ extract_sql:
 	tar -zxvf ../../third_party/sqlite-autoconf-3071300.tar.gz --no-anchored --wildcards 'sqlite3.[ch]'
 	cat ./sqlite-autoconf-3071300/sqlite3.c | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.c
 	cat ./sqlite-autoconf-3071300/sqlite3.h | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.h
+	cp ./sqlite-autoconf-3071300/sqlite3.h .
 
 appfw_sqlite3.o: extract_sql sqlfw.c
 	cat sqlfw.c >> appfw_sqlite3.c
@@ -27,4 +28,4 @@ libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o
 	gcc -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so appfw_sqlite3.o mysql_hook.o pg_hook.o appfw.o sqlite3_hook.o
 
 clean:
-	rm -fr *.o *.tmp *.so appfw_sqlite3.c appfw_sqlite3.h sqlite-autoconf-3071300 
+	rm -fr *.o *.tmp *.so appfw_sqlite3.c appfw_sqlite3.h sqlite3.h sqlite-autoconf-3071300 
