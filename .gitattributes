@@ -109,6 +109,7 @@ appfw/tests/postgres/testpg2.c -text
 appfw/tests/sqlite/Makefile -text
 appfw/tests/sqlite/setup.sql -text
 appfw/tests/sqlite/sqlite.test.sh -text
+appfw/tests/sqlite/sqlite3.h -text
 appfw/tests/sqlite/teardown.sql -text
 appfw/tests/sqlite/testsqlite.c -text
 beaengine/CMakeFiles/CMakeCCompiler.cmake -text
