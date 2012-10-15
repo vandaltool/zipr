@@ -71,7 +71,7 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN STRATAFIER_OBJCOPY IDAROOT 
 cd $TESTLOC
 make clean peasoup
 if [ ! $? -eq 0 ]; then
-	cleanup 1 "Failed to build postgres tests"
+	cleanup 1 "Failed to build sqlite tests"
 fi
 
 
