@@ -5,7 +5,7 @@ generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 all: testsqlite.exe
 
 testsqlite.o: testsqlite.c
-	gcc -c testsqlite.c
+	gcc -c -I. testsqlite.c
 
 testsqlite.exe: testsqlite.o
 	gcc testsqlite.o -o testsqlite.exe -lsqlite3
