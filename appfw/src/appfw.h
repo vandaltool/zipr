@@ -3,7 +3,7 @@
 
 #define MAX_COMMAND_LENGTH 2048
 
-enum { APPFW_BLESSED = 0, APPFW_TAINTED = 1, APPFW_SECURITY_VIOLATION =2 };
+enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_BLESSED_KEYWORD };
 
 extern void appfw_init();               // load/initialize signature patterns off signature file (specified via env. variable)  
 extern int appfw_isInitialized();

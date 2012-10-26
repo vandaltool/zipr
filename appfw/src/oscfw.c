@@ -12,6 +12,11 @@
 #include "oscfw.h"
 
 #include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+void osc_parse(char* to_parse, char* taint_markings);
+
 
 static int oscfw_initialized = 0;
 
@@ -32,16 +37,24 @@ int oscfw_isInitialized()
   return oscfw_initialized;
 }
 
-// @todo: jdh8d
 // insert function below to parse & verify taint
 int oscfw_verify(const char *p_command, char *p_taint)
 {
-  appfw_establish_taint(p_command, p_taint);
-  appfw_display_taint("Debugging OS Command", p_command, p_taint);
+  	appfw_establish_taint(p_command, p_taint);
+  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
-  fprintf(stderr,"oscfw_verify(): not yet implemented\n");
+	osc_parse((char*)p_command, (char*)p_taint);
 
-  // return code is really a boolean
-  // return > 0 if success
-  // return 0 if failure
+  	appfw_display_taint("Debug OSC after parse", p_command, p_taint);
+
+  	// return code is really a boolean
+  	// return > 0 if success
+  	// return 0 if failure
+	int i;
+	for(i=0;i<strlen(p_command);i++)
+	{
+		if(p_taint[i]==APPFW_SECURITY_VIOLATION)
+			return 0;
+	}
+	return 1;
 }

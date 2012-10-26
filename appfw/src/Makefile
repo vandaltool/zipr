@@ -1,5 +1,7 @@
 LIBAPPFW_DIR=../lib
 
+CFLAGS=-g
+
 all: libappfw 
 
 extract_sql:
@@ -13,25 +15,28 @@ appfw_sqlite3.o: extract_sql sqlfw.c
 	gcc -fPIC -DSQLITE_OS_UNIX=1 -DSQLITE_THREADSAFE=0 -DSQLITE_DEBUG=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_4_BYTE_ALIGNED_MALLOC -c appfw_sqlite3.c
 
 appfw.o: appfw.c
-	gcc -c appfw.c
+	gcc $(CFLAGS) -c appfw.c
 
 oscfw.o: oscfw.c
-	gcc -c oscfw.c
+	gcc $(CFLAGS) -c oscfw.c
 
 pg_hook.o: pg_hook.c
-	gcc -DSHOW_TAINT_MARKINGS -I/usr/include/postgresql -c pg_hook.c
+	gcc $(CFLAGS) -DSHOW_TAINT_MARKINGS -I/usr/include/postgresql -c pg_hook.c
 
 mysql_hook.o: mysql_hook.c
-	gcc -DSHOW_TAINT_MARKINGS -I/usr/include/mysql -c mysql_hook.c
+	gcc $(CFLAGS) -DSHOW_TAINT_MARKINGS -I/usr/include/mysql -c mysql_hook.c
 
 sqlite3_hook.o: sqlite3_hook.c
-	gcc -DSHOW_TAINT_MARKINGS -c sqlite3_hook.c
+	gcc $(CFLAGS) -DSHOW_TAINT_MARKINGS -c sqlite3_hook.c
 
 osc_hook.o: osc_hook.c
-	gcc -DSHOW_TAINT_MARKINGS -c osc_hook.c
+	gcc $(CFLAGS) -DSHOW_TAINT_MARKINGS -c osc_hook.c
+
+osc_parse.o: osc_parse.cpp
+	g++ $(CFLAGS)  -DSHOW_TAINT_MARKINGS -c $<
 	
-libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o
-	gcc -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so appfw_sqlite3.o mysql_hook.o pg_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o
+libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o
+	g++ $(CFLAGS) -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so appfw_sqlite3.o mysql_hook.o pg_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o
 
 clean:
 	rm -fr *.o *.tmp *.so appfw_sqlite3.c appfw_sqlite3.h sqlite3.h sqlite-autoconf-3071300 

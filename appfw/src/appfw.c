@@ -130,11 +130,13 @@ void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
 	for (i = 0; i < strlen(p_query); ++i)
 	{
 		if (p_taint[i] == APPFW_BLESSED)
-			fprintf(stderr," ");
+			fprintf(stderr,"o");
 		else if (p_taint[i] == APPFW_SECURITY_VIOLATION)
-			fprintf(stderr,"X");
+			fprintf(stderr,"v");
+		else if (p_taint[i] == APPFW_BLESSED_KEYWORD)
+			fprintf(stderr,"k");
 		else
-			fprintf(stderr,"-");
+			fprintf(stderr,"d");
 	}
 	fprintf(stderr,"\n");
 }
