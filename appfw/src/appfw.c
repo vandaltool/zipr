@@ -73,3 +73,67 @@ void appfw_error(const char *msg)
 {
   fprintf(stderr,"[appfw]: %s\n", msg);
 }
+
+// mark parts of string as tainted
+void appfw_taint_range(char *taint, char taintValue, int from, int len)
+{
+  int i;
+  for (i = from; i < from+len; ++i)
+    taint[i] = taintValue;
+}
+
+void appfw_establish_taint(const char *input, char *taint)
+{
+  int i, j, pos;
+  int tainted_marking = APPFW_TAINTED;
+  int not_tainted_marking = APPFW_BLESSED;
+  int patternFound;
+  char **fw_sigs = appfw_getSignatures();
+
+  if (!fw_sigs || !sqlfw_isInitialized())
+    return;
+
+  // set taint markings to 'tainted' by default
+  appfw_taint_range(taint, tainted_marking, 0, strlen(input));
+
+  // use simple linear scan for now // list of signature patterns are sorted in reverse length order already
+  // unset taint when match is found
+  pos = 0;
+  while (pos < strlen(input))
+  {
+	// when we'll have reg. expressions for patterns
+	// we'd need to make sure we go through all the regex patterns first
+	patternFound = 0;
+    for (i = 0; i < appfw_getNumSignatures() && !patternFound; ++i)
+	{
+	  int length_signature = strlen(fw_sigs[i]);
+	  if (length_signature >= 1 && length_signature <= (strlen(input) - pos))
+	  {
+	    if (strncasecmp(&input[pos], fw_sigs[i], strlen(fw_sigs[i])) == 0)
+	    {
+		  appfw_taint_range(taint, not_tainted_marking, pos, strlen(fw_sigs[i]));
+	      patternFound = 1;
+		}
+      }
+	}
+
+    pos++;
+  }
+}
+
+void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
+{
+	int i;
+	fprintf(stderr,"%s: %s\n", p_msg, p_query);
+	fprintf(stderr,"%s: ", p_msg);
+	for (i = 0; i < strlen(p_query); ++i)
+	{
+		if (p_taint[i] == APPFW_BLESSED)
+			fprintf(stderr," ");
+		else if (p_taint[i] == APPFW_SECURITY_VIOLATION)
+			fprintf(stderr,"X");
+		else
+			fprintf(stderr,"-");
+	}
+	fprintf(stderr,"\n");
+}
