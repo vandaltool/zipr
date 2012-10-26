@@ -14,4 +14,6 @@ int main(int argc, char **argv)
   int ret = system(command);
 
   fprintf (stdout, "%s returned with code: %d\n", command, ret);
+
+  return 0;
 }

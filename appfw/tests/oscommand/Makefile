@@ -18,3 +18,4 @@ peasoup: all
 	
 run: all
 	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc.exe.sigs ./testosc.exe "-l; cat /etc/passwd"
+	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc.exe.sigs ./testosc.exe "-lth; rm /tmp/foobar"
