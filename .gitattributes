@@ -103,6 +103,8 @@ appfw/src/sqlite3_hook.c -text
 appfw/tests/mysql/Makefile -text
 appfw/tests/mysql/runtest -text
 appfw/tests/mysql/testmysql.c -text
+appfw/tests/oscommand/Makefile -text
+appfw/tests/oscommand/testosc.c -text
 appfw/tests/postgres/Makefile -text
 appfw/tests/postgres/postgres.test.sh -text
 appfw/tests/postgres/setup.sql -text
