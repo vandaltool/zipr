@@ -82,7 +82,7 @@ void appfw_taint_range(char *taint, char taintValue, int from, int len)
     taint[i] = taintValue;
 }
 
-void appfw_establish_taint(const char *input, char *taint)
+void appfw_establish_taint(const char *command, char *taint)
 {
   int i, j, pos;
   int tainted_marking = APPFW_TAINTED;
@@ -90,16 +90,17 @@ void appfw_establish_taint(const char *input, char *taint)
   int patternFound;
   char **fw_sigs = appfw_getSignatures();
 
-  if (!fw_sigs || !sqlfw_isInitialized())
+  if (!fw_sigs)
     return;
 
   // set taint markings to 'tainted' by default
-  appfw_taint_range(taint, tainted_marking, 0, strlen(input));
+  appfw_taint_range(taint, tainted_marking, 0, strlen(command));
+  appfw_display_taint("testing", command, taint);
 
   // use simple linear scan for now // list of signature patterns are sorted in reverse length order already
   // unset taint when match is found
   pos = 0;
-  while (pos < strlen(input))
+  while (pos < strlen(command))
   {
 	// when we'll have reg. expressions for patterns
 	// we'd need to make sure we go through all the regex patterns first
@@ -107,9 +108,9 @@ void appfw_establish_taint(const char *input, char *taint)
     for (i = 0; i < appfw_getNumSignatures() && !patternFound; ++i)
 	{
 	  int length_signature = strlen(fw_sigs[i]);
-	  if (length_signature >= 1 && length_signature <= (strlen(input) - pos))
+	  if (length_signature >= 1 && length_signature <= (strlen(command) - pos))
 	  {
-	    if (strncasecmp(&input[pos], fw_sigs[i], strlen(fw_sigs[i])) == 0)
+	    if (strncasecmp(&command[pos], fw_sigs[i], strlen(fw_sigs[i])) == 0)
 	    {
 		  appfw_taint_range(taint, not_tainted_marking, pos, strlen(fw_sigs[i]));
 	      patternFound = 1;

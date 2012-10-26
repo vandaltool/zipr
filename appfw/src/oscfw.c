@@ -34,9 +34,13 @@ int oscfw_isInitialized()
 
 // @todo: jdh8d
 // insert function below to parse & verify taint
-int oscfw_verify(const char *p_cmd, const char *p_taint)
+int oscfw_verify(const char *p_command, char *p_taint)
 {
-fprintf(stderr,"oscfw_verify(): not yet implemented\n");
+  appfw_establish_taint(p_command, p_taint);
+  appfw_display_taint("Debugging OS Command", p_command, p_taint);
+
+  fprintf(stderr,"oscfw_verify(): not yet implemented\n");
+
   // return code is really a boolean
   // return > 0 if success
   // return 0 if failure

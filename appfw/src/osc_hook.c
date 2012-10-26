@@ -18,8 +18,6 @@ int system(const char *p_command)
 
   oscfw_init(); // will do this automagically later 
 
-  appfw_display_taint("Debugging OS Command", p_command, taint);
-
   if (oscfw_verify(p_command, taint))
   {
     int ret = my_system(p_command);
