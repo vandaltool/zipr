@@ -41,11 +41,11 @@ int oscfw_isInitialized()
 int oscfw_verify(const char *p_command, char *p_taint)
 {
   	appfw_establish_taint(p_command, p_taint);
-  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
+//  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
 	osc_parse((char*)p_command, (char*)p_taint);
 
-  	appfw_display_taint("Debug OSC after parse", p_command, p_taint);
+//  	appfw_display_taint("Debug OSC after parse", p_command, p_taint);
 
   	// return code is really a boolean
   	// return > 0 if success

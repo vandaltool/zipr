@@ -4,7 +4,7 @@ generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 all: testosc.exe 
 
 testosc.o: testosc.c
-	gcc -c testosc.c
+	gcc -g -c testosc.c
 
 testosc.exe: testosc.o 
 	gcc testosc.o -o testosc.exe 
@@ -17,5 +17,9 @@ peasoup: all
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testosc.exe testosc.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off
 	
 run: all
-	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc.exe.sigs ./testosc.exe "-l; cat /etc/passwd"
-	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc.exe.sigs ./testosc.exe "-lth; touch /tmp/foobar"
+	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc.exe.sigs ./testosc.exe 1 "-l; cat /etc/passwd"
+	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc.exe.sigs ./testosc.exe 2 "-l; cat /etc/passwd"
+	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc.exe.sigs ./testosc.exe 3 "-l; cat /etc/passwd"
+
+run2: all
+	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc.exe.sigs ./testosc.exe 1 "-lth; touch /tmp/foobar"

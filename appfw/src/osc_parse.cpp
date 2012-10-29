@@ -20,7 +20,7 @@ static char *tainted_data=NULL;
 
 static int check_taint(int s, int e)
 {
-	cout<<"Checking taint from "<<s<<" to "<<e<<""<<endl;
+//	cout<<"Checking taint from "<<s<<" to "<<e<<""<<endl;
 
 	for(int i=s;i<e;i++)
 	{
@@ -44,13 +44,13 @@ static void discard_comment(istream &fin, int start)
 		s+=c;
 	}
 	check_taint(position,position);
-	cout<<"Found comment at "<<position<<": "<<s;
+//	cout<<"Found comment at "<<position<<": "<<s;
 }
 
 static void start_command()
 {
 	starting_command=true;
-	cout<<"Starting new command"<<endl;
+//	cout<<"Starting new command"<<endl;
 }
 
 
@@ -69,11 +69,11 @@ static void get_string_literal(istream &fin, char c, int start)
 			get_string_literal(fin,d,((int)fin.tellg())+start);
 	}
 	while (!fin.eof());
-	cout<<"Found string literal "<<s<<" at "<<position<<endl;
+//	cout<<"Found string literal "<<s<<" at "<<position<<endl;
 
 	if(c=='`')
 	{
-		cout<<"Pushing literal to parse later\n";
+//		cout<<"Pushing literal to parse later\n";
 		sub_commands.push_back(pair<string,int>(s,position));
 	}
 
@@ -89,7 +89,7 @@ static void get_variable(istream &fin, int start)
 	if(d=='$' || d=='_' || d=='@' || d=='?')
 	{
 		check_taint(position,((int)fin.tellg())+start);
-		cout<<"Found special variable at "<<position<<": $"<<d<<endl;
+//		cout<<"Found special variable at "<<position<<": $"<<d<<endl;
 		return;
 	}
 	// check for paren'd or braced variable names 
@@ -105,7 +105,7 @@ static void get_variable(istream &fin, int start)
 				break;
 		} while(!fin.eof());
 		check_taint(position,((int)fin.tellg())+start);
-		cout<<"Found paren'd variable at "<<position<<": "<<s<<endl;
+//		cout<<"Found paren'd variable at "<<position<<": "<<s<<endl;
 		return;
 	}
 
@@ -120,13 +120,13 @@ static void get_variable(istream &fin, int start)
 			break;
 	} while (!fin.eof());
 	check_taint(position,((int)fin.tellg())+start);
-	cout<<"Found normal variable at "<<position<<": $"<<s<<endl;
+//	cout<<"Found normal variable at "<<position<<": $"<<s<<endl;
 
 }
 
 static inline bool can_start_word(char c)
 {
-	return isalnum(c) || c=='/' || c=='-';
+	return isalnum(c) || c=='/' || c=='-' || c=='.' || c=='_';
 
 }
 
@@ -188,24 +188,24 @@ static void get_word(istream &fin, char c, int start)
 
 	if(d=='=')
 	{
-		check_taint(position,((int)fin.tellg())+start);
-		cout<<"Found assignment word at "<<position<<": "<<s<<endl;
+		check_taint(position,s.length()+position);
+//		cout<<"Found assignment word at "<<position<<": "<<s<<endl;
 	}
 	else if (is_keyword(s))
 	{
-		check_taint(position,((int)fin.tellg())+start);
-		cout<<"Found key word at "<<position<<": "<<s<<endl;
+		check_taint(position,s.length()+position);
+//		cout<<"Found key word at "<<position<<": "<<s<<endl;
 	}
 	else if (is_command_word(s))
 	{
-		check_taint(position,((int)fin.tellg())+start);
-		cout<<"Found command word at "<<position<<": "<<s<<endl;
+		check_taint(position,s.length()+position);
+//		cout<<"Found command word at "<<position<<": "<<s<<endl;
 	}
 	else
 	{
 		if(s[0]=='-')
-			check_taint(position,((int)fin.tellg())+start);
-		cout<<"Found option word at "<<position<<": "<<s<<endl;
+			check_taint(position,position+s.length());
+//		cout<<"Found option word at "<<position<<": "<<s<<endl;
 	}
 
 	if(is_start_command_word(s))
@@ -240,7 +240,7 @@ static void parse(istream &fin, int start)
 				{
 					int position=((int)fin.tellg())-1+start;
 					check_taint(position,position);
-					cout<<"Found special token separator at "<<position<<": "<<oldc<<endl;
+//					cout<<"Found special token separator at "<<position<<": "<<oldc<<endl;
 					start_command();
 				}
 				fin.unget();
@@ -267,7 +267,9 @@ static void parse(istream &fin, int start)
 					continue; /* spaces change nothing */
 				}
 				else
-					cout <<"Found special character: "<<c<<endl;
+				{
+//					cout <<"Found special character: "<<c<<endl;
+				}
 				
 			break;
 					
@@ -287,7 +289,7 @@ void osc_parse(char* to_parse, char* taint_markings)
 	stringstream sin;
 	sin<<to_parse;
 
-	cout<<"Parsing "<<to_parse<<endl;
+//	cout<<"Parsing "<<to_parse<<endl;
 	parse(sin,0);
 
 	while(!sub_commands.empty())
@@ -297,9 +299,9 @@ void osc_parse(char* to_parse, char* taint_markings)
 		sub_commands.pop_front();
 		stringstream ss(stringstream::in|stringstream::out);
 		ss<<s.substr(1,s.length()-2)<<endl;
-		cout<<"Parsing sub-command " << s <<endl;
+//		cout<<"Parsing sub-command " << s <<endl;
 		parse(ss,pos+1);
-		cout<<"Done with " << s <<endl<<endl;
+//		cout<<"Done with " << s <<endl<<endl;
 	}
 
 

@@ -2,10 +2,19 @@
 #include <stdio.h>
 /*
 #include <stdint.h>
-#include <string.h>
 */
+#include <string.h>
 #include <stdlib.h>
 #include <dlfcn.h>
+#include <stdarg.h>
+#include <assert.h>
+
+#define FALSE 0
+#define TRUE 0
+
+extern char **environ;
+
+static int within_osc_monitor=FALSE;
 
 #include "oscfw.h"
 int system(const char *p_command)
@@ -17,9 +26,11 @@ int system(const char *p_command)
 
   oscfw_init(); // will do this automagically later 
 
-  if (oscfw_verify(p_command, taint))
+  if (within_osc_monitor || oscfw_verify(p_command, taint))
   {
-    int ret = my_system(p_command);
+	within_osc_monitor=TRUE;
+    	int ret = my_system(p_command);
+	within_osc_monitor=FALSE;
 	return ret;
   }
   else
@@ -35,15 +46,17 @@ int system(const char *p_command)
 FILE* popen(const char *p_command, const char* p_type)
 {
   char taint[MAX_COMMAND_LENGTH];
-  static int (*my_popen)(const char *, const char*) = NULL;
+  static FILE* (*my_popen)(const char *, const char*) = NULL;
   if (!my_popen)
     my_popen = dlsym(RTLD_NEXT, "popen");
 
   oscfw_init(); // will do this automagically later 
 
-  if (oscfw_verify(p_command, taint))
+  if (within_osc_monitor || oscfw_verify(p_command, taint))
   {
-    int ret = my_popen(p_command,p_type);
+	within_osc_monitor=TRUE;
+    	FILE* ret = my_popen(p_command,p_type);
+	within_osc_monitor=FALSE;
 	return ret;
   }
   else
@@ -55,3 +68,230 @@ FILE* popen(const char *p_command, const char* p_type)
     return 0; // error code for popen
   }
 }
+
+int rcmd(char **ahost, int inport, const char *locuser,
+                const char *remuser, const char *cmd, int *fd2p)
+{
+  char taint[MAX_COMMAND_LENGTH];
+  static int (*my_rcmd)(char **ahost, int inport, const char *locuser,
+                const char *remuser, const char *cmd, int *fd2p) = NULL;
+  if (!my_rcmd)
+    my_rcmd = dlsym(RTLD_NEXT, "rcmd");
+
+  oscfw_init(); // will do this automagically later 
+
+  if (within_osc_monitor || oscfw_verify(cmd, taint))
+  {
+	within_osc_monitor=TRUE;
+    	int ret = my_rcmd(ahost,inport,locuser,remuser,cmd,fd2p);
+	within_osc_monitor=FALSE;
+	return ret;
+  }
+  else
+  {
+#ifdef SHOW_TAINT_MARKINGS
+    appfw_display_taint("OS Command Injection detected", cmd, taint);
+#endif
+
+    return -1; // error code for rcmd
+  }
+}
+
+
+int oscfw_verify_args(char* const argv[])
+{
+  	char taint[MAX_COMMAND_LENGTH];
+	int i;
+	while(argv[i]!=NULL)
+	{
+		if(argv[i][0]=='-')
+		{
+        		appfw_establish_taint(argv[i], taint);
+        		appfw_display_taint("Debugging OS Command", argv[i], taint);
+
+			int j;
+			for(j=0;j<strlen(argv[i]);j++)
+			{
+                		if(taint[i]!=APPFW_BLESSED)
+				{
+    					fprintf(stderr, "Failed argument check\n");
+#ifdef SHOW_TAINT_MARKINGS
+    					appfw_display_taint("OS Command Injection detected", argv[i], taint);
+#endif
+                        		return 0;
+				}
+        		}
+		}
+		i++;
+	}
+	return 1;
+}
+
+int handle_execl(const char *file, char *const argv[], char *const envp[])
+{
+  	char taint[MAX_COMMAND_LENGTH];
+  	static int (*my_execve)(const char*,char*const[], char*const[])=NULL;
+  	if (!my_execve)
+    		my_execve = dlsym(RTLD_NEXT, "execve");
+	assert(my_execve);
+
+  	oscfw_init(); // will do this automagically later
+
+  	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)))
+  	{
+//		fprintf(stderr, "exec OK");
+		within_osc_monitor=TRUE;
+        	int ret = my_execve(file,argv,envp);
+		within_osc_monitor=FALSE;
+        	return ret;
+  	}
+  	else
+  	{
+#ifdef SHOW_TAINT_MARKINGS
+    		fprintf(stderr, "Failed argument check for handle_execl\n");
+    		appfw_display_taint("OS Command Injection detected", file, taint);
+#endif
+
+    		return -1; // error code for rcmd
+  	}
+}
+int handle_fexec(int fd, char *const argv[], char *const envp[])
+{
+  	char taint[MAX_COMMAND_LENGTH];
+  	static int (*my_fexec)(int,char*const [], char*const [])=NULL;
+  	if (!my_fexec)
+    		my_fexec = dlsym(RTLD_NEXT, "fexecve");
+  	assert(my_fexec);
+
+  	oscfw_init(); // will do this automagically later
+
+  	if (within_osc_monitor || oscfw_verify_args(argv))
+  	{
+		within_osc_monitor=TRUE;
+        	int ret = my_fexec(fd,argv,envp);
+		within_osc_monitor=FALSE;
+        	return ret;
+  	}
+  	else
+  	{
+#ifdef SHOW_TAINT_MARKINGS
+    		fprintf(stderr, "Failed argument check for handle_fexec\n");
+#endif
+    		return -1; // error code for rcmd
+  	}
+}
+
+int handle_execp(const char *file, char *const argv[], char *const envp[])
+{
+  	char taint[MAX_COMMAND_LENGTH];
+  	static int (*my_execvpe)(const char*,char*const [], char*const [])=NULL;
+  	if (!my_execvpe)
+    		my_execvpe = dlsym(RTLD_NEXT, "execvpe");
+	assert(my_execvpe);
+	
+  	oscfw_init(); // will do this automagically later
+
+  	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)))
+  	{
+		within_osc_monitor=TRUE;
+        	int ret = my_execvpe(file,argv,envp);
+		within_osc_monitor=FALSE;
+        	return ret;
+  	}
+  	else
+  	{
+#ifdef SHOW_TAINT_MARKINGS
+    		fprintf(stderr, "Failed argument check for execp\n");
+    		appfw_display_taint("OS Command Injection detected", file, taint);
+#endif
+    		return -1; // error code for rcmd
+  	}
+}
+
+va_list process_args(char* arg, va_list vlist, char*** ret)
+{
+	*ret=malloc(0);
+	int index;
+
+	do
+	{
+		*ret=realloc(*ret,(index+1)*sizeof(void*));
+		(*ret)[index++]=arg;
+		/* test for exit if arg is 0. */
+		if(arg==NULL)	
+			return vlist;
+		arg=(char*)va_arg(vlist,void*);
+
+	} while(1);
+
+	return vlist;
+}
+
+int execl(const char *path, const char *arg, ...)
+{
+
+	char **all_args=NULL;
+	char **env=NULL;
+	va_list vlist;
+	va_start(vlist, arg);
+	vlist=process_args((char*)arg,vlist,&all_args);
+	env=environ;
+
+	return handle_execl(path,all_args,env);
+}
+
+int execlp(const char *file, const char *arg, ...)
+{
+
+	char **all_args;
+	char **env;
+	va_list vlist;
+	va_start(vlist, arg);
+	vlist=process_args((char*)arg,vlist,&all_args);
+	env=environ;
+
+	return handle_execp(file,all_args,env);
+}
+
+int execle(const char *path, const char *arg, ...)
+{
+
+	char **all_args;
+	char **env;
+	va_list vlist;
+	va_start(vlist, arg);
+	vlist=process_args((char*)arg,vlist,&all_args);
+	env=va_arg(vlist,void*);
+
+	return handle_execl(path,all_args,env);
+}
+
+int execv(const char *path, char *const argv[])
+{
+	return handle_execl(path,argv,environ);
+}
+
+int execvp(const char *file, char *const argv[])
+{
+	return handle_execp(file,argv,environ);
+}
+
+int execvpe(const char *file, char *const argv[], char *const envp[])
+{
+	return handle_execp(file,argv,envp);
+}
+
+int execve(const char *filename, char *const argv[], char *const envp[])
+{
+	return handle_execl(filename,argv,envp);
+}
+
+int fexecve(int fd, char *const argv[], char *const envp[])
+{
+	return handle_fexec(fd,argv,envp);
+}
+
+
+
+
+

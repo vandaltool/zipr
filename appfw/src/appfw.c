@@ -95,7 +95,7 @@ void appfw_establish_taint(const char *command, char *taint)
 
   // set taint markings to 'tainted' by default
   appfw_taint_range(taint, tainted_marking, 0, strlen(command));
-  appfw_display_taint("testing", command, taint);
+//  appfw_display_taint("testing", command, taint);
 
   // use simple linear scan for now // list of signature patterns are sorted in reverse length order already
   // unset taint when match is found
