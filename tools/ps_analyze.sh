@@ -73,7 +73,10 @@ adjust_lib_path()
 	NEWPATH=
 	for i in `echo $LD_LIBRARY_PATH | sed 's/:/ /g'`
 	do
-		NEWPATH=$NEWPATH:`realpath $i`	
+		alp_newdir=`realpath $i	 2> /dev/null`
+		if [ $? = 0  ] ; then 
+			NEWPATH=$NEWPATH:$alp_newdir
+		fi
 	done
 
 
@@ -374,7 +377,7 @@ check_for_bad_funcs()
 
 	for ducs_i in $bad_funcs
 	do
-		nm $my_name|grep $ducs_i  > /dev/null 2> /dev/null 
+		nm $my_name 2>&1 |grep $ducs_i  > /dev/null 2> /dev/null 
 	
 		if [ $? = 0 ]; then
 			echo "Found bad function ($ducs_i) in executable, we should skip this test."
