@@ -36,7 +36,7 @@ osc_parse.o: osc_parse.cpp
 	g++ $(CFLAGS)  -c $<
 	
 libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o
-	g++ $(CFLAGS) -shared -ldl -fPIC -o $(LIBAPPFW_DIR)/libappfw.so appfw_sqlite3.o mysql_hook.o pg_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o
+	g++ $(CFLAGS) -shared -fPIC -o $(LIBAPPFW_DIR)/libappfw.so appfw_sqlite3.o mysql_hook.o pg_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o -ldl
 
 clean:
 	rm -fr *.o *.tmp *.so appfw_sqlite3.c appfw_sqlite3.h sqlite3.h sqlite-autoconf-3071300 
