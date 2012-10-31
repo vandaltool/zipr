@@ -85,16 +85,17 @@ void appfw_taint_range(char *taint, char taintValue, int from, int len)
 void appfw_establish_taint(const char *command, char *taint)
 {
   int i, j, pos;
-  int tainted_marking = APPFW_TAINTED;
-  int not_tainted_marking = APPFW_BLESSED;
   int patternFound;
   char **fw_sigs = appfw_getSignatures();
 
   if (!fw_sigs)
+  {
+    appfw_taint_range(taint, APPFW_BLESSED, 0, strlen(command));
     return;
+  }
 
   // set taint markings to 'tainted' by default
-  appfw_taint_range(taint, tainted_marking, 0, strlen(command));
+  appfw_taint_range(taint, APPFW_TAINTED, 0, strlen(command));
 //  appfw_display_taint("testing", command, taint);
 
   // use simple linear scan for now // list of signature patterns are sorted in reverse length order already
@@ -112,7 +113,7 @@ void appfw_establish_taint(const char *command, char *taint)
 	  {
 	    if (strncasecmp(&command[pos], fw_sigs[i], strlen(fw_sigs[i])) == 0)
 	    {
-		  appfw_taint_range(taint, not_tainted_marking, pos, strlen(fw_sigs[i]));
+		  appfw_taint_range(taint, APPFW_BLESSED, pos, strlen(fw_sigs[i]));
 	      patternFound = 1;
 		}
       }
