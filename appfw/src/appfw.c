@@ -11,6 +11,25 @@ static int fw_numPatterns = 0;
 static char **fw_sigs = NULL;
 static int appfw_initialized = 0;
 
+
+static  void reset_sig_file_env_var()
+{
+	extern char **environ;
+	int i;
+	for(i=0;(environ[i]!=0);i++)
+	{
+		if(getenv("VERBOSE"))
+			fprintf(stderr,"environ[i]=%s\n",environ[i]);
+		/* check that the environ has the key followed by an equal */
+		if(strncmp(sigFileEnv,environ[i],strlen(sigFileEnv))==0 && 
+			environ[i][strlen(sigFileEnv)]=='=')
+		{
+			environ[i][0]='B';
+		}
+
+	}
+}
+
 // read in signature file
 // environment variable specifies signature file location
 void appfw_init()
@@ -22,15 +41,20 @@ void appfw_init()
   char *signatureFile = getenv(sigFileEnv);
   if (!signatureFile)
   {
-    appfw_error("no signature file found");
+	if(getenv("VERBOSE"))
+    		appfw_error("no signature file found");
   }
 
-  fw_sigs = malloc(sizeof(char*) * 20000); // allow for 20000 signature patterns
+  reset_sig_file_env_var();
+
 
   FILE *sigF = fopen(signatureFile, "r");
   if (sigF)
   {
     char buf[MAX_SIGNATURE_SIZE];
+
+    fw_sigs = malloc(sizeof(char*) * 20000); // allow for 20000 signature patterns
+
     while (fgets(buf, MAX_SIGNATURE_SIZE, sigF) != NULL)
     {
       fw_sigs[numSigs] = (char *) malloc(strlen(buf) + 128);
@@ -46,8 +70,9 @@ void appfw_init()
   }
   else
   {
-    appfw_error("could not open signature file");
-    appfw_initialized = 0;
+	if(getenv("VERBOSE"))
+    		appfw_error("could not open signature file");
+    	appfw_initialized = 0;
   }
 }
 

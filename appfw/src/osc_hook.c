@@ -28,6 +28,8 @@ int system(const char *p_command)
 
   if (within_osc_monitor || oscfw_verify(p_command, taint))
   {
+	if(getenv("VERBOSE"))
+    		appfw_display_taint("OS Command Injection safe", p_command, taint);
 	within_osc_monitor=TRUE;
     	int ret = my_system(p_command);
 	within_osc_monitor=FALSE;
@@ -35,11 +37,10 @@ int system(const char *p_command)
   }
   else
   {
-#ifdef SHOW_TAINT_MARKINGS
-    appfw_display_taint("OS Command Injection detected", p_command, taint);
-#endif
+	if(getenv("VERBOSE"))
+    		appfw_display_taint("OS Command Injection detected", p_command, taint);
 
-    return -1; // error code for system
+    	return -1; // error code for system
   }
 }
 
@@ -61,11 +62,9 @@ FILE* popen(const char *p_command, const char* p_type)
   }
   else
   {
-#ifdef SHOW_TAINT_MARKINGS
-    appfw_display_taint("OS Command Injection detected", p_command, taint);
-#endif
-
-    return 0; // error code for popen
+	if(getenv("VERBOSE"))
+    		appfw_display_taint("OS Command Injection detected", p_command, taint);
+    	return 0; // error code for popen
   }
 }
 
@@ -89,11 +88,9 @@ int rcmd(char **ahost, int inport, const char *locuser,
   }
   else
   {
-#ifdef SHOW_TAINT_MARKINGS
-    appfw_display_taint("OS Command Injection detected", cmd, taint);
-#endif
-
-    return -1; // error code for rcmd
+	if(getenv("VERBOSE"))
+    		appfw_display_taint("OS Command Injection detected", cmd, taint);
+    	return -1; // error code for rcmd
   }
 }
 
@@ -115,9 +112,7 @@ int oscfw_verify_args(char* const argv[])
                 		if(taint[i]!=APPFW_BLESSED)
 				{
     					fprintf(stderr, "Failed argument check\n");
-#ifdef SHOW_TAINT_MARKINGS
     					appfw_display_taint("OS Command Injection detected", argv[i], taint);
-#endif
                         		return 0;
 				}
         		}
@@ -147,11 +142,9 @@ int handle_execl(const char *file, char *const argv[], char *const envp[])
   	}
   	else
   	{
-#ifdef SHOW_TAINT_MARKINGS
+
     		fprintf(stderr, "Failed argument check for handle_execl\n");
     		appfw_display_taint("OS Command Injection detected", file, taint);
-#endif
-
     		return -1; // error code for rcmd
   	}
 }
@@ -174,9 +167,7 @@ int handle_fexec(int fd, char *const argv[], char *const envp[])
   	}
   	else
   	{
-#ifdef SHOW_TAINT_MARKINGS
     		fprintf(stderr, "Failed argument check for handle_fexec\n");
-#endif
     		return -1; // error code for rcmd
   	}
 }
@@ -200,10 +191,8 @@ int handle_execp(const char *file, char *const argv[], char *const envp[])
   	}
   	else
   	{
-#ifdef SHOW_TAINT_MARKINGS
     		fprintf(stderr, "Failed argument check for execp\n");
     		appfw_display_taint("OS Command Injection detected", file, taint);
-#endif
     		return -1; // error code for rcmd
   	}
 }

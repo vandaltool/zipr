@@ -14,9 +14,9 @@
 
 using namespace std;
 
-static bool starting_command=false;
-static list<pair<string,int> > sub_commands;
-static char *tainted_data=NULL;
+static __thread bool starting_command=false;
+static __thread list<pair<string,int> > *sub_commands=NULL;
+static __thread char *tainted_data=NULL;
 
 static int check_taint(int s, int e)
 {
@@ -74,7 +74,7 @@ static void get_string_literal(istream &fin, char c, int start)
 	if(c=='`')
 	{
 //		cout<<"Pushing literal to parse later\n";
-		sub_commands.push_back(pair<string,int>(s,position));
+		(*sub_commands).push_back(pair<string,int>(s,position));
 	}
 
 }
@@ -282,9 +282,11 @@ static void parse(istream &fin, int start)
 extern "C" 
 void osc_parse(char* to_parse, char* taint_markings)
 {
+	list<pair<string,int> > my_sub_commands;
+	sub_commands=&my_sub_commands;
 	/* set global variables */
 	tainted_data=taint_markings;
-	sub_commands.clear();
+	(*sub_commands).clear();
 	
 	stringstream sin;
 	sin<<to_parse;
@@ -292,11 +294,11 @@ void osc_parse(char* to_parse, char* taint_markings)
 //	cout<<"Parsing "<<to_parse<<endl;
 	parse(sin,0);
 
-	while(!sub_commands.empty())
+	while(!(*sub_commands).empty())
 	{
-		string s=sub_commands.front().first;
-		int  pos=sub_commands.front().second;
-		sub_commands.pop_front();
+		string s=(*sub_commands).front().first;
+		int  pos=(*sub_commands).front().second;
+		(*sub_commands).pop_front();
 		stringstream ss(stringstream::in|stringstream::out);
 		ss<<s.substr(1,s.length()-2)<<endl;
 //		cout<<"Parsing sub-command " << s <<endl;
