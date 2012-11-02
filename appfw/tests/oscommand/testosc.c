@@ -5,6 +5,7 @@
 #include <assert.h>
 
 char *ls_string="ls";
+char *env_string="env";
 
 int main(int argc, char *argv[], char* envp[])
 {
@@ -67,13 +68,13 @@ int main(int argc, char *argv[], char* envp[])
 		}
 		case 6: 
 		{
-			execl("/bin/ls",  "/usr/bin/env", argv[2], NULL);
+			execl("/bin/ls",  "/bin/ls", argv[2], NULL);
 			assert(0);
 		}
 
 		case 7: 
 		{
-			execle("/bin/ls",  "/usr/bin/env", argv[2], NULL, envp2);
+			execle("/bin/ls",  "/bin/ls", argv[2], NULL, envp2);
 			assert(0);
 		}
 
@@ -100,6 +101,86 @@ int main(int argc, char *argv[], char* envp[])
 		{
 			argv[1]=ls_string;
 			execlp(ls_string,  argv[1], argv[2], NULL);
+			assert(0);
+		}
+
+		case 101:  // system
+		{
+  			char command[2048];
+  			sprintf(command, "/usr/bin/env %s", argv[2]);
+  			int ret = system(command);
+  			fprintf (stdout, "%s returned with code: %d\n", command, ret);
+			break;
+		}
+		case 102://popen
+		{
+  			char command[2048];
+  			sprintf(command, "/usr/bin/env %s", argv[2]);
+  			FILE* ret = popen(command,"r");
+			
+  			fprintf (stdout, "%s returned file descriptor: %d\n", command, ret?fileno(ret):0);
+			if(ret) pclose(ret);
+			break;
+		}
+		case 103: //rcmd
+		{
+			char *host="none";
+  			char command[2048];
+  			sprintf(command, "/usr/bin/env %s", argv[2]);
+  			int ret = rcmd(&host,0,NULL,NULL,command,NULL);
+			
+  			fprintf (stdout, "%s returned with code: %d\n", command, ret);
+			break;
+		}
+		case 104: 
+		{
+			FILE* fls=fopen("/usr/bin/env", "r");
+			argv[1]="/bin/ls";
+			fexecve(fileno(fls), &argv[1], envp2);
+			assert(0);
+		}
+		case 105: 
+		{
+
+			argv[1]="/usr/bin/env";
+			execve("/usr/bin/env",  &argv[1], envp2);
+			assert(0);
+		}
+		case 106: 
+		{
+			execl("/usr/bin/env",  "/bin/ls", argv[2], NULL);
+			assert(0);
+		}
+
+		case 107: 
+		{
+			execle("/usr/bin/env",  "/bin/ls", argv[2], NULL, envp2);
+			assert(0);
+		}
+
+		case 108: 
+		{
+			argv[1]="/usr/bin/env";
+			execv("/usr/bin/env",  &argv[1]);
+			assert(0);
+		}
+
+		case 109: 
+		{
+			argv[1]=env_string;
+			execvp(env_string,  &argv[1]);
+			assert(0);
+		}
+		case 110: 
+		{
+			argv[1]=env_string;
+			execvpe(env_string,  &argv[1], envp2);
+			assert(0);
+		}
+		case 111: 
+		{
+			argv[1]=env_string;
+			execlp(env_string,  argv[1], argv[2], NULL);
 			assert(0);
 		}
 
