@@ -67,7 +67,7 @@ rm $tmpFile $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $tmpSymbols 2>/dev/null
 touch $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $finalSigFile
 
 # get strings & symbols
-strings $inputFile | sort -f | uniq -i > $tmpFile2                     # get strings
+strings -n 2 $inputFile | sort -f | uniq -i > $tmpFile2                     # get strings
 cat $defaultSigs >> $tmpFile2                                          # add signatures from sqlite itself
 sort -f $tmpFile2 | uniq -i > $tmpFile                                 
 
