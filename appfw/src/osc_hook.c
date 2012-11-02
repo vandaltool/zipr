@@ -104,7 +104,8 @@ int oscfw_verify_args(char* const argv[])
 		if(argv[i][0]=='-')
 		{
         		appfw_establish_taint(argv[i], taint);
-        		appfw_display_taint("Debugging OS Command", argv[i], taint);
+			if(getenv("VERBOSE"))
+        			appfw_display_taint("Debugging OS Command", argv[i], taint);
 
 			int j;
 			for(j=0;j<strlen(argv[i]);j++)
