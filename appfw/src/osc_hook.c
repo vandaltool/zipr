@@ -98,7 +98,7 @@ int rcmd(char **ahost, int inport, const char *locuser,
 int oscfw_verify_args(char* const argv[])
 {
   	char taint[MAX_COMMAND_LENGTH];
-	int i;
+	int i=0;
 	while(argv[i]!=NULL)
 	{
 		if(argv[i][0]=='-')
