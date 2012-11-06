@@ -25,32 +25,6 @@ int mysql_query(MYSQL* p_conn, const char *p_query)
   }
   else
   {
-    int i;
-	/*
-    char taint[strlen(p_query)+32];
-    sqlfw_establish_taint(p_query, taint);
-	*/
-
-    // show query and taint markings
-
-#ifdef SHOW_TAINT_MARKINGS
-	sqlfw_display_taint("SQL Injection detected", p_query, tainted);
-	/*
-    fprintf(stderr, "[appfw]:                                         taint markings: ");
-	for (i = 0; i < strlen(p_query); ++i)
-	{
-      if (tainted[i] == APPFW_BLESSED)
-	    fprintf(stderr," ");
-	  else if (tainted[i] == APPFW_SECURITY_VIOLATION)
-	    fprintf(stderr,"X");
-      else
-	    fprintf(stderr,"-");
-
-	}
-	fprintf(stderr,"\n");
-	*/
-#endif
-
 	// error policy: issue bad query on purpose so that we return what PG would have returned
 	char errmsg[2048];
 	sprintf(errmsg, "error: security violation: %s", p_query);

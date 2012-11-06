@@ -1,4 +1,3 @@
-//
 // Detection of SQL Injections using really simple heuristic:
 //   (a) extract strings in binary
 //   (b) treat all extracted strings as trusted strings
@@ -46,19 +45,41 @@ void sqlfw_establish_taint(const char *query, char *taint)
   appfw_establish_taint(query, taint);
 }
 
+void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
+{
+  appfw_display_taint(p_msg, p_query, p_taint);
+}
+
 /*
 ** Run the original sqlite parser on the given SQL string.  
 ** Look for tainted SQL tokens/keywords
 */
 int sqlfw_verify(const char *zSql, char **pzErrMsg){
   char tainted[MAX_QUERY_LENGTH];
-  return sqlfw_verify_taint(zSql, tainted, pzErrMsg);
+
+  if (!peasoupDB)
+  {
+	if (getenv("VERBOSE"))
+		fprintf(stderr, "peasoupDB is NULL\n");
+    return 0;
+	}
+
+  // figure out taint markings
+  sqlfw_establish_taint(zSql, tainted);
+
+  int success = sqlfw_verify_taint(zSql, tainted, pzErrMsg);
+  if (!success)
+    appfw_display_taint("SQL Injection detected", zSql, tainted);
+
+  return success;
 }
 
 /*
 ** Run the original sqlite parser on the given SQL string.  
 ** Look for tainted SQL tokens/keywords
 ** Sets the taint array
+** 
+** original code: SQLITE_PRIVATE int sqlite3_sqlite3RunParser(Parse *pParse, const char *zSql, char **pzErrMsg){
 */
 int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
   Parse *pParse;
@@ -71,32 +92,17 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
   int j, k;
   int beg, end;
 
-  if (!peasoupDB)
-    return 0;
+  // terminate recursion if needed
+  if (strlen(zSql) <= 0)
+    return 1;
 
-  sqlfw_establish_taint(zSql, p_taint);
+  if (getenv("VERBOSE"))
+    sqlfw_display_taint("debug", zSql, p_taint);
 
-//  pParse = appfw_sqlite3StackAllocZero(db, sizeof(*pParse));
+  // need to reclaim this space later
   pParse = appfw_sqlite3MallocZero(sizeof(*pParse));
 
   pParse->db = peasoupDB;
-
-//  fprintf(stderr, "appfw_sqlite3_fw(): enter: query string length: %d\n", strlen(zSql));
-
-  // show query
-  /*
-  fprintf(stderr, "[appfw]: %s\n", zSql);
-
-  fprintf(stderr, "[appfw]: ");
-
-  // show taint
-  for (i = 0; i < strlen(zSql); ++i)
-    if (p_taint[i])
-      fprintf(stderr, "X");
-	else
-      fprintf(stderr, "-");
-  fprintf(stderr,"\n");
-  */
 
   pParse->rc = SQLITE_OK;
   pParse->zTail = zSql;
@@ -120,9 +126,10 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
       break;
     }
 
+//	fprintf(stderr, "token: [ ] type: %d [%d..%d]\n", tokenType, beg, end);
+
     switch( tokenType ){
       case TK_SPACE: {
-//	    fprintf(stderr, "token: [ ] type: %d [%d..%d]\n", tokenType, beg, end);
         break;
       }
       case TK_ILLEGAL: {
@@ -130,29 +137,36 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
       }
       case TK_SEMI: {
         pParse->zTail = &zSql[i];
-		if (p_taint[i])
+		if (p_taint[i] == APPFW_TAINTED)
 		{
-//          fprintf(stderr,"TAINTED SEMI-COLON DETECTED -- VERY BAD\n");
           p_taint[i] = APPFW_SECURITY_VIOLATION;
 		  goto abort_parse;
 		}
 
-        /* Fall thru into the default case */
+ 		// here we have a SQL terminator; we need to parse the next statement
+		// so we recursively call ourself
+		if (i+1 < strlen(zSql))
+          return sqlfw_verify_taint(&zSql[i+1], &p_taint[i+1], pzErrMsg);
+        else
+		{
+		  return 1; // semicolon was the last character in the entire statement return success
+		}
       }
       default: {
 	  // show token info
+	  
 	  /*
         fprintf(stderr, "token: [");
         for (k = beg; k <= end; ++k)
 		  fprintf(stderr,"%c", zSql[k]);
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
-		*/
+	  */
 
         appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
         lastTokenParsed = tokenType;
         if( pParse->rc!=SQLITE_OK ){
-    		fprintf(stderr,"fwsql_verify(): Error in parsing:"); 
+    		fprintf(stderr,"fwsql_verify(): Error in parsing: \n"); 
           goto abort_parse;
         }
 
@@ -207,7 +221,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
 		    int taint_detected = 0;
 		    for (j = beg; j <= end; ++j)
 			{
-              if (p_taint[j])
+              if (p_taint[j] == APPFW_TAINTED)
 			  {
 			      taint_detected = 1;
                   p_taint[j] = APPFW_SECURITY_VIOLATION;
@@ -215,7 +229,9 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
 			}
 
 			if (taint_detected)
+			{
 			  goto abort_parse;
+			}
 	      }
 		  break;
 		}
@@ -227,23 +243,23 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
 	{
 	  // detect p_taint comments (assume it's --), this may not be true for various SQL variants
 	  if (zSql[end+1] == '-' && zSql[end+2] == '-' &&
-	     (p_taint[end+1] || p_taint[end+2]))
+	     (p_taint[end+1] == APPFW_TAINTED || p_taint[end+2] == APPFW_TAINTED))
 	  {
         p_taint[end+1] = APPFW_SECURITY_VIOLATION;
         p_taint[end+2] = APPFW_SECURITY_VIOLATION;
 		goto abort_parse;
 	  }
 	}
-
   } // end while
 
   return 1; // this is good
 
 abort_parse:
+	if (getenv("VERBOSE"))
+	{
+		fprintf(stderr,"abort_parse: %s\n", pParse->zErrMsg);
+		fprintf(stderr,"abort_parse: %s\n", appfw_sqlite3ErrStr(pParse->rc));
+		}
   return 0;
 }
 
-void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
-{
-  appfw_display_taint(p_msg, p_query, p_taint);
-}

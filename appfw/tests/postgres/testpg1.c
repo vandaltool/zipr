@@ -26,7 +26,7 @@ int main(int argc, char **argv)
   }
 
   // deliberately allow for SQL injection
-  sprintf(query, "select * from doip where comment = '%s'", argv[1]);
+  sprintf(query, "select * from doip where comment = '%s';", argv[1]);
   fprintf(stderr,"issuing query: %s\n", query);
 
   // play with uppercase in SQL instructions (SQL is case insensitive)

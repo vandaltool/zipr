@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
  
    /* send SQL query */
    char query[512];
-   char *fmtString = "SELECT * FROM users_1796 WHERE first LIKE '%s'";
+   char *fmtString = "SELECT * FROM users_1796 WHERE first LIKE '%s'; -- comment ;";
    
    /* No more buffer overflow */
 	if ((strlen(argv[1]) + strlen(fmtString)) > 512){

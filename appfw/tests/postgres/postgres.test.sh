@@ -148,4 +148,16 @@ fi
 
 psql -f ./teardown.sql
 
+#
+# testpg4.exe.peasoup
+# test multi-statement queries
+#
+rm -f $tmp
+./testpg4.exe.peasoup "bob" > $tmp 2>&1
+grep -i "sql injection" $tmp | grep -i detected
+if [ $? -eq 0 ]; then
+	cat $tmp
+	cleanup 8 "False positive detected: there should be no SQL injections here"
+fi
+
 cleanup 0 "Successfully detected Postgres SQL Injection"

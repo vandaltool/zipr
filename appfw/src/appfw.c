@@ -148,6 +148,8 @@ void appfw_establish_taint(const char *command, char *taint)
   }
 }
 
+// enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_BLESSED_KEYWORD };
+
 void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
 {
 	int i;
