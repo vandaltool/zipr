@@ -22,8 +22,12 @@ static string labelfy(Instruction_t* insn);
 // the set of insturctions that have control 
 // transfers to them (including fallthrough type control transfers) from instructions that do not need a spri rule.
 //
-set<Instruction_t*> unmoved_insn_targets;
+static set<Instruction_t*> unmoved_insn_targets;
 	
+//
+// The set of all addresses that are ibts
+//
+static set <AddressID_t> ibts;
 
 //
 // map an instruction from the new variant back to the old variant;
@@ -465,6 +469,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 	/* if there's a corresponding "old" instruction (i.e., in Variant 0, aka from the binary) */
 	if(addressify(newinsn).c_str()[0]=='0')
 	{
+		assert(old_insn);
 		if(
 		   // if it's an indirect branch target 
 		   newinsn->GetIndirectBranchTargetAddress() || 
@@ -474,7 +479,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 		{
 			fout << qualified_addressify(fileIRp, newinsn) <<" -> ."<<endl;
 		}
-		else
+		else if (ibts.find(*old_insn->GetAddress()) == ibts.end())
 		{
 			fout << "# eliding, no indirect targets"<<endl;
 			fout << qualified_addressify(fileIRp, newinsn) <<" -> 0x0 " <<endl; 
@@ -633,6 +638,29 @@ void FileIR_t::GenerateSPRI(ostream &fout)
 
 }
 
+//
+// generate_IBT_set -- record all addresses in the program
+//
+static void generate_IBT_set(FileIR_t* fileIRp)
+{
+	ibts.clear();
+	for(
+		set<Instruction_t*>::const_iterator it=fileIRp->GetInstructions().begin();
+		it!=fileIRp->GetInstructions().end();
+		++it
+	   )
+	{
+		Instruction_t *insn=*it;
+		AddressID_t *ibt=insn->GetIndirectBranchTargetAddress();
+
+		if(ibt)
+		{
+			ibts.insert(*ibt);
+		}
+
+	}
+
+}
 
 //
 // generate_unmoved_insn_targets_set --  create the set of insturctions that have control 
@@ -676,6 +704,9 @@ void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout)
 
 	// generate the map from new instruction to old instruction needed for this transform.
 	generate_insn_to_insn_maps(fileIRp, orig_fileIRp);
+
+	// generate the set of all indirect branch target addressses for this fileIR
+	generate_IBT_set(fileIRp);
 
 	// generate unmoved_insn_targets_set --  the set of instructions that have control 
 	// transfers to them (including fallthrough type control transfers) from instructions that do not need a spri rule.

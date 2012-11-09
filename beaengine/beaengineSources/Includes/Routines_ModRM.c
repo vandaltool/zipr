@@ -64,6 +64,9 @@ void __bea_callspec__ Reg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
         (*pMyArgument).ArgSize = 64;
     }
     else if (GV.SEG_ == 1) {
+	/* sanity check that the segment register is between 0 and 5. seg registers 6 and 7 are undefined */
+	if(GV.REGOPCODE<0 || GV.REGOPCODE>5)
+		FailDecode(pMyDisasm);
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSEG[GV.REGOPCODE]);
         #endif

@@ -270,16 +270,16 @@ char RegistersSEG[16][8] = {
     "ds",      /* +3 */
     "fs",      /* +4 */
     "gs",      /* +5 */
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
+    "invalid seg?",
+    "invalid seg?",
+    "invalid seg?",
+    "invalid seg?",
+    "invalid seg?",
+    "invalid seg?",
+    "invalid seg?",
+    "invalid seg?",
+    "invalid seg?",
+    "invalid seg?",
 };
 
 /* =====================================================

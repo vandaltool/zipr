@@ -30,6 +30,8 @@ class AddressID_t : public BaseObj_t
         std::string WriteToDB(File_t *vid, db_id_t newid);
 
 
+	inline bool operator<(const AddressID_t& cmp) const { return fileID < cmp.fileID || (fileID == cmp.fileID && virtual_offset < cmp.virtual_offset); }  
+
     private:
         db_id_t fileID;          // The ID of the file
         virtual_offset_t virtual_offset;  // the virtual address(offset) into the file. 
