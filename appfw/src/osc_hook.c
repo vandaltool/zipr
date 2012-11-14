@@ -26,9 +26,12 @@ int system(const char *p_command)
 
   oscfw_init(); // will do this automagically later 
 
+  if(getenv("APPFW_VERBOSE"))
+	fprintf(stderr, "In system\n");
+
   if (within_osc_monitor || oscfw_verify(p_command, taint))
   {
-	if(getenv("VERBOSE"))
+	if(getenv("APPFW_VERBOSE"))
     		appfw_display_taint("OS Command Injection safe", p_command, taint);
 	within_osc_monitor=TRUE;
     	int ret = my_system(p_command);
@@ -37,7 +40,7 @@ int system(const char *p_command)
   }
   else
   {
-	if(getenv("VERBOSE"))
+	if(getenv("APPFW_VERBOSE"))
     		appfw_display_taint("OS Command Injection detected", p_command, taint);
 
     	return -1; // error code for system
@@ -62,7 +65,7 @@ FILE* popen(const char *p_command, const char* p_type)
   }
   else
   {
-	if(getenv("VERBOSE"))
+	if(getenv("APPFW_VERBOSE"))
     		appfw_display_taint("OS Command Injection detected", p_command, taint);
     	return 0; // error code for popen
   }
@@ -88,7 +91,7 @@ int rcmd(char **ahost, int inport, const char *locuser,
   }
   else
   {
-	if(getenv("VERBOSE"))
+	if(getenv("APPFW_VERBOSE"))
     		appfw_display_taint("OS Command Injection detected", cmd, taint);
     	return -1; // error code for rcmd
   }
@@ -104,7 +107,7 @@ int oscfw_verify_args(char* const argv[])
 		if(argv[i][0]=='-')
 		{
         		appfw_establish_taint(argv[i], taint);
-			if(getenv("VERBOSE"))
+			if(getenv("APPFW_VERBOSE"))
         			appfw_display_taint("Debugging OS Command", argv[i], taint);
 
 			int j;

@@ -18,7 +18,7 @@ static  void reset_sig_file_env_var()
 	int i;
 	for(i=0;(environ[i]!=0);i++)
 	{
-		if(getenv("VERBOSE"))
+		if(getenv("APPFW_VERBOSE"))
 			fprintf(stderr,"environ[i]=%s\n",environ[i]);
 		/* check that the environ has the key followed by an equal */
 		if(strncmp(sigFileEnv,environ[i],strlen(sigFileEnv))==0 && 
@@ -41,7 +41,7 @@ void appfw_init()
   char *signatureFile = getenv(sigFileEnv);
   if (!signatureFile)
   {
-	if(getenv("VERBOSE"))
+	if(getenv("APPFW_VERBOSE"))
     		appfw_error("no signature file found");
   }
 
@@ -67,13 +67,16 @@ void appfw_init()
     fw_numPatterns = numSigs;
     fclose(sigF);
     appfw_initialized = 1;
+    if(getenv("APPFW_VERBOSE"))
+	fprintf(stderr, "appfw init finished\n");
   }
   else
   {
-	if(getenv("VERBOSE"))
+	if(getenv("APPFW_VERBOSE"))
     		appfw_error("could not open signature file");
     	appfw_initialized = 0;
   }
+  fflush(stderr);
 }
 
 int appfw_isInitialized()
@@ -167,4 +170,5 @@ void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
 			fprintf(stderr,"d");
 	}
 	fprintf(stderr,"\n");
+	fflush(stderr);
 }

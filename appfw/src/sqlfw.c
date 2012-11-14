@@ -59,7 +59,7 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 
   if (!peasoupDB)
   {
-	if (getenv("VERBOSE"))
+	if (getenv("APPFW_VERBOSE"))
 		fprintf(stderr, "peasoupDB is NULL\n");
     return 0;
 	}
@@ -96,7 +96,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
   if (strlen(zSql) <= 0)
     return 1;
 
-  if (getenv("VERBOSE"))
+  if (getenv("APPFW_VERBOSE"))
     sqlfw_display_taint("debug", zSql, p_taint);
 
   // need to reclaim this space later
@@ -255,7 +255,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
   return 1; // this is good
 
 abort_parse:
-	if (getenv("VERBOSE"))
+	if (getenv("APPFW_VERBOSE"))
 	{
 		fprintf(stderr,"abort_parse: %s\n", pParse->zErrMsg);
 		fprintf(stderr,"abort_parse: %s\n", appfw_sqlite3ErrStr(pParse->rc));
