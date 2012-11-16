@@ -170,6 +170,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
         lastTokenParsed = tokenType;
         if( pParse->rc!=SQLITE_OK ){
 		  continue;
+
 		  /*
     		fprintf(stderr,"fwsql_verify(): Error in parsing: \n"); 
           goto abort_parse;
