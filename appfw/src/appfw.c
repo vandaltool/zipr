@@ -4,13 +4,13 @@
 
 #include "appfw.h"
 
+#define MAX_NUM_SIGNATURES 40000
 #define MAX_SIGNATURE_SIZE 1024
 
 static const char *sigFileEnv = "APPFW_SIGNATURE_FILE";
 static int fw_numPatterns = 0;
 static char **fw_sigs = NULL;
 static int appfw_initialized = 0;
-
 
 static  void reset_sig_file_env_var()
 {
@@ -53,7 +53,7 @@ void appfw_init()
   {
     char buf[MAX_SIGNATURE_SIZE];
 
-    fw_sigs = malloc(sizeof(char*) * 20000); // allow for 20000 signature patterns
+    fw_sigs = malloc(sizeof(char*) * MAX_NUM_SIGNATURES);
 
     while (fgets(buf, MAX_SIGNATURE_SIZE, sigF) != NULL)
     {
@@ -105,9 +105,7 @@ void appfw_error(const char *msg)
 // mark parts of string as tainted
 void appfw_taint_range(char *taint, char taintValue, int from, int len)
 {
-  int i;
-  for (i = from; i < from+len; ++i)
-    taint[i] = taintValue;
+	memset(&taint[from], taintValue, len);
 }
 
 void appfw_establish_taint(const char *command, char *taint)
@@ -115,44 +113,39 @@ void appfw_establish_taint(const char *command, char *taint)
   int i, j, pos;
   int patternFound;
   char **fw_sigs = appfw_getSignatures();
+  int commandLength = strlen(command);
 
   if (!fw_sigs)
   {
-    appfw_taint_range(taint, APPFW_BLESSED, 0, strlen(command));
+    appfw_taint_range(taint, APPFW_BLESSED, 0, commandLength);
     return;
   }
 
   // set taint markings to 'tainted' by default
-  appfw_taint_range(taint, APPFW_TAINTED, 0, strlen(command));
-//  appfw_display_taint("testing", command, taint);
+  appfw_taint_range(taint, APPFW_TAINTED, 0, commandLength);
 
-  // use simple linear scan for now // list of signature patterns are sorted in reverse length order already
+  // use simple linear scan for now 
+  // list of signature patterns are sorted in reverse length order already
   // unset taint when match is found
   pos = 0;
-  while (pos < strlen(command))
-  {
-	// when we'll have reg. expressions for patterns
-	// we'd need to make sure we go through all the regex patterns first
-	patternFound = 0;
-    for (i = 0; i < appfw_getNumSignatures() && !patternFound; ++i)
-	{
-	  int length_signature = strlen(fw_sigs[i]);
-	  if (length_signature >= 1 && length_signature <= (strlen(command) - pos))
-	  {
-	    if (strncasecmp(&command[pos], fw_sigs[i], strlen(fw_sigs[i])) == 0)
-	    {
-		  appfw_taint_range(taint, APPFW_BLESSED, pos, strlen(fw_sigs[i]));
-	      patternFound = 1;
-		}
-      }
-	}
 
+  int numSignatures =appfw_getNumSignatures();  
+  while (pos < commandLength)
+  {
+    for (i = 0; i < numSignatures; ++i)
+	{
+	    int length_signature = strlen(fw_sigs[i]);
+	    if (strncasecmp(&command[pos], fw_sigs[i], length_signature) == 0)
+	    {
+		  appfw_taint_range(taint, APPFW_BLESSED, pos, length_signature);
+		  break;
+		}
+	}
     pos++;
   }
 }
 
 // enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_BLESSED_KEYWORD };
-
 void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
 {
 	int i;
@@ -166,7 +159,7 @@ void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
 			fprintf(stderr,"v");
 		else if (p_taint[i] == APPFW_BLESSED_KEYWORD)
 			fprintf(stderr,"k");
-		else
+		else // APPFW_TAINTED
 			fprintf(stderr,"d");
 	}
 	fprintf(stderr,"\n");

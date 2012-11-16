@@ -1,6 +1,6 @@
 LIBAPPFW_DIR=../lib
 
-CFLAGS=-g -DSHOW_TAINT_MARKINGS
+CFLAGS=-g -DSHOW_TAINT_MARKINGS -O3
 
 all: libappfw 
 
@@ -12,7 +12,7 @@ extract_sql:
 
 appfw_sqlite3.o: extract_sql sqlfw.c
 	cat sqlfw.c >> appfw_sqlite3.c
-	gcc -fPIC -DSQLITE_OS_UNIX=1 -DSQLITE_THREADSAFE=0 -DSQLITE_DEBUG=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_4_BYTE_ALIGNED_MALLOC -c appfw_sqlite3.c
+	gcc $(CFLAGS) -fPIC -DSQLITE_OS_UNIX=1 -DSQLITE_THREADSAFE=0 -DSQLITE_DEBUG=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_4_BYTE_ALIGNED_MALLOC -c appfw_sqlite3.c
 
 appfw.o: appfw.c
 	gcc $(CFLAGS) -c appfw.c

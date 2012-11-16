@@ -1,7 +1,7 @@
 #ifndef SQLFW_INIT
 #define SQLFW_INIT
 
-#define MAX_QUERY_LENGTH 2048
+#define MAX_QUERY_LENGTH 65536
 
 extern void sqlfw_init();
 extern int sqlfw_isInitialized();

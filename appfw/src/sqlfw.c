@@ -55,7 +55,8 @@ void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
 ** Look for tainted SQL tokens/keywords
 */
 int sqlfw_verify(const char *zSql, char **pzErrMsg){
-  char tainted[MAX_QUERY_LENGTH];
+//  char *tainted = appfw_sqlite3MallocZero(strlen(zSql));
+  char *tainted = malloc(strlen(zSql));
 
   if (!peasoupDB)
   {
@@ -65,12 +66,14 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 	}
 
   // figure out taint markings
+  // this function is particularly-time consuming -- need to optimize
   sqlfw_establish_taint(zSql, tainted);
 
   int success = sqlfw_verify_taint(zSql, tainted, pzErrMsg);
   if (!success)
     appfw_display_taint("SQL Injection detected", zSql, tainted);
 
+  free(tainted);
   return success;
 }
 
@@ -154,20 +157,23 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
       }
       default: {
 	  // show token info
-	  
 	  /*
         fprintf(stderr, "token: [");
         for (k = beg; k <= end; ++k)
 		  fprintf(stderr,"%c", zSql[k]);
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
-	  */
+		*/
+	 
 
         appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
         lastTokenParsed = tokenType;
         if( pParse->rc!=SQLITE_OK ){
+		  continue;
+		  /*
     		fprintf(stderr,"fwsql_verify(): Error in parsing: \n"); 
           goto abort_parse;
+		  */
         }
 
 // GOOD:
@@ -252,6 +258,8 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
 	}
   } // end while
 
+  appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
+
   return 1; // this is good
 
 abort_parse:
@@ -260,6 +268,7 @@ abort_parse:
 		fprintf(stderr,"abort_parse: %s\n", pParse->zErrMsg);
 		fprintf(stderr,"abort_parse: %s\n", appfw_sqlite3ErrStr(pParse->rc));
 		}
+  appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
   return 0;
 }
 
