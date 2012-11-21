@@ -35,13 +35,26 @@ void found_string(string s, void* addr)
 
 void load_section(elf_info_t &ei, int i, pqxx::largeobjectaccess &loa)
 {
+	if( (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
+	{
+		cerr<<"Cannot load non-alloc section\n";
+		assert(0);
+	}
+
 	if(ei.sec_data[i]==NULL)
 	{
-//		cout<<"Loading section "<<std::dec<<i<<" vaddr: "<<std::hex<<ei.sechdrs[i].sh_addr<< "  size: "
-//			<<std::dec<<ei.sechdrs[i].sh_size<< endl;
-		ei.sec_data[i]=(char*)malloc(ei.sechdrs[i].sh_size);
-        	loa.seek(ei.sechdrs[i].sh_offset, std::ios_base::beg);
-        	loa.cread((char*)ei.sec_data[i], ei.sechdrs[i].sh_size);
+		ei.sec_data[i]=(char*)calloc(ei.sechdrs[i].sh_size,1);
+		if(ei.sechdrs[i].sh_type==SHT_NOBITS)
+		{
+			/* no need to read anything for NOBITS sections */
+		}
+		else
+		{
+//			cout<<"Loading section "<<std::dec<<i<<" vaddr: "<<std::hex<<ei.sechdrs[i].sh_addr<< "  size: "
+//				<<std::dec<<ei.sechdrs[i].sh_size<< endl;
+        		loa.seek(ei.sechdrs[i].sh_offset, std::ios_base::beg);
+        		loa.cread((char*)ei.sec_data[i], ei.sechdrs[i].sh_size);
+		}
 	}
 }
 
