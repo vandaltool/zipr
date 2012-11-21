@@ -12,6 +12,7 @@ class BaseObj_t
         BaseObj_t(doip_t* doip);
 
         static void SetInterface(DBinterface_t *dbintr);
+        static DBinterface_t* GetInterface() {return dbintr;}
 
         // get and set the ID
         db_id_t GetBaseID() const {return base_id; }
