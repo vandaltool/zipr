@@ -6,10 +6,11 @@
 #    The output string patterns are stored in a file in reverse-length order
 #
 # Usage:
-#    generate_signatures <filename> <signatures>
+#    generate_string_signatures.sh <filename> [<signatures> [<stringLogFile>]]
 #
 #    $1       'input file
-#    $2       'output file (optional, defaults to $1.sigs)
+#    $2       'output file 
+#    $3       'input string log file 
 #
 # Output:
 #    The file <$1.sigs> will contain a set of string patterns, one per line,
@@ -48,12 +49,16 @@
 #
 
 defaultSigs=$PEASOUP_HOME/tools/signatures/sqlite.sigs
+
 inputFile=$1
 if [ -z $2 ];then
-  finalSigFile=$1.sigs
+	finalSigFile=$1.sigs
 else
-  finalSigFile=$2
+	finalSigFile=$2
 fi
+
+stringLogFile=$3
+
 tmpFile=$1.$$.tmp
 tmpFile2=$1.$$.2.tmp
 tmpFile3=$1.$$.3.tmp
@@ -67,7 +72,14 @@ rm $tmpFile $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $tmpSymbols 2>/dev/null
 touch $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $finalSigFile
 
 # get strings & symbols
-strings -n 2 $inputFile | sort -f | uniq -i > $tmpFile2                     # get strings
+if [ -z $stringLogFile ]; then
+	# get strings from ELF file
+	strings -n 2 $inputFile | sort -f | uniq -i > $tmpFile2            
+else
+    # get string from smart string extractor (used by ps_analyze.sh)
+	grep -i "found string:" $stringLogFile | sed "s/Found string: \"//" | sed "s/\" at.*$//" > $tmpFile2
+fi
+
 cat $defaultSigs >> $tmpFile2                                          # add signatures from sqlite itself
 sort -f $tmpFile2 | uniq -i > $tmpFile                                 
 

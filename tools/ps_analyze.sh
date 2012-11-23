@@ -494,11 +494,6 @@ check_for_bad_funcs $newname.ncexe
 mkdir logs 	
 
 #
-# analyze binary for string signatures
-#
-perform_step appfw $PEASOUP_HOME/tools/do_appfw.sh $newname.ncexe
-
-#
 # create a stratafied binary that does pc confinement.
 #
 perform_step stratafy_with_pc_confine sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
@@ -587,9 +582,12 @@ perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $clo
 
 
 # look for strings in the binary 
-perform_step find_strings $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid	
+perform_step find_strings $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid
 
-
+#
+# analyze binary for string signatures
+#
+perform_step appfw $PEASOUP_HOME/tools/do_appfw.sh $newname.ncexe logs/find_strings.log
 
 #
 # Run script to setup manual tests
