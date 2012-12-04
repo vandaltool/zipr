@@ -113,7 +113,7 @@ int oscfw_verify_args(char* const argv[])
 			int j;
 			for(j=0;j<strlen(argv[i]);j++)
 			{
-                		if(taint[i]!=APPFW_BLESSED)
+                		if(taint[j]!=APPFW_BLESSED)
 				{
     					fprintf(stderr, "Failed argument check\n");
     					appfw_display_taint("OS Command Injection detected", argv[i], taint);
