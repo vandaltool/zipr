@@ -30,8 +30,8 @@ static int check_taint(int s, int e)
 			tainted_data[i]=APPFW_BLESSED_KEYWORD;
 		else if(tainted_data[i]==APPFW_TAINTED)
 			tainted_data[i]=APPFW_SECURITY_VIOLATION;
-		else
-			assert(0);
+		else 
+			assert(tainted_data[i]==APPFW_BLESSED_KEYWORD || tainted_data[i]==APPFW_SECURITY_VIOLATION);
 	}
 }
 
@@ -80,7 +80,7 @@ static void get_string_literal(istream &fin, char c, int start)
 	{
 		if(getenv("APPFW_VERBOSE"))
 			cout<<"Pushing literal to parse later\n";
-		(*sub_commands).push_back(pair<string,int>(s,position));
+		(*sub_commands).push_back(pair<string,int>(s.substr(1,s.length()-2),position));
 	}
 
 }
@@ -88,13 +88,13 @@ static void get_string_literal(istream &fin, char c, int start)
 static void get_variable(istream &fin, int start)
 {
 	string s;
-	char d=fin.get();
 	int position=((int)fin.tellg())-1+start;
+	char d=fin.get();
 
 	// check for special characters
 	if(d=='$' || d=='_' || d=='@' || d=='?')
 	{
-		check_taint(position,((int)fin.tellg())+start);
+		check_taint(position,position+2);
 		if(getenv("APPFW_VERBOSE"))
 		{
 			cout<<"Found special variable at "<<position<<": $"<<d;
@@ -105,34 +105,47 @@ static void get_variable(istream &fin, int start)
 	// check for paren'd or braced variable names 
 	if(d=='(' || d=='{')
 	{
-		char paren=d;
-		s="$"+d;
+		s="$";
+		s+=d;
+
+		char end_paren=')';
+		if(d=='{')
+			end_paren='}';
 		do
 		{
 			d=fin.get();
 			s+=d;
-			if(d==paren)
+			if(d==end_paren)
 				break;
 		} while(!fin.eof());
-		check_taint(position,((int)fin.tellg())+start);
 		if(getenv("APPFW_VERBOSE"))
-			cout<<"Found paren'd variable at "<<position<<": "<<s<<endl;
+			cout<<"Found paren'd variable at "<<position<<": '"<<s<<"'"<<endl;
+		check_taint(position,position+s.length());
+		if(end_paren==')')
+		{
+			if(getenv("APPFW_VERBOSE"))
+				cout<<"Pushing string "<<s<<" as subcommand"<<endl;
+			(*sub_commands).push_back(pair<string,int>(s.substr(2,s.length()-3),position+2));
+		}
 		return;
 	}
 
 	// normal variable
 	fin.unget();
-
+	s="$";
 	do
 	{
 		d=fin.get();
-		s+=d;
-		if(!isalnum(d))
+		if(!isalnum(d) && d!='_')
+		{
+			fin.unget();
 			break;
+		}
+		s+=d;
 	} while (!fin.eof());
-	check_taint(position,((int)fin.tellg())+start);
 	if(getenv("APPFW_VERBOSE"))
-		cout<<"Found normal variable at "<<position<<": $"<<s<<endl;
+		cout<<"Found normal variable at "<<position<<": '"<<s<<"'"<<endl;
+	check_taint(position,position+s.length());
 
 }
 
@@ -182,7 +195,7 @@ static inline bool is_command_word(string s)
 
 static void get_word(istream &fin, char c, int start)
 {
-	string s;
+	string s; 
 	char d;
 	int position=((int)fin.tellg())-1+start;
 	s+=c;
@@ -326,10 +339,10 @@ void osc_parse(char* to_parse, char* taint_markings)
 		int  pos=(*sub_commands).front().second;
 		(*sub_commands).pop_front();
 		stringstream ss(stringstream::in|stringstream::out);
-		ss<<s.substr(1,s.length()-2)<<endl;
+		ss<<s<<endl;
 		if(getenv("APPFW_VERBOSE"))
 			cout<<"Parsing sub-command " << s <<endl;
-		parse(ss,pos+1);
+		parse(ss,pos);
 		if(getenv("APPFW_VERBOSE"))
 			cout<<"Done with " << s <<endl<<endl;
 	}
