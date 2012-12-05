@@ -190,6 +190,12 @@ void FileIR_t::RegisterAssembly(Instruction_t *instr, string assembly)
 	assembly_registry[instr] = assembly;
 }
 
+void FileIR_t::UnregisterAssembly(Instruction_t *instr)
+{
+	assembly_registry.erase(instr);
+}
+
+
 std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 	(
         	std::map<db_id_t,AddressID_t*> &addrMap
