@@ -36,6 +36,7 @@ class FileIR_t : public BaseObj_t
 	// to be assembled later. 
 	void AssembleRegistry();
 	void RegisterAssembly(Instruction_t *instr, std::string assembly);
+	void UnregisterAssembly(Instruction_t *instr);
 	//Needed for inserting assembly before an instruction. 
 	//if orig is not registered, the function returns, otherwise
 	//the instruction/assembly mapping of orig->assembly is altered to
