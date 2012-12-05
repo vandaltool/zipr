@@ -94,6 +94,39 @@ check_step_option()
 	
 }
 
+set_p1transform_option()
+{
+	option=`echo $1 | sed 's/\(.*\)=.*/\1/'`
+	val=`echo $1 | sed 's/.*=\(.*\)/\1/'`
+
+	case "$option" in
+		canaries)
+			DO_CANARIES=$val
+			;;
+		*) echo "Unrecognized p1transform option: $option\n"
+			exit -2 #What's the correct exit status?
+			;;
+	esac
+
+}
+
+set_step_option()
+{
+	step=`echo $1 | sed 's/\(.*\):.*/\1/'`
+	option=`echo $1 | sed 's/.*:\(.*\)/\1/'`
+
+	case "$step" in
+       p1transform)
+           	set_p1transform_option $option
+            ;;
+		*) 	echo "Unrecognized --step-option: $step" 
+		 	exit -2 #What's the correct exit status?
+			;;
+	esac
+	
+}
+
+
 
 #
 # check that the remaining options are validly parsable, and record what they are.
@@ -108,7 +141,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t:w: --long integer_warnings_only --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -118,6 +151,10 @@ check_options()
 
 	while true ; do
 		case "$1" in
+			--step-option)
+           	set_step_option $2
+            shift 2
+            ;;
         -w|--watchdog)
             # This is the watchdog value
             watchdog_val=$2
