@@ -1333,10 +1333,13 @@ void PNTransformDriver::undo( Function_t *func)
 	mit != undo_list[func_name].end();
 	++mit)
     {
-	Instruction_t* alt = mit->first;
-	Instruction_t* orig = mit->second;
+		Instruction_t* alt = mit->first;
+		Instruction_t* orig = mit->second;
   
-	copyInstruction(orig,alt);
+		copyInstruction(orig,alt);
+		
+		orig_virp->UnregisterAssembly(alt);
+	
 	//TODO: apparently there is a issue with this delete.
 	//When using the padding/shuffle transformation PN terminates
 	//for some reason with no segfault. Removing this delete
@@ -1351,8 +1354,9 @@ void PNTransformDriver::undo( Function_t *func)
 	++it
 	)
     {
-	orig_virp->GetInstructions().erase(*it);
-	delete *it;
+		orig_virp->UnregisterAssembly(*it);
+		orig_virp->GetInstructions().erase(*it);
+		delete *it;
     }
 
     for(set<AddressID_t*>::const_iterator it=inserted_addr[func_name].begin();
@@ -1360,8 +1364,8 @@ void PNTransformDriver::undo( Function_t *func)
 	++it
 	)
     {
-	orig_virp->GetAddresses().erase(*it);
-	delete *it;
+		orig_virp->GetAddresses().erase(*it);
+		delete *it;
     }
     //reset_undo(func->GetName());
 
