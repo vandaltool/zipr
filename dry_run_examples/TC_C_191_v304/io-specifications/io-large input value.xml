@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><io_pair io_pair_category_id="2"><name>large input value</name><input>000129</input><input_mode_id>2</input_mode_id><output>*************************************&#13;
-*** Recaman's Sequence Generator  ***&#13;
-*************************************&#13;
-&#13;
-Enter a sequence number [ &gt;= 0 ]: 11&#13;
-&#13;
-</output><output_mode_id>2</output_mode_id><description>Input must go through pipe.&#13;
-when calculating the value of x the values underflow and the final result is negative. This negative value is then used as an index to access an array.</description></io_pair>
