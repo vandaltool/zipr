@@ -1,2 +1,0 @@
--C /home/jdh8d/peasoup/uva/spec2006/benchspec/CPU2006/464.h264ref/run/run_base_test_i386-m32-gcc42-nn.0000
--o foreman_test_baseline_encodelog.out -e foreman_test_baseline_encodelog.err ../run_base_test_i386-m32-gcc42-nn.0000/h264ref_base.i386-m32-gcc42-nn -d foreman_test_encoder_baseline.cfg

@@ -1,20 +1,0 @@
-MPlayer SVN-r1.0~rc3+svn20090426-4.4.3 (C) 2000-2009 MPlayer Team
-
-Playing /home/jdh8d/peasoup/uva/security_transforms_trunk/tests/mplayer/faxspin.avi.
-AVI file format detected.
-[aviheader] Video stream found, -vid 0
-AVI: No audio stream found -> no sound.
-VIDEO:  [cvid]  720x480  24bpp  29.970 fps  12832.2 kbps (1566.4 kbyte/s)
-==========================================================================
-Opening video decoder: [ffmpeg] FFmpeg's libavcodec codec family
-Selected video codec: [ffcvid] vfm: ffmpeg (FFmpeg Cinepak Video)
-==========================================================================
-Audio: no sound
-Starting playback...
-VDec: vo config request - 720 x 480 (preferred colorspace: Planar YV12)
-VDec: using Planar YV12 as output csp (no 0)
-Movie-Aspect is undefined - no prescaling applied.
-VO: [xv] 720x480 => 720x480 Planar YV12 
-V:   0.0   1/  1 ??% ??% ??,?% 0 0 [JV:   0.0   2/  2 ??% ??% ??,?% 0 0 [JV:   0.1   3/  3 ??% ??% ??,?% 0 0 [JV:   0.1   4/  4 ??% ??% ??,?% 0 0 [JV:   0.1   5/  5 ??% ??% ??,?% 0 0 [JV:   0.2   6/  6 ??% ??% ??,?% 0 0 [JV:   0.2   7/  7 ??% ??% ??,?% 0 0 [JV:   0.2   8/  8 ??% ??% ??,?% 0 0 [JV:   0.3   9/  9 ??% ??% ??,?% 0 0 [JV:   0.3  10/ 10 ??% ??% ??,?% 0 0 [JV:   0.3  11/ 11 ??% ??% ??,?% 0 0 [JV:   0.4  12/ 12 ??% ??% ??,?% 0 0 [JV:   0.4  13/ 13 ??% ??% ??,?% 0 0 [JV:   0.4  14/ 14 ??% ??% ??,?% 0 0 [JV:   0.5  15/ 15 ??% ??% ??,?% 0 0 [JV:   0.5  16/ 16 22%  7%  0.0% 0 0 [JV:   0.5  17/ 17 21%  7%  0.0% 0 0 [JV:   0.6  18/ 18 20%  6%  0.0% 0 0 [JV:   0.6  19/ 19 19%  6%  0.0% 0 0 [JV:   0.6  20/ 20 18%  6%  0.0% 0 0 [JV:   0.7  21/ 21 18%  5%  0.0% 0 0 [JV:   0.7  22/ 22 17%  5%  0.0% 0 0 [JV:   0.7  23/ 23 17%  5%  0.0% 0 0 [JV:   0.8  24/ 24 16%  5%  0.0% 0 0 [JV:   0.8  25/ 25 16%  5%  0.0% 0 0 [JV:   0.8  26/ 26 16%  4%  0.0% 0 0 [JV:   0.8  26/ 26 16%  4%  0.0% 0 0 [J
-
-Exiting... (End of file)
