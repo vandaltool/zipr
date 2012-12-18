@@ -55,16 +55,16 @@ int oscfw_verify(const char *p_command, char *p_taint)
 	int i;
 	for(i=0;i<strlen(p_command);i++)
 	{
-		if(getenv("APPFW_VERBOSE"))
+		if(getenv("APPFW_PRINTCOMMAND_VERBOSE"))
 			fprintf(stderr, "Verifyig p_command[%d]=%d\n", i, p_command[i]);
 		if(p_taint[i]==APPFW_SECURITY_VIOLATION)
 		{
 			if(getenv("APPFW_VERBOSE"))
-				fprintf(stderr,"verify-OK\n");
+				fprintf(stderr,"verify NOT okayK\n");
 			return 0;
 		}
 	}
 	if(getenv("APPFW_VERBOSE"))
-		fprintf(stderr,"verify-OK\n");
+		fprintf(stderr,"verify OK\n");
 	return 1;
 }

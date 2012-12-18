@@ -18,7 +18,7 @@ static  void reset_sig_file_env_var()
 	int i;
 	for(i=0;(environ[i]!=0);i++)
 	{
-		if(getenv("APPFW_VERBOSE"))
+		if(getenv("APPFW_ENV_VERBOSE"))
 			fprintf(stderr,"environ[i]=%s\n",environ[i]);
 		/* check that the environ has the key followed by an equal */
 		if(strncmp(sigFileEnv,environ[i],strlen(sigFileEnv))==0 && 

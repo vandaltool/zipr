@@ -45,7 +45,7 @@ static void discard_comment(istream &fin, int start)
 		c=fin.get();
 		s+=c;
 	}
-	check_taint(position,position);
+	check_taint(position,position+1);
 	if(getenv("APPFW_VERBOSE"))
 		cout<<"Found comment at "<<position<<": "<<s;
 }
@@ -253,12 +253,23 @@ static void parse(istream &fin, int start)
 		switch(c)
 		{
 			case '#': 
+			{
+				// taint checked in discard_comment
 				discard_comment(fin,start);
 				continue;
+			}
 			case ';':
-			case '\n':
+			{
+				int position=((int)fin.tellg())-1+start;
+				check_taint(position,position+1);
 				start_command();
 				continue;
+			}
+			case '\n':
+			{
+				start_command();
+				continue;
+			}
 			
 			case '|':
 			case '&':
@@ -268,7 +279,7 @@ static void parse(istream &fin, int start)
 				if(c!='|' || c!='&')
 				{
 					int position=((int)fin.tellg())-1+start;
-					check_taint(position,position);
+					check_taint(position,position+1);
 					if(getenv("APPFW_VERBOSE"))
 						cout<<"Found special token separator at "<<position<<": "<<oldc<<endl;
 					start_command();
@@ -277,23 +288,29 @@ static void parse(istream &fin, int start)
 				continue;
 			}
 			case '$':
+				// taint checked in called func
 				get_variable(fin,start);
 				break;
 			case '\'':
 			case '`':
 			case '"': 
+				// taint checked in called func
 				get_string_literal(fin,c,start);
 				break;
 
+			case EOF:
+				return;
 
 			default:
 			{
 				if (can_start_word(c))	
 				{
+					// taint checked in called func
 					get_word(fin,c,start);
 				}
 				else if (isspace(c))
 				{
+					// no taint check needed for spaces 
 					// cout<<"Whitespace"<<endl;
 					continue; /* spaces change nothing */
 				}
@@ -301,6 +318,8 @@ static void parse(istream &fin, int start)
 				{
 					if(getenv("APPFW_VERBOSE"))
 					{
+						int position=((int)fin.tellg())-1+start;
+						check_taint(position,position+1);
 						cout <<"Found special character: "<<c;
 						fprintf(stdout, " or in hex: %x\n", c);
 					}
@@ -309,8 +328,6 @@ static void parse(istream &fin, int start)
 			}
 			break;
 					
-			case EOF:
-				return;
 		}
 		starting_command=false;
 	}
