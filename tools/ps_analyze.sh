@@ -619,7 +619,7 @@ perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $clo
 
 
 # look for strings in the binary 
-#perform_step find_strings $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid
+perform_step find_strings $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid
 
 #
 # analyze binary for string signatures
