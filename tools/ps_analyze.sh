@@ -574,6 +574,7 @@ if [ ! -f $newname.ncexe.annot  ] ; then
 	fail_gracefully "idapro step failed, exiting early.  Is IDAPRO installed? "
 fi
 
+
 #
 # Run concolic engine
 #
@@ -661,6 +662,11 @@ perform_step fast_spri $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbsp
 # preLoaded_ILR step
 perform_step preLoaded_ILR1 $STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe a.irdb.fbspri 
 perform_step preLoaded_ILR2 $PEASOUP_HOME/tools/generate_relocfile.sh a.irdb.fbspri
+
+#
+# remove the parts of the aannotation file not needed at runtime
+#
+perform_step fast_annot $PEASOUP_HOME/tools/fast_annot.sh
 
 #
 # create a report for all of ps_analyze.
