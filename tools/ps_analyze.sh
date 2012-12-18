@@ -619,7 +619,7 @@ perform_step fix_calls $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $clo
 
 
 # look for strings in the binary 
-perform_step find_strings $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid
+#perform_step find_strings $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strings.exe $cloneid
 
 #
 # analyze binary for string signatures
@@ -658,6 +658,9 @@ perform_step generate_spri $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.
 perform_step spasm $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe libstrata.so.symbols
 perform_step fast_spri $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 
+# preLoaded_ILR step
+perform_step preLoaded_ILR1 $STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe a.irdb.fbspri 
+perform_step preLoaded_ILR2 $PEASOUP_HOME/tools/generate_relocfile.sh a.irdb.fbspri
 
 #
 # create a report for all of ps_analyze.

@@ -51,6 +51,13 @@ else
 fi
 
 #
+# Set mmap files location if preLoaded_ILR is on
+#
+if [ -f $datapath/a.stratafied.data_hash.ini ]; then
+	command="STRATA_SPRI_MMAP_DIR=$datapath/ $command"
+fi
+
+#
 # Set SPRI file to use (should be generated from the IRDB).
 #
 if [ -f $datapath/a.irdb.fbspri ]; then
