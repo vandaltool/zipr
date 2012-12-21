@@ -316,10 +316,10 @@ static void parse(istream &fin, int start)
 				}
 				else
 				{
+					int position=((int)fin.tellg())-1+start;
+					check_taint(position,position+1);
 					if(getenv("APPFW_VERBOSE"))
 					{
-						int position=((int)fin.tellg())-1+start;
-						check_taint(position,position+1);
 						cout <<"Found special character: "<<c;
 						fprintf(stdout, " or in hex: %x\n", c);
 					}
