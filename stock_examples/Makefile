@@ -5,7 +5,7 @@ CFLAGS=-O2
 
 .SUFFIXES: .stock .protected
 
-protected_exes=awk.protected bzip2.protected cal.protected cat.protected clear.protected date.protected df.protected diff.protected du.protected expr.protected find.protected grep.protected hostname.protected ipcs.protected less.protected ls.protected nasm.protected objdump.protected ps.protected sdiff.protected wc.protected whoami.protected xeyes.protected xcalc.protected xpdf.protected firefox-bin.protected lighttpd.protected mplayer.protected gnash.protected xpdfsrc.protected gcc-4.4.protected
+protected_exes=awk.protected bzip2.protected cal.protected cat.protected clear.protected date.protected df.protected diff.protected du.protected expr.protected find.protected grep.protected hostname.protected ipcs.protected less.protected ls.protected nasm.protected ps.protected sdiff.protected wc.protected whoami.protected xeyes.protected xcalc.protected xpdf.protected lighttpd.protected xpdfsrc.protected gcc-4.4.protected
 
 ilr=on
 stratafy_with_pc_confine=on
