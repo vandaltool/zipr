@@ -117,7 +117,7 @@ void is_string_constant(void* addr)
 	s[2]=byte2;
 	s[3]=byte1;
 	s[4]=0;
-	if(strlen(s)>1) // only find 2+ character strings this way.
+	if(strlen(s)>0) // only find 2+ character strings this way.
 		found_string(s, addr);
      }
 
@@ -175,7 +175,8 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 		assert(res);
 
 //		cout<<"Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
-                is_string_constant((void*)disasm.Instruction.Immediat);
+		if(disasm.Argument1 .ArgType ==MEMORY_TYPE && disasm.Argument2.ArgType!=MEMORY_TYPE)
+                	is_string_constant((void*)disasm.Instruction.Immediat);
                 is_string_pointer((void*)disasm.Instruction.Immediat,ei,loa);
                 handle_argument(&disasm.Argument1,ei,loa);
                 handle_argument(&disasm.Argument2,ei,loa);

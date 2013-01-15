@@ -160,11 +160,189 @@ bool call_needs_fix(Instruction_t* insn)
 
 }
 
+/*
+ * - adjust_esp_offset - take newbits, and determine if it has an esp+K type offset in a memory address.
+ * if so, adjust k by offset, and return the new string.
+ */
+string adjust_esp_offset(string newbits, int offset)
+{
 
+        /*
+         * call has opcodes of:
+         *              E8 cw   call near, relative, displacement relative to next instruction
+         *              E8 cd   call near, relative, displacement relative to next instruction
+         *              FF /2   call near, absolute indirect, address given in r/m16
+         *              FF /2   call near, absolute indirect, address given in r/m32
+         *              9a cd   call far, absolute, address given in operand
+         *              9a cp   call far, absolute, address given in operand
+         *              FF /3   call far, absolute indirect, address given in m16:16
+         *              FF /3   call far, absolute indirect, address given in m16:32
+         *
+         *              FF /4   jmp near, absolute indirect, address given in r/m16
+         *              FF /4   jmp near, absolute indirect, address given in r/m32
+         *              FF /5   jmp near, absolute indirect, address given in r/m16
+         *              FF /5   jmp near, absolute indirect, address given in r/m32
+         *
+         *              /digit indicates that the Reg/Opcode field (bits 3-5) of the ModR/M byte (opcode[1])
+         *              contains that value as an opcode instead of a register operand indicator.  The instruction only
+         *              uses the R/M field (bits 0-2) as an operand.
+         *
+         *              cb,cw,cd,cp indicates a 1,2,4,6-byte following the opcode is used to specify a
+         *                      code offset and possibly a new code segment
+         *
+         *      I believe we only care about these this version:
+         *              FF /3   call far, absolute indirect, address given in m16:32
+         *      as we're looking for an address on the stack.
+         *
+         *      The ModR/M byte must be Mod=10, Reg/Op=010, R/M=100 aka 0x94 or possibly
+         *                              Mod=01, Reg/Op=100, R/M=100 aka 0x64 or possibly
+         *                              Mod=10, Reg/Op=100, R/M=100 aka 0xa4 or possibly
+         *                              Mod=01, Reg/Op=010, R/M=100 aka 0x54 or possibly
+         *      R/M=100 indicates to read the SIB (see below)
+         *      Mod=10 indicates an 32-bit displacement after the SIB byte
+         *      Mod=01 indicates an  8-bit displacement after the SIB byte
+         *      Reg/Op=010 indicates an opcode that has a /3 after it
+         *      Reg/Op=100 indicates an opcode that has a /5 after it
+         *
+         *      The SIB byte (opcode[2]) needs to be scale=00, index=100, base=100, or 0x24
+         *              indicating that the addresing mode is 0*%esp+%esp.
+         *
+         *      I believe that the SIB byte could also be 0x64, 0xA4, or 0xE4, but that
+         *      these are very rarely used as they are redundant.
+         *
+         *
+         *
+         *
+         */
+        /* non-negative offsets please */
+        assert(offset>=0);
+
+        int sib_byte=(unsigned char)newbits[2];
+        int sib_base=(unsigned char)sib_byte&0x7;
+        int sib_ss=(sib_byte>>3)&0x7;
+        int sib_index=(sib_byte>>3)&0x7;
+
+
+        /* 32-bit offset */
+        if ( (unsigned char)newbits[0] == 0xff &&                                	/* ff */
+             ((unsigned char)newbits[1] == 0x94 || (unsigned char)newbits[1] == 0x64 )    && 		/* /2  or /4*/
+             sib_base == 0x4 )                                          /* base==esp */
+        {
+		// reconstruct the old 32-bit value
+		int oldval=(unsigned char)newbits[3]<<24+(unsigned char)newbits[4]<<16+(unsigned char)newbits[5]<<8+(unsigned char)newbits[6];
+
+		// add the offset 
+		int newval=oldval+offset;
+
+		// break it back apart to store in the string.
+		newbits[3]=(char)(newval>>24)&0xff;
+		newbits[4]=(char)(newval>>16)&0xff;
+		newbits[5]=(char)(newval>>8)&0xff;
+		newbits[6]=(char)(newval>>0)&0xff;
+        }
+
+        /* 8-bit offset */
+        else if ( (unsigned char)newbits[0] == 0xff &&                           	/* ff */
+             ((unsigned char)newbits[1] == 0x54 || (unsigned char)newbits[1]==0xa4) &&    		/* /3 or /5 */
+             sib_base == 0x4 )                                          /* base==esp */
+        {
+                /* We need to add 4 to the offset, but this may overflow an 8-bit quantity
+                 * (note:  there's no 16-bit offset for this insn.  Only 8-bit or 32-bit offsets exist for this instr)
+                 * if the const offset is over (0x7f-offset), adding offset will overflow it to be negative instead
+                 * of positive
+                 */
+                if((unsigned char)newbits[3]>=(0x7f-offset))
+                {
+                        /* Careful, adding 4 to this will cause an overflow.
+                         * We need to convert it to a 32-bit displacement
+                         */
+                        /* first, change addressing mode from 8-bit to 32-bit. */
+                        newbits[1]&=0x3f;         /* remove upper 2 bits */
+                        newbits[1]|=0x80;         /* make them 10 to indicate a 32-bit offset */
+
+			// reconstruct the old 32-bit value
+			int oldval=(unsigned char)newbits[3]<<24+(unsigned char)newbits[4]<<16+(unsigned char)newbits[5]<<8+(unsigned char)newbits[6];
+
+			// add the offset 
+			int newval=oldval+offset;
+	
+			// break it back apart to store in the string.
+			newbits[3]=(char)(newval>>24)&0xff;
+			newbits[4]=(char)(newval>>16)&0xff;
+			newbits[5]=(char)(newval>>8)&0xff;
+			newbits[6]=(char)(newval>>0)&0xff;
+
+                }
+                else
+
+                        newbits[3] += (char)offset;
+        }
+	return newbits;
+}
 
 	
 
+/* 
+ * convert_to_jump - assume newbits is a call insn, convert newbits to a jump, and return it.
+ * Also: if newbits is a call [esp+k], add "offset" to k.
+ */ 
+static string convert_to_jump(string newbits, int offset)
+{
+	// on the opcode.  assume no prefix here 	
+	switch((unsigned char)newbits[0])
+	{
+		// opcodes: ff /2 and ff /3
+		case 0xff:	
+		{
+			// opcode: ff /2
+			// call r/m32, call near, absolute indirect, address given in r/m32
+			if(((((unsigned char)newbits[1])&0x38)>>3) == 2)
+			{
+				newbits=adjust_esp_offset(newbits,offset);
+				// convert to jmp r/m32
+				// opcode: FF /4
+				newbits[1]&=0xC7;	// remove old bits
+				newbits[1]|=(0x4<<3);	// set r/m field to 4
+			}
+			// opcode: ff /3
+			// call m16:32, call far, absolute indirect, address given in m16:32	
+			else if(((((unsigned char)newbits[1])&0x38)>>3) == 3)
+			{
+				// convert to jmp m16:32
+				// opcode: FF /5
+				newbits[1]&=0xC7;	// remove old bits
+				newbits[1]|=(0x5<<3);	// set r/m field to 5
+			}
+			else
+				assert(0);
+			break;
+		}
+		// opcode: 9A cp
+		// call ptr16:32, call far, absolute, address given in operand
+		case 0x9A:	
+		{
+			// convert to jmp ptr16:32
+			// opcode: EA cp
+			newbits[0]=0xEA;
+			break;
+		}
 
+		// opcode: E8 cd
+		// call rel32, call near, relative, displacement relative to next insn.
+		case 0xE8:
+		{
+			// convert to jmp rel32
+			// opcode: E9 cd
+			newbits[0]=0xE9;
+			break;
+		}
+
+		// not a call
+		default:
+			assert(0);
+	}
+	return newbits;
+}
 
 
 void fix_call(Instruction_t* insn, FileIR_t *firp)
@@ -221,31 +399,9 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 
 	/* set the new instruction's data bits to be a jmp instead of a call */
 	string newbits=insn->GetDataBits();
-	switch((unsigned char)newbits[0])
-	{
-		case 0xff:
-			if(((((unsigned char)newbits[1])&0x38)>>3) == 2)
-			{
-				newbits[1]&=0xC7;	// remove old bits
-				newbits[1]|=(0x4<<3);	// set r/m field to 4
-			}
-			else if(((((unsigned char)newbits[1])&0x38)>>3) == 3)
-			{
-				newbits[1]&=0xC7;	// remove old bits
-				newbits[1]|=(0x5<<3);	// set r/m field to 5
-			}
-			else
-				assert(0);
-			break;
-		case 0x9A:
-			newbits[0]=0xEA;
-			break;
-		case 0xE8:
-			newbits[0]=0xE9;
-			break;
-		default:
-			assert(0);
-	}
+
+	newbits=convert_to_jump(newbits,4);
+
 	callinsn->SetDataBits(newbits);
 
 	/* add the new insn and new address into the list of valid calls and addresses */

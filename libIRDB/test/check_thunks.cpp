@@ -327,6 +327,8 @@ void check_non_funcs_for_thunks(FileIR_t *firp)
 			if(is_thunk_call(insn,reg) && 
 				is_thunk_add(insn->GetFallthrough(),reg,offset))
 			{
+				cout<<"Found non-function thunk at "<<	
+					insn->GetAddress()->GetVirtualOffset()<<endl;
 				check_for_thunk_offsets(firp,insn,reg,offset);
 			}
 		}
@@ -351,8 +353,6 @@ void check_non_funcs_for_thunks(FileIR_t *firp)
  */
 void check_for_thunks(FileIR_t* firp)
 {
-// this doesn't work for now.  and consequently, ILR won't work with -fPIC.  need to fix for shared libs.
-return;
 	for(
 		set<Function_t*>::iterator it=firp->GetFunctions().begin();
 		it!=firp->GetFunctions().end();
@@ -360,6 +360,11 @@ return;
 	   )
 	{
 		Function_t* func=*it;
+
+		if(getenv("THUNK_VERBOSE"))
+		{
+			cout<<"Checking for thunks in "<<func->GetName()<<endl;
+		}
 		check_func_for_thunk_calls(func);
 
 	}
