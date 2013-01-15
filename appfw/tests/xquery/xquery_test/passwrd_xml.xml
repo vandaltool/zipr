@@ -1,0 +1,12 @@
+<users>
+<user>
+<login>john</login>
+<password>abracadabra</password>
+<home_dir>/home/john</home_dir>
+</user>
+<user>
+<login>cbc</login>
+<password>1mgr8</password>
+<home_dir>/home/cbc</home_dir>
+</user>
+</users>

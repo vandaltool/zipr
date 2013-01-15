@@ -138,7 +138,8 @@ int handle_execl(const char *file, char *const argv[], char *const envp[])
 
   	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)))
   	{
-//		fprintf(stderr, "exec OK");
+		if(getenv("VERBOSE"))
+			fprintf(stderr, "Exec detected as OK\n");
 		within_osc_monitor=TRUE;
         	int ret = my_execve(file,argv,envp);
 		within_osc_monitor=FALSE;
@@ -222,7 +223,6 @@ va_list process_args(char* arg, va_list vlist, char*** ret)
 
 int execl(const char *path, const char *arg, ...)
 {
-
 	char **all_args=NULL;
 	char **env=NULL;
 	va_list vlist;
