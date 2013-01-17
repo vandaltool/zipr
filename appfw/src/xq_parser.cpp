@@ -152,8 +152,20 @@ void parse(istream &fin)
 			case EOF:
 				return;
 			default:
-				if(!isspace(c))
+				/* spacing makes no diff. to xquery commands
+				 * so we ignore them.  
+				 * generally we will allow numeric constants
+				 * (at least integers) to be tainted, too
+				 * this test proxies for tainted digits and
+				 * spacing 
+				 */
+				if(isdigit(c) || isspace(c))
+				{	/* empty */ 		
+				}
+				else 
+				{
 					check_taint(start);
+				}
 		}
 
 	}
