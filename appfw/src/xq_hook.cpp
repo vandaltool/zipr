@@ -51,8 +51,9 @@ xmlXPathObjectPtr	xmlXPathEvalExpression	(const xmlChar * str, xmlXPathContextPt
 }
 
 XQQuery* XQilla::parse(unsigned short const* one, DynamicContext* two, unsigned short const* three, unsigned int four, 
-	xercesc_3_1::MemoryManager* five, XQQuery* six)
+	xercesc_3_1::MemoryManager* five /* , XQQuery* six */)
 {
+	XQQuery *six=NULL;
 
 	xqfw_init();
 	XQQuery* (*my_parse)(unsigned short const*, DynamicContext*, unsigned short const*, unsigned int, xercesc_3_1::MemoryManager*, XQQuery*)=NULL;
