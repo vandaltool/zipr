@@ -51,9 +51,18 @@ xmlXPathObjectPtr	xmlXPathEvalExpression	(const xmlChar * str, xmlXPathContextPt
 }
 
 XQQuery* XQilla::parse(unsigned short const* one, DynamicContext* two, unsigned short const* three, unsigned int four, 
-	xercesc_3_1::MemoryManager* five /* , XQQuery* six */)
+	xercesc_3_1::MemoryManager* five 
+/* XQilla version 2.0 takes 5 params, xqilla 2.3 takes 6 params. */
+#if XQILLA_MAJOR_VER>2 || XQILLA_MINOR_VER>0
+	, XQQuery* six
+	)
+{
+#else
+	/* , XQQuery* six */
+	)
 {
 	XQQuery *six=NULL;
+#endif
 
 	xqfw_init();
 	XQQuery* (*my_parse)(unsigned short const*, DynamicContext*, unsigned short const*, unsigned int, xercesc_3_1::MemoryManager*, XQQuery*)=NULL;

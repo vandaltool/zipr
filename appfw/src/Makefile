@@ -36,8 +36,14 @@ osc_parse.o: osc_parse.cpp
 oscfw.o: oscfw.c
 	gcc $(CFLAGS) -c oscfw.c
 
-xq_hook.o: xq_hook.cpp
-	g++ $(CFLAGS) -c $^  -I/usr/include/libxml2
+xqil_major:
+	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_//" -e "s/\..*//" > xqil_major
+
+xqil_minor:
+	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_..//" -e "s/\..*//" > xqil_minor
+
+xq_hook.o: xq_hook.cpp xqil_major xqil_minor
+	g++ $(CFLAGS) -DXQILLA_MAJOR_VER=`cat xqil_major` -DXQILLA_MINOR_VER=`cat xqil_minor` -c $<  -I/usr/include/libxml2
 
 xq_parser.o: xq_parser.cpp
 	g++ $(CFLAGS)  -c $<
@@ -49,4 +55,4 @@ libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o 
 	g++ $(CFLAGS) -shared -fPIC -o $(LIBAPPFW_DIR)/libappfw.so $^ -ldl
 
 clean:
-	rm -fr *.o *.tmp *.so appfw_sqlite3.c appfw_sqlite3.h sqlite3.h sqlite-autoconf-3071300 
+	rm -fr *.o *.tmp *.so appfw_sqlite3.c appfw_sqlite3.h sqlite3.h sqlite-autoconf-3071300  xqil_major xqil_minor
