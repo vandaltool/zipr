@@ -59,7 +59,9 @@ int appfw_ldap_verify(const char *p_filter)
 		if(appfw_ldap_isFilterOperator(p_filter[i]) && (p_taint[i]!=APPFW_BLESSED))
 		{
 			p_taint[i] = APPFW_SECURITY_VIOLATION;
-	  		appfw_display_taint("Security violation detected", p_filter, p_taint);
+
+			if(getenv("APPFW_VERBOSE"))
+	  			appfw_display_taint("Security violation detected", p_filter, p_taint);
 
     		free(p_taint);
 			return 0;

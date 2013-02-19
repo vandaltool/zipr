@@ -9,13 +9,11 @@
 #include "appfw_ldap.h"
 
 //
-// intercepted ldap functions
+// intercepted ldap functions:
 //   ldap_search_ext() 
 //   ldap_search_ext_s() 
 //   ldap_search() 
 //   ldap_search_s() 
-//
-// functions not intercepted b/c they call ldap_search internally
 //   ldap_search_st() 
 //
 
@@ -25,8 +23,6 @@
 int
 ldap_search_ext(LDAP *ld, LDAP_CONST char *base, int scope, LDAP_CONST char *filter, char **attrs, int attrsonly, LDAPControl **sctrls, LDAPControl **cctrls, struct timeval *timeout, int sizelimit, int *msgidp )
 {
-fprintf(stderr,"hooking ldap_search_ext\n");
-
   static int (*my_ldap_search_ext)(LDAP *, LDAP_CONST char *, int, LDAP_CONST char *, char **, int, LDAPControl **, LDAPControl **, struct timeval *, int, int *) = NULL;
   if (!my_ldap_search_ext)
   {
@@ -88,8 +84,6 @@ ldap_search(LDAP *ld, LDAP_CONST char *base, int scope, LDAP_CONST char *filter,
 int
 ldap_search_s(LDAP *ld, LDAP_CONST char *base, int scope, LDAP_CONST char *filter, char **attrs, int attrsonly, LDAPMessage **res)
 {
-fprintf(stderr,"Hooking ldap_search_s()\n");
-
   static int (*my_ldap_search_s) (LDAP *, LDAP_CONST char *, int, LDAP_CONST char *, char **, int, LDAPMessage **) = NULL;
   if (!my_ldap_search_s)
   {
@@ -104,6 +98,26 @@ fprintf(stderr,"Hooking ldap_search_s()\n");
   else
   {
     return my_ldap_search_s(ld, base, scope, ERROR_VIRTUALIZE_FILTER, attrs, attrsonly, res);
+  }
+}
+
+int
+ldap_stearch_st(LDAP *ld, LDAP_CONST char *base, int scope, LDAP_CONST char *filter, char **attrs, int attrsonly, struct timeval *timeout, LDAPMessage **res)
+{
+  static int (*my_ldap_stearch_st) (LDAP *, LDAP_CONST char *, int, LDAP_CONST char *, char **, int, struct timeval*, LDAPMessage **) = NULL;
+  if (!my_ldap_stearch_st)
+  {
+    my_ldap_stearch_st = dlsym(RTLD_NEXT, "ldap_stearch_st");
+    appfw_ldap_init(); 
+  }
+
+  if (appfw_ldap_verify(filter))
+  {
+    return my_ldap_stearch_st(ld, base, scope, filter, attrs, attrsonly, timeout, res);
+  }
+  else
+  {
+    return my_ldap_stearch_st(ld, base, scope, ERROR_VIRTUALIZE_FILTER, attrs, attrsonly, timeout, res);
   }
 }
 
