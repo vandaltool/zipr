@@ -51,7 +51,13 @@ xq_parser.o: xq_parser.cpp
 xqfw.o: xqfw.c
 	gcc $(CFLAGS) -c xqfw.c
 
-libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o xq_hook.o xq_parser.o xqfw.o
+appfw_ldap.o: appfw_ldap.c
+	gcc $(CFLAGS) -c appfw_ldap.c
+
+openldap_hook.o: openldap_hook.c
+	gcc $(CFLAGS) -I/usr/include -c $< 
+
+libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o xq_hook.o xq_parser.o xqfw.o openldap_hook.o appfw_ldap.o
 	g++ $(CFLAGS) -shared -fPIC -o $(LIBAPPFW_DIR)/libappfw.so $^ -ldl
 
 clean:
