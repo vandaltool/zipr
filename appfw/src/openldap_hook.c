@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -17,7 +18,7 @@
 //   ldap_search_st() 
 //
 
-// use a bogus ldap filter to force an error
+// use a bogus malformed ldap filter to force an error
 #define ERROR_VIRTUALIZE_FILTER ")securityViolation("
 
 int
@@ -58,7 +59,6 @@ ldap_search_ext_s(LDAP *ld, LDAP_CONST char *base, int scope, LDAP_CONST char *f
   {
     return my_ldap_search_ext_s(ld, base, scope, ERROR_VIRTUALIZE_FILTER, attrs, attrsonly, sctrls, cctrls, timeout, sizelimit, res);
   }
-
 }
 
 int
