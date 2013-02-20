@@ -40,7 +40,6 @@ int mysql_query(MYSQL* p_conn, const char *p_query)
 // intercept mysql_real_query
 int mysql_real_query(MYSQL* p_conn, const char *p_query, unsigned long p_length)
 {
-  char tainted[MAX_QUERY_LENGTH];
   static int (*intercept_sqlRealQuery)(MYSQL*, const char *, unsigned long) = NULL;
   if (!intercept_sqlRealQuery)
     intercept_sqlRealQuery = dlsym(RTLD_NEXT, "mysql_real_query");
@@ -48,7 +47,7 @@ int mysql_real_query(MYSQL* p_conn, const char *p_query, unsigned long p_length)
   sqlfw_init(); // will do this automagically later 
 
   char *errMsg = NULL;
-  if (sqlfw_verify_taint(p_query, tainted, &errMsg))
+  if (sqlfw_verify(p_query, &errMsg))
   {
     int ret = intercept_sqlRealQuery(p_conn, p_query, p_length);
 	return ret;
