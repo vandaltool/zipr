@@ -66,6 +66,7 @@ dyna_examples/block_copy.c -text
 dyna_examples/cmd_args_005.c -text
 dyna_examples/concolic_test_handshake.c -text
 dyna_examples/data.txt -text
+dyna_examples/dumble_dll.c -text
 dyna_examples/dumbledore_cmd.c -text
 dyna_examples/dumbledore_file.c -text
 dyna_examples/dumbledore_file_with_fopen_check.c -text

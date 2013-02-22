@@ -11,7 +11,7 @@ LDFLAGS=
 
 .SUFFIXES: .o .c .cpp .stock .protected
 
-exes=hanoi.protected hanoi_overrun.protected hanoi_heap_overrun.protected hanoi_stack_overrun.protected print_ptr.protected malloc.protected block_copy.protected hello.protected hanoi_overrun_tainted.protected hanoi_overrun_taintedenv.protected memcpy.protected cmd_args_005.protected dumbledore_stdin.protected dumbledore_cmd.protected dumbledore_file.protected 000.protected long.protected bad_purify.protected
+exes=hanoi.protected hanoi_overrun.protected hanoi_heap_overrun.protected hanoi_stack_overrun.protected print_ptr.protected malloc.protected block_copy.protected hello.protected hanoi_overrun_tainted.protected hanoi_overrun_taintedenv.protected memcpy.protected cmd_args_005.protected dumbledore_stdin.protected dumbledore_cmd.protected dumbledore_file.protected 000.protected long.protected bad_purify.protected dumble_dll.protected
 
 ilr=on
 stratafy_with_pc_confine=on
@@ -119,3 +119,6 @@ clean:
 concclean:
 	rm -Rf concolic.files_*
 	rm strata.log.*
+
+dumble_dll.stock: dumble_dll.c
+	gcc dumble_dll.c -shared -fPIC -Wl,-e,main -o dumble_dll.stock
