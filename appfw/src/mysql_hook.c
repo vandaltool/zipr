@@ -14,7 +14,6 @@
 // intercept mysql_query
 int mysql_query(MYSQL* p_conn, const char *p_query)
 {
-  char tainted[MAX_QUERY_LENGTH];
   static int (*intercept_sqlQuery)(MYSQL*, const char *) = NULL;
   if (!intercept_sqlQuery)
     intercept_sqlQuery = dlsym(RTLD_NEXT, "mysql_query");
@@ -22,7 +21,7 @@ int mysql_query(MYSQL* p_conn, const char *p_query)
   sqlfw_init(); // will do this automagically later 
 
   char *errMsg = NULL;
-  if (sqlfw_verify_taint(p_query, tainted, &errMsg))
+  if (sqlfw_verify_taint(p_query, &errMsg))
   {
     int ret = intercept_sqlQuery(p_conn, p_query);
 	return ret;
