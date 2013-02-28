@@ -16,16 +16,19 @@ using namespace std;
 //
 main(int argc, char* argv[])
 {
-	if(argc!=2 && argc!=3)
+	if(argc!=3 && argc!=4)
 	{
-		cerr<<"Usage: generate_spri.exe <variant id> [<output_file>]"<<endl;
+		cerr<<"Usage: generate_spri.exe <is shared object> <variant id> [<output_file>]"<<endl;
 		exit(-1);
 	}
 
+	int with_ilr=!atoi(argv[1]);
+	assert(with_ilr==!!with_ilr);
+
 	string filename;
 	ostream *fout;
-	if(argc==3)
-		fout=new ofstream(argv[2], ios::out);
+	if(argc==4)
+		fout=new ofstream(argv[3], ios::out);
 	else
 		fout=&cout;
 
@@ -40,8 +43,8 @@ main(int argc, char* argv[])
 	try 
 	{
 
-		cerr<<"Looking up variant "<<string(argv[1])<<" from database." << endl;
-		varidp=new VariantID_t(atoi(argv[1]));
+		cerr<<"Looking up variant "<<string(argv[2])<<" from database." << endl;
+		varidp=new VariantID_t(atoi(argv[2]));
 
 		assert(varidp->IsRegistered()==true);
 
@@ -53,12 +56,12 @@ main(int argc, char* argv[])
                 {
                         File_t* this_file=*it;
                         assert(this_file);
-			cerr<<"Reading variant "<<string(argv[1])<<":"<<this_file->GetURL()
+			cerr<<"Reading variant "<<string(argv[2])<<":"<<this_file->GetURL()
 			   <<" from database." << endl;
 
 			// read the db  
 			firp=new FileIR_t(*varidp,this_file);
-			firp->GenerateSPRI(*fout);
+			firp->GenerateSPRI(*fout, with_ilr);
 			delete firp;
 		}
 

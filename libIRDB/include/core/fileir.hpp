@@ -21,10 +21,10 @@ class FileIR_t : public BaseObj_t
 	std::set<Relocation_t*>&	GetRelocations() { return relocs; }
 
 	// generate the spri rules into the output file, fout.
-	void GenerateSPRI(std::ostream &fout);
+	void GenerateSPRI(std::ostream &fout, bool with_ilr=false);
 
 	// generate spri, assume that orig_varirp is the original variant. 
-	void GenerateSPRI(FileIR_t *orig_varirp, std::ostream &fout);
+	void GenerateSPRI(FileIR_t *orig_varirp, std::ostream &fout, bool with_ilr=false);
 
 	void SetBaseIDS();
 

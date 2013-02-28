@@ -286,7 +286,19 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			if (new_target.c_str()[0]=='0')
 			{
 				// if we're jumping to an absolute address vrs a label, we will need a relocation for this jump instruction
-				emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
+				if(
+			   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
+			   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
+				)
+				{
+					/* jumps have a 1-byte opcode */
+					emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
+				}
+				else
+				{
+					/* other jcc'often use a 2-byte opcode for far jmps (which is what spri will emit) */
+					emit_relocation(fileIRp, fout,2,"32-bit",newinsn);
+				}
 			}
 		}
 		else 	/* this instruction has a target, but it's not in the DB */
@@ -456,7 +468,7 @@ static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn)
 //
 // emit the spri rule to redirect this instruction.
 //
-static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& fout)
+static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& fout, bool with_ilr)
 {
 
 
@@ -474,7 +486,10 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 		   // if it's an indirect branch target 
 		   newinsn->GetIndirectBranchTargetAddress() || 
 		   // or the target of an unmodified instruction 
-		   unmoved_insn_targets.find(newinsn) != unmoved_insn_targets.end()
+		   unmoved_insn_targets.find(newinsn) != unmoved_insn_targets.end() || 
+		   // with ILR turned off, we don't try to redirect to 0
+		   !with_ilr
+		
 		  )
 		{
 			fout << qualified_addressify(fileIRp, newinsn) <<" -> ."<<endl;
@@ -609,7 +624,7 @@ static void generate_insn_to_insn_maps(FileIR_t *fileIRp, FileIR_t *orig_fileIRp
 //
 // GenerateSPRI -  spri for the entire database
 //
-void FileIR_t::GenerateSPRI(ostream &fout)
+void FileIR_t::GenerateSPRI(ostream &fout, bool with_ilr)
 {
 	VariantID_t orig_varidp(progid.GetOriginalVariantID());
 	assert(orig_varidp.IsRegistered()==true);
@@ -627,7 +642,7 @@ void FileIR_t::GenerateSPRI(ostream &fout)
 				fout <<"# Generating spri for "<< the_file->GetURL()<<endl;
 
 				orig_variant_ir_p=new FileIR_t(orig_varidp,the_file);
-				this->GenerateSPRI(orig_variant_ir_p,fout);
+				this->GenerateSPRI(orig_variant_ir_p,fout,with_ilr);
 				delete orig_variant_ir_p;
 				orig_variant_ir_p=NULL;
 			}
@@ -692,7 +707,7 @@ static void generate_unmoved_insn_targets_set(FileIR_t* fileIRp)
 }
 
 
-void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout)
+void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout, bool with_ilr)
 {
 	//Resolve (assemble) any instructions in the registry.
 	AssembleRegistry();
@@ -729,7 +744,7 @@ void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout)
 
 		if(needs_spri_rule(newinsn,oldinsn))
 		{
-			emit_spri_rule(fileIRp,newinsn,fout);
+			emit_spri_rule(fileIRp,newinsn,fout,with_ilr);
 		}
 	}
 	update_label_offset(fileIRp);

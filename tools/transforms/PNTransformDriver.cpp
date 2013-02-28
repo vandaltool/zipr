@@ -757,7 +757,7 @@ bool PNTransformDriver::Validate(FileIR_t *virp, Function_t *func)
     }
     
     cerr<<"Pre genreate SPRI"<<endl;
-    virp->GenerateSPRI(aspriFile); // p1.xform/<function_name>/a.irdb.aspri
+    virp->GenerateSPRI(aspriFile,false); // p1.xform/<function_name>/a.irdb.aspri
     cerr<<"Post genreate SPRI"<<endl;
     aspriFile.close();
 

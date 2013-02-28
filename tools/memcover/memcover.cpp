@@ -593,7 +593,7 @@ int main(int argc, char **argv)
 	    cout<<"Done!"<<endl;
 		ss<<file_cnt;
 		//annot_ofstream.open(string("annot_test"+ss.str()).c_str());
-		fir_p->GenerateSPRI(annot_ofstream);
+		fir_p->GenerateSPRI(annot_ofstream,false);
 	    //annot_ofstream.close();
 
 		delete fir_p;
