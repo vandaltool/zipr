@@ -290,7 +290,7 @@ perform_step()
 
 	logfile=logs/$step.log
 
-	echo -n Performing step "$step" [manditory=$manditory] ...
+	echo -n Performing step "$step" [dependencies=$manditory] ...
 	starttime=`date --iso-8601=seconds`
 
 	# If verbose is on, tee to a file 
@@ -311,7 +311,7 @@ perform_step()
 
 	is_step_error $step $command_exit
 	if [ $? -ne 0 ]; then
-		echo Done.  Command failed!
+		echo "Done.  Command failed! ***************************************"
 
 		# check if we need to exit
 		stop_if_error $step
@@ -655,10 +655,16 @@ fi
 		
 perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE
 #perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
-perform_step ilr none $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
+
+
+# only do ILR for main objects that aren't relocatable.  reloc. objects 
+# are still buggy for ILR
+if [ $($PEASOUP_HOME/tools/is_so.sh a.ncexe) = 0 ]; then
+	perform_step ilr none $SECURITY_TRANSFORMS_HOME/libIRDB/test/ilr.exe $cloneid 
+fi
 
 # generate aspri, and assemble it to bspri
-perform_step generate_spri manditory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $cloneid a.irdb.aspri
+perform_step generate_spri manditory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
 perform_step spasm manditory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe libstrata.so.symbols
 perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 

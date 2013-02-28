@@ -121,4 +121,4 @@ concclean:
 	rm strata.log.*
 
 dumble_dll.stock: dumble_dll.c
-	gcc dumble_dll.c -shared -fPIC -Wl,-e,main -o dumble_dll.stock
+	gcc dumble_dll.c -g -shared -fPIC -Wl,-e,main -o dumble_dll.stock
