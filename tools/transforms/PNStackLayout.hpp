@@ -69,7 +69,6 @@ public:
     virtual std::string GetLayoutName() const;
     virtual std::string GetFunctionName() const;
     virtual unsigned int GetOutArgsSize() const;
-    virtual bool HasFramePointer() const;
     virtual int GetNewOffsetESP(int ebp_offset) const;
     virtual int GetNewOffsetEBP(int ebp_offset) const;
     virtual PNStackLayout GetCanaryLayout() const;
@@ -77,6 +76,7 @@ public:
     virtual bool IsCanarySafe() const {return stack_layout.is_canary_safe;}
     virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
     virtual bool IsStaticStack()const {return stack_layout.is_static_stack;}
+	virtual bool HasFramePointer()const{return stack_layout.has_frame_pointer;}
     //memory leak?
     //virtual StackLayout* GetStackLayout() { return new StackLayout(stack_layout); }
 

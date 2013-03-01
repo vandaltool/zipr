@@ -478,10 +478,6 @@ string PNStackLayout::GetFunctionName() const
     return stack_layout.function_name;
 }
 
-bool PNStackLayout::HasFramePointer() const
-{
-    return stack_layout.has_frame_pointer;
-}
 
 //A frame can be shuffled if there are two or more variables, not including
 //the out arguments region. 
@@ -533,6 +529,13 @@ int PNStackLayout::GetNewOffsetESP(int esp_offset) const
 
 int PNStackLayout::GetNewOffsetEBP(int ebp_offset) const
 {
+
+	//If the function doesn't use a frame pointer, then do not alter any ebp relative instructions.
+	if(!HasFramePointer())
+	{
+		return ebp_offset;
+	}
+
     //In the event that an ebp relative offset extends beyond the stack pointer
     //determine the distance beyond the stack pointer, and return 
     //the sum of this distance with the new frame size and saved register region size
