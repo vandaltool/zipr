@@ -311,8 +311,12 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	poparg_i->SetDataBits(dataBits);
 	poparg_i->SetComment(poparg_i->getDisassembly() + " -- with callback to " + p_detector + " orig: " + p_instruction->GetComment()) ;
 	poparg_i->SetFallthrough(popPolicy_i); 
-	poparg_i->SetIndirectBranchTargetAddress(poparg_i->GetAddress());  
 	poparg_i->SetCallback(p_detector); 
+	AddressID_t *poparg_i_indTarg =new AddressID_t();
+	m_variantIR->GetAddresses().insert(poparg_i_indTarg);
+	poparg_i_indTarg->SetVirtualOffset(poparg_i->GetAddress()->GetVirtualOffset());
+	poparg_i_indTarg->SetFileID(BaseObj_t::NOT_IN_DATABASE);
+	poparg_i->SetIndirectBranchTargetAddress(poparg_i_indTarg);
 
 	// popPolicy
 	dataBits.resize(1);

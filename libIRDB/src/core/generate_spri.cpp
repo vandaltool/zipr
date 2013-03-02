@@ -136,11 +136,32 @@ static string qualify(FileIR_t* fileIRp)
 	return URLToFile(fileIRp->GetFile()->GetURL()) + "+" ;
 }
 
+
 static string qualify_address(FileIR_t* fileIRp, int addr)
 {
 	stringstream ss;
 	ss<< qualify(fileIRp) << "0x" << std::hex << (addr);
 	return ss.str();
+}
+
+static string better_qualify_address(FileIR_t* fileIRp, AddressID_t* addr)
+{
+	db_id_t fileID=addr->GetFileID();
+	virtual_offset_t off=addr->GetVirtualOffset();
+
+	/* in theory, we could have an address from any file..
+	 * but this appears to be broken.  NOT_IN_DATABASE means we're in the spri address space,
+	 * so that's all i'm checking for for now.
+	 * do it the old way if it's in the DB, else the new way.
+	 */
+	if(fileID!=BaseObj_t::NOT_IN_DATABASE)
+		return qualify_address(fileIRp,off);
+
+	/* having a file not in the DB means we're int he spridd address space */
+        stringstream s;
+        s<<"spridd+0x"<<std::hex<<off;
+        return s.str();
+		
 }
 
 static string qualified_addressify(FileIR_t* fileIRp, Instruction_t *insn)
@@ -509,7 +530,10 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 	}
 	else if (newinsn->GetIndirectBranchTargetAddress()) 
 	{
-		fout << qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset()) <<" -> ."<<endl;
+
+/* some of these addresses aren't pointers to THIS file, so we'll do a better qualifying of the address */
+//		fout << qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset()) <<" -> ."<<endl;
+		fout << better_qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()) <<" -> ."<<endl;
 		if(!newinsn->GetCallback().empty())
 			fout << ". -> "<< getPostCallbackLabel(newinsn) <<endl;
 	}
