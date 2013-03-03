@@ -123,10 +123,19 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 		cerr<<"OffsetInference: SetupLayout(): Stack Frame Already Allocated, Ignoring Push EBP"<<endl;
 		continue;
 	    }
-	    else
-	    {
-		saved_regs_size = 0;
-	    }
+
+//TODO: ignoring this code for now, although it appears this code no longer
+//makes sense anyway. Don't reset the saved regs if yous ee another push ebp
+//just ignore it for now. EBP is usually pushed first, if it isn't
+//it is likely not going to be used as a base pointer, in which case I really
+//don't want to reset the saved regs count anyway. If it is a base pointer
+//and pushed other than first, then I don't know how this func will work 
+//anyway. 
+
+//	    else
+//	    {
+//		saved_regs_size = 0;
+//	    }
 	}
 	else if(regexec(&(pn_regex.regex_save_fp), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
@@ -183,8 +192,27 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 		cerr<<"OffsetInference: LayoutSetup(): Stack alloc Size = "<<stack_frame_size<<
 		    " Saved Regs Size = "<<saved_regs_size<<" out args size = "<<out_args_size<<endl;
 
+		//TODO: with the new code for determine if a frame pointer exists
+		//I don't consider the case where the frame poitner is pushed but
+		//ebp is not setup like a frame pointer. In this case, ebp acts
+		//like a real general purpose register. 
+		//The hack for now is to check if ebp is pushed, but the frame pointer
+		//is not saved. In this case, consider ebp as another saved reg
+		//and add to the save of the saved regs.
+		//When you fix this, look at PNTransformDriver in the canary_rewrite
+		//subroutine. You will see a case where there is a check for the frame
+		//pointer, and an additional 4 bytes is added. This should be removed
+		//in the future to only use the size of the saved regs, but 
+		//this changes any ebp relative offset calculations to remove 4 bytes. 
+		//Confusing, I know. 
+		if(push_frame_pointer&&!save_frame_pointer)
+			saved_regs_size +=4;
+
 		//There is now enough information to create the PNStackLayout objects
 		return new StackLayout("All Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,(push_frame_pointer&&save_frame_pointer),out_args_size);
+
+
+		
 	    }
 	}
     }
