@@ -82,7 +82,10 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
     unsigned int stack_frame_size = 0;
     int saved_regs_size = 0;
     int out_args_size = func->GetOutArgsRegionSize();
-    bool has_frame_pointer = false;
+	bool push_frame_pointer = false;
+	bool save_frame_pointer = false;
+
+	//   bool has_frame_pointer = false;
 
     int max = PNRegularExpressions::MAX_MATCHES;
     regmatch_t pmatch[max];
@@ -112,7 +115,7 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 	if(regexec(&(pn_regex.regex_push_ebp), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 	    cerr << "OffsetInference: SetupLayout(): Push EBP Found"<<endl;
-	    has_frame_pointer = true;//if I see push ebp at all, then the frame pointer exists
+	    push_frame_pointer = true;
 
 	    if(stack_frame_size != 0)
 	    {
@@ -124,6 +127,10 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 	    {
 		saved_regs_size = 0;
 	    }
+	}
+	else if(regexec(&(pn_regex.regex_save_fp), disasm_str.c_str(), max, pmatch, 0)==0)
+	{
+		save_frame_pointer = true;
 	}
 	else if(regexec(&(pn_regex.regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
@@ -177,7 +184,7 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 		    " Saved Regs Size = "<<saved_regs_size<<" out args size = "<<out_args_size<<endl;
 
 		//There is now enough information to create the PNStackLayout objects
-		return new StackLayout("All Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,has_frame_pointer,out_args_size);
+		return new StackLayout("All Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,(push_frame_pointer&&save_frame_pointer),out_args_size);
 	    }
 	}
     }

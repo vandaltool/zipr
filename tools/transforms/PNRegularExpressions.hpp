@@ -8,6 +8,7 @@ class PNRegularExpressions
 public:
     PNRegularExpressions();
 
+	regex_t regex_save_fp;
     regex_t regex_ret;
     regex_t regex_esp_scaled;
     regex_t regex_ebp_scaled;

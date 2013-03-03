@@ -86,6 +86,12 @@ PNRegularExpressions::PNRegularExpressions()
 	exit(1);
     }
 
+    if (regcomp(&regex_save_fp, ".*mov[[:blank:]]+(ebp)[[:blank:]]*,[[:blank:]]*(esp).*", REG_EXTENDED | REG_ICASE) != 0)
+    {
+	fprintf(stderr,"Error: regular expression for save fp failed to compile\n");
+	exit(1);
+    }
+
     if (regcomp(&regex_push_anything, ".*push[[:blank:]]+(.*)", REG_EXTENDED | REG_ICASE) != 0)
     {
 	fprintf(stderr,"Error: regular expression for push (anything) failed to compile\n");
