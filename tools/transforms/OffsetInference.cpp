@@ -639,7 +639,10 @@ else
 		//NOTE: I have seen cases where there is an add esp, 0x0000000
 		//in unoptimized code. In this case, the compiler must have
 		//restored the stack already, ignore the instruction. 
-		if(offset != stack_frame_size && offset != 0)
+
+		//TODO: casting stack_frame_size, make sure it isn't larger than
+		//max int, I don't know what to do if I see this. 
+		if(offset != (int)stack_frame_size && offset != 0)
 		{
 			cerr<<"OffsetInference: stack deallocation detected with different size of allocation, abandon inference"<<endl;
 			//dealloc_flag = false;

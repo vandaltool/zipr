@@ -103,13 +103,18 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 		//if the next element's offset falls in the current range's boundary
 		//and its size exceeds the current range's boundary, then expand the
 		//current range to include this range.
+
+		//TODO: casting cur.GetSize() to an int in two places below. 
+		//make sure size isn't greater than int max, although I don't
+		//think this will happen and I don't know what to do if I see
+		//it occur. 
 		if((next_offset >= cur.GetOffset()) && 
-		   (next_offset < (cur.GetSize()+cur.GetOffset())) &&
+		   (next_offset < ((int)cur.GetSize()+cur.GetOffset())) &&
 		   ((next_offset+next_size) > (cur.GetOffset()+cur.GetSize())))
 		{
 			cur.SetSize(next_size + (next_offset-cur.GetOffset()));
 		}
-		else if(next_offset > (cur.GetOffset() + cur.GetSize()))
+		else if(next_offset > (cur.GetOffset() + (int)cur.GetSize()))
 		{
 			closure_ranges.push_back(cur);
 			cur.SetOffset(next_offset);

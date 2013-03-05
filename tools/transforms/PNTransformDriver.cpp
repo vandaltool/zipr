@@ -418,7 +418,11 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 	else if(threshold > 1)
 		threshold = 1;
 
-	if(threshold_level >= transform_hierarchy.size())
+	//TODO: threshold_level should be unsigned but I am not sure
+	//if I allow the threshold to be negative. For now
+	//covert the tramsform_hierarchy size to an int. 
+	//Check for max int boundary condition in the future. 
+	if(threshold_level >= (int)transform_hierarchy.size())
 		threshold_level = transform_hierarchy.size()-1;
 
 	//For each function
@@ -488,8 +492,8 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		//hierarchy have been exhausted. 
 
 		//TODO: need to properly handle not_transformable and functions failing all transforms. 
-		int null_inf_count = 0;
-		int starting_level = level;
+		unsigned int null_inf_count = 0;
+		unsigned int starting_level = level;
 		for(;level<transform_hierarchy.size()&&!success&&!timeExpired;level++)
 		{
 			vector<PNStackLayout*> layouts = GenerateInferences(func, level);
@@ -524,7 +528,13 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 				}
 		
 			}
-			do_validate = do_validate && (level != never_validate_level);
+
+			//TODO: type casting never_validate_level to unsigned.
+			//I need to make uses of unsigned and signed consistent.
+			//The rule of thumb should be if the value is absolutely
+			//not allowed to go 0, then it is unsigned. For now I am
+			//type casting to remove the warning. 
+			do_validate = do_validate && (level != (unsigned int)never_validate_level);
 		
 
 			//Go through each layout in the level of the hierarchy in order. 

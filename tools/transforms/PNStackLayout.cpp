@@ -501,7 +501,11 @@ int PNStackLayout::GetNewOffsetESP(int esp_offset) const
 	//could be accessing incoming args or the saved registers
 	//(such as fomit-frame-pointer). In this case we simply add
 	//to the offset the size of the altered frame.
-	if(esp_offset >= stack_layout.frame_alloc_size)
+
+	//TODO: converting stack_layout.frame_alloc_size to int
+	//check if the size is greater than max int. This should
+	//never occur though. 
+	if(esp_offset >= (int)stack_layout.frame_alloc_size)
 	{
 		cerr<<"PNStackLayout: GetNewOffsetESP: Offset greater than or equal to frame size, adjusting based on new frame size"<<endl;
 		//Get the number of bytes beyond the stack frame
