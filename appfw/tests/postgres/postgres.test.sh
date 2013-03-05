@@ -14,7 +14,6 @@
 # Fixed attributes
 # ATTRIBUTE ModDep=strata
 # ATTRIBUTE ModDep=diablo_toolchain
-# ATTRIBUTE ModDep=binutils-2.19
 # ATTRIBUTE ModDep=stratafier
 # ATTRIBUTE ModDep=idapro61
 # ATTRIBUTE ModDep=idapro61_sdk
@@ -66,7 +65,7 @@ cleanup()
 . ${TEST_HARNESS_HOME}/test_utils.sh || cleanup 1 "Cannot source utils file"
 
 assert_test_args $*
-assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN STRATAFIER_OBJCOPY IDAROOT IDASDK PEASOUP_HOME SECURITY_TRANSFORMS_HOME
+assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME SECURITY_TRANSFORMS_HOME
 
 # path to source
 cd $TESTLOC

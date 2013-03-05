@@ -8,7 +8,7 @@ testsqlite.o: testsqlite.c
 	gcc -c -I. testsqlite.c
 
 testsqlite.exe: testsqlite.o
-	gcc testsqlite.o -o testsqlite.exe -lsqlite3
+	gcc -v testsqlite.o -o testsqlite.exe -lsqlite3
 	$(generate_signatures) testsqlite.exe
 
 clean:
