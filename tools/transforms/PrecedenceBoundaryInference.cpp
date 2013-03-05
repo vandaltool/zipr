@@ -71,7 +71,7 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 	vector<Range> espranges;
 
 	//TODO: for now I need to transform offsets to esp to keep everything consistent
-	for(int i=0;i<ranges.size();i++)
+	for(unsigned int i=0;i<ranges.size();i++)
 	{
 		Range cur;
 		cur.SetOffset(ranges[i].GetOffset());
@@ -95,7 +95,7 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 	cur.SetOffset(espranges[0].GetOffset());
 	cur.SetSize(espranges[0].GetSize());
    
-	for(int i=1;i<espranges.size();i++)
+	for(unsigned int i=1;i<espranges.size();i++)
 	{
 		int next_offset = espranges[i].GetOffset();
 		unsigned int next_size = espranges[i].GetSize();
@@ -121,13 +121,13 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 	closure_ranges.push_back(cur);
 
 	//insert all the precedence boundaries
-	for(int i=0;i<closure_ranges.size();i++)
+	for(unsigned int i=0;i<closure_ranges.size();i++)
 	{
 		precedence_layout.InsertESPOffset(closure_ranges[i].GetOffset());
 		precedence_layout.InsertESPOffset(closure_ranges[i].GetOffset()+closure_ranges[i].GetSize());
 	}
 
-	for(int i=0;i<pnranges.size();i++)
+	for(unsigned int i=0;i<pnranges.size();i++)
 	{
 		//look for the offset and the offset+size for each pnrange
 		//if not found, -1 is returned, and in this case we want to insert
@@ -156,7 +156,7 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 		StackLayout revised_playout(GetInferenceName(),base_layout->GetFunctionName(),base_layout->GetOriginalAllocSize(),
 									base_layout->GetSavedRegsSize(), base_layout->HasFramePointer(), args_size);
 
-		for(int i=1;i<inserted_ranges.size();i++)
+		for(unsigned int i=1;i<inserted_ranges.size();i++)
 		{
 			revised_playout.InsertESPOffset(inserted_ranges[i].GetOffset()+inserted_ranges[i].GetSize());
 		}
