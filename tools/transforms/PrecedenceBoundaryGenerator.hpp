@@ -8,8 +8,8 @@
 class PrecedenceBoundaryGenerator
 {
 public:
-    virtual ~PrecedenceBoundaryGenerator(){}
-    virtual std::vector<Range> GetBoundaries(libIRDB::Function_t *func)=0;
+	virtual ~PrecedenceBoundaryGenerator(){}
+	virtual std::vector<Range> GetBoundaries(libIRDB::Function_t *func)=0;
 };
 
 #endif

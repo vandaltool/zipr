@@ -8,13 +8,11 @@
 class DirectOffsetInference : public PNStackLayoutInference
 {
 protected:
-    OffsetInference *offset_inference;
+	OffsetInference *offset_inference;
 public:
-    DirectOffsetInference(OffsetInference *offset_inference);
-    virtual PNStackLayout* GetPNStackLayout(libIRDB::Function_t *func);
-    virtual std::string GetInferenceName() const;
-
-    
+	DirectOffsetInference(OffsetInference *offset_inference);
+	virtual PNStackLayout* GetPNStackLayout(libIRDB::Function_t *func);
+	virtual std::string GetInferenceName() const;	
 };
 
 

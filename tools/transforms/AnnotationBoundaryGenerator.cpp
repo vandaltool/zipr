@@ -12,59 +12,56 @@ using namespace MEDS_Annotation;
 
 vector<Range> AnnotationBoundaryGenerator::GetBoundaries(libIRDB::Function_t *func)
 {
-    
-    vector<Range> ranges;
-    
-    std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotParser->getAnnotations();
-
-    for(
-	set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
-	it!=func->GetInstructions().end();
-	++it
-	)
-    {
-	Instruction_t* instr = *it;
-	virtual_offset_t irdb_vo = instr->GetAddress()->GetVirtualOffset();
-
-	if (irdb_vo == 0) continue;
-
-	VirtualOffset vo(irdb_vo);
-
-	MEDS_InstructionCheckAnnotation annotation = annotations[vo];
+	vector<Range> ranges;
 	
-	if (annotation.isValid() && annotation.isMemset())
+	std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotParser->getAnnotations();
+
+	for(
+		set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
+		it!=func->GetInstructions().end();
+		++it
+		)
 	{
-	    //cerr<<"Memset annot found"<<endl;
+		Instruction_t* instr = *it;
+		virtual_offset_t irdb_vo = instr->GetAddress()->GetVirtualOffset();
 
-	    int objectSize = annotation.getObjectSize();
-	    int offset = annotation.getStackOffset();
+		if (irdb_vo == 0) continue;
 
-	    Range cur;
-	    cur.SetOffset(offset);
-	    cur.SetSize(objectSize);
+		VirtualOffset vo(irdb_vo);
 
-	    if (annotation.isEbpOffset()) 
-	    {
-		if(offset < 0)
+		MEDS_InstructionCheckAnnotation annotation = annotations[vo];
+	
+		if (annotation.isValid() && annotation.isMemset())
 		{
-		    ranges.push_back(cur);
-		}
+			//cerr<<"Memset annot found"<<endl;
+
+			int objectSize = annotation.getObjectSize();
+			int offset = annotation.getStackOffset();
+
+			Range cur;
+			cur.SetOffset(offset);
+			cur.SetSize(objectSize);
+
+			if (annotation.isEbpOffset()) 
+			{
+				if(offset < 0)
+				{
+					ranges.push_back(cur);
+				}
 		
-	    } else if (annotation.isEspOffset()) 
-	    {
-		if(offset >= 0)
-		{
-		    ranges.push_back(cur);
+			} else if (annotation.isEspOffset()) 
+			{
+				if(offset >= 0)
+				{
+					ranges.push_back(cur);
+				}
+			} else 
+			{
+				// something went wrong
+				assert(0);
+			}
 		}
-	    } else 
-	    {
-		// something went wrong
-		assert(0);
-	    }
 	}
 
-
-    }
-
-    return ranges;
+	return ranges;
 }

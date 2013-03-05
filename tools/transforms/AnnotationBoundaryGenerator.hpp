@@ -9,10 +9,10 @@
 class AnnotationBoundaryGenerator : public PrecedenceBoundaryGenerator
 {
 protected:
-    MEDS_Annotation::MEDS_AnnotationParser *annotParser;
+	MEDS_Annotation::MEDS_AnnotationParser *annotParser;
 public:
-    AnnotationBoundaryGenerator(MEDS_Annotation::MEDS_AnnotationParser *annotParser) : annotParser(annotParser){}
-    virtual std::vector<Range> GetBoundaries(libIRDB::Function_t *func);
+	AnnotationBoundaryGenerator(MEDS_Annotation::MEDS_AnnotationParser *annotParser) : annotParser(annotParser){}
+	virtual std::vector<Range> GetBoundaries(libIRDB::Function_t *func);
 };
 
 #endif

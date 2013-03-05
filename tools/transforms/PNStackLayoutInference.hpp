@@ -10,10 +10,10 @@
 class PNStackLayoutInference
 {
 
-public:    
-    virtual ~PNStackLayoutInference(){}
-    virtual PNStackLayout*  GetPNStackLayout(libIRDB::Function_t *func)=0;
-    virtual std::string GetInferenceName()const=0;
+public:	   
+	virtual ~PNStackLayoutInference(){}
+	virtual PNStackLayout*	GetPNStackLayout(libIRDB::Function_t *func)=0;
+	virtual std::string GetInferenceName()const=0;
 };
 
 #endif
