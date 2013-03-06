@@ -1504,6 +1504,7 @@ void __bea_callspec__ movlps_VM(PDISASM pMyDisasm)
     }
     else {
 	GV.MemDecoration = Arg2fword; 
+        MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
 
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
         if (GV.MOD_== 0x3) {
@@ -1787,7 +1788,7 @@ void __bea_callspec__ movups_WV(PDISASM pMyDisasm)
     /* ========= 0xf3 */
     else if (GV.PrefRepe == 1) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
-        GV.MemDecoration = Arg1dword;
+        GV.MemDecoration = Arg1fword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movss ");
