@@ -839,6 +839,20 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 }
 
 
+//
+// Truth table for 32->16 bit truncation:
+//
+// bit range         sign
+// -------------     ------------------------
+// a31 - a17 = 0     unsigned <-- unsigned
+// a31 - a17 = 0     unsigned <-- signed
+// a31 - a16 = 0     signed <-- unsigned
+// a31 - a16 = a16   signed <-- signed
+//
+// 20130307 Currently, only the first 2 rules are implemented
+// 20130307 We need to know the signedness of both target and source, but the current annotation
+//             only provides one of them
+//
 void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	assert(getVariantIR() && p_instruction);
@@ -938,6 +952,7 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 
     //             <save flags>
     //             test eax, 0xFFFFFF00   ; (for 8 bit) 
+    //             test eax, 0xFFFF0000   ; (for 16 bit) 
 	//
 	//      for UNSIGNED:
     //             jz <continue>          ; upper 24 bits are 0's, fallthrough is nop 
