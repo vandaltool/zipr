@@ -4834,6 +4834,8 @@ void __bea_callspec__ lds_GvM(PDISASM pMyDisasm)
             Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
             GV.EIP_+= GV.DECALAGE_EIP+2;
         }
+        if (GV.MOD_== 3) 
+      		FailDecode(pMyDisasm);
     }
 }
 
@@ -4883,6 +4885,8 @@ void __bea_callspec__ lea_GvM(PDISASM pMyDisasm)
         Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
         GV.EIP_+= GV.DECALAGE_EIP+2;
     }
+    if (GV.MOD_== 3) 
+	FailDecode(pMyDisasm);
 
 }
 
@@ -4912,6 +4916,8 @@ void __bea_callspec__ les_GvM(PDISASM pMyDisasm)
             Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
             GV.EIP_+= GV.DECALAGE_EIP+2;
         }
+    	if (GV.MOD_== 3) 
+		FailDecode(pMyDisasm);
     }
 }
 
