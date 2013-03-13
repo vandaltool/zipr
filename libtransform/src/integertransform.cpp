@@ -817,7 +817,8 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 	if (targetReg == Register::UNKNOWN)
 	{
 		cerr << "integertransform: UNDERFLOW: unknown register -- use default instrumentation policy" << endl;
-		p_policy = POLICY_DEFAULT;
+//		p_policy = POLICY_DEFAULT;
+		p_policy = POLICY_EXIT;
 	}
 
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
