@@ -1,5 +1,6 @@
 #include <mysql.h>
 #include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 
 void get_spell_password(char *spell, char *password)
@@ -29,6 +30,7 @@ void display_html_header()
 {
   printf("Content-type: text/html\n\n");
   printf("\n<html>\n<head></head><body><img src=\"/ministry/images/header.jpg\"><br>\n");
+  fflush(stdout);
 }
 
 void display_html_footer()
