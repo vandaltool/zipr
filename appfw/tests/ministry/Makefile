@@ -1,3 +1,7 @@
+# Current assumption:
+#   Peasoupified demo binaries are executed via Web server cgi-bin facilities
+#   cgi-bin scripts are in /usr/lib/cgi-bin
+
 BINARIES=spelldescription oscommand
 PEASOUP_BINARIES=spelldescription.peasoup oscommand.peasoup
 
