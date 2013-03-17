@@ -1,4 +1,5 @@
 BINARIES=spelldescription oscommand
+PEASOUP_BINARIES=spelldescription.peasoup oscommand.peasoup
 
 all: $(BINARIES)
 
@@ -20,22 +21,28 @@ oscommand.o: oscommand.c
 oscommand: oscommand.o httpparse.o
 	gcc oscommand.o httpparse.o -o oscommand 
 
+oscommand.peasoup: oscommand
+	$(PEASOUP_HOME)/tools/ps_analyze.sh oscommand oscommand.peasoup --step concolic=off --step integertransform=off --step p1transform=off
+
+# need to run these once to create the diagnostics.out files
 runonce: $(BINARIES)
 	-./oscommand.peasoup
 	-./spelldescription.peasoup
 
+# the web server will run as user nobody and does not
+# have the proper permissions to run these binaries.
+# we change permissions to allow anyone to execute the peasoup_executable
+# directory and write to the diagnostics.out file
+# to make sure the diagnostics.out file exist, we run the executables once
 webhack: runonce
 	chmod og+rwx peasoup_exec*
 	chmod og+rw peasoup_exec*/diagnostics.out
 
-install: webhack
-	sudo cp $(BINARIES) /usr/lib/cgi-bin
+install: $(PEASOUP_BINARIES) webhack
+	sudo cp $(BINARIES) $(PEASOUP_BINARIES) /usr/lib/cgi-bin
 
 clean:
-	rm -rf *.o *.tmp *.exe peasoup_executable_directory* messages_to_tne.log ps_tne_logfile.txt appfw.db *.sigs *.peasoup $(BINARIES)
+	rm -rf *.o *.tmp *.exe peasoup_executable_directory* messages_to_tne.log ps_tne_logfile.txt appfw.db *.sigs *.peasoup $(BINARIES) $(PEASOUP_BINARIES)
 
-peasoup: all
-	$(PEASOUP_HOME)/tools/ps_analyze.sh oscommand oscommand.peasoup --step concolic=off --step integertransform=off --step p1transform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh spelldescription spelldescription.peasoup --step concolic=off --step integertransform=off --step p1transform=off
-	
+peasoup: $(PEASOUP_BINARIES)
 
