@@ -25,6 +25,8 @@ using namespace std;
 using namespace libIRDB;
 using namespace MEDS_Annotation;
 
+bool verbose_log = false;
+
 enum
 {
 	VARIANT_ID_OPTION = CHAR_MAX+1,
@@ -144,6 +146,14 @@ void usage()
 
 int main(int argc, char **argv)
 {
+
+	//Set the verbose flag
+	char *verbose = getenv("VERBOSE");
+	if(verbose == NULL)
+		verbose = getenv("PN_VERBOSE");
+
+	verbose_log = (verbose != NULL);
+
 	VariantID_t *pidp=NULL;
   
 	int c;

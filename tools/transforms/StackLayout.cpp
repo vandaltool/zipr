@@ -1,6 +1,7 @@
 #include "StackLayout.hpp"
 #include <cassert>
 #include <iostream>
+#include "globals.h"
 
 using namespace std;
 
@@ -83,13 +84,15 @@ void StackLayout::InsertESPOffset(int offset)
 		return;
 	}
 
-	cerr<<"StackLayout: Attempting to insert offset "<<offset<<endl;
+	if(verbose_log)
+		cerr<<"StackLayout: Attempting to insert offset "<<offset<<endl;
  
 
 	if(offset >= (int)frame_alloc_size)
 	{
 		//This can happen when an esp offset is accessing stored registers or function parameters
-		cerr<<"StackLayout: InsertESPOffset(): Offset is larger than or equal to the allocated stack, Ignoring insert"<<endl;
+		if(verbose_log)
+			cerr<<"StackLayout: InsertESPOffset(): Offset is larger than or equal to the allocated stack, Ignoring insert"<<endl;
 		return;
 	} 
 
@@ -100,7 +103,8 @@ void StackLayout::InsertESPOffset(int offset)
 		//The out args region is not divided
 		if(offset < (int)mem_objects[0].GetSize())
 		{
-			cerr<<"StackLayout: InsertESPOffset(): Offset in out args region, Ignoring insert"<<endl;
+			if(verbose_log)
+				cerr<<"StackLayout: InsertESPOffset(): Offset in out args region, Ignoring insert"<<endl;
 			return;
 		}
 	}
@@ -114,7 +118,8 @@ void StackLayout::InsertESPOffset(int offset)
 	if(index < 0)
 	{
 		//TODO: don't assert false, ignore, but for now I want to find when this happens
-		cerr<<"StackLayout: InsertESPOffset(): Could not Find Range to Insert Into, Asserting False for Now"<<endl;
+		if(verbose_log)
+			cerr<<"StackLayout: InsertESPOffset(): Could not Find Range to Insert Into, Asserting False for Now"<<endl;
 		//TODO: throw exception or ignore?
 		assert(false);
 	}
@@ -123,7 +128,8 @@ void StackLayout::InsertESPOffset(int offset)
 	if(index > ((int)mem_objects.size())-1)
 		assert(false); //TODO: throw exception
 
-	cerr<<"PNStackLayout: InsertESPOffset(): found offset = "<<
+	if(verbose_log)
+		cerr<<"PNStackLayout: InsertESPOffset(): found offset = "<<
 		mem_objects[index].GetOffset()<<endl;
 	//If offset is unique, insert it after the closest
 	//range (closest base address with out going over offset)
@@ -137,7 +143,8 @@ void StackLayout::InsertESPOffset(int offset)
 	//else no need to insert, the offset already exists
 	else
 	{
-		cerr<<"StackLayout: InsertESPOffset(): Offset already exists, ignoring insert"<<endl;
+		if(verbose_log)
+			cerr<<"StackLayout: InsertESPOffset(): Offset already exists, ignoring insert"<<endl;
 		return;
 	}
 
@@ -154,10 +161,13 @@ void StackLayout::InsertESPOffset(int offset)
 	else
 		mem_objects[index+1].SetSize(mem_objects[index+2].GetOffset()-mem_objects[index+1].GetOffset());
 
-	cerr<<"Stacklayout: Insert Successful, Post Insert Offsets"<<endl;
-	for(unsigned int i=0;i<mem_objects.size();i++)
+	if(verbose_log)
 	{
-		cerr<<"\tOffset = "<<mem_objects[i].GetOffset()<<endl;
+		cerr<<"Stacklayout: Insert Successful, Post Insert Offsets"<<endl;
+		for(unsigned int i=0;i<mem_objects.size();i++)
+		{
+			cerr<<"\tOffset = "<<mem_objects[i].GetOffset()<<endl;
+		}
 	}
 }
 
@@ -165,7 +175,8 @@ void StackLayout::InsertEBPOffset(int offset)
 {
 	//The size of the saved regs must be taken into consideration when transforming
 	//the EBP offset to an esp relative offset
-	cerr<<"StackLayout: InsertEBPOffset(): Offset="<<offset<<" frame alloc size="<<frame_alloc_size<<" saved regs size="<<saved_regs_size<<endl;
+	if(verbose_log)
+		cerr<<"StackLayout: InsertEBPOffset(): Offset="<<offset<<" frame alloc size="<<frame_alloc_size<<" saved regs size="<<saved_regs_size<<endl;
 	int esp_conversion = EBPToESP(offset);//((int)frame_alloc_size+(int)saved_regs_size) - offset;
 
 	//It is possible to have ebp offsets that extend beyond the stack pointer. I haven't seen it
@@ -174,7 +185,8 @@ void StackLayout::InsertEBPOffset(int offset)
 		InsertESPOffset(esp_conversion);
 	else
 	{
-		cerr<<"PNStackLayout: InsertEBPOffset: Coverted EBP offset to negative ESP offset, ignoring insert"<<endl;
+		if(verbose_log)
+			cerr<<"PNStackLayout: InsertEBPOffset: Coverted EBP offset to negative ESP offset, ignoring insert"<<endl;
 	}
 }
 

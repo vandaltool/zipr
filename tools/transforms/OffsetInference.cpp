@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <set>
 #include <fstream>
+#include "globals.h"
 
 using namespace std;
 using namespace libIRDB;
@@ -108,19 +109,24 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 		instr->Disassemble(disasm);
 		disasm_str = disasm.CompleteInstr;
 
-		cerr << "OffsetInference: SetupLayout(): disassembled line =  "<<disasm_str<< endl;
+		if(verbose_log)
+			cerr << "OffsetInference: SetupLayout(): disassembled line =  "<<disasm_str<< endl;
 	
 		//TODO: find push ebp, then count pushes to sub esp, stack alloc size and pushed size are fed to layout objects
 		//TODO: for now I assume all pushes are 32 bits, is this a correct assumption?
 		if(regexec(&(pn_regex.regex_push_ebp), disasm_str.c_str(), max, pmatch, 0)==0)
 		{
-			cerr << "OffsetInference: SetupLayout(): Push EBP Found"<<endl;
+			if(verbose_log)
+				cerr << "OffsetInference: SetupLayout(): Push EBP Found"<<endl;
+
 			push_frame_pointer = true;
 
 			if(stack_frame_size != 0)
 			{
 				//TODO: handle this better
-				cerr<<"OffsetInference: SetupLayout(): Stack Frame Already Allocated, Ignoring Push EBP"<<endl;
+				if(verbose_log)
+					cerr<<"OffsetInference: SetupLayout(): Stack Frame Already Allocated, Ignoring Push EBP"<<endl;
+
 				continue;
 			}
 
@@ -143,12 +149,15 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 		}
 		else if(regexec(&(pn_regex.regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
 		{
-			cerr<<"OffsetInference: SetupLayout(): Push (anything) Found"<<endl;
+			if(verbose_log)
+				cerr<<"OffsetInference: SetupLayout(): Push (anything) Found"<<endl;
 
 			if(stack_frame_size != 0)
 			{
 				//TODO: handle this better
-				cerr<<"OffsetInference: SetupLayout(): Stack Frame Already Allocated, Ignoring Push Instruction"<<endl;
+				if(verbose_log)
+					cerr<<"OffsetInference: SetupLayout(): Stack Frame Already Allocated, Ignoring Push Instruction"<<endl;
+
 				continue;
 			}
 			else
@@ -159,14 +168,17 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 		}
 		else if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
 		{
-			cerr << "OffsetInference: FindAllOffsets(): Found Stack Alloc"<<endl;
+			if(verbose_log)
+				cerr << "OffsetInference: FindAllOffsets(): Found Stack Alloc"<<endl;
 
 			//TODO: Is this the way this situation should be handled?
 			//The first esp sub instruction is considered the stack allocation, all other subs are ignored
 			//Given that I return when the first one is found, this is probably a useless check. 
 			if(stack_frame_size != 0)
 			{
-				cerr <<"OffsetInference: FindAllOffsets(): Stack Alloc Previously Found, Ignoring Instruction"<<endl;
+				if(verbose_log)
+					cerr <<"OffsetInference: FindAllOffsets(): Stack Alloc Previously Found, Ignoring Instruction"<<endl;
+
 				continue;
 			}
 
@@ -183,13 +195,15 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 					//constant integer, so it must be a register. 
 			
 					//TODO: is this what I really want to do?
-					cerr<<"OffsetInference: LayoutSetup(): Found non-integral stack allocation ("<<matched<<") before integral stack allocation, generating a null layout inference for function "<<func->GetName()<<endl; 
+					if(verbose_log)
+						cerr<<"OffsetInference: LayoutSetup(): Found non-integral stack allocation ("<<matched<<") before integral stack allocation, generating a null layout inference for function "<<func->GetName()<<endl; 
 					return NULL;
 				}
 
 				//else
 
-				cerr<<"OffsetInference: LayoutSetup(): Stack alloc Size = "<<stack_frame_size<<
+				if(verbose_log)
+					cerr<<"OffsetInference: LayoutSetup(): Stack alloc Size = "<<stack_frame_size<<
 					" Saved Regs Size = "<<saved_regs_size<<" out args size = "<<out_args_size<<endl;
 
 				//TODO: with the new code for determine if a frame pointer exists
@@ -251,7 +265,8 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	//only p1 should be attempted. 
 	bool PN_safe = true;
 
-	cerr<<"OffsetInference: FindAllOffsets(): Looking at Function = "<<func->GetName()<<endl;
+	if(verbose_log)
+		cerr<<"OffsetInference: FindAllOffsets(): Looking at Function = "<<func->GetName()<<endl;
 
 	ControlFlowGraph_t cfg(func);
 
@@ -323,7 +338,8 @@ assert(instructions.size() != 0);
 		instr->Disassemble(disasm);
 		disasm_str = disasm.CompleteInstr;
 
-		cerr << "OffsetInference: FindAllOffsets(): disassembled line =	 "<<disasm_str<< endl;
+		if(verbose_log)
+			cerr << "OffsetInference: FindAllOffsets(): disassembled line =	 "<<disasm_str<< endl;
 
 /*	
 //TODO: find push ebp, then count pushes to sub esp, stack alloc size and pushed size are fed to layout objects
@@ -407,8 +423,9 @@ else
 		//Right now I am going to enforce in PNTransformDriver that
 		//the alignment instruction is removed. 
 
+		if(verbose_log)
+			cerr<<"OffsetInference: FindAllOffsets(): Layout is not canary safe"<<endl;
 
-		cerr<<"OffsetInference: FindAllOffsets(): Layout is not canary safe"<<endl;
 		pn_direct_offsets->SetCanarySafe(false);
 		pn_scaled_offsets->SetCanarySafe(false);
 		pn_all_offsets->SetCanarySafe(false);
@@ -445,7 +462,8 @@ else
 				pn_all_offsets->SetCanarySafe(false);
 				pn_p1_offsets->SetCanarySafe(false);
 
-				cerr<<"OffsetInferece:	instruction contains a dynamic stack allocation, not pn_safe"<<endl;
+				if(verbose_log)
+					cerr<<"OffsetInferece:	instruction contains a dynamic stack allocation, not pn_safe"<<endl;
 
 				//TODO: this output should be removed after TNE
 				//only used to give Jason an indication that a 
@@ -476,14 +494,16 @@ else
 		alloc_count++;
 		if(alloc_count >1)
 		{
-			cerr<<"OffsetInference: integral stack allocations exceeded 1, abandon inference"<<endl;
+			if(verbose_log)
+				cerr<<"OffsetInference: integral stack allocations exceeded 1, abandon inference"<<endl;
 			break;
 		}
 
 	}
 	else if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
-		cerr<<"OffsetInference: FindAllOffsets(): Found ESP Scaled Instruction"<<endl;
+		if(verbose_log)
+			cerr<<"OffsetInference: FindAllOffsets(): Found ESP Scaled Instruction"<<endl;
 /*
   if(stack_frame_size <=0)
   {
@@ -507,12 +527,15 @@ else
 			{
 				pn_scaled_offsets->InsertESPOffset(offset);
 			}
-			cerr<<"OffsetInference: FindAllOffsets(): ESP Offset = "<<offset<<endl;
+
+			if(verbose_log)
+				cerr<<"OffsetInference: FindAllOffsets(): ESP Offset = "<<offset<<endl;
 		}
 	}
 	else if(regexec(&(pn_regex.regex_esp_direct), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
-		cerr<<"OffsetInference: FindAllOffsets: Found ESP Direct Instruction"<<endl;
+		if(verbose_log)
+			cerr<<"OffsetInference: FindAllOffsets: Found ESP Direct Instruction"<<endl;
 /*
   if(stack_frame_size <=0)
   {
@@ -537,12 +560,15 @@ else
 			{
 				pn_direct_offsets->InsertESPOffset(offset);
 			}
-			cerr<<"OffsetInference: FindAllOffsets(): ESP Offset = "<<offset<<endl;
+
+			if(verbose_log)
+				cerr<<"OffsetInference: FindAllOffsets(): ESP Offset = "<<offset<<endl;
 		}
 	}
 	else if(regexec(&(pn_regex.regex_ebp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
-		cerr<<"OffsetInference: FindAllOffsets(): Found EBP Scaled Instruction"<<endl;
+		if(verbose_log)
+			cerr<<"OffsetInference: FindAllOffsets(): Found EBP Scaled Instruction"<<endl;
 /*
   if(stack_frame_size <=0)
   {
@@ -583,7 +609,8 @@ else
 	}
 	else if(regexec(&(pn_regex.regex_ebp_direct), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
-		cerr<<"OffsetInference: FindAllOffsets(): Found EBP Direct Instruction"<<endl;
+		if(verbose_log)
+			cerr<<"OffsetInference: FindAllOffsets(): Found EBP Direct Instruction"<<endl;
 /*
   if(stack_frame_size <=0)
   {
@@ -611,7 +638,8 @@ else
   break;
   }
 */
-			cerr<<"OffsetInference: FinadAllOffsets(): Extracted EBP offset = "<<offset<<endl;
+			if(verbose_log)
+				cerr<<"OffsetInference: FinadAllOffsets(): Extracted EBP offset = "<<offset<<endl;
 
 			if(pn_all_offsets != NULL)
 			{
@@ -644,7 +672,8 @@ else
 		//max int, I don't know what to do if I see this. 
 		if(offset != (int)stack_frame_size && offset != 0)
 		{
-			cerr<<"OffsetInference: stack deallocation detected with different size of allocation, abandon inference"<<endl;
+			if(verbose_log)
+				cerr<<"OffsetInference: stack deallocation detected with different size of allocation, abandon inference"<<endl;
 			//dealloc_flag = false;
 
 			//TODO: hacked in for TNE, rewrite. 
@@ -664,7 +693,8 @@ else
 	else if(regexec(&(pn_regex.regex_scaled_ebp_index), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		PN_safe = false;
-		cerr<<"OffsetInference: instruction contains an ebp index, not pn_safe"<<endl;
+		if(verbose_log)
+			cerr<<"OffsetInference: instruction contains an ebp index, not pn_safe"<<endl;
 		//TODO: at this point I could probably break the loop, 
 	}
 		//TODO: a hack for TNE to check for direct recursion to dial down padding
@@ -674,7 +704,9 @@ else
 		{
 			if(instr->GetTarget()->GetAddress()->GetVirtualOffset() == first_instr->GetAddress()->GetVirtualOffset())
 			{
-				cerr<<"OffsetInference: function contains a direct recursive call"<<endl;
+				if(verbose_log)
+					cerr<<"OffsetInference: function contains a direct recursive call"<<endl;
+
 				pn_direct_offsets->SetRecursive(true);
 				pn_scaled_offsets->SetRecursive(true);
 				pn_all_offsets->SetRecursive(true);
@@ -682,10 +714,11 @@ else
 			}
 		}
 	}
-
+		
 	else
 	{
-		cerr<<"OffsetInference: FindAllOffsets: No Pattern Match"<<endl;
+		if(verbose_log)
+			cerr<<"OffsetInference: FindAllOffsets: No Pattern Match"<<endl;
 	}
 	}
 
@@ -697,8 +730,9 @@ else
 	//at the end of this function.
 	if(alloc_count>1)
 	{
+		if(verbose_log)
+			cerr<<"OffsetInference: FindAllOffsets: Multiple integral stack allocations found, returning null inferences"<<endl;
 
-		cerr<<"OffsetInference: FindAllOffsets: Multiple integral stack allocations found, returning null inferences"<<endl;
 		direct[func->GetName()] = NULL;
 		scaled[func->GetName()] = NULL;
 		all_offsets[func->GetName()] = NULL;
@@ -711,7 +745,8 @@ else
 
 		if(!dealloc_flag && ret_cnt == 0)
 		{
-			cerr<<"OffsetInference: FindAllOffsets: Function is missing stack deallocaiton, but does not return, assuming transformable"<<endl;
+			if(verbose_log)
+				cerr<<"OffsetInference: FindAllOffsets: Function is missing stack deallocaiton, but does not return, assuming transformable"<<endl;
 			dealloc_flag = true;
 		}
 		//TODO: I need to revist this such that you can pass a pointer to PNStackLayout,
@@ -734,32 +769,38 @@ else
 
 		if(!dealloc_flag)
 		{
-			cerr<<"OffsetInference: FindAllOffsets: No Stack Deallocation Found"<<endl;	 
+			if(verbose_log)
+				cerr<<"OffsetInference: FindAllOffsets: No Stack Deallocation Found"<<endl;	 
 			if(!direct[func->GetName()]->CanShuffle())
 			{
-				cerr<<"OffsetInference: FindAllOffsets: direct offset inference cannot be shuffled, generating null inference"<<endl;
+				if(verbose_log)
+					cerr<<"OffsetInference: FindAllOffsets: direct offset inference cannot be shuffled, generating null inference"<<endl;
 				direct[func->GetName()] = NULL;
 			}
 
 			if(!scaled[func->GetName()]->CanShuffle())
 			{
-				cerr<<"OffsetInference: FindAllOffsets: scaled offset inference cannot be shuffled, generating null inference"<<endl;
+				if(verbose_log)
+					cerr<<"OffsetInference: FindAllOffsets: scaled offset inference cannot be shuffled, generating null inference"<<endl;
 				scaled[func->GetName()] = NULL;
 			}
 
 			if(!all_offsets[func->GetName()]->CanShuffle())
 			{
-				cerr<<"OffsetInference: FindAllOffsets: all offset inference cannot be shuffled, generating null inference"<<endl;
+				if(verbose_log)
+					cerr<<"OffsetInference: FindAllOffsets: all offset inference cannot be shuffled, generating null inference"<<endl;
 				all_offsets[func->GetName()] = NULL;
 			}
 
 			p1[func->GetName()] = NULL;
-			cerr<<"OffsetInference: FindAllOffsets: p1 inference by default cannot be shuffled, generating null inference"<<endl;
+			if(verbose_log)
+				cerr<<"OffsetInference: FindAllOffsets: p1 inference by default cannot be shuffled, generating null inference"<<endl;
 		}
 	
 		if(!PN_safe)
 		{
-			cerr<<"OffsetInference: FindAllOffsets: Function not pn_safe, using only p1 (p1 may have been previously disabled)"<<endl;
+			if(verbose_log)
+				cerr<<"OffsetInference: FindAllOffsets: Function not pn_safe, using only p1 (p1 may have been previously disabled)"<<endl;
 			direct[func->GetName()] = NULL;
 			scaled[func->GetName()] = NULL;
 			all_offsets[func->GetName()] = NULL;

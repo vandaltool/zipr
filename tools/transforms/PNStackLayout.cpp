@@ -5,6 +5,7 @@
 #include <cassert>
 #include <sstream>
 #include <ctime>
+#include "globals.h"
 
 //TODO: debug use only
 #include <iostream>
@@ -190,11 +191,14 @@ void PNStackLayout::Shuffle()
 
 	isShuffled = true;
 
-	cerr<<"PNStackLayout: Shuffle(): "<<ToString()<<endl;
-	for(unsigned int i=0;i<mem_objects.size();i++)
+	if(verbose_log)
 	{
-		cerr<<"\tOffset = "<<mem_objects[i]->GetOffset()<<" Size = "<<mem_objects[i]->GetSize()<<
-			" Padding = "<<mem_objects[i]->GetPaddingSize()<<" displ = "<<mem_objects[i]->GetDisplacement()<<endl;
+		cerr<<"PNStackLayout: Shuffle(): "<<ToString()<<endl;
+		for(unsigned int i=0;i<mem_objects.size();i++)
+		{
+			cerr<<"\tOffset = "<<mem_objects[i]->GetOffset()<<" Size = "<<mem_objects[i]->GetSize()<<
+				" Padding = "<<mem_objects[i]->GetPaddingSize()<<" displ = "<<mem_objects[i]->GetDisplacement()<<endl;
+		}
 	}
 }
 
@@ -236,11 +240,14 @@ void PNStackLayout::AddCanaryPadding()
 
 	isPadded = true; 
 
-	cerr<<"PNStackLayout: AddPadding(): "<<ToString()<<endl;
-	for(unsigned int i=0;i<mem_objects.size();i++)
+	if(verbose_log)
 	{
-		cerr<<"\tOffset = "<<mem_objects[i]->GetOffset()<<" Size = "<<mem_objects[i]->GetSize()<<
-			" Padding = "<<mem_objects[i]->GetPaddingSize()<<" displ = "<<mem_objects[i]->GetDisplacement()<<endl;
+		cerr<<"PNStackLayout: AddPadding(): "<<ToString()<<endl;
+		for(unsigned int i=0;i<mem_objects.size();i++)
+		{
+			cerr<<"\tOffset = "<<mem_objects[i]->GetOffset()<<" Size = "<<mem_objects[i]->GetSize()<<
+				" Padding = "<<mem_objects[i]->GetPaddingSize()<<" displ = "<<mem_objects[i]->GetDisplacement()<<endl;
+		}
 	}	 
 }
 
@@ -261,7 +268,8 @@ void PNStackLayout::AddRandomPadding(bool isaligned)
 {
 	this->isaligned = isaligned;
 
-	cerr<<"ALIGNMENT IS "<<isaligned<<endl;
+	if(verbose_log)
+		cerr<<"ALIGNMENT IS "<<isaligned<<endl;
 
 	sort(mem_objects.begin(),mem_objects.end(),CompareRangeDisplacedOffset);
 	//counts the additional padding added, does not take into consideration previous padding
@@ -303,11 +311,14 @@ void PNStackLayout::AddRandomPadding(bool isaligned)
 
 	isPadded = true; 
 
-	cerr<<"PNStackLayout: AddPadding(): "<<ToString()<<endl;
-	for(unsigned int i=0;i<mem_objects.size();i++)
+	if(verbose_log)
 	{
-		cerr<<"\tOffset = "<<mem_objects[i]->GetOffset()<<" Size = "<<mem_objects[i]->GetSize()<<
-			" Padding = "<<mem_objects[i]->GetPaddingSize()<<" displ = "<<mem_objects[i]->GetDisplacement()<<endl;
+		cerr<<"PNStackLayout: AddPadding(): "<<ToString()<<endl;
+		for(unsigned int i=0;i<mem_objects.size();i++)
+		{
+			cerr<<"\tOffset = "<<mem_objects[i]->GetOffset()<<" Size = "<<mem_objects[i]->GetSize()<<
+				" Padding = "<<mem_objects[i]->GetPaddingSize()<<" displ = "<<mem_objects[i]->GetDisplacement()<<endl;
+		}
 	}	  
 }
 
@@ -355,11 +366,15 @@ void PNStackLayout::AddDMZPadding()
 
 	isPadded = true; 
 
-	cerr<<"PNStackLayout: AddDMZPadding(): "<<ToString()<<endl;
-	for(unsigned int i=0;i<mem_objects.size();i++)
+
+	if(verbose_log)
 	{
-		cerr<<"\tOffset = "<<mem_objects[i]->GetOffset()<<" Size = "<<mem_objects[i]->GetSize()<<
-			" Padding = "<<mem_objects[i]->GetPaddingSize()<<" displ = "<<mem_objects[i]->GetDisplacement()<<endl;
+		cerr<<"PNStackLayout: AddDMZPadding(): "<<ToString()<<endl;
+		for(unsigned int i=0;i<mem_objects.size();i++)
+		{
+			cerr<<"\tOffset = "<<mem_objects[i]->GetOffset()<<" Size = "<<mem_objects[i]->GetSize()<<
+				" Padding = "<<mem_objects[i]->GetPaddingSize()<<" displ = "<<mem_objects[i]->GetDisplacement()<<endl;
+		}
 	}		
 }
 
@@ -403,19 +418,24 @@ PNRange* PNStackLayout::GetClosestRangeEBP(int loc) const
 //passed, the algorithm failed, or the number of mem_objects
 //is 0. In this case a null pointer is returned;
 PNRange* PNStackLayout::GetClosestRangeESP(int loc) const
-{	
-	cerr<<"PNstackLayout: GetClosestRangeESP(): Seaching for ESP Offset "<<loc<<endl;
+{
+	if(verbose_log)
+		cerr<<"PNstackLayout: GetClosestRangeESP(): Seaching for ESP Offset "<<loc<<endl;
 
 	if(loc >= (int)stack_layout.frame_alloc_size)
 	{
-		//For now don't do anything if the loc is greater than the frame size
-		cerr<<"PNStackLayout: GetClosestRangeESP(): loc >= frame_alloc_size, Returning NULL"<<endl;
+		if(verbose_log)
+		{
+			//For now don't do anything if the loc is greater than the frame size
+			cerr<<"PNStackLayout: GetClosestRangeESP(): loc >= frame_alloc_size, Returning NULL"<<endl;
+		}
 		return NULL;
 	}
 
 	if(loc < 0)
 	{
-		cerr<<"PNStackLayout: GetClosestRangeESP(): loc < 0 ("<<loc<<"), Returning NULL"<<endl;
+		if(verbose_log)
+			cerr<<"PNStackLayout: GetClosestRangeESP(): loc < 0 ("<<loc<<"), Returning NULL"<<endl;
 		return NULL;
 	}
 
@@ -423,11 +443,13 @@ PNRange* PNStackLayout::GetClosestRangeESP(int loc) const
 
 	if(index < 0)
 	{
-		cerr<<"PNStackLayout: GetClosestRangeESP(): Could Not Find Range, Returning NULL"<<endl;
+		if(verbose_log)
+			cerr<<"PNStackLayout: GetClosestRangeESP(): Could Not Find Range, Returning NULL"<<endl;
 		return NULL;
 	}
 
-	cerr<<"PNStackLayout: GetClosestRangeESP(): Found range "<<mem_objects[index]->ToString()<<endl;
+	if(verbose_log)
+		cerr<<"PNStackLayout: GetClosestRangeESP(): Found range "<<mem_objects[index]->ToString()<<endl;
 
 	return mem_objects[index];
 }
@@ -507,7 +529,8 @@ int PNStackLayout::GetNewOffsetESP(int esp_offset) const
 	//never occur though. 
 	if(esp_offset >= (int)stack_layout.frame_alloc_size)
 	{
-		cerr<<"PNStackLayout: GetNewOffsetESP: Offset greater than or equal to frame size, adjusting based on new frame size"<<endl;
+		if(verbose_log)
+			cerr<<"PNStackLayout: GetNewOffsetESP: Offset greater than or equal to frame size, adjusting based on new frame size"<<endl;
 		//Get the number of bytes beyond the stack frame
 		new_offset = esp_offset-stack_layout.frame_alloc_size;
 		//add those bytes to the altered stack size
@@ -523,7 +546,8 @@ int PNStackLayout::GetNewOffsetESP(int esp_offset) const
 		{
 			assert(false);
 		}
-		cerr<<"PNStackLayout: GetNewOffsetESP: closest displacement = "<<closest->GetDisplacement()<<endl;
+		if(verbose_log)
+			cerr<<"PNStackLayout: GetNewOffsetESP: closest displacement = "<<closest->GetDisplacement()<<endl;
 
 		new_offset = closest->GetDisplacement() + esp_offset;
 	}
@@ -545,7 +569,8 @@ int PNStackLayout::GetNewOffsetEBP(int ebp_offset) const
 	//the sum of this distance with the new frame size and saved register region size
 	if(ebp_offset > (int)GetOriginalAllocSize()+(int)GetSavedRegsSize())
 	{
-		cerr<<"PNStackLayout: GetNewOffsetEBP: ebp offset extends passed stack pointer, maintaining relative position to esp"<<endl;
+		if(verbose_log)
+			cerr<<"PNStackLayout: GetNewOffsetEBP: ebp offset extends passed stack pointer, maintaining relative position to esp"<<endl;
 		return ebp_offset-(int)GetOriginalAllocSize()+(int)altered_alloc_size;
 	}
 
@@ -564,7 +589,8 @@ int PNStackLayout::GetNewOffsetEBP(int ebp_offset) const
 		return ebp_offset;
 	}
 
-	cerr<<"PNStackLayout: GetNewOffsetEBP: closest displacement = "<<closest->GetDisplacement()<<endl;
+	if(verbose_log)
+		cerr<<"PNStackLayout: GetNewOffsetEBP: closest displacement = "<<closest->GetDisplacement()<<endl;
 
 	int new_offset = ((int)GetOriginalAllocSize() + (int)GetSavedRegsSize() - ebp_offset);
 	new_offset += closest->GetDisplacement();

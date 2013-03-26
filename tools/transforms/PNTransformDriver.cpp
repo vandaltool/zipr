@@ -6,6 +6,7 @@
 #include "beaengine/BeaEngine.h"
 #include "General_Utility.hpp"
 #include <cmath>
+#include "globals.h"
 
 using namespace std;
 using namespace libIRDB;
@@ -243,10 +244,11 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 
 	bool success = false;
 
-	if(!validate)
+	if(!validate) 
 		cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is flagged to be transformed without validation"<<endl;
 
 	cerr<<"PNTransformDriver: Function "<<func->GetName()<<" is canary safe, attempting canary rewrite"<<endl;
+
 	layout->Shuffle();
 	layout->AddRandomPadding(do_align);
 
@@ -372,7 +374,7 @@ bool PNTransformDriver::IsBlacklisted(Function_t *func)
 
 	// filter out _L_lock_*
 	// filter out _L_unlock_*
-/*
+
   if (func->GetName().find("_L_lock_") == 0 ||
   func->GetName().find("_L_unlock_") == 0 ||
   func->GetName().find("__gnu_")	!= string::npos ||
@@ -387,8 +389,7 @@ bool PNTransformDriver::IsBlacklisted(Function_t *func)
   func->GetName().find("__PRETTY_FUNCTION__")	 != string::npos ||
   func->GetName().find("__cxa")  != string::npos ||
   blacklist.find(func->GetName()) != blacklist.end())
-*/
-	if(blacklist.find(func->GetName()) != blacklist.end())
+//	if(blacklist.find(func->GetName()) != blacklist.end())
 	{
 		cerr<<"PNTransformDriver: Blacklisted Function "<<func->GetName()<<endl;
 		blacklist_funcs++;
@@ -429,6 +430,8 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 	//Loop through each level, find boundaries for each, sort based on
 	//the number of boundaries, attempt transform in order until successful
 	//or until all inferences have been exhausted
+
+	unsigned int report_count = 0;
 	for(
 		set<Function_t*>::const_iterator it=orig_virp->GetFunctions().begin();
 		it!=orig_virp->GetFunctions().end()&&!timeExpired;
@@ -448,8 +451,11 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		if(IsBlacklisted(func))
 			continue;
 
-		cerr<<"#########################Intermediate Report#########################"<<endl;
-		Print_Report();
+		if(report_count %50 == 0)
+		{
+			cerr<<"#########################Intermediate Report#########################"<<endl;
+			Print_Report();
+		}
 
 		total_funcs++;
 
@@ -837,7 +843,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		//convert to negative
 		c.ret_offset = c.ret_offset*-1;
 	
-		cerr << "c.canary_val = " << c.canary_val << "	c.ret_offset = " <<	 c.ret_offset << endl;
+		if(verbose_log)
+			cerr << "c.canary_val = " << c.canary_val << "	c.ret_offset = " <<	 c.ret_offset << endl;
 
 		canaries.push_back(c);
 	}
@@ -862,13 +869,15 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		instr->Disassemble(disasm);
 		disasm_str = disasm.CompleteInstr;
 
-		cerr<<"PNTransformDriver: Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
 
 		//TODO: is the stack_alloc flag necessary anymore? 
 		//if(!stack_alloc && regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 		if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 		{
-			cerr << "PNTransformDriver: Canary Rewrite: Transforming Stack Alloc"<<endl;
+			if(verbose_log)
+				cerr << "PNTransformDriver: Canary Rewrite: Transforming Stack Alloc"<<endl;
 
 			//TODO: determine size of alloc, and check if consistent with alloc size?
 
@@ -902,7 +911,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		
 			disasm_str = "sub esp, 0x"+ss.str();
 
-			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;		
+			if(verbose_log)
+				cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;		
 			//undo_list[instr] = instr->GetDataBits();
 			//undo_list[instr] = copyInstruction(instr);
 			undo_list[func->GetName()][instr] = copyInstruction(instr);
@@ -927,7 +937,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		}
 		else if(regexec(&(pn_regex.regex_ret), disasm_str.c_str(),5,pmatch,0)==0)
 		{
-			cerr<<"PNTransformDriver: Canary Rewrite: inserting ret canary check"<<endl;
+			if(verbose_log)
+				cerr<<"PNTransformDriver: Canary Rewrite: inserting ret canary check"<<endl;
 
 			//undo_list[instr] = instr->GetDataBits();
 			//undo_list[instr] = copyInstruction(instr);
@@ -954,7 +965,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		else if(layout->IsStaticStack() && regexec(&(pn_regex.regex_call), disasm_str.c_str(),5,pmatch,0)==0)
 		{
 		
-			cerr<<"PNTransformDriver: Canary Rewrite: inserting call canary check"<<endl;
+			if(verbose_log)
+				cerr<<"PNTransformDriver: Canary Rewrite: inserting call canary check"<<endl;
 			//undo_list[instr] = copyInstruction(instr);
 			undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
 
@@ -985,7 +997,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *func)
 {
 	//TODO: add return value
-	cerr<<"PNTransformDriver: Sans Canary Rewrite for Function = "<<func->GetName()<<endl;
+	if(verbose_log)
+		cerr<<"PNTransformDriver: Sans Canary Rewrite for Function = "<<func->GetName()<<endl;
 
 	for(
 		set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
@@ -999,7 +1012,8 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 		instr->Disassemble(disasm);
 		disasm_str = disasm.CompleteInstr;
 
-		cerr<<"PNTransformDriver: Sans_Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Sans_Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
 
 		if(!Instruction_Rewrite(layout,instr))
 			return false;
@@ -1026,7 +1040,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//the disassmebly of lea has extra tokens not accepted by nasm, remove those tokens
 	if(regexec(&(pn_regex.regex_lea_hack), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
-		cerr<<"PNTransformDriver: Transforming LEA Instruction"<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Transforming LEA Instruction"<<endl;
+
 		matched = "";
 		for (int k = 1; k < 5; ++k)
 		{
@@ -1037,7 +1053,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 			}
 		}
 		disasm_str = matched;
-		cerr<<"PNTransformDriver: New LEA Instruction = "<<disasm_str<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: New LEA Instruction = "<<disasm_str<<endl;
+
 		matched = "";
 	}
 		
@@ -1075,8 +1093,12 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 				//up to the compiler to handle that else where. 
 				ss<<"add "<<matched<<" , 0x"<<hex<<layout->GetRandomPadding();//"0x500";
 
-				cerr<<"PNTransformDriver: adding padding to dynamic stack allocation"<<endl;
-				cerr<<"PNTransformDriver: inserted instruction = "<<ss.str()<<endl;
+				if(verbose_log)
+				{
+					cerr<<"PNTransformDriver: adding padding to dynamic stack allocation"<<endl;
+					cerr<<"PNTransformDriver: inserted instruction = "<<ss.str()<<endl;
+				}
+
 				Instruction_t *new_instr = insertAssemblyBefore(virp,instr,ss.str(),NULL);
 				new_instr->SetComment("Dynamic array padding:" +ss.str());
 				return true;			
@@ -1088,7 +1110,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		
 		disasm_str = "sub esp, 0x"+ss.str();
 
-		cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;		
+		if(verbose_log)
+			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;		
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
 		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
@@ -1118,7 +1141,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	}
 	else if(regexec(&(pn_regex.regex_esp_only), disasm_str.c_str(), max, pmatch, 0)==0) 
 	{
-		cerr<<"PNTransformDriver: Transforming ESP Only Instruction ([esp])"<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Transforming ESP Only Instruction ([esp])"<<endl;
 
 		PNRange *closest = layout->GetClosestRangeESP(0);
 
@@ -1134,7 +1158,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 		if(new_offset == 0)
 		{
-			cerr<<"PNTransformDriver: Displacement of [esp] is Zero, Ignoring Transformation"<<endl;
+			if(verbose_log)
+				cerr<<"PNTransformDriver: Displacement of [esp] is Zero, Ignoring Transformation"<<endl;
+			
 			return true;
 		}
 
@@ -1145,7 +1171,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;	
 		disasm_str.replace(pmatch[1].rm_so,mlen,matched);
 		
-		cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
 		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
@@ -1162,7 +1189,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	else if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
 			regexec(&(pn_regex.regex_esp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
-		cerr<<"PNTransformDriver: Transforming ESP Relative Instruction"<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Transforming ESP Relative Instruction"<<endl;
 
 		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
 		matched = disasm_str.substr(pmatch[1].rm_so,mlen);
@@ -1182,7 +1210,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		
 		disasm_str.replace(pmatch[1].rm_so,mlen,matched);
 		
-		cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
 		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
@@ -1200,7 +1229,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	else if(regexec(&(pn_regex.regex_ebp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
 			regexec(&(pn_regex.regex_ebp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
-		cerr<<"PNTransformDriver: Transforming EBP Relative Instruction"<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Transforming EBP Relative Instruction"<<endl;
 
 		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
 		matched = disasm_str.substr(pmatch[1].rm_so,mlen);
@@ -1208,13 +1238,16 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		// extract displacement 
 		int offset = strtol(matched.c_str(),NULL,0);
 
-		cerr<<"PNTransformDriver: Offset = "<<offset<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Offset = "<<offset<<endl;
 
 		int new_offset = layout->GetNewOffsetEBP(offset);
 
 		if(new_offset == offset)
 		{
-			cerr<<"PNTransformDriver: No offset transformation necessary, skipping instruction"<<endl;
+			if(verbose_log)
+				cerr<<"PNTransformDriver: No offset transformation necessary, skipping instruction"<<endl;
+
 			return true;
 		}
 
@@ -1224,8 +1257,10 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		matched = "0x"+ss.str();
 		
 		disasm_str.replace(pmatch[1].rm_so,mlen,matched);
-		
-		cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+
+		if(verbose_log)
+			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
 		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
@@ -1247,7 +1282,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//uses the correct offset. 
 	else if(regexec(&(pn_regex.regex_scaled_ebp_index), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
-		cerr<<"PNTransformDriver: Transforming Scaled EBP Indexed Instruction"<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Transforming Scaled EBP Indexed Instruction"<<endl;
 
 		int mlen = pmatch[2].rm_eo - pmatch[2].rm_so;
 		matched = disasm_str.substr(pmatch[2].rm_so,mlen);
@@ -1255,13 +1291,16 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		// extract displacement 
 		int offset = strtol(matched.c_str(),NULL,0);
 
-		cerr<<"PNTransformDriver: Offset = "<<offset<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Offset = "<<offset<<endl;
 
 		int new_offset = layout->GetNewOffsetEBP(offset);
 
 		if(new_offset == offset)
 		{
-			cerr<<"PNTransformDriver: No offset transformation necessary, skipping instruction"<<endl;
+			if(verbose_log)
+				cerr<<"PNTransformDriver: No offset transformation necessary, skipping instruction"<<endl;
+
 			return true;
 		}
 
@@ -1271,8 +1310,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		matched = "0x"+ss.str();
 		
 		disasm_str.replace(pmatch[2].rm_so,mlen,matched);
-		
-		cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+
+		if(verbose_log)
+			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
 		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
@@ -1286,7 +1326,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	}
 	else if(regexec(&(pn_regex.regex_stack_dealloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
-		cerr<<"PNTransformDriver: Transforming Stack Dealloc Instruction"<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Transforming Stack Dealloc Instruction"<<endl;
 
 		//Check if the dealloc amount is 0. In unoptimized code, sometimes the
 		//compiler will reset esp, and then add 0 to esp
@@ -1298,11 +1339,14 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		// extract displacement 
 		int offset = strtol(matched.c_str(),NULL,0);
 
-		cerr<<"PNTransformDriver: Dealloc Amount = "<<offset<<endl;
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Dealloc Amount = "<<offset<<endl;
 
 		if(offset == 0)
 		{
-			cerr<<"PNTransformDriver: Dealloc of 0 detected, ignoring instruction"<<endl;
+			if(verbose_log)
+				cerr<<"PNTransformDriver: Dealloc of 0 detected, ignoring instruction"<<endl;
+
 			return true;
 		}
 
@@ -1314,7 +1358,9 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
 		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
-		cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+
+		if(verbose_log)
+			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 
 		virp->RegisterAssembly(instr,disasm_str);
 /*
@@ -1323,8 +1369,10 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 */
 	}
 	else
-		cerr<<"PNTransformDriver: No Pattern Match"<<endl;
-
+	{
+		if(verbose_log)
+			cerr<<"PNTransformDriver: No Pattern Match"<<endl;
+	}
 	return true;
 }
 
