@@ -167,6 +167,7 @@ tools/ps_comp.sh -text
 tools/ps_create_installer.sh -text
 tools/ps_install.stmpl -text
 tools/ps_link.sh -text
+tools/ps_release.sh -text
 tools/ps_run.sh -text
 tools/ps_scrub.sh -text
 tools/ps_tne_scripts/README -text
