@@ -115,6 +115,7 @@ appfw/tests/ministry/spelldescription.c -text
 appfw/tests/mysql/Makefile -text
 appfw/tests/mysql/mysql.intercept.test.sh -text
 appfw/tests/mysql/runtest -text
+appfw/tests/mysql/testfp.c -text
 appfw/tests/mysql/testintercept.c -text
 appfw/tests/mysql/testintercept2.c -text
 appfw/tests/mysql/testmysql.c -text
