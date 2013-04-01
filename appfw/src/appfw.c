@@ -108,12 +108,14 @@ void appfw_taint_range(char *taint, char taintValue, int from, int len)
 	memset(&taint[from], taintValue, len);
 }
 
+// buffers must be big enough
 void appfw_establish_taint(const char *command, char *taint)
 {
   int i, j, pos;
   int patternFound;
   char **fw_sigs = appfw_getSignatures();
   int commandLength = strlen(command);
+  taint[commandLength] = '\0';
 
   if (!fw_sigs)
   {

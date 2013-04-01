@@ -74,6 +74,7 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
     appfw_display_taint("SQL Injection detected", zSql, tainted);
 
   free(tainted);
+
   return success;
 }
 
@@ -116,7 +117,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
     return 0;
   }
 
-  while( zSql[i]!=0 ){
+  while( zSql[i]!=0 ) {
     pParse->sLastToken.z = &zSql[i];
     pParse->sLastToken.n = appfw_sqlite3GetToken((unsigned char*)&zSql[i],&tokenType);
 
@@ -139,17 +140,17 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
         goto abort_parse;
       }
       case TK_SEMI: {
-        pParse->zTail = &zSql[i];
-		if (p_taint[i] == APPFW_TAINTED)
+        pParse->zTail = &zSql[beg];
+		if (p_taint[beg] == APPFW_TAINTED)
 		{
-          p_taint[i] = APPFW_SECURITY_VIOLATION;
+          p_taint[beg] = APPFW_SECURITY_VIOLATION;
 		  goto abort_parse;
 		}
 
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
-		if (i+1 < strlen(zSql))
-          return sqlfw_verify_taint(&zSql[i+1], &p_taint[i+1], pzErrMsg);
+		if (end+1 < strlen(zSql))
+          return sqlfw_verify_taint(&zSql[end+1], &p_taint[end+1], pzErrMsg);
         else
 		{
 		  return 1; // semicolon was the last character in the entire statement return success
@@ -157,6 +158,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
       }
       default: {
 	  // show token info
+	  
 	  /*
         fprintf(stderr, "token: [");
         for (k = beg; k <= end; ++k)
