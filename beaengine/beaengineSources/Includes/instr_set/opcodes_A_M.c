@@ -449,7 +449,7 @@ void __bea_callspec__ bound_(PDISASM pMyDisasm)
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bound ");
         #endif
         GvEv(pMyDisasm);
-        GV.MemDecoration = Arg2dword;
+        GV.MemDecoration = Arg2fword;
         (*pMyDisasm).Argument1.AccessMode = READ;
         FillFlags(pMyDisasm,8);
     }
