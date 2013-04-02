@@ -444,7 +444,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 		addMovRegisters(movR3R1_i, p_reg3, p_reg1, addRR_i);
 		addAddRegisters(addRR_i, p_reg3, p_reg2, popf_i);
 	}
-	addPopf(popf_i, p_instruction);
+	addPopf(popf_i, originalInstrumentInstr);
 
 	addRR_i->SetComment(msg);
 	addOverflowCheck(addRR_i, addRR_annot, p_policy, originalAddress);
@@ -507,7 +507,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, addR3Constant_i);
 	addAddRegisterConstant(addR3Constant_i, p_reg3, p_constantValue, popf_i);
-	addPopf(popf_i, p_instruction);
+	addPopf(popf_i, originalInstrumentInstr);
 
 	addR3Constant_i->SetComment(msg);
 	addOverflowCheck(addR3Constant_i, addR3Constant_annot, p_policy, originalAddress);
@@ -560,7 +560,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, mulR3Constant_i);
 	addMulRegisterConstant(mulR3Constant_i, p_reg3, p_constantValue, popf_i);
-	addPopf(popf_i, p_instruction);
+	addPopf(popf_i, originalInstrumentInstr);
 
 	mulR3Constant_i->SetComment(msg);
 	addOverflowCheck(mulR3Constant_i, mulR3Constant_annot, p_policy, originalAddress);
