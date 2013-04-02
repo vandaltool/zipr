@@ -269,8 +269,6 @@ main(int argc, char* argv[])
 			// do the finding. 
 			find_strings(pidp, firp);
 
-			firp->WriteToDB();
-
 			delete firp;
 		}
 
