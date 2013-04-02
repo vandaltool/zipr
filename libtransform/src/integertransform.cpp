@@ -271,7 +271,7 @@ void IntegerTransform::handleUnderflowCheck(Instruction_t *p_instruction, const 
    NOFLAGUNSIGNED 32 EDI+-66 ZZ lea     eax, [edi-42h] 
    NOFLAGSIGNED 32 ESI+100 ZZ lea     ecx, [esi+64h] 
 
-   posbible patterns after the bit width field:
+   possible patterns after the bit width field:
 
      rpr:  <reg>+<reg>
 	 rpc:  <reg>+-<constant>
@@ -390,7 +390,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 
 	//   <check for overflow>   ;     reuse overflow code
 	//   popf                   ;     restore flags
-	//   <nextIntruction>
+	//   lea r3, [r1+r2]
 
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
@@ -444,7 +444,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 		addMovRegisters(movR3R1_i, p_reg3, p_reg1, addRR_i);
 		addAddRegisters(addRR_i, p_reg3, p_reg2, popf_i);
 	}
-	addPopf(popf_i, fallthrough);
+	addPopf(popf_i, p_instruction);
 
 	addRR_i->SetComment(msg);
 	addOverflowCheck(addRR_i, addRR_annot, p_policy, originalAddress);
@@ -473,6 +473,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 	//   add r3, constant       ;     r3 = r1 + constant;
 	//   <check for overflow>   ;     reuse overflow code
 	//   popf                   ;     restore flags
+	//   lea r3, [r1+constant]          
 	//
 	// Note: if r3 == r1, code still works (though inefficiently)
 	//
@@ -506,7 +507,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, addR3Constant_i);
 	addAddRegisterConstant(addR3Constant_i, p_reg3, p_constantValue, popf_i);
-	addPopf(popf_i, fallthrough);
+	addPopf(popf_i, p_instruction);
 
 	addR3Constant_i->SetComment(msg);
 	addOverflowCheck(addR3Constant_i, addR3Constant_annot, p_policy, originalAddress);
@@ -525,6 +526,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 	//   imul r3, constant      ;     r3 = r1 * constant;
 	//   <check for overflow>   ;     reuse overflow code
 	//   popf                   ;     restore flags
+	//   lea r3, [r1*constant]          
 	//
 	// Note: if r3 == r1, code still works (though inefficiently)
 	//
@@ -558,7 +560,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, mulR3Constant_i);
 	addMulRegisterConstant(mulR3Constant_i, p_reg3, p_constantValue, popf_i);
-	addPopf(popf_i, fallthrough);
+	addPopf(popf_i, p_instruction);
 
 	mulR3Constant_i->SetComment(msg);
 	addOverflowCheck(mulR3Constant_i, mulR3Constant_annot, p_policy, originalAddress);
