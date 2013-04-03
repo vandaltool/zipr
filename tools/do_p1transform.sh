@@ -31,7 +31,7 @@ EXECUTED_ADDRESSES_FINAL=final.coverage.txt
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt
 BLACK_LIST=$P1_DIR/p1.filtered_out        # list of functions to blacklist
 COVERAGE_FILE=$P1_DIR/p1.coverage
-P1THRESHOLD=0.50
+P1THRESHOLD=0.0
 
 
 PN_BINARY=$SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe
@@ -81,13 +81,15 @@ do
     rm -rf grace_replay/
 
     if [ $input_cnt -ge $INPUT_CUTOFF ]; then
-	break
+		break
     fi
 
-    #check to see if the sym file exists, if not create it.
-    if [ ! -e $TOP_LEVEL/a.sym ]; then
-	$GRACE_HOME/concolic/src/util/linux/objdump_to_grace $STRATAFIED_BINARY
-    fi
+	#FYI: I Believe this check is in the loop to avoid calling this program if grace completely 
+	#failed or was not called at all, but I can't remember. I recommend just leavin it for now.
+#check to see if the sym file exists, if not create it.
+	if [ ! -e $TOP_LEVEL/a.sym ]; then
+		$GRACE_HOME/concolic/src/util/linux/objdump_to_grace $STRATAFIED_BINARY
+	fi
 
     input=`basename $i .json`
     #input_number=`echo $input | sed "s/.*input_//"`
@@ -101,17 +103,19 @@ do
 
 	#the exit status file has long been a flag that replay worked, make sure it exists before continuing
     if [ ! -f exit_status ]; then
-	continue;
+		continue;
     fi
 
     status=`cat exit_status | grep "Subject exited" | sed "s/.*status //"`
 
-    #don't consider inputs that cause the program to exit in exit coes
-    #132-140 inclusive
+    #don't consider inputs that cause the program to exit in exit codes 132-140 inclusive
     if [ "$status" -ge 132 ] && [ "$status" -le 140 ]; then
-	continue
+		echo "Ignoring input, bad exit status"
+		continue
     fi
     
+
+	#set up the baseline replayer directory, and move all replayer data into the directory
     mkdir $BASELINE_DIR/$input
 
     mv stdout.$input $BASELINE_DIR/$input/.
@@ -120,9 +124,80 @@ do
     mv tmp $BASELINE_DIR/$input/exit_status
     mv grace_replay/ $BASELINE_DIR/$input/.
 
+	#---------------Non-Determinism Check-------------------
+
+	#replay again and check for divergence due to non-deterministic output
+    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage $STRATAFIED_BINARY $i || continue
+
+	#create a temporary directory for the second replay values, so I can diff the directory structure.
+    mkdir $BASELINE_DIR/${input}_tmp
+
+    mv stdout.$input $BASELINE_DIR/${input}_tmp/.
+    mv stderr.$input $BASELINE_DIR/${input}_tmp/.
+    cat exit_status | grep "Subject exited with status" >tmp
+    mv tmp $BASELINE_DIR/${input}_tmp/exit_status
+    mv grace_replay/ $BASELINE_DIR/${input}_tmp/.
+
+    diff -r $BASELINE_DIR/$input $BASELINE_DIR/${input}_tmp
+    if [ ! $? -eq 0 ]; then
+		echo "Replayer divergence detected for input: $input, rerunning replayer with -r"
+
+		#destroy original baseline directory
+		rm -r $BASELINE_DIR/$input
+		#clean up the second replay baseline directory
+		rm -r $BASELINE_DIR/${input}_tmp
+
+		#rerun the replayer with -r
+		#BEN NOTE: It is my understanding that once run with -r, when we actual replay a peasoup'ed version we 
+		#do not need to run with -r. I.e., replay is oblivious to whether or not we used -r.
+		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage -r $STRATAFIED_BINARY $i || continue
+
+		#recreate a temporary directory for the second replay value, so I can diff the directory structure with baseline.
+		mkdir $BASELINE_DIR/${input}
+
+		mv stdout.$input $BASELINE_DIR/${input}/.
+		mv stderr.$input $BASELINE_DIR/${input}/.
+		cat exit_status | grep "Subject exited with status" >tmp
+		mv tmp $BASELINE_DIR/${input}/exit_status
+		mv grace_replay/ $BASELINE_DIR/${input}/.
+
+		#Run the replayer one more time without -r, to get a second run to compare against (-r is not necessary once it has been used once)
+		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage $STRATAFIED_BINARY $i || continue
+
+		#create a temporary directory for the second replay values, so I can diff the directory structure.
+		mkdir $BASELINE_DIR/${input}_tmp
+
+		mv stdout.$input $BASELINE_DIR/${input}_tmp/.
+		mv stderr.$input $BASELINE_DIR/${input}_tmp/.
+		cat exit_status | grep "Subject exited with status" >tmp
+		mv tmp $BASELINE_DIR/${input}_tmp/exit_status
+		mv grace_replay/ $BASELINE_DIR/${input}_tmp/.
+
+
+		#Check for a divergence between the new baseline using -r and the rerun
+		#If a divergence is detected, ignore the input (remove from baseline), and continue
+		diff -r $BASELINE_DIR/$input $BASELINE_DIR/${input}_tmp
+		if [ ! $? -eq 0 ]; then
+			echo "Replayer divergence detected using -r for input: $input, ignoring input"
+			#clean up the second replay baseline directory
+			rm -r $BASELINE_DIR/${input}_tmp
+			#remove original baseline run as well. 
+			rm -r $BASELINE_DIR/${input}
+			continue
+		fi		
+    fi #end of non-determinism check
+	
+	#at this point, the replayer should have produced baseline results that have been validated for non-determinism
+
+	#clean up the second replay baseline directory
+	rm -rf $BASELINE_DIR/${input}_tmp
+
+	#At this point, tmp coverage contains the coverage of the last call to the replayer, which we will
+	#assume is consistent with all other runs, if not, the most correct coverage.
 	#add to coverage total
     cat tmp_coverage >> $EXECUTED_ADDRESSES_CONCOLIC 	
 
+	#increment input counter (counter indicates how many inputs have been validated)
     input_cnt=`expr $input_cnt + 1`
 done
 
