@@ -439,6 +439,8 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		)
 
 	{
+		report_count++;
+
 		Function_t *func = *it;
 		bool success = false;
 
