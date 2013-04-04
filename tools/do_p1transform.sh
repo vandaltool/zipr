@@ -31,7 +31,7 @@ EXECUTED_ADDRESSES_FINAL=final.coverage.txt
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt
 BLACK_LIST=$P1_DIR/p1.filtered_out        # list of functions to blacklist
 COVERAGE_FILE=$P1_DIR/p1.coverage
-P1THRESHOLD=0.0
+P1THRESHOLD=0.5
 
 
 PN_BINARY=$SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe
@@ -227,6 +227,6 @@ touch $COVERAGE_FILE
 
 #execute_pn $CLONE_ID $BED_SCRIPT $LIBC_FILTER $COVERAGE_FILE $P1THRESHOLD $DO_CANARIES
 
-echo "$PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER"
+echo "$PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER --no_p1_validate"
 
 $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER --no_p1_validate
