@@ -67,8 +67,8 @@ void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string r
 				continue;
 
 			/* record that there's a possible target here */
-			cout <<"Possible thunk target (add): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
-			     <<" addoff: " << addoff << " total: "<< (thunk_base+addoff)<<endl;
+// 			cout <<"Possible thunk target (add): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
+//			     <<" addoff: " << addoff << " total: "<< (thunk_base+addoff)<<endl;
 			possible_target(thunk_base+addoff);
 		}
 		else if(string(d.Instruction.Mnemonic)==string("lea "))
@@ -86,8 +86,8 @@ void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string r
 				continue;
 			
 			/* record that there's a possible target here */
-			cout <<"Possible thunk target (lea): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
-			     <<" leaoff: " << leaoff << " total: "<< (thunk_base+leaoff)<<endl;
+// 			cout <<"Possible thunk target (lea): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
+// 			     <<" leaoff: " << leaoff << " total: "<< (thunk_base+leaoff)<<endl;
 			possible_target(thunk_base+leaoff);
 			
 		}
@@ -143,8 +143,8 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 				continue;
 
 			/* record that there's a possible target here */
-			cout <<"Possible thunk target (add): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
-			     <<" addoff: " << addoff << " total: "<< (thunk_base+addoff)<<endl;
+// 			cout <<"Possible thunk target (add): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
+//			     <<" addoff: " << addoff << " total: "<< (thunk_base+addoff)<<endl;
 			possible_target(thunk_base+addoff);
 		}
 		else if(string(d.Instruction.Mnemonic)==string("lea "))
@@ -162,8 +162,8 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 				continue;
 			
 			/* record that there's a possible target here */
-			cout <<"Possible thunk target (lea): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
-			     <<" leaoff: " << leaoff << " total: "<< (thunk_base+leaoff)<<endl;
+// 			cout <<"Possible thunk target (lea): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
+// 			     <<" leaoff: " << leaoff << " total: "<< (thunk_base+leaoff)<<endl;
 			possible_target(thunk_base+leaoff);
 			
 		}
