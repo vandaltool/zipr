@@ -578,12 +578,28 @@ void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS
 	}
 }
 
+//
+// before:
+// 10: <inst>
+//
+// after:
+// 10:  nop  (with callback handler)
+//  Y:  <inst>
+//
 void IntegerTransform::handleInfiniteLoop(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	assert(getVariantIR() && p_instruction);
 
-    // simple add infinite loop callback handler to  instruction 
-	addCallbackHandler(string(INFINITE_LOOP_DETECTOR), p_instruction, p_instruction, p_instruction->GetFallthrough(), p_policy, p_instruction->GetAddress());
+    db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+    Function_t* func = p_instruction->GetFunction();
+
+	AddressID_t *originalAddress = p_instruction->GetAddress();
+	Instruction_t* nop_i = allocateNewInstruction(fileID, func);
+
+	addNop(nop_i, p_instruction);
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, nop_i);
+
+	addCallbackHandler(string(INFINITE_LOOP_DETECTOR), originalInstrumentInstr, nop_i, nop_i->GetFallthrough(), p_policy, originalAddress);
 }
 
 //
