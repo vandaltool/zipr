@@ -229,16 +229,16 @@ string adjust_esp_offset(string newbits, int offset)
              sib_base == 0x4 )                                          /* base==esp */
         {
 		// reconstruct the old 32-bit value
-		int oldval=(unsigned char)newbits[3]<<24+(unsigned char)newbits[4]<<16+(unsigned char)newbits[5]<<8+(unsigned char)newbits[6];
+		int oldval=((unsigned char)newbits[6]<<24)+((unsigned char)newbits[5]<<16)+((unsigned char)newbits[4]<<8)+((unsigned char)newbits[3]);
 
 		// add the offset 
 		int newval=oldval+offset;
 
 		// break it back apart to store in the string.
-		newbits[3]=(char)(newval>>24)&0xff;
-		newbits[4]=(char)(newval>>16)&0xff;
-		newbits[5]=(char)(newval>>8)&0xff;
-		newbits[6]=(char)(newval>>0)&0xff;
+		newbits[3]=(char)(newval>>0)&0xff;
+		newbits[4]=(char)(newval>>8)&0xff;
+		newbits[5]=(char)(newval>>16)&0xff;
+		newbits[6]=(char)(newval>>24)&0xff;
         }
 
         /* 8-bit offset */
@@ -260,17 +260,19 @@ string adjust_esp_offset(string newbits, int offset)
                         newbits[1]&=0x3f;         /* remove upper 2 bits */
                         newbits[1]|=0x80;         /* make them 10 to indicate a 32-bit offset */
 
-			// reconstruct the old 32-bit value
-			int oldval=(unsigned char)newbits[3]<<24+(unsigned char)newbits[4]<<16+(unsigned char)newbits[5]<<8+(unsigned char)newbits[6];
+			// sign-extend to 32-bit int
+			int oldval=(char)newbits[3];
 
 			// add the offset 
 			int newval=oldval+offset;
 	
 			// break it back apart to store in the string.
-			newbits[3]=(char)(newval>>24)&0xff;
-			newbits[4]=(char)(newval>>16)&0xff;
-			newbits[5]=(char)(newval>>8)&0xff;
-			newbits[6]=(char)(newval>>0)&0xff;
+			assert(newbits.length() == 4);
+			newbits[3]=(char)(newval>>0)&0xff;
+			// 3 most significant bytes extend the instruction
+			newbits+=(char)(newval>>8)&0xff;
+			newbits+=(char)(newval>>16)&0xff;
+			newbits+=(char)(newval>>24)&0xff;
 
                 }
                 else
