@@ -86,6 +86,7 @@ echo "Preparing directory for release: $peasoup_dir"
 cd $peasoup_dir
 
 files_to_keep="a.ncexe.annot 
+a.ncexe.sigs
 a.stratafied 
 a.irdb.fbspri.reloc
 a.stratafied
@@ -107,9 +108,22 @@ libstrata.so
 ps_run.sh 
 "
 
+# assert that the necessary files were all created 
+assert_files $files_to_keep
+# remove any other files, including logs
 remove_rest $files_to_keep
 
-assert_files $files_to_keep
+#
+# set perms on remaining files
+#
 
+# directory has rwx for user only 
+chmod 700 .
+
+# non-executable files are read-only 
+chmod 400 a.irdb.fbspri.reloc a.ncexe.annot a.stratafied.data_dataListFile a.stratafied.data_hashFile a.stratafied.data_hash.ini a.stratafied.data_keyValueFile a.stratafied.data_libListFile a.stratafied.map_hashFile a.stratafied.map_hash.ini a.stratafied.map_keyValueFile a.stratafied.map_libListFile a.stratafied.term_map_hashFile a.stratafied.term_map_hash.ini a.stratafied.term_map_keyValueFile a.ncexe.sigs
+
+# executable files are r-x for user only 
+chmod 500 libappfw.so a.stratafied libstrata.so ps_run.sh
 
 
