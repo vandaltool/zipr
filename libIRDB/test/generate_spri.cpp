@@ -61,7 +61,9 @@ main(int argc, char* argv[])
 
 			// read the db  
 			firp=new FileIR_t(*varidp,this_file);
-			firp->GenerateSPRI(*fout, with_ilr);
+	
+			// ILR only for the main file.
+			firp->GenerateSPRI(*fout, with_ilr && this_file==varidp->GetMainFile());
 			delete firp;
 		}
 

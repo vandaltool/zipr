@@ -495,30 +495,70 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 
 	Instruction_t* old_insn=insnMap[newinsn];
 
-	fout << "# Orig addr: "<<addressify(newinsn)<<" insn_id: "<< std::dec << newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
+	fout << endl << "# Orig addr: "<<addressify(newinsn)<<" insn_id: "<< std::dec 
+	     << newinsn->GetBaseID()<<" with comment "<<newinsn->GetComment()<<endl;
 	if (newinsn->GetIndirectBranchTargetAddress())
-		fout << "# Orig addr: "<<addressify(newinsn)<<" indirect branch target: "<<newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() << endl;
+		fout << "# Orig addr: "<<addressify(newinsn)<<" indirect branch target: "
+		     <<newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset() << endl;
 
-	/* if there's a corresponding "old" instruction (i.e., in Variant 0, aka from the binary) */
-	if(addressify(newinsn).c_str()[0]=='0')
+	bool redirected_addr=false;
+	bool redirected_ibt=false;
+
+	// if it's the target of an unmodified instruction 
+	if( unmoved_insn_targets.find(newinsn) != unmoved_insn_targets.end() )
 	{
-		assert(old_insn);
-		if(
-		   // if it's an indirect branch target 
-		   newinsn->GetIndirectBranchTargetAddress() || 
-		   // or the target of an unmodified instruction 
-		   unmoved_insn_targets.find(newinsn) != unmoved_insn_targets.end() || 
-		   // with ILR turned off, we don't try to redirect to 0
-		   !with_ilr
-		
-		  )
+		redirected_addr=true;
+		if(old_insn)
 		{
+			// then we will need a rule so that the unmodified instruction gets here correctly
+			fout << "# because its target of unmoved"<<endl;
 			fout << qualified_addressify(fileIRp, newinsn) <<" -> ."<<endl;
 		}
-		else if (ibts.find(*old_insn->GetAddress()) == ibts.end())
+	}
+
+	/* if this insn is an IB target, emit the redirect appropriately */
+	if (newinsn->GetIndirectBranchTargetAddress()) 
+	{
+		redirected_ibt=true;
+		/* If the IBT address isn't this insns address, redirect appropriately.
+		 * If this insn isn't an unmoved insn target, always redirect appropriately.
+		 */
+		if((old_insn && (*newinsn->GetIndirectBranchTargetAddress()) != (*old_insn->GetAddress()))
+			||  !redirected_addr)
 		{
-			fout << "# eliding, no indirect targets"<<endl;
-			fout << qualified_addressify(fileIRp, newinsn) <<" -> 0x0 " <<endl; 
+			// use the better qualify address to check for file matches.
+			fout << "# because has indir "<<endl;
+			fout << better_qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()) 
+		     	     <<" -> ."<<endl;
+		}
+
+		/* i don't understand this part.  hopefully this is right */
+		if(!newinsn->GetCallback().empty())
+			fout << ". -> "<< getPostCallbackLabel(newinsn) <<endl;
+	}
+	// if there's a corresponding "old" instruction (i.e., in Variant 0, aka from the binary) 
+	if(old_insn)
+	{
+		/* the address of new insns with a corresponding old insn should start with 0x */
+		assert(addressify(newinsn).c_str()[0]=='0');
+
+		/* check to see if this address an IBT somewhere else */
+		/* and we havne't already redirected it */
+		if (ibts.find(*old_insn->GetAddress()) == ibts.end() && !redirected_ibt && !redirected_addr)
+		{
+
+		   	// with ILR turned off, we don't try to redirect to 0
+		   	if(with_ilr)
+			{	
+				fout << "# eliding, no indirect targets"<<endl;
+				fout << qualified_addressify(fileIRp, newinsn) <<" -> 0x0 " <<endl; 
+			}
+			else
+			{
+				fout << "# skipping elide because ilr is off (in this module) and "
+				        "no indirect targets"<<endl;
+			}
+			
 		}
 
 		// not yet handling callbacks on original instructions.
@@ -527,15 +567,6 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 		// you're reading this. 
 		assert(newinsn->GetCallback().empty());
 		
-	}
-	else if (newinsn->GetIndirectBranchTargetAddress()) 
-	{
-
-/* some of these addresses aren't pointers to THIS file, so we'll do a better qualifying of the address */
-//		fout << qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset()) <<" -> ."<<endl;
-		fout << better_qualify_address(fileIRp,newinsn->GetIndirectBranchTargetAddress()) <<" -> ."<<endl;
-		if(!newinsn->GetCallback().empty())
-			fout << ". -> "<< getPostCallbackLabel(newinsn) <<endl;
 	}
 
 	string original_target=emit_spri_instruction(fileIRp, newinsn, fout);
@@ -707,6 +738,7 @@ static void generate_IBT_set(FileIR_t* fileIRp)
 //
 static void generate_unmoved_insn_targets_set(FileIR_t* fileIRp)
 {
+	unmoved_insn_targets.clear();
 	for(
 		set<Instruction_t*>::const_iterator it=fileIRp->GetInstructions().begin();
 		it!=fileIRp->GetInstructions().end();
@@ -716,7 +748,7 @@ static void generate_unmoved_insn_targets_set(FileIR_t* fileIRp)
 		Instruction_t *insn=*it;
 
 		if(
-			// this instruction corresponds to an old instructino 
+			// this instruction corresponds to an old instruction 
 			insnMap[insn] && 
 			// and we need a spri rule for it 
 			!needs_spri_rule(insn, insnMap[insn])

@@ -405,6 +405,10 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	newbits=convert_to_jump(newbits,4);
 
 	callinsn->SetDataBits(newbits);
+	/* the jump instruction should NOT be indirectly reachable.  We should
+	 * land at the push
+	 */
+	newindirtarg->SetIndirectBranchTargetAddress(NULL);
 
 	/* add the new insn and new address into the list of valid calls and addresses */
 	firp->GetAddresses().insert(calladdr);
