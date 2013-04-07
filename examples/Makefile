@@ -31,6 +31,7 @@ integertransform=on
 ilr=on
 generate_spri=on
 spasm=on
+concolic=on
 
 
 all: env_check  ${exes}
@@ -61,6 +62,7 @@ all: env_check  ${exes}
                 --step integertransform=${integertransform}\
                 --step generate_spri=${generate_spri}\
                 --step spasm=${spasm}\
+                --step concolic=${concolic}\
 
 
 .c.o:
