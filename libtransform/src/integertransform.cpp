@@ -385,22 +385,25 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 	//   orig:  lea r3, [r1+r2]
 	//
 	//   pushf                  ;   save flags
-	//   pusha                  ;   save registers
+	//   push r1                ;   save r1
 	//   add r1, r2             ;   r1 = r1 + r2
 	//   <check for overflow>   ;   check for overflow as dictated by annotation
-	//   popa                   ;   restore registers
+	//   pop r1                 ;   restore r1
 	//   popf                   ;   restore flags
 	//                          ;   context fully restored at this point
 	//   lea r3, [r1+r2]        ;   execute original lea instruction
 	//		
+	// @todo:
+	//     recalculate dead regs info at some point
+	//     we could then optimize the code better
 
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
 
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
-	Instruction_t* pusha_i = allocateNewInstruction(fileID, func);
+	Instruction_t* pushr1_i = allocateNewInstruction(fileID, func);
 	Instruction_t* addRR_i = allocateNewInstruction(fileID, func);
-	Instruction_t* popa_i = allocateNewInstruction(fileID, func);
+	Instruction_t* popr1_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
 
 	// reuse annotation info when checking for overflow
@@ -418,16 +421,16 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 	string msg = "Originally: " + p_instruction->getDisassembly();
 	AddressID_t *originalAddress = p_instruction->GetAddress();
 
-	addPushf(pushf_i, pusha_i);
+	addPushf(pushf_i, pushr1_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(pusha_i);
+	pushf_i->SetFallthrough(pushr1_i);
 
-	addPusha(pusha_i, addRR_i);
+	addPushRegister(pushr1_i, p_reg1, addRR_i);
 
-	addAddRegisters(addRR_i, p_reg1, p_reg2, popa_i);
+	addAddRegisters(addRR_i, p_reg1, p_reg2, popr1_i);
 	addRR_i->SetComment(msg);
 
-	addPopa(popa_i, popf_i);
+	addPopRegister(popr1_i, p_reg1, popf_i);
 	addPopf(popf_i, originalInstrumentInstr);
 
 	addOverflowCheck(addRR_i, addRR_annot, p_policy, originalAddress);
