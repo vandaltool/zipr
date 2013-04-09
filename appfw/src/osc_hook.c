@@ -100,6 +100,7 @@ int rcmd(char **ahost, int inport, const char *locuser,
 
 int oscfw_verify_args(char* const argv[])
 {
+	int is_verbose=getenv("APPFW_VERBOSE")!=0;
   	char taint[MAX_COMMAND_LENGTH];
 	int i=0;
 	while(argv[i]!=NULL)
@@ -107,7 +108,7 @@ int oscfw_verify_args(char* const argv[])
 		if(argv[i][0]=='-')
 		{
         		appfw_establish_taint(argv[i], taint);
-			if(getenv("APPFW_VERBOSE"))
+			if(is_verbose)
         			appfw_display_taint("Debugging OS Command", argv[i], taint);
 
 			int j;
@@ -120,6 +121,33 @@ int oscfw_verify_args(char* const argv[])
                         		return 0;
 				}
         		}
+		}
+		else 
+		{
+			if((strcmp(argv[0],"/bin/sh")==0 || strstr(argv[0],"bash")!=0) 
+				&& i>0 
+				&& strcmp(argv[i-1],"-c")==0)
+			{
+				int OK=oscfw_verify(argv[i], taint);
+				if(is_verbose && OK)
+				{
+					fprintf(stderr,"Detected '%s' as non-argument to command '%s'\n", 
+						argv[i], argv[0]);
+				}
+				else if(is_verbose)
+				{
+					fprintf(stderr,"Detected '%s' as argument to command '%s'\n", 
+						argv[i], argv[0]);
+				}
+				if(!OK)
+					return 0;
+			
+			}
+			else if(is_verbose)
+			{
+				fprintf(stderr,"Detected '%s' as non-argument to command '%s'\n", 
+					argv[i], argv[0]);
+			}
 		}
 		i++;
 	}
