@@ -276,11 +276,13 @@ void IntegerTransform::handleUnderflowCheck(Instruction_t *p_instruction, const 
    NOFLAGSIGNED 32 ESI+100 ZZ lea     ecx, [esi+64h] 
 
    possible patterns after the bit width field:
-
      rpr:  <reg>+<reg>
 	 rpc:  <reg>+-<constant>
 	 rpc:  <reg>+<constant>
      rtc:  <reg>*constant
+
+
+   not yet handling these:
      rprpc:  <reg>+<reg>+<constant>
      rprpc:  <reg>+<reg>+-<constant>
      rprtc:  <reg>+<reg>*<constant>
@@ -314,15 +316,6 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		Register::RegisterName reg1 = leaPattern.getRegister1();
 		Register::RegisterName reg2 = leaPattern.getRegister2();
 		Register::RegisterName target = getTargetRegister(p_instruction);
-
-/*
-//		if (target == Register::ESI && (reg1 == Register::ESI || reg2 == Register::ESI))
-		if (target == Register::ESI)
-		{
-			cerr << "IntegerTransform::addOverflowCheckNoFlag(): ESI is target -- skipping" << endl;
-			return;
-		}
-*/
 
 		if (reg1 == Register::UNKNOWN || reg2 == Register::UNKNOWN || target == Register::UNKNOWN)
 		{
