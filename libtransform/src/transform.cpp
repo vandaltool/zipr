@@ -777,7 +777,6 @@ void Transform::addAddRegisters(Instruction_t *p_instr, Register::RegisterName p
 		return;
 	}
 
-//	cerr << "addAddRegisters(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetFallthrough(p_fallThrough);
 }
 

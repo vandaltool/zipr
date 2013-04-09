@@ -25,6 +25,10 @@
 //      - TRUNCATION (16->8)   no test cases available
 //      - LEA                  only reg32+reg32 case implemented
 //
+// @todo handle shared library
+//
+// 20130409 Anh  fixed lea reg+reg bug (we were assuming that annotation matched instruction exactly)
+//
 using namespace libTransform;
 
 IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
@@ -203,7 +207,7 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 
 	addPushf(pushf_i, test_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(test_i); // do I need this here again b/c carefullyInsertBefore breaks the link?
+	pushf_i->SetFallthrough(test_i); 
 	addTestRegister(test_i, p_annotation.getRegister(), jns_i);
 	addJns(jns_i, nop_i, popf_i);
 	addNop(nop_i, popf_i);
@@ -298,7 +302,8 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 	}
 
 	if (leaPattern.getRegister1() == Register::UNKNOWN ||
-		leaPattern.getRegister1() == Register::ESP)
+		leaPattern.getRegister1() == Register::ESP ||
+		leaPattern.getRegister1() == Register::EBP)
 	{
 		cerr << "IntegerTransform::addOverflowCheckNoFlag(): destination register is unknown, esp or ebp -- skipping: " << p_annotation.toString() << endl;
 		return;
@@ -310,14 +315,23 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		Register::RegisterName reg2 = leaPattern.getRegister2();
 		Register::RegisterName target = getTargetRegister(p_instruction);
 
+/*
+//		if (target == Register::ESI && (reg1 == Register::ESI || reg2 == Register::ESI))
+		if (target == Register::ESI)
+		{
+			cerr << "IntegerTransform::addOverflowCheckNoFlag(): ESI is target -- skipping" << endl;
+			return;
+		}
+*/
+
 		if (reg1 == Register::UNKNOWN || reg2 == Register::UNKNOWN || target == Register::UNKNOWN)
 		{
 			cerr << "IntegerTransform::addOverflowCheckNoFlag(): lea reg+reg pattern: error retrieving register:" << "reg1: " << Register::toString(reg1) << " reg2: " << Register::toString(reg2) << " target: " << Register::toString(target) << endl;
 			return;
 		}
-		else if (reg2 == Register::ESP)
+		else if (reg2 == Register::ESP) 
 		{
-			cerr << "IntegerTransform::addOverflowCheckNoFlag(): source register is esp or ebp -- skipping: " << p_annotation.toString() << endl;
+			cerr << "IntegerTransform::addOverflowCheckNoFlag(): source register is esp -- skipping: " << p_annotation.toString() << endl;
 			return;
 		}
 		else
@@ -373,34 +387,30 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 // 804852e      3 INSTR CHECK OVERFLOW NOFLAGSIGNED 32 EDX+EAX ZZ lea     eax, [edx+eax] Reg1: EDX Reg2: EAX
 void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const Register::RegisterName& p_reg2, const Register::RegisterName& p_reg3, int p_policy)
 {
-// should we even attempt to instrument if we're not sure about the signedness for this pattern?
-
-//	cerr << "IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(): " << p_annotation.toString() << endl;
+	// 20130409 Anh - new instrumentation code
 	//
-	// Instrumentation for: lea r3, [r1+r2]
-	//   pushf                  ;     save flags
-
-	// (when r3 == r1)
-	//   add r3, r2             ;     r3 = (r3==r1) + r2
-	// (when r3 == r2)
-	//   add r3, r1             ;     r3 = (r3==r2) + r1
-	// (otherwise)
-	//   mov r3, r1             ;     r3 = r1
-	//   add r3, r2             ;     r3 = r2 + r1
-
-	//   <check for overflow>   ;     reuse overflow code
-	//   popf                   ;     restore flags
-	//   lea r3, [r1+r2]
+	//   orig:  lea r3, [r1+r2]
+	//
+	//   pushf                  ;   save flags
+	//   pusha                  ;   save registers
+	//   add r1, r2             ;   r1 = r1 + r2
+	//   <check for overflow>   ;   check for overflow as dictated by annotation
+	//   popa                   ;   restore registers
+	//   popf                   ;   restore flags
+	//                          ;   context fully restored at this point
+	//   lea r3, [r1+r2]        ;   execute original lea instruction
+	//		
 
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
 
-	Instruction_t* fallthrough = p_instruction->GetFallthrough();
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
-	Instruction_t* movR3R1_i = NULL;
+	Instruction_t* pusha_i = allocateNewInstruction(fileID, func);
 	Instruction_t* addRR_i = allocateNewInstruction(fileID, func);
+	Instruction_t* popa_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
 
+	// reuse annotation info when checking for overflow
 	MEDS_InstructionCheckAnnotation addRR_annot;
 	addRR_annot.setValid();
 	addRR_annot.setBitWidth(32);
@@ -415,38 +425,18 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 	string msg = "Originally: " + p_instruction->getDisassembly();
 	AddressID_t *originalAddress = p_instruction->GetAddress();
 
-	bool hasSameRegister = false;
-	if (p_reg3 == p_reg1 || p_reg3 == p_reg2)
-		hasSameRegister = true;
-	else
-		movR3R1_i = allocateNewInstruction(fileID, func);
-
-	if (hasSameRegister)
-		addPushf(pushf_i, addRR_i);
-	else
-		addPushf(pushf_i, movR3R1_i);
-
+	addPushf(pushf_i, pusha_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	if (hasSameRegister)
-		pushf_i->SetFallthrough(addRR_i); // do I need this?
-	else
-		pushf_i->SetFallthrough(movR3R1_i); // do I need this?
+	pushf_i->SetFallthrough(pusha_i);
 
-	if (hasSameRegister)
-	{
-		if (p_reg3 == p_reg1)
-			addAddRegisters(addRR_i, p_reg3, p_reg2, popf_i);
-		else if (p_reg3 == p_reg2)
-			addAddRegisters(addRR_i, p_reg3, p_reg1, popf_i);
-	}
-	else
-	{
-		addMovRegisters(movR3R1_i, p_reg3, p_reg1, addRR_i);
-		addAddRegisters(addRR_i, p_reg3, p_reg2, popf_i);
-	}
+	addPusha(pusha_i, addRR_i);
+
+	addAddRegisters(addRR_i, p_reg1, p_reg2, popa_i);
+	addRR_i->SetComment(msg);
+
+	addPopa(popa_i, popf_i);
 	addPopf(popf_i, originalInstrumentInstr);
 
-	addRR_i->SetComment(msg);
 	addOverflowCheck(addRR_i, addRR_annot, p_policy, originalAddress);
 }
 
@@ -503,7 +493,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 
 	addPushf(pushf_i, movR3R1_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(movR3R1_i); // do I need this?
+	pushf_i->SetFallthrough(movR3R1_i); 
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, addR3Constant_i);
 	addAddRegisterConstant(addR3Constant_i, p_reg3, p_constantValue, popf_i);
@@ -556,7 +546,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 
 	addPushf(pushf_i, movR3R1_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(movR3R1_i); // do I need this?
+	pushf_i->SetFallthrough(movR3R1_i); 
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, mulR3Constant_i);
 	addMulRegisterConstant(mulR3Constant_i, p_reg3, p_constantValue, popf_i);
@@ -579,13 +569,10 @@ void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS
 }
 
 //
-// before:
-// 10: <inst>
-//
-// after:
-// 10:  nop  (with callback handler)
-//  Y:  <inst>
-//
+// before:       after:
+// <inst>        nop (with callback handler)
+//               <inst>
+//                     
 void IntegerTransform::handleInfiniteLoop(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	assert(getVariantIR() && p_instruction);
@@ -914,7 +901,7 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 
 	addPushf(pushf_i, test_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(test_i); // do I need this here again b/c carefullyInsertBefore breaks the link?
+	pushf_i->SetFallthrough(test_i); 
 
 	unsigned mask = 0;
 	if (p_annotation.getTruncationToWidth() == 16)
