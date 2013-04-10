@@ -278,19 +278,19 @@ perform_step()
 {
 	step=$1
 	shift
-	manditory=$1
+	mandatory=$1
 	shift
 	command="$*"
 
 	is_step_on $step
 	if [ $? -eq 0 ]; then 
-		echo Skipping step $step. [dependencies=$manditory]
+		echo Skipping step $step. [dependencies=$mandatory]
 		return 0
 	fi
 
 	logfile=logs/$step.log
 
-	echo -n Performing step "$step" [dependencies=$manditory] ...
+	echo -n Performing step "$step" [dependencies=$mandatory] ...
 	starttime=`date --iso-8601=seconds`
 
 	# If verbose is on, tee to a file 
@@ -413,6 +413,7 @@ check_for_bad_funcs()
 {
 	my_name=$1
 	bad_funcs="iconv_open"
+#	bad_funcs=""
 
 	for ducs_i in $bad_funcs
 	do
@@ -535,20 +536,20 @@ mkdir logs
 #
 # create a stratafied binary that does pc confinement.
 #
-perform_step stratafy_with_pc_confine manditory sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
+perform_step stratafy_with_pc_confine mandatory sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
 
 #
 # Let's output the modified binary
 # This binary will really be a shell script that calls the newly stratafied binary
 #
-perform_step create_binary_script 	manditory $PEASOUP_HOME/tools/do_makepeasoupbinary.sh $name 
+perform_step create_binary_script 	mandatory $PEASOUP_HOME/tools/do_makepeasoupbinary.sh $name 
 perform_step heaprand 	 		pc_confine,double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_HEAPRAND 1
 perform_step controlled_exit none 		 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONTROLLED_EXIT 1
 perform_step double_free heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
 perform_step pc_confine  none $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
 perform_step isr 	 pc_confine $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1
 perform_step watchdog 	 signconv_func_monitor $PEASOUP_HOME/tools/update_env_var.sh STRATA_WATCHDOG $watchdog_val
-perform_step is_so 	 manditory $PEASOUP_HOME/tools/update_env_var.sh STRATA_IS_SO $($PEASOUP_HOME/tools/is_so.sh a.ncexe)
+perform_step is_so 	 mandatory $PEASOUP_HOME/tools/update_env_var.sh STRATA_IS_SO $($PEASOUP_HOME/tools/is_so.sh a.ncexe)
 
 # turn on sign conversion function monitoring
 perform_step signconv_func_monitor none $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
@@ -566,13 +567,13 @@ STRATA_PC_CONFINE_XOR=0
 #
 # copy the .so files for this exe into a working directory.
 #
-perform_step gather_libraries manditory $PEASOUP_HOME/tools/do_gatherlibs.sh
+perform_step gather_libraries mandatory $PEASOUP_HOME/tools/do_gatherlibs.sh
 
 
 #
 # Running IDA Pro static analysis phase ...
 #
-perform_step meds_static manditory $PEASOUP_HOME/tools/do_idapro.sh
+perform_step meds_static mandatory $PEASOUP_HOME/tools/do_idapro.sh
 if [ ! -f $newname.ncexe.annot  ] ; then 
 	fail_gracefully "idapro step failed, exiting early.  Is IDAPRO installed? "
 fi
@@ -597,18 +598,18 @@ MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 #
 # register the program
 #
-perform_step pdb_register manditory "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
+perform_step pdb_register mandatory "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
 varid=`cat registered.id`
 if [ ! $varid -gt 0 ]; then
 	fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
 fi
 
 # build basic IR
-perform_step fill_in_cfg manditory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
-perform_step fill_in_indtargs manditory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid 
+perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
+perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid 
 
 # finally create a clone so we can do some transforms 
-perform_step clone manditory $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
+perform_step clone mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
 cloneid=`cat clone.id`
 
 #	
@@ -619,7 +620,7 @@ if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
 fi
 
 # do the basic tranforms we're performing for peasoup 
-perform_step fix_calls manditory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
+perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
 
 
 # look for strings in the binary 
@@ -664,8 +665,8 @@ if [ $($PEASOUP_HOME/tools/is_so.sh a.ncexe) = 0 ]; then
 fi
 
 # generate aspri, and assemble it to bspri
-perform_step generate_spri manditory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
-perform_step spasm manditory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe libstrata.so.symbols
+perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
+perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe libstrata.so.symbols
 perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 
 # preLoaded_ILR step
