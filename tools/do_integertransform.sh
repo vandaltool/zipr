@@ -13,7 +13,6 @@ WARNINGS_ONLY=$4 # 0 or 1
 
 # configuration variables
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system library functions
-ANNOT_INFO=a.ncexe.infoannot                         # new annotation for integer checks
 
 if [ -z $TIMEOUT ] ;
 then
@@ -27,7 +26,7 @@ INTEGER_WARNINGS_FILE=${TOP_DIR}/integer.warnings.addresses
 
 touch $INTEGER_WARNINGS_FILE
 
-echo "INT: transforming binary: cloneid=$CLONE_ID annotationInfoFile=$ANNOT_INFO"
+echo "INT: transforming binary: cloneid=$CLONE_ID"
 
 if [ ! -f $ANNOT_INFO ]; then
 	echo "INT: no info annotation file found -- skip integer transform"
@@ -94,22 +93,22 @@ echo "INT: Final integer transform"
 # for path manipulation routines, e.g. cwe191, use termination instead of saturation on truncation
 path_manip="realpath mkdir mkdirat rmdir rmdirat chmod chown unlink unlinkat"    # add to list of path manip functions here
 
-for i in $path_manip
-do
-  nm a.ncexe | grep $i >/dev/null 2>/dev/null
-  if [ $? -eq 0 ]; then
-     echo "detected path manipulation function: $i"
-     PATH_MANIP_DETECTED="--path-manip-detected"
-  fi
-done
+#for i in $path_manip
+#do
+#  nm a.ncexe | grep $i >/dev/null 2>/dev/null
+#  if [ $? -eq 0 ]; then
+#     echo "detected path manipulation function: $i"
+#     PATH_MANIP_DETECTED="--path-manip-detected"
+#  fi
+#done
 
 # --path-manip-detected will override the saturating arithmetic policy
 # but we still need to leave --saturating-arithmetic alone for now
-if [ $WARNINGS_ONLY -eq "1" ]; then
-  echo "intxform: warning only mode"
-  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
-else
+if [ -z $WARNINGS_ONLY ]; then
   echo "intxform: saturating arithmetic is enabled"
-  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $ANNOT_INFO $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic $PATH_MANIP_DETECTED
+  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic $PATH_MANIP_DETECTED
+else
+  echo "intxform: warning only mode"
+  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
 fi
 
