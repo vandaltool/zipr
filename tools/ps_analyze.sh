@@ -174,7 +174,7 @@ check_options()
 			shift 2 
 			;;
 		--integer_warnings_only)
-			echo "integer transfor: warnings only enabled"
+			echo "integer transform: warnings only enabled"
 			intxform_warnings_only=1
 			shift 
 			;;
