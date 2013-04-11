@@ -412,7 +412,7 @@ check_files()
 check_for_bad_funcs()
 {
 	my_name=$1
-	bad_funcs="iconv_open"
+	bad_funcs="" # previously "iconv_open"
 #	bad_funcs=""
 
 	for ducs_i in $bad_funcs
