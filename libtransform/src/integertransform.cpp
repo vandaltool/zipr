@@ -25,13 +25,13 @@
 //      - TRUNCATION (16->8)   no test cases available
 //      - LEA                  only reg32+reg32 case implemented
 //
-// @todo handle shared library
-//
 // 20130409 Anh  fixed lea reg+reg bug (we were assuming that annotation matched instruction exactly)
+// 20130410 Anh  implemented shared library support -- added outer loop to iterate over all files in the driver program
+// 20130411 Anh  skip instrumentation where there's no fallthrough for an instruction
 //
 using namespace libTransform;
 
-IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_variantIR, p_annotations, p_filteredFunctions) 
+IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions) 
 {
 	m_benignFalsePositives = p_benignFalsePositives;
 	m_policySaturatingArithmetic = false;
@@ -60,8 +60,8 @@ int IntegerTransform::execute()
 		cerr << "IntegerTransform: Warnings only mode" << endl;
 
 	for(
-	  set<Function_t*>::const_iterator itf=getVariantIR()->GetFunctions().begin();
-	  itf!=getVariantIR()->GetFunctions().end();
+	  set<Function_t*>::const_iterator itf=getFileIR()->GetFunctions().begin();
+	  itf!=getFileIR()->GetFunctions().end();
 	  ++itf
 	  )
 	{
@@ -87,6 +87,7 @@ int IntegerTransform::execute()
 
 			if (insn && insn->GetAddress())
 			{
+
 				int policy = POLICY_DEFAULT; // use Strata default settings
 				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
 				if (irdb_vo == 0) continue;
@@ -121,6 +122,12 @@ int IntegerTransform::execute()
 				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
 				if (!annotation.isValid()) 
 					continue;
+
+				if (!insn->GetFallthrough())
+				{
+					cerr << "Warning: no fall through for instruction -- skipping: " << insn->getDisassembly() << endl;
+					continue;
+				}
 
 				if (annotation.isOverflow())
 				{
@@ -181,7 +188,7 @@ void IntegerTransform::handleSignedness(Instruction_t *p_instruction, const MEDS
 void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	// sanity checks
-    assert(getVariantIR() && p_instruction);
+    assert(getFileIR() && p_instruction);
 	assert (p_annotation.isValid());
 	if (
 		!(p_annotation.getBitWidth() == 32 && Register::is32bit(p_annotation.getRegister())) && 
@@ -208,6 +215,7 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 	addPushf(pushf_i, test_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
 	pushf_i->SetFallthrough(test_i); 
+	pushf_i->SetComment("-- in signedness check");
 	addTestRegister(test_i, p_annotation.getRegister(), jns_i);
 	addJns(jns_i, nop_i, popf_i);
 	addNop(nop_i, popf_i);
@@ -424,6 +432,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 	addPushf(pushf_i, pushr1_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
 	pushf_i->SetFallthrough(pushr1_i);
+	pushf_i->SetComment("-- carefullyInsertBefore NoFlagRegPlusReg");
 
 	addPushRegister(pushr1_i, p_reg1, addRR_i);
 
@@ -438,7 +447,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 
 void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3, int p_policy)
 {
-//	cerr << "integertransform: reg+constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
+	cerr << "integertransform: reg+constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
 	//
 	// Original instruction is of the form:
@@ -466,7 +475,6 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
 
-	Instruction_t* fallthrough = p_instruction->GetFallthrough();
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
 	Instruction_t* movR3R1_i = allocateNewInstruction(fileID, func);
 	Instruction_t* addR3Constant_i = allocateNewInstruction(fileID, func);
@@ -490,6 +498,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 	addPushf(pushf_i, movR3R1_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
 	pushf_i->SetFallthrough(movR3R1_i); 
+	pushf_i->SetComment("in lea -- RegPlusConstant");
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, addR3Constant_i);
 	addAddRegisterConstant(addR3Constant_i, p_reg3, p_constantValue, popf_i);
@@ -519,7 +528,6 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
 
-	Instruction_t* fallthrough = p_instruction->GetFallthrough();
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
 	Instruction_t* movR3R1_i = allocateNewInstruction(fileID, func);
 	Instruction_t* mulR3Constant_i = allocateNewInstruction(fileID, func);
@@ -543,6 +551,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 	addPushf(pushf_i, movR3R1_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
 	pushf_i->SetFallthrough(movR3R1_i); 
+	pushf_i->SetComment("in lea Reg * Constant"); 
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, mulR3Constant_i);
 	addMulRegisterConstant(mulR3Constant_i, p_reg3, p_constantValue, popf_i);
@@ -571,7 +580,7 @@ void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS
 //                     
 void IntegerTransform::handleInfiniteLoop(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	assert(getVariantIR() && p_instruction);
+	assert(getFileIR() && p_instruction);
 
     db_id_t fileID = p_instruction->GetAddress()->GetFileID();
     Function_t* func = p_instruction->GetFunction();
@@ -603,9 +612,9 @@ void IntegerTransform::handleInfiniteLoop(Instruction_t *p_instruction, const ME
 //
 void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy, AddressID_t *p_addressOriginalInstruction)
 {
-	assert(getVariantIR() && p_instruction);
+	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
 
-cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	
 	string detector(INTEGER_OVERFLOW_DETECTOR);
 	string dataBits;
@@ -711,8 +720,8 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
 	}
 
-	getVariantIR()->GetAddresses().insert(jncond_a);
-	getVariantIR()->GetInstructions().insert(jncond_i);
+	getFileIR()->GetAddresses().insert(jncond_a);
+	getFileIR()->GetInstructions().insert(jncond_i);
 }
 
 //
@@ -734,7 +743,7 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 {
 	cerr << "IntegerTransform::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
 
-	assert(getVariantIR() && p_instruction);
+	assert(getFileIR() && p_instruction);
 	
 	string detector(INTEGER_OVERFLOW_DETECTOR);
 	string dataBits;
@@ -836,8 +845,8 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy);
 	}
 
-	getVariantIR()->GetAddresses().insert(jncond_a);
-	getVariantIR()->GetInstructions().insert(jncond_i);
+	getFileIR()->GetAddresses().insert(jncond_a);
+	getFileIR()->GetInstructions().insert(jncond_i);
 }
 
 
@@ -857,10 +866,10 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 //
 void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	assert(getVariantIR() && p_instruction);
+	assert(getFileIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
-cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+cerr << "IntegerTransform::addTruncationCheck(): instr: [" << p_instruction->getDisassembly() << "] address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	string detector; 
 
 	// 80484ed 3 INSTR CHECK TRUNCATION UNSIGNED 32 EAX 8 AL ZZ mov     [ebp+var_4], al
@@ -898,6 +907,8 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 	addPushf(pushf_i, test_i);
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
 	pushf_i->SetFallthrough(test_i); 
+	pushf_i->SetComment("-- in truncation");
+	originalInstrumentInstr->SetComment("-- in truncation (was original)");
 
 	unsigned mask = 0;
 	if (p_annotation.getTruncationToWidth() == 16)
@@ -1012,7 +1023,7 @@ cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getD
 
 void IntegerTransform::addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
 {
-	assert(getVariantIR() && p_instruction);
+	assert(getFileIR() && p_instruction);
 
 	p_instruction->SetFallthrough(p_fallthrough);
 
@@ -1060,7 +1071,7 @@ void IntegerTransform::addMaxSaturation(Instruction_t *p_instruction, Register::
 
 void IntegerTransform::addMinSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
 {
-	assert(getVariantIR() && p_instruction);
+	assert(getFileIR() && p_instruction);
 
 	p_instruction->SetFallthrough(p_fallthrough);
 
@@ -1093,7 +1104,7 @@ void IntegerTransform::addMinSaturation(Instruction_t *p_instruction, Register::
 
 void IntegerTransform::addSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, unsigned p_value, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
 {
-	assert(getVariantIR() && p_instruction);
+	assert(getFileIR() && p_instruction);
 
 	p_instruction->SetFallthrough(p_fallthrough);
 
@@ -1102,7 +1113,7 @@ void IntegerTransform::addSaturation(Instruction_t *p_instruction, Register::Reg
 
 void IntegerTransform::addZeroSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, Instruction_t *p_fallthrough)
 {
-	assert(getVariantIR() && p_instruction);
+	assert(getFileIR() && p_instruction);
 
 	p_instruction->SetFallthrough(p_fallthrough);
 

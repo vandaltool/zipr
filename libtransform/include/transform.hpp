@@ -54,7 +54,7 @@ class Transform {
 		virtual_offset_t getAvailableAddress();
 
 		VariantID_t* getVariantID() { return m_variantID; }
-		FileIR_t* getVariantIR() { return m_variantIR; }
+		FileIR_t* getFileIR() { return m_fileIR; }
 		set<std::string>* getFilteredFunctions() { return m_filteredFunctions; }
 
 		bool isMultiplyInstruction(libIRDB::Instruction_t*);
@@ -72,9 +72,9 @@ class Transform {
 		void addTestRegisterMask32(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
 		bool hasTargetRegister(libIRDB::Instruction_t*);
 
-		VariantID_t            *m_variantID;
-		FileIR_t            *m_variantIR;
-		set<std::string>       *m_filteredFunctions;
+		VariantID_t 		*m_variantID;
+		FileIR_t           	*m_fileIR;
+		set<std::string>	*m_filteredFunctions;
 };
 
 // make sure these match values in detector_handlers.h in the strata library

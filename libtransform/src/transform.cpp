@@ -3,10 +3,10 @@
 using namespace libTransform;
 using namespace MEDS_Annotation;
 
-Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_variantIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
+Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
 {
 	m_variantID = p_variantID;                  // Current variant ID
-	m_variantIR = p_variantIR;                  // IR (off the database) for variant
+	m_fileIR = p_fileIR;                  		// File IR (off the database) for variant
 	m_filteredFunctions = p_filteredFunctions;  // Blacklisted funtions
 }
 
@@ -19,37 +19,45 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 	p_instr->SetFallthrough(p_fallThrough); 
 	p_instr->SetTarget(p_target); 
 
-	m_variantIR->GetAddresses().insert(p_instr->GetAddress());
-	m_variantIR->GetInstructions().insert(p_instr);
+	m_fileIR->GetAddresses().insert(p_instr->GetAddress());
+	m_fileIR->GetInstructions().insert(p_instr);
 }
 
-Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_targetInstr, Instruction_t * &p_newInstr)
+//
+//  Before:              After:
+//  <p_instrumented>     <p_newInstr>
+//                       <p_instrumented>  <-- returns
+//
+//
+Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, Instruction_t * &p_newInstr)
 {
-	db_id_t fileID = p_targetInstr->GetAddress()->GetFileID();
-	Function_t* func = p_targetInstr->GetFunction();
+	db_id_t fileID = p_instrumented->GetAddress()->GetFileID();
+	Function_t* func = p_instrumented->GetFunction();
 
-	assert(p_targetInstr && p_newInstr && p_targetInstr->GetAddress());
+	assert(p_instrumented && p_newInstr && p_instrumented->GetAddress());
 
-	// duplicate old instruction
-	Instruction_t* dupInstr = allocateNewInstruction(p_targetInstr->GetAddress()->GetFileID(), p_targetInstr->GetFunction());
-	dupInstr->SetDataBits(p_targetInstr->GetDataBits());
-	dupInstr->SetComment(p_targetInstr->GetComment());
-	dupInstr->SetCallback(p_targetInstr->GetCallback());
-	dupInstr->SetFallthrough(p_targetInstr->GetFallthrough());
-	dupInstr->SetTarget(p_targetInstr->GetTarget());
+	// duplicate old instrumented instruction
+	Instruction_t* dupInstr = allocateNewInstruction(p_instrumented->GetAddress()->GetFileID(), p_instrumented->GetFunction());
+	dupInstr->SetDataBits(p_instrumented->GetDataBits());
+	dupInstr->SetComment(p_instrumented->GetComment());
+	dupInstr->SetCallback(p_instrumented->GetCallback());
+	dupInstr->SetFallthrough(p_instrumented->GetFallthrough());
+	dupInstr->SetTarget(p_instrumented->GetTarget());
 
-	// replace old with new instruction
-	p_targetInstr->SetDataBits(p_newInstr->GetDataBits());
-	p_targetInstr->SetComment(p_newInstr->GetComment());
-	p_targetInstr->SetCallback(p_newInstr->GetCallback());
-	p_targetInstr->SetFallthrough(dupInstr);
+	dupInstr->SetOriginalAddressID(p_instrumented->GetOriginalAddressID());
+	AddressID_t *saveIBTA = dupInstr->GetIndirectBranchTargetAddress();
+	dupInstr->SetIndirectBranchTargetAddress(NULL);
 
-	// no no, p_targetInstr gets new contents
-	// clear the indirect branch target 
-	// p_targetInstr->SetIndirectBranchTargetAddress(NULL);
+	// replace instrumented with new instruction
+	p_instrumented->SetDataBits(p_newInstr->GetDataBits());
+	p_instrumented->SetComment(p_newInstr->GetComment());
+	p_instrumented->SetCallback(p_newInstr->GetCallback());
+	p_instrumented->SetFallthrough(dupInstr);
 
+	p_instrumented->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
+	p_instrumented->SetIndirectBranchTargetAddress(saveIBTA);
 
-    	p_newInstr = p_targetInstr;
+   	p_newInstr = p_instrumented;
 	return dupInstr;
 }
 
@@ -196,8 +204,8 @@ Instruction_t* Transform::allocateNewInstruction(db_id_t p_fileID, Function_t* p
 	instr->SetFunction(p_func);
 	instr->SetAddress(a);
 
-	m_variantIR->GetInstructions().insert(instr);
-	m_variantIR->GetAddresses().insert(a);
+	m_fileIR->GetInstructions().insert(instr);
+	m_fileIR->GetAddresses().insert(a);
 	return instr;
 }
 
@@ -238,7 +246,7 @@ virtual_offset_t Transform::getAvailableAddress()
 
 void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumentedInstruction, Instruction_t *p_instruction, Instruction_t *p_fallThrough, int p_policy, AddressID_t *p_addressOriginalInstruction)
 {
-	assert(getVariantIR() && p_instruction);
+	assert(getFileIR() && p_instruction && p_fallThrough);
 
 	string dataBits;
 
@@ -270,6 +278,7 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 
 	// pushf   
 	addPushf(pushf_i, pushPolicy_i);
+	pushf_i->SetComment(pushf_i->GetComment() + " -- within callback handler");
 
 	// push detector exit policy
 	//     0 - default
@@ -313,7 +322,7 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	poparg_i->SetFallthrough(popPolicy_i); 
 	poparg_i->SetCallback(p_detector); 
 	AddressID_t *poparg_i_indTarg =new AddressID_t();
-	m_variantIR->GetAddresses().insert(poparg_i_indTarg);
+	m_fileIR->GetAddresses().insert(poparg_i_indTarg);
 	poparg_i_indTarg->SetVirtualOffset(poparg_i->GetAddress()->GetVirtualOffset());
 	poparg_i_indTarg->SetFileID(BaseObj_t::NOT_IN_DATABASE);
 	poparg_i->SetIndirectBranchTargetAddress(poparg_i_indTarg);
