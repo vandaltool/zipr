@@ -70,11 +70,13 @@ int IntegerTransform::execute()
 		if (getFilteredFunctions()->find(func->GetName()) != getFilteredFunctions()->end())
 			continue;
 
+/*
 		if (isBlacklisted(func))
 		{
 			cerr << "Heuristic filter: " << func->GetName() << endl;
 			continue;
 		}
+*/
 
 		cerr << "Integer xform: processing fn: " << func->GetName() << endl;
 
