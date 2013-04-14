@@ -869,11 +869,7 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	assert(getFileIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
-<<<<<<< .mine
 	cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
-=======
-cerr << "IntegerTransform::addTruncationCheck(): instr: [" << p_instruction->getDisassembly() << "] address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
->>>>>>> .r11000
 	string detector; 
 
 	// Complicated case:
