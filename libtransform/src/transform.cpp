@@ -629,6 +629,64 @@ void Transform::addTestRegisterMask32(Instruction_t *p_instr, Register::Register
 	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
 }
 
+void Transform::addCmpRegisterMask(Instruction_t *p_instr, Register::RegisterName p_reg, unsigned p_mask, Instruction_t *p_fallThrough)
+{
+	if (Register::is32bit(p_reg))
+		addCmpRegisterMask32(p_instr, p_reg, p_mask, p_fallThrough);
+}
+
+void Transform::addCmpRegisterMask32(Instruction_t *p_instr, Register::RegisterName p_reg, unsigned p_mask, Instruction_t *p_fallThrough)
+{
+	string dataBits;
+	unsigned *tmp;
+
+	if (p_reg == Register::EAX)
+	{
+      dataBits.resize(5); // EAX gets compact encoding
+		dataBits[0] = 0x3d;
+		tmp = (unsigned *) &dataBits[1];
+		*tmp = p_mask;
+	}
+	else 
+   { // common code for non-EAX cases first
+	  dataBits.resize(6); // all but EAX take 6 bytes
+     dataBits[0] = 0x81;
+     tmp = (unsigned *) &dataBits[2];
+     *tmp = p_mask;
+     if (p_reg == Register::EBX)
+	  {
+       dataBits[1] = 0xfb;
+     }
+     else if (p_reg == Register::ECX)
+     {
+       dataBits[1] = 0xf9;
+     }
+     else if (p_reg == Register::EDX)
+     {
+       dataBits[1] = 0xfa;
+     }
+     else if (p_reg == Register::EBP)
+     {
+       dataBits[1] = 0xfd;
+     }
+     else if (p_reg == Register::ESI)
+     {
+       dataBits[1] = 0xfe;
+     }
+     else if (p_reg == Register::EDI)
+     {
+       dataBits[1] = 0xff;
+     }
+     else
+     {
+       cerr << "Transform::addCmpRegisterMask32(): unhandled register" << endl;
+       return;
+     }
+   }
+
+	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
+}
+
 // jns - jump not signed
 void Transform::addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
@@ -639,7 +697,7 @@ void Transform::addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Ins
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
 
-// jz - jump zero
+// jz - jump zero (same as je - jump if equal)
 void Transform::addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
 	string dataBits;
@@ -650,12 +708,23 @@ void Transform::addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Inst
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
 
-// jnz - jump not zero
+// jnz - jump not zero (same as jne - jump if not equal)
 void Transform::addJnz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
 	string dataBits;
 	dataBits.resize(2);
 	dataBits[0] = 0x75;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+}
+
+// jae - jump if above or equal (unsigned) (same as jnb and jnc)
+void Transform::addJae(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x73;
 	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
 
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
