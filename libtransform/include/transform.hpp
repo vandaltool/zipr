@@ -38,10 +38,12 @@ class Transform {
 
 		void addTestRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegisterMask(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
+		void addCmpRegisterMask(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
 
 		void addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJnz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
+		void addJae(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addNot(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 
 		void addAddRegisters(Instruction_t *p_instr, Register::RegisterName p_regTgt, Register::RegisterName p_regSrc, Instruction_t *p_fallThrough);
@@ -70,6 +72,7 @@ class Transform {
 		void addTestRegister16(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegister32(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegisterMask32(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
+		void addCmpRegisterMask32(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
 		bool hasTargetRegister(libIRDB::Instruction_t*);
 
 		VariantID_t 		*m_variantID;
