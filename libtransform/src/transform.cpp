@@ -3,6 +3,9 @@
 using namespace libTransform;
 using namespace MEDS_Annotation;
 
+// 20130415 Anh added support for additional registers for various utility functions
+// 20130415 Anh added assert() statements for unhandled registers
+
 Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
 {
 	m_variantID = p_variantID;                  // Current variant ID
@@ -100,7 +103,8 @@ void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p
 	}
 	else
 	{
-		cerr << "Transform::addPushRegister: unhandled register";
+		cerr << "Transform::addPushRegister: unhandled register: " << p_reg << endl;
+		assert(0);
 		return;
 	}
 
@@ -147,6 +151,7 @@ void Transform::addPopRegister(Instruction_t *p_instr, Register::RegisterName p_
 	else
 	{
 		cerr << "Transform::addPopRegister: unhandled register";
+		assert(0);
 		return;
 	}
 
@@ -458,6 +463,7 @@ void Transform::addTestRegister8(Instruction_t *p_instr, Register::RegisterName 
 	else
 	{
 		cerr << "Transform::addTestRegister8(): unhandled register" << endl;
+		assert(0);
 		return;
 	}
 
@@ -492,9 +498,26 @@ void Transform::addTestRegister16(Instruction_t *p_instr, Register::RegisterName
 		dataBits[1] = 0x85;
 		dataBits[2] = 0xd2;
 	}
+	else if (p_reg == Register::BP)
+	{
+		assert(0);
+	}
+	else if (p_reg == Register::SP)
+	{
+		assert(0);
+	}
+	else if (p_reg == Register::SI)
+	{
+		assert(0);
+	}
+	else if (p_reg == Register::DI)
+	{
+		assert(0);
+	}
 	else
 	{
 		cerr << "Transform::addTestRegister16(): unhandled register" << endl;
+		assert(0);
 		return;
 	}
 
@@ -549,6 +572,7 @@ void Transform::addTestRegister32(Instruction_t *p_instr, Register::RegisterName
 	else
 	{
 		cerr << "Transform::addTestRegister32(): unhandled register" << endl;
+		assert(0);
 		return;
 	}
 
@@ -620,9 +644,24 @@ void Transform::addTestRegisterMask32(Instruction_t *p_instr, Register::Register
 		tmp = (unsigned *) &dataBits[2];
 		*tmp = p_mask;
 	}
+	else if (p_reg == Register::EBP)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xc5;
+		tmp = (unsigned *) &dataBits[2];
+		*tmp = p_mask;
+	}
+	else if (p_reg == Register::ESP)
+	{
+		dataBits[0] = 0xf7;
+		dataBits[1] = 0xc4;
+		tmp = (unsigned *) &dataBits[2];
+		*tmp = p_mask;
+	}
 	else
 	{
-		cerr << "Transform::addTestRegisterMask32(): unhandled register" << endl;
+		cerr << "Transform::addTestRegisterMask32(): unhandled register: " << p_reg << endl;
+		assert(0);
 		return;
 	}
 
@@ -680,6 +719,7 @@ void Transform::addCmpRegisterMask32(Instruction_t *p_instr, Register::RegisterN
      else
      {
        cerr << "Transform::addCmpRegisterMask32(): unhandled register" << endl;
+		assert(0);
        return;
      }
    }
@@ -838,6 +878,7 @@ void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Ins
 	else
 	{
 		cerr << "Transform::addNot(): unhandled register" << endl;
+		assert(0);
 		return;
 	}
 
@@ -852,6 +893,7 @@ void Transform::addAddRegisters(Instruction_t *p_instr, Register::RegisterName p
 	if (!p_instr->Assemble(assembly))
 	{
 		cerr << "addAddRegisters(): error in assembling instruction: " << assembly << endl;
+		assert(0);
 		return;
 	}
 
@@ -868,6 +910,7 @@ void Transform::addAddRegisterConstant(Instruction_t *p_instr, Register::Registe
 	if (!p_instr->Assemble(assembly))
 	{
 		cerr << "Transform::addAddConstant(): error in assembling instruction: " << assembly << endl;
+		assert(0);
 		return;
 	}
 
@@ -885,6 +928,7 @@ void Transform::addMulRegisterConstant(Instruction_t *p_instr, Register::Registe
 	if (!p_instr->Assemble(assembly))
 	{
 		cerr << "Transform::addMulRegisterConstant(): error in assembling instruction: " << assembly << endl;
+		assert(0);
 		return;
 	}
 
@@ -901,6 +945,7 @@ void Transform::addMovRegisters(Instruction_t *p_instr, Register::RegisterName p
 	if (!p_instr->Assemble(assembly))
 	{
 		cerr << "addMovRegisters(): error in assembling instruction: " << assembly << endl;
+		assert(0);
 		return;
 	}
 	p_instr->SetFallthrough(p_fallThrough);
@@ -918,6 +963,7 @@ void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::R
     if (!p_instr->Assemble(assembly))
     {
         cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
+		assert(0);
         return;
     }
 
@@ -936,6 +982,7 @@ void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register:
     if (!p_instr->Assemble(assembly))
     {
         cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
+		assert(0);
         return;
     }
 
@@ -955,6 +1002,7 @@ void Transform::addAndRegister32Mask(Instruction_t *p_instr, Register::RegisterN
     if (!p_instr->Assemble(assembly))
     {
         cerr << "addAndRegisterMask(): error in assembling instruction: " << assembly << endl;
+		assert(0);
         return;
     }
 

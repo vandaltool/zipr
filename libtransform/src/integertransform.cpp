@@ -565,15 +565,19 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 
 void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	if (p_annotation.getTruncationFromWidth() == 32 && (p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8))
+	if (p_annotation.getTruncationFromWidth() == 32)
 	{
-		addTruncationCheck(p_instruction, p_annotation, p_policy);
-	}
-	else
-	{
-		cerr << "integertransform: TRUNCATION annotation not yet handled: " << p_annotation.toString() << "fromWidth: " << p_annotation.getTruncationFromWidth() << " toWidth: " << p_annotation.getTruncationToWidth() << endl;
+		if (p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16)
+		{
+			addTruncationCheck(p_instruction, p_annotation, p_policy);
+		}
+		else
+		{
+			cerr << "integertransform: TRUNCATION annotation not yet handled: " << p_annotation.toString() << "fromWidth: " << p_annotation.getTruncationFromWidth() << " toWidth: " << p_annotation.getTruncationToWidth() << endl;
+		}
 	}
 }
+
 
 //
 // before:       after:
@@ -869,6 +873,7 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	assert(getFileIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
+//	cerr << "IntegerTransform::addTruncationCheck(): instr: [" << p_instruction->getDisassembly() << "] address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	string detector; 
 
