@@ -36,6 +36,14 @@ Register::RegisterName Register::getRegister(std::string p_reg)
 		return CX;
 	else if (strcasecmp(p_reg.c_str(), "DX") == 0)
 		return DX;
+	else if (strcasecmp(p_reg.c_str(), "BP") == 0)
+		return BP;
+	else if (strcasecmp(p_reg.c_str(), "SP") == 0)
+		return SP;
+	else if (strcasecmp(p_reg.c_str(), "SI") == 0)
+		return SI;
+	else if (strcasecmp(p_reg.c_str(), "DI") == 0)
+		return DI;
 	else if (strcasecmp(p_reg.c_str(), "AH") == 0)
 		return AL;
 	else if (strcasecmp(p_reg.c_str(), "BH") == 0)
@@ -64,7 +72,8 @@ bool Register::is8bit(Register::RegisterName p_reg)
 
 bool Register::is16bit(Register::RegisterName p_reg)
 {
-	return p_reg == AX || p_reg == BX || p_reg == CX || p_reg == DX;
+	return p_reg == AX || p_reg == BX || p_reg == CX || p_reg == DX ||
+		p_reg == BP || p_reg == SP || p_reg == SI || p_reg == DI;
 }
 
 bool Register::is32bit(Register::RegisterName p_reg)
@@ -88,6 +97,10 @@ std::string Register::toString(Register::RegisterName p_reg)
 	else if (p_reg == BX) return std::string("BX");
 	else if (p_reg == CX) return std::string("CX");
 	else if (p_reg == DX) return std::string("DX");
+	else if (p_reg == BP) return std::string("BP");
+	else if (p_reg == SP) return std::string("SP");
+	else if (p_reg == SI) return std::string("SI");
+	else if (p_reg == DI) return std::string("DI");
 	else if (p_reg == AH) return std::string("AH");
 	else if (p_reg == BH) return std::string("BH");
 	else if (p_reg == CH) return std::string("CH");
@@ -118,6 +131,10 @@ int Register::getBitWidth(Register::RegisterName p_reg)
 		case BX:				
 		case CX:				
 		case DX:				
+		case BP:				
+		case SP:				
+		case SI:				
+		case DI:				
 			return 16;
 			break;
 
