@@ -65,14 +65,15 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
 
   int count = 0;
 
-  for (int i = 0; i < instructions.size(); i ++ )
-  {
-    char buf[128];
     string query = "INSERT INTO " + addressTable;
     query += " (address_id, file_id, vaddress_offset) VALUES ";
 
     string query2 = "INSERT INTO " + instructionTable;
     query2 += " (instruction_id,address_id, parent_function_id, orig_address_id, data, comment) VALUES ";
+
+  for (int i = 0; i < instructions.size(); i ++ )
+  {
+    char buf[128];
 
       wahoo::Instruction *instruction = instructions[i];
       app_iaddr_t   addr = instruction->getAddress();
@@ -82,6 +83,7 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
       int address_id = next_address_id++;
 
       // insert into address table
+	  if (i > 0) query += ",";
       query += "(";
       query += txn.quote(address_id) + ",";
       query += txn.quote(fileID) + ",";
@@ -98,6 +100,7 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
       int orig_address_id = address_id;
       string asmData = instruction->getAsm();
 
+	  if (i > 0) query2 += ",";
       query2 += "(";
       query2 += txn.quote(my_to_string(i)) + ",";
       query2 += txn.quote(address_id) + ","; // i is the address id
@@ -130,9 +133,10 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
 //   cerr << "Query: " << query << endl; 
 //   cerr << "Query2: " << query2 << endl; 
 
+  }
+
     txn.exec(query);
     txn.exec(query2); 
-  }
 
   cerr << "Committing all instructions - this may take a while"<<endl;
   txn.commit();
@@ -259,11 +263,10 @@ int main(int argc, char **argv)
 
   	cerr << "Number of functions: " << functions.size() << endl;
   	cerr << "Number of instructions: " << instructions.size() << endl;
-
-
   	insert_functions(fileID, functions);
   	insert_instructions(fileID, instructions, functions);
   	update_functions(fileID, functions);
+
 
 	exit(0);
 }
