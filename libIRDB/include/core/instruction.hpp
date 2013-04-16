@@ -24,7 +24,6 @@ class Instruction_t : public BaseObj_t
         std::string GetCallback()  const { return callback; } 
         std::string GetComment()   const { return comment; } 
   
-
         void SetAddress(AddressID_t* newaddr)  { my_address=newaddr; }
         void SetFunction(Function_t* func   )  { my_function=func;}
         void SetOriginalAddressID(db_id_t origid) { orig_address_id=origid; /* you shouldn't do this, unless you know what you're doing! */}
@@ -38,7 +37,7 @@ class Instruction_t : public BaseObj_t
 	void SetIndirectBranchTargetAddress(AddressID_t* myIndTarg) { indTarg=myIndTarg; }
 
 	void WriteToDB() { assert(0); }
-        std::string WriteToDB(File_t *fid, db_id_t newid);
+        std::string WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader);
         int Disassemble(DISASM &d); 
 	std::string getDisassembly();
         bool Assemble(std::string assembly);

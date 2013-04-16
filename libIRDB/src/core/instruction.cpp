@@ -1,6 +1,6 @@
 #include <all.hpp>
 #include <utils.hpp>
-#include <stdlib.h>
+#include <stdlib.h> 
 #include <fstream>
 
 
@@ -132,7 +132,7 @@ bool Instruction_t::Assemble(string assembly)
 }
 
 
-string Instruction_t::WriteToDB(File_t *fid, db_id_t newid)
+string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
 {
 	assert(fid);
 	assert(my_address);
@@ -156,11 +156,15 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid)
 	if(indTarg)
 		indirect_bt_id=indTarg->GetBaseID();
 
-        string q=
-		string("insert into ")+fid->instruction_table_name +
-                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, target_address_id, data, callback, comment, ind_target_address_id, doip_id) ")+
-                string(" VALUES (") +
-                string("'") + to_string(GetBaseID())            	+ string("', ") +
+	string q;
+	
+	if (p_withHeader) 
+		q = string("insert into ")+fid->instruction_table_name +
+                string(" (instruction_id, address_id, parent_function_id, orig_address_id, fallthrough_address_id, target_address_id, data, callback, comment, ind_target_address_id, doip_id) VALUES ");
+	else
+		q = ",";
+
+	q += string("('") + to_string(GetBaseID())            	+ string("', ") +
                 string("'") + to_string(my_address->GetBaseID())   	+ string("', ") +
                 string("'") + to_string(func_id)            		+ string("', ") +
                 string("'") + to_string(orig_address_id)         	+ string("', ") +
@@ -171,14 +175,7 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid)
                 string("'") + callback                              	+ string("', ") +
                 string("'") + comment                              	+ string("', ") +
                 string("'") + to_string(indirect_bt_id)                 + string("', ") +
-                string("'") + to_string(GetDoipID())            	+ string("') ; ") ;
-
-	// for each relocation in this instruction 
-	for(set<Relocation_t*>::iterator it=relocs.begin(); it!=relocs.end(); ++it)
-	{
-		Relocation_t* reloc=*it;
-		q+=reloc->WriteToDB(fid,this);
-	}
+                string("'") + to_string(GetDoipID())            	+ string("')  ") ;
 
 	return q;
 }

@@ -409,42 +409,60 @@ void FileIR_t::WriteToDB()
 	dbintr->IssueQuery(string("TRUNCATE TABLE ")+ fileptr->relocs_table_name     + string(" cascade;"));
 
 	/* and now that everything has an ID, let's write to the DB */
+	bool withHeader;
+
+	withHeader = true;
 	string q=string("");
-	for(std::set<Function_t*>::const_iterator i=funcs.begin(); i!=funcs.end(); ++i)
+	for(std::set<Function_t*>::const_iterator f=funcs.begin(); f!=funcs.end(); ++f)
 	{
-		q+=(*i)->WriteToDB(fileptr,j);
+		q+=(*f)->WriteToDB(fileptr,j);
 		if(q.size()>1024*1024)
 		{
 			dbintr->IssueQuery(q);
 			q=string("");
 		}
-			
 	}
 	dbintr->IssueQuery(q);
 
+	withHeader = true;
 	q=string("");
-	for(std::set<AddressID_t*>::const_iterator i=addrs.begin(); i!=addrs.end(); ++i)
+	for(std::set<AddressID_t*>::const_iterator a=addrs.begin(); a!=addrs.end(); ++a)
 	{
-		q+=(*i)->WriteToDB(fileptr,j);
+		q+=(*a)->WriteToDB(fileptr,j,withHeader);
+		withHeader = false;
 		if(q.size()>1024*1024)
 		{
+			q+=";";
 			dbintr->IssueQuery(q);
 			q=string("");
+			withHeader = true;
 		}
 	}
 	dbintr->IssueQuery(q);
 
+	withHeader = true;
 	q=string("");
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
 	{	
-		q+=(*i)->WriteToDB(fileptr,j);
+		q+=(*i)->WriteToDB(fileptr,j,withHeader);
+		withHeader = false;
 		if(q.size()>1024*1024)
 		{
+			q+=";";
 			dbintr->IssueQuery(q);
 			q=string("");
+			withHeader = true;
 		}
-	}
 
+		string r="";
+		std::set<Relocation_t*> relocs = (*i)->GetRelocations();
+		for(set<Relocation_t*>::iterator it=relocs.begin(); it!=relocs.end(); ++it)
+		{
+			Relocation_t* reloc=*it;
+			r+=reloc->WriteToDB(fileptr,*i);
+		}
+		dbintr->IssueQuery(r);
+	}
 	dbintr->IssueQuery(q);
 }
 
