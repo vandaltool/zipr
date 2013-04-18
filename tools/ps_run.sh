@@ -55,7 +55,8 @@ STRATA_EXE_FILE=$datapath/a.stratafied
 #
 cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs
 if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
-	# Nathan:  add echo here to add argv[0] to appfw_sgi_file
+	echo $origbinpath >> $datapath/a.ncexe.sigs
+	echo $PWD >> $datapath/a.ncexe.sigs
 	for var in "$@"
 	do
 		echo "$var" >> $datapath/a.ncexe.sigs
