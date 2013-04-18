@@ -42,6 +42,20 @@ STRATA_RC=1
 STRATA_PARTIAL_INLINING=0			
 	$datapath/a.stratafied"
 
+
+#
+# setup signitures for appfw
+#
+cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs
+if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
+	for var in "$@"
+	do
+		echo $var >> $APPFW_SIGNATURE_FILE
+	done
+
+fi
+
+
 #
 #  If STRATA_LOG is clear, no additional logging was requested, and we just always need to log to a file.
 #
