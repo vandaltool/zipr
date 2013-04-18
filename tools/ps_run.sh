@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ######################################################################
 ######################################################################
 # This file is used as a template, not actually for running the code #
@@ -11,9 +11,15 @@
 datapath=$1
 
 #
+# save original $0
+#
+
+origbinpath=$2
+
+#
 # grab the rest of the args in $*
 #
-shift;
+shift 2;
 
 #
 # Run the program with the proper env. vars set., and the arguments to the program specified
@@ -40,7 +46,8 @@ STRATA_IS_SO=0
 STRATA_SIEVE=1					
 STRATA_RC=1					
 STRATA_PARTIAL_INLINING=0			
-	$datapath/a.stratafied"
+STRATA_EXE_FILE=$datapath/a.stratafied
+	exec -a $origbinpath $datapath/a.stratafied \"\$@\""
 
 
 #
@@ -90,7 +97,7 @@ if [ ! -z $VERBOSE ]; then
 	echo $command
 fi
 
-eval $command \"\$@\"
+eval $command
 
 SAVE_EXIT_CODE=$?
 
