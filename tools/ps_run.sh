@@ -48,9 +48,10 @@ STRATA_PARTIAL_INLINING=0
 #
 cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs
 if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
+	# Nathan:  add echo here to add argv[0] to appfw_sgi_file
 	for var in "$@"
 	do
-		echo $var >> $APPFW_SIGNATURE_FILE
+		echo "$var" >> $datapath/a.ncexe.sigs
 	done
 
 fi
