@@ -34,6 +34,9 @@ static  void reset_sig_file_env_var()
 // environment variable specifies signature file location
 void appfw_init()
 {
+  int verbose=0;
+  if(getenv("APPFW_VERBOSE"))
+	verbose=1;
   int numSigs = 0;
 
   if (appfw_isInitialized()) return;
@@ -41,7 +44,7 @@ void appfw_init()
   char *signatureFile = getenv(sigFileEnv);
   if (!signatureFile)
   {
-	if(getenv("APPFW_VERBOSE"))
+	if(verbose)
     		appfw_error("no signature file found");
   }
 
@@ -60,6 +63,8 @@ void appfw_init()
       fw_sigs[numSigs] = (char *) malloc(strlen(buf) + 128);
       strncpy(fw_sigs[numSigs], buf, strlen(buf));
       fw_sigs[numSigs][strlen(buf)-1] = '\0';
+	if(verbose && getenv("VERY_VERBOSE"))
+		fprintf(stderr,"Read sig: %s\n", fw_sigs[numSigs]);
 
       numSigs++;
     }
@@ -116,6 +121,8 @@ void appfw_establish_taint(const char *command, char *taint)
   char **fw_sigs = appfw_getSignatures();
   int commandLength = strlen(command);
   taint[commandLength] = '\0';
+  int verbose=(int)getenv("APPFW_VERBOSE");
+  verbose+=(int)getenv("VERY_VERBOSE");
 
   if (!fw_sigs)
   {
@@ -131,20 +138,20 @@ void appfw_establish_taint(const char *command, char *taint)
   // unset taint when match is found
   pos = 0;
 
-  int numSignatures =appfw_getNumSignatures();  
-  while (pos < commandLength)
-  {
-    for (i = 0; i < numSignatures; ++i)
-	{
-	    int length_signature = strlen(fw_sigs[i]);
-	    if (strncasecmp(&command[pos], fw_sigs[i], length_signature) == 0)
-	    {
-		  appfw_taint_range(taint, APPFW_BLESSED, pos, length_signature);
-		  break;
+  	int numSignatures =appfw_getNumSignatures();  
+  	while (pos < commandLength)
+  	{
+    		for (i = 0; i < numSignatures; ++i)
+		{
+	    		int length_signature = strlen(fw_sigs[i]);
+	    		if (strncasecmp(&command[pos], fw_sigs[i], length_signature) == 0)
+	    		{
+				if(verbose)	fprintf(stderr,"At %d Matched sig: %s\n", pos, fw_sigs[i]);
+				appfw_taint_range(taint, APPFW_BLESSED, pos, length_signature);
+			}
 		}
-	}
-    pos++;
-  }
+    		pos++;
+  	}
 }
 
 // enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_BLESSED_KEYWORD };
