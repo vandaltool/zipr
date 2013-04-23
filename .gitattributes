@@ -111,6 +111,7 @@ appfw/src/xqfw.h -text
 appfw/tests/ministry/Makefile -text
 appfw/tests/ministry/httpparse.c -text
 appfw/tests/ministry/oscommand.c -text
+appfw/tests/ministry/oscommandperf.c -text
 appfw/tests/ministry/spelldescription.c -text
 appfw/tests/mysql/Makefile -text
 appfw/tests/mysql/mysql.intercept.test.sh -text
