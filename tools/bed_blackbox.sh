@@ -13,6 +13,7 @@
 #
 
 PEASOUP_DIR=`pwd`
+ORIG_BINARY=$PEASOUP_DIR/a.ncexe
 
 variantid=$1
 aspri=$2
@@ -36,7 +37,8 @@ TRANSFORMED_PROGRAM="$PEASOUP_DIR/$NAME"
 # invoke the user-supplied test script
 # pass as argument the transformed program
 echo "blackbox BED: Invoking: $SCRIPT_NAME $TRANSFORMED_PROGRAM"
-eval $SCRIPT_NAME $TRANSFORMED_PROGRAM
+#We mandate that a manual test must take the modified program and the original as input
+eval $SCRIPT_NAME $TRANSFORMED_PROGRAM $ORIG_BINARY
 status=$? 
 
 cd $PEASOUP_DIR

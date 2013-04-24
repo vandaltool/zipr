@@ -26,7 +26,8 @@ echo "setarch i386 -RL $PIN_HOME/pin -injection child -t $PIN_HOME/itraceunique.
 
 chmod +x $PIN_BENCH
 
-eval $TEST_SCRIPT $PIN_BENCH
+#A test script must take as input a modified bin and the original
+eval $TEST_SCRIPT $PIN_BENCH $BENCH
 
 if [ $? -ne 0 ]; then
 
