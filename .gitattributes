@@ -151,6 +151,7 @@ tools/integer_replay.sh -text
 tools/is_so.sh -text
 tools/libc_functions.txt -text
 tools/manual_cover.sh -text
+tools/manual_coverage_wrapper.sh -text
 tools/manual_test_import.sh -text
 tools/p1xform.filter.deprecated.sh -text
 tools/p1xform.pbed.deprecated.sh -text
