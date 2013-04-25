@@ -24,6 +24,7 @@ namespace MEDS_Annotation
 #define MEDS_ANNOT_SEVERE       "SEVERE"
 #define MEDS_ANNOT_FLOWS_INTO_CRITICAL_SINK  "SINKMALLOC"
 #define MEDS_ANNOT_MEMSET       "MEMSET"
+#define MEDS_ANNOT_IDIOM        "IDIOM"
 
 using namespace std;
 using namespace MEDS_Annotation;
@@ -70,6 +71,9 @@ class MEDS_InstructionCheckAnnotation
 		bool isEbpOffset() const { return m_isEbpOffset; }
 		int getStackOffset() const { return m_stackOffset; }
 		int getObjectSize() const { return m_objectSize; }
+
+		// is idiom?
+		bool isIdiom() const { return m_isIdiom; }
 
 		// get bitwidth
 		int getBitWidth() const { return m_bitWidth; }
@@ -119,6 +123,7 @@ class MEDS_InstructionCheckAnnotation
 		VirtualOffset  m_virtualOffset;
 		bool           m_isValid;
 		bool           m_flowsIntoCriticalSink;
+		bool           m_isIdiom;
 		MEDS_Annotation::Register::RegisterName       m_register;
 		string         m_target;
 };

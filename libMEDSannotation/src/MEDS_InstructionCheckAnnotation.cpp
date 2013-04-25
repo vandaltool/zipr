@@ -38,6 +38,7 @@ void MEDS_InstructionCheckAnnotation::init()
 	m_isSevere = false;
 	m_isMemset = false;
 	m_flowsIntoCriticalSink = false;
+	m_isIdiom = false;
 	m_bitWidth = -1;
 	m_truncationFromWidth = -1;
 	m_truncationToWidth = -1;
@@ -112,6 +113,9 @@ void MEDS_InstructionCheckAnnotation::parse()
 
 	if (m_rawInputLine.find(MEDS_ANNOT_FLOWS_INTO_CRITICAL_SINK)!=string::npos)
 		m_flowsIntoCriticalSink = true;
+
+	if (m_rawInputLine.find(MEDS_ANNOT_IDIOM)!=string::npos)
+		m_isIdiom = true;
 
 
 	// signed vs. unsigned
