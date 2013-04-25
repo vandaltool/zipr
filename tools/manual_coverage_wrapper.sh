@@ -27,13 +27,13 @@ echo "setarch i386 -RL $PIN_HOME/pin -injection child -t $PIN_HOME/itraceunique.
 chmod +x $PIN_BENCH
 
 #A test script must take as input a modified bin and the original
-eval $TEST_SCRIPT $PIN_BENCH $BENCH
+#also, the script must accept the -i flag, indicating ignore results
+eval $TEST_SCRIPT -i $PIN_BENCH $BENCH
 
+#because I now have an ignore flag, this likely won't occur, but just in case.
 if [ $? -ne 0 ]; then
 
-	echo "WARNING: manual coverage failed. The running  manual tests reported failure with coverage instrumentation"
-
-	exit 1
+	echo "WARNING: manual coverage failed. The running  manual tests reported failure with coverage instrumentation. Continuing with coverage that was collected."
 fi
 
 # sanity filter, keep only well formed addresses
