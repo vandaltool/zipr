@@ -761,11 +761,28 @@ else
 			pn_p1_offsets->SetPaddingSafe(false);
 		}
 
+		unsigned int aoi_size = pn_all_offsets->GetRanges().size();
 		//TODO: causes a memory leak since I may reset to NULL, redo
-		direct[func->GetName()] = new PNStackLayout(*pn_direct_offsets);
-		scaled[func->GetName()] = new PNStackLayout(*pn_scaled_offsets);
-		all_offsets[func->GetName()] = new PNStackLayout(*pn_all_offsets);
+
+		//if the size of aoi is the same as any other inference
+		//assume they are the same (insert a null layout entry)
+		if(pn_direct_offsets->GetRanges().size() != aoi_size)
+			direct[func->GetName()] = new PNStackLayout(*pn_direct_offsets);
+		else
+			direct[func->GetName()] = NULL;
+
+		if(pn_scaled_offsets->GetRanges().size() != aoi_size)
+			scaled[func->GetName()] = new PNStackLayout(*pn_scaled_offsets);
+		else
+			scaled[func->GetName()] = NULL;
+
+		//TODO: BIG TODO: There is quite a delema here. If p1 is the same as
+		//AOI, I don't want to generate it to save time, but what if a function
+		//has no coverage, so p1 is used, if I set it null here because the
+		//layouts are the same, I wont have any modification for that function. 
 		p1[func->GetName()] = new PNStackLayout(*pn_p1_offsets);
+
+		all_offsets[func->GetName()] = new PNStackLayout(*pn_all_offsets);
 
 		if(!dealloc_flag)
 		{

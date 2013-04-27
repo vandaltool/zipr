@@ -41,10 +41,13 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
 	//TODO: throw exception?
 	this->pidp = pidp;
 	orig_progid = pidp->GetOriginalVariantID();
-	orig_virp = new FileIR_t(*pidp);
+	orig_virp = NULL;
 	this->BED_script = BED_script;
 	do_canaries = true;
 	do_align = false;
+	no_validation_level = -1;
+	coverage_threshold = -1;
+	do_shared_object_protection = false;
 }
 
 PNTransformDriver::~PNTransformDriver()
@@ -96,6 +99,8 @@ void PNTransformDriver::AddBlacklistFunction(string func_name)
 	blacklist.insert(func_name);
 }
 
+
+//This function was experimental, and I never did anything with it
 void PNTransformDriver::AddOnlyValidateList(std::set<std::string> &only_validate_list)
 {
 	set<string>::iterator it;
@@ -103,6 +108,26 @@ void PNTransformDriver::AddOnlyValidateList(std::set<std::string> &only_validate
 	{
 		this->only_validate_list.insert(*it);
 	}
+}
+
+void PNTransformDriver::SetCoverageMap(std::map<std::string,double> coverage_map)
+{
+	this->coverage_map = coverage_map;
+}
+
+void PNTransformDriver::SetNoValidationLevel(unsigned int no_validation_level)
+{
+	this->no_validation_level = no_validation_level;
+}
+
+void PNTransformDriver::SetCoverageThreshold(double threshold)
+{
+	coverage_threshold = threshold;
+}
+
+void PNTransformDriver::SetProtectSharedObjects(bool do_protection)
+{
+	do_shared_object_protection = do_protection;
 }
 
 
@@ -212,24 +237,6 @@ void PNTransformDriver::AddOnlyValidateList(std::set<std::string> &only_validate
   //Perhaps another map listing the perferences of transforms?
   }
 */
-
-//Assumed no coverage is used, and the entire hierarchy of transforms should be attempted on all functions
-void PNTransformDriver::GenerateTransforms()
-{
-	map<string,double> empty_map;
-	GenerateTransforms(empty_map,0,0,-1);
-}
-
-void PNTransformDriver::GenerateTransformsInit()
-{
-	//TODO: have a thread safe timeExpired
-	timeExpired = false;
-	signal(SIGUSR1, sigusr1Handler);
-	total_funcs = 0;
-	blacklist_funcs = 0;
-	not_transformable.clear();
-	failed.clear();	   
-}
 
 bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t *func, bool validate)
 {
@@ -399,33 +406,85 @@ bool PNTransformDriver::IsBlacklisted(Function_t *func)
 }
 
 
-//TODO: break into smaller functions
-//threshold_level is the hierarchy level to start at if the coverage for a function is less than the threshold.
-//Set this value to a negative integer to abort transformation of the function if the threshold is not met. 
-void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, double threshold, int threshold_level, int never_validate_level)
+void PNTransformDriver::GenerateTransformsInit()
+{
+	//TODO: have a thread safe timeExpired
+	timeExpired = false;
+	signal(SIGUSR1, sigusr1Handler);
+	total_funcs = 0;
+	blacklist_funcs = 0;
+	not_transformable.clear();
+	failed.clear();	   
+}
+
+
+void PNTransformDriver::GenerateTransforms()
 {
 	if(transform_hierarchy.size() == 0)
 	{
 		cerr<<"PNTransformDriver: No Transforms have been registered, aborting GenerateTransforms"<<endl;
 		return;
 	}
-
-	this->never_validate_level = never_validate_level;
-
 	GenerateTransformsInit();
 
-	if(threshold < 0)
-		threshold = 0;
-	else if(threshold > 1)
-		threshold = 1;
+	//sanity check of no_validation_level
+	if(no_validation_level >= (int)transform_hierarchy.size())
+	{
+		cerr<<"PNTransformDriver ERROR: no_validation_level greater than highest level in the hierarchy, exiting."<<endl;
+		exit(1);
+	}
 
-	//TODO: threshold_level should be unsigned but I am not sure
-	//if I allow the threshold to be negative. For now
-	//covert the tramsform_hierarchy size to an int. 
-	//Check for max int boundary condition in the future. 
-	if(threshold_level >= (int)transform_hierarchy.size())
-		threshold_level = transform_hierarchy.size()-1;
+	//TODO: I refactored PN, but to keep the refactoring simple, I did not change the use of the class field "orig_virp"
+	//now that I am protecting shared objects, it might be better to pass this variable around, or at least change the
+	//name, something to consider
 
+
+	//Transform all files or just the main file, depending on if we are protecting
+	//shared objects.
+	if(do_shared_object_protection)
+	{
+		cout<<"PNTransformDriver: Protecting Shared Objects"<<endl;
+		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+			it!=pidp->GetFiles().end();
+			++it
+			)
+		{
+			cout<<"PNTransformDiver: Transforming File"<<endl;
+
+			File_t* this_file=*it;
+			assert(this_file);
+
+			// read the db  
+			orig_virp=new FileIR_t(*pidp,this_file);
+			assert(orig_virp && pidp);
+
+			GenerateTransformsHidden();
+
+			if(timeExpired)
+				break;
+			
+			delete orig_virp;
+			cerr<<"############################File Report############################"<<endl;
+			Print_Report();
+		}
+
+	}
+	else
+	{
+		orig_virp = new FileIR_t(*pidp);
+		assert(orig_virp && pidp);
+
+		GenerateTransformsHidden();
+	}
+
+	cerr<<"############################Final Report############################"<<endl;
+	Print_Report();
+
+	//TODO: Get "final" summary here
+}
+
+void PNTransformDriver::GenerateTransformsHidden()
+{
 	//For each function
 	//Loop through each level, find boundaries for each, sort based on
 	//the number of boundaries, attempt transform in order until successful
@@ -439,8 +498,6 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		)
 
 	{
-		report_count++;
-
 		Function_t *func = *it;
 		bool success = false;
 
@@ -453,6 +510,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		if(IsBlacklisted(func))
 			continue;
 
+		report_count++;
 		if(report_count %50 == 0)
 		{
 			cerr<<"#########################Intermediate Report#########################"<<endl;
@@ -461,10 +519,9 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 
 		total_funcs++;
 
-		unsigned int level=0;
+		//Level in the hierarchy to start at
+		int level=0;
 		double func_coverage = 0;
-
-		//TODO: check a priori map, if in the map, ignore coverage
 
 		//see if the function is in the coverage map
 		if(coverage_map.find(func->GetName()) != coverage_map.end())
@@ -475,11 +532,10 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 			func_coverage = coverage_map[func->GetName()];
 		}
 
-		if(func_coverage < threshold)
+		//Function coverage must be strictly greater than the threshold
+		if(func_coverage <= coverage_threshold)
 		{
-			level = threshold_level;
-
-			if(threshold_level < 0)
+			if(no_validation_level < 0)
 			{
 				cout<<"PNTransformDriver: Function "<<func->GetName()<<
 					" has insufficient coverage, aborting transformation"<<endl;
@@ -487,11 +543,12 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 			}
 			else
 			{
+				level = no_validation_level;
+
 				cout<<"PNTransformDriver: Function "<<func->GetName()<<
 					" has insufficient coverage, starting at hierarchy at "
-					" level "<<threshold_level<<endl;
+					" level "<<level<<endl;
 			}
-
 		}
 
 		//Get a layout inference for each level of the hierarchy. Sort these layouts based on
@@ -500,9 +557,9 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 		//hierarchy have been exhausted. 
 
 		//TODO: need to properly handle not_transformable and functions failing all transforms. 
-		unsigned int null_inf_count = 0;
-		unsigned int starting_level = level;
-		for(;level<transform_hierarchy.size()&&!success&&!timeExpired;level++)
+		int null_inf_count = 0;
+		int starting_level = level;
+		for(;level<(int)transform_hierarchy.size()&&!success&&!timeExpired;level++)
 		{
 			vector<PNStackLayout*> layouts = GenerateInferences(func, level);
  
@@ -513,10 +570,10 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 				//If the number of null inferences encountered equals the number of inferences
 				//that are possible (based on the starting level which may not be 0), then
 				//the function is not transformable. 
-				if(transform_hierarchy.size()-starting_level == null_inf_count)
+				if((int)transform_hierarchy.size()-starting_level == null_inf_count)
 					not_transformable.push_back(func->GetName());
 				//TODO: is there a better way of checking this?
-				else if(transform_hierarchy.size()-1 == level)
+				else if((int)transform_hierarchy.size()-1 == level)
 					failed.push_back(func);
 
 				continue;
@@ -524,6 +581,8 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 
 			sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
 
+
+			//NOTE: this only_validate_list functionality may not be needed any more, consider removing
 			//TODO: for now, only validate if the only_validate_list doesn't have any contents and
 			//the level does not equal the never_validate level. I may want to allow the only validate
 			//list to be empty, in which case a pointer is better, to check for NULL.
@@ -534,15 +593,9 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 				{
 					do_validate = false;
 				}
-		
 			}
 
-			//TODO: type casting never_validate_level to unsigned.
-			//I need to make uses of unsigned and signed consistent.
-			//The rule of thumb should be if the value is absolutely
-			//not allowed to go 0, then it is unsigned. For now I am
-			//type casting to remove the warning. 
-			do_validate = do_validate && (level != (unsigned int)never_validate_level);
+			do_validate = do_validate && (level != no_validation_level);
 		
 
 			//Go through each layout in the level of the hierarchy in order. 
@@ -556,7 +609,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 				{
 	
 					success = CanaryTransformHandler(layouts[i],func,do_validate);
-					if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
+					if(!success && (int)transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 						failed.push_back(func);
 					else if(success)
 						break;
@@ -566,7 +619,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 				else if(layouts[i]->IsPaddingSafe())
 				{
 					success = PaddingTransformHandler(layouts[i],func,do_validate);
-					if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
+					if(!success && (int)transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 						failed.push_back(func);
 					else if(success)
 						break;
@@ -576,7 +629,7 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 				else
 				{
 					success = LayoutRandTransformHandler(layouts[i],func,do_validate);
-					if(!success && transform_hierarchy.size()-1 == level && i == layouts.size()-1)
+					if(!success && (int)transform_hierarchy.size()-1 == level && i == layouts.size()-1)
 						failed.push_back(func);
 					else if(success)
 						break;
@@ -584,15 +637,12 @@ void PNTransformDriver::GenerateTransforms(map<string,double> coverage_map, doub
 			}
 		}	
 	}
-
+	
 	if(timeExpired)
 		cerr<<"Time Expired: Commit Changes"<<endl;
-
 	//finalize transformation, commit to database
 	orig_virp->WriteToDB();
 
-	cerr<<"############################Final Report############################"<<endl;
-	Print_Report();
 }
 
 void PNTransformDriver::Print_Report()
@@ -789,6 +839,8 @@ bool PNTransformDriver::Validate(FileIR_t *virp, Function_t *func)
 	if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
 	else actual_signal = WTERMSIG(rt);
 	int retval = actual_exit;
+
+	//TODO: was I supposed to do something with actual_signal?
 	
 	return (retval == 0);
 }
@@ -851,7 +903,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		canaries.push_back(c);
 	}
 	
-	bool stack_alloc = false;
+	//bool stack_alloc = false;
 	int max = PNRegularExpressions::MAX_MATCHES;
 	regmatch_t pmatch[max];
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
@@ -924,7 +976,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
   if(!instr->Assemble(disasm_str))
   return false;
 */
-			stack_alloc = true;
+			//stack_alloc = true;
 
 			for(unsigned int i=0;i<canaries.size();i++)
 			{

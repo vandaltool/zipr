@@ -25,12 +25,15 @@ protected:
     int orig_progid;
     bool do_canaries;
     bool do_align;
-    
+	std::map<std::string,double> coverage_map;
+	int no_validation_level;
+	double coverage_threshold;
+	bool do_shared_object_protection;
+  
     std::vector< std::vector<PNStackLayoutInference*> > transform_hierarchy;
     PNRegularExpressions pn_regex;
     std::set<std::string> blacklist;
     std::set<std::string> only_validate_list;
-    int never_validate_level;
     //std::map<libIRDB::Instruction_t*,std::string> undo_list;
     //std::map<libIRDB::Instruction_t*,libIRDB::Instruction_t*> undo_list;
     std::map<std::string, std::map<libIRDB::Instruction_t*,libIRDB::Instruction_t*> > undo_list;
@@ -62,6 +65,7 @@ protected:
     virtual void GenerateTransformsInit();
     virtual bool IsBlacklisted(libIRDB::Function_t *func);
     virtual unsigned int GetRandomCanary();
+	virtual void GenerateTransformsHidden();
 
 public:
     static bool timeExpired;
@@ -80,8 +84,12 @@ public:
     virtual void AddOnlyValidateList(std::set<std::string> &only_validate_list);
     virtual void SetDoCanaries(bool do_canaries);
     virtual void SetDoAlignStack(bool align_stack);
+	virtual void SetCoverageMap(std::map<std::string,double> coverage_map);
+	virtual void SetNoValidationLevel(unsigned int no_validation_level);
+	virtual void SetCoverageThreshold(double threshold);
+	virtual void SetProtectSharedObjects(bool do_protection);
+
     virtual void GenerateTransforms();
-    virtual void GenerateTransforms(std::map<std::string,double> coverage_map, double threshold, int threshold_level, int never_validate_level);
 };
 
 #endif

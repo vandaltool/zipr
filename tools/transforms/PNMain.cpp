@@ -38,7 +38,8 @@ enum
 	ONLY_VALIDATE_OPTION,
 	NO_P1_VALIDATE_OPTION,
 	ALIGN_STACK_OPTION,
-	APRIORI_OPTION
+	APRIORI_OPTION,
+	SHARED_OBJECT_PROTECTION_OPTION
 };
 
 
@@ -55,15 +56,10 @@ static struct option const long_options[] =
 	{"no_p1_validate",no_argument,NULL,NO_P1_VALIDATE_OPTION},
 	{"apriori_layout_file",required_argument, NULL, APRIORI_OPTION},
 	{"align_stack",no_argument,NULL,ALIGN_STACK_OPTION},
+	{"shared_object_protection",no_argument,NULL,SHARED_OBJECT_PROTECTION_OPTION},
 	{NULL, 0, NULL, 0}
 };
 
-static double p1threshold;
-
-void pn_init()
-{
-	p1threshold=0.0;
-}
 
 //TODO: PN will now p1 if no coverage is available,
 //this is not desired for black box testing. 
@@ -165,6 +161,9 @@ int main(int argc, char **argv)
 	bool validate_p1=true;
 	bool do_canaries=true;
 	bool align_stack=false;
+	bool shared_object_protection=false;
+	double p1threshold=0.0;
+
 	while((c = getopt_long(argc, argv, "", long_options, NULL)) != -1)
 	{
 		switch(c)
@@ -231,6 +230,11 @@ int main(int argc, char **argv)
 			align_stack = true;
 			break;
 		}
+		case SHARED_OBJECT_PROTECTION_OPTION:
+		{
+			shared_object_protection=true;
+			break;
+		}
 		case '?':
 		{
 			//error message already printed by getopt_long
@@ -260,7 +264,8 @@ int main(int argc, char **argv)
 	catch (DatabaseError_t pnide)
 	{
 		cout<<"Unexpected database error: "<<pnide<<endl;
-		exit(-1);	 }
+		exit(-1);	
+	}
 	
 	set<std::string> blackListOfFunctions;
 	blackListOfFunctions = getFunctionList(blacklist_file);
@@ -270,25 +275,10 @@ int main(int argc, char **argv)
 
 	cout<<"P1threshold parsed = "<<p1threshold<<endl;
 
-/*
-  vector<std::string> functionsTransformed;
-  int numFuncProcessed = 0;
-  int numFuncFiltered = 0;
-  int numFuncBEDfailed = 0;
-  int numFuncBEDpassed = 0;
-  int numFunP1skipped = 0;
-*/
-
-	string report;
 	try 
 	{
 		PNTransformDriver transform_driver(pidp,BED_script);
 
-		transform_driver.AddBlacklist(blackListOfFunctions);
-		transform_driver.AddOnlyValidateList(onlyValidateFunctions);
-		transform_driver.SetDoCanaries(do_canaries);
-		transform_driver.SetDoAlignStack(align_stack);
-	
 		OffsetInference *offset_inference = new OffsetInference();
 
 		//TODO: hard coding the file in for now. 
@@ -314,16 +304,22 @@ int main(int argc, char **argv)
 		transform_driver.AddInference(scaled_offset_inference,1);
 		transform_driver.AddInference(conservative_memset_inference,2);
 		transform_driver.AddInference(p1,2);
-	
-		if(!validate_p1)
-			transform_driver.GenerateTransforms(coverage_map,p1threshold,2,2);
-		else
-			transform_driver.GenerateTransforms(coverage_map,p1threshold,2,-1);
-		//transform_driver.GenerateTransforms();
 
-/*
-  cerr << "P1: " << func->GetName() << " processed: " << numFuncProcessed << "/" << virp->GetFunctions().size() << " filtered: " << numFuncFiltered << " BED-passed: " << numFuncBEDpassed << " BED-failed: " << numFuncBEDfailed << " P1-skipped: " << numFunP1skipped << endl;
-*/
+		transform_driver.AddBlacklist(blackListOfFunctions);
+		transform_driver.AddOnlyValidateList(onlyValidateFunctions);
+		transform_driver.SetDoCanaries(do_canaries);
+		transform_driver.SetDoAlignStack(align_stack);
+		transform_driver.SetCoverageMap(coverage_map);
+		transform_driver.SetCoverageThreshold(p1threshold);
+		transform_driver.SetProtectSharedObjects(shared_object_protection);
+
+		//The passed in level must match a level that exists
+		if(! validate_p1)
+			transform_driver.SetNoValidationLevel(2);
+
+		//Produce SLX transformation
+		transform_driver.GenerateTransforms();
+	
 		pqxx_interface.Commit();	  
 	}
 	catch (DatabaseError_t pnide)
