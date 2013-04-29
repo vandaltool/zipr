@@ -125,6 +125,9 @@ int IntegerTransform::execute()
 				if (!annotation.isValid()) 
 					continue;
 
+				if (annotation.isIdiom())
+					continue;
+
 				if (!insn->GetFallthrough())
 				{
 					cerr << "Warning: no fall through for instruction -- skipping: " << insn->getDisassembly() << endl;
