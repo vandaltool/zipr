@@ -249,9 +249,11 @@ int main(int argc, char **argv)
 		}
 		}
 	}
+
 	//setup the interface to the sql server 
 	pqxxDB_t pqxx_interface;
 	BaseObj_t::SetInterface(&pqxx_interface);
+
 
 	try
 	{
@@ -318,9 +320,9 @@ int main(int argc, char **argv)
 			transform_driver.SetNoValidationLevel(2);
 
 		//Produce SLX transformation
-		transform_driver.GenerateTransforms();
-	
-		pqxx_interface.Commit();	  
+		transform_driver.GenerateTransforms(); 
+
+		pqxx_interface.Commit();
 	}
 	catch (DatabaseError_t pnide)
 	{

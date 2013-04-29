@@ -48,11 +48,17 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
 	no_validation_level = -1;
 	coverage_threshold = -1;
 	do_shared_object_protection = false;
+
 }
 
 PNTransformDriver::~PNTransformDriver()
 {
-	delete orig_virp;
+	//NOTE: because I now handle shared objects, I clean up orig_virp
+	//as I create use it, deleting here caused errors, I had to 
+	//ensure orig_virp is NULL, which I could do, but it is just as
+	//easy to destroy it myself when I am finished with it. 
+//	if(orig_virp != NULL)
+//		delete orig_virp;
 }
 
 //TODO: redesign the way inferences are added
@@ -433,6 +439,7 @@ void PNTransformDriver::GenerateTransforms()
 		cerr<<"PNTransformDriver ERROR: no_validation_level greater than highest level in the hierarchy, exiting."<<endl;
 		exit(1);
 	}
+	
 
 	//TODO: I refactored PN, but to keep the refactoring simple, I did not change the use of the class field "orig_virp"
 	//now that I am protecting shared objects, it might be better to pass this variable around, or at least change the
@@ -462,7 +469,7 @@ void PNTransformDriver::GenerateTransforms()
 
 			if(timeExpired)
 				break;
-			
+
 			delete orig_virp;
 			cerr<<"############################File Report############################"<<endl;
 			Print_Report();
@@ -475,6 +482,8 @@ void PNTransformDriver::GenerateTransforms()
 		assert(orig_virp && pidp);
 
 		GenerateTransformsHidden();
+		
+		delete orig_virp;
 	}
 
 	cerr<<"############################Final Report############################"<<endl;
