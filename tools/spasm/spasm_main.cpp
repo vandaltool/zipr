@@ -4,13 +4,14 @@
 #include <string>
 #include <cstdlib>
 #include <vector>
+#include <assert.h>
 
 using namespace std;
 
 bool fexists(string filename)
 {
-  ifstream ifile(filename.c_str());
-  return ifile;
+	ifstream ifile(filename.c_str());
+	return ifile;
 }
 
 void usage()
@@ -28,26 +29,30 @@ int main(int argc, char *argv[])
     if(argc == 4)
     {
     	elf = string(argv[3]);
-	if(!fexists(elf))
-	{
-		cerr<<"Symbol file "<<elf<<" does not exist.  SPASM will not be able to process callbacks properly."<<endl;
-	}
+		if(!fexists(elf))
+		{
+			cerr<<"Symbol file "<<elf<<" does not exist.  SPASM will not be able to process callbacks properly."<<endl;
+			assert(false);
+		}
     }
     else if(argc == 5) 
     {
     	elf = string(argv[3]);
-	if(!fexists(elf))
-	{
-    		elf = string(argv[4]);
 		if(!fexists(elf))
-			cerr<<"Symbol files ("<<argv[3] << " and " << argv[4] << 
-				") do not exist.  SPASM will not be able to process callbacks properly."<<endl;
-	}
+		{
+    		elf = string(argv[4]);
+			if(!fexists(elf))
+			{
+				cerr<<"Symbol files ("<<argv[3] << " and " << argv[4] << 
+					") do not exist.  SPASM will not be able to process callbacks properly."<<endl;
+				assert(false);
+			}
+		}
 		
     }
     else 
     {
-        cerr<<"SPASM Usage:\n<input file> <output file> <symbol file> \n"<<endl;
+        cerr<<"SPASM Usage:\n<input file> <output file> <symbol file> [<symbol file>] \n"<<endl;
         exit(1);
     }
 
@@ -61,7 +66,7 @@ int main(int argc, char *argv[])
 	input_list.push_back(input);
     try
     {
-	a2bspri(input_list,elf);
+		a2bspri(input_list,output,elf);
     }
     catch (SpasmException err)
     {

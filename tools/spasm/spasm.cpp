@@ -111,7 +111,6 @@ static string getCallbackAddress(const string &symbolFilename, const string &sym
 
 static int getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception)
 {
-
 	string symbolFullName = symbolFilename + "+" + symbol;
 	map<string,string>::iterator callbackMapIterator;
 	if(callbackMap.find(symbolFullName) != callbackMap.end())
@@ -140,9 +139,19 @@ static int getSymbolAddress(const string &symbolFilename, const string &symbol) 
 	return strtol(addressString.c_str(),NULL,16);
 }
 
-//void a2bspri(const string &input, const string &output, const string &symbolFilename) throw(exception)
-void a2bspri(const vector<string> &input, const string &symbolFilename) throw(exception)
+bool fexists(const string &filename)
 {
+	ifstream ifile(filename.c_str());
+	return ifile;
+}
+
+
+//void a2bspri(const string &input, const string &output, const string &symbolFilename) throw(exception)
+void a2bspri(const vector<string> &input,const string &outFilename, const string &symbolFilename) throw(exception)
+{
+
+	assert(fexists(symbolFilename));
+
 	srand(time(0));
 
 	vpc += rand()%PC_PADDING_MAX;
@@ -160,19 +169,12 @@ void a2bspri(const vector<string> &input, const string &symbolFilename) throw(ex
 		initBin(string(input[i]+".asm.bin"));
 	
 		resolveSymbols(input[i]+".asm.map");
-
-		string output = input[i];
-		size_t pos = output.find(".aspri");
-		if(pos != string::npos)
-			output = output.substr(0,pos);
-	
-		output += ".bspri";
 	
 
 		resetSpasmLines();
-		cout<<"Printing spri to file "<<output<<"...";
+		cout<<"Printing spri to file "<<outFilename<<"...";
 
-		printSPRI(symbolFilename,output);
+		printSPRI(symbolFilename,outFilename);//output);
 
 		cout<<"Done!"<<endl;
 
