@@ -67,6 +67,8 @@ mkdir $P1_DIR
 # generate coverage info for manually-specified tests (if any)
 $PEASOUP_HOME/tools/do_manual_cover.sh
 
+echo "manual cover finished"
+
 # merge all execution traces
 touch $EXECUTED_ADDRESSES_FINAL
 
@@ -229,4 +231,4 @@ touch $COVERAGE_FILE
 
 echo "$PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER --no_p1_validate"
 
-$PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER --no_p1_validate
+$PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER --no_p1_validate --shared_object_protection
