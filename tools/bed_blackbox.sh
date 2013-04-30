@@ -22,7 +22,7 @@ bspri=$3
 SCRIPT_NAME=$PEASOUP_DIR/manual_test_wrapper
 
 # generate the bspri code
-$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $PEASOUP_DIR/stratafier.o.exe  > spasm.out 2> spasm.err
+$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $PEASOUP_DIR/stratafier.o.exe $PEASOUP_DIR/libstrata.so.symbols 
 if [ ! $? -eq 0 ]; then
   echo "BED: spasm error -- exiting"
   exit 1
