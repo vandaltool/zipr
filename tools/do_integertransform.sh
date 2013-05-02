@@ -104,11 +104,14 @@ path_manip="realpath mkdir mkdirat rmdir rmdirat chmod chown unlink unlinkat"   
 
 # --path-manip-detected will override the saturating arithmetic policy
 # but we still need to leave --saturating-arithmetic alone for now
-if [ -z $WARNINGS_ONLY ]; then
-  echo "intxform: saturating arithmetic is enabled"
-  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic $PATH_MANIP_DETECTED
-else
+
+echo "warnings_only: $WARNINGS_ONLY"
+
+if [ "$WARNINGS_ONLY" != "0" ]; then
   echo "intxform: warning only mode"
   $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
+else
+  echo "intxform: saturating arithmetic is enabled"
+  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic $PATH_MANIP_DETECTED
 fi
 

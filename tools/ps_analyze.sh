@@ -23,7 +23,7 @@ PN_TIMEOUT_VALUE=9000000
 DO_CANARIES=on
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
-#intxform_warnings_only=1
+intxform_warnings_only=0
 
 # alarm handler
 THIS_PID=$$
@@ -654,7 +654,7 @@ else
 	fi
 fi
 		
-perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE
+perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only
 #perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
 
 
