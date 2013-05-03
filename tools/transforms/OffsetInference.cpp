@@ -788,21 +788,21 @@ else
 		{
 			if(verbose_log)
 				cerr<<"OffsetInference: FindAllOffsets: No Stack Deallocation Found"<<endl;	 
-			if(!direct[func->GetName()]->CanShuffle())
+			if(direct[func->GetName()] != NULL && !direct[func->GetName()]->CanShuffle())
 			{
 				if(verbose_log)
 					cerr<<"OffsetInference: FindAllOffsets: direct offset inference cannot be shuffled, generating null inference"<<endl;
 				direct[func->GetName()] = NULL;
 			}
 
-			if(!scaled[func->GetName()]->CanShuffle())
+			if(scaled[func->GetName()] != NULL && !scaled[func->GetName()]->CanShuffle())
 			{
 				if(verbose_log)
 					cerr<<"OffsetInference: FindAllOffsets: scaled offset inference cannot be shuffled, generating null inference"<<endl;
 				scaled[func->GetName()] = NULL;
 			}
 
-			if(!all_offsets[func->GetName()]->CanShuffle())
+			if(all_offsets[func->GetName()] != NULL && !all_offsets[func->GetName()]->CanShuffle())
 			{
 				if(verbose_log)
 					cerr<<"OffsetInference: FindAllOffsets: all offset inference cannot be shuffled, generating null inference"<<endl;
