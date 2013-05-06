@@ -805,5 +805,6 @@ void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout, bool with_ilr
 	}
 	update_label_offset(fileIRp);
 
+	fout<<"#DEBUG: maximum ID is "<<label_offset<<endl;
 }
 
