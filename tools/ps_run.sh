@@ -55,6 +55,7 @@ STRATA_EXE_FILE=$datapath/a.stratafied
 #
 cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs
 if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
+	echo $datapath/a.stratafied >> $datapath/a.ncexe.sigs
 	echo $origbinpath >> $datapath/a.ncexe.sigs
 	echo $PWD >> $datapath/a.ncexe.sigs
 	for var in "$@"
