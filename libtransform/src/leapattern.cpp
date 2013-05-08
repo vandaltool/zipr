@@ -38,8 +38,8 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 
 	const int max = 5;
     regmatch_t pmatch[max];
-
 	int countMatch = 0;
+
     if(regexec(&m_regex_reg_plus_reg, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
 	{
 		// pattern is of the form reg+reg, e.g.:   EDX+EAX
@@ -65,6 +65,8 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 			m_isValid = true;
 	}
 	
+// integertransform: reg+constant: register: EDX constant: 80 target register: EAX  annotation:    805525b      6 INSTR CHECK OVERFLOW NOFLAGUNSIGNED 32 EDX+128 ZZ lea     eax, [edx+80h]
+
 	if(regexec(&m_regex_reg_plus_constant, p_annotation.getTarget().c_str(), max, pmatch, 0)==0 ||
 	        regexec(&m_regex_reg_plus_negconstant, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
 	{
@@ -81,7 +83,7 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 			m_isValid = true;
 		}
 
-		cerr << "leapattern: reg+-constant: constant: " << m_constant << endl;
+//		cerr << "leapattern: reg+-constant: stream: " << p_annotation.getTarget().substr(4) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
 	}
 	
 	if(regexec(&m_regex_reg_times_constant, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)

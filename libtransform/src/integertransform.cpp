@@ -89,7 +89,6 @@ int IntegerTransform::execute()
 
 			if (insn && insn->GetAddress())
 			{
-
 				int policy = POLICY_DEFAULT; // use Strata default settings
 				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
 				if (irdb_vo == 0) continue;
@@ -452,7 +451,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 
 void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3, int p_policy)
 {
-	cerr << "integertransform: reg+constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
+//	cerr << "integertransform: doit: reg+constant: register: " << Register::toString(p_reg1) << " constant: " << dec << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
 	//
 	// Original instruction is of the form:
@@ -468,22 +467,28 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 	//   constant = -15
 	//
 	// Instrumentation:
+	//   push r3                ;     save register
 	//   pushf                  ;     save flags
 	//   mov r3, r1             ;     r3 = r1
 	//   add r3, constant       ;     r3 = r1 + constant;
 	//   <check for overflow>   ;     reuse overflow code
 	//   popf                   ;     restore flags
-	//   lea r3, [r1+constant]          
+	//   pop r3                 ;     restore register
+	//
+	//   lea r3, [r1+constant]  ;     original instruction        
 	//
 	// Note: if r3 == r1, code still works (though inefficiently)
 	//
+
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
 
+	Instruction_t* pushR3_i = allocateNewInstruction(fileID, func);
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
 	Instruction_t* movR3R1_i = allocateNewInstruction(fileID, func);
 	Instruction_t* addR3Constant_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
+	Instruction_t* popR3_i = allocateNewInstruction(fileID, func);
 
 	MEDS_InstructionCheckAnnotation addR3Constant_annot;
 	addR3Constant_annot.setValid();
@@ -500,14 +505,16 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 
 	AddressID_t *originalAddress = p_instruction->GetAddress();
 
+	addPushRegister(pushR3_i, p_reg3, pushf_i);
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushR3_i);
+	pushR3_i->SetComment("in lea -- RegPlusConstant");
+	pushR3_i->SetFallthrough(pushf_i);  
 	addPushf(pushf_i, movR3R1_i);
-	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(movR3R1_i); 
-	pushf_i->SetComment("in lea -- RegPlusConstant");
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, addR3Constant_i);
 	addAddRegisterConstant(addR3Constant_i, p_reg3, p_constantValue, popf_i);
-	addPopf(popf_i, originalInstrumentInstr);
+	addPopf(popf_i, popR3_i);
+	addPopRegister(popR3_i, p_reg3, originalInstrumentInstr);
 
 	addR3Constant_i->SetComment(msg);
 	addOverflowCheck(addR3Constant_i, addR3Constant_annot, p_policy, originalAddress);
@@ -521,11 +528,13 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 	//   lea r3, [r1*constant]          
 	//
 	// Instrumentation:
+	//   push r3                ;     save register
 	//   pushf                  ;     save flags
 	//   mov r3, r1             ;     r3 = r1
 	//   imul r3, constant      ;     r3 = r1 * constant;
 	//   <check for overflow>   ;     reuse overflow code
 	//   popf                   ;     restore flags
+	//   pop r3                 ;     restore register
 	//   lea r3, [r1*constant]          
 	//
 	// Note: if r3 == r1, code still works (though inefficiently)
@@ -533,10 +542,12 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
 	Function_t* func = p_instruction->GetFunction();
 
+	Instruction_t* pushR3_i = allocateNewInstruction(fileID, func);
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
 	Instruction_t* movR3R1_i = allocateNewInstruction(fileID, func);
 	Instruction_t* mulR3Constant_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
+	Instruction_t* popR3_i = allocateNewInstruction(fileID, func);
 
 	MEDS_InstructionCheckAnnotation mulR3Constant_annot;
 	mulR3Constant_annot.setValid();
@@ -553,14 +564,16 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 
 	AddressID_t *originalAddress = p_instruction->GetAddress();
 
+	addPushRegister(pushR3_i, p_reg3, pushf_i);
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushR3_i);
+	pushR3_i->SetFallthrough(pushf_i);
+	pushR3_i->SetComment("in lea -- Reg * Constant"); 
 	addPushf(pushf_i, movR3R1_i);
-	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pushf_i);
-	pushf_i->SetFallthrough(movR3R1_i); 
-	pushf_i->SetComment("in lea Reg * Constant"); 
 
 	addMovRegisters(movR3R1_i, p_reg3, p_reg1, mulR3Constant_i);
 	addMulRegisterConstant(mulR3Constant_i, p_reg3, p_constantValue, popf_i);
-	addPopf(popf_i, originalInstrumentInstr);
+	addPopf(popf_i, popR3_i);
+	addPopRegister(popR3_i, p_reg3, originalInstrumentInstr);
 
 	mulR3Constant_i->SetComment(msg);
 	addOverflowCheck(mulR3Constant_i, mulR3Constant_annot, p_policy, originalAddress);
@@ -750,10 +763,17 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 //
 void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
+	assert(getFileIR() && p_instruction);
+
+	Register::RegisterName targetReg = getTargetRegister(p_instruction);
+	if (targetReg == Register::UNKNOWN)
+	{
+		cerr << "IntegerTransform::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << "-- SKIP b/c no target registers" << endl;
+		return;
+	}
+	
 	cerr << "IntegerTransform::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << endl;
 
-	assert(getFileIR() && p_instruction);
-	
 	string detector(INTEGER_OVERFLOW_DETECTOR);
 	string dataBits;
 
@@ -832,14 +852,6 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 
 	p_instruction->SetFallthrough(jncond_i); 
 
-	Register::RegisterName targetReg = getTargetRegister(p_instruction);
-	if (targetReg == Register::UNKNOWN)
-	{
-		cerr << "integertransform: UNDERFLOW: unknown register -- use default instrumentation policy" << endl;
-//		p_policy = POLICY_DEFAULT;
-		p_policy = POLICY_EXIT;
-	}
-
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		// implement saturating arithmetic, e.g.:
@@ -876,7 +888,6 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	assert(getFileIR() && p_instruction);
 	assert(p_annotation.getTruncationFromWidth() == 32 && p_annotation.getTruncationToWidth() == 8 || p_annotation.getTruncationToWidth() == 16);
 
-//	cerr << "IntegerTransform::addTruncationCheck(): instr: [" << p_instruction->getDisassembly() << "] address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	cerr << "IntegerTransform::addTruncationCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	string detector; 
 
