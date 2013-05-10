@@ -21,20 +21,6 @@ echo "build_directory = $5"
 echo "ref_id = $6"
 echo "msg_port = $7"
 
-
-export SS_CC=gcc
-export SS_LNK=gcc
-#export SS_OS_SPECIFIC_LDFLAGS='-m32 -L/usr/lib -lXtst -lXrandr -lX11 -lssl'
-export SS_OS_SPECIFIC_CFLAGS='-fno-stack-protector -z execstack -m32'
-
-# set performer specific values here
-# export SS_CFLAGS=
-# export SS_LDFLAGS=
-
-export CFLAGS="-I$SS_TC_DEPS/include $SS_CFLAGS $SS_OS_SPECIFIC_CFLAGS"
-export CPPFLAGS="-I$SS_TC_DEPS/include $SS_CFLAGS $SS_OS_SPECIFIC_CFLAGS"
-export LDFLAGS="-L$SS_TC_DEPS/lib $SS_LDFLAGS $SS_OS_SPECIFIC_LDFLAGS"
-
 env > analysis_before.env
 
 previous_dir=`pwd`
@@ -133,11 +119,6 @@ python $GEN_MESSAGE_COMMAND -n $1 -t "Analyze called" -m "analyze script called 
 # cmdline=($2)
 # execpath=${cmdline[0]}
 
-## The TH passes the wrong path. This is a bug in the TH which is supposed to be
-## fixed by T&E. For now, we correct by taking just the executable name using the
-## following statement.
-# execcmd=`basename $execpath`
-# echo $execcmd
 echo "arg2 = $2"
 execcmd=$2
 echo "execcmd = $execcmd"
@@ -157,17 +138,9 @@ echo "-----------"
 file $execcmd
 echo "-----------"
 
-## TOOD: Enhance Grace to be able to use the 'ignored arguments' since 
+## TODO: Enhance Grace to be able to use the 'ignored arguments' since 
 ## T&E will always call the executable with them
 
-# build the package
-# we aren't building for binaries
-# eval $5
-
-# Move to the <run_directory>
-# This is currently set to . by MITRE, so is useless and violates the specification
-# given in Mitre's API document
-# cd $4
 l_message_2_1="In run dir: $PWD"
 l_message_2_2="Constructed command: $execpath"
 l_message_2_3="Constructed basename: $execcmd"
@@ -179,18 +152,6 @@ $l_message_2_3"
 python $LOG_COMMAND -n $1 -t "Analyze script" -m "$message_2"
 
 python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase beginning"
-
-# execcmd=`ls P_*`
-# echo $execcmd
-
-# cd $3
-# 2 hour timeout
-
-# echo "About to Analyze"
-# pwd
-# ls -l
-# echo $execcmd
-# echo "-----"
 
 # Get a list of pathnames of everything $execcmd execs during initialization
 EXEC_FILES=( $( $GRACE_HOME/concolic/bin/pgrp-timeout 10 strace -s10240 -f -e trace=execve $execcmd 2>&1 >/dev/null | grep -Po '(?<=execve\(")([^"]+(?="))' | sort | uniq ) )
@@ -238,12 +199,4 @@ else
     ss_report_status $7 "<?xml version=1.0 encoding=UTF-8 ?><return_status_message><message_type>analyze_status</message_type><test_case>$1</test_case><ref_id>$7</ref_id><status>skip</status></return_status_message>"
 fi
 
-#-----------------------------------------------------------
-#archive peasoup analysis folder
-# cd $2/$6
-# tar cfz /home/ps1/peasoup_output_$1.tar peasoup_exec*
-# /home/ps1/peasoup/scripts/archive.sh 3 $1 /home/ps1/peasoup_output_$1.tar
-# rm /home/ps1/peasoup_output_$1.tar
-#-----------------------------------------------------------
-                                       
 pkill sleep
