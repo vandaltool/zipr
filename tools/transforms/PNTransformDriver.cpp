@@ -849,6 +849,10 @@ bool PNTransformDriver::Validate(FileIR_t *virp, Function_t *func)
 	else actual_signal = WTERMSIG(rt);
 	int retval = actual_exit;
 
+	//TODO: I have set exit code status 3 to indicate spasm failure
+	//if spasm fails, there is no point in continuing. 
+	assert(retval != 3);
+
 	//TODO: was I supposed to do something with actual_signal?
 	
 	return (retval == 0);
@@ -1125,7 +1129,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 	if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
-		cerr << "PNTransformDriver: Transforming Stack Alloc"<<endl;
+		if(verbose_log)
+			cerr << "PNTransformDriver: Transforming Stack Alloc"<<endl;
 
 		//TODO: determine size of alloc, and check if consistent with alloc size?
 
