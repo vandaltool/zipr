@@ -16,6 +16,11 @@ P1_DIR=p1.xform/$fname
 #generate the bspri code
 $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $TOP_LEVEL/stratafier.o.exe $TOP_LEVEL/libstrata.so.symbols
 
+if [ $? -ne 0 ]; then
+	echo "Spasm failure in performing validation"
+	exit 3
+fi
+
 $PEASOUP_HOME/tools/fast_spri.sh $bspri $TOP_LEVEL/a.irdb.fbspri
 
 #
