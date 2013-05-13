@@ -73,4 +73,6 @@ int main(int argc, char *argv[])
         cerr<<err.what()<<endl;
         exit(1);
     }
+
+	return 0;
 }
