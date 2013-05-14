@@ -9,6 +9,12 @@
 #include <csignal>
 #include "Rewrite_Utility.hpp"
 
+//TODO: I should use the types defined by beaengine
+//#define RetType 13
+//#define JmpType 11
+//#define CallType 12
+
+
 struct canary
 {
     unsigned int canary_val;
@@ -33,12 +39,14 @@ protected:
     std::vector< std::vector<PNStackLayoutInference*> > transform_hierarchy;
     PNRegularExpressions pn_regex;
     std::set<std::string> blacklist;
+	std::set<libIRDB::Function_t*> sanitized;
     std::set<std::string> only_validate_list;
     //std::map<libIRDB::Instruction_t*,std::string> undo_list;
     //std::map<libIRDB::Instruction_t*,libIRDB::Instruction_t*> undo_list;
     std::map<std::string, std::map<libIRDB::Instruction_t*,libIRDB::Instruction_t*> > undo_list;
     std::map< std::string,std::vector<PNStackLayout*> > transformed_history;
     int blacklist_funcs;
+	int sanitized_funcs;
     int total_funcs;
     std::vector<std::string> not_transformable;
     std::vector<libIRDB::Function_t*> failed;
@@ -58,6 +66,8 @@ protected:
     virtual bool Canary_Rewrite( PNStackLayout *orig_layout,libIRDB::Function_t *func);
     virtual bool Sans_Canary_Rewrite(PNStackLayout *orig_layout, libIRDB::Function_t *func);
     inline bool Instruction_Rewrite(PNStackLayout *layout, libIRDB::Instruction_t *instr);
+	inline bool FunctionCheck(libIRDB::Instruction_t* a, libIRDB::Instruction_t* b);
+
     virtual void Print_Report();
     virtual bool CanaryTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
     virtual bool PaddingTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
@@ -66,7 +76,7 @@ protected:
     virtual bool IsBlacklisted(libIRDB::Function_t *func);
     virtual unsigned int GetRandomCanary();
 	virtual void GenerateTransformsHidden();
-
+	void SanitizeFunctions();
 public:
     static bool timeExpired;
     //TODO: use unsigned int?

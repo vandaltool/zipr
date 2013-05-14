@@ -20,6 +20,10 @@ using namespace libIRDB;
 
 //TODO: what if func is null?
 
+//TODO: everying operates on regex because when I first wrote this, I didn't
+//know DISASM had much of this information. We should migrate to using
+//this struct more. That goes for the entire PN code base as well. 
+
 //TODO: The inferences generated are highly conservative in what functions
 //are considered transformable. Look at how the dealloc_flag and alloc_count
 
@@ -94,6 +98,8 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 
 	assert(out_args_size >=0);
 
+	//TODO: find the fallthrough of the entry block, and loop to it if necessary. 
+
 	for(
 		vector<Instruction_t*>::const_iterator it=entry->GetInstructions().begin();
 		it!=entry->GetInstructions().end();
@@ -160,11 +166,41 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 
 				continue;
 			}
-			else
+
+//			cerr<<"PUSH FOUND: "<<disasm.CompleteInstr<<endl;
+//			cerr<<"PUSH Argument1: "<<hex<<(disasm.Argument1.ArgType & 0xF0000000)<<endl;
+//			cerr<<"PUSH Argument2: "<<hex<<(disasm.Argument2.ArgType & 0xF0000000)<<endl;
+			//		cerr<<"CONST_TYPE = "<<hex<<CONSTANT_TYPE<<endl;
+
+			//if the push is a constant, then check if the next instruction
+			//is an unconditional jmp, if so, ignore the push, assume 
+			//the push is part of fixed calls. 
+			if((disasm.Argument2.ArgType & 0xF0000000) == CONSTANT_TYPE)
 			{
-				//TODO: assuming 4 bytes here for saved regs
-				saved_regs_size += 4;
+				//cerr<<"DEBUG DEBUG: Disasm match: "<<disasm.CompleteInstr<<endl;
+
+				if((it+1) != entry->GetInstructions().end())
+				{
+					Instruction_t* next=*(it+1);
+					DISASM next_disasm;
+					next->Disassemble(next_disasm);
+
+					//cerr<<"DEBUG DEBUG: Disasm next match: "<<next_disasm.CompleteInstr<<endl;
+					
+					if(next_disasm.Instruction.BranchType == JmpType)
+					{
+						//TODO: check if jmp is out of the function?
+						
+						if(verbose_log)
+							cerr<<"OffsetInference: SetupLayout(): Found push matching fix calls pattern, ignoring the push (i.e., not recording the bytes pushed)."<<endl;
+						continue;
+					}
+				}
 			}
+			//else the push value is registered
+
+			//TODO: assuming 4 bytes here for saved regs
+			saved_regs_size += 4;
 		}
 		else if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
 		{
@@ -204,7 +240,7 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 
 				if(verbose_log)
 					cerr<<"OffsetInference: LayoutSetup(): Stack alloc Size = "<<stack_frame_size<<
-					" Saved Regs Size = "<<saved_regs_size<<" out args size = "<<out_args_size<<endl;
+						" Saved Regs Size = "<<saved_regs_size<<" out args size = "<<out_args_size<<endl;
 
 				//TODO: with the new code for determine if a frame pointer exists
 				//I don't consider the case where the frame poitner is pushed but
@@ -224,8 +260,6 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 
 				//There is now enough information to create the PNStackLayout objects
 				return new StackLayout("All Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,(push_frame_pointer&&save_frame_pointer),out_args_size);
-
-
 		
 			}
 		}

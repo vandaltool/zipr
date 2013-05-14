@@ -93,11 +93,15 @@ void PNTransformDriver::SetDoAlignStack(bool align_stack)
 
 void PNTransformDriver::AddBlacklist(set<string> &blacklist)
 {
+	this->blacklist.insert(blacklist.begin(),blacklist.end());
+
+/*
 	set<string>::iterator it;
 	for(it = blacklist.begin();it != blacklist.end();it++)
 	{
 		this->blacklist.insert(*it);
 	}
+*/
 }
 
 void PNTransformDriver::AddBlacklistFunction(string func_name)
@@ -382,6 +386,13 @@ bool PNTransformDriver::LayoutRandTransformHandler(PNStackLayout *layout, Functi
 
 bool PNTransformDriver::IsBlacklisted(Function_t *func)
 {
+  if(sanitized.find(func) != sanitized.end())
+  {
+	  cerr<<"PNTransformDriver:: Sanitized Function "<<func->GetName()<<endl;
+	  sanitized_funcs++;
+	  return true;
+  }
+
 	// @todo: specify regex patterns in black list file instead
 	//		  of special-casing here
 
@@ -408,6 +419,7 @@ bool PNTransformDriver::IsBlacklisted(Function_t *func)
 		blacklist_funcs++;
 		return true;
 	}
+
 	return false;
 }
 
@@ -419,6 +431,7 @@ void PNTransformDriver::GenerateTransformsInit()
 	signal(SIGUSR1, sigusr1Handler);
 	total_funcs = 0;
 	blacklist_funcs = 0;
+	sanitized_funcs = 0;
 	not_transformable.clear();
 	failed.clear();	   
 }
@@ -492,8 +505,103 @@ void PNTransformDriver::GenerateTransforms()
 	//TODO: Get "final" summary here
 }
 
+void PNTransformDriver::SanitizeFunctions()
+{
+	//TODO: for now, the santized list is only created for an individual IR file
+	sanitized.clear();
+
+	for(
+		set<Function_t*>::const_iterator func_it=orig_virp->GetFunctions().begin();
+		func_it!=orig_virp->GetFunctions().end();
+		++func_it
+		)
+	{
+		Function_t *func = *func_it;
+
+		if(func == NULL)
+			continue;
+
+		for(
+			set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
+			it!=func->GetInstructions().end();
+			++it
+			)
+		{
+			DISASM disasm;
+			Instruction_t* instr = *it;
+
+			if(instr == NULL)
+				continue;
+
+			instr->Disassemble(disasm);
+			string disasm_str = disasm.CompleteInstr;
+
+/*
+			if(disasm_str.find("nop")!=string::npos && instr->GetFunction() == NULL)
+				continue;
+*/
+
+			if(FunctionCheck(instr,instr->GetFallthrough()))
+			{
+				//check if instruciton is a call, unconditional jump, or ret
+				//all other instructions should have targets within the same function
+				//if not, filter the functions
+				int branch_type = disasm.Instruction.BranchType;
+				if(branch_type!=RetType && branch_type!=JmpType && branch_type!=CallType)
+					FunctionCheck(instr,instr->GetTarget());
+			
+			}
+		}
+	}
+	//TODO: print sanitized list. 
+
+	cerr<<"Sanitization Report:"<<"\nThe following "<<sanitized.size()<<
+		" functions were sanitized from this file:"<<endl;
+	for(
+		set<Function_t*>::const_iterator it=sanitized.begin();
+		it!=sanitized.end();
+		++it
+		)
+	{
+		Function_t *func=*it;
+		if(func != NULL)
+			cerr<<"\t"<<func->GetName()<<endl;
+	}
+}
+
+inline bool PNTransformDriver::FunctionCheck(Instruction_t* a, Instruction_t* b)
+{
+	if(a == NULL || b == NULL)
+		return true;
+
+	if(a->GetFunction() == NULL || b->GetFunction() == NULL)
+		return true;
+
+//	DISASM disasm;
+	if(a->GetFunction() != b->GetFunction())
+	{
+		if(a->GetFunction() != NULL)
+			sanitized.insert(a->GetFunction());
+		if(b->GetFunction() != NULL)
+			sanitized.insert(b->GetFunction());
+/*
+		a->Disassemble(disasm);
+		cerr<<"Debug: a: "<<disasm.CompleteInstr<<" b: ";
+		b->Disassemble(disasm);
+		cerr<<disasm.CompleteInstr<<endl;
+
+		cerr<<"DEBUG: a: "<<a->GetFunction()<<" b:"<<b->GetFunction()<<endl;
+*/
+		return false;
+	}
+
+	return true;
+}
+
 void PNTransformDriver::GenerateTransformsHidden()
 {
+	SanitizeFunctions();
+
 	//For each function
 	//Loop through each level, find boundaries for each, sort based on
 	//the number of boundaries, attempt transform in order until successful
@@ -748,6 +856,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"----------------------------------------------"<<endl;
 	cerr<<"Non-Blacklisted Functions \t"<<total_funcs<<endl;
 	cerr<<"Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
+	cerr<<"Sanitized Functions \t\t"<<sanitized_funcs<<endl;
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
 	cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
 }
