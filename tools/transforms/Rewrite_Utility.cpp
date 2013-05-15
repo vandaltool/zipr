@@ -2,8 +2,8 @@
 using namespace std;
 using namespace libIRDB;
 
-map<string, set<Instruction_t*> > inserted_instr; //used to undo inserted instructions
-map<string, set<AddressID_t*> > inserted_addr; //used to undo inserted addresses
+map<Function_t*, set<Instruction_t*> > inserted_instr; //used to undo inserted instructions
+map<Function_t*, set<AddressID_t*> > inserted_addr; //used to undo inserted addresses
 
 void setExitCode(FileIR_t* virp, Instruction_t* exit_code);
 
@@ -116,13 +116,8 @@ Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_
 	virp->GetInstructions().insert(instr);
 	virp->GetAddresses().insert(a);
 
-	string name = "1_null_func_dummy_1";
-
-	if(func != NULL)
-		name = func->GetName();
-
-	inserted_instr[name].insert(instr);
-	inserted_addr[name].insert(a);
+	inserted_instr[func].insert(instr);
+	inserted_addr[func].insert(a);
 	
 	return instr;
 }

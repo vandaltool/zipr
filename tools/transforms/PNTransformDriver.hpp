@@ -31,6 +31,8 @@ protected:
     int orig_progid;
     bool do_canaries;
     bool do_align;
+	//TODO: coverage map should not use function name as the key, since
+	//we may want to support coverage for shared objects. 
 	std::map<std::string,double> coverage_map;
 	int no_validation_level;
 	double coverage_threshold;
@@ -43,7 +45,7 @@ protected:
     std::set<std::string> only_validate_list;
     //std::map<libIRDB::Instruction_t*,std::string> undo_list;
     //std::map<libIRDB::Instruction_t*,libIRDB::Instruction_t*> undo_list;
-    std::map<std::string, std::map<libIRDB::Instruction_t*,libIRDB::Instruction_t*> > undo_list;
+    std::map<libIRDB::Function_t*, std::map<libIRDB::Instruction_t*,libIRDB::Instruction_t*> > undo_list;
     std::map< std::string,std::vector<PNStackLayout*> > transformed_history;
     int blacklist_funcs;
 	int sanitized_funcs;

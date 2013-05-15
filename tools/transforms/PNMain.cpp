@@ -92,6 +92,9 @@ set<string> getFunctionList(char *p_filename)
 	return functionList;
 }
 
+
+//TODO: the coverage map should not use the function name since
+//it is possible this will repeat when analyzing shared objects. 
 map<string,double> getCoverageMap(char *filename)
 {
 	map<string,double> coverage_map;

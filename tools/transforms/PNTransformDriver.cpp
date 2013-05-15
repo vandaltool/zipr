@@ -12,8 +12,8 @@ using namespace std;
 using namespace libIRDB;
 
 //TODO: this var is a hack for TNE
-extern map<string, set<Instruction_t*> > inserted_instr;
-extern map<string, set<AddressID_t*> > inserted_addr;
+extern map<Function_t*, set<Instruction_t*> > inserted_instr;
+extern map<Function_t*, set<AddressID_t*> > inserted_addr;
 
 void sigusr1Handler(int signum);
 bool PNTransformDriver::timeExpired = false;
@@ -621,7 +621,7 @@ void PNTransformDriver::GenerateTransformsHidden()
 		//TODO: remove this at some point when I understand if this can happen or not
 		assert(func != NULL);
 
-		cerr<<"PNTransformDriver: Function: "<<func->GetName()<<endl;
+		cerr<<"PNTransformDriver: Function: "<<orig_virp->GetFile()->GetURL()<<" "<<func->GetName()<<endl;
 
 		//Check if in blacklist
 		if(IsBlacklisted(func))
@@ -1091,7 +1091,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 				cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;		
 			//undo_list[instr] = instr->GetDataBits();
 			//undo_list[instr] = copyInstruction(instr);
-			undo_list[func->GetName()][instr] = copyInstruction(instr);
+			undo_list[func][instr] = copyInstruction(instr);
 
 			virp->RegisterAssembly(instr,disasm_str);
 /*
@@ -1118,7 +1118,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 
 			//undo_list[instr] = instr->GetDataBits();
 			//undo_list[instr] = copyInstruction(instr);
-			undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+			undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
 
 
 
@@ -1144,7 +1144,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 			if(verbose_log)
 				cerr<<"PNTransformDriver: Canary Rewrite: inserting call canary check"<<endl;
 			//undo_list[instr] = copyInstruction(instr);
-			undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+			undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
 
 			//This could probably be done once, but having the original instruction
 			//allows me to produce messages that indicate more precisely where
@@ -1258,7 +1258,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 				//cerr<<"PNTransformDriver: Stack alloc of non-integral type ("<<matched<<"), ignoring instruction"<<endl;
 
-				undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+				undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
 				//TODO: hack for TNE, padd the allocation by adding a random
 				//amount to the register used to subtract from esp. 
 
@@ -1291,7 +1291,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;		
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
-		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+		undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
 
 		virp->RegisterAssembly(instr,disasm_str);
 
@@ -1352,7 +1352,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
-		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+		undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
 
 		virp->RegisterAssembly(instr,disasm_str);
 
@@ -1391,7 +1391,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
-		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+		undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
 
 		virp->RegisterAssembly(instr,disasm_str);
 
@@ -1440,7 +1440,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
-		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+		undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
 
 		virp->RegisterAssembly(instr,disasm_str);
 
@@ -1492,7 +1492,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
-		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+		undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
 
 		virp->RegisterAssembly(instr,disasm_str);
 
@@ -1534,7 +1534,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
-		undo_list[instr->GetFunction()->GetName()][instr] = copyInstruction(instr);
+		undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
 
 		if(verbose_log)
 			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
@@ -1562,10 +1562,10 @@ void PNTransformDriver::undo( Function_t *func)
 	string func_name = func->GetName();
 
 	//rollback any changes
-	cerr<<"PNTransformDriver: Undo Transform: "<<undo_list[func_name].size()<<" instructions to rollback for function "<<func_name<<endl;
+	cerr<<"PNTransformDriver: Undo Transform: "<<undo_list[func].size()<<" instructions to rollback for function "<<func_name<<endl;
 	for(
-		map<Instruction_t*, Instruction_t*>::const_iterator mit=undo_list[func_name].begin();
-		mit != undo_list[func_name].end();
+		map<Instruction_t*, Instruction_t*>::const_iterator mit=undo_list[func].begin();
+		mit != undo_list[func].end();
 		++mit)
 	{
 		Instruction_t* alt = mit->first;
@@ -1584,8 +1584,8 @@ void PNTransformDriver::undo( Function_t *func)
 //	delete orig;
 	}
 
-	for(set<Instruction_t*>::const_iterator it=inserted_instr[func_name].begin();
-		it != inserted_instr[func_name].end();
+	for(set<Instruction_t*>::const_iterator it=inserted_instr[func].begin();
+		it != inserted_instr[func].end();
 		++it
 		)
 	{
@@ -1594,8 +1594,8 @@ void PNTransformDriver::undo( Function_t *func)
 		delete *it;
 	}
 
-	for(set<AddressID_t*>::const_iterator it=inserted_addr[func_name].begin();
-		it != inserted_addr[func_name].end();
+	for(set<AddressID_t*>::const_iterator it=inserted_addr[func].begin();
+		it != inserted_addr[func].end();
 		++it
 		)
 	{
@@ -1604,9 +1604,9 @@ void PNTransformDriver::undo( Function_t *func)
 	}
 	//reset_undo(func->GetName());
 
-	undo_list.erase(func_name);
-	inserted_instr.erase(func_name);
-	inserted_addr.erase(func_name);
+	undo_list.erase(func);
+	inserted_instr.erase(func);
+	inserted_addr.erase(func);
 	//undo_list.clear();
 }
 
