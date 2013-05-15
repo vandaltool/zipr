@@ -541,14 +541,15 @@ void PNTransformDriver::SanitizeFunctions()
 				continue;
 */
 
-			if(FunctionCheck(instr,instr->GetFallthrough()))
+			if(FallthroughFunctionCheck(instr,instr->GetFallthrough()))
 			{
 				//check if instruciton is a call, unconditional jump, or ret
 				//all other instructions should have targets within the same function
 				//if not, filter the functions
 				int branch_type = disasm.Instruction.BranchType;
 				if(branch_type!=RetType && branch_type!=JmpType && branch_type!=CallType)
-					FunctionCheck(instr,instr->GetTarget());
+					TargetFunctionCheck(instr,instr->GetTarget());
+
 			
 			}
 		}
@@ -569,7 +570,7 @@ void PNTransformDriver::SanitizeFunctions()
 	}
 }
 
-inline bool PNTransformDriver::FunctionCheck(Instruction_t* a, Instruction_t* b)
+inline bool PNTransformDriver::FallthroughFunctionCheck(Instruction_t* a, Instruction_t* b)
 {
 	if(a == NULL || b == NULL)
 		return true;
@@ -577,25 +578,32 @@ inline bool PNTransformDriver::FunctionCheck(Instruction_t* a, Instruction_t* b)
 	if(a->GetFunction() == NULL || b->GetFunction() == NULL)
 		return true;
 
-//	DISASM disasm;
-	if(a->GetFunction() != b->GetFunction())
-	{
-		if(a->GetFunction() != NULL)
-			sanitized.insert(a->GetFunction());
-		if(b->GetFunction() != NULL)
-			sanitized.insert(b->GetFunction());
-/*
-		a->Disassemble(disasm);
-		cerr<<"Debug: a: "<<disasm.CompleteInstr<<" b: ";
-		b->Disassemble(disasm);
-		cerr<<disasm.CompleteInstr<<endl;
+	return FunctionCheck(a->GetFunction(),b->GetFunction());
 
-		cerr<<"DEBUG: a: "<<a->GetFunction()<<" b:"<<b->GetFunction()<<endl;
-*/
+}
+
+inline bool PNTransformDriver::FunctionCheck(Function_t* a,Function_t* b)
+{
+	if(a != b)
+	{
+		//To avoid null pointer exceptions I am not going to sanitize the
+		//null function
+		if(a != NULL)
+			sanitized.insert(a);
+		if(b != NULL)
+			sanitized.insert(b);
 		return false;
 	}
-
 	return true;
+}
+
+
+inline bool PNTransformDriver::TargetFunctionCheck(Instruction_t* a, Instruction_t* b)
+{
+	if(a == NULL || b == NULL)
+		return true;
+
+	return FunctionCheck(a->GetFunction(),b->GetFunction());
 }
 
 void PNTransformDriver::GenerateTransformsHidden()

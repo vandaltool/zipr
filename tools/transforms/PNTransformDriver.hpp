@@ -68,7 +68,9 @@ protected:
     virtual bool Canary_Rewrite( PNStackLayout *orig_layout,libIRDB::Function_t *func);
     virtual bool Sans_Canary_Rewrite(PNStackLayout *orig_layout, libIRDB::Function_t *func);
     inline bool Instruction_Rewrite(PNStackLayout *layout, libIRDB::Instruction_t *instr);
-	inline bool FunctionCheck(libIRDB::Instruction_t* a, libIRDB::Instruction_t* b);
+	inline bool FunctionCheck(libIRDB::Function_t* a, libIRDB::Function_t* b);
+	inline bool TargetFunctionCheck(libIRDB::Instruction_t* a, libIRDB::Instruction_t* b);
+	inline bool FallthroughFunctionCheck(libIRDB::Instruction_t* a, libIRDB::Instruction_t* b);
 
     virtual void Print_Report();
     virtual bool CanaryTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
