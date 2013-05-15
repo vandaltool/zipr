@@ -9,15 +9,15 @@
 class OffsetInference : public PNStackLayoutInference
 {
 protected:
-	std::map<std::string,PNStackLayout*> direct;
-	std::map<std::string,PNStackLayout*> scaled;
-	std::map<std::string,PNStackLayout*> all_offsets;
-	std::map<std::string,PNStackLayout*> p1;
+	std::map<libIRDB::Function_t*,PNStackLayout*> direct;
+	std::map<libIRDB::Function_t*,PNStackLayout*> scaled;
+	std::map<libIRDB::Function_t*,PNStackLayout*> all_offsets;
+	std::map<libIRDB::Function_t*,PNStackLayout*> p1;
 
 	PNRegularExpressions pn_regex;
 
 	virtual void FindAllOffsets(libIRDB::Function_t *func);
-	virtual PNStackLayout* GetLayout(std::map<std::string,PNStackLayout*> &mymap, libIRDB::Function_t *func);
+	virtual PNStackLayout* GetLayout(std::map<libIRDB::Function_t*,PNStackLayout*> &mymap, libIRDB::Function_t *func);
 	//	virtual void GetInstructions(std::vector<libIRDB::Instruction_t*> &instructions,libIRDB::BasicBlock_t *block,std::set<libIRDB::BasicBlock_t*> &block_set);
 	virtual StackLayout* SetupLayout(libIRDB::BasicBlock_t *entry, libIRDB::Function_t *func);
 public:

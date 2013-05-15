@@ -34,7 +34,7 @@ OffsetInference::~OffsetInference()
 	//object
 	//TODO: add some asserts to ensure no double delete
 
-	map<string,PNStackLayout*>::iterator it;
+	map<Function_t*,PNStackLayout*>::iterator it;
 
 	for(it=direct.begin();it !=direct.end();it++)
 	{
@@ -327,10 +327,10 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	}
 	else
 	{
-		direct[func->GetName()] = NULL;
-		scaled[func->GetName()] = NULL;
-		all_offsets[func->GetName()] = NULL;
-		p1[func->GetName()] = NULL;
+		direct[func] = NULL;
+		scaled[func] = NULL;
+		all_offsets[func] = NULL;
+		p1[func] = NULL;
 		return;
 	}
 
@@ -711,10 +711,10 @@ else
 			//dealloc_flag = false;
 
 			//TODO: hacked in for TNE, rewrite. 
-			direct[func->GetName()] = NULL;
-			scaled[func->GetName()] = NULL;
-			all_offsets[func->GetName()] = NULL;
-			p1[func->GetName()] = NULL;
+			direct[func] = NULL;
+			scaled[func] = NULL;
+			all_offsets[func] = NULL;
+			p1[func] = NULL;
 			return;
 //		break;
 		}
@@ -767,10 +767,10 @@ else
 		if(verbose_log)
 			cerr<<"OffsetInference: FindAllOffsets: Multiple integral stack allocations found, returning null inferences"<<endl;
 
-		direct[func->GetName()] = NULL;
-		scaled[func->GetName()] = NULL;
-		all_offsets[func->GetName()] = NULL;
-		p1[func->GetName()] = NULL;
+		direct[func] = NULL;
+		scaled[func] = NULL;
+		all_offsets[func] = NULL;
+		p1[func] = NULL;
 		return;
 
 	}
@@ -801,49 +801,49 @@ else
 		//if the size of aoi is the same as any other inference
 		//assume they are the same (insert a null layout entry)
 		if(pn_direct_offsets->GetRanges().size() != aoi_size)
-			direct[func->GetName()] = new PNStackLayout(*pn_direct_offsets);
+			direct[func] = new PNStackLayout(*pn_direct_offsets);
 		else
-			direct[func->GetName()] = NULL;
+			direct[func] = NULL;
 
 		if(pn_scaled_offsets->GetRanges().size() != aoi_size)
-			scaled[func->GetName()] = new PNStackLayout(*pn_scaled_offsets);
+			scaled[func] = new PNStackLayout(*pn_scaled_offsets);
 		else
-			scaled[func->GetName()] = NULL;
+			scaled[func] = NULL;
 
 		//TODO: BIG TODO: There is quite a delema here. If p1 is the same as
 		//AOI, I don't want to generate it to save time, but what if a function
 		//has no coverage, so p1 is used, if I set it null here because the
 		//layouts are the same, I wont have any modification for that function. 
-		p1[func->GetName()] = new PNStackLayout(*pn_p1_offsets);
+		p1[func] = new PNStackLayout(*pn_p1_offsets);
 
-		all_offsets[func->GetName()] = new PNStackLayout(*pn_all_offsets);
+		all_offsets[func] = new PNStackLayout(*pn_all_offsets);
 
 		if(!dealloc_flag)
 		{
 			if(verbose_log)
 				cerr<<"OffsetInference: FindAllOffsets: No Stack Deallocation Found"<<endl;	 
-			if(direct[func->GetName()] != NULL && !direct[func->GetName()]->CanShuffle())
+			if(direct[func] != NULL && !direct[func]->CanShuffle())
 			{
 				if(verbose_log)
 					cerr<<"OffsetInference: FindAllOffsets: direct offset inference cannot be shuffled, generating null inference"<<endl;
-				direct[func->GetName()] = NULL;
+				direct[func] = NULL;
 			}
 
-			if(scaled[func->GetName()] != NULL && !scaled[func->GetName()]->CanShuffle())
+			if(scaled[func] != NULL && !scaled[func]->CanShuffle())
 			{
 				if(verbose_log)
 					cerr<<"OffsetInference: FindAllOffsets: scaled offset inference cannot be shuffled, generating null inference"<<endl;
-				scaled[func->GetName()] = NULL;
+				scaled[func] = NULL;
 			}
 
-			if(all_offsets[func->GetName()] != NULL && !all_offsets[func->GetName()]->CanShuffle())
+			if(all_offsets[func] != NULL && !all_offsets[func]->CanShuffle())
 			{
 				if(verbose_log)
 					cerr<<"OffsetInference: FindAllOffsets: all offset inference cannot be shuffled, generating null inference"<<endl;
-				all_offsets[func->GetName()] = NULL;
+				all_offsets[func] = NULL;
 			}
 
-			p1[func->GetName()] = NULL;
+			p1[func] = NULL;
 			if(verbose_log)
 				cerr<<"OffsetInference: FindAllOffsets: p1 inference by default cannot be shuffled, generating null inference"<<endl;
 		}
@@ -852,9 +852,9 @@ else
 		{
 			if(verbose_log)
 				cerr<<"OffsetInference: FindAllOffsets: Function not pn_safe, using only p1 (p1 may have been previously disabled)"<<endl;
-			direct[func->GetName()] = NULL;
-			scaled[func->GetName()] = NULL;
-			all_offsets[func->GetName()] = NULL;
+			direct[func] = NULL;
+			scaled[func] = NULL;
+			all_offsets[func] = NULL;
 		}
 	}
 
@@ -888,18 +888,18 @@ PNStackLayout* OffsetInference::GetP1AccessLayout(Function_t *func)
 }
 
 
-PNStackLayout* OffsetInference::GetLayout(map<string,PNStackLayout*> &mymap,Function_t *func)
+PNStackLayout* OffsetInference::GetLayout(map<Function_t*,PNStackLayout*> &mymap,Function_t *func)
 {
 	//No layout found, find all offset boundaries
-	if(mymap.find(func->GetName()) == mymap.end())
+	if(mymap.find(func) == mymap.end())
 	{
 		FindAllOffsets(func);
 	}
 
 	//At this point an entry should be made for the function
-	assert(mymap.find(func->GetName()) != mymap.end());
+	assert(mymap.find(func) != mymap.end());
 
-	return mymap.find(func->GetName())->second;
+	return mymap.find(func)->second;
 }
 
 string OffsetInference::GetInferenceName() const
