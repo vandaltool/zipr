@@ -32,6 +32,11 @@ static bool CompareBoundaryNumbers(PNStackLayout *a, PNStackLayout *b)
 	return (a->GetNumberOfMemoryObjects() > b->GetNumberOfMemoryObjects());
 }
 
+void PNTransformDriver::reset()
+{
+
+}
+
 PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
 {
 	//TODO: throw exception?
@@ -483,7 +488,7 @@ void PNTransformDriver::GenerateTransforms()
 			if(timeExpired)
 				break;
 
-			delete orig_virp;
+//			delete orig_virp;
 			cerr<<"############################File Report############################"<<endl;
 			Print_Report();
 		}
@@ -496,7 +501,7 @@ void PNTransformDriver::GenerateTransforms()
 
 		GenerateTransformsHidden();
 		
-		delete orig_virp;
+//		delete orig_virp;
 	}
 
 	cerr<<"############################Final Report############################"<<endl;
