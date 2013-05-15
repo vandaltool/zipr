@@ -32,11 +32,6 @@ static bool CompareBoundaryNumbers(PNStackLayout *a, PNStackLayout *b)
 	return (a->GetNumberOfMemoryObjects() > b->GetNumberOfMemoryObjects());
 }
 
-void PNTransformDriver::reset()
-{
-
-}
-
 PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
 {
 	//TODO: throw exception?
