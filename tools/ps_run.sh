@@ -61,7 +61,8 @@ if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
 	echo $PWD >> $datapath/a.ncexe.sigs
 	for var in "$@"
 	do
-		echo "$var" >> $datapath/a.ncexe.sigs
+		# Split whitespace in arguments and add to sigs
+		echo "$var" | tr ' ' '\n' | grep -v '^[<spc><tab>]*$' >> $datapath/a.ncexe.sigs
 	done
 
 fi
