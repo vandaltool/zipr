@@ -47,6 +47,7 @@ STRATA_SIEVE=1
 STRATA_RC=1					
 STRATA_PARTIAL_INLINING=0			
 STRATA_EXE_FILE=$datapath/a.stratafied
+STRATA_MAX_WARNINGS=500000
 	exec -a $origbinpath $datapath/a.stratafied \"\$@\""
 
 

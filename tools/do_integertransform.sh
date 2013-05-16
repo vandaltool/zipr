@@ -109,6 +109,7 @@ echo "warnings_only: $WARNINGS_ONLY"
 
 if [ "$WARNINGS_ONLY" != "0" ]; then
   echo "intxform: warning only mode"
+  $PEASOUP_HOME/tools/update_env_var.sh STRATA_MAX_WARNINGS 0
   $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
 else
   echo "intxform: saturating arithmetic is enabled"
