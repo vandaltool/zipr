@@ -31,7 +31,7 @@ command="
 LD_PRELOAD=$datapath/libappfw.so
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$datapath
 APPFW_DB=$datapath/appfw.db
-APPFW_SIGNATURE_FILE=$datapath/a.ncexe.sigs
+APPFW_SIGNATURE_FILE=$datapath/a.ncexe.sigs.$$
 STRATA_WATCHDOG=0
 STRATA_NUM_HANDLE=0
 STRATA_DOUBLE_FREE=0
@@ -54,15 +54,15 @@ STRATA_MAX_WARNINGS=500000
 #
 # setup signitures for appfw
 #
-cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs
+cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs.$$
 if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
-	echo $datapath/a.stratafied >> $datapath/a.ncexe.sigs
-	echo $origbinpath >> $datapath/a.ncexe.sigs
-	echo $PWD >> $datapath/a.ncexe.sigs
+	echo $datapath/a.stratafied >> $datapath/a.ncexe.sigs.$$
+	echo $origbinpath >> $datapath/a.ncexe.sigs.$$
+	echo $PWD >> $datapath/a.ncexe.sigs.$$
 	for var in "$@"
 	do
 		# Split whitespace in arguments and add to sigs
-		echo "$var" | tr ' ' '\n' | grep -v '^[<spc><tab>]*$' >> $datapath/a.ncexe.sigs
+		echo "$var" | tr ' ' '\n' | grep -v '^[<spc><tab>]*$' >> $datapath/a.ncexe.sigs.$$
 	done
 
 fi
