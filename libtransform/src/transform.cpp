@@ -48,7 +48,7 @@ Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, 
 	dupInstr->SetTarget(p_instrumented->GetTarget());
 
 	dupInstr->SetOriginalAddressID(p_instrumented->GetOriginalAddressID());
-	AddressID_t *saveIBTA = dupInstr->GetIndirectBranchTargetAddress();
+	AddressID_t *saveIBTA = p_instrumented->GetIndirectBranchTargetAddress();
 	dupInstr->SetIndirectBranchTargetAddress(NULL);
 
 	// replace instrumented with new instruction
