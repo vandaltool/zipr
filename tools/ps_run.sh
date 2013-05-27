@@ -62,7 +62,7 @@ if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
 	for var in "$@"
 	do
 		# Split whitespace in arguments and add to sigs
-		echo "$var" | tr ' ' '\n' | grep -v '^[<spc><tab>]*$' >> $datapath/a.ncexe.sigs.$$
+		echo "$var" | tr ' ' '\n' | /bin/grep -v '^[<spc><tab>]*$' >> $datapath/a.ncexe.sigs.$$
 	done
 
 fi
