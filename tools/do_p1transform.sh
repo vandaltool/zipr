@@ -12,6 +12,9 @@ MEDS_ANNOTATION_FILE=$3
 BED_SCRIPT=$4
 TIMEOUT_VALUE=$5
 DO_CANARIES=$6
+# Maximum length of time to spend replaying inputs to get coverage
+COVERAGE_REPLAY_TIMEOUT=600
+# Timeout per replayer run
 REPLAYER_TIMEOUT=120
 TOP_LEVEL=`pwd`
 BASELINE_DIR=$TOP_LEVEL/replayer_baseline
@@ -76,13 +79,14 @@ cat $EXECUTED_ADDRESSES_MANUAL >> $EXECUTED_ADDRESSES_FINAL
 
 echo "Replaying all .json files"
 input_cnt=0
-#run all .json inputs through the replayer
-for i in `ls $CONCOLIC_DIR/*.json`
+REPLAY_DEADLINE=$(( `date +'%s'` + $COVERAGE_REPLAY_TIMEOUT ))
+#run all .json inputs through the replayer starting with most recent
+for i in `ls -t $CONCOLIC_DIR/*.json`
 do
     rm -f exit_status stdout.* stderr.*
     rm -rf grace_replay/
 
-    if [ $input_cnt -ge $INPUT_CUTOFF ]; then
+    if [ `date +'%s'` -ge $REPLAY_DEADLINE ]; then
 		break
     fi
 
@@ -97,11 +101,11 @@ do
     #input_number=`echo $input | sed "s/.*input_//"`
    # abridged_number=`echo $input_number | sed 's/0*\(.*\)/\1/'`
 
-    echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage $STRATAFIED_BINARY $i"
+    echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i"
 
     #generate baseline from the stratafied program, if only to prevent discrepencies when a program prints its own name. 
     #also I want to be as consistent as possible to avoid replayer issues. 
-    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage $STRATAFIED_BINARY $i || continue
+    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i || continue
 
 	#the exit status file has long been a flag that replay worked, make sure it exists before continuing
     if [ ! -f exit_status ]; then
@@ -129,7 +133,9 @@ do
 	#---------------Non-Determinism Check-------------------
 
 	#replay again and check for divergence due to non-deterministic output
-    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage $STRATAFIED_BINARY $i || continue
+    echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i"
+
+    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i || continue
 
 	#create a temporary directory for the second replay values, so I can diff the directory structure.
     mkdir $BASELINE_DIR/${input}_tmp
@@ -152,7 +158,8 @@ do
 		#rerun the replayer with -r
 		#BEN NOTE: It is my understanding that once run with -r, when we actual replay a peasoup'ed version we 
 		#do not need to run with -r. I.e., replay is oblivious to whether or not we used -r.
-		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage -r $STRATAFIED_BINARY $i || continue
+                echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt -r $STRATAFIED_BINARY $i"
+		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt -r $STRATAFIED_BINARY $i || continue
 
 		#recreate a temporary directory for the second replay value, so I can diff the directory structure with baseline.
 		mkdir $BASELINE_DIR/${input}
@@ -164,7 +171,8 @@ do
 		mv grace_replay/ $BASELINE_DIR/${input}/.
 
 		#Run the replayer one more time without -r, to get a second run to compare against (-r is not necessary once it has been used once)
-		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=tmp_coverage $STRATAFIED_BINARY $i || continue
+                echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i"
+		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i || continue
 
 		#create a temporary directory for the second replay values, so I can diff the directory structure.
 		mkdir $BASELINE_DIR/${input}_tmp
@@ -194,11 +202,6 @@ do
 	#clean up the second replay baseline directory
 	rm -rf $BASELINE_DIR/${input}_tmp
 
-	#At this point, tmp coverage contains the coverage of the last call to the replayer, which we will
-	#assume is consistent with all other runs, if not, the most correct coverage.
-	#add to coverage total
-    cat tmp_coverage >> $EXECUTED_ADDRESSES_CONCOLIC 	
-
 	#increment input counter (counter indicates how many inputs have been validated)
     input_cnt=`expr $input_cnt + 1`
 done
@@ -206,8 +209,25 @@ done
 rm -f exit_status stdout.* stderr.*
 rm -rf grace_replay/
 
-
 echo "Finished replaying .json files: Replayed $input_cnt inputs"
+
+echo "Choosing at most $INPUT_CUTOFF inputs with best coverage"
+
+GREEDY_COVER=`$GRACE_HOME/concolic/scripts/set_cover.py $INPUT_CUTOFF $CONCOLIC_DIR/*.coverage`
+
+input_cnt=`echo $GREEDY_COVER|wc -w`
+
+echo "Chose $input_cnt inputs"
+
+cat $GREEDY_COVER >> $EXECUTED_ADDRESSES_CONCOLIC
+
+# Remove inputs that were not chosen.
+for i in $BASELINE_DIR/*
+do
+    if [[ ! "$GREEDY_COVER" =~ `basename $i` ]]; then
+        rm -r $i
+    fi
+done
 
 touch $EXECUTED_ADDRESSES_CONCOLIC
 
