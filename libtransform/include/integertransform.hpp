@@ -36,6 +36,8 @@ class IntegerTransform : public Transform
 		void addTruncationCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 
 		void addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy, AddressID_t *p_original = NULL);
+		void addOverflowCheckUnknownSign(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
+
 		void addUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 
 		void addOverflowCheckNoFlag(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
@@ -95,6 +97,7 @@ class IntegerTransform : public Transform
 #define UNDERFLOW_DETECTOR_SIGNED_16         "underflow_detector_signed_16"
 #define UNDERFLOW_DETECTOR_SIGNED_8          "underflow_detector_signed_8"
 #define INFINITE_LOOP_DETECTOR               "infinite_loop_detector"
+#define	OVERFLOW_UNKNOWN_SIGN_DETECTOR       "overflow_unknown_sign_detector"
 }
 
 #endif
