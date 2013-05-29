@@ -256,7 +256,11 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 
 void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	if (p_annotation.isOverflow() && p_annotation.isNoFlag())
+	if (p_annotation.isUnknownSign())
+	{
+		addOverflowCheckUnknownSign(p_instruction, p_annotation, p_policy);
+	}
+	else if (p_annotation.isOverflow() && p_annotation.isNoFlag())
 	{
 		addOverflowCheckNoFlag(p_instruction, p_annotation, p_policy);
 	}
@@ -636,6 +640,13 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 {
 	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
 
+	Register::RegisterName targetReg = getTargetRegister(p_instruction);
+	if (targetReg == Register::UNKNOWN)
+	{
+		cerr << "integertransform: OVERFLOW UNKNOWN SIGN: unknown register -- skip instrumentation" << endl;
+		return;
+	}
+
 cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	
 	string detector(INTEGER_OVERFLOW_DETECTOR);
@@ -700,13 +711,6 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 	jncond_i->SetTarget(nextOrig_i); 
 
 	p_instruction->SetFallthrough(jncond_i); 
-
-	Register::RegisterName targetReg = getTargetRegister(p_instruction);
-	if (targetReg == Register::UNKNOWN && p_policy != POLICY_CONTINUE)
-	{
-		cerr << "integertransform: OVERFLOW: unknown register -- policy exit" << endl;
-		p_policy = POLICY_EXIT;
-	}
 
 	if (p_addressOriginalInstruction)
 	{
@@ -1168,3 +1172,50 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 	else
 		return false;
 }
+
+//
+//      <instruction to instrument>
+//      jno <originalFallthroughInstruction> 
+//      jnc <originalFallthroughInstruction> 
+//      nop [attach callback handler]
+//      <originalFallthroughInstruction>
+//
+void IntegerTransform::addOverflowCheckUnknownSign(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+{
+	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
+	Register::RegisterName targetReg = getTargetRegister(p_instruction);
+	if (targetReg == Register::UNKNOWN)
+	{
+		cerr << "integertransform: OVERFLOW UNKNOWN SIGN: unknown register -- skip instrumentation" << endl;
+		return;
+	}
+
+cerr << "IntegerTransform::addOverflowCheckUnknownSign(): instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+	
+	string detector(OVERFLOW_UNKNOWN_SIGN_DETECTOR);
+	string dataBits;
+
+	// for now assume we're dealing with add/sub 32 bit
+	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
+	Function_t* func = p_instruction->GetFunction();
+
+	Instruction_t* jno_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	Instruction_t* jnc_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	Instruction_t* nop_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+
+	// save fallthrough from original instruction
+	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
+
+	// instrument for both jno and jnc
+	p_instruction->SetFallthrough(jno_i); 
+	addJno(jno_i, jnc_i, nextOrig_i);
+	addJnc(jnc_i, nop_i, nextOrig_i);
+	addNop(nop_i, nextOrig_i);
+
+	// only handle exit policy for this case
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC) 
+		p_policy = POLICY_EXIT;
+
+	addCallbackHandler(detector, p_instruction, nop_i, nextOrig_i, p_policy);
+}
+

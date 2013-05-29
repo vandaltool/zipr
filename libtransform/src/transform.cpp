@@ -770,6 +770,28 @@ void Transform::addJae(Instruction_t *p_instr, Instruction_t *p_fallThrough, Ins
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
 
+// jno - jump not overflow
+void Transform::addJno(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x71;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+}
+
+// jnc - jump not carry
+void Transform::addJnc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x73;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+}
+
 // not <reg> -- negate register
 void Transform::addNot(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
 {
