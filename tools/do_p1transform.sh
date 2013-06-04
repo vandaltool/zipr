@@ -213,21 +213,25 @@ echo "Finished replaying .json files: Replayed $input_cnt inputs"
 
 echo "Choosing at most $INPUT_CUTOFF inputs with best coverage"
 
-GREEDY_COVER=`$GRACE_HOME/concolic/scripts/set_cover.py $INPUT_CUTOFF $CONCOLIC_DIR/*.coverage`
+if [ "$input_cnt" -ne 0 ]; then
+	GREEDY_COVER=`$GRACE_HOME/concolic/scripts/set_cover.py $INPUT_CUTOFF $CONCOLIC_DIR/*.coverage`
 
-input_cnt=`echo $GREEDY_COVER|wc -w`
 
-echo "Chose $input_cnt inputs"
+	input_cnt=`echo $GREEDY_COVER|wc -w`
 
-cat $GREEDY_COVER >> $EXECUTED_ADDRESSES_CONCOLIC
+	echo "Chose $input_cnt inputs"
+
+	cat $GREEDY_COVER >> $EXECUTED_ADDRESSES_CONCOLIC
 
 # Remove inputs that were not chosen.
-for i in $BASELINE_DIR/*
-do
-    if [[ ! "$GREEDY_COVER" =~ `basename $i` ]]; then
-        rm -r $i
-    fi
-done
+	for i in $BASELINE_DIR/*
+	do
+		if [[ ! "$GREEDY_COVER" =~ `basename $i` ]]; then
+			rm -r $i
+		fi
+	done
+
+fi
 
 touch $EXECUTED_ADDRESSES_CONCOLIC
 
