@@ -53,6 +53,9 @@ protected:
     std::vector<std::string> not_transformable;
     std::vector<libIRDB::Function_t*> failed;
 
+    // write stack objects to IRDB
+    bool write_stack_ir_to_db;
+
     //   virtual bool Rewrite(PNStackLayout *layout, libIRDB::Function_t *func);
 //    virtual bool LayoutValidation(PNStackLayout *layout);
     virtual bool Validate(libIRDB::FileIR_t *virp, libIRDB::Function_t *func);
@@ -81,6 +84,9 @@ protected:
     virtual unsigned int GetRandomCanary();
 	virtual void GenerateTransformsHidden();
 	void SanitizeFunctions();
+//    virtual bool WriteToDB();
+    virtual bool WriteStackIRToDB();
+
 public:
     static bool timeExpired;
     //TODO: use unsigned int?
@@ -104,6 +110,7 @@ public:
 	virtual void SetProtectSharedObjects(bool do_protection);
 
     virtual void GenerateTransforms();
+    virtual void SetWriteStackIrToDb(bool setting) { write_stack_ir_to_db = setting; }
 };
 
 #endif

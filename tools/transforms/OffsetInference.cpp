@@ -82,13 +82,15 @@ OffsetInference::~OffsetInference()
   }
 */
 
-StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
+StackLayout* OffsetInference::SetupLayout(Function_t *func)
 {
 	unsigned int stack_frame_size = 0;
 	int saved_regs_size = 0;
 	int out_args_size = func->GetOutArgsRegionSize();
 	bool push_frame_pointer = false;
 	bool save_frame_pointer = false;
+
+	Instruction_t *entry = func->GetEntryPoint();
 
 	//	 bool has_frame_pointer = false;
 
@@ -100,15 +102,19 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 
 	//TODO: find the fallthrough of the entry block, and loop to it if necessary. 
 
+/*
 	for(
 		vector<Instruction_t*>::const_iterator it=entry->GetInstructions().begin();
 		it!=entry->GetInstructions().end();
 		++it
 		)
+*/
+	while(entry != NULL)
 	{
 		string matched;
 
-		Instruction_t* instr=*it;
+		//Instruction_t* instr=*it;
+		Instruction_t* instr = entry;
 		string disasm_str;
 
 		DISASM disasm;
@@ -133,6 +139,7 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 				if(verbose_log)
 					cerr<<"OffsetInference: SetupLayout(): Stack Frame Already Allocated, Ignoring Push EBP"<<endl;
 
+				entry = entry->GetFallthrough();
 				continue;
 			}
 
@@ -164,6 +171,7 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 				if(verbose_log)
 					cerr<<"OffsetInference: SetupLayout(): Stack Frame Already Allocated, Ignoring Push Instruction"<<endl;
 
+				entry = entry->GetFallthrough();
 				continue;
 			}
 
@@ -177,11 +185,18 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 			//the push is part of fixed calls. 
 			if((disasm.Argument2.ArgType & 0xF0000000) == CONSTANT_TYPE)
 			{
+				//Grab the pushed value
+				assert(pmatch[1].rm_so >=0 && pmatch[1].rm_eo >=0);
+				int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+				matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+
 				//cerr<<"DEBUG DEBUG: Disasm match: "<<disasm.CompleteInstr<<endl;
 
-				if((it+1) != entry->GetInstructions().end())
+//				if((it+1) != entry->GetInstructions().end())
+				if(entry->GetFallthrough() != NULL)
 				{
-					Instruction_t* next=*(it+1);
+//					Instruction_t* next=*(it+1);
+					Instruction_t* next = entry->GetFallthrough();
 					DISASM next_disasm;
 					next->Disassemble(next_disasm);
 
@@ -190,9 +205,39 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 					if(next_disasm.Instruction.BranchType == JmpType)
 					{
 						//TODO: check if jmp is out of the function?
-						
+
 						if(verbose_log)
 							cerr<<"OffsetInference: SetupLayout(): Found push matching fix calls pattern, ignoring the push (i.e., not recording the bytes pushed)."<<endl;
+
+
+						//find the indirect branch target instruction, and reset entry to this instruction, then continue execution of the loop. 
+
+						int target_addr_offset;
+						assert(str2int(target_addr_offset, matched.c_str())==SUCCESS);
+
+						for(
+							set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
+							it!=func->GetInstructions().end();
+							++it
+							)
+						{
+							Instruction_t *cur = *it;
+
+							if(cur->GetIndirectBranchTargetAddress() == NULL)
+								continue;
+							
+							int cur_ibta = (int)cur->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+
+							//The target instruction is found, set entry to point to this instruction
+							//continue analysis from this instruction. 
+							if(cur_ibta == target_addr_offset)
+							{
+								entry = cur;
+								break;
+							}
+						}
+
+						assert(entry != NULL);
 						continue;
 					}
 				}
@@ -215,6 +260,7 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 				if(verbose_log)
 					cerr <<"OffsetInference: FindAllOffsets(): Stack Alloc Previously Found, Ignoring Instruction"<<endl;
 
+				entry = entry->GetFallthrough();
 				continue;
 			}
 
@@ -263,6 +309,7 @@ StackLayout* OffsetInference::SetupLayout(BasicBlock_t *entry, Function_t *func)
 		
 			}
 		}
+		entry = entry->GetFallthrough();
 	}
 
 	return NULL;
@@ -302,15 +349,18 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 	if(verbose_log)
 		cerr<<"OffsetInference: FindAllOffsets(): Looking at Function = "<<func->GetName()<<endl;
 
-	ControlFlowGraph_t cfg(func);
+//	ControlFlowGraph_t cfg(func);
 
-	BasicBlock_t *block = cfg.GetEntry();
+//	BasicBlock_t *block = cfg.GetEntry();
 
 	//TODO: this is an addition for TNE to detect direct recursion,
 	//in the future the call graph should be analyzed to find all recursion. 
-	Instruction_t *first_instr = *(block->GetInstructions().begin());
+//	Instruction_t *first_instr = *(block->GetInstructions().begin());
 
-	pn_all_offsets = SetupLayout(block,func);
+	Instruction_t *first_instr = func->GetEntryPoint();
+
+//	pn_all_offsets = SetupLayout(block,func);
+	pn_all_offsets = SetupLayout(func);
 
 	if(pn_all_offsets != NULL)
 	{
@@ -350,6 +400,8 @@ cerr<<"OffsetInference: FindAllOffsets(): Number of CFG found instructions does 
 //Checking that GetInstructions hasn't screwed up
 assert(instructions.size() != 0);
 */
+
+//TODO: should I start modifying at the entry point? 
 	for(
 		set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
 		it!=func->GetInstructions().end();

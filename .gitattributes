@@ -380,6 +380,8 @@ tools/transforms/OffsetInference.cpp -text
 tools/transforms/OffsetInference.hpp -text
 tools/transforms/P1Inference.cpp -text
 tools/transforms/P1Inference.hpp -text
+tools/transforms/PNIrdbManager.cpp -text
+tools/transforms/PNIrdbManager.hpp -text
 tools/transforms/PNMain.cpp -text
 tools/transforms/PNRange.cpp -text
 tools/transforms/PNRange.hpp -text

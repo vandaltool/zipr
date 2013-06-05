@@ -39,6 +39,7 @@ enum
 	NO_P1_VALIDATE_OPTION,
 	ALIGN_STACK_OPTION,
 	APRIORI_OPTION,
+	GROUND_TRUTH_OPTION,
 	SHARED_OBJECT_PROTECTION_OPTION
 };
 
@@ -56,6 +57,7 @@ static struct option const long_options[] =
 	{"no_p1_validate",no_argument,NULL,NO_P1_VALIDATE_OPTION},
 	{"apriori_layout_file",required_argument, NULL, APRIORI_OPTION},
 	{"align_stack",no_argument,NULL,ALIGN_STACK_OPTION},
+	{"ground_truth",no_argument,NULL,GROUND_TRUTH_OPTION},
 	{"shared_object_protection",no_argument,NULL,SHARED_OBJECT_PROTECTION_OPTION},
 	{NULL, 0, NULL, 0}
 };
@@ -166,6 +168,7 @@ int main(int argc, char **argv)
 	bool align_stack=false;
 	bool shared_object_protection=false;
 	double p1threshold=0.0;
+	bool do_ground_truth=false;
 
 	while((c = getopt_long(argc, argv, "", long_options, NULL)) != -1)
 	{
@@ -236,6 +239,11 @@ int main(int argc, char **argv)
 		case SHARED_OBJECT_PROTECTION_OPTION:
 		{
 			shared_object_protection=true;
+			break;
+		}
+		case GROUND_TRUTH_OPTION:
+		{
+			do_ground_truth=true;
 			break;
 		}
 		case '?':
@@ -317,6 +325,7 @@ int main(int argc, char **argv)
 		transform_driver.SetCoverageMap(coverage_map);
 		transform_driver.SetCoverageThreshold(p1threshold);
 		transform_driver.SetProtectSharedObjects(shared_object_protection);
+		transform_driver.SetWriteStackIrToDb(do_ground_truth);
 
 		//The passed in level must match a level that exists
 		if(! validate_p1)

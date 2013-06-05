@@ -5,6 +5,7 @@
 #include <fstream>
 #include "beaengine/BeaEngine.h"
 #include "General_Utility.hpp"
+#include "PNIrdbManager.hpp"
 #include <cmath>
 #include "globals.h"
 
@@ -497,6 +498,11 @@ void PNTransformDriver::GenerateTransforms()
 		GenerateTransformsHidden();
 		
 //		delete orig_virp;
+	}
+
+	if (write_stack_ir_to_db)
+	{
+		WriteStackIRToDB();
 	}
 
 	cerr<<"############################Final Report############################"<<endl;
@@ -1628,6 +1634,54 @@ void PNTransformDriver::undo( Function_t *func)
 */
 
 
+bool PNTransformDriver::WriteStackIRToDB()
+{
+    // DEBUG
+    cerr << "Writing stack IR to IRDB!" << endl;
+
+    PNIrdbManager irdb_manager(this->pidp->GetOriginalVariantID());
+    if (!irdb_manager.TableExists())
+    {
+        irdb_manager.CreateTable();
+    }
+    else
+    {
+        irdb_manager.DeleteSource(PNIrdbManager::PEASOUP);
+    }
+
+    std::map< std::string,std::vector<PNStackLayout*> >::const_iterator it =
+        transformed_history.begin();
+    while (it != transformed_history.end())
+    {
+        vector<PNStackLayout*> layouts = it->second;
+        for (unsigned int laynum = 0; laynum < layouts.size(); ++laynum)
+        {
+            // DEBUG
+            cerr << "Function: " << layouts[laynum]->GetFunctionName() << endl;
+
+            std::vector<PNRange*> mem_objects = layouts[laynum]->GetRanges();
+            for(unsigned int j = 0; j < mem_objects.size(); j++)
+            {
+                libIRDB::db_id_t new_id = irdb_manager.InsertStackObject(
+                    layouts[laynum]->GetFunctionName(),
+                    mem_objects[j]->GetOffset(),
+                    mem_objects[j]->GetSize(),
+                    PNIrdbManager::PEASOUP);
+
+                // DEBUG
+                cerr<< "\tOffset = " << mem_objects[j]->GetOffset() << " Size = "<<mem_objects[j]->GetSize() << endl;
+
+                // return with failure if any insertion fails
+                if (new_id == -1)
+                    return false;
+            }
+        }
+
+        it++;
+    }
+
+    return true;
+}
 
 void sigusr1Handler(int signum)
 {
