@@ -30,7 +30,20 @@ typedef struct elf_info {
 
 void found_string(string s, void* addr)
 {
-	cout << "Found string: \""<<s<<"\" at "<<std::hex<<addr<<std::dec<<endl;
+	char buff[s.length()];
+	char *old_p=buff, *p;
+	memcpy(buff,s.c_str(),s.length());
+
+	// look for new lines in the string
+	// if found, split it up and print out each one as it's own thing.
+	while(p=strchr(old_p,'\n'))
+	{
+		*p=0;
+		cout << "Found string: \""<<old_p<<"\" at "<<std::hex<<addr<<std::dec<<endl;
+		old_p=p+1;
+	} 
+
+	cout << "Found string: \""<<old_p<<"\" at "<<std::hex<<addr<<std::dec<<endl;
 }
 
 void load_section(elf_info_t &ei, int i, pqxx::largeobjectaccess &loa)
