@@ -552,7 +552,7 @@ perform_step watchdog 	 signconv_func_monitor $PEASOUP_HOME/tools/update_env_var
 perform_step is_so 	 mandatory $PEASOUP_HOME/tools/update_env_var.sh STRATA_IS_SO $($PEASOUP_HOME/tools/is_so.sh a.ncexe)
 
 # turn on sign conversion function monitoring
-perform_step signconv_func_monitor none $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
+perform_step signconv_func_monitor heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_NUM_HANDLE 1
 
 
 #
