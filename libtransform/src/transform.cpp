@@ -259,31 +259,29 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	Function_t* func = p_instruction->GetFunction();
 
  	// create and register new instructions (and addresses)
-	Instruction_t* pusha_i = allocateNewInstruction(fileID, func);
 	Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
+	Instruction_t* pusha_i = allocateNewInstruction(fileID, func);
 	Instruction_t* pushPolicy_i = allocateNewInstruction(fileID, func);
 	Instruction_t* pusharg_i = allocateNewInstruction(fileID, func);
 	Instruction_t* pushret_i = allocateNewInstruction(fileID, func);
 	Instruction_t* poparg_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popPolicy_i = allocateNewInstruction(fileID, func);
-	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
 	Instruction_t* popa_i = allocateNewInstruction(fileID, func);
+	Instruction_t* popf_i = allocateNewInstruction(fileID, func);
 
 	// pin the poparg instruction 
 	virtual_offset_t postDetectorReturn = getAvailableAddress();
 	poparg_i->GetAddress()->SetVirtualOffset(postDetectorReturn);
 
 	// link callback handler sequence to instrumented instruction
-	p_instruction->SetFallthrough(pusha_i);
-	p_instruction->SetComment(p_instruction->GetComment() + " -- Link to callback handler sequence");
-
-	// pusha   
-	addPusha(pusha_i, pushf_i);
-	pusha_i->SetComment(pusha_i->GetComment() + " -- start of callback handler sequence");
+	p_instruction->SetFallthrough(pushf_i);
+	p_instruction->SetComment(p_instruction->GetComment() + " -- start of callback handler sequence");
 
 	// pushf   
-	addPushf(pushf_i, pushPolicy_i);
-	pushf_i->SetComment(pushf_i->GetComment() + " -- within callback handler");
+	addPushf(pushf_i, pusha_i);
+
+	// pusha   
+	addPusha(pusha_i, pushPolicy_i);
 
 	// push detector exit policy
 	//     0 - default
@@ -336,13 +334,14 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 	dataBits.resize(1);
 	dataBits[0] = 0x58;
 	popPolicy_i->SetDataBits(dataBits);
-	popPolicy_i->SetFallthrough(popf_i); 
-
-	// popf   
-	addPopf(popf_i, popa_i);
+	popPolicy_i->SetFallthrough(popa_i); 
 
 	// popa   
-	addPopa(popa_i, p_fallThrough);
+	addPopa(popa_i, popf_i);
+
+	// popf   
+	addPopf(popf_i, p_fallThrough);
+
 }
 
 // returns true if BeaEngine says arg1 of the instruction is a register 
