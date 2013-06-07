@@ -30,9 +30,10 @@ typedef struct elf_info {
 
 void found_string(string s, void* addr)
 {
-	char buff[s.length()];
+	char buff[s.length()+2];
 	char *old_p=buff, *p;
 	memcpy(buff,s.c_str(),s.length());
+	buff[s.length()]=0;
 
 	// look for new lines in the string
 	// if found, split it up and print out each one as it's own thing.
