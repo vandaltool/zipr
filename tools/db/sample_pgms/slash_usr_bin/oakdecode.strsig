@@ -1,0 +1,95 @@
+ !"#	%&'()*+,-./0123456789:;<=>? ABCDEFGHIJKLMNO0QRSTUVWGYZ[\]^V`abcd]fghcjkgmkomoarith_decode
+$&'(*+-.0134689;<>? !
+%02x (%d)
+	0x%08x %4d %4d %4d 0x%08x %5d %5d 0x%03x %4d %d %d
+	0x%x	0x%x	%d	%d	%d	%d	0x%x
+		%8s %4s %4s %4s %8s %5s %5s %3s %4s %s %s
+\$@9\$0s
+9J|~:;0u
+ABORT marker segment encountered
+@ACDEFHIJKMNO0223456789:;==
+arith_encode
+__assert_fail
+BD$d;t$d
+	Copies=0x%x	Duplex=0x%x
+cx >= 0 && cx < 4096
+, %d/%02d/%02d %02d:%02d:%02d
+D$0+D$$=
+D$,9D$(t
+D$(9D$\v
+       -d basename Basename of .pbm file for saving decompressed planes
+D$D+L$X)
+	Decode an Oak Tech. OAKT printer stream into human readable form.
+d:ior:D:?h
+		DL = %d, D = %d, P = %d, - = %d, XY = %d x %d
+       -D lvl      Set Debug level [%d]
+ driver=
+	Duplex=0x%x	Short=0x%x
+efghcijkg
+envMonarch
+__errno_location
+executive
+Expected OAK header, got short read: %d bytes
+ filename=
+file '%s' doesn't exist
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+$Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $ 
+Incremental BIE does not continue previous one
+Input data stream contains invalid data
+Input data stream uses unimplemented JBIG features
+_IO_putc
+_IO_stdin_used
+       -i          Supress display of image records
+jbig_ar.c
+JBIG-KIT 2.0 -- (c) 1995-2008 Markus Kuhn -- Licence: GPL
+		L0 = %d, MX = %d, MY = %d
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Missing image p=%d/%d %dx%d!
+ (no args)
+Not enough memory available
+	oakdecode [options] < OAKT-file
+	OAKT is the printer langauge used by the HP 1500 printers.
+       -o          Print file offsets
+Options:
+		Options = %d %s%s%s%s%s%s%s%s
+		Order   = %d %s%s%s%s%s
+	papercode=%s(%d)
+ PaperType=%d UNK8=%d,%d,%d, str='%s'
+PQRSTVWWHHJJKMM
+__printf_chk
+       -r basename Basename of .jbg file for saving raw planes
+rc= %d size=%d
+Reached specified image size
+%s-%02d-%d-%d.jbg
+%s-%02d-%d-%d.pbm
+s->buffer != 0xff
+Short read of hdr3c
+ Source=Auto
+ Source=%d
+ Source=ManualFeed
+ Source=Tray1
+ Source=Tray2
+__sprintf_chk
+ss < 113
+__stack_chk_fail
+statement
+strerror
+Unexpected end of input data stream
+	unk0	unk1	w	h	resx	resy	nBits
+	UNK=0x%x
+Unknown error code passed to jbg_strerror()
+Unknown marker segment encountered
+		%u stripes, %d layers, %d planes
+u&;t$@s 
+__vfprintf_chk
+ VLENGTH
+Warning: 
+	xwid=%d
+	ywid=%d

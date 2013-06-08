@@ -1,0 +1,412 @@
+                   
+                  }
+               }
+            }
+         }
+         };
+      };
+  1: (default) native exploration of the specified directory, but file sizes
+  2: like 1, but all files in directory are put together (as \"atom\") onto the
+  3: like 2, but don't coalesc files when the size of the \"atom\" becomes too
+  4: like 2, but the max. size of the atoms is limited to $max (storing the
+   "a|accuracy=i"            => \$acc,
+ -a|--accuracy NUMBER (1=faster, large number=better efficiency, default: 500)
+         # a bit complicated, split file set while creating coal.objects
+# about 400kB for iso headers
+$acc=1 if ($testsize <= $max); # just generate a list, more trials are pointless
+            # already too large, stop right here
+   # and now process files
+# and the real work
+               are rounded up to 2048 blocks plus estimated overhead for
+   # args: 
+# args: size, object (filename or list reference)
+# array (bins) of atoms (files or filelists). Otherwise, sizes
+# Author           : Eduard Bloch ( blade@debian.org )
+   "b|blksize=i"            => \$bsize,
+ -b|--blksize  NUMBER, block size of the target filesystem (currently $bsize).
+   $bel[0] = $in[0];
+         $bel[$bestplace]=$_;
+         $bel[$bestplace]+=$_;
+            $bel[$i]=$newsize;
+      $bel[$i]=$obj;
+            $bestplace=$i;
+            $bestwert=$rest;
+# big list @sizes containing the "items" (object sizes)
+Bugs: overhead trough blocksize alignment and directory entry storage varies,
+(cdrecord -v -toc ...). 
+# check for pointless requests
+   closedir(DIR);
+   close($o) if($o);
+   # count all rests but the last one
+   "d|dirhier"            => \$opt_dir,
+               die "Could not create $targetsubdir?\n" if(!(-d $targetsubdir && -w $targetsubdir));
+   die "Error: please specify a directory\n";
+   die "$fac is not a valid multiplier!";
+die "Nothing to do!\n" if($testsize<4096); # looks like just an empty dir
+            die "Too large file ($_) for the given max size $max, aborting...\n";
+   die "Too large object(s) ($_) for the given max size: @{$names{$_}} (maybe coalesced in arrays, check manually)\n" if($_>$max);
+# dirsplit ---
+dirsplit -m -s 120M -e4 largedirwithdata/ -p /zipmedia/backup_   #move stuff into splitted backup dirs
+dirsplit -m -s 700M -e2 random_data_to_backup/
+dirsplit [options] [advanced options] < directory >
+dirsplit -s 700M -e2 -f '/other\\/Soundtracks/' music/ # like above, only take files from other/Soundtracks
+dirsplit -s 700M -e2 -f '!/Thumbs.db|Desktop.ini|\\.m3u\$/i' # like above, ignore some junk files and playlists, both letter cases
+dirsplit -s 700M -e2 music/ # make mkisofs catalogs to burn all music to 700M CDRs, keep single files in each dir together
+            # don't coalesc in this mode, do like mode 1 above, leave them alone
+   "e|expmode=i"            => \$emode,
+ -e|--expmode  NUMBER - directory exploration mode (recommended, see long help)
+ -e|--expmode  NUMBER, special exploration modes, used with directory argument
+                  else {
+               else {
+         else {
+      else {
+      else{
+   else {
+   elsif(defined($_[1])) {
+      elsif(-d $f) {
+elsif($opt_listfile) {
+               elsif($opt_ln) {
+            # escape = in mkisofs catalogs, they are used as separator
+Example:
+Examples:
+   exit 0;
+exit $ret;
+   exit shift;
+   &explore($_) for(@dirs);
+   &explore($inputdir);
+      $fac=$_[1];
+      $fac=$2;
+      $f="$dir/$f" if($dir ne ".");
+ -f|--filter   EXPR - Filter expression, see examples below and perlre manpage
+   "f|filter=s"            => \$opt_filter,
+ -F|--follow   Follow symlinks. Use with care!
+   "F|follow"            => \$opt_follow,
+               filename length, default: 50, empiricaly found for Joliet+RR
+               filenames (see -o option)
+File sizes are expected to be in bytes, append modifier letters to multiply
+         $filesum += $tmp;
+               find dir -type f -printf \"%s %p\n\"
+      # first fit, use the first bin with enough free space
+            #fits here
+ --flat        Flat dir mode, don't recreate subdirectory structure (not recommended)
+   "flat"            => \$opt_flat,
+   for(@{$_}) {
+   for(1..$acc) {
+   foreach my $f (@stuff) {
+      for(@files) {
+      for($i=0;$i<=$#out;$i++) {
+   for($i=0;$i<$#out;$i++) {
+   for(@in) {
+      for my $file (@$stuffRef) {
+            for(my $i=0;$i<=$#sorted;$i++) {
+for(@result) {
+      # For simple mode, the files/atoms are already resolved, otherwise take
+for(@sizes) {
+for x in *list ; do mkisofs -quiet -D -r --joliet-long -graft-points \\
+         $globwaste += ( $max-$simpleBinSizes[$simplePos] );
+   $globwaste=$max*@sizes;
+         $globwaste=$waste;
+      # handle coalesced objects - first some sanity checks and splitting if
+      # handle coal. objects becoming too large
+heavily depends on the target filesystem and configuration (see -b and -o).
+   "h|help"                => \$opt_help,
+ -h|--help     Show this option summary
+   "H|longhelp"            => \$opt_longhelp,
+ -H|--longhelp Show the long help message with more advanced options
+                  $i--;
+   $i++;
+   if($_[0]=~/(\d+)(\D)/) {
+      if($bestplace>$#out) {
+if(-d $ARGV[0] || (-d readlink($ARGV[0]))) {
+                  if(-d $file && !-l $file) {
+   if( (@dirs + @files) == 0 ) {
+   if($emode==1) {
+         if($emode==3) {
+         if($emode==4) {
+      if($filesum) {
+      if($filesum>$max) {
+if($get_ver) {
+      if(-l $f && ! $opt_follow) {
+         if( $newsize <= $max ) {
+      if ($opt_filter) {
+   if($opt_listfile eq "-") {
+         if($opt_move) {
+            if(!$opt_sim) {
+   if($opt_simple) {
+if(!$opt_simple) {
+               if($opt_sln) {
+               if($partsum>$max) {
+      if(ref($item) eq "ARRAY") {
+         if($rest>0 && $rest < $bestwert) {
+      if($simpleBinSizes[$simplePos]+$size > $max) {
+      if($starttime && time > $starttime+10) {
+         if($tmp>$max) {
+      if($waste < $globwaste) {
+      if(/^(\w+)\s+(.+)/) {
+# ignore the old dirhier setting since it is default now and disable the flag when opt_flat is specified
+# init default value
+   $inputdir=Cwd::abs_path($ARGV[0]);
+         &insitem($filesum, \@files);
+         &insitem(fixnr($1), $2);
+      &insitem(getsize($dir), $dir);
+            &insitem(getsize($_), $_) for(@files);
+      &insitem(getsize($_), $_) for(@files);
+                  &insitem($partsum, \@tmpvol);
+# instead of atoms, to be resolved with %names.
+            $isoname=~s/=/\\=/g;
+               large for the medium size (currently $max)
+               # last check
+# Last Modified On : Sun, 06 Feb 2005 14:59:51 +0100
+ -L|--hardlink like -l but creates hardlinks
+   "L|hardlink"           => \$opt_ln,
+# License: GPLv2
+                     link($file, "$targetsubdir/$base");
+   "l|symlink"            => \$opt_sln,
+ -l|--symlink  similar to -m but just creates symlinks in the target dirs
+      # make reference point to an array with our files, create a list if needed
+$max-=420000;
+$max=fixnr($max);
+                     mkdir "$targetsubdir/$base";
+    mkisofs -D -r --joliet-long -graft-points -path-list CATALOG
+               mkpath $targetsubdir || die "Problems creating $targetsubdir\n";
+ -m|--move     Move files to target dirs (default: create mkisofs catalogs)
+   "m|move"            => \$opt_move,
+               mode.
+# mode 1: descend as far as possible and index all non-directories
+# mode 2++:
+#                              -*- Mode: Perl -*-
+my $acc=20;
+         my $base=basename($relFile);
+   my @bel;
+      my $bestplace=$#out+1;
+      my $bestwert=$max;
+         my @bin;
+      my @bin;
+my $bsize=2048;
+   (my $dir) = @_;
+   my $dirPrefixAbs=Cwd::abs_path($dirPrefix);
+   my $dirPrefix=dirname($prefix);
+   my @dirs;
+my $emode=1;
+   my $fac;
+   my $fh=${$_[0]};
+   (my $file) = @_;
+   my @files;
+      my $filesum=0;
+my $get_ver;
+my $globwaste=0;
+my $i=0;
+   my @in = @{$_[1]};
+my $inDirLen=length($inputdir);
+my $inputdir;
+            my $isoname = ($opt_dir?$relFile : $base);
+      my $item= $opt_simple ? $_ : shift(@{$names{$_}});
+   my $max=$_[0];
+my $max="4488M";
+   my $msglong="
+my %names;
+         my $newsize=($bel[$i]+$obj);
+   my $nr;
+   my $o;
+my $ofac =50;
+my $opt_dir;
+my $opt_filter;
+my $opt_flat;
+my $opt_follow;
+my $opt_help;
+my %options = (
+my $opt_listfile;
+my $opt_ln;
+my $opt_longhelp;
+my $opt_move;
+my $opt_sim;
+my $opt_simple;
+my $opt_sln;
+my $opt_ver;
+   my @out;
+            my $partsum=0;
+   my $prefixBase=basename($prefix);
+my $prefix="vol_";
+         my $relFile=substr($file,$inDirLen+1);
+         my $rest;
+   my $rest = ($size % $bsize);
+my @result;
+   my $ret=0;
+my $ret=0;
+my @simpleBinSizes;
+my $simplePos=0;
+   my ($size, $object) = @_;
+my @sizes;
+   my $size = ((stat($file))[7]);
+            my @sorted=sort(@files);
+            my $sourcefile=$file;
+   my $starttime=time;
+   my @stuff;
+      my $stuffRef;
+   my $target = $_[2];
+            my $targetsubdir = $dirPrefixAbs."/$prefixBase$i";
+my $testsize=0;
+      my @tmp;
+   my @tmp;
+         my $tmp=getsize($_);
+               my $tmp=getsize($sorted[$i]);
+            my @tmpvol;
+my $version="0.3.3";
+      #my $waste = bp_bestfit($max, \@in, \@tmp);
+      my $waste = bp_firstfit($max, \@sizes, \@tmp);
+# %names hash mapping "items" (size as key) to arrays with filenames/subarrays for coalesced files
+      # neues Bin
+      next if ($f eq "." || $f eq "..");
+            next piece; # break
+         next unless (eval("\$f=~$opt_filter;"));
+ -n|--no-act   Only print the commands, no action (implies -v)
+   "n|no-act"            => \$opt_sim,
+   # normaly, put the items into the pool for calculation. In simple mode, calculate here
+      # now the simplest method to fill the bins, just take a new one when the
+      $nr=$_[0];
+      $nr=$1;
+   # Number
+      # object-to-be-added no longer fits
+      # ok, building a coalesced object for simple cases
+   "o|overhead=i"            => \$ofac,
+ -o|--overhead NUMBER, overhead caused by directory entries (as factor for the
+   opendir(DIR, $dir) || die "Could not open $dir\n";
+      open(my $in, "<", $opt_listfile) || die "Cannot open list file $opt_listfile\n";
+   open($o, ">$prefix$i.list") if(! ($opt_move || $opt_sim));
+$opt_dir = !$opt_flat;
+   # optional: default multiplier
+$opt_move=1 if ($opt_sln || $opt_ln);
+$opt_ver = 1 if $opt_sim;
+(output in blocks of 2048 bytes) with the expected size (-s) and media data
+# parameter: directory
+# Parms: bin size (int), input array (arr reference), output array (arr reference)
+      &parseListe($in);
+      &parseListe(\*STDIN);
+                  $partsum-=$tmp;
+               $partsum+=$tmp;
+ -path-list \$x -print-size; done
+   piece: foreach my $obj (@in) {
+   "p|prefix=s"              => \$prefix,
+ -p|--prefix   STRING - first part of catalog/directory name (default: vol_)
+#         print "bel[i]: $bel[$i], new?: $newsize to max: $max\n";
+#            print "D: i: $i, partsum: $partsum, file: $sorted[$i]\n";
+      #print "D: waste - $waste\n";
+   print <<EOM
+#            print "F: bin$i: $bel[$i]+$obj=$newsize\n";
+      #       print "F: bin$i: $obj, @{$names{$obj}}\n";
+            print "$file -> $targetsubdir/$base\n" if($opt_ver);
+      #print "\$f=$opt_filter;\n";
+#           print "hm, bel $i ist :".$bel[$i]." und res:".($max-$bel[$i])."\n";
+            print "$i: /$isoname=$sourcefile\n" if $opt_ver;
+   print $msglong;
+#      print "N: bin$i: $bel[$i]=$obj\n";
+print "\nCalculated, using ".(scalar @result)." volumes.\n";
+print "\nSumm: $testsize\n" if($opt_ver);
+            print $o "/$isoname=$sourcefile\n" if(!$opt_sim);
+   print $version;
+print "Wasted: $globwaste Byte (estimated, check mkisofs -print-size ...)\n";
+#      print "wtf, ".join(",", @{$out[0]})."\n";
+         push(@bin, $_);
+      push(@bin, $obj);
+         push(@dirs, $f);
+         push(@files, $f);
+   push(@{$names{$size}},$object);
+         push(  @{$out[$bestplace]}    , $_);
+         push(@out,\@bin);
+      push(@out,\@bin);
+            push(  @{$out[$i]} , $obj);
+   push(@out, \@tmp);
+      push( @{$result[$simplePos]}, $object);
+   push(@sizes, $size);
+   push(@tmp,$in[0]);
+                  push(@tmpvol, $sorted[$i]);
+# put all files of a dir into coaleseced-object, then descend into each dir
+   # recurse on directories
+# recursive function
+                  rename($file, "$targetsubdir/$base");
+      # required
+require v5.8.1;
+                  # reset temporaries
+         $rest=$max-$bel[$i]-$_;
+               rest on another medium)
+# result containts the calculated output. In simple mode, an
+         @result=@tmp;
+      $ret+=($max-$bel[$i]);
+            return;
+      return;
+      return $_[0];
+   return 1+int(200 + $ofac*length(basename($file)) + $size);
+   return $nr*1000000000 if($fac eq "g");
+   return $nr*1000000 if($fac eq "m");
+   return $nr*1000 if($fac eq "k");
+   return $nr*1024 if($fac eq "K");
+   return $nr*1048576 if($fac eq "M");
+   return $nr*1073741824 if($fac eq "G");
+   return $nr if($fac eq "b");
+   return $ret;
+# Returns: wasted space (int)
+               same medium. This does not apply to subdirectories, however.
+   # save the absolut path before doing anyhting
+   shift @in;
+&show_help(1) if $opt_help;
+&show_help(1) unless ( GetOptions(%options));
+&show_longhelp if $opt_longhelp;
+      $simpleBinSizes[$simplePos]+=$size;
+         $simplePos++;
+   $size = ($size + $bsize - $rest) if ($rest);
+      @sizes=shuffle(@sizes);
+            $sourcefile=~s/=/\\=/g;
+   "S|simple"             => \$opt_simple,
+ -S|--simple   Simple/stupid/alphabetic mode
+ -s|--size     NUMBER - Size of the medium (default: $max)
+   "s|size=s"             => \$max,
+# Status           : Working, but use with caution!
+   @stuff=readdir(DIR);
+         $stuffRef=[$item];
+         $stuffRef=$item;
+      @stuff=sort { lc($a) cmp lc($b) } @stuff;
+sub bp_bestfit {
+sub bp_firstfit {
+sub explore {
+sub fixnr {
+sub getsize {
+sub insitem {
+sub parseListe {
+sub show_help {
+sub show_longhelp {
+   # sum up all rests except of the one from the last bin
+                  symlink($file, "$targetsubdir/$base");
+      syswrite(STDOUT,".");
+   syswrite(STDOUT,"Building file list, please wait...\n");
+   syswrite(STDOUT, "Calculating, please wait...\n");
+         syswrite(STDOUT,"\nSpent already over 10s (for $_ iterations)\nHint: reduce accuracy to make it faster!\n");
+   @{$target} = @out;
+            $targetsubdir .= "/".dirname($relFile) if($opt_dir);
+   $testsize+=$_;
+The complete help can be displayed with the --longhelp (-H) option.
+The default mode is creating file catalogs useable with:
+The default output mode is creating file catalogs useable with
+      # the next with appropriate size. 
+      # this one is empty, register for cosmetics reason
+ -T|--input    FILENAME (or - for STDIN):  List with sizes and paths, try:
+   "T|input=s"       => \$opt_listfile,
+               to get an example. Avoid duplicates! Unit suffixes are allowed.
+         # too large coal. object...
+                  undef $partsum;
+         undef $starttime;
+                  undef @tmpvol;
+                  # undo the last step then build the coal.object
+use Cwd 'abs_path';
+use File::Basename;
+use File::Path;
+use Getopt::Long qw(:config no_ignore_case bundling);
+use List::Util 'shuffle';
+use strict;
+#!/usr/bin/perl
+   "version"                 => \$get_ver
+ -v|--verbose  More verbosity
+   "v|verbose"            => \$opt_ver,
+   while(<$fh>) {
+with a factor, eg 200M (b,k,K,m,M,g,G for Bytes, Kb, KiB, Mb, MiB, Gb, GiB).
+               with not-so-deep directory structure). Works in exploration
+You should compare the required size of the created catalogs, eg.:

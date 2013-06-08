@@ -1,0 +1,182 @@
+__assert_fail
+bad group ID `%d' for user `%s': %s
+bad user ID `%d' for user `%s': %s
+BASH_ENV=
+/bin/bash
+bindtextdomain
+Cannot determine the user name of the caller (UID %lu)
+Cannot execute %s
+cannot open login definitions %s [%s]
+cannot read login definitions %s [%s]
+Can't change root directory to '%s'
+can't switch back to group `%d' in sulog
+  -c, --command COMMAND         pass COMMAND to the invoked shell
+CHFN_RESTRICT
+c:hlmps:
+closelog
+COLORTERM
+configuration error - cannot parse %s value: '%s'
+configuration error - unknown item '%s' (notify administrator)
+CONSOLE_GROUPS
+could not allocate space for config info
+Could not allocate space for config info.
+CREATE_HOME
+__ctype_b_loc
+dcgettext
+DEFAULT_HOME
+ENCRYPT_METHOD
+endpwent
+endspent
+endusershell
+__environ
+Environment overflow
+ENV_PATH
+ENV_SUPATH
+ERASECHAR
+__errno_location
+/etc/login.defs
+FAILED su for %s by %s
+FAILLOG_ENAB
+FAKE_SHELL
+__fprintf_chk
+FTMP_FILE
+getlogin
+getopt_long
+getpwnam
+getpwnam_r
+getpwuid
+getpwuid_r
+getusershell
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -h, --help                    display this help message and exit
+HUSHLOGIN_FILE
+(Ignored)
+initgroups
+initgroups failed for user `%s': %s
+Invalid root directory '%s'
+invalid root `%s' for user `%s'
+_IO_stdin_used
+_Jv_RegisterClasses
+                                keep the same shell
+KILLCHAR
+ ...killed.
+KRB_CONF=
+LANGUAGE=
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+LIBPAM_1.0
+LIBPAM_MISC_1.0
+libpam_misc.so.0
+libpam.so.0
+LIBPATH=
+  -, -l, --login                make the shell a login shell
+localtime
+LOGIN_RETRIES
+LOGIN_TIMEOUT
+LOG_OK_LOGINS
+LOG_UNKFAIL_ENAB
+MAIL_DIR
+MAIL_FILE
+malloc(%d) failed
+MAX_MEMBERS_PER_GROUP
+MD5_CRYPT_ENAB
+misc_conv
+  -m, -p,
+NLSPATH=
+No directory, logging in with HOME=/
+no subsystem root `%s' for user `%s'
+Options:
+pam_acct_mgmt
+pam_acct_mgmt: %s
+pam_authenticate
+pam_authenticate: %s
+pam_chauthtok
+pam_chauthtok: %s
+pam_close_session
+pam_close_session: %s
+pam_getenvlist
+pam_get_item
+pam_get_item: internal PAM error
+pam_open_session
+pam_open_session: %s
+pam_setcred
+pam_setcred: %s
+pam_set_item
+pam_set_item: %s
+pam_start
+pam_start: error %d
+pam_strerror
+PASS_MAX_DAYS
+PASS_MIN_DAYS
+PASS_WARN_AGE
+PATH=/bin:/usr/bin
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+preserve-environment
+  --preserve-environment        do not reset environment variables, and
+__printf_chk
+%s: Cannot determine your user name.
+%s: Cannot fork user shell
+Session terminated, terminating shell...
+setlocale
+setusershell
+SHA_CRYPT_MAX_ROUNDS
+SHA_CRYPT_MIN_ROUNDS
+SHLIB_PATH=
+sigaction
+sigaddset
+sigemptyset
+sigfillset
+sigprocmask
+%s: Internal PAM error retrieving username
+%s: must be run from a terminal
+__snprintf_chk
+%s: out of memory
+%s: pam_start: error %d
+  -s, --shell SHELL             use SHELL instead of the default in passwd
+%s: signal malfunction
+%s: signal masking malfunction
+- %s %s:%s
++ %s %s:%s
+__stack_chk_fail
+strcasecmp
+__strcpy_chk
+__strdup
+__strncpy_chk
+SU %.02d/%.02d %.02d:%.02d %c %s %s-%s
+Successful su for %s by %s
+SULOG_FILE
+SU_NO_SHELL_ARGS
+su session not logged to %s
+SYS_GID_MAX
+SYS_GID_MIN
+__syslog_chk
+SYSLOG_SG_ENAB
+SYSLOG_SU_ENAB
+SYS_UID_MAX
+SYS_UID_MIN
+ ...terminated.
+There is no UID 0 user.
+TTYGROUP
+TTYTYPE_FILE
+Unable to cd to '%s'
+unable to cd to `%s' for user `%s'
+unknown configuration item `%s'
+Unknown id: %s
+Usage: su [options] [LOGIN]
+USERDEL_CMD
+USERGROUPS_ENAB
+/usr/share/locale
+ ...waiting for child to terminate.
+wlen == (int) len -1
+wlen < (int) sizeof(variable)
+XAUTHORITY
+xgetpwnam
+xgetpwuid
+You may not change $%s

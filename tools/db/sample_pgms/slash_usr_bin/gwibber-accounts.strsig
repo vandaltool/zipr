@@ -1,0 +1,95 @@
+######################################################################
+accounts.GwibberAccountManager(selected_account=selected_account, condition=condition, message=message)
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+  condition = None
+  condition = options.condition
+# Copyright (C) 2010 Canonical Ltd
+# Copyright (C) 2010 Ken VanDine <ken.vandine@canonical.com>
+  couchmigrate.AccountCouchMigrate()
+DBusGMainLoop(set_as_default=True)
+  debuglog = False
+  debuglog = True
+    del sys.path[0]
+                  dest="condition", default=None,
+                  dest="debug", default=False, 
+                  dest="message", default=None,
+                  dest="migrate_couch", default=False,
+                  dest="selected_account", default=None, 
+# Don't run again if we are already running
+  finally:
+for w in screen.get_windows():
+from dbus.mainloop.glib import DBusGMainLoop
+from gettext import lgettext as _
+from gi.repository import Gtk, Wnck
+    from gwibber import accounts
+  from gwibber import accounts
+  from gwibber.microblog.util import couchmigrate
+    from gwibber.microblog.util.log import setup_logging
+  from gwibber.microblog.util.log import setup_logging
+from optparse import OptionParser, SUPPRESS_HELP
+from os.path import join, dirname, exists, realpath, abspath
+    gettext.bind_textdomain_codeset('gwibber','UTF-8')
+gettext.textdomain('gwibber')
+# GNU General Public License for more details.
+Gtk.main()
+  Gtk.main_iteration()
+                  help=_("Account to select"))
+                  help=_("Condition, valid values are info, warning or error"))
+                  help=_("Log debug messages"))
+                  help=_("Message to display explaining the condition"))
+                  help=SUPPRESS_HELP)
+if exists(join(SOURCE_DIR, "accounts.py")):
+if hasattr(gettext, 'bind_textdomain_codeset'):
+if options.condition:
+if options.debug:
+if options.message:
+if options.migrate_couch:
+if options.selected_account:
+# If we were invoked from a Gwibber source directory add that as the
+  if w.get_application().get_name() == progname:
+import gettext
+    import logging
+  import logging
+import sys
+    import time
+# it under the terms of the GNU General Public License version 2 as
+LAUNCH_DIR = abspath(sys.path[0])
+# Launch script for Gwibber Accounts
+    logger.info("Running from the source tree")
+  logger.info("Running from the system path")
+    logger = logging.getLogger("Accounts")
+  logger = logging.getLogger("Accounts")
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  message = None
+  message = options.message
+# Options 
+(options, args) = parser.parse_args()
+parser.add_option("-a", "--select-account", action="store",
+parser.add_option("-c", "--condition", action="store",
+parser.add_option("-d", "--debug", action="store_true",
+parser.add_option("--migrate-couch", action="store_true",
+parser.add_option("-m", "--message", action="store",
+parser = OptionParser()
+# preferred module path ...
+    print int(time.time())
+  print "migrate_couch"
+progname = "gwibber-accounts"
+# published by the Free Software Foundation.
+    quit()
+  quit()
+screen = Wnck.Screen.get_default()
+  selected_account = None
+  selected_account = options.selected_account
+    setup_logging(False, debuglog)
+  setup_logging(False, debuglog)
+# Setup path
+SOURCE_DIR = join(LAUNCH_DIR, "..", "gwibber")
+  sys.path.insert(0, realpath(dirname(SOURCE_DIR)))
+# This program is distributed in the hope that it will be useful,
+# This program is free software: you can redistribute it and/or modify
+#!/usr/bin/python
+    w.activate(int(time.time()))
+while Gtk.events_pending():
+    w.move_to_workspace(screen.get_active_workspace())
+# You should have received a copy of the GNU General Public License

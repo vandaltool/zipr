@@ -1,0 +1,25 @@
+__bss_start
+(Computing colormap...
+D$,9D$4u
+  Done.  24-bit true color %d color image.)
+  Done.  %d colors found.)
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_close
+pm_openr
+pm_usage
+ppm_colorhisttocolorhash
+ppm_computecolorhist
+[ppmfile]
+ppm_freecolorhist
+ppm_init
+ppm_lookupcolor
+ppm_readppm

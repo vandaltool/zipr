@@ -1,0 +1,100 @@
+                                                            
+A20 gate not responding!
+ aborted.
+: attempted DOS system call
+Boot error
+Boot failed: please change disks and press a key to continue.
+BOOT_IMAGE=
+booting, and I will take your word for it.
+Booting from local disk...
+/boot/syslinux/syslinux.cfg
+Cannot load a ramdisk with an old kernel image.
+.cbt.bss.bs
+COMBOOT image too large.
+.com.c32
+ Copyright (C) 1994-2008 H. Peter Anvin
+Could not find kernel image: 
+Could not find ramdisk image: 
+Detect display size
+drive s:
+__errno_location
+Error reading from disk.
+failed to create ldlinux.sys
+FAT     
+FAT12   
+FAT16   
+FAT32   
+f^f_fYfXf
+  file="/proc/%lu/fd/%d"
+filesystem type "????????" not supported
+__fprintf_chk
+fREIt%f1
+f=vga=t/f=mem=tV
+__fxstat64
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Invalid image type for this media type!
+Invalid or corrupt kernel image.
+_IO_stdin_used
+It appears your computer has less than 256K of low ("DOS")
+Kf==askt
+Kf==extt
+ <kt"<mt
+ldlinux.sys'
+LDLINUX SYS
+less than 4084 clusters but claims FAT16
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+linux auto
+Load boot graphics
+ Load error - 
+Loading 
+Loading...
+mattrib -h -r -s %s 2>/dev/null
+mattrib -h -r -s s:/ldlinux.sys 2>/dev/null
+mattrib +r +h +s %s
+mattrib +r +h +s s:/ldlinux.sys
+mcopy -D o -D O -o - s:/ldlinux.sys
+Missing parameter in configuration file.
+mkstemp64
+mmove -D o -D O s:/ldlinux.sys %s
+more than 4084 clusters but claims FAT12
+MTOOLSRC
+MTOOLS_SKIP_CHECK=1
+Not enough memory to load specified kernel.
+  offset=%llu
+}O]fRfPUSf
+only 512-byte sectors are supported
+Out of memory parsing config file
+pf=PAMSuhf
+Please insert boot disk 0; then press ENTER to continue.
+pwrite64
+RAM.  Linux needs at least this amount to boot.  If you get
+short read
+short write
+%s: not a block device or regular file (use -f to override)
+__sprintf_chk
+__stack_chk_fail
+strerror
+<st@<rtH<ftP<d
+strtoull
+%s: warning: failed to set system bit on ldlinux.sys
+%s: warning: unable to move ldlinux.sys
+SYSLINUX
+SYSLINUX 3.63 Debian-2012-04-16 
+this doesn't look like a valid FAT filesystem
+This is not boot disk 0. Press ENTER to continue.
+this message in error, hold down the Ctrl key while
+/tmp/syslinux-mtools-XXXXXX
+Unknown keyword in configuration file.
+Usage: %s [-sfr][-d directory][-o offset] device
+vfPfRSQVf
+VPN.;6l.t
+< v-</t)<.t
+ (y/n)? y
+Zf_fYfQfW

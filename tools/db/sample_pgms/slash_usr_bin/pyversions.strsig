@@ -1,0 +1,321 @@
+                  }
+                      action='store_true', dest='default')
+                      action='store_true', dest='installed')
+                      action='store_true', dest='requested')
+                      action='store_true', dest='supported')
+                           and version_cmp(ver,v[1]) <= 0:
+                      'attribute X(S)-Python-Version not in Source section'
+                break
+class ControlFileValueError(ValueError):
+class MissingVersionValueError(ValueError):
+            cmd = ['/usr/bin/apt-cache', '--no-all-versions',
+                cmd = ['/usr/bin/python', '-c', 'import sys; print sys.version[:3]']
+# compatibility functions to parse debian/pyversions
+                config.readfp(file('/usr/share/python/debian_defaults'))
+            config = SafeConfigParser()
+        # consistency check
+            continue
+                continue
+            #    continue
+        current = default_version(version_only=True)
+            debian_default = "python2.6"
+            debian_default = read_default('default-version')
+                      default=False, action='store_true', dest='version_only')
+            _defaults = config
+_defaults = None
+        _default_version = debian_default
+            _default_version = link = os.readlink('/usr/bin/python')
+            _default_version = None
+_default_version = None
+                _default_version = 'python' + line
+def default_version(version_only=False):
+def extract_pyversion_attribute_bis(fn):
+def extract_pyversion_attribute(fn, pkg):
+def installed_versions(version_only=False):
+def main():
+def old_versions(version_only=False):
+def parse_versions(vstring, add_exact=False):
+def read_default(name=None):
+def requested_versions_bis(vstring, version_only=False):
+def requested_versions(vstring, version_only=False):
+def supported_versions(version_only=False):
+def unsupported_versions(version_only=False):
+def version_cmp(ver1,ver2):
+                del vinfo['versions']
+                    depends = line.split(':', 1)[1].strip().split(',')
+            depends = None
+                depends = [re.sub(r'\s*(\S+)[ (]?.*', r'\1', s) for s in depends]
+            # Don't silently ignore Python 3 versions for Squeeze.
+    elif 'all' in vinfo:
+    elif 'all' in vinfo and 'current' in vinfo:
+        elif 'current' in vinfo:
+    elif 'current' in vinfo:
+        elif line.startswith('Package: ' + pkg):
+        elif line.startswith('Source:'):
+        elif line.startswith('XB-Python-Version:'):
+        elif line.startswith('XS-Python-Version:') or line.startswith('X-Python-Version:'):
+    elif opts.installed and len(args) == 0:
+    elif opts.requested and len(args) <= 1:
+    elif opts.supported and len(args) == 0:
+    elif 'versions' in vinfo or 'vexact' in vinfo:
+        elif 'vexact' in vinfo:
+            else:
+        else:
+    else:
+                exact_versions.add(v)
+    exact_versions = set([])
+                except ControlFileValueError:
+        except Exception:
+            except ImportError:
+                    except IOError:
+            except IOError, msg:
+    except IOError, msg:
+                except MissingVersionValueError:
+except NameError:
+        except NoOptionError:
+        except OSError:
+                except ValueError:
+        except ValueError:
+                except ValueError, e:
+        except ValueError, msg:
+            fd.close()
+                fd = os.popen(' '.join(cmd))
+                fd = os.popen("/usr/bin/python -c 'import sys; print sys.version[:3]'")
+                fd = p.stdout
+        field = field.strip()
+                filtop = operators[op]
+                    fn = os.path.join(os.path.dirname(fn), 'pyversions')
+                fn = versions
+    for field in vstring.split(','):
+    for item in vstring.split(','):
+            for line in fd:
+    for line in fp:
+                for s in glob.glob('/usr/bin/python[0-9].[0-9]')
+            for ver in py_supported_short:
+        fp = file(fn, 'r')
+    from ConfigParser import SafeConfigParser, NoOptionError
+    from optparse import OptionParser
+    global _defaults
+    global _default_version
+    global _old_versions
+    global _supported_versions
+    global _unsupported_versions
+                      help='print just the version number(s)',
+                      help='print the default python version',
+                      help='print the installed supported python versions',
+                      help='print the python versions requested by a build; the argument is either the name of a control file or the value of the X(S)-Python-Version attribute',
+                      help='print the supported python versions',
+    if add_exact:
+        if 'all' in vinfo:
+    if _defaults and name:
+            if depends:
+        if exact_versions:
+        if field == 'all':
+        if field in ('current', 'current_ext'):
+            #if int(vmaj) > 2:
+        if len(args) == 0:
+        if len(v)>1:
+    if len(vinfo) == 1:
+        if line == '':
+                if line.startswith('Depends:'):
+if __name__ == '__main__':
+        if not current in vinfo['versions']:
+    if not _defaults:
+    if not _default_version:
+        if not _default_version in (debian_default, os.path.join('/usr/bin', debian_default)):
+            if not m:
+    if not _old_versions:
+            if not _supported_versions:
+    if not _supported_versions:
+    if not _unsupported_versions:
+            if not v[0]:
+            if not v[1]:
+    if not version_only:
+    if not versions:
+            if op in (None, '='):
+    if opts.default and len(args) == 0:
+                if os.path.basename(s) in supported]
+        if os.path.exists('/usr/share/python/debian_defaults'):
+            if os.path.isfile(versions):
+            if pkg == 'Source':
+    if pkg == 'Source':
+            if relop_seen:
+            if re.match(r'\d\.\d$', line):
+            if section == None:
+    if section == None:
+            if section == pkg:
+            if section != 'Source':
+        if sversion == None:
+            if v[0] in py_supported_short:
+                    if version_cmp(ver,v[0]) >= 0 \
+    if version == None:
+    if version_only:
+        if 'versions' in vinfo:
+        if 'vexact' in vinfo:
+    import glob
+    import operator
+import os, re, sys
+    import sets
+                import subprocess
+                # last resort: python-minimal not installed, apt-cache
+            line = fd.readline().strip()
+        line = line.strip()
+    main()
+              'missing XB-Python-Version for package `%s' % pkg
+                  'missing X(S)-Python-Version in control file'
+        m = ve.match(field)
+                # not available, hard code the value, #394084
+            _old_versions = []
+_old_versions = None
+            _old_versions = [s.strip() for s in value.split(',')]
+                        + old_versions(version_only=True))
+                  '>=': operator.ge, '<=': operator.le,
+                  '<<': operator.lt
+    operators = { None: operator.eq, '=': operator.eq,
+    opts, args = parser.parse_args()
+            op, v = m.group(1), m.group(2)
+    package."""
+    parser.add_option('-d', '--default',
+    parser.add_option('-i', '--installed',
+    parser.add_option('-r', '--requested',
+    parser.add_option('-s', '--supported',
+    parser.add_option('-v', '--version',
+    parser = OptionParser(usage=usage)
+    pass
+                    pass
+        print "Cannot open %s: %s" % (fn, msg)
+            print default_version(opts.version_only)
+        print ' '.join(installed_versions(opts.version_only))
+        print ' '.join(supported_versions(opts.version_only))
+            print ' '.join(vs)
+                print msg
+            print "%s:" % program, msg
+                                         % program)
+                                     % (program, fn))
+    program = os.path.basename(sys.argv[0])
+                p = subprocess.Popen(cmd, bufsize=1,
+    py_supported_short = supported_versions(version_only=True)
+        raise ControlFileValueError, 'not a control file'
+            raise MissingVersionValueError, \
+        raise MissingVersionValueError, \
+                raise ValueError, \
+            raise ValueError
+        raise ValueError, "both `current' and `all' in version string"
+        raise ValueError('computed set of supported versions is empty')
+            raise ValueError, "`current' version not in supported versions"
+        raise ValueError, 'empty set of versions'
+                raise ValueError('error parsing Python-Version attribute')
+            raise ValueError, 'error parsing Python-Version attribute'
+        raise ValueError, 'No Python versions in version string'
+            raise ValueError, "/usr/bin/python does not match the python default version. It must be reset to point to %s" % debian_default
+    """read the debian/control file, extract the X-Python-Version or
+    relop_seen = False
+                relop_seen = True
+    return cmp(v1,v2)
+        return _default_version
+        return _default_version[6:]
+    return None
+        return _old_versions
+        return ['python%s' % v for v in versions]
+        return _supported_versions
+        return sversion
+        return _unsupported_versions
+        return [v[6:] for v in _old_versions]
+        return [v[6:] for v in _supported_versions]
+        return [v[6:] for v in _unsupported_versions]
+        return [v[6:] for v in versions]
+        return value
+    return version
+        return versions
+    return versions
+    return vinfo
+    return vstring
+            section = None
+    section = None
+            section = pkg
+            section = 'Source'
+    set = sets.Set
+    SetType = set
+    SetType = sets.Set
+                                     shell=False, stdout=subprocess.PIPE)
+                   'show', 'python-all']
+    supported = supported_versions()
+    supported = supported_versions(version_only=True)
+                _supported_versions = depends
+_supported_versions = None
+                _supported_versions = ['python2.6', 'python2.7']
+            _supported_versions = [s.strip() for s in value.split(',')]
+            sversion = line.split(':', 1)[1].strip()
+    sversion = None
+                    sys.exit(1)
+                sys.exit(1)
+            sys.exit(1)
+        sys.exit(1)
+        sys.exit(2)
+                    sys.exit(4)
+                        sys.stderr.write("%s: missing debian/pyversions file, fall back to supported versions\n" \
+                    sys.stderr.write("%s: missing X(S)-Python-Version in control file, fall back to %s\n" \
+                    sys.stderr.write("%s: not a control file: %s, " \
+                    sys.stderr.write("%s: %s\n" % (program, e))
+            sys.stderr.write("%s: %s\n" % (program, msg))
+        sys.stderr.write("usage: %s %s\n" % (program, usage))
+                    try:
+                try:
+            try:
+        try:
+    try:
+            _unsupported_versions = []
+_unsupported_versions = None
+            _unsupported_versions = [s.strip() for s in value.split(',')]
+    usage = '[-v] [-h] [-d|--default] [-s|--supported] [-i|--installed] [-r|--requested <version string>|<control file>]'
+#! /usr/bin/python
+                v[0] = py_supported_short[0]
+    v1=[int(i) for i in ver1.split('.')]
+                v[1] = py_supported_short[-1]
+    v2=[int(i) for i in ver2.split('.')]
+            value = _defaults.get('DEFAULT', name)
+            value = read_default('old-versions')
+            value = read_default('supported-versions')
+            value = read_default('unsupported-versions')
+        ve = re.compile('(>=|<=|<<|=)? *(\d\.\d)$')
+                version = line.split(':', 1)[1].strip()
+    version = None
+                version_range = [av for av in version_range if filtop(av ,v)]
+    version_range = set(supported_versions(version_only=True)
+    versions = []
+                versions.append(v[0])
+                        versions.append(ver)
+            versions = args[0]
+        versions = [current]
+            versions = 'debian/control'
+            versions = [default_version(version_only=True)]
+    versions = None
+    versions = [os.path.basename(s)
+        versions=['python'+i for i in versions]
+        versions = set()
+            versions = set(supported)
+    versions.sort()
+    versions.sort(version_cmp)
+            versions = supported
+            versions.update(vinfo['vexact'])
+            versions = vinfo['versions'].intersection(supported)
+            versions = vinfo['vexact']
+    vinfo = {}
+            vinfo['all'] = 'all'
+            vinfo['current'] = field
+    vinfo = parse_versions(vstring, add_exact=True)
+        vinfo.setdefault('versions', set())
+            vinfo['versions'] = exact_versions
+                vinfo['versions'] = exact_versions.union(version_range)
+                vinfo['versions'] = set(version_range)
+            vinfo['vexact'] = exact_versions
+        v=item.split('-')
+            vmaj, vmin = v.split('.')
+                        vs = requested_versions_bis(vstring, opts.version_only)
+                vs = requested_versions(versions, opts.version_only)
+                    vs = requested_versions(vstring, opts.version_only)
+                        vs = supported_versions(opts.version_only)
+                        vstring = extract_pyversion_attribute_bis(fn)
+                    vstring = extract_pyversion_attribute(fn, 'Source')
+    vstring = file(fn).readline().rstrip('\n')
+    XS-Python-Version field; check that XB-Python-Version exists for the

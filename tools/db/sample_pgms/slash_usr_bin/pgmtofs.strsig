@@ -1,0 +1,34 @@
+0123456789abcdef
+Address1: 
+Address2: 
+__bss_start
+CityStateZip: 
+Company: 
+E-mail: 
+FirstName: 
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+Image: %d %d %d
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+LastName: 
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+L$L;L$<u
+maxval of %d is too large for FaceSaver(tm)
+[pgmfile]
+pgm_init
+pgm_readpgm
+PicData: %d %d %d
+pm_bitstomaxval
+pm_close
+pm_error
+pm_maxvaltobits
+pm_openr
+pm_usage
+__printf_chk
+Telephone: 

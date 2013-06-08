@@ -1,0 +1,648 @@
+                    }
+                }
+            }
+            $_ = "{" . "$_";
+        }
+        };
+##############################################################################
+	        }
+			       2**32 * hex(substr($hex,  0, -8));
+        # also, remove * (C dereference operator) to avoid perl syntax
+and B<-a> are mutually exclusive.
+# and files we've already processed.
+			           " and -f \"\$_/$incl\" } \@INC);\n");
+		and print OUT "# some #ifdef were dropped here -- fill in the blanks\n";
+	    and !/;\s*$/ and !/{\s*}\s*$/)
+architecture dependent library directory.  You can specify a different
+	    # are mainly constructed like macros.
+	    $args = (
+		    $args = $1;
+			$args = "my($args) = \@_;\n$t    ";
+    $args = reindent($args);
+		    $args = reindent($args);
+			$args =~ s/\b(\w)/\$$1/g;
+			    $arg =~ s/^\s*([^\s].*[^\s])\s*$/$1/;
+@ARGV = ('-') unless @ARGV;
+                    $bad_file{$file} = 1;
+        # Behavior is undefined if sizeof() delimiters are unbalanced.
+beneath the default Perl library location (C<$Config{'installsitearch'}>).
+B<h2ph [-d destination directory] [-r | -a] [-l] [headerfiles]>
+build_preamble_if_necessary();
+    # Can we skip building the preamble file?
+                # C comment removal adapted from perlfaq6:
+	cd /usr/include; h2ph -r -l .
+	cd /usr/include; h2ph * sys/*
+	cd /usr/include; h2ph * sys/* arpa/* netinet/*
+	char	uchar	u_char
+		chdir $_;
+        chomp $in;
+		chomp $next;
+                chop $line;
+    closedir DIR;
+    close HEADER;
+        close PREAMBLE            or die "Cannot close $preamble:  $!";
+    close PREAMBLE               or die "Cannot close $preamble:  $!";
+	@Config{'ccsymbols', 'cppsymbols', 'cppccsymbols'};
+# %Config contains information on macros that are pre-defined by the
+		  (?:(?:__)?const(?:__)?\s+)?
+converts any C header files specified to the corresponding Perl header file
+                    # copy the prefix in the quote syntax (#include "x.h") case
+                # copy the prefix in the quote syntax (#include "x.h") case
+# Could this be implemented using File::Find?
+# Create "_h2ph_pre.ph", if it doesn't exist or was built by a different
+		       # Croak if nv_preserves_uv_bits < 64 ?
+    %curargs = ();
+			$curargs{$1} = 1;
+			    $curargs{$arg} = 1;
+		$define{$_} = $1;
+	$define{$1} = $2;
+		($define{$_} =~ /^([+-]?(\d+)?\.\d+([eE][+-]?\d+)?)[FL]?$/) {
+		# #defines in enums (aliases)
+definitions inside evals so that you can get at the definitions
+		$def =~ s/$arg/\$\{$arg\}/g;
+# Determine include directories; $Config{usrinc} should be enough for (all
+		die "Cannot parse:\n$in\n";
+die "Destination directory $Dest_dir doesn't exist or isn't a directory\n"
+die "-r and -a options are mutually exclusive\n" if ($opt_r and $opt_a);
+	    $dir = $1;
+directories which your C compiler ordinarily uses.  B<-a> and B<-r> are
+    $directory =~ s:/$::;
+            # directory; so push directories, and unshift everything else.
+Doesn't construct the %sizeof array for you.
+Doesn't handle complicated expressions built piecemeal, a la:
+Doesn't necessarily locate all of your C compiler's internally-defined
+		    $doit = 0;
+	    && do {my $hex = $1;
+        # Don't build preamble if a compatible preamble exists:
+		# drop "#define FOO FOO" in enums
+	# Eliminate typedefs
+                    } else {
+                } else {
+            } else {
+        } else {
+    } else {
+	    } else {
+		    } else {
+		   } else {
+		} else {
+			} else {
+                } else {                                    # Incomplete /* */
+            else                    { unshift @ARGV, "$directory/$_" }
+	    } elsif
+		} elsif (/^\[/) {
+	    } elsif ($define{$_} =~ /^([+-]?\d+)U?L{0,2}$/i) {
+	    } elsif ($define{$_} =~ /^\w+$/) {
+        } elsif (-d $file) {
+	    } elsif (/^else/) {
+	    } elsif (/^endif/) {
+	    } elsif(/^error\s+(.*)/) {
+	    } elsif(/^error\s+(".*")/) {
+	} elsif (/^(?:__extension__\s+)?(?:extern|static)\s+(?:__)?inline(?:__)?\s+/
+	    } elsif(/^ident\s+(.*)/) {
+	    } elsif ($id eq 'defined') {
+	    } elsif ($id =~ /^((un)?signed)|(long)|(short)$/) {
+	    } elsif (/^ifdef\s+(\w+)/) {
+	    } elsif (/^ifndef\s+(\w+)/) {
+            } elsif ($in =~ /^'/) {                         # '...
+            } elsif ($in =~ /^"/) {                         # "...
+	    } elsif (/^(include|import|include_next)\s*([<\"])(.*)[>\"]/) {
+            } elsif ($in =~ m/^\/\*/) {                     # /*...
+            } elsif ($in =~ s/^([^\'\"\\\/]+)//) {
+            } elsif ($in =~ s/^(\/)//) {                    # /...
+            } elsif ($in =~ s/^(\\.)//) {                   # \...
+            } elsif ($in =~ s/^\/\/.*//) {                  # //...
+            } elsif ($in =~ s/^([^"'\\\/]+)//) {            # Passthrough
+	    } elsif ($isatype{$id}) {
+		    } elsif ($new =~ /defined\s*\($/) {
+		} elsif ($new =~ /\(\s*$/ && /^[\s*]*\)/) {
+            } elsif ($^O eq 'linux' &&
+        } elsif ($opt_a) {
+	    } elsif (/^\s*\(/) {
+	    } elsif (s/^elif\s+//) {
+	    } elsif (s/^if\s+//) {
+	} elsif (/^\s*(typedef\s*)?enum\s*(\s+[a-zA-Z_]\w*\s*)?/) { # { for vi
+	    } elsif(/^undef\s+(\w+)/) {
+	    } elsif(/^warning\s+(.*)/) {
+	    EMIT($proto);
+		    EMIT($proto);
+    #endif
+    enum {
+		$enum_name or next;
+		$enum_val = (length($enum_value) ? $enum_value : $enum_val + 1);
+		$enum_value =~ s/^=//;
+errors, instead of the cryptic
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+                    $eval_index++;
+		    ++ $eval_index;
+			    $eval_index++;
+    $eval_index = 1;
+    # $eval_index goes into ``#line'' directives, to help locate syntax errors:
+			   "eval {\n");
+			       "eval(\"\\n#line $eval_index $outfile\\n",
+                    "eval \"\\n#line $eval_index $outfile\\n\" . 'sub $name $proto\{\n$t    ${args}eval q($new);\n$t}' unless defined(\&$name);\n";
+			       "eval(\"sub $enum_name () \{ $enum_val; \}\") ",
+                    "eval 'sub $name $proto\{\n$t    ${args}eval q($new);\n$t}' unless defined(\&$name);\n";
+exit $Exit;
+        expand_glob($dirlink);
+                expand_glob($file);
+            # expand_glob() is going to be called until $ARGV[0] isn't a
+	    expr();
+		    expr();
+		expr();
+        # Extract version number from first line of preamble:
+                # fall through
+	FILE	key_t	caddr_t
+                     $file =~ m!(?:^|/)linux/byteorder/pdp_endian\.h$! &&
+        $file = shift @ARGV;
+            # find balanced closing paren
+	FIRST_VALUE,
+		# float:
+	float	double	size_t
+	    foreach (@inc_dirs) {
+			foreach my $arg (split(/,\s*/,$args)) {
+	    foreach my $enum (@enum_subs) {
+        foreach (readdir DIR) {
+	foreach (sort keys %define) {
+	    foreach (split /\s+/, $1) {  # Make sure all the words are types,
+		for my $arg (split /,/, $1) {
+	{ # { for vi
+# function with perl as the .h files do with cc.
+getopts('Dd:rlhaQe');
+# Given $file, a symbolic link to a directory in the C include directory,
+			           "(grep { \$_ eq \"$incl\" } ",
+			   "(grep { not exists(\$INCD{\"\$_/$incl\"})",
+                                   "(grep {-r \"\$_/$incl\" } \@INC);\n");
+        # guess (c2ph?), but this at least avoids fatal syntax errors.
+h2ph - convert .h C header files to .ph Perl header files
+# Handle recursive subdirectories without getting a grotesquely big stack.
+=head1 AUTHOR
+=head1 BUGS
+=head1 DESCRIPTION
+=head1 DIAGNOSTICS
+=head1 ENVIRONMENT
+=head1 FILES
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+		   $hex =~ s/^0+//;
+        # hierarchy, so let's put all of the contents of $dirlink (actually,
+hierarchy with a B<-d> switch.
+However, the B<.ph> files almost double in size when built using B<-h>.
+		$id .= ' ' . $1;
+	    $id =~ s/(\.|(->))([^\.\-]*)/->\{$3\}/g;
+	    $id =~ s/\b([^\$])($joined_args)/$1\$$2/g if length($joined_args);
+		$id =~ s/\[\s*([^\$\&\d\]]+)\]/[$index]/;
+		    if ($args ne '') {
+		    if ($arg =~ /(\w+)\s*$/) {
+    if (/\b__asm__\b/) {	# freak out
+	    if ($curargs{$1}) {
+	    if ($curargs{$id}) {
+            if (-d "$directory/$_") { push    @ARGV, "$directory/$_" }
+    #ifdef ABC
+	    if ($define{$_} =~ /^\((.*)\)$/) {
+if (defined umask && (umask() & 0444)) {
+                if ($delimiter eq q{"} && $file =~ m|^(.*)/|) {
+	    if( $doit ){
+            if (! -e "$Dest_dir/$target") {
+        if (eval 'symlink($target, "$Dest_dir/$dirlink")') {
+		if(exists($curargs{$index})) {
+    if ($file eq '-') {
+        if ($file eq '-' or -f $file or -l $file) {
+	if ($file =~ m|^(.*)/|) {
+	    if ($id eq 'struct' || $id eq 'union') {
+                    if ($incl !~ m|/| && $incl_quote eq q{"} && $file =~ m|^(.*)/|) {
+                    if ($incl_type eq 'include_next') {
+                if (($incl_type eq 'include_next') ||
+	    if ($in =~ /^extern inline / && # Inlined assembler.
+		if ($inif) {
+	    if ($in =~ /^\#ifdef __LANGUAGE_PASCAL__/) {
+                if ($in =~ s/^('(\\.|[^'\\])*')//) {
+                if ($in =~ s/^("(\\.|[^"\\])*")//) {
+                if ($in =~ s/^\/\*[^*]*\*+([^\/*][^*]*\*+)*\///) {
+            if ($in =~ s/\\$//) {                           # \-newline
+		if ($isatype{$def}) {
+    if(keys(%curargs)) {
+        if (-l "$Dest_dir/$dirlink") {
+		   if (length $hex > 8 && !$Config{use64bitint}) {
+    if (-l $file and -d $file) {
+            if ($line =~ /^#\s*include\s+([<"])(.*?)[>"]/) {
+		    if ($new =~ /defined\s*$/) {
+		if ($new =~ /\{\s*$/) {
+	if ($opt_a) { # automagic mode:  locate header file in @inc_dirs
+	    if ($opt_D) {
+	if ($opt_D) {
+                if ($opt_e) {
+    if ($opt_e && exists($bad_file{$file})) {
+if ($opt_e && (scalar(keys %bad_file) > 0)) {
+    if ($opt_h) {
+			if ($opt_h) {
+		if ($opt_h) {
+            if ($opt_r) {
+            if ($pre_sub_tri_graphs) {
+    if (-r $preamble) {
+	if $running_under_some_shell;
+If run with no arguments, filters standard input to standard output.
+	    if (s/^define\s+(\w+)//) {
+	if (s/^\s*\#\s*//) {
+	    if (s/^\(([^()]*)\)\s*(\w+\s*)*//) {
+		if (s/^\(([\w,\s]*)\)//) {
+	    if (s/^(?:\w|\s|\*)*\s(\w+)\s*//) {
+    if ($target =~ m:^\.\./: or $target =~ m:^/:) {
+		       # if the hex constant was e.g. inside UINT64_C
+    if ($t ne '') {
+		    if ($t ne '') {
+	    if (/^(\w+)\((\w)\)$/) {
+I<h2ph>.  In those cases when you B<require> a B<.ph> file containing syntax
+                    $in = '';
+		$in = "";
+                        $incl = "$1/$incl";
+                $incl = $3;
+                $incl_quote = $2;
+                    $incl =~ s/\.h$/.ph/;
+                $incl_type = $1;
+Include the code from the B<.h> file as a comment in the B<.ph> file.
+                # including things stuck in quoted string constants.
+    # Increment $VERSION every time this function is modified:
+                $index++;
+		    $index = "\$$index";
+		    $index = "&$index";
+		$index =~ s/\s//g;
+		$inif = 0;
+		$inif = 1;
+        $in  .= <IN>;
+                $in =~ s/\?\?</{/g;                         # | ??<|  {|
+                $in =~ s/\?\?=/#/g;                         # | ??=|  #|
+                $in =~ s/\?\?>/}/g;                         # | ??>|  }|
+                $in =~ s/\?\?'/^/g;                         # | ??'|  ^|
+                $in =~ s/\?\?\-/~/g;                        # | ??-|  ~|
+                $in =~ s/\?\?\!/|/g;                        # | ??!|  ||
+                $in =~ s/\?\?\//\\/g;                       # | ??/|  \|
+                $in =~ s/\?\?\(/[/g;                        # | ??(|  [|
+                $in =~ s/\?\?\)/]/g;                        # | ??)|  ]|
+installation.
+                     $in   =~ s!\'T KNOW!!) {
+		# integer:
+	int	uint	u_int
+		$isatype{$id} = 1;
+@isatype{@isatype} = (1) x @isatype;
+    $Is_converted{$file} = 1;
+is not specified, then links are skipped over.
+It doesn't handle all C constructs, but it does attempt to isolate
+=item -a
+=item -D
+=item -d destination_dir
+=item -h
+=item -l
+=item -Q
+=item -r
+It is most easily run while in /usr/include:
+It's only intended as a rough tool.
+	$joined_args = join('|', keys(%curargs));
+                                   "keys(\%INC));\n");
+Larry Wall
+		    last;
+		    last if /^}/;
+		    last if /^\#endif/;
+		last if -f $file;
+		last if $next =~ /^}|^{.*}\s*$/;
+                    last READ;
+        last READ if $out =~ /\S/;
+		last unless defined ($next = next_line($file));
+    length($from_gcc) ? (split(' ', $from_gcc), $Config{usrinc}) : ($Config{usrinc});
+            $line =~ /(\b\d+\b)/;
+        # line, $dirlink will get created as an _actual_ directory.
+                $line .= <HEADER>;
+        link_if_possible($file) if ($opt_l);
+		  (?:long\s+)?
+	long	ulong	u_long
+                $lvl-- if substr($_, $index, 1) eq ")";
+                $lvl++ if substr($_, $index, 1) eq "(";
+		       # macro, but then again, h2ph is an approximation.
+# make an equivalent symbolic link in $Dest_dir, if we can figure out how.
+# Make sure read permissions for all are set:
+            # Make sure that the link _links_ to something:
+	    mkpath "$Dest_dir/$dir";
+                mkpath("$Dest_dir/$target", 0755) or
+mutually exclusive.
+		 [my \$$1;]gx;
+		 [my \$$1]gx;
+    my $allsymbols  = join " ",
+	    my @args;
+my %bad_file = ();
+		my $def = $define{$_};
+    my %define;
+    my (%define) = _extract_cc_defines();
+                my ($delimiter, $new_file) = ($1, $2);
+my $Dest_dir = $opt_d || $Config{installsitearch};
+    my ($directory)  = @_;
+    my ($dirlink)  = @_;
+	    my $doit = 1;
+		my ($enum_name, $enum_value) = $enum =~ /^([a-zA-Z_]\w*)(=.+)?$/;
+	    (my $enum_subs = $3) =~ s/\s//g;
+	    my @enum_subs = split(/,/, $enum_subs);
+	    my $enum_val = -1;
+my $Exit = 0;
+    my ($file)    = @_;
+    my $file;
+    my $file = shift;
+    my $from_gcc   = `LC_ALL=C $Config{cc} -v -E - < /dev/null 2>&1 | awk '/^#include/, /^End of search list/' | grep '^ '`;
+	    my $id = $1;
+my @inc_dirs = inc_dirs() if $opt_a;
+			   "my(\%INCD) = map { \$INC{\$_} => 1 } ",
+my ($incl, $incl_type, $incl_quote, $next);
+            my $index = 1;
+		my($index) = $1;
+my $inif = 0;
+    my ($in, $out);
+my %isatype;
+my @isatype = qw(
+my %Is_converted;
+    my $joined_args;
+		? "my(" . (join ',', map "\$$_", @args) . ") = \@_;\n$t    "
+    my $line;
+            my $line = <PREAMBLE>;
+            my $lvl = 1;  # already saw one open paren
+		my($macro, $arg) = ($1, $2);
+    my $preamble    = "$Dest_dir/_h2ph_pre.ph";
+    my $pre_sub_tri_graphs = 1;
+		    my $proto = '() ';
+	    my $proto = @args ? '' : '() ';
+    my $proto = shift;
+    my $target  = eval 'readlink($dirlink)';
+    my($text) = shift;
+my ($t, $tab, %curargs, $new, $eval_index, $dir, $name, $args, $outfile);
+		my $typelist = join '|', keys %isatype;
+    my $VERSION     = 3;
+			   "};\n");
+		$name = $1;
+	    $new = '';
+		$new = '';
+		    $new = 1 if $new eq '';
+	$new = '"(assembly code)"';
+		$new .= 'defined';
+			$new .= '(defined(&' . $id . ') ? &' . $id . ' : undef)';
+                    $new_file = "$1/$new_file";
+		       $new .=         hex(substr($hex, -8)) +
+	    $new .= " (\$$id)";
+		    $new .= ' &' . $id;
+		    $new .= " \$$id";
+		    $new .= "'$id'";
+		$new .= " &$id";
+		$new .= "\$$id";
+			$new .= '(&' . $id . ')';
+			$new .= '&' . $id;
+		$new .= '->' if /^[\[\{]/;
+		       $new .= lc("0x$hex");
+		$new .= "ord('$1')";
+		$new .= "ord('\$$1')";
+		    $new .= q(').$id.q(');
+    $new = reindent($new);
+		    $new = reindent($new);
+		$new =~ s['
+    $new =~ s/(['\\])/\\$1/g;   #']);
+	    $new =~ s/(["\\])/\\$1/g;       #"]);
+		    $new =~ s/(["\\])/\\$1/g;       #"]);
+			$new =~ s/(['\\])/\\$1/g;        #']);
+	    $new =~ s/&$_\b/\$$_/g for @local_variables;
+            $new .= '$sizeof';
+		    $new =~ s/\(\s*$//;
+            next;
+        $next = '';
+        next;
+	    next;
+		   next;};
+		$_ .= " $next";
+		$_ .= $next;
+            next if ($_ eq '.' or $_ eq '..');
+		    	next if " \&$name" eq $new;
+	    next if not defined; # because it's only a prototype
+                    next READ;
+                next READ;
+		next READ;
+		$next =~ s/^\s*#\s*define\s+(\w+)\s+\1\s*$//;
+		$next =~ s/^\s*#\s*define\s+(\w+)\s+(\w+)\s*$/$1 = $2,/;
+        next unless length $in;
+	    next unless /^\s?(typedef\s?)?enum\s?([a-zA-Z_]\w*)?\s?\{(.*)\}\s?([a-zA-Z_]\w*)?\s?;/;
+No environment variables are used.
+# non-GCC?) C compilers, but gcc uses additional include directories.
+        "no warnings qw(redefine misc);\n\n";
+	    # now that's almost like a macro (we hope)
+		$^O eq 'linux' && $file =~ m!(?:^|/)asm/[^/]+\.h$!) {
+on all files in those directories (and their subdirectories, etc.).  B<-r>
+    opendir DIR, $directory;
+    open HEADER, $file or return;
+	open(IN, "-");
+	open(IN,"$file") || (($Exit = 1),(warn "Can't open $file: $!\n"),next);
+	open(OUT, ">-");
+	open(OUT,">$Dest_dir/$outfile") || die "Can't create $outfile: $!\n";
+        open  PREAMBLE, $preamble or die "Cannot open $preamble:  $!";
+    open  PREAMBLE, ">$preamble" or die "Cannot open $preamble:  $!";
+                    ($opt_e && exists($bad_file{$incl}))) {
+			       or $next =~ /^(__extension__|extern|static)\b/;
+# Otherwise, just duplicate the file or directory.
+	    our @local_variables = (); # needs to be a our(): (?{...}) bug workaround
+                    $out    .= ' ';
+                $out    .= ' ';
+                    $out    .= $1;
+                $out    .= $1;
+	($outfile = $file) =~ s/\.h$/.ph/ || next;
+                $out    =~ s!I DON$!I_DO_NOT_KNOW!;
+                    $out = undef;
+		# parenthesized value:  d=(v)
+                # Preprocess all tri-graphs
+	print "$file -> $outfile\n" unless $opt_Q;
+            print "Linking $target -> $Dest_dir/$dirlink\n";
+    print OUT
+        print OUT "1;\n";
+		print OUT "# $next\n" if $opt_D;
+                        print OUT ($t,
+                print OUT ($t,
+        print OUT $t,
+		    print OUT ($t,
+		print OUT ($t,
+		print OUT $t, "# $1\n";
+		print OUT $t, "die($1);\n";
+		print OUT $t, "die(\"", quotemeta($1), "\");\n";
+		print OUT $t,"} else {\n";
+			    print OUT $t,"eval \"\\n#line $eval_index $outfile\\n\" . 'sub $name () {",$new,";}' unless defined(\&$name);\n";
+			    print OUT $t,"eval 'sub $name () {",$new,";}' unless defined(\&$name);\n";
+		print OUT $t,"if(defined(&$1)) {\n";
+		print OUT $t,"if($new) {\n";
+                    print OUT ($t, "my(\@REM);\n");
+		print OUT $t,"}\n";
+		print OUT $t,"}\n elsif($new) {\n";
+		    print OUT $t,"require '$incl';\n";
+		print OUT $t, "undef(&$1) if defined(&$1);\n";
+		print OUT $t,"unless(defined(&$1)) {\n";
+                      print OUT $t,"unless(defined(\&$name)) {\n    sub $name () {\t",$new,";}\n}\n";
+		print OUT $t, "warn(\"", quotemeta($1), "\");\n";
+              print OUT "unless(defined(\&$name)) {\n    sub $name $proto\{\n\t${args}eval q($new);\n    }\n}\n";
+		  print PREAMBLE
+		print PREAMBLE
+		print PREAMBLE <<DEFINE;
+		print PREAMBLE "# $_=$define{$_}\n";
+	print PREAMBLE "\n1;\n";  # avoid 'did not return a true value' when empty
+	print PREAMBLE "# This file was created by h2ph version $VERSION\n";
+	    print STDERR "$_:  $1 -> $2\n";
+                    print STDERR "Could not create $Dest_dir/$target/\n";
+                print STDERR "Could not remove link $Dest_dir/$dirlink:  $!\n";
+            print STDERR "Could not symlink $target -> $Dest_dir/$dirlink:  $!\n";
+                print STDERR "Skipping directory `$file'\n";
+            print STDERR "Skipping `$file':  not a file or directory\n";
+        # problems.  Where the %sizeof array comes from is anyone's
+			$proto = '';
+# Push all #included files in $file onto our stack, except for STDIN
+			push @args, $1;
+                push(@ARGV, $new_file) unless $Is_converted{$new_file};
+		  (?{ push @local_variables, $1 })
+# Put all the files in $directory into @ARGV for processing.
+Put ``hints'' in the .ph files which will help in locating problems with
+Put the resulting B<.ph> files beneath B<destination_dir>, instead of
+	queue_includes_from($file) if $opt_a;
+``Quiet'' mode; don't print out the names of the files being converted.
+		    quotemeta($define{$_}), "\" } }\n\n";
+    READ: while (not eof IN) {
+    # Recover from header files with unbalanced cpp directives
+                                   "\@REM = map { \"\$_/$incl\" } ",
+			           "\@REM = map { \"\$_/$incl\" } ",
+            # remove pesky * operators within the sizeof argument
+        # replace "sizeof(foo)" with "{foo}"
+        "require '_h2ph_pre.ph';\n\n",
+			   "require \"\$REM[0]\" if \@REM;\n");
+    return;
+    return %define;
+            return $file;
+        return if $1 == $VERSION;
+    return if ($file eq "-");
+    return $out;
+    return undef;
+Run automagically; convert B<headerfiles>, as well as any B<.h> files
+Run recursively; if any of B<headerfiles> are directories, then run I<h2ph>
+	s/^0X([0-9A-F]+)[UL]*//i
+	s/^\&([\(a-z\)]+)/$1/i;	# hack for things that take the address of
+	s/^([_a-zA-Z]\w*)//	&& do {
+	s/^([_A-Z]\w*(\[[^\]]+\])?((\.|->)[_A-Z]\w*(\[[^\]]+\])?)+)//i && do {
+	    s/\b(__extension__|extern|static|(?:__)?inline(?:__)?)\b//g;
+	    s/\breturn\b//g; # "return" doesn't occur in macros usually...
+	s/^(-?\d+\.\d+E[-+]?\d+)[FL]?//i	&& do {$new .= $1; next;};
+	s/^'((\\"|[^"])*)'//	&& do {
+	s/^(.)// && do { if ($1 ne '#') { $new .= $1; } next;};
+	s/^("(\\"|[^"])*")//	&& do {$new .= $1; next;};
+	s/^\&\&// && do { $new .= " &&"; next;}; # handle && operator
+	s/^(\d+)\s*[LU]*//i	&& do {$new .= $1; next;};
+	SECOND_VALUE,
+	    s@/\*.*?\*/@@g;
+	short	ushort	u_short
+		    	# Shunt around such directives as `#define FOO FOO':
+        #   sizeof(*(p)), which appear in the HP-UX 10.01 header files.
+	[ some error condition ] at (eval mmm) line nnn
+	[ some error condition ] at filename.ph line nnn
+    # Split compiler pre-definitions into `key=value' pairs:
+		    s/^[\s*]*\)//;
+		    s/^\s+//;
+		s/\s+$//;
+	s/^(\s+)//		&& do {$new .= ' '; next;};
+	    s/\s+/ /g;
+	    s/#\s*if.*?#\s*endif//g
+	    s/#\s*if.*?#\s*endif//g; # drop #ifdefs
+        s/^sizeof\s*\(// && do {
+		s/^\s+(\w+)//;
+		s/^\s*\((\w),/("$1",/ if $id =~ /^_IO[WR]*$/i;	# cheat
+	# struct/union member, including arrays:
+sub build_preamble_if_necessary
+sub EMIT {
+			       "sub $enum_name () \{ $enum_val; \}\") ",
+sub expand_glob
+sub expr {
+sub _extract_cc_defines
+sub inc_dirs
+sub link_if_possible
+sub next_file
+sub next_line
+sub queue_includes_from
+sub reindent($) {
+            substr($_, 0, $index - 1) =~ s/\*//g;
+            substr($_, $index - 1, 1) = "}";
+		  ' \s+ &(\w+) \s* ;
+		s/\([\w\s]+[\*\s]*\)// && next;      # then eliminate them.
+		s/\(\w+\s*\(\*\)\s*\(\w*\)\)\s*(-?\d+)/$1/; # (int (*)(foo_t))0
+Symbolic links will be replicated in the destination directory.  If B<-l>
+symbols.
+# system's compiler.  We need this information to make the .ph files
+    $t = '';
+    $tab = 0;
+                $tab -= 4;
+                $tab += 4;
+		$tab -= 4;
+		$tab += 4;
+            # tack } on the end, replacing )
+            # tack { on the front, and skip it in the loop
+    $text;
+    $text =~ s/\n/\n    /g;
+    $text =~ s/        /\t/g;
+that it can translate.
+		       # The above will produce "erroneous" code
+        # the contents of $target) into @ARGV; as a side effect down the
+The output files are placed in the hierarchy rooted at Perl's
+        # The target of a parent or absolute link could leave the $Dest_dir
+The usual warnings if it can't read or write the files involved.
+	THIRD_VALUE
+        # This code was modified to able to handle constructs like this:
+	    # This is a hack to parse the inline functions in the glibc headers.
+This is primarily used for debugging I<h2ph>.
+		# Tru64 disassembler.h evilness: mixed C and Pascal.
+	    # try to find and perlify local C variables
+                $t = "\t" x ($tab / 8) . ' ' x ($tab % 8);
+		$t = "\t" x ($tab / 8) . ' ' x ($tab % 8);
+		  (?:$typelist)\s+
+    umask (umask() & ~0444);
+		undef $_, last if $next =~ /__THROW\s*;/
+    unless -d $Dest_dir;
+			       "unless defined(\&$enum_name);\n");
+unless (defined &$macro) { sub $macro(\$) { my (\$$arg) = \@_; \"$def\" } }
+		    "unless (defined &$_) { sub $_() { \"",
+		    "unless (defined &$_) { sub $_() { $1 } }\n\n";
+		    "unless (defined &$_) { sub $_() { \"$def\" } }\n\n";
+		    "unless (defined &$_) { sub $_() { &$def } }\n\n";
+	        unless($isatype{$_} or $_ eq 'struct' or $_ eq 'union'){
+            unlink "$Dest_dir/$dirlink" or
+        unlink($Dest_dir . '/' . $outfile);
+		  (?:(?:un)?signed\s+)?
+	    until(/\{[^}]*\}.*;/ || /;/) {
+use Config;
+use File::Path qw(mkpath);
+use Getopt::Std;
+		use re "eval";
+use strict;
+use vars qw($opt_D $opt_d $opt_r $opt_l $opt_h $opt_a $opt_Q $opt_e);
+#!/usr/bin/perl
+ /usr/include/*.h
+ /usr/include/sys/*.h
+# version of h2ph.
+	    # violently drop #ifdefs
+		  (\w+)
+                    warn "Cannot parse $file:\n$in\n";
+			   "warn(\$\@) if \$\@;\n");
+	    # Warning: massive kludge ahead. We suppose inline functions
+		warn "name not found"; next; # shouldn't occur...
+    warn "\t" . join("\n\t",sort(keys %bad_file)) . "\n";
+    warn "Was unable to convert the following files:\n";
+which they include.  This option will search for B<.h> files in all
+	    while (1) {
+    while ($allsymbols =~ /([^\s]+)=((\\\s|[^\s])+)/g) {
+    while (@ARGV) {
+        while (defined($line = <HEADER>)) {
+    while (defined (local $_ = next_line($file))) {
+while (defined (my $file = next_file())) {
+            while (/\\$/) { # Handle continuation lines
+	    while($id =~ /\[\s*([^\$\&\d\]]+)\]/) {
+		while (<IN>) {
+            while ($index <= length($_) && $lvl > 0) {
+        while (length $in) {
+    while ($_ ne '') {
+		while (s/^\s+(\w+)//) { $id .= ' ' . $1; }
+	/\(([\w\s]+)[\*\s]*\)\s*[\w\(]/ && do {
+You have to run this program by hand; it's not run as part of the Perl
+You may need to dicker with the files produced.
+you will see the slightly more helpful

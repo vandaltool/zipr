@@ -1,0 +1,22 @@
+autoflush STDOUT 1;
+	($code, undef)=split(/ /, $ret, 2);
+$confmodule->finish;
+$confmodule->owner(shift) if @ARGV;
+Debconf::Config->getopt(gettext("Usage: debconf-communicate [options] [package]"));
+Debconf::Db->load;
+Debconf::Db->save;
+exit $code;
+$frontend->shutdown;
+my $code=127;
+my $confmodule=make_confmodule();
+my $frontend=make_frontend();
+	my $ret=$confmodule->process_command($_);
+	print "$ret\n";
+# This file was preprocessed, do not edit!
+use Debconf::AutoSelect qw(:all);
+use Debconf::Config;
+use Debconf::Db;
+use Debconf::Gettext;
+use strict;
+#!/usr/bin/perl -w
+while (<>) {

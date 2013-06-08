@@ -1,0 +1,36 @@
+__bss_start
+Can't init font config library
+FcFontList
+FcFontSetDestroy
+FcNameParse
+FcNameUnparse
+FcObjectSetAdd
+FcObjectSetBuild
+FcObjectSetCreate
+FcObjectSetDestroy
+FcPatternCreate
+FcPatternDestroy
+FcPatternFormat
+FcPatternGetString
+FcPatternPrint
+  -f, --format=FORMAT  use the given output format
+fontconfig version %d.%d.%d
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+  -h, --help           display this help and exit
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libfontconfig.so.1
+/lib/ld-linux.so.2
+List fonts matching [pattern]
+__printf_chk
+  -q, --quiet          suppress all normal output, exit 1 if no fonts matched
+__strdup
+usage: %s [-vqVh] [-f FORMAT] [--verbose] [--format=FORMAT] [--quiet] [--version] [--help] [pattern] {element ...} 
+  -v, --verbose        display entire font pattern verbosely
+  -V, --version        display font config version and exit

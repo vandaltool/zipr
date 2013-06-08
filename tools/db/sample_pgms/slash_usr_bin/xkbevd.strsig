@@ -1,0 +1,192 @@
+                  
+"#$$%%&'((()*******++,,-../
+---> 0x%p
+acts for key
+ Ano_event
+Assignment to unknown variable "%s"
+Audible bell might remain off
+behavior for key
+    bell class= %d, id= %d
+-bg                  Run in background
+bkaccept
+bkreject
+__bss_start
+Cannot open display "%s"
+Can't handle type %d XKB events yet, Sorry.
+Can't open config file "%s
+-cfg <file>          Specify a config file
+    changed= 0x%x, enabled= 0x%x, enabledChanges= 0x%x
+    compat maps for groups in 0x%02x changed
+    compatState = 0x%02x%s, 
+Config file "%s" specified twice!
+Couldn't configure audible bell to reset on exit
+Couldn't disable audible bell
+Couldn't find a config file anywhere
+Couldn't select desired XKB events
+__ctype_b_loc
+__ctype_tolower_loc
+    device= %d, class= %d, id= %d
+-display
+-d[isplay] <dpy>     Specify the display to watch
+Display "%s" specified twice!
+duration
+Empty shell command!
+Empty sound command!
+Error:            
+Executing shell command "%s"
+                  Exiting
+explicit components for key
+Fatal Error:      
+    first button= %d, num buttons= %d
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+    grab mods= 0x%02x%s, compat grab mods= 0x%02x%s
+    group= %d%s, base= %d%s, latched= %d%s, locked= %d%s,
+-?, -help            Print this message
+Internal error:   
+_IO_getc
+_IO_putc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+key aliases changed (%d aliases total)
+   keyboard has %d symbol interpretations
+    keycode= %d,detail= %s,slow keys delay= %d,debounce delay= %d
+    keycode %d, eventType %s,
+keycodes
+    key %d, event: %s,  follows: %s
+key type name
+last scanned symbol is: %s
+    leds defined= 0x%08x, led state= 0x%08x
+Legal options:
+level names for key type
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libxkbfile.so.1
+    lookup mods= 0x%02x%s, compat lookup mods= 0x%02x%s
+Malformed number %s
+    map changes= 0x%08x, state= 0x%08x
+memory exhausted
+    message: 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x
+modifier map for key
+    mods= 0x%02x%s, base= 0x%02x%s, latched= 0x%02x%s, locked= 0x%02x%s
+Multiple config files on command line
+Multiple displays on command line
+Multiple sound commands on command line
+Multiple sound dirs on command line
+    name= "%s"
+ name%s changed
+names for key
+    names of groups in 0x%x changed
+    names of indicators in 0x%08x changed
+    names of virtual modifiers in 0x%04x changed
+    new device: %d min_keycode: %d, max_keycode %d
+No configuration file specified on command line
+No configuration specified in "%s"
+No display specified on command line
+No events to watch in "%s"
+, no name
+ (NON-XKB)
+No sound command specified on command line
+No sound directory specified on command line
+    num_groups= %d
+    old device: %d min_keycode: %d, max_keycode %d
+    percent= %d, pitch= %d, duration= %d
+printevent
+__printf_chk
+ptr_buttons= 0x%04x%s
+radio group names changed (%d radio groups total)
+    reason= 0x%0x
+    request %d/%d,
+    request %d/%d%s
+Running in the background
+-sc <cmd>            Specify the command to play sounds
+%s %d changed%s
+-sd <dir>            Specify the root directory for sound files
+Server %s uses incompatible version %d.%02d
+%s event, serial %ld, synthetic %s, device %d, time %ld,
+%sgeometry
+skaccept
+skreject
+skrelease
+%s: line %d of %s
+soundcmd
+soundcommand
+Sound command "%s" specified twice!
+sounddir
+sounddirectory
+Sound directory "%s" specified twice!
+%sphysical symbols
+__sprintf_chk
+%ss %d..%d changed%s
+%ssymbols
+__stack_chk_fail
+    state changes= 0x%08x, new state= 0x%08x
+    supported= 0x%0x, unsupported= 0x%0x
+%s was compiled with XKB version %d.%02d
+switching to %s
+%s/xkbevd.cf
+%s/.xkb/xkbevd.cf
+    symbol interpretations %d..%d (of %d) changed
+symbols for key
+-synch               Force synchronization
+syntax error
+T$49T$<}H
+Temporarily disabling the audible bell
+T$ ;l$(t
+Trailing %s argument ignored
+Unexpected character %c (%d) in input stream
+(unknown)
+unknown(%d)
+Unknown error action type %d
+Unknown error %d from XkbOpenDisplay
+Unknown flag "%s" on command line
+Usage: %s [options]...
+Using "%s", ignoring "%s"
+/usr/sbin/sfplay -q
+/usr/share/data/sounds/prosonus/
+/usr/share/X11/xkb
+__vfprintf_chk
+    virtual modifiers changed (0x%04x)
+-v                   Print verbose messages
+Warning:          
+    window= 0x%x, %sevent_only
+XCloseDisplay
+XGetAtomName
+XInternAtom
+XkbAccessXDetailText
+XkbAccessXNotify
+XkbActionMessage
+XkbAtomText
+XkbBellNotify
+XkbChangeEnabledControls
+XkbCompatMapNotify
+XkbControlsNotify
+XkbExtensionDeviceNotify
+XKB extension not present on %s
+XkbForceDeviceBell
+XkbGetKeyboard
+XkbIndicatorMapNotify
+XkbIndicatorStateNotify
+XkbInitAtoms
+XkbMapNotify
+XkbNamesNotify
+XkbNewKeyboard
+XkbOpenDisplay
+XkbQueryExtension
+XkbSelectEvents
+XkbSetAutoResetControls
+XkbStateNotify
+XkbStdBellEvent
+XKB_UNKNOWN!!!
+X library supports incompatible version %d.%02d
+XNextEvent
+XSynchronize

@@ -1,0 +1,41 @@
+acted on.
+		addsubstvar($package, "misc:Depends", "dpkg (>= 1.15.4) | install-info");
+all packages if B<-A> is specified).
+B<dh_installinfo> is a debhelper program that is responsible for installing
+B<dh_installinfo> [S<I<debhelper options>>] [B<-A>] [S<I<file> ...>]
+dh_installinfo - install info files
+		doit("chmod","-R", "go=rX","$tmp/usr/share/info/");
+		doit("chmod","-R", "u+rw","$tmp/usr/share/info/");
+		doit("cp",@info,"$tmp/usr/share/info");
+			doit("install","-d","$tmp/usr/share/info");
+foreach my $package (@{$dh{DOPACKAGES}}) {
+		# For transition, could be removed later.
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+		if ( ! -d "$tmp/usr/share/info") {
+	if ($file) {
+	if (@info) {
+	if (($package eq $dh{FIRSTPACKAGE} || $dh{PARAMS_ALL}) && @ARGV) {
+		@info=filearray($file, ".");
+info files into F<usr/share/info> in the package build directory.
+Install all files specified by command line parameters in ALL packages
+Install these info files into the first package acted on. (Or in
+=item B<-A>, B<--all>
+=item debian/I<package>.info
+=item I<file> ...
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+List info files to be installed.
+	my $file=pkgfile($package,"info");
+	my @info;
+	my $tmp=tmpdir($package);
+		push @info, @ARGV;
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w

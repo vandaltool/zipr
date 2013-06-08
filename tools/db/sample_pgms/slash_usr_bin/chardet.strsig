@@ -1,0 +1,109 @@
+        """
+2009 Ben Finney <ben+python@benfinney.id.au>
+    app = DetectEncodingApp(argv)
+    """ Application behaviour for 'detect-encoding' program """
+        app.main()
+        argv = sys_argv
+# bin/chardet
+class DetectEncodingApp(object):
+class OptionParser(optparse.OptionParser, object):
+# -*- coding: utf-8 -*-
+    """ Command-line parser for this program """
+        " (confidence: %(confidence)0.2f)") % vars()
+    confidence = encoding_params['confidence']
+content. Reports the name and confidence level for each file's
+# Copyright 
+            data.
+def detect_encoding(in_file):
+    def _emit_file_error(self, file_name, error):
+    def __init__(self, *args, **kwargs):
+    def __init__(self, argv):
+def __main__(argv=None):
+    def main(self):
+    def _parse_commandline(self, argv):
+    def _process_all_files(self, file_names):
+def process_file(in_file):
+def report_file_encoding(in_file, encoding_params):
+detected character encoding.
+            detected encoding, and detection confidence.
+    """ Detect encoding of text in `in_file`
+# either version 2.1 or, at your option, any later version.
+                else:
+        """ Emit an error message regarding file processing """
+    encoding_name = encoding_params['encoding']
+          encoding_params
+    encoding_params = detect_encoding(in_file)
+    encoding_report = report_file_encoding(in_file, encoding_params)
+        error_name = error.__class__.__name__
+            except IOError, exc:
+    except SystemExit, e:
+        exitcode = e.code
+    exitcode = __main__(argv=sys.argv)
+    exitcode = None
+    file_name = in_file.name
+        "%(file_name)s: %(encoding_name)s"
+            "%(file_name)s: %(error_name)s: %(error)s\n") % vars()
+            file_names = [None]
+                    file_name = sys.stdin.name
+            File object being reported. Should have an appropriate
+For every specified file (defaulting to stdin if no files are
+        for file_name in file_names:
+    from sys import argv as sys_argv
+        global __doc__
+    if argv is None:
+                if file_name is None:
+if __name__ == "__main__":
+        if not len(file_names):
+import chardet
+import optparse
+import sys
+    in_data = in_file.read()
+          in_file
+                    in_file = open(file_name)
+                    in_file = sys.stdin
+        """ Main entry point for application """
+    """ Mainline code for this program """
+            Mapping as returned by `detect_encoding` on the file's
+        message = (
+    message = "%(encoding_report)s\n" % vars()
+            `name` attribute.
+            None.
+# No warranty expressed or implied. See the file COPYING for details.
+            Opened file object to read and examine.
+        option_parser = OptionParser()
+        (options, args) = option_parser.parse_args(argv[1:])
+        Parameters
+    params = chardet.detect(in_data)
+        """ Parse command-line arguments """
+# Part of chardet, the Universal Encoding Detector.
+        """ Process all files in list """
+    """ Process a single file
+                process_file(in_file)
+""" %prog [options] [file ...]
+        Reads the file contents, detects the encoding, and writes a
+    report = (
+Report heuristically-detected character encoding for each file.
+        report line to stdout.
+    """ Return a report of the file's encoding
+    return exitcode
+    return params
+    return report
+        Return value
+                self._emit_file_error(file_name, exc)
+        self.file_names = args
+        self._parse_commandline(argv)
+        self._process_all_files(self.file_names)
+        self.usage = __doc__.strip()
+        """ Set up a new instance """
+specified), reads and determines the character encoding of the file
+        super(OptionParser, self).__init__(*args, **kwargs)
+    sys.exit(exitcode)
+        sys.stderr.write(message)
+    sys.stdout.write(message)
+            The mapping as returned by `chardet.detect`.
+            The report is a single line of text showing filename,
+# This is free software; you may copy, modify and/or distribute this
+            try:
+    try:
+#! /usr/bin/python
+# work under the terms of the GNU Lesser General Public License;

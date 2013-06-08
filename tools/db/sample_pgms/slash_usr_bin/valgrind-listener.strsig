@@ -1,0 +1,45 @@
+cannot accept connection 
+cannot bind port 
+cannot enable address reuse 
+cannot open socket 
+           connections.  It must be between 1024 and 65535.
+           Current default is %d.
+(%d) -------------------- CONNECT --------------------
+(%d) ------------------- DISCONNECT -------------------
+--exit-at-zero
+fcntl failed
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+listen failed 
+main -- accept connection
+main -- bind port
+main -- create socket
+main -- enable address reuse
+main -- listen
+main -- too many concurrent connections
+nanosleep
+new_sd > 0
+Please report this bug at: %s
+poll(main) failed
+           port-number is the default port on which to listen for
+__printf_chk
+set_blocking
+set_nonblocking
+setsockopt
+           (the default is to keep listening forever)
+Too many concurrent connections.  Increase M_CONNECTIONS and recompile.
+usage is:
+valgrind-listener.c
+   valgrind-listener [--exit-at-zero|-e] [port-number]
+valgrind-listener %s at %s
+valgrind-listener: %s:%d (%s): Assertion '%s' failed.
+valgrind-listener: the 'impossible' happened:
+           when the number of connections falls back to zero
+   where   --exit-at-zero or -e causes the listener to exit
+www.valgrind.org

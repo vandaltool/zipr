@@ -1,0 +1,179 @@
+ %11s  %s
+ %1$s [options]
+ %1$s [options] <device> <mountpoint>
+ %1$s [options] <device> | <mountpoint>
+ %1$s [options] [--source <device>] [--target <mountpoint>]
+%3u:%-3u
+9T$4wwso
+ -a, --ascii            use ASCII chars for tree formatting
+acd:ehifo:O:p::Pklmnrst:uvRS:T:w:
+action detected by --poll
+all mount options
+__asprintf_chk
+__assert_fail
+Available columns:
+backward
+bindtextdomain
+__bss_start
+canonicalize
+can't read %s
+ -c, --canonicalize     canonicalize printed paths
+columns[num] < FINDMNT_NCOLUMNS
+__ctype_b_loc
+__ctype_get_mb_cur_max
+D$0;l$(t:
+dcgettext
+ -d, --direction <word> direction of search, 'forward' or 'backward'
+direction
+%d%s%jd%s
+ -e, --evaluate         convert tags (LABEL/UUID) to device names
+__errno_location
+/etc/fstab
+/etc/mtab
+evaluate
+failed to add line to output
+failed to initialize libmount cache
+failed to initialize libmount iterator
+failed to initialize libmount tabdiff
+failed to initialize libmount table
+failed to initialize output column
+failed to initialize output table
+failed to parse timeout
+ -f, --first-only       print the first found filesystem only
+filesystem label
+                          filesystems (default)
+filesystem type
+filesystem UUID
+findmnt.c
+first-only
+For more information see findmnt(1).
+__fprintf_chk
+--{fstab,mtab,kernel}
+get_column_id
+get_match
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+__gmon_start__
+ -h, --help             display this help text and exit
+id < FINDMNT_NCOLUMNS
+ -i, --invert           invert the sense of matching
+_IO_stdin_used
+is_tabdiff_column
+iswprint
+_Jv_RegisterClasses
+ -k, --kernel           search in kernel table of mounted
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libmount.so.1
+ -l, --list             use list format output
+localeconv
+major:minor device number
+mbstowcs
+ -m, --mtab             search in table of mounted filesystems
+mnt_cache_find_tag_value
+mnt_diff_tables
+mnt_free_cache
+mnt_free_iter
+mnt_free_tabdiff
+mnt_free_table
+mnt_fs_get_devno
+mnt_fs_get_fs_options
+mnt_fs_get_fstype
+mnt_fs_get_options
+mnt_fs_get_root
+mnt_fs_get_source
+mnt_fs_get_srcpath
+mnt_fs_get_tag
+mnt_fs_get_target
+mnt_fs_get_vfs_options
+mnt_fs_match_fstype
+mnt_fs_match_options
+mnt_fs_match_source
+mnt_fs_match_target
+mnt_init_debug
+mnt_iter_get_direction
+mnt_new_cache
+mnt_new_iter
+mnt_new_tabdiff
+mnt_new_table
+mnt_reset_iter
+mnt_reset_table
+mnt_resolve_path
+mnt_resolve_spec
+mnt_tabdiff_next_change
+mnt_table_find_next_fs
+mnt_table_find_source
+mnt_table_find_target
+mnt_table_get_root_fs
+mnt_table_next_child_fs
+mnt_table_next_fs
+mnt_table_parse_file
+mnt_table_parse_fstab
+mnt_table_parse_mtab
+mnt_table_parse_stream
+mnt_table_set_cache
+mnt_table_set_parser_errcb
+MOUNT_2.19
+MOUNT_2.20
+mountpoint
+nl_langinfo
+ -n, --noheadings       don't print column headings
+noheadings
+notruncate
+num < ncolumns
+old mount options saved by --poll
+old mountpoint saved by --poll
+OLD-OPTIONS
+OLD-TARGET
+ -O, --options <list>   limit the set of filesystems by mount options
+ -o, --output <list>    the output columns to be shown
+Options:
+options are mutually exclusive
+options --target and --source can't be used together with command line element that is not an option
+poll() failed
+ -P, --pairs            use key="value" output format
+ -p, --poll[=<list>]    monitor changes in table of mounted filesystems
+__printf_chk
+/proc/mounts
+/proc/self/mountinfo
+__progname
+program_invocation_short_name
+--{raw,list,pairs}
+ -r, --raw              use raw output format
+ -R, --submounts        print all submounts for the matching filesystems
+%s column is requested, but --poll is not enabled
+setlocale
+set_match
+ -s, --fstab            search in static table of filesystems
+snprintf
+__snprintf_chk
+%s: open failed
+source device
+%s: parse error at line %d
+%s: '%s'
+ -S, --source <string>  the device to mount (by name, LABEL= or UUID=)
+__stack_chk_fail
+__strdup
+strncasecmp
+__strtoull_internal
+submounts
+ -T, --target <string>  the mountpoint to use
+ -t, --types <list>     limit the set of filesystems by FS types
+unknown action: %s
+unknown column: %s
+unknown direction '%s'
+ -u, --notruncate       don't truncate text in columns
+/usr/share/locale
+util-linux
+VFS-OPTIONS
+VFS specific mount options
+ -v, --nofsroot         don't print [/dir] for bind or btrfs mounts
+wcstombs
+ -w, --timeout <num>    upper limit in milliseconds that --poll will block

@@ -1,0 +1,620 @@
+        
+#;"*?[]&|<>(){}$`^~!
+%04d-%02d-%02d %02d:%02d:%02d
+ (%.1f%%)
+addprefix
+add_string
+addsuffix
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  Also makes:
+always-make
+ap <= end
+$(AR) $(ARFLAGS) $@ $<
+*** Archive member `%s' may be bogus; not deleted
+archives
+ARFILENAMES/
+$(AS) $(ASFLAGS) $(TARGET_MACH)
+__assert_fail
+assume-new
+assume-old
+attempt to use unsupported feature: `%s'
+automatic
+Avoiding implicit rule recursion.
+  -B, --always-make           Unconditionally make all targets.
+basename
+best->bytesfree > len
+bindtextdomain
+  -b, -m                      Ignored for compatibility.
+bsd_signal
+Bstrcache.c
+BUG: num_pattern_rules wrong!  %u != %u
+ (built-in):
+but `%s' is now considered the same file as `%s'.
+cannot enforce load limit: 
+cannot enforce load limits on this operating system
+can't allocate %ld bytes for hash table: memory exhausted
+can't rename double-colon `%s' to single-colon `%s'
+can't rename single-colon `%s' to double-colon `%s'
+cat $< >$@ 
+$(CC) $(ASFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_MACH)
+$(CC) $(ASFLAGS) $(CPPFLAGS) $(TARGET_MACH) -c
+$(CC) $(ASFLAGS) $(LDFLAGS) $(TARGET_MACH)
+$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+$(CC) -E
+$(CC) -E $(CPPFLAGS)
+$(CC) $(LDFLAGS) $(TARGET_ARCH)
+  -C DIRECTORY, --directory=DIRECTORY
+                              Change to DIRECTORY before doing anything.
+$(CHECKOUT,v)
+CHECKOUT,v
+check-symlink
+check-symlink-times
+ chmod a+x $@
+Circular %s <- %s dependency dropped.
+Cleaning up temp batch file %s
+Cleaning up temporary batch file %s
+clock_gettime
+closedir
+Collisions=%ld/%ld=%.0f%%
+command line
+#  Command-line target.
+commands commence before first target
+#  Commands currently running (THIS IS A BUG).
+Commands for file `%s' were found by implicit rule search,
+Commands for `%s' will be ignored in favor of those for `%s'.
+Commands of `%s' are being run.
+#  commands to execute
+Commands were specified for file `%s' at %s:%lu,
+-*-command-variables-*-
+$(-*-command-variables-*-)
+${-*-command-variables-*-}
+COMPILE.c
+$(COMPILE.cc)
+COMPILE.cc
+$(COMPILE.cc) $(OUTPUT_OPTION) $<
+$(COMPILE.c) $(OUTPUT_OPTION) $<
+COMPILE.cpp
+$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+COMPILE.def
+$(COMPILE.def) -o $@ $<
+COMPILE.f
+$(COMPILE.f) $(OUTPUT_OPTION) $<
+COMPILE.mod
+$(COMPILE.mod) -o $@ $<
+$(COMPILE.mod) -o $@ -e $@ $^
+COMPILE.p
+$(COMPILE.p) $(OUTPUT_OPTION) $<
+COMPILE.r
+$(COMPILE.r) $(OUTPUT_OPTION) $<
+COMPILE.s
+$(COMPILE.s) -o $@ $<
+                              Consider FILE to be infinitely new.
+                              Consider FILE to be very old and don't remake it.
+Considering target file `%s'.
+construct_command_argv_internal
+continue
+ (core dumped)
+Couldn't change back to original directory.
+ cp $< $@
+creating jobs pipe
+$(CTANGLE) $^ $@
+$(CTANGLE) $< - $@
+__ctype_b_loc
+__ctype_tolower_loc
+Current time
+current_variable_set_list->next != ((void *)0)
+$(CWEAVE) $^ $@
+$(CWEAVE) $< - $@
+__cxa_atexit
+$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+dcgettext
+  --debug[=FLAGS]             Print various types of debugging information.
+.DEFAULT
+.DEFAULT_GOAL
+.DEFAULT_GOAL contains more than one target
+define %s
+.def.sym
+.DELETE_ON_ERROR
+*** Deleting file `%s'
+*** Deleting intermediate file `%s'
+#  Dependencies commands running (THIS IS A BUG).
+ (did you mean TAB instead of 8 spaces?)
+# Directories
+                              Don't actually run any commands; just print them.
+ (don't care)
+                              Don't start multiple jobs unless load is below N.
+  -d                          Print lots of debugging information.
+dup jobserver
+Duplicate the job FD
+  -e, --environment-overrides
+empty `override' directive
+empty string invalid as file name
+empty variable name
+enter_file
+__environ
+environment
+environment override
+environment-overrides
+environment under -e
+                              Environment variables override makefiles.
+__errno_location
+Estimated system load = %f (actual = %f) (max requested = %f)
+eval\ \"set\ x\;\ shift\;\ 
+execvp: 
+.EXPORT_ALL_VARIABLES
+extraneous `endef'
+extraneous `%s'
+Extraneous text after `endef' directive
+Extraneous text after `%s' directive
+F77FLAGS
+#  Failed to be updated.
+Failed to remake makefile `%s'.
+Failed to remake target file `%s'.
+$(FC) $(FFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+$(FC) $(FFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+$(FC) $(FFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -F
+$(FC) $(FFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+$(FC) $(FFLAGS) $(RFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+$(FC) $(FFLAGS) $(RFLAGS) $(TARGET_ARCH) -c
+$(FC) $(FFLAGS) $(RFLAGS) $(TARGET_ARCH) -F
+$(FC) $(FFLAGS) $(TARGET_ARCH) -c
+f->command_state == cs_finished
+.FEATURES
+  -f FILE, --file=FILE, --makefile=FILE
+$(FFLAGS)
+#  File does not exist.
+#  File has been updated.
+#  File has not been updated.
+#  File is an intermediate prerequisite.
+#  File is very old.
+ files, 
+File `%s' does not exist.
+# files hash-table stats:
+File `%s' was considered already.
+file->update_status >= 0 && file->update_status <= 2
+filter-out
+findstring
+# Finished Make data base on %s
+Finished prerequisites of target file `%s'.
+Finished updating file `%s'.
+first argument to `word' function must be greater than 0
+firstword
+fopen (temporary file)
+Found an implicit rule for `%s'.
+Found prerequisite `%s' as VPATH `%s'
+__fprintf_chk
+ (from `%s', line %lu)
+ (from `%s', line %lu):
+fwrite (temporary file)
+__fxstat64
+# General (`VPATH' variable) search path:
+$(GET) $(GFLAGS) $(SCCS_OUTPUT_OPTION) $<
+getloadavg
+getlogin
+getopt_long
+getpwnam
+getrlimit64
+gettimeofday
+Giving up on target file `%s'.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+globfree64
+__gmon_start__
+GmXXXXXX
+GNUmakefile
+  -h, --help                  Print this message and exit.
+i686-pc-linux-gnu
+  -I DIRECTORY, --include-dir=DIRECTORY
++$(if $(wildcard $@),,$(CO) $(COFLAGS) $< $@)
+ignore-errors
+  Ignoring VPATH name `%s'.
+  -i, --ignore-errors         Ignore errors from commands.
+# Implicit Rules
+#  Implicit rule search has been done.
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `%s'
+ impossibilities
+ impossibilities in %lu directories.
+-include
+include-dir
+.INCLUDE_DIRS
+Included makefile `%s' was not found.
+init jobserver pipe
+insufficient number of arguments (%d) to function `%s'
+.INTERMEDIATE
+Internal error: func_error: '%s'
+internal error: invalid --jobserver-fds string `%s'
+internal error: multiple --jobserver-fds options
+INTERNAL: Exiting with %u jobserver tokens available; should be %u!
+INTERNAL: Exiting with %u jobserver tokens (should be 0)!
+INTERNAL: Freeing child 0x%08lx (%s) but no tokens left!
+INTERNAL: no children as we go to sleep on read
+invalid first argument to `wordlist' function: `%d'
+invalid `override' directive
+invalid syntax in conditional
+#  Invalid value in `update_status' member!
+_IO_putc
+_IO_stdin_used
+<itz<wtF<et"
+  -j [N], --jobs[=N]          Allow N jobs at once; infinite jobs with no arg.
+jobserver-fds
+just-print
+_Jv_RegisterClasses
+  -k, --keep-going            Keep going when some targets can't be made.
+_(knN(%.o)
+|$L9|$$w
+#  Last modified %s
+lastword
+  -L, --check-symlink-times   Use the latest mtime between symlinks and target.
+ $(LEX.l) $< > $@
+$(LEX.l) $< > $@ 
+ $(LEX.l) $< > $*.c
+$(LEX) $(LFLAGS) -t
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+.LIBPATTERNS
+.LIBPATTERNS element `%s' is not a pattern
+librt.so.1
+lib%.so lib%.a
+$(LINK.cc)
+$(LINK.cc) $^ $(LOADLIBES) $(LDLIBS) -o $@
+$(LINK.c) $^ $(LOADLIBES) $(LDLIBS) -o $@
+LINK.cpp
+$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
+$(LINK.f) $^ $(LOADLIBES) $(LDLIBS) -o $@
+$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
+$(LINK.p) $^ $(LOADLIBES) $(LDLIBS) -o $@
+$(LINK.r) $^ $(LOADLIBES) $(LDLIBS) -o $@
+$(LINK.s) $^ $(LOADLIBES) $(LDLIBS) -o $@
+$(LINT.c) -C$* $<
+ $(LINT.c) -C$* y.tab.c 
+$(LINT.c) -i $*.c -o $@
+$(LINT) $(LINTFLAGS) $(CPPFLAGS) $(TARGET_ARCH)
+Live child 0x%08lx (%s) PID %ld %s
+  -l [N], --load-average[=N], --max-load[=N]
+load-average
+Load=%ld/%ld=%.0f%%, 
+localtime
+Looking for an implicit rule for `%s'.
+Looking for archive-member implicit rule for `%s'.
+Looking for a rule with intermediate file `%s'.
+lookup_file
+.LOW_RESOLUTION_TIME
+__lxstat64
+$(M2C) $(M2FLAGS) $(DEFFLAGS) $(TARGET_ARCH)
+$(M2C) $(M2FLAGS) $(MODFLAGS) $(TARGET_ARCH)
+MAKECMDGOALS
+$(MAKE_COMMAND)
+MAKE_COMMAND
+# Make data base, printed on %s
+Makefile
+Makefile from standard input specified twice.
+MAKEFILE_LIST
+MAKEFILES
+$(MAKEFILES)
+Makefile `%s' might loop; not remaking it.
+Makefile `%s' was not found
+MAKEFLAGS
+makeinfo
+$(MAKEINFO) $(MAKEINFO_FLAGS) $< -o $@
+MAKELEVEL
+MAKEOVERRIDES
+$(MAKEOVERRIDES)
+MAKE_RESTARTS
+MAKE_RESTARTS=
+MAKE_RESTARTS=%u
+MAKE_VERSION
+Making `%s' due to always-make flag.
+Malformed target-specific variable definition
+max-load
+missing `endef', unterminated `define'
+missing `endif'
+missing rule before commands
+missing separator%s
+missing target pattern
+mixed implicit and normal rules
+mixed implicit and static pattern rules
+mkstemp64
+#  Modification time never checked.
+multiple target patterns
+Must remake target `%s'.
+ mv -f lex.yy.r $@
+ mv -f y.tab.c $@
+*name != '\0'
+Need a job token; we %shave children
+#  Needs to be updated (-q is set).
+new-file
+  -n, --just-print, --dry-run, --recon
+no-builtin-rules
+no-builtin-variables
+No commands for `%s' and no prerequisites actually changed.
+ (no default goal)
+ (no ~ expansion)
+# No general (`VPATH' variable) search path.
+No implicit rule found for `%s'.
+# No implicit rules.
+no-keep-going
+No need to remake target `%s'
+non-numeric first argument to `word' function
+non-numeric first argument to `wordlist' function
+non-numeric second argument to `wordlist' function
+# No pattern-specific variable values.
+no-print-directory
+  --no-print-directory        Turn off -w, even if it was turned on implicitly.
+No targets
+No targets specified and no makefile found
+# Not a target:
+$(notdir $^)
+$(notdir $<)
+$(notdir $?)
+$(notdir $@)
+$(notdir $*)
+$(notdir $%)
+$(notdir $+)
+Nothing to be done for `%s'.
+.NOTPARALLEL
+# No `vpath' search paths.
+Obtained token for child 0x%08lx (%s).
+  -o FILE, --old-file=FILE, --assume-old=FILE
+old-file
+only one `else' per conditional
+Options:
+.out .a .ln .o .c .cc .C .cpp .p .f .F .r .y .l .s .S .mod .sym .def .h .info .dvi .tex .texinfo .texi .txinfo .w .ch .web .sh .elc .el
+OUTPUT_OPTION
+*p2 != '\0'
+patsubst
+$(patsubst %/,%,$(dir $^))
+$(patsubst %/,%,$(dir $<))
+$(patsubst %/,%,$(dir $?))
+$(patsubst %/,%,$(dir $@))
+$(patsubst %/,%,$(dir $*))
+$(patsubst %/,%,$(dir $%))
+$(patsubst %/,%,$(dir $+))
+# Pattern-specific Variable Values
+$(PC) $(PFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+$(PC) $(PFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+#  Phony target (prerequisite of .PHONY).
+pop_variable_scope
+  -p, --print-data-base       Print make's internal database.
+.PRECIOUS
+#  Precious file (prerequisite of .PRECIOUS).
+PREPROCESS.F
+$(PREPROCESS.F) $(OUTPUT_OPTION) $<
+PREPROCESS.r
+$(PREPROCESS.r) $(OUTPUT_OPTION) $<
+$(PREPROCESS.S) $< > $@
+PREPROCESS.S
+prerequisites cannot be defined in command scripts
+Prerequisite `%s' is newer than target `%s'.
+Prerequisite `%s' is older than target `%s'.
+Prerequisite `%s' is order-only for target `%s'.
+Prerequisite `%s' of target `%s' does not exist.
+print-data-base
+__printf_chk
+print_file
+Pruning file `%s'.
+Putting child 0x%08lx (%s) PID %ld%s on the chain.
+  -q, --question              Run no commands; exit status says if up to date.
+question
+question_flag
+__rawmemchr
+readdir64
+                              Read FILE as a makefile.
+Reading makefile `%s'
+Reading makefiles...
+read jobs pipe
+readlink
+readlink: 
+readonly
+Read returned EBADF.
+realpath
+__realpath_chk
+Reaping losing child 0x%08lx PID %ld %s
+Reaping winning child 0x%08lx PID %ld %s
+Recently tried and failed to update file `%s'.
+record_target_var
+recursive
+Recursive variable `%s' references itself (eventually)
+Re-executing[%u]:
+Rehash=%d, 
+Rejecting impossible implicit prerequisite `%s'.
+Rejecting impossible rule prerequisite `%s'.
+Released token for child 0x%08lx (%s).
+remake.c
+ (remote)
+remote_status
+Removing child 0x%08lx PID %ld%s from chain.
+Removing intermediate files...
+Report bugs to <bug-make@gnu.org>
+@$(RM) $@ 
+ $(RM) $*.c
+@$(RM) $*.c
+@rm -f $@ 
+ $(RM) y.tab.c
+  -r, --no-builtin-rules      Disable the built-in implicit rules.
+  -R, --no-builtin-variables  Disable the built-in variable settings.
+%s: *** 
+*** [%s] Archive member `%s' may be bogus; not deleted
+SCCS/s.%
+%s: Command not found
+%sCopyright (C) 2006  Free Software Foundation, Inc.
+# %s: could not be stat'd.
+*** [%s] Deleting file `%s'
+# %s (device %ld, inode %ld): 
+# %s (device %ld, inode %ld): could not be opened.
+                              Search DIRECTORY for included makefiles.
+ (search path)
+.SECONDARY
+.SECONDEXPANSION
+%s: Entering an unknown directory
+%s: Entering directory `%s'
+*** [%s] Error %d
+[%s] Error %d (ignored)
+setlocale
+setrlimit64
+%sGNU Make %s
+$(SHELL)
+sigaction
+sigaddset
+sigemptyset
+sigprocmask
+sinclude
+`%s' is up to date.
+%s: Leaving an unknown directory
+%s: Leaving directory `%s'
+%s (line %d) Bad shell context (!unixy && !batch_mode_shell)
+%s:%lu: 
+%s:%lu: *** 
+  -S, --no-keep-going, --stop
+%sNo rule to make target `%s', needed by `%s'%s
+%sNo rule to make target `%s'%s
+ so far.
+%s # of strcache buffers: %d
+%s # of strings in strcache: %d
+%sPARTICULAR PURPOSE.
+__sprintf_chk
+%s: '%s'
+%s: Shell program not found
+  -s, --silent, --quiet       Don't echo commands.
+*** [%s] %s%s
+%s%s: %s
+%s strcache free: total = %d / max = %d / min = %d / avg = %d
+%s strcache size: total = %d / max = %d / min = %d / avg = %d
+__stack_chk_fail
+start_waiting_job
+%sThere is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+%sThis is free software; see the source for copying conditions.
+%sThis program built for %s
+%sThis program built for %s (%s)
+Still updating file `%s'.
+%s: Timestamp out of range; substituting %s
+.  Stop.
+__strcpy_chk
+__strdup
+strerror
+$(strip $(GPATH))
+$(strip $(.LIBPATTERNS))
+$(strip $(VPATH))
+__strncpy_chk
+strsignal
+%s[%u]: 
+%s[%u]: *** 
+$(subst ,,%s)
+Successfully remade target file `%s'.
+#  Successfully updated.
+%s[%u]: Entering an unknown directory
+%s[%u]: Entering directory `%s'
+.SUFFIXES
+%s[%u]: Leaving an unknown directory
+%s[%u]: Leaving directory `%s'
+t79D$Dti
+$(TANGLE) $<
+target file `%s' has both : and :: entries
+Target file `%s' needs remade under -q.
+target pattern contains no `%%'
+target `%s' doesn't match the target pattern
+target `%s' given more than once in the same rule.
+Target `%s' is double-colon and has no prerequisites.
+Target `%s' not remade because of errors.
+target-specific order-only second-expansion else-if
+ terminal.
+$(TEX) $<
+.tex.dvi
+texi2dvi
+$(TEXI2DVI) $(TEXI2DVI_FLAGS) $<
+.texi.dvi
+.texi.info
+.texinfo.dvi
+.texinfo.info
+the `-%c' option requires a non-empty string argument
+the `-%c' option requires a positive integral argument
+The prerequisites of `%s' are being made.
+This program built for %s
+This program built for %s (%s)
+touch: Archive `%s' does not exist
+touch: Bad return code from ar_member_touch on `%s'
+touch: fstat: 
+touch: lseek: 
+touch: Member `%s' does not exist in `%s'
+touch: open: 
+touch: read: 
+touch %s
+touch: `%s' is not a valid archive
+touch: write: 
+Trying implicit prerequisite `%s'.
+Trying pattern rule with stem `%.*s'.
+Trying rule prerequisite `%s'.
+  -t, --touch                 Touch targets instead of remaking them.
+<-t<<@t(<+u>
+                              Turns off -k.
+.txinfo.dvi
+.txinfo.info
+\$\{%u\}
+# %u implicit rules, %u
+undefined
+unexport
+unimplemented on this platform: function `%s'
+unknown debug level specification `%s'
+unlink: 
+unlink (temporary file): 
+unterminated call to function `%s': missing `%c'
+unterminated variable reference
+# %u pattern-specific variable values
+update_file_1
+Updating goal targets....
+Updating makefiles....
+Usage: %s [options] [target] ...
+Using default commands for `%s'.
+; using VPATH name `%s'
+/usr/gnu/include
+/usr/include
+/usr/lib
+/usr/lib/i386-linux-gnu
+/usr/local/include
+/usr/local/lib
+/usr/share/locale
+u<<'t2<\t.<"
+# %u `vpath' search paths.
+variable.c
+# Variables
+.VARIABLES
+# variable set hash-table stats:
+__vfprintf_chk
+virtual memory exhausted
+vpath %s 
+# VPATH Search Paths
+  -v, --version               Print the version number of make and exit.
+*** Waiting for unfinished jobs....
+warning:  Clock skew detected.  Your build may be incomplete.
+Warning: File `%s' has modification time %.2g s in the future
+warning: ignoring old commands for target `%s'
+warning: -jN forced in submake: disabling jobserver mode.
+warning: jobserver unavailable: using -j1.  Add `+' to parent make rule.
+*** Warning: .LOW_RESOLUTION_TIME file `%s' has a high resolution time stamp
+warning: NUL character seen; rest of line ignored
+warning: overriding commands for target `%s'
+warning: undefined variable `%.*s'
+warn-undefined-variables
+  --warn-undefined-variables  Warn when an undefined variable is referenced.
+%.w %.ch
+$(WEAVE) $<
+.web.tex
+  -W FILE, --what-if=FILE, --new-file=FILE, --assume-new=FILE
+wildcard
+wordlist
+  -w, --print-directory       Print the current directory.
+write error
+write error: %s
+write jobserver
+__xstat64
+$(YACC.y) $< 
+$(YACC) $(YFLAGS)

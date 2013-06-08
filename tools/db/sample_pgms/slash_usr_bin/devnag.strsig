@@ -1,0 +1,65 @@
+addcontentsline
+addtocounter
+addtolength
+addvspace
+Author     : Frans J. Velthuis <velthuis@rc.rug.nl>
+cannot open either %s or %s%s
+cannot open file %s
+cannot open %s for output
+Copyright (C) 1991-1998  University of Groningen, The Netherlands
+__ctype_b_loc
+\def\DevnagVersion{%s}
+destination file extension %s is forbidden
+devnag v%s
+dolmode0
+dolmode1
+dolmode2
+dolmode3
+enlargethispage
+enlargethispage*
+Error: illegal character(s) "%s" detected at line %d:
+Error: missing }
+Error: tabs_mode not selected
+__fprintf_chk
+framebox
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+input file: 
+_IO_stdin_used
+__isoc99_sscanf
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+longtable
+Maintainer : Zdenek Wagner <zdenek.wagner@gmail.com>
+modernhindi
+multicolumn
+noarm AEOkgcjtdpbR ns aiu ktdonsrgha.KTDlLRm 
+nodollars
+nohyphen
+novconjuncts
+output file: 
+Preprocessor for Devanagari for TeX package
+__printf_chk
+raisebox
+refstepcounter
+sanskrit
+setcounter
+setlength
+source file extension %s is forbidden
+__sprintf_chk
+__stack_chk_fail
+strcasecmp
+__strcat_chk
+__strcpy_chk
+__strncat_chk
+subparagraph
+subsubsection
+supertabular
+thebibliography
+Warning: possible illegal preprocessor command at line 

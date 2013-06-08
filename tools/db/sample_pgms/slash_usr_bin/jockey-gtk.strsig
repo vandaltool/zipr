@@ -1,0 +1,304 @@
+        
+        '''
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+        A double underscore ('__') is converted to a real '_'.
+# (at your option) any later version.
+            buttons=Gtk.ButtonsType.CLOSE, message_format=text)
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# (c) 2007 Canonical Ltd.
+class GtkUI(jockey.ui.AbstractUI):
+        '''Close the current progress dialog.'''
+            col_icon.add_attribute(pixbuf_renderer, 'pixbuf', 1)
+            col_icon = Gtk.TreeViewColumn()
+            col_icon.pack_start(pixbuf_renderer, False)
+            col_icon.set_expand(False)
+            col_icon.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+            col_name.add_attribute(text_renderer, 'text', 2)
+            col_name = Gtk.TreeViewColumn()
+            col_name.pack_start(text_renderer, True)
+            col_name.set_expand(True)
+            col_name.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        '''Create a progress dialog.'''
+        # creating the notification immediately causes the bubble to point into
+                cur_path = self.model.get_path(iter)
+        cur_path = self.treeview.get_cursor()[0]
+        current/total specify the number of steps done and total steps to
+        # default height of details scrollwindow is too small
+        # default vpane size
+    def confirm_action(self, title, text, subtext=None, action=None):
+    def convert_keybindings(self, str):
+    def error_message(self, title, text):
+    def on_button_help_clicked(self, widget):
+    def on_button_toggle_clicked(self, widget):
+    def on_linkbutton_licensetext_clicked(self, widget):
+    def on_progress_cancel(self, *args):
+    def on_quit(self, *args):
+    def on_treeview_drivers_cursor_changed(self, widget):
+    def show_notification(self, data):
+    def ui_idle(self):
+    def ui_init(self):
+    def ui_main_loop(self):
+    def ui_notification(self, title, text):
+    def ui_progress_finish(self):
+    def ui_progress_start(self, title, description, total):
+    def ui_progress_update(self, current, total):
+    def ui_show_main(self):
+    def update_driver_info_ui(self, handler_id):
+    def update_tree_model(self):
+    def w(self, widget):
+        d = info['description']
+        display an indeterminated progress bar (bouncing back and forth).
+        do, or -1 if it cannot be determined. In this case the dialog should
+            # EDGE is the default, but that centers if there is just one button
+        elif info['certified']:
+            elif info['enabled']:
+        elif info['enabled']:
+        elif info['free']:
+        elif info['needs_reboot']:
+        elif len(self.get_displayed_handlers()) < 4:
+            else:
+        else:
+    # event callbacks
+                except GLib.Error:
+        except GLib.GError as e:
+        except NotImplementedError, e:
+        for h_id in self.get_displayed_handlers():
+        format for the frontend.
+from gi.repository import GObject, GLib, GdkPixbuf, Gtk, Notify
+from jockey.oslib import OSLib
+# GNU General Public License for more details.
+        GObject.timeout_add (500, self.show_notification, 
+                GObject.TYPE_STRING)
+                Gtk.IconSize.BUTTON)
+                Gtk.IconSize.BUTTON))
+                    Gtk.Image.new_from_icon_name('jockey-disabled', Gtk.IconSize.BUTTON))
+                    Gtk.Image.new_from_icon_name('jockey-enabled', Gtk.IconSize.BUTTON))
+                Gtk.Image.new_from_stock(Gtk.STOCK_APPLY,
+            Gtk.main()
+            Gtk.main_iteration_do(False)
+        Gtk.main_quit()
+    '''GTK user interface implementation.'''
+'''GTK user interface implementation.'''
+        # handler ID, icon, name
+    # helper functions
+            h_id = None
+            h_id = self.model[path][0]
+            # icon
+        if action:
+        If action is given, it is used as button label instead of the default
+        if cur_path:
+        if current < 0 or total < 0:
+        If handler_id is None, then no driver is selected, no information
+        if indicator or trayicon:
+        if info['certified'] == None:
+            if info['enabled']:
+        if info['enabled'] == None:
+        if info['free'] == None:
+        if info['license_text']:
+            if info['needs_reboot']:
+        if len(self.get_displayed_handlers()) < 2:
+if __name__ == '__main__':
+            if not cur_path:
+        if not info['button_toggle_label']:
+    if not os.environ.get('DISPLAY'):
+        if not OSLib.inst.ui_help_available(self):
+        if not os.path.exists(ui_path):
+        if not self.main_loop_running:
+        if not self.treeview.get_columns():
+        if path:
+        if self.set_handler_enable(self.model[self.treeview.get_cursor()[0]][0],
+        if subtext:
+        if title:
+        #if trayicon:
+    # Implementation of required AbstractUI methods
+import jockey.ui
+import sys, os.path, os
+            indicator = jockey.ui.AbstractUI.ui_notification(self, None, None)
+        indicator = None
+            indicator.set_menu(menu)
+        info = self.get_ui_driver_info(handler_id)
+            info = self.get_ui_driver_info(h_id)
+        # initialize handler treeview (but only do it once)
+        '''Initialize UI.'''
+        installers.
+            item.connect('activate', lambda widget: self.ui_show_main())
+            item = Gtk.MenuItem.new_with_label(self.string_install_drivers)
+            item.show()
+            iter = self.model.append([h_id, pixbuf, info['name'].encode('UTF-8')])
+# it under the terms of the GNU General Public License as published by
+        '''Keyboard accelerator aware gettext() wrapper.
+        # lift the curtain
+        # load UI
+        '''Main loop for the user interface.
+            menu.append(item)
+            menu = Gtk.Menu()
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                message_format=text)
+                message_format=text, buttons=Gtk.ButtonsType.OK_CANCEL)
+            # name
+        # nothing to do for GTK
+        notification should run the GUI.
+        #   notify.attach_to_status_icon(trayicon)
+        Notify.init('jockey')
+        notify = Notify.Notification.new(title, text.encode('UTF-8'), 'jockey')
+        notify.set_timeout(10000)
+            notify.show()
+        # not supported by libnotify 0.4 API:
+        'OK'.  Return True if the user confirms, False otherwise.
+        OSLib.inst.ui_help(self)
+        path = widget.get_cursor()[0]
+            pixbuf_renderer = Gtk.CellRendererPixbuf()
+                    pixbuf = theme.load_icon(Gtk.STOCK_NO, 16, Gtk.IconLookupFlags.USE_BUILTIN)
+                pixbuf = theme.load_icon(Gtk.STOCK_REFRESH, 16, Gtk.IconLookupFlags.USE_BUILTIN)
+                    pixbuf = theme.load_icon(Gtk.STOCK_YES, 16, Gtk.IconLookupFlags.USE_BUILTIN)
+                    pixbuf = theme.load_icon('jockey-disabled', 16, 0)
+                    pixbuf = theme.load_icon('jockey-enabled', 16, 0)
+        '''Present a confirmation dialog.
+        '''Present an error message box.'''
+        '''Present a notification popup.
+            print 'GTK ui_notification: appindicator failed:', e
+            print 'GTK ui_notification: got appindicator'
+        print >> sys.stderr, 'This program needs a running X session. Please use jockey-text for a command line version of Jockey.'
+        '''Process pending UI events and return.
+        ret = self.msgbox.run()
+        return ret == Gtk.ResponseType.OK
+        return self.cancel_progress
+        return self.widgets.get_object(widget)
+        return str
+        return True
+        self.cancel_progress = False
+        self.cancel_progress = True
+            self.current_driver_name)
+        self.current_driver_name = info['name']
+            self.current_license_text = info['license_text']
+            self.current_license_text = None
+        self.main_loop_running = False
+            self.main_loop_running = True
+            self.main_window_text())
+        self.model = Gtk.ListStore(GObject.TYPE_STRING, GdkPixbuf.Pixbuf,
+            self.msgbox.add_button(action, Gtk.ResponseType.OK).set_image(
+            self.msgbox.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        self.msgbox.destroy()
+            self.msgbox.format_secondary_text(subtext)
+        self.msgbox = Gtk.MessageDialog(message_type=Gtk.MessageType.ERROR,
+            self.msgbox = Gtk.MessageDialog(message_type=Gtk.MessageType.QUESTION,
+        self.msgbox = None
+        self.msgbox.run()
+            self.msgbox.set_title(title)
+            self.treeview.append_column(col_icon)
+            self.treeview.append_column(col_name)
+        self.treeview.expand_all()
+        self.treeview.grab_focus()
+        self.treeview = self.w('treeview_drivers')
+            self.treeview.set_cursor(cur_path, None, False)
+            self.treeview.set_headers_visible(False)
+        self.treeview.set_model(self.model)
+        self.treeview.set_sensitive(False)
+        self.treeview.set_sensitive(True)
+        self.ui_idle()
+            self.ui_main_loop()
+        self.update_driver_info_ui(h_id)
+        self.update_driver_info_ui(None)
+            self.update_tree_model()
+        self.update_tree_model()
+            self.w('button_box_main').set_layout(Gtk.ButtonBoxStyle.END)
+            self.w('button_help').hide()
+            self.w('button_toggle').hide()
+                self.w('button_toggle').set_image(
+            self.w('button_toggle').set_label(info['button_toggle_label'])
+            self.w('button_toggle').set_label(self.string_button_enable)
+            self.w('button_toggle').set_sensitive(False)
+            self.w('button_toggle').set_sensitive(True)
+        self.w('button_toggle').show()
+        self.w('dialog_licensetext').hide()
+        self.w('dialog_licensetext').run()
+        self.w('dialog_licensetext').set_default_size(600, 480)
+        self.w('dialog_licensetext').set_title(self.string_license_dialog_title)
+        self.w('dialog_manager').hide()
+        self.w('dialog_manager').set_default_size(-1, 550)
+        self.w('dialog_manager').set_title(self.main_window_title())
+        self.w('dialog_manager').show()
+        self.widgets.add_from_file(ui_path)
+        self.widgets.connect_signals(self)
+        self.widgets = Gtk.Builder()
+            self.w('image_certification').hide()
+            self.w('image_certification').set_from_icon_name('jockey-certified', Gtk.IconSize.BUTTON)
+            self.w('image_certification').set_from_stock(Gtk.STOCK_DIALOG_WARNING, Gtk.IconSize.BUTTON)
+            self.w('image_certification').show()
+            self.w('image_enabled').hide()
+            self.w('image_enabled').set_from_icon_name('jockey-disabled', Gtk.IconSize.BUTTON)
+            self.w('image_enabled').set_from_icon_name('jockey-enabled', Gtk.IconSize.BUTTON)
+            self.w('image_enabled').set_from_stock(Gtk.STOCK_REFRESH, Gtk.IconSize.BUTTON)
+            self.w('image_enabled').show()
+            self.w('image_license').hide()
+            self.w('image_license').set_from_icon_name('jockey-free', Gtk.IconSize.BUTTON)
+            self.w('image_license').set_from_icon_name('jockey-proprietary',
+            self.w('image_license').show()
+        self.w('label_certification').set_label(info['certification_label'])
+        self.w('label_description').set_label(description)
+        self.w('label_drivername').set_label('<b>%s</b>' % info['name'])
+        self.w('label_heading').set_label('<span weight="bold">%s</span>\n\n%s' %
+        self.w('label_license_drivername').set_label('<b>%s</b>' %
+            self.w('label_license_label').hide()
+        self.w('label_license_label').set_label(self.string_license_label)
+            self.w('label_license_label').show()
+        self.w('label_license').set_label(info['license_label'])
+        self.w('label_status').set_label(info['status_label'])
+            self.w('linkbutton_licensetext').hide()
+        self.w('linkbutton_licensetext').set_label('(%s)' % self.string_details)
+            self.w('linkbutton_licensetext').show()
+            self.w('progress').pulse()
+        self.w('progress').set_fraction(0)
+            self.w('progress').set_fraction(float(current)/total)
+            self.w('progress').set_pulse_step(0.1)
+        self.w('textview_description').get_buffer().set_text(d, len(d))
+        self.w('textview_license_text').get_buffer().set_text(self.current_license_text)
+            self.w('vpaned1').set_position(100)
+            self.w('vpaned1').set_position(36)
+            self.w('vpaned1').set_position(72)
+        self.w('window_progress').hide()
+        self.w('window_progress').set_title(title)
+        self.w('window_progress').set_transient_for(self.w('dialog_manager'))
+        self.w('window_progress').show()
+        '''Shortcut for getting an UI widget from GtkBuilder.'''
+        # show help button?
+        '''Show main window.'''
+        shown, and the appropriate controls are disabled.
+        sys.exit(1)
+    sys.exit(u.run())
+            sys.stderr.write('Failed to show notification: %s\n' % str(e))
+            text_renderer = Gtk.CellRendererText()
+        the exit code.
+# the Free Software Foundation; either version 2 of the License, or
+        theme = Gtk.IconTheme.get_default()
+        # the void; icon needs to settle first
+        This is called while waiting for external processes such as package
+        This optionally converts keyboard accelerators to the appropriate
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+        This should preferably create a tray icon. Clicking on the tray icon or
+        This should return if the user wants to quit the program, and return
+        This should return True to cancel, and False otherwise.
+            (title, text, trayicon))
+        (title, text, trayicon) = data
+            'toggle', False):
+            trayicon.connect('activate', lambda widget: self.ui_show_main())
+            trayicon = Gtk.StatusIcon.new_from_icon_name('jockey')
+            trayicon = None
+            trayicon.set_tooltip_text(title)
+            trayicon.set_visible(False)
+            trayicon.set_visible(True)
+                try:
+        try:
+    u = GtkUI()
+            ui_path = os.path.join(os.path.dirname(__file__), 'jockey-gtk.ui')
+        ui_path = '/usr/share/jockey/jockey-gtk.ui'
+        '''Update status of current progress dialog.
+        '''Update treeview to current set of handlers and their states.'''
+        '''Update UI elements which show the driver details.
+#!/usr/bin/python
+        while Gtk.events_pending():
+            # with appindicator
+            # with our own tray icon
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# You should have received a copy of the GNU General Public License along

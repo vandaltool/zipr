@@ -1,0 +1,1003 @@
+                                                                                
+%$-+(,)*._~/<>|&^!:[@]
+0x%lx out range of signed 32bit displacement
+16-bit jump out of range
+%20s:%-5d  %s:%s %s
+  --32/--64/--x32         generate 32bit/64bit/x32 code
+32bit mode not supported on `%s'.
+{ 3~$3N 	
+%33s:%s %s
+% 4d     
+% 4d      
+% 4d ???? 
+% 4d %04x 
+%4u:%-13s **** %s
+64bit mode not supported on `%s'.
+\$(9\$@v+
+\$(9\$@w
+$._ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
+a bignum with underscores may not have more than 8 hex digits in any word
+a bignum with underscores must have exactly 4 words
+.abort detected.  Abandoning ship.
+Accessing function `%s' as thread-local object
+Accessing `%s' as thread-local object
+add_prefix
+adjust_reloc_syms
+adjust_stab_sections
+alias = %s
+alignment negative; 0 assumed
+alignment not a power of 2
+alignment padding (%lu bytes) not a multiple of %ld
+alignment too large: %u assumed
+alternate
+  --alternate             initially turn on alternate macro syntax
+ambiguous memory operand size for `%s`
+ambiguous operand size for `%s'
+amdfam10
+A parameter named `%s' already exists for macro `%s'
+as_internal_value_out_of_range
+__asprintf_chk
+Assembler messages:
+                          assembly times
+Assertion failure at %s line %d.
+Assertion failure in %s at %s line %d.
+assuming all members of group `%s' are COMDAT
+  -a[sub-option...]	  turn on listings
+at most %d displacement operands are allowed
+at most %d immediate operands are allowed
+atof_generic
+attempt to allocate data in absolute section
+attempt to allocate data in common section
+attempt to get value of unresolved symbol `%s'
+attempt to move .org backwards
+attempt to .org/.space backwards? (%ld)
+Attempt to purge non-existant macro `%s'
+attempt to redefine pseudo-op `%s' ignored
+attempt to set value of section symbol
+attempt to store value in absolute section
+att_mnemonic
+Attribute name not recognised: %s
+att_syntax
+backward ref to unknown label "%d:"
+bad argument to sse_check directive.
+bad argument to syntax directive.
+bad .common segment %s
+bad defsym; format is --defsym name=value
+bad expression
+bad floating literal: %s
+bad floating-point constant: exponent overflow
+bad floating-point constant: unknown error code=%d
+bad format for ifc or ifnc
+bad memory operand `%s'
+bad or irreducible absolute expression
+Bad parameter list for macro `%s'
+bad register expression
+bad register name `%s'
+bad reloc expression
+bad .section directive: want a,l,w,x,M,S,G,T in string
+bad .section directive: want a,w,x,M,S,G,T in string
+bad string constant
+base/index
+basic_block
+_bfd_abort
+bfd_abs_section
+bfd_alloc
+bfd_arch_bits_per_address
+bfd_cache_close_all
+bfd_close
+bfd_com_section
+bfd_elf_add_obj_attr_int
+bfd_elf_add_obj_attr_int_string
+bfd_elf_add_obj_attr_string
+bfd_elf_get_default_section_type
+_bfd_elf_large_com_section
+_bfd_elf_obj_attrs_arg_type
+bfd_elf_obj_attr_size
+bfd_elf_set_obj_attr_contents
+bfd_errmsg
+bfd_get_arch_size
+bfd_get_error
+bfd_get_reloc_code_name
+bfd_get_reloc_size
+bfd_get_section_by_name
+bfd_get_section_by_name_if
+bfd_hash_set_default_size
+bfd_ind_section
+bfd_init
+bfd_install_relocation
+bfd_is_local_label
+bfd_make_empty_symbol: %s
+bfd_make_section_anyway
+bfd_make_section_old_way
+bfd_map_over_sections
+bfd_openw
+bfd_reloc_name_lookup
+bfd_reloc_type_lookup
+bfd_scan_vma
+bfd_set_error_program_name
+bfd_set_format
+bfd_set_reloc
+bfd_set_section_contents
+bfd_set_section_flags
+bfd_set_section_flags: %s
+bfd_set_section_size
+bfd_set_symtab
+bfd_target_list
+bfd-target = %s
+bfd_und_section
+bignum invalid
+bignum truncated to %d bytes
+bindtextdomain
+__bss_start
+build_modrm_byte
+build_vex_prefix
+cannot create floating-point number
+can not do %d byte pc-relative relocation
+can not do %d byte relocation
+cannot do %s %u byte relocation
+cannot do %u byte pc-relative relocation
+cannot infer the segment part of the operand
+cannot represent relocation type %s
+cannot represent relocation type %s in x32 mode
+cannot write to output file '%s': %s
+canonical = %s
+can't close `%s'
+can't close %s: %s
+can't create group: %s
+can't create %s: %s
+can't encode register '%s%s' in an instruction requiring REX prefix.
+can't equate global symbol `%s' with register name
+can't extend frag
+can't extend frag %u chars
+can't handle non absolute segment in `%s'
+can't make global register symbol `%s'
+can't make register symbol `%s' global
+can't mix positional and keyword arguments
+can't open a bfd on stdout %s
+can't open %s for reading: %s
+can't open `%s' for writing
+can't open %s: %s
+can't read from %s: %s
+can't resolve `%s' {%s section} - `%s' {%s section}
+can't resolve value for symbol `%s'
+can't use register '%s%s' as operand %d in '%s'.
+can't write %s: %s
+Case value %ld unexpected at line %d of file "%s"
+cfi_add_CFA_offset
+cfi_adjust_cfa_offset
+cfi_def_cfa
+cfi_def_cfa_offset
+cfi_def_cfa_register
+cfi_endproc
+.cfi_endproc without corresponding .cfi_startproc
+cfi_escape
+CFI instruction used without previous .cfi_startproc
+cfi_lsda
+.cfi_lsda requires encoding and symbol arguments
+cfi_offset
+cfi_personality
+.cfi_personality requires encoding and symbol arguments
+cfi_register
+cfi_rel_offset
+cfi_remember_state
+cfi_restore
+cfi_restore_state
+cfi_return_column
+cfi_same_value
+cfi_sections
+cfi_signal_frame
+cfi_startproc
+CFI state restore without previous remember
+cfi_undefined
+cfi_val_encoded_addr
+cfi_window_save
+chain_frchains_together_1
+character following name is not '#'
+                          check SSE instructions
+.clflush
+code16gcc
+coff-x86-64
+                      	  c      omit false conditionals
+comma missing in .xstabs
+.comment
+common.s
+compress_debug
+  --compress-debug-sections
+                          compress DWARF debug sections using zlib
+conflicting operand size modifiers
+confusion in formal parameters
+constant %lx
+Copyright 2011 Free Software Foundation, Inc.
+could not skip to %ld in file `%s'
+cpu-type = %s
+cvt_frag_to_fill
+",%d,0,0,%s
+"",%d,0,0,%s-%s
+%d,0,%d,%s
+%d,0,%d,%s-%s
+D$<3l$03D$4
+D$,3t$@3D$D
+D$43L$83D$<	
+D$49D$<|
+D$(9D$@s
+dcgettext
+D$$	D$<	Q
+.debug_abbrev
+.debug_aranges
+.debug_frame
+.debug_info
+.debug_line
+debug-prefix-map
+  --debug-prefix-map OLD=NEW
+.debug_ranges
+ defined
+deflateEnd
+deflateInit_
+  --defsym SYM=VAL        define symbol SYM to given value
+%d error%s, %d warning%s, generating bad object file
+%d error%s, %d warning%s, no object file generated
+"%d" (instance number %d of a %s label)
+disallow_index_reg
+discriminator
+discriminator less than zero
+  --divide                ignored
+division by zero
+division by zero when setting `%s'
+D$,#L$ !
+D$L;F<uh
+                      	  d      omit debugging directives
+                          don't compress DWARF debug sections
+do_repeat_with_expander
+  -D                      produce assembler debugging messages
+;D$<te9D$8
+;D$<tP9D$8
+D$(:\$(uJ
+dump-config
+duplicate .debug_line sections
+duplicate ".else"
+dwarf2dbg_convert_frag
+dwarf2_finish
+dwarf line number information for %s ignored
+%d warnings, treating warnings as errors
+E@f9G@tD
+.eh_frame
+eh_frame_convert_frag
+eh_frame_estimate_size_before_relax
+elf32-i386
+elf32-x86-64
+elf64-k1om
+elf64-l1om
+elf64-x86-64
+			  ELF .size directive check (default --size-check=error)
+".elseif" after ".else"
+".elseif" without matching ".if"
+".else" without matching ".if"
+emit_inc_line_addr
+emit_leb128_expr
+emulation
+emulations not handled in this configuration
+encoding_size
+.end%c encountered without preceding %s
+.endfunc missing for previous .func
+".endif" without ".if"
+end of file after a one-character quote; \0 inserted
+end of file in comment
+end of file in comment; newline inserted
+end of file in escape character
+end of file in multiline comment
+end of file inside conditional
+end of file in string; '%c' inserted
+end of file not at end of a line; newline inserted
+end of macro inside conditional
+entity size for SHF_MERGE not specified
+__environ
+epilogue_begin
+.err encountered
+__errno_location
+error constructing %s pseudo-op table: %s
+.error directive invoked in source file
+execinstr
+  --execstack             require executable stack for this object
+expected 0 or 1
+expected address expression
+expected alignment after size
+expected comma
+expected comma after name in .symver
+expected comma after name in .vtable_entry
+expected comma after name in .vtable_inherit
+expected comma after name `%s' in .size directive
+expected comma after "%s"
+expected fill pattern missing
+expected <nn>
+expected numeric constant
+expected quoted string
+expected `%s' to have already been set for .vtable_inherit
+expected symbol name
+expected <tag> , <value>
+expecting `)' after scale factor in `%s'
+expecting index register or scale factor after `,'; got '%c'
+expecting lockable instruction after `lock'
+expecting mnemonic; got nothing
+expecting operand after ','; got nothing
+expecting operand before ','; got nothing
+expecting `,' or `)' after base register in `%s'
+expecting `,' or `)' after index register in `%s'
+expecting prefix; got nothing
+expecting scale factor of 1, 2, 4, or 8: got `%s'
+expecting string instruction after `%s'
+expr.c(operand): bad atof_generic return val %d
+expr_set_rank
+                          EXTENSION is combination of:
+failed sanity check
+.fail %ld encountered
+Fatal error: 
+fatal-warnings
+  --fatal-warnings        treat warnings as errors
+field fx_size too small to hold %d
+                      	  =FILE  list to FILE (must be last sub-option)
+filename_cmp
+filename_ncmp
+file not found: %s
+file number %ld already allocated
+file number less than one
+  @FILE                   read options from FILE
+.fill size clamped to %d
+finalize_imm
+fini_array
+fix_new_internal
+fixups: %d
+floating point constant too large
+floating point number invalid
+                          for the output data column of the listing
+__fprintf_chk
+frag chains:
+frag_new
+.fsgsbase
+  -f                      skip whitespace and comment preprocessing
+../../gas/app.c
+../../gas/as.c
+../../gas/atof-generic.c
+../../gas/cond.c
+../../gas/config/obj-elf.c
+../../gas/config/tc-i386.c
+../../gas/config/tc-i386-intel.c
+../../gas/dw2gencfi.c
+../../gas/dwarf2dbg.c
+../../gas/ehopt.c
+../../gas/expr.c
+*GAS `expr' section*
+../../gas/frags.c
+../../gas/hash.c
+../../gas/input-file.c
+../../gas/input-scrub.c
+GAS LISTING
+../../gas/listing.c
+../../gas/messages.c
+../../gas/read.c
+*GAS `reg' section*
+../../gas/sb.c
+../../gas/subsegs.c
+../../gas/symbols.c
+.gasversion.
+../../gas/write.c
+gdwarf-2
+  --gdwarf-2              generate DWARF2 debugging information
+gen-debug
+                          generate code for CPU and EXTENSION, CPU is one of:
+generic32
+generic64
+get_frag_fix
+get_line_subseg
+getopt_long_only
+getrusage
+  -g --gen-debug          generate debugging information
+                      	  g      include general info
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+_GLOBAL_OFFSET_TABLE_
+__gmon_start__
+GNU AS %s
+GNU assembler %s
+ GNU assembler version %s (%s)
+GNU assembler version %s (%s) using BFD version %s
+gnu_attribute
+.gnu.attributes
+(GNU Binutils for Ubuntu) 2.22
+gnu_indirect_function
+.gnu.linkonce
+gnu_unique_object
+GOT already in symbol table
+GOTNTPOFF
+GOTPCREL
+GOTTPOFF
+group name for SHF_GROUP not specified
+  --gstabs                generate STABS debugging information
+  --gstabs+               generate STABS debug info with GNU extensions
+hash_delete
+hash-size
+--hash-size needs a numeric argument
+  --hash-size=<value>     set the hash table size close to <value>
+  --help                  show this message and exit
+here is the "else" of the unterminated conditional
+here is the previous ".else"
+here is the previous ".if"
+here is the start of the unterminated conditional
+hex_init
+_hex_value
+                      	  h      include high-level source
+<http://www.sourceware.org/bugzilla/>
+i386_align_code
+i386_index_check
+i386_intel_operand
+i386_intel_simplify
+i386 opcode
+i386_optab
+i386 register
+i386_regtab
+i386_regtab_size
+i386_validate_fix
+i686-linux-gnu
+i686-pc-linux-gnu
+  -I DIR                  add DIR to search list for .include directives
+.ifeqs syntax error
+ifnotdef
+ignoring changed section attributes for %s
+ignoring changed section entity size for %s
+ignoring changed section type for %s
+ignoring fill value in absolute section
+ignoring incorrect section type for %s
+ignoring macro exit outside a macro definition.
+illegal expression
+illegal immediate register operand %s
+ im_disp
+Imm4 isn't the first operand
+immediate operand illegal with absolute jump
+.incbin count zero, ignoring `%s'
+incompatible flag %i in line directive
+incorrect register `%s%s' used with `%c' suffix
+indirect %s without `*'
+INDNTPOFF
+Infinite loop encountered whilst attempting to compute the addresses of symbols in section %s
+input_file_open
+ input file    	: %s
+inserting "%s" into symbol table failed: %s
+integer_constant
+Intel K1OM is 64bit ELF only
+Intel K1OM is 64bit only
+Intel L1OM is 64bit ELF only
+Intel L1OM is 64bit only
+intel_mnemonic
+intel_syntax
+internal
+Internal error!
+Internal error, aborting at %s line %d
+Internal error, aborting at %s line %d in %s
+internal Error:  Can't hash %s: %s
+internal error: fixup not contained within frag
+invalid argument '%s' to -fdebug-prefix-map
+invalid attempt to declare external version name as default in symbol `%s'
+invalid character %s before operand %d
+invalid character %s in mnemonic
+invalid character %s in operand %d
+invalid char %s beginning operand %d `%s'
+invalid expression
+invalid identifier for ".ifdef"
+invalid instruction suffix
+invalid listing option `%c'
+invalid -march= option: `%s'
+invalid -mavxscalar= option: `%s'
+invalid merge entity size
+invalid -mmnemonic= option: `%s'
+invalid -msse-check= option: `%s'
+invalid -msyntax= option: `%s'
+invalid -mtune= option: `%s'
+invalid offset expression
+invalid operand
+invalid operands (%s and %s sections) for `%s'
+invalid operands (%s and %s sections) for `%s' when setting `%s'
+invalid operand (%s section) for `%s'
+invalid operand (%s section) for `%s' when setting `%s'
+invalid or unsupported encoding in .cfi_lsda
+invalid or unsupported encoding in .cfi_personality
+invalid reloc expression
+invalid segment "%s"
+Invalid --size-check= option: `%s'
+invalid use of operator "%s"
+invalid use of pseudo-register
+invalid use of register
+invalid VSIB address
+.invpcid
+_IO_getc
+_IO_putc
+_IO_stdin_used
+isa number less than zero
+is_stmt value not 0 or 1
+  -J                      don't warn about signed overflow
+-JLMRWZa::Dfg::I:o:vwX
+jump target out of range
+junk at end of line, first unrecognized character is `%c'
+junk at end of line, first unrecognized character valued 0x%x
+junk `%s' after expression
+junk `%s' after register
+_Jv_RegisterClasses
+keep-locals
+  -k                      ignored
+  -K                      warn when differences altered for long displacements
+l$09l$8r
+l$09l$8s+
+L$(3D$,1
+L$49L$<|
+L$(9L$0s
+L$(9L$4sS
+largecomm
+.largecomm supported only in 64bit mode, producing .comm
+lbasename
+left operand is a bignum; integer 0 assumed
+left operand is a float; integer 0 assumed
+                           length
+libbfd-2.22-system.so
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libopcodes-2.22-system.so
+libz.so.1
+                      	  l      include assembly
+linefile
+	.linefile 
+line numbers must be positive; line number %d rejected
+.linkonce is not supported for this object file format
+listing-cont-lines
+  --listing-cont-lines    set the maximum number of continuation lines used
+listing-lhs-width
+listing-lhs-width2
+  --listing-lhs-width2    set the width in words of the continuation lines
+  --listing-lhs-width     set the width in words of the output data column of
+listing_list
+listing_listing
+listing-rhs-width
+  --listing-rhs-width     set the max width in characters of the lines from
+  -L,--keep-locals        keep local symbols (e.g. starting with `L')
++L$(;L$8
+local label `%s' is not defined
+local_symbol_convert
+Local symbol `%s' can't be equated to common symbol `%s'
+localtime
+loc_mark_labels
+logical_and
+logical_or
+long jump required
+L$<#T$0#L$4
+%lu mini local symbols created, %lu converted
+macros nested too deeply
+Macro `%s' was already defined
+                          map OLD to NEW in debug information
+  -march=CPU[,+EXTENSION...]
+match_template
+mavxscalar
+  -mavxscalar=[128|256]   encode scalar AVX instructions with specific vector
+  --MD FILE               write dependency information in FILE (default none)
+md_operand
+__memcpy_chk
+__mempcpy_chk
+                      	  m      include macro expansions
+mindex-reg
+  -mindex-reg             support pseudo index registers
+mini local symbol table
+missing `)'
+missing `)' after formals in macro definition `%s'
+missing argument for sse_check directive
+missing '%c'
+missing closing `%c'
+missing cpu architecture
+missing expression
+missing expression in .size directive
+missing .func
+Missing macro name
+missing model parameter
+missing name
+missing operand; zero assumed
+missing or bad offset expression
+missing or invalid displacement expression `%s'
+missing or invalid expression `%s'
+missing or invalid immediate expression `%s'
+Missing parameter qualifier for `%s' in macro `%s'
+missing reloc type
+missing right bracket
+missing separator
+missing size expression
+missing string
+Missing symbol name in directive
+missing value
+Missing value for required parameter `%s' of macro `%s'
+missing version name in `%s' for symbol `%s'
+mmnemonic
+  -mmnemonic=[att|intel]  use AT&T/Intel mnemonic
+  -M,--mri                assemble in MRI compatibility mode
+mnaked-reg
+  -mnaked-reg             don't require `%%' prefix for registers
+mold-gcc
+  -mold-gcc               support old (<= 2.8.1) versions of gcc
+MRI mode not supported for this target
+msse2avx
+  -msse2avx               encode SSE instructions with VEX prefix
+msse-check
+  -msse-check=[none|error|warning]
+  -msyntax=[att|intel]    use AT&T/Intel syntax
+  -mtune=CPU              optimize for CPU, CPU is one of:
+multiple versions [`%s'|`%s'] for symbol `%s'
+multiply
+  -n                      Do not optimize code alignment
+new line in title
+new_logical_line_flags
+noaltmacro
+no compiled in support for 32bit x86_64
+no compiled in support for x86_64
+  --nocompress-debug-sections
+nocompress-debug-sections
+  -nocpp                  ignored
+NO DEFINED SYMBOLS
+noexecstack
+  --noexecstack           don't require executable stack for this object
+noformat
+no instruction mnemonic suffix given and no register operands; can't size instruction
+no instruction mnemonic suffix given; can't determine immediate size
+                      	  n      omit forms processing
+non-constant expression in ".elseif" statement
+non-constant expression in ".if" statement
+non-pc-relative relocation for pc-relative field
+noprefix
+no such architecture modifier: `%s'
+no such architecture: `%s'
+no such instruction: `%s'
+.note.GNU-stack
+NO UNDEFINED SYMBOLS
+number of operands mismatch
+number_to_chars_bigendian
+number_to_chars_littleendian
+obj_elf_visibility
+obj_elf_vtable_inherit
+_obstack_begin
+obstack_free
+_obstack_newchunk
+offset_in_range
+                          of the output data column; ignored if smaller than
+one_only
+only constant offsets supported in absolute section
+only supported with old gcc
+  -o OBJFILE              name the object-file output OBJFILE (default a.out)
+open CFI at the end of file; missing .cfi_endproc directive
+operand_size_match
+operand size mismatch
+operand_type_check
+operand type mismatch
+operation combines symbols in different segments
+% operator needs absolute expression
+optimize_imm
+Options:
+ options passed	: 
+out_debug_info
+out of memory
+output_cfi_insn
+output_disp
+ output file   	: %s
+output_insn
+	%p %-10s	%10d frags
+p2alignl
+p2alignw
+.pacifica
+.padlock
+Parameter named `%s' does not exist for macro `%s'
+partial line at end of file ignored
+ pcrel_adjust=%d
+pei-x86-64
+pentium4
+pentiumii
+pentiumiii
+pentiumpro
+pe-x86-64
+Please report this bug.
+Pointless default value for required parameter `%s' in macro `%s'
+popsection
+.popsection without corresponding .pushsection; ignored
+                          prefer smaller memory use at the cost of longer
+preinit_array
+prescott
+previous
+previous CFI entry not closed (missing .cfi_endproc)
+.previous without corresponding .section; ignored
+__printf_chk
+process_immext
+process_operands
+process_suffix
+progbits
+prologue_end
+protected
+pseudo-op table
+pushsection
+  -Q                      ignored
+  -q                      quieten some warnings
+redefined symbol cannot be used on reloc
+  --reduce-memory-overheads 
+reduce-memory-overheads
+redundant %s prefix
+register #%d
+register save offset not a multiple of %u
+register type mismatch
+register value used as expression
+relocated field and relocation type differ in signedness
+relocation out of range
+relocation overflow
+reloc not within (fixed part of) section
+repeat < 0; .fill ignored
+Report bugs to %s
+report_op_error
+.rept, .irp, or .irpc
+Reserved word `%s' used as parameter in macro `%s'
+ resolved
+resolve_symbol_value
+ resolving
+  -R                      fold data section into text section
+right operand is a bignum; integer 0 assumed
+right operand is a float; integer 0 assumed
+rva without symbol
+****  %s
+same_contents
+same_size
+same type of prefix used twice
+%s argument must be a string
+sb_build
+scale factor of %d without an index register
+`%s' can't be equated to common symbol '%s'
+_sch_istable
+_sch_tolower
+_sch_toupper
+    %s (%d)
+%s: data size %ld
+? section flag ignored with G present
+section.s
+section_symbol
+section symbols are already global
+seek to end of .incbin file failed `%s'
+segment override on `%s' is ineffectual
+segment register name expected
+select_cie_for_fde
+selected target format '%s' unknown
+s_elseif
+%sendfunc%d
+%s: error: too many @-files encountered
+set_16bit_gcc_code_flag
+set_symtab
+setting incorrect section attributes for %s
+setting incorrect section type for %s
+"%s:F1",%d,0,%d,%s
+%s for `%s'
+%s: global symbols not supported in common sections
+shift count
+show_arch
+  -s                      ignored
+                      	  s      include symbols
+S_IS_EXTERNAL
+S_IS_LOCAL
+`%s' is not a valid parameter qualifier for `%s' in macro `%s'
+`%s' is not a valid %s-bit %s expression
+`%s' is not a valid %s expression
+`%s' is not supported in 64-bit mode
+`%s' is not supported on `%s%s'
+`%s' is not valid here (expected `%c%s%s%c')
+`%s' is only supported in 64-bit mode
+size-check
+  --size-check=[error|warning]
+    size=%d frag=
+.size expression for %s does not evaluate to a constant
+size (%ld) out of range, ignored
+size negative; .fill ignored
+.sizeof.%s
+size of "%s" is already %ld; not changing to %ld
+size_seg
+skip (%ld) or count (%ld) invalid for file size (%ld)
+skipping prefixes on this instruction
+sledgehammer
+sNM ?.3-
+__snprintf_chk
+some symbol undefined; zero assumed
+`%s' operand %d must use `%ses' segment
+%s out of domain (%d is not a multiple of %d)
+%s out of range (0x%s is not between 0x%s and 0x%s)
+%s out of range (%d is not between %d and %d)
+space allocation too complex in absolute section
+space allocation too complex in common section
+.space or .fill with negative value, ignored
+.space repeat count is negative, ignored
+.space repeat count is zero, ignored
+.space specifies non-absolute value
+__sprintf_chk
+spurious operands; (%d operands/instruction max)
+@%s reloc is not supported with %d-bit output format
+sse_check
+SSE instruction `%s' is used
+S_SET_SEGMENT
+%s shortened to %s
+`%s%s' not allowed with `%s%c'
+%s %s 			page %d
+.stab%c: description field '%x' too big, try a different debug format
+.stab%c: missing comma
+.stabstr
+__stack_chk_fail
+stand-alone `%s' prefix
+standard
+{standard input}
+start address not supported
+startof.
+.startof.%s
+statistics
+  --statistics            print various measured statistics from execution
+%s: total time in assembly: %ld.%06ld
+strange paper height, set to no form
+stray `\'
+strcasecmp
+__strdup
+strftime
+string16
+string32
+string64
+string address
+stringer_append_char
+strings must be placed into a section
+strip-local-absolute
+  --strip-local-absolute  strip local absolute symbols
+strncasecmp
+STT_COMMON
+STT_FUNC
+STT_GNU_IFUNC
+STT_NOTYPE
+STT_OBJECT
+%s:%u: bad return from bfd_install_relocation: %x
+                      	  Sub-options [default hls]:
+subsection
+subseg_set_rest
+subtract
+s_vendor_attribute
+swap_operands
+`%s' was already used as parameter (or another local) name
+s_weakref
+%s without %s
+%s: would close weakref loop: %s
+symbol_append
+symbol_clear_list_pointers
+symbol_clone
+symbol definition loop encountered at `%s'
+symbol_insert
+symbol_new
+symbol_next
+symbol_previous
+symbol_remove
+symbol `%s' can not be both weak and common
+symbol `%s' is already defined
+symbol '%s' is already defined
+symbol `%s' is already defined as "%s"/%s%ld
+symbol "%s" undefined; zero assumed
+symbol type "%s" is supported only by GNU targets
+syntax error in .startof. or .sizeof.
+.syscall
+T$09T$8v
+T$49T$(s8
+t4<ht0<Ht,<d
+T$83E,3U(	
+t$,9t$D|
+T$,9T$D|7
+target-help
+  --target-help           show target specific options
+ target        	: %s
+tc_gen_reloc
+tc_x86_frame_initial_instructions
+\$,#T$@#\$D
+tE9D$Lt?
+the first operand of `%s' must be `%s%s'
+the GNU General Public License version 3 or later.
+the last operand of `%s' must be `%s%s'
+                          the listing
+there are no unsigned pc-relative relocations
+                          the source file
+                          the width of the first line
+This assembler was configured for a target of `%s'.
+this_gcc_requires_the_gnu_assembler
+This program has absolutely no warranty.
+This program is free software; you may redistribute it under the terms of
+this string may not contain '\0'
+ time stamp    	: %s
+tls_common
+tls_object
+<"tl< t;
+<@tM<[t6<:
+< tm<,tA
+too many memory references for `%s'
+too many positional arguments
+traditional-format
+  --traditional-format    Use same format as native assembler when possible
+translating to `%sp'
+translating to `%s %s%s'
+translating to `%s %s%s,%s%s'
+truncated file `%s', %ld of %ld bytes read
+< t@<,t,
+u3<*t/<!t+
+%u-byte relocation cannot be applied to %u-byte field
+uminus -<
+Unary operator %c ignored because bad operand follows
+unassigned file number %ld
+unbalanced brackets in operand %d.
+unbalanced parenthesis in operand %d.
+unexpected end of file in irp or irpc
+unexpected end of file in macro `%s' definition
+unexpected `"' in expression
+unknown architecture
+unknown floating type type '%c'
+unknown .loc sub-directive `%s'
+{unknown opcode %d}
+unknown pseudo-op: `%s'
+unknown relocation (%u)
+unlink_if_ordinary
+(unnamed)
+unrecognized .linkonce type `%s'
+unrecognized option -%c%s
+Unrecognized or unsupported floating point constant
+unrecognized reloc type
+unrecognized section attribute
+unrecognized .section attribute: want a,e,w,x,M,S,G,T
+unrecognized section type
+unrecognized symbol type "%s"
+unsigned
+unsupported
+unsupported flag %i in line directive
+unsupported syntax
+unsupported variable size or fill value
+unsupported vector index register
+unsupported with Intel mnemonic
+unterminated string; newline inserted
+Usage: %s [option...] [asmfile...]
+use .code16 to ensure correct addressing mode
+ used-in-reloc
+	 using BFD version %s.
+using `%s%s' instead of `%s%s' due to `%c' suffix
+/usr/share/locale
+value 0x%llx truncated to 0x%llx
+Value for parameter `%s' of macro `%s' was already specified
+value of %s too large for field of %d bytes at %s
+verify_symbol_chain
+  --version               print assembler version number and exit
+__vfprintf_chk
+"void:t1=1",128,0,0,0
+  -V                      print assembler version number
+__vsnprintf_chk
+vtable_entry
+vtable_inherit
+  --warn                  don't suppress warnings
+.warning
+Warning:
+Warning: 
+.warning directive invoked in source file
+ weakrefd
+ weakrefr
+ where=%ld offset=%lx addnumber=%lx
+  -w                      ignored
+  -W  --no-warn           suppress warnings
+write_contents
+ written
+wrong second argument to .cfi_lsda
+wrong second argument to .cfi_personality
+wrong third argument to .cfi_val_encoded_addr
+x86_64:32
+_xexit_cleanup
+  -X                      ignored
+xmalloc_set_program_name
+xrealloc
+.xsaveopt
+xstrerror
+%Y-%m-%dT%H:%M:%S.000%z
+you can't `pop %scs'
+Y>VPr^2>#
+zero assumed for missing expression
+  -Z                      generate object file even after errors
+_ZX`]OSO

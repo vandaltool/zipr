@@ -1,0 +1,20 @@
+__bss_start
+GLIBC_2.0
+__gmon_start__
+Image must have even number of columns.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_allocrow
+pm_close
+pm_error
+pm_openr
+pm_usage
+[ppmfile]
+ppm_init
+ppm_readppminit
+ppm_readppmrow
+This image is %d columns wide.  Try Pnmcut.

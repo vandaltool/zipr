@@ -1,0 +1,462 @@
+9T$<|S~K
+applications
+application://%s
+application/x-desktop
+application://zeitgeist-datahub.desktop
+app_name != NULL
+(@aysxas@a{sv})
+__bss_start
+com.canonical,datahub,pre-populator
+com.zeitgeist-project,datahub,downloads-monitor
+com.zeitgeist-project,datahub,gio-launch-listener
+com.zeitgeist-project,datahub,kde-recent
+com.zeitgeist-project,datahub,recent
+connection != NULL
+conn != NULL
+.crdownload
+data_hub_batch_insert_events_co
+data_hub_data_source_registered
+data_hub_get_data_source_actors
+data_hub_get_return_code
+data_hub_insert_events
+data_hub_items_available
+datahub != NULL
+data_hub_quit
+data_hub_run
+DataHubService
+data_hub_service_get_data_providers
+DataHubServiceProxy
+data_hub_set_return_code
+data_hub_start_data_providers_co
+DataProvider
+data-provider.c:311
+data-provider.c:325
+data_provider_get_datahub
+data_provider_get_description
+data_provider_get_enabled
+data_provider_get_last_timestamp
+data_provider_get_name
+data_provider_get_register
+data_provider_get_unique_id
+data_provider_set_datahub
+data_provider_set_description
+data_provider_set_enabled
+data_provider_set_last_timestamp
+data_provider_set_name
+data_provider_set_register
+data_provider_set_unique_id
+data_provider_start
+data_provider_stop
+description
+Desktop Entry
+desktop_entry_name != NULL
+desktop_file != NULL
+DesktopLaunchListener
+desktop-launch-listener.c
+desktop-launch-listener.c:755
+desktop-launch-listener.c:784
+desktop_launch_listener_construct
+desktop_launch_listener_signal_received
+desktop-launch-listener.vala:103: ran with uri: %s
+desktop-launch-listener.vala:114: Unable to open desktop file '%s'
+desktop-launch-listener.vala:56: %s
+DESKTOP_SESSION
+DownloadsDirectoryMonitor
+Downloads Directory Monitor
+downloads_directory_monitor_construct
+downloads_directory_monitor_process_event_co
+downloads-directory-provider.c
+downloads-directory-provider.c:812
+downloads-directory-provider.c:841
+downloads-directory-provider.vala:113: Couldn't process %s: %s
+ds != NULL
+events != NULL
+file %s: line %d: uncaught error: %s (%s, %d)
+file %s: line %d: unexpected error: %s (%s, %d)
+file:///tmp/
+g_app_info_get_display_name
+g_app_info_get_id
+g_app_info_should_show
+g_array_free
+g_assertion_message
+g_build_filename
+g_build_path
+g_bus_get_sync
+g_bus_own_name_with_closures
+gcalctool.desktop
+g_cclosure_new
+g_cclosure_user_marshal_VOID__BOXED
+g_clear_error
+g_dbus_connection_register_object
+g_dbus_connection_send_message
+g_dbus_connection_send_message_with_reply_sync
+g_dbus_connection_signal_subscribe
+g_dbus_connection_signal_unsubscribe
+g_dbus_message_get_body
+g_dbus_message_new_method_call
+g_dbus_message_new_method_reply
+g_dbus_message_set_body
+g_dbus_message_to_gerror
+g_dbus_method_invocation_get_connection
+g_dbus_method_invocation_get_message
+g_dbus_method_invocation_return_gerror
+g_dbus_proxy_get_connection
+g_dbus_proxy_get_default_timeout
+g_dbus_proxy_get_name
+g_dbus_proxy_get_object_path
+g_dbus_proxy_get_type
+g_desktop_app_info_get_filename
+g_desktop_app_info_new
+g_desktop_app_info_new_from_filename
+g_desktop_app_info_set_desktop_env
+gedit.desktop
+g_error_free
+GetDataProviders
+g_file_enumerate_children
+g_file_enumerator_close
+g_file_enumerator_next_file
+g_file_get_basename
+g_file_get_child
+g_file_get_parent
+g_file_get_path
+g_file_get_uri
+g_file_info_get_attribute_string
+g_file_info_get_attribute_uint32
+g_file_info_get_attribute_uint64
+g_file_info_get_is_backup
+g_file_info_get_is_hidden
+g_file_info_get_modification_time
+g_file_info_get_name
+g_file_load_contents
+g_file_monitor_directory
+g_file_monitor_get_type
+g_file_new_for_path
+g_file_new_for_uri
+g_file_query_exists
+g_file_query_info
+g_file_query_info_async
+g_file_query_info_finish
+g_getenv
+g_get_home_dir
+g_get_system_data_dirs
+g_get_user_data_dir
+g_get_user_special_dir
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_ref
+g_hash_table_unref
+g_idle_add_full
+g_intern_static_string
+g_io_error_quark
+g_key_file_free
+g_key_file_get_string
+g_key_file_load_from_data
+g_key_file_new
+GLIBC_2.0
+g_list_foreach
+g_list_free
+g_list_prepend
+g_main_loop_new
+g_main_loop_quit
+g_main_loop_run
+g_main_loop_unref
+g_malloc
+g_malloc0
+g_malloc0_n
+__gmon_start__
+g_object_class_install_property
+g_object_new
+g_object_notify
+g_object_ref
+g_object_ref_sink
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_param_spec_boolean
+g_param_spec_int
+g_param_spec_int64
+g_param_spec_object
+g_param_spec_string
+g_path_get_basename
+g_path_get_dirname
+g_path_is_absolute
+g_ptr_array_add
+g_ptr_array_foreach
+g_ptr_array_free
+g_ptr_array_get_length
+g_ptr_array_get_type
+g_ptr_array_new
+g_ptr_array_new_with_free_func
+g_ptr_array_remove_range
+g_ptr_array_unref
+g_quark_from_static_string
+g_quark_to_string
+g_realloc_n
+g_regex_error_quark
+g_regex_escape_string
+g_regex_new
+g_regex_replace
+g_regex_replace_literal
+g_regex_unref
+g_return_if_fail_warning
+g_set_prgname
+g_signal_connect_object
+g_signal_emit_by_name
+g_signal_handlers_disconnect_matched
+g_signal_new
+g_signal_parse_name
+g_simple_async_result_complete
+g_simple_async_result_complete_in_idle
+g_simple_async_result_get_op_res_gpointer
+g_simple_async_result_get_type
+g_simple_async_result_new
+g_simple_async_result_propagate_error
+g_simple_async_result_set_from_error
+g_simple_async_result_set_op_res_gpointer
+g_slice_alloc0
+g_slice_free1
+g_strchomp
+g_strchug
+g_strcmp0
+g_strconcat
+g_strdup
+g_strdup_printf
+g_str_equal
+g_str_hash
+g_str_has_prefix
+g_str_has_suffix
+g_strndup
+g_strsplit_set
+g_timeout_add_seconds_full
+gtk_recent_info_exists
+gtk_recent_info_get_added
+gtk_recent_info_get_application_info
+gtk_recent_info_get_display_name
+gtk_recent_info_get_mime_type
+gtk_recent_info_get_modified
+gtk_recent_info_get_private_hint
+gtk_recent_info_get_uri
+gtk_recent_info_get_visited
+gtk_recent_info_is_local
+gtk_recent_info_last_application
+gtk_recent_info_ref
+gtk_recent_info_unref
+gtk_recent_manager_get_default
+gtk_recent_manager_get_items
+gtk_recent_manager_get_type
+gtk_recent_manager_set_limit
+g_type_add_interface_static
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_init
+g_type_instance_get_private
+g_type_interface_add_prerequisite
+g_type_interface_peek
+g_type_interface_peek_parent
+g_type_name
+g_type_register_static
+g_type_register_static_simple
+g_type_set_qdata
+g_utf8_strup
+g_value_get_boolean
+g_value_get_boxed
+g_value_get_int
+g_value_get_int64
+g_value_get_object
+g_value_get_string
+g_value_set_boolean
+g_value_set_int
+g_value_set_int64
+g_value_set_object
+g_value_set_string
+g_variant_builder_add_value
+g_variant_builder_end
+g_variant_builder_init
+g_variant_dup_string
+g_variant_get
+g_variant_get_bytestring
+g_variant_get_variant
+g_variant_iter_free
+g_variant_iter_init
+g_variant_iter_loop
+g_variant_iter_next
+g_variant_iter_next_value
+g_variant_new_string
+g_variant_type_checked_
+g_variant_unref
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Software
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#SoftwareItem
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#AccessEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#CreateEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#ModifyEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#UserActivity
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#WorldActivity
+interface_name != NULL
+_IO_stdin_used
+items_available
+items-available
+_Jv_RegisterClasses
+kde-recent-document-provider.c
+kde-recent-document-provider.c:1592
+kde-recent-document-provider.c:1621
+kde-recent-document-provider.vala:117: Couldn't process %s: %s
+kde-recent-document-provider.vala:160: Couldn't find actor for '%s'.
+/.kde/share/apps/RecentDocuments
+__lambda1_
+__lambda3_
+__lambda4_
+last-timestamp
+Launched
+Launched desktop files
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-x11-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+libreoffice
+libzeitgeist-1.0.so.1
+Logs events about launched desktop files using GIO
+Logs events from GtkRecentlyUsed
+Logs events from KRecentDocument
+Logs files in the XDG downloads directory
+mimetype != NULL
+needle != NULL
+notify::connected
+n_param_values == 2
+object_path != NULL
+old != NULL
+/org/gnome/zeitgeist/datahub
+org.gnome.zeitgeist.datahub
+/org/gtk/gio/DesktopAppInfo
+org.gtk.gio.DesktopAppInfo
+origin-desktop-file
+origin-prgname
+parameters != NULL
+Pre-populate the log
+PrePopulator
+pre-populator.c
+pre-populator.c:707
+pre-populator.c:736
+pre_populator_construct
+pre_populator_event_for_desktop_file
+pre_populator_prepare_events_co
+pre-populator.vala:109: %s
+property
+prov != NULL
+Pushes a couple of events so Ubuntu Dash home is not empty when doing new install
+RecentDocumentsKDE
+recent_documents_kde_construct
+recent_documents_kde_crawl_all_items_co
+recent_documents_kde_get_actor_for_desktop_entry_name
+recent_documents_kde_parse_file_co
+recent_documents_kde_process_event_co
+Recently Used Documents
+Recently Used Documents (KDE)
+RecentManagerGtk
+recent_manager_gtk_construct
+recent_manager_gtk_get_items
+recent_manager_gtk_items_changed
+recent-manager-provider.c:1205
+recent-manager-provider.c:1234
+recent-manager-provider.vala:107: %s was not registered in RecentInfo item %p
+recent-manager-provider.vala:133: Desktop file for "%s" was not found, exec: %s, mime_type: %s
+register
+replacement != NULL
+return-code
+rhythmbox.desktop
+self != NULL
+sender != NULL
+signal_name != NULL
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+source-registered
+%s%s.desktop
+standard::content-type
+standard::content-type,time::modified,time::modified-usec,time::changed,time::changed-usec
+standard::fast-content-type
+standard::fast-content-type,standard::is-hidden,standard::is-backup,
+standard::name
+standard::type
+standard::type,time::modified,time::modified-usec
+string_contains
+string_replace
+string_strip
+string_substring
+thunderbird.desktop
+time::changed
+time::changed-usec
+_tmp12_ >= ((glong) 0)
+_tmp13_ <= _tmp14_
+(_tmp18_ + _tmp19_) <= _tmp20_
+totem.desktop
+Unable to get name "org.gnome.zeitgeist.datahub" on the bus!
+unique-id
+URL\[[^]]+\]=
+utils_extract_desktop_id
+utils_find_desktop_file_for_app
+utils_get_actor_for_desktop_file
+utils_get_file_contents
+utils_get_ooo_desktop_file_for_mimetype
+utils.vala:259: %s
+vala-dbus-interface-name
+vala-dbus-proxy-type
+vala-dbus-register-object
+XDG_CURRENT_DESKTOP
+X-KDE-LastOpenedWith
+yelp.desktop
+zeitgeist-datahub
+zeitgeist-datahub.c
+zeitgeist-datahub.c:1627
+zeitgeist-datahub.c:1641
+zeitgeist-datahub.vala:103: %s
+zeitgeist-datahub.vala:152: %s
+zeitgeist-datahub.vala:183: Inserting %u events
+zeitgeist-datahub.vala:210: Error during inserting events: %s
+zeitgeist-datahub.vala:227: %s
+zeitgeist-datahub.vala:60: Zeitgeist-daemon disappeared from the bus, exitting...
+zeitgeist_data_source_get_event_templates
+zeitgeist_data_source_get_timestamp
+zeitgeist_data_source_get_type
+zeitgeist_data_source_get_unique_id
+zeitgeist_data_source_is_enabled
+zeitgeist_data_source_new_full
+zeitgeist_data_source_registry_get_data_sources
+zeitgeist_data_source_registry_get_data_sources_finish
+zeitgeist_data_source_registry_new
+zeitgeist_data_source_registry_register_data_source
+zeitgeist_data_source_registry_register_data_source_finish
+zeitgeist_data_source_registry_set_data_source_enabled
+zeitgeist_data_source_registry_set_data_source_enabled_finish
+zeitgeist_event_add_subject
+zeitgeist_event_get_actor
+zeitgeist_event_get_type
+zeitgeist_event_new
+zeitgeist_event_new_full
+zeitgeist_event_set_actor
+zeitgeist_event_set_interpretation
+zeitgeist_event_set_manifestation
+zeitgeist_event_set_timestamp
+zeitgeist_interpretation_for_mimetype
+zeitgeist_log_find_event_ids
+zeitgeist_log_find_event_ids_finish
+zeitgeist_log_insert_events_finish
+zeitgeist_log_insert_events_from_ptrarray
+zeitgeist_log_is_connected
+zeitgeist_log_new
+zeitgeist_manifestation_for_uri
+zeitgeist_subject_new
+zeitgeist_subject_new_full
+zeitgeist_subject_set_interpretation
+zeitgeist_subject_set_manifestation
+zeitgeist_subject_set_mimetype
+zeitgeist_subject_set_text
+zeitgeist_subject_set_uri
+zeitgeist_time_range_new_anytime
+zeitgeist_timestamp_for_now
+zeitgeist_timestamp_from_timeval

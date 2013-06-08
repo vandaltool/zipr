@@ -1,0 +1,1415 @@
+%010d 00000 n 
+%010zu 00000 n 
+ 2009-2011 Canonical Ltd.
+24bit Color
+[%+.2fs] %s %s
+ @333333
+!	@333333
+4x6_menuitem
+|$8+|$0)
+a4_menuitem
+a4_menuitem_toggled_cb
+a5_menuitem
+a5_menuitem_toggled_cb
+a6_menuitem
+a6_menuitem_toggled_cb
+about_menuitem_activate_cb
+About Simple Scan
+action != NULL
+adf-back
+ADF Back
+adf-both
+ADF Duplex
+adf-front
+ADF Front
+adjustment != NULL
+advanced
+ Agtk-dialog-error
+All Files
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Application
+application_append_page
+application_authorize_cb
+application_cancel_cb
+application_construct
+application_email_cb
+application_fix_pdf
+application_get_profile_for_device
+application_get_temporary_filename
+application_get_type
+application_log_cb
+application_main
+application_new
+application_on_uevent
+APPLICATION_options
+application/pdf
+application_quit_cb
+application_ref
+application_remove_empty_page
+application_scan_cb
+application_scanner_document_done_cb
+application_scanner_failed_cb
+application_scanner_line_cb
+application_scanner_new_page_cb
+application_scanner_page_done_cb
+application_scanner_page_info_cb
+application_scanner_scanning_changed_cb
+application_start
+application_unref
+application_update_scan_devices_cb
+ --attach %s
+(at your option) any later version.
+authorize_dialog
+authorize_label
+automatic
+Automatic Document Feeder
+Automatic Document Feeder(centrally aligned)
+Automatic Document Feeder(left aligned)
+batch-scan
+<big><b>%s</b></big>
+bindtextdomain
+bind_textdomain_codeset
+/BitsPerComponent %d
+Black & White
+book_append_page
+book_clear
+book_compress_jpeg
+book_construct
+book_delete_page
+book_get_needs_saving
+book_get_n_pages
+book_get_page
+book_get_page_index
+book_get_type
+book_jpeg_empty_cb
+book_jpeg_init_cb
+book_jpeg_term_cb
+book_make_indexed_file
+book_move_page
+book_new
+book != NULL
+book_page_changed_cb
+book_ref
+book_save
+book_save_multi_file
+book_save_ps_pdf_surface
+book_set_needs_saving
+book_unref
+book.vala:553: Error writing PDF: %s
+book.vala:589: Error writing data: %s
+BookView
+book_view_add_cb
+book_view_button_cb
+book_view_clear_cb
+book_view_configure_cb
+book_view_construct
+book_view_draw_cb
+book_view_focus_cb
+book_view_get_book
+book_view_get_next_page
+book_view_get_nth_page
+book_view_get_page_at
+book_view_get_prev_page
+book_view_get_selected
+book_view_get_type
+book_view_get_x_offset
+book_view_key_cb
+book_view_layout
+book_view_layout_into
+book_view_motion_cb
+book_view_new
+book_view_page_view_changed_cb
+book_view_page_view_size_changed_cb
+book_view_redraw
+book_view_remove_cb
+book_view_reorder_cb
+book_view_scroll_cb
+book_view_select_next_page
+book_view_select_page
+book_view_select_page_view
+book_view_select_prev_page
+book_view_set_selected_page
+book_view_set_x_offset
+book_view_show_page_view
+bottom-left
+bottom-right
+bottom-to-top
+__bss_start
+button-press-event
+button-release-event
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+cairo_arc
+cairo_clip_extents
+cairo_create
+cairo_destroy
+cairo_fill
+cairo_fill_preserve
+cairo_get_source
+cairo_line_to
+cairo_move_to
+cairo_new_sub_path
+cairo_paint
+cairo_pattern_set_filter
+cairo_ps_surface_create_for_stream
+cairo_ps_surface_set_size
+cairo_rectangle
+cairo_reference
+cairo_restore
+cairo_rotate
+cairo_save
+cairo_scale
+cairo_set_fill_rule
+cairo_set_line_width
+cairo_set_source_rgb
+cairo_set_source_rgba
+cairo_stroke
+cairo_surface_destroy
+cairo_surface_reference
+cairo_surface_show_page
+cairo_translate
+Change _Scanner
+client != NULL
+Color pattern
+/ColorSpace /%s
+combo != NULL
+comments
+compression
+configure-event
+/Contents %u 0 R
+continuous_scan_button_clicked_cb
+copyright
+Copyright 
+/Count %u
+/Creator (Simple Scan %s)
+Credentials
+credentials_construct
+credentials_get_type
+credentials_new
+credentials_ref
+credentials_unref
+CRITICAL:
+crop_changed
+crop-changed
+CropLocation
+CROP_LOCATION_BOTTOM
+CROP_LOCATION_BOTTOM_LEFT
+CROP_LOCATION_BOTTOM_RIGHT
+crop_location_get_type
+CROP_LOCATION_LEFT
+CROP_LOCATION_MIDDLE
+CROP_LOCATION_NONE
+CROP_LOCATION_RIGHT
+CROP_LOCATION_TOP
+CROP_LOCATION_TOP_LEFT
+CROP_LOCATION_TOP_RIGHT
+crop_rotate_menuitem
+crop_rotate_menuitem_activate_cb
+crop_toolbutton
+crop_toolbutton_toggled_cb
+custom_crop_menuitem
+custom_crop_menuitem_toggled_cb
+D$0+|$ 9
+D$4+L$4+L$,
+D$89D$<}
+__data_start
+DCTDecode
+D$ +D$,9
+^\d\d\d\d\d\d\d\d\d\d 0000 n$
+%d dpi (default)
+%d dpi (draft)
+%d dpi (high resolution)
+default_file_name != NULL
+deflateEnd
+deflateInit_
+device1 != NULL
+device2 != NULL
+device_combo
+device_combo_changed_cb
+DeviceGray
+device_name != NULL
+device != NULL
+DeviceRGB
+[DEVICE...] - Scanning utility
+\$,;D$,}G
+Discard Changes
+discard_label != NULL
+document_done
+document-done
+document_hint != NULL
+document-type
+draw-page
+email_button_clicked_cb
+emulated
+endstream
+Error communicating with scanner
+Error fixing PDF file: %s
+error_string != NULL
+error_text != NULL
+error_title != NULL
+event != NULL
+expect_page
+expect-page
+extension != NULL
+Failed to save file
+Failed to scan
+ffffff'@
+FILENAME...
+filename != NULL
+file %s: line %d: uncaught error: %s (%s, %d)
+file %s: line %d: unexpected error: %s (%s, %d)
+Files missing
+/Filter /%s
+Fix PDF files generated with older versions of Simple Scan
+FlateDecode
+focus-in-event
+focus-out-event
+' for value type `
+four_by_six_menuitem_toggled_cb
+__fprintf_chk
+g_ascii_formatd
+g_assertion_message
+g_async_queue_length
+g_async_queue_new
+g_async_queue_pop
+g_async_queue_push
+g_async_queue_unref
+g_base64_encode
+g_build_filename
+g_cclosure_marshal_VOID__POINTER
+g_cclosure_marshal_VOID__STRING
+g_cclosure_marshal_VOID__VOID
+g_cclosure_user_marshal_VOID__INT_STRING
+g_cclosure_user_marshal_VOID__PAGE
+g_cclosure_user_marshal_VOID__SCAN_LINE
+g_cclosure_user_marshal_VOID__SCAN_PAGE_INFO
+g_cclosure_user_marshal_VOID__STRING_SCAN_OPTIONS
+g_clear_error
+g_dgettext
+g_direct_equal
+g_direct_hash
+gdk_cairo_set_source_pixbuf
+gdk_cursor_new
+gdk_pixbuf_get_height
+gdk_pixbuf_get_n_channels
+gdk_pixbuf_get_pixels
+gdk_pixbuf_get_rowstride
+gdk_pixbuf_get_width
+gdk_pixbuf_new
+gdk_pixbuf_save_to_callbackv
+gdk_window_set_cursor
+g_enum_register_static
+g_error_free
+get-option
+get-parameters
+g_file_get_contents
+g_file_get_uri
+g_file_new_for_path
+g_file_new_for_uri
+g_file_open_tmp
+g_file_replace
+g_get_user_cache_dir
+g_get_user_special_dir
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_remove
+g_hash_table_remove_all
+g_hash_table_unref
+g_idle_add_full
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+g_list_append
+g_list_copy
+g_list_foreach
+g_list_free
+g_list_index
+g_list_insert
+g_list_length
+g_list_nth_data
+g_list_prepend
+g_list_remove
+g_list_remove_link
+g_list_sort
+g_log_default_handler
+g_log_set_default_handler
+g_malloc0
+g_match_info_free
+g_match_info_get_string
+g_memdup
+g_mkdir_with_parents
+__gmon_start__
+GNU General Public License for more details.
+g_object_get
+g_object_new
+g_object_ref
+g_object_ref_sink
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+got_line
+got-line
+got_page_info
+got-page-info
+g_output_stream_write_all
+g_param_spec_internal
+g_param_spec_types
+g_path_get_basename
+g_propagate_error
+g_quark_from_static_string
+g_quark_from_string
+g_quark_to_string
+Grayscale
+g_realloc
+g_regex_error_quark
+g_regex_escape_string
+g_regex_match
+g_regex_new
+g_regex_replace_literal
+g_regex_unref
+g_return_if_fail_warning
+g_settings_get_boolean
+g_settings_get_enum
+g_settings_get_int
+g_settings_get_string
+g_settings_new
+g_settings_set_boolean
+g_settings_set_enum
+g_settings_set_int
+g_settings_set_string
+g_signal_connect_data
+g_signal_connect_object
+g_signal_emit_by_name
+g_signal_handlers_disconnect_matched
+g_signal_new
+g_signal_parse_name
+g_source_remove
+g_spawn_command_line_async
+g_strcmp0
+g_strconcat
+g_strdup
+g_strdup_printf
+g_str_equal
+g_str_hash
+g_str_has_prefix
+g_str_has_suffix
+g_string_assign
+g_string_free
+g_string_insert_c
+g_string_new
+g_strndup
+g_thread_create
+g_thread_join
+g_timeout_add_full
+g_timer_destroy
+g_timer_elapsed
+g_timer_new
+gtk_adjustment_get_page_size
+gtk_adjustment_get_type
+gtk_adjustment_get_upper
+gtk_adjustment_get_value
+gtk_adjustment_set_lower
+gtk_adjustment_set_page_size
+gtk_adjustment_set_upper
+gtk_adjustment_set_value
+gtk_box_new
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_builder_add_from_file
+gtk_builder_connect_signals
+gtk_builder_get_object
+gtk_builder_new
+gtk_button_get_type
+gtk-cancel
+gtk_cell_layout_add_attribute
+gtk_cell_layout_pack_start
+gtk_cell_renderer_text_new
+gtk_check_menu_item_get_active
+gtk_check_menu_item_set_active
+gtk-close
+gtk_combo_box_get_active
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_set_active
+gtk_combo_box_set_active_iter
+gtk_container_add
+gtk_container_get_border_width
+gtk_container_get_type
+gtk_container_set_border_width
+gtk_dialog_add_button
+gtk_dialog_get_type
+gtk_dialog_run
+gtk-dialog-warning
+gtk_drawing_area_new
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_set_text
+gtk_expander_new_with_mnemonic
+gtk_expander_set_spacing
+gtk_file_chooser_add_filter
+gtk_file_chooser_dialog_new
+gtk_file_chooser_get_current_folder
+gtk_file_chooser_get_filename
+gtk_file_chooser_get_uri
+gtk_file_chooser_set_current_folder
+gtk_file_chooser_set_current_name
+gtk_file_chooser_set_do_overwrite_confirmation
+gtk_file_chooser_set_extra_widget
+gtk_file_chooser_set_local_only
+gtk_file_filter_add_mime_type
+gtk_file_filter_add_pattern
+gtk_file_filter_add_pixbuf_formats
+gtk_file_filter_new
+gtk_file_filter_set_name
+gtk_get_current_event_time
+gtk_get_option_group
+gtk_icon_theme_append_search_path
+gtk_icon_theme_get_default
+gtk_image_new_from_stock
+gtk_image_set_from_stock
+gtk_info_bar_add_button
+gtk_info_bar_get_content_area
+gtk_info_bar_new
+gtk_info_bar_set_message_type
+gtk_init
+gtk_label_get_type
+gtk_label_new
+gtk_label_set_markup
+gtk_label_set_text
+gtk_list_store_append
+gtk_list_store_get_type
+gtk_list_store_insert
+gtk_list_store_new
+gtk_list_store_remove
+gtk_list_store_set
+gtk_main
+gtk_main_quit
+gtk_menu_get_type
+gtk_menu_item_get_type
+gtk_menu_popup
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_new
+gtk_misc_set_alignment
+gtk_print_context_get_cairo_context
+gtk_print_context_get_dpi_x
+gtk_print_context_get_dpi_y
+gtk_print_context_get_height
+gtk_print_context_get_width
+gtk_print_operation_get_type
+gtk_print_operation_new
+gtk_print_operation_run
+gtk_print_operation_set_n_pages
+gtk_radio_menu_item_get_type
+gtk_range_get_adjustment
+gtk_render_focus
+gtk-save
+gtk_scrollbar_new
+gtk_show_about_dialog
+gtk_show_uri
+gtk_toggle_tool_button_get_active
+gtk_toggle_tool_button_get_type
+gtk_toggle_tool_button_set_active
+gtk_tool_button_get_type
+gtk_tree_model_get
+gtk_tree_model_get_iter_first
+gtk_tree_model_iter_n_children
+gtk_tree_model_iter_next
+gtk_tree_model_iter_nth_child
+gtk_tree_selection_get_selected
+gtk_tree_selection_get_type
+gtk_tree_selection_select_iter
+gtk_tree_view_append_column
+gtk_tree_view_column_new_with_attributes
+gtk_tree_view_get_selection
+gtk_tree_view_new_with_model
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_rules_hint
+gtk_vbox_get_type
+gtk_widget_destroy
+gtk_widget_get_allocation
+gtk_widget_get_style_context
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_get_window
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_queue_draw
+gtk_widget_set_can_focus
+gtk_widget_set_events
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_set_visible
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_get_screen
+gtk_window_get_type
+gtk_window_maximize
+gtk_window_present
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_APPLICATION)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_BOOK)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_CREDENTIALS)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_NOTIFY)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_PAGE)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_PAGE_VIEW)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_PDF_WRITER)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_PIXBUF_WRITER)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_PS_WRITER)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_REQUEST)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_SCAN_DEVICE)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_SCAN_JOB)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_SCAN_LINE)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_SCANNER)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_SCAN_OPTIONS)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_SCAN_PAGE_INFO)
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_SIMPLE_SCAN)
+g_type_check_value_holds
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_APPLICATION)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_BOOK)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_CREDENTIALS)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_NOTIFY)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_PAGE)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_PAGE_VIEW)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_PDF_WRITER)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_PIXBUF_WRITER)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_PS_WRITER)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_REQUEST)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_SCAN_DEVICE)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_SCAN_JOB)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_SCAN_LINE)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_SCANNER)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_SCAN_OPTIONS)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_SCAN_PAGE_INFO)
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_SIMPLE_SCAN)
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_create_instance
+g_type_free_instance
+g_type_fundamental_next
+g_type_init
+g_type_instance_get_private
+g_type_is_a
+g_type_is_a (object_type, TYPE_APPLICATION)
+g_type_is_a (object_type, TYPE_BOOK)
+g_type_is_a (object_type, TYPE_CREDENTIALS)
+g_type_is_a (object_type, TYPE_NOTIFY)
+g_type_is_a (object_type, TYPE_PAGE)
+g_type_is_a (object_type, TYPE_PAGE_VIEW)
+g_type_is_a (object_type, TYPE_PDF_WRITER)
+g_type_is_a (object_type, TYPE_PIXBUF_WRITER)
+g_type_is_a (object_type, TYPE_PS_WRITER)
+g_type_is_a (object_type, TYPE_REQUEST)
+g_type_is_a (object_type, TYPE_SCAN_DEVICE)
+g_type_is_a (object_type, TYPE_SCAN_JOB)
+g_type_is_a (object_type, TYPE_SCAN_LINE)
+g_type_is_a (object_type, TYPE_SCANNER)
+g_type_is_a (object_type, TYPE_SCAN_OPTIONS)
+g_type_is_a (object_type, TYPE_SCAN_PAGE_INFO)
+g_type_is_a (object_type, TYPE_SIMPLE_SCAN)
+g_type_name
+g_type_register_fundamental
+g_type_register_static
+g_udev_client_new
+g_utf8_strdown
+g_utf8_strrchr
+g_value_get_int
+g_value_get_string
+g_value_type_compatible
+g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value))
+hand-scanner
+hard-select
+/Height %d
+help_contents_menuitem_activate_cb
+help_menu
+help:simple-scan
+Hewlett-Packard
+https://launchpad.net/simple-scan
+icc-profile
+If you don't save, changes will be permanently lost.
+Image Files
+image != NULL
+/Im%d Do
+inactive
+info != NULL
+/Info %u 0 R
+invalid object type `
+invalid unclassed object pointer for value type `
+_IO_stdin_used
+it under the terms of the GNU General Public License as published by
++jH+BD+jP+BL
+JPEG (compressed)
+jpeg_CreateCompress
+jpeg_destroy_compress
+jpeg_finish_compress
+jpeg_set_defaults
+jpeg_start_compress
+jpeg_std_error
+jpeg_write_scanlines
+_Jv_RegisterClasses
+key-press-event
+launchpad_integration_add_items
+launchpad_integration_set_sourcepackagename
+left-to-right
+legal_menuitem
+legal_menuitem_toggled_cb
+/Length %d
+letter_menuitem
+letter_menuitem_toggled_cb
+libcairo.so.2
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+libgudev-1.0.so.0
+LIBJPEG_8.0
+libjpeg.so.8
+liblaunchpad-integration-3.0.so.1
+/lib/ld-linux.so.2
+libm.so.6
+libpthread.so.0
+libsane.so.1
+libz.so.1
+line != NULL
+L$<+L$4+L$,
+L$,+L$ 9L$(
+logo-icon-name
+main_vbox
+/MediaBox [ 0 0 %s %s ]
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MESSAGE:
+message != NULL
+ min=%d, max=%d, quant=%d
+ min=%f, max=%f, quant=%d
+motion-notify-event
+ name='%s'
+needs_saving_changed
+needs-saving-changed
+new_button_clicked_cb
+no_crop_menuitem
+no_crop_menuitem_toggled_cb
+No scanners available.  Please connect a scanner.
+No scanners detected
+notification != NULL
+notify_construct
+NotifyDocumentDone
+notify_document_done_construct
+notify_document_done_get_type
+notify_document_done_new
+notify_document_done_real_run
+NotifyExpectPage
+notify_expect_page_construct
+notify_expect_page_get_type
+notify_expect_page_new
+notify_expect_page_real_run
+notify_get_type
+NotifyGotLine
+notify_got_line_construct
+notify_got_line_get_type
+notify_got_line_new
+notify_got_line_real_run
+NotifyGotPageInfo
+notify_got_page_info_construct
+notify_got_page_info_get_type
+notify_got_page_info_new
+notify_got_page_info_real_run
+notify_new
+NotifyPageDone
+notify_page_done_construct
+notify_page_done_get_type
+notify_page_done_new
+notify_page_done_real_run
+notify_real_run
+notify_ref
+NotifyRequestAuthorization
+notify_request_authorization_construct
+notify_request_authorization_get_type
+notify_request_authorization_new
+notify_request_authorization_real_run
+notify_run
+NotifyScanFailed
+notify_scan_failed_construct
+notify_scan_failed_get_type
+notify_scan_failed_new
+notify_scan_failed_real_run
+NotifyScanningChanged
+notify_scanning_changed_construct
+notify_scanning_changed_get_type
+notify_scanning_changed_new
+notify_scanning_changed_real_run
+notify_unref
+NotifyUpdateDevices
+notify_update_devices_construct
+notify_update_devices_get_type
+notify_update_devices_new
+notify_update_devices_real_run
+n_param_values == 2
+n_param_values == 3
+operation != NULL
+Option %d:
+option != NULL
+options != NULL
+org.gnome.SimpleScan
+page_added
+page-added
+page_delete_menuitem
+page_delete_menuitem_activate_cb
+page_done
+page-done
+page-dpi
+page_finish
+page_get_color_profile
+page_get_crop
+page_get_depth
+page_get_dpi
+page_get_height
+page_get_image
+page_get_named_crop
+page_get_n_channels
+page_get_pixels
+page_get_rowstride
+page_get_scan_direction
+page_get_scan_height
+page_get_scan_line
+page_get_scan_width
+page_get_width
+page_has_crop
+page_has_data
+page-height
+page_is_color
+page_is_landscape
+page_is_scanning
+page_menu
+page_move_crop
+page_move_left_menuitem
+page_move_left_menuitem_activate_cb
+page_move_right_menuitem
+page_move_right_menuitem_activate_cb
+page != NULL
+page_parse_scan_line
+page_ref
+page_removed
+page-removed
+page_rotate_crop
+page_rotate_left
+page_rotate_right
+page_save
+page_selected
+page-selected
+page_set_color_profile
+page_set_custom_crop
+page_set_named_crop
+page_set_no_crop
+page_set_page_info
+page_set_scan_direction
+page-side
+page_side_combo
+page_start
+/Pages %u 0 R
+page_unref
+page.vala:151: Extending image from %d lines to %d lines
+page.vala:193: Trimming page from %d lines to %d lines
+page.vala:437: Unknown paper size '%s'
+page.vala:670: failed to get icc profile data: %s
+PageView
+page_view_animation_cb
+page_view_button_press
+page_view_button_release
+page_view_construct
+page_view_get_crop_location
+page_view_get_cursor
+page_view_get_height
+page_view_get_page
+page_view_get_pixel
+page_view_get_preview_height
+page_view_get_preview_width
+page_view_get_selected
+page_view_get_type
+page_view_get_width
+page_view_get_x_offset
+page_view_get_y_offset
+page_view_motion
+page_view_new
+page_view_page_overlay_changed_cb
+page_view_page_pixels_changed_cb
+page_view_page_size_changed_cb
+page_view_page_to_screen_x
+page_view_page_to_screen_y
+page_view_ref
+page_view_render
+page_view_scan_direction_changed_cb
+page_view_screen_to_page_x
+page_view_set_height
+page_view_set_selected
+page_view_set_width
+page_view_set_x_offset
+page_view_set_y_offset
+page_view_unref
+page_view_update_preview
+page-width
+paper-height
+paper_size_combo
+paper-width
+param_spec_application
+param_spec_book
+param_spec_credentials
+param_spec_notify
+param_spec_page
+param_spec_page_view
+param_spec_pdf_writer
+param_spec_pixbuf_writer
+param_spec_ps_writer
+param_spec_request
+param_spec_scan_device
+param_spec_scan_job
+param_spec_scan_line
+param_spec_scanner
+param_spec_scan_options
+param_spec_scan_page_info
+param_spec_simple_scan
+/Parent %u 0 R
+password_entry
+password != NULL
+%PDF-1.3
+PDF (multi-page document)
+PDFWriter
+pdf_writer_construct
+pdf_writer_get_type
+pdf_writer_new
+pdf_writer_ref
+pdf_writer_start_object
+pdf_writer_unref
+pdf_writer_write
+pdf_writer_write_string
+photo-dpi
+photo_dpi_combo
+photo_menuitem
+photo_menuitem_toggled_cb
+photo_toolbutton_menuitem
+PixbufWriter
+pixbuf_writer_construct
+pixbuf_writer_get_type
+pixbuf_writer_new
+pixbuf_writer_ref
+pixbuf_writer_save
+pixbuf_writer_unref
+pixbuf_writer_write_pixbuf_data
+pixels_changed
+pixels-changed
+Please check your installation
+Please check your scanner is connected and powered on
+PNG (lossless)
+@p != NULL
+preferences_button_clicked_cb
+preferences_dialog
+preferences_dialog_delete_event_cb
+preferences_dialog_response_cb
+print_button_clicked_cb
+print_context != NULL
+Print debugging messages
+profile != NULL
+program-name
+PsWriter
+ps_writer_construct
+ps_writer_get_type
+ps_writer_new
+ps_writer_ref
+ps_writer_unref
+ps_writer_write_cairo_data
+quit_menuitem_activate_cb
+Quit without Saving
+read-delay
+read-delay-duration
+redetect
+reordered
+request_authorization
+request-authorization
+RequestCancel
+request_cancel_construct
+request_cancel_get_type
+request_cancel_new
+request_construct
+request_get_type
+request_new
+RequestQuit
+request_quit_construct
+request_quit_get_type
+request_quit_new
+RequestRedetect
+request_redetect_construct
+request_redetect_get_type
+request_redetect_new
+request_ref
+RequestStartScan
+request_start_scan_construct
+request_start_scan_get_type
+request_start_scan_new
+request_unref
+resolution
+resource != NULL
+/Resources << /XObject << /Im%d %u 0 R >> >>
+response
+R@has-focus
+right-to-left
+Robert Ancell <robert.ancell@canonical.com>
+/Root %u 0 R
+rotate_left_button_clicked_cb
+rotate_right_button_clicked_cb
+Run '%s --help' to see a full list of available command line options.
+%s 0 0 %s 0 0 cm
+sane_cancel
+sane_close
+sane_control_option
+sane_exit
+SANE_FALSE
+SANE_FRAME_BLUE
+SANE_FRAME(%d)
+SANE_FRAME_GRAY
+SANE_FRAME_GREEN
+SANE_FRAME_RED
+SANE_FRAME_RGB
+sane_get_devices
+sane_get_option_descriptor
+sane_get_parameters
+sane_init
+sane_open
+sane_read
+sane_start
+SANE_STATUS_ACCESS_DENIED
+SANE_STATUS_CANCELLED
+SANE_STATUS_COVER_OPEN
+SANE_STATUS(%d)
+SANE_STATUS_DEVICE_BUSY
+SANE_STATUS_EOF
+SANE_STATUS_GOOD
+SANE_STATUS_INVAL
+SANE_STATUS_IO_ERROR
+SANE_STATUS_JAMMED
+SANE_STATUS_NO_DOCS
+SANE_STATUS_NO_MEM
+SANE_STATUS_UNSUPPORTED
+sane_strstatus
+SANE_TRUE
+Save As...
+save_as_file_button_clicked_cb
+save_as_menuitem
+Save current document?
+save-directory
+Save document before quitting?
+save_file_button_clicked_cb
+save_menuitem
+save_toolbutton
+scan_button_clicked_cb
+Scan cancelled - do not report this error
+ScanDevice
+scan_device_construct
+scan_device_get_type
+scan_device_new
+scan_device_ref
+scan_device_unref
+scan-direction
+?ScanDirection
+SCAN_DIRECTION_BOTTOM_TO_TOP
+scan_direction_changed
+scan-direction-changed
+scan_direction_get_type
+SCAN_DIRECTION_LEFT_TO_RIGHT
+SCAN_DIRECTION_RIGHT_TO_LEFT
+SCAN_DIRECTION_TOP_TO_BOTTOM
+scan_failed
+scan-failed
+scan_job_construct
+scan_job_get_type
+scan_job_new
+scan_job_ref
+scan_job_unref
+ScanLine
+scan_line_changed
+scan-line-changed
+scan_line_construct
+scan_line_get_type
+scan_line_new
+scan_line_ref
+scan_line_unref
+ScanMode
+ScanMode.COLOR
+SCAN_MODE_COLOR
+ScanMode.DEFAULT
+SCAN_MODE_DEFAULT
+scan_mode_get_type
+ScanMode.GRAY
+SCAN_MODE_GRAY
+ScanMode.LINEART
+SCAN_MODE_LINEART
+Scanned Document
+Scanned Document.pdf
+scanned-page
+scanner_authorization_cb
+scanner_authorize
+scanner.c
+scanner_cancel
+scanner_close_device
+scanner_compare_devices
+scanner_do_complete_document
+scanner_do_read
+scanner_fail_scan
+scanner_free
+scanner_get_device_weight
+scanner_get_instance
+scanner_get_option_by_name
+scanner_get_type
+scanner_is_scanning
+scanner_notify
+scanner_notify_idle_cb
+scanner != NULL
+scanner_redetect
+scanner_ref
+scanner_scan
+scanner_scan_thread
+scanner_set_bool_option
+scanner_set_constrained_string_option
+scanner_set_fixed_option
+scanner_set_int_option
+scanner_set_scanning
+scanner_set_string_option
+scanner_start
+scanner_unref
+scanner.vala:1117: sane_cancel ()
+scanner.vala:1144: sane_start (page=%d, pass=%d) -> %s
+scanner.vala:1151: Unable to start device: %s
+scanner.vala:1161: sane_get_parameters () -> %s
+scanner.vala:1164: Unable to get device parameters: %s
+scanner.vala:1173: Parameters: format=%s last_frame=%s bytes_per_line=%d pixels_per_line=%d lines=%d depth=%d
+scanner.vala:1245: sane_read (%d) -> (%s, %d)
+scanner.vala:1251: Scan completed with %d lines, expected %d lines
+scanner.vala:1253: Scan complete with %d bytes of unused data
+scanner.vala:1261: Unable to read frame from device: %s
+scanner.vala:1378: sane_init () -> %s
+scanner.vala:1381: Unable to initialize SANE backend: %s
+scanner.vala:1384: SANE version %d.%d.%d
+scanner.vala:1435: Unable to create thread: %s
+scanner.vala:1445: Requesting redetection of scan devices
+scanner.vala:1491: Scanner.scan ("%s", dpi=%d, scan_mode=%s, depth=%d, type=%s, paper_width=%d, paper_height=%d)
+scanner.vala:1515: Stopping scan thread
+scanner.vala:1523: sane_exit ()
+scanner.vala:334: sane_get_devices () -> %s
+scanner.vala:337: Unable to get SANE devices: %s
+scanner.vala:346: Device: name="%s" vendor="%s" model="%s" type="%s"
+scanner.vala:388: sane_control_option (%d, SANE_ACTION_SET_AUTO) -> %s
+scanner.vala:390: Error setting default option %s: %s
+scanner.vala:402: sane_control_option (%d, SANE_ACTION_SET_VALUE, %s) -> (%s, %s)
+scanner.vala:439: sane_control_option (%d, SANE_ACTION_SET_VALUE, %d) -> (%s, %d)
+scanner.vala:479: sane_control_option (%d, SANE_ACTION_SET_VALUE, %f) -> (%s, %f)
+scanner.vala:497: sane_control_option (%d, SANE_ACTION_SET_VALUE, "%s") -> (%s, "%s")
+scanner.vala:685: %s
+scanner.vala:688:   Description: %s
+scanner.vala:715: sane_cancel ()
+scanner.vala:718: sane_close ()
+scanner.vala:753: Processing request
+scanner.vala:788: No scan device available
+scanner.vala:805: sane_close ()
+scanner.vala:814: sane_open ("%s") -> %s
+scanner.vala:818: Unable to get open device: %s
+scanner.vala:835: sane_get_option_descriptor (%d)
+scanner.vala:889: Unable to set single page source, please file a bug
+scanner.vala:894: Unable to set front ADF source, please file a bug
+scanner.vala:899: Unable to set back ADF source, please file a bug
+scanner.vala:904: Unable to set duplex ADF source, please file a bug
+scanner.vala:950: Unable to set Color mode, please file a bug
+scanner.vala:954: Unable to set Gray mode, please file a bug
+scanner.vala:958: Unable to set Lineart mode, please file a bug
+scanner.vala:994: Unable to disable compression, please file a bug
+scanning_changed
+scanning-changed
+ScanOptions
+scan_options_construct
+scan_options_get_type
+scan_options_new
+scan_options_ref
+scan_options_unref
+ScanPageInfo
+scan_page_info_construct
+scan_page_info_get_type
+scan_page_info_new
+scan_page_info_ref
+scan_page_info_unref
+ScanState
+SCAN_STATE_GET_OPTION
+SCAN_STATE_GET_PARAMETERS
+scan_state_get_type
+SCAN_STATE_IDLE
+SCAN_STATE_OPEN
+SCAN_STATE_READ
+SCAN_STATE_REDETECT
+SCAN_STATE_START
+ScanType
+ScanType.ADF_BACK
+SCAN_TYPE_ADF_BACK
+ScanType.ADF_BOTH
+SCAN_TYPE_ADF_BOTH
+ScanType.ADF_FRONT
+SCAN_TYPE_ADF_FRONT
+scan_type_get_type
+ScanType.SINGLE
+SCAN_TYPE_SINGLE
+selected-device
+Select File _Type
+selection != NULL
+self != NULL
+setlocale
+show_menu
+show-menu
+show_page
+show-page
+Show release version
+Simple document scanning tool
+simple_scan_add_default_page
+simple_scan_authorize
+simple-scan.c
+simple_scan_construct
+simple_scan_draw_page
+simple_scan_find_scan_device
+simple_scan_get_book
+simple_scan_get_page_side
+simple_scan_get_paper_size
+simple_scan_get_photo_dpi
+simple_scan_get_scan_options
+simple_scan_get_selected_device
+simple_scan_get_selected_page
+simple_scan_get_text_dpi
+simple_scan_get_type
+simple_scan_info_bar_response_cb
+simple_scan_load
+simple-scan.log
+simple_scan_needs_saving_cb
+simple_scan_new
+simple_scan_on_file_type_changed
+simple_scan_on_quit
+simple_scan_page_added_cb
+simple_scan_page_removed_cb
+simple_scan_page_scan_direction_changed_cb
+simple_scan_page_selected_cb
+simple_scan_page_size_changed_cb
+simple_scan_prompt_to_save
+simple_scan_ref
+simple-scan %s
+simple_scan_save_document
+simple_scan_set_crop
+simple_scan_set_default_file_name
+simple_scan_set_document_hint
+simple_scan_set_dpi_combo
+simple_scan_set_scan_devices
+simple_scan_set_scanning
+simple_scan_set_selected_device
+simple_scan_set_selected_page
+simple_scan_show_error
+simple_scan_show_error_dialog
+simple_scan_show_page_cb
+simple_scan_show_page_menu_cb
+simple_scan_start
+simple-scan.ui
+simple_scan_unref
+simple_scan_update_info_bar
+simple_scan_update_page_menu
+simple-scan.vala:236: Page is %d pixels wide, %d pixels high, %d bits per pixel
+simple-scan.vala:296: Requesting scan at %d dpi from device '%s'
+simple-scan.vala:332: Error saving email attachment: %s
+simple-scan.vala:358: Unable to save email file: %s
+simple-scan.vala:382: Unable to save email file: %s
+simple-scan.vala:392: Launching email client: %s
+simple-scan.vala:399: Unable to start email: %s
+simple-scan.vala:586: Starting Simple Scan %s, PID=%i
+simple_scan_window
+simple_scan_window_configure_event_cb
+simple_scan_window_window_state_event_cb
+size_changed
+size-changed
+ size=%d
+/Size %zu
+soft-detect
+soft-select
+__stack_chk_fail
+start_scan
+start-scan
+startxref
+stop_scan
+stop-scan
+stop_scan_button_clicked_cb
+stop_scan_menuitem
+stop_toolbutton
+stream != NULL
+string_get
+string_last_index_of_char
+string_replace
+string_slice
+string_substring
+string_to_utf8
+/Subtype /Image
+surface != NULL
+%sXXXXXX.%s
+T$49T$0}
+t=9t$ ~7
+test-picture
+text-dpi
+text_dpi_combo
+text_menuitem
+text_menuitem_toggled_cb
+text_toolbutton_menuitem
+the Free Software Foundation, either version 3 of the License, or
+This program is distributed in the hope that it will be useful,
+This program is free software: you can redistribute it and/or modify
+three-pass
+Thresholded
+ title='%s'
+_tmp0_ >= 0
+_tmp0_ >= 1
+_tmp1_ >= 0
+_tmp1_ >= 1
+_tmp12_ >= ((glong) 0)
+_tmp13_ <= _tmp14_
+_tmp18_ <= _tmp19_
+_tmp1_ == SANE_TYPE_BOOL
+_tmp1_ == SANE_TYPE_INT
+_tmp1_ == SANE_TYPE_STRING
+_tmp20_ != NULL
+_tmp2_ == SANE_TYPE_FIXED
+_tmp2_ == SANE_TYPE_STRING
+_tmp2_ < _tmp3_
+_tmp3_ == SANE_CONSTRAINT_STRING_LIST
+_tmp4_ < _tmp5_
+_tmp62_ >= 0
+_tmp63_ < _tmp64_
+_tmp65_ >= 0
+_tmp66_ < _tmp67_
+_tmp68_ != NULL
+top-left
+top-right
+top-to-bottom
+translator-credits
+True Gray
+ type=bool
+ type=button
+/Type /Catalog
+ type=%d
+ type=fixed
+ type=group
+ type=int
+type != NULL
+/Type /Page
+/Type /Pages
+ type=string
+/Type /XObject
+%u 0 obj
+ui != NULL
+ui.vala:1054: Error printing: %s
+ui.vala:1276: Unable to load UI %s: %s
+ui.vala:1425: Restoring window to %dx%d pixels
+ui.vala:1430: Restoring window to maximized
+ui.vala:452: Saving to '%s'
+ui.vala:471: Error saving file: %s
+ui.vala:798: Error saving email attachment: %s
+Unable to connect to scanner
+Unable to open help file
+Unable to open image preview application
+Unable to save image for preview
+Unable to start scan
+ unit=bits
+ unit=%d
+ unit=dpi
+ unit=microseconds
+ unit=mm
+ unit=percent
+ unit=pixels
+update_devices
+update-devices
+uri != NULL
+Username and password required to access '%s'
+username_entry
+username != NULL
+/usr/share/locale
+/usr/share/simple-scan/
+/usr/share/simple-scan/icons
+value-changed
+value_get_application
+value_get_book
+value_get_credentials
+value_get_notify
+value_get_page
+value_get_page_view
+value_get_pdf_writer
+value_get_pixbuf_writer
+value_get_ps_writer
+value_get_request
+value_get_scan_device
+value_get_scan_job
+value_get_scan_line
+value_get_scanner
+value_get_scan_options
+value_get_scan_page_info
+value_get_simple_scan
+value location for `%s' passed as NULL
+value != NULL
+ values=[
+value_set_application
+value_set_book
+value_set_credentials
+value_set_notify
+value_set_page
+value_set_page_view
+value_set_pdf_writer
+value_set_pixbuf_writer
+value_set_ps_writer
+value_set_request
+value_set_scan_device
+value_set_scan_job
+value_set_scan_line
+value_set_scanner
+value_set_scan_options
+value_set_scan_page_info
+value_set_simple_scan
+value_take_application
+value_take_book
+value_take_credentials
+value_take_notify
+value_take_page
+value_take_page_view
+value_take_pdf_writer
+value_take_pixbuf_writer
+value_take_ps_writer
+value_take_request
+value_take_scan_device
+value_take_scan_job
+value_take_scan_line
+value_take_scanner
+value_take_scan_options
+value_take_scan_page_info
+value_take_simple_scan
+view != NULL
+WARNING:
+widget != NULL
+/Width %d
+window_delete_event_cb
+window-height
+window-is-maximized
+window-width
+wrap-license
+XCnyfxydf
+xdg-email
+You should have received a copy of the GNU General Public License

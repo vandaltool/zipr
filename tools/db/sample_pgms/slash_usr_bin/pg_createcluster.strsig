@@ -1,0 +1,443 @@
+    # 8.3 enables autovacuum by default
+# add access for database superuser
+# - Add a "local all" entry to pg_hba.conf for the db superuser before all
+additional options passed to pg_ctl of that cluster.
+	# add superuser entry before column description line
+adjusted to allow write access to the cluster owner. Please note that
+arbitrary. The default cluster that is created on installation of a server
+# Arguments: <source file> <target dir> <uid> <gid> <perms> <postgresql.conf option>
+# Arguments: <version> <data directory> <owner uid> <owner gid>
+a socket there and impersonate the database server. If the given directory does
+#  (at your option) any later version.
+automatically on system boot.
+B<Note>: It is not recommended to set this option directly! Set the locale
+B<pg_createcluster> creates a new PostgreSQL server cluster (i. e. a
+B<pg_createcluster> [I<options>] I<version> I<name>
+B<pg_createcluster> runs in.
+B<postgresql-common> package. 
+    # bug
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+# (C) 2005-2009 Martin Pitt <mpitt@debian.org>
+# call initdb 
+C</etc/postgresql/>I<version>C</>I<name>C</>; in particular these are
+(C</etc/ssl/certs/ssl-cert-snakeoil.pem> and
+C</etc/ssl/private/ssl-cert-snakeoil.key>), this program creates symlinks to
+# - Change default authentication for host entries to md5.
+Change the group of the cluster related data files. By default this will be the
+        change_ugid $_[2], $_[3];
+change_ugid $owneruid, $ownergid;
+character sets supported by the PostgreSQL server are described in the
+# check validity of locale
+# Check whether we can access the SSL private key as the cluster owner
+# check whether we have an already existing cluster; check version and
+    chmod 01775, '/var/log/postgresql';
+chmod 0640, $real_logfile;
+chmod 0644, "$confdir/environment";
+    chown 0, $postgres_user[3], '/var/log/postgresql';
+chown $owneruid, $g, $real_logfile;
+chown $owneruid, $ownergid, "$confdir/environment";
+    chown $owneruid, $ownergid, "$confdir/log";
+chown $owneruid, $ownergid, $datadir, $confdir, "$confdir/pg_ctl.conf" or die "chown: $!";
+chown $owneruid, $ownergid, $datadir, $confdir, "$confdir/start.conf" or die "chown: $!";
+$cleanup_cruft = 0;
+$cleanup_cruft = 1;
+    # clean up cruft if something went wrong
+# clean up on errors
+C<log_filename>; if at least one of these options is present, then the symbolic
+close ENV;
+        close F;
+    close F;
+    close L;
+        close STDOUT;
+($cluster) = $ARGV[1] =~ /^([-.\w]+)$/;
+cluster. Please be aware that this will not stop the cluster owner from calling
+clusters will use the same SSL certificate by default. Of course you can
+cluster with a name that already exists for that version.
+collection of databases served by a L<postmaster(1)> instance) and
+# command line arguments
+comment lines (started with '#'), empty lines, and must have exactly one
+$confdir = "$confdirp/$cluster";
+$confdirp = "$PgCommon::confroot/$version";
+$conf_fn = "configure_$version";
+&$conf_fn if defined &$conf_fn and $newcluster;
+$conf_fn =~tr/./_/;
+configuration file and setting the data_directory option. Please note that this
+# configure socket directory
+# configure to create external PID file
+CONTROL> below. By default, B<auto> is used, which means that the cluster is
+controlling the cluster with L<pg_ctlcluster(1)> is permitted.
+C<pg_ctlcluster> I<version cluster> C<start> on it). By default, the cluster is
+C<pg_ctl.conf>, and a symbolic link C<log> which points to the log file (by
+C<postgresql.conf> can be customized to specify C<log_directory> and/or
+C<postgresql.conf>, C<pg_ident.conf>, C<pg_hba.conf>, a postgresql-common
+C<postgresql.conf> is automatically adapted to use the next available port, i.
+# create configuration directory
+# create default (empty) environment file
+# create default pg_ctl.conf file
+# create default "start" file
+# create log file
+# Create new PostgreSQL cluster or integrate an existing data directory into
+# create SSL certificate symlinks to the default certificate if it exists; if
+# create SSL client certificate root symlink if appropriate
+C</var/lib/postgresql/>I<version>C</>I<cluster>.
+C</var/log/postgresql/postgresql->I<version>C<->I<cluster>C<.log>.
+# Database administrative login by Unix domain socket
+databases and tables. This will become quite big (easily in the order of five
+# database superuser can access the database using some other method.
+data directory.
+    $datadir = (-l $_[1]) ? readlink $_[1] : $_[1];
+    $datadir = "$pd/$cluster";
+  -d <dir>      data directory (default: 
+	# default authentication for TCP connections
+	# default authentication for Unix socket connections
+default, C</var/log/postgresql/postgresql->I<version>C<->I<name>C<.log>).
+default is derived from the locale, or SQL_ASCII if that does not work.  The
+defaults to /tmp. You might want to change the unix_socket_directory parameter
+# determine owner in this case
+die "changing egid back: $!" if $) != $egid;
+die "changing euid back: $!" if $> != $euid;
+    die 'Internal error: could not determine initdb path' unless $initdb[0];
+documentation. 
+# DO NOT DISABLE!
+e. all the configuration files (C<postgresql.conf> etc.) must be present in the
+  -e <encoding> Default encoding (default: derived from locale)
+$) = $egid;
+    } else {
+    } else{
+} else {
+} elsif ($> == 0) {
+encoding of any database you create later, unless you override it there. The
+    # ensure that the version data dir is owned by postgres as well, so that
+        $ENV{'LANG'} = $ENV{'LC_ALL'};
+$ENV{'PATH'} = '/bin:/usr/bin'; # untaint
+error 'cluster configuration already exists' 
+error 'clusters must not be owned by root' unless $owneruid && $ownergid;
+error 'could not create configuration directory; you might ' .
+        error 'could not create data directory; you might need to run this program with root privileges';
+	error "could not create log directory; you might need to run this program with root privileges";
+        error 'could not create socket directory';
+        error "could not open $datadir/PG_VERSION";
+        error "$datadir already contains a version $existingver cluster";
+        error 'initdb failed' if $?;
+error 'invalid cluster name' unless defined $cluster;
+error 'Invalid --start-conf value' if $startconf ne 'auto' &&
+error "invalid version: $version" unless get_program_path 'initdb', $version;
+        error "move_conffile: required configuration file $realfile does not exist";
+    error 'port must be a positive integer between 1024 and 65535' 
+	    error "port $port is already used by cluster $v/$c"
+    error "setup_pg_hba: did not find insert position" if $search;
+    error ('The locale requested by the environment is invalid.')
+    error 'User postgresql does not exist' unless $owneruid;
+etc. C<pg_createcluster> will abort with an error if you try to create a
+e. the first port (starting from 5432) which is not yet used by an already
+$> = $euid;
+# evaluated.
+Every cluster is uniquely identified by its version and name. The name can be
+        exec @initdb;
+# Execution starts here
+existing cluster.
+        $existingver = <F>;
+    exit 1;
+	exit 1;
+exit 1 unless GetOptions ('u|user=s' => \$owneruid, 'g|group=s' => \$ownergid,
+Explicitly set the data directory path, which is used to store all the actual
+Explicitly set the directory where the L<postmaster(1)> server stores the Unix
+Explicitly set the path for the L<postmaster(1)> server log file. Defaults to
+    ($file, $target, $uid, $gid, $perms, $confopt) = @_;
+    $fname = "$confdir/pg_hba.conf";
+	foreach $c (get_version_clusters $v) {
+    foreach (@lines) {
+    foreach $v (get_versions) {
+free port starting from 5432 is assigned.
+    $g = (getgrnam 'adm')[2];
+  -g <gid>      group for data files (default: primary group of owner)
+$( = $gid;
+Given a major PostgreSQL I<version> (like "8.2" or "8.3") and a cluster
+given name or uid.  By default, this is the user B<postgres>.  A cluster must
+#  GNU General Public License for more details.
+    $g = $ownergid;
+handled by C</etc/init.d/postgresql>, i. e. starts and stops
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 STARTUP CONTROL
+=head1 SYNOPSIS
+	$ident_method = 'ident';
+	$ident_method = 'ident sameuser';
+# I. e. you need to enclose any value which does not only consist of letters,
+    if ($_[0] ge '8.4') {
+    if ($_[0] ge '9.1') {
+    if ($_[0] le '8.2' && $ENV{'LC_ALL'}) {
+If a custom socket directory is given and it does not exist, it is created.
+if ($#ARGV != 1) {
+    if ($cleanup_cruft && defined $version && defined $cluster) {
+if ($custom_logfile) {
+if (!defined $datadir) {
+if (defined $port) {
+if (! -d '/var/log/postgresql') {
+    if -e "$confdir/postgresql.conf" || -e "$confdir/pg_hba.conf";
+    if (-e $file) {
+if (! -e $real_logfile) {
+    if ($existingver = $version) {
+if (-f "$datadir/PG_VERSION") {
+    if (fork) {
+		if (get_cluster_port $v, $c) == $port;
+	if ($line =~ /^#?host/) {
+	if ($line =~ /^#?local/) {
+if ($newcluster && -e '/etc/postgresql-common/root.crt') {
+if ($newcluster && -e '/etc/ssl/certs/ssl-cert-snakeoil.pem' && 
+    if (open F, "$datadir/PG_VERSION") {
+if ($ownergid) {
+if ($owneruid) {
+if ($owneruid < 500) {
+	if ($search && /#.*TYPE\s+DATABASE/) {
+if ($socketdir eq '/var/run/postgresql') {
+if ($socketdir && ! -e $socketdir) {
+if ($start) {
+if (!stat $confdirp) {
+    if (!stat $pd) {
+    if (system 'install', '-d', '-m', '0755', '-o', $owneruid, '-g', $ownergid, $socketdir) {
+    if (system 'install', '-d', '-o', $_[2], '-g', $_[3], $datadir) {
+If the data directory does not yet exist, PostgreSQL's L<initdb(1)> command is
+If the default snakeoil SSL certificate exists
+If the log file does not exist, it is created. In any case the permissions are
+    if ($val =~ /^-----BEGIN CERTIFICATE-----/m) {
+# if we are using a non-default log file, create a log symlink
+    if (-w '/var/run/postgresql') {
+# If you change this first entry you will need to make sure that the
+Immediately start a server for the cluster after creating it (i. e. call
+I<name>, it creates the necessary configuration files in
+    @initdb = ((get_program_path 'initdb', $_[0]), '-D', $datadir);
+    init_db $version, $datadir, $owneruid, $ownergid;
+in postgresql.conf to a more secure directory.
+	install_file $realfile, $target, $uid, $gid, $perms;
+instead.
+integrates it into the multi-version/multi-cluster architecture of the
+I<only> works for data directories which were created directly with B<initdb>, i.
+    # it can be administrated without root permissions
+=item B<auto>
+=item B<-d> I<dir>, B<--datadir=>I<dir>
+=item B<disable>
+=item B<-e> I<encoding>, B<--encoding=>I<encoding>
+=item B<-g> I<group>, B<--group=>I<group>
+=item B<--lc-collate=>I<locale>
+=item B<--lc-ctype=>I<locale>
+=item B<--lc-messages=>I<locale>
+=item B<--lc-monetary=>I<locale>
+=item B<--lc-numeric=>I<locale>
+=item B<--lc-time=>I<locale>
+=item B<-l> I<path>, B<--logfile=>I<path>
+=item B<--locale=>I<locale>
+=item B<manual>
+=item B<-p> I<port>, B<--port=>I<port>
+=item B<-s> I<dir>, B<--socketdir=>I<dir>
+=item B<--start>
+=item B<--start-conf=>B<auto>|B<manual>|B<disabled>
+=item B<-u> I<user>, B<--user=>I<user>
+it is integrated into the B<postgresql-common> structure by moving the
+#  it under the terms of the GNU General Public License as published by
+  --lc-collate/ctype/messages/monetary/numeric/time <locale>
+    'lc-collate=s' => \$lc_collate, 'lc-ctype=s' => \$lc_ctype,
+    'lc-messages=s' => \$lc_messages, 'lc-monetary=s' => \$lc_monetary,
+    'lc-numeric=s' => \$lc_numeric, 'lc-time=s' => \$lc_time);
+  -l <dir>      path to desired log file (default:
+Like B<--locale>, but only sets the locale in the specified category.
+                like --locale, but only set for a particular category
+	$line = $_;
+	    $line =~ s/($ident_method|trust)/md5/;
+	    $line =~ s/trust/$peer_method/;
+line with one of the following keywords:
+link C<log> in the cluster configuration directory is ignored.
+    'l|logfile=s' => \$custom_logfile, 'start-conf=s' => \$startconf,
+  --locale <encoding>
+lower level tools to control the postmaster process; this option is only meant
+L<pg_ctlcluster(8)>, L<pg_lsclusters(1)>, L<pg_wrapper(1)>
+# maintenance (custom daily cronjobs, replication, and similar tasks).
+Martin Pitt L<E<lt>mpitt@debian.orgE<gt>>
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    mkdir '/var/log/postgresql' or
+# move a file to a directory with defined permissions; set <postgresql.conf option> in
+move_conffile "$datadir/pg_hba.conf", $confdir, $owneruid, $ownergid, '640', 'hba_file';
+move_conffile "$datadir/pg_ident.conf", $confdir, $owneruid, $ownergid, '640', 'ident_file';
+move_conffile "$datadir/postgresql.conf", $confdir, $owneruid, $ownergid, '644';
+# move conffiles, setup permissions
+my $cleanup_cruft = 0;
+my @postgres_user = getpwnam 'postgres';
+my $ssl_key_access;
+my $startconf = 'auto';
+my ($uid, $euid, $gid, $egid) = ($<, $>, $(, $));
+    my $val;
+    'need to run this program with root privileges' if system ('install', '-d', $confdir);
+Neither the init script nor L<pg_ctlcluster(1)> are permitted to start/stop the
+$newcluster = 0;
+    $newcluster = 1;
+# Noninteractive access to all databases is required during automatic
+not be owned by root.
+not exist, it is created with appropriate permissions.
+not started.
+# now we created the first new directory for this cluster and start to rollback
+# numbers, and '-', '_', '.' in single quotes. Shell commands are not
+# on error
+open ENV, ">$confdir/environment" or error "could not create environment file";
+    open F, '/etc/postgresql-common/root.crt';
+    open (F, $fname) or error "could not open $fname for reading";
+    open (F, ">$fname") or error "could not open $fname for writing";
+    open L, ">>$real_logfile" or error "could not create log file $real_logfile";
+        open STDOUT, ">/dev/null";
+Options:
+$) = $orig_egid;
+$orig_egid = $);
+$> = $orig_euid;
+$orig_euid = $>;
+# other entries. 
+                owned by 'postgres', /tmp for other clusters)
+owned by the user B<postgres>, and C</tmp> for clusters owned by other users.
+$) = $ownergid;
+    $ownergid = (getgrnam $ownergid)[2] unless $ownergid =~ /\d+/;
+    $ownergid = (getpwuid $owneruid)[3];
+    $owneruid = $>;
+$> = $owneruid;
+    $owneruid = (getpwnam $owneruid)[2] unless $owneruid =~ /\d+/;
+    $owneruid = getpwnam 'postgres';
+    ($owneruid, $ownergid) = (stat "$datadir/PG_VERSION")[4,5];
+package is C<main>. However, you might wish to create other clusters for
+	@pathcomps = split ('/', $file);
+    $pd = "/var/lib/postgresql/$version";
+	$peer_method = $ident_method;
+	$peer_method = 'peer';
+    PgCommon::set_conf_value $version, $cluster, 'postgresql.conf', 'autovacuum', 'on';
+	PgCommon::set_conf_value $version, $cluster, 'postgresql.conf', $confopt, $target if $confopt;
+PgCommon::set_conf_value $version, $cluster, 'postgresql.conf', 'data_directory', $datadir;
+    PgCommon::set_conf_value $version, $cluster, 'postgresql.conf', 'external_pid_file', "/var/run/postgresql/$version-$cluster.pid";
+    PgCommon::set_conf_value $version, $cluster, 'postgresql.conf', 'log_line_prefix', '%t ';
+    PgCommon::set_conf_value $version, $cluster, 'postgresql.conf', 'ssl', 'true';
+    PgCommon::set_conf_value $version, $cluster, 'postgresql.conf', 'stats_row_level', 'on';
+pg_createcluster - create a new PostgreSQL cluster
+Please be aware that C</tmp> is an unsafe directory since everybody can create
+    $port = next_free_port;
+port); this must be a number between 1024 and 65535, since PostgreSQL does not
+# postgresql.conf.
+    'p|port=i' => \$port, 'locale=s' => \$locale,
+  -p <port>     port number (default: next free port starting from 5432)
+    # pre-8.2 servers do not ignore LANG when LC_ALL is set; work around this
+primary group of the database owner.
+        print "Configuring already existing cluster (configuration: $confdir, data: $datadir, owner: $owneruid:$ownergid)\n";
+print "Configuring postgresql.conf to use port $port...\n";
+    print "Creating new cluster (configuration: $confdir, data: $datadir)...\n";
+print ENV "# environment variables for postmaster process
+	print F $_;
+        print "Moving configuration file $realfile to $target...\n";
+    print "Usage: $0 [options] <version> <cluster name>
+	print "Warning: The socket directory for owners other than 'postgres'
+    push @initdb, ('-A', $ident_method);
+    push @initdb, ('--encoding', $encoding) if $encoding;
+    push @initdb, ('--lc-collate', $lc_collate) if $lc_collate;
+    push @initdb, ('--lc-ctype', $lc_ctype) if $lc_ctype;
+    push @initdb, ('--lc-messages', $lc_messages) if $lc_messages;
+    push @initdb, ('--lc-monetary', $lc_monetary) if $lc_monetary;
+    push @initdb, ('--lc-numeric', $lc_numeric) if $lc_numeric;
+    push @initdb, ('--lc-time', $lc_time) if $lc_time;
+    push @initdb, ('--locale', $locale) if $locale;
+	push @lines, $line;
+	    push @lines, "\n";
+	    push @lines, $s;
+	    push @lines, $su_comment;
+    read F, $val, 4096;
+    $realfile = $file;
+        $realfile = readlink $realfile;
+$real_logfile = $custom_logfile || "/var/log/postgresql/postgresql-$version-$cluster.log";
+replace these symlinks with a cluster specific certificate.
+run as root and thus needs an unprivileged port number. By default the next
+  -s <dir>      socket directory (default: /var/run/postgresql for clusters
+	    $search = 0;
+    $search = 1;
+Select the encoding of the template database. This will also be the default
+Select the port the new cluster listens on (for the Unix socket and the TCP
+                Set automatic startup behaviour in start.conf (default: 'auto')
+                set cluster locale (default: inherit from environment)
+set_cluster_pg_ctl_conf $version, $cluster, '';
+set_cluster_port $version, $cluster, $port;
+set_cluster_socketdir $version, $cluster, $socketdir if $socketdir;
+set_cluster_start_conf $version, $cluster, $startconf;
+Set the default locale for the database cluster. If this option is not
+Set the initial value in the C<start.conf> configuration file. See B<STARTUP
+Set the user who owns the cluster and becomes the database superuser to the
+setup_pg_hba if $newcluster;
+# Set up the default pg_hba.conf file:
+        $socketdir='/tmp';
+	$socketdir = '/var/run/postgresql';
+socket for local connections. Defaults to C</var/run/postgresql/> for clusters
+# so, enable SSL
+# some sanity checks
+specific configuration file C<start.conf> (see B<STARTUP CONTROL> below),
+specified, the locale is inherited from the environment that
+SSL for that cluster (option B<ssl> in C<postgresql.conf>). Therefore all
+    $ssl_key_access) {
+$ssl_key_access = -r '/etc/ssl/private/ssl-cert-snakeoil.key';
+    's|socketdir=s' => \$socketdir, 'd|datadir=s' => \$datadir, 
+	    $s = sprintf "%-7s %-15s %-39s %s\n", 'local', 'all', $user, $peer_method;
+  --start-conf auto|manual|disabled
+    $startconf ne 'manual' && $startconf ne 'disabled';
+# start it if requested
+    'start' => \$start, 'e|encoding=s' => \$encoding, 
+  --start       start the cluster after creating it
+start/stop behavior of that cluster's postmaster process. The file can contain
+sub configure_8_1 {
+sub configure_8_2 {
+sub configure_8_3 {
+sub configure_8_4 {
+sub configure_9_0 {
+sub configure_9_1 {
+sub init_db {
+sub move_conffile {
+sub setup_pg_hba {
+    $su_comment = "
+	symlink '/etc/postgresql-common/root.crt', $datadir.'/root.crt';
+    symlink '/etc/ssl/certs/ssl-cert-snakeoil.pem', $datadir.'/server.crt';
+    symlink '/etc/ssl/private/ssl-cert-snakeoil.key', $datadir.'/server.key';
+    symlink $real_logfile, "$confdir/log";
+    system 'install', '-d', '-o', $postgres_user[2], '-g', $postgres_user[3], $confdirp;
+        system 'install', '-d', '-o', $postgres_user[2], '-g', $postgres_user[3], $pd;
+	system "pg_dropcluster $version $cluster 2>/dev/null";
+    system '/usr/bin/pg_ctlcluster', $version, $cluster, 'start';
+	$target .= '/' . $pathcomps[-1];
+testing, with other superusers, a cluster for each user on a shared server,
+The C<pg_ctl.conf> file in the cluster configuration directory can contain
+The C<start.conf> file in the cluster configuration directory controls the
+#  the Free Software Foundation; either version 2 of the License, or
+# the postgresql-common infrastructure.
+The postmaster process is not handled by the init script, but manually
+The postmaster process is started/stopped automatically in the init script.
+these files in the data directory (C<server.crt> and C<server.key>) and enables
+# This file has the same syntax as postgresql.conf: 
+# this flag gets set when we started creating the cluster, and thus we need to
+This is also the default if the file is missing.
+#  This program is distributed in the hope that it will be useful,
+#  This program is free software; you can redistribute it and/or modify
+times the amount of actual data stored in the cluster). Defaults to
+to prevent accidents during maintenance, not more.
+$< = $uid; 
+	unless $port =~ /^\d+/ && $port >= 1024 && $port <= 65535;
+unless (setlocale (LC_ALL, "")) {
+unless ($socketdir) {
+        unlink $file, $realfile;
+used to generate a new cluster structure. If the data directory already exists,
+use Getopt::Long;
+use lib '/usr/share/postgresql-common';
+use PgCommon;
+use POSIX qw/setlocale LC_ALL/;
+    $user = (getpwuid $owneruid)[0];
+#!/usr/bin/perl -w
+  -u <uid>      cluster owner and superuser (default: 'postgres')
+#  VARIABLE2 = 'any value!'
+#  VARIABLE = simple_value
+                /var/lib/postgresql/<version>/<cluster name>)
+                /var/log/postgresql/postgresql-<version>-<cluster>.log)
+($version) = $ARGV[0] =~ /^(\d+\.\d+)$/;
+# Version specific default configuration
+# version specific default configuration tweaking
+        wait;
+    while (<F>) {
+    while (-l $realfile) {

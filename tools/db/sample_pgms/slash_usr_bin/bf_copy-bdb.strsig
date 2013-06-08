@@ -1,0 +1,41 @@
+#  bf_copy [-c] source_dir dest_dir
+#! /bin/sh
+: ${BOGOUTIL:=bogoutil}
+$BOGOUTIL --db-checkpoint="$SRC" || :
+  $BOGOUTIL --db-list-logfiles="$SRC" >$TMP
+	*) break;
+    case "$1" in
+	-c) COMPACT=1 ;;
+COMPACT=0
+    dd bs=$SIZE if=$FILE of="$DST/"`basename "$FILE"`
+  # don't copy unneeded logs
+DST="$2"
+	-*) echo "unknown option $1" >&2 ; exit 1 ;;
+    echo 'usage: bf_copy [-c] source_dir dest_dir'
+    echo "   use -c to copy active logs, not all"
+    esac
+    exit 1
+# flush mempools
+for FILE in "$SRC"/*.db ; do
+#    from one directory to another
+# $Id: bf_copy.in 6750 2008-10-15 23:18:45Z clint $
+if [ $# -ne 2 ] ; then
+if test $COMPACT -eq 1 ; then
+if test -f "$SRC"/DB_CONFIG ; then cp -p "$SRC"/DB_CONFIG "$DST" ; fi
+if test "$LOGS" ; then $BOGOUTIL --db-recover="$DST" ; fi
+if test "$LOGS" ; then cp -p $LOGS "$DST" ; fi
+LOGS=`ls "$SRC"/log.* 2>/dev/null | grep -v -F -f $TMP || :`
+mkdir "$DST"
+rm -f $TMP
+set -e # die on errors
+    shift
+	--) shift ; break ;;
+    SIZE=`$BOGOUTIL --db-print-pagesize="$FILE"`
+SRC="$1"
+  : >$TMP
+TMP=bfc.$$.unneeded
+trap - 0
+trap "rm -rf $TMP \"$DST\"" 0
+#    use to copy wordlist.db and related files
+while test "$1" ; do
+# XXX FIXME - use Berkeley DB environment probing here

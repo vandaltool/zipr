@@ -1,0 +1,697 @@
+                }
+            ;;
+            }
+          -*)
+          */*)
+          *)
+         ;;
+        ;;
+        }
+        *)
+       }
+      -*)
+      ;;
+      *)
+#--------------------------------------
+#----------------------------------------
+#-----------------------------------------
+#---------------------------------------------
+#------------------------------------------------------------
+#-------------------------------------------------------------
+#----------------------------------------------------------------------------
+                $0=prefix application
+            $0=prefix value
+           $0=substr($0,RSTART+RLENGTH)
+    # $1 is vendor-name.desktop
+    # [$2 - 1]
+    # $2 is mime/type
+        action=defapp
+        action=info
+    action=install
+    action=makedefault
+    action=uninstall
+    # Add $2=$1 to XDG_DATA_HOME/applications/defaults.list
+add descriptions for new file types.
+        added=0
+                added=1
+    # [Added Associations]
+Adds a file type description for "shiny"-files. "shinythings-" is used as the
+    Adds the file type descriptions provided in mimetypes-file to the desktop
+    # All output to stderr
+and adding descriptions for new file types
+#   and/or sell copies of the Software, and to permit persons to whom the
+An exit code of 0 indicates success while a non-zero exit code indicates
+An icon for this new file type must also be installed, for example with:
+    # Application=$1
+    application is identified by its *.desktop file.
+    application is the desktop file id of the application and has the form
+    application-vnd.oasis.opendocument.text to be installed (unless the file
+    A required tool could not be found.
+  ARGC=1
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+    Ask the desktop environment to make application the default application for
+            associations=0
+        associations=0
+            associations=1
+    A vendor prefix consists of alpha characters ([a-zA-Z]) and is terminated
+' | awk '
+                awk < "$filename" '
+' | awk > $kde_dir/$x.desktop '
+        awk -v application="$vendor" -v mimetype="$mimetype" '
+    awk -v mimetype="$2" -v application="$1" '
+       [a-zA-Z]*-*)
+basefile=`basename "$filename"`
+            basename "$trader_result"
+    BEGIN {
+    # Be silent
+#!/bin/sh
+                blanks--
+            blanks--
+            blanks++
+        blanks=0
+        break
+           break
+        case "$1" in
+        case $1 in
+    case $1 in
+case $1 in
+case $action in
+    case "$DE" in
+    case "$file" in
+        case $filename in
+        case $mimetype in
+        case "$parm" in
+    case $parm in
+cat << _MANUALPAGE
+cat << _USAGE
+check_common_commands "$@"
+check_common_commands()
+check_input_file()
+        check_input_file "$filename"
+check_output_file()
+# Checks for known desktop environments
+# Checks for shared commands, e.g. --help
+check_vendor_prefix()
+    check_vendor_prefix "$filename"
+    command in the mimetypes context. For example the filetype application/
+Commands
+    <comment>Shiny new file type</comment>
+        comment=substr($0,RSTART+1)
+#   Common utility functions included in all XDG wrapper scripts
+#   copy of this software and associated documentation files (the "Software"),
+#   Copyright 2006, Jeremy White <jwhite@codeweavers.com>
+#   Copyright 2006, Kevin Krammer <kevin.krammer@gmx.at>
+#   Copyright 2009-2010, Fathi Boudra <fabo@freedesktop.org>
+#   Copyright 2009-2010, Rex Dieter <rdieter@fedoraproject.org>
+              count++
+            count=0
+    current user only. In system mode the file is (un)installed for all users
+DEBUG 1 "$action mimetype in $xdg_dir"
+                DEBUG 1 "Installing $kde_dir/$x.desktop (KDE 3.x support)"
+                DEBUG 1 "Removing $kde_dir/$x.desktop (KDE 3.x support)"
+        DEBUG 1 "Running file -i \"$1\""
+        DEBUG 1 "Running gnomevfs-info \"$1\""
+        DEBUG 1 "Running gvfs-info \"$1\""
+         DEBUG 1 "Running kbuildsycoca"
+        DEBUG 1 "Running KDE trader query \"$MIME\" mimetype and \"Application\" servicetype"
+        DEBUG 1 "Running kfile \"$1\""
+        DEBUG 1 "Running kmimetypefinder \"$1\""
+        DEBUG 1 "Running mimetype -b \"$1\""
+         DEBUG 1 "Running $x/update-mime-database $1"
+    DEBUG 1 "Updating $default_file"
+       DEBUG 2 "Checking $x/applications/defaults.list"
+    DEBUG 2 "KDE3 mimelnk directory found, extracting mimetypes from XML file"
+    DEBUG 2 "make_default_generic $1 $2"
+        DEBUG 2 "make_default_kde: No kde runtime detected"
+    DEBUG 2 "make_default_kde $vendor $mimetype"
+DEBUG 3 "gnome_global_dir: $gnome_global_dir"
+DEBUG 3 "gnome_user_dir: $gnome_user_dir"
+DEBUG 3 "kde_global_dir: $kde_global_dir"
+DEBUG 3 "kde_global_dirs: $kde_global_dirs"
+DEBUG 3 "kde_user_dir: $kde_user_dir"
+DEBUG 3 "xdg_global_dir: $xdg_global_dir"
+DEBUG 3 "xdg_user_dir: $xdg_user_dir"
+defapp_generic()
+        defapp_generic "$1"
+        defapp_generic "$mimetype"
+defapp_kde()
+        defapp_kde "$mimetype"
+      default)
+  default)
+        default_dir=`kde4-config --path xdgdata-apps 2> /dev/null | cut -d ':' -f 1`
+        default_dir=`kde-config --path config 2> /dev/null | cut -d ':' -f 1`
+        default_file="$default_dir/mimeapps.list"
+        default_file="$default_dir/profilerc"
+'   $default_file > ${default_file}.new && mv ${default_file}.new $default_file
+' $default_file > ${default_file}.new && mv ${default_file}.new $default_file
+    default_file="$xdg_user_dir/applications/mimeapps.list"
+    default handler for.
+            DE=generic
+Description
+      *.desktop)
+    detectDE
+      detectDE
+detectDE()
+        DIR=`dirname "$1"`
+    document root.
+    done
+        done
+            done
+        echo
+        echo "$@"
+  echo "$@" >&2
+    echo 'A vendor prefix consists of alpha characters ([a-zA-Z]) and is terminated' >&2
+# echo "[gnome|$gnome_user_dir|$gnome_global_dir]"
+# echo "[kde|$kde_user_dir|$kde_global_dir]"
+                echo $trader_result
+          echo $trader_result
+        echo "Try 'xdg-mime --help' for more information." >&2
+            echo "Use 'man xdg-mime' or 'xdg-mime --manual' for additional info."
+        echo "Use 'man xdg-mime' or 'xdg-mime --manual' for additional info."
+    echo "Use --novendor to override or 'xdg-mime --manual' for additional info." >&2
+# echo "[using|$xdg_dir|$kde_dir|$gnome_dir]"
+    echo 'with a dash ("-"). An example '"$file_label"' is '"'example-$file'" >&2
+            echo "xdg-mime 1.0.2"
+        echo "xdg-mime: $@" >&2
+    echo "xdg-mime: $file_label '$file' does not have a proper vendor prefix" >&2
+# echo "[xdg|$xdg_user_dir|$xdg_global_dir]"
+    elif `dbus-send --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.GetNameOwner string:org.gnome.SessionManager > /dev/null 2>&1` ; then DE=gnome;
+    elif gnomevfs-info --help 2>/dev/null 1>&2; then
+    elif mimetype --version >/dev/null 2>&1; then
+    elif [ -w $x ] ; then
+    elif [ x"$DESKTOP_SESSION" = x"LXDE" ]; then DE=lxde;
+    elif [ "$XDG_UTILS_INSTALL_MODE" = "user" ] ; then
+    elif [ x"$GNOME_DESKTOP_SESSION_ID" != x"" ]; then DE=gnome;
+    elif xprop -root _DT_SAVE_MODE 2> /dev/null | grep ' = \"xfce4\"$' >/dev/null 2>&1; then DE=xfce;
+    elif [ x"XDG_CURRENT_DESKTOP" = x"LXDE" ]; then DE=lxde;
+    else
+        else
+         else
+       else {
+      else {
+    else {
+    else DE=""
+        } else if ($0 == "") {
+        } else if (associations && index($0, prefix) == 1) {
+  else if (found) {
+        } else if (!found && indefault && index($0, prefix) == 1) {
+        } else if (indefault && !added && index($0, prefix) == 1) {
+        } else if (index($0, "[") == 1) {
+    END {
+    environment. mimetypes-file must be a XML file that follows the
+    environment uses for opening files of type mimetype. The default
+Environment Variables
+    Error in command line syntax.
+    esac
+        esac
+            eval 'cp $filename $x/$basefile'$xdg_redirect_output
+             eval 'kbuildsycoca4'$xdg_redirect_output
+        eval 'kbuildsycoca4'$xdg_redirect_output
+             eval 'kbuildsycoca'$xdg_redirect_output
+         eval '$x/update-mime-database $1'$xdg_redirect_output
+    # Example file:
+Examples
+      exit 0
+    exit 0
+                    exit 1
+        exit 1
+    exit 1
+    exit 2
+    exit 3
+    exit 4
+    exit 5
+    exit 6
+Exit Codes
+exit_failure_file_missing()
+        exit_failure_file_missing "file '$1' does not exist"
+exit_failure_file_permission_read()
+        exit_failure_file_permission_read "no permission to read file '$1'"
+exit_failure_file_permission_write()
+            exit_failure_file_permission_write "no permission to create file '$1'"
+            exit_failure_file_permission_write "no permission to write to file '$1'"
+            exit_failure_operation_failed
+        exit_failure_operation_failed
+exit_failure_operation_failed()
+exit_failure_operation_impossible()
+    exit_failure_operation_impossible "no method available for quering default application for '$mimetype'"
+    exit_failure_operation_impossible "no method available for quering MIME type of '$filename'"
+        exit_failure_operation_impossible "No writable system mimetype directory found."
+exit_failure_syntax()
+        exit_failure_syntax "application argument missing"
+    exit_failure_syntax "command argument missing"
+            exit_failure_syntax "FILE argument missing"
+        exit_failure_syntax "malformed argument '$1', expected *.desktop"
+            exit_failure_syntax "mimetype argument missing"
+        exit_failure_syntax "mimetype argument missing"
+            exit_failure_syntax "mimetype '$mimetype' is not in the form 'minor/major'"
+    exit_failure_syntax "mimetypes-file argument missing"
+            exit_failure_syntax "mode argument missing for --mode"
+        exit_failure_syntax "query type argument missing"
+            exit_failure_syntax "unexpected argument '$parm'"
+            exit_failure_syntax "unexpected option '$1'"
+        exit_failure_syntax "unexpected option '$1'"
+            exit_failure_syntax "unexpected option '$filename'"
+            exit_failure_syntax "unexpected option '$mimetype'"
+        exit_failure_syntax "unexpected option '$parm'"
+  exit_failure_syntax "unknown command '$1'"
+            exit_failure_syntax "unknown mode '$1'"
+      exit_failure_syntax "unknown query type '$1'"
+# Exit script on failure returned by a tool application
+# Exit script on failure to locate necessary tool applications
+# Exit script on insufficient permission to read a specified file
+# Exit script on insufficient permission to write a specified file
+# Exit script on malformed arguments, not enough arguments
+# Exit script on missing file specified on command line
+# Exit script on successfully completing the desired operation
+                exit_success
+            exit_success
+          exit_success
+        exit_success
+    exit_success
+exit_success
+exit_success()
+# Extract mimetype $x from the XML file $filename
+failure. The following failure codes can be returned:
+        [ -f $default_file ] || touch $default_file
+    [ -f $default_file ] || touch $default_file
+      fi
+       fi
+        fi
+         fi
+            fi
+                fi
+    file=`basename "$1"`
+    file_label="$2"
+    file must list support for all the MIME types that it wishes to be the
+filename=
+        filename="$1"
+        filename="$2"
+        filename="$parm"
+        filename=$(readlink -f -- "$filename")
+      filetype)
+# Find KDE3 mimelnk directory
+        first=false
+#   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+            for (i=0; i < count; i++) {
+            for (i in apps) {
+for x in `echo $kde_global_dirs | sed 's/:/ /g'` ; do
+   for x in `echo "$PATH:/opt/gnome/bin" | sed 's/:/ /g'`; do
+    for x in `echo "$xdg_system_dirs" | sed 's/:/ /g'`; do
+for x in `echo $xdg_system_dirs | sed 's/:/ /g'`; do
+    for x in `echo "$xdg_user_dir" | sed 's/:/ /g'`; do
+            for x in $mimetypes ; do
+        for x in $mimetypes ; do
+        for x in $xdg_dir ; do
+        found=0
+  found=0
+                found=1
+            found=1
+        found=1
+    freedesktop.org Shared MIME-info Database specification and that has a
+  glob_patterns=""
+        glob_patterns = glob_patterns substr($0,RSTART+9,RLENGTH-9) ";"
+    <glob pattern="*.shi"/>
+    <glob pattern="*.shiny"/>
+        gnome)
+    gnome_dir="$gnome_global_dir"
+    gnome_dir="$gnome_user_dir"
+gnome_global_dir=/usr/share/gnome/apps
+gnome_user_dir="$HOME/.gnome/apps"
+        gnomevfs-info --slow-mime "$1" 2> /dev/null | grep "^MIME" | cut -d ":" -f 2 | sed s/"^ "//
+                    grep -A 10 "^Error:" $kde_dir/$x.desktop >&2
+            | grep DesktopEntryPath | head -n 1 | cut -d ':' -f 2 | cut -d \' -f 2`
+        gvfs-info "$1" 2> /dev/null | grep standard::content-type | cut -d' ' -f4
+    has a proper vendor prefix. This option can be used to disable that check.
+        header_start="[" mimetype " - "
+            --help)
+    icons with name type-subtype must be installed with the xdg-icon-resource
+           if ($0) print $0
+                if [ "$?" = "1" ] ; then
+if [ "$action" = "defapp" ]; then
+if [ "$action" = "info" ]; then
+if [ "$action" = "makedefault" ]; then
+        if (!added) {
+            if (!added && indefault) {
+                if (apps[i] != application && apps[i] != "") {
+            if (!associations) {
+            if (associations && !found) {
+    if [ -e "$1" ]; then
+    if [ ! -e "$1" ]; then
+    if [ $? -eq 0 ]; then
+        if [ -f "$mimeapps_list" ] ; then
+            if (!found) {
+        if (!found) {
+  if (!found) {
+      if (glob_patterns)
+            if grep '^# Installed by xdg-mime' $kde_dir/$x.desktop >/dev/null 2>&1; then
+    if [ $# -gt 0 ]; then
+    if gvfs-info --help 2>/dev/null 1>&2; then
+        if (index($0, "[Added Associations]") == 1) {
+        if (index($0, "[Default Applications]") == 1) {
+        if (index($0, header_start) == 1 )
+    # if it does not exists, check if we are allowed to write on the directory
+        if (lang)
+       if (match($0,/<!--/)) {
+       if (match($0,/-->/)) {
+      if (match($0,/>/)) {
+    if (match($0,/^comment/)) {
+    if (match($0,/^glob/)) {
+    if (match($0,/^\/mime-type/)) {
+  if (match($0,/^mime-type/)) {
+      if (match($0,/pattern="[^"]*/) || match($0,/pattern='"'"'[^'"'"']*/)) {
+    if (match($0,/^sub-class-of/)) {
+      if (match($0,/type="[^"]*/) || match($0,/type='"'"'[^'"'"']*/)) {
+    if (match($0,/type="[^"]*/) || match($0,/type='"'"'[^'"'"']*/)) {
+      if (match($0,/xml:lang="[^"]*/) || match($0,/xml:lang='"'"'[^'"'"']*/)) {
+    if mimetype --version >/dev/null 2>&1; then
+        if [ -n "$filename" ] ; then
+if [ -n "$kde_dir" ] ; then
+    if [ -n "$KTRADER" ] ; then
+        if [ -n "$mimetypes" ] ; then
+            if [ -n "$trader_result" ] ; then
+        if [ -n "$trader_result" ] ; then
+       if [ -n "$trader_result" ] ; then
+if [ -n "$XDG_UTILS_INSTALL_MODE" ] ; then
+    if [ ! -r "$1" ]; then
+           if (RSTART>1) print substr($0,0,RSTART)
+      if (substr($0,RSTART+6,RLENGTH-6) == the_type) {
+        if (!suppress) {
+    if (suppress) {
+            if (/^\[/) { suppress=0 }
+    # if the file exists, check if it is writeable
+if [ "$vendor" =  "true" -a "$action" = "install" ] ; then
+        if [ ! -w "$1" ]; then
+        if [ ! -w "$DIR" -o ! -x "$DIR" ]; then
+    if [ `whoami` = "root" ] ; then
+    if [ -w $x/$xdg_dir_name ] ; then
+      if [ x"$DE" = x"kde" ] ; then
+    if [ x"$DE" = x"" ]; then
+if [ ${XDG_UTILS_DEBUG_LEVEL-0} -lt 1 ]; then
+    if [ "$XDG_UTILS_INSTALL_MODE" = "system" ] ; then
+    if [ x"$KDE_FULL_SESSION" = x"true" ]; then DE=kde;
+         if [ x"$KDE_SESSION_VERSION" = x"4" ]; then
+    if [ x"$KDE_SESSION_VERSION" = x"4" ]; then
+   if [ x"$mode" = x"user" -a -n "$DISPLAY" ] ; then
+if [ x"$mode" = x"user" ] ; then
+        if [ -x /usr/bin/file ]; then
+      if [ -x $x/update-mime-database ] ; then
+        if [ -z "$1" ] ; then
+    if [ -z "$1" ] ; then
+if [ -z "$action" ] ; then
+    if [ -z "$default_dir" ]; then
+        if [ -z "$filename" ] ; then
+if [ -z "$filename" ] ; then
+    if [ -z "$first" ] ; then
+        if [ -z "$mimetype" ] ; then
+if [ -z "$mode" ] ; then
+    if [ -z "${xdg_dir}${kde_dir}${gnome_dir}" ] ; then
+#   in all copies or substantial portions of the Software.
+    increases the verbosity.
+            indefault=0
+        indefault=0
+            indefault=1
+info_generic()
+        info_generic "$filename"
+info_gnome()
+        info_gnome "$filename"
+info_kde()
+        info_kde "$filename"
+    install)
+  install)
+# It also always returns 1 in KDE 3.4 and earlier
+        kde)
+    kde_dir="$kde_global_dir"
+    kde_dir="$kde_user_dir"
+kde_global_dir=
+kde_global_dirs=`kde${KDE_SESSION_VERSION}-config --path mime 2> /dev/null`
+        kde_global_dir="$x"
+kde_user_dir=
+        kde_user_dir="$x"
+        $KFILE "$1" 2> /dev/null | head -n 1 | cut -d "(" -f 2 | cut -d ")" -f 1
+        KFILE=`which kfile 2>/dev/null`
+# kfmclient exec/openURL can give bogus exit value in KDE <= 3.5.4
+kfmclient_fix_exit_code()
+        $KMIMETYPEFINDER "$1" 2>/dev/null | head -n 1
+        KMIMETYPEFINDER=`which kmimetypefinder 2>/dev/null`
+        KTRADER=`which ktraderclient 2> /dev/null`
+        KTRADER=`which ktradertest 2> /dev/null`
+        lang=""
+        lang=substr($0,RSTART+10,RLENGTH-10)
+#   LICENSE:
+# List MIME types listed in <mime-type> tags
+    major=`echo $version | sed 's/KDE.*: \([0-9]\).*/\1/'`
+make_default_generic()
+        make_default_generic "$filename" "$mimetype"
+make_default_kde()
+        make_default_kde "$filename" "$mimetype"
+            --manual)
+--manual
+            manualpage
+manualpage()
+_MANUALPAGE
+    menu before it can be made the default handler. The aplication's desktop
+    MIME="$1"
+'           $mimeapps_list`
+        mimeapps_list="$x/applications/mimeapps.list"
+</mime-info>
+    MIME-info Database specification and that has a mime-info element as its
+    mime-info element as its document root. For each new file type one or more
+/^mime-info/, /^\/mime-info/ {
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+  </mime-type>
+mimetype=
+        mimetype="$1"
+        mimetype="$2"
+    mimetype="$2"
+        mimetype -b "$1"
+        MIMETYPE="--mimetype"
+mimetypes=
+    mimetypes=`awk < "$filename" '
+    mimetypes-file must be a XML file that follows the freedesktop.org Shared
+  <mime-type type="text/x-shiny">
+    minor=`echo $version | sed 's/KDE.*: [0-9]*\.\([0-9]\).*/\1/'`
+    mkdir -p "$default_dir"
+    mkdir -p `dirname "$default_file"`
+                mkdir -p `dirname $kde_dir/$x.desktop`
+            mkdir -p $x
+      --mode)
+    mode can be user or system. In user mode the file is (un)installed for the
+--mode mode
+            mode="system"
+        mode="system"
+            mode="user"
+        mode="user"
+    my_umask=022
+    my_umask=077
+    [ -n "$file_label" ] || file_label="filename"
+    No permission to read one of the files passed on the command line.
+            # No quotes around $mimetypes
+        # No quotes around $mimetypes
+    Normally, xdg-mime checks to ensure that the mimetypes-file to be installed
+# Note that bash requires us to escape a single quote as '"'"'
+      --novendor)
+--novendor
+    [ -n "$xdg_system_dirs" ] || xdg_system_dirs=/usr/local/share/:/usr/share/
+[ -n "$xdg_system_dirs" ] || xdg_system_dirs=/usr/local/share/:/usr/share/
+    [ -n "$xdg_user_dir" ] || xdg_user_dir="$HOME/.local/share"
+[ -n "$xdg_user_dir" ] || xdg_user_dir="$HOME/.local/share"
+            # Ok
+    One of the files passed on the command line did not exist.
+    # On KDE 3, add to $KDE_CONFIG_PATH/profilerc:
+    # On KDE 4, add $2=$1 to $XDG_DATA_APPS/mimeapps.list
+    on the system. Usually only root is allowed to install in system mode.
+#   on XDG compliant systems.
+    opening files of type mimetype. An application can be made the default for
+#   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# or missing required option.
+    or phrase, preferably the organizations name, for which they hold a
+#   OTHER DEALINGS IN THE SOFTWARE.
+#   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+    override the installation mode. Valid values are user and system.
+        parm="$1"
+    parm="$1"
+#   Permission is hereby granted, free of charge, to any person obtaining a
+    policy or approval by the end-user. xdg-mime query can be used to verify
+        prefix=mimetype "="
+    prevent name conflicts.
+    previously added with xdg-mime install from the desktop environment.
+                print ""
+            print ""
+        print ""
+            print $0
+                print "[Added Associations]"
+        print "AllowAsDefault=true"
+        print "Application=" application
+           print "Comment=" comment
+           print "Comment[" lang "]=" comment
+                print "[Default Applications]"
+        print "[Desktop Entry]"
+    print "Error: Mimetype '"'"'" the_type "'"'"' not found"
+        print "Error: '"'"'pattern'"'"' argument missing in " RS $0
+        print "Error: '"'"'type'"'"' argument missing in " RS $0
+        print "GenericServiceType=Application"
+        print "Icon=" the_icon
+        print "# Installed by xdg-mime from " the_source
+        print "[" mimetype " - 1]"
+        print "MimeType=" the_type
+         print "Patterns=" glob_patterns
+        print "Preference=1"
+                print prefix application
+            print prefix application
+        print "ServiceType=" mimetype
+Prints the .desktop filename of the application which is registered to open PNG
+Prints the MIME type of the file /tmp/foobar.png, in this case image/png
+            print substr($0, length(prefix) +1, length)
+      print substr($0,RSTART+6,RLENGTH-6)
+# prints usage information
+        print "Type=MimeType"
+        print "X-KDE-IsAlso=" substr($0,RSTART+6,RLENGTH-6)
+  query)
+    query default mimetype: Returns the default application that the desktop
+    query filetype FILE: Returns the file type of FILE in the form of a MIME
+    recommended to use xdg-mime default as root.
+    recommended to use xdg-mime query as root.
+#   Refer to the usage() function below for usage.
+    release=`echo $version | sed 's/KDE.*: [0-9]*\.[0-9]*\.\([0-9]\).*/\1/'`
+    # Remove all [$2 - *] sections, or even better,
+    # [Removed Associations]
+    Removes the file type descriptions provided in mimetypes-file and
+    # renumber [$2 - *] sections and remove duplicate
+    Requests to make an application a default handler may be subject to system
+        return
+         return
+    return 0
+    Returns information related to file types.
+                rm -f $kde_dir/$x.desktop
+            rm -f $x/$basefile
+                    rm $kde_dir/$x.desktop
+  RS="<"
+        save_umask=`umask`
+See Also
+# See http://forums.fedoraforum.org/showthread.php?t=26875
+        SERVICETYPE="--servicetype"
+    Setting this environment variable to a non-zero numerical value makes
+# set variable DE to the desktop environments name, lowercase
+    several file types by specifying multiple mimetypes.
+    shift
+        shift
+shinythings-shiny.xml:
+    Show command synopsis.
+    Show the xdg-utils version information.
+    Show this manualpage.
+# Simply return 0 in such case
+#   Software is furnished to do so, subject to the following conditions:
+            split(value, apps, ";")
+# Strip XML comments
+        sub("&amp;", "\\&", comment)
+        sub("&gt;", ">", comment)
+        sub("&lt;", "<", comment)
+        sub("/", "-", the_icon)
+           suppress=0
+        suppress=0
+ suppress=0
+            suppress=1
+           suppress=1
+Synopsis
+          system)
+    test "$major" -gt 3 && return $1
+    test "$minor" -gt 5 && return $1
+    test "$release" -gt 4 && return $1
+    # text/plain=gnome-gedit.desktop;gnu-emacs.desktop;
+    # text/plain=kde4-kate.desktop;kde4-kwrite.desktop;
+#   The above copyright notice and this permission notice shall be included
+    The action failed.
+#   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+    The default is to use system mode when called by root and to use user mode
+    The default option is for use inside a desktop session only. It is not
+    The following queries are supported:
+        the_icon=the_type
+    The query option is for use inside a desktop session only. It is not
+#   the rights to use, copy, modify, merge, publish, distribute, sublicense,
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  the_source=ARGV[2]
+  the_type=ARGV[1]
+The xdg-mime program can be used to query information about file types and to
+    This environment variable can be used by the user or administrator to
+#   to deal in the Software without restriction, including without limitation
+# TODO: Gnome legacy support
+    touch "$default_file"
+    trademark as their vendor prefix. The purpose of the vendor prefix is to
+            trader_result=`awk -v mimetype="$MIME" '
+       trader_result=`grep "$MIME=" $x/applications/defaults.list 2> /dev/null | cut -d '=' -f 2 | cut -d ';' -f 1`
+        trader_result=`$KTRADER $MIMETYPE "$MIME" $SERVICETYPE Application 2>/dev/null \
+    type.
+    type recommends another icon name).
+        umask $my_umask
+        umask $save_umask
+uninstall
+    uninstall)
+  uninstall)
+update_mime_database()
+update_mime_database $xdg_base_dir
+        usage
+            usage
+          user)
+        /usr/bin/file -i "$1" 2> /dev/null | cut -d ":" -f 2 | sed s/"^ "//
+#   Utility script to manipulate MIME related information
+            value=application ";"
+            value=substr($0, length(prefix) + 1, length)
+                    value=value apps[i] ";"
+    vendor="$1"
+        vendor=false
+    vendor-name.desktop application must already be installed in the desktop
+vendor prefix. The file type description could look as folows.
+vendor=true
+            --version)
+--version
+    version=`kde${KDE_SESSION_VERSION}-config --version 2>/dev/null | grep '^KDE'`
+    vnd.oasis.opendocument.text requires an icon named
+[ -w $gnome_global_dir ] || gnome_global_dir=
+    when called by a non-root user.
+    whether an application is the actual default handler for a specific file
+ while(1)
+            while (blanks > 0) {
+        while (blanks > 0) {
+    while [ $# -gt 0 ] ; do
+while [ $# -gt 0 ] ; do
+    with a dash ("-"). Companies and organizations are encouraged to use a word
+[ -w $xdg_global_dir ] || xdg_global_dir=
+[ x"$1" != x"" ] || exit_failure_syntax
+' $x $basefile
+xdg_base_dir=
+xdg_dir_name=mime/packages/
+    xdg_dir="$xdg_global_dir"
+    xdg_dir="$xdg_user_dir"
+        xdg_global_dir="$x/$xdg_dir_name"
+xdg-icon-resource(1), xdg-desktop-menu(1)
+xdg-icon-resource install --context mimetypes --size 64 shiny-file-icon.png text-x-shiny
+#   xdg-mime
+xdg-mime - command line tool for querying information about file type handling
+xdg-mime default application mimetype(s)
+    xdg-mime do more verbose reporting on stderr. Setting a higher value
+xdg-mime { --help | --manual | --version }
+xdg-mime honours the following environment variables:
+xdg-mime install [--mode mode] [--novendor] mimetypes-file
+xdg-mime install shinythings-shiny.xml
+xdg-mime query default image/png
+xdg-mime query { filetype | default } ...
+xdg-mime query filetype /tmp/foobar.png
+xdg-mime uninstall [--mode mode] mimetypes-file
+    xdg_redirect_output=" >&2"
+    xdg_redirect_output=" > /dev/null 2> /dev/null"
+    xdg_system_dirs="$XDG_DATA_DIRS"
+xdg_system_dirs="$XDG_DATA_DIRS"
+    xdg_user_dir="$XDG_DATA_HOME"
+xdg_user_dir="$XDG_DATA_HOME"
+    xdg_user_dir="$xdg_user_dir/$xdg_dir_name"
+xdg_user_dir="$xdg_user_dir/$xdg_dir_name"
+#@xdg-utils-common@
+XDG_UTILS_DEBUG_LEVEL
+  [ ${XDG_UTILS_DEBUG_LEVEL} -lt $1 ] && return 0;
+XDG_UTILS_INSTALL_MODE
+<?xml version="1.0"?>
+        [ x"$mode" = x"system" ] && xdg_base_dir="$x/mime"
+[ x"$mode" = x"user" ] && xdg_base_dir="$xdg_user_dir/mime"
+#[ -z $vendor ] || basefile="$vendor-$basefile"
+  [ -z "${XDG_UTILS_DEBUG_LEVEL}" ] && return 0;
+[ -z "${XDG_UTILS_DEBUG_LEVEL}" ] && unset XDG_UTILS_DEBUG_LEVEL;

@@ -1,0 +1,567 @@
+          }
+         }
+        }
+ 2001-2011 Jamie Zawinski <jwz@jwz.org>.
+  # a few files in it, and re-check if not.
+               "(after $max_tries tries)\n";
+  @all_files = read_cache ($dir);
+#  @all_files = sort(@all_files);
+  @all_files = split (/[\r\n]+/, `$cmd`);
+# and return the file name.
+# and that are never used in the name of a subdirectory.  This is an
+# Anything not matching this is ignored.  This is so you can point your
+      # Assume that files ending in .html are not directories.
+      # Assume that files ending in .jpg exist and are not directories.
+    # Assume that unknown files are of good sizes: this will happen if
+          $atime,$mtime,$ctime,$blksize,$blocks) = @st;
+# at random.  The feed will be re-polled periodically, as needed.
+  # At this point, we have the directory corresponding to this URL.
+  binmode ($in);  # Larry can take Unicode and shove it up his ass sideways.
+  $body =~ s@(<ENTRY|<ITEM)@\001$1@gsi;
+    # Both feed and cache are empty. No files at all.
+    # But check if the user wants a sequential image
+    # But if there was nothing in the feed (network failure?)
+	# but in Perl 5.10, both of these load, and cause errors!
+      # but that would exclude any symlinks to directories.
+    # but won't find files that (for whatever reason) didn't get indexed.
+  $cache_fd = undef;
+    $cache_file_name = "$dd/org.jwz.xscreensaver.getimage.cache";
+    $cache_file_name = "$ENV{HOME}/tmp/.xscreensaver-getimage.cache";
+    $cache_file_name = "$ENV{HOME}/.xscreensaver-getimage.cache";
+  $cache_p = 0;
+    # $ch contains the value of the marker.
+      $ch = substr($body, $i, 1); $i++;
+  close ($cache_fd);
+  closedir ($dd);
+    closedir $dirh;
+             close(IN);
+         close(IN);
+  close $in;			    # (It's not for certain huge jpegs...
+  close ($lock_fd);
+# Copyright 
+# copyright notice and this permission notice appear in supporting
+    # Could also do <content:encoded>, but the above probably covers all
+      $count++;
+# Created: 12-Apr-01.
+                 "d=$dir_count; " .
+    # Default to random image
+# depending on the value of the "chooseRandomImages" and "imageDirectory"
+        $desc;
+        $desc =~ s/&amp;/&/gs;
+        $desc =~ s/&apos;/\'/gs;
+        $desc =~ s/&gt;/>/gs;
+        $desc =~ s/&lt;/</gs;
+        $desc =~ s/&quot;/\"/gs;
+        $dir_count++;
+    $dir = "$dir/org.jwz.xscreensaver.feeds";
+# directly from utils/grabclient.c.
+      # directory to see if this directory contains any subdirectories,
+    $dir = "$ENV{HOME}/tmp/.xscreensaver-feeds";
+    $dir = "$ENV{HOME}/.xscreensaver-feeds";
+  $dir .= '/' . md5_file ($url);
+  $dir =~ s@([^-_/a-z\d.,])@\\$1@gsi;  # quote for sh
+    $dir =~ s@^~/@$ENV{HOME}/@s;     # allow literal "~/"
+  $dir =~ s@^feed:@http:@si;
+    $dir =~ s@/+$@@s;		   # omit trailing /
+   'dmg', 'eps', 'gz', 'hqx', 'htm', 'html', 'icns', 'ilbm', 'mov',
+# documentation for any purpose is hereby granted without fee, provided that
+# documentation.  No representations are made about the suitability of this
+  # Don't bother doing If-Modified-Since to see if the URL has changed.
+  # Don't bother using the imageDirectory cache.  We know that this directory
+    # Download each image currently in the feed.
+# Elements of the list are references, [ "url", "guid" ].
+          } else {
+        } else {
+      } else {
+    } else {
+  } else {
+    else { usage; }
+    elsif (!defined($dir)) { $dir = $_; }
+  } elsif (-d "$ENV{HOME}/tmp") {
+    elsif ($_ eq "--cache")        { $cache_p = 1; }
+    elsif ($_ eq "--name") { }     # ignored, for compatibility
+    elsif ($_ eq "--no-cache")     { $cache_p = 0; }
+    elsif ($_ eq "--no-spotlight") { $use_spotlight_p = 0; }
+    elsif ($_ eq "--spotlight")    { $use_spotlight_p = 1; }
+    } elsif ($file =~ m/$nondir_re/io) {
+      } elsif ($files{$f}) {
+      } elsif ($iurl ne $o) {
+    elsif (m/^-./) { usage; }
+    elsif (m/^-v+$/) { $verbose += length($_)-1; }
+  } elsif ($use_spotlight_p) {
+    error ("empty feed: $url") if ($kept <= 1);
+  error ("not an RSS or Atom feed: $url")
+            # errors about UTF-8 all over the place without this.
+      error ("unable to rewind $cache_file_name: $!");
+      error ("unable to truncate $cache_file_name: $!");
+    error ("unable to unlock $cache_file_name: $!");
+  # Even if the cache is young, let's make sure there are at least
+# everything if your Spotlight index is out of date, which happens often.)
+    exit 1;
+  exit 1;
+                 "f=" . ($#all_files+1) . "; " .
+                 " file" . ($#all_files == 0 ? "" : "s") .
+    $file = "$dir/$file";
+  $file .= '.' . lc($ext) if $ext;
+      $files{$f} = 0;  # 0 means "file exists, should be deleted"
+      $files{$f} = 1;    # Got it, don't delete
+        $file =~ s@^\Q$dir\L/@@so || die;  # remove $dir from front
+    $files{$stamp} = 1;
+    find_all_files ($_);
+    find_all_files ($dir);
+    # Find a unique ID for this image, to defeat image farms.
+    # Find next marker, beginning with 0xFF.
+    # First look for <id>...</id>
+    # First look for <link rel="enclosure" href="...">
+  flock ($cache_fd, LOCK_EX)     || error ("unable to lock $file: $!");
+  flock ($cache_fd, LOCK_UN) ||
+  flock ($lock_fd, LOCK_EX)     || error ("unable to lock $lock: $!");
+  flock ($lock_fd, LOCK_UN) || error ("unable to unlock $lock: $!");
+# For diagnostic messages:
+      foreach (@all_files) {
+  foreach (@dirs) {
+  foreach (@good_extensions) {
+  foreach my $file (@files) {
+    foreach my $f (keys(%files)) {
+    foreach my $f (readdir ($dirh)) {
+  foreach my $item (@items) {
+    foreach my $p (@urls) {
+  for (my $i = 0; $i < $max_tries; $i++) {
+                     " for \"$o\" and \"$iurl\"\n";
+        $f =~ s@^\Q$dir\L/@@so || die;  # remove $dir from front
+# Given the raw body of a GIF document, returns the dimensions of the image.
+# Given the raw body of a GIF, JPEG, or PNG document, returns the dimensions
+# Given the raw body of a JPEG document, returns the dimensions of the image.
+# Given the raw body of a PNG document, returns the dimensions of the image.
+# Given the URL of an image, download it into the given directory
+    # got it from the cache...
+      }!gsexi;
+# has the additional benefit that if two copies of this program are
+            $href = undef unless ($type =~ m@^image/@si);  # omit videos
+      $i += 3;
+    ($id) = ($item =~ m!<GUID\b[^<>]*>\s*([^<>]+?)\s*</GUID>!si) unless $id;
+    ($id) = ($item =~ m!<ID\b[^<>]*>\s*([^<>]+?)\s*</ID>!si) unless $id;
+    ($id) = ($item =~ m!<LINK\b[^<>]*>\s*([^<>]+?)\s*</LINK>!si) unless $id;
+      $id = $iurl unless $id;
+        $ids{$id} = $iurl;
+    if ($#all_files >= 0) {
+  if ($#all_files < 0) {
+  if ($#all_files >= 0) {
+# if any.  This also holds an exclusive lock on the cache file, which 
+      if ($count <= 0) {
+    if ($count <= 0) {
+  if (-d $dd) {
+    if (! -d $dir) {
+  if (-d $dir) {
+  if (! -d $dir) {
+  if (!defined ($h)) {
+          if (defined ($ll)) {
+  if (!defined ($odir) || ($dir ne $odir)) {
+  if ($dir =~ m/^https?:/si) {
+    if ($_ eq "--verbose") { $verbose++; }
+  if (-f "$dir/$file") {
+    if ($file =~ m/$good_file_re/io) {
+    if ($file =~ m/[~%\#]$/) {      # ignore backup files (and dirs...)
+    if (! $iurl) {
+    if ($iurl) {
+    if (large_enough_p ($file)) {
+  if (!LWP::Simple::is_success ($status)) {
+    if (($marker >= 0xC0) &&
+  if ($mtime + $cache_max_age < time) {
+      if (! $o) {
+  if (! opendir ($dd, $dir)) {
+         if (open (IN, ">$ENV{HOME}/.xscreensaver-image-index")) {
+    if (open(IN, "<$ENV{HOME}/.xscreensaver-image-index")) {
+  if (! open ($in, '<', $file)) {
+  if (! $poll_p) {
+  if ($poll_p) {
+  if (! $read_cache_p) {
+        if ($rel && lc($rel) eq 'enclosure') {
+      if (S_ISDIR($mode)) {
+      if ($#st == -1) {
+# If the directory is a URL, it is assumed to be an RSS or Atom feed.
+          if ($type) {
+        if (unlink ("$dir/$f")) {
+      if (! $url) {
+  if ($url) {
+    if ($url =~ m@^https?://[^/?#&]*?flickr\.com/@si);
+  if ($url !~ m/^https?:/si) {   # not a URL: local directory.
+  if ($use_spotlight_p == -1) {
+        if ($verbose) {
+      if ($verbose);
+    if ($verbose);
+      if ($verbose > 1);
+    if ($verbose > 1);
+      if ($verbose && $odir);
+  # If we didn't read it, then write it now.
+  # If we have already downloaded it, assume it's good.
+  # If we read the cache, just close it without rewriting it.
+# If we're using cacheing, read the cache file and return its contents,
+  if ($w && $h) { return ($w, $h); }
+  if ($w < $min_image_width || $h < $min_image_height) {
+    if (-x '/usr/bin/mdfind') {
+      $i += $length-2;
+# imageDirectory at directory trees that have things other than images in
+# images and thumbnails, and have it only select the big versions.
+  "       images will be downloaded cached locally.\n" .
+# implied warranty.
+import Fcntl ':mode' unless defined &S_ISUID;	# but it is here in Perl 5.8
+# (In my experience, this isn't actually any faster, and might not find
+  # is flat, and we can assume that an RSS feed doesn't contain 100,000 images
+  "       is searched recursively.  Images smaller than " .
+      $item =~ s!(<description[^<>]*>.*?</description>)!{
+      $item =~ s!(<LINK[^<>]*>)!{
+      $item =~ s!(<MEDIA:CONTENT[^<>]*>)!{
+          $iurl = $href if ($href);
+        $iurl = $href if ($href);
+        $iurl = $href if $href;
+# JPEG, GIF, and PNG files that are are smaller than this are rejected:
+        $kept++;
+    # kMDItemDisplayName matches against the name in the Spotlight index,
+    # kMDItemFSName hits the file system every time: much worse than "find".
+# larger than a certain minimum size.
+      last;
+# Like md5_base64 but uses filename-safe characters.
+  # like ~/Pictures/ might.
+        $link;
+  $lock_fd = undef;
+# lot.  Don't give your directories stupid names.)
+        ($marker != 0xC4) &&
+        ($marker != 0xCC)) {  # it's a SOFn marker
+        ($marker <= 0xCF) &&
+    # markers can be padded with any number of 0xFF.
+  # MD5 for directory name to use for cache of a feed URL.
+         "${min_image_width}x${min_image_height} are excluded.\n" .
+    mkdir ($dir) || error ("mkdir $dir: $!");
+    $mtime = time();	# update the timestamp
+  # munge it to be "b" (1024x1024).
+      my ($a,$b,$c,$d) = unpack("C"x4, $s);
+  my ($a,$b,$c,$d) = unpack ("C"x4, $s);
+my @all_files = ();         # list of "good" files we've collected
+  my ($bits) = ($body =~ m/^.{12}(.{12})/s);
+  my ($body) = @_;
+  my $body = '';
+  my $body = (LWP::Simple::get($url) || '');
+      my ($c1, $c2) = unpack ("C"x2, $s);
+  my $c1 = substr($body, $i, 1); $i++;
+  my $c2 = substr($body, $i, 1); $i++;
+my $cache_fd = undef;
+my $cache_file_name = undef;
+my $cache_max_age = 60 * 60 * 3;   # 3 hours
+my $cache_p = 1;
+  my $ch = "0";
+  my $cmd = "mdfind -onlyin $dir \"" . join (' || ', @terms) . "\"";
+    my $count = 0;
+  my $dd;
+  my $dd = "$ENV{HOME}/Library/Caches";    # MacOS location
+        my $desc = $1;
+      my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+  my ($dir) = @_;
+my $dir_count = 1;          # number of directories seen
+  my $dir = "$ENV{HOME}/Library/Caches";    # MacOS location
+  my @dirs = ();
+  my $dir = undef;
+  my ($err) = @_;
+  my ($ext) = ($url =~ m@\.([a-z\d]+)$@si);
+      my $f = download_image ($furl, $id, $dir);
+my $feed_max_age = $cache_max_age;
+  my ($file) = @_;
+    my $file = $all_files[$n];
+  my $file = $cache_file_name;
+  my $file = find_random_file ($dir);
+  my $file = md5_file ($uid);
+    my %files;
+  my @files = ();
+  my @files = readdir ($dd);
+        my $f = $_; # stupid Perl. do this to avoid modifying @all_files!
+      my ($furl, $id) = @$p;
+my @good_extensions = ('jpg', 'jpeg', 'pjpeg', 'pjpg', 'png', 'gif',
+my $good_file_re = '\.(' . join("|", @good_extensions) . ')$';
+        my ($href) = ($desc =~ m@<IMG[^<>]*\bSRC=[\"\']?([^\"\'<>]+)@si);
+        my ($href) = ($link =~ m/\bHREF\s*=\s*[\"\']([^<>\'\"]+)/si);
+        my ($href) = ($link =~ m/\bURL\s*=\s*[\"\']([^<>\'\"]+)/si);
+  my $i = 0;
+  my %ids;
+    my $id = undef;
+  my ($ign, $w, $h) = unpack("a4N2", $bits);
+  my @imgs = ();
+  my $in;
+  my @items = split(/\001/, $body);
+    my $iurl = undef;
+    my $kept = 0;
+      my $length = ($c1 << 8) | $c2;
+        my $link = $1;
+  my $L = length($body);
+          my $ll = readlink $file;
+  my $lock = "$dir/$stamp";
+  my $lock_fd;
+    my $marker = ord($ch);
+  my $max_tries = 50;
+my $min_image_height = 255;
+my $min_image_width  = 255;
+  my $mtime = (stat($cache_fd))[9];
+  my $mtime = ((stat($lock))[9]) || 0;
+    my $n = int (rand ($#all_files + 1));
+my @nondir_extensions = ('ai', 'bmp', 'bz2', 'cr2', 'crw', 'db',
+my $nondir_re = '\.(' . join("|", @nondir_extensions) . ')$';
+  my $odir = <$cache_fd>;
+      my $o = $ids{$id};
+        my @P = ($iurl, $id);
+  my $poll_p = ($mtime + $feed_max_age < time);
+my $progname = $0; $progname =~ s@.*/@@g;
+my $read_cache_p = 0;
+        my ($rel)  = ($link =~ m/\bREL\s*=\s*[\"\']?([^<>\'\"]+)/si);
+  my ($s) = @_;
+  my $s;
+my %seen_inodes;            # for breaking recursive symlink loops
+my $skip_count_stat = 0;    # number of files skipped after stat
+my $skip_count_unstat = 0;  # number of files skipped without stat'ing
+      my $s = substr($body, $i, 2); $i += 2;
+      my $s = substr($body, $i, 4); $i += 4;
+  my $stamp = '.timestamp';
+my $stat_count = 0;	    # number of files/dirs stat'ed
+  my $status = LWP::Simple::mirror ($url, "$dir/$file");
+      my @st = stat($file);
+  my @terms = ();
+        my ($type) = ($link =~ m/\bTYPE\s*=\s*[\"\']?([^<>\'\"]+)/si);
+  my $type = substr($body, 0, 6);
+  my ($url) = @_;
+  my $url;
+    my @urls = parse_feed ($url);
+  my ($url, $uid, $dir) = @_;
+my $use_spotlight_p = 0;
+my $verbose = 0;
+my $version = q{ $Revision: 1.30 $ }; $version =~ s/^[^0-9]+([0-9.]+).*$/$1/;
+  my ($w, $h) = gif_size ($body);
+  my ($w, $h) = image_file_size ($file);
+                 ".\n"
+         $n++;
+  "\n" .
+   'nef', 'pbm', 'pdf', 'pl', 'ppm', 'ps', 'psd', 'sea', 'sh', 'shtml',
+        next;
+      next if ($f eq '.' || $f eq '..');
+    next if ($file =~ m/^\./);      # silently ignore dot files/dirs
+      next if ($f =~ m/^\./s);
+      next if ($seen_inodes{"$dev:$ino"}); # break symlink loops
+      next unless $f;
+      # Note: we could use the trick of checking "nlinks" on the parent
+    # Not yet time to re-check the URL.
+  # Now check to see if the files in it are up to date, and download
+    # Now delete any files that are no longer in the feed.
+      # Now we need to stat the file to see if it's a subdirectory.
+  $odir =~ s/[\r\n]+$//s if defined ($odir);
+# of the image.
+    # of the real-world possibilities.
+    # ok
+  open ($cache_fd, '+>>', $file) || error ("unable to write $file: $!");
+    opendir (my $dirh, $dir) || error ("$dir: $!");
+  open ($lock_fd, '+>>', $lock) || error ("unable to write $lock: $!");
+# optimization that prevents us from having to stat() those files to
+            # Perl 5.8.0 causes us to start getting incomprehensible
+# Permission to use, copy, modify, distribute, and sell this software and its
+      $poll_p = 1;
+  $poll_p = 1 unless ($cache_p);  # poll again now with --no-cache cmd line arg.
+      print $cache_fd "$dir\n";
+        print $cache_fd "$f\n";
+             print(IN $n--);
+# prints its name.  The file will be an image file whose dimensions are
+    print STDERR "$progname: " .
+  print STDERR "$progname: awaiting lock: $cache_file_name\n"
+  print STDERR "$progname: awaiting lock: $lock\n"
+    print STDERR "$progname: cached " . ($#all_files+1) . " files\n"
+    print STDERR "$progname: cache is for $odir, not $dir\n"
+    print STDERR "$progname: cache is too old\n" if ($verbose);
+    print STDERR "$progname: couldn't open $dir: $!\n" if ($verbose);
+            print STDERR "$progname: + dangling symlink: $file -> $ll\n";
+    print STDERR "$progname: $dir is cache for $url\n" if ($verbose > 1);
+      print STDERR "$progname: $dir: not a directory or URL\n";
+  print STDERR "$progname: downloading: $dir/$file for $uid / $url\n" 
+    print STDERR "$progname: empty feed: $url\n" if ($count <= 0);
+  print STDERR "$progname: $err\n";
+    print STDERR "$progname: error $status: $url\n";   # keep going
+  print STDERR "$progname: executing: $cmd\n" if ($verbose > 1);
+    print STDERR "$progname: exists: $dir/$file for $uid / $url\n" 
+    print STDERR "$progname: $file: $!\n" if ($verbose);
+  print STDERR "$progname: " . ($#files+1) . " files in cache\n"
+    print STDERR "$progname: $file: too small ($w x $h)\n" if ($verbose);
+    print STDERR "$progname: $file: unable to determine image size\n"
+  print STDERR "$progname: $file: $w x $h\n" if ($verbose);
+    print STDERR "$progname: found " . ($#all_files+1) .
+        print STDERR "$progname:  + found dir  $file\n" if ($verbose > 1);
+      print STDERR "$progname:  - found file $file\n" if ($verbose > 1);
+    print STDERR "$progname: loading $url\n" if ($verbose);
+    print STDERR "$progname: mkdir $dir/ for $url\n" if ($verbose);
+    print STDERR "$progname: mkdir $dir/\n" if ($verbose);
+      print STDERR "$progname: no files in cache of $url\n" if ($verbose);
+    print STDERR "$progname: no files in $dir\n";
+  print STDERR "$progname: no suitable images in $dir " .
+  print STDERR "$progname:  + reading dir $dir/...\n" if ($verbose > 1);
+    print STDERR "$progname: recursively reading $dir...\n" if ($verbose);
+          print STDERR "$progname: rm $dir/$f: $!\n";   # don't bail
+          print STDERR "$progname: rm $dir/$f\n" if ($verbose > 1);
+        print STDERR "$progname:  + skip file  $file\n" if ($verbose > 1);
+      print STDERR "$progname:  - skip file  $file\n" if ($verbose > 1);
+      print STDERR "$progname: -- skip file  $file\n" if ($verbose > 1);
+    print STDERR "$progname: spotlighting $dir...\n" if ($verbose);
+  print STDERR "$progname: unlocked $lock\n" if ($verbose > 1);
+            print STDERR "$progname: + unreadable: $file\n";
+    print STDERR "$progname: using cache: $url\n" if ($verbose);
+        print STDERR "$progname: WARNING: dup ID \"$id\"" .
+  print STDERR "usage: $progname [--verbose] directory\n" .
+  print STDOUT "$file\n";
+  "       Prints the name of a randomly-selected image file.  The directory\n" .
+  # "public.image" matches all (indexed) images, including Photoshop, etc.
+      push @all_files, $file;
+        push @dirs, $file;
+    push @files, "$odir/$_";
+        push @imgs, \@P;
+#  push @terms, "kMDItemContentTypeTree == 'public.image'";
+    push @terms, "kMDItemDisplayName == '*.$_'";
+#    push @terms, "kMDItemFSName == '*.$_'";
+  $read_cache_p = 1;
+         read(IN, $n, 8);
+# Regenerate the cache if it is older than this many seconds.
+# Re-poll RSS/Atom feeds when local copy is older than this many seconds.
+require 5;
+    return ();
+    return;
+  return ();
+    return 0;
+    return 1;
+  return 1;
+  return (($b<<8|$a), ($d<<8|$c));
+      return (($c<<8|$d), ($a<<8|$b));
+      return $file;
+    return $file;
+  return $file;
+  return @files;
+      return () if ($length < 2);
+  return () if (length($body) < 10);
+      return () if (length($body) <= $i);
+  return image_size ($body);	    # but we know they're huge!)
+  return @imgs;
+  return png_size ($body);
+  return $s;
+# Returns a list of the image enclosures in the RSS or Atom feed.
+# Returns the dimensions of the image file.
+  # Return the URL and directory name of the files of that URL's local cache.
+    return undef;
+    return (undef, $url);
+  return () unless ($bits =~ /^IHDR/);
+  return () unless ($body =~ m/^\211PNG\r/s);
+  return () unless ($cache_p);
+  return unless ($cache_p);
+  return () unless defined ($bits);
+  return () unless (ord($c1) == 0xFF && ord($c2) == 0xD8);
+  return () unless ($type =~ /GIF8[7,9]a/);
+  return ($url, $dir);
+  return ($w, $h);
+# running at once, one will wait for the other, instead of both of
+    seek ($cache_fd, 0, 0) ||
+  seek ($cache_fd, 0, 0)         || error ("unable to rewind $file: $!");
+  seek ($lock_fd, 0, 0)  || error ("unable to rewind $lock: $!");
+  seek ($lock_fd, 0, 0)         || error ("unable to rewind $lock: $!");
+      $seen_inodes{"$dev:$ino"} = 1;
+# settings in the ~/.xscreensaver file (or .../app-defaults/XScreenSaver).
+    shift @ARGV;
+  shift @items;
+        $skip_count_stat++;
+      $skip_count_unstat++;
+                  ($skip_count_unstat + $skip_count_stat) .
+                 "skip=${skip_count_unstat}+$skip_count_stat=" .
+  $s = md5_base64($s);
+# software for any purpose.  It is provided "as is" without express or 
+  # So if the URL ends in "s" (75x75), "t" (100x100) or "m" (240x240),then
+	# So we have to check for S_ISUID instead of S_ISDIR?  WTF?
+  # Special-case kludge for Flickr:
+    spotlight_all_files ($dir);
+    s/[\r\n]+$//s;
+  $s =~ s@[/]@_@gs;
+  $s =~ s@[+]@-@gs;
+                 "s=$stat_count; " .
+  $s = substr ($body, 6, 10);
+      $stat_count++;
+sub download_image($$$) {
+sub error($) {
+sub find_all_files($) {
+sub find_all_files($);
+sub find_random_file($) {
+sub gif_size($) {
+sub image_file_size($) {
+sub image_size($) {
+sub jpeg_size($) {
+sub large_enough_p($) {
+sub main() {
+sub md5_file($) {
+sub mirror_feed($) {
+sub parse_feed($) {
+sub png_size($) {
+sub read_cache($) {
+sub spotlight_all_files($) {
+sub usage() {
+sub write_cache($) {
+  sysread ($in, $body, 1024 * 50);  # The first 50k should be enough.
+   'tar', 'tgz', 'thb', 'txt', 'xcf', 'xmp', 'Z', 'zip' );
+# tell whether they are directories or not.  (It speeds things up a
+# the above copyright notice appear in all copies and that both that
+  "       The directory may also be the URL of an RSS/Atom feed.  Enclosed\n" .
+# The images from that feed will be downloaded, cached, and selected from
+# the image to manipulate by running the "xscreensaver-getimage" program.
+  # Their RSS feeds sometimes include only the small versions of the images.
+# them, but it assumes that you gave your images sensible file extensions.
+  # them if not.
+# them spanking the same file system at the same time.
+    # then don't blow away the old files.
+    # Then look for <description>... with an <img href="..."> inside.
+    # Then look for <guid isPermaLink=...> ... </guid>
+    # Then look for <link> ... </link>
+    # Then look for <media:content url="...">
+# The screen savers invoke "xscreensaver-getimage" via utils/grabclient.c,
+# The various xscreensaver hacks that manipulate images ("jigsaw", etc.) get
+    # they matched $good_file_re, but we don't have code to parse them.
+# this is so that you can use an image directory that contains both big
+# This matches file extensions that might occur in an image directory,
+# This matches files that we are allowed to use as images (case-insensitive.)
+# This program chooses a random file from under the given directory, and
+    # (This will also happen if the file is junk...)
+                       'tif', 'tiff', 'xbm', 'xpm');
+  # #### TODO: need image parsers for TIFF, XPM, XBM.
+    truncate ($cache_fd, 0) ||
+  truncate ($lock_fd, 0) || error ("unable to truncate $lock: $!");
+  $ua->agent ("$progname/$version");
+  $ua->timeout (10);  # bail sooner than the default of 3 minutes
+# Under Cocoa, this script lives inside the .saver bundle, and is invoked
+# Under X11, the "xscreensaver-getimage" program invokes this script,
+    unless ($body =~ m@^<\?xml\s@si);
+  # Unlock and update the write date on the .timestamp file.
+  ($url, $dir) = mirror_feed ($dir);
+  $url =~ s@_[stm](\.[a-z]+)$@_b$1@si
+      usage;
+  usage unless (defined($dir));
+use bytes;  # Larry can take Unicode and shove it up his ass sideways.
+#use diagnostics;	# Fails on some MacOS 10.5 systems
+use Digest::MD5 qw(md5_base64);
+use Fcntl;
+use Fcntl ':flock'; # import LOCK_* constants
+use LWP::Simple qw($ua);
+use POSIX;
+use POSIX ':fcntl_h';				# S_ISDIR was here in Perl 5.6
+    $use_spotlight_p = 0;
+      $use_spotlight_p = 1;
+use strict;
+#!/usr/bin/perl -w
+  utime ($mtime, $mtime, $lock_fd) || error ("unable to touch $lock: $!");
+      # valid JPEG markers.
+                 " via Spotlight\n"
+      # We must skip variables, since FFs in variable names aren't
+# When set to -1, uses Spotlight if "mdfind" exists.
+# Whether to cache the results of the last run.
+# Whether to use MacOS X's Spotlight to generate the list of files.
+# which then invokes this script.
+  while ($_ = $ARGV[0]) {
+  while (<$cache_fd>) { 
+  while (ord($ch) != 0xDA && $i < $L) {
+    while (ord($ch) == 0xFF) {
+    while (ord($ch) != 0xFF) {
+  ($w, $h) = jpeg_size ($body);
+  write_cache ($dir);

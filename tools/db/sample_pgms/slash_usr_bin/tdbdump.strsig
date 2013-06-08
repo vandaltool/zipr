@@ -1,0 +1,23 @@
+__ctype_b_loc
+data(%d) = "
+Failed to open %s
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+   -h          this help message
+_IO_stdin_used
+_Jv_RegisterClasses
+key(%d) = "
+   -k keyname  dumps value of keyname
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libtdb.so.1
+__printf_chk
+TDB_1.2.1
+tdb_fetch
+tdb_open
+tdb_traverse
+Usage: tdbdump <fname>
+Usage: tdbdump [options] <filename>

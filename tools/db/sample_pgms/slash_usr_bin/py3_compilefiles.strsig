@@ -1,0 +1,100 @@
+                        break
+    """Byte-compile all file.
+            cfile = fullname + (__debug__ and 'c' or 'o')
+            continue
+                continue
+    ddir:      if given, purported directory name (this is the
+    ddir = None
+def compile_files(files, ddir=None, force=0, rx=None, quiet=0, ignore=0):
+def main():
+    dfile = None
+               directory name that will show up in error messages)
+        elif fullname[-3:] == '.py':
+        elif not compile_files(files, ddir, force, rx, quiet, ignore):
+        elif not os.path.isfile(fullname):
+            else:
+    except getopt.error as msg:
+            except IOError as e:
+            except KeyboardInterrupt:
+    except KeyboardInterrupt:
+            except (MemoryError, SyntaxError) as err:
+            except os.error: ctime = 0
+            except py_compile.PyCompileError as err:
+    exit_status = int(not main())
+        files = []
+                files.append(arg)
+                    files.append(line[:-1])
+    file:      the file to byte-compile
+        for arg in args:
+    force = 0
+    force:     if 1, force compilation, even if timestamps are up-to-date
+    for fullname in files:
+    for o, a in opts:
+            ftime = os.stat(fullname).st_mtime
+            if arg == '-':
+            if (ctime > ftime) and not force: continue
+    if ddir:
+        if len(args) != 1:
+            if mo:
+if __name__ == '__main__':
+        if not files:
+                    if not line:
+            if not quiet:
+    if not success and ignore:
+        if o == '-d': ddir = a
+        if o == '-f': force = 1
+        if o == '-i': ignore = 1
+                if ok == 0:
+        if o == '-q': quiet = 1
+        if os.path.isdir(fullname):
+        if o == '-x':
+                if quiet:
+        if rx is not None:
+    ignore = 0
+    import getopt
+import os
+import py_compile
+            import re
+import sys
+                    line = sys.stdin.readline()
+            mo = rx.search(fullname)
+                ok = py_compile.compile(fullname, None, dfile, True)
+        opts, args = getopt.getopt(sys.argv[1:], 'lfiqd:x:')
+                    print('Compiling', fullname, '...')
+                print('Compiling', fullname, '...')
+            print("-d destdir require exactly one directory argument")
+                print(err.msg)
+        print("Errors were ignored.")
+        print("-f: force rebuild even if timestamps are up-to-date")
+            print("file does not exist:", fullname)
+        print("-i: ignore errors during byte compilation")
+        print(msg)
+        print("\n[interrupt]")
+            print("py_compilefiles: no files to compile")
+        print("-q: quiet operation")
+                print("Sorry", e)
+        print("   the regexp is search for in the full path of the file")
+        print("usage: python compilefiles.py [-f] [-q] [-i] " \
+        print("-x regexp: skip files matching the regular expression regexp")
+    quiet = 0
+    quiet:     if 1, be quiet during compilation
+                raise KeyboardInterrupt
+    return success
+    return success or ignore
+    rx = None
+            rx = re.compile(a)
+    """Script main program."""
+                    success = 0
+                success = 0
+            success = 0
+        success = 0
+    success = 1
+            sys.exit(2)
+        sys.exit(2)
+    sys.exit(exit_status)
+            try:
+    try:
+            try: ctime = os.stat(cfile).st_mtime
+#! /usr/bin/python3
+                while 1:
+              "[-x regexp] [file ...] [-]")

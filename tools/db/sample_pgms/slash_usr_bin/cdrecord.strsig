@@ -1,0 +1,2668 @@
+-------------------------------------------------------------------------
+ (%02d:%02d.%02d)
+ 0"3$6&5(<*?,:.90(2+4.6-8$:'<">!@`BcDfFeHlJoLjNiPxR{T~V}XtZw\r^q`PbSdVfUh\j_lZnYpHrKtNvMxDzG|B~A
+086?<6:1($.#$*"-`pfwl~jyxl~ktbrePHVO\FZAHTNSDZB]
+0	current session not fixated for append
+]0data channel impending failure general hard drive failure
+0x%04X (%s) %s
+12V failure
+)14>&$':%
+1+/4uikvIWWH
+'%.16s' 
+]1data channel impending failure drive error rate too high
+1st run-in block detected
+1st run-out block detected
+ 1T speed high
+  1T speed low
+24 (I2S)
+%255s %10s %10s %80s
+]2data channel impending failure data error rate too high
+%2d  dev='%s'	%s : '%.8s' '%.16s'
+ %2d (reserved val %2d)
+2nd run-in block detected
+2nd run-out block detected
+^2Q<@.O 
+ 2T speed high
+  2T speed low
+\2@/)Y5D
+ |%3d %4dms|
+ |%3d %4dms %5dms|
+]3data channel impending failure seek error rate too high
+3rd run-in block detected
+]4data channel impending failure too many block reassigns
+%4d seconds.
+4th run-in block detected
+]5data channel impending failure access times too high
+]6data channel impending failure start unit times too high
+!6JRpi>$
+]7data channel impending failure channel parametrics
+<836"$-*xpw~flibDHKFZTUZ
+8<63$"*-px~wlfbiHDFKTZZU
+]8data channel impending failure controller detected
+8:$'ptliHNTS
+:8'$tpilNHST
+]9data channel impending failure throughput performance
+  A1 values: %02X %02X %02X
+  A2 values: %02X %02X %02X
+  A3 values: %02X %02X %02X
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+a blank disk is detected by read toc
+abnormal spinning - servo irq
+abnormal spin - nmi
+Aborted by EOF on input.
+Aborted Command
+	-abort		send an abort sequence to the drive (may help if hung)
+absorbtion control error
+ACB-4520
+ACB-4525
+access controls code 1 (99-314) [proposed]
+access controls code 2 (99-314) [proposed]
+access controls code 3 (99-314) [proposed]
+access controls code 4 (99-314) [proposed]
+access controls code 5 (99-245) [proposed]
+ 	access controls code 6 (99-245) [proposed]
+access controls code 7 (99-245) [proposed]
+access controls code 8 (99-245) [proposed]
+Acer Media Technology, Inc.
+Actual fixating time: %ld seconds
+actual retry count %d
+actuator velocity control error
+Adaptec 4000
+Adaptec 4000/4010/4070
+Adaptec 4010
+Adaptec 4070
+Adaptec 4520A
+Adaptec 4525
+Adaptec 5500
+ADAPTEC ACB-4000        FAKE
+ADAPTEC ACB-4010        FAKE
+ADAPTEC ACB-4070        FAKE
+ADAPTEC ACB-40X0        FAKE
+ADAPTEC ACB-5500        FAKE
+adapter parity error
+add logical unit failed
+address can't find or not data track
+address mark not found for data field
+address mark not found for id field
+addr exceeded the last valid block addr
+Advanced Digital Media
+]afirmware impending failure drive error rate too high
+Albumperformer
+Albumtitle
+	all		blank the entire disk
+Allocated DMA copy buffer, addr: 0x%8.8lX size: %ld
+allow_atapi
+allow media to be locked in the drive via PREVENT/ALLOW command
+alpc error - opc execution
+alpha and power range error
+alpha lower range error
+alpha upper range error
+AMS Technology Inc.
+any_other
+^Apower state change to active
+application code conflict
+Arranger
+]Aservo impending failure drive error rate too high
+assign failure occurred
+associated write protect
+Assuming -tao mode.
+As the orange forum likes to get money for recent information,
+asymmetric access code 1 (00-232) [proposed]
+asymmetric access code 2 (00-232) [proposed]
+asymmetric access code 3 (00-232) [proposed]
+asymmetric access code 4 (00-232) [proposed]
+asymmetric access code 5 (00-232) [proposed]
+asymmetric access code 6 (00-232) [proposed]
+asymmetric access code 7 (00-232) [proposed]
+asynchronous information protection error detected
+ATA Packet specific SCSI transport
+ATA Packet specific SCSI transport using sg interface
+ATAPI:1,2,0
+ATAPI early return: sleeping %d seconds.
+ATIP info: 
+ATIP info from disk:
+atip not found
+	-atip		retrieve and print ATIP data
+  ATIP start of lead in:  %ld (%02d:%02d/%02d)
+  ATIP start of lead out: %ld (%02d:%02d/%02d)
+atip/subcode jumped error
+atip sync error
+attachment of logical unit failed
+attach_unknown
+attampt to cross track-boundary
+audio address not valid
+Audio data cannot be written in packet mode.
+AUDIO DISTRIBUTORS CO., LTD.
+audiomaster
+AUDIOMASTER 
+audiomaster	Turn Audio Master feature on (SAO CD-R Audio/Data only)
+audio not playing
+audio play operation aborted
+audio play operation in progress
+Audio Play operation Not in Progress
+audio play operation paused
+audio play operation stopped due to error
+audio play operation successfully completed
+audioread
+	-audio		Subsequent tracks are CD-DA audio tracks
+Audio tracks must be at least %ld bytes and a multiple of %d.
+auinfosize
+automatic document feeder cover up
+automatic document feeder lift up
+Automation/Drive Interface
+Auvistar Industry Co.,Ltd.
+auxiliary memory code 1 (99-148) [proposed]
+auxiliary memory code 2 (99-148) [proposed]
+auxiliary memory code 3 (99-148) [proposed]
+auxiliary memory code 4 (99-148) [proposed]
+Average write speed %5.1fx.
+await_faio
+A write error occured.
+B0 lout: %ld
+B0 start: %ld
+background
+	background		background formating
+background format
+Bad audio track size %lld for track %02d.
+Bad CDR_FIFOSIZE environment (%s).
+Bad CDR_MAXFIFOSIZE setting (%s).
+Bad CDR_SPEED environment (%s).
+Bad default CDR_SPEED setting (%s).
+Bad driver opts '%s'.
+Bad fifo size option.
+Bad fifo size (%s) in the config, device description.
+_badfile
+bad_file
+bad_file_mode
+bad_file_op
+bad format on drive
+Bad gigarec value '%s'.
+Badly placed CUE keyword '%s'
+Badly placed FLAGS keyword
+Badly placed INDEX keyword
+Badly placed INDEX %ld number
+Badly placed ISRC keyword
+Badly placed option. Global options must be before any track.
+Badly placed POSTGAP keyword
+Badly placed PREGAP keyword
+Badly placed TRACK keyword
+Badly placed TRACK %ld number
+Bad minbuf=%d option (must be between 25 and 95)
+_badmode
+Bad Option: %s.
+bad_owner
+Bad speed default setting (%s).
+Bad speed option.
+Bad speed (%s) in the config, drive description.
+Bad transfer size option.
+Bad VariRec offset %d
+Bad varirec value '%s'.
+barcode reading error
+Based on works from Joerg Schilling, Copyright (C) 1995-2006, J. Schilling
+BD-R random recording
+BD-R sequential recording
+Beginning DMA speed test. Set CDR_NODMATEST environment variable if device
+beginning-of-partition/medium detected
+BERTHOLD
+Berthold HR-Scanner
+Bestdisc Technology Corporation
+beta lower range error
+beta upper range error
+]bfirmware impending failure data error rate too high
+BFree: %ld K BSize: %ld K
+bias magnet failure
+B&L)^8P7
+Blank Check
+blank_dummy
+Blanking options:
+Blanking %s
+Blanking time: 
+	blank=type	blank a CD-RW disc (see blank=help)
+blank_types
+blank unit
+block decoder communication error
+block encoder communication error
+block encoder/decoder path error
+Blocklen:%ld
+block not compressible
+block sequence error
+blocksize conflict
+block size format conflict
+Blocks:  %ld
+Blocks total: %ld Blocks current: %ld Blocks remaining: %ld
+^Bpower state change to idle
+Bridging expander
+]Bservo impending failure data error rate too high
+__bss_start
+ [buf %3d%%]
+buf_dummy
+Buffer cap: %ld
+buffer data size error
+buffer error during at once recording
+Buffer error during recording
+buffer overflow
+buffer overflow for read all subcodes command
+Buffer Overrun
+buffer parity error
+Buffer size in KB
+buffer underrun
+buffer under run
+Buffer underrun: actual delay was %d.%3.3d ms, max delay was %d.%3.3d ms.
+buf: %p bufend: %p, buflen: %ld
+buf: %p bufend: %p, buflen: %ld (align %ld)
+bufsize: %d buffers: %d hdrsize %ld
+build_edc
+BURNFREE 
+Burnfree counter: %d
+BURN-Free is %s.
+burnfree	Prepare writer to use BURN-Free technology
+BURN-Free was %d times used.
+BURN-Free was never needed.
+Bus: %d cookie: %X
+bus device reset function occurred
+Bus: %d Target: %d Lun: %d Chan: %d Ino: %d
+bV|I^h@w
+C4324/C4325
+Calibrating laser...
+calibration area almost full
+calibration area full
+Cannot allocate memory for driver structure.
+Cannot attach driver for CD/DVD-Recorder.
+Cannot blank disk, aborting.
+Cannot change disk stile for recorded disk.
+Cannot close track.
+Cannot create socketpair.
+cannot decompress using declared algorithm
+Cannot do DiskT@2.
+Cannot do inquiry for CD/DVD-Recorder.
+Cannot eject media.
+Cannot fixate disk.
+Cannot fixate without track list (not yet implemented).
+Cannot format disk, aborting.
+cannot format medium - incompatible medium
+Cannot get blank time
+Cannot get connection to remote host
+Cannot get default %s data.
+Cannot get DiskT@2 info.
+Cannot get disk type.
+Cannot get DMA stop time
+Cannot get fix time
+Cannot get format time
+Cannot get isosize for multi session disks.
+Cannot get lead-in write time
+Cannot get mmap for %d Bytes on /dev/zero.
+Cannot get next writable address.
+Cannot get next writable address for 'invisible' track.
+Cannot get saved %s data.
+Cannot get SCSI I/O buffer.
+Cannot get %s data.
+Cannot get %s mask.
+Cannot get start time
+Cannot get stop time
+Cannot init drive.
+Cannot load media.
+Cannot load media with %s drive!
+Cannot malloc auinfo string.
+Cannot malloc CD-Text read buffer.
+Cannot malloc CD-Text structure.
+Cannot malloc CD-Text write buffer.
+Cannot open FILE '%s'.
+Cannot open new session.
+Cannot open next track.
+Cannot open '%s'
+Cannot open '%s'.
+Cannot open SCSI driver!
+Cannot read capacity
+Cannot read CD-Text
+Cannot read CD-Text header
+Cannot read first writable address
+cannot read medium - incompatible format
+cannot read medium - unknown format
+Cannot read '%s'.
+Cannot read session offset
+Cannot read TOC
+Cannot read TOC header
+Cannot read TOC/PMA
+cannot recover leadin
+cannot recover leadout
+cannot recover opc
+cannot recover pma
+cannot recover track
+Cannot reset (OS does not implement reset).
+Cannot reset target.
+Cannot send CUE sheet.
+Cannot send SCSI cmd via ioctl
+Cannot send structure for middle zone location.
+Cannot set dummy writing for this device.
+Cannot set SG_SET_TIMEOUT.
+Cannot set speed/dummy.
+Cannot set up 1st set of driver options.
+Cannot set up 2nd set of driver options.
+Cannot use '%s' as CD-Text file.
+cannot write - application code mismatch
+Cannot write CD's >= 100 minutes.
+cannot write medium - incompatible format
+cannot write medium - unknown format
+Cannot write more than remaining DVD capacity.
+Can only copy session # 1.
+Can write CD-R:
+Can write DVD-R:
+Capabilities   : 
+Capacity: %ld Blocks = %ld kBytes = %ld MBytes = %ld prMB
+capacity_not_set
+cap_free
+cap_get_proc
+cap_set_flag
+cap_set_proc
+cartridge changer
+cartridge could not be ejected
+cartridge fault
+CATALOG keyword must be before first TRACK
+Caught interrupt.
+ (CD %3ux,
+??? CDA Datentr
+CDA Datentr
+cdb decryption error
+cdbd over run error
+CD capabilities
+cd control error
+CDD521/00
+CDD521/02
+CD-DA without preemphasis
+CD-DA with preemphasis
+CDDB_DISKID
+CD disk information
+CD/DVD-Recorder not ready.
+CDINDEX_DISCID
+	-cdi		Subsequent tracks are CDI tracks
+CDR100IPW
+CD-R2004
+CD-R2006 
+CD-R2006PLUS
+CD-R4012
+CDR-632P
+CD-R 650
+cdr_cd_dvd
+cdr_cdr_simul
+CD-R   CDU92
+CD-R   CDU928E
+CD-R   CDU94
+cdr_cw7501
+CD-R   CW-7501
+CD-R   CW-7502
+cdr_defaults
+CDR_DEVICE
+cdr_dvd_simul
+cdrecord
+Cdrecord-yelling-line-to-tell-frontends-to-use-it-like-version 2.01.01a03-dvd 
+CD-R engine selftest error
+CDR_FIFOSIZE
+CDR_FORCERAWSPEED
+CDR_FORCESPEED
+cdrkit-team
+cdr_kodak_pcd600
+CDR_MAXFIFOSIZE
+cdr_mdvd
+cdr_mmc_sony
+CDR_NODMATEST
+cdr_oldcd
+CD-ROM mode 1
+CD-ROM mode 2
+CD-ROM XA mode 1
+CD-ROM XA mode 2
+CD-ROM XA mode 2 form 1
+CD-ROM XA mode 2 form 1/2/mix
+CD-ROM XA mode 2 form 1 (with subheader)
+CD-ROM XA mode 2 form 2
+cdr_philips_cdd521
+cdr_philips_cdd521O
+cdr_philips_cdd522
+cdr_philips_dumb
+cdr_pioneer_dw_s114x
+cdr_plasmon_rf4100
+CD-R   PX-R24CS
+cdr_ricoh_ro1060
+cdr_ricoh_ro1420
+cdr_simul
+CDR_SIMUL_BUFSIZE
+cdr_sony_cdu924
+CDR_SPEED
+cdr_subtypes
+cdr_teac_cdr50
+cdr_tyuden_ew50
+cdr_underrun
+CD-RW226
+cdrw_subtypes
+cdr_yamaha_cdr100
+cdtext.dat
+CDTEXTFILE
+CDTEXTFILE keyword must be before first TRACK
+CD-Text len: %d
+CD-Text must be in first session.
+CD-Text needs -dao, -raw96r or -raw96p.
+CD-Text unsupported in CW-7501 - ignoring.
+CD track information
+CD-WO CRD-R24S
+CD-WO DR-R504X
+CD-WO DW-S114X
+CD-WO EW-50
+CD write parameter
+CD-Writer 6020
+cfg_close
+cfg_get_next
+cfg_open
+cfg_restart
+]cfirmware impending failure seek error rate too high
+changed operating definition
+Channels
+CHECK CONDITION
+	-checkdrive	check if a driver for the drive is present
+Checking disk capacity according to new values.
+Checking for Yamaha Audio Master feature: 
+Checking possible write modes: 
+check_linux_26
+checktextfile
+check_writemodes_mdvd
+check_writemodes_mmc
+circ unrecovered error
+CIS Technology Inc.
+cleaning cartridge installed
+cleaning failure
+cleaning requested
+clear subcode
+clone_toc
+clone_tracktype
+	-clone		Write disk in clone write mode.
+Clone writing currently supports only one file argument.
+Clone writing TOC length %ld does not match track length %ld
+Closed_info
+close_track
+close track/session
+close_track/test_unit_ready
+closing of last session
+CLV/PCAV
+CMC Magnetics Corporation
+cmd_dummy
+cmd finished after %ld.%03lds timeout %ds
+cmd timeout after %ld.%03ld (%d) s
+comerrno
+command not accepted
+command not now valid
+command now not valid
+command phase error
+command phase timeout error
+command rejected
+commands cleared by another initiator
+command sequence error
+command to logical unit failed
+Communication
+communication breaks or freezes immediately after that.
+compatible with ultra high speed media.
+compatible with ultra high speed+ media.
+completed preview write
+component device attached
+Composer
+compression check miscompare error
+Computer Support Italy s.r.l.
+conditional write protect
+CONDITION MET/GOOD
+Condition not caught: 
+configuration failure
+configuration of incapable logical units failed
+Control (as in set mode) missing.
+]%controller impending failure access times too high
+]'controller impending failure channel parametrics
+](controller impending failure controller detected
+]"controller impending failure data error rate too high
+],controller impending failure drive calibration retry count
+]!controller impending failure drive error rate too high
+] controller impending failure general hard drive failure
+]#controller impending failure seek error rate too high
+]*controller impending failure seek time performance
+]+controller impending failure spin-up retry count
+]&controller impending failure start unit times too high
+])controller impending failure throughput performance
+]$controller impending failure too many block reassigns
+controller prom error
+Controlling file not open for reading, send SIGUSR1 to continue.
+Converting ATIP from BCD
+Copy Aborted
+	-copy		Audio tracks have unlimited copy permission
+copy cannot execute since host cannot disconnect
+Copy management revision supported
+Copy_permitted
+copy protection key exchange failure - authentication failure
+copy protection key exchange failure - key not established
+copy protection key exchange failure - key not present
+Copyright (C) 2006 Cdrkit suite contributors
+copy segment granularity violation
+copy target device data overrun
+copy target device data underrun
+copy target device not reachable
+Corrected CRC ERROR in pack #%ld (offset %d-%ld) in CD-Text file '%s'.
+Could not write Lead-in.
+Could set back effective uid.
+^Cpower state change to standby
+CR-4020C
+CRC ERROR in pack #%ld (offset %d-%ld) in CD-Text file '%s'.
+creation of logical unit failed
+CREATIVE
+C-=R>N@1
+]Cservo impending failure seek error rate too high
+<Ctr<ctn<I
+__ctype_b_loc
+	cuefile=name	Set the file with CDRWIN CUE data to 'name'
+---> CUE Parser got EOF, found %d tracks.
+CUE sheet not accepted. Retrying with minimum pregapsize = 1.
+CUE sheet still not accepted. Please try to write in RAW (-raw96r) mode.
+(current)
+Current: 0x%04X (%s)
+current command aborted
+currently in a media-locked state
+Currently only form 1 tracks are supported.
+Currently running '%s' command.
+Current profile: 0x%04X
+current program area empty
+current program area is empty
+current program area is not empty
+Current read  speed
+Current Secsize: %d
+Current speed %d, medium low speed: %d medium high speed: %d
+Current write speed
+Customer Pressing Oosterhout
+cw7501 finalize
+cw7501 read_track_information
+cw7501 reserve_track
+cw7501 rezero
+cw7501 set_mode
+cw7501 write_dao
+__cxa_atexit
+D$<9D$,}'
+dac error
+damaged track present
+	-dao		Write disk in SAO mode.
+]<data channel impending failure drive calibration retry count
+]:data channel impending failure seek time performance
+];data channel impending failure spin-up retry count
+data decryption error
+Data does not fit on current disk.
+data expansion occurred during compression
+data in phase timeout error
+data loss on logical unit
+data out phase timeout error
+data path failure (should use 40 nn)
+data phase crc error detected
+data phase error
+Data Protect
+data re-synchronization error
+__data_start
+	-data		Subsequent tracks are CD-ROM data mode 1 - 2048 bytes (default)
+data sync error - data auto-reallocated
+data sync error - data rewritten
+data sync error - recommend reassignment
+data sync error - recommend rewrite
+data synchronization mark error
+data track length error
+data transfer error
+%d,%d,%d
+%d.%d.%d
+	debug=#,-d	Set to # or increment misc debug level
+decode_L2_P
+decode_L2_Q
+decode_LSUB_P
+decode_LSUB_Q
+de-compression crc error
+decompression exception long algorithm id
+decompression exception short algorithm id of 0x%X
+decompression exception short algorithm id of nn
+defective track
+defect list error
+defect list error in grown list
+defect list error in primary list
+defect list not available
+defect list not found
+defect list update failed
+defect list update failure
+, deferred error
+	defpregap=#	Amount of pre-gap sectors for all but track #1
+deliver composite A/V data
+DELPHI TECHNOLOGY INC.
+Density: 0x%X
+Detected %s drive: %s
+/dev/cdrom
+/dev/cdroms/cdrom%i
+/dev/cdrw
+/dev/dvdrw
+DEVFS not detected, continuing with old dev
+/dev/hd%c
+/device/
+device identifier changed
+device internal reset
+Device seems to be: 
+Device type    : 
+Device was not specified. Trying to find an appropriate drive...
+devname: '%s'
+/dev/scd%d
+/dev/sg%d
+/dev/sr%i
+dev: '%s' speed: %d fs: %ld driveropts '%s'
+	dev=target	SCSI target to use as CD/DVD-Recorder
+]dfirmware impending failure too many block reassigns
+diagnostic failure on BUFFER RAM
+diagnostic failure on cd-rom ecc circuit
+diagnostic failure on component 0x%X
+diagnostic failure on component nn (80h-ffh)
+diagnostic failure on component parts
+diagnostic failure on CPU internal RAM
+diagnostic failure on gate array
+diagnostic failure on internal SCSI controller
+diagnostic failure on memories
+diagnostic failure on program rom
+diagnostic failure on ROM
+diagnostic failure on servo processor
+diagnostic failure on system mechanism
+DIGITAL STORAGE TECHNOLOGY CO.,LTD
+	disc		blank the entire disk
+disc changer
+disc information less disk
+disc information read error
+discontinue
+  Disk application code: %d
+disk application code does not match host application code
+Disk bar code:
+	disk		blank the entire disk
+disk informatoion error
+disk not inserted
+disk_rcap
+Disk size changed by user options.
+disk style mismatch
+  Disk sub type: %s (%d)
+DiskT@2 1st write error.
+DiskT@2 file read error.
+DiskT@2 final error.
+DiskT@2 image size: 3744 x %d pixel.
+DiskT@2 info not valid.
+DiskT@2 inner r: %d
+DiskT@2 outer r: %d
+DiskT@2 write error.
+DISKTATTOO 
+Disk type:    %s
+disk write protected
+D$L;|$8t/
+DMA addr: 0x%8.8lX size: %d - using copy buffer
+DMA overrun, 
+DMA speed too slow (OK for %dx). Cannot write at speed %dx.
+document jam in automatic document feeder
+document miss feed automatic in document feeder
+do_decode_sub
+do_encode_L1
+do_encode_L2
+do_encode_sub
+  Does %s%s
+do_inquiry
+do_leadin
+Doremi Media Co., Ltd.
+         Do you really want to write this image? Press Ctrl-C to abort...
+D$p9D$x|
+drive_attach
+Drive buf size : %lu = %lu KB
+Drive capabilities, per
+Drive current speed: %d
+Drive default speed: %d
+Drive DMA Speed: %d kB/s %dx CD %dx DVD
+Drive does not support GigaRec.
+Drive does not support PACKET recording.
+Drive does not support RAW/RAW16.
+Drive does not support RAW/RAW96P.
+Drive does not support RAW/RAW96R.
+Drive does not support RAW recording.
+Drive does not support SAO/RAW96P.
+Drive does not support SAO/RAW96R.
+Drive does not support SAO recording.
+Drive does not support TAO recording.
+Drive does not support VariRec.
+drive_getdisktype
+drive_identify
+Drive is pre MMC-3
+Drive max speed    : %d
+drive name:
+Drive needs to reload the media to return to proper status.
+drive region must be permanent/region reset count error
+Driver flags   : 
+driver for Kodak PCD-600
+driver for Matsushita/Panasonic CW-7501
+driver for Philips CDD-521
+driver for Philips CDD-521 with pessimistic assumptions
+driver for Philips CDD-522
+driver for Philips old CDD-521
+driver for Pioneer DW-S114X
+driver for Plasmon RF 4100
+driver for Ricoh RO-1060C
+driver for Ricoh RO-1420C
+driver for Sony CDU-924 / CDU-948
+driver for Taiyo Yuden EW-50
+driver for Teac CD-R50S, Teac CD-R55S, JVC XR-W2010, Pinnacle RCD-5020
+driver for Yamaha CDR-100 / CDR-102
+	driver=name	user supplied driver name, use with extreme care
+Driver options:
+driveropts
+	driveropts=opt	a comma separated list of driver specific options
+Driveropts: '%s'
+Driver types:
+drive sequence stop
+]Dservo impending failure too many block reassigns
+Dummy/autopg information
+Dummy/autopg page
+dummy blocks added
+dummy data blocks added
+	-dummy		do everything with laser turned off
+Dummy mode not possible with %s.
+dup2 failed.
+DV):7#ZO
+ DVD %2ux)
+dvd_dual_layer_split: read_dvd_structure returns invalid data
+dvd_dual_layer_split: send_dvd_structure failed, could not set middle zone location.
+DVD+R/DL
+DVD-R/DL layer jump recording
+DVD-R/DL sequential recording
+DVD-R DVR-S101
+DVD-R sequential recording
+DVD+RW/DL
+DVD-RW restricted overwrite
+DVD-RW sequential recording
+dvd_simul
+DVD write parameter
+Early return from fixating. Ret: %d Key: %d, Code: %d
+ECC error during verify
+echo buffer overwritten
+edc error
+eeprom failure
+]efirmware impending failure access times too high
+efm decoder error
+efm encoder error
+efm isn't detected
+	-eject		eject the disk after doing the work
+empty or partially written reserved track
+Emulex MD21
+Emulex MD23
+Emulex MT02
+EMULEX  MT02            FAKE
+enclosure failure
+Enclosure services
+enclosure services failure
+enclosure services transfer failure
+enclosure services transfer refused
+enclosure services unavailable
+encodesector
+Encoding speed : %dx (%d sectors/s) for libedc from Heiko Ei
+encsectors
+encspeed
+Endianess
+end-of-data detected
+end-of-data not found
+end of medium 
+end of medium reached
+end-of-partition/medium detected
+end of user area encountered on this track
+---> Entering CUE Parser...
+entire disk
+^Epower state change to sleep
+erase failure
+erase failure - incomplete erase operation detected
+errmsgno
+errmsgstr
+Errno: %d (%s), %s scsi sendcmd: %s
+errno (EACCESS), you don't have the needed rights for %s
+__errno_location
+Error: Cannot gain SYS_RAWIO capability, is wodim installed SUID root? Reason
+ERROR: Could not manage to find medium size, and more than 4.3 GB of data for a non dual layer disc.
+ERROR: Could not manage to find medium size, and more than 8.0 GB of data.
+error counter overflow
+error: %d
+Error %d
+error detected by third party temporary initiator
+Error: disk already formated, ignoring.
+error: %d scb.chk: %d sense_count: %d sense.code: 0x%x
+ERROR: in usalo_get_first_free_shillybus(...). Too many CDROMs, more than %i
+error log overflow
+Error: only support DVD+RW formating, ignoring.
+error reading isrc number
+error reading upc/ean number
+error refers to %s part, bit ptr %d %s field ptr %d
+ERROR: this cdrom is already mapped %s(%d,%d,%d)
+Error: this media does not support blanking, ignoring.
+error too long to correct
+Error trying to open %s exclusively (%s)... %s
+ERROR: unknown format
+ERROR: unknow subsystem (%s) in (%s)
+ERROR: with link merging! base %s link %s, result of merging %i
+ERROR: with link reading! link %s, result of readlink %i
+]Eservo impending failure access times too high
+esn - device busy class event
+esn - media class event
+esn - power management class event
+/etc/wodim.conf
+event status notification
+EXAMPLE: /dev/hda or /dev/sr0
+EXAMPLE: /dev/ide/host0/bus0/target1/lun0/cd
+EXAMPLE: /dev/scsi/host1/bus2/target3/lun4/cd
+excessive write errors
+exchange of logical unit failed
+execlp '%s' failed.
+Executing '%s' command on Bus %d Target %d, Lun %d timeout %ds
+exit from pseudo track at once recording
+Extra text '%s'
+failed to sense bottom-of-form
+failed to sense top-of-form
+failure prediction threshold exceeded
+failure prediction threshold exceeded (false)
+faio_get_buf
+faio_get_buf fatal: fd=%d, f->fd=%d, f->len=%d f->errno=%d
+faio_read_buf
+faio_reader all tracks read, exiting
+faio_reader _exit(0)
+faio_reader reading track %u
+faio_reader starting
+faio_read_track fatal: secsize %d secspt %d, bytespt(%d) > %d !!
+faio_wait_on_buffer for %s timed out.
+	fast		minimally blank the entire disk (PMA, TOC, pregap)
+fatal error
+_fcons64
+feature len: %d current profile 0x%04X (%s)
+feature len: %d current profile 0x%04X (%s) len %d
+Features: 
+]ffirmware impending failure start unit times too high
+ (fifo %3d%%)
+fifo_cleanup
+fifo had %ld puts and %ld gets.
+fifo_percent
+Fifo size %ld too small, turning fifo off.
+FIFO size      : %lu = %lu KB
+fifo_stats
+fifo was %ld times empty and %ld times full, min fill was %ld%%.
+file (%d,%d,%d): %d
+fileluopen64
+file mark detected 
+filemark detected
+filemark or setmark not found
+fileopen64
+fileread
+file_read_err
+File '%s' is too small for CD-Text.
+File: '%s' itracksize: %lld isecsize: %d tracktype: %d = %s sectype: %X = %s dbtype: %s flags %X
+filesize
+filesize64
+filewrite
+file_write_err
+fill_buf
+fillbytes
+fillsector
+fillsubch
+filltpoint
+fillttime
+]`firmware impending failure general hard drive failure
+first: %d last %d
+first %u last %u ctrl first: %X ctrl last %X
+first writeable address philips
+fixate_mdvd
+fixate_mmc
+Fixating...
+Fixating is not possible in dummy write mode.
+Fixating time: 
+	-fix		fixate a corrupt or unfixated disk (generate a TOC)
+ FLAGS: 0x%X sect: %X RAW16:%d secs: %d spt: %d
+flip_crc_error_corr
+flush cache
+focus failure
+focus servo failure
+forced format
+	force		force reformat
+	-force		force to continue on some errors to allow blanking bad disks
+forcespeed
+FORCESPEED 
+Forcespeed is %s.
+forcespeed	Tell the drive to force speed even for low quality media
+For IDE/ATAPI devices configuration, see the file README.ATAPI.setup from
+fork(2) failed
+forked version from cdrkit
+format command failed
+format_dummy
+	-format		format a CD-RW/DVD-RW/DVD+RW disc
+Formating in progress: 0.00 %% done.
+Formating in progress: 100.00 %% done.        
+Formating in progress: %.2f %% done [%d].                           
+Formating options:
+Formating %s
+format_mdvd
+format_mdvd: drive is a dvd burner.
+format_mdvd: forcing reformat.
+format_mdvd: media is unformated.
+Formatting time: 
+format_types
+	formattype=#	select the format method for DVD+RW disc
+format unit
+FORNET INTERNATIONAL PTE LTD.
+For possible targets try 'wodim --devices' or 'wodim -scanbus'.
+For possible transport specifiers try 'wodim dev=help'.
+Found burnproof/burnfree in driveropts, those options are enabled by default now.
+Found DVD media: using cdr_mdvd.
+Found MMC-3 %s CD: %s/%s DVD-: %s/%s DVD+: %s/%s DDCD: %s/%s.
+Found MMC drive CDWR: %d DVDWR: %d.
+Found unsupported DVD-RAM media.
+fparsecue
+__fprintf_chk
+Friendly CD-Tek Co.
+from_bcd
+fseeko64
+]Fservo impending failure start unit times too high
+fs: %ld buflen: %ld
+	fs=#		Set fifo size to # (0 to disable, default is %ld MB)
+FUJI Photo Film Co., Ltd.
+full format
+full pma area
+	full		standard formating
+Future versions of wodim may have different drive dependent defaults.
+__fxstat64
+General Magnetics Ld
+generation does not exist
+Generic CCS Disk
+Generic CD-ROM
+Generic mmc2 DVD-R/DVD-RW
+Generic mmc2 DVD-ROM
+Generic mmc CD-R
+Generic mmc CD-ROM
+Generic mmc CD-RW
+Generic NON CCS Disk
+generic SCSI-2       CD-ROM driver
+generic SCSI-3/mmc   CD/DVD driver (checks media)
+generic SCSI-3/mmc   CD-R/CD-RW driver
+generic SCSI-3/mmc   CD-R/CD-RW driver (Sony 928 variant)
+generic SCSI-3/mmc   CD-ROM driver
+generic SCSI-3/mmc DVD-R(W) driver
+Generic transport independent SCSI
+ger Albrechts GmbH.
+getallargs
+getarg_bad_format
+_getargs
+get_cdrcmds
+?get_configuration
+get_configuration
+get_curprofile
+geterrno
+getfiles
+get_justlink_ricoh
+getllnum
+get_mode_params
+getpagesize
+get_proflist
+get_progname
+getpwnam
+getpwuid
+getrlimit64
+get_sector_type
+getservbyname
+gets: %ld puts: %ld cont: %ld low: %ld
+get_supported_cdrw_media_types
+gettextptr
+gettimeofday
+get_wproflist
+]gfirmware impending failure channel parametrics
+gigarec=
+GIGAREC 
+GigaRec %sis %s.
+gigarec=val	Set GigaRec capacity ratio to 0.6, 0.7, 0.8, 1.0, 1.2, 1.3, 1.4
+GIGASTORAGE CORPORATION
+giving up.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+globfree64
+__gmon_start__
+g	multiply assigned logical unit
+Got %d (0x%X), expecting %d (0x%X) bytes of data.
+^Gpower state change to device control
+	gracetime=#	set the grace time before starting to write to #.
+Grand Advance Technology Ltd.
+grown defect list not found
+]Gservo impending failure channel parametrics
+Guann Yinn Co.,Ltd.
+g)y6.~0a
+Hardware Error
+hardware impending failure access times too high
+hardware impending failure channel parametrics
+hardware impending failure controller detected
+hardware impending failure data error rate too high
+hardware impending failure drive calibration retry count
+hardware impending failure drive error rate too high
+hardware impending failure general hard drive failure
+hardware impending failure seek error rate too high
+hardware impending failure seek time performance
+hardware impending failure spin-up retry count
+hardware impending failure start unit times too high
+hardware impending failure throughput performance
+hardware impending failure too many block reassigns
+hardware write protected
+Harmonic Hall Optical Disc Ltd.
+hasdrvopt
+have load-empty-slot-in-changer feature
+have valid data on falling edge of clock
+h&B)L8^7Pb
+HD-DVD-R
+HD-DVD-RAM
+HD-DVD-ROM
+header monitor error
+header search error
+head select fault
+help,version,checkdrive,prcap,inq,devices,scanbus,reset,abort,overburn,ignsize,useinfo,dev*,timeout#,driver*,driveropts*,setdropts,tsize&,padsize&,pregap&,defpregap&,speed#,load,lock,eject,dummy,msinfo,toc,atip,multi,fix,nofix,waiti,immed,debug#,d+,kdebug#,kd#,verbose+,v+,Verbose+,V+,x+,xd#,silent,s,audio,data,mode2,xa,xa1,xa2,xamix,cdi,isosize,nopreemp,preemp,nocopy,copy,nopad,pad,swab,fs&,ts&,blank&,format,formattype&,pktsize#,packet,noclose,force,tao,dao,sao,raw,raw96r,raw96p,raw16,clone,scms,isrc*,mcn*,index*,cuefile*,textfile*,text,shorttrack,noshorttrack,gracetime#,minbuf#,msifile*
+]hfirmware impending failure controller detected
+HIDECDR 
+Hide CDR is %s.
+hidecdr		Tell the drive to hide CD-R media
+High speed Rewritable (CAV) media
+Hile Optical Disc Technology Corp.
+HINT: use dvd+rw-mediainfo from dvd+rw-tools for information extraction.
+Hitachi Maxell, Ltd.
+Hong Kong Digital Technology Co., Ltd.
+ host adapter detected error
+HOST ADAPTOR
+host_status: %02X driver_status: %02X
+]Hservo impending failure controller detected
+id crc or ecc error
+Identification : '%.16s'
+Identify set driver to '%s'.
+idle condition activated by command
+idle condition activated by timer
+]ifirmware impending failure throughput performance
+If you like to write CD-Text, call wodim -text.
+If you like to write to 'preformatted' RW media, try to blank the media first.
+Ignoring CDTEXTFILE '%s'.
+	-ignsize	ignore the known size of a medium (may cause problems)
+illegal bar code format
+illegal bar code length
+Illegal blanking type '%s'.
+illegal block length 
+illegal block length for write command
+illegal blocksize
+illegal blocksize for command
+illegal command while in explicit address model
+illegal command while in implicit address model
+illegal cue sheet
+illegal data form for reserve track command
+Illegal DiskT@2 file size.
+Illegal driver type '%s'.
+Illegal frame value in '%s'
+illegal function for medium type
+illegal function (use 20 00, 24 00, or 26 00)
+Illegal index '%s'
+Illegal Manufacturer code
+illegal medium
+Illegal minute value in '%s'
+illegal mode for this track
+ILLEGAL OLD CODE: Old CDA Datentr
+ILLEGAL OLD CODE: Old Kodak Photo CD
+ILLEGAL OLD CODE: Old Ritek Co.???
+ILLEGAL OLD CODE: TDK ???
+Illegal pack type 0x%02X pack #%ld in CD-Text file '%s'.
+illegal power condition request
+Illegal Que Sheet (DAO parameter)
+Illegal remote device syntax
+Illegal Request
+Illegal Reserve Length for Reserve Track Command
+Illegal second value in '%s'
+Illegal sector type 0
+Illegal sector type 3
+Illegal sector type 6
+Illegal sector type 7
+Illegal startsec (%ld)
+Illegal toc type 5
+Illegal toc type 6
+Illegal toc type 7
+illegal track
+illegal track mode
+illegal track number
+Illegal TRACK number '%s'
+illegal track status
+illegal transfer length
+Illegal value for busno, target or lun '%d,%d,%d'
+Illegal value for bus, target or lun '%d,%d,%d'
+Illegal write mode for this drive.
+	-immed		Try to use the SCSI IMMED flag with certain long lasting commands
+Implementation botch: track boundary in buffer.
+import or export element accessed
+Inappropriate audio coding in '%s'
+Inappropriate audio coding in '%s'.
+inappropriate command
+incompatible medium installed
+incomplete block read
+Incomplete CUE file
+incomplete track
+Inconsistent CD-Text file '%s' length should be %d but is %lld
+Inconsistent CD-Text file '%s' not a multiple of pack length
+incorrect copy target device type
+Increase MAX_SCHILLY_HOSTS in scsi-linux-ata.c and recompile!
+	index=list	Set the index list for the next track to 'list'
+Index '%s' contains illegal character '%c'.
+  Indicated writing power: %d
+INFO: Bus: %d Target: %d Lun: %d Chan: %d Ino: %d
+INFO: /dev/%s, (host%d/bus%d/target%d/lun%d) will be mapped on the schilly bus No %d (%d,%d,%d)
+INFODISC Technology Co., Ltd.
+INFO: do usalo_open openbydev
+INFO: l1: 0x%lX l2: 0x%lX
+informational, refer to log
+information unit crc error detected
+INFO: scan_internal(...) failed
+INFO: %s -> %s
+INFO: subsystem %s: h %i, b %i, t %i, l %i
+init_faio
+init_fifo
+initiator detected error
+initiator detected error message received
+initiator id
+inline data length exceeded
+Input buffer error, aborting.
+input buffer ready.
+	-inq		do an inquiry for the drive and exit
+Inquiry Data   :
+Inquiry Data   : 
+inquiry data has changed
+insufficient registration resources
+insufficient reservation resources
+insufficient resources
+insufficient time for operation
+interleave error
+INTERMEDIATE CONDITION MET/GOOD
+INTERMEDIATE GOOD STATUS
+Internal error: Bad TOC type.
+Internal error, DVD driver failure. Please report to debburn-devel@lists.alioth.debian.org.
+internal target failure
+			In this case default track type is CD-ROM XA mode 2 form 1 - 2048 bytes
+invalid address for write
+invalid B0 value
+invalid bits in identify message
+Invalid bus or target specifier in '%s'
+invalid cdb field while in explicit block address model
+invalid cdb field while in implicit block address model
+invalid combination of windows specified
+invalid command operation code
+invalid element address
+invalid field in cdb
+invalid field in parameter list
+Invalid lun specifier in '%s'
+Invalid lun specifier '%s'
+invalid message error
+invalid operation for copy source or destination
+invalid packet size
+invalid release of persistent reservation
+invalid sense code 0x%X
+invalid start address
+invalid start adress
+Invalid target or lun specifier in '%s'
+Invalid value for bus, target or lun (%d,%d,%d)
+_io_add_my_flag
+ioctl(CDROM_SEND_PACKET) ret: %d
+ioctl ret: %d
+_IO_getc
+_io_get_my_flag
+_io_glflag
+_io_myfl
+i/o process terminated
+_io_set_my_flag
+_IO_stdin_used
+is_auname
+is_cddrive
+]Iservo impending failure throughput performance
+__isoc99_sscanf
+	-isosize	Use iso9660 file system size for next data track
+ISRC keyword must be past first TRACK
+ISRC '%s' contains illegal character '%c'.
+ISRC '%s' has illegal length.
+	isrc=text	Set the ISRC number for the next track to 'text'
+  Is %s%s
+is_tao: %d,is_packet: %d
+is_unknown_dev
+is_wavname
+It is recommended to mount sysfs to allow better device configuration
+It looks like 'driveropts=burnfree' does not work for this drive.
+it may be that this media does not use illegal manufacturer coding.
+]jfirmware impending failure seek time performance
+]Jservo impending failure seek time performance
+Judging disk...
+Juke Box
+_Jv_RegisterClasses
+JzWfpBm^>
+	kdebug=#,kd=#	do Kernel debugging
+kdg mediatech AG
+KEY: '%s'     %s
+]kfirmware impending failure spin-up retry count
+kill_faio
+King Pro Mediatek Inc.
+Kodak Japan Limited
+kodak_pcd_600
+]Kservo impending failure spin-up retry count
+k)w4#g?z
+L0 size: %ld (track size %ld)
+L0 zone size already set
+lamp failure
+laser current over
+laser focus coil over-current
+laser tracking coil over-current
+Last actual write speed:   %dx
+Last chance to quit, starting %s write in %4d seconds.
+last_done
+last one block error
+Last selected write speed: %dx
+lba: %9ld (%9ld) %02d:%02d:%02d adr: %X control: %X mode: %d
+lba_addr
+lba: %ld lba_addr: %ld
+lba_to_msf
+%ld packs %% 4 = %ld
+Lead Data Inc.
+Leadinstart: %d %d:%d/%d
+Leadin TOC Type: %d
+Lead-in write time: 
+lead out AA: %ld
+lead out B0: %ld
+lead out capacity: %ld
+Lead out start: (%02d:%02d/%02d)
+Leadoutstart: %d %d:%d/%d amt %ld
+l-ec uncorrectable error
+Length of data in BCLKs
+]lfirmware impending failure drive calibration retry count
+libcap.so.2
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+limited laser life
+linear velocity measurement error
+link area encountered
+link block detected
+link blocks encountered
+Linux sg driver version: %d.%d.%d
+list_devices
+L$L<Lt(<lt$<St
+Loading mechanism type
+	-load		load the disk and exit (works only with tray loader)
+load/unload failure
+	-lock		load and lock the disk and exit (works only with tray loader)
+lock media on power up via prevent jumper
+locuser: '%s' rscsiuser: '%s' host: '%s'
+log counter at maximum
+log exception
+logical block address out of range
+logical unit communication crc error (ultra-dma/32)
+logical unit communication failure
+logical unit communication parity error
+logical unit communication time-out
+logical unit does not respond to selection
+logical unit failed self-configuration
+logical unit failed self-test
+logical unit failure
+logical unit failure prediction threshold exceeded
+logical unit has not self-configured yet
+logical unit is in process of becoming ready
+logical unit is reserved
+logical unit not configured
+logical unit not ready, cause not reportable
+logical unit not ready, format in progress
+logical unit not ready, initializing cmd. required
+logical unit not ready, long write in progress
+logical unit not ready, manual intervention required
+logical unit not ready, operation in progress
+logical unit not ready, rebuild in progress
+logical unit not ready, recalculation in progress
+	logical unit not ready, self-test in progress
+logical unit not supported
+logical unit software write protected
+logical unit unable to update self-test log
+log list codes exhausted
+log parameters changed
+Long strategy type (Cyanine, AZO or similar)
+Looking for a %s drive to store %.2f MiB...
+Looking for data for major:minor: %ld:%ld
+Lost connection to remote host ??
+Lout start:     %4llu MB (%02d:%02d/%02d) = %lld sectors
+low power condition on
+]Lservo impending failure drive calibration retry count
+%lu microseconds passed waiting for %d current: %d idx: %ld
+lverbose
+__lxstat64
+Make sure that you are root, enable DMA and check your HW/OS set up.
+manufacturer_id
+Manufacturer is guessed because of the orange forum embargo.
+Manufacturer is unknown because of the orange forum embargo.
+Manufacturer: %s
+Manuf. index: %d
+Mapping device specification to ATA: method now.
+MATSHITA
+Matsushita CW-7501
+Matsushita CW-7502
+Matsushita Electric Industrial Co.,Ltd.
+Max DMA data speed is %d.
+Maximum read  speed
+Maximum reserve time in drive buffer: %d.%3.3d ms for speed %dx
+Maximum write speed
+Max media write speed:     %dx
+Max RAW data speed on this processor is %d.
+Maxtor RXT800S
+MCN '%s' contains illegal character '%c'.
+MCN '%s' has illegal length.
+	mcn=text	Set the media catalog number for this CD to 'text'
+mechanical positioning error
+mechanical positioning or changer error
+media failure prediction threshold exceeded
+media load mechanism failed
+media load or eject failed
+media region code is mismatched to logical unit region
+medium auxiliary memory accessible
+medium destination element full
+Medium Error
+medium format corrupted
+medium loadable
+medium magazine inserted
+medium magazine locked
+medium magazine not accessible
+medium magazine removed
+medium magazine unlocked
+medium not formatted
+medium not present
+medium not present - loadable
+medium not present - medium auxiliary memory accessible
+medium not present - tray closed
+medium not present - tray open
+medium removal is prevented
+medium removal prevented
+medium source element empty
+Medium Type A, high Beta category (A+)
+Medium Type A, low Beta category (A-)
+Medium Type B, high Beta category (B+)
+Medium Type B, low Beta category (B-)
+Medium Type C, high Beta category (C+)
+Medium Type C, low Beta category (C-)
+message error
+message in phase timeout error
+message out phase timeout error
+microcode has been changed
+Microtek MS300A
+Min drive buffer fill was %u%%
+	minimal		minimally blank the entire disk (PMA, TOC, pregap)
+Minimum reserve time in drive buffer: %d.%3.3d ms
+Miscompare
+miscompare during verify operation
+miscorrected error
+Missing Entry for dev %d
+Missing text
+missing track
+MITSBISH
+Mitsubishi Chemical Corporation
+Mitsui Chemicals, Inc.
+=M;J1C7D%Q#V)_/X
+mlockall
+mmc_cd_dvd
+mmc_cdr_sony
+mmc_check
+mmc_getval
+mmc_mdvd
+mmc_obtain_profile_name
+mmc_opthelp
+	-mode2		Subsequent tracks are CD-ROM data mode 2 - 2336 bytes
+Mode len: %d
+mode of last track error
+Mode Page  Data
+Mode Parameters
+mode parameters changed
+Mode Parameters (un-converted)
+moderation error
+mode_select
+Mode Select Data
+Mode Select Data 
+mode select g0
+mode_select_g0
+mode select g1
+mode_select_g1
+mode_select_sg0
+Mode Sence CData
+mode_sense
+Mode Sense Data
+Mode Sense Data 
+Mode Sense Data (converted)
+mode sense g0
+mode_sense_g0
+mode sense g1
+mode_sense_g1
+mode_sense_sg0
+modification of logical unit failed
+MO erasable
+monitor atip error
+Moser Baer India Limited
+motor controller error
+MOTOROLA
+mount error
+movebytes
+MQQLukiv
+msf_to_lba
+	-msifile=path	run -msinfo and copy output to file
+	-msinfo		retrieve multi-session info for genisoimage
+ MuCzQk_duI{FiWgX
+	-multi		generate a TOC that allows multi session
+Multi Media Masters & Machinary SA
+multiple logical unit failures
+multiple peripheral devices selected
+multiple read errors
+Nacar Media srl
+NAN-YA Plastics Corporation
+New L0 size: %ld
+New start of lead in: %ld (%02d:%02d/%02d)
+New start of lead out: %ld (%02d:%02d/%02d)
+-->Newtrack %d
+next writable address
+_nixwrite
+No Additional Sense
+no additional sense information
+no atip or subcode
+no bar code
+no barcode available
+no bar code start pattern
+noburnfree
+noburnfree	Disable using BURN-Free technology
+noburnproof
+no cartridge present
+No CD-Text or CD-Text unaware drive.
+No chance to quit anymore.
+	-nocopy		Audio tracks may only be copied once for personal use (default)
+no current audio status to return
+no defect spare location available
+no disk present - couldn't get focus
+No disk / Wrong disk!
+<no driver>
+no efm at search address
+no error
+	-nofix		do not fixate disk after writing tracks
+	no gap found
+nohidecdr	Disable hiding CD-R media
+no index/sector signal
+no logical sector
+ [No matching qualifier]
+No memory for SCSI structure
+no more track reservations allowed
+NON CCS 
+None supported for this drive.
+nonexistent block encountered
+Non-removable disk
+	-nopad		Do not pad data tracks (default)
+	-nopreemp	Audio tracks are mastered with no preemphasis (default)
+no reference position found
+No remote SCSI transport available.
+Normal Rewritable (CLV) media
+no seek complete
+no_sendcue
+no sense
+	-noshorttrack	Subsequent tracks must be >= 4 seconds
+nosinglesession	Disable single session only mode
+nospeedread	Disable to read as fast as possible
+No support for Ricoh RO-1060C
+no table of contents
+not all data transferred
+Not a number '%s'
+No target found.
+not enough bar code margin
+not enough space
+Not enough space (Leadin/Leadout space)
+Notice: Most CD-writers do overburning only on SAO or RAW mode.
+Notice: Most recorders cannot write CD's >= 90 minutes.
+Notice: Overburning active. Trying to write more than the official disk capacity.
+Notice: -overburn is not expected to work with DVD media.
+NOTICE: reducing block size for last record.
+Notice: Use -ignsize option to allow >= 90 minutes.
+Notice: Use -overburn option to write more than the official disk capacity.
+NOT IMPELEMENTED: usalo_initiator_id
+not present 
+no track present to finalize
+No tracks allowed with -load, -lock, -setdropts, -msinfo, -toc, -atip, -fix,
+No tracks allowed with the cuefile= option
+No tracks found.
+No tracks specified. Need at least one.
+Not Ready
+not ready to ready change, medium may have changed
+(not valid)
+(not valid) 
+no write current
+no write data - buffer empty
+No write mode specified.
+nsubheader %d lout: %ld track 1 secs: %ld
+  Number of supported write speeds: %d
+Number of volume control levels
+NWA: %ld
+O]1"VB(=
+Object based storage
+obsolete ATAPI driver in cdrkit
+oCq\S}Mb
+ of %4lld MB
+O)k4wg#z?]
+OLDATAPI
+on_comerr
+ on line %d in '%s'.
+Only one FILE allowed
+Only one of -audio, -data, -mode2, -xa, -xa1, -xa2, -xamix allowed.
+Only one of -packet, -dao, -raw allowed.
+Only one of -raw16, -raw96p, -raw96r allowed.
+		Only works for audio and if speed is set to 4
+opc execution eror
+opc execution timeout
+OPC failed.
+opc initialize error
+__open64_2
+open_auto
+Open via UNIX device:	%ssupported
+operation %d%% done
+operation in progress
+ Operation starts.
+operator medium removal request
+operator request or state change input
+operator selected write permit
+operator selected write protect
+Optical card r/w
+OPTICAL DISC CORPRATION
+Optical Disc Manufacturing Equipment
+optical power calibration error
+Optical Storage
+Optical write once
+Opti.Me.S. S.p.A.
+Options:
+opt_power_judge
+OPTROM.INC.
+out of focus
+	-overburn	allow to write more than the official size of a medium
+overlapped commands attempted
+overwrite error on update in place
+packet does not fit in available space
+pack_len: %d, reply_len: %d pack_id: %d result: %d sense[0]: %02X
+packtext
+			Pad audio tracks to a multiple of %d bytes
+	-pad		Pad data tracks with %d zeroed sectors
+ padsize: %4lld KB
+ padsize: %4lld MB
+	padsize=#	Amount of padding for next track
+pad_track
+pad_track(%ld, %ld)-> %ld
+ pad written
+ page 2A:
+Panic cannot set back effective uid.
+Panic: unknown CUE command '%s'
+Panic: unknown datatype '%s'
+Panic: unknown filetype '%s'
+Panic: unknown FLAG '%s'
+paper jam
+parameter list length error
+parameter list too large
+parameter not supported
+parameters changed
+parameter value invalid
+parity/data mismatch
+partial defect list transfer
+ pasdize %lld (%ld sectors)
+pca area full
+PCA area full (100 counts)
+Performer
+Performing OPC...
+peripheral device write fault
+permanent write protect
+persistent prevent conflict
+persistent write protect
+Phase change
+Philips CDD-2000
+Philips CDD-2600
+philips_cdd521
+philips_cdd521_old
+philips_cdd522
+philips_dumb
+philips fixation
+philips medium load/unload
+Philips old CDD-521
+philips read session info
+philips recover
+philips reserve_track
+philips write_track
+PINNACLE
+Pioneer DVD-R S101
+pioneer_dws114x
+Pioneer Video Corporation
+Plasmon Data systems Ltd.
+plasmon_rf4100
+Plasmon RF-4100
+play audio CDs
+Please properly read the error message above.
+Please report.
+plextor drive mode
+plextor drive mode2
+plextor get speedlist
+plextor read bpc
+pll no lock
+pma area full
+PMA area full (1000 blocks)
+PMA Data
+pma error
+PMA Header: 
+pma less disk - not a recordable disk
+PMA, TOC, pregap
+position error related to timing
+positioning error detected by read of medium
+position past beginning of medium
+position past end of medium
+Possible reason: wodim not installed SUID root.
+POSTECH Corporation
+power calibration area almost full
+power calibration area error
+power calibration area is full
+power calibration error
+power calibration not executed
+  power mult factor: %d %d
+power on occurred
+power-on or self-test failure (should use 40 nn)
+power on, reset, or bus device reset occurred
+power range error
+Power-Rec is %s.
+Power-Rec write speed:     %dx (recommended)
+	-prcap		print drive capabilities for MMC compliant drives
+	-preemp		Audio tracks are mastered with 50/15 microseconds preemphasis
+Pre-emphasis
+pregap1: %ld
+	pregap=#	Amount of pre-gap sectors before next track
+ pregapsize: %3ld
+Premature EOF on stdin.
+Preparing middle zone location for this DVD+R dual layer disc
+prevent/allow medium removal
+primary defect list not found
+Princo Corporation
+print_capabilities
+print_capabilities_mmc4
+print_capacity
+__printf_chk
+printinq
+print_min_atip
+print_profiles
+pr_manufacturer
+Probably trying to use ultra high speed medium on improper writer.
+Probably trying to use ultra high speed+ medium on improper writer.
+Processor
+Processor too slow. Cannot write RAW data at speed %d.
+/proc/mounts
+/proc/sys/dev/cdrom/info
+Prodisc Technology Inc.
+Profile: 
+Profile: 0x%04X (%s)
+program area not empty
+program memory area is full
+program memory area update failure
+Protocol error (got %s).
+prtimediff
+]Pspindle impending failure general hard drive failure
+]=[:Q3W4E!C&I/O(m
+$q5c:mo7`9q+~%S
++q$c5m:7o9`+q%~
+QMLQkuvi
+]Qspindle impending failure drive error rate too high
+radial skating error
+raisecond
+raisepri
+ram failure (should use 40 nn)
+random positioning error
+	-raw16		Write disk in RAW/RAW16 mode.
+	-raw96p		Write disk in RAW/RAW96P mode.
+	-raw96r		Write disk in RAW/RAW96R mode.
+Raw (audio)
+Raw (audio) with P/Q sub channel
+Raw (audio) with P/W packed sub channel
+Raw (audio) with P/W raw sub channel
+RAW/R16 
+RAW/R96P 
+RAW/R96R 
+RAW/RAW16
+RAW/RAW96P
+RAW/RAW96R
+	-raw		Write disk in RAW mode.
+RBlocks total: %ld RBlocks current: %ld RBlocks remaining: %ld
+RCD-1000
+rcmdsh: fork to lose parent failed.
+rcvsize: %d
+read address is atip area - blank
+read_buff_cap
+read buffer
+read_buffer
+read buffer cap
+read buffer cap sony
+read capacity
+read_capacity
+read CD bar code
+read CD-R media
+read CD-RW media
+read_cdtext
+Read %d bytes TOC len: %d first session: %d last session: %d
+read digital audio blocks
+read disk info
+read_disk_info
+read DVD-RAM media
+read DVD-R media
+read DVD-ROM media
+read dvd structure
+read_dvd_structure
+read error - loss of streaming
+read error on input file
+read fixed-packet CD media using Method 2
+read header
+read_header
+read in leadin
+read in leadout
+readlink
+read link, run-in run-out
+read master cue
+read_master_cue
+read Mode 2 Form 1 blocks
+read Mode 2 Form 2 blocks
+read multi-session CDs
+read of scrambled sector without authentication
+read past beginning of medium
+;	read past end of medium
+read peak buffer capacity
+read raw P-W subcode data from lead in
+read retries exhausted
+read R-W subcode information
+read_rzone_info
+read_scsi
+read_session_offset
+read_session_offset_philips
+read subchannel
+read_subchannel
+read timeout
+read toc
+read_toc
+read toc error
+read_tochdr
+read_toc_philips
+read track info
+read_trackinfo
+read_track_info
+read_track_info_philips
+read type operation while in write capable state
+rebuild failure occurred
+recalculate failure occurred
+Received Data: 
+  recommended erase/write power: %d
+recorded entity not found
+record not found
+record not found - data auto-reallocated
+record not found - recommend reassignment
+recoverable write error
+recovered data - data auto-reallocated
+recovered data - recommend reassignment
+recovered data - recommend rewrite
+recovered data using previous sector id
+recovered data with circ
+recovered data with ecc - data rewritten
+recovered data with error correction applied
+recovered data with error corr. & retries applied
+recovered data with l-ec
+recovered data with linking
+recovered data with negative head offset
+recovered data with no error correction applied
+recovered data without ecc - data auto-reallocated
+	recovered data without ecc - data rewritten
+recovered data without ecc - recommend reassignment
+recovered data without ecc - recommend rewrite
+recovered data with positive head offset
+recovered data with retries
+recovered data with retries and/or circ applied
+Recovered Error
+recovered id with ecc correction
+Recovery failed
+recovery needed
+recovery_needed
+Recovery needed
+Recovery needed.
+RedBook total: %ld RedBook current: %ld RedBook remaining: %ld
+redundancy group created or modified
+redundancy group deleted
+redundancy level got better
+redundancy level got worse
+  Reference speed: %d
+registrations preempted
+Re-load disk and hit <CR>
+reload_media
+    Remaining Filesize %lld (%lld secs)
+Remaining reserve time in drive buffer: %d.%3.3d ms
+remote-1.18
+REMOTE:rscsi@host:1,2,0
+Remote SCSI
+Remote status(%s): %d '%s'.
+Removable 
+Removable disk
+remove of logical unit failed
+reported luns data has changed
+reposition error
+request for fixation failed
+request_sense
+request_sense_b
+RESERVATION CONFLICT
+reservations preempted
+reservations released
+reserved 
+Reserved
+reserved(2)
+reserved(3)
+reserved(6)
+reserved(7)
+reserved blanking type
+Reserved mode 14
+Reserved mode 4
+Reserved mode 5
+Reserved mode 6
+reserved track
+reserved track present
+Reserved track Status
+Reserved/Unknown
+reserve track
+reserve_track
+reserve track check error
+reserve_track_rzone
+reserve_tr_rzone
+	-reset		reset the SCSI bus with the cdrecorder (if possible)
+resid: %d
+Response Format: %d
+restart non-streamed digital audio reads accurately
+ret < 0 errno: %d ux_errno: %d error: %d
+retryable error
+retrying in 1 second.
+return CD ISRC information
+return CD media catalog number
+return R-W subcode de-interleaved and error-corrected
+Revision       : '%.4s'
+rezero unit
+rezero_unit
+ribbon, ink, or toner failure
+Ricoh Company Limited
+ricoh_ro1060c
+ricoh_ro1420c
+Ricoh Vendor Page
+Ritek Co.
+rma/pma is almost full
+rols_fgetline
+rols_getline
+__roothandle
+Rotational control selected
+rounded parameter
+rpl status change
+rscsi@host:bus,target,lun
+]Rspindle impending failure data error rate too high
+Run "wodim --devices" for details.
+RXT-800S
+s2^<Q.@ O
+%s%4ld.%03lds
+  %s: %5d kB/s
+SAO/R96P 
+SAO/R96R 
+SAO/RAW16
+SAO/RAW96P
+SAO/RAW96R
+SAO RAW writing does not allow -raw16.
+SAO RAW writing not yet implemented.
+SAO RAW writing only makes sense in clone mode.
+SAO startsec: %ld
+	-sao		Write disk in SAO mode.
+SAO writing not available or not implemented for this drive.
+save_args
+saved_ac
+saved_av
+saved_av0
+saving parameters not supported
+	-scanbus	scan the SCSI and IDE buses and exit
+scandevs
+scan head positioning error
+scatter_secs
+sched_get_priority_max
+sched_setscheduler
+schily_error
+	-scms		Audio tracks will not have any copy permission at all
+scramble_L2
+scrsectors
+scsi2_cd
+SCSI ALREADY RUNNING !!
+scsi_blank
+SCSI buffer size: %ld
+scsibus%d:
+SCSI Bus: %d (mapped from %d)
+scsibus: %d target: %d lun: %d
+scsi bus reset occurred
+SCSI Bus scanning:	%ssupported
+scsi_cdr_write
+scsi_close_tr_session
+SCSI command name not set by caller
+scsi_compliant
+scsidev: '%s'
+scsi_flush_cache
+scsi_format
+scsi_format: post processing %d
+scsi_format: preparing
+scsi_format: running
+scsi_get_speed
+scsihack.c-1.44
+scsi_in_progress
+scsi-linux-ata.c-1.7
+scsi-linux-sg.c-1.86
+scsi_load
+scsi_load_unload
+SCSI open usage error.
+scsi parity error
+scsi parity error detected during st data phase
+scsi_prevent_removal
+scsi_set_speed
+scsi_set_streaming
+scsi_start_stop_unit
+scsi to host system interface failure
+@(#)scsitransp.c	1.91 04/06/17 Copyright 1988,1995,2000-2004 J. Schilling
+scsi_unload
+SCSI unsupported with '%s'
+  %s: %d
+Seantram Technology Inc.
+Second interrupt. Doing hard abort.
+secsize:%d secspt:%d bytespt:%d audio:%d pad:%d
+sec_to_msf
+Sectorsize: %ld Bytes
+sectype first: %X sectype last %X
+SECTYPE %X 
+seek_scsi
+See -pad option.
+See -shorttrack option.
+Selected speed     : %d
+select or reselect failure
+select_secsize
+select_target
+self test failed
+send_cue_sheet
+send digital data LSB-first
+send dvd structure
+send_dvd_structure
+Sending CUE sheet...
+Sending %d (0x%X) bytes of data.
+send opc
+send_opc
+Sense Bytes:
+Sense Code: 0x%02X Qual 0x%02X %s%s%s%s Fru 0x%X
+Sense flags: Blk %d %s%s%s%s
+sense_secsize
+sequential positioning error
+servo adjustment over
+servo ic error
+]@servo impending failure general hard drive failure
+servo off track
+	session		blank last session
+session fixation error
+session fixation error - incomplete track in session
+session fixation error writing lead-in
+session fixation error writing lead-out
+Session info data: 
+Session info too big.
+session offset: %ld
+set_cdrcmds
+set cd speed
+	-setdropts	set driver specific options and exit
+seterrno
+seteuid(%lld) failed.
+setindex
+set limits
+set_limits(%ld, %ld)-> %ld
+set limit violation
+set LRCK high for left-channel data
+setmark detected
+set_mode_params
+setpriority
+set_progname
+setreuid
+setrlimit64
+set_secsize
+set_sector_type
+setsockopt
+set streaming
+set subcode
+Set Transfersizes end
+Set Transfersizes start
+setuid(%lld) failed.
+sg_open_excl
+shared memory segment attached at: %p size %d
+shell/tcp: unknown service
+SHENZEN SG&GAST DIGITAL OPTICAL DISCS
+Short strategy type (Phthalocyanine or similar)
+	-shorttrack	Subsequent tracks may be non Red Book < 4 seconds if in SAO or RAW mode
+	-silent,-s	do not print status of failed SCSI commands
+Simple direct access
+simulation CD-R driver for timing/speed tests
+Simulation drive buffer size: %d KB
+simulation DVD-R driver for timing/speed tests
+singlesession
+SINGLESESSION 
+Single session is %s.
+singlesession	Tell the drive to behave as single session only drive
+%s is not a cdrom, skipping
+SKC Co., Ltd.
+sledge servo failure
+slew failure
+slider velocity control error
+sndsize: %d
+snprintf
+__snprintf_chk
+socketpair
+SOFTRESET 
+Some drives do not support all blank types.
+Songwriter
+sony_cdu924
+Sony CDU-924S
+SONY Corporation
+Sony SMO-C501
+sony_speeds
+Sorry, no CD/DVD-Drive found on this target.
+Sorry, no CD/DVD-Recorder or unsupported CD/DVD-Recorder found on this target.
+Sorry, no supported CD/DVD-Recorder found on this target.
+Sound Sound Multi-Media Development Limited
+%s: Overview of accessible drives (%d found) :
+%sPACKET
+spare area exhaustion prediction threshold exceeded
+spare created or modified
+?	spare deleted
+Speed/Dummy information
+Speed information
+speedread
+SPEEDREAD 
+Speed-Read is %s.
+speedread	Tell the drive to read as fast as possible
+	speed=#		set speed of drive
+Speed set to %d KB/s
+spindle failure
+]\spindle impending failure drive calibration retry count
+][spindle impending failure spin-up retry count
+spindle servo failure
+spindles not synchronized
+spindles synchronized
+__sprintf_chk
+%sRAW/R16
+%sRAW/R96P
+%sRAW/R96R
+  %s: %s
+%s: %s. 
+%sSAO/R96P
+%sSAO/R96R
+%sSense Key: 0x%X %s%s, Segment %d
+]Sspindle impending failure seek error rate too high
+__stack_chk_fail
+standby condition activated by command
+standby condition activated by timer
+Starting new track at sector: %ld
+Starting to write CD/DVD at speed %5.1f in %s%s %s mode for %s session.
+Starting to write DiskT@2 data.
+start lba: %ld last lba: %ld
+ START: %ld SECTORS: %ld INDEX0 %ld
+start/stop unit
+state change has occurred
+status: 0x%x 
+status phase timeout error
+%.*s.toc
+stopped on non data block
+stopped on non_data block
+stoptime
+Storage array
+%sTrack %02d: Total bytes read/written: %lld/%lld (%lld sectors).
+%s: Tracksize %lld bytes (%ld sectors, %ld samples)
+__strcat_chk
+__strcpy_chk
+__strdup
+strerror
+__strncpy_chk
+<St&<st"<Cf
+Subcode:
+Subcode len: %d
+subcode not found
+subrecodesecs
+support Buffer-Underrun-Free recording
+support C2 error pointers
+support changing side of disk
+support digital output on port 1
+support digital output on port 2
+Supported CD-RW media types: %02X
+Supported CD-RW media types according to MMC-4 feature 0x37:
+Supported modes: 
+Supported SCSI transports for this platform:
+support ejection of CD via START/STOP command
+Support for that may cease in the future versions of wodim. For now,
+support independent mute setting for each channel
+support Individual Disk Present feature
+support individual volume control setting for each channel
+support test writing
+SWABAUDIO 
+	-swab		Audio data source is byte-swapped (little-endian/Intel)
+swabbytes
+%swrite track data: error after %lld bytes
+%swrite track data: error after %lld bytes, retry with new packet
+%swrite track pad data: error after %lld bytes
+sync error
+synchronous data transfer error
+/sys/block/*/device/block*/queue/max_sectors_kb
+/sys/class/scsi_generic/*/device/block*/queue/max_sectors_kb
+syscon communication error
+syscon eeprom error
+syscon not ready
+syscon ram error
+syscon rom error
+Sysgen SC4000
+SYSGEN  SC4000          FAKE
+/sys/kernel
+system buffer full
+system resource failure
+t5iT$(@B
+Taeil Media Co.,Ltd.
+tagged overlapped commands (nn = queue tag)
+tagged overlapped commands, queue tag is 0x%X
+tail of track
+Taiyo Yuden Company Limited
+	-tao		Write disk in TAO mode.
+tape length error
+tape or electronic vertical forms unit not ready
+tape position error at beginning-of-medium
+tape position error at end-of-medium
+Target (%d,%d,%d): DMA max %d old max: %ld
+Target example:		%s
+target operating conditions have changed
+Target specifier:	%s
+TAROKO INTERNATIONAL CO.,LTD.
+tattoofile
+tattoofile=name	Use 'name' as DiskT@2 image file
+tattooinfo
+tattooinfo	Print image size info for DiskT@2 feature
+TDK Corporation
+teac_cdr50
+Teac CD-R50S
+teac_freeze
+teac_read_pma
+teac_write_pma
+temperature alarm
+TERMIOP 
+test unit ready
+test_unit_ready
+	textfile=name	Set the file with CD-Text data to 'name'
+	-text		Write CD-Text from information from *.inf or *.cue files
+The CDU-924 does not support CD-Text, disabling.
+The cuefile= option only works with -dao.
+The current problem looks like a buffer underrun.
+the device will be mapped to a block device file where possible.
+The information for this media may not be correct.
+The orange forum likes to get money for recent information.
+thermal sensor failure
+The type of the first track is used for the toc type.
+The unit seems to be hung and needs power cycling.
+the wodim documentation.
+third party device failure
+This drive or media does not support the 'BLANK media' command
+This drive or media does not support the 'FORMAT media' command
+This means that we are checking recorded media.
+This media cannot be written in streaming mode anymore.
+threshold condition met
+threshold parameters not supported
+TI EXIST-R   (0): 
+TI EXIST-ROM (3): 
+timeout on logical unit
+	timeout=#	set the default SCSI command timeout to #.
+timevaldiff
+TI NWA       (1): 
+TI PMA       (2): 
+toc2name
+toc2sess
+TOC data: 
+tocheader: 
+toc less disk
+toc read error
+	-toc		retrieve and print TOC/PMA data
+TOC too large.
+TOC Type: %d = %s
+To force the old ATAPI: method, replace ATAPI: with OLDATAPI:
+to get a list of drive specific options.
+to get a list of possible SCSI transport specifiers.
+to get a list of valid blanking options.
+to get a list of valid options.
+Too many indices for track %d
+Too many raw modes.
+too many segment descriptors
+too many target descriptors
+Too many tracks for this disk, last track number is %d.
+Too many types for track %d.
+too many windows specified
+Too many write modes.
+Total of %ld possible drive buffer underruns predicted.
+Total size:     %4llu MB (%02d:%02d.%02d) = %lld sectors
+Total size:     %4llu MB = %lld sectors
+Track %02d:    0 MB written.
+Track %02d:    0 of %4lld MB pad written.
+Track %02d:    0 of %4lld MB written.
+Track %02d: %4lld
+Track %02d: audio %4lld MB (%02d:%02d.%02d) %spreemp%s%s
+Track %02d: audio unknown length    %spreemp%s%s
+Track %02d: data  %4lld MB        
+Track %02d: data  unknown length
+Track %02d: writing %3lld KB of pad data.
+Track1 Start: '%s' (%ld)
+track: %3d 
+track at one not in PMA
+	track		blank a track
+Track %d %d Index: '%s'
+Track %d File '%s' Filesize %lld
+Track %d flags 0x%08X
+Track %d flags %X secspt %d secsize: %d isecsize: %d
+Track %d has unknown length.
+Track %d Index %d %ld
+Track %d ISRC: '%s'
+Track %d MCN: '%s'
+Track %d packet size %d exceeds buffer limit of %d sectors
+Track %d pregapsize %ld
+TRACK %d SECTORS: %ld
+Track %d start %ld
+track: %d start: %lld pregap: %ld
+Track %d Tracktype %s/%d
+Track %d Tracktype %X
+track following error
+track info:
+tracking failure
+tracking servo failure
+Tracklength
+Track limit (%d) exceeded
+track:lout 
+trackno=%d
+Tracknumber
+    trackoff %lld filesize %lld index1 %ld size %ld/%lld
+track size smaller than one layer, use --force to force burning.
+Trackstart
+Tracktitle
+transceiver mode changed to lvd
+transceiver mode changed to single-ended
+Transp. layer ind.:	%s
+Transport descr.:	%s
+Transport name:		%s
+Traxdata
+tray out
+Trouble flushing the cache
+	trtail		blank a track tail
+Try again with wodim blank=all.
+Trying to clear drive status.
+Trying to use high speed medium on low speed writer.
+Trying to use ultra high speed medium on a writer which is not
+Trying to use ultra high speed+ medium on a writer which is not
+try open(%s) return %i, errno %i
+try open(%s) return %i errno %i calling sg_mapdev(...)
+try open(%s) return %i, errno %i, cancel
+try open(%s) return %i, errno %i, trying next cdrom
+Try -raw16 option.
+Try -raw96p option.
+Try -raw96r option.
+Try -raw option.
+Try to load media by hand.
+Try to use 'driveropts=burnfree'.
+	tsize=#		Length of valid data in next track
+]Tspindle impending failure too many block reassigns
+	ts=#		set maximum transfer size for a single SCSI command
+T$t9T$l}
+T$,;T$<t'
+tuiT$(@B
+Turning Audio Master Q. R. on
+Turning BURN-Free off
+Turning BURN-Free on
+Turning forcespeed off
+Turning forcespeed on
+Turning hide CDR %s.
+Turning Power-Rec %s.
+Turning single session %s.
+Turning Speed-Read %s.
+Turning Varirec on.
+tyuden_ew50
++!U^2>LA
+'UJ9T 9L
+ultra high
+Ultra High speed Rewritable media
+Ultra High speed+ Rewritable media
+uMzCkQd_IuF{WiXg
+unable to acquire video
+unable to ensure reliable writing as the inserted disk does not support speed
+unable to ensure reliable writing as the inserted disk has no char id code
+unable to ensure reliable writing with the inserted disk - unsupported disk
+- [unable to fork()]
+unable to read TOC/PMA/Subcode/ATIP
+Unable to recover damaged disk
+unable to recover table-of-contents
+unable to reserve track, because track mode has been changed
+unable to spin up
+Unable to write multi session info file
+	unclose		unclose last session
+undefined syscon error
+unexpected inexact segment
+unexpected short read-attempt in faio_get_buf. size = %d, len = %d
+UNIDISC TECHNOLOGY CO.,LTD
+Unit Attention
+UNITECH JAPAN INC.
+unit not present
+Unknown CUE keyword '%s'
+unknown device type 0x%x
+unknown dye (old id code)
+unknown dye (reserved id code)
+Unknown file size for FILE '%s'
+Unknown filetype '%s'
+Unknown flag '%s'
+Unknown GigaRec value 0x%X.
+unknown/no device
+unknown (not in table)
+Unknown old Manufacturer code
+unknown syscon error
+Unknown user: %s
+Unknown write mode.
+unload_media
+unload tape failure
+unreachable copy target
+unrecordable disk
+unrecoverable damaged track cause too small writing area
+unrecoverable track descriptor encountered
+unrecovered read error
+unrecovered read error - auto reallocate failed
+unrecovered read error - recommend reassignment
+unrecovered read error - recommend rewrite the data
+unreserve
+	unreserve	unreserve a track
+unrestricted
+Unspecified command not implemented for this drive.
+unsuccessful soft reset
+unsupported
+unsupported 
+Unsupported drive type
+unsupported enclosure function
+Unsupported filetype '%s'
+Unsupported sector size %ld for audio
+Unsupported sector size %ld for data
+Unsupported sector size %ld for mode2
+&	unsupported segment descriptor type code
+unsupported target descriptor type code
+unwritten area encountered
+updated block read
+Usage: %s [options] track1...trackn
+usal_bufsize
+usal_close
+usal__close
+usal_cmd
+usal_cmd_err
+usal_cmd_status
+usal_dummy_ops
+usal_errfflush
+usal_errflush
+usal__errmsg
+usal_fileno
+usal_fprascii
+usal_fprbytes
+usal_fprintdev
+usal_fprinterr
+usal_fprsense
+usal_freebuf
+usal_getbuf
+usal_getdmacnt
+usal_getresid
+usal_havebus
+__usal_help
+usal_initiator_id
+usal_isatapi
+usal_natname
+usalo_getbuf: %ld bytes
+usal_open
+usal__open
+usal__open(%s) %d,%d,%d
+usalo_send(%s) wrote %d bytes (expected %d).
+usal_prascii
+usal_prbytes
+usal_printcdb
+usal_printdev
+usal_printerr
+usal_printf
+usal_printrdata
+usal_printresult
+usal_printstatus
+usal_printwdata
+usal_prsense
+usal_remote
+usal_remote_ops
+usal_reset
+usal_sense_code
+usal_sense_key
+usal_sensemsg
+usal_sense_qual
+usal_sense_table
+usal_setnonstderrs
+usal_settarget
+usal_settimeout
+usal_sfree
+usal_smalloc
+usal_sprascii
+usal_sprbytes
+usal_sprintcdb
+usal_sprinterr
+usal__sprinterr
+usal_sprintrdata
+usal_sprintresult
+usal_sprintstatus
+usal_sprintwdata
+usal_sprsense
+usal_std_ops
+usal_svhead
+usal_svtail
+__usal_times
+usal_version
+usal_vhead
+usal_vsetup
+usal_vtail
+usal_yes
+Use --devices to display the native names.
+	-useinfo	use *.inf files to overwrite audio options.
+Use	%s blank=help
+Use	%s dev=b,t,l driveropts=help -checkdrive
+Use	%s dev=help
+Use	%s -help
+Use tsize= option in %s mode to specify track size.
+Using CLONE LEADIN
+Using CLONE TOC....
+Using %d buffers of %d bytes.
+Using /dev/cdrom of unknown capabilities
+Using driver '%s' for identify.
+Using drive: %s
+Using libusal version '%s-%s'.
+Using remote (pipe) mode for interactive i/o.
+Using remote transport code version '%s-%s'
+Using Session At Once (SAO) for DVD mode.
+Using %s (%s).
+]Uspindle impending failure access times too high
+/usr/sbin/netscsid
+(valid) 
+Value %lld is too large for data type 'long'.
+Vanguard Disc Inc.
+varirec=
+VARIREC 
+Varirec offset is %d.
+varirec=val	Set VariRec Laserpower to -2, -1, 0, 1, 2
+Vendor_info    : '%.8s'
+vendor specific %d 
+Vendor Unique
+Vendor unique mode 15
+Vendor unique mode 7
+vendor unique sense code 0x%X
+	-verbose,-v	increment general verbose level by one
+	-Verbose,-V	increment SCSI command transport verbose level by one
+verify blank error
+verify error at beginning of lead-in
+verify error at beginning of lead-out
+verify error at beginning of track
+verify error at ending of lead-in
+verify error at ending of lead-out
+verify error at ending of track
+verify failed
+-version, -checkdrive, -prcap, -inq, -scanbus, --devices, -reset and -abort options.
+Version        : %d
+	-version	print version information and exit
+__vfprintf_chk
+VICTOR COMPANY OF JAPAN, LIMITED
+video acquisition error
+VIVA MAGNETICS LIMITED
+VIVASTAR AG
+voltage fault
+volume overflow
+volume set created or modified
+volume set deassigned
+volume set deleted
+volume set reassigned
+__vsnprintf_chk
+]Vspindle impending failure start unit times too high
+Waiting for data on stdin...
+Waiting for drive to calm down.
+Waiting for reader process to fill input buffer ... 
+	-waiti		wait until input is available before opening SCSI
+wait_unit_ready
+WARNING: adding dummy block to close track.
+Warning: blockdesc secsize %d differs from cap secsize %d
+Warning: Cannot gain SYS_RAWIO capability
+Warning: Cannot raise RLIMIT_MEMLOCK limits.
+WARNING: Cannot set priority using setpriority(),increased risk for buffer underruns.
+WARNING: Cannot set RR-scheduler
+Warning: controller creates hard SCSI failure when retrieving %s page.
+Warning: controller does not support %s page.
+Warning: controller returns wrong page %X for %s page (%X).
+Warning: controller returns wrong size for %s page.
+Warning: controller returns zero sized %s page.
+WARNING: Could not manage to find medium size, and more than 90 mins of data.
+WARNING: Data may not fit on current disk.
+WARNING: Data may not fit on standard 74min disk.
+WARNING: device not valid, trying to use default target...
+WARNING: Drive returns wrong startsec (%ld) using -150
+WARNING: Drive returns wrong startsec (%ld) using %ld from ATIP
+warning - enclosure degraded
+WARNING: found a microscopic small track size (%lld bytes).
+WARNING: ignoring selected speed.
+Warning: low file descriptor limit (%lld)
+WARNING: padding remainder of packet.
+WARNING: padding up to secsize.
+WARNING: RR-scheduler not available, disabling.
+WARNING: %s does not contain a 'Tracklength=' tag.
+WARNING: setting to minimum speed (2).
+WARNING: Some drives don't like fixation in dummy mode.
+warning - specified temperature exceeded
+WARNING: %s seems to be mounted!
+WARNING: Stdin is connected to a terminal.
+WARNING: %s: 'Tracklength=' contains illegal parameter '%s'.
+Warning, sysfs is not mounted on /sys!
+WARNING: the ATA: method is considered deprecated on modern kernels!
+WARNING: the ATAPI: method is considered deprecated on modern kernels!
+WARNING: the deprecated pseudo SCSI syntax found as device specification.
+Warning: There is absolutely NO DMA, operations thus are slow.
+Warning: The related Linux kernel interface code seems to be unmaintained.
+WARNING: Total disk size unknown. Data may not fit on disk.
+WARNING: Trying to use other driver on known device.
+Warning: Using ATA Packet interface.
+Warning: using default %s data.
+Warning: Using remote SCSI interface.
+W: Cannot do mlockall(2). Possibly increased risk for buffer underruns.
+WEALTH FAIR INVESTMENT LIMITED
+Well known lun
+who are you? No passwd entry found.
+Wodim 1.1.11
+wodim: media format asked
+Wodim version: 1.1.11
+Woongjin Media corp
+WRa Data
+write address is efm area - aleady written
+write append error
+write append position error
+write audio on reserved track
+write_buffer
+write-buffer too small, minimum is %dk. Disabling.
+write CD-R media
+write CD-RW media
+write_cdtext
+write CD-Text data: error after %ld bytes
+write complete
+write_continue
+Write Data: 
+write data error with CU
+write DVD-RAM media
+write DVD-R media
+write emergency occurred
+write error
+write error - auto reallocation failed
+Write error (Fatal Error/Time out)
+	write error - loss of streaming
+write error - padding blocks added
+write error - recommend reassignment
+write error - recovered with auto reallocation
+write error - recovery failed
+write error recovery failed
+write error - recovery needed
+write error track recovered
+write_g0
+write_g1
+write_g5
+write high  speed       CD-RW media
+write_leadin
+write leadin data: error after %ld bytes
+Write Lead-in time: 
+write_leadout
+write leadout data: error after %ld bytes
+write multi speed       CD-RW media
+write_packet_data
+write protected
+write request means mixed data mode
+write_secs
+  Write speed # %d:
+Write speed %d of medium not sufficient for this writer.
+Write speed %d of writer not sufficient for this medium.
+write_start
+write_teac_g1
+write type operation while in read capable state
+write ultra high speed  CD-RW media
+write ultra high speed+ CD-RW media
+write_xg0
+write_xg1
+write_xg5
+write_xscsi
+Writing last record for this track.
+Writing lead-in...
+Writing lead-in at sector %ld
+Writing Leadout...
+Writing pregap for track %d at %ld
+Writing  time: 
+]Wspindle impending failure channel parametrics
+wstarttime
+x2\/@Y)D5c
+	-xa1		Subsequent tracks are CD-ROM XA mode 2 form 1 - 2056 bytes
+	-xa2		Subsequent tracks are CD-ROM XA mode 2 form 2 - 2324 bytes
+	-xamix		Subsequent tracks are CD-ROM XA mode 2 form 1/2 - 2332 bytes
+	-xa		Subsequent tracks are CD-ROM XA mode 2 form 1 - 2048 bytes
+Xcitec Inc.
+<>"!x|fcDBZ]
+XR-W2001
+XR-W2010
+]Xspindle impending failure controller detected
+__xstat64
+<xt:<*t6
+yamaha_cdr100
+Yamaha CDR-100
+Yamaha CDR-400
+yamaha force cd speed
+Yamaha Tattoo Page
+You did use a %s speed medium on an improper writer or
+You may have used an ultra low speed medium on a high speed writer.
+you used a speed=# option with a speed too low for this medium.
+]Yspindle impending failure throughput performance
+<zJfWBp^m
+zoned formatting failed due to spare linking
+]Zspindle impending failure seek time performance
+$zV	7WE$

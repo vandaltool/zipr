@@ -1,0 +1,101 @@
+appsink name=sink caps="%s"
+                                      blue_mask = (int)  0x0000FF00,
+__bss_start
+/build/buildd/shotwell-0.12.3/thumbnailer/shotwell-video-thumbnailer.vala
+Could not get snapshot dimension
+could not get snapshot format
+Could not make snapshot
+__data_start
+/dev/stdout
+                                      endianness = (int) BIG_ENDIAN,
+Failed to play the file: couldn't get state.
+Failed to play the file: couldn't set state
+file %s: line %d: uncaught error: %s (%s, %d)
+filesrc location="%s" ! decodebin2 ! ffmpegcolorspace ! 
+' for value type `
+                                      framerate = (fraction) [ 0, max ]
+g_clear_error
+gdk_pixbuf_new_from_data
+gdk_pixbuf_save
+g_error_free
+GLIBC_2.0
+__gmon_start__
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_param_spec_internal
+g_param_spec_types
+g_quark_to_string
+                                      green_mask = (int) 0x00FF0000,
+g_return_if_fail_warning
+g_signal_emit_by_name
+gst_bin_get_by_name
+gst_bin_get_type
+gst_buffer_get_caps
+gst_caps_get_structure
+gst_caps_unref
+gst_element_get_state
+gst_element_seek_simple
+gst_element_set_state
+gst_init
+gst_mini_object_unref
+gst_object_unref
+gst_parse_launch
+g_strconcat
+g_strdup_printf
+gst_structure_copy
+gst_structure_free
+gst_structure_get_int
+g_thread_init
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, TYPE_SHOTWELL_THUMBNAILER)
+g_type_check_value_holds
+G_TYPE_CHECK_VALUE_TYPE (value, TYPE_SHOTWELL_THUMBNAILER)
+g_type_class_peek_parent
+g_type_create_instance
+g_type_free_instance
+g_type_fundamental_next
+g_type_init
+g_type_is_a
+g_type_is_a (object_type, TYPE_SHOTWELL_THUMBNAILER)
+g_type_name
+g_type_register_fundamental
+g_value_type_compatible
+g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value))
+                                      height = (int) [ 1, max ],
+invalid object type `
+invalid unclassed object pointer for value type `
+_IO_stdin_used
+_Jv_RegisterClasses
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgdk_pixbuf-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgstreamer-0.10.so.0
+libgthread-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+Live sources not supported yet.
+param_spec_shotwell_thumbnailer
+pull-preroll
+                                      red_mask = (int)   0xFF000000,
+ShotwellThumbnailer
+shotwell_thumbnailer_construct
+shotwell_thumbnailer_get_type
+shotwell_thumbnailer_main
+shotwell_thumbnailer_new
+shotwell_thumbnailer_ref
+shotwell_thumbnailer_unref
+usage: %s [filename]
+value_get_shotwell_thumbnailer
+value location for `%s' passed as NULL
+value_set_shotwell_thumbnailer
+value_take_shotwell_thumbnailer
+video/x-raw-rgb,bpp = (int) 32, depth = (int) 32,
+                                      width = (int) [ 1, max ],
+ Writes video thumbnail to stdout

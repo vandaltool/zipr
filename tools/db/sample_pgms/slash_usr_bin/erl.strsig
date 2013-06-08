@@ -1,0 +1,22 @@
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+BINDIR=$ROOTDIR/erts-5.8.5/bin
+#!/bin/sh
+# compliance with the License. You should have received a copy of the
+# %CopyrightBegin%
+# %CopyrightEnd%
+# Copyright Ericsson AB 1996-2009. All Rights Reserved.
+EMU=beam
+# Erlang Public License along with this software. If not, it can be
+exec $BINDIR/erlexec ${1+"$@"}
+export BINDIR
+export EMU
+export PROGNAME
+export ROOTDIR
+PROGNAME=`echo $0 | sed 's/.*\///'`
+# retrieved online at http://www.erlang.org/.
+ROOTDIR=/usr/lib/erlang
+# Software distributed under the License is distributed on an "AS IS"
+# The contents of this file are subject to the Erlang Public License,
+# the License for the specific language governing rights and limitations
+# under the License.
+# Version 1.1, (the "License"); you may not use this file except in

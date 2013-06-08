@@ -1,0 +1,14 @@
+   $0 method-name type1:parameter1 type2:parameter2 ...
+   $0 PurpleCoreQuit
+#!/bin/sh
+    cat <<EOF
+dbus-send --dest=im.pidgin.purple.PurpleService --type=method_call /im/pidgin/purple/PurpleObject im.pidgin.purple.PurpleInterface.$METHOD_NAME "$@"
+Examples:
+    exit 1
+if test -z "$METHOD_NAME"
+it does not print the return value.
+METHOD_NAME=$1
+This program calls purple API functions using DBus.  As opposed to purple-send,
+This shell script just invokes dbus-send, see man dbus-send for how
+to specify the parameters.
+Use dbus-viewer to get the list of supported functions and their parameters.

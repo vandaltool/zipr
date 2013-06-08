@@ -1,0 +1,3 @@
+import virtualenv
+#!/usr/bin/python
+virtualenv.main()

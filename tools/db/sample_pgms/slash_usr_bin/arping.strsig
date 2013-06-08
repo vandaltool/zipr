@@ -1,0 +1,72 @@
+  -A : ARP answer mode, update your neighbours
+arping: device (option -I) is required
+arping: invalid source %s
+arping: no source address in not-DAD mode
+arping: recvfrom
+ARPING %s 
+arping: setuid
+arping: socket
+arping: unknown host %s
+arping: unknown iface %s
+arping utility, iputils-ss%s
+  -b : keep broadcasting, don't go unicast
+broadcast
+__bss_start
+  -c count : how many packets to send
+  -D : duplicate address detection mode
+  destination : ask for what ip address
+%d request(s)
+__errno_location
+__fprintf_chk
+  -f : quit on first reply
+from %s %s
+gethostbyname2
+getsockname
+gettimeofday
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+h?bfDUAqc:w:s:I:V
+  -I device : which ethernet device to use (eth0)
+inet_aton
+inet_ntoa
+Interface "%s" is down
+Interface "%s" is not ARPable
+Interface "%s" is not ARPable (no ll address)
+ioctl(SIOCGIFFLAGS)
+_IO_stdin_used
+_Jv_RegisterClasses
+ %ld.%03ldms
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libsysfs.so.2
+__memcpy_chk
+__printf_chk
+  -q : be quiet
+Received %d response(s)
+recvfrom
+s20101006
+%s%d broadcast(s)
+Sent %d probes (%d broadcast(s))
+setsockopt
+%s from 
+sigaction
+sigaddset
+sigemptyset
+sigprocmask
+  -s source : source ip address
+__stack_chk_fail
+sysfs_get_classdev_attr
+sysfs_get_classdev_attr(broadcast)
+sysfs_open_class_device
+sysfs_open_class_device(net)
+sysfs_read_attribute
+ UNSOLICITED?
+Usage: arping [-fqbDUAV] [-c count] [-w timeout] [-I device] [-s source] destination
+  -U : Unsolicited ARP mode, update your neighbours
+  -V : print version and exit
+WARNING: interface is ignored
+WARNING: setsockopt(SO_DONTROUTE)
+  -w timeout : how long to wait for a reply

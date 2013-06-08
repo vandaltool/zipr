@@ -1,0 +1,38 @@
+  1:-help|1:-version)
+    BASE_NAME=`basename $0`
+    BASE_NAME=`echo $0 | sed 's!.*/!!'`
+  # be ignored (if XUSERFILESEARCHPATH is set)
+#!/bin/sh
+case "$#:$1" in
+# Copyright Thomas Esser, 1998. Permission to distribute under the terms
+exec xdvi.bin $NAMEOPT ${1+"$@"}
+  # For R3, we have to set XAPPLRESDIR.
+  # For R4 or later, we have to set XFILESEARCHPATH, since XAPPLRESDIR might
+  ### for user customizations in current X
+have_basename=`basename foo/bar 2>&1 | grep -i 'not found'`
+# -help and -version only used to work if they were the only options,
+if [ "$have_basename"xxx = "xxx" ]; then
+if test -n "$xdviappfile"; then
+    NAMEOPT=;;
+    NAMEOPT="-name $BASE_NAME";;
+# of the GNU general public license version 2 or later.
+# resource file in $XDVIINPUTS/xdvi is read by xdvi.bin.
+RUNNING_BSH=
+  && { RUNNING_BSH=true; export RUNNING_BSH; exec /bin/bsh $0 ${1+"$@"}; }
+RUNNING_SH5=
+  && { RUNNING_SH5=true; export RUNNING_SH5; exec /bin/sh5 $0 ${1+"$@"}; }
+# so the "-name xdvi" parameter wasn't used in that case. With current
+  ### SU: removed, xdvik won't work with R3 anyway, and XAPPLRESDIR is
+test -f /bin/bsh && test -z "$RUNNING_BSH" \
+test -f /bin/sh5 && test -z "$RUNNING_SH5" \
+  && test x"`(uname -s) 2>&1`" = xAIX \
+  && test x"`(uname -s) 2>&1`" = xULTRIX \
+# This is the xdvi wrapper script for teTeX, version 0.2.
+# This script sets some environment variables to make sure that xdvi's
+# with older xdvik and plain xdvi versions.
+  ### XAPPLRESDIR="$xdviappdir"; export XAPPLRESDIR
+  xdviappdir=`dirname "$xdviappfile"`
+xdviappfile=`kpsewhich -progname=xdvi --format='other text files' XDvi`
+  xdviapppath="${xdviappdir}/%l_%t/%N:${xdviappdir}/%N"
+# xdvik, it should work in any case, but we keep this logic for compatibility
+  XFILESEARCHPATH="$xdviapppath:${XFILESEARCHPATH-%D}"; export XFILESEARCHPATH

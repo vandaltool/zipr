@@ -1,0 +1,70 @@
+app-name
+APP_NAME
+__bss_start
+category
+critical
+expire-time
+__fprintf_chk
+g_ascii_strtoull
+g_ascii_table
+g_error_free
+g_error_new
+g_get_prgname
+GLIBC_2.0
+GLIBC_2.3.4
+g_log_set_always_fatal
+__gmon_start__
+g_object_unref
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_error_quark
+g_printf
+g_set_prgname
+g_strcompress
+g_strfreev
+g_strsplit
+g_strtod
+g_strv_length
+g_type_check_instance_cast
+g_type_init
+ICON[,ICON...]
+Invalid hint syntax specified. Use TYPE:NAME:VALUE.
+Invalid hint type "%s". Valid types are int, double, string and byte.
+Invalid number of options.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libnotify.so.4
+No summary specified.
+notify_init
+notify_notification_new
+notify_notification_set_app_name
+notify_notification_set_category
+notify_notification_set_hint_byte
+notify_notification_set_hint_double
+notify_notification_set_hint_int32
+notify_notification_set_hint_string
+notify_notification_set_timeout
+notify_notification_set_urgency
+notify_notification_show
+notify-send
+notify_uninit
+Specifies an icon filename or stock icon to display.
+Specifies basic extra data to pass. Valid types are int, double, string and byte.
+Specifies the app name for the icon
+Specifies the notification category.
+Specifies the timeout in milliseconds at which to expire the notification.
+Specifies the urgency level (low, normal, critical).
+strcasecmp
+<SUMMARY> [BODY] - create a notification
+TYPE:NAME:VALUE
+TYPE[,TYPE...]
+Unknown urgency %s specified. Known urgency levels: low, normal, critical.
+Value "%s" of hint "%s" could not be parsed as type "%s".
+Version of the package.

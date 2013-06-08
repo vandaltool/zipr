@@ -1,0 +1,261 @@
+     15 => 'domain-name',
+     15 => \@fmt_string,
+    209 => 'config-file',
+    209 => \@fmt_string,
+    210 => \@fmt_string,
+    210 => 'path-prefix',
+    211 => \@fmt_uint32
+    211 => 'reboottime'
+     54 => \@fmt_oneip,
+     54 => 'next-server',
+     67 => \@fmt_string,
+      6 => 'domain-name-servers',
+      6 => \@fmt_multiip,
+	$adata = '';
+	$adata .= "\xff";
+%after    = ();
+	$after{$onum} = $odata;
+	$aoff = $patch_start;
+	$bdata = '';
+	$bdata .= "\xff";
+%before   = ();
+	$before{$onum} = $odata;
+    $block = delete_option($num, $block);
+	    $block = substr($block, 0, $x);
+	$boff = $patch_start;
+@clear    = ();
+close(FILE);
+	$c = substr($s, $i, 1);
+		$d .= $addr;
+    $data[0] = add_option($o, $before{$o}, $data[0]);
+    $data[0] = delete_option($o, $data[0]);
+    $data[1] = add_option($o, $after{$o}, $data[1]);
+    $data[1] = delete_option($o, $data[1]);
+	delete $after{$onum};
+	    # Delete a null option
+	delete $before{$onum};
+	    # Delete this option
+	die "$0: $file: failed to write options: $!\n";
+    die "$0: $file: patch block not found or file corrupt\n";
+	die "$0: option $num has too much data (max 255 bytes)\n";
+    } else {
+	} else {
+    } elsif (length($data) > 255) {
+    } elsif ($n =~ /^[0-9]+$/ && $n >= 1 && $n <= 254) {
+	} elsif ($o == 0) {
+	} elsif ($o == 255) {
+    } elsif ($opt eq '-a' || $opt eq '--after') {
+    } elsif ($opt eq '-b' || $opt eq '--before') {
+    } elsif ($opt eq '-d' || $opt eq '--delete') {
+    } elsif ($opt eq '-h' || $opt eq '--help') {
+    } elsif ($opt eq '-l' || $opt eq '--list') {
+    } elsif ($opt eq '-n' || $opt eq '--no-write' || $opt eq '--dry-run') {
+	    # End marker - truncate block
+$err      = 0;
+	    $err = 1;
+    $err = $usage = 1;
+	    $err = $usage = 1;
+	$err = $usage = 1;
+    exit($err);
+	$file = $opt;
+@fmt_multiip = ("ip-address-list", \&parse_multiip, \&show_ip);
+@fmt_oneip   = ("ip-address", \&parse_oneip, \&show_ip);
+@fmt_string  = ("string", \&parse_string, \&show_string);
+@fmt_uint32  = ("uint32", \&parse_uint32, \&show_uint32);
+	    foreach $addr (@addrs) {
+	foreach $h (split(/\:/, $s)) {
+    foreach $i (sort { $a <=> $b } keys(%option_names)) {
+foreach $o (@clear) {
+foreach $o (keys(%after)) {
+foreach $o (keys(%before)) {
+foreach $opt (keys(%option_names)) {
+    foreach $s (split(/,/, $l)) {
+    for ($i = 0; $i < length($l); $i++) {
+	for ($i = 0; $i < length($l); $i += 4) {
+    for ($i = 0; $i < length($s); $i++) {
+	    = gethostbyname($s);
+	if ($addrtype == AF_INET) {
+    if ($alen == 0) {
+    if ($blen == 0) {
+	if ($c eq "\'" || $c eq '!') {
+	if (defined($file)) {
+if (!defined($file) && !$usage) {
+	if (!defined($odata)) {
+	if (!defined($oname)) {
+	if (!defined($onum)) {
+    if (defined($option_format{$opt})) {
+    if (defined($option_rnames{$n})) {
+if (!defined($patch_start)) {
+if ($err || $usage) {
+    if (length($adata) > 0) {
+    if (length($bdata) > 0) {
+    if (length($data) == 0) {
+    if (length($l) & 3) {
+    if (length($l) == 4) {
+if ($list) {
+if (!$no_write) {
+	if ($o == 0) {
+	if ($o == $num) {
+    if ($opt !~ /^-/) {
+    if ($s =~ /^[0-9]+$/) {
+    if ($s =~ /^[0-9a-f]{1,2}(:[0-9a-f]{1,2})*$/) {
+if (!scalar(@clear)) {
+if ($usage) {
+    if (!write_optsets(\*FILE, $patch_start, @data)) {
+	    last;
+	    last if (length($odata) != $l); # Incomplete option
+$list     = 0;
+	$list = 1;
+    list_options('-a ', $data[1]);
+    list_options('-b ', $data[0]);
+$mode = $no_write ? '<' : '+<';
+    my @a = ();
+    my $addr;
+    my $aoff = 0;
+	my @b = ();
+    my $boff = 0;
+    my $d = '';
+    my $data, $bdata, $adata;
+    my($file) = @_;
+    my($file, $patch_start, $bdata, $adata) = @_;
+    my @h;
+	my @h = ();
+    my $hdr = pack("VVVV", $boff, length($bdata), $aoff, length($adata));
+    my $i;
+    my($l) = @_;
+    my($magic, $len, $flags, $boff, $blen, $aoff, $alen)
+    my($n) = @_;
+	my($name,$aliases,$addrtype,$length,@addrs)
+    my($name,$aliases,$addrtype,$length,@addrs) = gethostbyname($s);
+    my ($num, $block) = @_;
+    my ($num, $data, $block) = @_;
+	    my $odata = substr($data, $x+2, $l);
+    my $o, $i, $c;
+    my $o, $l, $c, $x;
+    my($opt, $arg) = @_;
+    my $patch_start = (stat($file))[7];
+    my($pfx, $data) = @_;
+    my $s;
+    my($s) = @_;
+    my $v;
+    my $x, $o, $l;
+	    next;
+$no_write = 0;
+	$no_write = 1;
+    $no_write = 1;		# No modifications requested
+    $o = "\'";
+    $o .= "\'";
+	    $o .= "\'\\$c\'";
+	    $o .= $c;
+	$odata = parse_option($onum, $odata);
+	$odata = shift(@ARGV);
+	($o, $l) = unpack("CC", substr($block, $x, 2));
+	($o, $l) = unpack("CC", substr($data, $x, 2));
+	$oname = shift(@ARGV);
+	$onum = option_number($oname);
+open(FILE, $mode, $file)
+%option_format = (
+%option_names = (
+		$option_names{$i}, $i, $option_format{$i}[0];
+		$option_names{$o} || sprintf("%d", $o),
+%option_rnames = ();
+    $option_rnames{$option_names{$opt}} = $opt;
+    or die "$0: cannot open: $file: $!\n";
+	$patch_start = $aoff if ($aoff < $patch_start);
+	$patch_start = $boff if ($boff < $patch_start);
+($patch_start, @data) = read_optsets(\*FILE);
+	$patch_start += length($adata);
+	$patch_start += length($bdata);
+	    printf "%s%-20s %s\n", $pfx,
+	printf STDERR "%-23s %3d  %s\n",
+    printf STDERR "%-23s %-3s  %s\n", 'Name', 'Num', 'Value Format';
+	    print STDERR "$0: unable to parse data for option $oname\n";
+	    print STDERR "$0: unknown option name: $oname\n";
+    print STDERR "--after  option value   -a   Add an option after DHCP data\n";
+    print STDERR "--before option value   -b   Add an option before DHCP data\n";
+    print STDERR "--delete option         -d   Delete an option\n";
+    print STDERR "--dry-run               -n   Don't modify the target file\n";
+    print STDERR "--help                  -h   Display this help text\n";
+	print STDERR "Invalid option: $opt\n";
+    print STDERR "--list                  -l   List set options\n";
+    print STDERR "\n";
+    print STDERR "Options:\n";
+    print STDERR "The following DHCP options are currently recognized:\n";
+    print STDERR "Usage: $0 options pxelinux.0\n";
+	    push(@b, hex $h);
+	push(@clear, $onum);
+	    push(@h, inet_ntoa(substr($l, $i, 4)));
+	push(@h, sprintf("%02x", unpack("C", substr($l, $i, $1))));
+    return $_[0];
+    return 1;
+    return ($addrtype == AF_INET) ? $addrs[0] : undef;
+    return $block;
+	return $block;
+	return $block . pack("CC", $num, length($data)) . $data;
+    return $d ne '' ? $d : undef;
+    return join(':', @h);
+	return join(',', @h);
+	return $n+0;
+    return $o;
+	return $option_rnames{$n};
+	return pack("C", @b);
+	return pack("N", $s);
+    return parse_generic($arg);
+    return ($patch_start, $bdata, $adata);
+    return show_generic($arg);
+	return undef;
+    return undef if ($len < 7*4);
+    return undef if ($magic != 0x2983c8ac);
+	return undef unless (print $file $adata);
+	return undef unless (print $file $bdata);
+    return undef unless (print $file $hdr);
+	return undef unless (read($file, $adata, $alen) == $alen);
+	return undef unless (read($file, $bdata, $blen) == $blen);
+    return undef unless (read($file, $data, 7*4) == 7*4);
+    return undef unless (seek($file, 8+3*4, SEEK_SET));
+    return undef unless (seek($file, 8, SEEK_SET));
+	return undef unless (seek($file, $aoff, SEEK_SET));
+	return undef unless (seek($file, $boff, SEEK_SET));
+	return unpack("N", $l);
+	return $v if (defined($v));
+# Set PXELINUX hard-coded options
+		show_option($o, $odata);
+	    # Skip to the next option
+sub add_option($$$)
+sub delete_option($$)
+sub list_options($$)
+sub option_number($)
+sub parse_generic($)
+sub parse_multiip($)
+sub parse_oneip($)
+sub parse_option($$)
+sub parse_string($)
+sub parse_uint32($)
+sub read_optsets($)
+sub show_generic($)
+sub show_ip($)
+sub show_option($$)
+sub show_string($)
+sub show_uint32($)
+	    substr($block, $x, 1) = '';
+	    substr($block, $x, $l+2) = '';
+sub usage()
+sub write_optsets($$@)
+    truncate($file, $patch_start);
+undef $file;
+	= unpack("VVVVVVV", $data);
+    usage();
+$usage    = 0;
+	$usage = 1;
+use bytes;
+use Fcntl;
+use Socket;			# For gethostbyname
+#!/usr/bin/perl
+	$v = $option_format{$opt}[1]($arg);
+	$v = $option_format{$opt}[2]($arg);
+while (defined($opt = shift(@ARGV))) {
+    while ($x < length($block)) {
+    while ($x < length($data)) {
+	    $x++;
+    $x = 0;
+	    $x += $l+2;

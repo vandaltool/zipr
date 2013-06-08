@@ -1,0 +1,134 @@
+    }    
+	    # Child, go on immediately
+	    chomp $driver;
+close $fileh;
+	close $fileh or die "\nError in child...\n";
+	    close OUTPUT;
+compile_db [ -f ] [ -t type ] [ -d destdir] [ -j n ] [driver1] [driver2] ...
+# Compute the overview (only printer/driver combos which give a PPD)
+# create lists to process
+		@data = $db->get_combo_data_xml($driver, $printer);
+		@data = $db->getppd();
+			 ((!$db->{'dat'}{'cmd'}) and 
+			  (!$db->{'dat'}{'ppdfile'})));
+$db->get_overview(1, ($filetype eq "ppd" ? 2 : 0));
+ -d destdir  put PPD files in this directory
+# Default file type are PPD files
+    $destdir = $opt_d;
+    $destdir = "$pwd/combo-xml" if not defined( $destdir );
+    $destdir = "$pwd/ppd" if not defined( $destdir );
+# Destination directory
+	    # Determine file name for the output file
+		die "Cannot write $filename!";
+    die "Unknown file type: $opt_t!\n";
+		# Do not create a PPD file if the printer/driver combo
+# Do the whole world
+ driver1 driver2 ...  
+    } else {
+} else {
+	    } else {
+} elsif ($opt_t eq "xml") {
+    } elsif( ! $pid ){
+		# empty and no custom PPD file is available
+	exit (0);
+exit (0);
+    exit 1;
+ -f       force: proceed even if the destination directory exists
+	$fileh = spawn_child();
+    $filetype = "ppd";
+    $filetype = "xml";
+# Find all printer/driver combinations
+# Form a combo-computing child process to handle a flock of combos
+    for my $driver (@{$printer->{'drivers'}}) {
+for my $printer (@{$db->{"overview"}}) {
+for( $n = 0; $n < $opt_j; ++$n ){
+	    # Generate the file ...
+    # Generic PPDs
+getopts('ft:j:hd:') || help();
+help() if ($opt_h);
+	if (!@ARGV || Foomatic::DB::member($driver, @ARGV)) {
+    if( ! defined( $pid ) ){
+	    if ($filename =~ /^\-/) {
+	    if ($filetype eq 'xml') {
+    if (open CHILD, '|-') {
+if( $opt_d ){
+if (!$opt_t) {
+if (($opt_t eq "ppd") || ($opt_t eq "cups") || ($opt_t eq "ppr")) {
+    if ($pcount++ > 25) {
+if( $pid ){
+		# is not possible or if the renderer command line is
+ -j n     n==number of work processes to run at the same time
+	    last;
+mkdir $destdir, 0777 or $force or die "\nCannot make destination directory (If the directory already exists and you\nwant to proceed anyway, use the \"-f\" option)!\n";
+my $combo;
+my @combos;
+my ($db) = new Foomatic::DB;
+my $debug = 0;
+my $destdir;
+my $fileh=spawn_child();
+	    my $filename = "$destdir/$printer-$driver$suffix";
+my $force = ($opt_f ? 1 : 0);
+	my $j = $n % $opt_j;
+my $n = 0;
+my $pcount=0;
+my (@pids, $pid );
+    my $poid = $printer->{'id'};
+	my $pos = int(rand(scalar(@combos)));
+		my $possible = $db->getdat($driver, $printer);
+	    my ($printer,$driver) = split(',',$line);
+	    my $printer = Foomatic::DB::translate_printer_id($printer);
+my $pwd = cwd;
+my @rcombos;
+my $rcombos = [];
+	    #next if (-f $filename);
+		next if ((!$possible) or 
+	# No more input!
+# Now, the processing loop:
+# OK, spawn n manager processes
+          only compile the database for these drivers
+	    open OUTPUT, "> $filename" ||
+$opt_j += 0;
+$opt_j = 0 if( not defined $opt_j );
+$opt_j = 1 if( not $opt_j or $opt_j < 0 );
+    $opt_t = "ppd";
+	$pcount=0;
+# -*- perl -*-
+    $pid = fork();
+	print "ALL DONE" if $debug;
+    print $fileh $combo;
+print "Monitor process $$\n";
+	print "$n: combos " . scalar(@combos) . ", pos $pos, id $j\n" if $debug;
+	    print OUTPUT join('', @data);
+    print "PROCESS $n - $$, $combo" if $debug;;
+    print "process $pid\n" if $debug;
+print STDERR "Done.\n";
+    print STDERR <<EOF;
+    print STDERR "Generating Foomatic PPD files ...\n";
+    print STDERR "Generating Foomatic printer/driver combo XML files ...\n";
+print STDERR "\n";
+print STDERR "\nStoring files in directory $destdir.\n";
+		print STDERR "WARNING: $printer with $driver gives a bad PPD file name: $filename\n\n";
+	    print STDERR "  Worker $$ ...printer $printer, driver $driver\n";
+	    push (@combos, "$poid,$driver\n");
+	push( @{$rcombos->[$n % $opt_j]}, splice( @combos, $pos, 1 ) );
+    $rcombos->[$n] = [];
+	@rcombos = @{$rcombos->[$n]};
+	return \*CHILD;
+	    ## Skip entirely if we can
+	    # Skip on bad file name
+sub help {
+sub spawn_child {
+    $suffix = ".ppd";
+    $suffix = ".xml";
+ -t type  output file type: ppd or xml
+use Cwd;
+use Foomatic::DB;
+use Foomatic::Defaults;
+use Getopt::Std;
+#!/usr/bin/perl
+	warn( "cannot fork child process" );
+	# we wait for the processes
+while($combo=pop(@rcombos)) {
+while( @combos ){
+	while ($line=<STDIN>) {
+	while( ($pid = wait()) > 0 ){ print "DONE $pid\n" if $debug };

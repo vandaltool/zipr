@@ -1,0 +1,28 @@
+__bss_start
+Decrypted file size: [%llu]
+ecryptfs_parse_stat
+Encrypted
+Error attempting to read from file [%s]; errno msg = [%m]
+Error opening file [%s] for RD_ONLY access; errno msg = [%m]
+File version: [%d]
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+HMAC disabled
+HMAC enabled
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libecryptfs.so.0
+/lib/ld-linux.so.2
+Metadata in the extended attribute region
+Metadata in the header region
+Number of header bytes at front of file: [%zu]
+Plaintext
+__printf_chk
+%s <filename>
+__stack_chk_fail
+Valid eCryptfs metadata information not found in [%s]

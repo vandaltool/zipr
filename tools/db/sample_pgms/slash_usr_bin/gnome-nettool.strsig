@@ -1,0 +1,688 @@
+%02x:%02x:%02x:%02x:%02x:%02x
+^[ ]*[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[ ]*$
+100baseT4
+100baseTx
+100baseTx-FD
+100baseTx-HD
+10baseT-FD
+10baseT-HD
+16_ethernet.xpm
+16_loopback.xpm
+16_plip.xpm
+16_ppp.xpm
+ 2003-2008 %s
+activate
+Address Type
+A domain address was not specified
+-A inet -A inet6 -ln
+-A inet -ln
+An error occurred when try to run '%s'
+A network address was not specified
+Any / All Information
+bindtextdomain
+bind_textdomain_codeset
+/bin:/usr/bin:.
+Broadcast
+__bss_start
+BTracing route to %s
+builder != NULL
+Bytes	Source	Seq	Time	Units
+cairo_destroy
+Canonical Name
+Carlos Garcia Campos <carlosgc@gnome.org>
+channel != NULL
+clean_gtk_tree_view
+Collisions:	%s
+comments
+ --configure 
+copyright
+Copyright 
+CPU / OS Type
+data != NULL
+__data_start
+%d bytes from %s icmp_%3c=%d ttl=%d time=%s %s
+dcgettext
+Default Information
+delete-event
+Destination
+Destination	Gateway	Netmask	Interface
+Disabled
+documenters
+%d packets transmitted, %d %s
+%d %s %s %s ms
+%d: %s %s %sms
+__errno_location
+Error: %s
+Ethernet Interface
+finger_button
+Finger command to run
+finger_copy_to_clipboard
+finger_do
+finger_foreach
+finger_host
+finger_host_label
+finger_input_box
+finger != NULL
+finger_output
+finger_stop
+finger_type
+finger_user
+finger_user_label
+g_ascii_formatd
+g_ascii_strcasecmp
+g_ascii_strtod
+g_assertion_message_expr
+g_build_filename
+g_child_watch_add
+gdk_beep
+gdk_cairo_create
+gdk_cursor_new
+gdk_cursor_unref
+gdk_pixbuf_get_type
+gdk_pixbuf_new_from_file
+gdk_window_set_cursor
+g_error_free
+gethostbyname2
+Get netstat information.  Valid options are: route, active, multicast.
+getsockname
+Getting active Internet connections
+Getting group memberships
+Getting information of all users on "%s"
+Getting information of %s on "%s"
+Getting routing table
+Getting the whois information of %s
+g_file_test
+g_get_charset
+g_get_current_dir
+g_getenv
+ghelp:gnome-nettool
+g_idle_add
+g_io_add_watch
+g_io_channel_get_encoding
+g_io_channel_read_chars
+g_io_channel_read_line
+g_io_channel_set_encoding
+g_io_channel_unix_new
+g_io_channel_unref
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+glibtop_close
+glibtop_get_netlist
+glibtop_get_netload
+glibtop_init
+g_list_append
+g_list_find_custom
+g_list_free
+g_list_length
+g_locale_to_utf8
+g_malloc
+g_malloc0
+g_malloc_n
+__gmon_start__
+GnComboHistory
+gn_combo_history_add
+gn-combo-history.c:210
+gn_combo_history_clear
+gn_combo_history_get_combo
+gn_combo_history_get_id
+gn_combo_history_get_max_history
+gn_combo_history_get_property
+gn_combo_history_get_type
+gn_combo_history_init
+gn_combo_history_new
+gn_combo_history_set_combo
+gn_combo_history_set_id
+gn_combo_history_set_max_history
+gn_combo_history_set_popdown_strings
+gn_combo_history_set_property
+gn_combo_history_settings_load
+gn_combo_history_settings_register_id
+gn_combo_history_settings_save
+GN_IS_COMBO_HISTORY (history)
+GN_IS_COMBO_HISTORY (netinfo->history)
+GN_IS_COMBO_HISTORY (netinfo->history_user)
+GN_IS_COMBO_HISTORY (object)
+gn_quit_app
+g_object_class_install_property
+g_object_get_data
+g_object_new
+g_object_ref
+g_object_set
+g_object_set_data
+g_object_unref
+g_param_spec_pointer
+g_param_spec_string
+g_param_spec_uint
+g_path_is_absolute
+Graphical user interface for common network utilities
+g_regex_match_simple
+g_regex_new
+g_regex_replace
+g_regex_replace_literal
+g_regex_unref
+g_return_if_fail_warning
+g_settings_get_strv
+g_settings_new
+g_settings_set_strv
+g_signal_connect_data
+g_slist_append
+g_slist_find_custom
+g_slist_foreach
+g_slist_free
+g_slist_last
+g_slist_length
+g_slist_prepend
+g_slist_remove
+g_snprintf
+g_source_remove
+g_spawn_async_with_pipes
+g_spawn_close_pid
+g_spawn_command_line_async
+g_sprintf
+g_strchomp
+g_strchug
+g_strcmp0
+g_strconcat
+g_strdelimit
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strfreev
+g_string_append
+g_string_append_printf
+g_string_free
+g_string_insert_c
+g_string_new
+g_strjoinv
+g_strlcpy
+g_strrstr
+g_strsplit
+g_strtod
+g_timeout_add
+gtk_action_get_type
+gtk_alignment_new
+gtk_bin_get_child
+gtk_bin_get_type
+gtk_box_get_type
+gtk_box_pack_start
+gtk_builder_add_from_file
+gtk_builder_connect_signals
+gtk_builder_get_object
+gtk_builder_new
+gtk_button_new
+gtk_cell_layout_clear
+gtk_cell_layout_get_type
+gtk_cell_layout_pack_start
+gtk_cell_layout_set_attributes
+gtk_cell_renderer_pixbuf_new
+gtk_cell_renderer_text_new
+gtk_clipboard_get
+gtk_clipboard_set_text
+gtk_combo_box_get_active
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_entry_text_column
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_set_active
+gtk_combo_box_set_active_iter
+gtk_combo_box_set_entry_text_column
+gtk_combo_box_set_model
+gtk_container_add
+gtk_container_get_type
+gtk_container_set_border_width
+gtk_dialog_get_type
+gtk_dialog_run
+gtk_entry_completion_new
+gtk_entry_completion_set_model
+gtk_entry_completion_set_text_column
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_set_completion
+gtk_entry_set_text
+gtk_events_pending
+gtk_get_current_event_time
+gtk_hbox_new
+gtk_image_new_from_stock
+gtk_init_with_args
+GTK_IS_COMBO_BOX (combo)
+GTK_IS_COMBO_BOX (history->priv->combo)
+GTK_IS_ENTRY (gtk_bin_get_child (GTK_BIN (netinfo->host)))
+GTK_IS_ENTRY (gtk_bin_get_child (GTK_BIN (netinfo->user)))
+GTK_IS_NOTEBOOK (notebook)
+GTK_IS_TREE_VIEW (netinfo->output)
+GTK_IS_TREE_VIEW (widget)
+GTK_IS_WIDGET (netinfo->button)
+GTK_IS_WINDOW (window)
+gtk_label_get_text
+gtk_label_get_type
+gtk_label_new_with_mnemonic
+gtk_label_set_justify
+gtk_label_set_mnemonic_widget
+gtk_label_set_text
+gtk_list_store_append
+gtk_list_store_clear
+gtk_list_store_get_type
+gtk_list_store_insert
+gtk_list_store_insert_after
+gtk_list_store_new
+gtk_list_store_set
+gtk_main
+gtk_main_iteration_do
+gtk_main_quit
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_notebook_get_current_page
+gtk_notebook_get_type
+gtk_notebook_set_current_page
+gtk_paint_box
+gtk_paint_flat_box
+gtk_paint_hline
+gtk_paint_layout
+gtk_progress_bar_get_type
+gtk_progress_bar_pulse
+gtk_progress_bar_set_fraction
+gtk_show_about_dialog
+gtk_show_uri
+gtk_spin_button_get_type
+gtk_spin_button_get_value
+gtk_statusbar_get_type
+gtk_statusbar_pop
+gtk_statusbar_push
+gtk_text_buffer_delete
+gtk_text_buffer_get_bounds
+gtk_text_buffer_get_end_iter
+gtk_text_buffer_get_text
+gtk_text_buffer_get_type
+gtk_text_buffer_insert
+gtk_text_view_get_buffer
+gtk_text_view_get_type
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_set_active
+gtk_tree_model_foreach
+gtk_tree_model_get
+gtk_tree_model_get_column_type
+gtk_tree_model_get_iter
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_n_columns
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_get_value
+gtk_tree_model_iter_next
+gtk_tree_path_free
+gtk_tree_view_append_column
+gtk_tree_view_column_new_with_attributes
+gtk_tree_view_column_set_alignment
+gtk_tree_view_get_column
+gtk_tree_view_get_columns
+gtk_tree_view_get_cursor
+gtk_tree_view_get_model
+gtk_tree_view_get_type
+gtk_tree_view_insert_column
+gtk_tree_view_remove_column
+gtk_tree_view_set_cursor
+gtk_tree_view_set_model
+gtk_tree_view_set_rules_hint
+gtk_ui_manager_get_type
+gtk_widget_create_pango_layout
+gtk_widget_destroy
+gtk_widget_get_allocated_height
+gtk_widget_get_allocated_width
+gtk_widget_get_parent
+gtk_widget_get_realized
+gtk_widget_get_screen
+gtk_widget_get_style
+gtk_widget_get_toplevel
+gtk_widget_get_type
+gtk_widget_get_window
+gtk_widget_hide
+gtk_widget_modify_font
+gtk_widget_realize
+gtk_widget_set_can_default
+gtk_widget_set_sensitive
+gtk_widget_show
+gtk_window_get_type
+gtk_window_present
+gtk_window_set_default_icon_name
+gtk_window_set_title
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_peek_parent
+g_type_name
+g_type_register_static
+g_value_dup_string
+g_value_get_int
+g_value_get_pointer
+g_value_get_uint
+g_value_set_pointer
+g_value_set_string
+g_value_set_uint
+g_value_unset
+Hardware address:	%s
+history_id != NULL
+history->priv->id != NULL
+Hop	Hostname	IP	Time 1
+Hostname
+Host name for Address
+hostnames
+http://projects.gnome.org/gnome-network/
+Hylke Bons <h.bons@student.rug.nl>
+Inactive
+inet_ntoa
+inet_ntop
+info_broadcast
+info_collisions
+info_combo
+info_combo_label
+info_configure_button
+info_copy_to_clipboard
+info_get_nic
+info_get_nic_information
+info_hw_address
+info_ip_address
+info_ipv6_frame
+info_link_speed
+info_list_ip_addr
+info_load_iface
+info_mtu
+info_multicast
+info_netmask
+info_nic_changed
+info_nic_update_stats
+Information not available
+info_rx_bytes
+info_rx_errors
+info_set_nic
+info_state
+info_tx_bytes
+info_tx_errors
+Infrared Interface
+In order to use this feature of the program, %s must be installed in your system
+Interface	Member	Group
+Internet Address
+_IO_stdin_used
+IP Address
+IP Source
+irda-16.png
+<i>%s</i>
+ISO-8859-1
+__isoc99_sscanf
+_Jv_RegisterClasses
+launchpad_integration_add_ui
+libcairo.so.2
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+libgtop-2.0.so.7
+liblaunchpad-integration-3.0.so.1
+/lib/ld-linux.so.2
+libpango-1.0.so.0
+libpthread.so.0
+Link speed:	%s
+%lld.%lld %s
+load_finger_widgets_from_builder
+Load information for a network device
+load_info_widgets_from_builder
+load_lookup_widgets_from_builder
+load_netstat_widgets_from_builder
+load_ping_widgets_from_builder
+load_scan_widgets_from_builder
+load_traceroute_widgets_from_builder
+load_whois_widgets_from_builder
+localhost
+logo-icon-name
+Looking up %s
+Look up a network address
+lookup_button
+lookup_copy_to_clipboard
+lookup_do
+lookup_foreach
+lookup_foreach_with_tree
+lookup_host
+lookup_host_label
+lookup != NULL
+lookup_output
+lookup_stop
+lookup_type
+lookup_type_label
+Loopback
+Loopback Interface
+Mailbox Exchange
+Mailbox Information
+max_history
+mii_get_basic
+Modem Interface
+monospace
+multicast
+Multicast:	%s
+Name Server
+netinfo->button_callback != NULL
+netinfo->command_line != NULL
+netinfo_error_message
+netinfo_get_count
+netinfo_get_host
+netinfo_get_ip_version
+netinfo_get_user
+netinfo_io_text_buffer_dialog
+netinfo_is_ipv6_enable
+netinfo != NULL
+netinfo->output != NULL
+netinfo_process_command
+netinfo_progress_indicator_start
+netinfo_progress_indicator_stop
+netinfo_reap_child
+netinfo_set_host
+netinfo_set_user
+netinfo_stop_process_command
+netinfo_text_buffer_insert
+netinfo_toggle_button
+netinfo_toggle_state
+netinfo_validate_domain
+netinfo_validate_host
+Netmask / Prefix
+netstat_button
+netstat_copy_to_clipboard
+netstat_create_multicast_model
+netstat_create_protocol_model
+netstat_create_route_model
+netstat_do
+netstat_foreach
+netstat_foreach_with_tree
+netstat_get_active_option2
+netstat_multicast
+netstat_multicast_tree_insert
+netstat != NULL
+netstat_output
+netstat_protocol
+netstat_protocol_tree_insert
+netstat_route_tree_insert
+netstat_routing
+netstat_stop
+nettool.c
+network-admin
+Network device:	%s
+Network Devices Not Found
+network.png
+nm-connection-editor
++nocomments +search +nocmd +nostats +noadditional
+?No network devices found.
+notebook
+n Poo Caama
+o <gpoo@gnome.org>
+on_about_activate
+on_beep_activate
+on_clear_history_activate
+on_configure_button_clicked
+on_copy_activate
+on_finger_activate
+on_help_activate
+on_lookup_activate
+on_netstat_activate
+on_page_switch
+on_ping_activate
+on_ping_graph_draw
+on_ping_toggled
+on_protocol_button_toggled
+on_scan_activate
+on_traceroute_activate
+on_whois_activate
+org.gnome.gnome-nettool
+other_type
+Other type
+Packets received:	%s
+packets transmitted
+Packets transmitted:	%s
+pango_font_description_free
+pango_font_description_new
+pango_font_description_set_family
+pango_font_description_set_weight
+pango_layout_get_pixel_size
+Parallel Line Interface
+Perform a whois lookup for a network domain
+ping_average
+ping_button
+ping_copy_to_clipboard
+ping_count
+pinger != NULL
+ping_foreach
+ping_foreach_with_tree
+ping_graph
+ping_host
+ping_host_label
+ping_limited
+ping_maximum
+ping_minimum
+ping_output
+ping_packets_received
+ping_packets_success
+ping_packets_transmitted
+ping_stop
+Please enter a valid domain address and try again.
+Please enter a valid network address and try again.
+port-scan
+Port scan a network address
+Port/Service
+Port	State	Service
+primary != NULL
+program-name
+program != NULL
+progress_bar
+progress_timeout_id
+property
+protocol
+Protocol	IP Source	Port/Service	State
+-q 1 -m 40
+-q 1 -N -m 40
+Received packets:	%s
+Reception errors:	%s
+Record Type
+response
+-rn -A inet
+-rn -A inet -A inet6
+Rodrigo Moya <rodrigo@gnome-db.org>
+routing set
+/sbin:/usr/sbin:/usr/etc:/usr/local/bin:/usr/local/sbin:/usr/ucb
+scan_button
+scan_copy_to_clipboard
+scan_define_model
+scan_foreach
+scan_host
+scan_host_label
+Scanning %s for open ports
+scan != NULL
+scan_output
+scan_stop
+%s %d %d %s %s %s
+%s %d %s
+%s %d %s MX %s %[^
+%s %d %s %s %[^
+^(Selected|Tracing) 
+Send a ping to a network address
+Sending ping requests to %s
+Seq. No.:
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+%s Mbit %sD
+%s netstat %s
+%s - Network Tools
+Source	TTL	Address Type	Record Type1	Resolution
+%s ping6%s-n %s
+%s ping -b%s-n %s
+__sprintf_chk
+%s %s %s %s
+%s %s %s %s %d %d %d %s
+__stack_chk_fail
+start_initial_process_cb
+Start of Authority
+State:	%s
+statusbar
+__strcat_chk
+strerror
+Successful packets:	%s
+tcptraceroute
+Text Information
+text != NULL
+The address '%s' cannot be found
+The file %s doesn't exist, please check if gnome-nettool is correctly installed
+Time average:	%s ms
+Time maximum:	%s ms
+Time minimum:	%s ms
+Time (ms):
+Trace a route to a network address
+tracepath
+tracepath6
+tracer != NULL
+traceroute6
+traceroute_button
+traceroute_copy_to_clipboard
+traceroute_do
+traceroute_foreach
+traceroute_foreach_with_tree
+traceroute_host
+traceroute_host_label
+traceroute_output
+traceroute_stop
+translator-credits
+Transmission errors:	%s
+Transmitted packets:	%s
+uimanager1
+/ui/menubar1/help/LaunchpadItems
+Unable to open help file
+Unknown Interface
+Unknown notebook page
+usernames
+/usr/share/gnome-nettool/pixmaps
+/usr/share/gnome-nettool/ui/gnome-nettool.ui
+/usr/share/locale
+util_find_program_dialog
+util_find_program_in_path
+util_legible_bytes
+util_tree_model_to_string
+Warning: change of encoding: %s. The encoding was changed from %s to ISO-8859-1 only for this string
+wavelan-16.png
+Well Known Services
+whois_button
+whois_copy_to_clipboard
+whois_do
+whois_foreach
+whois_host
+whois_host_label
+whois_input_box
+whois != NULL
+whois_output
+whois_stop
+William Jon McCann <mccann@jhu.edu>
+Wireless Interface
+wrap-license
+zDmain_window

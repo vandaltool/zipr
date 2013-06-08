@@ -1,0 +1,44 @@
+bad buffer in yy_scan_bytes()
+__bss_start
+Can't open `%s'.  Errno = %d (%s).
+clearerr
+D$,9L$<t
+Done %d-byte row %d.
+__errno_location
+fatal error - scanner input buffer overflow
+fatal flex scanner internal error--end of buffer missed
+fatal flex scanner internal error--no action found
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+Got %d rows, %d columns
+input in flex scanner failed
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+Match <esc>&l
+Match <esc>*rA
+Match <esc>*rB
+Match <esc>*r#S
+Match <esc>*r#w
+out of dynamic memory in yy_create_buffer()
+out of dynamic memory in yy_scan_buffer()
+out of dynamic memory in yy_scan_bytes()
+Out of memory
+Out of memory.
+overflow2
+overflow_add
+pbm_init
+pbm_writepbminit
+pbm_writepbmrow_packed
+pm_error
+Start %d-byte row.
+strerror
+Unexpected character (%#x) in raster mode.
+Usage: %s [-d] [thinkjet_file]
+__vfprintf_chk

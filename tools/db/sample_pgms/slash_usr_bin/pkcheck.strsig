@@ -1,0 +1,111 @@
+--action-id
+action:           %s
+--allow-user-interaction
+Authentication request was dismissed.
+authorization id: %s
+Authorization requires authentication and -u wasn't passed.
+Authorization requires authentication but no agent is available.
+__bss_start
+cannot read cmdline
+Cannot show manual page: %s
+--detail
+%d min %d sec %s
+--enable-internal-agent
+Error checking for authorization %s: %s
+Error creating textual authentication agent: %s
+Error getting authority: %s
+Error getting process for system bus name `%s': %s
+Error getting session: %s
+Error getting temporary authorizations: %s
+Error opening `%s': %s
+Error registering local authentication agent: %s
+Error revoking temporary authorizations: %s
+expires:          %s (%s)
+from now
+g_ascii_table
+g_error_free
+g_file_get_contents
+g_get_current_time
+GLIBC_2.0
+GLIBC_2.4
+GLIBC_2.7
+g_list_foreach
+g_list_free
+__gmon_start__
+g_object_ref
+g_object_unref
+g_printerr
+g_return_if_fail_warning
+g_spawn_command_line_sync
+g_strchomp
+g_strchug
+g_strcmp0
+g_strdup
+g_strdup_printf
+g_strfreev
+g_string_append_printf
+g_string_free
+g_string_insert_c
+g_string_new
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_init
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpolkit-agent-1.so.0
+libpolkit-gobject-1.so.0
+libpthread.so.0
+--list-temp
+localtime
+man pkcheck
+Not authorized.
+obtained:         %s (%s)
+pkcheck version %s
+polkit_agent_listener_register
+polkit_agent_listener_unregister
+polkit_agent_text_listener_new
+polkit_authority_check_authorization_sync
+polkit_authority_enumerate_temporary_authorizations_sync
+polkit_authority_get_sync
+polkit_authority_revoke_temporary_authorizations_sync
+polkit_authorization_result_get_details
+polkit_authorization_result_get_dismissed
+polkit_authorization_result_get_is_authorized
+polkit_authorization_result_get_is_challenge
+polkit_details_get_keys
+polkit_details_insert
+polkit_details_lookup
+polkit_details_new
+_polkit_subject_get_cmdline
+polkit_subject_to_string
+polkit_system_bus_name_get_name
+polkit_system_bus_name_get_process_sync
+polkit_system_bus_name_get_type
+polkit_system_bus_name_new
+polkit_temporary_authorization_get_action_id
+polkit_temporary_authorization_get_id
+polkit_temporary_authorization_get_subject
+polkit_temporary_authorization_get_time_expires
+polkit_temporary_authorization_get_time_obtained
+polkit_temporary_authorization_get_type
+polkit_unix_process_get_pid
+polkit_unix_process_get_type
+polkit_unix_process_new
+polkit_unix_process_new_full
+polkit_unix_session_new_for_process_sync
+/proc/%d/cmdline
+--process
+--revoke-temp
+__stack_chk_fail
+strftime
+subject != NULL
+subject:          %s (%s)
+--system-bus-name
+Unknown subject type passed to _polkit_subject_get_cmdline()
+--version

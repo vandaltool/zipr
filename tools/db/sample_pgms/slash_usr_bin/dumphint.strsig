@@ -1,0 +1,17 @@
+#!/bin/sh
+	*)  break ;;
+	case "$1" in
+	echo "Usage: `basename \"$0\"` input.pdf" 1>&2
+exec "$GS_EXECUTABLE" -q -dNODISPLAY $OPTIONS -- "`dirname \"$0\"`/dumphint.ps" "$1"
+# executable name set in the makefile
+gs="`dirname \"$0\"`/$GS_EXECUTABLE"
+GS_EXECUTABLE=gs
+GS_EXECUTABLE="$gs"
+	gs="$GS_EXECUTABLE"
+if [ $# -ne 1 ]; then
+if test ! -x "$gs"; then
+# Linearized PDF hint formatting utility.
+	-?*) OPTIONS="$OPTIONS $1" ;;
+OPTIONS="-P- -dSAFER -dDELAYSAFER"
+# This definition is changed on install to match the
+while true

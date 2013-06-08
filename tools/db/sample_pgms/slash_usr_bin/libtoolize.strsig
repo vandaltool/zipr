@@ -1,0 +1,1572 @@
+        ;;
+        }
+      --*=*)
+      ;;
+      ..)
+      "")
+      *)
+      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+      *[\\\`\"]*)
+      *[\\\`\"\$]*)
+      *\$*)
+    ///*)
+    //*)
+    # ---------------- #
+    # ----------------- #
+    # ------------------- #
+    # ------------------------------ #
+    # ---------------------------------------------------- #
+    ## ---------------------------------------------------------- ##
+  *[\\/]*)
+# ---------------
+## ----------- ##
+## -------------------- ##
+## --------------------- ##
+	      ;;
+			        -*) ;;
+  [0-9]* | *[!a-zA-Z0-9_]*)
+$0: including any error possibly output before this
+$0: message. Then install a modern shell, or manually run
+$0: the script under such a shell if you do have one."
+  # 1. Parent has separate macrodir to subproject ltdl:
+  # 1. Parent shares auxdir with subproject ltdl:
+  # 2. Parent has separate auxdir to subproject ltdl:
+  # 2. Parent shares macrodir with subproject ltdl:
+  # 3. Not a subproject, but macrodir was specified in parent:
+  # 3. Not subproject, but AC_CONFIG_AUX_DIR was used in parent:
+  # 4. AC_CONFIG_AUX_DIR was not specified:
+  # 4. AC_CONFIG_MACRO_DIR was not specified:
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+   A) # ASCII based system
+      # Absolute path, do nothing.
+    # A bug in bash halts the script if the last line of a function
+	/AC_CONFIG_AUX_DIR(/ {
+	/AC_CONFIG_MACRO_DIR(/ {
+      ac_config_macro_dir_advised=:
+	  ac_config_macro_dir_advised=:
+	ac_config_macro_dir_advised=:
+    ac_config_macro_dir_advised=false
+    $ac_config_macro_dir_advised || if test -z "$ac_macrodir" || test x"$macrodir" = x.; then
+        $ac_config_macro_dir_advised || test "$subproject_macrodir" = "$macrodir" ||
+	/AC_INIT/ {
+	/AC_LIB_LTDL/        {
+        /^[	 ]*ACLOCAL_[A-Z_]*FLAGS[	 ]*=[	 ]*/ {
+# @aclocal_DATA\@ is substituted as per its value in Makefile.am;
+    aclocaldir="$_lt_pkgdatadir/libltdl/m4"
+      "$aclocaldir" "$subproject_macrodir" pkgmacro_header
+  aclocaldir=/usr/share/aclocal
+# aclocal, so we can't use configure --trace which relies on a consistent
+    ac_ltdldir=`$ECHO "$ac_ltdldir" | $SED 's,/*$,,'`
+    ac_ltdl_mode=
+	/A[CM]_PROG_LIBTOOL/ {
+	/\[A[CM]_PROG_LIBTOOL/d
+        # Actual path component, append it.
+	/AC_WITH_LTDL/       {
+#             add APPEND to the result, otherwise set result
+# a directory that exists and is non-empty abort with a diagnostic.
+# Aesthetically quote ARG to be evaled later.
+# Aesthetically quote ARG to be evaled later; same as above,
+# a help hint, and exit.
+  alias -g '${1+"$@"}'='"$@"'
+  alias -g '\${1+\"\$@\"}'='\"\$@\"'
+  # Allow the user to override the master libtoolize repository:
+  all_pkgconfig_files="ltmain.sh"
+  all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am README acinclude.m4 aclocal.m4 argz_.h argz.c config.h.in config-h.in configure configure.ac configure.in libltdl/lt__alloc.h libltdl/lt__dirent.h libltdl/lt__glibc.h libltdl/lt__private.h libltdl/lt__strl.h libltdl/lt_dlloader.h libltdl/lt_error.h libltdl/lt_system.h libltdl/slist.h loaders/dld_link.c loaders/dlopen.c loaders/dyld.c loaders/load_add_on.c loaders/loadlibrary.c loaders/preopen.c loaders/shl_load.c lt__alloc.c lt__dirent.c lt__strl.c lt_dlloader.c lt_error.c ltdl.c ltdl.h slist.c"
+  all_pkgmacro_files="argz.m4 libtool.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 ltversion.in ltversion.m4 lt~obsolete.m4"
+# along with libtoolize; see the file COPYING.  If not, a copy
+# a message.  Then update appropriate macros if newer ones are available
+          am_macrodir="$arg"
+	      am_macrodir=`$ECHO "$arg" | sed 's,^-I,,'`
+# and cancel out any ".." path components in PATH after making
+      # and for example Cygwin uses it to access remote file shares
+# and func_basename. For efficiency, we do not delegate to
+# and libtool.  Possibly running some of these tools if necessary.
+  # any remaining arguments are an error
+      arg=$1;
+	arg=`expr "X$arg" : ".*$as_nl\\(.*\\)"`;;
+    # arguments were not given in terms of a shell variable!
+    # argz.m4, libtool.m4 and ltdl.m4 are handled specially:
+  as_bourne_compatible="if test -n \"\${ZSH_VERSION+set}\" && (emulate sh) >/dev/null 2>&1; then :
+  # Ascend the tree starting from libdir
+as_echo='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+    $as_echo "$0: be upgraded to zsh 4.3.4 or later."
+    $as_echo "$0: In particular, zsh $ZSH_VERSION has bugs and should"
+    $as_echo "$0: Please tell bug-autoconf@gnu.org about your system,
+  $as_echo "$0: the shells that I found on your system."
+  $as_echo "$0: This script requires a shell more modern than all"
+		    { $as_echo "$as_bourne_compatible""$as_required" | as_run=a "$as_shell"; } 2>/dev/null; then :
+	      { $as_echo "$as_bourne_compatible""$as_required" | as_run=a "$SHELL"; } 2>/dev/null; then :
+as_echo=$as_echo$as_echo$as_echo$as_echo$as_echo
+as_echo=$as_echo$as_echo$as_echo$as_echo$as_echo$as_echo
+  $as_echo "$as_myself: error: cannot find myself; rerun with an absolute file name" >&2
+    as_echo_body='eval expr "X$1" : "X\\(.*\\)"'
+    as_echo_body='eval /usr/ucb/echo -n "$1$as_nl"'
+    as_echo_n_body='eval
+  as_echo_n='printf %s'
+  as_echo_n='print -rn --'
+    as_echo_n='sh -c $as_echo_n_body as_echo'
+    as_echo_n='/usr/ucb/echo -n'
+  as_echo='printf %s\n'
+  as_echo='print -r --'
+  as_echo='sh -c $as_echo_body as_echo'
+as_fn_failure () { as_fn_return 1; }
+as_fn_failure && { exitcode=1; echo as_fn_failure succeeded.; }
+as_fn_ret_failure && { exitcode=1; echo as_fn_ret_failure succeeded.; }
+as_fn_ret_failure () { return 1; }
+as_fn_ret_success || { exitcode=1; echo as_fn_ret_success failed.; }
+as_fn_ret_success () { return 0; }
+as_fn_success () { as_fn_return 0; }
+as_fn_success || { exitcode=1; echo as_fn_success failed.; }
+as_fn_unset ()
+# as_fn_unset VAR
+  as_found=:
+  as_found=false
+as_found=false
+$as_found || { if { test -f "$SHELL" || test -f "$SHELL.exe"; } &&
+  as_have_required=no
+  as_have_required=yes
+as_myself=
+  *[\\/]* ) as_myself=$0 ;;
+  as_myself=$0
+      *"$as_nl"*)
+	  * ) as_opts= ;;
+  as_required="as_fn_return () { (exit \$1); }
+  *) as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+	     as_shell=$as_dir/$as_base
+  as_suggested=""
+# as the cp(1) shell command.
+as_unset=as_fn_unset
+# (at your option) any later version.
+#       autoconf:		$autoconf_version
+#       automake:		$automake_version
+  auxdir=
+	auxdir=$ac_auxdir
+          auxdir="$dir"
+          auxdir=$dir
+# available from the libtool installation tree.
+# A wrapper for func_copy_cb that accepts arguments in the same order
+  [\\/]*|[A-Za-z]:\\*) ;;
+  # Bail if the options were screwed
+      # Bail out if we (or some other process) failed to create a directory.
+#   basename: Compute filename of FILE.
+basename="s,^.*/,,"
+    # bash bug again:
+	BASH_ENV=/dev/null
+  # :::BE CAREFUL HERE:::
+# be careful that --ltdl=foo --ltdl=bar results in ltdldir=bar:
+  # before installing the latest files when --force was passed to help
+# Be more Bourne compatible
+#! /bin/sh
+	  b more
+      break
+        break
+          break
+        && break
+      --)		break					;;
+	      break
+		   break 2
+bs2='\\\\'
+bs4='\\\\\\\\'
+# but do not quote variable references.
+# but without wasting forks for bash or zsh.
+# Call COPY_CB for each regular file in SRCDIR named by the ':' delimited
+# Calls func_echo with the value of MSG_VAR, and then sets MSG_VAR="" so
+# can be downloaded from http://www.gnu.org/licenses/gpl.html,
+  # Cancel out all the simple stuff to save iterations.  We also want
+case $0 in #((
+    case $1 in
+  case $1 in
+    case ${2} in
+      case "$ac_auxdir" in
+    case "$ac_ltdldir" in
+      case $arg in #(
+	  case $arg in
+  case $as_dir in #(
+    case `echo " $my_included_files " | $NL2SP` in
+  case `echo X|tr X '\101'` in
+    case $func_normal_abspath_tcomponent in
+  case $func_normal_abspath_tpath in
+    case $func_quote_for_eval_unquoted_result in
+    case $func_relative_path_tbindir in
+	case $- in # ((((
+  case $ltdldir in
+      case $ltdl_mode in
+    case $ltdl_mode in
+    case " $ltdl_options " in
+    case "$ltdl_options" in
+    case $my_arg in
+      case $my_directory_path in
+        case $my_directory_path in */*) ;; *) break ;; esac
+    case $my_filename in
+    case $need in
+			    case $optarg in # ((
+    case $opt in
+case $opt_ltdl in
+    case $opt_verbose in
+      case :$pkgconfig_files: in
+      case :$pkgltdl_files: in
+case $progpath in
+  case `(set -o) 2>/dev/null` in #(
+  case \`(set -o) 2>/dev/null\` in #(
+    case x$ac_ltdldir,x$ltdldir in
+    case x$ac_ltdl_mode,x$ltdl_mode in
+#   -c, --copy          copy files rather than symlinking them
+# CDPATH.
+# characters, hashes, percent signs, but SUFFIX may contain a leading
+    # check if we have found a prefix of bindir
+    # check that the directories contents can be ls'ed
+# Check whether EXPRESSION matches any line of FILENAME, without output.
+CLICOLOR_FORCE= GREP_OPTIONS=
+collapseslashes='s@/\{1,\}@/@g'
+# comment line must also match MACRO_REGEX, if given.
+# Compare (possibly multi-part, '.' delimited) serial numbers, and
+# Compute the dirname of FILE.  If nonempty, add APPEND to the result,
+  # conditions, or that check will be impossible.   No need to clutter the
+  CONFIG_SHELL=$as_shell as_have_required=yes
+  CONFIG_SHELL=$SHELL as_have_required=yes
+  configure_ac=configure.in
+# configure.(ac|in) and aclocal.m4.
+	    continue
+    # Copy all the files from installed libltdl to this project, if the
+      --copy|-c)
+	  copy_return_status=0
+	copy_return_status=0
+    copy_return_status=1
+# Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
+# Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
+: ${CP="cp -f"}
+CP="func_echo_all $CP"
+        d'
+      /^[	 ]*\\\\\$/d"
+  datadir=/usr/share
+#       --debug         enable verbose shell tracing
+#   --debug             enable verbose shell tracing
+      --debug|--no-warn|--quiet|--verbose)
+      --debug|-x)	opt_debug='set -x'
+      # Determine whether the destination has an older serial.
+    # directly from configure.ac.
+#   dirname:  Compute the dirname of FILE.  If nonempty,
+dirname="s,/[^/]*$,,"
+# DIRVAR is the name of a variable to evaluate.  Unless DIRVAR names
+do eval test x\${$as_var+set} = xset \
+dollar='\$'
+    done
+     done
+      done
+        done
+	   done;;
+    ## DO NOT PUT ANYTHING BUT UPGRADE ADVICE MESSAGES BELOW HERE ##
+  # Do not remove config.guess nor config.sub, we don't install them
+    # Don't trace for this, we're just checking the user didn't invoke it
+    # Do this after the copy for hand maintained `aclocal.m4', incase
+# dot (in which case that matches only a dot).
+      # Double-quote args containing shell metacharacters to delay
+double_quote_subst='s/\(["`\\]\)/\\\1/g'
+      --dry-run|--dryrun|-n)
+DUALCASE=1; export DUALCASE # for MKS sh
+   *) # EBCDIC based system
+    echo
+    $ECHO "$*"
+        `$ECHO "$1" | $SED "$dirname"` \
+	`$ECHO "$1" | $SED "$dirname"` "$2" "$3"
+        `$ECHO "$2" | $SED "$dirname"` \
+    echo "$env_warning" |while read line; do func_warning "$line"; done
+# Echo long help message to standard output and exit,
+      $ECHO "$my_searchfile"
+    $ECHO "$my_serial"
+    $ECHO "$my_tmpdir"
+    $ECHO "$progname: ${opt_mode+$opt_mode: }$*"
+    $ECHO "$progname: ${opt_mode+$opt_mode: }"${1+"$@"} 1>&2
+# Echo program name prefixed message, along with the current mode
+# Echo program name prefixed message in verbose mode only.
+# Echo program name prefixed message to standard error.
+# Echo program name prefixed message to standard error, and exit.
+# Echo program name prefixed message to standard error and set global
+# Echo program name prefixed message to standard error, followed by
+# Echo program name prefixed warning message to standard error.
+    $ECHO "run \`$progname --help | more' for full usage"
+# Echo short help message to standard output and exit.
+# Echo version message to standard output and exit.
+# `\'-ed in input to the same.  If an odd number of `\' preceded a '$'
+	    -e "$double_quote_subst" -e "$sed_double_backslash"` ;;
+: ${EGREP="/bin/grep -E"}
+    elif $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
+    elif $opt_ltdl && test "x$ltdl_mode" = "xsubproject"
+  elif $opt_recursive; then
+  elif $opt_standalone; then
+    elif $opt_verbose || $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
+        elif test -f "$dir/install.sh"; then
+    elif test -n "$ac_auxdir" || test "x$auxdir" = "x."; then
+    elif test -n "$auxdir" || test "x$ltdldir" = "x."; then
+    elif test -n "$auxdir"; then
+    elif test -n "$ltdldir"; then
+    elif test -n "$macrodir"; then
+    elif test -n "$subproject_macrodir"; then
+elif (test "X`printf %s $as_echo`" = "X$as_echo") 2>/dev/null; then
+    elif test -z "$ac_macrodir$ltdldir"; then
+    elif test -z "$am_macrodir"; then
+    else
+      else
+        else
+  # else relative path ending with a slash; either way, target
+      # Empty path, that just means $cwd.
+  emulate sh
+  # ensure a clean upgrade.
+	ENV=/dev/null
+		envopts="${envopts+$envopts }$opt"			  ;;
+      --*)	env_warning="${env_warning+$env_warning
+        -e "$pathcar"`
+        -e "$pathcdr"`
+        -e "$removedotparts" -e "$collapseslashes" -e "$finalslash"`
+    esac
+      esac
+       esac
+      esac;
+			    esac
+# (escaped) backslashes.  A very naive implementation.
+        eval $1=""
+  { eval $1=; unset $1;}
+	eval 'case $my_filename in '$my_glob_exclude') my_cont=: ;; esac'
+    eval `cat aclocal.m4 "$configure_ac" 2>/dev/null | $SED "$my_sed_traces"`
+	eval "(exit $my_status); $my_fail_exp"
+      eval "func_echo $func_quote_for_expand_result"
+      eval "$lt_safe_locale"
+      eval "$lt_user_locale
+      eval "$my_cmd"
+      eval my_msg=\$$1
+        || eval `$SED "$my_sed_scan_configure_ac" "$configure_ac"`
+    eval set dummy "$func_quote_for_eval_result" ${1+"$@"}
+	exec "$CONFIG_SHELL" $as_opts "$as_myself" ${1+"$@"}
+     exit $?
+    exit $?
+  exit 1
+# exit_cmd.
+exit_cmd=:
+    exit_cmd=exit
+  $exit_cmd $EXIT_FAILURE
+exitcode=0
+  exitcode=1; echo positional parameters were not saved.
+    exit $EXIT_FAILURE
+exit $exit_status
+EXIT_FAILURE=1
+EXIT_MISMATCH=63  # $? = 63 is used to indicate version mismatch to missing.
+      exit $ret
+EXIT_SKIP=77	  # $? = 77 is used to indicate a skipped test to automake.
+      exit_status=$EXIT_FAILURE
+exit_status=$EXIT_SUCCESS
+EXIT_SUCCESS=0
+      # expansion for a subsequent eval.
+  export as_echo_body
+    export as_echo_n_body
+export as_nl
+	export CONFIG_SHELL
+export LANGUAGE
+export LC_ALL
+export SHELL
+	expr "X$arg" : "X\\(.*\\)$as_nl";
+      expr "X$arg" : "X\\(.*\\)" | tr -d "$as_nl"
+    # Extract mode name from ltdl_options
+    # Extract subdirectory from the argument.
+        # Failing that, at least try and use $RANDOM to avoid a race
+    # fails when set -e is in force, so we need another command to
+          false|:) ;;  # a bare '--ltdl' followed by another option
+      false) my_copy_msg="file \`$my_destdir/$my_file'"     ;;
+#   -f, --force         replace existing files
+: ${FGREP="/bin/grep -F"}
+      fi
+        fi
+          fi
+    # Figure out what to do with it
+  # file name can be directly appended.
+      # files in a project that uses libltdl:
+finalslash='s,/*$,/,'
+    # Find local m4 macro directory. #
+# Find who we are.  Look in the path if we contain no directory separator.
+    # FIXME: Diagnose multiple conflicting modes in ltdl_options
+    # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
+      for arg in `$SED "$my_sed_aclocal_flags" Makefile.am`; do
+	   for as_base in sh bash ksh sh5; do
+for as_dir in /bin$PATH_SEPARATOR/usr/bin$PATH_SEPARATOR$PATH
+for as_dir in $PATH
+for as_var in BASH_ENV ENV MAIL MAILPATH
+# `--force' at the command line.
+      --force|-f)
+      for dir in . .. ../..; do
+    for file in $pkgmacro_files; do
+      for my_dir in $my_dir_list; do
+    for my_file in `func_included_files "$my_filename"`; do
+    for my_filename in config/compile config/config.guess config/config.sub config/depcomp config/install-sh config/missing config/ltmain.sh; do
+    for my_filename in libltdl/COPYING.LIB libltdl/README libltdl/Makefile.inc libltdl/Makefile.am libltdl/configure.ac libltdl/aclocal.m4 libltdl/Makefile.in libltdl/config-h.in libltdl/configure libltdl/argz_.h libltdl/argz.c libltdl/loaders/dld_link.c libltdl/loaders/dlopen.c libltdl/loaders/dyld.c libltdl/loaders/load_add_on.c libltdl/loaders/loadlibrary.c libltdl/loaders/shl_load.c libltdl/lt__dirent.c libltdl/lt__strl.c libltdl/libltdl/lt__alloc.h libltdl/libltdl/lt__dirent.h libltdl/libltdl/lt__glibc.h libltdl/libltdl/lt__private.h libltdl/libltdl/lt__strl.h libltdl/libltdl/lt_dlloader.h libltdl/libltdl/lt_error.h libltdl/libltdl/lt_system.h libltdl/libltdl/slist.h libltdl/loaders/preopen.c libltdl/lt__alloc.c libltdl/lt_dlloader.c libltdl/lt_error.c libltdl/ltdl.c libltdl/ltdl.h libltdl/slist.c; do
+    for my_filename in m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4 m4/lt~obsolete.m4; do
+    for my_filename in $my_srcfile_spec; do
+      for my_filename in `$SED "$my_sed_include" "$my_searchfile"`; do
+        for need in $my_missing; do
+	for need in $my_needed; do
+     for progdir in $PATH; do
+    # For recursive ltdl modes, copy a suitable Makefile.{am,inc}:
+      # For subproject mode, offer some suggestions for avoiding duplicate
+        # found a matching prefix
+        # found an exact match
+# four `\'s followed by two `\'s and then a '$'.  `\' that '$'.
+# Free Software Foundation, Inc.
+# from libtool installation tree to subproject libltdl tree.
+# from the libtool installation tree.
+func_aclocal_update_check ()
+# func_aclocal_update_check filename
+	  func_aclocal_update_check $need
+    func_aclocal_update_check_result="$func_serial_update_check_result"
+	  $func_aclocal_update_check_result && my_missing="$my_missing $need"
+func_basename ()
+# func_basename file
+} # func_basename may be replaced by extended shell implementation
+    func_basename_result=`$ECHO "${1}" | $SED "$basename"`
+    func_basename_result=`$ECHO "${1}" | $SED -e "$basename"`
+  func_check_macros
+# func_check_macros
+func_check_macros ()
+  # func_check_macros needs to check whether --ltdl was specified when
+func_config_update ()
+      func_config_update config.guess \
+      func_config_update config.sub \
+# func_config_update filename srcdir destdir [msg_var]
+func_copy ()
+func_copy_cb ()
+# func_copy_cb filename srcdir destdir [msg_var]
+      func_copy_cb "$my_f1" \
+      func_copy "$my_srcfile" "$my_destfile" "$my_msg_var"
+func_copy_some_files ()
+    func_copy_some_files "argz.m4:libtool.m4:ltdl.m4:$pkgmacro_files" \
+    func_copy_some_files "$pkgconfig_files" \
+    func_copy_some_files "$pkgltdl_files" \
+# func_copy_some_files srcfile_spec srcdir destdir [msg_var] [cb=func_copy_cb]
+# func_copy srcfile destfile [msg_var]
+func_dirname ()
+func_dirname_and_basename ()
+    func_dirname_and_basename "$1"
+      func_dirname_and_basename "$2"
+# func_dirname_and_basename file append nondir_replacement
+} # func_dirname_and_basename may be replaced by extended shell implementation
+      func_dirname_and_basename "$my_filename"
+    func_dirname_and_basename "$my_filename"
+func_dirname_and_basename "$progpath"
+# func_dirname file append nondir_replacement
+        func_dirname "$func_normal_abspath_result"
+        func_dirname $func_relative_path_tlibdir
+} # func_dirname may be replaced by extended shell implementation
+      func_dirname_result="${3}"
+    func_dirname_result=`$ECHO "${1}" | $SED "$dirname"`
+    func_dirname_result=`$ECHO "${1}" | $SED -e "$dirname"`
+      func_dirname_result="$func_dirname_result${2}"
+func_echo ()
+      func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
+func_echo_all ()
+# func_echo_all arg...
+      func_echo "and rerunning $progname and aclocal."
+# func_echo arg...
+      func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and"
+      func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macrodir])' to $configure_ac,"
+      func_echo "Consider adding \`-I m4' to ACLOCAL_AMFLAGS in Makefile.am."
+        func_echo "Consider adding \`-I $macrodir' to ACLOCAL_AMFLAGS in Makefile.am."
+	func_echo "Consider adding \`-I $subproject_macrodir' to ACLOCAL_AMFLAGS in Makefile.am."
+          func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_auxdir])' in $configure_ac."
+          func_echo "Consider using \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' in $configure_ac."
+			func_echo "enabling shell trace mode"
+	  func_echo "  \`$my_ac_config_macro_srcdir/$need'"
+        || func_echo "\`$my_destfile' is already up to date."
+      func_echo "\`$my_destfile' is already up to date."
+        func_echo "$my_msg"
+func_echo_once ()
+# func_echo_once msg_var
+              func_echo_once "$my_msg_var"
+      func_echo_once "$my_msg_var"
+	func_echo_once "$my_msg_var"
+          func_echo "or else add \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' to $configure_ac."
+        func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdldir])' to \`$configure_ac'."
+      func_echo "Remember to add \`LTDL_INIT$ltdl_init_args' to $configure_ac."
+      func_echo "Remember to add \`LT_INIT' to $configure_ac."
+      func_echo "rerunning $progname, to keep the correct libtool macros in-tree."
+	      func_echo "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
+        func_echo "You should add the contents of the following files to \`aclocal.m4':"
+func_error ()
+    func_error ${1+"$@"}
+      { func_error "\`$1' not copied:  not a regular file"; return 1; }
+# func_error arg...
+      func_error "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
+    func_error "missing argument for $1."
+	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
+           func_error "\`$my_destfile' is newer: use \`--force' to overwrite"
+      func_error "serial numbers \`$1' or \`$2' contain non-digit chars"
+      func_error "you can have at most one of --non-recursive, --recursive and --standalone"
+func_fatal_error ()
+        || func_fatal_error "AC_CONFIG_MACRO_DIR([$ac_macrodir]) conflicts with ACLOCAL_AMFLAGS=-I $am_macrodir."
+# func_fatal_error arg...
+	func_fatal_error "cannot create $my_destdir/$my_filename"
+        func_fatal_error "cannot create temporary directory \`$my_tmpdir'"
+        func_fatal_error "can not handle variables in AC_CONFIG_AUX_DIR"
+        func_fatal_error "can not handle variables in LT_CONFIG_LTDL_DIR"
+        func_fatal_error "can not handle variables in LTDL_INIT"
+        || func_fatal_error "can not list files: \`$my_dir'"
+        func_fatal_error "Failed to create \`$1'"
+        || func_fatal_error "func_copy() cannot change filename on copy"
+    func_fatal_error "$help"
+	    func_fatal_error "--ltdl='$ltdldir' does not match LT_CONFIG_LTDL_DIR($ac_ltdldir)"
+	    func_fatal_error "--$ltdl_mode does not match LTDL_INIT($ac_ltdl_mode)"
+      || func_fatal_error "\$$my_dirvar is not a directory: \`$my_dir'"
+	func_fatal_error "\`$my_filename' not found in \`$my_srcdir'"
+        func_fatal_error "\`$my_file' not found in \`$my_srcdir'"
+func_fatal_help ()
+# func_fatal_help arg...
+      *)	func_fatal_help "garbled LIBTOOLIZE_OPTIONS near \`$opt'" ;;
+    func_fatal_help "unknown additional arguments: \`${1+}'"
+      -*)		func_fatal_help "unrecognized option \`$opt'" ;;
+func_fixup_Makefile ()
+        func_fixup_Makefile "Makefile.am" "$pkgltdldir/libltdl" "$ltdldir"
+        func_fixup_Makefile "Makefile.inc" "$pkgltdldir/libltdl" "$ltdldir"
+# func_fixup_Makefile srcfile srcdir destdir
+func_grep ()
+         func_grep '^AC_DEFUN(\['"$my_macro_regex" "$my_file"
+# func_grep expression filename
+func_help ()
+# func_help [NOEXIT]
+func_included_files ()
+	func_included_files $my_filename
+# func_included_files searchfile
+  func_install_pkgconfig_files
+# func_install_pkgconfig_files
+func_install_pkgconfig_files ()
+# func_install_pkgconfig_files and func_install_pkgmacro_files resp.
+      func_install_pkgconfig_parent
+# func_install_pkgconfig_parent
+	func_install_pkgconfig_parent
+func_install_pkgconfig_parent ()
+      func_install_pkgconfig_subproject
+# func_install_pkgconfig_subproject
+func_install_pkgconfig_subproject ()
+  func_install_pkgltdl_files
+# func_install_pkgltdl_files
+func_install_pkgltdl_files ()
+  func_install_pkgmacro_files
+# func_install_pkgmacro_files
+func_install_pkgmacro_files ()
+      func_install_pkgmacro_parent
+# func_install_pkgmacro_parent
+func_install_pkgmacro_parent ()
+      func_install_pkgmacro_subproject
+# func_install_pkgmacro_subproject
+func_install_pkgmacro_subproject ()
+func_install_update ()
+# func_install_update filename srcdir destdir [msg_var]
+      func_install_update install-sh \
+func_keyword_update ()
+    func_keyword_update "$1" "$2" "$3" "$my_sed_config" "$4"
+    func_keyword_update "$1" "$2" "$3" "$my_sed_install" "$4"
+    func_keyword_update "$1" "$2" "$3" "$my_sed_ltmain" "$4"
+# func_keyword_update filename srcdir destdir sed_script [msg_var]
+func_ltmain_update ()
+# func_ltmain_update filename srcdir destdir [msg_var]
+    func_ltmain_update ltmain.sh \
+func_massage_aclocal_DATA ()
+    func_massage_aclocal_DATA 'argz.m4|libtool.m4|ltdl.m4'
+# func_massage_aclocal_DATA [glob_exclude]
+    func_massage_pkgconfig_files
+func_massage_pkgconfig_files ()
+# func_massage_pkgconfig_files [glob_exclude]
+func_massage_pkgltdl_files ()
+# func_massage_pkgltdl_files [glob_exclude]
+      func_massage_pkgltdl_files 'Makefile.am|Makefile.in*|aclocal.m4|config*'
+      func_massage_pkgltdl_files 'Makefile.inc'
+func_missing_arg ()
+# func_missing_arg argname
+func_mkdir_p ()
+# func_mkdir_p directory-path
+    func_mkdir_p `$ECHO "$my_destdir/$my_file" | $SED "$dirname"`
+func_mktempdir ()
+# func_mktempdir [string]
+func_nonemptydir_p ()
+  func_nonemptydir_p aclocaldir
+# func_nonemptydir_p dirvar
+  func_nonemptydir_p pkgdatadir
+  func_nonemptydir_p pkgltdldir
+func_normal_abspath ()
+  func_normal_abspath "$1"
+  func_normal_abspath "$2"
+      func_normal_abspath_altnamespace=/
+  func_normal_abspath_altnamespace=
+# func_normal_abspath PATH
+        func_normal_abspath_result=/
+  func_normal_abspath_result=
+        func_normal_abspath_result=$func_dirname_result
+  func_normal_abspath_result=$func_normal_abspath_altnamespace$func_normal_abspath_result
+        func_normal_abspath_result=$func_normal_abspath_result/$func_normal_abspath_tcomponent
+      func_normal_abspath_result=$func_stripname_result
+    func_normal_abspath_tcomponent=`$ECHO "$func_normal_abspath_tpath" | $SED \
+  func_normal_abspath_tpath=$1
+    func_normal_abspath_tpath=`$ECHO "$func_normal_abspath_tpath" | $SED \
+  func_normal_abspath_tpath=`$ECHO "$func_normal_abspath_tpath" | $SED \
+      func_normal_abspath_tpath=`pwd`/$func_normal_abspath_tpath
+func_quote_for_eval ()
+# func_quote_for_eval arg
+    func_quote_for_eval "$envopts"
+        func_quote_for_eval_result="$func_quote_for_eval_unquoted_result"
+        func_quote_for_eval_result="\"$func_quote_for_eval_unquoted_result\""
+        func_quote_for_eval_unquoted_result="$1" ;;
+	func_quote_for_eval_unquoted_result=`$ECHO "$1" | $SED "$sed_quote_subst"` ;;
+# FUNC_QUOTE_FOR_EVAL_UNQUOTED_RESULT has merely all characters
+func_quote_for_expand ()
+# func_quote_for_expand arg
+      func_quote_for_expand "$my_cmd"
+    func_quote_for_expand_result="$my_arg"
+func_relative_path ()
+          func_relative_path_result=.
+  func_relative_path_result=
+          func_relative_path_result=../$func_relative_path_result
+        func_relative_path_result=../$func_relative_path_result
+    func_relative_path_result=${func_relative_path_result}/${func_stripname_result}
+    func_relative_path_result=$func_stripname_result
+  func_relative_path_result=$func_stripname_result
+# func_relative_path SRCDIR DSTDIR
+  func_relative_path_tbindir=$func_normal_abspath_result
+        func_relative_path_tcancelled=
+          func_relative_path_tcancelled=$func_relative_path_tbindir
+        func_relative_path_tcancelled=$func_stripname_result
+      $func_relative_path_tlibdir)
+      $func_relative_path_tlibdir*)
+        func_relative_path_tlibdir=${func_dirname_result}
+  func_relative_path_tlibdir=$func_normal_abspath_result
+  func_scan_files
+# func_scan_files
+func_scan_files ()
+func_serial ()
+# func_serial filename [macro_regex]
+          func_serial_max \
+func_serial_max ()
+      func_serial_max "$my_src_serial" "$my_dest_serial"
+    func_serial_max_result=
+        && { func_serial_max_result="$1"; break; }
+        && { func_serial_max_result="$2"; break; }
+# func_serial_max serial1 serial2
+func_serial_update ()
+      func_serial_update argz.m4 "$aclocaldir" "$macrodir" \
+      func_serial_update_check \
+    func_serial_update_check \
+func_serial_update_check ()
+    func_serial_update_check_result="$my_update_p"
+# func_serial_update_check srcfile src_serial destfile dest_serial
+      func_serial_update "$file" "$aclocaldir" "$macrodir" \
+# func_serial_update filename srcdir destdir [msg_var] [macro_re] [old_macro_re]
+    func_serial_update  libtool.m4 "$aclocaldir" "$macrodir" \
+      func_serial_update ltdl.m4 "$aclocaldir" "$macrodir" \
+func_show_eval ()
+# func_show_eval cmd [fail_exp]
+func_show_eval_locale ()
+# func_show_eval_locale cmd [fail_exp]
+func_split_long_opt ()
+    func_split_long_opt_arg=`$ECHO "$1" | $SED "$my_sed_long_arg"`
+# func_split_long_opt longopt
+} # func_split_long_opt may be replaced by extended shell implementation
+    func_split_long_opt_name=`$ECHO "$1" | $SED "$my_sed_long_opt"`
+			func_split_long_opt "$opt"
+func_split_short_opt ()
+    func_split_short_opt_arg=`$ECHO "$1" | $SED "$my_sed_short_rest"`
+} # func_split_short_opt may be replaced by extended shell implementation
+    func_split_short_opt_name=`$ECHO "$1" | $SED "$my_sed_short_opt"`
+			func_split_short_opt "$opt"
+# func_split_short_opt shortopt
+func_stripname ()
+    func_stripname './' '' "$func_relative_path_result/"
+  func_stripname '' '/' "$func_relative_path_result"
+  func_stripname '/' '/' "$func_relative_path_tcancelled"
+        func_stripname "$func_relative_path_tlibdir" '' "$func_relative_path_tbindir"
+} # func_stripname may be replaced by extended shell implementation
+# func_stripname prefix suffix name
+      func_stripname '' '/' "`pwd`"
+      .*) func_stripname_result=`$ECHO "${3}" | $SED "s%^${1}%%; s%\\\\${2}\$%%"`;;
+      *)  func_stripname_result=`$ECHO "${3}" | $SED "s%^${1}%%; s%${2}\$%%"`;;
+# func_strip_suffix prefix name
+# function.
+# function massages it into a suitable format for func_copy_some_files.
+# func_tr_sh
+func_tr_sh ()
+    func_tr_sh_result=$1
+    func_tr_sh_result=`$ECHO "$1" | $SED 's/^\([0-9]\)/_\1/; s/[^a-zA-Z0-9_]/_/g'`
+# func_usage
+func_usage ()
+func_verbose ()
+      func_verbose "AC_CONFIG_AUX_DIR not defined, not copying libtool auxiliary files."
+      func_verbose "AC_CONFIG_MACRO_DIR not defined, not copying libtool macros."
+# func_verbose arg...
+        func_verbose "${my_configure_ac}not using Autoconf"
+        && func_verbose "\`$my_srcfile' is serial $my_src_serial, greater than $my_dest_serial in \`$my_destfile'"
+        func_verbose "\`$my_srcfile' is serial $my_src_serial, less than $my_dest_serial in \`$my_destfile'"
+      func_verbose "Not copying \`$macrodir/argz.m4', libltdl not used."
+      func_verbose "Not copying \`$macrodir/ltdl.m4', libltdl not used."
+# func_version
+func_version ()
+func_warning ()
+# func_warning arg...
+        func_warning "no serial number in \`$my_srcfile', not copying."
+        func_warning "no serial number on \`$my_srcfile', not copying."
+     /^# General help using/b print
+# General help using GNU software: <http://www.gnu.org/gethelp/>.
+# Generated from libtoolize.m4sh by GNU Autoconf 2.68.
+# generates a relative path from SRCDIR to DSTDIR, with a trailing
+# given, STRING is the basename for that directory.
+# Global variables:
+# GNU General Public License for more details.
+# GNU libtool home page: <http://www.gnu.org/software/libtool/>.
+    $GREP "$1" "$2" >/dev/null 2>&1
+: ${GREP="/bin/grep"}
+# has a newer revision according to the serial number extracted by
+# has a newer revision, or DESTFILE does not yet exist, or the user
+# has a newer serial number, or DESTFILE does not yet exist, or the user
+# has a newer timestamp, or DESTFILE does not yet exist, or the user
+          # Have to descend all the way to the root!
+      -\?*|-h*|-c*|-f*|-i*|-n*|-q*|-v*)
+      --help)		func_help				;;
+help="Try \`$progname --help' for more information."  ## default
+      -\?|-h)		func_usage				;;
+#   -h, --help          print short or long help message
+     /^# .* home page:/b print
+#       host-triplet:	i686-pc-linux-gnu
+    # Hunt for ACLOCAL_AMFLAGS in `Makefile.am' for a `-I' argument.
+	    -I*)
+# if $1 begins with a digit, a '_' is prepended as well.
+      # if aclocal.m4 contains an untagged --i.e older-- macro file):
+# (If _AS_PATH_WALK were called with IFS unset, it would disable word
+      if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
+	if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
+      # If $configure_ac contains AC_CONFIG_AUX_DIR, check that it was
+    # If $configure_ac contains AC_CONFIG_LTDL_DIR, check that its
+    # If $configure_ac contains LTDL_INIT, check that its
+  if (eval "$as_required") 2>/dev/null; then :
+	if $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
+      # If mktemp works, use that first and foremost
+    if $my_keyword_update_p || $opt_force; then
+        if $my_macrodir_is_next; then
+    if $my_serial_update_p || $opt_force; then
+    # If neither --ltdl nor an LTDL_INIT mode are specified, default to
+    # If neither --ltdl nor LT_CONFIG_LTDL_DIR are specified, default to
+    if $opt_copy; then
+    if ${opt_dry_run-false}; then :; else
+    if $opt_dry_run; then :;
+    if $opt_install; then
+# If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
+      if $opt_ltdl && test "$macrodir" != "$subproject_macrodir"; then
+    if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
+      if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" && test "$subproject_macrodir" != "$macrodir"; then
+    if $opt_ltdl; then
+  if $opt_nonrecursive; then
+    if $opt_recursive || $opt_standalone; then
+    IFS=:
+IFS=" ""	$as_nl"
+  IFS=$as_save_IFS
+IFS=$as_save_IFS
+      if $seen_autoconf; then
+if ( set x; as_fn_ret_success y && test x = \"\$1\" ); then :
+IFS=" 	$lt_nl"
+      IFS="$my_save_IFS"
+    IFS="$my_save_IFS"
+     IFS=${PATH_SEPARATOR-:}
+       IFS="$save_IFS"
+     IFS="$save_IFS"
+      IFS="$save_mkdir_p_IFS"
+	IFS="$save_mkdir_p_IFS"
+    if test "$copy_return_status" != 0; then
+    if test -d "$2"; then
+      if test ! -d "$my_tmpdir"; then
+        if test -f aclocal.m4; then
+      if test -f "aclocal.m4"; then
+if test ! -f "$as_myself"; then
+	     if { test -f "$as_shell" || test -f "$as_shell.exe"; } &&
+        if test -f "$dir/install-sh"; then
+    if test -f Makefile.am; then
+    if test -f "$my_destfile"; then
+    if test -f "$my_searchfile"; then
+      if test -f "$my_srcdir/$my_filename"; then
+    if test "$func_normal_abspath_tpath" = / ; then
+			if test $# -gt 0; then
+        if test "$my_ac_config_macro_srcdir" != "$aclocaldir"; then
+      if test "$my_file" = "aclocal.m4"; then
+      if test "$my_status" -eq 0; then :; else
+    if test -n "$1"; then
+    if test -n "$ac_auxdir"; then
+    if test -n "$ac_macrodir$ltdldir" && test -z "$macrodir"; then
+    if test -n "$am_macrodir" && test -n "$ac_macrodir"; then
+  if test -n "$_lt_pkgdatadir"; then
+    if test -n "$my_directory_path" && test "$opt_dry_run" != ":"; then
+      if test -n "$my_glob_exclude"; then
+      if test -n "$my_missing"; then
+      if test -n "$my_msg"; then
+if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then :
+    if test "$opt_dry_run" = ":"; then
+if test "${PATH_SEPARATOR+set}" != set; then
+    if test x$as_have_required = xno; then :
+  if test x$as_have_required = xyes && (eval "$as_suggested") 2>/dev/null; then :
+if test "x$as_myself" = x; then
+      if test "x$CONFIG_SHELL" != x; then :
+if test "x$CONFIG_SHELL" = x; then
+    if test "X$func_dirname_result" = "X${1}"; then
+        if test "x$func_relative_path_tlibdir" = x ; then
+  if test "x$func_stripname_result" != x ; then
+      if test "x$ltdl_mode" = "xsubproject"; then
+    if test "x$ltdl_mode" = "xsubproject"; then
+        if test "X$my_copy_cb" = Xfunc_copy_cb; then
+      if test "X$my_dest_serial" = "X$func_serial_max_result"; then
+          if test "X$my_src_serial" = "X$func_serial_max_result"; then
+  if test "X`(/usr/ucb/echo -n -n $as_echo) 2>/dev/null`" = "X-n $as_echo"; then
+  if test x${ZSH_VERSION+set} = xset ; then
+    if test -z "$1"; then
+    if test -z "$am_macrodir$macrodir"; then
+if test -z "$BASH_VERSION$ZSH_VERSION" \
+      if test -z "$func_normal_abspath_result" ; then
+        if test -z "$func_relative_path_result"; then
+  if test ! -z "$func_relative_path_result"; then
+      if test -z "$my_macro_regex" ||
+    # If the file has no serial number, we assume it's ancient.
+        # If the last portion added has no slash in it, the list is done
+      # If we ascended to the root using ".." the result may be empty now.
+      # If we're not in dry-run mode, bomb out on failure
+      # ignore duplicates
+      # ignore excluded filenames
+#   -i, --install       copy missing auxiliary files
+# Implementation must be kept synchronized with func_dirname
+	    -I) my_macrodir_is_next=: ;;
+# in aclocal.m4, set $func_aclocal_update_check to 'false'.
+    # Incase they turn out to be the same, we'll set it to empty
+# include the following information:
+# indicate that --ltdl was seen during option processing.  Also,
+# in input to double_quote_subst, that '$' was protected from expansion.
+      # in scan sets, so we specify it separately.
+# Install copies of the auxiliary files into this package according to
+# Install copies of the libltdl files into this package.  Any auxiliary
+# Install copies of the libtool and libltdl m4 macros into this package.
+      --install|-i)
+    # in the file that AC_DEFUNs MACRO_REGEX.
+# Invoke $ECHO with all args, space-separated.
+# in which case we are not to be found in the path.
+  # is contrary to our usage.  Disable this feature.
+# is double-quoted, suitable for a subsequent eval, whereas
+# is given, then evaluate it.
+# is given, then evaluate it.  Use the saved locale for evaluation.
+    # Is it a directory at all?
+# is ksh but when the shell is invoked as "sh" and the current value of
+# it an absolute path.
+    # it has `m4_include([DESTFILE])', so the copy effectively already
+# it under the terms of the GNU General Public License as published by
+    # Just use the current directory if all else fails.
+LANGUAGE=C
+LC_ALL=C
+    # `libltdl'.  If both are specified, they must be the same.  Otherwise,
+    # Libtool is probably misinstalled if this happens:
+# Libtoolize affects the contents of aclocal.m4, and should be run before
+# libtoolize (GNU libtool) 2.4.2
+# Libtoolize is distributed in the hope that it will be useful, but
+# Libtoolize is free software; you can redistribute it and/or modify
+    LIBTOOLIZE_OPTIONS=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_rest"`
+      libtool.m4)
+# libtool processes, and avoids race conditions if possible.  If
+	# list incase some portion of path contains whitespace.
+  # Lists of all files libtoolize has ever installed.  These are removed
+: ${LN_S="ln -s"}
+# Local Variables:
+  # Locations for important files:
+# Locations for important files:
+	/LT_CONFIG_LTDL_DIR(/ {
+	/_LT_CONFIG_LTDL_DIR(/d
+      --ltdl)
+# ltdl can be installed to be self-contained (subproject, the default);
+ltdldir=
+  *)       ltdldir=`$ECHO "$optarg" | $SED 's,/*$,,'` ;;
+#       --ltdl[=DIR]    install libltdl sources [default: libltdl]
+	/LTDL_INIT/          {
+	*)          ltdl_init_args="([$ltdl_mode])" ;;
+	/\[LTDL_INIT/d
+  # LTDL_INIT was not seen, so we can't just use one variable for both
+      ltdl.m4)
+ltdl_mode=
+    ltdl_mode=nonrecursive
+    ltdl_mode=recursive
+    ltdl_mode=standalone
+  .) ltdlprefix= ;;
+  *) ltdlprefix=$ltdldir/ ;;
+	/LT_INIT/		 {
+	/\[LT_INIT/d
+lt_sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
+	/LT_WITH_LTDL/       {
+        /^m4_include(\[.*\])$/ {
+## M4sh Initialization. ##
+## M4sh Shell Functions. ##
+  macrodir=
+    macrodir="$ac_macrodir"
+##    Main.    ##
+## Main body of script. ##
+        # ...make a list in topmost first order.  Use a colon delimited
+# Make a temporary directory that won't clash with other running
+      Makefile.am)
+      Makefile.inc)
+: ${MAKE="make"}
+# Make sure IFS has a sensible default
+	# Make sure ltdldir and ltdl_mode have sensible defaults
+# Make sure the entire path to DIRECTORY-PATH is available.
+# Make sure we have an absolute path for reexecution:
+      # Many Bourne shells cannot handle close brackets correctly
+    # Massage a value for pkgconfig_files from the value used in Makefile.am
+    # Massage a value for pkgltdl_files from the value used in Makefile.am
+    # Massage a value for pkgmacro_files from the value used in Makefile.am.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# message.  Then update appropriate auxiliary files if newer ones are
+# metacharacters that are still active within double-quoted strings.
+        # mkdir can fail with a `File exist' error if two processes
+MKDIR="func_echo_all $MKDIR"
+: ${MKDIR="mkdir"}
+        $MKDIR "$my_dir" 2>/dev/null || :
+        $MKDIR "$my_tmpdir"
+# mode:shell-script
+: ${MV="mv -f"}
+      my_ac_config_macro_srcdir="$aclocaldir"
+	my_ac_config_macro_srcdir="$subproject_macrodir"
+        my_arg="$1" ;;
+	my_arg=`$ECHO "$1" | $SED \
+        my_arg="\"$my_arg\""
+	    $my_cmd"
+    my_cmd="$1"
+	my_configure_ac=
+	$my_cont && continue
+	my_cont=false
+    my_copy_cb="${5-func_copy_cb}"
+      $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
+      *)     my_copy_msg="file from \`$my_srcdir/$my_file'" ;;
+    my_destdir="$3"
+      *" $my_destfile "*) ;;
+    my_destfile="$3"
+    my_destfile="aclocal.m4"
+    my_destfile="$my_destdir/$my_filename"
+    my_dest_serial="$4"
+	  my_dest_serial=`func_serial "$my_destfile" 'A[CM]_PROG_LIBTOOL'`
+	my_dest_serial=`func_serial "$my_destfile" LTDL_INIT`
+	my_dest_serial=`func_serial "$my_destfile" LT_INIT`
+      my_dest_serial=`func_serial "$my_destfile" "$my_macro_regex"`
+        my_dest_serial=`func_serial "$my_destfile" "$my_old_macro_regex"`
+	my_dest_serial=`func_serial "$my_destfile" "$need"`
+      my_dest_serial=`$SED -e "$my_sed_script" "$my_destfile"`
+    my_directory_path="$1"
+        my_directory_path=`$ECHO "$my_directory_path" | $SED -e "$dirname"`
+        -*) my_directory_path="./$my_directory_path" ;;
+    my_dir=`eval echo "\\\$$my_dirvar"`
+    my_dir_list=
+      my_dir_list=`$ECHO "$my_dir_list" | $SED 's,:*$,,'`
+        my_dir_list="$my_directory_path:$my_dir_list"
+    my_dirvar="$1"
+    my_f1=$func_basename_result
+    my_fail_exp="${2-:}"
+    my_file="$1"
+    my_filebase=$func_basename_result
+        *:$my_filename:*) ;;
+    my_filename="$1"
+      my_filename=`expr "X$my_filename" : 'Xlibltdl/\(.*\)'`
+      my_filename=$func_basename_result
+	    $my_fixup_inc_paths_script" \
+	my_fixup_inc_paths_script= ;;
+	my_fixup_inc_paths_script="\
+    my_fixup_non_subpackage_script="\
+	my_fixup_non_subpackage_script=`echo "$my_fixup_non_subpackage_script" | \
+    my_glob_exclude="$1"
+    my_included_files=`func_included_files aclocal.m4`
+    my_include_regex=
+    my_keyword_update_p=:
+      my_keyword_update_p="$func_serial_update_check_result"
+      my_macrodir_is_next=false
+	    *) my_macrodir_is_next=false ;;
+    my_macro_regex="$2"
+    my_macro_regex="$5"
+        my_missing="$my_needed"
+    my_msg_var="$4"
+    my_msg_var="$5"
+      my_needed="libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 lt~obsolete.m4"
+    my_old_macro_regex="$6"
+        my_pkgmacro_header argz.m4
+        my_pkgmacro_header "$file"
+        my_pkgmacro_header 'LTDL_INIT'
+      my_pkgmacro_header LT_INIT 'A[CM]_PROG_LIBTOOL'
+      my_pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$ac_macrodir'."
+      my_pkgmacro_header="putting macros in \`$macrodir'."
+      my_return_status=$?
+    my_return_status=1
+    my_save_IFS="$IFS"
+    my_searchfile="$1"
+    my_sed_aclocal_flags='
+    my_sed_config='
+    my_sed_digits='s/[^0-9.]//g'
+    my_sed_dot='s/\..*$//g'
+  my_sed_env_opt='1s/^\([^,:; ]*\).*$/\1/;q'
+  my_sed_env_rest='1s/^[^,:; ]*[,:; ]*\(.*\)$/\1/;q'
+    my_sed_include='
+    my_sed_install='
+    my_sed_long_arg='1s/^--[^=]*=//'
+    my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
+    my_sed_ltmain='
+    my_sed_rest='s/^[0-9][1-9]*\.*//'
+    my_sed_scan_configure_ac='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
+    my_sed_script="$4"
+    my_sed_serial='
+    my_sed_short_opt='1s/^\(..\).*$/\1/;q'
+    my_sed_short_rest='1s/^..\(.*\)$/\1/;q'
+    my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,
+    my_serial=
+    my_serial1="$1"
+      my_serial1=`$ECHO "$my_serial1" | $SED "$my_sed_rest"`
+      my_serial1_part=`$ECHO "$my_serial1" | $SED "$my_sed_dot"`
+    my_serial2="$2"
+      my_serial2=`$ECHO "$my_serial2" | $SED "$my_sed_rest"`
+      my_serial2_part=`$ECHO "$my_serial2" | $SED "$my_sed_dot"`
+        my_serial=`$SED -e "$my_sed_serial" "$my_file"`
+    my_serial_update_p=:
+      my_serial_update_p="$func_serial_update_check_result"
+    my_srcdir="$2"
+	< "$my_srcdir/$my_filename" > "$my_destdir/$my_filename" ||
+    my_srcfile="$1"
+    my_srcfile="$aclocaldir/$1"
+    my_srcfile="$my_srcdir/$my_filename"
+         "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
+        "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
+      "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
+    my_srcfile_spec="$1"
+    my_src_serial="$2"
+              "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
+	  my_src_serial=`func_serial "$my_srcfile" 'A[CM]_PROG_LIBTOOL'`
+	my_src_serial=`func_serial "$my_srcfile" LTDL_INIT`
+	my_src_serial=`func_serial "$my_srcfile" LT_INIT`
+      my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
+        my_src_serial=`func_serial "$my_srcfile" "$my_old_macro_regex"`
+	my_src_serial=`func_serial "$my_srcfile" "$need"`
+      my_src_serial=`$SED -e "$my_sed_script" "$my_srcfile"`
+      my_status=$?
+    my_template="${TMPDIR-/tmp}/${1-$progname}"
+      my_tmpdir=`mktemp -d "${my_template}-XXXXXXXX" 2>/dev/null`
+      my_tmpdir="${my_template}-$$"
+        my_tmpdir="${my_template}-${RANDOM-0}$$"
+      my_tname=$func_basename_result
+    my_update_p=:
+# name if it has been set yet.
+# names in SRCFILE_SPEC.  The odd calling convention is needed to allow
+#   -n, --dry-run       print commands rather than running them
+	# neutralization value for shells without unset; and this also
+      # \n is not interpreted correctly by Solaris 8 /usr/ucb/tr
+    NL2SP='tr \015\012 \040\040'
+    NL2SP='tr \r\n \100\100'
+# NLS nuisances.
+      nonrecursive)
+      *" nonrecursive "*)  ac_ltdl_mode=nonrecursive	;;
+# nonrecursive automake driven make:
+      --nonrecursive|--non-recursive)
+#       --nonrecursive  prepare ltdl for non-recursive make
+  # Normalisation. If bindir is libdir, return empty string,
+      # Note that we default to the current directory.
+      # not given in terms of a shell variable!
+# not in the set a-zA-Z0-9_ are replaced with '_'. Further,
+      # Not necessarily an ordinary path; POSIX reserves leading '//'
+# not true, evaluate CMD.  If the evaluation of CMD fails, and FAIL_EXP
+#       --no-warn       don't display warning messages
+#   --no-warn           don't display warning messages
+      --no-warning|--no-warn)
+  # Now calculate path; take care to avoid doubling-up slashes.
+  NULLCMD=:
+# OLD_MACRO_REGEX must match any text after "# serial N" in both files.
+      # Only recurse when we don't care if all the variables we use get
+    opt="$1"
+			optarg="$1"
+# optarg for --ltdl during option processing, but then stashing
+			opt_copy=:
+opt_copy=false
+    $opt_debug
+			$opt_debug
+opt_debug=:
+			opt_dry_run=:
+opt_dry_run=false
+    opt=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_opt"`
+			opt_force=:
+opt_force=false
+    $opt_force && for file in $all_pkgconfig_files; do
+    $opt_force && for file in $all_pkgltdl_files; do
+    $opt_force && for file in $all_pkgmacro_files; do
+	  $opt_force || if test -f "$my_destdir/$my_filename"; then
+	$opt_force || if test -n "$ac_macrodir$ac_ltdldir"; then
+opt_help=false
+			opt_install=:
+opt_install=false
+# Option defaults:
+# options are ignored:
+opt_ltdl=:
+opt_ltdl="false"
+    $opt_ltdl && if test x$seen_ltdl != x:; then
+      $opt_ltdl && my_needed="$my_needed argz.m4 ltdl.m4"
+			        *) opt_ltdl="$optarg"; shift ;;
+    $opt_ltdl || return
+			opt_nonrecursive=:
+opt_nonrecursive=false
+      $opt_quiet \
+	    $opt_quiet \
+			opt_quiet=:
+opt_quiet=false
+	  $opt_quiet || func_echo "copying $my_copy_msg"
+	$opt_quiet || func_echo "copying $my_copy_msg"
+    $opt_quiet || func_echo "creating file \`$my_destdir/$my_filename'"
+	  $opt_quiet || func_echo "linking $my_copy_msg"
+      $opt_quiet || func_echo_once "$my_msg_var"
+	    $opt_quiet || func_echo_once "$my_msg_var"
+	  $opt_quiet || func_echo_once "$my_msg_var"
+	$opt_quiet || func_echo_once "$my_msg_var"
+    $opt_quiet || if test -n "$ac_ltdldir"; then
+    $opt_quiet || if test -n "$ac_macrodir"; then
+    $opt_quiet || if test "x$ac_auxdir" = "x$subproject_auxdir"; then
+    $opt_quiet || if test "x$macrodir" != "x$subproject_macrodir"; then
+    $opt_quiet && return
+			opt_recursive=:
+opt_recursive=false
+    ${opt_silent-false} || {
+    $opt_standalone &&
+			opt_standalone=:
+opt_standalone=false
+			opt_verbose=:
+opt_verbose=false
+    $opt_verbose && func_echo ${1+"$@"}
+opt_warning=:
+    $opt_warning && $ECHO "$progname: ${opt_mode+$opt_mode: }warning: "${1+"$@"} 1>&2
+			opt_warning=false
+    $opt_warning || return
+# or m4 macro files needed in the libltdl tree will also be copied by
+# or obtained by writing to the Free Software Foundation, Inc.,
+# or to be configured by a parent project, either with a recursive or
+      # Otherwise compare to aclocal.m4 serial number (func_serial
+# otherwise set result to NONDIR_REPLACEMENT.
+        # ...otherwise throw away the child directory and loop
+# Output INCLUDEFILE if SEARCHFILE m4_includes it, else output SEARCHFILE.
+# Output the value of the serial number comment in FILENAME, where the
+      # over CIFS/SMB, so we conserve a leading double slash if found.
+        p
+	/^package_revision='\''*[0-9][1-9.]*'\''*/ {
+        # Parent dir; strip last assembled component from result.
+# Parse environment options
+# Parse options once, thoroughly.  This comes as soon as possible in the
+    (PATH='/bin:/bin'; FPATH=$PATH; sh -c :) >/dev/null 2>&1 ||
+  (PATH='/bin;/bin'; FPATH=$PATH; sh -c :) >/dev/null 2>&1 && {
+pathcar='s,^/\([^/]*\).*$,\1,'
+pathcdr='s,^/[^/]*,,'
+      PATH_SEPARATOR=';'
+  PATH_SEPARATOR=:
+# perform func_basename and func_dirname in a single function
+    pkgconfig_files=`$ECHO "$pkgconfig_files" | $SED 's,^:*,,'`
+    pkgconfig_files=	# GLOBAL VAR
+# @pkgconfig_files\@ is substituted as per its value in Makefile.am; this
+	*) pkgconfig_files="$pkgconfig_files:$my_filename" ;;
+      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_auxdir'."
+      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_auxdir'."
+      pkgconfig_header="putting auxiliary files in \`$auxdir'."
+        "$pkgdatadir/config" "$auxdir" pkgconfig_header
+      "$pkgdatadir/config" "$auxdir" pkgconfig_header
+      "$pkgdatadir" "$ltdldir" pkgconfig_header
+    pkgdatadir="$_lt_pkgdatadir/libltdl"
+  pkgdatadir=/usr/share/libtool
+      "$pkgltdldir/libltdl" "$ltdldir" pkgltdl_header
+    pkgltdldir="$_lt_pkgdatadir"
+  pkgltdldir=/usr/share/libtool
+    pkgltdl_files=`$ECHO "$pkgltdl_files" | $SED 's,^:*,,'`
+    pkgltdl_files=	# GLOBAL VAR
+# @pkgltdl_files\@ is substituted as per its value in Makefile.am; this
+	*) pkgltdl_files="$pkgltdl_files:$my_filename" ;;
+      pkgltdl_header="putting libltdl files in LT_CONFIG_LTDL_DIR, \`$ac_ltdldir'."
+      pkgltdl_header="putting libltdl files in \`$ltdldir'."
+    pkgmacro_files=`$ECHO "$pkgmacro_files" | $SED 's,^:*,,'`
+    pkgmacro_files=     # GLOBAL VAR
+      pkgmacro_files="$pkgmacro_files:$my_filename"
+      pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$subproject_macrodir'."
+      pkgmacro_header="putting macros in \`$subproject_macrodir'."
+# Portably unset VAR.
+# positional parameter $0, within a function call, is the name of the
+  *posix*) :
+# possible).
+# pre-3.0 UWIN ksh).  But do not cause bugs in bash 2.01; the "|| exit 1"
+  # Pre-4.2 versions of Zsh do word splitting on ${1+"$@"}, which
+  # Pre-4.2 versions of Zsh do word splitting on \${1+\"\$@\"}, which
+# Prefer a ksh shell builtin over an external printf program on Solaris,
+    # Prefer configure.ac to configure.in
+# PREFIX and SUFFIX must not contain globbing or regex special
+  prefix=/usr
+# Prepare a package to use libtool.
+	# Preserve -v and -x to the replacement shell.
+    # previous libtoolize release:
+# Printing a long string crashes Solaris 7 /usr/bin/printf.
+    # Probe macro usage in configure.ac and/or aclocal.m4. #
+    # Processed it all yet?
+     progdir=`cd "$progdir" && pwd`
+     progdir=$func_dirname_result
+# `$progname'.
+progname=$func_basename_result
+#       $progname:	(GNU libtool) 2.4.2 Debian-2.4.2-1ubuntu1
+     ' < "$progpath"
+     }' < "$progpath"
+    }' < "$progpath"
+progpath="$0"
+     progpath="$progdir/$progname"
+	/^# '$PROGRAM' (GNU /,/# warranty; / {
+PROGRAM=libtoolize
+      # Protect directory names starting with `-'
+PS1='$ '
+PS2='> '
+PS4='+ '
+#   -q, --quiet         work silently
+      --quiet|--automake|-q)
+#   --quiet             work silently
+      --recursive)
+      recursive)
+      *" recursive "*)     ac_ltdl_mode=recursive	;;
+#       --recursive     prepare ltdl for recursive make
+      # Relative path, prepend $cwd.
+      # Remind the user to call LT_CONFIG_LTDL_DIR:
+    # Remove any lingering files that my have been installed by some
+removedotparts=':dotsl
+# Remove doubled-up and trailing slashes, "." path components,
+# Re-`\' parameter expansions in output of double_quote_subst that were
+	repl=$ltdldir
+	repl_uscore=`$ECHO "$repl" | $SED 's,[/.+-],_,g'`
+# Report bugs to <bug-libtool@gnu.org>.
+  # rest of the code with '$opt_ltdl || $seen_ltdl' though, because we CAN
+  # Restore leading double-slash if one was found on entry.
+# Result is stored in $func_tr_sh_result.  All characters
+    ret=$?
+      return
+      # Return a directory name, but don't create it in dry-run mode
+    return $copy_return_status # set in func_copy_cb
+    return $my_return_status
+      # returns 0 for older macro serial numbers before we provided
+# return the largest in $func_serial_max_result.  If they are the
+      rm -f "$auxdir/$file"
+      rm -f "$ltdldir/$file"
+      rm -f "$macrodir/$file"
+      rm -f "$subproject_auxdir/$file"
+      rm -f "$subproject_macrodir/$file"
+RM="func_echo_all $RM"
+    $RM "$my_destdir/$my_file"
+    $RM "$my_destdir/$my_filename" 2>/dev/null
+: ${RM="rm -f"}
+        s/^# //
+	    s,,,
+	    s,[#;].*,,
+		s,/\.$,/,'
+	s/^# *$//
+	    s,^.*AC_CONFIG_AUX_DIR([[	 ]*\([^])]*\).*$,ac_auxdir=\1,
+	    s,^.*AC_CONFIG_MACRO_DIR([[	 ]*\([^])]*\).*$,ac_macrodir=\1,
+        s,^.*AC_REQUIRE(.*$,,; s,^.*m4_require(.*$,,;
+	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4_defun(.*$,,
+  # safely set opt_ltdl to true if LTDL_INIT was seen:
+# Same as above, but do not quote variable references.
+# same, func_serial_max_result will be empty.
+# Sanity check macros from aclocal.m4 against installed versions.
+	s/\$autoconf_version/'"`(${AUTOCONF-autoconf} --version) 2>/dev/null |$SED 1q`"'/
+	s/\$automake_version/'"`(${AUTOMAKE-automake} --version) 2>/dev/null |$SED 1q`"'/
+     save_IFS="$IFS"
+      save_mkdir_p_IFS="$IFS"; IFS=':'
+        save_mktempdir_umask=`umask`
+  s/^$bs2$dollar/$bs&/
+  s/$bs4/&\\
+  s/\\([^$bs]\\)$bs2$dollar/\\1$bs2$bs$dollar/g
+        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/
+# Scan configure.(ac|in) and aclocal.m4 (if present) for use of libltdl
+# script to make things like `--version' happen as quickly as we can.
+	/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
+    # Search FILENAME and all the files it m4_includes for a serial number
+: ${SED="/bin/sed"}
+sed_double_backslash="\
+sed_make_literal_regex='s,[].[^$\\*\/],\\&,g'
+      $SED "$my_fixup_non_subpackage_script
+    $SED -n '/(C)/!b go
+    $SED -n '/^# Usage:/,/^#  *.*--help/ {
+    $SED -n '/^# Usage:/,/# Report bugs to/ {
+sed_quote_subst='s/\([`"$\\]\)/\\\1/g'
+# SED_SCRIPT, or DESTFILE does not yet exist, or the user specified
+    $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
+		sed 's,libltdl/,,'`
+# Sed substitution that converts a w32 file name or path
+# Sed substitution that helps us do robust quoting.  It backslashifies
+# Sed substitution that turns a string into a regex matching for the
+    $seen_autoconf || {
+  seen_autoconf=false
+    $seen_autoconf || return
+    $seen_libtool ||
+  seen_libtool=false
+  seen_ltdl=false
+  $seen_ltdl && opt_ltdl=:
+      # Separate non-argument short options:
+      # Separate optargs to long options:
+	/^# serial [1-9][0-9.]*[	 ]*'"$my_macro_regex"'[	 ]*$/ {
+      # serial formats, but we accept them here to be complete:
+	# serial formats, but we accept them here to be complete:
+      # serial tags, so the update message will be correctly given
+			set dummy "$func_split_long_opt_name" "$func_split_long_opt_arg" ${1+"$@"}
+			set dummy "$func_split_short_opt_name" "-$func_split_short_opt_arg" ${1+"$@"}
+      *)		set dummy "$opt" ${1+"$@"};	shift; break  ;;
+# Set func_split_long_opt_name and func_split_long_opt_arg shell
+# Set func_split_short_opt_name and func_split_short_opt_arg shell
+    # Set local variables to reflect contents of configure.ac
+    set -o posix ;; #(
+  setopt NO_GLOB_SUBST
+	    s/-/./g
+		s@/\./@/@g
+# shares the AC_CONFIG_AUX_DIR setting.
+: ${SHELL="${CONFIG_SHELL-/bin/sh}"}
+SHELL=${CONFIG_SHELL-/bin/sh}
+    shift
+			shift
+# sh-indentation:2
+	s*\$host*'"$host"'*
+  # show any warnings saved by LIBTOOLIZE_OPTIONS parsing
+	  s, -Ilibltdl , -I@repl@ ,
+# Since each input `\' is now two `\'s, look for any number of runs of
+        # since we return early here:
+    ## Since we return early here when --no-warn was given:       ##
+      # Skip included files:
+# slash if non-empty, suitable for immediately appending a filename
+	s*\$LD*'"$LD"'*
+      s,libltdl/aclocal.m4,,
+      s,libltdl/config-h.in,,
+      s,libltdl/configure,,
+      s,libltdl/configure.ac,,
+      s,libltdl/Makefile.am,,
+      s,libltdl/Makefile.in,,
+	  s,: libltdl/,: @repl@/,
+	  s,)/libltdl ,)/@repl@ ,
+	  s,libltdl/,@repl@/,
+	  s,\\\$(libltdl_,\$(@repl_uscore@_,
+	  s,libltdl_,@repl_uscore@_,
+      s,(LIBOBJS),(ltdl_LIBOBJS),g
+	s*\$LTCC*'"$LTCC"'*
+	s*\$LTCFLAGS*'"$LTCFLAGS"'*
+	    s,^.*LT_CONFIG_LTDL_DIR([[	 ]*\([^])]*\).*$,ac_ltdldir=\1,
+	    s,^.*LTDL_INIT([[	 ]*\([^])]*\).*$,ltdl_options="\1",
+	    s,^.*LTDL_INIT[	 ]*$,seen_ltdl=:,
+      s,(LTLIBOBJS),(ltdl_LTLIBOBJS),g
+	s,^.*m4_define(.*$,,
+	    s,^m4_include(\[\(.*\)\])$,\1,
+	  s/\n# / /
+  s/\n//g"
+    SP2NL='tr \040 \012'
+    SP2NL='tr \100 \n'
+# spaces in file and directory names.
+	    s,^package_revision='\''*\([0-9.]*\)'\''*[	 ]*$,\1,
+# specified `--force' at the command line.
+# specified `--force' at the command line.  If given, MACRO_REGEX or
+# splitting by setting IFS to empty value.)
+	s/\$progname/'$progname'/
+	s*\$progname*'$progname'*
+	  s,@repl@,${repl},g"
+	  s,@repl_uscore@,${repl_uscore},g
+	    s,^scriptversion='\''*\([0-9.-]*\)'\''*,\1,
+	    s,^.*$,seen_autoconf=:,
+	    s,^.*$,seen_libtool=:,
+	    s,^.*$,seen_ltdl=:,
+	    s,^# serial \([1-9][0-9.]*\).*$,\1,
+	s*\$SHELL*'"$SHELL"'*
+      --standalone)
+# Standard options:
+  # Start from root dir and reassemble the path.
+	    s,^timestamp='\''*\([0-9-]*\)'\''*,\1,
+        # stop in that case!
+      # Strictly, this libtoolize ought not to have to deal with ancient
+	# Strictly, this libtoolize ought not to have to deal with ancient
+# string literally.
+# strip PREFIX and SUFFIX off of NAME.
+    # strip spurious leading `:'
+      # Strip surplus leading 'libltdl/':
+      *" subproject "*)    ac_ltdl_mode=subproject	;;
+  subproject_auxdir=${ltdlprefix}config
+    # `subproject'.  If both are specified, they must be the same.  Otherwise,
+	subproject) ltdl_init_args=""               ;;
+  subproject_macrodir=${ltdlprefix}m4
+#       --subproject    prepare ltdl to configure and build independently
+    # Suggest modern idioms for storing autoconf macros:
+    # Suggest using LTDL_INIT if appropriate:
+      # Supporting this would mean changing the timestamp:
+# suppresses any "Segmentation fault" message there.  '((' could
+	s/\$with_gnu_ld/'"$with_gnu_ld"'/
+    # take the one that is given!
+    # take the one that is given! (If LT_CONFIG_LTDL_DIR is not specified
+TAR="func_echo_all $TAR"
+: ${TAR=tar}
+		t dotsl
+      test "$am_macrodir" = "$ac_macrodir" \
+    test -d "$my_dir" \
+      test -d "$my_directory_path" || \
+      test -d "$my_tmpdir" || \
+  # test EBCDIC or ASCII
+test "${ECHO+set}" = set || ECHO=${as_echo-'printf %s\n'}
+    test -f "$1" || \
+      test -f "$auxdir/$file" && func_verbose "rm -f '$auxdir/$file'"
+    test -f "$configure_ac" || configure_ac=
+    test -f configure.ac && configure_ac=configure.ac
+      test -f "$ltdldir/$file" && func_verbose "rm -f '$ltdldir/$file'"
+      test -f "$macrodir/$file" && func_verbose "rm -f '$macrodir/$file'"
+    test -f "$my_srcdir/$my_file" ||
+    test -f "$my_srcfile" || func_fatal_error "\`$my_srcfile' does not exist."
+      test -f "$subproject_auxdir/$file" && func_verbose "rm -f '$subproject_auxdir/$file'"
+      test -f "$subproject_macrodir/$file" && func_verbose "rm -f '$subproject_macrodir/$file'"
+  test $# -gt 0 &&
+         test "$my_filename" = aclocal.m4 ||
+      test "$my_serial1_part" -gt "$my_serial2_part" \
+      test "$my_serial2_part" -gt "$my_serial1_part" \
+      test -n "$ac_ltdldir" ||
+    test -n "$auxdir" || auxdir=.
+    test -n "`{ cd $my_dir && ls; } 2>/dev/null`" \
+	test -n "$configure_ac" && my_configure_ac="$configure_ac: "
+  test -n "$envopts" && {
+  test -n "$env_warning" &&
+test -n "$LN_S" && LN_S="func_echo_all $LN_S"
+	test -n "$ltdldir" || ltdldir=libltdl
+	test -n "$ltdl_mode" || ltdl_mode=subproject
+    test -n "$ltdl_options" && seen_ltdl=:
+       test -n "$macrodir" && test "x$macrodir" != "x$subproject_macrodir"
+      test -n "$my_dest_serial" || my_dest_serial=0
+    test -n "$my_serial" || my_serial=0
+     test -n "$progdir" || progdir=`pwd`
+    test -r "$as_dir/$0" && as_myself=$as_dir/$0 && break
+        test "$subproject_auxdir" = "$auxdir" ||
+    test "X$1$2" = X`$ECHO "$1$2" | $SED "$my_sed_digits"` || {
+       test "x$ac_auxdir" = "x$subproject_auxdir"
+        test x"$ac_ltdldir" = x"$ltdldir" || \
+        test x"$ac_ltdl_mode" = x"$ltdl_mode" || \
+       # && test "x$auxdir" != "x$subproject_auxdir" is implied
+test x\$exitcode = x0 || exit 1"
+       # && test "x$macrodir" = "x$subproject_macrodir"
+      test "X$my_dest_serial" = "X0" &&
+	test "X$my_dest_serial" = "X0" &&
+      test "X$my_f1" = "X$my_tname" \
+         test "X$my_macro_regex" = "X$my_filebase" ||
+      test "X$my_src_serial" = "X0" &&
+      test "X$my_src_serial" = "X0" && {
+	test "X$my_src_serial" = "X0" &&
+      test "X$my_src_serial" = "X$func_serial_max_result" \
+      test "X$my_src_serial" = "X$func_serial_max_result" || my_update_p=false
+    && (test "X`print -r -- $as_echo`" = "X$as_echo") 2>/dev/null; then
+       test -x "$progdir/$progname" && break
+  test -z "$as_dir" && as_dir=.
+    test -z "$configure_ac" \
+    test -z "$macrodir" && macrodir="$am_macrodir"
+      test -z "$my_serial1_part" \
+      test -z "$my_serial1_part$my_serial2_part" \
+      test -z "$my_serial2_part" \
+      test -z "$my_src_serial" && {
+# that subsequent calls have no effect.
+# The following space or comma delimited options can be passed to $progname
+# the Free Software Foundation; either version 2 of the License, or
+    then
+      then
+# The name of this program:
+    # The next three entries are used to spot a run of precisely
+# then try to copy SRCFILE to DESTFILE (without changing the timestamp if
+# the (optional) optarg in $ltdldir and reusing $opt_ltdl to
+	/the.*option into.*LT_INIT.*parameter/d
+  # the path to end with a slash for ease of parsing, so make sure
+  # there is one (and only one) here.
+# there to prevent editors from complaining about space-tab.
+    # These files are handled specially, depending on ltdl_mode:
+# These SED scripts presuppose an absolute path with a trailing slash.
+# The user is always right.
+# the whether libltdl is included as a subproject, and whether the parent
+# the _XPG environment variable is not equal to 1 (one), the special
+# this function massages it into a suitable format for func_copy_some_files.
+# This function returns two values: FUNC_QUOTE_FOR_EVAL_RESULT
+# This is free software; see the source for copying conditions.  There is NO
+# This is tricky, since we're overloading $opt_ltdl to be the
+  # this just eases exit handling
+# those functions but instead duplicate the functionality here.
+	/^timestamp='\''*[0-9][1-9-]*'\''*/ {
+# to 'false'.
+#             to NONDIR_REPLACEMENT.
+	 && touch "$my_destdir/$my_file"; then
+        # Trailing empty path component, ignore it.
+      # trashed, since they are in global scope.
+# trigger a bug in pdksh 5.2.14.
+	     # Try only shells that exist, to save several forks.
+        # try to create one of the directories concurrently.  Don't
+      # Try to discover auxdir the same way it is discovered by configure.
+# Turn $1 into a string suitable for a shell variable name.
+    # two leading slashes without using negated character classes;
+        umask 0077
+           | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1; } \
+	     | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1 ; }
+        umask $save_mktempdir_umask
+# unless 'noexit' is passed as argument.
+# Unless opt_silent is true, then output CMD.  Then, if opt_dryrun is
+# Unless --quiet was passed, display a message. Then copy pkgconfig_files
+# Unless --quiet was passed, display a message. Then copy pkgmacro_files
+# Unless --quiet was passed, or AC_CONFIG_AUX_DIR was not seen, display a
+# Unless --quiet was passed, or AC_CONFIG_MACRO_DIR was not seen, display
+# Unless serial number of FILENAME is newer than the matching serial number
+# Unless SRC_SERIAL is newer than DEST_SERIAL set $func_serial_update_check
+}unrecognized environment option \`$opt'" 				  ;;
+  && ( (unset $as_var) || exit 1) >/dev/null 2>&1 && unset $as_var || :
+	(unset BASH_ENV) >/dev/null 2>&1 && unset BASH_ENV ENV
+(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
+unset CLICOLOR_FORCE GREP_OPTIONS
+# Unset more variables known to interfere with behavior of common tools.
+# Unset variables that we do not need and which cause bugs (e.g. in
+      # Unusual form of absolute path, do nothing.
+    # updated `aclocal.m4'.
+# Usage: $progname [OPTION]...
+    # user specified a macrodir.
+    # user specified an auxdir.
+    # user specified `--ltdl'.
+    # Validate auxdir. #
+    # Validate ltdldir. #
+    # Validate ltdl_mode. #
+  # Validate options:
+  # validate $opt_nonrecursive, $opt_recursive and $opt_standalone
+#             value retuned in "$func_basename_result"
+#             value returned in "$func_dirname_result"
+#             value returned in "$func_normal_abspath_result"
+#             value returned in "$func_relative_path_result"
+# variables after splitting LONGOPT at the `=' sign.
+# variables after splitting SHORTOPT after the 2nd character.
+	  *v* ) as_opts=-v ;;
+      --verbose|-v)
+#   --verbose           verbosely report processing
+      --version)	func_version				;;
+#       --version       print version information and exit
+# via the environment variable LIBTOOLIZE_OPTIONS, unknown environment
+#   -v, --verbose       verbosely report processing
+	  *v*x* | *x*v* ) as_opts=-vx ;;
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  # We cannot yet assume a decent shell, so we have to provide a
+# We did not find ourselves, most probably we were run as `sh COMMAND'
+# We need space, tab and new line, in precisely that order.  Quoting is
+    # we suggest adding it later in this code.)
+    # we take advantage of case's first-match behaviour.
+# When reporting a bug, please describe a test case to reproduce it and
+# which are still active within double quotes backslashified.
+# which contains forward slashes, into one that contains
+  while :; do
+      # While some portion of DIR does not yet exist...
+      while test ! -d "$my_directory_path"; do
+  while test $# -gt 0; do
+  while test -n "$LIBTOOLIZE_OPTIONS"; do
+    while test -n "$my_serial1$my_serial2"; do
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+  # without --install, and the project may not be using Automake.
+# without needing to append a separator.
+      # word splitting and command substitution for a subsequent eval.
+      # word splitting, command substitution and and variable
+# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
+    # work around that:
+	# works around shells that cannot unset nonexistent variables.
+# Written by Gary V. Vaughan <gary@gnu.org>, 2003
+	  *x* ) as_opts=-x ;;
+: ${Xsed="$SED -e 1s/^X//"}
+Xsed="${SED}"' -e 1s/^X//'
+      x*,x)	ltdldir=$ac_ltdldir	;;
+      x,x)	ltdldir=libltdl		;;
+      x,x*)	ltdldir=$ltdldir	;;
+      x*,x)	ltdl_mode=$ac_ltdl_mode	;;
+      x,x*)	ltdl_mode=$ltdl_mode	;;
+      x,x)	ltdl_mode=subproject	;;
+# You must `cd' to the top directory of your package before you run
+# You should have received a copy of the GNU General Public License

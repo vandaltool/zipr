@@ -1,0 +1,41 @@
+    -black                  use BlackPixel
+__bss_start
+__ctype_b_loc
+__ctype_tolower_loc
+-display
+    -display host:dpy       or -d
+__fprintf_chk
+-geometry
+Geometry
+    -geometry WxH+X+Y       or -g spec
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+    -none                   no background in window
+    -root                   use the root background
+%s:  can't use colors on a monochrome display.
+    -solid colorname        use the color indicated
+__strdup
+%s:  unable to allocate color '%s'.
+%s:  unable to allocate memory for string.
+%s:  unable to open display '%s'
+The default is:  %s -none
+usage:  %s [-options] [geometry] [display]
+where the available options are:
+    -white                  use WhitePixel
+XAllocColor
+XCloseDisplay
+XCreateWindow
+XDisplayName
+XGetDefault
+XMapWindow
+XOpenDisplay
+XParseColor
+XParseGeometry

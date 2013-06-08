@@ -1,0 +1,88 @@
+bitstream
+__bss_start
+CHARSET_ENCODING
+CHARSET_REGISTRY
+COPYRIGHT
+Couldn't allocate names.
+Couldn't allocate strike.
+Couldn't build cmap.
+Couldn't build indexSubTable.
+Couldn't compute file size
+Couldn't compute table offset
+Couldn't compute table size
+Couldn't create bitmap.
+Couldn't load glyph for U+%04X (%d)
+Couldn't open face %s.
+Couldn't reverse mapping.
+Couldn't seek
+Couldn't select character map: %x.
+Couldn't set size.
+?Couldn't write
+D$FX11Rf
+Duplicate bitmap %d.
+__errno_location
+extrabold
+extracondensed
+extraexpanded
+extralight
+FontEncMapFind
+FontMapReverse
+fonttosfnt [ -v ] [ -c ] [ -b ] [ -r ] [ -g n ] [ -m n ] -o font.ttf [ -- ] font ...
+__fprintf_chk
+FT_Done_Face
+FT_Get_BDF_Property
+FT_Get_Char_Index
+FT_Init_FreeType
+FT_Load_Glyph
+FT_New_Face
+FT_Select_Charmap
+FT_Set_Pixel_Sizes
+fwrite_unlocked
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+__gmon_start__
+interleaf
+_IO_stdin_used
+iso10646-1
+ITALIC_ANGLE
+_Jv_RegisterClasses
+larabiefonts
+libc.so.6
+__libc_start_main
+libfontenc.so.1
+libfreetype.so.6
+/lib/ld-linux.so.2
+libm.so.6
+linotype
+microsoft
+monotype
+No bitmaps in face.
+Offset %d is not a multiple of 4
+__overflow
+semibold
+semicondensed
+semiexpanded
+SETWIDTH_NAME
+Short read.
+Short write.
+size %d: %dx%d
+%s %s %s: %d sizes%s
+__stack_chk_fail
+strcasecmp
+%s X.Org bitmap
+%s X.Org bitmap size %d
+%s X.Org bitmap size %dx%d
+ (symbol)
+|$,;\$(u
+ultracondensed
+ultraexpanded
+UNDERLINE_POSITION
+UNDERLINE_THICKNESS
+__vasprintf_chk
+Version 0.0
+Warning: no bitmap for the undefined glyph.
+WEIGHT_NAME
+X.OrgX converted bitmap font

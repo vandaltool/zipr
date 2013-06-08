@@ -1,0 +1,14 @@
+__data_start
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_Compiler_Properties
+_Jv_RegisterClasses
+JvRunMain
+libc.so.6
+__libc_start_main
+libgcj.so.12
+libgcj-tools.so.12
+/lib/ld-linux.so.2
+/usr/lib/i386-linux-gnu
+_ZN3gnu9classpath5tools9serialver9SerialVer6class$E

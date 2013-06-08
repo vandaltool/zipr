@@ -1,0 +1,977 @@
+"#$%&'()*
+$%%&&&&&&&&&&'()**+,,--.//00211334444444445667888888
+	0x%04x,
+0x%04x},
+45[T?@9M6$%&'()*+,$%&'()*+,
+8 EDIHJNQRWXVYZ\:O<
+acircumflex
+adding map %d violates explicit keymaps line
+addkey called with bad index %d
+addkey called with bad keycode %d
+addkey called with bad table %d
+addmap called with bad index %d
+Adiaeresis
+alphaaccent
+AltGr_Lock
+AltLLock
+Alt_Lock
+AltRLock
+ampersand
+apostrophe
+asciitilde
+assuming iso-8859-15 %s
+assuming iso-8859-1 %s
+assuming iso-8859-2 %s
+assuming iso-8859-3 %s
+assuming iso-8859-4 %s
+asterisk
+BackSpace
+bad buffer in yy_scan_bytes()
+Bare_Num_Lock
+  -b --bkeymap       output a binary keymap to stdout
+bcC:dhmsuqvV
+bielorussian_cyrillic_capital_letter_i
+bielorussian_cyrillic_capital_letter_short_u
+bielorussian_cyrillic_small_letter_i
+bielorussian_cyrillic_small_letter_short_u
+bindtextdomain
+braceleft
+braceright
+bracketleft
+Brl_blank
+Brl_dot1
+Brl_dot10
+Brl_dot2
+Brl_dot3
+Brl_dot4
+Brl_dot5
+Brl_dot6
+Brl_dot7
+Brl_dot8
+Brl_dot9
+brokenbar
+bzip2 -d -c
+cabovedot
+Cannot find %s
+cannot open file %s
+cannot open include file %s
+Caps_Lock
+CapsShift_Lock
+ccedilla
+ccircumflex
+  -c --clearcompose  clear kernel compose table
+  -C <cons1,cons2,...> --console=<cons1,cons2,...>
+Changed %d %s and %d %s.
+char func_buf[] = {
+char *funcbufptr = func_buf;
+char *func_table[MAX_NR_FUNC] = {
+ckbcomp -model pc105 %s
+ckbcomp -model pc105 %s %s
+clearcompose
+clearerr
+clearstrings
+closedir
+compose table overflow
+Console_1
+Console_10
+Console_11
+Console_12
+Console_13
+Console_14
+Console_15
+Console_16
+Console_17
+Console_18
+Console_19
+Console_2
+Console_20
+Console_21
+Console_22
+Console_23
+Console_24
+Console_25
+Console_26
+Console_27
+Console_28
+Console_29
+Console_3
+Console_30
+Console_31
+Console_32
+Console_33
+Console_34
+Console_35
+Console_36
+Console_37
+Console_38
+Console_39
+Console_4
+Console_40
+Console_41
+Console_42
+Console_43
+Console_44
+Console_45
+Console_46
+Console_47
+Console_48
+Console_49
+Console_5
+Console_50
+Console_51
+Console_52
+Console_53
+Console_54
+Console_55
+Console_56
+Console_57
+Console_58
+Console_59
+Console_6
+Console_60
+Console_61
+Console_62
+Console_63
+Console_7
+Console_8
+Console_9
+Control_a
+Control_asciicircum
+Control_b
+Control_backslash
+Control_bracketright
+Control_c
+Control_d
+Control_e
+Control_f
+Control_g
+Control_h
+Control_i
+Control_j
+Control_k
+Control_l
+Control_Lock
+Control_m
+Control_n
+Control_o
+Control_p
+Control_q
+Control_r
+Control_s
+Control_t
+Control_u
+Control_underscore
+Control_v
+Control_w
+Control_x
+Control_y
+Control_z
+copyright
+Couldn't get a file descriptor referring to the console
+Couldn't open %s
+CtrlL_Lock
+CtrlR_Lock
+__ctype_b_loc
+currency
+cyrillic_capital_hard_sign
+cyrillic_capital_letter_a
+cyrillic_capital_letter_be
+cyrillic_capital_letter_che
+cyrillic_capital_letter_de
+cyrillic_capital_letter_dze
+cyrillic_capital_letter_e
+cyrillic_capital_letter_ef
+cyrillic_capital_letter_el
+cyrillic_capital_letter_em
+cyrillic_capital_letter_en
+cyrillic_capital_letter_er
+cyrillic_capital_letter_es
+cyrillic_capital_letter_ge
+cyrillic_capital_letter_ghe
+cyrillic_capital_letter_ha
+cyrillic_capital_letter_i
+cyrillic_capital_letter_ia
+cyrillic_capital_letter_ie
+cyrillic_capital_letter_ii
+cyrillic_capital_letter_io
+cyrillic_capital_letter_iu
+cyrillic_capital_letter_je
+cyrillic_capital_letter_ka
+cyrillic_capital_letter_kha
+cyrillic_capital_letter_lje
+cyrillic_capital_letter_nje
+cyrillic_capital_letter_o
+cyrillic_capital_letter_pe
+cyrillic_capital_letter_reversed_e
+cyrillic_capital_letter_sha
+cyrillic_capital_letter_shcha
+cyrillic_capital_letter_short_i
+cyrillic_capital_letter_short_ii
+cyrillic_capital_letter_te
+cyrillic_capital_letter_tse
+cyrillic_capital_letter_u
+cyrillic_capital_letter_ve
+cyrillic_capital_letter_ya
+cyrillic_capital_letter_yeri
+cyrillic_capital_letter_yeru
+cyrillic_capital_letter_yu
+cyrillic_capital_letter_ze
+cyrillic_capital_letter_zhe
+cyrillic_capital_soft_sign
+cyrillic_small_hard_sign
+cyrillic_small_letter_a
+cyrillic_small_letter_be
+cyrillic_small_letter_che
+cyrillic_small_letter_de
+cyrillic_small_letter_dze
+cyrillic_small_letter_e
+cyrillic_small_letter_ef
+cyrillic_small_letter_el
+cyrillic_small_letter_em
+cyrillic_small_letter_en
+cyrillic_small_letter_er
+cyrillic_small_letter_es
+cyrillic_small_letter_ge
+cyrillic_small_letter_ghe
+cyrillic_small_letter_ha
+cyrillic_small_letter_i
+cyrillic_small_letter_ia
+cyrillic_small_letter_ie
+cyrillic_small_letter_ii
+cyrillic_small_letter_io
+cyrillic_small_letter_iu
+cyrillic_small_letter_je
+cyrillic_small_letter_ka
+cyrillic_small_letter_kha
+cyrillic_small_letter_lje
+cyrillic_small_letter_nje
+cyrillic_small_letter_o
+cyrillic_small_letter_pe
+cyrillic_small_letter_reversed_e
+cyrillic_small_letter_sha
+cyrillic_small_letter_shcha
+cyrillic_small_letter_short_i
+cyrillic_small_letter_short_ii
+cyrillic_small_letter_te
+cyrillic_small_letter_tse
+cyrillic_small_letter_u
+cyrillic_small_letter_ve
+cyrillic_small_letter_ya
+cyrillic_small_letter_yeri
+cyrillic_small_letter_yeru
+cyrillic_small_letter_yu
+cyrillic_small_letter_ze
+cyrillic_small_letter_zhe
+cyrillic_small_soft_sign
+dcgettext
+  -d --default       load "%s"
+dead_acute
+dead_breve
+dead_caron
+dead_cedilla
+dead_circumflex
+dead_diaeresis
+dead_doubleacute
+dead_grave
+dead_ogonek
+dead_tilde
+deallocate keymap %d
+Decr_Console
+definition
+definitions
+defkeymap.kmap
+/dev/console
+/dev/tty
+/dev/tty0
+/dev/vc/0
+division
+/* Do not edit this file! It was automatically generated by   */
+dotlessi
+doubledagger
+doubleunderscore
+D$%/ttyf
+eabovedot
+ecircumflex
+ediaeresis
+ellipsis
+epsilonaccent
+__errno_location
+error executing  %s
+Error writing map to file
+etaaccent
+ethiopic_colon
+ethiopic_comma
+ethiopic_digit_eight
+ethiopic_digit_five
+ethiopic_digit_four
+ethiopic_digit_nine
+ethiopic_digit_one
+ethiopic_digit_seven
+ethiopic_digit_six
+ethiopic_digit_three
+ethiopic_digit_two
+ethiopic_full_stop
+ethiopic_number_eighty
+ethiopic_number_fifty
+ethiopic_number_forty
+ethiopic_number_hundred
+ethiopic_number_ninety
+ethiopic_number_seventy
+ethiopic_number_sixty
+ethiopic_number_ten
+ethiopic_number_ten_thousand
+ethiopic_number_thirty
+ethiopic_number_twenty
+ethiopic_paragraph_separator
+ethiopic_preface_colon
+ethiopic_question_mark
+ethiopic_semicolon
+ethiopic_syllable_ba
+ethiopic_syllable_baa
+ethiopic_syllable_be
+ethiopic_syllable_bee
+ethiopic_syllable_bi
+ethiopic_syllable_bo
+ethiopic_syllable_bu
+ethiopic_syllable_bwaa
+ethiopic_syllable_ca
+ethiopic_syllable_caa
+ethiopic_syllable_ce
+ethiopic_syllable_cee
+ethiopic_syllable_cha
+ethiopic_syllable_chaa
+ethiopic_syllable_che
+ethiopic_syllable_chee
+ethiopic_syllable_chi
+ethiopic_syllable_cho
+ethiopic_syllable_chu
+ethiopic_syllable_chwa
+ethiopic_syllable_ci
+ethiopic_syllable_co
+ethiopic_syllable_cu
+ethiopic_syllable_cwa
+ethiopic_syllable_da
+ethiopic_syllable_daa
+ethiopic_syllable_dda
+ethiopic_syllable_ddaa
+ethiopic_syllable_dde
+ethiopic_syllable_ddee
+ethiopic_syllable_ddi
+ethiopic_syllable_ddo
+ethiopic_syllable_ddu
+ethiopic_syllable_ddwa
+ethiopic_syllable_de
+ethiopic_syllable_dee
+ethiopic_syllable_di
+ethiopic_syllable_do
+ethiopic_syllable_du
+ethiopic_syllable_dwa
+ethiopic_syllable_fa
+ethiopic_syllable_faa
+ethiopic_syllable_fe
+ethiopic_syllable_fee
+ethiopic_syllable_fi
+ethiopic_syllable_fo
+ethiopic_syllable_fu
+ethiopic_syllable_fwaa
+ethiopic_syllable_fya
+ethiopic_syllable_ga
+ethiopic_syllable_gaa
+ethiopic_syllable_ge
+ethiopic_syllable_gee
+ethiopic_syllable_gga
+ethiopic_syllable_ggaa
+ethiopic_syllable_gge
+ethiopic_syllable_ggee
+ethiopic_syllable_ggi
+ethiopic_syllable_ggo
+ethiopic_syllable_ggu
+ethiopic_syllable_gi
+ethiopic_syllable_glottal_a
+ethiopic_syllable_glottal_aa
+ethiopic_syllable_glottal_e
+ethiopic_syllable_glottal_ee
+ethiopic_syllable_glottal_i
+ethiopic_syllable_glottal_o
+ethiopic_syllable_glottal_u
+ethiopic_syllable_glottal_wa
+ethiopic_syllable_go
+ethiopic_syllable_gu
+ethiopic_syllable_gwa
+ethiopic_syllable_gwaa
+ethiopic_syllable_gwe
+ethiopic_syllable_gwee
+ethiopic_syllable_gwi
+ethiopic_syllable_ha
+ethiopic_syllable_haa
+ethiopic_syllable_he
+ethiopic_syllable_hee
+ethiopic_syllable_hha
+ethiopic_syllable_hhaa
+ethiopic_syllable_hhe
+ethiopic_syllable_hhee
+ethiopic_syllable_hhi
+ethiopic_syllable_hho
+ethiopic_syllable_hhu
+ethiopic_syllable_hhwa
+ethiopic_syllable_hi
+ethiopic_syllable_ho
+ethiopic_syllable_hu
+ethiopic_syllable_ja
+ethiopic_syllable_jaa
+ethiopic_syllable_je
+ethiopic_syllable_jee
+ethiopic_syllable_ji
+ethiopic_syllable_jo
+ethiopic_syllable_ju
+ethiopic_syllable_jwa
+ethiopic_syllable_ka
+ethiopic_syllable_kaa
+ethiopic_syllable_ke
+ethiopic_syllable_kee
+ethiopic_syllable_ki
+ethiopic_syllable_ko
+ethiopic_syllable_ku
+ethiopic_syllable_kwa
+ethiopic_syllable_kwaa
+ethiopic_syllable_kwe
+ethiopic_syllable_kwee
+ethiopic_syllable_kwi
+ethiopic_syllable_kxa
+ethiopic_syllable_kxaa
+ethiopic_syllable_kxe
+ethiopic_syllable_kxee
+ethiopic_syllable_kxi
+ethiopic_syllable_kxo
+ethiopic_syllable_kxu
+ethiopic_syllable_kxwa
+ethiopic_syllable_kxwaa
+ethiopic_syllable_kxwe
+ethiopic_syllable_kxwee
+ethiopic_syllable_kxwi
+ethiopic_syllable_la
+ethiopic_syllable_laa
+ethiopic_syllable_le
+ethiopic_syllable_lee
+ethiopic_syllable_li
+ethiopic_syllable_lo
+ethiopic_syllable_lu
+ethiopic_syllable_lwa
+ethiopic_syllable_ma
+ethiopic_syllable_maa
+ethiopic_syllable_me
+ethiopic_syllable_mee
+ethiopic_syllable_mi
+ethiopic_syllable_mo
+ethiopic_syllable_mu
+ethiopic_syllable_mwaa
+ethiopic_syllable_mya
+ethiopic_syllable_na
+ethiopic_syllable_naa
+ethiopic_syllable_ne
+ethiopic_syllable_nee
+ethiopic_syllable_ni
+ethiopic_syllable_no
+ethiopic_syllable_nu
+ethiopic_syllable_nwa
+ethiopic_syllable_nya
+ethiopic_syllable_nyaa
+ethiopic_syllable_nye
+ethiopic_syllable_nyee
+ethiopic_syllable_nyi
+ethiopic_syllable_nyo
+ethiopic_syllable_nyu
+ethiopic_syllable_nywa
+ethiopic_syllable_pa
+ethiopic_syllable_paa
+ethiopic_syllable_pe
+ethiopic_syllable_pee
+ethiopic_syllable_pha
+ethiopic_syllable_phaa
+ethiopic_syllable_pharyngeal_a
+ethiopic_syllable_pharyngeal_aa
+ethiopic_syllable_pharyngeal_e
+ethiopic_syllable_pharyngeal_ee
+ethiopic_syllable_pharyngeal_i
+ethiopic_syllable_pharyngeal_o
+ethiopic_syllable_pharyngeal_u
+ethiopic_syllable_phe
+ethiopic_syllable_phee
+ethiopic_syllable_phi
+ethiopic_syllable_pho
+ethiopic_syllable_phu
+ethiopic_syllable_phwa
+ethiopic_syllable_pi
+ethiopic_syllable_po
+ethiopic_syllable_pu
+ethiopic_syllable_pwaa
+ethiopic_syllable_qa
+ethiopic_syllable_qaa
+ethiopic_syllable_qe
+ethiopic_syllable_qee
+ethiopic_syllable_qha
+ethiopic_syllable_qhaa
+ethiopic_syllable_qhe
+ethiopic_syllable_qhee
+ethiopic_syllable_qhi
+ethiopic_syllable_qho
+ethiopic_syllable_qhu
+ethiopic_syllable_qhwa
+ethiopic_syllable_qhwaa
+ethiopic_syllable_qhwe
+ethiopic_syllable_qhwee
+ethiopic_syllable_qhwi
+ethiopic_syllable_qi
+ethiopic_syllable_qo
+ethiopic_syllable_qu
+ethiopic_syllable_qwa
+ethiopic_syllable_qwaa
+ethiopic_syllable_qwe
+ethiopic_syllable_qwee
+ethiopic_syllable_qwi
+ethiopic_syllable_ra
+ethiopic_syllable_raa
+ethiopic_syllable_re
+ethiopic_syllable_ree
+ethiopic_syllable_ri
+ethiopic_syllable_ro
+ethiopic_syllable_ru
+ethiopic_syllable_rwa
+ethiopic_syllable_rya
+ethiopic_syllable_sa
+ethiopic_syllable_saa
+ethiopic_syllable_se
+ethiopic_syllable_see
+ethiopic_syllable_sha
+ethiopic_syllable_shaa
+ethiopic_syllable_she
+ethiopic_syllable_shee
+ethiopic_syllable_shi
+ethiopic_syllable_sho
+ethiopic_syllable_shu
+ethiopic_syllable_shwa
+ethiopic_syllable_si
+ethiopic_syllable_so
+ethiopic_syllable_su
+ethiopic_syllable_swa
+ethiopic_syllable_sza
+ethiopic_syllable_szaa
+ethiopic_syllable_sze
+ethiopic_syllable_szee
+ethiopic_syllable_szi
+ethiopic_syllable_szo
+ethiopic_syllable_szu
+ethiopic_syllable_szwa
+ethiopic_syllable_ta
+ethiopic_syllable_taa
+ethiopic_syllable_te
+ethiopic_syllable_tee
+ethiopic_syllable_tha
+ethiopic_syllable_thaa
+ethiopic_syllable_the
+ethiopic_syllable_thee
+ethiopic_syllable_thi
+ethiopic_syllable_tho
+ethiopic_syllable_thu
+ethiopic_syllable_thwa
+ethiopic_syllable_ti
+ethiopic_syllable_to
+ethiopic_syllable_tsa
+ethiopic_syllable_tsaa
+ethiopic_syllable_tse
+ethiopic_syllable_tsee
+ethiopic_syllable_tsi
+ethiopic_syllable_tso
+ethiopic_syllable_tsu
+ethiopic_syllable_tswa
+ethiopic_syllable_tu
+ethiopic_syllable_twa
+ethiopic_syllable_tza
+ethiopic_syllable_tzaa
+ethiopic_syllable_tze
+ethiopic_syllable_tzee
+ethiopic_syllable_tzi
+ethiopic_syllable_tzo
+ethiopic_syllable_tzu
+ethiopic_syllable_va
+ethiopic_syllable_vaa
+ethiopic_syllable_ve
+ethiopic_syllable_vee
+ethiopic_syllable_vi
+ethiopic_syllable_vo
+ethiopic_syllable_vu
+ethiopic_syllable_vwa
+ethiopic_syllable_wa
+ethiopic_syllable_waa
+ethiopic_syllable_we
+ethiopic_syllable_wee
+ethiopic_syllable_wi
+ethiopic_syllable_wo
+ethiopic_syllable_wu
+ethiopic_syllable_xa
+ethiopic_syllable_xaa
+ethiopic_syllable_xe
+ethiopic_syllable_xee
+ethiopic_syllable_xi
+ethiopic_syllable_xo
+ethiopic_syllable_xu
+ethiopic_syllable_xwa
+ethiopic_syllable_xwaa
+ethiopic_syllable_xwe
+ethiopic_syllable_xwee
+ethiopic_syllable_xwi
+ethiopic_syllable_ya
+ethiopic_syllable_yaa
+ethiopic_syllable_ye
+ethiopic_syllable_yee
+ethiopic_syllable_yi
+ethiopic_syllable_yo
+ethiopic_syllable_yu
+ethiopic_syllable_za
+ethiopic_syllable_zaa
+ethiopic_syllable_ze
+ethiopic_syllable_zee
+ethiopic_syllable_zha
+ethiopic_syllable_zhaa
+ethiopic_syllable_zhe
+ethiopic_syllable_zhee
+ethiopic_syllable_zhi
+ethiopic_syllable_zho
+ethiopic_syllable_zhu
+ethiopic_syllable_zhwa
+ethiopic_syllable_zi
+ethiopic_syllable_zo
+ethiopic_syllable_zu
+ethiopic_syllable_zwa
+ethiopic_wordspace
+exclamdown
+expected filename between quotes
+ezhcaron
+    FAILED
+failed to bind key %d to value %d
+failed to bind string '%s' to function %s
+failed to clear string %s
+fatal error - scanner input buffer overflow
+fatal flex scanner internal error--end of buffer missed
+fatal flex scanner internal error--no action found
+finalkaf
+finalmem
+finalnun
+finaltsadi
+__fprintf_chk
+	func_buf + %ld,
+gabovedot
+gcedilla
+gcircumflex
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+guillemotleft
+guillemotright
+gzip -d -c
+hcircumflex
+  -h --help          display this help text
+Iabovedot
+icircumflex
+idiaeresis
+Idotabove
+idotless
+impossible error in do_constant
+../../include/
+#include <linux/kd.h>
+#include <linux/keyboard.h>
+#include <linux/types.h>
+includes are nested too deeply
+Incr_Console
+input in flex scanner failed
+int funcbufleft = 0;          /* space left */
+int funcbufsize = sizeof(func_buf);
+_IO_getc
+_IO_stdin_used
+iotaaccent
+iotadiaeresis
+iotadiaeresisaccent
+iso-10646-18
+iso-8859-
+iso-8859-1
+iso-8859-10
+iso-8859-15
+iso-8859-2
+iso-8859-3
+iso-8859-4
+iso-8859-5
+iso-8859-7
+iso-8859-8
+iso-8859-9
+iso-ir-197
+iso-ir-209
+jcircumflex
+kbd 1.15.2
+kcedilla
+KDGKBMODE
+KDSKBDIACR
+KDSKBDIACRUC
+KDSKBENT
+KDSKBMODE
+key bindings not changed
+KeyboardSignal
+keycode %d, table %d = %d%s
+Keymap %d: Permission denied
+killkey called with bad index %d
+killkey called with bad table %d
+KP_Comma
+KP_Divide
+KP_Enter
+KP_MinPlus
+KP_Multiply
+KP_Period
+KP_Subtract
+Last_Console
+lcedilla
+leftquote
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Linefeed
+Loaded %d compose %s.
+Loading %s
+loadkeys: don't know how to compose for %s
+LOADKEYS_INCLUDE_PATH
+/*    loadkeys --mktable defkeymap.map > defkeymap.c          */
+loadkeys version %s
+macedonian_cyrillic_capital_letter_dze
+macedonian_cyrillic_capital_letter_gje
+macedonian_cyrillic_capital_letter_kje
+macedonian_cyrillic_small_letter_dze
+macedonian_cyrillic_small_letter_gje
+macedonian_cyrillic_small_letter_kje
+masculine
+memory exhausted
+  -m --mktable       output a "defkeymap.c" to stdout
+multiplication
+multiply
+ncedilla
+nobreakspace
+no-break_space
+(No change in compose definitions.)
+number_acronym
+numbersign
+ocircumflex
+odiaeresis
+odoubleacute
+ * often want quite a lot of string space. So, we statically allocate
+omegaaccent
+omicronaccent
+onequarter
+onesuperior
+Ooblique
+ordfeminine
+out of dynamic memory in yy_create_buffer()
+out of dynamic memory in yyensure_buffer_stack()
+out of dynamic memory in yy_get_next_buffer()
+out of dynamic memory in yy_scan_buffer()
+out of dynamic memory in yy_scan_bytes()
+overscore
+PageDown
+paragraph
+paragraph_sign
+parenleft
+parenright
+    (perhaps you want to do `kbd_mode -u'?)
+periodcentered
+permille
+ * Philosophy: most people do not define more strings, but they who do
+plusminus
+__printf_chk
+/proc/self/fd/0
+  -q --quiet         suppress all normal output
+question
+questiondown
+quotedbl
+quotedblbase
+rcedilla
+readlink
+registered
+rightanglequote
+rightquote
+%s: addfunc: func_buf overflow
+%s: cannot deallocate or clear keymap
+SCapsShift
+scedilla
+scircumflex
+  -s --clearstrings  clear kernel string table
+SControl
+%s: could not deallocate keymap %d
+%s: could not return to original keyboard mode
+%s: could not switch to Unicode mode
+Scroll_Backward
+Scroll_Forward
+Scroll_Lock
+serbocroatian_cyrillic_capital_letter_chje
+serbocroatian_cyrillic_capital_letter_dje
+serbocroatian_cyrillic_small_letter_chje
+serbocroatian_cyrillic_small_letter_dje
+%s: error reading keyboard mode
+setlocale
+%s from %s
+ShiftL_Lock
+ShiftR_Lock
+Show_Memory
+Show_Registers
+Show_State
+'%s' is not a function key symbol
+__snprintf_chk
+soft_hyphen
+%s: out of memory
+Spawn_Console
+__sprintf_chk
+%s: %s:%d: 
+%s: %s:%d: %s
+__stack_chk_fail
+sterling
+strcasecmp
+__strcat_chk
+__strcpy_chk
+__strdup
+string too long
+struct kbdiacr accent_table[MAX_DIACR] = {
+struct kbdiacruc accent_table[MAX_DIACR] = {
+%s: warning: loading Unicode keymap on non-Unicode console
+switching to %s
+syntax error
+syntax error in map file
+tcedilla
+terminalsigma
+thai_angkhankhu
+thai_baht
+thai_bobaimai
+thai_chochan
+thai_chochang
+thai_choching
+thai_chochoe
+thai_dochada
+thai_dodek
+thai_fofa
+thai_fofan
+thai_fongman
+thai_hohip
+thai_honokhuk
+thai_khokhai
+thai_khokhon
+thai_khokhuat
+thai_khokhwai
+thai_khomut
+thai_khorakhang
+thai_kokai
+thai_lakkhangyao
+thai_lekchet
+thai_lekha
+thai_lekhok
+thai_lekkao
+thai_leknung
+thai_lekpaet
+thai_leksam
+thai_leksi
+thai_leksong
+thai_leksun
+thai_lochula
+thai_loling
+thai_maichattawa
+thai_maiek
+thai_maihanakat
+thai_maitaikhu
+thai_maitho
+thai_maitri
+thai_maiyamok
+thai_moma
+thai_ngongu
+thai_nikhahit
+thai_nonen
+thai_nonu
+thai_oang
+thai_paiyannoi
+thai_phinthu
+thai_phophan
+thai_phophung
+thai_phosamphao
+thai_popla
+thai_rorua
+thai_saraa
+thai_saraaa
+thai_saraae
+thai_saraaimaimalai
+thai_saraaimaimuan
+thai_saraam
+thai_sarae
+thai_sarai
+thai_saraii
+thai_sarao
+thai_sarau
+thai_saraue
+thai_sarauee
+thai_sarauu
+thai_sorusi
+thai_sosala
+thai_soso
+thai_sosua
+thai_thanthakhat
+thai_thonangmontho
+thai_thophuthao
+thai_thothahan
+thai_thothan
+thai_thothong
+thai_thothung
+thai_topatak
+thai_totao
+thai_wowaen
+thai_yamakkan
+thai_yoyak
+thai_yoying
+                     the console device(s) to be used
+ * the default and allocate dynamically in chunks of 512 bytes.
+threequarters
+threesuperior
+too many compose definitions
+too many (%d) entries on one line
+too many key definitions on one line
+trademark
+twosuperior
+ucircumflex
+udiaeresis
+udoubleacute
+ukrainian_cyrillic_capital_letter_ghe_with_upturn
+ukrainian_cyrillic_capital_letter_i
+ukrainian_cyrillic_capital_letter_ie
+ukrainian_cyrillic_capital_letter_yi
+ukrainian_cyrillic_small_letter_ghe_with_upturn
+ukrainian_cyrillic_small_letter_i
+ukrainian_cyrillic_small_letter_ie
+ukrainian_cyrillic_small_letter_yi
+Uncaps_Shift
+unicode keysym out of range: %s
+unknown charset %s - ignoring charset request
+unknown keysym '%s'
+unsigned int accent_table_size = %d;
+unsigned int keymap_count = %d;
+upsilonaccent
+upsilondiaeresis
+upsilondiaeresisaccent
+Usage: loadkeys [option...] [mapfile...]
+ushort *key_maps[MAX_NR_KEYMAPS] = {
+u_short %s_map[NR_KEYS] = {
+/usr/share/keymaps/**
+/usr/share/keymaps/i386/include/
+/usr/share/keymaps/include/
+/usr/share/keymaps/mac/include/
+/usr/share/locale
+/usr/src/linux/drivers/char/
+  -u --unicode       force conversion to Unicode
+Valid options are:
+VoidSymbol
+  -v --verbose       report the changes
+ydiaeresis
+zabovedot

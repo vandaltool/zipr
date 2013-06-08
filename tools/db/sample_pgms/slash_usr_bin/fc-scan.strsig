@@ -1,0 +1,34 @@
+__bss_start
+Can't init font config library
+FcDirScan
+FcFileIsDir
+FcFileScan
+FcFontSetCreate
+FcFontSetDestroy
+FcPatternFormat
+FcPatternPrint
+FcStrListCreate
+FcStrListDone
+FcStrListNext
+FcStrSetCreate
+FcStrSetDestroy
+  -f, --format=FORMAT  use the given output format
+fontconfig version %d.%d.%d
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+  -h, --help           display this help and exit
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libfontconfig.so.1
+/lib/ld-linux.so.2
+__printf_chk
+Scan font files and directories, and print resulting pattern(s)
+__strdup
+T$09T$8}w
+usage: %s [-Vh] [-f FORMAT] [--format FORMAT] [--version] [--help] font-file...
+  -V, --version        display font config version and exit

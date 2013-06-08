@@ -1,0 +1,143 @@
+-adjustcolors
+assert: MinReg > MaxReg
+    assuming image maxval=%d
+__bss_start
+byterun1
+cannot interpret %d-plane image as 'deep' (# of planes must be divisible by 3)
+-cmaponly
+color index out of range: %d (max %d)
+compression: %s
+contents of %s chunk:
+D$09T$,f
+D$@9\$4t
+decode_mask(): chunkyrow == NULL - can't happen
+decode_mask(): unknown masking type %d - can't happen
+D$h	D$Lf
+dimensions: %dx%d
+dimensions: %dx%d, %d planes
+D$L9D$,u
+D$<;l$<t
+D$$;l$$t
+don't know how to interpret %d-plane image
+%d-plane HAM?? - interpreting image as a normal ILBM
+error doing ByteRun1 decompression
+GLIBC_2.0
+GLIBC_2.4
+__gmon_start__
+"-ignore" option needs a 4 byte chunk ID string as argument
+    ignoring it... colors might get messed up from here
+ignoring %s chunk
+input is a colormap file
+input is a %d-bit RGB image
+input is a %d:%d:%d direct color ILBM
+input is a deep (%d-bit) ILBM
+input is a %d-plane %s%sILBM
+input is a %sHAM%d file
+input is a %sPBM 
+input is not a FORM type IFF file
+input is not an ILBM, RGBN, RGB8 or PBM type FORM IFF file
+insufficient data in BigLineChanges structures
+insufficient data in line mask
+insufficient data in %s chunk
+insufficient data in SmallLineChanges structures
+invalid compression mode for %s: %d (must be 4)
+invalid number of planes for IFF-PBM: %d (must be 8)
+invalid number of planes for %s: %d (must be 13)
+invalid number of planes for %s: %d (must be 25)
+invalid size for %s chunk - skipping it
+_IO_getc
+_IO_stdin_used
+-isnotdeep
+-isnotehb
+-isnotham
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+-maskfile
+masking type "%s" in a deep ILBM?? - ignoring it
+masking type "%s" in a direct color ILBM?? - ignoring it
+mask plane
+maskplane not supported in IFF-PBM
+max %d chunk IDs to ignore
+multipalette 
+-noadjustcolors
+no colormap
+no colormap - interpreting values as grayscale
+no %s or %s chunk found
+-noverbose
+nPlanes is too large
+out of memory allocating %d bytes
+overflow2
+overflow_add
+pbm_writepbminit
+pbm_writepbmrow
+pm_allocrow
+pm_bitstomaxval
+pm_close
+pm_error
+pm_freerow
+pm_keymatch
+pm_maxvaltobits
+pm_message
+pm_openr
+pm_openw
+pm_readbiglong
+pm_readbigshort
+pm_usage
+ppm_colorrowtomapfile
+ppm_init
+ppm_parsecolor
+ppm_writeppminit
+ppm_writeppmrow
+premature EOF in %s chunk
+read error
+rgbn_to_ppm(): invalid IFF ID %s - can't happen
+    row %d  change structure %d  reg=%d (max %d)
+scaling colormap to 8 bits
+scaling colors to %d bits
+%s chunk:  dpi_x = %d    dpi_y = %d
+%s chunk found after %s chunk - skipping
+%s chunk not supported in direct color
+%s chunk size mismatch
+%s chunk without %s chunk
+shifted 
+skipped %ld extraneous byte%s after last chunk
+%s/%s plane number mismatch
+__stack_chk_fail
+T$0+\$09L$4t
+too many planes
+too many planes (max %d)
+too many planes (max %d per color component)
+-transparent
+transparent color
+unknown chunk type %s - skipping
+unknown compression type %d
+unknown masking type %d
+unknown palette changes structure format in %s chunk
+unknown PCHG compression type %d
+    use "-adjustcolors" to scale colormap to 8 bits
+use "-maskfile <filename>" to generate a PBM mask file from genlock bits
+use "-maskfile <filename>" to generate a PBM mask file from %s
+using default transparent color (black)
+-verbose
+[-verbose] [-ignore <chunkID> [-ignore <chunkID>] ...] [-isham|-isehb|-isdeep|-isnotham|-isnotehb|-isnotdeep] [-cmaponly] [-adjustcolors] [-transparent <color>] [-maskfile <filename>] [ilbmfile]
+warning - black colormap
+warning - color lookup tables ignored in HAM
+warning - %d-bit index into 8-bit color lookup table, table maxval=%d
+warning - empty %s colormap
+warning - file length/FORM size field mismatch (%ld != %ld+8)
+warning - got %ld change structures, chunk header reports %ld
+warning - illegal aspect ratio %d:%d, using 1:1
+warning - %ld extraneous byte%s in %s chunk
+warning - masking type "%s" not supported
+warning - non-0 %s chunk
+warning - non-square pixels; to fix do a 'pnmscale -%cscale %g'
+warning - palette change register out of range
+warning - PCHG alpha channel not supported
+warning - probably %s4-bit colormap
+warning - repeat count 0 at col %d row %d: skipped %d RGB entr%s
+warning - %s chunk with FORM size 0x%08lx (should be 0x%08x)
+warning - %s type %ld not supported
+write error

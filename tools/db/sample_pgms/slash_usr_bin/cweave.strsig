@@ -1,0 +1,190 @@
+<5t4<)t:<3u
+! Ambiguous prefix: matches <
+  a null CHANGEFILE.
+__assert_fail
+[backup]
+both the %s copyright and
+__bss_start
+-b          suppress banner line on terminal
+/build/buildd/texlive-bin-2009/inst/lib
+byte memory
+[cancel]
+! Cannot open change file 
+! Cannot open include file
+! Cannot open index file 
+! Cannot open input file 
+! Cannot open output file 
+! Cannot open section file 
+[ccancel]
+! Change file ended after @x
+! Change file ended before @y
+! Change file ended without @z
+! Change file entry did not match
+const_cast
+continue
+! Control codes are forbidden in control text
+! Control codes are forbidden in section name
+! Control text didn't end
+Copyright 2009 %s.
+  C output goes to the basename of WEBFILE extended with `.c'
+covered by the terms of 
+cross-reference
+ctangle: Need one to three file arguments.
+! C text in section name didn't end: <
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+cweave: Need one to three file arguments.
+! CWEB file ended during a change
+|[[%d]]|
+  Default CHANGEFILE is /dev/null;
+(Did you see the warning message above?)
+! Double @ should be used in limbo
+! Double @ should be used in strings
+dynamic_cast
++e          enclose C material in \PB{...}
+Email bug reports to %s.
+explicit
+! Extra } in comment
+-f          do not force a newline after every C statement in output
+[fforce]
+! Filename too long
+find_first_ident
+For more information about these matters, see the file
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+--help      display this help and exit
+! Hmm... %d 
+-h          suppress success message on completion
+! Illegal control code in section name: <
+! Illegal use of @ in comment
+! Improper format definition
+! Improper macro definition
+! Include file name not given
+! Include file name too long
+[indent]
+\input cwebma
+! Input ended in mid-comment
+! Input ended in middle of string
+! Input ended in section name
+! Input line too long
+[inserted]
+_IO_getc
+_IO_putc
+_IO_stdin_used
+Irreducible scrap sequence in section %d:
+__isoc99_sscanf
+_Jv_RegisterClasses
+kpathsea_version_string
+kpse_def_inst
+kpse_fclose_trace
+kpse_find_file
+kpse_fopen_trace
+kpse_set_program_name
+. (l. %d)
+%ld bytes (out of %ld)
+%ld cross-references (out of %ld)
+%ld levels (out of %ld)
+%ld names (out of %ld)
+. (l. %d of change file)
+. (l. %d of include file %s)
+\,\ldots\,
+%ld scraps (out of %ld)
+%ld texts (out of %ld)
+%ld tokens (out of %ld)
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+! Line had to be broken (output l. %d):
+make_pair
+\mathrel{
+\mathrel+
+Memory usage statistics:
+! Missing '|' after C text
+! Missing } in comment
+! Missing left identifier of @s
+! Missing right identifier of @s
+! Missing @x in change file
+named COPYING and the %s source.
+namespace
+! Never defined: <
+! Never used: <
+! New name extends <
+! New name is a prefix of <
+(No errors were found.)
+offsetof
+of the preceding lines failed to match
+operator
+[outdent]
+(Pardon me, but I think I spotted something wrong.)
+Parsing:
+[preproc]
+Primary author of %s: %s.
+__printf_chk
+printversionandexit
+prog_name_end && prog_version
+protected
+-p          suppress progress report messages
+ptrdiff_t
+register
+reinterpret_cast
+scrap/token/text
+! Section name didn't end
+! Section name incompatible with <
+! Section name too long: 
+section number
+sig_atomic_t
+Silvio Levy and Donald E. Knuth
+! Sorry, %s capacity exceeded
+Sorting:
+__sprintf_chk
++s          print usage statistics
+__stack_chk_fail
+static_cast
+__strcpy_chk
+! String didn't end
+! String too long: 
+__strncpy_chk
+  Tangle WEBFILE with CHANGEFILE into a C/C++ program.
+template
+tex-k@mail.tug.org
+../../../../texk/web2c/lib/printversion.c
+ (TeX Live 2009/Debian)
+  TeX output goes to the basename of WEBFILE extended with `.tex'
+! TeX string should be in C text only
+(That was a fatal error, my friend.)
+the Lesser GNU General Public License.
+There is NO warranty.  Redistribution of this software is
+! This can't happen: 
+This is CTANGLE, Version 3.64
+This is CWEAVE, Version 3.64
+! Too many nested includes
+Tracing after l. %d:
+Try `%s --help' for more information.
+<	t=< t99
+typename
+  unless otherwise specified by OUTFILE; in this case, '-' specifies
+unsigned
+Usage: ctangle [OPTIONS] WEBFILE[.w] [{CHANGEFILE[.ch]|-} [OUTFILE[.c]]]
+Usage: cweave [OPTIONS] WEBFILE[.w] [{CHANGEFILE[.ch]|-} [OUTFILE[.tex]]]
+! Use @l in limbo only
+! Verbatim string didn't end
+--version
+--version   output version information and exit
+volatile
+  Weave WEBFILE with CHANGEFILE into a TeX document.
+! Where is the matching @y?
+! Where is the matching @z?
+ which abbreviates <
+Writing the index...
+Writing the output file...
+-x          omit indices and table of contents
+! You can't do that in C text
+! You can't do that in TeX text
+! You need an = sign after the section name

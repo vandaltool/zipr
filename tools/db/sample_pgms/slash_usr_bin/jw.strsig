@@ -1,0 +1,276 @@
+                ;;
+\040 all \t\t Equivalent to: mixed, should, default, undefined, sgmldecl, unused-map, unused-param, empty and unclosed\n\n\
+\040 A warning can be disabled by using its name prefixed with no-. Example: -w all -w no-duplicate"
+\040 -b|--backend <backend>: \t Specify the backend (destination format)\n\
+\040 -c|--cat <file>: \t\t Specify an extra SGML open catalog\n\
+\040 -d|--dsl <file>|default|none:\t Specify an alternate style sheet\n\
+\040 default \t Warn about defaulted references\n\
+\040 duplicate \t Warn about duplicate entity declarations\n\
+\040 -e|--errors <error_type>|list: Control errors or display the allowed error types\n\
+\040 empty \t Warn about empty start and end-tags\n\
+\040 -f|--frontend <frontend>: \t Specify the frontend (source format)\n\
+\040 -h|--help: \t\t\t Print this help message and exit\n\
+\040 -i|--include <section>: \t Specify a SGML marked section to include\n\
+\040 -l|--dcl <file>: \t\t Specify an alternate SGML declaration\n\
+\040 min-tag \t Warn about minimized start and end-tags. Equivalent to: unclosed, empty and net\n\
+\040 mixed \t Warn about mixed content models that do not allow #pcdata anywhere\n\
+\040 net \t\t Warn about net-enabling start-tags and null end-tags\n\
+\040 -n|--nostd: \t\t\t Do not use the standard SGML open catalogs\n\
+\040 no-idref \t No error for an ID reference value which no element has as its ID\n\
+\040 no-significant No errors for characters not significant in the reference concrete syntax\n\
+\040 notation-sysid Warn about notations for which no system identifier could be generated\n\
+\040 no-valid \t Do not require the document to be type-valid"
+\040 -o|--output <directory>: \t Set output directory\n\
+\040 -p|--parser <program>: \t Specify the parser if several are installed\n\
+\040 sgmldecl \t Warn about various dubious constructions in the SGML declaration\n\
+\040 should \t Warn about various recommendations made in ISO 8879 that the document does not comply with\n\
+\040 -s|--sgmlbase <path>: \t Change base directory for SGML distribution\n\
+\040 \t\t\t\t (default is docbook)\n\
+\040 \t\t\t\t (default is html)\n\
+\040 \t\t\t\t (default is to use the default stylesheet)\n\
+\040 \t\t\t\t  (jade or openjade)\n\
+\040 \t\t\t\t (overrides the stylesheet settings)\n\
+\040 \t\t\t\t (should be marked as \"ignore\" in the SGML text)\n\
+\040 \t\t\t\t (usually /usr/share/sgml)\n\
+\040 \t\t\t\t (usual ones like xml.dcl get detected automatically)\n\
+\040 unclosed \t Warn about unclosed start and end-tags\n\
+\040 undefined \t Warn about undefined elements: elements used in the DTD but not defined\n\
+\040 -u|--nochunks: \t\t Output only one big file\n\
+\040 unused-map \t Warn about unused short reference maps\n\
+\040 unused-param \t Warn about parameter entities that are defined but not used in a DTD\n\
+\040 -V <variable[=value]>: \t Set a variable\n\
+\040 -v|--version: \t\t Print the version and exit"
+\040 -w|--warning <warning_type>|list: Control warnings or display the allowed warning types\n\
+\040 xml \t\t Warn about constructs that are not allowed by XML\n\
+  -b|--backend)	case "$2" in
+#! /bin/sh
+# Call the backend
+		  case "$1" in
+case $SGML_BACKEND in
+case "$SGML_OPTIONS" in
+case $SGML_STANDARD_CATALOGS in
+  -c|--cat)	case "$2" in
+cd $SGML_CURRENT_DIRECTORY
+cd $SGML_OUTPUT_DIRECTORY
+# Check that we have a backend
+# Check that we have a file to process
+# Check that we have a frontend
+# Choose a parser
+# Create output directory if not available
+  -d|--dsl)	case "$2" in
+# Determine if we are in an XML file
+# Determine the backend type
+# Determine which stylesheet to use
+do case $1 in
+		   *) d=/usr/share/docbook-utils/backends
+		   *) d=/usr/share/docbook-utils/frontends
+  echo "`basename $0`: Cannot open \"$SGML_FILE\"." >&2
+    echo "`basename $0`: Could not create \"$SGML_OUTPUT_DIRECTORY\" output directory" >&2
+      echo "`basename $0`: No parser available" >&2
+    echo "`basename $0`: parser $SGML_JADE is not available" >&2
+  echo "`basename $0`: Please specify at least one catalog" >&2
+  echo "`basename $0`: Please specify at least one stylesheet" >&2
+  echo "`basename $0`: There is no backend called \"$SGML_BACKEND\"." >&2
+  echo "`basename $0`: There is no frontend called \"$SGML_FRONTEND\"." >&2
+echo "Done."
+		  *)	echo "Unknown error type \"$2\". Allowed error types are:" >&2
+		  *)	echo "Unknown warning type \"$2\". Allowed warning types are:" >&2
+echo "Using catalogs: `echo $SGML_CATALOG_FILES | sed 's/:/, /g'`"
+echo "Using stylesheet: $SGML_STYLESHEET"
+echo "Working on: $SGML_FILE"
+  -e|--error)	case $2 in
+    else
+		  esac
+			exit 0
+		exit 0
+  exit 1
+		  exit 1
+				exit 1
+			exit 1
+		exit 1
+  exit 2
+  exit 3
+  exit 4
+  exit 5
+      exit 6
+    exit 6
+    exit 7
+  export SGML_BASE_DIR SGML_TYPE SGML_STYLESHEET
+export SGML_CATALOG_FILES SGML_BASE_DIR SGML_FILE SGML_STYLESHEET
+export SGML_JADE SGML_FILE_NAME SGML_ARGUMENTS
+  -f|--frontend) case "$2" in
+# Get name of main SGML configuration file
+  -h|--help)	printf "`basename $0` - Jade Wrapper\n\n"
+  *html|*txt) \
+	  h=$(/usr/bin/locale LC_PAPER 2>/dev/null | head -n 1)
+if [ ! -d $SGML_OUTPUT_DIRECTORY ]
+    if [ $? -eq 0 ]
+  if [ $? -eq 0 ]
+if [ $? -eq 0 ]
+if [ -f "$SGML_CONF" ]
+	  if [ "$h" = 297 ]
+  if [ $? -ne 0 ]
+	if [ -n "$papersize" ]
+if [ "$SGML_DECL" = "" -a "$SGML_XML" = "xml" ]
+  if [ $SGML_RETURN -gt 0 ]
+if [ $SGML_RETURN -gt 0 ]
+if [ "$SGML_STYLESHEET" = "default" -o "$SGML_STYLESHEET" = "none" ]
+if [ $SGML_XML -eq 1 ]; then
+if [ ! -s $SGML_BACKEND ]
+	if [ -s $SGML_CENTRALIZED_CATALOG ]
+if [ ! -s $SGML_FILE ]
+if [ ! -s $SGML_FRONTEND ]
+	if [ -x /usr/bin/locale ]
+if [ -z "$NOCHUNKS" ]
+if [ -z "$SGML_BACKEND" ]
+if [ -z "$SGML_CATALOG_FILES" ]
+  *)		if [ -z "$SGML_FILE" ]
+if [ -z "$SGML_FILE" ]
+if [ -z "$SGML_FRONTEND" ]
+if [ -z "$SGML_JADE" ]
+  if [ -z "SGML_NORM" ]
+if [ -z "$SGML_NORM" ]
+if [ -z "$SGML_OUTPUT_DIRECTORY" ]
+if [ -z "$SGML_STYLESHEET" ]
+  -i|--include)	case $2 in
+# Jade Wrapper
+  -l|--dcl)	case "$2" in
+		  list) printf "List of allowed error types (multiple -e options are allowed):\n\n"
+		  list) printf "List of allowed warning types (multiple -w options are allowed):\n\n"
+  mkdir $SGML_OUTPUT_DIRECTORY 2>/dev/null
+  -n|--nostd)	SGML_STANDARD_CATALOGS="no"
+NOCHUNKS=`echo $SGML_OPTIONS | grep nochunks`
+		  no-idref|no-significant|no-valid) \
+		  /*|none|default) SGML_STYLESHEET="$2" ;;
+  no)	SGML_CATALOG_FILES=""
+  -o|--output)	case "$2" in
+	papersize=
+	    papersize=A4
+  *paper-type*)
+  -p|--parser)	case "$2" in
+# Prepare the parser's arguments
+			printf "$SGML_ERRORS_LIST\n"
+		        printf "$SGML_ERRORS_LIST\n" >&2
+		printf "$SGML_HELP_MESSAGE\n"
+  -*)		printf "$SGML_HELP_MESSAGE\n" >&2
+  printf "$SGML_HELP_MESSAGE\n" >&2
+		  printf "$SGML_HELP_MESSAGE\n" >&2
+			printf "$SGML_WARNINGS_LIST\n"
+		        printf "$SGML_WARNINGS_LIST\n" >&2
+		  print|html)	echo "The marked section named \"$2\" is reserved for internal use by `basename $0`." >&2
+# Process options
+  RE='^[:space:]*SGML_BASE_DIR[:space:]*=[:space:]*'
+  RE='^[:space:]*SGML_CATALOGS_DIR[:space:]*=[:space:]*'
+# (run the frontend to know it if the default stylesheet or no custom stylesheet is desired)
+# Script to convert a SGML file into some other format
+# Send any comments to Eric Bischoff <eric@caldera.de>
+# Separate the file name and the extension (if any)
+# Set backend to use
+# Set flavour of jade parser to use
+# Set frontend to use
+# Set help message
+# Set list of error types
+# Set list of "include" marked sections
+# Set list of warning types
+# Set list of warning types and errors types
+# Set main stylesheet
+# Set of options to set
+# Set option: use standard catalogs
+# Set output and current directories
+# Set path to SGML catalogs (first try centralized catalog)
+# Set path to user SGML catalogs
+# Set SGML base directory and centralized catalogs directory
+# Set SGML declaration and file to process
+	# Set the paper size to A4 if the locale suggests so
+# Set version message
+SGML_ARGUMENTS="$SGML_INCLUDE -i $SGML_TYPE -d $SGML_STYLESHEET $SGML_OPTIONS $SGML_WARNINGS $SGML_DECL $SGML_FILE"
+		  /*) SGML_BACKEND="$2" ;;
+		      SGML_BACKEND="$d/$2" ;;
+SGML_BACKEND="/usr/share/docbook-utils/backends/html"
+		  /*) SGML_BASE_DIR="$2" ;;
+  SGML_BASE_DIR=`grep $RE $SGML_CONF | sed "s/$RE//"`
+		   *) SGML_BASE_DIR="$SGML_CURRENT_DIRECTORY/$2" ;;
+SGML_BASE_DIR="/usr/share/sgml"
+SGML_CATALOG_FILES=`echo "$SGML_CATALOG_FILES" | sed 's/^://;s/:$//'`
+	  SGML_CATALOG_FILES=`echo "$SGML_CATALOG_FILES" | tr [:space:] :`
+	  SGML_CATALOG_FILES=`find $SGML_BASE_DIR -name catalog`
+SGML_CATALOG_FILES=${SGML_CATALOG_FILES}${SGML_EXTRA_CATALOGS}
+	  SGML_CATALOG_FILES=$SGML_CENTRALIZED_CATALOG
+SGML_CATALOGS_DIR="/etc/sgml"
+  SGML_CATALOGS_DIR=`grep $RE $SGML_CONF | sed "s/$RE//"`
+	SGML_CENTRALIZED_CATALOG=`sh $SGML_FRONTEND centralized-catalog`
+  SGML_CONF="/etc/sgml/sgml.conf"
+  SGML_CONF=`sgmlwhich`
+SGML_CURRENT_DIRECTORY=`pwd`
+SGML_DECL=""
+		  /*) SGML_DECL="$2" ;;
+		   *) SGML_DECL="$SGML_CURRENT_DIRECTORY/$2" ;;
+SGML_ERRORS_LIST="\n\
+SGML_EXTRA_CATALOGS=""
+		  /*) SGML_EXTRA_CATALOGS="$SGML_EXTRA_CATALOGS:$2" ;;
+   *) SGML_EXTRA_CATALOGS="$SGML_EXTRA_CATALOGS:$SGML_CURRENT_DIRECTORY/$2" ;;
+SGML_FILE=""
+		    /*) SGML_FILE="$1" ;;
+SGML_FILE_NAME=`basename $SGML_FILE`
+SGML_FILE_NAME=${SGML_FILE_NAME%.*}
+		     *) SGML_FILE="$SGML_CURRENT_DIRECTORY/$1" ;;
+		  /*) SGML_FRONTEND="$2" ;;
+		      SGML_FRONTEND="$d/$2" ;;
+SGML_FRONTEND="/usr/share/docbook-utils/frontends/docbook"
+SGML_HELP_MESSAGE="Usage: `basename $0` [<options>] <sgml_file>\n\
+SGML_INCLUDE=""
+		SGML_INCLUDE="$SGML_INCLUDE -i $2"
+SGML_JADE=""
+		  /*) SGML_JADE="$2" ;;
+    SGML_JADE="jade"
+      SGML_JADE="openjade"
+		   *) SGML_JADE="$SGML_CURRENT_DIRECTORY/$2" ;;
+    SGML_NORM=`which osgmlnorm 2>/dev/null`
+  SGML_NORM=`which sgmlnorm 2>/dev/null`
+SGML_OPTIONS=""
+	  SGML_OPTIONS="-V paper-type=$papersize $SGML_OPTIONS"
+SGML_OUTPUT_DIRECTORY="."
+		  /*) SGML_OUTPUT_DIRECTORY="$2" ;;
+		   *) SGML_OUTPUT_DIRECTORY="$SGML_CURRENT_DIRECTORY/$2" ;;
+  SGML_RETURN=$?
+SGML_RETURN=$?
+SGML_STANDARD_CATALOGS="yes"
+SGML_STYLESHEET="default"
+		   *) SGML_STYLESHEET="$SGML_CURRENT_DIRECTORY/$2" ;;
+  SGML_STYLESHEET=`sh $SGML_FRONTEND style-sheet`
+	SGML_TYPE=html
+  *)	SGML_TYPE=print
+SGML_VERSION_MESSAGE="DocBook-utils version 0.6.14 (jw version 1.1)"
+SGML_WARNINGS=""
+SGML_WARNINGS_LIST="\n\
+			SGML_WARNINGS="$SGML_WARNINGS -w $2"
+SGML_XML=`head "$SGML_FILE" | grep "<?xml.*?>" | wc -l`
+  SGML_XML="sgml"
+  SGML_XML="xml"
+		  shift 1
+		shift 1
+                shift 2
+			shift 2
+		shift 2
+	sh $SGML_BACKEND
+	sh $SGML_BACKEND >$SGML_FILE_NAME.html
+  -s|--sgmlbase) case "$2" in
+    then 
+  then exit `expr 7 + $SGML_RETURN`
+then exit `expr 7 + $SGML_RETURN`
+then SGML_DECL=${SGML_BASE_DIR}/declaration/xml.dcl
+# This program is under GPL license. See LICENSE file for details.
+# Try to find the SGML normalizer
+  -u|--nochunks) SGML_OPTIONS="$SGML_OPTIONS -V nochunks"
+# Use SGML declaration for XML if needed
+  -V)           SGML_OPTIONS="$SGML_OPTIONS -V $2"
+  -v|--version)	printf "$SGML_VERSION_MESSAGE\n"
+where <options> are:\n\
+  which jade >/dev/null 2>/dev/null
+    which openjade >/dev/null 2>/dev/null
+  which $SGML_JADE >/dev/null 2>/dev/null
+which sgmlwhich >/dev/null 2>/dev/null
+while [ $# -gt 0 ]
+  -w|--warning)	case $2 in
+		  xml|mixed|sgmldecl|should|default|duplicate|undefined|unclosed|empty|net|min-tag|unused-map|unused-param|notation-sysid|all|no-xml|no-mixed|no-sgmldecl|no-should|no-default|no-duplicate|no-undefined|no-unclosed|no-empty|no-net|no-min-tag|no-unused-map|no-unused-param|no-notation-sysid) \
+  yes)	export SGML_CATALOGS_DIR SGML_FILE SGML_XML SGML_NORM

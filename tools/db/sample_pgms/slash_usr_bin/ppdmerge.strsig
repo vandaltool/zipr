@@ -1,0 +1,70 @@
+__bss_start
+cupsArrayAdd
+cupsArrayDelete
+cupsArrayFind
+cupsArrayFirst
+cupsArrayNew
+cupsArrayNext
+cupsArrayRemove
+cupsFileClose
+cupsFileGets
+cupsFileOpen
+cupsFilePrintf
+cupsFilePuts
+cupsFileRewind
+cupsFileStdout
+_cupsLangPrintf
+_cupsLangPuts
+*cupsLanguages:
+*cupsLanguages: "%s
+_cupsSetLocale
+_cups_strlcpy
+_cups_strncasecmp
+Custom%s
+__cxa_finalize
+__errno_location
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+hungarian
+_IO_stdin_used
+japanese
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libcups.so.2
+/lib/ld-linux.so.2
+libpthread.so.0
+norwegian
+  -o filename.ppd[.gz]    Set output file (otherwise stdout).
+Options:
+portuguese
+ppdClose
+ppdErrorString
+ppdFindAttr
+ppdFindCustomOption
+ppdFirstCustomParam
+_ppdGetLanguages
+ppdLastError
+ppdmerge
+ppdmerge: Bad LanguageVersion "%s" in %s.
+ppdmerge: Ignoring PPD file %s.
+ppdmerge: Unable to backup %s to %s - %s
+ppdNextCustomParam
+ppdOpen2
+*%s.Custom%s True/%s: ""
+simplified chinese
+*%% %s localization
+__snprintf_chk
+*%s.ParamCustom%s %s/%s: ""
+*%s.%s %s/%s: ""
+__stack_chk_fail
+*%s.Translation ModelName/%s: ""
+*%s.Translation %s/%s: ""
+strerror
+%s: Unable to open PPD file: %s on line %d.
+%s: Unable to open %s: %s
+traditional chinese
+Usage: ppdmerge [options] filename.ppd [ ... filenameN.ppd ]

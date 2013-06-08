@@ -1,0 +1,71 @@
+                  action='store_false',
+                  action='store_true',
+                    allow_system_internal=False,
+                           allow_system_internal=options.allow_system_internal)
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# as published by the Free Software Foundation.
+    # automatically?
+    backend = UDisksBackend(allow_system_internal=options.allow_system_internal,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# Copyright (C) 2009 Canonical Ltd.
+                         'disk (may slow down the boot process).'))
+    else:
+except DBusException as e:
+except (KeyboardInterrupt, Exception) as e:
+    # FIXME evand 2009-07-09: Wouldn't service activation pick this up
+    # FIXME evand 2009-07-28: Does this really belong this far out?
+# FIXME evand 2009-07-28: Reconnect this option to the install routine.
+from dbus import DBusException
+from usbcreator.backends.udisks import UDisksBackend
+from usbcreator.frontends.gtk import GtkFrontend
+from usbcreator.misc import *
+    frontend = GtkFrontend(backend, options.img, options.persistent,
+gettext.install('usbcreator', localedir='/usr/share/locale', unicode=True)
+# GNU General Public License for more details.
+    GtkFrontend.startup_failure(message)
+                  help=_('allow writing to system-internal devices'))
+                  help=_('choose safer options when constructing the startup '
+                  help=_('disable persistent setting in the UI'))
+                  help=_('provide a source image (CD or disk) to '
+                  help=_('Show all devices'))
+    if e._dbus_error_name == 'org.freedesktop.DBus.Error.ServiceUnknown':
+if program.startswith('./') or program.startswith('bin/'):
+import gettext
+import optparse
+import os, sys
+                    iso=None,
+# it under the terms of the GNU General Public License version 3,
+    logging.exception('DBus exception:')
+    logging.exception('Unhandled exception:')
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        message = _('An error occurred while talking to the udisks '
+    message = _('An unhandled exception occurred:\n%s' % unicode(e))
+        message = _('This program needs udisks running in order to'
+(options, args) = parser.parse_args()
+    os.environ['USBCREATOR_LOCAL'] = '1'
+parser.add_option('--allow-system-internal', dest='allow_system_internal',
+parser.add_option('-i', '--iso', dest='img',
+parser.add_option('-n', '--not_persistent', dest='persistent',
+parser.add_option('--show-all', dest='show_all', action='store_true',
+parser.add_option('-s', '--safe', dest='safe', action='store_true',
+parser = optparse.OptionParser(usage=_('%prog [options]'), version='0.2.23')
+parser.set_defaults(safe=False,
+                    persistent=True,
+                         'pre-populate the UI.'))
+program = sys.argv[0]
+                    'properly function.')
+sane_path()
+                    'service.')
+setup_logging()
+                            show_all=options.show_all)
+    sys.exit(1)
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+# This program is distributed in the hope that it will be useful,
+# This program is free software: you can redistribute it and/or modify
+    # TODO evand 2009-05-03: What should we do here to make sure devices are
+# TODO evand 2009-07-09: Rename to bin/usb-creator-gtk.in and substitue the
+                    trace=False)
+    # unmounted, etc?
+#!/usr/bin/python
+# version in at build time.
+# You should have received a copy of the GNU General Public License

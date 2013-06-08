@@ -1,0 +1,34 @@
+                a) ALLMATCHES=1 ;;
+ALLMATCHES=0
+     [ "$ALLMATCHES" -eq 1 ] || break
+ ALLRET=0
+  ALLRET=1
+ ALLRET=1
+#! /bin/sh
+case $PATH in
+ case $PROGRAM in
+        case "$whichopts" in
+     ELEMENT=.
+        esac
+exit "$ALLRET"
+   for ELEMENT in $PATH; do
+for PROGRAM in "$@"; do
+if [ "$#" -eq 0 ]; then
+    if [ -f "$ELEMENT/$PROGRAM" ] && [ -x "$ELEMENT/$PROGRAM" ]; then
+   if [ -f "$PROGRAM" ] && [ -x "$PROGRAM" ]; then
+ if [ "$RET" -ne 0 ]; then
+ IFS="$IFS_SAVE"
+ IFS_SAVE="$IFS"
+if test -n "$KSH_VERSION"; then
+    if [ -z "$ELEMENT" ]; then
+	(*[!:]:) PATH="$PATH:" ;;
+		printf '%s\n' "$*"
+		print -r -- "$*"
+	puts() {
+     puts "$ELEMENT/$PROGRAM"
+    puts "$PROGRAM"
+                ?) puts "Usage: $0 [-a] args"; exit 2 ;;
+     RET=0
+    RET=0
+shift $(($OPTIND - 1))
+while getopts a whichopts

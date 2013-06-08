@@ -1,0 +1,1727 @@
+""""'""'"
+""""""""""""
+(""""""""""""""""""""""""""""""""""""""""""
+	##""""""!
+ !"#$%&'()*+,-./0123@@@@@\%03o
+0123456789
+0123456789abcdef
+127.0.0.1
+<29|$Tv\
+@@@@@@@@@@@>@@@?456789:;<=@@@@@@@
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+# %a %b %d %H:%M:%S %Y
+Accepted DHCPv4 packet with one-character client-id - a future version of ISC DHCP will reject this
+ackoff-cutoff
+Added new forward map from %.*s to %s
+addr_eq():%s:%d: Invalid addr length.
+address in use
+address not available
+add "%s"
+Advertise
+algorithm
+Algorithm: 
+Algorithm: %d (%s)
+all-subnets-local
+already running
+and CONFIG_FILTER
+an object is already open.
+are not running HP JetAdmin software, which
+arp-cache-timeout
+array incompatible with zerolen.
+Arrays of encapsulations don't make sense.
+arrays of text strings not %s
+associated-ip
+a subnet6 declaration
+a subnet declaration
+Attempting to add unknown option %d.
+attempts:
+Attempt to clear null handle pointer
+auth_key_hash
+autoretries
+autoretry-secs
+bad base64 encoding
+Bad descriptor %d.
+bad DNS key
+bad DNS signature
+Bad format '%c' in parse_option_token.
+Bad header line in '/proc/net/dev'
+Bad line reading interface information
+Bad line reading interface information (no colon)
+Bad line reading IPv6 interface address for '%s'
+Bad line reading IPv6 interface information
+Bad line reading IPv6 interface information (no space)
+-balance
+bandoned
+bcms-controller-address
+bcms-controller-names
+bcms-server-a
+bcms-server-d
+because your
+binary-to-ascii
+binary-to-ascii: %s %d %s %ld!
+binary_to_ascii: %s %ld!
+/bin/df  2>&1
+binding type %d in %s.
+Bind socket to interface: %m
+/bin/iostat  2>&1
+/bin/ps -a 2>&1
+/bin/ps -axlw 2>&1
+/bin/sin 2>&1
+/bin/sin fds 2>&1
+/bin/sin memory 2>&1
+Bogus number: %s.
+Bogus number %s: digit %d not in base %d
+Bogus opcode in evaluate_boolean_expression: %d
+Bogus opcode in evaluate_data_expression: %d
+Bogus opcode in evaluate_dns_expression: %d
+bogus statement type %d
+bogus statement type in set_option.
+boolean expression expected
+boolean expression expected.
+Boolean opcode in evaluate_data_expression: %d
+Boolean opcode in evaluate_dns_expression: %d
+Boolean opcode in evaluate_numeric_expression: %d
+boolean value (true/false/on/off) expected
+bootfile-name
+bootp in /etc/inetd.conf.   Also make sure you
+bootp_packet_handler
+boot-size
+Bounds failure on internal buffer at %s:%d
+Bound to *:%d
+broadcast-address
+broadcast_addr():%s:%d: Addr/mask length mismatch.
+broadcast_addr():%s:%d: Invalid addr length.
+__bss_start
+b-time-format
+buffer.c
+callback.c
+Cannot create authenticator: %s
+cannot update authenticator
+Can't add entry to hash table: no memory.
+can't allocate at CONCAT2
+can't allocate buffer for base64 data.
+can't allocate command name
+Can't allocate const_data buffer
+Can't allocate const expression.
+Can't allocate dhcp option hash table.
+Can't allocate dhcpv6 option hash tables.
+can't allocate expr
+can't allocate expression
+can't allocate expression.
+Can't allocate expression!
+Can't allocate fqdn option hash table.
+can't allocate fundef.
+Can't allocate input buffer sized %d
+Can't allocate ISC Vendor options hash table.
+can't allocate name for %s
+Can't allocate nwip option hash table.
+Can't allocate option space table.
+can't allocate primary option cache.
+can't allocate rrtype value.
+can't allocate secondary.
+Can't allocate %s option hash table.
+can't allocate space for hostname.
+Can't allocate space for new host.
+can't allocate string.
+can't allocate temp space for hostname.
+can't allocate trace packet header.
+can't allocate variable name
+can't allocate variable name.
+Can't allocate Vendor Identified Vendor Class option hash table.
+Can't allocate Vendor Identified Vendor Sub-options hash table.
+Can't allocate Vendor Specific Information Options space.
+Can't bind to dhcp address: %m
+Can't create dhcp socket: %m
+can't create new object
+can't create object: %s
+Can't create socket for "%s": %m
+can't delete options from %s space.
+can't destroy object: %s
+Can't get list of interfaces.
+Can't install packet filter program: %m
+can't look up options in %s space.
+can't make constant string expression.
+Can't make initial control object: %s
+can't open object: %s
+Can't open tracefile %s: %m
+can't refresh object: %s
+Can't register control object type: %s
+Can't register group object type: %s
+Can't register interface object type: %s
+Can't register I/O handle for "%s": %s
+Can't register I/O handle for %s: %s
+Can't register shared network object type: %s
+Can't register subnet object type: %s
+Can't save tracefile position: %m
+can't seek past header: %m
+can't select authenticator
+Can't set close-on-exec on fallback: %m
+Can't set close-on-exec on %s: %m
+Can't set SO_BROADCAST option on dhcp socket: %m
+Can't set SO_REUSEADDR option on dhcp socket: %m
+can't store options in %s space.
+can't update object
+can't update object: %s
+case statement in inappropriate scope.
+'c' atom not following D atom in format string: %s
+(check %s)
+class %s: %s
+client-data
+client-id
+client-last-transaction-time
+client-state
+clock skew too great
+closedir
+clt-time
+code tag at end of buffer - missing length field
+collections
+comapi.c
+comma expected.
+Commands:
+config-option
+CONFIG_PACKET (Packet socket) %s
+config_universe
+configuration!
+conflex.c
+  connect
+connection
+connection.c
+connection-input
+connection-output
+connection refused
+connection reset by peer
+Contents/Size (%%): %u/%u (%u%%). Min/max: %u/%u
+cookie-servers
+Corrupt format: %s
+  create
+cross-zone update
+ctrace.c
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+__cxa_finalize
+D$4+D$\9
++D$(9l$(
+data: binary-to-ascii: no memory
+data: concat: no memory
+data: encode_int16: no memory
+data: encode_int32: no memory
+data: encode_int8: no memory
+data: filename: no memory.
+data: hardware: invalid hlen (%d)
+data: hardware: no memory for buffer.
+data: hardware: raw packet not available
+data: host-decl-name: no memory.
+data: host_decl_name: not available
+data: lcase: no buffer memory.
+data: "leased-address" configuration directive: there is no lease associated with this client.
+data: leased-address: no memory.
+data: leased_lease: not available
+data: lease_time: lease ends at
+data not yet available
+Data opcode in evaluate_boolean_expression: %d
+Data opcode in evaluate_dns_expression: %d
+Data opcode in evaluate_numeric_expression: %d
+data: packet: no buffer memory.
+data: packet: raw packet not available
+data: reverse: no memory
+data: sname: no memory.
+%d bad IP checksums seen in %d packets
+%d bad udp checksums in %d packets
+db_time_format
+D$(+D$<=
+%d %d %d
+D$d+D$<)
+dddddddd
+dddddddddddddddddddddddddddd
+ddns-fwd-name
+ddns-rev-name
+;;	debug
+default: 
+default-authenticator
+default_collection
+default-ip-ttl
+default_option_format
+default-tcp-ttl
+default-url
+(defined %s)
+delete_fqdn6_option
+delete_hashed_option
+delete_linked_option
+destination address required
+Device name too long: "%s"
+/dev/random
+dfree %s(%d): free on null pointer.
+DHCID mismatch, belongs to another client.
+dhcp_bpf_filter
+dhcp_bpf_filter_len
+dhcp-client-identifier
+dhcp_control_object
+dhcpctl.c
+dhcpctl-callback
+dhcpctl_callback_destroy
+dhcpctl_callback_get_value
+dhcpctl_callback_set_value
+dhcpctl_callback_signal_handler
+dhcpctl_callback_stuff_values
+dhcpctl_callback_type
+dhcpctl_connect: %s
+dhcpctl_initialize: %s
+dhcpctl-remote
+dhcpctl_remote_destroy
+dhcpctl_remote_get_value
+dhcpctl_remote_set_value
+dhcpctl_remote_signal_handler
+dhcpctl_remote_stuff_values
+dhcpctl_remote_type
+dhcp_free_list
+dhcp_interface_discovery_hook
+dhcp_interface_setup_hook
+dhcp_interface_shutdown_hook
+dhcp_interface_startup_hook
+dhcp-lease-time
+dhcp-max-message-size
+dhcp-message
+dhcp-message-type
+dhcp-option-overload
+dhcp-parameter-request-list
+dhcp-rebinding-time
+dhcp-renewal-time
+dhcp-requested-address
+dhcp-server-identifier
+dhcp_type_control
+dhcp_type_group
+dhcp_type_interface
+dhcp_type_shared_network
+dhcp_type_subnet
+dhcp_universe
+dhcpv6_duid_types
+dhcpv6_duid_type_values
+dhcpv6_messages
+dhcpv6-messages
+dhcpv6_message_values
+dhcpv6_packet_handler
+dhcpv6_status_codes
+dhcpv6_status_code_values
+dhcpv6_type_name_max
+dhcpv6_type_names
+dhcpv6_universe
+Disabling input on LPF/%s/%s%s%s
+Disabling input on  Socket/%s
+Disabling input on  Socket/%s/%s
+Disabling output on LPF/%s/%s%s%s
+Disabling output on Socket/%s
+Disabling output on Socket/%s/%s
+Discarding packet with bogus hlen.
+disconnect
+discover.c
+dispatch.c
+D$l9D$hu
+DNS format error
+(dns-lookup %s)
+dns opcode in evaluate_boolean_expression: %d
+dns opcode in evaluate_numeric_expression: %d
+DNS server failed
+dns update opcode in evaluate_data_expression: %d
+dns_zone_hash
+dns zone key %s: %s
+dns_zone_reference
+do_case_hash
+domain already exists
+domain doesn't exist
+domain exists
+domainname
+domain-name-servers
+domain-search
+do_number_hash
+do_packet6: no memory for incoming packet.
+do_packet6: no memory for options.
+do_packet6: short packet from %s port %d, len %d, dropped
+do_packet: no memory for incoming packet!
+do_string_hash
+dotted octet > 255: %s
+<double impossible condition>
+Dropped DHCPv4 packet with zero-length client-id
+DSTKEYPATH
+dst_path
+dst_t_func
+D$$;t$8t
+%d udp packets in %d too long - dropped
+duid-llt
+duid-types
+dummy_interfaces
+D$X9D$\}
+econtact-interval
+ecover-done
+ecover-wait
+Efqdn6-if-you-see-me-its-a-bug-bug-bug.
+elapsed-time
+} else {
+} elsif 
+emporary
+encapsulate
+encapsulate must always be the last item.
+encapsulation format
+encapsulation requested for '%s' with no support.
+encode-int
+endprotoent
+  end %s
+endservent
+enumeration format
+enumerations
+eof in string constant
+epoch %lu; %s
+__errno_location
+Error allocating fallback interface: %s
+Error allocating interface %s: %s
+Error assembling domain list: %m
+Error compressing domain list: %m
+Error creating gethostbyname() internal record. (%s:%d)
+Error creating socket to list interfaces; %m
+Error evaluating option %d
+Error evaluating option %d in VSIO space %s.
+error finding encapsulated option (%s:%d)
+Error getting hardware address for "%s": %m
+Error getting interface address for '%s'; %m
+Error getting interface flags for '%s'; %m
+Error getting interface information.
+Error opening '/proc/net/dev' to list interfaces
+Error opening '/proc/net/if_inet6' to list IPv6 interfaces; %m
+Error printing text.
+Error reading headers from '/proc/net/dev'
+Error reading interface information
+Error reading IPv6 interface information
+Error reading trace file header: %m
+Error reading trace packet header: %m
+Error reading trace payload: %m
+esolution-interrupted
+/etc/resolv.conf
+ethernet
+et-lease-hostnames
+evaluate_boolean_expression
+evaluate_data_expression
+evaluate_dns_expression called with non-null %s
+evaluate_expression
+evaluate_numeric_expression
+evaluate_numeric_expression: bogus opcode %d
+Evendor.
+Evendor-class.
+exclusive
+execute: bad arg %d
+execute.c
+execute: fork() failed
+execute: %s exit status %d
+execute_statement argv[0] = %s
+execute_statement argv[%d] = %s
+execute_statement failed argv[%d]
+(exists %s.%s)
+expected colon separating hour from minute.
+expected colon separating minute from second.
+expected slash separating month from day.
+expected slash separating year from month.
+expecting "="
+expecting a 10base number
+Expecting a boolean expression.
+expecting a data expression.
+Expecting a dns update subexpression.
+Expecting a domain string.
+expecting a lease event type
+expecting a network hardware type
+Expecting a numeric expression.
+Expecting a quoted string.
+expecting argument name
+Expecting a semicolon.
+expecting a string
+expecting a subexpression
+expecting boolean.
+expecting boolean expressions
+expecting class name.
+expecting conditional.
+expecting data expression
+expecting data expression.
+expecting data/numeric expression
+expecting data or numeric expression.
+expecting dns expression.
+expecting DNS prerequisite.
+expecting expression.
+expecting function call.
+expecting hexadecimal constant.
+expecting hexadecimal number.
+expecting hostname.
+expecting identifier.
+expecting identifier after '.'
+expecting identifier after option keyword.
+expecting identifier or number.
+expecting if statement
+expecting '=' in %s statement.
+expecting "integer" keyword.
+expecting ip-address or ip-address/prefixlen
+expecting IP addr or hostname.
+expecting key algorithm name.
+expecting key name.
+expecting left brace
+expecting left brace.
+Expecting 'local' or 'default'.
+expecting number.
+expecting number 1, 2, 4.
+expecting number 1 or 2.
+expecting numeric expression.
+expecting numeric expressions
+Expecting numeric lease time
+expecting numeric value.
+expecting "of".
+expecting option code number.
+expecting option space identifier
+expecting ~= or ~~ operator
+Expecting quoted literal: "foo.example.com"
+expecting right brace.
+expecting right-hand side.
+expecting right paren.
+expecting rigt brace.
+expecting semicolon.
+expecting %s expression.
+expecting size token.
+expecting string.
+expecting string or hexadecimal data
+expecting string or hexadecimal data.
+expecting width token.
+extensions-path
+extract-int
+ext-server
+Failed to get interface index: %m
+Failed to set auxiliary packet data: %m
+fallback
+fallback_discard
+fallback_interface
+fancy bits in fqdn option
+__fdelt_chk
+FF02::1:2
+FF05::1:3
+filename
+finger-server
+flict-done
+font-servers
+format_has_text(%s): 'c' atoms are illegal except after 'D' atoms.
+format_min_length(%s): 'c' atom is illegal except after 'D' atom.
+format_min_length(%s): No safe value for unknown format symbols.
+for the network segment
+Forward map from %.*s to %s FAILED: %s
+__fprintf_chk
+fqdn6-if-you-see-me-its-a-bug-bug-bug
+fqdn6_option_space_encapsulate
+fqdn6_option_space_foreach
+fqdn6_universe
+fqdn6_universe_decode
+fqdn_option_space_encapsulate
+fqdn tag longer than buffer
+fqdn_universe
+fqdn_universe_decode
+free_binding_values
+free_expressions
+free_hash_buckets
+free_option_caches
+free_pairs
+from listening on this subnet %s
+fsetpos in tracefile failed: %m
+function definition in evaluate_boolean_expr
+function definition in evaluate_data_expression
+function definition in evaluate_numeric_expr
+Function opcode in evaluate_dns_expression: %d
+__fxstat
+generic.c
+gethostbyname
+gethostid
+gethostname
+getifaddrs
+getpeername
+getprotoent
+getservbyname
+getservent
+getsockname
+getsockopt
+gettimeofday
+getUChar
+getULong
+getUShort
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+global_scope
+__gmon_start__
+group_dereference
+group_name_hash
+group_reference
+group_write_hook
+handle.c
+hardware
+hardware address too long
+    hardware addr = %s
+hardware_types
+Has an address record but no DHCID, not mine.
+hash bucket %d:
+hashed_option_space_encapsulate
+hashed_option_space_foreach
+hashed_option_state_dereference
+__h_errno_location
+hexadecimal constant too long.
+hmac-md5
+HMAC-MD5.SIG-ALG.REG.INT
+HMAC-MD5.SIG-ALG.REG.INT.
+host_addr():%s:%d: Addr/mask length mismatch.
+host_addr():%s:%d: Invalid addr length.
+host-decl-name
+-host-decl-names
+host down
+hostname
+<hostname>
+host-name
+  host %s  
+host unknown
+host unreachable
+ia-prefix
+ick-first-value
+identifier expected
+ieee802-3-encapsulation
+ien116-name-servers
+if_nametoindex
+if_readsocket
+If this is not what
+** Ignoring requests on %s.  %s
+illegal-1
+illegal-2
+illegal-3
+illegal-4
+illegal expression relating different types
+imestamp
+Impossible case at %s:%d.
+Impossible case at %s:%d (undefined expression %d).
+Impossible case at %s:%d.  Undefined operator %d.
+Impossible condition at %s:%d
+Impossible condition at %s:%d.
+Impossible error at %s:%d
+impress-servers
+Improperly configured option space(%s): may not have a nonzero length size AND a NULL get_length function.
+inappropriate scope.
+! in boolean context without =
+includes a bootp server.
+Inconsistent universe tag size at %s:%d.
+inet_aton
+inet_ntoa
+inet_ntop
+inet_pton
+inet_pton: unable to convert '%s'
+info-refresh-time
+Information-request
+inpacket
+inpacket_trace
+input-authenticator
+input is not being consumed.
+input-signature
+input-signature-size
+interface_count
+interface-id
+interface_max
+interface-mtu
+Interface name '%s' too long
+interfaces_invalidated
+interface_trace
+interface_vector
+internal encapsulation format error 1.
+internal encapsulation format error 2.
+Internal inconsistency at %s:%d.
+Internal inconsistency: storage value has not been initialized to zero (from %s:%d).
+invalid argument
+invalid base64 character %d.
+Invalid CIDR prefix length: expecting a number.
+invalid code width (%d), expecting a 1, 2 or 4.
+invalid create flag value
+invalid DNS rrtype: %s
+Invalid domain list.
+Invalid domain name.
+invalid exclusive flag value
+invalid expression type in print_expression: %d
+invalid file
+invalid hash length: %d
+Invalid hash table.
+invalid hex digit: %x
+Invalid IPv6 address.
+Invalid IPv6 prefix length.
+invalid length width (%d) expecting 1 or 2.
+invalid octal digit %x
+Invalid port number specification: %s
+invalid TSIG key
+invalid update flag value
+invalid value.
+invalid width
+   in your dhcpd.conf file %s
+in your kernel
+I/O error
+_IO_getc
+_IO_stdin_used
+ip_addr():%s:%d: Addr/mask length mismatch.
+ip_addr():%s:%d: Invalid addr length.
+ip-forwarding
+IPv6 interface name '%s' too long
+irc-server
+is attached. **
+isc6_universe
+isc_universe
+__isoc99_fscanf
+__isoc99_sscanf
+ixed-address
+ixed-address6
+ixed-prefix6
+_Jv_RegisterClasses
+key conflict
+key_file_fmt_str
+  key <key name> <key value>
+key %s: too many algorithms
+key %s: too many secrets
+K%s+%03d+%05d.%s
+L$,9L$(v&
+-lease-addr-for-default-route
+-lease-cutoff
+leased-address
+-lease-length
+Leasequery
+Leasequery-reply
+  Lease %s
+left brace expected.
+left brace or if expected.
+left parenthesis expected.
+length of buffer
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+limited_broadcast
+linked_option_space_encapsulate
+linked_option_space_foreach
+linked_option_state_dereference
+listener-accept
+listener.c
+Listening on LPF/%s/%s%s%s
+Listening on Socket/%d/%s/%s
+Listening on Socket/%s
+Listening on Trace/%s/%s%s%s
+local_address
+local_address6
+LOCALDOMAIN
+local_family
+local_port
+localtime
+lock busy
+log_cleanup
+log_perror
+log_priority
+log-servers
+lookup_fqdn6_option
+lookup_hashed_option
+lookup_linked_option
+lpr-servers
+lq6_query_types
+lq6_query_type_values
+lq-client-link
+lq-query
+lq-relay-data
+malformed encapsulation format (bug!)
+MalformedQuery
+malformed %s (bug!)
+mask-supplier
+max-dgram-reassembly
+MD5 part of SSLeay 0.8.1 19-Jul-1997
+MD5_version
+__memcpy_chk
+memory.c
+__memset_chk
+merit-dump
+message.c
+misbalance
+mobile-ip-home-agent
+more than one object matches key
+more than one primary.
+more than one secondary.
+mr-input
+MR_ns_flagdata
+mr-output
+mr-randomid
+mr-statp
+mrtrace.c
+munications-interrupted
+nameserver
+nauthenticated
+Ndhcpv6-messages.
+;;	ndots=%d
+nds-context
+nds-servers
+nds-tree-name
+nearest-nwip-server
+ne-lease-per-client
+netbios-dd-server
+netbios-name-servers
+netbios-node-type
+netbios-scope
+netinfo-server-address
+netinfo-server-tag
+network client
+network down
+network mask too short.
+network unreachable
+  new <object-type>
+new_parse()
+New value: %s/%d.
+ng%08lx%08lx
+nis-domain
+nis-domain-name
+nisp-domain-name
+nisplus-domain
+nisplus-servers
+nisp-servers
+nis-servers
+nitial-delay
+nitial-interval
+nntp-server
+NoAddrsAvail
+No authenticator on message
+no available threads
+NoBinding
+no-check-names
+no-client-update
+no IPv4 addresses
+no key specified
+no matching handle
+no memory for base64 buffer.
+no memory for concat.
+No memory for concatenation
+No memory for concatenation expression node.
+no memory for cons.
+No memory for constant data adding %s (option %d).
+no memory for default statement.
+No memory for dhcp6.fqdn option buffer.
+No memory for domain list object.
+No memory for encapsulation expression node.
+No memory for equal precedence combination.
+no memory for eval statement.
+no memory for execute statement.
+No memory for host lookup tree node.
+no memory for if statement.
+no memory for key
+no memory for key name.
+no memory for key %s.
+no memory for limit expression
+no memory for limit length expression
+no memory for limit offset expression
+no memory for log statement.
+No memory for make_const_data tree node.
+No memory for make_const_int tree node.
+No memory for new option space.
+No memory for new option space name.
+no memory for new statement.
+no memory for new zone.
+no memory for option buffer.
+no memory for option cache
+No memory for option cache adding %s (option %d).
+No memory for option_cache reference.
+No memory for option code %s.%s.
+no memory for option format.
+no memory for option statement.
+no memory for return statement.
+No memory for "%s"
+No memory for %s
+No memory for %s.
+no memory for set statement.
+No memory for statp iov.
+no memory for string list.
+no memory for string %s.
+no memory for substring expression.
+no memory for uname information.
+No memory for virtual option buffer.
+no memory to build server ORO
+No memory to expand option space array.
+no memory to store octet data.
+no memory to store option declaration.
+no memory to store server name.
+no memory to store %s.%s
+no nested arrays.
+non-local-source-routing
+no object.
+no object matches specification
+no open object.
+no option named %s in space %s
+no option space named %s.
+no pending connections
+NoPrefixAvail
+No registered trace type for type name %.*s
+no remove method for object
+no root zone
+no space for ifp mockup.
+no space for numeric aggregate
+no space for numeric aggregate.
+No space for option %d
+No space for option %d in VSIO space %s.
+No subnet6 declaration for %s (%s).
+No subnet declaration for %s (%s).
+no such domain
+no such RRset
+No table.
+NotAllowed
+not a multiple of width
+not authorized
+not a valid domain name.
+not a zone
+NotConfigured
+Not configured to listen on any interfaces!
+not connected
+not connected.
+no temp space for number.
+not enough free resources
+Not enough space for option overload option.
+not equal
+not exists
+not_exists
+notify not implemented yet
+notify-object
+not implemented
+NotOnLink
+not open.
+no trailing '.' on zone
+no TSIG signature
+No VSIO option code found.
+nsq-broadcast
+Nstatus-codes.to
+NSupdate of RR type: %d not implemented
+<null address>
+Null pointer in option_cache_dereference: %s(%d)
+number expected.
+numeric day of month expected.
+numeric day of week expected.
+numeric hour expected.
+numeric minute expected.
+numeric month expected.
+Numeric opcode in evaluate_boolean_expression: %d
+Numeric opcode in evaluate_data_expression: %d
+Numeric opcode in evaluate_dns_expression: %d
+numeric second expected.
+numeric token larger than internal buffer
+numeric year expected.
+nwip-1-1
+nwip-domain
+Nwip option hash does not contain 1 (%s:%d).
+nwip_option_space_encapsulate
+nwip-suboptions
+nwip_universe
+object lookup failed
+Object %lx %s%s%.*s
+object unchanged
+obj: <null>
+o-forward-update
+old-dns-delete
+old-dns-update
+omapi_auth_key_destroy
+omapi_auth_key_get_value
+omapi_auth_key_lookup
+omapi_auth_key_stuff_values
+omapi_connection_destroy
+omapi_connection_get_value
+omapi_connection_reader
+omapi_connection_readfd
+omapi_connection_reaper
+omapi_connections
+omapi_connection_set_value
+omapi_connection_signal_handler
+omapi_connection_stuff_values
+omapi_connection_writefd
+omapi_connection_writer
+omapi_generic_destroy
+omapi_generic_get_value
+omapi_generic_set_value
+omapi_generic_signal_handler
+omapi_generic_stuff_values
+omapi_handle_table
+omapi_io_destroy
+omapi_io_get_value
+omapi_io_set_value
+omapi_io_signal_handler
+omapi_io_stuff_values
+omapi_listener_destroy
+omapi_listener_get_value
+omapi_listener_set_value
+omapi_listener_signal_handler
+omapi_listener_stuff_values
+omapi_message_destroy
+omapi_message_get_value
+omapi_message_set_value
+omapi_message_signal_handler
+omapi_message_stuff_values
+omapi_next_handle
+omapi_object_type_count
+omapi_object_types
+omapi_protocol_destroy
+omapi_protocol_get_value
+omapi_protocol_listener_destroy
+omapi_protocol_listener_get_value
+omapi_protocol_listener_set_value
+omapi_protocol_listener_signal
+omapi_protocol_listener_stuff
+omapi_protocol_set_value
+omapi_protocol_signal_handler
+omapi_protocol_stuff_values
+omapi_registered_messages
+omapi_type_auth_key
+omapi_type_connection
+omapi_type_datagram
+omapi_type_generic
+omapi_type_io_object
+omapi_type_listener
+omapi_type_message
+omapi_type_protocol
+omapi_type_protocol_listener
+omapi_type_remote
+omapi_type_waiter
+omapi_waiter_signal_handler
+omshell.c
+only uniform array inside record.
+oot-unknown-clients
+Open a socket for LPF: %m
+OPEN can't be a response
+operating system does not %s.
+operation canceled
+operation in progress
+Option codes 0 and %u are illegal in the %s space.
+option data buffer overflow
+option data buffer %s
+option length exceeds option buffer length
+options.c
+option %s has been redefined as option %s.  Please update your configs if neccessary.
+option_space_encapsulate: option space '%.*s' does not exist, but is configured.
+(option %s.%s)
+ost-identifier
+otential-conflict
+out of memory
+out of memory allocating option cache.
+out of memory allocating option data.
+Out of memory saving IPv4 address on interface.
+Out of memory saving IPv6 address on interface.
+outpacket
+outpacket_trace
+output-authenticator
+output-signature
+output-signature-size
+ownership
+p6-address
+packet_free_list
+p-address
+parse error(s) occurred
+parse_expression: expecting string.
+parse_option_buffer
+parse_option_buffer: malformed option %s.%s (code %u): %s.
+parse_option_buffer: No memory.
+parse_option_param: Bad format %c
+partial base64 value left over: %d.
+path-mtu-aging-timeout
+path-mtu-plateau-table
+pdated-dns-rr
+perform-mask-discovery
+permission denied
+piaddrmask():%s:%d: Address and mask size mismatch
+piaddrmask():%s:%d: Address length %d invalid
+piaddr():%s:%d: Invalid address length %d.
+Please make sure there is no other dhcp server
+policy-filter
+pop-server
+Port number specified is out of range (%ld-%ld).
+  port <server omapi port>
+preference
+preferred-dss
+primary-dss
+__printf_chk
+Private-key-format: v
+Private-key-format: v%s
+/proc/dumper
+/proc/interrupts
+/proc/ipstats
+/proc/meminfo
+/proc/net/dev
+/proc/net/if_inet6
+/proc/rtc
+/proc/self/as
+/proc/self/status
+/proc/stat
+protocol
+protocol.c
+protocol error
+protocol-listener
+protocol version mismatch
+putUChar
+putULong
+putUShort
+query-by-address
+query-by-clientid
+query-types
+quiet_interface_discovery
+quota reached
+ran out of space
+ransmission
+rapid-commit
+__rawmemchr
+Read file %s when expecting %s
+Read packet type %s when expecting %s
+Received DHCPv4 packet without client-id option and empty hlen field.
+receive_packet6() failed on %s: %m
+receive_packet6: unable to allocate cmsg header
+receive_packet failed on %s: %m
+reconf-accept
+Reconfigure
+reconf-msg
+recvfrom
+referred-life
+  refresh
+ regarding broadcast address.
+register_eventhandler: no memory!
+relay-agent-information
+RELAY-FORW
+Relay-forward
+relay-msg
+RELAY-REPL
+Relay-reply
+remote.c
+remote-handle
+remote-id
+remote_port
+  remove
+Report out of range for display.
+res_mkupdate: incorrect opcode: %d
+resolver_inited
+resolver_state
+resolving <hostname> failed
+RES_OPTIONS
+resource-location-servers
+-response-delay
+;; res_setoptions("%s", "%s")..
+;; res_setoptions("%s", "%s")...
+result pointer
+reverse: %s %d %s %ld!
+right brace expected.
+right paren expected
+right paren expected.
+right parenthesis expected.
+root_group
+root-path
+router-discovery
+router-solicitation-address
+RRset already exists
+rrset doesn't exist
+rrset exists
+running and that there's no entry for dhcp or
+rw_queue_empty
+save_fqdn6_option
+save_hashed_option
+save_linked_option
+%s bit precision is not supported.
+%s: can't allocate argument scope.
+%s can't be a variable name
+%scommit
+%s(%d): can't allocate buffer.
+%s(%d): can't allocate option cache.
+%s (%d): expecting IP address or hostname
+%s: %d extra bytes
+%s: %d extra bytes at end of array
+%s(%d): invalid binding type: %d
+%s(%d): negative refcnt!
+%s(%d): new_hash_table called with null pointer.
+%s(%d): non-null pointer
+%s(%d): non-null target for new_hash_table.
+%s: dns values for functions not supported.
+%s: dns values for variables not supported.
+%s(%d): null pointer
+%s(%d): %s: short write (%d:%d)
+%s:%d:store_options: Invalid first cutoff.
+%s:%d:store_options: Invalid second cutoff.
+%s(%d): %s write failed: %m
+%s(%d): trace_begin called twice
+%s(%d): trace_begin: short write (%d:%ld)
+%s(%d): trace_begin: %s: %m
+%s(%d): trace_begin write failed: %m
+%s(%d): trace_write_packet: short write (%d:%d)
+%s(%d): trace_write_packet: short write (%d:%ld)
+%s(%d): trace_write_packet with no tracefile.
+%s(%d): trace_write_packet with null trace type
+%s(%d): trace_write_packet write failed: %m
+Second buffer overflow in overloaded options.
+Seconds since epoch expected.
+semicolon expected.
+sending events is not allowed
+Sending on   LPF/%s/%s%s%s
+Sending on   Socket/%d/%s/%s
+Sending on   Socket/%s
+Sending on   Socket/%s%s%s
+Sending   on Trace/%s/%s%s%s
+send_packet6: %m
+send_packet6: unable to allocate cmsg header
+send_packet: %m
+send_packet: please consult README file%s
+server-id
+  server <server address>
+server-update
+  set <name> = <value>
+setprotoent
+set %s: can't allocate scope
+setservent
+set %s: no scope
+setsockopt
+setsockopt: IPV6_JOIN_GROUP: %m
+setsockopt: IPV6_MULTICAST_HOPS: %m
+setsockopt: IPV6_RECVPKTINFO: %m
+setsockopt: SO_BINDTODEVICE: %m
+%s: expecting at least %d bytes; got %d
+%sexpiry
+%s: Extra codes in format string: %s
+%s: garbage in format string: %s
+shared-network
+Short read on trace file header: %d %ld.
+Short read on trace packet header: %ld %ld.
+Short read on trace payload: %d %d.
+short trace index mapping
+%s: host unknown.
+shutdown
+shutting down
+sigaction
+.SIG-ALG.REG.INT.
+sigfillset
+%s IN KEY %d %d %d %s
+%s: invalid expression type: %d
+sip-servers-addresses
+sip-servers-names
+Slash expected.
+%s%ld, addr %s, port %d
+%s line %d: %s
+%s%lo exceeds max (%d) for precision.
+slp-directory-agent
+slp-service-scope
+%s%lu exceeds max (%d) for precision.
+%s %lu when it is now %lu
+%s%lx exceeds max (%d) for precision.
+%s missing an interface address
+smtp-server
+%s must be at end of record.
+%s: name server failed
+%s: no A record associated with address
+%s: no such function.
+%s: not a dhcp trace file.
+%s: not a function.
+%s: not found
+__snprintf_chk
+sntp-servers
+socket already bound
+socket.c
+(Socket Filtering) are enabled %s
+socket: %m - make sure
+sortlist
+specified object already exists
+__sprintf_chk
+Spurious traced connect - index %ld, addr %s, port %d
+Spurious traced listener connect - index 
+%srelease
+%s() returned type %d in %s.
+%s %s%s%s = 
+__stack_chk_fail
+  start %s
+statements
+static-routes
+status-code
+status-codes
+%s: temporary name server failure
+%s: too few arguments.
+%s: too many arguments.
+store_option: option %d refers to unknown option space '%.*s'.
+strcasecmp
+__strcpy_chk
+__strdup
+streettalk-directory-assistance-server
+streettalk-server
+strerror
+strftime
+string constant larger than internal buffer
+string constant too long.
+string expected.
+strncasecmp
+__strncat_chk
+stuff after base64 '=' terminator: %s.
+subnet6 declaration for this
+subnet declaration for this
+subnet-mask
+subnet_number():%s:%d: Addr/mask length mismatch.
+subnet_number():%s:%d: Invalid addr length.
+subnet prefix is out of range [0..%d].
+subnet-selection
+subnet.   You cannot prevent %s
+subscriber-id
+substring
+supersede
+support.c
+support this capability
+swap-server
+switch (
+switch default statement in %s
+__syslog_chk
+t$(9t$,s
+tables.c
+task is done
+tcp-keepalive-garbage
+tcp-keepalive-interval
+tftp-server-name
+the DHCP server
+Third buffer overflow in overloaded options.
+timed out
+time-offset
+timeout:
+time-servers
+Time zone offset or semicolon expected.
+token_print_indent: no memory for copy buffer
+token-ring
+too few numbers.
+too many types in record.
+   to %s %s %s
+t$P+t$t)
+trace_connect
+Trace connect: invalid length %d
+trace connection input: no connection index %ld
+trace connection input: %s
+trace connection_input: %s
+trace_disconnect
+trace disconnect: no connection matching index %ld
+trace disconnect: wrong length %d
+traced listener connect: %s
+tracefile header size too small - %ld < %ld
+tracefile packet size too small - %ld < %ld
+tracefile version %ld > current %ld.
+trace-index-mapping
+trace_inpacket_input
+trace_inpacket_stop
+trace_input_packet: no bootp packet handler.
+trace_input_packet: too short - %d
+trace_input_packet: unknown interface index %d
+trace_interface_input
+trace_interface_input: %s.
+trace interface packet size mismatch: %ld != %d
+trace_interface_stop
+trace_listener_accept
+trace_listener_accept: %s from %s/%d to port %d
+trace_listener_remember: %s
+trace_listeners
+trace_mr_input
+trace_mr_output
+trace_mr_randomid
+trace_mr_randomid: bogus length: %d
+trace_mr_recvfrom: data too short.
+trace_mr_recvfrom: no input found.
+trace_mr_recvfrom: too much%s
+trace_mr_statp
+trace_mr_statp: bogus length: %d
+trace_mr_statp: no statp packet found.
+trace_outpacket_input
+trace_outpacket_stop
+Trace packet with unknown index %ld
+trace_seed_input: wrong size (%d)
+trace_set_time_hook
+trace %s output: %s
+trace_time_marker
+trace_write_packet
+trace_write_packet: %s
+trailer-encapsulation
+-transmit-idle
+tsig key %s: %s
+T$$+T$ +t$ +D$ k
+type required on create
+uap-servers
+Unable to add forward map from %.*s to %s: %s
+Unable to convert dhcp6.fqdn domain name to printable form.
+Unable to execute %s: %m
+Unable to find FQDN parent option (%s:%d).
+Unable to find FQDN v6 parent option. (%s:%d).
+Unable to find ISC parent option (%s:%d).
+Unable to find NWIP parent option (%s:%d).
+Unable to find VIVCO parent option (%s:%d).
+Unable to find VIVSO parent option (%s:%d).
+Unable to find VSIO parent option (%s:%d).
+Unable to set up signal handler for %d, %m
+Unable to store relay agent information in reply packet.
+unaccounted-for minires input.
+unaccounted-for minires randomid input.
+unaccounted-for minires statp input.
+-unacked-updates
+unbalanced parentheses
+Unbound from *:%d
+unexpected connect
+unexpected end of file
+unexpected end of input
+unexpected error
+unexpected expression
+Unexpected format code %c
+Unexpected hash function at %s:%d.
+Unexpected integer size: %d
+unexpected rrclass: %s
+unexpected rrtype: %s
+unexpected token
+Unexpected token.
+universe_count
+universe_hash
+universe_max
+universes
+<unknown>
+unknown-
+unknown-0
+unknown-10
+unknown-100
+unknown-101
+unknown-102
+unknown-103
+unknown-104
+unknown-105
+unknown-106
+unknown-107
+unknown-108
+unknown-109
+unknown-11
+unknown-110
+unknown-111
+unknown-112
+unknown-113
+unknown-114
+unknown-115
+unknown-116
+unknown-117
+unknown-118
+unknown-119
+unknown-12
+unknown-120
+unknown-121
+unknown-122
+unknown-123
+unknown-124
+unknown-125
+unknown-126
+unknown-127
+unknown-128
+unknown-129
+unknown-13
+unknown-130
+unknown-131
+unknown-132
+unknown-133
+unknown-134
+unknown-135
+unknown-136
+unknown-137
+unknown-138
+unknown-139
+unknown-14
+unknown-140
+unknown-141
+unknown-142
+unknown-143
+unknown-144
+unknown-145
+unknown-146
+unknown-147
+unknown-148
+unknown-149
+unknown-15
+unknown-150
+unknown-151
+unknown-152
+unknown-153
+unknown-154
+unknown-155
+unknown-156
+unknown-157
+unknown-158
+unknown-159
+unknown-16
+unknown-160
+unknown-161
+unknown-162
+unknown-163
+unknown-164
+unknown-165
+unknown-166
+unknown-167
+unknown-168
+unknown-169
+unknown-17
+unknown-170
+unknown-171
+unknown-172
+unknown-173
+unknown-174
+unknown-175
+unknown-176
+unknown-177
+unknown-178
+unknown-179
+unknown-18
+unknown-180
+unknown-181
+unknown-182
+unknown-183
+unknown-184
+unknown-185
+unknown-186
+unknown-187
+unknown-188
+unknown-189
+unknown-19
+unknown-190
+unknown-191
+unknown-192
+unknown-193
+unknown-194
+unknown-195
+unknown-196
+unknown-197
+unknown-198
+unknown-199
+unknown-2
+unknown-20
+unknown-200
+unknown-201
+unknown-202
+unknown-203
+unknown-204
+unknown-205
+unknown-206
+unknown-207
+unknown-208
+unknown-209
+unknown-21
+unknown-210
+unknown-211
+unknown-212
+unknown-213
+unknown-214
+unknown-215
+unknown-216
+unknown-217
+unknown-218
+unknown-219
+unknown-22
+unknown-220
+unknown-221
+unknown-222
+unknown-223
+unknown-224
+unknown-225
+unknown-226
+unknown-227
+unknown-228
+unknown-229
+unknown-23
+unknown-230
+unknown-231
+unknown-232
+unknown-233
+unknown-234
+unknown-235
+unknown-236
+unknown-237
+unknown-238
+unknown-239
+unknown-24
+unknown-240
+unknown-241
+unknown-242
+unknown-243
+unknown-244
+unknown-245
+unknown-246
+unknown-247
+unknown-248
+unknown-249
+unknown-25
+unknown-250
+unknown-251
+unknown-252
+unknown-253
+unknown-254
+unknown-255
+unknown-26
+unknown-27
+unknown-28
+unknown-29
+unknown-3
+unknown-30
+unknown-31
+unknown-32
+unknown-33
+unknown-34
+unknown-35
+unknown-36
+unknown-37
+unknown-38
+unknown-39
+unknown-4
+unknown-40
+unknown-41
+unknown-42
+unknown-43
+unknown-44
+unknown-45
+unknown-46
+unknown-47
+unknown-48
+unknown-49
+unknown-5
+unknown-50
+unknown-51
+unknown-52
+unknown-53
+unknown-54
+unknown-55
+unknown-56
+unknown-57
+unknown-58
+unknown-59
+unknown-60
+unknown-61
+unknown-62
+unknown-63
+unknown-64
+unknown-65
+unknown-66
+unknown-67
+unknown-68
+unknown-69
+unknown-7
+unknown-70
+unknown-71
+unknown-72
+unknown-73
+unknown-74
+unknown-75
+unknown-76
+unknown-77
+unknown-78
+unknown-79
+unknown-80
+unknown-81
+unknown-82
+unknown-83
+unknown-84
+unknown-85
+unknown-86
+unknown-87
+unknown-88
+unknown-89
+unknown-9
+unknown-90
+unknown-91
+unknown-92
+unknown-93
+unknown-94
+unknown-95
+unknown-96
+unknown-97
+unknown-98
+unknown-99
+unknown attribute
+unknown_class
+unknown collection.
+unknown data type %s
+Unknown enumeration: %s
+<unknown error>
+unknown error: %d
+<unknown file>
+unknown key %s
+unknown option space %s
+UnknownQueryType
+unknown service name: %s
+unknown token: %s
+unknown-%u
+unknown value
+unsearchable object type
+  unset <name>
+UnspecFail
+Unsupported device type %ld for "%s"
+unsupported integer size %d
+  update
+update-assist
+uplicates
+usage: close
+usage: connect
+usage: key <name> <secret>
+usage: key <name> <value>
+usage: new <object-type>
+usage: port <port>
+usage: port <server>
+usage: refresh
+usage: remove
+usage: %s
+usage: server <server>
+usage: set <name> = <value>
+usage: unset <name>
+UseMulticast
+user-class
+/usr/bin/dig com. soa +ti=1 +retry=0 2>&1
+/usr/bin/netstat -an 2>&1
+/usr/bin/netstat -s 2>&1
+/usr/bin/printenv  2>&1
+/usr/bin/ps -ef 2>&1
+/usr/bin/uptime  2>&1
+/usr/bin/vmstat  2>&1
+/usr/bin/w  2>&1
+/usr/bsd/uptime  2>&1
+/usr/bsd/w  2>&1
+/usr/etc/arp -a 2>&1
+/usr/etc/netstat -an 2>&1
+/usr/home
+/usr/sbin/arp -an 2>&1
+/usr/sbin/iostat  2>&1
+/usr/sbin/netstat -an 2>&1
+/usr/sbin/vmstat  2>&1
+/usr/ucb/netstat -an 2>&1
+/usr/ucb/uptime  2>&1
+uthenticat
+uthoritative
+%u.%u.%u.%u
+%u.%u.%u.%u, 
+uX;l$(uR
+/var/adm
+/var/adm/lastlog
+/var/adm/messages
+/var/adm/wtmp
+/var/log/lastlog
+/var/log/messages
+/var/log/wtmp
+/var/mail
+/var/spool
+/var/spool/mail
+/var/tmp
+vendor_cfg_option
+vendor-class
+vendor-class-identifier
+vendor_class_universe
+vendor-encapsulated-options
+vendor-opts
+vendor_universe
+vsio_universe
+__vsnprintf_chk
+__vsprintf_chk
+Warning: Extraneous bits removed in address component of %s/%d.
+WARNING: Overwriting trace file "%s"
+which interface
+wk9t$Tt 
+www-server
+%w %Y/%m/%d %H:%M:%S;
+x-display-manager
+yet supported.
+%Y/%m/%d %H:%M:%S
+you haven't opened an object yet!
+you must make a new object first!
+You must write a %s
+   you want, please write %s
+zone TSIG key not known

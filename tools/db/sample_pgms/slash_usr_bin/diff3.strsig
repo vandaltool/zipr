@@ -1,0 +1,152 @@
+-3, --easy-only             like -e, but incorporate only nonoverlapping changes
+%50s %50s
+9+|$T9|$\|
+aeimvx3AEL:TX
+                                -A if no other options are given
+and output the actual merged file.  For unusual input, this is more
+A NULL argv[0] was passed through an exec system call.
+-A, --show-all              output all changes, bracketing conflicts
+__assert_fail
+-a, --text                  treat all files as text
+bindtextdomain
+bug-diffutils@gnu.org
+                                (can be repeated up to three times)
+CHARSETALIASDIR
+Compare three files line by line.
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+dcgettext
+/dev/null
+diff-program
+    --diff-program=PROGRAM  use PROGRAM to compare files
+easy-only
+-e, --ed                    output ed script incorporating changes
+__errno_location
+-E, --show-overlap          like -e, but bracket conflicts
+Exit status is 0 if successful, 1 if conflicts, 2 if trouble.
+extra operand `%s'
+failed to reopen %s with mode %s
+Finally, the -m (--merge) option causes diff3 to do the merge internally
+__fprintf_chk
+fputs_unlocked
+freopen64
+                                from OLDFILE to YOURFILE into MYFILE
+fwrite_unlocked
+__fxstat64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU diffutils
+    --help                  display this help and exit
+--horizon-lines=100
+http://www.gnu.org/software/diffutils/
+-i                          append `w' and `q' commands to ed scripts
+iconv_close
+iconv_open
+If a FILE is `-', read standard input.
+incompatible options
+initial-tab
+input file shrank
+internal error: invalid diff type passed to output
+internal error: screwup in format of diff blocks
+invalid diff format; incomplete last line
+invalid diff format; incorrect leading line chars
+invalid diff format; invalid change separator
+_IO_stdin_used
+iswalnum
+iswprint
+iswspace
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+L$,9|$\}
+%ld,%ldc
+%ld,%ldd
+%ld,%lds/^\.//
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+-L, --label=LABEL           use LABEL instead of file name
+\$L;t$Ptg
+Mandatory arguments to long options are mandatory for short options too.
+mbiter.h
+mbiter_multi_next
+mbsinit (&iter->state)
+mbuiter.h
+mbuiter_multi_next
+memory exhausted
+missing operand after `%s'
+-m, --merge                 output actual merged file, according to
+nl_langinfo
+No newline at end of file
+__overflow
+overlap-only
+__printf_chk
+__progname
+__progname_full
+program error
+program_invocation_name
+program_invocation_short_name
+Randy Smith
+read failed
+Report bugs to: %s
+robust than using ed.
+<<<<<<< %s
+>>>>>>> %s
+||||||| %s
+%s, and %s.
+%s: diff failed: 
+setlocale
+shell-always
+%s home page: <%s>
+show-all
+show-overlap
+sigaction
+sigaltstack
+sigemptyset
+`-' specified for more than one input file
+__sprintf_chk
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+stack overflow
+standard output
+__strdup
+--strip-trailing-cr
+    --strip-trailing-cr     strip trailing carriage return on input
+subsidiary program `%s' could not be invoked
+subsidiary program `%s' failed
+subsidiary program `%s' failed (exit status %d)
+subsidiary program `%s' not found
+the changes.
+The default output format is a somewhat human-readable representation of
+The -e, -E, -x, -X (and corresponding long) options cause an ed script
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+-T, --initial-tab           make tabs line up by prepending a tab
+to be output instead of the default.
+too many file label options
+Try `%s --help' for more information.
+unknown stream
+Usage: %s [OPTION]... MYFILE OLDFILE YOURFILE
+/usr/lib
+/usr/share/locale
+-v, --version               output version information and exit
+write failed
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+-X                          like -x, but bracket conflicts
+-x, --overlap-only          like -e, but incorporate only overlapping changes
+__xstat64

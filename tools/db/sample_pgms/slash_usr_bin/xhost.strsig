@@ -1,0 +1,67 @@
+access control disabled, clients can connect from any host
+access control enabled, only authorized clients can connect
+being added to access control list
+being removed from access control list
+__bss_start
+__ctype_tolower_loc
+endhostent
+failed to get netname for "%s"
+__fprintf_chk
+freeaddrinfo
+getaddrinfo
+getdomainname
+getnameinfo
+getpwnam
+getpwuid
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+inet_addr
+inet_ntop
+inet_pton
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXmuu.so.1
+__memmove_chk
+netname2user
+	(no nameserver response within %d seconds)
+non-network local connections %s
+no such user "%s"
+__printf_chk
+%s:  bad hostname "%s"
+sethostent
+sigaction
+%s: malloc bombed in change_host
+%s:  must be on local machine to add or remove hosts.
+%s:  must be on local machine to enable or disable access control.
+%s: not compiled for DECnet
+%s: not compiled for Kerberos 5
+__sprintf_chk
+%s@ (%*.*s)
+%s@ (%s) %s
+__stack_chk_fail
+%s: type must be specified for server interpreted family "%s"
+%s: unable to get %saddress for "%s"
+%s:  unable to open display "%s"
+%s: unknown address family "%s"
+<unknown address in family %d>
+<unknown family type %d>:
+usage: %s [[+-]hostname ...]
+user2netname
+XAddHost
+XCloseDisplay
+XDisableAccessControl
+XDisplayName
+XEnableAccessControl
+XListHosts
+XmuPrintDefaultErrorMessage
+XOpenDisplay
+XRemoveHost
+XSetErrorHandler

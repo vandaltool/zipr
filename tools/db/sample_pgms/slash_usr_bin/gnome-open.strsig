@@ -1,0 +1,33 @@
+__bss_start
+__data_start
+Error showing url: %s
+__fprintf_chk
+g_app_info_launch_default_for_uri
+g_ascii_strncasecmp
+g_dgettext
+g_error_free
+g_file_get_uri
+g_file_is_native
+g_file_new_for_commandline_arg
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+gnome_program_init
+gnome-url-show
+g_object_unref
+g_strdup
+_IO_stdin_used
+_Jv_RegisterClasses
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgnome-2.0
+libgnome-2.so.0
+libgnome_module_info_get
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+Usage: %s <url>

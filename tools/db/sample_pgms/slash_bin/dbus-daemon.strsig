@@ -1,0 +1,1166 @@
+|$$3|$ 1
+3D$l3T$h	
+3D$T3D$L
+|$<3l$(3l$
+3L$@3L$,
+3T$ 3T$$
+3T$<3T$P3T$0
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz
+Abstract socket name too long
+Activated service '%s' failed: %s
+Activating service name='%s'
+Activating service name='%s' (using servicehelper)
+Activating systemd to hand-off: service name='%s' unit='%s'
+Activating via systemd: service name='%s' unit='%s'
+--activation=
+ActivationFailure
+Activation of %s timed out
+ActivationRequest
+Activation via systemd failed for unit '%s': %s
+AddMatch
+--address
+--address=
+Address already in use
+Address does not contain a colon
+address != NULL
+Address '%s' already used
+AGREE_UNIX_FD
+A handler is already registered for %s
+Alignment padding not null
+allow_anonymous
+Already handled an Hello message
+ANONYMOUS
+An SELinux policy prevents this sender from sending this message to this recipient
+Applications must not close shared connections - see dbus_connection_close() docs. This is a bug in the application.
+      <arg direction="%s" type="
+      <arg name="data" direction="out" type="%s"/>
+      <arg type="s"/>
+Argument %d is specified to be an array of "%s", but is actually an array of "%s"
+Argument %d is specified to be of type "%s", but is actually of type "%s"
+Argument %d matched more than once in match rule
+arguments to %s() were incorrect, assertion "%s" failed in file %s line %d.
+Array length exceeds maximum
+Array length incorrect
+Array or variant type requires that type %s be written, but %s was written.
+Array or variant type wasn't expecting any more values to be written into it, but a value %s was written.
+arrays of %s can't be appended with %s for now
+array types
+associate
+at_console
+Attempted to unregister path (path[0] = %s path[1] = %s) which isn't registered
+Attempt to remove filter function %p user data %p, but no such filter has been added
+Attribute "%s" is invalid on <%s> element in this context
+Attribute "%s" repeated twice on the same <%s> element
+Authenticated
+auth_timeout
+--autolaunch
+autolaunch:
+avc_add_callback
+avc_context_to_sid
+avc_destroy
+avc_has_perm
+avc_init
+avc_sid_to_context
+Babysitter process not available to be reaped; should not happen
+Bad byte order
+Bad destination
+Bad error name
+Bad interface
+Bad member
+Bad message type
+Bad message type "%s"
+Bad path
+Bad protocol version
+Bad sender
+Bad serial
+Bad utf8 in string
+Bad value "%s" for %s attribute, must be true or false
+begin_dict_entry
+begin_struct
+--binary-syntax
+//bin/dbus-launch
+body types
+Boolean is not zero or one
+*bool_p == 0 || *bool_p == 1
+(*bools)[i] == 0 || (*bools)[i] == 1
+__bss_start
+Buffer too small for audit message
+busconfig
+Bus name is not valid or missing
+Bus name not found in system service directory
+Call to %s has wrong args (%s, expected %s)
+Cannot acquire a service starting with ':' such as "%s"
+Cannot do system-bus activation with no user
+Cannot initialize inotify
+Can not introspect - Out of memory
+Cannot launch daemon, file not found or permissions invalid
+Cannot release a service starting with ':' such as "%s"
+Cannot release the %s service because it is owned by the bus
+(cannot represent path: out of memory!)
+Cannot send file descriptors on this connection.
+Cannot setup inotify for '%s'; error '%s'
+cannot specify two of "path" and "tmpdir" and "abstract" at the same time
+cannot use the "tmpdir" option for an address to connect to, only in an address to listen on
+can't lookup socket from launchd; launchd support not compiled in
+can't specify both "path" and "abstract" options in an address
+Can't stat the service file
+Ccould not find watch %p function %p data %p to remove
+'=' character not found or has no value following it
+child_entries != NULL
+Circular inclusion of file '%s'
+clearenv
+Client tried to send a message other than %s without being registered
+clock_getres
+clock_gettime
+closedir
+--close-stderr
+Command contained non-ASCII
+/com/ubuntu/Upstart
+com.ubuntu.Upstart
+com.ubuntu.Upstart0_6
+--config-file
+--config-file=
+Configuration file has the wrong document type %s
+Configuration file needs one or more <listen> elements giving addresses
+connection->dispatch_acquired
+connection->generation == _dbus_current_generation
+Connection is closed
+connection != NULL
+connection == preallocated->connection
+Connection "%s" is not allowed to add more match rules (increase limits in configuration file if required)
+Connection "%s" is not allowed to own more services (increase limits in configuration file if required)
+Connection "%s" is not allowed to own the service "%s"because it is reserved for D-Bus' use only
+Connection "%s" is not allowed to own the service "%s" due to security policies in the configuration file
+Connection "%s" is not allowed to own the service "%s" due to SELinux policy
+Connection timed out
+connection->transport != NULL
+Connection was disconnected before a reply was received
+context attribute on <policy> must have the value "default" or "mandatory", not "%s"
+Copyright (C) 2002, 2003 Red Hat, Inc., CodeFactory AB, and others
+Could not allocate memory for directory iterator
+Could not authenticate to server
+Could not change permissions of file %s: %s
+Could not chdir() to root directory
+Could not chmod %s: %s
+Could not close fd %d
+Could not close file %s: %s
+Could not create file %s: %s
+Could not create full-duplex pipe
+Could not create mutex: %s
+Could not create %s: %s
+Could not determine audit session data for '%s'
+Could not determine PID for '%s'
+Could not determine security context for '%s'
+Could not determine SELinux policy root for relative inclusion
+Could not determine UID for '%s'
+Could not determine unique name for '%s'
+Could not duplicate fd %d
+could not find timeout %p function %p data %p to remove
+Could not get audit session data for name '%s': no such name
+Could not get owner of name '%s': no such name
+Could not get owners of name '%s': no such name
+Could not get password database information for UID of current process: %s
+Could not get PID of name '%s': no such name
+Could not get security context of name '%s': no such name
+Could not get system database.
+Could not get UID and GID for username "%s"
+Could not get UID of name '%s': no such name
+Could not load cookie file
+Could not lock keyring file to add to it
+Could not parse address
+Could not parse cookie ID as an integer
+Could not parse server address: %s
+Could not read nonce from file %s
+Could not read nonce from socket (fd=%d)
+Could not rename %s to %s: %s
+Could not set full-duplex pipe nonblocking
+Could not set mode 0777 on socket %s
+Could not synchronize file %s: %s
+Could not tell if SELinux is enabled: %s
+Could not write to %s: %s
+Couldn't read from reload pipe.
+Credentials byte was not nul
+__cxa_finalize
+data != NULL
+data_size != NULL
+/dbus-1/services
+/dbus-1/system-services
+dbus-activation
+DBUS_ACTIVATION_ADDRESS
+DBUS_ACTIVATION_BUS_TYPE
+dbus append iterator can't be used: message is locked (has already been sent)
+DBUS_BLOCK_ON_ABORT
+dbus_bus_add_match
+dbus_bus_get_id
+dbus_bus_get_unique_name
+dbus_bus_get_unix_user
+dbus_bus_name_has_owner
+dbus_bus_register
+dbus_bus_release_name
+dbus_bus_remove_match
+dbus_bus_request_name
+dbus_bus_set_unique_name
+dbus_bus_start_service_by_name
+_dbus_check_is_valid_bus_name (name)
+_dbus_check_is_valid_error_name (error_name)
+_dbus_check_is_valid_interface (interface)
+_dbus_check_is_valid_member (method)
+_dbus_check_is_valid_member (name)
+_dbus_check_is_valid_path (path)
+_dbus_check_is_valid_path (*string_p)
+_dbus_check_is_valid_signature (*string_p)
+_dbus_check_is_valid_utf8 (*string_p)
+dbus_connection_add_filter
+dbus_connection_borrow_message
+dbus_connection_can_send_type
+dbus_connection_close
+dbus_connection_dispatch
+dbus_connection_flush
+dbus_connection_free_data_slot
+dbus_connection_free_preallocated_send
+dbus_connection_get_adt_audit_session_data
+dbus_connection_get_data
+dbus_connection_get_dispatch_status
+dbus_connection_get_is_anonymous
+dbus_connection_get_is_authenticated
+dbus_connection_get_is_connected
+dbus_connection_get_max_message_size
+dbus_connection_get_max_message_unix_fds
+dbus_connection_get_max_received_size
+dbus_connection_get_max_received_unix_fds
+dbus_connection_get_object_path_data
+dbus_connection_get_outgoing_size
+dbus_connection_get_outgoing_unix_fds
+dbus_connection_get_server_id
+dbus_connection_get_socket
+dbus_connection_get_unix_fd
+dbus_connection_get_unix_process_id
+dbus_connection_get_unix_user
+dbus_connection_get_windows_user
+_dbus_connection_handle_watch
+dbus_connection_has_messages_to_send
+dbus_connection_list_registered
+dbus_connection_open
+dbus_connection_open_private
+dbus_connection_preallocate_send
+dbus_connection_read_write
+dbus_connection_read_write_dispatch
+dbus_connection_ref
+dbus_connection_register_fallback
+dbus_connection_register_object_path
+dbus_connection_remove_filter
+dbus_connection_return_message
+dbus_connection_send
+dbus_connection_send_preallocated
+dbus_connection_send_with_reply
+dbus_connection_send_with_reply_and_block
+dbus_connection_set_allow_anonymous
+dbus_connection_set_data
+dbus_connection_set_dispatch_status_function
+dbus_connection_set_exit_on_disconnect
+dbus_connection_set_max_message_size
+dbus_connection_set_max_message_unix_fds
+dbus_connection_set_max_received_size
+dbus_connection_set_max_received_unix_fds
+dbus_connection_set_route_peer_messages
+dbus_connection_set_timeout_functions
+dbus_connection_set_unix_user_function
+dbus_connection_set_wakeup_main_function
+dbus_connection_set_watch_functions
+dbus_connection_set_windows_user_function
+dbus_connection_steal_borrowed_message
+dbus_connection_try_register_fallback
+dbus_connection_try_register_object_path
+dbus_connection_unref
+dbus_connection_unregister_object_path
+DBUS_COOKIE_SHA1
+_dbus_current_generation
+dbus-daemon [--version] [--session] [--system] [--config-file=FILE] [--print-address[=DESCRIPTOR]] [--print-pid[=DESCRIPTOR]] [--fork] [--nofork] [--introspect] [--address=ADDRESS] [--activation=systemd|upstart]
+../../dbus/dbus-bus.c
+../../dbus/dbus-connection.c
+../../dbus/dbus-errors.c
+../../dbus/dbus-message.c
+../../dbus/dbus-pending-call.c
+../../dbus/dbus-server.c
+../../dbus/dbus-signature.c
+../../dbus/dbus-watch.c
+DBUS_DEBUG_OUTPUT
+dbus_error_free
+dbus_error_has_name
+dbus_error_init
+dbus_error_is_set
+DBUS_FATAL_WARNINGS
+DBUS_FATAL_WARNINGS should be set to 0 or 1 if set, not '%s'
+dbus_free
+_dbus_group_info_free_allocated
+.dbus-keyrings
+D-Bus library appears to be incorrectly set up; failed to read machine uuid: %s
+_dbus_lock_bus
+_dbus_lock_bus_datas
+_dbus_lock_connection_slots
+_dbus_lock_list
+_dbus_lock_machine_uuid
+_dbus_lock_message_cache
+_dbus_lock_message_slots
+_dbus_lock_pending_call_slots
+_dbus_lock_server_slots
+_dbus_lock_shared_connections
+_dbus_lock_shutdown_funcs
+_dbus_lock_sid_atom_cache
+_dbus_lock_system_users
+_dbus_lock_win_fds
+dbus_malloc
+dbus_message_append_args
+dbus_message_append_args_valist
+D-Bus Message Bus Daemon %s
+dbus message changed byte order since append iterator was created
+dbus message changed byte order since iterator was created
+dbus_message_copy
+dbus_message_demarshal
+dbus_message_free_data_slot
+dbus_message_get_args
+dbus_message_get_args_valist
+dbus_message_get_auto_start
+dbus_message_get_data
+dbus_message_get_destination
+dbus_message_get_error_name
+dbus_message_get_interface
+dbus_message_get_member
+dbus_message_get_no_reply
+dbus_message_get_path
+dbus_message_get_path_decomposed
+dbus_message_get_reply_serial
+dbus_message_get_sender
+dbus_message_get_serial
+dbus_message_get_signature
+dbus_message_get_type
+dbus_message_get_type (message) != DBUS_MESSAGE_TYPE_METHOD_CALL || dbus_message_get_member (message) != NULL
+dbus_message_get_type (message) != DBUS_MESSAGE_TYPE_SIGNAL || (dbus_message_get_interface (message) != NULL && dbus_message_get_member (message) != NULL)
+dbus_message_has_destination
+dbus_message_has_sender
+dbus_message_has_signature
+dbus_message_is_error
+dbus_message_is_method_call
+dbus_message_is_signal
+dbus_message_iter_abandon_container
+dbus_message_iter_append_basic
+_dbus_message_iter_append_check (real)
+_dbus_message_iter_append_check (real_sub)
+dbus_message_iter_append_fixed_array
+dbus message iterator invalid because the message has been modified (or perhaps the iterator is just uninitialized)
+dbus message iterator is NULL
+dbus message iterator looks uninitialized or corrupted
+_dbus_message_iter_check (real)
+dbus_message_iter_close_container
+_dbus_message_iter_get_args_valist
+dbus_message_iter_get_arg_type
+dbus_message_iter_get_arg_type (iter) == DBUS_TYPE_ARRAY
+dbus_message_iter_get_array_len
+dbus_message_iter_get_basic
+dbus_message_iter_get_element_type
+dbus_message_iter_get_fixed_array
+dbus_message_iter_get_signature
+dbus_message_iter_has_next
+dbus_message_iter_init
+dbus_message_iter_init_append
+dbus_message_iter_next
+dbus_message_iter_open_container
+dbus_message_iter_recurse
+dbus_message_marshal
+dbus_message_new
+dbus_message_new_error
+dbus_message_new_error_printf
+dbus_message_new_method_call
+dbus_message_new_method_return
+dbus_message_new_signal
+dbus_message_ref
+dbus_message_set_auto_start
+dbus_message_set_data
+dbus_message_set_destination
+dbus_message_set_error_name
+dbus_message_set_interface
+dbus_message_set_member
+dbus_message_set_no_reply
+dbus_message_set_path
+dbus_message_set_reply_serial
+dbus_message_set_sender
+dbus_message_set_serial
+dbus_message_unref
+dbus_move_error
+_dbus_no_memory_message
+/dbus_nonce-
+  D-Bus not built with -rdynamic so unable to print a backtrace
+dbus_pending_call_allocate_data_slot
+dbus_pending_call_block
+dbus_pending_call_cancel
+dbus_pending_call_free_data_slot
+dbus_pending_call_get_completed
+dbus_pending_call_get_data
+dbus_pending_call_ref
+dbus_pending_call_set_data
+dbus_pending_call_set_notify
+dbus_pending_call_steal_reply
+dbus_pending_call_unref
+_dbus_poll() error: %s
+dbus_realloc
+_dbus_return_if_fail_warning_format
+dbus_server_disconnect
+dbus_server_free_data_slot
+dbus_server_get_address
+dbus_server_get_data
+dbus_server_get_id
+dbus_server_get_is_connected
+dbus_server_listen
+dbus_server_ref
+dbus_server_set_auth_mechanisms
+dbus_server_set_data
+dbus_server_set_new_connection_function
+dbus_server_set_timeout_functions
+dbus_server_set_watch_functions
+dbus_server_unref
+D-BUS Service
+DBUS_SESSION_BUS_ADDRESS
+dbus_set_error
+dbus_set_error_const
+dbus_set_error_from_message
+dbus_shutdown() called but connections were still live. This probably means the application did not drop all its references to bus connections.
+dbus_signature_iter_get_current_type (iter) == DBUS_TYPE_ARRAY
+dbus_signature_iter_get_element_type
+dbus_signature_iter_recurse
+DBUS_STARTER_ADDRESS
+DBUS_STARTER_BUS_TYPE
+DBUS_SYSTEM_BUS_ADDRESS
+D-Bus threads were initialized after first using the D-Bus library. If your application does not directly initialize threads or use D-Bus, keep in mind that some library or plugin may have used D-Bus or initialized threads behind your back. You can often fix this problem by calling dbus_init_threads() or dbus_g_threads_init() early in your main() method, before D-Bus is used.
+_dbus_timeout_list_add_timeout
+_dbus_timeout_list_remove_timeout
+_dbus_timeout_list_toggle_timeout
+_dbus_timeout_unref
+dbus_type_is_basic
+dbus_type_is_basic (type)
+dbus_type_is_container
+dbus_type_is_container (dbus_signature_iter_get_current_type (iter))
+dbus_type_is_container (type)
+dbus_type_is_fixed
+dbus_type_is_fixed (element_type) && element_type != DBUS_TYPE_UNIX_FD
+_dbus_type_is_valid (typecode) || typecode == DBUS_TYPE_INVALID
+_dbus_user_info_free_allocated
+_dbus_validate_bus_name
+_dbus_validate_error_name
+_dbus_validate_interface
+_dbus_validate_member
+dbus_watch_get_data
+dbus_watch_get_enabled
+dbus_watch_get_fd
+dbus_watch_get_flags
+dbus_watch_get_socket
+dbus_watch_get_unix_fd
+dbus_watch_handle
+_dbus_watch_list_add_watch
+_dbus_watch_list_remove_watch
+_dbus_watch_list_toggle_watch
+dbus_watch_set_data
+_dbus_watch_unref
+D$(;Bxr:
+Desktop file size (%ld bytes) is too large
+Destination name '%s' is invalid
+destination == NULL || _dbus_check_is_valid_bus_name (destination)
+(dest) == NULL || !dbus_error_is_set ((dest))
+/dev/null
+/dev/urandom
+Dict entry ended but not started
+Dict entry has no fields
+Dict entry has only one field
+Dict entry has too many fields
+Dict entry not inside array
+Dict entry started but not ended
+dict_entry types
+Dict key must be basic type
+Did not get a reply message.
+Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+Disconnected
+Disconnected.
+!D$<;l$<
+D$l9D$t|S9T$ ~M
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+Don't have the requested cookie ID
+Dynamic session lookup supported but failed: %s
+Dynamic session lookup supported but failed silently
+eavesdrop
+Element <associate> must have attributes own="<servicename>" and context="<selinux context>"
+Element <%s> is not allowed in this context
+Element <%s> must have one or more attributes
+Element <%s> not allowed inside <%s> in configuration file
+Element <%s> was not closed in configuration file
+EmitEvent
+Empty address '%s'
+Empty key name
+Empty server challenge string
+Encountered error '%s' while parsing '%s'
+end_dict_entry
+end_struct
+__environ
+__errno_location
+Error at line %d: %s
+Error getting context from SID: %s
+Error getting SID from context "%s": %s
+Error in file %s, line %d, column %d: %s
+ error_name=
+error_name != NULL
+error_name == NULL || _dbus_check_is_valid_error_name (error_name)
+error != NULL
+(error) == NULL || !dbus_error_is_set ((error))
+Error reading or writing data
+Error reading "%s": %s
+ERROR "%s"
+<et6<rt2
+/etc/dbus-1/session.conf
+/etc/dbus-1/system.conf
+/etc/machine-id
+Exactly one complete type required in signature
+Exceeded maximum array recursion
+Exceeded maximum dict entry recursion
+Exceeded maximum struct recursion
+EXTERNAL
+Failed to acquire systemd socket: %s
+Failed to activate service %s: %s
+Failed to activate service '%s': timed out
+Failed to activate via systemd: service name='%s' unit='%s'
+Failed to add policy reload callback: %s
+Failed to allocate file handle array.
+Failed to allocate file handle array: %s
+Failed to bind socket "%s": %s
+Failed to bind socket "%s:%s": %s
+Failed to close file descriptor: %s
+Failed to close "%s": %s
+Failed to connect to socket %s: %s
+Failed to connect to socket "%s:%s" %s
+Failed to create a pipe to call %s: %s
+Failed to create directory %s: %s
+Failed to create pipe for communicating with child process (%s)
+Failed to delete file %s: %s
+Failed to delete lock file: %s
+Failed to drop supplementary groups: %s
+Failed to execute program %s: %s
+Failed to fdopen fd %d: %s
+Failed to fork a new process %s: %s
+Failed to fork daemon: %s
+Failed to fork (%s)
+Failed to fork() to call %s: %s
+Failed to get flags from file descriptor %d: %s
+Failed to get groups for username "%s" primary GID %lu: %s
+Failed to listen on socket "%s": %s
+Failed to listen on socket "%s:%s": %s
+Failed to lookup host/port: "%s:%s": %s (%d)
+Failed to open socket: %s
+Failed to open "%s": %s
+Failed to read an SELinux context from connection
+Failed to read arg from fd %d: %s
+Failed to read credentials byte: %s
+Failed to read credentials byte (zero-length read)
+Failed to read data from fd %d: %s
+Failed to read directory "%s": %s
+Failed to read from child pipe (%s)
+Failed to read from "%s": %s
+Failed to read PID from fd %d: %s
+Failed to remove directory %s: %s
+Failed to resolve port "%s:%s": %s (%s)
+Failed to send nonce (fd=%d): %s
+Failed to set GID to %lu: %s
+Failed to set nonblocking flag of file descriptor %d: %s
+Failed to set socket option"%s": %s
+Failed to set socket option "%s:%s": %s
+Failed to set UID to %lu: %s
+Failed to setup environment correctly
+Failed to start Access Vector Cache (AVC).
+Failed to start AVC thread: %s
+Failed to start message bus: %s
+Failed to stat "%s": %s
+Failed to verify systemd socket type: %s
+Failed to write credentials byte: %s
+Failed to write data to pipe!
+Failed to write to "%s": %s
+,family=
+Feature not supported
+File doesn't exist.
+File size %lu of "%s" is too large.
+__fprintf_chk
+freeaddrinfo
+function != NULL
+__fxstat
+gai_strerror
+getaddrinfo
+GetAdtAuditSessionData
+GetConnectionSELinuxSecurityContext
+GetConnectionUnixProcessID
+GetConnectionUnixUser
+getgrgid_r
+getgrnam_r
+getgrouplist
+GetMachineId
+getnameinfo
+GetNameOwner
+getpeercon
+getpwnam_r
+getpwuid_r
+getresgid
+getresuid
+getrlimit
+getsockname
+getsockopt
+gettimeofday
+Given bus name "%s" is not valid
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.10
+GLIBC_2.1.2
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.2.4
+GLIBC_2.3.2
+GLIBC_2.3.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+GLIBC_2.9
+__gmon_start__
+Group %s unknown or failed to look it up
+g	uyyyyuua(yv)
+Header field appears twice
+Header field code
+Header field has wrong type
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+if_selinux_enabled
+if_selinux_enabled attribute must have value "yes" or "no"
+ignore_missing
+ignore_missing attribute must have value "yes" or "no"
+inactive
+(inactive)
+includedir
+In D-Bus address, character '%c' should have been escaped
+In D-Bus address, percent character was followed by characters other than hex digits
+In D-Bus address, percent character was not followed by two hex digits
+inotify_add_watch
+inotify_init
+inotify_init1
+inotify_rm_watch
+Insane body length
+Insane fields array length
+insert_at = %d string len = %d data_len = %d
+  </interface>
+ interface=
+  <interface name="%s">
+Interface name '%s' is invalid
+interface != NULL
+interface == NULL || _dbus_check_is_valid_interface (interface)
+internal_bus_get
+--introspect
+Introspect
+Invalid arguments.
+Invalid arguments to command line
+Invalid characters in key name
+Invalid combination of attributes on element <%s>
+Invalid context in keyring creation
+Invalid file descriptor: "%s"
+Invalid hex encoding
+Invalid message type (%s) in match rule
+invalid request, socket fd %d not open
+Invalid syntax for section header
+invalid UTF-8
+_IO_stdin_used
+is_selinux_enabled
+It appears that username "%s" is in more than %d groups.
+iter != NULL
+_Jv_RegisterClasses
+keep_umask
+Key '%s' in match rule contains junk after argument number. Only 'path' is optionally valid ('arg0path' for example).
+Key '%s' in match rule has arg number %lu but the maximum is %d.
+Key '%s' in match rule starts with 'arg' but could not parse arg number. Should be 'arg0' or 'arg7' for example.
+Key '%s' in match rule starts with 'arg' but lacks an arg number. Should be 'arg0' or 'arg7' for example.
+Key %s specified twice in match rule
+l$(3l$<3l$X
+l$$3T$D3T$4
+L$<9L$4t
+Launched child was signaled, it probably crashed
+Launcher could not run (out of memory)
+Launch helper exited with unknown return code %i
+Length out of bounds
+len_p != NULL
+L$H3L$P1
+libc.so.6
+__libc_start_main
+libdbus 1.4.18
+libexpat.so.1
+/lib/ld-linux.so.2
+libpthread.so.0
+librt.so.1
+libselinux.so.1
+<limit> element must have a "name" attribute
+<limit name="%s"> element has invalid value (could not parse as integer)
+<limit name="%s"> must be a positive number
+ListActivatableNames
+LISTEN_FDS
+LISTEN_PID
+ListNames
+ListQueuedOwners
+localhost
+/.local/share
+__lxstat
+mandatory
+marshalled_data_p != NULL
+Match rule has a key with no subsequent '=' character
+Match rule text is %d bytes, maximum is %d
+max_completed_connections
+max_connections_per_user
+max_incoming_bytes
+max_incoming_unix_fds
+max_incomplete_connections
+max_match_rules_per_connection
+max_message_size
+max_message_unix_fds
+max_names_per_connection
+max_outgoing_bytes
+max_outgoing_unix_fds
+max_pending_service_starts
+max_replies_per_connection
+ member=
+Member name '%s' is invalid
+member == NULL || _dbus_check_is_valid_member (member)
+Memory allocation failure in message bus
+Message bus will not accept messages of unknown type
+message == connection->message_borrowed
+Message did not receive a reply (timeout by message bus)
+message->generation == _dbus_current_generation
+Message has only %d arguments, but more were expected
+Message has the same reply serial as a currently-outstanding existing method call
+!message->in_cache
+Message is corrupted (%s)
+!message->locked
+message != NULL
+Message refers to file descriptor at index %i,but has only %i descriptors attached.
+Message too long
+message_type != DBUS_MESSAGE_TYPE_INVALID
+    </method>
+method_call
+method_call != NULL
+    <method name="Introspect">
+    <method name="%s">
+method != NULL
+method_return
+Method "%s" with signature "%s" on interface "%s" doesn't exist
+Missing array element type
+Missing error name
+Missing interface
+Missing member
+Missing path
+Missing reply serial
+Most likely, the application called unref() too many times and removed a reference belonging to libdbus, since this is a shared connection.
+Most likely, the application was supposed to call dbus_connection_close(), since this is a private connection.
+msg != NULL
+msgtype=
+NameAcquired
+NameHasOwner
+NameLost
+NameOwnerChanged
+Name "%s" does not exist
+nanosleep
+NeedDisconnect
+NeedSendAuth
+Need to authenticate first
+NEGOTIATE_UNIX_FD
+n_elements >= 0
+n_elements <= DBUS_MAXIMUM_ARRAY_LENGTH / _dbus_type_get_alignment (element_type)
+Network unavailable
+No configuration file specified.
+  <node name="%s"/>
+--nofork
+No '=' in key/value pair
+No memory to read directory entry
+noncefile
+,noncefile=
+Nonces do not match, access denied (fd=%d)
+nonce-tcp
+nonce-tcp:
+nonce-tcp:host=
+No recent-enough key found in keyring, and unable to create a new key
+No server available at address
+No "%s" key in .service file
+No socket received.
+Not currently in an auth conversation
+Not enough data
+Not enough file descriptors to create pipe in babysitter process
+Not enough memory
+Not enough memory available
+No text content expected inside XML element %s in configuration file
+NOTIFY_SOCKET
+No tokens found in command line
+object_path
+Object path already in use
+object_path == NULL || _dbus_check_is_valid_path (object_path)
+old_refcount > 0
+On element <%s>, if you specify a member you must specify an interface or a path. Keep in mind that not all messages have an interface field.
+/org/freedesktop/DBus
+org.freedesktop.DBus
+org.freedesktop.DBus.DesktopParseError.InvalidChars
+org.freedesktop.DBus.DesktopParseError.InvalidEscapes
+org.freedesktop.DBus.DesktopParseError.InvalidSyntax
+org.freedesktop.DBus.Error.AccessDenied
+org.freedesktop.DBus.Error.AddressInUse
+org.freedesktop.DBus.Error.AdtAuditDataUnknown
+org.freedesktop.DBus.Error.AuthFailed
+org.freedesktop.DBus.Error.BadAddress
+org.freedesktop.DBus.Error.Disconnected
+org.freedesktop.DBus.Error.Failed
+org.freedesktop.DBus.Error.FileExists
+org.freedesktop.DBus.Error.FileNotFound
+org.freedesktop.DBus.Error.InconsistentMessage
+org.freedesktop.DBus.Error.InvalidArgs
+org.freedesktop.DBus.Error.InvalidFileContent
+org.freedesktop.DBus.Error.InvalidSignature
+org.freedesktop.DBus.Error.IOError
+org.freedesktop.DBus.Error.LimitsExceeded
+org.freedesktop.DBus.Error.MatchRuleInvalid
+org.freedesktop.DBus.Error.MatchRuleNotFound
+org.freedesktop.DBus.Error.NameHasNoOwner
+org.freedesktop.DBus.Error.NoMemory
+org.freedesktop.DBus.Error.NoNetwork
+org.freedesktop.DBus.Error.NoReply
+org.freedesktop.DBus.Error.NoServer
+org.freedesktop.DBus.Error.NotSupported
+org.freedesktop.DBus.Error.ObjectPathInUse
+org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown
+org.freedesktop.DBus.Error.ServiceUnknown
+org.freedesktop.DBus.Error.Spawn.ChildExited
+org.freedesktop.DBus.Error.Spawn.ChildSignaled
+org.freedesktop.DBus.Error.Spawn.ExecFailed
+org.freedesktop.DBus.Error.Spawn.Failed
+org.freedesktop.DBus.Error.Spawn.FailedToSetup
+org.freedesktop.DBus.Error.Spawn.FileInvalid
+org.freedesktop.DBus.Error.Spawn.ForkFailed
+org.freedesktop.DBus.Error.Spawn.PermissionsInvalid
+org.freedesktop.DBus.Error.Spawn.ServiceNotFound
+org.freedesktop.DBus.Error.Spawn.ServiceNotValid
+org.freedesktop.DBus.Error.TimedOut
+org.freedesktop.DBus.Error.Timeout
+org.freedesktop.DBus.Error.UnixProcessIdUnknown
+org.freedesktop.DBus.Error.UnknownMethod
+org.freedesktop.DBus.Introspectable
+/org/freedesktop/DBus/Local
+org.freedesktop.DBus.Local
+org.freedesktop.DBus.Peer
+org_freedesktop_general
+org.freedesktop.systemd1
+org.freedesktop.systemd1.Activator
+Out of memory
+|$P3|$$1
+parent_path[0] == '/'
+parent_path != NULL
+Passed socket has wrong type.
+path or abstract
+path or tmpdir or abstract
+Path '%s' is invalid
+pending->completed
+pending != NULL
+pending->reply != NULL
+Permission denied
+pid=%ld comm="
+pid != NULL
+<policy> element must have exactly one of (context|user|group|at_console) attributes
+preallocated->connection == connection
+preallocated != NULL
+--print-address
+--print-address=
+__printf_chk
+Printing message bus address: did not write all bytes
+Printing message bus PID: did not write enough bytes
+--print-pid
+--print-pid=
+Proceeding with just the first %d groups.
+process %lu: 
+  Process %lu sleeping for gdb attach
+Process %s exited abnormally
+Process %s exited, reason unknown
+Process %s exited with status %d
+Process %s received signal %d
+/proc/%ld/cmdline
+pthread_cancel
+pthread_condattr_destroy
+pthread_condattr_init
+pthread_condattr_setclock
+pthread_cond_broadcast
+pthread_cond_destroy
+pthread_cond_init
+pthread_cond_signal
+pthread_cond_timedwait
+pthread_cond_wait
+pthread_create
+pthread_mutex_destroy
+pthread_mutex_init
+pthread_mutex_lock
+pthread_mutex_unlock
+pthread_self
+real->iter_type == DBUS_MESSAGE_ITER_TYPE_READER
+real->iter_type == DBUS_MESSAGE_ITER_TYPE_WRITER
+real_sub->iter_type == DBUS_MESSAGE_ITER_TYPE_WRITER
+real->u.writer.container_type == DBUS_TYPE_ARRAY
+receive_error
+receive_interface
+receive_member
+receive_path
+receive_requested_reply
+receive_sender
+receive_type
+Re-entrant call to %s
+REJECTED
+Rejected: destination has a full message queue
+Rejected receive message
+Rejected send message
+ReleaseName
+ReloadConfig
+Reloaded configuration
+RemoveMatch
+reply_serial != 0
+reply_timeout
+reply_to != NULL
+Requested bus name "%s" is not valid
+RequestName
+Resource limits exceeded
+returning %d but error pointer %p name %s
+<rtf<et]<atq
+rule != NULL
+%s directory is not private to the user
+%s, %d matched rules; type="%s", sender="%s" (%s) interface="%s" member="%s" error name="%s" requested_reply="%d" destination="%s" (%s)
+%s does not understand message %s
+Secret keyring file contains non-ASCII! Ignoring existing contents
+See the manual page for dbus-uuidgen to correct this issue.
+SELinux enabled but AVC initialization failed; check system log
+selinux_policy_root
+SELinux pre-initialization failed
+selinux_root_relative
+selinux_root_relative attribute must have value "yes" or "no"
+send_destination
+Sender name '%s' is invalid
+sender == NULL || _dbus_check_is_valid_bus_name (sender)
+send_error
+send_interface
+send_member
+send_path
+send_requested_reply
+send_type
+Sent AUTH while another AUTH in progress
+Sent AUTH while expecting BEGIN
+Sent DATA while expecting BEGIN
+Server address of type %s was missing argument %s
+Server did not send context/ID/challenge properly
+server != NULL
+Server sent invalid cookie context
+.service
+service=
+servicedir
+servicehelper
+SERVICE=%s
+Service %s already exists in activation entry list
+service_start_timeout
+--session
+[session 
+setgroups
+setrlimit
+setsockopt
+sid="%s" 
+sigaction
+sigaddset
+sigemptyset
+    </signal>
+    <signal name="NameAcquired">
+    <signal name="NameLost">
+    <signal name="NameOwnerChanged">
+signal_name != NULL
+signature
+Signature is too long
+Signature length out of bounds
+Signature missing nul
+signature != NULL
+sigprocmask
+"%s" is not a regular file
+slot >= 0
+*slot_p >= 0
+slot_p != NULL
+__snprintf_chk
+Socket name too long
+socketpair
+%spid=%lu
+<%s> rule cannot be per-group because it has bus-global semantics
+<%s> rule cannot be per-user because it has bus-global semantics
+%ssid=%s
+--%s specified but address %s already requested
+--%s specified but configuration file %s already requested
+--%s specified but printing address to %s already requested
+--%s specified but printing pid to %s already requested
+__stack_chk_fail
+standard_session_servicedirs
+standard_system_servicedirs
+StartServiceByName
+%s terminated abnormally without any error message
+%s terminated abnormally with the following error: %s
+String missing nul
+__strncpy_chk
+str != NULL
+Struct ended but not started
+Struct has no fields
+Struct started but not ended
+struct types
+sub != NULL
+(subtype == DBUS_TYPE_INVALID) || (dbus_type_is_fixed (subtype) && subtype != DBUS_TYPE_UNIX_FD)
+Successfully activated service '%s'
+/sys/fs/cgroup
+/sys/fs/cgroup/systemd
+--system
+[system] 
+systemd:
+--systemd-activation
+SystemdService
+T$03T$L1
+T$,3T$H3T$8
+@t-9P,~(
+T$ 9T$,t
+<{t*<at&<(t"
+t$D3t$@1
+Text content outside of any XML element in configuration file
+Text to be unescaped contains embedded nul
+Text to be unescaped ended in \
+Text to be unescaped had invalid escape sequence
+The given match rule wasn't found and can't be removed
+The last reference on a connection was dropped without closing the connection. This is a bug in an application. See dbus_connection_unref() documentation for details.
+The maximum number of active connections for UID %lu has been reached
+The maximum number of active connections has been reached
+The maximum number of pending activations has been reached, activation of %s failed
+The maximum number of pending replies per connection has been reached
+The name %s was not provided by any .service files
+The new service name "%s" of service file "%s" is already in cache, ignoring
+The overall signature expected here was '%s' and we are on byte %d of that signature.
+The permission of the setuid helper is not correct
+The pid file "%s" exists, if the message bus is not running, remove this file
+There is no limit called "%s"
+There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+The service file is incorrect or does not have all required attributes
+This is free software; see the source for copying conditions.
+This is normally a bug in some application using the D-Bus library.
+timeout_milliseconds >= 0 || timeout_milliseconds == -1
+Too much data
+Tried to handle an invalidated watch; this watch should have been removed
+Tried to send message with Unix file descriptorsto a client that doesn't support that.
+t`</t\<\tX<*
+T$$;T$(u
+type >= 0 && type < N_BUS_TYPES
+(type == DBUS_TYPE_ARRAY && contained_signature && *contained_signature == DBUS_DICT_ENTRY_BEGIN_CHAR) || (contained_signature == NULL || _dbus_check_is_valid_signature (contained_signature))
+(type == DBUS_TYPE_STRUCT && contained_signature == NULL) || (type == DBUS_TYPE_DICT_ENTRY && contained_signature == NULL) || (type == DBUS_TYPE_VARIANT && contained_signature != NULL) || (type == DBUS_TYPE_ARRAY && contained_signature != NULL)
+type %s %d not a basic type
+type %s isn't supported yet in %s
+type %s not a basic type
+u.9~LtQ9~P
+uid != NULL
+Unable to add reload watch to main loop
+Unable to add reload watch to main loop: %s
+Unable to autolaunch a dbus-daemon without a $DISPLAY for X11
+Unable to autolaunch when setuid
+Unable to create DBus keyring when setuid
+Unable to create inotify watch
+Unable to create reload pipe: %s
+Unable to create reload watch: %s
+Unable to determine the address of the message bus (try 'man dbus-launch' and 'man dbus-daemon' for help)
+Unable to register shutdown func
+Unable to reload configuration: %s
+Unable to write termination signal to pipe - buffer full?
+Unable to write to reload pipe - buffer full?
+Unbalanced quotation marks in match rule
+Unclosed quotes in command line
+Unexpected error %d in waitpid() for babysitter: %s
+unexpected waitpid() failure in check_babysit_events(): %s
+unique_name != NULL
+unix:abstract=
+Unix FD passing not supported, not authenticated or otherwise not possible
+unix:path=
+unix:path=/var/run/dbus/system_bus_socket
+Unknown activation type: %s.
+Unknown address family %s
+Unknown address type (examples of valid types are "tcp" and on UNIX "unix")
+Unknown address type '%s'
+Unknown command
+Unknown element <%s> at root of configuration file
+Unknown error
+Unknown group "%s" in message bus configuration file
+Unknown group "%s" on element <%s>
+Unknown key "%s" in match rule
+Unknown message received from babysitter process
+Unknown method invoked on org.freedesktop.DBus.Peer interface
+Unknown reason
+Unknown typecode
+Unknown username "%s" in message bus configuration file
+Unknown username "%s" on element <%s>
+Unknown value "%s" for at_console in message bus configuration file
+unsetenv
+UpdateActivationEnvironment
+UpstartJob
+User '%s' does not appear to exist?
+User "%s" unknown or no memory to allocate password entry
+Uses local interface
+Uses local path
+/usr/local/share:/usr/share:
+/usr/share
+/usr/share:/lib:
+UUID file '%s' contains %d bytes of hex-encoded data instead of %d
+UUID file '%s' contains invalid hex data
+UUID file '%s' should contain a hex string of length %d, not length %d, with no other text
+Valid but incomplete
+Validity unknown
+value != NULL
+Variants cannot be used to create a hugely recursive tree of values
+Variant signature bad
+Variant signature empty
+Variant signature length out of bounds
+Variant signature missing nul
+Variant signature specifies multiple values
+/var/lib/dbus/machine-id
+/var/run/console/
+__vasprintf_chk
+--version
+__vfprintf_chk
+__vsnprintf_chk
+__vsprintf_chk
+__vsyslog_chk
+vtable != NULL
+WaitingForAgreeUnixFD
+WaitingForAuth
+WaitingForBegin
+WaitingForData
+WaitingForReject
+waitpid() reaped pid %d that we've never heard of
+Watch is invalid, it should have been removed
+watch != NULL
+watch %p was invalidated but not removed; removing it now
+Will exit instead.
+windows_sid_p != NULL
+Would reject message
+Writing an array of '%s' but this is incompatible with the expected type of elements in the parent array
+Writing an element of type %s, but no value is expected here
+Writing an element of type %s, but the expected type here is %s
+Writing to pipe: %s
+wrote zero bytes writing credentials byte
+XDG_DATA_DIRS
+XDG_DATA_HOME
+XML element <%s> ended but topmost element on the stack was <%s>
+XML element <%s> was expected to have content inside it
+XML_ErrorString
+XML_GetCurrentColumnNumber
+XML_GetCurrentLineNumber
+XML_GetErrorCode
+XML_Parse
+XML_ParserCreate_MM
+XML parser ended element with no element on the stack
+XML_ParserFree
+XML_SetCharacterDataHandler
+XML_SetElementHandler
+XML_SetUserData
+you can only read arrays and basic types with %s for now
+you can't read arrays of container types (struct, variant, array) with %s for now
+You can't recurse into an empty array or off the end of a message body
+zDError in section %s at line %d: %s

@@ -1,0 +1,50 @@
+__assert_fail
+both the %s copyright and
+__bss_start
+/build/buildd/texlive-bin-2009/inst/lib
+ characters in all.)
+Copyright 2009 %s.
+covered by the terms of 
+D.E. Knuth
+  Display the string number of each string in POOLFILE.
+Email bug reports to %s.
+extend_filename
+For more information about these matters, see the file
+__fprintf_chk
+getopt_long_only
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+-help       display this help and exit
+! I can't read the POOL file.
+_IO_getc
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+kpathsea_version_string
+kpse_set_progname
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+named COPYING and the %s source.
+! POOL file contained no check sum
+! POOL line doesn't begin with two digits
+pooltype
+pooltype: Need exactly one file argument.
+Primary author of %s: %s.
+__printf_chk
+printversionandexit
+prog_name_end && prog_version
+%s: Oops; not enough arguments.
+tex-k@mail.tug.org
+../../../../texk/web2c/lib/printversion.c
+ (TeX Live 2009/Debian)
+! That POOL line was too short
+the Lesser GNU General Public License.
+There is NO warranty.  Redistribution of this software is
+! There's junk after the check sum
+This is POOLtype, Version 3.0
+Try `%s --help' for more information.
+Usage: pooltype [OPTION]... POOLFILE[.pool]
+-version    output version information and exit

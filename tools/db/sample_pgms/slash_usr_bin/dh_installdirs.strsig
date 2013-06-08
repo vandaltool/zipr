@@ -1,0 +1,47 @@
+acted on, not just the first.
+B<dh_installdirs> is a debhelper program that is responsible for creating
+B<dh_installdirs> [S<I<debhelper options>>] [B<-A>] [S<I<dir> ...>]
+		# be in the right directory, but more importantly, it 
+Create any directories specified by command line parameters in ALL packages
+		# Create dirs.
+Create these directories in the package build directory of the first
+dh_installdirs - create subdirectories in package build directories
+			  } @dirs;
+		@dirs=filearray($file)
+		@dirs=map {
+		doit("install","-d",@dirs);
+		doit("install","-d",$tmp);
+foreach my $package (@{$dh{DOPACKAGES}}) {
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	if (@dirs) {
+	if (! -e $tmp) {
+	if ($file) {
+	if (($package eq $dh{FIRSTPACKAGE} || $dh{PARAMS_ALL}) && @ARGV) {
+=item B<-A>, B<--all>
+=item debian/I<package>.dirs
+=item I<dir> ...
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+Lists directories to be created in I<package>.
+	my @dirs;
+	my $file=pkgfile($package,"dirs");
+	my $tmp=tmpdir($package);
+package acted on. (Or in all packages if B<-A> is specified.)
+		# protects against the danger of absolute dirs being
+		push @dirs, @ARGV;
+		# specified.
+		# Stick the $tmp onto the front of all the dirs.
+subdirectories in package build directories.
+		# This is necessary, for 2 reasons, one to make them 
+This program is a part of debhelper.
+				$_="$tmp/$_";
+				tr:/:/:s; # just beautification.
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w

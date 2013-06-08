@@ -1,0 +1,109 @@
+<%12.06f>] 
+[%5d.%06d 
+%-6s:%-6s: 
+ %7s - %s
+9T$4wwso
+%a %b %e %H:%M:%S %Y
+action must be taken immediately
+authpriv
+bindtextdomain
+buffer-size
+cannot allocate %zu bytes
+CcDdEf:hkl:n:rs:TtuVx
+ -C, --clear                 clear the kernel ring buffer
+clear, read-clear, console-level, console-on, and console-off options are mutually exclusive
+clock daemon
+console-level
+console-off
+console-on
+ -c, --read-clear            read and clear all messages
+critical conditions
+__ctype_b_loc
+dcgettext
+ -D, --console-off           disable printing messages to console
+debug-level messages
+ -d, --show-delta            show time delta between printed messages
+%d%s%jd%s
+ -E, --console-on            enable printing messages to console
+__errno_location
+error conditions
+facility
+failed to parse buffer size
+failed to parse facility '%s'
+failed to parse level '%s'
+ -f, --facility <list>       restrict output to defined facilities
+__fprintf_chk
+ftp daemon
+getopt_long
+gettimeofday
+gettimeofday failed
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ -h, --help                  display this help and exit
+                             inaccurate if you have used SUSPEND/RESUME)
+informational
+_IO_putc
+_IO_stdin_used
+iswprint
+kernel messages
+ -k, --kernel                display kernel messages
+klogctl failed
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+line printer subsystem
+ -l, --level <list>          restrict output to defined levels
+localeconv
+localtime
+mail system
+messages generated internally by syslogd
+ -n, --console-level <level> set level of messages printed to console
+network news subsystem
+normal but significant condition
+--notime can't be used together with ctime 
+Options:
+__printf_chk
+__progname
+program_invocation_short_name
+random user-level messages
+--raw can't be used together with level, facility, decode, delta, ctime or notime options
+read-clear
+ -r, --raw                   print the raw message buffer
+ -s, --buffer-size <size>    buffer size to query the kernel ring buffer
+security/authorization messages
+security/authorization messages (private)
+setlocale
+%s from %s
+show-delta
+__snprintf_chk
+ %s [options]
+%s: '%s'
+__stack_chk_fail
+__strdup
+strftime
+strncasecmp
+__strtoull_internal
+Supported log facilities:
+Supported log levels (priorities):
+sysinfo failed
+system daemons
+system is unusable
+ -T, --ctime                 show human readable timestamp (could be 
+ -t, --notime                don't print messages timestamp
+unknown facility '%s'
+unknown level '%s'
+unsupported command
+userspace
+/usr/share/locale
+util-linux
+util-linux 2.20.1
+UUCP subsystem
+ -u, --userspace             display userspace messages
+ -V, --version               output version information and exit
+warning conditions
+write failed
+ -x, --decode                decode facility and level to readable string

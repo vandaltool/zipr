@@ -1,0 +1,586 @@
+%2.2X-%2.2X-%2.2X
+:%2.2X:%2.2X:%2.2X:%2.2X:%2.2X:%2.2X
+3DiJoy Corporation
+3DSP Corporation
+<3-slot EDR ACL>
+<3-slot EDR eSCO>
+<3-slot packets>
+<5-slot EDR ACL>
+<5-slot packets>
+<6ti<7ty<5t%
+%.8x-%.4x-%.4x-%.4x-%.8x%.4x
+9Solutions Oy
+Accel Semiconductor Ltd.
+Accept Connection Request
+Accept failed: %s (%d)
+Accept Logical Link
+Accept Physical Link
+Accept Synchronous Connection
+Add SCO Connection
+A&D Engineering, Inc.
+Advanced Audio
+<AFH cap. master>
+<AFH cap. slave>
+<AFH class. master>
+<AFH class. slave>
+<A-law log>
+AMP Test Command
+AMP Test End
+Apple Agent
+Apple, Inc.
+APT Ltd.
+	[-A] request authentication
+Atheros Communications, Inc.
+Atmel Corporation
+Audio Sink
+Audio Source
+Audio/Video
+Authentication Requested
+Avago Technologies
+AVM Berlin
+AV Remote
+AV Remote Target
+BandSpeed, Inc.
+Band XI International, LLC
+Basic Printing
+	[-b bytes] [-i device] [-P channel] [-U uuid]
+Beautiful Enterprise Co., Ltd.
+Belkin International, Inc.
+	[-B filename] use data packets from file
+Bluegiga
+Bluetooth SIG, Inc
+<BR/EDR not supp.>
+BriarTek, Inc.
+<broadcast encrypt>
+Broadcom Corporation
+Browse Group Descriptor
+__bss_start
+Cambridge Silicon Radio
+Cancel Create Connection
+Cancel Remote Name Request
+Can not listen on the socket: %s (%d)
+Can't allocate data buffer
+Can't bind socket: %s (%d)
+Can't connect: %s (%d)
+Can't create socket: %s (%d)
+Can't enable deferred setup : %s (%d)
+Can't enable SO_LINGER: %s (%d)
+Can't get channel number
+Can't get RFCOMM connection information: %s (%d)
+Can't get socket name: %s (%d)
+Can't get socket priority: %s (%d)
+Can't set RFCOMM link mode: %s (%d)
+Can't set socket priority: %s (%d)
+	-c connect, disconnect, connect, ...
+Change Connection Link Key
+Change Connection Packet Type
+<channel quality>
+Close failed: %m
+closelog
+Closing channel ...
+	[-C num] send num frames before delay (default = 1)
+Commil Ltd
+Common ISDN Access
+Computer Access Technology Corporation (CATC)
+Conexant Systems Inc.
+connectBlue AB
+Connected [handle %d, class 0x%02x%02x%02x, priority %d]
+Connect from %s [handle %d, class 0x%02x%02x%02x, priority %d]
+Continental Automotive Systems
+CONWISE Technology Corporation Ltd
+copy_cstate
+Cordless Telephony
+Create Logical Link
+Create New Unit Key
+Create Physical Link
+C Technologies
+__ctype_b_loc
+__cxa_finalize
+D$,9D$8s=
+D$,9D$Ds=
+Delete Stored Link Key
+Dialup Networking
+Digianswer A/S
+Direct Printing
+Direct Printing Ref. Objects
+Disconnect
+Disconnect Logical Link
+Disconnect: %m
+Disconnect Physical Link
+	-d listen and dump incoming data
+	[-D milliseconds] delay after sending num frames (default = 0)
+Eclipse (HQ Espana) S.L.
+<EDR ACL 2 Mbps>
+<EDR ACL 3 Mbps>
+<EDR eSCO 2 Mbps>
+<EDR eSCO 3 Mbps>
+EM Microelectronic-Marin SA
+Enable AMP Receiver Reports
+Enable Device Under Test Mode
+<encapsulated PDU>
+<encryption>
+Enhanced Flush
+<enhanced iscan>
+	[-E] request encryption
+Ericsson Technology Licensing
+<err. data report>
+__errno_location
+<EV4 packets>
+<EV5 packets>
+Exit Park State
+Exit Periodic Inquiry Mode
+Exit Sniff Mode
+<extended features>
+<extended inquiry>
+<extended SCO>
+extract_int
+extract_record_handle_seq
+extract_seq
+extract_str
+__fdelt_chk
+|$<f	l$.
+Flow Specification
+Flow Specification Modify
+Free2move AB
+GCT Semiconductor
+General Motors
+Generic Attribute
+Generic Audio
+Generic File Transfer
+Generic Networking
+Generic Telephony
+Gennum Corporation
+Get Link Quality
+getsockname
+getsockopt
+gettimeofday
+Gibson Guitars
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.15
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GN Netcom A/S
+G]o&&G&_&&GGG&_&_
+Group Sense Ltd.
+Handsfree
+Handsfree Audio Gateway
+Hardcopy Cable Replacement
+Harman International Industries, Inc.
+HCRP-Ctrl
+HCRP-Data
+HCRP-Notify
+HCR Print
+HCR Scan
+HDP Sink
+HDP Source
+Headset Audio Gateway
+Hewlett-Packard Company
+Hitachi Ltd
+<hold mode>
+Hold Mode
+Host Buffer Size
+Host Number Of Completed Packets
+Human Interface Device
+<HV2 packets>
+<HV3 packets>
+IBM Corp.
+Imaging Automatic Archive
+Imaging Referenced Objects
+Imaging Responder
+Infineon Technologies AG
+Inquiry Cancel
+<inquiry TX power>
+<inquiry with RSSI>
+Integrated Silicon Solution Taiwain, Inc.
+Integrated System Solution Corp.
+Intel Corp.
+Intercom
+<interlaced iscan>
+<interlaced pscan>
+internal use
+Inventel
+IO Capability Request Negative Reply
+IO Capability Request Reply
+_IO_stdin_used
+IPextreme, Inc.
+IrMC Sync
+IrMC Sync Command
+J&M Corporation
+_Jv_RegisterClasses
+KC Technology Inc.
+LAN Access Using PPP
+[%ld.%ld] 
+LE Add Device To White List
+<LE and BR/EDR>
+LE Clear White List
+LE Connection Update
+LE Create Connection
+LE Create Connection Cancel
+LE Encrypt
+LE Long Term Key Request Negative Reply
+LE Long Term Key Request Reply
+LE Read Advertising Channel TX Power
+LE Read Buffer Size
+LE Read Channel Map
+LE Read Local Supported Features
+LE Read Remote Used Features
+LE Read Supported States
+LE Read White List Size
+LE Receiver Test
+LE Remove Device From White List
+LE Set Advertise Enable
+LE Set Advertising Data
+LE Set Advertising Parameters
+LE Set Event Mask
+LE Set Host Channel Classification
+LE Set Random Address
+LE Set Scan Enable
+LE Set Scan Parameters
+LE Set Scan Response Data
+LE Start Encryption
+<LE support>
+LE Test End
+LE Transmitter Test
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Link Key Request Negative Reply
+Link Key Request Reply
+Logical Link Cancel
+	[-L seconds] enabled SO_LINGER option
+Macronix International Co. Ltd.
+Mansella Ltd
+Marvell Technology Group Ltd.
+Master Link Key
+Matsushita Electric Industrial Co., Ltd.
+	[-M] become master
+MCAP-Ctrl
+MCAP-Data
+MediaTek, Inc.
+__memcpy_chk
+MewTel Technology Inc.
+MiCommand Inc.
+Microsoft
+MindTree Ltd.
+Mitel Semiconductor
+Mitsubishi Electric Corporation
+	-m multiple connects
+Mobilian Corporation
+Monster, LLC
+Motorola
+	-n connect and be silent
+NEC Corporation
+Network Access Point
+Newlogic
+	[-N num] number of frames to send
+<no. 24>
+<no. 34>
+<no. 50>
+<no. 55>
+<no. 59>
+<no. 60>
+<no. 61>
+<no. 62>
+Nokia Mobile Phones
+<non-flush flag>
+Nordic Semiconductor ASA
+Norwood Systems
+not assigned
+OBEX File Transfer
+OBEX Object Push
+Open failed: %s (%d)
+Open Interface
+Options:
+<paging scheme>
+PAN Group Network
+PAN User
+<park state>
+PARROT SA
+Parthus Technologies Inc.
+<pause encryption>
+Philips Semiconductors
+Phonebook Access
+Phonebook Access - PCE
+Phonebook Access - PSE
+PIN Code Request Negative Reply
+PIN Code Request Reply
+Plantronics, Inc.
+PnP Information
+Polar Electro OY
+<power control>
+__printf_chk
+Printing Status
+Public Browse Group
+QoS Setup
+Qualcomm
+Ralink Technology Corporation
+	rctest <mode> [options] [bdaddr]
+rctest - RFCOMM testing
+RDA Microelectronics
+rdscuwmnb:i:P:U:B:N:MAESL:W:C:D:Y:T
+Read AFH Channel Assessment Mode
+Read AFH Channel Map
+Read Authentication Enable
+Read Automatic Flush Timeout
+Read BD ADDR
+Read BD Clock
+Read Best Effort Flush Timeout
+Read Class Of Device
+Read Clock Offset
+Read Connection Accept Timeout
+Read Country Code
+Read Current IAC LAP
+Read Data Block Size
+Read Default Erroneous Data Reporting
+Read Default Link Policy Settings
+Read Encryption Key Size
+Read Encryption Mode
+Read Enhanced Transmit Power Level
+Read Extended Inquiry Response
+Read Failed Contact Counter
+Read failed: %s (%d)
+Read Flow Control Mode
+Read Hold Mode Activity
+Read Inquiry Mode
+Read Inquiry Response Transmit Power Level
+Read Inquiry Scan Activity
+Read Inquiry Scan Type
+Read LE Host Support
+Read Link Policy Settings
+Read Link Supervision Timeout
+Read LMP Handle
+Read Local AMP_ASSOC
+Read Local AMP Info
+Read Local Extended Features
+Read Local Name
+Read Local OOB Data
+Read Local Supported Commands
+Read Local Supported Features
+Read Local Version Information
+Read Location Data
+Read Logical Link Accept Timeout
+Read Loopback Mode
+Read Number of Supported IAC
+Read Num Broadcast Retransmissions
+Read Page Scan Activity
+Read Page Scan Mode
+Read Page Scan Period Mode
+Read Page Scan Type
+Read Page Timeout
+Read PIN Type
+Read Remote Extended Features
+Read Remote Supported Features
+Read Remote Version Information
+Read RSSI
+Read Scan Enable
+Read Simple Pairing Mode
+Read Stored Link Key
+Read Synchronous Flow Control Enable
+Read Transmit Power Level
+Read Voice Setting
+Realtek Semiconductor Corporation
+Receiving ...
+Recevied %d bytes
+Red-M (Communications) Ltd
+Reference Printing
+Reflected UI
+Refresh Encryption Key
+Reject Connection Request
+Reject Synchronous Connection
+RELIABLE
+Remote OOB Data Request Negative Reply
+Remote OOB Data Request Reply
+Renesas Technology Corp.
+Research In Motion
+Reserved
+Reset Failed Contact Counter
+R F Micro Devices
+RivieraWaves S.A.S
+	-r listen and receive
+Rohde & Schwartz GmbH & Co. KG
+Role Discovery
+<role switch>
+RTX Telecom A/S
+%s: Client timed out
+<SCO link>
+	-s connect and send
+%s: Continuation state size exceeds internal buffer
+sdp_attrid_comp_func
+sdp_data_alloc_with_length
+sdp_data_free
+sdp_device_record_register_binary
+sdp_device_record_unregister_binary
+sdp_device_record_update
+sdp_extract_attr
+sdp_extract_pdu
+sdp_extract_seqtype
+sdp_general_inquiry
+sdp_get_error
+sdp_process
+sdp_read_rsp
+sdp_send_req_w4_rsp
+SDP Server
+sdp_service_attr_async
+sdp_service_attr_req
+sdp_service_search_async
+sdp_service_search_attr_async
+sdp_service_search_attr_req
+sdp_service_search_req
+sdp_uuid128_cmp
+sdp_uuid_extract
+Seiko Epson Corporation
+Send failed: %s (%d)
+Sending ...
+Send Keypress Notification
+Serial Port
+%s: Error sendind data:%s
+%s: Error sendind data:%s(%d)
+%s: Error sending data:%s
+Service Description: %.*s
+Service Name: %.*s
+Service Provider: %.*s
+Set AFH Channel Classification
+Set Connection Encryption
+Set Event Filter
+Set Event Mask Page 2
+Set Host Controller To Host Flow Control
+setsockopt
+Setup Synchronous Connection
+ShangHai Super Smart Electronics Co. Ltd.
+Short Range Mode
+shutdown
+sigaction
+Signia Technologies, Inc.
+Silicon Wave
+%s: Illegal PDU ID: 0x%x
+SIM Access
+<simple pairing>
+%s: Inquiry failed:%s
+%s: Invalid session
+SiRF Technology, Inc.
+%s%ld bytes in %.2f sec, %.2f kB/s
+<slot offset>
+<sniff mode>
+<sniff subrating>
+Sniff Subrating
+%s: Not enough memory for incoming string
+%s: Not enough room for 128-bit UUID
+%s: Not enough room for 16-bit UUID
+%s: Not enough room for 32-bit UUID
+snprintf
+__snprintf_chk
+Socket Communications
+Sony Ericsson Mobile Communications
+Sound ID
+%s: Packet not big enough to hold sequence.
+__sprintf_chk
+%s: Protocol error.
+%s: Protocol error: wrong current service record count value.
+%s: Protocol error: wrong PDU size.
+%s: Read response:%s (%d)
+%s: Response buffer alloc failure:%s (%d)
+	[-S] secure connection
+%s: Sizeof text string > UINT16_MAX
+%s: Strings of size > USHRT_MAX not supported
+%s: String too long to fit in packet
+%s: SVC REC is null
+Staccato Communications, Inc.
+__stack_chk_fail
+ST Microelectronics
+Stonestreet One, LLC
+strcasecmp
+__strdup
+strerror
+strncasecmp
+Summit Data Communications, Inc.
+%s: Unexpected end of packet
+%s: Unexpected end of packet: continuation state data missing
+%s: Unknown data descriptor : 0x%x terminating
+%s: Unknown data type : %d expecting a svc UUID
+%s: Unknown sequence type, aborting
+Switch Role
+Symbol Technologies, Inc.
+Synopsys
+__syslog_chk
+Systems and Chips, Inc
+T$`+D$T+T$X
+	[-T] enable timestamps
+Texas Instruments Inc.
+T$.f9T$l
+T$.f9T$m
+<timing accuracy>
+Toshiba Corp.
+Transilica, Inc.
+<transparent SCO>
+TTPCom Limited
+Type of UUID (%x) unknown.
+Tzero Technologies, Inc.
+	-u connect and receive
+<u-law log>
+UPnP L2CAP
+UPnP LAP
+UPnP PAN
+User Confirmation Request Negative Reply
+User Confirmation Request Reply
+User Passkey Request Negative Reply
+User Passkey Request Reply
+__vfprintf_chk
+Video Conferencing
+Video Conferencing Gateway
+Video Distribution
+Video Sink
+Video Source
+Vizio, Inc.
+__vsnprintf_chk
+Waiting for connection on channel %d ...
+Waiting for %d seconds
+WAP Client
+WavePlus Technology Co., Ltd.
+Wicentric, Inc.
+Widcomm, Inc.
+	-w listen and send
+Write AFH Channel Assessment Mode
+Write Authentication Enable
+Write Automatic Flush Timeout
+Write Best Effort Flush Timeout
+Write Class Of Device
+Write Connection Accept Timeout
+Write Current IAC LAP
+Write Default Erroneous Data Reporting
+Write Default Link Policy Settings
+Write Encryption Mode
+Write Extended Inquiry Response
+Write Flow Control Mode
+Write Hold Mode Activity
+Write Inquiry Mode
+Write Inquiry Scan Activity
+Write Inquiry Scan Type
+Write Inquiry Transmit Power Level
+Write LE Host Support
+Write Link Policy Settings
+Write Link Supervision Timeout
+Write Local Name
+Write Location Data
+Write Logical Link Accept Timeout
+Write Loopback Mode
+Write Num Broadcast Retransmissions
+Write Page Scan Activity
+Write Page Scan Mode
+Write Page Scan Period Mode
+Write Page Scan Type
+Write Page Timeout
+Write PIN Type
+Write Remote AMP_ASSOC
+Write Scan Enable
+Write Simple Pairing Debug Mode
+Write Simple Pairing Mode
+Write Stored Link Key
+Write Synchronous Flow Control Enable
+Write Voice Setting
+	[-W seconds] enable deferred setup
+	[-Y priority] socket priority
+Zeevo, Inc.
+Zomm, LLC

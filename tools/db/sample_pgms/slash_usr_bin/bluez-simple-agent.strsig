@@ -1,0 +1,88 @@
+		adapter.CreatePairedDevice(args[1], path, capability,
+	adapter = dbus.Interface(bus.get_object("org.bluez", path),
+		adapter.RegisterAgent(path, capability)
+			adapter.RemoveDevice(device)
+	#adapter.UnregisterAgent(path)
+	agent = Agent(bus, path)
+		agent.set_exit_on_release(False)
+		authorize = raw_input("Authorize connection (yes/no): ")
+		authorize = raw_input("Authorize mode change (yes/no): ")
+	bus = dbus.SystemBus()
+	capability = "DisplayYesNo"
+		capability  = options.capability
+class Agent(dbus.service.Object):
+class Rejected(dbus.DBusException):
+		confirm = raw_input("Confirm passkey (yes/no): ")
+	_dbus_error_name = "org.bluez.Error.Rejected"
+	dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+	@dbus.service.method("org.bluez.Agent",
+	def Authorize(self, device, uuid):
+	def Cancel(self):
+	def ConfirmModeChange(self, mode):
+def create_device_error(error):
+def create_device_reply(device):
+	def DisplayPasskey(self, device, passkey):
+	def Release(self):
+	def RequestConfirmation(self, device, passkey):
+	def RequestPasskey(self, device):
+	def RequestPinCode(self, device):
+	def set_exit_on_release(self, exit_on_release):
+			device = adapter.FindDevice(args[1])
+					error_handler=create_device_error)
+	exit_on_release = True
+from optparse import OptionParser
+		if (authorize == "yes"):
+		if (confirm == "yes"):
+	if len(args) > 0:
+	if len(args) > 1:
+		if len(args) > 2:
+if __name__ == '__main__':
+	if options.capability:
+		if self.exit_on_release:
+import dbus
+import dbus.mainloop.glib
+import dbus.service
+import gobject
+import sys
+					in_signature="o", out_signature="s")
+					in_signature="o", out_signature="u")
+					in_signature="os", out_signature="")
+					in_signature="ou", out_signature="")
+					in_signature="", out_signature="")
+					in_signature="s", out_signature="")
+	mainloop = gobject.MainLoop()
+			mainloop.quit()
+	mainloop.quit()
+	mainloop.run()
+	manager = dbus.Interface(bus.get_object("org.bluez", "/"),
+	(options, args) = parser.parse_args()
+							"org.bluez.Adapter")
+							"org.bluez.Manager")
+	parser.add_option("-c", "--capability", action="store",
+	parser = OptionParser()
+		passkey = raw_input("Enter passkey: ")
+		path = manager.DefaultAdapter()
+		path = manager.FindAdapter(args[0])
+	path = "/test/agent"
+		print "Agent registered"
+	#print "Agent unregistered"
+		print "Authorize (%s, %s)" % (device, uuid)
+		print "Cancel"
+		print "ConfirmModeChange (%s)" % (mode)
+	print "Creating device failed: %s" % (error)
+		print "DisplayPasskey (%s, %d)" % (device, passkey)
+	print "New device (%s)" % (device)
+		print "Release"
+		print "RequestConfirmation (%s, %d)" % (device, passkey)
+		print "RequestPasskey (%s)" % (device)
+		print "RequestPinCode (%s)" % (device)
+		raise Rejected("Connection rejected by user")
+		raise Rejected("Mode change by user")
+		raise Rejected("Passkey doesn't match")
+					reply_handler=create_device_reply,
+			return
+		return dbus.UInt32(passkey)
+		return raw_input("Enter PIN Code: ")
+		self.exit_on_release = exit_on_release
+					type="string", dest="capability")
+#!/usr/bin/python

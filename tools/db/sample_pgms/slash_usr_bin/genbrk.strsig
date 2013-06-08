@@ -1,0 +1,63 @@
+__bss_start
+copyright
+ Copyright (C) 2011, International Business Machines Corporation and others. All Rights Reserved. 
+	-c or --copyright   include a copyright notice
+Could not open file "%s"
+createRuleBasedBreakIterator: ICU Error "%s"  at line %d, column %d
+CXXABI_1.3
+	-d or --destdir     destination directory, followed by the path
+error in command line argument "%s"
+Error reading file "%s"
+Error writing to output file "%s"
+	                    followed by path, defaults to %s
+__fprintf_chk
+genbrk: Could not open output file "%s", "%s"
+genbrk: error %d writing the output file
+genbrk: tool completed successfully.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBCXX_3.4
+__gmon_start__
+__gxx_personality_v0
+	-h or -? or --help  this usage text
+icudatadir
+	-i or --icudatadir  directory for locating any needed intermediate data files,
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+libicutu.so.48
+libicuuc.so.48
+/lib/ld-linux.so.2
+libstdc++.so.6
+options:
+__printf_chk
+	Read in break iteration rules text and write out the binary data
+rule file and output file must both be specified.
+%s: can not initialize ICU.  status = %s
+u_cleanup_48
+ucnv_close_48
+ucnv_detectUnicodeSignature_48
+ucnv_open_48
+ucnv_open: ICU Error "%s"
+ucnv_toUChars_48
+ucnv_toUChars: ICU Error "%s"
+udata_create
+udata_finish
+udata_writeBlock
+u_errorName_48
+u_getDataDirectory_48
+u_init_48
+_Unwind_Resume
+u_parseArgs
+Usage: %s [-v] [-options] -r rule-file -o output-file
+u_setDataDirectory_48
+	-v or --verbose     turn on verbose output
+	-V or --version     show a version message
+_ZN6icu_4813UnicodeStringC1EaPKti
+_ZN6icu_4813UnicodeStringD1Ev
+_ZN6icu_4822RuleBasedBreakIteratorC1ERKNS_13UnicodeStringER11UParseErrorR10UErrorCode
+_ZN6icu_487UMemorydlEPv
+_ZN6icu_487UMemorynwEj

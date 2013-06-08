@@ -1,0 +1,165 @@
+-4 -4 -4 -4 -4 -4 -4 -4 -4 -4
+BMES_CHAR (`%c') %s, not `%c' (char %d).
+but ch = %c (char %d) is not EMES_CHAR = %c (char %d)
+byte %d not in the range of 0 to 255.
+ (bytes) wouldn't be a multiple of 4 !
+cannot read string[
+ characters.
+char_status = CHAR_FAIL,
+char_status = %d is unfamiliar!
+(check_bmes) : DTL FILE ERROR (%s) : 
+(check_byte) : INTERNAL ERROR : 
+(check_emes) : DTL FILE ERROR (%s) : 
+command must begin with "%s", 
+completely interpreted 
+(cons_cmds) : INTERNAL ERROR : 
+__ctype_b_loc
+Current DTL input line 
+%d complete iterations of "padding byte" loop;
+detailed debugging
+(dexit) : exiting with status %d.
+(dinfo) : 
+(dt2dv) :
+(dt2dv) : command 
+(dt2dv) : DTL FILE ERROR (%s) : 
+(dt2dv) : DTL FILE ERROR (%s) : unknown command "%s".
+(dt2dv) : end of input, or reading error.
+ DTL bytes (
+dtl line >= 
+DTL signature must begin with "%s", not "%s".
+DTL variety must be "%s", not "%s".
+ DVI bytes;
+ DVI bytes.
+ DVI command%s.
+DVI size 
+each DTL command is in parentheses
+ECOM ("%s") expected, not `%c' (char %d).
+EMES_CHAR (`%c') %s, not `%c' (char %d).
+end of dtl file, 
+end of dtl file, or reading error
+end of DTL line (at least) 
+ERROR : DTL character %d is not in range 0 to 255
+expected before string
+expected to follow string
+ faulty in table "%s".
+fewer than four `223' padding bytes.
+(fontdef) : about to read font number.
+font def %d, but range is 1 to 4.
+(fontdef) : DTL FILE ERROR (%s) : 
+(fontdef) : entering fontdef.
+(fontdef) : font 
+(fontdef) : leaving fontdef.
+(fontdef) : WARNING : font area string's length (
+(fontdef) : WARNING : font string's length (
+for postamble in DTL file is wrong
+for previous bop in DTL file is wrong
+__fprintf_chk
+] from dtl file.
+(get_Lstring) : DTL FILE ERROR (%s) : 
+(get_Lstring) : entering get_Lstring.
+(get_Lstring) : INTERNAL ERROR : 
+(get_Lstring) : leaving get_Lstring.
+(get_Lstring) : string is: "
+(get_signed) : DTL FILE ERROR (%s) :  %s "%s".
+(get_unsigned) : DTL FILE ERROR (%s) :  %s "%s".
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+(gmalloc) : INTERNAL ERROR : 
+(gmalloc) : MEMORY ALLOCATION ERROR : 
+__gmon_start__
+hexadecimal number expected, not
+ in current command), wrote 
+) in DTL file is wrong
+_IO_stdin_used
+__isoc99_sscanf
+is outside table %s [ %d to %d ] !
+(%ld of %ld).
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+ lines);
+(ls_putb) : ERROR : No more room in Lstring.
+(mem_viol) : called with wrong signal!
+(mem_viol) : RUNTIME MEMORY ERROR : memory violation, 
+Messages, like this one, go to stderr.
+not `%c' (char %d).
+not printable and not white space
+octal number expected, not
+op_128_170
+(open_dtl) : DTL FILE ERROR : Cannot open "%s" for text reading.
+(open_dtl) : INTERNAL ERROR : address of dtl variable is NULL.
+(open_dtl) : INTERNAL ERROR : dtl file's name is NULL.
+(open_dvi) : DVI FILE ERROR : Cannot open "%s" for binary writing.
+(open_dvi) : INTERNAL ERROR : address of dvi variable is NULL.
+(open_dvi) : INTERNAL ERROR : dvi file's name is NULL.
+operating system failed to malloc %ld bytes
+[options]  dtl_file  dvi_file
+or serious dtl file reading error
+post_post
+(post_post) : DTL FILE ERROR (%s) : 
+(post_post) : WARNING : 
+(preamble) : entering preamble.
+(preamble) : leaving preamble.
+prefix's last suffix %d < first suffix (%d)
+premature end of DTL file!
+(process) : at most two filenames allowed.
+Program "%s" version %s compiled in %sstandard C.
+(put_byte) : DVI FILE ERROR (%s) : cannot write to dvi file.
+(put_Lstring) : DVI File ERROR : not all bytes written 
+(put_signed) : INTERNAL ERROR : asked for %d bytes.  Must be 1 to 4.
+(put_table) : DTL FILE (OR INTERNAL) ERROR : opcode %d 
+(put_table) : INTERNAL ERROR : internal read of table %s failed!
+(put_table) : INTERNAL ERROR : opcode %d for command "%s"
+(put_unsigned) : INTERNAL ERROR : asked for %d bytes.  Must be 1 to 4.
+range is 1 to 4.
+read all DTL commands from standard input
+(read_char) : character %d not in range 0 to 255
+(read_char) : character %d %s.
+Read (from file "%s") 
+(read_line_char) : end of DTL file
+(read_line_char) : new DTL input line:
+(read_token) : end of dtl file.
+(read_token) : token = "%s"
+(read_variety) : DTL FILE ERROR (%s) : 
+(read_variety) : DTL variety %s is OK.
+ = "%s".
+sequences-6
+(set_seq) : 
+signed number expected, not "%s".
+(skip_space) : 
+(special) : DTL FILE ERROR (%s) : special %d, 
+(special) : entering special.
+(special) : leaving special.
+__sprintf_chk
+__stack_chk_fail
+Standard Input
+Standard Output
+Successfully interpreted 
+) to DVI file
+token "%s" should be ECOM ("%s")
+troublesome token = "%s"
+unreasonable request to malloc %ld bytes
+unsigned number expected, not
+usage:   
+Will write at least four `223' padding bytes.
+Will write (at least four) `223' padding bytes until it is.
+write all DVI commands to standard output
+Writing correct value (
+wrote (to file "%s") 
+(xfer_args) : opcode %d not handled.
+(xfer_bop_address) : DTL FILE ERROR (%s) : 
+(xfer_bop_address) : WARNING : byte address (
+(xfer_hex) : DTL FILE ERROR (%s) :  %s "%s".
+(xfer_hex) : INTERNAL ERROR : asked for %d bytes.  Must be 1 to 4.
+(xfer_len_string) : entering xfer_len_string.
+(xfer_len_string) : leaving xfer_len_string.
+(xfer_len_string) : string's nominal length k = 
+(xfer_len_string) : WARNING : string length (
+(xfer_oct) : DTL FILE ERROR (%s) :  %s "%s".
+(xfer_oct) : INTERNAL ERROR : asked for %d bytes.  Must be 1 to 4.
+(xfer_postamble_address) : DTL FILE ERROR (%s) : 
+(xfer_postamble_address) : WARNING : byte address (

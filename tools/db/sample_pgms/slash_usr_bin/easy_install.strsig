@@ -1,0 +1,8 @@
+# EASY-INSTALL-ENTRY-SCRIPT: 'distribute==0.6.24dev-r0','console_scripts','easy_install'
+from pkg_resources import load_entry_point
+if __name__ == '__main__':
+import sys
+        load_entry_point('distribute==0.6.24dev-r0', 'console_scripts', 'easy_install')()
+__requires__ = 'distribute==0.6.24dev-r0'
+    sys.exit(
+#! /usr/bin/python

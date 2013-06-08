@@ -1,0 +1,2476 @@
+			    }
+				    }
+		    # "0" in this case. The number is very likely not the
+$0 =~ m!/([^/]+)\s*$!;
+		# 1.1.12 and newer) to URI for the "mtink" CUPS backend
+		# 1.1.12 and newer) to URI for the "ptal" CUPS backend
+			($1 ne '')) {$p->{$1} = $2};
+		       ($5 ? 100 * (ord(uc($6)) - 64) + $7 : 9999)) / 1e8;
+    # able to easily switch the default printer we set up a printer group
+    # according to what "lpinfo -v" reports.
+$action = ($opt_D ? 'default' : $action);
+$action = ($opt_P ? 'query' : $action);
+$action = ($opt_Q ? 'query' : $action);
+    # Actual devices
+	  "\# Additional configuration atop $ppdfile");
+	    $address = $2;
+		$address = cups_usb_printer_uri_to_device_uri($address);
+	$address = $entry->{'Address'};
+		($address =~ m!^/dev/ptal-printd/(.+)$!) ||
+		($address =~ m!/dev/ptal-printd!) ||
+		     ($address =~ m!parallel!)) {
+		     ($address =~ m!serial!)) {
+		($address =~ m!$sysdeps->{'mtink-pipes'}!) || 
+		($address =~ m!$sysdeps->{'ptal-pipes'}!) || 
+		     ($address =~ m!^/var/mtink/(.+)$!)) {
+		($address =~ m!/var/mtink!)) {
+		($address =~ m!^/var/run/ptal-printd/(.+)$!)) {
+		($address =~ m!/var/run/ptal-printd!) ||
+	    $address = "$remhost:$remport";
+	    $address = "${remqueue}\@${remhost}";
+	    $address = "//$smbserver/$smbshare";
+	    $address = "$sysdeps->{'mtink-pipes'}/$1";
+	    $address = "$sysdeps->{'ptal-pipes'}/$devname";
+    # Add the alias "lp" to the /etc/printcap entry to make LPD considering
+    # Add to the config file if a new entry
+    # Add to the printcap if a new entry
+    # Add to the printrc if it is a new entry
+                 all installed queues for the current/selected spooler.
+    # All URIs ("-c" option) have the same syntax as URIs in CUPS
+    # All URIs ("-c" option) have the same syntax as URIs in CUPS ("-v"
+	# All URIs ("-c" option) have the same syntax as URIs in CUPS ("-v"
+		     and $config->{'queue'} ne $p->{'name'});
+		 and $config->{'queue'} ne $p->{'name'});
+		 and $config->{'queue'} ne $p->{'names'}[0]);
+	    # and get it to standard output
+	# and model, check if there is some old contents
+	    # ... and remove the original one
+    # and the queue did not exist before we assume that he wants to set up a
+    # a new clear-text ID
+                 appropriate printer/driver combo is generated, supplied
+    # a raw queue
+    # Are there changes in the error handling of the backend?
+    $asciidata =~ s/\$VAR1/\$COMBODATA/g;
+	    $asciidata =~ s/\$VAR1/\$QUEUES[$i]/g;
+    # as /etc/cups/ppd/ (where CUPS stores the PPDs of the installed queues)
+		# as LPD/LPRng does not support these URIs, translate it
+	    # as PDQ does not support these URIs, translate it
+		# as PPR does not support these URIs, translate it
+		# as spooler-less printing does not support these URIs, 
+		 'att'      => $opt_att,
+	    # Automatic input tray selection not activated by default,
+	   "backend-attempts=s" => \$opt_att, # Try that often when backend
+			  [ --backend-attempts=value ] \\
+ --backend-attempts=value  Try that often when backend fails, for infinite
+	   "backend-delay=s" => \$opt_delay, # Delay in seconds between
+			  [ --backend-delay=value ] \\
+ --backend-delay=value  Delay in seconds between retries of failed backend.
+	   "backend-dont-disable=s" => \$opt_dd, # Do not disable CUPS 
+			  [ --backend-dont-disable=value ] \\
+ --backend-dont-disable=value  1: Do not disable CUPS queue when backend
+	                             # backends
+    $backslash = "" if $config->{'spooler'} eq 'lprng';
+	    # back to a standard USB device URI
+		# back to a standard USB device URI
+    # backup so that PDQ does not parse it.
+		# banner page by default, "-h" suppresses it. "rlpr" must
+	# because otherwise there is a Ctrl+D between the PJL frame added
+	    # because the feature requires manual choice of the paper types
+		# before ("if" tag). So when we do not set up a raw queue,
+	# Before we overwrite the description field with manufacturer
+	    # Beginning of new "printer" block
+		    # Beginning of new <Printer ...> block
+		    # Beginning of new printer's entry
+                 be given when a new queue is created
+		    $beh->{'att'} = $olddatablob->{'queuedata'}{'att'};
+                 behaviour to 1. Default: 1 (CUPS only)
+		    $beh->{'dd'} = $olddatablob->{'queuedata'}{'dd'};
+				  $beh->{'delay'} : 30);
+		    $beh->{'delay'} = $olddatablob->{'queuedata'}{'delay'};
+		    $beh->{'uri'} = $olddatablob->{'queuedata'}{'connect'};
+		    "being closed!\nLine $linecount in " .
+		# be SUID "root".
+		     'bool')) {
+			'bool') {
+	    # broken for printers with a high number of input trays in their
+		    "broken!\n";
+# But I'm not really very particular...
+	# but needs installed and running PPR printing system
+		# but use "rlpr" in a $postpipe. Note that "rlpr" prints a
+	# by foomatic-rip and the PostScript job. This breaks printing of
+                 by frontends, the output is done as a Perl array, one
+		"by this function!\n";
+# Call proper proc
+	    $c->{'att'} = 1;
+	    $c->{'att'} = $2;
+			  [ -c connect ] \\
+		$c->{'connect'} = $address;
+		    $c->{'connect'} = "file:$file";
+		$c->{'connect'} = "file:$file";
+		    $c->{'connect'} = "file:$lp";
+ -c connection   Printer is connected thusly (ex file:/dev/lp0), must
+		    $c->{'connect'} = $lp;
+		$c->{'connect'} = "lpd://$2/$1";
+	    $c->{'connect'} = "lpd://$remhost/$remqueue";
+		$c->{'connect'} = "lpd://$rm/$rp";
+		    $c->{'connect'} = "mtink:/$1";
+		$c->{'connect'} = "mtink:/$1";
+		$c->{'connect'} = "ncp://$identity$server/$queue";
+		    $c->{'connect'} = "parallel:$file";
+		$c->{'connect'} = "parallel:$file";
+		$c->{'connect'} = "postpipe:\"$1\"";
+		$c->{'connect'} = "ptal:/$3";
+		    $c->{'connect'} = "ptal:/$devname";
+		$c->{'connect'} = "ptal:/$devname";
+		    $c->{'connect'} = "serial:$file";
+		$c->{'connect'} = "serial:$file";
+		$c->{'connect'} = "smb://$identity$workgroup$servershare";
+		$c->{'connect'} = "socket://$3:$4";
+	    $c->{'connect'} = "socket://$remhost:$remport";
+	    $c->{'connect'} = "stdout";
+	$c->{'connect'} = $uri;
+		    $c->{'connect'} = "usb:$file";
+		$c->{'connect'} = "usb:$file";
+	    $c->{'dd'} = 0;
+	    $c->{'dd'} = $1;
+	    $c->{'delay'} = $3;
+	    $c->{'delay'} = 30;
+	$c->{'desc'} = $p->{'Comment'};
+	$c->{'desc'} = $p->{'desc'};
+	$c->{'desc'} = $p->{'Info'};
+	$c->{'desc'} = $p->{'names'}[1] if $p->{'names'}[1];
+	    $c->{'driver'} = $dat->{'driver'};
+	$c->{'errorpolicy'} = $p->{'ErrorPolicy'}
+	# certain PS files as the CUPS test page.
+	$c->{'foomatic'} = 0;
+	    $c->{'foomatic'} = 1;
+		($c->{'foomatic'} ? 1 : 0),
+	    changeowner("cupsys", $ppdfile);
+	changeowner("cupsys", $ppdfile);
+#changeowner function changes owner only if user exists on system
+	    #changeowner function changes owner only if user exists on system
+	#changeowner function changes owner only if user exists on system
+                 characteristics including default option settings are 
+				     # characters (for CUPS Windows driver)
+	    # Check consistency of the printer/driver settings
+	# Check, if there is a PJL option and set the "Jobbreak" to "none"
+    # Check whether there is a already a 'try_include "/etc/foomatic/pdq/*"'
+    # Check whether there is a group named "default" to see what is the
+    chmod 0600, $sysdeps->{'lpd-log'};
+    chmod 0644, $pconfigname;
+	    chmod 0644, $ppdfile;
+	chmod 0644, $ppdfile;
+    chmod 0644, $printcap;
+    chmod 0644, $printrcname;
+#		chomp $line;
+	    chomp ($line);
+	    chomp $line;
+			chomp $line;
+		chomp $line;
+	chomp($line);
+        chomp $s;
+    chown $lpuid, $lpgid, $sysdeps->{'lpd-log'};
+    chown $uid, $gid, $file;
+	$c->{'klimit'} = $p->{'KLimit'}
+		# classic LPD does not support sending jobs to a server with the
+	$c->{'laststatechange'} = $p->{'StateTime'}
+	# Clean up "Switchset" entry
+	$c->{'loc'} = $p->{'loc'};
+	$c->{'loc'} = $p->{'Location'};
+	$c->{'loc'} = $p->{'names'}[3] if $p->{'names'}[3];
+	close CONFIG;
+	close DEFAULT;
+    close F;
+	    close F;
+	close F;
+#		close FILE;
+	close LPSTAT;
+    close PCAP;
+	close PCONF;
+	    close PCONFFILE;
+    close PCONFIG;
+		    close PPAD_SHOW;
+	    close PPDFILE;
+	close PPOP_DEST;
+    close PRINTCAP;
+    close PRINTRC;
+	close SHOWDEFAULTGROUP;
+	close VER;
+	# Collect values
+    # command line
+    # command line into $postpipe (for example for Socket, Samba, ...)
+    # command line into $postpipe (for example for Socket, Samba, parallel
+	    @comment = ();
+	    @comment = @comments_in_pc_entry;
+	$comment = $config->{'desc'};
+		$comment = "$makemodel";
+		$comment = "Raw queue";
+			    'comments' => [ @comment ] });
+	    @comments_in_pc_entry = ();
+# Common parts for queue creation/modification functions
+# companion filters.
+	# composite options)
+		# Compressed PPD file
+	  ($config->{'att'} != 1))) ||
+	    $config->{'att'} = (defined($beh->{'att'}) ? $beh->{'att'} : 1);
+	   ($config->{'att'} ne $beh->{'att'})) ||
+	  ($config->{'dd'} != 0))) ||
+	    (($config->{'dd'} != 0) || ($config->{'att'} != 1))) {
+			       $config->{'dd'}, $config->{'att'},
+	    $config->{'dd'} = (defined($beh->{'dd'}) ? $beh->{'dd'} : 0);
+	   ($config->{'dd'} ne $beh->{'dd'})) ||
+	  ($config->{'delay'} != 30)))) {
+			       $config->{'delay'}, $cupsuri);
+	    $config->{'delay'} = (defined($beh->{'delay'}) ? 
+	   ($config->{'delay'} ne $beh->{'delay'})) ||
+		    ($config->{'driver'} eq "raw"));
+		($config->{'driver'} eq "raw")) {
+		 ($config->{'driver'} eq "raw") || # No new driver, printer,
+    $config->{'driver'} = "" if not defined $config->{'driver'};
+	($config->{'driver'} ne "raw")) || ($config->{'ppdfile'}))) {
+			$config->{'driver'} = $olddatablob->{'driver'};
+		$config->{'driver'} = "raw";
+    # Config file names
+	    (!$config->{'force'})) {
+			$config->{$i} = "";
+			$config->{$i} = 0;
+			$config->{$i} = 1;
+			$config->{$i} = 30;
+			$config->{$i} = $olddatablob->{'queuedata'}{$i};
+		       "\'$config->{'ppdfile'}\' > " .
+		     (!$config->{'ppdfile'})) ||
+		($config->{'ppdfile'} eq "") &&
+    $config->{'ppdfile'} = "" if not defined $config->{'ppdfile'};
+	    $config->{'ppdfile'} = $sourceppd;
+				       $config->{'printer'});
+				   $config->{'printer'});
+		 ($config->{'printer'} eq "")) &&  # PPD file
+    $config->{'printer'} = "" if not defined $config->{'printer'};
+			$config->{'printer'} = $olddatablob->{'id'};
+		$config->{'printer'} = undef;
+	        #"\"$config->{'queue'}\" \"" . 
+	    #"\"$config->{'queue'}\"";
+	"\"$config->{'queue'}\"";
+			      $config->{'queue'});
+			     $config->{'queue'});
+			  $config->{'queue'});
+				    $config->{'queue'});
+					     $config->{'queue'})) {
+	    "\"$config->{'queue'}\" \"\" 2> /dev/null";
+		"\"$config->{'queue'}\" backend=\"$interface\" " .
+	    "\"$config->{'queue'}\" \"$comment\"";
+	    "\"$config->{'queue'}\" \"$config->{'loc'}\"";
+	    "\"$config->{'queue'}\" > /dev/null";
+	"\"$config->{'queue'}\" > /dev/null";
+		"\"$config->{'queue'}\" foomatic-rip \"$address\"";
+			      $config->{'queue'}) if !$ppdfile;
+	    "\"$config->{'queue'}\" $interface \"$address\"";
+		"\"$config->{'queue'}\" $interface \"$address\"";
+	    "\"$config->{'queue'}\" " . join (' ', @newswitchset);
+		"\"$config->{'queue'}\"!\n";
+		"\"$config->{'queue'}\" none";
+	    "\"$config->{'queue'}\" $options $interface_options";
+		"\"$config->{'queue'}\" $options $interface_options";
+	    "\"$config->{'queue'}\" \"$ppdfile\" 2> /dev/null";
+	    ($config->{'spooler'} eq "cups" ? $beh : ()));
+	    ($config->{'spooler'} eq 'direct')) {
+	      ($config->{'spooler'} eq 'lpd'))) ||
+	     (($config->{'spooler'} eq 'lprng') ||
+    # Configured printers are represented by PPD files in /etc/foomatic/
+                         'configure' => \&setup_cups },
+                         'configure' => \&setup_direct } };
+                         'configure' => \&setup_lpd },
+                         'configure' => \&setup_lpd,
+                         'configure' => \&setup_pdq },
+                         'configure' => \&setup_ppr },
+		 'connect'  => $opt_c,
+# Connect syntax:
+			# contributed this fix
+	$c->{'operationpolicy'} = $p->{'OpPolicy'}
+	   "C"   => \$opt_C,         # Copy queue
+    @{$c->{'options'}} = ();
+	@{$c->{'options'}} = ();
+    # Copy a queue
+	    # Copy in the PPD file specified on the command line
+	    # Copy the queue ...
+	# Correct PTAL URIs: "ptal:/..." for HPOJ 0.9, "ptal://..." for newer
+	# Correct the permissions of the PPD file
+			    "corrupted:\n    $line\n";
+	# Could not determine version, so we set it to 0 (oldest possible)
+	$c->{'pagelimit'} = $p->{'PageLimit'}
+	    $c->{'printer'} = $dat->{'id'};
+	$c->{'queue'} = $p->{'name'};
+	$c->{'quotaperiod'} = $p->{'QuotaPeriod'}
+	# Create a group named "default" with only this printer as member
+    # Create directories
+    # Create driver description file
+	$c->{'shared'} = $p->{'Shared'}
+	   "c=s" => \$opt_c,         # printer Connection type
+ -C [sourcespooler] sourcequeue  Create a copy of a queue. All 
+		$c->{'spooler'}),
+	$c->{'spooler'} = 'cups';
+	$c->{'spooler'} = 'direct';
+	($c->{'spooler'} eq "cups" ?
+	    $c->{'spooler'} = 'lpd';
+	    $c->{'spooler'} = 'lprng';
+	$c->{'spooler'} = 'pdq';
+	$c->{'spooler'} = 'ppr';
+	# CUPS 1.2-specific settings
+              'cups' =>{ 'delete'    => \&delete_cups,
+	# CUPS-specific extra info
+	    $cupsuri = $2;
+	$cupsuri = $beh->{'uri'} if !$cupsuri;
+	    $cupsuri=$config->{'connect'};
+	    $cupsuri = cups_correct_ptal_uri($cupsuri);
+		$cupsuri = cups_usb_device_uri_to_printer_uri($cupsuri);
+		$cupsuri = "file:$cupsuri";
+	    $cupsuri = "file:$sysdeps->{'mtink-pipes'}/$1";
+	    $cupsuri = "file:$sysdeps->{'ptal-pipes'}/$devname";
+		 ($cupsuri =~ m!/dev/ptal-printd/(.+)$!) ||
+		     ($cupsuri =~ m!parallel!)) {
+		     ($cupsuri =~ m!serial!)) {
+		$cupsuri = "mtink:/$1";
+		      ($cupsuri =~ m!^/var/mtink/(.+)$!)) &&
+		 ($cupsuri =~ m!/var/run/ptal-printd/(.+)$!)) &&
+		$cupsuri = "parallel:$cupsuri";
+		$cupsuri = "ptal:/$devname";
+		$cupsuri = "serial:$cupsuri";
+	    $cupsuri = sprintf("beh:/%d/%d/%d/%s",
+		$cupsuri = "usb:$cupsuri";
+			$currentitem = -1;
+		    $currentitem = $itemshash->{$name};
+			$currentitem = $itemshash->{$name};
+                 current/selected spooler, including the default queue.
+	$datablob = load_cups_datablob($queue);
+	$datablob = load_direct_datablob($queue);
+	$datablob = load_lpd_datablob($queue);
+	$datablob = load_pdq_datablob($queue);
+	$datablob = load_ppr_datablob($queue);
+    # datafile is generated
+	$dat->{'ppdfile'} = $ppdfile;
+	$dat->{'queuedata'} = $c;
+		     ($#{$db->{'dat'}{'args'}} < 0));
+	$db->{'dat'} = $dat;
+	$db->{'dat'} = load_cups_datablob($p->{'name'});
+	$db->{'dat'} = load_direct_datablob($p->{'name'});
+	$db->{'dat'} = load_lpd_datablob($p->{'names'}[0]);
+	$db->{'dat'} = load_pdq_datablob($p->{'name'});
+	$db->{'dat'} = load_ppr_datablob($p->{'name'});
+	    $db->{'dat'} = $olddatablob;
+		$db->{'dat'} = $olddatablob;
+    #$db->{'dat'}{'postpipe'} = "";
+	    $db->{'dat'}{'postpipe'} = $olddatablob->{'postpipe'};
+		    $db->{'dat'}{'postpipe'} = $olddatablob->{'postpipe'};
+		$db->{'dat'}{'postpipe'} = $olddatablob->{'postpipe'};
+	    $db->{'dat'}{'postpipe'} = $postpipe;
+	$db->{'dat'} = ppdfromvartoperl([split(/\n/, $ppd)]);
+	    $db->{'dat'}{'queuedata'}{'connect'} = $p->{'DeviceURI'};
+		$db->{'dat'}{'queuedata'}{'default'} = 0;
+		$db->{'dat'}{'queuedata'}{'default'} = 1;
+	    $db->{'dat'}{'queuedata'}{'description'} = $p->{'Info'};
+	    $db->{'dat'}{'queuedata'}{'foomatic'} = 0;
+	    $db->{'dat'}{'queuedata'}{'loc'} = $p->{'Location'};
+	    $db->{'dat'}{'queuedata'}{'queue'} = $p->{'name'};
+	    $db->{'dat'}{'queuedata'}{'remote'} = 0;
+	    $db->{'dat'}{'queuedata'}{'remote'} = 1;
+	    $db->{'dat'}{'queuedata'}{'spooler'} = 'cups';
+	$db->getdatfromppd($config->{'ppdfile'});
+	    $db->ppdsetdefaults($ppdfile);
+		 'dd'       => $opt_dd,
+ -d driver       Foomatic database name for desired printer driver or "raw"
+			  [ -d driver ] [ -p printer ] [ -f ] [ -w ] \\
+    # De-activate old line from Foomatic 2.0.x
+	    $default = $1;
+                 Default: 30 (CUPS only)
+                         'default'   => \&default_cups,
+                         'default'   => \&default_direct,
+                         'default'   => \&default_lpd,
+                         'default'   => \&default_lprng,
+                         'default'   => \&default_pdq,
+                         'default'   => \&default_ppr,
+		$default = $def_firstname;
+		$defaultfromgroup = $1;
+	    "default \"$name\"";
+	$_->{'default'} = ($_->{'name'} eq $name);
+		$default = $p->{'name'};
+		    $default = $p->{'names'}[0];
+    # default printer.
+		    # Default printer
+		    $defaultprinter = $1;
+		$defaultprinter = $item->{'name'};
+			    "</defaultqueue>\n";
+		"deffiltopts \"$config->{'queue'}\" 2> /dev/null";
+			    $def_firstname = $p->{'names'}[0];
+	 (((defined($beh->{'att'})) && 
+	 (((defined($beh->{'dd'})) && 
+	 (((defined($beh->{'delay'})) &&
+	  (defined($c->{'errorpolicy'}) ?
+	  (defined($c->{'klimit'}) ?
+	  (defined($c->{'laststatechange'}) ?
+	((defined($config->{'att'})) && 
+	((defined($config->{'delay'})) && 
+	  (defined($c->{'operationpolicy'}) ?
+	  (defined($c->{'pagelimit'}) ?
+	  (defined($c->{'quotaperiod'}) ?
+	  (defined($c->{'shared'}) ?
+		    (defined($dest->{'args_byname'}{$1})) &&
+		((!defined($olddatablob->{'args'})) || # No existing options
+		 'delay'    => $opt_delay,
+	delete ($db->{'dat'});
+			# "delete" does not work on arrays with Perl 5.0.x
+	    delete $entry->{'bool'}{'force_localhost'};
+	    delete $entry->{'str'}{'af'};
+	delete $entry->{'str'}{'af'};
+	    delete $entry->{'str'}{'filter_options'};
+	delete $entry->{'str'}{'filter_options'};
+	delete $entry->{'str'}{'if'};
+		delete $entry->{'str'}{'lp'};
+	    delete $entry->{'str'}{'ppd'};
+	delete $entry->{'str'}{'ppd'};
+	    delete $entry->{'str'}{'ppdfile'};
+		delete $entry->{'str'}{'rm'};
+	delete $entry->{'str'}{'rm'};
+		delete $entry->{'str'}{'rp'};
+	delete $entry->{'str'}{'rp'};
+			#delete($items[$currentitem]);
+	    delete($olddatablob->{'queuedata'});
+		delete($olddatablob->{'queuedata'});
+		 'desc'     => $opt_N,
+	                             # Description)
+		    # Description field
+	    $desc =~ s!^\"!!;
+	    $desc =~ s!\"$!!;
+		    $dest->{'args_byname'}{$1}{'default'} = '0';
+		    ($dest->{'args_byname'}{$1}{'type'} eq
+		    $dest->{'args_byname'}{$option}{'default'} = '1';
+		    ($dest->{'args_byname'}{$option}{'type'} eq
+			    $dest->{'args_byname'}{$optname}{'default'} = 
+			$dest->{'args_byname'}{$optname}{'default'} = 
+			     $dest->{'args_byname'}{$optname}{'max'})) {
+			     $dest->{'args_byname'}{$optname}{'min'}) &&
+			     ($dest->{'args_byname'}{$optname}{'type'} eq
+			    ($dest, $optname, $optvalue, 0);
+    # Determine the name of the config file to modify
+    # Determine the PPR version in use
+		    # "device for ..." line, extract URI
+		       ($#{$devicelists[1]} < 0));
+    $device =~ s/ /\%20/g;
+	    $devname =~ s/_/:/;
+		    $devname =~ s/_/:/;
+		$devname =~ s/_/:/;
+	    $devname =~ tr/:/_/;
+	$devname =~ tr/:/_/;
+		die( "bad printcap entry at '$pline'" );
+	die "Cannot backup $printrcname!\n";
+		    die "Cannot copy \'$config->{'ppdfile'}\' to \'$ppdfile\'!\n";
+	    die "Cannot create $driverfile!\n";
+#    die( "Cannot currently parse lprng style printcaps created by " .
+	    die "Cannot execute \"lpstat\".\n";
+			die "Cannot execute \"ppad\".\n";
+	    die "Cannot execute \"ppop\".\n";
+	die "Cannot read printrc file!\n";
+	die "Cannot read $sysdeps->{'foo-etc'}/direct directory!\n";
+	    die "Cannot read $sysdeps->{'ppr-etc'}/printers directory!\n";
+		die "Cannot read $sysdeps->{'ppr-etc'}/printers/$name!\n";
+		die "Could not copy the queue \"default\" into the " .
+		die "Could not remove the queue \"default\"!\n";
+	    die "Could not run $sysdeps->{'cups-lpstat'}!\n";
+	    die "Could not run $sysdeps->{'pdq-print'}!\n";
+	    die "Could not set PPD for the queue \"$config->{'queue'}\"!\n";
+	die "Could not set up/change the queue \"$config->{'queue'}\"!\n";
+		    die "Line $linecount in $sysdeps->{'cups-pconf'} " .
+		die "Line $linecount in $sysdeps->{'pdq-printrc'} " .
+		die "New printer block started without previous one " .
+	die "\n" if ($yn !~ m!^y!i);
+		die "Remote LPD configuration of the queue $p->{'name'} " .
+		die "SMB configuration of the queue $p->{'name'} broken!\n";
+    die "Sorry, $action for your spooler is unimplemented...\n";
+	    die "That printer and driver combination is not possible.\n"
+	die "That printer and driver combination is not possible.\n"
+		die "The \"ncp://\" URI must at least contain the " .
+		die "The \"ncp://\" URI must at least contain the server " .
+	    die "The PPD file \'$config->{'ppdfile'}\' does not exist or is " .
+	    die "There is neither a custom PPD file nor the driver database entry contains sufficient data to build a PPD file.\n"
+	die "There is neither a custom PPD file nor the driver database entry contains sufficient data to build a PPD file.\n"
+		die "The \"smb://\" URI must at least contain the " .
+	    die "The source queue $sourcequeue does not exist " .
+	    die "The spooler $config->{'spooler'} is not supported " .
+	    die ("The URI \"$config->{'connect'}\" is not supported " .
+	die ("The URI \"$config->{'connect'}\" is not supported " .
+	    die ("The URI \"$config->{'connect'}\" is not supported for " .
+	die "Unable to delete queue \"$config->{'queue'}\"!\n";
+	die "Unable to find object.\n";
+    die "Unable to identify spooler, please specify with -s\n"
+	    die ("Unable to open PPD file \'$config->{'ppdfile'}\'\n");
+        die "Unable to set queue \"$config->{'queue'}\" as default!\n";
+	    die "Unsufficient options to copy a queue, " .
+	die "Unsupported spooler: $spooler\n";
+		die "You also need to specify a driver with \"-d\"!\n";
+		die "You also need to specify a printer with \"-p\"!\n";
+	    die "You must specify a connection with -c.\n";
+	die "You must specify a connection with -c.\n";
+	die "You must specify a -p printer and/or -d driver.\n";
+              'direct'=>{'delete'    => \&delete_direct,
+    # Directory setup, let the Foomatic PPD directory for CUPS be the same 
+    # do also some checking of the user-supplied parameters
+	# does not insist on using another PPD file, we must copy it
+    # Do it!
+	# Do it! (Ignore errors silently)
+	    # Do not consider "." and ".." as a printer queue
+	# Do not make two entries when there is both a ".ppd" AND ".PPD"
+	# Do only add the "beh" wrapper backend when it is really needed
+           "D"   => \$opt_D,         # set Default queue
+	    # Do the renaming
+		# Do we have a raw queue?
+    $driverdesc =~ m!^\s*driver\s*(\"\S*\-\d+\")!m;
+    # Driver fields
+	       "$driverfile") and
+    $driverfile = sprintf('%s/pdq/driverdescr/%s.pdq',
+                 driver for Windows (GUI strings are limited to 39 characters).
+		 'driver'   => $opt_d,
+    # Driver-specific entries
+ -D              Set this queue as the queue used by default.
+	   "d=s" => \$opt_d,         # Driver
+	    dump_config($c);
+    # editor backup so that PDQ does not parse it.
+                 element per queue), With printer ID and driver name instead
+    } else {
+	    } else {
+	} else {
+		    } else {
+		} else {
+			    } else {
+				    } else {
+    # Else if /etc/printcap, some sort of lpd thing
+		    else { $p->{'str'}{$1} = $2; }
+	    } elsif (($address =~ m!lp[0-9]!) || ($address =~ m!LP[0-9]!) || 
+	    } elsif (($address =~ m!^$sysdeps->{'mtink-pipes'}/(.+)$!) ||
+	    } elsif (($address =~ m!tty!) || ($address =~ m!TTY!) || 
+	    } elsif ($address =~ m!^\w+:!i) {
+	} elsif ($#ARGV == 1) {  # 2 arguments -> queue from given spooler
+    } elsif ($config->{'connect'}) {
+	} elsif ($config->{'connect'} =~
+	} elsif ($config->{'connect'}) {
+    } elsif ($config->{'connect'} =~ m!^lpd://([^/]+)/([^/]+)$!) {
+	} elsif ($config->{'connect'} =~ m!^lpd://([^/]+)/([^/]+)$!) {
+    } elsif ($config->{'connect'} =~ m!^mtink:/(.+)$!) {
+	} elsif (($config->{'connect'} =~ m!^mtink:/(.*)$!) &&
+	} elsif ($config->{'connect'} =~ m!^mtink:/(.+)$!) {
+	} elsif ($config->{'connect'} =~ m!^ncp://(.*)$!) {
+	} elsif ($config->{'connect'} =~ m!^postpipe:(.*)$!) {
+    } elsif ($config->{'connect'} =~ m!^ptal://?([^/].*)$!) {
+	} elsif (($config->{'connect'} =~ m!^ptal://?([^/].*)$!) &&
+	} elsif ($config->{'connect'} =~ m!^ptal://?([^/].*)$!) {
+	} elsif ($config->{'connect'} =~ m!^smb://(.*)$!) {
+    } elsif ($config->{'connect'} =~ m!^socket://([^/:]+):([0-9]+)/?$!) {
+	} elsif ($config->{'connect'} =~ m!^stdout!) {
+	    } elsif ($config->{'connect'} =~ m!usb!i) {
+    } elsif ($config->{'ppdfile'}) {
+	    } elsif( ($config->{'spooler'} eq "lprng")) {
+	} elsif ($config->{'spooler'} eq "lprng") {
+	    } elsif (($cupsuri =~ m!lp[0-9]!) || ($cupsuri =~ m!LP[0-9]!)|| 
+	    } elsif ((($cupsuri =~ m!^$sysdeps->{'mtink-pipes'}/(.+)$!) ||
+	    } elsif (($cupsuri =~ m!tty!) || ($cupsuri =~ m!TTY!) || 
+		} elsif ((defined($dest->{'args_byname'}{$option})) &&
+	} elsif (defined($item->{'others'})) {
+		} elsif (defined($p->{'name'})) {
+		    } elsif (($dest->{'args_byname'}{$optname}{'type'} eq
+    } elsif (!$entry->{'model'}) {
+	    } elsif ($file =~ m!(lp[0-9]|parallel)!i) {
+		} elsif ($file =~ m!(lp[0-9]|parallel)!i) {
+	    } elsif (($file =~ m!^$sysdeps->{'mtink-pipes'}/(.+)$!) ||
+		} elsif (($file =~ m!^$sysdeps->{'mtink-pipes'}/(.+)$!) ||
+	    } elsif ($file =~ m!(tty|serial)!i) {
+		} elsif ($file =~ m!(tty|serial)!i) {
+	    } elsif ($file =~ m!usb!i) {
+		} elsif ($file =~ m!usb!i) {
+		    } elsif ($i eq 'att') {
+		    } elsif ($i eq 'dd') {
+		    } elsif ($i eq 'delay') {
+	} elsif ($inprinterblock == 1) {
+	} elsif ($interface eq "lpr") {
+	} elsif ($interface eq "smb") {
+	} elsif ($interface eq "tcpip") {
+		} elsif ($item =~ m!^([^\@]*)\@?!) {
+		} elsif ($item =~ m!^([^\#]*)\#(.+)!) {
+			} elsif ((lc($optvalue) eq 'false') ||
+		} elsif ($line =~ m!^device\s+for\s+(\S+):\s+(\S.*)$!) {
+		} elsif ($line =~ m!^printer\s+(\S+)\s+(\S.*)$!) {
+	    } elsif ((!($line =~ m!^\s*\#!)) && 
+		} elsif ($line =~ m!^\s+Connection:\s+remote!) {
+		} elsif ($line =~ m!^\s+Description:\s+(\S.*)$!) {
+		} elsif ($line =~ m!^\s+Location:\s+(\S.*)$!) {
+		} elsif ($line =~ m!^\s*</Printer>\s*$!) {
+	    } elsif ($line =~ m!^\s*(\S+)\s*(\S+.*)$!) {
+	    } elsif ($line =~ /^\s*([^:\s]+)\s+([^:\s]+)\s*:(.*)$/) {
+		} elsif (($lp =~ m!^$sysdeps->{'mtink-pipes'}/(.+)$!) ||
+		} elsif ($lp =~ m!^\w+:!i) {
+	} elsif ($newfoomaticdata) {
+    } elsif ($opt_d) {
+	    } elsif ($option =~
+		} elsif (($option =~ /^F\s*\*([^\*\s=:]+)\s*$/) ||
+	    } elsif ($option =~ m!^\s*\{?\s*\"(OPT_|)(.+?)\"\s*\}?\s*$!) {
+    } elsif ($opt_p) {
+	    } elsif ($parameters =~ m!([^/]+)/([^/]+)$!) {
+	} elsif( $pcentry ne "" ){
+	} elsif ($p->{'interface'} =~ m!bsd-lpd!) {
+	} elsif ($p->{'interface'} =~ m!tcp-port!) {
+	} elsif ($pline =~ m!^:!) {
+	    } elsif ($postpipe =~ 
+	    } elsif( $postpipe ){
+    } elsif (!$reconf) {
+    } elsif ($spooler eq "cups") {
+    } elsif ($spooler eq "direct") {
+    } elsif ($spooler eq "pdq") {
+    } elsif ($spooler eq "ppr") {
+	} elsif (($uri =~ m!^file:$sysdeps->{'mtink-pipes'}/(.+)$!) ||
+		} elsif (($username eq "") && ($password eq "")) {
+		} elsif (($username eq "") && ($password ne "")) {
+		} elsif (($username ne "") && ($password eq "")) {
+	} elsif (-x $sysdeps->{'lpd-bin'}) {
+		# End of "printer" block
+		    # End of <Printer ...> block
+	# enpty end entry for trailing comments
+	# Enter info for remote queue
+	    $entry->{'bool'}{'force_localhost'} = 1;
+    $entry->{'bool'}{'sh'} = 1;
+	$entry->{'desc'} = $config->{'desc'};
+	    $entry->{'desc'} = "$makemodel";
+    $entry->{'driver'} = $1;
+    $entry->{'driver_args'} = "\{ \}";
+    $entry->{'driver_opts'} = "\{ \}";
+	$entry->{'interface_args'} = 
+	$entry->{'interface_args'} = "\{ \"PORT\" = " .
+	$entry->{'interface_args'} = "\{ \"PORT\" = \"$file\" \}";
+	$entry->{'interface'} = "\"bsd-lpd\"";
+	$entry->{'interface'} = "\"local-port\"";
+	$entry->{'interface_opts'} = "\{ \}";
+	$entry->{'interface'} = "\"tcp-port\"";
+	$entry->{'location'} = "\"$config->{'loc'}\"";
+	$entry->{'loc'} = $config->{'loc'};
+	$entry->{'model'} = "\"$config->{'desc'}\"";
+	    $entry->{'model'} = "\"$makemodel\"";
+	    $entry->{'model'} = "\"Raw printer\"";
+    $entry->{'name'} = $config->{'queue'};
+	    $entry->{'names'}[0] = $config->{'queue'}; 
+	    $entry->{'names'}[1] = $config->{'desc'};
+	    $entry->{'names'}[2] = "$makemodel";
+	    $entry->{'names'}[2] = "Raw queue";
+		$entry->{'names'}[2] = "Raw queue";
+	    $entry->{'names'}[3] = $config->{'loc'};
+    $entry->{'num'}{'mx'} = '0';
+	    $entry = $p;
+	    $entry->{'str'}{'af'} = $ppdfile;
+	    $entry->{'str'}{'if'} = $sysdeps->{'foomatic-rip'};
+    $entry->{'str'}{'lf'} = $sysdeps->{'lpd-log'};
+	    $entry->{'str'}{'lp'} = '/dev/null';
+	    $entry->{'str'}{'lp'} = "/dev/null";
+	$entry->{'str'}{'lp'} = '/dev/null';
+		$entry->{'str'}{'lp'} = "/dev/null";
+		$entry->{'str'}{'lp'} = $file;
+		$entry->{'str'}{'lp'} = "$remhost\%$remport";
+		$entry->{'str'}{'lp'} = "$remqueue\@$remhost";
+	    $entry->{'str'}{'lp'} = "$sysdeps->{'mtink-pipes'}/$1";
+	    $entry->{'str'}{'ppdfile'} = $ppdfile; # For the GPR printing GUI
+	    $entry->{'str'}{'ppd'} = $ppdfile;
+	    $entry->{'str'}{'ppd'} = $ppdfile; # for LPRng PPD support
+		$entry->{'str'}{'rm'} = $remhost;
+		#   $entry->{'str'}{'rm'} = $remhost;
+		$entry->{'str'}{'rp'} = $remqueue;
+		#   $entry->{'str'}{'rp'} = $remqueue;
+    $entry->{'str'}{'sd'} = sprintf('%s/%s',
+	# (/etc/cups/printers.conf can only be manipulated by root)
+    # (/etc/foomatic/cups/ will be a link to /etc/cups/ppd/)
+	    # /etc/printcap
+		# evaluated or numerical option, boolean option with
+# everything related to print queue dynamic state: submit jobs, and
+    # Execute the lpadmin command to set up the new queue
+    # Execute the ppad commands to set up the new queue
+    exit 0;
+    exit(0);
+exit(0);
+		exit(1);
+	exit 1;
+                 extension ".gz".
+    # Extract driver name
+	# extract the queue data block
+		# Extract URI and backend error handling data
+                 facility allows to overtake one's configured queues when
+	                             # fails
+                 fails, 0: Original CUPS behaviour, queue gets disabled
+ -f              Force rebuild of PPD file from database
+	    $file = $2;
+	    $file = cups_usb_printer_uri_to_device_uri($file);
+		$file = cups_usb_printer_uri_to_device_uri($file);
+	# file for the same printer name.
+		    ($file =~ m!^/dev/ptal-printd/(.+)$!) ||
+		($file =~ m!^/dev/ptal-printd/(.+)$!) ||
+		     ($file =~ m!^/var/mtink/(.+)$!)) {
+		    ($file =~ m!^/var/mtink/(.+)$!)) {
+			 ($file =~ m!^/var/mtink/(.+)$!)) {
+		    ($file =~ m!^/var/run/ptal-printd/(.+)$!)) {
+		($file =~ m!^/var/run/ptal-printd/(.+)$!)) {
+# file:/path/file                 # includes usb, lp, named pipes, other
+	# Files beginning with a dot or ending with a tilde are never
+    # file system, another of the USB URIs listed by CUPS' "lpinfo -v"
+    # Fill in the "location" field if something for it is provided.
+		# fill in the second of the two fields in $config
+		$first = 0;
+	# first check configuration
+#'# Fix emacs syntax highlighting
+            #fix to work on Ubuntu, where cupd runs not as root, but as cupsys user
+#fix to work on Ubuntu, where cupd runs not as root, but as cupsys user
+	#fix to work on Ubuntu, where cupd runs not as root, but as cupsys user
+			      'float')) {
+	         'foomatic' => 1};
+			     Foomatic::DB::normalizename($b) } 
+	Foomatic::DB::translate_printer_id($in_config->{'printer'});
+		    # foomatic-rip
+	   "f"   => \$opt_f,         # Force rebuild of PPD from database
+		# For a raw queue overtake at least the $postpipe
+                 for a raw queue. When a non-raw queue is created, the
+		 'force'    => $force,
+	for (@{$config->{'options'}}) {
+	foreach @retval;
+	    for $i (('desc', 'loc', 'printer', 'driver', 'connect',
+#                                 # (for ink level monitoring when printing,
+	for (@{$item->{'comments'}}) {
+    for $item (@{$config}) {
+    for $item (@{$pcap}) {
+    for $item (@{$printrc}) {
+	for $item (split(/:\s*/, $p->{'itemstr'})) {
+	for (keys(%{$item->{'bool'}})) {
+	for (keys(%{$item->{'num'}})) {
+	for (keys(%{$item->{'str'}})) {
+	for $line (@lpstat) {
+	for $line (@pconf) {
+	for $line (@ppop_dest) {
+    for $line (@printrc) {
+		 "for LPD/LPRng or you have\nmistyped.\n");
+	for my $arg (@{$db->{'dat'}->{'args'}}) {
+    for (my $i = 0; $i <= $#{$devicelists[0]}; $i ++) {
+    for (my $i = 0; $i <= $#{$devicelists[1]}; $i ++) {
+	    for my $key (keys(%{$item})) {
+	    for my $line (<PCONFFILE>) {
+		    for my $line (<PPAD_SHOW>) {
+	for my $line (<SHOWDEFAULTGROUP>) {
+	    for my $option (@printerdefaults) {
+	for my $option (@printrcdefaults) {
+	for my $option (@switchset) {
+    for my $opt (@{$olddatablob->{'args'}}) {
+	for my $opt (@{$olddatablob->{'args'}}) {
+    for my $pattern ("/dev/usb/lp*", "/dev/usb/usblp*") {
+    for my $p (@{$printrc}) {
+		for $name (split('\|',$item)) {
+	    for $n (@{$p->{'names'}}) {
+		    for $n (@{$p->{'names'}}) {
+			    for $n (@{$pp->{'names'}}) {
+    for (@{$pcap}) {
+    for (@{$pconfig}) {
+    for $p (@{$config}) {
+    # for PDQ
+	     "for PDQ or you have\nmistyped.\n");
+    for $p (@items) {
+    for $pline (split('\n',$pcap)) {
+    for $p (@{$pcap}) {
+	    for $p (@{$pcap}) {
+    for $p (@{$pconf}) {
+	for $p (@{$pconf}) {
+    for $p (@{$pconfig}) {
+		    for $pp (@{$pcap}) {
+		for $pp (@{$printrc}) {
+    for $p (@{$printrc}) {
+	for $p (@{$printrc}) {
+    for (@{$printrc}) {
+    for (split(':', $ENV{'PATH'})) {
+	# From Foomatic XML database
+	# From PPD file
+		     /^F\s*\*([^\*\s=:]+)\s+([^\*\s=:]+)\s*$/) ||
+		     /^F\s*([^\*\s=:]+)\s*=\s*([^\*\s=:]+)\s*$/)) {
+### Functions used by the queue manipulation functions from above
+	# Generate the PPD and extract it to Perl again (to get in the
+	    # Generate the PPD file from the Foomatic database
+    # Generate two lists: One of the actual USB device files in the
+    # Generate/write te PPD file
+    # Generate/write the PPD file
+    # Get additional info from /etc/cups/printers.conf
+    # Get additional info from /etc/foomatic/direct/.config
+    # Get additional info from /etc/foomatic/direct/.config (default
+    # Get additional info from /etc/ppr/*
+    # Get additional info from /etc/printcap
+    # Get additional info from printrc
+	# Get info from /etc/cups/printers.conf, works only as "root" and
+	# Get info from /etc/ppr/printers/<queue name>, works only as
+	# Get info with the "lpstat" command, works for normal users and for
+	# Get info with the "ppop"/"ppad" commands, works for normal users,
+	getoldqueuedata($config, 1);
+	getoldqueuedata($config, $reconf);
+GetOptions("q"   => \$opt_q,         # Quiet, non-interactive operation
+Getopt::Long::Configure("no_ignore_case");
+    # Get the data
+    # Get the data from the former queue if we reconfigure or copy a queue
+	    # Get the server and share name
+	    # Get the user's login and password from the URI
+	    # Get the workgroup, server, and share name
+get_xml() if $opt_X;
+		    # given
+		# given
+	              grep { chomp } <F>;
+                 gzip-compressed PPD files are allowed, they must have the
+                 has no influence on PPDs supplied with the "--ppd" option.
+    # has to use the driver name "raw".
+		help();
+	help();
+help() if $opt_h;
+	   "help"=> \$opt_h) || help();
+    # Here we set up the command line for the "lpadmin" command
+    # Here we set up the command line for the "ppad interface" and the
+ -h  --help      Show this help message
+	   "h"   => \$opt_h,         # Help!
+# hp:/bus/model?serial=xxx        # HPLIP print queue (hpinkjet.sf.net)
+# hpfax:/bus/model?serial=xxx     # HPLIP fax queue (hpinkjet.sf.net)
+    # HPOJ 0.9 uses "ptal:..." URIs with one slash
+	    # HPOJ MLC protocol
+	# HPOJ MLC protocol
+#                                 #  http://xwtools.automatix.de/)
+	    $i ++;
+			    $i++;
+				$i++;
+		    $identity = "";
+		    $identity = ":$password\@";
+		    $identity = "$username\@";
+		    $identity = "$username:$password\@";
+    if ($< == 0) {
+    if ($< != 0) {
+			if ($< == 0) {
+#	if (0 and $p->{'str'}{'if'} eq $file) {  # Raw queue with $postpipe
+    if (($> != 0) && (-f "$ENV{'HOME'}/.defaultspooler")) {
+    if (($< != 0) || (($opt_r) && (($opt_Q) || ($opt_P)))) {
+		    if ($1 eq 'tc') { $p->{'str'}{"tc$tci"} = $2; $tci++; }
+# If a certain URI is not supported by all the spoolers, the spoolers
+	    if ($address =~ /^([^\@]+)\@([^\@]+)$/) {
+	    if ($address =~ m!^//([^/]+)/([^/]+)$!) {
+	    if (($address =~ m!^$sysdeps->{'ptal-pipes'}/(.+)$!) ||
+	    if (($address =~ m!usb!) || ($address =~ m!USB!) ||
+	    if ($arg->{'style'} eq "J") {
+	if ($#ARGV == 0) {  # 1 argument -> queue from same spooler
+	if( $backslash ){
+    if ($comment) {
+    if ($config->{'connect'} =~ m!^(file|usb|parallel|serial):(.*)!) {
+	if ($config->{'connect'} =~ m!^(file|usb|parallel|serial):(.*)!) {
+	if ($config->{'connect'} =~ m!^(file|usb|parallel|serial):(.*)$!) {
+	    if ($config->{'connect'} =~ m!^usb://!) {
+	if ($config->{'connect'} =~ m!^usb://!) {
+	    if (!$config->{'driver'}) {
+		    if ((!$config->{'driver'}) && ($config->{'printer'})) {
+	    if ((($config->{'driver'} eq "") || 
+	    if ($config->{'driver'} ne "raw") {
+    if ($#{$config->{'options'}} >= 0) {
+    if ($config->{'ppdfile'}) { 
+		if ((!$config->{'ppdfile'}) &&
+	if ($config->{'ppdfile'}) {
+	    if ($config->{'ppdfile'} !~ /\.gz$/i) {
+	    if (!$config->{'printer'}) {
+		    if ((!$config->{'printer'}) && ($config->{'driver'})) {
+		if ($config->{'spooler'} eq "cups") {
+	if ($config->{'spooler'} eq "lpd") {
+    if ($config->{'spooler'} eq "lprng") {
+	    if( ($config->{'spooler'} eq "lprng")) {
+    if ($cupsuri) {
+	if (($cupsuri) && ($cupsuri !~ m!^hp(fax|):/!) &&
+	if ($cupsuri =~ m!^ptal:/!) {
+	    if ((($cupsuri =~ m!$sysdeps->{'ptal-pipes'}/(.+)$!) ||
+		    if ($currentitem != -1) {
+			if ($currentitem != -1) {
+			if (($currentitem <= $#items) &&
+    if (!$datablob) {
+	    if (!$db->{'dat'}{'cmd'}) && (!$db->{'dat'}{'ppdfile'});
+		if (!$db->{'dat'}{'cmd'}) && (!$db->{'dat'}{'ppdfile'});
+	    if ($db->{'dat'}{'id'}) {
+	if ($defaultstr =~ m!\S+:\s+(\S+)$!) {
+	if ($defaultstr =~ m!The\s+default\s+printer\s+is\s+(\S+)$!m) {
+	if (!defined($config->{'att'})) {
+    if (defined($config->{'connect'})) {
+    if (((defined($config->{'dd'})) && 
+	if (!defined($config->{'dd'})) {
+	if (!defined($config->{'delay'})) {
+    if (defined($config->{'desc'})) {
+	if (defined($config->{'desc'})) {
+		if (!defined($config->{$i})) {
+    if (defined($config->{'loc'})) {
+	if (defined($config->{'loc'})) {
+    if ((defined($config->{'loc'})) || (!$reconf)) {
+    if (!defined($config->{'queue'})) {
+    if (defined($dat)) {
+	if (!defined($dat)) {
+	if (defined($dat)) {
+	if (defined($dat->{'id'}) and defined($dat->{'driver'})) {
+    if (!defined($dat->{'queuedata'})) {$dat = undef};
+    if (defined($db->{'dat'})) {
+	if (defined($db->{'dat'}{'postpipe'})) {
+	if (((defined $db->{'dat'}{'postpipe'} && $db->{'dat'}{'postpipe'} ne "") &&
+    if (defined($defaultprinter)) {
+	    if (defined($def_firstname)) {
+		    if (defined($def_firstname)) {
+   		if (defined($dest->{'args_byname'}{$optname})) {
+			if (defined($dest->{'args_byname'}{$optname}{'vals_byname'}{$optvalue})) {
+    if (!defined($i)) {$i = 0;}
+if ((defined($in_config->{'desc'})) && ($in_config->{'desc'} =~ m!^\s*$!)) {
+if ((defined($in_config->{'loc'})) && ($in_config->{'loc'} =~ m!^\s*$!)) {
+if (!defined($in_config->{'spooler'})) {
+	    if (defined($item->{'desc'})) {
+	    if (defined($item->{'loc'})) {
+	if (defined($item->{'name'})) {
+	if (defined($item->{'names'})) {
+		    if (!defined($itemshash->{$name})) {
+		    if (defined($itemshash->{$name})) {
+	    if (defined($lp) and $lp and $lp ne '/dev/null') {
+	    if (defined($olddatablob->{'postpipe'})) {
+		if (defined($olddatablob->{'postpipe'})) {
+	if (defined($olddatablob->{'postpipe'})) {
+    if (defined($opt_r)) {$opt_r = undef;}
+			    if defined($optvalue);
+	    if defined($p->{'ErrorPolicy'});
+	    if defined($p->{'KLimit'});
+	if (defined($p->{'location'})) {
+	if (defined($p->{'model'})) {
+	if ((defined($p->{'name'})) &&
+		if (defined($p->{'names'})) {
+	    if defined($p->{'OpPolicy'});
+	if (defined($postpipe)) {
+	    if defined($p->{'PageLimit'});
+		    if (defined($pp->{'name'})) {
+			if (defined($pp->{'names'})) {
+	    if defined($p->{'QuotaPeriod'});
+	    if defined($p->{'Shared'});
+	    if defined($p->{'StateTime'});
+		if ((!defined($p->{'str'}{'if'})) ||
+	    if (defined($rm) and defined($rp)) {
+    if (!defined($s)) {
+    if ((!defined($s)) && (-f "$sysdeps->{'foo-etc'}/defaultspooler")) {
+    if (defined($x)) {
+	    if ($desc ne '') {$c->{'desc'} = $desc;}
+# If description and location contain only whitespace, use an empty string
+		    if ($dest->{'args_byname'}{$optname}{'type'} eq
+	if ($device eq $devicelists[0][$i]) {
+	if ($device eq $devicelists[1][$i]) {
+		    if (-d $oldspooldir);
+	    if (! -e $address) {
+	    if (! -e $file) {
+	if (! -e $file) {
+	    if (($entry->{'names'}[2] eq "Raw queue") ||
+	if (-f $driverfile);
+	# If -f /etc/lpd.conf, lprng
+	    if (($file =~ m!^$sysdeps->{'ptal-pipes'}/(.+)$!) ||
+		if (($file =~ m!^$sysdeps->{'ptal-pipes'}/(.+)$!) ||
+	    if ($first) {
+	    if (-f "$ppdfile");
+	    if (-f $ppdfile) {
+		    if (-f $ppdfile);
+	if (-f "$ppdfile");
+	if (-f $ppdfile);
+	    if (-f "$ppdfile.old");
+	if (!(-f $printrcname)) {die "No file $printrcname!"};
+	if (!(-f $printrcname)) {system "touch $printrcname"};
+    if (-f $sysdeps->{'lpd-pcap'}) {
+	if (-f $sysdeps->{'lprng-conf'}) {
+	if ($if =~ m!foomatic-rip$!) {
+if ($in_config->{'printer'}) {
+	    if ($inprinterblock == 1) {
+	if (($interface eq "foomatic-rip") ||
+	if (($interface eq "simple") || ($interface eq "parallel") ||
+	    if ($interface_options =~ /backend=(\S+)/) {
+		if ($interface_options =~ /^\s*$/) {
+		if ($interface_options =~ /smbpassword=(\S+)/) {
+		if ($interface_options =~ /smbuser=(\S+)/) {
+	    if ($item->{'bool'}{$_}) {
+	    if ($item->{'default'}) {
+		if ($item =~ m!^([^=]*)=(.+)!) {
+    if (!(join("", @retval) =~
+		if (($key ne 'name') && ($key ne 'others')) {
+			    if ($keyword eq "Bin") {
+				    if ($keyword eq "Bins") {
+					if ($keyword eq "Switchset") {
+			if ((lc($optvalue) eq 'true') ||
+			    if ($line =~ 
+		if ($line =~
+	    if ($line =~ /^default\s*:\s*([^:\s]+)\s*$/) {
+	if ($line =~ m!(ptal://?$d)$!) {
+	    if (!($line =~ m!^\s*$!)) {
+			if ((!($line =~ m!^\s*\#!)) && 
+	    if (!($line =~ m!^\s*\#!) && (!($line =~ m!^\s*$!))) {
+		if (!($line =~ m!^\s*\#!) && (!($line =~ m!^\s*$!))) {
+	if ($line =~ m!^\s*printer\s+\"(.+)\"\s*{\s*$!) {
+		if ($line =~ m!^\s*<(.*)Printer\s+([^\s>]+)>\s*$!) {
+	    if (($line !~ m!^\s*-+\s*$!) && 
+	    if ($line =~ m!^\s*}\s*$!) {
+		if ($line =~ m!^\s*(\S+)\s+printer!) {
+		    if (($line =~ m!^\s*(\S+)\s+(\S.*)$!) and
+		    if (($line =~ m!^\s*([^\s:]+)\s*:\s*(\S.*)$!) ||
+	    if ($line =~ /\s*Members:\s*([^\s,]+)\s*$/) {
+	if (!($lines =~ m!\n$!s)) {$lines .= "\n";}
+	    if ($loc ne '') {$c->{'loc'} = $loc;}
+		if ($login =~ m!([^:]*):([^:]*)!) {
+		if (($lp =~ m!^$sysdeps->{'ptal-pipes'}/(.+)$!) ||
+	if (($make) && ($model)) { 
+	    if ($name eq "default") {
+			    if ($nameinuse) {
+	    if ($_->{'names'}[0] eq $name);
+		if ($ncppassword ne "") {
+	    if ($ncpuser ne "") {
+			if ($n eq 'lp') {
+		if ($n eq 'lp') {
+				if ($n eq "lp$i") {
+    if ($nodriver) {
+    if ($nonprinterlines == 1) {
+	    if ($nonprinterlines == 1) {
+    if ($olddatablob) {
+	if (($olddatablob) &&
+	if ($olddatablob) {
+	    if ($olddatablob = load_datablob($config->{'spooler'}, 
+	if (!($olddatablob = load_datablob($sourcespooler, $sourcequeue))) {
+	    if ($olddatablob) {overtake_defaults($olddatablob)};
+	if ($olddatablob) {overtake_defaults($olddatablob)};
+	if ($olddatablob->{'queuedata'}) {
+		    if ($olddatablob->{'queuedata'}{$i}){
+	if (!$olddesc) {
+    if (open CONFIG, "< $sysdeps->{'direct-config'}") {
+#	    if (open FILE, "$file") {
+	if (open PCONF, $sysdeps->{'cups-pconf'}) {
+    if (open SHOWDEFAULTGROUP,
+    if (open VER, "$sysdeps->{'ppr-pprd'} --version |") {
+    if ($opt_C) {
+	    if ($option =~
+		if (($option =~ 
+	    if (!(($option =~ /^F\s*\*([^\*\s=:]+)\s+([^\*\s=:]+)\s*$/) ||
+	    if ($option =~ m!^\s*([^=]+)=([^=]*)\s*$!) {
+		if (($option =~ /^no(.+?)$/) && 
+		if ($option =~ /^\s*(\S)(.*)$/) {
+	if ($opt_n) {
+    if (!$opt_P) {
+	    if (!$opt_P) {
+		    if (!$opt_P) {
+		if (!$opt_P) {
+	if ($opt_P) {
+    if (($opt_p) and ($opt_d)) {
+    if (($opt_P) && ((($config->{'driver'}) && ($config->{'printer'}) &&
+if (!($opt_Q or $opt_P or defined($in_config->{'queue'}))) {
+    if ((!$opt_q) && (!$takenfromconfigfile)) {
+		    if (!$opt_r) {
+			if (($optvalue =~ 
+			if (($optvalue eq '1') || ($optvalue eq '0')) {
+    if ($page =~ m!Common UNIX Printing System!) {
+	    if ($parameters =~ m!([^/]*)/([^/]+)/([^/]+)$!) {
+	    if ($parameters =~ m!([^/]+)/([^/]+)$!) {
+	    if ($parameters =~ m!([^@]*)@([^@]+)!) {
+		if ($parameters =~ m!^-n\s+(\S.*)$!) {
+		if ($parameters =~ m!^-P\s+(\S*)\s+(\S.*)$!) {
+		if ($parameters =~ m!^-q\s+(\S*)\s+(\S.*)$!) {
+		if ($parameters =~ m!^([^-]\S*)\s+(\S.*)$!) {
+		if ($parameters =~ m!^-S\s+(\S*)\s+(\S.*)$!) {
+		if ($parameters =~ m!^-U\s+(\S*)\s+(\S.*)$!) {
+		if ($parameters =~ m!^-W\s+(\S*)\s+(\S.*)$!) {
+	if (!$p->{'bool'}{'force_localhost'}) {
+#      if $pcap =~ m/\n\s*(:.*[^\\]\n\s*:)/m;
+    if( $pcentry ){
+	    if( $pcentry ){
+	    if( $pcentry ne "" ){
+	    if ($p->{'default'}) {
+	if ($p->{'interface'} =~ m!local-port!) {
+	if ($pjloption) {
+	if ($pline =~ m!^\#!) {
+	if ($p->{'name'} eq $config->{'queue'}) {
+	    if ($p->{'name'} eq $default) {
+	if ($p->{'name'} eq 'default') {
+	if ($p->{'name'} eq $name) {
+	if ($p->{'names'}[0] eq $config->{'queue'}) {
+	    if ($p->{'names'}[0] eq $default) {
+	    if ($p->{'names'}[0] eq 'lp') {
+	if ($p->{'names'}[0] eq $name) {
+	    if (!$possible);
+		if (!$possible);
+	    if ($postpipe =~ 
+    if ($postpipe ne "") {
+	if ($postpipe ne "") {
+			if ($pp->{'name'} eq "default$i") {
+	if ($pprversion >= 1.50000102 ) { #1.50a2
+	if ($p->{'remote'}) {
+    if ($printerfound) {
+    # If printing job has to be passed through a special program, put the
+		if ($p->{'str'}{'af'} =~ /\.ppd$/) {
+    if (!$rawqueue) {
+    if ($rawqueue) {
+	    if (!$rawqueue) {
+	if (!$rawqueue) {
+	    if (($rawqueue) && ($config->{'spooler'} eq "lpd")) {
+	if (! -r $config->{'ppdfile'}) {
+    if (!$reconf) {
+    if ($reconf) {
+	if (!$reconf);
+	if ($reconf) {
+	if (($reconf) && ($entry->{'Comment'})) {
+	if (($reconf) && ($entry->{'desc'})) {
+    if ((!$reconf) or ($config->{'connect'})) {
+	if ((-r $sourceppd) && (!$config->{'ppdfile'})) {
+    if (scalar(@comment)) {
+	    if ($smbpassword ne "") {
+		    if ($smbpassword ne "") {
+		if ($smbpassword ne "") {
+	    if (($smbpassword ne "") && ($smbuser eq "")) {
+		if (($smbpassword ne "") && ($smbuser eq "")) {
+	    if ($smbuser eq "") {
+	    if ($smbuser ne "") {
+		if ($smbuser ne "") {
+	    if ($smbuser ne "") {$postpipe .= " -U '$smbuser'";}
+	    if ($smbuser ne "") {$postpipe .= " -U $smbuser";}
+    if (($spooler eq "lpd") ||
+	    if (system("foomatic-configure -s ppr -n default -R")) {
+	    if (system("foomatic-configure -s ppr -n $newname -C default")){
+    if (system $lpadminline) {
+	    #if (system $ppad_bins) {
+	if (system $ppad_comment) {
+	    if (system $ppad_deffiltopts) {
+	if (system $ppad_group) {
+    if ((system $ppad_interface) ||
+	    if (system $ppad_jobbreak) {
+	if (system $ppad_location) {
+	if (!system $ppad_ppd) {
+	if (system $ppad_switchset) {
+	    if ($_ =~ /^tc\d+$/) {
+    # If tcp/localhost:631 opens, cups CUPS is the most sophisticated
+	    # If the printer we want to use as default printer has the
+    # If the printing jobs should not be passed to standard output, put the
+    # If there is no known spooler, set up printers for direct, spooler-less
+	    # If there is no "mtink" backend script for CUPS, use an URI
+	    # If there is no "ptal" backend script for CUPS, use an URI
+    # If the user does not supply info about his printer and/or driver
+		# If the user has supplied only a printer or only a driver
+    # If the user supplies an old numerical printer ID, translate it to
+				    # If the value is enclosed in double 
+			    # If the value is enclosed in double quotes,
+	if ($uri =~ m!^beh:/(\d+)/(\d+)/(\d+)/(\S+)$!) {
+	if (($uri =~ m!^file:$sysdeps->{'ptal-pipes'}/(.+)$!) ||
+			if ($uri !~ /:/) {$uri = "file:" . $uri};
+		if (($username eq "GUEST") && ($password eq "")) {
+		if (($username eq "") && ($password eq "")) {
+				if (($values) && ($values ne "")) {
+			if (($values) && ($values ne "")) {
+			# If we are root and didn't see this entry
+	# If we have a raw queue, delete the PPD file if there is still
+	    if ($workgroup ne "") {$postpipe .= " -W '$workgroup'";}
+	    if ($workgroup ne "") {$postpipe .= " -W $workgroup";}
+	if (-x "$_/pdq") {
+    if (-x $sysdeps->{'ppr-ppr'}) {
+	# If yes, read out its parameters and isolate the original URI.
+    # ignored by foomatic-rip, uncomment this to remove it)
+	# in 30-sec intervals anyway.
+    # In case of LPRng, give SIGHUP to the daemon, LPRng needs this to 
+    $in_config->{'desc'} = "";
+    $in_config->{'loc'} = "";
+    $in_config->{'printer'} =
+    $in_config->{'spooler'} = $s;
+    # In CUPS we never have a $postpipe
+			# in /etc/cups/printers.conf, this printer
+		$inprinterblock = 0;
+	    $inprinterblock = 1;
+	# inserted into the PPD file
+    # Insert the new "default_printer" line
+	    # Inside "printer" block
+		    # Inside <Printer ...> block
+    # installing a queue
+# instead
+			      'int') || 
+		$interface = "";
+		$interface = $1;
+		$interface = "dummy";
+	$interface = $entry->{'Interface'};
+	    ($interface eq "ppromatic")) {
+	    ($interface eq "serial") || ($interface eq "dummy")) {
+    # Interface fields
+	    $interface = "lpr";
+	    # Interface not supported by Foomatic
+		    $interface_options = "";
+	$interface_options = $entry->{'Options'};
+		$interface_options =~ s/backend=(\S+)//;
+	$interface_options =~ s/smbpassword=(\S+)//;
+	$interface_options =~ s/smbuser=(\S+)//;
+		$interface = "parallel";
+		$interface = "serial";
+	    $interface = "simple";
+		$interface = "simple";
+	    $interface = "smb";
+	    $interface = "tcpip";
+	    # in the default group.
+	    # in the trays and other spoolers than PPR do not have automatic
+	# invalid entry
+		    "invalid!\n";
+			"invalid!\n";
+			# is remotely defined
+	# Is the beh (Backend Error Handler) wrapper backend in use?
+    # Is the given queue a valid queue?
+# It also comprises half of a programatic API for user tools: you can
+	    # $item is a "printer" block
+	    # $item is not a "printer" block
+		$items[$currentitem]{$2} = $3;
+					@{$items[$currentitem]{'Bins'}} = 
+		    $items[$currentitem]{'default'} = 
+		$items[$currentitem]{'default'} = 1;
+			    $items[$currentitem]{'DeviceURI'} ||= $uri;
+			$items[$currentitem]{'Info'} ||= $1;
+					$items[$currentitem]{$keyword} = 
+			$items[$currentitem]{'Location'} ||= $1;
+			    ($items[$currentitem]{'name'} eq $name)) {
+		    $items[$currentitem]{'name'} ||= $name;
+			    $items[$currentitem]{'remote'} = 1;
+		    $items[$currentitem]{'State'} ||= $state;
+			$itemshash->{$name} = $#items;
+	    $itemshash->{$p->{'name'}} = $#items;
+	$itemshash->{$p->{'name'}} = $#items;
+		    $itemshash->{$p->{name}} = $#items;
+			    $items[$itemshash->{$name}]{'remote'} = 1;
+	    # It is not possible to copy the given source queue
+	    # its data
+		#join ('" "', @{$entry->{'Bins'}}) . "\"";
+	# Keep previous connection type
+	    # Keep the previous PPD file, only set the options and the
+			# <keyword>: <value1> <value2> ...
+				# <keyword>: <value1> <value2> ...
+	    last;
+		    last;
+			    last;
+				    last;
+				last;
+			last;
+	last if !$devicelists[0][$i];
+	last if !$devicelists[1][$i];
+	last if $#usbdevices >= 0;
+		$lastline =~ s!:\\!:!;
+				 (lc($optvalue) eq 'no')) {
+				 (lc($optvalue) eq 'off') ||
+			    (lc($optvalue) eq 'on') ||
+			    (lc($optvalue) eq 'yes')) {
+			$lcount ++;
+    # Lead with a blank line for new entries
+# learn and control everything about the static properties of print
+    $l = getgrnam("lp"); $lpgid = $l if defined($l);
+    $l = getgrnam($username); $gid = $l if defined($l);
+    $l = getpwnam("lp"); $lpuid = $l if defined($l);
+    $l = getpwnam($username); $uid = $l if defined($l);
+#like system ("chown cupsys $ppdfile"), but
+	    $linecount ++;
+	$linecount ++;
+		$linecount ++;
+#		$line = <FILE>;
+    # line in the config file
+#		$line = join('', <FILE>);
+		     (!($line =~ m!^\s*$!))) {
+			    (!($line =~ m!^\s*$!))) {
+		($line !~ m!^\s*Destination\s+Type\s+Status\s+Charge\s*$!)){
+			($line =~ m!^\s*([^\s:]+)\s*:\s*()$!)) {
+    # Lines depending on the printer/spooler
+    # list-o-printers
+    # list-o-printers, each with comments
+    # list-o-printers, with storage of non-printer-specific lines
+ -L Location     Short phrase describing this printer's location. An empty
+	# Load the datablob of the former configuration
+	# Load the data from the PPD file
+    # Load the PPD file
+	# load the queue data
+	    # local printer
+	    # Local printer or printing to a file
+	# Local printer or printing to a file
+    # Location field
+		    # Location field
+		 'loc'      => $opt_L,
+	    $loc =~ s!^\"!!;
+	    $loc =~ s!\"$!!;
+	$lpadminline .= " -D \"$config->{'desc'}\"";
+		$lpadminline .= " -D \"$makemodel\"";
+		$lpadminline .= " -D \"Raw queue\"";
+	$lpadminline .= " -L \"$config->{'loc'}\"";
+	$lpadminline .= " -P \'$ppdfile\'";
+	$lpadminline .= " -v \"$cupsuri\"";
+	    # "lp" as its name or as an alias name
+	    # LPD
+# lpd://host                      # LPD protocol (default queue, CUPS only)
+# lpd://host/queue                # LPD protocol
+#                                 # (LPD, LPRng, direct)
+		    ($lp =~ m!^/dev/ptal-printd/(.+)$!) ||
+			 ($lp =~ m!^/var/mtink/(.+)$!)) {
+		    ($lp =~ m!^/var/run/ptal-printd/(.+)$!)) {
+	    # LPRng
+              'lprng'=>{ 'delete'    => \&delete_lpd,
+#	 "lprngtool!\n" .
+	   "L=s" => \$opt_L,         # Location
+	$make = $db->{'dat'}{'make'};
+	$makemodel = $db->{'dat'}{'makemodel'};
+	    $makemodel = "$make $model";
+	# Make sure that the last line line ends with a newline character
+    # Make sure that /var/spool/lp-errs exists
+    # Make the printer driver descriptions in /etc/foomatic/pdq visible
+                 manufacturer-supplied PPD file for a PostScript printer).
+	    map { $_ = '' if not defined $_; } @{$item->{'names'}};
+    # member. If there is already a printer called "default", we rename it.
+    mkdir $entry->{'str'}{'sd'}, 0755;
+    mkdir $sysdeps->{'foo-etc'}, 0755;
+    mkdir $sysdeps->{'foo-etc'} . "/direct", 0755;
+    mkdir "$sysdeps->{'foo-etc'}/lpd", 0755;
+    mkdir $sysdeps->{'foo-etc'} . '/pdq', 0755;
+    mkdir $sysdeps->{'foo-etc'} . '/pdq/driverdescr', 0755;
+    mkdir $sysdeps->{'foo-etc'} . '/ppr', 0755;
+	$model = $db->{'dat'}{'model'};
+    # Model/Description field
+    # Modify the "default" fields of the printers appropriately
+	# (More than one retry and/or no disabling) and if the queue is not
+    # Move the /etc/printcap entry for the chosen printer to the first place
+		m!\"?QUEUE\"?\s*=\s*\"?([^\"\s]+)\"?!;
+		m!\"?REMOTE_HOST\"?\s*=\s*\"?([^\"\s]+)\"?!;
+		m!\"?REMOTE_PORT\"?\s*=\s*\"?([^\"\s]+)\"?!;
+		 m!^socket://([^/:]+):([0-9]+)/?$!) {
+		 m!^socket://([^/:]+):([0-9]+)/?$!){
+			     m!^\s*[\+\-]?\s*[0-9]*\.?[0-9]*\s*$!) &&
+		     m!^\s*\{?\s*\"(OPT_|)([^_]+?)_(.+?)\"\s*\}?\s*$!) {
+		m!^\s*\{?\s*\"(OPT_|)(.+?)\"\s*=\s*\"(.*)\"\s*\}?\s*$!) {
+				m!^\s*([^\s:][^:]*)\s*:\s*(.*)$!) {
+		m!^\s*\|\s*($sysdeps->{'cat'}|cat)\s+-?\s*>\s*([^\s]+)\s*$!) {
+		m!^\s*\|\s*($sysdeps->{'nc'}|netcat|nc)\s+(-w\s*1\s+|)([^\s]+)\s+([^\s]+)\s*$!){
+		     m!^\s*\|\s*$sysdeps->{'nprint'}\s+(\S.*)$!s) {
+		m!^\s*\|\s*($sysdeps->{'ptal-connect'}|ptal-connect|ptal-print)\s+(-print\s+|)([^\s]+)(\s+-print|)\s*$!){
+		     m!^\s*\|\s*$sysdeps->{'rlpr'}\s.*-P\s*([^\s\\\@]+)\@([^\s\\\@]+)\s*$!) {
+		     m!^.*\|\s*$sysdeps->{'smbclient'}\s+\"//([^/\s]+)/([^/\s]+)\"\s+(\S.*)$!s) {
+		    m!^\s*system\s+default\s+destination:\s+(\S+)\s*$!) {
+	  m!^\s*try_include\s*\"$sysdeps->{'foo-etc'}/pdq/driverdescr/\*\"\s*$!m)) {
+# mtink:/path/device              # Epson inkjet through mtink daemon
+my $action = ($opt_R ? 'delete' : 'configure');
+    my $address = "";
+	my $address = $p->{'Address'};
+    my $asciidata = $db->getascii();
+	    my $asciidata = $db->getascii();
+    my $backslash = "\\";
+    my $c;
+	my $c = {};
+    my $c = $_[0];
+        my $c = $db->{'dat'}{'queuedata'};
+	my $c = $db->{'dat'}{'queuedata'};
+	my $command = "$sysdeps->{'cups-admin'} -d " .
+    my $command = "$sysdeps->{'cups-lpoptions'} -d " .
+    my (@comment, @items, @comments_in_pc_entry);
+	my($comment, $olddesc);
+    my ($config) = @_;
+    my ($config) = $_[0];
+    my $config = $_[0];
+    my $config = load_direct_config();
+    my ($config, $olddatablob) = @_;
+    my ($config, $pcap )= @_;
+    my ($config, $ppdfile, $rawqueue, $newfoomaticdata) = @_;
+    my ($config, $reconf) = @_;
+    my $cupsuri = "";
+	my $currentitem = -1;
+		my $currentitem = $itemshash->{$1};
+    my $datablob;
+	my $dat = ppdtoperl($config->{'ppdfile'});
+    my $dat = ppdtoperl($ppdfile);
+my $db = new Foomatic::DB;
+my $debug = 0;
+    my $default = '';
+    my $default;
+    my $defaultfromgroup = "  ";
+	my $defaultprinter = '';
+    my $defaultprinter = undef;
+	my $defaultstr = <DEFAULT>;
+	my $defaultstr = join('', <DEFAULT>);
+	    my $def_firstname = undef;
+	    my $desc = $p->{'model'};
+    my ($dest) = $_[1];
+    my ($device) = @_;
+    my $device = $1;
+    my @devicelists = cups_generate_usb_device_lists();
+	    my $devname = $1;
+		    my $devname = $1;
+		my $devname = $1;
+	my $devname = $1;
+	my $d = quotemeta($device);
+    my $driverdesc = `cat $driverfile`;
+    my $driverfile = sprintf('%s/pdq/driverdescr/%s.pdq',
+    my ($entry, $reconf, $p);
+	my $file;
+	    my $file = $1;
+	    my $file = $2;
+		my $file = $2;
+	my $file = $2;
+	my $first = 1;
+my $force = ($opt_f ? 1 : 0); 
+ 	    my $i;
+	    my $i = 0;
+		my $i = 0;
+    my $i = $ARGV[0];
+		my $identity = "";
+	my $if = ($p->{'str'}{'if'} || "");
+my $in_config = {'queue'    => $opt_n,
+    my $inprinterblock = 0;
+    my $interface = "";
+    my $interface_options = "";
+	my $interface_options = $p->{'Options'};
+	my $interface = $p->{'Interface'};
+    my $item;
+	my $item;
+    my @items = ();
+    my @items;
+    my $itemshash = {};
+				my $keyword = $1;
+			my $keyword = $1;
+    my $l;
+	my $lastline = pop(@retval);
+		    my $lcount = 0;
+    my $line;
+	    my $line;
+	my $line;
+    my $linecount = 0;
+	    my $linecount = 0;
+	my $linecount = 0;
+	my $lines = join ("", @others);
+	    my $loc = $p->{'location'};
+		my $login = $1;
+    my $lpadminline =
+	    my $lp = $p->{'str'}{'lp'};
+	my @lpstat = <LPSTAT>;
+    my ($lpuid, $lpgid) = (-1, -1);
+    my ($make, $model, $makemodel);
+	    my $n;
+		    my $n;
+			    my $n;
+		my $name;
+	my $name;
+		    my $name = $1;
+    my $name = $config->{'queue'};
+	my $name = $c->{'queue'} = $p->{'name'};
+	my $name = $c->{'queue'} = $p->{'names'}[0];
+	    my $namefound = 0;
+		my $namefound = 0;
+		    my $nameinuse = 0;
+		my $nameinuse = 0;
+	    my $ncppassword = "";
+	    my $ncpqueue = "";
+	    my $ncpserver = "";
+	    my $ncpuser = "";
+    my @newcap;
+    my @newconf;
+    my $newfoomaticdata = 0;
+	    my $newname = "";
+    my $newname = undef;
+    my @newpconfig = dump_direct_config(\@newconf);
+    my @newpconfig = dump_direct_config($pconfig);
+    my @newprintcap = dump_lpd_printcap($config, \@newcap);
+    my @newprintrc = dump_pdq_printrc(\@newrc);
+    my @newrc;
+	my @newswitchset = ();
+    my $nodriver = (((!$config->{'driver'}) && (!$config->{'printer'}) &&
+    my $nonprinterlines = 0;
+		my $nppdfile = sprintf('%s/lpd/%s.ppd',
+    my $nppdfile = undef;
+	    my $o;
+    my ($olddatablob) = $_[0];
+	    my $olddatablob = load_cups_datablob($opt_n);
+	    my $olddatablob = load_direct_datablob($opt_n);
+	    my $olddatablob = load_lpd_datablob($opt_n);
+	    my $olddatablob = load_pdq_datablob($opt_n);
+	    my $olddatablob = load_ppr_datablob($opt_n);
+	my $olddesc;
+	my( $olddesc );
+		my $oldspooldir = $p->{'str'}{'sd'};
+	    my $option = $_;
+    my $options = "";
+		my $optname = $1;
+my($opt_q, $opt_f, $opt_w, $opt_n, $opt_N, $opt_L, $opt_ppd,
+		my $optvalue = $2;
+    my @others;
+    my $p;
+	    my $p = {};
+	my $p = {};
+	my $p = $_;
+    my $page = ($db->getpage('http://localhost:631/', 1) || "");
+	    my $parameters = $1;
+		my $parameters = $1;
+		my $parameters = $3;
+		my $password = "";
+    my $pcap = join('', <PCAP>);
+    my $pcap = load_lpd_printcap();
+	my @pconf = ();
+    my $pconfig = load_direct_config();
+    my $pconfigname = $sysdeps->{'direct-config'};
+    my $pconf = load_cups_printersconf();
+	my $pconf = load_cups_printersconf();
+    my $pconf = load_direct_config();
+    my $pconf = load_ppr_printers_conf();
+	my $pdqargs;
+	my $pdqopts;
+	my $pjloption = 0;
+    my ($pline, $pcentry);
+	    my $possible = $db->getdat($config->{'driver'}, 
+	my $possible = $db->getdat($config->{'driver'}, 
+    my $postpipe = "";
+    my $postpipe = (defined($dat) ? $dat->{'postpipe'} : "");
+		    my $pp;
+		my $pp;
+	    #my $ppad_bins = "$sysdeps->{'ppr-ppad'} bins delete " .
+	    #my $ppad_bins = "$sysdeps->{'ppr-ppad'} bins ppd " .
+	my $ppad_comment = "$sysdeps->{'ppr-ppad'} comment " .
+	    my $ppad_deffiltopts = "$sysdeps->{'ppr-ppad'} " .
+	my $ppad_group = "$sysdeps->{'ppr-ppad'} group members " .
+    my $ppad_interface = "";
+	    my $ppad_jobbreak = "$sysdeps->{'ppr-ppad'} jobbreak " .
+	my $ppad_location = "$sysdeps->{'ppr-ppad'} location " .
+    my $ppad_options = "";
+	my $ppad_ppd = "$sysdeps->{'ppr-ppad'} ppd " .
+    my $ppad_rip = "";
+	my $ppad_switchset = "$sysdeps->{'ppr-ppad'} switchset " .
+	my $ppd = $db->getppd($config->{'shortgui'});
+    my ($ppdfile, $driverfile, $entry, $reconf, $p);
+    my ($ppdfile, $entry, $reconf, $p);
+    my $ppdfile = sprintf('%s/direct/%s.ppd',
+		my $ppdfile = sprintf('%s/lpd/lp.ppd',
+    my $ppdfile = sprintf('%s/lpd/%s.ppd',
+    my $ppdfile = sprintf('%s/pdq/%s.ppd',
+    my $ppdfile = sprintf('%s/ppd/%s.ppd',
+    my $ppdfile = sprintf('%s/ppr/%s.ppd',
+    #my $ppdfile = sprintf('%s/%s.ppd',
+	my @ppop_dest = <PPOP_DEST>;
+    my $pprversion;
+    my $printcap = $sysdeps->{'lpd-pcap'};
+	    my @printerdefaults = split('|', $p->{'Switchset'});
+    my $printerfound = 0;
+    my $printrc = $_[0];
+	my @printrcdefaults = split(",", $pdqopts);
+    my $printrc = load_pdq_printrc();
+	my $printrc = load_pdq_printrc();
+    my $printrc = load_ppr_printers_conf();
+    my $printrcname = "";
+    my $printrcname = $sysdeps->{'pdq-printrc'};
+    my @printrc = <PRINTRC>;
+my $procs = { 'lpd' => { 'delete'    => \&delete_lpd,
+my $progname = ($1 || $0);
+		my $queue = "";
+    my ($queue) = $_[0];
+    my $queuedeleteline =
+    my $queuedeleteline = "$sysdeps->{'ppr-ppad'} delete " .
+    my $rawqueue = 0;
+    my $rawqueue = ((!defined($db->{'dat'}{'args'})) ||
+    my ($rawqueue, $newfoomaticdata, $makemodel) =
+    my ($rawqueue, $newfoomaticdata, $makemodel, $beh) =
+	    my $realdevice = $1;
+	    my $remhost = $1;
+	my $remhost = $1;
+		my $remhost = $2;
+	    my $remport = $1;
+        my $remport = $2;
+	    my $remport = $2;
+	    my $remqueue = $1;
+		my $remqueue = $1;
+        my $remqueue = $2;
+	    my $remqueue = $2;
+    my @retval;
+	    my ($rm, $rp) = ($p->{'str'}{'rm'}, $p->{'str'}{'rp'});
+    my $s;
+		my $server = "";
+		my $servershare = "$1/$2";
+my $shortgui = ($opt_w ? 1 : 0); 
+	    my $smbpassword = "";
+		my $smbpassword = "";
+	    my $smbserver = "";
+		my $smbserver = $1;
+	    my $smbshare = "";
+		my $smbshare = $2;
+	    my $smbuser = "";
+		my $smbuser = "";
+	my $sourceppd = $olddatablob->{'ppdfile'};
+    my ($sourcespooler, $sourcequeue, $olddatablob, $beh);
+    my ($spooler, $queue) = @_;
+    my $spoolersubdir;
+		    my $state = $2;
+	my @switchset = split('|', $entry->{'Switchset'});
+    my $takenfromconfigfile = 0;
+	my $tci = 0;
+    my ($t, $v) = @_;
+    my ($uid,$gid) = (-1, -1);
+    my ($uri) = @_;
+	my $uri = "";
+		    my $uri = $2;
+	my $uri = $p->{'DeviceURI'};
+    my @usbdevices;
+    my @usburis = grep { s!^direct usb:!! and chomp } <F>;
+		my $username = "";
+    my ($username, $file) = @_;
+				my $values = $2;
+			my $values = $2;
+	my $ver = <VER>;
+	    my $workgroup = "";
+		my $workgroup = "";
+    my $x = undef;
+	my $yn = <STDIN>;
+		    $n = '';
+		    "name and the queue name!\n";
+				    "$name\" corrupted:\n    $line\n";
+    # named "default" containing the chosen default printer as its only
+	    # name "default", we must use the new name as the member name
+			(($name eq "default") ||
+			       ($name eq $defaultfromgroup));
+			 ($name eq $defaultfromgroup));
+			($name eq $defaultprinter);
+		    $namefound = 1 - $nameinuse;
+		$namefound = 1 - $nameinuse;
+			    $nameinuse = 1;
+				    $nameinuse = 1;
+		$name = $newname;
+		    # name of any boolean option, so it will be ignored by 
+	$name =~ s/\.ppd$//i;
+		    $name =~ s!\s*(.+)\s*!$1!;
+		# native PostScript PPD file
+		    $ncppassword = "";
+		$ncppassword = "";
+		    $ncppassword = $2;
+		$ncpqueue = $2;
+		$ncpserver = $1;
+		$ncpuser = "";
+		    $ncpuser = $1;
+		    $ncpuser = $login;
+# ncp://user:pass@host/queue      # Netware (LPD, LPRng, direct)
+	    # necessary
+    # new config file
+	    $newfoomaticdata = 1;
+				    $newname);
+					    $newname);
+	    $newname = "default$i";
+		$newname = "lp$i";
+		# New PPD file name
+	    next if (defined($config->{'queue'})
+	next if (defined($config->{'queue'})
+	next if (defined($itemshash->{$name}));
+	    next if (!(defined($p->{'name'})));
+	next if !defined($p->{'name'});
+	next if (!(defined($p->{'name'})));
+	next if !defined($p->{'names'});
+	    next if $item =~ m!^\s*$!;
+	    next if ($name =~ /^\./);
+	next if (($name =~ /^\./) || ($name =~ /~$/));
+	next if $pline eq "";
+	    next if ($queue ne $p->{'name'});
+	next if ($queue ne $p->{'name'});
+	next if ($queue ne $p->{'names'}[0]);
+	next unless ($name =~ /\.ppd$/i);
+	                  [ -N 'Name/Descr.' ] [ -L 'Location Info' ] \\
+			  [ -N 'Name/Descr.' ] [ -L 'Location Info' ] \\
+ -N Name/Descr.  Long name/Short Description. An empty string ("") deletes
+    # no CUPS running.
+	    # No Foomatic/PPD data
+		$nonprinterlines = 0;
+	    $nonprinterlines = 1;
+    # No queue manipulation without knowing the name of the queue
+                 no queue name gives info about all installed queues for the
+    # Nothing found, do not correct the input
+	# now signal to use it
+	# now we join lines with \ at end
+ -n queuename    Configure/create/delete/query this print queue
+	   "N=s" => \$opt_N,         # human-readable Name (Model, 
+	   "n=s" => \$opt_n,         # queue Name
+ N               The first index of the Perl array, default: 0
+                 of queue name supplied the Perl data structure of the 
+		 ($#{$olddatablob->{'args'}} < 0))) {  # -> source queue raw
+	    ($olddatablob->{'driver'} eq $config->{'driver'}) &&
+	    ($olddatablob->{'id'} eq $config->{'printer'}) &&
+		    ($olddatablob->{'queuedata'}{'foomatic'})) {
+	    $olddatablob = undef;
+		$olddatablob = undef;
+	    $olddesc = $entry->{'Comment'};
+	    $olddesc = $entry->{'desc'};
+	    $olddesc = $p->{'Info'};
+		# Old PPD file name
+	    # Omit non-printer-block items
+	# Omit non-printer-block items
+                 one changes the spooler.
+	# one from a former queue.
+# one "-o" option on one command line.
+	# Only ".ppd" files are printer descriptions.
+			  [ -o option1=value1 -o option2 ... ] \\
+	                  [ -o option1=value1 -o option2 ... ] [ -q ]
+	    @{$o->{'options'}} = ();
+ -o option       Set the switch option by default in this queue
+ -o option=value Use value as the default for option in this queue
+	   "O"   => \$opt_O,         # get printer support Overview
+	open DEFAULT, "$sysdeps->{'cups-lpstat'} -d |" or
+	open DEFAULT, "$sysdeps->{'pdq-print'} -h 2>&1 |" or
+    opendir PCONFDIR, "$sysdeps->{'foo-etc'}/direct" or
+	opendir PCONFDIR, "$sysdeps->{'ppr-etc'}/printers" or
+	open F, "ls -1 $pattern 2>/dev/null |" or next;
+    open F, "$sysdeps->{'cups-lpinfo'} -v |" or return ([], []);
+    open F, "$sysdeps->{'cups-lpinfo'} -v |" or return (@_);
+	open LPSTAT, "$sysdeps->{'cups-lpstat'} -l -d -p -v |" or 
+    open PCAP, $sysdeps->{'lpd-pcap'} or die "Cannot read printcap file!\n";
+	    open PCONFFILE, "$sysdeps->{'ppr-etc'}/printers/$name" or
+    open PCONFIG, "> $pconfigname" or die "Cannot write $pconfigname!\n";
+		    open PPAD_SHOW,"$sysdeps->{'ppr-ppad'} show $name |" or 
+	    open PPDFILE, "> $ppdfile" or die "Cannot write \'$ppdfile\'!\n";
+	open PPOP_DEST, "$sysdeps->{'ppr-ppop'} destination all |" or 
+    open PRINTCAP, "> $printcap" or die "Cannot write $printcap!\n";
+    open PRINTRC, "> $printrcname" or die "Cannot open $printrcname!";
+    open PRINTRC, "$printrcname" or die "Cannot open $printrcname!";
+    open PRINTRC, "> $printrcname" or die "Cannot write $printrcname!\n";
+    open PRINTRC, $sysdeps->{'pdq-printrc'} or 
+ -O              Print XML Overview of all known printer/drivers
+   $opt_att, $opt_delay, $opt_h);
+   $opt_d, $opt_p, $opt_s, $opt_C, $opt_R, $opt_D, $opt_Q, $opt_P,
+		    ($option =~ 
+		  ($option =~ /^F\s*([^\*\s=:]+)\s*$/))) {
+		  ($option =~ /^F\s*\*([^\*\s=:]+)\s*$/) ||
+			 ($option =~ /^F\s*([^\*\s=:]+)\s*$/)) {	
+		  ($option =~ /^F\s*([^\*\s=:]+)\s*=\s*([^\*\s=:]+)\s*$/) ||
+    # option of "lpadmin").
+	# option of "lpadmin").
+	    $options = "";
+                 options are entered as default settings then, from a
+		"$options $interface_options";
+		 'options'  => \@opt_o,
+                 options, possible choices, default settings, ..., for use 
+		    $options .= " smbpassword=\"$smbpassword\"";
+		$options = "smbuser=\"$smbuser\"";
+   $opt_O, $opt_X, $opt_c, @opt_o, $opt_r, $opt_dd, $opt_nodd, 
+			    ($optvalue <=
+			    ($optvalue >=
+			    $optvalue
+				$optvalue;
+			    $optvalue = '0';
+			    $optvalue = '1';
+			$optvalue = Foomatic::DB::checkoptionvalue
+		"or is corrupted!\n";
+    or $progname -C [ -s spooler ] -n queuename \\
+    or $progname -D [ -s spooler ] -n queuename [ -q ]
+    or $progname -O
+    or $progname -P [ -s spooler ] [ -n queuename ] \\
+    or $progname -P [ -s spooler ] [ -n queuename ] [ -q ] [ N ]
+    or $progname -Q [ -s spooler ] [ -n queuename ] [ -q ] [ -r ]
+    or $progname -R [ -s spooler ] -n queuename [ -q ]
+    or $progname -X [ -p printer ] [ -d driver ]
+	   "o=s" => \@opt_o,         # default printing Options
+		@others = ();
+	    # Outside "printer" block
+		    # Outside <Printer ...> block
+    # Overtake all entries except the one of the deleted printer to the
+	    # Overtake data from the former configuration
+                 overtaken. Additional arguments modify the copy. This
+	    # Overtake the former default settings
+	# Overtake the former default settings
+	    # Overtake the former $postpipe
+	# Overtake the former $postpipe
+    # overtake the option default settings from $olddatablob
+overview() if $opt_O;
+		    $p = {};
+		$p = {};
+		$p->{$1} = $2;
+	    # paper tray selection. In addition "ppop media <queue>" is
+# parallel:/path/device           # Local parallel printer
+		    $parameters = $1;
+		    $parameters = $2;
+		$parameters = $2;
+			      'password')) {
+		    $password = $1;
+	    @{$p->{'Bins'}} = ();
+		    $p->{'bool'}{$1} = 1;
+    $pcap =~ s!\\MEMEMEM!\\!g;
+    $pcap =~ s!\\\n!!gms;
+    $pcap =~ s!^(\s*\#.*\\)$!${1}MEMEMEM!gm;
+    $pcentry = "";
+	    $pcentry = $pline;
+		$pcentry .= $pline;
+	    @pconf = <PCONF>;
+		    $p->{'default'} = ($1 eq "Default");
+	    $p->{'default'} = (($name eq "default") ||
+	    $pdqargs = $p->{'driver_args'};
+    # PDQ configuration file
+              'pdq'  =>{ 'delete'    => \&delete_pdq,
+    # pdq executable in our path somewhere?
+	    $pdqopts = $p->{'driver_opts'};
+    # Personal default spooler
+	    $p->{'interface_args'} =~
+	    $p->{'interface_args'} =~ m!\"?PORT\"?\s*=\s*\"?([^\"\s]+)\"?!;
+	    # Pipe output into a command
+		$pjloption = 1;
+				$p->{$keyword} = $values;
+	$pline =~ s/^\s+//;
+	    $p->{'name'} = $1;
+		    $p->{'name'} = $2;
+	    ($p->{'name'} eq $config->{'queue'})) {
+	    $p->{'name'} = $name;
+	$p->{'name'} = $name;
+		$p->{'names'}[0] = $newname;
+	    $p->{'names'}[4] = 'lp';
+		    $p->{'num'}{$1} = $2;
+	    # pointing to the pipe set up by mtinkd.
+	    # pointing to the pipe set up by ptal-printd.
+	   "P"   => \$opt_P,         # Perl queue/printer/driver info output
+    # port ...)
+	    $postpipe = "";
+	    # $postpipe
+	    $postpipe = $1;
+# postpipe:"<command line>"       # Free-formed backend command line
+	    $postpipe = $db->{'dat'}{'postpipe'};
+#		$postpipe = "| $line";
+	# $postpipe (LPRng, LPD, and no spooler only)
+		$postpipe =~ m!\s*\|\s*(\S.*)$!;
+		    $postpipe .= " -n";
+	    $postpipe .= " -N -P -c 'print -' ";
+		    $postpipe .= " -P $ncppassword";
+	    $postpipe = "| $postpipe";
+	    $postpipe .= " -q $ncpqueue -N - 2>/dev/null";
+		$postpipe .= " '$smbpassword'";
+		$postpipe .= " $smbpassword";
+		$postpipe = "$sysdeps->{'cat'} > $file";
+	    $postpipe = "$sysdeps->{'cat'} > $sysdeps->{'mtink-pipes'}/$1";
+	    $postpipe = "$sysdeps->{'nc'} -w 1 $remhost $remport";
+	    $postpipe = "$sysdeps->{'nprint'} -S $ncpserver";
+	    $postpipe = "$sysdeps->{'ptal-connect'} $devname -print";
+		$postpipe = "$sysdeps->{'ptal-connect'} $devname -print";
+		$postpipe = "$sysdeps->{'rlpr'} -q -h -P " .
+	    $postpipe = "$sysdeps->{'rlpr'} -q -h -P $remqueue\@$remhost";
+	    $postpipe = "$sysdeps->{'smbclient'} '//$smbserver/$smbshare'";
+	    $postpipe = "$sysdeps->{'smbclient'} \"//$smbserver/$smbshare\"";
+		$postpipe .= " -U $ncpuser";
+	    $ppad_interface = "$sysdeps->{'ppr-ppad'} interface " .
+	$ppad_interface = "$sysdeps->{'ppr-ppad'} interface " .
+    # "ppad options" commands
+	    $ppad_options = "$sysdeps->{'ppr-ppad'} options " .
+	$ppad_options = "$sysdeps->{'ppr-ppad'} options " .
+	    $ppad_rip = "$sysdeps->{'ppr-ppad'} " .
+	$ppad_rip = "$sysdeps->{'ppr-ppad'} " .
+		$ppad_rip = "$sysdeps->{'ppr-ppad'} " .
+		       "\'$ppdfile\'") and
+    # PPD file argument for the printer
+		     'ppdfile', 'dd', 'att', 'delay')) {
+    # PPD file name
+	# PPD file of the source queue, if it exists, and if the user
+		 'ppdfile'  => $opt_ppd,
+	    # PPD files.
+    $ppdfile = sprintf('%s/lpd/%s.ppd',
+    $ppdfile = sprintf('%s/pdq/%s.ppd',
+    $ppdfile = sprintf('%s/ppr/%s.ppd',
+		# PPD options are incorporated in the PPD file now and so
+			  [ --ppd ppdfile ] \\
+	                  [ --ppd ppdfile ] [ -d driver -p printer ] \\
+ --ppd ppdfile   Set up the queue using the PPD file ppdfile (can be a
+	   "ppd=s" => \$opt_ppd,     # PPD file
+		    # PPR 1.50a2 has a bug and needs at least one option for
+              'ppr'  =>{ 'delete'    => \&delete_ppr,
+ -p printer      Foomatic id for printer. When a non-raw queue is created,
+    # PPR is also very sophisticated so check for this spooler if there is
+		 "PPR or you have\nmistyped.\n");
+	$pprversion = 0;
+		    (($pprversion < 1.50000103 ) ? " 0" : "");
+	$pprversion = (1e8 * $1 + 1e6 * $2 + 1e4 * $4 +
+ -P              Query existing configuration (gives Perl data structure of
+    print 
+	print "AFTER '$pcap'\n" if $debug;
+    print $asciidata;
+	    print $asciidata;
+    print $db->get_overview_xml($opt_f);
+		print "<defaultqueue>$default</defaultqueue>\n";
+		    print "<defaultqueue>$def_firstname</defaultqueue>\n";
+		    print "<defaultqueue>$p->{'name'}</defaultqueue>\n";
+			print "<defaultqueue>$p->{'names'}[0]" .
+			#print Dumper($itemshash);
+    # printer, description, location
+	    $printerfound = 1;
+    # Printer model name (for comment field of the queue configuration)
+                 printer must be specified in addition ("-p" option)
+		 'printer'  => $opt_p,
+	# printers
+    # printing.
+	    # Printing through "mtinkd"
+	# Printing through "mtinkd"
+	print "LINE '$pline', pcentry '$pcentry'\n" if $debug;
+    print PCONFIG dump_direct_config($pconfig);
+    print PCONFIG @newpconfig;
+	print "PC '$pcap'\n" if $debug;
+	    print_perl_combo_data($config);
+	    print_perl_combo_data($config, $olddatablob);
+	    print PPDFILE $db->getppd($config->{'shortgui'});
+	    print PPDFILE "*PPD-Adobe: \"4.3\"\n*%\n";
+	    print PPDFILE "*% This is a raw (driverless/unfiltered) " .
+    print PRINTCAP dump_lpd_printcap($config, $pcap);
+    print "Printcap:\n" . Dumper(\@items ) if $debug;
+    print PRINTCAP @newprintcap;
+	print "PRINTCAP (spooler '" . $config->{'spooler'} . "') " . Dumper(\@retval) . "\n" if $debug;
+    print PRINTRC dump_pdq_printrc($printrc);
+    print PRINTRC @newprintrc;
+    print PRINTRC @printrc;
+# print queues, drivers, spoolers, etc using the foomatic database and
+	print "</queues>\n";
+	print "<queues>\n";
+	$printrcname = "$ENV{HOME}/.printrc";
+	$printrcname = "$sysdeps->{'pdq-printrc'}";
+	    print "Reconfigure of ", Dumper($p);
+	    print "Reconfigure of ", Dumper($p) if $debug;
+    print STDERR <<EOH;
+	print STDERR "You appear to be using $s.  Correct? ";
+	    print STDERR "You must specify a connection with -c.\n";
+    print STDERR "You must specify a queue name with -n!\n";
+	print $x;
+&{$procs->{$in_config->{'spooler'}}{$action}}($in_config);
+    # provided
+	   "p=s" => \$opt_p,         # Printer
+		    $p->{'str'}{'af'} = $nppdfile;
+		    ($p->{'str'}{'if'} ne $sysdeps->{'foomatic-rip'})) {
+		$p->{'str'}{'sd'} = sprintf('%s/%s',
+		# "ptal-connect" command
+    # ("ptal:/mlc:usb:dj450") and the current CVS of HPOJ uses two
+# ptal:/provider:bus:name         # HPOJ MLC protocol (hpoj.sf.net,obsolete)
+    # PTAL URIs listed by "lpinfo -v"
+	    push( @comment, @comments_in_pc_entry );
+	    push (@comment, $pline);
+	    	push (@comments_in_pc_entry, $pline);
+		push (@{$c->{'options'}}, "$2");
+		push (@{$c->{'options'}}, "$2=$3");
+	    push (@{$c->{'options'}}, "$opt->{'name'}=$opt->{'default'}");
+	push (@{$c->{'options'}}, "$opt->{'name'}=$opt->{'default'}");
+    push (@{$entry->{'comments'}},
+    push (@{$entry->{'comments'}}, "\n")
+			push(@items, {});
+	push (@items, {'comments' => [ @comment ]});
+	    push (@items, { 'itemstr' => $pcentry,
+		push (@items, {'others' => join ("", @others )});
+	push (@items, {'others' => $lines});
+	    push (@items, $p);
+		    push (@items, $p);
+		push (@items, $p);
+	push (@items, $p);
+	push (@newcap, $_)
+	push (@newcap, $p);
+	push (@newconf, $_)
+	push (@newrc, $_)
+		    push (@newswitchset, "-$1 \"$2\"");
+		    push (@{$o->{'options'}}, "$1");
+		    push (@{$o->{'options'}}, "$1=$2");
+	    push(@others, $line);
+				push (@{$p->{'Bins'}}, $values);
+	push(@{$pcap}, $entry);
+	push(@{$pconfig}, $entry);
+		    push (@{$p->{'names'}}, $name);
+    push @printrc, "default_printer $config->{'queue'}\n";
+	push (@printrcdefaults, split(",", $pdqargs));
+	push(@{$printrc}, $entry);
+	    push (@retval, 
+		push (@retval, 
+		push (@retval, "    :$_:${backslash}\n");
+		push (@retval, "$item->{'name'} desc:$item->{'desc'}\n");
+		push (@retval, "$item->{'name'} loc:$item->{'loc'}\n");
+	    push (@retval, $item->{'others'});
+	    push (@retval, (join('|', @{$item->{'names'}}) . ":${backslash}\n"));
+	push (@retval, $lastline);
+	    push (@retval, "$_\n");
+	    push (@retval, "\}\n");
+	    push (@retval, "printer \"$item->{'name'}\" \{\n");
+		    push (@retval, "\t$key $item->{$key}\n");
+    # Put in a useful comment for both new and old entries
+    # Put it out
+		# Put out warning
+	# Put $postpipe into the data structure, so that it will be
+			  [ -q ]
+	   "Q"   => \$opt_Q,         # Query queue info
+ -Q              Query existing configuration (gives XML summary). Supplying
+ -q              Run quietly and non-interactive
+# query, cancel, reorder, and redirect them.
+                         'query'     => \&query_cups,
+                         'query'     => \&query_direct,
+                         'query'     => \&query_lpd },
+                         'query'     => \&query_lpd,
+                         'query'     => \&query_pdq,
+                         'query'     => \&query_ppr,
+    # Query the default printer
+    #			  $queue);
+		       $queue);
+			  $queue);
+		    $queue = $1;
+	        #"queue \"$config->{'queue'}\"!\n";
+		    "queue \"$config->{'queue'}\"!\n";
+### Queue manipulation functions for both LPD and LPRng
+### Queue manipulation functions for CUPS
+### Queue manipulation functions for direct, spooler-less printing
+### Queue manipulation functions for PDQ
+### Queue manipulation functions for PPR
+	"</queue>\n";
+		    "queue \"$newname\"!\n";
+	    "\{ \"QUEUE\" = \"$remqueue\", \"REMOTE_HOST\" = " .
+    # queue set
+# queues here. With the sister program foomatic-printjob, you can do
+		"queue, this PPD file only carries\n" .
+	    # Queue with printer-bound USB URI transferred from CUPS,
+		# Queue with printer-bound USB URI transferred from CUPS,
+				    # quotes, remove the quotes
+	# raw queue
+		    $rawqueue = 1;
+		$rawqueue = 1;
+    # raw queue. To make a raw queue out of a formerly filtered one, one
+	# Raw queue with $postpipe, use a "PPD" only containing the
+		"readable.\n";
+	# Read data from source queue
+    # Read out previous interface settings
+# Read out the program name with which we were called, but discard the path
+	    # Read printer block name
+    # Read the config file
+    # Read the previous config file
+    # Read the previous configuration
+    # Read the previous /etc/printcap
+    # Read the previous /usr/lib/pdq/printrc
+    # recognize a new queue
+    # recognize the changes
+    $reconf = 0;
+	    $reconf = 1;
+	    "\"$remhost\" \}";
+	    # Remote LPD
+	# Remote LPD
+	    "\{ \"REMOTE_PORT\" = \"$remport\", \"REMOTE_HOST\" = " .
+		    # Remote printer, only keep it when the "-r" option is
+	# remote printers.
+    # Remove all valid "default_printer" lines
+	# remove \ in comment lines
+	    # Remove 'lp' as alias name
+	# Remove "rm" and "rp" tags to avoid problems when overwriting a
+	# Remove the config files
+			    # remove the quotes
+		    "$remqueue\@$remhost";
+	    # Rename a printer whose first name is 'lp'
+	# Rename a printer whose name is 'default'
+    rename $driverfile, "$driverfile.old~" 
+    # Rename old $driverfile, if any
+    # Rename old driverfile, if any, use the "~" to make it appear an 
+    # Rename old $ppdfile, if any
+		# Rename old $ppdfile, if any
+		rename $oldspooldir, $p->{'str'}{'sd'}
+    rename $pconfigname, "$pconfigname.old";
+		rename $ppdfile, $nppdfile
+	rename "$ppdfile.old", "$ppdfile"
+    rename "$ppdfile", "$ppdfile.old" 
+    rename $ppdfile, "$ppdfile.old" 
+    rename $printcap, "$printcap.old" or die "Cannot backup $printcap!\n";
+    rename $printrcname, "$printrcname.old" or
+    # Rename the PPD file
+		# Rename the printer
+		# Rename the spool directory
+    # (required for setting a remote queue as default)
+    # Results
+	                             # retries of failed backend
+                 retries set the value to zero, for standard CUPS
+	    # Retrieve data from the Foomatic database
+    return @_;
+    return;
+	return;
+    return 1;
+	return 'cups';
+    return $dat;
+    return ($datablob);
+    return $device;
+    return $device if (($#{$devicelists[0]} < 0) ||
+    return $device if $device =~ m!^//!;
+    return $device if $device =~ m!^/[^/]!;
+	    return $devicelists[0][$i];
+	    return $devicelists[1][$i];
+    return "direct";
+    return '' if !defined($v);
+    return ([], []) if $#usbdevices < 0;
+    return ([], []) if $#usburis < 0;
+    return \@items;
+	    return 'lpd';
+	    return 'lprng';
+	    return 'pdq';
+	return 'ppr';
+    return ($rawqueue, $newfoomaticdata, $makemodel,
+	    return $realdevice;
+    return @retval;
+    return "  <$t>$v</$t>\n";
+	return undef;
+    return (\@usbdevices, \@usburis);
+	# Revert changed config files
+	    "rip \"$config->{'queue'}\"";
+		    "rip \"$config->{'queue'}\"";
+		"rip \"$config->{'queue'}\"";
+		    "rip \"$config->{'queue'}\" foomatic-rip x" .
+ -r              list also remote queues (CUPS only).
+		# "rm" and "rp" tags in /etc/printcap and filtering it
+	# "root"
+	   "r"   => \$opt_r,         # list Remote queues
+           "R"   => \$opt_R,         # Remove queue
+ -R              Remove this whole queue entirely (just give -n queuename)
+    # Save old $driverfile, if any
+    # Save old driver file, use the "~" to make it appear an editor
+    # Save old $ppdfile, if any
+		   scalar(localtime(time))),
+        $s = `cat $ENV{'HOME'}/.defaultspooler`;
+        $s = `cat $sysdeps->{'foo-etc'}/defaultspooler`;
+		# script (if the script is there)
+    ($_ =~ /^\s*default_printer/ and $_="") foreach @printrc;
+	$s = detect_spooler();
+	    # Search for a free name
+		# Search for a free name
+	# Search for the appropriate queue
+	# Search for the correct queue
+	    # Search the current queue
+#	 "See the BUGS section in the manpage for details.\n")
+# serial:/path/device             # Local serial printer
+		    $server = $1;
+		    "server name and the queue name!\n";
+		    "server name and the share name!\n";
+	set_default_options($c, $dat);
+    set_default_options($c, $db->{'dat'});
+	set_default_options($c, $db->{'dat'});
+    set_default_options($config, $db->{'dat'});
+	set_default_options($config, $db->{'dat'});
+	    # Set default option settings and $postpipe
+	    set_default_options($o, $dat);
+    # Set the default printing options by doing changes on the Perl
+    # Set the default printing options supplied on the command line
+    # Set the initial line of the "printer" block in /usr/lib/pdq/printrc
+	    # Set the options for PPR's "smb" interface
+    # Set the printer queue name
+    # Set the printer queue name line in /etc/printcap
+    # Set to 1 when we retrieve a data set from the Foomatic database
+	# Set up connection type
+	    # Set up the command line for printing on the Netware server
+	    # Set up the command line for printing on the SMB server
+		 'shortgui' => $shortgui,
+    # simply passed to lpadmin.
+    # slashes ("ptal://mlc:usb:dj450"). Correct the user-supplied URI
+		    $smbpassword = "";
+		$smbpassword = "";
+		    $smbpassword = $1;
+		    $smbpassword = $2;
+	    # SMB (Printer on Windows server)
+		$smbserver = $1;
+		$smbserver = $2;
+		$smbshare = $2;
+		$smbshare = $3;
+		    $smbuser = $1;
+		    $smbuser = "GUEST";
+		$smbuser = "GUEST";
+		    $smbuser = $login;
+# smb://user:pass@wgrp/host/queue # Windows (CUPS, PPR, LPD, LPRng, direct)
+		    $smbuser = "ppr";
+			$smbuser .= ":$smbpassword";
+	    # Socket
+	    # Socket (AppSocket/HP JetDirect)
+	# Socket (AppSocket/HP JetDirect)
+# socket://host:port              # TCP aka appsocket
+# socket://host                   # TCP aka appsocket (port 9100)
+    # Some stuff for renaming a queue named "lp"
+	# so that an old queue gets overwritten
+    # so that LPRng considers it as the default printer
+	    $sourcequeue = $ARGV[0];
+	    $sourcequeue = $ARGV[1];
+	    $sourcespooler = $ARGV[0];
+	    $sourcespooler = $config->{'spooler'};
+	                  [ sourcespooler ] sourcequeue \\
+		    # special case of 'tc' items, as there can be more 
+	    # special case of 'tc' items, as there can be more than one
+			splice(@items, $currentitem, 1);
+	splice(@retval,0,0,"# Line inserted by $progname\ntry_include " .
+					    split(", ", $values);
+	($spooler eq "lprng")) {
+    # spooler, if it is running, it is usually the primary printing
+# spooler-less printing.
+		 "spooler-less printing or you have\nmistyped.\n");
+		 'spooler'  => $opt_s,
+	$spoolersubdir = 'cups';
+	$spoolersubdir = 'direct';
+	$spoolersubdir = 'lpd';
+	$spoolersubdir = 'pdq';
+	$spoolersubdir = 'ppr';
+    # spooler, we don't need to remove it really, because it will be
+	  sprintf ("\# Entry edited %s by $progname.",
+	sprintf("<queue foomatic=\"%d\" spooler=\"%s\">\n", 
+		  sprintf("    :$_#%s:${backslash}\n", $item->{'num'}{$_}));
+		      sprintf("    :$_=%s:${backslash}\n", $item->{'str'}{$_}));
+		      sprintf("    :tc=%s:${backslash}\n", $item->{'str'}{$_}));
+	   "s=s" => \$opt_s,         # Spooler
+ -s spooler      Explicit spooler type (cups, lpd, lprng, pdq, ppr, direct)
+    ($_ =~ s!^\s*try_include\s*\"$sysdeps->{'foo-etc'}/pdq/\*\"\s*$!\#$&!m)
+		    $state =~ s/\s+-$//;
+# stdout                          # Standard output (direct)
+	    # Store all non-printer-block stuff at first
+			      'string') || 
+                 string ("") deletes the location.
+    # structure produced by "getdat", before the spooler-specific
+	# Stuff data into the $config structure, all items must be defined,
+sub changeowner {
+sub cups_correct_ptal_uri {
+sub cups_generate_usb_device_lists {
+sub cups_usb_device_uri_to_printer_uri {
+sub cups_usb_printer_uri_to_device_uri {
+sub default_cups {
+sub default_direct {
+sub default_lpd {
+sub default_lprng {
+sub default_pdq {
+sub default_ppr {
+sub delete_cups {
+sub delete_direct {
+sub delete_lpd {
+sub delete_pdq {
+sub delete_ppr {
+sub detect_spooler {
+sub dump_config {
+sub dump_direct_config {
+sub dump_lpd_printcap {
+sub dump_pdq_printrc {
+sub getoldqueuedata {
+sub get_xml {
+sub help {
+sub load_cups_datablob {
+sub load_cups_printersconf {
+sub load_datablob {
+sub load_direct_config {
+sub load_direct_datablob {
+sub load_lpd_datablob {
+sub load_lpd_printcap {
+sub load_pdq_datablob {
+sub load_pdq_printrc {
+sub load_ppr_datablob {
+sub load_ppr_printers_conf {
+sub overtake_defaults {
+sub overview {
+sub print_perl_combo_data {
+sub query_cups {
+sub query_direct {
+sub query_lpd {
+sub query_pdq {
+sub query_ppr {
+sub set_default_options {
+sub setup_cups {
+sub setup_direct {
+sub setup_lpd {
+sub setup_pdq {
+sub setup_ppr {
+sub _tag {
+sub unimp {
+sub writeppdfile {
+                 supplied queue the option default settings are used.
+                 Supplying no queue, printer, and driver gives info about
+# supposed to be a file, and CUPS doesn't entirely reflect that.
+    symlink "$sysdeps->{'cups-etc'}/ppd/", "$sysdeps->{'foo-etc'}/cups";
+    # symlink $sysdeps->{'foo-etc'} . '/pdq', $sysdeps->{'pdq-foomatic'};
+	"$sysdeps->{'cups-admin'} -p \"$config->{'queue'}\" -E";
+	"$sysdeps->{'cups-admin'} -x \"$config->{'queue'}\"";
+		       $sysdeps->{'cups-etc'},
+			      $sysdeps->{'cups-etc'},
+    #			  $sysdeps->{'foo-etc'},
+			      $sysdeps->{'foo-etc'},
+			     $sysdeps->{'foo-etc'},
+			  $sysdeps->{'foo-etc'},
+				    $sysdeps->{'foo-etc'},
+				   $sysdeps->{'foo-etc'});
+	       "\"$sysdeps->{'foo-etc'}/pdq/driverdescr/*\"\n\n");
+				    $sysdeps->{'lpd-dir'},
+					    $sysdeps->{'lpd-dir'},
+	    "\"$sysdeps->{'mtink-pipes'}/$1\" \}";
+		    "$sysdeps->{'pdq-printrc'}.\n";
+			    "$sysdeps->{'ppr-etc'}/printers/$name " .
+	"$sysdeps->{'ppr-ppad'} group show default 2>/dev/null |"){
+	    "\"$sysdeps->{'ptal-pipes'}/$devname\" \}";
+    # system
+            #system ("chown cupsys $ppdfile");
+	#system ("chown cupsys $ppdfile");
+	system $command;
+    system $command and
+		system("cp -f \'$config->{'ppdfile'}\' \'$ppdfile\'") and
+    system("cp -f \'$ppdfile\' \'$ppdfile.old\'") 
+    # System default spooler
+	(system $ppad_options) ||
+	(system $ppad_rip)) {
+    system $queuedeleteline and
+	system("$sysdeps->{'foomatic-rip'} --genrawpdq $driverfile") and
+	system("$sysdeps->{'foomatic-rip'} --ppd \'$ppdfile\' --genpdq " .
+		system("$sysdeps->{'gzip'} -dc " .
+	system("$sysdeps->{'lpd-lpc'} reread > /dev/null 2>&1");
+	system("$sysdeps->{'lprng-checkpc'} -f > /dev/null 2>&1");
+    system "touch $sysdeps->{'lpd-log'}";
+	  _tag('attempts',$c->{'att'}),
+	_tag('connect',$c->{'connect'}),
+	  _tag('delay',$c->{'delay'}),
+	_tag('description',$c->{'desc'}),
+	 (_tag('dontdisable',$c->{'dd'}),
+	_tag('driver',$c->{'driver'}),
+	   _tag('errorpolicy',$c->{'errorpolicy'}) : ())) : ()),
+	   _tag('klimit',$c->{'klimit'}) : ()),
+	   _tag('laststatechange',$c->{'laststatechange'}) : ()),
+	_tag('location',$c->{'loc'}),
+	_tag('name',$c->{'queue'}),
+	   _tag('operationpolicy',$c->{'operationpolicy'}) : ()),
+	   _tag('pagelimit',$c->{'pagelimit'}) : ()),
+	_tag('printer',$c->{'printer'}),
+	   _tag('quotaperiod',$c->{'quotaperiod'}) : ()),
+	   _tag('shared',$c->{'shared'}) : ()),
+	$takenfromconfigfile = 1;
+			# Thanks to Olaf Till (i7tiol@t-online.de) who 
+		    # than one
+    # the chosen printer as default printer
+		    # the command line of the PPR RIP, therefore we add the
+                 the complete information about the queue, including
+    # The data can be viewed with the option defaults of an existing
+		"the default!\n";
+    # The default printer under PPR is the printer named "default". To be
+                 the description.
+    # The desired default printer exists? Then make it the default
+                 the driver must be specified in addition ("-d" option)
+#		# The first line is #!/bin/sh
+		# The option is not a PPD option, keep it.
+		"*% the postpipe.\n*%\n";
+		    # The PPR interface for SMB uses the user name "ppr"
+    # the printer currently connected
+	    # The printer is supported by the chosen driver? If yes, load
+		    "the queue \"$config->{'queue'}\"!\n";
+#		# The remaining line(s) are the $postpipe
+	# There's a /usr/bin/ppr
+	    # There's a /usr/sbin/lpd
+#		# The second line is a comment
+    # These lines are always in /etc/printcap
+	    # The "smb" interface of PPR uses "ppr" as the SMB user when no
+		# they can be dropped in the "Switchset".
+                 This applies only to PPDs built from the Foomatic database, it
+# This differs a tad from CUPS's, partly because everything is
+# This is foomatic-configure, a program to establish and configure
+    # This line deletes the old printer queue
+    # This line sets the default printer in /etc/cups/lpoptions
+	# This line sets the default printer in /etc/cups/printers.conf
+	# TODO Raw queue for LPD
+    # Trailing comments from way above...
+    # Trailing comments get stuck on as empty item later...
+    # Trailing non-printer lines get stuck on as empty item
+    # Transfer a device file name into a printer-bound CUPS URI for
+		    # Translate device for mtinkd to mtink URI
+		# Translate device for mtinkd to mtink URI
+		    # Translate device for ptal-printd to ptal URI
+		# Translate device for ptal-printd to ptal URI
+    # translated to the form which CUPS needs. All other URIs are
+	    # Translate "file:/" into the prefix needed by CUPS, if
+		# translate it back to a standard USB device URI
+		# Translate URI for mtinkd (does not work with CUPS
+	    # Translate URI for mtinkd to mtink URI
+		# Translate URI for ptal-printd (does not work with CUPS
+		# Translate URI for ptal-printd to postpipe using the
+	    # Translate URI for ptal-printd to ptal URI
+		"try \"$progname -h\"!\n";
+		# Uncompressed PPD file
+	    undef $db->{'dat'}{'postpipe'};
+	    # Under LPD the default printer is the printer which has
+	    # Under LPRng the default printer is the first entry in
+	    # under Windows. So use "GUEST" if no user name is given.
+	    unless (defined($_->{'name'}) && ($_->{'name'} eq $name));
+	    unless ($_->{'name'} eq $name);
+	    unless ($_->{'names'}[0] eq $name);
+	unless $s;
+	unlink "$ppdfile"
+		unlink "$ppdfile" or die "Cannot delete \'$ppdfile\'!\n";
+	unshift(@retval, "default: $defaultprinter\n");
+	    $uri = $4;
+		$uri = "file:$address";
+	    $uri = "$interface:$address";
+		$uri = "lpd://$remhost/$remqueue";
+	    ($uri =~ m!^file:/dev/ptal-printd/(.+)$!) ||
+		 ($uri =~ m!^file:/var/mtink/(.+)$!)) {
+	    ($uri =~ m!^file:/var/run/ptal-printd/(.+)$!)) {
+    $uri =~ m!^ptal://?([^/].*)$!;
+	    $uri = "mtink:/$1";
+		$uri = "mtink:/$1";
+	    $uri = "ptal:/$devname";
+		$uri = "ptal:/$devname";
+		$uri = "$smbserver/$smbshare";
+		$uri = "smb://$uri";
+		    $uri = "$smbuser\@$uri";
+	    $uri = "socket://$address";
+Usage: $progname [ -s spooler ] -n queuename \\
+	@usbdevices = sort { Foomatic::DB::normalizename($a) cmp 
+# usb://make/model?serial=xxx     # Printer-bound USB connection (CUPS)
+# usb:/path/device                # Local USB printer
+    # USB URIs listed by "lpinfo -v"
+	    use Data::Dumper;
+use Data::Dumper;
+use Foomatic::DB;
+use Foomatic::Defaults;
+use Getopt::Long;
+    # Use manufacturer and model as description when no description is
+	# Use previous $postpipe
+    # User can view the data of the combo also with options given on the
+		    $username = $1;
+	    # user name is given. Usually one does not have such a user name
+    # User requests data of a printer/driver combo to see the options before
+use strict; # -*- perl -*-
+	# using the HPLIP ("hp") backend, as otherwise the "hp-toolbox"
+#!/usr/bin/perl -w
+					    $values;
+			    $values =~ s/^\"(.*)\"$/$1/;
+				    $values =~ s/^\"(.*)\"$/$1/;
+					    $values =~ s/^|//g;
+					    $values =~ s/\'//g;
+					    $values =~ s/ -(\S) /\|$1/g;
+					    $values =~ s/-(\S) /$1/g;
+		# value "True", "False", "Yes", "No", "On", "Off", "1", "0" 
+    # Various file setup
+	$ver =~ /^\D*(\d+)\.(\d+)(\.(\d+)|)((a|alpha|b|beta|r|rc)(\d+|)|)/;
+    # ("-v" option of "lpadmin"). Here the old "file:/" URIs are
+    $v =~ s!\&!\&amp\;!g;
+    $v =~ s!\<!\&lt\;!g;
+	    warn "Could not create a group to make the queue \"$name\" " .
+		warn "Could not set \"DefFiltOpts\" entry for " .
+		warn "Could not set \"DefFiltOpts\" entry for the " .
+	    warn "Could not set description for the queue " .
+		warn "Could not set \"Jobbreak\" entry for the " .
+	    warn "Could not set location for the queue " .
+		#warn "Could not set paper input trays for the " .
+	    warn "Could not set switchset for the queue " .
+				warn "Line $lcount in \"ppad show " .
+			warn "Line $linecount in " .
+	    warn "Renamed the printer\"default\" to \"$newname\"!\n";
+		warn "The device or file $address doesn't exist? " .
+	    warn "The device or file $file doesn't exist? " .
+		warn "The device or file $file doesn't exist? " .
+		    warn("WARNING: ncp password is visible in PPD file\n");
+		warn("WARNING: Printer \"lp\" renamed to \"$newname\".\n");
+		warn("WARNING: smbclient password is visible in PPD file\n");
+	# watch out for comments with \ at end of line - ignore \
+		# We couldn't determine a certain driver, probably we had a
+		# we do not
+	    # We do not need the queue data block any more
+		# We do not need the queue data block here
+	# were we invoked for only one queue?
+# We use the library Getopt::Long here, so that we can have more than
+ -w              Generate PPD which is compatible to the CUPS PostScript
+	    # When a password is given, a user name should be given, too.
+                 when backend fails. Default: 0 (CUPS only)
+		    # when no user name is given.
+    # (when we get a $postpipe from a source PPD file from another
+    # When we have a $postpipe we never write to a device
+    # When we have no arguments in the current configuration, we must have 
+# which support it are listed in parantheses, "direct" means direct, 
+	while (my $line = <CONFIG>) {
+    while (my $line = <F>) {
+	    while(!$namefound) {
+		while(!$namefound) {
+    while ($name = readdir(PCONFDIR)) {
+	while ($name = readdir(PCONFDIR)) {
+	# will not list the printer any more. HPLIP does infinite retries
+	# with locally defined printers
+	   "w"   => \$opt_w,         # Cut GUI strings in the PPD to 39
+		$workgroup = "";
+		    $workgroup = "$1/";
+		$workgroup = $1;
+		    "Working anyway.\n";
+		"Working anyway.\n";
+    # Write back /etc/foomatic/direct/.config
+    # Write back /etc/printcap
+    # Write back the modified config file
+    # Write back the modified printrc file
+    writeppdfile($config, $ppdfile, $rawqueue, $newfoomaticdata);
+	$x = $db->get_combo_data_xml($opt_d,$opt_p);
+	$x = $db->get_driver_xml($opt_d);
+        $x = $db->get_printer_xml($opt_p);
+	   "X"   => \$opt_X,         # query XML printer/driver/combo info
+ -X              Print XML data for -p printer and/or -d driver object
+		     (-x "$sysdeps->{'cups-backends'}/mtink")) {
+		 (!-x "$sysdeps->{'cups-backends'}/mtink")) {
+		 (!-x "$sysdeps->{'cups-backends'}/ptal")) {
+		(-x "$sysdeps->{'cups-backends'}/ptal")) {

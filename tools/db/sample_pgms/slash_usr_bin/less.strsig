@@ -1,0 +1,562 @@
+        ---------------------------------------------------
+ ---------------------------------------------------------------------------
+'"()<>[]|&^`#\$%=~
+0123456789,
+0123456789;[?!"'#%()*+ 
+0123456789.
+0123456789.-
+3D$,3T$(	
+4cbcbc3b9cbccbccbb4c6bcc5b3cbbc4bc4bccbc191.b
+5bc6bcc7bcc41b.9b7.9b5.b..8b6.10b6.b9.7b9.8b8.17b3.3b9.7b9.8b8.6b10.b.b.b.
+8bcccbcc12bc5b95.b.
+8bcccbcc12bc5b95.b24.b.
+8bcccbcc12bc5b95.b.b11.b.2b12.b.
+8bcccbcc12bc5b95.b.b8.b.5b9.b.4b.
+8bcccbcc18b95.33b.
+8bcccbcc18b95.33b14.b35.b44.b
+8bcccbcc18b95.33b.3b.7b2.13b.3b.b26.5b19.b
+8bcccbcc18b95.33b4.2b4.b3.b35.b44.b
+8bcccbcc18b95.33b5.b8.b15.b4.b12.b18.b12.b.
+8bcccbcc18b95.33b.b29.32b28.2b2.b
+8bcccbcc18b95.3b11.4b12.2b.
+8bcccbcc18b95.b
+8bcccbcc18b95.b.
+8bcccbcc18b95.b126.bb
+8bcccbcc18b95.b.4b.11b7.8b.
+8bcccbcc18b95.b8.b6.b8.b.b.5b7.3b4.b4.b3.b.b.3b.
+8bcccbcc18b95.bb125.bb
+9l$,v29T$ }L
+        A mark is any upper-case or lower-case letter.
+ANSI_X3.4-1968
+  -a  ........  --search-skip-screen
+Assume dumb terminal
+Assume intelligent terminal
+auto-buffers
+Automatically allocate buffers when needed
+ BACKSPACE                                  Delete char to left of cursor.
+Backspaces cause overstrike
+                  Backward scroll limit.
+Backwards scroll limit: 
+Backwards scroll limit is %d lines
+  -B  ........  --auto-buffers
+b..b...bcccbccbbb7.8b95.b48.5b.
+  b  ^B  ESC-v      *  Backward one window (or _
+Brackets: 
+__bss_start
+                        C
+Calculating line numbers
+Cannot allocate memory
+Cannot change the %s option
+Cannot create pipe
+Cannot edit standard input
+Cannot query the %s option
+Cannot seek to beginning of file
+Cannot seek to end of file
+Cannot seek to line number %n
+Cannot seek to start position
+Cannot seek to that file position
+Cannot use lesskey file "%s"
+Cannot use "-+" or "--" for a string option
+Cannot write to "%s"
+Can't use "-!" for a numeric option
+Case is significant in searches
+  -c  ........  --clear-screen
+        Certain marks are predefined:
+cfgetospeed
+                  Change handling of backspaces.
+        character preceded by a -, or a name preceeded by --.
+chardef longer than 256
+chop-long-lines
+                  Chop long lines.
+Chop long lines
+ch_ungetchar overrun
+clear-screen
+ CNTL-BACKSPACE   ESC-BACKSPACE             Delete word to left of cursor.
+ CNTL-DELETE      ESC-DELETE      ESC-X     Delete word under cursor.
+ CNTL-L                                     Complete filename, list all.
+ CNTL-LeftArrow   ESC-LeftArrow   ESC-b     Move cursor left one word.
+ CNTL-RightArrow  ESC-RightArrow  ESC-w     Move cursor right one word.
+ CNTL-U           ESC (MS-DOS only)         Delete entire line.
+Command not available
+      Commands marked with * may be preceded by a number, _
+Constantly display line numbers
+Copyright (C) 1984-2009 Mark Nudelman
+                  Copy to log file (standard input only).
+                  Copy to log file (unconditionally overwrite).
+c]]  .  --quotes=[_
+-%c (--%s)
+__ctype_b_loc
+cyrillic
+D$4MCAPf
+D$4stopf
+  :d                   Delete the current file from the command line list.
+  d  ^D             *  Forward  one half-window (and set half-window to _
+  -d  ........  --dumb
+        Default "half-window" is half of the screen height.
+        Default "window" is the screen height.
+                  Define new prompt.
+ DELETE                           ESC-x     Delete char under cursor.
+Determining length of file
+/dev/null
+/dev/tty
+d                 Execute the less cmd each time a new file is examined.
+d             Execute the shell command with $SHELL.
+Display all blank lines
+Display a status column
+                  Display a status column at left edge of screen.
+Display control characters as ^X
+Display control characters directly
+Display control characters directly, processing ANSI sequences
+                  Display help (from command line).
+>              Display the setting of a command line option.
+>             Display the setting of an option, by name.
+                  Display the version number of "less".
+Display underlined text in underline mode
+D$L9D$8sX
+Don't automatically allocate buffers
+                  Don't automatically allocate buffers for pipes.
+Don't display a status column
+                  Don't display tildes after end of file.
+                  Don't highlight any matches for searches.
+Don't highlight first unread line
+Don't highlight search matches
+Don't know length of file
+Don't quit at end-of-file
+Don't quit if end-of-file on first screen
+                  Don't send keypad init/deinit sequence.
+Don't show tildes after end of file
+Don't use init/deinit strings
+Don't use keypad mode
+                  Don't use line numbers.
+Don't use line numbers
+                  Don't use termcap init/deinit strings.
+                  Don't use termcap keypad init/deinit strings.
+Don't use the LESSOPEN filter
+ DownArrow                        ESC-j     Retrieve next command line.
+d            Pipe file between current pos & mark X
+                  Dumb terminal.
+        Each "find close bracket" command goes forward to the close bracket 
+        Each "find open bracket" command goes backward to the open bracket 
+EBCDIC-US
+  e  ^E  j  ^N  CR  *  Forward  one line   (or _
+  -e  -E  ....  --quit-at-eof  --QUIT-AT-EOF
+e]            Examine a new file.
+e]  .  --lesskey-file=[_
+%E ?lm+%lm. %f
+e]  .  --log-file=[_
+ END                              ESC-$     Move cursor to end of line.
+EOF-ignore 
+        ^E or *  Search multiple files (pass thru END OF FILE).
+__errno_location
+  ESC-^B _
+  ESC-^F _
+  ESC-(  LeftArrow  *  Right one half screen width (or _
+  ESC-N             *  Repeat previous search, reverse dir. & spanning files.
+  ESC-n             *  Repeat previous search, spanning files.
+  ESC-)  RightArrow *  Left  one half screen width (or _
+  ESC-SPACE         *  Forward  one window, but don't stop at end-of-file.
+  ESC-u                Undo (toggle) search highlighting.
+e] --tag-file=[_
+/etc/sysless
+every %d spaces
+Examine: 
+                  Exit less in response to ctrl-C.
+F command follows file descriptor
+F command follows file name
+?f%f .?m(%T %i of %m) .?ltlines %lt-%lb?L/%L. .byte %bB?s/%s. ?e(END) :?pB%pB\%..%t
+?f%f .?n?m(%T %i of %m) ..?ltlines %lt-%lb?L/%L. :byte %bB?s/%s. .?e(END) ?x- Next\: %x.:?pB%pB\%..%t
+  -f  ........  --force
+  F                    Forward forever; like "tail -f".
+  f  ^F  ^V  SPACE  *  Forward  one window (or _
+                  Find a tag.
+>  *  Find close bracket _
+  {  (  [           *  Find close bracket } ) ].
+>  *  Find open bracket _
+  }  )  ]           *  Find open bracket { ( [.
+Finishing logfile
+First-file 
+Fold long lines
+      ........  --follow-name
+follow-name
+                  Force open non-regular files.
+For information about the terms of redistribution,
+        ^F or @  Start search at FIRST file (for /) or last file (for ?).
+                  Forward scroll limit.
+Forward scroll limit: 
+Forward scroll limit is %d lines
+                  Forward search always skips target line.
+                  Forward search skips current screen.
+__fprintf_chk
+  -F  ........  --quit-if-one-screen
+__fxstat64
+georgianps
+GEORGIAN-PS
+  g  <  ESC-<       *  Go to first line in file (or line _
+  G  >  ESC->       *  Go to last line in file (or line _
+  =  ^G  :f            Print current file name.
+  -g  ........  --hilite-search
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+>            Go to a previously marked position.
+goto mark: 
+  ''                   Go to the previous position.
+greek2005
+g]  ..  --tag=[_
+  -?  ........  --help
+HELP -- ?eEND -- Press g to see it again:Press RETURN for more., or q when done
+  h  H                 Display this help.
+Highlight all matches for previous search pattern
+                  Highlight first new line after any forward movement.
+                  Highlight first new line after forward-screen.
+Highlight first unread line after any forward movement
+Highlight first unread line after forward-screen
+Highlight matches for previous search only
+                  Highlight only last match for searches.
+hilite-search
+hilite-unread
+ HOME                             ESC-0     Move cursor to start of line.
+Homepage: http://www.greenwoodsoftware.com/less
+                  Horizontal scroll amount (0 = one half screen width)
+Horizontal shift: 
+Horizontal shift %d columns
+Horizontal shift %s of screen width
+IBM-1047
+ignore-case
+                  Ignore case in all searches.
+Ignore case in searches
+Ignore case in searches and in patterns
+                  Ignore case in searches that do not contain uppercase.
+                  Ignore the LESSOPEN environment variable.
+  -i  ........  --ignore-case
+Input is not a pipe
+Interrupt (ctrl-C) exits less
+Interrupt (ctrl-C) returns to prompt
+... (interrupt to abort)
+invalid chardef
+invalid charset name
+Invalid column fraction
+Invalid column number
+Invalid line fraction
+Invalid line number
+Invalid mark letter
+_IO_getc
+_IO_putc
+_IO_stdin_used
+ is a directory
+ is not a regular file (use -f to see it)
+ISO-8859-1
+ISO-8859-10
+ISO-8859-13
+ISO-8859-14
+ISO-8859-15
+ISO-8859-16
+ISO-8859-2
+ISO-8859-3
+ISO-8859-4
+ISO-8859-5
+ISO-8859-6
+ISO-8859-7
+ISO-8859-8
+ISO-8859-9
+iswupper
+                           J
+  -J  ........  --status-column
+jump-target
+_Jv_RegisterClasses
+Keep-pos 
+        ^K       Highlight matches, but don't move (KEEP position).
+  -K            --quit-on-intr
+                          L
+LC_CTYPE
+ LeftArrow                        ESC-h     Move cursor left one character.
+LESSANSIENDCHARS
+LESSANSIMIDCHARS
+LESSBINFMT
+LESSCHARDEF
+LESSCHARSET
+LESSCLOSE
+less comes with NO WARRANTY, to the extent permitted by law.
+lessecho
+LESSEDIT
+LESSGLOBALTAGS
+@/\less/\help/\file/\@
+LESSHISTFILE
+.less-history-file:
+LESSHISTSIZE
+.lesshst
+LESS_IS_MORE
+lesskey-file
+LESSKEY_SYSTEM
+LESSMETACHARS
+LESSMETAESCAPE
+LESSOPEN
+LESSSECURE
+LESSSEPARATOR
+LESS_TERMCAP_DEBUG
+LESSUTFBINFMT
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libncurses.so.5
+line-numbers
+Line numbers turned off
+  -L  ........  --no-lessopen
+log file: 
+log-file
+Log file: 
+LOG-FILE
+Log file is already in use
+Log file "%s"
+log file support is not available
+__longjmp_chk
+long-prompt
+Long prompt
+L$X+T$T)
+                    M
+                           M
+Mark not in current file
+Mark not set
+>            Mark the current position with <letter>.
+          matching the (_
+max-back-scroll
+Max buffer space per file: %dK
+Max buffer space per file (K): 
+max-forw-scroll
+             ^  means  beginning of the file
+             $  means  end of the file
+Medium prompt
+Missing filename ("less --help" for help)
+  -m  -M  ....  --long-prompt  --LONG-PROMPT
+--More--(?eEND ?x- Next\: %x.:?pB%pB\%:byte %bB?s/%s...%t)
+        Most options may be changed either on the command line,
+-" must be followed by 1 or 2 chars
+N[,...]]
+N]  ....  --buffers=[_
+n]  .  --color=_
+n          *  Display only matching lines
+Never ring the bell
+  :n                *  Examine the (_
+NEXTSTEP
+?n?f%f .?m(%T %i of %m) ..?e(END) ?x- Next\: %x.:?pB%pB\%:byte %bB?s/%s...%t
+?n?f%f .?m(%T %i of %m) ..?e(END) ?x- Next\: %x..%t
+N is given.
+N]  ....  --jump-target=[_
+N lines).
+nl_langinfo
+N]  ....  --max-back-scroll=[_
+N]  ....  --max-forw-scroll=[_
+  -n  -N  ....  --line-numbers  --LINE-NUMBERS
+No bracket in bottom line
+No bracket in top line
+No filenames allowed with -t option
+                --no-keypad
+      ........  --no-keypad
+no-keypad
+no-lessopen
+No log file
+No matching bracket
+No next file
+No next tag
+Non-match 
+No previous file
+No previous regular expression
+No previous tag
+        ^N or !  Search for NON-matching lines.
+No %snext file
+No %sprevious file
+No such file
+No such option
+No such tag in tags file
+No tags file
+      Notes in parentheses indicate the behavior if _
+Nothing in bottom line
+Nothing in top line
+Nothing to search
+n]  --pattern=[_
+N percent into file).
+N positions).
+  n                 *  Repeat previous search (for _
+  N                 *  Repeat previous search in reverse direction.
+n          *  Search backward for (_
+n          *  Search forward for (_
+N]  ....  --shift=[_
+N[,...]]  --tabs=[_
+<nte<st)<du
+N-th) close bracket in the bottom line.
+N-th) file from the command line.
+N-th) matching line.
+N-th) next file from the command line.
+N-th) next tag.
+N-th occurrence).
+N-th) open bracket in the top line.
+N-th) previous file from the command line.
+N-th) previous tag.
+Number is required after %s
+                  Number of buffers.
+N]  ....  --window=[_
+                           O
+        on the "command line" at the bottom of the screen.
+Open even non-regular files
+Open only regular files
+        Options may be given in one of two forms: either a single
+        or from within less by using the - or -- command.
+                  Output "raw" control characters.
+Overwrite, Append, or Don't log? (Type "O", "A", "D" or "q") 
+Pattern not found
+  :p                *  Examine the (_
+  p  %              *  Go to beginning of file (or _
+Please re-enter search pattern
+Position target at screen line %d
+Position target at screen position %s
+  (press RETURN)
+Print backspace as ^H
+prompt: 
+  q  :q  Q  :Q  ZZ     Exit.
+  -q  -Q  ....  --quiet  --QUIET  --silent --SILENT
+                  Quiet the terminal bell.
+                  Quit at end of file.
+Quit at end-of-file
+quit-at-eof
+Quit if end-of-file on first screen
+                  Quit if entire file fits on first screen.
+quit-if-one-screen
+Quit immediately at end-of-file
+quit-on-intr
+quotes: 
+quotes %s
+raw-control-chars
+        ^R       Don't use REGULAR EXPRESSIONS.
+read error
+Regex-off 
+                  Repaint by clearing rather than scrolling.
+Repaint by painting from top of screen
+Repaint by scrolling from bottom of screen
+ RightArrow                       ESC-l     Move cursor right one character.
+Ring the bell for errors AND at eof/bof
+Ring the bell for errors but not at eof/bof
+  R                    Repaint screen, discarding buffered input.
+  r  ^R  ^L            Repaint screen.
+  -r  -R  ....  --raw-control-chars  --RAW-CONTROL-CHARS
+                   S
+                          S
+*s<%02X>
+  -S  ........  --chop-long-lines
+                  Screen position of target lines.
+Scroll window size: 
+Scroll window size is %d lines
+Search includes all of displayed screen
+Search includes displayed screen
+        Search patterns may be modified by one or more of:
+search-skip-screen
+Search skips displayed screen
+seek error
+seek error to 0
+see the file named README in the less distribution.
+Send init/deinit strings to terminal
+setlocale
+                  Set prompt style.
+                  Set screen colors. (MS-DOS only)
+                  Set shell quote characters.
+                  Set size of window.
+                  Set tab stops.
+ SHIFT-TAB                        ESC-TAB   Complete filename & reverse cycle.
+Short prompt
+Show tildes after end of file
+sigemptyset
+sigprocmask
+%s is an ambiguous abbreviation ("less --help" for help)
+...skipping...
+"%s" may be a binary file.  See it anyway? 
+__snprintf_chk
+%s -p0x%x -d0x%x -e%s 
+__sprintf_chk
+squeeze-blank-lines
+                  Squeeze multiple blank lines.
+Squeeze multiple blank lines
+  -s  ........  --squeeze-blank-lines
+%s %s %s
+__stack_chk_fail
+                  Start at pattern (from command line).
+status-column
+__strcat_chk
+__strcpy_chk
+strerror
+%s -x%s %s
+ TAB                                        Complete filename & cycle.
+Tab stops: 
+tag-file
+Tag not found
+tags file: 
+Tags file "%s"
+tags support is not available
+Target line: 
+tcgetattr
+tcsetattr
+TCVN5712-1
+tgetflag
+  t                 *  Go to the (_
+tg<%tk<#
+                  The F command changes files if the input file is renamed.
+There is no --%s option
+There is no %s option
+There is no %s option ("less --help" for help)
+        These keys can be used to edit text being entered 
+The %s option should not be followed by =
+$tIInvalid pattern
+  -~  ........  --tilde
+<#tL<%tH
+>             Toggle a command line option, by name.
+>              Toggle a command line option [see OPTIONS below].
+towlower
+t]   --prompt=[_
+t:<%tn<#
+<#t\<%tX
+<U+%04lX>
+underline-special
+unknown tag type
+ UpArrow                          ESC-k     Retrieve previous command line.
+US-ASCII
+                  Use a lesskey file.
+                  Use an alternate tags file.
+Use "h" for help
+Use keypad mode
+Use line numbers
+Use new bottom of screen behavior
+Use old bottom of screen behavior
+Use the LESSOPEN filter
+/usr/bin/editor
+/usr/bin/.sysless
+  u  ^U             *  Backward one half-window (and set half-window to _
+  -u  -U  ....  --underline-special  --UNDERLINE-SPECIAL
+Value is required after %s
+  v                    Edit the current file with $VISUAL or $EDITOR.
+  V                    Print version number of "less".
+v,<-t(;t$
+  -V  ........  --version
+Waiting for data
+Warning: environment variables from lesskey file unavailable
+Warning: log file is incomplete
+Warning: "%s" exists; Overwrite, Append or Don't log? 
+Warning: some commands disabled
+Warning: some edit commands disabled
+WARNING: terminal is not fully functional
+WARNING: This file was viewed via LESSOPEN
+  w                 *  Backward one window (and set window to _
+  -w  ........  --hilite-unread
+windows-1251
+windows-1252
+windows-1255
+  :x                *  Examine the first (or _
+  -X  ........  --no-init
+__xstat64
+X to shell command.
+  ^X^V                 Same as :e.
+  ^X^X                 Same as '.
+  y  ^Y  k  ^K  ^P  *  Backward one line   (or _
+  z                 *  Forward  one window (and set window to _

@@ -1,0 +1,86 @@
+                     
+#                2004,2005 Michiel Sikkes
+                    action="store", type="string", default=None,
+                    action="store", type="string", default="/usr/share/software-properties/",
+                    action="store", type="string", dest="enable_component",
+                    action="store", type="string", dest="toplevel",
+#  along with this program; if not, write to the Free Software
+    app.add_source_from_line("ppa:%s" % options.enable_ppa)
+    app.run()
+    app = SoftwarePropertiesGtk(datadir=options.data_dir, options=options, file=file)
+    app.sourceslist.save()
+#  Author: Michiel Sikkes <michiel@eyesopened.nl>
+  # Begin parsing of options
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+                          "command line")
+#  Copyright (c) 2004,2005 Canonical
+                     dest="debug", default=False,
+                    dest="keyserver", default=DEFAULT_KEYSERVER,
+                     dest="massive_debug", default=False,
+                     dest="no_update", default=False,
+                    "dialog (useful for embedding)")
+    distro = aptsources.distro.get_distro()
+    distro.enable_component(options.enable_component)
+    distro.get_sources(sourceslist)
+  elif options.enable_component:
+  except locale.Error as e:
+    file = args[0]
+  file = None
+  # force new files to be 644 (LP: #497778)
+#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+                     "from an external program).")
+from aptsources.sourceslist import SourcesList
+from gi.repository import Gtk
+from optparse import OptionParser
+from softwareproperties.gtk.SoftwarePropertiesGtk import SoftwarePropertiesGtk
+from softwareproperties.ppa import DEFAULT_KEYSERVER
+  _ = gettext.gettext
+  gettext.textdomain(localesApp)
+#  GNU General Public License for more details.
+                    help="Enable PPA with the given name")
+                    help="Enable the specified component of the distro's "\
+                     help="No update on repository change (useful if called "\
+                    help="Open specific tab number on startup")
+                     help="Print a lot of debug information to the "
+                     help="Print some debug information to the command line")
+                    help="Set x-window-id of the toplevel parent for the "\
+                    help="URL of keyserver. Default: %default")
+                    help="Use data files (UI) from the given directory")
+  if len(args) > 0:
+if __name__ == "__main__":
+  if options.enable_ppa:
+import aptsources
+import gettext
+import locale
+import os
+import sys
+#  License, or (at your option) any later version.
+  localesApp="software-properties"
+      locale.setlocale(locale.LC_ALL, '')
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#          Michael Vogt <mvo@debian.org>
+#  modify it under the terms of the GNU General Public License as 
+  (options, args) = parser.parse_args()
+  os.umask(0022)
+  parser.add_option("--data-dir", "",
+  parser.add_option ("-d", "--debug", action="store_true",
+  parser.add_option("-e", "--enable-component", 
+  parser.add_option("--enable-ppa", "",
+  parser.add_option("-k", "--keyserver",
+  parser.add_option ("-m", "--massive-debug", action="store_true",
+  parser.add_option ("-n", "--no-update", action="store_true",
+  parser.add_option("--open-tab", "",
+  parser.add_option("-t", "--toplevel", 
+  parser = OptionParser()
+#  published by the Free Software Foundation; either version 2 of the
+                    "repositories")
+#  software-properties - graphical abstraction of the sources.list
+    sourceslist.save()
+    sourceslist = SourcesList()
+    sys.exit(app.modified_sourceslist)
+#sys.path.append("@prefix@/share/update-manager/python")
+      sys.stderr.write('Cannot set locale: %s\n' % str(e))
+#  This program is distributed in the hope that it will be useful,
+#  This program is free software; you can redistribute it and/or 
+#!/usr/bin/python
+#  You should have received a copy of the GNU General Public License

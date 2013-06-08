@@ -1,0 +1,66 @@
+	"db=s" => \$db,
+	$Debconf::Db::config = $driver;
+Debconf::Db->load(readonly => 'true');
+    debconf-show --listdbs
+    debconf-show --listowners [--db=dbname]
+    debconf-show packagename [...] [--db=dbname]
+	die $db.": unknown database" unless defined($driver);
+				else {
+				elsif (length $q->value) {
+elsif ($listowners) {
+elsif (@packages) {
+	exit(1);
+		foreach my $package (@packages) {
+		foreach (split(/, /, $q->owners)) {
+GetOptions(
+if ($db) {
+	if ($driver->isa("Debconf::DbDriver::Stack")) {
+			if (grep { $package eq $_} split(/, /, $q->owners)) {
+if ($listdbs) {
+				if ($q->flag("seen") eq 'true') {
+				if ($q->type eq 'password') {
+	"listdbs" => \$listdbs,
+	"listowners" => \$listowners,
+		map { tree($_->{name},$string) } @{$driver->{stack}};
+my $conf = Debconf::Config->config;
+my $db='';
+	my $driver = Debconf::DbDriver->driver($node);
+	my $driver = $drivers{$db};
+my %drivers = %Debconf::DbDriver::drivers;
+my $listdbs=0;
+my $listowners=0;
+	my $name = $driver->{name};
+	my $node=shift;
+my @packages;
+my $qi=Debconf::Question->iterator;
+	my %seen;
+	my $string=shift || "";
+	@packages=@ARGV;
+					print "  ";
+					print "* ";
+				print "$_\n";
+				print "\n";
+					print " (password omitted)";
+				print $q->name.":";
+					print " ".$q->value;
+	print STDERR <<EOF;
+	print $string."\n";
+				$seen{$_}=1;
+		$string=$string.'/';
+	$string = $string.$name;
+sub tree {
+sub usage {
+# This file was preprocessed, do not edit!
+	tree($conf);
+unless ($listowners or $listdbs) {
+			unless ($seen{$_}) {
+) || usage();
+	usage() unless @packages;
+use Debconf::Db;
+use Debconf::Question;
+use Debconf::Template;
+use Getopt::Long;
+use strict;
+use warnings;
+#!/usr/bin/perl
+	while (my $q=$qi->iterate) {

@@ -1,0 +1,37 @@
+#!/bin/sh
+			bootmounted=0
+			bootmounted="${mountboot#* }"
+			bootpart="${mountboot%% *}"
+			bootpart="$partition"
+				break
+					break
+	continue
+				debug "linux detected by $test"
+		debug "running $test"
+				debug "running $test on mounted $partition"
+					debug "$test succeeded"
+	echo "usage: linux-boot-prober partition" >&2
+	for test in /usr/lib/linux-boot-probes/*; do
+		for test in /usr/lib/linux-boot-probes/mounted/*; do
+grep "^/dev/" /proc/mounts | parse_proc_mounts >"$OS_PROBER_TMP/mounted-map" || true
+		if [ "$bootmounted" = 1 ]; then
+			if [ -f $test ] && [ -x $test ]; then
+if ! grep -q "^$mapped " "$OS_PROBER_TMP/mounted-map"; then
+		if ! grep -q " $mpoint/boot " "$OS_PROBER_TMP/mounted-map"; then
+if ! mapped="$(mapdevfs "$partition")"; then
+	if [ "$mpoint" != "/target/boot" ] && [ "$mpoint" != "/target" ] && [ "$mpoint" != "/" ]; then
+				if $test "$partition" "$bootpart" "$mpoint" "$type"; then
+			if $test "$partition"; then
+			if ! umount "$mpoint/boot"; then
+		if [ -x $test ] && [ -f $test ]; then
+if [ -z "$partition" ]; then
+			linux_mount_boot "$partition" "$mpoint"
+	log "Device '$partition' does not exist; skipping"
+	mpoint=$(grep "^$mapped " "$OS_PROBER_TMP/mounted-map" | head -n1 | cut -d " " -f 2)
+	mpoint="$(unescape_mount "$mpoint")"
+newns "$@"
+partition="$1"
+require_tmpdir
+		type=$(grep "^$mapped " "$OS_PROBER_TMP/mounted-map" | head -n1 | cut -d " " -f 3)
+. /usr/share/os-prober/common.sh
+				warn "failed to umount $mpoint/boot"

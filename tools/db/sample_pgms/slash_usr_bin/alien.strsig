@@ -1,0 +1,350 @@
+a Debian package, or by running "rpmbuild -bb <packagename>.spec" if you were
+# A few sanity checks.
+after it has been installed.
+alien - Convert or install an alien binary package
+alien has been extensively rewritten (3 times) and is now maintained by
+alien may be copied and modified under the terms of the GNU General Public
+				Alien::Package->do("cp", "-fa", "--", $package->unpacked_tree, $package->unpacked_tree.".orig")
+ alien [--to-deb] [--to-rpm] [--to-tgz] [--to-slp] [options] file [...]
+alien version.
+all 4 package formats.
+and B<alien> will use by preference a program named lsb-rpm, if it exists.
+and check to see what they do before using this option.
+another format will not cause its minor version number to be changed.
+	"anypatch"       => \$anypatch,
+       --anypatch           Use even old version os patches.
+a package named "lsb" -- your distribution should provide a package by that
+around in the package before building it. The package can be built from
+Automatically install each generated package, and remove the package file
+B<alien> is a program that converts between Red Hat rpm, Debian deb,
+B<alien> recognizes the following environment variables:
+B<alien> should not be used to replace important system packages, like
+B<alien> was written by Christoph Lameter, B<<clameter@debian.org>>.
+B<alien> will convert all the files you pass into it into all the output types
+Be less strict about which patch file is used, perhaps attempting to use a patch
+Be verbose as with --verbose, but also display the output of each command
+Be verbose: Display each command B<alien> runs in the process of converting a
+			bless($package, "Alien::Package::".ucfirst($format));
+      --bump=number         Increment package version by this number.
+	"bump=s"         => \$versionbump,
+# Bundling is nice anyway, and it is required or Getopt::Long will confuse
+by default as well.
+By default, B<alien> adds one to the minor version number of each package it
+cannot be used interchangeably. In general, if you can't remove a
+cause problems. It is recommended that you examine the scripts by hand
+# Check alien's working anvironment.
+	# Check lsb before rpm, since lsb packages are really just
+code in them, unless you want this source code to be installed in your root
+compliant, and it's rather unlikely they will unless you build them in the
+converting from the tgz package format, which lacks descriptions.
+converting from the tgz package format, which may lack version
+converts. If this option is given, B<alien> will not do this.
+Convert the package.deb into a package.rpm
+Convert the package.rpm into a package.deb
+Convert the package.rpm into a package.deb (converting to a .deb package is
+Creates 9 new packages. When it is done, foo bar and baz are available in
+creating a Red Hat package.
+  -c, --scripts             Include scripts in package.
+datastream package format), you will need the Solaris pkginfo and pkgtrans
+deb format.
+deb to rpm conversion code was taken from the martian program by
+default, so you need not specify --to-deb), and install the generated
+# Default to deb conversion.
+       --description=<desc> Specify package description.
+	"description=s"  => \$tgzdescription,
+	$destformats{deb}=1;
+	die("Cannot write to current directory. Try moving to /tmp and re-running alien.\n");
+		die "File \"$file\" not found.\n";
+	die "--generate and --single may only be used when converting to a single format.\n";
+		die "Must run as root to convert to deb format (or you may use fakeroot).\n";
+	die "Specified patch file, \"$patchfile\" cannot be found.\n";
+	die "The options --nopatch and --patchfile cannot be used together.\n";
+		die "Unknown type of package, $file.\n";
+	die "You can not use --generate or --single with --install.\n";
+different distributions, and packages from the different distributions
+                            directory.
+				# directory when it is destroyed.
+directory when you install the package!
+# Display alien's version number.
+Display a short usage summary.
+Display the version of B<alien>.
+# Display usage help.
+Do not use any patch files.
+			# Don't convert the package, but do install it.
+dpkg-dev, and dpkg packages must be installed.
+  -d, --to-deb              Generate a Debian deb package (default).
+				else {
+			else {
+	elsif (Alien::Package::Deb->checkfile($file)) {
+	elsif (Alien::Package::Pkg->checkfile($file)) {
+	elsif (Alien::Package::Rpm->checkfile($file)) {
+	elsif (Alien::Package::Slp->checkfile($file)) {
+	elsif (Alien::Package::Tgz->checkfile($file)) {
+		elsif ($install) {
+     Enables these options:
+eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
+	exit 1;
+	# Figure out what kind of file this is.
+file for an older verson of the package. This is not guaranteed to always work;
+  file [...]                Package file or files to convert.
+	"fixperms"       => \$fixperms,
+       --fixperms           Munge/fix permissions and owners.
+For converting to and from rpm format the Red Hat Package Manager must be
+For converting to (but not from) deb format, the gcc, make, debhelper,
+foreach my $file (@ARGV) {
+	foreach my $format (keys %destformats) {
+Generate a temporary directory suitable for building a package from, but do
+	"generate|g"     => \$generate,
+GetOptions(
+Getopt::Long::Configure("bundling");
+  -g, --generate            Generate build tree, but do not build package.
+	# glorified rpms.
+=head1 AUTHOR
+=head1 COPYRIGHT
+=head1 DESCRIPTION
+=head1 ENVIRONMENT
+=head1 EXAMPLES
+=head1 NAME
+=head1 OPTIONS
+=head1 PACKAGE FORMAT NOTES
+=head1 SYNOPSIS
+=head1 WARNING
+	"help|h"         => \&usage,
+Here are some examples of the use of B<alien>:
+  -h, --help                Display this help message.
+		# Howver, generate build tree even if the format is
+if ($> != 0) {
+    if 0; # not running under some shell
+	if (Alien::Package::Lsb->checkfile($file)) {
+				if (defined $patchfile) {
+if (! %destformats) {
+	if ($destformats{deb} && ! $generate && ! $single) {
+	if (! -e $file) {
+			if ($format eq 'deb' && ! $nopatch) {
+				if ($format eq 'deb' && ! $single) {
+			if ($format eq 'deb' && ! $single && $generate) {
+			if ($generate) {
+if (($generate || $single) && $install) {
+if (($generate || $single) && keys %destformats > 1) {
+			# If generating build tree only, stop here
+			if ($install) {
+		if ($package->origformat ne $format || $generate) {
+			if ($package->unpacked_tree) {
+	if (! $package->usescripts && $package->scripts) {
+if ($patchfile && ! -f $patchfile) {
+if ($patchfile && $nopatch) {
+				if (@results) {
+		if (! $scripts) {
+If set, B<alien> assumes this is your email address. Email addresses are
+			if ($test) {
+if (! -w '.') {
+  -i, --install             Install generated package.
+in B</var/lib/alien>. This has no effect unless a debian package is being
+included in generated debian packages.
+increment it by the given number.
+	# Increment release.
+information.
+init, libc, or other things that are essential for the functioning of
+installed.
+installed on your system, you can use B<alien> to convert it to your preferred
+	"install|i"      => \$install,
+Instead of incrementing the version number of the converted package by 1,
+=item alien -i package.rpm
+=item alien --to-deb package.rpm
+=item alien --to-deb --to-rpm --to-tgz --to-slp foo.deb bar.rpm baz.tgz
+=item alien --to-rpm package.deb
+=item B<--anypatch>
+=item B<--bump=>I<number>
+=item B<-c>, B<--scripts>
+=item B<-d>, B<--to-deb>
+=item B<--description=>I<desc>
+=item B<--fixperms>
+=item B<-g>, B<--generate>
+=item B<-h>, B<--help>
+=item B<-i>, B<--install>
+=item B<-k>, B<--keep-version>
+=item B<--nopatch>
+=item B<--patch=>I<patch>
+=item B<-p>, B<--to-pkg>
+=item B<-r>, B<--to-rpm>
+=item B<-s>, B<--single>
+=item B<-T>, B<--test>
+=item B<-t>, B<--to-tgz>
+=item B<--to-slp>
+=item B<-v>, B<--verbose>
+=item B<-V>, B<--version>
+=item B<--version=>I<version>
+=item B<--veryverbose>
+=item deb
+=item EMAIL
+=item file [...]
+=item lsb
+=item pkg
+=item rpm
+=item RPMBUILDOPTS
+=item RPMINSTALLOPT
+=item tgz
+Joey Hess, B<<joeyh@debian.org>>.
+	"keep-version|k" => \$keepversion,
+  -k, --keep-version        Do not change version of generated package.
+License.
+Like B<-g>, but do not generate the packagename.orig directory. This is only
+lintian's output displayed.
+                            looking for patch in /var/lib/alien.
+lsbdev environment.
+lsb packages if the destination package format supports dependencies. Note
+  -l, --to-lsb              Generate a LSB package.
+Make debian packages. This is the default.
+			# Make .orig.tar.gz directory?
+				# Make .orig.tar.gz directory.
+Make rpm packages.
+Make slp packages.
+Make Solaris pkg packages.
+				# Make sure $package does not wipe out the
+Make tgz packages.
+			# Mutate package into desired format.
+my (%destformats, $generate, $install, $single, $scripts, $patchfile,
+			my $newfile=$package->build;
+	my $package;
+				my @results = $package->test($newfile);
+my $versionbump=1;
+name, if it is lsb compliant. The scripts in the lsb package will be converted
+				next;
+No guarantees are made that the generated lsb packages will be fully LSB
+       --nopatch	    Do not use patches.
+	"nopatch"        => \$nopatch,
+    $nopatch, $tgzdescription, $tgzversion, $keepversion, $fixperms,
+not actually create the package. This is useful if you want to move files
+			# Note I don't unlink it. I figure that might annoy
+Note that unlike other package formats, converting an LSB package to
+Note that when converting from the tgz format, B<alien> will simply generate an
+Note that without an argument, this displays the version of B<alien> instead.
+older patches may not necessarily work with newer packages.
+			# Only unpack once.
+only works well if the tgz file has precompiled binaries in it in a
+Options to pass to rpm when it is building a package.
+Options to pass to rpm when it is installing a package.
+					or die "cp -fa failed";
+our $Version="8.86";
+output package that has the same files in it as are in the tgz file. This
+package.
+package Alien;
+		$package=Alien::Package::Deb->new(filename => $file);
+		$package=Alien::Package::Lsb->new(filename => $file);
+		$package=Alien::Package::Pkg->new(filename => $file);
+		$package=Alien::Package::Rpm->new(filename => $file);
+		$package=Alien::Package::Slp->new(filename => $file);
+		$package=Alien::Package::Tgz->new(filename => $file);
+				$package->cleantree;
+		$package->description($tgzdescription) if defined $tgzdescription;
+			$package->fixperms($fixperms);
+package format and install it. It also supports LSB packages.
+		$package->incrementrelease($versionbump);
+			$package->install($file);
+				$package->install($newfile);
+package is installed and removed. Use this with caution, because these
+					$package->patchfile($package->getpatch($anypatch, patchdirs()));
+					$package->patchfile($patchfile)
+			$package->prep;
+		$package->revert;
+packages.
+packages, which, if lintian is installed, will be tested with lintian and
+				$package->unpack;
+				$package->unpacked_tree('');
+		$package->usescripts($scripts);
+		$package->version($tgzversion) if defined $tgzversion;
+package without breaking your system, don't try to replace it with an
+       --patch=<patch>      Specify patch file to use instead of automatically
+	"patch=s"        => \$patchfile,
+			# people, since it was an input file.
+	print "alien version $Alien::Version\n";
+					print "Directories ".$package->unpacked_tree." and ".$package->unpacked_tree.".orig prepared.\n"
+					print "Directory ".$package->unpacked_tree." prepared.\n";
+				print "$newfile generated\n";
+	print STDERR <<EOF;
+	print STDERR "Warning: alien is not running as root!\n";
+	print STDERR "Warning: Ownerships of files in the generated packages will probably be wrong.\n";
+			print STDERR "Warning: Skipping conversion of scripts in package ".$package->name.": ".join(" ", $package->scripts)."\n";
+			print STDERR "Warning: Use the --scripts parameter to include the scripts.\n";
+	print STDERR "You must specify a file to convert.\n\n";
+					print "Test results:\n";
+					print "\t$_\n" foreach @results;
+  -p, --to-pkg              Generate a Solaris pkg package.
+Randolph Chung, B<<tausq@debian.org>>.
+# Returns a list of directories to search for patches.
+	return '/var/lib/alien',"/usr/share/alien/patches";
+  -r, --to-rpm              Generate a Red Hat rpm package.
+run. Some commands may generate a lot of output.
+Sanitize all file owners and permissions when building a deb. This may be
+	"scripts|c"      => \$scripts,
+scripts might be designed to work on a system unlike your own, and could
+			# See if a patch file should be used.
+	"single|s"       => sub { $single=1; $generate=1 },
+		# Skip conversion if package is already the correct format.
+so it defaults to off. This can only be used when converting to debian
+some things to mess with their permissions and owners to the degree this does,
+Specifiy a description for the package. This only has an effect when
+Specifiy a version for the package. This only has an effect when
+Specify the patch to be used instead of automatically looking the patch up
+       -s, --single         Like --generate, but do not create .orig
+Stampede slp, Slackware tgz, and Solaris pkg file formats. If you want to
+standard linux directory tree. Do NOT run B<alien> on tar files with source
+# Start by processing the parameters.
+sub patchdirs {
+sub usage {
+sub version {
+# -T and -t.
+				# Tell them where the package ended up.
+    $test, $anypatch);
+       --test               Test generated packages with lintian.
+Test the generated packages. Currently this is only supported for debian
+	"test|T"         => \$test,
+that this means that the package generated from a lsb package will depend on
+The list of package files to convert.
+The Solaris pkg code was written by Mark A. Hershberger B<<mah@everybody.org>>.
+This is enabled by default when converting from lsb packages.
+this temporary directory by running "debian/rules binary", if you were creating
+to be configuration files.
+	"to-deb|d"       => sub { $destformats{deb}=1 },
+To generate lsb packages, the Red Hat Package Manager must be installed,
+	"to-lsb|l"       => sub { $destformats{lsb}=1 },
+To manipulate packages in the Solaris pkg format (which is really the SV 
+	"to-pkg|p"       => sub { $destformats{pkg}=1 },
+	"to-rpm|r"       => sub { $destformats{rpm}=1 },
+      --to-slp              Generate a Stampede slp package.
+	"to-slp"         => sub { $destformats{slp}=1 },
+	"to-tgz|t"       => sub { $destformats{tgz}=1 },
+Try to convert the scripts that are meant to be run when the
+  -t, --to-tgz              Generate a Slackware tgz package.
+		# unchanged.
+unless (@ARGV) {
+	unless (defined $keepversion) {
+Unlike the other package formats, B<alien> can handle the depenendencies of
+				unlink $newfile;
+) || usage();
+	usage();
+Usage: alien [options] file [...]
+use Alien::Package::Deb;
+use Alien::Package::Lsb;
+use Alien::Package::Pkg;
+use Alien::Package::Rpm;
+use Alien::Package::Slp;
+use Alien::Package::Tgz;
+use a package from another linux distribution than the one you have
+useful if the original package is a mess. On the other hand, it may break
+useful when you are very low on disk space and are generating a debian
+use Getopt::Long;
+use strict;
+#!/usr/bin/perl -w
+	"verbose|v"      => \$Alien::Package::verbose,
+        "version:s"      => sub { length $_[1] ? $tgzversion=$_[1] : version() },
+       --version=<version>  Specify package version.
+      --veryverbose         Be verbose, and also display output of run commands.
+	"veryverbose"    => sub { $Alien::Package::verbose=2 },
+  -v, --verbose             Display each command alien runs.
+	"V"              => \&version,
+  -V, --version		    Display alien's version number.
+When using B<alien> to convert a tgz package, all files in /etc in are assumed
+			# with message.
+your system. Many of these packages are set up differently by the
+you specify. If no output type is specified, it defaults to converting to

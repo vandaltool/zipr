@@ -1,0 +1,255 @@
+    $_ = "'" . $_ . "'";
+#      }
+#    $_ = "'" . $_ . "'";
+########################################################################
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+  @ARGV = @filespec;
+assumed automatically.
+# (at your option) any later version.
+# by the Free Software Foundation, either version 3 of the License, or
+-C            compatibility mode
+    chomp;
+      chop;
+    # closed by `Oc'.
+  close(FILE);
+# Copyright (C) 1993, 2006, 2009 Free Software Foundation, Inc.
+      $double_minus = 1;
+      } else {
+    } else {
+  } else {
+#      } else {
+    } elsif (/^\.\[/) {
+    } elsif (/^\.\]/) {
+    } elsif (/^\.Dd$Sp/) {
+    } elsif (/^\.EQ$Sp/) {
+    } elsif (/^\.G1$Sp/) {
+    } elsif (/^\.GS$Sp/) {
+    } elsif (/^\.[IL]P$Sp/) {
+  } elsif ($n == 1) {
+    } elsif (/^\.NH$Sp/) {
+    } elsif (/^\..* Oc( |$)/) {
+    } elsif (/^\.Oc$Sp/) {
+    elsif (/^\..* Oo( |$)/) {
+    elsif (/^\.Oo$Sp/) {
+    } elsif (/^\.P$/) {
+    } elsif (/^\.(PH|SA)$Sp/) {
+    } elsif (/^\.([pnil]p|sh)$Sp/) {
+    } elsif (/^\.PP$Sp/) {
+    } elsif (/^\.(PRINTSTYLE|START)$Sp/) {
+    } elsif (/^\.PS[\s\n<]/) {
+#    } elsif (/^\.PS\Sp([ 0-9.<].*)?$/) {
+    } elsif (/^\.R1$Sp/) {
+    } elsif (/^\.SH$Sp/) {
+    } elsif (/^\.TH$Sp/) {
+    } elsif (/^\.TL$Sp/) {
+    } elsif (/^\.(Tp|Dp|De|Cx|Cl)$Sp/) {
+    } elsif (/^\.TS$Sp/) {
+### Emacs settings
+# Environment, pp 306-8.
+  exit 0;
+  exit 1 unless @filespec;
+    exit 1 unless $level;
+  exit $exit_status;
+  exit $n if $n > 1;
+      $_ = <FILE>;
+#	$_ = <FILE>;
+  @filespec = ('-') if ! @filespec && ! $had_filespec;
+"filespec" is either the name of an existing, readable file or "-" for
+  foreach (@Command) {
+#  foreach (@Command) {
+  foreach my $arg (@ARGV) {
+foreach my $arg (@ARGV) {
+# General Public License for more details.
+    # grap must be run before pic
+      $Groff{'chem'}++;
+	$Groff{'eqn'}++;
+	$Groff{'grap'}++;
+	$Groff{'grn'}++;
+       $Groff{'grn'} || $Groff{'grap'} || $Groff{'refer'} ) {
+      $Groff{'ILP'}++;		# for man and ms
+       ($Groff{'ILP'} && ! $is_man) ||
+# `groff' is distributed in the hope that it will be useful, but
+# `groff' is free software; you can redistribute it and/or modify it
+      $Groff{'mdoc'}++;
+      $Groff{'mdoc_old'} = 1;
+      $Groff{'me'}++;
+      $Groff{'mm'}++;
+      $Groff{'mom'}++;
+      $Groff{'NH'}++;		# for ms
+      $Groff{'Oo'}--;
+      $Groff{'Oo'}++;
+	$Groff{'Oo'}--;
+	$Groff{'Oo'}++;
+"groff" options are appended to the output, "-m" options are checked.
+      $Groff{'P'}++;
+      $Groff{'pic'}++;
+#	  $Groff{'pic'}++;
+#	$Groff{'pic'}++;
+	$Groff{'pic'}++;
+      $Groff{'PP'}++;		# for mom and ms
+       ($Groff{'PP'} && ! $is_mom && ! $is_man) ) {
+      $Groff{'refer'}++;
+      $Groff{'refer_close'}++;
+  $Groff{'refer'} ||= $Groff{'refer_open'} && $Groff{'refer_close'};
+      $Groff{'refer_open'}++;
+      $Groff{'SH'}++;
+      $Groff{'soelim'}++ if $level;
+#	  $Groff{'soelim'}++ if $level;
+#	$Groff{'soelim'}++ if $level;
+	$Groff{'soelim'}++ if $level;
+	$Groff{'tbl'}++;
+      $Groff{'TH'}++;
+      $Groff{'TL'}++;		# for mm and ms
+# grog - guess options for groff command
+      $had_filespec = 1;
+    &help() if $arg eq '-h' || '--help' =~ /^$arg/;
+-h --help     print this uasge message
+      if (!/^\./) {
+      if (!/^\./ || /^\.[0-9]/) {
+    if ($arg =~ /^-/) {
+    if ($arg eq '--') {
+    if ($arg eq '-') {
+    if ($arg =~ /^-m/) {
+    if (/^(.cstart)|(begin\s+chem)$/) {
+    if ($double_minus) {
+      if (-f $arg && -r $arg) {
+  if ($Groff{'chem'}) {
+  if ( $Groff{'mdoc'} ) {
+  if ( $Groff{'me'} ) {
+  if ( $Groff{'mm'} || ($Groff{'P'} && ! $is_man) ) {
+  if ( $Groff{'mom'} ) {
+  if ( $Groff{'NH'} || ($Groff{'TL'} && ! $is_mm) ||
+  if ( $Groff{'pic'} || $Groff{'tbl'} || $Groff{'eqn'} ||
+  if ( $Groff{'SH'} && $Groff{'TH'} ) {
+	if $m[0] ne $Mparams[0];
+  if ($n == 0) {
+    if ($np == 1) {
+  if (!open(FILE, $filename eq "-" ? $filename : "< $filename")) {
+#	if (!/^\./ || /^\.ps/) {
+      if (/^\.PS\s*<\s*(\S+)/) {
+#      if (/^\.PS\s*<\s*(\S+)/) {
+      if (s/ Oc( |$)/ /) {
+      if (s/ Oo( |$)/ /) {
+    if (/^\.so$Sp/) {
+    # indicate a doublequote as a string element, and weird features
+    "in groff version 1.21\n";
+# Inspired by doctype script in Kernighan & Pike, Unix Programming
+# Installed position: <prefix>/bin/grog
+    # In the old version of -mdoc `Oo' is a toggle, in the new it's
+    $is_man = 1;
+    $is_mm = 1;
+    $is_mom = 1;
+    # like `.foo a"b' are not used.
+  local(*FILE);
+# Local Variables:
+    # macro arguments are well behaved, i.e., "" is used within "..." to
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# mode: CPerl
+    my @chem = ('chem', @ARGV, '|', 'groff');
+my @Command;			# stores the final output
+  my $double_minus = 0;
+  my ($exit_status) = @_;
+  my ($filename, $level) = @_;
+  my @filespec = ();
+my %Groff;
+  my $had_filespec = 0;
+  my $is_man = 0;
+  my $is_mm = 0;
+  my $is_mom = 0;
+my $Last_Update = '5 Jan 2009';
+  my @m = ();
+my @Mparams;			# stores the options -m*
+  my $np = scalar @Mparams;
+  my $n = scalar @m;
+my $Prog = $0;
+    my $s = "-";
+    my $s = ( $Groff{'mdoc_old'} || $Groff{'Oo'} ) ? '-mdoc-old' : '-mdoc';
+my $Sp = qr([\s\n]);
+#my $Sp = "[\\s\\n]";
+  my ($v, $d, $f) = File::Spec->splitpath($Prog);
+  my $was_minus = 0;
+    # new implementation of -mdoc) is not complete; it assumes that
+      next;
+    next unless $arg;
+    next unless /\s/;
+#    next unless /[\$\\\"\';&()|<> \t\n]/;
+"option" is either a "groff" option or one of these:
+    # .PP occurs in -mom, -man and -ms, .IP and .LP occur in -man and -ms
+  print "@Command\n";
+  print <<EOF;
+  print "Perl version of GNU $Prog of $Last_Update " .
+	print STDERR "grog: $arg is not a readable file.\n";
+    print STDERR "grog: wrong option $arg.\n" if $arg =~ /^--/;
+    print STDERR "$Prog: can't open \`$filename': $!\n";
+    print STDERR "$Prog: error: there are several macro packages: @m\n";
+  print STDERR "$Prog: more than 1 `-m' argument: @Mparams" if $np > 1;
+      print STDERR "$Prog: wrong `-m' argument: $Mparams[0]\n"
+#	&process($1, $level);
+	&process($1, $level);
+  &process($arg, 0);
+      &process($_, $level + 1) unless /\\/ || $_ eq "";
+  $Prog = $f;
+      push(@Command, $arg);
+    push(@Command, @ARGV);
+    push(@Command, '-man');
+    push(@Command, '-me');
+    push(@Command, '-mm');
+    push(@Command, '-mom');
+    push(@Command, '-ms');
+    push(@Command, $s);
+	push @filespec, $arg;
+    push(@m, '-man');
+    push(@m, '-me');
+    push(@m, '-mm');
+    push(@m, '-mom');
+    push(@m, '-ms');
+      push @Mparams, $arg;
+    push(@m, $s);
+      redo;
+require v5.6;
+    return;
+# Rewritten and put under GPL by Bernd Warken.
+      s/ .*$//;
+      s/\".*//;
+      s/\\\".*//;
+#    s/\'/\'\\\'\'/;
+    $s .= "e" if $Groff{'eqn'};
+      s/\"[^\"]*\"//g;
+    $s .= "G" if $Groff{'grap'};
+    $s .= "g" if $Groff{'grn'};
+    s/$/\n/;
+      s/^\.Oc/\. /;
+      s/^\.Oo/\. /;
+# Source file position: <groff-source>/src/roff/grog/grog.pl
+    $Sp = '' if $arg eq '-C';
+    $s .= "p" if $Groff{'pic'};
+    $s .= "R" if $Groff{'refer'};
+    s/^[.']\s*/./;
+    $s .= "s" if $Groff{'soelim'};
+      s/^.so *//;
+    s/^\s+|\s+$//g;
+standard input.  If no "filespec" is specified, standard input is
+    $s .= "t" if $Groff{'tbl'};
+sub help {
+sub process {
+sub version {
+    # The test for `Oo' and `Oc' not starting a line (as allowed by the
+# This file is part of `grog', which is part of `groff'.
+# under the terms of the GNU General Public License (GPL) as published
+      unless ($was_minus) {
+    unshift(@Command, @chem);
+    unshift @Command, 'groff';
+    unshift @Command, $Mparams[0] if $np == 1;
+usage: grog [option]... [--] [filespec]...
+use File::Spec;
+use strict;
+use warnings;
+#! /usr/bin/env perl
+    &version(0) if $arg eq '-v' || '--version' =~ /^$arg/;
+-v --version  print version information
+	$was_minus = 1;
+  # We could implement an option to execute the command here.
+  while (<FILE>) {
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# Written by James Clark, maintained by Werner Lemberg.
+# You should have received a copy of the GNU General Public License

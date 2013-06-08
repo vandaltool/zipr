@@ -1,0 +1,25 @@
+__bss_start
+-frequency
+[-frequency|-intensity] [ppmfile]
+GLIBC_2.0
+__gmon_start__
+-intensity
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pgm_writepgminit
+pgm_writepgmrow
+pm_allocrow
+pm_close
+pm_error
+pm_keymatch
+pm_openr
+pm_usage
+ppm_computecolorhist
+ppm_init
+ppm_readppm
+This should never happen - contact the maintainer
+Too many colors - Try reducing with ppmquant

@@ -1,0 +1,114 @@
+ArtBox:         
+Author:         
+BleedBox:       
+__bss_start
+Call to Object where the object was type %d, not the expected type %d
+Copyright 1996-2004 Glyph & Cog, LLC
+Copyright 2005-2011 The Poppler Developers - http://poppler.freedesktop.org
+Couldn't get text encoding
+CreationDate
+CreationDate:   
+Creator:        
+CropBox:        
+__ctype_b_loc
+Encrypted:      
+Failed to print boxes for page %d
+FDAvailable encodings are:
+File size:      %u bytes
+first page to convert
+__fprintf_chk
+fseeko64
+ftello64
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBCXX_3.4
+globalParams
+__gmon_start__
+Internal error in arg table
+_IO_stdin_used
+_Jv_RegisterClasses
+Keywords
+Keywords:       
+last page to convert
+ (letter)
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpoppler.so.19
+libpthread.so.0
+libstdc++.so.6
+list available encodings
+-listenc
+MediaBox:       
+Metadata:
+ModDate:        
+Optimized:      %s
+output text encoding name
+owner password (for encrypted files)
+Page %4d ArtBox:   
+Page %4d BleedBox: 
+Page %4d CropBox:  
+Page %4d MediaBox: 
+Page %4d size: %g x %g pts
+Page %4d TrimBox:  
+Pages:          %d
+Page size:      %g x %g pts
+pdfDocEncoding
+<PDF-file>
+pdfinfo version %s
+PDF version:    %d.%d
+print copyright and version info
+__printf_chk
+print the document metadata (XML)
+print the page bounding boxes
+print usage information
+Producer
+Producer:       
+%s%8.2f %8.2f %8.2f %8.2f
+__sprintf_chk
+__stack_chk_fail
+strftime
+ <string>
+Subject:        
+T$(9T$,|
+T$(9T$,}^
+Tagged:         %s
+Title:          
+TrimBox:        
+Usage: %s [options]
+user password (for encrypted files)
+yes (print:%s copy:%s change:%s addNotes:%s)
+_Z15parseDateStringPKcPiS1_S1_S1_S1_S1_PcS1_S1_
+_Z5erroriPcz
+_ZN10UnicodeMap10mapUnicodeEjPci
+_ZN10UnicodeMap9decRefCntEv
+_ZN12GlobalParams15getTextEncodingEv
+_ZN12GlobalParams15setTextEncodingEPc
+_ZN12GlobalParams16getEncodingNamesEv
+_ZN12GlobalParamsC1EPKc
+_ZN12GlobalParamsD1Ev
+_ZN13PDFDocFactory12createPDFDocERK9GooStringPS0_S3_Pv
+_ZN13PDFDocFactoryC1EP7GooList
+_ZN13PDFDocFactoryD1Ev
+_ZN4Dict6lookupEPcP6ObjectPSt3setIiSt4lessIiESaIiEE
+_ZN4XRef10getDocInfoEP6Object
+_ZN4XRef10okToChangeEb
+_ZN4XRef12okToAddNotesEb
+_ZN4XRef8okToCopyEb
+_ZN4XRef9okToPrintEb
+_ZN6Object4freeEv
+_ZN6Object8memCheckEP8_IO_FILE
+_ZN6PDFDoc11getNumPagesEv
+_ZN6PDFDoc12isLinearizedEv
+_ZN6PDFDoc7getPageEi
+_ZN6PDFDocD1Ev
+_ZN7Catalog12readMetadataEv
+_ZN7Catalog17getStructTreeRootEv
+_ZN7GooListD1Ev
+_ZN9GooString3SetEPKciS1_i
+_ZN9GooStringC1EPKc
+_ZN9GooStringD1Ev
+_ZNK9GooString3cmpEPKc

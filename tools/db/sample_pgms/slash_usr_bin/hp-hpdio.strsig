@@ -1,0 +1,144 @@
+                action = event.event_code
+# along with this program; if not, write to the Free Software
+    args = [device_uri, '', event_code, prop.username, 0, '', '', bytes_written]
+# (at your option) any later version.
+# Author: Don Welch
+                break
+                    break
+                            break
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# (c) Copyright 2003-2008 Hewlett-Packard Development Company, L.P.
+# -*- coding: utf-8 -*-
+                    continue
+                        data = data[PIPE_BUF:]
+                    data = dumps(response, HIGHEST_PROTOCOL)
+def run(read_pipe2=None,  # pipe from hpssd
+def send_message(device_uri, event_code, bytes_written=0):
+                            dev.close()
+                            dev = devices[device_uri]
+                            dev = devices[device_uri] = device.Device(device_uri, disable_dbus=True)
+                                    dev.error_state = ERROR_STATE_ERROR
+                            dev.error_state = ERROR_STATE_ERROR
+devices = {} # { 'device_uri' : device.Device(), ... }
+                                        'device-state': DEVICE_STATE_NOT_FOUND,
+                device_uri = event.device_uri
+        dev = None
+                            dev.open()
+                                    dev.pollDevice()
+                                    dev.queryDevice()
+                                    dev.status_code = EVENT_ERROR_DEVICE_IO_ERROR
+__doc__ = "Provides device I/O process isolation for system tray application."
+                elif action == EVENT_POLLING_REQUEST:
+                elif action == EVENT_SYSTEMTRAY_EXIT:
+                elif action == EVENT_USER_CONFIGURATION_CHANGED:
+                                else:
+                        else:
+                else:
+                            else: # EVENT_POLLING_REQUEST
+                event.debug()
+                event = device.Event(*struct.unpack(fmt, m[:fmt_size]))
+                                except Error, e:
+                        except Error, e:
+except ImportError:
+            except KeyboardInterrupt:
+    except KeyboardInterrupt:
+                        except KeyError:
+            except select.error, e:
+                    #finally:
+        fmt = "80s80sI32sI80sf" # TODO: Move to Event class
+        fmt_size = struct.calcsize(fmt)
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+from base.codes import *
+from base.g import *
+from base import utils, device, status, models
+from cPickle import dumps, HIGHEST_PROTOCOL
+    from dbus import lowlevel, SessionBus
+    global r2, w3
+# Globals
+# GNU General Public License for more details.
+                    if 1:
+                            if action == EVENT_DEVICE_UPDATE_REQUESTED:
+                if action == EVENT_DEVICE_UPDATE_REQUESTED:
+                if action in (EVENT_DEVICE_UPDATE_REQUESTED, EVENT_POLLING_REQUEST):
+                        if dev.device_state == DEVICE_STATE_NOT_FOUND:
+                        if dev is not None:
+                if e[0] == errno.EINTR:
+            if e: break
+                        if not data:
+            if not m:
+            if not r: continue
+import os
+import Queue
+import select
+import struct
+import sys
+import time
+# it under the terms of the GNU General Public License as published by
+        log.debug("Ctrl-C: Exiting...")
+                                log.debug("Device state = %d" % dev.device_state)
+                                log.debug("Error state = %d" % dev.error_state)
+                    log.debug("Exiting")
+                log.debug("Handling event...")
+        log.debug("PID=%d" % os.getpid())
+                    log.debug("Sending data through pipe to hpssd...")
+                        #log.debug("%s starting for %s" % (ACTION_NAMES[action], device_uri))
+                                log.debug("Status code = %d" % dev.status_code)
+                    log.debug("Wrote %d bytes" % total_written)
+    log.error("dbus failed to load (python-dbus ver. 0.80+ required). Exiting...")
+                            log.error(e.msg)
+                                    log.error("Poll device error (%s)." % e.msg)
+                                    log.error("Query device error (%s)." % e.msg)
+        log.set_module("hp-systray(hpdio)")
+        m = ''
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            m = ''.join([m, os.read(r2, fmt_size)])
+                m = m[fmt_size:]
+__mod__ = 'hpdio'
+    msg.append(signature='ssisissi', *args)
+    msg = lowlevel.SignalMessage('/', 'com.hplip.StatusService', 'Event')
+    os.umask(0111)
+                    #    os.write
+                    pass
+PIPE_BUF = 4096
+                            #print "Device.open()"
+                                    #print "Device.queryDevice()"
+                                #print response
+                    #print response
+r2, w3 = None, None
+        r2, w3 = read_pipe2, write_pipe3
+        response = {}
+                response.clear()
+                                response = dev.dq
+                            response = {'error-state': ERROR_STATE_ERROR,
+                                    response = {'test' : 1}
+                r, w, e = select.select([r2], [], [r2], 1.0)
+                send_message(device_uri, EVENT_DEVICE_UPDATE_ACTIVE)
+                send_message(device_uri, EVENT_DEVICE_UPDATE_INACTIVE)
+                    send_message(device_uri, EVENT_DEVICE_UPDATE_REPLY, total_written)
+session_bus = None
+    SessionBus().send_message(msg)
+                                        'status-code' : EVENT_ERROR_DEVICE_IO_ERROR}
+# StdLib
+                    sys.exit(1)
+    sys.exit(1)
+# the Free Software Foundation; either version 2 of the License, or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+                    #thread_activity_lock.release()
+__title__ = "Services and Status System Tray Device I/O Child Process"
+    tmp_dir = '/tmp'
+                    # TODO: Translate into event: scan requested, copy requested, etc.. send as event
+                    total_written = 0
+                        total_written += os.write(w3, data[:PIPE_BUF])
+                                try:
+                        try:
+                    #try:
+            try:
+    try:
+#!/usr/bin/env python
+__version__ = '0.1'
+            while len(m) >= fmt_size:
+                    while True:
+        while True:
+        write_pipe3=None): # pipe to hpssd
+# You should have received a copy of the GNU General Public License

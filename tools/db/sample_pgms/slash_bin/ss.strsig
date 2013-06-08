@@ -1,0 +1,256 @@
+%[^ ] %[^
+0123456789abcdef
+%*08x%*08x%08x%08x
+%08x%08x%08x%08x:%x
+   -0, --packet	display PACKET sockets
+   -4, --ipv4          display only IP version 4 sockets
+%-6d %-6d 
+   -6, --ipv6          display only IP version 6 sockets
+%-6s %-6s 
+*	  %-9d %-9s %-9s
+   -a, --all		display all sockets
+addattr_l ERROR: message exceeded bound of %d
+addraw_l ERROR: message exceeded bound of %d
+   -A, --query=QUERY, --socket=QUERY
+autobound
+Cannot bind netlink socket
+Cannot getsockname
+Cannot open netlink socket
+Cannot parse dst/src address.
+Cannot send dump request
+Cannot talk to rtnetlink
+closedir
+close-wait
+cmdlineno
+Command line is not complete. Try option "help"
+CurrEstab
+ cwnd:%d
+%*d (%[^)])
+D$ 9D$$t
+   -d, --dccp		display only DCCP sockets
+   -D, --diag=FILE     Dump raw information about TCP sockets to FILE
+!!!Deficit %d, rta_len=%d
+dhaletuwxnro460spf:miA:D:F:vV
+Dump terminated
+   -e, --extended      show detailed socket information
+EOF on netlink
+__errno_location
+Error: ambiguous port "%s".
+Error: an inet address is expected rather than "%s".
+Error: an inet prefix is expected rather than "%s".
+Error: an IP address is expected rather than "%s"
+Error: argument "%s" is required
+Error: argument "%s" is wrong: %s
+Error: duplicate "%s": "%s" is the second value.
+Error: either "%s" is duplicate, or "%s" is a garbage.
+Error: "%s" does not look like a port.
+Error: "%s" may be inet address, but it is not allowed in this context.
+Error: "%s" may be inet prefix, but it is not allowed in this context.
+ERROR truncated
+established
+extended
+   -f, --family=FAMILY display sockets of type FAMILY
+   -F, --filter=FILE   read filter information from FILE
+       FILTER := [ state TCP-STATE ] [ EXPRESSION ]
+fin-wait-1
+fin-wait-2
+fopen filter file
+fopen($TCPDIAG_FILE)
+__fprintf_chk
+FRAG	  %-9d %-9d %-9d
+__fread_chk
+__getdelim
+gethostbyaddr
+gethostbyname2
+getopt_long
+getprotobyname
+getprotobynumber
+getservbyname
+getservbyport
+getsockname
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+   -h, --help		this message
+ieeepupat
+if_nametoindex
+   -i, --info		show internal TCP information
+INET	  %-9d %-9d %-9d
+inet_ntop
+inet_pton
+ ino=%u uid=%u sk=%llx
+_IO_stdin_used
+ipproto-%d
+keepalive
+L$ 9L$$t
+last-ack
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+listening
+   -l, --listening	display listening sockets
+ll_remember_index
+%llx %d %d %x %d %d %llx %d
+%llx %*d %d %x %d %d %u %u %u
+Local Address
+localtalk
+localtime
+!!!malformed message: len=%d
+!!!malformed message: len=%d @%lu
+__memcpy_chk
+memory exhausted
+ mem:(r%u,w%u,f%u,t%u)
+Message truncated
+Missing continuation line
+   -m, --memory        show socket memory usage
+More than one filter file
+netlink:
+netlink receive error %s (%d)
+net/netlink
+net/packet
+net/raw6
+net/snmp
+net/sockstat
+net/sockstat6
+net/tcp6
+net/udp6
+net/unix
+   -n, --numeric	don't resolve service names
+   -o, --options       show timer information
+ opt:"%s"
+Out of memory
+packet_dgram
+packet_raw
+Peer Address
+ppp_disc
+   -p, --processes	show process using socket
+__printf_chk
+processes
+PROC_IP_LOCAL_PORT_RANGE
+PROC_NET_NETLINK
+PROC_NET_PACKET
+PROC_NET_PSCHED
+PROC_NET_RAW
+PROC_NET_RAW6
+PROC_NET_SNMP
+PROC_NET_SOCKSTAT
+PROC_NET_SOCKSTAT6
+PROC_NET_TCP
+PROC_NET_TCP6
+PROC_NET_UDP
+PROC_NET_UDP6
+PROC_NET_UNIX
+PROC_ROOT
+PROC_SLABINFO
+ qack:%d
+       QUERY := {all|inet|tcp|udp|raw|unix|packet|netlink}[,QUERY]
+RAW	  %-9d %-9d %-9d
+ rcv_rtt:%g
+ rcv_space:%d
+Reading header from $TCPDIAG_FILE
+Reading $TCPDIAG_FILE
+readlink
+!!!Remnant of size %d
+resolve_hosts
+   -r, --resolve       resolve host names
+rta_addattr32: Error! max allowed bound %d exceeded
+rta_addattr_l: Error! max allowed bound %d exceeded
+RTNETLINK answers
+rtnl_from_file: fread
+rtnl-from_file: truncated message
+ rtt:%g/%g
+("%s",%d,%d),
+%*s %-*d %*s %-*d
+%*s%d%*s%d%*s%d%*s%d%*s%d
+%s/%d/stat
+sender address length == %d
+ send %sbps
+setbuffer
+sethostent
+setservent
+setsockopt
+skbuff_head_cache
+ sk:%llx
+ sk=%llx cb=%llx groups=0x%08x
+slabinfo
+%s/net/psched
+snprintf
+__snprintf_chk
+socket:[
+sockets:
+socket:[%u]
+SO_RCVBUF
+SO_SNDBUF
+__sprintf_chk
+%*s:%-*s 
+%*s*%-*s
+ss: bison bellows (while parsing filter): "%s!"
+ss: get_snmpstat
+ss: get_sockstat
+ss: no families to show with such filter.
+ss: no socket states to show with such filter.
+ss: no socket tables to show with such filter.
+       ss [ OPTIONS ] [ FILTER ]
+ss: "%s" is illegal socket table id
+ss: "%s" is invalid family
+%*s:%-*s %*s:%-*s
+ss: tcpdiag dump requested and no tcp in filter.
+ ssthresh:%d
+   -s, --summary	show socket usage summary
+ss utility, iproute2-ss%s
+__stack_chk_fail
+strcasecmp
+__strcat_chk
+__strcpy_chk
+__strdup
+strerror
+strtoull
+synchronized
+syn-recv
+syn-sent
+syntax error
+sys/net/ipv4/ip_local_port_range
+TCP	  %-9d %-9d %-9d
+tcp_bind_bucket
+TCP:   %d (estab %d, closed %d, orphaned %d, synrecv %d, timewait %d/%d), ports %d
+TCPDIAG answered
+TCPDIAG answers
+tcp_open_request
+tcp_tw_bucket
++T$D+T$X
+ timer:(%s,%s,%d)
+Timestamp: %s %lu usec
+timewait
+time-wait
+$tIToo long line in filter
+Too many arguments to command
+Total: %d (kernel %d)
+tr_802_2
+Transport Total     IP        IPv6
+Truncated message
+   -t, --tcp		display only TCP sockets
+UDP	  %-9d %-9d %-9d
+%u %*d %s %u %s
+unconnected
+Unexpected EOF reading $TCPDIAG_FILE
+Unexpected reply!!!
+unix_dgram
+unix_stream
+Usage: ss [ OPTIONS ]
+ users:(%s)
+/usr/sbin/rpcinfo -p 2>/dev/null
+   -u, --udp		display only UDP sockets
+   -V, --version	output version information
+   -w, --raw		display only RAW sockets
+Wrong address family %d
+Wrong address length %d
+ wscale:%d,%d
+   -x, --unix		display only Unix domain sockets
+%x %x:%x %*x:%*x %*x %d %*d %u %d %llx %[^
+%x %x:%x %x:%x %x %d %d %u %d %llx %d %d %d %d %d %[^
+%x: %x %x %x %x %x %d %s

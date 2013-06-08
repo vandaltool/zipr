@@ -1,0 +1,27 @@
+# about this file.
+# appears before other options.
+	  *)		base=`basename "${infile}"` ;;
+# Based on ps2pdf
+#!/bin/sh
+	*)  break ;;
+	case "$1" in
+	case "${infile}" in
+# Convert DVI to PDF.
+	  *.dvi)	base=`basename "${infile}" .dvi` ;;
+DVIPSOPTIONS=""
+	echo "Usage: `basename \"$0\"` [options...] input.dvi [output.pdf]" 1>&2
+exec dvips -Ppdf $DVIPSOPTIONS -q -f "$infile" | $GS_EXECUTABLE $OPTIONS -q -P- -dSAFER -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sstdout=%stderr -sOutputFile="$outfile" $OPTIONS -c .setpdfwrite -
+# executable name set in the makefile
+GS_EXECUTABLE=gs
+if [ $# -eq 1 ]
+if [ $# -lt 1 -o $# -gt 2 ]; then
+infile=$1;
+OPTIONS=""
+	-?*) OPTIONS="$OPTIONS $1" ;;
+	outfile=$2
+	outfile="${base}".pdf
+# Please contact Andrew Ford <A.Ford@ford-mason.co.uk> with any questions
+	-R*) DVIPSOPTIONS="$DVIPSOPTIONS $1";;
+# This definition is changed on install to match the
+# We have to include the options twice because -I only takes effect if it
+while true

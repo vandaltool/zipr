@@ -1,0 +1,205 @@
+%1023s %1023s
+3T$$3D$ 	
+__assert_fail
+bad group ID `%d' for user `%s': %s
+bad user ID `%d' for user `%s': %s
+BASH_ENV=
+/bin/bash
+bindtextdomain
+Cannot execute %s
+cannot find user %s
+cannot open login definitions %s [%s]
+cannot read login definitions %s [%s]
+Can't append failure of user %s to %s.
+Can't change root directory to '%s'
+Can't open the faillog file (%s) to check UID %lu. User access authorized.
+Can't reset faillog entry for UID %lu in %s.
+Can't write faillog entry for UID %lu in %s.
+CHFN_RESTRICT
+closelog
+configuration error - cannot parse %s value: '%d'
+configuration error - cannot parse %s value: '%s'
+configuration error - unknown item '%s' (notify administrator)
+CONSOLE_GROUPS
+could not allocate space for config info
+Could not allocate space for config info.
+Couldn't initialize PAM: %s
+CREATE_HOME
+__ctype_b_loc
+dcgettext
+dcngettext
+DEFAULT_HOME
+%d failure since last login.
+%d failures since last login.
+d:fh:pr:
+ENCRYPT_METHOD
+endgrent
+endpwent
+endsgent
+endspent
+endutent
+__environ
+Environment overflow
+ENV_PATH
+ENV_SUPATH
+ERASECHAR
+__errno_location
+/etc/gshadow
+/etc/login.defs
+exceeded failure limit for `%s' %s
+FAILED LOGIN (%u)%s FOR '%s', %s
+FAILLOG_ENAB
+FAKE_SHELL
+fgetsgent
+__fprintf_chk
+freeaddrinfo
+FTMP_FILE
+getaddrinfo
+getgrgid_r
+getgrnam_r
+gethostname
+get_pam_user
+getpwnam
+getpwnam_r
+getsgnam
+gettimeofday
+getutent
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.2
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+HUSHLOGIN=FALSE
+HUSHLOGIN_FILE
+HUSHLOGIN=TRUE
+initgroups
+initgroups failed for user `%s': %s
+Invalid root directory '%s'
+invalid root `%s' for user `%s'
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+KILLCHAR
+KRB_CONF=
+LANGUAGE=
+Last was %s on %s.
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+LIBPAM_1.0
+LIBPAM_MISC_1.0
+libpam_misc.so.0
+libpam.so.0
+LIBPATH=
+localtime
+login: abort requested by PAM
+Login incorrect
+login: PAM Failure, aborting: %s
+LOGIN_RETRIES
+login '%s' re-enabled after temporary lockout (%d failures)
+Login timed out after %u seconds.
+LOGIN_TIMEOUT
+LOG_OK_LOGINS
+LOG_UNKFAIL_ENAB
+MAIL_DIR
+MAIL_FILE
+malloc(%d) failed
+Maximum number of tries exceeded (%u)
+MAX_MEMBERS_PER_GROUP
+MD5_CRYPT_ENAB
+misc_conv
+NLSPATH=
+No directory, logging in with HOME=/
+no subsystem root `%s' for user `%s'
+No utmp entry.  You must exec "login" from the lowest level "sh"
+ on '%.100s'
+ on '%.100s' from '%.200s'
+__open64_2
+PAM_ABORT returned from pam_authenticate()
+pam_acct_mgmt
+pam_authenticate
+pam_chauthtok
+pam_close_session
+pam_getenvlist
+pam_get_item
+pam_open_session
+pam_setcred
+pam_set_item
+pam_start
+pam_strerror
+PASS_MAX_DAYS
+PASS_MIN_DAYS
+PASS_WARN_AGE
+PATH=/bin:/usr/bin
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+prepare_utmp
+__printf_chk
+process_flags
+putsgent
+pututline
+REMOTEHOST
+ROOT LOGIN %s
+%s: Cannot possibly work without effective root
+setlocale
+setsgent
+setutent
+%s: failure forking: %s
+sgetsgent
+SHA_CRYPT_MAX_ROUNDS
+SHA_CRYPT_MIN_ROUNDS
+SHLIB_PATH=
+'%s' logged in %s
+%s login: 
+__snprintf_chk
+%s: out of memory
+%s: Permission denied.
+       %s [-p] [-h host] [-f name]
+       %s [-p] -r host
+__stack_chk_fail
+strcasecmp
+__strdup
+strftime
+__strncpy_chk
+SULOG_FILE
+SYS_GID_MAX
+SYS_GID_MIN
+__syslog_chk
+SYSLOG_SG_ENAB
+SYSLOG_SU_ENAB
+SYS_UID_MAX
+SYS_UID_MIN
+tcgetattr
+tcsetattr
+TIOCSCTTY failed on %s
+TOO MANY LOGIN TRIES (%u)%s FOR '%s'
+TTYGROUP
+TTYTYPE_FILE
+Unable to cd to '%s'
+unable to cd to `%s' for user `%s'
+unable to change owner or mode of tty stdin for user `%s': %s
+Unable to change owner or mode of tty stdin: %s
+Unable to determine your tty name.
+unknown configuration item `%s'
+Usage: %s [-p] [name]
+USERDEL_CMD
+USERGROUPS_ENAB
+/usr/share/locale
+/var/log/faillog
+/var/log/wtmp
+((void *)0) != line
+((void *)0) != name
+((void *)0) != ptr_pam_user
+((void *)0) == username
+((void *)0) != username
+((void *)0) != ut
+Warning: login re-enabled after temporary lockout.
+wlen == (int) len -1
+wlen < (int) sizeof(variable)
+xgetgrgid
+xgetgrnam
+xgetpwnam
+You may not change $%s

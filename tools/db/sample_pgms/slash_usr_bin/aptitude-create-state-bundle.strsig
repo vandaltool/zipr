@@ -1,0 +1,55 @@
+      * )
+#!/bin/bash
+  case "$1" in
+(cd / && tar c ${REALINPUTS[@]}) | $COMPRESSOR -c > "$OUTFILE"
+    COMPRESSOR=bzip2
+    COMPRESSOR=gzip
+declare -a REALINPUTS
+	  DONE=1
+    echo
+    echo "  --force-bzip2     Override autodetection of the comrpession"
+    echo "  --force-gzip      Override autodetection of the compression"
+    echo "                    format: use bzip2 even if it appears to be"
+    echo "                    format: use gzip even if bzip2 is available."
+    echo "  --help            Print this message, then exit."
+    echo "Options:"
+    echo "  --print-inputs    Display the list of files and directories"
+    echo "reproduce an aptitude bug, storing it in the given output file."
+    echo "                    that would be included in the bundle, then exit."
+    echo "This script will collect the copious information needed to"
+    echo "                    unavailable."
+    echo "Usage: $0 [options ... ] <output-file>"
+    exit 0
+    exit 1
+      --force-bzip2 )
+	  FORCE_BZIP2=0
+FORCE_BZIP2=0
+	  FORCE_BZIP2=1
+      --force-gzip )
+	  FORCE_GZIP=0
+FORCE_GZIP=0
+	  FORCE_GZIP=1
+    for x in ${INPUTS[@]}; do echo $x; done
+      --help )
+   [ $HELP = 1 ]
+	  HELP=1
+if [ $FORCE_BZIP2 = 1 ] || ([ $FORCE_GZIP = 0 ] && which bzip2 2> /dev/null > /dev/null)
+if ([ $PRINT_INPUTS = 0 ] && [ "$#" -ne 1 ]) ||
+if [ $PRINT_INPUTS = 1 ]
+  i=$((i + 1))
+INPUTS[1]="$HOME/.aptitude"
+INPUTS[2]="/var/lib/aptitude"
+INPUTS[3]="/var/lib/apt"
+INPUTS[4]="/var/cache/apt/*.bin"
+INPUTS[5]="/etc/apt"
+INPUTS[6]="/var/lib/dpkg/status"
+OUTFILE="$1"
+      --print-inputs )
+PRINT_INPUTS=0
+	  PRINT_INPUTS=1
+   ([ $PRINT_INPUTS = 1 ] && [ "$#" -ne 0 ]) ||
+  REALINPUTS[$i]=./${INPUTS[$i]}
+	  shift
+# Stick "." on the front of all inputs.
+while [ $DONE = 0 ]
+while [ $i -le ${#INPUTS[*]} ]

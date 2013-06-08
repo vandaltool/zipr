@@ -1,0 +1,73 @@
+  All filenames are taken literally; no suffixes are added.
+both the CTIE copyright and the GNU General Public Licence.
+__bss_start
+/build/buildd/texlive-bin-2009/inst/lib
+! Cannot find change file 
+! Cannot find include file
+! Cannot find master file 
+! Cannot open change file 
+! Cannot open/create output file
+! Cannot open include file
+! Cannot open master file 
+-c  create a master change file for original (C)WEB file from changefile(s)
+! Change file ended after @x
+! Change file ended without @z
+! Change file entry did not match
+Copyright 2002,2003 Julian Gilbey.  All rights reserved.  There is no warranty.
+Copyright (C) 2002,2003 Julian Gilbey.
+  Create a new master file or change file from the given
+__ctype_b_loc
+__ctype_tolower_loc
+__errno_location
+For more information about these matters, see the files
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+--help      display this help and exit
+! Hmm... %d 
+ included from l. %ld of %s file %s)
+! Include file name not given
+! Include file name too long
+! Input line too long
+_IO_getc
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+Kpathsea is copyright (C) 1999 Free Software Foundation, Inc.
+kpathsea_version_string
+Kpathsea written by Karl Berry and others.
+kpse_fclose_trace
+kpse_find_file
+kpse_fopen_trace
+kpse_set_program_name
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+. (l. %ld of include file %s
+. (l. %ld of %s file %s)
+  master (C)WEB file and changefiles.
+-m  create a new master file from original (C)WEB and change file(s)
+! Missing @x in change file
+named COPYING and the CTIE source.
+(No errors were found.)
+! No memory for input descriptor
+! No memory for new include descriptor
+of the preceding lines failed to match
+(Pardon me, but I think I spotted something wrong.)
+Primary authors of CTIE: Julian Gilbey.
+__printf_chk
+Redistribution of this software is covered by the terms of
+Run with the --version option for other important information.
+strerror
+(That was a fatal error, my friend.)
+There is NO warranty.  This is free software.
+! This can't happen: change file is master file
+This is CTIE, Version 1.1
+! Too many nested includes
+Type ctie --help for more information
+Usage: ctie -[mc] outfile master changefile(s)
+--version
+--version   display version information and exit

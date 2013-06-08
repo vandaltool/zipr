@@ -1,0 +1,150 @@
+%50s %50s
+abBdEHiI:lo:stvw:WZ
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+-a, --text                   treat all files as text
+-B, --ignore-blank-lines     ignore changes whose lines are all blank
+-b, --ignore-space-change    ignore changes in the amount of white space
+bindtextdomain
+both files to be compared are directories
+bug-diffutils@gnu.org
+cannot interactively merge standard input
+CHARSETALIASDIR
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+dcgettext
+diff-program
+    --diff-program=PROGRAM   use PROGRAM to compare files
+-d, --minimal                try hard to find a smaller set of changes
+eb:	Edit then use both versions.
+ed:	Edit then use both versions, each decorated with a header.
+e:	Discard both versions then edit a new one.
+-E, --ignore-tab-expansion   ignore changes due to tab expansion
+el or e1:	Edit then use the left version.
+er or e2:	Edit then use the right version.
+__errno_location
+Exit status is 0 if inputs are the same, 1 if different, 2 if trouble.
+expand-tabs
+extra operand `%s'
+fflush_unlocked
+__fprintf_chk
+fputs_unlocked
+fread_unlocked
+fwrite_unlocked
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU diffutils
+    --help                   display this help and exit
+-H, --speed-large-files      assume large files, many scattered small changes
+http://www.gnu.org/software/diffutils/
+iconv_close
+iconv_open
+If a FILE is `-', read standard input.
+ignore-all-space
+ignore-blank-lines
+ignore-case
+ignore-matching-lines
+ignore-space-change
+ignore-tab-expansion
+ignore-trailing-space
+-i, --ignore-case            consider upper- and lower-case to be the same
+-I, --ignore-matching-lines=RE  ignore changes whose lines all match RE
+_IO_stdin_used
+iswalnum
+iswspace
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+--left-column
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+-l, --left-column            output only the left column of common lines
+l or 1:	Use the left version.
+Mandatory arguments to long options are mandatory for short options too.
+mbiter.h
+mbiter_multi_next
+mbsinit (&iter->state)
+mbuiter.h
+mbuiter_multi_next
+memory exhausted
+missing operand after `%s'
+mkstemp64
+nl_langinfo
+-o, --output=FILE            operate interactively, sending output to FILE
+__overflow
+__printf_chk
+__progname
+__progname_full
+program error
+program_invocation_name
+program_invocation_short_name
+q:	Quit.
+read failed
+Report bugs to: %s
+r or 2:	Use the right version.
+%s, and %s.
+--sdiff-merge-assist
+setlocale
+%s home page: <%s>
+Side-by-side merge of differences between FILE1 and FILE2.
+sigaction
+sigaddset
+sigaltstack
+sigemptyset
+sigprocmask
+--- %s %ld
++++ %s %ld
+--- %s %ld,%ld
++++ %s %ld,%ld
+speed-large-files
+__sprintf_chk
+%s, %s, and others.
+%s, %s, and %s.
+%s/sdiffXXXXXX
+s:	Silently include common lines.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+-s, --suppress-common-lines  do not output common lines
+__stack_chk_fail
+stack overflow
+standard output
+__strdup
+--strip-trailing-cr
+    --strip-trailing-cr      strip trailing carriage return on input
+__strtoull_internal
+subsidiary program `%s' could not be invoked
+subsidiary program `%s' failed
+subsidiary program `%s' failed (exit status %d)
+subsidiary program `%s' not found
+--suppress-common-lines
+--tabsize
+    --tabsize=NUM            tab stops at every NUM (default 8) print columns
+-t, --expand-tabs            expand tabs to spaces in output
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+Thomas Lord
+Try `%s --help' for more information.
+Usage: %s [OPTION]... FILE1 FILE2
+/usr/lib
+/usr/share/locale
+v:	Verbosely include common lines.
+-v, --version                output version information and exit
+-W, --ignore-all-space       ignore all white space
+write failed
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+-w, --width=NUM              output at most NUM (default 130) print columns
+__xstat64
+-Z, --ignore-trailing-space  ignore white space at line end

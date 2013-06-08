@@ -1,0 +1,124 @@
+ActivateSession
+authenticate
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+CanActivateSessions
+Cannot disable screensaver engines: %s
+Cannot lock screen: %s
+checking if seat can activate sessions
+ConsoleKit: No reply for GetSessionsForUser
+ConsoleKit %s raised:
+ConsoleKit Wrong reply for GetSessionsForUser - expecting an array.
+Could not identify the current session.
+Couldn't allocate the D-Bus message
+CreateTransientDisplay
+dbus_bus_get
+dbus_connection_flush
+dbus_connection_send_with_reply_and_block
+dbus_error_free
+dbus_error_init
+dbus_error_is_set
+dbus_message_append_args
+dbus_message_iter_get_arg_type
+dbus_message_iter_get_basic
+dbus_message_iter_init
+dbus_message_iter_next
+dbus_message_iter_recurse
+dbus_message_new_method_call
+dbus_message_unref
+dcgettext
+Debugging output
+Failed to connect to the D-Bus daemon: %s
+gdk_screen_get_default
+gdmflexiserver.c
+gdm_flexiserver_error
+GDM  %s 
+g_error_free
+GetCurrentSession
+GetSeatId
+GetSessions
+GetSessionType
+g_find_program_in_path
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3.4
+__gmon_start__
+gnome-screensaver-command
+gnome-screensaver-command --lock
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_translation_domain
+g_quark_from_static_string
+g_random_double
+g_set_error
+g_spawn_command_line_async
+g_strdup
+g_strdup_printf
+g_strfreev
+gtk_box_get_type
+gtk_box_set_spacing
+gtk_container_get_type
+gtk_container_set_border_width
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_run
+gtk_init
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_widget_destroy
+gtk_window_get_type
+gtk_window_set_icon_name
+gtk_window_set_title
+g_type_check_instance_cast
+Ignored 
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libdbus-1.so.3
+libgdk-3.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+LoginWindow
+monte-carlo-pi
+- New GDM login
+No longer supported
+Not yet implemented
+Only the VERSION command is supported
+org.freedesktop.ConsoleKit
+/org/freedesktop/ConsoleKit/Manager
+org.freedesktop.ConsoleKit.Manager
+org.freedesktop.ConsoleKit.Seat
+org.freedesktop.ConsoleKit.Session
+org.gnome.DisplayManager
+/org/gnome/DisplayManager/LocalDisplayFactory
+org.gnome.DisplayManager.LocalDisplayFactory
+Out of memory.
+pi ~~ %1.10f	(%lu/%lu * 4) iteration: %lu 
+__printf_chk
+ retained for compatibility
+%s %d : error allocating memory
+seat id is not set; can't switch sessions
+seat is unable to activate sessions
+session-properties
+setlocale
+Started %s
+startnew
+__strdup
+Switching to session %s
+Unable to activate session: %s
+Unable to create transient display: %s
+Unable to determine seat: %s
+Unable to determine session: %s
+Unable to start new display
+/usr/share/locale
+Version of this application
+xscreensaver-command
+xscreensaver-command -lock
+xscreensaver-command -throttle

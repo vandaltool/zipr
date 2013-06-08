@@ -1,0 +1,20 @@
+Allocating output buffer
+__bss_start
+dumb:os:col#80:cr=^M:sf=^J:am:
+Expanding output buffer
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libtinfo.so.5
+putwchar
+setlocale
+tgetflag
+trouble reading termcap
+unknown escape sequence in input: %o, %o
+usage: ul [-i] [-t terminal] [file ...]

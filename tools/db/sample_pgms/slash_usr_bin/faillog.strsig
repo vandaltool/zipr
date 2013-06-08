@@ -1,0 +1,66 @@
+0 == err
+%-9s   %5d    %5d   
+  -a, --all                     display faillog records for all users
+ahl:m:rt:u:
+__assert_fail
+bindtextdomain
+                                counters and limits (if used with -r, -m,
+__ctype_b_loc
+dcgettext
+%D %H:%M:%S %z
+endpwent
+__errno_location
+faillog.c
+faillog: Cannot get the size of %s: %s
+faillog: Cannot open %s: %s
+faillog: Failed to get the entry for UID %lu
+faillog: Failed to reset fail count for UID %lu
+faillog: Failed to set locktime for UID %lu
+faillog: Failed to set max for UID %lu
+__fprintf_chk
+fseeko64
+__fxstat64
+getopt_long
+getpwent
+getpwnam
+getpwuid
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -h, --help                    display this help message and exit
+_IO_putc
+_IO_stdin_used
+lastlog: Unknown user or range: %s
+ [%lds lock]
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+  -l, --lock-secs SEC           after failed login lock account for SEC seconds
+localtime
+lock-secs
+Login       Failures Maximum Latest                   On
+ [%lus left]
+  -m, --maximum MAX             set maximum failed login counters to MAX
+Options:
+                                or -l) only for the specified LOGIN(s)
+__printf_chk
+print_one
+reset_one
+  -r, --reset                   reset the counters of login failures
+setlocale
+set_locktime_one
+setmax_one
+setpwent
+%s: invalid numeric argument '%s'
+__stack_chk_fail
+strerror
+strftime
+  -t, --time DAYS               display faillog records more recent than DAYS
+Usage: %s [options]
+/usr/share/locale
+  -u, --user LOGIN/RANGE        display faillog record or maintains failure
+/var/log/faillog

@@ -1,0 +1,20 @@
+ file...          files to decompress. If none given, use standard input.
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+ -h --help        give this help
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+msexpand version %s (vernadsky) May  9 2010
+__printf_chk
+Report bugs to <mhi@penguin.cz>
+%s: Doesn't end with underscore -- ignored
+%s:No memory
+%s: This is not a MS-compressed file
+__strcpy_chk
+%s: Unsupported version 6.22
+Usage: %s [-h] [-V] [file ...]
+ -V --version     display version number

@@ -1,0 +1,29 @@
+__bss_start
+Categories:
+Child: %s
+	Comment: %s
+Document: %s
+Error: No reg passed in!
+-> ghelp:%s
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+Info category: %s
+Info page: %s
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+librarian.so.0
+Man page %s
+	Path: %s
+	Path: %s#%s
+__printf_chk
+rrn_for_each
+rrn_info_for_each
+rrn_info_get_categories
+rrn_info_shutdown
+rrn_man_for_each
+rrn_man_shutdown
+rrn_shutdown

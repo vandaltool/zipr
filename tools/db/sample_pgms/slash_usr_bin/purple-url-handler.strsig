@@ -1,0 +1,242 @@
+    account = cpurple.PurpleAccountsFindAny(accountname, protocolname)
+    account = cpurple.PurpleAccountsFindConnected(accountname, protocolname)
+    account = findaccount(protocol)
+    account = findaccount(protocol, accountname)
+    account = findaccount(protocol, matcher=correct_server)
+        accountname = ""
+               (accountname != "" and accountname != cpurple.PurpleAccountGetUsername(account)):
+    accountname = params.get("account", "")
+    accountname = params.get("from_jid", "")
+        accountname = urllib.unquote_plus(tmp)
+        account_not_found()
+        addbuddy(account, screenname)
+        addbuddy(account, screenname, params.get("group", ""))
+        addbuddy(account, screenname, params.get("group", ""), params.get("name", ""))
+            aim(uri)
+        assert False, "Not implemented"
+                break
+                bring_account_online(account)
+    bring_account_online(account)
+bus = dbus.SessionBus()
+                channel = "#" + channel
+            channel = urllib.unquote_plus(target.split(",")[0])
+class CheckedAttribute:
+class CheckedObject:
+        command = ""
+    command = urllib.unquote_plus(match.group(1))
+        command = urllib.unquote_plus(tmp)
+    connection = cpurple.PurpleAccountGetConnection(account)
+                continue
+    conversation = cpurple.PurpleConversationNew(1, account, screenname)
+            conversation = purple.PurpleFindConversationWithAccount(2, params.get("channel", params.get("room")), account)
+cpurple = CheckedObject(purple)
+    cpurple.PurpleBlistRequestAddBuddy(account, screenname, group, alias)
+def account_not_found():
+def addbuddy(account, screenname, group="", alias=""):
+def aim(uri):
+def bring_account_online(account):
+    def __call__(self, *args):
+def convert(value):
+    def correct_server(account):
+def extendlist(list, length, fill):
+def findaccount(protocolname, accountname="", matcher=None):
+    def __getattr__(self, attr):
+def gg(uri):
+def gochat(account, params, message=None):
+def goim(account, screenname, message=None):
+def gtalk(uri):
+def icq(uri):
+    def __init__(self, cobj, attr):
+    def __init__(self, obj):
+def irc(uri):
+def main(argv=sys.argv):
+def msnim(uri):
+def myim(uri):
+def sip(uri):
+def xmpp(uri):
+def ymsgr(uri):
+    elif command.lower() == "add":
+    elif command.lower() == "addbuddy":
+    elif command.lower() == "addfriend":
+    elif command.lower() == "call":
+    elif command.lower() == "chat":
+    elif command.lower() == "gochat":
+    elif command.lower() == "join":
+    elif command.lower() == "roster":
+        elif type == "gg":
+        elif type == "gtalk":
+        elif type == "icq":
+        elif type == "irc":
+        elif type == "msnim":
+        elif type == "myim":
+        elif type == "sip":
+        elif type == "xmpp":
+        elif type == "ymsgr":
+            else:
+        else:
+    else:
+        # error message ourselves.
+    except:
+    except dbus.DBusException, e:
+except dbus.DBusException, e:
+        for account in cpurple.PurpleAccountsGetAll():
+    	for i in range(20):
+        for modifier in target.split(",")[1:]:
+        for param in paramstring.split(";"):
+        for param in paramstring.split("&"):
+        # generator thing just wants a UInt32, which is pretty failing.
+            gg(uri)
+        gochat(account, params)
+        gochat(account, {"room": room, "server": server})
+        gochat(account, {"room": screenname})
+            gochat(account, {"server": server, "channel": channel, "password": params.get("key", "")}, params.get("msg"))
+        goim(account, jid)
+        goim(account, screenname)
+    goim(account, screenname)
+        goim(account, screenname, params.get("body"))
+        goim(account, screenname, params.get("m"))
+        goim(account, screenname, params.get("message"))
+            goim(account, urllib.unquote_plus(target.split(",")[0]), params.get("msg"))
+            gtalk(uri)
+        # Happily, passing a 0 to mean an empty list turns out to work anyway.
+            icq(uri)
+    if (account == 0):
+    if (account != 0):
+            if channel[0] != "#":
+    if command.lower() == "chat":
+    if command.lower() == "goim":
+    if command.lower() == "message":
+    if command.lower() == "sendim":
+            if conversation:
+    if e._dbus_error_name == "org.freedesktop.DBus.Error.ServiceUnknown":
+        if (isnick):
+        if len(argv) != 2:
+    if len(argv) != 2 or argv[1] == "--help" or argv[1] == "-h":
+    if len(list) < length:
+    if matcher:
+            if matcher(account):
+    if message:
+    if message != None:
+if __name__ == "__main__":
+    if not cpurple.PurpleAccountIsConnected(account):
+    if not match:
+    if paramstring:
+            if (protocolname != cpurple.PurpleAccountGetProtocolId(account)) or \
+#        if (result == 0):
+    if (target != ""):
+    if target:
+    if (tmp):
+        if type == "aim":
+                         "/im/pidgin/purple/PurpleObject")
+import dbus
+import re
+import sys
+import time
+import urllib
+            irc(uri)
+    isnick = modifiers.has_key("isnick")
+    jid = params.get("jid", "")
+            key, value = extendlist(param.split("=", 1), 2, "")
+    main()
+    match = re.match(r"^aim:([^?]*)(\?(.*))", uri)
+    match = re.match(r"^gg:(.*)", uri)
+    match = re.match(r"^gtalk:([^?]*)(\?(.*))", uri)
+    match = re.match(r"^icq:([^?]*)(\?(.*))", uri)
+    match = re.match(r"^irc:(//([^/]*))?/?([^?]*)(\?(.*))?", uri)
+    match = re.match(r"^msnim:([^?]*)(\?(.*))", uri)
+    match = re.match(r"^sip:(.*)", uri)
+    match = re.match(r"^xmpp:(//([^/?#]*)/?)?([^?#]*)(\?([^;#]*)(;([^#]*))?)?(#(.*))?", uri)
+    match = re.match(r"^ymsgr:([^?]*)(\?([^&]*)(&(.*))?)", uri)
+        # message if nothing is listening on the bus.  We print a friendly
+    modifiers = {}
+            modifiers[modifier] = True
+            msnim(uri)
+            myim(uri)
+    obj = bus.get_object("im.pidgin.purple.PurpleService",
+obj = None
+    params = {}
+            params[key] = urllib.unquote_plus(value)
+    paramstring = match.group(3)
+    paramstring = match.group(5)
+    paramstring = match.group(7)
+    # prefer connected accounts
+        print "Error: no libpurple-powered client is running. Try starting Pidgin or Finch."
+#            print "Error: " + self.attr + " " + str(args) + " returned " + str(result)
+        print "Error: %s" % (e.message)
+        print "Example: %s \"xmpp:romeo@montague.net?message\"" % argv[0]
+        print "Invalid aim URI: %s" % uri
+        print "Invalid gg URI: %s" % uri
+        print "Invalid gtalk URI: %s" % uri
+        print "Invalid icq URI: %s" % uri
+        print "Invalid irc URI: %s" % uri
+        print "Invalid msnim URI: %s" % uri
+        print "Invalid sip URI: %s" % uri
+        print "Invalid xmpp URI: %s" % uri
+        print "Invalid ymsgr URI: %s" % uri
+    print "No matching account found."
+        print "TODO: send uri: ", uri
+            print "Unknown protocol: %s" % type
+        print "Usage: %s URI" % argv[0]
+    protocol = "prpl-aim"
+    protocol = "prpl-gg"
+    protocol = "prpl-icq"
+    protocol = "prpl-irc"
+    protocol = "prpl-jabber"
+    protocol = "prpl-msn"
+        protocol = "prpl-myspace"
+    protocol = "prpl-simple"
+    protocol = "prpl-yahoo"
+purple = dbus.Interface(obj, "im.pidgin.purple.PurpleInterface")
+        purple.PurpleAccountConnect(account)
+        purple.PurpleAccountSetStatusList(account, "online", 1, 0)
+                purple.PurpleConvSendConfirm(conversation, message)
+        purple.PurpleConvSendConfirm(conversation, message)
+    purple.ServJoinChat(connection, params)
+    query = match.group(5) or ""
+        real_stderr = sys.stderr
+        # Redirect stderr to suppress the printing of an " Introspect error"
+        result = self.cobj.obj.__getattr__(self.attr)(*args)
+        return
+            return 0
+                return account
+        return account
+    return account
+        return CheckedAttribute(self, attr)
+        return int(value)
+        return list
+        return list + [fill] * (length - len(list))
+        return result
+        return ((server == "") or ("@" in username) and (server == (username.split("@"))[1]))
+        return value
+        room, server = screenname.split("@")
+    screenname = params.get("contact", "")
+    screenname = params.get("screenname", "")
+    screenname = urllib.unquote_plus(match.group(1))
+    screenname = urllib.unquote_plus(match.group(3))
+        self.attr = attr
+        self.cobj = cobj
+        self.obj = obj
+    server = urllib.unquote_plus(match.group(2) or "")
+            sip(uri)
+            sys.exit(1)
+        sys.exit(1)
+    sys.exit(1)
+        sys.stderr = None
+        sys.stderr = real_stderr
+    target = match.group(3) or ""
+        # The last argument is meant to be a GList * but the D-Bus binding
+# This can be useful for debugging.
+                time.sleep(0.5)
+    tmp = match.group(2)
+    tmp = match.group(5)
+    try:
+    # try to get any account and connect it
+    type = uri.split(":")[0]
+    uri = argv[1]
+        username = cpurple.PurpleAccountGetUsername(account)
+#!/usr/bin/env python
+            xmpp(uri)
+    # XXX: 1 == PURPLE_CONV_TYPE_IM
+            # XXX: 2 == PURPLE_CONV_TYPE_CHAT
+        # XXX V&V prompt to establish call
+            ymsgr(uri)

@@ -1,0 +1,63 @@
++af:o:pqvV
+	Average resident set size (kbytes): %t
+	Average shared text size (kbytes): %X
+	Average stack size (kbytes): %p
+	Average total size (kbytes): %K
+	Average unshared data size (kbytes): %D
+cannot fork
+cannot run %s
+	Command being timed: "%C"
+Command exited with non-zero status %d
+Command stopped by signal %d
+Command terminated by signal %d
+	Elapsed (wall clock) time (h:mm:ss or m:ss): %E
+__errno_location
+error_at_line
+error_message_count
+error_one_per_line
+error_print_progname
+error waiting for child process
+	Exit status: %x
+	File system inputs: %I
+	File system outputs: %O
+__fprintf_chk
+getopt_long
+getpagesize
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+GNU time 1.7
+%Iinputs+%Ooutputs (%Fmajor+%Rminor)pagefaults %Wswaps
+	Involuntary context switches: %c
+_IO_putc
+_IO_stdin_used
+%ld.%02ld
+%ld:%02ld:%02ld
+%ld:%02ld.%02ld
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+	Major (requiring I/O) page faults: %F
+	Maximum resident set size (kbytes): %M
+	Minor (reclaiming a frame) page faults: %R
+output-file
+	Page size (bytes): %Z
+	Percent of CPU this job got: %P
+portability
+       [--portability] [--format=format] [--output=file] [--version]
+       [--quiet] [--help] command [arg...]
+	Signals delivered: %k
+	Socket messages received: %r
+	Socket messages sent: %s
+strerror
+%s: virtual memory exhausted
+	Swaps: %W
+	System time (seconds): %S
+Usage: %s [-apvV] [-f format] [-o file] [--append] [--verbose]
+	User time (seconds): %U
+%Uuser %Ssystem %Eelapsed %PCPU (%Xavgtext+%Davgdata %Mmaxresident)k
+__vfprintf_chk
+	Voluntary context switches: %w
+write error

@@ -1,0 +1,170 @@
+%50s %50s
+                 add the contents of script-file to the commands to be executed
+                 add the script to the commands to be executed
+Be sure to include the word ``%s'' somewhere in the ``Subject:'' field.
+bindtextdomain
+bsnruEe:f:l:i::V:
+__bss_start
+bug-gnu-utils@gnu.org
+Called savchar() with unexpected pushback (%x)
+cannot remove %s: %s
+cannot rename %s: %s
+cannot specify modifiers on empty regexp
+cannot stat %s: %s
+can't find label for jump to `%s'
+Case conversion produced an invalid character!
+CHARSETALIASDIR
+clearerr
+clearerr_unlocked
+command only uses one address
+comments don't accept any addresses
+                 consider files as separate rather than as a single continuous
+Copyright (C) %d Free Software Foundation, Inc.
+couldn't allocate memory
+couldn't attach to %s: %s
+couldn't close %s: %s
+couldn't edit %s: is a terminal
+couldn't edit %s: not a regular file
+couldn't flush %s: %s
+couldn't follow symlink %s: %s
+couldn't open file %s: %s
+couldn't open temporary file %s: %s
+couldn't re-allocate memory
+couldn't write %d items to %s: %s
+couldn't write %d item to %s: %s
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_toupper_loc
++D$09t$0
+dcgettext
+dcngettext
+delimiter character is not a single-byte character
+/dev/stderr
+/dev/stdin
+/dev/stdout
+                 disable all GNU extensions.
+`}' doesn't want any addresses
+: doesn't want any addresses
+                 edit files in place (makes backup if extension supplied)
+E-mail bug reports to: <%s>.
+__errno_location
+error in subprocess
+  -e script, --expression=script
+expected \ after `a', `c' or `i'
+expected newer version of sed
+expression
+extra characters after command
+  --follow-symlinks
+follow-symlinks
+                 follow symlinks when processing in place
+__fprintf_chk
+fread_unlocked
+  -f script-file, --file=script-file
+__fxstat64
+General help using GNU software: <http://www.gnu.org/gethelp/>.
+__getdelim
+getfilecon
+getfscreatecon
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU sed home page: <http://www.gnu.org/software/sed/>.
+GNU sed version %s
+      --help     display this help and exit
+If no -e, --expression, -f, or --file option is given, then the first
+in-place
+INTERNAL ERROR: bad address type
+INTERNAL ERROR: Bad cmd %c
+invalid reference \%d on `s' command's RHS
+invalid usage of line address 0
+invalid usage of +N or ~N as first address
+_IO_putc
+_IO_stdin_used
+is_selinux_enabled
+  -i[SUFFIX], --in-place[=SUFFIX]
+iswprint
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libselinux.so.1
+line-length
+  -l N, --line-length=N
+                 load minimal amounts of data from the input files and flush
+                 long stream.
+__lxstat64
+__memmove_chk
+memory exhausted
+missing command
+mkstemp64
+multiple `g' options to `s' command
+multiple number options to `s' command
+multiple `p' options to `s' command
+multiple `!'s
+nl_langinfo
+no input files
+non-option argument is taken as the sed script to interpret.  All
+no previous regular expression
+  -n, --quiet, --silent
+number option to `s' command may not be zero
+_obstack_begin
+_obstack_newchunk
+__overflow
+  --posix
+POSIXLY_CORRECT
+preserving permissions for %s
+read error on %s: %s
+readlink
+re_compile_pattern
+regexp-extended
+remaining arguments are names of input files; if no input files are
+re_search
+re_set_syntax
+  -r, --regexp-extended
+%s: can't read %s: %s
+%s: -e expression #%lu, char %lu: %s
+separate
+setfscreatecon
+setlocale
+setting permissions for %s
+%s: file %s line %lu: %s
+shell-always
+specified, then the standard input is read.
+                 specify the desired line-wrap length for the `l' command
+__sprintf_chk
+  -s, --separate
+%s/%sXXXXXX
+__stack_chk_fail
+strerror
+strings for `y' command are different lengths
+strverscmp
+                 suppress automatic printing of pattern space
+%s: warning: failed to get security context of %s: %s
+%s: warning: failed to set default file creation context to %s: %s
+                 the output buffers more often
+This is free software; see the source for copying conditions.  There is NO
+to the extent permitted by law.
+towlower
+towupper
+unbuffered
+unexpected `,'
+unexpected `}'
+<unknown>
+unknown command: `%c'
+unknown option to `s'
+unmatched `{'
+unterminated address regex
+unterminated `s' command
+unterminated `y' command
+Usage: %s [OPTION]... {script-only-if-no-other-script} [input-file]...
+                 use extended regular expressions in the script.
+/usr/share/locale
+  -u, --unbuffered
+      --version  output version information and exit
+__vfprintf_chk
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE,

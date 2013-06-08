@@ -1,0 +1,62 @@
+2006-2007
+basename
+bindtextdomain
+Bruno Haible
+__bss_start
+Cannot convert from "%s" to "%s". %s relies on iconv(), and iconv() does not support this conversion.
+close_stdout
+Copyright (C) %s Free Software Foundation, Inc.
+c_strcasecmp
+__cxa_atexit
+Danilo Segan
+dcgettext
+__errno_location
+error while converting from "%s" encoding to "%s" encoding
+__fprintf_chk
+getopt_long
+gettext-tools
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3.4
+__gmon_start__
+  -h, --help                  display this help and exit
+iconv_close
+iconv_open
+Informative output:
+input is not valid in "%s" encoding
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+libcroco-0.6.so.3
+libc.so.6
+__libc_start_main
+libgettextlib-0.18.1.so
+libglib-2.0.so.0
+/lib/ld-linux.so.2
+libncurses.so.5
+libtinfo.so.5
+libunistring.so.0
+libxml2.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+locale_charset
+__printf_chk
+proper_name
+proper_name_utf8
+Recode Serbian text from Cyrillic to Latin script.
+Report bugs to <bug-gnu-gettext@gnu.org>.
+setlocale
+set_program_name
+%s (GNU %s) %s
+standard output.
+The input text is read from standard input.  The converted text is output to
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+too many arguments
+Try `%s --help' for more information.
+Usage: %s [OPTION]
+/usr/share/locale
+  -V, --version               output version information and exit
+Written by %s and %s.
+xmem_cd_iconv
+xrealloc

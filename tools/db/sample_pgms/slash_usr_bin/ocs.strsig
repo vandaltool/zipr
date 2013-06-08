@@ -1,0 +1,202 @@
+#		and continue to use them.
+    ARGS="$*"
+# Author:   donwo	Tue Jun 25 15:36:39 PDT 1996
+#!/bin/sh
+    case $arg in
+	    case $x in
+case $x in
+#		change only seldom.  Cscope is requested not to
+#		check for changed files.  This can be
+# Check for existing libraries
+# Check that cscope is in PATH
+#check that SYSDIR exists
+# Command line options:
+# containing "SCCS" assuming that these are directories of
+create_list()
+	create_list ${TMP}
+create_list ${TMP}
+CSCOPE=cscope
+#                    cscope -L -0 <ptn> - to display ptn matches on stdout
+    . ./cscope.rc
+#	CSD	cscope.csd
+    CSD=${DIR}/cscope.csd
+    CSLIB=$2
+# database.
+#		database is generated, cs will detect the files
+[ -d $DIR ] || {
+#	-d	Do not regenerate.  Intended for cscope sub-tasks.
+    DIR=$1
+#		directories that are read-only.
+DIR=$PWD
+#		disk space used is doubled.  Once the quick
+	-d )	NOUPDATE=-d; shift	;;
+do_cscope()
+	    do_cscope ${CSD} ${OUT} ${INC} ${QUICK}
+	    do_cscope ${CSD} ${OUT} ${INC} ${QUICK} -d
+do_cscope ${TMP} ${OUT} ${INC} ${QUICK}
+	do_cscope ${TMP} ${OUT} ${INC} ${QUICK} ${NOUPDATE}
+    echo " -d don't update database (default)" >&2
+	echo "ERROR: cscope is not in \$PATH" >&2
+    echo "exec cscope"
+    echo "exec of $CSCOPE failed" >&2
+    echo " -f ask about about regeneration" >&2
+   echo -n $SYSDIR does not exist. 
+   echo Please create the directory and set SYSDIR appropriately
+	echo "       Please set \$PATH correctly or make sure cscope is installed" >&2
+    echo " -q quick Index - faster search but larger index" >&2
+   echo setting default sysdir
+    echo " -s specify where files go" >&2
+    echo "Use: cs [-x] [-f] [-q] [-u]" >&2
+    echo " -u update database" >&2
+    echo " -x debug on " >&2
+	EDITOR=${XCS_EDITOR}
+    else
+    esac
+	    esac
+    exec $CSCOPE ${ARGS} -p 2 ${INCARGS} -i ${LIST} -f ${CSLIB}
+# executable, the execution of it will be included within this
+   exit 
+    *)		exit 1			;;
+    exit 1
+# Expand the include file list into command line arguments
+exp_inc()
+	export EDITOR
+    [ -f ${CSD} ] && {
+#	-f	force
+	-f )	FORCE=N; NOUPDATE=; shift;;
+	find . -follow -type f \( -name \*.[sScChHlyG] -o \
+    [ -f ${LST} ] && do_cscope ${LST} ${OUT} ${INC} ${QUICK} ${NOUPDATE}
+#FORCE=N
+FORCE=Y         # hops - default to force rather than query
+	for i in `cat ${theInc}`
+    [ -f ${TMP} ] && {
+   ) | grep -v SCCS | sort -u > ${LIST}
+# Here is the security hole.  Execute whatever is needed for
+# Here is where we put things
+    [Hh]* )	DIR=${HOMEDIR}$PWD	;;
+HOMEDIR=${HOME}/lib/cs
+#	Home	In users home directory		$HOME/lib/cs/`pwd`
+# $Id: ocs,v 1.4 2004/06/21 18:13:21 broeker Exp $
+# If a shell script named ./cscope.rc is found and is
+if [ ! -d ${SYSDIR} ]; then
+    if [ -f ${LIST} ]
+	if [ "${FORCE}" = "Y" ]
+	if [ "${FORCE}" != "Y" ]
+if [ -n "$DISPLAY" -a -x ${XCS_EDITOR} ]
+if [ $? -ne 0 ]
+if [ ! -n "${NOUPDATE}" -o -n "${SPECDEST}" ] ; then
+    if [ -s "${theInc}" ]
+# if using unadorned cscope with this use cscope -d so not trash db
+# If we have existing libraries, we should use them.
+if [ -z "${SYSDIR}" ]; then
+    INC=$3
+    INCARGS=`exp_inc ${INC}`
+#	INC	cscope.inc
+    INC=${DIR}/cscope.inc
+INC=${DIR}/cscope.inc
+#		increase in speed with this option however the
+#		in which to search for include files.
+#		is executed.
+#		is writable by the current user.  This type is usable
+    LIST=$1
+    [Ll]* )	DIR=$PWD		;;
+#	Local	In the current directory	./
+#	LST	cscope.lst
+    LST=${DIR}/cscope.lst
+# ######## main() #######
+# Misc defaults
+    mkdir -p $DIR || exit $?
+# Modified: hops Jan 2000  chg defaults to not update if files exist and force
+				  -name \*.asm -o \
+				  -name \*.cc -o \
+				  -name \*.ccP -o \
+				  -name \*.cxx -o \
+				  -name \*.ed -o \
+				  -name Gensymvals -o \
+				  -name \*.hP -o \
+				  -name \*.inc -o \
+				  -name \[mM\]ake\* \) \
+				  -name vuifile -o \
+	[ -n "${NOUPDATE}" ] && return
+#NOUPDATE=
+NOUPDATE=-d     # hops - default to no update if files already exist
+#		  o  Allow cscope to regenerate libraries for CSD lists.
+#		  o  Do not ask about regenerating TMP.  Just do it.
+#		of use only the the current user.  This type is
+#		on source directories that are read-only.
+    OUT=${DIR}/cscope.out
+OUT=${DIR}/cscope.out
+# Parse the command line
+# popup editor 
+				  -print
+printf "Create new library? <(L)ocal, (H)ome, (S)ystem, (Q)uit> [q] "
+	printf "Creating library:\n  ${LIST} "
+	    printf "-I $i "
+    printf "\n`cat ${LIST} | wc -l` files listed\n"
+	    printf "\n${LIST}\n"
+	    printf "Update the library? <(Y)es, (N)o, (Q)uit> [n] "
+	printf "Updating library:\n  ${LIST} "
+PWD=`pwd`
+    QCK=${DIR}/cscope.out.po
+		[Qq]* )	exit 1	;;
+	-q )	QUICK=-q;    shift	;;
+#	-q	Tell cscope to build an inverted index for quick
+	    read x y
+read x y
+		*)	return	;;
+# script after defaults_set/cmdline_parse and locating the
+set -- `getopt xfqdu $*`
+#set the default value for SYSDIR 
+    shift;shift;shift
+#		significantly faster on large source trees.
+# source code control data.
+SPECDEST=       # hops - query for files
+    [ -s ${QCK} ] && QUICK=-q
+    [Ss]* )	DIR=${SYSDIR}$PWD	;;
+	-s )	SPECDEST=Y;   shift	;;
+std_libs()
+std_libs ${HOMEDIR}$PWD
+std_libs $PWD
+std_libs ${SYSDIR}$PWD
+#		symbol searching.  There is a SIGNIFICANT
+   SYSDIR=/usr/local/lib/cs
+#	System	In a global system directory	$SYSDIR/`pwd`
+#		that the CSD list is used where the source files
+#               The fixed list generated by some other process
+    theInc=$1
+#               The list generated by this program
+# The lists of files are kept in two forms:
+#		the LST or TMP forms.  CSD differs from LST in
+    then
+# These comments ARE the manual.  What more do you really need?
+#		the system.  This type is NOT usable on source
+#		the TMP form generated here.
+#               This is a list of additional directories
+#		This is for items that are of interest to all accounts.
+#		This is good for items that seldom change but are
+#		This is most useful for transient projects or
+#		This list will be updated each time this program
+#		This list will be used, if found, rather than
+#		This option is not available unless the system directory
+# this project.  A per-project setup script may be available.
+# This routine does not return to the caller
+# This utility maintains the database for cscope on a recursive dir set
+# Three hierarchies of libraries are supported:
+#	TMP	cscope.tmplst
+    TMP=${DIR}/cscope.tmplst
+TMP=${DIR}/cscope.tmplst
+umask 02
+	-u )	NOUPDATE=;   shift	;;
+unset XCS_EDITOR
+#		usable on source directories that are read-only.
+#	-u	Update/regenerate.
+# We look hard for appropriate files to scope.  We ignore items
+# We may need to create one for this area
+#		where the information is of no use to others on
+which cscope 1>/dev/null 2>&1
+[ -x ./cscope.rc ] && {
+#XCS_EDITOR=${HOME}/bin/x_cscope_editor
+XCS_EDITOR=${HOME}/bin/xme
+#	-x	set shell debugging
+	-x )	set -x;     shift	;;
+		[Yy]* )	;;

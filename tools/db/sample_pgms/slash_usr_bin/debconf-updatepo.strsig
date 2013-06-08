@@ -1,0 +1,107 @@
+            -* )
+#  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#  along with this program; if not, write to the
+#! /bin/sh
+            * ) break ;;
+        case $option in
+        cat <<EOT 1>&2
+cd "$podir"
+                continue
+#  Copyright (C) 2002-2005  Denis Barbier <barbier@debian.org>
+                [ -d $d ] && podir=$d
+#  debconf-updatepo  - update PO files with Debconf templates files content
+                       debian/po, ./po and ../po)
+        do
+domain=templates
+        done
+[ -d "$podir" ] || {
+                echo "$0: unknown option: $option ...exiting" 1>&2
+        echo "Directory $podir does not exist... exiting" 1>&2
+        echo "File $podir/POTFILES.in does not exist... exiting" 1>&2
+        echo "No PO directory found, use the --podir flag to tell where it is... exiting" 1>&2
+        esac
+                eval "$prev=\$option"
+        exit 0
+                exit 1 ;;
+        exit 1
+export INTLTOOL_DEBIAN_TYPE
+export INTLTOOL_EXTRACT
+                        export XGETTEXT_ARGS
+                export XGETTEXT_ARGS
+[ -f debian.pot ] && domain=debian
+        fi
+                fi
+        for d in ../po po debian/po
+        for lang in *.po
+for option
+[ -f "$podir/POTFILES.in" ] || {
+#  Free Software Foundation, Inc.,
+#  General Public License for more details.
+                help=1 ;;
+  -h,  --help          display this help message
+            -h | --h | --help )
+if [ -n "$help" ]; then
+        if [ -n "$msgid_bugs_address" ]; then
+        if [ -n "$prev" ]; then
+                if [ -n "$source_package" ]; then
+        if [ -z "$msgid_bugs_address" ] && [ -r "../control" ]; then
+if [ -z "$skip_merge" ]; then
+if [ -z "$skip_pot" ]; then
+INTLTOOL_DEBIAN_TYPE=po-debconf
+INTLTOOL_EXTRACT=${PODEBCONF_LIB}/intltool-extract
+                #  intltool-update accepts XGETTEXT_ARGS since intltool-debian 0.34.1
+#  it under the terms of the GNU General Public License as published by
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+            --msgid-bugs-address=* )
+msgid_bugs_address=
+       --msgid-bugs-address=EMAIL
+                msgid_bugs_address=$optarg ;;
+                        msgid_bugs_address="$source_package@packages.debian.org"
+                msgmerge --backup=none --previous -q -U $lang $domain.pot
+[ -n "$podir" ] || {
+[ -n "$verbose" ] && echo "PO directory is $podir" 1>&2
+                [ -n "$verbose" ] && msgfmt -v -o /dev/null $lang
+                [ -n "$verbose" ] && printf "Merging $lang with $domain.pot... " 1>&2
+        optarg=$(expr "x$option" : 'x[^=]*=\(.*\)')
+Options:
+			package_name="$source_package"
+        "$PODEBCONF_LIB/intltool-update" $verbose --gettext-package=$domain --pot || exit 1
+: ${PODEBCONF_LIB=/usr/share/intltool-debian}
+            --podir=* )
+            --podir )
+       --podir=DIR     specify PO directory (searched by default in
+                podir=$optarg ;;
+                prev=
+#   Prevent automatic conversion to UTF-8 by Perl
+                prev=podir ;;
+                       Report-Msgid-Bugs-To field
+rm -f messages.mo 2>/dev/null
+                                          sed -e 's/.*:\s\+//' -e 1q)
+#  See intltool-extract
+        shift
+                shift
+            --skip-merge )
+skip_merge=
+                skip_merge=1 ;;
+       --skip-merge    do not merge PO files with templates.pot
+            --skip-pot )
+skip_pot=
+                skip_pot=1 ;;
+       --skip-pot      do not generate a new templates.pot file
+                source_package=$(LC_ALL=C grep "^Source:" ../control |
+                       specify an email address for POT's
+#  the Free Software Foundation; either version 2 of the License, or (at
+#  This program is distributed in the hope that it will be useful, but
+#  This program is free software; you can redistribute it and/or modify
+#   This script is part of po-debconf
+unset LANGUAGE LANG LC_ALL LC_CTYPE
+Usage: debconf-updatepo [OPTIONS]
+verbose=
+                verbose=--verbose ;;
+  -v,  --verbose       enable verbose mode
+            -v | --v | --verbose )
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+                XGETTEXT_ARGS="--msgid-bugs-address=\"$msgid_bugs_address\" --package-name=\"$source_package\""
+                [ "x$lang" = "x*.po" ] && break
+#  your option) any later version.
+#  You should have received a copy of the GNU General Public License

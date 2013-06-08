@@ -1,0 +1,28 @@
+__bss_start
+GLIBC_2.0
+__gmon_start__
+Image no. %u does not have the same height as Image 0.
+Image no. %u does not have the same maxval as Image 0.
+Image no. %u does not have the same width as Image 0.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_error
+pm_freerow
+pm_message
+pm_openr
+pm_optParseOptions3
+pnm_allocpamrow
+pnm_init
+pnm_readpaminit
+pnm_readpamrow
+pnm_writepaminit
+pnm_writepamrow
+tupletype
+Tuple type name specified is too long.  Maximum of %u characters allowed.
+Writing %d channel PAM image
+You may not specify more than %d input images.
+You must specify at least one input PAM image.

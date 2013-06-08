@@ -1,0 +1,17 @@
+    [ "`basename $f`" = "ChangeLog$2" ] && U="${GENDIFF_DIFF_CHANGELOG_ARGS}"
+#!/bin/sh
+    ${diffcmd}
+    diffcmd="${DIFF} ${U} /dev/null ${f%$2}"
+        diffcmd="${DIFF} ${U} ${f} ${f%$2}"
+: ${DIFF:=diff}
+#    ${DIFF} ${U} $f `echo $f | sed s/$2\$//`
+    echo "${diffcmd}"
+  echo "usage: $0 <directory> <diff-extension>" 1>&2
+  exit 1
+find $1 \( -name "*$2" -o -name ".*$2" \) -print | sort |
+: ${GENDIFF_DIFF_ARGS:=-up}
+: ${GENDIFF_DIFF_CHANGELOG_ARGS:=-U0}
+    if [ -r "$f" ]; then
+    U="${GENDIFF_DIFF_ARGS}"
+while read f; do
+[ -z "$1" -o -z "$2" ] && {

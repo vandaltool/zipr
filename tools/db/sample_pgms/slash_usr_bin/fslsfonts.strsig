@@ -1,0 +1,38 @@
+    -1                       force single column
+all %d fontnames listed are zero length
+bogus property
+__bss_start
+    -C                       force columns
+__fprintf_chk
+FSCloseServer
+FSFreeFontNames
+FSListFonts
+FSListFontsWithXInfo
+FSOpenServer
+FSServerName
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libFS.so.6
+/lib/ld-linux.so.2
+    -l[l[l]]                 give long info about each font
+    -m                       give character min and max bounds
+    -n columns               number of columns if multi column
+__printf_chk
+    -server servername       font server to contact
+%s:  no font information for font "%s".
+%s: no font server defined
+%s: pattern "%s" unmatched
+__sprintf_chk
+__stack_chk_fail
+__strncpy_chk
+%s:  unable to open server "%s"
+    -u                       keep output unsorted
+usage:  %s [-options] [-fn pattern]
+where options include:
+    -w width                 maximum width for multiple columns

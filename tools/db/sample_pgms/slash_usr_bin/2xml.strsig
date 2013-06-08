@@ -1,0 +1,19 @@
+__assert_fail
+__bss_start
+error: invalid comment entry 
+error: invalid context for 
+error: multiple roots
+GLIBC_2.0
+__gmon_start__
+htmlTagLookup
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+LIBXML2_2.4.30
+libxml2.so.2
+__strdup
+usage: [2xml|2html] < in > [xml|html]
+warning: invalid line 

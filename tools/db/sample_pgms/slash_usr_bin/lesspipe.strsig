@@ -1,0 +1,180 @@
+#    $1  filename to be viewed with less  (used by LESSOPEN)
+	) 2>/dev/null
+#    $2  filename that was created during LESSOPEN
+			*.7z)
+		# Allow for user defined filters
+	# and I'll incorporate it.
+# and possibly (if used by lessfile)
+			*.arj)
+BASENAME=`basename $0`
+			*.bin|*.raw)
+#!/bin/sh
+					bunzip2 -dc "$1" | tar tvvf -
+			*.bz)
+			*.bz2)
+		case `echo "$1" | tr '[:upper:]' '[:lower:]'` in
+	case "$SHELL" in
+						cat "$1"
+					catdoc "$1"
+# combined lessfile and lesspipe to avoid duplication of decode stage
+			*.deb|*.udeb)
+		# Decode file for less
+	# delete the file created if we were lessfile
+			*.doc)
+				echo
+					echo
+				echo "$1:"; dpkg --info "$1"
+					echo "$1:"; rpm -q -i -p "$1"
+			echo >&2 "Could not find essential program 'tempfile'. Exiting"
+	#echo "# calling less."
+					echo '*** Contents:'
+				echo '*** Contents:'; dpkg-deb --contents "$1"
+				echo "Error in deleting $2" > /dev/tty
+			echo "Error in deleting $2" > /dev/tty
+				echo "export LESSCLOSE=\"$FULLPATH %s %s\";"
+				echo "export LESSOPEN=\"| $FULLPATH %s\";"
+				echo "export LESSOPEN=\"$FULLPATH %s\";"
+	#echo "# If you tried to view a file with a name that starts with '#', you"
+					echo "Install ImageMagick to browse images"
+					echo "Install mkisofs to view ISO images"
+	#echo "# might see this message instead of the file's contents."
+						echo "No catdoc available";
+					echo "No identify available"
+					echo "No isoinfo available"
+					echo "No lzma available"
+				echo "setenv LESSCLOSE \"$FULLPATH %s %s\";"
+				echo "setenv LESSOPEN \"| $FULLPATH %s\";"
+				echo "setenv LESSOPEN \"$FULLPATH %s\";"
+						echo $TMPFILE
+			echo $TMPFILE
+	#echo "# To view the contents, try to put './' ahead of the filename when"
+	echo "Usage: eval \`$BASENAME\`"
+elif [ $# -eq 0 ] ; then
+elif [ $# -eq 2 ] ; then
+                                elif [ -x "`which 7zr`" ]; then 7zr l "$1";
+				elif [ -x "`which lunzip`" ]; then
+				elif [ -x "`which lunzip`" ]; then lunzip -dc "$1"
+				elif [ -x "`which miniunzip`" ]; then miniunzip -l "$1";
+				elif [ -x "`which miniunz`" ]; then miniunz -l "$1";
+				elif [ -x "`which unrar`" ]; then unrar v "$1"
+				elif [ -x "`which unzoo`" ]; then unzoo -l "$1";
+				else
+					else
+				else echo "No 7za or 7zr available"; fi ;;
+				else echo "No ar available"; fi ;;
+				else echo "No bunzip2 available"; fi ;;
+				else echo "No bunzip available"; fi ;;
+				else echo "No lha available"; fi ;;
+				else echo "No lzip or lunzip available"; fi ;;
+				else echo "No pdftotext available"; fi ;;
+				else echo "No rar or unrar available"; fi ;;
+				else echo "No unarj available"; fi ;;
+				else echo "No unzip, miniunzip or miniunz available"; fi ;;
+				else echo "No unzoo or zoo available"; fi ;;
+				else echo "rpm isn't available, no query on rpm package possible"; fi ;;
+				exit 0
+		exit 0
+      exit 1
+					file "$1" | grep -q ISO\.9660 && iso_list "$1"
+	# first determine the full path of lessfile/lesspipe
+	FULLPATH=`cd \`dirname $0\`;pwd`/$BASENAME
+# Further Modifications by Thomas Schoepf <schoepf@debian.org>
+	# generate filename for possible use by lesspipe
+			*.gif|*.jpeg|*.jpg|*.pcd|*.png|*.tga|*.tiff|*.tif)
+				gzip -dc "$1" ;;
+			*.gz|*.z|*.dz)
+# Helper function to list contents of ISO files (CD images)
+					identify "$1"
+# $Id: lessopen,v 1.4 1998/05/12 09:37:46 torin Exp $
+				if [ $BASENAME = $LESSFILE ]; then
+			if [ $BASENAME = $LESSFILE ]; then
+	if [ $BASENAME = $LESSFILE ]; then
+		if [ $BASENAME = $LESSFILE ]; then exec > $TMPFILE; fi
+			if [ $? -eq 0 ]; then
+if [ $# -eq 1 ] ; then
+		if [ -f "$2" ]; then
+					if ( file "$1" | grep ASCII 2>/dev/null >/dev/null); then
+		if [ -n "$BASH" ]; then
+			if [ ! -O "$2" ]; then
+	if [ ! -r "$1" ]; then
+					if [ -s $TMPFILE ]; then
+		if [ -s $TMPFILE ]; then
+	# if the file doesn't exist, we don't do anything
+		#if [ -x ~/.lessfilter -a -O ~/.lessfilter ]; then
+		if [ -x ~/.lessfilter ]; then
+				if [ -x "`which 7za`" ]; then 7za l "$1";
+				if [ -x "`which ar`" ]; then ar tv "$1"
+				if [ -x "`which bunzip2`" ]; then
+				if [ -x "`which bunzip2`" ]; then bunzip2 -dc "$1"
+				if [ -x "`which bunzip`" ]; then bunzip -c "$1"
+				if [ -x "`which catdoc`" ]; then
+				if [ -x "`which identify`" ]; then
+				if [ -x "`which isoinfo`" ]; then
+				if [ -x "`which isoinfo`" ]; then iso_list "$1"
+				if [ -x "`which lha`" ]; then lha v "$1"
+				if [ -x "`which lzip`" ]; then
+				if [ -x "`which lzip`" ]; then lzip -dc "$1"
+				if [ -x "`which lzma`" ]; then
+				if [ -x "`which pdftotext`" ]; then pdftotext -layout "$1" -
+				if [ -x "`which rar`" ]; then rar v "$1"
+				if [ -x "`which rpm`" ]; then
+				if [ -x "`which unarj`" ]; then unarj l "$1"
+				if [ -x "`which unzip`" ]; then unzip -v "$1";
+				if [ -x "`which zoo`" ]; then zoo v "$1";
+	# if you can determine a better way to do this, send me a patch, I've
+		if [ -z "$TMPFILE" ]; then
+	# I have no idea how some of the more esoteric shells (es, rc) do
+			*.iso)
+	isoinfo -d -i "$1"
+	isoinfo -d -i "$1" | grep -q ^Joliet && iiopts="$iiopts -J"
+	isoinfo -d -i "$1" | grep -q ^Rock\.Ridge && iiopts="$iiopts -R"
+	isoinfo -f $iiopts -i "$1"
+iso_list() {
+			*.jar|*.war|*.ear|*.xpi|*.zip)
+LESSFILE=lessfile
+# lessfile/lesspipe
+			~/.lessfilter "$1"
+# Less filter for viewing non text files.
+# less passes in:
+			*.lha|*.lzh)
+					lunzip -dc "$1" | tar tvvf -
+			*.lz)
+					lzip -dc "$1" | tar tvvf -
+			*.lzma)
+					lzma -dc "$1"
+					lzma -dc "$1" | tar tfvv -
+# Many Modifications by Darren Stalder
+	# must setup shell to use LESSOPEN/LESSCLOSE
+					# no catdoc, read normally if file is text.
+			# Note that this is out of alpha order so that we don't catch
+	# not shell-scripted for many a year.
+			*.pdf)
+# Plus POSIX sh changes by Y.Dirson
+		# possibly redirect stdout to a file for lessfile
+			*.rar|*.r[0-9][0-9])
+			rm -f "$2"
+						rm -f $TMPFILE
+			rm -f $TMPFILE
+			*.rpm)
+					rpm -q -l -p "$1"
+# shell is sure icky.  I'm real tempted to rewrite the whole thing in Perl
+			*.tar)
+			*.tar.bz2)
+			*.tar.gz|*.tgz|*.tar.z|*.tar.dz)
+			*.tar.lzma)
+			*.tar.lz|*.tlz)
+				tar tvf "$1" --force-local
+				tar tzvf "$1" --force-local
+			# the gzipped tar files.
+	# things. If they don't do things in a Bourne manner, send me a patch
+# throughout the code.  If you don't want lessfile to be called that,
+TMPDIR=${TMPDIR:-/tmp}
+		TMPFILE=`tempfile -d $TMPDIR -p lessf`
+	umask 077
+# Unfortunately, this means that I have filename dependencies sprinkled
+# Usage: eval `lessfile`  or eval `lesspipe`
+	# we were called as LESSCLOSE
+	# we were called as LESSOPEN
+# Written by: Behan Webster <behanw@pobox.com>
+# you'll need to change the LESSFILE envar below.
+			*.zoo)

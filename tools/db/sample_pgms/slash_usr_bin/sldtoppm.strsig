@@ -1,0 +1,59 @@
+already specified a height/ysize
+already specified a library item
+already specified a scale factor
+already specified a width/xsize
+AutoCAD Slide
+AutoCAD Slide Library 1.0
+Bad polygon vertex count (%d)
+being reversed
+__bss_start
+Byte order is %s.
+__ctype_b_loc
+__ctype_toupper_loc
+                 [-dir] [-lib|-Lib <name>]
+error reading slide file
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.7
+__gmon_start__
+incompatible slide file format
+_IO_getc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+not an AutoCAD slide library file.
+Original screen size %dx%d, aspect ratio %.3f.
+overflow_add
+pm_allocarray
+pm_close
+pm_error
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+   Point %d:  (%d, %d)
+Polygon: %d points, fill type %d, colour %d
+ppmd_fill
+ppmd_fill_drawproc
+ppmd_filledrectangle
+ppmd_fill_init
+ppmd_line
+ppm_init
+ppm_writeppm
+Resized from %dx%d to %dx%d to correct pixel aspect ratio.
+scale factor must be greater than 0
+Slide file type %d, level %d, hwfill type %d.
+Slides in library:
+slide %s not in library.
+          Specifying -adjust will correct image width to compensate.
+the same
+this is not an AutoCAD slide file.
+Vector (%d, %d) - (%d, %d)  Colour %d
+-verbose
+[-verbose] [-info] [-adjust] [-scale <s>]
+Warning - pixels on source screen were non-square.
+                 [-xsize|-width <x>] [-ysize|-height <y>] [sldfile]

@@ -1,0 +1,148 @@
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+app-defaults file not properly installed.
+appDefaultsVersion
+boxWidgetClass
+__bss_start
+CHARSET_REGISTRY
+commandBox
+commandWidgetClass
+countLabel
+D$4atchf
+D$4 matf
+    -display dpy           X server to contact
+%d names match
+%d names to parse
+encoding
+fieldBox
+field %d:
+fontName
+formWidgetClass
+__fprintf_chk
+    -geometry geom         size and location of window
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+internal error; pattern didn't match first font
+_IO_stdin_used
+iso10646
+_Jv_RegisterClasses
+L$<9L$0u
+labelWidgetClass
+leftBitmap
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXaw.so.7
+libXmu.so.6
+libXt.so.6
+menuButtonWidgetClass
+<Message>WM_PROTOCOLS: Quit()
+ownButton
+panedWidgetClass
+-pattern
+    -pattern fontspec      font name pattern to match against
+pixelSizeList
+pointSizeList
+PRIMARY_FONT
+__printf_chk
+printOnQuit
+    -print                 print selected font name on exit
+quitButton
+-sample16
+    -sample16 string       sample text to use for 2-byte fonts
+    -sample string         sample text to use for 1-byte fonts
+sampleText
+sampleText16
+sampleTextUCS
+*sampleText*UCSLabel:XFontSel app-defaults file not properly installed;\nsee 'xfontsel' manual page.
+-sampleUCS
+    -sampleUCS string      sample text to use for ISO10646 fonts
+scaledFonts
+    -scaled                use scaled instances of fonts
+ %s: %d fonts
+showUnselectable
+simpleClassRec
+simpleMenuWidgetClass
+smeBSBObjectClass
+__sprintf_chk
+__stack_chk_fail
+t$h9^Tt/1
+toggleWidgetClass
+UCSLabel
+usage:  %s [-options ...] -fn font
+viewPort
+viewportWidgetClass
+where options include:
+WM_DELETE_WINDOW
+XawInitializeWidgetSet
+XCopyArea
+XCopyPlane
+XDefineCursor
+XDrawString
+XDrawString16
+XExtentsOfFontSet
+XFontSel
+XFreeFont
+XFreeFontNames
+XGetAtomName
+XGetGeometry
+XInternAtom
+XListFonts
+XLoadQueryFont
+XMapWindow
+XmbDrawString
+XmbTextEscapement
+XmuConvertStandardSelection
+XmuCreateStippledPixmap
+XmuCvtStringToJustify
+XmuInternAtom
+XmuMakeAtom
+XmuReleaseStippledPixmap
+XRectInRegion
+XrmPutLineResource
+XSetWMProtocols
+XtAddCallback
+XtAddConverter
+XtAllocateGC
+XtAppAddActions
+XtAppAddWorkProc
+XtAppInitialize
+XtAppMainLoop
+XtAppPending
+XtAppProcessEvent
+XtAppWarning
+XtCloseDisplay
+XtCreateManagedWidget
+XtCreatePopupShell
+XtDatabase
+XtDefaultFont
+XtDefaultFontSet
+XtDefaultForeground
+XtDisownSelection
+XtDisplay
+XTextWidth
+XTextWidth16
+XtGetApplicationResources
+XtGetSubresources
+_XtInherit
+XtIsManaged
+XtIsSensitive
+XtLastTimestampProcessed
+XtMalloc
+XtManageChildren
+XtOverrideTranslations
+XtOwnSelection
+XtParseTranslationTable
+XtRealizeWidget
+XtRealloc
+XtReleaseGC
+XtSetLanguageProc
+XtSetSensitive
+XtSetValues
+XtStrings
+XtUnmanageChildren
+XtWarning
+XtWindow
+XUnmapWindow

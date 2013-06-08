@@ -1,0 +1,128 @@
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Authors: Dustin Kirkland <kirkland@ubuntu.com>
+automount_true() {
+			automount_true "$home"
+#!/bin/sh -e
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+	case "$1" in
+	case "$i" in
+		check_filenames_encrypted)
+		check_filenames_not_encrypted)
+		check_home)
+		check_private)
+			checks="$checks check_filenames_encrypted"
+			checks="$checks check_filenames_not_encrypted"
+			checks="$checks check_home"
+			checks="$checks check_private"
+				configured for encryption, False otherwise
+#    Copyright (C) 2011 Dustin Kirkland <kirkland@ubuntu.com>
+	echo `gettext "ERROR:"` "$@" 1>&2
+	echo `gettext "ERROR:"` "Configuration invalid" 1>&2
+	echo `gettext "INFO:"` "$@"
+ecryptfs_exists() {
+			ecryptfs_exists "$home"
+#    ecryptfs-verify
+ecryptfs-verify [-h|--home] [-p|--private] [-e|--filenames-encrypted] [-n|--filenames-not-encrypted] [-u|--user USER] [--help]
+		-e|--filenames-encrypted)
+ -e|--filenames-encrypted	True if filenames are set for encryption,
+				encryption, False otherwise
+error() {
+		error "[$dotecryptfs] does not exist"
+		error "Filenames are encrypted"
+		error "Filenames are not encrypted"
+		error "[$home/.ecryptfs/auto-mount] does not exist"
+			error "Invalid check [$i]"
+				error "Invalid home directory [$home] of [$user]"
+		error "Invalid owner [$owner] of mount point [$2]"
+		error "[$m] is not a directory"
+		error "[$m] is not a valid mount point"
+		error "[$mountfile] does not exist"
+		error "Mount point [$m] is not the user's home [$home]"
+		error "Mount point [$m] is the user's home"
+	error "No checks given"
+		error "[$sigfile] does not contain exactly 1 or 2 lines"
+		error "[$sigfile] does not exist"
+				False otherwise
+filenames_encrypted() {
+			filenames_encrypted "$home"
+filenames_not_encrypted() {
+			filenames_not_encrypted "$home"
+for i in $checks; do
+#    GNU General Public License for more details.
+		--help)
+ --help 			This usage information
+		-h|--home)
+ -h|--home			True if HOME is correctly configured for
+			home=$(getent passwd "$user" | awk -F: '{print $6}')
+home="$HOME"
+	if [ "$c" = "1" ] || [ "$c" = "2" ]; then
+	if [ "$c" = "1" ]; then
+	if [ "$c" = "2" ]; then
+	if [ -d "$dotecryptfs" ]; then
+			if [ ! -d "$home" ]; then
+	if [ -d "$m" ]; then
+	if [ -f "$automount" ]; then
+	if [ -f "$mountfile" ]; then
+	if [ -f "$sigfile" ]; then
+	if [ "$m" = "$home" ]; then
+	if [ "$m" != "$home" ]; then
+	if [ "$owner" = "$1" ]; then
+if [ -z "$checks" ]; then
+info() {
+		info "[$automount] Automount is set"
+info "Configuration valid"
+		info "[$dotecryptfs] exists"
+		info "Filenames are encrypted"
+		info "Filenames are not encrypted"
+		info "[$m] is a directory"
+		info "[$mountfile] exists"
+		info "Mount point [$m] is a valid directory"
+		info "Mount point [$m] is not the user's home [$home]"
+		info "Mount point [$m] is the user's home"
+		info "Ownership [$owner] of mount point [$2] is correct"
+		info "[$sigfile] contains [$c] signatures"
+		info "[$sigfile] exists"
+				is checked, override with this option
+#    it under the terms of the GNU General Public License as published by
+	local automount="$1/.ecryptfs/auto-mount"
+	local c=$(wc -l "$sigfile" | awk '{print $1}')
+	local dotecryptfs="$1/.ecryptfs"
+	local home="$1"
+	local m=$(cat "$mountfile")
+	local mountfile="$1/.ecryptfs/Private.mnt"
+	local mountfile="$home/.ecryptfs/Private.mnt"
+	local owner=$(stat -c "%U" "$2")
+	local sigfile="$1/.ecryptfs/Private.sig"
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+mountfile_valid() {
+			mountfile_valid "$home"
+mount_is_home() {
+			mount_is_home "$home"
+mount_is_private() {
+			mount_is_private "$home"
+		-n|--filenames-not-encrypted)
+ -n|--filenames-not-encrypted	True if filenames are not encrypted,
+ non-zero.
+ Note that options are additive.  ALL checks must pass in order for this
+owns_mountpoint() {
+	owns_mountpoint "$user" "$m"
+		-p|--private)
+ -p|--private			True if a non-HOME directory is correctly
+ program to exit 0.  Any failing check will cause this program to exit
+	return 0
+	return 1
+			shift
+			shift 2
+sigfile_valid() {
+			sigfile_valid "$home"
+#    the Free Software Foundation; version 2 of the License.
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software; you can redistribute it and/or modify
+			usage
+usage() {
+			user="$2"
+user="$USER"
+		-u|--user)
+ -u|--user USER			By default, the current user's configuration
+while [ ! -z "$1" ]; do
+#    You should have received a copy of the GNU General Public License

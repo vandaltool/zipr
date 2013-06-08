@@ -1,0 +1,168 @@
+0123456789abcdef
+0123456789abcdefx
+along with this software.  If not, see <http://www.gnu.org/licenses/>.
+ANSI_X3.4-1968
+argidx < argspecs_len
+arg->vt == valuetable[arg->arg_pos-1].vt
+(A single dash may be used instead of the double ones)
+__assert_fail
+attribute
+(at your option) any later version.
+__bss_start
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+BZ2_bzDecompress
+BZ2_bzDecompressEnd
+BZ2_bzDecompressInit
+bz2lib inflate problem: %d
+bz2lib problem: %d
+c >= 224 && c < 255
+can't allocate memory pool of %u bytes
+can't lock memory: %s
+can't mmap pool of %u bytes: %s - using malloc
+can't open fd %d for logging: %s
+can't open `%s': %s
+Command "%.50s" is ambiguous
+conversion from `%s' to `%s' failed: %s
+conversion from `%s' to `%s' not available
+convert secret keys to public keys
+Copyright (C) 2010 Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+dcgettext
+do_format
+dummy m_size called
+--dump-options
+dump-options
+encrypted
+encrypted_mdc
+__errno_location
+error calcualting public key length
+error closing `%s': %s
+error creating `%s': %s
+error reading `%s': %s
+error writing `%s': %s
+estream_asprintf failed: %s
+estream_vasprintf
+failed to drop setuid
+failed to reset uid: %s
+fatal: out of memory
+fatal: too many args for xstrconcat
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU General Public License for more details.
+GNU/Linux
+gpg_control
+gpgsplit
+gpgsplit (GnuPG)
+iconv_close
+iconv_open
+iconv_open failed: %s
+inflateEnd
+inflateInit_
+inflateInit2_
+Invalid argument for ArgParse
+Invalid command "%.50s"
+invalid compression algorithm (%d)
+invalid CTB %02x
+invalid lib version
+Invalid option "%.50s"
+_IO_getc
+_IO_putc
+_IO_stdin_used
+iso-8859-1
+It is distributed in the hope that it will be useful,
+it under the terms of the GNU General Public License as published by
+_Jv_RegisterClasses
+libbz2.so.1.0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libz.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+log_set_logfile
+__memset_chk
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+Missing argument for option "%.50s"
+nl_langinfo
+no-split
+Ohhhh jeeee: 
+old_comment
+onepass_sig
+Oops, secure memory pool already initialized
+operation is not possible without initialized secure memory
+Option "%.50s" does not expect an argument
+Option "%.50s" is ambiguous
+@Options:
+Options:
+out of core
+out of %s memory while allocating %u bytes
+parm.used
+plaintext
+Please report bugs to <bug-gnupg@gnu.org>.
+please see http://www.gnupg.org/faq.html for more information
+premature EOF while reading `%s'
+__printf_chk
+public_key
+public_subkey
+ring_trust
+%s%06u-%03d.%.40s
+secmem usage: %u/%u bytes in %u/%u blocks of pool %lu/%lu
+secret_key
+secret_subkey
+secret-to-public
+secure memory corrupted at block %p
+secure memory is disabled
+Split an OpenPGP message into packets
+__sprintf_chk
+%s %s; %s
+%s%s: %s
+__stack_chk_fail
+strerror
+|STRING|Prepend filenames with STRING
+%s:%u: argument not expected
+%s:%u: invalid alias definition
+%s:%u: invalid command
+%s:%u: invalid option
+%s:%u: keyword too long
+%s:%u: missing argument
+%s:%u: read error
+Syntax: gpgsplit [options] [files]
+t}<0~}<9
+the Free Software Foundation; either version 3 of the License, or
+There is NO WARRANTY, to the extent permitted by law.
+... this is a bug (%s:%d:%s)
+This is free software: you are free to change and redistribute it.
+This is free software; you can redistribute it and/or modify
+(this may be caused by too many secret keys used simultaneously or due to excessive large key sizes)
+../../tools/gpgsplit.c
+uncompress
+uncompress a packet
+uncompressed
+unknown error
+Usage: gpgsplit [options] [files] (-h for help)
+utf8_to_native
+../../util/estream-printf.c
+../../util/logger.c
+../../util/strgutil.c
+valuetable[arg->precision_pos-1].vt == VALTYPE_INT
+valuetable[arg->width_pos-1].vt == VALTYPE_INT
+--version
+__vfprintf_chk
+WARNING: 
+WARNING: using insecure memory!
+warranty
+--warranty
+write_part
+write to stdout and don't actually split
+writing `%s'
+(you may have used the wrong program for this task)
+You should have received a copy of the GNU General Public License
+zlib inflate problem: rc=%d
+zlib inflate problem: %s
+zlib problem: %s

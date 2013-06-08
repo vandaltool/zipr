@@ -1,0 +1,3 @@
+#!/bin/sh
+echo You need to install the perl-doc package to use this program. >&2
+# place-holder, diverted by perl-doc

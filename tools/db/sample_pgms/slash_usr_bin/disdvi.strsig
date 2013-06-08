@@ -1,0 +1,67 @@
+%06ld:         
+ae         /* scadinavian (non-printing) 0x%02X */
+BAD DVI FILE END: 0x%02X
+BOP       page number      : %ld
+/build/buildd/texlive-bin-2009/inst/lib
+Char:     
+          checksum         : %ld
+__ctype_b_loc
+          denominator      : %ld
+          design           : %ld
+@(#) disdvi.c  2.1 19/01/90 M.J.E. Mol (c) 1989, 1990
+DOWN%d:    %ld
+ffi        /* ligature (non-printing) 0x%02X */
+ff         /* ligature (non-printing) 0x%02X */
+ffl        /* ligature (non-printing) 0x%02X */
+fi         /* ligature (non-printing) 0x%02X */
+fl         /* ligature (non-printing) 0x%02X */
+FNT%d:     %d    /* %s */
+FNT_DEF%d: %ld
+FONT_%02d              /* %s */
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+Illegal empty filename
+i          /* (non-printing) 0x%02X */
+_IO_getc
+_IO_putc
+_IO_stdin_used
+j          /* (non-printing) 0x%02X */
+          job name (%3d)   :
+          length: %ld
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+          magnification    : %ld
+          max page height  : %ld
+          max page width   : %ld
+          name             : 
+          number of pages  : %d
+          numerator        : %ld
+oe         /* scadinavian (non-printing) 0x%02X */
+o          /* scadinavian (non-printing) 0x%02X */
+POST      last page offset : %06ld
+POSTPOST  postamble offset : %06ld
+PRE       version          : %d
+          prev page offset : %06ld
+__printf_chk
+PUT%d:     %ld
+PUT_RULE: height: %ld
+RIGHT%d:   %ld
+          scale            : %ld
+SET%d:    %ld
+SET_RULE: height: %ld
+ss         /* german (non-printing) 0x%02X */
+          stack size needed: %d
+To many arguments
+unknown fontname
+Usage: %s [dvi-file]
+          version          : %d
+W%d:       %ld
+X%d:       %ld
+XXX%d:     %ld bytes
+Y%d:       %ld
+Z%d:       %ld

@@ -1,0 +1,628 @@
+%02X.%02x.%02x.%02x.%02x%c
+%02x.%02x.%02x.%02x%c
+0xd200: 0x%08x
+0xd204: 0x%08x
+0xd208: 0x%08x
+0xd20c: 0x%08x
+0xd210: 0x%08x
+0xd214: 0x%08x
+0xd218: 0x%08x
+0xd21c: 0x%08x
+0xd228: 0x%08x
+0xd22c: 0x%08x
+0xd230: 0x%08x
+0xd304: 0x%08x
+0xd508: 0x%08x
+0xd600: 0x%08x
+0xd604: 0x%08x
+0xd608: 0x%08x
+1.5x1.5 Supersampling
+?%1i:%02X
+2x2 Supersampling
+2x Bilinear
+2x Quincunx
+4x Bilinear
+4x Gaussian
+AA Line Gamma
+AGP (BR02)
+Allow Flipping
+Analog Devices ADT7473
+Anisotropic Filtering
+basefreq
+BNV-CONTROL
+__bss_start
+bus: %x device: %x
+Can't create '%s'. Do you have sufficient permissions?
+Can't open /proc/bus/pci/devices to detect your videocard.
+Can't open %s
+Can't open '%s'. Is it really a directory?
+CFintek F75375S
+CNational Semiconductor LM99
+__ctype_b_loc
+	-d  --decrease		Decrease brightness with one level.
+decrease
+/dev/mem
+/dev/nvidia%d
+dfpdithering
+dfpscaling
+Digital Vibrance
+Disable CPU optimizations
+Disabled
+divider=%f, offset=%f
+Emulate Nvidia GPU
+Fintek F75373S
+Flatpanel Dithering
+Flatpanel Scaling
+flipping
+__fprintf_chk
+Fullscene Antialiasing
+getopt_long
+getpagesize
+gettimeofday
+	-g  --get		Query brightness level.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+GPU Internal Sensor
+	-h  --help		Prints this help text.
+High Performance
+High Quality
+%hx %x %x %x
+	-i  --increase		Increase brightness with one level.
+Illegal option value (-s): Value has to be a non-negative number.
+Image Qualty
+Image Sharpening
+increase
+index 0x%x: %02x
+init_nvclock() failed!
+intellisample
+Intellisampling
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXext.so.6
+linegamma
+m1=%d m2=%d n1=%d n2=%d p=%d
+Maxim MAX6659
+m=%d n=%d p=%d
+MPLL2_COEFF=%08x
+MPLL2_COEFF: %08x
+MPLL_COEFF=%08x
+MPLL_COEFF: %08x
+MPLL_COEFF2=%08x
+No nvidia cards found in your system!
+NV_10F0 (0x10f0): %08x
+NV_1540 (0x1540): %08x
+NV_15B0 (0x15b0): %08x
+NV_15B4 (0x15b4): %08x
+?NV_15B4 (0x15B4): %08x
+NV_15B8 (0x15b8): %08x
+NV_15F0 (0x15f0): %08x
+NV_15F4 (0x15f4): %08x
+NV_15F8 (0x15f8): %08x
+?NV_20008 (0x20008): %08x
+NV_20008 (0x20008): %08x
+NV_20400 (0x20400): %08x
+NV_4000 (0x4000): %08x
+NV_4004 (0x4004): %08x
+NV_4008 (0x4008): %08x
+NV_400C (0x400c): %08x
+NV_4010 (0x4010): %08x
+NV_4014 (0x4014): %08x
+NV_4018 (0x4018): %08x
+NV_401C (0x401c): %08x
+NV_4020 (0x4020): %08x
+NV_4024 (0x4024): %08x
+NV_4028 (0x4028): %08x
+NV_402C (0x402c): %08x
+NV_4030 (0x4030): %08x
+NV_4034 (0x4034): %08x
+NV_4038 (0x4038): %08x
+NV_403C (0x403c): %08x
+NV_4040 (0x4040): %08x
+NV_4044 (0x4044): %08x
+NV_4048 (0x4048): %08x
+NV_404C (0x404c): %08x
+NV_4050 (0x4050): %08x
+NV_4054 (0x4054): %08x
+NV_4058 (0x4058): %08x
+NV_405C (0x405c): %08x
+NV_4060 (0x4060): %08x
+NV46/G72
+NV47/G70
+NV49/G71
+NV4B/G73
+NV50/G80
+NV_C010 (0xc010): %08x
+NV_C014 (0xc014): %08x
+NV_C018 (0xc018): %08x
+NV_C01C (0xc01c): %08x
+NV_C020 (0xc020): %08x
+NV_C024 (0xc024): %08x
+NV_C028 (0xc028): %08x
+NV_C02C (0xc02c): %08x
+NV_C040 (0xc040): %08x
+NVClock SmartDimmer adjustment tool version 0.8b4.
+NVdriver
+NV_E100 (0xe100): %08x
+NV_E114 (0xe114): %08x
+NV_E118 (0xe118): %08x
+NV_E11C (0xe11c): %08x
+NV_E120 (0xe120): %08x
+NV_E300 (0xe300): %08x
+nvemulate
+nVidia G70
+nVidia G70GL
+nVidia G80-875
+nVidia G98
+nVidia Geforce 210
+nVidia Geforce 256 DDR
+nVidia Geforce 256 SDR
+nVidia Geforce 2 GO
+nVidia Geforce 2 GTS/PRO
+nVidia Geforce 2 MX 100/200
+nVidia Geforce 2 MX integrated
+nVidia Geforce 2 MX/MX400
+nVidia Geforce 2 Ti
+nVidia Geforce 2 Ultra
+nVidia Geforce 3
+nVidia Geforce 315
+nVidia Geforce 3 Titanium 200
+nVidia Geforce 3 Titanium 500
+nVidia Geforce 410 Go
+nVidia Geforce 4 4000 GO
+nVidia Geforce 4 420 Go
+nVidia Geforce 4 420 Go 32M
+nVidia Geforce 4 440 Go
+nVidia Geforce 4 440 Go 64M
+nVidia Geforce 4 448 Go
+nVidia Geforce 4 460 Go
+nVidia Geforce 4 488 Go
+nVidia Geforce 4 Go
+nVidia Geforce 4 MX4000
+nVidia Geforce 4 MX420
+nVidia Geforce 4 MX420 8X
+nVidia Geforce 4 MX440
+nVidia Geforce 4 MX440 8X
+nVidia Geforce 4 MX440 SE
+nVidia Geforce 4 MX440SE 8X
+nVidia Geforce 4 MX460
+nVidia Geforce 4 MX integrated
+nVidia Geforce 4 Ti 4200
+nVidia Geforce 4 Ti 4200 8X
+nVidia Geforce 4 Ti 4400
+nVidia Geforce 4 Ti 4600
+nVidia Geforce 4 Ti 4800
+nVidia Geforce 4 Ti 4800SE
+nVidia Geforce 6100
+nVidia Geforce 6100 nForce 400
+nVidia Geforce 6100 nForce 405
+nVidia Geforce 6100 nForce 420
+nVidia Geforce 6100 nForce 430
+nVidia Geforce 6150
+nVidia Geforce 6150LE
+nVidia Geforce 6200
+nVidia Geforce 6200 A-LE
+nVidia Geforce 6200SE TurboCache
+nVidia Geforce 6200 TurboCache
+nVidia Geforce 6250
+nVidia Geforce 6600
+nVidia Geforce 6600GT
+nVidia Geforce 6600/GT
+nVidia Geforce 6600LE
+nVidia Geforce 6610XL
+nVidia Geforce 6700XL
+nVidia Geforce 6800
+nVidia Geforce 6800GS
+nVidia Geforce 6800GS/XT
+nVidia Geforce 6800GT
+nVidia Geforce 6800LE
+nVidia Geforce 6800 Ultra
+nVidia Geforce 6800/Ultra
+nVidia Geforce 6800XE
+nVidia Geforce 6800XT
+nVidia Geforce 7000M nForce 610M
+nVidia Geforce 7025 nForce 630a
+nVidia Geforce 7050 nForce 610i
+nVidia Geforce 7050 nForce 620i
+nVidia Geforce 7050 nForce 630i
+nVidia Geforce 7050PV nForce 630a
+nVidia Geforce 7100GS
+nVidia Geforce 7100 nForce 630i
+nVidia Geforce 7150M nForce 630M
+nVidia Geforce 7150 nForce 630i
+nVidia Geforce 7300GS
+nVidia Geforce 7300GT
+nVidia Geforce 7300LE
+nVidia Geforce 7300SE
+nVidia Geforce 7500LE
+nVidia Geforce 7600GS
+nVidia Geforce 7600GT
+nVidia Geforce 7600LE
+nVidia Geforce 7650GS
+nVidia Geforce 7800GS
+nVidia Geforce 7800GT
+nVidia Geforce 7800GTX
+nVidia Geforce 7900GS
+nVidia Geforce 7900GT
+nVidia Geforce 7900GTX
+nVidia Geforce 7950GT
+nVidia Geforce 7950GX2
+nVidia Geforce 8200
+nVidia Geforce 8200M G
+nVidia Geforce 8300
+nVidia Geforce 8300GS
+nVidia Geforce 8400
+nVidia Geforce 8400GS
+nVidia Geforce 8400M G
+nVidia Geforce 8400M GS
+nVidia Geforce 8400M GT
+nVidia Geforce 8400SE
+nVidia Geforce 8500GT
+nVidia Geforce 8600GS
+nVidia Geforce 8600GT
+nVidia Geforce 8600GTS
+nVidia Geforce 8600M GS
+nVidia Geforce 8600M GT
+nVidia Geforce 8600M GTS
+nVidia Geforce 8700M GT
+nVidia Geforce 8800
+nVidia Geforce 8800GS
+nVidia Geforce 8800GT
+nVidia Geforce 8800GTS
+nVidia Geforce 8800GTS 512
+nVidia Geforce 8800GTX
+nVidia Geforce 8800M GTS
+nVidia Geforce 8800M GTX
+nVidia Geforce 8800Ultra
+nVidia Geforce 9100
+nVidia Geforce 9100M G
+nVidia Geforce 9200
+nVidia Geforce 9200M GS
+nVidia Geforce 9300
+nVidia Geforce 9300GE
+nVidia Geforce 9300GS
+nVidia Geforce 9300M G
+nVidia Geforce 9300M GS
+nVidia Geforce 9300 nForce 730i
+nVidia Geforce 9300SE
+nVidia Geforce 9400
+nVidia Geforce 9400GT
+nVidia Geforce 9400M
+nVidia Geforce 9400M G
+nVidia Geforce 9500GS
+nVidia Geforce 9500GT
+nVidia Geforce 9500M G
+nVidia Geforce 9500M GS
+nVidia Geforce 9600GS
+nVidia Geforce 9600GSO
+nVidia Geforce 9600GSO 512
+nVidia Geforce 9600GT
+nVidia Geforce 9600M GS
+nVidia Geforce 9600M GT
+nVidia Geforce 9650M GT
+nVidia Geforce 9650S
+nVidia Geforce 9700M GT
+nVidia Geforce 9700M GTS
+nVidia Geforce 9800GT
+nVidia Geforce 9800GTX
+nVidia Geforce 9800GTX+
+nVidia Geforce 9800GX2
+nVidia Geforce 9800M GS
+nVidia Geforce 9800M GT
+nVidia Geforce 9800M GTS
+nVidia Geforce 9800M GTX
+nVidia GeforceFX 5200
+nVidia GeforceFX 5200LE
+nVidia GeForce FX 5200 (Mac)
+nVidia GeforceFX 5200 Ultra
+nVidia GeforceFX 5500
+nVidia GeforceFX 5600
+nVidia GeforceFX 5600 Ultra
+nVidia GeforceFX 5600XT
+nVidia GeforceFX 5700
+nVidia GeforceFX 5700LE
+nVidia GeforceFX 5700 Ultra
+nVidia GeforceFX 5700VE
+nVidia GeforceFX 5800
+nVidia GeforceFX 5800 Ultra
+nVidia GeforceFX 5900
+nVidia GeforceFX 5900 Ultra
+nVidia GeforceFX 5900XT
+nVidia GeforceFX 5900ZT
+nVidia GeforceFX 5950 Ultra
+nVidia GeforceFX 700
+nVidia GeforceFX Go5100
+nVidia GeforceFX Go 5200
+nVidia GeForceFX Go5200 32M/64M
+nVidia GeforceFX Go 5250
+nVidia GeforceFX Go5300
+nVidia GeforceFX Go 5600
+nVidia GeforceFX Go 5650
+nVidia GeforceFX Go5700
+nVidia Geforce G100
+NVIDIA GeForce G102M
+nVidia Geforce G 103M
+nVidia Geforce G105M
+nVidia Geforce G 105M
+nVidia Geforce G 110M
+nVidia Geforce Go 6100
+nVidia Geforce Go 6150
+nVidia Geforce Go 6200
+nVidia Geforce Go 6400
+nVidia Geforce Go 6600
+nVidia Geforce Go 6600GT
+nVidia GeForce Go 6600TE/6200TE
+nVidia Geforce Go 6800
+nVidia Geforce Go 6800Ultra
+nVidia Geforce Go 7300
+nVidia Geforce Go 7400
+nVidia Geforce Go 7400GS
+nVidia Geforce Go 7600
+nVidia Geforce Go 7600GT
+nVidia Geforce Go 7700
+nVidia Geforce Go 7800GTX
+nVidia Geforce Go 7900GS
+nVidia Geforce Go 7900GTX
+nVidia Geforce Go 7900SE
+nVidia Geforce Go 7950GTX
+nVidia Geforce GT 120
+nVidia Geforce GT 120M
+nVidia Geforce GT 130
+nVidia Geforce GT 130M
+nVidia Geforce GT 140
+nVidia Geforce GT 220
+nVidia Geforce GT 220M
+nVidia Geforce GT 230
+nVidia Geforce GT 230M
+nVidia Geforce GT 240
+nVidia Geforce GT 320
+nVidia Geforce GT 320M
+nVidia Geforce GT 330
+nVidia Geforce GT 330M
+nVidia Geforce GT 340
+nVidia Geforce GTS 150M
+nVidia Geforce GTS 160M
+nVidia Geforce GTS 220
+nVidia Geforce GTS 240
+nVidia Geforce GTS 250
+nVidia Geforce GTS 250M
+nVidia Geforce GTS 260M
+nVidia Geforce GTS 335M
+nVidia Geforce GTS 350M
+nVidia Geforce GTS 360M
+nvidia GeForce GTX 260
+nVidia Geforce GTX 260M
+nvidia GeForce GTX 280
+nVidia Geforce GTX 280M
+nvidia GeForce GTX 285
+nVidia Geforce GTX 285M
+nvidia GeForce GTX 295
+nVidia Geforce NB9P-GE
+nVidia GeforcePCX 4300
+nVidia GeforcePCX 5300 / Quadro FX330
+nVidia GeforcePCX 5750
+nVidia GeforcePCX 5900
+nVidia HICx16 + Graphics
+NVIDIA ION
+NVIDIA ION LE
+nVidia nForce 730a
+nVidia nForce 750a SLI
+nVidia nForce 760i SLI
+nVidia nForce 8100 / nForce 720a
+nVidia nForce 980a/780a SLI
+nVidia NV31
+nVidia NV31GL
+nVidia NV34GL
+nVidia NV44
+nVidia Quadro
+nVidia Quadro 2 MXR/EX/GO
+nVidia Quadro 2 Pro
+nVidia Quadro 4 200/400 NVS
+nVidia Quadro 4 280 NVS
+nVidia Quadro 4 380 XGL
+nVidia Quadro 4 500 GoGL
+nVidia Quadro 4 550 XGL
+nVidia Quadro 4 580 XGL
+nVidia Quadro 4 600 XGL
+nVidia Quadro 4 700 GoGL
+nVidia Quadro 4 700 XGL
+nVidia Quadro 4 750 XGL
+nVidia Quadro 4 780 XGL
+nVidia Quadro 4 900 XGL
+nVidia Quadro 4 980 XGL
+nvidia Quadro CX
+nVidia Quadro DCC
+nVidia QuadroFX 1000
+nVidia QuadroFX 1100
+nVidia QuadroFX 1300
+nVidia QuadroFX 1400
+nVidia QuadroFX 1500
+nVidia QuadroFX 1500M
+nVidia QuadroFX 1600M
+nVidia QuadroFX 1700
+nVidia Quadro FX 1700M
+nVidia Quadro FX 1800
+nVidia Quadro FX 1800M
+nVidia QuadroFX 2000
+nVidia QuadroFX 2500M
+nVidia Quadro FX 2700M
+nVidia Quadro FX 2800M
+nVidia QuadroFX 3000
+nVidia QuadroFX 3350/4000SDI
+nVidia QuadroFX 3400
+nVidia QuadroFX 350
+nVidia QuadroFX 3500
+nVidia QuadroFX 350M
+nVidia Quadro FX 3600M
+nVidia Quadro FX 3700
+nVidia Quadro FX 3700M
+nVidia QuadroFX 370 LP
+nVidia QuadroFX 370M
+nVidia Quadro FX 380
+nvidia QuadroFX 3800
+nVidia Quadro FX 3800M
+nVidia QuadroFX 4000
+nVidia QuadroFX 4400
+nVidia QuadroFX 4500
+nVidia QuadroFX 4500 X2
+nVidia QuadroFX 4600
+nVidia Quadro FX 4700 X2
+nvidia QuadroFX 4800
+nVidia QuadroFX 500
+nVidia QuadroFX 540
+nVidia QuadroFX 550
+nVidia QuadroFX 5500
+nVidia QuadroFX 550M
+nVidia QuadroFX 560
+nVidia QuadroFX 5600
+nVidia QuadroFX 570
+nVidia QuadroFX 570M
+nVidia Quadro FX 580
+nvidia QuadroFX 5800
+nVidia Quadro FX 770M
+nVidia Quadro FX Go1000
+nVidia QuadroFX Go 1400
+nVidia QuadroFX Go700
+nVidia Quadro NVS 110M
+nVidia Quadro NVS 120M
+nVidia Quadro NVS 130M
+nVidia Quadro NVS 135M
+nVidia Quadro NVS 140M
+nVidia Quadro NVS 150M
+nVidia Quadro NVS 160M
+nVidia Quadro NVS 210S / Geforce 6150LE
+nVidia Quadro NVS280/FX330
+nVidia Quadro NVS 280 PCI
+nVidia Quadro NVS 285
+nVidia Quadro NVS 290
+nVidia Quadro NVS 295
+nVidia Quadro NVS 300M
+nVidia Quadro NVS 320M
+nVidia Quadro NVS 370M
+nVidia Quadro NVS 420
+nVidia Quadro NVS 450
+nVidia Quadro NVS 50 PCI
+nVidia Quadro NVS 5100M
+nvidia Quadroplex 2200 D2
+nvidia Quadroplex 2200 S4
+nVidia Quadro VX 200
+nVidia Riva TnT
+nVidia Riva TnT 2
+nVidia Riva TnT 2 Aladdin (Integrated)
+nVidia Riva TnT 2 M64
+nVidia Riva TnT 2 Pro
+nVidia Riva TnT 2 Ultra
+nVidia Riva TnT 2 VANTA
+nvidia Tesla C1060
+nVidia Unknown NV4x
+nVidia Xbox GPU
+NV_MPLL_COEFF_A (0x680504): %08x
+NV_MPLL_COEFF_B (0x680574: %08x
+NV_NVPLL_COEFF_A (0x680500): %08x
+NV_NVPLL_COEFF_B (0x680570: %08x
+NV_PBUS_DEBUG_0 (0x1080): %08x
+NV_PBUS_DEBUG_1 (0x1084): %08x
+NV_PBUS_DEBUG_2 (0x1088): %08x
+NV_PBUS_DEBUG_3 (0x108c): %08x
+NV_PBUS_PCI_0 (0x1800): %08x
+NV_PBUS_PCI_0 (0x182c): %08x
+NV_PDISPLAY_SOR0_REGS_BRIGHTNESS(%x): %08x
+NV_PEXTDEV_BOOT_0 (0x101000): %08x
+NV_PFB_218  (0x100218): %08x
+NV_PFB_474     (0x100474): %08x
+NV_PFB_CFG0 (0x100200): %08x
+NV_PFB_CFG0 (0x100204): %08x
+NV_PFB_CFG0 (0x100208): %08x
+NV_PFB_CFG0 (0x10020c): %08x
+NV_PFB_TIMING0 (0x100220): %08x
+NV_PFB_TIMING1 (0x100224): %08x
+NV_PFB_TIMING2 (0x100228): %08x
+NVPLL2_COEFF=%08x
+NVPLL2_COEFF: %08x
+NVPLL_COEFF=%08x
+NVPLL_COEFF: %08x
+NVPLL_COEFF2=%08x
+NV_PLL_COEFF_SELECT (0x68050c): %08x
+NV_PMC_BOOT_0 (0x0): %08x
+NV_VPLL_COEFF (0x680508): %08x
+Options:
+pageflip
+PageFlipping
+PCI-Express
+PCI-Express (BR02)
+--- PCI header ---
+PLL=%#08x, PLL2=%08x
+__printf_chk
+Probing I2C busses
+/proc/bus/pci/%02x/%02x.%x
+/proc/bus/pci/devices
+/proc/modules
+register=%#x, clockIn=%d, calculated=%d
+%s/bios%d.rom
+%s/config
+%s %d %d
+set_card() failed!
+--- %s GPU registers ---
+Show SLI HUD
+slope=%f, offset=%f, correction=%d
+Smartdimmer is only supported on certain (HP/SamsungSony/Zepto) laptops using a Geforce 6200/7x00Go/8x00Go. If you want support on your laptop contact the author.
+SmartDimmer level: %d
+%s/.nvclock
+SPLL2_COEFF=%08x
+SPLL_COEFF=%08x
+	-s  --set <level>	Set brightness level (15-100)
+%s.%s=%u
+__stack_chk_fail
+Sync to VBlank
+texclamping
+texsharpen
+Texture Clamping
+Texture Sharpening
+#This is NVClock's config file. Don't edit the hw and general section!
+Try `%s --help' for help.
+tvbrightness
+TV Brightness
+tvcontrast
+TV Contrast
+tvflicker
+TV Flicker
+--- TVOut regs ---
+tvoverscan
+TV Overscan
+TV Reset
+tvsaturation
+TV Saturation
+Uknown Winbond vendor: %x
+Unable to allocate memory for shadowing the bios image
+Unable to shadow the video bios
+Unable to write configuration file to '%s'. Do you have sufficient permissions?
+Unhandled init script entry with id '%c' at %04x
+Unified Back Buffer
+Unknown default pll for %#x
+Unknown NV44
+Unknown Nvidia card
+Unsupported
+Usage: %s [OPTION]...
+vibrance
+vsnprintf
+Warning using experimental NV4x lowlevel clock adjustment, if you encounter strange issues, issue a bugreport.
+Winbond W83781D
+Winbond W83L785R
+windowflip
+WindowFlipping
+XextAddDisplay
+XextCreateExtension
+XextFindDisplay
+XMissingExtension
+_XSetLastRequestRead
+You don't have enough permissions to run NVClock! Retry as root.
+You don't have enough permissions to run NVClock! Retry as root or install the Nvidia drivers.

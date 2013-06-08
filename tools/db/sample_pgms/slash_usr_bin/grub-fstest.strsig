@@ -1,0 +1,802 @@
+ !"'()*+./0123456789:;<=>?@ABCDEFGQRTUZ[\]bcdefhqrstvw|}~
+%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x
+%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%0x-%02x%02x%02x%02x%02x%02x
+ %04d%02d%02d%02d%02d%02d 
+%04x-%04x
+%04x%04x-%04x-%04x-%04x-%04x%04x%04x
+%08x%08x
+1.2.840.113549.1.1.12
+1.2.840.113549.1.1.13
+1.99-21ubuntu3.9
+{$1SFAt5
+{$1SFBt5
+2.16.840.1.101.3.4.2.2
+2.16.840.1.101.3.4.2.3
+3D$ 3T$$
+3D$(3T$,#D$ #T$$
+3T$,3D$(
+3T$,3D$(	
+3T$k3D$g	
+3T$t3D$p	
+64-bit MFT number
+9\$<r	w_9L$8wY
+9T$4wpsh
+9T$4w:s2
+Aborted.
+Access denied.
+actual checksum %016llx %016llx %016llx %016llx
+-ADLER32
+AFFS blocksize couldn't be determined
+Amiga partition map not found
+another zpool
+A NULL argv[0] was passed through an exec system call.
+an unused code found
+Apple partition map not found
+Apr 23 2011
+argp_err_exit_status
+argp_error
+argp_failure
+argp_help
+ARGP_HELP_FMT
+ARGP_HELP_FMT: %s value is less than or equal to %s
+argp_parse
+argp_program_bug_address
+argp_program_version
+argp_program_version_hook
+argp_state_help
+argp_usage
+assert: error stack overflow detected!
+__assert_fail
+Assertion failed at %s:%d
+ at level %d
+attempt to read past the end of file
+attempt to seek outside of the file
+attribute can't be compressed
+attribute not found
+a value was assigned to the argument `%s' while it doesn't require an argument
+bad bonus type
+bad boot flag
+bad filename
+bad magic (found 0x%x; wanted 0x%x
+bad read
+bad ZAP flags
+bad ZAP magic
+bad ZAP salt
+beyond the total sectors
+_BHRfS_M
+big-endian gang
+bindtextdomain
+biosdisk
+$BITMAP without $INDEX_ALLOCATION
+blocklist
+blocklist FILE
+__bss_start
+btree corruption
+btree level mismatch
+btree lookup failure
+C(+|$0;|$x
+cannot find the HFS root directory
+cannot find the partition of `%s'
+cannot follow symlink `%s'
+cannot get disk geometry of `%s'
+cannot get the real path of `%s'
+cannot open file %s:%s
+cannot open `%s'
+cannot open %s
+cannot open `%s' while attempting to get disk geometry
+cannot open `%s' while attempting to get disk size
+cannot read from `%s'
+cannot read `%s'
+cannot read %s
+cannot restore the original directory
+cannot seek `%s'
+cannot stat `%s'
+cannot stat %s
+cannot stat %s: %s
+Cannot stat `%s', skipping
+cannot write to `%s'
+canonicalize_file_name
+can't find 0x%X in attribute list
+can't find command %s
+can't find PD
+can't open device
+can't open `%s'
+can't open the hostfs directory `%s'
+can't resolve ..
+casesensitivity
+%c%c%c%c-%c%c-%c%c-%c%c-%c%c-%c%c-%c%c
+changing current directory to %s
+check 10 passed
+check 11 passed
+check 2 passed
+check 3 passed
+check 4 passed
+check 6 passed
+check 7 passed
+check 8 passed
+check 9 passed
+checksum %s verification failed
+checksum verification failed
+children
+chunk 0x%llx+0x%llx (%d stripes (%d substripes) of %llx)
+chunk 0x%llx+0x%llx (%d stripes (%d substripes) of %llx) stripe %x maps to 0x%llx
+closedir
+Closing `%s'.
+cmp FILE LOCAL
+Commands:
+compare fail at offset %llu
+Compare FILE with local file LOCAL.
+compression algorithm %s not supported
+compression algorithm %u not supported
+compression block overflown
+compression block too large
+compression type 0x%x not supported
+Copy FILE to local file LOCAL.
+couldn't find a member device
+couldn't find a valid DVA
+couldn't find a valid label
+couldn't find ID
+Couldn't find PV %s. Check your device.map
+couldn't find raidz ashift
+couldn't find raidz parity
+couldn't find %s
+couldn't find the chunk descriptor
+couldn't find vdev id
+couldn't find vdev tree
+couldn't read i-node
+cp FILE LOCAL
+CRC32RFC1510
+crc FILE
+ [-%c[%s]]
+[-%c %s]
+__ctype_b_loc
+ %d-%02d-%02d %02d:%02d:%02d %-11s 
++D$0;D$d
+D$$3t$ 1
+D$$3T$T3D$P	
+D$@9D$Lv]
+D$` 9L$t
+\$|*D$@9\$t
+data is NULL
+$DATA should be non-resident
+dcgettext
+[-d] DEVICENAME FILE.
+%d %d %u:%u %s %s%n
+	+D$ ;D$x
+Debug tool for filesystem driver.
+Delete the loopback device entry.
+--detail
+Detecting %s...
+/dev/.devfsd
+/dev/dm-
+device count exceeds limit
+DEVICE_NAME
+device name required
+device not found
+Device %s:
+/dev/mapper
+/dev/mapper/
+/dev/mapper/%s
+/dev/root
+dgettext
+D$H3D$\	
+Differs in %lld
+Discarding improperly nested partition (%s,%s,%s%d)
+diskcount
+Disk count must precede disks list.
+disk does not exist, so falling back to partition device %s
+disk missing
+disk read fails at offset %lld, length %d
+Display blocklist of FILE.
+Display the usage of this command and exit.
+Display this help and exit.
+DlCRC24RFC2440
+dm_get_next_target
+dm_is_dm_major
+dm_log_with_errno_init
+dmraid_nv
+dm %s starts at %llu
+dm_task_create
+dm_task_create failed
+dm_task_destroy
+dm_task_no_open_count
+dm_task_run
+dm_task_run failed
+dm_task_set_name
+dm_task_set_name failed
+dm_tree_add_dev
+dm_tree_add_dev failed
+dm_tree_create
+dm_tree_create failed
+dm_tree_find_node
+dm_tree_find_node failed
+dm_tree_free
+dm_tree_next_child
+dm_tree_node_get_name
+dm_tree_node_get_uuid
+doc-opt-col
+drive `%s' already mapped to `%s'
+dummy mbr
+dup-args
+dup-args-note
+dva=%llx, %llx
+EFI PART
+embedded HFS+ filesystem
+Embedding on MSDOS subpartition isn't supported
+empty nvpair
+encoding not supported
+encryption not supported
+endian = %d
+endian = %d, blkid=%llx
+entries && short_options
+__errno_location
+error parsing metadata
+error parsing pe_start
+error: %s.
+expected checksum %016llx %016llx %016llx %016llx
+--export
+ext2fs doesn't support quadruple indirect blocks
+extent 0x%llx+0x%llx (0x%llx)
+extent_count = 
+extent_size = 
+external pointer tables not supported
+extra extents found in an extend overflow file
+failed here
+failed in building a Huffman code table
+Failed to create tree
+failed to get canonical path of %s
+fails to read non-resident $BITMAP
+fail to read non-resident attribute list
+fat_size=%d, next_cluster=%u
+fflush failed
+f=h$t f=x$u*
+file bigger than maximum size
+file name required
+file not found
+file size : %d (%08x%08x)
+file size : %lld
+Filesystem cannot be accessed
+filesystem has unsupported incompatible features
+filesystem is corrupt
+Filesystem type %s
+FIXME: no / in buf. (make_system_path_relative_to_its_root)
+fixup signature not match
+fletcher2
+fletcher4
+flockfile
+Found array %s (%s)
+Found : %s, type=%d
+found two disks with the index %d for RAID %s
+__fprintf_chk
+fputs_unlocked
+__fread_chk
+fread: %s
+fseeko64
+fseeko: %s
+fsname = '%s' snapname='%s' filename = '%s'
+fstat failed
+ftello64
+funlockfile
+fwrite_unlocked
+__fxstat64
+fzap: length %d
+gang_header
+Garbage in ARGP_HELP_FMT: %s
+Get crc32 checksum of FILE.
+__getdelim
+gettimeofday
+getting the size of %s
+give a short usage message
+give this help list
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+GLIBC_2.8
+__gmon_start__
+GPT curently supports only PC-BIOS embedding
+GPT entry %d: start=%lld, length=%lld
+grub-core/disk/raid.c
+grub-core/fs/affs.c
+grub-core/fs/btrfs.c
+grub-core/fs/fat.c
+grub-core/fs/reiserfs.c
+grub-core/fs/zfs/zfs.c
+../../../../grub-core/gnulib/argp-help.c
+grub-core/kern/disk.c
+grub-core/kern/emu/getroot.c
+grub-core/kern/emu/hostdisk.c
+grub-core/kern/fs.c
+grub-core/kern/partition.c
+grub-core/partmap/apple.c
+grub-core/partmap/gpt.c
+grub-core/partmap/msdos.c
+GRUB_LEGACY_0_BASED_PARTITIONS
+grub_reiserfs_iterate_dir called on a non-directory item
+Hah!IdontNeedEFI
+Handle N bytes in output file.
+hang for SECS seconds (default 3600)
+Have successfully read %lld bytes (%ld requested)
+header-col
+Hex dump FILE.
+hex FILE
+HighPoint RAID controller
+hol_append
+hol->entries && hol->short_options
+hol->num_entries <= ((size_t) -1) / sizeof (struct hol_entry)
+hostdisk
+(host)%s
+HP Backup and Recovery Manager (?)
+<ht{<utp
+<htW<utS
+human-readable
+ignoring dm target %s (not linear/striped)
+IKSVgixNHOIJKSVWXY^_`agmnoijyz{x
+IMAGE_PATH COMMANDS
+incorrect checksum
+incorrect dnode type
+incorrect mirror VDEV
+incorrect nvlist
+incorrect nvlist array
+incorrect nvlist header
+incorrect segment
+inode not found
+internal node (depth %d) %llx %x %llx
+invalid aed tag
+invalid Amiga partition map
+invalid argument
+invalid checksum
+invalid chunk entry
+invalid chunk number
+invalid cluster %u
+Invalid command %s.
+invalid compression block
+invalid compression block size
+invalid cpio archive
+Invalid disk count.
+invalid extent
+invalid extent type
+invalid fe/efe descriptor
+invalid fid tag
+invalid file entry
+invalid file name `%s'
+invalid fileset descriptor
+invalid leaf chunk entry
+invalid leaf magic
+invalid leaf type
+invalid part ref
+invalid skip value %lld
+invalid string
+invalid tag ident
+invalid tar archive
+invalid uberblock magic
+invalid uint64
+_IO_putc
+_IO_stdin_used
+item is NULL
+Iterating directory...
+_Jv_RegisterClasses
+key is NULL
+ KMGTskip partition
+|$L9D$Lr
+label ok %d
+LABELONE
+- Label "%s"
+- Last modification time %d-%02d-%02d %02d:%02d:%02d %s
+l$<#D$@3D$
+leaf (depth %d) %llx %x %llx
+level loop
+level loop detected, aborting
+L$h9L$T}f
+[-l|-h|-a] [FILE ...]
+L$H#D$P!
+libc.so.6
+__libc_start_main
+libdevmapper.so.1.02.1
+/lib/ld-linux.so.2
+LICENSE=GPLv3+
+Linux/ADFS partition map not found
+List all files.
+List devices and files.
+List files in PATH.
+little-endian gang
+%llx %llx 
+Load the same file in multiple ways.
+logical_volumes
+long-opt-col
+looking for '%s'
+loopback
+loopback command fails
+loop detected
+L$P+L$L9
+\$L#T$D!
+LVM2 001
+ LVM2 x[5A%r0N*>
+__lxstat64
+lzjb decompression failed
+lzop file corrupted
+Make a device of a file.
+make_hol
+Mandatory or optional arguments to long options are also mandatory or optional for any corresponding short options.
+Map table size exceeded
+mdraid09
+mdraid1x
+MD_UUID=
+mduuid/%s
+mduuid/%s,%s
+member drive unknown
+__memcpy_chk
+MFT 0x%X is not in use
+MGQRTUZ[\]bcdefhqrstvw|}~
+micro zap
+mirror_count = 
+mirrors = [
+mirror-%u
+missing `)'
+missing mandatory option for `%s'
+Missing @ or / separator
+Must use absolute path.
+nanosleep
+N input files.
+no block found for the file id 0x%x and the block offset 0x%x
+no bsdlabel found
+no chunk
+No close parenthesis found
+No command is specified.
+no creation date in filesystem to generate UUID
+no $DATA in MFT 0x%X
+no device is set
+no dm params
+no dm target
+no embedding supported
+No filename found
+no file specified
+no GPT partition map found
+no gzip magic found
+no $INDEX_ROOT
+no LVM signature found
+no lzop magic found
+no mapping exists for `%s'
+non-positive number of mirror children
+nontext window empty
+No open parenthesis found
+no signature
+no such disk
+no such partition
+not 0.9x raid
+not 1.x raid
+not a Btrfs filesystem
+not a correct XFS BMAP node
+not a correct XFS inode
+not a cpio filesystem
+not a directory
+not a disk
+not a FAT filesystem
+not a file
+not a HFS filesystem
+not a HFS+ filesystem
+not a host disk
+not a hostfs
+not a ISO9660 filesystem
+not a JFS filesystem
+Not a known filesystem
+not a minix2 filesystem
+not a minix filesystem
+not an AFFS filesystem
+not an afs_be filesystem
+not an afs filesystem
+not an befs_be filesystem
+not an befs filesystem
+not an ext2 filesystem
+not an HFS filesystem
+not a nilfs2 filesystem
+not an ntfs filesystem
+not an SFS filesystem
+not an UDF filesystem
+not an ufs1 filesystem
+not an ufs2 filesystem
+not an XFS filesystem
+not a regular file
+not a ReiserFS filesystem
+not a SFS filesystem
+not a squash4
+not a sun partition table
+not a sun_pc partition table
+not a tar filesystem
+not a XFS filesystem
+not BtrFS
+not enough disk to restore
+Not enough parameters to command.
+not raid
+not squash4
+No uberblock found
+no valid GPT header
+ntfscomp module not loaded
+ number of contained items : %d
+num_entries <= ((size_t) -1) / sizeof (struct hol_entry)
+OD$D)D$D
+OFS not yet supported
+__open64_2
+open error
+Opening `%s'...
+Opening `%s' failed.
+opening the device %s
+opening the device `%s' in open_device()
+opt-doc-col
+ [OPTION...]
+! ((opts)->flags & 0x4)
+OSP too small
+Other software is using the embedding area, and there is not enough room for core.img.  Such software is often trying to store data in a way that avoids detection.  We recommend you investigate.
+out of disk
+out of memory
+out of partition
+overflow is detected
+partition %d: bad magic (found 0x%x; wanted 0x%x
+partition %d: flag 0x%x, type 0x%x, start 0x%llx, len 0x%llx
+partition %d: name %s, type %s, start 0x%x, len 0x%x
+Partition %d starts from %lu
+Partition %s:
+ - Partition start at %llu
+partmap type not supported
+PC-style partitions curently support only PC-BIOS embedding
+pe_start = 
+physical_volumes {
+physical volume %s not found
+pool_guid
+pool_guid not found
+POSIXLY_CORRECT
+posix_memalign
+ Press any key to exit.
+Print a block list.
+__printf_chk
+print program version
+Print sizes in a human readable format.
+Print verbose messages.
+/proc/self/mountinfo
+__progname
+__progname_full
+(PROGRAM ERROR) No version known!?
+(PROGRAM ERROR) Option should have been recognized!?
+program_invocation_name
+program_invocation_short_name
+program-name
+putc_unlocked
+raid5rec is not loaded
+raid6rec is not loaded
+raidz%d is not supported
+RAIDZ mapping 0x%llx+%u (%x, %x) -> (0x%llx, 0x%llx)
+Read a valid GPT header
+readdir64
+read error at offset %llu: %s
+read failed
+reading a SFS block outside the extent
+Reading direct block %u from %u to %u...
+Reading from %lld to %lld (%lld instead of requested %ld)
+Reading indirect block %u from %u to %u...
+reading paddr 0x%llx for laddr 0x%llx
+reading %s
+Reading %s backwards
+Reading %s sequentially
+Reading %s sequentially again
+reading the label of a HFS+ partition is not implemented
+read MFT 0x%X fails
+read out of range
+Read out of range: sector 0x%llx (%s).
+realpath
+recovering %u bufers
+reiserfs
+reiserfs_blocktype
+reiserfs_tree
+Report bugs to %s.
+retrieving %llx %x %llx
+returned %d
+reusing open device `%s'
+root_dataset
+root not found
+run list overflown
+;|$$rVvN
+%.*s: ARGP_HELP_FMT parameter must be positive
+%.*s: ARGP_HELP_FMT parameter requires a value
+Saturday
+Scanning for %s RAID devices on disk %s
+scanning %s for LVM
+%s child has no DM name
+%s child has no DM uuid
+%s child is not DM-RAID
+%s child %s looks like a sub-layer
+%s detection failed.
+%s:%d: %s
+searching for laddr %llx
+Sector %llu is already in use by %s; avoiding it.  Please ask the manufacturer not to store data in MBR gap
+Sector %llu is already in use by %s; avoiding it.  This software may cause boot or other problems in future.  Please ask its authors not to store data in the boot track
+sector sizes of %d bytes aren't supported yet
+seek error
+seek failed
+segment_count = 
+%s: error:
+Set debug environment variable.
+setlocale
+Set root device.
+set the program name
+SFS extent not found
+%s has no DM children
+%s has no DM name
+%s has no DM uuid
+short-opt-col
+Show a long list with more detailed information.
+%s: info:
+singular recovery matrix
+%s: invalid option -- '%c'
+%s is a multipath disk
+%s is an LVM
+%s is not DM-RAID
+size not match
+Skip N bytes from output file.
+%s label not found
+%s: level=%d, total_sectors=%lld
+`%s' looks like a floppy drive, skipping
+something wrong with extent
+%s: option '%c%s' doesn't allow an argument
+%s: option requires an argument -- '%c'
+%s: option '--%s' doesn't allow an argument
+%s: option '%s' is ambiguous
+%s: option '--%s' requires an argument
+%s: option '-W %s' doesn't allow an argument
+%s: option '-W %s' is ambiguous
+%s: option '-W %s' requires an argument
+spares aren't implemented
+__sprintf_chk
+%s read failed
+ [--%s=%s]
+ [--%s[=%s]]
+--%s: %s
+%s (%s) %s
+%s %s %s
+ %s %s %s %s %s %s
+%s starts from %lu
+__stack_chk_fail
+start_extent = 
+state not found
+%s: Too many arguments
+%s: total_devs=%d, disk_size=%lld
+strcasecmp
+strchrnul
+__strcpy_chk
+__strdup
+strerror
+strerror_r
+stripe_count = 
+striped"
+stripes = [
+stripe_size = 
+strtoull
+sub-partition %s%d of (%s,%s) ends after parent.
+%.*s: Unknown ARGP_HELP_FMT parameter
+%s: unrecognized option '%c%s'
+%s: unrecognized option '--%s'
+superfluous RAID member (%d found)
+%s: warn:
+Symlink: `%s'
+T$@3D$,3T$(	
+T$@3D$$3T$ 	
+T$(3D$43T$0	
+T$@3T$|1
+T$_3T$N3D$J	
+T$49T$(t
++T$d;T$l
+testload
+T$H9T$(r
+the argument `%s' requires an integer
+the blocksize is not a power of two
+the length of a stored block does not match
+the size of %s is %llu
+the size of %s is %lu
+this command is available only for disk devices
+This GPT partition label has no BIOS Boot Partition; embedding won't be possible!
+This msdos-style partition label has no post-MBR gap; embedding won't be possible!
+t$H#t$P	
+Thursday
+too deep nesting of symlinks
+too many codes found
+too many partition maps
+too many PDs
+too much data
+too new version %llu > %llu
+too new ZPL version
+too small osp
+total sectors : %lld
+ - Total size %llu sectors
+ - Total size unknown
+TRAILER!!!
+treating dm target %s (striped) as real disk
+trying to lookup past nvlist array
+Try `%s --help' or `%s --usage' for more information.
+<_t(</t$
+<\t,<,t@
+txg not found
+type = "
+type=%d, name=%s
+%u.%02u%c
+u'3\$C3t$?	
+ufs does not support triple indirect blocks
+Unable to create pipe for mdadm: %s
+unable to find root item
+unable to find searched item
+Unable to fork mdadm: %s
+Unable to open stream from mdadm: %s
+unaligned device size
+unexpected end of file
+unknown argument `-%c'
+unknown argument `%s'
+unknown block type %d
+unknown checksum function %d
+unknown extent_count
+unknown extent size
+unknown filesystem
+unknown kind of RAID device `%s'
+unknown LVM device %s
+unknown LVM metadata header
+unknown LVM segment
+unknown LVM type %s
+unknown mirror_count
+unknown mirrors
+unknown node '%s'
+unknown pe_start
+unknown RAID device %s
+unknown segment
+unknown segment_count
+unknown start_extent
+unknown stripe_count
+unknown stripes
+Unknown system error
+unknown version: %d.%d
+unknown ZAP type
+unrecognised object type 0x%x
+unrecognized number
+unsupported device type
+unsupported extent type 0x%x
+unsupported gzip format
+unsupported RAID
+unsupported RAID flags %llx
+unsupported RAID level: %d
+Unsupported RAID version: %d
+unsupported RAID version: %d.%d
+unsupported (too new) LZO version
+unsupported (too old) LZOP version
+un;\$,t2
+usage-indent
+/usr/share/locale
+, UUID %s
+__vasprintf_chk
+vdev %s isn't supported
+vdev_tree
+version not found
+vfprintf
+__vfprintf_chk
+/$Volume
+vsnprintf
+Warning : %s has no stat block !
+Wednesday
+we don't support multiple LVM data areas
+wH9\$4sB
+write error
+write failed
+writing 0x%x bytes
+writing 0x%x bytes at offset 0x%x
+Writing `%s'...
+XFS does not support inode format %d yet
+__xstat64
+Your BIOS Boot Partition is too small; embedding won't be possible!
+Your core.img is unusually large.  It won't fit in the embedding area.
+Your embedding area is unusually small.  core.img won't fit in it.
+zap iterate
+ZAP leaf is too small
+zap: name = %s, value = %llx, cd = %x
+zap read
+zpool is marked as destroyed
+zpool isn't active
+zpool status %s

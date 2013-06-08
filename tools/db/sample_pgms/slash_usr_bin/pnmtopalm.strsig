@@ -1,0 +1,51 @@
+__bss_start
+Color %d:%d:%d not found in colormap.  Try using ppmquant to reduce the number of colors.
+colormap
+-depth value (%u) is greater than -maxdepth (%u) value.
+Don't know how to create %d bit DirectColor bitmaps.
+GLIBC_2.0
+__gmon_start__
+grayscale
+Input is %dx%d %s, maxval %d
+Internal error: user specified -colormap, but we did not generate a colormap.
+invalid value for -depth: %u.  Valid values are 1, 2, 4, 8, and 16
+invalid value for -maxdepth: %u.  Valid values are 1, 2, 4, 8, and 16
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+maxdepth
+Must use depth of 8 for color pixmap without custom color table.
+oops.  Bug in color re-calculation code.  color of %u.
+output is black and white
+Output is color with custom colormap with %d colors at %d bpp
+Output is color with default colormap at 8 bpp
+output is grayscale %d bits-per-pixel
+overflow2
+overflow_add
+pm_close
+pm_error
+pm_message
+pm_openr
+pm_optParseOptions3
+pm_readbiglong
+pm_readbigshort
+pm_writebiglong
+pm_writebigshort
+pnm_readpnm
+ppm_init
+ppm_parsecolor
+rle_compression
+scanline_compression
+Specified transparent color %s not found in colormap.
+This program takes at most 1 argument: the file name.  You specified %d
+Too many colors for custom colormap (max 256).  Try using ppmquant to reduce the number of colors.
+Too many colors for specified depth.  Use ppmquant to reduce.
+Too many colors for specified max depth.  Use ppmquant to reduce.
+transparent
+unknown format 0x%x on input file
+You specified -colormap with a black and white input image.  -colormap is valid only with color.
+You specified -colormap with a black and white inputimage.  -colormap is valid only with color.

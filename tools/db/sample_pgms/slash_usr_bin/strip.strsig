@@ -1,0 +1,675 @@
+01000000000000000000000;
+01000000000000000000000;0777777777777777777777;
+01777777777777777777777;
+0777777777777777777777;
+%.12s %.4s
+abfd != ((void *)0)
+add-gnu-debuglink
+     --add-gnu-debuglink=<file>    Add section .gnu_debuglink linking to <file>
+                                   Add <incr> to LMA, VMA and start addresses
+                                   Add <incr> to the start address
+                                   Add <prefix> to start of every allocatable
+--add-section
+     --add-section <name>=<file>   Add section <name> found in <file> to output
+adjust-section-vma
+adjust-start
+adjust-vma
+alloc, load, noload, readonly, debug, code, data, rom, share, contents
+alt-machine-code
+     --alt-machine-code <index>    Use the target's <index>'th alternative machine
+__anon%u
+architecture %s unknown
+ar%s;%ld;%ld;%s
+__assert_fail
+bad ATN65 record
+bad C++ field bit pos or size
+bad format for %s
+bad mangled name `%s'
+bad misc record
+Bad stab: %s
+bad type for C++ method function
+b:B:i:I:j:K:N:s:O:d:F:L:G:R:SpgxXHhVvW:w
+  -B --binary-architecture <arch>  Set output arch, when input is arch-less
+  -b --byte <num>                  Select byte <num> in every interleaved block
+BCD float type not supported
+_bfd_abort
+bfd_abs_section
+bfd_alt_mach_code
+bfd_arch_list
+bfd_bread
+bfd_bwrite
+bfd_canonicalize_reloc
+bfd_check_format
+bfd_check_format_matches
+bfd_close
+bfd_close_all_done
+bfd_coff_get_auxent
+bfd_coff_get_auxent failed: %s
+bfd_coff_get_comdat_section
+bfd_coff_get_syment
+bfd_coff_get_syment failed: %s
+bfd_com_section
+bfd_create_gnu_debuglink_section
+bfd_decode_symclass
+bfd_errmsg
+bfd_fill_in_gnu_debuglink_section
+bfd_get_arch
+bfd_get_arch_info
+bfd_get_archive_filename
+bfd_get_error
+bfd_get_full_section_contents
+bfd_get_mach
+bfd_get_reloc_upper_bound
+bfd_get_section_by_name
+bfd_get_section_contents
+bfd_get_stab_name
+bfd_hash_allocate
+bfd_hash_lookup
+bfd_hash_newfunc
+bfd_hash_table_free
+bfd_hash_table_init
+bfd_hash_table_init_failed: %s
+bfd_hash_traverse
+BFD header file version %s
+bfd_init
+bfd_is_local_label
+bfd_make_section
+bfd_make_section_anyway_with_flags
+bfd_make_section_with_flags
+bfd_malloc
+bfd_map_over_sections
+bfd_openr
+bfd_openr_next_archived_file
+bfd_openw
+bfd_printable_arch_mach
+bfd_scan_arch
+bfd_scan_vma
+bfd_seek
+bfd_set_default_target
+bfd_set_error
+bfd_set_file_flags
+bfd_set_format
+bfd_set_reloc
+bfd_set_section_contents
+bfd_set_section_size
+bfd_set_start_address
+bfd_set_symtab
+bfd_target_list
+bfd_target_vector
+bfd_und_section
+big endian
+binary-architecture
+bindtextdomain
+binutils
+../../binutils/bucomm.c
+../../binutils/debug.c
+../../binutils/ieee.c
+../../binutils/objcopy.c
+../../binutils/wrstabs.c
+blocks left on stack at end
+__bss_start
+byte number must be less than interleave
+byte number must be non-negative
+cannot create debug link section `%s'
+cannot create tempdir for archive copying (error: %s)
+Cannot create temporary file in %s: %s
+cannot fill debug link section `%s'
+cannot open '%s': %s
+cannot open: %s: %s
+cannot reverse bytes: length of section %s must be evenly divisible by %d
+can't add padding
+can't add section '%s'
+can't create debugging section
+can't create section `%s'
+Can't fill gap after section
+can't set BFD default target to `%s': %s
+can't set debugging section contents
+C++ base class not defined
+C++ base class not found in container
+C++ data member not found in container
+C++ default values not in a function
+--change-addresses
+    {--change-addresses|--adjust-vma} <incr>
+change-leading-char
+     --change-leading-char         Force output format's leading character style
+                                   Change LMA and VMA of section <name> by <val>
+--change-section-address
+    {--change-section-address|--adjust-section-vma} <name>{=|+|-}<val>
+--change-section-lma
+     --change-section-lma <name>{=|+|-}<val>
+--change-section-vma
+     --change-section-vma <name>{=|+|-}<val>
+--change-start
+    {--change-start|--adjust-start} <incr>
+                                   Change the LMA of section <name> by <val>
+                                   Change the VMA of section <name> by <val>
+character
+C++ object has no fields
+                                   <commit>
+     --compress-debug-sections     Compress DWARF debug sections using zlib
+const/volatile indicator missing
+ Copies a binary file, possibly transforming it in the process
+copy from `%s' [%s] to `%s' [%s]
+copy from `%s' [unknown] to `%s' [unknown]
+Copyright 2011 Free Software Foundation, Inc.
+could not create temporary file to hold stripped copy
+Couldn't get demangled builtin type
+couldn't open symbol redefinition file %s (error: %s)
+cplus_demangle
+cplus_demangle_builtin_types
+cplus_demangle_init_info
+cplus_demangle_mangled_name
+cplus_demangle_operators
+cplus_demangle_print
+cplus_demangle_type
+cplus_mangle_opname
+C++ reference in class with no fields
+C++ reference is not pointer
+C++ reference not found
+C++ static virtual method
+dcgettext
+debug_add_to_current_namespace: no current file
+debug_end_block: attempt to close top level block
+debug_end_block: no current block
+debug_end_common_block: not implemented
+debug_end_function: no current function
+debug_end_function: some blocks were not closed
+debug_find_named_type: no current compilation unit
+debug_get_real_type: circular debug information for %s
+debugging
+     --debugging                   Convert debugging information, if possible
+debug_make_undefined_type: unsupported kind
+debug_name_type: no current file
+debug_record_function: no debug_set_filename call
+debug_record_label: not implemented
+debug_record_line: no current unit
+debug_record_parameter: no current function
+debug_record_variable: no current file
+debug_set_class_id
+debug_set_filename
+debug_start_block: no current block
+debug_start_common_block: not implemented
+debug_start_source: no debug_set_filename call
+debug_tag_type: extra tag attempted
+debug_tag_type: no current file
+debug_write_class_type
+debug_write_type
+debug_write_type: illegal type encountered
+decompress-debug-sections
+     --decompress-debug-sections   Decompress DWARF debug sections using zlib
+Demangled name is not a function
+discard-all
+discard-locals
+                                   Do not copy symbol <name> unless needed by
+don't know how to write debugging information for %s
+double complex
+eh_throw
+endianness unknown
+__errno_location
+error copying private BFD data
+error in private header data
+error: the input file '%s' is empty
+expression stack mismatch
+expression stack overflow
+expression stack underflow
+extract-symbol
+     --extract-symbol              Remove section contents but keep symbols
+failed to copy private data
+failed to create output section
+Failed to print demangled template
+failed to set size
+--file-alignment
+     --file-alignment <num>        Set PE file alignment to <num>
+filename_cmp
+  @<file>                          Read options from <file>
+__float128
+__fprintf_chk
+  -F --target=<bfdname>            Set both input and output format to <bfdname>
+  -F --target <bfdname>            Set both input and output format to <bfdname>
+--gap-fill
+     --gap-fill <val>              Fill gaps between sections with <val>
+gcc2_compiled.
+gcc_compiled.
+$GDB_STRINGS$
+$GDB_SYMBOLS$
+getopt_long
+  -G --keep-global-symbol <name>   Localize all symbols except <name>
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3.4
+GLIBC_2.4
+*global*
+globalize-symbol
+     --globalize-symbol <name>     Force symbol <name> to be marked as a global
+globalize-symbols
+     --globalize-symbols <file>    --globalize-symbol for all in <file>
+*globals*
+__gmon_start__
+(GNU Binutils for Ubuntu) 2.22
+GNU objcopy
+GNU %s %s
+  -g -S -d --strip-debug           Remove all debugging symbols & sections
+  -g --strip-debug                 Remove all debugging symbols & sections
+                                   Handle long section names in Coff objects.
+ (header %s, data %s)
+     --heap <reserve>[,<commit>]   Set PE reserve/commit heap to <reserve>/
+  -h --help                        Display this output
+htab_create_alloc
+htab_elements
+htab_find
+htab_find_slot
+htab_hash_string
+htab_traverse
+<http://www.sourceware.org/bugzilla/>
+h != ((void *)0)
+h != ((void *)0) && h->index > 0
+i686-pc-linux-gnu
+ieee_builtin_type
+ieee_class_baseclass
+ieee_class_end_method
+ieee_class_method_var
+ieee_class_start_method
+ieee_class_static_member
+ieee_end_class_type
+ieee_end_function
+ieee_end_range
+ieee_end_struct_type
+ieee_finish_compilation_unit
+ieee_function_parameter
+ieee_lineno
+IEEE numeric overflow: 0x
+ieee_pop_type_used
+ieee_start_class_type
+ieee_start_function
+ieee_start_struct_type
+IEEE string length overflow: %u
+ieee_struct_field
+ieee_typedef_type
+IEEE unsupported complex type size %u
+IEEE unsupported float type size %u
+IEEE unsupported integer type size %u
+ieee_variable
+ignoring the alternative value
+  -I --input-target=<bfdname>      Assume input file is in format <bfdname>
+  -I --input-target <bfdname>      Assume input file is in format <bfdname>
+  -i --interleave [<number>]       Only copy N out of every <number> bytes
+illegal type index
+illegal variable index
+--image-base
+     --image-base <address>        Set PE image base to <address>
+     --impure                      Mark the output file as impure
+indx < (60)
+                                     in <file>
+info->block_depth == 1
+info->filename != ((void *)0)
+info->lineno_filename != ((void *)0)
+     --info                        List object formats & architectures supported
+info->nesting > 0
+info->nesting == 0 && info->fun_offset == -1
+info.pending_lbrac == (bfd_vma) -1
+info->pending_ranges != ((void *)0)
+info->type_stack->fields != ((void *)0)
+info->type_stack->index > 0
+info->type_stack != ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->fields != ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->methods != ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->next != ((void *)0) && ! ((&info->type_stack->next->type.strdef)->head == ((void *)0))
+info->type_stack != ((void *)0) && info->type_stack->type.classdef != ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->type.classdef != ((void *)0) && info->type_stack->type.classdef->method == ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->type.classdef != ((void *)0) && info->type_stack->type.classdef->method != ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->type.name != ((void *)0) && info->type_stack->next != ((void *)0) && info->type_stack->next->type.classdef != ((void *)0) && ! ((&info->type_stack->next->type.strdef)->head == ((void *)0))
+info->type_stack != ((void *)0) && ! ((&info->type_stack->type.strdef)->head == ((void *)0))
+info->units == ((void *)0)
+! ((&info->vars)->head == ((void *)0))
+Input file `%s' ignores binary architecture parameter.
+input-format
+input-target
+instruction address
+integer*1
+integer*2
+integer*4
+integer*8
+interleave
+interleave must be positive
+interleave start byte must be set with --byte
+interleave-width
+interleave width must be less than or equal to interleave - byte`
+interleave width must be positive
+     --interleave-width <number>   Set N for --interleave
+internal stat error on %s
+INVALID_CPLUSPLUS_ABBREV
+invalid number
+invalid string length
+I:O:F:K:N:R:o:sSpdgxXHhVvw
+_IO_getc
+_IO_putc
+_IO_stdin_used
+  -j --only-section <name>         Only copy section <name> into the output
+_Jv_RegisterClasses
+keep-file-symbols
+     --keep-file-symbols           Do not strip file symbol(s)
+keep-global-symbol
+keep-global-symbols
+     --keep-global-symbols <file>  -G for all symbols listed in <file>
+keep-symbol
+keep-symbols
+     --keep-symbols <file>         -K for all symbols listed in <file>
+  -K --keep-symbol=<name>          Do not strip symbol <name>
+  -K --keep-symbol <name>          Do not strip symbol <name>
+Last stabs entries before error:
+LC_SYMTAB.stabs
+LC_SYMTAB.stabstr
+%ld: .bf without preceding function
+%ld=%c%s
+%ld=r%ld;
+%ld=r%ld;%u;0;
+%ld=r%s;%u;0;
+%ld: unexpected .ef
+libbfd-2.22-system.so
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+                                     listed in <file>
+little endian
+  -L --localize-symbol <name>      Force symbol <name> to be marked as a local
+localize-hidden
+     --localize-hidden             Turn all ELF hidden symbols into locals
+localize-symbol
+localize-symbols
+     --localize-symbols <file>     -L for all symbols listed in <file>
+localp == nt->type.localp
+logical*1
+logical*2
+logical*4
+logical*8
+long long double
+long long int
+long long unsigned int
+long-section-names
+     --long-section-names {enable|disable|keep}
+__lxstat64
+member function type missing
+missing index type
+missing required ASN
+missing required ATN65
+mkstemp64
+mkstemps64
+Multiple renames of section %s
+name->kind == DEBUG_OBJECT_TAG
+N_LBRAC not within function
+no-adjust-warnings
+no argument types in mangled string
+no-change-warnings
+    {--[no-]change-warnings|--[no-]adjust-warnings}
+No mangling for "%s"
+::NoSuchStrinG
+NoSuchStrinG__
+not stripping symbol `%s' because it is named in a relocation
+no type information for C++ method function
+  -N --strip-symbol=<name>         Do not copy symbol <name>
+  -N --strip-symbol <name>         Do not copy symbol <name>
+n_type n_desc n_value  string
+number of bytes to reverse must be positive and even
+numeric overflow
+  -o <file>                        Place stripped output into <file>
+only-keep-debug
+     --only-keep-debug             Strip everything but the debug information
+only-section
+  -O --output-target=<bfdname>     Create an output file in format <bfdname>
+  -O --output-target <bfdname>     Create an output file in format <bfdname>
+out of memory
+output-file
+Output file cannot represent architecture `%s'
+output-format
+output-target
+--pad-to
+     --pad-to <addr>               Pad the last section up to address <addr>
+parse_coff_type: Bad type code 0x%x
+Pascal file name not supported
+  -p --preserve-dates              Copy modified/access timestamps to the output
+prefix-alloc-sections
+     --prefix-alloc-sections <prefix>
+prefix-sections
+     --prefix-sections <prefix>    Add <prefix> to start of every section name
+prefix-symbols
+     --prefix-symbols <prefix>     Add <prefix> to start of every symbol name
+preserve-dates
+__printf_chk
+     --pure                        Mark the output file as demand paged
+QUOTED STRING
+readonly
+readonly-text
+     --readonly-text               Make the output text write protected
+--redefine-sym
+     --redefine-sym <old>=<new>    Redefine symbol name <old> to <new>
+redefine-syms
+     --redefine-syms <file>        --redefine-sym for all symbol pairs 
+reference parameter is not a pointer
+relocation count is negative
+                                     relocations
+remove-leading-char
+     --remove-leading-char         Remove leading character from global symbols
+remove-section
+ Removes symbols and sections from files
+--rename-section
+     --rename-section <old>=<new>[,<flags>] Rename section <old> to <new>
+Report bugs to %s
+reverse-bytes
+     --reverse-bytes=<num>         Reverse <num> bytes at a time, in output sections with content
+rP9L$(vJ
+  -R --remove-section=<name>       Remove section <name> from the output
+  -R --remove-section <name>       Remove section <name> from the output
+r%s;%ld;%ld;
+%s: 0x%lx: %s (0x%x)
+S3Forced
+%s: bad number: %s
+%s: bad version in PE subsystem
+%s both copied and removed
+%s: cannot set time: %s
+%s:c=e%s,%ld
+%s:c=f%g
+_sch_istable
+%s:c=i%ld
+%s:%d: garbage found at end of line
+%s:%d: Ignoring rubbish found on this line
+%s:%d: missing new symbol name
+%s:%d: premature end of file
+--section-alignment
+     --section-alignment <num>     Set PE section alignment to <num>
+                                     section name
+%s: error: too many @-files encountered
+                                   Set PE subsystem to <name> [& <version>]
+--set-section-flags
+     --set-section-flags <name>=<flags>
+                                   Set section <name>'s properties to <flags>
+--set-start
+     --set-start <addr>            Set the start address to <addr>
+setup_section
+%s: fread failed
+short real
+short unsigned int
+%s: invalid commit value for --heap
+%s: invalid commit value for --stack
+%s: invalid reserve value for --heap
+%s: invalid reserve value for --stack
+%s %ld/%ld %6ld %s 
+%s: Matching formats:
+%s: Multiple redefinition of symbol "%s"
+%s: no recognized debugging information
+'%s': No such file
+__sprintf_chk
+srec-forceS3
+     --srec-forceS3                Restrict the type of generated Srecords to S3
+--srec-len
+     --srec-len <number>           Restrict the length of generated Srecords
+%s %s%c0x%s never used
+%s:%s;%c%c%c
+__%s%s%d
+%s: %s: %s
+%s%s:%s%s,%ld,%ld;
+%s%s:%s%s:%s;
+%s: %s: stab entry %ld is corrupt, strx = 0x%x, type = %d
+  -s --strip-all                   Remove all symbol and relocation information
+%s: supported architectures:
+%s: supported targets:
+%s: Symbol "%s" is target of more than one redefinition
+stab_class_baseclass
+stab_class_end_method
+stab_class_method_var
+stab_class_start_method
+stab_class_static_member
+stab_end_block
+stab_end_class_type
+stab_end_struct_type
+stab_enum_type
+stab_int_type: bad size %u
+stab_lineno
+stab_modify_type
+stab_pop_type
+stab_start_class_type
+stab_start_function
+stab_struct_field
+stab_typedef_type
+__stack_chk_fail
+     --stack <reserve>[,<commit>]  Set PE reserve/commit stack to <reserve>/
+stat returns negative size for `%s'
+%s:T%ld=e
+%s:t%ld=%s
+__strcat_chk
+__strdup
+strerror
+string_hash_lookup failed: %s
+stringptr
+strip-all
+strip-debug
+strip-symbol
+strip-symbols
+     --strip-symbols <file>        -N for all symbols listed in <file>
+strip-unneeded
+     --strip-unneeded              Remove all symbols not needed by relocations
+strip-unneeded-symbol
+                                   --strip-unneeded-symbol for all symbols listed
+     --strip-unneeded-symbol <name>
+strip-unneeded-symbols
+     --strip-unneeded-symbols <file>
+strncasecmp
+subsystem
+     --subsystem <name>[:<version>]
+Supported architectures:
+supported flags: %s
+Supported targets:
+%s: warning: unknown size for field `%s' in struct
+T$(9T$0s
+T$,9T$8}Q
+tag != ((void *)0)
+the GNU General Public License version 3 or (at your option) any later version.
+ The options are:
+This program has absolutely no warranty.
+This program is free software; you may redistribute it under the terms of
+this target does not support %lu alternative machine codes
+Too many N_RBRACs
+treating that number as an absolute e_machine value instead
+ts != ((void *)0)
+T$t9T$Tr
+<	t^< tZ<
+Type file number %d out of range
+Type index number %d out of range
+type->kind == DEBUG_KIND_STRUCT || type->kind == DEBUG_KIND_UNION || type->kind == DEBUG_KIND_CLASS || type->kind == DEBUG_KIND_UNION_CLASS
+type->u.kclass->id > info->base_id
+Unable to change endianness of input file(s)
+unable to copy file '%s'; reason: %s
+unable to parse alternative machine code
+Unable to recognise the format of file
+Unable to recognise the format of the input file `%s'
+unable to rename '%s'; reason: %s
+undefined C++ object
+undefined C++ vtable
+Undefined N_EXCL
+undefined variable in ATN
+undefined variable in TY
+Unexpected demangled varargs
+unexpected end of debugging information
+unexpected number
+unexpected record type
+unexpected string in C++ misc
+Unexpected type in v3 arglist demangling
+UNKNOWN!
+unknown ATN type
+unknown BB type
+unknown builtin type
+unknown C++ encoded name
+unknown C++ visibility
+unknown input EFI target: %s
+unknown long section names option '%s'
+unknown output EFI target: %s
+unknown PE subsystem: %s
+unknown section
+unknown TY code
+unknown virtual character for baseclass
+unknown visibility character for baseclass
+unknown visibility character for field
+unlink_if_ordinary
+unnamed $vb type
+unrecognized C++ abbreviation
+unrecognized C++ default type
+unrecognized C++ misc record
+unrecognized C++ object overhead spec
+unrecognized C++ object spec
+unrecognized C++ reference type
+unrecognized cross reference type
+Unrecognized demangle component %d
+Unrecognized demangled builtin type
+unrecognized section flag `%s'
+Unrecognized XCOFF type %d
+unsigned
+unsigned char
+unsigned __int128
+unsigned long
+unsigned long long
+unsigned short
+unsigned short int
+unsupported ATN11
+unsupported ATN12
+unsupported C++ object type
+unsupported IEEE expression operator
+unsupported qualifier
+Usage: %s [option(s)] in-file [out-file]
+Usage: %s <option(s)> in-file(s)
+/usr/share/locale
+/usr/tmp
+/var/tmp
+vclass != ((void *)0)
+__vfprintf_chk
+  -v --verbose                     List all object files modified
+  -V --version                     Display this program's version number
+                                   Warn if a named section does not exist
+Warning: changing type size from %d to %d
+warning: could not create temporary file whilst copying '%s', (error: %s)
+Warning: could not locate '%s'.  reason: %s
+warning: could not locate '%s'.  System error message: %s
+warning: file alignment (0x%s) > section alignment (0x%s)
+Warning: ignoring previous --reverse-bytes value of %d
+Warning: '%s' has negative size, probably it is too large
+Warning: '%s' is not an ordinary file
+Warning: %s: %s
+Warning: truncating gap-fill from 0x%s to 0x%x
+__wchar_t
+     --weaken                      Force all global symbols to be marked as weak
+weaken-symbol
+weaken-symbols
+     --weaken-symbols <file>       -W for all symbols listed in <file>
+wildcard
+writable-text
+     --writable-text               Mark the output text as writable
+write_stabs_in_sections_debugging_info
+  -W --weaken-symbol <name>        Force symbol <name> to be marked as a weak
+  -w --wildcard                    Permit wildcard in symbol comparison
+  -x --discard-all                 Remove all non-global symbols
+  -X --discard-locals              Remove any compiler-generated symbols
+xmalloc_set_program_name
+xrealloc
+__XRYCPP
+__xstat64

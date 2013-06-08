@@ -1,0 +1,41 @@
+0.0 <= alpha <= 0.5 for alpha trimmed mean -or- 
+-0.1 >= alpha >= -0.9 for edge enhancement
+0.3333 <= radius <= 1.0 specify effective radius
+1.0 <= alpha <= 2.0 for optimal estimation -or- 
+Alpha must be in range 0.0 <= alpha <= 0.5 for alpha trimmed mean
+Alpha must be in range -0.9 <= alpha <= -0.1 for edge enhancement
+Alpha must be in range 1.0 <= alpha <= 2.0 for optimal estimation
+alpha radius pnmfile
+__bss_start
+Format of Image %u is not the same as Image 0
+GLIBC_2.0
+GLIBC_2.7
+__gmon_start__
+Height of Image %u (%d) is not the same as Image 0 (%d)
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+Maxval of Image %u (%u) is not the same as Image 0 (%u)
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_message
+pm_nextimage
+pm_openr
+pm_usage
+pnm_init
+pnm_promoteformatrow
+pnm_readpnminit
+pnm_readpnmrow
+pnm_writepnminit
+pnm_writepnmrow
+promoting file to PGM
+Radius must be in range 0.333333333 <= radius <= 1.0
+The maxval of the input image (%d) is too large.
+This program's limit is %d.
+Width of Image %u (%d) is not the same as Image 0 (%d)

@@ -1,0 +1,455 @@
+        
+            
+                
+                    
+                        
+                            
+                                
+                                }
+                            : ();
+                            },
+                        : ();
+                    );
+                );
+                }; 
+            );
+            }
+        );
+        );            
+        }
+        }    
+    }   
+    }    
+    }        
+                    : 0;
+2001 - 2007, Jos Boumans E<lt>kane@cpan.orgE<gt>. All rights reserved.
+                 "%2 seconds\n", $obj->module, $timeout );
+                    : 300;
+                  aborting. This is useful to terminate any build that 
+        ### 'acceptable' death
+                    after building it. 
+                    alarm 0; 
+    alarm 0;
+                    alarm $timeout || 0;
+                    already uptodate on the local system. Can be negated
+                         and --banlist, but with pre-set lists. See the
+and C<--ban> options for this, but we provide some built-in
+    ### and its dependencies into .debs
+    ### any options to fix config entries
+    ### any options to fix program entries
+    ### any other options passed
+                            ### any passed arbitrary options
+    Apache              # These usually require apache libraries
+    archive and all of its prerequisites.
+    --archive       Indicate that all modules listed are actually archives
+                  Are appended to the ban list built up by --ban
+                  Are appended to the ban list built up by --ignore.
+                  Are appended to the list of command line modules.
+are part of core-perl and you dont want a new package.
+as well as the documentation of your format of choice for any format
+    ^Authen::PAM$       # Needs PAM C libraries & Headers
+    Ban list:] .    _default_ban_list();
+    --banlist     File containing patterns that could be given to --ban
+    --ban         Patterns of module names to skip during installation,
+            'ban=s@',               'banlist=s@',
+    ^Berk.*DB           # DB packages require specific options & linking
+    ### build a debian package of DBI and its prerequisites, 
+    ### build a debian package of DBI and its prerequisites and install them
+    ### build a package from Net::FTP, but dont build any packages or
+    ### build a package from Net::FTP, but ignore its listed dependency
+    ### Build a package, whose format is determined by your config, of 
+    ### building all modules listed, plus their prerequisites
+                    Build.PL' calls where possible
+    --buildprereq   Build packages of any prerequisites, even if they are
+    ### builtin lists
+Builtin Lists:
+                         "Builtin Lists" section for details.
+                        "but found in your ban list (%3) -- skipping",
+                    by all formats
+    Can also create a distribution of type FMT from a local
+                  case-insensitive (affects prerequisites too)
+# c-basic-offset: 4
+            $cb->_register_callback(
+    $cb->_register_callback(
+$cb->reload_indices() if $opts->{'flushcache'};
+C<cpanp>
+C<CPANPLUS::Shell::Default>. See the C<CPANPLUS::Dist> documentation,
+    ### check for ban patterns when handling prereqs
+        chomp;
+# c-indentation-style: bsd
+                                close $fh;
+            code    => \&__ask_about_install,
+            code    => \&__filter_prereqs,
+                code    => sub {
+                            : $conf->get_conf($val);
+    ^Config$                # Perl's own config, not shipped separately
+    $conf->set_conf( dist_type  => $format );
+            $conf->set_conf( $key => $val );
+    $conf->set_conf( prereqs => PREREQ_ASK );
+            $conf->set_conf( $val => $bool );
+            $conf->set_program( $key => $val );
+    cpan2dist --ban Foo --ban Bar --banlist /tmp/ban Net::FTP
+    cpan2dist --dist-opts deb_version=3 --dist-opts prefix=corp
+    cpan2dist --format CPANPLUS::Dist::Deb --buildprereq --install DBI
+    cpan2dist --format CPANPLUS::Dist::Deb --buildprereq --skiptest DBI
+        cpan2dist [--format FMT] [OPTS] --archive /tmp/dist [/tmp/dist2] 
+        cpan2dist [--format FMT] [OPTS] --modulelist /tmp/mods.list
+    cpan2dist --ignore IO::Socket Net::FTP
+    cpan2dist --ignorelist /tmp/modules.ignore --banlist /tmp/modules.ban 
+    cpan2dist --makefile --flushcache --archive /path/to/Cwd-1.0.tgz
+cpan2dist - The CPANPLUS distribution creator
+    ^Cwd$                   # Provided with core anyway
+    ^DBD::              # DBD drivers require database files/headers
+                    default answers during 'perl Makefile.PL' or 'perl
+            'default-banlist!',     'set-program=s%',
+    --default-banlist    Use our builtin banlist. Works just like --ban
+            'default-ignorelist!',  'edit-metafile!',
+    --default-ignorelist Use our builtin ignorelist. Works just like 
+    --defaults      Instruct ExtUtils::MakeMaker and Module::Build to use
+            'defaults',             'modulelist=s@',
+                delete $href->{ $name };                         
+    ### dependencies whose name match 'Foo', 'Bar' or any of the 
+        die bless sub { loc("Module '%1' requires '%2' to be installed " .
+    ### died for some other reason? just report and skip
+    die loc("Invalid format: " . ($format || "[NONE]") ) . usage() 
+die usage() if exists $opts->{'help'};
+die usage() unless @modules;
+        ### die with an error object, so we can verify that
+                            %$dist_opts,
+    --dist-opts   Arbitrary options passed along to the chosen installer
+            'dist-opts=s%',         'set-config=s%',
+                  documentation of the installer of your choice for 
+    ### don't bother running tests
+    --edit-metafile Edit the distributions metafile(s) before the distribution
+        } else {
+    } else {
+    } elsif ( $@ ) {
+    } elsif ( $@ and ref $@ and $@->isa( ALARM_CLASS ) ) {
+        ### ENOTARBALL?
+  $ENV{'PERL_MM_USE_DEFAULT'} = $opts->{'defaults'} ? 1 : 0;
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+Examples:
+    ^ExtUtils::Install$     # Part of of EU::MM, same reason    
+    ^ExtUtils::MakeMaker$   # Shipped with perl, recent versions 
+    ^File::Spec             # Provided with core anyway
+                         "-- filtering it out\n", $name, $pat);
+        ### find the corresponding module object ###
+    --flushcache    Update CPANPLUS' cache before commencing any operation
+                    force       => 'force',
+    --force         Force operation. Can be negated using --noforce
+    --format      Installer format to use (defaults to config setting)
+{   $format      = $opts->{'format'}         || $conf->get_conf('dist_type');
+$formats
+            'format=s',             'archive',
+                  format's prepare()/create() routine. Please see the
+        for my $name ( keys %$href ) {
+for my $name (@modules) {
+        for my $pat ( @ban ) {
+        for my $pat ( @ignore ) {
+                  for when a prereq listed by a CPAN module is resolved 
+    ^GD$                # Needs c libaries
+GetOptions( $opts,
+        ### get the version from the package name
+                  grep { /#/ }
+                grep { /#/ }
+                  hang or happen to be interactive despite being told not 
+                            # have bug 14721 (see rt.cpan.org)
+=head1 AUTHOR
+=head1 BUG REPORTS
+=head1 Built-In Filter Lists
+=head1 COPYRIGHT
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 USAGE
+=head2 Built-In Ban list
+=head2 Built-In Ignore List
+            'help',                 'flushcache',
+    --help          Show this help message
+    if( $@ and ref $@ and $@->isa( PREREQ_SKIP_CLASS ) ) {
+        if( $editor ) {
+    if( exists $opts->{'banlist'} ) {
+    if( exists $opts->{'ignorelist'} ) {
+if( exists $opts->{'modulelist'} ) {
+        ### if it's a traditional CPAN package, we can tidy
+    if( my $file = $opts->{logfile} ) {
+    if( my $pat = ban_me( $obj ) ) {
+            if( my $pat = ignore_me( $obj ) ) {
+    if( my $pat = ignore_me( $obj ) ) {
+        if $opts->{'default-banlist'};
+        if $opts->{'default-ignorelist'};
+{   if( $opts->{'edit-metafile'} ) {
+### if provided, we go with the command line option, fall back to conf setting
+	if $running_under_some_shell;
+    if( $tarball ) {
+if they are bundled with core-perl anyway and they have known
+                        if $timeout;
+if you like, or supply your own if need be.
+                         --ignore and --ignorelist but with pre-set lists. 
+    Ignore list:] . _default_ignore_list() . qq[
+    --ignorelist  File containing patterns that may be given to --ignore.
+    --ignore      Patterns of modules to exclude from prereq list. Useful
+            'ignore=s@',            'ignorelist=s@',
+    Image::Magick       # Needs ImageMagick C libraries
+                  in another way than from its corresponding CPAN package
+# indent-tabs-mode: nil
+            'install!'
+installed using the corresponding package manager for the format.
+    ### install failed due to a 'die' in our prereq skipper?
+    --install       Install this package (and any prerequisites you built)
+                  invocation only. See CPANPLUS::Config for a list of 
+    ^IO$                    # Provided with core anyway
+                    is built. Requires a configured editor.
+    ### is it a tarball? then we get it locally and transform it
+issues building.
+    ### is this a valid format??
+                            keep_source     => $keep,
+    --keepsource    Keep sources after building distribution. Can be
+            last LOGFILE
+L<CPANPLUS::Dist>, L<CPANPLUS::Module>, L<CPANPLUS::Shell::Default>,
+lists that catch common cases. You can use these built-in lists
+local $Data::Dumper::Indent = 1;
+                    local $SIG{ALRM} = sub { die bless {}, ALARM_CLASS }
+# Local variables:
+LOGFILE: {
+    --logfile     File to log all output to. By default, all output goes
+            'logfile=s',            'timeout=s',
+    Mail::ClamAV        # Needs ClamAV C Libraries
+            'makefile!',            'buildprereq!',
+      --makefile --defaults
+                    makefile    => 'prefer_makefile'
+    --makefile      Prefer Makefile.PL over Build.PL. Can be negated
+        ### make sure we use an absolute path, so chdirs() dont
+                            ? map { qr/$_/ } @{ $opts->{'ban'} }
+                        ? map { qr/$_/ } @{ $opts->{'ignore'} }
+                map  { split /\n/ } _default_ban_list() 
+                  map  { split /\n/ } _default_ignore_list() 
+                  map  { [split /\s*#\s*/]->[0] }
+                map  { [split /\s*#\s*/]->[0] }
+                  (Match is done on both module name, and package name of
+                  May be given multiple times
+                  May be given multiple times.
+        ### mess things up
+                        $mod->module, $prereq->module, $pat ) 
+                        module  => basename($name),
+    --modulelist  File containing a list of modules that should be built.
+      --modulelist /tmp/modules.list --buildprereq --flushcache 
+modules altogether.
+{   my @ban      = exists $opts->{'ban'}  
+            my $bool = exists $opts->{$key} 
+my $cb      = CPANPLUS::Backend->new
+        my $cb      = shift;
+my $conf    = $cb->configure_object;
+                                my $cont = $cb->_get_file_contents( file => $file );
+    my $dist    = eval { 
+                    my $dist_opts = $opts->{'dist-opts'} || {};
+my %done;
+        my $editor = $conf->get_program('editor');
+                                my($fh,$file) = tempfile( UNLINK => 1 );
+    my $fh = OPEN_FILE->( $file ) or return;
+    my $file    = shift or return;
+my $format;
+    my $formats = join "\n", map { "\t\t$_" } sort keys %formats;
+my %formats = map { $_ => $_ } CPANPLUS::Dist->dist_types;
+        my $href    = shift;
+{   my @ignore      = exists $opts->{'ignore'}  
+my $keep        = $opts->{'keepsource'} ? 1 : 0;
+    my $list = << '=cut';
+    {   my %map = ( verbose     => 'verbose',
+    my $me      = basename($0);
+        my $mod = shift;
+        my $mod     = shift or return;
+my @modules = @ARGV;
+    my $obj;
+            my $obj = $cb->parse_module( module => $name ) or (
+my $opts    = {};
+        my $pat = ban_me( $prereq );
+my $prereqbuild = exists $opts->{'buildprereq'}
+        my $prereq  = shift or return;
+    my $qr      = shift() ? 1 : 0;
+    my @rv;
+                    my $rv = $obj->install(   
+                                my $self = shift;
+    {   my $set_conf = $opts->{'set-config'} || {};
+    {   my $set_prog = $opts->{'set-program'} || {};
+my $tarball     = $opts->{'archive'}    || 0;
+    my $target  = $opts->{'install'} ? 'install' : 'create';
+                                my $text = shift or return;
+my $timeout     = exists $opts->{'timeout'} 
+    my $usage = << '=cut';
+    \n];
+        $name = File::Spec->rel2abs( $name ); 
+            name    => 'filter_prereqs',
+            name    => 'install_prerequisite',
+                name    => 'munge_dist_metafile',
+                        "'$name' -- skipping\n",
+                    negated by --nokeepsource. May not be supported 
+        next
+                next );
+            next;
+        next;
+        next;                    
+        next if /^#/;                   # skip comments
+        next unless /\S/;               # skip empty lines
+Note, you can also do this interactively from the default shell,
+        $obj = $cb->parse_module( module => $name ) or (
+        $obj = CPANPLUS::Module::Fake->new(
+                    $obj->module, $@ );
+                    $obj->module, $@->() );
+        $obj->module( $obj->package_name ) if $obj->package_name;
+                    $obj->module, $pat );
+        $obj->status->fetch($name);
+        $obj->version( $obj->package_version || 0 );
+    ### on IO::Socket, as it's shipped per default with the OS we're on
+        open $fh, ">$file" or ( 
+Options:
+                  options it accepts.
+                    ? $opts->{'buildprereq'}
+                            ? $opts->{$key} 
+                    ? $opts->{'timeout'} 
+                or die loc("Could not create new CPANPLUS::Backend object");
+    ### or just ignored it? 
+                        package => basename($name),
+### parse options
+    ### pass arbitrary options to the format's prepare()/create() routine
+                        path    => dirname($name),
+    ### patterns mentioned in /tmp/ban
+### patterns to strip from prereq lists
+    ### plain old cpan module?    
+Please report bugs or other issues to E<lt>bug-cpanplus@rt.cpan.org<gt>.
+    Possible formats are:
+                            prereq_build    => $prereqbuild,
+                  }, PREREQ_SKIP_CLASS if $pat;
+                            prereq_target   => $target,
+    print "Created '$format' distribution for ", $obj->module,
+### print when you can
+        push @ban, map { parse_file( $_, 1 ) } @{ $opts->{'banlist'} };
+    push @ban,  map  { s/\s+//; $_ }
+        push @ignore, map { parse_file( $_, 1 ) } @{ $opts->{'ignorelist'} };
+    push @ignore, map  { s/\s+//; $_ }
+    push @modules, map { parse_file( $_ ) } @{ $opts->{'modulelist'} }; 
+        push @rv, $qr ? qr/$_/ : $_;    # add pattern to the list
+            ### register install callback ###
+    ### register install callback ###
+### reload indices if so desired
+                                    return;
+        return;
+        return 1;
+                                return $cont;
+        return $href;
+    return $list;
+            return $pat if $mod->module =~ /$pat/i;
+            return $pat if $mod->package_name =~ /$pat/i;
+    return @rv;
+    return $usage;
+                    $rv;
+                         See the "Builtin Lists" section for details.
+    --set-config  Change any options as specified in your config for this
+        ### set config options from arguments        
+    ### set here again, in case the install dies
+                  set it to 0.
+    --set-program Change any programs as specified in your config for this
+        ### set the location of the tarball
+### set up munge callback if requested
+    ### should we skip this module?
+            'skiptest!',            'keepsource!',
+                    skiptest    => 'skiptest',
+    --skiptest      Skip tests. Can be negated using --noskiptest
+Some because they won't build on your system. Some because
+Some modules you'd rather not package. Some because they
+specific documentation.
+    specified on the command line, and all their prerequisites.
+        s/^(\S+).*/$1/;                 # skip extra info
+    SSL                 # These usually require SSL certificates & libs
+        *STDERR = $fh;
+        *STDOUT = $fh;
+    ### strip the pod directives
+    sub __ask_about_install {
+    sub ban_me {
+sub _default_ban_list {
+sub _default_ignore_list {
+    sub __filter_prereqs {
+    sub ignore_me {
+sub parse_file {
+sub usage {
+                  supported options.
+                  supported programs.
+                                system( $editor => $file );
+    ### take argument:
+    ### take no argument:
+                            target          => $target,
+The CPAN++ interface (of which this module is a part of) is copyright (c) 
+        ### the die came from this location, and that it's an
+    ### the local tarball, reloading cpanplus' indices first and using
+                  the package the module is in, case-insensitive)
+There may be a myriad of reasons. You can use the C<--ignore>
+    ### the tarballs Makefile.PL if it has one.
+This library is free software; you may redistribute and/or modify it 
+This module by Jos Boumans E<lt>kane@cpan.orgE<gt>.
+This script will create distributions of C<CPAN> modules of the format
+    --timeout     The allowed time for buliding a distribution before
+                  to be. Defaults to 300 seconds. To turn off, you can 
+to be listed as prerequisites of a package. Particularly useful
+Toggle it by supplying the C<--default-banlist> option.
+Toggle it by supplying the C<--default-ignorelist> option.
+                " to:\n\t", $obj->status->dist->status->dist, "\n";
+                  to the console.
+under the same terms as Perl itself.
+    unless ($dist and $obj->status->dist) {
+        unless( -e $name ) {
+unless ( $ENV{'PERL_MM_USE_DEFAULT'} ) {
+        unless $formats{$format};
+                                unless( print $fh $text ) {
+        ### up the module name some
+ Usage: cpan2dist [--format FMT] [OPTS] Mod::Name [Mod::Name, ...]
+    $usage .= << '=cut';
+    $usage .= qq[
+    $usage =~ s/=pod\n//g;
+use constant ALARM_CLASS        => 'CPANPLUS::To::Dist::ALARM';
+use constant PREREQ_SKIP_CLASS  => 'CPANPLUS::To::Dist::PREREQ_SKIP';
+use CPANPLUS::Backend;
+use CPANPLUS::Dist;
+use CPANPLUS::Internals::Constants;
+use Data::Dumper;
+### use default answers?
+use File::Basename;
+use File::Spec;
+use File::Temp                  qw|tempfile|;
+use Getopt::Long;
+use Locale::Maketext::Simple    Class => 'CPANPLUS', Style => 'gettext';
+    ### use our prereq install callback 
+use strict;
+                    using --nobuildprereq. Defaults to false.
+                    using --nomakefile. Defaults to your config setting
+#!/usr/bin/perl
+#!/usr/bin/perl -w
+    --verbose       Be verbose. Can be negated using --noverbose
+            'verbose!',             'force!',
+    ^Verilog            # Needs Verilog C Libraries
+# vim: expandtab shiftwidth=4:
+                warn "Cannot make a module object out of ".
+                                    warn "Could not print metafile information: $!";
+        warn loc("'%1' found in your ban list (%2) -- skipping\n",
+                warn loc("'%1' found in your ignore list (%2) ".
+        warn loc("'%1' found in your ignore list (%2) -- skipping\n",
+            warn loc("Archive '$name' does not exist");
+            warn loc("Could not open '%1' for writing: %2", $file,$!),
+        warn loc("Dist creation of '%1' failed: '%2'",
+        warn loc("Dist creation of '%1' skipped: '%2'", 
+        warn loc("\nDist creation of '%1' skipped, build time exceeded: ".
+        warn loc("Unable to create '%1' dist of '%2'", $format, $obj->module);
+        warn "Logging to '$file'\n";
+            warn "No editor configured. Can not edit metafiles!\n";
+    ### we didn't get a dist object back?
+    while( <$fh> ) {
+        while (my($key,$val) = each %map) {
+        while( my($key,$val) = each %$set_conf ) {
+        while( my($key,$val) = each %$set_prog ) {
+    Will create a distribution of type FMT of the modules
+    ^XML::              # XML modules usually require expat libraries
+    ### you banned it?
+    You can install more formats from CPAN!
+You can use this list of regexes to disable building of these
+You can use this list of regexes to ignore modules matching
+your package manager of choice already packages them for you.
+you specify, including its prerequisites. These packages can then be

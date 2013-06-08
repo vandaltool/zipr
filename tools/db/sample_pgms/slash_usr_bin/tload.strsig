@@ -1,0 +1,11 @@
+ %.2f, %.2f, %.2f
+display_version
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libproc-3.2.8.so
+usage: tload [-V] [-d delay] [-s scale] [tty]

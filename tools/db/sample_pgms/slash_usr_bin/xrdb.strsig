@@ -1,0 +1,109 @@
+ -all                do all resources [default]
+A - or no input filename represents stdin.
+__asprintf_chk
+ -backup string      backup suffix for -edit [%s]
+BITS_PER_RGB
+__bss_start
+CLASS_%s
+CLASS_%s_%d
+CLIENTHOST
+ -cpp filename       preprocessor to use [%s]
+__ctype_b_loc
+/dev/null
+DirectColor
+-display
+ -display host:dpy   display to use
+DISPLAY_NUM
+ -Dname[=value], -Uname, -Idirectory    passed to preprocessor
+ -edit filename      edit resources into file
+__errno_location
+__fprintf_chk
+-geometry
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+ -global             do screen-independent resources
+__gmon_start__
+GrayScale
+#if SCREEN_NUM == %d
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXmuu.so.1
+# line %d
+ -load               load resources from file [default]
+localhost
+ -merge              merge resources from file & sort
+ -nocpp              do not use a preprocessor
+ -n                  show but don't do changes
+NUM_SCREENS
+-override
+ -override           add in resources from file
+__printf_chk
+PseudoColor
+ -query              query resources
+ -quiet              don't warn about duplicates
+ -remove             remove resources
+ -retain             avoid server reset (avoid using this)
+REVISION
+%s: cannot run '%s'
+%s: Can't open display '%s'
+%s: can't open file '%s'
+%s: can't open temporary file '%s'
+%s: can't rename file '%s' to '%s'
+%s: colon missing on line %d, ignoring line
+ -screen             do screen-specific resources for one screen
+! screen %d resources
+# screen %d symbols
+! screen-independent resources
+SCREEN_NUM
+SCREEN_RESOURCES
+-screens
+ -screens            do screen-specific resources for all screens
+SERVERHOST
+%s: Failed to open temp file: %s
+%s: Not enough memory
+__snprintf_chk
+%s: Out of memory
+%s -P%s %s %s
+%s:  "%s" on line %d overrides entry on line %d
+__stack_chk_fail
+StaticColor
+StaticGray
+%s: Too many -U/-D arguments
+__strcpy_chk
+%sXXXXXX
+-symbols
+ -symbols            show preprocessor symbols
+T$@9T$<t7
+/tmp/xrdb_XXXXXX
+TrueColor
+usage:  %s [-options ...] [filename]
+/usr/bin/cpp
+__vfprintf_chk
+where options include:
+XChangeProperty
+XCloseDisplay
+XDeleteProperty
+XDisplayName
+XFreeExtensionList
+XGetVisualInfo
+XGrabServer
+XInternAtom
+XListExtensions
+XMaxRequestSize
+XmuGetHostname
+XOpenDisplay
+X_RESOLUTION
+XResourceManagerString
+XScreenResourceString
+XSetCloseDownMode
+XUngrabServer
+Y_RESOLUTION

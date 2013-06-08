@@ -1,0 +1,135 @@
+Additional info:
+Analyzing %s
+Analyzing URI timed out
+An error was encountered while discovering the file
+Bitrate: %u
+__bss_start
+Channels: %u
+Couldn't convert filename to URI: %s
+Depth: %u
+discovered
+Discoverer was busy
+- discover files synchronously with GstDiscoverer
+Done discovering %s
+Don't output the information structure
+Error initializing: %s
+finished
+Frame rate: %u/%u
+g_build_filename
+g_dir_close
+g_dir_open
+g_dir_read_name
+g_error_free
+g_filename_to_uri
+g_get_current_dir
+g_idle_add
+GLIBC_2.0
+g_main_loop_new
+g_main_loop_quit
+g_main_loop_run
+g_main_loop_unref
+g_malloc0
+__gmon_start__
+g_object_unref
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_path_is_absolute
+g_quark_to_string
+g_signal_connect_data
+<GstBuffer [%d bytes]>
+gst_buffer_get_type
+gst_caps_is_fixed
+gst_caps_to_string
+gst_caps_unref
+gst_discoverer_audio_info_get_bitrate
+gst_discoverer_audio_info_get_channels
+gst_discoverer_audio_info_get_depth
+gst_discoverer_audio_info_get_language
+gst_discoverer_audio_info_get_max_bitrate
+gst_discoverer_audio_info_get_sample_rate
+gst_discoverer_audio_info_get_type
+gst_discoverer_container_info_get_streams
+gst_discoverer_container_info_get_type
+gst_discoverer_discover_uri
+gst_discoverer_discover_uri_async
+gst_discoverer_info_get_duration
+gst_discoverer_info_get_misc
+gst_discoverer_info_get_result
+gst_discoverer_info_get_seekable
+gst_discoverer_info_get_stream_info
+gst_discoverer_info_get_tags
+gst_discoverer_info_get_uri
+gst_discoverer_new
+gst_discoverer_start
+gst_discoverer_stop
+gst_discoverer_stream_info_get_caps
+gst_discoverer_stream_info_get_misc
+gst_discoverer_stream_info_get_next
+gst_discoverer_stream_info_get_stream_type_nick
+gst_discoverer_stream_info_get_tags
+gst_discoverer_stream_info_list_free
+gst_discoverer_subtitle_info_get_language
+gst_discoverer_subtitle_info_get_type
+gst_discoverer_video_info_get_bitrate
+gst_discoverer_video_info_get_depth
+gst_discoverer_video_info_get_framerate_denom
+gst_discoverer_video_info_get_framerate_num
+gst_discoverer_video_info_get_height
+gst_discoverer_video_info_get_max_bitrate
+gst_discoverer_video_info_get_par_denom
+gst_discoverer_video_info_get_par_num
+gst_discoverer_video_info_get_type
+gst_discoverer_video_info_get_width
+gst_discoverer_video_info_is_interlaced
+gst_init_get_option_group
+gst_mini_object_unref
+gst_pb_utils_get_codec_description
+g_strconcat
+g_strdup
+g_strdup_printf
+g_string_append
+g_string_append_vprintf
+g_string_free
+g_string_sized_new
+gst_structure_foreach
+gst_structure_to_string
+gst_tag_get_nick
+gst_uri_is_valid
+gst_value_get_mini_object
+gst_value_serialize
+g_type_check_instance_is_a
+g_type_check_value_holds
+g_value_dup_string
+Height: %u
+Interlaced: %s
+_IO_stdin_used
+_Jv_RegisterClasses
+Language: %s
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgstpbutils-0.10.so.0
+libgstreamer-0.10.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+Max bitrate: %u
+Missing plugins
+Pixel aspect ratio: %u/%u
+Properties:
+Run asynchronously
+Sample rate: %u
+%*sDuration: %u:%02u:%02u.%09u
+Specify timeout (in seconds, default 10)
+%*sSeekable: %s
+%*s%s: %s
+%*sTags: 
+Topology:
+<unknown>
+URI is not valid
+usage: %s <uris>
+Verbose properties
+Width: %u

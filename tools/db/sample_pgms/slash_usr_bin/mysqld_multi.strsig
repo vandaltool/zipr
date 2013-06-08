@@ -1,0 +1,498 @@
+        {
+        }
+#### 1.arg: append to the log file (given string, or from a file. if a file,
+# 1.COMMON USER
+#### 2.arg: logfile -name (w2log assumes that the logfile is in $opt_logdir).
+# 2.PID-FILE
+#### 3.arg. 0 | 1, if true, print current date to the logfile. 3. arg will
+# 3.DATA DIRECTORY
+#### 4.arg. 0 | 1, if true, first argument is a file, else a string
+# 4.TCP/IP Port
+# 5.[mysqld#] Groups
+# 6.MySQL Server User
+# 7.A Start-up Manage Script for $my_progname
+#   accepts, so you will get an error if you try to pass it to mysqld directly.
+  # Add [mysqld_multi] options to front of @ARGV, ready for GetOptions()
+	       !($ARGV[0] =~ m/^report$/i)));
+	      (!($ARGV[0] =~ m/^start$/i) &&
+	       !($ARGV[0] =~ m/^stop$/i) &&
+#   (as per Linux/Unix standard). You may even replace the
+#   as UNIX root.
+    $basedir_found= 0; # The default
+        $basedir_found= 1;
+        $basedir= $options[$j];
+        $basedir =~ s/^--basedir=//;
+be comma separated or a dash combined. The latter means that all the
+#   Before using, you must create a my.cnf file either in /usr/my.cnf
+####        be ignored, if 1. arg is a file.
+#   be used to start and stop multiple servers during boot and shutdown.
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+                   By default connecting is done via the UNIX socket.
+#   can be very handy in some cases, but then you need to run $my_progname
+	# catch this and ignore
+      chdir($basedir) or die "Can't change to datadir $basedir";
+      chdir($curdir) or die "Can't change back to original dir $curdir";
+  chomp @defaults;
+    close CONF;
+      close(FROMFILE)
+  close (LOGFILE);
+    $com.= " &";
+    $com= get_mysqladmin_options($i, @groups);
+#   common 'multi_admin' user for all MySQL servers being controlled by
+  $com = "$mysqladmin";
+    $com= "$mysqld";
+      $com= $options[$j];
+	$com= $options[$j];
+    $com.= " >> $opt_log 2>&1" if (!$opt_no_log);
+    $com.= " ping >> /dev/null 2>&1";
+    $com.= " shutdown";
+    $com.= $tmp;
+  $com.= $tmp;
+#   controlled by $my_progname. 'multi_admin' will shutdown the servers
+# Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+      $curdir=getcwd();
+datadir    = /var/lib/mysql2
+datadir    = /var/lib/mysql3
+datadir    = /var/lib/mysql4
+datadir    = /var/lib/mysql6
+#   - Data synchronising problems between the running servers
+default mysqld and mysqladmin under group [mysqld_multi], but this is
+--defaults-extra-file=...  Read this configuration file in addition to the
+--defaults-file=...  Read only this configuration file, do not read the
+Description:
+    else
+      else
+  else {
+      elsif ("--basedir=" eq substr($options[$j], 0, 10))
+      elsif ("--mysqld=" eq substr($options[$j], 0, 9))
+    elsif ((($options[$j] =~ m/^(\-\-socket\=)(.*)$/) && !$opt_tcp_ip) ||
+      $end = $start if not defined $end;
+               ($ENV{HOME} ? "$ENV{HOME}/.my.cnf" : undef));
+               ($ENV{MYSQL_HOME} ? "$ENV{MYSQL_HOME}/my.cnf" : undef),
+#   /etc/init.d/mysql.server script with it.
+              ('/etc/my.cnf',
+               '/etc/mysql/my.cnf',
+#   Every server requires one and it must be unique.
+#### example
+--example          Give an example of a config file with extra information.
+  example() if ($opt_example);
+    exit(0);
+  exit(0);
+        exit(1);
+      exit(1);
+    exit(1);
+                   file is turned on.
+####        file will be read from $opt_logdir)
+    $flag_exit= 1;
+    $fmode= "06${fmode}"; }
+  $fmode= oct($fmode);
+    $fmode= substr $UMASK, 2, 2;
+  foreach (@defaults_options)
+  foreach my $file (@defaults_files)
+      foreach my $i ($start .. $end)
+    foreach my $line (@data)
+  foreach my $opt (defaults_for_group('mysqld'))
+    foreach my $raw_gid (split ',', $raw_gids)
+  foreach $path (@paths)
+  for ($i = 0; defined($groups[$i]); $i++)
+  for ($j = 0; defined($options[$j]); $j++)
+    for ($j = 0, $tmp= ""; defined($options[$j]); $j++)
+#   For this reason you might want to use the above options within [mysqld#]
+from both [mysqld_multi] and [mysqld#], a group that is tried to be
+        $gids{$i + 0}= 1;
+#   gives you more flexibility.
+                   give this option inside groups [mysqld#] in ~/.my.cnf,
+GNRs between GNR1-GNR2 will be affected. Without GNR argument all the
+#   GRANT SHUTDOWN ON *.* TO multi_admin\@localhost IDENTIFIED BY 'password'
+#   group directly.
+  $groupids = $ARGV[1];
+  @groups = &find_groups($groupids);
+groups found will either be started, stopped, or reported. Note that
+# groups which actually are mentioned in a relevant config file
+    # have been given
+#   - Heavily media (disk) bound
+--help             Print this help and exit.
+$homedir = $ENV{HOME};
+# identical, to behavior of my_search_option_files()
+    if ($ARGV[0] =~ m/^report$/i)
+  if ($ARGV[0] =~ m/^start$/i)
+                   If a socket file is missing, the server may still be
+    if ($basedir_found)
+if (defined($ENV{UMASK})) {
+  if (!defined($logdir))
+    if (!defined(($mysqladmin= my_which($opt_mysqladmin))) && $opt_verbose)
+    if (!defined(($mysqld= my_which($opt_mysqld))) && $opt_verbose)
+  if (!defined(my_which(my_print_defaults)))
+  if (defined($opt_password)) {
+  if (defined($raw_gids))
+  if ($flag_exit)
+  if($fmode != $UMASK) {
+  if (!GetOptions("help", "example", "version", "mysqld=s", "mysqladmin=s",
+  if (!$i)
+  if (!$i && !$opt_no_log)
+  if ($is_file)
+      if ("--mysqladmin=" eq substr($options[$j], 0, 13))
+    if ("--mysqladmin=" eq substr($options[$j], 0, 13))
+  if (!$mysqladmin_found)
+    if (!$mysqld_found)
+        if (not defined($raw_gids) or $gids{$2 + 0})
+      if (not defined $start or $end < $start or $start < 0)
+    if ($opt =~ m/^--datadir=(.*)/ && -d "$1" && -w "$1")
+      if (!$opt_no_log)
+    if (!$opt_no_log)
+  if (!$opt_no_log)
+    if (!$opt_silent)
+    if ($opt_verbose && $com =~ m/\/(safe_mysqld|mysqld_safe)$/ && !$info_sent)
+  if ($opt_verbose && $opt_silent)
+  if ($opt_version)
+    if ($pec)
+      if (/^\s*\[\s*(mysqld)(\d+)\s*\]\s*$/)
+                   If the file exists, everything will be appended.
+  if(($UMASK =~ m/[^0246]/) || ($UMASK =~ m/^[^0]/) || (length($UMASK) != 4)) {
+#   If you are using mysqld_safe to start mysqld, make sure that every
+      $info_sent= 1;
+#### Init log file. Check for appropriate place for log file, in the following
+  init_log() if (!defined($opt_log));
+#   in MySQL distribution. (Verify the script before using)
+integer starting from 1. These groups should be the same as the regular
+#   intentionally left out. You may have 'gaps' in the config file. This
+#   In the example below the first and the fifth mysqld group was
+in the group name has another function; it can be used for starting,
+#   In the recent MySQL distributions you can find a file called
+#   - Is not applicable with all table types. (Such as InnoDB)
+#   It is NOT advised to run many MySQL servers within the same data directory.
+language   = /usr/share/mysql/mysql/english
+language   = /usr/share/mysql/mysql/estonia
+language   = /usr/share/mysql/mysql/japanese
+language   = /usr/share/mysql/mysql/swedish
+    last unless $ARGV[0] =~
+#   ledir (library executable directory), is an option that only mysqld_safe
+#   ledir=/path/to/mysqld-binary/
+ledir      = /path/to/mysqld-binary/
+# Library General Public License for more details.
+# License along with this library; if not, write to the Free
+# License as published by the Free Software Foundation; version 2
+      $logdir= $1;
+    $logdir= "/usr/share/mysql" if (-d "/usr/share/mysql" && -w "/usr/share/mysql");
+    # Log file was not specified and we could not log to a standard place,
+--log=...          Log file. Full path to and the name for the log file. NOTE:
+# MA 02110-1301, USA
+#### main sub routine
+    # Make a hash of the wanted group ids
+#   Make sure that the MySQL user, who is stopping the mysqld services, has
+                   make sure you have mysqld in your PATH or fix mysqld_safe.
+#   make the needed symbolic links to it from various run levels
+      # Match 123 or 123-456
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# modify it under the terms of the GNU Library General Public
+  my $com= join ' ', 'my_print_defaults', @defaults_options, $group;
+  my ($command) = @_;
+  my (@data);
+  my @defaults = `$com`;
+  my @defaults_files = list_defaults_files();
+my @defaults_options;   #  Leading --no-defaults, --defaults-file, etc.
+  my $flag_exit= 0;
+  my $fmode = "0640";
+  my %gids;
+  my ($group) = @_;
+  my @groups;
+  my (@groups, $com, $i, @options);
+  my (@groups, $com, $i, @options, $pec);
+  my (@groups, $com, $tmp, $i, @options, $j, $mysqld_found, $info_sent);
+  my ($i, @groups)= @_;
+my $logdir= undef();
+  my $m;
+  my ($msg, $file, $date_flag, $is_file)= @_;
+my $my_print_defaults_exists= 1;
+  my ($mysqladmin_found, $com, $tmp, $j);
+my ($mysqld, $mysqladmin, $groupids, $homedir, $my_progname);
+  my %opt;
+  my ($option)= @_;
+  my (@paths, $path);
+    $my_print_defaults_exists= 0;
+$my_progname = $0;
+$my_progname can be used to start, or stop any number of separate
+$my_progname can read group [mysqld_multi] from my.cnf file. You may
+#   $my_progname. Here is an example how to do it:
+$my_progname =~ s/.*[\/]//;
+$my_progname version $VER by Jani Tolonen
+$my_progname will search for groups named [mysqld#] from my.cnf (or
+    my $pw= $opt_password;
+  my ($raw_gids) = @_;
+  my %seen;  # Don't list the same file more than once
+  $mysqladmin_found= 0 if (!length($mysqladmin));
+      $mysqladmin_found= 1;
+  $mysqladmin_found= 1; # The default
+--mysqladmin=...   mysqladmin binary to be used for a server shutdown.
+mysqladmin = /path/to/mysqladmin
+mysqladmin = /usr/bin/mysqladmin
+[mysqld2]
+[mysqld3]
+[mysqld4]
+[mysqld6]
+    $mysqld_found= 0 if (!length($mysqld));
+        $mysqld_found= 1;
+    $mysqld_found= 1; # The default
+[mysqld] group, but with those port, socket and any other options
+[mysqld_multi]
+#   mysqld_multi.server.sh. It is a wrapper for $my_progname. This can
+--mysqld=...       mysqld binary to be used. Note that you can give mysqld_safe
+#   mysqld=/path/to/mysqld_safe
+mysqld     = /path/to/mysqld_safe
+mysqld processes running in different TCP/IP ports and UNIX sockets.
+mysqld     = /usr/bin/mysqld_safe
+#   MySQL server has a separate pid-file. In order to use mysqld_safe
+      my ($start, $end) = ($raw_gid =~ /^\s*(\d+)(?:\s*-\s*(\d+))?\s*$/);
+  my $UMASK = $ENV{UMASK};
+#### my_which is used, because we can't assume that every system has the
+    next unless open CONF, "< $file";
+      /^--(?:no-defaults$|(?:defaults-file|defaults-extra-file)=)/;
+--no-defaults      Do not read any defaults file
+--no-log           Print to stdout instead of the log file. By default the log
+not mandatory. Please note that if mysqld or mysqladmin is missing
+# of the License.
+                   of the UNIX socket. This affects stopping and reporting.
+    open (FROMFILE, "<$msg") && (@data=<FROMFILE>) &&
+  open (LOGFILE, ">>$opt_log")
+    $opt{$1} = $2 if /^--defaults-(extra-file|file)=(.*)$/;
+$opt_example       = 0;
+               $opt{'extra-file'},
+$opt_help          = 0;
+Options:
+    @options = defaults_for_group($groups[$i]);
+  @options = defaults_for_group($groups[$i]);
+	   ($options[$j] =~ m/^(\-\-port\=)(.*)$/))
+        $options[$j]= quote_shell_word($options[$j]);
+	$options[$j]= quote_shell_word($options[$j]);
+      $options[$j]=~ s/\-\-mysqladmin\=//;
+	$options[$j]=~ s/\-\-mysqld\=//;
+  $option =~ s!([^\w=./-])!\\$1!g;
+	      "$opt_log", 0, 0);
+	  "$opt_log", 0, 0);
+	  "$opt_log", 1, 0);
+    $opt_log= "$logdir/mysqld_multi.log";
+$opt_log           = undef();
+$opt_mysqladmin    = "/usr/bin/mysqladmin";
+$opt_mysqld        = "/usr/sbin/mysqld";
+$opt_no_log        = 0;
+    $opt_no_log= 1;
+$opt_password      = undef();
+$opt_silent        = 0;
+$opt_tcp_ip        = 0;
+$opt_user          = "root";
+$opt_verbose       = 0;
+$opt_version       = 0;
+#### order:  my_print_defaults mysqld datadir, /usr/share/mysql
+	or die "FATAL: w2log: Couldn't open file: $msg\n";
+    or die "FATAL: w2log: Couldn't open log file: $opt_log\n";
+or     $my_progname [OPTIONS] {start|stop|report} [GNR-GNR,GNR,GNR-GNR,...]
+#   or /root/.my.cnf and add the [mysqld_multi] and [mysqld#] groups.
+or several of them at the same time. (See --example) The GNRs list can
+#### or undefined, if not found.
+password   = my_password
+--password=...     Password for mysqladmin user.
+    $path .= "/$command";
+  @paths = split(':', $ENV{'PATH'});
+    $pec = $? >> 8;
+pid-file   = /var/lib/mysql2/hostname.pid2
+pid-file   = /var/lib/mysql3/hostname.pid3
+pid-file   = /var/lib/mysql4/hostname.pid4
+pid-file   = /var/lib/mysql6/hostname.pid6
+                   Please note: Since mysqld_multi version 2.3 you can also
+port       = 3307
+port       = 3308
+port       = 3309
+port       = 3311
+      print "$1 in order to find the actual mysqld binary.\n";
+        print "ABORT: Bad GNR: $raw_gid; see $my_progname --help\n";
+    print "ABORT: Can't find command 'my_print_defaults'.\n";
+    print "Both --verbose and --silent have been given. Some of the warnings ";
+    print "but no mysqladmin binary was found.\n";
+      print "but no mysqld binary was found.\n";
+    print "distribution. Please make sure you have the command\n";
+  print <<EOF;
+    print "Error with an option, see $my_progname --help for more info.\n";
+      print "FATAL ERROR: Tried to start mysqld under group [$groups[$i]], ";
+    print "FATAL ERROR: Tried to use mysqladmin in group [$groups[$i]], ";
+    printf("The first digit will be corrected to 6, the others may be 0, 2, 4, or 6.\n"); }
+    printf("UMASK corrected from $UMASK to $fmode ...\n"); }
+    printf("UMASK must be a 3-digit mode with an additional leading 0 to indicate octal.\n");
+      print "group [$groups[$i]] separately.\n";
+      print "groups [mysqldN] separately for each.\n\n";
+    print "in group [$groups[$i]].\n";
+    print "in your PATH.\n";
+    print "in your path. The command is available from the latest\n";
+      print "ledir (library executable directory) should be the path to the ";
+      print LOGFILE "$line";
+    print LOGFILE "$msg";
+    print LOGFILE "\n";
+    print LOGFILE strftime "%a %b %e %H:%M:%S %Y", localtime if ($date_flag);
+      print "may need to pass\n\"ledir=...\" under groups [mysqldN] to ";
+    print "$my_progname log file version $VER; run: ";
+    print "$my_progname version $VER by Jani Tolonen\n";
+    print "MySQL distribution.\n";
+      print "MySQL server from group: $groups[$i] is not running\n";
+      print "MySQL server from group: $groups[$i] is running\n";
+      print "\n";
+    print "\n";
+    print "No groups to be reported (check your GNRs)\n";
+    print "\nStarting MySQL servers\n";
+    print "\nStopping MySQL servers\n";
+    print "Please add \"mysqladmin=...\" in group [mysqld_multi], or ";
+      print "Please add \"mysqld=...\" in group [mysqld_multi], or add it to ";
+    print "Please make sure you have this command available and\n";
+  print "Reporting MySQL servers\n";
+    print strftime "%a %b %e %H:%M:%S %Y", localtime;
+    print "This command is available from the latest MySQL\n";
+      print "This is OK, if you are using option \"mysqladmin=...\" in ";
+      print "This is OK, if you are using option \"mysqld=...\" in ";
+      print "Tried: $opt_mysqladmin\n";
+      print "Tried: $opt_mysqld\n";
+      print "wanted mysqld binary.\n\n";
+      print "WARNING: $1 is being used to start mysqld. In this case you ";
+      print "WARNING: Couldn't find the default mysqladmin binary.\n";
+      print "WARNING: Couldn't find the default mysqld binary.\n";
+      print "WARNING: Log file disabled. Maybe directory or file isn't writable?\n";
+    print "WARNING: my_print_defaults command not found.\n";
+    print "will be disabled\nand some will be enabled.\n\n";
+    # Protect single quotes in password
+    push @defaults_options, (shift @ARGV);
+          push @groups, "$1$2";
+    $pw =~ s/'/'"'"'/g;
+                   question. This will be recognised as a special option and
+    $_ = quote_shell_word($_);
+# Quote word for shell
+#   reasons should have no other privileges. It is advised that you create a
+#   - Relies on the system (external) file locking
+  # Remove leading defaults options from @ARGV
+#### Report living and not running MySQL servers
+      report_mysqlds();
+  return;
+# Return a list of option files which can be opened.  Similar, but not
+  return $com;
+  return $command if (-f $command && -x $command);
+  return @defaults;
+  return grep { defined $_ and not $seen{$_}++ and -f $_ and -r $_ }
+  return @groups;
+    return () if /^--no-defaults$/;
+  return ($opt{file}) if exists $opt{file};
+  return $option;
+    return $path if (-f $path && -x $path);
+  return undef();
+  return () unless $my_print_defaults_exists;
+#### Return values: requested system command with the first found path,
+#   - Risk of table/data corruption
+                   running, but can be accessed only via the TCP/IP port.
+--silent           Disable warnings.
+                   Since version 2.10 this can be given within groups [mysqld#]
+socket     = /tmp/mysql.sock2
+socket     = /tmp/mysql.sock3
+socket     = /tmp/mysql.sock4
+socket     = /tmp/mysql.sock6
+# Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+    # so log file be disabled for now.
+# SOME IMPORTANT NOTES FOLLOW:
+#   - Speed penalty
+                   standard system-wide and user-specific files
+                   start different mysqld versions with mysqld_multi.
+#### start multiple servers
+    start_mysqlds();
+#### stop multiple servers
+      stop_mysqlds();
+stopping, or reporting any specific mysqld server.
+sub defaults_for_group
+sub example
+sub find_groups
+#### Sub function for mysqladmin option parsing
+sub get_mysqladmin_options
+sub init_log
+sub list_defaults_files
+sub main
+sub my_which
+sub quote_shell_word
+sub report_mysqlds
+sub start_mysqlds()
+sub stop_mysqlds()
+sub usage
+sub w2log
+syntax for specifying GNRs must appear without spaces.
+    system($com);
+# Takes a specification of GNRs (see --help), and returns a list of matching
+--tcp-ip           Connect to the MySQL server(s) via the TCP/IP port instead
+                  "tcp-ip",  "silent", "verbose"))
+that are to be used with each separate mysqld process. The number
+the given --defaults-extra-file=...), where '#' can be any positive 
+The GNR means the group number. You can start, stop or report any GNR,
+#   the same password to all MySQL servers being accessed by $my_progname.
+#   The script can be found from support-files/mysqld_multi.server.sh
+These options must be given before any others:
+# This is an example of a my.cnf file for $my_progname.
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or
+#   This user needs to have the 'Shutdown_priv' -privilege, but for security
+        $tmp.= " $options[$j]";
+      $tmp.= " $options[$j]";
+	$tmp.= " $options[$j]";
+  $tmp.= $opt_tcp_ip ? " -h 127.0.0.1" : "";
+    $tmp.= " -p'$pw'";
+  $tmp = " -u $opt_user";
+                   to this option also. The options are passed to mysqld. Just
+#     Trying so will end up with undesirable results.
+  umask($fmode);
+#   underlying caveats. In short they are:
+  unshift @ARGV, defaults_for_group('mysqld_multi');
+#### usage
+  usage() if (!defined($ARGV[0]) ||
+  usage() if ($opt_help);
+Usage: $my_progname [OPTIONS] {start|stop|report} [GNR,GNR,GNR...]
+        # Use $2 + 0 to normalize numbers (002 + 0 -> 2)
+used, $my_progname will abort with an error.
+use Getopt::Long;
+        # Use $i + 0 to normalize numbers (002 + 0 -> 2)
+use POSIX qw(strftime getcwd);
+user       = multi_admin
+--user=...         mysqladmin user. Using: $opt_user
+                  "user=s", "password=s", "log=s", "no-log",
+user       = unix_user1
+user       = unix_user2
+user       = unix_user3
+user       = unix_user4
+Using:  @{[join ' ', @defaults_options]}
+                   Using: $mysqladmin
+#   using 'mysqladmin' -binary, when '$my_progname stop' is being called.
+                   Using: $mysqld
+                   Using: $opt_log
+#!/usr/bin/perl
+               '/usr/my.cnf',
+# Usually this file is located in home dir ~/.my.cnf or /etc/my.cnf
+$VER="2.16";
+--verbose          Be more verbose.
+version 2.10 these options can also be given under groups [mysqld#],
+--version          Print the version number and exit.
+#   via $my_progname, you need to use two options:
+    w2log("$my_progname log file version $VER; run: ",
+	w2log("MySQL server from group: $groups[$i] is not running",
+	w2log("MySQL server from group: $groups[$i] is running",
+      w2log("No groups to be reported (check your GNRs)", "$opt_log", 0, 0);
+    w2log("No MySQL servers to be started (check your GNRs)",
+    w2log("No MySQL servers to be stopped (check your GNRs)",
+    w2log("\nReporting MySQL servers","$opt_log",0,0);
+    w2log("\nStarting MySQL servers\n","$opt_log",0,0);
+    w2log("\nStopping MySQL servers\n","$opt_log",0,0);
+#### w2log: Write to a logfile.
+want to put options mysqld=... and mysqladmin=... there.  Since
+        #warn "Found a group: $1$2\n";
+  #warn "@{[sort keys %gids]} -> @defaults_files\n";
+    # We can't throw out yet, since --version, --help, or --example may
+  # We've already handled --no-defaults, --defaults-file, etc.
+                   where '#' stands for an integer (number) of the group in
+#### which -command. my_which can take only one argument at a time.
+which gives more control over different versions.  One can have the
+  while (@ARGV > 0)
+    while (<CONF>)
+                   will not be passed to the mysqld. This will allow one to
+#   You can do so, but please make sure to understand and deal with the
+#   You can pass the user=... option inside [mysqld#] groups. This
+#   You can place the file in /etc/init.d/mysqld_multi.server.sh and
+# You should have received a copy of the GNU Library General Public
+#   You will need to apply the above to all MySQL servers that are being

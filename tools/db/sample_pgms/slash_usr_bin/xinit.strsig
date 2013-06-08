@@ -1,0 +1,76 @@
+__bss_start
+cannot change uid
+can't kill X server
+can't send HUP to process group %d
+can't SIGKILL X server
+client error
+connection to X server lost
+__ctype_b_loc
+__errno_location
+for your display.  Possible server names include:
+__fprintf_chk
+-geometry
+giving up
+GLIBC_2.0
+GLIBC_2.11
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+is in your path.
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+__longjmp_chk
+No XFree86_VT property detected on X server, WINDOWPATH won't be set
+server error
+server to die
+setpriority
+sigaction
+sigaddset
+sigemptyset
+sigprocmask
+sigsuspend
+snprintf
+__snprintf_chk
+Specify a program on the command line or make sure that %s
+strerror
+that "%s" is a program or a link to the right type of server
+unable to connect to X server
+Unable to intern XFree86_VT atom
+Unable to run program "%s"
+unable to run server "%s"
+unable to set DISPLAY
+unable to set WINDOWPATH
+unexpected signal %d
+Use the -- option, or make sure that %s is in your path and
+/usr/bin
+__vfprintf_chk
+waiting for %s 
+warning, no client init file "%s"
+warning, no server init file "%s"
+XCloseDisplay
+Xdmx        Distributed Multi-head X server
+Xephyr      kdrive-based nested X server
+Xfake       kdrive-based virtual frame buffer
+XFree86_VT
+XFree86_VT property has unexpected format %d
+XFree86_VT property has unexpected type %lx
+XFree86_VT property unexpectedly has %lu items instead of 1
+XGetWindowProperty
+.xinitrc
+XInternAtom
+Xnest       X server nested in a window on another X server
+XOpenDisplay
+Xorg        Common X server for most displays
+.xserverrc
+XSERVERRC
+X server refuses to die
+X server slow to shut down, sending KILL signal
+X server to begin accepting connections
+X server to shut down
+XSetIOErrorHandler
+Xvfb        Virtual frame buffer
+Xvnc        X server accessed over VNC's RFB protocol

@@ -1,0 +1,93 @@
+      ;;
+# 1) The security problem with Chinese translations that happen to use a
+# 2) The security problem with malevolent translators who put in command lists
+# 3) The translations can only refer to shell variables that are already
+# any later version.
+  # being sourced, not executed, because hardly anyone is crazy enough to
+#! /bin/sh
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# by the Free Software Foundation; either version 2, or (at your option)
+  case "$0" in
+        case "$1" in
+      cat <<EOT
+# characters and underscore.
+#    character such as \xe0\x60 is avoided.
+# contained in $PATH), rather than in some other location such as
+# Copyright (C) 2003, 2005-2007 Free Software Foundation, Inc.
+        echo "Copyright (C) 2003-2007 Free Software Foundation, Inc.
+  echo='echo'
+    echo='echo_func'
+    echo_func () {
+        echo "GNU gettext shell script function library version $version"
+    echo='printf %s\n'
+        echo "$progname (GNU $package) $version"
+        echo "Usage: . gettext.sh"
+        echo "Written by" "Bruno Haible"
+# `envsubst --variables ...` returns nothing.
+        esac
+eval_gettext () {
+# eval_gettext MSGID
+eval_ngettext () {
+# eval_ngettext MSGID MSGID-PLURAL COUNT
+      exit 1
+      fi
+# Find a way to echo strings without interpreting backslash.
+  # fortunately we know that when running under zsh, this script is always
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+      # func_usage
+      func_usage ()
+      func_usage 1>&2
+            func_usage; exit 0 ;;
+      # func_version
+      func_version ()
+            func_version; exit 0 ;;
+  gettext "$1" | (export PATH `envsubst --variables "$1"`; envsubst "$1")
+    gettext.sh | */gettext.sh | *\\gettext.sh)
+# ". gettext.sh" to find it, we install it in $PREFIX/bin (that is usually
+# GNU General Public License for more details.
+          --help | --hel | --he | --h )
+      if test $# = 1; then
+if test "X`(echo '\t') 2>/dev/null`" = 'X\t'; then
+  if test "X`(printf '%s\n' '\t') 2>/dev/null`" = 'X\t'; then
+if test -z "$ZSH_VERSION"; then
+  # install zsh as /bin/sh.
+  # it sets $0 to "gettext.sh", defeating the purpose of this test. But
+# License along with this program; if not, write to the Free Software
+License GPLv2+: GNU GPL version 2 or later <http://gnu.org/licenses/gpl.html>
+#    like "$(...)" or "`...`" is avoided.
+# looks up the translation of MSGID and substitutes shell variables in the
+# looks up the translation of MSGID / MSGID-PLURAL for COUNT and substitutes
+#    mentioned in MSGID or MSGID-PLURAL.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ngettext "$1" "$2" "$3" | (export PATH `envsubst --variables "$1 $2"`; envsubst "$1 $2")
+# not dropped, not from the gettext invocation and not from the value of any
+# Note: "export PATH" above is a dummy; this is for the case when
+# Note: Field splitting on the `envsubst --variables ...` result is desired,
+# Note: In eval_ngettext above, "$1 $2" means a string whose variables set is
+# Note: The minimal use of backquote above ensures that trailing newlines are
+# Note: This use of envsubst is much safer than using the shell built-in 'eval'
+# output by "envsubst --variables ..." consist solely of alphanumeric
+      # outputs to stdout the --help usage message.
+      # outputs to stdout the --version message.
+      package=gettext-runtime
+# $PREFIX/share/sh-scripts or $PREFIX/share/gettext. In order to not violate
+      progname=$0
+# result.
+# shell variable.
+# shell variables in the result.
+# since envsubst outputs the variables, separated by newlines. Pathname
+# the Filesystem Hierarchy Standard when doing so, this script is executable.
+# Therefore it needs to support the standard --help and --version.
+There is NO WARRANTY, to the extent permitted by law."
+# the union of the variables set of "$1" and "$2".
+This is free software: you are free to change and redistribute it.
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify it
+# This script is primarily a shell function library. In order for
+# under the terms of the GNU Library General Public License as published
+      version=0.18.1
+          --version | --versio | --versi | --vers | --ver | --ve | --v )
+# wildcard expansion or tilde expansion has no effect here, since the words
+# would be.
+# You should have received a copy of the GNU Library General Public
+  # zsh is not POSIX compliant: By default, while ". gettext.sh" is executed,

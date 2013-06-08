@@ -1,0 +1,26 @@
+-1      list resources only at the specified level
+-AppResTest-
+__bss_start
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXt.so.6
+The number of class and instance elements must be equal.
+usage:  %s  [class [instance]] [-1] [toolkitoptions]
+XrmEnumerateDatabase
+XrmPermStringToQuark
+XrmQuarkToString
+XrmStringToQuark
+XrmStringToQuarkList
+XtAppInitialize
+XtDatabase
+XtDisplay
+XtGetApplicationNameAndClass

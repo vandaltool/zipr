@@ -1,0 +1,76 @@
+                  
+---> 0x%p
+bottomColor
+*Box*background: grey50
+*Box*borderWidth: 0
+*Box*vSpace: 1
+boxWidgetClass
+__bss_start
+compat%d
+Couldn't create application top level
+Couldn't create base modifiers box
+Couldn't create compatibility state box
+Couldn't create effective modifiers box
+Couldn't create latched modifiers box
+Couldn't create locked modifiers box
+Couldn't create top level box
+__ctype_b_loc
+__ctype_tolower_loc
+effective
+effective%d
+Error:            
+                  Exiting
+Fatal Error:      
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Internal error:   
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+latched%d
+ledHeight
+ledWidth
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXaw.so.7
+libXt.so.6
+locked%d
+offColor
+Server doesn't support a compatible XKB
+sessionShellWidgetClass
+simpleClassRec
+simpleWidgetClass
+__sprintf_chk
+__stack_chk_fail
+switching to %s
+topColor
+__vfprintf_chk
+Warning:          
+XawInitializeWidgetSet
+XCreateGC
+XCreatePixmap
+XFillRectangle
+XFreePixmap
+XkbGetState
+XkbQueryExtension
+XkbSelectEvents
+xkbwatch
+XSetForeground
+XSetWindowBackgroundPixmap
+XtAppNextEvent
+XtCreateManagedWidget
+XtDefaultForeground
+XtDispatchEvent
+XtDisplay
+_XtInherit
+XtOpenApplication
+XtRealizeWidget
+XtSetValues
+XtStrings

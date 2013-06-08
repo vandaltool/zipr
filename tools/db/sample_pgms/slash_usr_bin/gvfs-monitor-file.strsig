@@ -1,0 +1,37 @@
+__bss_start
+Don't send single MOVED events.
+Event = ATTRIB CHANGED
+Event = CHANGED
+Event = CHANGES_DONE_HINT
+Event = CREATED
+Event = DELETED
+Event = MOVED
+Event = PRE_UNMOUNT
+Event = UNMOUNTED
+File Monitor Event:
+File = %s
+g_file_get_parse_name
+g_file_monitor_file
+g_file_new_for_commandline_arg
+GLIBC_2.0
+g_main_loop_new
+g_main_loop_run
+__gmon_start__
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_signal_connect_data
+g_type_init
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+- monitor file <location> [location]...
+Other = %s
+setlocale

@@ -1,0 +1,40 @@
+-adobe-courier-medium-r-normal--12-*-*-*-*-*,-*-*-*-*-*-*-12-*-*-*-*-*
+asciiTextWidgetClass
+__bss_start
+commandWidgetClass
+formWidgetClass
+fromHoriz
+fromVert
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+*international: True
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libXaw.so.7
+libXt.so.6
+__printf_chk
+scrollHorizontal
+scrollVertical
+sessionShellWidgetClass
+*text.baseTranslations: #override \n\	<Key>space:     next-page()\n\	<Key>F:         next-page()\n\	Ctrl<Key>B:     previous-page()\n\	<Key>K:         scroll-one-line-down()\n\	<Key>Y:         scroll-one-line-down()\n\	<Key>Return:    scroll-one-line-up()\n\	<Key>J:         scroll-one-line-up()\n\	<Key>E:         scroll-one-line-up()\n\	<Key>q:         quit()\n
+textfont
+*textfont: -adobe-courier-medium-r-normal--12-*-*-*-*-*,-*-*-*-*-*-*-12-*-*-*-*-*
+*text.Translations: #override \n\	Ctrl<Key>S:     no-op(RingBell)\n\	Ctrl<Key>R:     no-op(RingBell)\n\	<Key>space:     next-page()\n\	<Key>F:         next-page()\n\	Ctrl<Key>B:     previous-page()\n\	<Key>B:         previous-page()\n\	<Key>K:         scroll-one-line-down()\n\	<Key>Y:         scroll-one-line-down()\n\	<Key>Return:    scroll-one-line-up()\n\	<Key>J:         scroll-one-line-up()\n\	<Key>E:         scroll-one-line-up()\n\	<Key>q:         quit()\n
+usage: %s [ x options ] filename
+*verbose
+XtAddCallback
+XtAppAddActions
+XtAppMainLoop
+XtAppSetExitFlag
+XtCallActionProc
+XtCreateManagedWidget
+XtGetApplicationResources
+XtOpenApplication
+XtRealizeWidget
+XtSetLanguageProc
+XtStrings
+XtWidgetToApplicationContext

@@ -1,0 +1,54 @@
+             1 : check alignment
+             2 : colored stripes, use for head cleaning
+             3 : center paper 
+6III6&III>|
+    --align         pattern 0:  align print heads. (default) 
+BaQIF"AII6
+BLACKSHEAR 
+    --center        pattern 3:  center paper. 
+    --clean         pattern 2:  clean print head. 
+COLOFFSX
+COLOFFSY
+COLORSHEAR 
+'EEE9>III2
+__fprintf_chk
+getopt_long
+    -g, --gamma     produce  gamma.ppm (10MB, used in color calibration).
+gho:p:s:v:
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+    -h,   --help    displays this help text.
+HP 1000 Series Printers
+HP 710C, 712C, 720C, 722C Series Printers
+HP 820 Series Printers
+III6>AAA"
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+  NOTE: The size of a  full-page PixMap is 100MB!!.
+    -o <outfile>    output to file <outfile>, "-o -" means stdout (default)
+    -p <n>          create test pattern number <n>
+# pnm2ppa calibration image
+#PPM (PixMap) Image for comparison with printed output of "pnm2ppa -g"
+__printf_chk
+  Produces various PixMap (PPM) files used for calibrating pnm2ppa.
+%s: cannot open output file "%s"
+%s:  malloc failed
+    -s <paper>      default papersize (a4, legal, letter = us (default))
+__sprintf_chk
+__stack_chk_fail
+%s: unknown paper size "%s"
+%s: unknown test pattern (%d)
+%s: writing requested PPM data to "%s"
+test pattern 0 : cartridge alignment (default)
+    --test          pattern 1:  test alignment. 
+  the  -g option, where the PixMap should be viewed or printed by other means.
+  These PixMaps should be piped directly to pnm2ppa, except in the case of
+usage: %s [ options ] [ -o <outfile> ]] 

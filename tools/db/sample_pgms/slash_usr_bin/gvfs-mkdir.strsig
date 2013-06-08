@@ -1,0 +1,31 @@
+__bss_start
+- create directories
+create parent directories
+dcgettext
+Error creating directory: %s
+Error parsing commandline options: %s
+g_error_free
+g_file_make_directory
+g_file_make_directory_with_parents
+g_file_new_for_commandline_arg
+g_get_prgname
+GLIBC_2.0
+__gmon_start__
+g_object_unref
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_printerr
+g_type_init
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+setlocale
+Try "%s --help" for more information.

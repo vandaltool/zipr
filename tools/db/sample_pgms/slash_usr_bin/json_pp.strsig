@@ -1,0 +1,102 @@
+                                           ],
+            };
+                                             '0000000',
+                                             '1234'
+                                             '5678900',
+Acceptable options are:
+    allow_singlequote allow_barekey allow_bignum loose escape_slash
+    ascii latin1 utf8 pretty indent space_before space_after relaxed canonical allow_nonref
+as Data::Dumper
+as Perl code
+              'bar' => '1234567890000000000000000',
+","bar":1234567890000000000000000}|' |\
+              'bar' => bless( {
+Copyright 2010 by Makamaka Hannyaharamitu
+      Data::Dumper::Dumper($_)
+        die "$@" if $@;
+   'dumper' => sub {
+=encoding utf8
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+   'eval' => sub {
+    exit;
+    -f from_format
+              'foo' => "\x{3042}\x{3044}"
+              'foo' => "\x{e3}\x{81}\x{82}\x{e3}\x{81}\x{84}"
+$_ = $F{$opt_from}->();
+$F{$opt_from}
+Format types:
+   'f=s' => \( my $opt_from = 'json' ),
+GetOptions(
+=head1 AUTHOR
+=head1 COPYRIGHT AND LICENSE
+=head1 DESCRIPTION
+=head1 EXAMPLES
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+=head2 -f
+=head2 -json_opt
+=head2 -t
+=head2 -v
+	if $running_under_some_shell;
+if ( $version ) {
+# imported from JSON-XS/bin/json_xs
+=item dumper
+=item eval
+=item json
+=item null
+it under the same terms as Perl itself. 
+      $json->decode( $_ );
+      $json->encode( $_ );
+      $json->$_() for @json_opt;
+$json_opt = '' if $json_opt eq '-';
+   'json_opt=s' => \( my $json_opt = 'pretty' ),
+json_pp converts between some input and output formats (one of them is JSON).
+       json_pp -f json -t dumper -json_opt pretty
+       json_pp -f json -t dumper -json_opt pretty,utf8,allow_bignum
+json_pp - JSON::PP command utility
+    json_pp [-v] [-f from_format] [-t to_format] [-json_opt options_to_json]
+   'json' => sub {
+L<JSON::PP>, L<json_xs>
+local $/;
+Makamaka Hannyaharamitu, E<lt>makamaka[at]cpan.orgE<gt>
+                              }, 'Math::BigInt' ),
+my %allow_json_opt = map { $_ => 1 } qw(
+my %F = (
+      my $json = JSON::PP->new;
+my @json_opt = grep { $allow_json_opt{ $_ } or die "'$_' is invalid json opttion" } split/,/, $json_opt;
+my %T = (
+my $VERSION = '1.00';
+        my $v = eval "no strict;\n#line 1 \"input\"\n$_";
+no action.
+   'null' => sub { "" },
+options to JSON::PP
+   or die "$opt_from: not a valid fromformat\n";
+   or die "$opt_from: not a valid toformat\n";
+) or die "Usage: $0 [-v] -f from_format [-t to_format]\n";
+    $ perl -e'print q|{"foo":"
+print $_;
+Prints version and exits.
+    print "$VERSION\n";
+Reads a data in the given format from STDIN.
+      require Data::Dumper;
+        return $v;
+                                'sign' => '+'
+$_ = <STDIN>;
+The default input format is json and the default output format is json with pretty option.
+This library is free software; you can redistribute it and/or modify
+This program was copied from L<json_xs> and modified.
+$_ = $T{$opt_to}->();
+$T{$opt_to}
+   't=s' => \( my $opt_to = 'json' ),
+use Getopt::Long;
+use JSON::PP ();
+use strict;
+#!/usr/bin/perl
+                                'value' => [
+    $VAR1 = {
+Verbose option, but currently no action in fact.
+   'v'   => \( my $opt_verbose ),
+   'V'   => \( my $version ),
+Writes a data in the given format to STDOUT.

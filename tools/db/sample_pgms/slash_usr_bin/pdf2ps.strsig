@@ -1,0 +1,24 @@
+# appears before other options.
+#!/bin/sh
+	*)  break ;;
+	case "$1" in
+# Convert PDF to PostScript.
+# Doing an initial 'save' helps keep fonts from being flushed between pages.
+    echo "Usage: `basename \"$0\"` [-dASCII85EncodePages=false] [-dLanguageLevel=1|2|3] input.pdf [output.ps]" 1>&2
+elif [ $# -eq 1 ]
+exec "$GS_EXECUTABLE" $OPTIONS -q -dNOPAUSE -dBATCH -P- -dSAFER -sDEVICE=ps2write "-sOutputFile=$outfile" $OPTIONS -c save pop -f "$1"
+# executable name set in the makefile
+    exit 1
+gs="`dirname \"$0\"`/$GS_EXECUTABLE"
+GS_EXECUTABLE=gs
+GS_EXECUTABLE="$gs"
+	gs="$GS_EXECUTABLE"
+if [ $# -eq 2 ] 
+if test ! -x "$gs"; then
+OPTIONS=""
+	-?*) OPTIONS="$OPTIONS $1" ;;
+    outfile=$2
+    outfile=`basename "$1" \.pdf`.ps
+# This definition is changed on install to match the
+# We have to include the options twice because -I only takes effect if it
+while true

@@ -1,0 +1,45 @@
+		# A directory, re-encrypt the filename
+		# A file or symlink, re-encrypt the contents
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Authors: Dustin Kirkland <kirkland@ubuntu.com>
+#!/bin/sh -e
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+		continue
+			continue
+#    Copyright (C) 2008 Canonical Ltd.
+		cp -a "$i" "$temp1" 2>/dev/null || {
+	echo `gettext "ERROR:"` "$1" 1>&2
+		echo `gettext "[EXCLUDED]"` >&2
+	echo `gettext "[FAILED]"`
+	echo `gettext "[OK]"`
+	echo -n `gettext "INFO:"` `gettext "Rewriting"` "[$j/$#] [$i] ... "
+echo "$OKs/$j" `gettext "rewrites succeeded"`
+#    ecryptfs-rewrite-file
+error() {
+			error `gettext "Could not copy"` "[$i] -> [$temp1]"
+			error `gettext "Could not create tempdir"`
+			error `gettext "Could not create tempfile"`
+			error `gettext "Could not rename"` "[$i] -> [$temp1]"
+			error `gettext "Could not rename"` "[$temp1] -> [$i]"
+		error `gettext "File does not exist"`
+for i in "$@"; do
+#    GNU General Public License for more details.
+	if [ -d "$i" -a ! -h "$i" ]; then
+	if [ ! -e "$i" ] ; then
+	if [ "$i" = "." ]; then
+#    it under the terms of the GNU General Public License as published by
+	j=`expr $j + 1`
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		mv -f "$temp1" "$i" 2>/dev/null || {
+		mv -f -T "$i" "$temp1" 2>/dev/null  || {
+[ $OKs -ne $j ] && exit 1
+	OKs=$((OKs+1))
+			rmdir "$temp1"
+			rm -f "$temp1"
+		temp1=`mktemp -d "$i".XXXXXXXXXX` || {
+		temp1=`mktemp "$i".XXXXXXXXXX` || {
+TEXTDOMAIN="ecryptfs-utils"
+#    the Free Software Foundation, version 2 of the License.
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+#    You should have received a copy of the GNU General Public License

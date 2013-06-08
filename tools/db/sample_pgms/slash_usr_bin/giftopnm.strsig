@@ -1,0 +1,73 @@
+alphaout
+Application
+bad version number, not '87a' or '89a'
+bogus character 0x%02x, ignoring
+__bss_start
+circular table entry BIG ERROR
+Color map %s grays, %s colors
+Colors = %d   Color Resolution = %d
+comments
+contains
+couldn't alloc space for image
+couldn't read left/top/width/height
+doesn't contain
+EOF encountered before EOD marker.  The GIF file is malformed, but we are proceeding anyway as if an EOD marker were at the end of the file.
+EOF encountered in image before EOD marker.  The GIF file is malformed, but we are proceeding anyway as if an EOD marker were at the end of the file.
+EOF/error encountered reading 1st DataBlock of Graphic Control Extension.
+EOF or error in reading DataBlock size from file
+EOF or error reading data portion of %d byte DataBlock from file
+EOF / read error on extension function code
+EOF / read error on image data
+error reading magic number
+failed to read screen descriptor
+File does not contain a GIF stream.  It does not start with 'GIF'.
+gif comment: %s
+GIF format version is '%s'
+GIF stream ends (or read error) right after an image separator; no image data follows.
+GIF stream ends (or read error) right after the minimum lzw code size field; no image data follows.
+GIF Width = %d GIF Height = %d Pixel aspect ratio = %d (%f:1)
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ got a '%s' extension
+Graphic Control
+graphic control extension 1st DataBlock too short.  It must be at least 4 bytes; it is %d bytes.
+Ignoring unrecognized extension (type 0x%02x)
+ interlaced
+Invalid -image option: %d.  Must be at least 1.
+Invalid minimum code size value in image data: %u.  Maximum allowable code size in GIF is %u
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+no transparency
+pbm_writepbminit
+pbm_writepbmrow
+Plain Text
+pm_allocarray
+pm_allocrow
+pm_close
+pm_error
+pm_freearray
+pm_freerow
+pm_message
+pm_openr
+pm_openw
+pm_optParseOptions2
+pnm_init
+pnm_writepnm
+Program takes zero or one argument (filename).  You specified %d
+ran off the end of my bits
+reading %d by %d%s GIF image
+__sprintf_chk
+__stack_chk_fail
+too much input data, ignoring extra...
+transparent background color: rgb:%02x/%02x/%02x Index %d
+Unable to read Color %d from colormap
+UNKNOWN (0x%02x)
+warning - input pixels are not square, but we are rendering them as square pixels in the output.  To fix the output, run it through 'pnmscale -%cscale %g'
+writing a %s file
+You requested Image %d, but only %d image%s found in GIF stream

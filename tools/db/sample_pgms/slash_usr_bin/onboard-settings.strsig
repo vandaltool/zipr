@@ -1,0 +1,3 @@
+from Onboard.settings import Settings
+s = Settings(True)
+#!/usr/bin/python

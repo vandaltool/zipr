@@ -1,0 +1,241 @@
+                  }
+                      action='store_true', dest='default')
+                      action='store_true', dest='installed')
+                      action='store_true', dest='requested')
+                      action='store_true', dest='supported')
+                           and version_cmp(ver,v[1]) <= 0:
+                break
+class ControlFileValueError(ValueError):
+class MissingVersionValueError(ValueError):
+            cmd = ['/usr/bin/apt-cache', '--no-all-versions',
+            config.readfp(open('/usr/share/python3/debian_defaults'))
+            config = SafeConfigParser()
+    # consistency check
+            continue
+                continue
+    debian_default = read_default('default-version')
+                      default=False, action='store_true', dest='version_only')
+            _defaults = config
+_defaults = None
+    _default_version = debian_default
+        _default_version = link = os.readlink('/usr/bin/python3')
+_default_version = None
+def default_version(version_only=False):
+def extract_pyversion_attribute_bis(fn):
+def extract_pyversion_attribute(fn, pkg):
+def installed_versions(version_only=False):
+def main():
+def old_versions(version_only=False):
+def parse_versions(vstring):
+def read_default(name=None):
+def requested_versions_bis(vstring, version_only=False):
+def requested_versions(vstring, version_only=False):
+def supported_versions(version_only=False):
+def unsupported_versions(version_only=False):
+                    depends = line.split(':', 1)[1].strip().split(',')
+            depends = None
+            depends = [re.sub(r'\s*(\S+)[ (]?.*', r'\1', s) for s in depends]
+        elif line.startswith('Package: ' + pkg):
+        elif line.startswith('Source:'):
+        elif line.startswith('X-Python3-Version:'):
+    elif opts.installed and len(args) == 0:
+    elif opts.requested and len(args) <= 1:
+    elif opts.supported and len(args) == 0:
+            else:
+        else:
+    else:
+                exact_versions.add(v)
+    exact_versions = set()
+                except ControlFileValueError:
+        except Exception:
+            except ImportError:
+                except MissingVersionValueError:
+        except NoOptionError:
+                except ValueError:
+        except ValueError:
+        except ValueError as msg:
+            fd.close()
+                fd = os.popen(' '.join(cmd))
+                fd = p.stdout
+    field."""
+        field = field.strip()
+                filtop = operators[op]
+                fn = versions
+    for field in vstring.split(','):
+    for item in vstring.split(','):
+            for line in fd:
+    for line in open(fn, encoding='utf-8'):
+                for s in glob.glob('/usr/bin/python3.[0-9]')
+            for ver in py_supported_short:
+    from configparser import SafeConfigParser, NoOptionError
+    from optparse import OptionParser
+    global _defaults
+    global _default_version
+    global _old_versions
+    global _supported_versions
+    global _unsupported_versions
+                      help='print just the version number(s)',
+                      help='print the default python3 version',
+                      help='print the installed supported python3 versions',
+                      help='print the python3 versions requested by a build; the argument is either the name of a control file or the value of the X-Python3-Version attribute',
+                      help='print the supported python3 versions',
+    if _defaults and name:
+        if field == 'all':
+        if field in ('current', 'current_ext'):
+            if int(vmaj) < 3:
+        if len(args) == 0:
+        if len(v)>1:
+    if len(vinfo) == 1:
+        if line == '':
+                if line.startswith('Depends:'):
+if __name__ == '__main__':
+    if not _defaults:
+    if not _default_version:
+    if not _default_version in (debian_default, os.path.join('/usr/bin', debian_default)):
+            if not m:
+    if not _old_versions:
+    if not _supported_versions:
+    if not _unsupported_versions:
+            if not v[0]:
+            if not v[1]:
+    if not version_only:
+    if not versions:
+            if op in (None, '='):
+    if opts.default and len(args) == 0:
+                if os.path.basename(s) in supported]
+        if os.path.exists('/usr/share/python3/debian_defaults'):
+            if os.path.isfile(versions):
+            if pkg == 'Source':
+    if pkg == 'Source':
+        if relop_seen:
+    if section == None:
+            if section != 'Source':
+        if sversion == None:
+            if v[0] in py_supported_short:
+                    if version_cmp(ver,v[0]) >= 0 \
+    if version_only:
+    if 'versions' in vinfo:
+    import glob
+    import operator
+import os, re, sys
+                import subprocess
+        line = line.strip()
+    main()
+        m = ve.match(field)
+            _old_versions = []
+_old_versions = None
+            _old_versions = [s.strip() for s in value.split(',')]
+                  '>=': operator.ge, '<=': operator.le,
+                  '<<': operator.lt
+    operators = { None: operator.eq, '=': operator.eq,
+    opts, args = parser.parse_args()
+            op, v = m.group(1), m.group(2)
+    parser.add_option('-d', '--default',
+    parser.add_option('-i', '--installed',
+    parser.add_option('-r', '--requested',
+    parser.add_option('-s', '--supported',
+    parser.add_option('-v', '--version',
+    parser = OptionParser(usage=usage)
+    pass
+                    pass
+            print(default_version(opts.version_only))
+        print(' '.join(installed_versions(opts.version_only)))
+        print(' '.join(supported_versions(opts.version_only)))
+            print(' '.join(vs))
+            print("%s:" % program, msg)
+                                         % program)
+                                     % (program, fn))
+    program = os.path.basename(sys.argv[0])
+                p = subprocess.Popen(cmd, bufsize=1,
+    py_supported_short = supported_versions(version_only=True)
+        raise ControlFileValueError('not a control file')
+            raise MissingVersionValueError('missing X-Python3-Version in control file')
+            raise ValueError
+                raise ValueError('attribute X-Python3-Version not in Source section')
+        raise ValueError('empty set of versions')
+                raise ValueError('error parsing Python-Version attribute')
+            raise ValueError('error parsing Python-Version attribute')
+        raise ValueError('No python3 versions in version string')
+        raise ValueError("the symlink /usr/bin/python3 does not point to the python3 default version. It must be reset to point to %s" % debian_default)
+    """read the debian/control file, extract the X-Python3-Version
+    relop_seen = False
+                relop_seen = True
+        return _default_version
+        return _default_version[6:]
+    return None
+        return _old_versions
+        return ['python%s' % v for v in versions]
+        return _supported_versions
+        return sversion
+        return _unsupported_versions
+        return [v[6:] for v in _old_versions]
+        return [v[6:] for v in _supported_versions]
+        return [v[6:] for v in _unsupported_versions]
+        return [v[6:] for v in versions]
+        return value
+    return version
+        return versions
+    return versions
+    return vinfo
+    return vstring
+            section = None
+    section = None
+            section = pkg
+            section = 'Source'
+                                     shell=False, stdout=subprocess.PIPE)
+                   'show', 'python3-all']
+    supported = supported_versions()
+    supported = supported_versions(version_only=True)
+            _supported_versions = depends
+_supported_versions = None
+            _supported_versions = [s.strip() for s in value.split(',')]
+            sversion = line.split(':', 1)[1].strip()
+    sversion = None
+                    sys.exit(1)
+            sys.exit(1)
+        sys.exit(1)
+                    sys.stderr.write("%s: missing X-Python3-Version in control file, fall back to supported versions\n" \
+                    sys.stderr.write("%s: not a control file: %s, " \
+            sys.stderr.write("%s: %s\n" % (program, msg))
+        sys.stderr.write("usage: %s %s\n" % (program, usage))
+                try:
+            try:
+        try:
+            _unsupported_versions = []
+_unsupported_versions = None
+            _unsupported_versions = [s.strip() for s in value.split(',')]
+    usage = '[-v] [-h] [-d|--default] [-s|--supported] [-i|--installed] [-r|--requested <version string>|<control file>]'
+#! /usr/bin/python3
+                v[0] = py_supported_short[0]
+                v[1] = py_supported_short[-1]
+            value = _defaults.get('DEFAULT', name)
+            value = read_default('old-versions')
+            value = read_default('supported-versions')
+            value = read_default('unsupported-versions')
+        ve = re.compile('(>=|<=|<<|=)? *(\d\.\d)$')
+    version = None
+                version_range = [av for av in version_range if filtop(av ,v)]
+    version_range = set(supported_versions(version_only=True))
+    versions = []
+                versions.append(v[0])
+                        versions.append(ver)
+            versions = args[0]
+            versions = 'debian/control'
+    versions = None
+    versions = [os.path.basename(s)
+        versions=['python'+i for i in versions]
+    versions.sort()
+    versions.sort(version_cmp)
+        versions = vinfo['versions'].intersection(supported)
+    vinfo = {}
+    vinfo = parse_versions(vstring)
+        vinfo.setdefault('versions', set())
+        vinfo['versions'] = exact_versions
+            vinfo['versions'] = exact_versions.union(version_range)
+        v=item.split('-')
+            vmaj, vmin = v.split('.')
+                vs = requested_versions(versions, opts.version_only)
+                    vs = requested_versions(vstring, opts.version_only)
+                    vs = supported_versions(opts.version_only)
+                    vstring = extract_pyversion_attribute(fn, 'Source')
+    vstring = open(fn).readline().rstrip('\n')

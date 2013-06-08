@@ -1,0 +1,22 @@
+    } else {
+	for ( $i = 0 ; $i < $n ; $i++ ) {
+    if ( open(RANDOM, '<', '/dev/random') ||
+    my($n) = @_;
+    my($v, $i);
+	# No real RNG available...
+	 open(RANDOM, '<', '/dev/urandom') ) {
+$pass = Digest::SHA::sha1_base64($salt, $pass);
+($pass, $salt) = @ARGV;
+print '$4$', $salt, '$', $pass, "\$\n";
+	read(RANDOM, $v, $n);
+    return $v;
+    $salt = MIME::Base64::encode(random_bytes(6), '');
+	srand($$ ^ time);
+sub random_bytes($) {
+unless (defined($salt)) {
+use bytes;
+use Digest::SHA;
+use MIME::Base64;
+#!/usr/bin/perl
+	$v = '';
+	    $v .= ord(int(rand() * 256));

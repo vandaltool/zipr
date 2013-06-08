@@ -1,0 +1,309 @@
+__assert_fail
+Bad Argument (%s)
+Bad command (%s), for list of commands type help
+Bad parameter (%s) for option -x
+Bad parameter (%s) in -d option
+BlockQuote
+BOttom, 
+__bss_start
+Canceled.
+Can't access file (%s)
+Can't access rules
+Can't load PICS user "%s".
+Can't open `%s'\n
+Context_new
+Couldn't load home page
+CSApp_registerApp
+CSApp_registerReq
+CSApp_registerUserByName
+CSApp_unregisterApp
+CSApp_unregisterDefaultUser
+CSApp_unregisterReq
+CSLabel_getRatingName
+CSLabel_getRatingStr
+CSLabel_getServiceName
+CSLoadedUser_deleteAll
+CSLoadedUser_enum
+CSLoadedUser_find
+CSLoadedUser_load
+CSLoadedUser_remove
+CSUser_checkPassword
+CSUser_getRatingStr
+CSUserList_enum
+CSUserList_findURL
+CSUser_name
+__ctype_toupper_loc
+? (%d/%d)
+%%%d.%ds%%s
+default.style
+Delete the current document?
+Destination: 
+display_page
+display_titile
+  Documents you have visited: 
+Down or <RETURN> for more,
+%d: %s %s
+Failed to set PICS user to "%s".
+File exists - overwrite?
+FIND <keywords>, 
+Flush Persistent Cache?
+Forward, 
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.7
+Glossary
+GlossaryCompact
+__gmon_start__
+GridStyle.c
+GridText.c
+Heading1
+Heading2
+Heading3
+Heading4
+Heading5
+Heading6
+Heading7
+HTAlert_deleteOpcode
+HTAlert_deleteReply
+HTAlert_find
+HTAlert_interactive
+HTAlert_newReply
+HTAlert_replyMessage
+HTAlert_replySecret
+HTAlert_setInteractive
+HTAnchor_address
+HTAnchor_document
+HTAnchor_findAddress
+HTAnchor_followMainLink
+HTAnchor_hasChildren
+HTAnchor_isIndex
+HTAnchor_mainLink
+HTAnchor_parent
+HTAnchor_setDocument
+HTAnchor_title
+HTAtom_for
+HTBrowse.c
+HTCache_flushAll
+HTCacheMode_setDisconnected
+HTCacheMode_setEnabled
+HTCacheMode_setExpires
+HTChunk_delete
+HTChunk_new
+HTChunk_putc
+HTChunk_puts
+HTDeleteAnchor
+HTDNS_setTimeout
+HTEscape
+HTEventList_loop
+HTEventList_register
+HTEvent_new
+HText addText callback registration failed.
+HText_beginAnchor
+HText element callback registration failed.
+HText link callback registration failed.
+HText_New
+HText new/delete callback registration failed.
+HText_registerCDCallback
+HText_registerElementCallback
+HText_registerLinkCallback
+HText_registerTextCallback
+HTFile_dirAccess
+HTFile_setDirAccess
+HTFile_setDirReadme
+HTFormat_addCoding
+HTFormat_conversion
+HTFWriter_new
+HTGetCurrentDirectoryURL
+HTHistory_back
+HTHistory_canBacktrack
+HTHistory_canForward
+HTHistory_count
+HTHistory_delete
+HTHistory_find
+HTHistory_forward
+HTHistory_list
+HTHistory_new
+HTHistory_position
+HTHistory_removeFrom
+HTHistory_replace
+HTHomeAnchor
+HTIdentityCoding
+HTLib_setSecure
+HTLib_version
+HTLink_destination
+HTList_addObject
+HTList_count
+HTList_delete
+HTList_new
+HTList_removeFirstObject
+HTList_removeObject
+HTLoadAnchor
+HTLoadRelative
+HTLoadRules
+HTLoadSocket
+HTLog_close
+HTLogFilter
+HTLog_open
+HTMemory_calloc
+HTMemory_free
+HTMemory_malloc
+HTMemory_outofmem
+HTMemory_realloc
+HTML_dtd
+HTMLGenerator
+HTMLInit
+HTNet_addAfter
+HTNet_addBefore
+HTNet_count
+HTNet_killAll
+HTOptionsAnchor
+HTPresentation_deleteAll
+HTPresenterInit
+HTProfile_delete
+HTProfile_newClient
+HTPutDocumentRelative
+HTRequest_addRqHd
+HTRequest_anchor
+HTRequest_childAnchor
+HTRequest_context
+HTRequest_delete
+HTRequest_method
+HTRequest_new
+HTRequest_outputFormat
+HTRequest_outputStream
+HTRequest_reloadMode
+HTRequest_setAnchor
+HTRequest_setContext
+HTRequest_setConversion
+HTRequest_setMethod
+HTRequest_setOutputFormat
+HTRequest_setOutputStream
+HTRequest_setParent
+HTRequest_setPreemptive
+HTRequest_setReloadMode
+HTRule_global
+HTRule_parseLine
+HTSACopy
+HTSearchAnchor
+HTSearchString
+HTSetTraceMessageMask
+HTStyleNew
+HTStyleSheetNew
+http://www.w3.org/LineMode/User/CommandLine.html
+http://www.w3.org/LineMode/User/Commands.html
+http://www.w3.org/LineMode/User/QuickGuide.html
+id: %x  obj: %p: 
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+KEYWORDS
+label bureau was not contacted
+labels were out of date
+libc.so.6
+__libc_start_main
+libdl.so.2
+/lib/ld-linux.so.2
+libmd5.so.0
+libm.so.6
+libpics.so.0
+libwwwapp.so.0
+libwwwcache.so.0
+libwwwcore.so.0
+libwwwdir.so.0
+libwwwfile.so.0
+libwwwftp.so.0
+libwwwgopher.so.0
+libwwwhtml.so.0
+libwwwhttp.so.0
+libwwwinit.so.0
+libwwwmime.so.0
+libwwwmux.so.0
+libwwwnews.so.0
+libwwwstream.so.0
+libwwwtelnet.so.0
+libwwwtrans.so.0
+libwwwutils.so.0
+libwwwxml.so.0
+libxmlparse.so.0
+libxmltok.so.0
+LineMode_new
+line->next != ((void *)0)
+line != ((void *)0)
+Listed users:
+Loaded users:
+Local directory is now:
+Mem Cache... Document %p already in memory
+Mem Cache... No fresh document...
+Mem Cache... We only check GET methods
+MemoryCache. Freeing off cached doc.
+message/rfc822
+Name of the new local directory missing.
+-nocache
+  No other documents to recall.
+no ratings in a service
+no services available for document
+no single-labels found
+NOT FOUND
+'nother Window
+/opt/stonesoup/TH-workspace/install/lib
+PICSCallback: odd error code: %d
+PICS cannot set to no name.
+PICS disallowed document: %s
+PICS password was not valid.
+PICS request not found
+PICS set user *canceled*.
+PICS user %s is not allowed to see document: %s
+PICS user "%s" is unknown.
+PICS user "%s" not found in "%s".
+PICSusrs.html
+Please send feedback to <libwww@w3.org>
+ Please type "quit" in full to leave www.
+Preformatted
+Quit, or Help: 
+rating not found
+Read Console... BUFFER OVERRUN
+*** References from this document ***
+-reformat
+Rendering... Change to style %s
+Rendering... No such anchor in this text!
+Rendering... Nothing to select!
+Rendering... Selecting anchor [%d] at char %d, line %d
+Request timed out
+REVALIDATE
+Saving to file `%s'
+service not available
+SGML_new
+split_line
+__sprintf_chk
+%s R %d	%s%s
+  %s's "%s" rating for service %s (%s) did not include %s
+strcasecomp
+strncasecomp
+StyleSheet: No style named `%s'
+%s (y/n) 
+text/html
+There are no references from this document.
+This is the first document in history list
+This is the last document in history list.
+-timeout
+(truncated)
+Unable to load PICS user "%s".
+(Unstyled)
+URL needed
+  Verbose mode %s.
+-version
+__vfprintf_chk
+W3CLineMode
+	W3C Line Mode Browser version %s.
+	W3C Reference Library version %s.
+W3C Reference Software
+Warning: Invalid Reference Number: (%d)
+with address
+www.conf
+www/present
+WWW_TraceFlag
+www/void
+You are reading

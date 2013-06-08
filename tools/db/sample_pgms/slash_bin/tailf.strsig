@@ -1,0 +1,53 @@
+~9<htC<nu5
+9T$4wwso
+bindtextdomain
+cannot allocate %zu bytes
+cannot open "%s" for read
+cannot stat "%s"
+__ctype_b_loc
+dcgettext
+%d%s%jd%s
+__errno_location
+failed to parse number of lines
+__fprintf_chk
+__fxstat64
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ -h, --help          display this help and exit
+incomplete write to "%s" (written %zd, expected %zd)
+inotify_add_watch
+inotify_init
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+localeconv
+ -n, --lines NUMBER  output the last NUMBER lines
+no input file specified
+ -NUMBER             same as `-n NUMBER'
+Options:
+__printf_chk
+__progname
+program_invocation_short_name
+%s: cannot add inotify watch.
+%s: cannot add inotify watch (limit of inotify watches was reached).
+%s: cannot read inotify events
+setlocale
+%s from %s
+__snprintf_chk
+ %s [option] file
+%s: '%s'
+__stack_chk_fail
+__strdup
+__strtoull_internal
+/usr/share/locale
+util-linux
+util-linux 2.20.1
+ -V, --version       output version information and exit
+__xstat64

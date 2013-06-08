@@ -1,0 +1,25 @@
+Can't default to both true and false!
+Debian ischroot, version 4.2.1Copyright (C) 2011 Aurelien Jarno
+default-false
+default-true
+EClTQ3\i
+FAKECHROOT
+FAKECHROOT_BASE
+  -f, --default-false return false if detection fails
+getopt_long
+GLIBC_2.0
+__gmon_start__
+  -h, --help          display this help and exit.
+_IO_stdin_used
+LD_PRELOAD
+libc.so.6
+__libc_start_main
+libfakechroot.so
+/lib/ld-linux.so.2
+or later for copying conditions.  There is NO warranty.
+/proc/1/root
+  -t, --default-true  return true if detection fails
+This is free software; see the GNU General Public License version 2
+Try `ischroot --help' for more information.
+Usage: ischroot [OPTION]
+  -V, --version       output version information and exit.

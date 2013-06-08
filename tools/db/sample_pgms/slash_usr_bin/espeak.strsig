@@ -1,0 +1,90 @@
+%2d  %-12s%s%c  %-17s %-11s 
+a:b:f:g:hk:l:mp:qs:v:w:xXz
+-a <integer>
+	   Amplitude, 0 to 200, default is 100
+-b	   Input text encoding, 1=UTF8, 2=8 bit, 4=16 bit 
+__bss_start
+Can't write to: '%s'
+Can't write to: %s
+	   =<characters> is omitted, all punctuation is spoken.
+compile-debug
+	   Compile pronunciation rules and dictionary from the current
+--compile=<voice name>
+	   directory. <voice name> specifies the language
+espeak_CompileDictionary
+espeak_Info
+espeak_Initialize
+espeak_ListVoices
+espeak [options] ["<words>"]
+espeak_SetParameter
+espeak_SetPhonemeTrace
+espeak_SetPunctuationList
+espeak_SetSynthCallback
+espeak_SetVoiceByName
+espeak_SetVoiceByProperties
+espeak_Synchronize
+espeak_Synth
+eSpeak text-to-speech: %s  Data at: %s
+Failed to allocate memory %d bytes
+Failed to read 
+__fprintf_chk
+-f <text file>   Text file to speak
+getopt_long
+-g <integer>
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+	   higher values indicate a pitch increase (try -k20).
+	   If <language> is omitted, then list all voices.
+If neither -f nor --stdin, then <words> are spoken, or if none then text
+	   Indicate capital letters with: 1=sound, 2=the word "capitals",
+_IO_stdin_used
+--ipa      Write phonemes to stdout using International Phonetic Alphabet
+is spoken from stdin, each line separately.
+_Jv_RegisterClasses
+-k <integer>
+libc.so.6
+__libc_start_main
+libespeak.so.1
+/lib/ld-linux.so.2
+	   Line length. If not zero (which is the default), consider
+	   lines less than this length as end-of-clause
+-l <integer>
+	   List the available voices for the specified language.
+-m	   Interpret SSML markup, and ignore other < > tags
+--path="<path>"
+--phonout="<filename>"
+--pho      Write mbrola phoneme data (.pho) to stdout or to the file in --phonout
+-p <integer>
+	   Pitch adjustment, 0 to 99, default is 50
+__printf_chk
+Pty Language Age/Gender VoiceName       File        Other Langs
+--punct="<characters>"
+-q	   Quiet, don't produce any speech (may be useful with -x)
+%s_%.2d%s
+%sfile '%s'
+-s <integer>
+	   Speak the names of punctuation characters during speaking.  If
+	   Specifies the directory containing the espeak-data directory
+	   Speed in words per minute, 80 to 450, default is 175
+--split="<minutes>"
+__sprintf_chk
+__stack_chk_fail
+	   Starts a new WAV file every <minutes>.  Used with -w
+--stdin    Read text input from stdin instead of a file
+--stdout   Write speech output to stdout
+__strcpy_chk
+%svoice '%s'
+	   Use voice file of this name from espeak-data/voices
+--voices=<language>
+-v <voice name>
+WAVEfmt 
+	   Word gap. Pause between words, units of 10mS at the default speed
+	   Write phoneme output from -x -X --ipa and --pho to this file
+	   Write speech to this WAV file, rather than speaking it directly
+-w <wave file name>
+-x	   Write phoneme mnemonics to stdout
+-X	   Write phonemes mnemonics and translation trace to stdout
+-z	   No final sentence pause at the end of the text

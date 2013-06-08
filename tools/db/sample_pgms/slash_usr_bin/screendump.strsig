@@ -1,0 +1,33 @@
+bindtextdomain
+couldn't read %s
+D$0;|$8s
+dcgettext
+/dev/tty%d
+/dev/vc/%d
+/dev/vcsa
+/dev/vcs/a
+/dev/vcs/a%d
+/dev/vcsa%d
+__errno_location
+Error reading %s
+Error writing screendump
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+kbd 1.15.2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__printf_chk
+setlocale
+%s from %s
+%s: out of memory
+__sprintf_chk
+Strange ... screen is both %dx%d and %dx%d ??
+__strdup
+T$4;t$8sH1
+TIOCGWINSZ
+usage: screendump [n]
+/usr/share/locale

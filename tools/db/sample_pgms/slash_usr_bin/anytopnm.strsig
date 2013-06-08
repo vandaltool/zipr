@@ -1,0 +1,152 @@
+        ;;
+        * )
+# anytopnm - attempt to convert an unknown type of image file to a P?M file.
+    anytopnm "$newfile"
+    atob < "$file" | anytopnm -
+    *Bennet* )
+#!/bin/sh
+    bmptoppm "$file"
+        *.brush | *.brush.* )
+        brushtopbm "$file"
+    *btoa* )
+    *bzip2*compressed*data* )
+    bzip2 -dk < "$file" | anytopnm -
+    *bzip*compressed*data* )
+    bzip -dk < "$file" | anytopnm -
+    # Can't figure out the file type from the magic number,
+    case "$fileextension" in
+case "$filetype" in
+    cat < "$1" > "$file"
+        cat "$file"
+    cat "$file"
+	cat > "$file"
+    *compress* )
+# Copyright (C) 1991 by Jef Poskanzer.
+# copyright notice and this permission notice appear in supporting
+    # disappointed.
+# documentation for any purpose and without fee is hereby granted, provided
+# documentation.  This software is provided "as is" without express or
+        echo "$0: $1: Empty file" 1>&2
+        echo "$0: $1: No such file" 1>&2
+        echo "$0: $1: Not a file" 1>&2
+        echo "$0: $1: Not a readable file" 1>&2
+    echo "       $0 - < infilename > outfilename.pnm" 1>&2
+        echo "$0: unknown file type: $filetype" 1>&2
+    (echo begin 600 $newfile; sed 1d < "$file") | uudecode # #204890
+    echo "  If the infilename is a '-', uses standard input" 1>&2
+    echo "  It automatically determines the format of the input file" 1>&2
+    echo "  This will convert the input file into a PNM file" 1>&2
+    echo "Usage: $0 infilename > outfilename.pnm" 1>&2
+    echo "    with the 'file' command, and acts accordingly" 1>&2
+    esac
+        exit 1
+    exit 1
+fileextension=`echo "$1" | awk '{gsub(" ","");gsub(".*\\\\.",".");print}'`
+file="$tmpdir/atn.stdin"
+filetype=`file "$file" | cut -d: -f2-`
+# Find the filename extension for last-ditch efforts later
+        *.fits | *.fits.* )
+        fitstopnm "$file"
+        *.fs | *.fs.* | *.face | *.face.* )
+        fstopgm "$file"
+        *.g3 | *.g3.* | *.fax | *.fax.* )
+        g3topbm "$file"
+        gemtopbm "$file"
+    *GIF* )
+        *.gif | *.gif.* )
+        giftopnm "$file"
+    giftopnm "$file"
+    *gzip*compressed*data* )
+    gzip --decompress --to-stdout < "$file" | anytopnm -
+        *.hips | *.hips.* )
+        hipstopgm "$file"
+if [ -d "$tmpdir" ] ; then
+    if [ ! -e "$1" ] ; then
+if [ $# -eq 0 -o "$1" = "-" ] ; then
+    if [ ! -f "$1" ] ; then
+        *.iff | *.iff.* | *.ilbm | *.ilbm.* )
+    *IFF*ILBM* )
+if [ $# -gt 1 ] ; then
+    if [ ! -r "$1" ] ; then
+    if [ -z "$1" ] ; then
+        ilbmtoppm "$file"
+    ilbmtoppm "$file"
+        *.img | *.img.* )
+# implied warranty.
+    *JPEG* | *JFIF* )
+        *.JPEG | *.jpeg | *.jpg | *.JPG )
+        jpegtopnm "$file"
+    jpegtopnm "$file"
+    *Lisp* )
+        *.lispm | *.lispm.* )
+        lispmtopgm "$file"
+    lispmtopgm "$file"
+        *.mac | *.mac.* | *.macp | *.macp.* )
+        macptopbm "$file"
+        *.mda | *.mdp )
+        mdatopbm -d -- "$file"
+    mdatopbm -d -- "$file"
+    *MicroDesign* )
+        *.mtv | *.mtv.* )
+        mtvtoppm "$file"
+    newfile="$tmpdir/atn.decode"
+        *.pbm | *.pbm.* | *.pgm | *.pgm.* | *.ppm | *.ppm.* )
+    *PBM* | *PGM* | *PPM* )
+    pbmtext -builtin fixed < "$file"
+    *PC*bitmap*data* )
+    *PC*Paintbrush* )
+        *.pcx | *.pcx.* )
+        pcxtoppm "$file"
+    pcxtoppm "$file"
+# Permission to use, copy, modify, and distribute this software and its
+        *.pi1 | *.pi1.* )
+        pi1toppm "$file"
+        *.pi3 | *.pi3.* )
+        pi3topbm "$file"
+        *.pic | *.pic.* | *.pict | *.pict.* | *.pict2 | *.pict2.* )
+        picttoppm "$file"
+    *pixmap*image*text* )
+    *PNG* )
+        *.png | *.PNG )
+        pngtopnm "$file"
+    pngtopnm "$file"
+# possible.
+        *.qrt | *.qrt.* )
+        qrttoppm "$file"
+        rasttopnm "$file"
+    rasttopnm "$file"
+    rm -rf "$tmpdir";
+        *.r | *.r.* | *.rast | *.rast.* )
+# Sanitize the filename by making our own temporary files as safely as
+        *.spc | *.spc.* )
+        spctoppm "$file"
+        *.spu | *.spu.* )
+        sputoppm "$file"
+    *Sun* | *rasterfile* )
+# Take out all spaces
+    *text* )
+        *.tga | *.tga.* | *.targa | *.targa.* )
+        tgatoppm "$file"
+# that the above copyright notice appear in all copies and that both that
+    # This has to come after all other 'text' files, or you may be
+    *TIFF* )
+        tifftopnm "$file"
+    tifftopnm "$file"
+        *.tif | *.tif.* | *.tiff | *.tiff.* )
+tmpdir=$(mktemp -d -t anytopnm.XXXXXXXXXX) || exit 1 #219019
+    # try the extension.
+    uncompress -c < "$file" | anytopnm -
+    *uuencoded* )
+            *.x11bm | *.x11bm.* | *.bitmap | *.bitmap.* )
+        xbmtopbm "$file"
+        ximtoppm "$file"
+        *.xim | *.xim.* )
+        xpmtoppm "$file"
+    xpmtoppm < "$file"
+        *.xpm | *.xpm.* | *.xpm2 | *.xpm2.* )
+        xwdtopnm "$file"
+        *.xwd | *.xwd.* | *.x10wd | *.x10wd.* | *.x11wd | *.x11wd.* )
+        *.x | *.x.* | *.xbm | *.xbm.* | *.x10bm | *.x10bm.* | \
+        ybmtopbm "$file"
+    ybmtopbm "$file"
+        *.ybm | *.ybm.* | *.face | *.face.* )

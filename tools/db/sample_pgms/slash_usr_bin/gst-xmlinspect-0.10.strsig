@@ -1,0 +1,127 @@
+bin-flags
+__bss_start
+<bufferalloc-function function="%s"/>
+<chain-based function="%s"/>
+clocking-interaction
+couldn't construct element for some reason
+<default>%d</default>
+description
+direction
+element-actions
+element-flags
+element-implementation
+[ELEMENT-NAME]
+element-properties
+element-property
+element-signals
+enum-values
+Error initializing: %s
+<event-function function="%s"/>
+<flag value="%d" nick="%s"/>
+<get-range-based function="%s"/>
+g_get_prgname
+GLIBC_2.0
+g_malloc0
+g_markup_escape_text
+__gmon_start__
+g_object_class_list_properties
+g_object_get_property
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_param_spec_get_blurb
+g_param_spec_get_name
+g_param_spec_get_nick
+g_param_spec_types
+g_printerr
+g_set_prgname
+g_signal_list_ids
+g_signal_query
+gst_bin_get_type
+gst_caps_get_type
+gst_caps_to_string
+_gst_debug_nameof_funcptr
+gst_element_factory_create
+gst_element_factory_find
+gst_element_factory_get_type
+gst_element_get_clock
+gst_element_is_indexable
+gst_element_provides_clock
+gst_element_requires_clock
+gst_init_get_option_group
+gst_object_get_name
+gst_pad_event_default
+gst_pad_get_direction
+gst_pad_get_query_types
+gst_pad_get_query_types_default
+gst_pad_iterate_internal_links_default
+gst_pad_query_default
+gst_plugin_feature_list_free
+gst_query_type_get_details
+g_strdup_printf
+g_strdup_value_contents
+gstreamer-0.10
+gst_registry_get_default
+gst_registry_get_feature_list
+gst_static_caps_get
+gst_version_string
+gst-xmlinspect
+g_type_check_instance_is_a
+g_type_class_ref
+g_type_name
+g_type_parent
+g_value_get_enum
+g_value_get_flags
+g_value_init
+g_value_peek_pointer
+https://launchpad.net/distros/ubuntu/+source/gstreamer0.10
+<indexing-capabilities/>
+_IO_stdin_used
+<iterintlink-function function="%s"/>
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgstreamer-0.10.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+<load function="%s"/>
+long-name
+no such element '%s'
+<object name="%s">
+object-type
+pad-template
+pad-templates
+presence
+Print version information and exit
+<provides-clock name="%s"/>
+<query-function function="%s"/>
+query-type-func
+<query-type-func function="%s">
+<query-type id="%d" nick="%s">%s</query-type>
+<query-type id="%d">unknown</query-type>
+<range min="%d" max="%d"/>
+<range min="%f" max="%f"/>
+<range min="%g" max="%g"/>
+<range min="%ld" max="%ld"/>
+<range min="%lli" max="%lli"/>
+<range min="%llu" max="%llu"/>
+<range min="%lu" max="%lu"/>
+<range min="%u" max="%u"/>
+request-function
+<requires-clock/>
+return-type
+<save function="%s"/>
+setlocale
+sometimes
+%*.*s</%s>
+%*.*s<%s>
+%*.*s<%s>%s</%s>
+<state-change function="%s"/>
+%s-%u.%u
+%s version %u.%u.%u
+<value value="%d" nick="%s"/>
+<?xml version="1.0" encoding="UTF-8" ?>

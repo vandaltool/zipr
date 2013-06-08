@@ -1,0 +1,318 @@
+            ;;
+         ;;
+        ;;
+      -*)
+      *)
+#--------------------------------------
+#----------------------------------------
+#-----------------------------------------
+#---------------------------------------------
+#------------------------------------------------------------
+#-------------------------------------------------------------
+#----------------------------------------------------------------------------
+    1.0 version of the specification.
+    action=install
+    action=uninstall
+A *.desktop file can provide a name and description for an application in
+    A generic description of the application. For example Web Browser
+    # All output to stderr
+    an application launcher.
+An application launcher can be added to the desktop by installing a *.desktop
+An application launcher is represented by a *.desktop file. Desktop files are
+#   and/or sell copies of the Software, and to permit persons to whom the
+An exit code of 0 indicates success while a non-zero exit code indicates
+    an image file or an icon-name. If an icon-name is provided an image lookup
+    application launcher the %f is replaced with the file path of the dropped
+    A required tool could not be found.
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+aspects of *.desktop files are summarized below.
+    A vendor prefix consists of alpha characters ([a-zA-Z]) and is terminated
+       [a-zA-Z]*-*)
+basefile=`basename "$desktop_file"`
+    # Be silent
+#!/bin/sh
+    by name is done in the user's current icon theme. The xdg-icon-resource
+case $1 in
+case $action in
+case "$desktop_file" in
+    case "$file" in
+        case "$parm" in
+    case $parm in
+cat << _MANUALPAGE
+cat << _USAGE
+    check.
+check_common_commands "$@"
+check_common_commands()
+check_input_file()
+            check_input_file "$parm"
+check_output_file()
+# Checks for known desktop environments
+# Checks for shared commands, e.g. --help
+check_vendor_prefix()
+        check_vendor_prefix "$desktop_file"
+                chmod u+x "$x/$basefile"
+    command can be used to install image files into icon themes. The advantage
+Commands
+Comment=Comment
+#   Common utility functions included in all XDG wrapper scripts
+#   copy of this software and associated documentation files (the "Software"),
+#   Copyright 2006, Jeremy White <jwhite@codeweavers.com>
+#   Copyright 2006, Kevin Krammer <kevin.krammer@gmx.at>
+#   Copyright 2009-2010, Fathi Boudra <fabo@freedesktop.org>
+#   Copyright 2009-2010, Rex Dieter <rdieter@fedoraproject.org>
+DEBUG 1 "$action $desktop_file in $desktop_dir $desktop_dir_kde $desktop_dir_gnome"
+defined by the freedesktop.org Desktop Entry Specification. The most important
+Description
+  *.desktop)
+    desktop_dir_gnome="$HOME"
+desktop_dir="$HOME/Desktop"
+        desktop_dir_kde=
+desktop_dir_kde=`kde${KDE_SESSION_VERSION}-config --userpath desktop 2> /dev/null`
+  desktop_dir=`xdg-user-dir DESKTOP`
+  [Desktop Entry]
+desktop_file=
+        desktop_file=$parm
+Desktop Files
+detectDE()
+different values for the same Key depending on the currently selected language.
+        DIR=`dirname "$1"`
+    done
+        done
+    # Don't create $HOME/Desktop if it doesn't exist
+        echo
+        echo "$@"
+  echo "$@" >&2
+    echo 'A vendor prefix consists of alpha characters ([a-zA-Z]) and is terminated' >&2
+        echo "Try 'xdg-desktop-icon --help' for more information." >&2
+            echo "Use 'man xdg-desktop-icon' or 'xdg-desktop-icon --manual' for additional info."
+        echo "Use 'man xdg-desktop-icon' or 'xdg-desktop-icon --manual' for additional info."
+    echo "Use --novendor to override or 'xdg-desktop-icon --manual' for additional info." >&2
+    echo 'with a dash ("-"). An example '"$file_label"' is '"'example-$file'" >&2
+            echo "xdg-desktop-icon 1.0.2"
+        echo "xdg-desktop-icon: $@" >&2
+    echo "xdg-desktop-icon: $file_label '$file' does not have a proper vendor prefix" >&2
+    elif `dbus-send --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.GetNameOwner string:org.gnome.SessionManager > /dev/null 2>&1` ; then DE=gnome;
+    elif [ x"$DESKTOP_SESSION" = x"LXDE" ]; then DE=lxde;
+    elif [ x"$GNOME_DESKTOP_SESSION_ID" != x"" ]; then DE=gnome;
+    elif xprop -root _DT_SAVE_MODE 2> /dev/null | grep ' = \"xfce4\"$' >/dev/null 2>&1; then DE=xfce;
+    else
+    else DE=""
+  Encoding=UTF-8
+Environment Variables
+    Error in command line syntax.
+    esac
+        esac
+                eval 'cp "$desktop_file" "$x/$basefile"'$xdg_redirect_output 
+Examples
+Exec=Command Line
+  Exec=webmirror
+    exit 0
+    exit 1
+    exit 2
+    exit 3
+    exit 4
+    exit 5
+    exit 6
+Exit Codes
+exit_failure_file_missing()
+        exit_failure_file_missing "file '$1' does not exist"
+exit_failure_file_permission_read()
+        exit_failure_file_permission_read "no permission to read file '$1'"
+exit_failure_file_permission_write()
+            exit_failure_file_permission_write "no permission to create file '$1'"
+            exit_failure_file_permission_write "no permission to write to file '$1'"
+exit_failure_operation_failed()
+exit_failure_operation_impossible()
+exit_failure_syntax()
+    exit_failure_syntax "command argument missing"
+    exit_failure_syntax "FILE argument missing"
+            exit_failure_syntax "unexpected argument '$parm'"
+        exit_failure_syntax "unexpected option '$parm'"
+    exit_failure_syntax "unknown command '$1'"
+# Exit script on failure returned by a tool application
+# Exit script on failure to locate necessary tool applications
+# Exit script on insufficient permission to read a specified file
+# Exit script on insufficient permission to write a specified file
+# Exit script on malformed arguments, not enough arguments
+# Exit script on missing file specified on command line
+# Exit script on successfully completing the desired operation
+            exit_success
+exit_success
+exit_success()
+failure. The following failure codes can be returned:
+        fi
+            fi
+file. A *.desktop file consists of a [Desktop Entry] header followed by several
+    file=`basename "$1"`
+    file. If multiple files can be specified on the command line the %F
+    file_label="$2"
+    file or any other type of file.
+    files the %f placeholder should be specified. When a file is dropped on the
+filetype=
+     filetype=desktop
+     filetype=other
+#   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+For a complete oveview of the *.desktop file format please visit http://
+    %f or %F.
+        for x in "$desktop_dir" "$desktop_dir_kde" "$desktop_dir_gnome" ; do
+GenericName=Generic Name
+            --help)
+Icon=Icon File
+  Icon=shinythings-webmirror
+        if [ "$action" = "install" ] ; then
+    if [ ! -d "$desktop_dir_kde" ]; then
+    if [ -e "$1" ]; then
+    if [ ! -e "$1" ]; then
+if gconftool-2 -g /apps/nautilus/preferences/desktop_is_home_dir 2> /dev/null | grep true > /dev/null; then
+    if [ $# -gt 0 ]; then
+    # if it does not exists, check if we are allowed to write on the directory
+if [ -n "$desktop_dir_kde" ]; then
+        if [ -n "$desktop_file" ] ; then
+            if [ -n "$x" ]; then
+    if [ ! -r "$1" ]; then
+        # If so, don't create $HOME/Desktop if it doesn't exist
+    # if the file exists, check if it is writeable
+     if [ "$vendor" = "true" -a "$action" = "install" ] ; then
+        if [ ! -w "$1" ]; then
+        if [ ! -w "$DIR" -o ! -x "$DIR" ]; then
+if xdg-user-dir 2>/dev/null 1>&2; then
+if [ ${XDG_UTILS_DEBUG_LEVEL-0} -lt 1 ]; then
+    if [ x"$KDE_FULL_SESSION" = x"true" ]; then DE=kde;
+    if [ x`readlink -f "$desktop_dir"` != x`readlink -f "$desktop_dir_kde"` ]; then
+if [ -z "$action" ] ; then
+if [ -z "$desktop_file" ] ; then
+#   in all copies or substantial portions of the Software.
+    in several differently themed styles.
+    install)
+  install)
+    installed has a vendor prefix. This option can be used to disable that
+    Installs FILE to the desktop of the current user. FILE can be a *.desktop
+    # Is the KDE desktop dir != $HOME/Desktop ?
+# It also always returns 1 in KDE 3.4 and earlier
+Key=Value lines.
+# kfmclient exec/openURL can give bogus exit value in KDE <= 3.5.4
+kfmclient_fix_exit_code()
+LC_MESSAGES in square brackets behind the Key. This way one can specify
+#   LICENSE:
+    major=`echo $version | sed 's/KDE.*: \([0-9]\).*/\1/'`
+            --manual)
+--manual
+            manualpage
+manualpage()
+_MANUALPAGE
+    minor=`echo $version | sed 's/KDE.*: [0-9]*\.\([0-9]\).*/\1/'`
+        mkdir -p "$desktop_dir_kde"
+                mkdir -p "$x"
+my_umask=077
+Name=Application Name
+  Name[nl]=WebSpiegel
+  Name=WebMirror
+    [ -n "$file_label" ] || file_label="filename"
+    No permission to read one of the files passed on the command line.
+    Normally, xdg-desktop-icon checks to ensure that a *.desktop file to be
+      --novendor)
+--novendor
+Now the xdg-desktop-icon tool can be used to add the webmirror.desktop file to
+    of using an icon-name instead of an absolute path is that with an icon-name
+    One of the files passed on the command line did not exist.
+    open URLs in addition to local files then %u or %U can be used instead of
+    Optional field to specify a tooltip for the application. For example Visit
+#   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# or missing required option.
+    or phrase, preferably the organizations name, for which they hold a
+#   OTHER DEALINGS IN THE SOFTWARE.
+other file on the desktop of the current user.
+#   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+        parm="$1"
+    parm=$1
+#   Permission is hereby granted, free of charge, to any person obtaining a
+    placeholder should be used instead of %f. If the application is able to
+    prevent name conflicts.
+# prints usage information
+#   Refer to the usage() function below for usage.
+    release=`echo $version | sed 's/KDE.*: [0-9]*\.[0-9]*\.\([0-9]\).*/\1/'`
+    Removes FILE from the desktop of the current user.
+         return
+    return 0
+                rm -f "$x/$basefile"
+        save_umask=`umask`
+See Also
+    Setting this environment variable to a non-zero numerical value makes
+# set variable DE to the desktop environments name, lowercase
+several different languages. This is done by adding a language code as used by
+    shift
+        shift
+"shinythings" as its vendor id. In order to add the application to the desktop
+shinythings-webmirror.desktop:
+# Shouldn't happen
+    Show command synopsis.
+    Show the xdg-utils version information.
+    Show this manualpage.
+# Simply return 0 in such case
+#   Software is furnished to do so, subject to the following conditions:
+Synopsis
+    test "$major" -gt 3 && return $1
+    test "$minor" -gt 5 && return $1
+    test "$release" -gt 4 && return $1
+#   The above copyright notice and this permission notice shall be included
+    The action failed.
+    the application icon can be provided in several different sizes as well as
+#   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+    The command line to start the application. If the application can open
+The company ShinyThings Inc. has developed an application named "WebMirror" and
+the desktop:
+The following keys are often used:
+    The icon to use for the application. This can either be an absolute path to
+    The name of the application. For example Mozilla
+there needs to be a .desktop file for the application:
+#   the rights to use, copy, modify, merge, publish, distribute, sublicense,
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+The xdg-desktop-icon program can be used to install an application launcher or
+    This is a mandatory field that indicates that the *.desktop file describes
+    This is a mandatory field to indicate that the *.desktop file follows the
+To add a README file to the desktop as well, the following command can be used:
+#   to deal in the Software without restriction, including without limitation
+    trademark as their vendor prefix. The purpose of the vendor prefix is to
+  Type=Application
+Type=Application
+        umask $my_umask
+        umask $save_umask
+uninstall
+    uninstall)
+  uninstall)
+        usage
+            usage
+#   Utility script to install desktop items on a Linux desktop.
+Value=1.0
+    value increases the verbosity.
+        vendor=false
+vendor=true
+            --version)
+--version
+    version=`kde${KDE_SESSION_VERSION}-config --version 2>/dev/null | grep '^KDE'`
+        [ -w "$desktop_dir" ] || desktop_dir=
+    [ -w "$desktop_dir" ] || desktop_dir=
+    websites on the Internet
+    while [ $# -gt 0 ] ; do
+while [ $# -gt 0 ] ; do
+    with a dash ("-"). Companies and organizations are encouraged to use a word
+would like to add a launcher for for on the desktop. The company will use
+www.freedesktop.org/wiki/Standards/desktop-entry-spec
+[ x"$1" != x"" ] || exit_failure_syntax
+#   xdg-desktop-icon
+xdg-desktop-icon - command line tool for (un)installing icons to the desktop
+    xdg-desktop-icon do more verbose reporting on stderr. Setting a higher
+xdg-desktop-icon { --help | --manual | --version }
+xdg-desktop-icon honours the following environment variables:
+xdg-desktop-icon install [--novendor] FILE
+xdg-desktop-icon install ./shinythings-README
+xdg-desktop-icon install ./shinythings-webmirror.desktop
+xdg-desktop-icon uninstall FILE
+xdg-icon-resource(1)
+    xdg_redirect_output=" >&2"
+    xdg_redirect_output=" > /dev/null 2> /dev/null"
+#@xdg-utils-common@
+XDG_UTILS_DEBUG_LEVEL
+  [ ${XDG_UTILS_DEBUG_LEVEL} -lt $1 ] && return 0;
+  [ -z "${XDG_UTILS_DEBUG_LEVEL}" ] && return 0;
+[ -z "${XDG_UTILS_DEBUG_LEVEL}" ] && unset XDG_UTILS_DEBUG_LEVEL;

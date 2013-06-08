@@ -1,0 +1,35 @@
+%.3s %.3s%3d %.2d:%.2d:%.2d 
+__ctype_b_loc
+__dcgettext
+differs from POSIX standard
+__environ
+Error writing to standard output
+For bug reporting instructions, please see:
+GLIBC_2.0
+GLIBC_2.3
+__gmon_start__
+ gmtoff=%ld
+has fewer than 3 alphabetics
+has more than 6 alphabetics
+<http://www.debian.org/Bugs/>
+_IO_stdin_used
+ isdst=%d
+JanFebMarAprMayJunJulAugSepOctNovDec
+lacks alphabetic at start
+%ld,%ld%c
+_libc_intl_domainname
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+localtime
+setlocale
+SunMonTueWedThuFriSat
+%s: usage is %s [ --version ] [ --help ] [ -v ] [ -c [loyear,]hiyear ] zonename ...
+%s: warning: zone "%s" abbreviation "%s" %s
+%s: wild -c argument %s
+textdomain
+__tzname
+(Ubuntu EGLIBC 2.15-0ubuntu10.4) 
+--version
+@(#)zdump.c	8.9
+zdump %s%s

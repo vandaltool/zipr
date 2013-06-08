@@ -1,0 +1,114 @@
+$0 [options] -e query [-e query...] [filename...]
+allows extensions to be added in the form of functions.
+a pay per incident basis. Alternatively subscribe to the Perl-XML
+are given, the query is done using C<STDIN> as an XML document.
+Be quiet. Output only errors (and no separator) on stderr.
+B<xpath [-s suffix] [-p prefix] [-q] -e query [-e query] ... [file] ...>
+B<xpath> uses the L<XML::XPath|XML::XPath> perl module to make XPath queries
+by Fabien Ninoles <fabien@debian.org> for the Debian Project.
+context for the next query and only the result of the last one is output.
+	context of the next one.
+		else {
+eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
+		$filename = shift @ARGV;
+		$filename = 'stdin';
+			foreach my $node ($nodes->get_nodelist) {
+	foreach my $node ($nodes->get_nodelist) {
+Full support for this module is available from Fastnet Software Ltd on
+Gnu GPL,  or under specific licencing from Fastnet Software Ltd.
+=head1 BUGS
+=head1 DESCRIPTION
+=head1 HISTORY
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+=head2 B<-p prefix>
+=head2 B<-q>
+=head2 B<-s suffix>
+hours into this code, and if someone uses my software in their product
+I expect them to have the courtesy to contact me first.
+    if 0; # not running under some shell
+		if ($ARGV[0] eq "-e") {
+		if ($ARGV[0] eq "-p") {
+		if ($ARGV[0] eq "-q") {
+		if ($ARGV[0] eq "-s") {
+	if (@ARGV >= 1) {
+		if ($new->isa('XML::XPath::NodeSet')) {
+	if ($nodes->isa('XML::XPath::NodeSet')) {
+		if ($nodes->size) {
+	If no filenams are given, supply XML on STDIN.
+in the body of the message. There are lots of friendly people on the
+			last OPTIONS;
+			last unless $nodes->isa('XML::XPath::NodeSet');
+list, including myself, and we'll be glad to get you started.
+L<XML::XPath(3pm)>.
+mailing list by mailing lyris@activestate.com with the text:
+Matt Sergeant, matt@sergeant.org
+module. You may distribute this module under the terms of either the
+	my @curpaths = @paths;
+	my $filename;
+	my $find = shift;
+	my $newnodes = XML::XPath::NodeSet->new;
+		my $new = $xpath->find($find, $node);
+	my ($nodes) = @_;
+	my $nodes = $xpath->find(shift @curpaths);
+my @paths;
+my $pipeline;
+my $PREFIX = "";
+my $quiet = 0;
+my $SUFFIX = "\n";
+	my $xpath;
+	my $xpath = shift;
+			$newnodes->append($new);
+			$nodes = find_more($xpath, shift @curpaths, $nodes);
+	Options:
+	OPTIONS: {
+PARSE: while ((@ARGV >= 1) && ($ARGV[0] =~ /^-./ )) {
+Place C<prefix> preceding each entry. Default is nothing.
+Place C<suffix> at the end of each entry. Default is a linefeed.
+	-p postfix	use prefix instead of nothing.
+			$PREFIX = shift;
+		print $nodes->value, "\n";
+				print $PREFIX, $node->toString, $SUFFIX;
+			print STDERR "Found ", $nodes->size, " nodes in $filename:\n" unless $quiet;
+				print STDERR "-- NODE --\n" unless $quiet;
+			print STDERR "No nodes found in $filename\n" unless $quiet;
+	print STDERR qq(Usage:
+		print STDERR "Query didn't return a nodeset. Value: ";
+		print STDERR "Unknown option ignore: ", shift;
+			push @paths, shift;
+	-q		quiet. Only output the resulting PATH
+	query is done in order, the previous query giving the
+			$quiet = 1;
+	return $newnodes;
+See also L<XML::XPath(3pm)>.
+send him (L<fabien@tzone.org>) any corrections concerning this text.
+			shift;
+software, and as such comes with NO WARRANTY. No dates are used in this
+software. Please don't flame me for this licence - I've put a lot of
+Special free licencing consideration will be given to similarly free
+	-s suffix	use suffix instead of linefeed.
+sub find_more {
+	SUBSCRIBE Perl-XML
+			$SUFFIX = shift;
+The author of this man page is not very fluant in english. Please,
+The context of the first query is always the root of the current document.
+The script takes any number of XPath pointers and tries to apply them
+This man page was added as well as some serious modifications to the script
+This module is copyright 2000 Fastnet Software Ltd. This is free
+to any XML document. The L<XML::XPath|XML::XPath> module aims to comply exactly
+to each XML document given on the command line. If no file arguments
+to the XPath specification at C<http://www.w3.org/TR/xpath> and yet
+unless (@paths >= 1) {
+} until (@ARGV < 1);
+use strict;
+use XML::XPath;
+#!/usr/bin/perl -w
+			warn "Not a nodeset: ", $new->value, "\n";
+When multiple queries exist, the result of the last query is used as
+		while (@curpaths >= 1) {
+xpath - a script to query XPath statements in XML documents.
+		$xpath = XML::XPath->new(filename => $filename);
+		$xpath = XML::XPath->new(ioref => \*STDIN);
+	You must provide at least one query. Each supplementary

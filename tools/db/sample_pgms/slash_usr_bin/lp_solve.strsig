@@ -1,0 +1,372 @@
+		addition of an extra variable, which also helps bound the OF
+		after solve.
+		and the branch-and-bound decisions
+		are dominated by others, also fixes variables at a bound
+	 -B0: Select Lowest indexed non-integer column (default)
+	 -B1: Selection based on distance from the current bounds
+	 -B2: Selection based on the largest current bound
+	 -B3: Selection based on largest fractional value
+	 -B4: Simple, unweighted pseudo-cost of a variable
+	 -B5: This is an extended pseudo-costing strategy based on minimizing
+	 -B6: This is an extended pseudo-costing strategy based on maximizing
+-Bb		BranchReverse branch-and-bound
+-BB		BreadthFirst branch-and-bound
+-b <bound>	specify a lower bound for the objective function
+-Bc		Do bound tightening during B&B based of reduced cost info
+-Bd		Dynamic branch-and-bound
+		before solve.
+-Bf		DepthFirst branch-and-bound
+-bfp <filename>	Set basis factorization package.
+-Bg		Greedy branch-and-bound
+-BG		GubMode branch-and-bound
+-Bi		Initialize pseudo-costs by strong branching
+-Bo		Order variables to improve branch-and-bound performance
+-Bp		PseudoCost branch-and-bound
+Branch & Bound depth: %d
+-Br		Randomize branch-and-bound
+-B <rule>	specify branch-and-bound rule
+-Bs		RestartMode branch-and-bound
+__bss_start
+-Bw		WeightReverse branch-and-bound
+		by others (only one can be non-zero)
+	 -C0: No crash basis
+	 -C2: Most feasible basis
+	 -C3: Least degenerate basis
+-ca		during branch-and-bound, the algorithm chooses branch
+		calculations.
+		Can give you useful solutions even if the total run time
+		can increase numerical instability
+-cc		during branch-and-bound, take the ceiling branch first
+-cf		during branch-and-bound, take the floor branch first
+-C <mode>	basis crash mode
+		constraints; this requires changes to the constraint matrix
+CPU Time for %s: %gs (%gs total since program start)
+CPU times not available on this machine
+-Da <filename>	Do a generic readable data dump of key lp_solve model variables
+		data file name for xli library.
+-Db <filename>	Do a generic readable data dump of key lp_solve model variables
+-d		debug mode, all intermediate results are printed,
+ (default)
+-degenb		anti-degen B&B
+-degenc		use column check to reduce degeneracy
+-degend		dynamic check to reduce degeneracy
+		degenerative problems
+-degenf		anti-degen fixedvars
+-degeni		anti-degen infeasible
+-degenl		anti-degen lostfeas
+-degenn		anti-degen numfailure
+-degenp		anti-degen Limit bound flips
+-degenr		anti-degen Perturbation of the working RHS at refactorization
+-degens		anti-degen stalling
+-degen		use perturbations to reduce degeneracy,
+delete_lp
+-depth <limit>	set branch-and-bound depth limit
+-dual		Prefer the dual simplex for both phases.
+-e <number>	specifies the tolerance which is used to determine whether a
+-epsb <epsb>	set minimum tolerance for the RHS
+-epsd <epsd>	set minimum tolerance for reduced costs
+-epsel <epsel>	set tolerance for rounding values to zero
+-epsp <epsp>	set the value that is used as perturbation scalar for
+Error, Unable to open input file '%s'
+Error, Unrecognized command line argument '%s'
+Feasible solution 
+First MILP    
+		floating point number is in fact an integer.
+-fmps		read from MPS file in free format
+__fprintf_chk
+-f		specifies that branch-and-bound algorithm stops at first found
+-ga <number>	specifies the absolute MIP gap for branch-and-bound.
+-gbas filename	guess basis with variables from filename.
+get_bb_rule
+get_max_level
+get_nameindex
+get_Ncolumns
+get_Nrows
+get_pivoting
+get_presolve
+get_presolveloops
+get_scaling
+get_solutioncount
+get_total_iter
+get_total_nodes
+get_working_objective
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+-g <number>
+-gr <number>	specifies the relative MIP gap for branch-and-bound.
+guess_basis
+guess_basis: Out of memory.
+guess_basis: Unknown variable name %s
+		 -H headername: header name for parameters. By default 'Default'
+-h		prints this message
+-ia		print all intermediate (only non-zero values) valid solutions.
+		 if level not provided (-v) then -v4 (NORMAL) is taken.
+-improve
+	 -improve0: none
+	 -improve1: Running accuracy measurement of solved equations on Bx=r
+	 -improve2: Improve initial dual feasibility by bound flips (default)
+	 -improve4: Low-cost accuracy monitoring in the dual
+	 -improve8: check for primal/dual feasibility at the node level
+Improved MILP 
+-improve <level>	iterative improvement level
+Invalid tolerance %g; 0 < epsilon < 0.5
+_IO_stdin_used
+-i		print all intermediate valid solutions.
+is_SOS_var
+		is too long
+_Jv_RegisterClasses
+libcolamd.so.2.7.1
+libc.so.6
+__libc_start_main
+libdl.so.2
+/lib/ld-linux.so.2
+liblpsolve55.so
+libm.so.6
+List of options:
+-lp		read from LP file (default)
+lp_solve failed
+Mallformed line: %s
+-max		Maximize the lp problem (overrules setting in file)
+-min		Minimize the lp problem (overrules setting in file)
+-mps		read from MPS file in fixed format
+-nocolnames
+-nocolnames	Ignore variable names
+Nodes processed: %.0f
+-noint		Ignore integer restrictions
+-nonames
+-nonames	Ignore variables and constraint names
+-norownames
+-norownames	Ignore constraint names
+-n <solnr>	specify which solution number to return
+Number of equal solutions: %d
+-o0		Don't put objective in basis%s.
+-o1		Put objective in basis%s.
+		on the object function. Can result in faster solving times.
+		options for parameter file:
+		options for xli library.
+Out of memory
+-o <value>	specifies that branch-and-bound algorithm stops when objective
+-parse_only
+-parse_only	parse input file but do not solve
+Parsing input
+	 -piv0: Select first
+	 -piv1: Select according to Dantzig
+	 -piv2: Select Devex pricing from Paula Harris (default)
+	 -piv3: Select steepest edge
+-piva		Temporarily use First Index if cycling is detected.
+-pivf		In case of Steepest Edge, fall back to DEVEX in primal.
+-pivh		Use Harris' primal pivot logic rather than the default.
+-pivla		Scan entering/leaving columns alternatingly left/right.
+-pivll		Scan entering/leaving columns left rather than right.
+-pivm		Multiple pricing.
+-pivr		Adds a small randomization effect to the selected pricer.
+-piv <rule>	specify simplex pivot rule
+-pivt		Use true norms for Devex and Steepest Edge initializations.
+-presolve
+-presolveb
+-presolveb	Attempt to fix binary variables at one of their bounds
+-presolvebnd
+-presolvebnd	Presolve bounds
+-presolvec
+-presolvec	Attempt to reduce coefficients in binary models
+-presolvecol
+-presolvecold
+-presolvecold	Deletes variables (mainly binary), that are dominated
+-presolvecol	presolve problem before start optimizing (columns only)
+-presolved
+-presolved	Presolve duals
+Presolved solution
+-presolvef
+-presolvefd
+-presolvefd	COLFIXDUAL
+-presolvef	Identify implied free variables (releasing their expl. bounds)
+-presolveg
+-presolveg	Reduce (tighten) coef. in integer models based on GCD argument
+-presolvek
+-presolvek	Simplification of knapsack-type constraints through
+-presolvel
+-presolvel	also eliminate linearly dependent rows
+-presolvem
+-presolvem	Merge rows
+-presolve	presolve problem before start optimizing (rows+columns)
+-presolveq
+-presolveq	Direct substitution of one variable in 2-element equality
+-presolver
+-presolver	If the phase 1 solution process finds that a constraint is
+-presolverow
+-presolverowd
+-presolverowd	Idenfify and delete qualifying constraints that
+-presolverow	presolve problem before start optimizing (rows only)
+-presolves
+-presolves	also convert constraints to SOSes (only SOS1 handled)
+-presolveslk
+-presolveslk	IMPLIEDSLK
+-prim		Prefer the primal simplex for both phases.
+		Principally for run difference and debugging purposes
+print_constraints
+print_debugdump
+print_duals
+__printf_chk
+print_lp
+print_objective
+print_scales
+print_solution
+print_tableau
+put_msgfunc
+-rbas filename	read basis from filename.
+read_basis
+		read file with xli library
+read_freemps
+read_mps
+read_params
+read_XLI
+Real solution 
+		redundant then this constraint is deleted
+-rpar filename	read parameters from filename.
+-rparopt
+-rparopt options
+-R		report information while solving the model
+-r <value>	specify max nbr of pivots between a re-inversion of the matrix
+-rxlidata
+-rxlidata datafilename
+-rxliopt
+-rxliopt options
+-rxli xliname filename
+	 -s0: No scaling
+	 -S0: Print nothing
+	 -s1: Geometric scaling (default)
+	 -S1: Only objective value
+	 -s2: Curtis-reid scaling
+	 -S2: Obj value+variables (default)
+	 -S3: Obj value+variables+constraints
+	 -s3: Scale to convergence using largest absolute value
+	 -s4: Numerical range-based scaling
+	 -S4: Obj value+variables+constraints+duals
+	 -S5: Obj value+variables+constraints+duals+lp model
+	 -s5: Scale to convergence using logarithmic mean of all values
+%s %6.1fsec %8g
+	 -S6: Obj value+variables+constraints+duals+lp model+scales
+	 -s6: Scale based on the simple numerical range
+	 -S7: Obj value+variables+constraints+duals+lp model+scales+lp tableau
+	 -s7: Scale quadratic
+-S <detail>	Print solution. If detail omitted, then -S2 is used.
+-se		also do equilibration to scale to the -1..1 range (default).
+set_anti_degen
+set_basis
+set_basiscrash
+set_bb_depthlimit
+set_bb_floorfirst
+set_bb_rule
+set_break_at_first
+set_break_at_value
+set_debug
+set_epsb
+set_epsd
+set_epsel
+set_epsint
+set_epsperturb
+set_epspivot
+set_improve
+set_maxim
+set_maxpivot
+set_minim
+set_mip_gap
+set_obj_bound
+set_obj_in_basis
+set_pivoting
+set_preferdual
+set_presolve
+set_print_sol
+set_scalelimit
+set_scaling
+set_semicont
+set_simplextype
+set_solutionlimit
+set_timeout
+set_trace
+set_use_names
+		Should be < 0.5
+-si		also do Integer scaling (default).
+	      Similar to (the reciprocal of) a cost/benefit ratio
+-simplexdd
+-simplexdd	Set Phase1 Dual, Phase2 Dual.
+-simplexdp
+-simplexdp	Set Phase1 Dual, Phase2 Primal.
+-simplexpd
+-simplexpd	Set Phase1 Primal, Phase2 Dual.
+Simplex pivots: %.0f
+-simplexpp
+-simplexpp	Set Phase1 Primal, Phase2 Primal.
+-s <mode> <scaleloop>	use automatic problem scaling.
+		solution
+%s [options] [[<]input_file]
+-sp		also do power scaling.
+__stack_chk_fail
+Suboptimal solution
+The B&B routine failed
+	      the normal pseudo-cost divided by the number of infeasibilities.
+	      the number of integer infeasibilities
+These branch-and-bound rules can be combined with any of the following:
+These pivot rules can be combined with any of the following:
+These scaling rules can be combined with any of the following:
+This problem is infeasible
+This problem is unbounded
+		This specifies the absolute allowed tolerance
+		This specifies the relative allowed tolerance
+time_elapsed
+-timeout
+-timeoutok
+-timeout <sec>	Timeout after sec seconds when not solution found.
+-time		Print CPU time to parse input and to calculate result.
+		to the program. If close enough, may speed up the
+-trej <Trej>	set minimum pivot value
+-t		trace pivot selection
+Unable to guess basis from provided variables.
+Unable to open file %s
+Unable to read basis file.
+Unable to read model.
+Unable to read parameter file (%s)
+Unable to remove integer conditions because there is at least one SOS constraint
+Unable to set BFP package.
+Unable to set guessed basis.
+Unable to set XLI library (%s).
+Unable to write basis file.
+Unable to write parameter file (%s)
+Usage of %s version %d.%d.%d.%d:
+User aborted
+/usr/lib/lp_solve
+	 -v0: NEUTRAL
+	 -v1: CRITICAL
+	 -v2: SEVERE
+	 -v3: IMPORTANT (default)
+	 -v4: NORMAL
+	 -v5: DETAILED
+	 -v6: FULL
+		value is better than value
+-v <level>	verbose mode, gives flow through the program.
+-wafter		Write model after solve (useful if presolve used).
+-wbas filename	write basis to filename.
+-wfmps filename	write to MPS file in free format
+-wlp filename	write to LP file
+-wmps filename	write to MPS file in fixed format
+-wpar filename	write parameters to filename.
+-wparopt
+-wparopt options
+write_basis
+		write file with xli library
+write_freemps
+write_lp
+write_mps
+write_params
+		write solution file with xli library
+write_XLI
+-wxliopt
+-wxliopt options
+-wxlisol
+-wxlisolopt
+-wxlisolopt options
+-wxlisol xliname filename
+-wxli xliname filename

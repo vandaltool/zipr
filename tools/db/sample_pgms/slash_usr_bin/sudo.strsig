@@ -1,0 +1,284 @@
++Aa:bC:c:D:Eeg:HhiKklnPp:r:Sst:U:u:Vv
+ [-AbEHknPS] [-C fd] [-D level] [-g groupname|#gid] [-p prompt] [-u user name|#uid] [-g groupname|#gid] [VAR=value] [-i|-s] [<command>]
+allocate pty for I/O logging
+  -a type       %s
+background
+bindtextdomain
+  -b            %s
+bsdauth_type
+calling I/O close with errno
+calling I/O close with wait status
+calling policy close with errno
+calling policy close with wait status
+  -C fd         %s
+child stopped, suspending parent
+close all file descriptors >= fd
+closedir
+closefrom
+closefrom=
+command=
+command exited: %d
+command info: %s
+command killed, signal %d
+command stopped, signal %d
+Configure options: %s
+contents of edit session left in %s
+ (core dumped)
+__ctype_b_loc
+D$,9t$ t&
+dcgettext
+D$<#D$D;D$<t
+debug_level
+/dev/null
+/dev/tty
+display help message and exit
+display version information and exit
+ [-D level] -h | -K | -k | -V
+ -e [-AknS] [-C fd] [-D level] [-g groupname|#gid] [-p prompt] [-u user name|#uid] file ...
+edit files instead of running a command
+endutxent
+__errno_location
+error initializing I/O plugin %s
+error reading from pipe
+error reading from signal pipe
+error reading from socketpair
+error reading signal pipe %s
+  -e            %s
+/etc/sudo.conf
+execute command as the specified group
+fatal error, unable to load plugins
+__fdelt_chk
+foreground
+__fprintf_chk
+freeifaddrs
+__fxstat64
+getgrnam
+getgrouplist
+getgroups
+gethostname
+getifaddrs
+getpwnam
+getpwuid
+getrlimit64
+gettimeofday
+getutxline
+  -g group      %s
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.2.4
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+__gmon_start__
+  -h            %s
+  -i [command]  %s
+ignore_ticket
+implied_shell
+inet_ntoa
+inet_ntop
+internal error, emalloc2() overflow
+internal error, erealloc3() overflow
+internal error, tried to emalloc(0)
+internal error, tried to emalloc2(0)
+internal error, tried to erealloc(0)
+internal error, tried to erealloc3(0)
+invalidate timestamp file
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+kill(%d, %d)
+kill parent %d
+killpg(%d, %d)
+  -k            %s
+LD_PRELOAD
+LD_PRELOAD=
+libc.so.6
+__libc_start_main
+libdl.so.2
+/lib/ld-linux.so.2
+libutil.so.1
+lines=%d
+list user's available commands
+ -l[l] [-AknS] [-D level] [-g groupname|#gid] [-p prompt] [-U user name] [-u user name|#uid] [-g groupname|#gid] [command]
+  -l[l] command %s
+load_interfaces: overflow detected
+localhost
+login_class
+login_class=
+login_shell
+mkstemps
+mkstemps64
+must be setuid root
+network_addrs
+no askpass program specified, try setting SUDO_ASKPASS
+noexec_file=
+noninteractive
+non-interactive mode, will not prompt user
+no tty present and no askpass program specified
+  -n            %s
+Only one of the -e, -h, -i, -K, -l, -s, -v or -V options may be specified
+Options:
+parent is in %s, ttymode %d -> %d
+plugin error: missing file list for sudoedit
+policy plugin returns %d
+policy plugin %s does not include a check_policy method
+policy plugin %s does not support listing privileges
+policy plugin %s does not support the -k/-K options
+policy plugin %s does not support the -v option
+  -p prompt     %s
+--prefix=/usr -v --with-all-insults --with-pam --with-fqdn --with-logging=syslog --with-logfac=authpriv --with-env-editor --with-editor=/usr/bin/editor --with-timeout=15 --with-password-timeout=0 --with-passprompt=[sudo] password for %p:  --without-lecture --with-tty-tickets --disable-root-mailer --enable-admin-flag --with-sendmail=/usr/sbin/sendmail --with-timedir=/var/lib/sudo --mandir=/usr/share/man --libexecdir=/usr/lib/sudo
+preserve_environment
+preserve_groups
+preserve_groups=
+preserve group vector instead of setting to target's
+preserve user environment when executing command
+__printf_chk
+/proc/self/fd
+progname
+__progname
+program_invocation_short_name
+  -P            %s
+pututxline
+readdir64
+read password from standard input
+received signal %d
+remove timestamp file completely
+run a login shell as target user
+runas_egid=
+runas_euid=
+runas_gid=
+runas_group
+runas_groups=
+run a shell as target user
+runas_uid=
+runas_user
+run command in the background
+run command (or edit file) as specified user
+run_shell
+  --            %s
+%s: at least one policy plugin must be specified
+  -s [command]  %s
+%s - edit files as another user
+select failed
+selinux_role
+selinux_role=
+selinux_type
+selinux_type=
+sending signal %d to child over backchannel
+sent status to parent
+setegid(%d)
+seteuid(%d)
+seteuid(ROOT_UID)
+setgroups
+set_home
+set HOME variable to target user's home dir.
+setlocale
+setpriority
+setresuid
+setrlimit64
+settings: %s=%s
+set_utmp=
+setutxent
+%s - execute a command as another user
+sigaction
+sigaddset
+sigemptyset
+signal %d from parent
+sigprocmask
+%s: incompatible policy major version %d, expected %d
+%s left unmodified
+%s must be only be writable by owner
+%s must be owned by uid %d
+%s: not a regular file
+snprintf
+__snprintf_chk
+socketpair
+%s: only a single policy plugin may be loaded
+  -S            %s
+%s: short write
+%s%s: %s
+%.*s/%s.XXXXXXXX
+%.*s/%.*sXXXXXXXX%s
+__stack_chk_fail
+stop processing command line arguments
+strcasecmp
+strerror
+strncasecmp
+__strncpy_chk
+strsignal
+SUDO_ASKPASS
+sudoedit
+sudoedit=
+sudoers_io
+sudoers_policy
+sudoers.so
+sudo_mode %d
+Sudo version %s
+%s: unable to find symbol %s
+%s unchanged
+%s: unknown policy type %d
+tcgetattr
+tcgetpgrp
+tcsetattr
+tcsetpgrp
+term_erase
+term_kill
+the `-A' and `-S' options may not be used together
+the argument to -C must be a number greater than or equal to 3
+the argument to -D must be between 1 and 9 inclusive
+the `-U' option may only be used with the `-l' option
+timeout=
+unable to allocate memory
+unable to allocate pty
+unable to change directory to %s
+unable to change root to %s
+unable to change to runas uid (%u, %u)
+unable to change uid to root (%u)
+unable to create pipe
+unable to create sockets
+unable to dlopen %s: %s
+unable to fork
+unable to get group vector
+unable to initialize policy plugin
+unable to open %s
+unable to read temporary file
+unable to run %s
+unable to send status to parent: %s
+unable to set controlling tty
+unable to set effective gid to runas gid %u
+unable to set gid to runas gid %u
+unable to set gid to %u
+unable to set process priority
+unable to set supplementary group IDs
+unable to set terminal to raw mode
+unable to set uid to %u
+unable to write to %s
+unexpected child termination condition: %d
+unexpected reply type on backchannel: %d
+unexpected sudo mode 0x%x
+unknown uid %u: who are you?
+unknown user: %s
+update user's timestamp without running a command
+usage: %s%s
+use_pty=
+use specified BSD authentication type
+use specified password prompt
+/usr/lib/sudo/
+/usr/lib/sudo/sudo_noexec.so
+/usr/share/locale
+/usr/tmp/
+utmp_user=
+  -u user       %s
+ -v [-AknS] [-D level] [-g groupname|#gid] [-p prompt] [-u user name|#uid]
+/var/tmp/
+__vasprintf_chk
+__vfprintf_chk
+  -v            %s
+when listing, list specified user's privileges
+__xstat64
+you may not specify both the `-i' and `-s' options
+you may not specify environment variables in edit mode

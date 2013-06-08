@@ -1,0 +1,56 @@
+        }
+        *)  arg="$arg '$1'" ;;
+	-)  arg="$arg '$1'" ;;
+awk 'BEGIN { line = 0; capture = 0; format=sprintf("'"$format"'",'"$width"') }
+        -awk|-icn|-icon)    format='# %%-%ds' ; subst=' ' ;;
+/^@begin doc/ { capture = 1; next }
+#!/bin/sh
+	case $1 in
+        -c++)    format='// %%-%ds' ;           subst=' ' ;;
+        -c)      format='/* %%-%ds */'          subst='gsub("\\*/", "* /", s)' ;;
+# Copyright 1991 by Norman Ramsey.  All rights reserved.
+/^@defn / { holding[line] = holding[line] "<"substr($0,7)">=" # (line should be blank)
+            defn_pending = 0
+  else holding[line] = holding[line] s
+          } else if (defn_pending != 0) {
+          } else print
+/^@end doc/ { capture = 0; holding[++line] = "" ; next }
+/^@endquote$/ { grab("]]") ; next}
+        esac
+eval "$LIB/nt $opt"
+        -f77)    format='C %%-%ds' ;            subst=' ' ;;
+        -f90)    format='! %%-%ds' ;            subst=' ' ;;
+	-filter) filters=" | $filters $2 " ; shift ;;
+            for (i=0; i<=line && holding[i] ~ /^ *$/; i++) i=i
+            for (; i<=line; i++) printf "@text %s\n@nl\n", comment(holding[i])
+function comment(s) {
+function grab(s) {
+            holding[++line] = ""
+  if (capture==0) print
+        -L*) ;; # deliberately ignore requests for #line
+LIB=/usr/lib/noweb
+            line = 0; holding[0] = ""
+	-lisp|-scm)	    format=';;; %%-%ds' ; subst=' ' ;;
+markup=$LIB/markup opt= arg= filters=
+	-markup) markup="$2" ; shift ;;
+        -matlab) format='%%%% %%-%ds' ;         subst=' ' ;;
+        -ml|-m3) format='(* %%-%ds *)' ;        
+          next  
+/^@nl$/ { if (capture !=0 ) {
+        -*) opt="$opt '$1'" ;;
+	-pascal) format='{ %%-%ds }' ;          subst='gsub("[{}]", "-", s)' ;;
+PATH="$PATH:$LIB" eval "$markup $arg $filters" |
+{ print }' |
+            print ; defn_pending = 1 ; next }
+	    print "@nl"
+/^@quote$/    { grab("[[") ; next}
+    return sprintf(format,s)
+# See file COPYRIGHT for more information.
+# set -x
+    '"$subst"'
+                 subst='gsub("\\*\\)", "* )", s); gsub("\\(\\*", "( *", s)' ;;
+        -tex)    format='%%%% %%-%ds' ;         subst=' ' ;;
+/^@text /     { grab(substr($0,7)); next}
+        -w[0-9][0-9]*)    width=`echo $1 | sed 's/^-w//'` ;;
+while [ $# -gt 0 ]; do
+width=72 subst='gsub("\\*/", "* /", s)' format='/* %%-%ds */'

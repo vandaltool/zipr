@@ -1,0 +1,566 @@
+                     );
+            }
+        }
+############################################################################
+                        "00",
+            070707,
+            070707, $dev, $ino, $mode, $uid, $gid, $nlink, $rdev, $mtime,
+        $| = 1;
+512-byte blocks, but a suffix of "c" specifies that size should be
+Adds current output to "new"-style cpio-format FILE.
+Adds current output to old-style cpio-format FILE.
+Adds current output to tar-format FILE.
+a distinct argument, so it may need to be surrounded by whitespace and/or
+an C<lstat> is done.
+arguments, so they may need to be surrounded by whitespace and/or
+        $atime,$mtime,$ctime,$blksize,$blocks);
+          $atime,$mtime,$ctime,$blksize,$blocks) = (0) x 13;
+          \$atime,\$mtime,\$ctime,\$blksize,\$blocks) = $stat(_);
+        \$atime,\$mtime,\$ctime,\$blksize,\$blocks) = $stat(_);
+                 $blocks,
+    $blocks
+        ++$blocks{$fh};
+C<find(1)>).
+Change directory traversal algorithm from breadth-first to depth-first.
+    chdir $cwd; #sigh
+    chdir $File::Find::dir;
+check option, an C<stat> is done which means the file check applies to the
+        close IN;
+                && (@cmd == 2 || (@cmd == 3 && $cmd[1] eq '-f'))) {
+                && $cmd[$#cmd] eq '{}'
+counted in characters (bytes) and a suffix of "k" specifies that
+        cpio($fh, undef, $nc{$fh});
+        $cpout{$fh} .=
+        $cpout{$fh} .= "\0" if length($cpout{$fh}) & 1;
+        $cpout{$fh} .= "0" x (5120 - length($cpout{$fh}));
+        $cpout{$fh} .= pack("SSSSSSSSLSLa*",
+        $cpout{$fh} .= $text;
+C<-print0>, or C<-ok> is specified, then C<-print> will be added
+$declaresubs
+        $declaresubs .= "sub cpio;\nsub cflushall ();\n";
+            $declaresubs .= "sub doexec (\$\@);\n";
+        $declaresubs .= "sub doexec (\$\@);\n";
+        $declaresubs .= "sub ls ();\n";
+        $declaresubs .= "sub tar;\nsub tflushall ();\n";
+                        defined $linkname ? $linkname : '',
+            $dev & 0777777,
+        ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+            || die "Malformed -perm argument: $onum\n";
+        die "-$_ must have a filename argument\n" unless @ARGV;
+        die "-tar must have a filename argument\n" unless @ARGV;
+        die "Unrecognized switch: -$_\n";
+*dir    = *File::Find::dir;
+Do not descend into the directory currently matched.
+Do not traverse mount points (prunes search at mount-point directories).
+            } else {
+        } else {
+    } else {
+} else {
+    else         { $perms = '?' . $perms; }
+            } elsif (!@ARGV) {
+    elsif (-b _) { $perms = 'b' . $perms; $size = sizemm($rdev); }
+            elsif (-b _) { $typeflag = '4' }
+    elsif (-c _) { $perms = 'c' . $perms; $size = sizemm($rdev); }
+            elsif (-c _) { $typeflag = '3' }
+    elsif (-d _) { $perms = 'd' . $perms; }
+            elsif (-d _) { $typeflag = '5' }
+    } elsif ($_ eq '!') {
+    } elsif ($_ eq ')') {
+    } elsif ($_ eq 'atime') {
+    } elsif ($_ eq 'ctime') {
+    } elsif ($_ eq 'depth') {
+    } elsif ($_ eq 'eval') {
+    } elsif ($_ eq 'exec') {
+    } elsif ($_ eq 'follow') {
+    } elsif ($_ eq 'fstype') {
+    } elsif ($_ eq 'group') {
+    } elsif ($_ eq 'inum') {
+    } elsif ($_ eq 'links') {
+    } elsif ($_ eq 'ls') {
+    } elsif ($_ eq 'mtime') {
+    } elsif ($_ eq 'newer') {
+    } elsif ($_ eq 'nogroup') {
+    } elsif ($_ eq 'nouser') {
+    } elsif ($_ eq 'ok') {
+    } elsif ($_ eq 'perm') {
+    } elsif ($_ eq 'print') {
+    } elsif ($_ eq 'print0') {
+    } elsif ($_ eq 'prune') {
+    } elsif ($_ eq 'size') {
+    } elsif ($_ eq 'tar') {
+    } elsif ($_ eq 'type') {
+    } elsif ($_ eq 'user') {
+    } elsif ($_ eq 'xdev') {
+    } elsif (/^(i)?name$/) {
+    } elsif (/^(i)?path$/) {
+    elsif (-l _) { $perms = 'l' . $perms; $pname .= ' -> ' . readlink($_); }
+    } elsif (/^(n?)cpio\z/) {
+    elsif (-p _) { $perms = 'p' . $perms; }
+            elsif (-p _) { $typeflag = '6' }
+    } elsif ($size) {
+        } elsif (s/k\z//) {
+    elsif (-S _) { $perms = 's' . $perms; }
+equivalent Perl code.  The resulting code is typically faster than
+    eval 'exec $perlpath -S \$0 \${1+"\$@"}'
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+evaluated if PREDICATE1 is false.
+exec() the arguments in OPTIONS in a subprocess; any occurrence of {} in
+        $fh =~ s/\W/_/g;
+file check option, this now applies to the symbolic link itself, i.e.
+File::Find::$find( {wanted => \\&wanted, follow => 1}, $roots);
+File::Find::$find({wanted => \\&wanted}, $roots);
+File name matches specified GLOB wildcard pattern.  GLOB may need to be
+file.  Note that the command "rm" has been special-cased to use perl's
+Filesystem of current path is of type TYPE (only NFS/non-NFS distinction
+file the symbolic link is pointing to. If C<-follow> option follows the
+find2perl is a little translator to convert find command lines to
+	find2perl [paths] [predicates] | perl
+find2perl - translate find command lines to Perl code
+find, File::Find.
+        $find = 'finddepth';
+$flushall
+        $flushall .= "cflushall;\n";
+$flushall .= "exit;\n";
+        $flushall .= "tflushall;\n";
+            flush($fh, \$cpout{$fh}, 5120);
+        flush($fh, \$cpout{$fh}, 5120)
+        flush($fh, \$cpout{$fh}, 5120);
+            flush($fh, \$tarout{$fh}, 10240);
+        flush($fh, \$tarout{$fh}, 10240)
+        flush($fh, \$tarout{$fh}, 10240);
+                        $fname,
+            $fname);
+            $fname . (length($fname) & 1 ? "\0" : "\0\0"));
+                 $fname, "\n";
+    $fname =~ s#^\./##;
+        $fname = 'TRAILER!!!';
+Follow (dereference) symlinks.  The checking of file attributes depends
+        $follow_in_effect= 1;
+            for (@cmd)
+        for (@cmd)
+    for my $fh (keys %cpout) {
+    for my $fh (keys %tarout) {
+    for my $word (@command)
+for (@roots) { $_ = quote($_) }
+# for the convenience of &wanted calls, including -eval statements:
+            $gid & 0777777,
+                                     $group,
+                        $group{$gid},
+Group the given PREDICATES.  The parentheses must be passed as distinct
+Has the perl script eval() the EXPR.  
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+        if 0; #\$running_under_some_shell
+    if (@ARGV) {
+        if ($ARGV[0] eq '-o') {
+        if ($cmd[0] =~m#^(?:(?:/usr)?/bin/)?rm$#
+            if (@cmd == 2) {
+    if ( ! defined $fname ) {
+        if (!defined($fname) || length($prefix) > 155) {
+            if (defined $linkname) { $typeflag = '2' }
+    if ($_ eq '(') {
+if (exists $init{cpio}) {
+if (exists $init{cpio} || exists $init{tar}) {
+if (exists $init{declarestat}) {
+if (exists $init{doexec}) {
+        if exists $init{group};
+if (exists $init{group} || exists $init{ls} || exists $init{tar}) {
+if (exists $init{ls}) {
+        if exists $init{ls} || exists $init{tar};
+            if (exists $init{saw_or}) {
+if (exists $init{tar}) {
+        if exists $init{user};
+if (exists $init{user} || exists $init{ls} || exists $init{tar}) {
+        if (-f _) {
+if ( $follow_in_effect ) {
+    if    (-f _) { $perms = '-' . $perms; }
+    if (length($fname) > 100) {
+            if (length($linkname) > 100) {
+        if ($linkname = $linkseen{$fh, $dev, $ino}) {
+    if (-M _ > 365.25 / 2) {
+        if ($_ =~ /^(?:name|print|prune|exec|ok|\(|\))/) {
+    if ($nc eq 'n') {
+    if ($nlink > 1) {
+    if ($ok) {
+        if ($onum =~ s/^-//) {
+if ($print_needed) {
+      if $running_under_some_shell;
+        if (s/c\z//) {
+    if ($size) {
+    if (!$statdone) {
+    if ($text ne '') {
+    if ($t !~ /&&\s*$/) { $t .= '&& ' }
+        if ($type eq 'nfs') {
+    if ($typeflag eq '0') {
+implicitly.
+        --$indent_depth;
+        $indent_depth++;
+        $init{cpio} = 1;
+            $init{declarestat} = 1;
+            $init{delayedstat} = 1;
+            $init{doexec} = 1;
+        $init{doexec} = 1;
+        $initfile .= "open($fh, " . quote('> ' . $file) .
+        $init{group} = 1;
+        $init{ls} = 1;
+        $initnewer .= "my $newername = -M " . quote($file) . ";\n";
+            $init{saw_or} = 1;
+        $init{tar} = 1;
+        $init{user} = 1;
+            $ino,
+            $ino & 0777777,
+is implemented).
+=item C<-atime N>
+=item C<-cpio FILE>
+=item C<-ctime N>
+=item C<-depth>
+=item C<-eval EXPR>
+=item C<-exec OPTIONS ;>
+=item C<-follow>
+=item C<-fstype TYPE>
+=item C<-group GROUP>
+=item C<-iname GLOB>
+=item C<-inum INUM>
+=item C<-ipath GLOB>
+=item C<-links N>
+=item C<-ls>
+=item C<-mtime N>
+=item C<-name GLOB>
+=item C<-ncpio FILE>
+=item C<-newer FILE>
+=item C<-nogroup>
+=item C<-nouser>
+=item C<-ok OPTIONS ;>
+=item C<-path GLOB>
+=item C<-perm -PERM>
+=item C<-perm PERM>
+=item C<! PREDICATE>
+=item C<PREDICATE1 -o PREDICATE2>
+=item C<PREDICATE1 PREDICATE2>
+=item C<( PREDICATES )>
+=item C<-print>
+=item C<-print0>
+=item C<-prune>
+=item C<-size N>
+=item C<-tar FILE>
+=item C<-type X>
+=item C<-user USER>
+=item C<-xdev>
+        $len += 10240 if $len < 1024;
+        $len = 10240 - length($tarout{$fh});
+            length($fname)+1,
+            length($fname)+1, $size,
+Like C<-name>, but the match is case insensitive.
+Like C<-path>, but the match is case insensitive.
+Like -exec, but first prompts user; if user's response does not begin
+Like -print, but terminates with \0 instead of \n.
+            $linkname = readlink($_);
+            $linkseen{$fh, $dev, $ino} = $fname;
+            $l = length($cpout{$fh});
+            $l = length($tarout{$fh});
+    local (*IN);
+            { local $" = "','"; $out .= "doexec(0, '@cmd')"; }
+        { local $" = "','"; $out .= "doexec(1, '@cmd')"; }
+            { local($statdone) = 1; $out .= "\n" . tab . "||\n"; }
+Low-order 9 bits of permission match octal value PERM.
+                                                 $mday,
+            $mode & 0777777,
+    $mode >>= 3;
+                                              $moname[$mon],
+            $mtime,
+my %blocks = ();
+        my @cmd = ();
+    my @command = @_; # copy so we don't try to s/// aliases to constants
+my %cpout = ();
+my $cwd = Cwd::cwd();
+my $decl = '';
+my $declaresubs = "sub wanted;\n";
+    my ($dev,$ino,$mode,$nlink,$uid,$gid);
+    my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+        my $fh = 'FH' . $file;
+    my ($fh, $fname) = @_;
+    my ($fh, $fname, $nc) = @_;
+    my ($fh, $varref, $blksz) = @_;
+        my $file = shift;
+        (my $filetest = shift) =~ tr/s/S/;
+my $find = "find";
+my $flushall = '';
+my ($follow_in_effect,$Skip_And) = (0,0);
+        my $gname = shift;
+    my $group = $group{$gid} || $gid;
+    my $header = pack("a100a8a8a8a12a12a8a1a100a6a2a32a32a8a8a155",
+my $indent_depth = 1;
+my %init = ();
+my $initfile = '';
+my $initnewer = '';
+        my $l;
+    my $len;
+    my $linkname;
+my %linkseen = ();
+    my $l = length($header) % 512;
+my @moname = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+my %nc = ();
+        my $newername = 'AGE_OF' . $file;
+        my $n = 'int(((-s _) + 511) / 512)';
+    my $ok = shift;
+        my $old = select(STDOUT);
+        my $onum = shift;
+my $out = '';
+(my $perlpath = <<'/../') =~ s/\s*\z//;
+    my $perms = $rwx[$mode & 7];
+    my $pname = $name;
+    my $prefix = '';
+    my ($pre, $n) = @_;
+my $print_needed = 1;
+        my $prog = shift;
+    my $rdev = shift;
+my @roots = ();
+my $roots = join(', ', @roots);
+my @rwx = qw(--- --x -w- -wx r-- r-x rw- rwx);
+    my ($sec,$min,$hour,$mday,$mon,$timeyear) = localtime($mtime);
+            my $slop = length($tarout{$fh}) % 512;
+my $startperl = "#! $perlpath -w";
+            my $statcall = '(($dev,$ino,$mode,$nlink,$uid,$gid) = '
+my $stat = 'lstat';
+    my $string = shift;
+    my $tabstring;
+my %tarout = ();
+    my $text = '';
+    my $t = tab;
+    my $typeflag = '0';
+        my $type = shift;
+        my $uname = shift;
+    my $user = $user{$uid} || $uid;
+    my $x = shift;
+*name   = *File::Find::name;
+    $nc{$fh} = $nc;
+Negate the sense of the following predicate.  The C<!> must be passed as
+        $newername = '$' . $newername;
+        $newername =~ s/\W/_/g;
+        next;
+            $n = 'int(-s _)';
+            $n = 'int(((-s _) + 1023) / 1024)';
+   * N is not prefixed with either + or -: match only values equal to N
+   * N is prefixed with a +: match values greater than N
+   * N is prefixed with a -: match values less than N
+                            $nlink,
+            $nlink & 0777777,
+        no strict qw/refs/;
+not evaluated if PREDICATE1 is true.
+    $n =~ s/ 0*(\d)/ $1/;
+    $n =~ s/^-/< / || $n =~ s/^\+/> / || $n =~ s/^/== /;
+on the position of the C<-follow> option. If it precedes the file
+        $onum =~ /^-?[0-7]+$/
+            $onum =~ s/^0*/0/;
+            $onum = sprintf("0%o", oct($onum) & 07777);
+            open(IN, "./$_\0") || do {
+OPTIONS will first be substituted with the path of the current
+        or $blocks = int(($size + 1023) / 1024);
+            $out .= '($dev < 0)';
+            $out .= '($dev >= 0)'; #XXX
+    $out = <<'END' . $out;
+            $out .= "((\$mode & 0777) == $onum)";
+            $out .= "((\$mode & $onum) == $onum)";
+            $out .= "\n";
+    $out .= "\n" . $t . 'print("$name\n")';
+$out =~ s/lstat\(\$_\)/lstat(_)/;
+        $out .= tab . "!";
+        $out .= tab . ")";
+        $out .= tab;
+        $out .= tab . "cpio(*$fh, \$name, '$1')";
+        $out .= tab . "eval {$prog}";
+        $out .= tab . '!exists $gid{$gid}';
+        $out .= tab . '!exists $uid{$uid}';
+        $out .= tab . '$File::Find::name =~ /' . fileglob_to_re(shift) . "/s$1";
+        $out .= tab . '($File::Find::prune = 1)';
+        $out .= tab . '!($File::Find::prune |= ($dev != $File::Find::topdev))'
+        $out .= tab . '/' . fileglob_to_re(shift) . "/s$1";
+        $out .= tab . "-$filetest _";
+        $out .= tab . "(\$gid == \$gid{'$gname'})";
+        $out .= tab . "ls";
+        $out .= tab . "(-M _ < $newername)";
+        $out .= tab . "(\n";
+        $out .= tab . n('$ino', shift);
+        $out .= tab . n('int(-A _)', shift);
+        $out .= tab . n('int(-C _)', shift);
+        $out .= tab . n('int(-M _)', shift);
+        $out .= tab . n($n, $_);
+        $out .= tab . n('$nlink', shift);
+        $out .= tab . 'print("$name\0")';
+        $out .= tab . 'print("$name\n")';
+        $out .= tab . "tar(*$fh, \$name)";
+        $out .= tab . "(\$uid == \$uid{'$uname'})";
+            $out .= " &&" unless $Skip_And || $ARGV[0] eq ')';
+                $out .= 'unlink($_)';
+                $out .= '(unlink($_) || 1)';
+                $out .= '(unlink($_) || warn "$name: $!\n")';
+Path name matches specified GLOB wildcard pattern.
+"paths" are a set of paths where find2perl will start its searches and
+                      $perms,
+    $perms = $rwx[$mode & 7] . $perms;
+                                                         $pname;
+"predicates" are taken from the following list.
+Predicates which take a numeric argument N can come in three forms:
+                        $prefix,
+        ($prefix, $fname) = ($fname =~ m#\A(.*?)/(.{,100})\Z(?!\n)#);
+    "($pre $n)";
+        print $blocks{$fh} * 10, " blocks\n";
+        print "@command";
+    print <<'END';
+print <<'END';
+print <<"END";
+    printf "%5lu %4ld %-10s %3d %-8s %-8s %8s %s %2d %5s %s\n",
+    print '    $gid{$name} = $gid{$gid} = $gid;', "\n"
+    print '    $group{$gid} = $name unless exists $group{$gid};', "\n"
+print $initfile, "\n" if $initfile ne '';
+print $initnewer, "\n" if $initnewer ne '';
+    print <<'INTRO', <<"SUB", <<'END';
+    print "my (%gid, %group);\n";
+    print "my (%uid, %user);\n";
+	$print_needed = 0;
+    print "}\n\n";
+Print out path of file (always true). If none of C<-exec>, C<-ls>,
+    print '    $uid{$name} = $uid{$uid} = $uid;', "\n"
+    print '    $user{$uid} = $name unless exists $user{$uid};', "\n"
+    print "while (my (\$name, \$pw, \$gid) = getgrent) {\n";
+    print "while (my (\$name, \$pw, \$uid) = getpwent) {\n";
+        $prog =~ s/'/\\'/g;
+*prune  = *File::Find::prune;
+            { push(@cmd, shift) }
+    push(@roots, shift);
+                     qq{) || die "Can't open $fh: \$!\\n";\n};
+quoted from interpretation by the shell using a backslash (just as with
+quoted to avoid interpretation by the shell (just as with using
+            $rdev & 0177777,
+                        $rdev & 0xff,
+                        ($rdev >> 8) & 0xff,
+                return;
+            return;
+    return !$?;
+        return 0 unless <STDIN> =~ /^y/;
+@roots = (curdir()) unless @roots;
+running find itself.
+    s/^-// || /^[()!]/ || die "Unrecognized switch: $_\n";
+see below).
+        select($old);
+# Set the variable \$File::Find::dont_use_nlink if you're using AFS,
+                { s/'/\\'/g }
+            { s/'/\\'/g }
+            shift;
+        $_ = shift;
+        shift;
+    $_ = shift;
+            shift if $ARGV[0] eq '-a';
+Simulates C<-exec ls -dils {} ;>
+# since AFS cheats.
+                                          $size,
+            $size,
+            $size = 0;
+    $size = 0 if $typeflag ne '0';
+            $size = 0 unless defined $text;
+size should be counted in 1024-byte blocks.
+        $Skip_And= 1;
+          sprintf("%06o%06o%06o%06o%06o%06o%06o%06o%011lo%06o%011lo%s\0",
+                        sprintf("%11o ", $mtime),
+                        sprintf("%11o ", $size),
+    sprintf("%3d, %3d", ($rdev >> 8) & 0xff, $rdev & 0xff);
+                        sprintf("%7o ", $gid  & 0777777),
+                        sprintf("%7o ", $mode &    0777),
+                        sprintf("%7o ", $uid  & 0777777),
+$startperl
+                         . $stat . '($_))';
+            $statdone = 0 if $indent_depth == 1 && exists $init{delayedstat};
+            $statdone = 1;
+        $stat = 'stat';
+    "'$string'";
+    $string =~ s/'/\\'/g;
+    $string =~ s/\\/\\\\/g;
+sub cflushall () {
+sub cpio {
+sub doexec ($@) {
+sub fileglob_to_re ($) {
+sub fileglob_to_re ($);
+sub flush {
+sub ls () {
+sub n ($$) {
+sub n ($$);
+sub quote ($) {
+sub quote ($);
+sub sizemm {
+    substr($header, 148, 8) = sprintf("%7o ", unpack("%16C*", $header));
+    substr($perms, 2, 1) =~ tr/-x/Ss/ if -u _;
+    substr($perms, 5, 1) =~ tr/-x/Ss/ if -g _;
+    substr($perms, 8, 1) =~ tr/-x/Tt/ if -k _;
+        substr($$varref, 0, $blksz) = '';
+sub tab () {
+sub tab ();
+sub tar {
+sub tflushall () {
+sub wanted {
+    system @command;
+        syswrite($fh, $$varref, $blksz);
+    $tabstring;
+                $tabstring .= "(\$nlink || $statcall) &&\n" . $tabstring;
+    $tabstring =~ s/^\s+/ / if $out =~ /!$/;
+                $tabstring .= "$statcall &&\n" . $tabstring;
+    $tabstring = "\t" x ($indent_depth/2) . ' ' x ($indent_depth%2 * 4);
+    $tarout{$fh} .= "\0" x (512 - $l) if $l;
+            $tarout{$fh} .= "\0" x (512 - $slop) if $slop;
+        $tarout{$fh} .= "\0" x $len;
+    $tarout{$fh} .= $header;
+            $text = readlink($_);
+The bits specified in PERM are all set in file's permissions.
+The file's type matches perl's C<-X> operator.
+                                                     $timeyear,
+        $timeyear += 1900;
+        $timeyear = sprintf("%02d:%02d", $hour, $min);
+                     "too long for tar output: $linkname\n";
+# Traverse desired filesystems
+True file's inode number is INUM.
+True if _both_ PREDICATE1 and PREDICATE2 are true; PREDICATE2 is not
+True if either one of PREDICATE1 or PREDICATE2 is true; PREDICATE2 is
+True if file's group is GROUP.
+True if file's group is not in group database.
+True if file's owner is not in password database.
+True if file's size matches N (see below) N is normally counted in
+True if (hard) link count of file matches N (see below).
+True if last-access time of file matches N (measured in days) (see
+True if last-changed time of file's inode matches N (measured in days,
+True if last-modified time of file matches N.
+True if last-modified time of file matches N (measured in days, see below).
+True if USER is owner of file.
+                        $typeflag,
+            $typeflag = '1';
+            $uid & 0777777,
+unlink() function instead (as an optimization).  The C<;> must be passed as
+use Cwd ();
+use File::Find ();
+use File::Spec::Functions 'curdir';
+                                $user,
+                        $user{$uid},
+use strict;
+use vars qw/*name *dir *prune/;
+use vars qw/$statdone/;
+using C<find(1)>).
+/usr/bin/perl
+#!/usr/bin/perl
+                        "ustar\0",
+                warn "$0: omitting file with linkname ",
+            warn "$0: omitting file with name too long for tar output: ",
+                warn "Couldn't open $fname: $!\n";
+while (@ARGV) {
+while ($ARGV[0] =~ /^[^-!(]/) {
+        while (@ARGV && $ARGV[0] ne ';')
+    while (length($$varref) >= $blksz) {
+            while ($l = length($cpout{$fh})) >= 5120;
+            while ($l = length($tarout{$fh})) >= 10240;
+        while (sysread(IN, $cpout{$fh}, 5120 - $l, $l)) {
+        while (sysread(IN, $tarout{$fh}, 10240 - $l, $l)) {
+with a y, skip the exec.  The C<;> must be passed as
+        { $word =~ s#{}#$name#g }
+                        ' 'x8,
+    $x =~ s#([?*])#.$1#g;
+    $x =~ s#([./^\$()+])#\\$1#g;
+    "^$x\\z";

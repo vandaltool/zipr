@@ -1,0 +1,447 @@
+                 
+------------ 
+---------------------------
+---------------------------------------
+----------------------------------------
+--------------------------------------------------
+---------------------------------------------------------
+	 ---------
+	 ---------- 	 ----------- 	 ---------
+	 -----------
+	 -------------------------
+	 %2d Rel ( %6d, %6d) -> Abs ( %6d, %6d)
+	 %2d: %s
+	 %4d. advWid: %4d, LSBear: %4d
+	 %4d. advWid: %4d, TSBear: %4d
+	 %4d. 	 %d
+	 %4d. LSbear: %4d
+	 %4d. TSBear: %4d
+	 achVendID:		 '%s'
+	 advanceHeightMax: %d
+	 advanceWidthMax:	 %d
+		 Arm Style:	 %d 	 '%s'
+	 ascent:	 %d
+	 Bytes in subtable 	 %d
+Can't open dumping file
+Can't open ttc file %s
+Can't open ttf file %s
+	 capHeight  	 %d
+	 caretOffset:	 %d
+	 caretSlopeRise: %d
+	 caretSlopeRise:	 %d
+	 caretSlopeRun: %d
+	 caretSlopeRun:		 %d
+		Char 0x%04x -> Index %d
+		   Char %2x -> Index %d
+		 Char %3d -> Index %4d 
+	 characterComplement 0x
+		 CharSetId 	 %d
+	 checkSumAdjustment:	 0x%08x
+		 'cmap' Offset: 0x%08x
+'cmap' Table - Character to Glyph Index Mapping Table
+	 'cmap' version: %d
+	 CodePage Range 1( Bits 0 - 31 ):	 0x%08x
+	 CodePage Range 2( Bits 32- 63 ):	 0x%08x
+(Composite)
+Constant/Pointed
+Constant/Serifed
+Constant/Small
+Constant/StandardConstant/LargeDucking/Small
+Constant/Trimmed
+		 Contrast:	 %d 	 '%s'
+	 Coordinates
+Copyright 1996-1998 ollie@ms1.hinet.net 
+	 Coverage bits 	 0x%x 
+	 created:
+__ctype_b_loc
+'cvt ' Table - Control Value Table
+	  %d: %2d
+ D = %6d,
+	 %d. 	 %d
+	 %d. 		 %d
+		 %d 		 %d 		 %d
+Decorative
+	 descent:	 %d
+	 # device records:	 %d
+	 DevRec  %d: ppem =  %d, maxWid =  %d
+D$(f9D$$
+	 %d: Flags:	 0x%x
+	 %d.  Number of Hgt Records %d
+		 %d. Pel Height= %d
+Ducking/Large
+Ducking/Standard
+Dumping File:%s
+		 EcodingID:  %2d
+ En = %04x,
+		 EncodingID:	 %d
+	 Ended at 0x%08x
+	 Ending Y Pel Height %d
+	 EndPoints
+		 entryCount 	 %d
+		 Entry Count: %d
+		 entrySelector:	 %d
+	 Entry Selector  %d
+Error Getting CHAR
+Error readind achVendID
+Error readind PANOSE
+Error reading loca data
+Error when getting CVT
+Error when getting endCount
+Error when getting endPtsOfContours
+Error when getting glyphIndexArray 
+Error when getting idDelta
+Error when getting idRangeOffset
+Error when getting instructions
+Error when getting Name Record Data
+Error when getting Offset
+Error when getting PREP
+Error when getting startCount
+Error when getting subHeaderKeys 
+Error when getting yPels
+Error when loading instructions
+Error when reading Table Direcotry Offset/n
+Even Width
+Exaggerated
+Extra-Bold
+Extra-condensed
+Extra-expanded
+Extra-light
+		 Family Kind:	 %d 	 '%s'
+	 fileName   	 
+		 First Byte:	 %2x
+		 firstCode 	 0x%04x
+		 First Code: 0x%04x
+	 flags:			 0x%04x
+	 fontDirectionHint:	 %d
+	 fontNumber 	 %d (0x%x) 
+	 fontReversion:		 %2d.%2d
+		 Format 0 - Byte encoding table
+	 Format 2.0:  Non-Standard (for PostScript) TrueType Glyph Set.
+		 Format 2 - High-byte mapping through table
+		 Format 4 - Segment mapping to delta values
+		 Format 6 - Trimmed table mapping
+	 Format:		 %d
+__fprintf_chk
+Fseek Failed
+Fseek Failed in ttfLOADCMAP 
+Fseek Failed in ttfLoadCMAP0 
+Fseek Failed in ttfLoadCMAP2 
+Fseek Failed in ttfLoadCMAP4 
+Fseek Failed in ttfLoadCMAP6 
+Fseek Failed in ttfLoadCompositeGlyph
+Fseek Failed in ttfLoadCVT 
+Fseek Failed in ttfLoadEncodingTable 
+Fseek Failed in ttfLoadGASP 
+Fseek Failed in ttfLoadGLYF
+Fseek Failed in ttfLoadHDMX 
+Fseek Failed in ttfLoadHEAD 
+Fseek Failed in ttfLOADHMTX 
+Fseek Failed in ttfLoadKERN 
+Fseek Failed in ttfLOADLOCA 
+Fseek Failed in ttfLoadLTSH 
+Fseek Failed in ttfLOADNAME 
+Fseek Failed in ttfLoadNameRecord 
+Fseek Failed in ttfLoadPOST
+Fseek Failed in ttfLoadPREP 
+Fseek Failed in ttfLoadSimpleGlyph
+Fseek Failed in ttfLoadSubTable
+Fseek Failed in ttfLoadVDMX 
+Fseek Failed in ttfLoadVHEA 
+Fseek Failed in ttfLOADVMTX 
+	 fsSelection:		 0x%04x 	 '%s'
+	 fsType:		 %d
+	 gasp Range %d
+'gasp' Table - Grid-fitting And Scan-conversion Procedure
+'gasp' version:	 %d
+ gId# = %d
+ gId# = N/A
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+		 Glyf %3d  -> Mac Glyph # %3d
+		 Glyf %3d  -> PSGlyf Name # %3d, '%s'
+	    Glyf Index:	 %d
+Glyph %6d.
+	 glyphDataFormat:	 %d
+		 glyphIdArray[%d] = %4d
+		 glyphIdArray[%d] =  %d
+	 Glyph # 	 Threshold
+__gmon_start__
+Gradual/Diagonal
+Gradual/Horizontal
+Gradual/Transitional
+Gradual/Vertical
+'hdmx' Table - Horizontal Device Metrics
+	 'hdmx' version:	 %d
+'head' Table - Font Header
+	 'head' version:	 %2d.%2d
+'hhea' Table - Horizontal Header
+	 'hhea' version:	 %2d.%2d
+High/PointedHigh/Serifed
+High/Trimmed
+'hmtx' Table - Horizontal Metrics
+		 idDelta 	 %d
+		 idRangeOffset 	 0x%04x
+	 Idx %6d -> GlyphOffset 0x%08x
+	 indexToLocFormat:	 %d
+ in __FILE__:__LINE__
+_IO_stdin_used
+	 isFixedPitch:		 %ud
+	 italicAngle:		 %d.%d
+'kern' Table - Kerning Data
+'kern' Version:	 %d
+		 LanguageID:	 %d
+	 Left Glyph 	 Right Glyph 	 Kern Move
+		 Length:  %6d
+		 Length:	 %d
+	 Length of Instructions: %2d
+		 Lettreform:	 %d 	 '%s'
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+	 lineGap:	 %d
+'loca' Table - Index to Location
+	 lowestRecPPEM:		 %d
+Low/Serifed
+Low/TrimmedLow/Pointed
+'LTSH' Table - Linear Threshold Table
+'LTSH' Version:	 %d
+	 macStyle bits:		 0x%04x
+	 magicNumber:		 0x%08x
+	 maxCompoenetDepth:	 %d
+	 maxComponentElements:	 %d
+	 maxCompositeContours:	 %d
+	 maxCompositePoints:	 %d
+	 maxContours:		 %d
+	 maxFunctionDefs:	 %d
+	 maxInstructionDefs:	 %d
+	 maxMemType1:		 %ud
+	 maxMemType42:		 %ud
+	 maxPoints:		 %d
+'maxp' Table - Maximum Profile
+	 'maxp' version:	 %2d.%2d
+	 maxSizeOfInstructions:	 %d
+	 maxStackElements:	 %d
+	 maxStorage:		 %d
+	 maxTwilightPoints:	 %d
+	 maxZones:		 %d
+Medium High
+Medium Low
+	 metricDataFormat:	 %d
+		 Midline:	 %d 	 '%s'
+	 minBottomBearing: %d
+	 minLeftSideBearing:	 %d
+	 minMemType1:		 %ud
+	 minMemType42:		 %ud
+	 minRightSideBearing:	 %d
+	 minTopSideBearing: %d
+	 modified:
+Monospaced
+		 NameID:	 %d
+Name table %3d.	
+'name' Table - Naming Table
+No FitStraight Arms/Horizontal
+Non-Straight Arms/Double Serif
+Non-Straight Arms/Horizontal
+Non-Straight Arms/Single Serif
+Non-Straight Arms/Vertical
+Non-Straight Arms/Wedge
+NO Overlap   
+Normal/Boxed
+Normal/Contact
+Normal/Flttened
+Normal/Off Center
+Normal/Rounded
+Normal Sans
+Normal/Square
+Normal/Weighted
+	 numberOfContours:	 %d  %s
+	 number of encoding: %d
+Number of fonts:	 %d
+		 Number of glyphIndex %d
+Number of glyphIndex: %d
+Number of Glyphs:	 %d
+Number of Hgt Records:	 %d
+	 numberOfHMetrics:	 %d
+	 Number of pairs %d
+Number of Ratio Records:	 %d
+	 Number of Record:	 %d
+		 Number of SubHeaders is %d
+Number of subtables:	 %d
+	 number of tables: %d
+	 numGlyphs:		 %d
+		 numGlyphs:	 %d
+	 numOfLongVerMetrics: %d
+numRanges: 	 %d
+Oblique/Boxed
+Oblique/Contact
+Oblique/Flattened
+Oblique/Off Center
+Oblique/Rounded
+Oblique/Square
+Oblique/Weighted
+Obtuse Cove
+Obtuse Sans
+Obtuse Square Cove
+		 Offset:	 %d
+Offset of Directory #%d:	 %d
+Offset Table 
+Old Style
+'OS/2' Table - OS/2 and Windows Metrics
+	 'OS/2' version:	 %d
+	    Others:	 %s
+Out of Memofy in __FILE__:__LINE__
+?Out of memory
+Out of Memory
+Out of Memory in __FILE__:__LINE__
+Out Of Memory in  __FILE_ : __LINE__ 
+Out Of Memory in  __FILE__ : __LINE__ 
+Out Of Memory in __FILE__ : __LINE__
+Out of memory in Strdup()
+	 PANOSE:
+`PCLT' Table - Printer Command Language Table
+Perp Sans
+Pictorial
+	 pitch   	 %d
+ PlatformID: %2d
+ PlatformID:	 %d
+	 'post' format:		 %d.%d
+'post' Table - PostScript
+		 Proportion:	 %d 	 '%s'
+	 rangeGaspBehavior:	 0x%04x
+	 rangeMaxPPEM:	 %d
+		 rangeShift:	 %d
+	 Range Shift     %d
+Rapid/Horizontal
+Rapid/Vertical
+	 Ratio Record #%d
+	 Record length:	 %d
+		 Record Offset %d (group #%d)
+Regular 
+Repeat  
+	 reserved %d:	 %d
+	 reserved%d:		 %d
+ RO = %6d,
+'%s' - chechsum = 0x%08x, offset = 0x%08x, len = %9u 
+		 searchRange:	 %d
+	 Search Range    %d
+		 Seg   %3d :
+		 segCount:	 %d
+Segment %d:
+Semi-bold
+Semi-condensed
+Semi-expanded
+	 serifStyle 	 %d
+		 Serif Style:	 %d 	 '%s'
+	 sFamilyClass:	 %d 	 subclass = %d
+	 sfnt version:
+should between 0 and %d
+Size = %d bytes, %d entries
+__sprintf_chk
+		 %s >  %s
+		 %s > %s
+ St = %04x,
+__stack_chk_fail
+Standard/Pointed
+Standard/Serifed
+Standard/Trimmed
+	 Starting Y Pel Height  %d
+	 Storage offset:	 %d
+Straight Arms/Double Serif
+Straight Arms/Single Serif
+__strcat_chk
+__strcpy_chk
+		 Stroke:	 %d 	 '%s'
+	 strokeWeight 	 %d
+	 style   	 %d
+	 sTypoAscender:		 %d
+	 sTypoDescender:	 %d
+	 sTypoLineGap:		 %d
+		 SubHeader[%d]
+		 subHeaderKeys[%d] = %d
+Subtable %3d.	
+	 Subtable format 	 %d
+	 Subtable version 	 %d
+	 symbolSet  	 %d
+Text and Display
+t:g:c:i:o:h
+Triangle
+TrueType Collection Header
+TrueType collection number too large
+True Type Font File Dumper: v 0.5.5
+TTC version: 		 %d.%d
+	 typeFace   	 
+	 typeFamily 	 %x
+Ultra-condensed
+Ultra-expanded
+	 underlinePosition:	 %d
+	 underlineThichness:	 %d
+Unexpected EOF 
+	 Unicode Range 1( Bits 0 - 31 ): 	 0x%08x
+	 Unicode Range 2( Bits 32 - 63 ): 	 0x%08x
+	 Unicode Range 3( Bits 64 - 95 ): 	 0x%08x
+	 Unicode Range 4( Bits 96 - 128 ): 	 0x%08x
+	 unitsPerEm:		 %d
+Unrecognized CMAP format
+Usage: ttfdump ttfname dumpname [options]
+Use My Metrics   
+	 usFirstCharIndex:	 0x%04x
+	 usLastCharIndex:	 0x%04x
+	 usWeightClass:		 %d 	 '%s'
+	 usWidthClass:		 %d 	 '%s'
+	 usWinAscent:		 %d
+	 usWinDescent:		 %d
+	 VDMX Height Record Groups
+'VDMX' Table - Precomputed Vertical Device Metrics
+		 Version: %6d
+	 version 	 %d.%d
+	 version:	 %d.%d
+Very Condensed
+Very Expanded
+Very High
+Very Light
+Very Low
+'VHEA' - Vertical Header Table
+'vmtx' Table - Vertical Metrics
+		 Weight:	 %d 	 '%s'
+	 widthType  	 %d
+	 xAvgCharWidth:		 %d
+	    X BOffset:	 %d
+XDual   
+	 xHeight 	 %d
+		 X-height:	 %d 	 '%s'
+	 xMax:			 %d
+	 xMaxExtent:		 %d
+	 xMin:			 %d
+		 xRatio 	 %d
+	    X Scale:	 %f
+X-Short 
+	    X WOffset:	 %d
+	    X,Y Scale:	 %f
+	 yAscender:		 %d
+	    Y BOffset:	 %d
+	 yDescender:		 %d
+		 yEndRatio 	 %d
+	 yLineGap:		 %d
+	 yMax:			 %d
+		 yMax= 	 %d
+	 yMaxExtent:	 %d
+	 yMin:			 %d
+		 yMin= 	 %d
+	    Y Scale:	 %f
+Y-Short 
+		 yStartRatio 	 %d
+	 yStrikeoutPosition	 %d
+	 yStrikeoutSize:	 %d
+	 ySubscriptXOffset:	 %d
+	 ySubscriptXSize:	 %d
+	 ySubscriptYOffset:	 %d
+	 ySubscriptYSize:	 %d
+	 ySuperscriptXOffset:	 %d
+	 ySuperscriptXSize:	 %d
+	 ySuperscriptYOffset:	 %d
+	 ySuperscriptYSize:	 %d
+	    Y WOffset:	 %d
+	    Y,X Scale:	 %f

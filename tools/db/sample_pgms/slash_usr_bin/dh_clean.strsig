@@ -1,0 +1,85 @@
+B<clean> target in F<debian/rules>.
+B<dh_clean> is a debhelper program that is responsible for cleaning up after a
+B<dh_clean> (or "B<dh clean>") should be the last debhelper command run in the
+B<dh_clean> [S<I<debhelper options>>] [B<-k>] [B<-d>] [B<-X>I<item>] [S<I<file> ...>]
+Can list other files to be removed.
+	complex_doit("find . $find_options \\( \\( -type f -a \\
+	complex_doit("rm","-f","debian/*.debhelper.log");
+		complex_doit("rm -f debian/$ext*.debhelper");
+	complex_doit('rm -f *-stamp');
+  #*# *~ DEADJOE *.orig *.rej *.SUMS TAGS .deps/* *.P *-stamp
+debhelper commands. It also removes common files that should not appear in a
+Debian diff:
+deleted, even if they would normally be deleted. You may use this option
+Delete these I<file>s too.
+dh_clean - clean up package build directories
+	# dh_prep will be emulated (mostly) by the code below.
+	"dirs-only" => \$dh{D_FLAG},
+		doit("rm","-f","--",@ARGV);
+			doit("rm","-f","--",@clean) if @clean;
+		doit("rm","-f","debian/debhelper.log");
+		doit("rm","-f","debian/${ext}substvars")
+		doit("rm","-f","debian/files")
+doit('rm', '-rf', 'debian/tmp') if -x 'debian/tmp' && ! compat(1) &&
+	doit ("rm","-rf",$tmp."/")
+                                   ! excludefile("debian/tmp");
+Exclude files that contain I<item> anywhere in their filename from being
+		\\) -exec rm -f {} \\; \\) -o \\
+				filearray("debian/clean", ".");
+		$find_options="! \\( $dh{EXCLUDE_FIND} \\) -a";
+foreach my $package (@{$dh{DOPACKAGES}}) {
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	if (@ARGV) {
+	if (compat(1)) {
+if (!compat(6) && !$dh{K_FLAG}) {
+		if (!compat(6) && -e "debian/clean") {
+	if (defined($dh{EXCLUDE_FIND}) && $dh{EXCLUDE_FIND} ne '') {
+	if (! $dh{D_FLAG}) {
+if (! $dh{D_FLAG}) {
+if (! $dh{D_FLAG} && ! $dh{K_FLAG}) {
+	if (! $dh{K_FLAG}) {
+if ($dh{K_FLAG}) {
+inhibit_log();
+init(options => {
+It does not run "make clean" to clean up after the build process. Use
+=item B<-d>, B<--dirs-only>
+=item B<-k>, B<--keep>
+=item B<-X>I<item> B<--exclude=>I<item>
+=item F<debian/clean>
+=item I<file> ...
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+L<dh_auto_clean(1)> to do things like that.
+multiple times to build up a list of things to exclude.
+			my @clean=grep { ! excludefile($_) }
+	my $ext=pkgext($package);
+	my $find_options='';
+	my $tmp=tmpdir($package);
+	        \\( -name '#*#' -o -name '.*~' -o -name '*~' -o -name DEADJOE \\
+		 -o -name '*.orig' -o -name '*.rej' -o -name '*.bak' \\
+		 -o -name '.*.orig' -o -name .*.rej -o -name '.SUMS' \\
+		 -o -name TAGS -o \\( -path '*/.deps/*' -a -name '*.P' \\) \\
+Only clean the package build directories, do not clean up any other files
+other files including F<debian/files>, and any detritus left behind by other
+package is built. It removes the package build directories, and removes some
+# Remove all debhelper logs.
+	# Remove other temp files.
+	# See if some files that would normally be deleted are excluded.
+		# These are all debhelper temp files, and so it is safe to 
+This is deprecated, use L<dh_prep(1)> instead.
+This program is a part of debhelper.
+		\\( -type d -a -name autom4te.cache -prune -exec rm -rf {} \\; \\) \\)");
+			unless excludefile("debian/${ext}substvars");
+			unless excludefile("debian/files");
+		unless excludefile($tmp);
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w
+	warning("dh_clean -k is deprecated; use dh_prep instead");
+		# wildcard them.

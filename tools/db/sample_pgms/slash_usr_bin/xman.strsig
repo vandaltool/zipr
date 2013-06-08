@@ -1,0 +1,321 @@
+(1) User Commands
+2> /dev/null
+(2) System Calls
+%-30s - %s
+(3) Subroutines
+(4) Devices
+(5) File Formats
+(6) Games
+(7) Miscellaneous
+(8) Sys. Administration
+-background <color>
+Background color for the application.
+-bd <color>
+-bg <color>
+-bordercolor <color>
+-borderwidth <pixels>
+-bothshown
+bothShown
+__bss_start
+bunzip2 -c -d < %s >> %s
+-bw <pixels>
+Cant create temp file
+cd %s ; %s %s %s >> %s %s
+Change the name used for retrieving resources.
+Change the name without affecting resources.
+clearSearchString
+closedir
+Color of all window borders.
+commandWidgetClass
+compress
+Could not allocate memory for manual sections.
+Could not clear the search string.
+Could not find longest widget, aborting...
+Could not find manual search widget in MakeSearchWidget.
+Could not find text widget in MakeSearchWidget.
+Could not find widget named '%s'
+Could not get the search string, no search will be preformed.
+Could not open help file, NO HELP WILL BE AVALIABLE.
+Could not open manual page, %s
+Couldn't set permissions on formatted man page '%s'.
+CreateNewManpage
+__ctype_b_loc
+defaultDistance
+dialogWidgetClass
+directory
+directoryFontNormal
+directoryHeight
+Directory of: %s
+displayDirectory
+-display <display name>
+displayManualPage
+__errno_location
+Error creating a temp file
+Error while executing the command '%s'.
+Error while stating file %s, errno = %d
+Error while uncompressing, command was: %s
+/etc/manpath.config
+Failed to get the directory font.
+-fg <color>
+FIGURE_WIDTH
+First character cannot be a space.
+-fn <font>
+foldsuffix
+-font <font>
+Font to be used for button and label text.
+forceVert
+-foreground <color>
+Foreground color for the application.
+formWidgetClass
+__fprintf_chk
+fromHoriz
+fromVert
+__fxstat
+-geometry
+-geometry <geom>
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GotoPage
+gzip -c -d < %s >> %s
+helpButton
+helpCursor
+-helpfile
+helpFile
+-helpfile <filename>
+horizPane
+index failure in BEntrySearch
+index failure in ParseEntry.
+Internal error while cataloging manual pages.
+Internal error while removing duplicate manual pages.
+_IO_stdin_used
+_Jv_RegisterClasses
+   <Key>1:      Page(Line, 1) 
+   <Key>2:      Page(Line, 2) 
+   <Key>3:      Page(Line, 3) 
+   <Key>4:      Page(Line, 4) 
+   <Key>b:      Page(Back) 
+<Key>f:      Page(Forward) 
+   <Key>\ :    Page(Forward)
+Known arguments are:
+labelWidgetClass
+left_ptr
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXaw.so.7
+libXt.so.6
+likeToSave
+listWidgetClass
+(l) Local
+lost temp file? out of temp space?
+malloc failure
+MANDATORY_MANPATH
+man -M %s -k %s | pr -h Apropos >> %s
+manpageButton
+manpageCursor
+MANPATH_MAP
+manualBrowser
+*manualBrowser.geometry
+manualFontBold
+manualFontItalic
+manualFontNormal
+manualFontSymbol
+manualPage
+manualTitle
+menuButtonWidgetClass
+menuName
+<Message>WM_PROTOCOLS: Quit()
+<Message>WM_PROTOCOLS: RemoveThisManpage()
+-name <name>
+*-new century schoolbook-bold-i-normal--*-120-*
+*-new century schoolbook-bold-r-normal--*-120-*
+*-new century schoolbook-medium-r-normal--*-120-*
+no default sections
+No manual entry for %s.
+No manual pages found.
+No manual sections to read, exiting.
+-notopbox
+numTotalLines
+numVisibleLines
+openNewManpage
+OPTIONAL_MANPATH
+optionMenu
+-pagesize
+-pagesize <geom>
+panedWidgetClass
+| pic | eqn | tbl -Tlatin1 | GROFF_NO_SGR= groff -Tlatin1 -mandoc
+pleaseStandBy
+pointerColor
+pointerColorBackground
+PopupHelp
+PopupSearch
+preferredPaneSize
+__printf_chk
+Print this message
+question_arrow
+quitButton
+removeThisManpage
+Results of apropos search on: %s
+SaveFormattedPage
+SBLW LoadFile: Failure in fread.
+SBLW LoadFile: Failure in fstat.
+scrollbar
+scrollbarWidgetClass
+ScrollByLine
+searchEntryCursor
+Search string is empty.
+Search string too long.
+section%d
+sectionMenu
+showBothScreens
+Show Both Screens
+Show both the directory and manpage at once.
+Show One Screen
+showVersion
+simpleClassRec
+simpleMenuWidgetClass
+simpleWidgetClass
+%s/lib/X11/xman.help
+smeBSBObjectClass
+%s: nothing appropriate
+snprintf
+__snprintf_chk
+Something went wrong in retrieving the uncompressed manual page try cleaning up /tmp.
+Something went wrong trying to run %s
+Something went wrong trying to run the command: %s
+Specifies a resource on the command line.
+Specifies the geometry of the manual page.
+Specifies the geometry of the top box.
+Specifies the helpfile to use.
+Specify a display that is not the default
+%s < %s > %s
+%s %s %s
+%s/%s%s/%s
+%s/%s%s/%s.%s
+%s/%s%s.%s/%s
+__stack_chk_fail
+Starts with manpage rather than topbox.
+__strcat_chk
+__strcpy_chk
+__strdup
+__strncat_chk
+*-symbol-medium-r-normal--*-120-*
+The current manual page is: %s.
+There are no manual sections to display, check your MANPATH.
+This argument is unknown to Xman: %s
+-title <name>
+*topBox.geometry
+topCursor
+topLabel
+topLevelShellWidgetClass
+transientShellWidgetClass
+t=;|$ t7
+unlzma -c -d < %s >> %s
+/usr/man
+/usr/share/X11/xman.help
+u:;|$ t4
+vertPane
+viewportWidgetClass
+warnDialog
+warnShell
+Widget is not realized, no cursor added.
+Width of all window borders.
+WM_DELETE_WINDOW
+XawDialogAddButton
+XawDialogGetValueString
+XawListHighlight
+XawListUnhighlight
+XawScrollbarSetThumb
+XCheckTypedWindowEvent
+XClearArea
+XCopyArea
+XCreateBitmapFromData
+XDefineCursor
+XDeleteContext
+XDrawString
+XFindContext
+XGetFontProperty
+XInternAtom
+Xman: Could not find global data, exiting
+Xman: Could not locate widget in tree, exiting
+Xman: Could not remove global data?
+Xman: Could not save global data, are you out of memory?
+Xman Error: %s
+Xman - GotoPage: This action routine requires one argument.
+Xman - GotoPage: Unknown argument must be either Manpage or Directory.
+Xman Help
+Xman*helpButton.Label:			Help
+Xman*helpButton.sensitive:                    FALSE
+Xman*manpageButton.Label:		        Manual Page
+Xman*manpageButton.sensitive:                 FALSE
+Xman*quitButton.Label:			Quit
+Xman*quitButton.translations:	#override \n   <Btn1Up>: Quit() reset()
+Xman - SaveFormattedPage: This action routine requires one argument.
+Xman - SaveFormattedPage: Unknown argument must be either 'Save' or 'Cancel'.
+Xman - Search: First parameter unknown.
+Xman - Search: Second parameter unknown.
+Xman - Search: This action routine requires one or two arguments.
+Xman*topLabel.label:         		        No App-Defaults File
+Xman Version 1.1.2
+Xman Warning: %s
+XMapWindow
+XQueryColors
+XQueryPointer
+XRecolorCursor
+-xrm <resource>
+XrmStringToQuark
+XSaveContext
+XSetCommand
+XSetWMProtocols
+XtAddCallback
+XtAddEventHandler
+XtAppAddActions
+XtAppError
+XtAppInitialize
+XtAppMainLoop
+XtAppSetExitFlag
+XtAppWarning
+XtCalloc
+XtCreateManagedWidget
+XtCreatePopupShell
+XtCreateWidget
+XtDefaultBackground
+XtDefaultForeground
+XtDestroyWidget
+XtDispatchEvent
+XtDisplay
+XTextWidth
+XtGetApplicationResources
+XtGetValues
+_XtInherit
+XtIsRealized
+XtMalloc
+XtManageChild
+XtMoveWidget
+XtNameToWidget
+XtOverrideTranslations
+XtParent
+XtParseTranslationTable
+XtPopdown
+XtRealizeWidget
+XtRealloc
+XtReleaseGC
+XtResizeWidget
+XtScreen
+XtSetKeyboardFocus
+XtSetLanguageProc
+XtSetSensitive
+XtSetValues
+XtShellStrings
+XtStrings
+XtTranslateCoords
+XtUnmanageChild
+XtWidgetToApplicationContext
+XtWindow
+XWINHOME
+zcat < %s >> %s

@@ -1,0 +1,136 @@
+            }
+        }
+#   2005/05/21 v1.0: First release.
+#   2006/08/16 v2.2: Included in DTX file of attachfile2.dtx.
+# and version 1.3 or later is part of all distributions of LaTeX
+@ARGV == 1 or die "$usage$Error Missing jobname!\n";
+* ARGV: @OrgArgv
+$atfifile = $ARGV[0];
+    $atfifile .= ".atfi";
+            $_ = "\\attachfile\@file["
+                 . (($checksum) ? ",CheckSum=$checksum" : "")
+                $checksum = $ctx->hexdigest;
+                close(FILE);
+close(IN);
+close(OUT);
+# conditions of the LaTeX Project Public License, either version 1.3
+# Copyright (C) 2005, 2006 Heiko Oberdiek.
+                 . (($creationdate) ? ",CreationDate=$creationdate" : "")
+                $creationdate = sprintf("%04d%02d%02d%02d%02d%02d",
+                $ctx->addfile(*FILE);
+  "debug!",
+                      . " dropping checksum!\n";
+            else {
+        else {
+END_OF_USAGE
+### error strings
+eval '(exit $?0)' && eval 'exec perl -S $0 ${1+"$@"}' && eval 'exec perl -S $0 $argv:q'
+-f $atfifile or die "$Error File `$atfifile' not found!\n";
+    # file entry
+# for installation purposes.
+Function: Help program for LaTeX package "attachfile2".
+### get jobname
+GetOptions(
+  "help!",
+  --help          print usage
+                 . "]{$hexfile}\n";
+# History:
+                                        $hour, $min, $sec);
+                                  $hour, $min, $sec);
+#   http://www.latex-project.org/lppl.txt
+    if (/^\\attachfile\@file\[[^\]]*\]\{(.*)\}$/) {
+if (!-f $atfifile && -f "$atfifile.atfi") {
+            if ($^O eq 'MSWin32') { # cygwin?
+            if (open(FILE, $file)) {
+if ($::opt_debug) {
+            if ($::opt_verbose) {
+        if (@s == 0) {
+    if (s/^(\\attachfile\@timezone\{).*(\})$/$1$timezone$2/) {
+            # "Mac OS", but it is unsupported for "Mac OS X".
+            # Manual page "perlport" says that "ctime" is creation
+            # md5 checksum
+                 . "ModDate=$moddate,Size=$size"
+my $atfifile;
+my $author      = "Heiko Oberdiek";
+my @bool = ("false", "true");
+            my $checksum = "";
+my $copyright   = "Copyright (c) 2005, 2006 by $author.";
+            my $creationdate = "";
+            my $ctime = @s[10]; # inode change time
+            my $ctx = Digest::MD5->new;
+my $date        = "2009/09/25";
+my $Error = "!!! Error:"; # error prefix
+        my $file = pack('H*', $hexfile);
+my $file        = "pdfatfi.pl";
+        my $hexfile = $1;
+            my $moddate = sprintf("%04d%02d%02d%02d%02d%02d",
+            my $mtime = @s[9];
+my @OrgArgv = @ARGV;
+my $program     = uc($&) if $file =~ /^\w+/;
+            my ($sec, $min, $hour, $mday, $mon, $year) = localtime($mtime);
+            my $size = @s[7];
+        my @s = stat($file);
+my $timezone = strftime "%z", localtime;
+my $title = "$program $version, $date - $copyright\n";
+my $tmpfile = $atfifile . ".tmp";
+my $usage = <<"END_OF_USAGE";
+my $version     = "2.5";
+  --(no)debug     debug informations              ($bool[$::opt_debug])
+  --(no)quiet     suppress messages               ($bool[$::opt_quiet])
+  --(no)verbose   verbose printing                ($bool[$::opt_verbose])
+# of this license or (at your option) any later version.
+open(IN, $atfifile) or die "$Error Cannot open `$atfifile'!\n";
+open(OUT, ">$tmpfile") or die "$Error Cannot write `$tmpfile'!\n";
+$::opt_debug      = 0;
+$::opt_help       = 0;
+!$::opt_help or die $usage;
+Options:                                          (defaults:)
+### option variables
+$::opt_quiet      = 0;
+$::opt_quiet = 0 if $::opt_verbose;
+$::opt_verbose    = 0;
+        or die "$Error Cannot move `$tmpfile' to `$atfifile'!\n";
+) or die $usage;
+* OSNAME: $^O
+# pdfatfi.pl
+* PERL_VERSION: $]
+                print "  checksum     = $checksum\n" if $checksum;
+                print "  creationdate = $creationdate\n" if $creationdate;
+  print <<"END_DEB";
+                print "* file entry   = $file\n";
+print "* job file     = $atfifile\n" if $::opt_verbose;
+                print "  moddate      = $moddate\n";
+    print OUT $_;
+print "*** ready. ***\n" unless $::opt_quiet;
+                print "  size         = $size\n";
+        print "* timezone     = $timezone\n" if $::opt_verbose;
+print $title unless $::opt_quiet;
+                print "!!! Warning: File `$file' cannot be read,"
+            print "!!! Warning: File `$file' not found!\n";
+### process options
+### program identification
+  "quiet!",
+rename $tmpfile, $atfifile
+                ($sec, $min, $hour, $mday, $mon, $year) = localtime($ctime);
+# See file "attachfile2.pdf" for a list of files that belong to this project.
+# The latest version of this license is in
+# This Current Maintainer of this work is Heiko Oberdiek.
+# This file "pdfatfi.pl" may be renamed to "pdfatfi"
+# This work has the LPPL maintenance status "maintained".
+# This work may be distributed and/or modified under the
+            # time instead of inode change time for "Win32" and
+    # timezone
+$timezone =~ s/^([+\-]\d\d)(\d\d)$/$1'$2'/;
+${title}Syntax:   \L$program\E [options] <file[.atfi]>
+unlink($atfifile) or die "$Error Cannot delete old `$atfifile'!\n";
+use Digest::MD5;
+use Getopt::Long;
+use POSIX qw(strftime); # %z is used (GNU)
+use strict;
+### variables
+  "verbose!",
+# version 2005/12/01 or later.
+$^W=1; # turn warning on
+while(<IN>) {
+                                        $year + 1900, $mon + 1, $mday,
+                                  $year + 1900, $mon + 1, $mday,

@@ -1,0 +1,47 @@
+accepted connection, fd = %d
+acceptor_thread
+__bss_start
+Connecting to usbmuxd failed, terminating.
+create_socket
+__data_start
+__errno_location
+Error connecting to device!
+Error creating socket: %s
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+invalid client_data provided!
+Invalid device_port specified!
+Invalid listen_port specified!
+_IO_stdin_used
+_Jv_RegisterClasses
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+libusbmuxd.so.1
+No connected device found, terminating.
+Number of available devices == %d
+only sent %d from %d bytes
+__printf_chk
+pthread_create
+pthread_join
+recv_buf_timeout
+recv failed: %s
+Requesting connecion to device handle == %d (serial: %s), port %d
+run_ctos_loop
+run_stoc_loop
+send_buf
+send failed: %s
+%s: fd = %d
+__stack_chk_fail
+strerror
+usage: %s LOCAL_TCP_PORT DEVICE_TCP_PORT
+usbmuxd_connect
+usbmuxd_get_device_list
+waiting for connection

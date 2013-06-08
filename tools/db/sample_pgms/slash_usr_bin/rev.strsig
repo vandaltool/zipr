@@ -1,0 +1,29 @@
+bindtextdomain
+cannot allocate %zu bytes
+dcgettext
+For more information see rev(1).
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+__gmon_start__
+ -h, --help      display this help and exit
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Options:
+__printf_chk
+__progname
+program_invocation_short_name
+putwchar
+setlocale
+%s from %s
+%s: open failed
+Usage: %s [options] [file ...]
+/usr/share/locale
+util-linux
+util-linux 2.20.1
+ -V, --version   output version information and exit

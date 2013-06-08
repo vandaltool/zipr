@@ -1,0 +1,19 @@
+arch=${jvm##*-}
+BINARY_LOCATION=/usr/bin/itweb-settings
+#!/bin/sh
+    break
+  ${CLASSNAME} \
+CLASSNAME=net.sourceforge.jnlp.controlpanel.CommandLine
+  -Dicedtea-web.bin.location=${BINARY_LOCATION} \
+  -Dicedtea-web.bin.name=${PROGRAM_NAME} \
+for jvm in $jvms; do
+  if [ -x /usr/lib/$jvm/jre/bin/java ]; then
+${JAVA} ${LAUNCHER_BOOTCLASSPATH} ${LAUNCHER_FLAGS} \
+JAVA=/usr/lib/jvm/java-6-openjdk-i386/jre/bin/java
+    JAVA=/usr/lib/$jvm/jre/bin/java
+jvm="$(echo $JAVA | awk -F/ '{print $5}')"
+jvms="$jvm java-6-openjdk-$arch java-7-openjdk-$arch"
+LAUNCHER_BOOTCLASSPATH="-Xbootclasspath/a:/usr/share/icedtea-web/netx.jar"
+LAUNCHER_FLAGS=-Xms8m
+PROGRAM_NAME=itweb-settings
+# the build configuration is the default, then search for 6 and 7

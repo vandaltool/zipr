@@ -1,0 +1,236 @@
+Aborting...
+Aborting file dialog popup.
+ancestors
+ application is no longer available
+asciiTextWidgetClass
+ asking for widget tree
+ asking it to find the child Widget.
+ asking it to get a widget's resource list
+ asking it to perform GetGeometry()
+ asking it to perform SetValues()
+boxWidgetClass
+__bss_start
+canvasHeight
+canvasWidth
+children
+commandBox
+commands
+commandWidgetClass
+constraintLabel
+constraintList
+constraintViewport
+D$(;D$,t;
+descendants
+D$Hf+T$B
+dialogWidgetClass
+D$Jidgef
+dumpTreeToFile
+D$xquesf
+EditresClientVal
+EditresComm
+EditresCommand
+EditresProtocol
+EnableGetVal
+Enter file to dump resources into:
+Enter the filename:
+Error while trying to find Context
+Error while trying to save Context
+fileDialog
+flashActiveWidgets
+flashColor
+flashTime
+formWidgetClass
+__fprintf_chk
+fromHoriz
+fromVert
+getResourceList
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+horizDistance
+id: 0x%lx
+IGNORE_ME
+Incorrect ident from client.
+Internal error: Unknown command %d.
+InterViews
+invertAll
+_IO_stdin_used
+_Jv_RegisterClasses
+labelWidgetClass
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXaw.so.7
+libXmu.so.6
+libXt.so.6
+listWidgetClass
+mainViewport
+menuButtonWidgetClass
+menuName
+<Message>WM_PROTOCOLS: quit()
+namesAndClasses
+namesLabel
+namesList
+normalViewport
+not been created yet
+numberStrings
+numFlashes
+overrideShellWidgetClass
+panedWidgetClass
+pannerWidgetClass
+Parent %10s, Name: %10s, ID: %10ld, Class: %10s
+Please select a new widget tree
+PopdownFileDialog
+porthole
+portholeWidgetClass
+__printf_chk
+radioData
+radioGroup
+refreshTree
+reportCallback
+resourceBox
+resourceLabel
+resourceText
+%s(0x%lx) - %s
+%s(0x%lx) - This object's parent is unrealized
+%s(0x%lx) - This widget is not mapped
+%s(0x%lx) - This widget is not mapped.
+%s(0x%lx) - This widget is unrealized
+%s(0x%lx) - This widget's window no longer exists.
+saveAndApply
+saveResourceFile
+SaveResourcesFile
+selectAncestors
+selectChildren
+selectDescendants
+selectParent
+sendTree
+setValues
+setValuesPopup
+showClassNames
+showClientWidget
+showWidgetIDs
+showWidgetNames
+showWidgetWindows
+simpleMenuWidgetClass
+sliderHeight
+sliderWidth
+smeBSBObjectClass
+smeLineObjectClass
+__sprintf_chk
+__stack_chk_fail
+__strcat_chk
+__strcpy_chk
+SVActiveEntry
+T$D9T$lu
+the any widget
+The communication window with%s%s.
+the Editres Protocol.
+toggleWidgetClass
+Top of Tree, Name: %10s, ID: %10ld, Class: %10s
+transientShellWidgetClass
+treeCommands
+treeParent
+treeWidgetClass
+Unable to open this file for writing, would %s
+Unknown resource type %d
+unselectAll
+Usage: %s
+valueForm
+valueLabel
+valueText
+viewportWidgetClass
+win: 0x%lx
+WM_DELETE_WINDOW
+XAllowEvents
+XawDialogAddButton
+XawDialogGetValueString
+XawListShowCurrent
+XawListUnhighlight
+XawToggleGetCurrent
+XawTreeForceLayout
+XCreateFontCursor
+XDeleteContext
+_XEditResGet16
+_XEditResGet32
+_XEditResGet8
+_XEditResGetSigned16
+_XEditResGetString8
+_XEditResGetWidgetInfo
+_XEditResPut16
+_XEditResPut32
+_XEditResPut8
+_XEditResPutString8
+_XEditResResetStream
+XFindContext
+XGetWindowAttributes
+XGrabPointer
+XInternAtom
+XMapRaised
+XMapWindow
+XmuClientWindow
+XmuCopyISOLatin1Lowered
+XmuPrintDefaultErrorMessage
+XQueryPointer
+XrmDestroyDatabase
+XrmGetResource
+XrmPutLineResource
+XrmQGetResource
+XrmStringToQuark
+XrmUniqueQuark
+XSaveContext
+XSendEvent
+XSetErrorHandler
+XSetWMProtocols
+XtAddCallback
+XtAppAddActions
+XtAppAddTimeOut
+XtAppInitialize
+XtAppMainLoop
+XtAppNextEvent
+XtCalloc
+_XtCheckSubclassFlag
+XtCreateManagedWidget
+XtCreatePopupShell
+XtCreateWidget
+XtDefaultForeground
+XtDestroyApplicationContext
+XtDestroyWidget
+XtDisownSelection
+XtDispatchEvent
+XtDisplay
+XtDisplayOfObject
+XtGetApplicationResources
+XtGetSelectionValue
+XtGetValues
+XtIsRealized
+XtIsSensitive
+XtIsSubclass
+XtLastTimestampProcessed
+XtMalloc
+XtManageChild
+XtOverrideTranslations
+XtOwnSelection
+XtParent
+XtParseTranslationTable
+XtPopdown
+XtRealizeWidget
+XtRealloc
+XtRemoveTimeOut
+XtScreen
+XtScreenOfObject
+XtSetKeyboardFocus
+XtSetSensitive
+XtSetValues
+XtShellStrings
+XtStrings
+XtTranslateCoords
+XtVaCreatePopupShell
+XtWidgetToApplicationContext
+XtWindow
+XUngrabPointer
+XUnmapWindow
+you like To try again?

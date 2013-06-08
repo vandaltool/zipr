@@ -1,0 +1,34 @@
+0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+endutent
+endutxent
+__fprintf_chk
+getpwnam
+get user id
+getutxent
+getutxid
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+ [-L lastlog-file]
+pututline
+pututxline
+seeking lastlog entry
+setutent
+setutxent
+             [-s slot-number] [-x servers-file] user-name
+__stack_chk_fail
+%s: usage %s {-a -d} [-w wtmp-file] [-u utmp-file]
+             [-t ttys-file] [-l line-name] [-h host-name]
+updwtmpx
+utmpname
+utmpxname
+/var/log/lastlog
+/var/log/wtmp
+/var/run/utmp
+write lastlog entry

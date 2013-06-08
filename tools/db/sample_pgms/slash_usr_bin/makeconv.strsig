@@ -1,0 +1,143 @@
+	                    allocation when loaded.
+__bss_start
+cnv extension fromUBytes
+cnv extension fromUTableUChars
+cnv extension fromUTableValues
+cnv extension toUTable
+cnv extension toUUChars
+code_set_name
+compacting stage 2 from stage2Top=0x%lx to 0x%lx, saving %ld bytes
+compacting stage 3 from stage3Top=0x%lx to 0x%lx, saving %ld bytes
+copyright
+ Copyright (C) 2011, International Business Machines Corporation and others. All Rights Reserved. 
+	-c or --copyright   include a copyright notice
+Couldn't create the udata %s.%s: %s
+	-d or --destdir     destination directory, followed by the path
+duplicate codepage byte sequence at U+%04x<->0x%s see U+%04x
+duplicate Unicode code point at U+%04x<->0x%02x see 0x%02x
+duplicate Unicode code point at U+%04x<->0x%s see 0x%02x
+EBCDICStateful
+Error: A converter name must contain only invariant characters.
+error: byte sequence ends in illegal state at U+%04x<->0x%s
+error: byte sequence ends in state-change-only at U+%04x<->0x%s
+error: byte sequence ends in unassigned state at U+%04x<->0x%s
+error: byte sequence too long by %d bytes, final state %hu: 0x%s (U+%x)
+error: byte sequence too short, ends in non-final state %hu: 0x%s (U+%x)
+error: code point does not fit into valid-16-bit state at U+%04x<->0x%s
+error: contains mappings for both supplementary and surrogate code points
+error: contains mappings for surrogate code points
+Error creating converter for "%s" file for "%s" (%s)
+error: duplicate codepage byte sequence at U+%04x<->0x%s see U+%04x
+error: duplicate Unicode code point at U+%04x<->0x%02x see 0x%02x
+error: duplicate Unicode code point at U+%04x<->0x%s see 0x%02x
+error: illegal fallback indicator %d
+error: illegal mapping to SI or SO for SI/SO codepage: U+%04x<->0x%s
+error: illegal <subchar1> %s
+error: illegal <subchar> %s
+error in command line argument "%s"
+error: multiple mappings from same bytes
+error: multiple mappings from same Unicode code points
+error: offset 0x%lx to extension table exceeds 0xffffff
+error: out of memory allocating %ld 16-bit code units
+error: out of memory allocating %ld B for target mappings
+error: some entries have the mapping precision (with '|'), some do not
+error: <subchar1> defined for a type other than MBCS or EBCDIC_STATEFUL
+error: the <icu:base> file "%s" is not a base table file
+error: there is no state information!
+error: too many code points at U+%04x<->0x%02x
+error: too many code points at U+%04x<->0x%s
+error: too many stage 2 entries at U+%04x
+error: too many stage 2 entries at U+%04x<->0x%02x
+error: too many stage 2 entries at U+%04x<->0x%s
+error: too many stage 3b entries at U+%04x
+error: too many stage 3 entries at U+%04x
+error: too many toUnicode fallbacks, currently at: U+%x
+error: toUnicode extension table section overflow: %ld section entries
+error: unable to encode a |1 fallback from U+%04x to 0x%02x
+Error writing "%s" file for "%s" (%s)
+error: wrote %u bytes to the .cnv file but counted %u bytes
+findBasename
+__fprintf_chk
+fromUnicode number of %d-byte stage 3 mapping entries: 0x%lx=%lu
+fromUnicode number of uint%s_t in stage 2: 0x%lx=%lu
+getLongPathname
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+	-h or -? or --help  this usage text
+ignore-siso-check
+	      --ignore-siso-check         Use SI/SO other than 0xf/0xe.
+internal error: byte sequence reached reserved action code, entry 0x%02x: 0x%s (U+%x)
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libicutu.so.48
+libicuuc.so.48
+/lib/ld-linux.so.2
+makeconv version %hu.%hu, ICU tool to read .ucm codepage mapping files and write .cnv files
+makeconv warning: --small not available for .ucm files without |0 etc.
+	                    older versions of ICU and will require heap memory
++ omitting %lu out of %lu stage2 entries and %lu fromUBytes
+- Opened udata %s.%s
+options:
+out of memory
+__printf_chk
+__rawmemchr
+	read .ucm codepage mapping files and write .cnv files
+	                    significantly smaller but may not be compatible with
+%s is not a valid converter name.
+size of extension data: %ld
+	      --small       Generate smaller .cnv files. They will be
+__stack_chk_fail
+__strcpy_chk
+subchar1
+T_CString_stricmp_48
+T_FileStream_close
+T_FileStream_open
+T_FileStream_readLine
+       the subchar1 byte is illegal in this codepage structure!
+       the substitution character byte sequence is illegal in this codepage structure!
+the total number of offsets is 0x%lx=%ld
++ total size savings: %lu bytes
+ucm_checkBaseExt
+ucm_checkValidity
+ucm_close
+ucm_countChars
+ucm error: missing conversion type (<uconv_class>)
+ucm_findFallback
+ucm_moveMappings
+ucm_open
+ucm_optimizeStates
+ucm_parseBytes
+ucm_parseHeaderLine
+ucm_printMapping
+ucm_processStates
+ucm_readTable
+ucm_sortTable
+udata_create
+udata_finish
+udata_writeBlock
+u_errorName_48
+u_getDataDirectory_48
+u_getVersion_48
+unexpected text after the base mapping table
+u_parseArgs
+uprv_free_48
+uprv_isInvariantString_48
+uprv_malloc_48
+usage: %s [-options] files...
+u_skipWhitespace
+u_strFromUTF32_48
+utm_alloc
+utm_allocN
+utm_close
+utm_countItems
+utm_getStart
+utm_open
+	-v or --verbose     Turn on verbose output
+	-V or --version     show a version message
+Warning: %s%s claims to be '%s'
+- Wrote %u bytes to the udata.

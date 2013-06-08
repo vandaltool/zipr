@@ -1,0 +1,300 @@
+2001-2010
+Abkhazian
+Achinese
+(Afan) Oromo
+Afrikaans
+Albanian
+Aragonese
+Argentinian
+Armenian
+Assamese
+Asturian
+at most one input file allowed
+Austrian
+Automatically generated
+Azerbaijani
+Balinese
+basename
+Belarusian
+Bhojpuri
+bindtextdomain
+bison-runtime
+Brazilian Portuguese
+Bruno Haible
+__bss_start
+Buginese
+Bulgarian
+Central Khmer
+Chamorro
+charset=
+Chinese (Hong Kong)
+Chinese (simplified)
+Chinese (traditional)
+Church Slavic
+closedir
+close_stdout
+color_test_mode
+      --color                 use colors and other text attributes always
+      --color=WHEN            use colors and other text attributes if WHEN.
+Content-Transfer-Encoding
+Content-Type
+Copyright (C) %s Free Software Foundation, Inc.
+Corsican
+Created %s.
+create_pipe_in
+Creates a new PO file, initializing the meta information with values from the
+Crimean Tatar
+Croatian
+c_strcasecmp
+c_strstr
+__ctype_b_loc
+__cxa_atexit
+dcgettext
+/dev/null
+Dzongkha
+EMAIL@ADDRESS
+English (British)
+English translations for %s package
+__errno_location
+error_print_progname
+error reading current directory
+Esperanto
+Estonian
+extract_plural_expression
+fdopen() failed
+fgets_unlocked
+file.  This is necessary so you can test your translations.
+Filipino
+FIRST AUTHOR <EMAIL@ADDRESS>
+Found more than one .pot file.
+Found no .pot file in the current directory.
+__fprintf_chk
+Friulian
+__fsetlocking
+Galician
+Georgian
+__getdelim
+getlogin
+getopt_long
+getpwnam
+getpwnam("%s")
+getpwuid
+getpwuid("%d")
+GETTEXTLIBDIR
+gettext-tools
+give you feedback about the translations, and so that maintainers can contact
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+gl_locale_name
+__gmon_start__
+Gujarati
+handle_color_option
+handle_style_option
+  -h, --help                  display this help and exit
+Hiligaynon
+hi:l:o:pPVw:
+Hiri Motu
+Hungarian
+Icelandic
+If it is -, standard input is read.
+If no input file is given, the current directory is searched for the POT file.
+If no output file is given, it depends on the --locale option or the user's
+  -i, --input=INPUTFILE       input POT file
+Inari Sami
+Indonesian
+Informative output:
+Input file location:
+Input file syntax:
+input_format_po
+input_format_properties
+input_format_stringtable
+Interlingua
+Interlingue
+Inuktitut
+_IO_stdin_used
+Japanese
+Javanese
+_Jv_RegisterClasses
+Kabardian
+Kalaallisut
+Kashmiri
+Kashubian
+Kimbundu
+Kinyarwanda
+Kuanyama
+Language
+Language %s
+Language-Team
+Last-Translator
+LC_MESSAGES
+Letzeburgesch
+libcroco-0.6.so.3
+libc.so.6
+__libc_start_main
+libgettextlib-0.18.1.so
+libgettextsrc-0.18.1.so
+libglib-2.0.so.0
+libintl_once_singlethreaded
+libintl_recursive_lock_init_multithreaded
+/lib/ld-linux.so.2
+libncurses.so.5
+libpthread.so.0
+libtinfo.so.5
+libunistring.so.0
+libxml2.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+Limburgish
+Lithuanian
+  -l, --locale=LL_CC          set target locale
+locale_charset
+locale setting.  If it is -, the results are written to standard output.
+localtime
+Lower Sorbian
+Low Saxon
+Luba-Katanga
+Luba-Lulua
+Lule Sami
+Macedonian
+Madurese
+Maithili
+Malagasy
+Malayalam
+Mandatory arguments to long options are mandatory for short options too.
+Mandingo
+Manipuri
+Mapudungun
+Marshallese
+maybe_print_progname
+message_alloc
+message_list_prepend
+message_list_search
+message_page_width_ignore
+message_page_width_set
+MIME-Version
+Minangkabau
+Moldavian
+Mongolian
+msgdomain_list_english
+msgdomain_list_print
+msginit.c
+multiline_error
+Neapolitan
+Northern Sami
+Northern Sotho
+North Ndebele
+Norwegian
+Norwegian Bokmal
+Norwegian Nynorsk
+no-translator
+      --no-translator         assume the PO file is automatically generated
+      --no-wrap               do not break long message lines, longer than
+Nyamwezi
+Nyankole
+Old English
+  -o, --output-file=FILE      write output to specified PO file
+Ossetian
+OUTPUT_CHARSET
+Output details:
+output-file
+Output file location:
+Output file %s already exists.
+output_format_po
+output_format_properties
+output_format_stringtable
+PACKAGE VERSION
+Pampanga
+Pangasinan
+Papiamento
+Please specify the input .pot file through the --input option.
+Please specify the locale through the --locale option or
+Plural-Forms
+plural_table
+plural_table_size
+po_charset_ascii
+po_charset_canonicalize
+PO-Revision-Date
+po_strftime
+POT-Creation-Date
+  -P, --properties-input      input file is in Java .properties syntax
+  -p, --properties-output     write out a Java .properties file
+__printf_chk
+project-id
+Project-Id-Version
+proper_name
+properties-input
+properties-output
+pthread_cancel
+pthread_mutexattr_destroy
+pthread_mutexattr_init
+pthread_mutexattr_settype
+pthread_mutex_init
+pthread_mutex_lock
+pthread_mutex_unlock
+Rajasthani
+read_catalog_file
+readdir64
+Report bugs to <bug-gnu-gettext@gnu.org>.
+Romanian
+Sanskrit
+Sardinian
+Scottish Gaelic
+setlocale
+set_program_name
+Setswana
+%s (GNU %s) %s
+Sichuan Yi
+Sicilian
+Skolt Sami
+Slovenian
+SOME DESCRIPTIVE TITLE
+Southern Sami
+South Ndebele
+Spanish (Canary Islands)
+%s subprocess failed with exit code %d
+%s subprocess I/O error
+__stack_chk_fail
+%s translations for %%s package
+stringtable-input
+      --stringtable-input     input file is in NeXTstep/GNUstep .strings syntax
+stringtable-output
+      --stringtable-output    write out a NeXTstep/GNUstep .strings file
+      --style=STYLEFILE       specify CSS style rule file for --color
+Sundanese
+Swiss German
+Tahitian
+text/plain; charset=%s
+The new message catalog should contain your email address, so that users can
+                              the output page width, into several lines
+the output .po file through the --output-file option.
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+Tigrinya
+too many arguments
+Try `%s --help' for more information.
+Ukrainian
+unsetenv
+Upper Sorbian
+Usage: %s [OPTION]
+user's environment.
+/usr/lib/gettext
+/usr/lib/gettext/user-email
+/usr/share/gettext/projects
+/usr/share/gettext/projects/team-address
+/usr/share/locale
+Vietnamese
+  -V, --version               output version information and exit
+wait_subprocess
+Western Frisian
+                              WHEN may be 'always', 'never', 'auto', or 'html'.
+Written by %s.
+  -w, --width=NUMBER          set output page width
+xasprintf
+xconcatenated_filename
+You are in a language indifferent environment.  Please set
+you in case of unexpected technical problems.
+your LANG environment variable, as described in the ABOUT-NLS

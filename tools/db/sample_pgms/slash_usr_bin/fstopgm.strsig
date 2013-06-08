@@ -1,0 +1,34 @@
+__bss_start
+can't handle 'Image' depth other than 8
+can't handle 'PicData' depth other than 8
+depth %d is too large.  Our maximum is %d
+E-mail: %[^
+EOF / read error
+error reading header
+FirstName: %[^
+[fsfile]
+GLIBC_2.0
+GLIBC_2.7
+__gmon_start__
+Image: %d %d %d
+invalid header
+_IO_getc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+LastName: %[^
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pgm_init
+pgm_writepgm
+PicData: %d %d %d
+pm_allocarray
+pm_bitstomaxval
+pm_close
+pm_error
+pm_message
+pm_openr
+pm_usage
+warning, non-square pixels; to fix do a 'pnmscale -%cscale %g'

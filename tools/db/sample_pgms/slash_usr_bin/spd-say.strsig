@@ -1,0 +1,115 @@
+any later version. Please see COPYING for more details.
+application-name
+__assert_fail
+                               (between -100 and +100, default: 0)
+                               (between -100 and +100, default: 0) 
+__bss_start
+Can't initialize semaphore: %s
+Can't set spelling to on!
+Can't set this punctuation mode!
+Can't set this voice!
+-C, --cancel           -     Cancel all messages in Speech Dispatcher
+child_female
+child_male
+connection-name
+Copyright (C) 2002-2006 Brailcom, o.p.s.
+Copyright (C) 2003 Brailcom, o.p.s.
+                                (default: main)
+                                (default: spd-say)
+-e, --pipe-mode        -     Pipe from stdin to stdout plus Speech Dispatcher
+__errno_location
+Failed to connect to Speech Dispatcher:
+Failed to set SSML mode.
+                                female3, child_male, child_female)
+For more information about these matters, see the file named COPYING.
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+-h, --help             -     Print this info
+important
+                                in Speech Dispatcher
+Invalid language!
+Invalid output module!
+Invalid pitch!
+Invalid priority.
+Invalid punctuation mode.
+Invalid rate!
+Invalid voice
+Invalid volume!
+_IO_stdin_used
+-i, --volume           -     Set the volume (intensity) of the speech
+_Jv_RegisterClasses
+language
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+libspeechd.so.2
+-l, --language         -     Set the language (iso code)
+                               (male1, male2, male3, female1, female2
+Missing argument!
+-m, --punctuation-mode -     Set the punctuation mode (none, some, all) 
+-N, --application-name -     Set the application name used to estabilish
+-n, --connection-name  -     Set the connection name used to estabilish
+notification
+-o, --output-module    -     Set the output module
+options.c
+options_parse
+options_print_help
+output-module
+pipe-mode
+Please report bugs to <speechd@bugs.freebsoft.org>
+-p, --pitch            -     Set the pitch of the speech
+-P, --priority         -     Set priority of the message (important, message,
+__printf_chk
+priority
+progress
+punctuation-mode
+r:p:i:l:o:t:m:sxeP:N:n:wSCvh
+-r, --rate             -     Set the rate of the speech
+sem_init
+sem_post
+sem_wait
+SET SELF SSML_MODE ON
+spd_cancel_all
+spd_close
+spd_execute_command
+spd_open2
+spd-say comes with ABSOLUTELY NO WARRANTY.
+spd_sayf
+spd-say: spd-say 0.7.1
+spd_set_language
+spd_set_notification_on
+spd_set_output_module
+spd_set_punctuation
+spd_set_spelling
+spd_set_voice_pitch
+spd_set_voice_rate
+spd_set_voice_type
+spd_set_volume
+spd_stop_all
+Speech Dispatcher failed to say message
+Speech Dispatcher Say -- a simple client for speech synthesis (GNU GPL)
+spelling
+-s, --spelling         -     Spell the message
+-S, --stop             -     Stop speaking the message being spoken
+__strdup
+strerror
+Syntax error or bad parameter!
+                                text, notification, progress; default: text)
+                                the connection to specified string value
+the Free Software Foundation; either version 2, or (at your option)
+This is free software; you can redistribute it and/or modify it
+-t, --voice-type       -     Set the prefered voice type
+under the terms of the GNU General Public License.
+under the terms of the GNU General Public License as published by
+Unrecognized option
+Usage: %s [options] "some text"
+voice-type
+-v, --version          -     Print version and copyright info
+-w, --wait             -     Wait till the message is spoken or discarded
+-x, --ssml             -     Set SSML mode on (default: off)
+You may redistribute copies of spd-say

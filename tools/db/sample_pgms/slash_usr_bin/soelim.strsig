@@ -1,0 +1,57 @@
+,$+4$+l$
+/build/buildd/groff-1.21/src/libs/libgroff/errarg.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/searchpath.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/string.cpp
+/build/buildd/groff-1.21/src/preproc/soelim/soelim.cpp
+can't open `%1': %2
+__ctype_b_loc
+__cxa_atexit
+CXXABI_1.3
+D$D;D$H|
+__errno_location
+Failed assertion at line %d, file `%s'.
+fatal error:
+%% file %s, line %d
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBCXX_3.4
+__gmon_start__
+GNU soelim (groff) version %s
+__gxx_personality_v0
+_IO_getc
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+.lf %d %s
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+libstdc++.so.6
+L<%t`<1t|
+output error
+POSIXLY_CORRECT
+__printf_chk
+%s: illegal option -- %c
+%s: invalid option -- %c
+%s: option `%c%s' doesn't allow an argument
+%s: option requires an argument -- %c
+%s: option `--%s' doesn't allow an argument
+%s: option `%s' is ambiguous
+%s: option `%s' requires an argument
+%s: option `-W %s' doesn't allow an argument
+%s: option `-W %s' is ambiguous
+__sprintf_chk
+%s (%s):%d:
+<standard input>
+strerror
+%s: unrecognized option `%c%s'
+%s: unrecognized option `--%s'
+<\ta<et]< u
+_Unwind_Resume
+usage: %s [ -Crtv ] [ -I dir ] [ files ]
+warning:

@@ -1,0 +1,19 @@
+|$\9|$Xv
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.7
+__gmon_start__
+input array
+Input is %d-bit, fujiturn is %d-bit
+Input is not a Fuji image processed by dcraw.
+_IO_stdin_used
+__isoc99_fscanf
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+middle array
+Not enough memory for %s
+output array
+P6 %d %d %d%c
+t$D;D$hu

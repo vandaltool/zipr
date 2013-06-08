@@ -1,0 +1,50 @@
+__bss_start
+Can't create pid file
+Can't open display.
+     (default is 200ms)
+  -d Start as a daemon, i.e. in the background.
+     enabling the touchpad. (default is 2.0s)
+Failed to open device '%s'.
+__fprintf_chk
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -i How many seconds to wait after the last key press before
+i:m:dtp:kKR?v
+_IO_stdin_used
+_Jv_RegisterClasses
+  -k Ignore modifier keys when monitoring keyboard activity.
+  -K Like -k but also ignore Modifier+Key combos.
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXi.so.6
+  -m How many milli-seconds to wait until next poll.
+No properties on device '%s'.
+No synaptics properties on device '%s'.
+  -p Create a pid file with the specified name.
+  -R Use the XRecord extension.
+sigaction
+sigemptyset
+__stack_chk_fail
+Synaptics Off
+  -t Only disable tapping and scrolling, not mouse movements.
+TOUCHPAD
+Usage: syndaemon [-i idle-time] [-m poll-delay] [-d] [-t] [-k]
+  -v Print diagnostic messages.
+XChangeDeviceProperty
+XCloseDevice
+XFreeDeviceList
+XFreeModifiermap
+XGetDeviceProperty
+XGetModifierMapping
+XInternAtom
+XListDeviceProperties
+XListInputDevices
+XOpenDevice
+XOpenDisplay
+XQueryKeymap

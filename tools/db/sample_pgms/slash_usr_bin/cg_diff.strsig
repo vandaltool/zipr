@@ -1,0 +1,214 @@
+        
+                                                
+            }
+        }
+#----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+##--------------------------------------------------------------------##
+#  02111-1307, USA.
+# 1. If $a2->[$i] is undefined, it defaults to 0 which is what we want; we turn
+# 2. We don't add an undefined count or a ".", even though it's value is 0,
+            add_array_a_to_b($CC, $currCC);
+# Add each event count to the CC array.  '.' counts become undef, as do
+# Add the two arrays;  any '.' entries are ignored.  Two tricky things:
+        $a->[$i] -= $b->[$i];       # XXX: doesn't handle '.' entries
+#  along with this program; if not, write to the Free Software
+  and licensed under the GNU General Public License, version 2.
+# Argument and option handling
+            # Assume that a "fn=" line is followed by a "fl=" line.
+#    because we don't want to make an $a2->[$i] that is undef become 0
+        $b->[$i] += $a->[$i] if (defined $a->[$i] && "." ne $a->[$i]);
+            # blank, do nothing
+  Bug reports, feedback, admiration, abuse, etc, to: njn\@valgrind.org.
+##--- Cachegrind's differencer.                         cg_diff.in ---##
+        $CC2 = [];
+    (@CC <= $numEvents) or die("Line $.: too many event counts\n");
+        $CCs2->{$filefuncname} = $CC2;
+                $CCs{$currFileFuncName} = $currCC;
+  cg_diff is Copyright (C) 2010-2010 Nicholas Nethercote.
+    # Check if summary line was present
+#    checking for definedness ourselves.
+# Check the events match
+    chomp($cmd);    # Remove newline
+    close(INPUTFILE);
+($cmd1, $events1, $CCs1, $summaryCC1) = read_input_file($file1);
+($cmd2, $events2, $CCs2, $summaryCC2) = read_input_file($file2);
+# Commands seen in the files.  Need not match.
+#  Copyright (C) 2002-2010 Nicholas Nethercote
+                $currCC = [];
+            $currCC = $CCs{$currFileFuncName};
+            $currFileFuncName = "$currFileName#$tmpFuncName";
+            $currFileFuncName = undef;  
+            $currFileName = $1;
+            defined($currCC) || die;
+            defined($currFileName) || die;
+    (defined $line && $line =~ s/^events:\s+//) 
+            $desc .= $line;
+         || die "Cannot open $input_file for reading\n";
+                die("cg_diff-$version\n");
+        die("missing final summary line, aborting\n");
+                die($usage);
+            die($usage);
+        die($usage);
+# Do the subtraction: CCs2 -= CCs1
+        } else {
+    } else {
+            } else {            # -h and --help fall under this case
+            } elsif ($arg =~ /^--mod-filename=(.*)/) {
+            } elsif ($arg =~ /^--mod-funcname=(.*)/) {
+        } elsif (not defined($file1)) {
+        } elsif (not defined($file2)) {
+        } elsif (s/^fl=(.*)$//) {
+        } elsif (s/^fn=(.*)$//) {
+        } elsif (s/^\s*$//) {
+        } elsif (s/^summary:\s+//) {
+##--- end                                                          ---##
+                eval "\$currFileName =~ $mod_filename";
+                eval "\$tmpFuncName =~ $mod_funcname";
+    ($events1->[$i] eq $events2->[$i]) || die "events don't match, aborting\n";
+# Events seen in the files.  They must match.
+            $file1 = $arg;
+            $file2 = $arg;
+    foreach my $i (0 .. $n-1) {
+foreach my $i (0 .. $n-1) {
+    foreach my $n (@$CC) {
+foreach my $n (@$summaryCC2) {
+    for my $arg (@ARGV) { 
+for my $e (@$events1) {
+#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+#  General Public License for more details.
+# Global variables
+# hashref("$filename#$funcname", CC array)
+    -h --help             show this message
+        if ($arg =~ /^-/) {
+            if ($arg =~ /^-v$|^--version$/) {
+            if (defined $mod_filename) {
+            if (defined $mod_funcname) {
+        if ($line =~ s/desc:\s+//) {
+    if (not defined $CC2) {
+            if (not defined $currCC) {
+    if (not defined $file1 or not defined $file2) {
+    if (not defined $summaryCC) {
+        if (s/^(\d+)\s+//) {
+# Individual CCs, organised by filename/funcname/line_num.
+            last;
+#  License, or (at your option) any later version.
+    $line = <INPUTFILE>;
+    ($line =~ s/^cmd:\s+//) or die("Line $.: missing command line\n");
+# "main()"
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# missing entries (implicitly).
+                $mod_filename = $1;
+    --mod-filename=<expr> a Perl search-and-replace expression that is applied
+# --mod-filename expression
+                $mod_funcname = $1;
+# --mod-funcname expression
+    --mod-funcname=<expr> like --mod-filename, but applied to function names
+#  modify it under the terms of the GNU General Public License as
+    # Must have specified two input files.
+    my ($a, $b) = @_;
+    my $CC2 = $CCs2->{$filefuncname};
+            my $CC = line_to_CC($_, $numEvents);
+my $CCs1;
+my $CCs2;
+    my %CCs;                    # hash("$filename#$funcname" => CC array)
+    my @CC = (split /\s+/, $line);
+my $cmd1;
+my $cmd2;
+    my $cmd = $line;
+    my $currCC = undef;         # CC array
+    my $currFileFuncName;
+    my $currFileName;
+    my $desc;
+my $events1;
+my $events2;
+    my @events = split(/\s+/, $line);
+my ($file1, $file2) = process_cmd_line();
+    my ($file1, $file2) = (undef, undef);
+    my ($input_file) = @_;
+    my $line;
+    my ($line, $numEvents) = @_;
+my $mod_filename = undef;
+my $mod_funcname = undef;
+    my $n = max(scalar @$a, scalar @$b);
+my $n = max(scalar @$events1, scalar @$events2);
+    my $numEvents = scalar @events;
+    my $summaryCC;
+my $summaryCC1;
+my $summaryCC2;
+            my $tmpFuncName = $1;
+my $usage = <<END
+my $version = "3.7.0";
+    my @x = split(/#/, $filefuncname);
+    my ($x, $y) = @_;
+#     njn@valgrind.org
+#    off warnings to allow this.  This makes things about 10% faster than
+    open(INPUTFILE, "< $input_file") 
+  options for the user, with defaults in [ ], are:
+        or die("Line $.: missing events line\n");
+                or die("Line $.: summary event and total event mismatch\n");
+    print("0");
+print("cmd:  $cmd1; $cmd2\n");
+print("desc: Files compared:   $file1; $file2\n");
+    print(" $e");
+print("events: ");
+    print("fl=$x[0]\n");
+    print("fn=$x[1]\n");
+        print(" $n");
+    print(" $n");
+    print("\n");
+print("\n");
+print("summary:");
+# Print the result, in CCs2
+#  profiling programs.
+#  published by the Free Software Foundation; either version 2 of the
+    # Read body of input file.
+    # Read "cmd:" line (Nb: will already be in $line from "desc:" loop above).
+    # Read "desc:" lines.
+    # Read "events:" line.  We make a temporary hash in which the Nth event's
+# Reading of input file
+# Read the input files
+    return \@CC;
+    return ($cmd, \@events, \%CCs, $summaryCC);
+    return ($file1, $file2);
+    return ($x > $y ? $x : $y);
+            (scalar(@$summaryCC) == @events) 
+    (scalar @x == 2) || die;
+        s/#.*$//;   # remove comments
+sub add_array_a_to_b ($$) 
+        sub_array_b_from_a($CC2, $CC1);     # CC2 -= CC1
+sub_array_b_from_a($summaryCC2, $summaryCC1);
+sub line_to_CC ($$)
+sub max ($$) 
+sub process_cmd_line() 
+sub read_input_file($) 
+sub sub_array_b_from_a ($$) 
+            $summaryCC = line_to_CC($_, $numEvents);
+#  The GNU General Public License is contained in the file COPYING.
+#  This file is part of Cachegrind, a Valgrind tool for cache
+# This is a very cut-down and modified version of cg_annotate.
+#  This program is distributed in the hope that it will be useful, but
+#  This program is free software; you can redistribute it and/or
+                          to filenames, eg. --mod-filename='s/prog[0-9]/projN/'
+# Total counts for summary (an arrayref).
+#    unnecessarily.
+usage: cg_diff [options] <cachegrind-out-file1> <cachegrind-out-file2>
+# Usage message.
+use strict;
+use warnings;
+#! /usr/bin/perl
+    # value is N, which is useful for handling --show/--sort options below.
+            # --version
+# Version number
+    -v --version          show version
+    $^W = 0;
+$^W = 0;    # turn off warnings, because we might hit undefs
+    $^W = 1;
+$^W = 1;
+            warn("WARNING: line $. malformed, ignoring\n");
+    while (<INPUTFILE>) {
+    while ($line = <INPUTFILE>) {
+while (my ($filefuncname, $CC1) = each(%$CCs1)) {
+while (my ($filefuncname, $CC) = each(%$CCs2)) {
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  You should have received a copy of the GNU General Public License

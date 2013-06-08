@@ -1,0 +1,42 @@
+%6.2f  %i %i %i %i  %i %i %i %i
+__bss_start
+BXNFvasprintf
+Calculates VESA CVT (Coordinated Video Timing) modelines for use with X.
+calloc failed
+(CVT %.2fM
+__cxa_finalize
+# %dx%d %.2f Hz 
+ERROR: Multiple of 60Hz refresh rate required for  reduced blanking.
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.3.4
+GLIBC_2.8
+__gmon_start__
+hsync: %.2f kHz; 
+ interlace
+--interlaced
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+malloc failed
+Modeline "%dx%d_%.2f"  
+Modeline "%dx%dR"  
+pclk: %.2f MHz
+__printf_chk
+--reduced
+      refresh : Desired refresh rate (default: 60.0Hz).
+ -r|--reduced : Create a mode with reduced blanking (default: normal blanking).
+usage: %s [-v|--verbose] [-r|--reduced] X Y [refresh]
+__vasprintf_chk
+--verbose
+__vfprintf_chk
+__vsnprintf_chk
+ -v|--verbose : Warn about CVT standard adherance.
+Warning: Aspect Ratio is not CVT standard.
+Warning: Refresh Rate is not CVT standard (50, 60, 75 or 85Hz).
+            X : Desired horizontal resolution (multiple of 8, required).
+XNFvasprintf failed
+            Y : Desired vertical resolution (required).

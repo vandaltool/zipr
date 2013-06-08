@@ -1,0 +1,91 @@
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Authors: Dustin Kirkland <kirkland@ubuntu.com>
+#!/bin/sh
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+				byobu-janitor --force && screen -X at 0 source "$BYOBU_CONFIG_DIR/profile" >/dev/null 2>&1
+. "${BYOBU_PREFIX}/lib/${PKG}/include/common"
+#    byobu-status: byobu's cached status gathering
+	case "$1" in
+case "$1" in
+case "$BYOBU_BACKEND" in
+			case "$i" in
+			case "$i" in \#*) continue ;; esac
+	# Check if we have data in the cache
+# Clean and create cache directories
+				# Clear initial window name
+#    Copyright (C) 2011 Dustin Kirkland
+[ -d "$BYOBU_RUN_DIR/.last.$BYOBU_BACKEND" ] || mkdir -p "$BYOBU_RUN_DIR/.last.$BYOBU_BACKEND"
+[ -d "$BYOBU_RUN_DIR/status.$BYOBU_BACKEND" ] || mkdir -p "$BYOBU_RUN_DIR/status.$BYOBU_BACKEND"
+	--detail)
+			detail=$(eval "__${i}_detail" 2>/dev/null | $BYOBU_SED -e '/^$/d' -e 's/^/\t/g')
+		# Do first-run procedures, if necessary
+	elif [ -s "$cachepath" ]; then
+		eval items="\$$1"
+[ -f "$BYOBU_CONFIG_DIR/status.disable" ] && exit 0
+			[ -f "$i" ] || continue
+	find_script "$function" && . "${_RET}"
+			find_script "$i" && . "${_RET}"
+		for i in "$BYOBU_PREFIX/lib/$PKG"/*; do
+for i in "${BYOBU_PREFIX}/share/$PKG/status/status" "${BYOBU_PREFIX}/share/$PKG/status/statusrc" "$BYOBU_CONFIG_DIR/status" "$BYOBU_CONFIG_DIR/statusrc" "$BYOBU_CONFIG_DIR/color" "$BYOBU_CONFIG_DIR/color.tmux"; do
+		for i in $items; do
+		"__$function" > "$cachepath".new
+get_now; NOW=${_RET}
+get_status() {
+			get_status "$i"
+# Get the current timestamp
+#    GNU General Public License for more details.
+		if command -v dpkg-query >/dev/null; then
+		if command -v vim >/dev/null && `vim --version | grep -q +folding`; then
+			if [ ! -e "$BYOBU_RUN_DIR/${TMUX#*,}" ]; then
+		if [ -e "/var/run/screen/S-$USER/$PKG.reload-required" ] || [ -e "$BYOBU_RUN_DIR/reload-required" ]; then
+	if [ $NOW -ge $expiry ] || [ "$lastrun" = "0" ]; then
+		if [ -n "$TMUX" ]; then
+			if [ -r "$BYOBU_CONFIG_DIR/profile" ]; then
+	if [ -s "$cachepath".new ]; then
+		IFS= read line < "$cachepath"; printf "%s" "$line"
+				# If the forced janitorial steps succeed, try a profile reload
+			i=${i##*/}
+				include|menu|notify_osd|time_binary) continue ;;
+		ip_address4)
+		ip_address6)
+#    it under the terms of the GNU General Public License as published by
+	*left|*right)
+	local cachepath="$BYOBU_RUN_DIR/status.$BYOBU_BACKEND/$1"
+	local expiry=$(($lastrun+$_RET))
+			local function="$1"
+			local function="ip_address"
+			local IPV6=0
+			local IPV6=1
+	local lastpath="$BYOBU_RUN_DIR/.last.$BYOBU_BACKEND/$1"
+	local lastrun=0
+		# Looks like we have an updated cache, use it
+# Make sure status is not disabled
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		mv -f "$cachepath".new "$cachepath"
+			[ -n "$detail" ] && printf "%s\n" "$detail"
+		# New cache is empty, but we have data from our last run, use it
+PKG="byobu"
+		printf "$ESC{= $BACKGROUND$FOREGROUND}"
+			printf "  Expand all - zr\t\tCollapse all - zm\n  Expand one - zo\t\tCollapse one - zc\n\n"
+		printf "$PKG-$VER Detailed Status Navigation\n"
+		printf "%s" "$NOW" > "$lastpath"
+			printf "%s\n\t(%s)\n" "$short" "$i"
+		# Reload profile, if necessary
+[ -r "$HOME/.byoburc" ] && . "$HOME/.byoburc"
+	[ -r "$i" ] && . "$i"
+	[ -r "$lastpath" ] && read lastrun < "$lastpath"
+	screen)
+			short=$(eval "__${i}" | $BYOBU_SED -e 's/^\s*//' -e 's/\s*$//' -e 's/.{[^}]*}//g')
+# Source configurations
+	status_freq "$function"
+#    the Free Software Foundation, version 3 of the License.
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+				tmux rename-window ""
+				touch "$BYOBU_RUN_DIR/${TMUX#*,}"
+	# Update cache now, if necessary
+			VER=$(set -- $(dpkg-query --show $PKG); printf "%s\n" "$2")
+#    You should have received a copy of the GNU General Public License
+		[ -z "$BACKGROUND" ] && BACKGROUND="k"
+[ -z "${BYOBU_PREFIX}" ] && export BYOBU_PREFIX="/usr" || export BYOBU_PREFIX
+		[ -z "$FOREGROUND" ] && FOREGROUND="w"

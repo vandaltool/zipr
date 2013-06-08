@@ -1,0 +1,35 @@
+        }
+also reloads the specified AppArmor profile in postinst using:
+apparmor_parser -r -W -T /etc/apparmor.d/<profilename>
+AppArmor reload commands for all packages rather than just the one that
+	autoscript($package,"postinst","postinst-apparmor","s/#PROFILE#/$pname/");
+	autoscript($package,"postrm","postrm-apparmor","s/#PROFILE#/$pname/");
+B<dh_apparmor> B<--profile-name=>I<profilename>
+By using '-W -T' we ensure that any abstraction updates are also pulled in.
+dh_apparmor is a debhelper program that will create/remove the
+dh_apparmor - reload AppArmor profile and create local include
+		error("Must specify --profile-name");
+/etc/apparmor.d/local/<profilename> include file in maintainer scripts. It
+foreach my $package (@{$dh{DOPACKAGES}}) {
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 NOTES
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	if (! $dh{PROFILE_NAME}) {
+init(options => {
+=item B<--profile-name=><profilename>
+Jamie Strandboge <jamie@canonical.com>
+L<debhelper>
+        my $pname = $dh{PROFILE_NAME};
+Note that for packages that have multiple binary packages, you will want to
+pass '-p<package name>' to dh_apparmor, otherwise dh_apparmor will add
+	"profile-name=s" => \$dh{PROFILE_NAME},
+ships the profile.
+Specify the profile name.
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w

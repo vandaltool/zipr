@@ -1,0 +1,106 @@
+  -a              ignore, for compatibility with other versions
+A NULL argv[0] was passed through an exec system call.
+Arnold Robbins
+bindtextdomain
+__bss_start
+bug-coreutils@gnu.org
+cannot find name for group ID %lu
+cannot find name for user ID %lu
+cannot print only names or real IDs in default format
+cannot print "only" of more than one choice
+cannot print security context when user specified
+can't get process context
+ context=%s
+--context (-Z) works only on an SELinux-enabled kernel
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+David MacKenzie
+dcgettext
+ egid=%lu
+__errno_location
+ euid=%lu
+extra operand %s
+failed to get groups for the current process
+failed to get groups for user %s
+For complete documentation, run: info coreutils '%s invocation'
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getgrgid
+getgrouplist
+getgroups
+getopt_long
+getpwnam
+getpwuid
+  -g, --group     print only the effective group ID
+  -G, --groups    print all group IDs
+ gid=%lu
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.2.4
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+ groups=
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+_IO_stdin_used
+is_selinux_enabled
+iswprint
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libselinux.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+memory exhausted
+  -n, --name      print a name instead of a number, for -ugG
+or (when USERNAME omitted) for the current user.
+__overflow
+POSIXLY_CORRECT
+__printf_chk
+Print user and group information for the specified USERNAME,
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+  -r, --real      print the real ID instead of the effective ID, with -ugG
+%s, and %s.
+setlocale
+shell-always
+%s home page: <%s>
+%s: No such user
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+tD9D$lt>
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+Try `%s --help' for more information.
+Usage: %s [OPTION]... [USERNAME]
+/usr/share/locale
+  -u, --user      print only the effective user ID
+      --version  output version information and exit
+Warning: user %s is in more groups than system's configured maximum.
+Without any OPTION, print some useful set of identified information.
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  -Z, --context   print only the security context of the current user

@@ -1,0 +1,124 @@
+	"00") echo ">ifc " ;;
+	"01") echo "audio" ;;
+	"02") echo "commc" ;;
+	"03") echo "HID  " ;;
+	"05") echo "PID  " ;;
+	"06") echo "still" ;;
+	"07") echo "print" ;;
+	"08") echo "stor." ;;
+	"09") echo "hub  " ;;
+	"0a") echo "data " ;;
+	"0b") echo "scard" ;;
+	"0d") echo "c-sec" ;;
+	"0e") echo "video" ;;
+	"0f") echo "perhc" ;;
+				$((1 + (($maxps_hex >> 11) & 0x3)))`
+#            2009 Frans Pop <elendil@planet.nl>
+#            2009 Randy Dunlap <rdunlap@xenotime.net>
+	addr=`cat $eppath/bEndpointAddress`
+		$addr $dir $attr $eptype "$maxps" $interval
+	altset=`cat $ifpath/bAlternateSetting`
+# any later version.
+	attr=`cat bmAttributes`
+	attr=`cat $eppath/bmAttributes`
+#!/bin/bash
+		$busnum $level $parent $port $count $devnum $speed $maxchild
+	case $class in
+	cd $devpath
+	cfgnum=`cat bConfigurationValue`
+	class=`cat $ifpath/bInterfaceClass`
+class_decode() {
+	classname=`class_decode $class`
+	classname=`class_decode $devclass`
+			|| continue
+# Copyright: 2009 Greg Kroah-Hartman <greg@kroah.com>
+	"dc") echo "diagd" ;;
+	[ -d $devpath ] || return
+	devclass=`cat bDeviceClass`
+		devcount=$(($devcount + 1))
+				$devnum $(($level +1)) $devcount
+	devprotocol=`cat bDeviceProtocol`
+	devsubclass=`cat bDeviceSubClass`
+	dir=`cat $eppath/direction`
+		driver=`basename $driver`
+		driver="(none)"
+		driver=`readlink $ifpath/driver`
+	"e0") echo "wlcon" ;;
+	echo "Error: directory /sys/bus does not exist; is sysfs mounted?" >&2
+		echo "S:  $name=`cat $file`"
+		echo "$subdev" | grep -Eq "^$busnum-[0-9]+(\.[0-9]+)*$" \
+	"*")  echo "unk. " ;;
+	"ef") echo "misc " ;;
+	eptype=`cat $eppath/type`
+	# Extract MaxPS size (bits 0-10) and multiplicity values (bits 11-12)
+	"fe") echo "app. " ;;
+	"ff") echo "vend." ;;
+	file=$1
+for device in /sys/bus/usb/devices/usb*
+	for endpoint in $ifpath/ep_??
+	for interface in $busnum-*:?.*
+	for subdev in $busnum-*
+		if [ -d $devpath/$subdev ]; then
+if [ ! -d /sys/bus ]; then
+	if [ -f $file ]; then
+		if [ -L $endpoint ]; then	# v4: verify endpoint exists
+	if [ $level -gt 0 ]; then
+	if [ -L $ifpath/driver ]; then		# v4: allow for no driver
+		$ifnum $altset $numeps $class "$classname" $subclass \
+	ifnum=`cat $ifpath/bInterfaceNumber`
+	interval=`cat $eppath/interval`
+	local busnum=`cat busnum`
+	local class=$1		# v4: in hex
+	local count=$4
+	local devcount=0
+	local devnum=`cat devnum`
+	local devpath=$1
+	local eppath=$1
+	local ifpath=$1
+	local level=$3
+	local parent=$2
+	maxchild=`cat maxchild`
+	maxpower=`cat bMaxPower`
+	maxps0=`cat bMaxPacketSize0`
+		$maxps0 $numconfigs
+	maxps_hex="0x`cat $eppath/wMaxPacketSize`"
+	maxps=`printf "%4i*%s\n" $(($maxps_hex & 0x7ff)) \
+	name=$2
+	numconfigs=`cat bNumConfigurations`
+	numeps=`cat $ifpath/bNumEndpoints`
+	numifs=`cat bNumInterfaces`
+		$numifs $cfgnum $attr $maxpower
+		port=0
+		port=$((${devpath##*[-.]} - 1))
+print_device() {
+	print_device $device 0 0 0
+			print_device $devpath/$subdev \
+print_endpoint() {
+	#print_endpoint $devpath/ep_00
+			print_endpoint $endpoint
+	printf "C:  #Ifs=%2i Cfg#=%2i Atr=%s MxPwr=%s\n" \
+	printf "D:  Ver=%5s Cls=%s(%s) Sub=%s Prot=%s MxPS=%2i #Cfgs=%3i\n" \
+	printf "E:  Ad=%s(%s) Atr=%s(%s) MxPS=%s Ivl=%s\n" \
+	printf "I:  If#=%2i Alt=%2i #EPs=%2i Cls=%s(%s) Sub=%s Prot=%s Driver=%s\n" \
+	printf "\nT:  Bus=%02i Lev=%02i Prnt=%02i Port=%02i Cnt=%02i Dev#=%3i Spd=%-3s MxCh=%2i\n" \
+	printf "P:  Vendor=%s ProdID=%s Rev=%s.%s\n" \
+print_interface() {
+		print_interface $devpath/$interface
+print_string() {
+	print_string manufacturer "Manufacturer"
+	print_string product Product
+	print_string serial SerialNumber
+	prodid=`cat idProduct`
+	protocol=`cat $ifpath/bInterfaceProtocol`
+		$protocol $driver
+	revmajor=`cat bcdDevice | cut -c 1-2`
+	revminor=`cat bcdDevice | cut -c 3-4`
+	speed=`cat speed`
+	subclass=`cat $ifpath/bInterfaceSubClass`
+# the GNU General Public License (GPL), version 2, or at your option
+	# There's not really any useful info in endpoint 00
+# This software may be used and distributed according to the terms of
+	vendid=`cat idVendor`
+		$vendid $prodid $revmajor $revminor
+	ver=`cat version`
+		$ver $devclass "$classname" $devsubclass $devprotocol \

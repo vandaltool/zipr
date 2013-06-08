@@ -1,0 +1,114 @@
+		    );;
+			  *[1-9]*) gzip_status=1;;
+				5<&0
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# (at your option) any later version.
+#!/bin/bash
+bindir='/bin'
+--__bindir) bindir=${2?}; shift; shift;;
+  *) break;;
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+  case $1 in
+	case "$1" in
+case $1 in
+                case "$2" in
+        *)      case "$2" in
+			case $gzip_status in
+cmp="$cmp --"
+  -?*) cmp="$cmp '$1'";;
+  -*\'*) cmp="$cmp '"`printf '%sX\n' "$1" | sed "$escape"`;;
+  --__cmp) shift
+                        cmp_status=$?
+			cmp_status=$?
+cmp_status=$?
+Compare FILE1 to FILE2, using their uncompressed contents if they are
+compressed.  If FILE2 is omitted, compare FILE1 to the uncompressed
+contents of FILE1.gz.  Do comparisons like '$prog' does.
+# Copyright (C) 1993 Jean-loup Gailly
+# Copyright (C) 1998, 2002, 2006, 2007, 2009 Free Software Foundation
+Copyright (C) 2007, 2009-2010 Free Software Foundation, Inc.
+    echo >&2 "$0: $1: unknown compressed file extension"
+	echo >&2 "$0: invalid number of operands; try \`$0 --help' for help"
+			echo X |
+			 (echo X | eval "$cmp" /dev/fd/5 - >/dev/null 2>&1) \
+		    elif
+elif test $# -eq 2; then
+		    else
+                esac;;
+escape='
+		*)	eval "$cmp" '"$1"' '"$2"';;
+			    eval "$cmp" '"$1"' - >&3
+		        eval "$cmp" - '"$2"' >&3
+			    eval "$cmp" - - >&3
+			       eval "$cmp" /dev/fd/5 - >&3) 5<&0
+			    eval "$cmp" - '"$tmp"' >&3
+exec 3>&1
+      exec 4>&1
+		      exec 4>&1
+			  exec 4>&1
+    exit 2;;
+			  (exit 2); exit 2
+			(exit $cmp_status)
+exit $cmp_status
+			F=`expr "/$2" : '.*/\(.*\)[-.][zZtga]*$'` || F=$prog
+		    fi;;
+    FILE=`expr "X$1" : 'X\(.*\)[-.][zZtga]*$'`
+for file
+# GNU General Public License for more details.
+      (gzip -cd -- "$1" 4>&-; echo $? >&4) 3>&- | eval "$cmp" - '"$FILE"' >&3
+		      (gzip -cdfq -- "$1" 4>&-; echo $? >&4) 3>&- |
+			  (gzip -cdfq -- "$1" 4>&-; echo $? >&4) 3>&- |
+			  (gzip -cdfq -- "$2" 4>&-; echo $? >&4) 3>&- |
+			    ( (gzip -cdfq -- "$2" 4>&-; echo $? >&4) 3>&- 5<&- </dev/null |
+			gzip -cdfq -- "$2" > "$tmp" || exit 2
+			  (gzip -cdfq - 4>&-; echo $? >&4) 3>&- |
+    gzip_status=$(
+		    gzip_status=$(
+			gzip_status=$(
+			  *) gzip_status=0;;
+gzip_status=0
+  *[-.]gz* | *[-.][zZ] | *.t[ga]z)
+	*[-.]gz* | *[-.][zZ] | *.t[ga]z | -)
+		*[-.]gz* | *[-.][zZ] | *.t[ga]z | -)
+  --h*) printf '%s\n' "$usage" || exit 2; exit;;
+			' HUP INT PIPE TERM 0
+		    if test "$1$2" = --; then
+if test $# -eq 1; then
+			if type mktemp >/dev/null 2>&1; then
+# it under the terms of the GNU General Public License as published by
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# newlines correctly) turn trailing X on last line into '.
+OPTIONs are the same as for '$prog'.
+PATH=$bindir:$PATH
+	prog=cmp;  cmp='${CMP-cmp}'  ;;
+  *)    prog=diff; cmp='${DIFF-diff}';;
+			# Reject Solaris 8's buggy /bin/bash 2.03.
+Report bugs to <bug-gzip@gnu.org>."
+			rm -f "$tmp" || gzip_status=$?
+# sed script to escape all ' for the shell, and then (to handle trailing
+			  set -C
+  s/'\''/'\''\\'\'''\''/g
+  --) shift; break;;
+# sh is buggy on RS/6000 AIX 3.2. Replace above line with #!/bin/ksh
+  $s/X$/'\''/
+test "$gzip_status" -eq 0 || exit 2
+			  test -n "$tmp" && rm -f "$tmp"
+  test "X$file" = X- || <"$file" || exit 2
+# the Free Software Foundation; either version 3 of the License, or
+the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.
+		    then
+There is NO WARRANTY, to the extent permitted by law.
+This is free software.  You may redistribute copies of it under the terms of
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+			  tmp=`mktemp -t -- "$F.XXXXXX"` || exit 2
+			  tmp=${TMPDIR-/tmp}/$F.$$
+			trap '
+			trap - HUP INT PIPE TERM 0
+usage="Usage: $0 [OPTION]... FILE1 [FILE2]
+  --v*) echo "$version" || exit 2; exit;;
+version="z$prog (gzip) 1.4
+while :; do
+# with this program; if not, write to the Free Software Foundation, Inc.,
+Written by Jean-loup Gailly."
+# You should have received a copy of the GNU General Public License along

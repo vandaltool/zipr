@@ -1,0 +1,15 @@
+--------------------------------------
+access. Please enter your password.
+#!/bin/sh
+driver framework HPLIP into your system. This requires administrator
+    else
+	gksu -D 'HP Printer Driver Plug-in Installation' -- hp-plugin -u >/dev/null 2>&1
+	gksu -D 'HP Printer Driver Plug-in Installation' -- xterm -T 'HP Printer Driver Plug-in Installation' -sb -rightbar -hold -e hp-plugin -i >/dev/null 2>&1 &
+    hp-plugin -i
+HP Printer Driver Plug-in Installetion
+    if python -c 'import PyQt4.QtGui' 2>/dev/null && which hp-toolbox 2>/dev/null; then
+if [ -z $DISPLAY ]; then
+Password: " \
+    sudo -p \
+This program will install the proprietary plug-in for HP's printer
+User: %u

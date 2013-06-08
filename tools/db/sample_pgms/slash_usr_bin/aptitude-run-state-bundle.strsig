@@ -1,0 +1,71 @@
+      * )
+	  APPEND=0
+	  APPEND=1
+APPEND=1
+      --append-args )
+#!/bin/bash
+  case "$1" in
+	  DONE=1
+    echo
+    echo "  --append-args    Place the generated arguments at the end of"
+    echo "aptitude to use the contents of that archive as its global"
+	echo "Can't use $INPUTFILE as the input bundle: file not found."
+	echo "Can't use $INPUTFILE as the input bundle: it's a directory."
+    echo "data store."
+    echo "  --help           Display this message and exit."
+    echo "information, then invoke the given program with the given"
+    echo "                   invoking aptitude."
+    echo "list of arguments, passing appropriate -o options to cause"
+    echo "  --no-clean       Do not remove the temporary directory after"
+    echo "                   not a bundle file; implicitly sets --no-clean."
+    echo "                   of the command line."
+    echo "Options:"
+    echo "  --prepend-args   Place the generated arguments at the beginning"
+    echo "  --really-clean   Remove the state directory, even if --statedir"
+    echo "  --statedir       The <input-file> is an unpacked aptitude bundle,"
+    echo "                   the command line (default)."
+    echo "This command will unpack the given archive of aptitude state"
+    echo "  --unpack         Just unpack the <input-file>, don't run aptitude."
+    echo "Usage: $0 [options] <input-file> [<program> [arguments ...]]"
+    echo "                   was passed as an argument."
+else echo "Removing $tempdir"; rm -fr $tempdir
+    exit 0
+    exit 1
+      --help )
+   [ $HELP = 1 ]
+	  HELP=1
+if [ "$APPEND" = 1 ]
+    if [ -d "$INPUTFILE" ]
+    if ! [ -f "$INPUTFILE" ]
+if [ "$#" -lt 1 ]
+if [ $NO_CLEAN = 1 ]
+if [ $STATEDIR = 0 ]
+if ( [ $UNPACK_ONLY = 0 ] && [ "$#" -lt 1 ] ) ||
+if [ $UNPACK_ONLY = 1 ]
+    if [ -z "$tempdir" ]
+INPUTFILE="$1"
+      --no-clean )
+	  NO_CLEAN=0
+NO_CLEAN=0
+	  NO_CLEAN=1
+      --prepend-args )
+    PROGRAM="$1"
+    PROGRAM=aptitude
+    "$PROGRAM" -o "Dir=$tempdir" -o "Dir::State::status=$tempdir/var/lib/dpkg/status" "$@"
+    "$PROGRAM" "$@" -o "Dir=$tempdir" -o "Dir::State::status=$tempdir/var/lib/dpkg/status"
+      --really-clean )
+    shift
+	  shift
+      --statedir )
+STATEDIR=0
+	  STATEDIR=1
+    tar -C "$tempdir" -xf "$INPUTFILE" || exit 1
+    tempdir=$INPUTFILE
+    tempdir=$(mktemp -p ${TMPDIR:-/tmp} -d aptitudebug.XXXXXXXXX) || exit 1
+    then
+then echo "Leaving final state in $tempdir"
+      --unpack )
+UNPACK_ONLY=0
+	  UNPACK_ONLY=1
+   ( [ $UNPACK_ONLY = 1 ] && [ "$#" -ne 1 ] ) ||
+while [ $DONE = 0 ]

@@ -1,0 +1,78 @@
+        ;;
+all_libs="-lpng12 -lz -lm "
+# and license in png.h
+#! /bin/sh
+    case "$1" in
+    cat <<EOF
+    --ccopts)
+ccopts=""
+  --ccopts        print compiler options
+    --cflags)
+  --cflags        print preprocessor flags, I_opts, and compiler options
+# Copyright (C) 2002, 2004, 2006, 2007 Glenn Randers-Pehrson
+    --cppflags)
+cppflags=""
+  --cppflags      print pre-processor flags
+        echo ${ccopts}
+        echo ${cppflags}
+        echo ${I_opts}
+        echo ${I_opts} ${cppflags} ${ccopts}
+    	echo ${ldopts}
+        echo ${ldopts} ${L_opts} ${R_opts} ${libs}
+        echo ${libdir}
+        echo ${libs}
+        echo ${L_opts}
+        echo ${prefix}
+        echo ${R_opts}
+        echo ${version}
+    esac
+exec_prefix="${prefix}"
+        exit 0
+        exit 1
+    exit $1
+# For conditions of distribution and use, see the disclaimer
+    --help)
+  --help          print this help and exit
+if test $# -eq 0; then
+includedir="${prefix}/include/libpng12"
+    --I_opts)
+I_opts="-I${includedir}"
+  --I_opts        print "-I" include options
+Known values for OPTION are:
+    --ldflags)
+  --ldflags       print linker flags (ldopts, L_opts, R_opts, and libs)
+    --ldopts)
+ldopts=""
+  --ldopts        print linker options
+    --libdir)
+libdir="${prefix}/lib/i386-linux-gnu"
+  --libdir        print path to directory containing library
+# libpng-config
+    --libs)
+	libs=${all_libs}
+libs="-lpng12"
+  --libs          print library linking information
+    --L_opts)
+L_opts="-L${libdir}"
+  --L_opts        print linker "-L" flags for dynamic linking
+# Modeled after libxml-config.
+    --prefix)
+  --prefix        print libpng prefix
+prefix="/usr"
+# provides configuration info for libpng.
+        R_opts=""
+    --R_opts)
+R_opts=""
+  --R_opts        print dynamic linker "-R" or "-rpath" flags
+    shift
+    --static)
+  --static        revise subsequent outputs for static linking
+# This code is released under the libpng license.
+        usage
+        usage 0
+Usage: $0 [OPTION] ...
+    usage 1
+    --version)
+version="1.2.46"
+  --version       print version information
+while test $# -gt 0; do

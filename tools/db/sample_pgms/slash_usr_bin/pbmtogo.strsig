@@ -1,0 +1,25 @@
+__bss_start
+[-c] [pbmfile]
+D$49D$Xt
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+L$H9L$,t#
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+ND$X;D$L
+overflow_add
+P0;1;0;4;1;%d;%d;1!R1/
+pbm_init
+pbm_readpbminit
+pbm_readpbmrow
+pm_allocrow
+pm_close
+pm_openr
+pm_usage
+__printf_chk

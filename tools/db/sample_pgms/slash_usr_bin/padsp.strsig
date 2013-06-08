@@ -1,0 +1,53 @@
+# along with PulseAudio; if not, write to the Free Software
+# (at your option) any later version.
+#!/bin/sh
+	case $param in
+# Copyright 2006 Lennart Poettering
+# Copyright 2006 Pierre Ossman <ossman@cendio.se> for Cendio AB
+			echo " "
+			echo "$0 [options] application [arguments]"
+			echo "$0 - redirect OSS audio devices to PulseAudio"
+			echo "	-D                  disable /dev/dsp emulation"
+			echo "	-d                  enable debug output"
+			echo "	-h                  show brief help"
+			echo "	-M                  disable /dev/mixer emulation"
+			echo "	-m <name>           stream name to report to the server"
+			echo "	-n <name>           client name to report to the server"
+			echo "options:"
+			echo "	-S                  disable /dev/sndstat emulation"
+			echo "	-s <host>[:<port>]  contact a specific PulseAudio server"
+exec "$@"
+			exit 0
+export LD_PRELOAD
+			export PADSP_CLIENT_NAME
+			export PADSP_DEBUG
+			export PADSP_NO_DSP
+			export PADSP_NO_MIXER
+			export PADSP_NO_SNDSTAT
+			export PADSP_STREAM_NAME
+			export PULSE_SERVER
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+# General Public License for more details.
+if `pgrep -f /usr/bin/pulseaudio 1>/dev/null` ; then
+   if [ x"$LD_PRELOAD" = x ] ; then
+			if [ x"$PADSP_DEBUG" = x ]; then
+# it under the terms of the GNU Lesser General Public License as published by
+	LD_PRELOAD="$LD_PRELOAD libpulsedsp.so"
+	LD_PRELOAD="libpulsedsp.so"
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+			PADSP_CLIENT_NAME="$OPTARG"
+				PADSP_DEBUG=1
+				PADSP_DEBUG=$(( $PADSP_DEBUG + 1 ))
+			PADSP_NO_DSP=1
+			PADSP_NO_MIXER=1
+			PADSP_NO_SNDSTAT=1
+			PADSP_STREAM_NAME="$OPTARG"
+# PulseAudio is distributed in the hope that it will be useful, but
+# PulseAudio is free software; you can redistribute it and/or modify
+			PULSE_SERVER="$OPTARG"
+shift $(( $OPTIND - 1 ))
+# the Free Software Foundation; either version 2 of the License, or
+# This file is part of PulseAudio.
+while getopts 'hs:n:m:MSDd' param ; do
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# You should have received a copy of the GNU Lesser General Public License

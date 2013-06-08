@@ -1,0 +1,1001 @@
+                  ;;
+                ;;
+                "")
+                *)
+              ;;
+              ;;  
+              "")
+              *)
+            -)
+            :
+            "")
+            *)
+           ;;
+          ;;
+          (
+          )
+          }
+        ;;
+        "")
+        "") :;;
+        *)
+      --*)
+      ;;
+    "") 
+    "") :;;
+    #   ;;
+###############################################################################
+  0) tcInteractive;;
+      # 20100125: added paper sizes found in xdvi.c, version.h says 22.84.16 in TeXLive 2010
+	    # 20100125: added paper sizes found in xdvi.c, version.h says 22.84.16 in TeXLive 2010
+2010, Public Domain:
+a0           "84.1x118.9cm"
+  a0 a0r a1 a1r a2 a2r a3 a3r a4 a4r a5 a5r a6 a6r a7 a7r a8 a8r a9 a9r a10 a10r
+  a0 a1 a10 a2 a3 a4 a5 a6 a7 a8 a9 b0 b1 b2 b3 b4 b5 b6 c5 ledger legal letter tabloid"
+	a0|a1|a10|a2|a3|a4|a5|a6|a7|a8|a9|b0|b1|b2|b3|b4|b5|b6|c5|ledger|legal|letter|tabloid)
+            a0|a1|a1r|a2|a2r|a3|a3r|a4|a4r|a5|a5r|a6|a6r|a7|a7r|a8|a8r|a9|a9r|a10|a10r|b0|b0r|b1|b1r|b2|b2r|b3|b3r|b4|b4r|b5|b5r|b6|b6r|b7|b7r|b8|b8r|b9|b9r|b10|b10r|c0|c0r|c1|c1r|c2|c2r|c3|c3r|c4|c4r|c5|c5r|c6|c6r|c7|c7r|c8|c8r|c9|c9r|c10|c10r|foolscap|foolscapr|legal|legalr|us|usr|letter|ledger|tabloid)
+a0r          "118.9x84.1cm"
+a10          "2.6x3.7cm"
+a10r         "3.7x2.6cm"
+a1           "59.4x84.0cm"
+a1r          "84.0x59.4cm"
+a2           "42.0x59.4cm"
+a2r          "59.4x42.0cm"
+a3           "29.7x42.0cm"
+a3r          "42.0x29.7cm"
+a4           "21.0x29.7cm"
+a4r          "29.7x21.0cm"
+a5           "14.85x21.0cm"
+a5r          "21.0x14.85cm"
+a6           "10.5x14.85cm"
+a6r          "14.85x10.5cm"
+a7           "7.42x10.5cm"
+a7r          "10.5x7.42cm"
+a8           "5.2x7.4cm"
+a8r          "7.4x5.2cm"
+a9           "3.7x5.2cm"
+a9r          "5.2x3.7cm"
+    || abort "could not create directory \`$tmpdir'"
+# abort(errmsg)
+        add)
+  AFMFONTS BIBINPUTS BSTINPUTS CMAPFONTS CWEBINPUTS ENCFONTS GFFONTS
+      allowedUnitLetters="min"
+      AskedHeight=$1
+      AskedPaper=$1
+      AskedWidth=$2
+#   a texmf tree in variable relPart.
+     | awk '$1 == "XDPI" || $1 == "YDPI" { print $3 }'
+b0           "1000.0x141.4cm"
+b0           "141.4x100cm"
+  b0 b0r b1 b1r b2 b2r b3 b3r b4 b4r b5 b5r b6 b6r b7 b7r b8 b8r b9 b9r b10 b10r
+b10          "3.1x4.4cm"
+b10r         "4.4x3.1cm"
+b1           "70.6x100.0cm"
+b1r          "100.0x70.6cm"
+b2           "50.0x70.6cm"
+b2r          "70.6x50.0cm"
+b3           "35.3x50.0cm"
+b3r          "50.0x35.3cm"
+b4           "25.0x35.3cm"
+b4r          "35.3x25.0cm"
+b5           "17.6x25.0cm"
+b5r          "25.0x17.6cm"
+b6           "13.5x17.6cm"
+b6r          "17.6x13.5cm"
+b7           "8.8x13.5cm"
+b7r          "13.5x8.8cm"
+b8           "6.2x8.8cm"
+b8r          "8.8x6.2cm"
+b9           "4.4x6.2cm"
+b9r          "6.2x4.4cm"
+#!/bin/sh -e
+        break
+      *) break;;
+c0           "91.7x129.7cm"
+  c0 c0r c1 c1r c2 c2r c3 c3r c4 c4r c5 c5r c6 c6r c7 c7r c8 c8r c9 c9r c10 c10r
+c0r          "129.7x91.7cm"
+c10          "2.8x4.0cm"
+c10r         "4.0x2.8cm"'
+c1           "64.8x91.6cm"
+c1r          "91.6x64.8cm"
+c2           "45.8x64.8cm"
+c2r          "64.8x45.8cm"
+c3           "32.4x45.8cm"
+c3r          "45.8x32.4cm"
+c4           "22.9x32.4cm"
+c4r          "32.4x22.9cm"
+c5           "16.2x22.9cm"
+c5r          "22.9x16.2cm"
+c6           "11.46x16.2cm"
+c6r          "16.2x11.46cm"
+c7           "8.1x11.46cm"
+c7r          "11.46x8.1cm"
+c8           "5.7x8.1cm"
+c8r          "8.1x5.7cm"
+c9           "4.0x5.7cm"
+c9r          "5.7x4.0cm"
+#   called from tcBatch with original positional parameters shifted by 1
+#   call mktexdir script, disable all features (to prevent sticky directories)
+      case $1 in
+    case $1 in
+  case $1 in
+          case $2 in
+      case $2 in
+          case $3 in
+  case $checkElemInListFound in
+      case $ci in
+  case $ci in
+              case "$configPsFile" in
+  case $configPsFile in
+      case $elbLoc in
+    case $elc in
+    case $elcLoc in
+    case "$file" in
+  case $FMT in
+  case $found in
+case $# in
+  case $modesMfFile in
+  case $MT_SYSTEXMF in
+  case $MT_TEXMFDIST in
+  case $MT_TEXMFMAIN in
+  case $MT_TEXMVAR in
+  case $needsCleanup in
+          case $offset in
+              case $otherPrinterFile in
+      case $otherPrinter in
+    case $pathElem in
+              case $pFile in
+          case $printcmd in
+            case $relPart in
+  case $relPart in
+              case $tcBatchHFID in
+            case $tcBatchHyphenFile in
+      case $tcBatchHyphenFormat in
+    case "x$checkElemInListElem" in
+    cat >mftmp.mf <<-'eof'
+            cd "$MT_VARTEXFONTS" || exit
+    && { cd / && rm -rf "$tmpdir"; }
+    cd $tmpdir
+  cfbBinary=$1
+    # changed, in order to be able to recreate formats etc.
+checkElemInList()
+  checkElemInListElem=$1; shift
+# checkElemInList(elem, list)
+  checkElemInListFound=false
+        checkElemInListFound=true
+checkForBinary()
+# checkForBinary(prog) - echo full path of prog
+#   check if element exists in list
+          chmod 1777 "$MT_VARTEXFONTS" || {
+          chmod 755 "$MT_VARTEXFONTS" || {
+  # ci=`tcfmgr --tmp $tmpdir --cmd ci --id "$fmgrConfigReplaceID"`
+    ci=`tcfmgr --tmp $tmpdir --cmd ci --id "$fmgrConfigReplaceID" || retval=$?`
+                  ci=`tcfmgr --tmp $tmpdir --cmd ci --id "$tcBatchHFID" || retval=$?`
+cleanup()
+  cleanup 1
+	cleanup 1
+# cleanup() - clean up the temp area and exit with proper exit status
+cleanup $rc
+        comm -13 $tmpdir/pre $tmpdir/post > $tmpdir/addOrChange
+    # compare-papers)
+    conf|confall)
+      # config file doesn't make sense.  moreover, it is not under ucf
+      configPsFile=`tcfmgr --cmd find --file config.ps`
+configReplace()
+  configReplaceFile=$1; configReplacePat=$2; configReplaceLine=$3
+# configReplace(file pattern line)
+  configReplace "$fmgrConfigReplaceCfgFile" "$fmgrConfigReplaceRegex" "$fmgrConfigReplaceValue"
+	$configReplaceLine
+	/$configReplacePat/c
+                  configReplace "$tfc" '^VARTEXFONTS' "VARTEXFONTS  = $tcBatchFontVardir"
+      "") continue;;
+      # control in Debian, so running the command from the libpaper
+#   Convert paper dimensions to a unique paper name
+#   Convert paper name to dimensions, values taken from config.ps
+  co=`tcfmgr $moreArgs --tmp $tmpdir --cmd co --file $fmgrConfigReplaceFile || retval=$?`
+  co=`tcfmgr --tmp $tmpdir --cmd co --file $setupDvipsPaperFile || retval=$?`
+                co=`tcfmgr --tmp $tmpdir --cmd co --file "$tcBatchHyphenFileBasename" --reldir "$relPart" --infile "$tcBatchHyphenFile" || retval=$?`
+                cp "$tcBatchHyphenFile" "$tcBatchHFOrig"
+        del)
+      $dir/*)
+      done
+        done
+          done
+            done
+  done | grep -v 'is unset$'
+    # don't tell again about replacing pdftexconfig
+    dvipdfm)
+      # dvipdfm is now only a symlink to dvipdfmx. Changing the old
+      dvipdfmPaperConf
+# dvipdfmPaperConf
+	  dvipdfmPaperConf
+dvipdfmPaperConf(){
+    dvipdfmx)
+      dvipdfmxPaperConf
+# dvipdfmxPaperConf
+	  dvipdfmxPaperConf
+dvipdfmxPaperConf(){
+    dvips)
+    #   dvipsOnly=$(comm -1 -3 ${TMPDIR:-/tmp}/xdvi.list ${TMPDIR:-/tmp}/dvips.list)
+      dvipsPaperConf
+# dvipsPaperConf
+	  dvipsPaperConf
+dvipsPaperConf(){
+      echo
+    #   echo
+              echo >&2; echo "Valid PAPER settings:" >&2
+      echo '=========================== active config files =========================='
+      echo '==================== binaries found by searching $PATH ==================='
+    echo "$configReplaceLine" >> $configReplaceFile
+      echo '========================== default paper sizes =========================='
+    #   echo "dvips only:"
+        *) echo "$elb: $elbLoc";;
+        "") echo "$elb: not found";;
+      *)  echo "$elcLoc";;
+      "") echo "$elc: not found";;
+                    echo "% file config.$printerName; added by texconfig" > "$tcBatchDvipsAddFile"
+      echo '============================= font map files ============================='
+	  echo "           for the programs you need." >&2
+	echo $height $width
+      echo "$help"
+              echo "$help" >&2
+    echo "$help" >&2
+            "") echo "$help" >&2; rc=1;;
+          echo "$help" >&2; rc=1
+          echo "$help" >&2; rc=1 ;;
+          echo "$help" >&2; rc=1;;
+        "") echo "$help" >&2; rc=1;;
+        "") echo "$help" >&2; rc=1; return;;
+    #   echo "known to both:"
+	echo "Known units are mm and in, decimal separator is \`.'"
+      echo '=========================== kpathsea variables ==========================='
+      echo '==== kpathsea variables from environment only (ok if no output here) ===='
+echoLocateBinary()
+# echoLocateBinary(args ...) - show where programs actually exist
+      echoLocateBinary kpsewhich updmap fmtutil texconfig tex pdftex mktexpk dvips dvipdfm
+echoLocateCfgfile()
+# echoLocateCfgfile(args ...) - show where files actually exist
+      echoLocateCfgfile texmf.cnf updmap.cfg fmtutil.cnf config.ps mktex.cnf XDvi pdftexconfig.tex config | sort -k 2
+	echo "Maybe height and width have been exchanged?" >&2
+        echo "$m: `kpsewhich $m`"
+      echo -n "dvipdfm: "
+      echo -n "dvipdfmx: "
+      echo -n "dvips: "
+	echo "No paper known with height $AskedHeight and width $AskedWidth"  >&2
+      echo -n "pdftex: "
+      echo -n "XDvi: "
+	  echo "           or use \`$progname PROGNAME paper $2' instead " >&2
+	echo "Paper $AskedPaper has height $height and width $width"
+	echo $papername
+      echo "PATH=$PATH"
+    echo "pdftex paper size has changed, refreshing formats"
+		echo "Please read its manual page or /usr/share/tex-common/TeX-on-Debian*"
+  echo "$progname: $1." >&2
+            echo "$progname: all permissions set." >&2
+      echo "$progname: analyzing new configuration..." >&2
+      echo "$progname: analyzing old configuration..." >&2
+                  echo "$progname: configuration file \`config.$otherPrinterName' for printer \`$otherPrinterName' not found" >&2
+                  echo "$progname: configuration file for printer \`$printerName' already exists (\`$pFile')" >&2
+                  echo "$progname: configuration file for printer \`$printerName' (config.$printerName) not found" >&2
+              echo "$progname: configuration unchanged." >&2
+                echo "$progname: could not find hyphen setup file for format \`$tcBatchHyphenFormat'" >&2
+                      echo "$progname: failed to add new configuration file \`config.$printerName'" >&2
+                    echo "$progname: failed to add new configuration file \`config.$printerName'" >&2
+                    echo "$progname: failed to check in file \`$tcBatchHyphenFileBasename'" >&2
+                  echo "$progname: failed to check out file \`$tcBatchHyphenFile'" >&2
+            echo "$progname: failed to modify permissions in \`$MT_VARTEXFONTS'." >&2; rc=1
+                    echo "$progname: failed to remove file \`$pFile'" >&2
+            echo "$progname: failed to set \`font ro'; reason: could not determine VARTEXFONTS variable." >&2; rc=1
+            echo "$progname: failed to set \`font ro'; reason: directory \`$MT_VARTEXFONTS' does not exist." >&2; rc=1
+            echo "$progname: failed to set \`font rw'; reason: could not determine VARTEXFONTS variable." >&2; rc=1
+            echo "$progname: failed to set \`font rw'; reason: directory \`$MT_VARTEXFONTS' does not exist." >&2; rc=1
+        echo "$progname: faq not found (usually in \$TEXMFMAIN/doc/tetex/teTeX-FAQ)" >&2
+                  echo "$progname: file config.ps not found" >&2; rc=1
+                    echo "$progname: file \`$pFile' removed" >&2
+                      echo "$progname: file $tcfRet added" >&2
+      echo "$progname: fmgrConfigReplace ci failed for \`$fmgrConfigReplaceFile'" >&2
+  #   echo "$progname: fmgrConfigReplace ci failed for \`$fmgrConfigReplaceFile'" >&2
+    echo "$progname: fmgrConfigReplace co failed for \`$fmgrConfigReplaceFile'" >&2
+      echo "$progname: fmgrConfigReplace failed to call ucf for \`$fmgrConfigReplaceOrigFile'" >&2
+    echo "$progname: fmgrConfigReplace failed to call ucf for \`$fmgrConfigReplaceOrigFile'" >&2
+            echo "$progname: for getting help, try \`$progname hyphen'" >&2
+            echo "$progname: invalid format \`$tcBatchHyphenFormat' specified as argument for \`$progname hyphen'" >&2
+              echo "$progname: missing arg for parameter -P" >&2
+            echo "$progname: modifying permissions in \`$MT_VARTEXFONTS' ..." >&2
+        echo "$progname: no new/updated formats available ..." >&2
+          echo "$progname: PAPER \`$2' is not understood by all programs." >&2
+                    echo "$progname: paper \`$tcBatchDvipsPaper' not found in file \`$configPsFile'" >&2; rc=1
+                echo "$progname: setting up vardir failed. Reason: failed to find file \`$tfc'" >&2
+                  echo "$progname: setting up vardir failed. Reason: no permission to write file \`$tfc'" >&2
+    echo "$progname: setupDvipsPaper co failed for \`$setupDvipsPaperFile'" >&2
+		echo "$progname: The hyphenation file for $tcBatchHyphenFormat is a generated file in Debian"
+          echo "$progname: try \`$progname dvipdfm' for help" >&2
+             echo "$progname: try \`$progname dvipdfm paper' for help" >&2
+          echo "$progname: try \`$progname dvipdfmx' for help" >&2
+             echo "$progname: try \`$progname dvipdfmx paper' for help" >&2
+          echo "$progname: try \`$progname dvips' for help" >&2
+                echo "$progname: try \`$progname dvips mode' for help" >&2
+           echo "$progname: try \`$progname font' for help" >&2
+      echo "$progname: try \`$progname help' for help" >&2
+          echo "$progname: try \`$progname paper' for help" >&2
+          echo "$progname: try \`$progname pdftex' for help" >&2
+          echo "$progname: try \`$progname xdvi' for help" >&2
+             echo "$progname: try \`$progname xdvi paper' for help" >&2
+                echo "$progname: unknown MODE \`$tcBatchDvipsMode' given as argument for \`$progname dvips mode'" >&2
+            echo "$progname: unknown mode \`$tcBatchMode' specified as argument for \`$progname mode'" >&2; rc=1
+                echo "$progname: unknown MODE \`$tcBatchPdftexMode' given as argument for \`$progname pdftex mode'" >&2
+      echo "$progname: unknown option \`$1' given as argument for \`$progname'" >&2
+          echo "$progname: unknown option \`$1' given as argument for \`$progname dvips'" >&2
+          echo "$progname: unknown option \`$2' given as argument for \`$progname dvipdfm'" >&2
+          echo "$progname: unknown option \`$2' given as argument for \`$progname dvipdfmx'" >&2
+        *) echo "$progname: unknown option \`$2' given as argument for \`$progname font'" >&2
+          echo "$progname: unknown option \`$2' given as argument for \`$progname pdftex'" >&2
+          echo "$progname: unknown option \`$2' given as argument for \`$progname xdvi'" >&2
+             echo "$progname: unknown PAPER \`$3' given as argument for \`$progname dvipdfm paper'" >&2
+             echo "$progname: unknown PAPER \`$3' given as argument for \`$progname dvipdfmx paper'" >&2
+             echo "$progname: unknown PAPER \`$3' given as argument for \`$progname xdvi paper'" >&2
+        *) echo "$progname: updated configuration saved as file \`$ci'" >&2
+    *) echo "$progname: updated configuration saved as file \`$ci'" >&2
+                    echo "$progname: updated configuration saved as file \`$tcBatchHFOut'" >&2
+                  echo "$progname: updated configuration saved as file \`$tcBatchHFOut'" >&2
+      echo "$progname: updating formats ..." >&2
+      echo "$progname version $version"
+echoShowKpseVariable()
+# echoShowKpseVariable(args ...)
+      echoShowKpseVariable TEXMFMAIN TEXMFDIST TEXMFLOCAL TEXMFSYSVAR TEXMFSYSCONFIG TEXMFVAR TEXMFCONFIG TEXMFHOME VARTEXFONTS TEXMF SYSTEXMF TEXMFDBS WEB2C TEXPSHEADERS TEXCONFIG ENCFONTS TEXFONTMAPS
+echoShowVariable()
+# echoShowVariable(args ...)
+      echoShowVariable $envVars
+          echo "$tcBatchXdviPapers"
+	echo "unknown paper size: $AskedPaper" >&2
+      echo $UsagePaperToSize >&2
+              echo "Usage: $progname dvips add PRINTER" >&2
+              echo "Usage: $progname dvips del PRINTER" >&2
+              echo "Usage: $progname dvips mode MODE
+              echo "Usage: $progname dvips offset OFFSET"
+              echo "Usage: $progname dvips paper PAPER" >&2
+              echo "Usage: $progname dvips printcmd CMD"
+          echo "Usage: $progname mode MODE
+              echo "Usage: $progname pdftex mode MODE"
+      echo $UsageSizeToPaper >&2
+    echo "$var=$val"
+    echo "$var$val"
+      echo '=========================== version information =========================='
+    #   echo "xdvi only:"
+		echo "You cannot use this texconfig command, use \`update-language(1)' instead."
+    ed "$configReplaceFile" >/dev/null 2>&1 <<-eof
+                # edit tcBatchHyphenFile directly
+  ed "$setupDvipsPaperCfgFile" > /dev/null 2>&1 <<-eof
+(e.g. by running \`texdoc TETEXDOC')."
+  egrep -v "^(help|%)" | sort
+    elbLoc=`checkForBinary "$elb"`
+      ELB_PATH_ONLY=1 echoLocateBinary "$@"
+      *) elcLoc=`tcfmgr --cmd find --file "$elc"`;;
+    else
+      else
+          else
+            else
+              else
+                else
+                  else
+                    else
+      # empty or full filename -> getRelDir failed!
+envVars="
+      -e "s/ .*%[^ ]* / '/" \
+      -e "s/\$/' /" |
+    esac
+      esac
+          esac
+            esac
+              esac
+          esac ;;
+    #   eval echo $dvipsOnly
+    #   eval echo $knownToBoth
+    #   eval echo $xdviOnly
+    eval val=\"\${$var+=}\${$var- is unset}\"
+      (exit 0); exit 0;;
+      (exit 0); return 0
+  (exit 0); return 0
+      (exit 1); return 1
+    (exit 1); return 1
+  (exit 1); return 1
+  #   (exit 1); return 1
+  (exit $rc); exit $rc
+export PATH
+    false) (exit 1); return 1;;
+    faq)
+      fi
+          fi
+            fi
+              fi
+                fi
+                  fi
+                    fi
+      # fi
+    ""|$file)
+  file=$1
+	  # filter out duplicates.  This command line shows duplicates in the current config.ps:
+    findprog)
+fmgrConfigReplace()
+  fmgrConfigReplaceChanged=false
+           fmgrConfigReplaceChanged=true
+          fmgrConfigReplaceChanged=true;;
+      fmgrConfigReplaceChanged=true
+  fmgrConfigReplaceFile=$1
+# fmgrConfigReplace (file regex value)
+  fmgrConfigReplaceID=$1; fmgrConfigReplaceCfgFile=$3; fmgrConfigReplaceOrigFile=$4
+            fmgrConfigReplace mktex.cnf '^: ..BDPI=' ": \${BDPI=$tcBatchRes}"
+            fmgrConfigReplace mktex.cnf '^: ..MODE=' ": \${MODE=$tcBatchMode}"
+          fmgrConfigReplace mktex.cnf '^: ..MT_FEATURES=' ": \${MT_FEATURES=appendonlydir:varfonts}"
+          fmgrConfigReplace mktex.cnf '^: ..MT_FEATURES=' ": \${MT_FEATURES=texmfvar}"
+                fmgrConfigReplace $moreFmgrArgs config.$tcBatchDvipsPrinter '^D' "D $resX"
+                fmgrConfigReplace $moreFmgrArgs config.$tcBatchDvipsPrinter '^M' "M $tcBatchDvipsMode"
+              fmgrConfigReplace $moreFmgrArgs config.$tcBatchDvipsPrinter '^o' o
+              fmgrConfigReplace $moreFmgrArgs config.$tcBatchDvipsPrinter '^O' "O $offset"
+              fmgrConfigReplace $moreFmgrArgs config.$tcBatchDvipsPrinter '^o' "o |$printcmd"
+                fmgrConfigReplace $moreFmgrArgs config.$tcBatchDvipsPrinter '^X' "X $resX"
+                fmgrConfigReplace $moreFmgrArgs config.$tcBatchDvipsPrinter '^Y' "Y $resY"
+                fmgrConfigReplace pdftexconfig.tex 'pdfpkresolution' "\\pdfpkresolution=$1"
+  fmgrConfigReplaceRegex=$2
+              fmgrConfigReplace --ucf config '^p' "p $3";;
+              fmgrConfigReplace --ucf dvipdfmx.cfg '^p' "p $3";;
+    fmgrConfigReplace --ucf pdftexconfig.tex pdfpageheight '\pdfpageheight='"$pdfPaperHeight"
+    fmgrConfigReplace --ucf pdftexconfig.tex pdfpageheight '\pdfpageheight='"$pdfPaperHeight" 2>/dev/null
+  fmgrConfigReplace --ucf pdftexconfig.tex pdfpagewidth '\pdfpagewidth='"$pdfPaperWidth"
+              fmgrConfigReplace --ucf XDvi paper: "*paper: $3"
+  fmgrConfigReplaceValue=$3
+fmgrConfigShow()
+  fmgrConfigShow config '/^p/ {s/^p //;p}'
+  fmgrConfigShow config.ps '/^@ / {s/^@ \([^[:space:]]*\).*/\1/;p;q}'
+  fmgrConfigShow dvipdfmx.cfg '/^p/ {s/^p[[:space:]]*//;p}'
+  fmgrConfigShowFile=`tcfmgr --cmd find --file $1`
+# fmgrConfigShowPaper (file regex)
+  fmgrConfigShowRegex=$2
+  fmgrConfigShow XDvi '/^\*paper:/ {s/^\*paper: \([^[:space:]]*\).*/\1/;p;q}'
+  $FMT ${1+"$@"}
+      FMT=fmt
+    fmtutil --byengine pdftex 2>&1 | grep "^fmtutil"
+            $fmtutil --byfmt "$i" || rc=1
+          fmtutil --byfmt "$i" || rc=1
+              fmtutil --byhyphen "$tcBatchHFOut"
+  fmtutil --catcfg | awk '$3 != "-" {print $1}' | sort
+      fmtutil --catcfg > $tmpdir/post
+      fmtutil --catcfg > $tmpdir/pre
+      fmtutil --edit
+        fmtutil=fmtutil
+        fmtutil=fmtutil-sys
+                  fmtutil --refresh
+    font)
+	fontmaking := 0;
+foolscap     "13.5x17.0"
+foolscap     "17.0x13.5"
+  foolscap foolscapr legal legalr us|letter usr ledger tabloid"
+  for checkElemInListIter
+            for d in pk tfm source; do
+  for dir
+  for elb
+  for elc
+  for eskv
+  for esv
+	      for file in $tfcs; do tfc=$file; done
+        for i in `awk '{print $1}' $tmpdir/addOrChange`; do
+          for i in "$@"; do
+    formats)
+$formatsForHyphenFmt"
+      formatsForHyphenFmt=`echo "$formatsForHyphen" | myFmt | sed 's@^@  @'`
+      formatsForHyphen=`getFormatsForHyphen`
+      for m in psfonts.map pdftex.map ps2pk.map dvipdfm.map; do
+For more information about these \`features', consult the teTeX manual
+  for pathElem
+          for p in letter legal ledger tabloid a4 a3; do echo $p; done
+  found=false
+      getFormatsForHyphen
+getFormatsForHyphen()
+# getFormatsForHyphen(void)
+Get more help with:
+#   get paper for dvipdfm
+#   get paper for dvipdfmx
+#   get paper for dvips
+#   get paper for pdftex
+#   get paper for XDvi
+getRelDir()
+# getRelDir(file)
+            getRelDir "$tcBatchHyphenFile"
+getRes()
+  getResMode=$1
+# getRes(mode) - print resolution (both X and Y axis) to metafont mode
+  GLYPHFONTS INDEXSTYLE LIGFONTS MFBASES MFINPUTS MFPOOL MFTINPUTS
+	grep "$AskedWidth[[:space:]]*$AskedHeight" | \
+  grep '@ ' $configPsFile | sed "s/..//;s/ / '/;s/\$/' /"
+  grep mode_def "$modesMfFile" |
+# hack around a bug in zsh:
+#   handle batch mode
+	  # handled by xdvi and dvips (and hence all others)
+#   handle interactive mode
+    # handle "texconfig font"
+    # handle "xdvi paper PAPER"
+      height=$(echo $paperline | sed \
+    help|--help|-h)
+  help="texconfig supports adjusting and updating many aspects of
+      help="Usage:
+      help="Usage: $progname dvipdfm paper PAPER
+      help="Usage: $progname dvipdfmx paper PAPER
+      help="Usage: $progname dvips add PRINTER
+      help="Usage: $progname font vardir DIR
+      help="Usage: $progname hyphen FORMAT
+      help="Usage: $progname paper PAPER
+      help="Usage: $progname xdvi paper PAPER
+    # here is a bug: We should somehow check whether the file had been
+      # hook would give false ucf questions
+    hyphen)
+    # "hyphen FORMAT"
+    hyphen-list)
+              if checkElemInList "$tcBatchDvipsMode" `listMfModes | sed 's@ .*@@'`; then
+          if checkElemInList "$tcBatchHyphenFormat" $formatsForHyphen; then
+          if checkElemInList $tcBatchMode `listMfModes | sed 's@ .*@@'`; then
+              if checkElemInList "$tcBatchPdftexMode" `listMfModes | sed 's@ .*@@'`; then
+      # if checkForBinary dvipdfm >/dev/null && tcfmgr --cmd find --file config >/dev/null 2>&1; then
+      if checkForBinary dvipdfmx >/dev/null && tcfmgr --cmd find --file dvipdfmx.cfg >/dev/null 2>&1; then
+            if checkForBinary dvips >/dev/null && tcfmgr --cmd find --file config.ps >/dev/null 2>&1; then
+      if checkForBinary dvips >/dev/null && tcfmgr --cmd find --file config.ps >/dev/null 2>&1; then
+            if checkForBinary pdftex >/dev/null && tcfmgr --cmd find --file pdftexconfig.tex >/dev/null 2>&1; then
+      if checkForBinary pdftex >/dev/null && tcfmgr --cmd find --file pdftexconfig.tex >/dev/null 2>&1; then
+      if checkForBinary xdvi >/dev/null && tcfmgr --cmd find --file XDvi >/dev/null 2>&1; then
+            if cmp "$tcBatchHFEdit" "$tcBatchHFOrig" >/dev/null 2>&1; then
+      if cmp $tmpdir/pre $tmpdir/post >/dev/null 2>&1; then
+    if ! $(diff $fmgrConfigReplaceCfgFile $fmgrConfigReplaceOrigFile >/dev/null); then
+	if [ $(echo $papername | wc -w) -gt 1 ]; then
+                if $fmgrConfigReplaceChanged; then
+          if $fmtutil --all \
+  if grep "$configReplacePat" "$configReplaceFile" >/dev/null; then
+                  if grep "@ $tcBatchDvipsPaper " $configPsFile >/dev/null 2>&1; then
+  if [ -n "$2" ] && [ "$2" = "no-recreate-formats" ]; then skipFormats=true; fi
+      if [ ! -n "$paperline" ]; then
+      if [ ! -n "$papername" ] || [ "$papername" = "unknown" ] || [ "$papername" = "nopaper" ]; then
+                  if rm "$pFile"; then
+  if $skipFormats; then return 0; fi
+  IFS=$OLDIFS
+      if [ $sparseOutput = 1 ]; then
+  # if test $? != 0; then
+          if test ! -d "$MT_VARTEXFONTS"; then
+      if test -f $MT_TEXMFDIST/doc/tetex/teTeX-FAQ.gz; then
+    if test -n "$ELB_PATH_ONLY"; then
+      if test -n "$texconfig_sys"; then  # set by texconfig-sys
+              if test -n "$tfc"; then
+                    if test $retval != 0; then
+                  if test $retval != 0; then
+                if test $retval != 0; then
+    if test $retval != 0; then
+  if test $retval != 0; then
+                if test -w "$tfc"; then
+          if test -z "$MT_VARTEXFONTS"; then
+  if [ $use_ucf = true ]; then
+  if $wChanged || $fmgrConfigReplaceChanged; then
+  if $wChanged; then
+  if [ -z $pdfPaperName ]; then
+    init)
+# initializations...
+in mktex.cnf.
+# invoke the right shell:
+    #   knownToBoth=$(comm -1 -2 ${TMPDIR:-/tmp}/xdvi.list ${TMPDIR:-/tmp}/dvips.list)
+	      # last match wins
+        $lastUpdatedFile)
+    $lastUpdatedFile)
+lastUpdatedFile=
+                    lastUpdatedFile=$ci
+                  lastUpdatedFile=$ci
+           lastUpdatedFile=$ci;;
+       lastUpdatedFile=$ci;;
+ledger       "17x11"
+legal        "8.5x14"
+legalr       "14x8.5"
+	let myexit = primitive_end_;
+letter       "8.5x11"
+            letter|legal|ledger|tabloid|a4|a3)
+  letter legal ledger tabloid a4 a3"
+#   line will be added at the end of the file if pattern does not match.
+#   list all formats which have customizable hyphenation
+          listDvipsPapers
+listDvipsPapers()
+              listDvipsPapers | sed 's@ .*@@; s@^@  @' | myFmt
+# listDvipsPapers(void) - list paper definitions from config.ps
+      listMfModes
+listMfModes()
+# listMfModes(file) - list modes from modes.mf file
+              listMfModes | sed 's@ .*@@; s@^@  @' | myFmt
+          listMfModes | sed 's@ .*@@; s@^@  @' | myFmt
+  locateConfigPsFile
+      locateConfigPsFile
+          locateConfigPsFile
+              locateConfigPsFile
+locateConfigPsFile()
+# locateConfigPsFile(void) - find config.ps file (with caching)
+# main()
+# Main functions,
+#   matches file against SYSTEXMF. Returns relative directory of file within
+	message "XDPI = " & xdpi;
+	message "YDPI = " & ydpi;
+    mf '\mode='"$getResMode"';  \input ./mftmp' </dev/null \
+  MISCFONTS MPINPUTS MPMEMS MPPOOL MPSUPPORT OCPINPUTS OFMFONTS
+mktex.cnf.
+mktexdir()
+# mktexdir(args)
+      mktexlsr
+mktexupd()
+# mktexupd(args) - call mktexupd script
+    -m|--machine-readable)
+        mode)
+    mode)
+    mode-list)
+	mode_setup;
+      modesMfFile=`tcfmgr --cmd find --file modes.mf`
+            # modify mktex.cnf
+  moreArgs=""
+	moreArgs="$moreArgs $1 $2"
+          moreFmgrArgs="--reldir dvips/config --infile $otherPrinterFile"
+  MT_FEATURES=none "$MT_TEXMFMAIN/web2c/mktexdir" "$@" >&2
+    "") MT_SYSTEXMF=`kpsewhich -var-value=SYSTEXMF`;;
+        <$MT_TEXMFDIST/doc/tetex/teTeX-FAQ.gz eval zcat | ${PAGER-sensible-pager}
+    "") MT_TEXMFDIST=`kpsewhich -var-value=TEXMFDIST`;;
+    "") MT_TEXMFMAIN=`kpsewhich -var-value=TEXMFMAIN`;;
+  "$MT_TEXMFMAIN/texconfig/tcfmgr" "$@"
+  "$MT_TEXMFMAIN/web2c/mktexupd" "$@"
+    "") MT_TEXMVAR=`kpsewhich -var-value=TEXMFVAR`;;
+          MT_VARTEXFONTS=`kpsewhich -var-value VARTEXFONTS`
+	myexit;
+# myFmt(args) - run $FMT
+# needed for set -e and replacing the various checks for $?
+needsCleanup=false
+  $needsCleanup && test -n "$tmpdir" && test -d "$tmpdir" \
+  needsCleanup=true
+  # no harm in continuing to look for the teTeX files.
+  # now check for success / failure
+  # now loop over all components of SYSTEXMF
+# Now maintained as part of TeX Live; correspondence to tex-live@tug.org.
+        offset)
+          offset=$2
+  OLDIFS=$IFS
+    # one change, there shouldn't be any need for prompting.  But since
+  # one change, there shouldn't be any need for prompting.  But since
+  OPENTYPEFONTS OPLFONTS OTPINPUTS OVFFONTS OVPFONTS PDFTEXCONFIG PKFONTS
+# Originally written by Thomas Esser. Public domain.
+          otherPrinter=false
+              otherPrinterFile=`kpsewhich -format='dvips config' "config.$otherPrinterName"`
+              otherPrinterName=$2
+              otherPrinter=true
+        -P)
+      p=$2
+        paper)
+    paper)
+	paperconf)
+# paperconf additions by Frank K
+  PaperHeight=$(echo $pdfPaperDims | sed 's/ .*//') # keep value before blank
+      paperline=$(listDvipsPapers | grep "^$AskedPaper[[:space:]]")
+        paper-list)
+	  papername=$(echo $papername | \
+      papername=$(listDvipsPapers | \
+	  papernameList=$papername
+    paper-to-size)
+      PaperToSize $@
+# PaperToSize
+PaperToSize()
+  PaperWidth=$( echo $pdfPaperDims | sed 's/.* //') # keep value after blank
+  pdfPaperDims=$(PaperToSize -m $pdfPaperName)
+  pdfPaperHeight=$(echo $PaperHeight | sed 's/mm/ true mm/;s/in/ true in/')
+  pdfPaperHelp="Usage: $progname pdftex paper PAPER"
+  pdfPaperName="$1"
+  pdfPaperWidth=$( echo $PaperWidth  | sed 's/mm/ true mm/;s/in/ true in/')
+    pdftex)
+  pdftexconfig=`tcfmgr --cmd find --file pdftexconfig.tex`
+      pdftexPaperConf
+# pdftexPaperConf
+	  pdftexPaperConf
+pdftexPaperConf(){
+  pdftexPaperHeight=$(sed -n '/^\\pdfpageheight/ {s/^\\pdfpageheight=//;s/ true //;p}' $pdftexconfig)
+  pdftexPaperWidth=$(sed -n '/^\\pdfpagewidth/ {s/^\\pdfpagewidth=//;s/ true //;p}' $pdftexconfig)
+# pdftexSetPaper
+	  pdftexSetPaper $@
+pdftexSetPaper()
+              pFile=`kpsewhich -format='dvips config' "config.$printerName"`
+                                        plus run updmap)
+        printcmd)
+          printcmd=$2
+              printerName=$2
+#   print `errmsg' to stderr and exit with error code 1
+       $progname dvipdfm
+       $progname dvipdfm paper PAPER   (dvipdfm paper size)
+       $progname dvipdfmx
+       $progname dvipdfmx paper PAPER  (dvipdfmx paper size)
+       $progname dvips
+       $progname dvips del PRINTER
+       $progname dvips [OPTION...]     (dvips options)
+            $progname dvips paper-list
+       $progname dvips paper-list
+       $progname dvips paper PAPER
+       $progname dvips [-P PRINTER] mode MODE
+       $progname dvips [-P PRINTER] offset OFFSET
+       $progname dvips [-P PRINTER] printcmd CMD"
+       $progname faq                   (show teTeX faq)
+       $progname findprog PROG...      (show locations of PROGs, a la which)
+       $progname font
+       $progname font ro
+       $progname font rw
+       $progname font vardir DIR
+       $progname formats               (edit fmtutil.cnf)
+       $progname help                  (or --help; show this help)
+       $progname hyphen
+       $progname hyphen FORMAT         (edit hyphenation config for FORMAT)
+       $progname init [FORMAT]...      (rebuild FORMATs, or all formats
+       $progname mode
+       $progname mode MODE             (set Metafont MODE)
+       $progname paper
+       $progname paper PAPER           (set default paper size to PAPER)
+       $progname pdftex
+       $progname pdftex mode MODE
+       $progname pdftex [OPTION]...    (pdftex options)
+       $progname pdftex paperconf
+       $progname pdftex paper PAPER
+       $progname rehash                (rebuild ls-R files with mktexlsr)
+progname=texconfig
+       $progname version               (or --version; show version info)
+       $progname xdvi
+       $progname xdvi paper PAPER      (xdvi paper size)
+  PSHEADERS SFDFONTS T1FONTS T1INPUTS T42FONTS TEXBIB TEXCONFIG TEXDOCS
+                      rc=1
+                    rc=1
+                  rc=1
+                rc=1
+              rc=1
+             rc=1 ;;
+            rc=1
+           rc=1
+          rc=1
+        rc=1
+      rc=1
+    rc=1
+                  rc=1; (exit $rc); return $rc
+              rc=1; (exit $rc); return $rc
+#   rearranges config.ps to make paper the first paper definition
+    rehash)
+  relPart=
+        relPart=`echo "$file" | sed "s%$dir/*%%"`
+      relPart=`echo "$relPart" | sed 's%/*[^/]*$%%'`
+      # relPart should just have the "dirname" part:
+#   replaces line matching regex by value in file
+Report bugs to <tex-k@tug.org>."
+                resX=$1; resY=$2
+      return
+            return
+                return
+                    return
+            return;
+          return;;
+    *) return;;
+                  return 1
+    return $rc
+retval=0
+    #   rm ${TMPDIR:-/tmp}/dvips.list
+    #   rm ${TMPDIR:-/tmp}/xdvi.list
+        ro)
+  && { RUNNING_BSH=true; export RUNNING_BSH; exec /bin/bsh $0 ${1+"$@"}; }
+  && { RUNNING_KSH=true; export RUNNING_KSH; exec /bin/ksh $0 ${1+"$@"}; }
+    # running, pass the option, if only to prevent it from nagging.
+  # running, pass the option, if only to prevent it from nagging.
+        rw)
+	"s/.*['\'']\([[:digit:].]*[$allowedUnitLetters][$allowedUnitLetters]\).*/\1/" \
+  && sed 1q $MT_TEXMFMAIN/../release-texlive.txt
+  sed -e "s/mode_def //" \
+  sed -n "$fmgrConfigShowRegex" $fmgrConfigShowFile
+	    sed 's/11x17//;s/statement//;s/a4size//;s/letterSize//;s/flse//;s/[[:space:]]//g' \
+	  #     sed 's/\([[:alnum:]]*\)[[:space:]]\(.*\)/\2 \1/' | \
+	sed 's/[[:space:]].*//' \
+	  #     sed 's/\(.*\)[[:space:]]\([[:alnum:]]*\)/\2 \1/' | \
+See http://tug.org/texlive/ for other documentation, etc.
+#   set paper for pdftex
+setupDvipsPaper()
+  setupDvipsPaperChanged=false
+       setupDvipsPaperChanged=true
+      setupDvipsPaperChanged=true;;
+  setupDvipsPaperDftPaper=$1
+	/@ $setupDvipsPaperDftPaper /;/@ /-1m'a-1
+  setupDvipsPaperFile=config.ps
+  setupDvipsPaperID=$1; setupDvipsPaperCfgFile=$3; setupDvipsPaperOrigFile=$4
+# setupDvipsPaper(paper)
+                    setupDvipsPaper "$tcBatchDvipsPaper"
+  setupFMT
+setupFMT()
+# setupFMT(void) - find a suitable version of fmt / adjust
+      setupModesMfFile
+          setupModesMfFile
+              setupModesMfFile
+setupModesMfFile()
+# setupModesMfFile(void) - find modes.mf file (with caching)
+  setupSystexmf
+setupSystexmf()
+# setupSystexmf() - get value for MT_SYSTEXMF (with caching)
+      setupTexmfdist
+setupTexmfdist()
+  setupTexmfmain
+      setupTexmfmain
+setupTexmfmain()
+# setupTexmfmain() - get value for MT_TEXMFDIST (with caching)
+# setupTexmfmain() - get value for MT_TEXMFMAIN (with caching)
+setupTexmfvar()
+# setupTexmfvar() - get value for MT_TEXMFVAR (with caching)
+  setupTmpDir
+      setupTmpDir
+          setupTmpDir
+            setupTmpDir
+              setupTmpDir
+                setupTmpDir
+                  setupTmpDir
+setupTmpDir()
+# setupTmpDir() - set up a temp directory and a trap to remove it
+                  set x $co; shift
+  set x $co; shift
+  set x `echo "$MT_SYSTEXMF" | tr : '
+  set x `echo "$PATH" | sed 's/^:/.:/; s/:$/:./; s/::/:.:/g'`; shift
+                set x `getRes "$tcBatchDvipsMode"`; shift
+            set x `getRes "$tcBatchMode"`; shift
+                set x `getRes "$tcBatchPdftexMode"`; shift
+                    set x $tcfRet; shift
+      shift
+'`; shift
+          shift 1
+                *) shift; shift;;
+	  shift; shift
+	shift; shift
+      showDistVersionInfo
+showDistVersionInfo()
+#   show environment variables which names are as args and their values
+#   show kpathsea variables which names are as args and their values
+#   shows the paper setting in file, according to regex
+# show version information from the distribution, if we have any.
+    size-to-paper)
+      SizeToPaper $@
+# SizeToPaper
+SizeToPaper()
+  SizeToPaper $pdftexPaperHeight $pdftexPaperWidth
+  skipFormats=false
+	  #     sort | \
+source) world writable and sets the features appendonlydir:varfonts
+source) writable for the owner only and sets the feature texmfvar in
+  sparseOutput=0
+      sparseOutput=1
+	"s/.*[[:space:]]\([[:digit:].]*[$allowedUnitLetters][$allowedUnitLetters]\).$/\1/" \
+	string xdpi;
+	string ydpi;
+tabloid      "11x17"
+  *) tcBatch "$@";;
+tcBatch()
+# tcBatch(args)
+      #   tcBatch dvipdfm paper $p
+        tcBatch dvipdfmx paper $p
+                    tcBatchDvipsAddID=$1; tcBatchDvipsAddFile=$3
+              tcBatchDvipsMode=$2
+              tcBatch dvips mode "$tcBatchMode"
+              tcBatchDvipsPaper=$2
+    #   tcBatch dvips paper-list | cut -d " " -f 1 | sort -u > ${TMPDIR:-/tmp}/dvips.list
+        tcBatch dvips paper $p
+          tcBatchDvipsPrinter=$otherPrinterName
+          tcBatchDvipsPrinter=ps
+              tcBatchFontVardir=$3
+                tcBatchHFEdit=$tcBatchHyphenFile
+                tcBatchHFID=
+                  tcBatchHFID=$1; tcBatchHFEdit=$3; tcBatchHFOrig=$4
+                tcBatchHFOrig=$tmpdir/hforig
+                    tcBatchHFOut=$ci
+                  tcBatchHFOut=$tcBatchHFEdit
+                tcBatchHyphenFileBasename=`echo "$tcBatchHyphenFile" | sed 's@.*/@@'`
+            tcBatchHyphenFile=`fmtutil --showhyphen "$tcBatchHyphenFormat"`
+      tcBatchHyphenFormat=$2
+          tcBatchMode=$2
+              tcBatchPdftexMode=$3
+              tcBatch pdftex mode "$tcBatchMode"
+        tcBatch pdftex paper $p
+            tcBatchRes=$1
+    #   tcBatch xdvi paper-list | cut -d " " -f 1 | sort -u > ${TMPDIR:-/tmp}/xdvi.list
+        tcBatch xdvi paper $p
+      tcBatchXdviPapers='us           "8.5x11"
+tcfmgr()
+# tcfmgr(args) - call tcfmgr script
+                  tcfRet=`tcfmgr --emptyinfile --reldir dvips/config --cmd co --tmp $tmpdir --file "config.$printerName" || retval=$?`
+                    tcfRet=`tcfmgr --tmp $tmpdir --id "$tcBatchDvipsAddID" --cmd ci || retval=$?`
+tcInteractive()
+# tcInteractive(void)
+              test -d "$d" && find $d -type d -exec chmod 1777 '{}' \;
+              test -d "$d" && find "$d" -type d -exec chmod 755 '{}' \;
+          test -d "$MT_VARTEXFONTS" || mktexdir "$MT_VARTEXFONTS"
+test -f /bin/bsh && test -z "$RUNNING_BSH" \
+test -f /bin/ksh && test -z "$RUNNING_KSH" \
+  test -f $MT_TEXMFDIST/release-tetex-texmf.txt \
+  test -f $MT_TEXMFMAIN/release-tetex-src.txt \
+  test -f $MT_TEXMFMAIN/../release-texlive.txt \
+      *) test -f "$pathElem/$cfbBinary" && { echo "$pathElem/$cfbBinary"; found=true; break; }
+    test -n "$dir" || continue
+      test -n "$elbLoc" && echo "$elbLoc"
+test -n "${ZSH_VERSION+set}" && alias -g '${1+"$@"}'='"$@"'
+        { test -x /bin/adjust || test -x /usr/bin/adjust; } && FMT=adjust
+      test ! -x /bin/fmt && test ! -f /usr/bin/fmt &&
+  && "teTeX-src release:   `cat $MT_TEXMFMAIN/release-tetex-src.txt`"
+  && "teTeX-texmf release: `cat $MT_TEXMFDIST/release-tetex-texmf.txt`"
+    # texconfig conf
+  texconfig-dialog
+        # texconfig dvipdfm ""
+    # texconfig dvipdfm
+        # texconfig dvipdfm paper
+        # texconfig dvipdfm <unknown>
+        # texconfig dvipdfmx ""
+    # texconfig dvipdfmx
+        # texconfig dvipdfmx paper
+        # texconfig dvipdfmx <unknown>
+    # texconfig dvips
+	  # ./texconfig dvips paper-list | \
+    # texconfig might be called by a maintainer script with debconf
+  # texconfig might be called by a maintainer script with debconf
+# TeXConfig version 3.0
+  TEXFONTMAPS TEXFONTS TEXFORMATS TEXINDEXSTYLE TEXINPUTS TEXMFCNF
+  # TeX Live file.
+      texmf.cnf) elcLoc=`kpsewhich $elc`;;
+  TEXMFDBS TEXMFINI TEXMFSCRIPTS TEXPICTS TEXPKS TEXPOOL TEXPSHEADERS
+  TEXSOURCES TFMFONTS TRFONTS TTFONTS VFFONTS WEB2C WEBINPUTS
+	      tfcs=$(grep -l '^[[:space:]]*VARTEXFONTS[[:space:]]*=' /etc/texmf/texmf.d/*.cnf)
+#   The first line in file that matches pattern gets replaced by line.
+The ro option makes the VARTEXFONTS directory (and subtrees pk, tfm,
+The rw option makes the VARTEXFONTS directory (and subtrees pk, tfm,
+the TeX installation.
+The vardir option changes the VARTEXFONTS variable in the texmf.cnf file.
+# the version string
+    #   # this option is not meant to be used by users; therefore I don't care for insecure tempfiles
+tmpdir=${TMPDIR-${TEMP-${TMP-/tmp}}}/tctmp.$$
+          to get a list of valid PAPER values.
+  trap 'cleanup 1' 1 2 3 7 13 15
+        true)
+    true) (exit 0); return 0;;
+    true) return;;
+      --ucf)
+    ucf --debconf-ok $fmgrConfigReplaceCfgFile $fmgrConfigReplaceOrigFile || retval=$?
+  ucf --debconf-ok $setupDvipsPaperCfgFile $setupDvipsPaperOrigFile || retval=$?
+  (umask 077; mkdir "$tmpdir") \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xAIX; } 2>/dev/null \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xULTRIX; } 2>/dev/null \
+	  #     uniq -D -f 1
+unset RUNNING_BSH
+unset RUNNING_KSH
+		  update-texmf
+             && $updmap; then
+        updmap=updmap
+        updmap=updmap-sys
+  UsagePaperToSize="Usage: texconfig paper-to-size [-m|--machine-readable] papername"
+Usage: $progname conf                  (show configuration information)
+  UsageSizeToPaper="Usage: texconfig size-to-paper height width"
+                # use tcfmgr
+  use_ucf=false
+    # use ucf in Debian.  Since we just copied the file and made only
+  # use ucf in Debian.  Since we just copied the file and made only
+	use_ucf=true
+usr          "11x8.5"
+Valid FORMATs are:
+Valid MODE settings:"
+Valid PAPER settings:
+          Valid PAPER settings: Same as for dvips, use
+    val=`kpsewhich -var-value="$eskv"`
+        vardir)
+    var=$eskv
+    var=$esv
+	      /var/lib/texmf/*)
+version=20080708.1050plus_paperconf
+    version|--version)
+            ${VISUAL:-${EDITOR:-sensible-editor}} "$tcBatchHFEdit"
+  wChanged=$fmgrConfigReplaceChanged
+      width=$(echo $paperline | sed \
+      x$checkElemInListIter)
+	xdpi := decimal round pixels_per_inch;
+    xdvi)
+    #   xdviOnly=$(comm -2 -3 ${TMPDIR:-/tmp}/xdvi.list ${TMPDIR:-/tmp}/dvips.list)
+      XDviPaperConf
+# XDviPaperConf
+	  XDviPaperConf
+XDviPaperConf(){
+	ydpi := decimal round (pixels_per_inch * aspect_ratio);
+# You may freely copy, distribute and/or modify any part of the patch

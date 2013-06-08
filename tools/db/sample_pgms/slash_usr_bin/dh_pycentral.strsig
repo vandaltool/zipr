@@ -1,0 +1,538 @@
+		   ) {
+	    # Add any fixed version
+				addsubstvar($package, "python:Depends", 
+		addsubstvar($package, "python:Depends", "python-central", ">= $pycentral_version");
+					addsubstvar($package, "python:Depends", "python$min_version");
+				addsubstvar($package, "python:Depends", $python, ">= $min_version");
+				addsubstvar($package, "python:Depends", $python, "<< $stop_version");
+		addsubstvar($package, "python:Depends", $python) unless ($min_version or $stop_version);
+			addsubstvar($package, "python:Depends", $pyver);
+				addsubstvar($package, "python:Provides", $virtual);
+			addsubstvar($package, "python:Versions", $_);
+		addsubstvar($package, "python:Versions", $versions_field);
+    # Add two fakes minima, maxima to check if we have limits
+Also includes bits of the old dh_python written by Josselin Mouette
+		# Always add pythonX.Y dependency if a script uses that interpreter
+		# Always add pythonX.Y dependency if some private modules are
+and not removing the symlinked files on upgrade) in version 0.6.9.
+and /usr/lib/python?.?/dist-packages.
+# a string like this "-1.2,1.4-1.6,2.0,2.3-"
+		# At least a script has been detected
+			autoscript($package,"postinst","postinst-pycentral","s%#PACKAGE#%$package%");
+			autoscript($package,"preinst","preinst-pycentral","s%#PACKAGE#%$package%");
+			##autoscript($package,"preinst","preinst-pycentral","s%#PACKAGE#%$package%;s%#FORMAT#%$pyformat%;s%#PYVERSIONS#%$versions_field%;s%#PYCENTRAL_VERSION#%$pycentral_version%");
+			autoscript($package,"prerm","prerm-pycentral","s%#PACKAGE#%$package%;s%#UPGRADE#%$prerm_upgrade%");
+B<dh_pycentral> [S<I<debhelper options>>] [B<-n>] [B<-X>I<item>] [B<-V> I<version>] [S<I<module dirs ...>>]
+		# byte-compiled with it)
+		# byte-compiled with it (or if extensions are
+can make dh_pycentral check those directories by passing their names on the
+	# Can't fail, dh_testdir has already been called
+# Check for -V
+	# Check that we have *.py files!
+# Check the compatibilty mode to use
+		chomp($python_header);
+	chomp($pyversions_field);
+		# Classify the file in the right category
+# Cleaning the paths given on the command line
+	close(CONTROL);
+	close(DEFAULTS);
+			close F;
+	close(PYVERS);
+	# Close the range properly
+command line. By default, it will check /usr/lib/$PACKAGE, /usr/share/$PACKAGE,
+	# Common dependency handling
+		compare_version($_, $max) <= 0 } @all_versions;
+		compare_version($_, $min) >= 0 and 
+			##complex_doit("awk '/^\\[python-package\\]\$/, /^PYEOF\$/ { if (\$1 ~ /PYEOF/) exit; else print}' $outfile > debian/$package/usr/share/pyshared-data/$package");
+			complex_doit("/bin/echo -e '[python-package]\nformat = $pyformat\npython-version = $versions_field\n[pycentral]\nversion = $pycentral_version\ninclude-links = $includelinks\n[files]' >> $metafile");
+			complex_doit("find debian/$package -mindepth 1 -regex '.*/usr/share/doc/.*' -prune -o \\( -regex '.*/usr/share/pyshared/.*' -o -regex '.*/usr/lib/python[23]\.[0-9]/[ds]i[st][te]-packages/.*' -o -name '*.py' \\) -printf '/%P=%Y\n' >> $metafile");
+			##complex_doit("find debian/$package -mindepth 1 -regex '.*/usr/share/doc/.*' -prune -o \\( -regex '.*/usr/share/pyshared/.*' -o -regex '.*/usr/lib/python[23]\.[0-9]/[ds]i[st][te]-packages/.*' -o -name '*.py' \\) -printf '/%P=%Y\n' > $outfile.pyc");
+			##complex_doit("perl -pi -e '/#PYFILES#/ and do { open F, \"$outfile.pyc\"; local \$/ ; \$_ = <F> };' $outfile");
+    # Compute the list of versions that are supported
+		# Continue only with .py or .so
+# Convert the Python-Version field in a standardized "pyversions" field
+	# criteria
+			# Current version is not supported by the package
+			# Current versions is supported by the package
+	# Deactivate versions which do not match the other
+# dependency types
+			# Depend on python only if the version
+				# depend on that specific python version
+		$dep_on_python++;
+			$dep_on_python++;
+				$dep_on_python--;
+	$dep_on_python = 0;
+					$deps |= PROGRAM;
+				$deps |= PY_PRIVATE_MODULE;
+				$deps |= PY_PUBLIC_MODULE;
+					$deps |= PY_UNKNOWN_MODULE;
+				$deps |= SO_PRIVATE_MODULE;
+					$deps |= SO_UNKNOWN_MODULE;
+    || ($dh{FLAG_INCLUDE_LINKS}))
+  $dh{FLAG_NO_MOVE} = 1;
+dh_pycentral is a debhelper program that will scan your package, detect
+dh_pycentral - use the python-central framework to handle Python modules and extensions
+dh_pycentral will also generate substitution variables: the
+	$diff = $A[$i] - $B[$i];
+	@dirs = grep -d, map "$tmp/$_", @dirs;
+					$dir =~ s/^\Q$tmp\E//;
+	@dirs_so = grep -d, map "$tmp/$_", @dirs_so;
+			##doit(("chmod","644","debian/$package/usr/share/pyshared-data/$package"));
+			doit(("chmod","644","debian/$package/usr/share/pyshared-data/$package"));
+			##	doit(("cp","-p",$outfile,$savedfile));
+			##		doit(("cp","-p","$savedfile",$outfile));
+			##doit(("mkdir","-p","-m","755","debian/$package/usr/share/pyshared-data"));
+			doit(("mkdir","-p","-m","755","debian/$package/usr/share/pyshared-data"));
+	doit("pycentral debhelper$pcopts $package $tmp");
+		doit(("rm","-f",$_."c",$_."o")) if /\.py$/;
+			##		doit(("rm","-f","$outfile"));
+			##doit(("rm","-f","$outfile.pyc"));
+			##doit(("rm","-f","$savedfile"));
+Do not modify postinst/postrm scripts.
+} else { 
+	    } else {
+	} else {
+		    } else {
+		} else {
+			} else {
+			##} else {
+			##	} else {
+				} else {
+	} elsif ($check =~ /^<=\s*([\d\.]+)/) {
+	} elsif ($check =~ /^>=\s*([\d\.]+)/) {
+			} elsif (compare_version($min_version, $python_version) > 0) {
+				} elsif(defined $verdeps{$2}) {
+	} elsif ($_ eq "100.0") {
+		} elsif ($fn =~ m|\Q$tmp\E/usr/lib/python([\d\.]+)/|) {
+		} elsif ($fn =~ m|\Q$tmp\E/usr/lib/python-support/[^/]+/python([\d\.]+)/|) {
+		} elsif ($fn =~ m|\Q$tmp/usr/lib/python([\d\.]+)/[ds]i[st][te]-packages/|) {
+		} elsif ($fn =~ m|$tmp/usr/share/doc/|) {
+		} elsif ($fn =~ m{$tmp(?:/usr/share/pyshared/|/usr/share/python-support/)}) {
+elsif ($python_version =~ m/^Python\s+(\d+)\.(\d+)(\.\d+)*/) {
+		} elsif (/\.so$/ and $private_sodirs_regex and $fn =~ m/(?:$private_sodirs_regex)/) {
+		    # Empty field, start with something!
+	    error("Can't open /usr/share/python/debian_defaults: $!");
+	error("Python is not installed, aborting. (Probably forgot to Build-Depend on python.)");
+		error("The package $package puts files in /usr/lib/site-python: forbidden by policy");
+		error("The package $package puts files in /usr/share/pycentral instead of /usr/share/pyshared; use `pycentral pycentraldir' to determine the installation directory");
+	error("Unable to parse python version out of \"$python_version\".");
+		error("Unknown python version $dh{V_FLAG}");
+		# (even if the modules can be automatically byte-compiled for any new
+Exclude files that contain "item" anywhere in their filename from being
+expects the XB-Python-Version for each binary package it is supposed
+Extensions are kept into the original installation location.
+extensions have to provide those whereas it's only option for pure python
+		# Extensions will always trigger this (as well as public
+# Extract a list of officially supported Python versions
+# Extract min, max and list of versions from
+extra names on the command line are searched for binary (.so) modules.
+# extra options for pycentral debhelper call
+	# Fail early if the package use usr/lib/site-python
+		# Find scripts
+	find sub {
+		# Find the current version in all_versions
+		# FIXME: move back, after $versions_field is set.
+    foreach (@_) {
+foreach (@ARGV) {
+	foreach (<DEFAULTS>) {
+			foreach $dir (@dirs) {
+			foreach (grep { $officially_supported{$_} } @versions) {
+	foreach (grep { $pyversions_additional{$_} } keys %pyversions_additional) {
+	    foreach (keys %pyversions_additional) {
+			foreach (keys %pyversions_found) {
+		foreach (keys %pyversions_found) {
+    foreach my $check (split(/,\s*/, $header)) {
+foreach my $package (@{$dh{DOPACKAGES}}) {
+	foreach my $pyver (keys %verdeps) {
+    foreach my $range (split /,/, $field) {
+			foreach my $version (split(/\s+/, $supported)) {
+    foreach (@python_allversions) {
+	foreach (@python_allversions) {
+foreach (@python_allversions) {
+    foreach (@supported) {
+# format version used for the preinst script
+    for (my $i = 0; $i <= $#A; $i++) {
+		$found++;
+		# Generate provides for all python versions supported
+		# Generate provides for the python2.X-foo packages that we emulate
+    # Generate the corresponding information in standardized "pyversions" format
+	# Generate the depends to accept all python
+		# Generate the Python-Version field
+	# Global scan
+		    grep { $pyversions_expected{$_} == 1 } keys %pyversions_expected;
+    # Handles 2.10 -> 2.11 gracefully
+=head1 AUTHORS
+=head1 CONFORMS TO
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	# Here we're doing what dh_python used to do
+		# If a stronger dependency is needed
+	if ($check =~ /^<<\s*([\d\.]+)/) {
+	if ($check =~ /^=?\s*([\d\.]+)/) {
+			if (compare_version($min_version, $python_version) <= 0 ) {
+			if (compare_version($stop_version, $python_version) > 0 ) {
+if (! defined $python_version || $python_version eq "") {
+				if (! $dep_on_python) {
+	if ($dep_on_python) {
+	if ($deps & (PROGRAM|PY_PUBLIC_MODULE)) {
+			##	if (!($deps & PY_PRIVATE_MODULE)) {
+	if ($deps & PY_PRIVATE_MODULE) {
+	if ($deps & SO_PRIVATE_MODULE) {
+if ($dh{FLAG_NO_MOVE}) {
+		if (! $dh{NOSCRIPTS}) {
+				if ($dh{V_FLAG_SET}) {
+			if ($dh{V_FLAG_SET}) {
+if($dh{V_FLAG_SET}) {
+		if (($dh{V_FLAG_SET} and ($usepython eq "python$python_version")) or
+	if (-d "$tmp/usr/lib/site-python") {
+	if (-d "$tmp/usr/share/pycentral") {
+			##if (!(-d "$tmp/usr/share/pyshared" || ($deps & PY_PRIVATE_MODULE)) || ($ENV{DH_PYCENTRAL} && $ENV{DH_PYCENTRAL} =~ /noprepare/)) {
+if (-e "debian/pyversions") {
+if (($ENV{DH_PYCENTRAL} && $ENV{DH_PYCENTRAL} =~ /include-links/)
+if ($ENV{DH_PYCENTRAL} && $ENV{DH_PYCENTRAL} =~ /no-?move/) {
+	if ($_ eq "0.0") {
+if (-e "/usr/share/python/debian_defaults") {
+		if (excludefile($fn)) {
+				if ($fn =~ m/\Q$dir\E/) {
+	if ($found or -d "$tmp/usr/share/pyshared") {
+			##if (-f $outfile) {
+	if (! grep { $_ eq $usepython } @python_allversions) {
+if ($includelinks) {
+		    if ($index <= $#all_versions and $all_versions[$index] eq $_) {
+		if ($index <= $#all_versions and $all_versions[$index] eq $_) {
+		if ($min_version) {
+			if ($min_version and ($min_version eq $max_version)) {
+	if (m/python([\d\.]+)/) {
+		if ($package =~ /^python-/) {
+			if (/\.py$/) {
+		if (/\.py$/ and $private_pydirs_regex and $fn =~ m/(?:$private_pydirs_regex)/) {
+				if ( "python" eq $2 ) {
+	if ($range =~ /^([\d\.]+)?-([\d\.]+)?$/) {
+    if ($range_is_open) {
+	    if ($range_is_open) {
+			if (read F, local $_, 32 and m%^#!\s*/usr/bin/(env\s+)?(python(\d+\.\d+)?)\s%) {
+		if ($result) {
+			##	if ($savedfile eq "") {
+		if (scalar grep { $python_version eq $_ } keys %pyversions_found) {
+	if (scalar keys %pyversions_found) {
+	    if ($source =~ m/^$/) {
+	    if ($source =~ m/^XS-Python-Version: \s*(.*)$/m) {
+		if ($stop_version) {
+		if (/^supported-versions\s*=\s*(.*)$/) {
+(if the package's name starts with "python-"). A python-foo package could
+If the .py files your package ships are meant to be used by a specific
+    if ($use_additional) {
+		if ($verdeps{$pyver} & PROGRAM) {
+		if ($verdeps{$pyver} & (PY_PRIVATE_MODULE|SO_PRIVATE_MODULE)) {
+				if ($version =~ /python([\d\.]+)/) {
+				# If we support only one non-standard python
+		if (-x or /\.py$/) {
+If your package installs python modules in non-standard directories, you
+			# Ignore .py files in doc directory
+  $includelinks = 1;
+	"include-links" => \$dh{FLAG_INCLUDE_LINKS},
+	    $index++;
+		    $index++;
+init(options => {
+			# interval of python versions
+=item B<-n>, B<--noscripts>
+=item B<-V> I<version>
+=item B<-X>I<item>, B<--exclude=>I<item>
+=item I<module dirs>
+    $items[1] += 1;
+			# It's safe to depends on the corresponding
+<joss@debian.org> who used many ideas from Brendan O'Dea <bod@debian.org>.
+			last;
+		    last if ($all_versions[$index] eq $_);
+	    $last_real_version = $_;
+L<debhelper(7)>
+		# Let's depend on python anyway
+	local $/ = "";
+			local *F;
+	    $max = defined($2) && $2 ? $2 : "100.0";
+	$max = $_ if (compare_version($_, $max) > 0);
+    $max = "" if (!defined($max) or $max eq "100.0");
+    $max = max(@versions);
+			    $max_version = max(keys %pyversions_found);
+	    $min = defined($1) && $1 ? $1 : "0.0";
+	$min = $_ if (compare_version($_, $min) < 0);
+    $min = "" if (!defined($min) or $min eq "0.0");
+    $min = min(@versions);
+		    (($min_version eq $python_version) and ($min_version eq $max_version))
+				# Min version is greater to current version
+				# Min-version is less or equal to current version
+			$min_version = min(keys %pyversions_found);
+				$min_version = $python_version;
+modules.
+		# modules not handled by python-support/python-central)
+	# Move *.py files if needed
+Moving the files to the pycentral location and adding symbolic links to
+Moving the files to the pycentral location can be disabled by setting
+    my ($a, $b) = @_;
+    my @all_versions = ();
+    my @all_versions = ("0.0");
+    my @A = split(/\./, $a);
+    my @B = split(/\./, $b);
+	my $dep_on_python = 0;
+	my $deps = 0;
+    my $diff = 0;
+			my $dir;
+	my @dirs_so = (@ARGV);
+	my @dirs = ("usr/lib/$package", "usr/share/$package", "usr/lib/games/$package", "usr/share/games/$package", @ARGV );
+    my $field = shift;
+		my $fn="$File::Find::dir/$_";
+	my $found = 0;
+    my $header = shift;
+my $includelinks = 0;
+    my @items = split(/\./, $version);
+    my $max = shift;
+			my $metafile = "debian/$package/usr/share/pyshared-data/$package";
+    my ($min, $max, @versions);
+    my $min = shift;
+	my ($min_version, $max_version, @versions) = analyze_pyversions($pyversions_field);
+my %officially_supported;
+			##my $outfile = "debian/".pkgext($package)."preinst.debhelper";
+	my $paraborder = 1;
+my $pcopts = "";
+			my $prerm_upgrade = "|upgrade";
+	my %private_dirs_list;
+	my $private_pydirs_regex = join('|', map { "\Q$_\E" } @dirs);
+	my $private_sodirs_regex = join('|', map { "\Q$_\E" } @dirs_so);
+my $pycentral_version = '0.6.11';
+my $pyformat = '1';
+my @python_allversions = ('1.5','2.1','2.2','2.3','2.4','2.5','2.6','2.7');
+my $python_header = "";
+my $python_major;
+my $python_nextmajor = $python_major + 1;
+my $python_nextversion = next_minor_version($python_version);
+my $python = 'python';
+my $python_version = `$python -V 2>&1`;
+    my %pyversions_additional;
+    my %pyversions_expected;
+my $pyversions_field = "";
+	my %pyversions_found;
+    my ($result, $index, $range_is_open, $last_real_version) = ("", 0, 0, "");
+			##my $savedfile = "$outfile.saved";
+	my $stop_version = "";
+	my $strong_dep = 0;
+			my $supported = $1;
+    my @supported = sort { compare_version($a, $b) } 
+	my $tmp = tmpdir($package);
+    my $use_additional = 0;
+my $usepython = "python$python_version";
+	    my $v = $1;
+			my $v = $1;
+	my %verdeps = ();
+	my $versions_field = "";
+    my $version = shift;
+				my $virtual = $package;
+	# NEW POLICY
+	    next;
+	next if ($package =~ /^python3-/); # ignore Python 3 packages
+		next if $paraborder;
+			# Next version doesn't match, no range but a list
+			} # No extensions here
+	"no-move" => \$dh{FLAG_NO_MOVE},
+				# no need for a python dependency
+Note: only /usr/lib/python?.?/site-packages and the
+		# Note that we have to test on the full filename, including directory.
+				    $officially_supported{$1} = 1;
+				# Only one version supported, use it
+				# Only works with old versions,
+	open(CONTROL, "debian/control");
+	open(DEFAULTS, "/usr/share/python/debian_defaults") ||
+	open(PYVERS, "debian/pyversions") || error("Can't open debian/pyversions: $!");
+option multiple times to build up a list of things to exclude.
+package.
+				# package is mostly deprecated,
+		# Packages using a private extension can only support one
+		# Package with private modules can only support one version at a time
+	    $paraborder = 0;
+  $pcopts = "$pcopts --include-links";
+  $pcopts = "$pcopts --no-move";
+			##		$prerm_upgrade = "";
+		    # Previous version ended the range
+					$private_dirs_list{"$dir"} = 1;
+	# Private extensions, must be rebuilt for each python version
+	# Private modules 
+			# Private python extension
+			# Private python module
+provide "python2.3-foo" and "python2.4-foo" at the same time. Python
+	# Public extensions
+public Python modules and move them in /usr/share/pycentral so that
+	    push @all_versions, $1;
+    push @all_versions, "100.0";
+	    push @versions, grep { 
+	    push @versions, $range if (grep { $range eq $_ } @all_versions);
+python-central can byte-compile those for all supported Python versions.
+		$python_header = $1;
+	$python_major = $1 ;
+					    "python (>= $min_version) | python$min_version");
+Python policy, version 0.4.1 (2006-06-20)
+${python:Provides} variable will contain versioned provides of the package
+	# Python scripts & public modules
+		# python version).
+	$python_version = "$1.$2" ;
+pythonX.Y version, you can use this option to specify the desired version,
+    $pyversions_additional{"0.0"} = 1;
+		$pyversions_additional{$_} = 0 unless (compare_version($_, $v) <= 0);
+		$pyversions_additional{$_} = 0 unless (compare_version($_, $v) < 0);
+		$pyversions_additional{$_} = 0 unless (compare_version($_, $v) >= 0);
+    $pyversions_additional{"100.0"} = 1;
+	    $pyversions_additional{$1} = 1;
+# pyversions describes the list of python versions that this package can
+	    $pyversions_expected{$_} = 1;
+	    $pyversions_expected{$1} = 1 if (grep { $_ eq $1 } @all_versions);
+		$pyversions_field = convert_python_header($python_header);
+	$pyversions_field = <PYVERS>;
+$pyversions_field =~ s/^\s*(.*?)\s*$/\1/;
+			$pyversions_found{$1} = 1;
+		# Range is open
+		    $range_is_open = 0;
+	    $range_is_open = 0; # Proper end
+	    $range_is_open = 1;
+			$range_is_open = 1;
+Raphael Hertzog <hertzog@debian.org>
+	# read first non-empty line
+		# Remove any byte-compiled file
+# required pycentral version
+	# Reset again, analysis using new policy follows
+		    $result = "$_";
+			$result .= "-";
+			$result .= ",$_";
+		    $result .= $all_versions[$index-1] . ",$_";
+	$result .= $last_real_version;
+	    $result .= "-"; # No lower limit
+	    $result .= "-" unless $range_is_open; # No upper limit
+			return;
+    return 0;
+	return $diff if $diff; 
+		return if $File::Find::dir =~ m|^\Q$tmp\E/usr/share/doc/|;
+    return $max;
+    return $min;
+    return ($min, $max, @versions);
+    return $result;
+		return unless -f;
+		return unless -f and /\.py$/;
+			return unless open F, $_;
+		return unless (/\.py$/ or /\.so$/);
+    return $version;
+	s#^/##;
+	s#/$##;
+			##	$savedfile = "";
+		# See if we were asked to exclude this file.
+set of python versions that are going to be supported. dh_pycentral
+	    $source =~ s/^#.*//;
+	    $source =~ s/\s*\n$//;
+	s/^/python/;
+		# Still try to describe the versions that the package support
+				# Stop version is strictly bigger than current version
+			    $stop_version = next_minor_version($max_version);
+	$stop_version = next_minor_version($max_version) if $max_version;
+		$stop_version = next_minor_version($versions_field);
+string B<nomove>.
+	# strip newlines
+# strip spaces
+sub analyze_pyversions {
+sub compare_version {
+sub convert_python_header {
+sub max {
+sub min {
+sub next_minor_version {
+such as 2.3. Do not use if you ship modules in /usr/lib/site-python.
+				# Supposition: new stuff working only with the latest python, 
+    # syntax but it may not be necessary for the usage that we make of it.
+taken into account to generate the python dependency. You may use this
+		# the best guess:
+# The current python major version
+				# The current version is unsupported, use the min version instead
+the environment varibale DH_PYCENTRAL to a string containing the
+The functionality to shorten the time of unavailabilty of files during
+# The next python version
+The ${python:Versions} variable should be used to provide the required
+		# There's no range yet
+    # They are the same
+This program is a part of python-central but is made to work with debhelper.
+		    # This version still in the range
+			# This version still match, we can start a range
+	}, $tmp;
+to work on.
+			# Unknown pyfiles
+			# Unless min/max are the same we put "current"
+			unless ($stop_version) {
+			unless ($versions_field) {
+		unless ($versions_field) {
+		unless($versions_field) {
+unpack and configure has been removed (symlinking files in the preinst
+	    $use_additional = 1;
+use constant PROGRAM   => 1;
+use constant PY_OFFICIAL_MODULE => 8;
+use constant PY_PRIVATE_MODULE => 2;
+use constant PY_PUBLIC_MODULE => 4;
+use constant PY_UNKNOWN_MODULE => 16;
+use constant SO_OFFICIAL_MODULE => 128;
+use constant SO_PRIVATE_MODULE => 32;
+use constant SO_PUBLIC_MODULE => 64;
+use constant SO_UNKNOWN_MODULE => 256;
+use Debian::Debhelper::Dh_Lib;
+			# used to build is the currently supported one
+use File::Find;
+	$usepython = $dh{V_FLAG};
+	$usepython =~ s/^/python/;
+use strict;
+				# Use the current version by default
+#!/usr/bin/perl -w
+/usr/lib/games/$PACKAGE, /usr/share/games/$PACKAGE, /usr/lib/python?.?/site-packages
+/usr/lib/pythonX.Y/*-packages can be done by setting the environment
+varibale DH_PYCENTRAL to a string containing the string B<include-links>.
+				verbose_print("Found official extension: $fn");
+				verbose_print("Found official module: $fn");
+			verbose_print("Found private extension: $fn");
+			verbose_print("Found private module: $fn");
+				verbose_print("Found program using $2: $fn");
+				verbose_print("Found public extension: $fn");
+				verbose_print("Found public module: $fn");
+				verbose_print("Found unclassified extension: $fn");
+				verbose_print("Found unclassified module: $fn");
+			verbose_print("Ignoring $fn");
+    verbose_print("List of versions supported according to XS-Python-Version: @supported");
+					verbose_print("Memorizing dir to byte-compile: $dir");
+	verbose_print("Pyversions analysis gives: min=$min_version, max=$max_version (@versions)");
+verbose_print("Pyversions field: $pyversions_field");
+		$verdeps{$_} = 0;
+					$verdeps{$2} |= PROGRAM;
+				$verdeps{"python$v"} |= PY_OFFICIAL_MODULE;
+				$verdeps{"python$v"} |= PY_PUBLIC_MODULE;
+				$verdeps{"python$v"} |= SO_OFFICIAL_MODULE;
+				$verdeps{"python$v"} |= SO_PUBLIC_MODULE;
+				$verdeps{$usepython} |= PY_PRIVATE_MODULE;
+					$verdeps{$usepython} |= PY_UNKNOWN_MODULE;
+				$verdeps{$usepython} |= SO_PRIVATE_MODULE;
+					$verdeps{$usepython} |= SO_UNKNOWN_MODULE;
+		# version: if versions_field is already set that's because
+    $version = join(".", @items);
+		$versions_field = "all" unless $versions_field;
+				$versions_field = "current";
+		$versions_field = join(", ", keys %pyversions_found);
+				$versions_field = $min_version;
+		$versions_field = $python_header if ($versions_field eq "current");
+		$versions_field = $python_header unless $versions_field;
+				$versions_field = $python_version;
+				$versions_field = $pyver;
+				$versions_field =~ s/^python//;
+    @versions = grep { $_ ne "0.0" and $_ ne "100.0" } @versions;
+	# versions that this package effectively provides
+				# version, the depend on that version and not on python
+				$virtual =~ s/^python-/$python$_-/;
+		# we're using -V and we should respect that, otherwise try
+		while ($index <= $#all_versions) {
+	while (my $source = <CONTROL>) {
+With the new policy, this option is mostly deprecated. Use the
+# work with
+XB-Python-Version field listing the python versions supported by the
+XS-Python-Field to indicate that you're using a specific python version.
+    # XXX: I go to great length to generate the shortest pyversions
+You must have filled the XS-Python-Version header to indicate the

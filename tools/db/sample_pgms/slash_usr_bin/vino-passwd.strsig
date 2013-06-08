@@ -1,0 +1,53 @@
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+Cancelled
+Changing Vino password.
+dcgettext
+dcngettext
+Enter new Vino password: 
+ERROR: Maximum length of password is %d character. Please, re-enter the password.
+ERROR: Maximum length of password is %d characters. Please, re-enter the password.
+ERROR: You do not have enough permissions to change Vino password.
+g_base64_encode
+g_error_free
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.4
+__gmon_start__
+gnome_keyring_set_network_password_sync
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_help_enabled
+g_printerr
+g_settings_is_writable
+g_settings_new
+g_settings_set_string
+g_str_equal
+g_type_init
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgnome-keyring.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+org.gnome.Vino
+Retype new Vino password: 
+Run 'vino-passwd --help' to see a full list of available command line options
+Show Vino version
+Sorry, passwords do not match.
+__stack_chk_fail
+tcgetattr
+tcsetattr
+- Updates Vino password
+/usr/share/locale
+vino.local
+vino-passwd: password unchanged.
+vino-passwd: password updated successfully.
+VINO Version %s
+vnc-password

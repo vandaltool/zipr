@@ -1,0 +1,31 @@
+__bss_start
+chvt: VT_ACTIVATE
+cur_term
+/dev/console
+/dev/pts/
+/dev/tty
+/dev/tty0
+__errno_location
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+	-h --help      display this help text and exit
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libtinfo.so.5
+	-q  --quiet    don't print error messages
+%s: cannot get VTstate
+setupterm
+%s: no non-option arguments are valid
+%s: terminal is not a console
+%s: Version %s
+Usage: %s [option]
+valid options are:
+VT_WAITACTIVE
+	-V --version   display version information and exit

@@ -1,0 +1,1273 @@
+| | | | | | (_) | (_) |
+| '_ ` _ \ / _ \ / _ \
+|_| |_| |_|\___/ \___/
+        
+                  { 
+ _ __ ___   ___   ___
+%*08x%*08x%08x%08x
+(0x%08x)
+ (0x%x) 
+0x%x %s #
+    %-10d %-10d %-10d %-10d %-10d %-10d
+    %-10ld %-12ld %-6ld %-8ld %-8ld %-6ld
+    %-10ld %-12ld %-6ld %-8ld %-8ld %-8ld%s
+    %-10llu %-8llu %-7llu %-7llu %-7llu %-7llu
+    %-10u %-8u %-7u %-7u %-7u %-7u
+%-32s Iif: 
+6rd-prefix
+          [ 6rd-prefix ADDR ] [ 6rd-relay_prefix ADDR ] [ 6rd-reset ]
+ 6rd-prefix %s/%u 
+6rd-relay_prefix
+6rd-relay_prefix %s/%u 
+6rd-reset
+               %-7llu  %-7llu %-7llu %-7llu
+               %-7llu  %-7llu %-7llu %-7llu %-7llu
+               %-7u  %-7u %-7u %-7u
+               %-7u  %-7u %-7u %-7u %-7u
+accept_msg
+acquire 
+        [ action ACTION ] [ priority PRIORITY ] [ flag FLAG-LIST ]
+action allow 
+ACTION := allow | block
+action block 
+"ACTION" is invalid
+ACTION := [ table TABLE_ID ]
+action %u 
+"action" value is invalid
+addattr_l ERROR: message exceeded bound of %d
+addattr_nest
+addattr_nest_compat
+addattr_nest_compat_end
+addattr_nest_end
+addraw_l
+addraw_l ERROR: message exceeded bound of %d
+                   [ address LLADDR ]
+	                  [ address LLADDR ]
+       ADDR := { IP_ADDRESS | any }
+       ADDR      := IPV6_ADDRESS
+addrlabel
+[ADDRLABEL]
+  add %s 
+add tunnel %s failed: %s
+"aead" ICV length is invalid
+af-unspec
+af-unspec%s
+ age %dsec
+ALGO := { 
+ALGO-ICV-LEN
+"ALGO" is invalid with proto=%s
+"ALGO" is required with proto=%s
+ALGO-KEY
+"ALGO-KEY" is invalid
+"ALGO-KEY" makes buffer overflow
+ALGO-LIST := [ ALGO-LIST ] ALGO
+ALGO-NAME
+ } ALGO-NAME ALGO-KEY |
+ ALGO-NAME ALGO-KEY ALGO-ICV-LEN |
+ ALGO-NAME ALGO-KEY ALGO-TRUNC-LEN
+ALGO-TRUNC-LEN
+ALGO-TYPE
+"ALGO-TYPE" is invalid
+			  [ alias NAME ]
+    alias %s
+align4%s
+allmulticast
+	                  [ allmulticast { on | off } ]
+ALLMULTI%s
+allocs %llu 
+allocspi
+An error :-)
+anycast_delay
+anycast_delay %llu 
+         [ anycast_delay MSEC ] [ proxy_delay MSEC ] [ proxy_queue LEN ]
+"anycast_delay" value is invalid
+any/ipv6
+app_probes
+app_probes %u 
+"app_probes" value is invalid
+         [ app_probs VAL ] [ ucast_probes VAL ] [ mcast_probes VAL ]
+Argument "%s" is unknown, try "ip monitor help".
+Argument "%s" is unknown, try "ip xfrm monitor help".
+	                  [ arp { on | off } ]
+Async event 
+auth-trunc
+"auth" trunc length is invalid
+autoconf 
+AUTOMEDIA%s
+BAD SAD info returned
+BAD SAD length returned
+bad TOS value
+base_reachable
+base_reachable %llu 
+"base_reachable" value is invalid
+batch_file
+(berr-counter tx %d rx %d) 
+berr-reporting
+	[ berr-reporting { on | off } ]
+Bind /proc/self/ns/net -> %s failed: %s
+Bind %s -> %s failed: %s
+	[ bitrate BITRATE [ sample-point SAMPLE-POINT] ] | 
+    bitrate %d sample-point %.3f 
+blackhole
+broadcast
+          [ broadcast ADDR ] [ anycast ADDR ]
+Broadcast can be set only for IPv4 addresses
+                   [ broadcast LLADDR ]
+	                  [ broadcast LLADDR ]
+BROADCAST%s
+Broadcast tunnel requires a source address.
+__bss_start
+ (buckets 
+BUG: device with ifindex %d has nil ifname
+Buggy XFRM_MSG_DELPOLICY: no XFRMA_POLICY
+Buggy XFRM_MSG_DELPOLICY: too short XFRMA_POLICY len
+Buggy XFRM_MSG_DELSA: no XFRMA_SA
+BUG: rta type is %d
+BUG: wrong nlmsg len %d
+byte-hard
+"byte-hard" value is invalid
+byte-soft
+         { byte-soft | byte-hard } SIZE | { packet-soft | packet-hard } COUNT
+"byte-soft" value is invalid
+calc_host_len
+can_link_util
+Cannot bind netlink socket
+Cannot create control socket
+Cannot create socket
+cannot determine tunnel mode (ipip, gre or sit)
+Cannot find device "%s"
+Cannot flush link addresses.
+Cannot flush routing cache
+Cannot fopen
+Cannot getsockname
+Cannot guess tunnel mode.
+Cannot open file "%s" for reading: %s
+Cannot open netlink socket
+Cannot open network namespace: %s
+Cannot open rtnetlink
+Cannot open "%s"
+Cannot remove %s: %s
+Cannot send dump request
+Cannot talk to rtnetlink
+can: what is "%s"?
+    clock %d
+closedir
+cmdlineno
+"coa" address family is AF_UNSPEC
+"coa" address length is too large
+        [ coa ADDR[/PLEN] ] [ ctx CTX ]
+"coa" is invalid with proto=%s
+"coa" is required with proto=%s
+code %u 
+"code" value is invalid
+Command failed %s:%d
+Command line is not complete. Try option "help"
+Command "%s" is unknown, try "ip addr help".
+Command "%s" is unknown, try "ip addrlabel help".
+Command "%s" is unknown, try "ip -f inet6 tunnel help".
+Command "%s" is unknown, try "ip link help".
+Command "%s" is unknown, try "ip maddr help".
+Command "%s" is unknown, try "ip mroute help".
+Command "%s" is unknown, try "ip neigh help".
+Command "%s" is unknown, try "ip netns help".
+Command "%s" is unknown, try "ip ntable help".
+Command "%s" is unknown, try "ip route help".
+Command "%s" is unknown, try "ip rule help".
+Command "%s" is unknown, try "ip tunnel help".
+Command "%s" is unknown, try "ip tuntap help".
+Command "%s" is unknown, try "ip xfrm policy help".
+Command "%s" is unknown, try "ip xfrm state help".
+compressed
+CONFFLAG  := [ home | nodad ]
+                                                      [ CONFFLAG-LIST ]
+           CONFFLAG-LIST ]
+CONFFLAG-LIST := [ CONFFLAG-LIST ] CONFFLAG
+connected
+Could not create %s: %s
+ count %d
+        [ ctx CTX ] [ mark MARK [ mask MASK ] ] [ ptype PTYPE ]
+"cwnd" value is invalid
+dadfailed
+dadfailed 
+Database %s is corrupted at %s
+__data_start
+ (%d bits)
+decap-dscp
+decap-dscp%s
+default 
+!!!Deficit %d, rta_len=%d
+delay_probe
+delay_probe %llu 
+         [ delay_probe MSEC ] [ queue LEN ]
+"delay_probe" value is invalid
+deleteall
+Delete-all completed
+Delete-all nlmsg count = %d
+Delete-all round = %d
+Delete-all terminated
+Deleted 
+delete %s
+delete tunnel %s failed: %s
+deprecated
+deprecated 
+destroys %llu 
+[detached] 
+-details
+Device and destination are required arguments.
+Device does not exist
+Device "%s" does not exist.
+dev is invalid
+"DEV" is invalid
+/dev/net/tun
+ dev %s 
+"dev" (%s) must match "label" (%s).
+DIR := in | out | fwd
+"DIR" is invalid
+    dnet 
+dnet_ntop
+dnet_pton
+dnrouted
+do_ip6tunnel
+do_ipaddr
+do_ipaddrlabel
+do_iplink
+do_ipmonitor
+do_ipneigh
+do_ipntable
+do_iproute
+do_iprule
+do_iptunnel
+do_iptuntap
+do_multiaddr
+do_multiroute
+do_multirule
+do_netns
+DORMANT%s
+do_show_or_flush
+do_xfrm_monitor
+do_xfrm_policy
+do_xfrm_state
+(dport) 0x%.4x 
+dport %u 
+          [ dscp inherit ]
+ dscp inherit
+%d%s%d%d%s
+%d:	%s%s
+%d%s%s%d
+"dst" address family is AF_UNSPEC
+dst %s/%u 
+Dump terminated
+dynamic 
+	                  [ dynamic { on | off } ]
+DYNAMIC%s
+       ELIM      := { none | 0..255 }(default=%d)
+"encap" dport value is invalid
+ENCAP := { espinudp | espinudp-nonike } SPORT DPORT OADDR
+encaplimit
+          [ encaplimit ELIM ]
+ encaplimit none
+ encaplimit %u
+"encap" sport value is invalid
+"ENCAP-TYPE" is invalid
+entries %u 
+entry_size %u 
+EOF on netlink
+__errno_location
+ERROR-ACTIVE
+Error: an inet address is expected rather than "%s".
+Error: an inet prefix is expected rather than "%s".
+Error: an IP address is expected rather than "%s"
+Error: argument of "mode" must be "private", "vepa", "bridge" or "passthru" 
+Error: argument of "%s" must be "on" or "off"
+Error: argument "%s" is required
+Error: argument "%s" is wrong: %s
+ error %d
+Error: duplicate "%s": "%s" is the second value.
+Error: either "%s" is duplicate, or "%s" is a garbage.
+Error: "nexthop" or end of line is expected instead of "%s"
+ERROR-PASSIVE
+Error: "%s" is not a legal ll address.
+Error: "%s" may be inet address, but it is not allowed in this context.
+Error: "%s" may be inet prefix, but it is not allowed in this context.
+(ERROR "tmpl" truncated)
+(ERROR truncated)
+ERROR truncated
+Error: unexpected end of line after "nexthop"
+ERROR-WARNING
+espinudp
+espinudp 
+espinudp-nonike
+espinudp-nonike 
+/etc/iproute2/group
+/etc/iproute2/rt_dsfield
+/etc/iproute2/rt_protos
+/etc/iproute2/rt_realms
+/etc/iproute2/rt_scopes
+/etc/iproute2/rt_tables
+/etc/netns
+exec of %s failed: %s
+  expire add: soft %llu(sec), hard %llu(sec)%s
+Expired 
+ expires %dsec
+  expire use: soft %llu(sec), hard %llu(sec)%s
+         Explicitly specify the prefix length (%s/%d) to avoid this warning.
+FAILED%s
+Failed to connect the route
+Failed to create a new network namespace: %s
+Failed to get existing tunnel info.
+Failed to get type of [%s]
+Failed to parse rule type
+Failed to parse %s
+Failed to send delete-all request
+Failed to send flush request
+    family %d 
+                    -f[amily] { inet | inet6 | ipx | dnet | link } |
+features
+filter_dev
+filter_family
+filter_nlmsg
+         fix your scripts!
+        [ flag FLAG-LIST ]
+        [ flag FLAG-LIST ] [ sel SELECTOR ] [ LIMIT-LIST ] [ encap ENCAP ]
+"FLAG" is invalid
+FLAG-LIST := [ FLAG-LIST ] FLAG
+FLAG := localok | icmp
+FLAG := noecn | decap-dscp | nopmtudisc | wildrecv | icmp | af-unspec | align4
+FLAG  := [ permanent | dynamic | secondary | primary |
+FLAG := [ reorder_hdr { on | off } ] [ gvrp { on | off } ]
+flags %02x 
+ (flowinfo 0x%08x)
+flowlabel
+       FLOWLABEL := { 0x0..0xfffff | inherit }
+ flowlabel 0x%05x
+ flowlabel inherit
+Flushed policy 
+Flushed state 
+*** Flush is complete after %d round%s ***
+*** Flush not complete bailing out after %d rounds
+*** Flush not completed after %ld seconds, %d entries remain ***
+Flush policy
+*** Flush remains incomplete after %d rounds. ***
+Flush requires arguments.
+Flush state proto=%s
+Flush terminated
+forced_gc_runs %llu 
+format_host
+__fprintf_chk
+__fread_chk
+from 0/%d 
+from 0/%u 
+from all 
+from %s 
+from %s/%u 
+fwmark 0x%x 
+fwmark 0x%x/0x%x 
+fwmark value is invalid
+fwmask value is invalid
+Garbage instead of arguments "%s ...". Try "ip link help".
+gc_int %llu 
+"gc_int" value is invalid
+gc_stale
+gc_stale %llu 
+"gc_stale" value is invalid
+get_addr
+get_addr_1
+get_addr32
+getcmdline
+__getdelim
+getgrnam
+gethostbyaddr
+__get_hz
+get_integer
+get_link_kind
+get_netns_fd
+get_prefix
+get_prefix_1
+getprotobyname
+getprotobynumber
+getpwnam
+get_rt_realms
+getsockname
+gettimeofday
+get_time_rtt
+get tunnel %s failed: %s
+get_unsigned
+__get_user_hz
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.14
+GLIBC_2.2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+          [ goto NUMBER ]
+gre_link_util
+gretap_link_util
+group cannot be used when creating devices.
+ group %ld
+       GROUP := { STRING | NUMBER }
+ hard %s(bytes)%s
+ hard %s(packets)%s
+hash_chain_gc %u 
+hash_grows %llu 
+hash_mask %08x 
+hash_rnd %u 
+hexstring_a2n
+hexstring_n2a
+hits %llu 
+hoplimit
+          [ hoplimit TTL ] [ tclass TCLASS ] [ flowlabel FLOWLABEL ]
+ hoplimit %u
+"hoplimit" value is invalid
+id is invalid
+ID := [ src ADDR ] [ dst ADDR ] [ proto XFRM-PROTO ] [ spi SPI ]
+ieee1394
+ieee802.11
+ieee802.11/prism
+ieee802.11/radiotap
+ieee802.15.4
+IFADDR := PREFIX | ADDR peer PREFIX
+if_indextoname
+if_nametoindex
+            [ iif STRING ] [ oif STRING ] [ pref NUMBER ]
+ikey %s 
+ ikey %u 
+Illegal "mark" mask
+Illegal "mark" value
+in6addr_any
+incomplete
+incomplete_command
+INCOMPLETE%s
+        [ index INDEX ] [ ptype PTYPE ] [ action ACTION ] [ priority PRIORITY ]
+"INDEX" is invalid
+index %u 
+    inet 
+    inet6 
+inet_addr_match
+inet_ntop
+inet_pton
+infiniband
+INFO_SPEC := NH OPTIONS FLAGS [ nexthop NH ]...
+                          [ ingress-qos-map QOS-MAP ] [ egress-qos-map QOS-MAP ]
+initcwnd
+"initcwnd" value is invalid
+initrwnd
+"initrwnd" value is invalid
+inotify_add_watch
+inotify_add_watch failed: %s
+inotify_init
+inotify_init failed: %s
+in_trigger
+invalid 6rd_prefix
+invalid 6rd-relay_prefix
+invalid "bitrate" value
+invalid egress-qos-map
+invalid ELIM
+invalid Flowlabel
+invalid group "%s"
+Invalid "group" value
+invalid ingress-qos-map
+Invalid "mtu" value
+Invalid "netns" value
+invalid "phase-seg1" value
+invalid "phase-seg2" value
+invalid "prop-seg" value
+invalid "protocol"
+invalid protocol family
+Invalid "qos" value
+Invalid "rate" value
+Invalid rcvbuf size '%s'
+invalid realms
+invalid "restart-ms" value
+invalid "sample-point" value
+invalid "scope"
+invalid "scope" value
+invalid scope value.
+invalid "sjw" value
+invalid table ID
+invalid target
+invalid TClass
+invalid "tq" value
+invalid TTL
+Invalid "txqueuelen" value
+invalid user "%s"
+Invalid value for "key"
+invalid value of "ikey"
+invalid value of "key"
+invalid value of "okey"
+Invalid "vf" value
+Invalid "vlan" value
+ioctl(SIOCGIFXQLEN) failed: %s
+ioctl(TUNSETGROUP)
+ioctl(TUNSETIFF)
+ioctl(TUNSETOWNER)
+ioctl(TUNSETPERSIST)
+          [ [i|o]seq ] [ [i|o]key KEY ] [ [i|o]csum ]
+_IO_stdin_used
+       ip addr del IFADDR dev STRING
+"ip addrlabel flush" does not allow extra arguments
+"ip addrlabel show" does not take any arguments.
+ipaddr_list_link
+ipaddr_reset_filter
+       ip addr {show|flush} [ dev STRING ] [ scope SCOPE-ID ]
+       ip [ -force ] -batch filename
+ ipid 0x%04x
+       ip link delete DEV type TYPE [ ARGS ]
+iplink_parse
+iplink_parse_vf
+       ip link set { dev DEVICE | group DEVGROUP } [ { up | down } ]
+       ip link show [ DEVICE | group GROUP ]
+iplink_usage
+       ip maddr show [ dev STRING ]
+ipneigh_reset_filter
+       ip neigh {show|flush} [ to PREFIX ] [ dev DEV ] [ nud STATE ]
+       ip netns add NAME
+       ip netns delete NAME
+       ip netns exec NAME cmd ...
+       ip netns monitor
+ipntable_reset_filter
+__iproute2_hz_internal
+__iproute2_user_hz_internal
+       ip route { add | del | change | append | replace } ROUTE
+"ip route flush" requires arguments.
+iproute_get
+       ip route get ADDRESS [ from ADDRESS iif STRING ]
+iproute_modify
+iproute_reset_filter
+       ip route restore
+iproute_restore
+       ip route save SELECTOR
+"ip rule flush" does not allow arguments
+"ip rule show" does not take any arguments.
+ipsec-any
+ip utility, iproute2-ss%s
+ipv4/ipv6
+*** IPv4 routing cache is flushed.
+ipv6/ipv6
+     ipx 
+ipx_ntop
+"" is not a valid device identifier
+_Jv_RegisterClasses
+       KEY  := { DOTTED_QUAD | NUMBER }
+ [ key { DOTTED-QUAD | NUMBER } ] | PROTO }
+"key" is invalid with proto=%s
+key_len %u 
+Keys are not allowed with ipip and sit.
+label %d 
+label is invalid
+          [ label STRING ] [ scope SCOPE-ID ]
+last_flush %s 
+last_rand %s 
+lastused 
+%ld%ld%ld%ld%ld%ld%ld%*d%ld%ld%ld%ld%ld%ld%ld
+"LEVEL" is invalid
+level required 
+LEVEL := required | use
+level %u 
+level use 
+LFT := forever | SECONDS
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libdl.so.2
+/lib/ld-linux.so.2
+lifetime config:%s
+lifetime current:%s
+LIFETIME := [ valid_lft LFT ] [ preferred_lft LFT ]
+"LIMIT" is invalid
+LIMIT-LIST := [ LIMIT-LIST ] limit LIMIT
+        [ LIMIT-LIST ] [ TMPL-LIST ]
+  limit: soft %s(bytes),
+  limit: soft %s(packets),
+LIMIT := { time-soft | time-hard | time-use-soft | time-use-hard } SECONDS |
+    link/%s 
+link  %s
+listen-only
+	[ listen-only { on | off } ]
+ll_addr_a2n
+ll_addr_n2a
+lladdr %s
+ll_idx_n2a
+ll_index_to_addr
+ll_index_to_flags
+ll_index_to_name
+ll_index_to_type
+ll_init_map
+ll_name_to_index
+ll_remember_index
+ll_type_n2a
+  %llu(bytes), %llu(packets)%s
+"local" address family is AF_UNSPEC
+localok%s
+local %s 
+localtime
+locktime
+locktime %llu 
+         [ locktime MSEC ]
+"locktime" value is invalid
+lookup %s 
+lookups %llu 
+loopback
+	[ loopback { on | off } ]
+LOOPBACK%s
+                    -l[oops] { maximum-addr-flush-attempts } |
+loose_binding
+        [ loose_binding { on | off } ]
+LOOSE_BINDING%s
+LOWERLAYERDOWN
+LOWER_UP%s
+macvlan_link_util
+macvlan: what is "%s"?
+macvtap_link_util
+macvtap: what is "%s"?
+maddress
+maddr_ins
+makeargs
+!!!malformed message: len=%d
+!!!malformed message: len=%d @%lu
+map-to %s 
+ mark 0x%x
+	mark %d/0x%x
+        [ mark MARK [ mask MASK ] ] [ index INDEX ] [ ptype PTYPE ]
+        [ mark MARK [ mask MASK ] ] [ reqid REQID ] [ seq SEQ ]
+                            [ mark NUMBER ]
+ mark %u
+mask2bits
+masquerade
+			  [ master DEVICE ]
+master %s 
+MASTER%s
+max_flush_loops
+"max" is missing
+"max" value is invalid
+mcast_probes
+mcast_probes %u 
+"mcast_probes" value is invalid
+__memcpy_chk
+Message truncated
+ metric %d
+ metric %d 
+metricom
+"metric" value is invalid
+"min" is missing
+"min" value is invalid
+"min" value is larger than "max" value
+Missing continuation line
+          [ mode { ip6ip6 | ipip6 | any } ]
+          [ mode { ipip | gre | sit | isatap } ] [ remote ADDR ] [ local ADDR ]
+"MODE" is invalid
+"mode" is invalid with proto=%s
+ mode %s 
+MODE := transport | tunnel | ro | in_trigger | beet
+          [ mode { tun | tap } ] [ user USER ] [ group GROUP ]
+MP_ALGO := { rr | drr | random | wrandom }
+"mss" value is invalid
+                   [ mtu MTU ]
+	                  [ mtu MTU ]
+"mtu" value is invalid
+multiaddr_modify
+	                  [ multicast { on | off } ]
+Multicast rules are only supported for IPv4/IPv6, was: %i
+MULTICAST%s
+Must specify dev.
+	                  [ name NEWNAME ]
+"name" too long
+need at least destination address
+neighbor
+neighbour
+netlink receive error %s (%d)
+                   netns }
+	                  [ netns NAME ]
+	                  [ netns PID ]
+NHFLAGS := [ onlink | pervasive ]
+NH := [ via ADDRESS ] [ dev STRING ] [ weight NUMBER ] NHFLAGS
+NO-CARRIER%s
+No cmd specified
+NODE_SPEC := [ TYPE ] PREFIX [ tos TOS ]
+node type value is invalid
+nomaster
+			  [ nomaster ]
+No netns name specified
+ nopmtudisc
+nopmtudisc 
+nopmtudisc%s
+Not a policy: %08x %08x %08x
+Not a prefix: %08x %08x %08x
+Not a route?
+Not a route: %08x %08x %08x
+Not a state: %08x %08x %08x
+Not enough information: changable attributes required.
+Not enough information: "dev" argument is required.
+Not enough information: "dev" is required.
+Not enough information: "DIR" is required.
+Not enough information: either "SELECTOR" or "INDEX" is required.
+Not enough information: "ID" is required
+Not enough information: "label" argument is required.
+Not enough information: "prefix" argument is required.
+Not enough information: "type" argument is required
+Not enough of information: "dev" argument is required.
+Nothing to flush.
+not inherit
+Not NEIGHTBL: %08x %08x %08x
+NOTPRESENT
+NOTRAILERS%s
+Not RTM_NEWNEIGH: %08x %08x %08x
+Not sending binary stream to stdout
+          [ nud { permanent | noarp | stale | reachable } ]
+nud_state_a2n
+nud state is bad
+Object "%s" is unknown, try "ip help".
+                            [ oif STRING ]  [ tos TOS ]
+ okey %u 
+-oneline
+                    -o[neline] | -t[imestamp] | -b[atch] [filename] |
+One PRL entry at a time.
+ one_queue
+          [ one_queue ] [ pi ] [ vnet_hdr ]
+one-shot
+	[ one-shot { on | off } ]
+open %s: %s
+OPTIONS := FLAGS [ mtu NUMBER ] [ advmss NUMBER ]
+Option "%s" is unknown, try "ip -help".
+       OPTIONS := { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] |
+Out of memory
+packet-hard
+"packet-hard" value is invalid
+packet-soft
+"packet-soft" value is invalid
+          [ PARMS ]
+PARMS := [ base_reachable MSEC ] [ retrans MSEC ] [ gc_stale MSEC ]
+parse_nexthops
+parse_one_nh
+parse_rtattr
+parse_rtattr_byindex
+__parse_rtattr_nested_compat
+passthru
+ peer %s/%d 
+periodic_gc_runs %llu 
+permanent
+PERMANENT%s
+ pervasive
+pervasive 
+phase-seg1
+	       PHASE-SEG1    := { 1..8 }
+phase-seg2
+	       PHASE-SEG2    := { 1..8 }
+ 	  phase-seg2 PHASE-SEG2 [ sjw SJW ] ]
+phonet_pipe
+POINTOPOINT%s
+  policy 
+Policy buffer overflow
+ policy updated 
+"PORT" is invalid
+PORTSEL%s
+preference
+preference value is invalid
+preferred_family
+ preferred_lft 
+preferred_lft
+preferred_lft is greater than valid_lft
+preferred_lft value
+preferred %u 
+[PREFIX]
+prefix_banner
+print_addrinfo
+print_addrinfo_primary
+print_addrinfo_secondary
+print_addrlabel
+__printf_chk
+print_link_flags
+print_linkinfo
+print_neigh
+print_ntable
+print_prefix
+print_route
+print_rule
+print_sadinfo
+print_spdinfo
+print_timestamp
+priority
+"PRIORITY" is invalid
+priority %u 
+prl-default
+          [ prl-default ADDR ] [ prl-nodefault ADDR ] [ prl-delete ADDR ]
+prl-delete
+prl-nodefault
+ probes %u
+/proc/net/dev
+/proc/net/dev_mcast
+/proc/net/dev read error
+/proc/net/igmp
+/proc/net/igmp6
+/proc/net/ip_mr_cache
+/proc/net/ip_mr_vif
+PROC_NET_PSCHED
+PROC_ROOT
+/proc/self/ns/net
+/proc/sys/net/ipv4/route/flush
+prohibit
+          [ prohibit | reject | unreachable ]
+	                  [ promisc { on | off } ]
+PROMISC%s
+prop-seg
+	       PROP-SEG      := { 1..8 }
+protocol
+ protocol %s 
+"protocol" value is invalid
+"PROTO" is invalid
+ proto %s 
+proto %s
+proto %u
+          | proxy ADDR } [ dev DEV ]
+proxy_delay
+proxy_delay %llu 
+"proxy_delay" value is invalid
+proxy_qlen %u 
+proxy_queue
+proxy_queue %u 
+"proxy_queue" value is invalid
+P.S. no real cows were harmed for this moo
+"PTYPE" is invalid
+PTYPE := main | sub
+qdisc %s 
+, qos %d
+QOS-MAPPING := FROM:TO
+QOS-MAP := [ QOS-MAP ] QOS-MAPPING
+"queue" value is invalid
+				   [ rate TXRATE ] ] 
+                    -rc[vbuf] [size]}
+rcv_probes_mcast %llu 
+rcv_probes_ucast %llu 
+REACHABLE%s
+read_dev_mcast
+read failed: %s
+read_igmp
+read_igmp6
+read %s: %s
+ realm%s 
+realms %s/
+          [ realms [SRCREALM/]DSTREALM ]
+"realm" value is invalid
+redirect
+refcnt %u 
+!!!Remnant of size %d
+"remote" address family is AF_UNSPEC
+          [ remote ADDR local ADDR ] [ dev PHYS_DEV ]
+remote %s 
+reorder_hdr
+REORDER_HDR%s
+reordering
+"reordering" value is invalid
+replay-oseq
+"replay-oseq" value is invalid
+replay-seq
+"replay-seq" value is invalid
+ replay update 
+replay-window
+        [ replay-window SIZE ] [ replay-seq SEQ ] [ replay-oseq SEQ ]
+replay-window %u 
+  replay-window %u replay %u failed %u%s
+"replay-window" value is invalid
+ reqid 0x%x
+"REQID" is invalid
+        [ reqid REQID ] [ seq SEQ ] [ min SPI max SPI ]
+reqid %u
+required
+res_failed %llu 
+-resolve
+resolve_hosts
+	[ restart ]
+    re-started bus-errors arbit-lost error-warn error-pass bus-off
+restart-ms
+	       RESTART-MS    := { 0 | NUMBER }
+restart-ms %d 
+	[ restart-ms TIME-MS ]
+restore_handler
+retrans %llu 
+"retrans" value is invalid
+*** Round %d, deleting %d addresses ***
+*** Round %d, deleting %d entries ***
+ROUTE := NODE_SPEC [ INFO_SPEC ]
+rta_addattr32
+rta_addattr32: Error! max allowed bound %d exceeded
+rta_addattr_l
+rta_addattr_l: Error! max allowed bound %d exceeded
+rt_addr_n2a
+RTNETLINK answers
+rtnl_close
+rtnl_dsfield_a2n
+rtnl_dsfield_n2a
+rtnl_dump_filter
+rtnl_dump_filter_l
+rtnl_dump_request
+rtnl_from_file
+rtnl_from_file: fread
+rtnl-from_file: truncated message
+rtnl_group_a2n
+rtnl_listen
+rtnl_open
+rtnl_open_byproto
+rtnl_rtntype_a2n
+rtnl_rtntype_n2a
+rtnl_rtprot_a2n
+rtnl_rtprot_n2a
+rtnl_rtrealm_a2n
+rtnl_rtrealm_n2a
+rtnl_rtscope_a2n
+rtnl_rtscope_n2a
+rtnl_rttable_a2n
+rtnl_rttable_n2a
+rtnl_send
+rtnl_send_check
+rtnl_talk
+rtnl_wilddump_request
+           [ rto_min TIME ] [ hoplimit NUMBER ] [ initrwnd NUMBER ]
+"rto_min" value is invalid
+RTPROTO := [ kernel | boot | static | NUMBER ]
+           [ rtt TIME ] [ rttvar TIME ] [reordering NUMBER ]
+"rtt" value is invalid
+"rttvar" value is invalid
+    RX: bytes  packets  errors  dropped overrun mcast   %s%s
+    RX errors: length  crc     frame   fifo    missed%s
+RX: Packets    Bytes        Errors CsumErrs OutOfSeq Mcasts%s
+                  %s
+      %s { 
+SADinfo: Wrong len %d
+sample-point
+	       SAMPLE-POINT  := { 0.000..0.999 }
+save_route
+%s    cache 
+%s  Checksum in received packet is required.
+%s  Checksum output packets.
+SCOPE := [ host | link | global | NUMBER ]
+SCOPE-ID := [ host | link | global | NUMBER ]
+ scope %s 
+             [ scope SCOPE ] [ metric METRIC ]
+%s  Drop packets out of sequence.
+%sdst-direct%s
+%sdst-nat%s
+secondary
+secondary 
+	security context 
+SELECTOR
+SELECTOR := [ not ] [ from PREFIX ] [ to PREFIX ] [ tos TOS ] [ fwmark FWMARK[/MASK] ]
+SELECTOR := [ root PREFIX ] [ match PREFIX ] [ exact PREFIX ]
+SELECTOR := [ src ADDR[/PLEN] ] [ dst ADDR[/PLEN] ] [ dev DEV ] [ UPSPEC ]
+sender address length == %d
+  seq 0x%08u 
+"SEQ" is invalid
+sethostent
+seting the network namespace failed: %s
+setsockopt
+%sfastroute%s
+share %s 
+Short write while saving nlmsg
+show_details
+show_stats
+%s: Invalid 6RD parameter.
+%s: Invalid PRL parameter.
+SIOCGIFFLAGS
+SIOCGIFINDEX
+SIOCSIFFLAGS
+SIOCSIFHWADDR
+SIOCSIFHWBROADCAST
+SIOCSIFMTU
+SIOCSIFNAME
+SIOCSIFXQLEN
+%s: ioctl %x failed: %s
+"%s" is invalid lladdr.
+	       SJW           := { 1..4 }
+SLEEPING
+%s_link_util
+%slocal%s
+%s-mask %s
+%s-mask %s 
+%smasq%s
+%s/net/psched
+%s	nexthop
+%snotify%s
+snprintf
+__snprintf_chk
+socket(PF_PACKET)
+SO_RCVBUF
+Sorry, "neigh get" is not implemented :-(
+SO_SNDBUF
+	 SPD buckets:
+SPDinfo: Wrong len %d
+spi 0x%08x
+ SPI 0x%x
+"SPI" is invalid
+"spi" must be 0 with proto=%s
+"SPI" must be zero
+"sport" and "dport" are invalid with proto=%s
+ } [ sport PORT ] [ dport PORT ] |
+sport %u 
+__sprintf_chk
+%sproxy%s
+"src" address family is AF_UNSPEC
+ src %s 
+src %s/%u 
+%sredirected%s
+%sredirect%s
+%sreject%s
+(%s, %s)
+%s  Sequence packets on output.
+%s: %s/ip  remote %s  local %s 
+%s: %s/ipv6 remote %s local %s
+%ssrc-direct%s
+%ssrc-nat%s
+ssthresh
+           [ ssthresh NUMBER ] [ realms REALM ] [ src ADDRESS ]
+"ssthresh" value is invalid
+__stack_chk_fail
+State buffer overflow
+state %s 
+state %#x 
+-statistics
+stats:%s
+strcasecmp
+__strcat_chk
+__strcpy_chk
+__strdup
+strerror
+strftime
+__strncat_chk
+__strncpy_chk
+strtoull
+strxf_algotype
+strxf_mask32
+strxf_mask8
+strxf_proto
+strxf_ptype
+strxf_share
+strxf_xfrmproto
+    %s: tseg1 %d..%d tseg2 %d..%d sjw 1..%d brp %d..%d brp-inc %d
+%s  %u packets, %u bytes
+%s: XFRMA_MARK failed
+/sys/class/net
+/sys/class/net/%s/%s
+TABLE_ID := [ local | main | default | all | NUMBER ]
+TABLE_ID := [ local | main | default | NUMBER ]
+table id value is invalid
+ table %s 
+             [ table TABLE_ID ] [ proto RTPROTO ]
+            [ table TABLE_ID ] [ proto RTPROTO ]
+"table" value is invalid
+ tclass 0x%02x
+ tclass inherit
+temporary
+temporary 
+tentative
+tentative 
+           tentative | deprecated | dadfailed | temporary |
+the same address family is required between "src" and "dst"
+         This special behaviour is likely to disappear in further releases,
+thresh1 %u 
+          [ thresh1 VAL ] [ thresh2 VAL ] [ thresh3 VAL ] [ gc_int MSEC ]
+"thresh1" value is invalid
+thresh2 %u 
+"thresh2" value is invalid
+thresh3 %u 
+"thresh3" value is invalid
+time-hard
+"time-hard" value is invalid
+TIME := NUMBER[s|ms]
+ timer expired 
+time-soft
+"time-soft" value is invalid
+-timestamp
+Timestamp: %s %lu us
+Timestamp: %s %lu usec
+time-use-hard
+"time-use-hard" value is invalid
+time-use-soft
+"time-use-soft" value is invalid
+TMPL := ID [ mode MODE ] [ reqid REQID ] [ level LEVEL ]
+TMPL-LIST := [ TMPL-LIST ] tmpl TMPL
+tnl_6rd_ioctl
+tnl_add_ioctl
+tnl_del_ioctl
+tnl_get_ioctl
+tnl_ioctl_get_6rd
+tnl_prl_ioctl
+tnl_strproto
+to 0/%d 
+To get <options> type 'ip link add help'
+Too many arguments to command
+Too many tmpls: buffer overflow
+too short XFRMA_POLICY_TYPE len
+                            [ to PREFIX ] [ FLAG-LIST ] [ label PATTERN ]
+       TOS       := { 0x0..0xff | inherit }
+       TOS  := { NUMBER | inherit }
+to %s/%u 
+"tos" value is invalid
+TOS value is invalid
+tOv%<)ta</t5
+    tq %d prop-seg %d phase-seg1 %d phase-seg2 %d sjw %d
+	       TQ            := { NUMBER }
+	[ tq TQ prop-seg PROP_SEG phase-seg1 PHASE-SEG1
+trailers
+	                  [ trailers { on | off } ]
+transport
+triple-sampling
+	[ triple-sampling { on | off } ]
+Truncated message
+ ts 0x%x tsage %dsec
+       TTL       := 0..255 (default=%d)
+ttl != 0 and noptmudisc are incompatible
+       TTL  := { 1..255 | inherit }
+ ttl %d 
+(ttl>%d)
+(ttl %d) 
+ ttl inherit 
+TTL must be <=255
+TTL must be <= 255
+          [ ttl TTL ] [ tos TOS ] [ [no]pmtudisc ] [ dev PHYS_DEV ]
+tun_flags
+                   tunnel | tuntap | maddr | mroute | mrule | monitor | xfrm |
+    TX: bytes  packets  errors  dropped carrier collsns %s%s
+    TX errors: aborted fifo    window  heartbeat%s
+TX: Packets    Bytes        Errors DeadLoop NoRoute  NoBufs%s
+txqueuelen
+                   [ txqueuelen PACKETS ]
+	                  [ txqueuelen PACKETS ]
+, tx rate %d (Mbps)
+"type" and "code" are invalid with proto=%s
+          type { gre | gretap } [ remote ADDR ] [ local ADDR ]
+ } [ type NUMBER ] [ code NUMBER ] |
+                   type TYPE [ ARGS ]
+            [ type TYPE ] [ scope SCOPE ]
+type %u 
+TYPE := [ unicast | local | broadcast | multicast | throw |
+"type" value is invalid
+TYPE := { vlan | veth | vcan | dummy | ifb | macvlan | can | bridge }
+, %u arrived on wrong iif.
+ucast_probes
+ucast_probes %u 
+"ucast_probes" value is invalid
+umount of /sys failed: %s
+Unexpected reply!!!
+ UNKNOWN_FLAGS:%lx
+Unknown message: %08d 0x%08x 0x%08x
+Unknown message: %08x %08x %08x
+unreachable
+          unreachable | prohibit | blackhole | nat ]
+ [unresolved]
+unresolved 
+unshare failed: %s
+Unsupported family:%d
+Updated 
+UPSPEC := proto { { 
+Usage: ip addr {add|change|replace} IFADDR dev STRING [ LIFETIME ]
+Usage: ip addrlabel [ list | add | del | flush ] prefix PREFIX [ dev DEV ] [ label LABEL ]
+Usage: ip -f inet6 tunnel { add | change | del | show } [ NAME ]
+Usage: ip link add [link DEV] [ name ] NAME
+Usage: ip link { add | set | change | replace | del } NAME
+Usage: ip link <options> type veth [peer <options>]
+Usage: ip link set DEVICE type can
+Usage: ip link set DEVICE [ { up | down } ]
+Usage: ip maddr [ add | del ] MULTIADDR dev STRING
+Usage: ip monitor [ all | LISTofOBJECTS ]
+Usage: ip mroute show [ PREFIX ] [ from PREFIX ] [ iif DEVICE ]
+Usage: ip neigh { add | del | change | replace } { ADDR [ lladdr LLADDR ]
+Usage: ip netns list
+Usage: ip ntable change name NAME [ dev DEV ]
+Usage: ip ntable show [ dev DEV ] [ name NAME ]
+Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }
+Usage: ip route { list | flush } SELECTOR
+Usage: ip tunnel { add | change | del | show | prl | 6rd } [ NAME ]
+Usage: ip tuntap { add | del } [ dev PHYS_DEV ] 
+Usage: ip xfrm count
+Usage: ip xfrm monitor [ all | LISTofXFRM-OBJECTS ]
+Usage: ip xfrm policy { add | update } SELECTOR dir DIR [ ctx CTX ]
+Usage: ip xfrm policy { deleteall | list } [ SELECTOR ] [ dir DIR ]
+Usage: ip xfrm policy { delete | get } { SELECTOR | index INDEX } dir DIR
+Usage: ip xfrm policy flush [ ptype PTYPE ]
+Usage: ip xfrm state { add | update } ID [ ALGO-LIST ] [ mode MODE ]
+Usage: ip xfrm state allocspi ID [ mode MODE ] [ mark MARK [ mask MASK ] ]
+Usage: ip xfrm state count
+Usage: ip xfrm state { deleteall | list } [ ID ] [ mode MODE ] [ reqid REQID ]
+Usage: ip xfrm state { delete | get } ID [ mark MARK [ mask MASK ] ]
+Usage: ip xfrm state flush [ proto XFRM-PROTO ]
+Usage: ip xfrm XFRM-OBJECT { COMMAND | help }
+Usage: ... macvlan mode { private | vepa | bridge | passthru }
+Usage: ... macvtap mode { private | vepa | bridge | passthru }
+Usage: ... vlan id VLANID [ FLAG-LIST ]
+ used %d
+ used %d/%d/%d
+ user %ld
+ users %d
+Use setsockopt for this group %d
+use %s%s
+/usr/lib//ip/link_%s.so
+       valid_lft 
+valid_lft
+valid_lft is zero
+valid_lft value
+valid %u 
+/var/run/netns
+-Version
+veth_link_util
+    vf %d MAC %s
+	                  [ vf NUM [ mac LLADDR ]
+ via %s 
+, vlan %d
+VLANID := 0-4095
+				   [ vlan VLANID [ qos VLAN-QOS ] ]
+ vnet_hdr
+Warning: Executing wildcard deletion to stay compatible with old scripts.
+Warning: route NAT is deprecated
+ weight %d
+"weight" is invalid
+	Where: BITRATE       := { 1..1000000 }
+Where: NAME      := STRING
+Where: NAME := STRING
+where  OBJECT := { link | addr | addrlabel | route | rule | neigh | ntable |
+Where: USER  := { STRING | NUMBER }
+where  XFRM-OBJECT := state | policy | monitor
+wildrecv
+wildrecv%s
+           [ window NUMBER] [ cwnd NUMBER ] [ initcwnd NUMBER ]
+"window" value is invalid
+Wrong address family %d
+Wrong address length %d
+Wrong address (%s) length: expected %d bytes
+wrong family %d
+Wrong format of /proc/net/dev. Sorry.
+wrong ND type %d
+xfrm_addr_match
+xfrm_ae_flags_print
+xfrm_algotype_getbyname
+xfrm_encap_type_parse
+xfrm_id_info_print
+xfrm_id_parse
+xfrm_lifetime_cfg_parse
+xfrm_lifetime_print
+xfrm_mode_parse
+xfrm_parse_mark
+xfrm_policy_get_or_delete
+xfrm_policy_info_print
+xfrm_policy_modify
+xfrm_policy_print
+XFRM-PROTO
+XFRM-PROTO := 
+"XFRM-PROTO" is invalid
+xfrm_reqid_parse
+xfrm_sctx_parse
+xfrm_selector_parse
+xfrm_selector_print
+xfrm_state_info_print
+xfrm_state_print
+xfrm_stats_print
+xfrm_xfrma_print
+xfrm_xfrmproto_getbyname
+xfrm_xfrmproto_is_ipsec
+xfrm_xfrmproto_is_ro
+xresolve
+%x%x%d%u%u%u %[^
+%Y-%m-%d %T
+You failed to specify a tunnel mode
+You managed to ask for more than one tunnel mode.
+zDUsage: ip rule [ list | add | del | flush ] SELECTOR ACTION

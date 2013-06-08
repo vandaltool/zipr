@@ -1,0 +1,26 @@
+__bss_start
+__ctype_b_loc
+cupsCancelJob2
+cupsFreeDests
+cupsGetNamedDest
+_cupsLangPrintf
+cupsLastErrorString
+cupsSetEncryption
+_cupsSetLocale
+cupsSetServer
+cupsSetUser
+__cxa_finalize
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.3
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libcups.so.2
+/lib/ld-linux.so.2
+%s: Error - expected hostname after "-h" option.
+%s: Error - expected username after "-U" option.
+%s: Error - unknown destination "%s".
+%s: Error - unknown option "%c".

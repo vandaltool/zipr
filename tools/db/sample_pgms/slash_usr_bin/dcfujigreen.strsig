@@ -1,0 +1,39 @@
+-2        Write  8-bit non-linear PGM (default)
+-3        Write 16-bit linear PSD (Adobe Photoshop)
+-4        Write 16-bit linear PGM
+-b <num>  Set brightness (default = 1.0)
+by Dave Coffin, dcoffin a cybercom o net
+"-%c" requires a numeric argument.
+__ctype_b_loc
+-c        Write image data to standard output
+FinePix S5100
+FinePix S5500
+FUJIFILM
+Fuji Green channel output
+fuji_load_raw()
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.4
+__gmon_start__
+-i        Identify files without decoding them
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+Loading %s %s image from %s...
+No files to process.
+%s is a %s %s image.
+%s: Out of memory in %s
+__stack_chk_fail
+standard output
+%s: unsupported file format.
+-s        Use secondary pixels if available
+Unknown option "-%c".
+Usage:  %s [options] file1 file2 ...
+Valid options:
+-v        Print verbose messages
+Will not write an image to the terminal!
+Writing data to %s...

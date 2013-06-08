@@ -1,0 +1,174 @@
+and they should be used when possible as they often have extra intelligence for
+	# . as srcdir makes no sense, so this is a special case.
+	"autodest" => \$dh{AUTODEST},
+B<dh_install> automatically looks for files in F<debian/tmp> in debhelper
+B<dh_install> [B<-X>I<item>] [B<--autodest>] [B<--sourcedir=>I<dir>] [S<I<debhelper options>>] [S<I<file> ... I<dest>>]
+B<dh_install> cannot rename files or directories, it can only install them
+B<dh_install> is a debhelper program that handles installing files into package
+being installed.
+build directories. There are many B<dh_install>I<*> commands that handle installing
+build tree.
+by the B<dh_auto_>I<*> commands. You rarely need to use this option, since
+				chomp $pwd;
+compatibility level 7 and above.
+				complex_doit("cd '$dir' && find '$basename' $exclude \\( -type d -and -empty \\) -exec cp --parents -a {} $pwd/$tmp/$dest/ \\;");
+				complex_doit("cd '$dir' && find '$basename' $exclude \\( -type f -or -type l \\) -exec cp --parents -dp {} $pwd/$tmp/$dest/ \\;");
+				# cp is annoying so I need a separate pass
+				$dest=dirname("/".$dest);
+			$dest=pop @$set;
+				$dest=~s/^(.*\/)?debian\/tmp\///;
+				$dest=~s/^(.*\/)?\Q$srcdir\E\///;
+				$dest=$src;
+				$dest=undef;
+dh_install - install files into package build directories
+directories and files from there into the proper package build directories.
+directory (or whereever you've told it to look using B<--sourcedir>).
+				doit("cp", "-a", $src, "$tmp/$dest/");
+				doit("install","-d","$tmp/$dest");
+			else {
+else, for which no particular intelligence is needed. It is a replacement for
+			error("missing files, aborting");
+				error("$package missing files (@$set), aborting");
+		$exclude = '! \( '.$dh{EXCLUDE_FIND}.' \)';
+Exclude files that contain I<item> anywhere in their filename from
+	"fail-missing" => \$dh{FAIL_MISSING},
+				# Fall back to looking in debian/tmp.
+F<debian/package.install> files or on the command line. Instead, B<dh_install>
+F<debian/package.install> file, with no explicit destination, then B<dh_install>
+F<debian/tmp/etc/passwd>, it will be copied to F<debian/package/etc/>.
+		$_="$File::Find::dir/$_";
+filename. So if the filename is F<debian/tmp/usr/bin>, then that directory
+			$file=~s/^\Q$srcdir\E\///;
+files to install, and at the end of the line tells the directory it should be
+	find(sub {
+		-f || -l || return;
+F<Makefile> to install it all into F<debian/tmp>, and then use B<dh_install> to copy
+		foreach my $glob (@$set) {
+foreach my $package (getpackages()) {
+	foreach my $set (@install) {
+		foreach my $src (@filelist) { 
+					@found = glob "debian/tmp/$glob";
+From debhelper compatibility level 7 on, B<dh_install> will fall back to
+Guess as the destination directory to install things to. If this is
+				# Guess at destination directory.
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 LIMITATIONS
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+		if (! compat(4)) { # check added in v5
+			if (! compat(6)) {
+			if (! defined $dest) {
+		if (! defined $dh{AUTODEST} && @$set > 1) {
+	if ($dh{EXCLUDE_FIND}) {
+		if ($dh{FAIL_MISSING}) {
+if ($dh{LIST_MISSING} || $dh{FAIL_MISSING}) {
+			if (-d $src && $exclude) {
+			if (! -e "$tmp/$dest") {
+	if ($file) {
+			if (! @filelist && ! $skip_install) {
+				if (! @found || ! (-e $found[0] || -l $found[0])) {
+		if (! /$installed/ && ! excludefile($_)) {
+	if (@missing) {
+	if (($package eq $dh{FIRSTPACKAGE} || $dh{PARAMS_ALL}) && @ARGV) {
+	if ($srcdir eq '.') {
+			if ($tmpdest) {
+init(options => {
+	} @installed);
+installed in. The name of the files (or directories) to install should be given
+	$installed=qr{^($installed)$};
+installed to. The format is a set of lines, where each line lists a file or
+		@install=filedoublearray($file); # no globbing here; done below
+=item B<--autodest>
+=item B<--fail-missing>
+=item B<--list-missing>
+=item B<--sourcedir=>I<dir>
+=item B<-X>I<item>, B<--exclude=>I<item>
+=item debian/I<package>.install
+=item I<file> ... I<dest>
+itself in a
+Joey Hess <joeyh@debian.org>
+				# just for empty directories
+		# Kill any extra slashes, for robustness.
+L<debhelper(7)>
+	"list-missing" => \$dh{LIST_MISSING},
+	# list-missing/fail-missing, but skip really installing for
+Lists files (or directories) to install and where to install them to.
+List the files to install into each package and the directory they should be
+	# Look at the install files for all packages to handle
+looking in F<debian/tmp> for files, if it doesn't find them in the current
+Look in the specified directory for files to be installed.
+			# Make sure the destination directory exists.
+				my $basename = basename($src);
+		my $dest;
+				my $dir = ($basename eq '.') ? $src : "$src/..";
+	my $exclude = '';
+			my $file=$_;
+		my @filelist;
+	my $file=pkgfile($package,"install");
+			my @found = glob "$srcdir/$glob";
+	my @install;
+my @installed;
+	my $installed=join("|", map {
+	my @missing;
+				my $pwd=`pwd`;
+	my $skip_install=! grep { $_ eq $package } @{$dh{DOPACKAGES}};
+my $srcdir = '.';
+		my $tmpdest=0;
+	my $tmp=tmpdir($package);
+			next if excludefile($src);
+			next if $skip_install;
+Note that files that are excluded from being moved via the B<-X> option are not
+Note that if you list exactly one filename or wildcard-pattern on a line by
+Note that this is not the same as the B<--sourcedirectory> option used
+not only list the missing files, but also fail with a nonzero exit code. 
+on them to move them into place. On the other hand, maybe you have a large
+	# packages that are not being acted on.
+package that builds multiple binary packages. You can use the upstream
+			push @filelist, @found;
+		push @install, [@ARGV];
+			push @installed, $src;
+			push @missing, $file;
+		"\Q$_\E\/.*|\Q$_\E";
+relative to the current directory, while the installation directory is given
+relative to the package build directory. You may use wildcards in the names of
+		s:^(\./)*::;
+		s:/+$::;
+somewhere, it will warn on stderr about that.
+	"sourcedir=s" => \$dh{SOURCEDIR},	
+specific types of files such as documentation, examples, man pages, and so on,
+specified, you should not list destination directories in
+	}, $srcdir);
+		$srcdir='debian/tmp';
+$srcdir = $dh{SOURCEDIR} if defined $dh{SOURCEDIR};
+Strip off F<debian/tmp> (or the sourcedir if one is given) from the front of
+	# Support for -X flag.
+that the upstream Makefile does not install for you, you can run B<dh_install>
+the end, compare that list with the files in the source directory. If any of
+the filename, if it is present, and install into the dirname of the
+the files (and symlinks) in the source directory were not installed to
+the files to install (in v3 mode and above).
+The files will be installed into the first package F<dh_install> acts on.
+the old B<dh_movefiles> command.
+This may be useful if you have a large package and want to make sure that
+This option is like B<--list-missing>, except if a file was missed, it will
+This option makes B<dh_install> keep track of the files it installs, and then at
+This program is a part of debhelper.
+This program may be used in one of two ways. If you just have a file or two
+those particular tasks. B<dh_install>, then, is useful for installing everything
+				$tmpdest=1;
+use Debian::Debhelper::Dh_Lib;
+use File::Find;
+use strict;
+#!/usr/bin/perl -w
+warned about.
+		warning "$_ exists in $srcdir but is not installed to anywhere" foreach @missing;
+will automatically guess the destination even if this flag is not set.
+will be copied to F<debian/package/usr/>. If the filename is
+will guess as follows:
+with the names they already have into wherever you want in the package
+you don't miss installing newly added files in new upstream releases.
+		y:/:/:s;

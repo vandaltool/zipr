@@ -1,0 +1,34 @@
+__bss_start
+can't happen
+GLIBC_2.0
+__gmon_start__
+-imagename
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+maxval too large - try using "pnmdepth %d"
+out of memory allocating %d bytes
+overflow2
+overflow_add
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+pm_writebiglong
+pm_writebigshort
+pnm_init
+pnm_readpnminit
+pnm_readpnmrow
+promoting PBM to PGM
+unknown storage type - can't happen
+-verbatim
+[-verbatim|-rle] [-imagename <name>] [pnmfile]
+write error

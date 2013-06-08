@@ -1,0 +1,53 @@
+-----------
+ %-16s %20s  %-20s  %s
+    -all             list all known widget and object classes
+__bss_start
+%%-%ds  
+%d:  %s/%s
+    -format string   printf format for instance, class, type
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+Instance
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libXaw.so.7
+libXmu.so.6
+libXt.so.6
+-nosuper
+    -nosuper         do not print superclass resources
+__printf_chk
+*resourceFormat
+ResourceFormat
+*showSuper
+ShowSuper
+*showTree
+ShowTree
+*showVariable
+ShowVariable
+__sprintf_chk
+%s:  unable to find widget "%s"
+    -top name        object to be top of tree
+*topObject
+TopObject
+    -tree            list all widgets and objects in a tree
+usage:  %s [-options...]
+-variable
+    -variable        show variable name instead of class name
+where options include:
+widgetClass
+XawWidgetArray
+XawWidgetCount
+XmuWnFetchResources
+XmuWnInitializeNodes
+XmuWnNameToNode
+XtAppInitialize
+XtCreateWidget
+XtGetApplicationResources
+XtSetLanguageProc
+XtStrings

@@ -1,0 +1,19 @@
+B<dh_desktop> [S<I<debhelper options>>]
+B<dh_desktop> was a debhelper program that registers F<.desktop> files.
+correct location (F</usr/share/applications>) and they will be registered by
+dh_desktop - deprecated no-op
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+However, it no longer does anything, and is now deprecated.
+If a package ships F<desktop> files, they just need to be installed in the
+L<debhelper>
+Ross Burton <ross@burtonini.com>
+the appropriate tools for the corresponding desktop environments.
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w
+warning("This program is deprecated, and does nothing anymore.");

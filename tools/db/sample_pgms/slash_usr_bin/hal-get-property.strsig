@@ -1,0 +1,59 @@
+__bss_start
+Could not initialise connection to hald.
+dbus_bus_get
+dbus_error_free
+dbus_error_init
+dbus_error_is_set
+error: libhal_ctx_init: %s: %s
+error: libhal_ctx_new
+error: libhal_ctx_set_dbus_connection: %s: %s
+error: libhal_device_exists: %s: %s
+error: libhal_device_get_property_type: %s: %s
+error: %s: %s
+error: UDI %s does not exist
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+hal-get-property 0.5.14
+        --help           Show this information and exit
+hexadecimal
+                        [--hex] [--help] [--verbose] [--version]
+        --hex            Show integer values in hex (without leading 0x)
+_IO_stdin_used
+_Jv_RegisterClasses
+        --key            Key of the property to get
+libc.so.6
+__libc_start_main
+libdbus-1.so.3
+libhal_ctx_init
+libhal_ctx_new
+libhal_ctx_set_dbus_connection
+libhal_device_exists
+libhal_device_get_property_bool
+libhal_device_get_property_double
+libhal_device_get_property_int
+libhal_device_get_property_string
+libhal_device_get_property_strlist
+libhal_device_get_property_type
+libhal_device_get_property_uint64
+libhal_free_string
+libhal.so.1
+/lib/ld-linux.so.2
+Normally this means the HAL daemon (hald) is not running or not ready.
+On error, the program exits with an exit code different from 0
+__printf_chk
+__strdup
+then it is printed on stdout and this program exits with exit code 0.
+This program retrieves a property from a device. If the property exist
+Type is boolean
+Type is double
+Type is integer (shown in %s)
+Type is string
+Type is uint64 (shown in %s)
+        --udi            Unique Device Id
+Unknown type %d='%c'
+usage : hal-get-property --udi <udi> --key <key> 
+        --verbose        Be verbose
+        --version        Show version and exit

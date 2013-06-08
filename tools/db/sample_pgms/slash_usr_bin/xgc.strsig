@@ -1,0 +1,258 @@
+ !"""#####################
+((+,-013579;=?ACEGIKMOQSUW
+ #&),/258;>ADG
+Ack... %s %s
+andInverted
+andReverse
+An uncounted number of pixels in %.3f seconds.
+ARCMODETYPE
+asciiTextWidgetClass
+background
+background 
+Background
+background %ld
+bad buffer in yy_scan_bytes()
+Binput in flex scanner failed
+__bss_start
+     <Btn1Down>:    set-keyboard-focus() select-start()
+capstyle
+CAPSTYLETYPE
+Cleanup: discarding lookahead
+Cleanup: popping
+clearerr
+Clear window
+commandform
+commandWidgetClass
+CopyArea
+Copy Area
+copyInverted
+CopyPlane
+Copy Plane
+Ctrl<Key>J:    KillPopup() Done()
+     Ctrl<Key>J:    Nothing()
+     Ctrl<Key>M:    KillPopup() Done()
+     Ctrl<Key>M:    Nothing()
+     Ctrl<Key>N:    Nothing()
+     Ctrl<Key>O:    Nothing()
+     Ctrl<Key>P:    Nothing()
+     Ctrl<Key>V:    Nothing()
+     Ctrl<Key>Z:    Nothing()
+   $%d = 
+dashlist
+dashlist %d
+dashlist%d
+Deleting
+%d lines of length %d in %.3f seconds.
+DoubleDash
+%d pixels in %.2f seconds.
+%d points in %.3f seconds.
+%d segments in %.3f seconds.
+%d strings in %.2f seconds.
+End Record
+Entering state %d
+__errno_location
+Error: discarding
+Error: popping
+exactly one bit in plane mask must be set for this test
+fatal error - scanner input buffer overflow
+fatal flex scanner internal error--end of buffer missed
+fatal flex scanner internal error--no action found
+Filename: 
+Filled Arcs
+(Filled Polygons)
+Filled Rectangles
+FillPolygon
+fillrule
+FILLRULETYPE
+fillstyle
+FILLSTYLETYPE
+foreground
+foreground 
+Foreground
+foreground %ld
+formWidgetClass
+__fprintf_chk
+fromHoriz
+fromVert
+function
+FUNCTIONTYPE
+GetImage
+(Get Image)
+getrusage
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+highlightThickness
+horizDistance
+ImageText16
+Image Text 16
+ImageText8
+Image Text 8
+?Invalid flag in timer()
+_IO_getc
+_IO_stdin_used
+__isoc99_sscanf
+joinstyle
+JOINSTYLETYPE
+_Jv_RegisterClasses
+     <Key>Linefeed: KillPopup() Done()
+     <Key>Linefeed: Nothing()
+     <Key>Return:   KillPopup() Done()
+     <Key>Return:   Nothing()
+KillPopup
+L$(9L$,t
+labelWidgetClass
+<Leave>: Update()
+<Leave>:      WriteText(%d)
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libX11.so.6
+libXaw.so.7
+libXt.so.6
+linestyle
+LINESTYLETYPE
+linewidth
+linewidth 
+Line Width
+LINEWIDTH
+linewidth %d
+memory exhausted
+<Message>WM_PROTOCOLS: quit()
+     Meta<Key>I:    Nothing()
+     Meta<Key>V:    Nothing()
+     Meta<Key>Z:    Nothing()
+-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1
+Next token is
+Now at end of input.
+nterm %s (
+OnOffDash
+OpaqueStippled
+orInverted
+orReverse
+out of dynamic memory in yy_create_buffer()
+out of dynamic memory in yyensure_buffer_stack()
+out of dynamic memory in yy_get_next_buffer()
+out of dynamic memory in yy_scan_buffer()
+out of dynamic memory in yy_scan_bytes()
+overrideShellWidgetClass
+pack my box with five dozen liquor jugs
+Percentage of Test
+percent %d
+PieSlice
+planemask
+planemask%d
+planemask %ld
+planemask %lu
+Playback
+PolyFillArc
+PolyFillRect
+PolyLine
+PolyPoint
+PolyRectangle
+PolySegment
+PolyText16
+PolyText8
+Projecting
+PutImage
+Put Image
+radioGroup
+Reading a token: 
+Read Input
+Reducing stack by rule %d (line %lu):
+resizable
+scrollbarWidgetClass
+Segments
+Shifting
+snprintf
+__snprintf_chk
+__stack_chk_fail
+Stack now
+Stack size increased to %lu
+Starting parse
+__strcat_chk
+__strncat_chk
+syntax error
+T$4t<+t$8
+testchoiceform
+Testform
+testpercent
+TESTTYPE
+That test doesn't exist yet.
+toggleWidgetClass
+token %s (
+Total line length %d in %.3f seconds.
+$undefined
+useStringInPlace
+vertDistance
+widgetClass
+WM_DELETE_WINDOW
+WriteText
+XawScrollbarSetThumb
+XawTextReplace
+XawTextTopPosition
+XChangeGC
+XClearWindow
+XCopyArea
+XCopyPlane
+XCreateBitmapFromData
+XCreateGC
+XCreatePixmap
+XCreatePixmapFromBitmapData
+XDrawArcs
+XDrawImageString
+XDrawImageString16
+XDrawLines
+XDrawPoints
+XDrawRectangles
+XDrawSegments
+XDrawString
+XDrawString16
+XFillArcs
+XFillPolygon
+XFillRectangle
+XFillRectangles
+xgc: bad character `%s', line %d
+xgc: syntax error, line %d
+XGetImage
+XInternAtom
+XListFonts
+XLoadFont
+XPutImage
+XQueryPointer
+XSetArcMode
+XSetBackground
+XSetDashes
+XSetFillRule
+XSetFillStyle
+XSetFont
+XSetForeground
+XSetFunction
+XSetPlaneMask
+XSetStipple
+XSetTile
+XSetWindowBackground
+XSetWMProtocols
+XtAppAddActions
+XtAppInitialize
+XtAppMainLoop
+XtCallCallbacks
+XtCreateManagedWidget
+XtCreatePopupShell
+XtDisplay
+XtGetValues
+XtMalloc
+XtOverrideTranslations
+XtParseTranslationTable
+XtPopdown
+XtRealizeWidget
+XtSetLanguageProc
+XtSetValues
+XtShellStrings
+XtStrings
+XtWindow

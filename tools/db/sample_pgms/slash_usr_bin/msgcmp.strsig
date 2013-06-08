@@ -1,0 +1,123 @@
+1995-1998, 2000-2010
+basename
+bindtextdomain
+bison-runtime
+__bss_start
+...but this definition is similar
+charset=
+close_stdout
+Compare two Uniforum style .po files to check that both contain the same
+Copyright (C) %s Free Software Foundation, Inc.
+c_strncasecmp
+c_strstr
+__cxa_atexit
+dcgettext
+dcngettext
+  -D, --directory=DIRECTORY   add DIRECTORY to list for input files search
+  def.po                      translations
+directory
+dir_list_append
+error_message_count
+error_print_progname
+exactly 2 input files required
+file (generally created by xgettext).  This is useful for checking that
+found %d fatal error
+found %d fatal errors
+__fprintf_chk
+fuzzy_search_goal_function
+getopt_long
+gettext-tools
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+gram_max_allowed_errors
+hash_destroy
+hash_find_entry
+hash_init
+hash_insert_entry
+hash_iterate
+hash_iterate_modify
+hash_set_value
+  -h, --help                  display this help and exit
+iconv_msgdomain_list
+Informative output:
+Input file location:
+Input file syntax:
+input_format_po
+input_format_properties
+input_format_stringtable
+_IO_stdin_used
+_Jv_RegisterClasses
+libcroco-0.6.so.3
+libc.so.6
+__libc_start_main
+libgettextlib-0.18.1.so
+libgettextsrc-0.18.1.so
+libglib-2.0.so.0
+/lib/ld-linux.so.2
+libm.so.6
+libncurses.so.5
+libtinfo.so.5
+libunistring.so.0
+libxml2.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+Mandatory arguments to long options are mandatory for short options too.
+match cannot be found, fuzzy matching is used to produce better diagnostics.
+maybe_print_progname
+message_list_alloc
+message_list_append
+message_list_free
+message_list_remove_if_not
+message_list_search
+  -m, --multi-domain          apply ref.pot to each of the domains in def.po
+msgdomain_list_sublist
+multi-domain
+  -N, --no-fuzzy-matching     do not use fuzzy matching
+no-fuzzy-matching
+no input files given
+Operation modifiers:
+Peter Miller
+po_charset_ascii
+po_charset_canonicalize
+po_charset_character_iterator
+po_gram_error_at_line
+  -P, --properties-input      input files are in Java .properties syntax
+__printf_chk
+proper_name
+properties-input
+read_catalog_file
+  ref.pot                     references to the sources
+Report bugs to <bug-gnu-gettext@gnu.org>.
+setlocale
+set of msgid strings.  The def.po file is an existing PO file with the
+set_program_name
+%s (GNU %s) %s
+__stack_chk_fail
+stringtable-input
+      --stringtable-input     input files are in NeXTstep/GNUstep .strings
+                              syntax
+T$`9T$ds
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+this message is untranslated
+this message is used but not defined...
+this message is used but not defined in %s
+this message needs to be reviewed by the translator
+translations.  The ref.pot file is the last created PO file, or a PO Template
+Try `%s --help' for more information.
+Usage: %s [OPTION] def.po ref.pot
+use-fuzzy
+      --use-fuzzy             consider fuzzy entries
+use-untranslated
+      --use-untranslated      consider untranslated entries
+/usr/share/locale
+  -V, --version               output version information and exit
+warning: this message is not used
+Written by %s.
+xalloc_die
+xmmalloca
+xrealloc
+you have translated each and every message in your program.  Where an exact

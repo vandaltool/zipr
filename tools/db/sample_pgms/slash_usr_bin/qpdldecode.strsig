@@ -1,0 +1,104 @@
+ !"#	%&'()*+,-./0123456789:;<=>? ABCDEFGHIJKLMNO0QRSTUVWGYZ[\]^V`abcd]fghcjkgmkomoarith_decode
+$&'(*+-.0134689;<>? !
+%6x:    
+\$@9\$0s
+9J|~:;0u
+ABORT marker segment encountered
+@ACDEFHIJKMNO0223456789:;==
+	Also known as SPLC.
+	A Quick Page Description Langauge (QPDL) is the printer langauge	used by some Samsung printers, such as the CLP-600n.
+arith_encode
+__assert_fail
+BD$d;t$d
+		copies=%d
+Couldn't get 0x%x(%d) bytes
+Couldn't get 11 bytes
+Couldn't get 14 bytes
+Couldn't get 16 bytes
+Couldn't get 24 bytes
+Couldn't get 2 bytes
+Couldn't get 4 bytes
+Couldn't get 7 bytes
+cx >= 0 && cx < 4096
+%d:     
+D$0+D$$=
+D$,9D$(t
+D$(9D$\v
+		Data: 
+       -d basename Basename of .pbm file for saving decompressed planes
+D$D+L$X)
+	Decode a QPDL stream into human readable form.
+d:hor:D:?h
+		DL = %d, D = %d, P = %d, - = %d, XY = %d x %d, %s
+       -D lvl      Set Debug level [%d]
+efghcijkg
+		end=%d, ver=%d, checksum WANT=0x%x GOT=0x%x
+envMonarch
+EOF on file
+__errno_location
+file '%s' doesn't exist
+__fprintf_chk
+__fread_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+       -h          Print hex file offsets
+$Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $ 
+Incremental BIE does not continue previous one
+Input data stream contains invalid data
+Input data stream uses unimplemented JBIG features
+_IO_getc
+_IO_stdin_used
+jbig_ar.c
+JBIG-KIT 2.0 -- (c) 1995-2008 Markus Kuhn -- Licence: GPL
+JBIG uses unimpl feature
+		L0 = %d, MX = %d, MY = %d
+    len=15
+	len=17	pageNum=%d
+    len=25
+    len=8
+		len=%d(0x%x)
+	len=%d(0x%x)
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+		magic=0x%x, len=%d(0x%x), unk=%x,%x,%x,%x,%x,%x,
+(Margin=%d)
+Missing image %dx%d!
+Not enough memory available
+       -o          Print file offsets
+Options:
+		Options = %d %s%s%s%s%s%s%s%s
+		Order   = %d %s%s%s%s%s
+		papersource=%s, unk=%d, duplex=%d:%d, unk=%d,%d,  unk=%d(0x%x)
+@PJL ENTER LANGUAGE=HIPERC
+@PJL ENTER LANGUAGE = QPDL
+PQRSTVWWHHJJKMM
+__printf_chk
+	qpdldecode [options] < qpdl-file.prn
+Reached specified image size
+RECTYPE 0x%x
+%s-%02d-%d.pbm
+s->buffer != 0xff
+__sprintf_chk
+ss < 113
+__stack_chk_fail
+statement
+strerror
+		stripe=%d, WB=%d(0x%x), H=%d(0x%x), plane=%d, comp=0x%x,
+Unexpected end of input data stream
+		unknown: 
+Unknown error code passed to jbg_strerror()
+Unknown marker segment encountered
+Unknown rectype 0x%x at 0x%x(%d)
+		%u stripes, %d layers, %d planes
+u&;t$@s 
+__vfprintf_chk
+ VLENGTH
+Warning: 
+*** xd%256 != 0!
+		xres=%d
+		yres=%d, copies=%d, papersize=%s(%d), w=%d, h=%d

@@ -1,0 +1,99 @@
+__asprintf_chk
+__assert_fail
+Bad regular expression: %s
+bindtextdomain
+Cannot find user %s
+Cannot get UID from process status
+closedir
+Copyright (C) 1993-2005 Werner Almesberger and Craig Small
+__ctype_b_loc
+%*d (%15[^)]
+D$8 ;t$X
+dcgettext
+%*d %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %*s %Lu
+  -e,--exact          require exact match for very long names
+egy:o:ilqrs:u:vwVI
+    -e      require exact match for very long names;
+__errno_location
+error opening uptime file
+For more information about these matters, see the files named COPYING.
+__fprintf_chk
+__getdelim
+getopt_long_only
+getpgid(%d): %s
+getpwnam
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+__gmon_start__
+  -g,--process-group  kill process group instead of process
+    -g      show process group ID instead of process ID
+ignore-case
+  -I,--ignore-case    case insensitive process name match
+  -i,--interactive    ask for confirmation before killing
+interactive
+Invalid time format
+_IO_putc
+_IO_stdin_used
+kill_all
+killall.c
+       killall -l, --list
+       killall -V, --version
+Killed %s(%s%d) with signal %d
+Kill %s(%s%d) ? (y/N) 
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+list-signals
+  -l,--list           list all known signal names
+Maximum number of names is %d
+older-than
+  -o,--older-than     kill processes older than TIME
+       pidof -V
+__printf_chk
+/proc/%d/cmdline
+/proc/%d/exe
+/proc/%d/stat
+/proc/%d/status
+process_age
+process_age_sec > 0
+process-group
+/proc/uptime
+PSmisc comes with ABSOLUTELY NO WARRANTY.
+  -q,--quiet          don't print complaints
+readdir64
+readlink
+  -r,--regexp         interpret NAME as an extended regular expression
+sc_clk_tck > 0
+%s(%d): %s
+setlocale
+Signal %s(%s%d) ? (y/N) 
+            skip if the command line is unavailable
+skipping partial match %s(%d)
+%s lacks process entries (not mounted ?)
+%s: no process found
+__snprintf_chk
+%s (PSmisc) %s
+  -s,--signal SIGNAL  send this signal instead of SIGTERM
+__stack_chk_fail
+strcasecmp
+strerror
+strncasecmp
+%s: unknown signal; %s -l lists signals.
+the terms of the GNU General Public License.
+This is free software, and you are welcome to redistribute it under
+Usage: killall [OPTION]... [--] NAME...
+Usage: pidof [ -eg ] NAME...
+/usr/share/locale
+  -u,--user USER      kill only process(es) running as USER
+    -V      display version information
+  -v,--verbose        report if the signal was successfully sent
+  -V,--version        display version information
+  -w,--wait           wait for processes to die
+__xstat64
+younger-than
+  -y,--younger-than   kill processes younger than TIME

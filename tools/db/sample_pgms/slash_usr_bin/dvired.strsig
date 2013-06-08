@@ -1,0 +1,66 @@
+#==============================================================================
+0)      help ; exit 1 ; ;;
+# Address:      te@dbs.uni-hannover.de
+# Author:       Thomas Esser
+#!/bin/sh
+	case $1 in
+case $# in
+case "$of" in
+case "$PRINTER" in
+        cat <<eof
+# Copying:      GNU GENERAL PUBLIC LICENSE
+# Copyright:    (c) 1994, 1999 by Thomas Esser
+# Created:      19.11.1992
+"")	dvips_pre="" ;;
+dvips_pre="$dvips_pre -t $paper -t landscape"
+*)	dvips_pre="-P$PRINTER" ;;
+"-")	dvips -x707 $dvips_pre $opt -f | pstops -q $pstopsopt
+"")	dvips -x707 $dvips_pre $opt -f | pstops -q $pstopsopt | lpr $lpr_opt
+*)	dvips -x707 $dvips_pre $opt -f | pstops -q $pstopsopt > "$of"
+   dvired foo -f | ghostview -     preview output with ghostview
+   dvired -o foo.ps foo            send output to file foo.ps
+   dvired -Plw foo                 send output to printer lw
+   dvired -pp4-7 foo               send 4 output-pages to printer
+Examples: (it is assumed that the PRINTER-variable is set)
+	-f)	of="-" ;;
+For options see dvips(1). This program only interprets the options
+If your paper is not in A4 format, you need to adjust the dimensions
+in this program.
+# Language:     sh
+# Last Change:  13.08.1999
+lpr_opt=""
+# Module:       dvired
+	-o)	of="$2"
+	-o*)	of="`echo $1| sed 's/..//'`" ;;
+-o, -P and -f. All other options will directly be passed to dvips.
+	*)	opt="$opt $1"
+# or not, if you can test them.
+pages will be put on onto each physical sheet of paper.
+#		paper.
+#paper=a3 ;	pstopsopt='2:0(7.44mm,7.44mm)+1(7.44mm,-202.56mm)'
+paper=a4 ;	pstopsopt='2:0(7.44mm,7.44mm)+1(7.44mm,-141.06mm)'
+#paper=ledger ;	pstopsopt='2:0(7.44mm,7.44mm)+1(7.44mm,-132.26mm)'
+#paper=legal ;	pstopsopt='2:0(7.44mm,7.44mm)+1(7.44mm,-170.36mm)'
+#paper=letter ;	pstopsopt='2:0(7.44mm,7.44mm)+1(7.44mm,-132.26mm)'
+#paper=tabloid ;	pstopsopt='2:0(7.44mm,7.44mm)+1(7.44mm,-208.46mm)'
+	-P*)	of="" ;  dvips_pre="$dvips_pre $1" ; lpr_opt="$1" ;;
+	-P)	of="" ;  dvips_pre="$dvips_pre -P$2" ; lpr_opt="-P$2"
+# Purpose:      Translate dvi-file into postscript with reduced output size.
+# Requires:	pstops (http://www.dcs.ed.ac.uk/home/ajcd/psutils/), dvips
+  && { RUNNING_BSH=true; export RUNNING_BSH; exec /bin/bsh $0 ${1+"$@"}; }
+  && { RUNNING_SH5=true; export RUNNING_SH5; exec /bin/sh5 $0 ${1+"$@"}; }
+		shift ;;
+# System:	Linux. UNIX(tm) systems may work as well :-)
+test -f /bin/bsh && test -z "$RUNNING_BSH" \
+test -f /bin/sh5 && test -z "$RUNNING_SH5" \
+# The following are *UNTESTED*. Please let me know whether they work
+This programm behaves like dvips, execpt fot the fact that two logical
+# This will work for A4 paper.
+#		Two logical pages will be put on onto each physical sheet of
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xAIX; } 2>/dev/null \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xULTRIX; } 2>/dev/null \
+unset RUNNING_BSH
+unset RUNNING_SH5
+Usage: dvired [options] file
+# Version:      0.3
+while [ ! -z "$1" ] ; do

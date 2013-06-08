@@ -1,0 +1,223 @@
+        $0 $background_start_arguments -b -r $RESPAWN_TIMEOUT -p $PID_FILE \
+_add_config_dir () {
+    _add_config_dir "$DEFAULT_CONFIG_DIR"
+    _add_config_dir "$LOCAL_CONFIG_DIR"
+_add_config_file () {
+    _add_config_file "$DEFAULT_CONFIG_FILE"
+          _add_config_file "$file"
+    _add_config_file "$LOCAL_CONFIG_FILE"
+  -A DIR      add configuration DIR to chain
+  -a FILE     add configuration FILE to chain
+Apache CouchDB crashed, restarting in $RESPAWN_TIMEOUT second$plural_ending.
+Apache CouchDB is not running but a stale PID file exists: $PID_FILE"
+            -A) shift; _add_config_dir "$1"; shift;;
+            -a) shift; _add_config_file "$1"; shift;;
+BACKGROUND=false
+background_start_arguments=""
+    background_start_arguments="$background_start_arguments -a $1"
+    background_start_arguments="-n"
+$basename - Apache CouchDB 1.0.1
+basename=`basename $0`
+#! /bin/sh -e
+            -b) shift; BACKGROUND=true;;
+  -b          spawn as a background process
+        case "$1" in
+                cat << EOF
+    cat <<EOF
+    cat << EOF
+        check_environment
+check_environment () {
+check_status () {
+    command="/usr/bin/erl $interactive_option $ERL_START_OPTIONS \
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  -c          print configuration file chain and exit
+            -c) shift; _print_config; exit;;
+DEFAULT_CONFIG_DIR=/etc/couchdb/default.d
+DEFAULT_CONFIG_FILE=/etc/couchdb/default.ini
+        display_error
+display_error () {
+            *) display_error "Unknown option: $1" >&2;;
+display_help () {
+display_version () {
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    done
+            done
+            -d) shift; SHUTDOWN=true;;
+  -d          shutdown the background process
+        echo $1 >&2
+    echo >&2
+            echo >&2 << EOF
+                echo "Apache CouchDB could not be killed." >&2
+                    echo "Apache CouchDB has been killed."
+                    echo "Apache CouchDB has been shutdown."
+        echo "Apache CouchDB has started, time to relax."
+        echo "Apache CouchDB is not running."
+        echo "Apache CouchDB is not running." >&2
+            echo "Apache CouchDB is running as process $PID, time to relax."
+        echo "$message_prefix PID file: $PID_FILE" >&2
+        echo "$message_prefix STDERR file: $STDERR_FILE" >&2
+        echo "$message_prefix STDOUT file: $STDOUT_FILE" >&2
+    echo $PID
+            echo > $PID_FILE
+                echo "Stale PID file existed but Apache CouchDB is not running."
+                echo "Stale PID file exists but Apache CouchDB is not running."
+    echo "Try \`"$basename" -h' for more information." >&2
+  -e FILE     redirect background stderr to FILE (defaults to $STDERR_FILE)
+    else
+        else
+            else
+                else
+        -env ERL_LIBS /usr/lib/couchdb/erlang/lib -couch_ini $start_arguments -s couch"
+    ERL_AFLAGS, ERL_FLAGS, ERL_ZFLAGS
+Erlang inherits the environment of this command.
+Erlang is called with:
+    $ERL_START_OPTIONS
+ERL_START_OPTIONS="-sasl errlog_type error +K true +A 4"
+        esac
+            -e) shift; STDERR_FILE=$1; shift;;
+                `eval $command -pidfile $PID_FILE -heart \
+            eval exec $command
+    eval set -- $options
+            exit
+                export HEART_BEAT_TIMEOUT
+                export HEART_COMMAND
+    false
+        false
+        fi
+            fi
+                fi
+                    fi
+    for file in "$1"/*.ini; do
+_get_pid () {
+  -h          display a short help message and exit
+HEART_BEAT_TIMEOUT=11
+HEART_COMMAND="/usr/bin/couchdb -k"
+            -h) shift; display_help; exit;;
+  http://www.apache.org/licenses/LICENSE-2.0
+#   http://www.apache.org/licenses/LICENSE-2.0
+        if check_status 2> /dev/null; then
+                    if kill -0 $PID 2> /dev/null; then
+        if kill -0 $PID 2> /dev/null; then
+            if kill -1 $PID 2> /dev/null; then
+        if [ -r "$file" ]; then
+                if test "$1" = "false"; then
+            if test "$1" = "false"; then
+        if test "$1" = "false"; then
+    if test "$BACKGROUND" = "true" -a "$RECURSED" = "false"; then
+    if test "$BACKGROUND" = "true"; then
+    if test "$BACKGROUND" != "true"; then
+    if test `echo 2> /dev/null >> $PID_FILE; echo $?` -gt 0; then
+    if test `echo 2> /dev/null >> $STDERR_FILE; echo $?` -gt 0; then
+    if test `echo 2> /dev/null >> $STDOUT_FILE; echo $?` -gt 0; then
+    if test ! $? -eq 0; then
+    if test -f $PID_FILE; then
+    if test "$INTERACTIVE" = "true"; then
+    if test "$KILL" = "true" -o "$SHUTDOWN" = "true"; then
+    if test -n "$1"; then
+                if test -n "$PID"; then
+    if test -n "$PID"; then
+        if test "$RECURSED" = "true"; then
+    if test ! "$RECURSED" = "true"; then
+                if test "$RESPAWN_TIMEOUT" = "0"; then
+                if test "$RESPAWN_TIMEOUT" != "1"; then
+    if test ! -w $PID_FILE; then
+    if test ! -w $STDERR_FILE; then
+    if test ! -w $STDOUT_FILE; then
+    if test -z "$print_arguments"; then
+INTERACTIVE=false
+        interactive_option=""
+        interactive_option="+Bd -noinput"
+    interactive_option="+Bd -noinput"
+            -i) shift; INTERACTIVE=true;;
+  -i          use the interactive Erlang shell
+KILL=false
+  -k          kill the background process, will respawn if needed
+            -k) shift; KILL=true;;
+License at
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+# License for the specific language governing permissions and limitations under
+    _load_config
+_load_config () {
+LOCAL_CONFIG_DIR=/etc/couchdb/local.d
+LOCAL_CONFIG_FILE=/etc/couchdb/local.ini
+    message_prefix="Apache CouchDB needs a regular"
+    message_prefix="Apache CouchDB needs write permission on the"
+  -n          reset configuration file chain (including system default)
+            -n) shift; _reset_config;;
+  -o FILE     redirect background stdout to FILE (defaults to $STDOUT_FILE)
+Options:
+    options=`getopt hVa:A:ncibp:r:Ro:e:skd $@`
+            -o) shift; STDOUT_FILE=$1; shift;;
+            -o $STDOUT_FILE -e $STDERR_FILE -R &
+parse_script_option_list () {
+parse_script_option_list $@
+  -p FILE     set the background PID FILE (overrides system default)
+        PID=`cat $PID_FILE`
+PID_FILE=/var/run/couchdb/couchdb.pid
+                PID=`_get_pid`
+    PID=`_get_pid`
+                    plural_ending="s"
+    print_arguments=""
+$print_arguments
+print_arguments=""
+        print_arguments="$1"
+        print_arguments="`cat <<EOF
+_print_config () {
+            -p) shift; PID_FILE=$1; shift;;
+RECURSED=false
+Report bugs at <https://issues.apache.org/jira/browse/COUCHDB>.
+_reset_config () {
+RESET_CONFIG=true
+RESPAWN_TIMEOUT=0
+        return
+                        return $SCRIPT_ERROR
+                return $SCRIPT_ERROR
+    return $SCRIPT_ERROR
+                    return $SCRIPT_OK
+                return $SCRIPT_OK
+            return $SCRIPT_OK
+  -r SECONDS  respawn background process after SECONDS (defaults to no respawn)
+            -R) shift; RECURSED=true;;
+            -r) shift; RESPAWN_TIMEOUT=$1; shift;;
+SCRIPT_ERROR=1
+SCRIPT_OK=0
+  -s          display the status of the background process
+See erl(1) for more information about the environment variables.
+    set -e
+    set +e
+            --) shift; break;;
+SHUTDOWN=false
+                sleep $RESPAWN_TIMEOUT
+specific language governing permissions and limitations under the License.
+            -s) shift; check_status; exit;;
+    start_arguments=""
+start_arguments=""
+    start_arguments="$start_arguments $1"
+        start_couchdb
+start_couchdb () {
+STDERR_FILE=couchdb.stderr
+                    >> $STDOUT_FILE 2>> $STDERR_FILE` || true
+STDOUT_FILE=couchdb.stdout
+stop_couchdb () {
+        stop_couchdb $KILL
+The $basename command runs the Apache CouchDB server.
+The exit status is 0 for success or 1 for failure.
+# the License.
+# the License at
+this file except in compliance with the License. You may obtain a copy of the
+        touch $PID_FILE
+    touch $PID_FILE 2> /dev/null || true
+    touch $STDERR_FILE 2> /dev/null || true
+    touch $STDOUT_FILE 2> /dev/null || true
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# Unless required by applicable law or agreed to in writing, software
+Unless required by applicable law or agreed to in writing, software distributed
+Usage: $basename [OPTION]
+# use this file except in compliance with the License. You may obtain a copy of
+  -V          display version information and exit
+            -V) shift; display_version; exit;;
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+    while [ $# -gt 0 ]; do
+            while true; do
+You can override these options using the environment:

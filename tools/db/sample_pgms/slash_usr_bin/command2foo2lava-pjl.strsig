@@ -1,0 +1,55 @@
+%-12345X
+%-12345X@PJL INFO CONFIG
+%-12345X@PJL INFO DSTATUS
+ATTR: marker-colors=%s
+ATTR: marker-levels=%s
+ATTR: marker-names=%s
+ATTR: marker-types=%s
+AutoConfigure
+__bss_start
+__ctype_b_loc
+cupsBackChannelRead
+cupsSideChannelDoRequest
+DEBUG: foo2zjsNegateMarkerLevels=%d
+DEBUG: Got %d bytes: %s
+DEBUG: Printer does not return a proper PJL CONFIG response.
+DEBUG: Printer does not return a proper PJL DSTATUS response.
+DEBUG: Supply return entry did not match any known keyword: %s
+DEBUG: Unable to auto-configure printer - no bidirectional I/O available!
+DEBUG: Unable to extract supply information from the printer's response.
+DEBUG: Unable to retrieve supply status from printer - no bidirectional I/O available!
+ERROR: Invalid printer command "%s"!
+ERROR: %s job-id user title copies options [file]
+ERROR: Unable to open command file - 
+foo2zjsNegateMarkerLevels
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libcups.so.2
+/lib/ld-linux.so.2
+@PJL INFO CONFIG
+@PJL INFO DSTATUS
+ppdClose
+ppdFindAttr
+ppdOpenFile
+ReportLevels
+ReportStatus
+__sprintf_chk
+%s"%s (Max %d)"
+__stack_chk_fail
+__strcat_chk
+__strcpy_chk
+strncasecmp
+TONERCOUNTERFEIT
+TONERINSTALL
+TONERTYPE
+transferUnit
+Transfer unit

@@ -1,0 +1,2304 @@
+==============
+=================
+../../../../
+ !"#$%&'()*+,-./0123456789:;<=>?@abcdefghijklmnopqrstuvwxyz[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+^([1-9][0-9]*|0)(\.([1-9][0-9]*|0))*$
+32:../lib:i386-linux-gnu !m64 m32;
+64:../lib64:x86_64-linux-gnu m64 !m32;
+Accept extensions to support legacy code
+Access data in the same section from shared anchor points
+Add a common subexpression elimination pass after loop optimizations
+Add extra commentary to assembler output
+Add mudflap bounds-checking instrumentation for multi-threaded program
+Add mudflap bounds-checking instrumentation for single-threaded program
+Alias for -femit-class-file
+Alias for --help=target
+Align all labels
+Align destination of the string operations
+Align labels which are only reached by jumping
+Align some doubles on dword boundary
+Align the start of functions
+Align the start of loops
+All intrinsics procedures are available regardless of selected standard
+Allocate local variables on the stack to allow indirect recursion
+Allow arbitrary character line width in fixed mode
+Allow arbitrary character line width in free mode
+Allow dollar signs in entity names
+Allow fast jumps to the message dispatcher
+Allow function addresses to be held in registers
+Allow implicit conversions between vectors with differing numbers of subparts and/or differing element types.
+Allow loop optimizations to assume that the loops behave in normal way
+Allow math optimizations that may violate IEEE or ISO standards
+Allow optimization for floating-point arithmetic which may change the result of the operation due to rounding.
+Allow premature scheduling of queued insns
+Allow speculative motion of more loads
+Allow speculative motion of non-loads
+Allow speculative motion of some loads
+Allow the arguments of the '?' operator to have different types
+Allow use of deprecated features
+--all-warnings
+Also if-convert conditional jumps containing memory writes
+Alternate calling convention
+Always check for non gcj generated classes archives
+Always use Dynamic Realigned Argument Pointer (DRAP) to realign stack
+amdfam10
+Amend appropriate diagnostic messages with the command line option that controls them
+anachronism: 
+                           and libraries
+Append a second underscore if the name already contains an underscore
+Append underscores to externally visible names
+Apply negative sign to zero values
+Apply variable expansion when loops are unrolled
+-A<question>=<answer>	Assert the <answer> to <question>.  Putting '-' before <question> disables the <answer> to <question>
+argument to %%:compare-debug-auxbase-opt does not end in .gk
+argument to %qs should be a non-negative integer
+       as %(asm_debug) %(asm_options) %m.s %A }}}}
+ as %(asm_options) %m.s %A }  }
+asm_debug
+asm_final
+asm_options
+ --as-needed 
+--assemble
+@assembler
+Assembler options
+@assembler-with-cpp
+--assert
+--assert=
+assertion missing after %qs
+Assume floating-point operations can trap
+Assume incoming stack aligned to this power of 2
+Assume native functions are implemented using JNI
+Assume no NaNs or infinities are generated
+Assume normal C execution environment
+Assume signed arithmetic overflow wraps around
+Assume strict aliasing rules apply
+Assume that receivers of Objective-C messages may be nil
+Assume that the source file is fixed form
+Assume that the source file is free form
+Assume that values of enumeration type are always within the minimum range of that type
+Assume the runtime uses a hash table to map an object to its synchronization structure
+A synonym for -std=c89 (for C) or -std=c++98 (for C++)
+atexit failed
+athlon-4
+Attempt to fill delay slots of branch instructions
+Attempt to keep stack aligned to this power of 2
+Attempt to merge identical constants across compilation units
+Attempt to merge identical constants and constant variables
+Attempt to merge identical debug strings across compilation units
+-auxbase
+-auxbase-strip
+-auxbase-strip 
+-aux-info
+-aux-info=
+-aux-info <file>	Emit declaration information into <file>
+  -B <directory>           Add <directory> to the compiler's search paths
+bindtextdomain
+BINUTILS
+--bootclasspath
+--bootclasspath=<path>	Replace system path
+both ERRNAME and PEX_STDERR_TO_PIPE specified.
+braced spec body %qs is invalid
+braced spec %qs is invalid at %qc
+Branches are this expensive (1-5, arbitrary units)
+<built-in>
+calculate_allocation
+Call a library routine to do integer divisions
+Cannot create temporary file in %s: %s
+cannot specify -o with -c, -S or -E with multiple files
+%(cc1_cpu) %{profile:-p}
+cc1 -E %{traditional|traditional-cpp:-traditional-cpp}
+		    cc1 -fpreprocessed %{save-temps*:%b.i} %{!save-temps*:%g.i} 			%(cc1_options)                        %{!fdump-ada-spec*:-o %g.s %{!o*:--output-pch=%i.gch}                        %W{o*:--output-pch=%*}}%V}	  %{!save-temps*:%{!traditional-cpp:%{!no-integrated-cpp:		cc1 %(cpp_unique_options) %(cc1_options)                    %{!fdump-ada-spec*:-o %g.s %{!o*:--output-pch=%i.gch}                    %W{o*:--output-pch=%*}}%V}}}}}}
+	    cc1 -fpreprocessed %{save-temps*:%b.i} %{!save-temps*:%g.i} 	  %(cc1_options) %(ssp_default)}      %{!save-temps*:%{!traditional-cpp:%{!no-integrated-cpp:	  cc1 %(cpp_unique_options) %(cc1_options) %(ssp_default)}}}      %{!fsyntax-only:%(invoke_as)}}}}
+	    cc1obj -fpreprocessed %b.mi %(cc1_options) %(ssp_default) %{print-objc-runtime-info} %{gen-decls}                        -o %g.s %{!o*:--output-pch=%i.gch}                        %W{o*:--output-pch=%*}%V}	%{!save-temps*:%{!no-integrated-cpp:	    cc1obj %(cpp_unique_options) %(cc1_options) %(ssp_default) %{print-objc-runtime-info} %{gen-decls}                        -o %g.s %{!o*:--output-pch=%i.gch}                        %W{o*:--output-pch=%*}%V}}}}}
+	    cc1obj -fpreprocessed %{save-temps*:%b.mi} %{!save-temps*:%g.mi} %(cc1_options) %(ssp_default) %{print-objc-runtime-info} %{gen-decls}}	%{!save-temps*:%{!no-integrated-cpp:	    cc1obj %(cpp_unique_options) %(cc1_options) %(ssp_default) %{print-objc-runtime-info} %{gen-decls}}}        %{!fsyntax-only:%(invoke_as)}}}}
+}      cc1objplus %{save-temps*|no-integrated-cpp:-fpreprocessed %{save-temps*:%b.mii} %{!save-temps*:%g.mii}}	      %{!save-temps*:%{!no-integrated-cpp:%(cpp_unique_options)}}	%(cc1_options) %(ssp_default) %2       %{!fsyntax-only:%(invoke_as)}}}}
+}      cc1objplus %{save-temps*|no-integrated-cpp:-fpreprocessed %{save-temps*:%b.mii} %{!save-temps*:%g.mii}}	      %{!save-temps*:%{!no-integrated-cpp:%(cpp_unique_options)}}	%(cc1_options) %(ssp_default) %2        -o %g.s %{!o*:--output-pch=%i.gch} %W{o*:--output-pch=%*}%V}}}
+cc1_options
+}      cc1plus %{save-temps*|no-integrated-cpp:-fpreprocessed %{save-temps*:%b.ii} %{!save-temps*:%g.ii}}	      %{!save-temps*:%{!no-integrated-cpp:%(cpp_unique_options)}}	%(cc1_options) %(ssp_default) %2	%{!fsyntax-only:%{!fdump-ada-spec*:-o %g.s %{!o*:--output-pch=%i.gch}        %W{o*:--output-pch=%*}}%V}}}}
+}      cc1plus %{save-temps*|no-integrated-cpp:-fpreprocessed %{save-temps*:%b.ii} %{!save-temps*:%g.ii}}	      %{!save-temps*:%{!no-integrated-cpp:%(cpp_unique_options)}}	%(cc1_options) %(ssp_default) %2       %{!fsyntax-only:%(invoke_as)}}}}
+  -c                       Compile and assemble, but do not link
+@c++-cpp-output
+Changes visibility to match Microsoft Visual Studio by default
+@c-header
+@c++-header
+Check for syntax errors, then stop
+Check the return value of new
+Chose strategy to generate stringop using
+--classpath
+--CLASSPATH	Deprecated; use --classpath instead
+--classpath=<path>	Set class path
+				    %{.class|.zip|.jar|!fsyntax-only:jc1				      %{.java|fsaw-java-file:%U.jar -fsource-filename=%i %<ffilelist-file}       %{.class|.zip|.jar|ffilelist-file|fcompile-resource*:%i}		      %(jc1) %(cc1_options) %{I*} %{!findirect-dispatch:-faux-classpath %U.zip}       %{MD:-MD_} %{MMD:-MMD_} %{M} %{MM} %{MA} %{MT*} %{MF*}      %(invoke_as)}
+closing pipeline input file
+collect2
+COLLECT_GCC=
+COLLECT_LTO_WRAPPER=
+command line option %qs is not supported by this configuration
+--comments
+--comments-in-macros
+compare-debug-auxbase-opt
+compare-debug-dump-opt
+compare_debug_dump_opt_spec_function
+%:compare-debug-self-opt()
+compare-debug-self-opt
+Compare the results of several data dependence analyzers.
+compare_version_strings
+comparing final insns dumps
+compilation terminated.
+compilation terminated due to -fmax-errors=%u.
+compilation terminated due to -Wfatal-errors.
+--compile
+Compile all program units at once and check all interfaces
+Compile as D language version 1
+Compile in debug code
+Compile in unittest code
+Compile release version
+COMPILER_PATH
+Compile whole compilation unit at a time
+Complex multiplication and division follow Fortran rules
+Configured with: %s
+Conform to nothing in particular
+Conform to the ISO 1990 C standard
+Conform to the ISO 1990 C standard as amended in 1994
+Conform to the ISO 1990 C standard with GNU extensions
+Conform to the ISO 1998 C++ standard revised by the 2003 technical corrigendum
+Conform to the ISO 1998 C++ standard, with extensions that are likely to become a part of the upcoming ISO C++ standard, dubbed C++0x. Note that the extensions enabled by this mode are experimental and may be removed in future releases of GCC.
+Conform to the ISO 1998 C++ standard with GNU extensions
+Conform to the ISO 1998 C++ standard, with GNU extensions and extensions that are likely to become a part of the upcoming ISO C++ standard, dubbed C++0x. Note that the extensions enabled by this mode are experimental and may be removed in future releases of GCC.
+Conform to the ISO 1999 C standard
+Conform to the ISO 1999 C standard with GNU extensions
+Conform to the ISO 201X C standard draft (experimental and incomplete support)
+Conform to the ISO 201X C standard draft with GNU extensions (experimental and incomplete support)
+Conform to the ISO Fortran 2003 standard
+Conform to the ISO Fortran 2008 standard
+Conform to the ISO Fortran 95 standard
+Conform to the Objective-C 1.0 language as implemented in GCC 4.0
+Construct webs and split unrelated uses of single variable
+Convert conditional jumps in innermost loops to branchless equivalents
+Convert floating point constants to single precision constants
+Copy array sections into a contiguous block on procedure entry
+Copyright %s 2011 Free Software Foundation, Inc.
+corei7-avx
+could not close temporary response file %s
+could not create temporary file
+could not find specs file %s
+could not open temporary response file %s
+could not write to temporary response file %s
+--coverage
+cpp_debug_options
+cpp_options
+@cpp-output
+cpp_unique_options
+%(cpp_unique_options) %1 %{m*} %{std*&ansi&trigraphs} %{W*&pedantic*} %{w} %{f*} %{g*:%{!g0:%{g*} %{!fno-working-directory:-fworking-directory}}} %{O*} %{undef} %{save-temps*:-fpch-preprocess} %(ssp_default)
+Create a position independent executable
+Create a shared library
+Create canonical induction variables in loops
+Create data files needed by "gcov"
+cross_compile
+%{c|S:%{o*:%*}}
+__ctype_b_loc
+__ctype_tolower_loc
+__cxa_atexit
++|$(;D$(
+D$(9D$0tZ
++D$(9t$(
+D$$9\$(t 
+Data greater than given threshold will go into .ldata section in x86-64 medium model
+dcgettext
+dcngettext
+--debug=
+-debuglib=
+Debug library to use instead of phobos
+decode_cmdline_option
+decode_utf8_char
+-defaultlib=
+Default library to use instead of phobos
+Defer popping functions args from stack until later
+--define-macro
+--define-macro=
+Delete useless null pointer checks
+--dependencies
+Deprecated in favor of -std=c99
+Deprecated in favor of -std=gnu99
+Deprecated in favor of -std=iso9899:1999
+Deprecated.  This switch has no effect
+/dev/null
+-D_GNU_SOURCE %(cpp)
+diagnostic_action_after_output
+diagnostic_build_prefix
+Disable floating point optimizations that ignore the IEEE signedness of zero
+Disable optimizations observable by IEEE signaling NaNs
+Disable optimizations that assume default FP rounding behavior
+Disable partioning and streaming
+Disable preprocessing
+Discover pure and const functions
+Discover readonly and non addressable static variables
+                           Display specific types of command line options
+Display statistics accumulated during compilation
+Display the code tree after front end optimization
+Display the code tree after parsing
+Display the code tree after parsing; deprecated option
+Display the compiler's version
+Display this information
+-d<letters>	Enable dumps from specific passes of the compiler
+-D<macro>[=<val>]	Define a <macro> with <val> as its value.  If just <macro> is given, <val> is taken to be 1
+Do dispatch scheduling if processor is bdver1 and Haifa scheduling is selected.
+Does nothing.  Preserved for backward compatibility.
+Does nothing. Preserved for backward compatibility.
+Do not assume that standard C libraries and "main" exist
+Do not discard comments
+Do not discard comments in macro expansions
+Do not display functions compiled or elapsed time
+Do not generate #line directives
+Do not generate .size directives
+Do not perform optimizations increasing noticeably stack usage
+Do not predefine system-specific and GCC-specific macros
+Do not put uninitialized globals in the common section
+Do not search standard system include directories
+Do not search standard system include directories for C++
+Do not support SSE4.1 and SSE4.2 built-in functions and code generation
+Do not suppress C++ class debug information.
+Do not suppress warnings from system headers
+Do not treat local variables and COMMON blocks as if they were named in SAVE statements
+Do not use hardware fp
+Do not warn about using "long long" when -pedantic
+Do not warn about using variadic macros when -pedantic
+Don't allocate floats and doubles in extended-precision registers
+Don't emit dllexported inline functions unless needed
+Don't emit DWARF additions beyond selected version
+Don't warn about uses of Microsoft extensions
+Do the full register move optimization pass
+Downgrade conformance errors to warnings
+driver_handle_option
+Dump a core file when a runtime error occurs
+--dumpbase
+-dumpbase <file>	Set the file basename to be used for dumps
+Dump declarations to a .decl file
+Dump decoded UTF-8 text and source from HTML
+--dumpdir
+-dumpdir <dir>	Set the directory name to be used for dumps
+-dumpmachine
+  -dumpmachine             Display the compiler's target processor
+-dumpspecs
+  -dumpspecs               Display all of the built in spec strings
+-dumpversion
+  -dumpversion             Display the version of the compiler
+during -fcompare-debug recompilation
+%{!E:cc1d %i %(cc1_options) %(cc1d) %I %N %{nostdinc*} %{+e*} %{I*} %{J*}      %{M} %{MM} %{!fsyntax-only:%(invoke_as)}}
+%{!E:%e-E or -x required when input is from standard input}    %(trad_capable_cpp) %(cpp_options) %(cpp_debug_options)
+Eliminate redundant zero extensions on targets that support implicit extensions.
+Emit common-like symbols as weak symbols
+Emit DWARF additions beyond selected version
+Emit implicit instantiations of inline templates
+Emit implicit instantiations of templates
+Emit profiling counter call at function entry before prologue.
+Emit static const variables even if they are not used
+%{E|M|MM:cc1obj -E %{traditional|traditional-cpp:-traditional-cpp}          %(cpp_options) %(cpp_debug_options)}      %{!E:%{!M:%{!MM:	%{traditional|traditional-cpp:%eGNU Objective C no longer supports traditional compilation}	%{save-temps*|no-integrated-cpp:cc1obj -E %(cpp_options) -o %{save-temps*:%b.mi} %{!save-temps*:%g.mi} 
+%{E|M|MM:cc1objplus -E %(cpp_options) %2 %(cpp_debug_options)}     %{!E:%{!M:%{!MM:       %{save-temps*|no-integrated-cpp:cc1objplus -E		%(cpp_options) %2 -o %{save-temps*:%b.mii} %{!save-temps*:%g.mii} 
+%{E|M|MM:cc1plus -E %(cpp_options) %2 %(cpp_debug_options)}     %{!E:%{!M:%{!MM:       %{save-temps*|no-integrated-cpp:cc1plus -E		%(cpp_options) %2 -o %{save-temps*:%b.ii} %{!save-temps*:%g.ii} 
+%{E|M|MM:%(trad_capable_cpp) %(cpp_options) %(cpp_debug_options)}      %{!E:%{!M:%{!MM:	  %{save-temps*|traditional-cpp|no-integrated-cpp:%(trad_capable_cpp) 		%(cpp_options) -o %{save-temps*:%b.i} %{!save-temps*:%g.i} 
+%{E|M|MM:%(trad_capable_cpp) %(cpp_options) %(cpp_debug_options)}      %{!E:%{!M:%{!MM:          %{traditional:%eGNU C no longer supports -traditional without -E}      %{save-temps*|traditional-cpp|no-integrated-cpp:%(trad_capable_cpp) 	  %(cpp_options) -o %{save-temps*:%b.i} %{!save-temps*:%g.i} 
+Enable alignment of COMMON blocks
+Enable all -Wunused- warnings
+Enable an RTL peephole pass before sched2
+Enable assignability checks for stores into object arrays
+Enable automatic parallelization of loops
+Enable automatic template instantiation
+Enable basic block vectorization (SLP) on trees
+Enable basic program profiling code
+Enable CFI tables via GAS assembler directives.
+Enable common options for generating profile info for profile feedback directed optimizations
+Enable common options for generating profile info for profile feedback directed optimizations, and set -fprofile-dir=
+Enable common options for performing profile feedback directed optimizations
+Enable common options for performing profile feedback directed optimizations, and set -fprofile-dir=
+Enable conditional dead code elimination for builtin calls
+Enable copy propagation of scalar-evolution information.
+Enable copy propagation on trees
+Enable correction of flow inconsistent profile data input
+Enable dead store elimination
+Enable/Disable the traditional scheduling in loops that already passed modulo scheduling
+Enable dominator optimizations
+Enable exception handling
+Enable forward propagation on trees
+Enable Full Redundancy Elimination (FRE) on trees
+Enable function profiling
+Enable garbage collection (GC) in Objective-C/Objective-C++ programs
+Enable Graphite Identity transformation
+Enable guessing of branch probabilities
+Enable hoisting loads from conditional pointers.
+Enable in and out of Graphite representation
+Enable inline checks for nil receivers with the NeXT runtime and ABI version 2.
+Enable link-time optimization.
+Enable Loop Blocking transformation
+Enable loop distribution for patterns transformed into a library call
+Enable loop distribution on trees
+Enable Loop Flattening transformation
+Enable loop header copying on trees
+Enable Loop Interchange transformation
+Enable loop interchange transforms.  Same as -floop-interchange
+Enable loop invariant motion on trees
+Enable loop optimizations on tree level
+Enable Loop Strip Mining transformation
+Enable loop vectorization on trees
+Enable loop versioning when doing loop vectorization on trees
+Enable machine specific peephole optimizations
+Enable most warning messages
+Enable Objective-C exception and synchronization syntax
+Enable Objective-C setjmp exception handling runtime
+Enable OpenMP (implies -frecursive in Fortran)
+Enable optimization of static class initialization code
+Enable Plan 9 language extensions
+Enable preprocessing
+Enable range checking during compilation
+Enable reassociation on tree level
+Enable register pressure sensitive insn scheduling
+Enables a register move optimization
+Enable scheduling across basic blocks
+Enable SSA-BIT-CCP optimization on trees
+Enable SSA-CCP optimization on trees
+Enable SSA code sinking on trees
+Enable SSA dead code elimination optimization on trees
+Enable SSA-PRE optimization on trees
+Enable stack probing
+Enable the critical path heuristic in the scheduler
+Enable the dependent count heuristic in the scheduler
+Enable the group heuristic in the scheduler
+Enable the last instruction heuristic in the scheduler
+Enable the rank heuristic in the scheduler
+Enable the speculative instruction heuristic in the scheduler
+Enable traditional preprocessing
+Enable use of cost model in vectorization
+Enable verbose output
+Encode SSE instructions with VEX prefix
+--encoding
+--encoding=<encoding>	Choose input encoding (defaults from your locale)
+Enforce class member access control semantics
+Enforce property syntax
+--entry=
+__environ
+environment variable %qs not defined
+  -E                       Preprocess only; do not compile, assemble or link
+__errno_location
+error in args to spec function %qs
+Error out the compiler on warnings
+: error trying to exec '
+every-line
+Exit on the first error occurred
+Expand 32bit/64bit integer divide into 8bit unsigned integer divide with run-time check
+-export-dynamic
+Export functions even if they can be inlined
+--extdirs
+--extdirs=<path>	Set the extension directory path
+--extra-warnings
+@f77-cpp-input
+f951 %i %{E:%{!cpp:%egfortran does not support -E without -cpp}}	  %{cpp:%{!nocpp: -cpp=%g.f90 %{E} %(cpp_unique_options) 			     %{E|M|MM:%(cpp_debug_options) %1 %{m*} %{f*} %{g*:%{!g0:%{g*} 			     %{!fno-working-directory:-fworking-directory}}} 			     %{std*&ansi&trigraphs} %{W*&pedantic*} %{w} 			     %{O*} %{undef} -fsyntax-only};: %{i*} %{I*} %{M*}};:  %{i*} %{I*} %{M*}} 	  %{!E:%(cc1_options) %{J*} 			     %{!nostdinc:-fintrinsic-modules-path finclude%s}			     %{!fsyntax-only:%(invoke_as)}}
+f951 %i %{!ffree-form:-ffixed-form}           %{E:%{!cpp:%egfortran does not support -E without -cpp}}           %{cpp:%{!nocpp: -cpp=%g.f90 %{E} %(cpp_unique_options) 			     %{E|M|MM:%(cpp_debug_options) %1 %{m*} %{f*} %{g*:%{!g0:%{g*} 			     %{!fno-working-directory:-fworking-directory}}} 			     %{std*&ansi&trigraphs} %{W*&pedantic*} %{w} 			     %{O*} %{undef} -fsyntax-only};: %{i*} %{I*} %{M*}};: %{i*} %{I*} %{M*}} 	  %{!E:%(cc1_options) %{J*} 			     %{!nostdinc:-fintrinsic-modules-path finclude%s}			     %{!fsyntax-only:%(invoke_as)}}
+f951 %i %{!ffree-form:-ffixed-form} %{!nocpp: -cpp=%g.f90 %{E} %(cpp_unique_options) 			     %{E|M|MM:%(cpp_debug_options) %1 %{m*} %{f*} %{g*:%{!g0:%{g*} 			     %{!fno-working-directory:-fworking-directory}}} 			     %{std*&ansi&trigraphs} %{W*&pedantic*} %{w} 			     %{O*} %{undef} -fsyntax-only};: %{i*} %{I*} %{M*}} %{!E:%(cc1_options) %{J*} 			     %{!nostdinc:-fintrinsic-modules-path finclude%s}			     %{!fsyntax-only:%(invoke_as)}}
+f951 %i %{!nocpp: -cpp=%g.f90 %{E} %(cpp_unique_options) 			     %{E|M|MM:%(cpp_debug_options) %1 %{m*} %{f*} %{g*:%{!g0:%{g*} 			     %{!fno-working-directory:-fworking-directory}}} 			     %{std*&ansi&trigraphs} %{W*&pedantic*} %{w} 			     %{O*} %{undef} -fsyntax-only};: %{i*} %{I*} %{M*}} %{!E:%(cc1_options) %{J*} 			     %{!nostdinc:-fintrinsic-modules-path finclude%s}			     %{!fsyntax-only:%(invoke_as)}}
+@f95-cpp-input
+-fabi-version=
+-faccess-control
+failed to get exit status: %m
+failed to get process times: %m
+-falign-commons
+-falign-functions
+-falign-functions=
+-falign-jumps
+-falign-jumps=
+-falign-labels
+-falign-labels=
+-falign-loops
+-falign-loops=
+-fall-intrinsics
+-fallow-leading-underscore
+-fall-virtual
+-falt-external-templates
+-fargument-alias
+-fargument-noalias
+-fargument-noalias-anything
+-fargument-noalias-global
+-fassert
+-fassociative-math
+-fassume-compiled
+-fassume-compiled=
+-fasynchronous-unwind-tables
+fatal error: 
+fatal_error
+-fauto-inc-dec
+-fautomatic
+-faux-classpath
+-fbackslash
+-fbacktrace
+-fblas-matmul-limit=
+-fblas-matmul-limit=<n>	Size of the smallest matrix for which matmul will use BLAS
+-fbootclasspath=
+-fbootstrap-classes
+-fbounds-check
+-fbranch-count-reg
+-fbranch-probabilities
+-fbranch-target-load-optimize
+-fbranch-target-load-optimize2
+-fbtr-bb-exclusive
+-fbuiltin
+-fbuiltin-
+-fcaller-saves
+-fcall-saved-
+-fcall-saved-<register>	Mark <register> as being preserved across functions
+-fcall-used-
+-fcall-used-<register>	Mark <register> as being corrupted by function calls
+-fcheck=
+-fcheck-array-temporaries
+-fcheck-data-deps
+-fcheck-new
+-fcheck-references
+-fcheck=[...]	Specify which runtime checks are to be performed
+-fclasspath=
+-fcoarray=
+-fcoarray=[...]	Specify which coarray parallelization should be used
+-fcombine-stack-adjustments
+-fcommon
+-fcompare-debug
+-fcompare-debug=
+-fcompare-debug=-gtoggle
+-fcompare-debug[=<opts>]	Compile with and without e.g. -gtoggle, and compare the final-insns dump
+-fcompare-debug-second
+-fcompare-elim
+-fcompile-resource=
+-fcond-mismatch
+-fconserve-space
+-fconserve-stack
+-fconstant-string-class=
+-fconstexpr-depth=
+-fconstexpr-depth=<number>	Specify maximum constexpr recursion depth
+-fconst-string-class=<name>	Use class <name> for constant strings
+-fconvert=big-endian
+-fconvert=little-endian
+-fconvert=native
+-fconvert=swap
+-fcprop-registers
+-fcray-pointer
+-fcrossjumping
+-fcse-follow-jumps
+-fcse-skip-blocks
+-fcx-fortran-rules
+-fcx-limited-range
+-fdata-sections
+-fdbg-cnt=
+-fdbg-cnt=<counter>:<limit>[,<counter>:<limit>,...]	Set the debug counter limit.   
+-fdbg-cnt-list
+-fdebug=
+-fdebug-c
+-fdebug,-fdebug=<level>,-fdebug=<ident> Compile in debug code, code <= level, or code identified by ident
+-fdebug-prefix-map=
+-fdeduce-init-list
+-fdefault-double-8
+-fdefault-inline
+-fdefault-integer-8
+-fdefault-real-8
+-fdefer-pop
+-fdelayed-branch
+-fdelete-null-pointer-checks
+-fdeprecated
+-fdeps=<filename> Write module dependencies to filename
+-fdevirtualize
+-fdiagnostics-show-location=
+-fdiagnostics-show-location=[once|every-line]	How often to emit source location at the beginning of line-wrapped diagnostics
+-fdiagnostics-show-option
+-F <dir>	Add <dir> to the end of the main framework include path
+-fdirectives-only
+-fdisable-assertions
+-fdisable-assertions=
+-fd-lines-as-code
+-fd-lines-as-comments
+-fdoc-dir=
+-fdoc-dir=<docdir> Write documentation file to docdir directory
+-fdoc-file=
+-fdoc-file=<filename> Write documentation file to filename
+-fdoc-inc=
+-fdoc-inc=<filename> Include a Ddoc macro file
+-fdollar-ok
+-fdollars-in-identifiers
+-fdump-core
+-fdump-final-insns
+-fdump-final-insns=
+%{fdump-final-insns=*:%*}
+%{fdump-final-insns:-fdump-final-insns=.} %<fdump-final-insns
+-fdump-final-insns=filename	Dump to filename the insns at the end of translation
+-fdump-fortran-optimized
+-fdump-fortran-original
+-fdump-go-spec=
+-fdump-go-spec=filename	Write all declarations to file as Go code
+-fdump-noaddr
+-fdump-parse-tree
+-fdump-source
+-fdump-<type>	Dump various compiler internals to a file
+-fdump-unnumbered
+-fdump-unnumbered-links
+-fd-verbose
+-fd-version=1
+-fd-vtls
+-fdwarf2-cfi-asm
+-fearly-inlining
+-felide-constructors
+-feliminate-dwarf2-dups
+-feliminate-unused-debug-symbols
+-feliminate-unused-debug-types
+-femit-class-debug-always
+-femit-class-files
+-femit-struct-debug-baseonly
+-femit-struct-debug-baseonly	Aggressive reduced debug info for structs
+-femit-struct-debug-detailed=
+-femit-struct-debug-detailed=<spec-list>	Detailed reduced debug info for structs
+-femit-struct-debug-reduced
+-femit-struct-debug-reduced	Conservative reduced debug info for structs
+-femit-templates
+-femit-templates=
+-femit-templates Emit templates code and data even if the linker cannot merge multiple copies
+-femit-templates=[normal|private|all|none|auto]	Control template emission
+-fenable-assertions
+-fenable-assertions=
+-fenable-icf-debug
+-fencoding=
+-fenforce-eh-specs
+-fenum-int-equiv
+-fexceptions
+-fexcess-precision=
+-fexcess-precision=[fast|standard]	Specify handling of excess floating-point precision
+-fexec-charset=
+-fexec-charset=<cset>	Convert all strings and character constants to character set <cset>
+-fexpensive-optimizations
+-fextdirs=
+-fextended-identifiers
+-fexternal-blas
+-fexternal-templates
+-ffast-math
+-ffilelist-file
+-ffinite-math-only
+-ffixed-
+-ffixed-form
+-ffixed-line-length-
+-ffixed-line-length-none
+-ffixed-line-length-<n>	Use n as character line width in fixed mode
+-ffixed-<register>	Mark <register> as being unavailable to the compiler
+-ffloat-store
+fflush_unlocked
+-fforce-addr
+-fforce-classes-archive-check
+-ffor-scope
+-fforward-propagate
+-ffp-contract=
+-ffp-contract=[off|on|fast] Perform floating-point expression contraction.
+-ffpe-trap=
+-ffpe-trap=[...]	Stop on following floating point exceptions
+-ffree-form
+-ffree-line-length-
+-ffree-line-length-none
+-ffree-line-length-<n>	Use n as character line width in free mode
+-ffreestanding
+-ffriend-injection
+-ffunction-cse
+-ffunction-sections
+-fgcse-after-reload
+-fgcse-las
+-fgcse-lm
+-fgcse-sm
+-fgnu89-inline
+-fgnu-keywords
+-fgnu-runtime
+-fgo-dump-
+-fgo-dump-<type>	Dump Go frontend internal information
+-fgo-prefix=
+-fgo-prefix=<string>	Set package-specific prefix for exported Go names
+-fgraphite
+-fgraphite-identity
+-fguess-branch-probability
+-fguiding-decls
+-fhandle-exceptions
+-fhandle-exceptions has been renamed -fexceptions (and is now on by default)
+-fhash-synchronization
+-fhonor-std
+-fhosted
+-fhuge-objects
+-fif-conversion
+-fif-conversion2
+-fignore-unknown-pragmas
+<file:///usr/share/doc/gcc-4.6/README.Bugs>
+-fimplement-inlines
+-fimplicit-inline-templates
+-fimplicit-none
+-fimplicit-templates
+find-file
+find_file_spec_function
+-findirect-classes
+-findirect-dispatch
+-findirect-inlining
+find-plugindir
+find_plugindir_spec_function
+-finhibit-size-directive
+-finit-character=
+-finit-character=<n>	Initialize local character variables to ASCII value n
+-finit-integer=
+-finit-integer=<n>	Initialize local integer variables to n
+-finit-local-zero
+-finit-logical=
+-finit-logical=<true|false>	Initialize local logical variables
+-finit-real=
+-finit-real=<zero|nan|inf|-inf>	Initialize local real variables
+-finline
+-finline-functions
+-finline-functions-called-once
+-finline-limit=
+-finline-limit-
+-finline-limit=<number>	Limit the size of inlined functions to <number>
+-finline-small-functions
+-finput-charset=
+-finput-charset=<cset>	Specify the default character set for source files
+-finstrument-functions
+-finstrument-functions-exclude-file-list=
+-finstrument-functions-exclude-file-list=filename,...  Do not instrument functions listed in files
+-finstrument-functions-exclude-function-list=
+-finstrument-functions-exclude-function-list=name,...  Do not instrument listed functions
+-fintfc-dir=
+-fintfc-dir=<dir> Write D interface files to directory <dir>
+-fintfc-file=
+-fintfc-file=<filename> Write D interface file to <filename>
+-fintrinsic-modules-path
+-fipa-cp
+-fipa-cp-clone
+-fipa-matrix-reorg
+-fipa-profile
+-fipa-pta
+-fipa-pure-const
+-fipa-reference
+-fipa-sra
+-fipa-struct-reorg
+-fira-algorithm=
+-fira-algorithm=[CB|priority] Set the used IRA algorithm
+-fira-loop-pressure
+-fira-region=
+-fira-region=[one|all|mixed] Set regions for IRA
+-fira-share-save-slots
+-fira-share-spill-slots
+-fira-verbose=
+-fira-verbose=<number>	Control IRA's level of diagnostic messages.
+-fivopts
+%{fjni:%{femit-class-files:%e-fjni and -femit-class-files are incompatible}}    %{fjni:%{femit-class-file:%e-fjni and -femit-class-file are incompatible}}    %{femit-class-file:%{!fsyntax-only:%e-femit-class-file should used along with -fsyntax-only}}    %{femit-class-files:%{!fsyntax-only:%e-femit-class-file should used along with -fsyntax-only}}    %{E:%{e-E is not valid for gcj}}    %{.java|fsaw-java-file:ecj1 %i %{W*} %{w} %{g*}			      %{fbootclasspath*}						      %{fenable-assertions*}						      %{fdisable-assertions*}						      %{fencoding*} %{ffilelist-file}					      %{foutput-class-dir*} %{g*}					      %{fsource*} %{!fsource*:-fsource=1.5}				      %{ftarget*} %{!femit-class-files|!ftarget*:-ftarget=1.5}		      %{!findirect-dispatch:-fzip-dependency %U.zip}			      %{!fsyntax-only:-fzip-target %U.jar}}
+-fjump-tables
+-fkeep-inline-dllexport
+-fkeep-inline-functions
+-fkeep-static-consts
+-flabels-ok
+-flax-vector-conversions
+-fleading-underscore
+-floop-block
+-floop-flatten
+-floop-interchange
+-floop-optimize
+-floop-parallelize-all
+-floop-strip-mine
+-flto-compression-level=
+-flto-compression-level=<number>	Use zlib compression level <number> for IL
+-flto-partition=1to1
+-flto-partition=balanced
+-flto-partition=none
+-flto-report
+-fltrans
+-fltrans-output-list=
+-fmath-errno
+-fmax-array-constructor=
+-fmax-array-constructor=<n>	Maximum number of objects in an array constructor
+-fmax-errors=
+-fmax-errors=<number>	Maximum number of errors to report
+-fmax-identifier-length=
+-fmax-identifier-length=<n>	Maximum identifier length
+-fmax-stack-var-size=
+-fmax-stack-var-size=<n>	Size in bytes of the largest array that will be put on the stack
+-fmax-subrecord-length=
+-fmax-subrecord-length=<n>	Maximum length for subrecords
+-fmem-report
+-fmerge-all-constants
+-fmerge-constants
+-fmerge-debug-strings
+-fmessage-length=
+-fmessage-length=<number>	Limit diagnostics to <number> characters per line.  0 suppresses line-wrapping
+-fmodule-private
+-fmodulo-sched
+-fmodulo-sched-allow-regmoves
+-fmove-loop-invariants
+-fms-extensions
+-fmudflap
+%{fmudflap|fmudflapth: -export-dynamic}
+-fmudflapir
+-fmudflapth
+-fmultilib-dir=
+-fmultilib-dir=<dir> Select header multilib subdirectory
+-fname-mangling-version-
+-fnew-abi
+-fnext-runtime
+-fnil-receivers
+-fno-deduce-init-list	disable deduction of std::initializer_list for a template type parameter from a brace-enclosed initializer-list
+-fnonansi-builtins
+-fnon-call-exceptions
+-fnonnull-objects
+-fno-pretty-templates Do not pretty-print template specializations as the template signature followed by the arguments
+%{!fno-stack-protector:%{!fstack-protector-all:%{!ffreestanding:%{!nostdlib:-fstack-protector}}}}
+-fno-threadsafe-statics	Do not generate thread-safe code for initializing local statics
+-fnothrow-opt
+fno-use-linker-plugin
+-fobjc-abi-version=
+-fobjc-call-cxx-cdtors
+-fobjc-direct-dispatch
+-fobjc-exceptions
+-fobjc-gc
+-fobjc-nilcheck
+-fobjc-sjlj-exceptions
+-fobjc-std=objc1
+-fod=<directory> Specify the object output directory.
+-fomit-frame-pointer
+-fopenmp
+%{fopenmp|ftree-parallelize-loops=*: -pthread}
+-foperator-names
+-foptimize-register-move
+-foptimize-sibling-calls
+-foptimize-static-class-initialization
+-foptional-diags
+--for-assembler
+--for-assembler=
+For bug reporting instructions, please see:
+Force bitfield accesses to match their type width
+--force-link
+--force-link=
+Force the underlying type for "wchar_t" to be "unsigned short"
+--for-linker
+--for-linker=
+#Fortran
+-foutput-class-dir=
+-fpack-derived
+-fpack-struct
+-fpack-struct=
+-fpack-struct=<number>	Set initial maximum structure member alignment
+-fpartial-inlining
+-fpcc-struct-return
+-fpch-deps
+-fpch-preprocess
+-fpeel-loops
+-fpeephole
+-fpeephole2
+-fpermissive
+-fplan9-extensions
+-fplugin=
+-fplugin-arg-
+-fplugin-arg-<name>-<key>[=<value>]	Specify argument <key>=<value> for plugin <name>
+-fpost-ipa-mem-report
+-fpredictive-commoning
+-fprefetch-loop-arrays
+-fpre-ipa-mem-report
+-fpreprocessed
+-fpretty-templates
+__fprintf_chk
+-fprofile
+-fprofile-arcs
+-fprofile-correction
+-fprofile-dir=
+-fprofile-generate
+-fprofile-generate=
+-fprofile-use
+-fprofile-use=
+-fprofile-values
+-fproperty
+-fprotect-parens
+fputs_unlocked
+-frandom-seed
+-frandom-seed=
+-frandom-seed=0
+%{!frandom-seed=*:-frandom-seed=
+-frandom-seed=<string>	Make compile reproducible using <string>
+-frange-check
+-frealloc-lhs
+-freciprocal-math
+-frecord-gcc-switches
+-frecord-marker=4
+-frecord-marker=8
+-frecursive
+-freduced-reflection
+-fregmove
+-freg-struct-return
+-frelease
+-frename-registers
+freopen64
+-freorder-blocks
+-freorder-blocks-and-partition
+-freorder-functions
+-frepack-arrays
+-freplace-objc-classes
+-frequire-return-statement
+-frerun-cse-after-loop
+-frerun-loop-opt
+-freschedule-modulo-scheduled-loops
+-fresolution=
+                 from %s:%d
+-frounding-math
+-fsaw-java-file
+-fsched2-use-superblocks
+-fsched2-use-traces
+-fsched-critical-path-heuristic
+-fsched-dep-count-heuristic
+-fsched-group-heuristic
+-fsched-interblock
+-fsched-last-insn-heuristic
+-fsched-pressure
+-fsched-rank-heuristic
+-fsched-spec
+-fsched-spec-insn-heuristic
+-fsched-spec-load
+-fsched-spec-load-dangerous
+-fsched-stalled-insns
+-fsched-stalled-insns=
+-fsched-stalled-insns-dep
+-fsched-stalled-insns-dep=
+-fsched-stalled-insns-dep=<number>	Set dependence distance checking in premature scheduling of queued insns
+-fsched-stalled-insns=<number>	Set number of queued insns that can be prematurely scheduled
+-fschedule-insns
+-fschedule-insns2
+-fsched-verbose=
+-fsched-verbose=<number>	Set the verbosity level of the scheduler
+-fsecond-underscore
+-fsection-anchors
+-fselective-scheduling
+-fselective-scheduling2
+-fsel-sched-pipelining
+-fsel-sched-pipelining-outer-loops
+-fsel-sched-reschedule-pipelined
+__fsetlocking
+-fshort-double
+-fshort-enums
+-fshort-wchar
+-fshow-column
+-fsignaling-nans
+-fsigned-bitfields
+-fsigned-char
+-fsigned-zeros
+-fsign-zero
+-fsingle-precision-constant
+-fsource=
+-fsource-filename=
+-fsplit-ivs-in-unroller
+-fsplit-stack
+-fsplit-wide-types
+-fsquangle
+-fstack-check
+-fstack-check=
+-fstack-check=[no|generic|specific]	Insert stack checking code into the program
+-fstack-limit
+-fstack-limit-register=
+-fstack-limit-register=<register>	Trap if the stack goes past <register>
+-fstack-limit-symbol=
+-fstack-limit-symbol=<name>	Trap if the stack goes past symbol <name>
+-fstack-protector
+%{fstack-protector:}
+-fstack-protector-all
+-fstack-usage
+-fstore-check
+-fstrength-reduce
+-fstrict-aliasing
+-fstrict-enums
+-fstrict-overflow
+-fstrict-prototype
+-fstrict-volatile-bitfields
+-fsyntax-only
+%{!fsyntax-only:%{!c:%{!M:%{!MM:%{!E:%{!S:    %(linker)     %{!fno-use-linker-plugin:%{flto|flto=*|fuse-linker-plugin:     -plugin %(linker_plugin_file)     -plugin-opt=%(lto_wrapper)     -plugin-opt=-fresolution=%u.res     %{!nostdlib:%{!nodefaultlibs:%:pass-through-libs(%(link_gcc_c_sequence))}}     }}     %{flto|flto=*:%<fcompare-debug*}     %{flto} %{flto=*} %l %{pie:-pie}  -z relro %X %{o*} %{e*} %{N} %{n} %{r}    %{s} %{t} %{u*} %{z} %{Z} %{!nostdlib:%{!nostartfiles:%S}}    %{static:} %{L*} %(mfwrap) %(link_libgcc) %o    %{fopenmp|ftree-parallelize-loops=*:%:include(libgomp.spec)%(link_gomp)}    %(mflib)  %{fsplit-stack: --wrap=pthread_create}    %{fprofile-arcs|fprofile-generate*|coverage:-lgcov}    %{!nostdlib:%{!nodefaultlibs:%(link_ssp) %(link_gcc_c_sequence)}}    %{!nostdlib:%{!nostartfiles:%E}} %{T*} }}}}}}
+-ftabstop=
+-ftabstop=<number>	Distance between tab stops for column reporting
+-ftarget=
+-ftarget-help
+-ftemplate-depth=
+-ftemplate-depth-
+-ftemplate-depth=<number>	Specify maximum template instantiation depth
+-ftest-coverage
+-fthis-is-variable
+-fthread-jumps
+-fthreadsafe-statics
+-ftime-report
+-ftls-model=
+-ftls-model=[global-dynamic|local-dynamic|initial-exec|local-exec]	Set the default thread-local storage code generation model
+-ftoplevel-reorder
+-ftracer
+-ftrapping-math
+-ftree-bit-ccp
+-ftree-builtin-call-dce
+-ftree-ccp
+-ftree-ch
+-ftree-copy-prop
+-ftree-copyrename
+-ftree-cselim
+-ftree-dce
+-ftree-dominator-opts
+-ftree-dse
+-ftree-forwprop
+-ftree-fre
+-ftree-loop-distribute-patterns
+-ftree-loop-distribution
+-ftree-loop-if-convert
+-ftree-loop-if-convert-stores
+-ftree-loop-im
+-ftree-loop-ivcanon
+-ftree-loop-linear
+-ftree-loop-optimize
+-ftree-lrs
+-ftree-parallelize-loops=
+-ftree-phiprop
+-ftree-pre
+-ftree-pta
+-ftree-reassoc
+-ftree-salias
+-ftree-scev-cprop
+-ftree-sink
+-ftree-slp-vectorize
+-ftree-sra
+-ftree-store-ccp
+-ftree-store-copy-prop
+-ftree-switch-conversion
+-ftree-ter
+-ftree-vect-loop-version
+-ftree-vectorize
+-ftree-vectorizer-verbose=
+-ftree-vectorizer-verbose=<number>	Set the verbosity level of the vectorizer
+-ftree-vrp
+Function starts are aligned to this power of 2
+Functions which return values must end with return statements
+-funderscoring
+-funit-at-a-time
+-funittest
+-funroll-all-loops
+-funroll-loops
+-funsafe-loop-optimizations
+-funsafe-math-optimizations
+-funsigned-bitfields
+-funsigned-char
+-funswitch-loops
+-funwind-tables
+-fuse-atomic-builtins
+-fuse-boehm-gc
+-fuse-cxa-atexit
+-fuse-cxa-get-exception-ptr
+-fuse-divide-subroutine
+-fuse-linker-plugin
+-fuse-linker-plugin, but liblto_plugin.so not found
+-fvariable-expansion-in-unroller
+-fvar-tracking
+-fvar-tracking-assignments
+-fvar-tracking-assignments-toggle
+-fvar-tracking-uninit
+-fvect-cost-model
+-fverbose-asm
+-fversion
+-fversion=
+-fversion=<level|ident> Compile in version code >= <level> or identified by <ident>
+-fvisibility=
+-fvisibility=[default|internal|hidden|protected]	Set the default symbol visibility
+-fvisibility-inlines-hidden
+-fvisibility-ms-compat
+-fvtable-gc
+-fvtable-thunks
+-fwhole-file
+-fwhole-program
+-fwide-exec-charset=
+-fwide-exec-charset=<cset>	Convert all wide strings and character constants to character set <cset>
+-fworking-directory
+%{!fwpa:   %{fcompare-debug=*|fdump-final-insns=*:%:compare-debug-dump-opt()}   %{!S:-o %|.s |
+-fXf=<filename> Write JSON file to <filename>
+__fxstat64
+-fzero-initialized-in-bss
+-fzero-link
+%{!g0:%{gstabs*:--gstabs}%{!gstabs*:%{g*:--gdwarf2}}} %{fdebug-prefix-map=*:--debug-prefix-map %*}
+GCC_COMPARE_DEBUG
+gcc driver version %s %sexecuting gcc version %s
+GCC_EXEC_PREFIX
+GCC_EXEC_PREFIX=
+GCC_NOAPPORT
+gcc version %s %s
+-gdwarf-
+-gen-decls
+Generate 32bit i386 code
+Generate 64bit x86-64 code
+Generate a #line directive pointing at the current working directory
+Generate auto-inc/dec instructions
+generate_canonical_option
+Generate C header of platform-specific features
+Generate checks for references to NULL
+Generate cld instruction in the function prologue.
+Generate code for built-in atomic operations
+Generate code for functions even if they are fully inlined
+Generate code for given CPU
+Generate code for GNU runtime environment
+Generate code for NeXT (Apple Mac OS X) runtime environment
+Generate code for the Android platform.
+Generate code for the Boehm GC
+Generate code that conforms to the given ABI
+Generate code to check bounds before indexing arrays
+Generate code to check exception specifications
+Generate debug information in COFF format
+Generate debug information in default extended format
+Generate debug information in default format
+Generate debug information in DWARF v2 (or later) format
+Generate debug information in extended STABS format
+Generate debug information in extended XCOFF format
+Generate debug information in STABS format
+Generate debug information in VMS format
+Generate debug information in XCOFF format
+Generate debug information to support Identical Code Folding (ICF)
+Generate discontiguous stack frames
+Generate documentation
+Generated should be loaded by bootstrap loader
+Generate floating point mathematics using given instruction set
+Generate instances of Class at runtime
+Generate lazy class lookup (via objc_getClass()) for use in Zero-Link mode
+Generate make dependencies
+Generate make dependencies and compile
+generate_option
+Generate phony targets for all headers
+Generate position-independent code for executables if possible (large mode)
+Generate position-independent code for executables if possible (small mode)
+Generate position-independent code if possible (large mode)
+Generate position-independent code if possible (small mode)
+Generate prefetch instructions, if available, for arrays in loops
+Generate reciprocals instead of divss and sqrtss.
+Generate run time type descriptor information
+Generate sin, cos, sqrt for FPU
+Generate special Objective-C methods to initialize/destroy non-POD C++ ivars, if needed
+Generate unwind tables that are exact at each instruction boundary
+Generate vzeroupper instruction before a transfer of control flow out of the function.
+getrlimit64
+gettimeofday
+Give external symbols a leading underscore
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+global-dynamic
+__gmon_start__
+-gnat<options>	Specify options to GNAT
+-gno-strict-dwarf
+-gstabs+
+-gstrict-dwarf
+                           guessing the language based on the file's extension
+-gxcoff+
+--help=<class>	Display descriptions of a specific class of options.  <class> is one or more of optimizers, target, warnings, undocumented, params
+  --help                   Display this information
+help-dummy
+  --help={target|optimizers|warnings|params|[^]{joined|separate|undocumented}}[,...]
+.:.:i386-linux-gnu !m64 !m32;
+i686-linux-gnu
+iconv_close
+iconv_open
+-I <dir>	Add <dir> to the end of the main include path.
+-idirafter
+-idirafter <dir>	Add <dir> to the end of the system include path
+if-exists
+if-exists-else
+If scheduling post reload, do superblock scheduling
+Ignore 'D' in column one in fixed form
+Ignore read operations when inserting mudflap instrumentation
+Ignore unsupported pragmas
+--imacros
+--imacros=
+-imacros <file>	Accept definition of macros in <file>
+implicit-function-declaration
+-imultiarch
+-imultiarch <dir>	Set <dir> to be the multiarch include subdirectory
+-imultilib
+-imultilib <dir> Set <dir> to be the multilib include subdirectory
+--include
+--include=
+%include
+--include-barrier
+--include-directory
+--include-directory=
+--include-directory-after
+--include-directory-after=
+-include <file>	Include the contents of <file> before other files
+include-fixed
+%include_noerr
+--include-prefix
+--include-prefix=
+include_spec_function
+--include-with-prefix
+--include-with-prefix=
+--include-with-prefix-after
+--include-with-prefix-after=
+--include-with-prefix-before
+--include-with-prefix-before=
+In C++, nonzero means warn about deprecated conversion from string literals to 'char *'.  In C, similar warning, except that the conversion is of course not deprecated by the ISO C standard.
+In file included from %s:%d
+In file included from %s:%d:%d
+initial-exec
+Initialize local variables to zero (from g77)
+Inject friend functions into enclosing namespace
+Inline all known string operations
+Inline memset/memcpy string operations, but perform inline version only for small blocks
+Input file is a file with a list of filenames to compile
+in %s, at %s:%d
+Insert arc-based program profiling code
+Insert code to profile values of expressions
+Insert stack checking code into the program.  Same as -fstack-check=specific
+insert_wrapper
+install: %s%s
+Instrument function entry and exit with profiling calls
+Integrate functions called once into their callers
+Integrate simple functions into their callers
+Integrate simple functions into their callers when code size is known to not growth
+internal
+internal compiler error: 
+Internal compiler error: Error reporting routines re-entered.
+internal_error
+Invalid back reference
+Invalid character class name
+Invalid collation character
+Invalid content of \{\}
+Invalid preceding regular expression
+Invalid range end
+Invalid regular expression
+invalid version number %qs
+invoke_as
+_IO_stdin_used
+-iplugindir=
+-iplugindir=<dir>	Set <dir> to be the default plugin directory
+-iprefix
+-iprefix <path>	Specify <path> as a prefix for next two options
+-iquote <dir>	Add <dir> to the end of the quote include path
+Issue warnings needed for strict compliance to the standard
+-isysroot
+-isysroot <dir>	Set <dir> to be the system root directory
+-isystem
+-isystem <dir>	Add <dir> to the start of the system include path
+-iwithprefix
+-iwithprefixbefore
+-iwithprefixbefore <dir>	Add <dir> to the end of the main include path
+-iwithprefix <dir>	Add <dir> to the end of the system include path
+-J<directory>	Put MODULE files in 'directory'
+Jump targets are aligned to this power of 2
+Just generate unwind tables for exception handling
+-lang-asm
+--language
+--language=
+language %s not recognized
+-lgcc_eh
+libc.so.6
+__libc_start_main
+libgcc.a
+libgcc.a%s
+libgcc_eh.a%s
+/lib/ld-linux.so.2
+liblto_plugin.so
+libraries: %s
+--library-directory
+--library-directory=
+LIBRARY_PATH
+Like -M but ignore system header files
+Like -MD but ignore system header files
+Like -pedantic but issue them as errors
+  -###                     Like -v but options quoted and commands not executed
+line-map.c: file "%s" entered but not left
+line-map.c: file "%s" left but not entered
+*link_command
+*link_command:
+Linker options
+linker_plugin_file
+link_gcc_c_sequence
+link_gomp
+link_libgcc
+link_ssp
+Link-time optimization with number of parallel jobs or jobserver.
+List all available debugging counters with their limits and counts.
+List all variables going into thread local storage
+local_cpu_detect
+local-dynamic
+local-exec
+Look for and use PCH files even when preprocessing
+Looks for opportunities to reduce stack adjustments and stack references.
+Loop code aligned to this power of 2
+L$P;T$<tY
+lto1 %(cc1_options) %i %{!fsyntax-only:%(invoke_as)}
+lto_wrapper
+lto-wrapper
+-m128bit-long-double
+m32 m32;
+-m3dnowa
+%{!m64:--32} %{m64:--64}  %{!mno-sse2avx:%{mavx:-msse2avx}} %{msse2avx:%{!mavx:-msse2avx}}
+m64 m64;
+%{!m64:%{!march=*:-march=%(VALUE)}}
+%{m64:%{!march=*:-march=%(VALUE)}}
+%{m64:-m elf_x86_64} %{!m64:-m elf_i386} --hash-style=gnu   %{shared:-shared}   %{!shared:     %{!static:       %{rdynamic:-export-dynamic}       %{!m64:-dynamic-linker %{muclibc:/lib/ld-uClibc.so.0;:%{mbionic:/system/bin/linker;:/lib/ld-linux.so.2}}}       %{m64:-dynamic-linker %{muclibc:/lib/ld64-uClibc.so.0;:%{mbionic:/system/bin/linker64;:/lib64/ld-linux-x86-64.so.2}}}}     %{static:-static}}
+%{!m64:%{!mtune=*:%{!mcpu=*:%{!march=*:-mtune=%(VALUE)}}}}
+%{m64:%{!mtune=*:%{!mcpu=*:%{!march=*:-mtune=%(VALUE)}}}}
+-m8bit-idiv
+-m96bit-long-double
+-maccumulate-outgoing-args
+--machine
+--machine=
+--machine-
+--machine=no-
+--machine-no-
+macro name missing after %qs
+Make "char" signed by default (silently ignored in D)
+Make "char" unsigned by default (silently ignored in D)
+malformed spec function arguments
+malformed spec function name
+-malign-double
+-malign-functions=
+-malign-jumps=
+-malign-loops=
+-malign-stringops
+-mandroid
+Map one directory name to another in debug information
+%{!march=*:-march=%(VALUE)}
+%{march=native:%>march=native %:local_cpu_detect(arch)   %{!mtune=*:%>mtune=native %:local_cpu_detect(tune)}} %{mtune=native:%>mtune=native %:local_cpu_detect(tune)}
+Mark all loops as parallel
+Marks all inlined methods as having hidden visibility
+-mavx256-split-unaligned-load
+-mavx256-split-unaligned-store
+-mbionic
+-mbranch-cost=
+mbstowcs
+-mcmodel=
+%<-mcpu=%> is deprecated; use %<-mtune=%> or %<-march=%> instead
+md_exec_prefix
+-mdispatch-scheduler
+md_startfile_prefix
+md_startfile_prefix_1
+Memory exhausted
+-mfancy-math-387
+-mfentry
+-MF <file>	Write dependency output to the given file
+-mforce-drap
+-mfpmath=
+-mfp-ret-in-387
+-mfsgsbase
+-mfused-madd
+%<-mfused-madd%> is deprecated; use %<-ffp-contract=%> instead
+-mhard-float
+-mieee-fp
+-mincoming-stack-boundary=
+-minline-all-stringops
+-minline-stringops-dynamically
+-mintel-syntax
+%<-mintel-syntax%> and %<-mno-intel-syntax%> are deprecated; use %<-masm=intel%> and %<-masm=att%> instead
+missing argument to %qs
+missing filename after %qs
+missing makefile target after %qs
+missing path after %qs
+mkstemps64
+-mlarge-data-threshold=
+%{!M:%{!MM:%{!E:cc1 -fpreprocessed %i %(cc1_options) %(ssp_default) %{!fsyntax-only:%(invoke_as)}}}}
+       %{!M:%{!MM:%{!E:cc1obj -fpreprocessed %i %(cc1_options) %(ssp_default) %{print-objc-runtime-info} %{gen-decls}			     %{!fsyntax-only:%(invoke_as)}}}}
+%{!M:%{!MM:%{!E:cc1obj -fpreprocessed %i %(cc1_options) %(ssp_default) %{print-objc-runtime-info} %{gen-decls}			     %{!fsyntax-only:%(invoke_as)}}}}
+    %{!M:%{!MM:%{!E:    cc1objplus -fpreprocessed %i %(cc1_options) %(ssp_default) %2    %{!fsyntax-only:%(invoke_as)}}}}
+%{!M:%{!MM:%{!E:    cc1objplus -fpreprocessed %i %(cc1_options) %(ssp_default) %2    %{!fsyntax-only:%(invoke_as)}}}}
+%{!M:%{!MM:%{!E:    cc1plus -fpreprocessed %i %(cc1_options) %(ssp_default) %2    %{!fsyntax-only:%(invoke_as)}}}}
+%{!M:%{!MM:%{!E:%{!S:as %(asm_debug) %(asm_options) %i %A }}}}
+ -mmovbe
+-mms-bitfields
+ -mno-abm
+ -mno-aes
+-mno-align-stringops
+ -mno-avx
+ -mno-bmi
+ -mno-cx16
+-mno-fancy-math-387
+ -mno-fma
+ -mno-fma4
+ -mno-lwp
+ -mno-movbe
+ -mno-pclmul
+ -mno-popcnt
+-mno-push-args
+-mno-red-zone
+ -mno-sahf
+-mno-sse4
+ -mno-sse4.1
+ -mno-sse4.2
+ -mno-tbm
+ -mno-xop
+-momit-leaf-frame-pointer
+Move loop invariant computations out of loops
+ -mpclmul
+ -mpopcnt
+-mprefer-avx128
+-mpreferred-stack-boundary=
+-mpush-args
+-MQ <target>	Add a MAKE-quoted target
+-mred-zone
+-mregparm=
+-msoft-float
+-msse2avx
+ -msse4.1
+ -msse4.2
+%<-msse5%> was removed
+-msseregparm
+-mstack-arg-probe
+-mstackrealign
+-mstringop-strategy=
+-mtls-dialect=
+-mtls-direct-seg-refs
+-MT <target>	Add an unquoted target
+%{!mtune=*:%{!mcpu=*:%{!march=*:-mtune=%(VALUE)}}}
+-muclibc
+multilib_defaults
+multilib exclusion %qs is invalid
+multilib_exclusions
+multilib exclusions %qs is invalid
+multilib_extra
+multilib_matches
+multilib_options
+multilib select %qs is invalid
+multilib spec %qs is invalid
+                           multiple library search directories
+must-not-happen
+-mveclibabi=
+-mvect8-ret-in-mem
+-mvzeroupper
+nl_langinfo
+no arguments for spec function
+ --no-as-needed}%{shared-libgcc:
+%nobjc-cpp-output is deprecated; please use objective-c-cpp-output instead
+%nobjc++-cpp-output is deprecated; please use objective-c++-cpp-output instead
+--no-canonical-prefixes
+  -no-canonical-prefixes   Do not canonicalize paths when building relative
+no class name specified with %qs
+-nodefaultlibs
+no input files
+--no-integrated-cpp
+--no-line-commands
+No longer supported
+No match
+                           'none' means revert to the default behavior of
+-nophoboslib
+No previous regular expression
+--no-standard-includes
+--no-standard-libraries
+-nostartfiles
+-nostdinc
+-nostdinc++
+-nostdlib
+not configured with sysroot headers suffix
+--no-warnings
+Number of registers used to pass integer arguments
+@objc-cpp-output
+@objc++-cpp-output
+@objective-c
+@objective-c++
+#Objective-C
+#Objective-C++
+@objective-c-cpp-output
+@objective-c++-cpp-output
+@objective-c-header
+@objective-c++-header
+_obstack_begin
+obstack_free
+_obstack_newchunk
+%{Ofast|ffast-math|funsafe-math-optimizations:crtfastmath.o%s}    %{mpc32:crtprec32.o%s}    %{mpc64:crtprec64.o%s}    %{mpc80:crtprec80.o%s}    %{shared|pie:crtendS.o%s;:crtend.o%s} crtn.o%s
+-o <file>	Place output into <file>
+  -o <file>                Place the output into <file>
+%<o %<MD %<MMD %<MF* %<MG %<MP %<MQ* %<MT* %<fdump-final-insns=* -w -S -o %j %{!fcompare-debug-second:-fcompare-debug-second} 
+Omit range reduction step when performing complex division
+Omit the frame pointer in leaf functions
+-O<number>	Set optimization level to <number>
+%{o*:%*}%{!o:%{!S:%b%O}%{S:%b.s}}
+open error file
+open temporary file
+open temporary output file
+--optimize
+--optimize=
+Optimize for space rather than speed
+Optimize for speed disregarding exact standards compliance
+Optimize induction variables on trees
+Optimize sibling and tail recursive calls
+Options:
+Options starting with -g, -f, -m, -O, -W, or --param are automatically
+ other options on to these processes the -W<letter> options must be used.
+out of memory
+--output
+--output=
+Output a class file
+--output-class-directory
+--output-class-directory=
+--output-pch=
+Output stack usage information on a per-function basis
+__overflow
+Pack structure members together without holes
+--param=
+--param l1-cache-line-size=%u 
+--param l1-cache-size=%u 
+--param l2-cache-size=%u 
+--param <param>=<value>	Set parameter <param> to value.  See below for a complete list of parameters
+Partition functions and vars at linktime based on object files they originate from
+Partition functions and vars at linktime into approximately same sized buckets
+ passed on to the various sub-processes invoked by %s.  In order to pass
+--pass-exit-codes
+  -pass-exit-codes         Exit with highest error code from a phase
+pass-through-libs
+Pay attention to the "inline" keyword
+--pedantic
+--pedantic-errors
+pedwarn: 
+pentium2
+pentium3
+pentium4
+pentium-m
+pentium-mmx
+pentiumpro
+Perform a forward propagation pass on RTL
+Perform a number of minor, expensive optimizations
+Perform a register copy-propagation optimization pass
+Perform a register renaming optimization pass
+Perform branch target load optimization after prologue / epilogue threading
+Perform branch target load optimization before prologue / epilogue threading
+Perform cloning to make Interprocedural constant propagation stronger
+Perform comparison elimination after register allocation has finished
+Perform conversion of conditional jumps to branchless equivalents
+Perform conversion of conditional jumps to conditional execution
+Perform conversions of switch initializations.
+Perform cross-jumping optimization
+Perform DWARF2 duplicate elimination
+Perform early inlining
+Perform enhanced load motion during global common subexpression elimination
+Perform function-local points-to analysis on trees.
+Perform global common subexpression elimination
+Perform global common subexpression elimination after register allocation has finished
+Perform indirect inlining
+Perform Interprocedural constant propagation
+Perform interprocedural points-to analysis
+Perform interprocedural profile propagation
+Perform interprocedural reduction of aggregates
+Perform jump threading optimizations
+Perform live range splitting during the SSA->normal pass
+Perform loop peeling
+Perform loop unrolling for all loops
+Perform loop unrolling when iteration count is known
+Perform loop unswitching
+Perform matrix layout flattening and transposing based on profiling information.
+Perform partial inlining
+Perform redundant load after store elimination in global common subexpression elimination
+Perform scalar replacement of aggregates
+Perform SMS based modulo scheduling before the first scheduling pass
+Perform SMS based modulo scheduling with register moves allowed
+Perform software pipelining of inner loops during selective scheduling
+Perform software pipelining of outer loops during selective scheduling
+Perform store motion after global common subexpression elimination
+Perform structure layout optimizations based on profiling information.
+Perform superblock formation via tail duplication
+Perform unused type elimination in debug info
+Perform Value Range Propagation on trees
+Perform variable tracking
+Perform variable tracking and also tag variables that are uninitialized
+Perform variable tracking by annotating assignments
+Perform whole program optimizations
+permerror: 
+                           Permissible languages include: c c++ assembler none
+Permit '$' as an identifier character
+Permit nonconforming uses of the tab character
+Permit the use of the assert keyword
+Permit universal character names (\u and \U) in identifiers
+pex_init failed: %m
+PEX_STDERR_TO_PIPE used in the middle of pipeline
+%{pg:%{fomit-frame-pointer:%e-pg and -fomit-frame-pointer are incompatible}} %{!iplugindir*:%{fplugin*:%:find-plugindir()}} %1 %{!Q:-quiet} %{!dumpbase:-dumpbase %B} %{d*} %{m*} %{aux-info*} %{fcompare-debug-second:%:compare-debug-auxbase-opt(%b)}  %{!fcompare-debug-second:%{c|S:%{o*:-auxbase-strip %*}%{!o*:-auxbase %b}}}%{!c:%{!S:-auxbase %b}}  %{g*} %{O*} %{W*&pedantic*} %{w} %{std*&ansi&trigraphs} %{v:-version} %{pg:-p} %{p} %{f*} %{undef} %{Qn:-fno-ident} %{Qy:} %{-help:--help} %{-target-help:--target-help} %{-version:--version} %{-help=*:--help=%*} %{!fsyntax-only:%{S:%W{o*}%{!o*:-o %b.s}}} %{fsyntax-only:-o %j} %{-param*} %{fmudflap|fmudflapth:-fno-builtin -fno-merge-constants} %{coverage:-fprofile-arcs -ftest-coverage}
+ %{pg:%{fomit-frame-pointer:%e-pg and -fomit-frame-pointer are incompatible}} %{!S:%{!c:%e-c or -S required for Ada}} gnat1 %{I*} %{k8:-gnatk8} %{Wall:-gnatwa} %{w:-gnatws} %{!Q:-quiet}    %{nostdinc*} %{nostdlib*}    -dumpbase %{.adb:%b.adb}%{.ads:%b.ads}%{!.adb:%{!.ads:%b.ada}}    %{c|S:%{o*:-auxbase-strip %*}%{!o*:-auxbase %b}}%{!c:%{!S:-auxbase %b}}     %{O*} %{W*} %{w} %{p} %{pg:-p} %{d*} %{f*}    %{coverage:-fprofile-arcs -ftest-coverage} %{gnatea:-gnatez} %{g*&m*} %{fRTS=rtp:-mrtp} %1 %{!S:%{o*:%w%*-gnatO}}     %i %{S:%W{o*}%{!o*:-o %b.s}}     %{gnatc*|gnats*: -o %j} %{-param*}     %{!gnatc*:%{!gnats*:%(invoke_as)}}
+-pipe ignored because -save-temps specified
+pipeline already complete
+  -pipe                    Use pipes rather than intermediate files
+Place data items into their own section
+Place each function into its own section
+Please submit a full bug report,
+-plugin-opt=-pass-through=
+-plugin-opt=-pass-through=-l
+%{posix:-D_POSIX_SOURCE} %{pthread:-D_REENTRANT}
+pp_base_format
+pp_base_output_formatted_text
+--prefix
+--prefix=
+                           prefixes to other gcc components
+Premature end of regular expression
+--preprocess
+Preprocess directives only.
+Preprocessed source stored into %s file, please attach this to your bugreport.
+prescott
+print-asm-header
+Print extra (possibly unwanted) warnings
+__printf_chk
+--print-file-name
+--print-file-name=
+  -print-file-name=<lib>   Display the full path to library <lib>
+Print information about D language processing to stdout
+--print-libgcc-file-name
+  -print-libgcc-file-name  Display the name of the compiler's companion library
+--print-missing-file-dependencies
+--print-multiarch
+--print-multi-directory
+  -print-multi-directory   Display the root directory for versions of libgcc
+--print-multi-lib
+  -print-multi-lib         Display the mapping between command line options and
+--print-multi-os-directory
+  -print-multi-os-directory Display the relative path to OS libraries
+-print-objc-runtime-info
+--print-prog-name
+--print-prog-name=
+  -print-prog-name=<prog>  Display the full path to compiler component <prog>
+--print-search-dirs
+  -print-search-dirs       Display the directories in the compiler's search path
+--print-sysroot
+  -print-sysroot           Display the target libraries directory
+--print-sysroot-headers-suffix
+-print-sysroot-headers-suffix
+  -print-sysroot-headers-suffix Display the sysroot suffix used to find headers
+Print the name of header files as they are used
+priority
+Process all modules specified on the command line, but only generate code for the module specified by the argument.
+process_command
+Process #ident directives
+Produce a backtrace when a runtime error is encountered
+Produce a warning at runtime if a array temporary has been created for a procedure argument
+--profile
+programs: %s
+protected
+Protect parentheses in expressions
+prune_options
+-pthread
+%{pthread:-lpthread}    %{shared:-lc}    %{!shared:%{mieee-fp:-lieee} %{profile:-lc_p}%{!profile:-lc}}
+Put zero initialized data in the bss section
+%{!Q:-quiet} %{nostdinc*} %{C} %{CC} %{v} %{I*&F*} %{P} %I %{MD:-MD %{!o:%b.d}%{o*:%.d%*}} %{MMD:-MMD %{!o:%b.d}%{o*:%.d%*}} %{M} %{MM} %{MF*} %{MG} %{MP} %{MQ*} %{MT*} %{!E:%{!M:%{!MM:%{!MT:%{!MQ:%{MD|MMD:%{o*:-MQ %*}}}}}}} %{remap} %{g3|ggdb3|gstabs3|gcoff3|gxcoff3|gvms3:-dD} %{!iplugindir*:%{fplugin*:%:find-plugindir()}} %{H} %C %{D*&U*&A*} %{i*} %Z %i %{fmudflap:-D_MUDFLAP -include mf-runtime.h} %{fmudflapth:-D_MUDFLAP -D_MUDFLAPTH -include mf-runtime.h} %{E|M|MM:%W{o*}}
+%qs is an unknown -save-temps option
+-rdynamic
+read_cmdline_option
+Reading specs from %s
+Realign stack in prologue
+Reallocate the LHS in assignments
+__realpath_chk
+Recognize built-in functions
+Recognize C++ keywords like "compl" and "xor"
+Recognize GNU-defined keywords
+Recognize the "asm" keyword
+recompiling with -fcompare-debug
+Record gcc command line switches in the object file.
+Reduce the amount of reflection meta-data generated
+Reduce the size of object files
+Regular expression too big
+Remap file names when including files
+remove-outfile
+remove_outfile_spec_function
+rename spec %s to %s
+Reorder basic blocks and partition into hot and cold sections
+Reorder basic blocks to improve code placement
+Reorder functions to improve code placement
+Reorder top level functions, variables, and asms
+Replace add, compare, branch with branch on count register
+replace-outfile
+replace_outfile_spec_function
+Replace SSA temporaries with better names in copies
+Replace temporary expressions in the SSA->normal pass
+Report on memory allocation before interprocedural optimization
+Report on permanent memory allocation
+Report the time taken by each compiler pass
+Report various link-time optimization statistics
+Reschedule instructions after register allocation
+Reschedule instructions before register allocation
+Reschedule pipelined regions without pipelining
+Reserve space for outgoing arguments in the function prologue
+--resource
+--resource=
+Restrict target load migration not to re-use registers in any basic block
+Return 8-byte vectors in memory
+Return small aggregates in memory, not registers
+Return small aggregates in registers
+Return values of functions in FPU registers
+Run only the second compilation of -fcompare-debug
+Run predictive commoning optimization.
+Run selective scheduling after reload
+Run the link-time optimizer in local transformation (LTRANS) mode.
+Run the link-time optimizer in whole program analysis (WPA) mode.
+# %s %.2f %.2f
+%s: all warnings being treated as errors
+Same as -fassociative-math for expressions which include division.
+%s: attempt to rename spec %qs to already defined spec %qs
+Save registers around function calls
+--save-temps
+-save-temps=
+  -save-temps=<arg>        Do not delete intermediate files
+  -save-temps              Do not delete intermediate files
+-s-bc-abi
+Schedule code for given CPU
+Schedule instructions using selective scheduling algorithm
+  -S                       Compile only; do not assemble or link
+Scope of for-init-statement variables is local to the loop
+%s: could not determine length of compare-debug file %s
+%s: could not open compare-debug file %s
+--script
+%s:%d: confused by earlier errors, bailing out
+%s:%d:%d: %s
+%s:%d: %s
+See %s for instructions.
+%s: error: too many @-files encountered
+Set 80387 floating-point precision (-mpc32, -mpc64, -mpc80)
+Set default accessibility of module entities to PRIVATE.
+Set dependence distance checking in premature scheduling of queued insns
+Set errno after built-in math functions
+setlocale
+setrlimit64
+Set the default double precision kind to an 8 byte wide type
+Set the default integer kind to an 8 byte wide type
+Set the default real kind to an 8 byte wide type
+Set the source language version
+Set the target VM version
+Set the top-level directory for storing the profile data. The default is 'pwd'.
+%s: -fcompare-debug failure
+%s: -fcompare-debug failure (length)
+--shared
+%{!shared: 
+-shared-libgcc
+%{!shared: %{pg|p|profile:gcrt1.o%s;pie:Scrt1.o%s;:crt1.o%s}}    crti.o%s %{static:crtbeginT.o%s;shared|pie:crtbeginS.o%s;:crtbegin.o%s}
+Share slots for saving different hard registers.
+Share stack slots for spilled pseudo-registers.
+Show column numbers in diagnostics, when available.  Default on
+sizeof(long double) is 12
+sizeof(long double) is 16
+%s: linker input file unused because linking not done
+__snprintf_chk
+sorry, unimplemented: 
+spec failure: %<%%*%> has not been initialized by pattern match
+spec failure: more than one arg to SYSROOT_HEADERS_SUFFIX_SPEC
+spec failure: more than one arg to SYSROOT_SUFFIX_SPEC
+spec failure: unrecognized spec option %qc
+spec file has no spec for linking
+spec-generated switch is just %<-%>
+specific
+Specify a file to which a list of files output by LTRANS is written.
+Specify a plugin to load
+Specify that an external BLAS library should be used for matmul calls on large-size arrays
+Specify that backslash in string introduces an escape character
+Specify that no implicit typing is allowed, unless overridden by explicit IMPLICIT statements
+Specify that the source file's parent directories should be appended to the object output directory.
+Specify where to find the compiled intrinsic modules
+Specify which ABI to use for Objective-C family code and meta-data generation.
+spec %qs has invalid %<%%0%c%>
+spec %qs has invalid %<%%W%c%>
+spec %qs has invalid %<%%x%c%>
+spec %qs invalid
+--specs=
+specs file malformed after %ld characters
+  -specs=<file>            Override built-in specs with the contents of <file>
+specs %%include syntax malformed after %ld characters
+specs %%rename syntax malformed after %ld characters
+specs %s spec was not found to be renamed
+specs unknown %% command after %ld characters
+Split 32-byte AVX unaligned load
+Split 32-byte AVX unaligned store
+Split lifetimes of induction variables when loops are unrolled
+Split wide types into independent registers
+__sprintf_chk
+%s (program %s)
+../src/configure -v --with-pkgversion='Ubuntu/Linaro 4.6.3-1ubuntu5' --with-bugurl=file:///usr/share/doc/gcc-4.6/README.Bugs --enable-languages=c,c++,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-4.6 --enable-shared --enable-linker-build-id --with-system-zlib --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --with-gxx-include-dir=/usr/include/c++/4.6 --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-gnu-unique-object --enable-plugin --enable-objc-gc --enable-targets=all --disable-werror --with-arch-32=i686 --with-tune=generic --enable-checking=release --build=i686-linux-gnu --host=i686-linux-gnu --target=i686-linux-gnu
+../../src/gcc/diagnostic.c
+../../src/gcc/gcc.c
+../../src/gcc/pretty-print.c
+../../src/gcc/vec.c
+%s: %s compiler not installed on this system
+%s: some warnings being treated as errors
+%s%sout of memory allocating %lu bytes after a total of %lu bytes
+ssp_default
+standard
+startfile
+startfile_prefix_spec
+--static
+Statically link the GNU Fortran helper library (libgfortran)
+ %{static: %{fmudflap|fmudflapth:  --wrap=malloc --wrap=free --wrap=calloc --wrap=realloc --wrap=mmap --wrap=munmap --wrap=alloca} %{fmudflapth: --wrap=pthread_create}} %{fmudflap|fmudflapth: --wrap=main}
+-static-libgcc
+-static-libgcj
+-static-libgfortran
+-static-libgo
+-static_libphobos
+-static-libstdc++
+%{static:--start-group} %G %L %{static:--end-group}%{!static:%G}
+%{static|static-libgcc:
+}%{!static:%{!static-libgcc:%{!shared-libgcc:
+-std=c++03
+-std=c++0x
+-std=c1x
+-std=c89
+-std=c90
+-std=c++98
+-std=c99
+-std=c9x
+-std=f2003
+-std=f2008
+-std=f95
+-std=gnu
+-std=gnu++0x
+-std=gnu1x
+-std=gnu89
+-std=gnu90
+-std=gnu++98
+-std=gnu99
+-std=gnu9x
+-std=iso9899:1990
+-std=iso9899:199409
+-std=iso9899:1999
+-std=iso9899:199x
+-std=legacy
+  -std=<standard>          Assume that the input sources are for <standard>
+strcasecmp
+__strdup
+strerror
+strsignal
+strverscmp
+Support 3DNow! built-in functions
+Support AES built-in functions and code generation
+Support Athlon 3Dnow! built-in functions
+Support BMI built-in functions and code generation
+Support code generation of Advanced Bit Manipulation (ABM) instructions.
+Support code generation of cmpxchg16b instruction.
+Support code generation of crc32 instruction.
+Support code generation of movbe instruction.
+Support code generation of popcnt instruction.
+Support code generation of sahf instruction in 64bit x86-64 code.
+Support F16C built-in functions and code generation
+Support FMA4 built-in functions and code generation 
+Support FSGSBASE built-in functions and code generation
+Support LWP built-in functions and code generation 
+Support MMX and SSE built-in functions and code generation
+Support MMX built-in functions
+Support MMX, SSE and SSE2 built-in functions and code generation
+Support MMX, SSE, SSE2 and SSE3 built-in functions and code generation
+Support MMX, SSE, SSE2, SSE3 and SSE4A built-in functions and code generation
+Support MMX, SSE, SSE2, SSE3 and SSSE3 built-in functions and code generation
+Support MMX, SSE, SSE2, SSE3, SSSE3 and SSE4.1 built-in functions and code generation
+Support MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1 and SSE4.2 built-in functions and code generation
+Support MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2 and AVX built-in functions and code generation
+Support MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2, AVX and FMA built-in functions and code generation
+Support PCLMUL built-in functions and code generation
+Support RDRND built-in functions and code generation
+Support synchronous non-call exceptions
+Support TBM built-in functions and code generation
+Support XOP built-in functions and code generation 
+Suppress output of addresses in debugging dumps
+Suppress output of instruction numbers, line number notes and addresses in debugging dumps
+Suppress output of previous and next insn numbers in debugging dumps
+Suppress warnings
+Swap endianness for unformatted files
+switch %qs does not start with %<-%>
+switch %qs is no longer supported
+--symbolic
+Synonym for -Wcomment
+--sysroot
+--sysroot=
+  --sysroot=<directory>    Use <directory> as the root directory for headers
+sysroot_hdrs_suffix_spec
+--sysroot=%R
+sysroot_spec
+sysroot_suffix_spec
+system path %qs is not absolute
+t)9L$<v#
++T$(9t$(
+--target-help
+  --target-help            Display target specific command line options
+%{-target-help:%:print-asm-header()} %a %Y %{c:%W{o*}%{!o*:-o %w%b%O}}%{!c:-o %d%w%u%O}
+Target: %s
+The bug is not reproducible, so it is likely a hardware or OS problem.
+The resolution file
+This is free software; see the source for copying conditions.  There is NO
+This switch is deprecated; use -Werror=implicit-function-declaration instead
+This switch is deprecated; use -Wextra instead
+Thread model: %s
+  -time                    Time the execution of each subprocess
+$tI../../src/gcc/opts-common.c
+T$L;\$8}
+-tno-android-cc
+-tno-android-ld
+Toggle debug information generation
+Toggle -fvar-tracking-assignments
+too few arguments to %%:compare-debug-auxbase-opt
+too few arguments to %%:version-compare
+too many arguments to %%:compare-debug-auxbase-opt
+too many arguments to %%:compare-debug-dump-opt
+too many arguments to %%:compare-debug-self-opt
+too many arguments to %%:version-compare
+--trace-includes
+trad_capable_cpp
+%(trad_capable_cpp) -lang-asm %(cpp_options) -fno-directives-only      %{E|M|MM:%(cpp_debug_options)}      %{!M:%{!MM:%{!E:%{!S:-o %|.s |
+--traditional
+--traditional-cpp
+Trailing backslash
+Transform condition stores into unconditional ones
+Trap for signed overflow in addition, subtraction and multiplication
+Treat a throw() exception specification as noexcept to improve code size
+Treat lines with 'D' in column one as comments
+Treat missing header files as generated files
+Treat signed overflow as undefined
+Treat specified warning as error
+Treat the input file as already preprocessed
+--trigraphs
+-trigraphs	Support ISO C trigraphs
+Try to convert virtual calls to direct ones.
+Try to lay out derived types as compactly as possible
+<;t+< t'
+<\tX<#tH
+(Ubuntu/Linaro 4.6.3-1ubuntu5) 
+-U<macro>	Undefine <macro>
+unable to locate default linker script %qs in the library search paths
+--undefine-macro
+--undefine-macro=
+undocumented error #%d
+unknown excess precision style %qs
+unknown floating point contraction style %qs
+unknown IRA algorithm %qs
+unknown IRA region %qs
+unknown operator %qs in %%:version-compare
+unknown spec function %qs
+unknown TLS model %qs
+Unmatched \{
+Unmatched ( or \(
+Unmatched ) or \)
+Unmatched [ or [^
+unrecognized argument in option %qs
+unrecognized command line option %qs
+unrecognized option %<-%s%>
+unrecognized visibility value %qs
+Usage: %s [options] file...
+Use 128-bit AVX instructions instead of 256-bit AVX instructions in the auto-vectorizer.
+Use a 4-byte record marker for unformatted files
+Use an 8-byte record marker for unformatted files
+Use a stack protection method for every function
+Use big-endian format for unformatted files
+Use Bionic C library
+Use __cxa_atexit to register destructors
+Use __cxa_get_exception_ptr in exception handling
+Used in Fix-and-Continue mode to indicate that object files may be swapped in at runtime
+Use direct references against %gs when accessing tls data
+Use expression value profiles in optimizations
+Use f2c calling convention
+Use given assembler dialect
+Use given thread-local storage dialect
+Use given x86-64 code model
+Use GNU C library
+Use hardware fp
+Use IEEE math for fp comparisons
+Use IRA based register pressure calculation in RTL loop optimizations.
+Use jump tables for sufficiently large switch statements
+Use little-endian format for unformatted files
+Use native format for unformatted files
+Use native (MS) bitfield layout
+Use offset tables for virtual method calls
+use of obsolete %%[ operator in specs
+Use profiling information for branch probabilities
+Use propolice as a stack protection method
+Use push instructions to save outgoing arguments
+--user-dependencies
+Use red-zone in the x86-64 code
+Use SSE register passing conventions for SF and DF mode
+Use the Cray Pointer extension
+Use the narrowest integer type possible for enumeration types
+Use the RTL dead code elimination pass
+Use the RTL dead store elimination pass
+Use the same size for double as for float
+Use traditional GNU semantics for inline functions
+Use uClibc C library
+  (Use '-v --help' to display command line options of sub-processes)
+Use "-Wa,OPTION" to pass "OPTION" to the assembler.
+Use "-Wl,OPTION" to pass "OPTION" to the linker.
+Using built-in specs.
+/usr/bin/
+/usr/lib/
+/usr/lib/gcc/
+/usr/share/apport/gcc_ice_hook
+/usr/share/apport/gcc_ice_hook %s %s
+/usr/share/locale
+/usr/tmp
+valid arguments to %qs are: %s
+%(VALUE)
+/var/tmp
+__vasprintf_chk
+  -v                       Display the programs invoked by the compiler
+Vector library ABI to use
+--verbose
+--version
+version-compare
+version_compare_spec_function
+  --version                Display compiler version information
+__vfprintf_chk
+-Waddress
+-Waggregate-return
+-Waliasing
+-Walign-commons
+-Wall-deprecation
+-Wall-javadoc
+-Wampersand
+  -Wa,<options>            Pass comma-separated <options> on to the assembler
+Warn about alignment of COMMON blocks
+Warn about all enumerated switches missing a specific case
+Warn about an empty body in an if or else statement
+Warn about called procedures not explicitly declared
+Warn about calls with implicit interface
+Warn about casting functions to incompatible types
+Warn about casts which discard qualifiers
+Warn about C constructs that are not in the common subset of C and C++
+Warn about C++ constructs whose meaning differs between ISO C++ 1998 and ISO C++ 200x
+Warn about code which might break strict aliasing rules
+Warn about comparison of different enum types
+Warn about compile-time integer division by zero
+Warn about constructs not instrumented by -fmudflap
+Warn about creation of array temporaries
+Warn about enumerated switches missing a "default:" statement
+Warn about enumerated switches, with no default, missing a case
+Warn about "extern" declarations not at file scope
+Warn about features not present in traditional C
+Warn about format strings that are not literals
+Warn about format strings that contain NUL bytes
+Warn about function parameters declared without a type specifier in K&R-style functions
+Warn about function pointer arithmetic
+Warn about functions which might be candidates for __attribute__((const))
+Warn about functions which might be candidates for __attribute__((noreturn))
+Warn about functions which might be candidates for __attribute__((pure))
+Warn about functions which might be candidates for format attributes
+Warn about global functions without previous declarations
+Warn about global functions without prototypes
+Warn about implicit conversions from "float" to "double"
+Warn about implicit declarations
+Warn about implicit function declarations
+Warn about inappropriate attribute usage
+Warn about invalid uses of the "offsetof" macro
+Warn about macros defined in the main file that are not used
+Warn about missing ampersand in continued character constants
+Warn about missing fields in struct initializers
+Warn about misuses of pragmas
+Warn about most implicit conversions
+Warn about multiple declarations of the same object
+Warn about non-virtual destructors
+Warn about NULL being passed to argument slots marked as requiring non-NULL
+Warn about optimizations that assume that signed overflow is undefined
+Warn about overflow in arithmetic expressions
+Warn about overloaded virtual function names
+Warn about overriding initializers without side effects
+Warn about packed bit-fields whose offset changed in GCC 4.4
+Warn about PCH files that are found but not used
+Warn about pointer casts which increase alignment
+Warn about possible aliasing of dummy arguments
+Warn about possible security problems with format functions
+Warn about possible violations of sequence point rules
+Warn about possibly missing braces around initializers
+Warn about possibly missing parentheses
+Warn about possibly nested block comments, and C++ comments spanning more than one physical line
+Warn about printf/scanf/strftime/strfmon format string anomalies
+Warn about real-literal-constants with 'q' exponent-letter
+Warn about returning structures, unions or arrays
+Warn about @selector()s without previously declared methods
+Warn about signed-unsigned comparisons
+Warn about stray tokens after #elif and #endif
+Warn about strftime formats yielding 2-digit years
+Warn about subscripts whose type is "char"
+Warn about "suspicious" constructs
+Warn about suspicious declarations of "main"
+Warn about suspicious uses of memory addresses
+Warn about things that will change when compiling with an ABI-compliant compiler
+Warn about truncated character expressions
+Warn about truncated source lines
+Warn about uncasted NULL used as sentinel
+Warn about underflow of numerical constant expressions
+Warn about uninitialized automatic variables
+Warn about unprototyped function declarations
+Warn about unrecognized pragmas
+Warn about unsuffixed float constants
+Warn about unused dummy arguments.
+Warn about use of multi-character character constants
+Warn about user-specified include directories that do not exist
+Warn about uses of __attribute__((deprecated)) declarations
+Warn about variables that might be changed by "longjmp" or "vfork"
+Warn about variables which are initialized to themselves
+Warn about violations of Effective C++ style rules
+Warn about zero-length formats
+Warn for converting NULL from/to a non-pointer type
+Warn for implicit type conversions between signed and unsigned integers
+Warn for implicit type conversions that may change a value
+Warn for obsolescent usage in a declaration
+Warn if a caller of a function, marked with attribute warn_unused_result, does not use its return value
+Warn if a comparison is always true or always false due to the limited range of the data type
+Warn if a C-style cast is used in a program
+Warn if a deprecated compiler feature, class, method, or field is used
+Warn if an array is accessed out of bounds
+Warn if an old-style parameter definition is used
+Warn if an undefined macro is used in an #if directive
+Warn if a property for an Objective-C object has no assign semantics specified
+Warn if a selector has multiple methods
+Warn if a string is longer than the maximum portable length specified by the standard
+Warn if a user-procedure has the same name as an intrinsic
+Warn if a variable length array is used
+Warn if .class files are out of date
+Warn if deprecated empty statements are found
+Warn if inherited methods are unimplemented
+Warn if modifiers are specified when not necessary
+Warn if passing too many arguments to a function for its format string
+Warn if testing floating point numbers for equality
+Warn if the loop cannot be optimized due to nontrivial assumptions.
+Warn if trigraphs are encountered that might affect the meaning of the program
+Warn if type signatures of candidate methods do not match exactly
+Warn in case profiles in -fprofile-use do not match
+warning: 
+--warn-no-
+Warn of prototypes causing type conversions different from what would happen in the absence of prototype
+Warn on intrinsics not part of the selected standard
+Warn when a built-in preprocessor macro is undefined or redefined
+Warn when a declaration does not specify a type
+Warn when a declaration is found after a statement
+Warn when a function is unused
+Warn when a function parameter is only set, otherwise unused
+Warn when a function parameter is unused
+Warn when a jump misses a variable initialization
+Warn when a label is unused
+Warn when all constructors and destructors are private
+Warn when a logical operator is suspiciously always evaluating to true or false
+Warn when an expression value is unused
+Warn when an inlined function cannot be inlined
+Warn when a noexcept expression evaluates to false even though the expression can't actually throw
+Warn when an optimization pass is disabled
+Warn when a pointer differs in signedness in an assignment
+Warn when a pointer is cast to an integer of a different size
+Warn when a register variable is declared volatile
+Warn when a variable is only set, otherwise unused
+Warn when a variable is unused
+Warn when a #warning directive is encountered
+Warn when converting the type of pointers to member functions
+Warn whenever a function's return type defaults to "int" (C), or about inconsistent return types (C++)
+Warn whenever an Objective-C assignment is being intercepted by the garbage collector
+Warn whenever a trampoline is generated
+Warn whenever type qualifiers are ignored.
+Warn when non-templatized friend functions are declared within a template
+Warn when not issuing stack smashing protection for some reason
+Warn when one local variable shadows another
+Warn when overload promotes from unsigned to signed
+Warn when padding is required to align structure members
+Warn when __sync_fetch_and_nand and __sync_nand_and_fetch built-in functions are used
+Warn when the compiler reorders code
+Warn when the packed attribute has no effect on struct layout
+Warn when there is a cast to a pointer from an integer of a different size
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+-Warray-bounds
+-Warray-temporaries
+-Wassert-identifier
+-Wassign-intercept
+-Wattributes
+-Wbad-function-cast
+-Wboxing
+-Wbuiltin-macro-redefined
+-Wc++0x-compat
+-Wcast-align
+-Wcast-qual
+-Wc++-compat
+-Wcharacter-truncation
+-Wchar-concat
+-Wchar-subscripts
+-Wclobbered
+-Wcomments
+-Wcondition-assign
+-Wconstructor-name
+-Wconversion
+-Wconversion-extra
+-Wconversion-null
+-Wcoverage-mismatch
+wcswidth
+-Wctor-dtor-privacy
+-Wdeclaration-after-statement
+-Wdep-ann
+-Wdeprecated
+-Wdeprecated-declarations
+-Wdisabled-optimization
+-Wdiscouraged
+-Wdiv-by-zero
+-Wdouble-promotion
+-Weffc++
+-Wempty-block
+-Wempty-body
+-Wendif-labels
+-Wenum-compare
+-Wenum-identifier
+-Wenum-switch
+-Werror=
+-Werror-implicit-function-declaration
+-Wextraneous-semicolon
+-Wfallthrough
+-Wfatal-errors
+-Wfield-hiding
+-Wfinal-bound
+-Wfinally
+-Wfloat-equal
+-Wforbidden
+-Wformat
+-Wformat=
+-Wformat-contains-nul
+-Wformat-extra-args
+-Wformat-nonliteral
+-Wformat-security
+-Wformat-y2k
+-Wformat-zero-length
+-Wframe-larger-than=
+-Wframe-larger-than=<number>	Warn if a function's stack frame requires more than <number> bytes
+When possible do not generate stack frames
+When running CSE, follow jumps to their targets
+When "signed" or "unsigned" is not given make the bitfield signed
+When "signed" or "unsigned" is not given make the bitfield unsigned
+-Whiding
+-Wignored-qualifiers
+-Wimplicit
+-Wimplicit-function-declaration
+-Wimplicit-int
+-Wimplicit-interface
+-Wimplicit-procedure
+-Wimport
+-Windirect-static
+-Winit-self
+-Winline
+-Wintf-annotation
+-Wintf-non-inherited
+-Wintrinsic-shadow
+-Wintrinsics-std
+-Wint-to-pointer-cast
+-Winvalid-offsetof
+-Winvalid-pch
+With -g, generate C debug information for debugger compatibility
+with preprocessed source if appropriate.
+-Wjavadoc
+-Wjump-misses-init
+-Wlarger-than=
+-Wlarger-than-
+-Wlarger-than=<number>	Warn if an object is larger than <number> bytes
+-Wline-truncation
+-Wlocal-hiding
+-Wlogical-op
+-Wlong-long
+  -Wl,<options>            Pass comma-separated <options> on to the linker
+-Wmasked-catch-block
+-Wmissing-braces
+-Wmissing-declarations
+-Wmissing-field-initializers
+-Wmissing-format-attribute
+-Wmissing-include-dirs
+-Wmissing-noreturn
+-Wmissing-parameter-type
+-Wmissing-prototypes
+-Wmudflap
+-Wmultichar
+-Wnested-externs
+-Wno-effect-assign
+-Wnoexcept
+-Wnonnull
+-Wnon-template-friend
+-Wnon-virtual-dtor
+-Wnormalized=
+-Wnormalized=<id|nfc|nfkc>	Warn about non-normalised Unicode strings
+-Wold-style-cast
+-Wold-style-declaration
+-Wold-style-definition
+-Wout-of-date
+-Wover-ann
+-Woverflow
+-Woverlength-strings
+-Woverloaded-virtual
+-Woverride-init
+-Wpacked
+-Wpacked-bitfield-compat
+-Wpadded
+-Wparam-assign
+-Wparentheses
+-Wpkg-default-method
+-Wpmf-conversions
+-Wpointer-arith
+-Wpointer-sign
+-Wpointer-to-int-cast
+  -Wp,<options>            Pass comma-separated <options> on to the preprocessor
+-Wpragmas
+-Wproperty-assign-default
+-Wprotocol
+-Wreal-q-constant
+-Wredundant-decls
+-Wredundant-modifiers
+-Wreorder
+-Wreturn-type
+--write-dependencies
+--write-user-dependencies
+-Wselector
+-Wsequence-point
+-Wserial
+-Wshadow
+-Wsign-compare
+-Wsign-conversion
+-Wsign-promo
+-Wspecial-param-hiding
+-Wstack-protector
+-Wstatic-access
+-Wstatic-receiver
+-Wstrict-aliasing
+-Wstrict-aliasing=
+-Wstrict-null-sentinel
+-Wstrict-overflow
+-Wstrict-overflow=
+-Wstrict-prototypes
+-Wstrict-selector-match
+-Wsuggest-attribute=const
+-Wsuggest-attribute=noreturn
+-Wsuggest-attribute=pure
+-Wsuppress
+-Wsurprising
+-Wswitch
+-Wswitch-default
+-Wswitch-enum
+-Wsync-nand
+-Wsynthetic-access
+-Wsystem-headers
+-Wtraditional
+-Wtraditional-conversion
+-Wtrampolines
+-Wtrigraphs
+-Wtype-hiding
+-Wtype-limits
+-Wuncheck
+-Wundeclared-selector
+-Wunderflow
+-Wuninitialized
+-Wunknown-pragmas
+-Wunnecessary-else
+-Wunqualified-field
+-Wunreachable-code
+-Wunsafe-loop-optimizations
+-Wunsuffixed-float-constants
+-Wunused
+-Wunused-argument
+-Wunused-but-set-parameter
+-Wunused-but-set-variable
+-Wunused-dummy-argument
+-Wunused-function
+-Wunused-import
+-Wunused-label
+-Wunused-local
+-Wunused-macros
+-Wunused-parameter
+-Wunused-private
+-Wunused-result
+-Wunused-thrown
+-Wunused-value
+-Wunused-variable
+-Wuseless-type-check
+-Wvarargs-cast
+-Wvariadic-macros
+-Wvolatile-register-var
+-Wwarning-token
+-Wwrite-strings
+-Xassembler
+  -Xassembler <arg>        Pass <arg> on to the assembler
+  -x <language>            Specify the language of the following input files
+-Xlinker
+  -Xlinker <arg>           Pass <arg> on to the linker
+-Xpreprocessor
+  -Xpreprocessor <arg>     Pass <arg> on to the preprocessor
+%<-x %s%> after last input file has no effect
+__xstat64
+x<"t,<$f

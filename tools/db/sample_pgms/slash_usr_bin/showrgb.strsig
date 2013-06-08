@@ -1,0 +1,20 @@
+%3u %3u %3u		%s
+%d %d %d %[^
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+_IO_stdin_used
+__isoc99_sscanf
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__printf_chk
+%s:  syntax error: %s:%d
+__stack_chk_fail
+%s:  unable to open rgb database "%s"
+%s:  value for "%s" out of range: %s:%d
+/usr/share/X11/rgb

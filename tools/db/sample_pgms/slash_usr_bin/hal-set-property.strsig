@@ -1,0 +1,67 @@
+        --bool           Set value to a boolean, ie. true or false
+__bss_start
+Could not initialise connection to hald.
+dbus_bus_get
+dbus_error_free
+dbus_error_init
+dbus_error_is_set
+           [--direct] [--help] [--version]
+        --direct         Use direct HAL connection
+        --double         Set value to a floating point number
+error: libhal_ctx_init_direct
+error: libhal_ctx_init: %s: %s
+error: libhal_ctx_new
+error: libhal_ctx_set_dbus_connection: %s: %s
+error: libhal_device_remove_property: %s: %s
+error: libhal_device_set_property: %s: %s
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+hal-set-property 0.5.14
+        --help           Show this information and exit
+        --int            Set value to an integer. Accepts decimal and                          hexadecimal prefixed with 0x or x
+           (--int <value> | --string <value> | --bool <value> |
+_IO_stdin_used
+_Jv_RegisterClasses
+        --key            Key of the property to set
+libc.so.6
+__libc_start_main
+libdbus-1.so.3
+libhal_ctx_init
+libhal_ctx_init_direct
+libhal_ctx_new
+libhal_ctx_set_dbus_connection
+libhal_device_property_strlist_append
+libhal_device_property_strlist_prepend
+libhal_device_property_strlist_remove
+libhal_device_remove_property
+libhal_device_set_property_bool
+libhal_device_set_property_double
+libhal_device_set_property_int
+libhal_device_set_property_string
+libhal_device_set_property_uint64
+libhal.so.1
+/lib/ld-linux.so.2
+Normally this means the HAL daemon (hald) is not running or not ready.
+        --remove         Indicates that the property should be removed
+security considerations, it may not be possible to set a property; on
+__strdup
+        --string         Set value to a string
+strlist-post
+        --strlist-post   Append a string to a list
+strlist-pre
+        --strlist-pre    Prepend a string to a list
+            --strlist-pre <value> | --strlist-post <value> |
+strlist-rem
+        --strlist-rem    Remove a string from a list
+            --strlist-rem <value> | --double <value> | --remove)
+strtoull
+success this program exits with exit code 0. On error, the program exits
+This program attempts to set property for a device. Note that, due to
+        --udi            Unique Device Id
+        --uint64         Set value to an integer. Accepts decimal and                          hexadecimal prefixed with 0x or x
+usage : hal-set-property --udi <udi> --key <key>
+        --version        Show version and exit
+with an exit code different from 0

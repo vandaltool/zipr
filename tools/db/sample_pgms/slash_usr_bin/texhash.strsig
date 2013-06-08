@@ -1,0 +1,150 @@
+      ;;
+  "") ;;
+# 0 * * * * cd /your/texmf/root && /usr/local/texlive/bin/mktexlsr
+$//;1q' \"$db_file\"`" != "x$ls_R_magic" \
+$//;1q' \"$db_file\"`" != "x$old_ls_R_magic"; then
+# A copy of some stuff from mktex.opt, so we can run in the presence of
+# Add the location of the script to the PATH if necessary.  This must
+  # Allow for either ls-R and ls-r to exist.  But create ls-R if we're
+  /* | [A-z]:/*) ;;
+  /* | [A-z]:/*) # Absolute name
+  /* | [A-z]:/*) db_file="$db_readlink" ;;
+# be done before kpsewhich can be called, and thus cannot be put into
+#!/bin/sh
+  case "$db_readlink" in
+case $dirname in
+  case "$TEXMFLS_R" in
+case `uname -s` in
+  (cd "$TEXMFLS_R" && \ls -LRa 2>/dev/null) \
+    chmod `kpsestat -xst "$db_dir"` "$db_file"
+  chmod $PERMS "$db_file_tmp"
+    continue
+  "") continue ;;  # Strictly speaking, it is an error if this case is taken.
+    cp /dev/null "$db_file"
+# Create a variable that holds the right character to be used by the scripts.
+  CYGWIN*|Cygwin*|cygwin*) ;;
+# Cygwin, which pretends to be UNIX.
+  db_dir=`echo "$db_file" | sed 's%/[^/][^/]*$%%'` # can't rely on dirname
+  db_dir_tmp="$db_dir/lsR$$.tmp"
+  *)  db_file="$TEXMFLS_R/$db_readlink"
+    db_file="$TEXMFLS_R/ls-r"
+   >>"$db_file_tmp"
+  db_file_tmp="$db_dir_tmp/lsR$$.tmp"
+  db_readlink=`kpsereadlink "$TEXMFLS_R/ls-R" 2>/dev/null` || true
+# directories in path lists whereas Unix uses `:'.  Make an exception for
+dirname=`echo $0 | sed 's%/*[^/][^/]*$%%'`
+DIRS are given, these are used as the directories in which to build
+  "") # Do nothing
+DOSISH=no
+  $dry_run && continue
+  --dry-run  do not actually update anything
+dry_run=false
+    dry_run=true
+    echo "`basename $0` $version"
+  echo "./:" >>"$db_file_tmp"
+  echo "$ls_R_magic" >"$db_file_tmp"
+    || { echo "$progname: could not create directory '$db_dir_tmp'. Skipping..." >&2; continue; }
+    echo "$progname: $db_file lacks magic string. Skipping..." >&2
+    echo "$progname: unknown option $1, try --help if you need it." >&2
+    echo "$usage"
+  elif echo "x$1" | grep '^x-' >/dev/null; then
+  elif test -f "$TEXMFLS_R/ls-r"; then
+  elif test -s "$db_file" \
+  elif test "x$1" = x--dry-run || test "x$1" = x-n; then
+  elif test "x$1" = x--quiet || test "x$1" = x--silent \
+  elif test "x$1" = x--; then
+  elif test "x$1" = x--verbose || test "x$1" = x-verbose; then
+  elif test "x$1" = x--version || test "x$1" = x-version; then
+         -e '/^[\.\/]*lsR[0-9]*\.tmp:*$/d' \
+    exit 0
+    exit 1
+      export PATH ;;
+  # Follow a possible symlink to get the right filesystem. 
+For more information, see the &lsquo;Filename database&rsquo; section of
+for TEXMFLS_R in "$@"; do
+  # found via ls-R. Probably irrelevant in practice.  The sed command
+# Get list of directories from $TEXMFDBS; eliminate duplicates.
+  --help     display this help and exit 
+    IFS='
+    IFS=$OIFS
+If standard input is a terminal, --verbose is on by default.
+if test "$DOSISH" = "no"; then SEP=':'; else SEP=';';fi
+  if test ! -f "$db_file"; then
+  if test -f "$TEXMFLS_R/ls-R"; then
+  *) if test -n "$COMSPEC" || test -n "$ComSpec"; then DOSISH=yes; fi
+  if test -n "$trees"; then
+  if test "x$1" = x--help || test "x$1" = x-help; then
+if tty -s; then verbose=true; else verbose=false; fi
+# (If you change or delete the word `original' on the previous line,
+  # in directory names.
+  # inserts the leading ./ for directory names, and removes ., .., and
+# installation won't write this script over yours.)
+# is found mktex.opt.
+Kpathsea manual available at http://tug.org/kpathsea.
+  kpseaccess -w "$db_file" || { echo "$progname: $db_file: no write permission. Skipping..." >&2; continue; }
+    kpsewhich --version
+ls-R. Else all directories in the search path for ls-R files
+ls_R_magic='% ls-R -- filename database for kpathsea; do not change this line.'
+# mktex.opt.
+# mktexupd and mktexlsr make sure they're coordinated via this.  A copy
+# MS-DOS and MS-Windows define $COMSPEC or $ComSpec and use `;' to separate
+  mv "$db_file_tmp" "$db_file"
+    OIFS=$IFS  # want just a newline
+old_ls_R_magic='% ls-R -- maintained by MakeTeXls-R; do not change this line.'
+  # operation in a separate invocation.  We do not try to support colons
+Options:
+# Originally written as `texhash' by Thomas Esser
+# original mktexlsr -- create or rebuild ls-R.
+      PATH="$dirname$SEP$PATH"
+  # path ordinarily contains many nonexistent directories.
+      PATH="`pwd`/$dirname$SEP$PATH"
+  # Prepend cwd if the directory was relative.
+progname=`echo $0 | sed 's%.*/%%'`
+# Public domain.
+  --quiet    cancel --verbose
+Rebuild ls-R filename databases used by TeX.  If one or more arguments
+   *)  # Relative name
+Report bugs to tex-k@tug.org.
+  rm -f "$db_file"
+  rm -f "$db_file_tmp"
+  rm -rf "$db_dir_tmp"
+   | sed -e '/^$/{n;s%^\./%%;s%^%./%;}; /^\.$/d; /^\.\.$/d; /^'$vc_dirs'$/d;' \
+   | sed -e /$vc_dirs'.*:$/,/^$/d' \
+    set x `kpsewhich --show-path=ls-R | tr : '
+    set x $trees
+  --silent   same as --quiet
+  # Skip if we cannot write the file:
+' | sort | uniq`
+# Suitable for calling from cron, as in:
+# <te@dbs.uni-hannover.de>, Okt., 1994.
+# terminally damaged ls-R files.
+    test -d "$1" || echo "$progname: $1 not a directory." >&2
+  test -d "$db_dir" || continue
+  test -w "$db_dir" || { echo "$progname: $db_dir: directory not writable. Skipping..." >&2; continue; }
+       || test "x$1" = x-quiet || test "x$1" = x-silent ; then
+       && test "x`sed '1s/
+(\$TEXMFDBS) are used.
+  *)  TEXMFLS_R="`pwd`/$TEXMFLS_R"
+  # The main task. We put ./: in the output, so top-level files can be
+# The old string, which should continue to work.
+  # The '|| true' construct prevents an sh -e aborting.
+  # the version directories; sed apparently requires that we do that
+  # To be really safe, a loop.
+trap 'cd /; test -z "$db_dir_tmp" || rm -rf "$db_dir_tmp"; exit' 0 1 2 3 7 13 15
+    trees="$trees $1"  # don't want to update system dirs
+  (umask 077 && mkdir "$db_dir_tmp" ) \
+  until PERMS=`kpsestat = "$db_file"`; do sleep 1; done
+usage="Usage: $progname [OPTION]... [DIR]...
+    # Use same permissions as parent directory, minus x,s, or t bits.
+  vc_dirs='\.\(bzr\|git\|hg\|svn\)\|CVS\|RCS\|_darcs'
+$verbose && echo "$progname: Done." >&2
+  $verbose && echo "$progname: Updating $db_file... " >&2
+  --verbose  explain what is being done
+    verbose=false
+    verbose=true
+  # version control entries from the list.  Also omit contents of any
+version='$Id: mktexlsr 14402 2009-07-23 17:09:15Z karl $'
+  --version  output version information and exit
+  # want to be silent if the directory doesn't exist, since the ls-R
+while test $# -gt 0; do
+  # working from scratch.

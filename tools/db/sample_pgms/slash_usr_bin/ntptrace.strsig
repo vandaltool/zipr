@@ -1,0 +1,54 @@
+	close(PH) || die "$cmd failed";
+	$cmd = "$ntpq -n -c \"pstat $peer\" $host";
+	$cmd = "$ntpq -n -c rv $host";
+	$dhost = $host;
+		$dhost = $name if (defined($name));
+	    $dhost, $stratum, $offset, $syncdistance);
+$dodns = 0 if (defined($opt_n));
+$dodns = 1;
+for (;;) {
+getopts('nm:');
+$Getopt::Std::STANDARD_HELP_VERSION=1;
+$host ||= "127.0.0.1";
+$host = shift;
+	$host = $thost;
+		$iaddr = inet_aton($host);
+	if ($dodns && $host =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/) {
+# John Hay -- John.Hay@icomtek.csir.co.za / jhay@FreeBSD.org
+	last if ($nb_host > $max_hosts);
+	last if ($refid =~ /^127\.127\.\d{1,3}\.\d{1,3}$/);
+	last if ($stratum == 0 || $stratum == 1 || $stratum == 16);
+	last if ($stratum == 255);
+	last if ($thost =~ /^127\.127\.\d{1,3}\.\d{1,3}$/);
+	last if ($thost eq "");
+$max_hosts = 0 if ( $max_hosts !~ /^\d+$/ );
+$max_hosts = (defined($opt_m) ? $opt_m :  99);
+		$name = (gethostbyaddr($iaddr, AF_INET))[0];
+	$nb_host++;
+$nb_host = 1;
+$ntpq = "ntpq";
+	$offset /= 1000;
+		$offset = $1 if (/(?:offset|phase)=([^\s,]+)/);
+	# of perl only do IPv4 and I don't know if we should require extras.
+	# Only do lookups of IPv4 addresses. The standard lookup functions
+	open(PH, $cmd . "|") || die "failed to start command $cmd: $!";
+		$peer = $1 if (/peer=(\d+)/);
+	printf("\n");
+	printf(", refid '%s'", $refid) if ($stratum == 1);
+	printf("%s: stratum %d, offset %f, synch distance %f",
+		$refid = $1 if (/refid=([^\s,]+)/);
+	$rootdelay = 0;
+		$rootdelay = $1 if (/rootdelay=([^\s,]+)/);
+	$rootdispersion = 0;
+		$rootdispersion = $1 if (/rootdispersion=([^\s,]+)/);
+		$stratum = $1 if (/stratum=(\d+)/);
+	$stratum = 255;
+	$syncdistance = ($rootdispersion + ($rootdelay / 2)) / 1000;
+	$thost = "";
+		$thost = $1, last if (/srcadr=(\S+),/);
+use Getopt::Std;
+use Socket;
+use vars qw($opt_n $opt_m);
+#! /usr/bin/perl -w
+		# Very old servers report phase and not offset.
+	while (<PH>) {

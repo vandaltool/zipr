@@ -1,0 +1,33 @@
+B<dh_lintian> is a debhelper program that is responsible for installing
+B<dh_lintian> [S<I<debhelper options>>]
+build directory. This file is used to suppress erroneous lintian
+dh_lintian - install lintian override files into package build directories
+diagnostics.
+			 doit("install","-d","$or_dir");
+		doit("install","-p","-m644",$overrides,"$or_dir/$package");
+foreach my $package (@{$dh{DOPACKAGES}}) {
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+		if (! -d "$or_dir") {
+	if ($overrides ne '') {
+Installed into usr/share/lintian/overrides/I<package> in the package
+=item debian/I<package>.lintian-overrides
+=item F<debian/source.lintian-overrides>
+L<debhelper(1)>
+L<lintian(1)>
+	my $or_dir = "$tmp/usr/share/lintian/overrides";
+	my $overrides=pkgfile($package,"lintian-overrides");
+	my $tmp=tmpdir($package);
+	next if is_udeb($package);
+override files used by lintian into package build directories.
+overrides for the source package.
+Steve Robbins <smr@debian.org>
+These files are not installed, but will be scanned by lintian to provide
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w

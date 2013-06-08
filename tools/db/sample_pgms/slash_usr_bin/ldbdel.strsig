@@ -1,0 +1,41 @@
+__bss_start
+Deleted 1 record
+Deleted %u records
+delete of '%s' failed - (%s) %s
+Deletes records from a ldb
+distinguishedName=*
+Failed to delete '%s' - %s
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+LDB_0.9.10
+LDB_1.1.4
+ldb_cmdline_help
+ldb_cmdline_process
+ldb_delete_ctrl
+ldb_dn_compare
+ldb_dn_get_linearized
+ldb_dn_new
+ldb_errstring
+ldb_init
+ldb_parse_control_strings
+ldb_search
+ldb_strerror
+libc.so.6
+__libc_start_main
+libldb-cmdline.so
+libldb.so.1
+/lib/ld-linux.so.2
+libtalloc.so.2
+parsing controls failed: %s
+__printf_chk
+TALLOC_2.0.2
+_talloc_free
+talloc_named_const
+talloc_new: ../tools/ldbdel.c:90
+../tools/ldbdel.c:132
+../tools/ldbdel.c:67
+Usage: ldbdel <options> <DN...>
+/usr/lib/i386-linux-gnu/ldb

@@ -19,7 +19,7 @@
 # Intended Usage:
 #    To enable a cheap way of specifying tainted data in a binary program
 #    The key observation is that trusted/native strings from which SQL queries are constructed
-#    will be present as srings in the binary. Such strings can therefore be marked as trusted, 
+#    will be present as strings in the binary. Such strings can therefore be marked as trusted, 
 #    or non-tainted. Any portion of a string passed to a critical function 
 #    that is not found in the binary is probably external, and therefore
 #    should be marked as potentially tainted.

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec java -classpath /usr/share/java/saxon.jar com.icl.saxon.StyleSheet "$@"

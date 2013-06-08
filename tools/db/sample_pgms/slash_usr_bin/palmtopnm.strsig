@@ -1,0 +1,51 @@
+#%02x%02x%02x
+%.3d -> %.3d:  %d
+%.3d -> %ld,%ld,%ld:  %d
+Bad compression type 0x%x; the compression flag bit is not set
+__bss_start
+Can convert only 16-bit direct color Palm bitmaps.
+Can't allocate %d bytes for keeping track of which pixels were seen.
+cols %u, rows %u, bytes-per-row %u, flags 0x%04x, %d bits-per-pixel, version %d, nextDepthOffset 0x%x, transparentIndex %d, compressionType %d (%s)
+Error reading Tbmp file
+-forceplain
+__fprintf_chk
+__fread_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+Not enough renditions in the input pixmap to extract the %dth
+packbits (Palm OS 4.0)
+pm_allocrow
+pm_close
+pm_error
+pm_message
+pm_openr
+pm_readbiglong
+pm_readbigshort
+pm_usage
+pnm_init
+pnm_writepnminit
+pnm_writepnmrow
+__printf_chk
+-rendition
+rle (Palm OS 3.5)
+scanline (Palm OS 2.0)
+-showhist
+__stack_chk_fail
+The input is compressed with an unknown compression type %d
+This program cannot yet decompress 'packbits' compressed Palm bitmaps.
+Too many colors for custom colormap (max 256).  Try using ppmquant to reduce the number of colors.
+-transparent
+Unable to allocate %d bytes for one row of the Tbmp image
+unknown compression type
+-verbose
+ [-verbose] [-rendition N] ( [-showhist] [-forceplain] | -transparent ) [Tbmpfile]
+version specifier must be greater than 0

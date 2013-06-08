@@ -1,0 +1,339 @@
+215 TOPS20
+215 UNIX Type: L8
+421 Service not available, remote server has closed connection
+4K macro buffer exceeded
+	   -4: use IPv4 addresses only
+	   -6: use IPv6, nothing else
+Account:
+Account: 
+add_history
+allow use of any address family
+All rights reserved.
+Already connected to %s, use close first.
+?Ambiguous command
+?Ambiguous help command %s
+anonymous
+append to a file
+arguments to SITE command
+beep when command completed
+Bell mode %s.
+__bss_start
+Bytes transferred: %jd
+Carriage Return stripping %s.
+Case mapping %s.
+Case: %s; CR stripping: %s
+CDUP command not recognized, trying XCUP
+change file permissions of remote file
+change local working directory
+change remote working directory
+change remote working directory to parent directory
+Chosen addressing: %s.
+clear queued command replies
+command line to send
+:Commands may be abbreviated.  Commands are:
+Connected for proxy commands to %s.
+Connected to %s.
+Connecting using address family: %s.
+connect to remote ftp
+Continue with
+@(#) Copyright (c) 1985, 1989 Regents of the University of California.
+__ctype_b_loc
+CWD command not recognized, trying XCWD
+ (%d bytes/hash mark)
+ (%d bytes/tick increment)
+Debugging %s (debug=%d).
+define a macro
+delete multiple files
+delete remote file
+	   -d: enable debugging
+directory-name
+disconnect
+	   -e: disable readline support, if present
+Enter macro line by line, terminating it with a null line
+enter passive transfer mode
+EPRT |2|%s|%d|
+__errno_location
+Error creating temporary file, oops
+Error - .netrc file not correct permissions.
+Error: `password' must follow `login' in .netrc
+escape to the shell
+execute get, put or append to initiate transfer
+execute macro
+Extended passive mode address scan failure. Unfortunate!
+Extremely long filename from server: %s
+fdopen failed, oops
+File may not have transferred correctly.
+filename
+file-name
+Filename provided by server doesn't match pattern `%s': %s
+force interactive prompting on multiple commands
+__fprintf_chk
+freeaddrinfo
+from-name
+ftp: accept
+ftp: bind
+ftp: connect
+ftp: connect to address %s: 
+ftp: %c: unknown option
+ftp: fdopen failed.
+ftp: ftp/tcp: unknown service
+ftp: getsockname
+ftp: internal error: unknown type %d
+ftp: listen
+ftp: setsockopt
+ftp: setsockopt (ignored)
+ftp: setsockopt (reuse address)
+ftp: setsockopt TOS (ignored)
+ftp: socket
+ftp: %s: %s
+__fxstat64
+gai_strerror
+	   -g: disable filename globbing
+getaddrinfo
+__getdelim
+get file if remote file is newer than local file 
+get file restarting at end of local file
+get help from remote server
+gethostname
+getlogin
+get multiple files
+getpwnam
+getpwuid
+getservbyname
+get (set) idle timer on remote side
+get (set) umask on remote side
+getsockname
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+Globbing %s.
+globfree64
+__gmon_start__
+Hash mark printing %s
+Hash mark printing: %s; Use of PORT cmds: %s
+$Id: cmds.c,v 1.33 2000/07/23 01:36:59 dholland Exp $
+$Id: cmdtab.c,v 1.8 1999/09/28 15:36:05 dholland Exp $
+$Id: domacro.c,v 1.4 1996/08/14 23:27:28 dholland Exp $
+$Id: ftp.c,v 1.25 1999/12/13 20:33:20 dholland Exp $
+$Id: main.c,v 1.15 1999/10/02 13:25:23 netbug Exp $
+$Id: ruserpass.c,v 1.9 1999/10/02 19:12:33 dholland Exp $
+Incredible pattern: %s
+inet_ntop
+Interactive mode %s.
+?Invalid command
+?Invalid help command %s
+?Invalid proxy command
+_IO_getc
+_IO_putc
+_IO_stdin_used
+issue command on alternate connection
+	   -i: turn off prompting during mget
+%jd bytes %s in %.2f secs (%.1f kB/s)
+_Jv_RegisterClasses
+%ld,%ld,%ld,%ld,%ld,%ld
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libreadline.so.6
+Limit of 16 macros have already been defined
+list contents of multiple remote directories
+list contents of remote directory
+Local directory now %s
+local-file
+local-files
+Local file "%s" is newer than remote file "%s"
+local: %s 
+local: %s remote: %s
+local: %s: %s
+Login failed.
+__longjmp_chk
+macdef:end of file encountered
+Macro definition missing null line terminator.
+macro name
+Macro not defined - 4k buffer exceeded
+make directory on the remote machine
+__memcpy_chk
+Missing macdef name argument.
+MKD command not recognized, trying XMKD
+mkstemp64
+Mode: %s; Type: %s; Form: %s; Structure: %s
+Name (%s): 
+Name (%s:%s): 
+$NetKit: netkit-ftp-0.17 $
+	   -n: inhibit auto-login
+nlist contents of remote directory
+Nmap: (in) %s (out) %s
+Nmap off.
+Nmap: off
+nmap: unbalanced brackets
+No control connection for command
+No primary connection
+No proxy connection.
+Not connected
+Not connected.
+Ntrans: (in) %s (out) %s
+Ntrans off.
+Ntrans: off
+_obstack_begin
+obstack_free
+_obstack_newchunk
+Out of memory
+output to local-file:
+Packet tracing %s.
+Passive mode address scan failure.Shouldn't happen!
+Passive mode refused.
+Passive mode %s.
+password
+Password:
+Password: 
+PASS XXXX
+	   -p: enable passive mode (default for pftp)
+PORT %d,%d,%d,%d,%d,%d
+__printf_chk
+print ? in place of control characters on stdout
+print local help information
+print working directory on remote machine
+proxy server does not support third party transfers.
+PWD command not recognized, trying XPWD
+Quote control characters %s.
+Quote control characters: %s
+readline
+receive aborted
+received
+receive file
+Receive unique %s.
+Refusing to handle insecure file list
+Remember to set tenex mode when transferring binary files from this machine.
+remglob: dup
+remglob: fdopen
+remote-directory
+remote-file
+remote-files
+Remote system type is %s.
+Remove account or correct mode (should be 600).
+remove directory on the remote machine
+Remove password or correct mode (should be 600).
+rename file
+restart file transfer at bytecount
+restarting at %jd. %s
+restart: offset not specified
+REST %jd
+restrict address usage to IPv4
+restrict address usage to IPv6
+rl_terminal_name
+RMD command not recognized, trying XRMD
+runique: can't find unique file name.
+%s	%02d/%02d/%04d %02d:%02d:%02d GMT
+%*s %04d%02d%02d%02d%02d%02d
+%s: bad debugging value.
+%s: bad port number-- %s
+send aborted
+send account command to remote server
+send arbitrary ftp command
+send multiple files
+send new user information
+send one file
+sendport
+send site specific command to remote server
+set ascii transfer type
+set binary transfer type
+set file transfer format
+set file transfer mode
+set file transfer structure
+set file transfer type
+setsockopt
+set templates for default file name mapping
+set tenex file transfer type
+set translation table for default file name mapping
+%s from-name to-name
+show current status
+show last modification time of remote file
+show remote system type
+show size of remote file
+show status of remote machine
+shutdown
+sigaction
+sigemptyset
+siginterrupt
+__sigsetjmp
+SITE CHMOD %s %s
+SITE IDLE
+SITE IDLE %s
+SITE UMASK
+SITE UMASK %s
+'%s' macro not found.
+%s/.netrc
+%s: not a plain file.
+__snprintf_chk
+%s: short write
+__stack_chk_fail
+Store unique %s.
+Store unique: %s; Receive unique: %s
+strcasecmp
+__strcat_chk
+__strcpy_chk
+strncasecmp
+__strncat_chk
+%s: unknown mode
+	   -t: enable packet tracing [nonfunctional]
+terminate ftp session
+terminate ftp session and exit
+Tick counter printing %s
+Tick counter printing: %s
+toggle carriage return stripping on ascii gets
+toggle metacharacter expansion of local file names
+toggle mget upper/lower case id mapping
+toggle packet tracing
+toggle printing byte counter during transfers
+toggle printing `#' for each buffer transferred
+toggle/set debugging mode
+toggle store unique for local files
+toggle store unique on remote machine
+toggle use of PORT cmd for each data connection
+toggle verbose mode
+<$to<!tk
+Try again later
+Trying %s...
+		Try "rhelp site" or "site help" for more information
+TYPE %s %s
+Unknown .netrc keyword %s
+	Usage: { ftp | pftp } [-46pinegvtd] [hostname]
+usage: %s [
+usage: %s command
+usage: %s directory-name
+usage: %s filename
+usage: %s host-name [port]
+usage: %s line-to-send
+usage: %s local-directory
+usage: %s local-file remote-file
+usage: %s local-files
+Usage: %s macro_name
+Usage: %s macro_name.
+Usage: %s [mapin mapout]
+usage: %s mode file-name
+usage: %s remote-directory
+usage: %s remote-directory local-file
+usage: %s remote-file
+usage: %s remote-file [ local-file ]
+usage: %s remote-files
+usage: %s remote-files local-file
+usage: %s username [password] [account]
+Use of PORT cmds %s.
+username
+Using %s mode to transfer files.
+Verbose mode %s.
+Verbose: %s; Bell: %s; Prompting: %s; Globbing: %s
+__vfprintf_chk
+	   -v: verbose mode
+waiting for remote to finish abort
+WARNING! %d bare linefeeds received in ASCII mode
+Warning: embedded .. in %.*s (changing to !!)
+We only support %s format, sorry.
+We only support %s mode, sorry.
+We only support %s structure, sorry.
+__xstat64

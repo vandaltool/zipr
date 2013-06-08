@@ -1,0 +1,47 @@
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+Concatenate files at locations and print to the standard output. Works just like the traditional cat utility, but using gvfs location instead local files: for example you can use something like smb://server/resource/file.txt as location to concatenate.
+dcgettext
+__errno_location
+Error parsing commandline options: %s
+g_error_free
+g_file_get_uri
+g_file_new_for_commandline_arg
+g_file_read
+g_get_prgname
+g_input_stream_close
+g_input_stream_read
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.4
+__gmon_start__
+g_object_unref
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_summary
+g_printerr
+g_strconcat
+g_type_init
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+LOCATION... - concatenate LOCATIONS to standard output.
+Note: just pipe through cat if you need its formatting option like -n, -T or other.
+setlocale
+%s: missing locations
+%s: %s:error closing: %s
+%s: %s: error opening file: %s
+%s: %s: error reading: %s
+%s: %s, error writing to stdout
+__stack_chk_fail
+Try "%s --help" for more information.
+/usr/share/locale

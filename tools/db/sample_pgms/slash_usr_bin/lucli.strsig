@@ -1,0 +1,18 @@
+#!/bin/sh 
+CLASSPATH=${CLASSPATH}:$LUCLI/jline.jar:$LUCLI/lucene-core.jar:$LUCLI/lucene-lucli.jar
+#    contributor license agreements.  See the NOTICE file distributed with
+#    distributed under the License is distributed on an "AS IS" BASIS,
+export CLASSPATH
+#        http://www.apache.org/licenses/LICENSE-2.0
+java -Xmx${LUCLI_MEMORY} lucli.Lucli
+#    Licensed to the Apache Software Foundation (ASF) under one or more
+#    limitations under the License.
+LUCLI_MEMORY=128M
+LUCLI=/usr/share/java
+#    See the License for the specific language governing permissions and
+#    The ASF licenses this file to You under the Apache License, Version 2.0
+#    the "License"); you may not use this file except in compliance with
+#    the License.  You may obtain a copy of the License at
+#    this work for additional information regarding copyright ownership.
+#    Unless required by applicable law or agreed to in writing, software
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.

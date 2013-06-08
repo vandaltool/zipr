@@ -1,0 +1,89 @@
+A NULL argv[0] was passed through an exec system call.
+appending output to %s
+bindtextdomain
+bug-coreutils@gnu.org
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+dcgettext
+/dev/null
+__errno_location
+failed to open %s
+failed to redirect standard error
+failed to render standard input unusable
+failed to run command %s
+failed to set the copy of stderr to close on exec
+For complete documentation, run: info coreutils '%s invocation'
+for details about the options it supports.
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+`$HOME/nohup.out' otherwise.
+http://www.gnu.org/software/coreutils/
+If standard error is a terminal, redirect it to standard output.
+If standard input is a terminal, redirect it from /dev/null.
+If standard output is a terminal, append output to `nohup.out' if possible,
+ignoring input
+ignoring input and appending output to %s
+ignoring input and redirecting stderr to stdout
+_IO_stdin_used
+iswprint
+Jim Meyering
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+memory exhausted
+missing operand
+nohup.out
+NOTE: your shell may have its own version of %s, which usually supersedes
+  or:  %s OPTION
+POSIXLY_CORRECT
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+redirecting stderr to stdout
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+Run COMMAND, ignoring hangup signals.
+%s, and %s.
+setlocale
+shell-always
+%s home page: <%s>
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+There is NO WARRANTY, to the extent permitted by law.
+the version described here.  Please refer to your shell's documentation
+This is free software: you are free to change and redistribute it.
+To save output to FILE, use `%s COMMAND > FILE'.
+Try `%s --help' for more information.
+Usage: %s COMMAND [ARG]...
+/usr/share/locale
+      --version  output version information and exit
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,

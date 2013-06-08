@@ -1,0 +1,39 @@
+a command line argument to use another file in the /etc/ppp/peers/ directory."
+any additional arguments supplied will be passed as extra arguments to
+#!/bin/sh
+    break
+case "$1" in
+    echo "\
+  echo "\
+  echo "Error: only members of the 'dip' group can use this command."
+    exec /etc/ppp/ppp_on_boot
+exec /usr/sbin/pppd call $PROVIDER "$@"
+    exit 0
+  exit 1
+if [ "$1" ]; then
+if [ ! -e "/etc/ppp/peers/$PROVIDER" ]; then
+if [ -L /etc/ppp/ppp_on_boot -a "$(readlink /etc/ppp/ppp_on_boot)" = \
+If pon is invoked without arguments, /etc/ppp/ppp_on_boot file will be
+if [ ! -r /etc/ppp/peers/ ]; then
+  if [ -x /etc/ppp/ppp_on_boot ]; then
+If you specify one argument, a PPP connection will be started using
+if [ -z "$PROVIDER" ]; then
+  ln -s pppoe_on_boot /etc/ppp/ppp_on_boot
+# Perform ppp_on_boot migration from pppoe package.
+     "ppp_on_boot.dsl" -a ! -e /etc/ppp/ppp_on_boot.dsl ]; then
+  PROVIDER=$1
+  PROVIDER=provider
+  -q|--quick           pppd hangs up after all ip-up scripts are run
+  --quick|-q)
+    [ "$QUICK" ] && touch /var/run/ppp-quick
+[ "$QUICK" ] && touch /var/run/ppp-quick
+    QUICK=true
+  rm -f /etc/ppp/ppp_on_boot
+run, presuming it exists and is executable. Otherwise, a PPP connection
+settings from the appropriate file in the /etc/ppp/peers/ directory, and
+    shift
+The file /etc/ppp/peers/$PROVIDER does not exist. Please create it or use
+  # try the default script
+Usage: pon [OPTIONS] [provider] [arguments]
+while [ $# -ge 1 ]; do
+will be started using settings from /etc/ppp/peers/provider.

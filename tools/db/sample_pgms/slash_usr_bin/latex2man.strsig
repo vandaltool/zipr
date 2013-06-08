@@ -1,0 +1,1189 @@
+                                        };
+                          }
+                    }
+               }
+        }
+       					};
+##################################################################
+########################################################################
+#########################################################################
+###########################################################################
+############################################################################
+	      }
+				            }
+					    }
+    $_ = $_[0];
+    # -1: trailing \n generates an empty list element
+'} = '@"a';
+  -a char:       Is used only in conjunction with -T.
+					    $add_blank = 0;
+					    $add_blank  = 0;
+    archives in directory macros/latex/base/lppl.txt; either
+#   archives in directory macros/latex/base/lppl.txt; either
+    $arg = $_[0];
+    $arg =~ s/({|})/\@$1/g;
+    $arg =~ s/&/&amp;/g;
+    $arg =~ s/>/&gt;/g;
+    $arg =~ s/</&lt;/g;
+	    "Arguments of $1 are not contained in a single " .
+(@ARGV == 2) || die "$CMD: Expected two arguments: infile outfile. Try \`$CMD -h'.\n";
+  A tool to translate UNIX manual pages written with LaTeX into a format
+			 'August','September','October','November','December');
+'} = '&auml;';
+	$author  = $3;
+#              $author      author of the man page
+# Author:	Dr. J
+       /\\([a-zA-Z]+){([^}]*)}{([^}]*)}/
+       /\\([a-zA-Z]+){([^}]*)}/      && do {$s=$`;$m=$1;$a1=$2;$r=$';
+       /\\([a-zA-Z]+)\s*/            && do {$s=$`;$m=$1;$r=$';
+	         Background:
+		   before the additional space. By default this is a . (dot).
+        # \begin{Table}[width]{columns}
+                                           # by \rcsInfo
+        $chapter = $1;
+#              $chapter     chapter of the man page
+# check command line arguments
+					    check_Macro1 $m;
+                                            check_Macro2 $m;
+                                            check_Macro $m;
+					    check_Macro $m;
+# check option and arguments
+		# check whether this is the last word to be joined
+		# check whether we have to join some words
+    chop;
+    close (DEST);
+    close DEST;
+close DEST;
+			  # close list and list item
+                # close remaining lists
+    close TMP;
+$CMD=`basename $0`; chop ($CMD);
+                 -C 'name1 name2 ...'
+  -C name:       Enable conditional text \`name\'.
+	$cnt == 1 ||
+	    $cnt     = $2;
+	    $column       = $_[0];
+$columns      = 0; # nr of columns in the current table
+	    $columns      = $3;
+$cond_name{HTML}  = 1 if ($opt_H);
+$cond_name{LATEX} = 1 if ($opt_L);
+$cond_name{MAN}   = 1 if ($opt_M);
+	$cond_name{$name} = 1;
+$cond_name{TEXI}  = 1 if ($opt_T);
+  Copyright (C) 1998 Dr. J
+# Copyright (C) 1998 Dr. Juergen Vollmer
+$cur_list[0]  = "";# array, indexed with list_nest, indicates kind of list:
+	    $cur_list[$list_nest] = 'descr';
+	    $cur_list[$list_nest] = 'enum';
+	    $cur_list[$list_nest] = 'item';
+                        $cur_nesting = 1;
+                        $cur_nesting = 2;
+                        $cur_nesting = 3;
+	$date = $1;
+#              $date        date
+$DATE    = date2str ('$Date: 2008/11/11 07:21:14 $' =~ m|(\d+/\d+/\d+)|);
+$date =  date2str ($rcs_date);
+	$date = date2str ($rcs_date);
+	$date =~ s/~/$Macro->{'~'}/g;
+    # Definitionen von Verbatimbegin and Verbatimend
+# Descr:	Latex -->  MAN-page (groff -man), HTML and TexInfo;
+$DestFile = $ARGV[1];
+    # DestFile will be written in the postprocess
+	    die "$CMD: error in line $.: `%@% ELSE %@%' without an `%@% IF..'\n";
+	    die "$CMD: error in line $.: `%@% END-IF %@%' without an `%@% IF..'\n";
+	die "$CMD: Error in line $.: no such macro: \\$_[0]\n";
+	die "$CMD: in line $.\n           " .
+	    die "$CMD: The Synopsis section must be the first section after\n" .
+die "$CMD: you may give only one of the -H -T -M -L options\n" if ($opt_cnt > 1);
+	die "Error in line $.: no such macro: \\$_[0]\n";
+      /^$/                           && do {$add_blank = 0;
+    do $opt_t;
+ 				     && do {$s=$`;$m=$1;$a1=$2;$a2=$3;$r=$';
+ 				     && do {$s=$`;$m=$1;$a1=$2;$r=$';
+       /\\({|}|\$|_|#|&|-|%|,|\.|;)/ && do {$s=$`;$m=$1;$r=$';
+      /\$(<|>|<=|>=|=|<>)\$/         && do {$s=$`;$m=$1;$r=$';
+      /\$([^\$]*)\$/                 && do {$s=$`;$m=$1;$r=$';
+       /\\$|\\ /                     && do {$s=$`;$r=$';
+      /~/                            && do {$s=$`;$r=$';
+      /\\/                           && do {$s=$`;$r=$';
+      /\\\\/                         && do {$s=$`;$r=$';
+      /&/                            && do {$s=$`;$r=$';
+        } else {
+      } else {
+    } else {
+ } else {
+} else {
+	    } else {
+	} else {
+		} else {
+				            } else {
+					    } else {
+    } elsif ($cur_list[$list_nest] eq 'enum') {
+	} elsif (/\@\@INSERTION-POINT\@\@-TEXI-SEC\@\@ (\w+) (\d+)/) {
+	} elsif (/\@\@INSERTION-POINT\@\@-TEXI-TOP\@\@/) {
+	} elsif ((!$join || ($kind != 3)) && /^%+/) { # skip comments
+		} elsif ($kind == 2) { # braces
+		} elsif ($kind == 3) { # verb
+  } elsif ($opt_M) {
+  } elsif ($opt_T) {
+    } elsif (/^\s*\\begin{center}/) {
+    } elsif (/^\s*\\begin{description}/) {
+    } elsif (/^\s*\\begin{Description}(\[[^]]*\])?/) {
+    } elsif (/^\s*\\begin{enumerate}/) {
+    } elsif (/^\s*\\begin{itemize}/) {
+    } elsif (/^\s*\\begin{Name}{([^}]*)}{([^}]*)}{([^}]*)}{([^}]*)}{([^}]*)}/) {
+    } elsif (/^\s*((\\begin{Name|Table|Description})|(\\(sub)?section))/) {
+    } elsif (/^\s*\\begin{Table}(\[([^]]*)\])?{([^}]*)}/) {
+    } elsif (/^\s*\\begin{verbatim}/) {
+		    } elsif ($section_kind[$i] eq "section") {
+		    } elsif ($section_kind[$i] eq "subsection") {
+    } elsif (/^\s*\\end{center}/) {
+    } elsif (/^\s*\\end{description}/) {
+    } elsif (/^\s*\\end{enumerate}/) {
+    } elsif (/^\s*\\end{itemize}/) {
+    } elsif (/^\s*\\end{Name}/) {
+    } elsif (/^\s*\\end{Table}/) {
+    } elsif (/^\s*\\LatexManEnd/) {
+    } elsif (/^\s*%@%\s+ELSE\s+%@%\s*$/) {
+    } elsif (/^\s*%@%\s+END-IF\s+%@%\s*$/) {
+    } elsif (/^\s*\\setDate{([^}]*)}/) {
+    } elsif (/^\s*\\setDate{\\rcsInfoLongDate}/) {
+    } elsif (/^\s*\\setDate{\\today}/) {
+    } elsif (/^\s*\\setVersion{([^}]*)}/) {
+    } elsif (/^\s*\\(subsubsection|subsection|section){([^}]*)}/) {
+		} elsif (/\\verb/) {
+## Emacs specific:
+  email: Juergen.Vollmer@informatik-vollmer.de
+# emit an error message is the given macro does not exists.
+	# empty line marks a paragraph
+## End: ***
+    @EnglishMonthName = ('','January','February','March','April','May','June','July',
+$enum_nr      = 0; # current number of an enumeration
+	($@ eq "") || die "$CMD: error in line $.: wrong condition of `%@% IF.. ($@)\n";
+    exists $Macro->{$_[0]} ||
+    (exists $Macro1a->{$_[0]} && exists $Macro1b->{$_[0]}) ||
+    (exists $Macro2a->{$_[0]} && exists $Macro2b->{$_[0]} && exists $Macro2c->{$_[0]}) ||
+    exit (0);
+    exit 1;
+	    $first_column = 0;
+	  $first_column = 0;
+					    $first_column = 0;
+$first_column = 0; # true, if this is the first column in a table row
+	    $first_column = 1;
+						$first_column = 1;
+	$first_word = 0;
+	$first_word = 1;
+					    $first_word = 1;
+						$first_word = 1;
+$first_word   = 1; # true, if the next word to be processed is the first
+    foreach $c (split ("", $l)) {
+    foreach $name ((split (/\s/, $opt_C))) {
+	foreach $var (keys %cond_name) {
+    for ($i = 0; $i <= $max; $i++) {
+    for ($i = 0; $i <= $#parts; $i++) {
+    for ($i = 1; $i <= $columns; $i++) {
+		for ($i = 1; $i <= $section_cnt; $i++) {
+		for ($i = 2; $i <= $section_cnt; $i++) {
+		for my $i (1 .. $nesting) {
+			  for my $i ($cur_nesting .. $nesting-1) {
+$gen_date = `date`; chomp $gen_date;       # date when the output was generated
+# general processing
+getopts('o:t:VhMHTLC:D:a:'); # -D1: write each read line -D2: write each word
+                 Giving a blank (-a" ") supresses the indentation of a line.
+# global variables
+	    handle_conditional_text ("$_");
+	handle_conditional_text ("$_");
+# handle LaTeX output
+# handle non-LaTeX output
+      # handling of HTML table rows
+# handling of itemize/enumerate/description environments:
+      # handling of TexInfo specific stuff
+      # handling of troff table rows
+		    -H defines  HTML
+  -h:            Help.
+  -H:            Instead of producing output suitable for the man(1) command,
+                 HTML code is produced (despite of the name of the command).
+$htmlLetterCode{'
+$htmlMacro{'='}		= '=';
+$htmlMacro{'|'}		= '|';
+$htmlMacro{'_'}		= '_';
+$htmlMacro{'-'}		= '';
+$htmlMacro{','}		= ' ';
+$htmlMacro{'{'}		= '{';
+$htmlMacro{'}'}		= '}';
+$htmlMacro{'$'}		= '$';
+$htmlMacro{'#'}		= '#';
+$htmlMacro{'%'}		= '%';
+$htmlMacro1a{'Arg'} 		= '<i>';
+$htmlMacro1a{'Email'}		= '\n<tt>';
+$htmlMacro1a{'emph'} 		= '<em>';
+$htmlMacro1a{'File'} 		= '<tt>';
+$htmlMacro1a{'oArg'} 		= '[<i>';
+$htmlMacro1a{'oOpt'} 		= '[<b>';
+$htmlMacro1a{'Opt'} 		= '<b>';
+$htmlMacro1a{'Prog'} 		= '<tt>';
+$htmlMacro1a{'section'}   	= '\n<h2>';
+$htmlMacro1a{'subsection'}	= '\n<h4>';
+$htmlMacro1a{'subsubsection'}	= '\n<h5>';
+$htmlMacro1a{'textbf'} 		= '<strong>';
+$htmlMacro1a{'texttt'} 		= '<tt>';
+$htmlMacro1a{'underline'} 	= '<u>';
+$htmlMacro1a{'URL'}		= '\n<tt>';
+$htmlMacro1a{'verb'} 		= '<tt>';
+	$htmlMacro1b{'Arg'} 	= '</i>';
+	$htmlMacro1b{'Email'}	= '</tt>';
+	$htmlMacro1b{'emph'} 	= '</em>';
+	$htmlMacro1b{'File'} 	= '</tt>';
+	$htmlMacro1b{'oArg'}    = '</i>]';
+	$htmlMacro1b{'oOpt'} 	= '</b>]';
+	$htmlMacro1b{'Opt'} 	= '</b>';
+	$htmlMacro1b{'Prog'} 	= '</tt>';
+	$htmlMacro1b{'section'} = '</h2>\n';
+	$htmlMacro1b{'subsection'} = '</h4>\n';
+	$htmlMacro1b{'subsubsection'} = '</h5>\n';
+	$htmlMacro1b{'textbf'} 	= '</strong>';
+	$htmlMacro1b{'texttt'} 	= '</tt>';
+	$htmlMacro1b{'underline'}  = '</u>';
+	$htmlMacro1b{'URL'}	= '</tt>';
+	$htmlMacro1b{'verb'} 	= '</tt>';
+$htmlMacro2a{'Cmd'} 		  = '<em>';
+$htmlMacro2a{'Email'}		= '<a href ="mailto:';
+$htmlMacro2a{'oOptArg'} 	  = '[<b>';
+$htmlMacro2a{'oOptoArg'} 	  = '[<b>';
+$htmlMacro2a{'OptArg'} 		  = '<b>';
+$htmlMacro2a{'OptoArg'} 	  = '<b>';
+$htmlMacro2a{'section'}   	   = '\n<h2><a name="section_';
+$htmlMacro2a{'setlength'}	  = '';
+$htmlMacro2a{'subsection'}   	   = '\n<h4><a name="section_';
+$htmlMacro2a{'subsubsection'}         = '\n<h5><a name="section_';
+$htmlMacro2a{'URL'}		= '<a href ="';
+	$htmlMacro2b{'Cmd'} 	  = '</em>(';
+	$htmlMacro2b{'Email'}	= '"><tt>';
+	$htmlMacro2b{'oOptArg'}   = '</b><i>';
+	$htmlMacro2b{'oOptoArg'}  = '</b>[<i>';
+	$htmlMacro2b{'OptArg'} 	  = '</b><i>';
+	$htmlMacro2b{'OptoArg'}	  = '</b>[<i>';
+	$htmlMacro2b{'section'}    = '">';
+	$htmlMacro2b{'setlength'} = '';
+	$htmlMacro2b{'subsection'} = '">';
+	$htmlMacro2b{'subsubsection'} = '">';
+	$htmlMacro2b{'URL'}	= '"><tt>';
+	$htmlMacro2c{'Cmd'} 	  = ')';
+	$htmlMacro2c{'Email'}	= '</tt></a>';
+	$htmlMacro2c{'oOptArg'}   = '</i>]';
+	$htmlMacro2c{'oOptoArg'}  = '</i>]]';
+	$htmlMacro2c{'OptArg'} 	  = '</i>';
+	$htmlMacro2c{'OptoArg'}	  = '</i>]';
+	$htmlMacro2c{'section'}    = '</a></h2>\n';
+	$htmlMacro2c{'setlength'} = '';
+	$htmlMacro2c{'subsection'} = '</a></h4>\n';
+	$htmlMacro2c{'subsubsection'} = '</a></h5>\n';
+	$htmlMacro2c{'URL'}	= '</tt></a>';
+$htmlMacro{'&'}		= '&amp;';
+$htmlMacro{'Bar'} 	= '|';
+$htmlMacro{'\\'}	= '<br>\n';		# line break
+$htmlMacro{'Bs'} 	= '\\';
+$htmlMacro{'Bullet'}    = '*';
+$htmlMacro{'Circum'} 	= '^';
+$htmlMacro{'copyright'} = '&copy;';
+$htmlMacro{'Dollar'}    = '$';
+$htmlMacro{'Dots'} 	= '...';
+$htmlMacro{'ge'}         = '&gt;';
+$htmlMacro{'>='}	= '&gt;=';
+$htmlMacro{'>'}		= '&gt;';
+$htmlMacro{'hline'} 	= '';
+$htmlMacro{'HTMLbr'}	= '<br>\n';
+$htmlMacro{'itemsep'}   = '';
+$htmlMacro{'LaTeX'} 	= 'LaTeX';
+$htmlMacro{'LATEX'} 	= 'LaTeX';     # needed, since \LaTeX is contained in a
+$htmlMacro{'Lbr'} 	= '[';
+$htmlMacro{'LBr'} 	= '{';
+$htmlMacro{'leftarrow'}  = '&lt;--';
+$htmlMacro{'Leftarrow'}  = '&lt;==';
+$htmlMacro{'le'}         = '&lt;=';
+$htmlMacro{'<='}	= '&lt;=';
+$htmlMacro{'<'}		= '&lt;';
+$htmlMacro{'<>'}	= '&lt;&gt;';
+$htmlMacro{'MANbr'}	= '';
+$htmlMacro{'medskip'}	= '<br>\n';
+$htmlMacro{'~'}		= '&nbsp;';
+$htmlMacro{'noindent'} 	= '';
+$htmlMacro{'Percent'} 	= '%';
+$htmlMacro{'Rbr'} 	= ']';
+$htmlMacro{'RBr'} 	= '}';
+$htmlMacro{'rightarrow'} = '--&gt;';
+$htmlMacro{'Rightarrow'} = '==&gt;';
+$htmlMacro{'SPfirst'}    = $htmlMacro{'SP'};
+$htmlMacro{'SP'}	= '&nbsp;&nbsp;';
+$htmlMacro{'\\Tab'}	= '</td>\n</tr>\n';	# end of column in a table environment
+$htmlMacro{'TEXbr'}	= '';
+$htmlMacro{'TEXIbr'}	= '';
+$htmlMacro{'Tilde'} 	= '~';
+# $Id: latex2man,v 1.151 2008/11/11 07:21:14 vollmer Exp $
+	      if (/^$/) {
+  if (@_ <= 0) {
+    if (@_ <= 0 || length ($_[0]) == 0) {
+    if ($arg =~ /^\./) { print DEST '\\&' };
+	    # if blanks in a { .. }, \item[ .. ], \verb+ .. + then we have to joind words
+	if ($c eq "\n") {
+    if ($cur_list[$list_nest] eq 'item') {
+                    if ($cur_nesting < $nesting) {
+                    if ($cur_nesting == $nesting) {
+                    if ($cur_nesting > $nesting) {
+    if ($first_column == 0) {
+	  if ($first_column == 1) {
+					    if ($first_word) {
+	      if (/^\\hline/) {
+	if (/^\@\@INSERTION-POINT\@\@-TOC\@\@$/) {
+					    if ($inside_table) {
+      if ($inside_table == 1) {
+    if (!$inside_verb) {
+    if ($inside_verb) {
+	if ($i < $#parts) {
+		if (/\\item/) {
+    if ($item_nr[$list_nest] > 1) {
+    if ($join) {
+	        if (!$join) {
+	        if ($join) {
+	    if ($join) {
+		if ($kind == 1) { # item
+    if ($kind ne "subsubsection"){
+	if (length($parts[$i]) > 0) {
+						if (length ($r) > 0) {
+    if ($list_nest > 1) {
+    if ($manRS) {
+	if ($manRS == 0 && $list_nest > 1) {
+    if ($manRS == 1) {
+    if ($max < 0) {
+      if ($nesting == 0) {
+    if (!$newline) {
+	if ($newline) {
+    # if no option -H, -T, -M, -L is given, -M is the default
+if ($opt_a) {
+if ($opt_C) {
+if ($opt_cnt == 0) {
+    if ($opt_D == 1) {
+	if ($opt_D == 1) {
+  if ($opt_D == 2) {
+  if ($opt_H) {
+	    if ($opt_H) {
+if ($opt_H) {
+if ($opt_H || $opt_T) {
+if ($opt_L) {
+	    if ($opt_M) {
+if ($opt_M) {
+if ($opt_t) {
+	# if other chars than blanks are printed:
+    if (!$paragraph) {
+		    if ($section_kind[$i] eq "subsubsection") {
+        if (/^\s*\\end{verbatim}/) {
+	if ($skip[-1] == 1) {
+	if ($skip[-2] == 0) {
+    if (/^\s*\\rcsInfo \$(.*)\$/) {
+	if (/^\s*%@%\s/) {
+    if (/^\s*%@%\s+IF\s+([^%]*)\s+%@%\s*$/) {
+    if ((/^\s*%@%\s/) && ($inside_verb==0)) {
+	if (/^[\s]*$/) { # skip leading blanks
+	    if ($started == 1) {
+	if ($started == 1) {
+	if ($texiCenterLine) {
+    if (uc $sections[$cnt-1] eq "SYNOPSIS") {
+    if (uc $sections[$cnt] eq "SYNOPSIS") {
+	    if ($var ne "") {
+# If you find this software useful, please send me a postcard.
+  If you find this software useful, please send me a postcard from the place
+	    $inside_table = 0;
+$inside_table = 0; # true, if inside a table environment
+	    $inside_table = 1;
+		$inside_verb = 0;
+$inside_verb  = 0;  # true, if inside a verbatim environment
+	    $inside_verb = 1;
+	    interpret_line $_;
+    interpret_line "\\$kind\{$cnt\}\{$section\}";
+    interpret_line "\\$kind\{$section\}";
+    interpret_line "\\section\{NAME\}$rest";
+		    interpret_line "* " . $sections[$i] . "::";
+    interpret_line $title;
+					    interpret_word $a1;
+					    interpret_word $a2;
+    interpret_word $arg;
+    interpret_word $arg; Print "</dt>"; NL;
+	                                    interpret_word $m;
+	                                    interpret_word $r;
+					    interpret_word "\\$r";
+					    interpret_word $r;
+						    interpret_word $r;
+						interpret_word $r;
+                                            interpret_word $s;
+	                                    interpret_word $s;
+	   	                            interpret_word $s;
+					    interpret_word $s;
+	    interpret_word "$sections[$cnt], ";
+	    interpret_word "$sections[$cnt+1], ";
+	    interpret_word "$sections[$cnt-1], Top ";
+		    interpret_word $sections[$i];
+    interpret_word "$tool";
+		    interpret_word $word;
+	interpret_word $word;
+		    interpret_word $words[$i];
+				       # into uppercase
+$item_nr[0]   = 0; # array, indexed with list_nest, counts the number of \item in the
+                                            $item_nr[$list_nest] ++;
+	    $item_nr[$list_nest]  = 0;
+     /\\item\s*\[([^]]*)\]/          && do {$s=$`;$m=$1;$r=$';
+      /\\item\s*/                    && do {$s=$`;$r=$';
+  $_ = join " ", @_;
+		    $join = $cnt1 != $cnt2 | $cnt1 == 0;
+		    $join = $cnt % 2 != 0;
+		    $join = index ($_, "]") == -1;
+		    $join = index ($_, "+") == -1;
+		    $join = $#x == -1;
+		    $join = $#x != $#y;
+#                    Juergen.Vollmer@informatik-vollmer.de
+        $kind    = $1;
+	    $kind    = $1;
+		    $kind = 1;
+		    $kind = 2;
+		    $kind = 3;
+# Language:	PERL (>= 5.0)
+	    last;
+	$last_cond_clause = "ELSE";
+	$last_cond_clause = "END-IF";
+	$last_cond_clause = "IF";
+	($last_cond_clause =~ /IF/ && ($#skip > 0)) ||
+                                            last SWITCH;
+					    last SWITCH;
+                                            # LaTeX explicit blank \ will be
+       # LaTeX macros with one argument
+# LaTeX macros with one argument
+       # LaTeX macros without an argument:
+# LaTeX macros without arguments
+       # LaTeX macros with two arguments
+# LaTeX macros with two arguments
+      # LaTeX Math
+		    -L defines  LATEX
+])/$LetterCode->{"$1"}/go;
+$LetterCode = \%{$Prefix . "LetterCode"};
+  License:
+# License:
+	    "line.\n           " .
+                   # list
+	    $list_nest--;
+	    $list_nest++;
+$list_nest    = 0; # counts nesting of itemize/enumerate/description envrionments
+## Local Variables: ***
+  -L:            Output the LaTeX source. Useful in conjunctin with the -C
+    $l =~ s/\\n/\n/g;
+$Macro1a = \%{$Prefix . "Macro1a"};
+$Macro1b = \%{$Prefix . "Macro1b"};
+$Macro2a = \%{$Prefix . "Macro2a"};
+$Macro2b = \%{$Prefix . "Macro2b"};
+$Macro2c = \%{$Prefix . "Macro2c"};
+	$Macro->{'Date'} = $date;
+$Macro   = \%{$Prefix . "Macro"};
+$Macro->{'today'}  = $date;
+	$Macro->{'today'}  = $date;
+	$Macro->{'Version'} = $version;
+       /\\(MANbr|TEXIbr|HTMLbr)\s*/  && do {$s=$`;$m=$1;$r=$';
+$manLetterCode{'
+$manMacro{'~'}		= ' ';
+$manMacro{'<='}		= '<=';
+$manMacro{'<>'}		= '<>';
+$manMacro{'<'}		= '<';
+$manMacro{'='}		= '=';
+$manMacro{'>='}		= '>=';
+$manMacro{'>'}		= '>';
+$manMacro{'|'}		= '|';
+$manMacro{'_'}		= '_';
+$manMacro{'-'}		= '';
+$manMacro{','}		= ' ';
+$manMacro{'{'}		= '{';
+$manMacro{'}'}		= '}';
+$manMacro{'$'}		= '$';
+$manMacro{'&'}		= '&';
+$manMacro{'#'}		= '#';
+$manMacro{'%'}		= '%';
+$manMacro1a{'Arg'} 	 	= '\fI';
+$manMacro1a{'Email'}		= '\fB';
+$manMacro1a{'emph'} 	 	= '\fI';
+$manMacro1a{'File'} 	 	= '';
+$manMacro1a{'oArg'} 	 	= '[\fI';
+$manMacro1a{'oOpt'} 	 	= '[\fB';
+$manMacro1a{'Opt'} 	 	= '\fB';
+$manMacro1a{'Prog'} 	 	= '';
+$manMacro1a{'section'}   	= '\n.SH ';
+$manMacro1a{'subsection'}	= '\n.SS ';
+$manMacro1a{'subsubsection'}	= '\n.SS ';
+$manMacro1a{'textbf'} 	 	= '\fB';
+$manMacro1a{'texttt'} 	 	= '';
+$manMacro1a{'underline'} 	= '\n.ul\n';
+$manMacro1a{'URL'}		= '\fB';
+$manMacro1a{'verb'} 	 	= '';
+	$manMacro1b{'Arg'} 	= '\fP';
+	$manMacro1b{'Email'}	= '\fP';
+	$manMacro1b{'emph'} 	= '\fP';
+	$manMacro1b{'File'} 	= '';
+	$manMacro1b{'oArg'} 	= '\fP]';
+	$manMacro1b{'oOpt'} 	= '\fP]';
+	$manMacro1b{'Opt'} 	= '\fP';
+	$manMacro1b{'Prog'} 	= '';
+	$manMacro1b{'section'}  = '\n';
+	$manMacro1b{'subsection'} = '';
+	$manMacro1b{'subsubsection'} = '';
+	$manMacro1b{'textbf'} 	= '\fP';
+	$manMacro1b{'texttt'} 	= '';
+	$manMacro1b{'underline'}= '\n';
+	$manMacro1b{'URL'}	= '\fP';
+	$manMacro1b{'verb'} 	= '';
+$manMacro2a{'Cmd'} 		= '\fI';
+$manMacro2a{'oOptArg'} 		= '[\fB';
+$manMacro2a{'oOptoArg'} 	= '[\fB';
+$manMacro2a{'OptArg'} 		= '\fB';
+$manMacro2a{'OptoArg'} 		= '\fB';
+$manMacro2a{'setlength'}	= '';
+	$manMacro2b{'Cmd'} 	= '\fP(';
+	$manMacro2b{'oOptArg'} 	= '\fP\fI';
+	$manMacro2b{'oOptoArg'}	= '\fP[\fI';
+	$manMacro2b{'OptArg'} 	= '\fP\fI';
+	$manMacro2b{'OptoArg'} 	= '\fP[\fI';
+	$manMacro2b{'setlength'}= '';
+	$manMacro2c{'Cmd'} 	= ')';
+	$manMacro2c{'oOptArg'} 	= '\fP]';
+	$manMacro2c{'oOptoArg'}	= '\fP]]';
+	$manMacro2c{'OptArg'} 	= '\fP';
+	$manMacro2c{'OptoArg'} 	= '\fP]';
+	$manMacro2c{'setlength'}= '';
+$manMacro{'Bar'} 	= '|';
+$manMacro{'Bs'} 	= '\\\\';
+$manMacro{'Bullet'}     = '*';
+$manMacro{'Circum'} 	= '^';
+$manMacro{'copyright'} 	= '(C)';
+$manMacro{'Dollar'}     = '$';
+$manMacro{'Dots'} 	= '\&...\n';
+$manMacro{'ge'}         = '>=';
+$manMacro{'hline'} 	= '\n_';
+$manMacro{'HTMLbr'}	= '';
+$manMacro{'itemsep'}    = ' ';
+$manMacro{'LaTeX'} 	= 'LaTeX';
+$manMacro{'LATEX'} 	= 'LaTeX';     # needed, since \LaTeX is contained in a
+$manMacro{'Lbr'} 	= '[';
+$manMacro{'LBr'} 	= '{';
+$manMacro{'le'}         = '<=';
+$manMacro{'leftarrow'}  = '<--';
+$manMacro{'Leftarrow'}  = '<==';
+$manMacro{'MANbr'}	= '\n.br\n';
+$manMacro{'medskip'}	= '\n';
+$manMacro{'\\'}		= '\n.br';	# line break
+$manMacro{'noindent'} 	= '';
+$manMacro{'Percent'} 	= '%';
+$manMacro{'Rbr'} 	= ']';
+$manMacro{'RBr'} 	= '}';
+$manMacro{'rightarrow'} = '-->';
+$manMacro{'Rightarrow'} = '==>';
+$manMacro{'SP'}         = '\fB \fP';  # hack hack this works even on
+$manMacro{'SPfirst'}    = $manMacro{'SP'};
+$manMacro{'\\Tab'}	= '\nT}';       # end of column in a table environment
+$manMacro{'TEXbr'}	= '';
+$manMacro{'TEXIbr'}	= '';
+$manMacro{'Tilde'} 	= '~';
+    manParagraph;
+    $manRS      = 0;
+	$manRS == 0;
+$manRS        = 0; # true, if for Man a .RS was given after a \item
+	    $manRS = 1;
+		    -M defines  MAN
+		# Menu of sections for texi
+## mode: perl ***
+  -M:            Produce output suitable for the man(1) command (default).
+  my $add_blank = 1;  # if true, add a blank after the word
+    my $arg = $_[0];
+    my $c;
+		    my $cnt1 = tr/[/[/;
+		    my $cnt2 = tr/]/]/;
+    my ($cnt, $kind, $section) = @_;
+		    my $cnt = tr/+/+/;
+    my $columns = $_[0];
+my %cond_name;
+                    my $cur_nesting = 0;
+    my $i;
+    my $join  = 0;   # true, if words must be joined
+    my $kind  = 0;   # 1: item[ .. ], 2: { .. }, 3: \verb+ .. +
+my $last_cond_clause = "";
+    my $line  = $_[0]; chomp $line;
+	    my $line = $_; chop $line;
+	my $line = $_; chop $line;
+    my $l = shift;
+    my $max   = $#words;
+    my $name;
+    my ($name, $chapter, $author, $tool) = @_;
+                my $nesting     = 0; # nesting of section/subsection/subsubsection
+    my @parts = split /\\n/, $x, -1;
+	my $prog = "";
+	my $prog_cond = $1;
+	my ($rcs_id,$rcs_file,$rcs_revision,
+	my $skip = eval $prog;
+	    my $skip = $skip[-1];
+	my $skip = $skip[-1];
+my @skip;       # stack of skip-flags, 1: skip, 0: don't skip
+  my ($s,$m,$a1,$a2,$r); # start, match/macro, argument1, argument2
+	my $var;
+    my $width   = $_[1];
+    my @words = split(/\s+/,$line);
+    my $word  = "";  # the joined word
+    my $x = $_[0];
+		    my @x = $_ =~ /[^\\]{/g;
+		    my @x = $_ =~ /[^\\]}/g;
+    my ($Year,$Month,$Day) = split (/\//,$_[0]);
+		    my @y = $_ =~ /[^\\]}/g;
+	$name    = $2;
+#              $name        name of the man page
+#              $Name        name of the man page in uppercase
+	$Name    = uc $name;
+  $nesting --;
+  $nesting ++;
+$nesting      = 0; # count recursive calls of interpret_word
+                    $nesting = $cur_nesting;
+    $newline             = 0;
+	    $newline = 0;
+					    $newline = 0;
+$newline      = 0; # true, if the last output was a newline char
+	$newline = 1;
+                   new line. In order to produce some additional space before
+	    next;
+    next if ($skip[-1] == 1);
+	next if ($skip[-1] == 1);
+	    NL;
+					    NL;
+    NL; Print "</dd>\n</dl>"; NL;
+	NL; Print "</dd>"; NL;
+	NL; print DEST "\n";
+    NL; Print "<dl compact>"; NL;
+    NL; printf DEST ".\\\" NOTE: This file is generated, DO NOT EDIT.\n";
+    NL; Print "</li>\n</ol>"; NL;
+    NL; Print "</li>\n</ul>"; NL;
+    NL; Print "<ol compact>"; NL;
+	NL; Print "<p>"; NL;
+    NL; Print '<pre>'; NL;
+    NL; Print "</table>"; NL;
+    NL; Print "<table>"; NL:
+    NL; Print "<ul compact>"; NL;
+    # normalize special characters
+                 Note: only for the first \SP of a series that char is printed.
+    # nothing
+	    # nothing
+'} = '@"o';
+                   #       of a new paragraph or after a line break.
+    of the LaTeX Project Public License Distributed from CTAN
+#   of the LaTeX Project Public License Distributed from CTAN
+			  # open a new list
+    open (DEST, ">$DestFile") || die "$CMD: Can't open file \`$DestFile' for writing.\n";
+    open (DEST, ">$tmp")      || die "$CMD: Can't open file \`$tmp' for writing.\n";
+open (SRC,  "<$SrcFile")  || die "$CMD: Can't open file \`$SrcFile' for reading.\n";
+    open (TMP, "<$tmp")       || die "$CMD: Can't open file \`$tmp' for reading.\n";
+$opt_cnt = 0;
+$opt_cnt++ if ($opt_H);
+$opt_cnt++ if ($opt_L);
+$opt_cnt++ if ($opt_M);
+$opt_cnt++ if ($opt_T);
+($opt_h)     && usage;
+                 option.
+    $opt_M = 1;
+      ($opt_M == 1) && /((^\.|')+)/  && do {$s=$`;$m=$1;$r=$';
+($opt_V)     && print "Version: $VERSION, $DATE\n";
+'} = '&ouml;';
+	    # outer IF is not skipped, hence consider this IF
+    $paragraph = 0;
+$paragraph    = 0; # true, if the last output was a paragraph marker
+	$paragraph = 1;
+	$paragraph  = 1;
+	        $parts[$i] =~ s/-/\\-/g;
+	        $parts[$i] =~ s/\\/\\\\/g;
+	    $parts[$i] =~ s/^\s+//;
+	pop @skip;
+	    &{$Prefix . "CenterEnd"};
+	    &{$Prefix . "CenterStart"};
+	    &{$Prefix . "DescriptionEnd"};
+	    &{$Prefix . "DescriptionStart"};
+&{$Prefix . "End"};
+	    &{$Prefix . "EnumEnd"} ;
+	    &{$Prefix . "EnumStart"} ;
+    $Prefix  = "html";
+# $Prefix is used to construct procedure and variable names
+					    &{$Prefix . "Item"};
+	    &{$Prefix . "ItemEnd"} ;
+	    &{$Prefix . "ItemStart"} ;
+					    &{$Prefix . "ItemWithArg"} ($m);
+    $Prefix  = "man";
+	&{$Prefix . "NameEnd"} ($name, $chapter, $author, $tool);
+	&{$Prefix . "NameStart"} ($name, $chapter, $author, $tool, $title);
+	&{$Prefix . "Paragraph"};
+	    &{$Prefix . "Section"} ($section_cnt, $kind, $section);
+	&{$Prefix . "Start"}     ($name, $chapter, $author, $tool, $title);
+	    &{$Prefix . "TableEnd"} ($columns);
+					    &{$Prefix . "TableSep"};
+	    &{$Prefix . "TableStart"} ($columns, $2);
+    $Prefix  = "texi";
+		&{$Prefix . "VerbatimEnd"};
+	    &{$Prefix . "VerbatimLine"} ($_);
+	    &{$Prefix . "VerbatimStart"};
+					    &{$Prefix . "Verb"} ($m);
+	  print "     ";
+	  print "**** ";
+      Print "$_";
+	                                    Print " ";
+	Print " " .0.9/$columns ;
+		    Print "</a>";
+    Print $arg
+    Print $arg;
+    Print '@author ' . "$author";				NL;
+    Print "  -- Author of $CMD: Juergen.Vollmer\@informatik-vollmer.de --";NL;
+	Print '.B *';
+    Print "<body bgcolor=\"white\">"; 					NL;
+    Print "</body>"; 						 NL;
+    Print '@bye'; 						NL;
+    Print '@c %**end of header';				NL;
+    Print '@c Manual page created with' ." $CMD on $gen_date>";	NL;
+    Print '@c NOTE: This file is generated, DO NOT EDIT.'; 	NL;
+    Print '@c %**start of header';				NL;
+    Print "<dd>";
+  print DEST "$_";
+	    print DEST $_;
+	print DEST $_;
+	    print DEST "$c";
+	    print DEST "\@center ";
+					    print DEST "\\&$m";
+    print DEST ".$_\@*\n";
+    Print ".de Vb\n.ft CW\n.nf\n..\n.de Ve\n.ft R\n\n.fi\n..\n";
+    Print '@dircategory Man-pages';				NL;
+    # Print '@dircategory ' .$tool;				NL;
+    Print '@direntry';						NL;
+    Print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">"; 	NL;
+    Print "<dt>";
+print <<'END';
+    Print '@end direntry';					NL;
+		Print '@end menu\n';
+    Print '@end titlepage';					NL;
+    # printf "\`$_[0]'\n";
+    printf DEST ".\\\" Manual page created with $CMD on $gen_date\n";
+	printf DEST "\n";
+    printf DEST ".\\\" NOTE: This file is generated, DO NOT EDIT.\n";
+	    printf DEST "%s", $parts[$i];
+    printf DEST "\'\\\" t\n";   # process with tbl
+#    printf "skip-stack: %s;\t top = %s\n", join (", ", @skip), $skip[-1];
+	# printf "\`$words[$i]'";
+    Print "<h1 align=center>";						NL;
+    Print "</h1>"; 							NL;
+    Print "<h4 align=center>$date</h4>"; 				NL;
+    Print "<h4 align=center>"; interpret_word $author; Print "</h4>"; 	NL;
+    Print "<h4 align=center>Version $version</h4>"; 			NL;
+    Print "<head><title>$Name</title></head>"; 				NL;
+    Print "</html>"; 						 NL;
+    Print "<html>";							NL;
+  Print " " if ($nesting == 0 && $add_blank);
+    Print '\input texinfo   @c -*-texinfo-*-'; 			NL;
+    Print "\" \""; interpret_word "$tool"; Print "\""; NL;
+                    # print item
+	Print $item_nr[$list_nest] . '.';
+	Print " l";
+#    print "$last_cond_clause: skip = $skip[-1]\n";
+	Print '<li>';
+		    Print "<li><a href=\"#section_$i\">";
+		            Print '</li>\n';
+		          Print '</li>\n';
+		    Print '</li>\n';
+	Print '</li>\n';
+	    print "--- \`$line'\n";
+	print "--- \`$line'\n";
+	Print '<li value =' . $item_nr[$list_nest] .'>';
+    PrintM ' ';
+    Print "<!-- Manual page created with $CMD on $gen_date --"; 	NL;
+		Print '@menu\n';
+	                                    PrintM $Macro->{'~'};
+						PrintM $Macro->{'\\'};
+					    PrintM $Macro1a->{$m};
+					    PrintM $Macro1a->{'verb'};
+					    PrintM $Macro1b->{$m};
+					    PrintM $Macro1b->{'verb'};
+					    PrintM $Macro2a->{$m};
+					    PrintM $Macro2b->{$m};
+					    PrintM $Macro2c->{$m};
+                                            PrintM $Macro->{$m};
+	                                    PrintM $Macro->{$m};
+					    PrintM $Macro->{$m};
+						PrintM $Macro->{"SP"};
+						PrintM $Macro->{"SPfirst"};
+						PrintM $Macro->{'\\Tab'};
+    PrintM '\n.ce 0\n';
+    PrintM '\n.ce 100\n';
+      print "\`$_'\n";
+    Print '.\n';
+    Print '\n';
+    Print '\n<div align=center>\n';
+    Print '\n</div>\n';
+    Print '\n@end enumerate\n';
+    Print '\n@end itemize\n';
+    Print '\n@end multitable\n';
+    Print '\n@end table\n';
+    Print '\n@enumerate\n';
+		Print '\n<h3>Table of Contents</h3>\n';
+	Print '\n@@INSERTION-POINT@@-TEXI-SEC@@' . " $kind $cnt" . '\n';
+    Print '\n@@INSERTION-POINT@@-TEXI-TOP@@';			NL;
+    Print '\n@@INSERTION-POINT@@-TOC@@\n';
+	Print '\n@@INSERTION-POINT@@-TOC@@\n';
+    Print '\n@item ';
+	      Print '\n@item ';
+    Print '\n@itemize @bullet\n';
+    Print '\n@item\n';
+    Print '@*'; NL
+    Print '\n@multitable @columnfractions ';
+	    Print '@node ' ;
+	    Print '@node Top, ' . $sections[2] . ', (dir), (dir)\n';
+    Print "<!-- NOTE: This file is generated, DO NOT EDIT. -->"; NL;
+    Print "  -- NOTE: This file is generated, DO NOT EDIT. -->"; 	NL;
+	Print '\n.PP\n';
+#	print "\n**** [$prog]\n";
+	Print '\n.RE\n';
+	    Print '\n.RS';
+	Print '\n.RS\n';
+    Print '\n@table @samp\n';
+    Print '\n.TE\n';
+    Print '\n.TP\n';
+	      Print '\n<tr>\n<td>';
+		  Print '\n<tr><td colspan=' . $columns . '><hr></td></tr>\n';
+    Print '\nT}&T{\n';
+                          Print '\n<ul>\n'
+    Print '\n.Vb\n';
+# print only for Macro command text
+    Print '</pre>'; NL;
+	    # print section header for texi
+    Print '@setfilename ' . "$name.info";			NL;
+    Print '@settitle ' . "$name";				NL;
+#	print "**** skip=$skip\n";
+    Print '@subtitle ' . "$tool";				NL;
+    Print '@tab ';
+    Print 'tab(&);\n';
+    Print '<td>';
+	Print '</td>\n';
+    Print ".TH \"$Name\" \"$chapter\" \"". $date ."\" \"";
+    Print '@title ' . "$name";					NL;
+    Print '@titlepage';						NL;
+	      Print 'T{\n';
+    Print '@top ' . "$name";					NL;
+    Print '.TS\n';
+    Print "* " . (ucfirst $name) . ": ($name). Its Man-Page ";	NL;
+		            Print '</ul>\n';
+		    Print '</ul>\n';
+    Print '.Ve\n';
+    print "  Version $VERSION, $DATE.\n";
+    Print "w($width)" if ($width);
+# processing for HTML
+# processing for MAN
+# processing for TexInfo
+	# produce a program, which evaluates the condition:
+	$prog_cond    =~ s/(\w+)/\$$1/g;
+		$prog .= "my \$$var = 1; "      # declare set names,
+	$prog .= "return ($prog_cond) ? 0 : 1;";
+# Project: 	Documentation Tools
+push @skip, 0;  # synthetic "outer most" IF, don't skip
+	    push @skip, 1;
+	    push @skip, $skip;
+$rcs_date=`date '+%Y/%m/%d/'`;             # date of the man-page, overwritten
+	 $rcs_date,$rcs_time,$rcs_owner,$rcs_status,$rcs_locker) = split(/\s/,$1);
+# reading of translations for user macros
+# read sections
+  Reads infile, writes outfile.
+	    "Remember: all arguments of a macro must be on the same line.\n";
+    # remove {, } around Umlaute
+					    # represented as a single \ at
+require 5.0004_03;
+	$rest    = $';
+		  return;
+	return;
+    return $Day . " " . $EnglishMonthName[$Month] . " " . $Year;
+rgen Vollmer, Juergen.Vollmer@informatik-vollmer.de
+rgen Vollmer, Viktoriastr. 15, D-76133 Karlsruhe
+    s/({|}|@| )/@\1/g;
+    s/{(\\".)}/\1/g;      # "
+    s/\\"a/
+			  # same level, close list item
+  s/&/&amp;/g;
+	$section = $2;
+	$section_cnt ++;
+	$section_cnt = 0;
+$section_cnt  = 0; # Index into $sections
+#$section_kind     # Array of section kind (subsection/section)
+	$section_kind[$section_cnt] = $kind;
+        $section = "Name";
+                                       # section name (which are transposed
+#$sections[0]      # Array of all sections
+	$sections[0] = $section;
+    $sections[0] = "Top";
+	$sections[$cnt-1] = "Top";   # The predecessor node is Top and not SYNOPSIS
+	    $section = $sections[$cnt];
+	$sections[$section_cnt]     = $section;
+       $section = uc $section;
+					    # set $first_word to true
+  s/-/\\-/g;
+  s/\\/\\\\/g;
+	  s'@'@@'g;
+  s/>/&gt;/g;
+	($#skip == 0) &&
+	    $skip[-1] = $skip[-1]? 0 : 1;
+	    # skip leading blanks after a newline
+	    # skip this text, since outer IF skips
+  s/</&lt;/g;
+    s/\\"o/
+# some math
+       # Special Handling of Email and URL LaTeX macros with one argument
+       # Special handling of some LaTeX macros without an argument
+    # split date
+       /\\SP\s*/                     && do {$s=$`;$m=$1;$r=$';
+$SrcFile  = $ARGV[0];
+'} = '@ss{}';
+     /\\(".|ss)/                     && do {$s=$`;$m=$1;$r=$'; #"
+    s/\\ss/
+    s/{(\\ss)}/\1/g;
+$started     = 0;
+	$started = 1;
+    s/\\"u/
+sub check_Macro
+sub check_Macro1
+sub check_Macro2
+sub date2str
+sub date2str;
+sub handle_conditional_text
+sub htmlCenterEnd
+sub htmlCenterStart
+sub htmlDescriptionEnd
+sub htmlDescriptionStart
+sub htmlEnd
+sub htmlEnumEnd
+sub htmlEnumStart
+sub htmlItem
+sub htmlItemEnd
+sub htmlItemStart
+sub htmlItemWithArg
+sub htmlNameEnd
+sub htmlNameStart
+sub htmlParagraph
+sub htmlSection
+sub htmlStart
+sub htmlTableEnd
+sub htmlTableSep
+sub htmlTableStart
+sub htmlVerb
+sub htmlVerbatimEnd
+sub htmlVerbatimLine
+sub htmlVerbatimStart
+sub interpret_line
+sub interpret_line;
+sub interpret_word
+sub interpret_word;
+sub manCenterEnd
+sub manCenterStart
+sub manDescriptionEnd
+sub manDescriptionStart
+sub manEnd
+sub manEnumEnd
+sub manEnumStart
+sub manItem
+sub manItemEnd
+sub manItemStart
+sub manItemWithArg
+sub manNameEnd
+sub manNameStart
+sub manParagraph
+sub manSection
+sub manStart
+sub manTableEnd
+sub manTableSep
+sub manTableStart
+sub manVerb
+sub manVerbatimEnd
+sub manVerbatimLine
+sub manVerbatimStart
+sub Print
+sub Print;
+sub PrintM
+sub PrintM;
+sub texiCenterEnd
+sub texiCenterStart
+sub texiDescriptionEnd
+sub texiDescriptionStart
+sub texiEnd
+sub texiEnumEnd
+sub texiEnumStart
+sub texiItem
+sub texiItemEnd
+sub texiItemStart
+sub texiItemWithArg
+sub texiNameEnd
+sub texiNameStart
+sub texiParagraph
+sub texiSection
+sub texiStart
+sub texiTableEnd
+sub texiTableSep
+sub texiTableStart
+sub texiVerb
+sub texiVerbatimEnd
+sub texiVerbatimLine
+sub texiVerbatimStart
+sub usage
+  SWITCH: {
+'} = '&szlig;';
+		# Table of contents for HTML
+                    -T defines  TEXI
+    $texiCenterLine      = 0;
+$texiCenterLine = 0; # true, only in TEXI-mode  if a line must be centered
+    $texiCenterLine      = 1;
+$texiLetterCode{'
+$texiMacro{'~'}		= ' ';
+$texiMacro{'<='}	= '<=';
+$texiMacro{'<>'}	= '<>';
+$texiMacro{'<'}		= '<';
+$texiMacro{'='}		= '=';
+$texiMacro{'>='}	= '>=';
+$texiMacro{'>'}		= '>';
+$texiMacro{'|'}		= '|';
+$texiMacro{'_'}		= '_';
+$texiMacro{'-'}		= '@-';
+$texiMacro{','}		= ' ';
+$texiMacro{'{'}		= '@{';
+$texiMacro{'}'}		= '@}';
+$texiMacro{'$'}		= '$';
+$texiMacro{'&'}		= '&';
+$texiMacro{'#'}		= '#';
+$texiMacro{'%'}		= '%';
+$texiMacro1a{'Arg'} 		= '@var{';	$texiMacro1b{'Arg'} 	   = '}';
+$texiMacro1a{'Email'}		= '@email{';    $texiMacro1b{'Email'}	  = '}';
+$texiMacro1a{'emph'} 		= '@emph{';	$texiMacro1b{'emph'} 	   = '}';
+$texiMacro1a{'File'} 		= '@file{';	$texiMacro1b{'File'} 	   = '}';
+$texiMacro1a{'oArg'} 		= '[ @var{';	$texiMacro1b{'oArg'} 	   = '} ]';
+$texiMacro1a{'oOpt'} 		= '[ ';		$texiMacro1b{'oOpt'} 	   = ' ]';
+$texiMacro1a{'Opt'} 		= '';		$texiMacro1b{'Opt'} 	   = '';
+$texiMacro1a{'Prog'} 		= '';		$texiMacro1b{'Prog'} 	   = '';
+$texiMacro1a{'section'}   	= '\n@section ';    $texiMacro1b{'section'}    = '\n';
+$texiMacro1a{'subsection'}	= '\n@subsection '; $texiMacro1b{'subsection'} = '\n';
+$texiMacro1a{'subsubsection'}	= '\n@subsubsection '; $texiMacro1b{'subsubsection'} = '\n';
+$texiMacro1a{'textbf'} 		= '@strong{';	$texiMacro1b{'textbf'} 	   = '}';
+$texiMacro1a{'texttt'} 		= '@t{';	$texiMacro1b{'texttt'} 	   = '}';
+$texiMacro1a{'underline'} 	= '';		$texiMacro1b{'underline'}  = '';
+$texiMacro1a{'URL'}		= '@url{';      $texiMacro1b{'URL'}	  = '}';
+$texiMacro1a{'verb'} 		= '@t{';	$texiMacro1b{'verb'} 	   = '}';
+$texiMacro2a{'Cmd'} 		  = '';
+$texiMacro2a{'oOptArg'} 	  = '[ ';
+$texiMacro2a{'oOptoArg'} 	  = '[ ';
+$texiMacro2a{'OptArg'} 		  = '';
+$texiMacro2a{'OptoArg'} 	  = '';
+$texiMacro2a{'setlength'}	  = '';
+	$texiMacro2b{'Cmd'} 	  = '(';
+	$texiMacro2b{'oOptArg'}   = '@var{';
+	$texiMacro2b{'oOptoArg'}  = '[@var{';
+	$texiMacro2b{'OptArg'} 	  = '@var{';
+	$texiMacro2b{'OptoArg'}   = '[@var{';
+	$texiMacro2b{'setlength'} = '';
+	$texiMacro2c{'Cmd'} 	  = ')';
+	$texiMacro2c{'oOptArg'}   = '} ]';
+	$texiMacro2c{'oOptoArg'}  = '}] ]';
+	$texiMacro2c{'OptArg'} 	  = '}';
+	$texiMacro2c{'OptoArg'}   = '}]';
+	$texiMacro2c{'setlength'} = '';
+$texiMacro{'Bar'} 	= '|';
+$texiMacro{'Bs'} 	= '\\';
+$texiMacro{'Bullet'}    = '*';
+$texiMacro{'Circum'} 	= '^';
+$texiMacro{'copyright'} = '@copyright{}';
+$texiMacro{'Dollar'}    = '$';
+$texiMacro{'Dots'} 	= '...';
+$texiMacro{'ge'}         = '>=';
+$texiMacro{'hline'} 	= '';
+$texiMacro{'HTMLbr'}	= '';
+$texiMacro{'itemsep'}    = '';
+$texiMacro{'LaTeX'} 	 = 'LaTeX';
+$texiMacro{'LATEX'} 	 = 'LaTeX';    # needed, since \LaTeX is contained in a
+$texiMacro{'Lbr'} 	= '[';
+$texiMacro{'LBr'} 	= '@{';
+$texiMacro{'le'}         = '<=';
+$texiMacro{'leftarrow'}  = '<--';
+$texiMacro{'Leftarrow'}  = '<==';
+    $texiMacro{'\\'}     = '@*'; # line break
+$texiMacro{'MANbr'}	= '';
+$texiMacro{'medskip'}	= '@sp 2\n';
+    $texiMacro{'\\'}     = '@*\n';	# line break
+$texiMacro{'\\'}	= '@*\n';	# line break
+$texiMacro{'noindent'} 	= '\n@noindent\n';
+$texiMacro{'Percent'} 	= '%';
+$texiMacro{'Rbr'} 	= ']';
+$texiMacro{'RBr'} 	= '@}';
+$texiMacro{'rightarrow'} = '-->';
+$texiMacro{'Rightarrow'} = '==>';
+$texiMacro{'SP'}	= '@ @ ';
+  $texiMacro{'SPfirst'} = '.@ ';
+  $texiMacro{'SPfirst'} = $opt_a . '@ ';
+$texiMacro{'\\Tab'}	= '\n';		# end of column in a table environment
+$texiMacro{'TEXbr'}	= '';
+    $texiMacro{'TEXIbr'} = '@*';
+    $texiMacro{'TEXIbr'} = '@*\n';
+$texiMacro{'TEXIbr'}	= '@*\n';
+$texiMacro{'Tilde'} 	= '~';
+		 TEXINFO code is produced (despite of the name of the command).
+		   TEXINFO ignores all blanks before the first word on a
+	    # Texi-top node
+    # thanks to Andrew Anderson <aja@emulab.ee.mu.oz.au>
+	           that word (using \SP) some character has to be printed
+				      # the beginning of a line
+		 The \`char' specifies an alternative for that first character.
+					    # the end of the word
+                 The following names are defined automatically:
+    This program can be redistributed and/or modified under the terms
+#   This program can be redistributed and/or modified under the terms
+  -T:            Instead of producing output suitable for the man(1) command,
+	$title   = $5;
+$tmp = "/tmp/$CMD.$$";
+                 To enable more than one conditional name use quotes:
+	$tool    = $4;
+#              $tool        info about the tool set, $name is part of
+	# transform special characters
+# Translation for LaTeX macros for HTML
+# Translation for LaTeX macros for MAN
+# Translation for LaTeX macros for TexInfo
+# translation of LaTeX macros without, with one and with two arguments
+# translation of special characters
+# translations of special characters
+		"\t the Name environment\n";
+  -t transfile:  Translation for user defined LaTeX macros.
+'} = '@"u';
+		    				# undeclared ones get value 0
+  understood by the UNIX man(1)-command.
+    unless ($x =~ /^\s*$/) {
+    unlink $tmp;
+       /\\(URL|Email){([^}]*)}/ && ($opt_H)
+usage: latex2man [-t transfile]  [-HTML] [-C name] [-h] [-V] infile outfile.
+use Getopt::Std;
+# use strict 'vars';
+#!/usr/bin/env perl
+'} = '&uuml;';
+                   # values are:  'enum' / 'descr' / 'item'
+# Variables:   $section     name of the section in uppercase letters
+      /\\verb\+([^+]*)\+/            && do {$s=$`;$m=$1;$r=$';
+	$versin             =~ s/~/$Macro->{'~'}/g;
+	$version            = $1;
+$VERSION = "1.23";
+    version 1 of the License, or any later version.
+#   version 1 of the License, or any later version.
+#              $version     version info
+#                    Viktoriastrasse 15, D-76133 Karlsruhe, Germany
+  -V:            Version.
+# we handle Email and URL special in HTML, the LaTeX argument is doubled.
+# we handle sections in HTML as having two arguments, 1. the number, 2. the name
+  where you are living.
+    while (<SRC>) {
+while (<SRC>) {
+    while (<TMP>) {
+		    $word = "";
+	$_ = $words[$i];
+	        $word .= " " . $words[$i];
+		    $word = $words[$i];
+	    # write %@% directive
+	$x =~ s/([

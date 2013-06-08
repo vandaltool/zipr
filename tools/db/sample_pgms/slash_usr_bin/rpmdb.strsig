@@ -1,0 +1,53 @@
+__assert_program_name
+__bss_start
+Common options for all rpm modes and executables:
+Copyright (C) 1998-2002 - Red Hat, Inc.
+creating a pipe for --pipe failed: %m
+Database options:
+dcgettext
+exec failed
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+Help options:
+initialize database
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+LIBPOPT_0
+libpopt.so.0
+libpthread.so.0
+librpmio.so.2
+librpm.so.2
+only one major mode may be specified
+Options implemented via popt alias/exec:
+poptAliasOptions
+poptHelpOptions
+poptPeekArg
+poptPrintHelp
+poptPrintUsage
+rebuild database inverted lists from installed package headers
+rebuilddb
+rpmcliAllPoptTable
+rpmcliFini
+rpmcliInit
+rpmcliPipeOutput
+rpmcliRootDir
+rpmExpandNumeric
+rpmlogSetMask
+rpmtsCreate
+rpmtsFree
+rpmtsInitDB
+rpmtsRebuildDB
+rpmtsSetRootDir
+rpmtsSetVSFlags
+rpmtsVerifyDB
+RPM version %s
+This program may be freely redistributed under the terms of the GNU GPL
+verify database files
+verifydb
+%{_vsflags_rebuilddb}

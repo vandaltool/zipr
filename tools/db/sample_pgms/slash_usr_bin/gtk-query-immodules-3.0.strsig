@@ -1,0 +1,54 @@
+# Automatically generated file, do not edit
+__bss_start
+Cannot load module %s: %s
+# Created by %s from gtk+-%d.%d.%d
+__data_start
+g_build_filename
+g_dir_close
+g_dir_open
+g_dir_read_name
+g_file_set_contents
+g_fprintf
+g_get_current_dir
+g_hash_table_destroy
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new_full
+GLIBC_2.0
+g_module_close
+g_module_error
+g_module_open
+g_module_symbol
+__gmon_start__
+g_path_is_absolute
+g_strdup
+g_str_equal
+g_str_hash
+g_str_has_suffix
+g_string_append
+g_string_append_printf
+g_string_insert_c
+g_string_new
+# GTK+ Input Method Modules file
+gtk_rc_get_im_module_file
+gtk_rc_get_im_module_path
+im_module_create
+im_module_exit
+im_module_init
+im_module_list
+_IO_stdin_used
+_Jv_RegisterClasses
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgmodule-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+libpango-1.0.so.0
+libpthread.so.0
+# ModulesPath = %s
+pango_split_file_list
+%s does not export GTK+ IM module API: %s
+--update-cache

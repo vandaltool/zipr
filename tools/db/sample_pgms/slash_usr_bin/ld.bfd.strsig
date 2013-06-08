@@ -1,0 +1,1406 @@
+==================================================
+                
+  . = .;
+,	0	!	"	 	/	#	*	+	)	*	
+#$&'()*+,-./012345678;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+  } =0x90909090
+0x%V %W 
+0x%V %W %B
+0x%V %W RELOC %s 
+0x%V %W %s 0x%v
+%-16s %-18s %-18s %s
+3L$D3L$ 
+3t$@3t$(3L$
+|$43|$@1
+6	2	>	;	<	2	0	:	:	7	(	!	8	7	.	3	#	(	.	&	0	-	
+(%A+0x%v)
+ABSOLUTE
+Accept input files whose architecture cannot be determined
+       actually link against crtbegin.o; the
+Add data symbols to dynamic list
+Add DIRECTORY to library search path
+ additional relocation overflows omitted from the output
+Address of section %s set to 
+  /* Adjust the address for the data segment.  We want to adjust up to
+    . = ALIGN(. != 0 ? 32 / 8 : 1);
+   . = ALIGN(. != 0 ? 32 / 8 : 1);
+    . = ALIGN(. != 0 ? 64 / 8 : 1);
+   . = ALIGN(. != 0 ? 64 / 8 : 1);
+  . = ALIGN(32 / 8);
+  . = ALIGN(64 / 8);
+  . = ALIGN (CONSTANT (MAXPAGESIZE)) - ((CONSTANT (MAXPAGESIZE) - .) & (CONSTANT (MAXPAGESIZE) - 1)); . = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE));
+   /* Align here to ensure that the .bss section occupies space up to
+ALIGNMOD
+Allocating common symbols
+allow-multiple-definition
+Allow multiple definitions
+Allow unresolved references in shared libraries
+Always set DT_NEEDED for dynamic libraries mentioned on
+a.out-i386-linux
+Archive member included because of file (symbol)
+ascending
+[=ascending|descending]
+AS_NEEDED
+ASSERT (
+ASSERT_K
+assignment
+assign_op
+  at non-zero addresses.  Could be a Solaris ld bug, could be a GNU ld
+attempt to open %s failed
+attempt to open %s succeeded
+Attributes
+attributes_list
+attributes_opt
+attributes_string
+  --audit=AUDITLIB            Specify a library to use for auditing
+auxiliary
+Auxiliary filter for shared object symbol table
+bad buffer in yy_scan_bytes()
+%B: definition of %s
+Bdynamic
+%B%F: could not read relocs: %E
+%B%F: could not read symbols: %E
+_bfd_abort
+bfd_abs_section
+bfd_arch_get_compatible
+bfd_arch_mach_octets_per_byte
+bfd_bwrite
+bfd_cache_close_all
+bfd_canonicalize_reloc
+bfd_check_format
+bfd_check_format_matches
+bfd_close
+bfd_close_all_done
+bfd_coff_get_comdat_section
+bfd_com_section
+bfd_create
+bfd_demangle
+bfd_elf_discard_info
+bfd_elf_get_bfd_needed_list
+bfd_elf_get_dt_soname
+bfd_elf_get_dyn_lib_class
+bfd_elf_get_needed_list
+bfd_elf_get_runpath_list
+_bfd_elf_map_sections_to_segments
+_bfd_elf_match_sections_by_type
+bfd_elf_record_link_assignment
+bfd_elf_set_dt_needed_name
+bfd_elf_set_dyn_lib_class
+bfd_elf_size_dynamic_sections
+bfd_elf_size_dynsym_hash_dynstr
+_bfd_elf_tls_setup
+bfd_emul_get_commonpagesize
+bfd_emul_get_maxpagesize
+bfd_emul_set_commonpagesize
+bfd_emul_set_maxpagesize
+bfd_errmsg
+_bfd_fix_excluded_sec_syms
+bfd_generic_link_read_symbols
+bfd_get_arch
+bfd_get_arch_info
+bfd_getb16
+bfd_getb32
+bfd_getb64
+bfd_get_error
+bfd_get_gp_size
+bfd_get_reloc_code_name
+bfd_get_reloc_size
+bfd_get_reloc_upper_bound
+bfd_get_section_by_name
+bfd_get_section_by_name_if
+bfd_get_section_contents
+bfd_get_unique_section_name
+bfd_hash_allocate
+bfd_hash_lookup
+bfd_hash_newfunc
+bfd_hash_set_default_size
+bfd_hash_table_free
+bfd_hash_table_init
+bfd_hash_table_init_n
+bfd_hash_traverse
+bfd_hide_sym_by_version
+bfd_i386linux_size_dynamic_sections
+bfd_ind_section
+bfd_init
+bfd_link_add_undef
+bfd_link_hash_lookup
+bfd_link_hash_traverse
+bfd_make_readable
+bfd_make_section_anyway
+bfd_make_section_anyway_with_flags
+bfd_make_section_with_flags
+bfd_make_writable
+bfd_map_over_sections
+bfd_new_link_order
+bfd_octets_per_byte
+bfd_openr
+bfd_openr_next_archived_file
+bfd_openw
+bfd_printable_name
+bfd_putl16
+bfd_putl32
+bfd_putl64
+bfd_record_phdr
+bfd_reloc_type_lookup
+bfd_scan_arch
+bfd_scan_vma
+bfd_search_for_target
+bfd_section_already_linked_table_free
+bfd_section_already_linked_table_init
+bfd_seek
+bfd_set_arch_info
+bfd_set_default_target
+bfd_set_error
+bfd_set_error_handler
+bfd_set_error_program_name
+bfd_set_format
+bfd_set_gp_size
+bfd_set_start_address
+bfd_set_symtab
+bfd_stat
+bfd_target_list
+bfd_und_section
+bfd_use_reserved_id
+bfd_wrapped_link_hash_lookup
+%B: file not recognized: %E
+  -Bgroup                     Selects group name lookup rules for DSO
+Bind global function references locally
+Bind global references locally
+bindtextdomain
+%B: In function `%T':
+%B: matching formats:
+%B: reference to %s
+Bshareable
+   *(.bss)
+  .bss            :
+%B: %s%s
+  .bss          0 :
+   *(.bss .bss.* .gnu.linkonce.b.*)
+      .bss section disappears because there are no input sections.
+  __bss_start = .;
+__bss_start
+Bsymbolic
+Bsymbolic-functions
+  bug.  But for now assigning the zero vmas works.  */
+Build global constructor/destructor tables
+  --build-id[=STYLE]          Generate build ID note
+build_link_order
+built in linker script:%u
+b	V	]	i	X	k	i	W	W	V	7	:	?	0	
+%B: warning: common is here
+%B: warning: common of `%T' overridden by definition
+%B: warning: common of `%T' overridden by larger common
+%B: warning: common of `%T' overriding smaller common
+%B: warning: defined here
+%B: warning: definition of `%T' overriding common
+%B: warning: larger common is here
+%B: warning: more undefined references to `%T' follow
+%B: warning: multiple common of `%T'
+%B: warning: previous common is here
+%B: warning: smaller common is here
+%B: warning: undefined reference to `%T'
+call_shared
+Call SYMBOL at load-time
+Call SYMBOL at unload-time
+cannot find script file %s
+casesymlist
+Check section addresses for overlaps (default)
+Cleanup: discarding lookahead
+Cleanup: popping
+<code %d>
+coff-m68k
+COLLECT_NO_DEMANGLE
+.comment
+  .comment       0 : { *(.comment) }
+   *(COMMON)
+common-page-size=
+COMMONPAGESIZE
+Common symbol       size              file
+compare_section
+concat_copy2
+concat_length
+CONSTANT
+CONSTRUCTORS
+ CONSTRUCTORS
+Copy DT_NEEDED links mentioned inside DSOs that follow
+Copyright 2011 Free Software Foundation, Inc.
+could not create dummy IR bfd: %F%E
+[=COUNT]
+cplus_demangle_name_to_style
+cplus_demangle_set_style
+Create an output file even if errors occur
+Create a position independent executable
+Create a shared library
+Create default symbol version
+Create default symbol version for imported symbols
+ CREATE_OBJECT_SYMBOLS
+CREATE_OBJECT_SYMBOLS
+Cross Reference Table
+%C: %s%s
+  .ctors          :
+current_demangling_style
+%C: warning: undefined reference to `%T'
+   $%d = 
+D$ 3D$<3D$,
+D$83Q(3A$	
+D$(9D$,t
+    *(.data)
+  .data           :
+  .data         0 :
+  .data1        0 : { *(.data1) }
+  .data1          : { *(.data1) }
+    *(.data .data.* .gnu.linkonce.d.*)
+  .data.rel.ro : { *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*) *(.data.rel.ro* .gnu.linkonce.d.rel.ro.*) }
+DATA_SEGMENT_ALIGN
+  . = DATA_SEGMENT_END (.);
+DATA_SEGMENT_END
+DATA_SEGMENT_RELRO_END
+  . = DATA_SEGMENT_RELRO_END (0, .);
+  . = DATA_SEGMENT_RELRO_END (12, .);
+  . = DATA_SEGMENT_RELRO_END (24, .);
+dcgettext
+  .debug          0 : { *(.debug) }
+  .debug_abbrev   0 : { *(.debug_abbrev) }
+  .debug_aranges  0 : { *(.debug_aranges) }
+  .debug_frame    0 : { *(.debug_frame) }
+  .debug_funcnames 0 : { *(.debug_funcnames) }
+  .debug_info     0 : { *(.debug_info) }
+  .debug_info     0 : { *(.debug_info .gnu.linkonce.wi.*) }
+  .debug_line     0 : { *(.debug_line) }
+  .debug_loc      0 : { *(.debug_loc) }
+  .debug_macinfo  0 : { *(.debug_macinfo) }
+  .debug_pubnames 0 : { *(.debug_pubnames) }
+  .debug_pubtypes 0 : { *(.debug_pubtypes) }
+  .debug_ranges   0 : { *(.debug_ranges) }
+  .debug_sfnames  0 : { *(.debug_sfnames) }
+  .debug_srcinfo  0 : { *(.debug_srcinfo) }
+  .debug_str      0 : { *(.debug_str) }
+  .debug_typenames 0 : { *(.debug_typenames) }
+  .debug_varnames  0 : { *(.debug_varnames) }
+  .debug_weaknames 0 : { *(.debug_weaknames) }
+*default*
+default-imported-symver
+/* Default linker script, for normal executables */
+default-script
+Default search path for Solaris compatibility
+default-symver
+Define a symbol
+DEFSYMEND
+defsym_expr
+--defsym %s
+Deleting
+Demangle symbol names [using STYLE]
+depaudit
+descending
+/dev/urandom
+%D: first defined here
+DIRECTORY
+disable-new-dtags
+  --disable-new-dtags         Disable new dynamic tags
+Disallow undefined version
+/DISCARD/
+discard-all
+Discard all local symbols
+Discarded input sections
+discard-locals
+discard-none
+  /DISCARD/ : { *(.note.GNU-stack) *(.gnu_debuglink) *(.gnu.lto_*) }
+Discard temporary local symbols (default)
+Display target specific options
+dll-verbose
+       doesn't matter if the user does not
+       doesn't matter which directory crtbegin.o
+Do not allow unresolved references in object files
+Do not allow unresolved references in shared libs
+Do not check section addresses for overlaps
+Do not copy DT_NEEDED links mentioned inside DSOs that follow
+Do not define Common storage
+Do not demangle symbol names
+Do not link against shared libraries
+Do not list removed unused sections
+Do not page align data
+Do not page align data, do not make text readonly
+Do not strip symbols in discarded sections
+Do not treat warnings as errors (default)
+Do not use relaxation techniques to reduce code size
+Don't discard any local symbols
+Don't merge input [SECTION | orphan] sections
+Don't remove unused sections (default)
+Don't warn about mismatched input files
+Don't warn on finding an incompatible library
+Do task level linking
+#D$,#T$(	
+  .dtors          :
+  /* DWARF 1 */
+  /* DWARF 1.1 and DWARF 2 */
+  /* DWARF 2 */
+  /* DWARF 3 */
+  /* DWARF debug sections.
+%D: warning: more undefined references to `%T' follow
+  .dynamic      0 : { *(.dynamic) }
+  .dynamic        : { *(.dynamic) }
+dynamic-linker
+dynamic-list
+dynamic-list-cpp-new
+dynamic-list-cpp-typeinfo
+dynamic-list-data
+dynamic_list_file
+dynamic_list_node
+dynamic_list_nodes
+dynamic_list_tag
+   *(.dynbss)
+    *(.dynlbss)
+  .dynstr       0 : { *(.dynstr) }
+  .dynstr         : { *(.dynstr) }
+  .dynsym       0 : { *(.dynsym) }
+  .dynsym         : { *(.dynsym) }
+  _edata = .; PROVIDE (edata = .);
+eelf32_x86_64.c
+eelf_i386.c
+eelf_k1om.c
+eelf_l1om.c
+eelf_x86_64.c
+.eh_frame
+  .eh_frame     0 : ONLY_IF_RO { KEEP (*(.eh_frame)) }
+  .eh_frame     0 : ONLY_IF_RW { KEEP (*(.eh_frame)) }
+.eh_frame_hdr
+eh-frame-hdr
+  --eh-frame-hdr              Create .eh_frame_hdr section
+  .eh_frame_hdr : { *(.eh_frame_hdr) }
+  .eh_frame       : ONLY_IF_RO { KEEP (*(.eh_frame)) }
+  .eh_frame       : ONLY_IF_RW { KEEP (*(.eh_frame)) }
+ei386linux.c
+elf32-big
+	      "elf32-i386")
+elf32-i386
+elf32-little
+	      "elf32-x86-64")
+elf32_x86_64
+elf32-x86-64
+elf64-big
+	      "elf64-k1om")
+elf64-k1om
+	      "elf64-l1om")
+elf64-l1om
+elf64-little
+	      "elf64-x86-64")
+elf64-x86-64
+elf_i386
+elf_k1om
+elf_l1om
+elf_x86_64
+embedded-relocs
+emit-relocs
+enable-new-dtags
+  --enable-new-dtags          Enable new dynamic tags
+End a group
+      _end.  Align after .bss to ensure correct alignment even if the
+end-group
+END GROUP
+       end of ctors marker and it must be last */
+  _end = .; PROVIDE (end = .);
+Entering state %d
+ENTRY(_start)
+__environ
+__errno_location
+Error: discarding
+Error: popping
+error-unresolved-symbols
+  /* Exception handling  */
+  .exception_ranges*) }
+  .exception_ranges 0 : ONLY_IF_RO { *(.exception_ranges
+  .exception_ranges 0 : ONLY_IF_RW { *(.exception_ranges .exception_ranges*) }
+  .exception_ranges   : ONLY_IF_RO { *(.exception_ranges
+  .exception_ranges   : ONLY_IF_RW { *(.exception_ranges .exception_ranges*) }
+EXCLUDE_FILE
+EXCLUDE_FILE(%s
+exclude-libs
+  --exclude-libs=LIBS         Make all symbols in LIBS hidden
+exclude_name_list
+Export all dynamic symbols
+.exports
+extern_name_list
+extern_name_list_body
+Fail with %d
+fatal error - scanner input buffer overflow
+fatal flex scanner internal error--end of buffer missed
+fatal flex scanner internal error--no action found
+%F%B: Can't read contents of section .gnu.warning: %E
+%F%B: could not read symbols: %E
+%F%B: file not recognized: %E
+%F%B: final close failed: %E
+%F%B: member %B in archive is not an object
+filename
+filename_cmp
+file_NAME_list
+filename_ncmp
+fill_exp
+ FILL mask 0x
+fill_opt
+fill value
+Filter for shared object symbol table
+%F:includes nested too deeply
+  .fini           :
+  .fini         0 :
+  .fini_array     :
+.fini_array.
+       first.  Because this is a wildcard, it
+      FIXME: Why do we need it? When there is no .bss section, we don't
+floating_point_support
+flto-partition=
+%F: macros nested too deeply
+FORCE_COMMON_ALLOCATION
+Force common symbols to be defined
+force-exe-suffix
+Force generation of file with .exe suffix
+ /* For some reason, the Solaris linker makes bad executables
+found %s at %s
+%F%P: attempted static link of dynamic object `%s'
+%F%P:%B: bfd_elf_get_bfd_needed_list failed: %E
+%F%P:%B: bfd_stat failed: %E
+%F%P: bfd_hash_lookup failed: %E
+%F%P: bfd_hash_table_init failed: %E
+%F%P: bfd_record_phdr failed: %E
+%F%P: cannot create split section name for %s
+%F%P: clone section failed: %E
+%F%P: EOF in comment
+%F%P: final link failed: %E
+%F%P: internal error %s %d
+%F%P: invalid BFD target `%s'
+%F%P: invalid data statement
+%F%P: invalid reloc statement
+%F%P: map sections to segments failed: %E
+%F%P: no sections assigned to phdrs
+%F%P: read in flex scanner failed
+__fprintf_chk
+%F%P:%S: error: alias for default memory region
+%F%P:%S: error: memory region `%s' for alias `%s' does not exist
+%F%P:%S: error: redefinition of memory region alias `%s'
+%F%P: %s not found for insert
+%F%P: unknown demangling style `%s'
+%F%S assignment to location counter invalid outside of SECTION
+%F%S / by zero
+%F%S %% by zero
+%F%S cannot move location counter backwards (from %V to %V)
+%F%S can not PROVIDE assignment to location counter
+%F%s: file not recognized: %E
+%F%S invalid assignment to location counter
+%F%S: nonconstant expression for %s
+%F%S: non constant or forward reference address expression for section %s
+%F%S: undefined MEMORY region `%s' referenced in expression
+%F%S: undefined section `%s' referenced in expression
+%F%S: undefined symbol `%s' referenced in expression
+%F%S: unknown constant `%s' referenced in expression
+  .gcc_except_table.*) }
+  .gcc_except_table 0 : ONLY_IF_RO { *(.gcc_except_table
+  .gcc_except_table 0 : ONLY_IF_RW { *(.gcc_except_table .gcc_except_table.*) }
+  .gcc_except_table   : ONLY_IF_RO { *(.gcc_except_table
+  .gcc_except_table   : ONLY_IF_RW { *(.gcc_except_table .gcc_except_table.*) }
+    /* gcc uses crtbegin.o to find the start of
+$GDB_STRINGS$
+$GDB_SYMBOLS$
+Generate embedded relocs
+Generate relocatable output
+Generate relocations in final output
+getopt_long
+getopt_long_only
+getrusage
+gldelf32_x86_64_write_build_id_section
+gldelf_i386_write_build_id_section
+gldelf_k1om_write_build_id_section
+gldelf_l1om_write_build_id_section
+gldelf_x86_64_write_build_id_section
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3.4
+GLIBC_2.4
+globfree64
+__gmon_start__
+  .gnu.attributes 0 : { KEEP (*(.gnu.attributes)) }
+(GNU Binutils for Ubuntu) 2.22
+  /* GNU DWARF 1 extensions */
+  .gnu.hash     0 : { *(.gnu.hash) }
+  .gnu.hash       : { *(.gnu.hash) }
+GNU ld %s
+.gnu.linkonce.t.
+GNUTARGET
+  .gnu.version  0 : { *(.gnu.version) }
+  .gnu.version_d 0: { *(.gnu.version_d) }
+  .gnu.version_d  : { *(.gnu.version_d) }
+  .gnu.version    : { *(.gnu.version) }
+  .gnu.version_r 0: { *(.gnu.version_r) }
+  .gnu.version_r  : { *(.gnu.version_r) }
+    *(.gnu.warning)
+.gnu.warning
+.gnu.warning.
+    /* .gnu.warning sections are handled specially by elf32.em.  */
+  .got          0 : { *(.got) *(.igot) }
+  .got            : { *(.got) *(.igot) }
+  .got            : { *(.got.plt) *(.igot.plt) *(.got) *(.igot) }
+  .got.plt      0 : { *(.got.plt)  *(.igot.plt) }
+  .got.plt        : { *(.got.plt)  *(.igot.plt) }
+  .hash         0 : { *(.hash) }
+  .hash           : { *(.hash) }
+hash-size=<NUMBER>
+hash-style
+  --hash-style=STYLE          Set hash style to sysv, gnu or both
+high_level_library
+high_level_library_NAME_list
+How many tags to reserve in .dynamic section
+How to handle unresolved symbols.  <method> is:
+htab_create
+htab_find
+htab_find_slot
+htab_hash_string
+<http://www.sourceware.org/bugzilla/>
+i386linux
+i386:x64-32
+i386:x86-64
+i686-pc-linux-gnu
+  if gld -r is used and the intermediate file has sections starting
+ifile_list
+ifile_p1
+ignore-all
+                                ignore-all, report-all, ignore-in-object-files,
+Ignored for GCC LTO option compatibility
+Ignored for Linux compatibility
+Ignored for SunOS compatibility
+Ignored for SVR4 compatibility
+ignore-in-object-files
+                                ignore-in-shared-libs
+ignore-in-shared-libs
+Include all objects from following archives
+ in expression
+INHIBIT_COMMON_ALLOCATION
+  .init           :
+  .init         0 :
+  .init_array     :
+.init_array.
+initfirst
+INPUT_DEFSYM
+INPUT_DYNAMIC_LIST
+input_list
+INPUT_MRI_SCRIPT
+INPUT_SCRIPT
+INPUT_SECTION_FLAGS
+input_section_spec
+input_section_spec_no_keep
+INPUT_VERSION_SCRIPT
+ in script
+INSERT_K
+INSERT %s %s
+  .interp       0 : { *(.interp) }
+  .interp         : { *(.interp) }
+interpose
+_IO_getc
+_IO_putc
+_IO_stdin_used
+  .iplt         0 : { *(.iplt) }
+  .iplt           : { *(.iplt) }
+       is in.  */
+  .jcr          0 : { KEEP (*(.jcr)) }
+  .jcr            : { KEEP (*(.jcr)) }
+Just link symbols (if directory, same as --rpath)
+just-symbols
+_Jv_RegisterClasses
+    KEEP (*crtbegin?.o(.ctors))
+    KEEP (*crtbegin.o(.ctors))
+    KEEP (*crtbegin?.o(.dtors))
+    KEEP (*crtbegin.o(.dtors))
+    KEEP (*(.ctors))
+    KEEP (*(.dtors))
+    KEEP (*(EXCLUDE_FILE (*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o ) .ctors))
+    KEEP (*(EXCLUDE_FILE (*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o ) .dtors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o *crtend?.o ) .ctors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o *crtend?.o ) .dtors))
+    KEEP (*(.fini))
+    KEEP (*(.fini_array))
+    KEEP (*(.init))
+    KEEP (*(.init_array))
+Keep only symbols listed in FILE
+    KEEP (*(.preinit_array))
+    KEEP (*(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*)))
+    KEEP (*(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*)))
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*(SORT(.dtors.*)))
+l$$3l$03l$
+L$<3L$41
+L$(3L$83
+l$83D$$1
+l$(9l$ r\
+L$(9L$,t
+lang_do_assignments_1
+lang_size_sections_1
+    *(LARGE_COMMON)
+lbasename
+    *(.lbss)
+  .lbss   :
+  .lbss 0 :
+    *(.lbss .lbss.* .gnu.linkonce.lb.*)
+    *(.ldata)
+  .ldata 0  :
+  .ldata   ALIGN(CONSTANT (MAXPAGESIZE)) + (. & (CONSTANT (MAXPAGESIZE) - 1)) :
+    *(.ldata .ldata.* .gnu.linkonce.l.*)
+LDEMULATION
+LD_FEATURE
+  --ld-generated-unwind-info  Generate exception handling info for PLT.
+../../ld/ldcref.c
+../../ld/ldexp.c
+../../ld/ldlang.c
+../../ld/ldmain.c
+../../ld/ldwrite.c
+LD_LIBRARY_PATH
+../../ld/mri.c
+../../ld/plugin.c
+LD_RUN_PATH
+/ldscripts
+ldscripts/i386linux.x
+ldscripts/i386linux.xbn
+ldscripts/i386linux.xn
+ldscripts/i386linux.xr
+ldscripts/i386linux.xu
+length_spec
+libbfd-2.22-system.so
+libc.so.6
+__libc_start_main
+libdl.so.2
+libiberty_concat_ptr
+/lib/ld-linux.so.2
+library-path
+--library=%s
+  .line           0 : { *(.line) }
+Link against shared libraries
+Link big-endian objects
+Linker script and memory map
+       linker won't look for a file to match a
+Link little-endian objects
+List removed unused sections on stderr
+LOADADDR
+ load address 0x%V
+load base
+loadfltr
+Load named plugin
+__load_start_%s
+__load_stop_%s
+load_symbols
+low_level_library
+low_level_library_NAME_list
+lrealpath
+    *(.lrodata)
+  .lrodata 0  :
+  .lrodata   ALIGN(CONSTANT (MAXPAGESIZE)) + (. & (CONSTANT (MAXPAGESIZE) - 1)) :
+    *(.lrodata .lrodata.* .gnu.linkonce.lr.*)
+LSHIFTEQ
+make_relative_prefix
+max-page-size=
+MAXPAGESIZE
+Memory Configuration
+memory exhausted
+memory_spec
+memory_spec_list
+memory_spec_list_opt
+memspec_at_opt
+memspec_opt
+-mips32r2
+-mips64r2
+m	o	c	q	q	e	r	k	&
+mri_abs_name_list
+mri_alias
+mri_load_name_list
+mri-script
+mri_script_command
+mri_script_file
+mri_script_lines
+MRI style script
+multiple_definition
+mustbe_exp
+name|alignment
+NAMEWORD
+Next token is
+no-accept-unknown-input-arch
+no-add-needed
+no-allow-shlib-undefined
+no-as-needed
+no-check-sections
+nocombreloc
+no-copy-dt-needed-entries
+nocopyreloc
+nocrossref_list
+NOCROSSREFS
+nodefaultlib
+no-define-common
+nodefinitions
+nodelete
+no-demangle
+nodlopen
+  no emulation specific options.
+noexecstack
+no-export-dynamic
+no-fatal-warnings
+no-gc-sections
+noinhibit_exec
+noinhibit-exec
+no-keep-memory
+no-ld-generated-unwind-info
+  --no-ld-generated-unwind-info Don't do so.
+non_shared
+no-omagic
+<no plugin>
+no-print-gc-sections
+no-relax
+nostdlib
+no-strip-discarded
+no symbol
+nosymbolic
+No symbols
+.note.gnu.build-id
+  .note.gnu.build-id : { *(.note.gnu.build-id) }
+no-undefined
+no-undefined-version
+no-warn-mismatch
+no-warn-search-mismatch
+Now at end of input.
+no-whole-archive
+nterm %s (
+NULL TREE
+[=NUMBER]
+objalloc_free_block
+_obstack_begin
+obstack_free
+_obstack_newchunk
+     of the section so we begin them at 0.  */
+ONLY_IF_RO
+ONLY_IF_RW
+Only set DT_NEEDED for following dynamic libs if used
+Only use library directories specified on
+opened script file %s
+operator delete*
+operator new*
+opt_align
+opt_comma
+opt_exp_without_type
+opt_exp_with_type
+Optimize output file
+Options:
+opt_nocrossrefs
+opt_semicolon
+opt_subalign
+ordernamelist
+origin_spec
+out of dynamic memory in yy_create_buffer()
+out of dynamic memory in yyensure_buffer_stack()
+out of dynamic memory in yy_get_next_buffer()
+out of dynamic memory in yy_scan_buffer()
+out of dynamic memory in yy_scan_bytes()
+out of memory
+OUTPUT_ARCH
+OUTPUT_ARCH(i386)
+OUTPUT_ARCH(i386:x64-32)
+OUTPUT_ARCH(i386:x86-64)
+OUTPUT_ARCH(k1om)
+OUTPUT_ARCH(l1om)
+Output cross reference table
+OUTPUT_FORMAT
+OUTPUT_FORMAT("elf32-i386", "elf32-i386",
+OUTPUT_FORMAT("elf32-x86-64", "elf32-x86-64",
+OUTPUT_FORMAT("elf64-k1om", "elf64-k1om",
+OUTPUT_FORMAT("elf64-l1om", "elf64-l1om",
+OUTPUT_FORMAT("elf64-x86-64", "elf64-x86-64",
+Output lots of information during link
+OUTPUT(%s
+overlay_section
+Override the default sysroot location
+      pad the .data section.  */
+Page align data, make text readonly
+  -P AUDITLIB, --depaudit=AUDITLIB
+%P: %B: symbol `%s' definition: %d, visibility: %d, resolution: %d
+%P: cannot find %s
+%P: cannot find %s: %E
+%P: cannot find %s inside %s
+%P: cannot find %s (%s): %E
+%P: Disabling relaxation: it will not work with multiple definitions
+%P: Error closing file `%s'
+%P: Error writing file `%s'
+%P%F: bad -plugin-opt option
+%P%F: bad -rpath option
+%P%F: bad --unresolved-symbols option: %s
+%P%F: BFD backend error: BFD_RELOC_CTOR unsupported
+%P%F: bfd_hash_allocate failed creating symbol %s
+%P%F: bfd_hash_lookup failed creating symbol %s
+%P%F: bfd_hash_lookup failed: %E
+%P%F: bfd_hash_lookup for insertion failed: %E
+%P%F: bfd_hash_table_init failed: %E
+%P%F: bfd_link_hash_lookup failed: %E
+%P%F: bfd_new_link_order failed
+%P%F: can not create hash table: %E
+%P%F: cannot open linker script file %s: %E
+%P%F: cannot open map file %s: %E
+%P%F: cannot open output file %s: %E
+%P%F: cannot represent machine `%s'
+%P%F: can't relax section: %E
+%P%F: can't set start address
+%P%F: Could not define common symbol `%T': %E
+%P%F: error: no memory region specified for loadable section `%s'
+%P%F: failed creating section `%s': %E
+%P%F: Failed to create hash table
+%P%F: failed to record assignment to %s: %E
+%P%F: failed to set dynamic section sizes: %E
+%P%F: -f may not be used without -shared
+%P%F: gc-sections requires either an entry or an undefined symbol
+%P%F: group ended before it began (--help for usage)
+%P%F: Illegal use of `%s' section
+%P%F: invalid argument to option "--section-start"
+%P%F: invalid common page size `%s'
+%P%F: invalid common section sorting option: %s
+%P%F: invalid hash style `%s'
+%P%F: invalid hex number `%s'
+%P%F: invalid maxium page size `%s'
+%P%F: invalid number `%s'
+%P%F: invalid section sorting option: %s
+%P%F: invalid syntax in flags
+%P%F: --just-symbols may not be used on DSO: %B
+%P%F: looping in map_segments
+%P%F: missing argument(s) to option "--section-start"
+%P%F: missing argument to -m
+%P%F: multiple STARTUP files
+%P%F: no input files
+%P%F: output format %s cannot represent section called %s
+%P%F: -pie not supported
+%P%F: please report this bug
+%P%F: -r and -shared may not be used together
+%P%F: Relocatable linking with relocations from format %s (%B) to format %s (%B) is not supported
+%P%F:%s: can not make object file: %E
+%P%F:%s: can not set architecture: %E
+%P%F:%s: can't set start address
+%P%F: %s: error loading plugin
+%P%F: -shared not supported
+%P%F:%s: hash creation failed
+%P%F: %s: non-ELF symbol in ELF BFD!
+%P%F: %s: plugin reported error after all symbols read
+%P%F: %s: plugin reported error claiming file
+%P%F: %s: plugin symbol table corrupt (sym type %d)
+%P%F:%S: %s
+%P%F:%S: %s in %s
+%P%F: target %s not found
+%P%F: unknown ELF symbol visibility: %d!
+%P%F: unknown format type %s
+%P%F: unrecognised keyword in MRI style script '%s'
+%P%F: unrecognized -a option `%s'
+%P%F: unrecognized -assert option `%s'
+%P%F: use the --help option for usage information
+phdr flags
+phdr_list
+phdr load address
+phdr_opt
+phdr_qualifiers
+phdr_type
+phdr_val
+pic-executable
+%P: internal error: aborting at %s line %d
+%P: internal error: aborting at %s line %d in %s
+%P: link errors found, deleting executable `%s'
+  .plt          0 : { *(.plt) }
+  .plt          0 : { *(.plt) *(.iplt) }
+  .plt            : { *(.plt) }
+  .plt            : { *(.plt) *(.iplt) }
+plugin-opt
+%P: mode %s
+pop_stat_ptr
+  .preinit_array     :
+  .preinit_array   0 :
+%P: `-retain-symbols-file' overrides `-s' and `-S'
+print_data_statement
+Print default output format
+__printf_chk
+print-map
+Print map file on standard output
+Print memory usage statistics
+Print option help
+print-output-format
+Print version and emulation information
+Print version information
+                                processing at runtime
+program header type
+  PROVIDE (__etext = .);
+  PROVIDE (_etext = .);
+  PROVIDE (etext = .);
+  PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x08048000)); . = SEGMENT_START("text-segment", 0x08048000) + SIZEOF_HEADERS;
+  PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x400000)); . = SEGMENT_START("text-segment", 0x400000) + SIZEOF_HEADERS;
+PROVIDE_HIDDEN
+    PROVIDE_HIDDEN (__fini_array_end = .);
+    PROVIDE_HIDDEN (__fini_array_start = .);
+    PROVIDE_HIDDEN (__init_array_end = .);
+    PROVIDE_HIDDEN (__init_array_start = .);
+    PROVIDE_HIDDEN (__preinit_array_end = .);
+    PROVIDE_HIDDEN (__preinit_array_start = .);
+      PROVIDE_HIDDEN (__rela_iplt_end = .);
+      PROVIDE_HIDDEN (__rela_iplt_start = .);
+      PROVIDE_HIDDEN (__rel_iplt_end = .);
+      PROVIDE_HIDDEN (__rel_iplt_start = .);
+PROVIDE (%s, 
+%P: %s: error in plugin cleanup (ignored)
+%P:%s: file format not recognized; treating as linker script
+%P:%S: ignoring invalid character `%s'%s
+%P: skipping incompatible %s when searching for %s
+%P: %s%s
+%P:%S: warning: memory region `%s' not declared
+%P:%S: warning: redeclaration of memory region `%s'
+%P: symbol `%T' missing from main hash table
+PT_DYNAMIC
+PT_GNU_EH_FRAME
+PT_GNU_STACK
+PT_INTERP
+PT_SHLIB
+%P: unrecognised emulation mode: %s
+%P: unrecognized option '%s'
+pure-text
+push_stat_ptr
+%P: warning: address of `%s' isn't multiple of maximum page size
+%P: warning: Cannot create .eh_frame_hdr section, --eh-frame-hdr ignored.
+%P: warning: Cannot create .note.gnu.build-id section, --build-id ignored.
+%P: warning: cannot find entry symbol %s; defaulting to %V
+%P: warning: cannot find entry symbol %s; not setting start address
+%P: warning: changing start of section %s by %lu bytes
+%P: warning: could not find any targets that match endianness requirement
+%P: warning: dot moved backwards before `%s'
+%P: warning: global constructor %s used
+%P: warning: no memory region specified for loadable section `%s'
+%P: warning: .note.gnu.build-id section discarded, --build-id ignored.
+%P: warning: %s contains output sections; did you forget -T?
+%P: warning: %s, needed by %B, may conflict with %s
+%P: warning: %s, needed by %B, not found (try using -rpath or -rpath-link)
+%P: warning: unrecognized --build-id style ignored.
+%P: warning: -z %s ignored.
+%P%X: Different object file formats composing set %s
+%P%X: Different relocs used in set %s
+%P%X: failed to merge target specific data of file %B
+%P%X: --hash-size needs a numeric argument
+%P%X: Internal error on COFF shared library section %s
+%P%X: %s architecture of input file `%B' is incompatible with %s output
+%P%X: %s does not support reloc %s for set %s
+%P%X: Unsupported size %d for set %s
+__rawmemchr
+Read default linker script
+Read dynamic list
+read_hex
+Reading a token: 
+Read linker script
+Read MRI format linker script
+  /* Read-only sections, merged into text segment: */
+Read options from FILE
+Read version information script
+redirect
+Reduce code size by using target specific optimizations
+reduce-memory-overheads
+Reduce memory overheads, possibly taking much longer
+Reducing stack by rule %d (line %lu):
+REGION_ALIAS
+Reject input files whose architecture is unknown
+  .rela.bss     0 : { *(.rela.bss) }
+  .rela.bss       : { *(.rela.bss .rela.bss.* .rela.gnu.linkonce.b.*) }
+      *(.rela.bss .rela.bss.* .rela.gnu.linkonce.b.*)
+      *(.rela.ctors)
+  .rela.ctors   0 : { *(.rela.ctors) }
+  .rela.ctors     : { *(.rela.ctors) }
+  .rela.data    0 : { *(.rela.data) }
+  .rela.data      : { *(.rela.data .rela.data.* .rela.gnu.linkonce.d.*) }
+      *(.rela.data .rela.data.* .rela.gnu.linkonce.d.*)
+  .rela.data.rel.ro 0 : { *(.rela.data.rel.ro) }
+  .rela.data.rel.ro   : { *(.rela.data.rel.ro* .rela.gnu.linkonce.d.rel.ro.*) }
+      *(.rela.dtors)
+  .rela.dtors   0 : { *(.rela.dtors) }
+  .rela.dtors     : { *(.rela.dtors) }
+  .rela.dyn       :
+.rela.dyn
+      *(.rela.fini)
+  .rela.fini    0 : { *(.rela.fini) }
+  .rela.fini      : { *(.rela.fini) }
+      *(.rela.got)
+  .rela.got     0 : { *(.rela.got) }
+  .rela.got       : { *(.rela.got) }
+      *(.rela.ifunc)
+  .rela.ifunc   0 : { *(.rela.ifunc) }
+  .rela.ifunc     : { *(.rela.ifunc) }
+      *(.rela.init)
+  .rela.init    0 : { *(.rela.init) }
+  .rela.init      : { *(.rela.init) }
+      *(.rela.iplt)
+  .rela.iplt      :
+  .rela.iplt    0 :
+  .rela.lbss    0 : { *(.rela.lbss) }
+      *(.rela.lbss .rela.lbss.* .rela.gnu.linkonce.lb.*)
+  .rela.lbss      : { *(.rela.lbss .rela.lbss.* .rela.gnu.linkonce.lb.*) }
+  .rela.ldata   0 : { *(.rela.ldata) }
+      *(.rela.ldata .rela.ldata.* .rela.gnu.linkonce.l.*)
+  .rela.ldata     : { *(.rela.ldata .rela.ldata.* .rela.gnu.linkonce.l.*) }
+  .rela.lrodata 0 : { *(.rela.lrodata) }
+      *(.rela.lrodata .rela.lrodata.* .rela.gnu.linkonce.lr.*)
+  .rela.lrodata   : { *(.rela.lrodata .rela.lrodata.* .rela.gnu.linkonce.lr.*) }
+      *(.rela.plt)
+  .rela.plt       :
+  .rela.plt     0 :
+  .rela.rodata  0 : { *(.rela.rodata) }
+      *(.rela.rodata .rela.rodata.* .rela.gnu.linkonce.r.*)
+  .rela.rodata    : { *(.rela.rodata .rela.rodata.* .rela.gnu.linkonce.r.*) }
+  .rela.tbss	0 : { *(.rela.tbss) }
+      *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*)
+  .rela.tbss	  : { *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*) }
+  .rela.tdata	0 : { *(.rela.tdata) }
+      *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*)
+  .rela.tdata	  : { *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*) }
+  .rela.text    0 : { *(.rela.text) }
+      *(.rela.text .rela.text.* .rela.gnu.linkonce.t.*)
+  .rela.text      : { *(.rela.text .rela.text.* .rela.gnu.linkonce.t.*) }
+  .rel.bss      0 : { *(.rel.bss) }
+  .rel.bss        : { *(.rel.bss .rel.bss.* .rel.gnu.linkonce.b.*) }
+      *(.rel.bss .rel.bss.* .rel.gnu.linkonce.b.*)
+      *(.rel.ctors)
+  .rel.ctors    0 : { *(.rel.ctors) }
+  .rel.ctors      : { *(.rel.ctors) }
+  .rel.data     0 : { *(.rel.data) }
+  .rel.data       : { *(.rel.data .rel.data.* .rel.gnu.linkonce.d.*) }
+      *(.rel.data .rel.data.* .rel.gnu.linkonce.d.*)
+  .rel.data.rel.ro 0 : { *(.rel.data.rel.ro) }
+  .rel.data.rel.ro   : { *(.rel.data.rel.ro* .rel.gnu.linkonce.d.rel.ro.*) }
+      *(.rel.data.rel.ro* .rel.gnu.linkonce.d.rel.ro.*)
+      *(.rel.dtors)
+  .rel.dtors    0 : { *(.rel.dtors) }
+  .rel.dtors      : { *(.rel.dtors) }
+  .rel.dyn        :
+.rel.dyn
+      *(.rel.fini)
+  .rel.fini     0 : { *(.rel.fini) }
+  .rel.fini       : { *(.rel.fini) }
+      *(.rel.got)
+  .rel.got      0 : { *(.rel.got) }
+  .rel.got        : { *(.rel.got) }
+      *(.rel.ifunc)
+  .rel.ifunc    0 : { *(.rel.ifunc) }
+  .rel.ifunc      : { *(.rel.ifunc) }
+      *(.rel.init)
+  .rel.init     0 : { *(.rel.init) }
+  .rel.init       : { *(.rel.init) }
+      *(.rel.iplt)
+relocatable
+ relocation truncated to fit: %s against symbol `%T' defined in %A section in %B
+ relocation truncated to fit: %s against `%T'
+ relocation truncated to fit: %s against undefined symbol `%T'
+reloc_overflow
+      *(.rel.plt)
+  .rel.plt        :
+  .rel.plt      0 :
+  .rel.rodata   0 : { *(.rel.rodata) }
+      *(.rel.rodata .rel.rodata.* .rel.gnu.linkonce.r.*)
+  .rel.rodata     : { *(.rel.rodata .rel.rodata.* .rel.gnu.linkonce.r.*) }
+  .rel.tbss	0 : { *(.rel.tbss) }
+      *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*)
+  .rel.tbss	  : { *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*) }
+  .rel.tdata	0 : { *(.rel.tdata) }
+      *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*)
+  .rel.tdata	  : { *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*) }
+  .rel.text     0 : { *(.rel.text) }
+      *(.rel.text .rel.text.* .rel.gnu.linkonce.t.*)
+  .rel.text       : { *(.rel.text .rel.text.* .rel.gnu.linkonce.t.*) }
+Remove unused sections (on some targets)
+report-all
+Report bugs to %s
+Report unresolved symbols as errors
+Report unresolved symbols as warnings
+retain-symbols-file
+  .rodata       0 : { *(.rodata) }
+  .rodata1      0 : { *(.rodata1) }
+  .rodata1        : { *(.rodata1) }
+  .rodata         : { *(.rodata .rodata.* .gnu.linkonce.r.*) }
+rpath-link
+RSHIFTEQ
+%s+0x%v (type %s)
+S 3S(3C$
+SANE_EXPR
+_sch_istable
+_sch_tolower
+/* Script for ld -pie: link position independent executable */
+/* Script for ld -r: link without relocation */
+/* Script for ld --shared: link shared library */
+/* Script for ld -Ur: link w/out relocation, do create constructors */
+/* Script for -n: mix text and data on same page */
+/* Script for -N: mix text and data on same page; don't align data */
+/* Script for -pie -z combreloc: position independent executable, combine & sort relocs */
+/* Script for -pie -z combreloc -z now -z relro: position independent executable, combine & sort relocs */
+/* Script for --shared -z combreloc: shared library, combine & sort relocs */
+/* Script for --shared -z combreloc -z now -z relro: shared library, combine & sort relocs */
+/* Script for -z combreloc: combine and sort reloc sections */
+/* Script for -z combreloc -z now -z relro: combine and sort reloc sections */
+%s: data size %ld
+SEARCH_DIR
+SEARCH_DIR("/usr/i686-linux-gnu/lib32"); SEARCH_DIR("=/usr/local/lib32"); SEARCH_DIR("=/lib32"); SEARCH_DIR("=/usr/lib32"); SEARCH_DIR("=/usr/local/lib/i386-linux-gnu"); SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib/i386-linux-gnu"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib/i386-linux-gnu"); SEARCH_DIR("=/usr/lib");
+SEARCH_DIR("/usr/i686-linux-gnu/libx32"); SEARCH_DIR("=/usr/local/libx32"); SEARCH_DIR("=/libx32"); SEARCH_DIR("=/usr/libx32"); SEARCH_DIR("=/usr/local/lib/x86_64-linux-gnu"); SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib/x86_64-linux-gnu"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib/x86_64-linux-gnu"); SEARCH_DIR("=/usr/lib");
+SEARCH_DIR("=/usr/local/lib/i386-linux-gnu"); SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib/i386-linux-gnu"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib/i386-linux-gnu"); SEARCH_DIR("=/usr/lib");
+SEARCH_DIR("/usr/x86_64-linux-gnu/lib64"); SEARCH_DIR("/usr/i686-linux-gnu/lib64"); SEARCH_DIR("=/usr/local/lib/x86_64-linux-gnu"); SEARCH_DIR("=/usr/local/lib64"); SEARCH_DIR("=/lib/x86_64-linux-gnu"); SEARCH_DIR("=/lib64"); SEARCH_DIR("=/usr/lib/x86_64-linux-gnu"); SEARCH_DIR("=/usr/lib64"); SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib");
+Search for library LIBNAME
+sec_or_group_p1
+sect_constraint
+sect_flag_list
+sect_flags
+[=SECTION]
+SECTION=ADDRESS
+SECTIONS
+section-start
+SEGMENT_START
+  . = SEGMENT_START("text-segment", 0) + SIZEOF_HEADERS;
+%s: emulation specific options:
+Send arg to last-loaded plugin
+%s: error: too many @-files encountered
+Set address of .bss section
+Set address of .data section
+Set address of named section
+Set address of .text section
+Set address of text segment
+Set architecture
+Set default hash table size close to <NUMBER>
+Set emulation
+Set internal name of shared library
+Set link time shared library search path
+Set output file name
+Set PROGRAM as the dynamic linker to use
+Set runtime shared library search path
+Set start address
+Set                 Symbol
+%s generated
+  /* SGI/MIPS DWARF 2 extensions */
+--shared
+Shared library control for HP/UX compatibility
+Shifting
+%S HLL ignored
+SIZEOF_HEADERS
+.sizeof.%s
+%s/lib%s%s.sa
+%s/lib%s%s.so
+Small data size (if no size, same as --shared)
+%s needed by %B
+SORT_BY_ALIGNMENT
+SORT_BY_INIT_PRIORITY
+SORT_BY_NAME
+sort_common
+sort-common
+Sort common symbols by alignment [in specified order]
+    SORT(CONSTRUCTORS)
+ SORT (CONSTRUCTORS)
+sort-section
+Sort sections by name or maximum alignment
+spare-dynamic-tags
+                              Specify a library to use for auditing dependencies
+Specify target for following input files
+Specify target of output file
+split-by-file
+split-by-reloc
+Split output sections every COUNT relocs
+Split output sections every SIZE octets
+__sprintf_chk
+%s: supported emulations: 
+%s: supported targets:
+%S SYSLIB ignored
+  .stab          0 : { *(.stab) }
+  .stab.excl     0 : { *(.stab.excl) }
+  .stab.exclstr  0 : { *(.stab.exclstr) }
+  .stab.index    0 : { *(.stab.index) }
+  .stab.indexstr 0 : { *(.stab.indexstr) }
+  /* Stabs debugging sections.  */
+  .stabstr       0 : { *(.stabstr) }
+__stack_chk_fail
+Stack now
+Stack size increased to %lu
+Start a group
+start-group
+START GROUP
+Starting parse
+.startof.%s
+__start_%s
+Start with undefined reference to SYMBOL
+statement
+statement_anywhere
+statement_list
+statement_list_opt
+__stop_%s
+%s: total time in link: %ld.%06ld
+strcasecmp
+__strdup
+strip-all
+Strip all symbols
+strip-debug
+Strip debugging symbols
+Strip symbols in discarded sections
+[=STYLE]
+SUBALIGN
+subsection alignment
+  Supported emulations:
+Supported emulations: 
+                                SYMBOL as the version.
+SYMBOL=EXPRESSION
+ (symbol from plugin)
+     Symbols in the DWARF debugging sections are relative to the beginning
+syntax error
+--sysroot=
+sysroot=<DIRECTORY>
+             %T
+T$,3T$03T$41
+T$49T$<rmw
+t5<?t;<*
+<?t6<*t2<[t.
+T$,9T$<r+w
+Take export symbols list from .exports, using
+target-help
+TARGET_K
+TARGET(%s)
+task-link
+  .tbss		0 : { *(.tbss) }
+  .tbss		  : { *(.tbss .tbss.* .gnu.linkonce.tb.*) *(.tcommon) }
+  .tdata	0 : { *(.tdata) }
+  .tdata	  : { *(.tdata .tdata.* .gnu.linkonce.td.*) }
+  .text           :
+  .text         0 :
+    *(.text.exit .text.exit.*)
+    *(.text.hot .text.hot.*)
+.text-segment
+    *(.text.startup .text.startup.*)
+    *(.text .stub)
+    *(.text .stub .text.* .gnu.linkonce.t.*)
+    *(.text.unlikely .text.*_unlikely)
+                                the command line
+       the constructors, so we make sure it is
+       the crtend.o file until after the sorted ctors.
+       The .ctor section from the crtend file contains the
+the GNU General Public License version 3 or (at your option) a later version.
+     the same address within the page on the next page up.  */
+  /* These sections are generated by the Sun/Oracle C++ compiler.  */
+This program has absolutely no warranty.
+This program is free software; you may redistribute it under the terms of
+  /* Thread Local Storage sections  */
+<	tJ< tF
+token %s (
+Trace file opens
+Trace mentions of SYMBOL
+trace-symbol
+traditional-format
+Treat warnings as errors
+TRUNCATE
+Ttext-segment
+t=<?tN<*tJ<[tF
+t.<*t*<[t&
+Turn off --whole-archive
+typeinfo for*
+typeinfo name for*
+*undef*   
+$undefined
+Undo the effect of --export-dynamic
+unlink_if_ordinary
+[unresolved]
+unresolved-symbols=<method>
+Usage: %s [options] file...
+Use C++ operator new/delete dynamic list
+Use C++ typeinfo dynamic list
+Use less memory and more disk I/O
+Use same format as native linker
+Use wrapper functions for SYMBOL
+using external linker script:
+using internal linker script:
+using multiple gp values
+/usr/bin
+/usr/etc/ld.so.conf
+/usr/i686-linux-gnu/bin
+/usr/lib
+/usr/share/locale
+vers_defns
+VERS_IDENTIFIER
+version-exports-section
+VERSIONK
+version-script
+VERSION script
+version_script_file
+vers_node
+vers_nodes
+vers_tag
+Warn about duplicate common symbols
+warn-alternate-em
+warn-common
+warn-constructors
+Warn if an object has alternate ELF machine code
+Warn if global constructors/destructors are seen
+Warn if shared object has DT_TEXTREL
+Warn if start of section changes due to alignment
+Warn if the multiple GP values are used
+warning: 
+warn-multiple-gp
+warn-once
+Warn only once per undefined symbol
+warn-section-align
+warn-shared-textrel
+warn-unresolved-symbols
+    /* We don't want to include the .ctor section from
+wildcard_name
+wildcard_spec
+       wildcard.  The wildcard also means that it
+Write a map file
+%W (size before relaxing)
+%X%B: more undefined references to `%T' follow
+%X%B: undefined reference to `%T'
+%X%C: multiple definition of `%T'
+%X%C: prohibited cross reference from %s to `%T' in %s
+%X%C: undefined reference to `%T'
+%X%D: more undefined references to `%T' follow
+_xexit_cleanup
+%X%H: dangerous relocation: %s
+%X%H: reloc refers to symbol `%T' which is not being output
+X	\	K	L	J	[	N	V	W	U	V	A	S
+xmalloc_set_program_name
+%X%P: address 0x%v of %B section `%s' is not within region `%s'
+%X%P: anonymous version tag cannot be combined with other version tags
+%X%P: bfd_hash_table_init of cref table failed: %E
+%X%P: %B section `%s' will not fit in region `%s'
+%X%P: can't set BFD default target to `%s': %E
+%X%P: cref alloc failed: %E
+%X%P: cref_hash_lookup failed: %E
+%X%P: duplicate expression `%s' in version information
+%X%P: duplicate version tag `%s'
+%X%P: error: duplicate retain-symbols-file
+%X%P: region `%s' overflowed by %ld bytes
+%X%P: %s
+%X%P: %s: %E
+%X%P: section `%s' assigned to non-existent phdr `%s'
+%X%P: section %s loaded at [%V,%V] overlaps section %s loaded at [%V,%V]
+%X%P:%S: PHDRS and FILEHDR are not supported when prior PT_LOAD headers lack them
+%X%P:%S: PHDRS syntax error at `%s'
+%X%P:%S: section has both a load address and a load region
+%X%P:%S: unknown phdr type `%s' (try integer literal)
+%X%P: unable to find version dependency `%s'
+%X%P: unable to open for destination of copy `%s'
+%X%P: unable to open for source of copy `%s'
+%X%P: unable to read .exports section contents
+%X%P: unknown feature `%s'
+%X%P: unknown language `%s' in version information
+xrealloc
+__xstat64
+%X%S: unresolvable symbol `%s' referenced in expression
+x	t	p	r	t	"
+  -z combreloc                Merge dynamic relocs into one section and sort
+  -z common-page-size=SIZE    Set common page size to SIZE
+  -z defs                     Report unresolved symbols in object files.
+  -z execstack                Mark executable as requiring executable stack
+  -z initfirst                Mark DSO to be initialized first at runtime
+  -z interpose                Mark object to interpose all DSOs but executable
+  -z lazy                     Mark object lazy runtime binding (default)
+  -z loadfltr                 Mark object requiring immediate process
+  -z max-page-size=SIZE       Set maximum page size to SIZE
+  -z muldefs                  Allow multiple definitions
+  -z nocombreloc              Don't merge dynamic relocs into one section
+  -z nocopyreloc              Don't create copy relocs
+  -z nodefaultlib             Mark object not to use default search paths
+  -z nodelete                 Mark DSO non-deletable at runtime
+  -z nodlopen                 Mark DSO not available to dlopen
+  -z nodump                   Mark DSO not available to dldump
+  -z noexecstack              Mark executable as not requiring executable stack
+  -z norelro                  Don't create RELRO program header
+  -z now                      Mark object non-lazy runtime binding
+  -z origin                   Mark object requiring immediate $ORIGIN
+  -z relro                    Create RELRO program header

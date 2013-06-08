@@ -1,0 +1,112 @@
+    /''*|\./''*)
+add $displayname . $mcookie
+add :$dummy . $authcookie
+add :$dummy . $mcookie
+# and pop a clock and several xterms.
+        authcookie=`xauth list "$displayname" \
+    authdisplay=${display:-:0}
+#!/bin/sh
+    case "$1" in
+    # check for GNU hostname
+		client="$1"
+clientargs=""
+	    clientargs="$clientargs $1"
+		clientargs="$clientargs $1"
+        clientargs=$defaultclientargs
+    client=$defaultclient
+            client=$sysclientrc
+            client=$userclientrc
+    # create a file with auth information for the server. ':0' is a dummy.
+defaultclientargs=""
+defaultclient=/usr/bin/xterm
+defaultdisplay=":0"
+defaultserverargs=""
+defaultserver=/usr/bin/X
+		display="$1"
+	display=$defaultdisplay
+	    # display must be the FIRST server argument
+    done
+    dummy=0
+            dummy=$(($dummy+1));
+        echo "Couldn't create cookie"
+        elif [ -f "$sysclientrc" ]; then
+	elif [ -f "$sysserverrc" ]; then
+        else
+	    else
+enable_xauth=1
+    esac
+        exit 1
+exit $retval
+        export XAUTHORITY
+		 expr "$1" : ':[0-9][0-9]*$' > /dev/null 2>&1; then
+        fi
+# files, then system xinitrc and xserverrc files, else lets xinit choose
+	# For compatibility reasons, only use xserverrc if there were no server command line arguments
+    for displayname in $authdisplay $hostname$authdisplay; do
+# for .Xresources files and merge them in, start up a window manager,
+        hostname=`hostname`
+            hostname=`hostname -f`
+    # if '$displayname' already exists do not overwrite it as another
+        if [ -f "$userclientrc" ]; then
+	if [ -f "$userserverrc" ]; then
+    if hostname --version > /dev/null 2>&1; then
+    # if no client arguments either, use rc file instead
+    # if no server arguments or display either, use defaults
+    if test x"$mcookie" = x; then
+	if [ "$whoseargs" = "client" ]; then
+    if [ x"$clientargs" = x ]; then
+if [ x"$client" = x ]; then
+	    if [ x"$client" = x ] && [ x"$clientargs" = x ]; then
+if [ x"$enable_xauth" = x1 ] ; then
+    if [ x"$removelist" != x ]; then
+	    if [ x"$serverargs" = x ] && \
+    if [ x"$serverargs" = x -a x"$display" = x ]; then
+if [ x"$server" = x ]; then
+	    if [ x"$server" = x ] && [ x"$serverargs" = x ]; then
+    if [ x"$XAUTHORITY" = x ]; then
+    if [ x"$xserverauthfile" != x ]; then
+        if [ "z${authcookie}" = "z" ] ; then
+    if [ -z "$hostname" ]; then
+        if [ -z "`hostname --version 2>&1 | grep GNU`" ]; then
+# interface than xinit.  It looks for user .xinitrc and .xserverrc
+# its default.  The system xinitrc should probably do things like check
+    mcookie=`/usr/bin/mcookie`
+    # now add the same credentials to the client authority file
+# process client arguments
+# process server arguments
+    removelist=
+        removelist="$displayname $removelist"
+    # '' required to prevent cpp from treating "/*" as a C comment.
+retval=$?
+        rm -f "$xserverauthfile"
+        | sed -n "s/.*$displayname[[:space:]*].*[[:space:]*]//p"` 2>/dev/null;
+		server="$1"
+serverargs=""
+	serverargs=$defaultserverargs
+		serverargs="$serverargs $1"
+    serverargs=${serverargs}" -auth "${xserverauthfile}
+    server=$defaultserver
+    # server man need it. Add them to the '$xserverauthfile' instead.
+	    server=$sysserverrc
+	    server=$userserverrc
+    # set up default Xauth info for this machine
+    shift
+# Site administrators are STRONGLY urged to write nicer versions.
+sysclientrc=/etc/X11/xinit/xinitrc
+sysserverrc=/etc/X11/xinit/xserverrc
+# This is just a sample implementation of a slightly less primitive
+    trap "rm -f '$xserverauthfile'" HUP INT QUIT ILL TRAP KILL BUS TERM
+unset DBUS_SESSION_BUS_ADDRESS
+unset SESSION_MANAGER
+userclientrc=$HOME/.xinitrc
+userserverrc=$HOME/.xserverrc
+while [ x"$1" != x ]; do
+whoseargs="client"
+	whoseargs="server"
+        XAUTHORITY=$HOME/.Xauthority
+            xauth -q << EOF 
+            xauth -q -f "$xserverauthfile" << EOF
+    xauth -q -f "$xserverauthfile" << EOF
+        xauth remove $removelist
+xinit "$client" $clientargs -- "$server" $display $serverargs
+    xserverauthfile=`mktemp --tmpdir serverauth.XXXXXXXXXX`

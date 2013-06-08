@@ -1,0 +1,16 @@
+Cannot allocate memory!
+Failed to clean %s
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+%s.clean
+%s is not a CRW file!
+__sprintf_chk
+Usage:  %s crw_0001.crw crw_0002.crw ...
+Writing %s

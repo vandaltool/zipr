@@ -1,0 +1,79 @@
+A NULL argv[0] was passed through an exec system call.
+bindtextdomain
+__bss_start
+bug-coreutils@gnu.org
+cannot create fifo %s
+Copyright %s %d Free Software Foundation, Inc.
+Create named pipes (FIFOs) with the given NAMEs.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+David MacKenzie
+dcgettext
+__errno_location
+failed to set default file creation context to %s
+For complete documentation, run: info coreutils '%s invocation'
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+invalid mode
+_IO_stdin_used
+iswprint
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libselinux.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+Mandatory arguments to long options are mandatory for short options too.
+memory exhausted
+missing operand
+  -m, --mode=MODE    set file permission bits to MODE, not a=rw - umask
+mode must specify only file permission bits
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+%s, and %s.
+setfscreatecon
+setlocale
+shell-always
+%s home page: <%s>
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+Try `%s --help' for more information.
+Usage: %s [OPTION]... NAME...
+/usr/share/locale
+      --version  output version information and exit
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+__xstat64
+  -Z, --context=CTX  set the SELinux security context of each NAME to CTX

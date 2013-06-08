@@ -1,0 +1,265 @@
+~|&;<>()$`\"' 	
+%9s | %s
+abbreviation
+address-codeset
+%% alias %as
+all-locales
+alphasort
+application
+argp_parse
+argp_program_version_hook
+argz_create_sep
+asprintf
+audience
+cal_direction
+cannot read character map directory `%s'
+Cannot set LC_ALL to default locale
+Cannot set LC_COLLATE to default locale
+Cannot set LC_CTYPE to default locale
+Cannot set LC_MESSAGES to default locale
+category
+category-name
+closedir
+ <code_set_name> %as
+  codeset | %s
+collate-codeset
+collate-collseqmb
+collate-collseqwc
+collate-extramb
+collate-extrawc
+collate-indirectmb
+collate-indirectwc
+collate-nrules
+collate-rulesets
+collate-symb-extramb
+collate-symb-hash-sizemb
+collate-symb-tablemb
+collate-tablemb
+collate-tablewc
+collate-weightmb
+collate-weightwc
+conversion_rate
+Copyright (C) %s Free Software Foundation, Inc.
+country_ab2
+country_ab3
+country_car
+country_isbn
+country_name
+country_num
+country_post
+__ctype_b_loc
+ctype-class
+ctype-class32
+ctype-class-names
+ctype-class-offset
+ctype-indigits0_mb
+ctype-indigits0_wc
+ctype-indigits1_mb
+ctype-indigits1_wc
+ctype-indigits2_mb
+ctype-indigits2_wc
+ctype-indigits3_mb
+ctype-indigits3_wc
+ctype-indigits4_mb
+ctype-indigits4_wc
+ctype-indigits5_mb
+ctype-indigits5_wc
+ctype-indigits6_mb
+ctype-indigits6_wc
+ctype-indigits7_mb
+ctype-indigits7_wc
+ctype-indigits8_mb
+ctype-indigits8_wc
+ctype-indigits9_mb
+ctype-indigits9_wc
+ctype-indigits_mb-len
+ctype-indigits_wc-len
+ctype-map-names
+ctype-map-offset
+ctype-mb-cur-max
+ctype-outdigit0_mb
+ctype-outdigit0_wc
+ctype-outdigit1_mb
+ctype-outdigit1_wc
+ctype-outdigit2_mb
+ctype-outdigit2_wc
+ctype-outdigit3_mb
+ctype-outdigit3_wc
+ctype-outdigit4_mb
+ctype-outdigit4_wc
+ctype-outdigit5_mb
+ctype-outdigit5_wc
+ctype-outdigit6_mb
+ctype-outdigit6_wc
+ctype-outdigit7_mb
+ctype-outdigit7_wc
+ctype-outdigit8_mb
+ctype-outdigit8_wc
+ctype-outdigit9_mb
+ctype-outdigit9_wc
+ctype-tolower
+ctype-tolower32
+ctype-toupper
+ctype-toupper32
+ctype-translit-default-missing
+ctype-translit-default-missing-len
+ctype-translit-from-idx
+ctype-translit-from-tbl
+ctype-translit-ignore
+ctype-translit-ignore-len
+ctype-translit-tab-size
+ctype-translit-to-idx
+ctype-translit-to-tbl
+ctype-width
+__dcgettext
+duo_currency_symbol
+duo_frac_digits
+duo_int_curr_symbol
+duo_int_frac_digits
+duo_int_n_cs_precedes
+duo_int_n_sep_by_space
+duo_int_n_sign_posn
+duo_int_p_cs_precedes
+duo_int_p_sep_by_space
+duo_int_p_sign_posn
+duo_n_cs_precedes
+duo_n_sep_by_space
+duo_n_sign_posn
+duo_p_cs_precedes
+duo_p_sep_by_space
+duo_p_sign_posn
+duo_valid_from
+duo_valid_to
+__environ
+fgets_unlocked
+first_weekday
+first_workday
+For bug reporting instructions, please see:
+__fxstat
+__fxstat64
+Get locale-specific information.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_PRIVATE
+__gmon_start__
+<http://www.debian.org/Bugs/>
+identification-codeset
+int_prefix
+int_select
+_IO_putc
+_IO_stdin_used
+keyword-name
+lang_lib
+lang_name
+lang_term
+language
+LANGUAGE=%s
+LC_ADDRESS
+LC_COLLATE
+/LC_CTYPE
+LC_IDENTIFICATION
+LC_MEASUREMENT
+LC_MESSAGES
+LC_MONETARY
+LC_NUMERIC
+LC_PAPER
+LC_TELEPHONE
+_libc_intl_domainname
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+locale: %-15.15s archive: /usr/lib/locale/locale-archive
+locale: %-15.15s directory: %.*s
+/locale.alias
+locale %s%s
+map-to-nonascii
+measurement
+measurement-codeset
+memory exhausted
+messages-codeset
+Modify output format:
+mon_decimal_point
+monetary-codeset
+monetary-decimal-point-wc
+monetary-thousands-sep-wc
+mon_grouping
+mon_thousands_sep
+name-codeset
+name_fmt
+name_gen
+name_miss
+name_mrs
+negative_sign
+nl_langinfo
+numeric-codeset
+numeric-decimal-point-wc
+numeric-thousands-sep-wc
+_obstack_begin
+obstack_free
+_obstack_newchunk
+__overflow
+paper-codeset
+positive_sign
+POSIXLY_CORRECT
+posix_spawn_file_actions_addclose
+posix_spawn_file_actions_adddup2
+posix_spawn_file_actions_destroy
+posix_spawn_file_actions_init
+posix_spawnp
+postal_fmt
+Print more information
+__rawmemchr
+readdir64
+revision
+setlocale
+%s%s%s%s
+System information:
+tel_dom_fmt
+telephone
+telephone-codeset
+tel_int_fmt
+territory
+textdomain
+This is free software; see the source for copying conditions.  There is NO
+time-codeset
+time-era-entries
+time-era-num-entries
+timezone
+(Ubuntu EGLIBC 2.15-0ubuntu10.4) 
+Ulrich Drepper
+unknown name "%s"
+uno_valid_from
+uno_valid_to
+/usr/lib/locale
+/usr/lib/locale/locale-archive
+/usr/share/i18n/charmaps
+/usr/share/locale
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+week-1stday
+week-1stweek
+week-ndays
+while preparing output
+wide-abday
+wide-abmon
+wide-alt_digits
+wide-am_pm
+wide-date_fmt
+wide-day
+wide-d_fmt
+wide-d_t_fmt
+wide-era_d_fmt
+wide-era_d_t_fmt
+wide-era_t_fmt
+wide-era_year
+wide-mon
+wide-t_fmt
+wide-t_fmt_ampm
+Write names of available charmaps
+Write names of available locales
+Write names of selected categories
+Write names of selected keywords
+Written by %s.
+__xstat64

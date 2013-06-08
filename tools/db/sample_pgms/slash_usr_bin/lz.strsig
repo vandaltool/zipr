@@ -1,0 +1,50 @@
+# 1994/02/19	DCN	Created (as a trivial, but useful script)
+# 1994/12/01	DCN	Combined uz and lz, added suffix handling
+# 2002/09/11	DCN	Added bzip2 support
+	action="Extracting from "
+	action="Reading directory of "
+# along with Mtools.  If not, see <http://www.gnu.org/licenses/>.
+# (at your option) any later version.
+#!/bin/sh
+			break
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+case $0 in
+	case $found in
+# Copyright 1994,2002 David C. Niemi.
+# Copyright 1996,1997,2001-2003 Alain Knaff.
+# Copyright (C) 1994, 2002 David C. Niemi (niemi at tuxers dot net)
+# copyright notice; no other restrictions are placed on its use.
+## Default unzipping command
+		echo "$0: could not read \"$1\"." >&2
+	echo "$0: expect to be named either \"uz\" or \"lz\"." >&2
+	echo >&2
+		echo "$action \"$found\"." >&2
+	echo "$action standard input." >&2
+	for suffix in "" .gz .tgz .tar.gz .z .tar.z .taz .tpz .Z .tar.Z .tar.bz2; do
+			found=$1$suffix
+# GNU General Public License for more details.
+if [ $# = 0 ]; then
+# If called "lz", gunzips and shows a listing of a gzip'd tar'd archive.
+# If called "uz", gunzips and extracts a gzip'd tar'd archive.
+		if [ -r "${1}$suffix" ]; then
+	if [ -z "$found" ]; then
+# "-" is now used for backwards compatibility with antique tars, e.g. SCO.
+# it under the terms of the GNU General Public License as published by
+# lz [file...]
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# Mtools is distributed in the hope that it will be useful,
+# Mtools is free software: you can redistribute it and/or modify
+# Requires: gzip and tar in the user's path.  Should work with most tars.
+		*.tar.bz2 | *.tb2)
+	tarparam="-pxvf"
+	tarparam="-tvf"
+# The author requires that any copies or derived works include this
+# the Free Software Foundation, either version 3 of the License, or
+# This file is part of mtools.
+			uzcmd='bzip2 -cd'
+		$uzcmd -- "$found" | tar "$tarparam" -
+uzcmd='gzip -cd'
+	$uzcmd - | tar "$tarparam" -
+# uz [file...]
+while [ $# -ge 1 ]; do
+# You should have received a copy of the GNU General Public License

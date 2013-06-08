@@ -1,0 +1,101 @@
+# --------
+# -----------
+# --------------
+# -----------------------
+## ------ ##
+# 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# and Paul Eggert <eggert@twinsun.com>.
+# (at your option) any later version.
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+      # Continuation lines.
+# Copyright (C) 1994, 1995, 1999, 2000, 2001, 2002, 2003, 2005, 2006,
+Copyright (C) 2010 Free Software Foundation, Inc.
+## cperl-brace-offset: 0
+## cperl-continued-brace-offset: 0
+## cperl-continued-statement-offset: 2
+## cperl-extra-newline-before-brace: t
+## cperl-indent-level: 2
+## cperl-label-offset: -2
+## cperl-merge-trailing-else: nil
+  # e.g.: COMMAND.COM.  For DJGPP always use the shell that configure
+  $ENV{'SHELL'} = '/bin/bash' if ($^O eq 'dos');
+eval 'case $# in 0) exec /usr/bin/perl -S "$0";; *) exec /usr/bin/perl -S "$0" "$@";; esac'
+      $_ .= $file->getline
+foreach (@ARGV)
+	  foreach my $word (split (/\W+/))
+foreach (sort keys %occurrence)
+General help using GNU software: <http://www.gnu.org/gethelp/>.
+# Generated from ifnames.in; do not edit by hand.
+  getopt ();
+given) and write to the standard output a sorted list of all the
+GNU Autoconf home page: <http://www.gnu.org/software/autoconf/>.
+# GNU General Public License for more details.
+  # has detected.
+$help = "Usage: $0 [OPTION]... [FILE]...
+  -h, --help      print this help, then exit
+<http://gnu.org/licenses/gpl.html>, <http://gnu.org/licenses/exceptions.html>
+identifiers that appear in those files in `#if', `#elif', `#ifdef', or
+    if 0;
+# ifnames - print the identifiers used in C preprocessor conditionals
+`#ifndef' directives.  Print each identifier on a line, followed by a
+      if (s/^\s*\#\s*(if|ifdef|ifndef|elif)\s+//)
+		if $word eq 'defined' || $word !~ /^[a-zA-Z_]/;
+# it under the terms of the GNU General Public License as published by
+License GPLv3+/Autoconf: GNU GPL version 3 or later
+## Local Variables:
+## Main.  ##
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  my ($file_name) = @_;
+  my $file = new Autom4te::XFile ("< " . open_quote ($file_name));
+my %occurrence;
+  my $pkgdatadir = $ENV{'autom4te_perllibdir'} || '/usr/share/autoconf';
+	      next
+# %OCCURRENCE
+	      $occurrence{$word}{$file_name} = 1;
+  # Override SHELL.  On DJGPP SHELL may not be set to a shell
+# &parse_args ()
+parse_args();
+# -*- perl -*-
+## perl-brace-imaginary-offset: 0
+## perl-brace-offset: 0
+## perl-continued-brace-offset: 0
+## perl-continued-statement-offset: 2
+## perl-indent-level: 2
+## perl-label-offset: -2
+      # Preprocessor directives.
+    print "$_ ", join (' ', sort keys %{$occurrence{$_}}), "\n";
+# Process any command line arguments.
+# Reads from stdin if no files are given.
+	  # Remove comments.  Not perfect, but close enough.
+Report bugs to <bug-autoconf\@gnu.org>.
+	  s(//.*)();
+	  s(/\*.*?\*/)();
+	  s(/\*.*)();
+Scan all of the C source FILES (or the standard input, if none are
+    scan_file ($_);
+# &scan_file ($FILE-NAME)
+### Setup "GNU" style for perl-mode and cperl-mode.
+space-separated list of the files in which that identifier occurs.
+sub parse_args ()
+sub scan_file ($)
+  # that can handle redirection and quote arguments correctly,
+# the Free Software Foundation, either version 3 of the License, or
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+# This program is distributed in the hope that it will be useful,
+# This program is free software: you can redistribute it and/or modify
+  unshift @INC, $pkgdatadir;
+use Autom4te::FileUtils;
+use Autom4te::General;
+use Autom4te::XFile;
+#! /usr/bin/perl -w
+# $VERSION
+$version = "ifnames (GNU Autoconf) 2.68
+  -V, --version   print version number, then exit
+  while ($_ = $file->getline)
+	while (s/\\$//);
+# Writes to stdout.
+Written by David J. MacKenzie and Paul Eggert.
+# Written by David MacKenzie <djm@gnu.ai.mit.edu>
+# You should have received a copy of the GNU General Public License

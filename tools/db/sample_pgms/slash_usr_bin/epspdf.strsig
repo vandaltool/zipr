@@ -1,0 +1,3 @@
+#!/bin/sh
+ruby "$script" "$@"
+script=`kpsewhich -format=texmfscripts epspdf.rb`

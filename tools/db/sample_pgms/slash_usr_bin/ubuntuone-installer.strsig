@@ -1,0 +1,24 @@
+# by the Free Software Foundation.
+# -*- coding: utf-8 -*-
+                                 CONTROL_PANEL_COMMAND, CONTROL_PANEL_PACKAGE)
+# Copyright 2011-2012 Canonical Ltd.
+        dialog.run()
+        dialog = Window()
+    else:
+from gi.repository import Gtk, GLib
+        from ubuntuone.installer.gui import Window
+from ubuntuone.installer import (is_installed,
+        GLib.spawn_command_line_async(CONTROL_PANEL_COMMAND)
+        Gtk.main()
+    if is_installed(CONTROL_PANEL_PACKAGE):
+if __name__ == "__main__":
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+# PURPOSE.  See the GNU General Public License for more details.
+"""The main script for the Ubuntu One Installer."""
+# This program is distributed in the hope that it will be useful, but
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
+#!/usr/bin/python
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along

@@ -1,0 +1,16 @@
+# and clears the kernel keyring of the relevant keys
+#!/bin/sh -e
+		echo "  cd $PWD"
+		echo `gettext "INFO:"` `gettext "To see this change in your current shell:"`
+		echo `gettext "INFO:"` `gettext "Your private directory has been unmounted."`
+# Extracted to a stand-alone script by Dustin Kirkland <kirkland@ubuntu.com>
+		for key_id in `keyctl list @u | grep "$sig$" | awk -F: '{print $1}'`; do
+	for sig in `cat "$HOME/.ecryptfs/Private.sig"`; do
+if grep -qs "$HOME/.Private $PWD ecryptfs " /proc/mounts 2>/dev/null; then
+	if [ "$pwd_mounted" = "1" ]; then
+if /sbin/umount.ecryptfs_private; then
+			keyctl unlink "$key_id" @u
+# Original by Michael Halcrow, IBM
+	pwd_mounted=1
+TEXTDOMAIN="ecryptfs-utils"
+# This script unmounts a user's private ecryptfs folder

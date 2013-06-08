@@ -1,0 +1,73 @@
+and B<dh_installmodules> will warn if these files are present.
+			autoscript($package,"postinst","postinst-modules","s/#KVERS#/$kvers/g");
+		autoscript($package,"postinst","postinst-moveconffile","s!#OLD#!$old!g;s!#NEW#!$new!g");
+			autoscript($package,"postrm","postrm-modules","s/#KVERS#/$kvers/g");
+		autoscript($package,"preinst","preinst-moveconffile","s!#OLD#!$old!g;s!#PACKAGE#!$package!g");
+B<dh_installmodules> is a debhelper program that is responsible for
+B<dh_installmodules> [S<I<debhelper options>>] [B<-n>] [B<--name=>I<name>]
+between invocations of this command. Otherwise, it may cause multiple
+dh_installmodules - register modules with modutils
+		doit("install","-d",$tmp);
+			doit("install","-d","$tmp/etc/modprobe.d");
+		doit("install","-m","0644",$modprobe_file,"$tmp/$new");
+Do not modify F<preinst>/F<postinst>/F<postrm> scripts.
+			else {
+	find(sub {
+		foreach my $kvers (find_kernel_modules("$tmp/lib/modules")) {
+foreach my $package (@{$dh{DOPACKAGES}}) {
+found, F<preinst>, F<postinst> and F<postrm> commands are automatically generated to
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 NOTES
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+			if (! defined $kvers || ! length $kvers) {
+	if (! $dh{NOSCRIPTS}) {
+	if (! -e $tmp) {
+		if (! -e "$tmp/etc/modprobe.d") {
+		if (/\.k?o$/) {
+	if ($modprobe_file) {
+	if ($modutils_file) {
+Installed to etc/modprobe.d/I<package>.conf in the package build directory.
+installs files named debian/I<package>.I<name>.modprobe instead
+instances of the same text to be added to maintainer scripts.
+=item B<--name=>I<name>
+=item B<-n>, B<--noscripts>
+=item debian/I<package>.modprobe
+=item debian/I<package>.modules
+Joey Hess <joeyh@debian.org>
+Kernel modules are searched for in the package build directory and if
+L<debhelper(7)>
+L<dh_installdeb(1)>.
+# Looks for kernel modules in the passed directory. If any are found,
+			my ($kvers)=$File::Find::dir=~m!lib/modules/([^/]+)/!;
+	my $modprobe_file=pkgfile($package,"modprobe");
+	my $modutils_file=pkgfile($package,"modules");
+		my $new=$old.".conf";
+		my $old="/etc/modprobe.d/".pkgfilename($package);
+	my $searchdir=shift;
+	my $tmp=tmpdir($package);
+	my %versions;
+Note that this command is not idempotent. L<dh_prep(1)> should be called
+of the usual debian/I<package>.modprobe
+registering kernel modules.
+	return keys %versions;
+# returns the kernel version (or versions) that the modules seem to be for.
+	return unless -d $searchdir;
+run B<depmod> and register the modules when the package is installed. 
+	}, $searchdir);
+sub find_kernel_modules {
+These commands are inserted into the maintainer scripts by
+These files were installed for use by modutils, but are now not used
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+use File::Find;
+use strict;
+#!/usr/bin/perl -w
+				$versions{$kvers}=1;
+				warning("Cannot determine kernel version for module $File::Find::name");
+		warning("ignoring $modutils_file, since modutils is no longer in Debian");
+When this parameter is used, B<dh_installmodules> looks for and

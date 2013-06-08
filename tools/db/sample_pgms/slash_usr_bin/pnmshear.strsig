@@ -1,0 +1,29 @@
+Angle argument is not a valid floating point number: '%s'
+__bss_start
+GLIBC_2.0
+__gmon_start__
+image too large
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libnetpbm.so.10
+Need an argument:  the shear angle.
+noantialias
+overflow_add
+pm_allocrow
+pm_close
+pm_error
+pm_message
+pm_openr
+pm_optParseOptions3
+pnm_backgroundxelrow
+pnm_init
+pnm_readpnminit
+pnm_readpnmrow
+pnm_writepnminit
+pnm_writepnmrow
+promoting from PBM to PGM - use -noantialias to avoid this
+too many arguments (%d).  The only arguments are shear angle and filespec.

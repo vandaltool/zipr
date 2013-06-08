@@ -1,0 +1,102 @@
+  %3d '%-16s'
+aconnect - ALSA sequencer connection manager
+   aconnect -i|-o [-options]
+   aconnect [-options] sender receiver
+ALSA_0.9
+ALSA Connector
+ALSA lib %s:%i:(%s) 
+alsa-utils
+can't get client id
+can't open sequencer
+can't set client info
+client %d: '%s' [type=%s]
+Connected From
+Connecting To
+ * Connection/disconnection between two ports
+Connection failed (%s)
+Connection is already subscribed
+Copyright (C) 1999-2000 Takashi Iwai
+dcgettext
+     -d,--disconnect     disconnect
+dior:t:elx
+disconnect
+Disconnection failed (%s)
+     -e,--exclusive      exclusive connection
+__errno_location
+exclusive
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+     -i,--input          list input (readable) ports
+invalid destination address %s
+invalid sender address %s
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libasound.so.2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+ * List connected ports (no subscription action)
+     -l,--list           list current connections of each port
+No subscription is found
+     -o,--output         list output (writable) ports
+__printf_chk
+removeall
+ * Remove all exported connections
+     -r,--real #         convert real-time-stamp on queue
+     sender, receiver = client:port pair
+setlocale
+snd_lib_error_set_handler
+snd_seq_client_id
+snd_seq_client_info_get_client
+snd_seq_client_info_get_name
+snd_seq_client_info_get_type
+snd_seq_client_info_set_client
+snd_seq_client_info_sizeof
+snd_seq_close
+snd_seq_get_any_port_info
+snd_seq_get_port_subscription
+snd_seq_open
+snd_seq_parse_address
+snd_seq_port_info_get_addr
+snd_seq_port_info_get_capability
+snd_seq_port_info_get_name
+snd_seq_port_info_get_port
+snd_seq_port_info_set_client
+snd_seq_port_info_set_port
+snd_seq_port_info_sizeof
+snd_seq_port_subscribe_set_dest
+snd_seq_port_subscribe_set_exclusive
+snd_seq_port_subscribe_set_queue
+snd_seq_port_subscribe_set_sender
+snd_seq_port_subscribe_set_time_real
+snd_seq_port_subscribe_set_time_update
+snd_seq_port_subscribe_sizeof
+snd_seq_query_next_client
+snd_seq_query_next_port
+snd_seq_query_port_subscribers
+snd_seq_query_subscribe_get_addr
+snd_seq_query_subscribe_get_exclusive
+snd_seq_query_subscribe_get_index
+snd_seq_query_subscribe_get_queue
+snd_seq_query_subscribe_get_root
+snd_seq_query_subscribe_get_time_real
+snd_seq_query_subscribe_get_time_update
+snd_seq_query_subscribe_set_index
+snd_seq_query_subscribe_set_root
+snd_seq_query_subscribe_set_type
+snd_seq_query_subscribe_sizeof
+snd_seq_set_client_name
+snd_seq_subscribe_port
+snd_seq_unsubscribe_port
+snd_strerror
+__stack_chk_fail
+textdomain
+     -t,--tick #         convert tick-time-stamp on queue
+__vfprintf_chk
+     -x, --removeall

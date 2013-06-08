@@ -1,0 +1,259 @@
+0123456789ABCDEF
+{ 0.824900  div dup 0.008856 le {7.787 mul 16 116 div add}{1 3 div exp} ifelse } bind
+{0.8249 mul %g div exch pop exch pop exch pop exch pop} bind
+{ 0.964200  div dup 0.008856 le {7.787 mul 16 116 div add}{1 3 div exp} ifelse } bind
+{0.9642 mul %g div exch pop exch pop exch pop exch pop} bind
+0B2A1B2A2B2A1B2A
+0B2A1B2A2B2A1B2A0A2B1A2B2A2B1A2B
+0erp1erp2erp1erp
+{ 1.000000  div dup 0.008856 le {7.787 mul 16 116 div add}{1 3 div exp} ifelse } bind
+{1.0000 mul %g div exch pop exch pop exch pop exch pop} bind
+{100 mul  16 add 116 div } bind
+{ 116 mul  16 sub 100 div  } bind
+{ 200 mul 128 add 256 div  } bind
+{255 mul 128 sub 200 div } bind
+{255 mul 128 sub 500 div } bind
+3 -1 roll 
+3 1 roll 
+?33333S7
+3 index 
+4 -1 roll 
+{4 index 3 get div 2 index 3 get mul 2 index 3 get 2 index 3 get sub mul 2 index 3 get 4 index 3 get 3 index 3 get sub mul sub 3 index 3 get 3 index 3 get exch sub div exch pop exch pop exch pop exch pop } bind
+{4 index 4 get div 2 index 4 get mul 2 index 4 get 2 index 4 get sub mul 2 index 4 get 4 index 4 get 3 index 4 get sub mul sub 3 index 4 get 3 index 4 get exch sub div exch pop exch pop exch pop exch pop } bind
+{4 index 5 get div 2 index 5 get mul 2 index 5 get 2 index 5 get sub mul 2 index 5 get 4 index 5 get 3 index 5 get sub mul sub 3 index 5 get 3 index 5 get exch sub div exch pop exch pop exch pop exch pop } bind
+{ 500 mul 128 add 256 div  } bind
+5HCMt`vn
+65535 div 
+%.6f %.6f %.6f 
+|$,9|$ t 
+AbsoluteColorimetric
+%% Absolute colorimetric -- encode to relative to maximize LUT usage
+Ancient named color profiles are not supported.
+Bad array size of %d entries.
+Bad tag signature '%lx' found.
+Bad tag signature %lx found.
+= baLtk= BGRt<1
+BCHSW built-in
+%%%%BeginResource
+/BlackPoint [%f %f %f]
+B/MatrixPQR [1 0 0 0 1 0 0 0 1 ]
+%% Bradford Cone Space
+B(= YMCt
+Cannot create transform Lab -> Profile in CRD creation
+Cannot create transform Profile -> Lab
+Cannot precalculate %d->%d channels transform!
+Cannot use devicelink profile for CRD creation
+%cb - Black point compensation (CRD only)
+%cc<0,1,2> - Precision (0=LowRes, 1=Normal (default), 2=Hi-res) (CRD only)
+ceiling cvi 
+[ /CIEBasedA
+[ /CIEBasedABC
+[ /CIEBasedDEF
+[ /CIEBasedDEFG
+%ci<profile> - Input profile: Generates Color Space Array (CSA)
+CLUT with different granulatity is currently unsupported.
+cmsAddTag: Tag '%x' is unsupported
+cmsAllocLUT() failed
+cmsConvertGammaToSampledCurve: too many points (max=4096)
+cmsCreateMultiprofileTransform: ColorSpace mismatch
+cmsCreateTransform: _cmsMalloc() failed
+cmsCreateTransform: intent mismatch
+cmsJoinSampledCurves: invalid curve.
+_cmsSmoothEndpoints: too many points.
+cmsSmoothGamma: too many points.
+cmsSmoothSampledCurve: too many points.
+cmsWhitePointFromTemp: invalid temp
+%cn<gridpoints> - Alternate way to set precision, number of CLUT points (CRD only)
+(colorlistcomment) (%s)
+(colorlistcomment) (%s) 
+Color Rendering Dictionary (CRD)
+/ColorRenderingType 1
+%co<profile> - Output profile: Generates Color Rendering Dictionary(CRD)
+Corrupted memory profile
+Corrupted profile: '%s'
+Could not mix named color profiles with other types in multiprofile transform
+Couldn't allocate %ld bytes for profile
+Couldn't create gammatable of more than 65530 entries
+Couldn't free a NULL named color list
+Couldn't write to file '%s'
+Couldn't write to memory
+%% CRD End
+%% Created: %s
+%ct<0,1,2,3> - Intent (0=Perceptual, 1=Colorimetric, 2=Saturation, 3=Absolute)
+%cu - Do NOT generate resource name on CRD
+/Current exch /ColorRendering defineresource pop
+ /Current exch /HPSpotTable defineresource pop
+ %d {} bind 
+/DecodeA 
+/DecodeABC [
+/DecodeABC [ 
+/DecodeDEF [ 
+/DecodeLMN [
+%% Description: %s
+Device link is operating on wrong colorspace on input
+Device link is operating on wrong colorspace on output
+DHCMt(vN
+%d is an unsupported as bitdepth, use 8 or 16 only.
+dup 0.0 lt { pop 0.0 } if dup 1.0 gt { pop 1.0 } if 
+{dup 6 29 div ge {dup dup mul mul} {4 29 div sub 108 841 div mul} ifelse 0.824900 mul} bind
+{dup 6 29 div ge {dup dup mul mul} {4 29 div sub 108 841 div mul} ifelse 0.964200 mul} bind
+{dup 6 29 div ge {dup dup mul mul} {4 29 div sub 108 841 div mul} ifelse } bind
+/EncodeABC [
+/EncodeLMN [
+%%%%EndResource
+engine. Both lcms and this program are freeware. You can
+__errno_location
+ERROR: Unknown precalc mode '%d'
+ERROR: Unknown precalculation mode '%d'
+{exch pop exch 3 get mul exch pop exch 3 get div} bind
+{exch pop exch 4 get mul exch pop exch 4 get div} bind
+{exch pop exch 5 get mul exch pop exch 5 get div} bind
+File '%s' not found
+floor cvi 
+For suggestions, comments, bug reports etc. send mail to
+__fprintf_chk
+g?Color %d out of range
+get command line option
+{ %g exp } bind 
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+=gratt!=tptw
+gray built-in
+icc2ps: %s
+info@littlecms.com
+ink limiting built-in
+InkLimiting: Limit should be between 0..400
+InkLimiting: Only CMYK currently supported
+Input profile cannot be NULL!
+Input profile is operating on wrong colorspace
+(internal) %d Channels are not supported on PatchLUT
+Internal error (prelinearization on CRD)
+?(internal) Phase error
+?Invalid angle
+Invalid output color space
+Invalid PCS
+_IO_stdin_used
+_Jv_RegisterClasses
+L$0=kniluO
+L$0=kniluR
+Lab built-in
+Lab v4 built-in
+lcms BCHSW abstract profile
+>lcms: Error #%d; 
+lcms gray virtual profile
+lcms ink limiting device link
+(lcms internal)
+lcms Lab identity
+lcms Lab identity v4
+lcms linearization device link
+lcms RGB virtual profile
+lcms XYZ identity
+length 1 sub 
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+linearization built-in
+LittleCMS
+little cms PostScript converter - v1.5+v1.18+foo2zjs
+LK@333333#@
+LUT8 needs 256 entries on postlinearization
+LUT8 needs 256 entries on prelinearization
+/MatrixA [ 0.9642 1.0000 0.8249 ]
+/MatrixABC [ 
+/MatrixABC [ 0 1 0 1 -1 1 0 0 -1 ]
+/MatrixABC [ 1 1 1 1 0 0 0 0 -1]
+/MatrixPQR [0.8951 -0.7502 0.0389 0.2664 1.7135 -0.0685 -0.1614 0.0367 1.0296 ] 
+MbP?Out of memory creating named color list
+__memcpy_chk
+__memset_chk
+multiLocalizedUnicodeType of len != 12 is not supported.
+Named color CSA
+Named color Device link
+Named color needs TYPE_NAMED_COLOR_INDEX
+Named color profiles are not supported as output
+Named profile
+{no name}
+Noncompliant device-link profile
+obtain both in source code at http://www.littlecms.com
+Only 3, 4 channels supported for CSA. This profile has %d channels.
+Out of memory allocating CharTarget space!
+Out of memory reallocating named color list
+Output profile cannot be NULL!
+Output profile is operating on wrong colorspace
+Output profile should be NULL, since this is a device-link transform
+Perceptual
+Pointer error; probably corrupted file
+Precalc mode already specified
+(Prefix) [ (Pantone ) (PANTONE ) ]
+prefix/suffix/device for named color profiles mismatch.
+Profile is not suitable for CSA. Unsupported colorspace.
+profile is unsuitable for input
+profile is unsuitable for output
+Proofing not supported on device link transforms
+%%!PS-Adobe-3.0
+/RangeABC [ 0 1 0 1 0 1]
+/RangeLMN [ 0.0 0.9642 0.0 1.0000 0.0 0.8249 ]
+/RangeLMN [ -0.236 1.254 0 1 -0.635 1.640 ]
+/RangeLMN [ -0.635 2.0 0 2 -0.635 2.0 ]
+/RangePQR [ -0.5 2 -0.5 2 -0.5 2 ]
+Read error. Got %d bytes, block should be of %d bytes
+Read from memory error. Got %d bytes, block should be of %d bytes
+Read from memory error. Integer overflow with count / size.
+Read from memory error. Integer overflow with len.
+RelativeColorimetric
+/RenderingIntent (%s)
+/RenderTable 
+rgb built-in
+RLCCtPw^
+  (%s) [ %.3f %.3f %.3f ]
+Saturation
+Seek error; probably corrupted file
+Sorry, the proof profile has not gamut checking capabilities
+Sorry, the proof profile has not previewing capabilities
+%% Source: %s
+__sprintf_chk
+sRGB built-in
+  (%s) [ %s ]
+__stack_chk_fail
+strcasecmp
+__strcat_chk
+__strcpy_chk
+(Suffix) [ ( CV) ( CVC) ( C) ]
+Tag '%lx' not found
+T$@= baLtt
+This profile is not suitable for input
+This program is intended to be a demo of the little cms
+T$@=knil
+Too many colorants '%lx'
+Too many device coordinates.
+Too many tags (%d)
+/TransformPQR [
+unable to smelt shaper-matrix, required tags missing
+Undefined
+Unexpected direction (%d)
+Unknown input format
+Unknown option - run without args to see valid ones.
+Unknown output format
+?Unknown parametric curve type '%d' found.
+Unknown white point (X:%1.2g, Y:%1.2g, Z:%1.2g)
+Unknow precision of '%d'
+Unsupported parametric curve type=%d
+?Unsupported restoration (%d channels)
+usage: icc2ps [flags]
+uUbBI:i:O:o:T:t:c:C:n:N:
+__vfprintf_chk
+%% VonKries-like transform in Bradford Cone Space
+%% VonKries-like transform in Bradford Cone Space plus BPC
+__vsnprintf_chk
+wcstombs
+What are you trying to do with more that 255 profiles?!?, of course aborted
+/WhitePoint [%f %f %f]
+White point near %dK
+<wt:<Wt6
+XYZ built-in
+YARG BGRYARG BGR YMCKYMCrbCY vuL ZYX baLKvuL VSH SLH yxY6HCM7HCM8HCM9HCMAHCMBHCMCHCMDHCMEHCMFHCM
+= YMCtq=KYMCu

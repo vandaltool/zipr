@@ -1,0 +1,173 @@
+and gathers it and all its components in the C<submit_01/> directory:
+  # an \includegraphics statement
+  # an \input or \include statement
+    })/"\\bibliography$1" . "{@::refs}"/egmx;# &&
+B<texdirflatten> - Collects all components of a (La)TeX file in a
+Bug reports and patches are welcome.
+Cengiz Gunay <cengique<AT>users.sf.net>
+  close $COPY;
+  close $FILE;
+  $contents =~ 
+    $contents = $contents . $_;
+  #  "$contents\n" .
+  $$contentsref =~
+      # convert LyX directory dots
+Copyleft 2003-2009, Cengiz Gunay
+created if it is unexistent. If unspecified, it defaults to C<flat/>.
+  # Default value
+	die "Cannot find $bibfile.bib!\n";
+	    die "Cannot find figure file '$epsfile'";
+Directory to collect all files. B<texdirflatten> will copy each source
+      } else {
+	  } else {
+	} else {
+	  } elsif (-r "$long.tex") {
+	  $epsfile = $inputdir . '../figures/' . $long;
+	  $epsfile = $inputdir . $long;
+				       "file|f=s" => \$file,
+file, graphics and bibliography file to this directory. It will be
+files recursively, to collect together its components, such as
+  @flats = ();
+      $flat = shift @::flats;
+      $flat = shift @flats;
+=for comment
+    foreach $long (@::longs) {
+    foreach $long (@longs) {
+      (?{ # for each word do:
+# GetOpt::Long::
+# get the bibliography files
+# Global
+graphics and BiBTeX bibliography files in different directories.
+=head1 AUTHOR
+=head1 BUGS
+=head1 CAVEATS
+=head1 COPYRIGHT AND LICENSE
+=head1 DESCRIPTION
+=head1 EXAMPLES
+=head1 NAME
+=head1 OPTIONS
+=head1 SYNOPSIS
+				       "help|?" => \$help );
+# $Id: texdirflatten,v 1.1 2009/04/17 14:15:39 cengiz Exp $
+  if ($contents =~ /\\input\@path{{([^}]*)}}/) {
+  if ($#::flats > 0) {
+  if ($#flats > 0) {
+  if ($#flats > -1) {
+	# if from figures dir, copy the EPS file as well
+	if ($long =~ /figures\//) {
+      if (not exists $texfiles{$flat}) {
+	  if (-r $inputdir . $long) {
+	if (! -r $long ) {
+      if (system("cp $bibfile.bib $outputdir/$flat.bib") != 0) {
+      if (system("cp $epsfile.eps $outputdir/$flat.eps") != 0) {
+	if (system("cp $epsfile.eps $outputdir/$flat.eps") != 0) {
+	  if (system("cp $epsfile.pstex $outputdir/$flat.eps") != 0) {
+    $inputdir = $1;
+  #$inputdir = './' if (-z $inputdir);
+=item B<-f> I<input.tex>
+=item B<-o> I<outputdir>
+It parses the source file, following its included children (La)TeX
+it under the same terms as Perl itself.
+  local @::flats = ();
+	  #local (@_flats, @_longs, @_refs);
+  local @::longs = ();
+  local @::refs;
+	    $long = $inputdir . $long;
+  @longs = ();
+      $long =~ s/\\lyxdot /./g;
+	    $long .= '.tex';
+  # Look for graphics include statement
+  my @a = split /\//, $file;
+      my $bibfile = $inputdir . $long;
+  my $contents = "";
+  #my $contents = $$contentsref;
+  my ($contentsref, $inputdir) = @_;
+      my $epsfile = $inputdir . $long;
+my $file;
+  my $file = shift (@_);
+  my $file = shift;
+  my @flats;
+my $help;
+  my $inputdir = shift;
+    my $long = $2;
+    my ($long, $flat);
+  my @longs;
+  my $outfile = "$outputdir/" . popfile($file);
+my $outputdir   = "flat";
+  my $popped;
+my $result = GetOptions ("output|o=s" => \$outputdir,
+my %texfiles;
+  #  "----------------------------------------\n" .
+  #  "----------------------------------------\n";
+  open my $COPY, ">$outfile" or die "Cannot write file $outfile\n";
+  open my $FILE, $file or die "Cannot find file to read $file\n";
+package texdirflatten;
+# - parse BIBINPUTS environment variable and search figures and such
+# parse helpers
+parseTeX($file, "");
+	parseTeX($long, $inputdir); #later
+Please take backups before running this command. No warranties
+pod2usage( -section => "SYNOPSIS") if ($file eq "" || $help);
+  pop @a;
+  "{" . ($popped = popfile($2) and push @longs, $2 and push @flats,$popped and $popped) . "}"/egm;
+  ($popped = popfile($2) and push @longs, $2 and push @flats,$popped and $popped)  . "}"/egm;
+          $popped = popfile($+); push @::longs, $+;
+#  print ;
+  #print "bib contents: $contents\n";
+      #print "bib contents: $$contentsref\n";
+	  print "Cannot find $epsfile.eps!\n";
+	print "Cannot find $epsfile.eps!\n";
+  print $COPY $contents;
+      print "Found bib. file: '$long'\n";
+	    print "Found: '$epsfile.pstex'\n";
+	print "Found: '$epsfile.pstex'\n";
+      print "Found graphics: '$long'\n";
+    print "Found input directory: $inputdir\n";
+      print "Found Input/Include: '$long'\n";
+    #print "Found " . scalar @::longs . " items on line: '@::flats'.\n";
+    #print "Found " . scalar @longs . " items on line: '@flats'.\n";
+#print "help: $help, file: $file\n";
+      (?{ #print "\n+++ $#::flats; $#::refs; $#::longs\n";
+      #print "\n*** $#::flats; $#::refs; $#::longs\n";
+#print "poop: " . popfile('slkjs/lkjlsjd/saa.abc');
+  #print "Popping $file... split: @a ($#a), pop: " . pop(@a) . "\n";
+          #print "Refs: @::refs\n";
+          #print "Word: \"$+\", "; 
+  #print "Writing to \"$outfile\"\n" .
+          #push @::flats, @_flats; push @longs, @_longs; push @refs, @_refs;
+          push @::flats,$popped; push @::refs, $popped;
+  # Read to whole file first, and then scan for regexps
+      # recurse to parse that tex file unless it's done already
+      (?{ @::refs = (); #print "Found bibliography!\n"; #initialize ref list
+  replacebibs(\$contents, $inputdir);
+  $" = ' ';			# restore list item separator
+# Return everything after the last /
+Run without parameters to see usage.
+        }) (?: \s* ([^}, ]+)(?=[,}]),?
+        }) )+ \s* }
+    s/\\bibliography(\[[^\]]*\])? { 
+  # search for \bibliography statements
+  $" = ',';			# set list item separator
+    s/\\includegraphics(\[[^\]]*\])?\{([^}]*)\}/"\\includegraphics" . $1 .
+single output directory -- i.e., flattens its hierarchy.
+    s/\\(input|include){([^}]*)}/"\\${1}{" .
+Specifies input (La)TeX file.
+# start recursing
+sub parseTeX {
+sub popfile {
+sub replacebibs {
+system "mkdir $outputdir" if (not -d $outputdir);
+texdirflatten -f input.tex [-o outputdir]
+ $ texdirflatten -f manuscript.tex -o submit_01
+	$texfiles{$flat} = $long;
+The following example scans C<manuscript.tex> in the current directory
+# there as well.
+This library is free software; you may redistribute it and/or modify
+  # three cases: graphics, inputs and bibs
+use Getopt::Long qw(GetOptions);
+use Pod::Usage;
+use strict;
+#! /usr/bin/perl
+whatsoever provided.
+  while(<$FILE>) {
+  # write to flat copy

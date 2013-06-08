@@ -1,0 +1,261 @@
+account_conn_changed_cb
+account_enabled_cb
+account_manager_prepared_cb
+account_manager_prepared_cb %s
+account-validity-changed
+Activated, removing indicator
+add_account
+add_dispatch_operation_cb but there are no listeners with interest
+added channel-id: %s
+Approver registration failed, exiting
+approver_setup
+__bss_start
+channel-id
+check_account
+check_indicator: %s
+conn_invalidated_cb
+contact_add_response_cb
+contact_add_to_contact_list
+contact-list-changed
+contact_list_changed_cb
+contact_list_changed_cb: adding %s
+contact_list_changed_cb: found indicator for contact
+contact_list_changed_cb: removing %s
+contact_list_setup
+contact != NULL
+contact_remove_cb
+contact_remove_from_contact_list
+dcgettext
+_Decline
+DESKTOP_AUTOSTART_ID
+DispatchOperation invalidated, removing indicator
+dispatch_op_finished_cb
+draw-attention
+empathy.desktop
+Error preparing AM: %s
+Failed to authorize_publication on %s
+Failed to create pixbuf: %s
+Failed to get Daemon: %s
+Failed to handle operations: %s
+Failed to launch empathy: %s
+Failed to register the approver: %s
+Failed to register the observer: %s
+Failed to remove on %s
+Failed to request_subscription on %s
+Failed to unblock on %s
+find_indicator_by_id: %s
+g_app_info_launch
+g_desktop_app_info_new
+g_direct_equal
+g_direct_hash
+gdk_pixbuf_new_from_file_at_scale
+g_error_free
+get_contact_from_channel
+Getting avatar for %s
+g_file_get_path
+g_get_current_time
+g_hash_table_insert
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_lookup
+g_hash_table_new
+g_hash_table_remove
+g_hash_table_size
+GLIBC_2.0
+g_list_delete_link
+g_list_find
+g_list_free
+g_list_length
+g_list_prepend
+g_list_remove
+g_main_loop_new
+g_main_loop_run
+g_main_loop_unref
+__gmon_start__
+g_object_ref
+g_object_unref
+g_return_if_fail_warning
+g_signal_connect_data
+g_strcmp0
+g_strdup_printf
+g_timeout_add
+gtk_dialog_add_button
+gtk_dialog_get_type
+gtk_dialog_set_default_response
+gtk_image_new_from_pixbuf
+gtk_init
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_message_dialog_set_image
+gtk_widget_destroy
+gtk_widget_get_type
+gtk_widget_show
+gtk_window_get_type
+gtk_window_set_title
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_init
+g_unsetenv
+handle_contacts_add_indicator_cb alias: %s
+handle_contacts_pending_add_indicator_cb
+handle_contacts_pending_add_indicator_cb alias: %s
+handle_contacts_pending_add_indicator_cb HAS CONTACT alias: %s
+handle_contacts_pending_add_indicator_cb NO CONTACT alias: %s
+handle_with_cb
+Handling text channel: %s
+indicate_gtk_indicator_set_property_icon
+indicate_indicator_get_property
+indicate_indicator_get_type
+indicate_indicator_hide
+indicate_indicator_new
+indicate_indicator_set_property
+indicate_indicator_set_property_time
+indicate_indicator_show
+INDICATE_IS_INDICATOR(indicator)
+indicate_server_check_interest
+indicate_server_ref_default
+indicate_server_remove_interest
+indicate_server_set_desktop_file
+indicate_server_set_type
+indicate_server_show
+indicate_server_show_interest
+IndicatorApprover
+indicator for channel %s
+IndicatorObserver
+indicator_remove_by_id: %s
+indicator_remove_by_indicator
+interest-added
+interest-removed
+invalidated
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+libindicate-gtk.so.3
+libindicate.so.5
+/lib/ld-linux.so.2
+libpthread.so.0
+libtelepathy-glib.so.0
+libunity.so.9
+message.im
+message-received
+message_received_cb: %s
+notify::connection
+observer_add_dispatch_operation_cb but there are no listeners with interest
+observer_handle_with_cb
+observer_indicator_display
+Observer registration failed, exiting
+observer_setup
+org.freedesktop.Telepathy.Channel.ChannelType
+org.freedesktop.Telepathy.Channel.TargetHandleType
+org.freedesktop.Telepathy.Channel.Type.Text
+pending-message-removed
+pending_message_removed_cb: %s
+pending: %u
+response
+server-display
+server_display at %u
+server_display but there are no listeners with interest
+Subscription Request
+%s would like permission to see when you are online
+TELEPATHY_GLIB_0.11.14
+TELEPATHY_GLIB_0.11.15
+TELEPATHY_GLIB_0.11.3
+TELEPATHY_GLIB_0.11.5
+TELEPATHY_GLIB_0.11.6
+TELEPATHY_GLIB_0.11.7
+TELEPATHY_GLIB_0.13.10
+TELEPATHY_GLIB_0.13.12
+TELEPATHY_GLIB_0.13.16
+TELEPATHY_GLIB_0.13.9
+TELEPATHY_GLIB_0.15.0
+TELEPATHY_GLIB_0.15.5
+TELEPATHY_GLIB_0.15.6
+TELEPATHY_GLIB_0.17.0
+TELEPATHY_GLIB_0.7.1
+TELEPATHY_GLIB_0.7.12
+TELEPATHY_GLIB_0.7.18
+TELEPATHY_GLIB_0.7.21
+TELEPATHY_GLIB_0.7.26
+TELEPATHY_GLIB_0.7.29
+TELEPATHY_GLIB_0.7.32
+TELEPATHY_GLIB_0.9.0
+TELEPATHY_GLIB_0.9.2
+Telepathy Indicator started
+tp_account_get_connection
+tp_account_get_feature_quark_connection
+tp_account_get_path_suffix
+tp_account_get_type
+tp_account_manager_dup
+tp_account_manager_get_type
+tp_account_manager_get_valid_accounts
+tp_add_dispatch_operation_context_accept
+tp_asv_new
+tp_base_client_register
+tp_base_client_take_approver_filter
+tp_base_client_take_observer_filter
+tp_channel_borrow_connection
+tp_channel_dispatcher_get_type
+tp_channel_dispatcher_new
+tp_channel_dispatcher_present_channel_async
+tp_channel_dispatcher_present_channel_finish
+tp_channel_dispatch_operation_borrow_channels
+tp_channel_dispatch_operation_get_type
+tp_channel_dispatch_operation_handle_with_time_async
+tp_channel_dispatch_operation_handle_with_time_finish
+tp_channel_get_identifier
+tp_channel_get_initiator_contact
+tp_channel_get_initiator_handle
+tp_channel_get_initiator_identifier
+tp_channel_get_requested
+tp_channel_get_target_contact
+tp_channel_get_type
+tp_connection_get_connection_manager_name
+tp_connection_get_contacts_by_handle
+tp_connection_get_feature_quark_contact_list
+tp_connection_upgrade_contacts
+tp_contact_authorize_publication_async
+tp_contact_authorize_publication_finish
+tp_contact_get_alias
+tp_contact_get_avatar_file
+tp_contact_get_connection
+tp_contact_get_identifier
+tp_contact_get_publish_request
+tp_contact_get_publish_state
+tp_contact_get_type
+tp_contact_remove_async
+tp_contact_remove_finish
+tp_contact_request_subscription_async
+tp_contact_request_subscription_finish
+tp_contact_unblock_async
+tp_contact_unblock_finish
+tp_dbus_daemon_dup
+tp_g_signal_connect_object
+TP_IS_ACCOUNT (account)
+TP_IS_ACCOUNT_MANAGER (tp_am)
+TP_IS_CHANNEL (channel)
+tp_observe_channels_context_accept
+tp_proxy_get_factory
+tp_proxy_prepare_async
+tp_proxy_prepare_finish
+tp_simple_approver_new_with_am
+tp_simple_client_factory_add_account_features_varargs
+tp_simple_client_factory_add_connection_features_varargs
+tp_simple_client_factory_add_contact_features_varargs
+tp_simple_observer_new_with_am
+tp_text_channel_get_pending_messages
+tp_text_channel_get_type
+unity launcher: count is %d
+unity_launcher_entry_get_for_desktop_id
+unity_launcher_entry_set_count
+unity_launcher_entry_set_count_visible
+unity launcher: hiding count
+unity launcher: setting count to %d
+user-display
+/usr/share/applications/empathy.desktop

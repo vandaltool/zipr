@@ -1,0 +1,122 @@
+add_nc_palette_lab
+add_nc_palette_srgb
+add %s, %f,%f,%f
+add %s, %i,%i,%i as %f,%f,%f
+A gamma string, e.g. '0.8,0.8,0.6'
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+cannot write %s
+cd-create-profile.c
+cd-lcms-helpers.c
+cd_profile_write_metadata_string
+CMF_binary
+@CMF_product
+CMF_version
+cmsAllocNamedColorList
+cmsAppendNamedColor
+cmsBuildTabulatedToneCurve16
+cmsCloseProfile
+cmsCreateLab4Profile
+cmsCreateNULLProfile
+cmsCreate_sRGBProfile
+cmsCreateTransform
+cmsDeleteTransform
+cmsDictAddEntry
+_cmsDictAddEntryAscii
+cmsDictAlloc
+cmsDictFree
+cmsDictGetEntryList
+cmsDictNextEntry
+cmsDoTransform
+cmsFloat2LabEncoded
+cmsFreeNamedColorList
+cmsFreeToneCurve
+cmsMD5computeID
+cmsMLUalloc
+cmsMLUfree
+cmsMLUsetASCII
+cmsReadTag
+cmsSaveProfileToFile
+cmsSetColorSpace
+cmsSetDeviceClass
+cmsSetHeaderRenderingIntent
+cmsSetLogErrorHandler
+cmsSetPCS
+cmsSetProfileVersion
+cmsSmoothToneCurve
+cmsWriteTag
+_cmsWriteTagTextAscii
+converted != -1
+__data_start
+dcgettext
+failed to open profile
+Failed to parse arguments
+failed to write copyright
+failed to write description
+failed to write manufacturer
+failed to write metadata: %s
+failed to write model
+failed to write profile id
+failed to write VCGT
+g_assertion_message_expr
+g_error_free
+g_file_get_contents
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.4
+g_malloc
+__gmon_start__
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_set_error
+g_strchomp
+g_strchug
+g_strcmp0
+g_strdelimit
+g_strfreev
+g_strsplit
+g_strstr_len
+g_strv_length
+ICC profile creation program
+incorrect points string
+invalid line: %s
+invalid metadata format: '%s' expected 'key=value'
+_IO_stdin_used
+_Jv_RegisterClasses
+LCMS error %i: %s
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+liblcms2.so.2
+/lib/ld-linux.so.2
+libm.so.6
+libpthread.so.0
+mbstowcs
+metadata
+Named color CSV filename
+named-color-palette
+Named color prefix
+Named color suffix
+named-color-type
+Named color type, e.g. 'lab' or 'srgb'
+nc-prefix
+nc-suffix
+No data to create profile
+No output filename specified
+Profile to create
+setlocale
+__stack_chk_fail
+The device manufacturer
+The device model
+The metadata in 'key1=value1,key2=value2' format
+The profile copyright
+The profile description
+/usr/share/locale
+utf8_to_wchar_t
+wcstombs
+xorg-gamma

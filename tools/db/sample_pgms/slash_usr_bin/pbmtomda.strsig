@@ -1,0 +1,30 @@
+__bss_start
+-d: Halve height (to compensate for the PCW aspect ratio)
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+-i: Invert colours
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+License, version 2 or later.
+--: No more options (use if filename begins with a dash)
+Not enough memory for conversion.
+overflow_add
+pbm_init
+pbm_readpbm
+pbmtomda v1.00, Copyright (C) 1999 John Elliott <jce@seasip.demon.co.uk>
+pm_close
+pm_error
+pm_freearray
+pm_openr
+pm_writelittleshort
+__printf_chk
+%s: Cannot read input file.
+This program is redistributable under the terms of the GNU General Public
+Usage: %s [ -d ] [ -i ] [ -- ] [ infile ]

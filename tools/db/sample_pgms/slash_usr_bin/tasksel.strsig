@@ -1,0 +1,549 @@
+		              || 0 ||
+	# Add tasks to install and see if any selected task requires manual
+# A list of all available task desc files.
+# (All of its key packages must be installed.)
+	# And finally, act on selected tasks.
+		@apt="apt-get";
+		# aptitude/apt-get task definitions
+# aptitude/apt-get task syntax for those.
+		@aptitude="aptitude";
+		@aptitude=qw{aptitude -q};
+		@apt=qw{apt-get -q};
+		  $a->{section} cmp $b->{section}
+	        $a->{shortdesc} cmp $b->{shortdesc}
+			# Assume that no tasks are installed, to ensure
+			$avail_pkgs{$pkg} = 1;
+		$b->{relevance} <=> $a->{relevance}
+# Calculate the list of packages to remove, taking care not to include
+		# Canonicalise $question's value first, so that it will be
+	# chained enhances. This is ugly and could loop forever if
+		chomp;
+		chomp $line;
+		chomp $ret;
+		chomp $tmpfile;
+	chomp $tmpfile;
+			close AVAIL;
+	close AVAIL;
+	close DESC;
+		close IN;
+	close IN;
+	close STATUS;
+# command.
+# Converts a list of tasks into a debconf list of their short descriptions.
+# Copyright 2004-2006 by Joey Hess <joeyh@debian.org>.
+				$cur_region=floor($cur_region + $num_regions * 0.95 + 0.5);
+	# currently in base.
+		$dap="debconf-apt-progress";
+			$dap_from=$options{'debconf-apt-from'};
+			$dap_to=$options{'debconf-apt-to'};
+					$data{$key}=$value;
+					$data{$key}=[@values];
+			$data{relevance}=5 unless exists $data{relevance};
+			$data{shortdesc}=$data{description}->[0];
+			$data{shortdesctrans}=dgettext("debian-tasks", $data{shortdesc});
+		   "debconf-apt-from=i", "debconf-apt-to=i",
+# debconf-apt-progress, and returns the appropriate debconf-apt-progress
+		   "debconf-apt-progress=s")) {
+# Debian task selector, mark II.
+	delete $ENV{NEW_INSTALL};
+					delete $ENV{TESTING_ENHANCER};
+		delete $list{$_} foreach task_packages($task, 0, 0);
+				# dependencies are met and their test fields
+		$desc;
+		die "'Packages: standard' not supported by this version of tasksel\n";
+			die "tasksel canceled\n";
+		# displayed properly if preseeded unseen.
+	# divided equally among all the scripts. (If you change this, the
+		# Don't install hidden tasks if this is not a new install.
+			# Don't install new tasks unless manually selected.
+		# element(s) we should use, so if the user didn't select any
+	} else {
+			} else {
+				} else {
+				else {
+			else {
+		else {
+		elsif ($action eq 'skip') {
+		elsif ($apt_get_tasks) {
+		} elsif (defined $dap) {
+			} elsif ($manual_selection) {
+	elsif ($options{"task-desc"}) {
+		elsif ($ret != 0) {
+			elsif ($ret == 1) {
+			elsif ($ret == 2) {
+			elsif ($ret == 3) {
+	elsif ($task->{packages} eq 'manual') {
+	elsif ($task->{packages} eq 'standard') {
+		$enhances_needswork=0;
+					$enhances_needswork=1;
+	$ENV{NEW_INSTALL}=$new_install if defined $new_install;
+					$ENV{TESTING_ENHANCER}=1;
+				error "debconf failed to run";
+			error "debconf failed to run";
+		error "filter-tasks failed to run";
+						error gettext("aptitude failed")." ($ret)";
+					error gettext("aptitude failed")." ($ret)";
+				error gettext("aptitude failed")." ($ret)";
+		    exists $options{'debconf-apt-to'}) {
+			exit(0);
+		exit(0);
+			exit(1);
+		exit 1;
+		exit(1);
+	exit 1;
+			exit 10; # back up
+		# external method
+		filter_tasks(@tasks);
+			# Find tasks that are already installed.
+					foreach my $dep (map { $tasknames{$_} } split " | ", $ordep) {
+				foreach my $ordep (@ordeps) {
+		foreach my $pkg (list_avail()) {
+		foreach my $pkg (list_installed()) {
+		foreach my $pkg (@{$task->{key}}) {
+	foreach my $task (grep { ! $_->{_display} || $_->{_selected} } @_) {
+		foreach my $task (grep { ! $_->{_install} && exists $_->{enhances} &&
+	foreach my $task (grep { $_->{_install} && exists $_->{enhances} &&
+	foreach my $task (grep { $_->{_install} } @tasks) {
+		foreach my $task (@list) {
+		foreach my $task (list_to_tasks($ret, @tasks)) {
+		foreach my $taskname (@{$options{"task-packages"}}) {
+		foreach my $task (@tasks_install) {
+	foreach my $task (@tasks_install) {
+		foreach my $task (@tasks_remove) {
+	foreach my $task (@$tasks_remove) {
+	foreach my $task (@tasks_remove) {
+	foreach my $test (grep /^test-.*/, keys %$task) {
+			foreach order_for_display(grep { $_->{_display} } @tasks);
+	for my $line (<IN>) {
+	Getopt::Long::Configure ("bundling");
+# Given a first parameter that is a debconf list of short descriptions of
+# Given a list of task hashes, adjust their statuses according to
+# Given a package name, checks to see if it's available. Memoised.
+# Given a package name, checks to see if it's installed. Memoised.
+# Given a set of tasks and a name, returns the one with that name.
+# Given a task hash, checks if its key packages are available.
+# Given a task hash, checks to see if it is already installed.
+# Given a task hash, runs any test program specified in its data, and sets
+# Given task hash, returns a list of all available packages in the task.
+			grep { package_avail($_) }
+	grep { $seen{$_->{task}}++; $seen{$_->{task}} < 2 }
+	          grep { task_avail($_) } all_tasks();
+# hashes, returns a list of hashes for all the tasks in the list.
+		# have to use apt-get for other reasons ...
+# here; this will be taken care of later outside new-install mode, and in
+# Hides a task if it enhances other tasks. Don't mark it not to be installed
+		if ($action eq 'install') {
+	# If an enhancing task is already marked for
+		if (! @aptitude_args && $manual_selection) {
+		if ($aptitude_tasks) {
+	if (@ARGV) {
+	if (@ARGV && $ARGV[0] eq "install") {
+	if (@ARGV && $ARGV[0] eq "remove") {
+	if (! %avail_pkgs) {
+		if (%data) {
+		if (defined $dap_from and defined $dap_to) {
+		if (defined find_task_script($task->{task}, "postinst")) {
+		if (defined find_task_script($task->{task}, "postrm")) {
+		if (defined find_task_script($task->{task}, "preinst")) {
+		if (defined find_task_script($task->{task}, "prerm")) {
+			if (defined $path) {
+		if (! defined $ret) {
+	if (defined $start and defined $end and $num_regions) {
+					if (defined $value && length $value) {
+						if ($dep->{_install}) {
+		if ($desc=~/, /) {
+	if (-e $path && -x _) {
+		if (exists $options{'debconf-apt-from'} and
+			if exists $options{'debconf-apt-progress'};
+	if (exists $options{"task-packages"}) {
+	if (exists $task->{enhances} && length $task->{enhances}) {
+				if (! exists $tested{$task->{task}}) {
+	if (! GetOptions(\%ret, "test|t", "new-install", "list-tasks",
+					if (grep { $_ eq $task->{task} } @tasks) { 
+	if (! %installed_pkgs) {
+			if ($line=~/^([^ ]+):(?: (.*))?/) {
+				if (@lines && $lines[0] =~ /^\s+/) {
+	if (@list && ! $options{install} && ! $options{remove}) {
+			if ($manual_selection) {
+			if ($num_regions) {
+	if ($options{"install"}) {
+	if ($options{"list-tasks"}) {
+			if ($options{"new-install"}) {
+		if (! $options{"new-install"}) {
+		if ($options{"new-install"}) {
+	if (! $options{"new-install"}) {
+	if ($options{"new-install"}) {
+	if ($options{"remove"}) {
+	if ($options{section}) { 
+			if (@ordeps) {
+		if (/^Package: (.*)/) {
+			if (! package_avail($pkg)) {
+			if (! package_installed($pkg)) {
+	if (! ref $task->{key}) {
+	if (ref $task->{key}) {
+		if (ref $task->{packages}) {
+					if ($ret != 0) {
+				if ($ret != 0) {
+			if ($ret == 0) {
+			if ($ret != 0) {
+		if ($ret != 0) {
+	if ($ret != 0) {
+		if ($ret == 30) {
+		if ($ret ne "") {
+					if (! $satisfied) {
+		if (/^Status: .* installed$/m && /Package: (.*)$/m) {
+			if ($task) {
+		if ($task) {
+			if (! $task->{_installed}) {
+				if ($task->{_install} != $orig_state) {
+				if (/^Task: (.*)/m) {
+		if ($task->{packages} eq 'manual') {
+	if ($task->{packages} eq 'task-fields') {
+			if (! $task->{_selected} && $task->{_installed}) {
+	if (@tasks_install || @task_packages_remove || $manual_selection) {
+	if ($testmode) {
+# If the aptitude_tasks or apt_get_tasks parameter is true, then it does
+		# If the user selected no other tasks and manual package
+		if (-x "$testdir/$test") {
+			if (-x "/usr/bin/aptitude") {
+	if (-x "/usr/bin/debconf-apt-progress") {
+		# Ignore any disjunctive sets. We don't know which
+		# implemented externally.
+				# Include any preseeded tasks in the list,
+			$installed_pkgs{$pkg} = 1;
+	# install, probably by preseeding, mark the tasks
+			# installs.
+# installs it by default.
+		$interactive=1;
+	# it enhances for install.
+		# it's better to just leave them alone.
+	join ", ", map {
+				$key=lc($key);
+	# key packages are always included
+	                         length $_->{enhances} } @tasks) {
+		                         length $_->{enhances} } @tasks) {
+# Licensed under the GPL, version 2 or higher.
+	# Limit the tasks shown to a single section
+		$line=~/(.*?) (install|skip)/ or next;
+						$list{$1}=1 if /^Package: (.*)/m;
+		$list{$_} = 1 foreach task_packages($task, 0, 0);
+				@list = order_for_display(grep { $_->{_display} == 1 } @tasks);
+	    --list-tasks    list tasks that would be displayed and exit
+				list_to_tasks($ret, @list));
+# Loads info for all tasks, and returns a set of task structures.
+	local $_;
+			local $/="\n\n";
+	local $/="\n\n";
+		# manual package selection is a special case
+				$manual_selection=1;
+				map { $_->{_display} = 1; $_->{_installed} = 0 } list_to_tasks($ret, @tasks);
+		map { $_->{_install} = 0 } grep { $_->{_display} == 0 } @tasks;
+			map { $_->{_install} = 0 } @list;
+		map { $_->{_install} = 0 } @list;
+		map { $_->{_install}=1 } list_to_tasks($simple_enhances, @tasks);
+			map { $_->{_installed} = 0 } @list;
+			map { $_->{_installed} = task_installed($_) } @list;
+		map { $_->{_installed} = task_installed($_) } @tasks;
+		map { $list{$_}=1 }
+		map { $list{$_}=1 } @{$task->{key}};
+	map { read_task_desc($_) } list_task_descs();
+				# Mark enhancing tasks for install if their
+	# mark them.
+				# mark them for install.
+			$method=shift @params;
+			$method=$task->{packages};
+	# Might be better to use the perl apt bindings, but they are not
+					# multi-line field
+		my $action=$2;
+	my $apt_get_tasks=shift;
+	my (@aptitude, @apt);
+		my (@aptitude_args, @apt_args);
+	my $aptitude_tasks=shift;
+		my @args = map { "$_-" } @task_packages_remove;
+my %avail_pkgs;
+	my @cmd=($dap, '--from', $from, '--to', $to);
+	my $cur_region=0;
+	my $cur_region=shift;
+	my $dap;
+	my ($dap_from, $dap_to);
+	my @dap_options;
+	my $dap=shift;
+		my %data;
+my $debconf_helper="/usr/lib/tasksel/tasksel-debconf";
+		my @default = grep { $_->{_display} == 1 && ($_->{_install} == 1 || $_->{_installed} == 1) } @tasks;
+my $descdir="/usr/share/tasksel";
+		my $desc=$_->{$field};
+	my $desc=shift;
+	my %desc_to_task = map { $_->{shortdesc} => $_, $_->{task} => $_ } @_;
+my $disconnect="/usr/lib/tasksel/disconnect";
+	my $end=shift;
+	my $enhances_needswork=1;
+			my $extdesc=join(" ", @{$task->{description}}[1..$#{$task->{description}}]);
+	my $field = shift;
+my $filter_tasks="/usr/lib/tasksel/filter-tasks";
+		my $from=floor($start + ($end - $start) * $cur_region / $num_regions + 0.5);
+	my $from=shift;
+my $infodir="/usr/lib/tasksel/info";
+my %installed_pkgs;
+	my $interactive=0;
+				my ($key, $value)=($1, $2);
+			my $line=shift(@lines);
+		my @lines=split("\n");
+	my @list;
+	my %list;
+	my @list = order_for_display(grep { $_->{_display} == 1 } @tasks);
+	my $list=shift;
+my $localdescdir="/usr/local/share/tasksel";
+	my $manual_selection=0;
+		my ($method, @params);
+		my $name=$1;
+	my $name=shift;
+	my $new_install=shift;
+			my $new_value = task_to_debconf("shortdesc",
+	my $num_regions=0;
+	my $num_regions=shift;
+	my %options=getopts();
+	my $options=shift;
+			my @ordeps=split ", ", $task->{enhances};
+				my $orig_state=$task->{_install};
+my $packagesdir="/usr/lib/tasksel/packages";
+	my $package=shift;
+			my $path=find_task_script($task->{task}, "postinst");
+			my $path=find_task_script($task->{task}, "postrm");
+			my $path=find_task_script($task->{task}, "preinst");
+			my $path=find_task_script($task->{task}, "prerm");
+	my $path="$infodir/$task.$script";
+	my $path=pop;
+		my @prefix;
+	my @prefix=@_;
+				my @prefix=task_region($dap, $dap_from, $dap_to, \@dap_options, $cur_region++, 1, $num_regions);
+		my $question="tasksel/tasks";
+		my $ret;
+	my @ret;
+	my %ret;
+	my $ret=run(@prefix, $path);
+		my $ret=system($debconf_helper, "--get", $tmpfile,
+	my $ret=system($filter_tasks, $tmpfile, sort keys %tasks) >> 8;
+			my $ret=system("$testdir/$test", $task->{task}, split " ", $task->{"test-$test"}) >> 8;
+					my $satisfied=0;
+	my $script=shift;
+	my %seen;
+		my $simple_enhances=join ", ", grep { ! /\|/ } split ", ", $task->{enhances};
+	my $start=shift;
+my $statusfile="/var/lib/dpkg/status";
+	my $step_region=shift;
+			my %tasknames = map { $_->{task} => $_ } @tasks;
+		my $task=name_to_task($options{"install"}, @tasks);
+		my $task=name_to_task($options{"remove"}, @tasks);
+		my $task=name_to_task($options{"task-desc"}, all_tasks());
+			my $task=name_to_task($taskname, @tasks);
+	my @task_packages_remove = task_packages_remove(\@tasks_remove, @tasks);
+		my @tasks=all_tasks();
+	my $task=shift;
+	my @tasks_install;
+	my @tasks=map { hide_enhancing_tasks($_) } map { task_test($_, $options{"new-install"}, 1, 0) }
+	my %tasks=map { $_->{task} => $_ } @_;
+	my @tasks_remove;
+	my $tasks_remove = shift;
+					my @tasks=split(", ", $1);
+my $testdir="/usr/lib/tasksel/tests";
+	my %tested;
+my $testmode=0;
+		my $tmpfile=`tempfile`;
+	my $tmpfile=`tempfile`;
+		my $to=floor($start + ($end - $start) * ($cur_region + $step_region) / $num_regions + 0.5);
+	my $to=shift;
+					my @values;
+	    --new-install   automatically install some tasks
+# new-install mode we may want to apply a test to an enhancing task that
+	# new percentage should divide equally into 100.)
+				$new_value) >> 8;
+# not expand tasks that aptitude/apt-get knows about, and just returns
+			++$num_regions;
+	$num_regions*=20;
+			open (AVAIL, "apt-cache dumpavail|");
+	open (AVAIL, "apt-cache dumpavail|");
+	open (DESC, "<$desc") || die "read $desc\: $!";
+		open(IN, "<$tmpfile");
+	open(IN, "<$tmpfile") or return;
+	open (STATUS, $statusfile);
+	# Options that output stuff and don't need a full processed list of
+# Orders a list of tasks for display.
+# packages that are in other tasks that are still selected.
+			@params=@{$task->{packages}};
+			@prefix=($dap, @dap_options, '--');
+				@prefix=debconf_apt_command($dap, $dap_from, $dap_to, \@dap_options);
+				@prefix=task_region($dap, $dap_from, $dap_to, \@dap_options, $cur_region, $num_regions * 0.95, $num_regions);
+			print dgettext("debian-tasks", $extdesc)."\n";
+		print "".($_->{_installed} ? "i" : "u")." ".$_->{task}."\t".$_->{shortdesc}."\n"
+		print join(" ", @_)."\n";
+				print "$_\n" foreach task_packages($task);
+	print STDERR gettext(q{Usage:
+	print STDERR "tasksel: @_\n";
+# Prints the command in test mode. Parameters should be pre-split for
+# Process command line options and return them in a hash.
+		push @apt_args, @args;
+			push @apt_args, task_packages($task, 0, 1);
+		push @aptitude_args, @args;
+			push @aptitude_args, task_packages($task, 1, 0);
+	push @cmd, '--';
+	push @cmd, @$options if defined $options;
+		push @dap_options, split(' ', $options{'debconf-apt-progress'})
+			push @list, $1;
+			push @ret, \%data;
+		push @tasks_install, $task;
+				push @tasks_remove, $task;
+		push @tasks_remove, $task;
+						push @values, $1;
+						push @values, $value;
+			$question) >> 8;
+			$question="tasksel/first";
+				# regardless of filtering.
+				# remaining 95% of the progress bar.
+		$ret=<IN>;
+		$ret{install} = shift @ARGV;
+		$ret{remove} = shift @ARGV;
+				$ret=run(@aptitude, "-y", "--schedule-only", "install", @aptitude_args);
+			$ret=run_disconnect("aptitude", "--schedule-only");
+				$ret=run_disconnect(@aptitude, "--schedule-only");
+				$ret=run(@prefix, @aptitude, "-y", "install");
+					$ret=run(@prefix, @aptitude, "-y", "install");
+				$ret=run(@prefix, @apt, "-y", "install", @apt_args);
+			$ret=system($debconf_helper, "--set", $question,
+		$ret=system($debconf_helper, $tmpfile,
+		return;
+				return 0;
+		return 0;
+		return 0; # can't tell with no key packages
+		return 1;
+	return 1;
+	return $avail_pkgs{$package} || package_installed($package);
+	return @cmd;
+		return debconf_apt_command($dap, $from, $to, $options);
+	return glob("$descdir/*.desc"), glob("$localdescdir/*.desc");
+	return grep { defined } map { $desc_to_task{$_} } split ", ", $list;
+	return (grep { $_->{task} eq $name } @_)[0];
+	return $installed_pkgs{$package};
+	return keys %list;
+	return keys %list unless %list;
+	return @list;
+		return $path;
+		#return "~pstandard", "~prequired", "~pimportant";
+	return @ret;
+	return %ret;
+# Returns a list of all available packages.
+# Returns a list of all installed packages.
+# Returns a list of hashes; hash values are arrays for multi-line fields.
+		return system(@_) >> 8;
+		return system($disconnect, @_) >> 8;
+	return $task;
+			return $task->{task}.'^';
+			return '~t^'.$task->{task}.'$';
+		return undef;
+# Run a shell command except in test mode, and returns its exit code.
+				run_task_script(@prefix, $path);
+							$satisfied=1;
+		   "section=s",
+	# Select enhancing tasks for install.
+	# selection.
+		# selection, run aptitude w/o the --visual-preview parameter.
+		# Set _install flags based on user selection.
+		shift @ARGV;
+						shift @lines;
+	# Special case apt-like syntax.
+			split(' ', `$packagesdir/$method $task->{task} @params`);
+		# standard method is built in since it cannot easily be
+sub all_tasks {
+sub debconf_apt_command {
+sub error {
+sub filter_tasks {
+sub find_task_script {
+sub getopts {
+sub hide_enhancing_tasks {
+sub list_avail {
+sub list_installed {
+sub list_task_descs {
+sub list_to_tasks {
+sub main {
+sub name_to_task {
+sub order_for_display {
+sub package_avail {
+sub package_installed {
+sub read_task_desc {
+sub run {
+sub run_disconnect {
+sub run_task_script {
+sub task_avail {
+sub task_installed {
+sub task_packages {
+sub task_packages_remove {
+sub task_region {
+sub task_test {
+sub task_to_debconf {
+sub usage {
+sub warning {
+# system.
+	    --task-desc     returns the description of a task
+		$task->{_display} = 0;
+				$task->{_display} = 0;
+				$task->{_display} = 1;
+	$task->{_display} = shift; # default
+		# task-fields method is built-in for speed and to support
+				$task->{_install} = 0;
+						$task->{_install} = 0;
+				$task->{_install} = 1;
+		$task->{_install} = 1 if $task;
+	$task->{_install} = shift; # default
+					$task->{_install}=$tested{$task->{task}};
+	    --task-packages list available packages in a task
+		   "task-packages=s@", "task-desc=s",
+	# tasks.
+			$task->{_selected} = 1;
+# tasksel/force-tasks, tasksel/limit-tasks, and tasksel/skip-tasks.
+tasksel install <task>
+tasksel [options]
+tasksel remove <task>
+		@tasks = grep { $options{section} eq $_->{section} } @tasks; 
+			$tasks{$name}{_display} = 0;
+			$tasks{$name}{_install} = 0;
+			$tasks{$name}{_install} = 1;
+# tasks, or a dependency style list of task names, and then a list of task
+					task_test($task, $options{"new-install"}, 0, 1);
+			task_to_debconf("shortdesc", @default),
+			task_to_debconf("shortdesc", @list),
+			task_to_debconf("shortdesctrans", @list),
+					$tested{$task->{task}}=$task->{_install};
+	$testmode=1 if $ret{test}; # set global
+		$test=~s/^test-//;
+textdomain('tasksel');
+			# that complete tasks get installed on new
+# the _display and _install fields to 1 or 0 depending on its result.
+	# The interactive bit.
+				# The main apt-get run takes up the
+	# there's a cycle.
+	# This is relatively expensive, get the full list of available tasks and
+	-t, --test          test mode; don't really do anything
+		# Unfortunately, this needs aptitude, not apt-get, and we
+		unlink $tmpfile;
+	unlink $tmpfile;
+		usage();
+use Getopt::Long;
+use Locale::gettext;
+use POSIX qw(floor);
+use strict;
+use warnings;
+#!/usr/bin/perl
+				warning "parse error in stanza $. of $desc";
+		warning("$path exited with nonzero code $ret");
+			warning("task ".$_->{task}." contains a comma in its short description: \"$desc\"");
+				warning "task $task requires aptitude";
+	# We arbitrarily allocate 5% of the progress bar to task scripts,
+			while (<AVAIL>) {
+	while (<AVAIL>) {
+	while (<DESC>) {
+	while ($enhances_needswork) {
+		while (@lines) {
+					while (@lines && $lines[0] =~ /^\s+(.*)/) {
+	while (<STATUS>) {
+# Works out the region of a progress bar needed for a given invocation of
+	# XXX FIXME ugly hack -- loop until enhances settle to handle

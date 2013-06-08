@@ -1,0 +1,883 @@
+0 (NONE)
+0 (unknown)
+802-11-olpc-mesh
+802-11-wireless
+802-11-wireless-security
+802.1X supplicant configuration failed
+802.1X supplicant disconnected
+802.1X supplicant failed
+802.1X supplicant took too long to authenticate
+802-3-ethernet
+activated
+Active connection details
+Active connection path: %s
+Active connections
+Active connection state: %s
+addresses
+A dependency of the connection failed
+allowed-bands
+anonymous-identity
+auth-alg
+autoconnect
+AutoIP service error
+AutoIP service failed
+AutoIP service failed to start
+auto-negotiate
+bindtextdomain
+bind_textdomain_codeset
+bluetooth
+__bss_start
+CAPABILITIES
+CARRIER-DETECT
+Carrier/link changed
+Caught signal %d, shutting down...
+cloned-mac-address
+  COMMAND := { list | status | up | down | delete }
+  COMMAND := { status | enable | sleep | wifi | wwan }
+  COMMAND := { status | list | disconnect | wifi }
+connected (local only)
+connected (site only)
+connecting (checking IP connectivity)
+connecting (configuring)
+connecting (starting secondary connections)
+connection
+connection,802-3-ethernet,802-1x,802-11-wireless,802-11-wireless-security,ipv4,ipv6,serial,ppp,pppoe,gsm,cdma,bluetooth,802-11-olpc-mesh,vpn,infiniband,bond,vlan
+Connection activated
+Connection details
+Connection list
+connections.c
+connections-read
+  con         NetworkManager connections
+CON-PATH
+%d (104/128-bit passphrase)
+dbus_g_bus_get
+dbus_g_connection_unref
+dbus_g_proxy_call
+dbus_g_proxy_new_for_name
+dcgettext
+deactivating
+DEFAULT6
+  delete id <id> | uuid <id>
+  dev         devices managed by NetworkManager
+Device details
+Device disconnected by user or client
+Device is now managed
+Device is now unmanaged
+device '%s' not compatible with connection '%s'
+Device state: %d (%s)
+DEVICE,TYPE,STATE
+DEVICE,TYPE,STATE,DBUS-PATH
+dhcp-anycast-address
+DHCP client error
+DHCP client failed
+DHCP client failed to start
+dhcp-client-id
+dhcp-hostname
+dhcp-send-hostname
+%d (hex-ascii-key)
+disabled
+disconnect
+  disconnect iface <iface> [--nowait] [--timeout <timeout>]
+disconnecting
+dns-search
+do_connection_up
+  down id <id> | uuid <id>
+dst = %s
+dst = %s/%u, nh = %s, mt = %u
+%d (unknown)
+egress-priority-map
+  enable [true|false]
+Encrypted: 
+Enterprise 
+__errno_location
+Error: Access point with bssid '%s' not found.
+Error: Can't find out if NetworkManager is running: %s.
+Error: Can't obtain connections: settings service is not running.
+Error: 'con' command '%s' is not valid.
+Error: 'con list': %s
+Error: 'con list': %s; allowed fields: %s
+Error: Connection activation failed.
+Error: Connection activation failed: %s
+Error: Connection activation failed: %s.
+Error: Connection deletion failed: %s
+Error: 'con status': %s
+Error: 'con status': %s; allowed fields: %s
+Error converting IP4 address '0x%X' to text form
+Error converting IP6 address '%s' to text form
+Error: could not connect to D-Bus.
+Error: Could not create NMClient object.
+Error: Could not get system settings.
+Error: Couldn't connect to system bus: %s
+Error: Couldn't create D-Bus object proxy.
+Error: Couldn't create D-Bus object proxy for org.freedesktop.DBus
+Error: 'dev' command '%s' is not valid.
+Error: Device '%s' is not a WiFi device.
+Error: Device '%s' not found.
+Error: Device '%s' (%s) disconnecting failed: %s
+Error: 'dev list': %s
+Error: 'dev list': %s; allowed fields: %s
+Error: 'dev status': %s
+Error: 'dev status': %s; allowed fields: %s
+Error: 'dev wifi' command '%s' is not valid.
+Error: 'dev wifi': %s
+Error: 'dev wifi': %s; allowed fields: %s
+Error: fields for '%s' options are missing.
+Error: '--fields' value '%s' is not valid here; allowed fields: %s
+Error: id or uuid has to be specified.
+Error: iface has to be specified.
+Error in sleep: %s
+Error: invalid 'enable' parameter: '%s'; use 'true' or 'false'.
+Error: invalid 'sleep' parameter: '%s'; use 'true' or 'false'.
+Error: invalid 'wifi' parameter: '%s'.
+Error: invalid 'wwan' parameter: '%s'.
+Error: missing argument for '%s' option.
+Error: NameHasOwner request failed: %s
+Error: NetworkManager is not running.
+Error: nmcli (%s) and NetworkManager (%s) versions don't match. Force execution using --nocheck, but the results are unpredictable.
+Error: 'nm' command '%s' is not valid.
+Error: 'nm status': %s
+Error: 'nm status': %s; allowed fields: %s
+Error: No suitable device found.
+Error: No suitable device found: %s.
+Error: no valid parameter specified.
+error == NULL || *error == NULL
+Error: Object '%s' is unknown, try 'nmcli help'.
+Error: Option '--pretty' is mutually exclusive with '--terse'.
+Error: Option '--pretty' is specified the second time.
+Error: Option '%s' is unknown, try 'nmcli -help'.
+Error: Option '--terse' is mutually exclusive with '--pretty'.
+Error: Option '--terse' is specified the second time.
+Error: %s.
+Error: '%s' argument is missing.
+Error: %s argument is missing.
+Error: '%s' is not an active connection.
+Error: '%s' is not valid argument for '%s' option.
+Error: Sleeping status is not exported by NetworkManager.
+Error: %s - no such connection.
+Error: Timeout %d sec expired.
+Error: timeout value '%s' is not valid.
+Error: Unknown connection: %s.
+Error: unknown parameter: %s
+  -e[scape] yes|no                           escape columns separators in values
+Failed to register with the requested network
+Failed to select the specified APN
+  -f[ields] <field1,field2,...>|all|common   specify fields to output
+field '%s' has to be alone
+fill_in_fields_con_status
+find_active_connection
+find_device_for_connection
+FIRMWARE-MISSING
+__fprintf_chk
+g_array_append_vals
+g_array_free
+g_array_new
+g_ascii_strup
+g_assertion_message_expr
+g_clear_error
+GENERAL,CAPABILITIES,WIFI-PROPERTIES,AP,WIRED-PROPERTIES,IP4,DHCP4,IP6,DHCP6
+GENERAL,IP,VPN
+g_error_free
+get_connection_for_active
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_size
+g_idle_add
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+g_main_loop_new
+g_main_loop_quit
+g_main_loop_run
+g_main_loop_unref
+g_malloc0
+g_malloc_n
+__gmon_start__
+g_object_get
+g_object_unref
+g_propagate_error
+g_ptr_array_foreach
+g_return_if_fail_warning
+GROUP,ADDRESS,ROUTE,DNS,DOMAIN
+GROUP,ADDRESS,ROUTE,DNS,DOMAIN,WINS
+group_ccmp
+GROUP,NAME,UUID,DEVICES,STATE,DEFAULT,DEFAULT6,VPN,ZONE,DBUS-PATH,CON-PATH,SPEC-OBJECT,MASTER-PATH
+GROUP,OPTION
+group_tkip
+GROUP,TYPE,USERNAME,GATEWAY,BANNER,VPN-STATE,CFG
+group_wpe104
+group_wpe40
+g_set_error
+g_signal_connect_data
+g_slist_foreach
+g_slist_free
+g_slist_length
+GSM Modem's SIM card not inserted
+GSM Modem's SIM PIN required
+GSM Modem's SIM PUK required
+GSM Modem's SIM wrong
+g_strcmp0
+g_strdup
+g_strdup_printf
+g_strescape
+g_strfreev
+g_string_append
+g_string_append_printf
+g_string_assign
+g_string_free
+g_string_insert_c
+g_string_new
+g_string_prepend
+g_string_printf
+g_string_truncate
+g_strjoinv
+g_strnfill
+g_strsplit_set
+g_timeout_add_seconds
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_init
+g_unichar_iswide
+g_unichar_iszerowidth
+g_utf8_get_char
+g_utf8_skip
+g_utf8_validate
+  -h[elp]                                    print this help
+home-only
+ignore-auto-dns
+ignore-auto-routes
+inet_ntop
+infiniband
+InfiniBand device does not support connected mode
+Infrastructure
+ingress-priority-map
+interface-name
+invalid field '%s'
+invalid VPN secrets
+_IO_stdin_used
+IP configuration could not be reserved (no available address, timeout, etc)
+IP-IFACE
+IPSec gateway
+ip = %s/%u, gw = %s
+_Jv_RegisterClasses
+key-mgmt
+lcp-echo-failure
+lcp-echo-interval
+leap-password
+leap-username
+leftxauthusername
+libc.so.6
+__libc_start_main
+libdbus-glib-1.so.2
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libnm-glib.so.4
+libnm-util.so.2
+libpthread.so.0
+  list [id <id> | uuid <id>]
+  list [iface <iface>]
+localtime
+LOOSE_BINDING, 
+mac-address-blacklist
+MASTER-PATH
+may-fail
+Modem initialization failed
+  -m[ode] tabular|multiline                  output mode
+mppe-stateful
+multiline
+name,baud,bits,parity,stopbits,send-delay
+name,bdaddr,type
+NAME,CARRIER
+NAME,CARRIER-DETECT,SPEED
+NAME,DEVICE,TYPE,VENDOR,PRODUCT,DRIVER,HWADDR,STATE,REASON,UDI,IP-IFACE,NM-MANAGED,FIRMWARE-MISSING,CONNECTION
+name,eap,identity,anonymous-identity,pac-file,ca-cert,ca-path,subject-match,altsubject-matches,client-cert,phase1-peapver,phase1-peaplabel,phase1-fast-provisioning,phase2-auth,phase2-autheap,phase2-ca-cert,phase2-ca-path,phase2-subject-match,phase2-altsubject-matches,phase2-client-cert,password,private-key,private-key-password,phase2-private-key,phase2-private-key-password,pin,system-ca-certs
+NameHasOwner
+name,id,uuid,type,autoconnect,timestamp,read-only,permissions
+name,interface-name,options
+name,interface-name,parent,id,flags,ingress-priority-map,egress-priority-map
+name,key-mgmt,wep-tx-keyidx,auth-alg,proto,pairwise,group,leap-username,wep-key0,wep-key1,wep-key2,wep-key3,psk,leap-password,wep-key-type
+name,mac-address,mtu,transport-mode
+name,mac-address,network-name
+name,method,dns,dns-search,addresses,routes,ignore-auto-routes,ignore-auto-dns,dhcp-client-id,dhcp-send-hostname,dhcp-hostname,never-default,may-fail
+name,method,dns,dns-search,addresses,routes,ignore-auto-routes,ignore-auto-dns,never-default,may-fail
+name,noauth,refuse-eap,refuse-pap,refuse-chap,refuse-mschap,refuse-mschapv2,nobsdcomp,nodeflate,no-vj-comp,require-mppe,require-mppe-128,mppe-stateful,crtscts,baud,mru,mtu,lcp-echo-failure,lcp-echo-interval
+name,number,username,password
+name,number,username,password,apn,network-id,network-type,allowed-bands,pin,home-only
+name,port,speed,duplex,auto-negotiate,mac-address,cloned-mac-address,mac-address-blacklist,mtu,s390-subchannels,s390-nettype,s390-options
+name,service-type,user-name,data,secrets
+name,service,username,password
+NAME,SSID,BSSID,MODE,FREQ,RATE,SIGNAL,SECURITY,ACTIVE
+name,ssid,channel,dhcp-anycast-address
+name,ssid,mode,band,channel,bssid,rate,tx-power,mac-address,cloned-mac-address,mac-address-blacklist,mtu,seen-bssids,security
+NAME,UUID,DEVICES,DEFAULT,VPN,MASTER-PATH
+NAME,UUID,DEVICES,STATE,DEFAULT,DEFAULT6,VPN,ZONE,DBUS-PATH,CON-PATH,SPEC-OBJECT,MASTER-PATH
+NAME,UUID,TYPE,TIMESTAMP-REAL
+NAME,UUID,TYPE,TIMESTAMP,TIMESTAMP-REAL,AUTOCONNECT,READONLY,DBUS-PATH
+NAME,WEP,WPA,WPA2,TKIP,CCMP
+Necessary firmware for the device may be missing
+NET-ENABLED
+network-id
+Networking enabled
+NetworkManager
+NetworkManager status
+NetworkManager went to sleep
+Network registration denied
+Network registration timed out
+network-type
+never-default
+, nh = %s
+nm_access_point_get_bssid
+nm_access_point_get_flags
+nm_access_point_get_frequency
+nm_access_point_get_max_bitrate
+nm_access_point_get_mode
+nm_access_point_get_rsn_flags
+nm_access_point_get_ssid
+nm_access_point_get_strength
+nm_access_point_get_type
+nm_access_point_get_wpa_flags
+nm_active_connection_get_connection
+nm_active_connection_get_default
+nm_active_connection_get_default6
+nm_active_connection_get_devices
+nm_active_connection_get_master
+nm_active_connection_get_specific_object
+nm_active_connection_get_state
+nm_active_connection_get_type
+nm_active_connection_get_uuid
+nmc_active_connection_detail
+nmc_ip4_address_as_string
+nmc_ip6_address_as_string
+nmc_is_nm_running
+nm_client_activate_connection
+nm_client_deactivate_connection
+nm_client_get_active_connections
+nm_client_get_device_by_iface
+nm_client_get_devices
+nm_client_get_state
+nm_client_get_version
+nm_client_networking_get_enabled
+nm_client_networking_set_enabled
+nm_client_new
+nm_client_wireless_get_enabled
+nm_client_wireless_hardware_get_enabled
+nm_client_wireless_set_enabled
+nm_client_wwan_get_enabled
+nm_client_wwan_hardware_get_enabled
+nm_client_wwan_set_enabled
+nmcli tool, version %s
+nmc != NULL
+nm_connection_get_path
+nm_connection_get_setting_802_1x
+nm_connection_get_setting_bluetooth
+nm_connection_get_setting_bond
+nm_connection_get_setting_cdma
+nm_connection_get_setting_connection
+nm_connection_get_setting_gsm
+nm_connection_get_setting_infiniband
+nm_connection_get_setting_ip4_config
+nm_connection_get_setting_ip6_config
+nm_connection_get_setting_olpc_mesh
+nm_connection_get_setting_ppp
+nm_connection_get_setting_pppoe
+nm_connection_get_setting_serial
+nm_connection_get_setting_vlan
+nm_connection_get_setting_vpn
+nm_connection_get_setting_wired
+nm_connection_get_setting_wireless
+nm_connection_get_setting_wireless_security
+nm_connection_get_type
+nm_connection_is_type
+nmc_terse_option_check
+nmc_versions_match
+nm_device_bond_get_hw_address
+nm_device_bond_get_type
+nm_device_connection_compatible
+nm_device_disconnect
+nm_device_ethernet_get_carrier
+nm_device_ethernet_get_hw_address
+nm_device_ethernet_get_speed
+nm_device_ethernet_get_type
+nm_device_get_active_connection
+nm_device_get_capabilities
+nm_device_get_device_type
+nm_device_get_dhcp4_config
+nm_device_get_dhcp6_config
+nm_device_get_driver
+nm_device_get_firmware_missing
+nm_device_get_iface
+nm_device_get_ip4_config
+nm_device_get_ip6_config
+nm_device_get_ip_iface
+nm_device_get_managed
+nm_device_get_product
+nm_device_get_state
+nm_device_get_state_reason
+nm_device_get_type
+nm_device_get_udi
+nm_device_get_vendor
+nm_device_infiniband_get_hw_address
+nm_device_infiniband_get_type
+nm_device_modem_get_current_capabilities
+nm_device_modem_get_type
+nm_device_vlan_get_hw_address
+nm_device_vlan_get_type
+nm_device_wifi_get_access_points
+nm_device_wifi_get_active_access_point
+nm_device_wifi_get_bitrate
+nm_device_wifi_get_capabilities
+nm_device_wifi_get_hw_address
+nm_device_wifi_get_type
+nm_dhcp4_config_get_options
+nm_dhcp6_config_get_options
+nm_ip4_address_get_address
+nm_ip4_address_get_gateway
+nm_ip4_address_get_prefix
+nm_ip4_config_get_addresses
+nm_ip4_config_get_domains
+nm_ip4_config_get_nameservers
+nm_ip4_config_get_routes
+nm_ip4_config_get_wins_servers
+nm_ip4_route_get_dest
+nm_ip4_route_get_metric
+nm_ip4_route_get_next_hop
+nm_ip4_route_get_prefix
+nm_ip6_address_get_address
+nm_ip6_address_get_gateway
+nm_ip6_address_get_prefix
+nm_ip6_config_get_addresses
+nm_ip6_config_get_domains
+nm_ip6_config_get_nameservers
+nm_ip6_config_get_routes
+nm_ip6_route_get_dest
+nm_ip6_route_get_metric
+nm_ip6_route_get_next_hop
+nm_ip6_route_get_prefix
+NM_IS_SETTING_802_1X (s_8021X)
+NM_IS_SETTING_BLUETOOTH (s_bluetooth)
+NM_IS_SETTING_BOND (s_bond)
+NM_IS_SETTING_CDMA (s_cdma)
+NM_IS_SETTING_CONNECTION (s_con)
+NM_IS_SETTING_GSM (s_gsm)
+NM_IS_SETTING_INFINIBAND (s_infiniband)
+NM_IS_SETTING_IP4_CONFIG (s_ip4)
+NM_IS_SETTING_IP6_CONFIG (s_ip6)
+NM_IS_SETTING_OLPC_MESH (s_olpc_mesh)
+NM_IS_SETTING_PPPOE (s_pppoe)
+NM_IS_SETTING_PPP (s_ppp)
+NM_IS_SETTING_SERIAL (s_serial)
+NM_IS_SETTING_VLAN (s_vlan)
+NM_IS_SETTING_VPN (s_vpn)
+NM_IS_SETTING_WIMAX (s_wimax)
+NM_IS_SETTING_WIRED (s_wired)
+NM_IS_SETTING_WIRELESS_SECURITY (s_wireless_sec)
+NM_IS_SETTING_WIRELESS (s_wireless)
+NM-MANAGED
+  nm          NetworkManager status
+nm_object_get_path
+nm_object_get_type
+nm_remote_connection_delete
+nm_remote_connection_get_type
+nm_remote_settings_list_connections
+nm_remote_settings_new
+nm_setting_802_1x_get_altsubject_match
+nm_setting_802_1x_get_anonymous_identity
+nm_setting_802_1x_get_ca_cert_blob
+nm_setting_802_1x_get_ca_cert_path
+nm_setting_802_1x_get_ca_cert_scheme
+nm_setting_802_1x_get_ca_path
+nm_setting_802_1x_get_client_cert_blob
+nm_setting_802_1x_get_client_cert_path
+nm_setting_802_1x_get_client_cert_scheme
+nm_setting_802_1x_get_eap_method
+nm_setting_802_1x_get_identity
+nm_setting_802_1x_get_num_altsubject_matches
+nm_setting_802_1x_get_num_eap_methods
+nm_setting_802_1x_get_num_phase2_altsubject_matches
+nm_setting_802_1x_get_pac_file
+nm_setting_802_1x_get_password
+nm_setting_802_1x_get_phase1_fast_provisioning
+nm_setting_802_1x_get_phase1_peaplabel
+nm_setting_802_1x_get_phase1_peapver
+nm_setting_802_1x_get_phase2_altsubject_match
+nm_setting_802_1x_get_phase2_auth
+nm_setting_802_1x_get_phase2_autheap
+nm_setting_802_1x_get_phase2_ca_cert_blob
+nm_setting_802_1x_get_phase2_ca_cert_path
+nm_setting_802_1x_get_phase2_ca_cert_scheme
+nm_setting_802_1x_get_phase2_ca_path
+nm_setting_802_1x_get_phase2_client_cert_blob
+nm_setting_802_1x_get_phase2_client_cert_path
+nm_setting_802_1x_get_phase2_client_cert_scheme
+nm_setting_802_1x_get_phase2_private_key_blob
+nm_setting_802_1x_get_phase2_private_key_password
+nm_setting_802_1x_get_phase2_private_key_path
+nm_setting_802_1x_get_phase2_private_key_scheme
+nm_setting_802_1x_get_phase2_subject_match
+nm_setting_802_1x_get_pin
+nm_setting_802_1x_get_private_key_blob
+nm_setting_802_1x_get_private_key_password
+nm_setting_802_1x_get_private_key_path
+nm_setting_802_1x_get_private_key_scheme
+nm_setting_802_1x_get_subject_match
+nm_setting_802_1x_get_system_ca_certs
+nm_setting_802_1x_get_type
+nm_setting_bluetooth_get_bdaddr
+nm_setting_bluetooth_get_connection_type
+nm_setting_bluetooth_get_type
+nm_setting_bond_get_interface_name
+nm_setting_bond_get_num_options
+nm_setting_bond_get_option
+nm_setting_bond_get_type
+nm_setting_cdma_get_number
+nm_setting_cdma_get_password
+nm_setting_cdma_get_type
+nm_setting_cdma_get_username
+nm_setting_connection_get_autoconnect
+nm_setting_connection_get_connection_type
+nm_setting_connection_get_id
+nm_setting_connection_get_num_permissions
+nm_setting_connection_get_permission
+nm_setting_connection_get_read_only
+nm_setting_connection_get_timestamp
+nm_setting_connection_get_type
+nm_setting_connection_get_uuid
+nm_setting_connection_get_zone
+nm_setting_gsm_get_allowed_bands
+nm_setting_gsm_get_apn
+nm_setting_gsm_get_home_only
+nm_setting_gsm_get_network_id
+nm_setting_gsm_get_network_type
+nm_setting_gsm_get_number
+nm_setting_gsm_get_password
+nm_setting_gsm_get_pin
+nm_setting_gsm_get_type
+nm_setting_gsm_get_username
+nm_setting_infiniband_get_mac_address
+nm_setting_infiniband_get_mtu
+nm_setting_infiniband_get_transport_mode
+nm_setting_infiniband_get_type
+nm_setting_ip4_config_get_address
+nm_setting_ip4_config_get_dhcp_client_id
+nm_setting_ip4_config_get_dhcp_hostname
+nm_setting_ip4_config_get_dhcp_send_hostname
+nm_setting_ip4_config_get_dns
+nm_setting_ip4_config_get_dns_search
+nm_setting_ip4_config_get_ignore_auto_dns
+nm_setting_ip4_config_get_ignore_auto_routes
+nm_setting_ip4_config_get_may_fail
+nm_setting_ip4_config_get_method
+nm_setting_ip4_config_get_never_default
+nm_setting_ip4_config_get_num_addresses
+nm_setting_ip4_config_get_num_dns
+nm_setting_ip4_config_get_num_dns_searches
+nm_setting_ip4_config_get_num_routes
+nm_setting_ip4_config_get_route
+nm_setting_ip4_config_get_type
+nm_setting_ip6_config_get_address
+nm_setting_ip6_config_get_dns
+nm_setting_ip6_config_get_dns_search
+nm_setting_ip6_config_get_ignore_auto_dns
+nm_setting_ip6_config_get_ignore_auto_routes
+nm_setting_ip6_config_get_may_fail
+nm_setting_ip6_config_get_method
+nm_setting_ip6_config_get_never_default
+nm_setting_ip6_config_get_num_addresses
+nm_setting_ip6_config_get_num_dns
+nm_setting_ip6_config_get_num_dns_searches
+nm_setting_ip6_config_get_num_routes
+nm_setting_ip6_config_get_route
+nm_setting_ip6_config_get_type
+nm_setting_olpc_mesh_get_channel
+nm_setting_olpc_mesh_get_dhcp_anycast_address
+nm_setting_olpc_mesh_get_ssid
+nm_setting_olpc_mesh_get_type
+nm_setting_ppp_get_baud
+nm_setting_ppp_get_crtscts
+nm_setting_ppp_get_lcp_echo_failure
+nm_setting_ppp_get_lcp_echo_interval
+nm_setting_ppp_get_mppe_stateful
+nm_setting_ppp_get_mru
+nm_setting_ppp_get_mtu
+nm_setting_ppp_get_noauth
+nm_setting_ppp_get_nobsdcomp
+nm_setting_ppp_get_nodeflate
+nm_setting_ppp_get_no_vj_comp
+nm_setting_ppp_get_refuse_chap
+nm_setting_ppp_get_refuse_eap
+nm_setting_ppp_get_refuse_mschap
+nm_setting_ppp_get_refuse_mschapv2
+nm_setting_ppp_get_refuse_pap
+nm_setting_ppp_get_require_mppe
+nm_setting_ppp_get_require_mppe_128
+nm_setting_ppp_get_type
+nm_setting_pppoe_get_password
+nm_setting_pppoe_get_service
+nm_setting_pppoe_get_type
+nm_setting_pppoe_get_username
+nm_setting_serial_get_baud
+nm_setting_serial_get_bits
+nm_setting_serial_get_parity
+nm_setting_serial_get_send_delay
+nm_setting_serial_get_stopbits
+nm_setting_serial_get_type
+nm_setting_vlan_get_flags
+nm_setting_vlan_get_id
+nm_setting_vlan_get_interface_name
+nm_setting_vlan_get_num_priorities
+nm_setting_vlan_get_parent
+nm_setting_vlan_get_priority
+nm_setting_vlan_get_type
+nm_setting_vpn_foreach_data_item
+nm_setting_vpn_foreach_secret
+nm_setting_vpn_get_data_item
+nm_setting_vpn_get_num_data_items
+nm_setting_vpn_get_service_type
+nm_setting_vpn_get_type
+nm_setting_vpn_get_user_name
+nm_setting_wimax_get_mac_address
+nm_setting_wimax_get_network_name
+nm_setting_wimax_get_type
+nm_setting_wired_get_auto_negotiate
+nm_setting_wired_get_cloned_mac_address
+nm_setting_wired_get_duplex
+nm_setting_wired_get_mac_address
+nm_setting_wired_get_mac_address_blacklist
+nm_setting_wired_get_mtu
+nm_setting_wired_get_num_s390_options
+nm_setting_wired_get_port
+nm_setting_wired_get_s390_nettype
+nm_setting_wired_get_s390_option
+nm_setting_wired_get_s390_subchannels
+nm_setting_wired_get_speed
+nm_setting_wired_get_type
+nm_setting_wireless_get_band
+nm_setting_wireless_get_bssid
+nm_setting_wireless_get_channel
+nm_setting_wireless_get_cloned_mac_address
+nm_setting_wireless_get_mac_address
+nm_setting_wireless_get_mac_address_blacklist
+nm_setting_wireless_get_mode
+nm_setting_wireless_get_mtu
+nm_setting_wireless_get_num_seen_bssids
+nm_setting_wireless_get_rate
+nm_setting_wireless_get_security
+nm_setting_wireless_get_seen_bssid
+nm_setting_wireless_get_ssid
+nm_setting_wireless_get_tx_power
+nm_setting_wireless_get_type
+nm_setting_wireless_security_get_auth_alg
+nm_setting_wireless_security_get_group
+nm_setting_wireless_security_get_key_mgmt
+nm_setting_wireless_security_get_leap_password
+nm_setting_wireless_security_get_leap_username
+nm_setting_wireless_security_get_num_groups
+nm_setting_wireless_security_get_num_pairwise
+nm_setting_wireless_security_get_num_protos
+nm_setting_wireless_security_get_pairwise
+nm_setting_wireless_security_get_proto
+nm_setting_wireless_security_get_psk
+nm_setting_wireless_security_get_type
+nm_setting_wireless_security_get_wep_key
+nm_setting_wireless_security_get_wep_key_type
+nm_setting_wireless_security_get_wep_tx_keyidx
+nm_utils_hwaddr_ntoa
+nm_vpn_connection_get_banner
+nm_vpn_connection_get_type
+nm_vpn_connection_get_vpn_state
+no active connection on device '%s'
+no active connection or device
+nobsdcomp
+No carrier could be established
+-nocheck
+  -n[ocheck]                                 don't check nmcli and NetworkManager versions
+nodeflate
+no device found for connection '%s'
+No dial tone
+No reason given
+not connected
+notify::state
+not running
+Not searching for networks
+no valid VPN secrets
+no-vj-comp
+--nowait
+openconnect
+openswan
+Option '--terse' requires specific '--fields' option values , not '%s'
+Option '--terse' requires specifying '--fields'
+/org/freedesktop/DBus
+org.freedesktop.DBus
+/org/freedesktop/NetworkManager
+org.freedesktop.NetworkManager
+pac-file
+pair_ccmp
+pair_tkip
+pairwise
+pair_wpe104
+pair_wpe40
+parse_output_fields
+path != NULL
+permissions
+phase1-fast-provisioning
+phase1-peaplabel
+phase1-peapver
+phase2-altsubject-matches
+phase2-auth
+phase2-autheap
+phase2-ca-cert
+phase2-ca-path
+phase2-client-cert
+phase2-private-key
+phase2-private-key-password
+phase2-subject-match
+PIN check failed
+PPP failed
+PPP service disconnected
+PPP service failed to start
+  -p[retty]                                  pretty output
+__printf_chk
+print_fields
+read-only
+READONLY
+refuse-chap
+refuse-eap
+refuse-mschap
+refuse-mschapv2
+refuse-pap
+REORDER_HEADERS, 
+require-mppe
+require-mppe-128
+RSN-FLAGS
+RUNNING,STATE,WIFI-HARDWARE,WIFI,WWAN-HARDWARE,WWAN
+RUNNING,VERSION,STATE,NET-ENABLED,WIFI-HARDWARE,WIFI,WWAN-HARDWARE,WWAN
+s390-nettype
+s390-options
+s390-subchannels
+s_con != NULL
+Secrets were required, but not provided
+SECURITY
+seen-bssids
+send-delay
+service-running
+service-type
+setlocale
+setting_802_1X_details
+setting_bluetooth_details
+setting_bond_details
+setting_cdma_details
+setting_connection_details
+setting_gsm_details
+setting_infiniband_details
+setting_ip4_config_details
+setting_ip6_config_details
+setting_olpc_mesh_details
+setting_ppp_details
+setting_pppoe_details
+setting_serial_details
+setting_vlan_details
+setting_vpn_details
+setting_wimax_details
+setting_wired_details
+setting_wireless_details
+setting_wireless_security_details
+Shared connection service failed
+Shared connection service failed to start
+sigaction
+sigemptyset
+  sleep [true|false]
+SPEC-OBJECT
+SSID,BSSID,MODE,FREQ,RATE,SIGNAL,SECURITY,ACTIVE
+SSID,BSSID,MODE,FREQ,RATE,SIGNAL,SECURITY,WPA-FLAGS,RSN-FLAGS,DEVICE,ACTIVE,DBUS-PATH
+%s%s%s[%d]:
+__stack_chk_fail
+state: %s (%d)
+  status
+  status [id <id> | uuid <id> | path <path>]
+Status of devices
+stopbits
+strcasecmp
+strftime
+Success: Device '%s' successfully disconnected.
+system-ca-certs
+T$,9T$DtC
+  -t[erse]                                   terse output
+the base network connection was interrupted
+The Bluetooth connection failed or timed out
+the connection attempt timed out
+the connection was removed
+The device could not be readied for configuration
+The device's active connection disappeared
+The device's existing connection was assumed
+The device was removed
+The dialing attempt failed
+The dialing request timed out
+The IP configuration is no longer valid
+The line is busy
+The modem could not be found
+The supplicant is now available
+the user was disconnected
+the VPN service did not start in time
+the VPN service failed to start
+the VPN service returned invalid configuration
+the VPN service stopped unexpectedly
+--timeout
+timestamp
+transport-mode
+tx-power
+unavailable
+Unknown error
+Unknown parameter: %s
+unknown reason
+  up id <id> | uuid <id> [iface <iface>] [ap <BSSID>] [--nowait] [--timeout <timeout>]
+Usage: nmcli con { COMMAND | help }
+Usage: nmcli dev { COMMAND | help }
+Usage: nmcli nm { COMMAND | help }
+Usage: %s [OPTIONS] OBJECT { COMMAND | help }
+user-name
+USERNAME
+/usr/share/locale
+!value_is_array || !section_prefix || idx != 0
+-version
+  -v[ersion]                                 show program version
+VPN connected
+VPN connecting
+VPN connecting (getting IP configuration)
+VPN connecting (need authentication)
+VPN connecting (prepare)
+VPN connection failed
+VPN disconnected
+VPN-STATE
+vpn-state-changed
+Warning: Connection not active
+Warning: nmcli (%s) and NetworkManager (%s) versions don't match. Use --nocheck to suppress the warning.
+WCDMA 3GPP UMTS 1700/2100 MHz, 
+WCDMA 3GPP UMTS 1700 MHz, 
+WCDMA 3GPP UMTS 1800 MHz, 
+WCDMA 3GPP UMTS 1900 MHz, 
+WCDMA 3GPP UMTS 2100 MHz, 
+WCDMA 3GPP UMTS 2600 MHz, 
+WCDMA 3GPP UMTS 800 MHz, 
+WCDMA 3GPP UMTS 850 MHz, 
+WCDMA 3GPP UMTS 900 MHz, 
+wep-key0
+wep-key1
+wep-key2
+wep-key3
+wep-key-type
+wep-tx-keyidx
+WiFi enabled
+WIFI-HARDWARE
+  wifi [list [iface <iface>] [bssid <BSSID>]]
+  wifi [on|off]
+WIFI-PROPERTIES
+WiFi scan list
+WIMAX-HARDWARE
+WIMAX-PROPERTIES
+WIRED-PROPERTIES
+WPA-FLAGS
+WWAN enabled
+WWAN-HARDWARE
+  wwan [on|off]
+Xauth username

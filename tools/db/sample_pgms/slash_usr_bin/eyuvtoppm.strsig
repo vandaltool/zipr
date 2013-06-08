@@ -1,0 +1,26 @@
+__bss_start
+Converting Frame %u
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_allocarray
+pm_close
+pm_error
+pm_freearray
+pm_message
+pm_openr
+pm_optParseOptions3
+ppm_init
+ppm_writeppm
+Premature end of file reading EYUV input file
+Program takes zero or one argument (filename).  You specified %d
+The height cannot be zero.
+The height of an eyuv image must be an even number.  You specified %u.
+The width cannot be zero.
+The width of an eyuv image must be an even number.  You specified %u.
+Unable to allocate storage for %d x %d byte array.

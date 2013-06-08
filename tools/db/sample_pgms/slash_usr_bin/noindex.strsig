@@ -1,0 +1,26 @@
+alphabet
+alphasort
+bad index or chunk format
+#!/bin/sh
+Cannot write 
+exec iconx $0 ${1+"$@"}
+[executable Icon binary follows]
+@fatal noindex 
+firstkey
+I9.0.00/32
+\@input{
+IXBIN=/usr/bin/iconx                                                          
+IXLCL=`echo $0 | sed 's=[^/]*$=iconx='`
+[ -n "$ICONX" ] && exec "$ICONX" $0 ${1+"$@"}
+No file 
+noindex.nw
+not chunk or index
+noweb error in noindex: 
+\nwixadds{
+\nwixaddsx{
+remove_control_sequences
+stripcount
+This can't happen
+Usage: noindex basename
+[ -x "$IXBIN" ] && exec "$IXBIN" $0 ${1+"$@"}
+[ -x "$IXLCL" ] && exec "$IXLCL" $0 ${1+"$@"}

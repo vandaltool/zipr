@@ -1,0 +1,51 @@
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Authors: Nick Barcet <nick.barcet@ubuntu.com>
+#!/bin/sh -e
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    byobu-launcher-install
+. "${BYOBU_PREFIX}/lib/${PKG}/include/common"
+	case "$i" in
+case "$SHELL" in
+#    Copyright (C) 2008 Canonical Ltd.
+#             Dustin Kirkland <kirkland@ubuntu.com>
+FLAG="$BYOBU_CONFIG_DIR/no-logout-on-detach"
+	for i in ".bash_profile" ".bash_login"; do
+for i in $@; do
+#    GNU General Public License for more details.
+# Handle bourne shells, if not set globally in /etc/profile.d
+# Hush login, since we will handle motd printing
+if [ ! -h "/etc/profile.d/Z98-$PKG.sh" ]; then
+	if [ "$LOGOUT_ON_DETACH" = "1" ]; then
+		if [ -w "$HOME/$i" ]; then
+	# Install in $HOME/.profile unconditionally
+# Install in zprofile if default shell is zsh
+install_launcher() {
+			install_launcher "$HOME/$i"
+	install_launcher "$HOME/.profile"
+		install_launcher "$HOME/.zprofile"
+#    it under the terms of the GNU General Public License as published by
+			LOGOUT_ON_DETACH=0
+LOGOUT_ON_DETACH=1
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		-n|--no-logout)
+	# Now, install in any shell-specific profiles, if they exist
+PKG="byobu"
+	$PKG-launcher-uninstall "$1" || true
+$PKG-launcher-uninstall || true
+	printf "_byobu_sourced=1 . ${BYOBU_PREFIX}/bin/byobu-launch\n" >> "$1"
+[ -r "$HOME/.byoburc" ] && . "$HOME/.byoburc"
+rm -f "$BYOBU_CONFIG_DIR/disable-autolaunch"
+		rm -f "$FLAG"
+# Sanitize the environment
+#    the Free Software Foundation, version 3 of the License.
+	# This list may grow to support other shells
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+		touch "$FLAG"
+touch "$HOME"/.hushlogin
+update_flag
+update_flag() {
+# Update the logout/nologout flag
+# vi: syntax=sh ts=4 noexpandtab
+#    You should have received a copy of the GNU General Public License
+[ -z "${BYOBU_PREFIX}" ] && export BYOBU_PREFIX="/usr" || export BYOBU_PREFIX

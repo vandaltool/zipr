@@ -1,0 +1,38 @@
+__bss_start
+<convolutionfile> [pnmfile]
+D$0+D$,9
+D$T+D$D;D$,
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+;L$0}C;L$,
+|$L9T$L~0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_allocarray
+pm_allocrow
+pm_close
+pm_error
+pm_message
+pm_openr
+pm_usage
+pnm_init
+pnm_promoteformat
+pnm_promoteformatrow
+pnm_readpnm
+pnm_readpnminit
+pnm_readpnmrow
+pnm_writepnminit
+pnm_writepnmrow
+promoting to PGM
+promoting to PPM
+t$09t$4u
+the convolution matrix must have an odd number of rows and columns
+the image is smaller than the convolution matrix
+WARNING - this convolution matrix is biased.  average weight = %f (unbiased would be 1)
+WARNING - this convolution matrix is biased.  red, green, and blue average weights: %f, %f, %f (unbiased would be 1)
+|$X9T$X~0
+|$X9T$X~3

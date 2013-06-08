@@ -1,0 +1,309 @@
+# All im-switch related alternatives start with xinput-
+# along with this program; if not, write to the Free Software
+ALTER_XINPUT=/etc/alternatives/xinput-
+auto() {
+        a) vlang; auto; exit 0;;
+#!/bin/sh
+    case $OPTION in
+cfgalt() {
+            console_ucfgalt
+console_ucfgalt() {
+# copy, or redistribute it subject to the terms and conditions of the
+# Copyright (C) 1999 - 2004 Red Hat, Inc. All rights reserved. This
+# Copyright (C) 2005 - 2006 Kenshi Muto <kmuto@debian.org>
+# Copyright (C) 2006        Osamu Aoki  <osamu@debian.org>
+# copyrighted material is made available to anyone wishing to use, modify,
+        COUNT=`possible_im | wc -l`
+            cp -a ${DOTXINPUT_PATH}/${LNG} ${DOTXINPUT_PATH}/${LNG}.backup
+current_system_im () {
+current_user_im () {
+        c) vlang; cfgalt; exit 0;;
+#   $DEFAULT
+        [ "$DEFAULT" -a -x "$HOOKDIR/$DEFAULT" ] &&  $HOOKDIR/$DEFAULT install
+        DEFAULT=$(current_system_im)
+    DEFAULT=$(current_system_im)
+        DEFAULT=$(current_user_im)
+    DEFAULT=$(current_user_im)
+dependency() {
+    dependency "$DEFAULT"
+    dependency $DEFAULT
+        DEPENDS=""
+        DEPENDS=$(grep -e "DEPENDS=" ${HOME}/$(basename $1) | sed -e 's/DEPENDS=//' -e 's/"//g')
+        DEPENDS=$(grep -e "DEPENDS=" $XINPUT_PATH/$1 | sed -e 's/DEPENDS=//' -e 's/"//g')
+    done
+        done
+DOTXINPUT_PATH=${HOME}/.xinput.d
+    echo
+    echo "======================================================="
+echo "  ------------------------------------------------------------------"
+echo "\"${0##*/}\" configures the input method to be automatically switched based "
+echo "       ${0##*/} -h"
+echo "       ${0##*/} [-v][-z ll_CC] -a"
+echo "       ${0##*/} [-v][-z ll_CC] -c"
+echo "       ${0##*/} [-v][-z ll_CC] -l"
+        echo "$1" >&2
+echo $1 | sed \
+	  echo "$(basename $(readlink "${DOTXINPUT_PATH}/all_ALL"))"
+	  echo "$(basename $(readlink "${DOTXINPUT_PATH}/${LNG}"))"
+# echo command line info to STDERR when VERBOSE is on.
+# echo current system wide default IM setup name
+# echo current user IM setup name
+        echo "  $(echo \"$RESULT\" | sed -e 's/|/ or /g') ."
+echo "Error: \"${0##*/}\" invoked with \"$ORGAT\" as options." >&2
+	    echo "Error: No action taken." >&2
+            echo "Error: no configuration file \"${1}\" exists." >&2
+            echo "Error: no system wide configuration file \"$1\" exists." >&2
+echo "Error: Try \"${0##*/} -h\" for usage." >&2
+# echo IM setup candidates
+        echo "    $INDEX        $i"
+        echo "    $INDEX        ~/.xinput.d/$i "
+echo "Input Method Switcher                     im-switch Version: $VER"
+echo "Input Method Switcher: im-switch Version=$VER"
+echo "is used to override the current locale (ISO 639 / ISO 3188) : eg \"-z ja_JP\""
+      echo "LANG=\"$LANG\"" >&2
+      echo "LC_ALL=\"$LC_ALL\"" >&2
+      echo "LC_CTYPE=\"$LC_CTYPE\"" >&2
+      echo "LNG=\"$LNG\"" >&2
+# echo local setups to STDERR when VERBOSE is on.
+# echo missing dependency information for $1=$LNG
+            echo -n " "
+            echo -n "*"
+            echo -n "+"
+            echo -n "$i "
+        echo "No private configuration can be defined for root account."
+	echo "No private \"${DOTXINPUT_PATH}/${LNG} or ${DOTXINPUT_PATH}/all_ALL\" is defined."
+	echo "No system wide default \"${ALTER_XINPUT}${LNG} or ${ALTER_XINPUT}all_ALL\" is defined."
+	    echo "No system wide default defined just for locale ${LNG} ."
+	    echo "No system wide default defined just for locale $LNG ."
+echo -n "Press enter to keep the current selection[*], or type selection number: "
+            echo -n "~/.xinput.d/$i "
+echo "on the locale (ll_CC) using Debian \"update-alternatives\" mechanism."
+        echo "Please install following packages:"
+echo "Please read /usr/share/doc/im-switch/README.Debian.gz ."
+echo "Please restart the X session to activate the selected Imput Method."
+echo "  Selection    Input Method Candidates for ${DOTXINPUT_PATH}/${LNG}:"
+        echo    "System wide default for ${LNG} locale is marked with [+]."
+echo    "System wide default for ${LNG} (or all_ALL) locale is marked with [+]."
+    echo "The available input method configuration files are:"
+	  echo "The configuration \"${DOTXINPUT_PATH}/all_ALL\" is defined as a link pointing to"
+	  echo "The configuration \"${DOTXINPUT_PATH}/${LNG}\" is defined as a link pointing to"
+echo "           the language, and also all the available languages"
+echo "The \"ll_CC\" argument of -z takes the form \"<language>_<teritory>\" and "
+	  echo "The private configuration is a static file \"${DOTXINPUT_PATH}/all_ALL\" ."
+	  echo "The private configuration is a static file \"${DOTXINPUT_PATH}/${LNG}\" ."
+	echo "The system wide default is pointed by \"${ALTER_XINPUT}all_ALL\" ."
+	echo "The system wide default is pointed by \"${ALTER_XINPUT}${LNG}\" ."
+echo "The use of -v option produces verbose outputs."
+	echo "This private configuration supersedes the system wide default."
+echo "           to list current settings and available input methods for"
+echo "           to revert to the default input method for the language"
+echo "           to set an input method for the language by menu"
+echo "           to set a specific input method for the language"
+echo "           to show this help"
+# echo to STDERR when VERBOSE is on.
+echo    "Type \"REMOVE\" to remove user selection to enable system default."
+echo "Usage: ${0##*/} [-v][-z ll_CC] -s inputmethodname"
+	    echo "Use \"all_ALL\" quasi-locale and set IM."
+echo "When \"${0##*/}\" is invoked from root user, it sets system wide alternatives."
+    echo "Your input method setup under $LNG locale as below."
+    elif [ -L "${DOTXINPUT_PATH}/all_ALL" ]; then
+    elif [ -r "${ALTER_XINPUT}all_ALL" ]; then
+    elif [ -r "${DOTXINPUT_PATH}/${LNG}" ]; then
+    elif [ -r "${XINPUT_PATH}/$1" ]; then
+    else
+        else
+            else
+    	else
+errcmd() {
+	?) errcmd; exit 1;;
+    esac
+-e "s/default$/Use setting by the sysadmin. (default)/" \
+-e "s/default-xim$/Use xim (default-xim)/" \
+-e "s/ibus$/Use IBus (ibus)/" \
+-e "s/lo-gtk$/Use thai IM_MODULE (lo-gtk)/" \
+-e "s/none$/Do not use Input Method. (none)/" \
+-e "s/scim-bridge$/Use SCIM via scim-bridge (scim-bridge)/" \
+-e "s/scim-immodule$/Use SCIM via IM_MODULE (scim-immodule)/" \
+-e "s/scim$/Use SCIM via xim (scim)/" \
+-e "s/skim$/Use SCIM via IM_MODULE (skim)/" \
+-e "s/th-gtk$/Use thai IM_MODULE (th-gtk)/" \
+-e "s/th-xim$/Use thai xim (th-xim)/"
+-e "s/^~\/\.xinput\.d\//User local configuration at ~\/\.xinput\.d\/: /" \
+            exit 1
+        fi
+            fi
+    for i in `/bin/ls $ALTER_XINPUT* | sed -e "s%$ALTER_XINPUT%%"`; do
+    for i in `echo "$DEPENDS"`; do 
+    for i in `possible_im` ; do
+    for i in `possible_im`; do
+for i in `possible_im`; do
+    for i in `/usr/bin/find $HOOKDIR -type f| sed -e "s%$HOOKDIR/%%"`; do
+	for j in `echo "$i"`; do 
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# GNU General Public License version 2.
+help() {
+HOOKDIR=/usr/share/im-switch
+        h) vlang; help; exit 0;;
+	if [ ! -d ${DOTXINPUT_PATH} ]; then
+    if [ "$DEFAULT" != "$PREVIOUS" ]; then
+            if dpkg -s $j 2>/dev/null | grep -q -e "Status: install ok installed" ; then
+        if [ -h "$DOTXINPUT_PATH/$LNG" ] ; then
+    if [ -h "$DOTXINPUT_PATH/$LNG" ] ; then
+if [ -h ${DOTXINPUT_PATH}/$LNG ]; then
+    if [ $INSTALLED -eq 0 ]; then 
+        if [ -L "${DOTXINPUT_PATH}/all_ALL" ]; then
+        if [ -L "${DOTXINPUT_PATH}/${LNG}" ]; then
+# If no option --> Menu use under X :-)
+    if [ -n "$RESULT" ]; then
+if [ -n "$SEL" ]; then
+    	if [ "$PREVIOUS" = "$i" ]; then
+    	if [ "$PREVIOUS_SYS" = "$i" ]; then
+    	if [ "$PREVIOUS_SYS" = "~/.xinput.d/$i" ]; then
+    	if [ "$PREVIOUS" = "~/.xinput.d/$i" ]; then
+        if [ ! -r "${ALTER_XINPUT}${LNG}" ]; then
+    if [ -r "${ALTER_XINPUT}${LNG}" ]; then
+	if [ ! -r "${ALTER_XINPUT}${LNG}" ]; then
+        if [ -r "$DOTXINPUT_PATH/${1}" ] ; then
+            if [ -r "$DOTXINPUT_PATH/$i" ] ; then
+        if [ -r $DOTXINPUT_PATH/$i ]; then
+    if [ -r $DOTXINPUT_PATH/$i ]; then
+	if [ -r "${DOTXINPUT_PATH}/${LNG}" ]; then
+        if [ -r "$DOTXINPUT_PATH/$SEL" ] ; then
+    if [ -r  ${HOME}/$(basename "$1") ]; then
+        if [ ! -r "$XINPUT_PATH/${1}" -a ! -r "$DOTXINPUT_PATH/${1}" ] ; then
+        if [ ! -r "$XINPUT_PATH/$1" ] ; then
+    IFS=","
+	IFS="|"
+        if [ "$SEL" -eq "$INDEX" ]; then
+    if [ "$SEL" != "REMOVE" ]; then
+if [ "$SEL" != "REMOVE" ]; then
+    if [ "$USERID" -eq 0 ]; then
+    if [ $VERBOSE -eq 1 ] ; then
+        if [ "x$DISPLAY" != "x" ]; then
+    if [ -z "$1" ] ; then
+    if [ -z "$DEPENDS" ]; then
+        if [ -z "$RESULT" ]; then
+if [ -z "$SEL" ]; then
+    INDEX=0
+        INDEX=$(($INDEX+1))
+    INDEX=$(($INDEX+1))
+        INSTALLED=0
+                INSTALLED=1
+list() {
+                ln -fs $DOTXINPUT_PATH/$i ${DOTXINPUT_PATH}/$LNG
+            ln -fs $DOTXINPUT_PATH/$SEL ${DOTXINPUT_PATH}/$LNG
+                ln -fs $XINPUT_PATH/$i ${DOTXINPUT_PATH}/$LNG
+            ln -fs $XINPUT_PATH/$SEL ${DOTXINPUT_PATH}/$LNG
+            LNG="all_ALL"
+# $LNG is locale <languag>e_<region> without .<encoding> and .<encoding>@EURO
+LNG=${LC_ALL:-${LC_CTYPE:-${LANG}}}
+LNG=${LNG%.*}
+LNG=${LNG%@*}
+            ln -s $DOTXINPUT_PATH/${1} ${DOTXINPUT_PATH}/$LNG
+            ln -s $XINPUT_PATH/${1} ${DOTXINPUT_PATH}/$LNG
+# location for special hook scripts installed by each IM packages
+        l) vlang; list; exit 0;;
+menuitem_im () {
+	    mkdir -p ${DOTXINPUT_PATH}
+#  Modified for Debian package.
+            mv ${DOTXINPUT_PATH}/${LNG} ${DOTXINPUT_PATH}/${LNG}.backup
+	    mv ${DOTXINPUT_PATH}/${LNG} ${DOTXINPUT_PATH}/${LNG}.backup
+    # No action because INDEX is larger than 0
+ORGAT="$@"
+possible_im () {
+#   $PREVIOUS
+        [ "$PREVIOUS" -a -x "$HOOKDIR/$PREVIOUS" ] &&  $HOOKDIR/$PREVIOUS remove
+	PREVIOUS=$(current_system_im)
+	    PREVIOUS=$(current_user_im)
+        PREVIOUS_SYS=$(current_system_im)
+    readlink ${DOTXINPUT_PATH}/$LNG | \
+read SEL
+    RESULT=""
+            RESULT="( $i )"
+            RESULT="${RESULT} and ( $i )"
+        return
+            rm ${DOTXINPUT_PATH}/$LNG
+        rm ${DOTXINPUT_PATH}/$LNG
+    runhookscripts
+runhookscripts () {
+# run system hook script when system wide IM setup is changed
+        # sanity check
+	sed -e "s%${XINPUT_PATH}/%%"
+    sed -e "s%${XINPUT_PATH}/%%" -e "s%${DOTXINPUT_PATH}/%~/.xinput.d/%"
+	sed -ne 's/^ *link currently points to \([^ ]*\)/\1/p' | \
+    SEL=0
+SEL=$(eval $ZCMD0 $ZCMD)
+    SEL=$PREVIOUS
+setalt() {
+# set im setup pointing to to $1 script in $XINPUT_PATH
+# set im setup pointing to to a script in $XINPUT_PATH by terminal menu
+# set IM to defaults
+# set user im setup pointing to to a script in $XINPUT_PATH by console menu
+# set user im setup pointing to to a script in $XINPUT_PATH by zenity menu
+# So far, I have not see its use yet.
+    sort -u
+    # split with ","
+	# split with |
+        s) vlang; setalt "$OPTARG"; exit 0;;
+# system wide configuration directory
+            unset IFS
+USERID=$(id -u)
+# user specific customization directory
+      (/usr/bin/find $DOTXINPUT_PATH -type f| sed -e "s%$DOTXINPUT_PATH/%%" ; ) ) | \
+    ( (/usr/bin/find $XINPUT_PATH    -type f| sed -e "s%$XINPUT_PATH/%%") ; \
+	/usr/sbin/update-alternatives --auto xinput-$LNG
+	/usr/sbin/update-alternatives --config xinput-$LNG
+	/usr/sbin/update-alternatives --display xinput-all_ALL | \
+	/usr/sbin/update-alternatives --display xinput-all_ALL | sed -e "s%$XINPUT_PATH/%%"
+	/usr/sbin/update-alternatives --display xinput-$LNG | \
+	/usr/sbin/update-alternatives --display xinput-$LNG | sed -e "s%$XINPUT_PATH/%%"
+	/usr/sbin/update-alternatives --set xinput-$LNG $XINPUT_PATH/${1}
+    vecho
+    vecho "======================================================="
+vecho() {
+            vecho "Backed up user configuration pointing to $PREVIOUS."
+        vecho "Changed system wide default from $PREVIOUS to $DEFAULT."
+            vecho "checking status of \"$j\" package"
+            vecho "Creating  ${DOTXINPUT_PATH} directory."
+    vecho "  \"$DEPENDS\"."
+            vecho "${DOTXINPUT_PATH}/$LNG removed"
+        vecho "${DOTXINPUT_PATH}/$LNG removed"
+    vecho "From the package dependency information requires"
+                vecho "+++ \"$j\" package is installed."
+                vecho "---- \"$j\" package is NOT installed."
+        vecho -n "$i "
+        vecho "    PREVIOUS=\"$PREVIOUS\""
+        vecho "    PREVIOUS_SYS=\"$PREVIOUS_SYS\""
+        vecho "Set user configuration pointing to $DEFAULT."
+    vecho "Set user configuration pointing to $DEFAULT."
+    vecho "The available input method hook scripts are in $HOOKDIR:"
+    vecho "The system wide default input methods are available for the locales:"
+        vecho "You are non-root user."
+        vecho "You are root user."
+vecho "$ZCMD0 $ZCMD"
+VER=1.20ubuntu5.2
+VERBOSE=0
+vlang() {
+        v) VERBOSE=1;;
+while getopts "vfz:als:ch" OPTION; do
+XINPUT_PATH=/etc/X11/xinit/xinput.d
+    # XXX FIXME : should test for executable
+# You should have received a copy of the GNU General Public License
+ZCMD0="zenity --title=\"Input Method Switcher (ver $VER)\" --width=600 --height=400 --text=\"Select User Input Method for ${LNG} . User choice supercedes system choice marked as default.\" --list --radiolist --hide-column=2 --column \"User\" --column \"im\" --column \"system\" --column \"Description of Input Method\""
+            ZCMD="$ZCMD \" \""
+            ZCMD="$ZCMD default"
+            ZCMD="$ZCMD FALSE"
+ZCMD="$ZCMD FALSE REMOVE \" \" \"Remove user choice to enable system choice\""
+        ZCMD="$ZCMD $i"
+        ZCMD="$ZCMD \"$(menuitem_im $i)\""
+        ZCMD="$ZCMD \"$(menuitem_im ~/.xinput.d/$i)\""
+            ZCMD="$ZCMD TRUE"
+        ZCMD="$ZCMD ~/.xinput.d/$i"
+zenity --info --text "Please read /usr/share/doc/im-switch/README.Debian.gz . \n\n$ZMES\n\nRestart the X session to activate the selected Imput Method."
+            zenity_ucfgalt 
+zenity_ucfgalt() {
+[ -z "$LNG" ] && LNG="all_ALL" || true
+ZMES="No user configuration enabled for $LNG."
+            ZMES="User configuration $(menuitem_im $SEL) enabled for $LNG."
+            ZMES="User configuration removed for $LNG."
+        z) vlang; LNG="$OPTARG"; LNG=${LNG%@*}; LNG=${LNG%.*};;

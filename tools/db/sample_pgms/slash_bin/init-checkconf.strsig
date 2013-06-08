@@ -1,0 +1,147 @@
+        ;;
+      --)
+  -- "$@")
+#---------------------------------------------------------------------
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+args=$(getopt \
+# Author: James Hunt <james.hunt@canonical.com>
+#!/bin/bash
+    break
+        break
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# By default, two checks are performed:
+    case "$1" in
+cat <<EOT
+        check_scripts=n
+check_scripts=y
+cleanup()
+  "$cmd" --help | grep -q -- --session || die "version of $cmd too old"
+      cmd='sed -n "/^ *${section}/,/^ *end script/p" $file | /bin/sh -n 2>&1'
+  "$confdir")
+confdir=$(mktemp -d /tmp/${script_name}.XXXXXXXXXX)
+# Copyright (C) 2011 Canonical Ltd.
+cp "$file" "$confdir"
+  dbus-send --session --print-reply \
+  [ -d "$confdir" ] && rm -rf "$confdir"
+      -d|--debug)
+ -d, --debug           : Show some debug output.
+debug "confdir=$confdir"
+debug_enabled=n
+        debug_enabled=y
+  [ $debug_enabled = y ] && echo "DEBUG: $msg"
+debug "file=$file"
+debug "initctl_path=$initctl_path"
+debug "job=$job"
+debug "ok - no other running instances detected"
+debug "Secondary Upstart ($upstart_cmd) running with PID $upstart_pid"
+    debug "stopping secondary Upstart (running with PID $upstart_pid)"
+debug "upstart_cmd=$upstart_cmd"
+debug "upstart_out=$upstart_out"
+debug "upstart_path=$upstart_path"
+  debug "Waiting for Upstart to reply over D-Bus (attempt $i)"
+Description: Determine if specified Upstart (init(8)) job configuration
+    --dest='com.ubuntu.Upstart' /com/ubuntu/Upstart \
+        die "$(printf "File $file: shell syntax invalid in $section section:\n${errors}")"
+die "$(printf "File $file: syntax invalid:\n${errors}")"
+  echo "File $file: syntax ok"
+echo "$filename" | egrep -q '\.conf$' || die "file must end in .conf"
+#   - Ensure all script sections are parseable by shell
+#   - Ensure Upstart can parse overall file successfully
+[ $? -eq 0 ] && die "Another instance of this program is already running"
+[ $# -eq 0 ] && { usage; exit 0; }
+  error "$*"
+      errors=$(eval "$cmd")
+errors=$(grep "$job" "$upstart_out"|sed "s,${confdir}/,,g")
+    esac
+eval set -- "$args"
+        exit 0
+  exit 0
+  exit 1
+  [ -f "$cmd" ] || die "Path $cmd does not exist"
+      -f|--file)
+[ ! -f "$file" ] && die "file $file does not exist"
+ -f <file>,            : Job configuration file to check.
+        file="$2"
+ --file=<file>           (no default).
+             file is valid.
+filename=$(basename $file)
+file_valid=n
+  file_valid=y
+  [ $file_valid = y ] && exit 0
+for cmd in "$upstart_path" "$initctl_path"
+for i in $(seq 1 5)
+  for section in pre-start post-start script pre-stop post-stop
+# GNU General Public License for more details.
+      -h|--help)
+ -h, --help            : Show this help.
+[ "$(id -u)" -eq 0 ] && die "cannot run as root"
+if [ "$check_scripts" = y ]
+    if egrep -q "\<${section}\>" "$file"
+  if [ $? -eq 0 ]
+if [ $? -eq 0 ]
+  if [ ! -z "$upstart_pid" ]
+      -i|--initctl-path)
+        initctl_path="$2"
+ --initctl-path=<path>   (default=$initctl_path).
+initctl_path=/sbin/initctl
+"$initctl_path" --session list|grep -q "^${job}"
+ -i <path>,            : Specify path to initctl binary
+# it under the terms of the GNU General Public License as published by
+job="${filename%.conf}"
+    kill -0 "$upstart_pid" >/dev/null 2>&1 && \
+    kill -9 "$upstart_pid" >/dev/null 2>&1
+  --longoptions="debug file: help initctl-path: noscript upstart-path:" \
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  msg="$*"
+      [ $? -ne 0 ] && \
+[ $? -ne 0 ] && { usage; exit 1; }
+nohup $upstart_cmd >"$upstart_out" 2>&1 &
+  -n "$script_name" \
+Options:
+  --options="df:hi:sx:" \
+    org.freedesktop.DBus.Properties.GetAll \
+  printf "ERROR: %s\n" "$msg" >&2
+# Return 0 if Upstart is running on the D-Bus session bus, else 1.
+running=n
+[ $running = n ] && die "failed to ask Upstart to check conf file"
+    running=y
+# safety first
+script_name=${0##*/}
+       $script_name [options]    <conf_file>
+# Script to determine if specified config file is valid or not.
+    shift
+        shift
+  sleep 1
+      -s|--noscript)
+ -s, --noscript        : Do not check script sections.
+   "%s --session --no-sessions --no-startup-event --verbose --confdir %s" \
+# Stop the shell outputting a message when Upstart is killed.
+    string:'com.ubuntu.Upstart0_6' >/dev/null 2>&1
+# the Free Software Foundation, version 3 of the License.
+    then
+# this is the only safe way to run another instance of Upstart
+# This program is distributed in the hope that it will be useful,
+# This program is free software: you can redistribute it and/or modify
+trap cleanup EXIT INT TERM
+upstart_cmd=$(printf \
+upstart_out="$(mktemp --tmpdir "${script_name}-upstart-output.XXXXXXXXXX")"
+  "$upstart_path" \
+        upstart_path="$2"
+"$upstart_path" --help|grep -q -- --no-startup-event || die "$upstart_path too old"
+ --upstart-path=<path>   (default=$upstart_path).
+upstart_path=/sbin/init
+upstart_pid=$!
+  upstart_running
+upstart_running
+upstart_running()
+        usage
+Usage: $script_name [options] -f <conf_file>
+# wait for Upstart to initialize
+# We handle this ourselves in cleanup().
+while [ $# -gt 0 ]
+  [ -x "$cmd" ] || die "File $cmd not executable"
+ -x <path>             : Specify path to init daemon binary
+      -x|--upstart-path)
+# You should have received a copy of the GNU General Public License
+[   -z "$file" ] && die "must specify configuration file"
+[ -z "$file" ] && file="$1"

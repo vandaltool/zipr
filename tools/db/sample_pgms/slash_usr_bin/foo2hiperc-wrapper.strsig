@@ -1,0 +1,425 @@
+		    ;;
+		[024568])	NUP="1$OPTARG";;
+[0-9]*)		;;
+		[0-9]*\ [0-9]*)
+                    0=auto 1=tray1 2=tray2 3=multi 4=manual
+    0)	model=CLP-300;;
+                  0=no, 1=Y, 2=X, 3=XY
+                  0=Perceptual, 1=Colorimetric, 2=Saturation, 3=Absolute
+                    0=plain 1=labels 2=transparency
+0|plain)	MEDIA=0;;
+10|envC5)	PAPER=10;	paper=envC5;     XDIM="7650";  YDIM="5408"
+                    10=ICM color profile (using -G *.icm file)
+11|"env#10")	PAPER=11;	paper=env10;     XDIM="4950";  YDIM="5700"
+1200x1200)	;;
+    1200x1200)	SCREEN=$model-1200x1200cms2;;
+1200x1200)	YDIM=`expr $YDIM \* 2`;;
+1200x600)	;;
+    1200x600)	SCREEN=$model-1200x600cms2;;
+12|executive)	PAPER=12;	paper=executive; XDIM="8700";  YDIM="6300"
+13|"env#9")	PAPER=13;	paper=env9;      XDIM="4496";  YDIM="5324"
+                    1=A4, 2=letter, 3=legal, 5=A5, 6=B5, 7=A6, 8=envMonarch
+1|a4|A4)	PAPER=1;	paper=a4;        XDIM="9920";  YDIM="7016"
+	1)	case "$OPTARG" in
+                  1=Cyan, 2=Magenta, 3=Yellow, 4=Black
+1|labels)	MEDIA=1;;
+    1)	model=CLP-600;;
+                    1=off, 2=longedge, 3=shortedge
+1|off|none)	DUPLEX=1;;
+1|tray1)	SOURCE=1;;
+-2/-3/-4/-6/-8/-10/-12/-14/-15/-16/-18
+[234689]|1[024568])	PREFILTER="nup";;
+	[234689])	NUP="$opt";;
+    [2368]|1[0458])
+	2400x600)	lrx=`expr $lrx \* 2`;;
+	2400x600)	ulx=`expr $ulx \* 2`;;
+2|letter)	PAPER=2;	paper=letter;    XDIM="10200"; YDIM="6600"
+2|long*)	DUPLEX=2;;
+2|transparency)	MEDIA=2;;
+2|tray2)	SOURCE=2;;
+300x300)	;;
+	300x300)	lrx=`expr $lrx / 4`; lry=`expr $lry / 2`;;
+	300x300)	ulx=`expr $ulx / 4`; uly=`expr $uly / 2`;;
+300x300)	XDIM=`expr $XDIM / 4`; YDIM=`expr $YDIM / 2`;;
+3|legal)	PAPER=3;	paper=legal;     XDIM="10200"; YDIM="8400"
+3|multi)	SOURCE=3;;
+3|short*)	DUPLEX=3;;
+    [49]|1[26])
+4|manual)	SOURCE=4;;
+	[57])	error "Can't find acceptable layout for $opt-up";;
+5|a5|A5)	PAPER=5;	paper=a5;        XDIM="6992";  YDIM="4960"
+600x1200)	;;
+	600x1200)	lrx=`expr $lrx / 2`; lry=`expr $lry \* 2`;;
+	600x1200)	ulx=`expr $ulx / 2`; uly=`expr $uly \* 2`;;
+600x1200)	XDIM=`expr $XDIM / 2`; YDIM=`expr $YDIM \* 2`;;
+600x600)	;;
+	600x600)	lrx=`expr $lrx / 2`;;
+    600x600)	SCREEN=$model-600x600cms2;;
+	600x600)	ulx=`expr $ulx / 2`;;
+600x600)	XDIM=`expr $XDIM / 2`;;
+6|b5jis|B5jis)	PAPER=6;	paper=b5;        XDIM="8598";  YDIM="6070"
+		#792.000000 612.000000 1 0.000000 0.000000
+7|a6|A6)	PAPER=7;	paper=a6;        XDIM="4960";  YDIM="3496"
+7*)	DEFAULTCOLORMODE=10
+8|envMonarch)	PAPER=8;	paper=envMonarch;XDIM="4650";  YDIM="4500"
+                    9=envDL, 10=envC5, 11=env#10, 12=executive, 13=env#9
+9|envDL)	PAPER=9;	paper=envDL;     XDIM="5200";  YDIM="5200"
+	A)	AIB=-A;;
+		    /AccurateScreens true
+                  adjust colors using the setcolorrendering PS operator.
+    AIB=-A
+#* along with this program; if not, write to the Free Software
+	and converts it to a Oki Data HIPERC stream for the
+		    /Angle 37
+#	area for ZjStream printers.  Various versions of ZjS print
+#* (at your option) any later version.
+#* Authors: Rick Richardson <rick.richardson@comcast.net>
+BASENAME=`basename $PROGNAME`
+		"`basename $ICC2PS` -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps"
+	$BASENAME [options] [ps-file]
+	B)	BC=-B;;
+	    $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD $COMPRESSED -D$DEBUG
+    BC=-B
+		#%%BeginFeature: *CustomPageSize True
+	b)	GSBIN="$OPTARG";;
+#!/bin/sh
+#* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	C310/C3100/C3200/C3250/C3400/C5100/C5250n/C5500/C5600/C5800
+	# Can't handle different size pages
+    case "$COLORMODE" in
+case "$COLORMODE" in
+case "$DUPLEX" in
+    case "$GAMMAFILE" in
+	case "$GAMMAFILE" in
+case `$GSBIN --version` in
+case "$MEDIA" in
+case "$MODEL" in
+    case "$NUP" in
+case $NUP in
+	case $opt in
+case "$PAPER" in
+case "$QUALITY" in
+	case "$RES" in
+case "$RES" in
+case "$SOURCE" in
+		case "$tmp" in
+	cat <<EOF
+	cat > $ICCTMP.selcrd.ps <<-EOF
+	    cat >> $ICCTMP.usecie.ps <<-EOF
+		cat >> $ICCTMP.usecie.ps <<-EOF
+	cat > $ICCTMP.usecie.ps <<-EOF
+		cat >$TMPFILE
+	c)	COLOR=-c;;
+-C colormode      Colormode [$COLORMODE]
+	C)	COLORMODE="$OPTARG";;
+CLIP_LOG=
+CLIP_LR=
+	CLIP_LR="-l ${lrx}x${lry}"
+CLIP_UL=
+	CLIP_UL="-u ${ulx}x${uly}"
+CMDLINE="$*"
+		    Code numbers may vary with printer model.
+COLOR2MONO=
+	    $COLOR $CLIP_UL $CLIP_LR $CLIP_LOG $SAVETONER \
+                  color correction using the setcolortransfer PS operator.
+    COLORMODE=
+COLORMODE=default
+Color Tweaking Options:
+		# Command line only
+COMPRESSED=
+COPIES=1
+#* Copyright (C) 2003-2006  Rick Richardson
+#	corrupted image data.
+-c                Print in color (else monochrome)
+    # CRD
+CRDBASE="$PREFIX/share/foo2hiperc/crd"
+    # Create a Postscript CRD
+	    create_crd
+	create_crd
+create_crd() {
+		/Current /ColorRendering findresource setcolorrendering
+Custom*)
+Custom*x*)
+dbgcmd() {
+	D)	DEBUG="$OPTARG";;
+                  -dDITHERPPI=nnn, etc.  May appear more than once. []
+-d duplex         Duplex code to send to printer [$DUPLEX]
+	d)	DUPLEX="$OPTARG";;
+Debugging Options:
+#	default clipping region.  Unfortunately, this is a trouble
+*)	DEFAULTCOLORMODE=10
+	DEFAULTCOLORMODE=10
+    default)	COLORMODE=$DEFAULTCOLORMODE;;
+    default)	GAMMAFILE=samclp300-0.icm;;
+DIM="${XDIM}x${YDIM}"
+-D lvl            Set Debug level [$DEBUG]
+# doesn't have :-
+    done
+DUPLEX=1
+		    echo
+		    echo "	$0 $CMDLINE"
+	    echo "$@" >&2
+	echo "$BASENAME: $1" >&2
+		    echo "Illegal command:"
+# e.g. /usr/share/ghostscript/7.07/lib/gs_statd.ps
+elif [ "$COLOR" != "" -a "$QUALITY" = as ]; then
+    elif [ -f $CRDBASE/$COLORMODE ]; then
+	elif [ -r "$SHARE/icm/$GAMMAFILE" ]; then
+    else
+	    else
+# Else, the input comes from stdin.
+#	engines react differently when asked to print into their
+error() {
+		*)	error "Can't find acceptable layout for 1$OPTARG-up";;
+	error "Can't find CRD '$COLORMODE' in . or in $CRDBASE"
+		    error "Custom page size '$PAPER' != 1-99999"
+		    error "Custom page size [XY]DIM != 1-99999"
+	error "Illegal call to nup()."
+*)		error "Illegal resolution $RES";;
+		|| error "Problem converting .ICM file to Postscript"
+*)		error "Unimplemented paper code $PAPER";;
+    error "Unknown color method '$COLORMODE'"
+*)		error "Unknown duplex code $DUPLEX";;
+*)		error "Unknown media code $MEDIA";;
+*)	error "Unknown model code $MODEL";;
+*)		error "Unknown source code $SOURCE";;
+    esac
+		esac;;
+    exec < $1
+		exec <$TMPFILE
+EXTRAPAD=
+# fallback to whatever the Linux distro has installed (usually 7.07)
+	# Faster, but can't handle AllIsBlack or BlackClears
+	[ -f $file ] && rm -f $file
+#	Figure out the paper dimensions in pixels/inch, and set the
+#	Figure out USERNAME
+	file="$ICCTMP.$i"
+# Filter thru psnup if N-up printing has been requested
+	"foo2hiperc -r$RES -g$DIM -p$PAPER -m$MEDIA \
+| foo2hiperc -r$RES -g$DIM -p$PAPER -m$MEDIA -n$COPIES -d$DUPLEX -s$SOURCE \
+foo2zjs-pstops $PSTOPS_OPTS | \
+	Foomatic printer wrapper for the foo2hiperc printer driver.
+    for i in crd.ps log usecie.ps selcrd.ps
+#* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+		    /Frequency 137
+    [ -f "$TMPFILE2" ] && rm -f $TMPFILE2
+    [ -f "$TMPFILE" ] && rm -f $TMPFILE
+    GAMMAFILE=
+    GAMMAFILE=""
+	    GAMMAFILE=
+	GAMMAFILE=
+    GAMMAFILE="$CRDBASE/prolog.ps"
+GAMMAFILE=default
+	GAMMAFILE="$GAMMAFILE $COLORMODE"
+	GAMMAFILE="$GAMMAFILE $CRDBASE/$COLORMODE"
+    GAMMAFILE="$GAMMAFILE $CRDBASE/${model}cms"
+    GAMMAFILE="$GAMMAFILE $CRDBASE/$SCREEN"
+	*)	GAMMAFILE="$ICCTMP.usecie.ps $ICCTMP.crd.ps $ICCTMP.selcrd.ps";;
+	    GAMMAFILE="$SHARE/icm/$GAMMAFILE"
+	G)	GAMMAFILE="$OPTARG";;
+-G gamma-file.ps  Prepend gamma-file to the Postscript input to perform
+-g gsopts         Additional options to pass to Ghostscript, such as
+	g)	GSOPTS="$GSOPTS $OPTARG";;
+#* GNU General Public License for more details.
+-G profile.icm    Convert profile.icm to a Postscript CRD using icc2ps and
+        GSBIN=${GSBIN:-gs}
+        GSBIN=${GSBIN:-gs.foo}
+	"$GSBIN $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS $GAMMAFILE"
+	GSDEV=-sDEVICE=bitcmyk
+GSDEV=-sDEVICE=pbmraw
+	GSDEV=-sDEVICE=pksmraw
+GS="$GSBIN -q -dBATCH -dSAFER -dQUIET -dNOPAUSE"
+    GSOPTS="-dCOLORSCREEN -dMaxBitmap=500000000 $GSOPTS"
+    GSOPTS="-dCOLORSCREEN $GSOPTS"
+    GSOPTS="-dMaxBitmap=500000000 $GSOPTS"
+| ($GS $PAPERSIZE -g$DIM -r$RES $GSDEV $GSOPTS \
+		    /HalftoneName (Round Dot Screen) cvn
+		    /HalftoneType 1
+	    $ICC2PS -o $GAMMAFILE -t$INTENT > $ICCTMP.crd.ps 2>$ICCTMP.log \
+    ICC2PS=$PREFIX/bin/foo2zjs-icc2ps
+    ICCTMP=/tmp/icc
+    ICCTMP=/tmp/icc$$
+    *.icm|*.ICM|*.icc|*.ICC)
+    if [ "" = "$AIB" -a "" = "$BC" ]; then
+    if [ "$CLIP_LR" = "" ]; then
+    if [ "$CLIP_UL" = "" ]; then
+		if [ "$CMDLINE" != "-?" -a "$CMDLINE" != -h ]; then
+if [ "$COLOR" != "" -a "$QUALITY" = wts ]; then
+if [ "" = "$COLOR" ]; then
+if [ "" != "$COLOR" ]; then
+		if [ $DEBUG = 0 ]; then
+		    if [ $DEBUG = 0 ]; then rm -f $TMPFILE; fi
+if [ $DEBUG -eq 0 ]; then
+	if [ $DEBUG -ge 1 ]; then
+if [ "$DEBUG" -ge 9 ]; then
+if [ $DEBUG -gt 0 ]; then
+if eval gs.foo -v >/dev/null 2>&1; then
+    if [ -f $COLORMODE ]; then
+if [ $# -ge 1 ]; then
+    if [ "$LPJOB" = "" ]; then
+if [ "$LPUSER" != "" ]; then
+	if [ "$QUALITY" = wts -o "$QUALITY" = as ]; then
+	    if [ "$QUALITY" = wts ]; then
+	if [ -r "$GAMMAFILE" ]; then
+# If there is an argument left, take it as the file to print.
+		if [ "$XDIM" -eq 0 -o "$YDIM" -eq 0 ]; then
+		if [ "$XDIM" = "" -o "$YDIM" = "" ]; then
+    if [ -x $ICC2PS ]; then
+if [ -x /usr/bin/logger -o -x /bin/logger ]; then
+	    if [ -x /usr/bin/logger ]; then
+if [ -x /usr/bin/logger ]; then
+	I)	INTENT="$OPTARG";;
+-I intent         Select profile intent from ICM file [$INTENT]
+INTENT=0
+#	intermingled with the printer drivers output, resulting in
+	# Its really an .ICM file, not a gamma file.
+#* it under the terms of the GNU General Public License as published by
+	    -J "$LPJOB" -U "$USER" \
+	L)	CLIP_LOG="-L $OPTARG";;
+	l)	CLIP_LR="-l $OPTARG";;
+-L mask           Send logical clipping values from -u/-l in ZjStream [3]
+		l*)	NUP_ORIENT=-l;;
+    logger -t "$BASENAME" -p lpr.info -- \
+		logger -t "$BASENAME" -p lpr.info -- \
+    logger -t "$BASENAME" -p lpr.info -- "$BASENAME $@" </dev/null
+#	Log the command line, for debugging and problem reports
+	: # LPJOB="$1"
+    lrx=$3; lry=$4
+-l <xoff>x<yoff>  Set offset of lower right printable in pixels [varies]
+#	Main Program, just cobble together the pipeline and run it
+#* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-m media          Media code to send to printer [$MEDIA]
+	m)	MEDIA="$OPTARG";;
+    # Monochrome
+                  monochrome-only printers.
+# N.B. := operator used here, when :- would be better, because "ash"
+-n$COPIES -d$DUPLEX -s$SOURCE $COLOR $CLIP_UL $CLIP_LR $CLIP_LOG \
+-n copies         Number of copies [$COPIES]
+	n)	COPIES="$OPTARG";;
+    none | none.icm | */none.icm)
+	none | none.icm | */none.icm)
+	none | none.icm | */none.icm) GAMMAFILE="$ICCTMP.usecie.ps";;
+NOPLANES=
+Normal Options:
+#	N-up-ify the job.  Requires psnup from psutils package
+NUP_ORIENT=
+	o)	case "$OPTARG" in
+# Oki Data C3100
+# Oki Data C310dn
+# Oki Data C3200
+# Oki Data C3300
+# Oki Data C3400
+# Oki Data C5100
+# Oki Data C5250
+# Oki Data C5500
+# Oki Data C5600
+# Oki Data C5800
+# Olivetti d-Color P160W
+-o orient         For N-up: -op is portrait, -ol is landscape, -os is seascape.
+#	Overload -G.  If the file name ends with ".icm" or ".ICM"
+		PAPER=21;        paper=letter;
+PAPERSIZE="-sPAPERSIZE=$paper";
+PATH=$PATH:.
+PATH=$PATH:/sw/bin:/opt/local/bin
+-P                Do not output START_PLANE codes.  May be needed by some
+	P)	NOPLANES=-P;;
+		p*|*)	NUP_ORIENT=;;
+		#pop pop pop pop pop
+	p)	PAPER="$OPTARG";;
+-p paper          Paper code [$PAPER]
+$PREFILTER \
+*)			PREFILTER=cat;;
+    PREFILTER="tee /tmp/$BASENAME.ps"
+PREFIX=/usr
+# Printer Notes:
+	printers.
+Printer Tweaking Options:
+                  Print with N-up (requires psutils)
+#       Process the options
+PROGNAME="$0"
+		%!PS-Adobe-3.0
+PSTOPS_OPTS="-n"
+    PSTOPS_OPTS="$PSTOPS_OPTS -a"
+	PSTOPS_OPTS="$PSTOPS_OPTS -c"
+    PSTOPS_OPTS="$PSTOPS_OPTS -w"
+	q)	QUALITY="$OPTARG";;
+	QUALITY=1
+QUALITY=1
+QUALITY=wts
+#	Remove cruft
+#       Report an error and exit
+RES=600x600
+	r)	RES="$OPTARG";;
+-r <xres>x<yres>  Set device resolution in pixels/inch [$RES]
+SAVETONER=
+$SAVETONER $BC $AIB $COLOR2MONO $NOPLANES $EXTRAPAD $COMPRESSED"
+	S)	COLOR2MONO="-S$OPTARG";;
+		    | sed -n '/CustomPageSize/{n;p;n;p;}' \
+set_clipping() {
+		set_clipping 150 100	150 100
+                set_clipping 2 100     2 100
+    # Set clipping region if it isn't already set
+		>> sethalftone
+                  $SHARE/icm/ will be searched for profile.icm.
+SHARE=$PREFIX/share/foo2hiperc
+shift `expr $OPTIND - 1`
+		s*)	NUP_ORIENT=-r;;
+#	(some versions?) of Ghostscript where Postscript's stdout gets
+SOURCE=0
+    -sOutputFile="|cat 1>&3" $GAMMAFILE -_ >/dev/null) 3>&1 \
+-S plane          Output just a single color plane from a color print [all]
+		    /SpotFunction { 180 mul cos exch 180 mul cos add 2 div}
+	s)	SOURCE="$OPTARG";;
+-s source         Source code to send to printer [$SOURCE]
+-t                Draft mode.  Every other pixel is white.
+	# The file can be a full path name, or the name of a file in $SHARE/icm/
+#* the Free Software Foundation; either version 2 of the License, or
+#	The malarky with file descriptors 1 and 3 is to avoid a bug in
+#	then convert the ICC color profile to a Postscript CRD,
+#	then prepend it to the users job.  Select the intent
+#* This program is distributed in the hope that it will be useful,
+#* This program is free software; you can redistribute it and/or modify
+	This script reads a Postscript ps-file or standard input
+		    TMPFILE=/tmp/cus$$
+		    TMPFILE=/tmp/custom.ps
+		tmp=`head -n 10000 $TMPFILE \
+		    | tr '\n' ' '`
+	tr '\r' '\n' | psnup $NUP_ORIENT -d2 -$NUP -m.3in -p$paper -q
+	tr '\r' '\n' | psnup $NUP_ORIENT -d2 -$NUP -m.5in -p$paper -q
+# Try to use a local copy of GhostScript 8.54, if available.  Otherwise,
+	t)	SAVETONER="-t";;
+	u)	CLIP_UL="-u $OPTARG";;
+    ulx=$1; uly=$2
+#	unprintable regions.
+		usage;;
+usage() {
+		<</UseCIEColor true>>setpagedevice
+    # Use old ICM method
+    USER=""
+    USER="$LPUSER@$LPHOST"
+		    << /UseWTS false >> setuserparams
+		    << /UseWTS true >> setuserparams
+#	using the -I option.
+-u <xoff>x<yoff>  Set offset of upper left printable in pixels [varies]
+#	Validate Duplex code
+#	Validate media code
+#	Validate model code
+#	Validate Resolution
+#	Validate source (InputSlot) code
+	V)	echo "$VERSION"; foo2hiperc -V; foo2zjs-pstops -V; exit 0;;
+VERSION='$Id: foo2hiperc-wrapper.in,v 1.25 2011/01/31 12:23:43 rick Exp $'
+-V                $VERSION
+# What mode to use if the user wants us to pick the "best" mode
+while getopts "1:23456789o:b:cC:d:g:l:u:L:m:n:p:q:r:s:tz:ABS:D:G:I:PX:Z:Vh?" opt
+		XDIM=`dc -e "$XDIM 1200* 72/p"`
+		XDIM=`echo "$PAPER" | sed -e "s/Custom.//" -e "s/x.*//" `
+		    XDIM=`echo "$tmp" | sed 's/ .*//'`
+	X)	EXTRAPAD="-X $OPTARG";;
+-X padlen         Add extra zero padding to the end of BID segments [16]
+		YDIM=`dc -e "$YDIM 600* 72/p"`
+		YDIM=`echo "$PAPER" | sed -e "s/.*x//" `
+		    YDIM=`echo "$tmp" | sed -e 's/^[^ ]* //' -e 's/ .*//'`
+#* You should have received a copy of the GNU General Public License
+-Z compressed     Use uncompressed (0) or compressed (1) data [0]
+	Z)	COMPRESSED="-Z $OPTARG";;
+	z)	MODEL="$OPTARG";;

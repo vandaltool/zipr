@@ -1,0 +1,1404 @@
+(0.0, 0.0, 0.0)
+(0.0, 0.0, 1.0)
+(0.0, 0.439988, 0.569994)
+(0.0, 0.5, 1.0)
+(0.0, 0.6, 0.0)
+(0.0, 0.75, 0.160012)
+(0.0, 0.880006, 0.0)
+(0.0, 1.0, 0.0)
+(0.0100122, 1.0, 0.480006)
+(0.0, 1.0, 0.5)
+(0.0, 1.0, 1.0)
+(0.0399878, 1.0, 1.0)
+(0.0600122, 0.460012, 1.0)
+(0.0600122, 0.889988, 1.0)
+0 0] concat
+ 0 0 rlineto
+(0.1, 0.05, 0.960012)
+(0.119994, 0.980006, 0.640018)
+@0123456789ABCDEF
+0 1 255 {1 index exch /.notdef put} for
+(0.15, 1.0, 0.669994)
+(0.15, 1.0, 0.8)
+(0.180006, 1.0, 0.7)
+(0.210012, 0.119994, 1.0)
+(0.25, 0.1, 1.0)
+(0.3, 0.0, 0.0)
+(0.310012, 1.0, 0.5)
+(0.35, 0.869994, 1.0)
+(0.380006, 0.430006, 0.769994)
+(0.380006, 1.0, 0.880006)
+(0.4, 0.0, 0.0)
+(0.430006, 0.45, 1.0)
+(0.45, 0.00998169, 0.919994)
+(0.5, 0.0, 1.0)
+(0.5, 0.5, 0.5)
+(0.5, 1.0, 0.0)
+(0.55, 0.0, 0.0)
+(0.55, 0.139988, 1.0)
+(0.560012, 1.0, 0.260012)
+(0.590018, 0.0, 0.660012)
+(0.6, 0.2, 0.8)
+(0.640018, 0.0800061, 0.980006)
+(0.65, 0.0, 0.0)
+(0.680006, 0.0, 0.0)
+(0.680006, 0.360012, 1.0)
+(0.719994, 0.0, 0.0)
+(0.739988, 1.0, 0.239988)
+(0.760012, 0.0100122, 0.0)
+(0.85, 1.0, 0.310012)
+(0.860012, 0.580006, 0.439988)
+(0.880006, 0.410012, 1.0)
+ 0 dtransform exch truncate exch idtransform pop setlinewidth
+ [] 0 setdash
+(1.0, 0.0, 0.0)
+(1.0, 0.0, 0.5)
+(1.0, 0.0, 0.869994)
+(1.0, 0.0, 1.0)
+(1.0, 0.0399878, 0.610012)
+(1.0, 0.180006, 1.0)
+(1.0, 0.189988, 1.0)
+(1.0, 0.230006, 0.130006)
+(1.0, 0.369994, 1.0)
+(1.0, 0.389988, 0.130006)
+(1.0, 0.469994, 0.619994)
+(1.0, 0.489988, 0.0)
+(1.0, 0.5, 0.3)
+(1.0, 0.519994, 1.0)
+(1.0, 0.539988, 0.5)
+(1.0, 0.580006, 0.0)
+(1.0, 0.680006, 0.480006)
+(1.0, 0.710012, 0.160012)
+(1.0, 0.9, 0.160012)
+(1.0, 1.0, 0.0)
+(1.0, 1.0, 1.0)
+ (%1.4f,%1.4f)--(0,%1.4f)--cycle;
+1 or ... or 9 to ignore the next 1 to 9 tokens of input,
+ 277 SlantFont 
+--(%.3f,%.3f);
+(%.3f,%.3f)
+(%.3f,%.3f)--
+\$43\$8+\$49
+\$43\$D+\$49
+\$43\$H+\$49
+4;;t$ ts
+%.4u/%.2u/%.2u %.2u:%.2u %s %s
+,%.5f,%.4f,%.4f)
+ 890 ScaleFont 
+|$ 9|$4th
+/a12[-904 -939]def 
+a bad variable
+above this error message. So I'll try a zero subscript.
+A bracketed subscript must have a known numeric value;
+A colon should follow a headerbyte or fontinfo location.
+A curl must be a known, nonnegative number.
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+  addto _p doublepath _a withpen pencircle scaled _w _t enddef;
+ addto _p doublepath _q withpen pencircle scaled _d; enddef;
+-Adobe-3.0 EPSF-3.0
+(a font metric dimension
+A forbidden `outer' token occurred in skipped text.
+, after choices
+After `exitif <boolean exp>' I expect to see a semicolon.
+  after MPNAME is read.
+After `vardef a' you can't say `vardef a.b'.
+A funny symbol that I can't read has just been input.
+A group begun on line 
+Always say `randomseed:=<numeric expression>'.
+A message should be a known string expression.
+ampersand
+/Amul{4 -1 roll exch mul 1000 div}bd/ExtendFont{fmc 0 get Amul 0 exch put fmd}bd
+a name expected: `%s'
+a name or `] def' or `] readonly def' expected: `%s'
+and an auxiliary file I need to read to find out what your
+and deduce the truth by inspired guesses.
+and hope for the best.
+and the final value `c' must have known numeric values.
+An equation between already-known quantities can't help.
+An error might have occurred before I noticed any problems.
+angle(0,0) is taken as zero
+An mpx file cannot contain btex or verbatimtex blocks
+a number expected: `%s'
+  Any remaining COMMANDS are processed as MetaPost input,
+A path join command should end with two dots.
+ appears not to be a mem file)
+A previous error seems to have propagated,
+A primary
+Aquamarine
+arclength
+Are you trying to use a reserved word in a variable name?
+<argument> 
+argument (see above) as the result of the operation.
+argument (shown above) as the result of the operation.
+arithmetic: divided by zero
+arithmetic: number too big
+Arithmetic overflow
+Ascender
+asciicircum
+asciitilde
+A secondary
+__assert_fail
+A statement can't begin with `
+asterisk
+A tertiary
+a text argument
+ at line 
+at most 
+At most 127 lig/kern steps can separate skipto1 from 1::.
+Attempt to reset resolution
+attempt to typeset invalid character %d
+At this point I needed to see the name of a picture variable.
+AVAIL list clobbered at 
+a value of 4096 or more. Continue and I'll try to cope
+avl_do_entry
+A write command should end with `to <filename>'
+backslash
+Bad argument in %s
+Bad c command in troff output
+Bad command in troff output
+Bad DVI file: attempt to pop empty stack!
+Bad DVI file: bad scale ratio in preamble!
+Bad DVI file: bop occurred before eop!
+Bad DVI file: First byte isnt start of preamble!!
+Bad DVI file: magnification isn't positive!
+Bad DVI file: missing bop!
+Bad DVI file: preamble or postamble within a page!!
+Bad DVI file: %s !
+Bad DVI file: stack not empty at end of page!
+Bad DVI file: the DVI file ended prematurely!
+Bad DVI file: Undefined font!
+Bad flag at 
+Bad font def: x %s
+Bad font setting
+badly. I will try to ignore the broken link, but something
+Bad nnc command in troff output
+Bad PREVDEP at 
+Bad resolution: x %s
+Bad shift entry : "%s"
+Bad TFM file for 
+Bad VF file for 
+batchmode
+/bd{bind def}bind def
+/bd{bind def}bind def/fshow {exch findfont exch scalefont setfont show}bd
+because I've already looked at the definition heading.
+, before choices
+begingroup
+begingroup save %s_p,_r,_s,_n; picture _p; _p=nullpicture;
+Beginning to dump on file 
+ % beginning with offset 
+%%BeginProlog
+%%%%BeginResource: encoding 
+%%BeginResource: font 
+%%BeginResource: procset mpost
+%%BeginResource: procset mpost-minimal
+%%BeginSetup
+be the same color.  I can't handle your color changes
+beveled joins
+biggestfont
+Bittersweet
+blackpart
+blocks.  Such files are normally generated automatically
+BlueGreen
+bluepart
+BlueViolet
+boundarychar
+%%BoundingBox: 
+    \box0
+box_ends
+braceleft
+braceright
+bracketleft
+bracketright
+BrickRed
+__bss_start
+btex..etex blocks mean. If you don't know why I had trouble,
+btex in TeX mode
+btex section does not end
+buffer overflow: (%u,%u) at file %s, line %d
+/build/buildd/texlive-bin-2009/inst/lib
+built-in
+BurntOrange
+but after finding a nice `a' I found a `b' that isn't
+But don't worry; continue and I'll just ignore it.
+But don't worry; I'll pretend that an equals sign
+but I'll try to get myself back together, by ignoring
+but nevertheless you nearly hornswoggled me...
+But perhaps no harm has been done; let's continue.
+, but the 'connect-the-dots' algorithm returned 
+but this one got messed up.  You might want to insert a
+but this one seems to be messed up.  I'll just keep going
+but this one seems to be messed up.  I'm going to ignore
+but watch out, I'll probably miss it later.
+by `endgroup'. So I've inserted `endgroup' now.
+CadetBlue
+call_edit: can't find a suitable MPEDIT or EDITOR variable
+call_edit: `%%d' appears twice in editor command
+call_edit: `%%s' appears twice in editor command
+  Call MetaPost with --dvitomp --help for option explanations.
+cannot call subr (%i)
+Cannot find DESC
+Cannot find %s
+Cannot find TFM %s
+cannot open encoding file %s for reading
+cannot open font map file %s
+cannot open Type 1 font file %s for reading
+*** (cannot readstring in nonstop modes)
+cannot subset font (unknown predefined encoding `%s')
+CapHeight
+(%CAPSULE)
+%CAPSULE
+CarnationPink
+---case %i
+causing me to read past where you wanted me to stop.
+Cerulean
+change the DESC file for your GROFF PostScript device, remove tcommand
+(Chapter 27 of The METAFONTbook explains that
+Character 
+character %i is mapped to %s
+charcode
+"&char%d
+charexists
+CharString: invalid access (%i) to stack (%i entries)
+/CharStrings
+CharStrings dict: more entries than dict size (%i)
+CharString (/%s): %s
+check_ff_exist
+Checksum mismatch for 
+circumflex
+cleartomark
+clip-path
+clipPath
+clipping path:
+ CLOBBERED
+clockwise to offset 
+closedir
+closefrom
+ closepath
+color stack overflow
+color stack underflow
+combination of types. Continue, and I'll return the second
+Command failed: %s; see mpxerr.log
+command not valid: %i
+command, so I can't give any explicit help.
+command, something happened, and the left-hand side
+command value out of range: %i
+comp_fm_entry_ps
+computing got too large, so I'm afraid your answers will be
+] concat 0 0 moveto
+Continue, and I'll forget that it ever happened.
+..control?
+controls
+   ..controls 
+controls (%.3f,%.3f) and (%.3f,%.3f)..
+  Convert a TeX DVI file to a MetaPost MPX file.
+Copyright 2009 AT&T Bell Laboratories.
+CornflowerBlue
+Courier-Bold
+Courier-BoldOblique
+Courier-Oblique
+covered by the terms of both the MetaPost copyright and
+create_avl_trees
+ created.
+<!-- Created by MetaPost 
+%%CreationDate: 
+%%Creator: MetaPost 
+/C{setcmykcolor}bd/G{setgray}bd/R{setrgbcolor}bd/lj{setlinejoin}bd/ml{setmiterlimit}bd
+cs_parse
+__ctype_b_loc
+currency
+currentdict end
+currentfile eexec
+Current maintainer of MetaPost: Taco Hoekwater.
+cyanpart
+ & cycle
+D$43D$@+D$49
+D(%.4f) 
+daggerdbl
+Dandelion
+DarkOrchid
+dashed (
+dashpart
+Declared variable conflicts with previous vardef
+defaultcolormodel
+definefont
+definition?
+definition will be completed without mixing me up too badly.
+degenerate spec
+delete this zero and insert something else;
+delimiters
+ delimiter that matches 
+Descender
+Description file for %s ends unexpectedly
+designsize
+/dev/null
+D$<f9D$8
+dieresis
+  \dimen1=\ht0 \dimen2=\dp0
+directiontime
+Division by zero
+'d macro:
+%%DocumentFonts:
+%%DocumentNeededResources: font
+%%DocumentResources: procset mpost
+%%DocumentResources: procset mpost-minimal
+%%DocumentSuppliedResources: procset mpost
+%%DocumentSuppliedResources: procset mpost-minimal
+doesn't belong here
+dotaccent
+dotlessi
+Double-AVAIL list clobbered at 
+doublepath
+Doubly free location at 
+ dtransform truncate idtransform setlinewidth pop
+(dump is performed only by INIMP)
+dup 0 /.notdef put
+dup dup %i exch %i get put
+dup dup %i %i getinterval %i exch putinterval
+dup %i%256s put
+dup %i /%s put
+dup %i %u
+dup %i %u%s 
+Dvi conversion failed: %s %s
+DVI generation failed
+--dvitomp
+DVItoMP capacity exceeded (max font numbers=%d)
+DVItoMP capacity exceeded (max fonts=%d)!
+DVItoMP capacity exceeded (max widths=%d)
+DVItoMP capacity exceeded (stack size=%d)
+DVItoMP capacity exceeded (virtual font space=%d)
+DVItoMP capacity exceeded (width table size=%d)!
+dvitomp %s
+Edge structure
+ellipsis
+    \else \vrule width1sp height1sp depth0sp\relax
+Email bug reports to mp-implementors@tug.org.
+Emergency stop
+%%+ encoding
+ Encoding: 
+/Encoding
+/Encoding 
+/Encoding [
+/Encoding[
+/Encoding 256 array
+/Encoding StandardEncoding def
+encoding vector contains more than 256 names
+%%EndComments
+end def 
+\end{document}
+End edges
+endgroup
+endinput
+(end occurred when 
+End of file on the terminal!
+! End of file on the terminal... why?
+end of setbounds
+%%EndProlog
+%%%%EndResource
+%%EndSetup
+engine=metapost
+Enormous 
+Enormous number has been reduced
+envelope
+Envelope spec
+Equation cannot be performed (
+errmessage
+__errno_location
+Error detected while interpreting a virtual font
+errorstopmode
+E to edit your file,
+everyjob
+everything from here to `endfor' will be iterated.
+everything up to the next `;'. Please insert a semicolon
+except to a fully known pair or transform.
+Excessive slant
+ exch definefont pop
+exclamdown
+exec failed: %s
+expandafter
+expansion depth
+Explicit subscripts like `x15a' aren't permitted.
+<expr>->
+ expression can't begin with `
+expression that is shown above this error message,
+<expr>of<primary>->
+-Extend_
+ExtendFont
+ ExtendFont 
+extensible
+__extension__ ({ size_t __s1_len, __s2_len; (__builtin_constant_p (tfm) && __builtin_constant_p (nontfm) && (__s1_len = __builtin_strlen (tfm), __s2_len = __builtin_strlen (nontfm), (!((size_t)(const void *)((tfm) + 1) - (size_t)(const void *)(tfm) == 1) || __s1_len >= 4) && (!((size_t)(const void *)((nontfm) + 1) - (size_t)(const void *)(nontfm) == 1) || __s2_len >= 4)) ? __builtin_strcmp (tfm, nontfm) : (__builtin_constant_p (tfm) && ((size_t)(const void *)((tfm) + 1) - (size_t)(const void *)(tfm) == 1) && (__s1_len = __builtin_strlen (tfm), __s1_len < 4) ? (__builtin_constant_p (nontfm) && ((size_t)(const void *)((nontfm) + 1) - (size_t)(const void *)(nontfm) == 1) ? __builtin_strcmp (tfm, nontfm) : (__extension__ ({ __const unsigned char *__s2 = (__const unsigned char *) (__const char *) (nontfm); register int __result = (((__const unsigned char *) (__const char *) (tfm))[0] - __s2[0]); if (__s1_len > 0 && __result == 0) { __result = (((__const unsigned char *) (__const char *) (tfm))[1] - __s2[1]); if (__s1_len > 1 && __result == 0) { __result = (((__const unsigned char *) (__const char *) (tfm))[2] - __s2[2]); if (__s1_len > 2 && __result == 0) __result = (((__const unsigned char *) (__const char *) (tfm))[3] - __s2[3]); } } __result; }))) : (__builtin_constant_p (nontfm) && ((size_t)(const void *)((nontfm) + 1) - (size_t)(const void *)(nontfm) == 1) && (__s2_len = __builtin_strlen (nontfm), __s2_len < 4) ? (__builtin_constant_p (tfm) && ((size_t)(const void *)((tfm) + 1) - (size_t)(const void *)(tfm) == 1) ? __builtin_strcmp (tfm, nontfm) : (__extension__ ({ __const unsigned char *__s1 = (__const unsigned char *) (__const char *) (tfm); register int __result = __s1[0] - ((__const unsigned char *) (__const char *) (nontfm))[0]; if (__s2_len > 0 && __result == 0) { __result = (__s1[1] - ((__const unsigned char *) (__const char *) (nontfm))[1]); if (__s2_len > 1 && __result == 0) { __result = (__s1[2] - ((__const unsigned char *) (__const char *) (nontfm))[2]); if (__s2_len > 2 && __result == 0) __result = (__s1[3] - ((__const unsigned char *) (__const char *) (nontfm))[3]); } } __result; }))) : __builtin_strcmp (tfm, nontfm)))); })
+ Extra CharSet: 
+Extra `endfor'
+Extra `endgroup'
+Extra etex will be ignored
+Extra tokens will be flushed
+fatal error: %s: missing -s argument
+fatal error: %s: unknown option %s
+(Fatal mem file error; 
+(Fatal mem file error; I'm stymied)
+/fcp{findfont dup length dict begin{1 index/FID ne{def}{pop pop}ifelse}forall}bd
+    \fi\egroup
+File ended
+--file-line-error
+file name for font metrics
+file name for output
+file name for write output
+File names can't appear within macros
+filenametemplate
+File open error for %s in mode %s
+fill: black; stroke: none;
+Filled contour 
+Filled pen stroke 
+fill-rule: evenodd;
+final value
+finish this TeX material.  I've inserted `etex' now.
+/fmc{FontMatrix dup length array copy dup dup}bd/fmd{/FontMatrix exch def}bd
+fm->ff_name!=((void *)0)
+fm_read_info
+fm_scan_line
+%%+ font
+%*Font: 
+FontBBox
+fontdimen
+Font embedding failed
+font loading problems for font 
+fontmaking
+fontmap encoding problems for font 
+fontmap entry for `%s' already exists, duplicates ignored
+fontmap entry for `%s' has been used, replace/delete not allowed
+fontmap entry for `%s' not found
+fontmapfile
+fontmapline
+fontmap name problems for font 
+/FontMatrix
+ FontMatrix [-1 0 0 1 0 0] matrix concatmatrix /FontMatrix exch def 
+ font metric dimensions
+Font metric dimensions must be less than 2048pt.
+Font metrics written on 
+FontName
+fontpart
+font `%s' cannot be embedded
+font %s cannot be found in any fontmapfile!
+fontsize
+font-size
+Font %s was not in map file
+/FontType
+Font was not in map file
+Forbidden token found
+ForestGreen
+<forever> 
+fork failed: %s
+For more information about these matters, see the files
+For safety's sake I'll ignore the present command.
+forsuffixes
+f->pp!=((void *)0)
+__fprintf_chk
+fp->tfm_name!=((void *)0)
+fraction
+Free list garbled
+/fshow {exch findfont exch scalefont setfont show}bind def
+\gdef\mpxshipout{\shipout\hbox\bgroup%
+\gdef\stopmpxshipout{\egroup  \dimen0=\ht0 \advance\dimen0\dp0
+germandbls
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+glyph index too high (
+Glyph interpreter failed (missing glyph '%s'?)
+glyph `%s' undefined
+__gmon_start__
+Goldenrod
+greenpart
+GreenYellow
+greypart
+gsave fill grestore
+guillemotleft
+guillemotright
+guilsinglleft
+guilsinglright
+ had to be decreased)
+half_error_line
+--halt-on-error
+' has been inserted
+ has been obliterated
+ has been reduced
+ has been replaced by 0
+hash size
+hash_size
+have missed it, if it wasn't followed by the proper token.)
+headerbyte
+  -help                     display this help and exit
+Helvetica
+Helvetica-Bold
+Helvetica-BoldOblique
+Helvetica-Oblique
+Here is how much of MetaPost's memory you used:
+H for help, X to quit.
+%%HiResBoundingBox: 
+/hlw{0 dtransform exch truncate exch idtransform pop setlinewidth}bd
+hrule or vrule is out of range
+  \ht0=0pt \dp0=0pt \box0 \egroup}
+http://www.w3.org/1999/xlink
+http://www.w3.org/2000/svg
+hungarumlaut
+I already knew that this equation was true.
+I assume you meant to say `until' after `step'.
+%i bytes more than expected were ignored
+I can only output known pictures.
+I can't find file `
+I can't find the 'plain' mem file!
+I can't go on meeting you like this
+I can't handle numbers bigger than 32767.99998;
+I can't set an internal quantity to anything but a known string
+I can't set this internal quantity to anything but a known
+I can't write on file `
+I can't write to that file name.  It isn't a known string
+I couldn't find an `=' or `:=' after the
+identification in byte 1 should be %d!
+I didn't find a variable name at the left of the `:=',
+``If all else fails, read the instructions.''
+    \ifnum\dimen0>0 \vrule width1sp height\dimen1 depth\dimen2 
+I found an entry in the list of free nodes that links
+I found no right delimiter to match a left one. So I've
+If you just proceed without changing anything, I'll ignore
+If you really absolutely need more capacity,
+I have just deleted some text, as you asked.
+I have trouble with numbers greater than 4095; watch out.
+ %ii,%in,%ip,%ib,%if stack positions out of %ii,%in,%ip,%ib,%if
+I'll continue by pretending that each missing argument
+(illegal design size has been changed to 128pt)
+Illegal ligtable step
+Illegal suffix of declared variable will be flushed
+I'll have to ignore this preprocessor command because it
+I'll ignore the bad `with' clause and look for another.
+I'll ignore this preprocessor command because it
+I'll pretend that you meant to divide by 1.
+I'll read it as a right delimiter this time;
+I'll try to recover; but if the error is serious,
+I'm afraid I don't know how to apply that operation to that
+I'm afraid I need some sort of value in order to continue,
+image_generator
+I'm broken. Please show this to someone who can fix can fix
+I'm confused; after exiting from a loop, I still seem
+I'm going to assume that the comma I just read was a
+I'm going to discard the junk I found here,
+I'm going to flush this expression, since
+I'm ignoring this; it doesn't match any if.
+I'm not currently working on a `begingroup',
+I'm not currently working on a for loop,
+ IMPOSSIBLE
+I'm processing `extensible c: t,m,b,r'.
+Improper 
+Improper `addto'
+Improper `clip'
+Improper curl has been replaced by 1
+Improper font parameter
+Improper iteration spec has been replaced by nullpicture
+Improper kern
+Improper location
+Improper subscript has been replaced by zero
+Improper tension has been set to 1
+Improper transformation argument
+Improper type
+Improper `:=' will be changed to `='
+I'm sorry, but I don't know how to make such things equal.
+I'm unable to apply a partially specified transformation
+I'm zeroing this one. Proceed, with fingers crossed.
+ INACCESSIBLE
+in a charlist
+in a ligtable
+%%IncludeResource: font 
+Incomplete if; all text was ignored after line 
+Incomplete string token has been flushed
+Inconsistent design sizes given for 
+Inconsistent equation
+independent
+I need a `known' x value for this part of the path.
+I need a `known' y value for this part of the path.
+I need x and y numbers for this part of the path.
+in fact, I'm barely conscious. Please fix it and try again.
+ in font 
+" infont "
+`infont' operation won't produce anything. If the font name
+  -ini                      be inimpost, for dumping mem files
+ (INIMP)
+initial value
+In order to get back on my feet, I've inserted `0' instead.
+input file name
+INPUT %s
+<insert>
+insert another by typing, e.g., `I"new string"'.
+<inserted text> 
+--interaction
+  -interaction=STRING       set interaction mode (STRING=batchmode/nonstopmode/
+interim linecap:=0;
+Internal quantity `
+internal_restore
+Interruption
+intersectiontimes
+Invalid code has been replaced by 0
+invalid encoding vector: a name or `] def' expected: `
+invalid encoding vector (a name or `[' missing): `
+invalid entry for `%s': closing quote missing
+invalid entry for `%s': font file must be included or omitted for base fonts
+invalid entry for `%s': only subsetted TrueType font can be reencoded
+invalid entry for `%s': PidEid can be used only with subsetted non-reencoded TrueType fonts
+invalid entry for `%s': SlantFont/ExtendFont can be used only with embedded T1 fonts
+invalid entry for `%s': too big value of ExtendFont (%d/1000.0)
+invalid entry for `%s': too big value of SlantFont (%d/1000.0)
+invalid entry for `%s': unknown name `%s' ignored
+invalid marker
+in x and there must be no overlapping.  This failed
+_IO_getc
+_IO_putc
+_IO_stdin_used
+ is already 
+I saw a `begingroup' back there that hasn't been matched
+is either zero or null.
+I shall pretend that one was there.
+' is no longer a right delimiter
+is no longer a variable! So I won't change anything.
+' isn't an internal quantity
+isn't of numeric type. So I've changed that part to zero.
+__isoc99_fscanf
+__isoc99_sscanf
+Isolated expression
+is right, try asking an expert to fix the TFM file
+is right, you might ask an expert to make a TFM file
+is seriously amiss. It is wise to warn the maintainers.
+ is the wrong type (
+ %i string characters out of %i
+ %i string compactions (moved %i characters, %i strings)
+ %i string%s out of %i
+I suspect you have forgotten an `enddef',
+I suspect you have forgotten an `endfor',
+ %i symbolic tokens out of %i
+/ItalicAngle
+It is at least 4096. Continue and I'll try to cope
+I to insert something, 
+It seems that a right delimiter was left out,
+It seems you did a nasty thing---probably by accident,
+It's not legal to label a character more than once.
+I've deleted the partial string; you might want to
+I've finished reading a macro argument and am about to
+I've gotten to the end of the macro parameter list.
+I've got the first argument; will look now for the other.
+I've got the x coordinate of a path direction;
+I've inserted an inaccessible symbol so that your
+I've just read as much of that statement as I could fathom,
+I've just scanned a cmykcolor `(c,m,y,k)'; but the `k' isn't
+I've just scanned a color `(a,b,c)' or cmykcolor(a,b,c,d); but the `c'
+I've scanned a direction spec for part of a path,
+I've scanned an expression of the form `a[b,c',
+I've seen a `[' and a subscript value, in a suffix,
+I've started to scan a pair `(a,b)' or a color `(a,b,c)';
+I was looking for a "known" picture variable.
+I was looking for a known, positive number.
+I was looking for a number between 0 and 255, or for a
+I was looking for `=:' or `kern' here.
+I was looking for the beginning of a new statement.
+I wasn't able to read the size data for this font so this
+ %i words of memory out of %i
+I zeroed out characters that weren't hex digits.
+I zeroed out characters that weren't in the range 0..7.
+JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC
+*** (job aborted, file error in nonstop mode)
+*** (job aborted, no legal end found)
+--jobname
+  -jobname=STRING           set the job name to STRING
+?? joins
+JungleGreen
+ (just shipped out)
+_Jv_RegisterClasses
+--kpathsea-debug
+  -kpathsea-debug=NUMBER    set path searching debugging flags according to
+kpathsea_version_string
+kpse_def_inst
+kpse_fclose_trace
+kpse_find_file
+kpse_fopen_trace
+kpse_set_program_enabled
+kpse_set_program_name
+kpse_var_value
+\$(+l$()
+l$$9l$,}D
+Lavender
+/lc{setlinecap}bd/S{stroke}bd/F{fill}bd/q{gsave}bd/Q{grestore}bd/s{scale}bd/t{concat}bd
++L$d+T$h
+less arguments on stack (%i) than required (%i)
+.lf %d %s
++L$H9L$\
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+libm.so.6
+ligtable too large
+LimeGreen
+linearform
+Line is too long
+llcorner
+L$,)L$ ;D$ 
+/l{lineto}bd/r{rlineto}bd/c{curveto}bd/m{moveto}bd/p{closepath}bd/n{newpath}bd
+L$l+L$t)
++L$l+T$p
+(local label 
+localtime
+Logarithm of 
+long "color" special ignored
+__longjmp_chk
+*** (loop confusion)
+{loop value=
+Lost loop
+lrcorner
+magentapart
+Mahogany
+main_memory
+main memory size
+makempx.log
+makempx %s: %s:
+makepath
+ makepath(pencircle scaled %.3f shifted (%.3f,%.3f));
+makepath(pencircle xscaled %.3f
+mark currentfile closefile
+max_in_open
+max_print_line
+Maybe you should try asking a human?
+MbP?%04d.%02d.%02d
+mem file name
+' mem file; will try 'plain'.
+  -mem=MEMNAME or &MEMNAME  use MEMNAME instead of program name or a %%& line
+Memory allocation failure
+ memory locations dumped; current usage is 
+Memory size overflow
+Memory size overflow!
+Memory usage 
+ (mem=%s %s)
+message by zero. I'm going to divide it by one instead.
+MetaPost capacity exceeded, sorry [%s=%d]
+MetaPost %s
+/Metrics 2 dict dup begin 
+MidnightBlue
+Misplaced mpxbreak
+  Missing `
+Missing argument to 
+Missing character: There is no 
+Missing parameter type; `expr' will be assumed
+Missing `%s' has been inserted
+Missing spline increments
+Missing symbolic token inserted
+Missing `to' clause
+mitered joins limited 
+more arguments on stack (%i) than required (%i)
+mp_add_enc
+mp_avl_ins(ff,mp->ps->ff_tree,avl_false)> 0
+mp_avl_ins(fp,mp->ps->ps_tree,avl_false)> 0
+mp_avl_ins(fp,mp->ps->tfm_tree,avl_false)> 0
+mp_avl_ins(p,mp->ps->enc_tree,avl_false)> 0
+mp_avl_ins(tmp,mpx->trfonts,avl_false)> 0
+mp_do_snprintf
+mp_fm_lookup
+  MPNAME.tfm), where NNN are the character numbers generated.
+       mpost --dvitomp DVINAME[.dvi] [MPXNAME[.mpx]]
+mpost.map
+mpout.fls
+mp_pack_file_name
+mp_process_map_item
+mpprocset
+mp->ps->ff_tree!=((void *)0)
+mp->ps->ps_tree!=((void *)0)
+mp->ps->tfm_tree!=((void *)0)
+mp_structured
+MPTEXPRE
+mptexpre.tex
+mpversion
+mpxbreak
+`mpxbreak' must be at the end of a line
+MPXCOMMAND
+mpx_def_named_color
+mpxerr.dvi
+mpxerr.i
+mpxerr.log
+mpxerr.t
+mpxerr.tex
+mpx file ended unexpectedly
+MPXMAINCMD
+mpx->num_named_colors<100
+mpx_read_fmap
+\mpxshipout%% line %d %s
+Mulberry
+must be exactly equal to the starting point of q.
+' must receive a known numeric or string
+' must receive a known numeric value
+' must receive a known string
+named COPYING, COPYING.LESSER and the MetaPost source.
+names and collective subscripts, e.g., `x[]a'.
+NavyBlue
+,_n%d,%1.5f,%1.4f,%1.4f,
+Need to increase max_fnums
+Need to increase SHIFTS
+negative, or zero. So this comparison test won't be `true'.
+ never ended
+New busy locs:
+newinternal
+newpath 
+Next time say `dashed <known picture expression>';
+Next time say `withcmykcolor <known cmykcolor expression>';
+Next time say `withcolor <known color expression>';
+Next time say `withgreyscale <known numeric expression>';
+Next time say `withpen <known pen expression>';
+Next time say `withpostscript <known string expression>';
+Next time say `withprescript <known string expression>';
+Next time say `withrgbcolor <known color expression>';
+noaccess put
+--no-file-line-error
+  [-no]-file-line-error     disable/enable file:line:error style messages
+no font selected for character %d
+no font selected for character %d in virtual font
+no job id!
+--no-kpathsea
+No loop is in progress
+nonexistant glyph requested
+ NONEXISTENT
+non-hardcoded color "%s" in "color push" command
+Nonnumeric blackpart has been replaced by 0
+Nonnumeric third part has been replaced by 0
+Nonnumeric ypart has been replaced by 0
+nonstopmode
+<nontfm>
+--no-parse-first-line
+normaldeviate
+Not a cycle
+Not a known picture
+Not a string
+Not a suitable variable
+No TFM file found for 
+Not implemented: 
+Not implemented: envelope(elliptical pen)of(path)
+ not usable: TFM file is bad
+ not usable: TFM file not found
+No vardef in charlib/%s
+now in front of anything that you don't want me to delete.
+ now untouched)
+nullfont
+nullpicture
+Number is too large (
+numbersign
+Number too large (
+numeric value, so I'll have to ignore this assignment.
+n!=((void *)0)
+ of cmyk object
+ of defaulted object
+ (off by 
+ of grey object
+ of marking object
+of numeric type. So I've changed that part to zero.
+ of rgb object
+Oh dear. I can't decide if the expression above is positive,
+OK, entering 
+OliveGreen
+One of your faux pas seems to have wounded me deeply...
+Only known strings are allowed for output as specials.
+Only known strings can be map files or map lines.
+only works when there is a file to preprocess.  You might
+OrangeRed
+ordfeminine
+ordmasculine
+<!-- Original BoundingBox: 
+or known numeric value, so I'll have to ignore this assignment.
+(Or perhaps you have indeed presented me with one; I might
+or the greypart of a grey object. No mixing and matching, please.
+Ouch---my internal constants have been clobbered!
+(outer) 
+Out of memory!
+Out of Memory
+out of memory space
+Out of order at 
+--output-directory
+ output file
+outputformat
+OUTPUT %s
+outputtemplate
+p1->ps_name!=((void *)0)&&p2->ps_name!=((void *)0)
+%%Page: 1 1
+%%Pages: 1
+paperheight
+paperlength
+papersize
+paperwidth
+paragraph
+parameter stack size
+param_size
+parenleft
+parenright
+--parse-first-line
+particular type. Continue, and I'll simply return the
+pathpart
+Paths don't touch; `&' will be changed to `..'
+pdftex.map
+pencircle
+pencircle transformed (
+_p endgroup
+penoffset
+periodcentered
+Periwinkle
+perthousand
+%p = fopen(%s,"rb")
+picture expression now.
+Picture is too complicated to use as a dash pattern
+PidEid=%i, %i %n
+PineGreen
+Please delete the tokens and insert the name again.
+(Please type a command or say `end')
+Please type another 
+Please type the name of your input file.
+possibly garbaging the name you gave.
+postcontrol
+precontrol
+Pretend that you're Miss Marple: Examine all clues,
+Primary author of MetaPost: John Hobby.
+primarydef
+__printf_chk
+Proceed, and I'll ignore the illegal redeclaration.
+Proceed, and I'll omit the transformation.
+ProcessBlue
+processcolored 
+--progname
+  -progname=STRING          set program (and mem) name to STRING
+  -progname=STRING          set program name to STRING
+prologues
+proto-dependent
+psfonts.map
+ PS name: 
+ps_name entry for `%s' already exists, duplicates ignored
+ putinterval
+put one in, behind the scenes; this may fix the problem.
+PWD <unknown>
+Pythagorean subtraction 
+question
+questiondown
+quotedbl
+quotedblbase
+quotedblleft
+quotedblright
+quoteleft
+quoteright
+quotesinglbase
+quotesingle
+_r((%1.4f,%1.4f)..(%1.4f,%1.4f), %1.4f,
+randomseed
+{randomseed:=
+__rawmemchr
+RawSienna
+read another; the arguments weren't delimited correctly.
+readfrom
+] readonly def
+readonly def
+readstring
+<recently read> 
+--recorder
+  -recorder                 enable filename recorder
+RedOrange
+Redundant equation
+Redundant or inconsistent equation
+RedViolet
+renaming %s to %s
+[repeat the loop]
+requested format (%c) in outputtemplate is unknown.
+requested identifier (%s) in outputtemplate is not an internal.
+requested identifier (%s) in outputtemplate not found.
+Resolution is not set soon enough
+{restore}
+restoreclipcolor
+{restoring 
+reverse 
+-Reverse
+Rhodamine
+right delimiter, and then I'll begin expanding the macro.
+round joins
+RoyalBlue
+RoyalPurple
+R to run without stopping, Q to run quietly,
+RubineRed
+Runaway 
+  Run MetaPost on MPNAME, usually creating MPNAME.NNN (and perhaps
+running command %s
+/ScaleFont{dup fmc 0 get Amul 0 exch put dup dup 3 get Amul 3 exch put fmd}bd
+scantokens
+<scantokens>
+scantokens should be followed by a known string.
+scrollmode
+                            scrollmode/errorstopmode)
+%s=%d: %s, assignment ignored.
+/sd{setdash}bd/rd{[] 0 setdash}bd/P{showpage}bd/B{q F Q}bd/W{clip}bd
+SeaGreen
+secondarydef
+see Chapter 27 of The METAFONTbook for an example.
+(See Chapter 27 of The METAFONTbook for an example.)
+ (see the transcript file)
+(see the transcript file for additional information)
+(See the two expressions just above the error message.)
+semicolon
+setbounds path:
+setbounds _p to (0,%1.4f)--(%1.4f,%1.4f)--
+  \setbox0=\hbox\bgroup
+  \setbox0=\hbox\bgroup}%
+ setcmykcolor
+ setgray
+ setlinecap
+ setlinejoin
+ setmiterlimit
+ setrgbcolor
+(Set warningcheck:=0 to suppress this message.)
+%s has a bad line in its description file: %s
+) shifted 
+ shifted (%.3f,%.3f));
+showdependencies
+showpage
+showstats
+showstopping
+showtoken
+showvariable
+Since I don't take logs of non-positive numbers,
+Since I don't take square roots of negative numbers,
+  -sINTERNAL=NUMBER         set internal INTERNAL to the integer value NUMBER
+  -sINTERNAL="STRING"       set internal INTERNAL to the string value STRING
+sizescale
+sizes per font
+-Slanted
+ slanted%.5f
+SlantFont
+/SlantFont{fmc 2 get dup 0 eq{pop 1}if Amul FontMatrix 0 get mul 2 exch put fmd}bd
+so a right brace should have come next.
+so a right bracket should have come next.
+so a semicolon should have been next. It's very puzzling...
+soelim | eqn -Tps -d$$ | troff -Tps
+so I can't transform anything using it.
+so I guess I'll just ignore it and carry on.
+so I had better not try to end anything.
+So I'll have to discard this definition.
+so I'll just make it a solid line instead.
+So I'll look for the final value and colon next.
+So I'll not change anything just now.
+So I'll pretend that a colon was present;
+so I'll try to keep going by using zero instead.
+so I'm going to pretend that you said `=' instead.
+So I'm going to pretend that you said `p..q' instead.
+So it will probably look funny. Proceed, for a laugh.
+so I've changed your constant to that maximum amount.
+so I've tentatively inserted `0'. You may want to
+so I won't change the random seed just now.
+Some number got too big
+Something like `tracingonline' should follow `interim'.
+something was redefined, and it's no longer a variable!
+somewhat askew. You'll probably have to adopt different
+Sorry, I already gave what help I could...
+Sorry, I can't find the '
+Sorry, I don't know how to help in this situation.
+Sorry...I've converted what follows to tokens,
+Sorry: You can't redefine a number, string, or expr.
+Sorry: You can't redefine my error-recovery tokens.
+/space[0 -278]def 
+SpringGreen
+__sprintf_chk
+Square root of 
+%s refers to unknown font %s
+_s(%s(_n%d)
+%s="%s": %s, assignment ignored.
+__stack_chk_fail
+StandardEncoding
+statting %s and %s
+step size
+sterling
+ still untouched)
+stop clipping
+\stopmpxshipout
+Strange path
+Strange: This token has lost its former meaning!
+strcasecmp
+__strcat_chk
+__strcpy_chk
+__strdup
+strerror
+String contains illegal digits
+string does not end
+string _n[];
+string of length 1. Didn't find it; will use 0 instead.
+ strings of total length 
+string, so I'll have to ignore this assignment.
+Strings should finish on the same line as they began.
+String usage 
+__strncpy_chk
+stroke-dasharray: 
+stroke-linecap: 
+stroke-linejoin: 
+stroke-miterlimit: 
+;stroke: none;
+; stroke-width: 
+subpath (%.5f,%.5f) of
+Subr (%i): %s
+Subrs array: entry index out of range (%i)
+substring
+<suffix>->
+svg buffer size
+ symbolic tokens
+] t 0 0 m
+T$09T$8ry
+T$09T$8s
+T$4)T$,;|$,
+t$89t$@t
+tactics next time. But I shall try to carry on anyway.
+TealBlue
+..tension 
+terminal
+tertiarydef
+../../../texk/web2c/mplibdir/mp.w
+../../../texk/web2c/mplibdir/mpxout.w
+../../../texk/web2c/mplibdir/psout.w
+TeX mode didn't end; all text was ignored after line 
+<text>->
+  -tex=TEXPROGRAM           use TEXPROGRAM for text labels
+text, filled regions, or clipping paths.  This time it did
+text input levels
+text is out of range
+Text line contains an invalid character
+text out of range ignored
+textpart
+T$$f9T$&
+ TFM name: 
+That contour should have ended with `..cycle' or `&cycle'.
+That macro has more parameters than you thought.
+(That makes 100 errors; please try again.)
+(That was another `errmessage'.)
+The amount of kern should be a known numeric value.
+The `angle' between two identical points is undefined.
+The appearance of outputtemplate inside outputtemplate is ignored.
+                            the bits of NUMBER
+(The b that I didn't like appears above the error message.)
+The character %d cannot be output in SVG unless prologues:=3;
+(The c that I didn't like appears above the error message.)
+the cyanpart, magentapart, yellowpart or blackpart of a cmyk object, 
+the definition of 
+The equation I just processed has given some variable
+The equation I just read contradicts what was said before.
+The expression above should have been a number >=3/4.
+The expression shown above has the wrong type,
+The expression shown above should have had a definite
+The file ended while I was looking for the `etex' to
+The file ended while I was skipping conditional text.
+The file had too few picture expressions for btex...etex
+the initial value `a' and the step size `b'
+(The k that I didn't like appears above the error message.)
+the Lesser GNU Lesser General Public License.
+the matching `fi'. I've inserted a `fi'; this might work.
+The next thing in this `def' should have been `=',
+The next thing in this loop should have been a `:'.
+The next thing in this loop should have been `=' or `:='.
+The path that I just computed is out of range.
+The quantities shown above have not been equated.
+There is no btex or verbatimtex for this to match
+There is no character %s
+There is NO warranty.  Redistribution of this software is
+There should've been a colon after the condition.
+the rest of this line.
+the text of a 
+The text to be written should be a known string expression
+The token `
+The two files given above are one of your source files
+The value I found (see above) was no good;
+This can't happen (%s)
+This error message was generated by an `errmessage'
+This expression should have specified a known path.
+This expression should have specified a known picture.
+This file contains picture expressions for btex...etex
+This is MetaPost, version 
+This is MetaPost, Version 1.208
+This isn't an error message; I'm just showing something.
+This kind of error happens when you say `if...' and forget
+This Type 1 font uses mismatched subroutine begin/end token pairs.
+This variable already starts with a macro
+ (this will be ignored)
+T$h+L$l+T$p
+Times-Bold
+Times-BoldItalic
+Times-Italic
+Times-Roman
+<to be read again> 
+token list
+Too far to skip
+Too many arguments to 
+too many extensible recipies
+too many fontdimens
+too many TFM kerns
+to the end of the statement
+to want to repeat it. I'll try to forget the problem.
+tracingcapsules
+tracingchoices
+tracingcommands
+tracingequations
+tracinglostchars
+tracingmacros
+tracingonline
+tracingoutput
+tracingrestores
+tracingspecs
+tracingstats
+tracingtitles
+transcript file name
+Transcript written on 
+transform
+Transform components aren't all known
+transformed
+transformed 
+translate 
+translate(
+--translate-file
+trchars.adj
+trfonts.map
+ -troff 
+Troff conversion failed: %s %s
+troff.map
+troffmode
+  -troff                    set prologues:=1 and assume TEXPROGRAM is really troff
+! Trouble executing `%s'.
+truecorners
+true-or-false value. I'm changing it to `false'.
+try running it manually through MPtoTeX, TeX, and DVItoMP
+Try to insert some instructions for me (e.g.,`I show x'),
+t^<}tZ<%tV
+turningnumber
+Turquoise
+Type%d fonts unsupported by metapost
+Type <return> to proceed, S to scroll future error messages,
+u+;|$du%
+Uh, oh. A little while ago one of the quantities that I was
+ulcorner
+! Unable to make mpx file
+! Unbalanced quotes in %s %s
+undefined command %d
+Undefined condition will be treated as `false'
+Undefined coordinates have been replaced by (0,0)
+Undefined font selected
+Undefined x coordinate has been replaced by 0
+Undefined y coordinate has been replaced by 0
+underscore
+unexpected data after eexec
+unexpected end of file
+unfortunately, what I found was the value that appears just
+uniformdeviate
+/UniqueID
+unitwidth
+unknown 
+unknown boolean
+unknown "color" special ignored
+[unknown command code!]
+Unknown drawing function %s
+unknown numeric
+[unknown object type!]
+unknown path
+unknown pen
+unknown picture
+Unknown relation will be considered false
+unknown string
+Unknown value will be ignored
+unless you just want to quit by typing `X'.
+unmatched etex
+unsuffixed macro
+Unsuitable expression
+up to the next comma or the end of the declaration.
+urcorner
+url(#CLIP
+Usage: dvitomp DVINAME[.dvi] [MPXNAME[.mpx]]
+Usage: mpost [OPTION] [&MEMNAME] [MPNAME[.mp]] [COMMANDS]
+value has the wrong type
+value is too large
+Value is too large (
+value is too small
+ values had to be adjusted by as much as 
+vardef _D(expr _d)expr _q =
+vardef in charlib/%s has no arguments
+vardef _r(expr _a,_w)(text _t) =
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+Variable 
+variable does not exist
+variable instance identifiers exhausted
+variable is not an internal
+Variables in declarations must consist entirely of
+verbatimtex
+verbatimtex in TeX mode
+--version
+  -version                  output version information and exit
+__vfprintf_chk
+VioletRed
+/vlw{0 exch dtransform truncate idtransform setlinewidth pop}bd
+vp<<tl<{th<>td</f
+__vsprintf_chk
+wait failed: %s
+want to delete everything up to the next `etex`.
+Warning: 
+warningcheck
+warning: could not set up $engine
+warning: %s: unimplemented option %s
+warning: %s: unknown option argument %s
+Warning: the turningnumber algorithms do not agree. The current computed value is 
+ was incomplete)
+:: was missing)
+was present, and I'll look for the values next.
+was present. Everything from here to `enddef'
+was present. The next token I read will be `something'.
+ was written by an older version)
+When you join paths `p&q', the ending point of p
+When you say `dashed p', every path in p should be monotone
+When you say `dashed p', everything in picture p should
+When you say `dashed p', picture p should not contain any
+When you say `for x=a step b until c',
+When you say `for x in p', p must be a known picture.
+While I was evaluating the right-hand side of this
+While I was evaluating the suffix of this variable,
+ while scanning 
+Why say `exitif' when there's nothing to exit from?
+WildStrawberry
+will be the replacement text of this macro.
+will look for the y coordinate next.
+  With a --dvitomp argument, MetaPost acts as DVI-to-MPX converter only.
+withcmykcolor
+withcolor
+ withcolor %s
+withgreyscale
+withoutcolor
+ with pen
+withpostscript
+withprescript
+withrgbcolor
+with that big value; but it might be dangerous.
+ written: 
+% Written by dvitomp version 
+Wrong picture color model: 
+xlink:href
+xmlns:xlink
+<?xml version="1.0"?>
+YellowGreen
+YellowOrange
+yellowpart
+you can ask a wizard to enlarge me.
+You can now delete more, or insert, or whatever.
+You can only ask for the redpart, greenpart, bluepart of a rgb object,
+You can only use `btex' or `verbatimtex' in a file
+You can't use, e.g., `numeric foo[]' after `vardef foo'.
+you'd better type `E' or `X' now and fix your file.
+You might want to delete some tokens before continuing.
+you might want to type `I ???' now.)
+You rang?
+You're trying to divide the quantity shown above the error
+Your expression was too random for me to handle,
+You should have said `let symbol = something'.
+You should've had `expr' or `suffix' or `text' here.
+(You used %iw,%ih,%id,%ii,%il,%ik,%ie,%ip metric file positions)
+You want to edit file %s at line %d
+ yscaled %.3f
+ yscaled%.4f
+ZapfDingbats
+zpzdr-reversed

@@ -1,0 +1,143 @@
+				2>/dev/null || true;
+acted on.
+Add these files to the list of files to compress.
+		# are because gzip refuses to compress such files, assumming
+B<dh_compress> is a debhelper program that is responsible for compressing
+B<dh_compress> [S<I<debhelper options>>] [B<-X>I<item>] [B<-A>] [S<I<file> ...>]
+be compressed, namely all files in F<usr/share/info>, F<usr/share/man>,
+By default, B<dh_compress> compresses files that Debian policy mandates should
+				$changed++;
+		$changed = 0;
+	# changes are made. This is done in case there are links pointing
+	chdir($olddir);
+	chdir($tmp) || error("Can't cd to $tmp: $!");
+		# complete list of such extensions: ".gz", ".z", ".taz", 
+Compress all files specified by command line parameters in ALL packages
+compressed. For example, B<-X.tiff> will exclude TIFF files from compression.
+Debian policy, version 3.0
+				delete $links{$link};
+dh_compress - compress files and fix symlinks in package build directories
+		doit("ln","$hardlinks{$_}.gz","$_.gz");
+				doit("ln","-sf","$linkval.gz","$link.gz");
+	    	doit("rm","-f","$_");
+				doit("rm","-f",$link);
+			else {
+		else {
+(except the F<copyright> file, F<.html> and other web files, image files, and files
+exclude.
+	# Exclude files from compression.
+Exclude files that contain F<item> anywhere in their filename from being
+F<changelog> files. Plus PCF fonts underneath F<usr/share/fonts/X11/>
+	# Figure out what files to compress.
+file is ran as a shell script, and all filenames that the shell script
+files in F<usr/share/doc> that are larger than 4k in size,
+		@files=@new;
+			find usr/info usr/share/info usr/man usr/share/man usr/X11*/man -type f ! -iname "*.gz" \\
+			find usr/share/doc \\
+			find usr/share/fonts/X11 -type f -name "*.pcf" 2>/dev/null || true;
+	# First of all, deal with any files specified right on the command line.
+	# Fix up symlinks that were pointing to the uncompressed files.
+		foreach (@files) {
+	foreach (@files) {
+	foreach (keys %hardlinks) {
+		foreach my $link (keys %links) {
+foreach my $package (@{$dh{DOPACKAGES}}) {
+			foreach my $x (@{$dh{EXCLUDE}}) {
+general; you should only use a F<debian/package.compress> file if you really
+				$hardlinks{$_}=$seen{"$inode.$dev"};
+=head1 AUTHOR
+=head1 CONFORMS TO
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	if ($compress) {
+			if (! -e "$directory/$linkval" && -e "$directory/$linkval.gz") {
+	if (@f) {
+	if (@files && defined($dh{EXCLUDE}) && $dh{EXCLUDE}) {
+		if ($nlink > 1) {
+	if (($package eq $dh{FIRSTPACKAGE} || $dh{PARAMS_ALL}) && @ARGV) {
+				if (/\Q$x\E/) {
+			if (! $seen{"$inode.$dev"}) {
+If this file exists, the default files are not compressed. Instead, the
+				! -iname "*.gif" ! -iname "*.png" ! -iname "*.jpg" \\
+				! -iname "*-gz"  ! -iname "*-z" ! -iname "*_z" \\
+				! -iname "*.jar" ! -iname "*.zip" ! -iname "*.css" \\
+				! -iname "*.jpeg" \\
+				! -iname "*.jpeg" ! -iname "*.gz" ! -iname "*.taz" \\
+				! -iname "*.svg" ! -iname "*.svgz" ! -iname "*.js" \\
+				! -iname "*.tgz" ! -iname "*.z" ! -iname "*.bz2" \\
+=item B<-A>, B<--all>
+=item B<-X>I<item>, B<--exclude=>I<item>
+=item debian/I<package>.compress
+=item I<file> ...
+Joey Hess <joeyh@debian.org>
+	# Keep looping through looking for broken links until no more
+					last;
+L<debhelper(7)>
+	# Look for files with hard links. If we are going to compress both,
+		# Make executables not be anymore.
+		# Make new hardlink.
+	my $changed;
+	my $compress=pkgfile($package,"compress");
+		my ($dev, $inode, undef, $nlink)=stat($_);
+			my ($directory) = $link =~ m:(.*)/:;
+	my @f=();
+	my @files;
+	my %hardlinks;
+	my %links = map { chomp; $_ => 1 } `find $tmp -type l`;
+			my $linkval = readlink($link);
+		my @new=();
+			my $ok=1;
+	my $olddir=getcwd();
+	my %seen;
+	my $tmp=tmpdir($package);
+				\\( -name changelog.html -or ! -iname "*.htm*" \\) \\
+				! -name "copyright" 2>/dev/null || true;
+				! -name "index.sgml" ! -name "objects.inv" \\
+need to.
+		# Note that all the excludes of odd things like _z 
+	# Now change over any files we can that used to be hard links so
+					$ok='';
+outputs will be compressed. The shell script will be run from inside the
+package build directory. Note though that using B<-X> is a much better idea in
+				push @f, $_;
+			push @f, $_;
+		push @files, @ARGV;
+		push @files, split(/\n/,`
+		push @files, split(/\n/,`sh $olddir/$compress 2>/dev/null`);
+			push @new,$_ if $ok;
+		# Remove old file.
+	# Run the file name gathering commands from within the directory
+				$seen{"$inode.$dev"}=$_;
+	# space in the end.
+	# structure that will be effected.
+		# ".tgz", "-gz", "-z", "_z"
+that appear to be already compressed based on their extensions), and all
+that pointed to the files before they were compressed are updated to point
+		# The compress file is a sh script that outputs the files to be compressed
+the files in package build directories, and makes sure that any symlinks
+These files are deprecated.
+	# they are again.
+		# they are zip files. I looked at the gzip source to get the
+				# This is a hardlink.
+This program is a part of debhelper.
+	# to links, pointing to compressed files.
+to the new files.
+				\\( -type d -name _sources -prune -false \\) -o \\
+				-type f \\( -size +4k -or -name "changelog*" -or -name "NEWS*" \\) \\
+		# (typically using find).
+use Cwd;
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w
+	verbose_print("cd '$olddir'");
+	verbose_print("cd $tmp");
+		warning("$compress is deprecated; use -X or avoid calling dh_compress instead");
+	# we can preserve the hard link across the compression and save
+	} while $changed;
+		xargs(\@f,"chmod","a-x");
+		xargs(\@f,"gzip","-9nf");
+You may use this option multiple times to build up a list of things to

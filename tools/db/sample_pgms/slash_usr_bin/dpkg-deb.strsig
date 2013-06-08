@@ -1,0 +1,534 @@
+0.939000
+1.16.1.2 (i386)
+%-16s%-12lu0     0     100644  %-10jd`
+`%.255s' is not a debian format archive
+'%.50s' is not allowed for %s
+ %7jd bytes, %5d lines   %c  %-20.127s %.127s
+abcdefghijklmnopqrstuvwxyz0123456789+-.
+  A format is a string that will be output for each package. The format
+                                     Allowed types: gzip, xz, bzip2, lzma, none.
+alphasort64
+alternatives (`|') not allowed in %s field
+Architecture
+architecture name in specifier '%s%s%s' is illegal: %s
+archive '%.250s' contains not understood data member %.*s, giving up
+archive '%.250s' contains two control members, giving up
+archive control member size
+archive has malformatted control member size '%s'
+archive has no dot in version number
+archive has no newlines in header
+archive information header member
+archive magic version number
+archive member header
+archive version %.250s not understood, get newer dpkg-deb
+ar member file (%s)
+__assert_fail
+available
+a value different from 'any' is currently not allowed
+ bad version relationship %c%c
+  -b|--build <directory> [<deb>]   Build an archive.
+bin %5d has %7d
+bindtextdomain
+blank line in value of field '%.*s'
+__bss_start
+--build takes at most two arguments
+Built-Using
+  by inserting variable references to package fields using the ${var[;width]}
+BZ2_bzdopen
+BZ2_bzerror
+BZ2_bzread
+BZ2_bzwrite
+BZ2_bzWriteClose
+  can include the standard escape sequences \n (newline), \r (carriage
+cannot open `%.255s' (in `%.255s')
+cannot scan directory `%.255s'
+cannot stat `%.255s' (in `%.255s')
+can't stat package info file `%.255s'
+  case left alignment will be used.
+  -c|--contents <deb>              List contents.
+<cfield> is the name of a field in the main `control' file.
+<cfile> is the name of an administrative file component.
+character `%c' not allowed (only letters, digits and characters `%s')
+ `%c' is obsolete, use `%c=' or `%c%c' instead
+closedir
+Closing brace missing in format
+Commands:
+<compress> from tar -cf
+compress_type
+conffile `%.250s' does not appear in package
+conffile `%.250s' is not stattable
+conffile filename '%s' contains trailing white spaces
+conffile name '%.50s...' is too long, or missing final newline
+conffile name '%s' is duplicated
+conffiles
+Conffiles:
+conffile '%s' is not a plain file
+config-files
+configuration error: %s:%d: %s
+Configured-Version for package with inappropriate Status
+Config-Version
+Config-Version: 
+conflicting actions -%c (--%s) and -%c (--%s)
+Conflicts
+contents
+--contents takes exactly one argument
+control directory has bad permissions %03lo (must be >=0755 and <=0775)
+control directory is not a directory
+control file '%s'
+control member
+control.tar.gz
+-%c option does not take a value
+-%c option takes a value
+, core dumped
+could not open the `control' component
+__ctype_b_loc
+__ctype_tolower_loc
+data member
+data.tar
+dcgettext
+dcngettext
+.../DEBIAN
+debian-binary
+Debian `%s' package archive backend version %s.
+<deb> is the filename of a Debian format archive.
+<decompress>
+deinstall
+  -D                               Enable debugging output.
+description
+dop->up == dep
+dpkg-deb
+dpkg-deb: `%.255s' contains no control component `%.255s'
+dpkg-deb: building an unknown package in '%s'.
+dpkg-deb: building package `%s' in `%s'.
+dpkg-deb:    corrupted by being downloaded in ASCII mode
+../../dpkg-deb/extract.c
+dpkg-deb: file looks like it might be an archive which has been
+DPKG_UNTRANSLATED_MESSAGES
+%d requested control component is missing
+%d requested control components are missing
+`dselect' or `aptitude' for user-friendly package management.  Packages
+duplicate awaited trigger package `%.255s'
+duplicate pending trigger `%.255s'
+duplicate value for `%s' field
+duplicate value for user-defined field `%.*s'
+dyp->up == pigp
+  -e|--control <deb> [<directory>] Extract control info.
+empty file details field `%s'
+empty string from fgets reading conffiles
+empty trigger names are not permitted
+empty value for %s
+Enhances
+EOF after field name `%.*s'
+EOF before value of field `%.*s' (missing final newline)
+EOF during value of field `%.*s' (missing final newline)
+epoch in version is not number
+__errno_location
+error closing configuration file `%.255s'
+error closing the '%s' component
+error formatting string into varbuf variable
+error handler returned unexpectedly!
+error in Config-Version string '%.250s'
+Error in format
+error in Version string '%.250s'
+error opening conffiles file
+error opening configuration directory '%s'
+error reading conffiles file
+error reading %s from file %.255s
+error un-catching signal %s: %s
+error writing `%s'
+error writing to '%s'
+Essential
+/etc/dpkg
+                                   Extract control info and files.
+failed during read of `control' component
+failed in write on buffer copy for %s
+failed to allocate memory
+failed to chdir to `%.255s'
+failed to chdir to directory
+failed to chdir to directory after creating it
+failed to chdir to `/' for cleanup
+failed to close '%.250s' after writing %s database
+failed to close after read: `%.255s'
+failed to close pipe in copy
+failed to create directory
+failed to create pipe
+failed to dup for fd %d
+failed to dup for std%s
+failed to flush %s database to '%.250s'
+failed to fstat archive
+failed to fstat ar member file (%s)
+failed to fsync %s database to '%.250s'
+failed to install '%.250s' as '%.250s' containing %s database
+failed to link '%.250s' to '%.250s' for backup of %s database
+failed to make temporary file (%s)
+failed to open configuration file '%.255s' for reading: %s
+failed to open package info file `%.255s' for reading
+failed to open '%s' for writing %s database
+failed to read `%.255s' (in `%.255s')
+failed to read archive `%.255s'
+failed to read on buffer copy for %s
+failed to rewind temporary file (%s)
+failed to seek %s
+failed to stat temporary file (%s)
+failed to unlink temporary file (%s), %s
+failed to write details of `%.50s' to `%.250s'
+failed to write filename to tar pipe (%s)
+failed to write %s database record about '%.50s' to '%.250s'
+failed to write to pipe in copy
+  -f|--field <deb> [<cfield> ...]  Show field(s) to stdout.
+fgets gave an empty string from `%.250s'
+field name `%.*s' must be followed by colon
+Field '%s' is not allowed in input
+file '%.250s' is corrupt - bad archive header magic
+file `%.250s' is not a debian binary archive (try dpkg-split?)
+file details field `%s' not allowed in status file
+file name '%.50s...' is too long
+first (want) word in `status' field
+Fl9D$8tY
+foreign/allowed/same/no in quadstate field
+fork failed
+--format=gnu
+--format=lzma
+Format syntax:
+__fprintf_chk
+fsys-tarfile
+  --fsys-tarfile <deb>             Output filesystem tarfile.
+__fxstat64
+generated corrupt ar header for '%s'
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+__gmon_start__
+gzip -9c
+half-configured
+half-installed
+<hash report>
+  -h|--help                        Show this help message.
+Homepage
+ignoring %d warning about the control file(s)
+ignoring %d warnings about the control file(s)
+  -I|--info <deb> [<cfile> ...]    Show info to stdout.
+illegal package name in awaited trigger `%.255s': %s
+illegal pending trigger name `%.255s': %s
+ implicit exact match on version number, suggest using `=' instead
+important
+inconsistent varbuf: size(%zu) < used(%zu)
+Installed-Size
+Installer-Menu-Item
+invalid character '%c' in archive '%.250s' member '%.16s' size
+invalid character `%c' in field width
+invalid character in revision number
+invalid character in version number
+invalid compression level for -%c: %ld'
+invalid integer for -%c: '%.250s'
+invalid package name (%.250s)
+_IO_getc
+_IO_putc
+_IO_stdin_used
+junk after %s
+_Jv_RegisterClasses
+Kernel-Version
+later for copying conditions. There is NO warranty.
+libbz2.so.1.0
+libc.so.6
+__libc_start_main
+../../../lib/dpkg/buffer.c
+../../../lib/dpkg/compress.c
+../../../lib/dpkg/dump.c
+../../../lib/dpkg/ehandle.c
+../../../lib/dpkg/parse.c
+../../../lib/dpkg/parsehelp.c
+../../../lib/dpkg/pkg-db.c
+../../../lib/dpkg/pkg-spec.c
+../../../lib/dpkg/varbuf.c
+../../../lib/dpkg/vercmp.c
+/lib/ld-linux.so.2
+libz.so.1
+__longjmp_chk
+__lxstat64
+maintainer
+maintainer script `%.50s' has bad permissions %03lo (must be >=0555 and <=0775)
+maintainer script `%.50s' is not a plain file or symlink
+maintainer script `%.50s' is not stattable
+malloc failed (%zu bytes)
+may not be empty string
+missing %s
+mkstemp64
+MSDOS EOF char in value of field `%.*s' (missing newline?)
+MSDOS EOF (^Z) in field name `%.*s'
+MSDOS-Filename
+Multi-Arch
+Multi-Arch: same
+multiple/unknown/no psf_def_* configured in pkg_spec
+must start with an alphanumeric
+must start with an alphanumeric character
+mv %s/* . && rmdir %s
+need an action option
+ new debian package, version %s.
+newline in field name `%.*s'
+  --nocheck                        Suppress control file check (build bad
+no compressor specified
+(no `control' file in control archive!)
+no package information in `%.255s'
+--no-recursion
+     not a plain file          %.255s
+not checking contents of control area.
+nothing after colon in version number
+not-installed
+n?unable to create temporary directory
+obsolete
+ obsolete
+obsolete option '--%s'
+obsolete `Revision' or `Package-Revision' field used
+_obstack_begin
+obstack_free
+_obstack_newchunk
+ old debian package, version %s.
+  --old, --new                     Select archive format.
+Only exact versions may be used for Provides
+open component `%.255s' (in %.255s) failed in an unexpected way
+optional
+Options:
+out of memory for new cleanup entry
+out of memory for new cleanup entry with many arguments
+out of memory for new error context
+Package: 
+package has status %s but triggers are awaited
+package has status %s but triggers are pending
+package has status triggers-awaited but no triggers awaited
+package has status triggers-pending but no triggers pending
+package is marked '%s' but is architecture all
+package name
+package name has characters that aren't lowercase alphanums or `-+.'
+package name in specifier '%s%s%s' is illegal: %s
+Package_Revision
+Package-Revision
+                                     packages).
+PackageSpec
+Package-Type
+${Package}	${Version}
+Package which in state not-installed has conffiles, forgetting them
+parsing file '%.255s' near line %d:
+parsing file '%.255s' near line %d package '%.255s':
+Perhaps you should be using dpkg --install ?
+pigp->eflag <= eflag_reinstreq
+pigp->priority <= pri_unknown
+pigp->set->name
+pigp->status > stat_configfiles && pigp->status <= stat_triggersawaited
+pigp->status >= stat_triggersawaited && pigp->status <= stat_triggerspending
+!pigp->trigaw.head
+!pigp->trigpend_head
+pigp->want <= want_purge
+pkg_db_find_pkg
+pkg->installed.arch->type == arch_native || pkg->installed.arch->type == arch_all || pkg->installed.arch->type == arch_none
+pkg_parse_copy
+pkg_spec_find_pkg() incompatible with patterns
+postinst
+Pre-Depends
+__printf_chk
+Priority
+Priority: 
+Private-
+__progname
+program_invocation_short_name
+Provides
+raw-extract
+readdir64
+read error in `%.250s'
+read error in configuration file `%.255s'
+reading package info file '%.255s'
+realloc failed (%zu bytes)
+Recommended
+Recommends
+reinstreq
+Replaces
+required
+  return) or \\ (plain backslash). Package information can be included
+rm command for cleanup
+root or null directory is listed as a conffile
+  -R|--raw-extract <deb> <directory>
+%s: %.250s
+scandir64
+%s: compression
+'%s' contains user-defined field '%s'
+'%s' contains user-defined Priority value '%s'
+%s: decompression
+'%s' does not take a value
+second (error) word in `status' field
+Section: 
+%s: error binding input to bzip2 stream
+%s: error binding input to gzip stream
+%s: error binding output to bzip2 stream
+%s: error binding output to gzip stream
+%s: error: %s
+%s: error while cleaning up:
+setlocale
+several package info entries found, only one allowed
+`%s' field, invalid package name `%.255s': %s
+'%s' field, missing architecture name, or garbage where architecture name expected
+`%s' field, missing package name, or garbage where package name expected
+`%s' field, reference to `%.255s':
+'%s' field, reference to '%.255s': error in version
+'%s' field, reference to '%.255s': invalid architecture name '%.255s': %s
+`%s' field, reference to `%.255s': version contains `%c'
+`%s' field, syntax error after reference to package `%.255s'
+shell command to move files
+short read on buffer copy for %s
+showformat
+  --showformat=<format>            Use alternative format for --show.
+sigaction
+sigemptyset
+%s: internal bzip2 read error
+%s: internal bzip2 read error: '%s'
+%s: internal bzip2 write error
+%s: internal bzip2 write error: '%s'
+%s: internal gzip read error
+%s: internal gzip read error: '%s'
+%s: internal gzip write error
+%s: internal gzip write error: '%s'
+%s: internal gzip write error: %s
+%s is missing
+'%s' is not a valid architecture name: %s
+size %7d occurs %5d times
+ size %jd bytes: control archive= %jd bytes.
+ size %jd bytes: control archive= %jd, main archive= %jd.
+skipped archive control member data from %s
+skipped archive member data from %s
+--%s needs a .deb filename argument
+--%s needs a <directory> argument
+--%s needs a target directory.
+'%s' needs a value
+__snprintf_chk
+--%s option does not take a value
+--%s option takes a value
+%s: outside error context, aborting:
+__sprintf_chk
+%s/.%s.cfg
+%s/%s.cfg
+%s/%s.cfg.d
+%s:%s:%d: internal error: %s
+%s/%s/%s
+%s/%s_%s%s%s%s
+%s (subprocess): %s
+%s/%s.XXXXXX
+__stack_chk_fail
+--%s takes at most two arguments (.deb and directory)
+--%s takes only one argument (.deb filename)
+standard
+<standard output>
+Status: 
+%s: too many nested errors during error recovery!!
+strcasecmp
+__strcat_chk
+__strcpy_chk
+__strdup
+strerror
+strncasecmp
+strsignal
+Subarchitecture
+subprocess %s failed with wait status code %d
+subprocess %s returned error exit status %d
+subprocess %s was interrupted
+subprocess %s was killed by signal (%s)%s
+Suggests
+%s: unrecoverable fatal error, aborting:
+%s: warning: %s
+  syntax. Fields will be right-aligned unless the width is negative in which
+%%%s%zus
+ta->aw == src_pkg
+target is directory - cannot skip control file check
+taroption is too long '%s'
+TAR_OPTIONS
+third (status) word in `status' field
+this is a bug - please report
+This is free software; see the GNU General Public License version 2 or
+too few values in file details field `%s' (compared to others)
+too-long line or missing newline in `%.250s'
+too many values in file details field `%s' (compared to others)
+trigger name contains invalid character
+triggers-awaited
+Triggers-Awaited:
+triggers-pending
+Triggers-Pending:
+Type dpkg-deb --help for help about manipulating *.deb files;
+Type dpkg --help for help about installing and deinstalling packages.
+unable to check for existence of archive `%.250s'
+unable to close file '%s'
+unable to create `%.255s'
+unable to execute %s (%s)
+unable to get file descriptor for directory '%s'
+unable to ignore signal %s before running %.250s
+unable to open directory '%s'
+unable to open file '%s'
+unable to read filedescriptor flags for %.250s
+unable to set buffering on %s database file
+unable to set close-on-exec flag for %.250s
+unable to stat control directory
+unable to stat file name '%.250s'
+unable to sync directory '%s'
+unable to sync file '%s'
+unable to write file '%s'
+unbalanced quotes in '%s'
+unexpected bzip2 error
+unexpected end of file in %s in %.255s
+unexpected eof reading `%.250s'
+unknown compression type `%s'!
+unknown data type '%i' in buffer_filter_update
+unknown data type '%i' in buffer_read
+unknown data type '%i' in buffer_skip
+unknown data type '%i' in buffer_write
+unknown depverrel '%d'
+unknown error handler type %d!
+unknown option -%c
+unknown option --%s
+unknown option '%s'
+unknown package status '%d'
+unknown verrel '%d'
+unknown versiondisplayepochwhen '%d'
+unpacked
+unpacked using `dpkg-deb --extract' will be incorrectly installed !
+unsetenv
+Usage: %s [<option> ...] <command>
+Use `dpkg' to install and remove packages from your system, or
+user-defined field name `%.*s' too short
+/usr/share/locale
+value for `conffiles' has line starting with non-space `%c'
+value for `conffiles' has malformatted line `%.*s'
+value for `config-version' field not allowed in this context
+value for `status' field not allowed in this context
+value for `triggers-awaited' field not allowed in this context
+value for `triggers-pending' field not allowed in this context
+varbuf: claimed used(%zu) > size(%zu)
+varbufdependency
+__vasprintf_chk
+version number does not start with digit
+  --version                        Show the version.
+version string has embedded spaces
+version string is empty
+ version value starts with non-alphanumeric, suggest adding a space
+vextract
+__vsnprintf_chk
+  -v, --verbose                    Enable verbose output.
+wait for subprocess %s failed
+--warning=no-timestamp
+w_dependency
+Wl9T$8tV
+word in `priority' field
+w_packagespec
+w_priority
+  -W|--show <deb>                  Show information on package(s)
+w_status
+w_trigaw
+w_trigpend
+  -x|--extract <deb> <directory>   Extract files.
+__xstat64
+  -X|--vextract <deb> <directory>  Extract & list files.
+yes/no in boolean field
+  -z#                              Set the compression level when building.
+  -Z<type>                         Set the compression type used when building.

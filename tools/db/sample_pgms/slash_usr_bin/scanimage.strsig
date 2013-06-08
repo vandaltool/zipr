@@ -1,0 +1,200 @@
+        
+%.128s%.*s
+-A, --all-options          list all available backend options
+accept-md5-only
+    --accept-md5-only      only accept authorization requests using md5
+all-options
+All options specific to device `%s':
+__assert_fail
+Authentification required for resource %*.*s. Enter username: 
+Authentification required for resource %s. Enter username: 
+batch-count
+    --batch-count=#        how many pages to scan in batch mode
+batch-double
+    --batch-double         increment page number by two, same as
+batch-increment
+                           --batch-increment=2
+    --batch-increment=#    increase page number in filename by #
+batch-prompt
+    --batch-prompt         ask for pressing a key before scanning a page
+batch-start
+    --batch-start=#        page number to start naming files with
+Batch terminated, %d pages scanned
+-b, --batch[=FORMAT]       working in batch mode, FORMAT is `out%%d.pnm' or
+-B, --buffer-size=#        change input buffer size (in kB, default 32)
+Bffffff9@ICC profile %s is too short
+__bss_start
+buffer-size
+Calling sane_exit
+                           can be specified: %%d (device name), %%v (vendor),
+cannot open /dev/null
+cannot open %s
+cannot rename %s to %s
+check that the scanner is plugged in, turned on and detected by the
+Closing device
+Could not get option descriptor for option 0
+Could not get option descriptor for option %d
+Could not get value for option 0: %s
+Could not open ICC profile %s
+__cxa_atexit
+-d, --device-name=DEVICE   use a given scanner device (e.g. hp:/dev/scanner)
+default device is `%s'
+-d epson) and by a "=" from multi-character options (e.g. --device-name=epson).
+device-name
+devices are installed in your system, you should be able to see a list with
+device `%s' is a %s %s %s
+/dev/null
+-d:hi:Lf:B::nvVTAbp
+dont-scan
+Enter password: 
+ERROR: backend requested plain-text password
+FAIL Cheat: %d bytes
+FAIL Error: %s
+FAIL No data
+FAIL Overflow: %d bytes
+-f, --formatted-device-list=FORMAT similar to -L, but the FORMAT of the output
+    --format=pnm|tiff      file format of output file
+formatted-device-list
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ [hardware]
+Height of scan-area.
+-h, --help                 display this help message and exit
+icc-profile
+-i, --icc-profile=PROFILE  include this ICC profile into TIFF file
+ [inactive]
+ (in steps of %d)
+ (in steps of %g)
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libsane.so.1
+list-devices
+List of available devices:
+-L, --list-devices         show available scanner devices
+$MD5$%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x
+                           %%m (model), %%t (type), %%i (index number), and
+-n, --dont-scan            only set options, don't actually scan
+                           %%n (newline)
+No scanners were identified. If you were expecting something different,
+Options specific to device `%s':
+out%d.pnm
+out%d.tif
+                           `out%%d.tif' by default depending on --format
+Parameters are separated by a blank from single-character options (e.g.
+(parm.depth == 1) || (parm.depth == 8) || (parm.depth == 16)
+parm.depth == 8
+(parm.depth == 8) || (parm.depth == 16)
+parm.format >= SANE_FRAME_RED && parm.format <= SANE_FRAME_BLUE
+Place document no. %d on the scanner.
+-p, --progress             print progress messages
+Press Ctrl + D to terminate.
+Press <RETURN> to continue.
+__printf_chk
+progress
+Progress: %3.1f%%
+ [read-only]
+resolution
+    --%s
+%s: aborting
+%s: acquiring %s frame
+%s: acquiring %s frame, %d bits/sample
+sane-backends
+sane_cancel
+sane_close
+sane_control_option
+# SANE data follows
+SANE_DEFAULT_DEVICE
+sane_exit
+sane-find-scanner tool (if appropriate). Please read the documentation
+sane_get_devices
+sane_get_option_descriptor
+sane_get_parameters
+sane_init
+sane_open
+sane_read
+sane_start
+sane_strstatus
+%s: argument without option: `%s'; 
+%s: attempted to set inactive option %s
+Scan height
+scanimage.c
+scanimage: finished
+"scanimage --list-devices".
+scanimage (%s) %s; backend version %d.%d.%d
+Scanned page %d.
+ (scanner status = %d)
+Scanning %d pages, incrementing by %d, numbering from %d
+Scanning page %d
+%s: can't allocate image buffer (%dx%d)
+Scan width
+%s: duh, got unknown option type %d
+%s: failed to set option --%s to automatic (%s)
+%s has wrong permissions (use at least 0600)
+%s: ignored request to set inactive option %s
+%s: invalid option caps, SS+HS
+%s: invalid option caps, SS!SD
+%s: min/max graylevel value = %d/%d
+%s: no SANE devices found
+%s: not enough memory
+%s: open of device %s failed: %s
+%s: option --%s: bad option value (rest of option: %s)
+%s: option --%s: bad option value `%s'
+%s: option --%s: closing bracket missing (rest of option: %s)
+%s: option --%s: illegal separator (rest of option: %s)
+%s: option --%s: illegal unit (rest of option: %s)
+%s: option --%s: index %d out of range [0..%ld]
+%s: out of memory
+%s: out of memory in main()
+%s: output is not a file, exiting
+__sprintf_chk
+%s: reading one byte...		
+%s: reading one scanline, %d bytes...	
+%s: read %u bytes in total
+%s: received signal %d
+%s: rounded value of %s from %d to %d
+%s: rounded value of %s from %g to %g
+%s: sane_get_devices() failed: %s
+%s: sane_get_parameters: %s
+%s/.sane/pass
+%s: sane_read: %s
+%s: sane_start: %s
+%s: scanning image %d pixels wide and variable height at %d bits/pixel
+%s: scanning image of size %dx%d pixels at %d bits/pixel
+%s: setting of option --%s failed (%s)
+%s: stepped read, %d bytes... 	
+__stack_chk_fail
+standard output.
+Start image acquisition on a scanner device and write image data to
+__strcat_chk
+__strcpy_chk
+<string>
+strncasecmp
+%s: trying to stop scanner
+%s: unable to determine option count
+%s: unable to get option count descriptor
+%s: unknown format specifier %%%c
+%s: value for --%s is: 
+%s: WARNING: read more data than announced by backend (%u/%u)
+the SANE scanner or image acquisition device you want to use. As an example,
+try %s --help
+-T, --test                 test backend thoroughly
+Type ``%s --help -d DEVICE'' to get list of all options for DEVICE.
+Usage: %s [OPTION]...
+-v, --verbose              give even more status messages
+-V, --version              print version information
+WARNING: backend requested plain-text password
+which came with this software (README, FAQ, manpages).
+Width of scan-area.
+yes|no)]
+you might want "epson:/dev/sg0" or "hp:/dev/usbscanner0". If any supported
+You seem to have specified a UNIX device name, or filename instead of selecting

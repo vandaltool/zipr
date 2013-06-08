@@ -1,0 +1,129 @@
+__bss_start
+Collecting settings for schema '%s'
+converted
+Directory '%s' all uptodate, nothing to do
+Directory '%s' does not exist, nothing to do
+do not perform any changes
+__errno_location
+/etc/gconf/2
+Failed to create directory %s: %s
+Failed to get GConf key '%s': %s
+Failed to open '%s': %s
+File '%s already converted, skipping
+for storage at '%s'
+g_ascii_strtoll
+g_build_filename
+gconf_address_list_free
+gconf_client_get_for_engine
+gconf_client_get_without_default
+gconf_engine_get_local_for_addresses
+gconf_load_source_path
+gconf_value_free
+gconf_value_get_bool
+gconf_value_get_float
+gconf_value_get_int
+gconf_value_get_list
+gconf_value_get_list_type
+gconf_value_get_string
+gconf_value_type_to_string
+g_dir_open
+g_dir_read_name
+g_error_free
+g_file_set_contents
+g_file_test
+g_get_system_data_dirs
+g_get_user_data_dir
+g_hash_table_insert
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_unref
+g_key_file_free
+g_key_file_get_groups
+g_key_file_get_keys
+g_key_file_get_string
+g_key_file_get_string_list
+g_key_file_load_from_file
+g_key_file_new
+g_key_file_set_string
+g_key_file_set_value
+g_key_file_to_data
+GLIBC_2.0
+g_malloc
+g_mkdir_with_parents
+__gmon_start__
+g_object_unref
+g_option_context_add_main_entries
+g_option_context_new
+g_option_context_parse
+g_option_context_set_summary
+g_path_get_basename
+g_printerr
+gsettings
+g_settings_apply
+gsettings-data-convert
+g_settings_delay
+g_settings_get_range
+g_settings_get_value
+g_settings_new
+g_settings_new_with_path
+g_settings_schema_source_get_default
+g_settings_schema_source_lookup
+g_settings_schema_unref
+g_settings_set
+g_settings_set_enum
+g_settings_set_flags
+g_settings_set_value
+g_slist_prepend
+g_slist_reverse
+g_strconcat
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strerror
+g_strfreev
+g_str_hash
+g_string_append_printf
+g_string_free
+g_string_new
+g_strsplit
+g_type_init
+g_variant_builder_add
+g_variant_builder_new
+g_variant_builder_unref
+g_variant_get
+g_variant_get_type
+g_variant_new
+g_variant_new_array
+g_variant_print
+g_variant_ref_sink
+g_variant_type_equal
+g_variant_unref
+_IO_stdin_used
+_Jv_RegisterClasses
+Key '%s' contains a '/'
+Keys of type 'list of %s' not handled yet
+Keys of type %s not handled yet
+libc.so.6
+__libc_start_main
+libgconf-2.so.4
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+Migrate settings from the users GConf database to GSettings.
+perform conversions from an extra file
+:readwrite:
+Schema '%s' not found, skipping
+Set key '%s' to a list of integers: %s
+Set key '%s' to a list of strings: %s
+Set key '%s' to boolean '%d'
+Set key '%s' to double '%g'
+Set key '%s' to integer '%d'
+Set key '%s' to string '%s'
+show verbose messages
+'%s' is already converted.  Skipping.
+Skipping GConf key '%s', no user value
+timestamp

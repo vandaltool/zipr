@@ -1,0 +1,74 @@
+__bss_start
+Can't get target window attributes.
+Can't grab the mouse.
+Can't open output file as specified.
+D$49D$8}
+-display
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+Invalid window id format: %s.
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+L$89L$4}
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+ND$X9T$T
+_NET_VIRTUAL_ROOTS
+No window with name %s exists!
+Out of memory!
+[{-root|-id <id>|-name <name>}]
+%s: error: 
+SERVER_OVERLAY_VISUALS
+__stack_chk_fail
+%s:  unable to get image at %dx%d+%d+%d
+%s:  unable to open display '%s'
+%s:  unable to translate window coordinates (%d,%d)
+UL;\$Hts
+unknown_program
+usage: %s [-display host:dpy] [-debug] [-help] %s [-nobdrs] [-out <file>]
+__vfprintf_chk
+WM_STATE
+XAllowEvents
+XCloseDisplay
+XCreateFontCursor
+XCreateImage
+XCreateRegion
+XDefaultScreen
+XDestroyRegion
+XDisplayName
+XEmptyRegion
+XFetchName
+XGetImage
+XGetVisualInfo
+XGetWindowAttributes
+XGetWindowProperty
+XGrabPointer
+XInternAtom
+XIntersectRegion
+XListInstalledColormaps
+XOpenDisplay
+XQueryColors
+XQueryPointer
+XQueryTree
+XSubtractRegion
+XTranslateCoordinates
+XUngrabPointer
+XUnionRectWithRegion
+xwd: Calculating header size.
+xwd: Constructing and dumping file header.
+xwd: Dumping %d colors.
+xwd: Dumping pixmap.  bufsize=%d
+xwd: Freeing colors.
+xwd: Freeing window name string.
+xwd: Getting Colors.
+xwd: Getting target window information.
+XWindowEvent
+ [-xy] [-add value] [-frame]

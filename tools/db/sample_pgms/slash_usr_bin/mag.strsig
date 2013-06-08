@@ -1,0 +1,16 @@
+/build/buildd/texlive-bin-2009/inst/lib
+__ctype_b_loc
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+__printf_chk
+%s: %c illegal option
+Usage: %s [-r] [-Rdpi] size . . .
+__vfprintf_chk

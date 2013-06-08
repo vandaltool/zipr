@@ -1,0 +1,1001 @@
+addDatabase
+added event source to composite connection
+added event source to damage connection
+added event source to xfixes cursor-notify connection
+Adding polling timer
+addListener
+addListenerWithMask
+addZoomRegion
+ALIGN_CENTER
+ALIGN_MAX
+ALIGN_MIN
+AlignPolicy
+allow_grow
+allow_shrink
+An instance of magnifier is already active. Exiting Program.
+any_signal::destroy
+any_signal::realize
+any_signal::size_allocate
+(arg)->_type->kind == CORBA_tk_string
+- a screen magnifier for Gnome
+Attempt to set source to same value as previous: %s
+Attempt to set target to same value as previous: %s
+BackendFailed
+Bad bounds request (%d,%d to %d,%d), ignoring.
+BGet property: 	%s
+bilinear
+blue-brightness
+blue-contrast
+blue image brightness ratio
+blue image contrast ratio
+bonobo_activation_active_server_register
+bonobo_activation_active_server_unregister
+bonobo_arg_new
+bonobo_arg_new_from
+bonobo_arg_release
+bonobo_arg_type_is_equal
+bonobo_arg_type_is_equal ((arg)->_type, ((CORBA_TypeCode)&TC_CORBA_boolean_struct), ((void *)0))
+bonobo_arg_type_is_equal ((arg)->_type, ((CORBA_TypeCode)&TC_CORBA_float_struct), ((void *)0))
+bonobo_arg_type_is_equal ((arg)->_type, ((CORBA_TypeCode)&TC_CORBA_long_struct), ((void *)0))
+bonobo_arg_type_is_equal ((arg)->_type, ((CORBA_TypeCode)&TC_CORBA_short_struct), ((void *)0))
+bonobo_arg_type_is_equal ((arg)->_type, ((CORBA_TypeCode)&TC_CORBA_unsigned_long_struct), ((void *)0))
+bonobo_arg_type_is_equal ((arg)->_type, ((CORBA_TypeCode)&TC_GNOME_Magnifier_Point_struct), ((void *)0))
+bonobo_arg_type_is_equal ((arg)->_type, ((CORBA_TypeCode)&TC_GNOME_Magnifier_RectBounds_struct), ((void *)0))
+bonobo_arg_type_is_equal ((def)->_type, ((CORBA_TypeCode)&TC_CORBA_boolean_struct), ((void *)0))
+bonobo_arg_type_is_equal ((def)->_type, ((CORBA_TypeCode)&TC_CORBA_float_struct), ((void *)0))
+bonobo_arg_type_is_equal ((def)->_type, ((CORBA_TypeCode)&TC_CORBA_long_struct), ((void *)0))
+bonobo_arg_type_is_equal ((def)->_type, ((CORBA_TypeCode)&TC_CORBA_short_struct), ((void *)0))
+Bonobo_ConfigDatabase__classid
+Bonobo_ConfigDatabase__iinterface
+Bonobo_ConfigDatabase__imethods
+Bonobo_EventSource__classid
+Bonobo_EventSource__iinterface
+Bonobo_EventSource__imethods
+bonobo_exception_repoid_to_text
+bonobo_init
+Bonobo_Listener__classid
+Bonobo_Listener__iinterface
+Bonobo_Listener__imethods
+bonobo_main
+bonobo_main_quit
+bonobo_object
+bonobo_object_add_interface
+bonobo_object_corba_objref
+bonobo_object_dup_ref
+bonobo_object_get_type
+bonobo_object_release_unref
+bonobo_pbclient_get_boolean
+bonobo_pbclient_get_float
+bonobo_pbclient_get_long
+bonobo_pbclient_get_short
+bonobo_pbclient_get_string
+bonobo_pbclient_get_value
+bonobo_pbclient_set_boolean
+bonobo_pbclient_set_float
+bonobo_pbclient_set_long
+bonobo_pbclient_set_short
+bonobo_pbclient_set_string
+bonobo_pbclient_set_ulong
+bonobo_pbclient_set_value
+bonobo_property_bag_add
+Bonobo_PropertyBag__classid
+Bonobo_PropertyBag__iinterface
+Bonobo_PropertyBag__imethods
+bonobo_property_bag_new_closure
+bonobo_type_unique
+Bonobo_Unknown__classid
+Bonobo_Unknown__iinterface
+bordercolor
+border-color
+BORDERCOLOR
+border color, as RGBA32
+border color specified as (A)RGB 23-bit value, Alpha-MSB
+border-size
+BORDERSIZE
+border-size-bottom
+BORDERSIZEBOTTOM
+border-size-left
+BORDERSIZELEFT
+border-size-right
+BORDERSIZERIGHT
+bordersizes
+border-size-top
+BORDERSIZETOP
+border_width
+__bss_start
+can_focus
+can't allocate GmagWin (struct _GmagWin)
+Can't open display: DISPLAY is not set
+clearAllZoomRegions
+Clear all zoom regions.
+colorblind
+color-blind-filter
+ColorBlindFilter
+COLORBLIND_FILTER_T_HUE_SHIFT_NEGATIVE
+COLORBLIND_FILTER_T_HUE_SHIFT_POSITIVE
+COLORBLIND_FILTER_T_MONOCHRONE_OTHERS
+COLORBLIND_FILTER_T_NO_FILTER
+color blind filter to apply in an image
+COLORBLIND_FILTER_T_SELECTIVE_DESSATURATE
+COLORBLIND_FILTER_T_SELECTIVE_DESSATURATE_BLUE
+COLORBLIND_FILTER_T_SELECTIVE_DESSATURATE_GREEN
+COLORBLIND_FILTER_T_SELECTIVE_DESSATURATE_RED
+COLORBLIND_FILTER_T_SELECTIVE_SATURATE
+COLORBLIND_FILTER_T_SELECTIVE_SATURATE_BLUE
+COLORBLIND_FILTER_T_SELECTIVE_SATURATE_GREEN
+COLORBLIND_FILTER_T_SELECTIVE_SATURATE_RED
+color of crosswire, as A-RGB; note that alpha is required. (use 0 for XOR wire)
+Composite
+Composite extension being ignored at user request.
+Composite extension not currently active.
+ConfigDatabase
+CONTRASTB
+CONTRASTG
+CONTRASTR
+CORBA_exception_init
+CORBA_exception_set
+CORBA_free
+CORBA_Object_duplicate
+CORBA_string_dup
+Could not initialize Bonobo
+Could not render scaled image to drawable; out of memory!
+create-pixmap: no target drawable
+createZoomRegion
+Create zoom region: 	zoom %f,%f, viewport %d,%d to %d,%d
+creating zoom region with parent %p
+crosswire-clip
+CROSSWIRE_CLIP
+crosswire-color
+CROSSWIRE_COLOR
+crosswire-length
+CROSSWIRE_LENGTH
+crosswire-size
+CROSSWIRE_SIZE
+cursor-color
+CURSOR_COLOR
+cursor color (applied to 'black' pixels)
+cursor-default-size
+CURSOR_DEFAULT_SIZE
+cursor-hotspot
+CURSOR_HOTSPOT
+cursor isn't DRAWABLE!
+cursor pixmap is non-drawable.
+cursor scale factor
+cursor-scale-factor
+cursor_set
+cursor-set
+CURSOR_SET
+cursor set to use in target display
+cursor-size
+CURSOR_SIZE
+cursor size, in pixels
+cursor size to use (overrides cursor-scale-factor)
+CURSOR_ZOOM
+Damage extension being ignored at user request.
+Damage extension not currently active.
+dbus_g_bus_get
+dbus_g_connection_register_g_object
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__BOOLEAN_POINTER
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__BOXED
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__BOXED_POINTER
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__DOUBLE_POINTER
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__INT_INT_POINTER
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__INT_POINTER
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__POINTER
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__POINTER_POINTER
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__STRING_POINTER
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__UINT_POINTER
+dbus_glib_marshal_impl_dbus_magnifier_BOOLEAN__VOID
+dbus_glib_marshal_impl_dbus_magnifier_BOXED__DOUBLE_DOUBLE_BOXED_BOXED
+dbus_glib_marshal_impl_dbus_magnifier_BOXED__VOID
+dbus_glib_marshal_impl_dbus_magnifier_DOUBLE__VOID
+dbus_glib_marshal_impl_dbus_magnifier_INT__VOID
+dbus_glib_marshal_impl_dbus_magnifier_STRING__VOID
+dbus_glib_marshal_impl_dbus_magnifier_UINT__VOID
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__BOOLEAN_POINTER
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__BOXED_POINTER
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__DOUBLE_DOUBLE
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__DOUBLE_DOUBLE_DOUBLE_POINTER
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__INT_INT_POINTER
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__INT_POINTER
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__POINTER
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__STRING_POINTER
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__UINT_POINTER
+dbus_glib_marshal_impl_dbus_zoom_region_BOOLEAN__VOID
+dbus_glib_marshal_impl_dbus_zoom_region_BOXED__VOID
+dbus_glib_marshal_impl_dbus_zoom_region_DOUBLE__VOID
+dbus_glib_marshal_impl_dbus_zoom_region_INT__VOID
+dbus_glib_marshal_impl_dbus_zoom_region_STRING__VOID
+dbus_glib_marshal_impl_dbus_zoom_region_UINT__VOID
+dbus_g_object_type_install_info
+dbus_g_proxy_call
+dbus_g_proxy_new_for_name
+dcgettext
+default-cursor.xpm
+default size of current cursor set
+(def)->_type->kind == CORBA_tk_string
+deltas too big to scroll
+dirtyRegion
+DISPLAY=
+display performance ouput
+disposing region %p
+don't create an initial zoom region
+draw_cursor
+draw-cursor
+DRAWCURSOR
+empty cursor pixmap created.
+Error getting source-display-bounds
+Error registering magnifier server.
+<et0<ytD1
+event_mask
+event_name
+EventSource
+EXCEPTION
+EXCEPTION getProperties
+EXCEPTION setMagFactor
+EXCEPTION setROI
+exit_magnifier
+exit-magnifier
+EXIT_MAGNIFIER
+expose_event
+file %s: line %d: bonobo exception: `%s'
+finalizing region %p
+foreground color for 1-bit cursors, as ARGB
+__fprintf_chk
+  Frame Number             = %ld
+  Frame Rate               = (avg. %f) (max. %f) frames/second
+  Frames Processed         = %ld
+<ftP<mt;1
+fullscreen
+fullScreenCapable
+fullscreen magnification, covers entire target display [REQUIRES --source-display and --target-display]
+g_array_append_vals
+g_array_new
+g_ascii_dtostr
+g_assertion_message_expr
+g_cclosure_new_object
+g_dir_close
+g_dir_open
+g_dir_read_name
+gdk_colormap_get_system
+gdk_display_get_default_screen
+gdk_display_get_screen
+gdk_display_open
+gdk_display_sync
+gdk_drawable_get_depth
+gdk_drawable_get_display
+gdk_drawable_get_size
+gdk_drawable_get_type
+gdk_draw_drawable
+gdk_draw_image
+gdk_draw_line
+gdk_draw_pixbuf
+gdk_draw_rectangle
+gdk_error_trap_pop
+gdk_error_trap_push
+gdk_flush
+gdk_gc_get_colormap
+gdk_gc_new
+gdk_gc_set_clip_rectangle
+gdk_gc_set_values
+gdk_image_new
+gdk_image_put_pixel
+gdk_pixbuf_add_alpha
+gdk_pixbuf_copy_area
+gdk_pixbuf_get_bits_per_sample
+gdk_pixbuf_get_from_drawable
+gdk_pixbuf_get_height
+gdk_pixbuf_get_n_channels
+gdk_pixbuf_get_pixels
+gdk_pixbuf_get_rowstride
+gdk_pixbuf_get_width
+gdk_pixbuf_new
+gdk_pixbuf_new_from_data
+gdk_pixbuf_new_from_file
+gdk_pixbuf_new_subpixbuf
+gdk_pixbuf_render_threshold_alpha
+gdk_pixbuf_scale
+gdk_pixbuf_scale_simple
+gdk_pixbuf_set_option
+gdk_pixmap_new
+gdk_rectangle_intersect
+gdk_rectangle_union
+gdk_rgb_find_color
+gdk_screen_get_height
+gdk_screen_get_root_window
+gdk_screen_get_width
+gdk_visual_get_system
+gdk_window_begin_paint_rect
+gdk_window_end_paint
+gdk_window_foreign_new
+gdk_window_get_pointer
+gdk_window_get_position
+gdk_window_invalidate_rect
+gdk_window_move
+gdk_window_move_resize
+gdk_window_object_get_type
+gdk_window_process_updates
+gdk_window_reparent
+gdk_window_resize
+gdk_window_scroll
+gdk_x11_display_get_xdisplay
+gdk_x11_drawable_get_xdisplay
+gdk_x11_drawable_get_xid
+gdk_x11_get_xatom_by_name
+gdk_x11_get_xatom_by_name_for_display
+gdk_x11_get_xatom_name
+gdk_x11_screen_get_screen_number
+gdk_x11_window_get_drawable_impl
+g_error_free
+getBordercolor
+getBordersizes
+getBrightness
+getColorblind
+getContrast
+getCrosswireClip
+getCrosswireColor
+getCrosswireLength
+getCrosswireSize
+getCursorColor
+getCursorDefaultSize
+getCursorHotspot
+getCursorSet
+getCursorSize
+getCursorZoom
+getDefault
+getDocTitle
+getDrawCursor
+getExitMagnifier
+getFlags
+getInvert
+_get_isWriteable
+getMagFactor
+getManaged
+getPollMouse
+getProperties
+getSmoothing
+getSmoothscroll
+getSourceDisplay
+_get_SourceDisplay
+Get source display: 	%s
+getSourceSize
+getTargetDisplay
+_get_TargetDisplay
+Get target display: 	%s
+getTargetSize
+getTestpattern
+getTimingOutput
+getTimingPanRate
+getTimingTest
+getValue
+getValues
+getViewport
+getXalign
+getYalign
+Get zoom-region property: %s
+getZoomRegions
+Get zoom regions: 	%d
+g_getenv
+g_hash_table_destroy
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new
+g_hash_table_new_full
+g_hash_table_remove
+g_idle_add_full
+g_idle_remove_by_data
+g_io_add_watch
+g_io_channel_unix_new
+g_io_channel_unref
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+g_list_append
+g_list_copy
+g_list_foreach
+g_list_free
+g_list_last
+g_list_length
+g_list_nth_data
+g_list_prepend
+g_list_remove_link
+g_list_reverse
+gmag_gs_source_has_damage_extension
+g_malloc
+g_malloc0
+__gmon_start__
+GNOME_Magnifier_Magnifier__classid
+GNOME_Magnifier_Magnifier__iinterface
+GNOME_Magnifier_Magnifier__imethods
+GNOME_Magnifier_ZoomRegion__classid
+GNOME_Magnifier_ZoomRegion__iinterface
+GNOME_Magnifier_ZoomRegion__imethods
+g_object_connect
+g_object_disconnect
+g_object_get_data
+g_object_new
+g_object_ref
+g_object_set_data
+g_object_unref
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_description
+g_option_context_set_ignore_unknown_options
+g_path_get_basename
+g_queue_find_custom
+g_queue_foreach
+g_queue_insert_after
+g_queue_new
+g_queue_peek_head_link
+g_queue_peek_tail_link
+g_queue_push_head
+g_queue_push_tail
+g_queue_remove
+green-brightness
+green-contrast
+green image brightness ratio
+green image contrast ratio
+g_return_if_fail_warning
+g_setenv
+g_signal_connect_data
+g_signal_handler_disconnect
+g_slist_append
+g_slist_free
+g_source_remove
+g_strconcat
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strfreev
+g_str_hash
+g_strsplit
+g_timeout_add
+g_timeout_add_full
+g_timer_elapsed
+g_timer_new
+g_timer_start
+g_timer_stop
+gtk_container_add
+gtk_container_get_type
+gtk_container_remove
+gtk_drawing_area_new
+gtk_fixed_get_type
+gtk_fixed_move
+gtk_fixed_new
+gtk_fixed_put
+gtk_init
+gtk_main_quit
+gtk_widget_destroy
+gtk_widget_get_realized
+gtk_widget_get_type
+gtk_widget_get_window
+gtk_widget_modify_bg
+gtk_widget_new
+gtk_widget_set_size_request
+gtk_widget_show
+gtk_window_get_position
+gtk_window_get_size
+gtk_window_get_type
+gtk_window_move
+gtk_window_resize
+gtk_window_set_screen
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_peek
+g_value_peek_pointer
+g_value_set_boolean
+g_value_set_double
+g_value_set_int
+g_value_set_uint
+g_value_take_boxed
+g_value_take_string
+hideCursor
+hide magnifier pointer when passed
+hide-pointer
+horizontal
+hotspot relative to cursor's upper-left-corner, at default resolition
+IDL:Bonobo/ConfigDatabase:1.0
+IDL:Bonobo/ConfigDatabase/DBFlags:1.0
+IDL:Bonobo/EventSource:1.0
+IDL:Bonobo/EventSource/UnknownListener:1.0
+IDL:Bonobo/KeyList:1.0
+IDL:Bonobo/Listener:1.0
+IDL:Bonobo/Pair:1.0
+IDL:Bonobo/PropertyBag:1.0
+IDL:Bonobo/PropertyBag/BackendFailed:1.0
+IDL:Bonobo/PropertyBag/InvalidType:1.0
+IDL:Bonobo/PropertyBag/NotFound:1.0
+IDL:Bonobo/PropertyBag/ReadOnly:1.0
+IDL:Bonobo/PropertyFlags:1.0
+IDL:Bonobo/PropertySet:1.0
+IDL:Bonobo/Unknown:1.0
+IDL:GNOME/Magnifier/Magnifier:1.0
+IDL:GNOME/Magnifier/Point:1.0
+IDL:GNOME/Magnifier/RectBounds:1.0
+IDL:GNOME/Magnifier/ZoomRegion:1.0
+IDL:GNOME/Magnifier/ZoomRegion/AlignPolicy:1.0
+IDL:GNOME/Magnifier/ZoomRegion/ColorBlindFilter:1.0
+IDL:GNOME/Magnifier/ZoomRegionList:1.0
+IDL:GNOME/Magnifier/ZoomRegion/ScrollingPolicy:1.0
+IDL:omg.org/CORBA/Object:1.0
+If false, zoom region does not auto-update, but is drawn into directly by the client
+If false, zoom region does not draw the cursor.
+If false, zoom region does not poll for pointer location, but is (exclusively) given it by the client
+ignore-composite
+ignore-damage
+ignore the X server COMPOSITE extension, if present
+ignore the X server DAMAGE extension, if present
+image smoothing algorithm to apply (bilinear-interpolation | none)
+image smoothing algorithm used
+impl_magnifier_set_source_display
+impl_magnifier_set_target_display
+initializing region %p
+initial viewport %d %d
+InvalidType
+inverse-video
+inverse video display
+invert-image
+invert the image colormap
+_IO_stdin_used
+is-managed
+iterations to run timing benchmark test (0=continuous)
+_Jv_RegisterClasses
+  [Last update not finished, pending - ROI=(%d, %d) (%d, %d)]
+length of crosswire cursor, in target pixels
+libbonobo-2.so.0
+libbonobo-activation.so.4
+libc.so.6
+__libc_start_main
+libdbus-glib-1.so.2
+libgdk_pixbuf-2.0.so.0
+libgdk-x11-2.0.so.0
+libglib-2.0.so.0
+libgnome-mag.so.2
+libgobject-2.0.so.0
+libgtk-x11-2.0.so.0
+/lib/ld-linux.so.2
+libloginhelper.so.0
+libm.so.6
+libORBit-2.so.0
+libpthread.so.0
+libX11.so.6
+libXcomposite.so.1
+libXdamage.so.1
+libXext.so.6
+libXfixes.so.3
+libXrender.so.1
+login_helper_get_type
+MAG_CLIENT_DEBUG
+mag-factor-x
+mag-factor-y
+MagLoginHelper
+Magnifier
+magnifier.c
+magnifier_get_property
+MAGNIFIER_IGNORE_COMPOSITE
+MAGNIFIER_IGNORE_DAMAGE
+magnifier_properties_init
+magnifier_set_property
+magnifier_zoom_regions_mark_dirty
+magnifier_zoom_regions_save
+magnifier_zoom_regions_update_pointer
+main options
+make the magnifier window totally unmanaged by the window manager
+MANDATORY
+markDirty
+maximum mouse latency time, in ms
+minimum refresh time for idle, in ms
+mouse-follow
+mouse-latency
+moveResize
+Must specify timing_iterations when running pan test
+name of cursor set
+  Net Render Rate          = (avg. %f) (max. %f) Mpex/second
+    Net Update Rate        = (avg. %f) (max. %f) Mpex/second
+_NET_WM_PING
+_NET_WM_STRUT
+_NET_WM_STRUT_PARTIAL
+_NET_WM_WINDOW_TYPE
+_NET_WM_WINDOW_TYPE_DOCK
+New window created
+nil region!
+no-initial-region
+NotFound
+n_param_values == 1
+n_param_values == 2
+n_param_values == 3
+n_param_values == 4
+n_param_values == 5
+NULL magnifier cursor pixmap.
+OAFIID:GNOME_Magnifier_Magnifier:0.9
+ORBit_skel_class_register
+_ORBIT_skel_small_Bonobo_ConfigDatabase_addDatabase
+_ORBIT_skel_small_Bonobo_ConfigDatabase_getDirs
+_ORBIT_skel_small_Bonobo_ConfigDatabase__get_isWriteable
+_ORBIT_skel_small_Bonobo_ConfigDatabase_hasDir
+_ORBIT_skel_small_Bonobo_ConfigDatabase_removeDir
+_ORBIT_skel_small_Bonobo_ConfigDatabase_removeValue
+_ORBIT_skel_small_Bonobo_ConfigDatabase_sync
+_ORBIT_skel_small_Bonobo_ConfigDatabase_unImplemented5
+_ORBIT_skel_small_Bonobo_ConfigDatabase_unImplemented6
+_ORBIT_skel_small_Bonobo_ConfigDatabase_unImplemented7
+_ORBIT_skel_small_Bonobo_ConfigDatabase_unImplemented8
+_ORBIT_skel_small_Bonobo_EventSource_addListener
+_ORBIT_skel_small_Bonobo_EventSource_addListenerWithMask
+_ORBIT_skel_small_Bonobo_EventSource_removeListener
+_ORBIT_skel_small_Bonobo_EventSource_unImplemented
+_ORBIT_skel_small_Bonobo_EventSource_unImplemented2
+_ORBIT_skel_small_Bonobo_Listener_event
+_ORBIT_skel_small_Bonobo_Listener_unImplemented
+_ORBIT_skel_small_Bonobo_Listener_unImplemented2
+_ORBIT_skel_small_Bonobo_PropertyBag_getDefault
+_ORBIT_skel_small_Bonobo_PropertyBag_getDoc
+_ORBIT_skel_small_Bonobo_PropertyBag_getDocTitle
+_ORBIT_skel_small_Bonobo_PropertyBag_getFlags
+_ORBIT_skel_small_Bonobo_PropertyBag_getKeys
+_ORBIT_skel_small_Bonobo_PropertyBag_getType
+_ORBIT_skel_small_Bonobo_PropertyBag_getValue
+_ORBIT_skel_small_Bonobo_PropertyBag_getValues
+_ORBIT_skel_small_Bonobo_PropertyBag_setValue
+_ORBIT_skel_small_Bonobo_PropertyBag_setValues
+_ORBIT_skel_small_Bonobo_PropertyBag_unImplemented1
+_ORBIT_skel_small_Bonobo_PropertyBag_unImplemented2
+_ORBIT_skel_small_Bonobo_PropertyBag_unImplemented3
+_ORBIT_skel_small_Bonobo_PropertyBag_unImplemented4
+_ORBIT_skel_small_Bonobo_Unknown_queryInterface
+_ORBIT_skel_small_Bonobo_Unknown_ref
+_ORBIT_skel_small_Bonobo_Unknown_unref
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_addZoomRegion
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_clearAllZoomRegions
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_createZoomRegion
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_dispose
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_fullScreenCapable
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_getProperties
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier__get_SourceDisplay
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier__get_TargetDisplay
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_getZoomRegions
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_hideCursor
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier__set_SourceDisplay
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier__set_TargetDisplay
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_showCursor
+_ORBIT_skel_small_GNOME_Magnifier_Magnifier_supportColorblindFilters
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_dispose
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_getBrightness
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_getContrast
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_getMagFactor
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_getProperties
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_getROI
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_markDirty
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_moveResize
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_setBrightness
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_setContrast
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_setMagFactor
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_setPointerPos
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_setROI
+_ORBIT_skel_small_GNOME_Magnifier_ZoomRegion_updatePointer
+ORBit_small_alloc
+ORBit_small_allocbuf
+ORBit_TypeCode_epv
+/org/freedesktop/DBus
+org.freedesktop.DBus
+/org/freedesktop/gnome/Magnifier
+org.freedesktop.gnome.Magnifier
+org.freedesktop.gnome.Magnifier.ZoomRegion
+/org/freedesktop/gnome/ZoomRegion/%i
+override-redirect
+  Pan Latency              = (avg. %f) (max. %f) seconds
+  Pan Latency              = %f (avg. %f) (max. %f) seconds
+  Panning Increment (x)    = %d (avg. %f) lines/frame
+  Panning Increment (y)    = %d (avg. %f) lines/frame
+  Pan Rate                 = %d
+pixels to pan in x-dimension each frame in timing update test
+pixels to pan in y-dimension each frame in timing update test
+POA_Bonobo_ConfigDatabase__fini
+POA_Bonobo_ConfigDatabase__init
+POA_Bonobo_EventSource__fini
+POA_Bonobo_EventSource__init
+POA_Bonobo_Listener__fini
+POA_Bonobo_Listener__init
+POA_Bonobo_PropertyBag__fini
+POA_Bonobo_PropertyBag__init
+POA_Bonobo_Unknown__fini
+POA_Bonobo_Unknown__init
+poll_mouse
+poll-mouse
+POLLMOUSE
+PortableServer_ServantBase__fini
+PortableServer_ServantBase__init
+__printf_chk
+print version
+PropertyBag
+PropertyFlags
+PropertySet
+ReadOnly
+RectBounds
+red-brightness
+red-contrast
+red image brightness ratio
+red image contrast ratio
+refresh-time
+region to update: %d %d %d %d
+removeDir
+removeListener
+removeValue
+Removing polling time
+Removing polling timer
+Report bugs to http://bugzilla.gnome.org
+RequestName
+return_value != NULL
+saving %d regions
+scale factor for cursors (overrides size)
+Scale factor too big to fit in memory; shrinking.
+  Scroll Delta (x)         = (avg. %f) (tot. %d) lines
+  Scroll Delta (y)         = (avg. %f) (tot. %d) lines
+SCROLL_FAST
+SCROLL_FASTEST
+ScrollingPolicy
+scrolling policy, slower versus faster
+SCROLL_NORMAL
+  Scroll Rate (x)          = (avg. %f) lines/second
+  Scroll Rate (y)          = (avg. %f) lines/second
+SCROLL_SMOOTH
+SCROLL_SMOOTHEST
+%s: (%d,%d - %d,%d)
+setBordercolor
+setBordersizes
+setBrightness
+Set brightness: 	%f,%f %f
+setColorblind
+setContrast
+Set contrast: 	%f,%f %f
+setCrosswireClip
+setCrosswireColor
+setCrosswireLength
+setCrosswireSize
+setCursorColor
+setCursorHotspot
+setCursorSet
+setCursorSize
+setCursorZoom
+setDrawCursor
+setExitMagnifier
+setInvert
+setMagFactor
+setManaged
+Set Pointer: 	%ld,%ld
+setPointerPos
+setPollMouse
+Set ROI: 	%d,%d %d,%d
+setSmoothing
+setSmoothscroll
+set source bounds to %d,%d; %d,%d
+setSourceDisplay
+_set_SourceDisplay
+Set source display: 	%s
+setSourceSize
+Set source size: 	%d,%d to %d,%d
+setTargetDisplay
+_set_TargetDisplay
+Set target display: 	%s
+Set target display: 	%s (screen %d)
+setTargetSize
+Set target size: 	%d,%d to %d,%d
+setTestpattern
+setTimingOutput
+setTimingPanRate
+setTimingTest
+Setting crosswire clip: 	%s
+Setting crosswire color: 	%ld
+Setting crosswire length: 	%d
+Setting crosswire size: 	%d
+Setting crosswire size: 	%ld
+Setting cursor color: 	%u
+Setting cursor scale factor: 	%f
+Setting cursor set: 	%s
+Setting cursor size: 	%d
+setValue
+setValues
+setViewport
+setXalign
+setYalign
+Set zoom-region property: %s
+show-crosswires
+show crosswires when passed
+showCursor
+size of bottom zoom-region border, in pixels
+size of left zoom-region border, in pixels
+size of right zoom-region border, in pixels
+size of top zoom-region border, in pixels
+size of zoom-region borders, in pixels
+smoothing
+smoothing-type
+smoothscroll
+smooth-scrolling
+smooth-scroll-policy
+source_bounds
+source_display
+source-display
+SOURCE_DISPLAY
+source-display-bounds
+source display bounds/size
+source display screen
+source-display-screen
+SOURCE_SIZE
+specify display on which to show magnified view
+specify display to magnify
+split screen horizontally (if target display = source display)
+split screen vertically (if target display = source display)
+__stack_chk_fail
+supportColorblindFilters
+target_bounds
+target_display
+target-display
+TARGET_DISPLAY
+target-display-bounds
+target display bounds/size
+target display screen
+target-display-screen
+TARGET_SIZE
+TC_Bonobo_ConfigDatabase_DBFlags_struct
+TC_Bonobo_ConfigDatabase_struct
+TC_Bonobo_EventSource_struct
+TC_Bonobo_EventSource_UnknownListener_struct
+TC_Bonobo_KeyList_struct
+TC_Bonobo_Listener_struct
+TC_Bonobo_Pair_struct
+TC_Bonobo_PropertyBag_BackendFailed_struct
+TC_Bonobo_PropertyBag_InvalidType_struct
+TC_Bonobo_PropertyBag_NotFound_struct
+TC_Bonobo_PropertyBag_ReadOnly_struct
+TC_Bonobo_PropertyBag_struct
+TC_Bonobo_PropertyFlags_struct
+TC_Bonobo_PropertySet_struct
+TC_CORBA_any_struct
+TC_CORBA_boolean_struct
+TC_CORBA_float_struct
+TC_CORBA_long_struct
+TC_CORBA_sequence_Bonobo_Pair_struct
+TC_CORBA_sequence_CORBA_string_struct
+TC_CORBA_sequence_GNOME_Magnifier_ZoomRegion_struct
+TC_CORBA_short_struct
+TC_CORBA_string_struct
+TC_CORBA_TypeCode_struct
+TC_CORBA_unsigned_long_struct
+TC_GNOME_Magnifier_Magnifier_struct
+TC_GNOME_Magnifier_Point_struct
+TC_GNOME_Magnifier_RectBounds_struct
+TC_GNOME_Magnifier_ZoomRegion_AlignPolicy_struct
+TC_GNOME_Magnifier_ZoomRegion_ColorBlindFilter_struct
+TC_GNOME_Magnifier_ZoomRegionList_struct
+TC_GNOME_Magnifier_ZoomRegion_ScrollingPolicy_struct
+TC_GNOME_Magnifier_ZoomRegion_struct
+TC_void_struct
+testpattern
+thickness of crosswire cursor, in target pixels
+timing-delta-x
+timing-delta-y
+Timing Information - ROI   = (%d, %d) (%d, %d):
+timing iterations
+timing-iterations
+timing output
+timing_output
+timing-output
+TIMING_OUTPUT
+timing pan rate
+timing_pan_rate
+timing-pan-rate
+TIMING_PAN_RATE
+timing pan rate in lines per frame
+### Timing Summary:
+timing_test
+$tIueryInterface
+  Total Frame Duration     = (avg. %f) (max. %f) (tot. %f) seconds
+  Total Frame Duration     = %f (avg. %f) (max. %f) (tot. %f) seconds
+track mouse movements
+Unable to connect to dbus: %s
+Unable to register service: %s
+unImplemented
+unImplemented1
+unImplemented2
+unImplemented3
+unImplemented4
+unImplemented5
+unImplemented6
+unImplemented7
+unImplemented8
+UnknownListener
+unreffing zoom region
+  Update Duration          = (avg. %f) (max. %f) (tot. %f) seconds
+  Update Duration          = %f (avg. %f) (max. %f) (tot. %f) seconds
+update of invalid subregion!
+update on uninitialized zoom region!
+    Update Pixels          = (avg. %ld) pixels/frame
+    Update Pixels          = %ld (avg. %ld) pixels/frame
+updatePointer
+    Update Rate            = (avg. %f) (max. %f) updates/second
+### Updates finished, starting panning test
+### Updates summary:
+updating non-drawable pixmap: region %p
+user_data
+use smooth scrolling
+use-test-pattern
+use test pattern as source
+use test pattern for source
+/usr/share/gnome-mag
+vertical
+viewport
+viewport bounding box
+warning - using DefaultScreen for X connection.
+we should clip at %d, %d
+whether to inset the cursor over the crosswire or not
+  Width/Height/Depth       = %d/%d/%d
+width of border
+window not yet created...
+WM_DELETE_WINDOW
+x11/gmag-graphical-server.c
+x-alignment
+x-alignment policy for this region
+XChangeProperty
+XCloseDisplay
+XCompositeGetOverlayWindow
+XCompositeQueryExtension
+XCompositeRedirectSubwindows
+XDamageCreate
+XDamageQueryExtension
+XDamageSubtract
+XFixesCopyRegion
+XFixesCreateRegion
+XFixesCreateRegionFromWindow
+XFixesDestroyRegion
+XFixes extension not currently active.
+XFixesFetchRegion
+XFixesGetCursorImage
+XFixesHideCursor
+XFixesIntersectRegion
+XFixesQueryExtension
+XFixesQueryVersion
+XFixesSelectCursorInput
+XFixesSetPictureClipRegion
+XFixesSetRegion
+XFixesShowCursor
+XFixesSubtractRegion
+XFixesTranslateRegion
+XFixesUnionRegion
+XGetWindowAttributes
+XGrabServer
+XNextEvent
+XOpenDisplay
+XPending
+XQueryExtension
+XQueryPointer
+XQueryTree
+XRenderComposite
+XRenderCreatePicture
+XRenderFindVisualFormat
+x scale factor
+XSelectInput
+XSetErrorHandler
+XSetWMHints
+XSetWMProtocols
+XShapeCombineRectangles
+XUngrabServer
+XWarpPointer
+y-alignment
+y-alignment policy for this region
+y scale factor
+zoom-factor
+  Zoom Factor (x/y)        = %f/%f
+zoom-region.c
+zoom_region_get_property
+ZoomRegionList
+zoomRegionList-ret
+zoom_region_paint_pixmap
+zoom_region->priv
+zoom_region->priv->w
+zoom_region_properties_init
+zoomRegion-ret
+zoom_region_set_property
+zoom (scale) factor used to magnify source display

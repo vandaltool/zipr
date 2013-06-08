@@ -1,0 +1,38 @@
+ bbox reads a rawppm or rawpbm file and prints out the
+%%%%BoundingBox: %d %d %d %d
+ bounding box of the image. If no filename is specified
+ call %s -h for help on usage
+CL$H9T$T
+__fprintf_chk
+FT$T9D$P
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+%%%%HiResBoundingBox: %f %f %f %f
+ -h: this help
+ input is read from standard input.
+_IO_stdin_used
+__isoc99_sscanf
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+ -l: loose bounding box (bbox is expanded by 1 point)
+__printf_chk
+$Revision: 1.18 $ $Date: 2009-10-13 15:03:49 $
+ -r: resolution of picture in dpi
+%s: bbox Version %s
+%s: ERROR -- could not open file %s
+%s: ERROR -- Missing resolution after -r
+%s: ERROR -- not enough memory to read in one row of the picture
+%s: ERROR -- %s is not in ppmraw or pbmraw format
+%s: ERROR -- unknown option %s
+__stack_chk_fail
+- STDIN -
+%s: Version %s
+%s: WARNING -- fread incomplete - file %s seems to be corrupt
+ usage: %s [-l] [-r resolution] [-V] [filename]
+--version
+ -V: version information

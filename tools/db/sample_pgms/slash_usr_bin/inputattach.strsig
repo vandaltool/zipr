@@ -1,0 +1,115 @@
+%02x (%c) 
+0600520058C272
+  %-16s %-8s  %s
+"1 Spaceball 4000 FLX
+@1 Spaceball alive
+2-button Microsoft mouse
+3-button Logitech / Genius mouse
+3-button mouse in Microsoft mode
+3-button Mouse Systems mouse
+3-button Sun mouse
+--always
+cfsetispeed
+cfsetospeed
+__ctype_toupper_loc
+--daemon
+DEC LK201 / LK401 keyboards
+DEC VSXXX-AA / VSXXX-GA mouse and VSXXX-A tablet
+--elo261-280
+--elo271-140
+--elo4002
+--elotouch
+ELO touchscreen, 10-byte mode
+ELO Touchscreen, 3-byte mode
+ELO touchscreen, 4-byte mode
+ELO touchscreen, 6-byte mode
+__errno_location
+__fprintf_chk
+--fujitsu
+Fujitsu serial touchscreen
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Gravis Stinger
+--h3600ts
+Handykey Twiddler chording keyboard
+Handykey Twiddler used as a joystick
+HvFirmware
+--iforce
+I-Force joystick or wheel
+inputattach
+inputattach: can't set device type
+inputattach: can't set line discipline
+inputattach: device initialization failed
+inputattach: ignored device initialization failure
+inputattach: invalid baud rate '%d'
+inputattach: invalid mode '%s'
+inputattach: must specify device
+inputattach: must specify mode
+inputattach: require baud rate
+inputattach: '%s' - only one mode allowed
+inputattach: '%s' - %s
+--intellimouse
+_IO_stdin_used
+Ipaq h3600 touchscreen
+-ipaqkbd
+Just enable device
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Logitech mouse with 4-5 buttons or a wheel
+--magellan
+Magellan / SpaceMouse
+--microsoft
+Microsoft IntelliMouse
+MicroTouch (3M) touchscreen
+--mmwheel
+--mouseman
+--mousesystems
+--mshack
+--mtouch
+--newtonkbd
+Newton keyboard
+--noinit
+--penmount
+Penmount touchscreen
+__printf_chk
+--ps2mult
+PS/2 serial multiplexer
+--ps2serkbd
+PS/2 via serial keyboard
+Sahara Touch-iT213 Tablet PC
+--spaceball
+SpaceBall 2003 / 3003 / 4000 FLX
+--spaceorb
+SpaceOrb 360 / SpaceBall Avenger
+__stack_chk_fail
+--stinger
+--stowawaykbd
+Stowaway keyboard
+strcasecmp
+strerror
+--sunkbd
+--sunmouse
+Sun Type 4 and Type 5 keyboards
+TAOS evaluation module
+--taos-evm
+tcgetattr
+tcsetattr
+--touchit213
+--touchright
+Touchright serial touchscreen
+--touchwin
+Touchwindow serial touchscreen
+--twiddler
+--twiddler-joy
+-twidjoy
+Usage: inputattach [--daemon] [--baud <baud>] [--always] [--noinit] <mode> <device>
+--vsxxx-aa
+Wacom W8001
+--warrior
+WingMan Warrior
+--zhen-hua
+Zhen Hua 5-byte protocol

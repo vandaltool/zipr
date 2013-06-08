@@ -1,0 +1,49 @@
+"" | . | .. | */ | */. | */.. )
+# 1994/02/19	DCN	Created
+# 1994/12/01	DCN	Cleanup and major improvements
+# along with Mtools.  If not, see <http://www.gnu.org/licenses/>.
+# (at your option) any later version.
+#!/bin/sh
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+case $dest in
+# Copyright 1994 David C. Niemi.
+# Copyright 1997,2001,2002 Alain Knaff.
+# Copyright (C) 1994 David C. Niemi (niemi@tuxers.net)
+# copyright notice; no other restrictions are placed on its use.
+	dest=$1
+	dest=${dest}.tgz	## Add on .tgz as default suffix
+# due to use of --exclude, --totals and -S.
+{	echo "Error: $0: ${@-}." >&2
+	echo "Usage: $0: [destination [source...] ]" >&2
+	echo "Writing gzip'd tar archive to \"$dest\"." >&2
+	echo "Writing gzipp'd tar archive to standard output." >&2
+elif [ $# = 1 ]; then
+elif [ -d "$dest" ]; then
+elif [ -f "$dest" ]; then
+Error ()
+	Error "Destination \"$dest\" already exists as a directory"
+	Error "Destination \"$dest\" already exists as a file"
+	Error "Destination file \"$dest\" already exists as a symbolic link"
+# GNU General Public License for more details.
+if [ $# = 0 ]; then
+if [ -h "$dest" ]; then
+if [ -z "$dest" -o "X$dest" = 'X-' ]; then
+# it under the terms of the GNU General Public License as published by
+	ls -l "$dest" >&2
+# Make a gzip'd tar archive $1 (or stdout) out of specified files
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# Mtools is distributed in the hope that it will be useful,
+# Mtools is free software: you can redistribute it and/or modify
+# (or, if not specified, from everything in the current directory)
+# Requires gnu tar (or something close) in the user's path
+# Requires gzip in the user's path.
+	src="${@-}"
+	tar cvf - . | gzip -9v
+	tar cvfS - -- $src | gzip -9v
+	tar -cvS --totals --exclude "$dest" -f - -- $src | gzip -9v > "$dest" 
+# tgz [destination [source...] ]
+# The author requires that any copies or derived works include this
+# the Free Software Foundation, either version 3 of the License, or
+# This file is part of mtools.
+*.t?z | *.?z | *.z | *.Z | *.tz | *.tz? )
+# You should have received a copy of the GNU General Public License

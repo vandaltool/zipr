@@ -1,0 +1,37 @@
+__assert_fail
+__bss_start
+Can't allocate row buffer
+-compress
+deltaBufferIndex <= deltaBufferSize
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.7
+__gmon_start__
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+-noreset
+[-noreset|-float|-packbits|-delta|-compress|-resolution N|-copies N] [pbmfile]
+overflow_add
+-packbits
+packbits created a degenerate run!
+packBufferIndex <= packBufferSize
+pbm_init
+../pbm/pbmtolj.c
+pbm_readpbminit
+pbm_readpbmrow
+pm_allocrow
+pm_close
+pm_keymatch
+pm_openr
+pm_usage
+__printf_chk
+-resolution
+	resolution = [75|100|150|300|600] (dpi)
+rowBufferIndex <= rowBufferSize
+rowBufferIndex < rowBufferSize
+tG;\$<tA

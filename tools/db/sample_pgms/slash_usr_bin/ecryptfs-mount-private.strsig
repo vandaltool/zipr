@@ -1,0 +1,51 @@
+#  * and mounts a user's encrypted private folder
+#!/bin/sh -e
+				break
+#  * checks it for validity
+				continue
+	echo "  cd $PWD"
+	echo `gettext "ERROR:"` `gettext "Encrypted private directory is not setup properly"`
+		echo `gettext "ERROR:"` `gettext "Too many incorrect password attempts, exiting"`
+				echo `gettext "ERROR:"` `gettext "Your passphrase is incorrect"`
+	echo `gettext "INFO:"` `gettext "To see this change in your current shell:"`
+	echo `gettext "INFO:"` `gettext "Your private directory has been mounted."`
+		echo -n "$MESSAGE"
+		exit 1
+# Extracted to a stand-alone script by Dustin Kirkland <kirkland@ubuntu.com>
+# First, silently try to perform the mount, which would succeed if the appropriate
+if [ -f $HOME/.ecryptfs/wrapping-independent ]; then
+if [ -f "$WRAPPED_PASSPHRASE_FILE" -a -f "$MOUNT_PASSPHRASE_SIG_FILE" ]; then
+if grep -qs "$HOME/.Private $PWD ecryptfs " /proc/mounts 2>/dev/null; then
+			if printf "%s\0" "$LOGINPASS" | ecryptfs-insert-wrapped-passphrase-into-keyring "$WRAPPED_PASSPHRASE_FILE" - ; then
+			if printf "%s\0" "$LOGINPASS" | ecryptfs-unwrap-passphrase "$WRAPPED_PASSPHRASE_FILE" - | ecryptfs-add-passphrase -; then
+if /sbin/mount.ecryptfs_private >/dev/null 2>&1; then
+	if [ $tries -ge $PW_ATTEMPTS ]; then
+		if [ $(wc -l < "$MOUNT_PASSPHRASE_SIG_FILE") = "1" ]; then
+#  * inserts the mount passphrase into the keyring
+#  * interactively prompts for a user's wrapping passphrase (defaults to their
+# key is available in the keyring
+		LOGINPASS=`head -n1`
+#    login passphrase)
+MESSAGE=`gettext "Enter your login passphrase:"`
+	MESSAGE=`gettext "Enter your wrapping passphrase:"`
+MOUNT_PASSPHRASE_SIG_FILE="$HOME/.ecryptfs/$PRIVATE_DIR.sig"
+			# No filename encryption; only insert fek
+# Original by Michael Halcrow, IBM
+# Otherwise, interactively prompt for the user's password
+PRIVATE_DIR="Private"
+PW_ATTEMPTS=3
+	/sbin/mount.ecryptfs_private
+		stty -echo
+	stty_orig=`stty -g`
+		stty $stty_orig
+TEXTDOMAIN="ecryptfs-utils"
+# This script:
+# This script mounts a user's confidential private folder
+	tries=0
+				tries=$(($tries + 1))
+#  * unwraps a users mount passphrase with their supplied wrapping passphrase
+	# use a wrapping passphrase different from the login passphrase
+	while [ $tries -lt $PW_ATTEMPTS ]; do
+WRAPPED_PASSPHRASE_FILE="$HOME/.ecryptfs/wrapped-passphrase"
+	WRAPPING_PASS="INDEPENDENT"
+WRAPPING_PASS="LOGIN"

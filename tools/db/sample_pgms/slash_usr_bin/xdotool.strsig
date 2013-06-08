@@ -1,0 +1,367 @@
+                -1 also means infinite.
+  1 means the window manager will not manage this window.
+  1 sets the urgency flag, 0 removes it.
+4CUsage: %s [options] <x> <y>
+Adding mask for event '%s': 0x%lx
+ additional commands after it.
+--all           Require all conditions match a window. Default is --any
+Any letter or key symbol such as Shift_L, Return, Dollar, a, space are valid,
+--any           Windows matching any condition will be reported
+--args N  - how many arguments to expect in the exec command. This is
+argument
+arguments
+Available commands:
+behave_screen_edge
+  blur             - When the window loses focus
+bottom-left
+bottom-right
+__bss_start
+Button is a button number. Generally, left = 1, middle = 2, 
+Can't consume %d args; are only %d available. This is a bug.
+-c, --clearmodifiers      - reset active modifiers (alt, etc) while typing
++chw:pd:
+--class         check regexp_pattern agains the window class
+--class CLASS - set the window's class
+classname
+--classname     check regexp_pattern agains the window classname
+--classname CLASSNAME - set the window's classname
+clearmodifiers
+--clearmodifiers     - clear active keyboard modifiers during keystrokes
+--clearmodifiers       - reset active modifiers (alt, etc) while typing
+clock_gettime
+Command failed.
+            commands
+coordinate will be used. This is useful for moving the window along
+  Corners: top-left, top-right, bottom-left, bottom-right
+__ctype_b_loc
+Defaulting to search window name, class, and classname
+    Default is 100ms
+defaults are: --name --classname --class
+--delay DELAY        - Use DELAY milliseconds between keystrokes
+--delay MILLISECONDS     - delay before activating. During this time,
+--delay <milliseconds> - delay between keystrokes
+--delay MILLISECONDS   - delay in milliseconds between clicks.
+--desktop N     only search a specific desktop number
+D$H+D$X)
+%d is out of range (only %d windows in list)
+Don't use both --terminator and --args.
+D$P;D$Xtu
+Each keysequence can be any number of modifiers and keys, separated by plus (+)
+edge-or-corner can be any of:
+  Edges: left, top, right, bottom
+__errno_location
+Events: 
+Exec arg[%d]: %s
+execvp failed
+Failure opening '%s': %s
+  focus            - When the window gets focus
+                    for continuing with more xdotool commands.
+  For example: alt+r
+__fprintf_chk
+-f     - Report the window with focus even if we don't think it is a 
+  Geometry: %ux%u
+getactivewindow
+get_desktop
+get_desktop_for_window
+get_desktop_viewport
+getdisplaygeometry
+getmouselocation
+get_num_desktops
+getopt_long_only
+getwindowfocus
+getwindowgeometry
+getwindowname
+getwindowpid
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Got event type %d
+Have no previous mouse position. Cannot restore.
+HEIGHT=%d
+HEIGHT=%u
+-h, --help             - show this help output
+-h, --help      show this help output
++hn:i:r:C:N:u:
+icon-name
+--icon-name NAME - set the window name while minimized/iconified
+If none of --name, --classname, or --class are specified, the 
+If no window is given, %1 is used. See WINDOW STACK in xdotool(1)
+If no window is given, and there are windows in the stack, %1 is used. Otherwise
+If you use literal 'x' or 'y' for the x coordinates, then the current
+If you want to use negative numbers for a coordinate, you'll need to
+including those not currently available on your keyboard.
+Invalid argument count, got %d, expected %d
+Invalid edge or corner, '%s'
+Invalid number of arguments (minimum is 2)
+Invalid number of arguments (minimum is 3)
+Invalid repeat value '%s' (must be >= 1)
+Invalid usage
+Invalid window '%s'
+Invalid window selection '%s'
+Invalid window stack selection '%s'
+Invalid window stack selection '%s' (out of range)
+invoke it this way (with the '--'):
+_IO_stdin_used
+            is to fork a child process and continue.
+It doesn't make sense to have multiple destinations as the new parent window. Your destination selection '%s' resulted in %d windows.
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+librt.so.1
+libX11.so.6
+libxdo.so.2
+--limit N       break search after N results
+                    marks the end of 'exec' arguments. This is useful
+maxdepth
+--maxdepth N    set search depth to N. Default is infinite.
+mouse-click
+  mouse-click      - Fired when the mouse button is released
+mousedown
+mouse-enter
+  mouse-enter      - When the mouse moves into the window
+mouse-leave
+  mouse-leave      - When the mouse leaves a window
+mousemove
+mousemove_relative
+--name          check regexp_pattern agains the window name
+--name NAME  - set the window name (aka title)
+        new activation will occur. This helps prevent accidental
+No arguments given.
+No search results, still waiting...
+Not enough arguments given.
+                Not supported by all X11 applications
+only one axis.
+onlyvisible
+--onlyvisible   matches only windows currently visible
+otherwise, normal usage looks like this:
+        otherwise this timer will reset. Default is no delay (0).
+overrideredirect
+--overrideredirect OVERRIDE - set override_redirect.
+--pid PID       only show windows belonging to specific process
+  Position: %d,%d (screen: %d)
+-p, --polar               - Use polar coordinates. X as an angle, Y as distance
+__printf_chk
+--quiesce MILLISECONDS   - quiet time period after activating that no
+        re-activation immediately after an event. Default is 2000 (2
+--relative  - make movements relative to the current window position
+--relative    - Move relative to the current desktop. Negative values OK
+--repeat REPEATS       - number of times times to click. Default is 1
+right = 3, wheel up = 4, wheel down = 5
+--role ROLE - set the window's role string
+Run '%s help' if you want a command list
+   %s 100 140
+   %s -- -20 -15
+SCREEN=%d
+--screen N      only search a specific screen. Default is all screens
+--screen SCREEN           - which screen to move on, default is current screen
+        seconds).
+Select: %d
+Selecting events on window %ld: mask = 0x%lx
+Selectmask: 0x%lx
+selectwindow
+%s: error: environment variable $%s is not set.
+%s: error: failed to allocate memory while parsing `%s'.
+%s: error: `%s' needs at least %d %s; only %d given
+set_desktop
+set_desktop_for_window
+set_desktop_viewport
+set_num_desktops
+set_window
+--shell     - output shell variables for use with eval
+Sleep a given number of seconds. Fractions of seconds are valid.
+__stack_chk_fail
+--step support not yet implemented
+strcasecmp
+__strdup
+strerror
+%s: Unknown command: %s
+--sync                    - only exit once the mouse has moved
+--sync    - only exit once the window has been mapped (is visible)
+--sync    - only exit once the window has been unmapped (is hidden)
+--sync    - only exit once the window has focus
+--sync    - only exit once the window has minimized (is not visible)
+--sync      - only exit once the window has moved
+--sync      - only exit once the window has resized
+--sync    - only exit once the window is active (is visible + active)
+--sync    - only exit when the command given finishes. The default
+--sync          Wait until a search result is found.
+terminator
+--terminator TERM - similar to --args, specifies a terminator that
+T$H9T$\t
+         that has focus.
+The action is any valid xdotool command (chains OK here)
+the currently-focused window is used
+The event is a window event, such as mouse-enter, resize, etc.
+There are no windows in the stack
+There are no windows on the stack, Can't continue.
+This command consumes all arguments after it, so you cannot chain
+This flag is deprecated. Assuming you mean --name (the window name).
+    This has no effect if you do not use --repeat.
+--title         DEPRECATED. Same as --name.
+$tIWIDTH=%d
+to be the remainder of the command line.
+Too few arguments (got %d, minimum is %d)
+top-left
+         top-level window. The default is to find the top-level window
+top-right
+T$T;T$\t
+Unexpected event: %d
+Unknown command '%s'
+Unknown event '%s'
+unknown opt: %d
+Unless --args OR --terminator is specified, the exec command is assumed
+--urgency URGENT - set the window's urgency hint.
+Usage: %s
+Usage: %s [--clearmodifiers] [--window WINDOW] <button>
+Usage: %s <cmd> <args>
+Usage: %s desktop
+Usage: %s [-f]
+Usage: %s num_desktops
+Usage: %s [options] <button>
+Usage: %s [options] command [arg1 arg2 ...] [terminator]
+Usage: %s [options] edge-or-corner action [args...]
+Usage: %s [options] <keysequence> [keysequence ...]
+Usage: %s [options] [window=%1]
+Usage: %s [options] [window=%1] x y
+Usage: %s [options] <x> <y>
+Usage: %s seconds
+Usage: %s [--shell]
+Usage: %s [--sync] [--usehints] [window=%1] width height
+Usage: %s [--sync] [window=%1]
+Usage: %s [window=%1]
+Usage: %s [window=%1] <desktop>
+Usage: %s window event action [args...]
+Usage: %s [window_source=%1] window_destination
+Usage: %s [--window windowid] [--delay milliseconds] <things to type>
+Usage: %s x y
+Usage: xdotool %s [options] regexp_pattern
+            useful for ending an exec and continuing with more xdotool
+usehints
+--usehints  - Use window sizing hints (like font size in terminals)
+Using %d for x
+Using %d for y
+Using polar coordinate mode makes 'x' the angle (in degrees) and
+__vfprintf_chk
+Waiting for next event...
+What button do you want me to send?
+WIDTH=%u
+windowactivate
+WINDOW=%d
+windowkill
+Window %ld
+WINDOW=%ld
+window %ld - failed to get height/width?
+window %ld - failed to get location?
+window %ld has no pid associated with it.
+windowmap
+windowminimize
+windowmove
+windowraise
+windowreparent
+windowsize
+windowunmap
+--window <windowid>    - specify a window to send keys to
+--window WINDOW      - send keystrokes to a specific window
+--window WINDOW        - specify a window to send click to
+WM_ICON_NAME
+WM_WINDOW_ROLE
+-w, --window <windowid>   - specify a window to move relative to.
+XConnectionNumber
+xdo_clear_active_modifiers
+xdo_click failed on window %ld
+xdo_click_multiple
+xdo_free
+xdo_free_active_modifiers
+xdo_get_active_modifiers
+xdo_get_active_window reported an error
+xdo_get_current_desktop
+xdo_get_desktop_for_window
+xdo_get_desktop_viewport
+xdo_get_number_of_desktops
+xdo_get_viewport_dimensions
+xdo_get_window_location
+xdo_get_window_name
+xdo_get_window_size
+xdo_keysequence
+xdo_keysequence_down
+xdo_keysequence reported an error for string '%s'
+xdo_keysequence_up
+xdo_mousedown
+xdo_mousedown reported an error on window %ld
+xdo_mouselocation
+xdo_mouselocation2
+xdo_mousemove
+xdo_mousemove_relative
+xdo_mousemove_relative reported an error
+xdo_mousemove_relative_to_window
+xdo_mousemove reported an error
+xdo_mouseup
+xdo_mouseup reported an error on window %ld
+xdo_mouse_wait_for_move_from
+xdo_mousewindow
+xdo_set_active_modifiers
+xdo_set_current_desktop
+xdo_set_desktop_for_window
+xdo_set_desktop_for_window on window %ld, desktop %ld failed
+xdo_set_desktop_viewport
+xdo_set_number_of_desktops
+xdotool version %s
+xdo_type
+xdo_type reported an error
+xdo_version
+xdo_window_activate
+xdo_window_activate on window:%ld reported an error
+xdo_window_focus
+xdo_window_focus reported an error
+xdo_window_get_active
+xdo_window_get_focus
+xdo_window_get_pid
+xdo_window_kill
+xdo_window_kill reported an error on window %ld
+xdo_window_map
+xdo_window_map reported an error
+xdo_window_minimize
+xdo_window_minimize reported an error
+xdo_window_move
+xdo_window_move reported an error while moving window %ld
+xdo_window_raise
+xdo_window_raise reported an error on window %ld
+xdo_window_reparent
+xdo_window_reparent reported an error
+xdo_window_reparent reported an error on for src=%ld, dest=%ld
+xdo_window_sane_get_focus
+xdo_window_search
+xdo_window_select_with_click
+xdo_window_select_with_click reported an error
+xdo_window_setclass
+xdo_window_set_override_redirect
+xdo_window_setprop
+xdo_window_setsize
+xdo_window_setsize on window:%ld reported an error
+xdo_window_seturgency
+xdo_window_translate_with_sizehint
+xdo_window_unmap
+xdo_window_unmap reported an error
+xdo_window_wait_for_active
+xdo_window_wait_for_focus
+xdo_window_wait_for_map_state
+xdo_window_wait_for_size
+x:%d y:%d screen:%d window:%ld
+XGetWindowAttributes
+XNextEvent
+XScreenNumberOfScreen
+XSelectInput
+XSelectInput reported an error
+XSetErrorHandler
+        your mouse must stay in the area selected (corner or edge)
+You said '--args %d' but only gave %d arguments.
+You specified the wrong number of args.
+You specified the wrong number of args (expected 2).
+You specified the wrong number of args (expected 2 coordinates or 'restore').
+'y' the distance.

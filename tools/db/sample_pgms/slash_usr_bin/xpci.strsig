@@ -1,0 +1,48 @@
+# Add project root directory (enable symlink, and trunk execution).
+    and PROJECT_ROOT_DIRECTORY not in sys.path):
+# by the Free Software Foundation.
+# Copyright (C) 2012 Bryce Harrington bryce@canonical.com
+    devices = get_pci_devices(text)
+    else:
+    for device in devices:
+from xdiagnose.pci_devices import get_pci_devices
+        help="Show debug messages")
+        if device:
+            if device.generation:
+    if devices is None:
+            if device.title:
+    if len(args) > 0:
+if __name__ == "__main__":
+            if not device.supported:
+if (os.path.exists(os.path.join(PROJECT_ROOT_DIRECTORY, 'xdiagnose'))
+    import optparse
+import os
+        import subprocess
+import sys
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+    (options, args) = parser.parse_args()
+    os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0]))))
+    os.putenv('PYTHONPATH', PROJECT_ROOT_DIRECTORY) # for subprocesses
+    parser.add_option(
+    parser = optparse.OptionParser(version="%prog %ver")
+                print device.generation,
+            print device.name, device.regex,
+                print device.title,
+            print ','.join(device.drivers),
+                print " (NOT SUPPORTED)"
+        process = subprocess.Popen('lspci -vvnn', shell=True, stdout=subprocess.PIPE)
+PROJECT_ROOT_DIRECTORY = os.path.abspath(
+# PURPOSE.  See the GNU General Public License for more details.
+        sys.exit(1)
+    sys.path.insert(0, PROJECT_ROOT_DIRECTORY)
+        text = ' '.join(args)
+        text = process.communicate()[0]
+# This program is distributed in the hope that it will be useful, but
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 3, as published
+#!/usr/bin/python
+        "-v", "--verbose", action="store_true", dest="verbose",
+# WITHOUT ANY WARRANTY; without even the implied warranties of
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along

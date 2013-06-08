@@ -1,0 +1,107 @@
+##############################################################################
+and write to the current directory using the basename of the file from the
+archive.  Beware: if two matching files in the archive have the same basename,
+# archive.  See 'ptargrep --help' for more documentation.
+archive which contain lines matching the specified pattern and either print out
+    'basename|b',
+   --basename|-b     ignore directory paths from archive
+    close($fh);
+contained in a tar archive.  You might use this to identify all files in an
+Copyright 2010 Grant McLean E<lt>grantm@cpan.orgE<gt>
+        $dir =~ s{\A/}{./};
+Display this documentation.
+    else {
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+grep regex).
+=head1 COPYRIGHT
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SYNOPSIS
+    'help|?',
+   --help|-?         detailed help message
+    if($body !~ $pattern) {
+    if($dir and not $opt{basename}) {
+if(!GetOptions(\%opt,
+    if($opt{'ignore-case'}) {
+    if($opt{'list-only'}) {
+	if $running_under_some_shell;
+    'ignore-case|i',
+   --ignore-case|-i  do case-insensitive pattern matching
+in turn.
+=item B<--basename> (alias -b)
+=item B<--help> (alias -?)
+=item B<--ignore-case> (alias -i)
+=item B<--list-only> (alias -l)
+=item B<--verbose> (alias -v)
+    'list-only|l',
+   --list-only|-l    list matching filenames rather than extracting matches
+Log debugging info to STDERR.
+    _log("filename: %s  (%d bytes)", $path, $f->size);
+    _log("  found match - extracting");
+        _log("  no match");
+    _log("Processing archive: $filename");
+        _log("  writing to $dir/$file");
+        _log("  writing to ./$file");
+Make pattern matching case-insensitive.
+make_pattern( shift(@ARGV) );
+        match_file($f) if $f->size > 0;
+    -message => "No pattern specified",
+    -message => "No tar files specified",
+        mkpath($dir) unless -d $dir;
+Multiple tar archive filenames can be specified - they will each be processed
+    my $body = $f->get_content();
+    my($dir, $file) = $path =~ m{\A(?:(.*)/)?([^/]+)\z};
+    my($f)   = @_;
+    my($fh);
+    my($filename) = @_;
+    my($format, @args) = @_;
+    my $next = Archive::Tar->iter($filename);
+my(%opt, $pattern);
+    my($pat) = @_;
+    my($path, $body) = @_;
+    my $path = $f->name;
+        next unless $f->is_file;
+        open $fh, '>', "$dir/$file" or die "open($dir/$file): $!";
+        open $fh, '>', $file or die "open($file): $!";
+  Options:
+        $pattern = qr{(?im)$pat};
+        $pattern = qr{(?m)$pat};
+pod2usage(-exitstatus => 0, -verbose => 2) if $opt{help};
+    pod2usage(-exitval => 1,  -verbose => 0);
+pod2usage(-exitval => 1,  -verbose => 0,
+    print $fh $body;
+        print $path, "\n";
+Print the pathname of each matching file from the archive to STDOUT.  Without
+process_archive($_) foreach @ARGV;
+ptargrep - Apply pattern matching to the contents of files in a tar archive
+  ptargrep [options] <pattern> <tar file> ...
+        return;
+    return unless $opt{verbose};
+    save_file($path, $body);
+sub _log {
+sub make_pattern {
+sub match_file {
+sub process_archive {
+sub save_file {
+the pathnames or extract the files.
+The pattern will be used as a Perl regular expression (as opposed to a simple
+the second file extracted will overwrite the first.
+this option, the default behaviour is to extract each matching file.
+This program is free software; you can redistribute it and/or modify it
+This utility allows you to apply pattern matching to B<the contents> of files
+# Tool for using regular expressions against the contents of files in a tar
+under the same terms as Perl itself. 
+) unless @ARGV;
+use Archive::Tar qw();
+use File::Path   qw(mkpath);
+use Getopt::Long qw(GetOptions);
+use Pod::Usage   qw(pod2usage);
+use strict;
+use warnings;
+#!/usr/bin/perl
+    'verbose|v',
+   --verbose|-v      write debugging message to STDERR
+    warn sprintf($format, @args) . "\n";
+When matching files are extracted, ignore the directory path from the archive
+    while( my $f = $next->() ) {

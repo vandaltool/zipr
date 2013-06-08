@@ -1,0 +1,95 @@
+asciiTextWidgetClass
+__assert_fail
+*baseTranslations: #override :<Key>Return: default-exit()
+bottomMargin
+__bss_start
+-buttons
+.buttons
+    -buttons string             comma-separated list of label:exitcode
+?cannot get memory for message file
+    -center                     pop up at center of screen
+<ClientMessage>WM_PROTOCOLS: exit(1)
+commandWidgetClass
+-default
+.defaultButton
+DefaultButton
+    -default button             button to activate if Return is pressed
+default-exit
+displayCaret
+    -file filename              file to read message from, "-" for stdin
+formWidgetClass
+__fprintf_chk
+fromHoriz
+fromVert
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+hScrollbar
+_IO_stdin_used
+_Jv_RegisterClasses
+labelWidgetClass
+leftMargin
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXaw.so.7
+libXt.so.6
+maxHeight
+maxWidth
+*message.Scroll: whenNeeded
+-nearmouse
+.nearMouse
+NearMouse
+    -nearmouse                  pop up near the mouse cursor
+n < psize
+    -print                      print the button label when selected
+.printValue
+PrintValue
+rightMargin
+%s: cannot get memory for message string
+scrollbarWidgetClass
+%s:  internal error found %d instead of %d pairs
+%s:  internal error, found extra pairs (should be %d)
+%s: problems reading message file
+%s: unable to create query form with buttons: %s
+-timeout
+.timeout
+    -timeout secs               exit with status 0 after "secs" seconds
+topMargin
+usage: %s [-options] [message ...]
+vertDistance
+vScrollbar
+where options include:
+WM_DELETE_WINDOW
+XInternAtom
+XMapWindow
+Xmessage
+../xmessage/xmessage.c
+XParseGeometry
+XQueryPointer
+XSetWMProtocols
+XtAddCallback
+XtAppAddActions
+XtAppAddTimeOut
+XtAppInitialize
+XtAppMainLoop
+XtCreateManagedWidget
+XtDestroyWidget
+XtDisplay
+XtGetApplicationResources
+XtMalloc
+XtOverrideTranslations
+XtParseTranslationTable
+XtRealizeWidget
+XtScreen
+XtSetLanguageProc
+XtSetMappedWhenManaged
+XtShellStrings
+XtStrings
+XtVaCreateManagedWidget
+XtVaCreateWidget
+XtVaGetValues
+XtVaSetValues
+XtWindow

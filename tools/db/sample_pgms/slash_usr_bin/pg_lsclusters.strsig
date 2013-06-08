@@ -1,0 +1,42 @@
+#  (at your option) any later version.
+B<pg_lsclusters> [I<options>]
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+# (C) 2005-2009 Martin Pitt <mpitt@debian.org>
+@columns = ('Version', 'Cluster', 'Port', 'Status', 'Owner', 'Data directory',
+@colwidths = qw/7 9 4 6 8 34 1/;
+            defined $info{'owneruid'} ? (getpwuid $info{'owneruid'})[0] : '<unknown>', 
+Do not print the column header line.
+exit 1 unless GetOptions ('h|no-header' => \$no_header);
+    $fmtstring .= '%-'.$cw.'s';
+    $fmtstring .= ' ' if $fmtstring;
+$fmtstring .= "\n";
+    foreach $c (sort @clusters) {
+foreach $cw (@colwidths) {
+foreach $v (sort (get_versions())) {
+#  GNU General Public License for more details.
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SYNOPSIS
+        %info = cluster_info $v, $c;
+	    $info{'pgdata'} || '<not set>', $info{'logfile'} || 'custom');
+            $info{'running'} ? "online" : "down", 
+=item B<-h>, B<--no-header>
+#  it under the terms of the GNU General Public License as published by
+            'Log file');
+Martin Pitt L<E<lt>mpitt@debian.orgE<gt>>
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    my @clusters = get_version_clusters $v;
+pg_lsclusters - show information about all PostgreSQL clusters
+printf $fmtstring, @columns unless $no_header;
+        printf $fmtstring, ($v, $c, $info{'port'}, 
+# Show all PostgreSQL clusters in a list
+#  the Free Software Foundation; either version 2 of the License, or
+This command shows a list about the configuration and status of all clusters.
+#  This program is distributed in the hope that it will be useful,
+#  This program is free software; you can redistribute it and/or modify
+use Getopt::Long;
+use lib '/usr/share/postgresql-common';
+use PgCommon;
+#!/usr/bin/perl -wT

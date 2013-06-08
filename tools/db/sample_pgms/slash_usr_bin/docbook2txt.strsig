@@ -1,0 +1,2 @@
+#! /bin/sh
+jw -f docbook -b txt "$@"

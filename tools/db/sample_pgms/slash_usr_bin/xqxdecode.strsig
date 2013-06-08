@@ -1,0 +1,104 @@
+ !"#	%&'()*+,-./0123456789:;<=>? ABCDEFGHIJKLMNO0QRSTUVWGYZ[\]^V`abcd]fghcjkgmkomoarith_decode
+$&'(*+-.0134689;<>? !
+\$@9\$0s
+9J|~:;0u
+ABORT marker segment encountered
+@ACDEFHIJKMNO0223456789:;==
+arith_encode
+__assert_fail
+	A XQX stream is the printer langauge used by some HP LaserJet
+BD$d;t$d
+cx >= 0 && cx < 4096
+D$0+D$$=
+D$,9D$(t
+D$(9D$\v
+       -d basename Basename of .pbm file for saving decompressed planes
+D$D+L$X)
+	Decode a XQX stream into human readable form.
+d:hoD:?h
+		DL = %d, D = %d, P = %d, - = %d, XY = %d x %d
+       -D lvl      Set Debug level [%d]
+	Don't understand magic number 0x%lx
+efghcijkg
+EOF on file reading header.
+__errno_location
+file '%s' doesn't exist
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+       -h          Print hex file offsets
+$Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $ 
+Incremental BIE does not continue previous one
+Input data stream contains invalid data
+Input data stream uses unimplemented JBIG features
+_IO_getc
+_IO_stdin_used
+jbig_ar.c
+JBIG-KIT 2.0 -- (c) 1995-2008 Markus Kuhn -- Licence: GPL
+JBIG uses unimplemented feature
+		L0 = %d, MX = %d, MY = %d
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Missing image %dx%d!
+Missing XQX Magic number
+Not enough memory available
+       -o          Print file offsets
+Options:
+		Options = %d %s%s%s%s%s%s%s%s
+		Order   = %d %s%s%s%s%s
+ [Page %d]
+@PJL SET JOBATTR=
+@PJL USTATUS TIMED = 
+PQRSTVWWHHJJKMM
+	printers, such as the HP LaserJet M1005 (MFP).
+__printf_chk
+Reached specified image size
+%s-%02d-%d.pbm
+	%s(0x%lx)
+s->buffer != 0xff
+	%s, %ld (0x%lx)
+%s(%ld), %ld items
+__sprintf_chk
+ss < 113
+__stack_chk_fail
+strerror
+Total size: %d bytes
+Unexpected end of input data stream
+Unknown error code passed to jbg_strerror()
+Unknown marker segment encountered
+		%u stripes, %d layers, %d planes
+u&;t$@s 
+__vfprintf_chk
+ VLENGTH
+Warning: 
+XQX_0x%lx, %ld items
+	xqxdecode [options] < zjs-file
+XQX_END_DOC
+XQX_END_PAGE
+XQX_END_PLANE
+	XQXI_0x%lx, %ld size,
+	XQXI_0x%x, %ld (0x%lx)
+XQXI_BIH
+XQXI_DMDEFAULTSOURCE
+XQXI_DMDUPLEX
+XQXI_DMMEDIATYPE
+XQXI_DMPAPER
+XQXI_DUPLEX_PAUSE
+XQXI_ECONOMODE
+XQXI_END
+XQXI_RASTER_X
+XQXI_RASTER_Y
+XQXI_RESOLUTION_X
+XQXI_RESOLUTION_Y
+XQXI_VIDEO_BPP
+XQXI_VIDEO_X
+XQXI_VIDEO_Y
+XQX_JBIG
+XQX_MAGIC, 0x%lx (%.4s)
+XQX_START_DOC
+XQX_START_PAGE
+XQX_START_PLANE

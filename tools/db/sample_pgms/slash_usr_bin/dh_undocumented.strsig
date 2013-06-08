@@ -1,0 +1,18 @@
+be used.
+dh_undocumented - undocumented.7 symlink program (deprecated no-op)
+Do not run!
+F<undocumented.7> man page, and so this program does nothing, and should not
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+pages not present in a package. Debian policy now frowns on use of the
+This program is a part of debhelper.
+This program used to make symlinks to the F<undocumented.7> man page for man
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w
+warning("This program does nothing and should no longer be used.");

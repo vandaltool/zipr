@@ -1,0 +1,77 @@
+%1s %1s %1s %1s |
+ %3d/%3d |
+%5d/%5d | capacity: %3d | 
+%5d/%5d | pressure: %3d | 
+baudrate
+... Baud rate is %d
+ -b, --baudrate baudrate    - set baudrate
+cfsetispeed
+cfsetospeed
+... %d bytes garbage.
+... %d bytes unexpected data.
+%d | %d/%d |
+%d.%d.%d
+__errno_location
+error during query.
+Error during read.
+Error reading data.
+... Expecting packet sized %d
+Failed to get serial attributes.
+Failed to open device file.
+failed to parse coordinate data.
+failed to parse touch data.
+failed to reset tablet.
+__fprintf_chk
+... garbage flushed
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ -h, --help                 - usage
+... %#hhx 
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__memmove_chk
+Nonblock failed.
+Not a serial device?
+not written.
+Only able to read %d bytes.
+... Opening device '%s'.
+Options:
+... +++ out of cheese error +++ redo from start +++
+... Parsing coordinate data.
+... Parsing query reply.
+... Parsing touch query reply.
+__printf_chk
+... Querying tablet.
+... Read %d bytes.
+... read %d bytes in one chunk.
+... Reading %d bytes from device.
+... Reset requested, resetting tablet
+ --reset                    - send reset command before doing anything
+... skipping over %d bytes.
+__stack_chk_fail
+TABLET: pressure max: %d
+TABLET: tilt_x max: %d tilt_y max %d
+TABLET: version: %d
+TABLET: x max: %d y max %d
+tcgetattr
+tcsetattr
+TOUCH capacity resolution: %d
+TOUCH panel resolution: %d
+touch parsing error code %d
+TOUCH sensor id: %d
+TOUCH version: %d
+TOUCH x max: %d y max %d
+... Trying touch query
+Unsupported baud rate.
+Usage: wacom-serial-debugger [options] device
+ -v, --verbose              - verbose output
+ -V, --version              - version info
+... Waiting for events
+... Writing SAMPLING command.
+... Writing STOP command.
+... Written '%s'.

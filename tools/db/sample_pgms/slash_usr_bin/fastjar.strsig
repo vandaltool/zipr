@@ -1,0 +1,154 @@
+  -0              store only; use no ZIP compression
+%10s: %s
+%10s: %s/
+%6lu %s %s
+%a %b %d %H:%M:%S %Z %Y
+Absolute path names are not allowed.
+adding: META-INF/ (in=0) (out=0) (stored 0%%)
+adding: META-INF/MANIFEST.MF (in=56) (out=56) (stored 0%%)
+adding: %s 
+adding: %s (in=%d) (out=%d) (stored 0%%)
+                  and its Class-Path (currently unimplemented)
+can't expand file
+  -c              create new archive
+  -C DIR FILE     change to the specified directory and include
+closedir
+../compress.c
+Copyright 1999, 2000, 2001  Bryan Burns
+Copyright 2006 Free Software Foundation
+Created-By: 
+-ctxuvVf:m:C:0Mi:J:E@
+__ctype_b_loc
+deflated
+deflateEnd
+deflateInit2_
+deflateReset
+  -E              don't include the files found in a directory
+end_of_entries
+__errno_location
+Error adding file to jar!
+Error adding %s (in directory %s) to jar archive!
+Error adding %s to jar archive!
+Error calling deflateEnd
+Error! CRCs do not match! Got %lx, expected %lx
+Error deflating! %s:%d
+error: (%d) %s
+Error extracting JAR archive!
+Error inflating file! (%d)
+Error initializing deflation!
+Error in JAR file! Cannot locate central header!
+Error in JAR file format
+Error in JAR file! (not compressed but data desc.)
+Error! Missing data descriptor!
+Error opening %s.
+Error opening %s for reading!
+error realloc-ing subdir_list_size
+Error resetting deflation
+Error: %s
+error writing to jar
+Example 1: to archive two class files into an archive called classes.jar: 
+Example 2: use an existing manifest file 'mymanifest' and archive all the
+extracted
+  -f FILE         specify archive file name
+  @FILE           expand options and files from FILE
+Filename is NULL!
+     files in the foo/ directory into 'classes.jar': 
+__fprintf_chk
+ftruncate
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  --help          print this help, then exit
+Hmmm.. %s exists but isn't a directory!
+Ick! %#x
+If any file is a directory then it is processed recursively.
+  -i              generate an index of the packages in this jar
+Illegal file specified: %s
+(in=%d) (out=%d) (%s %d%%)
+(in = %d) (out = %d) (%s %d%%)
+inflated
+inflateInit2_
+inflateReset
+in the same order the 'm' and 'f' flags are specified.
+Invalid manifest file specified.
+_IO_getc
+_IO_stdin_used
+     jar cvf classes.jar Foo.class Bar.class 
+     jar cvfm classes.jar mymanifest -C foo/ .
+JarIndex-Version: 1.0
+jar (%s) %s
+../jartool.c
+  -J*             -J options are ignored
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libz.so.1
+localtime
+malloc errror
+Malloc of in_buff failed.
+Malloc of out_buff failed.
+Manifest-Version: 1.0
+  -M              Do not create a manifest file for the entries
+META-INF/
+META-INF/INDEX.LIST
+META-INF/MANIFEST.MF
+  -m FILE         include manifest information from specified manifest file
+Need a dictionary?
+out of memory
+Out of memory.
+__printf_chk
+Pushback failed.
+Pushback failure.
+Read failed on input file.
+  -@              read names from stdin
+Realloc of out_buff failed.
+%s: can't find central directory header
+%s: can't find end of central directory: %s
+%s: error closing jar archive: %s
+%s: error: missing argument for -C.
+%s: error opening %s for reading: %s
+%s: error opening %s for writing: %s
+skipping: %s
+__snprintf_chk
+%s: one of options -{ctxui} must be specified.
+%s: option '-@' is supported only with '-c' or '-u'.
+%s: option `%s' requires an argument.
+%s: %s: can't overwrite non-directory with directory
+%s: %s: can't seek file
+%s: %s is a directory in the archive
+%s: %s is not seekable
+%s: %s: unexpected end of file
+__stack_chk_fail
+Store many files together in a single `jar' file.
+__strdup
+strerror
+strftime
+%s: `-u' mode requires a file name
+T$89T$4v'
+                  the following file
+The manifest file name and the archive file name needs to be specified
+This is free software; see the source for copying conditions.  There is NO
+  -t              list table of contents for archive
+Traversal to parent directories during unpacking!
+Tried to read %lu but read %lu instead.
+Try `%s --help' for more information.
+Unknown behavior from inflate
+updating: %s 
+Usage: %s {ctxuV}[vfm0ME@] [jar-file] [manifest-file] [-C dir] files ...
+  -u              update existing archive
+  -v              generate verbose output on standard output
+  -V, --version   display version information
+Warning: using non standard '-E' option
+Warning: using non standard '-@' option
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+We're shit outta luck!
+  -x              extract named (or all) files from archive
+Z_BUF_ERROR
+Z_DATA_ERROR
+Z_MEM_ERROR
+Z_STREAM_ERROR

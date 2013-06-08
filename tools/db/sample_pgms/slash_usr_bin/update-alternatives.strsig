@@ -1,0 +1,230 @@
+------------------------------------------------------------
+1.16.1.2
+  %-12.12s %-*.*s %-10.10s %s
+%-30s %-8s %s
+a && a->master_file
+a && a->name
+                           add a group of alternatives to the system.
+--admindir
+  --admindir <directory>   change the administrative directory.
+  --all                    call --config on all alternatives.
+alphasort64
+--altdir
+  --altdir <directory>     change the alternatives directory.
+alternative link is not absolute as it should be: %s
+alternative link %s is already managed by %s.
+alternative link %s is already managed by %s (slave of %s).
+alternative name (%s) must not contain '/' and spaces.
+alternative path is not absolute as it should be: %s
+alternative path %s doesn't exist.
+Alternative: %s
+alternative %s can't be master: it is a slave of %s
+alternative %s can't be slave of %s: it is a master alternative.
+alternative %s can't be slave of %s: it is a slave of %s
+alternative_select_choice
+alternative %s for %s not registered, not removing.
+alternative %s for %s not registered, not setting.
+alternative_sort_choices
+alternative %s (part of link group %s) doesn't exist. Removing from list of alternatives.
+Alternative %s unchanged because choice %s is not available.
+__assert_fail
+  automatic mode.
+automatic updates of %s/%s are disabled, leaving it alone.
+auto mode
+  --auto <name>            switch the master link <name> to automatic mode.
+auto-repair link group %s
+b && b->master_file
+b && b->name
+Best: %s
+bindtextdomain
+Call %s.
+cannot append to '%s'
+cannot scan directory `%.255s'
+cannot stat file '%s'
+can't install unknown choice %s
+Commands:
+compare_fileset
+compare_slave_link
+--config
+  --config <name>          show alternatives for the <name> group and ask the
+Copyright (C) 1995 Ian Jackson.
+Copyright (C) 2000-2002 Wichert Akkerman.
+Copyright (C) 2009-2010 Raphael Hertzog.
+__ctype_b_loc
+current alternative %s is unknown, switching to %s for link group %s.
+Current 'best' version is '%s'.
+dcgettext
+dcngettext
+Debian %s version %s.
+discarding obsolete slave link %s (%s).
+--display
+  --display <name>         display information about the <name> group.
+DPKG_ADMINDIR
+DPKG_UNTRANSLATED_MESSAGES
+duplicate path %s
+duplicate slave link %s
+duplicate slave name %s
+  (e.g. pager)
+  (e.g. /usr/bin/less)
+  (e.g. /usr/bin/pager)
+__errno_location
+error creating symbolic link `%.255s'
+/etc/alternatives
+failed to allocate memory
+  --force                  allow replacing files with alternative links.
+forcing reinstallation of alternative %s because link group %s is broken.
+fork failed
+__fprintf_chk
+fs->master_file
+--get-selections
+  --get-selections         list master alternative names and their status.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+__gmon_start__
+  --help                   show this help message.
+                           in automatic mode (relevant for --config only)
+--install
+  --install <link> <name> <path> <priority>
+--install needs <link> <name> <path> <priority>
+invalid status
+_IO_stdin_used
+later for copying conditions. There is NO warranty.
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+line not terminated while trying to read %s
+line too long or not terminated while trying to read %s
+<link> and <path> can't be the same
+  link currently absent
+  link currently points to %s
+link group %s fully removed
+link group %s updated to point to %s
+<link> is the symlink pointing to %s/<name>.
+Link: %s
+link %s is both primary and slave
+  --list <name>            display all targets of the <name> group.
+localtime
+  --log <file>             change the log file.
+__longjmp_chk
+__lxstat64
+malloc failed (%zu bytes)
+manual mode
+master file
+master link
+<name> is the master name for this link group.
+name %s is both primary and slave
+need --display, --query, --list, --get-selections, --config, --set, --set-selections, --install, --remove, --all, --remove-all or --auto
+newlines prohibited in update-alternatives files (%s)
+no alternatives for %s.
+Nothing to configure.
+not removing %s since it's not a symlink.
+not replacing %s with a link.
+No versions available.
+Options:
+<path> is the location of one of the alternative target files.
+Press enter to keep the current choice[*], or type selection number: 
+__printf_chk
+priority
+Priority: %d
+<priority> is an integer; options with higher numbers have higher priority in
+priority must be an integer
+priority of %s: %s
+  --query <name>           machine parseable version of --display <name>.
+  --quiet                  quiet operation, minimal output.
+read error in %.250s
+readlink
+--remove
+--remove-all
+  --remove-all <name>      remove <name> group from the alternatives system.
+  --remove <name> <path>   remove <path> from the <name> group alternative.
+removing manually selected alternative - switching %s to auto mode
+renaming %s link from %s to %s.
+renaming %s slave link from %s to %s.
+run with %s
+%s %-12d %-*s % -10d %s
+%s --auto %s
+scandir64
+%s corrupt: %s
+Selection
+setlocale
+  --set <name> <path>      set <path> as alternative for <name>.
+--set-selections
+  --set-selections         read alternative status from standard input.
+setting up automatic selection of %s.
+setvbuf failed
+--skip-auto
+  --skip-auto              skip prompt for alternatives correctly configured
+skip creation of %s because associated file %s (of link group %s) doesn't exist.
+Skip invalid line: %s
+Skip unknown alternative %s.
+slave file
+slave link
+    [--slave <link> <name> <path>] ...
+slave link same as main link %s
+slave name
+--slave needs <link> <name> <path>
+--slave only allowed with --install
+  slave %s: %s
+--%s needs a <directory> argument
+--%s needs a <file> argument
+--%s needs <name>
+--%s needs <name> <path>
+%s - priority %d
+[%s %s] 
+%s: %s: 
+%s/%s.dpkg-tmp
+%s --set %s %s
+%s/%s has been changed (manually or by a script). Switching to manual updates only.
+%s/%s is dangling, it will be updated with best choice.
+__stack_chk_fail
+<standard input>
+status of link group %s set to %s
+Status: %s
+__strdup
+strerror
+strftime
+There are %d choices for the alternative %s (providing %s).
+There is %d choice for the alternative %s (providing %s).
+There is no program which provides %s.
+There is only one alternative in link group %s: %s
+This is free software; see the GNU General Public License version 2 or
+to return to automatic updates use '%s --auto %s'.
+two commands specified: --%s and --%s
+unable to close file '%s'
+unable to create file '%s'
+unable to execute %s (%s)
+unable to flush file '%s'
+unable to install `%.250s' as `%.250s'
+unable to open file '%s'
+unable to read link `%.255s'
+unable to remove '%s'
+unable to sync file '%s'
+unable to write file '%s'
+unexpected end of file while trying to read %s
+unknown argument `%s'
+unknown option `%s'
+update-alternatives
+Usage: %s [<option> ...] <command>
+                           user to select which one to use.
+using %s to provide %s (%s) in %s.
+/usr/share/locale
+../../utils/update-alternatives.c
+Value: %s
+/var/lib/dpkg
+/var/log/alternatives.log
+__vasprintf_chk
+--verbose
+  --verbose                verbose operation, more output.
+--version
+  --version                show the version.
+__vfprintf_chk
+wait for subprocess %s failed
+while reading %s: %s
+__xstat64
+%Y-%m-%d %H:%M:%S

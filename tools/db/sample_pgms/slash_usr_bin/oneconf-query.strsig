@@ -1,0 +1,211 @@
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+        action = ACTION_ASYNC_UPDATE
+        action = ACTION_DIFF
+        action = ACTION_GET_LAST_SYNC
+        action = ACTION_LIST
+    action = ACTION_NONE
+        action = ACTION_SHARE_INVENTORY
+        action = ACTION_STOP_SERVICE
+        action = ACTION_UPDATE
+(ACTION_NONE, ACTION_LIST, ACTION_DIFF, ACTION_UPDATE, ACTION_ASYNC_UPDATE,
+ACTION_SHARE_INVENTORY, ACTION_GET_LAST_SYNC, ACTION_STOP_SERVICE) = range(8)
+        additional_text = ""
+            additional_text = "[Current]"
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# Authors:
+                       "can't be used together and only concerns diff and " \
+# -*- coding: utf-8 -*-
+# Copyright (C) 2010 Canonical
+        current, name, share_inventory = hosts[hostid]
+    # default is '' for dbus compatible format
+                      default=None)
+def err_action():
+def err_scope():
+def option_not_compatible(options, action):
+def print_hosts(hosts, only_current=False):
+def print_packages_diff(packages_to_install, packages_to_remove):
+def print_packages(installed_pkg):
+                      dest="action_async_update",
+                      dest="action_diff",
+                      dest="action_getlastsync",
+                      dest="action_list",
+                      dest="scope_all_packages",
+                      dest="scope_host",
+                      dest="scope_hosts",
+                      dest="scope_manual_packages",
+                      dest="share_inventory",
+# details.
+#  Didier Roche <didrocks@ubuntu.com>
+    # don't run as root:
+    elif action == ACTION_ASYNC_UPDATE:
+    elif action == ACTION_DIFF:
+    elif action == ACTION_GET_LAST_SYNC:
+    elif action == ACTION_LIST:
+    elif action == ACTION_SHARE_INVENTORY:
+    elif action == ACTION_STOP_SERVICE:
+    else:
+            err_action()
+            err_scope()
+        except DBusException, e:
+except IOError:
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+    for hostid in hosts:
+    for pkg_name in installed_pkg:
+    for pkg_name in packages_to_install:
+    for pkg_name in packages_to_remove:
+# Foundation; version 3.
+        from dbus import DBusException
+    from gettext import gettext as _
+            from oneconf.dbusconnect import DbusConnect
+            from oneconf.directconnect import DirectConnect
+        from oneconf.directconnect import DirectConnect
+from oneconf.version import *
+from optparse import OptionParser, OptionGroup
+from time import localtime, strftime
+    gettext.textdomain('oneconf')
+    _ = gettext.translation('oneconf').ugettext
+                    "getting a diff")
+                      help=_("all available hosts from storage (only with list)"))
+                      help=_("Current diff between this machine and another " \
+                      help=_("don't use dbus for the request"))
+                      help=_("enable debug mode (use --direct)"))
+                      help=_("get all installed packages from storage"))
+                      help=_("Get last sync date"))
+                      help=_("get only manual installed packages from storage"))
+                      help=_("hide this inventory on the web"),
+                      help=_("List stored package (default for local hostid) or host lists"))
+                      help=_("Perform async update of the package list in store"))
+                      help=_("share this inventory on the web"),
+                      help=_("specify target host"), default='')
+                      help=_("Stop oneconf service"))
+                      help=_("This host (only with list)"))
+                      help=_("Update the package list in store"))
+                    hostid=options.hostid, hostname=options.hostname)
+        if action != ACTION_NONE:
+    if action == ACTION_NONE:
+    if action == ACTION_UPDATE:
+        if current:
+    if len(hosts) == 1 or only_current:
+if __name__ == '__main__':
+        if not options.hostid and not options.hostname:
+        if (only_current and current) or not only_current:
+    if options.action_async_update:
+    if options.action_diff:
+    if options.action_getlastsync:
+    if options.action_list:
+    if options.action_stopservice:
+    if options.action_update:
+    if options.debug:
+    if options.directaccess or options.debug:
+    if options.hostid and options.hostname:
+        if options.hostid or options.hostname:
+    if options.scope_all_packages:
+    if options.scope_host:
+    if options.scope_hosts:
+    if options.scope_manual_packages:
+    if options.share_inventory is not None: # True and False both used
+    if os.getuid() == 0:
+        if scope == SCOPE_ALL_PACKAGES:
+        if scope == SCOPE_HOST:
+        if scope == SCOPE_HOSTS:
+        if scope == SCOPE_MANUAL_PACKAGES:
+        if scope == SCOPE_NONE:
+        if scope != SCOPE_NONE:
+import gettext
+import logging
+import os
+import sys
+            installed_pkg = oneconf.get_packages(hostid=options.hostid, hostname=options.hostname, only_manual=False)
+            installed_pkg = oneconf.get_packages(hostid=options.hostid, hostname=options.hostname, only_manual=True)            
+                       "list actions. List hosts to get registered strings.")
+            LOG.critical("Can't connect to dbus: %s, fallback to direct connexion as a fallback:" % e)
+        LOG.debug("Direct call: only take from cache")
+        LOG.debug("Using dbus")
+        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
+LOG = logging.getLogger(__name__)
+        oneconf.async_update()
+            oneconf = DbusConnect()
+            oneconf = DirectConnect()
+        oneconf = DirectConnect()
+        oneconf.set_share_inventory(options.share_inventory, options.hostid, options.hostname)
+        oneconf.stop_service()
+        oneconf.update()
+            option_not_compatible("--host", "--diff")
+            option_not_compatible("--hosts", "--diff")
+            option_not_compatible("--manual-packages", "--diff")
+    (options, args) = parser.parse_args()
+            (packages_to_install, packages_to_remove) = oneconf.diff(
+    parser.add_option("--async-update", action="store_true",
+    parser.add_option("-d", "--diff", action="store_true",
+    parser.add_option("--debug", action="store_true", dest="debug",
+    parser.add_option("--direct", action="store_true", dest="directaccess",
+    parser.add_option("--get-last-sync", action="store_true",
+    parser.add_option_group(scope_group)
+    parser.add_option_group(scope_hosts)
+    parser.add_option_group(scope_manage_host)
+    parser.add_option("-l", "--list", action="store_true",
+    parser.add_option("--stop", action="store_true", dest="action_stopservice",
+    parser.add_option("-u", "--update", action="store_true", dest="action_update",
+    parser = OptionParser(version= "%prog " + VERSION, usage=usage)
+                        "present to manage host parameters.")
+    print "Additional packages: (package to install)"
+        print _("hostid and hostname can't be provided together")
+            print_hosts(oneconf.get_all_hosts())
+            print_hosts(oneconf.get_all_hosts(), True)
+        print "Hosts stored for OneConf:"
+            print "ID: %s %s\n name: %s\n share inventory: %s" % (hostid, additional_text, name, share_inventory)
+    print "Installed package:"
+        print "Listing this host stored in OneConf:"
+    print "Missing packages: (package to remove)"
+        print oneconf.get_last_sync_date()
+        print "oneconf-query can't run as root. Exiting"
+        print_packages_diff(packages_to_install, packages_to_remove)
+            print_packages(installed_pkg)
+        print pkg_name
+    print _("%s isn't compatible with %s" % (options, action))
+        print " %s" % pkg_name
+    print _("you can't define --all-packages, --manual-packages or --hosts together.")
+    print _("you can't define --list, --diff, --update, --async-update, --share-inventory, --stop, --get-last-sync together.")
+            print _("You can't define --package, --host or --hosts " \
+            print _("You can't use hostid or hostname when changing show inventory status")
+            print _("You can't use hostid or hostname when updating")
+            print _("You have to provide either hostid or hostname for " \
+                             "provided by hostname/hostid"))
+    scope_group.add_option("--all-packages", action="store_true",
+    scope_group.add_option("--host", action="store_true",
+    scope_group.add_option("--hosts", action="store_true",
+    scope_group.add_option("--manual-packages", action="store_true",
+    scope_group = OptionGroup(parser, "Scope of actions:", "This define the " \
+    scope_hosts.add_option("--hostid", action="store", dest="hostid",
+    scope_hosts.add_option("--hostname", action="store", dest="hostname",
+    scope_hosts = OptionGroup(parser, "Host scope:", "Thoses options " \
+    scope_manage_host.add_option("--hide-inventory", action="store_false",
+    scope_manage_host.add_option("--share-inventory", action="store_true",
+    scope_manage_host = OptionGroup(parser, "host management:",
+SCOPE_NONE, SCOPE_ALL_PACKAGES, SCOPE_MANUAL_PACKAGES, SCOPE_HOSTS, SCOPE_HOST = range(5)
+            scope = SCOPE_ALL_PACKAGES
+        scope = SCOPE_ALL_PACKAGES
+        scope = SCOPE_HOST
+        scope = SCOPE_HOSTS
+        scope = SCOPE_MANUAL_PACKAGES
+    scope = SCOPE_NONE
+                       "scope to consider for list and diff command.")
+    # set verbosity
+    # store_const doesn't handle conflicts, so use manual triage
+    sys.exit(0)
+            sys.exit(1)
+        sys.exit(1)
+    sys.exit(1)
+# the terms of the GNU General Public License as published by the Free Software
+# this program; if not, write to the Free Software Foundation, Inc.,
+# This program is distributed in the hope that it will be useful, but WITHOUTa
+# This program is free software; you can redistribute it and/or modify it under
+                        "Those options can't be used with anything else and are "
+    # TODO: choose the future, choose argparse!
+        try:
+    usage = _("usage: %prog [options]")
+#!/usr/bin/python
+                    "when changing show inventory status")
+                    "when updating")
+# You should have received a copy of the GNU General Public License along with

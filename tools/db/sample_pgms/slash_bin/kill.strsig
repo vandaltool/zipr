@@ -1,0 +1,72 @@
+%-8s %-8s %5d %-16.16s
+%-8s %-8s %5d %-16.16s   
+%-8s %-8s %5d %-16.16s   ? 
+Alternate signals may be specified in three ways: -SIGKILL -KILL -9
+closedir
+-c  The next argument is a command name.
+dev_to_tty
+__errno_location
+ERROR: could not determine own name.
+ERROR: -%c used with bad data.
+ERROR: -%c with nothing after it.
+ERROR: garbage process ID "%s".
+ERROR: general flags may not be repeated.
+ERROR: -i makes no sense with -v, -f, and -n.
+ERROR: no process selection criteria.
+ERROR: no "%s" support.
+ERROR: unknown signal name "%s".
+ERROR: -v makes no sense with -i and -f.
+Example: skill -KILL -v pts/*
+Example: snice +7 netscape crack 
+-f  fast mode            This is not currently useful.
+__fxstat
+General options:
+getpwnam
+GLIBC_2.0
+GLIBC_2.4
+__gmon_start__
+-i  interactive use      You will be asked to approve each action.
+_IO_stdin_used
+_Jv_RegisterClasses
+  kill -l                   List all signal names.
+  kill -L                   List all signal names in a nice table.
+  kill -l signal            Convert between signal numbers and names.
+  kill pid ...              Send SIGTERM to every process listed.
+kill (%s)
+  kill signal pid ...       Send a signal to every process listed.
+  kill -s signal pid ...    Send a signal to every process listed.
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libproc-3.2.8.so
+Negative priority numbers are restricted to administrative users.
+-n  no action            This only displays the process ID.
+No memory.
+Particularly useful signals include HUP, INT, KILL, STOP, CONT, and 0.
+pretty_print_signals
+print_given_signals
+Priority numbers range from +20 (slowest) to -20 (fastest).
+/proc/%d/stat
+procps_version
+-p  The next argument is a process ID number.
+Selection criteria can be: terminal, user, pid, command.
+setpriority
+signal_name_to_number
+skill (%s)
+snice (%s)
+snprintf
+__stack_chk_fail
+The default priority is +4. (snice +4 ...)
+The default signal is TERM. Use -l or -L to list available signals.
+The options below may be used to ensure correct interpretation.
+-t  The next argument is a terminal (tty or pty).
+unix_print_signals
+unknown (%s)
+Usage:   skill [signal to send] [options] process selection criteria
+Usage:   snice [new priority] [options] process selection criteria
+user_from_uid
+-u  The next argument is a username.
+--version
+-v  verbose output       Display information about selected processes.
+WARNING: process %d could not be found.
+-w  warnings enabled     This is not currently useful.

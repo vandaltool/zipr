@@ -1,0 +1,223 @@
+0066_0066
+0066_0066_0069
+0066_0066_006C
+11tty_printer
+`%1' command invalid before first `p' command
+2 arguments required for line
+,$+4$+l$
+7printer
+8tty_font
+all files must use the same device
+bad argument for `slant' command
+bad argument for `spacewidth' command
+bad character type for `%1'
+bad code `%1' for character `%2'
+bad font position `%1'
+bad `hor' value
+bad kern amount `%1'
+bad number `%1'
+bad number of fonts `%1'
+bad paper size
+bad size range `%1'
+bad `sizescale' value
+bad `vert' value
+bad width for `%1'
+bBcdfF:hiI:oruUv
+biggestfont
+braceleftbt
+braceleftex
+braceleftmid
+bracelefttp
+bracerightbt
+bracerightex
+bracerightmid
+bracerighttp
+bracketleftbt
+bracketleftex
+bracketlefttp
+bracketrightbt
+bracketrightex
+bracketrighttp
+/build/buildd/groff-1.21/src/devices/grotty/tty.cpp
+/build/buildd/groff-1.21/src/libs/libdriver/printer.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/color.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/errarg.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/font.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/glyphuni.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/nametoindex.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/searchpath.cpp
+cannot expand table
+can't find `DESC' file
+can't find font file `%1'
+can't malloc space for filename
+can't open file `%1'
+can't print zero-width character in bold
+can't underline zero-width character
+character above first line discarded
+character argument expected
+character type `%1' out of range
+character with ridiculous horizontal position discarded
+cmy %.2ff %.2ff %.2ff
+cmyk %.2ff %.2ff %.2ff %.2ff
+color component argument out of range
+coproduct
+could not unget character
+couldn't convert 2 digits
+couldn't load DESC file, can't continue
+__ctype_b_loc
+__cxa_atexit
+__cxa_pure_virtual
+CXXABI_1.3
+%d,%d,%d,%d,%d,%d
+`DESC' is not a valid font file name
+!	@dev%s/%s
+digit expected
+duplicate `x init' command
+duplicate `x res' command
+duplicate `x T' command
+empty argument for `x F' command
+empty X command ignored
+end of file while reading list of fonts
+__errno_location
+even number of arguments expected
+even number of arguments required for polygon
+executive
+Failed assertion at line %d, file `%s'.
+family command requires an argument
+fatal error:
+ffffff9@U*
+first charset entry is duplicate
+font `%1' does not contain ascii character `%2'
+font `%1' does not contain numbered character %2
+font `%1' does not contain special character `%2'
+font count does not match number of fonts
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBCXX_3.4
+__gmon_start__
+GNU grotty (groff) version %s
+gray %.2ff
+GROFF_FONT_PATH
+GROFF_NO_SGR
+__gxx_personality_v0
+I didn't seem to find any characters
+image_generator
+image_generator command requires an argument
+index out of range
+integer argument expected
+integer argument too large
+integral
+internalname
+`internalname' command requires argument
+invalid color scheme `%1'
+invalid input character code `%1'
+invalid integer argument, set to 0
+_IO_getc
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+kernpairs
+%lf%1[ipPc],%lf%1[ipPc]
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+libm.so.6
+libstdc++.so.6
+ligatures
+list of sizes must be terminated by `0'
+L<%t`<1t|
+minimum horizontal motion does not match
+minimum vertical motion does not match
+missing argument
+missing argument to `c' command
+missing character type for `%1'
+missing `charset' command
+missing charset command
+missing code for `%1'
+missing `fonts' command
+missing kern amount
+missing `res' command
+missing `sizes' command
+missing `unitwidth' command
+missing value for command `%1'
+must have some sizes
+no arguments for polygon
+no arguments found
+no final `x stop' command
+no font mounted at `%1'
+number of integers to be allocated must be > 0
+out of memory
+output error
+paperlength
+papersize
+papersize command requires an argument
+paperwidth
+parenleftbt
+parenleftex
+parenlefttp
+parenrightbt
+parenrightex
+parenrighttp
+pass_filenames
+POSIXLY_CORRECT
+__printf_chk
+requested number of arguments must be > 0
+resolution does not match
+rgb %.2ff %.2ff %.2ff
+setlocale
+%s: illegal option -- %c
+%s: invalid option -- %c
+sizescale
+%s: option `%c%s' doesn't allow an argument
+%s: option requires an argument -- %c
+%s: option `--%s' doesn't allow an argument
+%s: option `%s' is ambiguous
+%s: option `%s' requires an argument
+%s: option `-W %s' doesn't allow an argument
+%s: option `-W %s' is ambiguous
+sorry, I can't continue
+spacewidth
+__sprintf_chk
+%s (%s):%d:
+__stack_chk_fail
+<standard input>
+statement
+strcasecmp
+__strcpy_chk
+%s: unrecognized option `%c%s'
+%s: unrecognized option `--%s'
+tcommand
+the first command must be `x T'
+the second command must be `x res'
+the third command must be `x init'
+too many arguments
+too many arguments on current line
+too many symbols
+u99L$,~+
+unitwidth
+Unknown color (%1) mapped to default
+unknown command `x %1'
+unnamed character cannot be duplicate
+unrecognised command `%1' after `kernpairs' or `charset' command
+unrecognised ligature `%1'
+unrecognized command `%1'
+unscaled_charwidths
+_Unwind_Resume
+usage: %s [-bBcdfhioruUv] [-F dir] [files ...]
+use_charnames_in_special
+/usr/share/groff/site-font:/usr/share/groff/1.21/font:/usr/lib/font
+vertical position at end of page not multiple of vertical resolution
+vertical position not a multiple of vertical resolution
+warning:
+width of character not a multiple of horizontal resolution
+x@/build/buildd/groff-1.21/src/libs/libgroff/ptable.cpp
+X command without `tty:' tag ignored
+`x X' command invalid before first `p' command
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE

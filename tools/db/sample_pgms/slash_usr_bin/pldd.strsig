@@ -1,0 +1,56 @@
+argp_help
+argp_parse
+argp_program_bug_address
+argp_program_version_hook
+__assert_fail
+cannot attach to process %lu
+cannot find program header of process
+cannot get information about process %lu
+cannot open %s
+cannot open %s/task
+cannot prepare reading %s/task
+cannot read dynamic section
+cannot read link map
+cannot read object name
+cannot read program header
+cannot read program interpreter
+cannot read r_debug
+closedir
+Copyright (C) %s Free Software Foundation, Inc.
+__ctype_b_loc
+__dcgettext
+Exactly one parameter with process ID required.
+fdopendir
+For bug reporting instructions, please see:
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.4
+GLIBC_PRIVATE
+__gmon_start__
+<http://www.debian.org/Bugs/>.
+invalid process ID '%s'
+invalid thread ID '%s'
+_IO_stdin_used
+_libc_intl_domainname
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+List dynamic shared objects loaded into process.
+memory exhausted
+pldd %s%s
+process %lu is no ELF program
+/proc/%lu
+__progname
+program_invocation_short_name
+<program name undetermined>
+readdir64
+readlinkat
+snprintf
+This is free software; see the source for copying conditions.  There is NO
+thread_list != ((void *)0)
+(Ubuntu EGLIBC 2.15-0ubuntu10.4) 
+Ulrich Drepper
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Written by %s.

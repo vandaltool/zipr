@@ -1,0 +1,32 @@
+Adobe Reader - 
+bad condition in %s at line %d
+__bss_start
+Cannot get DefaultScreen
+can't open display
+Display %s: can't open window named "%s"
+Error in XSendEvent
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+out of memory
+pdfclose 0.5: you are mistaking me for an actual program.
+  pdfclose --file filename.pdf
+__sprintf_chk
+__SWM_VROOT
+../../../utils/pdfopen/sendx.c
+XCloseDisplay
+XDisplayName
+XFetchName
+XGetWindowProperty
+XInternAtom
+XKeysymToKeycode
+XOpenDisplay
+XQueryTree
+XSendEvent
+XStringToKeysym

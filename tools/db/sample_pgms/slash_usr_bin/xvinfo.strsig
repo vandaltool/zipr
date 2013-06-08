@@ -1,0 +1,70 @@
+  Adaptor #%i: "%s"
+        bits per pixel: %i
+__bss_start
+%c%c%c%c
+              client gettable attribute
+              client settable attribute
+__ctype_b_loc
+ (current value is %i)
+D$0P9T$4
+        depth: %i
+      depth %i, visualID 0x%2lx
+-display
+      encoding ID #%li: "%s"
+__fprintf_chk
+GetStill 
+, gettable
+GetVideo 
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+        guid: 
+      id: 0x%x
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXv.so.1
+    maximum XvImage size: %li x %li
+ no adaptors present
+    no port attributes defined
+    number of attributes: %i
+    number of encodings: %i
+    Number of image formats: %i
+        number of planes: %i
+    number of ports: %li
+    operations supported: 
+    port base: %li
+PutImage 
+PutStill 
+PutVideo 
+        rate: %f
+        red, green, blue masks: 0x%x, 0x%x, 0x%x
+screen #%i
+              settable
+        size: %li x %li
+__sprintf_chk
+      "%s" (range %i to %i)
+__stack_chk_fail
+    supported visuals:
+        type: %s (%s)
+Usage:  xvinfo [-display host:dpy] [-short]
+XDisplayName
+XInternAtom
+XOpenDisplay
+XvFreeAdaptorInfo
+XvFreeEncodingInfo
+XvGetPortAttribute
+X-Video Extension version %i.%i
+XV_IMAGE
+xvinfo: No X-Video Extension on %s
+xvinfo:  Unable to open display %s
+XvListImageFormats
+XvQueryAdaptors
+XvQueryEncodings
+XvQueryExtension
+XvQueryPortAttributes

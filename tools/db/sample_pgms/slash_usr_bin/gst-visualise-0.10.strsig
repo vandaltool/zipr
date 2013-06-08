@@ -1,0 +1,46 @@
+      $cfg{$var} = $value;
+  "chart", "audioconvert ! chart",
+      chomp;
+    $command = "gst-launch-0.10 $cfg{AUDIOSRC} ! $pipe ! { queue ! ffmpegcolorspace ! $cfg{VIDEOSINK} }";
+    exit 1;
+  "goom", "goom",
+if ($#ARGV > 0) {
+    if (!($cfg{AUDIOSRC}))
+    if (!($cfg{VIDEOSINK}))
+  if (!defined $cfg{AUDIOSRC})   { $cfg{AUDIOSRC} = "osssrc"; }
+  if (!defined $cfg{CVS_PATH})   { $cfg{CVS_PATH} =  `echo -n ~`."/gst/cvs"; }
+  if (!defined $cfg{VIDEOSINK})  { $cfg{VIDEOSINK} = "xvimagesink"; }
+  if (-e $config_file)
+# input audio.
+# launch a gst-launch pipeline to display a visualisation of the 
+### main
+# make use of default input srcs.
+  "monoscope", "audioconvert ! monoscope"
+  my $config_file = `echo -n ~`."/.gst";
+    my $pipe;
+my (%pipes, %cfg);
+      my ($var, $value) = split (/\s*=\s*/, $_, 2);
+    my $vis = $cfg{VISUALIZER};
+      next unless length;
+    open CONFIG, $config_file;
+### packages
+%pipes = ( 
+    $pipe = $vis unless $pipe = $pipes{$vis};
+    print "No configuration file $config_file found.  You might want to create one.\n";
+      print "Please add an AUDIOSRC to $config_file !\n";
+      print "Please add a VIDEOSINK to $config_file !\n";
+    print "Running $command\n";
+    print STDERR "Usage: gst-visualise [visualiser]\n";
+read_config ();
+      s/#.*//;
+      s/\s+$//;
+sub read_config
+sub visualise(@)
+  "synaesthesia", "synaesthesia",
+    system ("PATH=\$PATH:".$cfg{CVS_PATH}."/gstreamer/tools $command");
+#!/usr/bin/perl -w
+    $vis = "goom" unless $vis;
+    $vis = shift() if ($#_ != -1);
+# visualisation plugin is specified on command line.
+visualise(@ARGV);
+    while (<CONFIG>)

@@ -1,0 +1,175 @@
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`8|
+2_get_group_descblock
+\9`9d9h9l9D
+9D$Ur-w	
+	9|$=ux9t$9ur
+A20 gate not responding!
+abcdefghijklmnopqrstuvwxyz
+ aborted.
+%$%a%b%V%U%c%Q%W%]%\%[%
+  --active     -a  Mark partition as active
+a EXT2/3/4*
+__asprintf_chk
+At least one specified option not yet implemented for this installer.
+: attempted DOS system call INT 
+_BHRfS_M
+Boot error
+Boot failed: please change disks and press a key to continue.
+BOOT_IMAGE=
+Booting from local disk...
+btrfs: search extent data error!'
+, cannoth
+Cannot load a ramdisk with an old kernel image.
+.cbt.bss.bs
+CD#f5CHz
+ch")ys "Li
+clear-once
+  --clear-once -O  Clear the boot-once command
+COMBOOT image too large.
+.com.c32
+compress9
+ Copyright (C) 1994-2011 H. Peter Anvin et al
+Could not find kernel image: 
+Could not find ramdisk image: 
+%`CX"w9P
+directory
+  --directory  -d  Directory for installation target
+drive s:
+e"d" #!#
+ encrypted
+__errno_location
+ERROR: idle with IF=0
+ERROR: No configuration file found
+f;68<v2Qf
+f;68<v_f
+failed to create ldlinux.sys
+FAT     
+FAT12   
+FAT16   
+FAT32   
+  file="/proc/%lu/fd/%d"
+filesystem type "????????" not supported
+  --force      -f  Ignore precautions
+:fPfQUf1
+__fprintf_chk
+__fxstat64
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+__gmon_start__
+  --heads=#    -H  Force number of heads
+h-T?L:DA@:N
+impossible cluster size
+impossible sector size
+impossibly large number of clusters
+initrd=/
+  --install    -i  Install over the current bootsector
+Insufficient extent space, build error!
+Invalid image type for this media type!
+invalid media signature (not a FAT filesystem?)
+Invalid or corrupt kernel image.
+_IO_stdin_used
+It appears your computer has only 000K of low ("DOS") RAM.
+iVDth	8r
+ <kt"<mt
+ldlinux.sys'
+LDLINUX SYS
+less than 4084 clusters but claims FAT16
+less than 65525 clusters but claims FAT32
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+llu (%u/
+ Load error - 
+Loading 
+lPPUtK[=
+mattrib -h -r -s %s 2>/dev/null
+mattrib -h -r -s s:/ldlinux.sys 2>/dev/null
+mattrib +r +h +s %s
+mattrib +r +h +s s:/ldlinux.sys
+  --mbr        -m  Install an MBR
+mcopy -D o -D O -o - s:/ldlinux.sys
+menu-save
+  --menu-save= -M  Set the label to select as default on the next boot
+message in error, hold down the Ctrl key whilebooting, and I
+MI0P@Hh6
+missing FAT32 signature
+Missing parameter in configuration file. Keyword: 
+mkstemp64
+mmove -D o -D O s:/ldlinux.sys %s
+more than 4084 clusters but claims FAT12
+MTOOLS_FAT_COMPATIBILITY=1
+MTOOLSRC
+MTOOLS_SKIP_CHECK=1
+negative number of data sectors
+No DEFAULT or UI configuration directive found!
+: not a COM32R image
+Not enough memory to load specified image.
+  offset=%llu
+  --offset     -t  Offset of the file system on the device 
+  --once=...   %s  Execute a command once upon boot
+only support sH
+Out of memory:a
+Out of memory parsing config file
+P-}	8#68XY">8u
+pwrite64
+"$"pZl\|
+Q]fRfPUSf
+R.(9Z*~"P
+raid-mode
+  --raid       -r  Fall back to the next device on boot failure
+reset-adv
+  --reset-adv      Reset auxilliary data
+%s 4.05  Copyright 1994-2011 H. Peter Anvin et al
+  --sectors=#  -S  Force the number of sectors per track
+S"Fnu3!LB
+*:[/'s h!
+short read
+short write
+%s: invalid number of heads: %u (must be 1-256)
+%s: invalid number of sectors: %u (must be 1-63)
+Sl;,$w-;T$
+%s: not a block device or regular file (use -f to override)
+%s: not enough space for boot-once command
+%s: not enough space for menu-save label
+%s: -o will change meaning in a future version, use -t or --offset
+__sprintf_chk
+%s: %s: %s
+%s//syslinux-mtools-XXXXXX
+__stack_chk_fail
+strerror
+  --stupid     -s  Slow, safe and stupid mode
+Subdirectory path too long... aborting install!
+Subvol name too long... aborting install!
+%s: Unknown option: -%c
+%s: warning: failed to set system bit on ldlinux.sys
+%s: warning: unable to move ldlinux.sys
+SYSLINUX
+SYSLINUX 4.05 
+SYSLINUX 4.05 20120131
+t f=!GPTu
+t:fid:UuzsS:H:rvho:OM:ma
+This version of Syslinux needs 000K to boot.  If you get this
+too many chunk iM
+tructure
+uf=PAMSum
+Unknown keyword in configuration file: 
+unsupported sectors size
+  --update     -U  Update a previous installation
+Usage: %s [options] device
+Usage: %s [options] directory
+Usage: %s [options] <drive>: [bootsecfile]
+uuk "_y$}
+_V.YYQ@ 
+will take your word for it.
+X:jG\.qZ)M
+&YgB$H*P
+zero FAT sectors
+zero FAT sectors (FAT12/16)
+zipdrive
+  --zip        -z  Force zipdrive geometry (-H 64 -S 32)
+%<%^%_%Z%T%i%f%`%P%l%g%h%d%e%Y%X%R%S%k%j%

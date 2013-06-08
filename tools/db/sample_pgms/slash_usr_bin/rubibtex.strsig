@@ -1,0 +1,56 @@
+' 1 2 3 7 13 15
+' <"$backup" >"$job.aux"
+backup="$tmpdir/orig.aux"
+bibtex "$job"
+#!/bin/sh
+case $job in
+cat "$backup" > "$job.aux"
+cat <"$job.aux" >"$backup" || {
+  /^\\citation/ {
+  echo "$progname: could not create backup of file \`$job.aux' as \`$backup'." >&2
+  || { echo "$progname: could not create directory \`$tmpdir'" >&2; exit 1; }
+  echo "$progname: file \`$job.aux' does not exist." >&2
+    echo "usage: $progname file" >&2
+    exit 1
+  exit 1
+if test ! -f "$job.aux"; then
+progname=rubibtex
+  rm -rf "$tmpdir"
+rm -rf "$tmpdir"
+# rubibtex, based on the original version contained in the t2 bundle.
+    s/\\IeC {\\cyra }/
+    s/\\IeC {\\cyrb }/
+    s/\\IeC {\\cyrc }/
+    s/\\IeC {\\cyrch }/
+    s/\\IeC {\\cyrd }/
+    s/\\IeC {\\cyre }/
+    s/\\IeC {\\cyrerev }/
+    s/\\IeC {\\cyrery }/
+    s/\\IeC {\\cyrf }/
+    s/\\IeC {\\cyrg }/
+    s/\\IeC {\\cyrh }/
+    s/\\IeC {\\cyrhrdsn }/
+    s/\\IeC {\\cyri }/
+    s/\\IeC {\\cyrishrt }/
+    s/\\IeC {\\cyrk }/
+    s/\\IeC {\\cyrl }/
+    s/\\IeC {\\cyrm }/
+    s/\\IeC {\\cyrn }/
+    s/\\IeC {\\cyro }/
+    s/\\IeC {\\cyrp }/
+    s/\\IeC {\\cyrr }/
+    s/\\IeC {\\cyrs }/
+    s/\\IeC {\\cyrsftsn }/
+    s/\\IeC {\\cyrsh }/
+    s/\\IeC {\\cyrshch }/
+    s/\\IeC {\\cyrt }/
+    s/\\IeC {\\cyru }/
+    s/\\IeC {\\cyrv }/
+    s/\\IeC {\\cyrya }/
+    s/\\IeC {\\cyryo }/
+    s/\\IeC {\\cyryu }/
+    s/\\IeC {\\cyrz }/
+    s/\\IeC {\\cyrzh }/
+# Thomas Esser, Public Domain.
+tmpdir=${TMPDIR-${TEMP-${TMP-/tmp}}}/$progname.$$
+(umask 077; mkdir "$tmpdir") \

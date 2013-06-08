@@ -1,0 +1,201 @@
+                        
+    %02d: %s: %*s
+  acceleration:  %d/%d    threshold:  %d
+activate
+allow exposures:  %s
+	      (also implicitly enables DPMS features) 
+	      a timeout value of zero disables the mode 
+  auto repeat delay:  %d    repeat rate:  %d
+  auto repeating keys:  
+  auto repeat:  %s    key click percent:  %d    LED mask:  %08lx
+bad parameter %s
+	-b                b off               b 0
+  bell percent:  %d    bell pitch:  %d    bell duration:  %d
+__bss_start
+Bug Mode: compatibility mode is disabled
+Bug Mode: compatibility mode is enabled
+	 b [vol [pitch [dur]]]          b on
+	 c [0-100]        c on
+	-c                c off               c 0
+__ctype_b_loc
+  default colormap:  0x%lx    BlackPixel:  %ld    WhitePixel:  %ld
+    Directory does not exist or has wrong permissions
+    Directory missing fonts.dir
+  Display is not capable of DPMS
+DPMSCapable
+DPMSDisable
+DPMSEnable
+DPMS (Energy Star):
+	-dpms      Energy Star features off
+	+dpms      Energy Star features on
+DPMSForceLevel
+DPMSGetTimeouts
+DPMSInfo
+  DPMS is Disabled
+  DPMS is Enabled
+DPMSQueryExtension
+DPMSSetTimeouts
+	 dpms [standby [suspend [off]]]     
+  (empty)
+Failed to set led named %s %s
+Font Path:
+	      force off 
+	      force on 
+	      force standby 
+	      force suspend 
+    For screen-saver control:
+    For status information:  q
+	 fp default
+	 fp= path[,path...]
+	-fp path[,path...]  fp- path[,path...]
+	+fp path[,path...]  fp+ path[,path...]
+	 fp rehash
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+illegal combination of values
+    Incorrect font server address or syntax
+invalid pixel number %s
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+Keyboard Control:
+L$@9L$,}
+	-led [1-32]         led off
+	 led [1-32]         led on
+	-led named 'name'   led off
+	 led named 'name'   led on
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXext.so.6
+libXmuu.so.1
+	 m [acc_mult[/acc_div] [thr]]    m default
+missing argument to -display
+missing argument to -led named
+missing argument to led named
+missing argument to p
+missing -fp argument
+missing +fp argument
+missing fp= argument
+missing fp- argument
+missing fp+ argument
+  Monitor is in Standby
+  Monitor is in Suspend
+  Monitor is Off
+  Monitor is On
+more than %d pixels specified
+noexpose
+    None
+out of memory
+out of memory for font path directory list
+Pointer Control:
+	 p pixel_value color_name
+  prefer blanking:  %s    
+__printf_chk
+	-r [keycode]        r off
+	 r [keycode]        r on
+	 r rate [delay [rate]]
+	 s activate           s reset
+%s:  bad font path element (#%ld), possible causes are:
+	 s blank              s noblank    s off
+%s:  cannot set pixel values in read-only %s visuals
+%s:  cannot store in pixel 0x%lx, invalid pixel number
+%s: Can't get visual for visualID 0x%x
+Screen Saver:
+server does not have extension for -bc option
+server does not have extension for bc option
+server does not have extension for -dpms option
+server does not have extension for +dpms option
+server does not have extension for dpms option
+server does not have extension for "r rate" option
+  Server does not have the DPMS Extension
+  Server does not have the XKB Extension
+	 s expose             s noexpose
+%s: internal error, only parsed %d of %d directories.
+%s:  invalid color "%s"
+%s: Invalid led name: %s
+%s:  pixel not allocated read/write
+%s:  pixel value %ld out of colormap range 0 through %ld
+__sprintf_chk
+__stack_chk_fail
+  Standby: %d    Suspend: %d    Off: %d
+  standby time of %d is greater than off time of %d
+  standby time of %d is greater than suspend time of %d
+StaticColor
+StaticGray
+	 s [timeout [cycle]]  s default    s on
+%s:  unable to get current font path.
+%s:  unable to get old font path.
+%s:  unable to open display "%s"
+%s:  unknown visual class type %d
+  suspend time of %d is greater than off time of %d
+%s:  warning, no entries deleted from font path.
+T$,9T$(u
+  timeout:  %d    cycle:  %d
+T$LkD$4P
+    To control Energy Star (DPMS) features:
+    To disable bug compatibility mode:
+    To enable bug compatibility mode:
+    To have the server reread font databases:
+    To prepend or append elements to font path:
+    To remove elements from font path:
+    To restore the default font path:
+    To set bell volume, pitch and duration:
+    To set keyclick volume:
+    To set LED states off or on:
+    To set mouse acceleration and threshold:
+    To set pixel colors:
+    To set the font path:
+    To turn auto-repeat off or on:
+    To turn bell off:
+    To turn keyclick off:
+TrueColor
+unknown option %s
+  Unrecognized response from server
+usage:  %s [-display host:dpy] option ...
+__vfprintf_chk
+XActivateScreenSaver
+XChangeKeyboardControl
+XChangePointerControl
+XCloseDisplay
+XDeleteModifiermapEntry
+XDisplayName
+XFreeFontPath
+XFreeModifiermap
+XGetAtomNames
+XGetFontPath
+XGetKeyboardControl
+XGetModifierMapping
+XGetPointerControl
+XGetScreenSaver
+XGetVisualInfo
+XInsertModifiermapEntry
+XInternAtom
+XkbAllocKeyboard
+XkbFreeKeyboard
+XkbGetControls
+XkbGetNamedIndicator
+XkbGetNames
+  XKB indicators:
+XkbQueryExtension
+XkbSetControls
+XkbSetNamedIndicator
+XMITMiscGetBugMode
+XMITMiscQueryExtension
+XMITMiscSetBugMode
+XmuPrintDefaultErrorMessage
+XOpenDisplay
+XParseColor
+XResetScreenSaver
+XSetErrorHandler
+XSetFontPath
+XSetModifierMapping
+XSetScreenSaver
+XStoreColor
+XVisualIDFromVisual

@@ -1,0 +1,18 @@
+# along with Mtools.  If not, see <http://www.gnu.org/licenses/>.
+# (at your option) any later version.
+#!/bin/sh
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# Copyright 1996,1997,2001,2002,2006 Alain Knaff.
+dosfile=$1
+  echo "usage: $0 dosfile [cmpoptions] unixfile"
+  exit 1
+# GNU General Public License for more details.
+if [ $# -lt 2 ]; then
+# it under the terms of the GNU General Public License as published by
+mcopy $dosfile - | cmp $@
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# Mtools is distributed in the hope that it will be useful,
+# Mtools is free software: you can redistribute it and/or modify
+# the Free Software Foundation, either version 3 of the License, or
+# This file is part of mtools.
+# You should have received a copy of the GNU General Public License

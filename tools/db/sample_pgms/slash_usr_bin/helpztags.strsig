@@ -1,0 +1,60 @@
+        # 
+#         Artur R. Czechowski <arturcz@hell.pl>
+# Author: Jakub Turski <yacoob@chruptak.plukwa.net>
+        # characters, there is white space before it and is
+  chdir $dir || die "Error: $dir: no such directory\n";
+  chdir $startdir;
+C<http://bugs.debian.org/>.
+    close(GZ);
+    close TAGSFILE;
+contained in C<vim> sources for its C<:helptags command>.
+die "Error: no directories given. Check manpage for details.\n" unless @ARGV;
+    do { open(GZ, "zcat $file|") if ($file =~ /\.gz$/) } or open(GZ,$file);
+Each file is scanned for tags used in F<vim> help files. For each directory
+F<helpztags> scans given directories for F<*.txt> and F<*.txt.gz> files.
+        # followed by a white character or end-of-line.
+foreach my $dir (@ARGV) {
+  foreach my $file (<*.{gz,txt,??x}>) {
+    foreach my $tag (sort keys %{$tags}) {
+        # From vim73/src/ex_cmds.c, helptags_one, lines 6443-6445
+=head1 AUTHORS
+=head1 DESCRIPTION
+=head1 NAME
+=head1 REPORTING BUGS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+helpztags F<DIRS>...
+# helpztags generates tags for Vim helpfiles, for both .txt and .txt.gz files
+helpztags - generate the help tags file for directory
+    if ($1) {
+my $startdir=getcwd();
+    my $suffix = '';
+my %tags;
+    next unless $file =~ m/^[\w.-]+\.(?:txt|([[:alpha:]]{2})x)(?:.gz)?$/;
+    next unless %{$tags};
+        # Only accept a *tag* when it consists of valid
+    open(TAGSFILE, '>', $tagfile) || die "Error: Cannot open $dir/$tagfile for writing.\n";
+Please use a Debian C<reportbug> command or procedure described at
+# Please use following command for generate a manual file:
+# pod2man -c "User Commands" -s 1 -q none -r "vim 6.2" -d "September 2003" helpztags helpztags.1
+  print "Processing ".$dir."\n";
+      print TAGSFILE "$tag*\n";
+      print TAGSFILE "$tag\t$tags->{$tag}\t/*";
+proper F<tags> file is generated.
+Read C<:help helptags> in F<vim> for detailed information about helptags.
+      $suffix = "-$1";
+      $tag =~ s/\\/\\\\/g;
+      $tag =~ s@/@\/@g;
+        $tags{"tags$suffix"}{$1}=$file;
+There should be at least one directory given. In other case program exits
+use File::Glob ':globally';
+use POSIX qw(getcwd);
+use strict;
+use warnings;
+#!/usr/bin/perl
+# Version: 0.4
+    while (<GZ>) {
+  while (my ($tagfile, $tags) = each %tags) {
+      while (/(?:(?<=^)|(?<=\s))\*([^*\s|]+?)\*(?:(?=\s)|(?=$))/g) {
+with error.
+Written by Jakub Turski and Artur R. Czechowski based on idea

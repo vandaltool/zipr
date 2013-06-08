@@ -1,0 +1,140 @@
+0123456789ABCDEF
+                                   (1-255) and device address (1-255),
+%.3hhu:%.3hhu:%.3hhu
+                                   abbreviated
+Access denied (insufficient permissions) (ERROR_ACCESS)
+__bss_start
+Copyright (C) 2010 Nikolai Kondrashov
+__ctype_b_loc
+                                   decimal; 255 matches any
+                                   decimal; zeroes match any
+Default options: --stream-timeout=60000 --entity=descriptor
+descriptor
+  -d, -m, --model=vid[:pid]        limit interfaces by vendor and
+Dump USB device HID report descriptor(s) and/or stream(s).
+  -e, --entity=STRING              what to dump: either "descriptor",
+Entity not found (ERROR_NOT_FOUND)
+__errno_location
+                                   every transfer dumped a dot is
+Failed to allocate a transfer
+Failed to allocate a transfer buffer
+Failed to allocate transfer list
+Failed to cancel a transfer, ignoring: %s
+Failed to create libusb context: %s
+Failed to find and open the devices: %s
+Failed to find HID interfaces: %s
+Failed to handle transfer cancellation events, aborting transfer cancellation: %s
+Failed to handle transfer events: %s
+Failed to submit a transfer: %s
+__fprintf_chk
+  -f, --stream-feedback            enable stream dumping feedback: for
+getopt_long
+gettimeofday
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -h, --help                       output this help message and exit
+hvs:a:d:m:i:e:t:pf
+  -i, --interface=NUMBER           limit interfaces by number (0-254),
+infinite
+Input/output error (ERROR_IO)
+Insufficient memory (ERROR_NO_MEM)
+interface
+Invalid device address "%s"
+Invalid interface number "%s"
+Invalid model "%s"
+Invalid parameter (ERROR_INVALID_PARAM)
+Invalid stream timeout "%s"
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libusb-1.0.so.0
+libusb_alloc_transfer
+libusb_attach_kernel_driver
+libusb_cancel_transfer
+libusb_claim_interface
+libusb_clear_halt
+libusb_close
+libusb_control_transfer
+libusb_detach_kernel_driver
+libusb_exit
+libusb_free_config_descriptor
+libusb_free_device_list
+libusb_free_transfer
+libusb_get_active_config_descriptor
+libusb_get_bus_number
+libusb_get_device
+libusb_get_device_address
+libusb_get_device_descriptor
+libusb_get_device_list
+libusb_handle_events
+libusb_init
+libusb_open
+libusb_release_interface
+libusb_set_debug
+libusb_submit_transfer
+License GPLv2+: GNU GPL version 2 or later <http://gnu.org/licenses/gpl.html>.
+No matching HID interfaces
+No more interfaces to dump
+No such device (it may have been disconnected) (ERROR_NO_DEVICE)
+Operation not supported or unimplemented on this platform (ERROR_NOT_SUPPORTED)
+Operation timed out (ERROR_TIMEOUT)
+Options:
+Other error (ERROR_OTHER)
+Overflow (ERROR_OVERFLOW)
+                                   paused
+Pipe error (ERROR_PIPE)
+Positional arguments are not accepted
+                                   printed to stderr
+                                   product IDs (0001-ffff), hexadecimal;
+__progname
+program_invocation_short_name
+  -p, --stream-paused              start with the stream dump output
+Resource busy (ERROR_BUSY)
+%s:%-16s %12llu.%.6u
+  -s, -a, --address=bus[:dev]      limit interfaces by bus number
+%s:Device was disconnected
+%s:Failed to attach to the kernel driver: %s
+%s:Failed to claim: %s
+%s:Failed to detach from the kernel driver: %s
+%s:Failed to release: %s
+%s:Failed to resubmit a transfer: %s
+%s:Failed to retrieve report descriptor: %s
+%s:Failed to set infinite idle duration: %s
+%s:Failed to set report protocol: %s
+sigaction
+sigaddset
+sigemptyset
+Signals:
+%s:Interrupt transfer failed
+%s:Interrupt transfer halted (endpoint stalled)
+%s:Interrupt transfer overflowed (device sent more data than requested)
+%s:Interrupt transfer timed out
+__snprintf_chk
+__stack_chk_fail
+Starting dumping interrupt transfer stream
+stream-feedback
+                                   "stream" or "all"; value can be
+stream-paused
+stream-timeout
+%s%u hour%s
+%s%u millisecond%s
+%s%u minute%s
+%s%u second%s
+System call interrupted (perhaps due to signal) (ERROR_INTERRUPTED)
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+  -t, --stream-timeout=NUMBER      stream interrupt transfer timeout, ms;
+Unknown entity "%s"
+Unknown error code
+Usage: %s [OPTION]...
+usbhid-dump 1.2
+  USR1/USR2                        pause/resume the stream dump output
+  -v, --version                    output version information and exit
+with %s timeout.
+                                   zeroes match any
+                                   zero means infinity

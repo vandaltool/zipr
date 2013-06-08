@@ -1,0 +1,132 @@
+After config file:
+Applied rules from %s:
+__bss_start
+Cannot open display "%s"
+command line
+compatibility map
+-compat <name>      Specifies compatibility map component name
+compat:     %s
+config file
+-config <file>      Specifies configuration file to use
+Couldn't find configuration file "%s"
+Couldn't find rules file (%s) 
+Couldn't interpret %s property
+__ctype_b_loc
+default display
+-device <deviceid>  Specifies the device ID to use
+Didn't find
+-display
+-display <dpy>      Specifies display to use
+Error loading new keyboard description
+Error!   Option "%s" not recognized
+Error updating the XKB names property
+                Exiting.
+__fprintf_chk
+-geometry
+-geometry <name>    Specifies geometry component name
+geometry:   %s
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+-?,-help            Print this message
+-I[<dir>]           Add <dir> to list of directories to be used
+Illegal map name '%s' 
+Illegal verbose level %d.  Reset to 0
+Illegal verbose level %d.  Reset to 10
+in %s name '%s'
+Internal Error! Allocation failure in add to list!
+_IO_stdin_used
+_Jv_RegisterClasses
+keyboard layout
+keyboard model
+-keycodes
+-keycodes <name>    Specifies keycodes component name
+keycodes:   %s
+-keymap <name>      Specifies name of keymap to load
+keymap:     %s
+-layout <name>      Specifies layout used to choose component names
+layout:     %s
+layout variant
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libxkbfile.so.1
+locale is %s
+-model <name>       Specifies model used to choose component names
+model:      %s
+                    more messages
+More than one %s on %s
+Multiple definitions of %s
+No other components can be specified when a keymap is present
+No rules variables specified.  Rules file ignored
+No %s specified on the command line
+OOM in stringFromOptions
+-option <name>      Adds an option used to choose component names
+options:    %s
+Path too long (%s/rules/%s). Ignored.
+Path too long (%s/%s%s). Ignored.
+__printf_chk
+-print              Print a complete xkb_keymap description and exit
+-query              Print the current layout settings and exit
+rules file
+-rules <name>       Name of rules file to use
+rules:      %s
+Server %s uses incompatible version %d.%02d
+setlocale
+Setting verbose level to %d
+%s file %s
+__sprintf_chk
+%s/rules/%s
+__stack_chk_fail
+__strdup
+%s was compiled with XKB version %d.%02d
+-symbols
+-symbols <name>     Specifies symbols component name
+symbols:    %s
+-synch              Synchronize request w/X server
+Trailing %s option ignored
+Trying to build keymap using the following components:
+-types <name>       Specifies types component name
+types:      %s
+undefined
+Unknown error %d from XkbOpenDisplay
+Usage: %s [args] [<layout> [<variant> [<option> ... ]]]
+Use defaults: rules - '%s' model - '%s' layout - '%s'
+         Using "%s", ignoring "%s"
+         Using %s, ignoring %s
+Using "%s", ignoring "%s"
+Using %s, ignoring %s
+/usr/share/X11/xkb
+-variant
+-variant <name>     Specifies layout variant used to choose component names
+variant:    %s
+-verbose
+-v[erbose] [<lvl>]  Sets verbosity (1..10).  Higher values yield
+Warning! More than one %s from %s
+Warning! Multiple definitions of %s
+Where legal args are:
+XCloseDisplay
+X display
+XkbCFDflts
+XkbCFParse
+	xkb_compat    { include "%s"	};
+XKB extension not present on %s
+	xkb_geometry  { include "%s"	};
+XkbGetKeyboardByName
+	xkb_keycodes  { include "%s"	};
+xkb_keymap {
+XkbOpenDisplay
+XkbRF_GetComponents
+XkbRF_GetNamesProp
+XkbRF_Load
+XkbRF_SetNamesProp
+_XKB_RULES_NAMES
+	xkb_symbols   { include "%s"	};
+	xkb_types     { include "%s"	};
+Xlib supports incompatible version %d.%02d
+X server
+XSynchronize

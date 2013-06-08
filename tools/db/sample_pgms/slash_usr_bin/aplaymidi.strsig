@@ -1,0 +1,100 @@
+%3d:%-3d  %-32.32s %s
+_8|`>&1w
+ALSA_0.9
+ALSA_OUTPUT_PORTS
+aplaymidi
+aplaymidi version 1.0.25
+Cannot connect to port %d:%d - %s
+Cannot open %s - %s
+Cannot set queue tempo (%u/%i)
+Cannot %s - %s
+create port
+create queue
+-d, --delay=seconds         delay after song ends
+drain output
+__errno_location
+get client id
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+-h, --help                  this help
+Invalid event type %d!
+Invalid port %s - %s
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+libasound.so.2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+-l, --list                  list all possible output ports
+open sequencer
+out of memory
+output event
+Please specify a file to play.
+Please specify at least one port with --port.
+ Port    Client name                      Port name
+-p, --port=client:port,...  set port(s) to play to
+__printf_chk
+%s: data chunk not found
+set client name
+set output buffer size
+%s: invalid chunk length %d
+%s: invalid file format
+%s: invalid MIDI data (offset %#x)
+%s: invalid number of SMPTE frames per second (%d)
+%s: invalid number of tracks (%d)
+%s is not a Standard MIDI File
+snd_seq_alloc_named_queue
+snd_seq_client_id
+snd_seq_client_info_get_client
+snd_seq_client_info_get_name
+snd_seq_client_info_set_client
+snd_seq_client_info_sizeof
+snd_seq_close
+snd_seq_connect_to
+snd_seq_control_queue
+snd_seq_create_port
+snd_seq_drain_output
+snd_seq_event_length
+snd_seq_event_output
+snd_seq_get_output_buffer_size
+snd_seq_open
+snd_seq_parse_address
+snd_seq_port_info_get_capability
+snd_seq_port_info_get_client
+snd_seq_port_info_get_name
+snd_seq_port_info_get_port
+snd_seq_port_info_get_type
+snd_seq_port_info_set_capability
+snd_seq_port_info_set_client
+snd_seq_port_info_set_name
+snd_seq_port_info_set_port
+snd_seq_port_info_set_port_specified
+snd_seq_port_info_set_type
+snd_seq_port_info_sizeof
+snd_seq_query_next_client
+snd_seq_query_next_port
+snd_seq_queue_tempo_get_ppq
+snd_seq_queue_tempo_get_tempo
+snd_seq_queue_tempo_set_ppq
+snd_seq_queue_tempo_set_tempo
+snd_seq_queue_tempo_sizeof
+snd_seq_set_client_name
+snd_seq_set_output_buffer_size
+snd_seq_set_queue_tempo
+snd_seq_sync_output_queue
+snd_strerror
+__stack_chk_fail
+start queue
+__strdup
+%s: type %d format is not supported
+%s: unexpected end of file
+sync output
+Usage: %s -p client:port[,...] [-d delay] midifile ...
+__vfprintf_chk
+-V, --version               print current version

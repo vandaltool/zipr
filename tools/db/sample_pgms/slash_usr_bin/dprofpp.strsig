@@ -1,0 +1,628 @@
+        }
+	        }
+	 0.00   0.000          1   0.0000 DynaLoader::import
+	 0.00   0.000          1   0.0000 main::baz
+	 45.9   0.280        200   0.0014 main::bar
+	 52.4   0.320          2   0.1600 main::foo
+			#  9/18/95 dmr
+		$a = \@a;
+    -A          Count autoloaded to *AUTOLOAD.
+			add_to_tree($curdeep_times, $ename,
+				add_to_tree($curdeep_times, $name,
+                after profiling the script, without interpreting the data.
+Aggregate "Group" all calls matching the pattern together.
+		$a = $idkeys;
+Any bugs in Devel::DProf, or any profiler generating the profile data, could
+Applications which call _exit() or exec() from within a subroutine
+		@ARGV = split( ' ', $ENV{DPROFPP_OPTS} );
+		@ARGV = @tmpargv;
+    -a          Sort by alphabetic name of subroutines.
+		@a = sort $sort @$idkeys;
+as the Devel::DProf profiler.  Dprofpp will read the file F<tmon.out> and
+Average number of seconds per call to this routine.
+Average time (in seconds) spent in each call of this routine
+be visible here.  See L<Devel::DProf/BUGS>.
+Branches are sorted with regard to inclusive time.
+calling level then it is displayed once with a repeat count.
+			$calls->{$name}++;
+		$$calls{$opt_G} = 0;
+				$$calls{$opt_G} += $$calls{$key};
+			$$calls{$other} = 0;
+					$$calls{$other} += $$calls{$key};
+candidates for inlining.
+C<Devel::DProf> I<when> the C<AUTOLOAD> switches to actual subroutine,
+child subroutines.
+	chop($_ = <$fh>);
+			close( $fh );
+	$cnt = $opt_O || 15;
+	# collect childtime
+Columns are:
+Consult L<Devel::DProf/"PROFILE FORMAT"> for a description of the raw profile.
+    count => 0,
+Count anonymous subroutines defined in the same package separately.
+Count timing for autoloaded subroutine as timing for C<*::AUTOLOAD>.
+	    $cpercall = sprintf("%.4f", $cs/$ncalls );
+	$c = pop( @$tstack );
+		$c = pop( @$tstack );
+		# create entries to store grouping
+	    $cs = $ctimes->{$key}/$hz;
+	    $csecs = sprintf("%.3f", $cs );
+		$^ = 'CSTAT_top';
+				$ctimes->{$name} = 0;
+					   $ctimes, $name, \$in, $tab,
+	$ctimes->{$name} += $z
+		$$ctimes{$opt_G} = 0;
+				$$ctimes{$opt_G} += $$ctimes{$key};
+			$$ctimes{$other} = 0;
+					$$ctimes{$other} += $$ctimes{$key};
+				   $curdeep_times, \%outer );
+					   $curdeep_times, \%outer );
+		  $cv_hash{$id} = "$pack\::$name";
+data.  The above two commands can be executed with one dprofpp command.
+		 $deep_times);
+  $deep_times->{excl_time} = 0 unless $deep_times->{excl_time} >= 0;
+  $deep_times->{excl_time} = $deep_times->{incl_time} - $kids_time;
+  $deep_times->{incl_time} = 0 unless $deep_times->{incl_time} >= 0;
+  $deep_times->{kids_time} = $kids_time;
+(default)  Display all subroutine times exclusive of child subroutine times.
+(default) Sort by amount of user+system time used.  The first few lines
+      $dest_kid->{count} += $source_kid->{count};
+      $dest_kid->{incl_time} += $source_kid->{incl_time};
+      $dest->{$kid_name} = $source_kid;
+						  'Devel/DProf.pm')) {
+		    die "Bad profile: $_";
+		die "Failed: $startperl -d:$profiler $cmd: $!";
+		die "Garbled profile, missing an enter time stamp";
+	    die "Garbled profile, unexpected exit time stamp";
+		die "Not a perl profile";
+		die "-Q is meaningful only when used with -p\n";
+  die "Shorted?!" unless @$curdeep_times >= 2;
+			die "Try rerunning dprofpp with -F.\n";
+		  $dir = '-';
+		  ($dir, $id, $pack, $name) = split;
+		($dir, $usert, $syst, $realt, $name) = split;
+Display all subroutine times inclusive of child subroutine times.
+Display brief help and exit.
+displayed for each branch of the tree.
+displayed.  When a function is called multiple consecutive times at the same
+Display elapsed real times rather than user+system times.
+Display I<merged> subroutine call tree to stdout.  Statistics are
+Display long help and exit.
+	display( $runtime, $hz, $names, $calls, $times, $ctimes, $cnt, $a,
+Display subroutine call tree to stdout.  Subroutine statistics are
+Display subroutine call tree to stdout.  Subroutine statistics are not
+Display system times rather than user+system times.
+display the 15 subroutines which are using the most time.  By default
+    display_tree( $deep_times->{kids}{$kid}, $kid, $level + 1 );
+	  display_tree( $deep_times, 'toplevel', -1 )
+Display user times rather than user+system times.
+Do not display column headers.
+Do not sort.  Display in the order found in the raw profile.
+don't count on that in this version.
+dprofpp [B<-a>|B<-z>|B<-l>|B<-v>|B<-U>] [B<-d>] [B<-s>|B<-r>|B<-u>] [B<-q>] [B<-F>] [B<-I|-E>] [B<-O cnt>] [B<-A>] [B<-R>] [B<-S>] [B<-g subroutine>] [B<-G> <regexp> [B<-P>]] [B<-f> <regexp>] [profile]
+dprofpp B<-G> <regexp> [B<-P>] [profile]
+dprofpp B<-p script> [B<-Q>] [other opts]
+dprofpp B<-t> [B<-F>] [B<-g subroutine>] [profile]
+dprofpp B<-V> [profile]
+dprofpp - display perl profile data
+dprofpp [options] [profile]
+	dprofpp		- profile processor
+	$ dprofpp -u
+	$ dprofpp -u -p test.pl
+			  $dprof_stamp = $t;
+    -d          Reverse sort.
+    } else {
+  } else {
+	  } else {
+	} else {
+		} else {
+			}else{
+				} else {
+	else		{	$over_per_call = $over_utime + $over_stime }
+		  else			{	$t = $usert + $syst	}
+			} elsif (defined $opt_g and $ename eq $opt_g) {
+			} elsif (defined $opt_g and $name eq $opt_g) {
+	elsif( defined $opt_Q ){
+		} elsif ($dir ne '-'){
+	  } elsif ( $opt_F ) {
+	elsif( $opt_r )	{	$over_per_call = $over_rtime		}
+		  elsif( $opt_r )	{	$t = $realt		}
+  elsif( $opt_s ){
+	elsif( $opt_s )	{	$over_per_call = $over_stime		}
+		  elsif( $opt_s )	{	$t = $syst		}
+			elsif( $opt_t ){
+  elsif( $opt_u ){
+						enter_stamp => $t - $overhead,
+  $entry->{count}++;
+  $entry->{incl_time} += $t - $curdeep_times->[-1]{enter_stamp};
+    -E          Sub times are reported exclusive of child times. (default)
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+    eval "format STAT = \n$fmt" . '
+  exclusives_in_tree($deep_times);
+    exclusives_in_tree($deep_times->{kids}{$kid});
+	Exclusive Times
+                exit;
+		exit(0);
+		exit(0) if defined $opt_Q;
+	exit(0) if $opt_T || $opt_t;
+				exitstamp( \@stack, \@tstack,
+			exitstamp( \@stack, \@tstack,
+F<E<lt>perl5-porters@perl.orgE<gt>>.  Bug reports should include the
+    -f          Filter all calls matching the pattern.
+Filter all calls matching the pattern.
+	#filter calls
+	$fmt .= '<' x ($cols - length $fmt) if $cols > 80;
+Force the generation of fake exit timestamps if dprofpp reports that the
+    foreach my $s (qw(/bin/stty /usr/bin/stty)) {
+			foreach $x ( reverse @stack ){
+			foreach $x (@stack) {
+	    foreach $z (@stack, $x) {
+For example this can be used to group all calls of a set of packages
+  for $kid (keys %{$deep_times->{kids}}) {
+  for $kid (sort kids_by_incl %{$deep_times->{kids}}) {
+format CSTAT_top =
+	#format: $ncalls, $name, $secs, $percall, $pcnt
+		for(my $i = 0;$i < @$idkeys - 2;){
+  for my $kid_name (keys %$source) {
+	  for( $x = 0; $x < @$idkeys; ++$x ){
+	for( $x = 0; $x < @$idkeys; ++$x ){
+from it).
+		getopts( $options );
+	getopts( $options ) or die "Try 'dprofpp -h' for help.\n";
+  -G "getNum"
+    -G          Group all calls matching the pattern together.
+  -G "(package1::)|(package2::)|(package3::)"
+			  "Grouping [$opt_G] IncTimes: [$$ctimes{$opt_G}]\n";
+			  "Grouping [$opt_G] Times: [$$times{$opt_G}]\n".
+		group($names, $calls, $times, $ctimes, $idkeys );
+    -g subr     Count only subs who are SUBR or called from SUBR.
+    -H          Display long manual page.
+    -h          Display this short usage message.
+=head1 BUGS
+=head1 DESCRIPTION
+=head1 ENVIRONMENT
+=head1 FILES
+=head1 NAME
+=head1 OPTIONS
+=head1 OUTPUT
+=head1 SEE ALSO
+=head1 SYNOPSIS
+			header($fh);
+	header($fh);
+  $hz ||= 1;
+			$i++;
+identify candidates for inlining.
+	    $idkeys, $deep_times ) = @_;
+		$$idkeys[@$idkeys] = $opt_G;
+			$$idkeys[@$idkeys] = $other;
+			# I don't want -F to be default behavior--yet
+		  # "- id" or "- & name"
+		if (/^&/) {
+	if( $? / 256 > 0 ){
+if($] > 5.013010 && deprecate::__loaded_from_core('Devel::DProf', $INC{'Devel/DProf.pm'},
+		if( @ARGV ){
+	if( @ARGV ){
+    if $deep_times->{count};
+  if (%{$deep_times->{kids}}) {
+			if( ! defined $names->{$name} ){
+	if(defined $opt_d){
+	if (defined $opt_g) {
+        if ( defined $opt_h ) {
+	if( defined $opt_p ){
+	if( defined $opt_V ){
+		if (defined $realt) { # '+ times nam' '- times nam' or '@ incr'
+	if( ! defined $x ){
+		if ( $dir eq '/' ) {
+		if ( $dir eq '-' or $dir eq '*' ) {
+		if( $dir eq '+' or $dir eq '*' ){
+	if( exists $ENV{DPROFPP_OPTS} ){
+	if( ! /^#fOrTyTwO$/ ){
+			if($key =~ /$opt_f/){
+			if($key =~ /$opt_G/){
+				if ($l_in == $in and $l_name eq $name) {
+						if $l_name ne '';
+    if (my $dest_kid = $dest->{$kid_name}) {
+			if ($name eq "Devel::DProf::write") {
+  if ($name ne $curdeep_times->[-1]{name} and $opt_A) {
+	    if ($opt_A) {
+	if( $opt_f ){
+		if( ! $opt_F ){
+	if( $opt_G ){
+				if($opt_P){
+		if($opt_P){
+	if( ! $opt_q ){
+  if( $opt_r ){
+		  if ($opt_R and ($name =~ /(?:::)?(__ANON__|END)$/)) {
+				  if $opt_S;
+					      } if $opt_S;
+	if ($opt_S) {
+	if( $opt_t ){
+			if( $opt_T ){
+	if( $opt_T || $opt_t ){
+	if( ! $opt_U ){
+	if   ( $opt_u )	{	$over_per_call = $over_utime		}
+		  if   ( $opt_u )	{	$t = $usert		}
+	if( $opt_v ){
+						 if $repcnt;
+	if $running_under_some_shell;
+	if( @stack ){
+	if( @$tstack ){
+    if (-t STDOUT and defined $stty and my ($cols) = `$stty -a` =~ /\bcolumns\s+(\d+)/)
+	  if ($x->[0] =~ /(?:::)?AUTOLOAD$/) {
+	if( $x->[0] ne $name and $opt_G and ($name =~ /$opt_G/)){
+	if (-x $s) {
+if you want B<-F> on all the time.
+Ignore subroutines except C<subroutine> and whatever is called from it.
+$incl_excl
+	$incl_excl = 'Exclusive';
+	$incl_excl = 'Inclusive' if defined $opt_I;
+    incl_time => 0,
+(including those called from it).
+inclusive, exclusive and kids time.
+			  $in_level--;
+			  $in_level++;
+		$$in -= $tab;
+				$in += $tab;
+interpreting the data.
+    -I          Sub times are reported inclusive of child times.
+=item B<-a>
+=item B<-d>
+=item B<-E>
+=item B<-F>
+=item B<-f> <regexp>
+=item B<-g> C<subroutine>
+=item B<-G> <regexp>
+=item B<-h>
+=item B<-I>
+=item B<-l>
+=item B<-O cnt>
+=item B<-P>
+=item B<-p script>
+=item B<-q>
+=item B<-r>
+=item B<-s>
+=item B<-t>
+=item B<-u>
+=item B<-v>
+=item B<-z>
+=item #Calls
+=item Csec/c
+=item CumulS
+=item ExclSec
+=item Name
+=item sec/call
+=item %Time
+itself (there is no way to separate autoload time from run time).
+			$key = $$idkeys[$i];
+	    $key = $idkeys->[$x];
+		$key = $idkeys->[$x];
+    kids => {},
+  $kids_time = 0 unless $kids_time >= 0;
+    $kids_time += $deep_times->{kids}{$kid}{incl_time};
+	    last;
+		last if /^PART/;
+	    last unless --$cnt;
+					$l_in = $in;
+					$l_name = $name;
+	local $calls = {};
+	local $ctimes = {};  # Cumulative times in hz
+	local $deep_times = {count => 0 , kids => {}, incl_time => 0};
+	local $hz = 0;
+	local $idkeys = [];
+	local $names = {};
+	local $overhead = 0;
+	local $persecs = {}; # times in seconds
+	local $rrun_rtime = 0;	# elapsed run time in hz
+	local $rrun_stime = 0;	# system time in hz
+	local $rrun_ustime = 0;	# user+system time in hz
+	local $rrun_utime = 0;	# user time in hz
+	local $runtime; # runtime in seconds
+	local $time_precision = 2;
+	local $times = {};   # times in hz
+			local $XS_VERSION = 'early';
+L<perl>, L<Devel::DProf>, times(2)
+    -l          Sort by number of calls to subroutines.
+Mail bug reports and feature requests to the perl5-porters mailing list at
+  # Merge the kids?
+		$Monfile = shift;
+			$Monfile = shift;
+	$Monfile = 'tmon.out';
+		$Monfile = 'tmon.out';  # because that's where it is
+  move_keys($curdeep_times->[-1]->{kids},$entry->{kids});
+      move_keys($source_kid->{kids},$dest_kid->{kids});
+	my @a = ();
+	my( $calls, $times, $persecs, $idkeys ) = @_;
+			# my children will put their time here
+		my $cmd = join ' ', @script_parts;
+	my $curdeep_times = [$deep_times];
+  my ($curdeep_times, $name, $t) = @_;
+	my %cv_hash;
+  my( $deep_times ) = @_;
+  my( $deep_times, $name, $level ) = @_;
+	my( $dir, $name );
+	my $dprof_stamp;
+			my $ename = $dir eq '*' ? $stack[-1][0]  : $name;
+  my $entry = $curdeep_times->[-2]{kids}{$name} ||= {
+		my $fh = 'main::fh';
+	my $fh = 'main::fh';
+	my( $fh, $names, $calls, $times, $ctimes, $idkeys ) = @_;
+	my $fh = shift;
+    my $fmt = ' ^>>>   ^>>>> ^>>>>> ^>>>>>   ^>>>>> ^>>>>>  ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<';
+	my $in = 0;
+	my $in_level = not defined $opt_g; # Level deep in report grouping
+  my $kid;
+  my $kids_time = 0;
+	my $l_in = $in;
+	my $l_name = '';
+	my $monout = $Monfile;
+	my ($names, $calls, $times, $ctimes, $idkeys ) = @_;
+	my $options = 'O:g:G:Pf:dlzaAvuTtqrRsUFEIp:QVShH';
+		my $other = "other";
+		my $ot = $t;
+	my %outer;
+	my $over_per_call;
+		my $prof = 'DProf';
+	my $profiler = shift;
+	my $repcnt = 0;
+	my $repstr = '';
+  my( $runtime, $hz ) = @_;
+	my( $runtime, $hz, $names, $calls, $times, $ctimes, $cnt,
+	my @script_parts = split /\s+/, $script;
+	my $script = shift;
+  my ($source, $dest) = @_;
+    my $source_kid = delete $source->{$kid_name};
+	my @stack = ();
+	my($stack, $tstack, $t, $times, $ctimes, $name, $in, $tab, $deep, $outer) = @_;
+		my $startperl = $Config{'startperl'};
+	my $startperl = shift;
+my $stty;
+	my $tab = 3;
+  my $time;
+		my @tmpargv = @ARGV;
+	my @tstack = ();
+	my( $t, $syst, $realt, $usert );
+	my( $x, $c, $z );
+	my( $x, $key, $s, $cs );
+	my( $x, $t, $n, $key );
+	my( $x, $z, $c, $id, $pack );
+    $name = $curdeep_times->[-1]{name};
+		  $name = defined $syst ? $syst : $cv_hash{$usert};
+		    $name .= "($id)";
+						name => $name,
+	    $name = $names->{$key};
+Name of routine.
+				$names->{$name} = $name;
+		$$names{$opt_G} = $opt_G;
+			$$names{$other} = $other;
+	      $name = $x->[0];
+	    $name = $x->[0];
+				$name = $x->[0];
+	    $ncalls = $calls->{$key};
+		$n = $calls->{$key};
+		  next;
+			  next;
+					next;
+				next;
+		next if /^#/;
+            next unless $count;
+		next unless $in_level or $name eq $opt_g;
+not displayed.
+  # Now transfer to the new node (could not do earlier, since name can change)
+Number of calls to this routine.
+    -O cnt      Specifies maximum number of subroutines to display.
+on the flags to the program and the version of Perl you're using.
+		open( $fh, "<$Monfile" ) && do {
+	open( $fh, "<$monout" ) || die "Unable to open $monout\n";
+options for dprofpp.  You might use this if you prefer B<-I> over B<-E> or
+Options on the commandline should override options in DPROFPP_OPTS--but
+		   or $a cmp $b }
+or to group subroutines by name:
+Otherwise the time to autoload it is counted as time of the subroutine
+                        $outer{$name}++;
+output of the B<-V> option.
+			$overhead += $over_per_call;
+			  $overhead += $t - $dprof_stamp;
+	$over_per_call /= 2*$over_tests; # distribute over entry and exit
+	$over_tests = 1 unless $over_tests;
+	parsestack( $fh, $names, $calls, $times, $ctimes, $idkeys );
+	# pass my time to my parent
+$pcnt, $secs, $csecs, $ncalls, $percall, $cpercall, $name
+	    $pcnt = $secs = $ncalls = $percall = "";
+	    $pcnt = sprintf("%.2f",
+		percalc( $calls, ($opt_I ? $ctimes : $times), $persecs, $idkeys );
+	    $percall = sprintf("%.4f", $s/$ncalls );
+Percentage of time spent in this routine.
+	$ perl5 -d:DProf test.pl
+		$persecs->{$key} = $t ? $t / $n : 0;
+                Pod::Usage::pod2usage( {-verbose => 2, -input => $0 } );
+  pop @$curdeep_times;
+		print "$0 version: $Devel::DProf::VERSION\n";
+Print dprofpp's version number and exit.  If a raw profile is found then its
+    print <<'EOF';
+		print "Grouping [$opt_G] Calls: [$$calls{$opt_G}]\n".
+		print "Option G Grouping: [$opt_G]\n";
+				print $x->[0],"\n";
+  print ' ' x (2*$level), "$name x $deep_times->{count}  \t${time}s\n"
+				print ' ' x $in, "$name\n";
+					print ' ' x $l_in, "$l_name$repstr\n"
+		print ' ' x $l_in, "$l_name$repstr\n";
+			print "XS_VERSION: $XS_VERSION\n";
+	      print $z->[0],"\n";
+profile data.  See B<-Q>.
+profile is garbled due to missing exit timestamps.  You're on your own if
+profile is garbled.  This is only useful if dprofpp determines that the
+    -p script   Specifies name of script to be profiled.
+    -P          Used with -G to pull all other calls together.
+			push @$curdeep_times, { kids => {},
+				push( @$idkeys, $name );
+			push( @stack, $x );
+			push( @tstack, 0 );
+		push( @$tstack, $c + $z );
+    -q          Do not print column headers.
+    -Q          Used with -p to indicate that dprofpp should quit
+    -R          Count anonymous subs separately even if from the same package.
+	# remember last call depth and function name
+					$repcnt++;
+					$repcnt = 0;
+# Report avg time-per-function in seconds
+# Report the times in seconds.
+					$repstr = '';
+					$repstr = ' ('.++$repcnt.'x)'
+		$repstr = ' ('.++$repcnt.'x)' if $repcnt;
+require 5.003;
+require deprecate;
+require Devel::DProf;
+                require Pod::Usage;
+# result is given in seconds.
+# Reversed
+Reverse whatever sort is used
+(($rrun_rtime - $overhead) / $hz)
+	$rrun_ustime = $rrun_utime + $rrun_stime;
+		run_profiler( $opt_p, $prof, $startperl );
+# Runs the given script with the given profiler and the given perl.
+  $$runtime = 0 unless $$runtime > 0;
+	  $runtime = 0 unless $runtime > 0;
+	  $runtime = $ctimes->{$opt_g}/$hz;
+			    $runtime? ((($opt_I ? $csecs : $secs) / $runtime) * 100.0): 0 );
+    $$runtime = ($rrun_rtime - $overhead)/$hz;
+    $$runtime = ($rrun_stime - $overhead)/$hz;
+    $$runtime = ($rrun_ustime - $overhead)/$hz;
+    $$runtime = ($rrun_utime - $overhead)/$hz;
+				$runtime -= $$times{$key};
+    -r          Use real elapsed time rather than user+system time.
+				# same calling level is called.
+    -S          Create statistics for all the depths.
+	    $secs = sprintf("%.3f", $s );
+# Sets $runtime to user, system, real, or user+system time.  The
+	settime( \$runtime, $hz ) unless $opt_g;
+Setup: {
+                shortusage();
+should show you which subroutines are using the most time.
+Show only I<cnt> subroutines.  The default is 15.
+so a separate statistics for C<AUTOLOAD> will be collected no matter
+Sort alphabetically by subroutine names.
+	$sort = 'by_alpha' if defined $opt_a;
+Sort by average time spent in subroutines during each call.  This may help
+	$sort = 'by_avgcpu' if defined $opt_v;
+	$sort = 'by_calls' if defined $opt_l;
+	$sort = 'by_ctime' if defined $opt_I;
+Sort by number of calls to the subroutines.  This may help identify
+	$sort = 'by_time';
+		$sort = "r".$sort;
+					splice(@$idkeys, $i, 1);
+				splice(@$idkeys, $i, 1);
+		$startperl =~ s/^#!//; # remove shebang
+	$~ = 'STAT';
+	    $s = $times->{$key}/$hz;
+	    $stty = $s;
+sub add_to_tree {
+sub by_alpha { $names->{$a} cmp $names->{$b} }
+sub by_avgcpu { $persecs->{$b} <=> $persecs->{$a} }
+sub by_calls { $calls->{$b} <=> $calls->{$a} }
+sub by_ctime { $ctimes->{$b} <=> $ctimes->{$a} }
+sub by_time { $times->{$b} <=> $times->{$a} }
+sub display {
+sub display_tree {
+sub exclusives_in_tree {
+sub exitstamp {
+sub group{
+sub header {
+sub kids_by_incl { $kids{$b}{incl_time} <=> $kids{$a}{excl_time}
+sub move_keys {
+sub parsestack {
+sub percalc {
+sub rby_alpha { $names->{$b} cmp $names->{$a} }
+sub rby_avgcpu { $persecs->{$a} <=> $persecs->{$b} }
+sub rby_calls { $calls->{$a} <=> $calls->{$b} }
+sub rby_ctime { $ctimes->{$a} <=> $ctimes->{$b} }
+sub rby_time { $times->{$a} <=> $times->{$b} }
+sub run_profiler {
+sub settime {
+sub shortusage {
+		# Sum calls for the grouping
+				# suppress output on same function if the
+    -s          Use system time rather than user+system time.
+	system $startperl, "-d:$profiler", @script_parts;
+		  $syst = $stack[-1][0] if scalar @stack;
+Tells dprofpp that it should profile the given script and then interpret its
+The dprofpp tool can also run the profiler before analyzing the profile
+The environment variable B<DPROFPP_OPTS> can be set to a string containing
+The I<dprofpp> command interprets profile data produced by a profiler, such
+the next level.  A repeat count is output together with combined
+Then run dprofpp to analyze the profile.  The output of dprofpp depends
+			# there was a filename.
+		# there was a filename, it overrides any earlier name.
+the times for each subroutine are given exclusive of the times of their
+This is going to be irrelevant with newer Perls.  They will inform
+This was added fairly lazily, so there are some undesirable side effects.
+%Time ExclSec CumulS #Calls sec/call Csec/c  Name
+Time (in seconds) spent in this routine and routines called from it.
+Time (in seconds) spent in this routine (not including those called
+        $time_precision, $deep_times->{excl_time}/$hz,
+      $time_precision, $deep_times->{incl_time}/$hz,
+          $time_precision, $deep_times->{kids_time}/$hz;
+	$time_precision = length int ($hz - 1);	# log ;-)
+@<<<<<<<< Times
+				   $times, $ctimes, $name, \$in, $tab,
+  @>>>>>>>>>> Time = @>>>>>>> Seconds
+	%Time Seconds     #Calls sec/call Name
+times in the same branch then all these calls go into one branch of
+				$times->{$name} = 0;
+	$times->{$name} += $z - $c;
+		$$times{$opt_G} = 0;
+				$$times{$opt_G} += $$times{$key};
+			$$times{$other} = 0;
+					$$times{$other} += $$times{$key};
+    $time = sprintf '%.*fs = (%.*f + %.*f)',
+    $time = sprintf '%.*f', $time_precision, $deep_times->{incl_time}/$hz;
+	tmon.out	- raw profile
+To profile a Perl script run the perl interpreter with the B<-d> switch.  So
+to profile script F<test.pl> with Devel::DProf use the following:
+	Total Elapsed Time =    1.67 Seconds
+Total Elapsed Time = @>>>>>>> Seconds
+	# total time this func has been active
+		  $t += $ot, next if $dir eq '@'; # Increments there
+				   $t - $overhead,
+					    $t - $overhead)
+				    $t - $overhead) if $opt_S;
+					   $t - $overhead, $times,
+    -T          Show call tree.
+    -t          Show call tree, compressed.
+		$t = $times->{$key} / $hz;
+    -U          Do not sort subroutines.
+            unless --$outer->{$name};
+use Config '%Config';
+Used with B<-p> to tell dprofpp to quit after profiling the script, without
+Used with -G to aggregate "Pull" together all calls that did not match -G.
+use Getopt::Std 'getopts';
+		  $usert = '&';
+		 User Time =    0.61 Seconds
+#!/usr/bin/perl
+    -u          Use user time rather than user+system time.
+    -V          Print dprofpp's version.
+    -v          Sort by average amount of time spent in subroutines.
+    warn "dprofpp will be removed from the Perl core distribution in the next major release. Please install Devel::DProf from CPAN.\n";
+			warn( "Faking " . scalar( @stack ) . " exit timestamp(s).\n");
+	    warn( "Garbled profile, faking exit timestamp:\n\t$name => $x->[0].\n");
+			warn "Garbled profile is missing some exit time stamps:\n";
+		  #warn("Inserted exit for $stack[-1][0].\n")
+            warn "$key has $count unstacked calls in outer\n";
+When a function is called multiple (I<not necessarily consecutive>)
+  # When summing, take into account non-rounded-up kids time.
+whether this option is set.
+	$whichtime = 'Real' if defined $opt_r;
+$whichtime, $runtime
+	$whichtime = 'System' if defined $opt_s;
+	$whichtime = 'User' if defined $opt_u;
+	$whichtime = 'User+System';
+	while(<$fh>){
+        while (my ($key, $count) = each %outer) {
+will leave an incomplete profile.  See the B<-F> option.
+	    write;
+	    write while( length $name );
+			$x = [ $name, $t - $overhead ];
+	$x = pop( @$stack );
+XS_VERSION variable will be displayed, too.
+you do this.  Consult the BUGS section.
+    -z          Sort by user+system time spent in subroutines. (default)
+	$z = $t - $x->[1];

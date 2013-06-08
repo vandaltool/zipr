@@ -1,0 +1,183 @@
+    action, file_args = get_action(args)
+# along with duplicity; if not, write to the Free Software Foundation,
+# any suggestions.
+    args = parse_cmdline_options(sys.argv[1:])
+        assert 0, "Unknown mode " + str(mode)
+    assert not outfp.close()
+    assert not sig_outfp.close()
+            check_does_not_exist(filename)
+    command = args[0]
+        command_line_error("Bad command " + action)
+        command_line_error("Bad command line option: %s" % (str(e),))
+        command_line_error("No arguments found")
+            command_line_error("Too few arguments")
+            command_line_error("Too many arguments")
+            command_line_error("Unknown option %s" % opt)
+        command = "sig"
+# Copyright 2002 Ben Escoto <ben@emerose.org>
+# Copyright 2007 Kenneth Loafman <kenneth@loafman.com>
+def check_does_not_exist(filename):
+def command_line_error(message):
+def get_action(args):
+def get_fileobj(filename, mode):
+def get_selection(filename):
+def main():
+def parse_cmdline_options(arglist):
+def patch(dirname, deltafp):
+    def require_args(num):
+    def sel_fl(filename):
+def write_delta_and_sig(dirname, sig_infp, outfp, sig_outfp):
+def write_delta(dirname, sig_infp, outfp):
+def write_sig(dirname, outfp):
+def write_tar_and_sig(dirname, outfp, sig_outfp):
+def write_tar(dirname, outfp):
+    delta_iter = diffdir.DirDelta(get_selection(dirname), sig_infp)
+    delta_iter = diffdir.DirDelta_WriteSig(sel, sig_infp, sig_outfp)
+        delta_outfp = get_fileobj(file_args[2], "wb")
+                                delta_outfp, sig_fileobj)
+    diffdir.write_block_iter(delta_iter, outfp)
+    diffdir.write_block_iter(diffdir.DirFull(get_selection(dirname)), outfp)
+    diffdir.write_block_iter(diffdir.DirSig(get_selection(dirname)), outfp)
+    diffdir.write_block_iter(full_iter, outfp)
+# Duplicity is distributed in the hope that it will be useful, but
+# Duplicity is free software; you can redistribute it and/or modify it
+    elif action == "delta":
+    elif action == "patch":
+    elif action == "tar":
+    elif command == "delta":
+    elif command == "patch":
+    elif command == "tar":
+        elif len(args)-1 > num:
+    elif mode == "w" or mode == "wb":
+        elif (opt == "--exclude-device-files" or
+        elif (opt == "--exclude-filelist" or opt == "--include-filelist" or
+        elif opt == "--exclude-filelist-stdin":
+        elif (opt == "--exclude" or opt == "--exclude-regexp" or
+        elif opt == "--include-filelist-stdin":
+        elif opt == "--null-separator":
+        elif opt == "-V":
+        elif opt == "-v" or opt == "--verbosity":
+        elif opt == "--write-sig-to" or opt == "--write-signature-to":
+        else:
+    else:
+    except getopt.error, e:
+        except IOError:
+    except OSError:
+                                       "exclude-filelist=", "exclude-filelist-stdin",
+                                       "exclude-globbing-filelist", "exclude-other-filesystems",
+                                       "exclude-regexp=", "include=", "include-filelist=",
+    """Exit with error message if filename already exists"""
+    """Figure out the main action from the arguments"""
+    for opt, arg in optlist:
+            fp = open(filename, mode)
+            fp = sys.stdin
+            fp = sys.stdout
+# Free Software Foundation; either version 2 of the License, or (at your
+from duplicity import diffdir
+from duplicity import globals
+from duplicity import log
+from duplicity import patchdir
+from duplicity import path
+from duplicity import selection
+    full_iter = diffdir.DirFull_WriteSig(get_selection(dirname), sig_outfp)
+# General Public License for more details.
+    """Get file object or stdin/stdout from filename"""
+                              get_fileobj(file_args[1], "wb"),
+gettext.install('duplicity')
+    global gzip_compress, select_opts, select_files, sig_fileobj
+    global select_opts, select_files
+            globals.null_separator = 1
+            gzip_compress = 1
+                                      ["gzip-compress", "exclude=", "exclude-device-files",
+gzip_compress = None
+        """Helper function for including/excluding filelists below"""
+    if action == "sig":
+    if command == "sig" or command == "signature":
+        if filename == "-":
+    if gzip_compress:
+        if len(args)-1 < num:
+    if mode == "r" or mode == "rb":
+if __name__ == "__main__":
+    if not args:
+        if opt == "--gzip_compress" or opt == "-z":
+# If set, compress diff and delta files using gzip
+# If set, when computing delta, also compute signature and write to
+        if sig_fileobj:
+import gettext
+import sys, getopt, gzip, os
+# Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+                                       "include-filelist-stdin", "include-globbing-filelist",
+                                       "include-regexp=", "null-separator", "verbosity=",
+    """Indicate a command line error and exit"""
+            log.FatalError("Error opening file %s" % filename)
+        log.FatalError("File %s already exists, will not "
+    log.setup()
+            log.setverbosity(int(arg))
+    main()
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+              opt == "--exclude-globbing-filelist" or
+              opt == "--exclude-other-filesystems"):
+              opt == "--include-globbing-filelist"):
+              opt == "--include" or opt == "--include-regexp"):
+# option) any later version.
+        optlist, args = getopt.getopt(arglist, "v:Vz",
+        os.lstat(filename)
+                       "overwrite." % filename)
+    """Parse argument list"""
+        pass
+    """Patch dirname, reading delta tar from deltafp"""
+    patchdir.Patch(path.Path(dirname), deltafp)
+        patch(file_args[0], get_fileobj(file_args[1], "rb"))
+# Please send mail to me or the mailing list if you find bugs or have
+            print "rdiffdir", str(globals.version)
+# rdiffdir -- Extend rdiff functionality to directories
+        require_args(2)
+        require_args(3)
+    return args
+    return command, args[1:]
+        return fp
+        return gzip.GzipFile(None, fp.mode, 9, fp)
+            return open(filename, "r")
+    """Return selection iter starting at path with arguments applied"""
+    return sel.set_iter()
+# See http://www.nongnu.org/duplicity for more information.
+            select_files.append(sel_fl(arg))
+            select_files.append(sys.stdin)
+select_files = [] # Will hold file objects when filelist given
+select_opts = [] # Add selection argument tuples to this
+            select_opts.append(("--exclude-filelist", "standard input"))
+            select_opts.append(("--include-filelist", "standard input"))
+            select_opts.append((opt, arg))
+            select_opts.append((opt, None))
+    sel = get_selection(dirname)
+    sel.ParseArgs(select_opts, select_files)
+    sel = selection.Select(path.Path(filename))
+                              sig_fileobj)
+            sig_fileobj = get_fileobj(arg, "wb")
+sig_fileobj = None
+        sig_infp = get_fileobj(file_args[0], "rb")
+# specified file.
+    """Start here"""
+    """Store dirname into a tarfile, write to outfp"""
+            sys.exit(0)
+    sys.exit(1)
+    sys.stderr.write("Error: %s\n" % (message,))
+    sys.stderr.write("See the rdiffdir manual page for instructions\n")
+# This file is part of duplicity.
+        try:
+    try:
+# under the terms of the GNU General Public License as published by the
+#!/usr/bin/python
+# Version 0.6.18 released February 29, 2012
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+    """Write delta and also signature of dirname"""
+            write_delta_and_sig(file_args[1], sig_infp,
+            write_delta(file_args[1], sig_infp, delta_outfp)
+    """Write delta to fileobj outfp, reading from dirname and sig_infp"""
+        write_sig(file_args[0], get_fileobj(file_args[1], "wb"))
+    """Write signature of dirname into file object outfp"""
+                                       "write-sig-to="])
+            write_tar_and_sig(file_args[0],
+            write_tar(file_args[0], get_fileobj(file_args[1], "wb"))
+    """Write tar of dirname to outfp, signature of same to sig_outfp"""
+# You should have received a copy of the GNU General Public License

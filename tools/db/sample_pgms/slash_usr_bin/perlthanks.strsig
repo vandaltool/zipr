@@ -1,0 +1,966 @@
+^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ~~
+            }
+        }
+-----------------------------------------------------------------
+$0 can send a copy of this report to your local perl
+$0 has detected an error while trying to send your message: $error.
+$0  [-v] [-a address] [-s subject] [-b body | -f inpufile ] [ -F outputfile ]
+$0  [-v] [-r returnaddress] [-A] [-ok | -okay | -nok | -nokay]
+    1 while unlink($filename);    # remove all versions under VMS
+    1 while unlink($filename);  # remove all versions under VMS
+  -a    Address to send the report to. Defaults to '$address'.
+A bug report which I<includes a patch to fix it> will almost
+    ack=no
+A copy of your message has been saved in '$file' for you to
+A copy of your message has been saved in '$filename' for you to
+across, B<perldoc> L<perldiag> for an explanation.  If the message
+#                 add local patch information
+addressed.
+    $address = $::opt_a || ($::opt_t ? $testaddress
+        $address = qq[${prefix}"$address"] unless $address =~ /^\w+%"/;
+    $address =~ s/"/""/g;
+Address to send copy of report to.  Defaults to the address of the
+Address to send the report to.  Defaults to B<perlbug@perl.org>.
+administrator.  If the address below is wrong, please correct it,
+  -A    Don't send a bug received acknowledgement to the return address.
+a duplicate of an existing report, you may not receive a personal
+Advanced usage:
+a few options. You can:
+A good test case has most of these attributes: short, simple code;
+A good test case is almost always a good candidate to be included in
+#                 Also removed some old comments duplicated elsewhere.
+#                 Also report selected environment variables.
+		$alt ||= $alts{$name}{'default'};
+	$alt = $alts{$name}{$what};
+        $alt = _prompt('', "\u$name", $alts{$name}{'default'});
+    @alts
+and B<-C>. Forces and supplies values for B<-s> and B<-b>. Only
+        $andcc = ''
+        $andcc = " and $cc" 
+and resolve the issue.  Be as specific and descriptive as
+and save it to a file which you can then send to B<perlbug@perl.org>
+and say what went wrong.  Alternatively, a prepared report may be
+(and thank-you notes) about perl5 and the modules which ship with it.
+an obvious bug in your own code, is difficult to understand or is
+        anything. You can use this with -v to get more complete data.
+are more than 60 days old.  This Perl version was constructed on
+As B<-nok> except it will report on older systems.
+As B<-ok> except it will report on older systems.
+A significant number of the bug reports we get turn out to be
+    # as "~s subject" and thus the Subject header will be corrupted
+as the code you are trying to patch.  Make sure your patch really
+# a strange way to check whether any significant editing
+attention and interest than those without patches.
+authors and maintainers of perl.
+	# Bah. Fall back to doing things less securely.
+  -b    Body of the report. If not included on the command line, or
+(B<dbx>, B<gdb>, etc) to produce a stack trace to include in the bug
+because it will most probably contain only the function names and not
+Because of this, there's no easy way to automatically send your
+because your system doesn't have a way to send mail that perlbug
+be included at the end of your message, because we're curious about
+be included at the end of your report. If you are using an unusual
+Be sure to include the B<exact> error messages, if any.
+B<make>). Honors return address specified with B<-r>.  You can use this
+    # Body of report
+Body of the report.  If not included on the command line, or
+    $body = $::opt_b || "";
+		$body = "Perl reported to build OK on this system.\n";
+B<perlbug>
+B<perlbug@perl.org>.
+B<perlbug> S<[ B<-v> ]> S<[ B<-a> I<address> ]> S<[ B<-s> I<subject> ]>
+B<perlbug> S<[ B<-v> ]> S<[ B<-r> I<returnaddress> ]>
+B<perlbug> will, amongst other things, ensure your report includes
+B<perlthanks>
+    $bugaddress = 'perlbug@perl.org';
+bug in the core perl distribution (along with tests or patches)
+bug is in your code, or possibly to get no reply at all.  The
+Bug reports with patches are likely to receive significantly more
+by Perl's test suite).
+  -c    Address to send copy of report to. Defaults to '$cc'.
+		Cancel();
+                Cancel();                        # cancel exits
+cannot guess it (for use with B<make>). Honors return address
+cannot run C<perlbug> at all on your system, be sure to include the
+can replicate the problem on a standard build of perl as well.
+	'category' => {
+    $category ||= ask_for_alternatives('category');
+    category=$category
+    $category ||= 'core';
+	        $category ||= 'library';
+	    $cc = $entry;
+    $cc = '' if $cc =~ /^(none|yourself|me|myself|ourselves)$/i;
+	    $cc = '' if $me eq $cc;
+    $cc = $::opt_C ? "" : (
+        $cc = qq[${prefix}"$cc"] unless !$cc || $cc =~ /^\w+%"/;
+    $cc      =~ s/"/""/g;
+	$cc = "yourself";
+  -C    Don't send copy to administrator.
+# Changed in 1.06 to skip Mail::Send and Mail::Util if not available.
+# Changed in 1.07 to see more sendmail execs, and added pipe output.
+# Changed in 1.08 to use correct address for sendmail.
+# Changed in 1.09 to close the REP file before calling it up in the editor.
+# Changed in 1.10 to run under VMS without Mail::Send; also fixed
+# Changed in 1.11 to clean up some text and removed Mail::Send deactivator.
+# Changed in 1.12 to check for editor errors, make save/send distinction
+# Changed in 1.13 to hopefully make it more difficult to accidentally
+# Changed in 1.14 to make the prompts a little more clear on providing
+# Changed in 1.15 to add warnings to stop people using perlbug for non-bugs.
+# Changed in 1.16 to include @INC, and allow user to re-edit if no changes.
+# Changed in 1.17 Win32 support added.  GSAR 97-04-12
+# Changed in 1.18 add '-ok' option for reporting build success. CFR 97-06-18
+# Changed in 1.19 '-ok' default not '-v'
+# Changed in 1.20 Added patchlevel.h reading and version/config checks
+# Changed in 1.21 Added '-nok' for reporting build failure DFD 98-05-05
+# Changed in 1.22 Heavy reformatting & minor bugfixes HVDS 98-05-10
+# Changed in 1.23 Restore -ok(ay): say 'success'; don't prompt
+# Changed in 1.24 Added '-F<file>' to save report HVDS 98-07-01
+# Changed in 1.25 Warn on failure to open save file. HVDS 98-07-12
+# Changed in 1.26 Don't require -t STDIN for -ok. HVDS 98-07-15
+# Changed in 1.27 Added Mac OS and File::Spec support CNANDOR 99-07-27
+# Changed in 1.28 Additional questions for Perlbugtron RFOLEY 20.03.2000
+# Changed in 1.29 Perlbug(tron): auto(-ok), short prompts RFOLEY 05-05-2000
+# Changed in 1.30 Added warnings on failure to open files MSTEVENS 13-07-2000
+# Changed in 1.31 Add checks on close().Fix my $var unless. TJENNESS 26-07-2000
+# Changed in 1.32 Use File::Spec->tmpdir TJENNESS 20-08-2000
+# Changed in 1.33 Don't require -t STDOUT for -ok.
+# Changed in 1.34 Added Message-Id RFOLEY 18-06-2002 
+# Changed in 1.35 Use File::Temp (patch from Solar Designer) NWCLARK 28-02-2004
+# Changed in 1.36 Initial Module::CoreList support Alexandr Ciornii 11-07-2007
+# Changed in 1.37 Killed some string evals, rewrote most prose JESSE 2008-06-08
+# Changed in 1.38 Actually enforce the CoreList check,
+# Changed in 1.39 Trap mail sending failures (simple ones) so   JESSE 2008-06-08
+        # Check that we have a report that has some, eh, report in it.
+	chomp (my $common_end = <<"EOF");
+    chomp($result);
+#                 clearer and add $ENV{REPLYTO}.
+clear, simple documentation.
+	close($fh);
+	close(F) or die "Error closing '$file': $!";
+        close(OUTFILE) or do { warn  "Error closing $file: $!"; return undef };
+    close(REP) or die "Error closing $filename: $!";
+    close(REP) or die "Error closing report file: $!";
+    close(REP) or die "Error closing report file '$filename': $!";
+		close(REP) or die "Error closing report file '$filename': $!";
+$common_end
+comp.lang.perl.misc.
+complete data.  Only makes a report if this system is less than 60
+concise but descriptive. Please include any detail which you think
+		    ." $::Config{'archname'} $::Config{'osvers'} $subject";
+	|| $::Config{'cf_email'} || $::Config{'cf_by'}
+    # -------- Configuration ---------
+connection.
+containing your report.
+correct it.
+correct place to report bugs.
+crucial information about your version of perl.  If C<perlbug> is
+-d> and email it to B<perlbug@perl.org>.  If, for some reason, you
+Data mode (the default if you redirect or pipe output).  This prints out
+$date.  If you really want to report this, use
+days old.
+  -d    Data mode.  This prints out your configuration data, without mailing
+debugger.  For information about how to use the debugger B<perldoc>
+	    'default' => 'core',
+	    'default' => 'low',
+definitely be fixed.  When sending a patch, please use the C<diff>
+	    $description = <<"EOF";
+	    $description =  <<"EOF";
+description of what's wrong is fine.
+detailed explanations about your fix.
+developers can contact you with questions about your issue or to
+		    die "Aborting.\n";
+        die "Can't spawn off mail (leaving bug report in $filename): $sts";
+    die "Invalid alternative ($name) requested\n" unless grep(/^$name$/, keys %alts);
+		die "Invalid $name: aborting.\n";
+    die "\n";
+        || die "'|$sendmail -t -oi -f $from' failed: $!";
+diff(1), patch(1), dbx(1), gdb(1)
+    * Display or change the message's [su]bject
+		# Display the message
+    * [D]isplay the message on the screen,
+documentation that came with that distribution to determine the
+documented features in Perl.  Make sure the issue you've run into
+does work (C<make test>, if the thing you're patching is covered
+		$domain = $ENV{'USERDOMAIN'};
+		$domain = Mail::Util::maildomain();
+		$domain = Sys::Hostname::hostname();
+Don't send a bug received acknowledgement to the reply address.
+Don't send copy to administrator.
+    Dump(*REP);
+	    $ed = $entry;
+	$ed = $entry unless $entry eq '';
+		Edit();
+    _edit_file($ed);
+    # Editor
+                $editor = $entry;
+editor or enter a filename.
+Editor to use.
+		# edit the message
+    # Edit the report
+Edit() unless $usefile || ($ok and not $::opt_n);
+    $ed = $::opt_e || $ENV{VISUAL} || $ENV{EDITOR} || $ENV{EDIT}
+  -e    Editor to use.
+            } else {
+        } else {
+    } else {
+} else {
+	} else {
+		} else {
+            } elsif ( $action =~ /^[cq]/i ) {    # <C>ancel, <Q>uit
+	    } elsif ($action =~ /^(d|l|sh)/i ) { # <D>isplay, <L>ist, <Sh>ow
+	    } elsif ($action =~ /^[er]/i) { # <E>dit, <R>e-edit
+	    } elsif ($action =~ /^[qc]/i) { # <C>ancel, <Q>uit
+	    } elsif ($action =~ /^se/i) { # <S>end
+	    } elsif ($action =~ /^s/i) {
+	    } elsif ($action =~ /^su/i) { # <Su>bject
+        } elsif ($entry) {
+	} elsif ($entry ne "") {
+    } elsif ($Is_MSWin32) {
+        } elsif ($Is_VMS) {
+	} elsif (my $bug_tracker = $Module::CoreList::bug_tracker{$entry}) {
+    } elsif ($usefile) {
+(E<lt>domo@computer.orgE<gt>), Hugo van der Sanden (E<lt>hv@crypt.org<gt>),
+(E<lt>gnat@frii.comE<gt>), Charles F. Randall (E<lt>cfr@pobox.comE<gt>),
+(E<lt>jesse@bestpractical.com<gt>).
+(E<lt>pudge@pobox.comE<gt>), Jon Orwant (E<lt>orwant@media.mit.eduE<gt>,
+Enter, otherwise type in the name of the editor you would like to
+entire output produced by running C<perl -V> (note the uppercase V).
+            $entry = '';
+'$entry' doesn't seem to be a readable file.  You may have mistyped
+$entry included with core Perl is copied directly from the CPAN distribution.
+$entry is not a "core" Perl module. Please check that you entered
+        $entry = _prompt($description, 'Module');
+    @env{@env} = @env;
+Environment for perl $perl_version:
+    eval {
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+	    : eval { getpwuid($<) };	# May be missing
+    eval { require File::Temp; };
+    eval { require Mail::Send;};
+    eval { require Mail::Util; } ;
+    eval { require Module::CoreList; };
+		exists $ENV{$env} ? "=$ENV{$env}" : ' (unset)',
+	    exit();
+		exit();
+    exit(0);
+    # Explain what perlbug is
+feature, please enter its name here. If it's not, just hit Enter
+features may be unimplemented or work differently.
+Feel free to update the ticket about your bug on http://rt.perl.org
+few dependencies on external commands, modules, or libraries; no
+  -f    File containing the body of the report. Use this to
+  -F    File to output the resulting mail message to, instead of mailing.
+    $fh->close or die "Error sending mail: $!";
+    $fh, $me, $body, $andcc, %REP, $ok, $thanks, $progname,
+    $fh = $msg->open;
+"file", and $0 will prompt you to enter the name of the file
+File containing the body of the report.  Use this to quickly send a
+	$file = $entry;
+filename:
+	$filename = "bugrep0$$";
+    $filename = filename();
+	$filename = File::Spec->catfile($dir, $filename);
+    $filename, $messageid, $domain, $subject, $from, $verbose, $ed, $outfile,
+	$filename++ while -e File::Spec->catfile($dir, $filename);
+    $file = $::opt_f || "";
+File to output the results to instead of sending as an email. Useful
+    # File to output to
+    # File to send as report
+    _fingerprint_lines_in_report();
+"First of all, please provide a subject for the message.\n";
+fixed -- if nobody can duplicate your problem, it probably won't be 
+#                 Fix "module" prompting to not squish "category" prompting 
+	    # force these options
+        foreach ( qw[ IN MX SMTP UCX PONY WINS ], '' ) {
+	foreach (sort keys %::Config) {
+for $entry on http://rt.cpan.org, and report your issue there.
+For help using perl, try posting to the Usenet newsgroup 
+format STDOUT =
+    for my $env (sort keys %env) {
+    for my $header (keys %attr) {
+    for my $i (@INC) {
+    for my $key ( keys %headers) {
+    for (@paragraphs) {   # implicit local $_
+        for (@path) {
+    for (qw(/usr/lib/sendmail /usr/sbin/sendmail /usr/ucblib/sendmail)) {
+	    || $from || '';
+    $from = $::Config{'cf_email'}
+	    $from = $guess;
+	    $from = $guess if $from eq '';
+    $from = $::opt_r || "";
+        $from = _prompt('','Your address',$guess);
+further information about your issue or to inform you when it is
+Generally it is only a sensible to use this option if you are a
+generated with the help of perlbug $Version running under perl $perl_version.
+    # Generate report
+    # Generate scratch file to edit report in
+Given the sheer volume of Perl documentation, this isn't a trivial
+	# Good. Use a secure temp file
+	    goto editor;
+	    goto filename;
+		    $guess = "$domain\:\:$me";
+	$guess = $ENV{'REPLY-TO'} || $ENV{'REPLYTO'} || $ENV{'EMAIL'}
+		    $guess = "$me\@$domain" if $domain;
+Harassing or flaming them is likely to have the opposite effect of
+# has been done: check whether any new non-empty lines
+# have been added.
+    $::HaveCoreList = ($@ eq "");
+have luck consulting your operating system documentation instead.
+    $::HaveSend = ($@ eq "");
+    $::HaveTemp = ($@ eq "");
+    $::HaveUtil = ($@ eq "");
+Having done your bit, please be prepared to wait, to be told the
+=head1 AUTHORS
+=head1 BUGS
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+    $headers{'Cc'}         = $cc        if ($cc);
+    $headers{'From'}       = $from      if ($from);
+    $headers{'Message-Id'} = $messageid if ($messageid);
+    $headers{'Reply-To'}   = $from      if ($from);
+        $head .= "$header: ".$attr{$header}."\n";
+	    Help();
+#                 helpful information. Also let file read fail gracefully.
+Here are a few hints for creating high-quality patches:
+hit Enter and you'll be able to select a text editor instead.
+  -h    Print this help message.
+I<doc>tored by Gurusamy Sarathy (E<lt>gsar@activestate.comE<gt>),
+	    if ($action =~ /^(f|sa)/i) { # <F>ile/<Sa>ve
+            if ( $action =~ /^[re]/i ) {    # <R>etry <E>dit
+    if (   ( $address =~ /@/ and $address !~ /^\w+%"/ )
+if a new version of Perl is released and your bug is still present.
+    if (basename ($0) =~ /^perlthanks/i) {
+    if ($body) {
+    if ($cc) { 
+    if ( close(SENDMAIL) ) {
+    if ($::Config{cf_by} and $::Config{cf_time}) {
+	if $config_tag2 ne $config_tag1;
+    if ($default && $result eq '') {
+        if ($domain) {
+	    if ($entry and not $first_release) {
+	if ($entry eq "") {
+	if ($entry eq "file") {
+            if ( $entry ne "" ) {
+	if ($entry ne "") {
+	    if ($err++ == 5) {
+	    if ($err++ > 5) {
+        if ($exit_status) {
+    if ($explanation) {
+       if !$from && $::Config{'cf_email'} && $::Config{'cf_by'} && $me &&
+    if ($from eq $cc or $me eq $cc) {
+    if (!getopts("Adhva:s:b:f:F:r:e:SCc:to:n:T")) { Help(); exit; };
+	if ($guess) {
+    if ($::HaveCoreList && !$ok && !$thanks) {
+        if ( $::HaveSend && !$Is_Linux && !$Is_OpenBSD ) {
+    if ($::HaveTemp) {
+    if ($::HaveUtil) {
+		if ($Is_VMS && !$::Config{'d_socket'}) {
+If it is important to you that your bug be fixed, do monitor the
+    if ( my $error = $@ ) {
+	if ( not $thanks)  {
+    if ( $^O eq 'os2' and $sendmail eq "" ) {
+	if ($ok && $guess) {
+    if ($::opt_A) {
+    if( !$::opt_C and !$::opt_c ) {
+if ($::opt_d) { Dump(*STDOUT); exit; }
+if ($::opt_h) { Help(); exit; }
+    if ($::opt_n) {
+    if ($::opt_o) {
+	    if ($::opt_o eq 'k' and $age > 60 * 24 * 60 * 60 ) {
+	if ($::opt_o eq 'k' or $::opt_o eq 'kay') {
+    if( !$::opt_S ) {
+    if ($::opt_T) {
+if ($outfile) {
+    if (@patches) {
+		if ($reply ne '') {
+		if ($reply =~ /^yes$/) {
+    if ($report_about_module ) { 
+	if $running_under_some_shell;
+            if ( SaveMessage() ) { exit }
+    if ($sts) {
+    if ($subject =~
+    if ($subject && TrivialSubject($subject)) {
+	if (substr($::opt_n, 0, 2) eq 'ok' )	{
+    if ($thanks) {
+		if ($thanks) {
+	if ($thanks) {
+        if there were *any* problems at all, use -nok.
+if (!-t STDIN && !($ok and not $::opt_n)) {
+    if ($usefile and !$file) {
+    if ($usefile || $body) {
+    if ($verbose) {
+    if ($what) {
+If you are on a non-UNIX platform B<perldoc> L<perlport>, as some
+If you are unable to send your report using B<perlbug> (most likely
+        if you don't supply one on the command line.
+if you don't use this option.
+If you don't want to use a file as the content of your report, just
+If you get a core dump (or equivalent), you may use a debugger
+If you have already composed the body of your report, you may enter
+If you have found a bug with a non-standard port (one that was not
+If you mistyped its name, please enter it now, otherwise just press Enter.
+If your bug is about a Perl module rather than a core language
+If you're unsure of the meaning of an error message you've run
+If you wish to submit a bug report, please run it without the -T flag
+in a file with B<-f>, you will get a chance to edit the message.
+        in a file with -f, you will get a chance to edit the message.
+\@INC for perl $perl_version:
+include a file, you can use the -f switch.
+Include verbose configuration data in the report.
+    # Include verbose configuration information
+	    # Inevitably some of these will end up in RT whatever we do:
+In extreme cases, B<perlbug> may not work well enough on your system
+information to include in a manually composed bug report to
+inform you that it has been resolved.
+In most cases, you can just run "$0" interactively from a command
+In most cases, you can just run it interactively from a command
+        in the body of the report which you will be asked to edit.
+	# invoked as perlthanks
+    $Is_Linux = lc($^O) eq 'linux';
+    $Is_MSWin32, $Is_Linux, $Is_VMS, $Is_OpenBSD,
+	|| ($Is_MSWin32 && "notepad")
+    $Is_MSWin32 = $^O eq 'MSWin32';
+isn't in perldiag, it probably isn't generated by Perl.  You may
+isn't intentional by glancing through the documentation that comes
+    $Is_OpenBSD = lc($^O) eq 'openbsd';
+is "perl crashes" nor is "HELP!!!".  These don't help.  A compact
+	|| ($Is_VMS && "edit/tpu")
+    $Is_VMS = $^O eq 'VMS';
+It appears that there is no program which looks like "sendmail" on
+=item Are you running the latest released version of perl?
+=item Are you sure what you have is a bug?
+=item B<-a>
+=item B<-b>
+=item B<-c>
+=item B<-d>
+=item B<-e>
+=item B<-f>
+=item B<-h>
+=item B<-nok>
+=item B<-nokay>
+=item B<-ok>
+=item B<-okay>
+=item B<-r>
+=item B<-s>
+=item B<-t>
+=item B<-v>
+=item Can you describe the bug in plain English?
+=item Can you fix the bug yourself?
+=item Can you use C<perlbug> to submit a thank-you note?
+=item Can you use C<perlbug> to submit the report?
+=item Do you have a proper test case?
+=item Have you included all relevant information?
+=item What version of Perl you are running?
+	    "It is being executed now by  Perl $config_tag2.\n\n"
+It looks like you didn't enter a report. You may [r]etry your edit
+It seems you didn't enter a filename. Please choose to use a text
+it should, please try to include examples of the actual result and of
+its name correctly. If it is correct, quit this program, try searching
+its name or may not have permission to read it.
+It's now time to compose your bug report. Try to make the report
+It's now time to compose your thank-you message.
+it will be fixed.  Any insight you can provide into the problem
+Jarkko Hietaniemi (E<lt>jhi@iki.fiE<gt>), Chris Nandor
+Kenneth Albanowski (E<lt>kjahds@kjahds.comE<gt>), subsequently
+            last;
+		    last;
+latest released version, please try to replicate your bug on the
+latest stable release.
+    lc $alt;
+	length($subject) < 4 ||
+        $line =~ s/\s+//g;
+line without any special arguments and follow the prompts.
+    local(*OUT) = @_;
+local perl administrator (recorded when perl was built).
+Look at http://www.perl.org/ to find out.  If you are not using the
+L<perldebug>.
+L<perltrap> for pointers to common traps that new (and experienced)
+mail it later.
+#       make sure failure (transmission-wise) of Mail::Send is accounted for.
+Make sure the patch is not reversed (the first argument to diff is
+Make sure you test your patch by applying it with the C<patch>
+may be able to use B<perlbug -d> to get system configuration
+               ($me eq $::Config{'cf_by'});
+    $me = $Is_MSWin32 ? $ENV{'USERNAME'}
+message.
+    # Message has been accepted for transmission -- Send the message
+    $messageid = "<$::Config{'version'}_${$}_".time."\@$domain>"; 
+    # Message-Id - rjsf
+$message_start
+might be relevant or might help the volunteers working to improve
+Mike Guy (E<lt>mjtg@cam.a.ukE<gt>), Dominic Dunlop
+    module=$report_about_module
+		# move $domain to where we can use it elsewhere	
+        $msg->add($key => $headers{$key});
+much less likely that your issue gets the attention it deserves.
+	    my $action =  _prompt('', "Action (Send/Display/Edit/Subject/Save to File)");;
+            my $action = _prompt( $description, "Action (Retry/Cancel) " );
+	    my $age = time - $patchlevel_date;
+    my $alt = "";
+    my %alts = (
+ 	my @alts = @{$alts{$name}{'opts'}};
+    my %attr = (@_);
+my $config_tag1 = '5.14.2 - Mon Mar 18 19:04:34 UTC 2013';
+my $config_tag2 = "$perl_version - $Config{cf_time}";
+    my $content = _build_header(%{_message_headers()}) . "\n\n";
+		my $date = localtime $patchlevel_date;
+            my $desc = <<EOF;
+    my $description;
+            my $description = <<EOF;
+	my $description = <<EOF;
+	my $description =  <<EOF;
+	my $description = "Please make sure that the name of the editor you want to use is correct.";
+	my $dir = File::Spec->tmpdir();
+    my $editor = shift;
+    my $entry = '';
+            my $entry = _prompt( $desc, 'Editor', $editor );
+    my $entry = _prompt($description, "Editor", $ed);
+	my $entry = _prompt($description, 'Editor', $ed);
+	my $entry = _prompt($description, "Filename");
+	my $entry = _prompt($description, "Local perl administrator", $cc);
+    my @env =
+    my %env;
+	my $err = 0;
+        my $exit_status = system("$editor $filename");
+    my ($explanation, $prompt, $default) = (@_);
+	my ($fh, $filename) = File::Temp::tempfile(UNLINK => 1);
+    my $file = _prompt( '', "Name of file to save message in", $file_save );
+    my $file_save = $outfile || "$progname.rep";
+    my $file = shift;
+my( $file, $usefile, $cc, $address, $bugaddress, $testaddress, $thanksaddress,
+	    my $first_release = Module::CoreList->first_release($entry);
+	my $guess;
+    my $head = '';
+    my %headers = %{_message_headers()};
+    my %headers = ( To => $address, Subject => $subject );
+	    my $menu = <<EOF;
+        my $message_start = !$Is_Linux && !$Is_OpenBSD ? <<'EOT' : <<'EOT';
+    my $msg = Mail::Send->new();
+    my $name = shift;
+    my $new_lines = 0;
+    my @paragraphs = split /\n{2,}/, "@_";
+my @patches = (
+my $patchlevel_date = 1363632219;
+my $patch_tags = '';
+        my $path = $ENV{PATH};
+        my @path = split /$Config{'path_sep'}/, $path;
+my $perl_version = $^V ? sprintf("%vd", $^V) : $];
+        my $prefix;
+		my $reply =  _prompt( "Are you certain you want to send this message?", 'Please type "yes" if you are','no');
+		my $reply = _prompt( "Subject: $subject", "If the above subject is fine, press Enter. Otherwise, type a replacement now\nSubject");
+    my $report_written = 0;
+    my $reptype = !$ok ? ($thanks ? 'thank-you' : 'bug')
+	my $result = scalar(<>);
+    my $sendmail = "";
+    my $sendmail = _probe_for_sendmail();
+    my $sts = system(qq[mail/Subject="$subject" $filename. "$address","$cc"]);
+    my $subject = shift;
+    # My username
+	my $value;
+my $Version = "1.39";
+    my $what = $ok || $thanks;
+        $new_lines++ if (!$REP{$line});
+                next;
+  -nokay As -nok but allow report from old builds.
+  -nok  Report unsuccessful build on this system to perl porters
+non-core module (such as Tk, DBI, etc), then please see the
+None known (guess what must have been used to report them?)
+    # (Note that cf_email is not mentioned to metaconfig, since
+Note that reports about bugs in old versions of Perl, especially
+note to $thanksaddress instead of a bug report, please run 'perlthanks'.
+NOTE: unless your Perl has been compiled with debug info
+    # Not OK - provide build failure template by finessing OK report
+not share this information, you're welcome to delete it.
+no warnings 'once'; # Eventually, the $::opt_ stuff should get cleaned up
+NowWhat();
+	    : $^O eq 'os2' ? $ENV{'USER'} || $ENV{'LOGNAME'}
+offers of frosty beverages.  (Please do be kind to the maintainers.
+(often B<-g>), the stack trace is likely to be somewhat hard to use
+    $ok = '';
+  -okay As -ok but allow report from old builds.
+	    'ok'      => 'install',
+	    'ok'      => 'none',
+	    $ok = 'ok';
+		    . "OK: perl $perl_version ${patch_tags}on"
+  -ok   Report successful build on this system to perl porters
+    # OK - send "OK" report for build on this system
+        # Ok. the user did what they needed to;
+    # on linux certain "mail" implementations won't accept the subject
+	open(F, "<$file")
+	    open OUTFILE, ">$file" or do { warn  "Couldn't open '$file': $!\n"; return undef};
+    open( REP, "<$filename" ) or die "Couldn't open file '$filename': $!\n";
+		open(REP, "<$filename") or die "Couldn't open file '$filename': $!\n";
+    open(REP, "<$filename") or die "Couldn't open '$filename': $!\n";
+    open(REP,">$filename") or die "Unable to create report file '$filename': $!\n";
+    open(REP, "<$filename") or die "Unable to open report file '$filename': $!\n";
+    open( SENDMAIL, "|-", $sendmail, "-t", "-oi", "-f", $from )
+		$::opt_b = 1; # we have a body
+	    $::opt_C = 1; # don't send a copy to the local admin
+	$::opt_C = 1; # don't send a copy to the local admin
+	$::opt_c || $::Config{'perladmin'}
+Options:
+	: $::opt_n ? "build failure" : "success";
+	    $::opt_o = substr($::opt_n, 1);
+		$::opt_S = 1; # don't prompt for send
+	    $::opt_s = 1; # we have a subject line
+	    'opts'    => [qw(core docs install library utilities)], # patch, notabug
+	    'opts'    => [qw(critical high medium low wishlist none)], # zero
+	$::opt_T = 1;
+or [c]ancel this report.
+        or ( $cc =~ /@/ and $cc !~ /^\w+%"/ ) ) {
+		or die "Unable to read report file from '$file': $!\n";
+or enter 'none' or 'yourself' to not send a copy.
+(or run the program perlbug rather than perlthanks)
+    $outfile = $::opt_F || "";
+                paraprint <<EOF;
+        paraprint <<EOF;
+    paraprint <<"EOF";
+    paraprint <<EOF;
+	    paraprint <<'EOF';
+	    paraprint <<"EOF";
+	    paraprint <<EOF;
+		    paraprint <<EOF;
+		paraprint <<"EOF";
+		paraprint <<EOF;
+	paraprint <<EOF;
+        paraprint(<<"EOF"), die "\n";
+        paraprint $explanation;
+particularly when running perlbug on a machine with no direct internet
+part of the I<standard distribution>), a binary distribution, or a
+        $path =~ s:\\:/:;
+perl(1), perldebug(1), perldiag(1), perlport(1), perltrap(1),
+perl5-porters@perl.org mailing list and the commit logs to development
+    # perlbug address
+perlbug - how to submit bug reports on Perl
+"perlbug -ok" and "perlbug -nok" do not report on Perl versions which
+"perlbug -okay" or "perlbug -nokay".
+"Perl gave an error" is not an exact error message.
+perl. If you are reporting something that does not work as you think
+perl maintainer actively watching perl porters for your message to
+Perl programmers run into.
+Perl's developers may need your email address to contact you for
+Perl's test suite.  If you have the time, consider writing your test case so
+platform-dependent code (unless it's a platform-specific bug);
+[Please describe your issue here]
+[Please do not change anything below this line]
+Please do not use $0 to send test messages, test whether perl
+Please enter your full internet email address so that Perl's
+[Please enter your thank-you message here]
+Please pick a $name from the following list:
+Please report bugs in $entry directly to its maintainers using $bug_tracker
+Please use $progname interactively. If you want to
+    # Possible administrator addresses, in order of confidence
+            $prefix = "$_%", last if $ENV{"MAIL\$PROTOCOL_$_"};
+prepared message.
+	    print 
+    print <<EOF;
+		print <<"EOF";
+        print $menu;
+        print "\n";
+    print "\n";
+	print "\n";
+	    print "\nMessage saved.\n";
+        print "\nMessage sent\n";
+    print "\nMessage sent.\n";
+        print "\n\n";
+    print "\n\n";
+    print "\nQuitting without sending your message.\n";
+	print "\nThank you for taking the time to file a bug report!\n\n";
+	print "\nThank you for taking the time to send a thank-you message!\n\n";
+	print "\nThe subject you entered wasn't very descriptive. Please try again.\n\n";
+    print OUT Config::myconfig;
+	print OUT "Configured by $::Config{cf_by} at $::Config{cf_time}.\n\n";
+        print OUT <<EFF;
+    print OUT <<EFF;
+	print OUT <<EFF;
+	print OUT "    $env",
+    print OUT <<EOF;
+        print OUTFILE build_complete_message();
+	print OUT "    $i\n";
+	print OUT join "\n    ", "Locally applied patches:", @patches;
+	print OUT "\n";
+	print OUT "\nComplete configuration data for perl $perl_version:\n\n";
+    print OUT "This perlbug was built using Perl $config_tag1\n",
+	    print OUT "$_='$value'\n";
+    print $prompt. ($default ? " [$default]" :''). ": ";
+	    print REP $_
+	print REP $body;
+    print REP <<EOF;
+	    print REP <<'EOF';
+Prints a brief summary of the options.
+    print SENDMAIL build_complete_message();
+			print "Subject: $subject\n";
+prior to Perl 5.0.
+    $progname = $thanks ? 'perlthanks' : 'perlbug';
+program before you send it on its way.  Try to follow the same style
+program with the C<-u> option to generate "unified" diff files.
+    # Prompt for administrator address, unless an override was given
+    # Prompt for category of bug
+    # Prompt for editor, if no override is given
+    # Prompt for file to read report from, if needed
+    # Prompt for return address, if needed
+    # Prompt for severity of bug
+    # Prompt for subject of message, if needed
+prompts for a return address if it cannot guess it (for use with
+    push @env, $Config{ldlibpthname} if $Config{ldlibpthname} ne '';
+    push @env, grep /^(?:PERL|LC_|LANG|CYGWIN)/, keys %ENV;
+Query();
+        quickly send a prepared message.
+    * [Q]uit without sending a message
+        qw(PATH LD_LIBRARY_PATH LANG PERL_BADLANG SHELL HOME LOGDIR LANGUAGE);
+    # read in the report template once so that
+receive more attention. You may want to start with B<perldoc>
+recognizes), you may be able to use this tool to compose your report
+#                 Record the module the user enters if they do so
+    * [R]e-edit the message
+#                 Refactor mail sending routines
+#                 Refactor prompts to use common code           JESSE 2008-06-08
+release of Perl, are likely to receive less attention from the
+#                 Removed some labeled 'gotos'
+report.  
+    $report_about_module, $category, $severity,
+	        $report_about_module = $entry;
+    # Report is done, prompt for further action
+Report successful build on this system to perl porters. Forces B<-S>
+Report unsuccessful build on this system.  Forces B<-C>.  Forces and
+reproduce the crash and the stack trace.
+		require Sys::Hostname;
+resolved.  If the default shown is not your email address, please
+	$result =~ s/^\s*(.*?)\s*$/$1/s;
+      retry:
+                return;
+        return;
+	return 0;
+        return 1;
+    return $content;
+        return $default;
+	return $filename;
+    return $head;
+    return \%headers;
+        return if ( $ok and not $::opt_n ) || $body;
+    return $new_lines;
+        return $result;
+    return $sendmail;
+    # returns the number of lines with content that wasn't there when last we looked
+Richard Foley (E<lt>richard.foley@rfi.netE<gt>), and Jesse Vincent
+    [-r returnaddress] [-e editor] [-c adminaddress | -C] [-S] [-t] [-h]
+  -r    Your return address. The program will ask you to confirm
+        SaveMessage();
+    save_message_to_disk($file) || return undef;
+    save_message_to_disk($outfile);
+    * Save the message to a [f]ile to mail at another time
+ S<[ B<-A> ]> S<[ B<-ok> | B<-okay> | B<-nok> | B<-nokay> ]>
+S<[ B<-b> I<body> | B<-f> I<inputfile> ]> S<[ B<-F> I<outputfile> ]>
+S<[ B<-e> I<editor> ]> S<[ B<-c> I<adminaddress> | B<-C> ]>
+S<[ B<-r> I<returnaddress> ]>
+S<[ B<-S> ]> S<[ B<-t> ]>  S<[ B<-d> ]>  S<[ B<-A> ]>  S<[ B<-h> ]> S<[ B<-T> ]>
+    Send();
+    # Send a file
+Send a thank-you note instead of a bug report. 
+#                 send mail
+        $sendmail = $_, last if -e $_;
+            $sendmail = "$_/sendmail.exe", last if -e "$_/sendmail.exe";
+            $sendmail = "$_/sendmail",     last if -e "$_/sendmail";
+            _send_message_mailsend();
+            _send_message_sendmail();
+            _send_message_vms();
+		# Send the message
+    * [Se]nd the message to $address$andcc, 
+send to '$address' with your normal mail client.
+Send without asking for confirmation.
+    # -------- Setup --------
+    # Set up an initial report fingerprint so we can compare it later
+	'severity' => {
+    $severity ||= ask_for_alternatives('severity');
+    $severity ||= 'low';
+    severity=$severity
+Site configuration information for perl $perl_version:
+    # so don't use Mail::Send to be safe
+Some information about your local perl configuration will automatically
+specified with B<-r>.  You can use this with B<-v> to get more
+  -S    Send without asking for confirmation.
+	s/(\S)\s*\n/$1 /g;
+  -s    Subject to include with the message. You will be prompted
+sub ask_for_alternatives { # (category|severity)
+sub build_complete_message {
+sub _build_header {
+sub Cancel {
+} # sub Dump
+sub Dump {
+sub Edit {
+sub _edit_file {
+sub filename {
+sub _fingerprint_lines_in_report {
+sub Help {
+} # sub Init
+sub Init {
+	$subject = '';
+    # Subject of bug-report message
+	    $subject = ($::opt_n ? 'Not ' : '')
+    $subject = $::opt_s || "";
+        $subject = _prompt('','Subject');
+			$subject = $reply;
+	$subject !~ /\s/) {
+    $subject =~ s/"/""/g;
+		    $subject = 'Thanks for Perl';
+Subject to include with the message.  You will be prompted if you don't
+sub _message_headers {
+} # sub NowWhat
+sub NowWhat {
+sub paraprint {
+sub paraprint;
+sub _probe_for_sendmail {
+sub _prompt {
+} # sub Query
+sub Query {
+sub SaveMessage {
+sub save_message_to_disk {
+}    # sub Send
+sub Send {
+sub _send_message_mailsend {
+sub _send_message_sendmail {
+sub _send_message_vms {
+sub TrivialSubject {
+supplied using B<-f>.  Only prompts for a return address if it
+supplies a value for B<-s>, then requires you to edit the report
+supply one on the command line.
+system is less than 60 days old.
+    # Target address
+#                 temp filename generation.
+    # Test address
+    $testaddress = 'perlbug-test@perl.org';
+#       - Test -b option
+Test mode.  The target address defaults to B<perlbug-test@perl.org>.
+    # Thanks address
+    $thanksaddress = 'perl-thanks@perl.org';
+	    'thanks'  => 'none',
+	    'thanks'  => 'thanks',
+	$thanks = 'thanks';
+			    : $thanks ? $thanksaddress : $bugaddress);
+that it can be easily included into the standard test suite.
+    # that $::opt_C is forced.
+the behaviour you're seeing is I<wrong>, your issue is likely to
+The command you entered was ambiguous. Please type "send", "save" or "subject".
+the current release.
+the different ways that people build and use perl. If you'd rather
+The easier it is to reproduce your bug, the more likely it will be
+The easier it is to understand a reproducible bug, the more likely
+The editor you chose ('$editor') could not be run!
+their arguments.  If possible, recompile your Perl with debug info and
+the one you want.)
+the program as C<perlthanks>. Thank-you notes are good. It makes people
+    # these won't have been set if run with -d
+    # This comment is needed to notify metaconfig that we are
+    # This has to be after the $ok stuff above because of the way
+        this if you don't give it here.
+This is a $reptype report for perl from $from,
+#       (This may work now. Unsure of the original author's issue -JESSE 2008-06-08)
+This program is designed to help you generate and send bug reports
+This program provides an easy way to create a message reporting a
+This program provides an easy way to send a thank-you message back to the
+This should be a concise description of your bug or problem
+This tool isn't appropriate for reporting bugs in any version
+those which indicate you haven't also tested the current stable
+to compose the message yourself, add the output produced by C<perlbug
+to guide you through composing a bug report. In those cases, you
+Tom Christiansen (E<lt>tchrist@perl.comE<gt>), Nathan Torkington
+to skip this question.
+(to the extent you can) and report your discoveries.
+to the volunteers who maintain perl at $address.  To send a thank-you
+	# Try and guess return address
+	# Try not to copy ourselves
+  -t    Test mode. The target address defaults to '$testaddress'.
+  -T    Thank-you mode. The target address defaults to '$thanksaddress'.
+Type C<perl -v> at the command line to find out.
+typically the original file, the second argument your changed file).
+unable to mail your report after you have typed it in, you may have
+undertaking, but if you can point to documentation that suggests
+#                 Unified report fingerprint/change detection code
+#                 Unify message building code
+#                 Unify message header building
+	unless (-f $entry and -r $entry) {
+        unless ( _fingerprint_lines_in_report() ) {
+	unless ($guess) {
+    unless ($ok) {
+	    unless ($ok) {
+    unless ($::opt_e || $::opt_f || $::opt_b) {
+	    unless ($::opt_n) {
+    unless ($::opt_r) {
+    unless ($sendmail) {
+    unless ($subject) {
+		    unless (TrivialSubject($reply)) {
+        (use alone or with -v). Only use -ok if *everything* was ok:
+        (use alone or with -v). You must describe what went wrong
+use Config;
+	$usefile = 0;
+	    $usefile = 1;
+use File::Basename 'basename';
+    $usefile = ($::opt_f || 0);
+use File::Spec;		# keep perlbug Perl 5.005 compatible
+use Getopt::Std;
+	    # use it
+    # Users address, used in message and in From and Reply-To headers
+#                 users might be able to recover their bug reports
+    # use secure tempfiles wherever possible
+use strict;
+use warnings;
+#                 use warnings; (except 'once' warnings)
+    # using the $perladmin, $cf_by, and $cf_time definitions.
+using your regular mail client.
+#!/usr/bin/perl
+	    $value = $::Config{$_};
+	    $value =~ s/'/\\'/g;
+	    $value = '' unless defined $value;
+    $verbose = $::opt_v || 0;
+	    # verify it
+version of perl, it would be useful if you could confirm that you
+versions of Perl, and encourage the maintainers with kind words or
+	|| "vi";
+  -v    Include Verbose configuration data in the report
+volunteers who build and maintain Perl than reports about bugs in
+volunteers who maintain Perl are busy folks, so if your problem is
+        warn "\nSendmail returned status '", $? >> 8, "'\n";
+#                 warn on '-ok' if this is an old system; add '-okay'
+    # we can track whether the user does any editing.
+    # we don't really want it. We'll just take it if we have to.)
+What is the name of the file that contains your report?
+what you expected.
+When reporting a bug, please run through this checklist:
+Whether you use C<perlbug> or send the email manually, please make
+which will help the volunteers working to improve perl to categorize
+	while(1) {
+	} while !((($alt) = grep(/^$alt/i, @alts)));
+	while ($entry eq '') {
+	while (<F>) {
+    while (my $line = <REP>) {
+    while (<REP>) { $content .= $_; }
+    while ( !$report_written ) {
+		while (<REP>) { print $_ }
+    while (<REP>) { print $fh $_ }
+	} while (TrivialSubject($subject));
+will help a great deal.  In other words, try to analyze the problem
+with B<-v> to get more complete data.
+with B<-v> to get more complete data.   Only makes a report if this
+with the Perl distribution.
+works, or to report bugs in perl modules from CPAN.
+    # yes, *all* whitespace is ignored.
+	/^(y(es)?|no?|help|perl( (bug|problem))?|bug|problem)$/i ||
+Yes, you can do this by either using the C<-T> option, or by invoking
+you can. A subject like "perl bug" or "perl problem" will make it
+You didn't type "yes", so your message has not yet been sent.
+You have finished composing your message. At this point, you have 
+You may be able to figure out what's going wrong using the Perl
+You may want to save your report to a file, so you can edit and
+your configuration data, without mailing anything.  You can use this
+[You're welcome to delete anything below this line]
+Your message may not have been sent. You will now have a chance to save a copy to disk.
+Your patch may be returned with requests for changes, or requests for more
+your report. If "$ed" is the editor you want to use, then just press
+Your return address.  The program will ask you to confirm its default
+your Subject line informative.  "a bug" is not informative.  Neither
+your system.
+your system and that the Mail::Send library from CPAN isn't available.
+You will probably want to use a text editor to enter the body of

@@ -1,0 +1,29 @@
+__bss_start
+cannot specify both center and position
+[-center] [-xpos <pos>] [-ypos <pos>] [-gamma <val>] [-back <dark|lite>] [-rle] [-render <none|snap|bw|dither|diffuse|monodither|monodiffuse|clusterdither|monoclusterdither>] [ppmfile]
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.7
+__gmon_start__
+image too large for page
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+monoclusterdither
+monodiffuse
+monodither
+overflow2
+pm_allocrow
+pm_close
+pm_error
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+ppm_init
+ppm_readppm
+__printf_chk

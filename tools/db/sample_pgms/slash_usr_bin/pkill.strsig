@@ -1,0 +1,38 @@
+closeproc
+__ctype_b_loc
+dev_to_tty
+__errno_location
+__fxstat
+getgrnam
+getpwnam
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libproc-3.2.8.so
+[-n|-o] [-P PPIDLIST] [-g PGRPLIST] [-s SIDLIST]
+openproc
+pkill: %ld - %s
+procps_version
+readproc
+regerror
+signal_name_to_number
+%s: invalid group name: %s
+%s: invalid process group: %s
+%s: invalid session id: %s
+%s: invalid user name: %s
+%s: -L without -F makes no sense
+%s: No matching criteria specified
+%s: not a number: %s
+%s: pidfile not valid
+__stack_chk_fail
+strerror
+	[-u EUIDLIST] [-U UIDLIST] [-G GIDLIST] [-t TERMLIST] [PATTERN]
+Usage: pgrep [-cflvx] [-d DELIM] 
+Usage: pkill [-SIGNAL] [-fvx] 

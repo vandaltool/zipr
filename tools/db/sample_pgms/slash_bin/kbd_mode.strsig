@@ -1,0 +1,36 @@
+bindtextdomain
+Couldn't get a file descriptor referring to the console
+Couldn't open %s
+dcgettext
+/dev/console
+/dev/tty
+/dev/tty0
+/dev/vc/0
+D$%/ttyf
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+kbd 1.15.2
+kbd_mode: error reading keyboard mode
+KDGKBMODE
+KDSKBMODE
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__printf_chk
+/proc/self/fd/0
+%s: error setting keyboard mode
+setlocale
+%s from %s
+__snprintf_chk
+__stack_chk_fail
+The keyboard is in mediumraw (keycode) mode
+The keyboard is in raw (scancode) mode
+The keyboard is in some unknown mode
+The keyboard is in Unicode (UTF-8) mode
+The keyboard is in xlate (8-bit) mode
+usage: kbd_mode [-a|-u|-k|-s] [-C device]
+/usr/share/locale

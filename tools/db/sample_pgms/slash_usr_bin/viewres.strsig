@@ -1,0 +1,135 @@
+*allowShellResize: true
+ancestors
+boxWidgetClass
+__bss_start
+buttonbox
+*buttonbox.quit.Translations:  #override \n <Btn1Down>,<Btn1Up>: Quit() unset()
+canvasHeight
+canvasWidth
+children
+commandWidgetClass
+D$4k|$<<
+defaultColumns
+descendants
+forceColumns
+formWidgetClass
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+layoutHorizontal
+layoutVertical
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXaw.so.7
+libXmu.so.6
+libXt.so.6
+listWidgetClass
+menuButtonWidgetClass
+menuName
+<Message>WM_PROTOCOLS: Quit()
+namesClass
+namesVariable
+numberStrings
+*Paned*allowResize: true
+panedWidgetClass
+*Panner.bottom: ChainTop
+*Panner.left: ChainLeft
+*Panner.resizable: on
+*Panner.right:  ChainLeft
+*Panner.top: ChainTop
+pannerWidgetClass
+porthole
+*Porthole.bottom: ChainBottom
+*Porthole*Box.BorderWidth: 0
+*Porthole*Box.HSpace: 0
+*Porthole*Box.VSpace: 0
+*Porthole.left: ChainLeft
+*Porthole.resizable: on
+*Porthole.right:  ChainRight
+*Porthole.top: ChainTop
+portholeWidgetClass
+reportCallback
+resources
+selectAll
+selectAncestors
+selectChildren
+selectDescendants
+selectHasResources
+selectInvert
+selectMenu
+selectParent
+selectShownResources
+SetLabelType
+SetOrientation
+*showVariable
+ShowVariable
+simpleMenuWidgetClass
+sliderHeight
+sliderWidth
+smeBSBObjectClass
+smeLineObjectClass
+%s: no widget with name "%s" found.
+*Toggle.Translations: #augment \n <Btn2Down>,<Btn2Up>: set() notify() Resources(toggle)
+toggleWidgetClass
+-top name        object to be top of tree
+*topObject
+TopObject
+treeform
+*Tree.Gravity
+treeParent
+*Tree*ShapeStyle: rectangle
+*Tree*Toggle*BorderWidth: 0
+treeWidgetClass
+unselect
+usage:  %s [-options...]
+-variable
+-variable        show variable name instead of class name
+-vertical
+-vertical        list the tree vertically
+viewMenu
+viewNoResources
+viewResources
+where options include:
+widgetClass
+WM_DELETE_WINDOW
+XawListUnhighlight
+XawTreeForceLayout
+XawWidgetArray
+XawWidgetCount
+XInternAtom
+XMapWindow
+XmuCompareISOLatin1
+XmuWnCountOwnedResources
+XmuWnFetchResources
+XmuWnInitializeNodes
+XmuWnNameToNode
+XRaiseWindow
+XSetWMProtocols
+XtAppAddActions
+XtAppInitialize
+XtAppMainLoop
+XtCalloc
+XtConvertAndStore
+XtCreateManagedWidget
+XtCreatePopupShell
+XtCreateWidget
+XtDestroyWidget
+XtGetApplicationResources
+XtGetValues
+XtIsManaged
+XtIsSubclass
+XtManageChild
+XtOverrideTranslations
+XtParseTranslationTable
+XtRealizeWidget
+XtRealloc
+XtSetLanguageProc
+XtSetValues
+XtStrings
+XtUnmanageChild
+XUnmapWindow

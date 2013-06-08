@@ -1,0 +1,24 @@
+<basename> <width> <height> [-ccir601]
+__bss_start
+error opening input files
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_allocrow
+pm_close
+pm_usage
+ppm_init
+ppm_writeppminit
+ppm_writeppmrow
+__strcat_chk
+__strcpy_chk
+%s: Warning: odd columns count, exceed ignored
+%s: Warning: odd rows count, exceed ignored

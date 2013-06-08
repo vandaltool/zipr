@@ -1,0 +1,454 @@
+            >   
+                   }
+                }
+                } 
+            }  
+         } 
+    } { 
+		    ) )
+			       };
+				   };
+	    $_[0] =~ '(?:([^|]*)\|)?([^/]*)(?:/("?)(.*)\3)?';
+	    ($1,$2,$4);
+1 unless $standalone;  # or it'll complain about itself
+    "Aacute"	=>	"A"	#   capital A, acute accent
+    "Aacute"	=>	"A\\*'",	#   capital A, acute accent
+    "Aacute"	=>	"\xC1"	#   capital A, acute accent
+afterwards, do this:
+a link to the F<diagnostics.pod> documentation.  The B<-v> flag is like
+allowing duplicate user messages to be displayed.
+    'amp'	=>	'&',	#   ampersand
+and because it's probably not a very good idea anyway,
+			" an unknown diagnostic message.\n\n";
+any other diagnostics.  The $diagnostics::PRETTY variable can generate nicer
+    # Apply patterns in order of decreasing sum of lengths of fixed parts
+a program named I<splain>, you should expect a bit of whimsy.
+	   "$archlib/pod/perldiag.pod",
+	   "$archlib/pods/perldiag.pod",
+    $archlib = VMS::Filespec::unixify($archlib);
+as the theoretical 
+            $_ .= ' at ' . $secs[$i];
+at the enable() or disable() methods.
+at the start (or near the start) of your program.  (Note 
+	autodescribe();
+            ( [A-Za-z]+ )       
+Because you just moved the existing B<stdout> to somewhere else.
+    BEGIN { $diagnostics::DEBUG = 1 } 
+    BEGIN { $diagnostics::PRETTY = 1 } 
+    # but be aware of messages containing " at this-or-that"
+	# but i'm deeply afraid of the &$olddie guy reraising and us getting
+$Carp::Internal{__PACKAGE__.""}++;
+    close POD_DIAG unless *main::DATA eq *POD_DIAG;
+compilation will then be subject(ed :-) to the enhanced diagnostics.
+    confess "Uncaught exception from user code:\n\t$exception";
+CONFIG: {
+                    $conlen += length( $toks[$i] );
+curious what sorts of things are being intercepted.
+				    $DEBUG++;
+$DEBUG ||= 0;
+	$DEBUG = 2 if $opt_d;
+	/^-d(ebug)?$/ 	   	&& do {
+	        : defined $sect
+	       defined $text
+descriptions found in L<perldiag>) are only displayed once (no duplicate
+descriptions).  User code generated warnings a la warn() are unaffected,
+Diagnostic messages derive from the F<perldiag.pod> file when available at
+$diagnostics::PRETTY variable.  Since you're post-processing with 
+diagnostics, splain - produce verbose warning diagnostics
+    die "couldn't find diagnostic data in $PODFILE @INC $0";
+    die $@ if $@;
+    die "No diagnostics?" unless %msg;
+disable() and enable() methods to turn them off and on respectively.
+    disable diagnostics;
+    disable diagnostics; # only turns off runtime warnings
+    # Discard 1st " at <file> line <no>" and all text beyond
+                : do {
+         do {   
+                ? do { $HTML_Escapes{$1} }
+Due to the interaction between runtime and compiletime issues,
+            E<  
+                    "E<$1>";
+    }egx;
+        } else {
+    } else {
+    } else { 
+	} else {
+                } elsif( length( $toks[$i] ) ){
+	    elsif( s/^=for\s+diagnostics\s*\n(.*?)\s*\z// ) {
+                    } elsif( $toks[$i] =~ '%.(\d+)s' ){
+                    } elsif( $toks[$i] eq '%d' ){
+                     } elsif( $toks[$i] =~ '^%l*x$' ){
+                    } elsif( $toks[$i] =~ '^%(?:s|.*f)$' ){
+    enable  diagnostics;
+    enable diagnostics; # turns back on runtime warnings
+			    /^__END__\s*# wish diag dbase were more accessible/;
+__END__ # wish diag dbase were more accessible
+escape sequences for pagers.
+    # etc
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+    eval $transmo;
+    exec 3>&1; perl -w test.pl 2>&1 1>&3 3>&- | splain 1>&2 3>&- 
+             exists $HTML_Escapes{$1}
+    exit;
+explicative and endearing descriptions found in L<perldiag>.  Like the
+    ### &finish_compilation unless %msg;
+    for (@_) {
+		$for_item = $1;
+	    for my $file ( (map { "$_/$WHOAMI.pm" } @INC), $0) {
+    for my $hdr ( sort { $transfmt{$b}{len} <=> $transfmt{$a}{len} }
+		for my $h(@headers) { $msg{$h} .= $_ }
+            for my $i (0..$#toks){
+    for my $i ( 1..$#secs ){
+	     /ges;
+	Getopt::Std::getopts('pdvf:')
+    # get rid of the where-are-we-in-input part
+    goto &$oldwarn if defined $oldwarn and $oldwarn and $oldwarn ne \&warn_trap;
+    'gt'	=>	'>',	#   right chevron, greater-than
+# handy for development testing of new warnings etc
+    # Have carp skip over death_trap() when showing the stack trace.
+=head1 AUTHOR
+=head1 BUGS
+=head1 DESCRIPTION
+=head1 EXAMPLES
+=head1 INTERNALS
+=head1 NAME
+=head1 SYNOPSIS
+=head2 The C<diagnostics> Pragma
+=head2 The I<splain> Program
+	    $header = $1;
+		$header .= ' '.$1;
+	    @headers = ();
+	$header =~ s/[A-Z]<(.*?)>/$1/g;
+However, you may control their behaviour at runtime using the 
+%HTML_2_ASCII_7 = (
+%HTML_2_Latin_1 = (
+	\%HTML_2_Latin_1; 
+%HTML_2_Troff = (
+*HTML_Escapes = do {
+I could start up faster by delaying compilation until it should be
+	    if (0 and $standalone) { 
+If an extant $SIG{__WARN__} handler is discovered, it will continue
+    if (!@ARGV and -t STDIN) { print STDERR "$0: Reading from STDIN\n" } 
+    if (caller) {
+      if ($caller eq '(eval)') {
+    if (caller eq $WHOAMI or !splainthis($warning)) {
+    if (caller eq $WHOAMI) { print STDERR "INTERNAL EXCEPTION: $exception"; } 
+	    if (defined $header) { 
+if (eof(POD_DIAG)) { 
+    if ($exact_duplicate{$orig}++) {
+	if( $for_item ) { $header = $for_item; undef $for_item } 
+		if ( $header eq 'DESCRIPTION' && 
+                if( $i % 2 ){
+    if (length($line) > 79 and index($line, "\n") == -1) {
+	if ($msg{$_}) {
+	    if $msg{$header};
+if ($^O eq 'VMS') {
+    if ($old_diag{$_}) {
+		if (open(POD_DIAG, $file)) {
+    if (open(POD_DIAG, $PODFILE)) {
+	if ($PRETTY) {
+	if $running_under_some_shell;
+        if( $secs[$i] =~ /.+? (?:line|chunk) \d+/ ){
+	if ($seen_body) {
+	    if ( s/=head1\sDESCRIPTION//) {
+	if ($space_place != -1) {
+    if ($standalone) {
+if ($standalone) {
+	if (@toks > 1) {
+                    if(      $toks[$i] eq '%c' ){
+    if ($VERBOSE and not $count) {
+	if ($WARNTRACE) {
+	# If we have not come across the body of the description yet, then
+If you don't want to modify your source code, but still have on-the-fly
+If you prefer to run your program first and look at its problem
+If you want to control warnings on the fly, do something like this.
+	INCPATH: {
+	$in_eval = 1;
+in Perl 5.001e.
+insurmountable.
+	# into an indirect recursion loop
+I<splain>, there's no sense in being able to enable() or disable() processing.
+	           : italic($page)
+	           ? italic($sect) . ' in ' . italic($page)
+just B<-t>) flag turns off the explanations of warning messages leaving just
+                  keys %transfmt ){
+            last;
+	last CONFIG;
+			last INCPATH;
+    local $!;
+    local $/ = '';
+    local $\;
+local $.;
+local $| = 1;
+    local($Carp::CarpLevel) = 1;
+    #local \$^W = 0;  # recursive warnings we do NOT need!
+    'lt'	=>	'<',	#   left chevron, less-than
+Make sure you do the C<use> first, or you won't be able to get
+	# matches trace and traceonly for legacy doc mixup reasons
+more than a link to the (executable) F<diagnostics.pm> module, as well as
+	      "    m{^\Q$header\E} && return 1;\n";
+	$msg{$header} = '';
+		$msg{$header} .= $_;
+		$msg{$header = 'DESCRIPTION'} = '';
+    my $a, $b = scalar <STDIN>;
+            my $conlen = 0;
+my $count;
+my %exact_duplicate;
+    my $exception = $_[0];
+    my $for_item;
+    my $header;
+    my @headers;
+my(%HTML_2_Troff, %HTML_2_Latin_1, %HTML_2_ASCII_7);
+    my $i = 0;
+    my $in_eval = 0;
+            my $lhs = join( '', @toks );
+    my $line = $_[0];
+my %msg;
+my %old_diag;
+my $olddie;
+my $oldwarn;
+    my $orig = $_;
+(my $PODFILE) = ((grep { -e } @trypod), $trypod[$#trypod])[0];
+my($privlib, $archlib) = @Config{qw(privlibexp archlibexp)};
+    my $real = 0;
+    my @secs = split( / at / );
+    my $seen_body;
+	my $space_place = rindex($line, ' ', 79);
+my $standalone;
+	       my($text,$page,$sect) = _split_pod_link($1);
+        my @toks = split( /(%l?[dx]|%c|%(?:\.\d+)?[fs])/, $header );
+my %transfmt = (); 
+my $transmo = <<EOFUNC;
+my @trypod = (
+my $wantspace;
+    my $warning = $_[0];
+my $WHOAMI = ref bless [];  # nobody's business, prolly not even mine
+needed, but this gets a "panic: top_level" when using the pragma form
+	    next;
+		    next;
+				    next;
+			next unless
+Nifty, eh?
+		"\n$msg{DESCRIPTION}\n";
+Not being able to say "no diagnostics" is annoying, but may not be
+Note that this is not in general possible in shells of more dubious heritage, 
+	$old_diag{$_} = ++$count;
+    &$olddie if defined $olddie and $olddie and $olddie ne \&death_trap;
+    $olddie = $SIG{__DIE__};
+    $oldwarn = $SIG{__WARN__};
+		    (   /Optional warnings are enabled/ 
+	    or die "Usage: $0 [-v] [-p] [-f splainpod]";
+    $orig = shorten($orig);
+(or just B<-w>) flag, any warnings emitted will also come with a stack
+other pragmata, it affects the compilation phase of your program rather
+our $DEBUG;
+our %HTML_Escapes;
+    our $opt_p = our $opt_d = our $opt_v = our $opt_f = '';
+our $PRETTY;
+our $TRACEONLY = 0;
+our $VERBOSE;
+our $VERSION = '1.22';
+our $WARNTRACE = 0;
+Output from I<splain> is directed to B<STDOUT>, unlike the pragma.
+	           : $page
+perl compiler and the perl interpreter (from running perl with a -w 
+  perl -Mdiagnostics=-traceonly my_bad_script
+    perl -Mdiagnostics=-traceonly my_script.pl
+    perl program 2>diag.out
+    perl -w test.pl 2>test.out
+    (perl -w test.pl >/dev/tty) >& test.out
+	*POD_DIAG = *main::DATA;
+		<POD_DIAG> =~ /^\s*(.*?)\s*\z/;
+	$PODFILE = $opt_f if $opt_f;
+				    $PRETTY++;
+	/^-p(retty)?$/ 		&& do {
+	$PRETTY ? \%HTML_2_Latin_1 : \%HTML_2_ASCII_7; 
+	$PRETTY = $opt_p;
+	print BOGUS1 'nada';
+	print BOGUS2 'nada';
+	print BOGUS3 'nada';
+	print BOGUS4 'nada';
+	print "done with 1st bogus\n";
+	print "done with 2nd bogus\n";
+	print "done with 3rd bogus\n";
+	print "done with 4th bogus\n";
+    print "\n";
+    print "\nDIAGNOSTIC TESTER: Please enter a <CR> here: ";
+    print NOWHERE "nothing\n";
+	print "\ntime for 1st bogus diags: SQUAWKINGS\n";
+	print "\ntime for 2nd bogus: (squelched)\n";
+	print "\ntime for 3rd bogus: SQUAWKINGS\n";
+	print "\ntime for 4th bogus: (squelched)\n";
+				    print STDERR "$0: I'm afraid it's too late for prettiness.\n";
+	    print STDERR Carp::longmess($warning);
+    print STDERR "FINISHING COMPILATION for $_\n" if $DEBUG;
+    print STDERR "\n\tThis message should be unadorned.\n";
+	print STDERR "podfile is <DATA>\n" if $DEBUG;
+			print STDERR "podfile is $file\n" if $DEBUG;
+    print STDERR $transmo if $DEBUG;
+	    print STDERR $warning;
+	print STDERR "$WHOAMI: Duplicate entry: \"$header\"\n"
+		print THITHER "    **** Error #$old_diag{$_} ",
+	    print THITHER $msg{$_};
+	print THITHER "\n" if $wantspace;
+	print THITHER "$orig (#$old_diag{$_})\n";
+	print THITHER &{$PRETTY ? \&bold : \&noop}("DESCRIPTION OF DIAGNOSTICS"),
+    print $x/$y;
+	   "$privlib/pod/perldiag-$Config{version}.pod",
+	   "$privlib/pod/perldiag.pod",
+	   "$privlib/pods/perldiag-$Config{version}.pod",
+	   "$privlib/pods/perldiag.pod",
+    $privlib = VMS::Filespec::unixify($privlib);
+	    push @headers, $header if defined $header;
+	           ? qq '"$sect" in $page'
+    'quot'	=>	'"',	#   double quote
+            $real = 1;
+			($real ? "is" : "appears to be"),
+    # remove parenthesis occurring at the end of some messages 
+	require Getopt::Std;
+    require VMS::Filespec;
+	    return 0;
+    return 0 if $TRACEONLY;
+	return 0 unless &transmo;
+    return 1;
+    return if defined $SIG{__WARN__} && ($SIG{__WARN__} eq \&warn_trap);
+    return if $in_eval;
+    return $line;
+	return &transmo;
+    # return unless defined;
+    return unless @secs;
+    return unless $SIG{__WARN__} eq \&warn_trap;
+runtime and compiletime:
+runtime.  Otherwise, they may be embedded in the file itself when the
+    s/^\((.*)\)$/$1/;
+	    s/C<<< (.*?) >>>|C<< (.*?) >>|[BC]<(.*?)>/bold($+)/ges;
+	    s/C<<< (.*?) >>>|C<< (.*?) >>|[BC]<(.*?)>/$+/gs;
+    $_ = $secs[0];
+    # See if we are coming from anywhere within an eval. If so we don't
+    # Seems the best way of hitting the right one.
+		++$seen_body;
+	$seen_body = 0;
+		s/^/    /gm;
+    $_ = shift;
+    shift;
+	    s/[IF]<(.*?)>/$1/gs;
+	    s/[IF]<(.*?)>/italic($1)/ges;
+    $SIG{__DIE__} = \&death_trap;
+    $SIG{__DIE__} = $olddie || '';
+    $SIG{__DIE__} = $SIG{__WARN__} = '';
+    $SIG{__WARN__} = $oldwarn || '';
+    $SIG{__WARN__} = \&warn_trap;
+	    s/L<(.*?)>/
+              "    s{^$lhs}\n     {\Q$header\E}s\n\t&& return 1;\n";
+    s/, <.*?> (?:line|chunk).*$//;
+    s/\.?\n+$//;
+		     || /Some of these messages are generic./
+splain package is built.   See the F<Makefile> for details.
+    ./splain < test.out
+	splainthis($error) || print THITHER $error;
+    splainthis($exception) unless $in_eval;
+    splain [-v] [-p] diag.out
+	$standalone++;
+	# strip formatting directives from =item line
+    study;
+sub autodescribe {
+	    sub bold   { my $str =$_[0];  $str =~ s/(.)/$1\b$1/g; return $str; } 
+sub death_trap {
+sub disable {
+sub enable { &import }
+sub import {
+	    sub italic { my $str = $_[0]; $str =~ s/(.)/_\b$1/g;  return $str; } 
+	    sub noop   { return $_[0] }  # spensive for a noop
+sub shorten {
+sub splainthis {
+	sub _split_pod_link {
+	    substr($line, $space_place, 1) = "\n\t";
+sub transmo {
+sub unescape { 
+sub warn_trap {
+    # Switch off our die/warn handlers so we don't wind up in our own
+switch or C<use warnings>), augmenting them with the more
+	        ? $text
+than merely the execution phase.
+that this I<does> enable perl's B<-w> flag.)  Your whole
+The B<-p> flag is like the
+The B<-verbose> flag first prints out the L<perldiag> introduction before
+The C<-pretty> directive is called too late to affect matters.
+the C<use diagnostics -verbose> directive.
+The following file is certain to trigger a few errors at both
+(the module's $SIG{__WARN__} interceptor) has had its way with your
+    # then we've turned off diagnostics.
+	# the previous header needs to share the same description.
+There is a $diagnostics::DEBUG variable you may set if you're desperately
+These still go out B<STDERR>.
+the stack traces. So if your script is dieing, run it again with
+This is useful for pinpointing what caused the death. The B<-traceonly> (or
+This module also adds a stack trace to the error message when perl dies.
+This module extends the terse diagnostics normally emitted by both the
+*THITHER = $standalone ? *STDOUT : *STDERR;
+to be honored, but only after the diagnostics::splainthis() function 
+                        $toks[$i] = '.';
+                        $toks[$i] = ".{$1}";
+                        $toks[$i] = '\d+';
+                        $toks[$i] = '[\da-f]+';
+                        $toks[$i] = $i == $#toks ? '.*' : '.*?';
+                    $toks[$i] = quotemeta $toks[$i];
+Tom Christiansen <F<tchrist@mox.perl.com>>, 25 June 1995.
+to see the call stack at the time of death. By supplying the B<-warntrace>
+	     # tough, if you want diags, you want diags.
+To use in your program as a pragma, merely invoke
+				    $TRACEONLY++;
+	/^-t(race(only)?)?$/	&& do {
+            $transfmt{$header}{len} = $conlen;
+            $transfmt{$header}{len} = length( $header );
+            $transfmt{$header}{pat} =
+	    $transfmt{$header}{pat} =
+    $transmo .= "    return 0;\n}\n";
+        $transmo .= $transfmt{$hdr}{pat};
+    # traps.
+	 	undef $for_item;	
+		undef $for_item;
+	unescape();
+	unless (/^=/) {
+    unless (caller) {
+	unless ( s/=item (.*?)\s*\z//) {
+unshift @trypod, "./pod/perldiag.pod" if -e "pod/perldiag.pod";
+	# up we go; where we stop, nobody knows, but i think we die now
+use 5.009001;
+use Carp;
+use Config;
+    use diagnostics;
+    use diagnostics; # checks entire compilation phase 
+    use diagnostics -verbose;
+use strict;
+Using diagnostics to get stack traces from a misbehaving script:
+Using the C<diagnostics> pragma:
+Using the C<splain> standalone filter program:
+#!/usr/bin/perl
+				    $VERBOSE++;
+	/^-v(erbose)?$/ 	&& do {
+	$VERBOSE = $opt_v;
+    $^W = 1; # yup, clobbered the global variable; 
+	$wantspace = 0;
+	$wantspace = 1;
+    # want to explain the exception because it's going to get caught.
+		warn "Checking $file\n" if $DEBUG;
+	warn "Happy happy podfile from real $PODFILE\n" if $DEBUG;
+warnings.
+Warnings dispatched from perl itself (or more accurately, those that match
+warnings, do this:
+				    $WARNTRACE++;
+	/^-w(arntrace)?$/ 	&& do {
+    warn "\tThis is a user warning";
+                    warn "Unknown escape: E<$1> in $_";
+	warn "Unknown flag: $_";
+    # We don't want to unset these if we're coming from an eval because
+While apparently a whole nuther program, I<splain> is actually nothing
+    while (defined (my $error = <>)) {
+	    while( $header =~ /[;,]\z/ ) {
+While it's true that this documentation is somewhat subserious, if you use
+    while (my $caller = (caller($i++))[3]) {
+    while (<POD_DIAG>) {
+		    while (<POD_DIAG>) {
+You have to do this instead, and I<before> you load the module.
+you may not use C<no diagnostics> to turn them off at compiletime.

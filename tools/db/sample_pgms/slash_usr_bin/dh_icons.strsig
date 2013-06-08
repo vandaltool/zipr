@@ -1,0 +1,44 @@
+			autoscript($package,"postinst","postinst-icons","s%#DIRLIST#%$list%");
+			autoscript($package,"postrm","postrm-icons","s%#DIRLIST#%$list%");
+B<dh_icons> is a debhelper program that updates Freedesktop icon caches
+B<dh_icons> [S<I<debhelper options>>] [B<-n>]
+Currently this program does not handle installation of the files, though it
+dh_icons - Update Freedesktop icon caches
+Do not modify maintainer scripts.
+			find sub {
+foreach my $package (@{$dh{DOPACKAGES}}) {
+fragments to call B<update-icon-caches>.
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+			}, "$icondir/$subdir" ;
+	if (-d $icondir) {
+		if (@dirlist and ! $dh{NOSCRIPTS}) {
+=item B<-n>, B<--noscripts>
+Jordi Mallach <jordi@debian.org>
+Josselin Mouette <joss@debian.org>
+L<debhelper>
+may do so at a later date. It takes care of adding maintainer script
+my $baseicondir="/usr/share/icons";
+		my @dirlist;
+	my $icondir="$tmp$baseicondir";
+			my $list=join(" ", @dirlist);
+			my $needs_cache = 0;
+	my $tmp=tmpdir($package);
+				$needs_cache = 1 if -f and (/\.png$/ or /\.svg$/ or /\.xpm$/ or /\.icon$/);
+			next if $subdir =~ /^\./;
+			next if $subdir eq "gnome";
+			next if $subdir eq "hicolor";
+		opendir(DIRHANDLE, $icondir);
+			push @dirlist, "$baseicondir/$subdir" if $needs_cache;
+Ross Burton <ross@burtonini.com>
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+use File::Find;
+use strict;
+#!/usr/bin/perl -w
+when needed, using the B<update-icon-caches> program provided by GTK+2.12.
+		while (my $subdir = readdir(DIRHANDLE)) {

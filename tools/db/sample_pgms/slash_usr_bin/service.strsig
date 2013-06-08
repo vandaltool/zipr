@@ -1,0 +1,107 @@
+                  ;;
+                ;;
+              *)
+       ;;
+      ;;
+###########################################################################
+# A convenient wrapper for the /etc/init.d init scripts.
+         ACTION="${1}"
+         # Action is a valid upstart action
+# along with this program; if not, write to the Free Software
+# (at your option) any later version.
+#   * August 2008 - Dustin Kirkland <kirkland@canonical.com>
+#!/bin/sh
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+  case "${1}" in
+	case "$1" in
+   case "${ACTION}" in
+            case "${SERVICE}" in
+          cd ${SERVICEDIR}
+                          continue
+                            continue
+# Copyright (C) 2006 Red Hat, Inc. All rights reserved.
+# Copyright (C) 2008 Canonical Ltd.
+          done
+                            echo " [ - ]  $SERVICE"
+                            echo " [ + ]  $SERVICE"
+                          echo " [ ? ]  $SERVICE" 1>&2
+   echo "${SERVICE}: unrecognized service" >&2
+       echo "${USAGE}" >&2
+   echo "${USAGE}" >&2
+       echo "${VERSION}" >&2
+       elif [ $# -eq 2 -a "${2}" = "--full-restart" ]; then
+       elif [ -z "${ACTION}" ]; then
+       elif [ -z "${SERVICE}" ]; then
+       else
+                        else
+                          else
+            env -i LANG="$LANG" PATH="$PATH" TERM="$TERM" "$SERVICEDIR/$SERVICE" start
+                  #env -i LANG="$LANG" PATH="$PATH" TERM="$TERM" "$SERVICEDIR/$SERVICE" status
+            env -i LANG="$LANG" PATH="$PATH" TERM="$TERM" "$SERVICEDIR/$SERVICE" stop
+            esac
+         exec ${ACTION} ${SERVICE} ${OPTIONS}
+   exec env -i LANG="$LANG" PATH="$PATH" TERM="$TERM" "$SERVICEDIR/$SERVICE" ${ACTION} ${OPTIONS}
+         exec reload ${SERVICE} ${OPTIONS}
+         exec start ${SERVICE} ${OPTIONS}
+            exit $?
+          exit 0
+       exit 0
+   exit 1
+       fi
+          fi
+                fi
+                        fi
+                          fi
+      force-reload)
+          for SERVICE in * ; do
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+              functions | halt | killall | single| linuxconf| kudzu)
+# GNU General Public License for more details.
+    --help | -h | --h* )
+                          if [ "$?" = "0" -a -n "$out" ]; then
+if [ $# -eq 0 ]; then
+                        if ! grep -qs "\Wstatus)" "$SERVICE"; then
+                if ! is_ignored_file "${SERVICE}" \
+if [ -r "/etc/init/${SERVICE}.conf" ]; then
+          if [ -x "${SERVICEDIR}/${SERVICE}" ]; then
+if [ -x "${SERVICEDIR}/${SERVICE}" ]; then
+       if [ -z "${SERVICE}" -a $# -eq 1 -a "${1}" = "--status-all" ]; then
+is_ignored_file() {
+# it under the terms of the GNU General Public License as published by
+         # Map restart to the usual sysvinit behavior.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# On Debian GNU/Linux systems, the complete text of the GNU General
+OPTIONS=
+         OPTIONS="${OPTIONS} ${1}"
+# Otherwise, use the traditional sysvinit
+                          out=$(env -i LANG="$LANG" PATH="$PATH" TERM="$TERM" "$SERVICEDIR/$SERVICE" status 2>&1)
+                            #printf " %s %-60s %s\n" "[-]" "$SERVICE:" "NOT running"
+                            #printf " %s %-60s %s\n" "[+]" "$SERVICE:" "running"
+                          #printf " %s %-60s %s\n" "[?]" "$SERVICE:" "unknown" 1>&2
+# Public License can be found in `/usr/share/common-licenses/GPL-2'.
+# Red Hat/Fedora systems (licensed GPLv2+).
+      restart)
+			return 0
+	return 1
+SERVICE=
+          SERVICE="${1}"
+         SERVICE="${1}"
+SERVICEDIR="/etc/init.d"
+[ service_name [ command | --full-restart ] ]"
+       shift
+		skeleton | README | *.dpkg-dist | *.dpkg-old | rc | rcS | single | reboot | bootclean.sh)
+      start|stop|status|reload)
+         stop ${SERVICE} ${OPTIONS} || :
+# the Free Software Foundation; either version 2 of the License, or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+# This script is a modified version of the /sbin/service utility found on
+   # Upstart configuration exists for this job
+         # Upstart just uses reload for force-reload
+USAGE="Usage: `basename $0` < option > | --status-all | \
+# /usr/bin/service
+VERSION="`basename $0` ver. 0.91-ubuntu1"
+    --version | -V )
+while [ $# -gt 0 ]; do
+		    && [ -x "${SERVICEDIR}/${SERVICE}" ]; then
+# You should have received a copy of the GNU General Public License

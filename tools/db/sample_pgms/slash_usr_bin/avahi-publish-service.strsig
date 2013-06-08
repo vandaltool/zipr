@@ -1,0 +1,102 @@
+    -a --address         Publish address
+__assert_fail
+avahi_address_parse
+avahi_alternative_host_name
+avahi_alternative_service_name
+avahi_client_errno
+avahi_client_free
+avahi_client_get_host_name_fqdn
+avahi_client_get_state
+avahi_client_get_version_string
+avahi_client_new
+avahi_entry_group_add_address
+avahi_entry_group_add_service_strlst
+avahi_entry_group_add_service_subtype
+avahi_entry_group_commit
+avahi_entry_group_free
+avahi_entry_group_is_empty
+avahi_entry_group_is_empty(entry_group)
+avahi_entry_group_new
+avahi_free
+avahi_init_i18n
+avahi-publish.c
+avahi_simple_poll_free
+avahi_simple_poll_get
+avahi_simple_poll_loop
+avahi_simple_poll_new
+avahi_simple_poll_quit
+avahi_strdup
+avahi_strerror
+avahi_string_list_add
+avahi_string_list_free
+Bad number of arguments
+__bss_start
+Client failure, exiting: %s
+config->command == COMMAND_PUBLISH_ADDRESS
+config->command == COMMAND_PUBLISH_SERVICE
+dcgettext
+    -d --domain=DOMAIN   Domain to publish service in
+Disconnected, reconnecting ...
+entry_group_callback
+__errno_location
+Established under name '%s'
+event == AVAHI_WATCH_IN
+Failed to add address: %s
+Failed to add service: %s
+Failed to add subtype '%s': %s
+Failed to create client object: %s
+Failed to create entry group: %s
+Failed to create simple poll object.
+Failed to parse port number: %s
+Failed to query host name: %s
+Failed to query version string: %s
+Failed to register: %s
+fd == pipe_fds[0]
+    -f --no-fail         Don't fail if the daemon is not available
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Got %s, quitting.
+    -h --help            Show this help
+    -H --host=DOMAIN     Host where service resides
+Host name conflict
+hVsavRd:H:f
+_IO_stdin_used
+_Jv_RegisterClasses
+libavahi-client.so.3
+libavahi-common.so.3
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+l == sizeof(s)
+Name collision, picking new name '%s'.
+No command specified.
+no-reverse
+pipe() failed: %s
+pipe_fds[0] == -1 && pipe_fds[1] == -1
+__printf_chk
+register_stuff
+    -R --no-reverse      Do not publish reverse entry with address
+%s 0.6.30
+Server version: %s; Host name: %s
+setlocale
+set_nonblock
+sigaction
+sigaction() failed: %s
+sigint.c
+sigint_install
+sigint_uninstall
+!simple_poll
+%s [options] %s <host-name> <address>
+%s [options] %s <name> <type> <port> [<txt ...>]
+    -s --service         Publish service
+__stack_chk_fail
+       --subtype=SUBTYPE An additional subtype to register this service with
+    -v --verbose         Enable verbose mode
+    -V --version         Show version
+Waiting for daemon ...
+watch_callback

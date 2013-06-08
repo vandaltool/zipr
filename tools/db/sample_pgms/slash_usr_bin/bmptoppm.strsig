@@ -1,0 +1,49 @@
+  Bits per pixel in raster: %u
+BMP image header says:
+BMPlencolormap
+__bss_start
+  Byte offset of raster within file: %u
+  Class of BMP: %s
+  Colors in color map: %d
+GLIBC_2.0
+__gmon_start__
+  Height: %d pixels
+Input is compressed.  This program doesn't handle compressed images.  Compression type code = %ld
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+OS/2 BMP, %ldx%ldx%d
+pm_allocarray
+pm_bitfini
+pm_bitinit
+pm_bitread
+pm_close
+pm_error
+pm_message
+pm_openr
+pm_optParseOptions2
+pm_readlittlelong
+pm_readlittleshort
+pnm_init
+pnm_writepnm
+Program takes zero or one argument (filename).  You specified %d
+%s: couldn't read row %d
+%s: don't know how to handle cPlanes = %d
+%s: internal error!
+%s is not a BMP file
+%s: read error
+Standard Input
+%s: unknown cbFix: %ld
+Unrecognized bits per pixel in BMP file header: %d
+warning: offBits is %u, expected %u
+warning: read %u bytes, expected to read %u bytes
+warning: %u-byte RGB table, expected %u bytes
+  Width: %d pixels
+Windows BMP, %ldx%ldx%d
+WRITING PBM IMAGE
+WRITING PGM IMAGE
+WRITING PPM IMAGE

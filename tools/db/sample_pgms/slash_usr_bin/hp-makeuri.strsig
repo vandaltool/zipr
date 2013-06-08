@@ -1,0 +1,119 @@
+        
+            
+        ]
+          ("1. Example using 'lsusb' to obtain USB bus ID and USB device ID (example only, the values you obtain will differ) :", "", 'note', False),
+# along with this program; if not, write to the Free Software
+# (at your option) any later version.
+# Authors: Don Welch, Smith Kennedy
+          ("   Bus 003 Device 011: ID 03f0:c202 Hewlett-Packard", "", 'note', False),
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# (c) Copyright 2003-2008 Hewlett-Packard Development Company, L.P.
+# -*- coding: utf-8 -*-
+    cups_quiet_mode = False
+            cups_quiet_mode = True
+    cups_uri, sane_uri, fax_uri = device.makeURI(param, jd_port)
+          ("DEVNODE (parallel only):", '"/dev/parportX", X=0,1,2,...', "option", False),
+__doc__ = "Creates device URIs for local and network connected printers for use with CUPS."
+    elif not fax_uri and fax_quiet_mode:
+        elif not quiet_mode:
+    elif not quiet_mode:    
+    elif not sane_uri and sane_quiet_mode:
+        elif o == '-g':
+        elif o in ('-f', '--fax'):
+        elif o in ('-p', '--port'):
+        elif o in ('-s', '--sane'):
+except KeyboardInterrupt:
+            except ValueError:
+    fax_quiet_mode = False
+            fax_quiet_mode = True
+    for o, a in opts:
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+from base.codes import *
+from base.g import *
+from base import device, utils, module
+# GNU General Public License for more details.
+                     handle_device_printer=False)
+          ("   $ hp-makeuri 003:011", "", 'note', False),
+          ("hp-setup", "", "seealso", False),
+    if cups_quiet_mode:
+        if fax_quiet_mode:
+    if fax_uri:
+    if len(mod.args) != 1:
+    if 'localhost' in param.lower():
+    if not cups_uri:
+if not quiet_mode:
+        if o in ('-c', '--cups'):
+    #if quiet_mode:
+        if sane_quiet_mode:
+    if sane_uri:
+import getopt
+import os
+import re
+import sys
+                    (INTERACTIVE_MODE,), None, True, True)
+          ("IPs (network only):", 'IPv4 address "a.b.c.d" or "hostname"', "option", False),
+# it under the terms of the GNU General Public License as published by
+    jd_port = 1
+                jd_port = int(a)
+        log.error("Device does not support fax.")
+        log.error("Device does not support scan.")
+        log.error("Device not found")
+    log.error("User exit")
+    log.info("")
+    log.info("Done.")
+            log.set_level('debug')
+    #    log.set_level('warn')
+          ("   $ lsusb", "", 'note', False),
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+__mod__ = 'hp-makeuri'
+mod = module.Module(__mod__, __title__, __version__, __doc__, USAGE, 
+    mod.parseStdOpts('p:csf', ['port', 'cups', 'sane', 'fax'],
+    mod.quiet = quiet_mode
+    mod.showTitle()
+        mod.usage(error_msg=['Invalid hostname'])
+                mod.usage(error_msg=["Invalid port number. Must be between 1 and 3 inclusive."])
+        mod.usage(error_msg=["You must specify one SERIAL NO., IP, USB ID or DEVNODE parameter."])
+          ("Network:", "$ hp-makeuri 66.35.250.209", "example", False),
+          ("   (Note: You may have to run 'lsusb' from /sbin or another location. Use '$ locate lsusb' to determine this.)", "", 'note', True),
+opts, device_uri, printer_name, mode, ui_toolkit, lang = \
+          ("Parallel:", "$ hp-makeuri /dev/parport0", "example", False),
+    param = mod.args[0]
+        print cups_uri
+        print "CUPS URI: %s" % cups_uri
+            print fax_uri
+            print "HP Fax URI: %s" % fax_uri
+            print sane_uri
+            print "SANE URI: %s" % sane_uri
+    quiet_mode = cups_quiet_mode or sane_quiet_mode or fax_quiet_mode
+    sane_quiet_mode = False
+            sane_quiet_mode = True
+          ("SERIAL NO. (usb and parallel only):", '"serial no."', "option", True),
+          ("[SERIAL NO.|USB ID|IP|DEVNODE]", "", "heading", False),
+          ("Show the CUPS URI only (quiet mode):", "-c or --cups", "option", False),
+          ("Show the HP Fax URI only (quiet mode):", "-f or --fax", "option", False),
+          ("Show the SANE URI only (quiet mode):", "-s or --sane", "option", False),
+# Std Lib
+        sys.exit(1)
+# the Free Software Foundation; either version 2 of the License, or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+__title__ = 'Device URI Creation Utility'
+          ("To specify the port on a multi-port JetDirect:", "-p<port> or --port=<port> (Valid values are 1\*, 2, and 3. \*default)", "option", False),
+            try:
+USAGE = [ (__doc__, "", "name", True),
+          ("Usage: %s [OPTIONS] [SERIAL NO.|USB ID|IP|DEVNODE]" % __mod__, "", "summary", True),
+          ("USB:", "$ hp-makeuri 001:002", "example", False),
+          ("USB IDs (usb only):", """"xxx:yyy" where xxx is the USB bus ID and yyy is the USB device ID. The ':' and all leading zeroes must be present.""", 'option', False),
+          ("USB or parallel (using serial number):", "$ hp-makeuri US123456789", "example", False),
+          ("", """(Use the 'lsusb' command to obtain this information. See Note 1.)""", "option", False),
+#!/usr/bin/python
+    #utils.log_title(__title__, __version__) 
+          utils.USAGE_EXAMPLES,
+          utils.USAGE_HELP,
+          utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
+          utils.USAGE_NOTES,
+          utils.USAGE_OPTIONS,
+          utils.USAGE_SEEALSO,
+          utils.USAGE_SPACE,
+__version__ = '5.0'
+# You should have received a copy of the GNU General Public License

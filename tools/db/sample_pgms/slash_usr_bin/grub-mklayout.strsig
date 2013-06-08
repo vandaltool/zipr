@@ -1,0 +1,269 @@
+ !"#$%&'-.*+
+1.99-21ubuntu3.9
+3T$,3D$(	
+,9:;<=>?@ABCSG_`aV\]^WYZ[cc
+Aborted.
+A NULL argv[0] was passed through an exec system call.
+assert: error stack overflow detected!
+bindtextdomain
+biosdisk
+__bss_start
+bug-grub@gnu.org
+cannot find the partition of `%s'
+cannot get disk geometry of `%s'
+cannot get the real path of `%s'
+cannot open `%s'
+cannot open %s
+cannot open `%s' while attempting to get disk geometry
+cannot open `%s' while attempting to get disk size
+cannot read from `%s'
+cannot read `%s'
+cannot read %s
+cannot restore the original directory
+cannot seek `%s'
+cannot stat `%s'
+cannot stat %s
+cannot stat %s: %s
+Cannot stat `%s', skipping
+cannot write to `%s'
+canonicalize_file_name
+changing current directory to %s
+closedir
+Closing `%s'.
+Console_13
+Console_14
+Console_15
+Console_16
+Console_17
+Console_18
+Console_19
+Console_20
+Console_21
+Console_22
+Console_23
+Console_24
+Console_25
+Console_26
+Console_27
+Console_28
+Console_29
+Console_30
+Console_31
+Console_32
+Console_33
+Console_34
+Console_35
+Console_36
+Control_backslash
+Couldn't open input file: %s
+Couldn't open output file: %s
+__ctype_b_loc
+D$$3T$T3D$P	
+dcgettext
+%d %d %u:%u %s %s%n
+dead_acute
+dead_breve
+dead_caron
+dead_cedilla
+dead_circumflex
+dead_diaeresis
+dead_doubleacute
+dead_grave
+dead_ogonek
+dead_tilde
+--detail
+/dev/.devfsd
+/dev/dm-
+device count exceeds limit
+/dev/mapper
+/dev/mapper/
+/dev/mapper/%s
+/dev/root
+Discarding improperly nested partition (%s,%s,%s%d)
+disk does not exist, so falling back to partition device %s
+dm_get_next_target
+dm_is_dm_major
+dm_log_with_errno_init
+dm %s starts at %llu
+dm_task_create
+dm_task_create failed
+dm_task_destroy
+dm_task_no_open_count
+dm_task_run
+dm_task_run failed
+dm_task_set_name
+dm_task_set_name failed
+dm_tree_add_dev
+dm_tree_add_dev failed
+dm_tree_create
+dm_tree_create failed
+dm_tree_find_node
+dm_tree_find_node failed
+dm_tree_free
+dm_tree_next_child
+dm_tree_node_get_name
+dm_tree_node_get_uuid
+drive `%s' already mapped to `%s'
+__errno_location
+ERROR: no keycodes found. Check output of %s.
+error: %s.
+--export
+Failed to create tree
+failed to get canonical path of %s
+fflush failed
+FIXME: no / in buf. (make_system_path_relative_to_its_root)
+__fprintf_chk
+fseeko64
+fstat failed
+__fxstat64
+__getdelim
+gettimeofday
+getting the size of %s
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+GLIBC_2.8
+__gmon_start__
+grub-core/kern/disk.c
+grub-core/kern/emu/getroot.c
+grub-core/kern/emu/hostdisk.c
+grub-core/kern/partition.c
+GRUBLAYO
+GRUB_LEGACY_0_BASED_PARTITIONS
+  -h, --help		display this message and exit.
+hostdisk
+ignoring dm target %s (not linear/striped)
+  -i, --input		set input filename. Default is STDIN
+_IO_putc
+_IO_stdin_used
+JRKPOMQNIL
+_Jv_RegisterClasses
+keycode %u = %60s %60s %60s %60s
+KP_Divide
+KP_Enter
+KP_Multiply
+KP_Period
+KP_Subtract
+libc.so.6
+__libc_start_main
+libdevmapper.so.1.02.1
+/lib/ld-linux.so.2
+__lxstat64
+Map table size exceeded
+MD_UUID=
+mduuid/%s
+mduuid/%s,%s
+mirror-%u
+nanosleep
+No close parenthesis found
+no dm params
+no dm target
+No filename found
+no mapping exists for `%s'
+No open parenthesis found
+no such disk
+no such partition
+  -o, --output		set output filename. Default is STDOUT
+__open64_2
+Opening `%s'...
+Opening `%s' failed.
+opening the device %s
+opening the device `%s' in open_device()
+out of disk
+out of memory
+out of partition
+overflow is detected
+Partition %d starts from %lu
+POSIXLY_CORRECT
+posix_memalign
+ Press any key to exit.
+__printf_chk
+/proc/self/mountinfo
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+readdir64
+read failed
+reading %s
+Read out of range: sector 0x%llx (%s).
+realpath
+Report bugs to <%s>.
+reusing open device `%s'
+%s child has no DM name
+%s child has no DM uuid
+%s child is not DM-RAID
+%s child %s looks like a sub-layer
+Scroll_Backward
+Scroll_Forward
+Scroll_Lock
+%s:%d: %s
+sector sizes of %d bytes aren't supported yet
+seek failed
+%s: error:
+setlocale
+%s has no DM children
+%s has no DM name
+%s has no DM uuid
+Show_Memory
+Show_Registers
+%s: info:
+%s: invalid option -- '%c'
+%s is a multipath disk
+%s is an LVM
+%s is not DM-RAID
+`%s' looks like a floppy drive, skipping
+%s: option '%c%s' doesn't allow an argument
+%s: option requires an argument -- '%c'
+%s: option '--%s' doesn't allow an argument
+%s: option '%s' is ambiguous
+%s: option '--%s' requires an argument
+%s: option '-W %s' doesn't allow an argument
+%s: option '-W %s' is ambiguous
+%s: option '-W %s' requires an argument
+__sprintf_chk
+%s read failed
+%s (%s) %s
+ %s %s %s %s %s %s
+%s starts from %lu
+__stack_chk_fail
+__strcpy_chk
+__strdup
+strerror
+strtoull
+sub-partition %s%d of (%s,%s) ends after parent.
+%s: unrecognized option '%c%s'
+%s: unrecognized option '--%s'
+%s: warn:
+T$H9T$(r
+the size of %s is %llu
+the size of %s is %lu
+treating dm target %s (striped) as real disk
+Try `%s --help' for more information.
+<_t(</t$
+<\t,<,t@
+Unable to create pipe for mdadm: %s
+Unable to fork mdadm: %s
+Unable to open stream from mdadm: %s
+unaligned device size
+Unknown keycode 0x%02x
+Unknown key %s
+unknown kind of RAID device `%s'
+unrecognized number
+Usage: %s [OPTIONS]
+/usr/share/locale
+__vasprintf_chk
+__vfprintf_chk
+VoidSymbol
+  -v, --verbose		print verbose messages.
+  -V, --version		print version information and exit.
+write failed
+writing 0x%x bytes
+writing 0x%x bytes at offset 0x%x
+Writing `%s'...
+__xstat64
+zpool status %s

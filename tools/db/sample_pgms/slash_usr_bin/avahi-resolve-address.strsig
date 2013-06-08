@@ -1,0 +1,81 @@
+    -4                   Lookup IPv4 address
+    -6                   Lookup IPv6 address
+    -a --address         Resolve address
+address_resolver_callback
+__assert_fail
+avahi_address_parse
+avahi_address_resolver_free
+avahi_address_resolver_new
+avahi_address_snprint
+avahi_client_errno
+avahi_client_free
+avahi_client_get_host_name_fqdn
+avahi_client_get_version_string
+avahi_client_new
+avahi_host_name_resolver_free
+avahi_host_name_resolver_new
+avahi_init_i18n
+avahi-resolve.c
+avahi_simple_poll_free
+avahi_simple_poll_get
+avahi_simple_poll_loop
+avahi_simple_poll_new
+avahi_simple_poll_quit
+avahi_strerror
+__bss_start
+Client failure, exiting: %s
+dcgettext
+__errno_location
+event == AVAHI_WATCH_IN
+Failed to create address resolver: %s
+Failed to create client object: %s
+Failed to create host name resolver: %s
+Failed to create simple poll object.
+Failed to parse address '%s'
+Failed to query host name: %s
+Failed to query version string: %s
+Failed to resolve address '%s': %s
+Failed to resolve host name '%s': %s
+fd == pipe_fds[0]
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Got %s, quitting.
+    -h --help            Show this help
+host-name
+host_name_resolver_callback
+_IO_stdin_used
+_Jv_RegisterClasses
+libavahi-client.so.3
+libavahi-common.so.3
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+l == sizeof(s)
+    -n --name            Resolve host name
+No command specified.
+n_resolving > 0
+pipe() failed: %s
+pipe_fds[0] == -1 && pipe_fds[1] == -1
+__printf_chk
+%s 0.6.30
+Server version: %s; Host name: %s
+setlocale
+set_nonblock
+sigaction
+sigaction() failed: %s
+sigint.c
+sigint_install
+sigint_uninstall
+!simple_poll
+%s [options] %s <address ... >
+%s [options] %s <host name ...>
+__stack_chk_fail
+Too few arguments
+    -v --verbose         Enable verbose mode
+    -V --version         Show version
+watch_callback

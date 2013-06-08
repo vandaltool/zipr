@@ -1,0 +1,24 @@
+__bss_start
+GLIBC_2.0
+__gmon_start__
+-height must be positive.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+overflow2
+pm_allocarray
+pm_close
+pm_error
+pm_freearray
+pm_message
+pm_openr
+pm_optParseOptions2
+ppm_init
+ppm_writeppm
+Reading (%dx%d):  %s
+T$@9T$Lu
+There is at most 1 argument: the input file spec.  You supplied %d
+-width must be positive.

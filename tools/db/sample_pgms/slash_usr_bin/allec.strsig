@@ -1,0 +1,78 @@
+' 1 2 3 7 13 15
+  allec)
+# before we create the tmpdir, set trap for cleanup
+	\begin{document}
+#!/bin/sh
+body >> allcm10.tex
+body >> allcm11.tex
+body >> allcm12.tex
+case "$1" in
+case "$progname" in
+  cat <<-'eof'
+cd $tmpdir || exit 1
+$DVIPS ${1+"$@"} -V -f allcm10 > /dev/null
+$DVIPS ${1+"$@"} -V -f allcm11 > /dev/null
+$DVIPS ${1+"$@"} -V -f allcm12 > /dev/null
+    DVIPS=dvips
+    DVIPS=dvired
+echo >&2
+echo "---------------------------------------------------------------------" >&2
+echo ">>>>>>>>>>>  Calling latex...                              <<<<<<<<<<" >&2
+  echo '\documentclass['$1'pt]{article}'
+echo ">>>>>>>>>>>  Generating testfiles for 10pt, 11pt and 12pt. <<<<<<<<<<" >&2
+echo ">>>>>>>>>>>  Now, calling $DVIPS to make missing fonts...  <<<<<<<<<<" >&2
+  echo "$progname: failed to create temp directory." >&2
+  echo '\usepackage['$encoding']{fontenc}'
+    encoding=OT1;;
+    encoding=T1;;
+	\end{document}
+  exit 1
+# hack around a bug in zsh:
+	\hbadness=10000
+head 10 > allcm10.tex
+head 11 > allcm11.tex
+head 12 > allcm12.tex
+	\hfuzz=\maxdimen
+	\large \mytext\Large \mytext\LARGE \mytext\huge \mytext\Huge \mytext}}
+latex allcm10 >/dev/null
+latex allcm11 >/dev/null
+latex allcm12 >/dev/null
+	\mathbf{\myformula}\mathsf{\myformula}\mathtt{\myformula}
+	\mathnormal{\myformula}\mathit{\myformula}$}
+	\newcommand{\myformula}{\sum a_{b_{c_d}} = c}
+	\newcommand{\mytext}{text $\mathcal{\myformula}\mathrm{\myformula}
+	\newcommand{\TestBF}{bf-series: {\bfseries\TestFamilies}}
+	\newcommand{\TestFamilies}{\TestRM\TestSF\TestTT\newline}
+	\newcommand{\TestIT}{it-shape: {\itshape\TestSeries}\par}
+	\newcommand{\TestMD}{md-series: {\mdseries\TestFamilies}}
+	\newcommand{\TestRM}{rm-family: {\rmfamily\TestSizes}\newline}
+	\newcommand{\TestSC}{sc-shape: {\scshape\TestSeries}\par}
+	\newcommand{\TestSeries}{\TestBF\TestMD\par}
+	\newcommand{\TestSF}{sf-family: {\sffamily\TestSizes}\newline}
+	\newcommand{\TestShapes}{\TestUP\TestIT\TestSL\TestSC}
+	\newcommand{\TestSizes}{{%
+	\newcommand{\TestSL}{sl-shape: {\slshape\TestSeries}\par}
+	\newcommand{\TestTT}{tt-family: {\ttfamily\TestSizes}\newline}
+	\newcommand{\TestUP}{up-shape: {\upshape\TestSeries}\par}
+	\normalsize \mytext
+	\pagestyle{empty}
+	\parindent0in
+progname=`basename $0`
+  rm -rf $tmpdir
+rm -rf $tmpdir
+  && { RUNNING_BSH=true; export RUNNING_BSH; exec /bin/bsh $0 ${1+"$@"}; }
+  && { RUNNING_SH5=true; export RUNNING_SH5; exec /bin/sh5 $0 ${1+"$@"}; }
+    shift
+test -f /bin/bsh && test -z "$RUNNING_BSH" \
+test -f /bin/sh5 && test -z "$RUNNING_SH5" \
+test -n "${ZSH_VERSION+set}" && alias -g '${1+"$@"}'='"$@"'
+	\TestShapes
+	\textheight9.5in
+	\textwidth6.5in
+	\tiny \mytext\scriptsize \mytext\footnotesize \mytext\small \mytext
+tmpdir=${TMPDIR-${TEMP-${TMP-/tmp}}}/$progname.$$
+(umask 077; mkdir "$tmpdir") || {
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xAIX; } 2>/dev/null \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xULTRIX; } 2>/dev/null \
+unset RUNNING_BSH
+unset RUNNING_SH5

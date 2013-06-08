@@ -1,0 +1,107 @@
+bitmap bit order:   %d
+bitmap pad:         %d
+bitmap unit:        %d
+bits per pixel:     %d
+bits per rgb:       %d
+blue mask:          %d
+border width:       %d
+__bss_start
+byte order:         %d
+bytes per line:     %d
+Can't malloc color table
+Can't malloc data buffer.
+Can't malloc window name storage.
+Can't open input file as specified.
+colormap entries:   %d
+DIRECTCOLOR
+-display
+-dumpheader
+__errno_location
+exiting.
+file version:       %d
+__fprintf_chk
+-geometry
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.7
+__gmon_start__
+GRAYSCALE
+green mask:         %d
+header size:        %d
+            [-help] [-rv] [-plane <number>] [-fg <color>] [-bg <color>]
+Invalid input image header data.
+invalid visual specifier
+-inverse
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+            [-new] [-std <maptype>] [-raw] [-vis <vis-type-or-id>]
+-noclick
+no matching visual found
+no standard colormap matching specified visual
+num colors:         %d
+pixmap depth:       %d
+pixmap format:      %d
+pixmap height:      %d
+pixmap width:       %d
+plane number exceeds image depth
+__printf_chk
+PSEUDOCOLOR
+red mask:           %d
+            [-scale]
+sizeof(XWDheader):  %d
+specified standard colormap does not exist
+STATICCOLOR
+STATICGRAY
+%s:  unable to open display "%s"
+TRUECOLOR
+Unable to allocate memory for pixel conversion
+Unable to read color map from dump file.
+Unable to read dump file header.
+Unable to read pixmap from dump file.
+Unable to read window name from dump file.
+usage: %s [-in <file>] [-noclick] [-geometry <geom>] [-display <display>]
+visual class:       %d
+Visual type is not large enough to hold all colors of the image.
+window height:      %d
+window name:        %s
+window width:       %d
+window x:           %d
+window y:           %d
+win_name_size
+WM_DELETE_WINDOW
+WM_PROTOCOLS
+XAllocColor
+XAllocNamedColor
+XBitmapPad
+XCloseDisplay
+XCopyColormapAndFree
+XCreateColormap
+XCreateGC
+XCreateImage
+XCreateWindow
+XDisplayName
+XGetRGBColormaps
+XGetVisualInfo
+XInitImage
+XInternAtom
+XLookupString
+XMapWindow
+XNextEvent
+x offset:           %d
+XOpenDisplay
+XParseGeometry
+XPutImage
+XQueryColor
+XSetWMProperties
+XSetWMProtocols
+XStoreColors
+XVisualIDFromVisual
+xwud: Error => %s
+xwud: XWD file format version mismatch.
+xwud: XWD header size is too small.

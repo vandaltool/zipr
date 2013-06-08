@@ -1,0 +1,36 @@
+-background
+__bss_start
+        [-colo[u]r <colourspec>] [-background transparent|<colourspec>]
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libnetpbm.so.10
+pm_close
+pm_freearray
+pm_keymatch
+pm_openr
+pm_usage
+ppmd_fill
+ppmd_fill_drawproc
+ppmd_fill_init
+ppmd_line
+ppmd_text
+ppmd_text_box
+        [ppmfile]
+ppm_init
+ppm_parsecolor
+ppm_readppm
+ppm_writeppm
+__stack_chk_fail
+        [-text "<text string>"] [-file <filename>]
+transparent
+[-x <x>] [-y <y>] [-size <size>] [-angle <degrees>]

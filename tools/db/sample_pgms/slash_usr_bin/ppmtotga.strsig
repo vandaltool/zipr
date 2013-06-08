@@ -1,0 +1,34 @@
+__bss_start
+can't happen
+computing colormap...
+%d colors found
+D$P9\$Puy
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+input is not a graymap, filter through ppmtopgm first
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+[-name <tganame>] [-mono|-cmap|-rgb] [-norle] [ppmfile]
+pm_allocarray
+pm_allocrow
+pm_close
+pm_error
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+ppm_colorhisttocolorhash
+ppm_computecolorhist
+ppm_init
+ppm_lookupcolor
+ppm_readppminit
+ppm_readppmrow
+__strcpy_chk
+too many colors - try doing a 'ppmquant %d'
+unknown colormap pixel size (#2) - %d

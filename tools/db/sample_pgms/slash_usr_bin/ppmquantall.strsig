@@ -1,0 +1,54 @@
+    *)  
+#               a common colormap
+all=$(mktemp -t pqa.all.XXXXXXXXXX) || exit 1 #219019
+#all=`tempfile -p pqa.all -m 600`
+#all=.tmp.pqa.all.$$
+#!/bin/bash
+        break
+    case "$1" in
+# concatenate them together into one big pixmap, run ppmquant on that, and
+declare -a heights
+declare -a widths
+# display 256 different colors, but the pixmaps have a total of a thousand
+    echo "usage: $0 [-ext extension] <newcolours> <ppmfile> ..."
+    esac
+        exit $?
+    exit $?
+    exit 1
+    -ext*)
+        ext=".$2"
+# Extract the width and height of each of the images.
+        fi
+files=($@)
+        > ${files[$i]}$ext
+for i in ${files[@]}; do
+    heights=(${heights[*]} `egrep -v '^#' $i | sed '1d; s/ .*//; 2q'`) # #204890
+# Here, we make the assumption that the width and height are on the
+    if [ $? != 0 ]; then
+if [ $? != 0 ]; then
+        if [ $# -lt 2 ]; then
+if [ $# -lt 2 ]; then
+    i=$(($i + 1))
+newcolors=$1
+nfiles=$#
+# or so different colors.  For a single pixmap you solve this problem with
+pnmcat -topbottom -jleft -white ${files[@]} | ppmquant $newcolors > $all
+    pnmcut -left 0 -top $y -width ${widths[$i]} -height ${heights[$i]} $all \
+# ppmquantall - run ppmquant on a bunch of files all at once, so they share
+# ppmquant; this script solves it for multiple pixmaps.  All it does is
+# Put this program in C and use ppm_readppminit().
+#rm -f $all
+rm -f $all
+# second line, even though the PPM format doesn't require that.
+        shift
+# then split it up into little pixmaps again.
+# To be robust, we need to use Pnmfile to get that information, or 
+# to display on the screen all at the same time.  Your screen can only
+    usage
+            usage
+# Verbose explanation: Let's say you've got a dozen pixmaps that you want
+# WARNING: overwrites the source files with the results!!!
+while :; do
+while [ $i -lt $nfiles ]; do
+    widths=(${widths[*]} `egrep -v '^#' $i | sed '1d; s/ .*//; 2q'`) # #204890
+    y=$(($y + ${heights[$i]}))

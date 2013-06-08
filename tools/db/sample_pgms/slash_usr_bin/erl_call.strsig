@@ -1,0 +1,229 @@
+0123456789abcdef
+<- ACCEPT connected to remote
+<- ACCEPT failed
+<- ACCEPT initial ident failed
+<- ACCEPT (ok) remote = %s
+<- ACCEPT remote version not compatible
+<- ACCEPT socket accept failed
+<- ACCEPT waiting for connection
+apply = %s
+#Bin<%ld>
+Can't find host for %s: %d
+Can't get ip address for host %s: %d
+         -c  cookie string; by default read from ~/.erlang.cookie
+<- CLOSE
+-> CLOSE
+-> CONNECT attempt to connect to %s
+-> CONNECT can't get remote port
+-> CONNECT connected to remote
+-> CONNECT failed
+-> CONNECT (ok) remote = %s
+-> CONNECT remote version not compatible
+-> CONNECT socket connect failed
+Cookie = %s
+__ctype_b_loc
+         -d  direct Erlang output to ~/.erl_call.out.<Nodename>
+         -e  evaluate contents of standard input (e.g echo "X=1,Y=2,{X,Y}."|erl_call -e ...)
+ei_accept
+ei_connect
+ei_connect_init
+ei_connect_tmo
+ei_connect_xinit
+ei_epmd_r4_port
+ei_n_sockets
+ei_sockets
+ei_sockets_lock
+ei_sz_sockets
+ei_tracelevel
+ei_xconnect
+ei_x_extra
+/.erlang.cookie
+erl_call: cannot reallocate %u bytes of memory from %p
+erl_call: can't compile file %s
+erl_call: can't create C node %s; %d
+erl_call: can't ei_gethostbyname(%s)
+erl_call: can't read stdin, errno = %d
+erl_call: can't resolve hostname %s
+erl_call: can't write to source file %s
+erl_call: connect failed
+erl_call: connect timed out
+erl_call: error during connect
+erl_call: evaluating input failed: %s
+erl_call: exec failed: (%d) %s %s %s
+erl_call: failed to connect to node %s
+erl_call: failed to get host name: %d
+erl_call: hostname too long: %s
+erl_call: insufficient memory
+erl_call: module name too long: %s
+erl_call: module = %s, function = %s, args = %s
+erl_call: node is not running
+erl_call: nodename too long: %s
+erl_call: node = %s
+erl_call: no epmd running
+erl_call: now connected to node "%s"
+erl_call: now connected to node %s
+erl_call: %s %s %s
+erl_call: unable to start node, error = %d
+erl_call: we are now connected to node "%s"
+erl_call: wrong format of apply string (1)
+ERL_DEBUG_DIST
+ERL_EPMD_PORT
+.erl_start.out
+__errno_location
+ERROR: Cookie size too large
+<ERROR> get_cookie: can't open cookie file
+<ERROR> get_cookie: cookie in %s is too long
+<ERROR> get_cookie: reading cookie file
+<ERROR> get_cookie: too long path to home
+<ERROR> show_msg: unknown type of term !
+ERROR: Thishostname too long
+ERROR: this_node_name too long
+eval_str
+exec %s 
+EXIT2 From: 
+EXIT2_TT From: 
+EXIT From: 
+EXIT_TT From: 
+Failed to get host name: %d
+Failed to get name of this host
+flags = %s %s %s
+### fp exception ###
+__fprintf_chk
+#Fun<%s.%ld.%ld>
+gethostbyaddr
+gethostbyname
+gethostbyname_r
+gethostid
+gethostname
+getpeername
+getsockname
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+GROUP_LEADER From: 
+__h_errno_location
+         -h  specify a name for the erl_call client node
+Illegal argument '%s'.
+inet_ntoa
+#integer(%d) = {
+_IO_putc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+localhost
+===== Log started ======
+__memcpy_chk
+Missing argument(s) for '%s'.
+-module(
+module: name = %s , size = %d
+         -m  read and compile Erlang module from stdin
+         -name  name of Erlang node, expanded to a fully qualified
+         -n  name of Erlang node, same as -name
+            (-n Node | -sname Node | -name Node)
+Node name has no @ in name
+-noinput %s %s 
+#Pid<%s.%u.%u.%u>
+-> PORT2_REQ alive=%s ip=%s
+<- PORT2_RESP result=%d (failure)
+<- PORT2_RESP result=%d (ok)
+#Port<%d.%d>
+   port=%d ntype=%d proto=%d dist-high=%d dist-low=%d
+#Port<%s.%u.%u>
+pthread_getspecific
+pthread_key_create
+pthread_mutex_destroy
+pthread_mutex_init
+pthread_mutex_lock
+pthread_mutex_trylock
+pthread_mutex_unlock
+pthread_once
+pthread_setspecific
+         -q  halt the Erlang node (overrides the -s switch)
+   Reason: 
+recv_challenge
+recv_challenge_ack
+<- RECV_CHALLENGE_ACK authorization failure
+<- RECV_CHALLENGE_ACK incorrect tag, expected 'a' got '%c' (%u)
+<- RECV_CHALLENGE_ACK (ok) digest = %s
+<- RECV_CHALLENGE_ACK socket read failed (%d)
+<- RECV_CHALLENGE can't get peername
+<- RECV_CHALLENGE incorrect tag, expected 'n' got '%c' (%u)
+<- RECV_CHALLENGE nodename too long (%d)
+<- RECV_CHALLENGE (ok) node = %s, version = %u, flags = %u, challenge = %d
+<- RECV_CHALLENGE peer cannot handle binary float encoding
+<- RECV_CHALLENGE peer cannot handle extended pids and ports
+<- RECV_CHALLENGE peer cannot handle extended references
+recv_challenge_reply
+<- RECV_CHALLENGE_REPLY authorization failure
+<- RECV_CHALLENGE_REPLY incorrect tag, expected 'r' got '%c' (%u)
+<- RECV_CHALLENGE_REPLY (ok) challenge = %u, digest = %s
+<- RECV_CHALLENGE_REPLY socket read failed (%d)
+<- RECV_CHALLENGE socket read failed (%d)
+recv_name
+<- RECV_NAME can't get peername
+<- RECV_NAME incorrect tag, expected 'n' got '%c' (%u)
+<- RECV_NAME nodename too long (%d)
+<- RECV_NAME (ok) node = %s, version = %u, flags = %u
+<- RECV_NAME peer cannot handle extended pids and ports
+<- RECV_NAME peer cannot handleextended references
+<- RECV_NAME socket read failed (%d)
+recv_status
+<- RECV_STATUS (ok)
+<- RECV_STATUS socket read failed (%d)
+REG_SEND From: 
+REG_SEND_TT From: 
+         -r  use a random name for the erl_call client node
+<%s.%d.%d>
+SEND_CHALLENGE
+-> SEND_CHALLENGE_ACK (ok) digest = %s
+-> SEND_CHALLENGE_ACK socket write failed
+send_challenge_reply
+-> SEND_CHALLENGE_REPLY (ok) challenge = %d, digest = %s
+-> SEND_CHALLENGE_REPLY socket write failed
+SEND_NAME
+send_name_or_challenge
+send_status
+-> SEND_STATUS (%s)
+-> SEND_STATUS socket write failed
+SEND To: 
+SEND_TT To: 
+-s erl_reply reply %s %d %d 
+-setcookie
+setsockopt
+         -sname name of Erlang node, short form will be used
+__sprintf_chk
+%s: %.*s: 
+-> %s socket write failed
+%s/%s.%s
+         -s  start a new Erlang node if necessary
+__stack_chk_fail
+__strcat_chk
+__strcpy_chk
+__strdup
+__strncpy_chk
+Thisalivename too long
+Thisnodename too long
+Trace: Label: %ld, Flags: 0x%lx serial: %ld, prev: %ld From: 
+<- unknown (%d)
+#Unknown<%d.%d>
+Unknown message type: %ld
+UNLINK From: 
+Usage: %s [-[demqrsv]] [-c Cookie] [-h HiddenName] 
+/usr/bin/rsh
+verbosep
+__vfprintf_chk
+__vsprintf_chk
+         -v  verbose mode, i.e print some information on stderr
+  where: -a  apply(Mod,Fun,Args) (e.g -a 'erlang length [[a,b,c]]'
+write_file
+            [-x ErlScript] [-a [Mod [Fun [Args]]]]
+         -x  use specified erl start script, default is erl

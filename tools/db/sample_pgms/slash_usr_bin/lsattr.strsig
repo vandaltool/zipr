@@ -1,0 +1,33 @@
+29-Nov-2011
+bindtextdomain
+__bss_start
+dcgettext
+e2fsprogs
+__errno_location
+fgetflags
+fgetversion
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+iterate_on_dir
+_Jv_RegisterClasses
+libcom_err.so.2
+libc.so.6
+__libc_start_main
+libe2p.so.2
+/lib/ld-linux.so.2
+lsattr %s (%s)
+__lxstat64
+__printf_chk
+print_flags
+set_com_err_gettext
+setlocale
+__sprintf_chk
+Usage: %s [-RVadlv] [files...]
+/usr/share/locale
+While reading flags on %s
+While reading version on %s
+while trying to stat %s

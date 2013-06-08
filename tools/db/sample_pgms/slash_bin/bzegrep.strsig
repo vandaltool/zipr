@@ -1,0 +1,92 @@
+  --*)	;;
+# 02111-1307, USA.
+  -[ABCdm])opt="$opt $1 $2"; shift;;
+# Adapted from a version sent by Charles Levert <charles@comm.polymtl.ca>
+# Adapted from zgrep of the Debian gzip package by Anibal Monsalve Salazar. 
+after_dash_dash=""
+# along with this program; if not, write to the Free Software
+      # and passed to eval; fd1 is the normal standard output
+# any later version.
+#!/bin/sh
+	     break;
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# bzgrep -- a wrapper around a grep program that decompresses files as needed
+  bzip2 -cdfq | $grep $opt "$pat"
+  bzip2 -cdfq -- "$i" |
+	case "$1" in
+  case "$after_dash_dash$1" in
+case "$prog" in
+# Copyright (C) 1993 Jean-loup Gailly
+# Copyright (C) 1998, 2001, 2002 Free Software Foundation
+  --d* | --rec*)	echo >&2 "$0: $1: option not supported"; exit 2;;
+	-*[dr]*) echo >&2 "$0: $1: option not supported"; exit 2;;
+  echo "grep through bzip2 files"
+  echo "usage: $prog [grep_options] pattern [files]"
+  -[ef])   opt="$opt $1"; shift; pat="$1"
+	*egrep)	grep=${EGREP-egrep}	;;
+    elif test $files_without_matches -eq 1; then
+    elif test $with_filename -eq 0 && { test $# -eq 1 || test $no_filename -eq 1; }; then
+    else
+      else
+	   else
+      eval `
+      exec 3>&1
+      exec 4>&1 >&3 3>&-
+  exit $?
+  exit 2
+      # exit ${PIPESTATUS[0]}
+      exit $r
+exit $res
+	*fgrep)	grep=${FGREP-fgrep}	;;
+      fi
+           fi;;
+  --files-with-*)	files_with_matches=1;;
+files_with_matches=0
+  --files-witho*)	files_without_matches=1;;
+files_without_matches=0
+for i do
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# GNU General Public License for more details.
+             grep=egrep
+	*)	grep=${GREP-grep}	;;
+      $grep $opt "$pat"
+       $grep $opt "$pat" 4>&-; echo "r=$?;" >&4
+      $grep $opt "$pat" > /dev/null || printf "%s\n" "$i"
+      $grep $opt "$pat" > /dev/null && printf "%s\n" "$i"
+      # $grep $opt "$pat" | sed "$sed_script"
+      # Hack adapted from GPLed code at
+      # Has the same effect as the following two lines of bash:
+	-*h*)	no_filename=1;;
+      # http://home.comcast.net/~j.p.h/cus-faq-2
+	-*H*)	with_filename=1;;
+      i=$(echo "$i" | sed -e 's/[\\|&]/\\&/g')
+if test $# -eq 0; then
+    if test $files_with_matches -eq 1; then
+           if test "$grep" = grep; then  # grep is buggy with -e on SVR4
+      if test $with_filename -eq 1; then
+   *)      if test -z "$pat"; then
+if test -z "$pat"; then
+      # Inside the `...`, fd4 goes to the pipe whose other end is read
+# it under the terms of the GNU General Public License as published by
+	-*l*)	files_with_matches=1;;
+	-*L*)	files_without_matches=1;;
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+no_filename=0
+  --no-f*)	no_filename=1;;
+  -*)	   opt="$opt $1";;
+  --)      opt="$opt $1"; after_dash_dash=1;;
+	     pat="$1"
+PATH="/usr/bin:$PATH"; export PATH
+      # preserved the line before with exec 3>&1
+prog=`echo "$0" | sed 's|.*/||'`
+	sed_script="s|^|${i}:|"
+	sed_script="s|^[^:]*:|${i}:|"
+      } | sed "$sed_script"
+  test $res -lt $r && res=$r
+# the Free Software Foundation; either version 2, or (at your option)
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+while test $# -ne 0; do
+with_filename=0
+  --wi*)	with_filename=1;;
+# You should have received a copy of the GNU General Public License

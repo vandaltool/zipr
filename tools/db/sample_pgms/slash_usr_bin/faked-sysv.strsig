@@ -1,0 +1,59 @@
+Best used from the shell script `fakeroot'
+--cleanup
+Database load failed
+dev:ino=(%llx:%lli), mode=0%lo, own=(%li,%li), nlink=%li, rdev=%lli
+dev=%llx,ino=%llu,mode=%llo,uid=%llu,gid=%llu,nlink=%llu,rdev=%llu
+__errno_location
+faked, daemon for fake root environment
+ FAKED keeps data of %i inodes:
+FAKEROOT************************************************* cannot remove stat (a "cannot happen")
+FAKEROOT: chmod, mode=%lo
+FAKEROOT: chmod mode=%lo incompatible with existing mode=%lo
+FAKEROOT: chown 
+fakeroot: clearing up message queues and semaphores, signal=%i
+fakeroot: database save FAILED
+FAKEROOT, get_msg
+FAKEROOT: insert_or_overwrite unknown stat:
+FAKEROOTKEY
+FAKEROOT: mknod, mode=%lo
+FAKEROOT: msg=%i, key=%li
+FAKEROOT: (previously known): fake=
+FAKEROOT:    (previously unknown)
+FAKEROOT: process stat oldstate=
+FAKEROOT: r=%i, received message type=%li, message=%i
+fakeroot: saved database in %s
+FAKEROOT: unlink known file, old stat=
+fakeroot version 1.18.2
+fakeroot, while creating message channels
+--foreground
+__fprintf_chk
+getdtablesize
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.7
+__gmon_start__
+_IO_stdin_used
+__isoc99_scanf
+libc.so.6
+__libc_start_main
+libfakeroot, when sending message
+/lib/ld-linux.so.2
+__lxstat
+msg_key=%li
+options for fakeroot: --key, --cleanup, --foreground, --debug, --save-file, --load, --unknown-is-real
+Please, don't run fakeroot from within fakeroot!
+__printf_chk
+r=%i, EINTR=%i
+--save-file
+semop(1): encountered an error
+semop(2): encountered an error
+sigaction
+sigemptyset
+%s needs numeric argument
+This fakeroot has been compiled for SYSV IPC and does not support --port
+This may be due to a lack of SYSV IPC support.
+--unknown-is-real
+using %li as msg key
+--version

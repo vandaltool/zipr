@@ -1,0 +1,643 @@
+               ||
+               )
+               ) 
+              {
+              { 
+              {              
+              }
+             )
+             ) 
+            { 
+          {
+          { 
+          };
+        {
+        { 
+        {   
+      { 
+  ## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#                                                                          
+#                                                                           
+# -------------------------------------------------------
+# -------------------------------------------------------------------
+## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	       ||
+	       ||                    
+	       (
+	       &&
+	      {
+	      }
+	    {              
+a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,isob0,isob1,isob2,isob3,isob4,isob5,isob6,\
+	    " -a, --accuracy             improve accuracy during rendering (maybe slower)\n",
+	   'a|accuracy' => sub { $alphaopt = '-dTextAlphaBits=4 -dGraphicsAlphaBits=4' },
+      # accept even negative and fractional BBs
+  # actual ghostscript call
+            #add appropriate trailer
+# Additional filtering is performed when Windows generated PostScript files
+$allbinary= 0;        # treat postscript as binary do not filter or change stuff
+            " --     all following arguments are treated as files\n",
+            "        (allows filenames starting with -)\n",
+    along with this program; if not, write to the Free Software\
+# along with this program; if not, write to the Free Software              
+$alphaopt="";         # rendering option for ghostscript "-dTextAlphaBits=4 -dGraphicsAlphaBits=4"
+          " and writes to standard output.\n",
+  # apply changes to resulting bounding box if needed
+# are processed. Some instructions will otherwise lead to bad output
+## -- argument checking -- 
+            "Arguments:\n",
+    (at your option) any later version.\
+# (at your option) any later version.                                      
+# Author: Roland Bless
+b0,b1,b2,b3,b4,b5,c0,c1,c2,c3,c4,c5,c6,\
+      $BBarg= $1;
+	   'b|binary'   => sub { $allbinary = 1 },
+            " -b, --binary               treat postscript as binary, do not modify characters\n",
+# + bbox (a little C program [ANSI-C - should work on every platform]
+    $bboxname="";
+$bboxname= ($?== -1) ? "" : "bbox";
+$bboxver=`bbox >$NULLDEV -V`;
+      " before running $prgname again.\n";   
+	  $before_startps= 0;
+  $before_startps= 1;
+	           (/^(%%Begin(Binary|Data))|(beginimage)\r?\n?$/ ... /^(%%End(Binary|Data))|^(endimage)/) || 
+                   (/^beginjpeg / ... /~> endjpeg\r?\n?$/) ||             # Pscript_Win_Dib_L2 5.0 0
+               /^%%BeginProlog/ ||
+		                    "%%BeginProlog\n";
+	    " -B, --ignoreBB             do not use existing bounding box as page size for rendering\n",
+	   'B|ignoreBB'	=> \$ignoreBB,
+    $binarysection=$allbinary ||
+	      $boundingbox='%%BoundingBox: 0 0 ' . ($cBBurx-$cBBllx) . ' ' . ($cBBury-$cBBlly) . "\n";
+	      $boundingbox='%%BoundingBox: 0 0 ' . ($cBBury-$cBBlly) . ' ' . ($cBBurx-$cBBllx) . "\n";
+  $boundingbox = "%%BoundingBox: $cBBllx $cBBlly $cBBurx $cBBury\n";
+      $boundingbox =~ /^%%.*BoundingBox:\s*(.*)/;
+  $boundingbox=`$cmdline`;
+  $boundingbox =~ /^%%HiResBoundingBox:\s*(.*)/m;
+  # buffer input from stdin into temporary file, because it has to be read twice
+    but WITHOUT ANY WARRANTY; without even the implied warranty of\
+# but WITHOUT ANY WARRANTY; without even the implied warranty of           
+	{ # calculate dimension in pixels (remember: resolution is in dpi)
+  ## -- calculate the bounding box --
+    $cBBllx=0;
+      ($cBBllx,$cBBlly,$cBBurx,$cBBury,$dummy)= split(/\s/,$1);
+      $cBBllx = floor($hcBBllx);
+    $cBBlly=0;
+      $cBBlly = floor($hcBBlly);
+      $cBBurx++; 
+    $cBBurx= $cBBurx + $translate_x;
+      $cBBurx = ceil($hcBBurx);
+      $cBBury++;
+    $cBBury= $cBBury + $translate_y;
+      $cBBury = ceil($hcBBury);
+	   'C|clip'	=> \$clip,
+	    " -C, --clip                 insert postscript code for clipping\n",
+            " -c, --comments             preserve document structure comments\n",
+	   'c|comments' => sub { $removeDSC = 0 },
+    # check for existing BoundingBox parameters
+	    # check for meaningful values
+          # check for trigger
+      # check for Windows 3.x output
+	# check if we need to rotate
+  # check result of gs call
+    # check where magic Postscript header starts - skip leading binary stuff, e.g., HP PCL/PJL code
+    # check whether we are in a binary section
+                 "cleardictstack setmatrix setpagedevice copypage grestoreall\n",
+                 "clear erasepage initmatrix initclip initgraphics startjob\n",
+		                  "cleartomark\n", 
+$clip=0;              # do not clip
+	closedir DIR;
+  close ($outfhandle);
+    close($tmpfhandle); 
+  close($tmpfhandle);
+      $cmdline = "$ghostscriptname -dSAFER -dBATCH -dNOPAUSE -q $gpar -r$resolution -sDEVICE=bbox -sOutputFile=- -c \"/setpagedevice {pop} def\" $translatecmd -f \"$tmpfname\" -c quit 2>&1";
+      $cmdline="$ghostscriptname -dSAFER -dNOPAUSE $alphaopt -q $gpar -r$resolution -sDEVICE=$device -sOutputFile=- $translatecmd -f \"$tmpfname\" -c showpage -c quit | $bboxname -r $resolution";
+	     "(C)opyright 1998-2009 Roland Bless\n\n" );
+# (C)opyright 1999-2009 Roland Bless
+                                   "countdictstack\n",
+		                  "countdictstack\n", 
+      # count %%EOFs as we want to know when we got the last EOF
+  CREATEOUTPUT: 
+  ## -- Create output file --
+             /Creator:\s*(AdobePS|Pscript|.*Windows)/i ) #check for NT generated output
+  # cygwin and nevertheless using gswin32c.
+	   'd|debuggs'  => \$debuggs,
+	    " -d, --debuggs              show ghostscript call\n",
+$debuggs=0;           # no debugging of ghostscript call, turn this on if you want to see the gs call
+$defaultext = '(ps|prn)';  # default extension
+$defaultoutext = '.eps';   # default output extension
+               (defined($rangefilter_begin) && 
+               (defined($triggered_rangefilter_begin) && defined($triggered_rangefilter_end) &&
+$device= $fullcolors ? "ppmraw" : "pbmraw";
+       die "Cannot open temporary file $tmpfname for writing: $!\n";
+    die "Error: Could not determine bounding box!\n",
+      die "$prgname: Sorry, file named $outfname already exists,",
+die "Wrong option(s), please check usage with $prgname --help\n" unless 
+	{ die "$x_dim in $arg is not a valid number, stopped"; } 
+	{ die "$y_dim in $arg is not a valid number, stopped"; } 
+                   (/^(doNimage)|(doclutimage)\r?\n?$/ ... /(^|~> )Z\r?\n?$/) || # Pscript_Win_Dib_L2 5.0 0
+	    #do not forget to print last line if not terminated by LF
+$dummy="";
+	($eBBllx,$eBBlly,$eBBurx,$eBBury,$dummy)= split /\s/,$BBarg;
+	    " -E, --ignoreEOF            do not use %%EOF as hint for end of file\n",
+	   'E|ignoreEOF'=> \$ignoreEOFDSC,
+    else
+      else
+          else
+	    else
+      else # already inserted_prolog
+else #assume we're on a UNIXBOX
+    else { die "Wrong parameter for option -R: Valid are only +,-,^\n"; };
+  else # input is not stdin
+    else # otherwise simply append the extension $defaultoutext
+    else { push @filenames, $object; }
+    else # we are hopefully in regular postscript code now
+        else #we are in the main part of postscript file
+elsif (defined($ENV{'TMP'}))
+    elsif ($opt_R eq '-') { $rotate=$rotleft; }
+    elsif ($opt_R eq '^') { $rotate=$rotupsidedown; }
+	  elsif ($rotate eq $rotleft)
+	  elsif ($rotate eq $rotupsidedown)
+	       /^$/                       # empty lines
+                 /^%%EndComments/ ) # line is not a comment
+          } #end else
+      } #end else
+  } #end else input is not stdin
+    } # end else inserted_prolog
+      } # end else prolog_passed
+        } # end else (this is main part) 
+} # end foreach
+      } #endif $BBarg =~
+              } #endif clip
+	} #endif !$ignoreBB
+            } #endif line is not a comment
+        } # end if NTPS
+    } #end if trytofixps
+        } #endif (we are in the prologue section)
+    } #endif XxY in opt_s
+# ---- end of perl-script -------
+          #end of postscript file reached?
+               /^%%EndProlog/   ||
+                         	   "%%EndProlog\n",
+  } # end while CREATEOUTPUT
+  } #end while <$infhandle>
+} #end while PROCESSFILE
+#environment variable for papersize
+$envname_gsbbox = 'PS2EPS_GSBBOX';
+$envname_size = 'PS2EPS_SIZE';
+		                  "%%EOF\n"; 
+		                    "% EPSF created by ps2eps $ver[2]\n",
+                                  "exch sub { end } repeat\n",
+		(!(/$exclude_rangefilter_begin/ ... /$exclude_rangefilter_end/))
+	  $exclude_rangefilter_begin= '^(?i)%%BeginNonPPDFeature'; #'
+	  $exclude_rangefilter_end= '^(?i)%%EndNonPPDFeature';
+	exit 0;
+	    exit 1;
+                 "exitserver quit\n";
+    #explicit format XxY[cm|in]
+            " -F, --fixps                fix postscript code unconditionally\n",
+	   'F|fixps'	=> \$forcefixps,
+            " -f, --force                force overwriting existing files\n",
+	@fid = grep { /$wildcard(\.$defaultext)?/i } readdir(DIR);
+# filename for temporary files
+@filenames = ();
+$filenames[0]= '-' if (scalar(@filenames) == 0); # no file arguments, use STDIN as input
+  $filesep= ($tmpdir =~ /^?\:\\/) ? '\\' : '/';
+$filterorientation= 1;# filter Orientation line
+	       ($filterorientation && /^%%Orientation/) ||
+  $fixmsgprinted= 0;
+        $fixmsgprinted= 1; # stop printing message
+	    $fixmsgprinted= 1; # stop printing message
+	  $fixmsgprinted= 1; # stop printing message
+	  $fixreplacepat=' ';
+	  $fixsearchpat='(^|\s)(initmatrix|initclip|initgraphics)(\s|$)';
+  $fixthisps= $trytofixps;
+#         for calculation of the actual BoundingBox)
+$forcefixps= 0;       # fix postscript code unconditionally if eq 1
+$forceoverwrite=0;    # do not overwrite existing files
+	foreach (@fid) { push @filenames, $_; }
+foreach $object (@ARGV) {
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n";
+$fullcolors= 1;       # use ppm format (24-bit full color)
+GetOptions('f|force'	=> \$forceoverwrite,
+Getopt::Long::Configure("no_ignore_case");
+    # get postscript and DSC version
+	   'g|gsbbox'   => sub { $bboxname=""; },
+	    " -g, --gsbbox               use internal bbox device of ghostscript\n",
+  $ghostscriptname = "gs";
+  $ghostscriptname = "gswin32c";
+    GNU General Public License for more details.\
+# GNU General Public License for more details.                             
+$gpar="";
+	    $gpar= "-g${xpixels}x${ypixels}";
+	   $gpar="-sPAPERSIZE=$opt_s";
+		$gpar=""; undef $eBBllx; undef $eBBlly;
+# + gs   (ghostscript supporting pbm output)
+    $hcBBllx= 0;
+      ($hcBBllx,$hcBBlly,$hcBBurx,$hcBBury,$dummy)= split(/\s/,$1);
+    $hcBBlly= 0;
+    $hcBBurx= $hcBBurx + $hcBBllx;
+      $hcBBurx+= $hiresprecision; 
+    $hcBBury= $hcBBury + $hcBBlly;
+      $hcBBury+= $hiresprecision;
+@helptxt= ("Version: $ver[2]\n",
+            " -h, --help                 help information\n",
+	   'h|help'	=> sub { $stopnow = 1; print @prgidtxt,@helptxt,@usagetxt,"\nAuthor: Roland Bless (roland\@bless.de)\n\n"; },
+		  $hiresboundingbox='%%HiResBoundingBox: 0 0 ' . ($hcBBurx-$hcBBllx) . ' ' . ($hcBBury-$hcBBlly) . "\n";
+		  $hiresboundingbox= '%%HiResBoundingBox: 0 0 ' . ($hcBBury-$hcBBlly) . ' ' . ($hcBBurx-$hcBBllx) . "\n";
+		  $hiresboundingbox='%%HiResBoundingBox: 0 0 '  . ($hcBBury-$hcBBlly) . ' ' . ($hcBBurx-$hcBBllx) . "\n";
+      $hiresboundingbox="%%HiResBoundingBox: $hcBBllx $hcBBlly $hcBBurx $hcBBury\n";
+    $hiresboundingbox="%%HiResBoundingBox: $hcBBllx $hcBBlly $hcBBurx $hcBBury\n";
+$hiresprecision=0.5;  # amount that is changed of HiresBB in case that looseBB was requested
+	    " -H, --no-hires             do not use a HiResBoundingBox\n",
+	   'H|nohires'  => \$nohires,
+# $Id: ps2eps,v 1.68 2010-05-07 19:42:35 bless Exp $
+            if ( /^[^%].*/ ||
+      if ( $BBarg =~ /(\-?\d+\.?\d*\s+){3,}\d+/ ) # ignore %% BoundingBox: (atend) comments
+  if ($bboxname ne '')
+    if ($before_startps)
+  if ( $before_startps ) 
+    if ( !$binarysection )
+	if (!$binarysection)
+          if ( !$binarysection # only when not in binary section
+  if ($boundingbox !~ /^%%BoundingBox/m)
+          " If BoundingBox in output seems to be wrong, please try options --size or --ignoreBB.\n\n" );
+      if ($cBBllx > 0) { $cBBllx--; }
+  if ($cBBllx < 0 || $cBBlly < 0)
+      if ($cBBlly > 0) { $cBBlly--; }
+              if ($clip)
+        if ( /^%%Creator:\s*Wind.U\s*Xprinter/ )
+  if ($debuggs) { print STDERR "Call result: $boundingbox"; }
+  if ($debuggs) { print STDERR "\nCalling: $cmdline\n"; }
+  if (defined($1)) # HiResBoundingBox given
+if (defined($ENV{"$envname_gsbbox"}))
+if (defined($ENV{"$envname_size"}))
+	  if ( defined($fixsearchpat) )
+	if (!defined($hiresboundingbox)) 
+        if (defined($hiresboundingbox) && !defined($nohires)) { print $outfhandle $hiresboundingbox; }
+		 if (!defined($nohires))
+    if (defined($tmpfhandle))
+  if (defined($tmpfhandle)) 
+          if (defined($triggerstring) && /^$triggerstring$/)
+	if (!defined($unit) )
+if (! -d "/usr/bin")
+              if (/^%%EndComments/) { next CREATEOUTPUT; }
+      if ( /^%%EOF\s*$/ ) 
+    if (/^%%EOF\s*$/) 
+          if ( eof($tmpfhandle) || 
+	    if ( eof($tmpfhandle) && !/^$/ && !/^%%EOF\s*$/ ) # do not insert %%EOF twice
+# if EPS-file gets embedded into other PostScript files.
+    # if explicit size is given, ignore existing BoundingBox always
+    #if filename ends with $defaultext usually .ps or .prn, replace the extension with $defaultoutext
+          " If filenames are given as arguments they are processed\n",
+	      #if (/$fixsearchpat/) { print STDERR "**filter** before:",$_,"\n"; }
+    if ($fixthisps) # try to fix bad postscript code
+            if ($forcefixps)
+        if ( $forcefixps || 
+  if (!$forceoverwrite and -s "$outfname") 
+      if ($hcBBllx-$hiresprecision >= 0.0) { $hcBBllx-= $hiresprecision; }
+      if ($hcBBlly-$hiresprecision >= 0.0) { $hcBBlly-= $hiresprecision; }
+          if ( /^%%(HiRes)?BoundingBox/ ||
+	      if ($hiresboundingbox ne "")
+	if (!$ignoreBB)
+    if ($infname =~ /\.$defaultext$/i) 
+  if ($infname eq '-') # input is stdin
+      if (! $inserted_prolog)
+              if ($insertPScode) 
+            if ($insertPScode) 
+		    if (int($eBBllx) < 0 || int($eBBlly) < 0)
+	if (int($eBBllx) < 0) { $translate_x= - int($eBBllx-0.5); }
+	if (int($eBBlly) < 0) { $translate_y= - int($eBBlly-0.5); }
+  # if loose BB is requested
+  if ($looseBB ne '') 
+if ($^O =~ /MSWin32/i or $^O =~ /cygwin/i) 
+    if ($opt_R eq '+') { $rotate=$rotright; }
+if ($opt_r ne '') 
+if ($opt_R ne '')
+    if ($opt_s)
+    if ($opt_s eq "list")
+	if ($opt_s =~ /$known_papersizes/)
+if ($opt_s ne '') 
+if ($opt_t ne '')
+    if ($pagedimension =~ /(\d*\.?\d+)x(\d*\.?\d+)/)
+        if (! $prolog_passed)
+	  if (! /%!PS-Adobe.*/i) # some strange programs use other magics
+    if (/%!PS-Adobe-(\S+).*EPSF-(\S+)/) 
+      if (! ($PSDSCversion =~ /\d+\.\d+/))
+      if (! ($PSversion =~ /\d+\.\d+/))
+      if (!$quiet) {
+    if (!$quiet) 
+  if (!$quiet) 
+		if (!$quiet) 
+          if (!$quiet && !$fixmsgprinted) 
+        if (!$quiet && !$fixmsgprinted) 
+	    if (!$quiet && !$fixmsgprinted) 
+  if (!$quiet) { print STDERR "Creating output file $outfname ... "; }
+  if (!$quiet) { print STDERR "Processing: $infname\n"; }
+  if (!$quiet) { print STDERR "ready. $boundingbox" };
+  if (!$quiet) { print STDERR "ready.\n"; }
+	if ($rotatecmd)
+	  if ($rotate eq $rotright)
+  if ($rotate ne '')
+	      if ($rotate ne '')
+    if ( /^%%\s*BoundingBox:\s*(.*)/ && !defined($eBBllx) )
+          if ( /(^|\s)(clear|erasepage|initmatrix|initclip|initgraphics|startjob|cleardictstack|setmatrix|setpagedevice|copypage|grestoreall|exitserver|quit)(\s|$)/ )
+	      #if (s/$fixsearchpat/$fixreplacepat/) {	      print STDERR "**filter** after:",$_,"\n";}
+	    if (!/^\s*$/) #non empty lines follow
+      if ( /%!/ ) # This is usually the smallest magic sequence
+  if ($tmpdir =~ /$filesep$/)  
+  if ($tmpfname ne $infname) { unlink "$tmpfname"; } #remove temporary file
+	  if ( /^%%Trailer\s*$/ )
+  if ($translate_x!=0 || $translate_y!=0)
+	      if ($translation ne '')
+	if ( $unit ne 'in' ) # assume centimeters
+	if ( ! /%!.*[^\w]{2,}/ )
+  if ($warnings and $notsane and !$quiet)
+      if ( /^Win.*Dict/ )
+    if ($win && $object =~ m/\*/o) # asterisk is present in filename
+	if ( $x_dim !~ /^\d*\.?\d+$/ ) 
+	    if (($xpixels <= 1) || ($ypixels <= 1))
+	if ( $y_dim !~ /^\d*\.?\d+$/ ) 
+$ignoreBB= 0;         # ignore existing Bounding Box comment
+    $ignoreBB = 1; 
+	       ($ignoreEOFDSC == 0 && /^%%EOF\s*$/ && $seenEOF == $totalEOFDSC)
+$ignoreEOFDSC= 0;     # ignore %%EOF DSC hint
+          #ignore the following lines in the prologue
+          " In all other cases '$defaultoutext' is appended to the input filename.\n",
+$inch=2.54;           # one inch is 2.54cm
+$infhandle = STDIN;   # Standard input is the default input file
+$infname= '-';
+  $inserted_prolog= 0;
+        $inserted_prolog= 1;
+	      # Insert own postscript code for clipping
+$insertPScode= 1;     # Insert surrounding Postscript code
+	      #insert surrounding postscript code
+## internal wildcard processing for current directory, 
+    "I suppose $ghostscriptname had some trouble interpreting the postscript-file $infname. Exiting now.\n";
+## -- iterate over different input files --
+  # it is less trouble to use the current directory if working on
+    it under the terms of the GNU General Public License as published by\
+# it under the terms of the GNU General Public License as published by     
+jisb0,jisb1,jisb2,jisb3,jisb4,jisb5,jisb6,flsa,flse,halfletter\n";
+$known_papersizes="11x17|ledger|legal|letter(small)?|arch[A-E]|a([0-9]|10)|isob[0-6]|b[0-5]|c[0-6]|jisb[0-6]|fls(a|e)|halfletter";
+            last CREATEOUTPUT; 
+$licensetxt= "\
+        $linefilter= '^(EJ|RS)';
+  $linefilter= '^$'; #'# filter empty lines by default 
+               /$linefilter/             # lines by linefilter
+	    $linefilter= '^rs';
+            " -L, --license              show licensing information\n",
+	   'L|license'	=> sub { $stopnow = 1; print @prgidtxt,$licensetxt,"\nAuthor: Roland Bless (roland\@bless.de)\n\n"; },
+            " -l, --loose                expand the original bounding box by one point in each direction\n",
+	   'l|loose'	=> sub { $looseBB = '-l' },
+$looseBB='';          # default: tight bounding box
+                                   "mark\n",
+	# %! may be part of a binary sequence, but then control characters follow
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            
+	   'm|mono'	=> sub { $fullcolors = 0 },
+            " -m, --mono                 use black/white bitmap as base for calculation\n",
+            "\n",
+                                   "newpath\n",
+      next CREATEOUTPUT;
+	      next CREATEOUTPUT; 
+    next PROCESSFILE;
+            " -n, --nofix                do not try to fix postscript code\n",
+	   'n|nofix'	=> sub { $trytofixps = 0 },
+            " -N, --noinsert             do not insert any postscript code\n",
+	   'N|noinsert'	=> sub { $insertPScode = 0 },
+	    $nohires=1;
+	       ||                        # no preview
+      {           # Note: Adobe Photoshop generated a binary heading, so ^ is not applicable
+$notsane= 0; 
+	      $notsane= 1;
+             /^\/NTPS/ || 
+  $NULLDEV = "/dev/null 2>&1";
+  $NULLDEV = "nul";
+                 "of the following commands was still present:\n",
+          " one by one and output files are written to filenames\n",
+            " One or more names of PostScript files for input\n");
+  # one time for ghostscript processing, the second time for generating output
+          " only one single page.\n\n",
+## only used for non UNIX-based OSs (which may lack shell wildcard expansion)
+	opendir(DIR,'.') || die 'Unable to open current directory, stopped'; # open current directory
+      open($outfhandle,">$outfname") or die "Can't open file $outfname for writing: $!\n";
+    open($tmpfhandle,">$tmpfname") or 
+  open($tmpfhandle,"<$tmpfname") or die "Cannot open file $tmpfname for reading";
+          "Operation:\n",
+            " -O, --preserveorientation  do not filter Orientation: header comment\n",
+           'O|preserveorientation'  => sub { $filterorientation= 0 },
+            "Options:\n",
+$opt_r = '';          # for r-option
+    $opt_s= $ENV{"$envname_size"};
+    $opt_s = '';          # for s-option
+	    $opt_s=$opt_s . $unit;
+$opt_t = '';          # for t-option
+$outfhandle = STDOUT; # Standard output is default output if STDIN is input
+$outfname= '-';
+        $outfname= $infname . "$defaultoutext";
+      $outfname= $infname; $outfname =~ s/\.$defaultext$/$defaultoutext/i; 
+              #output postscript code for proper EPS file
+        # Output the postscript line to result file
+                                   "%%Page 1 1\n";
+    $pagedimension = $opt_s;
+               /^%%Pages/       ||
+$papersize_help="11x17,ledger,legal,letter,lettersmall,archA,archB,archC,archD,archE\
+# papersize stuff
+		   (/^pdfIm/ ... /^%-EOD-/);
+# + perl
+          " Please note that PostScript files for input should contain\n",
+	   'P|removepreview'	    => \$removePreview,
+            " -P, --removepreview        remove preview image (smaller file, but no preview)\n",
+@prgidtxt= ( "$prgname - convert PostScript to EPS (Encapsulated PostScript) files\n",
+            " $prgname [-f] [-q] [-N] [-O] [-n] [-P] [-c] [-b] [-C] [-m] [-B] [-E] [-s <pagedim>] [-R +|-|^] [-t <x,y>] [-l] [-g] [-d] [-H] [-h|--help] [-g] [-a] [-W] [-L] [-V|--version] [--] [psfile1] [psfile2] [...]\n",
+$prgname= "ps2eps";
+		     printf $outfhandle "newpath %d %d moveto %d %d lineto %d %d lineto %d %d lineto closepath clip\n",$cBBllx,$cBBlly,$cBBurx,$cBBlly,$cBBurx,$cBBury,$cBBllx,$cBBury;
+		     printf $outfhandle "newpath %f %f moveto %f %f lineto %f %f lineto %f %f lineto closepath clip\n",$hcBBllx,$hcBBlly,$hcBBurx,$hcBBlly,$hcBBurx,$hcBBury,$hcBBllx,$hcBBury;
+        print $outfhandle $_;
+        print $outfhandle $boundingbox;
+		  print $outfhandle "%%EndComments\n", 
+		print $outfhandle $_,"\n";
+	    print $outfhandle "\n"; # terminate line with LF
+        print $outfhandle "%!PS-Adobe-$PSversion EPSF-$PSDSCversion\n";
+		  print $outfhandle "$rotate\n";
+                print $outfhandle  "save\n",
+		print $outfhandle "%%Trailer\n",
+		  print $outfhandle "$translation\n";
+		  print $outfhandle "$transrotcmd\n";
+	print STDERR "Available paper sizes: $papersize_help";
+    print STDERR "Calculating Bounding Box...";
+	    print STDERR "Error: Unknown paper size: $opt_s\n Acceptable papersizes are:$papersize_help\n";
+	#print STDERR "Existing BB: $eBBllx,$eBBlly,$eBBurx,$eBBury\n";
+print STDERR "Input files: @filenames\n" if (!$quiet);
+    print STDERR "\n ** Error!! **: could not identify begin of postscript code in file $infname, please check header line!\n First line should start with %!. No output generated.\n";
+		print STDERR "Postscript filtering requested, fixing\n";
+    print STDERR "$prgname: Can't open $infname: $!\n";
+		    print STDERR "Rendering with existing $_";
+	    { print STDERR "Star/OpenOffice generated Postscript file detected, fixing\n"; }
+	  print STDERR "...using bbox device of $ghostscriptname...";
+	print STDERR "using page size $opt_s...";
+	      #print STDERR "Warning: dangerous command in line: ",$_,"\n";
+    print STDERR "** Warning **: EPS-output for $infname is not sane, at least one\n",
+			print STDERR "WARNING: existing Bounding Box shows negative values - shifting\n";
+	      print STDERR "** Warning **: Weird heading line -- ",$_," -- ";
+      print STDERR "WARNING! Your drawing had a negative Bounding Box which is deprecated and may cause problems!. I'll shift it.\n";
+      print STDERR $wildcard;
+           { print STDERR "Windows 3.5 generated Postscript file detected, fixing\n"; }
+		print STDERR "Windows generated Postscript file detected, fixing\n"; 
+	#print STDERR "xdim: $x_dim ydim: $y_dim unit:$unit\n" ;
+      print $tmpfhandle $_ or die "$prgname: Failure during writing to temporary file $tmpfname";
+  # print warning if magic sequence not found
+PROCESSFILE:
+  ## -- process input file --
+  $prolog_passed= 0;
+              $prolog_passed= 1;
+# ps2eps - convert PostScript to EPS (Encapsulated PostScript) files
+      $PSDSCversion=$2;
+        $PSDSCversion="2.0";
+$PSDSCversion="2.0";  # default Postscript DSC Version
+          " '.ps' or '.prn', this extension is replaced with '$defaultoutext'.\n",
+      $PSversion=$1;
+$PSversion="2.0";     # default Postscript Version
+	   'q|quiet'	=> \$quiet,
+            " -q, --quiet                quiet operation (no output while processing files)\n",
+$quiet= 0;            # write progress to stdout
+	  $rangefilter_begin= '^((\[\{)|(featurebegin\{))$'; #'
+                 (/$rangefilter_begin/ ... /$rangefilter_end/) &&
+        $rangefilter_begin= '^statusdict';
+        $rangefilter_end= 'cvx\ settransfer$';  #'
+	  $rangefilter_end= '^(\} stopped cleartomark|\}featurecleanup)';
+        redo CREATEOUTPUT;
+	       ($removeADO && 
+$removeADO= 1;        # remove Adobe printer Driver console Output [Page: ...]
+          # remove complete lines if one of the expression matches
+$removeDSC= 1;        # remove Adobe document structure comments
+               ($removeDSC && /^%%.*: \(atend\)/) ||
+	       ($removeDSC && (/^%( |!)(\w )+/ || /^%%([A-Za-z]+\s)/)) # any type of structured comment
+$removePreview= 0;    # remove preview
+	       ($removePreview && (/^%%BeginPreview/ ... /^%%EndPreview/))
+	       ($removePreview && (/^%%BeginPreview/ ... /^%%EndPreview/)) ) 
+	  # replacement
+# Requirements:
+  # reset filter definitions for each file
+$resolution= 144;     # resolution for bounding box calculation is 2x72 dpi
+  $resolution=$opt_r;
+		                  "restore\n",
+$rotate='';
+  $rotatecmd='';
+     $rotatecmd="-c \"$rotate\""
+$rotleft='90 rotate';
+$rotright='-90 rotate';
+$rotupsidedown='180 rotate';
+	   'r|resolution=s' => \$opt_r,
+	    " -r, --resolution           specify dpi resolution to render with ghostscript (default 144)\n",
+	    " -R, --rotate=<direction>   rotate resulting EPS. <direction>: +=+90 (clockw.),-=-90 (counter-clockw.) ^=180 degrees\n",
+	   'R|rotate=s'	=> \$opt_R,
+          # sanity check for potential dangerous commands
+	  $seenEOF++;
+# Send bug reports to roland <at> bless.de
+		                   "/setpagedevice {pop} def\n",
+              s/$fixsearchpat/$fixreplacepat/;
+                                   "/showpage {} def\n",
+  { # skip over this file 
+	  # some heading without two control characters found
+        # so skip %! if non alphanumeric characters follow
+                 /^\(%%\[\s*(Page:.*|LastPage)\s*\]%%\)\s*=\s*\w*\s*\r?\n?/ ))
+      s/\r?\n?$//;  # remove CR and/or LF at end of line if not in binary section
+            " -s, --size=<pagedim>       page size (a0-a10,letter,...) or in format XxY[cm|in] (default:cm), where X and Y are numbers\n",
+	   's|size=s'	=> \$opt_s,
+		(/^statusdict begin.*ProductName.*print product print.*flush end\r?\n?$/ ||
+$stopnow = 0;
+          } # stop output
+# The expression in the previous line replaces the unix specific line 
+    the Free Software Foundation; either version 2 of the License, or\
+# the Free Software Foundation; either version 2 of the License, or        
+    This program is distributed in the hope that it will be useful,\
+# This program is distributed in the hope that it will be useful,          
+    This program is free software; you can redistribute it and/or modify\
+# This program is free software; you can redistribute it and/or modify     
+  $tmpdir= $ENV{'TMP'};
+    $tmpfhandle='';
+    $tmpfhandle= $infhandle;
+    $tmpfname= $infname; 
+  $tmpfname= "$prgname.$$";
+  { $tmpfname= $tmpdir . "$filesep$prgname.$$"; }
+  { $tmpfname= $tmpdir . "$prgname.$$"; }
+  $tmpfname= "/tmp/" . "$prgname.$$";
+	$totalEOFDSC++
+	  # Trailer comment seen?
+		$trailerseen=0;
+$trailerseen= 0;      # Trailer comment seen?
+	    $trailerseen=1;
+               || ( $trailerseen && /^II\*\000.*/ )	       
+    $translatecmd="";
+    $translatecmd="-c \'$translation\'";
+#translate option    
+$translate_x= 0;      # translate by x postscript points
+    $translate_x= -int($cBBllx);
+  ($translate_x,$translate_y)= split(/\,/,$opt_t);
+$translate_y= 0;      # translate by y postscript points
+    $translate_y= -int($cBBlly);
+    $translation="";
+    $translation="$translate_x $translate_y translate";
+	$transrotcmd='';
+	      $transrotcmd="-$cBBlly $cBBurx translate";
+	      $transrotcmd="$cBBurx $cBBury translate";
+	      $transrotcmd="$cBBury -$cBBllx translate";
+                $trigger &&
+$trigger= 0;
+            $trigger= 1;
+	  #$triggered_rangefilter_begin= ''; #'
+                (/$triggered_rangefilter_begin/ ... /$triggered_rangefilter_end/)
+	  #$triggered_rangefilter_end= ''; #'
+$trytofixps= 1;       # try to fix postscript code
+	   't|translate=s'	=> \$opt_t,
+	    " -t, --translate            specify x,y offset (may be negative) in postscript points (1/72 dpi)\n",
+  undef $linefilter; 
+  undef $rangefilter_begin;
+  undef $rangefilter_end;
+    undef $tmpfhandle;
+	    $unit='cm';
+{ # Unix or cygwin
+  unless (open($infhandle,"<$infname"))
+@usagetxt= ("Syntax:\n",
+use Getopt::Long;
+#use Getopt package
+  { #use normal BoundingBox
+use POSIX;
+	    "                            use --size=list to list pre-defined page sizes\n",
+#use warnings;
+# {#!/usr/bin/perl}.   
+#! /usr/bin/perl
+	  #Usually the DSC %%EOF signifies the end
+$version= '$Id: ps2eps,v 1.68 2010-05-07 19:42:35 bless Exp $'; #'
+@ver= split(/ /,$version);
+            " -V, --version              show version information\n",
+	   'V|version'	=> sub { $stopnow = 1; print @prgidtxt,"Version: $ver[2]\n"; });exit if ($stopnow);
+$warnings=0;          # do not print warnings concerning postscript sanity
+{ # we assume that we are running under native windows
+      # We should insert our own prologue including the newly calculated BoundingBox
+  while (<$infhandle>)
+while ($infname= (shift @filenames))
+  while (<$tmpfhandle>) 
+      $wildcard = $object;
+## -- wildcard processing --
+      $wildcard =~ s/\./\\\./g; # replace . in pattern with \.
+      $wildcard =~ s/\*/\(\.\*\)/g; # replace * in pattern with (.*)
+      " will not overwrite it.\n",
+  $win=0;
+  $win=1;
+          " with extension '$defaultoutext'. If input filenames have the extension\n",
+          " Without any argument, $prgname reads from standard input\n",
+	    " -W, --warnings             show warnings about sanity of generated eps file\n",  
+	   'W|warnings' => \$warnings,
+	($x_dim, $dummy, $y_dim, $unit)= split(/(x|cm|in)/,$pagedimension);
+	$xpixels= int((($eBBurx-$eBBllx) * $resolution)/72 + 0.5);
+	    $xpixels= int($x_dim * $resolution)+1;
+	    $xpixels= int(($x_dim * $resolution) / $inch)+1;
+    You should have received a copy of the GNU General Public License\
+# You should have received a copy of the GNU General Public License        
+      " You will have to use the -f option, delete it or rename it",
+	$ypixels= int((($eBBury-$eBBlly) * $resolution)/72 + 0.5);
+	    $ypixels= int($y_dim * $resolution)+1;
+	    $ypixels= int(($y_dim * $resolution) / $inch)+1;

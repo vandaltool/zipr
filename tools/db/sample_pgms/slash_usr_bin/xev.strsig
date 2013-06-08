@@ -1,0 +1,179 @@
+           
+    atom 0x%lx (%s), time %lu, state %s
+    border_width %d, above 0x%lx, detail %s, value 0x%lx
+    border_width %d, above 0x%lx, override %s
+border_width %d, override %s
+BottomIf
+    -bs {NotUseful,WhenMapped,Always}   backingstore attribute
+__bss_start
+ButtonPress
+ButtonRelease
+    -bw pixels                          border width in pixels
+CirculateNotify
+CirculateRequest
+ClientMessage
+clientWindow
+    colormap 0x%lx, new %s, state %s
+ColormapInstalled
+ColormapNotify
+ColormapUninstalled
+ConfigureNotify
+ConfigureRequest
+CopyArea
+CopyPlane
+CreateNotify
+__ctype_b_loc
+__ctype_tolower_loc
+    (%d,%d), override %s
+    (%d,%d), width %d, height %d, count %d
+    (%d,%d), width %d, height %d, count %d,
+DestroyNotify
+    -display displayname                X server to contact
+EnterNotify
+    event 0x%lx, window 0x%lx
+    event 0x%lx, window 0x%lx, (%d,%d)
+    event 0x%lx, window 0x%lx, (%d,%d), width %d, height %d,
+    event 0x%lx, window 0x%lx, from_configure %s
+    event 0x%lx, window 0x%lx, override %s
+    event 0x%lx, window 0x%lx, parent 0x%lx,
+    event 0x%lx, window 0x%lx, place %s
+Event Tester
+FocusOut
+    focus %s, state %u
+focusWindow
+__fprintf_chk
+    -geometry geom                      size and location of window
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+GraphicsExpose
+GravityNotify
+    -id windowid                        use existing window
+@im=none
+inputStyle
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+KeymapNotify
+KeyPress
+KeyRelease
+    keys:  
+LeaveNotify
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+\$Lk|$HP
+    major %s, minor %d
+MapNotify
+MappingKeyboard
+MappingModifier
+MappingNotify
+MappingPointer
+MapRequest
+    message_type 0x%lx (%s), format %d
+    message_type 0x%lx (%s), format %d, message 0x%lx (%s)
+    mode %s, detail %s
+    mode %s, detail %s, same_screen %s,
+MotionNotify
+    -name string                        window name
+NoExpose
+(no name)
+NoSymbol
+NotifyAncestor
+NotifyDetailNone
+NotifyGrab
+NotifyInferior
+NotifyNonlinear
+NotifyNonlinearVirtual
+NotifyNormal
+NotifyPointer
+NotifyPointerRoot
+NotifyUngrab
+NotifyVirtual
+NotifyWhileGrabbed
+notuseful
+Opposite
+Outer window is 0x%lx, inner window is 0x%lx
+    owner 0x%lx, requestor 0x%lx, selection 0x%lx (%s),
+    parent 0x%lx, window 0x%lx
+    parent 0x%lx, window 0x%lx, (%d,%d), width %d, height %d
+    parent 0x%lx, window 0x%lx, (%d,%d), width %d, height %d,
+    parent 0x%lx, window 0x%lx, place %s
+PlaceOnBottom
+PlaceOnTop
+__printf_chk
+    property 0x%lx (%s), time %lu
+PropertyDelete
+PropertyNewValue
+PropertyNotify
+queryInputStyle
+ReparentNotify
+    request %s, first_keycode %d, count %d
+ResizeRequest
+    root 0x%lx, subw 0x%lx, time %lu, (%d,%d), root:(%d,%d),
+    -root                               use root window
+    -rv                                 reverse video
+    selection 0x%lx (%s), target 0x%lx (%s),
+    selection 0x%lx (%s), time %lu
+SelectionClear
+SelectionNotify
+SelectionRequest
+setlocale
+%s event, serial %ld, synthetic %s, window 0x%lx,
+%s:  input method doesn't support any styles
+%s: input method doesn't support the style we support
+__sprintf_chk
+    -s                                  set save-unders attribute
+__stack_chk_fail
+    state 0x%x, button %u, same_screen %s
+    state 0x%x, is_hint %u, same_screen %s
+    state 0x%x, keycode %u (keysym 0x%lx, %s), same_screen %s,
+    state %s
+%s:  unable to open display '%s'
+%s: warning: could not set default locale
+%s:  XOpenIM failed
+%s:  XSetLocaleModifiers failed
+    target 0x%lx (%s), property 0x%lx (%s), time %lu
+Unknown event type %d
+UnmapNotify
+usage:  %s [-options ...]
+VisibilityFullyObscured
+VisibilityNotify
+VisibilityPartiallyObscured
+VisibilityUnobscured
+whenmapped
+where options include:
+    width %d, height %d
+WM_DELETE_WINDOW
+WM_PROTOCOLS
+XCreateIC
+XCreateIC failed
+XCreateSimpleWindow
+XCreateWindow
+XDisplayName
+XFilterEvent
+    XFilterEvent returns: %s
+XGetAtomName
+XGetIMValues
+XGetWindowAttributes
+XInternAtom
+XKeysymToKeycode
+    XKeysymToKeycode returns keycode: %u
+XKeysymToString
+XLookupString
+    XLookupString gives %d bytes: 
+XMapWindow
+XmbLookupString
+    XmbLookupString gives %d bytes: 
+XNextEvent
+XOpenDisplay
+XParseGeometry
+XRefreshKeyboardMapping
+XSelectInput
+XSetLocaleModifiers
+XSetStandardProperties
+XSetWMProtocols

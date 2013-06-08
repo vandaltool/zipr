@@ -1,0 +1,30 @@
+adapter = dbus.Interface(bus.get_object("org.bluez", adapter_path),
+	adapter_path = manager.DefaultAdapter()
+	adapter_path = manager.FindAdapter(options.dev_id)
+bus = dbus.SystemBus()
+	connect <bdaddr>
+device = adapter.FindDevice(args[1])
+	disconnect <bdaddr>
+elif args[0] == "disconnect":
+from optparse import OptionParser, make_option
+if args[0] == "connect":
+if len(args) < 2:
+if options.dev_id:
+import dbus
+import sys
+	input.Connect()
+input = dbus.Interface(bus.get_object("org.bluez", device),
+	input.Disconnect()
+		make_option("-i", "--device", action="store",
+manager = dbus.Interface(bus.get_object("org.bluez", "/"), "org.bluez.Manager")
+option_list = [
+(options, args) = parser.parse_args()
+							"org.bluez.Adapter")
+				"org.bluez.Input")
+parser = OptionParser(option_list=option_list)
+	print "Unknown command"
+	print """Usage: %s <command>
+	""" % sys.argv[0]
+	sys.exit(1)
+				type="string", dest="dev_id"),
+#!/usr/bin/python

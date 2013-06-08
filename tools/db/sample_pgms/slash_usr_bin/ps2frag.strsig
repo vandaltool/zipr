@@ -1,0 +1,5 @@
+#!/bin/sh
+  echo "Please read the manpage ps2frag(1) and the documentation of the"
+  echo "psfrag package."
+  echo "Warning: the ps2frag script is not needed with this version of psfrag."
+tty -s && {

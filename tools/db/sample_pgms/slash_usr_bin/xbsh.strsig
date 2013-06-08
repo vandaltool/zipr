@@ -1,0 +1,7 @@
+#!/bin/sh
+  CLASSPATH="$2"
+CLASSPATH="${CLASSPATH:-.}:/usr/share/java/bsh.jar"
+exec /usr/bin/java bsh.Console "$@"
+export CLASSPATH
+if [ "$1" = "-classpath" ]
+  shift 2

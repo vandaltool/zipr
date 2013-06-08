@@ -1,0 +1,174 @@
+__assert_fail
+BASH_ENV=
+bindtextdomain
+__bss_start
+Cannot change ID to root.
+Cannot determine the user name of the caller (UID %lu)
+cannot open login definitions %s [%s]
+cannot read login definitions %s [%s]
+can't setuid(0)
+changed user '%s' information
+Changing the user information for %s
+CHFN_RESTRICT
+closelog
+commonio.c
+configuration error - cannot parse %s value: '%s'
+configuration error - unknown item '%s' (notify administrator)
+CONSOLE_GROUPS
+could not allocate space for config info
+Could not allocate space for config info.
+CREATE_HOME
+__ctype_b_loc
+dcgettext
+DEFAULT_HOME
+ENCRYPT_METHOD
+Enter the new value, or press ENTER for the default
+__environ
+Environment overflow
+ENV_PATH
+ENV_SUPATH
+ERASECHAR
+__errno_location
+/etc/login.defs
+/etc/passwd
+Failed to flush the nscd cache.
+failed to unlock %s
+FAILLOG_ENAB
+failure while writing changes to %s
+FAKE_SHELL
+fgetfilecon
+__fgets_chk
+__fprintf_chk
+f:r:w:h:o:
+FTMP_FILE
+Full Name
+__fxstat64
+getfscreatecon
+getgrnam
+getlogin
+getpwnam_r
+getpwuid
+getpwuid_r
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.2
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+	[-h home_ph] [-o other] [user]
+Home Phone
+HUSHLOGIN_FILE
+_IO_getc
+_IO_putc
+_IO_stdin_used
+is_selinux_enabled
+_Jv_RegisterClasses
+KILLCHAR
+KRB_CONF=
+LANGUAGE=
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+LIBPAM_1.0
+LIBPAM_MISC_1.0
+libpam_misc.so.0
+libpam.so.0
+LIBPATH=
+libselinux.so.1
+LOGIN_RETRIES
+LOGIN_TIMEOUT
+LOG_OK_LOGINS
+LOG_UNKFAIL_ENAB
+__lxstat64
+MAIL_DIR
+MAIL_FILE
+malloc(%d) failed
+MAX_MEMBERS_PER_GROUP
+MD5_CRYPT_ENAB
+misc_conv
+Multiple entries named '%s' in %s. Please fix this with pwck or grpck.
+NLSPATH=
+__open64_2
+pam_acct_mgmt
+pam_authenticate
+pam_start
+PASS_MAX_DAYS
+PASS_MIN_DAYS
+PASS_WARN_AGE
+posix_spawn
+posix_spawn() error=%d
+__printf_chk
+putpwent
+realpath
+realpath in lrename()
+Room Number
+%s: Cannot determine your user name.
+%s: cannot lock %s; try again later.
+%s: cannot open %s
+selinux_check_passwd_access
+setfscreatecon
+setlocale
+setrlimit64
+%s: failed to prepare the new %s entry '%s'
+%s: failed to unlock %s
+%s: failure while writing changes to %s
+%s: fields too long
+SHA_CRYPT_MAX_ROUNDS
+SHA_CRYPT_MIN_ROUNDS
+SHLIB_PATH=
+%s: invalid home phone: '%s'
+%s: invalid name: '%s'
+%s: invalid room number: '%s'
+%s: invalid work phone: '%s'
+%s: name with non-ASCII characters: '%s'
+snprintf
+__snprintf_chk
+%s: out of memory
+%s: PAM authentication failed
+%s: Permission denied.
+%s: room number with non-ASCII characters: '%s'
+	%s [%s]: 
+%s: '%s' contains illegal characters
+%s: '%s' contains non-ASCII characters
+%s,%s,%s,%s%s%s
+__stack_chk_fail
+strcasecmp
+__strcat_chk
+__strcpy_chk
+__strdup
+strerror
+__strncpy_chk
+SULOG_FILE
+%s: user '%s' does not exist
+%s: user '%s' does not exist in %s
+SYS_GID_MAX
+SYS_GID_MIN
+__syslog_chk
+SYSLOG_SG_ENAB
+SYSLOG_SU_ENAB
+SYS_UID_MAX
+SYS_UID_MIN
+TTYGROUP
+TTYTYPE_FILE
+ulckpwdf
+unknown configuration item `%s'
+Usage: %s [-f full_name] [-r room_no] [-w work_ph]
+Usage: %s [-f full_name] [-r room_no] [-w work_ph] [-h home_ph]
+USERDEL_CMD
+USERGROUPS_ENAB
+/usr/sbin/nscd
+/usr/share/locale
+((void *)0) != eptr
+waitpid returned %ld != %ld
+wlen == (int) len -1
+wlen < (int) sizeof(variable)
+Work Phone
+write_all
+xgetpwnam
+xgetpwuid
+__xstat64
+You may not change $%s

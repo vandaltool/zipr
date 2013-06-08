@@ -1,0 +1,101 @@
+##########################################################################
+	# Add crypttab entry
+	# Add fstab entry
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Authors: Dustin Kirkland <kirkland@ubuntu.com>
+	base=$(basename "$swap")
+#!/bin/sh -e
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+	case "$1" in
+	# Check if this swap space is already setup for encryption
+	CONFIRM=`head -n1`
+		continue
+#    Copyright (C) 2008 Canonical Ltd.
+# Count swap spaces available
+	echo "  $0 [-f|--force] [-n|--no-reload]"
+	echo "cryptswap$i $swap /dev/urandom swap,cipher=aes-cbc-essiv:sha256" >> /etc/crypttab
+	echo "/dev/mapper/cryptswap$i none swap sw 0 0" >> /etc/fstab
+	echo `gettext "And then re-run"` "$0"
+	echo `gettext "An encrypted swap is required to help ensure that encrypted files are not leaked to disk in an unencrypted format."`
+	echo `gettext "ERROR:"` "$@" 1>&2
+	echo `gettext "HOWEVER, THE SWAP ENCRYPTION CONFIGURATION PRODUCED BY THIS PROGRAM WILL BREAK HIBERNATE/RESUME ON THIS SYSTEM!"`
+	echo `gettext "INFO:"` "$@"
+	echo `gettext "NOTE: Your suspend/resume capabilities will not be affected."`
+	echo `gettext "Usage:"`
+	echo `gettext "WARNING:"`
+	echo `gettext "WARNING:"` "$@" 1>&2
+	echo `gettext "You can create a swap file by doing:"`
+	echo -n `gettext "Do you want to proceed with encrypting your swap?"` "[y/N]: "
+	echo " $ sudo dd if=/dev/zero of=/swapfile count=$swapsize"
+	echo " $ sudo mkswap /swapfile"
+	echo " $ sudo swapon /swapfile"
+	echo $swap
+#    ecryptfs-setup-swap
+		[ -e "/dev/mapper/cryptswap$i" ] || break
+# Ensure that cryptsetup is available
+# Ensure that we're running with root privileges
+error() {
+	/etc/init.d/cryptdisks restart
+		exit 0
+		-f|--force)
+filtered_swaps=$(
+			FORCE=1
+for swap in $swaps; do
+	for target in "UUID=$uuid" $swap; do
+#    GNU General Public License for more details.
+# Handle command line options
+#  * http://ubuntumagnet.com/2007/11/creating-encrypted-swap-file-ubuntu-using-cryptsetup
+	if [ "$(blkid -o value -s TYPE $swap)" != "swap" ]; then
+	if [ "$CONFIRM" != "y" -a "$CONFIRM" != "Y" ]; then
+if [ "$FORCE" != 1 ]; then
+if [ $(grep -c "^/" /proc/swaps) -eq 0 ]; then
+	if grep -qs "^$base.*swap.*cipher" /etc/crypttab 2>/dev/null; then
+	if grep -qs "$swap" /etc/initramfs-tools/conf.d/cryptroot 2>/dev/null; then
+if [ "$NO_RELOAD" != 1 ]; then
+		if [ -n "$target" ] && grep -qs "^$target " /etc/fstab; then
+	if /sbin/dmsetup table "$swap" 2>/dev/null | grep -qs " crypt "; then
+	if [ "${swap#/dev/ram}" != "$swap" ] || [ "${swap#/dev/zram}" != "$swap" ]; then
+if [ -z "$swaps" ]; then
+		i=$((i+1))
+info() {
+		info `gettext "Aborting."`
+	info `gettext "Setting up swap:"` "[$swap]"
+info `gettext "Successfully setup encrypted swap!"`
+	info "You do not currently have any swap space defined."
+#    it under the terms of the GNU General Public License as published by
+	# Make sure this is swap space
+	mem=$(grep "^MemTotal:" /proc/meminfo | awk '{print $2}')
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		-n|--no-reload)
+			NO_RELOAD=1
+	# Restart cryptdisks
+			sed -i "s:^$target :\#$target :" /etc/fstab
+			shift 1
+	swapoff -a
+	swapon -a
+swaps="$filtered_swaps"
+swaps=$(grep "^/" /proc/swaps | awk '{print $1}')
+	swapsize=$((4*$mem))
+TEXTDOMAIN="ecryptfs-utils"
+# The cryptswap setup used here follows a guide published at:
+#    the Free Software Foundation; version 2 of the License.
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software; you can redistribute it and/or modify
+	# Turn swap off
+	# Turn the swap on
+			usage
+usage() {
+	uuid=$(blkid -o value -s UUID $swap)
+warn() {
+			warn "Commented out your unencrypted swap from /etc/fstab"
+		warn "[$swap]" `gettext "already appears to be encrypted, skipping."`
+		warn "[$swap]" `gettext "already has an entry in /etc/crypttab, skipping."`
+		warn "[$swap]" `gettext "does not appear to be swap space, skipping."`
+		warn "[$swap]" `gettext "is a RAM device, skipping."`
+	warn "There were no usable swap devices to be encrypted.  Exiting."
+# Warn the user about breaking hibernate mode
+[ -w /etc/passwd ] || error `gettext "This program must be run with 'sudo', or as root"`
+	while :; do
+while [ ! -z "$1" ]; do
+[ -x /sbin/cryptsetup ] || error `gettext "Please install"` "'cryptsetup'"
+#    You should have received a copy of the GNU General Public License

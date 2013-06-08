@@ -1,0 +1,84 @@
+-backing
+       [-backing {backing-store}] [-distance]
+BackingStore
+__bss_start
+       [-display [{host}]:[{vs}]]
+-distance
+*eyes.backingStore
+*eyes.center
+*eyes.distance
+*eyes.outline
+*eyes.render
+*eyes.shapeWindow
+       [-fg {color}] [-bg {color}] [-bd {color}] [-bw {pixels}]
+       [-geometry [{width}][x{height}][{+-}{xoff}[{+-}{yoff}]]]
+GLIBC_2.0
+GLIBC_2.1
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libX11.so.6
+libXext.so.6
+libXmu.so.6
+libXrender.so.1
+libXt.so.6
+<Message>WM_PROTOCOLS: quit()
+-outline
+       [-render | +render]
+       [-shape | +shape] [-outline {color}] [-center {color}]
+ShapeWindow
+ShtM9CttP9SxtS
+usage: xeyes
+widgetClassRec
+WM_DELETE_WINDOW
+XClearWindow
+XCreateBitmapFromData
+XCreateGC
+XCreatePixmap
+XFillArc
+XFillRectangle
+XFreePixmap
+XInternAtom
+XmuCvtStringToBackingStore
+XQueryColor
+XQueryPointer
+XRenderCompositeDoublePoly
+XRenderCreatePicture
+XRenderCreateSolidFill
+XRenderFindStandardFormat
+XRenderFindVisualFormat
+XRenderFreePicture
+XSetForeground
+XSetWMProtocols
+XShapeCombineMask
+XShapeQueryExtension
+XtAddConverter
+XtAppAddActions
+XtAppAddTimeOut
+XtAppInitialize
+XtAppMainLoop
+XtCreateManagedWidget
+XtCreateWindow
+XtDefaultBackground
+XtDefaultForeground
+XtDestroyApplicationContext
+XtDisplay
+_XtInherit
+XtOverrideTranslations
+XtParseTranslationTable
+XTranslateCoordinates
+XtRealizeWidget
+XtReleaseGC
+XtRemoveTimeOut
+XtScreen
+XtSetLanguageProc
+XtSetValues
+XtShellStrings
+XtStrings
+XtWidgetToApplicationContext
+XtWindow
+XtWindowOfObject

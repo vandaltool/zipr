@@ -1,0 +1,53 @@
+# adapted from zdiff by Philippe Troin <phil@fifi.org> for Debian GNU/Linux.
+			/bin/rm -f "$tmp";;
+#!/bin/sh
+        *.bz2)
+	        *.bz2)
+# Bzcmp and bzdiff are used to invoke the cmp or the  diff  pro-
+# Bzcmp/diff wrapped for bzip2, 
+	bzip2 -cd "$FILE.bz2" | $comp $OPTIONS - "$FILE"
+                *)      bzip2 -cdfq "$1" | $comp $OPTIONS - "$2"
+                        bzip2 -cdfq "$1" | $comp $OPTIONS - "$tmp"
+                        bzip2 -cdfq "$2" | $comp $OPTIONS "$1" -
+                        bzip2 -cdfq "$2" > "$tmp"
+	case "$1" in
+                case "$2" in
+        *)      case "$2" in
+    case "$ARG" in
+case "$prog" in
+  *cmp) comp=${CMP-cmp}   ;;
+  *)    comp=${DIFF-diff} ;;
+                *)      $comp $OPTIONS "$1" "$2"
+# directly to cmp or diff.  If only 1 file is specified,  then
+			      echo 'cannot create a temporary file' >&2
+            echo "${prog}: $ARG not found or not a regular file"
+	echo "Usage: $prog [${comp}_options] file [file]"
+elif test $# -eq 2; then
+        else
+    esac
+                esac;;
+	    exit 1
+			      exit 1
+exit "$STAT"
+			F=`echo "$2" | sed 's|.*/||;s|.bz2$||'`
+        fi ;;
+	FILE=`echo "$1" | sed 's/.bz2$//'`
+            FILES="$FILES $ARG"
+# gram  on compressed files.  All options specified are passed
+if test $# -eq 1; then
+     *)	if test -f "$ARG"; then
+if test -z "$FILES"; then
+# If two files are specified, then they are  uncompressed  (if
+# necessary) and fed to cmp or diff.  The exit status from cmp
+OPTIONS=
+    -*)	OPTIONS="$OPTIONS $ARG";;
+# or diff is preserved.
+PATH="/usr/bin:/bin:$PATH"; export PATH
+prog=`echo $0 | sed 's|.*/||'`
+set $FILES
+# sh is buggy on RS/6000 AIX 3.2. Replace above line with #!/bin/ksh
+                        STAT="$?"
+                        STAT="$?";;
+	STAT="$?"
+# the  files  compared  are file1 and an uncompressed file1.gz.
+			tmp=`mktemp "${TMPDIR:-/tmp}"/bzdiff.XXXXXXXXXX` || {

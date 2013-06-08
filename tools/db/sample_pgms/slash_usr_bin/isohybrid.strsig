@@ -1,0 +1,109 @@
+%-18s %s
+Add AFP table support
+Allow booting from within a partition
+Apple_Free
+Apple_HFS
+Apple_partition_map
+Assume disk ID 0 if the Ctrl key is pressed
+Assume we are loaded as disk ID 0
+Build EFI bootable image
+catalogue offset: %d
+could not open file `%s'
+   --ctrlhd0
+__ctype_b_loc
+de_boot: %hhu
+de_count: %hu
+de_lba: %u
+de_mbz1: %hhu
+de_mbz2: %hu
+de_media: %hhu
+de_seg: %hu
+de_sys: %hhu
+Display this help
+Display verbose output
+Display version information
+   -e --entry
+EL TORITO SPECIFICATION
+   --forcehd0
+ftruncate64
+getopt_long_only
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+   -? --help
+:h:s:e:o:t:i:fcp?vV
+   -h <X>
+   -i --id
+imgsize: %zu, padding: %d
+invalid entry: `%s', 1 <= entry <= 4
+invalid head: `%s', 1 <= head <= 256
+invalid id: `%s'
+invalid offset: `%s', 0 <= offset <= 64
+invalid option `-%c', see --help
+invalid sector: `%s', 1 <= sector <= 63
+invalid type: `%s', 0 <= type <= 255
+_IO_stdin_used
+ISOHybrid
+ISOHybrid ISO
+isolinux.bin missing or corrupt.
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libuuid.so.1
+   -m --mac
+Not all BIOSes will be able to boot this device
+Number of default geometry heads
+Number of default geometry sectors
+   -o --offset
+Operating system load error.
+option `-%c' takes an argument
+Options:
+   --partok
+__printf_chk
+Report bugs to <pj.pandit@yahoo.co.in>
+%s: boot loader does not have an isolinux.bin hybrid signature. Note that isolinux-debug.bin does not support hybrid booting
+%s: could not add padding bytes
+%s: could not find boot record
+%s: could not synchronise
+%s: invalid boot catalogue
+%s: invalid efi catalogue
+sizeof(MBR): %zu bytes
+%s: --offset is invalid with UEFI images
+Specify MBR ID (default random)
+Specify partition entry number (1-4)
+Specify partition offset (default 0)
+Specify partition type (default 0x17)
+%s: read error
+%s: read error - 0
+%s: seek error - 0
+%s: seek error - 1
+%s: seek error - 2
+%s: seek error - 3
+%s: seek error - 4
+%s: seek error - 5
+%s: seek error - 6
+%s: seek error - 8
+__stack_chk_fail
+%s: unable to find efi image
+%s: unable to find mac efi image
+%s: unexpected boot catalogue parameters
+%s version %s
+%s: write error - 1
+%s: write error - 2
+%s: write error - 4
+   -s <X>
+   -t --type
+Usage: %s [OPTIONS] <boot.iso>
+   -u --uefi
+UUID_1.0
+uuid_generate
+ve[%d]: %d, cs: %d
+   -v --verbose
+   -V --version
+Warning: more than 1024 cylinders: %d
+__xstat64

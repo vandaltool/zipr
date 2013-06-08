@@ -1,0 +1,38 @@
+      ;;
+ARGS=( )
+      ARGS[$j]="$1"
+BINARY_LOCATION=/usr/bin/javaws
+#!/bin/bash
+  case "$1" in
+CLASSNAME=net.sourceforge.jnlp.runtime.Boot
+"${COMMAND[@]}"
+COMMAND=()
+  COMMAND[k]="${ARGS[$j]}"
+COMMAND[k]="${CLASSNAME}"
+COMMAND[k]="-classpath"
+COMMAND[k]="${CP}"
+COMMAND[k]="-Dicedtea-web.bin.location=${BINARY_LOCATION}"
+COMMAND[k]="-Dicedtea-web.bin.name=${PROGRAM_NAME}"
+COMMAND[k]="-Djava.security.manager"
+COMMAND[k]="-Djava.security.policy=/etc/icedtea-web/javaws.policy"
+COMMAND[k]="${JAVA}"
+  COMMAND[k]="${JAVA_ARGS[$i]}"
+COMMAND[k]="${LAUNCHER_BOOTCLASSPATH}"
+COMMAND[k]="${LAUNCHER_FLAGS}"
+CP=/usr/lib/jvm/java-6-openjdk-i386/jre/lib/rt.jar
+      i=$((i+1))
+  i=$((i+1))
+    -J*)
+JAVA_ARGS=( )
+      JAVA_ARGS[$i]="${1##-J}"
+JAVA=/usr/lib/jvm/java-6-openjdk-i386/jre/bin/java
+      j=$((j+1))
+  j=$((j+1))
+  k=$((k+1))
+k=$((k+1))
+LAUNCHER_BOOTCLASSPATH="-Xbootclasspath/a:/usr/share/icedtea-web/netx.jar"
+LAUNCHER_FLAGS=-Xms8m
+PROGRAM_NAME=javaws
+while [ "$#" -gt "0" ]; do
+while [ "$i" -lt "${#JAVA_ARGS[@]}" ]; do
+while [ "$j" -lt "${#ARGS[@]}" ]; do

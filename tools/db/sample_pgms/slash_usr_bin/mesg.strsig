@@ -1,0 +1,19 @@
+__errno_location
+__fprintf_chk
+__fxstat
+getgrgid
+getgrnam
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+@(#) mesg 2.81 31-Jul-2001 miquels@cistron.nl
+mesg: error: tty device is not owned by group `%s'
+mesg: %s: %s
+__printf_chk
+stdin: is not a tty
+strerror
+Usage: mesg [y|n]

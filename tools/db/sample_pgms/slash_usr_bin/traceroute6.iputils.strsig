@@ -1,0 +1,66 @@
+@(#) Copyright (c) 1990, 1993
+%d bytes from %s to %s
+Destination Unreachable
+, %d hops max, %d byte packets
+dm:np:q:rs:t:w:vi:g:V
+Echo Reply
+Echo Request
+__errno_location
+__fprintf_chk
+ from %s
+gethostbyaddr
+gethostbyname2
+getsockname
+gettimeofday
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+: icmp type %d (%s) code %d
+inet_ntop
+inet_pton
+_IO_putc
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+malloc failed
+Membership Query
+Membership Reduction
+Membership Report
+Neighbor Advertisement
+Neighbor Solicitation
+OUT-OF-RANGE
+Packet Too Big
+Parameter Problem
+__printf_chk
+Redirect
+Router Advertisement
+Router Solicitation
+s20101006
+setlinebuf
+setsockopt
+setsockopt(RAW_CHECKSUM) failed - try to continue.
+Sorry, rthdr is not yet supported
+	[-s src_addr] [-t tos] [-w wait] host [data size]
+__stack_chk_fail
+	The Regents of the University of California.  All rights reserved.
+Time Exceeded in Transit
+traceroute6: icmp socket
+traceroute6: setuid
+traceroute6 utility, iputils-ss%s
+traceroute: bind icmp6 socket
+traceroute: bind sending socket
+traceroute: max ttl must be >1.
+traceroute: nprobes must be >0.
+traceroute: packet size must be %d <= s < %d.
+traceroute: port must be >0.
+traceroute: SO_SNDBUF
+traceroute to %s (%s)
+traceroute: UDP socket
+traceroute: unknown addr %s
+traceroute: unknown host %s
+traceroute: wait must be >1 sec.
+traceroute: wrote %s %d chars, ret=%d
+Usage: traceroute6 [-dnrvV] [-m max_ttl] [-p port#] [-q nqueries]
+WARNING: interface is ignored

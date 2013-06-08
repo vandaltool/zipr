@@ -1,0 +1,64 @@
+        
+            ;;
+            ;; 
+        "")
+        *)
+# along with PulseAudio; if not, write to the Free Software
+            ARGS="$ARGS '-Lmodule-esound-compat-spawnfd fd=$1'"
+            ARGS="$ARGS '-Lmodule-esound-compat-spawnpid pid=$1'"
+ARGS=" --log-target=syslog"
+  -as SECS      free audio device after SECS of inactivity
+# (at your option) any later version.
+  -bind ADDRESS binds to ADDRESS (only for tcp/ip)
+#!/bin/sh
+  -b            run server in 8 bit sound mode
+    case "$1" in
+            cat <<EOF
+  -d DEVICE     force esd to use sound device DEVICE
+        -d|-r|-as|-port|-bind)
+    echo "ERROR: $1"
+            echo "$VERSION_STRING"
+    esac
+eval "exec '/usr/bin/pulseaudio'$ARGS"
+            exit 0
+    exit 1
+fail() {
+            fail "Unknown command: $1"
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+# General Public License for more details.
+        -h|--help)
+  -h --help     show this help
+if [ ! $PULSEAUDIO_SYSTEM_START -eq 0 ]; then
+Ignored directives:
+            # Ignore these commands
+            # Ignore these commands and their arguments
+# it under the terms of the GNU Lesser General Public License as published by
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  -nobeeps      disable startup beeps
+  -port PORT    listen for connections at PORT (only for tcp/ip)
+  -promiscuous  don't require authentication
+  -public       make tcp/ip access public (other than localhost)
+# PulseAudio is distributed in the hope that it will be useful, but
+# PulseAudio is free software; you can redistribute it and/or modify
+PULSEAUDIO_SYSTEM_START=0
+  -r RATE       run server at sample rate of RATE
+    shift
+            shift
+        -spawnfd)
+        -spawnpid)
+  -tcp          use tcp/ip sockets in addition to unix domain
+  -terminate    terminate esd daemone after last client exits
+test -f /etc/default/pulseaudio && . /etc/default/pulseaudio
+# the Free Software Foundation; either version 2 of the License, or
+# This file is part of PulseAudio.
+  -trust        start esd even if use of /tmp/.esd can be insecure
+        -unix|-b|-public|-terminate|-nobeeps|-trust|-tcp|-promiscuous)  
+  -unix         use unix domain sockets instead of tcp/ip
+Usage: $0 [options]
+$VERSION_STRING
+VERSION_STRING="pulseaudio esd wrapper 1.1"
+        -v|--version)
+  -v --version  print version information
+while [ "$#" -gt "0" ]; do
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# You should have received a copy of the GNU Lesser General Public License

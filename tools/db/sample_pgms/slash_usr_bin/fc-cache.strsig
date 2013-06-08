@@ -1,0 +1,76 @@
+(all directories in font configuration by default).
+__bss_start
+Build font information caches in [dirs]
+caching, new cache contents: %d fonts, %d dirs
+Cannot malloc
+closedir
+__errno_location
+FcCacheDir
+FcCacheNumFont
+FcCacheNumSubdir
+FcCacheSubdir
+FcConfigDestroy
+FcConfigEnableHome
+FcConfigGetCacheDirs
+FcConfigGetConfigDirs
+FcConfigSetCurrent
+FcDirCacheLoad
+FcDirCacheLoadFile
+FcDirCacheRead
+FcDirCacheUnlink
+FcDirCacheUnload
+FcDirCacheValid
+FcInitLoadConfig
+FcStrFree
+FcStrListCreate
+FcStrListDone
+FcStrListNext
+FcStrPlus
+FcStrSetAdd
+FcStrSetAddFilename
+FcStrSetCreate
+FcStrSetDestroy
+FcStrSetMember
+  -f, --force          scan directories with apparently valid caches
+fontconfig version %d.%d.%d
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+  -h, --help           display this help and exit
+_IO_stdin_used
+_Jv_RegisterClasses
+-le32d4.cache-3
+libc.so.6
+__libc_start_main
+libfontconfig.so.1
+/lib/ld-linux.so.2
+non-existent
+__printf_chk
+really-force
+  -r, --really-force   erase all existing caches, then rescan
+%s: allocation failure
+%s: Can't add directory
+%s: Can't create list of directories
+%s: Can't create subdir list
+%s: Can't create subdir set
+%s: Can't init font config library
+%s: cleaning cache directory
+%s: error scanning
+%s: failed to write cache
+%s: invalid cache file: %s
+skipping, existing cache is valid: %d fonts, %d dirs
+skipping, looped directory detected
+skipping, no such directory
+"%s": not a directory, skipping
+%s: not cleaning %s cache directory
+%s: out of memory
+%s: %s: missing directory: %s 
+  -s, --system-only    scan system-wide directories only
+succeeded
+system-only
+unwritable
+usage: %s [-frsvVh] [--force|--really-force] [--system-only] [--verbose] [--version] [--help] [dirs]
+  -v, --verbose        display status information while busy
+  -V, --version        display font config version and exit

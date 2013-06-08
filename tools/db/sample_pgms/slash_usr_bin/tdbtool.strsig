@@ -1,0 +1,97 @@
+0123456789abcdefABCDEF
+%10.3f ops/sec
+  1 | first            : print the first record
+bIterate
+  check                : check the integrity of an opened database
+cmd_table
+  ! command            : execute system command
+Could not create %s: %s
+Could not open %s: %s
+  create    dbname     : create a database
+__ctype_b_loc
+Database integrity is OK and has %d records.
+database not open
+data %d bytes
+delete failed
+  delete    key        : delete a record by key
+  dump                 : dump the database as strings
+  erase                : erase the database
+__errno_location
+Error = %s
+failed to move record
+fetch failed
+  free                 : print the database freelist
+gettimeofday
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+  hexkeys              : dump the database keys as hex values
+  info                 : print summary info about the database
+insert failed
+  insert    key  data  : insert a record
+Integrity check for the opened database failed.
+_IO_stdin_used
+iterate_kbuf
+_Jv_RegisterClasses
+key %d bytes
+key %d bytes: 
+  keys                 : dump the database keys as strings
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libtdb.so.1
+  list                 : print the database hash table and freelist
+mmap is disabled
+mmap is enabled
+  move      key  file  : move a record to a destination tdb
+need data
+need destination tdb name
+need key
+  n | next             : print the next record
+  \n                   : repeat 'next' command
+  open      dbname     : open an existing database
+__printf_chk
+  q | quit             : terminate
+record moved
+  show      key        : show a record by key
+  speed                : perform speed tests on the database
+store failed
+  store     key  data  : store a record (replace)
+store test
+Storing key:
+strerror
+system() call failed
+TDB_1.2.1
+TDB_1.2.9
+tdb_check
+tdb_close
+tdb_delete
+tdb_dump_all
+tdb_errorstr
+tdb_fetch
+tdb_firstkey
+tdb_nextkey
+tdb_open
+tdb_open_ex
+tdb_printfreelist
+tdb_store
+tdb_summary
+tdbtool: 
+tdb_transaction_cancel
+tdb_transaction_commit
+tdb_transaction_start
+tdb_traverse
+Testing fetch speed for %u seconds
+Testing store speed for %u seconds
+Testing transaction speed for %u seconds
+Testing traverse speed for %u seconds
+transaction_cancel
+  transaction_cancel   : cancel a transaction
+transaction_commit
+  transaction_commit   : commit a transaction
+transaction_start
+  transaction_start    : start a transaction
+transaction test
+unable to open destination tdb
+__vfprintf_chk

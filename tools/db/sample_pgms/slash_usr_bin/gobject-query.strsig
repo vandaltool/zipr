@@ -1,0 +1,30 @@
+       -b       specify indent string
+__bss_start
+       froots   iterate over fundamental roots
+g_fprintf
+GLIBC_2.0
+g_log_set_always_fatal
+g_malloc
+__gmon_start__
+g_strconcat
+g_type_children
+g_type_from_name
+g_type_init
+g_type_name
+       -h       guess what ;)
+_IO_stdin_used
+       -i       specify incremental indent string
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgthread-2.0.so.0
+/lib/ld-linux.so.2
+       -n       don't descend type tree
+qualifiers:
+       -r       specifiy root type
+       -s       specify line spacing
+%s%s%s%s
+       tree     print type tree
+usage: gobject-query <qualifier> [-r <type>] [-{i|b} ""] [-s #] [-{h|x|y}]

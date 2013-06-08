@@ -1,0 +1,730 @@
+        }
+       }
+    # 10.5.0 and later broke ptys in a new and exciting way: basically,
+    # 10 seconds is enough.
+    # 1 second to read all the queued data off the pipe before it is
+ 2005-2011 Jamie Zawinski <jwz@jwz.org>
+    # 3) Different behavior than MacOS 10.1 through 10.4; and 4)
+', "aacute" => '
+      $a . $b . $c;
+    "       according to the options in the ~/.xscreensaver file.\n" .
+', "acirc"  => '
+   "acute"  => '
+', "aelig"  => '
+   "agrave" => '
+    # amount of time (e.g., url-mode.)
+   "apos"   => '\'',
+', "aring"  => '
+  # Assume that if <![CDATA[...]]> is present, everything inside that.
+', "atilde" => '
+   "auml"   => '
+    # awesome properties: 1) Inconvenient; 2) Has no sane workaround;
+   "bdquo" => "\"",  "lsaquo"=> "<",    "rsaquo"=> ">",
+    $body .= $_;
+  $_ = $body;
+    $body = $1;
+    $body1 = $3 if (m@<((DESCRIPTION) [^<>\s]*)[^<>]*>\s*(.*?)\s*</\1>@xsi);
+      $body1 = $body2;
+    $body1 = rss_field_to_html ($body1 || '');
+    $body2 = $3 if (m@<((CONTENT)     [^<>\s]*)[^<>]*>\s*(.*?)\s*</\1>@xsi);
+      $body2 = $body3;
+    $body3 = $3 if (m@<((SUMMARY)     [^<>\s]*)[^<>]*>\s*(.*?)\s*</\1>@xsi);
+    $body = de_entify ($body);      # convert entities to get HTML from XML
+  $body = de_unicoddle ($body);     # convert UTF8 to Latin1
+  $body =~ s/^(.{512}).*/$1/s;  # only look in first half K of file
+  $body =~ s/(<(ITEM|ENTRY)\b)/\001\001$1/gsi;
+  $body =~ s@\\\n@@gs;
+    $body =~ s/[ \t]+$//gm;
+    $body = wrap ("", "", $body);
+  $body =~ y/A-Za-z/N-ZA-Mn-za-m/ if ($nyarlathotep_p);
+', "brvbar" => '
+      $b =~ s/[\r\n]/<BR>/gs;
+   "bull"  => "*",   "hellip"=> "...",  "prime" => "'",  "Prime" => "\"",
+     ($c || "[$3]");			# for &unknown; => "[unknown]"
+  # can't figure out the black magic to make Cocoa bindings work right.
+', "ccedil" => '
+         $c = chr($c);
+         $c = chr(hex($1));
+   "cedil"  => '
+', "cent"   => '
+       $c = $entity_table{$c};		# for &Aacute;
+   "circ"  => "^",   "tilde" => "~",    "ensp"  => " ",  "emsp"  => " ",
+      close IN;
+    close IN;
+  close S;
+      $cocoa_id = $ENV{XSCREENSAVER_CLASSPATH};
+    "       --cols N         Wrap lines at this column.  Default 72.\n" .
+   "cong"  => "=~",  "asymp" => "~",    "ne"    => "!=", "equiv" => "==",
+# Convert any HTML entities to Latin1 characters.
+# Convert any Unicode characters to Latin1 if possible.
+', "copy"   => '
+# Copyright 
+# copyright notice and this permission notice appear in supporting
+# Created: 19-Mar-2005.
+      $ct = $1 if ($head =~ m/^content-type:\s*([^\s]+)/mi);
+  $ct = guess_content_type ($ct, $body);
+         $c = undef;
+   "curren" => '
+    "       --date           Print the host name and current time.\n" .
+  $_ = de_entify ($_);            # convert HTML entities
+   "deg"    => '
+    # Different behavior than every other Unix in the world.
+', "divide" => '
+# documentation for any purpose is hereby granted without fee, provided that
+# documentation.  No representations are made about the suitability of this
+    "                        document.  If it contains HTML, RSS, or Atom,\n" .
+  # Do some basic sanity checking (null text, null file names, etc.)
+', "eacute" => '
+', "ecirc"  => '
+   "egrave" => '
+  # elide any remaining non-Latin1 binary data...
+       } else {
+      } else {
+     } else {
+    } else {
+  } else {
+  } else { # $text_mode eq 'date'
+    else { usage; }
+       } elsif ($c =~ m@^\d+$@si) {	# for &#65;
+  } elsif ($ct eq 'rss')  {
+    } elsif ( $http =~ m@^HTTP/[0-9.]+ ([4-9][0-9][0-9].*)$@ ) {
+    elsif (m/^--?cocoa$/)   { $cocoa_id = shift @ARGV; }
+    elsif (m/^--?col(umn)?s?$/) { $wrap_columns = 0 + shift @ARGV; }
+    elsif (m/^--?date$/)    { $text_mode = 'date';
+    elsif (m/^--?file$/)    { $text_mode = 'file';
+    elsif (m/^--?nyarlathotep$/) { $nyarlathotep_p++; }
+    elsif (m/^--?program$/) { $text_mode = 'program';
+    elsif (m/^--?text$/)    { $text_mode = 'literal';
+    elsif (m/^--?url$/)     { $text_mode = 'url';
+    elsif (m/^-./) { usage; }
+    elsif (m/^-v+$/) { $verbose += length($_)-1; }
+  elsif ($text_mode eq '1') { $text_mode = 'literal'; }
+  elsif ($text_mode eq '2') { $text_mode = 'file';    }
+  elsif ($text_mode eq '3') { $text_mode = 'url';     }
+  elsif ($text_mode eq '4') { $text_mode = 'program'; }
+  } elsif ($text_mode eq 'file') {
+  } elsif ($text_mode eq 'program') {
+  } elsif ($text_mode eq 'url') {
+        } elsif (! ($url =~ m@^[a-z]+:@i)) {
+  } elsif ($verbose > 1) {
+   "empty" => "
+    error ("cannot execute $cmd") unless (-x $cmd);
+  error ("$cmd[0]: core dumped!") if ($dumped_core);
+  error ("$cmd[0]: exited with $exit_value!") if ($exit_value);
+  error ("$cmd[0]: signal $signal_num!") if ($signal_num);
+  error ("$cmd not found on \$PATH");
+    error ("connect($serverstring): $!");
+      error ("failed: $1 ($url)");
+  error ("host not found: $remote") unless ($iaddr);
+        error ("no Location with \"$http\"");
+    error ("not an HTTP URL: $url");
+    error ("null response: $url");
+    error ("socket: $!");
+      error ("$text_file: $!");
+        error ("too many redirects ($max_loop_count) from $orig_url");
+    error ("unrecognised port in $url");
+    "                        escape sequences as per strftime(2).\n" .
+   "eth"    => '
+', "euml"   => '
+  exit 1;
+    # Fall back to any settings in the X resource database
+# Figure out what the proxy server should be, either from environment
+    "       --file PATH      Print the contents of the given file.\n" .
+  foreach (@items) {
+ foreach my $dir (split (/:/, $ENV{PATH})) {
+  foreach my $key (keys (%unicode_latin1_table)) {
+    foreach (split('\r?\n', $hdrs)) {
+', "frac12" => '
+   "frac14" => '
+', "frac34" => '
+   "frasl" => "/",   "trade" => "[tm]", "larr"  => "<-", "rarr"  => "->",
+      get_cocoa_prefs($cocoa_id);
+    get_url_text ($text_url);
+      get_x11_prefs();
+   /gexi;
+    $got_any_p = 1;
+    $got_any_p = get_x11_prefs_1 ($body);
+     }@gsexi;
+   "harr"  => "<->", "lArr"  => "<=",   "rArr"  => "=>", "hArr"  => "<=>",
+    $hdrs .= "Referer: $referer\r\n";
+  $hdrs .= "\r\n";
+      $_ = $head;
+    $head .= $_;
+      # historical suckage: allow "http://host:port" as well as "host:port".
+  # historical suckage: the environment variable name is lower case.
+              "Host: $them\r\n" .
+   # HTML 4 entities that do not have 1:1 Latin1 mappings.
+  $_  = $http;
+      $http_proxy = $1;
+  $http_proxy = $ENV{http_proxy} || $ENV{HTTP_PROXY};
+      $http_proxy .= ":$port" if $port;
+      $http_proxy = $server;
+    $http =~ s/[\r\n]+$//s;
+    $i++;
+', "iacute" => '
+  $iaddr = inet_aton($remote);
+', "icirc"  => '
+  $id  =~ s/[^-a-z\d. ]/_/gsi;
+    if (! $body1) {
+    if ($body2 && length($body2) >= length($body1 || '')) {
+    if ($body3 && length($body3) >= length($body2 || '')) {
+  if ($body =~ m@<(BASE|HTML|HEAD|BODY|SCRIPT|STYLE|TABLE|A\s+HREF)\b@i) {
+  if ($body =~ m@<(RSS|CHANNEL|GENERATOR|DESCRIPTION|CONTENT|FEED|ENTRY)\b@i) {
+  if ($body =~ m/^\s*<!\[CDATA\[(.*?)\]\s*\]/is) {
+  if ($body =~ m@^\s*<!DOCTYPE HTML@is) { return 'html'; }
+  if ($body =~ m@^\s*<!DOCTYPE RSS@is)  { return 'rss';  }
+  if ($body =~ m@^\s*<\?xml@is)         { return 'rss';  }
+  if ($body =~ m/^[.*]*textFile:[ \t]*(.*?)[ \t]*$/im) {
+  if ($body =~ m/^[.*]*textLiteral:[ \t]*(.*?)[ \t]*$/im) {
+  if ($body =~ m/^[.*]*textMode:[ \t]*([^\s]+)\s*$/im) {
+  if ($body =~ m/^[.*]*textProgram:[ \t]*(.*?)[ \t]*$/im) {
+  if ($body =~ m/^[.*]*textURL:[ \t]*(.*?)[ \t]*$/im) {
+  if ($cmd =~ m@^\./|^/@) {
+       if ($c =~ m@^x([\dA-F]+)$@si) {	# for &#x41;
+    "                        If --cols is specified, re-wrap the lines;\n" .
+    "                        If --cols is specified, re-wrap the output.\n" .
+  if (!connect(S, $paddr)) {
+  if ($ct eq 'html') {
+  if ($ct =~ m@\b(atom|rss|xml)\b@i)    { return 'rss';  }
+  if ($ct =~ m@^text/.*html@i)          { return 'html'; }
+     if (! defined($2)) {
+    if (!defined ($cocoa_id)) {
+    if (defined ($cocoa_id)) {
+  if (defined ($cocoa_id)) {
+  if (defined ($http_proxy)) {
+  if (!defined($wrap_columns) || $wrap_columns > 0) {
+    if ($_ eq "--verbose") { $verbose++; }
+    if (-f "/etc/redhat-release") {	    # "Fedora Core release 4 (Stentz)"
+    if (-f "/etc/release") {	    	    # "Solaris 10 3/05 s10_74L2a X86"
+    if (-f "/usr/sbin/system_profiler") {   # "Mac OS X 10.4.5 (8H14)"
+  if (! $got_any_p && defined ($ENV{DISPLAY})) {
+  if (!$http) {
+    if ( $http =~ m@^HTTP/[0-9.]+ 30[123]@ ) {
+  if ($http_proxy) {
+    if ($http_proxy && $http_proxy =~ m@^http://([^/]*)/?$@ ) {
+  if ($#items > 7) {
+  if ($load_p) {
+      if ( $location ) {
+      if ($loop_count++ > $max_loop_count) {
+          $_ .= "/" if m@^http://[^/]+$@i;
+  if (open (IN, "<$config_file")) {
+    if (open (IN, "<$text_file")) {
+  if (!$port2) {
+  if ($port2 =~ /\D/) { $port2 = getservbyname($port2, 'tcp') }
+  if ($referer) {
+  if (! $rss_p) {
+    if ($server) {
+  if (!socket(S, PF_INET, SOCK_STREAM, $proto)) {
+  if    ($text_mode eq '0') { $text_mode = 'date';    }
+  if ($text_mode eq 'literal') {
+  if (($text_mode eq 'literal' && $text_literal =~ m/^\s*$/i) ||
+    # If there are both <description> and <content> or <content:encoded>,
+      if ($title) {
+    if ($unamep) {
+        if ($url =~ m@^/@) {
+  if (! ($url =~ m@^http://@i)) {
+  if ($verbose > 1) {
+          if ($verbose > 2);
+    if ($verbose > 2);
+    if ($verbose > 2 && $http_proxy);
+          if ($verbose > 3);
+    if ($verbose > 3);
+  if ($verbose > 3) {
+    if ($verbose == 4);
+      if ($wrap_columns && $wrap_columns > 0) {
+    if ($wrap_columns && $wrap_columns > 0) {
+  if ($wrap_columns && $wrap_columns > 0) {
+   "igrave" => '
+# implied warranty.
+# In a native MacOS build of xscreensaver, this script is included in
+    # in cases where a large amount of text is generated in a short
+  # In HTML, try to preserve newlines inside of PRE.
+    # In HTML, unfold lines.
+    # In RSS, assume \n means literal line break.
+    # internal buffer, and always read as much data as possible as
+', "iquest" => '
+    "                        it will be converted to plain-text.\n" .
+', "iuml"   => '
+  $key =~ s/[^-a-z\d. ]/_/gsi;
+', "laquo"  => '
+    last if m@^$@;
+# Latin1 characters.
+   "le"    => "<=",  "ge"    => ">=",   "lang"  => "<",  "rang"  => ">",
+  # Let's skip forward in the stream by a random amount, so that if
+# like system() but checks errors.
+    $lines++;
+                              $load_p = 0; }
+# Loads the given URL, processes redirects, returns (content-type, body).
+# Loads the given URL, returns: $http, $head, $body.
+    local *IN;
+  local *IN;
+        $location =~ s/[\r\n]$//;
+   "loz"   => "<>",  "OElig" => "OE",   "oelig" => "oe", "Yuml"  => "Y",
+', "macr"   => '
+# Make an educated guess as to what's in this document.
+  # make sure there's nothing stupid/malicious in either string.
+    # Many of the screen savers were written to depend on being able
+# Maps certain UTF8 characters (2 or 3 bytes) to the corresponding
+# Maps HTML character entities to the corresponding Latin1 characters.
+', "micro"  => '
+', "middot" => '
+",   "minus" => "-",    "lowast"=> "*",  "sim"   => "~",
+  # multi-headed machine), they get different text.  (Put the items
+      my ($a, $b, $c) = ($1, $2, $3);
+        my $body = '';
+    my $body = '';
+  my ($body) = @_;
+  my $body = "";
+    my $body = `appres XScreenSaver xscreensaver -1`;
+  my ($body, $rss_p) = @_;
+      my $body = `( $text_program ) 2>&1`;
+     my $c = $3;
+  my (@cmd) = @_;
+  my ($cmd) = @_;
+    my $cmd2 = "$dir/$cmd";
+  my $cmd = "defaults -currentHost read \"$id\" \"$key\"";
+  my $cocoa_id = undef;
+my $config_file = $ENV{HOME} . "/.xscreensaver";
+  my ($ct, $body) = @_;
+  my ($ct, $body) = get_url ($url);
+      my $ct = 'text/plain';
+  my $dumped_core = $? & 128;
+my %entity_table = (
+  my ($err) = @_;
+  my $exit_value  = $? >> 8;
+  my $got_any_p = 0;
+  my $hdrs = ("GET " . ($http_proxy ? $url : "/$path") . " HTTP/1.0\r\n" .
+  my $head = "";
+    my ( $http, $head, $body ) = get_url_1 ($url, $referer);
+my $http_proxy = undef;
+  my $http = <S> || "";
+  my $i = -1;
+  my ($id) = @_;
+  my ($id, $key) = @_;
+  my @items = split (/\001\001/, $body);
+  my $lines = 0;
+  my $load_p = 1;
+      my ( $location ) = m@^location:[ \t]*(.*)$@im;
+  my $loop_count = 0;
+  my $max_loop_count = 10;
+    my $n = int (rand ($#items - 5));
+    my $n = `uname -n`;
+my $nyarlathotep_p = 0;
+  my $orig_url = $url;
+  my $port2 = $port;
+    my ($port)   = ($proxy_data =~ m/\bHTTPPort\s*:\s*([^\s]+)/s);
+    my ($prog, $args) = ($text_program =~ m/^([^\s]+)(.*)$/);
+my $progname = $0; $progname =~ s@.*/@@g;
+    my $proxy_data = `scutil --proxy 2>/dev/null`;
+  my ($remote, $iaddr, $paddr, $proto, $line);
+    my ($server) = ($proxy_data =~ m/\bHTTPProxy\s*:\s*([^\s]+)/s);
+  my $signal_num  = $? & 127;
+      my $sp =				    # "iMac G5"
+      my ($s) = ($sp =~ m/^\s*(?:CPU|Processor) Speed:\s*(.*)$/mi);
+  my ($text) = @_;
+my $text_file     = '';
+my $text_literal  = '';
+my $text_mode     = 'date';
+my $text_program  = '';
+my $text_url      = '';
+  my $them2 = $them;
+  my ($them,$port) = split(/:/, $serverstring);
+    my ($title, $body1, $body2, $body3);
+      my ($t) = ($sp =~ m/^\s*(?:Machine|Model) Name:\s*(.*)$/mi);
+    my $unamep = 1;
+my %unicode_latin1_table = (
+  my ($url) = @_;
+  my ($url_proto, $dummy, $serverstring, $path) = split(/\//, $url, 4);
+  my ($url, $referer) = @_;
+  my $user_agent = "$progname/$version";
+    my $ut = `uptime`;
+  my $v;
+  my $val = `$cmd 2>/dev/null`;
+    my $val = $unicode_latin1_table{$key};
+my $verbose = 0;
+my $version = q{ $Revision: 1.24 $ }; $version =~ s/^[^0-9]+([0-9.]+).*$/$1/;
+      my ($v) = ($sp =~ m/^\s*System Version:\s*(.*)$/mi);
+my $wrap_columns  = undef;
+    "\n" .
+    "\n");
+   ("\n" .
+  $_ .= "\n";
+   "nbsp"   => ' ', "iexcl"  => '
+        next;
+   "not"    => '
+    # Note that the current MacOS behavior has all four of these
+    # Note: this ignores the "ExceptionsList".
+    $n =~ s/\.local\n/\n/s;
+', "ntilde" => '
+', "oacute" => '
+   "ocirc"  => '
+', "ograve" => '
+    # once the process at the end of the pty exits, you have exactly
+    # One workaround would be to rewrite the savers to have an
+  # only re-wrap if --cols was specified.  Otherwise, dump it as is.
+    # On MacOS, sleep for 10 seconds between when the last output is
+    "   Options:\n" .
+', "ordf"   => '
+', "ordm"   => '
+    "       or load a URL.\n".
+   "oslash" => '
+    "                        otherwise, print them as-is.\n" .
+', "otilde" => '
+', "ouml"   => '
+  output();
+  $paddr   = sockaddr_in($port2, $iaddr);
+', "para"   => '
+  $path = "" unless $path;
+# Permission to use, copy, modify, distribute, and sell this software and its
+', "plusmn" => '
+    $port2 = 80 unless $port2;
+  $port = 80 unless $port;
+', "pound"  => '
+          print $_;
+    # printed, and when this process exits.  This is because MacOS
+    printf STDERR "$progname: file:    $text_file\n";
+    printf STDERR "$progname: literal: $text_literal\n";
+    printf STDERR "$progname: mode:    $text_mode\n";
+    printf STDERR "$progname: program: $text_program\n";
+    printf STDERR "$progname: url:     $text_url\n";
+    print "\n";
+    print $n;
+  print S $hdrs;
+    "       Prints out some text for use by various screensavers,\n" .
+  print STDERR "  <== [ body ]: $lines lines, " . length($body) . " bytes\n"
+    print STDERR "  <== $_" if ($verbose > 4);
+      print STDERR "  ==> $_\n";
+    print STDERR "  <== $_\n" if ($verbose > 3);
+  print STDERR "  <== $_\n" if ($verbose > 3);
+  print STDERR "  <== \n" if ($verbose > 4);
+    print STDERR "$progname:   checking $cmd2\n" if ($verbose > 3);
+  print STDERR "$progname: Cocoa: $id $key = \"$val\"\n"
+    print STDERR "$progname: $config_file: $!\n";
+    print STDERR "$progname: converting HTML...\n" if ($verbose > 2);
+  print STDERR "$progname: converting RSS ($#items items)...\n"
+  print STDERR "$progname: $err\n";
+  print STDERR "$progname: executing $cmd\n"
+  print STDERR "$progname: executing " . join(' ', @cmd) . "\n"
+    print STDERR "$progname: falling back to 'date'\n" if ($verbose);
+  print STDERR "$progname: loading $url\n" if ($verbose > 2);
+        print STDERR "$progname: no body in item $i (\"$title\")\n"
+        print STDERR "$progname: no body or title in item $i\n"
+    print STDERR "$progname: plain text...\n" if ($verbose > 2);
+  print STDERR "$progname: proxy server: $http_proxy\n" 
+  print STDERR "$progname: reading Cocoa prefs: \"$id\"\n" if ($verbose > 1);
+    print STDERR "$progname: reading $config_file\n" if ($verbose > 1);
+      print STDERR "$progname: reading $text_file\n" if ($verbose);
+    print STDERR "$progname: reading X resources\n" if ($verbose > 1);
+        print STDERR "$progname: redirect from $url to $location\n"
+    print STDERR "$progname: rotating by $n items...\n" if ($verbose > 2);
+    print STDERR "$progname: running $text_program\n" if ($verbose);
+    print STDERR "$progname: wrapping at $wrap_columns...\n" if ($verbose > 2);
+  print STDERR "usage: $progname [ --options ... ]\n" .
+  print STDOUT $_;
+  print STDOUT $body;
+    print STDOUT "\n" unless ($text_literal =~ m/\n$/s);
+    print STDOUT $text_literal;
+      print "$s $t\n" if ($s && $t);
+# print the date.
+    print "$ut\n";
+      print "$v\n" if ($v);
+    "       --program CMD    Run the given program and print its output.\n" .
+  $proto   = getprotobyname('tcp');
+      push @items, (shift @items);
+   "quot"   => '"', "amp"    => '&', "lt"     => '<', "gt"     => '>',
+', "raquo"  => '
+    # reached EOF.  This is no longer possible.
+        # read it, then reformat it.
+      # read it, then reformat it.
+# Reads the prefs we use from ~/.xscreensaver
+          $_ = $referer;
+          $referer =~ m@^(http://[^/]+)@i;
+        $referer = $url;
+    reformat_html ($body, 0);
+    reformat_html ("$title<P>$body1", 1);
+    reformat_rss ($body);
+        reformat_text ($body);
+      reformat_text ($body);
+    reformat_text ($body);
+', "reg"    => '
+  $remote = $them2;
+require 5;
+  return $body;
+    return $cmd;
+    return $cmd2 if (-x "$cmd2");
+      return ($ct, $body);
+  return $got_any_p;
+    return 'html';
+  return ( $http, $head, $body );
+    return 'rss';
+# Returns 'html', 'rss', or 'text';
+  return 'text';
+  return $text;
+  return $val;
+   "rsquo" => "'",   "sbquo" => "'",    "ldquo" => "\"", "rdquo" => "\"",
+  #s/([\177-\377]+(\s*[\177-\377]+)[^a-z\d]*)/
+  s/([\177-\377]+(\s*[\177-\377]+)[^a-z\d]*)/
+      safe_system ("cat", "/etc/redhat-release");
+    safe_system ("date", "+%c");
+      safe_system ("head", "-1", "/etc/release");
+      safe_system ("$text_program");
+      safe_system ("uname", "-sr");	    # "Linux 2.6.15-1.1831_FC4"
+  s@</?[BI]>@*@gsi;		                 # bold, italic => asterisks
+  s@</?(BR|TR|TD|LI|DIV)\b[^<>]*>@\n@gsi; # line break at BR, TD, DIV, etc
+', "sect"   => '
+    # See http://jwz.livejournal.com/817438.html, and for those of
+      # see OSX/XScreenSaverView.m
+  select(S); $| = 1; select(STDOUT);
+    $serverstring = $http_proxy if $http_proxy;
+    $serverstring =~ s@^[a-z]+://@@;
+  set_proxy();
+          s@[^/]+$@@g if m@^http://[^/]+/@i;
+  s@<!--.*?-->@@gsi;				 # lose comments
+  s@<[^<>]*>?@@gs;                # lose all other HTML tags
+    $_ = shift @ARGV;
+  shift @items;
+', "shy"    => '
+    sleep (10);
+  s@<lj\s+user=\"?([^<>\"]+)\"?[^<>]*>?@$1@gsi;  # handle <LJ USER=>
+  s/^\n+//gs;
+  s@\n\n\n+@\n\n@gs;              # compress blank lines
+# software for any purpose.  It is provided "as is" without express or 
+    # soon as a pipe has input available.  However, that's a lot more
+    s@(<PRE\b[^<>]*>\s*)(.*?)(</PRE)@{
+  s@</?(P|UL|OL|BLOCKQUOTE)\b[^<>]*>@\n\n@gsi; # two line breaks
+    s@[\r\n]@ @gsi;
+    s/\r\n/\n/gs;
+    s/[\r\n]+$//s;
+  s/[\r\n]+$//s;
+  s@<(STYLE|SCRIPT)\b[^<>]*>.*?</\1\s*>@@gsi;    # lose css and js
+  s/[ \t]+$//gm;                  # lose whitespace at end of line
+    s/[ \t]+$//gm;                # lose whitespace at end of line again
+        # stream it
+      # stream it
+sub de_entify($) {
+sub de_unicoddle($) {
+sub error($) {
+sub get_cocoa_pref_1($$) {
+sub get_cocoa_prefs($) {
+sub get_url($;$) {
+sub get_url_1($;$) {
+sub get_url_text($) {
+sub get_x11_prefs() {
+sub get_x11_prefs_1($) {
+sub guess_content_type($$) {
+sub main() {
+sub output() {
+sub reformat_html($$) {
+sub reformat_rss($) {
+sub reformat_text($) {
+sub rss_field_to_html($) {
+sub safe_system(@) {
+sub set_proxy() {
+sub usage() {
+sub which($) {
+    # summarily flushed.
+', "sup1"   => '
+', "sup2"   => '
+', "sup3"   => '
+  system @cmd;
+', "szlig"  => '
+    $text_file = $1;
+    $text_file =~ s@^~/@$ENV{HOME}/@s;     # allow literal "~/"
+                              $text_file = shift @ARGV || '';
+  $text_file = $v if defined ($v);
+    $text_literal = $1;
+                              $text_literal = shift @ARGV || '';
+  $text_literal =~ s@\\n@\n@gs;
+    $text_literal = strftime ($text_literal, localtime);
+  $text_literal = $v if defined ($v);
+    $text_literal =~ y/A-Za-z/N-ZA-Mn-za-m/ if ($nyarlathotep_p);
+    $text_mode = $1;
+    $text_mode = 'date';
+      ($text_mode eq 'file'    && $text_file    =~ m/^\s*$/i) ||
+      ($text_mode eq 'program' && $text_program =~ m/^\s*$/i) ||
+      ($text_mode eq 'url'     && $text_url     =~ m/^\s*$/i)) {
+  $text_mode =~ tr/A-Z/a-z/;
+  $text_mode = $v if defined ($v);
+    $text_program = $1;
+                              $text_program = shift @ARGV || '';
+  $text_program = $v if defined ($v);
+    $text_program = which ($prog) . $args;
+  $text =~ s/(&(\#)?([[:alpha:]\d]+);?)/
+    $text =~ s/$key/$val/gs;
+    "       --text STRING    Print out the given text.  It may contain %\n" .
+    $text_url = $1;
+                              $text_url = shift @ARGV || '';
+  $text_url = $v if defined ($v);
+    $Text::Wrap::columns = $wrap_columns;
+    $Text::Wrap::columns = ($wrap_columns || 72);
+    # that produce little output (e.g., date-mode); and won't solve it
+  # that we take off the front back on the back.)
+# the above copyright notice appear in all copies and that both that
+# the Contents/Resources/ directory of each screen saver .bundle that
+    ($them2,$port2) = split(/:/, $serverstring);
+  # The "textMode" pref is set to a number instead of a string because I
+   "thinsp"=> " ",   "ndash" => "-",    "mdash" => "-",  "lsquo" => "`",
+    "       This may dump the contents of a file, run a program,\n" .
+# This program writes some text to stdout, based on preferences in the
+    # This will solve the problem for invocations of xscreensaver-text
+', "thorn"  => '
+', "times"  => '
+    $title = $3 if (m@<((TITLE)       [^<>\s]*)[^<>]*>\s*(.*?)\s*</\1>@xsi);
+    $title = '' if ($body1 eq $title);  # Identical in Twitter's atom feed.
+    $title = rss_field_to_html ($title || '');
+    # to read a small number of bytes, and continue reading until they
+  # two copies of ljlatest are running at the same time (e.g., on a
+', "uacute" => '
+', "ucirc"  => '
+', "ugrave" => '
+   "uml"    => '
+      $unamep = !defined ($v);
+# Unconvertable bytes are left alone.
+          $url = $1 . $url;
+    "       --url HTTP-URL   Download and print the contents of the HTTP\n" .
+        $url = $location;
+  $url =~ s@^feed:@http:@si;
+          $url = $_ . $url;
+use bytes;
+#use diagnostics;	# Fails on some MacOS 10.5 systems
+use POSIX qw(strftime);
+              "User-Agent: $user_agent\r\n");
+# uses it; and in that case, it looks up its resources using
+use Socket;
+use strict;
+use Text::Wrap qw(wrap);
+    # use whichever one contains more text.
+# /usr/bin/defaults instead.
+#!/usr/bin/perl -w
+        `/usr/sbin/system_profiler SPSoftwareDataType SPHardwareDataType`;
+    # (/usr/X11R6/lib/X11/app-defaults/XScreenSaver)
+    $ut =~ s/^[ \d:]*(am|pm)?//i;
+    $ut =~ s/,\s*(load)/\n$1/;
+   "uuml"   => '
+  $val =~ s/^\s+//s;
+  $val =~ s/\s+$//s;
+  $val = undef if ($val =~ m/^$/s);
+# variables or by parsing the output of the (MacOS) program "scutil",
+  $v = get_cocoa_pref_1 ($id, "textFile");
+  $v = get_cocoa_pref_1 ($id, "textLiteral");
+  $v = get_cocoa_pref_1 ($id, "textMode");
+  $v = get_cocoa_pref_1 ($id, "textProgram");
+  $v = get_cocoa_pref_1 ($id, "textURL");
+# We don't necessarily take the Content-Type header at face value.
+    # We weren't able to read settings from the .xscreensaver file.
+# which tells us what the system-wide proxy settings are.
+  } while (1);
+  while ($#ARGV >= 0) {
+        while (<IN>) { 
+        while (<IN>) { $body .= $_; }
+    while (<IN>) { $body .= $_; }
+    while ($n-- > 0) {
+  while (<S>) {
+    # work, so instead, let's just not exit right away, and hope that
+    $_ = wrap ("", "  ", $_);     # wrap the lines as a paragraph
+   "\xC2\xA1" => '
+', "\xC2\xA2" => '
+', "\xC2\xA3" => '
+', "\xC2\xA4" => '
+   "\xC2\xA5" => '
+', "\xC2\xA6" => '
+', "\xC2\xA7" => '
+', "\xC2\xA8" => '
+   "\xC2\xA9" => '
+', "\xC2\xAA" => '
+', "\xC2\xAB" => '
+', "\xC2\xAC" => '
+   "\xC2\xAD" => '
+', "\xC2\xAE" => '
+', "\xC2\xAF" => '
+', "\xC2\xB0" => '
+   "\xC2\xB1" => '
+', "\xC2\xB2" => '
+', "\xC2\xB3" => '
+', "\xC2\xB4" => '
+   "\xC2\xB5" => '
+', "\xC2\xB6" => '
+', "\xC2\xB7" => '
+', "\xC2\xB8" => '
+   "\xC2\xB9" => '
+', "\xC2\xBA" => '
+', "\xC2\xBB" => '
+', "\xC2\xBC" => '
+   "\xC2\xBD" => '
+', "\xC2\xBE" => '
+', "\xC2\xBF" => '
+', "\xC3\x80" => '
+   "\xC3\x81" => '
+', "\xC3\x82" => '
+', "\xC3\x83" => '
+', "\xC3\x84" => '
+   "\xC3\x85" => '
+', "\xC3\x86" => '
+', "\xC3\x87" => '
+', "\xC3\x88" => '
+   "\xC3\x89" => '
+', "\xC3\x8A" => '
+', "\xC3\x8B" => '
+', "\xC3\x8C" => '
+   "\xC3\x8D" => '
+', "\xC3\x8E" => '
+', "\xC3\x8F" => '
+', "\xC3\x90" => '
+   "\xC3\x91" => '
+', "\xC3\x92" => '
+', "\xC3\x93" => '
+', "\xC3\x94" => '
+   "\xC3\x95" => '
+', "\xC3\x96" => '
+', "\xC3\x97" => '
+', "\xC3\x98" => '
+   "\xC3\x99" => '
+', "\xC3\x9A" => '
+', "\xC3\x9B" => '
+', "\xC3\x9C" => '
+   "\xC3\x9D" => '
+', "\xC3\x9E" => '
+', "\xC3\x9F" => '
+', "\xC3\xA0" => '
+   "\xC3\xA1" => '
+', "\xC3\xA2" => '
+', "\xC3\xA3" => '
+', "\xC3\xA4" => '
+   "\xC3\xA5" => '
+', "\xC3\xA6" => '
+', "\xC3\xA7" => '
+', "\xC3\xA8" => '
+   "\xC3\xA9" => '
+', "\xC3\xAA" => '
+', "\xC3\xAB" => '
+', "\xC3\xAC" => '
+   "\xC3\xAD" => '
+', "\xC3\xAE" => '
+', "\xC3\xAF" => '
+', "\xC3\xB0" => '
+   "\xC3\xB1" => '
+', "\xC3\xB2" => '
+', "\xC3\xB3" => '
+', "\xC3\xB4" => '
+   "\xC3\xB5" => '
+', "\xC3\xB6" => '
+', "\xC3\xB7" => '
+', "\xC3\xB8" => '
+   "\xC3\xB9" => '
+', "\xC3\xBA" => '
+', "\xC3\xBB" => '
+', "\xC3\xBC" => '
+   "\xC3\xBD" => '
+', "\xC3\xBE" => '
+', "\xC3\xBF" => '
+   "\xE2\x80\x93" => '--',  "\xE2\x80\x94" => '--',
+   "\xE2\x80\x98" => '`',   "\xE2\x80\x99" => '\'',
+   "\xE2\x80\x9C" => "``",  "\xE2\x80\x9D" => "''",
+   "\xE2\x80\xA6" => '...',
+# .xscreensaver file.  It may load a file, a URL, run a program, or just
+', "yacute" => '
+          y/A-Za-z/N-ZA-Mn-za-m/ if ($nyarlathotep_p);
+  y/A-Za-z/N-ZA-Mn-za-m/ if ($nyarlathotep_p);
+', "yen"    => '
+    # you inside Apple, "Problem ID 5606018".
+', "yuml"   => '

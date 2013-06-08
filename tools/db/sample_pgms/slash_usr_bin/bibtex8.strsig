@@ -1,0 +1,527 @@
+<           
+=           
+>           
+            
+-           
+:=          
+*           
++           
+%04d: \%s
+    %-15s = %7ld
+3.71 (31 May 2005)
+%4ld%6ld "
+78c:d:?stvBHM:W
+  -7  --traditional       operate in the original 7-bit mode
+88591lat.csf
+  -8  --8bit              force 8-bit mode, no CS file used
+aa          
+A bad cross reference-
+a bad literal--popped from an empty stack
+Aborted at line %ld of file 
+A cite key disappeared
+add.period$ 
+A digit disappeared
+ae          
+a field part
+A level-%ld auxilliary file: 
+all_marker=%ld, 
+allocated %7lu bytes for array `%s'
+Already encountered auxiliary file
+Already encountered file 
+Already encountered implicit function
+Already encountered style file
+A macro definition must be %c-delimited
+An "%c" disappeared
+  and has fields
+                          and sort definition file
+and the built_in function-call counts, %ld in all, are:
+an entry type
+, a nonvariable function class
+arrived at setjmp (Aux_Done_Flag)
+arrived at setjmp (Bst_Done_Flag)
+arrived at setjmp (Close_Up_Shop_Flag)
+arrived at setjmp (Exit_Program_Flag)
+a string name
+.aux        
+auxiliary file depth 
+AUX_STACK_SIZE
+  -B  --big               set large BibTeX capacity
+.bbl        
+.bib        
+\bibdata   
+\bibdata command
+\bibstyle  
+\bibstyle command
+BibTeX: 
+BibTeX's capacity set as follows:
+.blg        
+__bss_start
+.bst        
+BUF_SIZE
+/build/buildd/texlive-bin-2009/inst/lib
+built-in
+%c [%02x] 
+      %c [%02x] <<< %c [%02x]
+      %c [%02x] >>> %c [%02x]
+c8read_csf: trying to open CS file `%s' ...
+calling longjmp (Aux_Done_Flag) ... 
+calling longjmp (Close_Up_Shop_Flag) ... 
+calling longjmp (Exit_Program_Flag) ... 
+call.type$  
+can only specify one of --big, --huge and --wolfgang
+can't specify --csfile and --8bit
+can't specify --csfile and --traditional
+can't specify --traditional and --8bit
+Case mismatch error between cite keys 
+"%c" begins identifier, command: 
+"%c" can't follow a literal
+"%c"can't start a style-file command
+  -c  --csfile FILE       read FILE as the BibTeX character set
+C for Unix
+change.case$
+chr.to.int$ 
+"%c" immediately follows 
+"%c" immediately follows identifier, command: 
+"%c" is missing in command: 
+\citation  
+\citation commands
+cite$       
+Cite hash error
+cite_info
+ cite key encountered
+cite keys
+cite_list
+ Cites:            %6ld out of %ld
+comment     
+Context: line %04d: of CS file %s
+Control-sequence hash error
+crossref    
+__ctype_b_loc
+Curse you, wizard, before you recurse me:
+Database file #%ld: 
+database files
+D-CSF: ----------------------
+D-CSF: ---------------------------
+D-CSF: --------------------------------------
+D-CSF: ..     ....
+D-CSF: 00:    [00]
+D-CSF: 01:    [01]
+D-CSF: %02x:  
+D-CSF: 41:  A [41]
+D-CSF: 5a:  Z [5a]
+D-CSF: 61:  a [61]
+D-CSF: 7a:  z [7a]
+D-CSF: 8-bit ALPHA characters
+D-CSF: (All other characters are sorted equally after any of the above.)
+D-CSF: %c [%02x] <<< %c [%02x]
+D-CSF: %c [%02x] >>> %c [%02x]
+D-CSF: Characters in sorting order
+D-CSF: Characters with lower case equivalents
+D-CSF: Characters with upper case equivalents
+D-CSF: fe:    [fe]
+D-CSF: ff:    [ff]
+  -d  --debug TYPE        report debugging information.  TYPE is one
+default.type
+Done sorting
+duplicate$  
+Duplicate sort key
+empty$      
+Empty literal
+---entire database to be included
+ entries,
+ entries:
+--entry "
+entry       
+entry_exists
+entry_ints
+entry.max$  
+entry_strs
+, entry-type 
+ENT_STR_SIZE
+Error: attempt to redefine lower case of an ASCII character [0x%02x]
+Error: attempt to redefine upper case of an ASCII character [0x%02x]
+Error: cannot open CS file: %s
+(Error may have been on previous line)
+Error: non-alphanumeric character starts X_Y sequence
+Error: non-alphanumeric character starts X-Y sequence
+Error: only '-' or '_' may follow an alpha character
+Error: unexpected end of file in \lowercase section
+Error: unexpected end of file in \lowupcase section
+Error: unexpected end of file in \order section
+Error: unexpected end of file in \uppercase section
+Error: unmatched character pair in \lowercase section
+Error: unmatched character pair in \lowupcase section
+Error: unmatched character pair in \uppercase section
+execute     
+execute_fn `
+Fatal error: couldn't allocate %lu bytes for array `%s'
+field_info
+ Fields:           %6ld out of %ld
+File name `
+file name size 
+FILE_NAME_SIZE
+File=%s, extension=
+Finished reading the auxiliary file(s)
+Finished reading the database file(s)
+finished reading the \lowercase section.
+finished reading the \lowupcase section.
+finished reading the \order section.
+finished reading the \uppercase section.
+ for entry 
+format.name$
+__fprintf_chk
+" function name
+getopt_long
+GLIBC_2.0
+GLIBC_2.11
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+global.max$ 
+global_strs
+GLOB_STR_SIZE
+__gmon_start__
+" has a comma at the end
+" has an illegal brace-level-1 letter
+ has a wrong extension
+ has bad function type 
+  has entry integers
+, has entry strings
+hash_ilk
+hash_next
+Hash_Prime
+Hash_Prime = %d, Hash_Size = %d
+Hash_Prime (%d) must be >= 128
+Hash_Prime (%d) must be <= Hash_Size (%d)
+hash size 
+Hash_Size
+ Hash table:       %6ld out of %ld
+hash_text
+  -?  --help              display this help text
+Here's how much of BibTeX's memory you used:
+  -H  --huge              set huge BibTeX capacity
+History is bunk
+i           
+I couldn't open auxiliary file 
+I couldn't open database file 
+I couldn't open file name `
+I couldn't open style file 
+Identifier scanning error
+if$         
+I found no 
+ignoring char 0x%02X on line %d of CS file
+ilk_info
+Illegal, another \bib
+Illegal, another entry command
+Illegal, another read command
+Illegal auxiliary-file command
+ Illegal end of database file
+Illegal end of style file in command: 
+Illegal, execute command before read command
+Illegal integer in integer literal
+Illegal, iterate command before read command
+Illegal literal type
+Illegal, macro command after read command
+Illegal number of comma,s
+Illegal, read command before entry command
+Illegal, reverse command before read command
+Illegal, sort command before read command
+Illegal string number:%ld
+Implementation:  %s
+I'm skipping whatever remains of this 
+\@input    
+integer-entry-variable
+integer-global-variable
+integer-literal
+integers    
+int.to.chr$ 
+int.to.str$ 
+invalid max number of cites `%s'
+invalid max number of fields `%s'
+invalid max number of integer entries `%s'
+invalid max number of string entries `%s'
+invalid max number of strings `%s'
+invalid max wizard functions `%s'
+invalid minimum cross references `%s'
+invalid pool size `%s'
+_IO_getc
+_IO_stdin_used
+ is a bibdata file
+ is a database-defined macro
+ is a database key
+ is a field
+ is a field name
+" is a field value
+ is a function 
+' is a function literal
+ is already a type "
+ is already defined as a macro
+ is a macro
+ is a macro string
+' is a missing field
+ is an entry type or a database-file command
+ is an illegal case-conversion string
+ is an illegal style-file command
+ is an implicit function
+ is an integer entry-variable
+ is an integer global-variable
+ is an integer literal with value %ld
+ is an unknown function
+ is a quoted function 
+ is a string entry-variable
+ is a string global-variable
+" is a string literal
+ is a to be executed function
+ is a to be iterated function
+ is a to be iterated in reverse function
+ is a wizard-defined function
+ is illegal in its own definition
+" isn't a brace-balanced string
+" isn't a single character
+" isn't brace balanced
+" isn't style-file defined
+__isoc99_fscanf
+ is the key:
+' is too long
+iterate     
+I was expecting a `%c' or a `%c'
+I was expecting an "%c"
+j           
+_Jv_RegisterClasses
+kpse_fclose_trace
+kpse_find_file
+kpse_fopen_trace
+kpse_set_program_name
+l           
+%ld--end-of-def--
+%ld fields:
+%ld is a bad bad
+%ld is an integer literal
+%ld isn't valid ASCII
+%ld  quote_next_function    
+            %ld strings with %ld characters,
+%ld, the entry
+%ld, the global
+            %ld wiz_defined-function locations,
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+---line %ld of file 
+literal-stack size 
+LIT_STK_SIZE
+__longjmp_chk
+lowercase
+lowupcase
+macro       
+MAX_BIB_FILES
+Max_Cites
+Max_Cites = %d, Max_Ent_Ints = %d
+Max_Cites (%d) must be <= Max_Strings (%d)
+Max_Ent_Ints
+Max_Ent_Strs
+Max_Ent_Strs = %d, Max_Fields = %d
+Max_Fields
+MAX_GLOB_STRS
+MAX_PRINT_LINE
+Max_Strings
+Max_Strings (%d) must be <= Hash_Size (%d)
+Max_Strings = %d, Pool_Size = %d
+      --mcites ##         allow ## \cites in the .aux files
+mentints
+      --mentints ##       allow ## integer entries in the .bib databases
+mentstrs
+      --mentstrs ##       allow ## string entries in the .bib databases
+      --mfields ##        allow ## fields in the .bib databases
+min_crossrefs
+Min_Crossrefs = %d, Wiz_Fn_Space = %d
+MIN_PRINT_LINE
+    missing
+missing$    
+Missing "%c" in preamble command
+Missing "%c" in string command
+missing field `
+  -M  --min_crossrefs ##  set min_crossrefs to ##
+      --mpool ##          set the string pool to ## bytes
+mstrings
+      --mstrings ##       allow ## unique strings
+Multiple inclusions of entire database
+mwizfuns
+      --mwizfuns ##       allow ## wizard functions
+Name %ld in "
+Name %ld of "
+newline$    
+no aux file specified
+No `%c' to end string literal
+Nonempty empty string stack
+   nonexistent
+Nontop top of string stack
+, not a function,
+, not an integer,
+, not an integer or a string,
+, not a string,
+, not a string or missing field,
+--- no type found
+number of cite keys 
+number of database files 
+number of string global-variables %ld
+number of strings 
+num.names$  
+o           
+oe          
+of type 
+old_num_cites=%ld
+only one aux file may be specified
+open_ip_file: trying to open `%s' ... 
+open_ip_file: unable to open `%s' ... 
+open_op_file: error opening `%s'
+open_op_file: trying to open `%s' ... 
+                          or more of all, csf, io, mem, misc, search.
+output buffer size 
+*Please notify the bibstyle designer*
+*Please notify the BibTeX maintainer*
+Pointer is %ld but should be %ld
+pool size 
+Pool_Size
+pop$        
+preamble    
+preamble$   
+ previously
+__printf_chk
+ptr=%ld, stack=
+purify$     
+Pushing 
+quote$      
+read        
+reading the \lowercase section ... 
+reading the \lowupcase section ... 
+reading the \order section ... 
+reading the \uppercase section ... 
+refers to entry "
+Release version: %s
+Repeated entry
+reverse     
+Sanity checking capacity values ... 
+Setting BibTeX's capacity ... 
+'s extra "
+SINGLE_FN_SPACE
+single function space 
+skip$       
+Sorry---you've exceeded BibTeX's 
+sort        
+Sorting %ld through %ld
+Sorting the entries
+sort.key$   
+ss          
+  -s  --statistics        report internal statistics
+stack$      
+__stack_chk_fail
+Starting to allocate memory for arrays ... 
+statistics
+__strcat_chk
+__strcpy_chk
+string      
+string-entry-variable
+string-global-variable
+string-literal
+ String pool:      %6ld out of %ld
+strings     
+ Strings:          %6ld out of %ld
+-string-size,
+__strncpy_chk
+str_pool
+str_start
+Stuff after "%c"
+style file
+substring$  
+swap$       
+T$89T$d}@
+text.length$
+text.prefix$
+(That was a fatal error)
+The 1 database file is
+The 8-bit codepage and sorting file: %s
+The cite list is messed up
+The format string "
+The %ld database files are
+---the literal stack isn't empty
+There aren't %ld names in "
+There is no name in "
+There's no `%c' to end macro definition
+(There was 1 error message)
+(There was 1 warning)
+(There were %ld error messages)
+(There were %ld warnings)
+The string pool is
+The style file: 
+The style file is 
+The top-level auxiliary file: 
+The wiz-defined functions are
+---they aren't the same literal types
+---this can't happen
+This database file appears more than once: 
+This is 8-bit Big BibTeX version 0.99c
+ to be iterated in reverse on 
+ to be iterated on 
+Too many commas in name %ld of "
+top$        
+total number of fields 
+total number of integer entry-variables 
+total number of string entry-variables 
+traditional
+  -t  --trace             report execution tracing
+type$       
+type_list
+Unbalanced braces
+    undefined
+    uninitialized
+Unknown auxiliary-file command
+Unknown built-in function
+Unknown database-file command
+Unknown function class
+Unknown literal type
+unknown option
+Unknown section on line in CS file %s
+Unknown style-file command
+Unknown type of case conversion
+uppercase
+Usage: bibtex [options] aux-file
+used in its own definition
+  Valid options are:
+__vfprintf_chk
+  -v  --version           report BibTeX version
+warning$    
+Warning--
+Warning--"
+Warning: cannot open CS file: empty --csfile value specified.
+Warning--entry type for "
+Warning--I didn't find a database entry for "
+Warning--I didn't find any fields
+Warning--I'm ignoring 
+Warning--string name "
+Warning--you've exceeded 
+Warning--you've nested cross references
+", which also refers to something
+", which doesn't exist
+while$      
+while executing
+while executing-
+---while reading file 
+White space in argument
+width$      
+wizard-defined
+wizard-defined function space 
+ Wizard functions: %6ld out of %ld
+Wiz_Fn_Space
+wiz_functions
+wolfgang
+write$      
+  -W  --wolfgang          set really huge BibTeX capacity for Wolfgang
+You can't assign to type 
+You can't mess with entries here
+You can't pop an empty literal stack
+You're missing 
+Your field is more than %ld characters
+You've exceeded %ld preamble commands
+You've used %ld

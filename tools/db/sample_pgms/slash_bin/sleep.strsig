@@ -1,0 +1,78 @@
+A NULL argv[0] was passed through an exec system call.
+bindtextdomain
+bug-coreutils@gnu.org
+cannot read realtime clock
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+dcgettext
+__errno_location
+For complete documentation, run: info coreutils '%s invocation'
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+invalid time interval %s
+_IO_stdin_used
+iswprint
+Jim Meyering
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+memory exhausted
+`m' for minutes, `h' for hours or `d' for days.  Unlike most implementations
+missing operand
+nanosleep
+newlocale
+  or:  %s OPTION
+Paul Eggert
+Pause for NUMBER seconds.  SUFFIX may be `s' for seconds (the default),
+point number.  Given two or more arguments, pause for the amount of time
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+%s, and %s.
+setlocale
+shell-always
+%s home page: <%s>
+specified by the sum of their values.
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+strtod_l
+that require NUMBER be an integer, here NUMBER may be an arbitrary floating
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+Try `%s --help' for more information.
+Usage: %s NUMBER[SUFFIX]...
+/usr/share/locale
+      --version  output version information and exit
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,

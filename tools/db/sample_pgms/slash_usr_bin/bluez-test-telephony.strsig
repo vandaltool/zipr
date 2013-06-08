@@ -1,0 +1,81 @@
+adapter = dbus.Interface(bus.get_object("org.bluez", adapter_path),
+	adapter_path = manager.DefaultAdapter()
+	adapter_path = manager.FindAdapter(options.dev_id)
+	battery <level>
+bus = dbus.SystemBus()
+	connect <bdaddr>
+	device = adapter.FindDevice(args[1])
+	disconnect <bdaddr>
+from optparse import OptionParser, make_option
+	headset.Connect()
+	headset = dbus.Interface(bus.get_object("org.bluez", device),
+	headset.Disconnect()
+	headset.Play()
+		headset.SetProperty('MicrophoneGain', dbus.UInt16(args[2]))
+		headset.SetProperty('SpeakerGain', dbus.UInt16(args[2]))
+	headset.Stop()
+if args[0] == "battery":
+if args[0] == "cancel":
+if args[0] == "connect":
+if args[0] == "disconnect":
+if args[0] == "incoming":
+if args[0] == "microphonegain":
+if args[0] == "outgoing":
+if args[0] == "play":
+if args[0] == "registration":
+if args[0] == "roaming":
+if args[0] == "signal":
+if args[0] == "speakergain":
+if args[0] == "stop":
+if args[0] == "subscriber":
+	if len(args) > 1:
+if len(args) < 1:
+	if len(args) < 2:
+	if len(args) > 2:
+if options.dev_id:
+import dbus
+import sys
+	incoming <number>
+		make_option("-i", "--device", action="store",
+manager = dbus.Interface(bus.get_object("org.bluez", "/"), "org.bluez.Manager")
+	microphonegain <bdaddr> [level]
+option_list = [
+(options, args) = parser.parse_args()
+							"org.bluez.Adapter")
+					"org.bluez.Headset")
+			"org.bluez.TelephonyTest")
+	outgoing <number>
+parser = OptionParser(option_list=option_list)
+	play <bdaddr>
+		print "Need battery level parameter"
+		print "Need device address parameter"
+		print "Need number parameter"
+		print "Need signal strength parameter"
+		print "Need yes/no parameter"
+		print props['MicrophoneGain']
+		print props['SpeakerGain']
+print "Unknown command"
+	print """Usage: %s <command>
+		props = headset.GetProperties()
+	registration <status>
+	roaming <yes|no>
+	signal <level>
+	speakergain <bdaddr> [level]
+	stop <bdaddr>
+	subscriber <number>
+	""" % sys.argv[0]
+	sys.exit(0)
+		sys.exit(1)
+	sys.exit(1)
+sys.exit(1)
+		test.BatteryLevel(args[1])
+	test.CancelCall()
+test = dbus.Interface(bus.get_object("org.bluez", "/org/bluez/test"),
+		test.IncomingCall(args[1])
+		test.OutgoingCall(args[1])
+		test.RegistrationStatus(args[1] == "yes" or False)
+		test.RoamingStatus(args[1] == "yes" or False)
+		test.SetSubscriberNumber(args[1])
+		test.SignalStrength(args[1])
+				type="string", dest="dev_id"),
+#!/usr/bin/python

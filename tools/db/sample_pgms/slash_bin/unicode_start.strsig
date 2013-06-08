@@ -1,0 +1,62 @@
+# 0. Check whether we're on a console
+# >= 0x80 in a legacy 8-bit encoding.
+# 1. The input side: the keyboard driver.
+# 2. The output side: the console screen.
+#   are digits on the numeric keypad) will be emitted in UTF-8.
+#!/bin/sh
+# by giving `def.uni' as a second argument.
+case "$#" in
+case "$TTY" in
+# Change the keyboard mapping in such a way that the non-ASCII keys
+# contained in the IBM 437 character set (on PCs). The font should
+	/dev/console|/dev/vc*|/dev/tty[0-9]*)
+		[ -d "$HOME/.kbd" ] ||
+			dumpkeys > "$HOME/.kbd/.keymap_sv"
+	dumpkeys | loadkeys --unicode > /dev/null 2>&1
+   echo " Please ensure that /proc is mounted." >&2
+		echo "unicode_start skipped on $TTY" >&2
+		echo "usage: unicode_start [font [unicode map]]"
+   echo "Won't set unicode mode: Can't determine console type;" >&2
+    echo  "Won't set unicode mode: not a VT." >&2
+# Enables Unicode processing in the current console.
+# encoded multibyte sequences.
+#   entries from the keymaps.
+		exit 0
+    exit 1
+   exit 1
+# explicitly.
+# have a Unicode map attached, or explicitly specified, e.g.,
+		HOME='/root'
+	if [ -d "$HOME" -a -w "$HOME" ]; then
+if [ ! -e /proc/self/fd/0 ] ; then
+if [ $? -eq 1 ]; then
+if [ -t 1 -a -t 2 ]; then
+if [ "$uid" = '0' ]; then
+# - It is necessary for `dumpkeys' in order to not drop U+XXXX
+# - It is necessary for `loadkeys' in order to avoid warnings.
+kbd_mode -u
+			mkdir -- "$HOME/.kbd"
+	[ -n "$HOME" -a "$HOME" != '/' ] ||
+# Non-root users are allowed to change the unicode mode of their console, but
+# not the global keymap. root will have to load the keymap in unicode mode
+	# "plus before udiaeresis ignored" warnings.
+	printf '\033%%G'
+# produce UTF-8 encoded multibyte sequences, instead of single bytes
+readlink /proc/self/fd/0 | grep -q -e /dev/vc -e '/dev/tty[^p]' -e /dev/console
+	# redirect stderr and stdout of loadkeys to /dev/null to avoid the confusing
+	# (see also http://mail.nl.linux.org/linux-utf8/2003-08/msg00053.html):
+		setfont "$1"
+		setfont "$1" -u "$2"
+# Set the keyboard driver in Unicode mode. (Default is ASCII mode.)
+stty iutf8
+# Tell the console output driver that the bytes arriving are UTF-8
+# Tell the graphics card how to display Unicode characters not
+# the kernel. All it does is:
+	# the memory of the earlier keymap is lost. Therefore, try
+	# There is no way of reverting the effect of "dumpkeys | loadkeys --unicode",
+# This really does nothing with the way normal keys are handled in
+	# to save a copy of the original keymap to be able to reload it in unicode_stop.
+TTY="`/usr/bin/tty`"
+uid="`id -u 2>/dev/null`" ||:
+# - Unicode characters typed as Alt-x1 ... Alt-xn (where x1,...,xn
+		[ ! -w "$HOME/.kbd" ] ||

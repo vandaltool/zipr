@@ -1,0 +1,61 @@
+  </attribute>					\
+  <attribute id="0x0001">			\
+  <attribute id="0x0002">			\
+  <attribute id="0x0003">			\
+  <attribute id="0x0004">			\
+  <attribute id="0x0005">			\
+  <attribute id="0x0006">			\
+  <attribute id="0x0007">			\
+  <attribute id="0x0008">			\
+  <attribute id="0x0009">			\
+  <attribute id="0x000a">			\
+  <attribute id="0x000b">			\
+  <attribute id="0x000c">			\
+  <attribute id="0x0100">			\
+  <attribute id="0x0101">			\
+  <attribute id="0x0102">			\
+  <attribute id="0x0200">			\
+  <attribute id="0x0201">			\
+bus = dbus.SystemBus()
+handle = service.AddRecord(xml)
+if len(sys.argv) > 1:
+import dbus
+import sys
+import time
+manager = dbus.Interface(bus.get_object("org.bluez", "/"),
+						"org.bluez.Manager")
+						"org.bluez.Service")
+	path = manager.DefaultAdapter()
+	path = manager.FindAdapter(sys.argv[1])
+print "Press CTRL-C to remove service record"
+print "Service record with handle 0x%04x added" % (handle)
+	print "Terminating session"
+</record>					\
+<record>					\
+    </sequence>					\
+    <sequence>					\
+      </sequence>				\
+      <sequence>				\
+service = dbus.Interface(bus.get_object("org.bluez", path),
+service.RemoveRecord(dbus.UInt32(handle))
+     <text value="BlueZ"/>			\
+    <text value="Serial Port"/>			\
+    <text value="Serial Port Service"/>		\
+	time.sleep(1000)
+      <uint16 value="0x006a"/>			\
+      <uint16 value="0x0100"/>			\
+        <uint16 value="0x0100"/>		\
+      <uint16 value="0x656e"/>			\
+     <uint32 value="0"/>			\
+     <uint8 value="0xff"/>			\
+        <uint8 value="23"/>			\
+    <url value="http://www.bluez.org/"/>	\
+#!/usr/bin/python
+    <uuid value="00001101-0000-1000-8000-00805f9b34fb"/> \
+        <uuid value="0x0003"/>			\
+        <uuid value="0x0100"/>			\
+      <uuid value="0x1002"/>			\
+      <uuid value="0x1101"/>			\
+        <uuid value="0x1101"/>			\
+xml = ' \
+<?xml version="1.0" encoding="UTF-8" ?> 	\

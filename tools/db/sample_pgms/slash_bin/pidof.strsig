@@ -1,0 +1,55 @@
+3T$D3D$@	
+/bin/mount
+cannot execute mount
+cannot fork
+cannot opendir(/proc)
+can't get program name from /proc/%s
+can't read sid from %s
+%*c %*d %*d %d %*d %*d %*u %*u %*u %*u %*u %*u %*u %*d %*d %*d %*d %*d %*d %*u %*u %*d %*u %lu %lu
+chdir /proc failed
+closedir
+closelog
+endmntent
+__errno_location
+__fprintf_chk
+getmntent
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+illegal omit pid value (%s)!
+invalid options on command line!
+_IO_stdin_used
+@(#)killall5 2.86 31-Jul-2004 miquels@cistron.nl
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__memcpy_chk
+mlockall
+mount returned non-zero exit status
+only one argument, a signal number, allowed
+out of memory
+PIDOF_NETFS
+posix_memalign
+__printf_chk
+/proc/%d/exe
+/proc/%d/root
+/proc/mounts
+/proc not mounted, failed to mount.
+/proc/%s/exe
+/proc unavailable.
+/proc/version
+readlink
+/sbin/mount
+%s/cmdline
+setmntent
+__snprintf_chk
+__stack_chk_fail
+stat failed for %s!
+strcasecmp
+strdupa(): %s
+strerror
+__vfprintf_chk
+__vsyslog_chk

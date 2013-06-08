@@ -1,0 +1,70 @@
+			autoscript($package,"postinst","postinst-moveconffile","s!#OLD#!$old!g;s!#NEW#!$rule!g");
+			autoscript($package,"preinst","preinst-moveconffile","s!#OLD#!$old!g;s!#NEW#!$rule!g;s!#PACKAGE#!$package!g");
+B<dh_installudev> is a debhelper program that is responsible for
+B<dh_installudev> [S<I<debhelper options>>] [B<-n>] [B<--name=>I<name>] [B<--priority=>I<priority>]
+between invocations of this command. Otherwise, it may cause multiple
+Code is added to the F<preinst> and F<postinst> to handle the upgrade from the
+# conffile moves correctly.
+debian/I<package>.udev.
+dh_installudev - install udev rules files
+	$dh{PRIORITY}.="-";
+	$dh{PRIORITY}="40";
+	$dh{PRIORITY}=~s/^z//;
+			doit("install","-d","$tmp/lib/udev/rules.d");
+		doit("install","-m","0644",$rules_file,$tmp.$rule);
+Do not modify F<preinst>/F<postinst> scripts.
+			# file in /lib, so it will override.
+		$filename="$dh{NAME}.rules";
+		$filename = "$package.udev";
+	$filename=~s/\.udev$/.rules/;
+foreach my $package (@{$dh{DOPACKAGES}}) {
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 NOTES
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	if (defined $dh{NAME}) {
+if (! defined $dh{PRIORITY}) {
+if (defined $dh{PRIORITY}) {
+		if (! $dh{NOSCRIPTS}) {
+if ($dh{PRIORITY}) {
+		if (! -e "$tmp/lib/udev/rules.d") {
+	if ($filename eq 'udev') {
+	if ($rules_file) {
+# In case a caller still uses the `z` prefix, remove it.
+Installed into F<lib/udev/rules.d/> in the package build directory.
+installing B<udev> rules files.
+installs files named debian/I<package>.I<name>.udev instead of the usual
+instances of the same text to be added to maintainer scripts.
+			# in which case we rename it to match the new
+=item B<--name=>I<name>
+=item B<-n>, B<--noscripts>
+=item B<--priority=>I<priority>
+=item debian/I<package>.udev
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+	my $filename=basename($rules_file);
+			my $old="/etc/udev/rules.d/$old_priority$oldfilename";
+	my $oldfilename=$filename;
+my $old_priority=$dh{PRIORITY};
+		my $rule="/lib/udev/rules.d/$dh{PRIORITY}$filename";
+	my $rules_file=pkgfile($package,"udev");
+	my $tmp=tmpdir($package);
+Note that this command is not idempotent. L<dh_prep(1)> should be called
+old B<udev> rules file location.
+	$old_priority.="_";
+	$old_priority="z60";
+			# Remove old rule from /etc, unless it's modified,
+			$rule=~s/^\/lib/\/etc/;
+Sets the priority string of the F<rules.d> symlink. Default is 40.
+# The priority used to look like z60_;
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+use File::Find;
+use strict;
+#!/usr/bin/perl -w
+# we need to calculate that old value to handle
+When this parameter is used, B<dh_installudev> looks for and

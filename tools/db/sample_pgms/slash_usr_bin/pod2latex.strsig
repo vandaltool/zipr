@@ -1,0 +1,242 @@
+	      );
+# Abort if nothing to do
+				  AddPostamble => $options{'full'},
+				  AddPostamble => $postamble,
+				  AddPreamble => $options{'full'},
+				  AddPreamble => $preamble,
+Also forces C<latex> label and index entries to be prefixed by the
+and/or modify it under the same terms as Perl itself.
+  # and the program does not rely upon it.
+and they will therefore not be marked up in any special way
+      # a postamble (controlled by command line option)
+      # a preamble (controlled by command line option)
+      # are converting.
+are supported and appended in order separated by "\n".
+argument is not supplied, a single document will be created for each
+# a single output file is required per input file using
+# a .tex extension rather than any exisiting extension
+A user supplied postamble for the LaTeX code. Multiple values
+A user-supplied postamble for the LaTeX code to be read from the
+A user-supplied preamble for the LaTeX code. Multiple values
+A user-supplied preamble for the LaTeX code to be read from the
+# be directories
+# been given values.
+  # Case where we just generate one input per output
+  # Case where we want everything to be in a single document
+C<latex> chapter, 1 equivalent to a C<latex> section etc. The default
+combined output file.
+# comes from the file named by the argument
+      $converted++;
+Copyright (C) 2000, 2003, 2004 Tim Jenness. All Rights Reserved.
+C<pod2latex> is a program to convert POD format documentation
+      # Create a new parser object
+Creates a complete C<latex> file that can be processed immediately
+Cross references between documents are not resolved when multiple
+      # Derive the input file from the output file
+directives are treated as subsections. This has the advantage
+directive. This is an integer between 0 and 5 with 0 equivalent to a
+# directories to their contents.
+  # dont check for return status of unlink
+    } else {
+} else {
+      # end with an index for the last
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
+# everything at once but it allows us to preserve the order 
+# Extract the pods from each arg since some of them might
+  # Flag to indicate whether we have converted at least one file
+foreach my $arg (@files) {
+  foreach my $pod (@pods) {
+format to use for I<section-spec>. This option may be given multiple
+	   "full",
+	       "full"   => 0,
+Functions and variables are not automatically recognized
+GetOptions(\%options, 
+	       "h1level" => 1,  # section is equivalent to H1
+	   "h1level=i",
+=head1 AUTHOR
+=head1 BUGS
+=head1 DESCRIPTION
+				  Head1Level => $options{'h1level'},
+=head1 NAME
+=head1 OPTIONS AND ARGUMENTS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	   "help",
+	       "help"   => 0,
+    if 0; # not running under some shell
+if (exists $options{'out'} && defined $options{'out'}) {
+    if (-f $pod) {
+if ($multi_documents) {
+# If $options{'out'} is set we are processing to a single output file
+  if ($options{postamble} && @{$options{postamble}});
+  if ($options{preamble} && @{$options{preamble}});
+	if @{$options{'sections'}};
+if ($#pods == -1) {
+	if $running_under_some_shell;
+# If the output file is not specified it is assumed that
+      # if this is the first file to be converted we may want to add
+      # if this is the last file to be converted may want to add
+  # If verbose
+  # indicates how many files have been converted
+input file.
+into a single file. C<.tex> is appended if not present.  If the
+is 1 (C<H1> equivalent to a latex section).
+is encountered a section is created containing the actual
+=item B<-full>
+=item B<-h1level>
+=item B<-help>
+=item B<-man>
+=item B<-modify>
+=item B<-out>
+=item B<-postamble>
+=item B<-postfile>
+=item B<-preamble>
+=item B<-prefile>
+=item B<-sections>
+=item B<-verbose>
+it is assumed that the intention is to write all translated output
+Known bugs are:
+				  LevelNoNum => $options{'h1level'} + 1,
+    local $/;
+  # Loop over the input files
+(L<perlpod>) into latex. It can process multiple input documents at a
+L<Pod::LaTeX>
+				  MakeIndex => $options{'full'},
+	   "man",
+	       "man"    => 0,
+matching is supported.
+      # May want to start with a preamble for the first one and
+modified from the input pod such that when a C<=head1 NAME>
+	   "modify",
+	       "modify" => 0,
+  $multi_documents = 0;
+  $multi_documents = 1;
+  my $converted = 0;
+my @files = @ARGV;
+    my $fn = shift;
+    my $infh = gensym;
+my $multi_documents;
+my %options = (
+  my $outfh = gensym;
+  my $output = $options{'out'};
+      my $output = $pod;
+      my $parser = new Pod::LaTeX(
+      my $podfh = gensym;
+my @pods;
+  my %pods = pod_find($arg);
+      my $postamble = ( ($converted == $#pods && $options{'full'}) ? 1 : 0 );
+      my $preamble = 0;
+my %User;
+my $VERSION = "1.01";
+named file. Multiple values are supported and appended in
+name of the module.
+Name of the output file to be used. If there are multiple input pods
+  # Need to open the output file ourselves
+# Now find which ones are real pods and convert 
+# Only want to override the preamble and postamble if we have
+    open $infh, $fn
+  open ($outfh, ">$output") || die "Could not open output file: $!\n";
+      # Open parser object
+      open ($podfh, "<$pod") || die "Could not open pod file $pod: $!\n";
+      # Open the file (need the handle)
+$options{"postfile"} = sub { shift; push @{$options{"postamble"}}, _get(shift) };
+$options{"prefile"} = sub { shift; push @{$options{"preamble"}}, _get(shift) };
+order. See B<-postamble>.
+order. See B<-preamble>.
+        or die "Could not open file $fn: $!\n";
+      $output = basename($output, '.pm', '.pod','.pl') . '.tex';
+  $output .= '.tex' unless $output =~ /\.tex$/;
+	   "out=s",
+	       "out"    => undef,
+      # Parse it
+      $parser->{_INFILE} = $pod;
+      $parser->parse_from_filehandle($podfh, $outfh);
+      $parser->parse_from_file($pod, $output);
+      $parser->select(@{ $options{'sections'}})
+# pod2latex conversion program
+pod2latex - convert pod documentation to latex format
+  pod2latex -full -sections 'DESCRIPTION|NAME' SomeDir
+  pod2latex -out mytex.tex *.pod
+  pod2latex *.pm
+  pod2latex -prefile h.tex -postfile t.tex my.pod
+pod2usage(1)  if ($options{help});
+	  ) || pod2usage(2);
+pod2usage(-verbose => 2)  if ($options{man});
+pod documents are converted into a single output C<latex> file.
+pod name (rather than B<NAME>) and all subsequent C<=head1>
+	       "postamble" => [],
+	   "postamble=s@",
+	   "postfile=s"
+	       "preamble" => [],
+      $preamble = 1 if ($converted == 0 && $options{'full'});
+	   "preamble=s@",
+# "prefile" is just like "preamble", but the argument 
+	   "prefile=s", 
+Print a brief help message and exit.
+Print information messages as each document is processed.
+Print the manual page and exit.
+      print "Written output to $output\n" if $options{'verbose'};
+  push(@pods, sort keys %pods);
+# Read all the files from the command line
+# Read command line arguments
+      # relies on a previous pass to check existence of all pods we
+				  ReplaceNAMEwithSection => $options{'modify'},
+    return <$infh>;
+# return the entire contents of a text file
+	       "sections" => [],
+	   "sections=s@",
+See B<-postfile> for reading the postamble from a file.
+See B<-prefile> for reading the preamble from a file.
+      # Select sections if supplied
+  # Should unlink the file if we didn't convert anything!
+  # since there is not a lot to be done if the unlink failed
+Specifies the C<latex> section that is equivalent to a C<H1> pod
+Specify pod sections to include (or remove if negated) in the
+				  StartWithNewPage => $options{'full'},
+      # Store the file name for error messages
+sub _get {
+# supplied by the user
+Table of contents and index generation commands are included in the
+				  TableOfContents => $options{'full'},
+				  TableOfContents => $preamble,
+that the description of a module will be in its own section
+the C<podselect()> command.
+# the same between "postfile" and "postamble"
+      # This is a kluge that breaks the data hiding of the object
+# This is not as efficient as using pod_find to search through
+This option causes the output C<latex> to be slightly
+This program is free software; you can redistribute it
+This section describes the supported command line options. Minimum
+time and either generate a latex file per input document or a single
+times on the command line.This is identical to the similar option in
+Tim Jenness E<lt>tjenness@cpan.orgE<gt>
+translation.  See L<Pod::Select/"SECTION SPECIFICATIONS"> for the
+				  UniqueLabels => $options{'modify'},
+(unless C<=for/=begin> directives are used that rely on extra packages).
+unless instructed by an explicit pod command.
+  unlink "$output" unless $converted;
+  # Use auto-vivified file handle in perl 5.6
+      # Use auto-vivified handle in perl 5.6
+use File::Basename;
+use Getopt::Long;
+use Pod::Find qw/ pod_find /;
+use Pod::LaTeX;
+use Pod::Usage;
+                                  %User
+                                  %User,
+$User{UserPostamble} = join("\n", @{$options{'postamble'}})
+$User{UserPreamble} = join("\n", @{$options{'preamble'}})
+use strict;
+use Symbol;
+#!/usr/bin/perl
+	   "verbose",
+	       "verbose" => 0,
+  warn "Converted $converted files\n" if $options{'verbose'};
+      warn "Converting $pod\n" if $options{'verbose'};
+      warn "File $pod not found\n";
+  warn "None of the supplied Pod files actually exist\n";
+      # We have converted at least one file
+which is helpful for including module descriptions in documentation.
+# whose name is given as argument
+wrapper C<latex> code.

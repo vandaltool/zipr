@@ -1,0 +1,166 @@
+3T$43D$0	
+                          always (-i).  Without WHEN, prompt always
+ambiguous argument %s for %s
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+assurance that the contents are truly unrecoverable, consider using shred.
+bindtextdomain
+block special file
+# buckets:         %lu
+# buckets used:    %lu (%.2f%%)
+bug-coreutils@gnu.org
+By default, rm does not remove directories.  Use the --recursive (-r or -R)
+cannot remove directory: %s
+cannot remove %s
+character special file
+closedir
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+cycle_check
+cycle-check.c
+David MacKenzie
+dcgettext
+directory
+                          directory that is on a file system different from
+# entries:         %lu
+__errno_location
+(*__errno_location ()) != 22
+error closing file
+faccessat
+failed to get attributes of %s
+fdopendir
+  -f, --force           ignore nonexistent files, never prompt
+For complete documentation, run: info coreutils '%s invocation'
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+fstatfs64
+fts_children
+fts_close
+fts_close failed
+fts_open
+fts_read
+fts_read failed
+__fxstat64
+__fxstatat64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+__getdelim
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+--interactive
+      --interactive[=WHEN]  prompt according to WHEN: never, once (-I), or
+invalid argument %s for %s
+_IO_stdin_used
+  -i                    prompt before every removal
+  -I                    prompt once before removing more than three files, or
+iswprint
+it is dangerous to operate recursively on %s
+it is dangerous to operate recursively on %s (same as %s)
+Jim Meyering
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+__lxstat64
+max bucket length: %lu
+memory exhausted
+missing operand
+no-preserve-root
+      --no-preserve-root  do not treat `/' specially
+Note that if you use rm to remove a file, it might be possible to recover
+NOTIFY YOUR SYSTEM MANAGER.
+one-file-system
+      --one-file-system  when removing a hierarchy recursively, skip any
+openat64
+option to remove each listed directory, too, along with all of its contents.
+__overflow
+Paul Rubin
+please report to %s
+      --preserve-root   do not remove `/' (default)
+-presume-input-tty
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+readdir64
+recursive
+regular empty file
+regular file
+remove.c
+removed directory: %s
+removed %s
+Remove (unlink) the FILE(s).
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+Richard M. Stallman
+  -r, -R, --recursive   remove directories and their contents recursively
+  - `%s'
+%s, and %s.
+%s: descend into directory %s? 
+%s: descend into write-protected directory %s? 
+setlocale
+  %s -- -foo
+  %s ./-foo
+shell-always
+%s home page: <%s>
+skipping %s, since it's on a different device
+some of its contents, given sufficient expertise and/or time.  For greater
+%s: remove all arguments? 
+%s: remove all arguments recursively? 
+%s: remove %s %s? 
+%s: remove write-protected %s %s? 
+((s) == RM_OK || (s) == RM_USER_DECLINED || (s) == RM_ERROR)
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+state->magic == 9827862
+((status) == RM_OK || (status) == RM_USER_DECLINED || (status) == RM_ERROR)
+symbolic link
+                          that of the corresponding command line argument
+The following directory is part of the cycle:
+There is NO WARRANTY, to the extent permitted by law.
+This almost certainly means that you have a corrupted file system.
+This is free software: you are free to change and redistribute it.
+To remove a file whose name starts with a `-', for example `-foo',
+traversal failed: %s
+Try `%s --help' for more information.
+Try `%s ./%s' to remove the file %s.
+unexpected failure: fts_info=%d: %s
+unlinkat
+Usage: %s [OPTION]... FILE...
+use --no-preserve-root to override this failsafe
+use one of these commands:
+/usr/share/locale
+Valid arguments are:
+      --version  output version information and exit
+  -v, --verbose         explain what is being done
+WARNING: Circular directory structure.
+weird file
+                          when removing recursively.  Less intrusive than -i,
+                          while still giving protection against most mistakes
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+xfts_open
+__xstat64

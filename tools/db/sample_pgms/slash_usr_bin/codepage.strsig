@@ -1,0 +1,45 @@
+ -a: extract all codepages from the file
+ -c: input file is a single codepage
+Codepage = %d
+CPEntryHeader: size=%d dev=%d [%s] name=%8.8s codepage=%d
+Device = %.8s
+error reading CPEntryHeader - got %d chars
+error reading CPInfoHeader - got %d chars
+error reading ExtendedFontFileHeader - got %d chars
+error reading FontFileHeader - got %d chars
+error reading FontInfoHeader - got %d chars
+error writing %s - wrote %d chars
+Example: cpi ega.cpi 850 
+ExtendedFontFileHeader:
+font%d: height %d dfd_offset %d
+FontFileHeader: id=0x%x "%7.7s" res=%8.8s num=%d typ=%d fih_offset=%ld
+FontInfoHeader: num_codepages=%d
+found %d instead of 4 fonts in drfont
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+ -l or no option: list all codepages contained in the file
+ -L: print header info (you don't want to see this)
+more codepages expected, but nexthdr=%ld
+ nnn (3 digits): extract codepage nnn from the file
+no more code pages, but nexthdr != 0
+no page %d found
+Number of Fonts = %d
+pos=%ld font at %ld
+pos=%ld nexthdr at %ld
+__printf_chk
+		res=%6.6s nxt=%ld off_font=%ld
+Size of Bitmap = %d
+__sprintf_chk
+__stack_chk_fail
+this program cannot handle DRDOS font files
+Unable to open file %s.
+Usage: cpi code_page_file [-c] [-L] [-l] [-a|nnn]
+ will create a file 850.cp containing the requested codepage.
+Writing %s

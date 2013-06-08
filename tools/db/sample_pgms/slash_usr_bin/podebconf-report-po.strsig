@@ -1,0 +1,800 @@
+###############################################################################
+	1 while $body =~ s/^#[^\n]*\n//s;
+		                        access => 'a',
+  --addlanguageteam=LANG:LIST
+ "addlanguageteam=s"=>\@ADDLANGUAGETEAM,
+#  Add mail headers and remove non-ASCII characters
+	# Add the list of PO files.
+# along with this program; if not, write to the Free Software
+## Apply the values to the subject and to the body of the message
+                        argument to the mutt's postponed parameter or
+                        attach to the call for translations
+# (at your option) any later version.
+$BODY = &OpenEditor($EDITOR, $BODY) if not $DEFAULT_ARG;
+	$BODY = &ReadFile($TEMPLATE_CALL);
+	$BODY = &ReadFile($TEMPLATE_SUBMIT);
+	$BODY = &ReadFile($TEMPLATE_TRANSLATORS);
+	$body = &ReadFile($tmpnam) if (-f $tmpnam);
+	$BODY =~ s/<filelist>/$filelist/g;
+	$BODY =~ s/<from>/$FROM_ARG/g;
+	$BODY =~ s/\n<deadline>/$DEADLINE_ARG/g;
+	$BODY =~ s/\n# Reply-To: \n/\n/;
+	$BODY =~ s/<package_and_version>/$PACKAGE_AND_VERSION/g
+	$BODY =~ s/<package>/$PACKAGE_ARG/g if ($PACKAGE_ARG ne '');
+	$BODY =~ s/<reply>/$REPLY/g;
+	$BODY =~ s/<reply-to>/$BTS_ARG/g;
+	$body =~ s/^\s+//s;
+	$BODY =~ s/<statistics>\n/$statistics/g;
+	$BODY =~ s/<subject>/$SUBJECT/g;
+	$BODY =~ s/<version>/$PKG_VERSION/g if ($PKG_VERSION ne '');
+--$boundary
+--$boundary--
+	$BTS_ARG .= "\@bugs.debian.org";
+  --bts=BUGNUMBER       specify the Debian bug number to set as reply-to
+ "bts=s"           => \$BTS_ARG,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# --call.
+	$CALL="";
+	$CALL="Debian Internationalization <debian-i18n\@lists.debian.org>"
+  --call[=LIST]         send a call for translations to the LIST (or to
+ "call:s"          => \$CALL,
+	$CALL_WITH_TRANSLATORS = 0;
+$CALL_WITH_TRANSLATORS = 0 unless defined $CALL;
+	$CALL_WITH_TRANSLATORS = 1;
+                        can be used as a postponed mailbox with mutt -p.
+		$CHANGELOG = "$d/debian/changelog" if (-f "$d/debian/changelog");
+## Check every file with .po extension in $PODIR ...
+		#  Check for fuzzy or missing translations
+# Check invalid set of options
+	chomp $DEADLINE_ARG;
+	chomp($DEADLINE_ARG = <STDIN>);
+		chomp $stats;
+	chop $line;
+		close (CHG);
+	close(CNF)
+		close (CNTRL)
+	closedir(DIR);
+closedir(DIR);
+	close($fh)
+	close(FILE)
+	close (PO)
+	# Command line has the highest priority
+			#  Concatenate lines
+  --conf                
+		$conf .= $_;
+	$CONF_ARG = $ENV{'HOME'}."/.podebconf-report-po.conf";
+ "conf=s"          => \$CONF_ARG,
+	$conf =~ s/^\s*#.*$//m;
+	$conf =~ s/\s*$//m;
+		$content = Compress::Zlib::memGzip($content) if $GZIP_ARG;
+			$content = Compress::Zlib::memGzip($content) if $GZIP_ARG;
+Content-Disposition: attachment; filename="$file$ext"
+	$content =~ m/\n"Project-Id-Version:\s*([^"]*)\s*\\n"\n/i;
+Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+Content-Type: $contentType
+			, 'Content-Type' => ${$mail}{'content-type'}
+Content-Type: text/plain; charset="$charset"
+		$CONTROL = "$d/debian/control" if (-f "$d/debian/control");
+			$CONTROL = "$d/debian/control.in" if (-f "$d/debian/control.in");
+Copyright (C) 2004-2006 Fabio Tranchitella and Denis Barbier.
+# Copyright (C) 2004-2006 Fabio Tranchitella <kobold@kobold.it>
+# Copyright (C) 2007-2008 Nicolas Fran
+Copyright (C) 2007      Nicolas Fran
+		                        create => 1);
+			, data => ${$mail}{body}
+Deadline? [+10days] ";
+	$DEADLINE_ARG = $1;
+		$DEADLINE_ARG = "+10days";
+	$DEADLINE_ARG = "\n\nThe deadline for receiving the updated translation is\n$DEADLINE_ARG.";
+	$DEADLINE_ARG = qx/$cmd/;
+  --deadline=DEADLINE   specify the deadline for receiving the updated
+ "deadline=s"      => \$DEADLINE_ARG,
+	$DEFAULT_ARG = 0;
+	$DEFAULT_ARG = 1;
+		      ($DEFAULT_ARG?"":"e	reopen the editor.\n").
+ "default"         => \$DEFAULT_ARG,
+  --default             don't open the editor and use the template as is
+## Default subjects (used if the specified template does not contain a
+## Define the default subjects (if not set in the template)
+	delete $poFiles->{$poFile} unless $outdated;
+#                         Denis Barbier <barbier@debian.org>
+die "Directory po not found, exiting!\n" if $PODIR eq "";
+	die "In the --call mode, the --languageteam option is only valid if --withtranslators is specified.\n";
+		die "podebconf-report-po: failed to execute '$cmd': $!.\n";
+		die "Problem running mutt -p: $!\n";
+die "$PROGRAM: This program requires the libmail-sendmail-perl package.\n".
+		die "The --postpone and --mutt options require the ".
+			die "Too many pot file found.\n".
+die "Wrong argument: $PODIR is not a directory!\n" unless -d $PODIR;
+# Disable --withtranslators if no call for translations are requested with
+		      "?	display this help message.\n".
+$EDITOR = $ENV{'EDITOR'} if exists($ENV{'EDITOR'});
+$EDITOR = $ENV{'VISUAL'} if exists($ENV{'VISUAL'});
+} else {
+	} else {
+		} else {
+			} else {
+} elsif ($conf =~ m/^deadline\s*(?:\s|=)\s*(.*)$/m) {
+} elsif ($conf =~ m/^default$/m) {
+} elsif ($conf =~ m/^force$/m) {
+} elsif ($conf =~ m/^from\s*(?:\s|=)\s*(.*)$/m) {
+} elsif ($conf =~ m/^languageteam$/m) {
+} elsif ($conf =~ m/^nodeadline$/m) {
+} elsif ($conf =~ m/^nogzip$/m) {
+} elsif ($conf =~ m/^nolanguageteam$/m) {
+} elsif ($conf =~ m/^summary$/m) {
+} elsif ($conf =~ m/^templatecall\s*(?:\s|=)\s*(.*)$/m) {
+} elsif ($conf =~ m/^template\s*(?:\s|=)\s*(.*)$/m) {
+} elsif ($conf =~ m/^templatesubmit\s*(?:\s|=)\s*(.*)$/m) {
+} elsif ($conf =~ m/^templatetranslators\s*(?:\s|=)\s*(.*)$/m) {
+} elsif ($conf =~ m/^utf8$/m) {
+} elsif ($conf =~ m/^verbose$/m) {
+} elsif ($conf =~ m/^withouttranslators$/m) {
+} elsif ($conf =~ m/^withtranslators$/m) {
+		} elsif (-d "$dir/debian/po") {
+		} elsif (-d "$dir/po") {
+} elsif (defined $CALL) {
+} elsif (defined $CALL_WITH_TRANSLATORS) {
+} elsif (defined $DEADLINE_ARG) {
+} elsif (!defined $DEFAULT_ARG) {
+} elsif (!defined $FORCE_ARG) {
+} elsif (!defined $FROM_ARG) {
+} elsif (!defined $GZIP_ARG) {
+} elsif (defined $LANGUAGETEAM_ARG) {
+} elsif (!defined $SMTP_ARG) {
+} elsif (!defined $SUMMARY_ARG) {
+} elsif (!defined $TEMPLATE_ARG) {
+} elsif (!defined $UTF8) {
+} elsif (!defined $VERBOSE_ARG) {
+} elsif (length $CALL) {
+	} elsif (length $CALL) {
+	} elsif ($line eq "?") {
+				$email = $2;
+				$email ||= $2;
+			$email = $ENV{'DEBEMAIL'};
+				$email ||= $ENV{'EMAIL'};
+		Encode::from_to($poFiles->{$poFile}->{team},
+		Encode::from_to($poFiles->{$poFile}->{translator},
+	eval q{ sub Compress::Zlib::memGzip { return shift; } };
+eval q{use Compress::Zlib;};
+eval q{use Encode;};
+eval q{use Mail::Sendmail;};
+	exit 0;
+	exit(0);
+exit(0);
+	exit(0) if ($line ne "Y" and $line ne "y");
+	exit 1;
+#  Expanded into "<package> <version>" if version is found, <package> otherwise
+			$f = $1;
+ "f|force"         => \$FORCE_ARG,
+  -f, --force           send the email without confirmation
+$file_encoded
+		$filelist .= '### ';
+	$filelist = DropNonASCII($filelist)
+	$filelist = join(' ', sort keys %$poFiles)."\n";
+		$filelist .= '[' .((!%langs or $langs{$poFile})?'*':' '). '] ';
+		$filelist .= "\n";
+		$filelist .= "#\n"
+		$filelist .= $poFile . ': ' . $poFiles->{$poFile}->{translator};
+		$filelist .= ', ' . $poFiles->{$poFile}->{team} if defined($poFiles->{$poFile}->{team});
+$filelist =~ s/\n$//s;
+	#  First remove comments
+		$folder->write();
+	$FORCE_ARG = 0;
+	$FORCE_ARG = 1;
+		foreach my $d (@TOPDIRS) {
+	foreach my $d (@TOPDIRS) {
+	foreach my $file (keys %$poFiles) {
+	foreach my $h (keys(%headers)) {
+	foreach my $h (qw(From To Subject)) {
+			foreach my $lang_list (@ADDLANGUAGETEAM) {
+foreach my $mail (@mails) {
+foreach my $poFile (grep(/\.po$/, readdir(DIR))) {
+	foreach my $poFile (grep(/\.po$/, sort readdir(DIR))) {
+	foreach my $poFile (sort keys %$poFiles) {
+	foreach my $potFile (grep(/\.pot$/, readdir(DIR))) {
+foreach my $refmail (@mails) {
+foreach (split(",", $LANGS)) {
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+			$found_header = 1;
+		$FROM_ARG = "";
+	$FROM_ARG = $1;
+			$FROM_ARG = $1;
+		$FROM_ARG = $name ? "$name <$email>" : $email;
+				From => $FROM_ARG,
+		From => $FROM_ARG,
+			( From => ${$mail}{'From'}
+  --from=MAINTAINER     specify the name and the email address of the sender
+ "from=s"          => \$FROM_ARG,
+GetOptions
+## Global variables
+# GNU Library General Public License for more details.
+		goto OPEN_EDITOR unless ($DEFAULT_ARG);
+	goto PREPARE_MAIL;
+		goto QUESTION;
+	$GZIP_ARG = 0;
+	$GZIP_ARG = 1;
+  --gzip                compress PO files with gzip
+ "gzip"            => \$GZIP_ARG,
+## Handle invalid arguments
+## Handle options
+			$headers{$1} = $2;
+%headers = &ParseHeaders($BODY);
+  --help                display this help and exit
+ "help"            => \$HELP_ARG,
+&Help_PrintHelp    if $HELP_ARG;
+&Help_PrintVersion if $VERSION_ARG;
+                        \$HOME/postponed
+if ($@) {
+	if ($? != 0) {
+					if $1 ne 'LANGUAGE <LL@li.org>';
+if ($BTS_ARG =~ m/^\d+$/) {
+if ($CALL_WITH_TRANSLATORS) {
+		if ($comment =~ m/^([a-zA-Z0-9_-]+):\s*([^\n]+)$/) {
+		if ($comment =~ s/^##[ \t]*\[(?:\*|x|X)\][ \t]*([^:]*):[ \t]*([^\n]*)$//s) {
+if ($conf =~ m/^smtp\s*(?:\s|=)\s*(.*)$/m) {
+	if ($CONTROL eq '') {
+	if ($DEADLINE_ARG eq "") {
+if ($DEADLINE_ARG =~ m/^\+/) {
+if ($DEADLINE_ARG ne "") {
+if (defined $CALL and length $CALL) {
+if (defined $CALL_WITHOUT_TRANSLATORS) {
+if (defined $FROM_ARG) {
+	if (defined $MBOX and length $MBOX) {
+if (defined $NO_DEADLINE) {
+if (defined $NO_DEFAULT) {
+if (defined $NO_FORCE) {
+if (defined $NO_GZIP) {
+if (defined $NO_LANGUAGETEAM) {
+if (defined $NO_SUMMARY) {
+if (defined $NO_TEMPLATE) {
+if (defined $NO_UTF8) {
+if (defined $NO_VERBOSE) {
+		if (defined($poFiles->{$poFile}->{team}) and
+if (defined $TEMPLATE_CALL) {
+if (defined $TEMPLATE_SUBMIT) {
+if (defined $TEMPLATE_TRANSLATORS) {
+		if (defined $To{$file}) {
+		if ($dir =~ m/\/po$/) {
+	if ($dir =~ m/\/po$/ and $dir !~ m/\/debian\/po$/) {
+if (-e $ENV{'HOME'}."/.podebconf-report-po.conf") {
+			if ($email =~ /^(.*?)\s+<(.*)>\s*$/) {
+	if ($ENV{'DEBEMAIL'} || $ENV{'EMAIL'}) {
+			if ($ENV{'EMAIL'} =~ /^(.*?)\s+<(.*)>\s*$/) {
+	if (eval { require Mail::Box::Manager }) {
+		if (exists $ENV{'DEBEMAIL'}) {
+		if (exists $ENV{'DEBFULLNAME'}) { $name = $ENV{'DEBFULLNAME'}; }
+		if (exists $ENV{'EMAIL'}) {
+	if (-f $CHANGELOG) {
+	if (-f $CONTROL) {
+if (!$FORCE_ARG) {
+		if ($found_header == 0 && m/msgid ""\nmsgstr/s) {
+		if ($FROM_ARG eq "" && $text =~ m/^Maintainer: (.*)/m) {
+		#  if it cannot be retrieved.
+if (keys %$poFiles) {
+			if ($LANGUAGETEAM_ARG) {
+if ($LANGUAGETEAM_ARG && defined $CALL && not $CALL_WITH_TRANSLATORS) {
+			if ($LANGUAGETEAM_ARG && m/\\nLanguage-Team: (.*?)\\n/) {
+				if (length $poFiles->{$poFile}->{team}) {
+		if (length $POTFILE) {
+	if (length $POTFILE) {
+	if ($line eq "e" or $line eq "E") {
+	if ($MBOX =~ m/^postponed="(.*)"$/) {
+		if (m/^#, .*fuzzy/m or m/\nmsgstr ""$/s) {
+			if (m/\\nContent-Type: [^;]*; charset=(.*?)\\n/) {
+			if (m/\\nLast-Translator: (.*?)\\n/ && $1 ne 'FULL NAME <EMAIL@ADDRESS>') {
+				if (m/^$PACKAGE_ARG\s+\((.*)\)\s/) {
+if ($MUTT) {
+		if (! $name) {
+if ($no_encode and $UTF8) {
+	if ($NOT_DEBCONF) {
+if ($NOT_DEBCONF) {
+if ($no_zlib && $GZIP_ARG) {
+		if (open (CHG, "< $CHANGELOG")) {
+	if ($package_and_version =~ m/^(.+)\s+(.+?)$/i) {
+		if ($PACKAGE_AND_VERSION ne '');
+if ($PACKAGE_ARG eq "" or $FROM_ARG eq "") {
+		if ($PACKAGE_ARG eq "" && $text =~ m/^Source: (.*)/m) {
+if ($PACKAGE_ARG =~ s/_(.*)//) {
+if ($PKG_VERSION eq "N/A") {
+if ($PKG_VERSION eq 'N/A' and $PACKAGE_ARG eq '') {
+if ($PODIR_ARG eq "") {
+		if ($poFiles->{$poFile}->{translator} !~ /^(.*<)?[^@]+@[^@]+\.[A-Za-z]{2,4}>?$/) {
+if ($POTFILE eq "") {
+			if ($SEND_MESSAGE) {
+		if ($SEND_MESSAGE) {
+		if ($stats =~ s/^([0-9]+) fuzzy translation[s ,]*//) {
+		if ($stats =~ s/^([0-9]+) translated message[s ,]*//) {
+		if ($stats =~ s/^([0-9]+) untranslated message[s ,]*//) {
+	if ($SUBMIT_ARG) {
+if ($SUBMIT_ARG) {
+if ($SUBMIT_ARG or length $CALL) {
+if ($SUMMARY_ARG and not $CALL) {
+	if (system("mutt -p") >> 8 != 0) {
+if ($TEMPLATE_ARG ne "") {
+# If the specified deadline starts with a '+', it is an offset from now.
+		if ($UTF8) {
+	if ($UTF8) {
+	if ($warn_invalid_email) {
+		#  Ignore outdated msgids
+		import Mail::Box::Manager;
+# it under the terms of the GNU General Public License as published by
+  --langs=LANGUAGES     restrict sending emails only to these languages
+		$lang =~ s/\.po$//;
+			$lang =~ s/\.po$//;
+	$langs{$_.".po"} = 1;
+ "langs=s"         => \$LANGS,
+	$LANGUAGETEAM_ARG = 0;
+	$LANGUAGETEAM_ARG = 1;
+ "languageteam"    => \$LANGUAGETEAM_ARG,
+  --languageteam        send the email also to the Language Team
+				last;
+			last;
+				last if m/^ --/;
+		    "libmail-box-perl package if you want to use these ".
+				$list_addr =~ s/^.*?<([^<>]*)>.*?$/$1/;
+## Loaded modules, require libmail-sendmail-perl
+		local $/ = "\n\n";
+	local $/ = "\n\n";
+	local $/ = undef;
+	$mail{body} = encode_qp(&RemoveHeaders($BODY));
+		$mail{body} = <<_EOF_;
+			$mail{body} = <<_EOF_;
+			$mail{body} .= <<_EOF_;
+				$mail{body} .= <<_EOF_;
+		$mail{'content-type'} = "multipart/mixed; boundary=\"$boundary\"";
+			$mail{'content-type'} = "multipart/mixed; boundary=\"$boundary\"";
+	@mails = (\%mail);
+#  Make Perl compiler quiet
+		$MBOX = $1;
+		$MBOX = $ENV{'HOME'}."/postponed";
+	$MBOX = qx/mutt -Q postponed/;
+                        mention debconf in the subject and message
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		$mgr->appendMessage($folder, $msg);
+		$mgr->close();
+	$msg =~ s/^/**${PROGRAM}: /mg;
+ "mutt"            => \$MUTT,
+		     " 'mutt -Q postponed'. Using $MBOX.";
+  --mutt                send the mails with mutt. This set the --postpone
+my @ADDLANGUAGETEAM = ();
+	my $answers = ($DEFAULT_ARG)?"[y/N/?]":"[y/N/e/?]";
+my $BODY = '';
+	my $body = encode_qp(&RemoveHeaders($BODY));
+	my $body = <FILE>;
+		my $body = &RemoveHeaders($BODY);
+	my $body = shift;
+			my $boundary = "=" . time() . "=";
+		my $boundary = "=" . time() . "=";
+my $BTS_ARG = "";
+my $CALL;
+my $CALL_WITHOUT_TRANSLATORS;
+my $CALL_WITH_TRANSLATORS;
+	my $CHANGELOG = '';
+			my $charset = $UTF8?"utf-8":"us-ascii";
+		my $charset = $UTF8?"utf-8":"us-ascii";
+	my $cmd = "LC_ALL=C date -R -d \"$DEADLINE_ARG\"";
+		my $cmd = "LC_ALL=C /usr/bin/msgfmt -o /dev/null --stat $PODIR/$poFile 2>&1";
+		my $comment = $1;
+my $conf = "";
+my $CONF_ARG;
+			my $content = &ReadFile($PODIR . "/" . $file);
+		my $content = &ReadFile($PODIR . "/" . $file);
+	my $content = &ReadFile($PODIR . "/" . $POTFILE);
+			my $contentType = ($GZIP_ARG ? "application/octet-stream" : "text/x-gettext; name=\"$file\"; charset=\"$poFiles->{$file}->{charset}\"");
+		my $contentType = ($GZIP_ARG ? "application/octet-stream": "text/x-gettext; name=\"$file\"; charset=\"US-ASCII\"");
+	my $CONTROL = '';
+my $DEADLINE_ARG;
+my $DEFAULT_ARG;
+	my $dir = abs_path($PODIR);
+	my $dir = getcwd;
+	my $editor = shift;
+my $EDITOR = '/usr/bin/sensible-editor';
+		my ($email, $name);
+	my $ext = ($GZIP_ARG ? '.gz' : '');
+	my ($fh, $tmpnam) = tempfile("podebconf-report-po.mail.tmp.XXXXXX",
+			my $file_encoded = encode_base64($content);
+		my $file_encoded = encode_base64($content);
+my $filelist = '';
+		my $file = $POTFILE;
+	my $file = shift;
+		my $folder = $mgr->open(folder => $MBOX,
+my $FORCE_ARG;
+	my $found_header = 0;
+my $FROM_ARG;
+my $GZIP_ARG;
+	my %headers = ();
+my %headers = ();
+my $HELP_ARG = 0;
+			my $lang = $poFile;
+		my $lang = $poFile;
+my %langs=();
+my $LANGS = "";
+my $LANGUAGETEAM_ARG;
+	my $line = <>;
+				my $list = $1;
+				my $list_addr = $1;
+			my %mail = (
+	my %mail = (
+my @mails = ();
+	my $mail = shift;
+my $MBOX = "";
+		my $mgr = new Mail::Box::Manager;
+		my $msg = Mail::Message->build
+	my $msg = shift;
+my $MUTT = 0;
+my $NO_CONF;
+my $NO_DEADLINE;
+my $NO_DEFAULT;
+my $no_encode = 0;
+my $NO_FORCE;
+my $NO_GZIP;
+my $NO_LANGUAGETEAM;
+my $NO_SUMMARY;
+my $NOT_DEBCONF = 0;
+my $NO_TEMPLATE;
+my $NO_UTF8;
+my $NO_VERBOSE;
+my $no_zlib = 0;
+	my $opts = "";
+	my $outdated = 0;
+my $PACKAGE_AND_VERSION = "";
+	my $package_and_version = $1;
+my $PACKAGE_ARG = "";
+my $PKG_VERSION = "N/A";
+my $PODIR = '';
+my $PODIR_ARG = "";
+my $poFiles = {};
+my $POTFILE = "";
+my $PROGRAM = "podebconf-report-po";
+my $REPLY = '';
+my $SEND_MESSAGE = 0;
+my $SMTP_ARG;
+my $statistics = "language        translated     fuzzy     untranslated\n".
+		my $stats = qx/$cmd/;
+my $SUBJECT = '';
+my $SUBJECT_CALL;
+my $SUBJECT_SUBMIT;
+my $SUBJECT_TRANSLATOR;
+my $SUBMIT_ARG = 0;
+	my %summary = (
+my $SUMMARY_ARG;
+my $TEMPLATE_ARG;
+my $TEMPLATE_CALL;
+my $TEMPLATE_SUBMIT;
+my $TEMPLATE_TRANSLATORS;
+		my $text = <CNTRL>;
+	my $text = shift;
+		my ($t, $f, $u) = ("", "", "");
+	my %To = ();
+my %To = &ParseTo($BODY);
+my @TOPDIRS = qw{../.. .. .};
+my $UTF8;
+my $VERBOSE_ARG;
+my $VERSION = "0.14";
+my $VERSION_ARG = 0;
+my $warn = '';
+	my $warn_invalid_email = 0;
+	my $with_mutt = "";
+                 "-----------------------------------------------------\n";
+		            ."#\n";
+				$name ||= $1;
+			$name = (getpwuid($<))[6];
+			$name =~ s/,.*//;
+		      "N	exit, without sending mails.\n";
+			next;
+				next if ($poFiles->{$poFile}->{team} =~ m/(^|<)\Q$list_addr\E(>|$)/);
+				next unless ($lang_list =~ m/^$lang:(.*)$/);
+		next unless m/^msgid /m;
+  --noconf
+ "noconf"          => \$NO_CONF,
+ "nodeadline"      => \$NO_DEADLINE,
+  --nodefault
+ "nodefault"       => \$NO_DEFAULT,
+	$no_encode = 1;
+  --noforce
+ "noforce"         => \$NO_FORCE,
+  --nogzip
+ "nogzip"          => \$NO_GZIP,
+  --nolanguageteam
+ "nolanguageteam"  => \$NO_LANGUAGETEAM,
+  --nosummary
+ "nosummary"       => \$NO_SUMMARY,
+		$NOT_DEBCONF = 1;
+ "notdebconf"      => \$NOT_DEBCONF,
+  --notdebconf          this is not for debconf translation. Do not
+  --notemplate
+ "notemplate"      => \$NO_TEMPLATE,
+  --noutf8
+ "noutf8"          => \$NO_UTF8,
+  --noverbose
+ "noverbose"       => \$NO_VERBOSE,
+	$no_zlib = 1;
+                        of emails sent to translators
+                        of the outdated debconf translations
+ois <nicolas.francois@centraliens.net>
+		##  Only read the first stanza
+	open (CNF, "< $CONF_ARG")
+		open (CNTRL, "< $CONTROL")
+	opendir(DIR, $PODIR);
+opendir(DIR, $PODIR);
+OPEN_EDITOR:
+	open(FILE, "< $file")
+	open (PO, "< $PODIR/$poFile")
+	#  Optional empty lines
+Options:
+		    "options. No mail written or sent.";
+	$opts = "-f" if ($editor eq "vim");
+		or die ("Couldn't close $CONF_ARG: $!\nExiting!\n");
+		or die ("Couldn't close $file: $!\nExiting!\n");
+		or die ("Couldn't close $tmpnam: $!\nExiting!\n");
+		or die ("Couldn't read $CONF_ARG: $!\nExiting!\n");
+		or die ("Couldn't read $file: $!\nExiting!\n");
+			or die "Unable to close $CONTROL: $!\n";
+		or die "Unable to close $PODIR/$poFile: $!\n";
+			or die "Unable to read $CONTROL: $!\n";
+		or die "Unable to read $PODIR/$poFile: $!\n";
+ ) or &Help_InvalidOption;
+			or print "Couldn't send the email: $Mail::Sendmail::error\n";
+			$outdated = 1;
+$PACKAGE_AND_VERSION = $PACKAGE_ARG .
+		$PACKAGE_ARG = $1;
+			$PACKAGE_ARG = $1;
+		$PACKAGE_ARG = $package_and_version;
+  --package=PACKAGE     specify the name of the package
+ "package=s"       => \$PACKAGE_ARG,
+#  Package version
+			# Perhaps not ideal, but it will have to do
+		    "perl Mail::Box package. Please install the Debian ".
+	$PKG_VERSION = $1;
+					$PKG_VERSION = $1;
+		$PKG_VERSION = $2;
+	($PKG_VERSION ne 'N/A' ? " ".$PKG_VERSION : "");
+			    "Please specify one with the --potfile option.\n";
+# podebconf-report-po, Send outdated debconf PO files to the last translator
+			$PODIR = ".";
+			$PODIR = "debian/po";
+  --podir=DIRECTORY     specify where are located the PO files
+			$PODIR = "po";
+	$PODIR = $PODIR_ARG;
+ "podir=s"         => \$PODIR_ARG,
+	$poFiles->{$poFile} = {};
+		$poFiles->{$poFile} = {};
+		                $poFiles->{$poFile}->{charset},
+				$poFiles->{$poFile}->{charset} = $1;
+				$poFiles->{$poFile}->{team} = ""
+					$poFiles->{$poFile}->{team} .= ", ";
+				$poFiles->{$poFile}->{team} = $1
+		    $poFiles->{$poFile}->{team} !~ /^(.*<)?[^@]+@[^@]+\.[A-Za-z]{2,4}>?$/) {
+				$poFiles->{$poFile}->{team} .= $list;
+				$poFiles->{$poFile}->{translator} = $1;
+	  "         PO files will not be compressed!\n\n";
+		Postpone($mail);
+  --postpone=MBOX       do not send emails, append them in MBOX. This file
+ "postpone=s"      => \$MBOX,
+		Postpone(\%summary);
+  --potfile=FILE        when used with --call, specifies the POT file to
+		     "--potfile option, or specify in the mail how to ".
+		$POTFILE = $potFile;
+ "potfile=s"       => \$POTFILE,
+PREPARE_MAIL:
+	print "
+	print <<_EOF_;
+	print $fh $body;
+print $Mail::Sendmail::error . $Mail::Sendmail::error if 0;
+	print "No outdated files\n";
+	print "Now, prepare the mail for translators...";
+	print "Outdated files: ".join(' ', keys %$poFiles)."\n";
+		print "Ready to send$with_mutt the bug report against the package $PACKAGE_ARG, are you sure? $answers ";
+		print "Ready to send$with_mutt the call for translation to $CALL, are you sure? $answers ";
+		print "Ready to send$with_mutt the emails, are you sure? $answers ";
+	print STDERR $msg."\n";
+	print STDERR "Try `${PROGRAM} --help' for more information.\n";
+print STDERR $warn if $warn ne '';
+## Print the usage message and exit
+## Print the version text and exit
+		print "Using $POTFILE for the call for translation\n";
+		print "y	send the mail(s).\n".
+    "$PROGRAM: Aborting!\n" if $@;
+${PROGRAM} $VERSION
+	push @ADDLANGUAGETEAM, $1;
+			push(@mails, \%mail);
+	QUESTION:
+			$refmail->{$h} = &DropNonASCII($headers{$h});
+			$refmail->{$h} = &DropNonASCII($refmail->{$h});
+			$refmail->{$h} = encode_qp($headers{$h}, "");
+				$refmail->{$h} = encode_qp($refmail->{$h}, "");
+			$refmail->{$h} =~ s/=$//m;
+				$refmail->{$h} =~ s/=$//m;
+			$refmail->{$h} =~ s/(\S*=\S*)/=?utf-8?Q?$1?=/g;
+				$refmail->{$h} =~ s/(\S*=\S*)/=?utf-8?Q?$1?=/g;
+	$refmail->{smtp} = $SMTP_ARG if ($SMTP_ARG ne '');
+## Release information
+release (or the day before).
+	#  Remove non-ASCII characters
+ReplaceTags();
+	$REPLY = "Please respect the Reply-To: field and send your updated translation to\n$BTS_ARG.";
+	$REPLY = "Please send the updated file to me, or submit it as a wishlist bug\nagainst <package>.";
+		     "retrieve it."
+	return $body;
+	return %headers;
+	return $text;
+	return %To;
+	return unless $VERBOSE_ARG;
+                        Send a copy of the messages for language LANG also
+		sendmail(%{$mail})
+		sendmail(%summary)
+  --sendmessage         only send a message, without any attachment
+ "sendmessage"     => \$SEND_MESSAGE
+Send outdated debconf PO files to the last translators.
+	$SMTP_ARG = "";
+	$SMTP_ARG = $1;
+  --smtp=SERVER         specify SMTP server for mailing (default localhost)
+ "smtp=s"          => \$SMTP_ARG,
+			s/"\n"//g;
+		s/\n+$//s;
+#  so display them when it is closed.
+                        specify file to use it as template for the emails
+		$statistics .= sprintf("  %-10s%10s  %10s    %10s\n", $lang, $t, $f, $u);
+sub DropNonASCII {
+sub Help_InvalidOption
+sub Help_PrintHelp
+sub Help_PrintVersion
+	$SUBJECT_CALL = "<package_and_version>: Please translate debconf PO for the package <package>";
+	$SUBJECT_CALL = "<package_and_version>: Please translate the package <package>";
+## Subject field).
+			, Subject => ${$mail}{'Subject'}
+$SUBJECT =~ s/<package_and_version>/$PACKAGE_AND_VERSION/g;
+$SUBJECT =~ s/<package>/$PACKAGE_ARG/g;
+				Subject => $SUBJECT,
+		Subject => $SUBJECT,
+	$SUBJECT = $SUBJECT_CALL;
+	$SUBJECT = $SUBJECT_SUBMIT;
+	$SUBJECT = $SUBJECT_TRANSLATOR;
+	$SUBJECT_SUBMIT = "debconf PO translations for the package <package> are outdated";
+	$SUBJECT_SUBMIT = "PO translations for the package <package> are outdated";
+$SUBJECT =~ s/<version>/$PKG_VERSION/g;
+	$SUBJECT_TRANSLATOR = "<package_and_version>: Please update debconf PO translation for the package <package>";
+	$SUBJECT_TRANSLATOR = "<package_and_version>: Please update the PO translation for the package <package>";
+  --submit              send a bug report against the package with a report
+ "submit"          => \$SUBMIT_ARG,
+sub OpenEditor
+sub ParseHeaders
+sub ParseTo
+sub Postpone {
+sub ReadFile
+sub RemoveHeaders
+sub ReplaceTags {
+sub Verbose
+	$SUMMARY_ARG = 0;
+	$SUMMARY_ARG = 1;
+	$summary{body} .= encode_qp(&RemoveHeaders($BODY));
+	$summary{body} = "List of outdated files:\n";
+		$summary{body} .= "\n";
+		$summary{body} .= '  ' . $poFile . ': ' . $poFiles->{$poFile}->{translator};
+		$summary{body} .= ', ' . $poFiles->{$poFile}->{team} if defined($poFiles->{$poFile}->{team});
+	$summary{body} .= "Translators received the mail below.\n\n";
+  --summary             send a status report to the maintainer with the list
+ "summary"         => \$SUMMARY_ARG,
+	system("$editor $opts $tmpnam");
+			$t = $1;
+	$TEMPLATE_ARG = "";
+	$TEMPLATE_ARG = $1;
+	$TEMPLATE_CALL = $1;
+ "templatecall=s"  => \$TEMPLATE_CALL,
+  --templatecall=TEMPLATE
+	$TEMPLATE_CALL        = $TEMPLATE_ARG;
+		$TEMPLATE_CALL ="/usr/share/po-debconf/templates/call";
+		$TEMPLATE_CALL ="/usr/share/po-debconf/templates/call-po";
+ "template=s"      => \$TEMPLATE_ARG,
+	$TEMPLATE_SUBMIT = $1;
+ "templatesubmit=s" => \$TEMPLATE_SUBMIT,
+  --templatesubmit=TEMPLATE
+	$TEMPLATE_SUBMIT      = $TEMPLATE_ARG;
+	$TEMPLATE_SUBMIT ="/usr/share/po-debconf/templates/submit";
+  --template=TEMPLATE   specify file to use it as template for the emails
+	$TEMPLATE_TRANSLATORS = $1;
+ "templatetranslators=s" => \$TEMPLATE_TRANSLATORS,
+  --templatetranslators=TEMPLATE
+	$TEMPLATE_TRANSLATORS = $TEMPLATE_ARG;
+		$TEMPLATE_TRANSLATORS ="/usr/share/po-debconf/templates/translators";
+		$TEMPLATE_TRANSLATORS ="/usr/share/po-debconf/templates/translators-po";
+	$text =~ s/[\x80-\xff]/?/g;
+                        the Debian I18N mailing list by default
+	# The default deadline is +10days
+	# The default. (it will be removed when not in --call mode)
+# the Free Software Foundation; either version 2 of the License, or
+This deadline is usually the date you are planning to make the next
+This is free software; see the source for copying conditions.  There is NO
+	# This is very frequent for language teams.
+	# This part comes from devscripts' bts
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+	                             TMPDIR => 1);
+			$To{$1} = $2;
+		To => $CALL,
+		To => $FROM_ARG,
+			, To => ${$mail}{'To'}
+		To => "maintonly\@bugs.debian.org",
+	  "         to support the --gzip flag, but it is not installed.\n".
+                        to the LIST (unless it is already the language team).
+				To => $To{$file},
+                        translations
+                        translation updates must be sent to the translators
+## Try to detect if it is a debconf template translation
+	# Try to detect invalid emails.
+## Try to find default editor
+## Try to find the maintainer e-mail address and the package name
+## Try to locate the PO directory
+	# Try to read the PACKAGEand VERSION from the .pot file
+	         "Turning this option off.\n";
+			$u = $1;
+	undef $CALL;
+	undef $CALL_WITH_TRANSLATORS;
+	undef $DEADLINE_ARG;
+					unless (defined $poFiles->{$poFile}->{team});
+		unless length $CALL;
+unless ($NO_CONF or !defined $CONF_ARG) {
+unless ($NOT_DEBCONF) {
+			unless ($refmail->{$h} =~ m/=\?utf-8\?Q\?/) {
+		unless ($UTF8);
+	                             UNLINK => 0,
+	unlink($tmpnam);
+Usage: ${PROGRAM} [OPTIONS]
+use Cwd 'abs_path';
+use File::Temp 'tempfile';
+use Getopt::Long;
+use MIME::Base64;
+use MIME::QuotedPrint;
+use POSIX;
+use strict;
+	# Use the from parameter from the command line
+	# Use the specified deadline
+#!/usr/bin/perl -w
+		                "UTF-8");
+	$UTF8 = 0;
+	$UTF8 = 1;
+  --utf8                send the mail in UTF-8
+ "utf8"            => \$UTF8,
+	$VERBOSE_ARG = 0;
+	$VERBOSE_ARG = 1;
+Verbose("Checking for PO files in $PODIR");
+Verbose("Maintainer: $FROM_ARG");
+Verbose("Package: $PACKAGE_ARG");
+	Verbose("PODIR: $PODIR");
+	Verbose("POTFILE: $POTFILE");
+Verbose("Version: $PKG_VERSION");
+  --version             display version information and exit
+		#  Version information is not vital, do not abort
+ "version"         => \$VERSION_ARG,
+  -v, --verbose         display additional information
+ "v|verbose"       => \$VERBOSE_ARG,
+	$warn .= 
+		warn "Could not find mutt's postpone mailbox with ".
+#  Warnings may be deleted from screen when entering editor,
+		            ."#  WARNING: Some email addresses seem to be invalid.\n"
+	  "Warning: This program requires the libcompress-zlib-perl package in order\n".
+			$warn_invalid_email = 1;
+		warn "No POT file found. You should specify one with the ".
+	$warn .= "--utf8 requires the Encode perl module.  ".
+				$warn .= "Warning: $poFile:  Unable to determine charset.  Skipping file!\n";
+				$warn .= "Warning: $poFile:  Unable to determine last translator.  Skipping file!\n";
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+		# We will try below to use the Maintainer: control field
+	while ($body =~ s/^#[ \t]*([^\n]*)\n//s) {
+			while (<CHG>) {
+	while (<CNF>) {
+while ($conf =~ m/^addlanguageteam\s*(?:\s|=)\s*(.*)$/gm) {
+	while (<PO>) {
+	$with_mutt = " (with mutt)" if $MUTT;
+  --withouttranslators  
+ "withouttranslators" => \$CALL_WITHOUT_TRANSLATORS,
+ "withtranslators" => \$CALL_WITH_TRANSLATORS,
+  --withtranslators     when used with --call, specifies that request for
+			, 'X-Mail-Originator' => ${$mail}{'X-Mail-Originator'}
+		'X-Mail-Originator' => "$PROGRAM $VERSION"
+				'X-Mail-Originator' => "$PROGRAM $VERSION"
+# You should have received a copy of the GNU General Public License
+		            ."#           You should remove them and inform the translators separately.\n"
+You should specify a deadline to help translators organize their work.

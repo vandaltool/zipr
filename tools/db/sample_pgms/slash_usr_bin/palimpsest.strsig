@@ -1,0 +1,766 @@
+ 2007-2009 Red Hat, Inc.
+Activate all LVs in the VG
+activated
+Activate the Logical Volume
+add-spare-button-clicked
+allocated
+allow_read
+Allow Read
+allow_write
+Allow Write
+An error occured
+An invalid option was passed.
+Apple Partition Map
+Are you sure you want the RAID Array degraded?
+Are you sure you want the remove the component?
+Are you sure you want the remove the Physical Volume?
+Are you sure you want to delete the logical volume?
+Are you sure you want to delete the partition?
+Are you sure you want to forget the passphrase?
+Are you sure you want to format the drive?
+Are you sure you want to format the volume?
+ata_pata
+ata_sata
+<a title="%s" href="file://%s">%s</a>
+<a title="%s" href="sftp://%s/%s">%s</a>
+attach-button-clicked
+Available:
+Bailing out
+<b><big><big>%s</big></big></b>
+_Benchmark
+BError adding Physical Volume to Volume Group
+<big><b>%s</b></big>
+bindtextdomain
+bind_textdomain_codeset
+<b>NOTE:</b> This object represents one of several paths to the drive. To perform operations on the drive, use the corresponding multipath object.
+Bootable
+boot_code_is_pic
+Boot Code PIC
+brasero.desktop
+Bring up the RAID Array
+__bss_start
+Building menus failed: %s
+<b>WARNING:</b> Several paths to this drive has been detected but no corresponding multipath device was found. Your OS may be misconfigured.
+<b>WARNING:</b> The partition is misaligned by %d bytes. This may result in very poor performance. Repartitioning is suggested.
+Capacity:
+Change partition type, label and flags
+Change passphrase
+Change _Passphrase
+Change the label of the filesystem
+Change the name of the volume
+Change the Volume Group name
+Check and repair the array
+Check and repair the filesystem
+Chec_k Array
+_Check Filesystem
+Checking
+Choose a new filesystem label.
+Choose a new name for the Logical Volume.
+Choose a new Volume Group name.
+Components:
+Connection:
+Connect to _Server...
+Container for Logical Partitions
+contents
+copyright
+Create and copy CDs and DVDs
+Create and remove components
+Create and remove PVs
+Create a new logical volume
+Create a new partition
+Create a RAID array
+_Create Logical Volume
+_Create Partition
+David Zeuthen <davidz@redhat.com>
+D-Bus address to connect to
+dcgettext
+Deactivate all LVs in the VG
+Deactivate the Logical Volume
+DEGRADED
+delete-event
+D_elete Partition
+Delete passphrase from keyring
+Delete the Logical Volume
+Delete the partition
+D_elete Volume
+_Details:
+disabled
+disconnected
+ Disk Utility
+Drive to show
+Edit Com_ponents
+Edit Filesystem _Label
+Edit _Name
+Ed_it Partition
+Edit _Physical Volumes
+Edit Vol_ume Name
+Eject medium from the drive
+Encrypted Volume (Locked)
+Encrypted Volume (Unlocked)
+Erase or format the volume
+Erase or partition the array
+Erase or partition the drive
+Error adding component to RAID Array
+Error changing label
+Error checking filesystem on volume
+Error checking RAID Array
+Error connecting to 
+Error creating component for RAID array
+Error creating filesystem
+Error creating Logical Volume
+Error creating partition
+Error creating pool: `%s'
+Error creating PV for VG
+Error creating RAID array
+Error deleting Logical Volume
+Error deleting partition
+Error deleting partition for component in RAID Array
+Error deleting partition for Physical Volume in Volume Group
+Error detaching drive
+Error ejecting medium
+Error expanding RAID Array
+Error formatting drive
+Error launching Brasero
+Error locking LUKS volume
+Error modifying partition
+Error mounting volume
+error != NULL
+Error removing component from RAID Array
+Error removing Physical Volume from Volume Group
+Error setting name for Logical Volume
+Error setting name for Volume Group
+Error spawning nautilus: %s
+Error starting Logical Volume
+Error starting RAID Array
+Error starting Volume Group
+Error stopping Logical Volume
+Error stopping RAID Array
+Error stopping Volume Group
+Error unlocking LUKS volume
+Error unmounting volume
+expand-button-clicked
+Extent Size:
+file-connect
+file-create
+file-create-linux-md-array
+File system check on "%s" (%s) completed
+File system is <b>NOT</b> clean.
+File system is clean.
+Firmware Version:
+Forge_t Passphrase
+Format _Drive
+Format/Erase RAI_D Array
+Fo_rmat Volume
+g_app_info_get_type
+g_app_info_launch
+g_app_launch_context_get_type
+g_desktop_app_info_new
+gdk_display_get_app_launch_context
+g_dpgettext
+gdu_adapter_get_driver
+gdu_adapter_get_fabric
+gdu_adapter_get_model
+gdu_adapter_get_num_ports
+gdu_adapter_get_vendor
+gdu_add_component_linux_md_dialog_get_drives
+gdu_add_component_linux_md_dialog_get_size
+gdu_add_component_linux_md_dialog_get_type
+gdu_add_component_linux_md_dialog_new
+gdu_add_pv_linux_lvm2_dialog_get_drive
+gdu_add_pv_linux_lvm2_dialog_get_size
+gdu_add_pv_linux_lvm2_dialog_get_type
+gdu_add_pv_linux_lvm2_dialog_new
+gdu_ata_smart_dialog_new
+gdu_button_element_new
+gdu_button_element_set_visible
+gdu_button_table_get_type
+gdu_button_table_new
+gdu_button_table_set_elements
+gdu-check-disk
+gdu_confirmation_dialog_new
+gdu_confirmation_dialog_new_for_drive
+gdu_confirmation_dialog_new_for_volume
+gdu_connect_to_server_dialog_get_address
+gdu_connect_to_server_dialog_get_type
+gdu_connect_to_server_dialog_get_user_name
+gdu_connect_to_server_dialog_new
+gdu_create_linux_lvm2_volume_dialog_get_size
+gdu_create_linux_lvm2_volume_dialog_get_type
+gdu_create_linux_lvm2_volume_dialog_new
+gdu_create_linux_md_dialog_get_component_size
+gdu_create_linux_md_dialog_get_drives
+gdu_create_linux_md_dialog_get_level
+gdu_create_linux_md_dialog_get_name
+gdu_create_linux_md_dialog_get_size
+gdu_create_linux_md_dialog_get_stripe_size
+gdu_create_linux_md_dialog_get_type
+gdu_create_linux_md_dialog_new
+gdu_create_partition_dialog_get_size
+gdu_create_partition_dialog_get_type
+gdu_create_partition_dialog_new_for_drive
+gdu-detach
+gdu_details_element_new
+gdu_details_element_set_action_text
+gdu_details_element_set_icon
+gdu_details_element_set_progress
+gdu_details_element_set_text
+gdu_details_table_get_type
+gdu_details_table_new
+gdu_details_table_set_elements
+gdu_device_drive_ata_smart_get_is_available
+gdu_device_drive_ata_smart_get_status
+gdu_device_drive_ata_smart_get_time_collected
+gdu_device_drive_get_can_detach
+gdu_device_drive_get_connection_interface
+gdu_device_drive_get_connection_speed
+gdu_device_drive_get_is_media_ejectable
+gdu_device_drive_get_is_rotational
+gdu_device_drive_get_media_compatibility
+gdu_device_drive_get_model
+gdu_device_drive_get_ports
+gdu_device_drive_get_revision
+gdu_device_drive_get_rotation_rate
+gdu_device_drive_get_serial
+gdu_device_drive_get_similar_devices
+gdu_device_drive_get_vendor
+gdu_device_drive_get_write_cache
+gdu_device_drive_get_wwn
+gdu_device_get_device_file
+gdu_device_get_device_file_presentation
+gdu_device_get_mount_paths
+gdu_device_get_object_path
+gdu_device_get_pool
+gdu_device_get_size
+gdu_device_get_type
+gdu_device_id_get_label
+gdu_device_id_get_type
+gdu_device_id_get_usage
+gdu_device_id_get_version
+gdu_device_is_linux_dmmp
+gdu_device_is_linux_dmmp_component
+gdu_device_is_linux_lvm2_pv
+gdu_device_is_linux_md_component
+gdu_device_is_media_available
+gdu_device_is_mounted
+gdu_device_is_partition
+gdu_device_is_partition_table
+gdu_device_linux_dmmp_component_get_holder
+gdu_device_linux_lvm2_pv_get_group_extent_size
+gdu_device_linux_lvm2_pv_get_group_name
+gdu_device_linux_lvm2_pv_get_group_physical_volumes
+gdu_device_linux_lvm2_pv_get_group_size
+gdu_device_linux_lvm2_pv_get_group_unallocated_size
+gdu_device_linux_lvm2_pv_get_uuid
+gdu_device_linux_md_component_get_home_host
+gdu_device_linux_md_component_get_level
+gdu_device_linux_md_component_get_name
+gdu_device_linux_md_component_get_num_raid_devices
+gdu_device_linux_md_component_get_uuid
+gdu_device_linux_md_component_get_version
+gdu_device_linux_md_get_name
+gdu_device_linux_md_get_sync_action
+gdu_device_linux_md_get_sync_percentage
+gdu_device_linux_md_get_sync_speed
+gdu_device_linux_md_is_degraded
+gdu_device_luks_cleartext_get_slave
+gdu_device_luks_get_holder
+gdu_device_op_drive_detach
+gdu_device_op_drive_eject
+gdu_device_op_filesystem_check
+gdu_device_op_filesystem_create
+gdu_device_op_filesystem_mount
+gdu_device_op_filesystem_set_label
+gdu_device_op_filesystem_unmount
+gdu_device_op_linux_lvm2_lv_stop
+gdu_device_op_linux_md_add_spare
+gdu_device_op_linux_md_check
+gdu_device_op_linux_md_expand
+gdu_device_op_linux_md_remove_component
+gdu_device_op_linux_md_stop
+gdu_device_op_luks_change_passphrase
+gdu_device_op_luks_lock
+gdu_device_op_luks_unlock
+gdu_device_op_partition_create
+gdu_device_op_partition_delete
+gdu_device_op_partition_modify
+gdu_device_op_partition_table_create
+gdu_device_partition_get_alignment_offset
+gdu_device_partition_get_flags
+gdu_device_partition_get_label
+gdu_device_partition_get_scheme
+gdu_device_partition_get_slave
+gdu_device_partition_get_type
+gdu_device_partition_table_get_scheme
+gdu_drive_activate
+gdu_drive_benchmark_dialog_new
+gdu_drive_can_activate
+gdu_drive_count_mbr_partitions
+gdu_drive_create_volume
+gdu_drive_create_volume_finish
+gdu_drive_get_type
+gdu_drive_is_active
+gdu_edit_linux_lvm2_dialog_new
+gdu_edit_linux_md_dialog_new
+gdu_edit_name_dialog_get_name
+gdu_edit_name_dialog_get_type
+gdu_edit_name_dialog_new
+gdu_edit_partition_dialog_new
+gdu-eject
+gdu-encrypted-lock
+gdu-encrypted-unlock
+gdu_error_dialog_new
+gdu_error_dialog_new_for_drive
+gdu_error_dialog_new_for_volume
+gdu_error_quark
+gdu_expander_get_model
+gdu_expander_get_num_ports
+gdu_expander_get_revision
+gdu_expander_get_vendor
+gdu_format_dialog_get_encrypt
+gdu_format_dialog_get_fs_label
+gdu_format_dialog_get_fs_type
+gdu_format_dialog_get_take_ownership
+gdu_format_dialog_get_type
+gdu_format_dialog_new
+gdu_hub_get_adapter
+gdu_hub_get_expander
+gdu_hub_get_type
+GDU_IS_SECTION (section)
+GDU_IS_SECTION_VOLUMES (section)
+gdu_known_filesystem_get_max_label_len
+gdu_known_filesystem_get_supports_label_rename
+gdu_known_filesystem_get_supports_online_label_rename
+gdu_linux_lvm2_volume_get_group_uuid
+gdu_linux_lvm2_volume_get_name
+gdu_linux_lvm2_volume_get_type
+gdu_linux_lvm2_volume_get_uuid
+gdu_linux_lvm2_volume_group_get_compute_new_lv_name
+gdu_linux_lvm2_volume_group_get_pv_device
+gdu_linux_lvm2_volume_group_get_state
+gdu_linux_lvm2_volume_group_get_type
+gdu_linux_lvm2_volume_group_get_uuid
+gdu_linux_lvm2_volume_hole_get_type
+gdu_linux_md_drive_get_slave_flags
+gdu_linux_md_drive_get_slaves
+gdu_linux_md_drive_get_type
+gdu_linux_md_get_raid_level_for_display
+gdu_machine_get_type
+gdu-mount
+gdu_partition_dialog_get_scheme
+gdu_partition_dialog_get_type
+gdu_partition_dialog_new_for_drive
+gdu_pool_get_by_device_file
+gdu_pool_get_by_object_path
+gdu_pool_get_devices
+gdu_pool_get_drive_by_device
+gdu_pool_get_hub_by_object_path
+gdu_pool_get_known_filesystem_by_id
+gdu_pool_get_linux_md_drive_by_uuid
+gdu_pool_get_port_by_object_path
+gdu_pool_get_ssh_address
+gdu_pool_get_volume_by_device
+gdu_pool_new_for_address
+gdu_pool_op_linux_lvm2_lv_create
+gdu_pool_op_linux_lvm2_lv_remove
+gdu_pool_op_linux_lvm2_lv_set_name
+gdu_pool_op_linux_lvm2_lv_start
+gdu_pool_op_linux_lvm2_vg_add_pv
+gdu_pool_op_linux_lvm2_vg_remove_pv
+gdu_pool_op_linux_lvm2_vg_set_name
+gdu_pool_op_linux_lvm2_vg_start
+gdu_pool_op_linux_lvm2_vg_stop
+gdu_pool_op_linux_md_create
+gdu_pool_tree_model_new
+gdu_pool_tree_model_set_pools
+gdu_pool_tree_view_get_selected_presentable
+gdu_pool_tree_view_get_type
+gdu_pool_tree_view_new
+gdu_pool_tree_view_select_first_presentable
+gdu_pool_tree_view_select_presentable
+gdu_port_get_number
+gdu_port_get_parent
+gdu_presentable_get_device
+gdu_presentable_get_enclosing_presentable
+gdu_presentable_get_icon
+gdu_presentable_get_id
+gdu_presentable_get_name
+gdu_presentable_get_offset
+gdu_presentable_get_pool
+gdu_presentable_get_size
+gdu_presentable_get_type
+gdu_presentable_get_vpd_name
+gdu-raid-array
+gdu-raid-array-start
+gdu-raid-array-stop
+GduSection
+gdu-section.c:74
+gdu-section.c:97
+GduSectionDrive
+GduSectionHub
+GduSectionLinuxLvm2VolumeGroup
+GduSectionLinuxMdDrive
+gdu_section_update
+GduSectionVolumes
+gdu_section_volumes_select_volume
+gdu_section_volumes_select_volume (GDU_SECTION_VOLUMES (volumes_section), presentable)
+GduShell
+gdu-shell.c
+gdu_shell_raise_error
+gdu_shell_select_presentable
+gdu-smart-unknown
+gdu-unmount
+gdu_util_ata_smart_status_to_desc
+gdu_util_delete_secret
+gdu_util_dialog_ask_for_new_secret
+gdu_util_dialog_ask_for_secret
+gdu_util_dialog_change_secret
+gdu_util_get_connection_for_display
+gdu_util_get_default_part_type_for_scheme_and_fstype
+gdu_util_get_desc_for_part_type
+gdu_util_get_fstype_for_display
+gdu_util_get_size_for_display
+gdu_util_have_secret
+gdu_util_save_secret
+gdu_volume_get_type
+gdu_volume_grid_get_selected
+gdu_volume_grid_get_type
+gdu_volume_grid_new
+gdu_volume_grid_select
+gdu_volume_hole_get_type
+g_error_free
+g_error_new
+Get Help on Disk Utility
+Getting ATA SMART data would wake up the device.
+g_idle_add
+g_intern_static_string
+GLIBC_2.0
+GLIBC_2.2
+g_list_append
+g_list_foreach
+g_list_free
+g_list_length
+g_malloc0
+__gmon_start__
+gnome-disk-utility
+GnomeDiskUtilityActions
+g_object_class_install_property
+g_object_get
+g_object_new
+g_object_ref
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+Go to array
+Go to Multipath Device
+g_param_spec_object
+g_printerr
+g_ptr_array_add
+g_ptr_array_free
+g_ptr_array_new
+g_ptr_array_new_with_free_func
+g_ptr_array_remove
+g_ptr_array_remove (shell->priv->pools, pool)
+g_ptr_array_unref
+g_return_if_fail_warning
+g_signal_connect_data
+g_signal_handlers_disconnect_matched
+g_spawn_command_line_async
+g_strcmp0
+g_strconcat
+g_strdup
+g_strdup_printf
+g_strdup_vprintf
+g_strfreev
+g_str_has_prefix
+g_string_append
+g_string_free
+g_string_new
+g_strv_length
+g_themed_icon_new
+gtk-about
+gtk_action_group_add_actions
+gtk_action_group_new
+gtk_action_group_set_translation_domain
+gtk_alignment_get_type
+gtk_alignment_new
+gtk_alignment_set_padding
+gtk-bold
+gtk_box_get_type
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_box_set_spacing
+gtk-clear
+gtk-close
+gtk-connect
+gtk_container_add
+gtk_container_child_set
+gtk_container_foreach
+gtk_container_get_children
+gtk_container_get_type
+gtk_container_remove
+gtk_container_set_border_width
+gtk-delete
+gtk_dialog_add_button
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk-dialog-info
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk-dialog-warning
+gtk-edit
+gtk-execute
+gtk_expander_get_expanded
+gtk_expander_get_type
+gtk-find-and-replace
+gtk_hbox_new
+gtk-help
+gtk_hpaned_new
+gtk_icon_theme_get_default
+gtk_icon_theme_load_icon
+gtk_image_new_from_stock
+gtk_info_bar_add_button
+gtk_info_bar_get_content_area
+gtk_info_bar_get_type
+gtk_info_bar_new
+gtk_info_bar_set_message_type
+gtk_init_with_args
+gtk_label_get_type
+gtk_label_new
+gtk_label_set_line_wrap
+gtk_label_set_markup
+gtk_label_set_markup_with_mnemonic
+gtk_label_set_mnemonic_widget
+gtk_label_set_use_underline
+gtk_label_set_width_chars
+gtk_main
+gtk_main_quit
+gtk_message_dialog_format_secondary_markup
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_message_dialog_new_with_markup
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk_paned_add1
+gtk_paned_add2
+gtk_paned_get_type
+gtk-quit
+gtk_scrolled_window_add_with_viewport
+gtk_scrolled_window_get_type
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_scrolled_window_set_shadow_type
+gtk_show_about_dialog
+gtk_text_buffer_new
+gtk_text_buffer_set_text
+gtk_text_view_get_type
+gtk_text_view_new_with_buffer
+gtk_text_view_set_editable
+gtk_tree_selection_set_mode
+gtk_tree_view_column_set_widget
+gtk_tree_view_get_column
+gtk_tree_view_get_selection
+gtk_tree_view_get_type
+gtk_tree_view_set_headers_visible
+gtk_ui_manager_add_ui_from_string
+gtk_ui_manager_get_accel_group
+gtk_ui_manager_get_widget
+gtk_ui_manager_insert_action_group
+gtk_ui_manager_new
+gtk_vbox_get_type
+gtk_vbox_new
+gtk_widget_destroy
+gtk_widget_get_display
+gtk_widget_get_type
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_add_accel_group
+gtk_window_get_default_widget
+gtk_window_get_type
+gtk_window_new
+gtk_window_present
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_resizable
+gtk_window_set_title
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_is_a
+g_type_name
+g_type_register_static_simple
+GUID Partition Table
+g_value_get_object
+g_value_set_object
+g_warn_message
+hscrollbar-policy
+_IO_stdin_used
+job-changed
+_Jv_RegisterClasses
+Lapo Calamandrei <calamandrei@gmail.com>
+launchpad_integration_add_ui
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgdu-gtk.so.0
+libgdu.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+liblaunchpad-integration-3.0.so.1
+/lib/ld-linux.so.2
+libpthread.so.0
+libunique-3.0.so.0
+Location:
+_Lock Volume
+Logical _Volumes
+LVM2 LV State
+Make encrypted data available
+Make encrypted data unavailable
+Manage storage devices on another machine
+Master Boot Record
+Measure drive performance
+Measure RAID array performance
+/menubar
+/menubar/help/LaunchpadItems
+message-received
+Metadata Version:
+Mike Langlie <mlanglie@redhat.com>
+Mounted at %s
+Mount Point:
+Mount the volume
+_Mount Volume
+msdos_extended_partition
+Multipath Drive
+nautilus-gdu
+nautilus "%s"
+new-button-clicked
+No device for object path %s
+No drive for object path %s
+No Media Detected
+No presentable currently selected
+Not enough components available to start the RAID Array
+notify::expanded
+Not Mounted
+Not Partitioned
+Not running
+Not running, can only start degraded
+Not running, not enough components to start
+Not running, partially assembled
+Not Supported
+Number of Ports:
+Open CD/_DVD Application
+optical_cd
+org.gnome.Palimpsest
+palimpsest
+Parallel ATA
+Partially Running
+partition-flags
+Partition Flags:
+Partitioning:
+partition-label
+Partition Label:
+partition-type
+Partition Type:
+Permission denied.
+PHY %d of %s
+Physical Volumes:
+pool_disconnected
+Port %d of %s
+Power down the drive so it can be removed
+presentable
+presentable-added
+presentable-removed
+present_window
+program-name
+property
+RAID action
+_RAID Array...
+RAID Component
+RAID status
+Recovering
+remove-button-clicked
+removing bad password from keyring
+Repairing
+required
+Reshaping
+response
+Resyncing
+Revision:
+Rotation Rate
+Rotation Rate:
+Safe Rem_oval
+scsi_sas
+Serial ATA
+Serial Attached SCSI
+Serial Number:
+shadow-type
+shell != NULL
+show_drive
+show-drive
+show_volume
+show-volume
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+SM_ART Data
+SMART Status:
+Solid-State Disk
+<span fgcolor="red"><b>%s</b></span>
+<span foreground='red'><b>%s</b></span>
+%s (%s) 
+%s (%s) [%s] 
+%s (%s) @ %s 
+%s (%s) [%s] @ %s 
+St_art RAID Array
+S_tart Volume
+St_art Volume Group
+St_op RAID Array
+Sto_p Volume
+St_op Volume Group
+_Storage Devices
+Swap Space
+Tear down the RAID Array
+The application is not installed
+The daemon is being inhibited.
+The device is busy.
+The operation failed.
+The operation is not supported.
+The operation was canceled.
+TODO: launch help
+translator-credits
+<ui>  <menubar>    <menu action='file'>      <menuitem action='file-connect'/>      <menu action='file-create'>        <menuitem action='file-create-linux-md-array'/>      </menu>      <menuitem action='quit'/>    </menu>    <menu action='help'>      <placeholder name='LaunchpadItems'/>      <menuitem action='about'/>    </menu>  </menubar></ui>
+Unallocated:
+Unallocated Space
+unique_app_is_running
+unique_app_new_with_commands
+unique_app_send_message
+unique_message_data_free
+unique_message_data_get_text
+unique_message_data_new
+unique_message_data_set_text
+Unknown (%d)
+Unknown error
+Unknown Scheme: %s
+Un_lock Volume
+Unmount the volume
+Un_mount Volume
+use-markup
+use-underline
+/usr/share/locale
+View files on the volume
+View files on the volume using a SFTP network share
+View SMART data and run self-tests
+Volume Name:
+volumes_section != NULL
+Volume to show
+vscrollbar-policy
+World Wide Name:
+Write Cache
+Write Cache:

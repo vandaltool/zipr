@@ -1,0 +1,128 @@
+*+?.[]()|^$\
++-0123456789
+(1+index(
+%-5d"%s"
+(%-5d%s %d
+Adding %s
+$ARGV0 = $0;		# remember what we ran as
+($#ARGV+2)
+Awk script "%s" doesn't seem to exist.
+#! /bin/awk
+#!/bin/awk
+Can't pass expression by reference as arg %d of %s
+chomp;	# strip record separator
+/[%c\n]/
+continue
+continue {
+CONTINUE
+defined $
+delete $
+delete $opened{%s} && close(%s)
+) || die 'Cannot create file "
+) || die 'Cannot open file "
+) || die 'Cannot pipe from "
+) || die 'Cannot pipe to "
+eval '$'.$1.'$2;' while $ARGV[0] =~ /^([A-Za-z_0-9]+=)(.*)/ && shift;
+eval 'exec 
+eval $s_
+exit $ExitValue;
+$ExitValue = 
+    ($fh) = @_;
+    $fh = $name;
+';		# field separator from -F switch
+FILENAME
+($#Fld+1)
+$Fld%d, 
+($.-$FNRbase)
+    $FNRbase = $. if eof;
+foreach %s (0 .. $#%s) 
+foreach %s (keys %%%s) 
+__fprintf_chk
+$FS = ' ';		# set field separator
+function
+Garbage length in prewalk
+Garbage length in walk
+ = &Getline%d(%s)
+,$getline_ok)
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+    if ($getline_ok = (($_ = <$fh>) ne ''))
+    if ($getline_ok = (($_ = <>) ne ''))
+    if $running_under_some_shell;
+Ignoring spurious backslash
+Illegal for loop: %s
+Internal error: OCLOSE %s
+Internal error: OGETLINE %s
+Internal error: OPRINT
+_IO_putc
+_IO_stdin_used
+join(%s, 
+join(%s,@Fld)
+last line
+(length(
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+    local($_);
+    local($mode,$name,$pipe) = @_;
+locatime
+next line
+$/ = "\n\n"
+$\ = "\n";		# set output record separator
+    open($name,$mode.$name.$pipe) unless $opened{$name}++;
+Out of memory!
+panic: aryrefarg %d, line %d
+panic: unknown argument type %d, arg %d, line %d
+panic: unknown argument type %d, line %d
+/perl -S $0 ${1+"$@"}'
+    &Pick('',@_);
+&Pick('%s', %s) &&
+Please check my work on the %d line%s I've marked with "#???".
+POSTDECR
+POSTINCR
+__printf_chk
+			# process any FOO=bar switches
+Recompile a2p with larger OPSMAX
+			# (remove #! line above if indigestible)
+($s_ = '"'.(
+ ? scalar($RLENGTH = length($&), $RSTART = length($`)+1) : 0
+SCOMMENT
+Search pattern not found:
+Search pattern not terminated:
+SEMICOLON
+$, = ' ';		# set output field separator
+).'"') =~ s/&/\$&/g, 
+%s in file %s at line %d
+SNEWLINE
+ = split(
+ = split(' ', $_, -1);
+ = split(/[%c\n]/, $_, -1);
+ = split($FS, $_, -1);
+sprintf(
+__sprintf_chk
+__stack_chk_fail
+__strcpy_chk
+String not terminated:
+sub Getline%d {
+sub Pick {
+SUBTRACT
+syntax error
+<-tE<+tA
+The operation I've selected may be wrong for the operand types.
+			# this emulates #! processing on NIH machines.
+Translation aborted due to syntax errors.
+type > 255 (%d)
+Unrecognized character %c in file %s line %d--ignoring.
+Unrecognized switch: %s
+/usr/bin
+#! /usr/bin/awk
+#!/usr/bin/awk
+#!/usr/bin/perl
+__vfprintf_chk
+ while (
+while (<>) {
+while (<>) { }		# (no line actions)
+yacc stack overflow

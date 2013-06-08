@@ -1,0 +1,77 @@
+-background
+  -bg <color>   or   -background <color>
+  -bitmap <filename>
+__bss_start
+  -cursor <cursor file> <mask file>
+-cursor_name
+  -cursor_name <cursor-font name>
+-default
+  -def   or   -default
+-display
+  -display <display>   or   -d <display>
+  -fg <color>   or   -foreground <color>
+-foreground
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+  -gray   or   -grey
+Invalid cursor file "%s"
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXcursor.so.1
+libXmuu.so.1
+  -mod <x> <y>
+  -name <string>
+-reverse
+  -rv   or   -reverse
+%s: bad bitmap format file: %s
+%s: can't open file: %s
+%s: choose only one of {solid, gray, bitmap, mod}
+%s: dimensions of cursor bitmap and cursor mask bitmap are different
+%s: hotspot is outside cursor bounds
+%s: insufficient memory for bitmap: %s
+  -solid <color>
+%s:  unable to allocate color for "%s"
+%s:  unable to open display '%s'
+%s: unknown color or bad color format: %s
+%s:  unknown color "%s"
+%s: warning: _XSETROOT_ID property is garbage
+usage: %s [options]
+  where options are:
+XAllocColor
+  -xcf <ARGB cursor file> <cursor size>
+XChangeProperty
+XClearWindow
+XCloseDisplay
+XCopyPlane
+XCreateBitmapFromData
+XCreateGC
+XCreateGlyphCursor
+XCreatePixmap
+XCreatePixmapCursor
+XcursorFilenameLoadImages
+XcursorImagesLoadCursor
+XDefineCursor
+XDisplayName
+XFreeCursor
+XFreePixmap
+XGetWindowProperty
+XInternAtom
+XKillClient
+XLoadFont
+XmuCursorNameToIndex
+XOpenDisplay
+XParseColor
+XQueryColor
+XReadBitmapFile
+XSetCloseDownMode
+_XSETROOT_ID
+XSetWindowBackground
+XSetWindowBackgroundPixmap
+XStoreName
+XUndefineCursor

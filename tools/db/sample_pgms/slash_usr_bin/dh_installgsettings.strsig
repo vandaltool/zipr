@@ -1,0 +1,47 @@
+			addsubstvar($package, "misc:Depends", "dconf-gsettings-backend | gsettings-backend");
+B<dh_installgsettings> is a debhelper program that is responsible for installing
+B<dh_installgsettings> [S<I<debhelper options>>] [B<--priority=<number>>]
+  boolean-setting=true
+derived distributions (20), blend distributions (50), or site-specific
+dh_installgsettings - install GSettings overrides and set dependencies
+		doit("install","-p","-m644",$override,"$gsettings_schemas_dir/${priority}_$package.gschema.override");
+		doit("mkdir","-p",$gsettings_schemas_dir);
+foreach my $package (@{$dh{DOPACKAGES}}) {
+		# Get a list of the schemas
+GSettings backend.
+GSettings override files and generating appropriate dependencies on the
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+if (defined $dh{PRIORITY}) {
+	if (-d "$gsettings_schemas_dir") {
+	if ($override ne '') {
+		if ($schemas ne '') {
+Installed into usr/share/glib-2.0/schemas/10_I<package>.gschema.override in
+=item B<--priority> I<priority>
+=item debian/I<package>.gsettings-override
+Josselin Mouette <joss@debian.org>
+Laurent Bigonville <bigon@debian.org>,
+L<debhelper(7)>
+	my $gsettings_schemas_dir = "$tmp/usr/share/glib-2.0/schemas/";
+	my $override = pkgfile($package,"gsettings-override");
+my $priority=10;
+		my $schemas = `find $gsettings_schemas_dir -type f \\( -name \\*.xml -o -name \\*.override \\) -printf '%P '`;
+	my $tmp=tmpdir($package);
+  [org.gnome.mypackage]
+packages (90).
+	$priority=$dh{PRIORITY};
+priority instead of 10. Higher values than ten can be used by 
+  string-setting='string'
+The dependency on the backend will be generated in B<${misc:Depends}>.
+The format of the file is the following:
+the package build directory, with "I<package>" replaced by the package name.
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+Use I<priority> (which should be a 2-digit number) as the override
+use strict;
+#!/usr/bin/perl -w

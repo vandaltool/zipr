@@ -1,0 +1,19 @@
+#!/bin/sh
+case "$TTY" in
+	/dev/console|/dev/vc*|/dev/tty[0-9]*)
+   echo " Please ensure that /proc is mounted." >&2
+		echo "unicode_stop skipped on $TTY"
+   echo "Won't set ascii mode: Can't determine console type;" >&2
+		exit 0
+   exit 1
+if [ ! -e /proc/self/fd/0 ] ; then
+if test -t ; then
+if [ "$uid" = '0' ]; then
+kbd_mode -a
+		loadkeys "$HOME/.kbd/.keymap_sv"
+	printf '\033%%@'
+	[ ! -r "$HOME/.kbd/.keymap_sv" ] ||
+# stop unicode
+stty -iutf8
+TTY="`/usr/bin/tty`"
+uid="`id -u 2>/dev/null`" ||:

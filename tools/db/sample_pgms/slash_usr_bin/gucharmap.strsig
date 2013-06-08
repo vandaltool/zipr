@@ -1,0 +1,452 @@
+ 2004 Noah Levitt
+2010 Christian Persch
+2010 Unicode, Inc.
+accessories-character-map
+activate
+Also you should have received a copy of the Unicode Copyright along with Gucharmap; you can always find it at Unicode's website: http://www.unicode.org/copyright.html
+atk_object_set_name
+Based on the Unicode Character Database 6.1.0
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+ByScript
+By _Script
+ByUnicodeBlock
+By _Unicode Block
+cairo_move_to
+cairo_rectangle
+cairo_set_line_width
+cairo_set_source_rgb
+cairo_stroke
+Chee Bin HOH <cbhoh@gnome.org>
+Christian Persch <chpe@gnome.org>
+:codepoint-list
+cols: %d rows: %d pages: %d
+comments
+configure-event
+_Contents
+<control>0
+<control>minus
+<control>N
+<control>P
+<control>Page_Down
+<control>Page_Up
+<control>plus
+copyright
+Copyright 
+Copy to the clipboard.
+Daniel Elstner <daniel.elstner@gmx.net>
+dcgettext
+delete-event
+direction == GUCHARMAP_DIRECTION_BACKWARD || direction == GUCHARMAP_DIRECTION_FORWARD
+documenters
+factor > 0.0f
+FindNext
+Find _Next
+FindPrevious
+Find _Previous
+Font Family
+Font Size
+Font to start with; ex: 'Serif 27'
+fullscreen
+GamesConf::WindowState
+g_ascii_strncasecmp
+g_assertion_message
+g_assertion_message_expr
+g_build_filename
+g_cclosure_marshal_VOID__UINT
+g_cclosure_marshal_VOID__VOID
+g_dgettext
+gdk_cursor_new_for_display
+gdk_screen_get_default
+gdk_screen_get_monitor_at_point
+gdk_screen_get_monitor_workarea
+gdk_window_set_cursor
+g_error_free
+g_file_test
+g_get_language_names
+ghelp://
+g_idle_add
+g_idle_add_full
+g_intern_static_string
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.4
+__gmon_start__
+GNOME Character Map
+g_object_class_install_property
+g_object_freeze_notify
+g_object_new
+g_object_notify
+g_object_ref
+g_object_set
+g_object_set_data_full
+g_object_thaw_notify
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_param_spec_boxed
+g_param_spec_object
+g_printerr
+g_return_if_fail_warning
+group-by
+g_set_application_name
+g_set_prgname
+g_settings_get
+g_settings_get_boolean
+g_settings_get_enum
+g_settings_get_mapped
+g_settings_new
+g_settings_set
+g_settings_set_boolean
+g_settings_set_enum
+g_settings_set_string
+g_signal_connect_data
+g_signal_emit
+g_signal_new
+g_slice_alloc
+g_slice_alloc0
+g_slice_free1
+g_source_remove
+g_strconcat
+g_strdup
+g_timeout_add_seconds
+g_timer_destroy
+g_timer_elapsed
+g_timer_new
+gtk-about
+gtk_action_get_name
+gtk_action_group_add_actions
+gtk_action_group_add_radio_actions
+gtk_action_group_add_toggle_actions
+gtk_action_group_get_action
+gtk_action_group_new
+gtk_action_group_set_translation_domain
+gtk_action_set_sensitive
+gtk_adjustment_get_type
+gtk_adjustment_get_value
+gtk_adjustment_new
+gtk_adjustment_set_value
+gtk_binding_set_activate
+gtk_binding_set_by_class
+gtk-bold
+gtk_box_get_type
+gtk_box_pack_start
+gtk_box_set_spacing
+gtk_button_get_type
+gtk_button_new
+gtk_button_new_from_stock
+gtk_button_set_focus_on_click
+gtk_button_set_image
+gtk_button_set_label
+gtk_button_set_use_stock
+gtk_button_set_use_underline
+gtk_cell_layout_get_type
+gtk_cell_layout_pack_start
+gtk_cell_layout_set_attributes
+gtk_cell_renderer_text_new
+gtk_check_button_new_with_mnemonic
+gtk-close
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_type
+gtk_combo_box_new
+gtk_combo_box_set_active
+gtk_combo_box_set_active_iter
+gtk_combo_box_set_focus_on_click
+gtk_combo_box_set_model
+gtk_container_add
+gtk_container_get_type
+gtk_container_set_border_width
+gtk-copy
+gtk_dialog_add_action_widget
+gtk_dialog_add_button
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_set_alternative_button_order
+gtk_dialog_set_default_response
+gtk_editable_copy_clipboard
+gtk_editable_delete_selection
+gtk_editable_get_position
+gtk_editable_get_selection_bounds
+gtk_editable_get_type
+gtk_editable_insert_text
+gtk_editable_select_region
+gtk_editable_set_position
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_set_activates_default
+gtk-find
+gtk_get_current_event_time
+gtk-go-back
+gtk-go-forward
+gtk_grid_attach
+gtk_grid_get_type
+gtk_grid_new
+gtk_grid_set_column_spacing
+gtk_hbox_get_type
+gtk-help
+gtk_image_new_from_stock
+gtk_init_with_args
+GTK_IS_WINDOW (window)
+gtk-italic
+gtk_label_get_type
+gtk_label_new_with_mnemonic
+gtk_label_set_mnemonic_widget
+gtk_list_store_insert_with_values
+gtk_list_store_new
+gtk_main
+gtk_main_quit
+gtk_message_dialog_new
+gtk_print_context_create_pango_layout
+gtk_print_context_get_cairo_context
+gtk_print_context_get_height
+gtk_print_context_get_width
+gtk_print_operation_cancel
+gtk_print_operation_get_type
+gtk_print_operation_set_n_pages
+gtk_print_operation_set_unit
+gtk_radio_action_get_current_value
+gtk_show_about_dialog
+gtk_show_uri
+gtk_spin_button_new
+gtk_statusbar_get_type
+gtk_statusbar_new
+gtk_statusbar_pop
+gtk_statusbar_push
+gtk_toggle_action_get_active
+gtk_toggle_action_get_type
+gtk_toggle_action_set_active
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_new_with_mnemonic
+gtk_toggle_button_set_active
+gtk_tree_model_get
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_type
+gtk_tree_model_iter_next
+gtk_tree_sortable_get_type
+gtk_tree_sortable_set_sort_column_id
+gtk_ui_manager_add_ui_from_string
+gtk_ui_manager_get_accel_group
+gtk_ui_manager_get_widget
+gtk_ui_manager_insert_action_group
+gtk_ui_manager_new
+gtk_widget_destroy
+gtk_widget_ensure_style
+gtk_widget_get_accessible
+gtk_widget_get_allocation
+gtk_widget_get_display
+gtk_widget_get_pango_context
+gtk_widget_get_realized
+!gtk_widget_get_realized (GTK_WIDGET (guw))
+!gtk_widget_get_realized (GTK_WIDGET (window))
+gtk_widget_get_screen
+gtk_widget_get_style
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_get_window
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_hide_on_delete
+gtk_widget_set_can_default
+gtk_widget_set_hexpand
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_set_tooltip_text
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_add_accel_group
+gtk_window_fullscreen
+gtk_window_get_icon
+gtk_window_get_screen
+gtk_window_get_type
+gtk_window_maximize
+gtk_window_present
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_destroy_with_parent
+gtk_window_set_has_resize_grip
+gtk_window_set_icon
+gtk_window_set_icon_name
+gtk_window_set_resizable
+gtk_window_set_title
+gtk_window_set_transient_for
+gtk-zoom-100
+gtk-zoom-in
+gtk-zoom-out
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+gucharmap
+gucharmap_actions
+Gucharmap and the Unicode data files are distributed in the hope that they will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License and Unicode Copyright for more details.
+gucharmap_block_chapters_model_new
+gucharmap_charmap_get_active_character
+gucharmap_charmap_get_book_codepoint_list
+gucharmap_charmap_get_chartable
+gucharmap_charmap_get_font_desc
+gucharmap_charmap_get_type
+gucharmap_charmap_new
+gucharmap_charmap_next_chapter
+gucharmap_charmap_previous_chapter
+gucharmap_charmap_set_active_character
+gucharmap_charmap_set_chapters_model
+gucharmap_charmap_set_font_desc
+gucharmap_charmap_set_font_fallback
+gucharmap_charmap_set_snap_pow2
+gucharmap_chartable_get_active_character
+gucharmap_codepoint_list_get_char
+gucharmap_codepoint_list_get_index
+gucharmap_codepoint_list_get_last_index
+gucharmap_codepoint_list_get_type
+gucharmap_get_nameslist_colons
+gucharmap_get_nameslist_equals
+gucharmap_get_nameslist_pounds
+gucharmap_get_nameslist_stars
+gucharmap_get_unicode_data_name
+gucharmap_get_unicode_data_name_count
+gucharmap_get_unicode_kDefinition
+gucharmap_get_unihan_count
+Gucharmap is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+GUCHARMAP_IS_MINI_FONT_SELECTION (fontsel)
+GUCHARMAP_IS_WINDOW (guw)
+gucharmap-mini-fontsel.c:199
+gucharmap-mini-fontsel.c:217
+GucharmapMiniFontSelection
+gucharmap_mini_font_selection_change_font_size
+gucharmap_mini_font_selection_get_font_desc
+gucharmap_mini_font_selection_set_font_desc
+GucharmapPrintOperation
+gucharmap-print-operation.c
+gucharmap-print-operation.c:330
+gucharmap_print_operation_constructor
+gucharmap_script_chapters_model_new
+>GucharmapSearchDialog
+gucharmap-search-dialog.c
+gucharmap_search_state_new
+gucharmap_settings_add_window
+gucharmap_unichar_isdefined
+gucharmap_unichar_validate
+GucharmapWindow
+gucharmap-window.c
+gucharmap_window_set_chapters_model
+gucharmap_window_set_font
+gucharmap.xml
+g_unichar_isspace
+g_unichar_tolower
+g_unichar_to_utf8
+g_utf8_get_char
+g_utf8_normalize
+g_utf8_skip
+g_utf8_strlen
+g_value_dup_boxed
+g_value_dup_object
+g_value_get_boxed
+g_value_set_boxed
+g_variant_get_string
+HelpContents
+http://live.gnome.org/Gucharmap
+Information
+_IO_stdin_used
+_Jv_RegisterClasses
+last-char
+last_codepoint_index %d
+launchpad_integration_add_ui
+libatk-1.0.so.0
+libcairo.so.2
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+libgucharmap_2_90.so.7
+liblaunchpad-integration-3.0.so.1
+/lib/ld-linux.so.2
+libpango-1.0.so.0
+libpangocairo-1.0.so.0
+libpthread.so.0
+logo-icon-name
+Match _whole word
+maximized
+/MenuBar
+<menubar name='MenuBar'><menu action='File'><menuitem action='Close' /></menu><menu action='View'><menuitem action='ByScript' /><menuitem action='ByUnicodeBlock' /><separator /><menuitem action='ShowOnlyGlyphsInFont' /><menuitem action='SnapColumns' /><separator /><menuitem action='ZoomIn' /><menuitem action='ZoomOut' /><menuitem action='NormalSize' /></menu><menu action='Search'><menuitem action='Find' /><menuitem action='FindNext' /><menuitem action='FindPrevious' /></menu><menu action='Go'><menuitem action='NextCharacter' /><menuitem action='PreviousCharacter' /><separator /><menuitem action='NextChapter' /><menuitem action='PreviousChapter' /></menu><menu action='Help'><menuitem action='HelpContents' /><placeholder name="LaunchpadItems" /><menuitem action='About' /></menu></menubar>
+Next Block
+NextChapter
+NextCharacter
+_Next Character
+Next Script
+Noah Levitt <nlevitt@columbia.edu>
+NormalSize
+Not found.
+notify::active-character
+notify::font-desc
+org.gnome.Charmap
+org.gnome.Charmap.WindowState
+Padraig O'Briain <Padraig.Obriain@sun.com>
+pango_cairo_show_layout
+pango_context_list_families
+pango_font_description_copy
+pango_font_description_free
+pango_font_description_from_string
+pango_font_description_get_family
+pango_font_description_get_size
+pango_font_description_get_style
+pango_font_description_get_type
+pango_font_description_get_weight
+pango_font_description_set_family
+pango_font_description_set_size
+pango_font_description_set_style
+pango_font_description_set_weight
+pango_font_description_to_string
+pango_font_family_get_name
+pango_layout_get_extents
+pango_layout_set_font_description
+pango_layout_set_text
+pango_layout_set_width
+Permission is hereby granted, free of charge, to any person obtaining a copy of the Unicode data files to deal in them without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, and/or sell copies.
+Previous Block
+PreviousChapter
+PreviousCharacter
+_Previous Character
+Previous Script
+priv->codepoint_list != NULL
+priv->font_desc != NULL
+program-name
+property
+quick_checks_before
+response
+r != search_state->search_string_nfd_temp
+_Search:
+search_find
+search-finish
+Search in character _details
+search-start
+search_state->search_string_nfc != NULL
+search_state->search_string_nfd != NULL
+<shift><control>G
+Sho_w only glyphs from this font
+ShowOnlyGlyphsInFont
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+snap-cols-pow2
+SnapColumns
+Snap _Columns to Power of Two
+__stack_chk_fail
+status-message
+Sun Microsystems
+_Text to copy:
+translator-credits
+ui/MenuBar/Help/LaunchpadItems
+/usr/share/gnome/help
+/usr/share/locale
+value-changed
+window-state-event
+wrap-license
+You should have received a copy of the GNU General Public License along with Gucharmap; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02110-1301  USA

@@ -1,0 +1,472 @@
+%11lld/%lld (%4.1f%%) @0x, remaining ??:?? RBU %5.1f%% UBU %5.1f%%
+%11lld/%lld (%4.1f%%) @%.1fx, remaining %d:%02d RBU %5.1f%% UBU %5.1f%%
+3T$@3D$<	
+3T$P3D$L	
+About to execute '
+__assert_fail
+ASSOCIATED WRITE PROTECT
+:-( attempt to re-run with -dvd-compat -dvd-compat to engage DAO or apply full blanking procedure
+AUDIO PLAY OPERATION IN PROGRESS
+AUDIO PLAY OPERATION PAUSED
+AUDIO PLAY OPERATION STOPPED DUE TO ERROR
+AUDIO PLAY OPERATION SUCCESSFULLY COMPLETED
+/bin/umount
+builtin_dd
+builtin_dd if=%s of=%s obs=32k seek=%u
+builtin_dd: %lld*2KB out @ average %.1fx%dKBps
+| builtin_dd of=%s obs=32k seek=%u
+BUS DEVICE RESET FUNCTION OCCURRED
+BUS RESET OCCURRED
+CANNOT FORMAT MEDIUM - INCOMPATIBLE MEDIUM
+CANNOT READ MEDIUM - INCOMPATIBLE FORMAT
+CANNOT READ MEDIUM - UNKNOWN FORMAT
+CANNOT WRITE - APPLICATION CODE MISMATCH
+CANNOT WRITE MEDIUM - INCOMPATIBLE FORMAT
+CANNOT WRITE MEDIUM - UNKNOWN FORMAT
+CANNOT WRITE MEDIUM - UNSUPPORTED MEDIUM VERSION
+:-( can't control writing velocity, -speed option is ignored
+:-( can't locate DVD+RW format descriptor
+:-( can't locate format 0x30 descriptor
+:-( can't locate format 0x31 descriptor
+:-( can't locate format 0x32 descriptor
+:-( can't locate obligatory format descriptor
+:-( capacity is undefined or insane?
+capacity=%lld
+CD CONTROL ERROR
+-cdrecord-params
+CHANGED OPERATING DEFINITION
+CIRC UNRECOVERED ERROR
+CLEANING CARTRIDGE INSTALLED
+CLEANING FAILURE
+CLEANING REQUESTED
+CLOSE DISC
+CLOSE SESSION
+CLOSE SESSION (but try to continue)
+CLOSE TRACK
+COMMAND PHASE ERROR
+COMMANDS CLEARED BY ANOTHER INITIATOR
+COMMAND SEQUENCE ERROR
+:-! "COMMAND SEQUENCE ERROR"@LBA=%xh. Is media being read?
+CONDITIONAL WRITE PROTECT
+CONFLICT IN BINDING NONCE RECORDING
+COPY CANNOT EXECUTE SINCE INITIATOR CANNOT DISCONNECT
+COPY PROTECTION KEY EXCHANGE FAILURE - AUTHENTICATION FAILURE
+COPY PROTECTION KEY EXCHANGE FAILURE - KEY NOT ESTABLISHED
+COPY PROTECTION KEY EXCHANGE FAILURE - KEY NOT PRESENT
+CURRENT POWER CALIBRATION AREA IS ALMOST FULL
+CURRENT POWER CALIBRATION AREA IS FULL
+CURRENT PROGRAM AREA IS EMPTY
+CURRENT PROGRAM AREA IS NOT EMPTY
+CURRENT SESSION NOT FIXATED FOR APPEND
+:-( "Current Write Speed" descriptor is not present, faking 1x...
+__cxa_atexit
+__cxa_guard_acquire
+__cxa_guard_release
+CXXABI_1.3
+DATA PHASE ERROR
+%d	%d	%d	%d	%d
+DEFECTS IN ERROR WINDOW
+/dev/fd/%d
+/dev/fd/%u
+DEVICE INTERNAL RESET
+/dev/rawctl
+/dev/raw/raw%d
+/dev/sg%d
+/dev/tty
+/dev/zero
+-dry-run
+D:-( unable to %s: 
+-dvd-compat
+-dvd-video
+EMPTY OR PARTIALLY WRITTEN RESERVED TRACK
+ENCLOSURE FAILURE
+ENCLOSURE SERVICES CHECKSUM ERROR
+ENCLOSURE SERVICES FAILURE
+ENCLOSURE SERVICES TRANSFER FAILURE
+ENCLOSURE SERVICES UNAVAILABLE
+endmntent
+END OF MEDIUM REACHED
+END OF USER AREA ENCOUNTERED ON THIS TRACK
+ERASE FAILURE
+ERASE FAILURE - INCOMPLETE ERASE OPERATION DETECTED
+__errno_location
+ERROR LOG OVERFLOW
+ERROR READING ISRC NUMBER
+ERROR READING UPC/EAN NUMBER
+ERROR TOO LONG TO CORRECT
+Executing '
+:-? Failed to change write speed: %d->%d
+:-( Failed to change write speed: %d->%d
+:-( failed to create semaphore
+:-( failed to create thread
+FAILURE PREDICTION THRESHOLD EXCEEDED
+FAILURE PREDICTION THRESHOLD EXCEEDED (FALSE)
+:-( falling down to SET CD SPEED
+FATAL: %s already carries isofs!
+FOCUS SERVO FAILURE
+  for <genisoimage options> see 'genisoimage %s'
+:-( FORMAT allocaion length isn't sane
+FORMAT COMMAND FAILED
+FORMAT-LAYER MAY HAVE CHANGED
+FORMAT UNIT
+__fprintf_chk
+-free-space
+  front-ending to %s: 
+__fxstat64
+genisoimage
+GET CONFIGURATION
+GET CURRENT PERFORMANCE
+GET EVENT
+GET FEATURE 21h
+getmntent
+GET PERFORMANCE
+:-( GET PERFORMANCE: insane Performance Data Length
+getrlimit64
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+growisofs.c
+HARDWARE WRITE PROTECTED
+HEAD SELECT FAULT
+highest_ecc_block==2
+IDLE CONDITION ACTIVATED BY COMMAND
+IDLE CONDITION ACTIVATED BY TIMER
+:-! ignoring...
+ILLEGAL FUNCTION
+ILLEGAL MODE FOR THIS TRACK
+IMPORT OR EXPORT ELEMENT ACCESSED
+INCOMPATIBLE MEDIUM INSTALLED
+in_fd!=-1
+INITIATOR DETECTED ERROR MESSAGE RECEIVED
+INQUIRY DATA HAS CHANGED
+:-( insane break%c%d option
+:-( insane dao%c%d option
+:-( insane DVD+R DL BI structure length
+:-( insane Layer Break position with respect to dataset size
+:-( insane seek%c%d option
+:-( insane tracksize%c%d option
+INSUFFICIENT BLOCK COUNT FOR BINDING NONCE RECORDING
+INSUFFICIENT TIME FOR OPERATION
+INTERNAL TARGET FAILURE
+INVALID ADDRESS FOR WRITE
+INVALID BITS IN IDENTIFY MESSAGE
+INVALID COMMAND OPERATION CODE
+INVALID ELEMENT ADDRESS
+INVALID FIELD IN CDB
+INVALID FIELD IN PARAMETER LIST
+INVALID MESSAGE ERROR
+INVALID PACKET SIZE
+INVALID RELEASE OF PERSISTENT RESERVATION
+INVALID WRITE CROSSING LAYER JUMP
+I/O PROCESS TERMINATED
+_IO_stdin_used
+_Jv_RegisterClasses
+:-? L0 Data Zone Capacity is set already
+:-( last session is not empty
+L-EC UNCORRECTABLE ERROR
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+libstdc++.so.6
+LOAD TRAY
+LOG COUNTER AT MAXIMUM
+LOG EXCEPTION
+LOGICAL BLOCK ADDRESS OUT OF RANGE
+LOGICAL UNIT COMMUNICATION CRC ERROR (ULTRA-DMA/32)
+LOGICAL UNIT COMMUNICATION FAILURE
+LOGICAL UNIT COMMUNICATION PARITY ERROR
+LOGICAL UNIT COMMUNICATION TIMEOUT
+LOGICAL UNIT DOES NOT RESPOND TO SELECTION
+LOGICAL UNIT FAILED SELF-CONFIGURATION
+LOGICAL UNIT FAILURE
+LOGICAL UNIT FAILURE PREDICTION THRESHOLD EXCEEDED
+LOGICAL UNIT HAS NOT SELF-CONFIGURED YET
+LOGICAL UNIT IS IN PROCESS OF BECOMING READY
+LOGICAL UNIT NOT READY, CAUSE NOT REPORTABLE
+LOGICAL UNIT NOT READY, FORMAT IN PROGRESS
+LOGICAL UNIT NOT READY, INITIALIZING CMD. REQUIRED
+LOGICAL UNIT NOT READY, LONG WRITE IN PROGRESS
+LOGICAL UNIT NOT READY, MANUAL INTERVENTION REQUIRED
+LOGICAL UNIT NOT READY, OPERATION IN PROGRESS
+LOGICAL UNIT NOT READY, SELF-TEST IN PROGRESS
+LOGICAL UNIT NOT SUPPORTED
+LOGICAL UNIT REGION MUST BE PERMANENT/REGION RESET COUNT ERROR
+LOGICAL UNIT SOFTWARE WRITE PROTECTED
+LOG LIST CODES EXHAUSTED
+LOG PARAMETERS CHANGED
+LOW POWER CONDITION ON
+:-( LUN is impossible to bear with...
+MECHANICAL POSITIONING ERROR
+MECHANICAL POSITIONING OR CHANGER ERROR
+MEDIA FAILURE PREDICTION THRESHOLD EXCEEDED
+:-( media is not appendable
+:-( media is not formatted or unsupported.
+MEDIA LOAD OR EJECT FAILED
+:-( media must be full already
+MEDIA REGION CODE IS MISMATCHED TO LOGICAL UNIT REGION
+MEDIUM DESTINATION ELEMENT FULL
+MEDIUM FORMAT CORRUPTED
+MEDIUM MAGAZINE INSERTED
+MEDIUM MAGAZINE LOCKED
+MEDIUM MAGAZINE NOT ACCESSIBLE
+MEDIUM MAGAZINE REMOVED
+MEDIUM MAGAZINE UNLOCKED
+MEDIUM NOT FORMATTED
+MEDIUM NOT PRESENT
+MEDIUM NOT PRESENT - LOADABLE
+MEDIUM NOT PRESENT - TRAY CLOSED
+MEDIUM NOT PRESENT - TRAY OPEN
+MEDIUM REMOVAL PREVENTED
+MEDIUM SOURCE ELEMENT EMPTY
+:-( memory exhausted
+MICROCODE HAS BEEN CHANGED
+MISCOMPARE DURING VERIFY OPERATION
+mlockall
+MODE PARAMETERS CHANGED
+MODE SELECT
+MODE SENSE
+MODE SENSE#2A
+:-? more than 50%% of space will be *wasted*!
+:-( more than 50%% of space will be *wasted*!
+:-( mounted media[%X] is not supported
+MULTIPLE PERIPHERAL DEVICES SELECTED
+next_session!=-1
+next_session=%lld
+:-( next session would cross 4GB boundary, aborting...
+NO ADDITIONAL SENSE INFORMATION
+NO CURRENT AUDIO STATUS TO RETURN
+NO DEFECT SPARE LOCATION AVAILABLE
+NO MORE TEST ZONE EXTENSIONS ARE ALLOWED
+NO MORE TRACK RESERVATIONS ALLOWED
+:-( none Mode 1 track
+:-( non-MMC unit?
+NO REFERENCE POSITION FOUND
+NO SEEK COMPLETE
+:-( not an MMC unit!
+NOT READY TO READY CHANGE, MEDIUM MAY HAVE CHANGED
+:-( no volume descriptors found in previous session?
+OPERATION IN PROGRESS
+OPERATOR MEDIUM REMOVAL REQUEST
+OPERATOR REQUEST OR STATE CHANGE INPUT
+OPERATOR SELECTED WRITE PERMIT
+OPERATOR SELECTED WRITE PROTECT
+out_fd!=-1
+-overburn
+OVERLAPPED COMMANDS ATTEMPTED
+PACKET DOES NOT FIT IN AVAILABLE SPACE
+:-( parameter length inconsistency
+PARAMETER LIST LENGTH ERROR
+PARAMETER NOT SUPPORTED
+PARAMETER VALUE INVALID
+PERFORM OPC
+PERMANENT WRITE PROTECT
+PERSISTENT WRITE PROTECT
+-poor-man
+POSITIONING ERROR DETECTED BY READ OF MEDIUM
+POWER CALIBRATION AREA ALMOST FULL
+POWER CALIBRATION AREA ERROR
+POWER ON OCCURRED
+POWER ON, RESET, OR BUS DEVICE RESET OCCURRED
+PREVENT MEDIA REMOVAL
+-prev-session
+__printf_chk
+/proc/mounts
+/proc/scsi/sg/devices
+PROGRAM MEMORY AREA IS FULL
+PROGRAM MEMORY AREA UPDATE FAILURE
+pthread_attr_init
+pthread_attr_setscope
+pthread_attr_setstacksize
+pthread_create
+pthread_sigmask
+pwrite64
+QUICK GROW
+RANDOM POSITIONING ERROR
+RDZ IS FULL
+READ DISC INFORMATION
+READ DVD+R DL BOUNDARY INFORMATION
+READ DVD STRUCTURE #10h
+READ ERROR - LOSS OF STREAMING
+READ FORMAT CAPACITIES
+READ@LBA=10h
+READ OF SCRAMBLED SECTOR WITHOUT AUTHENTICATION
+READ RETRIES EXHAUSTED
+READ SESSION INFO
+READ TRACK INFORMATION
+RECOVERED DATA - DATA AUTO-REALLOCATED
+RECOVERED DATA - RECOMMEND REASSIGNMENT
+RECOVERED DATA - RECOMMEND REWRITE
+RECOVERED DATA USING PREVIOUS SECTOR ID
+RECOVERED DATA WITH CIRC
+RECOVERED DATA WITH ERROR CORRECTION APPLIED
+RECOVERED DATA WITH ERROR CORR. & RETRIES APPLIED
+RECOVERED DATA WITH L-EC
+RECOVERED DATA WITH LINKING
+RECOVERED DATA WITH NEGATIVE HEAD OFFSET
+RECOVERED DATA WITH NO ERROR CORRECTION APPLIED
+RECOVERED DATA WITHOUT ECC - DATA REWRITTEN
+RECOVERED DATA WITHOUT ECC - RECOMMEND REASSIGNMENT
+RECOVERED DATA WITHOUT ECC - RECOMMEND REWRITE
+RECOVERED DATA WITH POSITIVE HEAD OFFSET
+RECOVERED DATA WITH RETRIES
+RECOVERED DATA WITH RETRIES AND/OR CIRC APPLIED
+RESERVATIONS PREEMPTED
+RESERVE TRACK
+RESTART FORMAT
+:-? resuming track#%d from LBA#%d
+RMA/PMA IS ALMOST FULL
+RMZ EXTENSION IS NOT ALLOWED
+RNCLOSURE SERVICES TRANSFER REFUSED
+ROUNDED PARAMETER
+SAVING PARAMETERS NOT SUPPORTED
+%s: -C argument is %s.
+:-( %s: CD_ROM_MEDIA_CHANGED ioctl failed: 
+sched_yield
+%s: closing disc
+%s: closing %s
+%s: closing session
+%s: closing track
+%s: copying volume descriptor(s)
+SCSI PARITY ERROR
+%s: "Current Write Speed" is %.1fx%dKBps.
+:-( %s:%d doesn't look like isofs!
+:-( %s doesn't look like isofs...
+SELECT OR RESELECT FAILURE
+sem_init
+sem_post
+sem_wait
+SEND DVD+R DOUBLE LAYER RECORDING INFORMATION
+%s: engaging DVD-%s DAO upon user request...
+SESSION FIXATION ERROR
+SESSION FIXATION ERROR - INCOMPLETE TRACK IN SESSION
+SESSION FIXATION ERROR WRITING LEAD-IN
+SESSION FIXATION ERROR WRITING LEAD-OUT
+SET CD SPEED
+setlocale
+setmntent
+setresuid
+setrlimit64
+SET STREAMING
+:-( %s: failed to grab associated sg device
+:-[ %s failed with SK=%Xh/ASC=%02Xh/ACQ=%02Xh]: 
+:-[ %s failed with SK=%Xh/%s]: 
+%s: FEATURE 21h is not on, engaging DAO...
+%s: flushing cache
+* %.*sgrowisofs by <appro@fy.chalmers.se>, version 7.1,
+:-( %s has failed: %d
+sigaction
+sigaddset
+sigemptyset
+sigfillset
+sigprocmask
+:-( %s: %lld blocks are free, %lld to be written!
+:-( %s: media is not recognized as recordable DVD: %X
+:-( %s: mounted media doesn't appear to be [supported] DVD%sRW, DVD%sR or Blu-ray Disc
+%s: no genisoimage options are permitted with =, aborting...
+%s: no genisoimage options specified, aborting...
+%s: -o[utput] option is not permitted.
+SPARE AREA EXHAUSTION FAILURE PREDICTION THRESHOLD EXCEEDED
+-speed=%.1f: insane speed factor.
+SPINDLE SERVO FAILURE
+%s: pre-formatting blank BD-RE for %.1fGB...
+%s: pre-formatting blank BD-R for %.1fGB...
+%s: pre-formatting blank DVD+RW...
+%s: previous "session" device is not specified, do use -M or -Z option
+__sprintf_chk
+%s: "Quick Grow" session...
+:-( %s: race condition detected!
+%s: reloading tray
+%s: reserving %u blocks
+%s: restarting DVD+RW format...
+%s: splitting layers at %u blocks
+%s: stopping de-icing
+__stack_chk_fail
+STANDBY CONDITION ACTIVATED BY COMMAND
+STANDBY CONDITION ACTIVATED BY TIMER
+START UNIT
+STOP DE-ICING
+:-( %s: unable to lseek(%lld): 
+:-( %s: unable to proceed with recording: 
+:-( "%s": unexpected errno:
+%s: updating RMA
+%s: writing lead-out
+SYNCHRONOUS DATA TRANSFER ERROR
+SYNCHRONOUS FLUSH CACHE
+SYSTEM RESOURCE FAILURE
+	t$(9L$(
+TARGET OPERATING CONDITIONS HAVE CHANGED
+:-! the LUN appears to be stuck at %xh, retrying in 5 secs...
+:-? the LUN appears to be stuck writing LBA=%xh, keep retrying in %dms
+:-! the LUN is still in process of becoming ready, retrying in 5 secs...
+THRESHOLD CONDITION MET
+THRESHOLD PARAMETERS NOT SUPPORTED
+TIMEOUT ON LOGICAL UNIT
+TRACK FOLLOWING ERROR
+TRACKING SERVO FAILURE
+:-( track is formatted for fixed packet size
+:-( track is not formatted for fixed packet size
+tracksize
+U$3T$`3D$\	
+:-( unable to allocate %lu bytes: 
+:-( unable to anonymously mmap %d: 
+:-( unable to create pipe
+- unable to execute %s: 
+:-( unable to execute %s: 
+:-( unable to fork genisoimage
+:-( unable to fork -umount
+:-( unable to fstat
+:-( unable to fstat64
+:-( unable to O_EXCL %s: someone was in time to remount?
+:-( unable to open64("%s",O_RDONLY): 
+:-( unable to open64("%s",O_RDWR): 
+:-( unable to pread64(2) primary volume descriptor
+:-( unable to pread64(2) volume descriptors set
+:-( unable to pwrite64(2) volume descriptors set
+UNABLE TO RECOVER TABLE-OF-CONTENTS
+:-( unable to reload tray
+:-( unable to re-open64("%s",O_RDONLY): 
+:-( unable to stat64("%s"): 
+:-( unable to TEST UNIT READY
+:-( unable to umount %s: 
+unable to unmount
+undefined
+UNRECOVERED READ ERROR
+UNSUCCESSFUL SOFT RESET
+UNSUPPORTED ENCLOSURE FUNCTION
+- usage: %s [-dvd-compat] [-overburn] [-speed=1] \
+    use single layer media for this recording
+-use-the-force-luke
+-version
+VOLTAGE FAULT
+:-? volume descriptor mismatch, did you use same genisoimage options?
+:-( waipid failed
+:-( waitpid failed
+WARNING - BACKGROUND MEDIUM SCAN DETECTED MEDIUM ERROR
+WARNING - BACKGROUND PRE-SCAN DETECTED MEDIUM ERROR
+WARNING - BACKGROUND SELF-TEST FAILED
+WARNING - ENCLOSURE DEGRADED
+, warning for short DAO recording
+:-! WARNING: Power Calibration Area is almost full
+WARNING: %s already carries isofs!
+WARNING - SPECIFIED TEMPERATURE EXCEEDED
+WRITE ERROR
+WRITE ERROR - AUTO-REALLOCATION FAILED
+WRITE ERROR - LOSS OF STREAMING
+WRITE ERROR - PADDING BLOCKS ADDED
+WRITE ERROR - RECOMMEND REASSIGNMENT
+WRITE ERROR - RECOVERED WITH AUTO-REALLOCATION
+WRITE ERROR - RECOVERY FAILED
+WRITE ERROR - RECOVERY NEEDED
+:-( write failed
+WRITE@LBA=%xh
+__xstat64
+    you most likely want to use -Z option.
+-zero-session
+         -[ZM] /dev/dvd <genisoimage options>
+ZONED FORMATTING FAILED DUE TO SPARE LINKING

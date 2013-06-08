@@ -1,0 +1,461 @@
+========================================================================
+===============================================================================
+ %-27s %s|%s|%s %s %-11s %s %s
+, %3.0lf%% complete
+%3.1f days
+%3.1f hours
+%3.1f mins
+%3.1f secs
+%.3gC / %.3gF
+    adapter:                   %s
+added:     %s
+    alignment offset:          %lli
+    appendable:                %d
+    ATA SMART:                 Data not collected
+    ATA SMART:                 not available
+ata-smart-refresh
+ata-smart-simulate
+    ATA SMART:                 Updated at %s
+ata-smart-wakeup
+ Attribute       Current|Worst|Threshold  Status   Value       Type     Updates
+  automount hint:              %s
+    backed by:                 %s
+BAD_ATTRIBUTE_IN_THE_PAST
+BAD_ATTRIBUTE_NOW
+BAD_SECTOR
+BAD_SECTOR_MANY
+BAD_STATUS
+    blank:                     %d
+  block size:                  %llu
+__bss_start
+               but dm-multipath is not active for these devices.
+    by-id:                     %s
+    by-path:                   %s
+, cancellable
+Cannot find device with major:minor %d:%d: %s
+Cannot stat device file %s: %m
+    can spindown:              %d
+changed:     %s
+  cleartext luks device:
+    closed:                    %d
+      compat:                 
+      complete:                %3.01f%%
+    components:
+Couldn't call GetAll() to get properties for %s: %s
+Couldn't connect to system bus: %s
+Couldn't enumerate device files: %s
+Couldn't enumerate devices: %s
+    count:                     %d
+dbus_g_bus_get
+dbus_g_connection_unref
+dbus_g_object_path_get_g_type
+dbus_g_object_register_marshaller
+dbus_g_proxy_add_signal
+dbus_g_proxy_call
+dbus_g_proxy_connect_signal
+dbus_g_proxy_new_for_name
+dbus_g_type_get_collection
+dbus_g_type_get_map
+    degraded:                  %d
+    detachable:                %d
+Detach failed: %s
+detach-options
+Detach options separated by comma
+Detach the given device
+  detected at:                 %s
+ (detected at %s)
+    detection by polling:      %d
+    detection inhibitable:     %d
+    detection inhibited:       %d
+    detects change:            %d
+DeviceAdded
+DeviceAutomountHint
+DeviceBlockSize
+DeviceChanged
+DeviceDetectionTime
+DeviceFile
+DeviceFileById
+DeviceFileByPath
+DeviceFilePresentation
+  device-file:                 %s
+Device file %s is not a block device: %m
+DeviceIsDrive
+DeviceIsLinuxDmmp
+DeviceIsLinuxDmmpComponent
+DeviceIsLinuxLoop
+DeviceIsLinuxLvm2LV
+DeviceIsLinuxLvm2PV
+DeviceIsLinuxMd
+DeviceIsLinuxMdComponent
+DeviceIsLuks
+DeviceIsLuksCleartext
+DeviceIsMediaAvailable
+DeviceIsMediaChangeDetected
+DeviceIsMediaChangeDetectionInhibitable
+DeviceIsMediaChangeDetectionInhibited
+DeviceIsMediaChangeDetectionPolling
+DeviceIsMounted
+DeviceIsOpticalDisc
+DeviceIsPartition
+DeviceIsPartitionTable
+DeviceIsReadOnly
+DeviceIsRemovable
+DeviceIsSystemInternal
+DeviceJobChanged
+  device:                      %lld:%lld
+DeviceMajor
+DeviceMediaDetectionTime
+DeviceMinor
+DeviceMountedByUid
+DeviceMountPaths
+DevicePresentationHide
+DevicePresentationIconName
+DevicePresentationName
+DevicePresentationNopolicy
+DeviceRemoved
+DeviceSize
+Disk failure is imminent
+Disk has a few bad sectors
+Disk is being used outside of design parameters
+Disk reports many bad sectors
+Disk was used outside of design parameters in the past
+  dm-multipath:
+  dm-multipath component:
+  drive:
+DriveAdapter
+DriveAtaSmartBlob
+DriveAtaSmartIsAvailable
+DriveAtaSmartRefreshData
+DriveAtaSmartStatus
+DriveAtaSmartTimeCollected
+DriveCanDetach
+DriveCanSpindown
+DriveConnectionInterface
+DriveConnectionSpeed
+DriveDetach
+DriveEject
+DriveInhibitAllPolling
+DriveInhibitPolling
+DriveIsMediaEjectable
+DriveIsRotational
+DriveMedia
+DriveMediaCompatibility
+DriveModel
+DrivePollMedia
+DrivePorts
+DriveRevision
+DriveRotationRate
+DriveSerial
+DriveSetAllSpindownTimeouts
+DriveSetSpindownTimeout
+DriveSimilarDevices
+DriveVendor
+DriveWriteCache
+DriveWwn
+Dump all information about all devices
+    ejectable:                 %d
+Eject failed: %s
+eject-options
+Eject options separated by comma
+Eject the given device
+enumerate
+enumerate-device-files
+EnumerateDeviceFiles
+Enumerate device files for devices
+EnumerateDevices
+Enumerate objects paths for devices
+Error launching program: %s
+  FAIL   
+FAIL_PAST
+    filename:                  %s
+FilesystemMount
+FilesystemUnmount
+FindDeviceByMajorMinor
+    flags:                    
+g_error_free
+GHashTable
+g_hash_table_foreach
+g_hash_table_unref
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.4
+g_main_loop_new
+g_main_loop_run
+g_malloc0
+g_malloc0_n
+g_memdup
+__gmon_start__
+g_object_unref
+  good   
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_get_help
+g_option_context_new
+g_option_context_parse
+g_option_context_set_description
+g_printerr
+GPtrArray
+g_ptr_array_add
+g_ptr_array_foreach
+g_ptr_array_free
+g_ptr_array_new
+g_ptr_array_sort
+g_return_if_fail_warning
+g_spawn_sync
+g_strcmp0
+g_strdup
+g_strdup_printf
+g_strdupv
+g_strfreev
+g_strsplit
+g_strv_get_type
+g_strv_length
+g_type_init
+g_value_get_boolean
+g_value_get_boxed
+g_value_get_double
+g_value_get_int
+g_value_get_int64
+g_value_get_string
+g_value_get_type
+g_value_get_uint
+g_value_get_uint64
+g_value_peek_pointer
+  has media:                   %d
+    holder:                    %s
+    home host:                 %s
+IdVersion
+    if speed:                  %lli bits/s
+    if speed:                  (unknown)
+inhibit-all-polling
+Inhibit all polling
+Inhibit all polling failed: %s
+Inhibiting polling on all devices. Press Ctrl+C to exit.
+Inhibiting polling on %s. Press Ctrl+C to exit.
+Inhibiting the daemon. Press Ctrl+C to exit.
+inhibit-polling
+Inhibit polling
+Inhibit polling failed: %s
+Inhibit the daemon
+, initiated by uid %d
+Inject libatasmart BLOB for testing
+    interface:                 %s
+    interface:                 (unknown)
+_IO_stdin_used
+  is mounted:                  %d
+  is read only:                %d
+job-changed: %s
+JobInitiatedByUid
+JobInProgress
+JobIsCancellable
+JobPercentage
+  job underway:                no
+  job underway:                %s
+_Jv_RegisterClasses
+    label:                     %s
+  label:                       %s
+libatasmart.so.4
+libc.so.6
+__libc_start_main
+libdbus-glib-1.so.2
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+LinuxDmmpComponentHolder
+LinuxDmmpName
+LinuxDmmpParameters
+LinuxDmmpSlaves
+LinuxLoopFilename
+LinuxLvm2LVGroupName
+LinuxLvm2LVGroupUuid
+LinuxLvm2LVName
+LinuxLvm2LVUuid
+LinuxLvm2PVGroupExtentSize
+LinuxLvm2PVGroupLogicalVolumes
+LinuxLvm2PVGroupName
+LinuxLvm2PVGroupPhysicalVolumes
+LinuxLvm2PVGroupSequenceNumber
+LinuxLvm2PVGroupSize
+LinuxLvm2PVGroupUnallocatedSize
+LinuxLvm2PVGroupUuid
+LinuxLvm2PVNumMetadataAreas
+LinuxLvm2PVUuid
+  linux md:
+  linux md component:
+LinuxMdComponentHolder
+LinuxMdComponentHomeHost
+LinuxMdComponentLevel
+LinuxMdComponentName
+LinuxMdComponentNumRaidDevices
+LinuxMdComponentPosition
+LinuxMdComponentState
+LinuxMdComponentUuid
+LinuxMdComponentVersion
+LinuxMdHomeHost
+LinuxMdIsDegraded
+LinuxMdLevel
+LinuxMdName
+LinuxMdNumRaidDevices
+LinuxMdSlaves
+LinuxMdState
+LinuxMdSyncAction
+LinuxMdSyncPercentage
+LinuxMdSyncSpeed
+LinuxMdUuid
+LinuxMdVersion
+%llu sectors
+localtime
+    Logical Volumes that are part of the VG:
+LuksCleartextSlave
+LuksCleartextUnlockedByUid
+  luks device:
+LuksHolder
+  LVM2 Logical Volume:
+  LVM2 Physical Volume:
+    LV name:                   %s
+    LV uuid:                   %s
+    media:                     %s
+    model:                     %s
+Monitor activity from the disk daemon
+monitor-detail
+Monitoring activity from the disks daemon. Press Ctrl+C to cancel.
+Monitor with detail
+  mounted by uid:              %d
+Mounted %s at %s
+Mount failed: %s
+mount-fstype
+Mount options separated by comma
+  mount paths:             
+Mount the given device
+    multipath device:          %s
+   n/a   
+    name:                      %s
+NativePath
+  native-path:                 %s
+(not set)
+nowakeup
+n_param_values == 7
+    num audio tracks:          %d
+    number:                    %d
+    num comp:                  %d
+    num components:            %d
+    num sessions:              %d
+    num tracks:                %d
+    offset:                    %lli
+Old-age 
+  optical disc:
+OpticalDiscIsAppendable
+OpticalDiscIsBlank
+OpticalDiscIsClosed
+OpticalDiscNumAudioTracks
+OpticalDiscNumSessions
+OpticalDiscNumTracks
+org.freedesktop.DBus.Properties
+/org/freedesktop/UDisks
+org.freedesktop.UDisks
+org.freedesktop.UDisks.Device
+      overall assessment:      %s
+      overall assessment:      UNKNOWN
+    parameters:                %s
+  partition:
+PartitionAlignmentOffset
+PartitionFlags
+PartitionLabel
+PartitionNumber
+PartitionOffset
+PartitionScheme
+PartitionSize
+PartitionSlave
+  partition table:
+PartitionTableCount
+PartitionTableScheme
+PartitionType
+PartitionUuid
+    part of:                   %s
+    Physical Volumes bound to the VG:
+poll-for-media
+Poll for media
+Poll for media failed: %s
+    ports:
+    position:                  %d
+Pre-fail
+  presentation hide:           %d
+  presentation icon:           %s
+  presentation name:           %s
+  presentation nopolicy:       %d
+    presentation:              %s
+    PV num mda:                %d
+    PV uuid:                   %s
+q@n_param_values == 6
+    RAID level:                %s
+Refresh ATA SMART data
+Refreshing ATA SMART data failed: %s
+  removable:                   %d
+removed:   %s
+    revision:                  %s
+    rotational media:          No
+    rotational media:          Yes, at %d RPM
+    rotational media:          Yes, unknown rate
+                      %s
+    scheme:                    %s
+See the udisks man page for details.
+    serial:                    %s
+setlocale
+set-spindown
+set-spindown-all
+Set spindown for all drives to %d seconds. Press Ctrl+C to exit.
+Set spindown on %s to %d seconds. Press Ctrl+C to exit.
+Set spindown timeout for all drives
+Set spindown timeout for drive
+Setting spindown failed: %s
+show-info
+Show information about a device file
+Showing information for %s
+    similar devices:
+simulate=%s
+    size:                      %lli
+  size:                        %llu
+sk_disk_free
+sk_disk_open
+sk_disk_set_blob
+sk_disk_smart_parse_attributes
+    slaves:
+Specify file system type
+      speed:                   %lli bytes/sec
+spindown-timeout
+Spindown timeout in seconds
+__stack_chk_fail
+    state:                     
+    state:                     %s
+strftime
+    sync action:               %s
+  system internal:             %d
+    type:                      %s
+  type:                        %s
+udisks commandline tool
+udisks_marshal_VOID__BOOLEAN_STRING_UINT_BOOLEAN_DOUBLE
+udisks_marshal_VOID__BOXED_BOOLEAN_STRING_UINT_BOOLEAN_DOUBLE
+unhandled property '%s'
+    unlocked by:               uid %d
+Unmount failed: %s
+unmount-options
+Unmount options separated by comma
+Unmount the given device
+  usage:                       %s
+    uuid:                      %s
+  uuid:                        %s
+    vendor:                    %s
+    version:                   %s
+  version:                     %s
+    VG extent size:            %llu
+    VG name:                   %s
+    VG sequence number:        %llu
+    VG size:                   %llu
+    VG unallocated size:       %llu
+    VG uuid:                   %s
+Wake up the disk if it is not awake
+      WARNING: Multiple devices with this serial and/or WWN has been detected
+    write-cache:               %s
+    write-cache:               unknown
+    WWN:                       %s
+__xstat64

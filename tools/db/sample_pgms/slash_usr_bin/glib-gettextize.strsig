@@ -1,0 +1,127 @@
+      ;;
+    -* )
+# along with this program; if not, write to the Free Software
+# any later version.
+  auxdir="$auxdir/"
+auxdir=`cat "$configure_in" | grep '^AC_CONFIG_AUX_DIR' | sed -n -e 's/AC_CONFIG_AUX_DIR(\([^()]*\))/\1/p' | sed -e 's/^\[\(.*\)\]$/\1/' | sed -e 1q`
+#! /bin/sh
+      break ;;
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+  case "$1" in
+  case $file in
+case `uname` in
+    -c | --copy | --c* )
+  -c, --copy           copy files instead of making symlinks
+cd $gettext_dir || {
+# Check in which directory config.rpath, mkinstalldirs etc. belong.
+configstatus=0
+      configstatus=1 ;;
+    configure_in=configure.ac
+  configure_in=configure.in
+configure_in=NONE
+# Copy files to po/ subdirectory.
+# Copyright (C) 1995-1998, 2000, 2001 Free Software Foundation, Inc.
+datadir=${datarootdir}
+datarootdir=${prefix}/share
+# Directory where the sources are stored.
+  $echo "\
+    $echo "Cannot change directory to \`$srcdir'"
+echo "  codeset.m4 gettext.m4 glibc21.m4 iconv.m4 isc-posix.m4 lcmessage.m4"
+      { $echo "Copying file $file"; cp $file "$srcdir/$auxdir$file"; }
+      { $echo "Copying file $file"; cp $file "$srcdir/$file"; }
+  { $echo "Copying file po/$file"; cp $file "$srcdir/po/$file"; }
+      $echo "Copyright (C) 1995-1998, 2000, 2001 Free Software Foundation, Inc.
+  $echo "Creating po/ subdirectory"
+echo=echo
+    $echo "failed to create po/ subdirectory"
+echo "from the $datadir/aclocal directory to your autoconf macro directory"
+echo "ftp://ftp.gnu.org/pub/gnu/config/."
+   $echo "gettext source directory '${gettext_dir}' doesn't exist"
+      $echo "glib-gettextize: unknown option $1"
+  $echo "Missing configure.in or configure.ac, please cd to your package first."
+echo "or directly to your aclocal.m4 file."
+echo "Please add the files"
+      echo "$progname (GNU $package) $version"
+echo "  progtest.m4"
+  $echo "Removing po/cat-id-tbl.c"
+  $echo "Removing po/stamp-cat-id"
+      $echo "Try \`glib-gettextize --help' for more information."; exit 1 ;;
+  $echo "$usage"
+      $echo "$usage"; exit 0 ;;
+      $echo "Written by" "Ulrich Drepper"
+echo "You will also need config.guess and config.sub, which you can get from"
+      exit 0 ;;
+    exit 1
+   exit 1
+  exit 1
+    -f | --force | --f* )
+  -f, --force          force writing of new files even if old exist
+# Fill in the command line options value.
+      force=1 ;;
+for file in *; do
+# For simplicity we changed to the gettext source directory.
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# further information how to use it consult the GNU gettext manual.
+gettext_dir=$prefix/share/glib-2.0/gettext
+# GNU General Public License for more details.
+    --help | --h* )
+      --help           print this help and exit
+  if cd "$srcdir"; then
+if test $# -eq 1; then
+  if test -f configure.ac; then
+if test -f configure.in; then
+if test -f po/Makefile.in.in && test $force -eq 0; then
+if test -f "$srcdir/po/cat-id-tbl.c"; then
+if test -f "$srcdir/po/stamp-cat-id"; then
+if test $# -gt 1; then
+if test -n "$auxdir"; then
+# internationalize their package with the help of GNU gettext.  For
+# intl/, and to not add ChangeLog entries to po/ChangeLog
+    intl | po)
+# it under the terms of the GNU General Public License as published by
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MINGW32*)
+  mkdir po || {
+    mkinstalldirs)
+# - Modified in October 2001 by jacob berkman <jacob@ximian.com> to
+# Now copy all files.  Take care for the destination directories.
+origdir=`pwd`
+package=glib
+po/Makefile.in.in exists: use option -f if you really want to delete it."
+    prefix="`dirname $0`/.."
+prefix=/usr
+progname=$0
+Report bugs to http://bugzilla.gnome.org/."
+      rm -f "$srcdir/$auxdir$file"
+      rm -f "$srcdir/$file"
+  rm -f "$srcdir/po/cat-id-tbl.c"
+  rm -f "$srcdir/po/$file"
+  rm -f "$srcdir/po/stamp-cat-id"
+    -r | --run | --r* )
+      shift
+      shift; break ;;
+  srcdir=$1
+  srcdir=$origdir
+    srcdir=`pwd`
+    -- )	# Stop option prcessing
+test -d po || {
+test -f configure.in || test -f configure.ac || {
+# the Free Software Foundation; either version 2, or (at your option)
+# This file is meant for authors or maintainers which want to
+This is free software; see the source for copying conditions.  There is NO
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+try_ln_s=:
+      try_ln_s=false ;;
+      ($try_ln_s && ln -s $gettext_dir/$file "$srcdir/$auxdir$file" && $echo "Symlinking file $file") 2>/dev/null ||
+      ($try_ln_s && ln -s $gettext_dir/$file "$srcdir/$file" && $echo "Symlinking file $file") 2>/dev/null ||
+  ($try_ln_s && ln -s $gettext_dir/po/$file "$srcdir/po/$file" && $echo "Symlinking file po/$file") 2>/dev/null ||
+usage="\
+Usage: glib-gettextize [OPTION]... [package-dir]
+version=2.32.3
+      --version        print version information and exit
+    --version | --v* )
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+while test $# -gt 0; do
+# work with glib's Makefile.in.in and po2tbl.sed.in, to not copy in
+# You should have received a copy of the GNU General Public License

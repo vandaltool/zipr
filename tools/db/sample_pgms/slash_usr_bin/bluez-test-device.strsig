@@ -1,0 +1,100 @@
+		adapter.CreateDevice(args[1],
+adapter = dbus.Interface(bus.get_object("org.bluez", adapter_path),
+	adapter_path = manager.DefaultAdapter()
+	adapter_path = manager.FindAdapter(options.dev_id)
+		adapter.RemoveDevice(path)
+bus = dbus.SystemBus()
+dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+def create_device_error(error):
+def create_device_reply(device):
+		device = dbus.Interface(bus.get_object("org.bluez", path),
+		device.Disconnect()
+			device.SetProperty("Alias", args[2])
+			device.SetProperty("Blocked", value)
+			device.SetProperty("Trusted", value)
+			elif (args[2] == "no"):
+			else:
+				error_handler=create_device_error)
+		except:
+		for key in services.keys():
+	for path in adapter.ListDevices():
+		for path in properties["Services"]:
+from optparse import OptionParser, make_option
+if (args[0] == "alias"):
+if (args[0] == "blocked"):
+if (args[0] == "class"):
+if (args[0] == "create"):
+if (args[0] == "disconnect"):
+if (args[0] == "discover"):
+if (args[0] == "list"):
+if (args[0] == "name"):
+if (args[0] == "remove"):
+if (args[0] == "services"):
+if (args[0] == "trusted"):
+			if (args[2] == "yes"):
+if (len(args) < 1):
+	if (len(args) < 2):
+		if (len(args) < 3):
+if options.dev_id:
+import dbus
+import dbus.mainloop.glib
+import gobject
+import re
+import sys
+mainloop = gobject.MainLoop()
+	mainloop.quit()
+	mainloop.run()
+		make_option("-i", "--device", action="store",
+manager = dbus.Interface(bus.get_object("org.bluez", "/"), "org.bluez.Manager")
+option_list = [
+(options, args) = parser.parse_args()
+							"org.bluez.Adapter")
+							"org.bluez.Device")
+parser = OptionParser(option_list=option_list)
+			path = adapter.FindDevice(args[1])
+		path = adapter.FindDevice(args[1])
+			path = args[1]
+			pattern = ""
+			pattern = args[2]
+			p = re.compile(">.*?<")
+			print
+	print ""
+		print "0x%06x" % (properties["Class"])
+			print "[ 0x%5x ]" % (key)
+	print "  alias <address> [alias]"
+	print "  blocked <address> [yes/no]"
+	print "  class <address>"
+	print "  create <address>"
+	print "Creating device failed: %s" % error
+	print "  disconnect <address>"
+	print "  discover <address> [pattern]"
+	print "  list"
+	print "  name <address>"
+		print "Need address or object path parameter"
+		print "Need address parameter"
+	print "New device (%s)" % device
+			print path
+			print properties["Alias"]
+			print properties["Blocked"]
+		print properties["Name"]
+			print properties["Trusted"]
+	print "  remove <address|path>"
+	print "  services <address>"
+		print "%s %s" % (properties["Address"], properties["Alias"])
+	print "  trusted <address> [yes/no]"
+print "Unknown command"
+	print "Usage: %s <command>" % (sys.argv[0])
+			print xml
+			properties = device.GetProperties()
+		properties = device.GetProperties()
+				reply_handler=create_device_reply,
+		services = device.DiscoverServices(pattern);
+	sys.exit(0)
+	sys.exit(1)
+sys.exit(1)
+				type="string", dest="dev_id"),
+#!/usr/bin/python
+				value = dbus.Boolean(0)
+				value = dbus.Boolean(1)
+				value = dbus.Boolean(args[2])
+			xml = p.sub("><", services[key].replace("\n", ""))

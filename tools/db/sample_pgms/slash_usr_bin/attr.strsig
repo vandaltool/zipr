@@ -1,0 +1,43 @@
+A filename to operate on is required
+At least one of -s, -g, -r, or -l is required
+ATTR_1.0
+ATTR_1.2
+attr_get
+Attribute "%s" had a %d byte value for %s:
+Attribute "%s" has a %d byte value for %s
+Attribute "%s" set to a %d byte value for %s:
+attr_list
+attr_remove
+attr_set
+basename
+bindtextdomain
+__bss_start
+Could not get "%s" for %s
+Could not list "%s" for %s
+Could not remove "%s" for %s
+Could not set "%s" for %s
+dcgettext
+__fprintf_chk
+__fread_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.7
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libattr.so.1
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Only one of -s, -g, -r, or -l allowed
+__printf_chk
+setlocale
+       %s [-LRq]  -l pathname                          # list attrs 
+       %s [-LRSq] -g attrname pathname                 # get value
+       %s [-LRSq] -r attrname pathname                 # remove attr
+      -s reads a value from stdin and -g writes a value to stdout
+s:V:g:r:lqLRS
+Unrecognized option: %c
+Usage: %s [-LRSq] -s attrname [-V attrvalue] pathname  # set value
+/usr/share/locale
+-V only allowed with -s

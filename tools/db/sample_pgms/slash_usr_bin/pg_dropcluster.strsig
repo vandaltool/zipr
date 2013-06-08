@@ -1,0 +1,87 @@
+        }
+also removed.
+An empty socket directory other than B</var/run/postgresql> or B</tmp> is
+#  (at your option) any later version.
+before the files are removed.
+B<pg_dropcluster> [B<--stop>] I<cluster-version> I<cluster-name>
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+# (C) 2005-2009 Martin Pitt <mpitt@debian.org>
+    $c.'/environment', $c.'/pg_ctl.conf';
+(C</etc/postgresql/>I<version>C</>I<cluster>) is empty after this, it is
+    $c = "/etc/postgresql/$version/$cluster";
+    # check if we have a broken cluster, clean up if necessary
+    $c = $info{'configdir'};
+($cluster) = $ARGV[1] =~ /^([-.\w]+)$/;
+# command line options
+# Completely delete a PostgreSQL cluster. Fails if there is still a server
+    $c.'/start.conf', $c.'/log', $c.'/autovacuum_log', $c.'/pgdata',
+    -d $c or error 'specified cluster does not exist';
+deleted. To override this, the B<--stop> option forces a server shutdown
+delete @ENV{'IFS', 'CDPATH', 'ENV', 'BASH_ENV'};
+} else {
+	    } else {
+	} else {
+$ENV{'PATH'} = '/bin:/usr/bin';
+		    error 'could not stop server, aborting';
+error 'invalid cluster name' unless defined $cluster;
+error 'invalid version' unless defined $version;
+	    error 'This cluster is still running. Stop it or supply the --stop option';
+            error 'you might need to run this program with root privileges';
+    exit 1;
+exit 1 unless GetOptions ('stop-server' => \$stopserver, 'stop' => \$stopserver);
+        exit $result;
+foreach my $f (</var/log/postgresql/postgresql-$version-$cluster.log.[1-9]*>) {
+#  GNU General Public License for more details.
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+if ($#ARGV != 1) {
+if (cluster_exists $version, $cluster) {
+	    if ($info{'pgdata'} && -d $info{'pgdata'}) {
+if ($info{'pgdata'} && -d $info{'pgdata'}) {
+    if ($info{'running'}) {
+if ($info{'socketdir'} !~ /^(\/tmp|\/var\/run\/postgresql)\/?$/) {
+    if ($result) {
+	if ($stopserver) {
+		if (system ('pg_ctlcluster', $version, $cluster, 'stop')) {
+        if (! -w ($info{'pgdata'} . '/..')) {
+includes the data directory, the log file, and all configuration files that
+    %info = cluster_info ($version, $cluster);
+#  it under the terms of the GNU General Public License as published by
+L<pg_createcluster(1)>, L<pg_ctlcluster(1)>
+Martin Pitt L<E<lt>mpitt@debian.orgE<gt>>
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+my $c; # configuration directory
+my %info;
+pg_dropcluster - completely delete a PostgreSQL cluster
+		print STDERR "warning: corrupted cluster: data directory does not exist any more, but server is still running; you have to manually kill the postmaster process\n";
+    print STDERR "warning: corrupted cluster: data directory does not exist\n";
+    print "Usage: $0 [--stop] <version> <cluster>\n";
+# process attached.
+removed as well.
+# remove logrotated files
+    $result = system '/bin/rm', '-r', $info{'pgdata'}; 
+rmdir $c;
+rmdir "/etc/postgresql/$version";
+    rmdir $info{'socketdir'};
+rmdir "/var/lib/postgresql/$version";
+rmdir "/var/lib/postgresql/$version/$cluster";
+$stopserver = 0;
+#  the Free Software Foundation; either version 2 of the License, or
+#  This program is distributed in the hope that it will be useful,
+#  This program is free software; you can redistribute it and/or modify
+This program removes all files that belong to a given PostgreSQL cluster; that
+unlink $c.'/pg_hba.conf', $c.'/pg_ident.conf', $c.'/postgresql.conf',
+    unlink ($f =~ /(.*)/); # untaint
+unlink $info{'logfile'} if defined ($info{'logfile'});
+unlink "/var/log/postgresql/postgresql-$version-$cluster.log";
+# untaint environment
+use Getopt::Long;
+use lib '/usr/share/postgresql-common';
+use PgCommon;
+#!/usr/bin/perl -wT
+Usually a cluster which still has a running server attached will not be
+($version) = $ARGV[0] =~ /^(\d+\.\d+)$/;
+were created by L<pg_createcluster(1)>. If the configuration directory

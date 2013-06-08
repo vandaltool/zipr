@@ -1,0 +1,219 @@
+--address
+  --address ADDRESS connect to the given bus
+  args              arguments to pass to the call
+__bss_start
+Cannot call method '%s' because type '%s' is unknown to this tool
+Cannot find '%s.%s' in object %s at %s
+Cannot pass argument '%s' because it is not a valid object path.
+Cannot pass argument '%s' because it is not a valid signature.
+Could not connect to D-Bus server: %s: %s
+Could not convert '%s' to type '%s'.
+__cxa_atexit
+__cxa_begin_catch
+__cxa_end_catch
+__cxa_rethrow
+CXXABI_1.3
+D$x;D$|u%
+Error: %s
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.3.4
+GLIBCXX_3.4
+__gmon_start__
+__gxx_personality_v0
+interface
+Interface '%s' is not a valid interface name.
+Interface '%s' not available in object %s at %s:
+Introspect
+Invalid D-BUS interface name '%s' found while parsing introspection
+Invalid number of parameters
+Invalid reply type %d
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+libQtCore.so.4
+libQtDBus.so.4
+libQtXml.so.4
+libstdc++.so.6
+--literal
+  --literal         print replies literally
+Method name '%s' is not a valid member name.
+  method            the method to call, with or without the interface
+Options:
+org.freedesktop.DBus.Introspectable
+org.freedesktop.DBus.Properties
+Path '%s' is not a valid path name.
+  path              the path to the object (e.g., /)
+__printf_chk
+property 
+QDBusArgument
+qdbus: I don't know how to display an argument of type '%s', run with --literal.
+QDBusObjectPath
+QDBusSignature
+QDBusVariant
+qt_dbus_metaobject_skip_annotations
+readwrite
+  servicename       the service to connect to (e.g., org.freedesktop.DBus)
+Service '%s' does not exist.
+Service '%s' is not a valid name.
+Sorry, can't pass arg of type '%s'.
+ %s %s.%s
+%s %s%s%s %s.%s(
+--system
+  --system          connect to the system bus
+_Unwind_Resume
+Usage: qdbus [--system | --address ADDRESS] [--literal] [servicename] [path] [method] [args]
+With 0 arguments, qdbus will list the services available on the bus
+With just the servicename, qdbus will list the object paths available on the service
+With service name and object path, qdbus will list the methods, signals and properties available on the object
+_Z14qDBusReplyFillRK12QDBusMessageR10QDBusErrorR8QVariant
+_Z5qFreePv
+_Z8qWarningPKcz
+_ZN10QByteArray6appendEc
+_ZN10QByteArray8truncateEi
+_ZN10QByteArrayC1EPKc
+_ZN10QDBusErrorC1EPK9DBusError
+_ZN10QDBusErrorC1ERK12QDBusMessage
+_ZN10QDBusErrorC1ERKS_
+_ZN10QDBusErrorD1Ev
+_ZN10QDBusErrorD2Ev
+_ZN11QDomElementaSERKS_
+_ZN12QDBusMessage16createMethodCallERK7QStringS2_S2_S2_
+_ZN12QDBusMessageD1Ev
+_ZN12QDomDocument10setContentERK7QStringPS0_PiS4_
+_ZN12QDomDocumentC1Ev
+_ZN12QDomDocumentD1Ev
+_ZN13QDBusArgumentC1ERKS_
+_ZN13QDBusArgumentC1Ev
+_ZN13QDBusArgumentD1Ev
+_ZN14QDBusInterfaceC1ERK7QStringS2_S2_RK15QDBusConnectionP7QObject
+_ZN14QDBusInterfaceD1Ev
+_ZN14QDBusSignature5checkEv
+_ZN15QDBusConnection10sessionBusEv
+_ZN15QDBusConnection12connectToBusERK7QStringS2_
+_ZN15QDBusConnection9systemBusEv
+_ZN15QDBusConnectionaSERKS_
+_ZN15QDBusConnectionC1ERK7QString
+_ZN15QDBusConnectionD1Ev
+_ZN15QDBusObjectPath5checkEv
+_ZN16QCoreApplication9argumentsEv
+_ZN16QCoreApplicationC1ERiPPci
+_ZN16QCoreApplicationD1Ev
+_ZN22QDBusAbstractInterface20callWithArgumentListEN5QDBus8CallModeERK7QStringRK5QListI8QVariantE
+_ZN7QRegExpC1ERK7QStringN2Qt15CaseSensitivityENS_13PatternSyntaxE
+_ZN7QRegExpD1Ev
+_ZN7QString11shared_nullE
+_ZN7QString16fromAscii_helperEPKci
+_ZN7QString17fromLatin1_helperEPKci
+_ZN7QString4freeEPNS_4DataE
+_ZN7QString4growEi
+_ZN7QString6appendERKS_
+_ZN7QString7reallocEi
+_ZN7QString8truncateEi
+_ZN7QStringaSERKS_
+_ZN8QDomNodeD2Ev
+_ZN8QMapData10createDataEi
+_ZN8QMapData11node_createEPPNS_4NodeEii
+_ZN8QMapData11node_deleteEPPNS_4NodeEiS1_
+_ZN8QMapData11shared_nullE
+_ZN8QMapData16continueFreeDataEi
+_ZN8QVariant10nameToTypeEPKc
+_ZN8QVariant7convertENS_4TypeE
+_ZN8QVariant7handlerE
+_ZN8QVariantaSERKS_
+_ZN8QVariantC1EiPKv
+_ZN8QVariantC1EiPKvj
+_ZN8QVariantC1ERK11QStringList
+_ZN8QVariantC1ERK4QMapI7QStringS_E
+_ZN8QVariantC1ERK5QListIS_E
+_ZN8QVariantC1ERK7QString
+_ZN8QVariantC1ERKS_
+_ZN8QVariantC2ERKS_
+_ZN8QVariantD1Ev
+_ZN8QVariantD2Ev
+_ZN9QDBusUtil14isValidBusNameERK7QString
+_ZN9QDBusUtil16argumentToStringERK8QVariant
+_ZN9QDBusUtil17isValidMemberNameERK7QString
+_ZN9QDBusUtil17isValidObjectPathERK7QString
+_ZN9QDBusUtil20isValidInterfaceNameERK7QString
+_ZN9QListData11detach_growEPii
+_ZN9QListData11shared_nullE
+_ZN9QListData5eraseEPPv
+_ZN9QListData6appendEv
+_ZN9QListData6detachEi
+_ZN9QMetaType12registerTypeEPKcPFvPvEPFS2_PKvE
+_ZN9QMetaType4typeEPKc
+_ZN9QtPrivate16QStringList_joinEPK11QStringListRK7QString
+_ZN9QtPrivate16QStringList_sortEP11QStringList
+_ZNK10QByteArray10startsWithERKS_
+_ZNK10QByteArray7indexOfEci
+_ZNK10QByteArray8endsWithEc
+_ZNK10QDBusError4nameEv
+_ZNK10QDBusError4typeEv
+_ZNK10QDBusError7isValidEv
+_ZNK10QDBusError7messageEv
+_ZNK11QDomElement7tagNameEv
+_ZNK11QDomElement9attributeERK7QStringS2_
+_ZNK11QMetaMethod10methodTypeEv
+_ZNK11QMetaMethod14parameterNamesEv
+_ZNK11QMetaMethod14parameterTypesEv
+_ZNK11QMetaMethod3tagEv
+_ZNK11QMetaMethod8typeNameEv
+_ZNK11QMetaMethod9signatureEv
+_ZNK11QMetaObject11methodCountEv
+_ZNK11QMetaObject12methodOffsetEv
+_ZNK11QMetaObject13propertyCountEv
+_ZNK11QMetaObject14propertyOffsetEv
+_ZNK11QMetaObject6methodEi
+_ZNK11QMetaObject8propertyEi
+_ZNK12QDBusMessage4typeEv
+_ZNK12QDBusMessage9argumentsEv
+_ZNK12QDomDocument15documentElementEv
+_ZNK13QDBusArgument10beginArrayEv
+_ZNK13QDBusArgument11endMapEntryEv
+_ZNK13QDBusArgument13beginMapEntryEv
+_ZNK13QDBusArgument16currentSignatureEv
+_ZNK13QDBusArgument5atEndEv
+_ZNK13QDBusArgument6endMapEv
+_ZNK13QDBusArgument8beginMapEv
+_ZNK13QDBusArgument8endArrayEv
+_ZNK13QDBusArgumentrsER7QString
+_ZNK13QMetaProperty10isReadableEv
+_ZNK13QMetaProperty10isWritableEv
+_ZNK13QMetaProperty4nameEv
+_ZNK13QMetaProperty8typeNameEv
+_ZNK14QDBusInterface10metaObjectEv
+_ZNK15QDBusConnection11isConnectedEv
+_ZNK15QDBusConnection4callERK12QDBusMessageN5QDBus8CallModeEi
+_ZNK15QDBusConnection9interfaceEv
+_ZNK15QDBusConnection9lastErrorEv
+_ZNK22QDBusAbstractInterface7isValidEv
+_ZNK22QDBusAbstractInterface9lastErrorEv
+_ZNK24QDBusConnectionInterface12serviceOwnerERK7QString
+_ZNK24QDBusConnectionInterface22registeredServiceNamesEv
+_ZNK7QRegExp10exactMatchERK7QString
+_ZNK7QRegExp7isValidEv
+_ZNK7QString10startsWithERK5QCharN2Qt15CaseSensitivityE
+_ZNK7QString11lastIndexOfE5QChariN2Qt15CaseSensitivityE
+_ZNK7QString11toLocal8BitEv
+_ZNK7QString3midEii
+_ZNK7QString7indexOfE5QChariN2Qt15CaseSensitivityE
+_ZNK7QString8toLatin1Ev
+_ZNK7QStringeqERK13QLatin1String
+_ZNK7QStringltERKS_
+_ZNK8QDomNode17firstChildElementERK7QString
+_ZNK8QDomNode18nextSiblingElementERK7QString
+_ZNK8QDomNode6isNullEv
+_ZNK8QVariant12toStringListEv
+_ZNK8QVariant4typeEv
+_ZNK8QVariant5toMapEv
+_ZNK8QVariant6toListEv
+_ZNK8QVariant6toUIntEPb
+_ZNK8QVariant8toStringEv
+_ZNK8QVariant8userTypeEv
+_ZNK8QVariant9constDataEv
+_ZrsRK13QDBusArgumentR8QVariant

@@ -1,0 +1,89 @@
+ -B <dirs>  define binaries lookup path
+bindtextdomain
+ -b         search only binaries
+closedir
+__ctype_b_loc
+dcgettext
+ -f <file>  define search scope
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ -h         display this help and exit
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+ -M <dirs>  define man lookup path
+ -m         search only manual paths
+/opt/*/bin
+Options:
+__printf_chk
+__progname
+program_invocation_short_name
+readdir64
+ -S <dirs>  define sources lookup path
+See how to use file and dirs arguments from whereis(1) manual.
+setlocale
+%s from %s
+ %s [options] file
+ -s         search only sources path
+__stack_chk_fail
+__strcpy_chk
+ -u         search from unusual enties
+/usr/bin
+/usr/bin/X11
+/usr/contrib
+/usr/emacs/etc
+/usr/etc
+/usr/games
+/usr/games/bin
+/usr/games/lib
+/usr/g++-include
+/usr/hosts
+/usr/include
+/usr/interviews/bin/LINUX
+/usr/interviews/man/mann
+/usr/lib
+/usr/lib64
+/usr/lib/emacs/*/etc
+/usr/libexec
+/usr/local
+/usr/local/bin
+/usr/local/bin/X11
+/usr/local/emacs/etc
+/usr/local/etc
+/usr/local/games
+/usr/local/games/bin
+/usr/local/lib
+/usr/local/sbin
+/usr/local/tex/bin
+/usr/man/*
+/usr/new
+/usr/old
+/usr/sbin
+/usr/share
+/usr/share/locale
+/usr/share/man/*
+/usr/src/*
+/usr/src/lib/libc/*
+/usr/src/lib/libc/net/*
+/usr/src/ucb/pascal
+/usr/src/ucb/pascal/utilities
+/usr/src/undoc
+/usr/tex/bin
+/usr/TeX/man/*
+/usr/ucb
+/usr/X11/bin
+/usr/X11/man/*
+/usr/X11R5/bin
+/usr/X11R6/bin
+/usr/X386/bin
+/usr/X386/man/*
+util-linux
+util-linux 2.20.1
+ -V         output version information and exit
+__xstat64

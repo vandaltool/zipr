@@ -1,0 +1,111 @@
+>A NULL argv[0] was passed through an exec system call.
+__assert_fail
+bindtextdomain
+bug-coreutils@gnu.org
+cannot open %s for reading
+cannot read file names from %s
+  -c, --bytes            print the byte counts
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+David MacKenzie
+dcgettext
+delimited by white space.
+D$l9D$Dr
+D$P9D$hs
+__errno_location
+extra operand %s
+file operands cannot be combined with --files0-from
+files0-from
+      --files0-from=F    read input from the files specified by
+For complete documentation, run: info coreutils '%s invocation'
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+__fxstat64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getdelim
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+                           If F is - then read names from standard input
+invalid zero-length file name
+_IO_stdin_used
+iswprint
+iswspace
+L$h9L$@s
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+  -l, --lines            print the newline counts
+  -L, --max-line-length  print the length of the longest line
+max-line-length
+  -m, --chars            print the character counts
+__memmove_chk
+memory exhausted
+more than one FILE is specified.  With no FILE, or when FILE is -,
+                           NUL-terminated names in file F;
+_obstack_begin
+obstack_free
+_obstack_newchunk
+  or:  %s [OPTION]... --files0-from=F
+__overflow
+Paul Rubin
+posix_fadvise64
+__printf_chk
+Print newline, word, and byte counts for each FILE, and a total line if
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+read standard input.  A word is a non-zero-length sequence of characters
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+%s, and %s.
+setlocale
+shell-always
+%s home page: <%s>
+%s:%lu: %s
+%s: read error
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+standard input
+\$T9\$lr
+T$D9T$lw
+the following order: newline, word, character, byte, maximum line length.
+The options below may be used to select which counts are printed, always in
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+Try `%s --help' for more information.
+T$T9T$lw
+!"unexpected error code from argv_iter"
+Usage: %s [OPTION]... [FILE]...
+/usr/share/locale
+      --version  output version information and exit
+when reading file names from stdin, no file name of %s allowed
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  -w, --words            print the word counts
+__xstat64

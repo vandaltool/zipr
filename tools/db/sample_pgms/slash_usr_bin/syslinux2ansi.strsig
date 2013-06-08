@@ -1,0 +1,39 @@
+@ansicol = (0,4,2,6,1,5,3,7);
+		    $ansicol[$attr >> 4] + 40, $ansicol[$attr & 7] + 30;
+			$attr &= ~0x08;
+			$attr &= ~0x80;
+		$attr = hex $attr;
+    } else {
+	} else {
+    } elsif ( $ch eq "\x0A" ) { # <LF>  <Ctrl-J> Line feed
+    } elsif ( $ch eq "\x0C" ) {	# <FF>  <Ctrl-L> Clear screen
+    } elsif ( $ch eq "\x0D" ) {	# <CR>  <Ctrl-M> Carriage return
+    } elsif ( $ch eq "\x0F" ) {	# <SI>  <Ctrl-O> Attribute change
+    } elsif ( $ch eq "\x18" ) {	# <CAN> <Ctrl-X> Display image
+    } elsif ( (ord($ch) & ~07) == 0x10 ) { # Mode controls
+$enable = 1;
+	$enable = (ord($ch) & 0x01); # Emulate the text screen
+$getting_file = 0;
+	    $getting_file = 0;
+	$getting_file = 1;
+		    if ( $attr & 0x08 ) {
+		    if ( $attr & 0x80 ) {
+    if ( $ch eq "\x1A" ) {	# <SUB> <Ctrl-Z> EOF
+		if ( $enable ) {
+	if ( !$getting_file ) {
+	if ( $getting_file ) {
+	    if ( read(STDIN, $attr, 2) == 2 ) {
+	# Ignore
+	# Ignore all input until end of line
+# Perl script to convert a Syslinux-format screen to PC-ANSI
+			print "1;";
+			print "5;";
+	    print $ch if ( $enable );
+	print $ch if ( $enable && !$getting_file );
+		    printf "%d;%dm",
+		    print "\x1b[0;";
+	print "\x1b[2J" if ( $enable && !$getting_file );
+# to display in a color xterm or on the Linux console
+#!/usr/bin/perl
+	# We can't display an image; pretend to be a text screen
+while ( read(STDIN, $ch, 1) > 0 ) {

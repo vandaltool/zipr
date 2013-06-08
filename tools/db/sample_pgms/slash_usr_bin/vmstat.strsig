@@ -1,0 +1,95 @@
+%-10s %10s %10s %10s %10s
+%13d disks 
+%13d partitions 
+%13Lu idle cpu ticks
+%13lu inprogress IO
+%13Lu IO-wait cpu ticks
+%13Lu IRQ cpu ticks
+%13lu merged reads
+%13lu merged writes
+%13lu milli reading
+%13lu milli spent IO
+%13lu milli writing
+%13Lu nice user cpu ticks
+%13Lu non-nice user cpu ticks
+%13lu pages paged in
+%13lu pages paged out
+%13lu pages swapped in
+%13lu pages swapped out
+%13lu read sectors
+%13lu %s active memory
+%13lu %s buffer memory
+%13lu %s free memory
+%13lu %s free swap
+%13lu %s inactive memory
+%13Lu softirq cpu ticks
+%13lu %s swap cache
+%13Lu stolen cpu ticks
+%13lu %s total memory
+%13lu %s total swap
+%13lu %s used memory
+%13lu %s used swap
+%13Lu system cpu ticks
+%13lu total reads
+%13lu writes
+%13lu written sectors
+%13u boot time
+%13u CPU context switches
+%13u forks
+%13u interrupts
+%-24s %6s %6s %6s %6s
+%2s %2s %6s %6s %6s %6s %4s %4s %5s %5s %4s %4s %2s %2s %2s %2s
+%2u %2u %6lu %6lu %6lu %6lu %4u %4u %5u %5u %4u %4u %2u %2u %2u %2u
+%5s %6s %6s %7s %7s %6s %6s %7s %7s %6s %6s
+              -a print inactive/active page stats.
+              count is the number of updates.
+              delay is the delay between updates in seconds. 
+disk- ------------reads------------ ------------writes----------- -----IO------
+display_version
+              -d prints disk statistics
+              -D prints disk table
+getdiskstat
+getpartitions_num
+getslabinfo
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+kb_active
+kb_inactive
+kb_main_buffers
+kb_main_cached
+kb_main_free
+kb_main_total
+kb_main_used
+kb_swap_free
+kb_swap_total
+kb_swap_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libproc-3.2.8.so
+              -m prints slabinfo
+              -n causes the headers not to be reprinted regularly.
+Partition was not found
+              -p prints disk partition statistics
+/proc/diskstats
+/proc/slabinfo
+procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----
+read sectors
+requested writes
+setlinebuf
+              -s prints vm table
+-S requires k, K, m or M (default is kb)
+__stack_chk_fail
+              -S unit size
+              unit size k:1000 K:1024 m:1000000 M:1048576 (default is K)
+usage: vmstat [-V] [-n] [delay [count]]
+VdafmDnp:S:s
+              -V prints version.
+writes   
+Your kernel doesn't support diskstat (2.5.70 or above required)
+Your kernel doesn't support diskstat. (2.5.70 or above required)
+Your kernel doesn't support slabinfo.

@@ -1,0 +1,386 @@
+-- --- --:--:--
+--------------------------------------------------------------------------------
+%08lx.%08lx  --- --- -- ---- --:--:--
+%08lx.%08lx  %s, %s %2d %4d %2d:%02d:%02d.%03lu
+%16.16llx %s %s
+%2d %s %02d:%02d:%02d
+%.64s Password: 
+99-Bad-9999 99:99:99.999
+ A(AAAA) 
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
+%a, %d %b %Y %H:%M:%S GMT
+address family mismatch
+address family not supported
+address in use
+address mask not contiguous
+address not available
+ai_fam_pref
+already running
+An error occured while parsing the KoD db file %s
+an NTP or SNTP server and either display the time or set the local
+authentication
+auth_init: scanf %d items, skipping line %d.
+bad base32 encoding
+bad base64 encoding
+bad hex encoding
+base % 65536 == 0
+broadcast
+__bss_start
+buf != ((void *)0)
+Can't open KOD db file %s for writing!
+categories != ((void *)0) && categories[0].name != ((void *)0)
+category_id < lctx->category_count
+category->id < lctx->category_count
+category != ((void *)0)
+category == ((void *)0) || category->id < lctx->category_count
+(channel->destination.file.stream) == ((void *)0)
+channel->type == 3
+channel != ((void *)0)
+clearerr
+closedir
+connection refused
+connection reset
+critical
+Crypto NAK = 0x%08x
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+__cxa_atexit
+__cxa_finalize
+%d-%.2d-%.2d %.2d:%.2d:%.2d.%.6d (%+03d%02d)
+%d %9s %128s
+%d-%b-%Y %X
+default_debug
+default_stderr
+default_syslog
+default_text != ((void *)0)
+		delta: %.6f	 offset: %.6f
+destination != ((void *)0) || type == 1
+/dev/null
+difftime
+dirname != ((void *)0)
+dir != ((void *)0)
+(((dir) != ((void *)0)) && (((const isc__magic_t *)(dir))->magic == ((('D') << 24 | ('I') << 16 | ('R') << 8 | ('*')))))
+(((dir) != ((void *)0)) && (((const isc__magic_t *)(dir))->magic == ((('D') << 24 | ('I') << 16 | ('R') << 8 | ('*'))))) && dir->handle != ((void *)0)
+disabled
+Display extended usage information and exit
+%d prior KoD%s for %s, skipping.
+%d: %x 	
+Enable authentication with the key auth-keynumber
+end of file
+ERR_load_crypto_strings
+__errno_location
+Error looking up %s%s: %s
+EVP_DigestFinal
+EVP_DigestInit
+EVP_DigestUpdate
+EVP_get_digestbyname
+Extended usage information passed thru pager
+Failed to create UDP socket with family %d
+fatal error
+__fdelt_chk
+file already exists
+filename != ((void *)0)
+file not found
+file != ((void *)0)
+file != ((void *)0) && time != ((void *)0)
+(flags & (unsigned int)~(0x001F | 0x1000)) == 0
+flen < len
+Force IPv4 DNS name resolution
+Force IPv6 DNS name resolution
+format != ((void *)0)
+__fprintf_chk
+fp != ((void *)0) && *fp == ((void *)0)
+freeaddrinfo
+ +/- %f secs
+__fxstat
+gai_strerror
+getaddrinfo
+getnameinfo
+getsockname
+gettimeofday
+gettimeofday returned bad tv_usec: corrected
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.15
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+host down
+host unreachable
+http://bugs.ntp.org, bugs@ntp.org
+%i: %i 	
+i->nanoseconds < 1000000000
+inet_ntop
+interface
+invalid address format
+invalid file
+invalid use of multicast address
+INVARIANT
+I/O error
+_IO_stdin_used
+ipv4_works
+IPv6 is not supported.
+IPv6 structures in kernel and user space do not match.
+ipv6_works
+isc_assertion_failed
+isc_categories
+isc_interval_zero
+isc_lctx
+isc_log_open: roll_log '%s' failed: %s
+isc_log_open '%s' failed: %s
+isc_modules
+isc_msgcat
+(--(*((&isc_strerror_lock))) == 0 ? 0 : 34) == 0
+((*((&isc_strerror_lock)))++ == 0 ? 0 : 34) == 0
+isc_time_epoch
+isc_time_now((&isctime)) == 0
+isc_time_now((&new->time)) == 0
+isc_time_now((&oldest)) == 0
+It can be run interactively from the command line or as a cron job.
+i != ((void *)0)
+%i: %x 	
+jitter < max
+_Jv_RegisterClasses
+key type %s %u octet digests are too big, max %lu
+kod_db_cnt
+kod_db_file
+KoD history filename
+kod_init
+kod_init_kod_db(): Cannot open KoD db file %s
+(lcfg->channellists[i]).head == (item)
+(lcfg->channellists[i]).tail == (item)
+(lcfg->channels).head == (channel)
+(lcfg->channels).tail == (channel)
+lcfg->lctx == lctx
+lcfg->lctx != ((void *)0) && lcfg->lctx->logconfig != lcfg
+lcfgp == ((void *)0) || *lcfgp == ((void *)0)
+lcfgp != ((void *)0) && *lcfgp == ((void *)0)
+lcfgp != ((void *)0) && (((*lcfgp) != ((void *)0)) && (((const isc__magic_t *)(*lcfgp))->magic == ((('L') << 24 | ('c') << 16 | ('f') << 8 | ('g')))))
+(((lcfg) != ((void *)0)) && (((const isc__magic_t *)(lcfg))->magic == ((('L') << 24 | ('c') << 16 | ('f') << 8 | ('g')))))
+(((lcfg) != ((void *)0)) && (((const isc__magic_t *)(lcfg))->magic == ((('L') << 24 | ('c') << 16 | ('t') << 8 | ('x')))))
+lctx->category_count != 0
+(--(*((&lctx->lock))) == 0 ? 0 : 34) == 0
+((*((&lctx->lock)))++ == 0 ? 0 : 34) == 0
+(*((&lctx->lock)) == 0 ? (*((&lctx->lock)) = -1, 0) : 34) == 0
+lctx->logconfig != ((void *)0)
+(lctx->messages).head == (message)
+(lctx->messages).tail == (message)
+lctxp != ((void *)0) && *lctxp == ((void *)0)
+lctxp != ((void *)0) && (((*lctxp) != ((void *)0)) && (((const isc__magic_t *)(*lctxp))->magic == ((('L') << 24 | ('c') << 16 | ('t') << 8 | ('x')))))
+(((lctx) != ((void *)0)) && (((const isc__magic_t *)(lctx))->magic == ((('L') << 24 | ('c') << 16 | ('t') << 8 | ('x')))))
+lctx == ((void *)0) || (((lctx) != ((void *)0)) && (((const isc__magic_t *)(lctx))->magic == ((('L') << 24 | ('c') << 16 | ('t') << 8 | ('x')))))
+length > 0U
+level != 0
+level >= (-5)
+level %d: 
+libcrypto.so.1.0.0
+libc.so.6
+__libc_start_main
+lib_inited
+libisc.cat
+./../lib/isc/log.c
+./../lib/isc/nls/msgcat.c
+./../lib/isc/random.c
+./../lib/isc/result.c
+./../lib/isc/unix/dir.c
+./../lib/isc/unix/errno2result.c
+./../lib/isc/unix/file.c
+./../lib/isc/unix/net.c
+./../lib/isc/unix/strerror.c
+./../lib/isc/unix/time.c
+/lib/ld-linux.so.2
+libm.so.6
+lib_nextbuf
+libopts.so.25
+lib_stringbuf
+%llx %4s %254s
+Load options from a config file
+LOAD_OPTS
+localtime
+(--(*((&lock))) == 0 ? 0 : 34) == 0
+((*((&lock)))++ == 0 ? 0 : 34) == 0
+lock busy
+Logging with syslog
+Log to specified logfile
+low != ((void *)0) && high != ((void *)0)
+max size
+mctx != ((void *)0)
+__memcpy_chk
+message > 0
+module->id < lctx->module_count
+modules != ((void *)0) && modules[0].name != ((void *)0)
+module != ((void *)0)
+module == ((void *)0) || module->id < lctx->module_count
+more-help
+msgcatp != ((void *)0)
+msgcatp != ((void *)0) && *msgcatp == ((void *)0)
+(((msgcat) != ((void *)0)) && (((const isc__magic_t *)(msgcat))->magic == ((('M') << 24 | ('C') << 16 | ('a') << 8 | ('t'))))) || msgcat == ((void *)0)
+msyslog_term
+network down
+network unreachable
+newname != ((void *)0)
+no available threads
+no-load-opts
+no pending connections
+normalverbose
+Normal verbose
+NORMALVERBOSE
+not a directory
+not a file
+not a valid number
+not blocking
+not enough free resources
+not implemented
+nresults <= 65536
+NTP and SNTP are defined by RFC 5905, which obsoletes RFC 4330 and RFC
+ntp_syslogmask
+OBJ_nid2sn
+OBJ_sn2nid
+oldname != ((void *)0)
+OPENSSL_1.0.0
+OPENSSL_add_all_algorithms_noconf
+operation canceled
+operation in progress
+optionLoadOpt
+optionNumericVal
+optionPagedUsage
+optionPrintVersion
+optionProcess
+optionUsage
+out of entropy
+out of memory
+out of range
+Output version information and exit
+Packet sent.
+pathname != ((void *)0)
+path != ((void *)0)
+path != ((void *)0) && *path != '\0'
+permission denied
+__printf_chk
+progname
+queue is full
+ran out of space
+Received a KOD packet with code %c%c%c%c from %s, demobilizing all connections
+Received no useable packet from %s!
+recv_bcst_pkt
+recvfrom
+register_table() %s: %u
+remove '%s': failed
+(result code text not available)
+retrieving the address of an IPv6 socket from the kernel failed.
+rewinddir
+RUNTIME_CHECK(%s) %s
+save-opts
+Save the option state to a config file
+%s:%d: %s: 
+%s:%d: %s(%s) %s.
+see html/copyright.html
+set_li_vn_mode: leap > 3 using max. 3
+set_li_vn_mode: mode > 7, using client mode 3
+Set (slew) the time with adjtime()
+setsockopt
+Set (step) the time with settimeofday()
+settimeofday
+%s: fatal out of memory duplicating %u bytes
+@%s: fatal out of memory (%u bytes)
+shutting down
+snprintf
+__snprintf_chk
+sntp auth_init: Couldn't open key file %s for reading!
+sntp auth_init: Key file %s is empty!
+sntp: Cannot open logfile %s
+sntp copyright (c) 1970-2011 David L. Mills and/or others, all rights reserved
+sntp handle_pkt: Received %i bytes from %s
+sntp handle_pkt: Received KOD packet with code: %c%c%c%c from %s, demobilizing all connections
+sntp implements the Simple Network Time Protocol, and is used to query
+sntp offset_calculation:	t21: %.6f		 t34: %.6f
+sntpOptions
+SNTP_PRETEND_TIME
+sntp process_pkt: pkt.org and peer.xmt differ
+sntp recv_bcst_data: Couldn't add IP membership for %s
+sntp recv_bcst_data: Couldn't bind() address.
+sntp recv_bcst_data: Couldn't bind() address %s:%d.
+sntp recv_bcst_data: Couldn't join group for %s
+sntp recv_bcst_data: recvfrom:
+sntp recv_bcst_data: %s:%d is not a broad-/multicast address, aborting...
+sntp recv_bcst_data: select()
+sntp recv_bcst_data: select() reached timeout (%u sec), aborting.
+sntp recv_bcst_data: %s is not a broad-/multicast address, aborting...
+sntp recvpkt: select()
+sntp recvpkt: select() reached timeout (%u sec), aborting.
+sntp sendpkt: Sending packet to %s... 
+sntp %s: Funny packet length: %i. Discarding package.
+sntp %s: mode %d stratum %i
+sntp %s: packet received from %s is not authentic. Authentication not enforced.
+sntp %s: packet received from %s is not authentic. Will discard it.
+sntp %s: packet received from %s successfully authenticated using key id %i.
+sntp %s: Packet refid: %c%c%c%c
+sntp %s: Packet shows wrong version (%i)
+sntp %s: Server not in sync, skipping this server
+sntp %s: Stratum unspecified, going to check for KOD (stratum: %i)
+sntp - standard SNTP program - Ver. 4.2.6p3
+socket already bound
+socket is not bound
+socket is not connected
+socket() %s: %s
+(socktoa unknown family %d)
+soft quota reached
+Specify a keyfile. SNTP will look in this file for the key specified with -a
+Specify the number of seconds to wait for broadcasts
+%s %s[%d]: %s%s
+ssl_init_done
+%s%s%s%s%s%s%s%s%s%s
+__stack_chk_fail
+Started sntp
+Starting to read KoD file %s...
+stats != ((void *)0)
+__strcpy_chk
+__strdup
+strftime
+Syntax error in KoD db file %s in line %i (missing space)
+__syslog_chk
+syslog_file
+syslogit
+system's time (given suitable privilege).
+t1->nanoseconds < 1000000000 && t2->nanoseconds < 1000000000
+t1 != ((void *)0) && t2 != ((void *)0)
+templet != ((void *)0)
+timed out
+Time not set: adjtime(): %m
+Time not set: settimeofday(): %m
+time != ((void *)0)
+tmp-XXXXXXXXXX
+t->nanoseconds < 1000000000
+t->nanoseconds < 1000000000 && i->nanoseconds < 1000000000
+too many open files
+truncate
+t != ((void *)0) && i != ((void *)0) && result != ((void *)0)
+type == 2 || type == 3 || type == 4 || type == 1
+unable to convert errno to isc_result: %d: %s
+unable to remove log file '%s.%d': %s
+unable to remove log file '%s': %s
+unable to rename log file '%s.%d' to '%s.%d': %s
+unable to rename log file '%s' to '%s.0': %s
+Unable to resolve hostname(s)
+unbalanced parentheses
+unbalanced quotes
+unexpected end of input
+unexpected error
+unexpected token
+Unknown error: %u
+(unknown key type)
+unrecognized key ID = 0x%08x
+USAGE:  %s [ -<flag> [<val>] | --<name>[{=| }<val>] ]... hostname-or-IP ...
+Use broadcasts to the address specified for synchronisation
+ustotshi
+ustotslo
+ustotsmid
+val != ((void *)0)
+/var/db/ntp-kod
+__vfprintf_chk
+__vsnprintf_chk
+=	X]N	O$_	G
+%Y-%m-%dT%H:%M:%SZ

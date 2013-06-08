@@ -1,0 +1,280 @@
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+            appendtofile(path, "escape ^"+u+l+"\n")
+            appendtofile(path, out+"\n")
+#    Authors: Nick Barcet <nick.barcet@ubuntu.com>
+    bb = ButtonBar(snackScreen, ((_("Apply"), "apply"), (_("Cancel"), "cancel", ESC)), compact = 1)
+    bb = ButtonBar(snackScreen, buttons, compact = 1)
+    bb = ButtonBar(snackScreen, (("Exit", "exit", ESC),), compact=1)
+    bb = ButtonBar(snackScreen, ((_("Menu"), "menu", ESC),), compact = 1)
+    button = bb.buttonPressed(g.runOnce())
+    button = bb.buttonPressed(which)
+        button = messagebox(snackScreen, 60, 2, _("Message"), out, buttons=((_("Menu"), )))
+        button = messagebox(snackScreen, 60, 2, "Message", out, buttons=((_("Menu"), )))
+    buttons=((_("Okay"), "okay"),(_("Cancel"), "cancel", ESC)) ):
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+BYOBU_BACKEND=os.getenv("BYOBU_BACKEND", "tmux")
+#    byobu-config
+BYOBU_CONFIG_DIR=os.getenv("BYOBU_CONFIG_DIR", HOME+"/.byobu")
+BYOBU_PREFIX = os.getenv("BYOBU_PREFIX", "/usr")
+	BYOBU_SED = "gsed"
+    # BYOBU_SED is hacky here, but effective
+	BYOBU_SED = "sed"
+BYOBU_SOCKETDIR=os.getenv("SOCKETDIR", "/var/run/screen")
+            commands.getoutput("echo '%s=\"%s\"' >> %s" % (key, val, path))
+	commands.getoutput(RELOAD_CMD)
+            commands.getoutput("%s -i -e '/^%s=/d' %s" % (BYOBU_SED, key, path))
+    config = SafeConfigParser()
+#    Copyright (C) 2008 Canonical Ltd.
+        count=0
+    count=0
+            count=count+1
+       count=count+1
+            cr = (25, 80)
+            cr = (env['LINES'], env['COLUMNS'])
+    cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)  # try open fds
+            cr = ioctl_GWINSZ(fd)
+        cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
+#       ./debian/rules get-po
+def appendtofile(p, s):
+def autolaunch():
+def chgesc(snackScreen, size):
+DEF_ESC="A"
+def genstatusstring(s, status):
+def getesckey():
+def help(snackScreen, size, config):
+def install(snackScreen, size, isInstalled):
+def ioctl_GWINSZ(fd):                  #### TABULATION FUNCTIONS
+def main():
+def menu(snackScreen, size, isInstalled):
+def messagebox(snackScreen, width, height, title, text, scroll=0, \
+def readstatus():
+def reload_required():
+def setesckey(key):
+def terminal_size():                    ### decide on *some* terminal size
+def togglestatus(snackScreen, size):
+def writestatus(items):
+    DOC = BYOBU_CONFIG_DIR+"/"+DOC
+DOC=BYOBU_PREFIX+'/share/doc/'+PKG
+               # do nothing
+               dummy = "foo"
+                dummy = int(esc.value())
+#             Dustin Kirkland <kirkland@ubuntu.com>
+        elif tag == 2:
+	elif tag == 3:
+        elif tag == 4:
+                else:
+            else:
+        else:
+    else:
+            # Ensure that escape sequence is not \ or /
+            # Ensure that the escape sequence is not set to a number
+                error("Invalid configuration [%s]" % f)
+        esc = " "
+    esc=Entry(2, text=getesckey(), returnExit=1)
+    esc = line[line.find('^')+1]
+    escl=Label(_("Escape key: ctrl-"))
+                esc.set(DEF_ESC)
+                esc.set(val[1])
+            except:
+        except:
+    except:
+    except IOError:
+                execfile(f, glo, loc)
+    execfile(SHARE+'/status/status', glo, loc)
+        f.close()
+    f.close()
+	f.close()
+            fd = os.open(os.ctermid(), os.O_RDONLY)
+    f=file(DOC+'/help.'+BYOBU_BACKEND+'.txt')
+    f = open(p, 'a')
+	f = open(RELOAD_FLAG,'w')
+    for f in [SHARE+'/status/status', BYOBU_CONFIG_DIR+'/status']:
+    for i in items:
+            for i in items.split():
+    for i in keys:
+    for i in loc[s].split():
+        for item in itemlist:
+    for item in itemlist:
+	for key in ["screen_upper_left", "screen_upper_right", "screen_lower_left", "screen_lower_right"]:
+	for key in ["tmux_left", "tmux_right"]:
+from ConfigParser import SafeConfigParser
+from snack import *
+        f.write(s)
+    g.add(bb, 0, 1, padding=(1,1,0,0))
+    g.add(bb, 1, 1)
+    g.add(bb, 1, 1, padding=(1,1,0,0))
+    g.add(bb, 1, 1, padding=(4,1,0,0))
+    g.add(esc, 1, 0, anchorLeft=1)
+    g.add(escl, 0, 0, anchorLeft=1, padding=(1,0,0,1))
+    g.add(li, 0, 0, padding=(4,2,4,2))
+    g.add(r, 1, 0)
+    g.add(rl, 0, 0, anchorLeft=1, anchorTop=1, padding=(4,0,0,1))
+    g.add(t, 0, 0, padding=(0,0,0,0))
+    g.add(t, 1, 0)
+gettext.bindtextdomain(PKG, SHARE+'/po')
+_ = gettext.gettext
+gettext.textdomain(PKG)
+    g = GridForm(snackScreen, _(" Byobu Configuration Menu"), 1, 2)
+    g = GridForm(snackScreen, _("Byobu Help"), 2, 4)
+    g = GridForm(snackScreen, _("Change escape sequence"), 2, 4 )
+    g = GridForm(snackScreen, title, 1, 2)
+    g = GridForm(snackScreen, _("Toggle status notifications"), 2, 4 )
+    glo = {}
+#    GNU General Public License for more details.
+    g.setTimer(100)
+HOME=os.getenv("HOME")
+    if bb.buttonPressed(g.runOnce()) != "cancel":
+    if bb.buttonPressed(g.runOnce()) == "exit":
+    if button != "cancel":
+        if button == "exit":
+            if BYOBU_BACKEND == "tmux":
+    if BYOBU_BACKEND == "tmux":
+    if commands.getstatusoutput('grep -qs byobu-launch %s/.profile' % HOME)[0] == 0:
+if commands.getstatusoutput('which gsed')[0] == 0:
+    if esc == "`":
+    if isInstalled:
+                if i.startswith("#"):
+        if i.startswith("#"):
+            if item[0] != -1:
+       if item[0] != -1:
+        if key == " ":
+    if key != "":
+            if len(val) > 1:
+    if line == "":
+if __name__ == "__main__": main()
+    if not cr:                            # env vars or finally defaults
+    if not cr:                                                  # ...then ctty
+	if not os.path.exists(BYOBU_CONFIG_DIR):
+if not os.path.exists(DOC):
+    if not os.path.exists(path):
+if not os.path.exists(SHARE):
+    if os.path.exists(BYOBU_CONFIG_DIR+"/disable-autolaunch"):
+    if os.path.exists("/etc/profile.d/Z98-%s.sh" % PKG):
+        if os.path.exists(f):
+        if os.path.exists(path):
+        if out == "":
+        if status[i] == 1:
+        if tag == 1:
+            if val == '/' or val == '\\':
+        if which == "TIMER":
+# If you change any strings, please generate localization information with:
+                    i = i.replace("#", "")
+                i = i.replace("#", "")
+        import fcntl, termios, struct, os
+import sys, os, os.path, time, string, commands, gettext, glob, snack
+        installtext=_("Byobu currently does not launch at login (toggle on)")
+        installtext=_("Byobu currently launches at login (toggle off)")
+            isInstalled = autolaunch()
+    isInstalled = autolaunch()
+                item[0] = r.getEntryValue(count)[1]
+    itemlist=readstatus()
+                items = "%s %s" % (loc["tmux_left"], loc["tmux_right"])
+                items = "%s %s %s %s" % (loc["screen_upper_left"], loc["screen_upper_right"], loc["screen_lower_left"], loc["screen_lower_right"])
+#    it under the terms of the GNU General Public License as published by
+            key = "`"
+    keys.sort()
+    keys = status.keys()
+    li=[]
+    li.append(_("Change escape sequence"), 3)
+    li.append(_("Help -- Quick Start Guide"), 1)
+    li.append(installtext, 4)
+    li.append(_("Toggle status notifications"), 2)
+        li.append(window)
+    li = Listbox(height = 6, width = 60, returnExit = 1)
+    line = commands.getoutput("grep ^escape "+path)
+        l = key[0].lower()
+    loc = {}
+            loop=0
+    loop=1
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    new = ""
+            new += " " + i
+            new += " #" + i
+            os.close(fd)
+	    os.makedirs(BYOBU_CONFIG_DIR, 0755)
+            out = _("Byobu will be launched automatically next time you login.")
+            out = _("Byobu will not be launched next time you login.")
+        out = commands.getoutput("byobu-launcher-install")
+        out = commands.getoutput("byobu-launcher-uninstall")
+            out = commands.getoutput(BYOBU_SED+" -i -e '/^$/d' "+path)
+            out = commands.getoutput(BYOBU_SED+" -i -e 's/^escape.*$//' "+path)
+            out = commands.getoutput(BYOBU_SED+" -i -e 's/\"^^/\"\^"+l+"/g' "+path)
+            out = commands.getoutput(BYOBU_SED+" -i -e 's/^register.*$//' "+path)
+            out = commands.getoutput("grep -sh '^register x' "+SHARE+"/keybindings/*keys")
+            pass
+    path=BYOBU_CONFIG_DIR+'/keybindings'
+    path = BYOBU_CONFIG_DIR+'/keybindings'
+    path = BYOBU_CONFIG_DIR+'/status'
+PKG="byobu"
+            r.append(item[1],count,selected=item[0])
+    r=CheckboxTree(12, scroll=1)
+RELOAD_CMD="%s -X at 0 source %s/profile" % (BYOBU_BACKEND, BYOBU_CONFIG_DIR)
+RELOAD_FLAG="%s/reload-required" % (BYOBU_CONFIG_DIR)
+RELOAD = "If you are using the default set of keybindings, press\n<F5> or <ctrl-a-R> to activate these changes.\n\nOtherwise, exit this session and start a new one."
+	reload_required()
+    return
+        return
+            return 0
+        return 0
+    return 0
+	return 0
+	return 1
+        return 100
+    return 100
+        return 101
+    return bb.buttonPressed(g.runOnce())
+    return cr
+        return DEF_ESC
+    return esc
+    return int(cr[1]-5), int(cr[0]-5)         # reverse rows, cols
+    return li
+        return li.current()
+    return new
+        return None
+    rl=Label("")
+        setesckey(esc.value())
+    SHARE = BYOBU_CONFIG_DIR+"/"+SHARE
+SHARE=BYOBU_PREFIX+'/share/'+PKG
+    size = terminal_size()
+snack.hotkeys[ESC] = ord(ESC)
+snack.hotkeys[ord(ESC)] = ESC
+    snackScreen.drawRootText(1,0,_('Byobu Configuration Menu'))
+    snackScreen.finish()
+    snackScreen.popWindow()
+    snackScreen.pushHelpLine(_('<Tab> between elements | <Enter> selects | <Esc> exits'))
+    snackScreen = SnackScreen()
+    status={}
+                    status[i] = "0"
+                    status[i] = "1"
+        status[i[1]] = i[0]
+    sys.exit(0)
+    tag = 100
+            tag = chgesc(snackScreen, size)
+            tag = help(snackScreen, size, config)
+            tag = install(snackScreen, size, isInstalled)
+        tag = menu(snackScreen, size, isInstalled)
+            tag = togglestatus(snackScreen, size)
+    text=f.read()
+    text=text.replace("<esckey>", getesckey(), 1)
+    text=text.replace("_VER_", commands.getoutput("byobu -v | head -n1 | " + BYOBU_SED + " 's/.* //'"), 1)
+#    the Free Software Foundation, version 3 of the License.
+    """This is the main loop of our utility
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+            try:
+        try:
+    try:
+    try:                                ### Discover terminal width
+    t = Textbox(67, 16, text, scroll=1, wrap=1)
+    t = Textbox(width, height, text, scroll=scroll )
+        u = key[0].upper()
+USER=os.getenv("USER")
+#!/usr/bin/python
+            val=esc.value()
+            val = genstatusstring(key, status)
+        which=g.run()
+    while loop:
+    while tag > 0 :
+        window=[int(status[i]), i]
+        writestatus(itemlist)
+#    You should have received a copy of the GNU General Public License

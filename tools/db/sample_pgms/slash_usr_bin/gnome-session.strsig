@@ -1,0 +1,1522 @@
+10%.04x%.04x%.10lu%.3u%.10lu%.4d
+aapp->priv->desktop_file != NULL
+aborting...
+ActiveChanged
+add_autostart_app_internal
+AlreadyRegistered
+APPLICATION
+Application does not accept documents on command line
+Application ID not specified
+applications
+Application '%s' failed to register before timeout
+Application '%s' killed by signal
+app %s is disabled by Hidden
+app %s is disabled by X-GNOME-Autostart-enabled
+app %s not installed
+app %s not installed or not for %s
+App %s registered
+App '%s' respawning too quickly
+A program is still running:
+auth_iochannel_watch
+AUTH_LOCAL %s
+auto-save-session
+autostart
+autostart_app_start_activate
+autostart_app_start_spawn
+AutostartCondition
+AUTOSTART_DIR
+backtrace
+backtrace_symbols
+bindtextdomain
+bind_textdomain_codeset
+<b>%s</b>
+__bss_start
+bus-name
+cairo_surface_destroy
+cairo_xlib_surface_create
+callback != NULL
+Caller not recognized as the client
+CanActivateSessions
+Canceled
+CancelEndSession
+can-hibernate
+Cannot use session '%s': no component in the session.
+Cannot use session '%s': non-existing or invalid file.
+Cannot use session '%s': no '%s' group.
+Cannot use session '%s': required provider '%s' is not defined.
+CanRestart
+CanShutdown
+can-suspend
+Can't pass document URIs to a 'Type=Link' desktop entry
+changed::%s
+Child process %d was already dead.
+client-added
+ClientAdded
+client_dbus_filter_function
+Client exited in query end session phase instead of end session phase
+client_id
+client-id
+client_iochannel_watch
+Client is not registered
+client->priv->conn != NULL
+client->priv != NULL
+client-removed
+ClientRemoved
+Client '%s' failed to reply before timeout
+client_startup_id
+client-store
+Client %s which was automatically saved
+closelog
+Component '%s' crashing too quickly
+Component '%s' is autorestart, ignoring died signal
+condition
+condition-changed
+condition != NULL
+ConfirmedLogout
+ConfirmedReboot
+ConfirmedShutdown
+connection != NULL
+Could not acquire name on session bus
+Could not connect to ConsoleKit: %s
+Could not connect to session bus: %s
+Could not connect to the shell: %s
+Could not create ICE listening socket: %s
+Could not create pipe() for signal handling
+Could not initialize libSM: %s
+Could not launch application '%s': %s
+Could not load desktop file '%s': %s
+Could not load inhibitor UI file.
+Could not load inhibitor UI file: %s
+Could not make bus activated clients aware of %s=%s environment variable: %s
+Could not parse desktop file %s: %s
+Could not query CanRestart from ConsoleKit: %s
+Could not query CanStop from ConsoleKit: %s
+could not read %s
+Could not update ICEauthority file %s
+Couldn't allocate the D-Bus message
+Couldn't kill child process %d: %s
+Couldn't lock screen: %s
+CRITICAL
+CSearching for %d in %d,%d
+__ctype_b_loc
+data->fd <= 0
+dbus_bus_get
+dbus_connection_add_filter
+dbus_connection_remove_filter
+dbus_connection_send
+dbus_connection_send_with_reply_and_block
+dbus_connection_set_exit_on_disconnect
+dbus_connection_setup_with_g_main
+dbus_error_free
+dbus_error_init
+dbus_error_is_set
+dbus_g_bus_get
+dbus_g_connection_get_connection
+dbus_g_connection_register_g_object
+dbus_g_connection_unref
+dbus_g_error_domain_register
+dbus_glib_marshal_gsm_app_BOOLEAN__POINTER_POINTER
+dbus_glib_marshal_gsm_client_BOOLEAN__POINTER
+dbus_glib_marshal_gsm_client_BOOLEAN__POINTER_POINTER
+dbus_glib_marshal_gsm_inhibitor_BOOLEAN__POINTER_POINTER
+dbus_glib_marshal_gsm_manager_BOOLEAN__POINTER
+dbus_glib_marshal_gsm_manager_BOOLEAN__POINTER_POINTER
+dbus_glib_marshal_gsm_manager_BOOLEAN__STRING_BOOLEAN_POINTER
+dbus_glib_marshal_gsm_manager_BOOLEAN__STRING_POINTER_POINTER
+dbus_glib_marshal_gsm_manager_BOOLEAN__STRING_STRING_POINTER
+dbus_glib_marshal_gsm_manager_BOOLEAN__UINT_POINTER
+dbus_glib_marshal_gsm_manager_BOOLEAN__UINT_POINTER_POINTER
+dbus_glib_marshal_gsm_manager_VOID__BOXED_POINTER
+dbus_glib_marshal_gsm_manager_VOID__STRING_STRING_POINTER
+dbus_glib_marshal_gsm_manager_VOID__STRING_UINT_STRING_UINT_POINTER
+dbus_glib_marshal_gsm_presence_BOOLEAN__STRING_POINTER
+dbus_glib_marshal_gsm_presence_BOOLEAN__UINT_POINTER
+dbus_g_method_get_sender
+dbus_g_method_return
+dbus_g_method_return_error
+dbus_g_object_path_get_g_type
+dbus_g_object_type_install_info
+dbus_g_proxy_add_signal
+dbus_g_proxy_begin_call
+dbus_g_proxy_begin_call_with_timeout
+dbus_g_proxy_call
+dbus_g_proxy_call_with_timeout
+dbus_g_proxy_cancel_call
+dbus_g_proxy_connect_signal
+dbus_g_proxy_end_call
+dbus_g_proxy_new_for_name
+dbus_g_proxy_new_for_name_owner
+dbus_g_type_get_collection
+dbus_g_type_get_map
+dbus-launch
+dbus_message_get_args
+dbus_message_get_interface
+dbus_message_get_member
+dbus_message_get_path
+dbus_message_get_sender
+dbus_message_is_method_call
+dbus_message_is_signal
+dbus_message_iter_append_basic
+dbus_message_iter_get_basic
+dbus_message_iter_init
+dbus_message_iter_init_append
+dbus_message_new_error
+dbus_message_new_method_call
+dbus_message_new_method_return
+dbus_message_new_signal
+dbus_message_set_destination
+dbus_message_unref
+DBUS_SESSION_BUS_ADDRESS
+dcgettext
+dcngettext
+DEBUG(+)
+Debugging disabled
+Debugging enabled
+DefaultProvider
+default_stop
+description
+description-label
+DESKTOP_AUTOSTART_ID=%s
+Desktop Entry
+desktop-filename
+Desktop filename
+Desktop file '%s' has malformed Icon key '%s'(should not include extension)
+DesktopName
+DESKTOP_STARTUP_ID=%s
+Detected that screensaver has left the bus
+dialog->priv != NULL
+Directory
+disable-log-out
+disable-user-switching
+Disabling debugging
+DiscardCommand
+disconnected
+DISPLAY=%s
+do_inhibit_dialog_action
+Do not load user-specified applications
+do_save_yourself
+egg-desktop_file-error-quark
+EggSMClient
+Enable debugging code
+enabled-extensions
+Enabling debugging
+******************* END **********************************
+end_phase
+end-session-dialog-canceled
+end-session-dialog-closed
+end-session-dialog-confirmed-logout
+end-session-dialog-confirmed-reboot
+end-session-dialog-confirmed-shutdown
+end-session-dialog-opened
+end-session-dialog-open-failed
+end_session_or_show_shell_dialog
+end-session-response
+EndSessionResponse
+__errno_location
+error getting session bus: %s
+Error on restarting session managed app: %s
+Error saving session: %s
+Exited with code %d
+--exit-with-session
+Extension with dirname '%s' does not match metadata's UUID of '%s'. Skipping.
+Failed to acquire %s
+Failed to acquire %s: %s
+Failed to authenticate with GDM
+Failed to create GDM socket: %s
+Failed to establish a connection with GDM: %s
+Failed to get protocol version from GDM
+Failed to load session "%s"
+Failed to send message to GDM: %s
+Failed to start app: %s
+failsafe
+fallback
+FallbackSession
+File is not a valid .desktop file
+fill: *** Adding default providers
+fill: *** Adding required components
+fill: *** Checking required components and providers
+fill: *** Done adding default providers
+fill: *** Done adding required components
+fill: *** Done checking required components and providers
+fill: *** Getting session '%s'
+fill: *** Launching helper '%s' to know if session is runnable
+fill: *** Looking if %s is a valid session file
+fill: provider '%s' looking for component: '%s'
+fill: *** Session is not runnable
+find_inhibitor
+FLEXI_XSERVER
+Forced logout cannot be inhibited
+forceful
+Found multiple entries (or none) in model
+Found one entry in model
+Frame %zd: %s
+Freedesktop .desktop file
+func != NULL
+g_app_info_create_from_commandline
+g_app_info_launch
+g_ascii_strncasecmp
+g_ascii_strtod
+g_ascii_table
+g_assertion_message
+g_assertion_message_expr
+g_build_filename
+g_cclosure_marshal_VOID__BOOLEAN
+g_cclosure_marshal_VOID__BOXED
+g_cclosure_marshal_VOID__POINTER
+g_cclosure_marshal_VOID__STRING
+g_cclosure_marshal_VOID__UINT
+g_cclosure_marshal_VOID__UINT_POINTER
+g_cclosure_marshal_VOID__VOID
+g_child_watch_add
+g_clear_error
+gconf_client_add_dir
+gconf_client_get_bool
+gconf_client_get_default
+gconf_client_get_type
+gconf_client_notify_add
+gconf_client_notify_remove
+gconf_condition_cb
+GCONF_IS_CLIENT (client)
+gconf_value_get_bool
+g_dir_close
+g_dir_open
+g_dir_read_name
+gdk_display_get_app_launch_context
+gdk_display_get_default
+gdk_display_get_default_screen
+gdk_display_get_name
+gdk_display_sync
+gdk_get_display
+gdk_pixbuf_get_from_surface
+gdk_pixbuf_get_height
+gdk_pixbuf_get_type
+gdk_pixbuf_get_width
+gdk_pixbuf_new_from_file_at_size
+gdk_pixbuf_scale_simple
+gdk_screen_get_default
+gdk_screen_get_display
+gdk_screen_get_monitor_geometry
+gdk_screen_get_number
+gdk_screen_get_primary_monitor
+gdk_screen_make_display_name
+gdk_window_add_filter
+gdk_window_move
+gdk_window_move_resize
+gdk_window_resize
+gdk_x11_display_broadcast_startup_message
+gdk_x11_display_error_trap_pop_ignored
+gdk_x11_display_error_trap_push
+gdk_x11_display_get_user_time
+gdk_x11_display_get_xdisplay
+gdk_x11_get_server_time
+gdk_x11_window_set_user_time
+GDM crashed, but symbols couldn't be retrieved.
+gdmflexiserver
+gdm_init_protocol_connection
+GDM_IS_SIGNAL_HANDLER (handler)
+GDM_IS_SIGNAL_HANDLER (object)
+GdmSignalHandler
+gdm_signal_handler_add
+gdm_signal_handler_add_fatal
+GdmSignalHandler: Adding handler %u: signum=%d %p
+GdmSignalHandler: Caught termination signal - calling fatal func
+GdmSignalHandler: Caught termination signal - exiting
+GdmSignalHandler: Done handling signals
+gdm_signal_handler_finalize
+GdmSignalHandler: Finalizing signal handler
+GdmSignalHandler: Found %u callbacks
+GdmSignalHandler: handling signal %d
+GdmSignalHandler: Registering for %d signals
+gdm_signal_handler_remove
+gdm_signal_handler_remove_and_free_data
+gdm_signal_handler_remove_func
+GdmSignalHandler: Removing handler %u: signum=%d %p
+GdmSignalHandler: running %d handler: %p
+gdm_signal_handler_set_fatal_func
+GdmSignalHandler: Unregistering for %d signals
+GeneralError
+g_enum_register_static
+g_error_free
+g_error_new
+g_error_new_literal
+GetAppId
+GetClientId
+GetClients
+GetConnectionUnixProcessID
+GetConnectionUnixProcessID() failed: %s
+GetConnectionUnixUser
+GetConnectionUnixUser() failed: %s
+GetCurrentSession
+GetFlags
+GetInhibitors
+GetPhase
+GetReason
+GetRestartStyleHint
+GetSeatId
+GetSessionType
+GetStartupId
+GetStatus
+gettimeofday
+GetToplevelXid
+GetUnixProcessId
+g_file_enumerate_children
+g_file_enumerator_next_file
+g_file_get_path
+g_file_info_get_name
+g_file_monitor_cancel
+g_file_monitor_file
+g_filename_from_uri
+g_filename_to_uri
+g_file_new_for_path
+g_file_new_for_uri
+g_file_set_contents
+g_file_test
+g_find_program_in_path
+g_get_current_time
+g_getenv
+g_get_host_name
+g_get_prgname
+g_get_real_name
+g_get_system_config_dirs
+g_get_system_data_dirs
+g_get_user_config_dir
+g_get_user_data_dir
+g_get_user_name
+GHashTable
+g_hash_table_destroy
+g_hash_table_find
+g_hash_table_foreach_remove
+g_hash_table_get_values
+g_hash_table_insert
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_lookup
+g_hash_table_new
+g_hash_table_new_full
+g_hash_table_remove
+g_hash_table_size
+g_hash_table_unref
+g_idle_add
+g_intern_static_string
+g_io_add_watch
+g_io_add_watch_full
+g_io_channel_error_quark
+g_io_channel_read_chars
+g_io_channel_set_close_on_unref
+g_io_channel_set_flags
+g_io_channel_unix_new
+g_io_channel_unref
+g_key_file_free
+g_key_file_get_boolean
+g_key_file_get_double
+g_key_file_get_integer
+g_key_file_get_locale_string
+g_key_file_get_locale_string_list
+g_key_file_get_string
+g_key_file_get_string_list
+g_key_file_get_value
+g_key_file_has_group
+g_key_file_has_key
+g_key_file_load_from_data_dirs
+g_key_file_load_from_dirs
+g_key_file_load_from_file
+g_key_file_new
+g_key_file_set_boolean
+g_key_file_set_string
+g_key_file_to_data
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+g_list_delete_link
+g_listenv
+g_list_prepend
+g_locale_to_utf8
+g_log_set_default_handler
+g_main_loop_new
+g_main_loop_quit
+g_main_loop_run
+g_main_loop_unref
+g_malloc
+g_malloc0
+g_malloc_n
+g_mkdir_with_parents
+__gmon_start__
+g_mutex_lock
+g_mutex_unlock
+GNOME_DESKTOP_SESSION_ID
+gnome-screensaver-command --lock
+gnome-%s.desktop
+gnome-session
+GNOME Session
+gnome-session-3.0
+gnome-session-computer-fail
+GNOME_SESSION_SAVE
+gnome-shell
+gnome-shell.desktop
+gnome-windows
+g_object_add_weak_pointer
+g_object_class_install_property
+g_object_class_override_property
+g_object_get
+g_object_new
+g_object_notify
+g_object_ref
+g_object_set
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_param_spec_boolean
+g_param_spec_int
+g_param_spec_object
+g_param_spec_pointer
+g_param_spec_string
+g_param_spec_uint
+g_path_get_basename
+g_path_get_dirname
+g_path_is_absolute
+g_printerr
+g_propagate_error
+GPtrArray
+g_ptr_array_add
+g_ptr_array_foreach
+g_ptr_array_free
+g_ptr_array_new
+g_ptr_array_remove_index_fast
+g_quark_from_static_string
+g_random_int
+g_random_int_range
+g_return_if_fail_warning
+g_set_application_name
+g_setenv
+g_set_error
+g_set_error_literal
+GSettings
+g_settings_bind_with_mapping
+gsettings_condition_cb
+g_settings_get_boolean
+g_settings_get_string
+g_settings_get_strv
+g_settings_list_schemas
+g_settings_new
+g_settings_set_strv
+g_shell_parse_argv
+GSIdleMonitor
+gs_idle_monitor_add_watch
+GSIdleMonitor: callback returned FALSE; resetting idle time
+GSIdleMonitor: creating new alarm for negative transition wait=%lli
+GSIdleMonitor: creating new alarm for positive transition wait=%lli
+gs_idle_monitor_dispose
+gs_idle_monitor_finalize
+GSIdleMonitor: IDLETIME counter not found
+gs_idle_monitor_remove_watch
+gs_idle_monitor_reset
+GSIdleMonitor: sending fake key
+GSIdleMonitor: Sync extension not present
+GSIdleMonitor: Unable to initialize Sync extension
+GSIdleMonitor: updating alarm for negative transition wait=%lli
+GSIdleMonitor: updating alarm for positive transition wait=%lli
+g_signal_connect_data
+g_signal_emit
+g_signal_handler_disconnect
+g_signal_handlers_disconnect_matched
+g_signal_new
+g_signal_stop_emission_by_name
+GS_IS_IDLE_MONITOR (monitor)
+GS_IS_IDLE_MONITOR (object)
+g_slice_alloc
+g_slice_alloc0
+g_slice_free1
+g_slist_append
+g_slist_find
+g_slist_foreach
+g_slist_free
+g_slist_free_full
+g_slist_length
+g_slist_prepend
+g_slist_remove
+g_slist_remove_all
+g_slist_reverse
+gsm_app_died
+gsm_app_error
+gsm_app_exited
+gsm_app_get_app_id
+gsm_app_get_phase
+gsm_app_get_startup_id
+gsm_app_is_running
+gsm_app_peek_autorestart
+gsm_app_peek_autostart_delay
+gsm_app_peek_is_conditionally_disabled
+gsm_app_peek_is_disabled
+gsm_app_peek_phase
+gsm_app_registered
+gsm_app_set_id
+gsm_app_set_phase
+gsm_app_set_startup_id
+GsmAutostartApp
+gsm_autostart_app_add_provides
+GsmAutostartApp: app:%s condition changed condition:%d
+gsm-autostart-app.c
+gsm-autostart-app.c:729
+gsm-autostart-app.c:753
+GsmAutostartApp: Couldn't stop app: %s
+GsmAutostartApp: Error starting application: %s
+gsm_autostart_app_get_provides
+gsm_autostart_app_has_autostart_condition
+GsmAutostartApp: (pid:%d) done (%s:%d)
+gsm_autostart_app_provides
+GsmAutostartApp: sending signal %d to process %d
+gsm_autostart_app_start
+GsmAutostartApp: Started application %s
+GsmAutostartApp: started pid:%d
+GsmAutostartApp: starting %s: command=%s startup-id=%s
+gsm_autostart_app_stop
+GsmClient
+gsm-client.c:242
+gsm-client.c:268
+gsm_client_cancel_end_session
+gsm_client_dispose
+GsmClient: disposing %s
+gsm_client_end_session
+gsm_client_error
+GsmClientError
+GSM_CLIENT_ERROR_GENERAL
+GSM_CLIENT_ERROR_NOT_REGISTERED
+gsm_client_finalize
+gsm_client_get_app_id
+gsm_client_get_app_name
+gsm_client_get_restart_style_hint
+gsm_client_get_startup_id
+gsm_client_get_status
+gsm_client_get_unix_process_id
+gsm_client_peek_app_id
+gsm_client_peek_id
+gsm_client_peek_id (GSM_CLIENT (client)) != NULL
+gsm_client_peek_restart_style_hint
+gsm_client_peek_startup_id
+gsm_client_peek_status
+gsm_client_query_end_session
+gsm_client_save
+gsm_client_set_app_id
+gsm_client_set_startup_id
+gsm_client_set_status
+gsm_client_stop
+GsmConsolekit
+gsm-consolekit.c:104
+gsm-consolekit-error
+GsmDBusClient
+gsm-dbus-client.c
+gsm-dbus-client.c:380
+gsm-dbus-client.c:400
+GsmDbusClient: Couldn't connect to session bus: %s
+gsm_dbus_client_dispose
+gsm_dbus_client_error
+GsmDbusClientError
+GSM_DBUS_CLIENT_ERROR_GENERAL
+GSM_DBUS_CLIENT_ERROR_NOT_CLIENT
+gsm_dbus_client_get_bus_name
+GsmDBusClient: got EndSessionResponse is-ok:%d reason=%s
+GsmDBusClient: obj_path=%s interface=%s method=%s
+GsmDBusClient: saving client with id %s
+GsmDBusClient: sending QueryEndSession signal to %s
+gsm_dbus_client_set_bus_name
+_GSM_DesktopFile
+GsmFailWhaleDialog
+gsm-fail-whale-dialog.c
+gsm_get_dialog
+GsmInhibitDialog
+gsm-inhibit-dialog.c
+gsm-inhibit-dialog.c:786
+gsm-inhibit-dialog.c:810
+gsm_inhibit_dialog_dispose
+GsmInhibitDialog: dispose called
+gsm_inhibit_dialog_finalize
+GsmInhibitDialog: finalizing
+GsmInhibitDialog: getting foreign pixmap for %u
+GsmInhibitDialog: getting pixbuf w=%d h=%d
+GsmInhibitDialog: Got xpixmap %u
+GsmInhibitDialog: inhibitor added: %s
+GsmInhibitDialog: inhibitor has XID %u
+GsmInhibitDialog: inhibitor removed: %s
+GsmInhibitDialog: Initialized XRender extension
+GsmInhibitDialog: scaling pixbuf to w=%d h=%d
+gsm_inhibit_dialog_set_client_store
+gsm_inhibit_dialog_set_inhibitor_store
+GsmInhibitDialog: setting store %p
+GsmInhibitDialog: Unable to get window snapshot for %u
+GsmInhibitDialog: Unable to initialize XRender extension
+GsmInhibitDialog: unable to read pixbuf from %u
+GsmInhibitor
+gsm-inhibitor.c:435
+gsm-inhibitor.c:473
+gsm_inhibitor_error
+GsmInhibitorError
+GSM_INHIBITOR_ERROR_GENERAL
+GSM_INHIBITOR_ERROR_NOT_SET
+gsm_inhibitor_get_app_id
+gsm_inhibitor_get_client_id
+gsm_inhibitor_get_flags
+gsm_inhibitor_get_reason
+GsmInhibitor: getting client-id = '%s'
+gsm_inhibitor_get_toplevel_xid
+gsm_inhibitor_peek_app_id
+gsm_inhibitor_peek_bus_name
+gsm_inhibitor_peek_client_id
+gsm_inhibitor_peek_cookie
+gsm_inhibitor_peek_flags
+gsm_inhibitor_peek_id
+gsm_inhibitor_peek_reason
+gsm_inhibitor_peek_toplevel_xid
+gsm_inhibitor_set_app_id
+gsm_inhibitor_set_bus_name
+gsm_inhibitor_set_client_id
+gsm_inhibitor_set_cookie
+gsm_inhibitor_set_flags
+gsm_inhibitor_set_reason
+GsmInhibitor: setting client-id = %s
+gsm_inhibitor_set_toplevel_xid
+GSM_IS_APP (app)
+GSM_IS_APP (user_data)
+GSM_IS_AUTOSTART_APP (aapp)
+GSM_IS_CLIENT (client)
+GSM_IS_CLIENT (object)
+GSM_IS_DBUS_CLIENT (client)
+GSM_IS_DBUS_CLIENT (object)
+GSM_IS_INHIBIT_DIALOG (dialog)
+GSM_IS_INHIBIT_DIALOG (object)
+GSM_IS_INHIBITOR (inhibitor)
+GSM_IS_MANAGER (manager)
+GSM_IS_MANAGER (object)
+GSM_IS_PRESENCE (presence)
+GSM_IS_STORE (object)
+GSM_IS_STORE (store)
+GSM_IS_XSMP_CLIENT (client)
+GSM_IS_XSMP_SERVER (object)
+GSM_IS_XSMP_SERVER (xsmp_server)
+GsmLogoutDialog
+gsm-logout-dialog.c
+gsm-logout-dialog.c:107
+gsm-logout-dialog.c:91
+gsm_logout_dialog_timeout
+GsmManager
+gsm_manager_add_autostart_apps_from_dir
+GsmManager: *** Adding autostart apps for %s
+GsmManager: adding client to end-session clients: %s
+GsmManager: adding client to query clients: %s
+GsmManager: Adding new client %s to session
+GsmManager: adding required app %s
+GsmManager: app conditionally disabled, not restarting application
+GsmManager: app:%s condition changed condition:%d
+GsmManager: App startup summary
+GsmManager: autorestart not set, not restarting application
+gsm-manager.c
+gsm-manager.c:2483
+gsm-manager.c:2512
+GsmManager: Cancelling the end of session
+gsm_manager_can_shutdown
+GsmManager: CanShutdown called
+GsmManager: Client added: %s
+GsmManager: client failed to stop: %s, %s
+GsmManager: Client removed: %s
+GsmManager: Client %s
+GsmManager: dbus disconnected; disconnecting dbus clients...
+GsmManager: dbus disconnected, not restarting application
+GsmManager: disconnect client
+GsmManager: disconnect client: %s
+GsmManager: disconnect for app '%s'
+GsmManager: disposing manager
+GsmManager: doing action %d
+GsmManager: ending phase %s
+gsm_manager_error
+GsmManagerError
+GSM_MANAGER_ERROR_ALREADY_REGISTERED
+GSM_MANAGER_ERROR_GENERAL
+GSM_MANAGER_ERROR_INVALID_OPTION
+GSM_MANAGER_ERROR_LOCKED_DOWN
+GSM_MANAGER_ERROR_NOT_IN_INITIALIZATION
+GSM_MANAGER_ERROR_NOT_IN_RUNNING
+GSM_MANAGER_ERROR_NOT_REGISTERED
+gsm_manager_finalize
+gsm_manager_get_clients
+gsm_manager_get_failsafe
+gsm_manager_get_inhibitors
+GsmManager: GSM starting to manage
+GsmManager:	ID: %s	app-id:%s	is-disabled:%d	is-conditionally-disabled:%d	is-delayed:%d
+gsm_manager_inhibit
+GsmManager: inhibit dialog already up
+GsmManager: Inhibit dialog response: %d
+GsmManager: Inhibitor added: %s
+GsmManager: Inhibitor app:%s client:%s bus-name:%s reason:%s
+GsmManager: Inhibitor removed: %s
+GsmManager: Inhibit xid=%u app_id=%s reason=%s flags=%u
+gsm_manager_initialization_error
+GsmManager: in shutdown, not restarting application
+gsm_manager_is_autostart_condition_handled
+gsm_manager_is_inhibited
+gsm_manager_is_session_running
+GsmManager: last client disconnected - exiting
+gsm_manager_logout
+GsmManager: Logout called
+GsmManager: Logout dialog response: %d
+GsmManager: making app '%s' required
+GsmManager: not adding app: already added
+GsmManager: not adding app: app-id '%s' already exists
+GsmManager: not adding app: no app-id
+GsmManager: not adding app: no id
+GsmManager: not starting - app still running '%s'
+GsmManager: Phase %s
+GsmManager: query end session complete
+GsmManager: query end session timed out
+gsm_manager_quit
+GsmManager: read %s
+gsm_manager_register_client
+GsmManager: RegisterClient %s
+GsmManager: removing inhibitor from %s for reason '%s' on connection %s
+GsmManager: removing inhibitor %s %u reason '%s' %u connection %s
+GsmManager: removing JIT inhibitor for %s for reason '%s'
+GsmManager: requesting hibernate
+GsmManager: requesting logout
+GsmManager: requesting reboot
+GsmManager: requesting shutdown
+GsmManager: requesting suspend
+GsmManager: requesting user switch
+gsm_manager_request_reboot
+GsmManager: RequestReboot called
+gsm_manager_request_shutdown
+GsmManager: RequestShutdown called
+GsmManager: Response from end session request: is-ok=%d do-last=%d cancel=%d reason=%s
+GsmManager: restarting app
+GsmManager: sending query-end-session to clients (logout mode: %s)
+GsmManager: service '%s' is already provided
+gsm_manager_set_client_store
+gsm_manager_setenv
+gsm_manager_set_failsafe
+gsm_manager_set_phase
+GsmManager: setting client store %p
+gsm_manager_shutdown
+GsmManager: Shutdown called
+GsmManager: %s is scheduled to start in %d seconds
+GsmManager: Skipping disabled app: %s
+gsm_manager_start
+GsmManager: starting app '%s'
+GsmManager: starting phase %s
+GsmManager: stopped client: %s
+GsmManager: stopping app %s
+GsmManager: stopping client %s for app
+GsmManager: unable to find application for client - not restarting
+GsmManager: Unable to inhibit: %s
+GsmManager: Unable to start GDM greeter: %s
+gsm_manager_uninhibit
+GsmManager: Uninhibit %u
+gsm_manager_unregister_client
+GsmManager: UnregisterClient %s
+gsm_marshal_BOOLEAN__POINTER
+gsm_marshal_VOID__BOOLEAN_BOOLEAN_BOOLEAN_STRING
+gsm_marshal_VOID__BOOLEAN_BOOLEAN_POINTER
+GsmPresence
+GsmPresence: adding idle watch
+GsmPresence: already idle, ignoring
+GsmPresence: already not idle, ignoring
+gsm-presence.c:413
+gsm-presence.c:442
+gsm_presence_error
+GsmPresenceError
+GSM_PRESENCE_ERROR_GENERAL
+GsmPresence: removing idle watch
+gsm_presence_set_idle_enabled
+gsm_presence_set_idle_timeout
+gsm_presence_set_status
+gsm_presence_set_status_text
+GsmPresence: setting idle: %d
+gsm-session-fill.c
+GsmSessionSave: cannot create new saved session directory
+GsmSessionSave: cannot create saved session directory
+GsmSessionSave: clearing currently saved session at %s
+GsmSessionSave: Clearing saved session
+GsmSessionSave: could not create directory for saved session: %s
+GsmSessionSave: error loading saved session directory: %s
+GsmSessionSave: error saving session: %s
+GsmSessionSave: Failed to create directory %s: %s
+GsmSessionSave: removing '%s' from saved session
+GsmSessionSave: saved client %s to %s
+GsmSessionSave: Saving session
+GsmShell
+gsm-shell.c
+gsm-shell.c:121
+GsmShell: Connected to the shell
+GsmShellExtensions
+GsmShell: Not connected to the shell
+gsm_shell_open_end_session_dialog
+GsmStore
+gsm_store_add
+GsmStore: Adding object id %s to store
+gsm-store.c
+gsm-store.c:287
+gsm-store.c:307
+gsm_store_clear
+GsmStore: Clearing object store
+gsm_store_dispose
+GsmStore: emitting removed for %s
+gsm_store_error
+gsm_store_finalize
+gsm_store_find
+gsm_store_foreach
+gsm_store_foreach_remove
+gsm_store_get_locked
+gsm_store_lookup
+gsm_store_remove
+gsm_store_set_locked
+GsmStore: Unreffing object: %p
+GsmUtil: found in XDG dirs: '%s'
+GsmUtil: Looking for file '%s'
+GsmUtil: Looking in '%s'
+GsmXSMPClient
+gsm-xsmp-client.c
+gsm-xsmp-client.c:819
+gsm-xsmp-client.c:839
+GsmXSMPClient: Client '%s' received CloseConnection
+GsmXSMPClient: Client '%s' received InteractDone(cancel_shutdown = %s)
+GsmXSMPClient: Client '%s' received InteractRequest(%s)
+GsmXSMPClient: Client '%s' received RegisterClient(%s)
+GsmXSMPClient: Client '%s' received SaveYourselfDone(success = %s)
+GsmXSMPClient: Client '%s' received SaveYourselfPhase2Request
+GsmXSMPClient: Client '%s' received SaveYourselfRequest(%s, %s, %s, %s, %s)
+GsmXSMPClient:  close reason: '%s'
+GsmXSMPClient: Delete properties from '%s'
+GsmXSMPClient: desktop file for client %s is %s
+GsmXSMPClient: Get properties request from '%s'
+GsmXSMPClient: getting pid
+GsmXSMPClient: getting restart style
+GsmXSMPClient: IceProcessMessagesConnectionClosed on '%s'
+GsmXSMPClient: IceProcessMessagesIOError on '%s'
+GsmXSMPClient:   ignoring
+GsmXSMPClient: Initializing client %s
+GsmXSMPClient:   initiating checkpoint
+GsmXSMPClient:   initiating shutdown
+GsmXSMPClient: New client '%s'
+GsmXSMPClient:   queuing new SaveYourself for '%s'
+GsmXSMPClient:  RegisterClient not handled!
+GsmXSMPClient:   rejected: invalid previous_id
+gsm_xsmp_client_save_state
+GsmXSMPClient: saving client with id %s
+GsmXSMPClient:   %s = %d
+GsmXSMPClient: Sending initial SaveYourself
+GsmXSMPClient: Sending RegisterClientReply to '%s'
+GsmXSMPClient: Set properties from client '%s'
+GsmXSMPClient: Setting up new connection
+GsmXSMPClient:   skipping redundant SaveYourself for '%s'
+GsmXSMPClient:   %s = ??? (%s)
+GsmXSMPClient:   %s = '%s'
+GsmXSMPClient:   %s = %s
+GsmXSMPClient: xsmp_cancel_end_session ('%s')
+GsmXSMPClient: xsmp_finalize (%s)
+GsmXSMPClient: xsmp_interact ('%s')
+GsmXSMPClient: xsmp_save_yourself_phase2 ('%s')
+GsmXSMPClient: xsmp_stop ('%s')
+GsmXsmpServer
+GsmXsmpServer: accept_ice_connection()
+GsmXsmpServer: auth_ice_connection()
+gsm-xsmp-server.c
+gsm-xsmp-server.c:282
+gsm-xsmp-server.c:302
+gsm_xsmp_server_finalize
+GsmXsmpServer: IceAcceptConnection returned %d
+GsmXsmpServer: ice_error_handler (%p, %s, %d, %lx, %d, %d)
+GsmXsmpServer: ice_io_error_handler (%p)
+GsmXsmpServer: IceProcessMessages returned IceProcessMessagesConnectionClosed
+GsmXsmpServer: IceProcessMessages returned IceProcessMessagesIOError
+GsmXsmpServer: ice_protocol_timeout for IceConn %p with status %d
+GsmXsmpServer: In shutdown, rejecting new client
+GsmXsmpServer: SESSION_MANAGER=%s
+gsm_xsmp_server_set_client_store
+GsmXsmpServer: sms_error_handler (%p, %s, %d, %lx, %d, %d)
+g_snprintf
+g_source_remove
+g_spawn_async
+g_spawn_async_with_pipes
+g_spawn_close_pid
+g_spawn_command_line_async
+g_spawn_command_line_sync
+g_spawn_error_quark
+g_strcmp0
+g_strconcat
+g_strdup
+g_strdup_printf
+g_strdup_vprintf
+g_str_equal
+g_strerror
+g_strfreev
+g_str_hash
+g_str_has_prefix
+!g_str_has_prefix (argv[0], "dbus-launch")
+g_str_has_suffix
+g_string_append
+g_string_append_printf
+g_string_free
+g_string_insert_c
+g_string_new
+g_strsplit
+g_strv_length
+g_timeout_add
+g_timeout_add_seconds
+gtk_bin_get_child
+gtk_bin_get_type
+gtk_builder_add_from_file
+gtk_builder_get_object
+gtk_builder_new
+gtk_builder_set_translation_domain
+gtk-cancel
+gtk_cell_renderer_pixbuf_new
+gtk_cell_renderer_text_new
+gtk_container_add
+gtk_container_get_type
+gtk_container_set_border_width
+gtk_dialog_add_button
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_response
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk_get_current_event_time
+gtk_icon_info_free
+gtk_icon_info_get_filename
+gtk_icon_size_register
+gtk_icon_theme_get_default
+gtk_icon_theme_lookup_icon
+gtk_image_get_type
+gtk_image_set_from_icon_name
+gtk_init_check
+gtk_init_with_args
+gtk_label_get_type
+gtk_label_set_markup
+gtk_label_set_text
+gtk_list_store_insert_with_values
+gtk_list_store_new
+gtk_list_store_remove
+gtk_main
+gtk_main_level
+gtk_main_quit
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_image
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_message_dialog_set_markup
+gtk_tree_model_get
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_type
+gtk_tree_model_iter_n_children
+gtk_tree_model_iter_next
+gtk_tree_view_append_column
+gtk_tree_view_column_new
+gtk_tree_view_column_pack_start
+gtk_tree_view_column_set_attributes
+gtk_tree_view_column_set_cell_data_func
+gtk_tree_view_get_type
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_model
+gtk_tree_view_set_tooltip_column
+gtk_widget_add_events
+gtk_widget_destroy
+gtk_widget_get_display
+gtk_widget_get_events
+gtk_widget_get_realized
+gtk_widget_get_realized (widget)
+gtk_widget_get_screen
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_get_window
+gtk_widget_queue_resize
+gtk_widget_show
+gtk_widget_show_all
+gtk_widget_size_request
+gtk_window_get_screen
+gtk_window_get_type
+gtk_window_present
+gtk_window_set_default_icon_from_file
+gtk_window_set_default_icon_name
+gtk_window_set_icon_name
+gtk_window_set_keep_above
+gtk_window_set_position
+gtk_window_set_screen
+gtk_window_set_skip_taskbar_hint
+gtk_window_set_title
+gtk_window_stick
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+g_unlink
+g_value_get_boolean
+g_value_get_int
+g_value_get_object
+g_value_get_pointer
+g_value_get_string
+g_value_get_uint
+g_value_peek_pointer
+g_value_set_boolean
+g_value_set_enum
+g_value_set_int
+g_value_set_object
+g_value_set_pointer
+g_value_set_string
+g_value_set_uint
+g_variant_get_uint32
+handle_default_providers
+handle_required_components
+handler->priv != NULL
+header-label
+_Hibernate
+Hibernate Anyway
+IceAcceptConnection
+IceAuthFileName
+IceCloseConnection
+IceComposeNetworkIdList
+ice-connection
+IceConnectionNumber
+IceConnectionStatus
+IceFreeAuthFileEntry
+IceFreeListenObjs
+IceGenerateMagicCookie
+IceGetListenConnectionNumber
+IceGetListenConnectionString
+IceListenForConnections
+IceListenForConnections did not return a local listener!
+IceListenForConnections returned %d non-local listeners: %s
+IceLockAuthFile
+IceProcessMessages
+IceReadAuthFileEntry
+IceSetErrorHandler
+IceSetIOErrorHandler
+IceSetPaAuthData
+IceSetShutdownNegotiation
+_IceTransNoListen
+IceUnlockAuthFile
+IceWriteAuthFileEntry
+idle-delay
+idle-enabled
+idle_monitor->priv != NULL
+IDLETIME
+idle timeout
+idle-timeout
+if-exists
+if-session
+if_session_condition_cb
+inhibit_cookie
+inhibit_dialog_response
+inhibitor-added
+InhibitorAdded
+inhibitor-removed
+InhibitorRemoved
+inhibitors
+inhibitor-store
+inhibitors-treeview
+INITIALIZATION
+InitializationError
+InitializationError interface is only available during the Initialization phase
+Invalid autostart delay of %d for %s
+Invalid inhibit flags
+Invalid method call: %s
+InvalidOption
+Invalid Version string '%s' in %s
+_IO_stdin_used
+i == result_len
+IsAutostartConditionHandled
+is_available
+is_conditionally_disabled
+is-connected
+Is connected
+is_inhibited
+IsInhibited
+IsRunnableHelper
+is-running
+Is running
+IsSessionRunning
+json_node_get_object
+json_object_get_string_member
+json_parser_get_root
+json_parser_load_from_file
+json_parser_new
+_Jv_RegisterClasses
+keycode1 not existant
+keycode2 not existant
+keyfile != NULL
+Killed by signal %d
+libcairo.so.2
+libc.so.6
+__libc_start_main
+libdbus-1.so.3
+libdbus-glib-1.so.2
+libgconf-2.so.4
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+libICE.so.6
+libjson-glib-1.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+libSM.so.6
+libupower-glib.so.1
+libX11.so.6
+libXau.so.6
+libXext.so.6
+libXrender.so.1
+libXtst.so.6
+LISTofARRAY8
+LockedDown
+lock-enabled
+Lock Screen
+LoginWindow
+_Log Out
+Log Out Anyway
+logout_dialog_response
+Logout has been locked down
+Logout interface is only available during the Running phase
+Log out of this system now?
+logout-prompt
+logout-request
+Lost name on bus: %s, exiting
+main-box
+manager->priv->logout_mode == GSM_MANAGER_LOGOUT_MODE_NORMAL
+manager->priv != NULL
+message != NULL
+message-type
+metadata.json
+MIT-MAGIC-COOKIE-1
+Model has %d rows
+Move and/or resize window x=%d y=%d w=%d h=%d
+NameLost
+name != NULL
+NameOwnerChanged
+new_startup_id != NULL
+no confirmation
+No memory
+No session bus and could not exec dbus-launch: %s
+Not able to stop app client from its condition: %s
+Not able to stop app from its condition: %s
+Not a launchable item
+NotClient
+notify::session-name
+NotInInitialization
+NotInRunning
+NotRegistered
+Not responding
+Not running
+NotShowIn
+n_param_values == 2
+n_param_values == 3
+n_param_values == 4
+n_param_values == 5
+n_param_values == 6
+(NULL) message
+object != NULL
+OnlyShowIn
+on_open_finished
+on_phase_timeout
+org.freedesktop.ConsoleKit
+/org/freedesktop/ConsoleKit/Manager
+org.freedesktop.ConsoleKit.Manager
+org.freedesktop.ConsoleKit.Seat
+org.freedesktop.ConsoleKit.Session
+/org/freedesktop/DBus
+org.freedesktop.DBus
+org.freedesktop.DBus.Error.Failed
+/org/freedesktop/DBus/Local
+org.freedesktop.DBus.Local
+org.gnome.desktop.lockdown
+org.gnome.desktop.screensaver
+org.gnome.desktop.session
+/org/gnome/ScreenSaver
+org.gnome.ScreenSaver
+org.gnome.SessionClient
+/org/gnome/SessionManager
+org.gnome.SessionManager
+org.gnome.SessionManager.App
+/org/gnome/SessionManager/App%u
+org.gnome.SessionManager.Client
+org.gnome.SessionManager.ClientPrivate
+/org/gnome/SessionManager/Client%u
+/org/gnome/SessionManager/EndSessionDialog
+org.gnome.SessionManager.EndSessionDialog
+org.gnome.SessionManager.Inhibitor
+/org/gnome/SessionManager/Inhibitor%u
+/org/gnome/SessionManager/Presence
+org.gnome.SessionManager.Presence
+org.gnome.shell
+/org/gnome/Shell
+org.gnome.Shell
+Override standard autostart directories
+path != NULL
+phase-changed
+phase_num_to_name
+pid = %d
+predicate != NULL
+property
+proxy != NULL
+%p [%.*s %s]
+QueryEndSession
+QUERY_END_SESSION
+QUERY_LOGOUT_ACTION
+readwrite
+Reason not specified
+Refusing new client connection because the session is currently being shut down
+RegisterClient
+register_client_callback
+register-request
+Remembered Application
+request-completed
+RequestName
+RequestReboot
+RequestReboot interface is only available during the Running phase
+RequestShutdown
+RequestShutdown interface is only available during the Running phase
+require_dbus_session
+RequiredComponents
+RequiredProviders
+resizable
+_Restart
+Restart Anyway
+RestartCommand
+Re-starting app: %s
+RestartStyleHint
+return_value != NULL
+saved-session
+saved-session.new
+Scaling to %dx%d
+screensaver status changed: %d
+seat id is not set; can't switch sessions
+Session management startup ID
+SESSION_MANAGER
+SESSION_NAME
+session-over
+SessionOver
+session-running
+SessionRunning
+sessions
+Session '%s' runnable check failed: %s
+Session to use
+Setenv interface is only available during the Initialization phase
+SetIdleHint
+SET_SAFE_LOGOUT_ACTION %s
+SetStatus
+SetStatusText
+setup_condition_monitor
+setup_dialog
+shell->priv->end_session_dialog_type == type
+shell->priv->end_session_open_call == call
+Show the fail whale dialog for testing
+Shutdown
+!Shutdown
+_Shut Down
+Shut Down Anyway
+Shutdown interface is only available during the Running phase
+Shut down this system now?
+sigaction
+sigemptyset
+sigfillset
+sigprocmask
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+size_changed
+%s-%lu-%s-%s-%d_TIME%lu
+SmFreeProperty
+SmFreeReasons
+SmInteractStyleAny
+SmInteractStyleErrors
+SmInteractStyleNone
+SmSaveBoth
+SmSaveGlobal
+SmSaveLocal
+SmsCleanUp
+SmsGetIceConnection
+SmsInitialize
+SmsInteract
+SmsRegisterClientReply
+SmsReturnProperties
+SmsSaveComplete
+SmsSaveYourself
+SmsSaveYourselfPhase2
+SmsSetErrorHandler
+SmsShutdownCancelled
+Some programs are still running:
+<span size="small">%s</span>
+%s raised:
+%s.session
+__stack_chk_fail
+standard::*
+******************* START ********************************
+Starting app: %s
+Starting %s
+--startnew Standard
+start_phase
+startup_id
+StartupNotify
+StartupWMClass
+status-changed
+StatusChanged
+status text
+status_text
+status-text
+status-text-changed
+StatusTextChanged
+Status text too long
+Stop not implemented
+Stopped by signal %d
+store != NULL
+store->priv != NULL
+__strdup
+S_uspend
+Suspend Anyway
+Switch User Anyway
+__syslog_chk
+system-log-out
+system-run
+system-shutdown
+Terminal
+ - the GNOME session manager
+There is a syntax error in the invocation of the method EndSessionResponse
+this-is-deprecated
+This program is blocking logout.
+This system will be automatically shut down in %d second.
+This system will be automatically shut down in %d seconds.
+Timed out
+/tmp/.gdm_socket
+toplevel_xid
+toplevel-xid
+uid = %d
+Unable to activate session: %s
+Unable to cancel end session: %s
+Unable to create client
+Unable to determine seat: %s
+Unable to determine session: %s
+Unable to determine session type: %s
+Unable to find default provider '%s' of required provider '%s'
+Unable to find desktop file '%s'
+Unable to find desktop file '%s': %s
+Unable to find required component '%s'
+Unable to find watch for alarm %d
+Unable to get screensaver proxy: %s
+Unable to load desktop file '%s'
+Unable to load desktop file '%s': %s
+Unable to logout: Logout has been locked down
+Unable to logout: %s
+Unable to make Open call
+Unable to open shell end session dialog
+Unable to parse command from  '%s': %s
+Unable to query client: %s
+Unable to read ICE authority file: %s
+Unable to register app with session bus
+Unable to register client
+Unable to register client: already registered
+Unable to register client: shutting down
+Unable to register client with session bus
+Unable to register inhibitor with session bus
+Unable to register presence with session bus
+Unable to restart system: %s
+Unable to send CancelEndSession message
+Unable to send EndSession message
+Unable to send QueryEndSession message
+Unable to start application: %s
+Unable to start application: unable to call Start on client
+Unable to start application: unable to create proxy for client
+Unable to start login session (and unable to connect to the X server)
+Unable to stop client: %s
+Unable to stop: %s
+Unable to stop system: %s
+Unable to switch user: User switching has been locked down
+Unable to uninhibit: Invalid cookie
+Unable to uninhibit: %s
+Unable to unregister client
+Unable to unregister client: not registered
+Unable to write to ICE authority file: %s
+Unexpected hibernate failure: %s
+Unexpected logout type %d when creating end session dialog
+Unexpected logout type %d when creating inhibit dialog
+Unexpected suspend failure: %s
+Uninhibit
+(unknown)
+Unknown logout mode flag
+Unknown logout mode option
+unless-exists
+unless-session
+unless_session_condition_cb
+Unrecognized %%-code '%%%c' in Exec
+Unrecognized desktop file Version '%s'
+Unrecognized launch option: %d
+Unreffing manager
+UnregisterClient
+up_client_get_can_hibernate
+up_client_get_can_suspend
+up_client_hibernate_sync
+up_client_new
+up_client_suspend_sync
+UpdateActivationEnvironment
+Updating ConsoleKit idle status: %d
+/usr/lib/gnome-session/gdm-crash-logger
+/usr/share/gnome-session/gsm-inhibit-dialog.ui
+/usr/share/locale
+Value is not set
+variable
+/var/run/gdm_socket
+Version of this application
+__vsnprintf_chk
+Waiting for programs to finish.  Interrupting these programs may cause you to lose work.
+Waiting for the program to finish.  Interrupting the program may cause you to lose work.
+Watch %d fired, idle time = %lli
+We failed, but the fail whale is dead. Sorry....
+Whether GNOME Shell is running in the session
+Whether the session is connected to ConsoleKit
+WindowManager
+WINDOW_MANAGER
+_window_move_resize_window
+XauDisposeAuth
+XauFileName
+XauReadAuth
+XCreatePixmap
+XDG_CURRENT_DESKTOP
+xdg-open
+xdg-open %u
+xdg-terminal 
+XFreePixmap
+XGetWindowAttributes
+X-GNOME-AutoRestart
+X-GNOME-Autostart-Delay
+X-GNOME-Autostart-discard-exec
+X-GNOME-Autostart-enabled
+X-GNOME-Autostart-Phase
+X-GNOME-Autostart-startup-id
+X-GNOME-DBus-Name
+X-GNOME-DBus-Path
+X-GNOME-DBus-Start-Arguments
+X-GNOME-Provides
+XKeysymToKeycode
+XLockDisplay
+XRenderComposite
+XRenderCreatePicture
+XRenderFindVisualFormat
+XRenderQueryExtension
+xsmp_server->priv != NULL
+XSyncChangeAlarm
+XSyncCreateAlarm
+XSyncDestroyAlarm
+XSyncFreeSystemCounterList
+XSyncInitialize
+XSyncIntsToValue
+XSyncIntToValue
+XSyncListSystemCounters
+XSyncQueryExtension
+XSyncValueHigh32
+XSyncValueLow32
+XTestFakeKeyEvent
+XTestQueryExtension
+XUnlockDisplay
+You are currently logged in as "%s".
+You will be automatically logged out in %d second.
+You will be automatically logged out in %d seconds.

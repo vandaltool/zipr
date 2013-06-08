@@ -1,0 +1,321 @@
+-----------------------
+Accepted
+Accessed %ld documents in %.2f seconds (%.2f requests pr sec)
+Access scheme not allowed in this context
+A depth of more than 0 requires that you also specify a URI prefix.
+............ Already checked
+Automatic proxy redirection must be explicitly acknowledged
+Bad Argument (%s)
+Bad Gateway
+Bad, Incomplete, or Unknown Response
+Bad Request
+__bss_start
+-cacheroot
+-cache_size
+Cache warning
+Can't access resource
+Can't access rules
+Can't connect to WAIS-server
+Can't locate remote host
+Can't open `%s'
+charset_distribution
+client_error
+Conflict
+Connection establishment interrupted
+Continue
+CSO-server replies
+__ctype_b_loc
+Data transfer interrupted
+%d elements in queue 
+	Did a GET on %ld document(s) and downloaded %s bytes of document bodies (%2.1f bytes/sec)
+	Did a HEAD on %ld document(s) with a total of %s bytes
+disallow:
+Disallow : %s 
+Disconnected Opeartion
+%d is not a valid redirection code
+Distributions:
+Document Updated
+............ does not fulfill constraints
+             %d outstanding request%s
+%d requests were not served
+-endvalidate
+             Everything is finished...
+Expectation Failed
+Finger_new
+Forbidden
+FTP login failure
+FTP server doesn't reply
+FTP server replies
+Gateway Timeout
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+Gopher-server replies
+Heuristic Expiration
+HTAlert_setInteractive
+HTAnchor_address
+HTAnchor_charset
+HTAnchor_clearHeader
+HTAnchor_document
+HTAnchor_findAddress
+HTAnchor_findLinkType
+HTAnchor_followMainLink
+HTAnchor_format
+HTAnchor_getArray
+HTAnchor_lastModified
+HTAnchor_length
+HTAnchor_mainLink
+HTAnchor_parent
+HTAnchor_physical
+HTAnchor_robots
+HTAnchor_setDocument
+HTAnchor_subLinks
+HTAnchor_title
+HTArray_delete
+HTArray_sort
+HTAtom_caseFor
+HTAtom_for
+HTCache_flushAll
+HTCacheInit
+HTChunk_data
+HTChunk_delete
+HTChunk_new
+HTChunk_putc
+HTChunk_puts
+HTChunk_toCString
+HTDateTimeStr
+HTError_index
+HTEscape
+HTEventList_loop
+HText_registerCDCallback
+HText_registerLinkCallback
+HTGetCurrentDirectoryURL
+HTGetTimeInMillis
+HTHost_setDefaultWriteDelay
+HTHost_setEventTimeout
+HTLib_version
+HTLink_add
+HTLink_destination
+HTLink_find
+HTLink_type
+HTList_addObject
+HTList_appendObject
+HTList_count
+HTList_delete
+HTList_firstObject
+HTList_indexOf
+HTList_insertionSort
+HTList_new
+HTList_objectAt
+HTList_removeFirstObject
+HTList_removeObject
+HTLoadAnchor
+HTLoadAnchorToChunk
+HTLoadRulesAutomatically
+HTLog_accessCount
+HTLog_addLine
+HTLog_addText
+HTLog_close
+HTLogFilter
+HTLog_open
+HTMemory_calloc
+HTMemory_free
+HTMemory_outofmem
+HTNet_addAfter
+HTNextField
+HTNumToStr
+HTPrint_setCallback
+HTProfile_delete
+HTProfile_newRobot
+HTRedirectFilter
+HTRefererFilter
+HTRequest_addRqHd
+HTRequest_anchor
+HTRequest_context
+HTRequest_delete
+HTRequest_error
+HTRequest_forceFlush
+HTRequest_method
+HTRequest_new
+HTRequest_parent
+HTRequest_setContext
+HTRequest_setFlush
+HTRequest_setMethod
+HTRequest_setOutputFormat
+HTRequest_setParent
+HTRequest_setPreemptive
+HTRequest_setReloadMode
+HTResponse_redirection
+HTResponse_variant
+HTRobot.c
+HTSACopy
+HTSearchAnchor
+HTSetTraceMessageMask
+HTStrMatch
+http://*
+HTTP_setConnectionMode
+HTTP Version not supported
+http://www.w3.org/Robot/User/CommandLine
+HTTrace_setCallback
+HyperDoc_new
+-imgprefix
+information
+internal
+Internal Server Error
+_IO_stdin_used
+_Jv_RegisterClasses
+Length Required
+libc.so.6
+__libc_start_main
+libdl.so.2
+/lib/ld-linux.so.2
+libmd5.so.0
+libm.so.6
+libwwwapp.so.0
+libwwwcache.so.0
+libwwwcore.so.0
+libwwwdir.so.0
+libwwwfile.so.0
+libwwwftp.so.0
+libwwwgopher.so.0
+libwwwhtml.so.0
+libwwwhttp.so.0
+libwwwinit.so.0
+libwwwmime.so.0
+libwwwmux.so.0
+libwwwnews.so.0
+libwwwstream.so.0
+libwwwtelnet.so.0
+libwwwtrans.so.0
+libwwwutils.so.0
+libwwwxml.so.0
+libxmlparse.so.0
+libxmltok.so.0
+loading at depth %d
+loading at depth %d using HEAD
+Loading new rules must be explicitly acknowledged
+log-alt.txt
+log-charset.txt
+log-clf.txt
+log-conneg.txt
+log-format.txt
+	Logged %5d entries in content negotiation log file `%s'
+	Logged %5d entries in general log file `%s'
+	Logged %5d entries in missing alt tag log file `%s'
+	Logged %5d entries in not found log file `%s'
+	Logged %5d entries in referer log file `%s'
+	Logged %5d entries in rejected log file `%s'
+	Logged charset distribution in file `%s'
+	Logged hit count distribution in file `%s'
+	Logged last modified distribution in file `%s'
+	Logged link relationship distribution in file `%s'
+	Logged media type distribution in file `%s'
+	Logged title distribution in file `%s'
+log-hit.txt
+log-lastmodified.txt
+log-notfound.txt
+log-referer.txt
+log-reject.txt
+log-rel.txt
+log-title.txt
+mediatype_distribution
+Method Not Allowed
+Method not suited for automatic redirection
+Moved Permanently
+Multiple Choices
+News-server replies
+new_user_agent
+New User Agent
+No file name found or file not accessible
+nofollow
+No host name found
+-nometatags
+Non-authoritative Information
+Not Acceptable
+Not Found
+Not Implemented
+Not Modified
+not tested!
+operation failed
+/opt/stonesoup/TH-workspace/install/lib
+Partial Content
+Partial update Not Implemented
+Partial Update OK
+Payment Required
+	Please send feedback to the <www-lib@w3.org> mailing list,
+Precondition Failed
+Premature End Of File
+Proxy Authentication Required
+Proxy Reauthentication Reuired
+Proxy Redirect
+Queue size: %d 
+Range Not Satisfiable
+Raw Log files:
+Reauthentication Required
+redirection
+-relation
+Request Entity Too Large
+Request from QUEUE  %s
+Request Timeout
+Request-URI Too Large
+Reset Content
+Response from WAIS Server too Large - Extra lines ignored
+Response is Stale
+Revalidation Failed
+RHText_new
+Robot....... Checking Image `%s'
+Robot....... Checking redirecting from `%s' to `%s'
+robot.conf
+Robot....... done with %s
+Robot....... Found `%s' - 
+Robot....... Image not tested!
+RobotMain.c
+Robot_new
+robot.out
+Robot....... Received element %d, attribute %d with anchor %p
+Robot terminated %s
+RobotTxt.c
+-saveimg
+	see "http://www.w3.org/Library/#Forums" for details
+	See "http://www.w3.org/Robot/" for general information
+	See "http://www.w3.org/Robot/User/" for user information
+See Other
+	See "%s" for help
+server_error
+Server timed out
+Service Unavailable
+Something is wrong in robots.txt
+%s `%s' %s
+%s %s %s --> %s
+strcasecomp
+strncasecomp
+Switching Protocols
+Temporary Redirect
+This is probably a HTTP server 0.9 or less
+This version has expired and will be automatically reloaded
+-timeout
+Too many redirections
+Transformation Applied
+Trying `ftp://' instead of `file://'
+Unauthorized
+<unknown>
+Unknown access authentication scheme
+Unsupported Media Type
+Use Proxy
+user-agent:
+User Agent : %s 
+	using the W3C libwww library version %s.
+-validate
+-version
+__vfprintf_chk
+W3C OpenSource Software
+WAIS-server doesn't return any data
+	Webbot version %s
+Welcome to the W3C mini Robot version %s - started on %s
+When you are connected, you can log in
+Wrong or unknown access scheme
+WWW_TraceFlag
+www/unknown
+zDW3CRobot

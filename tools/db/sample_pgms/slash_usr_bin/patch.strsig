@@ -1,0 +1,365 @@
+--------------------------
+********
+3\$$3l$ 
+3D$(3T$,	
+3T$D3D$@	
+4_M_D_h_m_s$
+9D$T~r;\$,|
+a context diff
+already applied
+already exists
+ambiguous argument %s for %s
+ and any empty ancestor directories
+an ed script
+a new-style context diff
+a normal diff
+another_hunk
+Apply anyway? [n] 
+apply_hunk
+  Applying it anyway.
+__assert_fail
+  Assume -R? [n] 
+  Assuming -R.
+a unified diff
+Backup and version control options:
+backup basename prefix is empty
+  --backup-if-mismatch  Back up if the patch does not match exactly.
+backup prefix is empty
+backup suffix is empty
+basename-prefix
+  -b  --backup  Back up the original contents of each file.
+bB:cd:D:eEfF:g:i:lmnNo:p:r:RstTuvV:x:Y:z:Z
+  --binary  Read and write data in binary mode.
+  -B PREFIX  --prefix=PREFIX  Prepend PREFIX to backup file names.
+# buckets:         %lu
+# buckets used:    %lu (%.2f%%)
+Can't change to directory %s
+Can't close file %s
+Can't create file %s
+can't do dry run on nonexistent version-controlled file %s; invoke `%s' and try again
+can't find file to patch at input line %s
+Can't get file %s from %s
+can't open file %s
+Can't open patch file %s
+Can't open pipe to %s
+can't open `%s'
+Can't open stream for file %s
+Can't remove file %s
+Can't rename file %s to %s
+Can't reopen file %s
+Can't set permissions on file %s
+Can't set timestamp on file %s
+  -c  --context  Interpret the patch as a context difference.
+ClearCase
+cleartool co -unr -nc 
+closedir
+co -l %s
+Comparing file %s to default %s version...
+context mangled in hunk at line %s
+Copying file %s to %s
+Copyright (C) 1988 Larry Wall
+Copyright (C) 2003, 2009 Free Software Foundation, Inc.
+Creating empty file %s
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+D$<3D$\!
+D$<9D$l|
+|$D9|$t|
+  -d DIR  --directory=DIR  Change the working directory to DIR first.
+debugging option
+    Default is taken from QUOTING_STYLE env variable, or 'shell' if unset.
+/dev/null
+/dev/tty
+D$H9D$Pw
+|diff - %s
+directory
+  -D NAME  --ifdef=NAME  Make merged if-then-else output using NAME.
+do_ed_script
+does not exist
+%d out of %d hunk%s %s
+D$P9D$0s
+  --dry-run  Do not actually change any files; just print what would happen.
+D$$t+;|$
+D$T3T$03D$4	
+duplicate `---' at line %s; check line numbers at line %s
+D$x9D$hr
+  -e  --ed  Interpret the patch as an ed script.
+empty out
+# entries:         %lu
+  -E  --remove-empty-files  Remove output files that are empty after patching.
+__errno_location
+error_at_line
+error_message_count
+error_one_per_line
+error_print_progname
+existing
+`<' expected at line %s of patch
+`>' expected at line %s of patch
+`---' expected at line %s of patch
+Failed to duplicate standard output
+Failed to redirect messages to standard error
+(Fascinating -- this is really a new-style context diff but without
+fatal internal error in abort_hunk_context
+fetchname %s %d
+fflush_unlocked
+  -f  --force  Like -t, but ignore bad-Prereq patches, and assume unreversed.
+File %s already seen
+File %s is not a regular file -- can't patch
+File %s is not empty after patch, as expected
+File %s seems to be locked by somebody else under %s
+File to patch: 
+filldst==p_end+1 || filldst==repl_beginning
+fillsrc==p_end+1 || fillsrc==repl_beginning
+fillsrc %s, filldst %s, rb %s, e+1 %s
+  -F LINES  --fuzz LINES  Set the fuzz factor to LINES for inexact matching.
+For more information about these matters, see the file named COPYING.
+__fprintf_chk
+fseeko64
+ftello64
+fuzz factor
+__fxstat64
+Get file %s from %s%s? [y] 
+get option value
+getopt_long
+Getting file %s from %s%s...
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -g NUM  --get=NUM  Get files from RCS etc. if positive; ask if negative.
+Good.  This file appears to be the %s version.
+grow_hunkmax
+|$h9|$xs
+  --help  Output this help.
+Hunk #%d %s at 
+Hunk #%d %s at %s.
+Hunk #%d succeeded at %s
+  I can't seem to find a patch in there anywhere.
+#ifdef %s
+#ifndef %s
+  Ignore -R? [n] 
+ignore-whitespace
+  Ignoring -R.
+  Ignoring the trailing garbage.
+il=%s lfl=%s
+Index: %s
+! inerrno
+Input options:
+invalid argument %s for %s
+_IO_getc
+_IO_putc
+_IO_stdin_used
+  -i PATCHFILE  --input=PATCHFILE  Read patch from PATCHFILE instead of stdin.
+i == p_ptrn_lines + 1
+is already empty
+iswprint
+L$43T$01
+L$\9L$<|
+last_frozen_line == where - 1
+L$d9L$||
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+  -l  --ignore-whitespace  Ignore white space changes between patch and input.
+line number %.*s is too large at line %s: %s
+localtime
+locating merge: min=%s max=%s 
+lost hunk on alloc error!
+L$p9L$XvP
+malformed patch at line %s: %s
+max bucket length: %lu
+merge_hunk
+Miscellaneous options:
+misordered hunks! output would be garbled
+missing line number at line %s: %s
+  -m  --merge  Merge using conflict markers instead of creating reject files.
+  -N  --forward  Ignore patches that appear to be reversed or already applied.
+  -n  --normal  Interpret the patch as a normal difference.
+no-backup-if-mismatch
+  --no-backup-if-mismatch  Back up mismatches only if otherwise requested.
+No file to patch.  Skipping patch.
+no `---' found in patch at line %s
+Not enough memory to swap next hunk!
+Not enough memory to try swapped hunk!  Assuming unswapped.
+NOT MERGED
+Not setting time of file %s (contents mismatch)
+Not setting time of file %s (time mismatch)
+numbered
+Offset changing from %s to %s
+ (offset %s line%s)
+  -o FILE  --output=FILE  Output patched files to FILE.
+oldchar = '%c', newchar = '%c'
+oldin[in] == ' '
+Only garbage was found in the patch input.
+out of memory
+out of memory using Plan A
+Out-of-sync patch, lines %s,%s -- mangled text or line numbers, maybe?
+Output options:
+outstate->after_newline
+__overflow
+P4CONFIG
+p4 edit 
+PATCH_GET
+PATCH_GET value
+patching file %s
+Patching file %s using Plan %s...
+(Patch is indented %lu space%s.)
+patch unexpectedly ends in middle of line
+$PATCH_VERSION_CONTROL
+pathconf
+p_base <= file_pos
+p_Char[0] == '='
+pch_char (firstnew + 1) == '^'
+pch_char (new) == ' '
+pch_char(new) == ' '
+pch_char (old) == '=' && pch_char (new) == '^'
+((pch_char (old) == ' ' && pch_char (new) == ' ') || (pch_char (old) == '=' && pch_char (new) == '^')) && ((oldin[old] == ' ' && oldin[in] == ' ') || (oldin[old] == '=' && oldin[in] == '^'))
+pch_swap
+p_end == -1
+p_end + 1 < hunkmax
+p_end < hunkmax
+Perforce
+Perhaps you should have used the -p or --strip option?
+Perhaps you used the wrong -p or --strip option?
+p_line && p_len && p_Char
+  -p NUM  --strip=NUM  Strip NUM leading components from file names.
+  --posix  Conform to the POSIX standard.
+POSIXLY_CORRECT
+p_prefix_context != -1 && p_suffix_context != -1
+Premature
+Prereq: with multiple words at line %s of patch
+__printf_chk
+quoting style
+quoting-style
+QUOTING_STYLE
+  --quoting-style=WORD   output file names using quoting style WORD.
+Ran out of memory using Plan A -- trying again...
+rcsdiff %s
+RCS/%s%s
+readdir64
+read error
+reject-file
+reject-format
+  --reject-format=FORMAT  Create 'context' or 'unified' rejects.
+Removed empty directory %s
+remove-empty-files
+Removing file %s
+Removing file %s%s
+Renaming file %s to %s
+replacement text or line numbers mangled in hunk at line %s
+Report bugs to <bug-patch@gnu.org>.
+Reversed (or previously applied)
+  -r FILE  --reject-file=FILE  Output rejects to FILE.
+R_M_D_h_m_s$
+  -R  --reverse  Assume patches were created with old and new files swapped.
+  - `%s'
+***************%s
+%s: **** 
+, %s at 
+%s `---' at line %s; check line numbers at line %s
+ -- saving rejects to file %s
+SCCS/%s%s
+set-time
+%s FAILED
+shell-always
+sigaction
+sigaddset
+sigemptyset
+sigprocmask
+SIMPLE_BACKUP_SUFFIX
+  Skipping patch.
+Skip this patch? [y] 
+  %sooks like %s to me...
+%s patch detected!
+%s/p%cXXXXXX
+__sprintf_chk
+  -s  --quiet  --silent  Work silently unless an error occurs.
+src/merge.c
+src/patch.c
+src/pch.c
+--- %s,%s
+--- %s,%s ----
+--- %s%s
+*** %s,%s
+*** %s,%s ****
+*** %s%s
+%s: %s: extra operand
+%s %s is negative
+%s %s is not a number
+%s %s is too large
+--- %s,%s%s
+*** %s,%s%s
+__stack_chk_fail
+strerror_r
+strip count
+(Stripping trailing CRs from patch.)
+__strndup
+%s: Try `%s --help' for more information.
+	STYLE is either 'simple', 'numbered', or 'existing'.
+T$|3D$03T$4	
+T$|3T$81
+T$,3T$l3\$`3|$
+\$t9\$\|\
+T$,9T$$~
+t$\9t$l}{
+  -t  --batch  Ask no questions; skip bad-Prereq patches; assume reversed.
+T$h3D$\3T$X	
+T$H3D$T3T$P	
+T$H3T$h3D$d!
+the new style...)
+The next patch l
+The next patch%s would %s the file %s,
+the telltale extra asterisks on the *** line that usually indicate
+The text leading up to this was:
+This file doesn't appear to be the %s version -- aborting.
+This file doesn't appear to be the %s version -- patch anyway? [n] 
+This program comes with NO WARRANTY, to the extent permitted by law.
+T$L3T$H3|$H3\$<
+T$P3D$\3T$X	
+tp_char[0] == '*'
+  -T  --set-time  Likewise, assuming local time.
+T$T3T$<	
+t$T9t$<|
+tty read
+t$X3|$h3\$d
+T$x9T$@r&
+under the terms of the GNU General Public License.
+unexpected `***' at line %s: %s
+unexpected end of file in patch
+unexpected end of file in patch at line %s
+unexpected end of hunk at line %s
+Unknown system error
+Unreversed
+unterminated hunk starting at line %s; giving up at line %s: %s
+Usage: %s [OPTION]... [ORIGFILE [PATCHFILE]]
+  -u  --unified  Interpret the patch as a unified difference.
+Valid arguments are:
+    Valid WORDs are: literal, shell, shell-always, c, escape.
+  --verbose  Output extra information about the work being done.
+version-control
+$VERSION_CONTROL
+--version-control or -V option
+__vfprintf_chk
+  -V STYLE  --version-control=STYLE  Use STYLE version control.
+  -v  --version  Output version info.
+warning: Patching file %s, which does not match default %s version
+warning: the `-b %s' option is obsolete; use `-b -z %s' instead
+Warning: this file doesn't appear to be the %s version -- patching anyway.
+wE9|$l|?
+, when reversed,
+where=%s matched=%s changes=%s
+which %s!
+ with fuzz %s
+ with lock
+write error
+written by Larry Wall and Paul Eggert
+\$X3\$p3D$X
+__xstat64
+You may redistribute copies of this program
+  -Y PREFIX  --basename-prefix=PREFIX  Prepend PREFIX to backup file basenames.
+  -Z  --set-utc  Set times of patched files, assuming diff uses UTC (GMT).
+  -z SUFFIX  --suffix=SUFFIX  Append SUFFIX to backup file names.

@@ -1,0 +1,65 @@
+Because this program is implemented using the LWP library, it only
+copy.  If the local copy is newer nothing happens.
+Copyright 1995-1999, Gisle Aas.
+    die <<"EOT";
+    die "$progname: Illegal timeout value!\n" unless defined $1;
+document is only transfered if the remote copy is newer than the local
+elsif (!is_success($rc)) {
+eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
+    exit 1;
+$file = encode(locale_fs => decode(locale => shift)) or usage();
+Gisle Aas <gisle@aas.no>
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+    if 0; # not running under some shell
+if (defined $opt_t) {
+if ($opt_v) {
+if ($rc == 304) {
+is the time that the program will wait for response from the remote
+L<lwp-request>, L<LWP>
+lwp-mirror - Simple mirror utility
+ lwp-mirror [-v] [-t timeout] <url> <local file>
+minutes or hours, respectively.
+modify it under the same terms as Perl itself.
+    my $DISTNAME = 'libwww-perl-' . LWP::Version();
+$opt_h = undef;  # print usage
+    $opt_t =~ /^(\d+)([smh])?/;
+$opt_t = undef;  # timeout
+$opt_v = undef;  # print version
+    print STDERR "$progname: $file is up to date\n"
+    print STDERR "$progname: $rc ", status_message($rc), "   ($url)\n";
+$progname = $0;
+$progname =~ s,.*/,,;  # use basename only
+$progname =~ s/\.\w*$//; #strip extension if any
+$rc = mirror($url, $file);
+    require LWP;
+seconds.  You might append "m" or "h" to the timeout value to make it
+server before it fails.  The default unit for the timeout value is
+# Simple mirror utility using LWP
+sub usage
+supports the protocols that LWP supports.
+The timeout value specified with the C<-t> option.  The timeout value
+This is lwp-mirror version $VERSION ($DISTNAME)
+This program can be used to mirror a document from a WWW server.  The
+This program is free software; you can redistribute it and/or
+    $timeout = $1;
+    $timeout *= 3600 if ($2 eq "h");
+    $timeout *= 60   if ($2 eq "m");
+    -t <timeout> Set timeout value
+    $ua->timeout($timeout);
+unless (getopts("hvt:")) {
+$url  = decode(locale => shift) or usage();
+    usage();
+usage() if $opt_h or @ARGV;
+Usage: $progname [-options] <url> <file>
+use Encode;
+use Encode::Locale;
+use Getopt::Std;
+use LWP::Simple qw(mirror is_success status_message $ua);
+Use the C<-v> option to print the version number of this program.
+#!/usr/bin/perl -w
+$VERSION = "6.00";
+    -v           print version number of program

@@ -1,0 +1,43 @@
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+\begin.{displaymath
+\begin.{equation
+\begin.{math}
+\begin.{verbatim
+\end.{displaymath
+\end.{equation
+\end.{math}
+\end{verbatim
+                         file1       ... file1->stdout
+~~~ file: %s	  lines: %ld, changes: %ld
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+I cannot allocate pp, is anything wrong?
+_IO_getc
+_IO_stdin_used
+KkSsVvZzOoUuAI
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+      -l :  LaTeX mode
+      -m :  nomath: ignores math modes
+      -n :  noverb: ignores verbatim modes
+            nofilter: file1 [file2 file3 ...] all are in/out
+Operating buffer overflow, is anything wrong?
+  opt -f :  filter mode: file1 file2 ... file1->file2
+      -r :  rmbackup: if nofilter, removes temporary files
+%s: cannot open file %s
+%s, no memory, malloc failed
+      -s :  silent: no messages to stderr
+__stack_chk_fail
+                                     ... stdin->stdout
+%s: the conflict of file name %s
+__strcpy_chk
+This is program vlna, version 1.2, (c) 1995, 2002 Petr Olsak
+usage: vlna [opt] [filenames]
+      -v charset :  set of lettres to add tie, default: KkSsVvZzOoUuAI
+~!~ warning: text/math/verb mode mismatch,  file: %s,  line: %ld
+      -w :  web mode

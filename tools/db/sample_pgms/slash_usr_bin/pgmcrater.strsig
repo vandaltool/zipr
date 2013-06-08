@@ -1,0 +1,37 @@
+already specified a height/ysize
+already specified a width/xsize
+already specified gamma correction
+already specified number of craters
+__assert_fail
+__bss_start
+/build/buildd/netpbm-free-10.0/pgm/pgmcrater.c
+gamma correction must be greater than 0
+GLIBC_2.0
+GLIBC_2.7
+__gmon_start__
+                  [-height|-ysize <h>] [-gamma <f>]
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+%ld craters generated of %ld (%ld%% done)
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libnetpbm.so.10
+[-number <n>] [-width|-xsize <w>]
+number of craters must be greater than 0!
+out of memory allocating elevation array
+out of memory allocating slope map
+pgm_init
+pgm_writepgminit
+pgm_writepgmrow
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_keymatch
+pm_message
+pm_usage
+screen height must be greater than 0
+screen width must be greater than 0

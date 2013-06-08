@@ -1,0 +1,32 @@
+after a package build. It does so by running the appropriate command for
+B<dh_auto_clean> at all, and just run B<make clean> manually.
+B<dh_auto_clean> is a debhelper program that tries to automatically clean up
+B<dh_auto_clean> [S<I<build system options>>] [S<I<debhelper options>>] [S<B<--> I<params>>]
+B<dh_auto_clean> usually passes.
+buildsystems_do();
+buildsystems_init();
+dh_auto_clean - automatically cleans up after a build
+F<Makefile> and it contains a B<distclean>, B<realclean>, or B<clean> target,
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+inhibit_log();
+=item B<--> I<params>
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+Pass I<params> to the program that is run, after the parameters that
+See L<debhelper(7)/B<BUILD SYSTEM OPTIONS>> for a list of common build
+set). If there is a F<setup.py> or F<Build.PL>, it is run to clean the package.
+system selection and control options.
+the build system it detects the package uses. For example, if there's a
+then this is done by running B<make> (or B<MAKE>, if the environment variable is
+This is intended to work for about 90% of packages. If it doesn't work, or
+This program is a part of debhelper.
+tries to use the wrong clean target, you're encouraged to skip using
+use Debian::Debhelper::Dh_Buildsystems;
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w

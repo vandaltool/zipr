@@ -1,0 +1,172 @@
+0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_.
+%02x%02x%02x
+0 <= strtol_base && strtol_base <= 36
+3T$<3D$8	
+AIX and Solaris (and JFS, ReiserFS, XFS, Ext3, etc.)
+ambiguous argument %s for %s
+(and shred is thus of limited effectiveness) only in data=journal mode,
+and those files usually should not be removed.  When operating on regular
+A NULL argv[0] was passed through an exec system call.
+as documented in the mount man page (man mount).
+__assert_fail
+assumption.  The following are examples of file systems on which shred is
+bindtextdomain
+BLOCKSIZE
+BLOCK_SIZE
+bug-coreutils@gnu.org
+CAUTION: Note that shred relies on a very important assumption:
+cbBkKMGTPEZY0
+Colin Plumb
+* compressed file systems
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+data=ordered (default) and data=writeback modes, shred works as usual.
+dcgettext
+Delete FILE(s) if --remove (-u) is specified.  The default is not to remove
+/dev/urandom
+D$H3D$P	
+D$H3T$T3D$P	
+D$t3T$p	
+eEgGkKmMpPtTyYzZ0
+__errno_location
+Ext3 journaling modes can be changed by adding the data=something option
+fail, such as RAID-based file systems
+fdatasync
+  -f, --force    change permissions to allow writing if necessary
+files, most people use the --remove option.
+* file systems that cache in temporary locations, such as NFS
+* file systems that make snapshots, such as Network Appliance's NFS server
+* file systems that write redundant data and carry on even if some writes
+fn:s:uvxz
+For complete documentation, run: info coreutils '%s invocation'
+for even very expensive hardware probing to recover the data.
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fread_unlocked
+fseeko64
+ftruncate64
+__fxstat64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+|$H9|$Pr
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+human-readable
+If FILE is -, shred standard output.
+In addition, file system backups and remote mirrors may contain copies
+In the case of ext3 file systems, the above disclaimer applies
+invalid argument %s for %s
+_IO_stdin_used
+iswprint
+iterations
+KMGTPEZY
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+localeconv
+* log-structured or journaled file systems, such as those supplied with
+__lxstat64
+Mandatory arguments to long options are mandatory for short options too.
+__memcpy_chk
+memory exhausted
+missing file operand
+multiple random sources specified
+  -n, --iterations=N  overwrite N times instead of the default (%d)
+not effective, or is not guaranteed to be effective in all file system modes:
+of the file that cannot be removed, and that will allow a shredded file
+__overflow
+Overwrite the specified FILE(s) repeatedly, in order to make it harder
+POSIXLY_CORRECT
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+random-source
+      --random-source=FILE  get random bytes from FILE
+__read_chk
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+  - `%s'
+%s, and %s.
+%s: cannot rewind
+%s: cannot shred append-only file descriptor
+%s: end of file
+%s: error truncating
+%s: error writing at offset %s
+setlocale
+%s: failed to close
+%s: failed to open for writing
+%s: failed to remove
+%s: fcntl failed
+%s: fdatasync failed
+%s: file has negative size
+%s: file too large
+%s: fstat failed
+%s: fsync failed
+shell-always
+%s home page: <%s>
+%s: invalid file size
+%s: invalid file type
+%s: invalid number of passes
+%s: lseek failed
+%s: pass %lu/%lu (%s)...
+%s: pass %lu/%lu (%s)...%s
+%s: pass %lu/%lu (%s)...%s/%s %d%%
+__sprintf_chk
+%s: read error
+%s: removed
+%s: removing
+%s: renamed to %s
+%s, %s, and others.
+%s, %s, and %s.
+  -s, --size=N   shred this many bytes (suffixes like K, M, G accepted)
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+__strcpy_chk
+__strtoull_internal
+that the file system overwrites data in place.  This is the traditional
+the files because it is common to operate on device files like /dev/hda,
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+                   this is the default for non-regular files
+t$L9t$T}2
+to be recovered later.
+to the mount options for a particular file system in the /etc/fstab file,
+Try `%s --help' for more information.
+  -u, --remove   truncate and remove file after overwriting
+Usage: %s [OPTION]... FILE...
+/usr/share/locale
+Valid arguments are:
+version 3 clients
+      --version  output version information and exit
+  -v, --verbose  show progress
+way to do things, but many modern file system designs do not satisfy this
+which journals file data in addition to just metadata.  In both the
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  -x, --exact    do not round file sizes up to the next full block;
+xstrtol.c
+xstrtoumax
+  -z, --zero     add a final overwrite with zeros to hide shredding

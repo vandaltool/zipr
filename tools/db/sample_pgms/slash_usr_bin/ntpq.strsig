@@ -1,0 +1,796 @@
+===========================================================
+==============================================================================
+ .+*    
+________
+-- --- --:--:--
+0123456789
+0123456789abcdefABCDEF
+%08lx.%08lx  --- --- -- ---- --:--:--
+%08lx.%08lx  %s, %s %2d %4d %2d:%02d:%02d.%03lu
+<0t|<"t0
+%2d %s %02d:%02d:%02d
+ %2ld %c %4.4s %4.4s  %3lo  %7.7s %8.7s %7.7s
+%2u: %5d %5d	%3d octets
+%3d %5u  %04x   %3.3s  %4s  %4.4s %9.9s %11s %2s
+%.64s Password: 
+99-Bad-9999 99:99:99.999
+9D$,re;t$(
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
+access_denied
+ACTS_MODEM
+%a, %d %b %Y %H:%M:%S GMT
+address family mismatch
+address family not supported
+address in use
+address mask not contiguous
+address not available
+add variables to the variable list or change their values
+adj_systime: %m
+ai_fam_default
+ai_fam_templ
+already running
+always_auth
+always authenticate requests to this server
+Always output status line with readvar
+Arbiter 1088A/B GPS Receiver (11)
+ARCRON MSF (and DCF77) Receiver (27)
+***A request variable unknown to the server
+assoc_cache
+***Association for `%s' unknown (max &%d)
+Association ID %d doesn't match expected %d
+***Association ID %d unknown to server
+***Association ID %u not found in list
+***Association value `%s' invalid/undecodable
+associd=%d 
+associd=%u 
+atolfp.c
+ATOM_LEITCH
+Austron 2201A GPS Receiver (10)
+auth_agekeys: at %lu keys %lu expired %lu
+authdecryptions
+authenable
+authencryptions
+authentic
+authenticate
+authenticated requests being sent
+authfreekeys
+authkeyexpired
+authkeylookups
+authkeynotfound
+authkeyuncached
+authnokey
+authnumfreekeys
+authnumkeys
+;auth_setkey: key %d type %d len %d 
+Automated Computer Time Service (18)
+bad_auth
+bad base32 encoding
+bad base64 encoding
+bad_field_format_or_length
+bad_filestamp
+badformat
+bad hex encoding
+bad_or_missing_certificate
+bad_or_missing_cookie
+bad_or_missing_group key
+bad_or_missing_leapseconds
+bad_or_missing_public_key
+bad_signature_length
+bad_timestamp
+Bancomm GPS/IRIG Receiver (16)
+base % 65536 == 0
+__bss_start
+***Buffer size exceeded for returned data
+buf != ((void *)0)
+builtins
+%c%-15.15s 
+cache_flags
+cache_key
+cache_keyid
+cache_keylen
+cache_type
+caltontp.c
+***Can't find host %s
+categories != ((void *)0) && categories[0].name != ((void *)0)
+category_id < lctx->category_count
+category->id < lctx->category_count
+category != ((void *)0)
+category == ((void *)0) || category->id < lctx->category_count
+certificate_not_verified
+(channel->destination.file.stream) == ((void *)0)
+channel->type == 3
+channel != ((void *)0)
+CHRONOLOG
+Chrono-log K (32)
+CHU_AUDIO
+CHU Audio Demodulator/Decoder (7)
+circ_buf
+clearerr
+clearvars
+clk_bad_date
+clk_bad_format
+clk_bad_signal
+clk_bad_time
+clk_fault
+clk_no_reply
+clktypes
+clk_unspec
+clock_alarm
+Clock attached thru shared Memory (28)
+clock_event
+clock_gettime
+clockhop
+clocklist
+clock_settime
+clock_step
+clock_sync
+clockvar
+clock_var
+closedir
+Closing old host %s
+column %d syntax error
+Command = %s
+***Command `%s' ambiguous
+Command `%s' is ambiguous
+Command `%s' is unknown
+***Command `%s' unknown
+config-from-file
+<configuration command line>
+<configuration filename>
+configure ntpd using the configuration filename
+connection refused
+connection reset
+Conrad parallel port radio clock (35)
+critical
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+currenthost
+current host is %s
+current host remains %s
+current host set to %s
+current_output
+current_time
+__cxa_finalize
+Datum Precision Time System (17)
+%d-%b-%Y %X
+debug-level
+DEBUG_LEVEL
+debug level is %d
+debug level set to %d
+decodenetnum.c
+default_debug
+default_stderr
+default_syslog
+default_text != ((void *)0)
+delay %lu ms
+delay_time
+demobilize
+destination != ((void *)0) || type == 1
+%d event%s
+/dev/tty
+dirname != ((void *)0)
+dir != ((void *)0)
+(((dir) != ((void *)0)) && (((const isc__magic_t *)(dir))->magic == ((('D') << 24 | ('I') << 16 | ('R') << 8 | ('*')))))
+(((dir) != ((void *)0)) && (((const isc__magic_t *)(dir))->magic == ((('D') << 24 | ('I') << 16 | ('R') << 8 | ('*'))))) && dir->handle != ((void *)0)
+disabled
+Display extended usage information and exit
+do cooked mode variable output
+%d octet MAC, %lu expected with %lu octet digest
+done! (no data returned)
+Done sending file
+do raw mode variable output
+DUMBCLOCK
+Dumb generic hh:mm:ss local clock (33)
+duplicate %u octets at %u ignored, prior %u at %u
+EES M201 MSF Receiver (14)
+el_source
+end of file
+ERR_INCOMPLETE: Received fragments:
+ERR_load_crypto_strings
+__errno_location
+Error code %d received on not-final packet
+ERROR!! Couldn't open file: %s
+***Error opening %s: 
+EVP_DigestFinal
+EVP_DigestInit
+EVP_DigestUpdate
+EVP_get_digestbyname
+exit ntpq
+Extended usage information passed thru pager
+fatal error
+__fdelt_chk
+'f'-g!@H,
+file already exists
+filename
+Filename = %s
+filename != ((void *)0)
+file not found
+file != ((void *)0)
+file != ((void *)0) && time != ((void *)0)
+filtdelay
+filtdisp
+filterror
+filtoffset
+(flags & (unsigned int)~(0x001F | 0x1000)) == 0
+flen < len
+Force IPv4 DNS name resolution
+Force IPv6 DNS name resolution
+Force ntpq to operate in interactive mode
+format != ((void *)0)
+Forum Graphic GPS Dating Station (37)
+__fprintf_chk
+fp != ((void *)0) && *fp == ((void *)0)
+freeaddrinfo
+freq_mode
+freq_not_set
+freq_set
+frequency
+fudgetime1
+fudgetime2
+function: %s
+__fxstat
+gai_strerror
+Generic NMEA GPS Receiver (20)
+Generic reference clock driver (8)
+getaddrinfo
+getnameinfo
+getsockname
+gettimeofday
+gettimeofday returned bad tv_usec: corrected
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.1.3
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Got packet, size = %d
+GPS_ARBITER
+GPS_AS2201
+GPS_BANC
+GPS_DATUM
+GPS_JUPITER
+GPS_MX4200
+GPS_NMEA
+GPS_ONCORE
+GPS_PALISADE
+GPS_RIPENCC
+GPS_TRAK
+GPS_ZYFER
+g_varlist
+havehost
+Heath WWV/WWVH Receiver (19)
+history_end
+history_init
+history_init(): %s
+hopf Elektronic PCI receiver (39)
+hopf Elektronic serial line receiver (38)
+hostaddr
+host_certificate_expired
+host down
+hostname
+hostnames
+hostnames being shown
+hostnames not being shown
+hostpoll
+host unreachable
+HP 58503A GPS Time & Frequency Receiver (26)
+http://bugs.ntp.org, bugs@ntp.org
+***Illegal integer value %s
+implement the standard NTP mode 6 control message formats defined
+i->nanoseconds < 1000000000
+in Appendix B of the NTPv3 specification RFC1305, requesting
+In Config
+Increase output debug message level
+ind assid status  conf reach auth condition  last_event cnt
+inet_ntop
+info_auth_keyid
+information about current state and/or changes in that state.
+In ntp_set_tod
+interactive
+interface
+interleave_error
+interleave_mode
+Internal error in cookedprint, %s=%s, fmt %d
+***Internal error!  qsize (%d) too large
+interrupt_buf
+invalid address format
+***Invalid association ID %lu specified
+invalid file
+Invalid key identifier
+Invalid password
+invalid use of multicast address
+INVARIANT
+I/O error
+_IO_getc
+_IO_putc
+_IO_stdin_used
+ipv4_works
+IPv6 is not supported.
+IPv6 structures in kernel and user space do not match.
+ipv6_works
+IRIG_AUDIO
+IRIG Audio Decoder (6)
+IRIG_TPRO
+isc_assertion_failed
+isc_categories
+isc_interval_zero
+isc_lctx
+isc_log_open: roll_log '%s' failed: %s
+isc_log_open '%s' failed: %s
+isc_modules
+isc_msgcat
+(--(*((&isc_strerror_lock))) == 0 ? 0 : 34) == 0
+((*((&isc_strerror_lock)))++ == 0 ? 0 : 34) == 0
+isc_time_epoch
+isc_time_now((&isctime)) == 0
+isc_time_now((&new->time)) == 0
+isc_time_now((&oldest)) == 0
+i != ((void *)0)
+jitter < max
+JJY receiver (40)
+jt->hour <= 24
+jt->minute <= (60)
+jt->month <= 13
+jt->monthday <= 32
+jt->second <= (60)
+jt != ((void *)0)
+jt->yearday <= 366
+_Jv_RegisterClasses
+key_hash
+keyid is %lu
+Key not found
+keytype is %s with %lu octet digests
+key type (md5|des)
+keytype must be 'md5'%s
+key type %s %u octet digests are too big, max %lu
+Keyword = %s
+KSI/Odetics TPRO/S IRIG Interface (12)
+L$<9L$4t
+lassociations
+last fragment %sreceived
+(lcfg->channellists[i]).head == (item)
+(lcfg->channellists[i]).tail == (item)
+(lcfg->channels).head == (channel)
+(lcfg->channels).tail == (channel)
+lcfg->lctx == lctx
+lcfg->lctx != ((void *)0) && lcfg->lctx->logconfig != lcfg
+lcfgp == ((void *)0) || *lcfgp == ((void *)0)
+lcfgp != ((void *)0) && *lcfgp == ((void *)0)
+lcfgp != ((void *)0) && (((*lcfgp) != ((void *)0)) && (((const isc__magic_t *)(*lcfgp))->magic == ((('L') << 24 | ('c') << 16 | ('f') << 8 | ('g')))))
+(((lcfg) != ((void *)0)) && (((const isc__magic_t *)(lcfg))->magic == ((('L') << 24 | ('c') << 16 | ('f') << 8 | ('g')))))
+(((lcfg) != ((void *)0)) && (((const isc__magic_t *)(lcfg))->magic == ((('L') << 24 | ('c') << 16 | ('t') << 8 | ('x')))))
+lctx->category_count != 0
+(--(*((&lctx->lock))) == 0 ? 0 : 34) == 0
+((*((&lctx->lock)))++ == 0 ? 0 : 34) == 0
+(*((&lctx->lock)) == 0 ? (*((&lctx->lock)) = -1, 0) : 34) == 0
+lctx->logconfig != ((void *)0)
+(lctx->messages).head == (message)
+(lctx->messages).tail == (message)
+lctxp != ((void *)0) && *lctxp == ((void *)0)
+lctxp != ((void *)0) && (((*lctxp) != ((void *)0)) && (((const isc__magic_t *)(*lctxp))->magic == ((('L') << 24 | ('c') << 16 | ('t') << 8 | ('x')))))
+(((lctx) != ((void *)0)) && (((const isc__magic_t *)(lctx))->magic == ((('L') << 24 | ('c') << 16 | ('t') << 8 | ('x')))))
+lctx == ((void *)0) || (((lctx) != ((void *)0)) && (((const isc__magic_t *)(lctx))->magic == ((('L') << 24 | ('c') << 16 | ('t') << 8 | ('x')))))
+leap_add_sec
+leap_alarm
+leap_armed
+leap_del_sec
+leap_disarmed
+leap_event
+leap_none
+Leitch CSD 5300 Master Clock Controller (13)
+length > 0U
+level != 0
+level >= (-5)
+level %d: 
+libcrypto.so.1.0.0
+libc.so.6
+__libc_start_main
+libedit.so.2
+lib_inited
+libisc.cat
+./../lib/isc/log.c
+./../lib/isc/nls/msgcat.c
+./../lib/isc/random.c
+./../lib/isc/result.c
+./../lib/isc/unix/dir.c
+./../lib/isc/unix/errno2result.c
+./../lib/isc/unix/file.c
+./../lib/isc/unix/net.c
+./../lib/isc/unix/strerror.c
+./../lib/isc/unix/time.c
+/lib/ld-linux.so.2
+lib_nextbuf
+libopts.so.25
+librt.so.1
+lib_stringbuf
+Line No: %d query failed: %s
+Line No: %d %.*s: %s
+Load options from a config file
+LOAD_OPTS
+localhost
+localtime
+(--(*((&lock))) == 0 ? 0 : 34) == 0
+((*((&lock)))++ == 0 ? 0 : 34) == 0
+lock busy
+__longjmp_chk
+low != ((void *)0) && high != ((void *)0)
+lpassociations
+MAC decrypt: MAC length error
+Magnavox MX4200 GPS Receiver (9)
+maxhostlen
+max size
+mctx != ((void *)0)
+__memcpy_chk
+message > 0
+module->id < lctx->module_count
+modules != ((void *)0) && modules[0].name != ((void *)0)
+module != ((void *)0)
+module == ((void *)0) || module->id < lctx->module_count
+more-help
+Motorola UT Oncore GPS (30)
+mreadlist
+mreadvar
+MSF_ARCRON
+msgcatp != ((void *)0)
+msgcatp != ((void *)0) && *msgcatp == ((void *)0)
+(((msgcat) != ((void *)0)) && (((const isc__magic_t *)(msgcat))->magic == ((('M') << 24 | ('C') << 16 | ('a') << 8 | ('t'))))) || msgcat == ((void *)0)
+msyslog_term
+name[,...]
+name=value,[...]
+name=value[,...]
+name[=value][,...]
+NEOCLK4X
+NeoClock4X DCF77 / TDF receiver (44)
+network down
+network unreachable
+newname != ((void *)0)
+No association ID's in list
+No association ID's returned
+no available threads
+no events
+***No file for redirect
+***No host open, use `host' command
+***No information returned for association %u
+No information returned for association %u
+No information returned for%s association %u
+no keyid defined
+no-load-opts
+no|more|less
+no pending connections
+(no response message, curiously)
+no_sys_peer
+No system%s variables returned
+not a directory
+not a file
+not a valid number
+not blocking
+not enough free resources
+not implemented
+NOT_USED
+not used (15)
+not used (23)
+not used (24)
+not used (25)
+No variables on list
+nresults <= 65536
+ntp_optarg
+ntp_opterr
+ntp_optind
+ntp_optind <= argc
+ntp_optopt
+ntpq 4.2.6p3@1.2290-o Tue Jun  5 20:12:18 UTC 2012 (1)
+ntpq commands:
+ntpq copyright (c) 1970-2011 David L. Mills and/or others, all rights reserved
+ntpq_custom_opt_handler unexpected option '%c' (%d)
+ntpqOptions
+ntpq - standard NTP query program - Ver. 4.2.6p3
+ntp_set_tod: clock_settime: %d: %s
+ntp_set_tod: Final result: %s: %d: %s
+ntp_set_tod: settimeofday: %d: %s
+ntp_set_tod: stime: %d: %s
+ntp_syslogmask
+ntpversion
+NTP version being claimed is %d
+numassoc
+Number of fragments exceeds maximum %d
+numeric host addresses
+numhosts
+num != ((void *)0)
+OBJ_nid2sn
+OBJ_sn2nid
+obtain and print a list of all peers and clients [IP version]
+obtain and print a list of all peers and clients showing dstadr [IP version]
+obtain and print a list of the server's peers [IP version]
+Offset %d, count %d, too big for buffer
+oldname != ((void *)0)
+opeervarlist
+Opening host %s
+OPENSSL_1.0.0
+OPENSSL_add_all_algorithms_noconf
+operation canceled
+operation in progress
+optionLoadOpt
+optionPagedUsage
+optionPrintVersion
+optionProcess
+: option requires argument -
+optionUsage
+ or a digest type provided by OpenSSL
+out_chars
+out_linecount
+out of entropy
+out of memory
+out of range
+Output set to cooked
+Output set to raw
+Output version information and exit
+Packet data:
+Packet okay
+Packet received with mode %d
+Packet received with version %d
+panic_stop
+Password unchanged
+pathname != ((void *)0)
+path != ((void *)0)
+path != ((void *)0) && *path != '\0'
+peeraddr
+peer_dist
+peer_loop
+peerpoll
+peerport
+peer_stratum
+peer_unreach
+peer_var
+permission denied
+pkt_auth
+pkt_autokey
+pkt_bogus
+pkt_crypto
+pkt_denied
+pkt_header
+pkt_stratum
+pkt_unsync
+pktversion
+poll an NTP server in client mode `n' times
+poll not implemented yet
+PPS Clock Discipline (22)
+precision
+primary timeout %d ms
+Print a list of the peers
+__printf_chk
+print last obtained list of associations, including client information
+print list of association ID's and statuses for the server's peers
+print list of associations including all client information
+print list of associations returned by last associations command
+print peer list the old way, with dstadr shown rather than refid [IP version]
+print status information returned for a peer
+print variables on the variable list
+print version number
+processor
+progname
+[= prog-name =]
+protocol_error
+PSTI/Traconex WWV/WWVH Receiver (3)
+queue is full
+random: not enough state (%ld bytes); ignored.
+random: state info corrupted; not changed.
+ran out of space
+rate_exceeded
+read clock variables
+read peer variables from multiple peers
+read system or peer variables
+read the clock variables included in the variable list
+read the peer variables in the variable list for multiple peers
+read the system or peer variables included in the variable list
+received
+Received count of 0 in non-final fragment
+Received count of %d octets, data in packet is %d
+received frag at %u overlaps with %u octet frag at %u
+Received opcode %d, wanted %d (sequence number okay)
+Received request packet, wanted response
+Received second last fragment packet
+Received sequnce number %d, wanted %d
+received %u octet frag at %u overlaps with frag at %u
+REFCLK(%lu,%lu)
+register_table() %s: %u
+     remote           local      st t when poll reach   delay   offset    disp
+     remote           refid      st t when poll reach   delay   offset  jitter
+remove all variables from the variable list
+remove '%s': failed
+remove variables from the variable list
+***Request timed out
+***Response from server was incomplete
+Response packet claims %u octets payload, above %d received
+Response packet not padded, size = %d
+(result code text not available)
+retrieving the address of an IPv6 socket from the kernel failed.
+rewinddir
+RIPE NCC Trimble driver (43)
+Rockwell Jupiter GPS (31)
+rootdelay
+rootdisp
+rootdispersion
+run a command and exit
+RUNTIME_CHECK(%s) %s
+saveconfig
+save ntpd configuration to file, . for current config file
+save-opts
+Save the option state to a config file
+%s:%d: %s: 
+%s:%d: %s(%s) %s.
+see html/copyright.html
+sel_backup
+sel_cand
+sel_candidate
+select fails
+sel_excess
+sel_falsetick
+sel_outlyer
+sel_pps.peer
+sel_reject
+sel_sys.peer
+send a remote configuration command to ntpd
+Sending configuration file, one line at a time.
+Sending %lu octets
+sequence
+***Server disallowed request (authentication?)
+server_entry
+***Server indicates a request variable was bad
+***Server reports a bad format request packet
+***Server reports a bad opcode in request
+***Server returned an unspecified error
+***Server returned %d octets, should be multiple of 4
+***Server returns unknown error code %d
+server=%s 
+set/change debugging level
+set-debug-level
+SET_DEBUG_LEVEL
+set keyid to use for authenticated requests
+set key type to use for authenticated requests (des|md5)
+setsockopt
+set the delay added to encryption time stamps
+set the NTP version number to use for requests
+Set the output debug message level
+set the primary receive time out
+settimeofday
+set_tod_used
+set_tod_using
+%s: fatal out of memory duplicating %u bytes
+%s: fatal out of memory (%u bytes)
+Short (%d byte) packet received
+showhostnames
+showvars
+shutting down
+sigaction
+sigemptyset
+signal_no_reset: signal %d had flags %x
+signature_not_verified
+snprintf
+__snprintf_chk
+socket already bound
+socket is not bound
+socket is not connected
+socket() %s: %s
+(socktoa unknown family %d)
+soft quota reached
+specify a password to use for authenticated requests
+specify the host whose NTP server we talk to
+specify whether hostnames or net numbers are printed
+SPECTRACOM
+Spectracom (generic) Receivers (4)
+spike_detect
+%s %s[%d]: %s%s
+ssl_init_done
+%s%s%s%s%s%s%s%s%s%s
+stability
+__stack_chk_fail
+stale_leapsecond_values
+stats != ((void *)0)
+status=%04x %s,
+status=0x%04x,
+step-systime: %m
+step_systime: step %.6f residual %.6f
+still no current host
+%s: timed out, nothing received
+%s: timed out with incomplete data
+__strcpy_chk
+__strdup
+strftime
+strlen(num) < sizeof(name)
+Subsequent lines not sent.
+sync_cand
+sync_hf_radio
+sync_lf_radio
+sync_local
+sync_ntp
+sync_other
+sync_pps
+sync_telephone
+sync_uhf_radio
+sync_unspec
+sync_wristwatch
+__syslog_chk
+syslog_file
+syslogit
+sys_precision
+sys_residual
+sys_tick
+sys_var_list
+t1->nanoseconds < 1000000000 && t2->nanoseconds < 1000000000
+t1 != ((void *)0) && t2 != ((void *)0)
+T$(9T$ u
+t$<9t$,v?
+tell the use and syntax of commands
+templet != ((void *)0)
+The same formats are used in NTPv4, although some of the
+timecode
+timed out
+time != ((void *)0)
+$tIstr != ((void *)0)
+tmp-XXXXXXXXXX
+t->nanoseconds < 1000000000
+t->nanoseconds < 1000000000 && i->nanoseconds < 1000000000
+too many open files
+TRAK 8810 GPS Receiver (2)
+Trimble Navigation Palisade GPS (29)
+TRUETIME
+TrueTime 560 IRIG-B decoder (41)
+TrueTime (generic) Receivers (5)
+TrueTime GPS-VME Interface (21)
+truncate
+t$(;t$,r
+t != ((void *)0) && i != ((void *)0) && result != ((void *)0)
+type == 2 || type == 3 || type == 4 || type == 1
+ULINK_M320
+Ultralink M320 WWVB receiver (34)
+unable to convert errno to isc_result: %d: %s
+unable to remove log file '%s.%d': %s
+unable to remove log file '%s': %s
+unable to rename log file '%s.%d' to '%s.%d': %s
+unable to rename log file '%s' to '%s.0': %s
+unauthenticated requests being sent
+unbalanced parentheses
+unbalanced quotes
+undetermined
+Undisciplined local clock (1)
+unexpected end of input
+unexpected error
+unexpected token
+Unknown datatype(0x%x) in cookedprint
+Unknown error: %u
+(unknown key type)
+: unknown option -
+unspecified
+unspecified type (0)
+unsupported_digest_type
+unsupported_identity_type
+%u packets reassembled into response
+usage: %s
+USAGE:  %s [ -<flag> [<val>] | --<name>[{=| }<val>] ]... [ host ...]
+utility program is used to query NTP servers which
+***Value %s should be unsigned
+val != ((void *)0)
+Variable list full
+variables have changed and new ones added.
+Variable `%s' not found
+***Version must be either 4 or 6
+versions %d to %d, please
+__vfprintf_chk
+__vsnprintf_chk
+writelist
+write system or peer variables
+write the system or peer variables included in the variable list
+write to %s failed
+writevar
+WWV_AUDIO
+WWV/H Audio Demodulator/Decoder (36)
+WWV_HEATH
+ x.-+#*o
+<Xt0<xt,
+%Y-%m-%dT%H:%M:%SZ
+Zyfer GPStarplus receiver (42)

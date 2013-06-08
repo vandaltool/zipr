@@ -1,0 +1,195 @@
+                                
+00000000000000000000000000000000
+0123456789abcdef
+active name     <%s> at port %d, fd = %d
+*****     active name     "%s#%d" at port %d, fd = %d
+-address
+        addresses (and on the loopback interface).
+    -address List
+        a delay before a reply is sent.
+ALIVE2_REQ from non local address
+        Allow this instance of epmd to be killed with
+        Also allows forced unregister (epmd -stop).
+        Also a simulation of a busy server. Inserts
+***** ......and more
+        a new connection is requested and when the
+cannot allocate memory
+cannot convert IP address to network format
+cannot listen on more than %d IP addresses
+cannot parse IP address "%s"
+can't set sockopt
+closelog
+closing because timed out on receive
+closing connection on file descriptor %d
+        connection (default 60).
+        connections gets accepted.
+could only send %d bytes out of %d to fd %d
+__ctype_b_loc
+    -daemon
+daemon 2'nd child is %d
+daemon child is %d
+DbgExtra options
+    -debug
+-delay_accept
+    -delay_accept Seconds
+        delay between epmd gets notified about that
+-delay_write
+    -delay_write Seconds
+/dev/null
+D$_f	D$X
+Disallowed KILL_REQ, live nodes
+Disallowed STOP_REQ, no relaxed_command_check
+DUMP_REQ from non local address
+        Enable debugging. This will give a log to
+entering the main select() loop
+epmd: Cannot connect to local epmd
+epmd: Cant setsid()
+epmd: Can't write to epmd
+epmd: chdir() failed
+epmd connection stopped
+       epmd [-d|-debug] [-port No] [-names|-kill|-stop name]
+epmd: failed to read answer from local epmd
+epmd: Insufficient memory
+epmd killed
+        epmd -kill even if there are registered nodes.
+epmd: local epmd responded with <%s>
+epmd: Name too long!
+epmd: no response from local epmd
+epmd running - daemon = %d
+epmd: %s
+epmd: %.*s: 
+epmd: up and running on port %d with data:
+        epmd was started).
+erlang mapper daemon cant fork 2'nd time %m
+erlang mapper daemon cant fork %m
+ERL_EPMD_ADDRESS
+ERL_EPMD_PORT
+ERL_EPMD_RELAXED_COMMAND_CHECK
+__errno_location
+error in accept
+error in read
+error in select 
+error in write
+error on ALIVE socket %d (%d; errno=0x%x)
+error opening stream socket
+extra data is too long (%d) %s
+Extra info size error in ALIVE2_REQ
+failed opening connection on file descriptor %d
+failed to bind socket
+failed to listen on socket
+** failed to send ALIVE2_RESP for "%s"
+failed to send DUMP_RESP
+failed to send NAMES_RESP
+** failed to send PORT2_RESP (error) for "%s"
+** failed to send PORT2_RESP (ok) for "%s"
+failed to send reply to KILL_REQ
+failed to send STOP_RESP NOEXIST
+failed to send STOP_RESP STOPPED
+failed to set non-blocking mode of listening socket %d
+        Forcibly unregisters a name with epmd
+fork a daemon
+__fprintf_chk
+        get more debugging information.
+getpeername
+getsockname
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+** got ALIVE2_REQ
+got %d bytes
+got %d bytes in packet, expected %d
+** got DUMP_REQ
+got garbage 
+** got KILL_REQ
+got KILL_REQ - terminates normal
+got more than expected on ALIVE socket %d (%d)
+** got NAMES_REQ
+got partial packet only on file descriptor %d (%d)
+** got PORT2_REQ
+** got STOP_REQ
+        If you give more than one debug flag you may
+        inactive before epmd times out and closes the
+inet_pton
+Interactive options
+Invalid length in write %d
+invalid packet size (%d)
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+    -kill
+Killing not allowed - living nodes in database.
+KILL_REQ from non local address
+        Kill the currently running epmd
+        Let epmd listen only on the comma-separated list of IP
+        Let epmd listen to another port than default %d
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+        List names registered with the currently running epmd
+Local peer connected
+    -names
+name %s at port %d
+node name already occupied %s
+node name contains ascii 0 in ALIVE2_REQ
+node name contains ascii 0 in PORT2_REQ
+node name is too long (%d) %s
+Node name size error in ALIVE2_REQ
+Non-local peer connected
+*****     old/unused name "%s#%d"
+old/unused name <%s>, port = %d, fd = %d 
+        (only allowed if -names show empty database or
+        (only allowed if -relaxed_command_check was given when 
+opening connection on file descriptor %d
+-packet_timeout
+    -packet_timeout Seconds
+packet too small for request PORT2_REQ (%d)
+packet too small for request STOP_REQ (%d)
+packet to small for request ALIVE2_REQ (%d)
+    -port No
+            [-port No] [-daemon] [-relaxed_command_check]
+__printf_chk
+*****     reg calculated count  : %d
+registering '%s:%d', port %d
+Regular options
+    -relaxed_command_check
+-relaxed_command_check
+        -relaxed_command_check was given when epmd was started).
+reusing slot with same name '%s'
+See the Erlang epmd manual page for info about the usage.
+** sent ALIVE2_RESP for "%s"
+** sent DUMP_RESP
+** sent NAMES_RESP
+** sent PORT2_RESP (error) for "%s"
+** sent PORT2_RESP (ok) for "%s"
+** sent STOP_RESP NOEXIST
+** sent STOP_RESP STOPPED
+setsockopt
+        Set the number of seconds a connection can be
+__sprintf_chk
+__stack_chk_fail
+-started
+        Start epmd detached (as a daemon)
+    -stop Name
+STOP_REQ from non local address
+__strcpy_chk
+strerror
+__syslog_chk
+T$49T$,}T;l$,~N
+        the number of saved used node names to 5.
+there is already a epmd running at port %d
+        the standard error stream. It will shorten
+time in seconds: %d
++T$ ;l$`
+        To simulate a busy server you can insert a
+trying to unregister node with unknown file descriptor %d
+trying to unregister node with unknown name %s
+try to initiate listening port %d
+type %d proto %d highvsn %d lowvsn %d
+*****     unreg calculated count: %d
+*****     unreg counter         : %d
+unregistering '%s:%d', port %d
+usage: epmd [-d|-debug] [DbgExtra...] [-address List]

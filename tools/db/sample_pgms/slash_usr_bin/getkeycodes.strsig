@@ -1,0 +1,36 @@
+0 is an error; for 1-88 (0x01-0x58) scancode equals keycode
+ 0x%02x: 
+bindtextdomain
+Couldn't get a file descriptor referring to the console
+Couldn't open %s
+dcgettext
+/dev/console
+/dev/tty
+/dev/tty0
+/dev/vc/0
+D$%/ttyf
+e0 %02x: 
+__errno_location
+Escaped scancodes e0 xx (hex)
+failed to get keycode for scancode 0x%x
+for 1-%d (0x01-0x%02x) scancode equals keycode
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+kbd 1.15.2
+KDGETKEYCODE
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Plain scancodes xx (hex) versus keycodes (dec)
+__printf_chk
+/proc/self/fd/0
+setlocale
+%s from %s
+__snprintf_chk
+__stack_chk_fail
+usage: getkeycodes
+/usr/share/locale

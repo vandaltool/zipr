@@ -1,0 +1,171 @@
+assistant != NULL
+assistant_page_content_changed
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+Configuration Failed
+Configuration system error.
+connector.png
+Could not authenticate to the Exchange server.
+Could not authenticate to the Global Catalog server. You may need to go back and specify the Windows domain name as part of your username (eg, "MY-DOMAIN\%s").
+Could not configure Exchange account because an unknown error occurred. Check the URL, username, and password, and try again.
+Could not connect to specified server.
+Could not connect to the Exchange server.
+Could not find OWA data at the indicated URL.
+Could not locate Exchange server.
+create_page_vbox
+dcgettext
+e2k_autoconfig_check_exchange
+e2k_autoconfig_check_global_catalog
+e2k_autoconfig_free
+e2k_autoconfig_new
+e2k_autoconfig_set_gc_server
+e2k_autoconfig_set_owa_uri
+e2k_autoconfig_set_password
+e2k_autoconfig_set_username
+e2k_operation_free
+e2k_operation_init
+e_account_list_add
+e_account_list_new
+e_account_list_save
+e_account_list_set_default
+e_account_new
+e_iterator_get
+e_iterator_is_valid
+e_iterator_next
+e_list_get_iterator
+_Email Address:
+Enter your OWA site address (URL), username, and password, then click "Forward".
+e_passwords_add_password
+e_passwords_init
+e_passwords_remember_password
+e_passwords_shutdown
+Evolution Connector for Microsoft Exchange can use account information from your existing Outlook Web Access (OWA) account.
+Evolution Connector for Microsoft Exchange Configuration
+Evolution Connector for Microsoft Exchange could not find the Global Catalog replica for your site. Please enter the name of your Global Catalog server. You may need to ask your system administrator for the correct value.
+Evolution Connector for Microsoft Exchange has encountered a problem configuring your Exchange account.
+Evolution Connector for Microsoft Exchange requires access to certain functionality on the Exchange server that appears to be disabled or blocked.  (This is usually unintentional.)  Your Exchange administrator will need to enable this functionality in order for you to be able to use the Evolution Connector.
+evolution-exchange-3.2
+evolution-exchange-storage
+exchange://
+Exchange Configuration
+exchange://%s@%s
+Failed initialize application, %s
+failure_page_create
+finish_page_create
+For information to provide to your Exchange administrator, please follow the link below:
+Full _Name:
+g_build_filename
+gconf_client_get_default
+gc_page_create
+GC _Server:
+gdk_pixbuf_new_from_file
+g_error_free
+GLIBC_2.0
+GLIBC_2.2
+g_malloc0
+__gmon_start__
+g_object_unref
+g_object_weak_ref
+g_printerr
+g_return_if_fail_warning
+g_signal_connect_data
+g_strdup
+g_strdup_printf
+g_strdup_vprintf
+gtk_assistant_append_page
+gtk_assistant_get_current_page
+gtk_assistant_get_type
+gtk_assistant_new
+gtk_assistant_set_forward_page_func
+gtk_assistant_set_page_complete
+gtk_assistant_set_page_header_image
+gtk_assistant_set_page_title
+gtk_assistant_set_page_type
+gtk_box_get_type
+gtk_box_pack_start
+gtk_check_button_new_with_label
+gtk_check_button_new_with_mnemonic
+gtk_container_get_type
+gtk_container_set_border_width
+gtk_dialog_get_type
+gtk_dialog_run
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_set_text
+gtk_entry_set_visibility
+gtk_init_with_args
+gtk_label_get_type
+gtk_label_new
+gtk_label_new_with_mnemonic
+gtk_label_set_line_wrap
+gtk_label_set_mnemonic_widget
+gtk_label_set_text
+gtk_link_button_new
+gtk_main
+gtk_main_quit
+gtk_message_dialog_new
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk_table_attach
+gtk_table_get_type
+gtk_table_new
+gtk_table_set_col_spacings
+gtk_table_set_row_spacings
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_vbox_new
+gtk_widget_destroy
+gtk_widget_get_type
+gtk_widget_set_sensitive
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_get_type
+gtk_window_set_title
+g_type_check_instance_cast
+http://support.novell.com/cgi-bin/search/searchtid.cgi?/ximian/ximian328.html
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libedataserver-1.2.so.15
+libedataserverui-3.0.so.1
+libexchange.so.0
+libgconf-2.so.4
+libgdk_pixbuf-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+Make sure the server name is spelled correctly and try again.
+Make sure the URL is correct and try again.
+Make sure the URL is correct (try "%s" instead of "%s"?) and try again.
+Make sure the username and password are correct and try again.
+Make this my _default account
+owa_page_create
+OWA _URL:
+page_index != NULL
+page != NULL
+page_num >= 0 && page_num < G_N_ELEMENTS (autoconfig_pages)
+_Password:
+Please check the server name and try again.
+Please click the "Forward" button to continue.
+_Remember this password
+start_page_create
+The Exchange server URL you provided is for an Exchange 5.5 server. Evolution Connector for Microsoft Exchange supports Microsoft Exchange 2000 and 2003 only.
+The next few screens will help you configure Evolution
+to connect to your Exchange account.
+Unable to create new account.
+User_name:
+/usr/lib/evolution-exchange/3.2
+/usr/share/evolution-exchange/3.2/images
+/usr/share/locale
+vbox != NULL
+verify_page_create
+Welcome to Evolution Connector for Microsoft Exchange.
+You may need to specify the Windows domain name as part of your username (eg, "MY-DOMAIN\%s").
+You may only configure a single Exchange account
+Your account information is as follows. Please correct any errors, then click "Forward".
+Your Connector account is now ready to use. Click the "Apply" button to save your settings.

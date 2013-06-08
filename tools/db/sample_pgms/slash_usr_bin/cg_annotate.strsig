@@ -1,0 +1,619 @@
+        
+            
+                                                
+                    }
+                }
+            }
+        }
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+##--------------------------------------------------------------------##
+#  02111-1307, USA.
+                        100 * safe_div(abs($printed_totals_CC->[$i]),
+                ($1 >= 0 && $1 <= 20) or die($usage);
+#10. changed file format to avoid file/fn name repetition       2.40s
+#11. changed file format to drop unnecessary end-line "."s      2.36s
+#12. switched from hash CCs to array CCs                        1.61s
+#13. only adding b[i] to a[i] if b[i] defined (was doing it if
+#14. Stopped converting "." entries to undef and then back      1.16s
+#15. Using foreach $i (x..y) instead of for ($i = 0...) in
+#16. Finding count lengths by int((length-1)/3), not by
+# 1. If $a2->[$i] is undefined, it defaults to 0 which is what we want; we turn
+# 1. turned off warnings in add_hash_a_to_b()                   3.81 --> 3.48s
+    1 while ($val =~ s/^(-?\d+)(\d{3})/$1,$2/);
+    # 2ndary key, etc).
+# 2. We don't add an undefined count or a ".", even though it's value is 0,
+# 6. make line_to_CC() return a ref instead of a hash           3.01 --> 2.77s
+        $a2->[$i] += $a1->[$i] if (defined $a1->[$i] && "." ne $a1->[$i]);
+                                       abs($summary_CC->[$i])));
+                                abs($summary_CC->[$sort_order[$i]]));
+#    add_array_a_to_b()                                         1.11s
+            add_array_a_to_b($CC, $currFuncCC);
+                add_array_a_to_b($CC, $currLineCC);
+                        add_array_a_to_b($src_file_CCs->{$.}, 
+# Add each event count to the CC array.  '.' counts become undef, as do
+# Add the two arrays;  any '.' entries are ignored.  Two tricky things:
+        %all_ann_files = %user_ann_files;
+        %all_ann_files = (%user_ann_files, %$threshold_files) 
+                $allCCs{$currFileName} = $currFileCCs;
+# all the threshold counts.
+#  along with this program; if not, write to the Free Software
+# Also returns a hash containing all the files that are involved in getting the
+  and licensed under the GNU General Public License, version 2.
+# and make lines too long, we compute exactly how wide each column needs to be
+annotate_ann_files($threshold_files);
+            # Annotate chosen lines, tracking total counts of lines printed
+                          annotated lines [8]
+    # annotated lines above.
+# Annotate selected files
+@ Annotations may not be correct.
+            $any_thresholds_exceeded ||= ($prop >= $thresholds[$i]);
+            #   argument.
+# Argument and option handling
+        # Argument handling -- annotation file checking and selection.
+    # Assertion
+            # Assume that a "fn=" line is followed by a "fl=" line.
+                $auto_annotate = 0;
+                $auto_annotate = 1;
+# Auto-annotating primes:
+            # --auto=yes|no
+    --auto=yes|no         annotate all source files containing functions
+# Because the counts can get very big, and we don't want to waste screen space
+#    because we don't want to make an $a2->[$i] that is undef become 0
+            # blank, do nothing
+  Bug reports, feedback, admiration, abuse, etc, to: njn\@valgrind.org.
+# but we have to use @sort_order and @show_order below to handle the --sort and
+# by finding the widest entry for each one.
+##--- Cachegrind's annotator.                       cg_annotate.in ---##
+# Cachegrind's manual.
+$cause_and_solution@@
+        $cause_and_solution = <<END
+@@ cause:    bug in the Valgrind's debug info reader that screws up with .h
+@@ cause:    not sure, sorry
+@@ cause:    '$src_file' has changed since information was gathered.
+                $CC_col_widths->[$i] = max($CC_col_widths->[$i], $clength); 
+    (@CC <= @events) or die("Line $.: too many event counts\n");
+# CCs are arrays, the counts corresponding to @events, with 'undef'
+  cg_annotate is Copyright (C) 2002-2007 Nicholas Nethercote.
+    # Check if summary line was present
+#    checking for definedness ourselves.
+    chomp($cmd);    # Remove newline
+            close(INPUTFILE);
+    close(INPUTFILE);
+    $cmd = $line;
+    # column order (ie. first column event is primary sort key, 2nd column is
+# Command line of profiled program.
+#    commifying (halves the number of commify calls)            1.68s --> 1.47s
+                $context = $1;
+            # --context=N
+    --context=N           print N lines of context before and after
+#  Copyright (C) 2002-2005 Nicholas Nethercote
+    # correspond to @CC positions.
+                $currFileCCs = {};
+            $currFileCCs = $allCCs{$currFileName};
+                    $currFileCCs->{$lineNum} = $currLineCC;
+            $currFileFuncName = "$currFileName:$1";
+            $currFileFuncName = undef;
+            $currFileName = $1;
+                $currFuncCC = [];
+            $currFuncCC = $fn_totals{$currFileFuncName};
+                    $currLineCC = [];
+    # @curr_totals has the same shape as @sort_order and @thresholds
+            $curr_totals[$i] += $fn_CC->[$sort_order[$i]] 
+            defined($currFileCCs) || die;
+            defined($currFuncCC) || die;
+            (defined $events{$show_event}) or 
+            (defined $events{$sort_event}) or 
+    (defined $line && $line =~ s/^events:\s+//) 
+                (defined $user_ann_files{$src_file} ? "User" : "Auto");
+        delete $threshold_files->{"???"};
+            $desc .= $line;
+            $did_annotations = 1;
+         || die "Cannot open $input_file for reading\n";
+                die("cg_annotate-$version\n");
+                die("File $src_file not opened in any of: @include_dirs\n");
+        die("missing final summary line, aborting\n");
+                die("--show event `$show_event' did not appear in input\n");
+                die("Sorry, no space is allowed after a -I flag\n");
+                die("--sort event `$sort_event' did not appear in input\n");
+        die("sort_order length != thresholds length:\n",
+                    die($usage);
+                die($usage);
+        die($usage);
+# Directories in which to look for annotation files.
+    # Do as for --show, but if no --sort arg given, default to sorting by
+# eg. (@events[$show_order[1]], @events[$show_order[2]]...) = @show_events.
+#    either a[i] or b[i] was defined, but if b[i] was undefined
+                    } else {
+                } else {
+            } else {
+        } else {
+    } else {
+            } else {            # -h and --help fall under this case
+            } elsif ($arg =~ /^--auto=no$/) {
+            } elsif ($arg =~ /^--auto=yes$/) {
+            } elsif ($arg =~ /^--context=([\d\.]+)$/) {
+            } elsif ($arg =~ /^-I$/) {
+            } elsif ($arg =~ /^(-I=|-I|--include=)(.*)$/) {
+            } elsif ($arg =~ /^--show=(.*)$/) {
+            } elsif ($arg =~ /^--sort=(.*)$/) {
+            } elsif ($arg =~ /^--threshold=([\d\.]+)%?$/) {
+        } elsif (s/^fl=(.*)$//) {
+        } elsif (s/^fn=(.*)$//) {
+    } elsif ($src_file =~ /\.h$/) {
+        } elsif (s/^\s*$//) {
+        } elsif (s/^summary:\s+//) {
+##--- end                                           cg_annotate.in ---##
+#   - events = A,B,C,D
+# events count above the thresholds (ie. all the interesting ones).
+        $events{$event} = $n;
+            # Events header
+# Events in input file, eg. (A,B,C,D)
+    # "events:" line.  Then initialise @show_order.
+    @events = split(/\s+/, $line);
+# Events to show, from command line, eg. (C,A,D)
+    # Exhausted events, equal
+# explaining possible causes.
+            # Failed to open the file.  If chosen on the command line, die.
+            # File header (distinguish between user- and auto-selected files).
+        $filename =~ s/:.+$//;    # remove function name
+# Files chosen for annotation on the command line.  
+@@           files sometimes
+                # Find length, accounting for commas that will be added
+    # Find maximum width count for each column.  @CC_col_width positions
+            # Finds interesting line ranges -- all lines with a CC, and all
+                # First non-option argument is the output file.
+    } @fn_fullnames;
+    @fn_fullnames = sort {
+                $fn_totals{$currFileFuncName} = $currFuncCC;
+    foreach my $CC (@CCs) {
+        foreach my $e (@sort_order) {
+    foreach my $e (@thresholds) {
+    foreach my $event (@events) {
+    foreach my $fn_name (@fn_fullnames) {
+        foreach my $f (@unfound_auto_annotate_files) {
+        foreach (my $i = 0; $i < @$summary_CC; $i++) {
+    foreach my $i (0 .. $n-1) {
+        foreach my $i (0 .. scalar(@$CC)-1) {
+                foreach my $i (0 .. scalar @sort_events - 1) {
+        foreach my $i (0 .. scalar @sort_order - 1) {
+        foreach my $i (0 .. scalar @thresholds - 1) {
+                foreach my $include_dir (@include_dirs) {
+        foreach my $include_dir (@include_dirs) {
+    foreach my $include_dir (@include_dirs2) {
+    foreach my $i (@show_order) {
+    foreach my $i (@show_order) { 
+    foreach my $i (@sort_order) {
+                foreach my $line_num (@line_nums) {
+        foreach my $show_event (@show_events) {
+    foreach my $show_event (@show_events) {
+        foreach my $sort_event (@sort_events) {
+    foreach my $sort_event (@sort_events) {
+    foreach my $src_file (keys %all_ann_files) {
+    foreach $user_ann_file (@user_ann_files) {
+    for my $arg (@ARGV) { 
+            for (my $i = 0; $i < $n; $i++) {
+# for @show_order.
+#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+                $full_file_name = ($include_dir eq "" 
+            # full filename matches;  or, if auto-annotating, we have to
+# function names aren't pushed over unnecessarily by huge summary figures).
+@@           gather new information.
+#  General Public License for more details.
+# Generic description string.
+            # Get file's CCs
+# Global variables, main data structures
+# handled this proportion of all the events thresholded.
+# hash(filename:fn_name => CC array)
+# hash(filename => hash(line_num => CC array))
+    # Header and counts for summary
+    # Header for functions
+    -h --help             show this message
+                    $i++;
+    -I<d> --include=<d>   add <d> to list of directories to search for 
+        if (0 != $cmp) {
+        if ($arg =~ /^-/) {
+            if ($arg =~ /^--version$/) {
+            # If arose from auto-annotation, print a little message.
+    if ($auto_annotate) {
+            if ($auto_annotate || defined $user_ann_files{$currFileName}) {
+    # If auto-annotating, add interesting files (but not "???")
+                if ($context < 0) {
+            # If currFileName is selected, add CC to currFileName list.  We look for
+            if (defined $CC->[$i]) {
+                if (defined $fn_CC->[$sort_order[$i]]);
+                    if (defined $line_nums[0] && $. == $line_nums[0]) {
+            if (!defined $src_file_CCs) {
+            if (defined $user_ann_files{$src_file}) {
+    if ($did_annotations) {
+            if (@line_nums) {
+        if ($line =~ s/desc:\s+//) {
+    # If multiple threshold args weren't given via --sort, stick in the single
+    # If no --show arg give, default to showing all events in the file.
+            if (not defined $currFileCCs) {
+            if (not defined $currFuncCC) {
+                if (not defined $currLineCC) {
+            if (not defined $input_file) {
+    if (not defined $input_file) {
+    if (not defined $summary_CC) {
+        if (not $opened_file) {
+    if (not @thresholds) {
+                if (not $th_specified) {
+# If on, automatically annotates all files that are involved in getting over
+            if (open(INPUTFILE, "< $try_name")) {
+                    if (-r $include_dir . $arg) {
+        if (s/^(-?\d+)\s+//) {
+    if (@show_events) {
+    # If --show option is used, check all specified events appeared in the
+@@           If so, a warning will have already been issued about this.
+    if (@sort_events) {
+                    if ($sort_events[$i] =~ /.*:([\d\.]+)%?$/) {
+            if ($src_file_CCs->{0}) {
+            # If $src_file more recent than cachegrind.out, issue warning
+                if ($src_line) {
+    if ($src_more_recent_than_inputfile) {
+            if ((stat $opened_file)[9] > (stat $input_file)[9]) {
+# If there is information about lines not in the file, issue a warning
+            # If there was info on lines past the end of the file...
+    if (@unfound_auto_annotate_files) {
+    # If we did any annotating, print what proportion of events were covered by
+            # --include=A,B,C.  Allow -I=name for backwards compatibility.
+                                  : "$include_dir + $src_file"); 
+                $inc =~ s|/$||;         # trim trailing '/'
+# Individual CCs, organised by filename and line_num for easy annotation.
+@@ Information recorded about lines past the end of '$src_file'.
+    # Initialise with minimum widths (from event names)
+                $input_file = $arg;
+# Input file name
+# Issue a warning that the source file is more recent than the input file. 
+    # Iterate through sort events (eg. 3,2); return result if two are different
+#    it just added 0)                                           1.48s
+# key = basename (trimmed of any directory), value = full filename
+                    last;
+                last;
+            last;
+        last if not $any_thresholds_exceeded;
+                    last unless (defined $tmp);     # hack to detect EOF
+#  License, or (at your option) any later version.
+            # likely due to bugs in Valgrind's stabs debug info reader)
+    $line = <INPUTFILE>;
+                       $line_nums[$i] + 2*$context >= $line_nums[$i+1]) {
+    ($line =~ s/^cmd:\s+//) or die("Line $.: missing command line\n");
+            # lines within $context lines of a line with a CC.
+    LOOP:
+# "main()"
+# Map from @show_events indices to @events indices, eg. (2,0,3).  Gives the
+# Map from @sort_events indices to @events indices, eg. (3,2).  Same idea as
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# (Might help to think of it like a hash (0 => 2, 1 => 0, 2 => 3).)
+# missing entries (implicitly).
+#  modify it under the terms of the GNU General Public License as
+    # Must have chosen an input file
+    my ($a1, $a2) = @_;
+    my %all_ann_files;
+my %allCCs;
+            my $ann_type = 
+        my $any_thresholds_exceeded = 0;
+my $auto_annotate = 0;
+    my $cause_and_solution;
+    my ($CC, $CC_col_widths) = @_;
+    my ($CC_col_widths) = @_;
+    my $CC_col_widths = [];
+            my $CC_col_widths = compute_CC_col_widths(values %$src_file_CCs);
+            my $CC = line_to_CC($_);
+    my @CCs = @_;
+    my @CC = (split /\s+/, $_[0]);
+    my ($c, $d) = @_;
+                my $clength = $length + int(($length - 1) / 3);
+my $cmd;
+        my $cmp = abs($y) <=> abs($x);      # reverse sort of absolute size
+        mycmp($fn_totals{$a}, $fn_totals{$b})
+        my $col_width   = $CC_col_widths->[$i];
+my $context = 8;
+        my $count = (defined $CC->[$i] ? commify($CC->[$i]) : ".");
+    my $currFileCCs = {};     # hash(line_num => CC)
+    my $currFileFuncName;
+    my $currFileName;
+    my $currFuncCC;
+                my $currLineCC = $currFileCCs->{$lineNum};
+    my @curr_totals = ();
+my $default_threshold = 0.1;
+my $desc = "";
+    my $did_annotations = 0;
+        my $event       = $events[$i];
+    my %events;
+my @events;
+        my $event_width = length($event);
+my $fancy = '-' x 80 . "\n";
+        my $filename = $fn_name;
+    my      $fn_CC_col_widths = compute_CC_col_widths(values %fn_totals);
+        my $fn_CC = $fn_totals{$fn_name};
+    my @fn_fullnames = keys   %fn_totals;
+my %fn_totals;
+        my $full_file_name = "";
+                my $high = shift @pairs;
+                my $inc = $2;
+my @include_dirs = ("");
+    my @include_dirs2 = @include_dirs;  # copy @include_dirs
+    my $include_dir = shift(@include_dirs2);
+my $input_file = undef;
+    my $is_on = ($auto_annotate ? "on" : "off");
+                my $length = length $CC->[$i];
+    my $line;
+            my $lineNum = $1;
+            my @line_nums = sort {$a <=> $b} keys %$src_file_CCs;  
+                my $low  = shift @pairs;
+    my $n = 0;
+            my $n = @line_nums;
+    my $n = max(scalar @$a1, scalar @$a2);
+        my $opened_file = "";
+            my @pairs;
+        my $percent_printed_CC;
+        my $pp_CC_col_widths = compute_CC_col_widths($percent_printed_CC);
+    my $printed_totals_CC = [];
+            my $prop = safe_div(abs($fn_CC->[$sort_order[$i]] * 100),
+                my $readable = 0;
+my @show_events;
+my @show_order;
+my $single_threshold  = $default_threshold;
+my @sort_events;
+my @sort_order;
+        my $space = ' ' x ($CC_col_widths->[$i] - length($count));
+        my $space       = ' ' x ($col_width - $event_width);
+    my $src_file = $_[0];
+            my $src_file_CCs = $allCCs{$src_file};
+                my $src_line;
+            my $src_more_recent_than_inputfile = 0;
+    my ($src_more_recent_than_inputfile, $src_file, $excess_line_nums) = @_;
+my $summary_CC;
+    my $summary_CC_col_widths = compute_CC_col_widths($summary_CC);
+                        my $th = $1;
+    my ($threshold_files) = @_; 
+    my $threshold_files       = {};
+my $threshold_files = print_summary_and_fn_totals();
+my @thresholds;
+                my $th_specified = 0;
+                    my $tmp = <INPUTFILE>;
+            my $try_name = $include_dir . $src_file;
+    my @unfound_auto_annotate_files;
+my $usage = <<END
+my %user_ann_files;
+    my $user_ann_file = shift(@user_ann_files);
+    my @user_ann_files = keys %user_ann_files;
+    my ($val) = @_;
+my $version = "3.7.0";
+    my $warning = <<END
+        my ($x, $y);
+    my ($x, $y) = @_;
+        $n++
+        # Nb: include_dirs already includes "", so it works in the case
+            #   Nb: You can specify thresholds individually, eg.
+                next LOOP;
+#     njn@valgrind.org
+#    (not sure why higher;  maybe due to new '.' entries?)
+#    [now add_array_a_to_b()]
+# Number of lines to show around each annotated line.
+            # Numeric, not lexicographic sort!
+#    off warnings to allow this.  This makes things about 10% faster than
+                $opened_file    = $try_name;
+    open(INPUTFILE, "< $input_file") 
+        # Option handling
+  options for the user, with defaults in [ ], are:
+# order in which we must traverse @events in order to show the @show_events, 
+        or die("Line $.: missing events line\n");
+                or die("Line $.: summary event and total event mismatch\n");
+# Overview: the running example in the comments is for:
+            $pairs[0] = 1 if ($pairs[0] < 1);
+            # particular line (due to incomplete debug info).
+            $percent_printed_CC->[$i] = 
+# Performance improvements record, using cachegrind.out for cacheprof, doing no
+            print("-- $ann_type-annotated source: $full_file_name\n");
+    print("Auto-annotation:  $is_on\n");
+                    print(" <bogus line $line_num>\n");
+                        print_CC( [], $CC_col_widths);
+        print_CC($fn_CC, $fn_CC_col_widths);
+        print_CC($percent_printed_CC, $pp_CC_col_widths);
+                print_CC($src_file_CCs->{0}, $CC_col_widths);
+                        print_CC($src_file_CCs->{$.}, $CC_col_widths);
+                    print_CC($src_file_CCs->{$line_num}, $CC_col_widths);
+    print_CC($summary_CC, $summary_CC_col_widths);
+    print("Command:          $cmd\n");
+                print(" <counts for unidentified lines in $src_file>\n\n");
+    print("Data file:        $input_file\n");
+    print($desc);
+                                         $printed_totals_CC);
+            print_events($CC_col_widths);
+    print_events($fn_CC_col_widths);
+    print("Event sort order: @sort_events\n");
+        print_events($pp_CC_col_widths);
+    print("Events recorded:  @events\n");
+    print("Events shown:     @show_events\n");
+    print_events($summary_CC_col_widths);
+            print("$fancy");
+        print("$fancy");
+        print($fancy);
+    print($fancy);
+    print(" file:function\n");
+            print("  $f\n");
+        print(" $fn_name\n");
+        # Print function results
+    # Print functions, stopping when the threshold has been reached.
+        print("                  $include_dir\n");
+    print("Include dirs:     $include_dir\n");
+                    print("-- line $high " . '-' x 40 . "\n");
+                print("-- line $low " . '-' x 40 . "\n") if ($low != 1);
+                # Print line number, unless EOF
+                # Print line number, unless start of file
+    # Print list of unfound auto-annotate selected files.
+                print("\n");
+            print("\n");
+        print("\n");
+    print("\n");
+            print("\n\n");
+                print("  No information has been collected for $src_file\n\n");
+print_options();
+# Print options used
+# Print out the function totals sorted by these events, eg. (D,C).
+        print(" percentage of events annotated\n\n");
+    print(" PROGRAM TOTALS\n");
+        print("$space$count ");
+        print("$space$event ");
+                    print(" $src_line");
+# Prints summary and function totals (with separate column widths, so that
+# Print summary and sorted function totals
+            # Print summary of counts attributed to file but not to any
+# Print the CC with each column's size dictated by $CC_col_widths.
+        print("The following files chosen for auto-annotation could not be found:\n");
+    print("Thresholds:       @thresholds\n");
+        print("                  $user_ann_file\n");
+    print("User annotated:   $user_ann_file\n");
+    print($warning);
+@@ Probable cause and solution:
+process_cmd_line();
+#  profiling programs.
+#  published by the Free Software Foundation; either version 2 of the
+        push(@$CC_col_widths, length($event));
+        push(@curr_totals, 0);
+                push(@include_dirs, "$inc/");
+                push(@pairs, $line_nums[$i] - $context);   # lower marker
+                push(@pairs, $line_nums[$i] + $context);   # upper marker
+        push(@show_order, $events{$show_event});
+        push(@sort_order, $events{$sort_event});
+            push(@thresholds, 100);
+                push(@unfound_auto_annotate_files, $src_file);
+                        $readable = 1;
+                $readable or die("File $arg not found in any of: @include_dirs\n");
+    # Read body of input file.
+    # Read "cmd:" line (Nb: will already be in $line from "desc:" loop above).
+    # Read "desc:" lines.
+    # Read "events:" line.  We make a temporary hash in which the Nth event's
+# Reading of input file
+read_input_file();
+            # remember everything -- we won't know until the end what's needed.
+# representing '.'.  This makes things fast (faster than using hashes for CCs)
+    return 0;
+    return \@CC;
+    return $CC_col_widths;
+            return $cmp;
+    return $threshold_files;
+    return $val;
+    return ($x > $y ? $x : $y);
+    return ($y == 0 ? 0 : $x / $y);
+    (scalar @sort_order == scalar @thresholds) or 
+            (scalar(@$summary_CC) == @events) 
+    # separately).
+    shift(@include_dirs2);       # remove "" entry, which is always the first
+                        shift(@line_nums);
+            shift(@line_nums) if (0 == $line_nums[0]);
+            # Shift out 0 if it's in the line numbers (from unknown entries,
+            # --show=A,B,C
+    --show=A,B,C          only show figures for events A,B,C [all]
+#   - --show=C,A,D
+        @show_events = @events;
+                @show_events = split(/,/, $1);
+# --show options, which is a bit tricky.
+#    (shrunk file by about 37%)
+                $single_threshold = $1;
+@@ solution: none, sorry
+@@ solution: Recompile program and rerun under "valgrind --cachesim=yes" to 
+            #   --sort=A:99,B:95,C:90.  These will override any --threshold
+            # --sort=A,B,C
+    --sort=A,B,C          sort columns by events A,B,C [event column order]
+#   - --sort=D,C
+        @sort_events = @events;
+                        $sort_events[$i] =~ s/:.*//;
+                @sort_events = split(/,/, $1);
+    # Sort function names into order dictated by --sort option.
+            "  @sort_order\n  @thresholds\n");
+# source annotation (irrelevant ones removed):
+                          source files
+@ Source file '$src_file' is more recent than input file '$input_file'.
+# source line, grouped by files and functions.  The details are in
+# specified).  We print out functions and do auto-annotations until we've
+                sprintf("%.0f", 
+                                  ? $src_file 
+                                             $src_file, \@line_nums);
+                $src_more_recent_than_inputfile = 1;
+        s/#.*$//;   # remove comments
+        # Stick filenames into a hash for quick 'n easy lookup throughout.
+        # Stop when we've reached all the thresholds
+sub add_array_a_to_b ($$) 
+sub annotate_ann_files($)
+sub commify ($) {
+sub compute_CC_col_widths (@) 
+sub line_to_CC ($)
+sub max ($$) 
+sub mycmp ($$) 
+sub print_CC ($$) 
+sub print_events ($)
+sub print_options ()
+sub print_summary_and_fn_totals ()
+sub process_cmd_line() 
+sub read_input_file() 
+sub safe_div($$)
+                # Subsequent non-option arguments are source files.
+sub warning_on_nonexistent_lines ($$$)
+sub warning_on_src_more_recent_than_inputfile ($)
+            $summary_CC = line_to_CC($_);
+                        ($th >= 0 && $th <= 100) or die($usage);
+                          that helped reach the event count threshold [no]
+                          the counts of the primary sort event [$default_threshold]
+# The file format is simple, basically printing the cost centre for every
+#  The GNU General Public License is contained in the file COPYING.
+    # the primary sort event, and 0% for the rest.
+#  This file is part of Cachegrind, a Valgrind tool for cache
+#  This program is distributed in the hope that it will be useful, but
+#  This program is free software; you can redistribute it and/or
+    --threshold=<0--20>   a function is shown if it accounts for more than x% of
+    # threshold (either from --threshold if used, or the default otherwise) for
+        $threshold_files->{$filename} = 1;
+                    @thresholds = ();
+        $thresholds[0] = $single_threshold;
+                        $thresholds[$i] = 0;
+                        $thresholds[$i] = $th;
+# Thresholds, one for each sort event (or default to 1 if no sort events
+            # --threshold=X (tolerates a trailing '%')
+                        $th_specified = 1;
+# Total counts for summary (an array reference).
+# Totals for each function, for overall summary.
+    # Track if we did any annotations.
+#    unnecessarily.
+    unshift(@include_dirs2, "") if (0 == @include_dirs2); 
+    unshift(@user_ann_files, "") if (0 == @user_ann_files); 
+        # Update the threshold counts
+usage: cg_annotate [options] cachegrind-out-file [source-files...]
+# Usage message.
+# Used in various places of output.
+                $user_ann_files{$arg} = 1;
+#                                                               user time
+use strict;
+use warnings;
+#! /usr/bin/perl
+    # value is N, which is useful for handling --show/--sort options below.
+            # --version
+# Version number
+    --version             show version
+    $^W = 0;
+    $^W = 1;
+                warning_on_nonexistent_lines($src_more_recent_than_inputfile,
+                warning_on_src_more_recent_than_inputfile($src_file);
+@@ WARNING @@ WARNING @@ WARNING @@ WARNING @@ WARNING @@ WARNING @@ WARNING @@
+            warn("WARNING: line $. malformed, ignoring\n");
+            # We don't handle "-I name" -- there can be no space.
+    # We suppress warnings about .h files
+        # where the filename has the full path.
+                while (($. < $high) && ($src_line = <INPUTFILE>)) {
+                while ($i < $n-1 && 
+    while (<INPUTFILE>) {
+    while ($line = <INPUTFILE>) {
+                while ($. < $low-1) {
+            while (@pairs) {
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+            # Work out the size of each column for printing
+    # Work out the size of each column for printing (summary and functions
+        $x = -1 unless defined $x;
+        $x = $c->[$i];
+        $y = -1 unless defined $y;
+        $y = $d->[$i];
+#  You should have received a copy of the GNU General Public License

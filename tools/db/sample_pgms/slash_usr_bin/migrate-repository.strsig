@@ -1,0 +1,4 @@
+from migrate.versioning.migrate_repository import main
+import sys
+sys.exit(main())
+#!/usr/bin/python

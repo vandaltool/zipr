@@ -1,0 +1,73 @@
+ !"#	%&'()*+,-./0123456789:;<=>? ABCDEFGHIJKLMNO0QRSTUVWGYZ[\]^V`abcd]fghcjkgmkomoarith_decode
+$&'(*+-.0134689;<>? !
+%6x:    
+\$@9\$0s
+9J|~:;0u
+ABORT marker segment encountered
+@ACDEFHIJKMNO0223456789:;==
+arith_encode
+	A SPL-C is the printer langauge used by some Samsung
+__assert_fail
+BD$d;t$d
+cx >= 0 && cx < 4096
+%d:     
+D$0+D$$=
+D$,9D$(t
+D$(9D$\v
+       -d basename Basename of .pbm file for saving decompressed planes
+D$D+L$X)
+	Decode a SPL-C into human readable form.
+d:hor:D:?h
+       -D lvl      Set Debug level [%d]
+efghcijkg
+EOF on file
+__errno_location
+file '%s' doesn't exist
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+       -h          Print hex file offsets
+$Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $ 
+Incremental BIE does not continue previous one
+Input data stream contains invalid data
+Input data stream uses unimplemented JBIG features
+_IO_getc
+_IO_putc
+_IO_stdin_used
+jbig_ar.c
+JBIG-KIT 2.0 -- (c) 1995-2008 Markus Kuhn -- Licence: GPL
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Not enough memory available
+       -o          Print file offsets
+Options:
+@PJL ENTER LANGUAGE=HBPL
+PQRSTVWWHHJJKMM
+	printers, such as the CLT-510n.
+__printf_chk
+       -r basename Basename of .jbg file for saving raw planes
+Reached specified image size
+RECTYPE '%c' [0x%x]:
+s->buffer != 0xff
+	splcdecode [options] < oki-file
+ss < 113
+__stack_chk_fail
+strerror
+/tmp/hblp.out
+Unexpected end of input data stream
+Unknown error code passed to jbg_strerror()
+Unknown marker segment encountered
+Unknown rectype 0x%x at 0x%x(%d)
+Unknown subtype 0x%02x
+u&;t$@s 
+__vfprintf_chk
+Warning: 
+	%x %x: 0x%x
+	%x %x: 0x%x [%s]
+	%x %x: %d (0x%x) bytes of data...
+	%x %x: %d [PAGECNT]
+	%x %x: %dx%d [WxH]

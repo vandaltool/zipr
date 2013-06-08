@@ -1,0 +1,183 @@
+  -all          regenerate all graphics
+    buffer = fin:read(bufsize)
+    -- but it degrades raster graphics or makes them much larger
+    cmdtmpl = 'dvips -E -p %s -l %s -o %s %s'
+    cmdtmpl = findgs() .. 
+    copyfile(noextname .. jobsuffix .. '.pdf', multipicfilename)
+      ' -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode' ..
+      ' -dAutoFilterGrayImages=false -dGrayImageFilter=/FlateEncode' ..
+                  ' \\def\\jobname{' .. jobname .. '}' ..
+      ' -dFirstPage=%s -dLastPage=%s -sOutputFile=%s %s'
+  die(msg.NoGhostScript)
+  die(msg.NoInputFile)
+  die(msg.WrongOutputMode, expectedmode, actualmode)
+    dirsep, pathsep = '\\', ';' -- Windows
+      ' -dMonoImageFilter=/CCITTFaxEncode' ..
+  dotypesetting=true,
+  else die(msg.MultiPicOnlyInPDF) end -- this should never happen
+  else die(msg.UnknownOption, argn) end
+    else filename = opt end
+  elseif (head == 'CachePic') and c1 and c2 and c3 and c4 and c5 then
+  elseif (head == 'Tightpage') and c1 and c2 and c3 and c4 then
+  elseif opt == 'all'   then options.redoall = true
+  elseif opt == 'eps'   then options.pdfoutput = false
+  elseif opt == 'multi' then options.multipicfile = true
+  elseif opt == 'nopic' then options.nopostprocess = true
+  elseif opt == 'notex' then options.dotypesetting = false
+  elseif opt == 'pdf'   then options.pdfoutput = true
+  elseif opt == 'tight' then options.noborder = true
+  elseif (opt == 'usage') or (opt == 'help') or (opt == 'h') or (opt == '?') then 
+  else return ret end
+  -eps          output in eps format
+  error(string.format(msgfmt, ...))
+    ext = '.eps'
+    ext = '.pdf'
+    -- extra run through GhostScript seems to prevent that 
+    filename = '"' .. filename .. '"'
+    filename = qfile(noextname .. jobsuffix .. '.dvi')
+    filename = qfile(noextname .. jobsuffix .. '.pdf')
+  filename = string.gsub(filename, '"', '')
+filename = string.gsub(filename, '\\', '/')
+  FileOpenFailed = "could not open file: %s",
+  fin:close()
+for _, argn in ipairs(arg) do
+  for dir in string.gmatch(path, '[^' .. pathsep .. ']+') do
+  for _, fname in ipairs{'gs', 'gswin32c.exe', 'mgs.exe'} do
+  for i = 1, #pics do
+for i = 1, #pics do
+for line in iLines do
+  fout:close()
+    fout:write(buffer)    
+function die(msgfmt, ...)
+function warn(msgfmt, ...)
+--[[-- GS options preventing lossy image recompression
+  -help,-h,-?   display help message]]
+if #arg == 0 then 
+    if filename then die(msg.MultipleInputFiles, filename, opt)
+  if head == 'PDFoutput' then
+  if isfile(fname) then return fname end
+    if isfile(f) then return f end
+if not filename then
+  if not fin then die(msg.FileOpenFailed, src) end
+  if not fout then die(msg.FileOpenFailed, dst) end
+    if not isfile(outfile) or options.redoall then
+  if num == 0 then -- not an option
+if options.dotypesetting then
+if options.multipicfile and not options.pdfoutput then
+if options.multipicfile then
+if options.nopostprocess then return end
+  if options.pdfoutput then
+  if options.pdfoutput then 
+    if opt == 'usage' then os.exit(0) end
+  if (os.type == 'windows') or string.find(path, '\\') or string.find(path, ';') then
+if pdfmode ~= options.pdfoutput then
+if #pics == 0 then
+  if ret > 0 then os.exit(ret)
+  if string.find(filename, "[%s%&%(%)%[%]%{%}%^%=%;%!%'%+%,%`%~]") then
+  -- if we are not running under texlua, then do it the hard way
+    if whichfile(fname, path) then return fname end
+io.close()
+io.output(noextname .. '.cachepic')
+  io.write(pics[i].macro, '\n')
+  -- iterate path
+  local actualmode = pdfmode and 'pdf' or 'dvi'
+    local baseline = tonumber(c4) or 0
+  local buffer, bufsize = '', 1024
+  local command = engine .. ' -interaction=nonstopmode -jobname=' .. jobname .. jobsuffix ..
+  local dirsep, pathsep = '/', ':'
+  local engine = (options.pdfoutput and 'pdflatex' or 'latex')
+  local expectedmode = options.pdfoutput and 'pdf' or 'dvi'
+  local ext, cmdtmpl
+    local f = dir .. dirsep .. fname
+  local fh = io.open(fname)
+local filename = nil
+  local fin = io.open(src, 'rb')
+  local fout = io.open(dst, 'wb')
+local function copyfile(src, dst)
+local function findgs()
+local function qfile(filename)
+local function syscall(command)
+local function whichfile(fname, path)
+  local head, c1, c2, c3, c4, c5 = string.match(line, 
+local helptext = [[
+local iLines = io.lines(noextname .. jobsuffix .. '.log')
+local isfile = lfs and lfs.isfile or function (fname)
+local jobname = string.match(noextname, '[^/]+$')
+local jobsuffix = (options.dotypesetting and '_cptmp' or '')
+local msg = {
+local multipicfilename = noextname .. '-cachepic.pdf'
+  local noborder = (options.noborder and ' \\PreviewBorder=0pt' or '')
+local noextname = string.gsub(filename, '%.[^./]*$', '')
+local options = {
+  local opt, num = string.gsub(argn, '^%-%-?', '')
+    local outfile = string.gsub(pics[i].name, '"', '') .. ext
+  local path = os.getenv('PATH')
+local pdfmode = options.pdfoutput
+    local picname = c5
+    local picpage = tonumber(c1)
+local pics = {}
+  local psfixbb = (options.pdfoutput and '' or ',psfixbb')
+  local redoall = (options.redoall and ' \\makeatletter\\def\\cachepic@tryincludepic#1#2{\\xdef\\cachepic@name{#1}#2}\\makeatother' or '')
+  local ret = os.execute(command)
+    local texmacro = string.format('\\CachePicDefMacro{%s}{%d}{trim=%s}{%dsp}', 
+local trim = '0 0 0 0'
+local tryhelp = "Try `cachepic --help' for more information"
+local usagetext = 'Usage: cachepic [options] latexfile' 
+  -- make the best guess if it is Windows or Unix
+  -multi        all graphics in one file (implies -pdf)
+  multipicfile=false,
+  MultiPicOnlyInPDF = "option '-multi' for all graphics in one file supported only in pdf mode"
+  MultipleInputFiles = "cannot process multiple files:\t%s\t%s",
+  noborder=false,
+                  noborder .. redoall .. ' \\input{' .. qfile(filename) .. '}'
+  NoGhostScript = "could not locate ghostscript interpreter",
+  NoInputFile = "no input file given\n" .. tryhelp,
+    -- no perfect solution it seems
+  -nopic        generate no graphics, only .cachepic file
+  nopostprocess=false,
+  NoPreviews = "no cachepic previews found",
+  -notex        no typesetting, only graphic postprocessing
+  options.multipicfile = false
+Options start with '-' or '--' and can be any of:
+    os.exit(0)
+  os.exit(0)
+      outfile = qfile(outfile)
+    pdfmode = (tonumber(c1) ~= 0)
+  -pdf          output in (e)pdf format (default)
+  pdfoutput=true,
+                                   picname, picpage, trim, -baseline)
+    pics[#pics+1] = {name=picname, page=picpage, macro=texmacro}
+-- Postprocess pics --
+    '^Preview:%s*([A-Za-z]+)%s*(%-?%d*)%s*(%-?%d*)%s*(%-?%d*)%s*(%-?%d*)%s*(.*)')
+  print('copy ' .. qfile(src) .. ' ' .. qfile(dst))
+    -- print(f)
+    print(helptext)
+  print('system: ' .. command)
+  print(tryhelp)
+    print(usagetext)
+  print(usagetext)
+  print('warning: ' .. string.format(msgfmt, ...))
+-- Process log file --
+-- Process options --
+  redoall=false,
+                  ' \\RequirePackage[active,tightpage,delayed,cachepic' .. psfixbb .. ']{preview}' .. 
+  return
+  return (fh and (fh:close() or true) or false)
+  return filename
+  return nil
+      ' -sDEVICE=pdfwrite -dQUIET -dBATCH -dNOPAUSE -dCompatibilityLevel=1.4' .. 
+  syscall(command)
+      syscall(string.format(cmdtmpl, pics[i].page, pics[i].page, outfile, filename))
+  -tight        no 0.5bp margin around the graphic
+                         -tonumber(c1), -tonumber(c2), tonumber(c3), tonumber(c4))
+    trim = string.format('%dsp %dsp %dsp %dsp', 
+-- Typeset document --
+  UnknownOption = "unknown option: %s\n" .. tryhelp,
+  -usage        display usage message
+#!/usr/bin/env texlua
+  warn(msg.MultiPicOnlyInPDF)
+  warn(msg.NoPreviews)
+  while buffer do
+    -- without option -all the file size will slowly grow
+-- Write out cachepic macros --
+  WrongOutputMode = "expected %s output but got %s",

@@ -1,0 +1,470 @@
+		  		};
+1) B<Pre made config files:> These files can be specified with the
+2) B<Directly on the cmd line:>
+3) B<Package files:>
+activated via the updmap(-sys) mechanism.
+additional languages, or format definitions you can use three
+add ${misc:Depends} to all packages' dependencies.
+	addsubstvar($package, "misc:Depends", "dpkg", ">= 1.14.18");
+	addsubstvar($package, "misc:Depends", "tex-common", ">= 2.00");
+a different priority than the default one if no debian/package.maps nor
+allows the activation of single map files even if they are not automatically
+# along with this program; see the file COPYING. If not, write to the
+		# also include the full code
+an additional package.cfg/cnf (Variant 1) without a different priority than
+and a file /etc/texmf/hyphen.d/20package.cnf containing the lines
+and both are licensed under the GNU General Public License Version 2 or later.
+and new hyphenation patterns with TeX.
+any command line Map files are present.
+are stored in the respective config file 20package
+as /etc/texmf/fmt.d/42bar.cnf.
+	# as they vary with package
+At the moment you can select from the following list of flavors:
+		autoscript($package, "postinst", "postinst-tex", "s|#FORMATSFILES#|@fmtconffiles|; s|#WHATTODO#|@whattodo|");
+		autoscript($package, "postrm",   "postrm-tex", "s|#FORMATS#|@postrmfmtdata|; s|#WHATTODO#|@whattodo|");
+B<dh_installtex>
+between invocations of this command, unless using the B<-n> option.
+[B<--flavor=>I<flavor>[,I<flavor>]]
+B<format:add_one:I<formatname>> allows to add the generation of a specific
+B<format:build_all>, B<format:add_one:I<formatname>>, and
+B<format:build_all> will add code to the postinst script to create all
+[B<formatfile=>I<file.cnf>[=I<n>]]
+[B<format=>I<format>,I<engine>,I<hyphenfile>,I<rest args>]
+B<format:no_links>:
+[B<hyphenfile=>I<file.cnf>[=I<n>]]
+[B<hyphen=>I<lang>,I<file>[,lhm=I<n>][,rhm=I<n>][,synonym=I<syn>,...]]
+B<lsr:full>.
+B<lsr:full>: Recreate the lsr database not only for the standard trees,
+B<map:config_for_active_maps>, B<map:config_for_all_maps>, 
+B<map:config_for_active_maps> will create a file I<config.bar> for each active
+[B<mapfile=>I<file.cfg>[=I<n>]]
+[B<map=Map,>I<file.map>]
+[B<map=MixedMap,>I<file.map>]
+			$bn=basename($_);
+				$bn =~ s/\.$configfileext{$type}$//;
+# Boston, MA  02110-1301 USA.
+[B<--priority=>I<n>]
+# build_line
+but also the distribution tree C</usr/share/texmf-texlive>.
+B<WARNING> This program does B<not> check for the actual existence of any 
+# check wether a magic comment is already present
+				close(CFGFILE);
+			close(CFGFILE);
+			close(CNFFILE);
+				close(FOO);
+			close(FOO);
+			close(LISTFILE);
+		%cmdlineargs = ();
+			@cmdlinearguments = @{$cmdlineargs{$type}};
+			@cmdlineconfigfiles = keys(%priorityhash);
+		%cmdlinefilespriority = ();
+		$cmdlinefilespriority{$type}{$fn}=$pr;
+# collect data
+					collect_data($type,\@{$data{$type}},$_);
+				collect_data($type,\@{$data{$type}},$_);
+				collect_data($type,\@{$data{$type}},$foo);
+# comment char for magic header
+		# config files, or a package (e.g., debian/pkg.maps) file 
+# config files. Up to now we have to do the following:
+# Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Norbert Preining
+# Copyright (C) 2006, 2007 Florent Rougon
+# Copyright (C) 2006, 2007 Frank K
+# 		- creation of links /usr/bin/format -> /usr/bin/engine
+debian/control, but if you use -p, -i, or -a flags, it will be the first
+debian/package.formats or debian/formats. These files are
+(debian/package.hyphens, debian/package.formats)
+debian/package.hyphens or debian/hyphens, 
+"-_- DebPkgProvidedMaps -_-", "");
+Default is I<not> to generate any config files.
+defined formats, and to the postrm script to clean and recreate? FIXME?
+# definitions for the different flavors
+dependency to ${misc:Depends}.)
+        dh_installtex
+	dh_installtex
+dh_installtex is a debhelper program that is responsible for
+        dh_installtex mapfile=foo.cfg formatfile=debian/bar.cnf=42
+        dh_installtex map=Map,foo.map hyphen=french,loadhyph-fr.tex,lhm=2,rhm=3,synonym=patois,synonym=francais
+dh_installtex - register Type 1 fonts, hyphenation patterns, or formats with TeX
+# dh_installtex --- register Type 1 fonts, languages, or formats with TeX
+different I<type>file= options, together with an optional priority.
+different methods to specify what should be installed:
+# directory under /etc/texmf/ where files are installed
+# directory under /var/lib/tex-common where list files are installed
+			$doallformats = 1;
+			$dofilen = "$tmp/etc/texmf/$configdir{$type}/$pr$bn";
+			$dofilen = "$tmp/etc/texmf/$configdir{$type}/$priority$package.$configfileext{$type}";
+			$dofilen = "$tmp/usr/share/texmf/dvips/config/config.$font";
+			$dofilen = "$tmp/var/lib/tex-common/$managedir{$type}/$package.list";
+			$doformatlinks = 0;
+			$dofulllsr = 1;
+			doit("install","-d","$tmp/etc/texmf/$configdir{$type}/");
+		doit("install","-d","$tmp/usr/share/texmf/dvips/config/");
+				doit("install","-d","$tmp/var/lib/tex-common/$managedir{$type}/");
+					doit("ln","-s","$engine","$formatlink");
+					doit("mkdir","-p","$tmp/usr/bin");
+Do not modify postinst/prerm scripts.
+		# do the full maintainer stuff!
+# dummy loop variables
+	} else {
+		} else {
+			} else {
+				} else {
+			} elsif ($a eq "rhm") {
+			} elsif ($a eq "synonym") {
+			} elsif ($engine eq "mpost") {
+		} elsif ($fl eq "format:build_all") {
+		} elsif ($fl eq "format:no_links") {
+		} elsif ($fl eq "lsr:full") {
+		} elsif ($fl eq "map:config_for_all_maps") {
+		} elsif ($fl =~ /^format:add_one:(.*)$/) {
+	} elsif (m/^(map|hyphen|format)=(.*)$/) {
+	} elsif ($type eq "format") {
+	} elsif ($type eq "hyphen") {
+### End:
+					error("Cannot open $dofilen for writing!");
+				error("Cannot open $dofilen for writing!");
+				error("Cannot open $dofilen for writing/appending!");
+			error("$line is neither of the form Map filename.map, nor MixedMap filename.map.");
+				error("$line is not well formed.");
+			error("Specified flavor $fl not supported.\nPlease see man page for supported flavors!\n");
+					error("The config file $dofilen already exists! Cannot recreate it, please call dh_clean -k!");
+				error("The config file $dofilen already exists! Cannot recreate it, please call dh_clean -k!");
+				error("The dvips config file $dofilen already exists!\nYou may have to call dh_clean -k!\n");
+			error("This call would create multiple copies of $priority$package.$configfileext{$_}.\nPlease read the man page on how this should be fixed!\n");
+		error("Unrecognized argument: $_\n");
+/etc/texmf/fmt.d/, dh_installtex will create a symlink
+/etc/texmf/updmap.d/20package.cfg.
+even for those map files which are present in a cfg file, but deactivated by a comment.
+Example:
+example, /usr/bin/latex would be created as a symlink to pdftex.  
+exists, dh_installtex will skip this format with an informational
+explanation, warning and the pseudo-comment is added.
+# extension of package files debian/$package.formats and/or debian/formats etc
+# extension of the config files
+file and the merged file is installed as 20package.cfg/cnf. If you specify
+files will be installed into the first package dh_installtex
+				@fmtconffiles = @listlines;
+		@fmtpairs = @{$data{"format"}};
+			$font =~ s/\.map$//;
+# for config file for formats
+# for config file for maps
+foreach (@ARGV) {
+			foreach (@cmdlinearguments) {
+		foreach (@cmdlineconfigfiles) {
+					foreach $i (@magicheader) {
+		foreach $i (@mapdata) {
+			foreach (@listlines) {
+				foreach (@magicheader) {
+	foreach my $fl (split (/,/,$dh{FLAVOR})) {
+		foreach my $foo (@cmdlineconfigfiles) {
+foreach my $package (@{$dh{DOPACKAGES}}) {
+		foreach my $pair (@fmtpairs) {
+		foreach my $t (@whattodo) {
+	foreach my $type ("map", "hyphen", "format") {
+			foreach (@{$pkgprovidedfilecontents{$type}}) {
+		foreach (@rest) {
+	format 		=> '#', 
+	format 		=> "cnf", 
+	format 		=> "fmt.d", 
+	format 		=> "fmtutil-cnf", 
+	format 		=> "formats", 
+format without actually providing it (in a cnf file).  This is useful if a 
+for TeX by Debian packages.
+	# for trigger support
+# Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+# General Public License for more details.
+# 		- generation with fmtutil-sys --byfmt
+# GLOBAL VARIABLES
+=head1 AUTHOR
+=head1 COMPLEX USAGE: Registering fonts, hyphenation patterns and formats
+=head1 DESCRIPTION
+=head1 NAME
+=head1 NOTES
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SIMPLE USAGE: Registering Files 
+=head1 SYNOPSIS
+=head2 Mixing the different variants
+=head2 The pseudo-comment
+	hyphen	 	=> '%', 
+	hyphen	 	=> "cnf", 
+	hyphen	 	=> "hyphen-cnf", 
+	hyphen	 	=> "hyphen.d", 
+	hyphen 		=> "hyphens", 
+(i.e. uncommented) map in each of the cfg file generated by one of the
+	if ($#addbuildformats >= 0) {
+			if ($a eq "lhm") {
+			if ($bn eq "$package.$configfileext{$type}" && $cmdlinefilespriority{$type}{$foo} == $priority) {
+		if (($comment eq "") || ($mapdoconfig == 2)) {
+		if (defined($4)) {
+		if (defined($cmdlineargs{$type})) {
+		if (defined($cmdlinefilespriority{$type})) {
+	if (defined($data{"format"})) {
+	if (defined($data{"map"})) {
+if (defined($dh{FLAVOR})) {
+if (defined($dh{PRIORITY}) && $dh{PRIORITY} ne '') {
+	if (! $dh{NOSCRIPTS}) {
+		if ( ! $dh{ONLYSCRIPTS} && ! -d "$tmp/etc/texmf/$configdir{$type}/") {
+	if ( ! $dh{ONLYSCRIPTS} && ($#mapdata >= 0) ) {
+		if ( ! $dh{ONLYSCRIPTS} && ( $pkgprovidedfile || ($#cmdlinearguments >= 0) )) {
+	if ($doallformats == 1) {
+			if ($doformatlinks && ($format ne $engine)) {
+			if ( ! -d "$tmp/var/lib/tex-common/$managedir{$type}/") {
+				if ( -e $formatlink ) {
+			if ($engine =~ m/^(mf|mf-nowin)$/) {
+		if ($fl eq "map:config_for_active_maps") {
+If in addition, you have to install map files, hyphenation patterns for
+		if ($line =~ m/^(Map|MixedMap),(.*)$/) {
+	if ($line =~ m/^[[:space:]]*([#[:space:]]*)[[:space:]]*(Mixed)?Map[[:space:]]*(.*\.map)[[:space:]]*(#.*)?$/) {
+	if ($line =~ m/^([^#\s]\S+)\s*(\S*)\s+/) {
+				if (!magic_comment_present($_)) {
+	if ($mapdoconfig == 0) { return ""; }
+		if ($m = extract_format($entry)) { push @$dataref, $m; }
+		if ($m = extract_map($entry, $mapdoconfig)) { push @$dataref, $m; }
+	if ((m/^(map)file=(.*\.cfg)(=([[:digit:]]+))?$/) ||
+	if (($package eq $dh{FIRSTPACKAGE} || $dh{PARAMS_ALL}) && @ARGV) {
+		if ($pkgfilename) {
+		if ($pkgfileoncmdline && ($pkgprovidedfile || ($#cmdlinearguments >= 0))) {
+		if (!$pkgprovidedfile && ($#cmdlineconfigfiles < 0) && ($#cmdlinearguments < 0)) {
+			if (($pkgprovidedfile && !magic_comment_present($pkgfilename)) ||
+		if ($#synonyms >= 0) {
+	if (system(@args) == 0) { return 1; }
+			if ($t eq "map") {
+If the provided cfg files do not contain the pseudo-comment as described
+			if ($type eq "format") {
+	if ($type eq "map") {
+# 	if we select to generate all dvips config files
+If you only install files into /usr/share/texmf and want to be sure that 
+If you select B<map:config_for_all_maps> the script will generate I<config.bar>
+		# in case we have allformats to do we ignore
+### indent-tabs-mode: t
+init(options => { "flavor=s" => \$dh{FLAVOR} });
+input files in TEXMF trees. If you call it without any further specification
+	INSTALLDVIPSCONF: do {
+installed into /etc/texmf/I<configdir>/ for the respective type (updmap.d for
+installed with default priority and the name of the package. Each of these
+ 	installformatlink: do {
+in the Debian TeX Policy, Font configuration, an additional header with
+in the postrm script when there is no functional mktexlsr), simply call
+is told to act on. By default this is the first binary package in
+=item B<--flavor=>I<flavor>[,I<flavor>]
+=item B<-n>, B<--noscripts>
+=item B<--priority=>I<n>
+# it under the terms of the GNU General Public License as published by
+I<type> can be one of map, format and hyphen, and these files will be
+		# 	language and format
+L<debhelper(7)>
+				$lhm = $b;
+### Local Variables:
+management functions to B<all> packages. In this case don't forget to 
+	map 		=> '#' );
+	map 		=> "cfg" );
+		@mapdata = @{$data{"map"}};
+			$mapdoconfig = 1;
+			$mapdoconfig = 2;
+		# map entries have already been filtered out
+map files, hyphen.d for hyphenation pattern files, and fmt.d for format files).
+	map 		=> "fontmap-cfg" );
+        Map foo.map
+	map 		=> "maps" );
+	map 		=> "updmap.d" );
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+		# merge in the cmd line arguments
+message, even if this option is not given.
+	    (m/^(format)file=(.*\.cnf)(=([[:digit:]]+))?$/)) {
+	    (m/^(hyphen)file=(.*\.cnf)(=([[:digit:]]+))?$/) ||
+mktexlsr is called in a correct way (e.g., also
+			my ($a,$b) = split("=", $_, 2);
+my @addbuildformats = (); # additional formats to be build
+	my @args = ( "grep", "-q", "^[#%] -_- DebPkgProvidedMaps -_-", $fname );
+			my @bar = <FOO>;
+			my $bn=basename($foo);
+my %cmdlineargs;
+		my @cmdlinearguments = ();
+		my @cmdlineconfigfiles = ();
+my %cmdlinefiles;
+my %cmdlinefilespriority;
+my @cmdlinetexmftrees;
+		my $comment = $1;
+my %commentchar = ( 
+my %configdir = ( 
+my %configfileext = ( 
+	my %data;
+my $doallformats = 0;	  # depending on flavor format:build_all
+my $dofilen;
+my $doformatlinks = 1;
+my $dofulllsr = 0;        # do include texmf-texlive in lsr making
+my $flavor;		
+	my @fmtconffiles;
+	my @fmtdata = ();
+	my @fmtpairs = ();
+		my $fn=$2;
+	my ($fname) = @_;
+			my $font = $i;
+				my $foo =  build_line($type,$_);
+			my ($format,$engine) = $pair =~ m/^(.*)\t(.*)$/;
+		my ($format,$engine,$pat,@rest) = split(",",$line);
+				my $formatlink = "$tmp/usr/bin/$format";
+		my ($lang,$pat,@rest) = split(",",$line);
+		my $lhm;
+	my ($line) = @_;
+	my ($line,$mapdoconfig) = @_;
+		my @listlines;
+my @magicheader = ( "You can change/add entries to this file and changes will be preserved", 
+my %managedir = ( 
+		my $map = $3;
+	my @mapdata = ();
+my $mapdoconfig =  0;	  # doconfig depending map/subflavor
+		my @newwhat = ();
+my %pkgfileext = ( 
+		my $pkgfilename = pkgfile($package,$pkgfileext{$type});
+		my $pkgfileoncmdline = 0;
+		my $pkgprovidedfile = 0;
+	my %pkgprovidedfilecontents;
+	my @postrmfmtdata = ();
+my $priority=20;	# priority with which files are installed
+			my %priorityhash = %{$cmdlinefilespriority{$type}};
+		my $pr=$priority;
+		my $ret = "$format\t$engine\t$pat\t" . join(",",@rest);
+		my $ret="name=$lang file=$pat";
+		my $rhm;
+		my @synonyms = ();
+	my $tmp=tmpdir($package);
+		my $type=$1;
+	my ($type,$dataref,$entry) = @_;
+	my ($type,$line) = @_;
+	my @whattodo = ();
+	name=french file=loadhyphen-fr.tex lefthyphenmin=2 righthyphenmin=3 synonyms=patois,francais
+			next;
+Norbert Preining <F<preining@logic.at>> for the Debian Operating System
+Note that this command is not idempotent. "dh_clean -k" should be called
+"(not if you purged it). You should leave the following pseudo comment",
+		# now debian/package.maps and/or debian/maps formats languages
+of how this works.
+on which packages to work on (using C<-p> or C<-N>) it will add calls to
+				open(CFGFILE, ">$dofilen") ||
+			open(CFGFILE, ">$dofilen") || 
+			open(CNFFILE, ">$dofilen") ||
+				open(FOO,"<$_") || error("Cannot open $_ for reading!");
+			open(FOO, "<$pkgfilename") || error("$pkgfilename cannot be opened.");
+			open(LISTFILE, ">>$dofilen") ||
+Otherwise, it may cause multiple instances of the same text to be added
+"over upgrades, even if you have removed the main package prior",
+package adds hyphenation patterns to an existing formats.
+package.cfg/cnf without
+package specified by those flags.
+# parse the cmd line and fill in the various hashes
+### perl-indent-level: 4
+				$pkgfileoncmdline = 1;
+			$pkgprovidedfile = 1;
+				(!$pkgprovidedfile && ($#cmdlinearguments >= 0))) {
+			$pkgprovidedfilecontents{$type} = \@bar;
+Please refer to the Debian TeX policy for details about fonts configuration
+			$pr=$4;
+			$pr=$cmdlinefilespriority{$type}{$_};
+"present in the file!",
+					print CFGFILE $_; 
+				print CFGFILE "$_";
+						print CFGFILE "$commentchar{$type} $i\n";
+					print CFGFILE "$commentchar{$type} $_\n";
+					print CFGFILE "$commentchar{$type} $pr$bn\n";
+				print CFGFILE "$commentchar{$type} $priority$package.$configfileext{$type}\n";
+				print CFGFILE $foo,"\n";
+			print CNFFILE "p +$i\n";
+				print LISTFILE "$_\n";
+	$priority=$dh{PRIORITY};
+			push @addbuildformats , $1;
+		push @{$cmdlineargs{$1}}, $2;
+		push @fmtdata, @addbuildformats;
+			push @fmtdata, "$format";
+				push @listlines, "$pr$bn";
+			push @listlines, "$priority$package";
+		push @newwhat, "allformats";
+				push @newwhat, $t;
+		push @postrmfmtdata, @addbuildformats;
+				push @postrmfmtdata, "$engine/$format";
+			push @postrmfmtdata, "$format";
+				push @postrmfmtdata, "metafont/$format";
+				push @postrmfmtdata, "metapost/$format";
+				push @synonyms, $b;
+		push @whattodo, ($dofulllsr ? "lsrfull" : "lsr");
+		push @whattodo, $type;
+			-r $dofilen &&
+			-r $dofilen && 
+				-r $dofilen &&
+		$ret .= " lefthyphenmin=$lhm" if defined($lhm);
+		$ret .= "\n";
+		$ret .= " righthyphenmin=$rhm" if defined($rhm);
+			$ret .= " synonyms=" . join(",",@synonyms);
+	return "";
+	return 0;
+			return("$1 $2");
+		return "$1\t$2";
+			return $map;
+		return($ret);
+				$rhm = $b;
+Set the default priority to I<n> instead of 20.
+[S<I<debhelper options>>]
+specify a list from flavors to be selected.
+# START OF THE MAIN PROGRAM
+sub build_line {
+sub collect_data {
+sub extract_format {
+sub extract_map {
+sub magic_comment_present {
+### tab-width: 4
+that the update-* commands are available. (This program adds that
+		# the cmd line cfg files
+The command line items (Variant 2) are merged into the debian/package.maps 
+the default one on the cmd line, this will raise an error since both files
+The file I<config.bar> is used when called by `dvips -Pbar ...'. Thus it
+The flavor B<format:no_links> inhibits this. If a link already
+# the Free Software Foundation; version 2 dated June, 1991.
+the generated formats.
+# the magic header without comment chars
+	# these variables should be local to the loop over packages
+# This function is used to extract certain information from the respective
+This option will be used to switch additional options on. The argument
+This program and its documentation was written by
+This program automatically generates the postinst and postrm commands needed
+# This program is distributed in the hope that it will be useful, but
+# This program is free software; you can redistribute it and/or modify
+three methods described above. These files are installed in
+	# TODO should we do something with hypehn here!????
+to maintainer scripts.
+to register the fonts with TeX.  See L<dh_installdeb(1)> for an explanation
+	} unless ($dh{ONLYSCRIPTS});
+		}  unless ($dh{ONLYSCRIPTS});
+			} unless ($dh{ONLYSCRIPTS});
+updating the ls-R databases, registering map files, new formats, 
+use Debian::Debhelper::Dh_Lib;
+# used to create a correct config file entry from a cmd-line specification
+use strict;
+/usr/bin/I<format> that points to the corresponding engine.  For
+#!/usr/bin/perl -w
+/usr/share/texmf/dvips/config/.
+Usually, for every format that is specified in a configuration file in
+				verbose_print("Writing $dofilen");
+			verbose_print("Writing $dofilen");
+# vim:set tabstop=4 fileencoding=utf-8: #
+					warning("/usr/bin/$format already exists, skipping");
+# 	we collect the map files
+		# we do nothing here
+# 	we extract format\tengine for
+		# we got something, either a cmd line are for one of the
+			# we have nothing to do here, skip to the next one!
+		# we have to clear all the cmd line arguments!
+		@whattodo = @newwhat;
+				while (<FOO>) { 
+# 	(with map:config_for_active_maps or map:config_for_all_maps)
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+would be installed as 20package.cfg/cnf. You can only specify 
+would install a file /etc/texmf/updmap.d/20package.cfg containing the line
+would install a present debian/package.maps file as
+would install foo.cfg as /etc/texmf/updmap.d/20foo.cfg, and debian/bar.cnf
+			WRITECMDLINECFGFILE: do {
+		WRITELISTFILE: do {
+You can specify maps, formats, and hyphenations on the cmd line. The items
+You create a file debian/package.maps or debian/maps,
+Your package should depend on an appropriate version of tex-common so
+# You should have received a copy of the GNU General Public License

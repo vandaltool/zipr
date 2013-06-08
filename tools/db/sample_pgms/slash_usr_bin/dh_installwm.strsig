@@ -1,0 +1,60 @@
+		$ARGV[0]="/usr/bin/$ARGV[0]";
+			autoscript($package,"postinst","postinst-wm-noman","s:#WM#:$wm:;s/#PRIORITY#/$dh{PRIORITY}/",);
+						autoscript($package,"postinst","postinst-wm","s:#WM#:$wm:;s:#WMMAN#:$wmman.gz:;s/#PRIORITY#/$dh{PRIORITY}/",);
+			autoscript($package,"prerm","prerm-wm","s:#WM#:$wm:");
+B<dh_installwm> is a debhelper program that is responsible for
+B<dh_installwm> [S<I<debhelper options>>] [B<-n>] [B<--priority=>I<n>] [S<I<wm> ...>]
+between invocations of this command. Otherwise, it may cause multiple
+calculating the correct value.
+dh_installwm - register a window manager
+        $dh{PRIORITY}=20;
+Do not modify F<postinst>/F<prerm> scripts. Turns this command into a no-op.
+				foreach my $ext (".1", ".1x") {
+foreach my $package (@{$dh{DOPACKAGES}}) {
+F<usr/share/man/man1/> in the package build directory.
+generating the F<postinst> and F<prerm> commands that register a window manager
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 NOTES
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+if (@ARGV) {
+	if ($ARGV[0] !~ m:/:) {
+			if (! compat(5)) {
+if (! defined $dh{PRIORITY}) {
+	if (! $dh{NOSCRIPTS}) {
+					if (-e "$tmp$wmman" || -e "$tmp$wmman.gz") {
+	if ($file) {
+	if (($package eq $dh{FIRSTPACKAGE} || $dh{PARAMS_ALL}) && @ARGV) {
+	# include a path, assume it's in /usr/bin.
+instances of the same text to be added to maintainer scripts.
+=item B<-n>, B<--noscripts>
+=item B<--priority=>I<n>
+=item debian/I<package>.wm
+=item I<wm> ...
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+List window manager programs to register.
+most window managers; see the Debian Policy document for instructions on
+	my $file=pkgfile($package,"wm");
+	my $tmp=tmpdir($package);
+	my @wm;
+			my $wmman;
+						next WM;
+Note that this command is not idempotent. L<dh_prep(1)> should be called
+		push @wm, @ARGV;
+registered as a slave symlink (in v6 mode and up), if it is found in 
+Set the priority of the window manager. Default is 20, which is too low for
+	# This is here for backwards compatibility. If the filename doesn't
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w
+Window manager programs to register.
+with L<update-alternatives(8)>. The window manager's man page is also 
+		@wm=filearray($file, '.');
+WM:		foreach my $wm (@wm) {
+					$wmman="/usr/share/man/man1/".basename($wm).$ext;

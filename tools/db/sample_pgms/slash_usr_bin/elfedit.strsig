@@ -1,0 +1,103 @@
+/               
+//              
+ !"#$%&'()*+,-./0123456789:;<=>?@abcdefghijklmnopqrstuvwxyz[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+Au)\{g:)
+bindtextdomain
+binutils
+Copyright 2011 Free Software Foundation, Inc.
+Could not locate '%s'.  System error message: %s
+dcgettext
+__environ
+__errno_location
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+(GNU Binutils for Ubuntu) 2.22
+GNU %s %s
+  -h --help                   Display this information
+<http://www.sourceware.org/bugzilla/>
+Input file '%s' is not readable
+input-mach
+  --input-mach <machine>      Set input machine type to <machine>
+input-osabi
+  --input-osabi <osabi>       Set input OSABI to <osabi>
+input-type
+  --input-type <type>         Set input file type to <type>
+_IO_getc
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+out of memory
+Out of memory reading long symbol names in archive
+Out of memory whilst trying to convert the archive symbol index
+Out of memory whilst trying to read archive index symbol table
+Out of memory whilst trying to read archive symbol index
+output-mach
+  --output-mach <machine>     Set output machine type to <machine>
+output-osabi
+  --output-osabi <osabi>      Set output OSABI to <osabi>
+output-type
+  --output-type <type>        Set output file type to <type>
+__printf_chk
+Report bugs to %s
+%s: bad archive file name
+%s: did not find a valid archive header
+%s: Error: 
+%s: error: too many @-files encountered
+%s: failed to read archive header
+%s: failed to read archive header following archive index
+%s: failed to read archive index
+%s: failed to read archive index symbol table
+%s: Failed to read ELF header
+%s: Failed to read file's magic number
+%s: failed to read long symbol name string table
+%s: failed to seek to archive member
+%s: Failed to seek to ELF header
+%s: failed to seek to first archive header
+%s: failed to seek to next archive header
+%s: failed to seek to next file name
+%s: failed to skip archive symbol table
+%s: Failed to update ELF header: %s
+%s has no archive index
+'%s' is not an ordinary file
+'%s': No such file
+%s: Not an ELF file - wrong magic bytes at the start
+__snprintf_chk
+%s%sout of memory allocating %lu bytes after a total of %lu bytes
+%s[%s(%s)]
+__stack_chk_fail
+%s: the archive has an index but no symbols
+%s: the archive index is empty
+%s: the archive index is supposed to have %ld entries, but the size in the header is too small
+strcasecmp
+__strdup
+strerror
+%s: Unmatched EI_CLASS: %d is not %d
+%s: Unmatched EI_OSABI: %d is not %d
+%s: Unmatched e_machine: %d is not %d
+%s: Unmatched e_type: %d is not %d
+%s: Unsupported EI_VERSION: %d is not %d
+%s: Warning: 
+/SYM64/         
+the GNU General Public License version 3 or (at your option) any later version.
+ The options are:
+This program has absolutely no warranty.
+This program is free software; you may redistribute it under the terms of
+Unhandled data length: %d
+Unknown machine type: %d
+Unknown machine type: %s
+Unknown OSABI: %s
+Unknown type: %s
+Unsupported EI_CLASS: %d
+ Update the ELF header of ELF files
+Usage: %s <option(s)> elffile(s)
+/usr/share/locale
+__vfprintf_chk
+  -v --version                Display the version number of %s
+__xstat64

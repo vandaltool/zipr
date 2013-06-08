@@ -1,0 +1,237 @@
+0 <= strtol_base && strtol_base <= 36
+127; special values ^- or undef used to disable special characters.
+  -a, --all          print all current settings in human-readable form
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+bindtextdomain
+   [-]brkint     breaks cause an interrupt signal
+ * bsN           backspace delay style, N in [0..1]
+bug-coreutils@gnu.org
+   -cbreak       same as icanon
+   cbreak        same as -icanon
+cfgetispeed
+cfgetospeed
+cfsetispeed
+cfsetospeed
+                 characters to their default values
+   [-]clocal     disable modem control signals
+ * cols N        tell the kernel that the terminal has N columns
+ * columns N     same as cols N
+Combination settings:
+Control settings:
+   cooked        same as brkint ignpar istrip icrnl ixon opost isig
+   -cooked       same as raw
+Copyright %s %d Free Software Foundation, Inc.
+   [-]cread      allow input to be received
+ * crN           carriage return delay style, N in [0..3]
+crterase
+   [-]crterase   echo erase characters as backspace-space-backspace
+ * -crtkill      kill all line by obeying the echoctl and echok settings
+ * crtkill       kill all line by obeying the echoprt and echoe settings
+   crt           same as echoe echoctl echoke
+ * [-]crtscts    enable RTS/CTS handshaking
+   csN           set character size to N bits, N in [5..8]
+   [-]cstopb     use two stop bits per character (one with `-')
+ * [-]ctlecho    echo control characters in hat notation (`^c')
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+David MacKenzie
+dcgettext
+ * [-]decctlq    same as [-]ixany
+   dec           same as echoe echoctl echoke -ixany intr ^c erase 0177
+ * dsusp CHAR    CHAR will send a terminal stop signal once input flushed
+ * [-]echoctl    same as [-]ctlecho
+   [-]echo       echo input characters
+   [-]echoe      same as [-]crterase
+   [-]echok      echo a newline after a kill character
+ * [-]echoke     same as [-]crtkill
+   [-]echonl     echo newline even if not echoing other characters
+ * [-]echoprt    echo erased characters backward, between `\' and '/'
+   ek            erase and kill characters to their default values
+   eof CHAR      CHAR will send an end of file (terminate the input)
+ * eol2 CHAR     alternate CHAR for ending the line
+   eol CHAR      CHAR will end the line
+   erase CHAR    CHAR will erase the last character typed
+__errno_location
+   -evenp        same as -parenb cs8
+   evenp         same as parenb -parodd cs7
+  -F, --file=DEVICE  open and use the specified DEVICE instead of stdin
+ * ffN           form feed delay style, N in [0..1]
+For complete documentation, run: info coreutils '%s invocation'
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+  -g, --save         print all current settings in a stty-readable form
+Handle the tty line connected to standard input.  Without arguments,
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+   [-]hupcl      same as [-]hup
+   [-]hup        send a hangup signal when the last process closes the tty
+   [-]icanon     enable erase, kill, werase, and rprnt special characters
+                 icanon, eof and eol characters to their default values
+   [-]icrnl      translate carriage return to newline
+   [-]iexten     enable non-POSIX special characters
+   [-]ignbrk     ignore break characters
+   [-]igncr      ignore carriage return
+   [-]ignpar     ignore characters with parity errors
+ * [-]imaxbel    beep and do not flush a full input buffer on a character
+                 -imaxbel -opost -isig -icanon -xcase min 1 time 0
+                 -inlcr -igncr -icrnl  -ixon  -ixoff  -iuclc  -ixany
+   [-]inlcr      translate newline to carriage return
+   [-]inpck      enable input parity checking
+Input settings:
+   intr CHAR     CHAR will send an interrupt signal
+invalid argument %s
+invalid integer argument %s
+invalid line discipline %s
+_IO_stdin_used
+   [-]isig       enable interrupt, quit, and suspend special characters
+                 isig icanon iexten echo echoe echok -echonl -noflsh
+ispeed %lu baud; ospeed %lu baud;
+   ispeed N      set the input speed to N
+   [-]istrip     clear high (8th) bit of input characters
+iswprint
+ * [-]iuclc      translate uppercase characters to lowercase
+ * [-]iutf8      assume input characters are UTF-8 encoded
+ * [-]ixany      let any character restart output, not only start character
+   [-]ixoff      enable sending of start/stop characters
+                 -ixoff -iuclc -ixany imaxbel opost -olcuc -ocrnl onlcr
+   [-]ixon       enable XON/XOFF flow control
+   kill CHAR     CHAR will erase the current line
+                 kill ^u
+ * [-]LCASE      same as [-]lcase
+ * [-]lcase      same as xcase iuclc olcuc
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+line = %d;
+ * line N        use line discipline N
+   -litout       same as parenb istrip opost cs7
+   litout        same as -parenb -istrip -opost cs8
+ * lnext CHAR    CHAR will enter the next character quoted
+Local settings:
+%lx:%lx:%lx:%lx
+memory exhausted
+min = %lu; time = %lu;
+   min N         with -icanon, set N characters minimum for a completed read
+missing argument to %s
+mutually exclusive
+nl_langinfo
+ * nlN           newline delay style, N in [0..1]
+   -nl           same as icrnl -inlcr -igncr onlcr -ocrnl -onlret
+   nl            same as -icrnl -onlcr
+   [-]noflsh     disable flushing after interrupt and quit special characters
+   N             set the input and output speeds to N bauds
+ * [-]ocrnl      translate carriage return to newline
+   -oddp         same as -parenb cs8
+   oddp          same as parenb parodd cs7
+ * [-]ofdel      use delete characters for fill instead of null characters
+ * [-]ofill      use fill (padding) characters instead of timing for delays
+ * [-]olcuc      translate lowercase characters to uppercase
+ * [-]onlcr      translate newline to carriage return-newline
+ * [-]onlret     newline performs a carriage return
+only one device may be specified
+ * [-]onocr      do not print carriage returns in the first column
+                 -onocr -onlret -ofill -ofdel nl0 cr0 tab0 bs0 vt0 ff0
+   [-]opost      postprocess output
+Optional - before SETTING indicates negation.  An * marks non-POSIX
+  or:  %s [-F DEVICE | --file=DEVICE] [-a|--all]
+  or:  %s [-F DEVICE | --file=DEVICE] [-g|--save]
+   ospeed N      set the output speed to N
+Output settings:
+__overflow
+   [-]parenb     generate parity bit in output and expect parity bit in input
+   [-]parity     same as [-]evenp
+   [-]parmrk     mark parity errors (with a 255-0-character sequence)
+   [-]parodd     set odd parity (even with `-')
+   -pass8        same as parenb istrip cs7
+   pass8         same as -parenb -istrip cs8
+__printf_chk
+Print or change terminal characteristics.
+prints baud rate, line discipline, and deviations from stty sane.  In
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+prterase
+ * [-]prterase   same as [-]echoprt
+   quit CHAR     CHAR will send a quit signal
+   -raw          same as cooked
+   raw           same as -ignbrk -brkint -ignpar -parmrk -inpck -istrip
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+rows %d; columns %d;
+ * rows N        tell the kernel that the terminal has N rows
+ * rprnt CHAR    CHAR will redraw the current line
+%s, and %s.
+   sane          same as cread -ignbrk brkint -inlcr -igncr icrnl -iutf8
+%s: couldn't reset non-blocking mode
+setlocale
+settings, CHAR is taken literally, or coded as in ^c, 0x37, 0177 or
+settings.  The underlying system defines which settings are available.
+shell-always
+%s home page: <%s>
+ * size          print the number of rows and columns according to the kernel
+%s: no size information for this device
+__snprintf_chk
+Special characters:
+Special settings:
+speed %lu baud;
+   speed         print the terminal speed
+%s = %s;
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+standard input
+   start CHAR    CHAR will restart the output after stopping it
+   stop CHAR     CHAR will stop the output
+%s: unable to perform all requested operations
+   susp CHAR     CHAR will send a terminal stop signal
+ * swtch CHAR    CHAR will switch to a different shell layer
+ * tabN          horizontal tab delay style, N in [0..3]
+ * tabs          same as tab0
+ * -tabs         same as tab3
+   [-]tandem     same as [-]ixoff
+tcgetattr
+tcsetattr
+t$dkT$$,
+the options for verbose and stty-readable output styles are
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+   time N        with -icanon, set read timeout of N tenths of a second
+ * [-]tostop     stop background jobs that try to write to the terminal
+Try `%s --help' for more information.
+Usage: %s [-F DEVICE | --file=DEVICE] [SETTING]...
+/usr/share/locale
+      --version  output version information and exit
+ * vtN           vertical tab delay style, N in [0..1]
+ * werase CHAR   CHAR will erase the last word typed
+when specifying an output style, modes may not be set
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+                 -xcase -tostop -echoprt echoctl echoke, all special
+ * [-]xcase      with icanon, escape with `\' for uppercase characters
+xstrtol.c
+xstrtoul

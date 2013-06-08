@@ -1,0 +1,114 @@
+           ;;
+# -----------------
+# ------------------
+# ----------------------------------------------------------------------------
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#!/bin/sh
+case "`uname`" in
+  cd "$saveddir"
+    CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+    CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
+  -classpath "${M2_HOME}"/boot/plexus-classworlds-*.jar \
+  ${CLASSWORLDS_LAUNCHER} "$@"
+CLASSWORLDS_LAUNCHER=org.codehaus.plexus.classworlds.launcher.Launcher
+  CYGWIN*) cygwin=true ;;
+cygwin=false;
+  Darwin*) darwin=true 
+darwin=false;
+  "-Dclassworlds.conf=${M2_HOME}/bin/m2.conf" \
+# distributed with this work for additional information
+  "-Dmaven.home=${M2_HOME}"  \
+  echo "Error: JAVA_HOME is not defined correctly."
+  # echo Using m2 at $M2_HOME
+  echo "Warning: JAVA_HOME environment variable is not set."
+  echo "  We cannot execute $JAVACMD"
+#     e.g. to debug Maven itself, use
+    else
+    . /etc/mavenrc
+exec "$JAVACMD" \
+  exit 1
+      export JAVA_HOME
+           fi
+# For Cygwin, ensure paths are in UNIX format before anything is touched
+# For Cygwin, switch paths to Windows format before running java
+# For Migwn, ensure paths are in UNIX format before anything is touched
+    . "$HOME/.mavenrc"
+#    http://www.apache.org/licenses/LICENSE-2.0
+      # IBM's JDK on AIX uses strange locations for the executables
+if $cygwin ; then
+if $cygwin; then
+    if expr "$link" : '/.*' > /dev/null; then
+    if [ ! `expr "$readLink" : '\([^ ]*\)'` = "no" ]; then
+  if [ -f /etc/mavenrc ] ; then
+  if [ -f "$HOME/.mavenrc" ] ; then
+if $mingw ; then
+  if [ -n "$javaExecutable" -a ! "`expr \"$javaExecutable\" : '\([^ ]*\)'`" = "no" ]; then
+  if [ -n "$JAVA_HOME"  ] ; then
+  if [ -r /etc/gentoo-release ] ; then
+if [ ! -x "$JAVACMD" ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+if [ -z "$JAVACMD" ] ; then
+           if [ -z "$JAVA_HOME" ] ; then
+if [ -z "$JAVA_HOME" ] ; then
+if [ -z "$JAVA_HOME" ]; then
+           if [ -z "$JAVA_VERSION" ] ; then
+if [ -z "$M2_HOME" ] ; then
+if [ -z "$MAVEN_SKIP_RC" ] ; then
+      JAVACMD="$JAVA_HOME/bin/java"
+      JAVACMD="$JAVA_HOME/jre/sh/java"
+    JAVACMD="`which java`"
+      javaExecutable="`readlink -f \"$javaExecutable\"`"
+  javaExecutable="`which javac`"
+    JAVA_HOME="`(cd "$JAVA_HOME"; pwd)`"
+    JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+    JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+      javaHome="`dirname \"$javaExecutable\"`"
+      javaHome=`expr "$javaHome" : '\(.*\)/bin'`
+    JAVA_HOME=`java-config --jre-home`
+      JAVA_HOME="$javaHome"
+#   JAVA_HOME - location of a JDK home dir
+             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/${JAVA_VERSION}/Home
+             JAVA_VERSION="CurrentJDK"
+# KIND, either express or implied.  See the License for the
+# Licensed to the Apache Software Foundation (ASF) under one
+# "License"); you may not use this file except in compliance
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    ls=`ls -ld "$PRG"`
+    M2_HOME="`(cd "$M2_HOME"; pwd)`"
+  M2_HOME=`cd "$M2_HOME" && pwd`
+    M2_HOME=`cygpath --path --windows "$M2_HOME"`
+    M2_HOME=`cygpath --unix "$M2_HOME"`
+  M2_HOME=`dirname "$PRG"`/..
+#   M2_HOME - location of maven2's installed home dir
+  # make it fully qualified
+# Maven2 Start Up Batch script
+  $MAVEN_OPTS \
+#   MAVEN_OPTS - parameters passed to the Java VM when running Maven
+#   MAVEN_SKIP_RC - flag to disable loading of mavenrc files
+mingw=false
+  MINGW*) mingw=true;;
+  [ -n "$CLASSPATH" ] &&
+  # need this for relative symlinks
+  [ -n "$JAVA_HOME" ] &&
+  [ -n "$M2_HOME" ] &&
+# Optional ENV vars
+# or more contributor license agreements.  See the NOTICE file
+# OS specific support.  $var _must_ be set to either true or false.
+  PRG="$0"
+      PRG="`dirname "$PRG"`/$link"
+      PRG="$link"
+    # readlink(1) is not available as standard on Solaris 10.
+    readLink=`which readlink`
+# regarding copyright ownership.  The ASF licenses this file
+# Required ENV vars:
+  ## resolve links - $0 may be a link to maven's home
+  saveddir=`pwd`
+#       set MAVEN_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
+# software distributed under the License is distributed on an
+# specific language governing permissions and limitations
+  # TODO classpath?
+# to you under the Apache License, Version 2.0 (the
+# under the License.
+# Unless required by applicable law or agreed to in writing,
+  while [ -h "$PRG" ] ; do
+# with the License.  You may obtain a copy of the License at

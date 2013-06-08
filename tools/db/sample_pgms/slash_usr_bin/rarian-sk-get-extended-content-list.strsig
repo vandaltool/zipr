@@ -1,0 +1,11 @@
+# Assume we're installed in the same place as get-cl
+#! /bin/sh
+    cat <<EOF
+# Copied and edited from scrollkeeper source tree
+`dirname $0`/rarian-sk-get-cl $1 scrollkeeper_extended_cl.xml
+    exit $1
+# If it ain't in the normal path, this is needed
+if test $# -ne 1; then
+# Simple wrapper to make calling scrollkeeper-get-cl (extended) easier
+    usage 1
+Usage: `basename $0` <LOCALE>

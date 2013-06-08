@@ -1,0 +1,96 @@
+ 2010-2011 Piotr O
+# all copies or substantial portions of the Software.
+arowski <piotr@debian.org>
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# -*- coding: UTF-8 -*-
+# copies of the Software, and to permit persons to whom the Software is
+# Copyright 
+    counter = 0
+                    counter += 1
+    d = destroyer()
+        default=False, help='be quiet')
+def destroyer():  # ;-)
+    def find_files_to_remove(pyfile):
+def main():
+    d.next()  # initialize coroutine
+        d.send(filename)
+    else:
+Examples:
+    except GeneratorExit:
+                except (IOError, OSError), e:
+        exit(1)
+        files = add_namespace_files(files, action=False)
+        files = dpf.from_directory(args, extensions=('.py', '.so'))
+            files = files & pfiles
+        files = pfiles
+        files = set(dpf.filter_out_ext(files, ('.so',)))
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    for filename in files:
+            for filename in find_files_to_remove(pyfile):
+        for filename in ("%sc" % pyfile, "%so" % pyfile):
+from debpython import files as dpf
+from debpython.namespace import add_namespace_files
+from os import environ, remove
+from os.path import exists
+# furnished to do so, subject to the following conditions:
+        help='specify Debian package name to clean')
+        help='turn verbose more one')
+    if args:
+            if exists(filename):
+if __name__ == '__main__':
+    if not options.package and not args:
+        if options.package:
+    if options.package:
+    if options.verbose or environ.get('PYCLEAN_DEBUG') == '1':
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+import logging
+import optparse
+import sys
+# initialize script
+# in the Software without restriction, including without limitation the rights
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        log.debug('args: %s', args)
+        log.debug('argv: %s', sys.argv)
+                    log.debug(e)
+        log.debug('options: %s', options)
+                    log.debug('removing %s', filename)
+                    log.error('cannot remove %s', filename)
+logging.basicConfig(format='%(levelname).1s: %(module)s:%(lineno)d: '
+        log.info('cleaning directories: %s', args)
+        log.info('cleaning package %s', options.package)
+        log.info("removed files: %s", counter)
+log = logging.getLogger(__name__)
+        log.setLevel(logging.DEBUG)
+        log.setLevel(logging.WARNING)
+    main()
+                           '%(message)s')
+# of this software and associated documentation files (the "Software"), to deal
+    options, args = parser.parse_args()
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    parser.add_option('-p', '--package',
+    parser.add_option('-q', '--quiet', action='store_false', dest='verbose',
+    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
+    parser = optparse.OptionParser(usage, version='%prog 1.0')
+        parser.print_usage()
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+        pfiles = add_namespace_files(pfiles, options.package, action=False)
+        pfiles = dpf.from_package(options.package, extensions=('.py', '.so'))
+        pfiles = set(dpf.filter_out_ext(pfiles, ('.so',)))
+    pyclean -p python-mako # all .py[co] files from the package
+    pyclean /usr/lib/python2.6/dist-packages # python2.6
+            pyfile = (yield)
+                    remove(filename)
+    """Removes every .py[co] file associated to received .py file."""
+sys.path.insert(1, '/usr/share/python/')
+# The above copyright notice and this permission notice shall be included in
+# THE SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+"""TODO: move it to manpage
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                try:
+    try:
+    usage = '%prog [-p PACKAGE] [DIR_OR_FILE]'
+#! /usr/bin/python
+# vim: et ts=4 sw=4
+        while True:
+                yield filename

@@ -1,0 +1,36 @@
+__bss_start
+__ctype_b_loc
+__ctype_toupper_loc
+-enlarge
+found %d colors - using the lookuptable-method
+found too many colors for fast lookuptable mode
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.7
+__gmon_start__
+Image too large, MaxPixels = %d x %d
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+out of memory allocating %ld bytes
+overflow2
+pm_allocarray
+pm_allocrow
+pm_close
+pm_error
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+ppm_computecolorhist
+ppm_init
+ppm_readppminit
+ppm_readppmrow
+rotating image for output
+-sharpness
+[-sharpness <1-4>] [-enlarge <1-3>] [-media <a,a4,as,a4s>] [-copy <1-9>] [-tiny] [-dpi300] [ppmfile]
+you just found a lethal bug.

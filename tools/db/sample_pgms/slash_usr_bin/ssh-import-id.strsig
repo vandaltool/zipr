@@ -1,0 +1,106 @@
+# Abort on any unhandled error
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Authors: Dustin Kirkland <kirkland@canonical.com>
+	bad_usage
+bad_usage() { usage 1>&2; echo "$@" 1>&2; exit 1; }
+#!/bin/sh
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#                    by default
+	case "$cur" in
+	cat <<EOF
+		cat "$tmp" || error "Could not write to stdout";
+		cat "$tmp" >> "$output" || error "Could not write to [$output]";
+clean_env="env -i"
+		continue
+#    Copyright (C) 2010 Canonical Ltd.
+	# Count lines
+	# Count valid keys
+	cur=${1}; next=${2};
+	[ -d "$dir" ] || error "Cannot create directory [$dir]"
+                         (default ~/.ssh/authorized_keys)
+	dir=${output%/*}
+	echo >> "$tmp" # needed for wc
+		-e|--environment) clean_env="" ;;
+	{ [ ! -e /etc/ssh/ssh_import_id ] || . /etc/ssh/ssh_import_id ; } || error "failed to source /etc/ssh/ssh_import_id"
+		-e ':join /^ssh-/!{ N; s/[\n\r]//g ; b join }' \
+	[ -e "$output" ] || (umask 0177 && touch "$output") ||
+		-e '/^\r/d' \
+error() {
+		error "Cannot create [$output]"
+		-e 's/[^a-zA-Z0-9@: .\/=+-]//g' "$1"
+	eval set -- "${getopt_out}" ||
+exit $rc
+for i in "$@"; do
+#                    from a public SSH keyserver; Launchpad.net
+	# from http://andy.wordpress.com/2008/09/17/urlencode-in-bash-with-perl/
+	get_authkeypath
+get_authkeypath() {
+getopt_out=$(getopt --shell sh --name "${0##*/}" \
+#    GNU General Public License for more details.
+      -h | --help        this help
+		-h|--help) usage; exit 0;;
+		home=$(echo "$pwline" | awk -F: '{print $6}') || error "Cannot determine home directory"
+	if ! $clean_env wget --quiet -O- "$url" > "$tmp"; then
+	if [ "${output}" = "-" ]; then
+	if ! validate_keys "$tmp"; then
+	if [ -z "$HOME" ]; then
+if [ -z "${output}" ]; then
+if [ -z "$URL" ]; then
+   import ssh keys for listed users, writing output to a file.
+info() {
+	info "Successfully authorized [$i]"
+#    it under the terms of the GNU General Public License as published by
+	i=$(url_encode "$i") || error "Failed encoding [$i]"
+	keys=$(grep -c "^ssh-[dr]s[sa] [a-zA-Z0-9: .\/=+-]\+ " "$1")
+	LC_COLLATE=C \
+	[ $lines -gt 0 ] && [ $keys -eq $lines ]
+	lines=$(wc -l < "${1}")
+	local home="${HOME}"
+long_opts="help,environment,output:"
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	mkdir -p -m 0700 "${dir}" 2>/dev/null || true
+[ -n "$1" ] || bad_usage "must give user"
+		[ -n "$home" ] || error "Home directory cannot be empty"
+		[ -n "$uid" ] || error "User id cannot be empty"
+[ -n "$URL" ] || error "URL must be set"
+# Obtain the URL string
+	# Only support writing to this user's authorized_keys file
+      -o | --output F    write output to file 'F' 
+		-o|--output) output="${2}"; shift;;
+   options:
+	--options "${short_opts}" --long "${long_opts}" -- "$@") &&
+output=""
+	output=${_RET}
+	printf "ERROR: %s\n" "$@" 1>&2
+	printf "INFO: %s\n" "$@" 1>&2
+	printf "%s" "$1" | perl -pe's/([^-_.~A-Za-z0-9])/sprintf("%%%02X", ord($1))/seg'
+	printf "WARNING: %s\n" "$@" 1>&2
+	# Prune blank lines, join lines that don't start with ^ssh-
+		pwline=$(getent passwd "$uid") || error "Cannot get passwd entry"
+ 		rc=$(($rc+1));
+	# remove invalid characters
+	_RET="${home}/.ssh/authorized_keys"
+#             Scott Moser <smoser@canonical.com>
+	sed -i	-e '/^$/d' \
+		--) shift; break;;
+short_opts="heo:"
+#    ssh-import-id - authorize a user by fetching their key
+#    the Free Software Foundation, version 3 of the License.
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+tmp=$(mktemp)
+trap "rm -f $tmp" EXIT HUP INT QUIT TERM
+		uid=$(id -u) || error "Cannot determine user id"
+url_encode() {
+	URL="https://launchpad.net/~%s/+sshkeys"
+	url=$(printf "$URL" "$i")
+usage() {
+Usage: ${0##*/} [options] USER_ID [USER_ID_2] ... [USER_ID_n]
+	# Validate counts match, and >0
+validate_keys() {
+# vi: ts=4 noexpandtab
+warn() {
+		warn "Failed to retrieve key for [$i] from [$url]"
+		warn "Invalid keys at [$url]"
+while [ $# -ne 0 ]; do
+#    You should have received a copy of the GNU General Public License

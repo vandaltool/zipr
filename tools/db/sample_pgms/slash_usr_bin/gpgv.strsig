@@ -1,0 +1,1170 @@
+                      
+0123456789
+01234567890abcdefABCDEF
+01234567890_-.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+0123456789abcdef
+0123456789abcdefABCDEF
+0123456789abcdefx
+ %02X%02X
+:%02x%c:
+:%02x%s:
+|$03|$ 1
+%04d-%02d-%02d
+%04d-%02d-%02d %02d:%02d:%02d
+%08lX%08lX [?]
+%08lX%08lX %d 0
+%08lX%08lX %d %d %02x %lu %d
+%08lX%08lX %.*s
+%08lX%08lX [uncertain] 
+0x%08lX%08lX
+1 bad signature
+1 signature not checked due to a missing key
+1 signature not checked due to an error
+%.20s %c 0 0
+[%.20s image of size %lu]
+%.20s ? %lu %lu
+%.20s X 100 100
+|$@3|$01
+|$(3|$$1
+3|$D3|$$
+3D$(3T$,#D$ #T$$
+|$$3|$H1
+3|$L3|$(1
+3t$P3t$ 1
+3T$t3D$p	
+\$4#L$41
+|$83|$01
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+!a->buflen
+a->buflen <= 512
+active_handles > 0
+add_gpg_control
+add_signature
+a->d.len < a->d.size
+a->d.start == 1
+a->d.start == a->d.len
+afx->what=%d
+                aka "%s"
+, algo: %d,%s hash: %d
+along with this software.  If not, see <http://www.gnu.org/licenses/>.
+ALREADY_SIGNED
+ambiguous option `%s'
+a notation name must have only printable characters or spaces, and end with an '='
+a notation name must not contain more than one '@' character
+a notation value must not use any control characters
+ANSI_X3.4-1968
+a->pkt->pkttype == PKT_PUBLIC_KEY || a->pkt->pkttype == PKT_PUBLIC_SUBKEY
+a->pkt->pkttype == PKT_SECRET_KEY || a->pkt->pkttype == PKT_SECRET_SUBKEY
+argidx < argspecs_len
+arg->vt == valuetable[arg->arg_pos-1].vt
+armor_filter
+armor-filter: control: %d
+armor: %s
+(A single dash may be used instead of the double ones)
+ask_for_detached_datafile
+__assert_fail
+assuming bad signature from key %s due to an unknown critical bit
+assuming %s encrypted data
+assuming signed data in `%s'
+ATTRIBUTE
+:attribute packet: %s
+(at your option) any later version.
+a->use == 1 || a->use == 2
+a user notation name must contain the '@' character
+auto-key-locate found fingerprint %s
+automatically retrieved `%s' via %s
+BACKUP_KEY_CREATED
+BADARMOR
+[bad attribute packet of size %lu]
+bad certificate
+bad passphrase
+BAD_PASSPHRASE
+bad public key
+bad secret key
+bad signature
+BAD signature from "%s"
+begin bzDecompress: avail_in=%u, avail_out=%u, inbuf=%u
+BEGIN_DECRYPTION
+BEGIN_ENCRYPTION
+begin inflate: avail_in=%u, avail_out=%u, inbuf=%u
+BEGIN PGP ARMORED FILE
+BEGIN PGP MESSAGE
+BEGIN PGP PRIVATE KEY BLOCK
+BEGIN PGP PUBLIC KEY BLOCK
+BEGIN PGP SECRET KEY BLOCK
+-----BEGIN PGP SIGNATURE-----
+BEGIN PGP SIGNATURE
+BEGIN PGP SIGNED MESSAGE
+BEGIN_SIGNING
+BEGIN_STREAM
+be somewhat more quiet
+Big Brother's key (ignored): 
+bindtextdomain
+block_filter
+block_filter: 1st length byte missing
+block_filter: 2nd length byte missing
+block_filter: invalid 4 byte length
+block_filter: pending bytes!
+block_filter %p: read error (size=%lu,a->size=%lu)
+block_filter: write error: %s
+!bp_marker
+__bss_start
+buffer shorter than attribute subpacket
+buffer shorter than subpacket
+build_packet
+build_packet(%d) failed: %s
+build_packet(PKT_COMPRESSED) failed
+build_packet() type=%d
+build_sig_subpkt
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+BZ2_bzCompress
+BZ2_bzCompressEnd
+BZ2_bzCompressInit
+BZ2_bzDecompress
+BZ2_bzDecompressEnd
+BZ2_bzDecompressInit
+bz2lib deflate problem: rc=%d
+bz2lib inflate problem: rc=%d
+bz2lib problem: %d
+bzCompress: iobuf_write failed
+c=%02x a=%d f=
+c <= 0x1f
+C,9C(s?1
+cache_public_key: already in cache
+cache_user_id
+cache_user_id: already in cache
+caching keyring `%s'
+calc_packet_length
+cancel|cancel
+canceled
+cannot avoid weak key for symmetric cipher; tried %d times!
+can't allocate lock for `%s'
+can't allocate memory pool of %u bytes
+can't attach %uk shared memory: %s
+Can't check signature: %s
+can't cope with hdrlen yet
+can't create directory `%s': %s
+can't create `%s': %s
+can't disable core dumps: %s
+can't disable pubkey algo %d: table full
+can't encode a %d bit key in a %d bits frame
+can't encode a %d bit MD into a %d bits frame
+can't get %uk of shared memory: %s
+can't handle public key algorithm %d
+can't handle text lines longer than %d characters
+can't handle this ambiguous signature data
+can't hash datafile: %s
+can't lock memory: %s
+can't lock `%s'
+can't lseek: %s
+can't mmap pool of %u bytes: %s - using malloc
+can't open fd %d for attribute output: %s
+can't open fd %d for logging: %s
+can't open fd %d for status output: %s
+can't open `%s'
+can't open signed data `%s'
+can't open `%s': %s
+can't open the keyring
+can't remove the last filter from the chain
+can't rewind fd %d: %s
+can't seek `%s'
+can't seek: %s
+can't unlock `%s'
+CARDCTRL
+card-no: 
+      Card serial no. =
+ caught ... exiting
+" %c%c%c%c
+%c%c %c%c%c%c%c%c %s %s
+	checking subkey %08lX
+check_key_signature2
+check_revocation_keys
+check_sig_and_print
+Check signatures against known trusted keys
+	checksum: %04hx
+checksum error
+choosing a random k 
+choosing a random k of %u bits
+choosing a random x 
+choosing a random x of size %u
+../../cipher/dsa.c
+../../cipher/elgamal.c
+../../cipher/md.c
+../../cipher/pubkey.c
+  class=%02x keyid=%08lX ts=%lu
+clearerr
+clearsig encountered while not expected
+cleartext signature without data
+client modified shm control block - abort
+client returns too large data (%u bytes)
+!c->list
+Command "%.50s" is ambiguous
+Comment: 
+compare_name
+:compressed packet: algo=%d
+compress_filter
+compress_filter_bz2
+_CONSOLE
+conversion from `%s' to `%s' failed: %s
+conversion from `%s' to `%s' not available
+copy_packet: compressed!
+copy_public_key
+Copyright (C) 2010 Free Software Foundation, Inc.
+, count %lu (%lu)
+!c->pipemode.op
+c->pipemode.op == 'B'
+CRC error; %06lX - %06lX
+created: %s
+critical 
+Critical preferred keyserver: 
+Critical signature notation: 
+Critical signature policy: 
+%c       %s %s   
+ ctrl=%d len=%u
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+::%d:%08lX%08lX:%s:%s:
+D$0$9L$8
+|$D3|$<1
+data not saved; use option "--output" to save it
+[%d attributes of size %lu]
+%d bad signatures
+dbgmd-%05d.%.10s
+dcgettext
+:%d:%d:%d
+DECRYPTION_FAILED
+decryption failed: %s
+decryption okay
+DECRYPTION_OKAY
+deflateEnd
+deflateInit_
+deflateInit2_
+deflate: iobuf_write failed
+ - deleted
+DELETE_PROBLEM
+delete_sig_subpkt
+delete_subpkt: buffer shorter than subpacket
+Detached signature.
+detached_signature.filename
+/dev/null
+                did (%s)
+	digest algo %d, begin of digest %02x %02x
+directory `%s' created
+Dl../../mpi/mpi-pow.c
+:%d:%lu:%lu
+DNS CERT
+__dn_skipname
+do_check_sig
+do_encrypted_mdc
+do_format
+[don't know]
+do_plaintext(): wrote %lu bytes but expected %lu bytes
+do_reorder_keyblock
+do_secret_key
+do_shm_get
+do_symkey_enc
+do_symkey_enc: s2k=%d
+do_uncompress: returning %u bytes
+Do we really need this here?
+dsa  g= 
+DSA key %s requires a %u bit or larger hash
+DSA key %s uses an unsafe (%u bit) hash
+dsa  p= 
+dsa  q= 
+DSA requires the hash length to be a multiple of 8 bits
+DSA:: sign, verify failed
+dsa  x= 
+dsa  y= 
+%d signatures not checked due to errors
+%d signatures not checked due to missing keys
+dummydata
+dummy m_size called
+dump_attribs
+--dump-options
+dump-options
+%d %u %u 
+ed->mdc_method
+Elgamal operation: encrypt, decrypt failed
+elg  g= 
+elg  p= 
+elg  x= 
+elg  y= 
+encode_md_value
+encode_session_key
+:encrypted data packet:
+encrypted_mdc packet with unknown version %d
+	encrypted stuff follows
+encrypted with 1 passphrase
+encrypted with %lu passphrases
+encrypted with %s key, ID %s
+encrypted with %u-bit %s key, ID %s, created %s
+encrypted with unknown algorithm %d
+enc->version == 4
+END_DECRYPTION
+END dummy
+END_ENCRYPTION
+END PGP ARMORED FILE
+END PGP MESSAGE
+END PGP PRIVATE KEY BLOCK
+END PGP PUBLIC KEY BLOCK
+END PGP SECRET KEY BLOCK
+END PGP SIGNATURE
+END_STREAM
+enter bzCompress: avail_in=%u, avail_out=%u, flush=%d
+enter bzDecompress: avail_in=%u, avail_out=%u
+enter deflate: avail_in=%u, avail_out=%u, flush=%d
+enter inflate: avail_in=%u, avail_out=%u
+Enter new filename
+__errno_location
+error checking usability status of %s
+error closing `%s': %s
+error creating keyring `%s': %s
+error creating `%s': %s
+Error flushing plaintext: %s
+error reading key: %s
+ERROR: unexpected packet type %d
+Error writing to `%s': %s
+estream_asprintf failed: %s
+estream_vasprintf
+exceeded --max-output limit
+expected public key but found secret key - must stop
+experimental / private subpacket
+expired: %s
+Expired signature from "%s"
+expires: %s
+EXPKEYSIG
+failed to drop setuid
+failed to rebuild keyring cache: %s
+failed to reset uid: %s
+fatal: out of memory
+fatal: too many args for xstrconcat
+fd_cache_close (%d) real
+fd_cache_close (%s) new slot created
+fd_cache_close (%s) used existing slot
+fd_cache_invalidate (all)
+fd_cache_invalidate (%s)
+fd_cache_open (%s) not cached
+fd_cache_open (%s) using cached fp
+fd_cache_synchronize (%s)
+|FD|write status info to this FD
+features:
+file close error
+file create error
+file delete error
+FILE_DONE
+FILE_ERROR
+file exists
+file_filter
+file_filter(fd)
+file open error
+file read error
+file rename error
+File `%s' exists. 
+FILE_START
+file write error
+fingerprint_from_pk
+fingerprint_from_sk
+finish_lookup
+finish_lookup: checking key %08lX (%s)(req_usage=%x)
+flush on non-output iobuf
+fpr:::::::::
+__fprintf_chk
+fpr_len<=20
+free block_filter %p
+free_packet() type=%d
+free_user_id
+fseeko64
+fstat() failed: %s
+__fxstat64
+../../g10/armor.c
+../../g10/build-packet.c
+../../g10/compress-bz2.c
+../../g10/compress.c
+g10err=%d
+../../g10/free-packet.c
+../../g10/getkey.c
+../../g10/keydb.c
+../../g10/keyid.c
+../../g10/keylist.c
+../../g10/keyring.c
+../../g10/mainproc.c
+../../g10/parse-packet.c
+../../g10/plaintext.c
+../../g10/seskey.c
+../../g10/sig-check.c
+../../g10/signal.c
+../../g10/status.c
+../../g10/textfilter.c
+general error
+generate
+GET_LINE
+get_pubkey_byfprint_fast
+get_pubkey_byname
+get_pubkey_fast
+getpwnam
+getpwuid
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+	gnu-divert-to-card S2K
+	gnu-dummy S2K
+GNU General Public License for more details.
+GNU/Linux
+~/.gnupg
+[GNUPG:] 
+GnuPG 1.x
+GNUPGHOME
+gnupg-ring:
+[GNUPG:] %s 
+GOOD_PASSPHRASE
+Good signature from "%s"
+gpg-control
+- gpg control packet
+gpg --rebuild-keydb-caches
+gpgv (GnuPG)
+|$H3|$<1
+handle plaintext failed: %s
+hash_algo
+hash_uid_node
+!hd->current.iobuf
+Hint: backup your keys and try running `%s'
+http://www.gnupg.org/faq/features-not-in-gnupg-1.html
+http://www.gnupg.org/faq/subkey-cross-certify.html
+http://www.gnupg.org/faq/weak-digest-algos.html
+http://www.gnupg.org/faq/why-not-idea.html
+iconv_close
+iconv_open
+iconv_open failed: %s
+IDEA cipher unavailable, optimistically attempting to use %s instead
+idx >= 0 && idx < (1<<k)
+ignore-time-conflict
+IMPORT_CHECK
+IMPORTED
+IMPORT_OK
+IMPORT_RES
+increasing temp iobuf from %lu to %lu
+inflateEnd
+inflateInit_
+inflateInit2_
+init block_filter %p
+i == nlimbs
+input line longer than %d characters
+input line %u too long or missing LF
+invalid argument
+Invalid argument for ArgParse
+invalid armor
+invalid armor header: 
+invalid armor: line longer than %d characters
+invalid clearsig header
+Invalid command "%.50s"
+invalid compression level; using default level
+invalid control packet CTRLPKT_CLEARSIGN_START
+invalid dash escaped line: 
+invalid flag value in mpi
+invalid key resource URL `%s'
+invalid keyring
+Invalid key %s made valid by --allow-non-selfsigned-uid
+invalid lib version
+invalid marker packet
+invalid node with packet of type %d
+Invalid option "%.50s"
+invalid packet
+invalid packet type in build_packet()
+invalid packet type in calc_packet_length()
+invalid passphrase
+invalid pipemode control packet code
+invalid pipemode control packet length
+invalid radix64 character %02X skipped
+[invalid regexp subpacket]
+invalid root packet detected in proc_tree()
+invalid root packet for sigclass %02x
+invalid symkey encrypted packet
+[invalid trust subpacket]
+INV_RECP
+iobuf chain: %d.%d `%s' filter_eof=%d start=%d len=%d
+iobuf_close -> %p
+IOBUFCTRL_FREE failed on close: %s
+IOBUFCTRL_FREE failed: %s
+IOBUFCTRL_INIT failed: %s
+iobuf-%d.%d: close `%s'
+iobuf-%d.%d: create `%s'
+iobuf-%d.%d: error
+iobuf-%d.%d: fdopen `%s'
+iobuf-%d.%d: ioctl `%s' keep=%d
+iobuf-%d.%d: ioctl `%s' no_cache=%d
+iobuf-%d.%d: openrw `%s'
+iobuf-%d.%d: open `%s' fd=%d
+iobuf-%d.%d: pop in underflow (!len)
+iobuf-%d.%d: popped filter
+iobuf-%d.%d: pop `%s'
+iobuf-%d.%d: pop `%s' in underflow
+iobuf-%d.%d: push `%s'
+iobuf-%d.%d: underflow: eof
+iobuf-%d.%d: underflow: eof (due to filter eof)
+iobuf-%d.%d: underflow: eof (no filter)
+iobuf-%d.%d: underflow: got=%lu rc=%d
+iobuf-%d.%d: underflow: req=%lu
+iobuf_flush did not write all!
+iobuf_flush failed in pop_filter: %s
+iobuf_flush failed on close: %s
+iobuf_flush: no filter
+iobuf-*.*: ioctl `%s' fsync
+iobuf-*.*: ioctl `%s' invalidate
+iobuf_peek
+iobuf_push_filter2
+iobuf_set_partial_block_mode
+iobuf_write
+iobuf_writebyte
+_IO_getc
+_IO_putc
+_IO_stdin_used
+iso-8859-1
+issuer key ID %08lX%08lX
+	iter+salt S2K
+It is distributed in the hope that it will be useful,
+it under the terms of the GNU General Public License as published by
+_Jv_RegisterClasses
+Key available at: 
+[keybind]
+[key binding]:
+keyblock->pkt->pkttype == PKT_PUBLIC_KEY
+keyblock->pkt->pkttype == PKT_PUBLIC_KEY || keyblock->pkt->pkttype == PKT_PUBLIC_SUBKEY
+keyblock resource `%s': %s
+key_byname
+keydb_get_keyblock failed: %s
+keydb_locate_writable
+keydb_new
+keydb_release
+keydb_search2
+keydb_search failed: %s
+keydb_search_first failed: %s
+keydb_search_next failed: %s
+key does not expire
+KEYEXPIRED
+key expires after %s
+      Key fingerprint =
+key flags:
+  keyid=%08lX a=%d u=%d %c%c%c%c
+KEY_NOT_CREATED
+KEYREVOKED
+keyring_delete_keyblock
+keyring_get_keyblock failed: %s
+keyring_get_keyblock: read error: %s
+keyring_new
+keyring_register_filename
+keyring_release
+keyring `%s' created
+keyring_search
+keyring_search failed: %s
+keyring_search_reset
+keyring_update_keyblock
+keyserver
+keyserver error
+key server preferences:
+key %s: no subkey for subkey binding signature
+key %s: no subkey for subkey revocation signature
+key %s: no user ID for key signature packet of class %02x
+key %s: secret key without public key - skipped
+keystr_from_desc
+keystrlen
+key %s was created %lu second in the future (time warp or clock problem)
+key %s was created %lu seconds in the future (time warp or clock problem)
+k->pkt->pkttype == PKT_PUBLIC_KEY || k->pkt->pkttype == PKT_PUBLIC_SUBKEY
+k->pkt->pkttype == PKT_USER_ID
+|$(#L$(1
+\$<#L$<1
+|$L3|$,1
+#L$`3L$\
+L$,3l$$1
+L$(3|$L1
+L$$3t$,1
+L$83l$@1
+L$83t$@1
+l$<#D$@3D$
+L$d3L$\#L$h3L$d
+leave bzCompress: avail_in=%u, avail_out=%u, n=%u, zrc=%d
+leave bzDecompress: avail_in=%u, avail_out=%u, zrc=%d
+leave deflate: avail_in=%u, avail_out=%u, n=%u, zrc=%d
+leave inflate: avail_in=%u, avail_out=%u, zrc=%d
+len <= 20
+	length: %lu
+	length: unknown
+L$H3l$D1
+libbz2.so.1.0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libreadline.so.6
+libresolv.so.2
+libz.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+:literal data packet:
+L$L3|$(1
+load_digest_module
+localtime
+locking shared memory %d failed: %s
+logger-fd
+log_set_logfile
+\$L#T$D!
+%lu bytes
+%lu keys cached (%lu signatures)
+%lu keys cached so far (%lu signatures)
+ %lu %u %u %u %lu %lu %u
+make_attribute_uidname
+make timestamp conflicts only a warning
+malformed CRC
+malformed user id
+mapped %uk shared memory at %p, id=%d
+:marker packet: PGP
+max_namelen > 70
+	mdc_method: %d
+:mdc packet: length=%lu
+mdc_packet with invalid encoding
+md debug: can't open %s
+md_digest
+md_enable: algorithm %d not available
+md_filter
+md_write
+__memcpy_chk
+__memset_chk
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+merge_public_with_secret
+merge_selfsigs
+merge_selfsigs_main
+merge_selfsigs_subkey
+MessageID
+Missing argument for option "%.50s"
+MISSING_PASSPHRASE
+	mode %c (%X), created %lu, name="
+more than algorithm in md_digest(0)
+more than algorithm in md_read(0)
+mpi_alloc_limb_space(%u)
+mpi_alloc_secure(%u)
+mpi_alloc(%u)
+mpi_encode: mpi too large (%u bits)
+mpi_free
+mpi_free_limb_space of size %lu
+mpi_fromstr
+mpi_get_opaque on normal mpi
+mpi larger than buffer
+mpi larger than indicated length (%u bytes)
+../../mpi/mpicoder.c
+../../mpi/mpi-mpow.c
+../../mpi/mpiutil.c
+mpi_mulpowm
+[MPI_NULL]
+mpi_powm
+mpi_set_buffer
+mpi_set_secure
+mpi too large for this implementation (%u bits)
+mpi too large (%u bits)
+mpi too small
+!mp_marker
+n == 512
+nbits >= 512
+nbytes < 512
+NEED_PASSPHRASE
+NEED_PASSPHRASE_PIN
+NEED_PASSPHRASE_SYM
+nested clear text signatures
+network error
+never     
+new configuration file `%s' created
+ (new_ctb)
+nl_langinfo
+n == nframe
+no asn for md algo %d
+no decrypt() for %d
+nodefault
+node %p %02x/%02x type=%s
+node->pkt->pkttype == PKT_SIGNATURE
+no encrypt() for %d
+NO_PUBKEY
+NO_SECKEY
+no secret subkey for public subkey %s - ignoring
+no signature found
+no signed data
+no sign() for %d
+No such file, try again or hit enter to quit.
+no such user id
+	no suitable key found -  giving up
+	no suitable subkeys found - trying primary
+not a detached signature
+NOTATION_DATA
+NOTATION_NAME
+NotDashEscaped:
+not encrypted
+NOTE: sender requested "for-your-eyes-only"
+NOTE: signature key %s expired %s
+NOTE: This feature is not available in %s
+[not human readable]
+not human readable
+not processed
+not supported
+no valid OpenPGP data found.
+no verify() for %d
+n_packets
+npkey < nskey
+number of one-pass packets does not match number of signature packets
+Ohhhh jeeee: 
+Ohh jeee, trying to remove a head filter
+Ohh jeee, trying to remove an intermediate filter
+okay|okay
+old style (PGP 2.x) signature
+onepass-sig
+:onepass_sig packet: keyid %08lX%08lX
+onepass_sig with unknown version %d
+Oops: keyid_from_fingerprint: no pubkey
+Oops; key lost!
+Oops: md debug already started
+Oops, secure memory pool already initialized
+openfile.askoutname
+openfile.overwrite.okay
+--openpgp
+OpenPGP draft 
+OpenPGP (older)
+operation is not possible without initialized secure memory
+Option "%.50s" does not expect an argument
+Option "%.50s" is ambiguous
+Options:
+opt.show_subpackets
+original file name='%.*s'
+orphaned user ID
+out of core
+out of %s memory while allocating %u bytes
+Overwrite? (y/N) 
+:packet 63: length %lu 
+packet(%d) too large
+packet(%d) too short
+packet(%d) too short (%lu)
+packet(%d) with unknown version %d
+packet shorter tham mpi
+packet with S2K %d too short
+parm.used
+parse_packet(iob=%d): type=%d length=%lu%s (%s.%s.%d)
+parse_symkeyenc
+passphrase generated with unknown digest algorithm %d
+pause_on_sigusr
+pka-address@gnupg.org
+PKA_TRUST_BAD
+PKA_TRUST_GOOD
+pka_uri_from_sig
+pkcs1_encode_md
+pkd:%d:%u:
+pkdecrypt_failed %d
+	pkey[%d]: 
+pk_from_block
+pk || sk
+!pkt->pkt.generic
+plaintext
+PLAINTEXT_LENGTH
+Please enter name of data file: 
+Please fix this possible security flaw
+Please remember that the signature file (.sig or .asc)
+Please report bugs to <gnupg-bugs@gnu.org>.
+please see http://www.gnupg.org/faq.html for more information
+please see %s for more information
+please use "%s%s" instead
+POLICY_URL
+pop_filter
+pop_filter called in iobuf_seek - please report
+pop_filter called in set_partial_block_mode - please report
+pop_filter(): filter function not found
+preferred-email-encoding@pgp.com
+preferred key server: 
+Preferred keyserver: 
+pref-hash-algos:
+pref-sym-algos:
+pref-zip-algos:
+premature eof (no CRC)
+premature eof while reading hashed signature data
+premature eof while reading unhashed signature data
+premerge_public_with_secret
+prepare_search
+primary0
+ Primary key fingerprint:
+	primary key has been revoked
+	primary key has expired
+primary key is not really primary!
+	primary key may be used
+	primary key not valid
+	primary key usage does not match: want=%x have=%x
+primary user ID
+primegen
+__printf_chk
+print_revokers
+print_subpackets_colon
+print_userid
+- private (rest length %lu)
+Problem reading source (%u bytes remaining)
+proc_pkt.plaintext 89_BAD_DATA
+PROGRESS
+progress_filter
+	protect algo: %d  (hash algo: %d)
+	protect count: %lu
+	protect IV: 
+pub   %4u%c/%s %s
+pub  %4u%c/%s %s %s
+pubblock->pkt->pkttype == PKT_PUBLIC_KEY
+pubkey_decrypt: algo=%d
+:pubkey enc packet: version %d, algo %d, keyid %08lX%08lX
+pubkey_encrypt: algo=%d
+pubkey_sign: algo=%d
+public-enc
+public-key
+public key decryption failed: %s
+public key encrypted data: good DEK
+public key is %s
+public key not found
+public key %s is %lu second newer than the signature
+public key %s is %lu seconds newer than the signature
+public sub
+public-subkey
+pub == pubblock
+push_compress_filter2
+pv=1 pid=%d shmid=%d sz=%u lz=%u
+qbits >= 160
+qbits %8 == 0
+quoted printable character in armor - probably a buggy MTA has been used
+	raw data: 
+reading stdin ...
+regular expression: "%s"
+renaming `%s' to `%s' failed: %s
+re-reading keyblock failed: %s
+resource limit
+resource && !resource->secret == !secret
+__res_query
+!ret_kdbhd
+REVKEYSIG
+revocation key: 
+revocation reason 0x%02x (
+[revoked]
+[revoked]:
+revoked: %s
+--rfc1991
+:rfc1991 comment packet: "
+--rfc2440
+ring trust w/o key
+RIPEMD160
+rl_cleanup_after_signal
+rl_free_line_state
+root->pkt->pkttype == PKT_PUBLIC_KEY
+RSA operation: public, secret failed
+RSA operation: secret, public failed
+RSA_OR_IDEA
+rtv:1:%u:
+rtv:2:%u:
+rvk:::%d::::::
+      "%s"
+%s:::::::::
+%s: 1st length byte missing
+%s: 2nd length byte missing
+%s: 4 byte length invalid
+%s  %4u%c/%s %s 
+%s  %4u%c/%s %s%s
+S,9S(s&1
+, salt: 
+	salted S2K
+%s:%c::::
+%s%c  %4u%c/%s  
+%s: close failed: %s
+%s: close fd %d
+:%scomment packet: "
+SC_OP_FAILURE
+SC_OP_SUCCESS
+%s: copy to `%s' failed: %s
+%s:%d: deprecated option "%s"
+%s:e::::
+sec  %4u%c/%s %s %s
+secblock->pkt->pkttype == PKT_SECRET_KEY
+sec%c  %4u%c/%s %s
+secmem usage: %u/%u bytes in %u/%u blocks of pool %lu/%lu
+secret-key
+secret key not available
+secret sub
+secret-subkey
+sec::%u:%d:%08lX%08lX:%s:%s:::
+secure memory corrupted at block %p
+secure memory is disabled
+[selfsig]
+selftest failed
+%s encrypted session key
+	serial-number: 
+, seskey %d bits
+SESSION_KEY
+session key: `%s'
+setlocale
+setrlimit64
+setup_pubkey_table
+%sexportable
+%s: garbled packet detected
+ SHA1 protection,
+shmctl IPC_RMDID of %d failed: %s
+shmctl IPC_SET of %d failed: %s
+shmctl IPC_STAT of %d failed: %s
+SHM_GET_BOOL
+SHM_GET_HIDDEN
+SHM_INFO
+should be the first file given on the command line.
+sig::::::::::%02x%c:
+sigaction
+sigaddset
+SIG-COUNTER
+SIG_CREATED
+sig created %s
+sig does not expire
+sigemptyset
+SIGEXPIRED deprecated-use-keyexpired-instead
+sig expires after %s
+(sig->keyid[0]!=pk->keyid[0]) || (sig->keyid[0]!=pk->keyid[1])
+signature: 
+Signature expired %s
+Signature expires %s
+Signature made %s
+Signature made %s using %s key ID %s
+Signature notation: 
+:signature packet: algo %d, keyid %08lX%08lX
+signature packet: hashed data too long
+signature packet: too much data
+signature packet: unhashed data too long
+signature packet without keyid
+signature packet without timestamp
+Signature policy: 
+signature verification suppressed
+signer's user ID
+!sig->pka_info
+sigprocmask
+((sig)->sig_class == 0x20)
+SIG_SUBPACKET
+sigsuspend
+sig                             [unexpected signature class 0x%02x]
+ simple checksum,
+	simple S2K
+%s: indeterminate length for invalid packet type %d
+%s: invalid packet (ctb=%02x)
+%s is the new one
+%s is the unchanged one
+size > 10
+	skey[%d]: 
+	skey[%d]: [encrypted]
+:%s key packet:
+%s: keyring created
+sk_from_block
+skipped compressed packet in keyring
+((sk->skey[i]) && (mpi_get_flags (sk->skey[i])&4))
+((sk->skey[npkey]) && (mpi_get_flags (sk->skey[npkey])&4))
+ %s %lu %lu %d 0 %d %d %02X 
+__snprintf_chk
+%s: partial length for invalid packet type %d
+spk:%d:%u:%u:
+__sprintf_chk
+%s:r::::
+%s: read error: %s
+%srevocable
+%s [%s]: 
+ssb%c  %4u%c/%s %s
+ssb::%u:%d:%08lX%08lX:%s:%s:::::
+%s signature, digest algorithm %s
+%s: skipping %u packets failed: %s
+%s %s %lu
+%s %s; %s
+%s%s: %s
+	%s%ssubpkt %d len %u (
+__stack_chk_fail
+standalone revocation - use "gpg --import" to apply
+standalone signature of class 0x%02x
+standard
+status-fd
+[stdout]
+__strcat_chk
+strerror
+strftime
+strncasecmp
+%s:%u: argument not expected
+sub   %4u%c/%s %s
+      Subkey fingerprint:
+	subkey has been revoked
+	subkey has expired
+	subkey looks fine
+	subkey not valid
+	subkey not yet valid
+[subkey revoked]:
+subkey w/o mainkey
+subpacket of type %d has critical bit set
+subpacket of type %d too short
+	subpkt %d len %u (additional recipient request)
+%s::%u:%d:%08lX%08lX:%s:%s:::
+%s:%u: invalid alias definition
+%s:%u: invalid command
+%s:%u: invalid option
+%s:%u: keyword too long
+%s:%u: missing argument
+%s: unknown suffix
+%s:%u: read error
+%s: write error: %s
+:symkey enc packet: version %d, cipher %d, s2k %d, hash %d
+Syntax: gpgv [options] [files]
+sys_siglist
+t$03t$ 1
+t}<0~}<9
+t$@3t$01
+t$<3t$(1
+t$(3t$$1
+t$,3t$D1
+t$$3t$H1
+t$43t$@1
+take the keys from this keyring
+t$D3t$<1
+text_filter
+textmode
+the Free Software Foundation; either version 3 of the License, or
+the IDEA cipher plugin is not present
+There is NO WARRANTY, to the extent permitted by law.
+the signature could not be verified.
+... this is a bug (%s:%d:%s)
+This is free software: you are free to change and redistribute it.
+This is free software; you can redistribute it and/or modify
+(this may be caused by too many secret keys used simultaneously or due to excessive large key sizes)
+this message may not be usable by %s
+timestamp conflict
+t$L3t$,1
+too many entries in pk cache - disabled
+too much shared memory requested; only 8k are allowed
+[too short]
+too short: buffer is only %u)
+t$P3t$41
+trust database error
+trustedkeys.gpg
+TRUST_FULLY
+TRUST_MARGINAL
+TRUST_NEVER
+:trust packet: empty
+:trust packet: flag=%02x sigcache=%02x
+trust signature of depth %d, value %d
+TRUST_ULTIMATE
+TRUST_UNDEFINED
+t-;T$Pt'
+t&<,t"<=t
+t?<,t;<=u
+[%u bits]
+:%u:%d:%08lX%08lX:%s:%s::
+:%u:%d:%08lX%08lX:%s:%s:::::
+uid->ref > 0
+uid%*s%s 
+[uncertain]
+uncompressed
+uncompressed|none
+uncompressing failed: %s
+underflow
+UNEXPECTED
+unexpected armor: 
+unexpected data
+unexpected EOF in bz2lib
+unexpected keyblock found (pkttype=%d)%s
+unimplemented cipher algorithm
+unimplemented pubkey algorithm
+	unknown algorithm %d
+unknown armor header: 
+[unknown attribute of size %lu]
+unknown cipher algorithm
+unknown compress algorithm
+unknown digest algorithm
+unknown error
+unknown length
+unknown option `%s'
+unknown packet type
+:unknown packet: type %2d, length %lu
+unknown pubkey algorithm
+	unknown S2K %d
+unknown signature class
+	unknown %sS2K %d
+unknown type of key resource `%s'
+unknown version
+unode->pkt->pkttype == PKT_USER_ID
+	unsupported algorithm %d
+unsupported URI
+unusable pubkey algorithm
+unusable public key
+unusable secret key
+unused <= area->len
+	usage does not match: want=%x have=%x
+Usage: gpgv [options] [files] (-h for help)
+used_resources <= 40
+USERID_HINT
+[User ID not found]
+:user ID packet: "
+	using key %08lX
+               using %s key %s
+using subkey %s instead of primary key %s
+/usr/lib/gnupg
+/usr/share/locale
+utf8_to_native
+../../util/estream-printf.c
+../../util/iobuf.c
+../../util/logger.c
+../../util/strgutil.c
+%uy%ud%uh%um
+?v3 fpr?
+VALIDSIG
+valuetable[arg->precision_pos-1].vt == VALTYPE_INT
+valuetable[arg->width_pos-1].vt == VALTYPE_INT
+v%d, class 0x%02X, algo %d, digest algo %d
+verify signatures failed: %s
+--version
+	version %d, algo %d, created %lu, expires %lu
+	version %d, created %lu, md5len %d, sigclass 0x%02x
+	version %d, sigclass 0x%02x, digest %d, pubkey %d, last=%d
+Version: GnuPG v1.4.11 (GNU/Linux)
+__vfprintf_chk
+WARNING: 
+WARNING: 2 files with confidential information exists.
+WARNING: digest algorithm %s is deprecated
+WARNING: Elgamal sign+encrypt keys are deprecated
+WARNING: encrypted message has been manipulated!
+WARNING: invalid notation data found
+WARNING: message was not integrity protected
+WARNING: more than algorithm in md_get_algo()
+WARNING: multiple plaintexts seen
+WARNING: multiple signatures detected.  Only the first will be checked.
+WARNING: no length for md algo %d
+WARNING: options in `%s' are not yet active during this run
+WARNING: PGP versions > 5.0 and < 6.5.8 will automagically encrypt to this key and thereby reveal the plaintext to the owner of this ARR key. Detailed info follows:
+WARNING: potentially insecure symmetrically encrypted session key
+WARNING: signature digest conflict in message
+WARNING: signing subkey %s has an invalid cross-certification
+WARNING: signing subkey %s is not cross-certified
+WARNING: "%s" is a deprecated command - do not use it
+WARNING: "%s" is a deprecated option
+WARNING: unable to restore permissions to `%s': %s
+WARNING: using experimental cipher algorithm %s
+WARNING: using experimental digest algorithm %s
+WARNING: using experimental public key algorithm %s
+WARNING: using insecure memory!
+warranty
+--warranty
+weak key
+weak key created - retrying
+weird size for an encrypted session key (%d)
+which == 1
+word search mode does not yet work
+writing sigcache packet failed
+writing to `%s'
+writing to stdout
+wrong secret key used
+\$x3\$p1
+xrealloc
+__xstat64
+(you may have used the wrong program for this task)
+You should have received a copy of the GNU General Public License
+zlib deflate problem: rc=%d
+zlib deflate problem: %s
+zlib inflate problem: rc=%d
+zlib inflate problem: %s
+zlib problem: %s

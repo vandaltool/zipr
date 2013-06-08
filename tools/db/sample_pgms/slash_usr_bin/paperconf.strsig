@@ -1,0 +1,34 @@
+adznNswhcmip:
+__bss_start
+__ctype_b_loc
+__ctype_toupper_loc
+defaultpapername
+__errno_location
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpaper.so.1
+paperdone
+paperfirst
+paperinfo
+paperinit
+papernext
+paperpsheight
+paperpswidth
+__printf_chk
+%s: cannot get paper size from %s
+__sprintf_chk
+__stack_chk_fail
+%s: unknown paper `%s'
+systempapername
+systempapersizefile
+usage: %s [ [ -p ] papername | -d | -a ] [ -z ] [ -n | -N ] [ -s | -w | -h ] [ -c | -m | -i ]

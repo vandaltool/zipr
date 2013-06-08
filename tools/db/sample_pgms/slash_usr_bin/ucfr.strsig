@@ -1,0 +1,207 @@
+        
+             -- "$@"`
+        ;;
+        "$@"
+########                                                     #########
+######################################################################
+        action='echo'; 
+action='withecho'
+            # an empty parameter will be generated if its optional
+# arch-tag: 6e1d33fe-a930-41ce-8d0f-c87f87b19918
+            # argument is not found.
+# Author           : Manoj Srivastava ( srivasta@glaurung.internal.golden-gryphon.com ) 
+            awk '{print $1;}' );
+        awk '{print $1;}' );
+#! /bin/bash
+    case "$1" in
+	    case "$2" in
+case $safe_conf_file in
+        cat >&2 <<END
+########              Command line args                      #########
+# Command line, env variable, config file, or default
+conditions.  There is NO warranty.
+           Copyright (C) 2002-2006 Manoj Srivastava.
+count=$(egrep --count "[[:space:]]${safe_conf_file}$" "$statedir/registry") || true
+		cp -f "${statedir}/registry.${i}" \
+		cp -f "${statedir}/registry.${i}"  "${statedir}/registry.$(($i+1))"
+	cp -f "$statedir/registry"  "$statedir/registry.0" 
+# Created On Node  : glaurung.internal.golden-gryphon.com
+# Created On       : Tue Apr 11 11:09:15 2006
+	-D|-d|--debug|--DEBUG)
+Debian GNU/Linux $progname $pversion.
+                             default '/var/lib/ucf'. Used mostly for testing.
+# Description      : 
+            # d has an optional argument. As we are in quoted mode,
+     -d [n], --debug    [n]  Set the Debug level to N
+        docmd='NO'; 
+docmd='YES'
+    done
+        # Don't exit with an error for etch'
+        echo " $@" >&2
+    echo >&2 ""
+	    echo >&2 "$progname: $3 is $2";
+            echo >&2 "$progname: Association already purged. No changes.";
+                echo >&2 "$progname: Association already recorded. No changes.";
+                echo >&2 "$progname: Attempt from package $pkg  to take ${conf_file} away from package $old_pkg";
+    echo >&2 "$progname: Corrupt registry: Duplicate entries for ${conf_file}";
+    echo >&2 "$progname: do not have write privilege to the registry data"
+    echo >&2 "$progname: *** ERROR: Need exactly two arguments, got $#";
+	*) echo >&2 "$progname: Internal error!" ; exit 1 ;;
+        echo >&2 "$progname: Internal error: $statedir/registry does not exist";
+        echo >&2 "$progname: Need a fully qualified path for the file \"$safe_conf_file\""
+    echo >&2 "$progname: The registry exists"
+	echo >&2 "$progname: Unable to determine $3"
+                echo >&2 "ucfr: Aborting.";
+            echo >&2 "ucfr: Aborting";
+        echo >&2 "ucfr: Association belongs to $old_pkg, not $pkg";
+		echo cp -f "${statedir}/registry.${i}" \
+		echo cp -f "${statedir}/registry.${i}" "${statedir}/registry.$(($i+1))"
+	echo cp -f "$statedir/registry"  "$statedir/registry.0" 
+	    echo "echo \"$pkg 	 $conf_file\" >> \"$statedir/registry.tmp\""
+	echo "echo \"$pkg 	 $conf_file\" >> \"$statedir/registry.tmp\""
+	    echo "egrep -v [[:space:]]${safe_conf_file}$ $statedir/registry >\\"
+	    echo "egrep -v \"[[:space:]]${safe_conf_file}$\" \"$statedir/registry\"  \\"
+	#echo "egrep -v [[:space:]]${safe_conf_file}$ $statedir/registry"
+	echo "egrep -v \"[[:space:]]${safe_conf_file}$\" \"$statedir/registry\"  \\"
+    echo "Error handling options.Terminating..." >&2 ;
+        : echo fine
+	    echo "mv -f  $statedir/registry.tmp $statedir/registry" 
+	    echo mv -f "$statedir/registry.tmp"  "$statedir/registry"
+	echo "mv -f  $statedir/registry.tmp $statedir/registry" 
+	echo "$pkg 	 $conf_file" >>   "$statedir/registry.tmp"; 
+        echo "$progname: Need to be run as root." >&2
+        echo "$progname: Setting up no action mode." >&2
+            echo "	$statedir/registry.tmp || true"
+            echo "	$statedir/registry.tmp || true";
+        echo "	$statedir/registry.tmp || true"
+    egrep "[[:space:]]${safe_conf_file}$" "$statedir/registry";
+	egrep -v "[[:space:]]${safe_conf_file}$" "$statedir/registry" > \
+elif [ ! "x$conf_state_dir" = "x" ]; then
+elif [ ! "x$UCF_STATE_DIR" = "x" ]; then
+    else
+        else
+	    else
+	    else 
+    esac
+	    esac ;;
+    . /etc/ucf.conf
+	eval "$1=\"\$2\"";
+eval set -- "$TEMP"
+            exit 0;
+        exit 0;
+    exit 0 ;
+    exit 1 ;
+	exit 1;
+                exit 4;
+            exit 5;
+        exit 6;
+    exit $count;
+	-f|--force)   FORCE=1;                          shift   ;;
+     -f      --force         Force the association, even if another package
+        fi
+            fi
+	    fi 
+    for i in $(/usr/bin/seq 6 -1 0); do
+                             from the records
+     -h,     --help          print this message
+	-h|--help) usageversion;                        exit 0  ;;
+# HISTORY          : 
+if [ $? != 0 ] ; then
+if [ $# != 2 ]; then
+    if [ $count -eq 0 ]; then
+    if [ $count -eq 1 ]; then
+if [ "$count" -ge 2 ]; then
+    if [ "$docmd" = "YES" ]; then
+if [ ! -d "$statedir" ]; then
+if [ -e "$statedir/registry" -a ! -w "$statedir/registry" ]; then
+	if [ -e "${statedir}/registry.${i}" ]; then
+    if [ ! -e "$statedir/registry" ]; then
+if [ -f /etc/ucf.conf ]; then
+if [ ! -f "$statedir/registry" ]; then
+        if [ "$pkg" != "$old_pkg" ]; then
+    if [ "$pkg" != "$old_pkg"  ]; then
+if test $(id -u) != 0; then
+    if [ "x$2" = "x" ]; then
+    if [ "X$docmd" = "XYES" ]; then
+	    if [ "X$docmd" = "XYES" ]; then
+	if [ "X$docmd" = "XYES" ]; then
+            if [ "X$FORCE" = "X" ]; then
+        if [ "X$FORCE" = "X" ]; then
+if [ ! "x$opt_state_dir" = "x" ]; then
+if [ "X$PURGE" != "X" ]; then
+if [ "X$VERBOSE" = "X0" ]; then
+	if [ "x$VERBOSE" != "x" ]; then
+            if [ "X$VERBOSE" != "X" ]; then
+        if [ "X$VERBOSE" != "X" ]; then
+	if [ "X$VERBOSE" != "X" ]; then
+if [ "X$VERBOSE" != "X" ]; then
+# Last Machine Used: glaurung.internal.golden-gryphon.com
+# Last Modified By : Manoj Srivastava
+# Last Modified On : Tue Apr 11 13:50:58 2006
+# Load site defaults and over rides.
+      --long help,debug::,DEBUG::,force,no-action,purge,verbose,state-dir: \
+# Long term variables#
+# make sure we exit on error
+    mkdir -p "$statedir"
+#                               -*- Mode: Sh -*- 
+	    mv -f "$statedir/registry.tmp"  "$statedir/registry" 
+	mv -f "$statedir/registry.tmp"  "$statedir/registry" 
+# Need to run as root, or else the 
+	-n|--no-action) action='echo'; docmd='NO';      shift   ;;
+     -n,     --no-action     Dry run. No action is actually taken.
+# Note that we use `"$@"' to let each command-line parameter expand to a
+# Note the quotes around `$TEMP': they are essential!
+    # OK, so we have something to purge.
+        old_pkg=$(egrep "[[:space:]]${safe_conf_file}$" "$statedir/registry" | \
+    old_pkg=$(egrep "[[:space:]]${safe_conf_file}$" "$statedir/registry" | \
+Options:
+        -p|--purge) PURGE=YES;                         shift   ;;
+     -p,     --purge         Remove any reference to the package/file association 
+progname=$(basename "$0")
+purge_from_registry () {
+    purge_from_registry $pkg $conf_file;
+# Register a configuration file as belonging to a package
+replace_in_registry () {
+    replace_in_registry $pkg $conf_file;
+safe_conf_file=$(echo $conf_file | sed -e 's,+,\\+,')
+safe_pkg=$(echo $pkg       | sed -e 's,+,\\+,')
+# sanity check
+# separate word. The quotes around `$@' are essential!
+setq() {
+setq conf_file "$2" "The Configuration file";
+		"") setq DEBUG 1    "The Debug value"; shift 2 ;;
+		*)  setq DEBUG "$2" "The Debug value"; shift 2 ;;
+setq pkg  "$1" "The Package name";
+    setq statedir "$conf_state_dir" "The State directory"
+    setq statedir "$opt_state_dir" "The State directory"
+    setq statedir "$UCF_STATE_DIR" "The State directory"
+    setq statedir '/var/lib/ucf'  "The State directory"    
+# set the version and revision
+	--)  shift ;                                   break   ;;
+             --state-dir bar Set the state directory to bar instead of the
+	--state-dir)  opt_state_dir="$2";               shift 2 ;;
+		    "${statedir}/registry.$(($i+1))"
+	    "$statedir/registry.tmp" || true; 
+statedir='/var/lib/ucf';
+# Status           : Unknown, Use with caution!
+TEMP=`getopt -a -o hd::D::fnvp -n "$progname" \
+# test and see if this file exists in the database
+This is free software; see the GNU General Public Licence for copying
+THREEWAY=
+    touch "$statedir/registry"
+# ucfr --- 
+# Update Count     : 43
+Usage: $progname  [options] package_name path_for_configuration_file
+    usageversion;
+usageversion () {
+                             used to own the configuration file.
+########              Utility functions                      #########
+    # Variable Value Doc_string
+    VERBOSE=''
+VERBOSE=''
+# VERBOSE of 0 is supposed to be the same as not setting VERBOSE
+     -v,     --verbose       Make the script verbose
+	-v|--verbose) VERBOSE=1;                        shift   ;;
+# We need TEMP as the `eval set --' would nuke the return value of getopt.
+while true ; do
+withecho () {

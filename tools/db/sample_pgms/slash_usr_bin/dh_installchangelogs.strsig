@@ -1,0 +1,97 @@
+An upstream F<changelog> file may be specified as an option.
+Automatically installed into usr/share/doc/I<package>/
+B<dh_installchangelogs> is a debhelper program that is responsible for
+B<dh_installchangelogs> [S<I<debhelper options>>] [B<-k>] [B<-X>I<item>] [I<upstream>]
+by installing the upstream changelog as F<changelog>, and making a symlink from
+		$changelog="debian/changelog";
+changelog is a F<html> file (determined by file extension), it will be
+		$changelog_name='changelog';
+converted to plain text with B<html2text> to generate
+dh_installchangelogs - install changelogs into package build directories
+			doit("html2text","-nobs","-o","$tmp/usr/share/doc/$package/changelog",$upstream);
+		doit("install","-d","$tmp/usr/share/doc/$package");
+			doit("install","-o",0,"-g",0,"-p","-m644",
+	doit("install","-o",0,"-g",0,"-p","-m644",$changelog,
+		doit("install","-o",0,"-g",0,"-p","-m644",$news,
+			doit("ln","-sf",$link_to,"$tmp/usr/share/doc/$package/".basename($upstream));
+		else {
+		error("could not find changelog $changelog");
+		# Even if the target doesn't seem to be a doc dir from the
+Exclude upstream F<changelog> files that contain I<item> anywhere in their
+filename from being installed.
+F<NEWS> or F<changelog> file.
+foreach my $package (@{$dh{DOPACKAGES}}) {
+for native packages, and F<changelog.Debian> for non-native packages.
+F<usr/share/doc/package/changelog>.
+F<usr/share/doc/package/changelog> in the package build directory. If the
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 FILES
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+			# HTML changelog
+		if ($allpackages{basename($linkval)}) {
+	if (!$changelog) {
+	if (defined $upstream) {
+if (! defined $upstream) {
+		if ($dh{K_FLAG}) {
+	if (! -d "$tmp/usr/share/doc/$package") {
+	if (! -e $changelog) {
+	if (-e $news) {
+	if (isnative($dh{MAINPACKAGE})) {
+	# If it is a symlink to a documentation directory from the same
+	if (-l "$tmp/usr/share/doc/$package") {
+	if (!$news) {
+If there is an upstream F<changelog> file, it will be be installed as
+		if ($upstream=~m/\.html?$/i) {
+installed as F<usr/share/doc/package/changelog.html> instead, and will be
+installing changelogs into package build directories.
+			# Install symlink to original name of the upstream changelog file.
+Install this file as the upstream changelog.
+in the package build directory.
+=item B<-k>, B<--keep>
+=item B<-X>I<item>, B<--exclude=>I<item>
+=item debian/I<package>.changelog
+=item debian/I<package>.NEWS
+=item F<debian/changelog>
+=item F<debian/NEWS>
+=item I<upstream>
+Joey Hess <joeyh@debian.org>
+Keep the original name of the upstream changelog. This will be accomplished
+L<debhelper(7)>
+			$link_to='changelog';
+			$link_to='changelog.html';
+		my %allpackages=map { $_ => 1 } getpackages();
+my $changelog_name="changelog.Debian";
+	my $changelog=pkgfile($package,"changelog");
+		my $link_to;
+		my $linkval=readlink("$tmp/usr/share/doc/$package");
+my $news_name="NEWS.Debian";
+	my $news=pkgfile($package,"NEWS");
+	my $tmp=tmpdir($package);
+my $upstream=shift;
+		$news="debian/NEWS";
+			next;
+	next if is_udeb($package);
+		next unless -d "$tmp/usr/share/doc/$package";
+package refers to the F<changelog> file.
+	# packages that depend on each other and want to link doc dirs.
+		# same source package, don't do anything if it's a dangling
+	# source package, then don't do anything. Think multi-binary
+		# symlink.
+that to the original name of the F<changelog> file. This can be useful if the
+The F<changelog> file is installed with a name of changelog
+The F<NEWS> file is always installed with a name of F<NEWS.Debian>.
+This program is a part of debhelper.
+		"$tmp/usr/share/doc/$package/$changelog_name");
+			"$tmp/usr/share/doc/$package/$news_name");
+upstream changelog has an unusual name, or if other documentation in the
+				$upstream,"$tmp/usr/share/doc/$package/changelog");
+				$upstream,"$tmp/usr/share/doc/$package/changelog.html");
+			# Use basename in case original file was in a subdirectory or something.
+use Debian::Debhelper::Dh_Lib;
+use strict;
+Use the package specific name if I<package> needs a different
+#!/usr/bin/perl -w

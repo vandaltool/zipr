@@ -1,0 +1,34 @@
+__bss_start
+can't happen
+GLIBC_2.0
+GLIBC_2.7
+__gmon_start__
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+no logical operations allowed for non-bitmaps
+overflow_add
+pm_allocrow
+pm_close
+pm_error
+pm_keymatch
+pm_openr
+pm_usage
+pnm_init
+pnm_promoteformatrow
+pnm_readpnminit
+pnm_readpnmrow
+pnm_writepnminit
+pnm_writepnmrow
+-replace
+[-replace|-or|-and|-xor] frompnmfile x y [intopnmfile]
+x is too large -- the second anymap has only %d cols
+x is too negative -- the second anymap has only %d cols
+x + width is too large by %d pixels
+y + height is too large by %d pixels
+y is too large -- the second anymap has only %d rows
+y is too negative -- the second anymap has only %d rows

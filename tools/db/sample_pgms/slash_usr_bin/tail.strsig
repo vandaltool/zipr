@@ -1,0 +1,191 @@
+0 <= strtol_base && strtol_base <= 36
+3T$$3D$ 	
+ambiguous argument %s for %s
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+b 512, kB 1000, K 1024, MB 1000*1000, M 1024*1024,
+                             becomes inaccessible; useful when following by
+bindtextdomain
+bkKmMGTPEZY0
+B_POSIX2_VERSION
+# buckets:         %lu
+# buckets used:    %lu (%.2f%%)
+bug-coreutils@gnu.org
+cannot determine location of %s. reverting to polling
+cannot follow %s by name
+cannot fstat %s
+cannot open %s for reading
+cannot read realtime clock
+cannot watch parent directory of %s
+cannot watch %s
+  -c, --bytes=K            output the last K bytes; alternatively, use -c +K
+                           changed size after N (default %d) iterations
+closing %s (fd=%d)
+c:n:fFqs:v0123456789
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+David MacKenzie
+dcgettext
+                             (default 1.0) between iterations.
+descriptor
+-disable-inotify
+# entries:         %lu
+                           equivalent
+__errno_location
+error monitoring inotify event
+error reading inotify event
+error reading %s
+__fdelt_chk
+f->fd == -1
+fflush_unlocked
+                           -f, --follow, and --follow=descriptor are
+  -f, --follow[={name|descriptor}]
+--follow
+For complete documentation, run: info coreutils '%s invocation'
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+  -F                       same as --follow=name --retry
+fseeko64
+fstatfs64
+fwrite_unlocked
+__fxstat64
+GB 1000*1000*1000, G 1024*1024*1024, and so on for T, P, E, Z, Y.
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+Ian Lance Taylor
+If the first character of K (the number of bytes or lines) is a `+',
+inotify_add_watch
+inotify cannot be used, reverting to polling
+inotify_init
+inotify resources exhausted
+inotify_rm_watch
+invalid argument %s for %s
+invalid number of bytes
+invalid number of lines
+_IO_stdin_used
+iswprint
+its end.  This default behavior is not desirable when you really want to
+Jim Meyering
+                             least once every N seconds.
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+Mandatory arguments to long options are mandatory for short options too.
+max bucket length: %lu
+max-unchanged-stats
+      --max-unchanged-stats=N
+means that even if a tail'ed file is renamed, tail will continue to track
+memory exhausted
+named file in a way that accommodates renaming, removal and creation.
+                             name, i.e., with --follow=name
+nanosleep
+newlocale
+  -n, --lines=K            output the last K lines, instead of the last %d;
+no files remaining
+number in %s is too large
+=OAFSt=~#=SFAkt4
+option used in invalid context -- %c
+                           or use -n +K to output lines starting with the Kth
+                           output appended data as the file grows;
+__overflow
+Paul Rubin
+      --pid=PID            with -f, terminate after process ID, PID dies
+pipe_lines
+-presume-input-pipe
+print beginning with the Kth item from the start of each file, otherwise,
+__printf_chk
+Print the last %d lines of each FILE to standard output.
+print the last K items in the file.  K may have a multiplier suffix:
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+  -q, --quiet, --silent    never output headers giving file names
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+      --retry              keep trying to open a file even when it is or
+rotation).  Use --follow=name in that case.  That causes tail to track the
+  - `%s'
+S 3T$|3D$x	
+%s, and %s.
+%s: cannot change nonblocking mode
+%s: cannot follow end of this type of file; giving up on this name
+%s: cannot seek to end-relative offset %s
+%s: cannot seek to offset %s
+%s: cannot seek to relative offset %s
+setlocale
+%s: file truncated
+%s has appeared;  following end of new file
+%s has become accessible
+%s has become inaccessible
+%s has been replaced;  following end of new file
+%s has been replaced with an untailable file; giving up on this name
+%s has been replaced with a remote file. giving up on this name
+shell-always
+%s home page: <%s>
+%s: invalid maximum number of unchanged stats between opens
+%s: invalid number of seconds
+%s: invalid PID
+sleep-interval
+%s==> %s <==
+%s, %s, and others.
+%s, %s, and %s.
+  -s, --sleep-interval=N   with -f, sleep for approximately N seconds
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+standard input
+strtod_l
+__strtoull_internal
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+                           (this is the usual case of rotated log files).
+                           to output bytes starting with the Kth of each file
+                           to see if it has been unlinked or renamed
+track the actual name of the file, not the file descriptor (e.g., log
+Try `%s --help' for more information.
+Usage: %s [OPTION]... [FILE]...
+/usr/share/locale
+Valid arguments are:
+valid_file_spec (f)
+V=CUset'=FUset 1
+      --version  output version information and exit
+  -v, --verbose            always output headers giving file names
+w89T$ps2
+warning: following standard input indefinitely is ineffective
+warning: PID ignored; --pid=PID is useful only when following
+warning: --pid=PID is not supported on this system
+warning: --retry is useful mainly when following by name
+With --follow (-f), tail defaults to following the file descriptor, which
+                           with --follow=name, reopen a FILE which has not
+                             With inotify and --pid=P, check process P at
+                           With inotify, this option is rarely useful.
+With more than one FILE, precede each with a header giving the file name.
+With no FILE, or when FILE is -, read standard input.
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+xstrtol.c
+xstrtoul
+xstrtoumax

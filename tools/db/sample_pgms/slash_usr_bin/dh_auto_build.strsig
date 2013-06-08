@@ -1,0 +1,29 @@
+B<dh_auto_build> is a debhelper program that tries to automatically build a
+B<dh_auto_build> [S<I<build system options>>] [S<I<debhelper options>>] [S<B<--> I<params>>]
+B<dh_auto_build> usually passes.
+build process manually.
+buildsystems_do();
+buildsystems_init();
+dh_auto_build - automatically builds a package
+done by running B<make> (or B<MAKE>, if the environment variable is set). If
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+it detects the package uses. For example, if a F<Makefile> is found, this is
+=item B<--> I<params>
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+package. It does so by running the appropriate command for the build system
+Pass I<params> to the program that is run, after the parameters that
+See L<debhelper(7)/B<BUILD SYSTEM OPTIONS>> for a list of common build
+system selection and control options.
+there's a F<setup.py>, or F<Build.PL>, it is run to build the package.
+This is intended to work for about 90% of packages. If it doesn't work,
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Buildsystems;
+use strict;
+#!/usr/bin/perl -w
+you're encouraged to skip using B<dh_auto_build> at all, and just run the

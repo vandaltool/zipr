@@ -1,0 +1,50 @@
+array,eqnarray,equation,figure,mathmatica,picture,table,verbatim
+bad buffer in yy_scan_bytes()
+__bss_start
+/build/buildd/texlive-bin-2009/inst/lib
+can't open file
+can't open \include file
+can't open \input file
+clearerr
+__errno_location
+fatal error - scanner input buffer overflow
+fatal flex scanner internal error--end of buffer missed
+fatal flex scanner internal error--no action found
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+\includeonly list is too long, ignoring
+input in flex scanner failed
+_IO_getc
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+kpse_fclose_trace
+kpse_find_file
+kpse_fopen_trace
+kpse_set_program_name
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+malloc for AddInclude failed
+malloc for SetEnvIgnore failed
+malloc for SetInputPaths failed
+out of dynamic memory in yy_create_buffer()
+out of dynamic memory in yyensure_buffer_stack()
+out of dynamic memory in yy_get_next_buffer()
+out of dynamic memory in yy_scan_buffer()
+out of dynamic memory in yy_scan_bytes()
+__printf_chk
+%s: error: %s
+__stack_chk_fail
+__strcpy_chk
+%s: warning: %s %s
+TEXINPUTS
+TEXINPUTS environment variable has too many paths
+The environtment list contains too many environments
+unknown option ignored -
+.:/usr/local/tex/inputs
+verbatim

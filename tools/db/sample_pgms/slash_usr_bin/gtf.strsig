@@ -1,0 +1,62 @@
+%2d: %-27s: %15f
+[BOT MARGIN (LINES)]
+__bss_start
+__cxa_finalize
+  # %dx%d @ %.2f Hz (GTF) hsync: %.2f kHz; pclk: %.2f MHz
+--fbmode
+  -f|--fbmode : output an fbset(8)-style mode description
+__fprintf_chk
+    geometry %d %d %d %d 32
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3.4
+__gmon_start__
+[H BLANK (PIXELS)]
+[H FREQ]
+[H FRONT PORCH (PIXELS)]
+[H PERIOD]
+[H PERIOD EST]
+[H PIXELS RND]
+    hsync low
+[H SYNC (PIXELS)]
+[IDEAL DUTY CYCLE]
+                if no mode description is requested)
+[INTERLACE]
+_IO_stdin_used
+_Jv_RegisterClasses
++l$@+|$D
+[LEFT MARGIN (PIXELS)]
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+mode "%dx%d %.2fHz 32bit (GTF)"
+  Modeline "%dx%d_%.2f"  %.2f  %d %d %d %d  %d %d %d %d  -HSync +Vsync
+    # PCLK: %.2f MHz, H: %.2f kHz, V: %.2f Hz
+[PIXEL FREQ]
+__printf_chk
+      refresh : the desired refresh rate (required)
+[RIGHT MARGIN (PIXELS)]
+    timings %d %d %d %d %d %d %d
+[TOP MARGIN (LINES)]
+[TOTAL ACTIVE PIXELS]
+[TOTAL PIXELS]
+[TOTAL V LINES]
+usage: %s x y refresh [-v|--verbose] [-f|--fbmode] [-x|--xorgmode]
+[V BACK PORCH]
+--verbose
+[V FIELD RATE]
+[V FIELD RATE EST]
+[V FIELD RATE RQD]
+[V FRAME RATE]
+[V LINES RND]
+[V ODD FRONT PORCH(LINES)]
+[V SYNC+BP]
+    vsync high
+ -v|--verbose : enable verbose printouts (traces each step of the computation)
+--xf86mode
+--xorgmode
+            x : the desired horizontal resolution (required)
+ -x|--xorgmode : output an Xorg-style mode description (this is the default
+            y : the desired vertical resolution (required)

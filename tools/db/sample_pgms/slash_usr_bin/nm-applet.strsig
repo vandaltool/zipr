@@ -1,0 +1,1998 @@
+%02X:%02X:%02X:%02X:%02X:%02X
+ 2004-2011 Red Hat, Inc.
+ 2005-2008 Novell, Inc.
+54 Mbps Wireless PC Card
+802.11 WiFi (%s)
+802-11-wireless
+802-11-wireless-security
+802-3-ethernet
+access-point-added
+access-point-removed
+AccessTechnology
+active-ap
+Active connection %s had no devices and was not a VPN!
+add_one_setting
+addresses
+add_to_size_group
+adsfasdfasdfadfasdf
+ALICE-WLAN
+All files
+alpha_2_code
+and many other community contributors and translators
+anonymous-identity
+A password is required to connect to '%s'.
+     APN: %s (%s)
+app_indicator_get_icon
+app_indicator_get_status
+app_indicator_new
+app_indicator_set_icon_full
+app_indicator_set_menu
+app_indicator_set_status
+app_indicator_set_title
+applet_8021x_cert_keys
+applet_about_dialog_show
+applet->agent
+AppletAgent
+applet-agent.c
+applet_agent_get_secrets_cb
+applet_agent_get_type
+applet_agent_new
+applet->bt_class
+applet.c
+applet.c:4046
+applet->cdma_class
+applet_cdma_connect_network
+applet-device-bt.c
+applet_device_bt_get_class
+applet-device-cdma.c
+applet_device_cdma_get_class
+applet-device-gsm.c
+applet_device_gsm_get_class
+applet_device_info_destroy
+applet-device-wifi.c
+applet_device_wifi_get_class
+applet-device-wimax.c
+applet_device_wimax_get_class
+applet-device-wired.c
+applet_device_wired_get_class
+applet-dialogs.c
+applet_do_notify
+applet_do_notify_with_pref
+applet->fallback_icon
+applet_find_active_connection_for_device
+applet_gconf_value_changed
+applet_get_active_for_connection
+applet_get_all_connections
+applet_get_best_activating_connection
+applet_get_connection_for_active
+applet_get_default_active_connection
+applet_get_device_for_connection
+applet_get_exported_connection_for_device
+applet_get_first_active_vpn_connection
+applet_get_settings
+applet->gsm_class
+applet_gsm_connect_network
+applet->icon_size > 0
+applet_info_dialog_show
+applet_item_activate_info_destroy
+Applet mainloop
+applet_menu_item_activate_helper
+applet_menu_item_activate_helper_new_connection
+applet_menu_item_add_complex_separator_helper
+applet_menu_item_create_device_item_helper
+applet_menu_item_disconnect_helper
+applet_mobile_password_dialog_new
+applet_mobile_pin_dialog_destroy
+applet_mobile_pin_dialog_get_auto_unlock
+applet_mobile_pin_dialog_get_entry1
+applet_mobile_pin_dialog_get_entry2
+applet_mobile_pin_dialog_get_entry3
+applet_mobile_pin_dialog_match_23
+applet_mobile_pin_dialog_new
+applet_mobile_pin_dialog_present
+applet_mobile_pin_dialog_set_entry1
+applet_mobile_pin_dialog_set_entry2
+applet_mobile_pin_dialog_set_entry3
+applet_mobile_pin_dialog_start_spinner
+applet_mobile_pin_dialog_stop_spinner
+applet_new_menu_item_helper
+applet now %s the notification area
+applet != NULL
+applet_schedule_update_icon
+applet_schedule_update_menu
+applet_secrets_request_complete
+applet_secrets_request_complete_setting
+applet_secrets_request_free
+applet_secrets_request_new
+applet_secrets_request_set_free_func
+applet->status_icon
+AppletVpnRequest
+applet-vpn-request.c
+applet_vpn_request_get_secrets
+applet_vpn_request_get_secrets_size
+applet_vpn_request_get_type
+applet_warning_dialog_show
+applet_wifi_can_create_wifi_network
+applet->wifi_class
+applet_wifi_connect_to_8021x_network
+applet_wifi_connect_to_hidden_network
+applet_wifi_create_wifi_network
+applet->wimax_class
+applet->wired_class
+/apps/nm-applet
+/apps/nm-applet/8021x-password-always-ask/%s
+/apps/nm-applet/disable-connected-notifications
+/apps/nm-applet/disable-disconnected-notifications
+/apps/nm-applet/disable-vpn-notifications
+/apps/nm-applet/disable-wifi-create
+/apps/nm-applet/show-applet
+/apps/nm-applet/%s/%s
+/apps/nm-applet/stamp
+/apps/nm-applet/suppress-wireless-networks-available
+atk_object_set_name
+auth-alg
+auth-dialog
+authtype
+autoconnect
+Auto Ethernet
+Bad value '%d' for key '%s' on NM 0.6 connection %s
+Base Connection:
+-----BEGIN CERTIFICATE-----
+-----BEGIN DSA PRIVATE KEY-----
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+-----BEGIN PRIVATE KEY-----
+-----BEGIN RSA PRIVATE KEY-----
+belkin54g
+bindtextdomain
+bind_textdomain_codeset
+bluetooth
+Broadcast Address:
+<b>%s</b>
+__bss_start
+bt_add_menu_item
+bt_get_secrets
+builder != NULL
+Business Mobile Networks BV
+ca_cert_chooser != NULL
+Canceled by NetworkManager
+cancel-secrets
+canonical-last-essid
+Casting negative value (%i) to uint
+Casting value (%i) to char
+cc_filename
+cdma_add_menu_item
+cdma_device_added
+cdma_get_icon
+cdma_get_secrets
+CDMA network.
+     CDMA: %s
+CDMA (%s)
+</center>
+<center>
+cert-pass
+certsigs
+change_button
+check_start_polling
+child_finished_cb
+Choose a Certificate Authority certificate...
+Choose a PAC file...
+Choose CA Certificate
+Choose your personal certificate...
+Choose your private key...
+client != NULL
+code1_entry
+code1_label
+code1 != NULL
+code2_entry
+code2_label
+code2 != NULL
+code3_entry
+code3_label
+combo_name != NULL
+comments
+common_name
+Communications
+Communication S.p.A.
+comp-lzo
+Components
+_Configure VPN...
+Configuring mobile broadband connection '%s'...
+Configuring wired network connection '%s'...
+Configuring wireless network connection '%s'...
+Connection activation failed: %s
+Connection Established
+Connection had no VPN setting
+connection-id
+connection_id != NULL
+Connection _Information
+connection-name
+connection != NULL
+connection-type
+connection_type != NULL
+connection-uuid
+connection_uuid != NULL
+ConnectTo3gNetwork
+ConnectTo8021xNetwork
+ConnectToHiddenNetwork
+_Connect to Hidden Wireless Network...
+ Consider installing 'iso-codes'
+constructor
+content_label
+converted > 0
+converted < 1000
+copy_one_setting_value_to_gconf
+copyright
+Copyright 
+Corporation
+Could not allocate memory for temporary file for '%s'
+Could not convert leap-username.
+Could not convert string list value '%s' from wireless-security to 8021x setting
+Could not convert string value '%s' from wireless-security to 8021x setting
+Could not create file path for %s / %s
+Could not create temporary file for '%s': %d
+Could not create VPN secrets request object
+Could not find the authentication dialog for VPN connection type '%s'
+Could not load fallback icon: (%d) %s
+Could not read /usr/share/mobile-broadband-provider-info/serviceproviders.xml: %s
+Could not read /usr/share/mobile-broadband-provider-info/serviceproviders.xml: Unknown error
+Could not rename temporary file to '%s': %d
+Could not set permissions for temporary file '%s': %d
+Could not write certificate/key for %s / %s: %s
+Could not write temporary file for '%s': %d
+Couldn't create default connection.
+Couldn't find wireless_dialog widget.
+Couldn't load builder file: %s
+Couldn't load info dialog ui file: %s
+Couldn't load UI builder file %s: %s
+Couldn't load UI builder file /usr/share/nm-applet/nag-user-dialog.ui: %s
+Couldn't load UI widget '%s' from UI file %s
+Couldn't read CA certificate '%s': %s
+Couldn't read client certificate '%s': %s
+Couldn't read phase2 CA certificate '%s': %s
+Couldn't read phase2 client certificate '%s': %s
+Couldn't read phase2 private key '%s': %s
+Couldn't read private key '%s': %s
+cpath != NULL
+create_info_label_security
+_create_keyring_add_attr_list
+Create _New Wireless Network...
+CreateWifiNetwork
+Creation of wifi networks has been disabled by system policy.
+__ctype_b_loc
+ctype != NULL
+data->hash
+DATA_KEY=
+__data_start
+DATA_VAL=
+dbus_connect_3g_cb
+dbus_connect_8021x_cb
+dbus_connection_set_exit_on_disconnect
+dbus_g_bus_get
+dbus_g_connection_get_connection
+dbus_g_connection_register_g_object
+dbus_g_connection_unref
+dbus_g_error_get_name
+dbus_glib_marshal_nma_BOOLEAN__BOXED_BOXED_POINTER
+dbus_glib_marshal_nma_BOOLEAN__BOXED_POINTER
+dbus_glib_marshal_nma_BOOLEAN__POINTER
+dbus_glib_nma_object_info
+dbus_g_object_register_marshaller
+dbus_g_object_type_install_info
+dbus_g_proxy_add_signal
+dbus_g_proxy_begin_call
+dbus_g_proxy_begin_call_with_timeout
+dbus_g_proxy_call
+dbus_g_proxy_connect_signal
+dbus_g_proxy_end_call
+dbus_g_proxy_new_for_name
+dbus_g_type_get_collection
+dbus_g_type_get_map
+dbus_g_type_get_struct
+dcgettext
+dclass != NULL
+dclass->secrets_request_size
+dcngettext
+deactivate
+Default Route:
+DEK-Info:
+delayed_start_agent
+delete-event
+delete_secrets
+DER or PEM certificates (*.der, *.pem, *.crt, *.cer)
+DER, PEM, or PKCS#12 private keys (*.der, *.pem, *.p12, *.key)
+desc_label
+desc != NULL
+description
+device-added
+DeviceIdentifier
+device not managed
+device not ready
+device not ready (firmware missing)
+*device == NULL
+device != NULL
+device-removed
+dialog-password
+dir != NULL
+Disconnect
+disconnect_cb
+Disconnected
+Disconnected - you are now offline
+_Disconnect VPN
+        dns     : %s
+_do_new_auto_connection
+dont-show
+Don't show this message again
+DSL authentication
+dsl_password
+dsl_service
+dsl_show_password
+dsl_username
+d && widget
+Dynamic WEP
+eap_fast_anon_identity_entry
+eap_fast_anon_identity_label
+eap_fast_inner_auth_combo
+eap_fast_inner_auth_label
+eap_fast_inner_auth_vbox
+eap_fast_notebook
+eap_fast_pac_file_button
+eap_fast_pac_file_label
+eap_fast_pac_provision_checkbutton
+eap_fast_pac_provision_combo
+eap_leap_notebook
+eap_leap_password_entry
+eap_leap_password_label
+eap_leap_username_entry
+eap_leap_username_label
+EAPMethod
+eap_method_add_to_size_group
+eap-method.c
+eap_method_default_file_chooser_filter_new
+eap-method-fast.c
+eap_method_fast_new
+eap_method_fill_connection
+eap_method_get_g_type
+eap_method_get_widget
+eap_method_init
+eap_method_is_encrypted_private_key
+eap-method-leap.c
+eap_method_leap_new
+eap_method_nag_init
+eap_method_nag_user
+eap-method-peap.c
+eap_method_peap_new
+eap_method_phase2_update_secrets_helper
+eap_method_ref
+eap-method-simple.c
+eap_method_simple_new
+eap-method-tls.c
+eap_method_tls_new
+eap-method-ttls.c
+eap_method_ttls_new
+eap_method_unref
+eap_method_update_secrets
+eap_method_validate
+eap_method_validate_filepicker
+eap != NULL
+eap_password_always_ask
+eap_peap_anon_identity_entry
+eap_peap_anon_identity_label
+eap_peap_ca_cert_button
+eap_peap_ca_cert_label
+eap_peap_inner_auth_combo
+eap_peap_inner_auth_label
+eap_peap_inner_auth_vbox
+eap_peap_notebook
+eap_peap_version_combo
+eap_peap_version_label
+, EAP-%s
+eap_simple_notebook
+eap_simple_password_entry
+eap_simple_password_label
+eap_simple_username_entry
+eap_simple_username_label
+eap_tls_ca_cert_button
+eap_tls_ca_cert_label
+eap_tls_identity_entry
+eap_tls_identity_label
+eap_tls_notebook
+eap_tls_private_key_button
+eap_tls_private_key_label
+eap_tls_private_key_password_entry
+eap_tls_private_key_password_label
+eap_tls_user_cert_button
+eap_tls_user_cert_label
+eap_ttls_anon_identity_entry
+eap_ttls_anon_identity_label
+eap_ttls_ca_cert_button
+eap_ttls_ca_cert_label
+eap_ttls_inner_auth_combo
+eap_ttls_inner_auth_label
+eap_ttls_inner_auth_vbox
+eap_ttls_notebook
+eap_widget
+Edit Connections...
+embedded in
+Enable _Mobile Broadband
+Enable _Networking
+Enable WiMA_X Mobile Broadband
+Enable _Wireless
+encrypted
+entry_name != NULL
+entry != NULL
+__errno_location
+Error: couldn't verify CA certificate: %d %s
+Error: couldn't verify client certificate: %d %s
+Error: couldn't verify private key: %d %s
+Error displaying connection information:
+Error launching connection editor: %s
+*error == NULL
+error != NULL
+Error while parsing XML: %s
+Error while reading connection: %s
+Error while reading: %s
+/etc/NetworkManager/VPN
+ether_aton
+Ethernet (%s)
+Failed to activate connection: (%d) %s
+Failed to add/activate connection: (%d) %s
+Failed to add keyring item (%s/%s/%s/%s): %d
+Failed to add new connection: (%d) %s
+Failed to auto-unlock devid:%s simid:%s
+Failed to auto-unlock devid:%s simid:%s : (%s) %s
+Failed to create wireless dialog
+Failed to initialize D-Bus: %s
+Failed to load '%s': %s
+Failed to move connection '%s' to NetworkManager system settings.
+Failed to move connection '%s' to NetworkManager system settings: %s
+Failed to open VPN plugin file configuration directory /etc/NetworkManager/VPN
+Failed to parse '%s': %s
+Failed to register as an agent: (%d) %s
+Failed to show notification: %s
+Failed to start applet secret agent!
+Failed to write connection to VPN UI: errno %d
+fill_connection
+find_duplicate
+foo_client_state_changed_cb
+foo_device_added_cb
+foo_device_state_changed_cb
+__fprintf_chk
+Free Public WiFi
+frequency
+func != NULL
+g_array_append_vals
+g_array_free
+g_array_new
+g_array_sized_new
+g_ascii_strcasecmp
+g_ascii_strdown
+g_ascii_strtoull
+g_ascii_strup
+g_ascii_table
+g_assertion_message
+g_assertion_message_expr
+        gateway : %s
+g_base64_encode
+g_boxed_type_register_static
+g_byte_array_append
+g_byte_array_free
+g_byte_array_new
+g_byte_array_sized_new
+g_cclosure_marshal_VOID__POINTER
+g_cclosure_marshal_VOID__UINT
+g_child_watch_add
+g_clear_error
+g_compute_checksum_for_data
+gconf_client_add_dir
+gconf_client_all_dirs
+gconf_client_all_entries
+gconf_client_get
+gconf_client_get_bool
+gconf_client_get_default
+gconf_client_get_int
+gconf_client_get_without_default
+gconf_client_notify_add
+gconf_client_recursive_unset
+gconf_client_remove_dir
+gconf_client_set_bool
+gconf_client_set_float
+gconf_client_set_int
+gconf_client_set_list
+gconf_client_set_string
+gconf_client_suggest_sync
+gconf_client_unset
+gconf_entry_get_key
+gconf_entry_get_value
+gconf_entry_unref
+gconf_escape_key
+gconf-helpers.c
+GConf key '%s' had no basename
+gconf_unescape_key
+gconf_value_free
+gconf_value_get_bool
+gconf_value_get_float
+gconf_value_get_int
+gconf_value_get_list
+gconf_value_get_list_type
+gconf_value_get_string
+g_dbus_proxy_get_cached_property
+g_dbus_proxy_get_name_owner
+g_dbus_proxy_new_for_bus_sync
+g_dir_close
+g_direct_equal
+g_direct_hash
+g_dir_open
+g_dir_read_name
+gdk_pixbuf_composite
+gdk_pixbuf_copy
+gdk_pixbuf_fill
+gdk_pixbuf_get_bits_per_sample
+gdk_pixbuf_get_height
+gdk_pixbuf_get_width
+gdk_pixbuf_loader_close
+gdk_pixbuf_loader_get_pixbuf
+gdk_pixbuf_loader_new_with_type
+gdk_pixbuf_loader_write
+gdk_pixbuf_new
+gdk_x11_get_server_time
+g_dpgettext
+g_error_free
+g_error_new
+g_error_new_literal
+get_8021x_secrets_cb
+get_best_icon_name_for_ap
+get_bt_secrets_cb
+get_cdma_secrets_cb
+get_connection_for_active
+get_connection_id
+get_device_class
+get_device_class_from_connection
+get_existing_secrets_cb
+get_gsm_secrets_cb
+get_pppoe_secrets_cb
+GetRegistrationInfo
+GetRegistrationState
+get_secrets
+get-secrets
+get_secrets_cb
+get_secrets_dialog_response_cb
+GetServingSystem
+get_shell_version
+GetSignalQuality
+get_tip_for_vpn
+get_vpn_connections
+g_file_get_contents
+g_file_test
+g_get_current_time
+g_get_home_dir
+g_get_user_name
+GHashTable
+g_hash_table_destroy
+g_hash_table_foreach
+g_hash_table_insert
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_lookup
+g_hash_table_new
+g_hash_table_new_full
+g_hash_table_remove
+g_idle_add
+g_idle_add_full
+g_idle_remove_by_data
+g_intern_static_string
+g_io_add_watch
+g_io_channel_new_file
+g_io_channel_read_chars
+g_io_channel_read_line
+g_io_channel_set_encoding
+g_io_channel_unix_new
+g_io_channel_unref
+g_key_file_free
+g_key_file_get_string
+g_key_file_load_from_file
+g_key_file_new
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+g_list_foreach
+g_list_free
+g_list_length
+g_main_loop_new
+g_main_loop_quit
+g_main_loop_run
+g_malloc0
+g_markup_parse_context_free
+g_markup_parse_context_new
+g_markup_parse_context_parse
+g_markup_printf_escaped
+__gmon_start__
+gnome_keyring_attribute_list_append_string
+gnome_keyring_attribute_list_free
+gnome_keyring_attribute_list_new
+gnome_keyring_cancel_request
+gnome_keyring_find_itemsv
+gnome_keyring_find_itemsv_sync
+gnome_keyring_find_network_password_sync
+gnome_keyring_found_list_free
+gnome_keyring_item_create
+gnome_keyring_item_create_sync
+gnome_keyring_item_delete
+gnome_keyring_item_delete_sync
+gnome_keyring_network_password_list_free
+gnome-lockscreen
+g_object_class_find_property
+g_object_class_install_property
+g_object_get_data
+g_object_new
+g_object_ref
+g_object_ref_sink
+g_object_set
+g_object_set_data
+g_object_set_data_full
+g_object_steal_data
+g_object_unref
+g_object_weak_ref
+g_object_weak_unref
+going for offline with icon: %s
+g_once_init_enter
+g_once_init_leave
+g_param_spec_get_name
+g_param_spec_pointer
+g_param_value_defaults
+g_path_get_basename
+g_path_get_dirname
+GPtrArray
+g_ptr_array_add
+g_ptr_array_foreach
+g_ptr_array_free
+g_ptr_array_sized_new
+g_quark_from_static_string
+g_return_if_fail_warning
+group != NULL
+group_password
+group-password
+g_set_application_name
+g_set_error
+g_set_error_literal
+g_signal_connect_data
+g_signal_emit
+g_signal_handler_block
+g_signal_handler_disconnect
+g_signal_handlers_block_matched
+g_signal_handlers_disconnect_matched
+g_signal_handlers_unblock_matched
+g_signal_handler_unblock
+g_signal_new
+g_signal_stop_emission_by_name
+g_slice_alloc0
+g_slice_free1
+g_slist_append
+g_slist_copy
+g_slist_delete_link
+g_slist_foreach
+g_slist_free
+g_slist_insert_sorted
+g_slist_length
+g_slist_nth_data
+g_slist_prepend
+g_slist_remove
+g_slist_reverse
+g_slist_sort
+gsm-3g-full
+gsm-3g-high
+gsm-3g-low
+gsm-3g-medium
+gsm-3g-none
+gsm_add_menu_item
+gsm_device_added
+gsm_get_icon
+gsm_get_secrets
+GSM network.
+GSM (%s)
+g_source_remove
+g_spawn_async
+g_spawn_async_with_pipes
+g_spawn_close_pid
+g_strchomp
+g_strchug
+g_strcmp0
+g_strdup
+g_strdup_printf
+g_strdupv
+g_str_equal
+g_strfreev
+g_str_hash
+g_str_has_prefix
+g_str_has_suffix
+g_string_append
+g_string_append_printf
+g_string_assign
+g_string_free
+g_string_insert_c
+g_string_new
+g_string_new_len
+g_string_sized_new
+g_strsplit
+g_strv_length
+g_timeout_add
+g_timeout_add_seconds
+gtk_alignment_new
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_builder_add_from_file
+gtk_builder_get_object
+gtk_builder_new
+gtk_button_get_type
+gtk_button_set_label
+gtk-cancel
+gtk_check_menu_item_get_active
+gtk_check_menu_item_get_type
+gtk_check_menu_item_new_with_label
+gtk_check_menu_item_new_with_mnemonic
+gtk_check_menu_item_set_active
+gtk_check_menu_item_set_draw_as_radio
+gtk_combo_box_get_active
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_set_active
+gtk_combo_box_set_model
+gtk_container_add
+gtk_container_get_children
+gtk_container_get_type
+gtk_container_remove
+gtk_container_set_border_width
+gtk_dialog_add_button
+gtk-dialog-error
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_new
+gtk_dialog_response
+gtk_dialog_run
+gtk-edit
+gtk_editable_get_type
+gtk_editable_insert_text
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_set_activates_default
+gtk_entry_set_max_length
+gtk_entry_set_text
+gtk_entry_set_visibility
+gtk_entry_set_width_chars
+gtk_file_chooser_add_filter
+gtk_file_chooser_button_get_type
+gtk_file_chooser_button_set_title
+gtk_file_chooser_get_filename
+gtk_file_chooser_get_filter
+gtk_file_chooser_get_type
+gtk_file_chooser_set_filename
+gtk_file_chooser_set_filter
+gtk_file_chooser_set_local_only
+gtk_file_chooser_unselect_all
+gtk_file_filter_add_custom
+gtk_file_filter_add_pattern
+gtk_file_filter_get_type
+gtk_file_filter_new
+gtk_file_filter_set_name
+gtk_get_current_event_time
+gtk_icon_theme_append_search_path
+gtk_icon_theme_get_for_screen
+gtk_icon_theme_load_icon
+gtk_image_get_type
+gtk_image_menu_item_get_type
+gtk_image_menu_item_new_with_label
+gtk_image_menu_item_new_with_mnemonic
+gtk_image_menu_item_set_always_show_image
+gtk_image_menu_item_set_image
+gtk_image_new
+gtk_image_new_from_icon_name
+gtk_image_new_from_stock
+gtk_image_set_from_pixbuf
+gtk_image_set_from_stock
+gtk-info
+gtk_init
+gtk_label_get_type
+gtk_label_new
+gtk_label_new_with_mnemonic
+gtk_label_set_markup
+gtk_label_set_selectable
+gtk_label_set_text
+gtk_label_set_use_markup
+gtk_list_store_append
+gtk_list_store_new
+gtk_list_store_set
+gtk_menu_get_type
+gtk_menu_item_get_label
+gtk_menu_item_get_type
+gtk_menu_item_new
+gtk_menu_item_new_with_label
+gtk_menu_item_new_with_mnemonic
+gtk_menu_item_set_submenu
+gtk_menu_new
+gtk_menu_popup
+gtk_menu_shell_append
+gtk_menu_shell_get_type
+gtk_menu_shell_insert
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_message_dialog_new_with_markup
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk-network
+gtk_notebook_append_page
+gtk_notebook_get_n_pages
+gtk_notebook_get_type
+gtk_notebook_remove_page
+gtk_separator_menu_item_new
+gtk_show_about_dialog
+gtk_size_group_add_widget
+gtk_spinner_get_type
+gtk_spinner_new
+gtk_spinner_start
+gtk_spinner_stop
+gtk_status_icon_get_screen
+gtk_status_icon_get_type
+gtk_status_icon_is_embedded
+gtk_status_icon_new
+gtk_status_icon_position_menu
+gtk_status_icon_set_from_pixbuf
+gtk_status_icon_set_name
+gtk_status_icon_set_tooltip_text
+gtk_status_icon_set_visible
+gtk_table_attach
+gtk_table_get_type
+gtk_table_new
+gtk_table_set_col_spacings
+gtk_table_set_row_spacings
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_set_active
+gtk_tree_model_get
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_type
+gtk_tree_model_iter_next
+gtk_widget_destroy
+gtk_widget_get_accessible
+gtk_widget_get_toplevel
+gtk_widget_get_type
+gtk_widget_get_window
+gtk_widget_grab_default
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_hide_on_delete
+gtk_widget_is_toplevel
+gtk_widget_realize
+gtk_widget_set_sensitive
+gtk_widget_show
+gtk_widget_show_all
+gtk_widget_unparent
+gtk_window_get_type
+gtk_window_present
+gtk_window_present_with_time
+gtk_window_resize
+gtk_window_set_default
+gtk_window_set_default_icon_name
+gtk_window_set_icon_name
+gtk_window_set_modal
+gtk_window_set_position
+gtk_window_set_title
+gtk_window_set_transient_for
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_check_value_holds
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+GValueArray
+g_value_array_append
+g_value_array_free
+g_value_array_get_nth
+g_value_array_new
+g_value_dup_string
+g_value_get_boolean
+g_value_get_boxed
+g_value_get_int
+g_value_get_pointer
+g_value_get_schar
+g_value_get_string
+g_value_get_type
+g_value_get_uint
+g_value_get_uint64
+g_value_init
+g_value_peek_pointer
+g_value_set_boolean
+g_value_set_string
+g_value_set_uint
+g_value_take_boxed
+g_value_unset
+g_variant_dup_string
+g_variant_is_of_type
+g_variant_is_of_type (v, G_VARIANT_TYPE_STRING)
+g_variant_new_boolean
+g_variant_unref
+g_warn_message
+Hardware Address:
+has_connections
+header_label
+header != NULL
+helper_fill_secret_entry
+Home network
+Home network (%s)
+http-proxy-password
+http://www.gnome.org/projects/NetworkManager/
+icon != NULL
+Icon %s missing: (%d) %s
+identifier
+ieee8021x
+ignore-auto-dns
+ignore_button
+ignore-ca-cert
+ignore_checkbox
+ignore-dhcp-dns
+ignore-phase2-ca-cert
+Ignoring invalid route '%s'
+Incorporated
+indicator_fallback
+indicator_unfallback
+inet_ntop
+inet_pton
+info->ap != NULL
+info_dialog
+info->dialog != NULL
+info_dialog_update
+info->keyring_id == NULL
+info_notebook
+info != NULL
+info->unlock_required != NULL
+infrastructure
+inner_auth_combo_changed_cb
+inner_auth_combo_init
+inner-ca-cert.der
+inner-client-cert.der
+inner-private-key.p12
+inner-private-key.pem
+insert-text
+Interface:
+Invalid connection (empty)
+_IO_stdin_used
+ip6_address_as_string
+IP Address:
+IPSec gateway
+IPSec secret
+ipsec-secret-type
+is_connection_always_ask
+iso_3166
+iso_3166_entry
+iso_3166_parser_start_element
+item != NULL
+It is not intended for command-line interaction but instead runs in the GNOME desktop environment.
+_Jv_RegisterClasses
+key-mgmt
+keyring_pin_check_cb
+lasthost
+leap_key_mgmt
+leap-password
+leap_username
+leap-username
+leftxauthusername
+libappindicator3.so.1
+libatk-1.0.so.0
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libdbus-1.so.3
+libdbus-glib-1.so.2
+libgconf-2.so.4
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgnome-keyring.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+libnm-glib.so.4
+libnm-gtk.so.0
+libnm-util.so.2
+libnotify.so.4
+libpthread.so.0
+Limited.
+link-local
+linksys-a
+linksys-g
+logo-icon-name
+mac-address
+make_vpn_disconnection_message
+make_vpn_failure_message
+mcc_mnc_free
+        MCC/MNC: %s-%s
+__memcpy_chk
+menu != NULL
+message != NULL
+method->add_to_size_group
+method->fill_connection
+method != NULL
+method->refcount > 0
+method->refs > 0
+method->validate
+Missing key '%s' on NM 0.6 connection %s
+Missing resources
+MmPropertiesChanged
+Mobile broadband connection '%s' active
+Mobile broadband connection '%s' active: (%d%%%s%s)
+Mobile Broadband Minicard Composite Device
+Mobile broadband network password
+Mobile Communications AB
+mobile_helper_get_connection_label
+mobile_helper_get_quality_icon
+mobile_helper_get_status_pixbuf
+mobile_helper_get_tech_icon
+Modem network
+more_info_wifi_dialog_response_cb
+More networks
+move_to_system
+moving back from GtkStatusIcon to indicator
+mpd_entry_changed
+mpd_get_entry
+mpd_set_entry
+mschapv2
+Multiprotocol MAC/baseband processor
+nag_dialog_response_cb
+nag_user_dialog
+Network Connection
+Network connection '%s' active
+network-id
+Networking disabled
+NetworkManager Applet
+NetworkManager is not running...
+NetworkManager Website
+network-name
+network_name_entry
+Network secret for %s/%s/%s
+never-default
+new-connection
+New Mobile Broadband (CDMA) connection...
+New Mobile Broadband (GSM) connection...
+new_nsp_menu_item
+New PIN code:
+New secrets for %s/%s requested; ask the user
+nm_8021x_get_secrets
+nma-ca-cert-ignore
+nm_access_point_filter_connections
+nm_access_point_get_flags
+nm_access_point_get_hw_address
+nm_access_point_get_mode
+nm_access_point_get_rsn_flags
+nm_access_point_get_ssid
+nm_access_point_get_strength
+nm_access_point_get_type
+nm_access_point_get_wpa_flags
+nma_clear_icon
+nma_context_menu_create
+nm_active_connection_get_connection
+nm_active_connection_get_default
+nm_active_connection_get_devices
+nm_active_connection_get_specific_object
+nm_active_connection_get_state
+nm_active_connection_get_type
+nm-adhoc
+nma-error-quark
+nma_get_type
+nma_icon_check_and_load
+NMAIconPathAppended
+nma_icons_init
+nma_icons_reload
+_nma_marshal_VOID__INT_POINTER
+_nma_marshal_VOID__POINTER_POINTER
+_nma_marshal_VOID__POINTER_POINTER_STRING_POINTER_UINT_POINTER_POINTER
+_nma_marshal_VOID__STRING_BOXED
+_nma_marshal_VOID__STRING_STRING_STRING
+_nma_marshal_VOID__UINT_STRING_STRING
+_nma_marshal_VOID__UINT_UINT
+nma_menu_add_create_network_item
+nma_menu_add_hidden_network_item
+nma_menu_add_text_item
+nma_menu_device_check_unusable
+nma_menu_device_get_menu_item
+nma_menu_disconnect_vpn_item_activate
+nma_menu_show_cb
+nma_menu_vpn_item_clicked
+nma_mobile_wizard_destroy
+nma_mobile_wizard_new
+nma_mobile_wizard_present
+nma-path-ca-cert
+nma-path-client-cert
+nma-path-phase2-ca-cert
+nma-path-phase2-client-cert
+nma-path-phase2-private-key
+nma-path-private-key
+nma-phase2-ca-cert-ignore
+nma-phase2-private-key-password
+NM appeared
+NMApplet
+nm_applet_new
+nma-private-key-password
+nma_set_networking_enabled_cb
+nma_set_wimax_enabled_cb
+nma_set_wireless_enabled_cb
+nma_set_wwan_enabled_cb
+nma_wired_dialog_get_connection
+nma_wired_dialog_new
+nma_wireless_dialog_get_connection
+nma_wireless_dialog_get_nag_ignored
+nma_wireless_dialog_get_type
+nma_wireless_dialog_nag_user
+nma_wireless_dialog_new
+nma_wireless_dialog_new_for_create
+nma_wireless_dialog_new_for_other
+nma_wireless_dialog_set_nag_ignored
+nm_client_activate_connection
+nm_client_add_and_activate_connection
+nm_client_deactivate_connection
+nm_client_get_active_connections
+nm_client_get_device_by_path
+nm_client_get_devices
+nm_client_get_manager_running
+nm_client_get_permission_result
+nm_client_get_state
+nm_client_networking_get_enabled
+nm_client_networking_set_enabled
+nm_client_new
+nm_client_wimax_get_enabled
+nm_client_wimax_hardware_get_enabled
+nm_client_wimax_set_enabled
+nm_client_wireless_get_enabled
+nm_client_wireless_hardware_get_enabled
+nm_client_wireless_set_enabled
+nm_client_wwan_get_enabled
+nm_client_wwan_hardware_get_enabled
+nm_client_wwan_set_enabled
+nm_connection_add_setting
+nm_connection_clear_secrets
+nm_connection_compare
+nm_connection_create_setting
+nm_connection_duplicate
+nm_connection_for_each_setting_value
+nm_connection_get_id
+nm_connection_get_path
+nm_connection_get_setting
+nm_connection_get_setting_802_1x
+nm_connection_get_setting_by_name
+nm_connection_get_setting_cdma
+nm_connection_get_setting_connection
+nm_connection_get_setting_gsm
+nm_connection_get_setting_ip6_config
+nm_connection_get_setting_pppoe
+nm_connection_get_setting_vpn
+nm_connection_get_setting_wimax
+nm_connection_get_setting_wired
+nm_connection_get_setting_wireless
+nm_connection_get_setting_wireless_security
+nm_connection_get_type
+nm_connection_get_uuid
+nm_connection_new
+nm_connection_update_secrets
+nm_device_bt_get_name
+nm_device_bt_get_type
+nm_device_disconnect
+nm_device_ethernet_get_carrier
+nm_device_ethernet_get_hw_address
+nm_device_ethernet_get_speed
+nm_device_ethernet_get_type
+nm_device_filter_connections
+nm_device_get_capabilities
+nm_device_get_driver
+nm_device_get_firmware_missing
+nm_device_get_iface
+nm_device_get_ip4_config
+nm_device_get_ip6_config
+nm_device_get_managed
+nm_device_get_product
+nm_device_get_state
+nm_device_get_type
+nm_device_get_udi
+nm_device_get_vendor
+nm_device_modem_get_current_capabilities
+nm_device_modem_get_type
+nm_device_wifi_get_access_point_by_path
+nm_device_wifi_get_access_points
+nm_device_wifi_get_active_access_point
+nm_device_wifi_get_bitrate
+nm_device_wifi_get_capabilities
+nm_device_wifi_get_hw_address
+nm_device_wifi_get_type
+nm_device_wimax_get_active_nsp
+nm_device_wimax_get_bsid
+nm_device_wimax_get_cinr
+nm_device_wimax_get_hw_address
+nm_device_wimax_get_nsps
+nm_device_wimax_get_type
+nm-device-wired
+nm-device-wwan
+NM disappeared
+nm_gconf_add_keyring_item
+nm_gconf_get_bool_helper
+nm_gconf_get_bytearray_helper
+nm_gconf_get_float_helper
+nm_gconf_get_int_helper
+nm_gconf_get_ip4_helper
+nm_gconf_get_ip6addr_array_helper
+nm_gconf_get_ip6dns_array_helper
+nm_gconf_get_ip6route_array_helper
+nm_gconf_get_mac_address_helper
+nm_gconf_get_stringarray_helper
+nm_gconf_get_stringhash_helper
+nm_gconf_get_string_helper
+nm_gconf_get_stringlist_helper
+nm_gconf_get_uint_array_helper
+nm_gconf_key_is_set
+nm_gconf_migrate_0_6_connections
+nm_gconf_migrate_0_7_autoconnect_default
+nm_gconf_migrate_0_7_ca_cert_ignore
+nm_gconf_migrate_0_7_certs
+nm_gconf_migrate_0_7_connection_uuid
+nm_gconf_migrate_0_7_ignore_dhcp_dns
+nm_gconf_migrate_0_7_ip4_method
+nm_gconf_migrate_0_7_keyring_items
+nm_gconf_migrate_0_7_netmask_to_prefix
+nm_gconf_migrate_0_7_openvpn_properties
+nm_gconf_migrate_0_7_vpn_never_default
+nm_gconf_migrate_0_7_vpn_properties
+nm_gconf_migrate_0_7_vpn_routes
+nm_gconf_migrate_0_7_wireless_security
+nm_gconf_migrate_09_secret_flags
+nm_gconf_move_connections_to_system
+nm_gconf_read_connection
+nm_gconf_set_bool_helper
+nm_gconf_set_bytearray_helper
+nm_gconf_set_float_helper
+nm_gconf_set_int_helper
+nm_gconf_set_ip4_helper
+nm_gconf_set_ip6addr_array_helper
+nm_gconf_set_ip6dns_array_helper
+nm_gconf_set_ip6route_array_helper
+nm_gconf_set_mac_address_helper
+nm_gconf_set_stringarray_helper
+nm_gconf_set_stringhash_helper
+nm_gconf_set_string_helper
+nm_gconf_set_stringlist_helper
+nm_gconf_set_uint_array_helper
+nm_gconf_write_connection
+nm_ip4_address_get_address
+nm_ip4_address_get_gateway
+nm_ip4_address_get_prefix
+nm_ip4_config_get_addresses
+nm_ip4_config_get_nameservers
+nm_ip4_route_get_dest
+nm_ip4_route_get_metric
+nm_ip4_route_get_next_hop
+nm_ip4_route_get_prefix
+nm_ip4_route_new
+nm_ip4_route_set_dest
+nm_ip4_route_set_prefix
+nm_ip4_route_unref
+nm_ip6_address_get_address
+nm_ip6_address_get_gateway
+nm_ip6_address_get_prefix
+nm_ip6_config_get_addresses
+nm_ip6_config_get_nameservers
+NM_IS_ACCESS_POINT (ap)
+NM_IS_APPLET (applet)
+NM_IS_CONNECTION (connection)
+NM_IS_DEVICE (device)
+NM_IS_NETWORK_MENU_ITEM (item)
+NMMbMenuItem
+nm_mb_menu_item_get_type
+nm_mb_menu_item_new
+nm-mb-roam
+NMNetworkMenuItem
+nm_network_menu_item_add_dupe
+nm_network_menu_item_best_strength
+nm_network_menu_item_find_dupe
+nm_network_menu_item_get_has_connections
+nm_network_menu_item_get_hash
+nm_network_menu_item_get_is_adhoc
+nm_network_menu_item_get_is_encrypted
+nm_network_menu_item_get_ssid
+nm_network_menu_item_get_strength
+nm_network_menu_item_get_type
+nm_network_menu_item_new
+nm_network_menu_item_set_active
+nm_network_menu_item_set_detail
+nm_network_menu_item_set_ssid
+NmnMobileAccessMethod
+nmn_mobile_access_method_get_type
+nmn_mobile_access_method_ref
+nmn_mobile_access_method_unref
+NmnMobileProvider
+nmn_mobile_provider_get_type
+nmn_mobile_provider_ref
+nmn_mobile_providers_dump
+nmn_mobile_providers_parse
+nmn_mobile_provider_unref
+nm-no-connection
+nm_object_get_path
+nm_object_get_type
+nm_remote_settings_add_connection
+nm_remote_settings_get_connection_by_path
+nm_remote_settings_list_connections
+nm_remote_settings_new
+nm_secret_agent_delete_secrets
+nm_secret_agent_error_quark
+nm_secret_agent_get_registered
+nm_secret_agent_get_secrets
+nm_secret_agent_get_type
+nm_secret_agent_register
+nm_secret_agent_save_secrets
+nm_secret_agent_unregister
+nm-secure-lock
+nm_setting_802_1x_add_eap_method
+nm_setting_802_1x_clear_eap_methods
+nm_setting_802_1x_get_anonymous_identity
+nm_setting_802_1x_get_ca_cert_blob
+nm_setting_802_1x_get_ca_cert_path
+nm_setting_802_1x_get_ca_cert_scheme
+nm_setting_802_1x_get_client_cert_blob
+nm_setting_802_1x_get_client_cert_path
+nm_setting_802_1x_get_client_cert_scheme
+nm_setting_802_1x_get_eap_method
+nm_setting_802_1x_get_identity
+nm_setting_802_1x_get_num_eap_methods
+nm_setting_802_1x_get_pac_file
+nm_setting_802_1x_get_password
+nm_setting_802_1x_get_phase1_fast_provisioning
+nm_setting_802_1x_get_phase1_peapver
+nm_setting_802_1x_get_phase2_auth
+nm_setting_802_1x_get_phase2_autheap
+nm_setting_802_1x_get_phase2_ca_cert_blob
+nm_setting_802_1x_get_phase2_ca_cert_path
+nm_setting_802_1x_get_phase2_ca_cert_scheme
+nm_setting_802_1x_get_phase2_client_cert_blob
+nm_setting_802_1x_get_phase2_client_cert_path
+nm_setting_802_1x_get_phase2_client_cert_scheme
+nm_setting_802_1x_get_phase2_private_key_blob
+nm_setting_802_1x_get_phase2_private_key_format
+nm_setting_802_1x_get_phase2_private_key_password
+nm_setting_802_1x_get_phase2_private_key_path
+nm_setting_802_1x_get_phase2_private_key_scheme
+nm_setting_802_1x_get_private_key_blob
+nm_setting_802_1x_get_private_key_format
+nm_setting_802_1x_get_private_key_password
+nm_setting_802_1x_get_private_key_path
+nm_setting_802_1x_get_private_key_scheme
+nm_setting_802_1x_get_type
+nm_setting_802_1x_new
+nm_setting_802_1x_set_ca_cert
+nm_setting_802_1x_set_client_cert
+nm_setting_802_1x_set_phase2_ca_cert
+nm_setting_802_1x_set_phase2_client_cert
+nm_setting_802_1x_set_phase2_private_key
+nm_setting_802_1x_set_private_key
+nm_setting_cdma_new
+nm_setting_connection_add_permission
+nm_setting_connection_get_autoconnect
+nm_setting_connection_get_connection_type
+nm_setting_connection_get_id
+nm_setting_connection_get_type
+nm_setting_connection_get_uuid
+nm_setting_connection_new
+nm_setting_enumerate_values
+nm_setting_get_name
+nm_setting_get_secret_flags
+nm_setting_get_type
+nm_setting_gsm_new
+nm_setting_ip4_config_add_route
+nm_setting_ip4_config_get_type
+nm_setting_ip4_config_new
+nm_setting_ip6_config_get_method
+nm_setting_ppp_new
+nm_setting_pppoe_get_password
+nm_setting_pppoe_get_service
+nm_setting_pppoe_get_type
+nm_setting_pppoe_get_username
+nm_setting_serial_new
+nm_setting_set_secret_flags
+nm_setting_to_hash
+nm_setting_vpn_add_data_item
+nm_setting_vpn_add_secret
+nm_setting_vpn_foreach_data_item
+nm_setting_vpn_foreach_secret
+nm_setting_vpn_get_data_item
+nm_setting_vpn_get_service_type
+nm_setting_vpn_get_type
+nm_setting_vpn_new
+nm_setting_vpn_remove_data_item
+nm_setting_wimax_get_network_name
+nm_setting_wimax_get_type
+nm_setting_wimax_new
+nm_setting_wired_get_type
+nm_setting_wired_new
+nm_setting_wireless_add_seen_bssid
+nm_setting_wireless_get_mode
+nm_setting_wireless_get_security
+nm_setting_wireless_get_ssid
+nm_setting_wireless_get_type
+nm_setting_wireless_new
+nm_setting_wireless_security_add_proto
+nm_setting_wireless_security_clear_groups
+nm_setting_wireless_security_clear_pairwise
+nm_setting_wireless_security_clear_protos
+nm_setting_wireless_security_get_auth_alg
+nm_setting_wireless_security_get_key_mgmt
+nm_setting_wireless_security_get_type
+nm_setting_wireless_security_new
+nm-signal-00
+nm-signal-100
+nm-signal-25
+nm-signal-50
+nm-signal-75
+nm-stage%02d-connecting%02d
+nm-tech-cdma-1x
+nm-tech-edge
+nm-tech-evdo
+nm-tech-gprs
+nm-tech-hspa
+nm-tech-umts
+nm_utils_ip4_netmask_to_prefix
+nm_utils_ip4_prefix_to_netmask
+nm_utils_is_empty_ssid
+nm_utils_rsa_key_encrypt
+nm_utils_same_ssid
+nm_utils_security_valid
+nm_utils_slist_free
+nm_utils_ssid_to_utf8
+nm_utils_uuid_generate
+nm-vpn-connecting%02d
+nm_vpn_connection_get_banner
+nm_vpn_connection_get_type
+nm_vpn_connection_get_vpn_state
+nm_wimax_nsp_get_name
+nm_wimax_nsp_get_network_type
+nm_wimax_nsp_get_signal_quality
+nm_wimax_nsp_get_type
+nm-wwan-tower
+No Certificate Authority certificate chosen
+No keyring secrets found for %s/%s; asking user.
+No network connection
+No network devices available
+no notification because merged found that we have nothing to say (e.g. not offline)
+not enabled
+Not enough memory to create gconf path
+Notification area applet for managing your network devices and connections.
+notification-gsm-disconnected
+notification-gsm-high
+notification-network-disconnected
+notification-network-ethernet-connected
+notification-network-ethernet-disconnected
+notification-network-wireless-disconnected
+notification-network-wireless-full
+notify::active-access-point
+notify::active-connections
+notify::active-nsp
+notify::bitrate
+notify::bsid
+notify::cinr
+notify::embedded
+notify::filter
+notify_get_server_caps
+notify::g-name-owner
+notify_init
+notify_is_initted
+notify::manager-running
+notify_notification_add_action
+notify_notification_clear_actions
+notify_notification_close
+notify_notification_new
+notify_notification_set_hint
+notify_notification_set_timeout
+notify_notification_set_urgency
+notify_notification_show
+notify_notification_update
+notify::registered
+notify::screen
+notify::signal-quality
+notify::state
+notify::strength
+notify-wireless-avail-data
+not registered
+Not using a Certificate Authority (CA) certificate can result in connections to insecure, rogue wireless networks.  Would you like to choose a Certificate Authority certificate?
+No valid active connections found!
+n_param_values == 2
+n_param_values == 3
+n_param_values == 4
+n_param_values == 8
+nsp != NULL
+nsp-removed
+obj_size > 0
+ok_button
+old state indicates that this was not a disconnect %d
+openconnect
+openswan
+/org/freedesktop/DBus
+org.freedesktop.DBus
+org.freedesktop.DBus.Properties
+org.freedesktop.ModemManager
+org.freedesktop.ModemManager.Modem
+org.freedesktop.ModemManager.Modem.Cdma
+org.freedesktop.ModemManager.Modem.Gsm.Card
+org.freedesktop.ModemManager.Modem.Gsm.IncorrectPassword
+org.freedesktop.ModemManager.Modem.Gsm.Network
+org.freedesktop.NetworkManager.openconnect
+org.freedesktop.NetworkManager.openswan
+org.freedesktop.NetworkManager.openvpn
+org.freedesktop.NetworkManager.pptp
+org.freedesktop.NetworkManager.vpnc
+org.freedesktop.nm-applet
+/org/gnome/network_manager_applet
+org.gnome.network_manager_applet
+/org/gnome/Shell
+org.gnome.Shell
+*out_active == NULL
+pac-file
+PAC files (*.pac)
+pac_toggled_cb
+parser_toplevel_start
+Password:
+password_always_ask_changed
+password != NULL
+        password: %s
+password-tls
+PC Card with XJACK(r) Antenna
+(PC-Suite Mode)
+pending current provider
+pending current providers
+permission-changed
+phase1-fast-provisioning
+phase1-peaplabel
+phase1-peapver
+phase2-auth
+phase2-autheap
+phase2-ca-path
+phase2-private-key-password
+PID %d (we are %d) sent signal %d, shutting down...
+PIN code for SIM card '%s' on '%s'
+PIN code is needed for the mobile broadband device
+PIN code required
+pin != NULL
+pk_filename
+popup-menu
+pppoe_get_secrets
+pppoe_update_ui
+Preparing mobile broadband connection '%s'...
+Preparing network connection '%s'...
+Preparing wired network connection '%s'...
+Preparing wireless network connection '%s'...
+Primary DNS:
+private-key-passwd
+private_key_picker_helper
+Proc-Type: 4,ENCRYPTED
+progress_hbox
+progress_label
+property
+Protected EAP (PEAP)
+proto-tcp
+providers != NULL
+Provider: %s (%s)
+proxy-type
+pskinputmodes
+pskvalue
+PUK code:
+read-only
+Re-enter new PIN code:
+registration denied
+registration-result
+RegistrationStateChanged
+removed from
+req != NULL
+request_free
+Requesting a network address for '%s'...
+Requesting a VPN address for '%s'...
+Requesting a wired network address for '%s'...
+Requesting a wireless network address for '%s'...
+RequestName
+response
+return_value != NULL
+r->keyring_calls == NULL
+Roaming network
+Roaming network (%s)
+rsn-flags
+s390-opt-
+s390-options
+save_checkbutton
+save_one_secret
+Saving PIN code in keyring for devid:%s simid:%s failed
+%s connection
+s_con != NULL
+%s: couldn't find the default active connection's NMConnection!
+%s.%d - Connection didn't have requested setting '%s'.
+%s.%d - Connection didn't have required UUID.
+%s: deactivate clicked but no active VPN connection could be found.
+%s (default)
+%s: device disconnect failed: (%d) %s
+%s.%d - failed to read secrets from keyring (result %d)
+%s: don't know how to convert type %d
+%s:%d - %s
+%s.%d (%s): canceled
+%s.%d (%s): couldn't display secrets UI
+%s.%d (%s): couldn't display secrets UI: %s
+%s.%d (%s): couldn't get connection from wired dialog.
+%s.%d (%s): couldn't get connection from wireless dialog.
+%s.%d (%s): device type unknown
+%s.%d (%s): error asking for CDMA secrets.
+%s.%d (%s): error asking for GSM secrets.
+%s.%d (%s): failed to find device for active connection.
+%s.%d (%s): failed to hash setting pppoe
+%s.%d (%s): failed to hash setting '%s'.
+%s.%d (%s): Invalid connection
+%s.%d (%s): missing secrets hints.
+%s.%d (%s): no GSM setting
+%s.%d (%s): no secrets found
+%s.%d (%s): not enough memory to return secrets.
+%s.%d (%s): no WiMAX secrets available.
+%s.%d (%s): requested setting '802-11-wireless-security' didn't exist in the connection.
+%s.%d (%s): requested setting '802-1x' didn't exist in the connection.
+%s.%d (%s): unhandled setting '%s'
+%s.%d (%s): unhandled wired connection type '%s'
+%s.%d (%s): unknown secrets hint '%s'.
+searching
+sec->add_to_size_group
+sec->fill_connection
+sec != NULL
+Secondary DNS:
+sec->refcount > 0
+SECRET_KEY=
+secret != NULL
+secrets == NULL
+SECRET_VAL=
+Security:
+security_vbox
+sec->validate
+selection-changed
+Semiconductor
+Sending unlock code...
+%s: error converting IP6 address %s
+%s: error saving certificate/private key '%s': (%d) %s
+%s: error unlocking with PIN: %s
+service_name
+serviceproviders
+ServiceStartFailed
+service-type
+service_type != NULL
+_set_ignore_ca_cert
+set_menu_item_accessible_desc
+setting-key
+setting_key != NULL
+@setting_name
+setting-name
+setting_name != NULL
+setting != NULL
+settings != NULL
+setup_filepicker
+setup_indicator_menu
+setup_statusicon_menu
+setup_widgets
+%s: failed to connect to D-Bus: (%d) %s
+%s: failed to create CDMA proxy.
+%s: failed to create D-Bus properties proxy.
+%s: failed to create GSM Card proxy.
+%s: failed to create GSM Network proxy.
+%s: failed to set secret flags for %s/%s
+shared-key
+shared-key-direction
+--shell-debug
+shell_debug
+ShellVersion
+show_checkbox
+show_checkbutton_eapleap
+show_checkbutton_eapsimple
+show_checkbutton_eaptls
+show_password_checkbutton
+show_password_label != NULL
+Show PIN code
+Show PIN/PUK codes
+show_toggled_cb
+        SID: %d
+sigaction
+sigemptyset
+SimIdentifier
+simid_reply
+sim-pin2
+SIM PIN unlock required
+sim-puk2
+SIM PUK unlock required
+%s: invalid IPv4 address/route structure!
+%s: invalid IPv6 address!
+%s: invalid IPv6 address prefix %u
+%s: invalid IPv6 dest address!
+%s: invalid IPv6 dest prefix %u
+%s: invalid IPv6 DNS server address!
+%s: invalid IPv6 gateway!
+%s: invalid IPv6 next_hop address!
+%s: invalid IPv6 route!
+%s: invalid item type %d.
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+size-changed
+%s: missing mandatory 'alpha_2_code' atribute in '%s' element.
+%s: missing mandatory 'name' atribute in '%s' element.
+%s: mobile broadband provider database format '%s' not supported.
+%s: no active connection or device.
+%s: no connection associated with menu item!
+<span size="larger" weight="bold">%s</span>
+<span weight="bold" size="larger">%s</span>
+<span weight="bold">%s</span>
+spinner_alignment
+spinner != NULL
+s_pppoe != NULL
+%s: result %d
+%s (roaming)
+%s: %s contained bad address/prefix: %s
+%s: %s contained bad address: %s
+%s: %s contained bad gateway address: %s
+%s: %s contained bad route: %s
+%s-secure
+%s: %s format invalid; # elements not divisible by %d
+ssid != NULL
+%s (%s roaming)
+%s (%s %s)
+%s/.ssh/%s-%s
+__stack_chk_fail
+Starting applet secret agent because GNOME Shell disappeared
+Starting VPN connection '%s'...
+static-key
+static-key-direction
+stopbits
+Stopping applet secret agent because GNOME Shell appeared
+Stopping registered applet secret agent because GNOME Shell is running
+strcasestr
+strcmp (connection_type, NM_SETTING_VPN_SETTING_NAME) == 0
+__strdup
+strlen (code1)
+strlen (password)
+strncasecmp
+Subnet Mask
+Subnet Mask:
+summary != NULL
+%s: unhandled connection type '%s'
+%s: unhandled modem capabilities 0x%X
+%s: Unknown device type '%s'
+%s/%u%s%s
+%s/%u,%s,%u
+%s: VPN connection '%s' didn't have required vpn setting.
+s_vpn != NULL
+%s/vpn-properties
+s_wireless
+s_wireless_sec
+/system/networking/connections
+/system/networking/vpn_connections
+/system/networking/wireless/networks
+Technology Group Ltd.
+Ternary DNS:
+test_addr != NULL
+text != NULL
+tEXtSoftware
+The access point could not be found.
+The access point had no 802.1x capabilities
+The device could not be found.
+The device had no GSM or CDMA capabilities.
+The mobile broadband device '%s' requires a SIM PIN code before it can be used.
+The mobile broadband device '%s' requires a SIM PUK code before it can be used.
+The NetworkManager Applet could not find some required resources (the .ui file was not found).
+The request could not be completed.  Keyring result: %d
+The secrets request was canceled by the user
+The selected private key does not appear to be protected by a password.  This could allow your security credentials to be compromised.  Please select a password-protected private key.
+The VPN connection '%s' disconnected.
+The VPN connection '%s' disconnected because the network connection was interrupted.
+The VPN connection '%s' disconnected because the VPN service stopped.
+The VPN connection '%s' failed.
+The VPN connection '%s' failed because of invalid VPN secrets.
+The VPN connection '%s' failed because the connection attempt timed out.
+The VPN connection '%s' failed because the network connection was interrupted.
+The VPN connection '%s' failed because there were no valid VPN secrets.
+The VPN connection '%s' failed because the VPN service did not start in time.
+The VPN connection '%s' failed because the VPN service failed to start.
+The VPN connection '%s' failed because the VPN service returned invalid configuration.
+The VPN connection '%s' failed because the VPN service stopped unexpectedly.
+The VPN connection '%s' failed to start.
+This program is a component of NetworkManager (http://projects.gnome.org/NetworkManager).
+timestamp
+title != NULL
+totsize >= sizeof (SecretsRequest)
+transient
+Tried to icon to invalid layer %d
+Tunneled TLS
+tuple_len > 0
+type == DBUS_TYPE_G_MAP_OF_STRING
+type == G_TYPE_STRING
+ui_file != NULL
+ui_widget_name != NULL
+Unencrypted private keys are insecure
+Unexpected device type (not CDMA).
+Unexpected device type (not GSM).
+Unhandled certificate/private-key item '%s'
+Unhandled setting property type (read): '%s/%s' : '%s'
+Unhandled setting property type (write) '%s/%s' : '%s'
+Unhandled setting secret type (write) '%s/%s' : '%s'
+Unhandled unlock request for '%s'
+<unknown>
+(unknown)
+Unknown NM 0.6 auth type %d on connection %s
+unlock_button
+unlock_cancel_button
+unlock-code
+unlock_code != 0
+unlock_dialog
+unlock_dialog_new
+unlock_dialog_response
+unlock_pin_reply
+unlock_puk_reply
+UnlockRequired
+unmatched service name %s
+update_secrets
+User authentication required for mobile broadband connection '%s'...
+User authentication required for network connection '%s'...
+User authentication required for VPN connection '%s'...
+User authentication required for wired network connection '%s'...
+User authentication required for wireless network '%s'...
+user-name
+        username: %s
+Use the network menu to connect to a wireless network
+using fallback from indicator to GtkStatusIcon
+/usr/bin/nm-connection-editor
+/usr/lib/NetworkManager
+/usr/share/icons
+/usr/share/locale
+/usr/share/mobile-broadband-provider-info/serviceproviders.xml
+/usr/share/nm-applet/ce-page-dsl.ui
+/usr/share/nm-applet/eap-method-fast.ui
+/usr/share/nm-applet/eap-method-leap.ui
+/usr/share/nm-applet/eap-method-peap.ui
+/usr/share/nm-applet/eap-method-simple.ui
+/usr/share/nm-applet/eap-method-tls.ui
+/usr/share/nm-applet/eap-method-ttls.ui
+/usr/share/nm-applet/gsm-unlock.ui
+/usr/share/nm-applet/info.ui
+/usr/share/nm-applet/nag-user-dialog.ui
+/usr/share/nm-applet/wired-8021x.ui
+/usr/share/nm-applet/ws-wpa-eap.ui
+/usr/share/xml/iso-codes/iso_3166.xml
+utils_create_keyring_add_attr_list
+utils_escape_notify_message
+utils_ether_addr_valid
+utils_get_device_description
+utils_hash_ap
+validate
+value %d out-of-range for a byte value
+value->len == ETH_ALEN
+*value == NULL
+VPN Banner:
+VPN Connection
+VPN Connection activation failed: (%s) %s
+VPN Connection Failed
+VPN connection has been successfully established.
+_VPN Connections
+VPN connection '%s' active
+vpn_data
+VPN Gateway:
+vpn_ignore_keys
+VPN Login Message
+vpn_secret_iter_cb
+VPN %s secret for %s/%s/vpn
+vpn-state-changed
+vpn-state-id
+VPN Type:
+VPN Username:
+website-label
+we_cipher
+wep_auth_algorithm
+wep-key0
+wep-tx-keyidx
+widget != NULL
+Wifi/wired security
+wimax_add_menu_item
+WiMAX Base Station ID
+WiMAX CINR
+wimax_get_secrets
+WiMAX is disabled
+WiMAX is disabled by hardware switch
+WiMAX Mobile Broadband
+WiMAX Mobile Broadband (%s)
+WiMAX (%s)
+Wired 802.1X authentication
+wired_8021x_dialog
+wired_add_menu_item
+wired-dialog.c
+wired_get_secrets
+Wired network
+Wired network connection '%s' active
+Wired Networks
+Wired Network (%s)
+Wired Networks (%s)
+Wireless Adapter
+wireless_add_menu_item
+Wireless cardbus
+Wireless Cardbus Adapter
+wireless_dialog_response_cb
+wireless_get_secrets
+wireless is disabled
+wireless is disabled by hardware switch
+Wireless LAN Adapter
+Wireless LAN Controller
+Wireless LAN PC Card
+Wireless network
+Wireless network connection '%s' active
+Wireless network connection '%s' active: %s (%d%%)
+Wireless Networks
+Wireless Network (%s)
+Wireless Networks Available
+Wireless Networks (%s)
+wireless_new_auto_connection
+Wireless PC
+WirelessSecurity
+wireless_security_add_to_size_group
+wireless_security_adhoc_compatible
+wireless-security.c
+wireless_security_changed_cb
+wireless_security_clear_ciphers
+wireless_security_fill_connection
+wireless_security_get_g_type
+wireless_security_get_widget
+wireless_security_init
+wireless_security_nag_user
+wireless_security_ref
+wireless_security_set_changed_notify
+wireless_security_unref
+wireless_security_update_secrets
+wireless_security_validate
+wpa_eap_anon_identity
+wpa_eap_auth_combo
+wpa_eap_auth_label
+wpa_eap_ca_cert_file
+wpa_eap_client_cert_file
+wpa_eap_eap_method
+wpa_eap_identity
+wpa_eap_key_type
+wpa_eap_method_vbox
+wpa_eap_notebook
+wpa_eap_phase2_type
+wpa_eap_private_key_file
+wpa-flags
+wpa-none
+WPA/WPA2
+write_one_certificate
+write_one_secret_to_keyring
+Wrong PIN code; please contact your provider.
+Wrong PUK code; please contact your provider.
+ws_802_1x_add_to_size_group
+ws_802_1x_auth_combo_changed
+ws_802_1x_auth_combo_init
+ws_802_1x_fill_connection
+ws_802_1x_nag_user
+ws_802_1x_update_secrets
+ws_802_1x_validate
+ws-wpa-eap.c
+ws_wpa_eap_new
+www.inkscape.org
+xauthpassword
+Xauth password
+xauthpasswordinputmodes
+xauth-password-type
+Xauth username
+xmlconfig
+You are now connected to '%s'.
+You are now connected to the CDMA network.
+You are now connected to the mobile broadband network.
+You are now connected to the WiMAX network.
+You are now registered on a roaming network.
+You are now registered on the home network.
+(You can password-protect your private key with openssl)

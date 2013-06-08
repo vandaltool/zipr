@@ -1,0 +1,208 @@
+(According to introspection data, you need to pass `%s')
+--address
+--address 
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+/build/buildd/glib2.0-2.32.3/./gio/gdbus-tool.c
+  call         Invoke a method on a remote object
+Commands:
+complete
+connection
+Connection Endpoint Options:
+Connect to given D-Bus address
+Connect to the session bus
+Connect to the system bus
+dcgettext
+Destination name to introspect
+Destination name to invoke method on
+Destination name to monitor
+dump_property
+Emit a signal.
+  emit         Emit a signal
+Error connecting: %s
+Error: Destination is not specified
+Error flushing connection: %s
+Error: Method name is not specified
+Error: Method name `%s' is invalid
+Error: Object path is not specified
+Error: object path not specified.
+Error parsing introspection XML: %s
+Error parsing parameter %d of type `%s': %s
+Error parsing parameter %d: %s
+Error: %s
+Error: signal not specified.
+Error: %s is not a valid interface name
+Error: %s is not a valid member name
+Error: %s is not a valid object path
+Error: %s is not a valid unique bus name.
+g_ascii_table
+g_assertion_message
+g_assertion_message_expr
+g_bus_get_sync
+g_bus_watch_name_on_connection
+g_dbus_connection_call_sync
+g_dbus_connection_emit_signal
+g_dbus_connection_flush_sync
+g_dbus_connection_get_unique_name
+g_dbus_connection_new_for_address_sync
+g_dbus_connection_signal_subscribe
+g_dbus_connection_signal_unsubscribe
+g_dbus_interface_info_lookup_method
+g_dbus_is_interface_name
+g_dbus_is_member_name
+g_dbus_is_unique_name
+g_dbus_node_info_lookup_interface
+g_dbus_node_info_new_for_xml
+g_dbus_node_info_unref
+g_error_free
+g_hash_table_get_keys
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_unref
+g_io_error_quark
+GLIBC_2.0
+GLIBC_2.2
+GLib-GIO
+g_list_free
+g_list_sort
+g_main_loop_new
+g_main_loop_run
+g_main_loop_unref
+__gmon_start__
+g_object_unref
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_get_help
+g_option_context_new
+g_option_context_parse
+g_option_context_set_description
+g_option_context_set_help_enabled
+g_option_context_set_ignore_unknown_options
+g_option_context_set_summary
+g_option_group_add_entries
+g_option_group_new
+g_option_group_set_translation_domain
+g_path_get_basename
+g_printerr
+g_ptr_array_add
+g_ptr_array_new_with_free_func
+g_ptr_array_unref
+g_set_error
+g_shell_parse_argv
+g_strcmp0
+g_strcmp0 ((*argv)[1], command) == 0
+g_strdup
+g_strdup_printf
+g_str_equal
+g_str_hash
+g_str_has_prefix
+g_string_append
+g_string_append_len
+g_string_free
+g_string_insert_c
+g_string_new
+g_strndup
+g_type_init
+g_variant_builder_add_value
+g_variant_builder_clear
+g_variant_builder_end
+g_variant_builder_init
+g_variant_get
+g_variant_is_object_path
+g_variant_is_of_type
+g_variant_iter_free
+g_variant_iter_loop
+g_variant_iter_next_value
+g_variant_new
+g_variant_parse
+g_variant_print
+g_variant_ref
+g_variant_ref_sink
+g_variant_type_checked_
+g_variant_type_dup_string
+g_variant_type_free
+g_variant_type_get_string_length
+g_variant_type_new
+g_variant_type_peek_string
+g_variant_unref
+  help         Shows this information
+introspect 
+Introspect
+Introspect a remote object.
+Introspect children
+  introspect   Introspect a remote object
+Invoke a method on a remote object.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+ListActivatableNames
+ListNames
+--method
+--method 
+Method and interface name
+modify_argv0_for_command
+monitor 
+Monitor a remote object.
+monitor_filter_id == 0
+Monitoring signals from all objects owned by %s
+Monitoring signals on object %s owned by %s
+  monitor      Monitor a remote object
+monitor_on_name_appeared
+Multiple connection endpoints specified
+No connection endpoint specified
+nonce-tcp:
+(not set)
+num <= (*argc)
+--object-path
+--object-path 
+Object path to emit signal on
+Object path to introspect
+Object path to invoke method on
+Object path to monitor
+Only print properties
+--only-properties 
+only-properties
+Optional destination for signal (unique name)
+Options specifying the connection endpoint
+/org/freedesktop/DBus
+org.freedesktop.DBus
+org.freedesktop.DBus.Introspectable
+org.freedesktop.DBus.Properties
+Print XML
+readonly
+readwrite
+--recurse 
+remove_arg
+--session 
+setlocale
+Signal and interface name
+%*sinterface %s {
+Skipping path %s that is not enclosed by parent %s
+%*s  methods:
+%*snode %s
+%*s  properties:
+%*s  signals:
+%*s@%s("%s")
+%*s%s %s %s;
+%s: %s.%s %s
+%*s%s %s %s = %s;
+%*s%s%s %s%s
+--system 
+The name %s does not have an owner
+The name %s is owned by %s
+Timeout in seconds
+Unknown command `%s'
+Use "%s COMMAND --help" to get help on each command.
+/usr/share/locale
+Warning: According to introspection data, interface `%s' does not exist
+Warning: According to introspection data, method `%s' does not exist on interface `%s'
+Warning: Introspection data indicates %d parameters but more was passed
+writeonly

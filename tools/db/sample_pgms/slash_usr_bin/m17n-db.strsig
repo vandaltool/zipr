@@ -1,0 +1,94 @@
+ANY="$SPC\([A-Za-z*][^ 	)]*\)\?"
+# as published by the Free Software Foundation; either version 2.1 of
+#!/bin/sh
+# Boston, MA 02110-1301, USA.
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+    case "$1" in
+    case "$e" in
+    case "$l" in
+cat > /dev/null <<EOF
+cd $datadir/m17n
+# coding: euc-japan
+# Copyright (C) 2004
+# Copyright (C) 2004, 2005
+datadir=${prefix}/share
+	    done;;
+    echo "Can't find the m17n database directory file \"$DIRFILE\"!"
+    echo $datadir/m17n
+    echo "  -h, --help	Print this information."
+    echo "  -l, --locate	Print absolute pathnames of database files."
+    echo "Options:"
+	    echo "`pwd`/$FN"
+    echo "	TAG0 through TAG3 specifies the tags of the database."
+    echo "Usage: $0 [ OPTIONS ] [ TAG0 [ TAG1 [ TAG2 [ TAG3 ] ] ] ]"
+    echo "  -v, --version	Print the version number."
+    echo "With no options, print the installed directory name."
+/***en @page m17n-db Print information about the m17n database */
+ENTRIES=`sed -n "/$TAG0/s|$SPC($TAGS$FILE).*$|/\1/\2/\3/\4/\5|p" $DIRFILE`
+		    ENTRY=`sed -n "/$TAG0/s|$SPC($TAGS).*$|/\1/\2/\3/\4|p" $f`
+    esac
+    exit 0
+    exit 1
+	    fi;;
+		    fi
+FILE="$SPC\"\([^\"]*\)\""
+    FN=`expr "$e" : "/[^/]*/[^/]*/[^/]*/[^/]*/\(.*\)"`
+	    FN=`expr "$l" : "/[^/]*/[^/]*/[^/]*/[^/]*/\(.*\)"`
+for e in $ENTRIES; do
+	    for f in $FN; do
+for l in $LIST; do
+    help
+	*) help; exit 1;;
+	-h | --help) help; exit 0;;
+- -h, --help\n
+if test ! -f "$DIRFILE"; then
+	    if test -f $FN; then
+		if test -f $f; then
+if test $# -gt 0; then
+		    if test -n "$ENTRY"; then
+if test -z "$1"; then
+if test -z "$DIRFILE" ; then
+if test -z "$TAG1"; then
+if test -z "$TAG2"; then
+if test -z "$TAG3"; then
+/***ja @page m17n-db m17n 
+# Lesser General Public License for more details.
+# library.
+# License along with the m17n library; if not, write to the Free
+		LIST="$LIST $e"
+			LIST="$LIST $ENTRY/$f"
+	-l | --locate) DIRFILE="$datadir/m17n/mdb.dir"; shift;;
+- -l, --locate\n
+# Local Variables:
+m17n-db  [ OPTIONS ] [ TAG0 [ TAG1 [ TAG2 [ TAG3 ] ] ] ]
+# m17n-db -- print information about the m17n database.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# modify it under the terms of the GNU Lesser General Public License
+#   National Institute of Advanced Industrial Science and Technology (AIST)
+prefix=/usr
+	Print absolute pathnames of database files.\n
+	Print the version number.
+	Print this information.
+#   Registration Number H15PRO112
+@section m17n-db-description DESCRIPTION
+@section m17n-db-synopsis SYNOPSIS
+# See the end for copying conditions.
+# Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+SPC="[ 	]*"
+	/$TAG0/\*/*/* | /$TAG0/*/\*/* | /$TAG0/*/*/\*)
+	/$TAG0/$TAG1/$TAG2/$TAG3)
+	TAG0 through TAG3 specifies the tags of the database.
+    TAG1="*"
+    TAG2="*"
+    TAG3="*"
+TAGS="$SPC\($TAG0\)$SPC$ANY$SPC$ANY$SPC$ANY"
+The arguments OPTIONS has the following meanings.
+# the License, or (at your option) any later version.
+# The m17n library is distributed in the hope that it will be useful,
+# The m17n library is free software; you can redistribute it and/or
+The shell script m17n-db prints information about the m17n database.
+# This file is part of the m17n database; a sub-part of the m17n
+	-v | --version) echo "1.6.3"; exit 0;;
+- -v, --version\n
+With no arguments, print where the m17n database is installed.  */ 
+# You should have received a copy of the GNU Lesser General Public

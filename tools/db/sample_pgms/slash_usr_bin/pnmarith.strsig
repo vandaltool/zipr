@@ -1,0 +1,42 @@
+-add|-subtract|-multiply|-difference|-minimum|-maximum pnmfile1 pnmfile2
+__bss_start
+can't happen
+D$H+T$H)
+-difference
+D$puL=6P
++D$T9T$T
+D$|uJ=6P
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+-maximum
+-minimum
+MT$T;L$L
+-multiply
+NT$T;L$L
+OD$,+T$L
+pm_allocrow
+pm_close
+pm_error
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+pnm_init
+pnm_promoteformatrow
+pnm_readpnminit
+pnm_readpnmrow
+pnm_writepnminit
+pnm_writepnmrow
+promoting first file to PGM
+promoting first file to PPM
+promoting second file to PGM
+promoting second file to PPM
+-subtract
+the two anymaps must be the same width and height
+)T$T+L$L+|$H

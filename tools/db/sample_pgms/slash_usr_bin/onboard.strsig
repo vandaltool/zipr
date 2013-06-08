@@ -1,0 +1,13 @@
+ 2009 Chris Jones"
+__author__    = "Chris Jones <chrisejones@gmail.com>"
+# -*- coding: UTF-8 -*-
+__copyright__ = "Copyright 
+# exceptions.
+from __future__ import division, print_function, unicode_literals
+from Onboard.Exceptions import chain_handler
+from Onboard.OnboardGtk import OnboardGtk as Onboard
+import sys
+ob = Onboard()
+# Replace the default exception handler with one which handles chained
+sys.excepthook = chain_handler
+#!/usr/bin/python

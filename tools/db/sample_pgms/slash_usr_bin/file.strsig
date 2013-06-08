@@ -1,0 +1,88 @@
+      --apple                output the Apple CREATOR/TYPE
+                               ascii, apptype, compress, elf, soft, tar, tokens, troff
+bcCde:f:F:hiklLm:nNprsvz0
+                               before installing it
+__bss_start
+  -%c, --brief                do not prepend filenames to output lines
+  -%c, --checking-printout    print the parsed form of the magic file, use in
+  -%c, --compile              compile file specified by -m
+  -%c, --debug                print debugging messages
+  -%c, --dereference          follow symlinks (default)
+  -%c, --exclude TEST         exclude TEST from the list of test to be
+  -%c, --files-from FILE      read the filenames to be examined from FILE
+checking-printout
+  -%c, --keep-going           don't stop at the first match
+  -%c, --list                 list magic strength
+  -%c, --magic-file LIST      use LIST as a colon-separated list of magic
+  -%c, --mime                 output MIME type strings (--mime-type and
+  -%c, --no-buffer            do not buffer output
+  -%c, --no-dereference       don't follow symlinks
+  -%c, --no-pad               do not pad output
+                               conjunction with -m to debug a new magic file
+  -%c, --preserve-date        preserve access times on files
+  -%c, --print0               terminate filenames with ASCII NUL
+  -%c, --raw                  don't translate unprintable chars to \ooo
+  -%c, --separator STRING     use string as separator instead of `:'
+  -%c, --special-files        treat special (block/char devices) files as
+  -%c, --uncompress           try to look inside compressed files
+  -%c, --version              output version information and exit
+Determine type of FILEs.
+/dev/stdin
+__errno_location
+ERROR: %s
+            [-e testname] [-F separator] [-f namefile] [-m magicfiles] file ...
+@(#)$File: file.c,v 1.144 2011/05/10 17:08:14 christos Exp $
+files-from
+__fprintf_chk
+__getdelim
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+      --help                 display this help and exit
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+keep-going
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libmagic.so.1
+magic_check
+magic_close
+magic_compile
+magic_error
+magic_file
+magic-file
+magic file from %s
+magic_getpath
+magic_list
+magic_load
+magic_open
+                               --mime-encoding)
+mime-encoding
+      --mime-encoding        output the MIME encoding
+mime-type
+      --mime-type            output the MIME type
+no-buffer
+no-dereference
+                               number files
+                             ordinary ones
+                               performed for file. Valid tests are:
+POSIXLY_CORRECT
+preserve-date
+__printf_chk
+Report bugs to http://bugs.gw.com/
+%s: Cannot open `%s' (%s).
+       %s -C [-m magicfiles]
+separator
+setlocale
+       %s [--help]
+special-files
+__stack_chk_fail
+strerror
+uncompress
+Usage: file [OPTION...] [FILE...]
+Usage: %s [-bchikLlNnprsvz0] [--apple] [--mime-encoding] [--mime-type]

@@ -1,0 +1,477 @@
+         
+  !!!!!""""#########$$%%%%%%%%%%%%%%%%%%%%%&&&&&&''(())*+,,--
+0123456789
+0 == aux_format_char
+0 == (__extension__ (__builtin_constant_p (6) && ((__builtin_constant_p ("-newer") && strlen ("-newer") < ((size_t) (6))) || (__builtin_constant_p (argv[*arg_ptr]) && strlen (argv[*arg_ptr]) < ((size_t) (6)))) ? __extension__ ({ size_t __s1_len, __s2_len; (__builtin_constant_p ("-newer") && __builtin_constant_p (argv[*arg_ptr]) && (__s1_len = __builtin_strlen ("-newer"), __s2_len = __builtin_strlen (argv[*arg_ptr]), (!((size_t)(const void *)(("-newer") + 1) - (size_t)(const void *)("-newer") == 1) || __s1_len >= 4) && (!((size_t)(const void *)((argv[*arg_ptr]) + 1) - (size_t)(const void *)(argv[*arg_ptr]) == 1) || __s2_len >= 4)) ? __builtin_strcmp ("-newer", argv[*arg_ptr]) : (__builtin_constant_p ("-newer") && ((size_t)(const void *)(("-newer") + 1) - (size_t)(const void *)("-newer") == 1) && (__s1_len = __builtin_strlen ("-newer"), __s1_len < 4) ? (__builtin_constant_p (argv[*arg_ptr]) && ((size_t)(const void *)((argv[*arg_ptr]) + 1) - (size_t)(const void *)(argv[*arg_ptr]) == 1) ? __builtin_strcmp ("-newer", argv[*arg_ptr]) : (__extension__ ({ const unsigned char *__s2 = (const unsigned char *) (const char *) (argv[*arg_ptr]); register int __result = (((const unsigned char *) (const char *) ("-newer"))[0] - __s2[0]); if (__s1_len > 0 && __result == 0) { __result = (((const unsigned char *) (const char *) ("-newer"))[1] - __s2[1]); if (__s1_len > 1 && __result == 0) { __result = (((const unsigned char *) (const char *) ("-newer"))[2] - __s2[2]); if (__s1_len > 2 && __result == 0) __result = (((const unsigned char *) (const char *) ("-newer"))[3] - __s2[3]); } } __result; }))) : (__builtin_constant_p (argv[*arg_ptr]) && ((size_t)(const void *)((argv[*arg_ptr]) + 1) - (size_t)(const void *)(argv[*arg_ptr]) == 1) && (__s2_len = __builtin_strlen (argv[*arg_ptr]), __s2_len < 4) ? (__builtin_constant_p ("-newer") && ((size_t)(const void *)(("-newer") + 1) - (size_t)(const void *)("-newer") == 1) ? __builtin_strcmp ("-newer", argv[*arg_ptr]) : (__extension__ ({ const unsigned char *__s1 = (const unsigned char *) (const char *) ("-newer"); register int __result = __s1[0] - ((const unsigned char *) (const char *) (argv[*arg_ptr]))[0]; if (__s2_len > 0 && __result == 0) { __result = (__s1[1] - ((const unsigned char *) (const char *) (argv[*arg_ptr]))[1]); if (__s2_len > 1 && __result == 0) { __result = (__s1[2] - ((const unsigned char *) (const char *) (argv[*arg_ptr]))[2]); if (__s2_len > 2 && __result == 0) __result = (__s1[3] - ((const unsigned char *) (const char *) (argv[*arg_ptr]))[3]); } } __result; }))) : __builtin_strcmp ("-newer", argv[*arg_ptr])))); }) : strncmp ("-newer", argv[*arg_ptr], 6)))
+0 == format_char
+0 <= strtol_base && strtol_base <= 36
+0 == subdirs_left || options.no_leaf_check
+%-10s %s
+%3s %3s %2d %02d:%02d:%02d.%010ld %04d
+3T$<3D$8	
+3T$p3D$t	
+4096 <= len
+\$49\$0t
+6789:;,-./012R6789:;W*+
+A\3Z,3B0
+abcdDfFgGhHiklmMnpPsStuUyY
+<=>?@ABW\CDX
+AccessInfo
+actions: -delete -print0 -printf FORMAT -fprintf FILE FORMAT -print 
+ambiguous argument %s for %s
+argument list too long
+Arguments to -type should contain only one letter
+argument to -group is empty, but should be a group name
+arithmetic overflow while converting %s days to a number of seconds
+arithmetic overflow while converting %s minutes to a number of seconds
+__assert_fail
+?@BCDA+.47:1
+bc_init_controlinfo
+bc_init_state
+%b %e %H:%M
+%b %e  %Y
+bindtextdomain
+BI_OP == p->pred_left->p_type
+BI_OP == p->p_type
+BLOCKSIZE
+# buckets:         %lu
+# buckets used:    %lu (%.2f%%)
+buildcmd.c
+build_expression_tree
+Built using GNU gnulib version %s
+ by cost (%s)
+calculate_derived_rates
+[call stat] 
+Cannot close standard input
+cannot delete %s
+can not fit single argument within argument list size limit
+cannot fork
+cannot get current directory
+Cannot obtain birth time of file %s
+Cannot read mounted file system list
+cannot stat current directory
+CBO(level=%d) 
+cdb_free
+charsprinted=%ld but remaining=%lu: ns_buf=%s
+charsprinted < NS_BUF_LEN
+chdir_back(): chdir("%s")
+chdir_back(): chdir(<starting-point>)
+chdir_long
+chdir-long.c
+check_normalization
+check_sorted
+clock_gettime
+closedir
+! close_fail
+close_paren 
+      -cnewer FILE -ctime N -empty -false -fstype TYPE -gid N -group NAME
+collected
+command too long
+COMP_GT == pred_ptr->args.reftime.kind
+Copyright %s %d Free Software Foundation, Inc.
+ cost=%s rate=%#03.2g %sside effects 
+ctime_format
+ctl->arg_max <= (2147483647L - 2048L)
+ctl->max_arg_count > 0
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_toupper_loc
+__cxa_atexit
+D$@3S\3CX	
+D$@3T$`3D$d	
+D$<3T$t3D$p	
+daystart
+dcgettext
+dcngettext
+D$d3T$T3D$X	
+debug_stat
+debug_stat (%s)
+DECEMBER
+default path is the current directory; default expression is -print
+      -depth --help -maxdepth LEVELS -mindepth LEVELS -mount -noleaf
+@/dev/stderr
+/dev/stdout
+D$F/nulf
+difftime
+*dir != '/'
+dir <= dir_end
+disabled
+Display the expression tree
+do_complete_pending_execdirs
+Doesn't have two arms
+do_time_format
+D$t3T$p	
+e5573b1bad88bfabcda181b9e0125fb0c52b7d3b
+eEgGkKmMpPtTyYzZ0
+efficient as-is
+ELEVENTH
+email to <bug-findutils@gnu.org>.
+Empty argument to the -D option.
+endgrent
+endmntent
+end_of_seconds + ns_size + suffix_len == final_len
+endpwent
+# entries:         %lu
+entry_and != ((void *)0)
+entry_close != ((void *)0)
+entry_open != ((void *)0)
+entry->pred_func != ((void *)0)
+entry_print != ((void *)0)
+entry->type != ARG_OPTION
+entry->type != ARG_POSITIONAL_OPTION
+__environ
+Eric B. Decker
+__errno_location
+(*__errno_location ()) != 0
+error closing file
+error: %s at end of format string
+error: the format directive `%%%c' is reserved for future use
+error waiting for %s
+/etc/mtab
+EventualExec
+      -exec COMMAND ; -exec COMMAND {} + -ok COMMAND ;
+-execdir
+      -execdir COMMAND ; -execdir COMMAND {} + -okdir COMMAND ;
+execp->dir_fd == starting_desc
+executable
+expected an expression after '%s'
+expected an expression between '%s' and ')'
+Expected an integer: %s
+Expected a positive decimal integer argument to %s, but got %s
+Explain the various -D options
+      EXPR1 -o EXPR2   EXPR1 -or EXPR2   EXPR1 , EXPR2
+expression may consist of: operators, options, tests, and actions:
+      ( EXPR )   ! EXPR   -not EXPR   EXPR1 -a EXPR2   EXPR1 -and EXPR2
+extendbuf
+extendbuf.c
+(__extension__ (__builtin_constant_p (x) && !__builtin_constant_p (validchars) && (x) == '\0' ? (char *) __rawmemchr (validchars, x) : __builtin_strchr (validchars, x)))
+Failed to change directory
+failed to return to initial working directory
+failed to return to parent directory
+Failed to safely change directory into %s
+Failed to sort the costlookup array (indirect).
+fallback_stat(): stat(%s) failed; falling back on lstat()
+fdopendir
+Features enabled: 
+FEBRUARY
+Filesystem loop detected; %s has the same device number and inode as a directory which is %d level higher in the file system hierarchy
+Filesystem loop detected; %s has the same device number and inode as a directory which is %d levels higher in the file system hierarchy
+FIND_BLOCK_SIZE
+findutils-default
+format_date
+FORTNIGHT
+__fpending
+      -fprint0 FILE -fprint FILE -ls -fls FILE -prune -quit
+__fprintf_chk
+fseeko64
+FTS_CWDFD
+__fxstat64
+__fxstatat64
+G6789:;54H
+__getdelim
+getgrgid
+getgrnam
+getmntent
+get_new_pred
+get_new_pred_chk_op
+getpwnam
+getpwuid
+get_relative_timestamp
+get_stat_Ytime
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+GNU findutils
+human-readable
+I cannot figure out how to interpret %s as a date or time
+Ignoring unrecognised debug flag %s
+      -ilname PATTERN -iname PATTERN -inum N -iwholename PATTERN -iregex PATTERN
+ImmediateExec
+Indicate how often each predicate succeeded
+inserting %s
+insert_primary
+ into name_list
+Invalid argument `%s%c' to -size
+invalid argument %s for %s
+invalid argument `%s' to `%s'
+Invalid argument %s to -used
+invalid expression
+invalid expression; empty parentheses are not allowed.
+invalid expression; expected to find a ')' but didn't see one.  Perhaps you need an extra predicate after '%s'
+invalid expression; I was expecting to find a ')' somewhere but did not see one.
+invalid expression; you have too many ')'
+invalid expression; you have used a binary operator '%s' with nothing before it.
+invalid mode %s
+invalid null argument to -size
+Invalid optimisation level %s
+invalid predicate `%s'
+invalid -size type `%c'
+_IO_putc
+_IO_stdin_used
+iswprint
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+iwholename
+James Youngman
+                 <  %ju %s
+_Jv_RegisterClasses
+?Kevin Dalley
+kind == KIND_FORMAT
+KMGTPEZY
+L$<3T$X3L$T
+[%ld/%ld
+LEAF_OPTIMISATION 
+Left arm has no child on RHS
+Left subtree has side-effects
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+librt.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+LinkName
+      -links N -lname PATTERN -mmin N -mtime N -name PATTERN -newer FILE
+localeconv
+localtime
+__lxstat64
+make_segment
+max bucket length: %lu
+maxdepth
+mbsinit (&iter->state)
+mbuiter.h
+mbuiter_multi_next
+__memcpy_chk
+memory exhausted
+mindepth
+missing argument to `%s'
+Mode %s is not valid when POSIXLY_CORRECT is on.
+N\3K(3S$	
+nanosec < nanosec_per_sec
+Navigate the directory tree verbosely
+[need type] 
+no children.
+noignore_readdir_race
+no left.
+no right.
+Normalized Eval Tree:
+normal options (always true, specified before other expressions):
+Not a binary operation
+Not an arm swap candidate (%s):
+Not AND or OR
+      -nouser -nogroup -path PATTERN -perm [+-]MODE -regex PATTERN
+nout < 1024u
+NOVEMBER
+-O%d: categorising predicate 
+-O%d: promoting cheap predicate 
+Only one instance of {} is supported with -exec%s ... +
+O_NOFOLLOW(%s) 
+oops -- invalid default insertion of and!
+oops -- invalid expression type!
+oops -- invalid expression type (%d)!
+__open64_2
+openat64
+open_paren  
+Operation is AND and right success rate <= left
+Operation is OR and right success rate >= left
+operators (decreasing precedence; -and is implicit where no others are given):
+Optimisation level %lu is too high.  If you want to find files very quickly, consider using GNU locate.
+Optimized command line:
+Optimized Eval Tree:
+optionh_stat
+optionl_stat
+optionp_stat
+our_pred->need_stat
+our_pred->pred_func == pred_newerXY
+our_pred->pred_func != ((void *)0)
+page at http://savannah.gnu.org/ or, if you have no web access, by sending
+parse_newerXY
+parser.c
+] [path...] [expression]
+pathname = %s, stop_at_current_level = %d
+paths must precede expression: %s
+p < (buf + (sizeof buf))
+Performing arm swap on:
+Please specify a decimal number immediately after -O
+!p->no_default_print
+positional options (always true): -daystart -follow -regextype
+posix-awk
+posix-basic
+posix-egrep
+posix-extended
+POSIXLY_CORRECT
+posix-minimal-basic
+p->parser_entry->pred_func == p->pred_func
+p->parser_entry->type != ARG_OPTION
+p->parser_entry->type != ARG_POSITIONAL_OPTION
+p->parser_entry != ((void *)0)
+( ((p)->pred_func) == (pred_negate) )
+p->pred_func != ((void *)0)
+p->p_type != CLOSE_PAREN
+p->p_type != OPEN_PAREN
+PQ)(IJKLMSTUV[]
+pred_anewer
+pred_cnewer
+pred_fprintf
+Predicate List:
+Predicate success rates after completion:
+predlist after merge sort
+predlist before merge sort
+pred_newer
+pred_newerXY
+pred_prune
+pred_ptr->args.reftime.xval != XVAL_TIME
+pred_sanity_check
+pred_timewindow
+pred_type
+prep_child_for_exec
+__printf_chk
+process_dir
+!p->side_effects
+ptm->tm_hour >= 0
+ptm->tm_hour < 24
+ptm->tm_min < 60
+ptm->tm_mon >= 0
+ptm->tm_mon < 12
+ptm->tm_sec <= 61
+ptm->tm_wday >= 0
+ptm->tm_wday < 7
+QD+AP+QTy	
+__rawmemchr
+      -readable -writable -executable
+readdir64
+readlink
+re_compile_pattern
+regextype
+re_match
+Report (and track progress on fixing) bugs via the findutils bug-reporting
+re_set_syntax
+result <= 0
+rewinddir
+Right subtree has side-effects
+  - `%s'
+safely_chdir(): chdir("%s")
+samefile
+%s, and %s.
+sanity check of the fnmatch() library function failed.
+SATURDAY
+SEPTEMBER
+setlocale
+setmntent
+shell-always
+Show diagnostic information relating to -exec, -execdir, -ok and -okdir
+Show diagnostic information relating to optimisation
+%s is not the name of a known user
+%s is not the name of an existing group
+%s is not the name of an existing group and it does not look like a numeric group ID because it has the unexpected suffix %s
+sizeof buf > used
+slash - dir < 4096
+__snprintf_chk
+__sprintf_chk
+< %s ... %s > ? 
+%s, %s, and others.
+%s, %s, and %s.
+%s%s changed during execution of %s (old device number %ld, new device number %ld, file system type is %s) [ref %ld]
+%s%s changed during execution of %s (old inode number %llu, new inode number %llu, file system type is %s) [ref %ld]
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+standard error
+standard output
+starting_desc >= 0
+state.cwd_dir_fd >= 0
+(state.cwd_dir_fd >= 0) || (state.cwd_dir_fd==-100)
+state.execdirs_outstanding
+state.have_stat
+state.have_type
+StatInfo
+%s terminated by signal %d
+__strcpy_chk
+__strdup
+strftime
+strlen(ns_buf) < remaining
+__strndup
+__strtok_r
+__strtoull_internal
+Success rates: l=%f, r=%f
+Symbolic link %s is part of a loop in the directory hierarchy; we have already visited the directory to which it points.
+SyncDiskHit
+T$(3T$L1
+tests (N can be +N or -N or N): -amin N -anewer FILE -atime N -cmin N
+The argument to -user should not be empty
+The current directory is included in the PATH environment variable, which is insecure in combination with the %s action of find.  Please remove the current directory from your $PATH (that is, remove "." or leading or trailing colons)
+The -delete action atomatically turns on -depth, but -prune does nothing when -depth is in effect.  If you want to carry on anyway, just explicitly use the -depth option.
+The environment is too large for exec().
+The environment variable FIND_BLOCK_SIZE is not supported, the only thing that affects the block size is the POSIXLY_CORRECT environment variable
+The -O option must be immediately followed by a decimal integer
+There is NO WARRANTY, to the extent permitted by law.
+The relative path %s is included in the PATH environment variable, which is insecure in combination with the %s action of find.  Please remove that entry from $PATH
+The %s test needs an argument
+This is free software: you are free to change and redistribute it.
+This system does not provide a way to find the birth time of a file.
+THURSDAY
+<+tI<-t5
+T$L3T$h3D$l	
+TOMORROW
+Trace calls to stat(2) and lstat(2)
+t != (time_t)-1
+] type=%s prec=%s
+    type: %s    %s  
+unable to record current working directory
+unexpected extra predicate
+unexpected extra predicate '%s'
+Unexpected suffix %s on %s
+unknown 
+Unknown argument to -type: %c
+unknown predicate `%s'
+Unknown regular expression type %s; valid types are %s.
+unlinkat
+unsetenv
+Usage: %s [-H] [-L] [-P] [-Olevel] [-D 
+      -used N -user NAME -xtype [bcdpfls]
+UserInteraction
+/usr/share/locale
+Valid arguments are:
+Valid arguments for -D:
+-version
+      --version -xdev -ignore_readdir_race -noignore_readdir_race
+__vfprintf_chk
+((void *)0) == existing
+((void *)0) != p
+((void *)0) == p->pred_left
+((void *)0) == p->pred_right
+wanted > 0u
+Warning: cannot determine birth time of file %s
+Warning: file %s appears to have mode 0000
+WARNING: Hard link count is wrong for %s (saw only st_nlink=%d but we already saw %d subdirectories): this may be a bug in your file system driver.  Automatically turning on find's -noleaf option.  Earlier results may have failed to include directories that should have been searched.
+warning: no cost entry for predicate %s
+warning: not following the symbolic link %s
+warning: the -d option is deprecated; please use -depth instead, because the latter is a POSIX-compliant feature.
+warning: Unix filenames usually don't contain slashes (though pathnames do).  That means that '%s %s' will probably evaluate to false all the time on this system.  You might find the '-wholename' test more useful, or perhaps '-samefile'.  Alternatively, if you are using GNU grep, you could use 'find ... -print0 | grep -FzZ %s'.
+warning: unrecognized escape `\%c'
+warning: unrecognized format directive `%%%c'
+warning: you have specified a mode pattern %s (which is equivalent to /000). The meaning of -perm /000 has now been changed to be consistent with -perm -000; that is, while it used to match no files, it now matches all files.
+warning: you have specified the %s option after a non-option argument %s, but options are not positional (%s affects tests specified before it as well as those specified after it).  Please specify options before other arguments.
+WEDNESDAY
+      -wholename PATTERN -size N[bcwkMG] -true -type [bcdpflsD] -uid N
+writable
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+__xstat64
+xstrtol.c
+xstrtoumax
+XXX%s%ld:%02d
+YESTERDAY
+you have too many ')'
+You may not use {} within the utility name for -execdir and -okdir, because this is a potential security problem.

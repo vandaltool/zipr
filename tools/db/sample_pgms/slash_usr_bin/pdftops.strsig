@@ -1,0 +1,109 @@
+__bss_start
+BUsage: %s [options]
+conserve original page sizes
+Copyright 1996-2004 Glyph & Cog, LLC
+Copyright 2005-2011 The Poppler Developers - http://poppler.freedesktop.org
+__ctype_b_loc
+don't center pages smaller than the paper size
+don't crop pages to CropBox
+don't embed CID PostScript fonts
+don't embed CID TrueType fonts
+don't embed TrueType fonts
+don't embed Type 1 fonts
+don't print any messages or errors
+don't shrink pages larger than the paper size
+don't substitute missing fonts
+enable duplex printing
+EPS and form files can only contain one page.
+Error: forms are only available with Level 2 output.
+Error: use only one of -origpagesizes, -eps, and -form
+Error: use only one of the 'level' options.
+expand pages smaller than the paper size
+first page to print
+__fprintf_chk
+generate a PostScript form
+generate Encapsulated PostScript (EPS)
+generate Level 1 PostScript
+generate Level 1 separable PostScript
+generate Level 2 PostScript
+generate Level 2 separable PostScript
+generate Level 3 PostScript
+generate Level 3 separable PostScript
+generate OPI comments
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBCXX_3.4
+globalParams
+__gmon_start__
+Internal error in arg table
+Invalid paper size
+_IO_stdin_used
+_Jv_RegisterClasses
+last page to print
+-level1sep
+-level2sep
+-level3sep
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpoppler.so.19
+libpthread.so.0
+libstdc++.so.6
+-nocenter
+-noembcidps
+-noembcidtt
+-noembt1
+-noembtt
+-noshrink
+-origpagesizes
+owner password (for encrypted files)
+paper height, in points
+paper size (letter, legal, A4, A3, match)
+paper width, in points
+-passfonts
+<PDF-file> [<PS-file>]
+pdftops version %s
+-preload
+preload images and forms
+print copyright and version info
+print usage information
+resolution for rasterization, in DPI (default is 300)
+ <string>
+T$(9T$,|
+T$(9T$,}^
+user password (for encrypted files)
+write binary data in Level 1 PostScript
+You have to provide an output filename when reading form stdin.
+_Z5erroriPcz
+_ZN11PSOutputDevC1EPKcP6PDFDocP4XRefP7CatalogPcii9PSOutModeiibiiiibb
+_ZN12GlobalParams10setPSLevelE7PSLevel
+_ZN12GlobalParams11setErrQuietEb
+_ZN12GlobalParams11setPSBinaryEb
+_ZN12GlobalParams11setPSCenterEb
+_ZN12GlobalParams12setPSPreloadEb
+_ZN12GlobalParams15setPSEmbedType1Eb
+_ZN12GlobalParams15setPSSubstFontsEb
+_ZN12GlobalParams17setPSShrinkLargerEb
+_ZN12GlobalParams18setPSEmbedTrueTypeEb
+_ZN12GlobalParams18setPSExpandSmallerEb
+_ZN12GlobalParams19setSplashResolutionEd
+_ZN12GlobalParams21setPSEmbedCIDTrueTypeEb
+_ZN12GlobalParams23setPSEmbedCIDPostScriptEb
+_ZN12GlobalParams8setPSOPIEb
+_ZN12GlobalParamsC1EPKc
+_ZN12GlobalParamsD1Ev
+_ZN13PDFDocFactory12createPDFDocERK9GooStringPS0_S3_Pv
+_ZN13PDFDocFactoryC1EP7GooList
+_ZN13PDFDocFactoryD1Ev
+_ZN6Object8memCheckEP8_IO_FILE
+_ZN6PDFDoc11getNumPagesEv
+_ZN6PDFDoc12displayPagesEP9OutputDeviiddibbbPFbPvES2_PFbP5AnnotS2_ES2_
+_ZN6PDFDocD1Ev
+_ZN9GooString3SetEPKciS1_i
+_ZN9GooString6appendEPKci
+_ZN9GooStringC1EPKc
+_ZN9GooStringC1EPKci
+_ZN9GooStringC1EPKS_
+_ZN9GooStringD1Ev
+_ZNK9GooString3cmpEPKc

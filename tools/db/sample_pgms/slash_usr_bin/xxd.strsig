@@ -1,0 +1,49 @@
+!$*);~-/
+0123456789
+0123456789abcdef0123456789ABCDEF
+abcdefghi
+{ABCDEFGHI
+    -a          toggle autoskip: A single '*' replaces nul-lines. Default off.
+    -b          binary digit dump (incompatible with -ps,-i,-r). Default hex.
+    -c cols     format <cols> octets per line. Default 16 (-i: 12, -ps: 30).
+__ctype_b_loc
+    -E          show characters in EBCDIC. Default ASCII.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+    -g          number of octets per group in normal output. Default 2.
+    -h          print this summary.
+_IO_getc
+_IO_putc
+_IO_stdin_used
+    -i          output in C include file style.
+jklmnopqr^
+}JKLMNOPQR
+_len = %d;
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+    -l len      stop after <len> octets.
+Options:
+(or +: rel.) 
+    -ps         output in postscript plain hexdump style.
+    -r          reverse operation: convert (or patch) hexdump into binary.
+    -r -s off   revert with <off> added to file positions found in hexdump.
+%s0x%02x
+%s: invalid number of columns (max. %d).
+       %s [options] [infile [outfile]]
+__sprintf_chk
+       %s -r [-s [-]offset] [-c cols] [-ps] [infile [outfile]]
+%s: sorry, cannot revert this type of hexdump
+%s: sorry cannot seek.
+%s: sorry, cannot seek backwards.
+    -s %sseek  start at <seek> bytes abs. %sinfile offset.
+__strcpy_chk
+stuvwxyz
+unsigned char %s
+unsigned int %s
+    -u          use upper case hex letters.
+    -v          show version: "%s%s".
+xxd V1.10 27oct98 by Juergen Weigert

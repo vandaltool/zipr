@@ -1,0 +1,3652 @@
+~`!$^&*()=|\{}[];"'<>?
+ `"#$%^&*()=+{}[]:;'|\<>
+          
+ --------                   -------
+ --------    ----   ----    ----
+ !"$&'()*-/:;<=>?[\]`|}~
+--------          -------  ---                            -------
+--------  ------  ------- -----   ----   ----   ------    ----
+------------------
+!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+"$(...)"
+() { ... }
+@@@@@@@@@@@@@@@@[[[[[[[[[[[[[[[[                
++++-==============-==============
+00000000000
+                0000000000000000iofwide.c
+0123456789
+.#-+ 0123456789
+0123456789.
+0123456789abcdef
+0123456789abcdefghijklmnopqrstuvwxyz
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+`!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=
+%02d:%02d
+ %02d:%02d:%02d up 
+%02u:%02u:%02u
+%02u:%02u:%02u ETA
+%02X%02X-%02X%02X
+%02X:%02X:%02X:%02X:%02X:%02X
+%02X%02X%02X%02X%02X%02X%02X%02X
+%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x
+070701%08X%08X%08X%08X%08X%08X%08X%08X%08X%08X%08X%08X00000000%s%c
+"%07.7_Ax
+"%07.7_ax " 16/1 "%03o " "\n"
+"%07.7_ax " 16/1 "%3_c " "\n"
+"%07.7_ax " 8/2 "   %04x " "\n"
+"%07.7_ax " 8/2 "%04x " "\n"
+"%07.7_ax " 8/2 "  %05u " "\n"
+"%07.7_ax " 8/2 " %06o " "\n"
+"%08.8_Ax
+"%08.8_ax  " 8/1 "%02x " "  " 8/1 "%02x " 
+%*08x%*08x%08x%08x
+%08X%08X%08X%08X
+=0:a--r:r--a
+^%$0bBeEfth
+^0bBeEft%$ lh
+   0   custom (with hardware detected defaults)
+%.0s%.0s%llu %3o %3o
+=0:t--d:d--t
+<0t(<\tL<1u
+ %%0%u%s
+\$\#\$|1
+100baseFX
+100baseT
+100baseTX
+10646-1:1993//
+10646-1:1993/UCS4/
+%-10s %-14s %-18s %-12.12s
+%-10s %-14s %-18s %-12.12s %s
+%-10s %s
+1.18.5 Ubuntu 1:1.18.5-1ubuntu4.1
+ 123456789
+ -1:?2:g+
+13331#1!3333
+%13llu%13llu%13llu%13llu%13llu
+     %13s%13s%13s%13s%13s
+-1:?4:l--s:s--l
+%-15.15s %-15.15s %-16s%-6s
+%-15.*s %-15.*s %-7s %-16.16s %.*s
+"  |" 16/1 "%_p" "|\n"
+16 >= ((pstr)->mb_cur_max + 0)
+ %-16s%s 
+192.168.0.20
+192.168.0.254
+1997-12-20
+=1:Df:AU:c+
+1. fdisk will destroy its contents on write.
+--:-1:p:t:x
+=1:q--v:v--q:c+:w+:W+
+=1:s+:d+:t+
+=1:SD:u+
+1) software that runs at boot time (e.g., old versions of LILO)
+<1tewo<0
+?1:t--T:T--t
+?1:u--g:g--u:G--u:u--G:g--G:G--g:r?ugG:n?ugG
+2. Be sure that this disk is NOT a still vital part of a volume group.
+2) booting and partitioning software from other OSs
+2command
+%2d:%02d, 
+?2:d--of:o--df:f--do
+%2d: x%8.8x
+-2:f-in:i-fn:n-fi
+2getopts
+-2:l--s:s--l:Pd:rRd:Rd:apdR
+=2:L::U+
+%2u %02x%4u%4u%5u%4u%4u%5u%11u%11u %02x
+%2u: %-10s sector%5u size%8u
+%2u%2u%2u%2u%2u%c
+2unalias
+%2u: %s %4s %9lu %9lu %9lu  %2x  %s
+-2:vv:cc
+(3-!0,1'8"5.*2$
+%32s%x%*s%x%32s%x%x%x%x%s
+?33333333
+33A!13"3!
+3,5" floppy
+3. Before deleting this physical volume be sure to remove the disk
+3continue
+3L$@3\$D
+3L$T3T$P	
+%.3s %.3s%3d %.2d:%.2d:%.2d %d
+%40s %c %o %40s %40s %u %u %u %u %u
+%-43s %-39s %-5s %-6d %-2d %7d %-8s
+%-44s%-40sFlags Metric Ref    Use Iface
++45 3122-6543
++45 3325-6543
+<4,$?7/'
+,$+4$+l$
+%4s%4s%4s%4s%4s%4s%4s%4s %08x %02x %02x %02x %20s
+%4u%2u%2u%2u%2u%c
+%4u, %3u 
+%5d %-5d %6d %s
+    %5lu %5lu %5.5s 
+    %5lu %5lu %5u 
+%-5s %-6ld %-11s %-10s %-13s %6lu 
+%5u%6u %-8.8s %s%s%4u%%%4u%% 
+%63s%lx%lx%X%d%d%d%lx%d%d%d
+%6d %07o %3d 
+%-6d %-2d %7d %s
+%6u block device files
+%6u character device files
+%6u directories
+%6u files
+%6u inodes used (%u%%)
+%6u links
+%6u regular files
+%6u symbolic links
+%6u zones used (%u%%)
+[7m - next: %s
+[7m%s (file %i of %i)
+7readonly
+   @@@8\
+%-8.8s %-8.8s 
+\$89\$Hv
+%8lu%17lu%4u%%                            %u files
+%-8u %-8u 
+%8u  Defl:N%9u%4u%%  %02u-%02u-%02u %02u:%02u  %08x  %s
+%8x%8x%8x%8x%8x%8x%8x%*16c%8x%8x%8x
+\$`9\$|~_
+|$$9|$0vm
+\$(9\$4v
+[999;999H
+9BFt8Xe8
+9D$h~$9l$$rv;l$$th
+%9lu                   %u files
+%9s %3u%% %s
+%-9s Link encap:%s  
+9T$h~$9l$$rv;l$$th
+%9u  %02u-%02u-%02u %02u:%02u   %s
+a1->source_addr.sin6_family == 10
+a1->source_addr.sin6_family == 2
+A21"1##31
+a2->source_addr.sin6_family == 10
+a2->source_addr.sin6_family == 2
+aallexport
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
+@ABCDEFGHI@KLMNOPQRSTUVWXYZ[\]^_
+%a %b %d %H:%M:%S %Z %Y
+abdiL:NqrsS:tTU:wupBE
+abefnrtv\
+%a %b %e %H:%M:%S %Y
+%a %b %e %H:%M:%S %Z %Y
+absolute
+	accel %s
+Accept-Language:
+Accessing a corrupted shared library
+access violation
+a	change number of alternate cylinders
+Active Internet connections 
+Active UNIX domain sockets 
+	Adapt to window re-sizes
+%A, %d %B %Y
+%a, %d %b %Y %H:%M:%S 
+%a, %d %b %Y %H:%M:%S GMT
+%a %d %b %Y %T %Z
+addgroup
+addgroup -g %u '%s'
+addgroup '%s' '%s'
+add_name_to_object
+Address already in use
+Address family not supported by protocol
+Address Mask Reply
+Address Mask Request
+address space (kb)
+Address %u: %s%c
+add %s [%lu] to global scope
+a delimiter may be specified%s
+adjtimex
+Advertise error
+af == 10
+aHkLsxd:lchm
+akernel-name
+Alarm clock
+ALERT: cannot find a control file, your status file may be broken, status may be incorrect for %s
+allmulti
+alloca_aliases_len == 0
+All primary partitions have been defined already!
+Already used block is reused in file '%s'. 
+Alternate cylinders
+A:N:abcdfhij:lot:vxsS:w::
+and could in certain setups cause problems with:
+and is of type 'Whole disk'
+and others. Licensed under GPLv2.
+and partition 11 as entire volume (6)as IRIX expects it
+%a%N%f%N%d%N%b%N%s %h %e %r%N%C-%z %T%N%c%N
+anonymous
+anonymous:busybox@
+ANSI_X3.4//
+ANSI_X3.4-1968
+ANSI_X3.4-1968//
+ANSI_X3.4-1968//TRANSLIT
+ANSI_X3.4-1986//
+an %s %s is expected rather than "%s"
+APPC PReP Boot
+appeared
+: applet not found
+application/octet-stream
+Archive:  %s
+archmapped == &headmap
+Aread-bytes
+aremaining
+Arena %d:
+ARENA_MAX
+ARENA_TEST
+argument expected
+argument line too long
+Argument list too long
+argument of "%s" must be "on" or "off"
+arithmetic syntax error
+ARPING to %s
+=ascii->INTERNAL
+a	select bootable partition
+askfirst
+<aspace type="mprotect" size="%zu"/>
+<aspace type="total" size="%zu"/>
+as SunOS/Solaris expects it and even Linux likes it
+At block %d
+a	toggle a bootable flag
+a	toggle a read only flag
+ a tracked alias for
+Attempting to generate entire disk entry automatically
+Attempting to link in too many shared libraries
+attempts:
+audio/midi
+audio/mpeg
+audio/wav
+aunified
+Authorization:
+authpriv
+AUTH_TYPE=Basic
+   ?   auto configure
+Autoconfigure failed
+Autoconfigure found a %s%s%s
+autoindent 
+auto_time
+	Average resident set size (kbytes): %t
+	Average shared text size (kbytes): %X
+	Average stack size (kbytes): %p
+	Average total size (kbytes): %K
+	Average unshared data size (kbytes): %D
++AX5q.-%
+%[A-Za-z]%n
+======= Backtrace: =========
+Bad address
+bad address '%s'
+.badblocks
+bad blocks before data-area: cannot make fs
+bad blocksize '%s'
+bad byte count for conversion character %s
+bad character size %dx%d
+bad class %d
+bad conversion character %%%s
+bad delimiter for substitute
+bad fd number
+bad field specification
+bad file command
+Bad file descriptor
+Bad font file format
+bad for loop variable
+bad format in substitution expression
+bad format {%s}
+bad function name
+bad header line: %s
+Bad inittab entry at line %d
+bad IP address: %s
+bad line for read
+bad line range for %s
+bad line %u: %d tokens found, %d needed
+bad lzma header
+bad magic number in superblock
+bad mark name
+Bad message
+bad netmask: %s
+bad number
+bad -o argument '%s', supported arguments: %s
+Bad offset in primary extended partition
+bad operation
+bad option
+bad option in substitution expression
+bad output address radix '%c' (must be [doxn])
+bad packet, malformed option field
+Bad password: %s
+bad port spec '%s'
+bad quit command
+bad read command
+bad regex '%s'
+bad regex '%s': %s
+Bad Request
+bad response to %s: %s
+bad: '%s'
+bad signal name '%s'
+bad s_imap_blocks field in superblock
+bad speed: %s
+bad substitution
+Bad system call
+bad s_zmap_blocks field in superblock
+bad -t parameter
+bad write command
+Base address:0x%lx 
+basename
+BASH_ENV
+b--bcf:c--bcf:f--bcf
+ Bcast:%s 
+bcdoxCe:f:n:s:v
+b:c:f:d:sn
+b:C:H:lS:u
+b+:C+:H+:S+
+(bck->bk->size & 0x4) == 0
+%b %d %T %Y
+Be aware, that the bootfile is not checked for existence.
+b	edit bootfile entry
+b	edit bsd disklabel
+been replaced
+begin-base64 
+begin%s %o %s
+best-effort
+_BHRfS_M
+bignore-all-space
+/bin/busybox
+/bin/csh
+binding file %s [%lu] to %s [%lu]: %s symbol `%s'
+bind(%s)
+/bin/false
+/bin/login
+-/bin/sh
+/bin:/usr/bin
+bit != 0
+(bitmask_nwords & (bitmask_nwords - 1)) == 0
+bits != 0
+blackhole
+blockdev
+Block device required
+Block %d in file '%s' is marked as 'unused'. 
+b	move beginning of data in a partition
+bnetwork
+<BODY><H1>%d %s</H1>
+</BODY></HTML>
+bogus netmask %s
+bootfile
+boot_file
+boot_file=%.128s
+	Bootfile is changed to "%s"
+Bootfile must have a fully qualified pathname
+Bootfile: %s
+Boot file unchanged
+----- Bootinfo -----
+bootpc[[ --bootfile %bootfile%]] --dev %iface%[[ --server %server%]][[ --hwaddr %hwaddr%]] --returniffail --serverbcast
+bootsize
+Bootstrap installed on %s
+Bootstrap overlaps with disk label!
+Bootstrap: %sboot -> boot%s (%s): 
+break adjusted to free malloc space
+bridge %s
+broadcast
+broadcast can be set only for IPv4 addresses
+BROADCAST=%s
+broadcast tunnel requires a source address
+Broken pipe
+BSD disklabel command (m for help): 
+BSDI swap
+BSD label for device: %s
+buffer overflow detected
+-/+ buffers:      
+Buffers: %lu %s
+Building a new %s. Changes will remain in memory only,
+build_wcs_buffer
+build_wcs_upper_buffer
+%builtin
+Built-in commands:
+built-in shell (ash)
+bunzip error %d
+Bus error
+	BusyBox is a multi-call binary that combines many common Unix
+BusyBox v1.18.5 (Ubuntu 1:1.18.5-1ubuntu4.1)
+(but not to Linux). Having partitions of
+button/power PWRB 00000080
+button/power PWRF 00000080
+but your value %u %s covers some other partition.
+byte count with multiple conversion characters
+bytes/sector: %lu
+%c%2x %-22.22s
+-%c: %-30s 
+  %c: %8lu  %8lu  %8lu   
+  %c: %8lu%c %8lu%c %8lu%c  
+Cached: %lu %s
+cache != ((void *)0)
+Cadil1gnsxQAkcetuSXrvFpLRhT:w:
++%c %a %l
+calling fini: %s [%lu]
+calling init: %s
+Calling ioctl() to re-read partition table
+calling preinit: %s
+Call to undefined function
+Can not access a needed shared library
+cannot allocate dependency list
+Cannot allocate memory
+cannot allocate memory for program header
+cannot allocate memory in static TLS block
+cannot allocate name record
+cannot allocate symbol search list
+cannot allocate TLS data structures for initial thread
+cannot allocate version reference table
+cannot apply additional memory protection after relocation
+Cannot assign requested address
+cannot change memory protections
+cannot close file descriptor
+cannot create cache for search path
+cannot create RUNPATH/RPATH copy
+cannot create scope list
+cannot create search path array
+cannot create shared object descriptor
+cannot create TLS data structures
+cannot dynamically load executable
+cannot enable executable stack as shared object requires
+Cannot exec a shared library directly
+cannot extend global scope
+! "cannot happen"
+cannot load any more object with static TLS
+cannot load auxiliary `%s' because of empty dynamic string token substitution
+cannot make segment writable for relocation
+cannot map zero-fill pages
+cannot open shared object file
+cannot read file data
+Cannot read this file
+cannot restore segment prot after reloc
+Cannot send after transport endpoint shutdown
+cannot stat shared object
+canonicalize.c
+canonname == ((void *)0)
+can't access syslogd buffer
+can't access tty; job control turned off
+can't add option 0x%02x
+can't append to %s/%s
+can't bind to interface %s
+can't cd to %s
+can't change ifname %s to %s
+can't change locked password for %s
+can't change root directory to %s
+can't chdir to home directory '%s'
+can't clear boot sector
+can't close '%s'
+can't compare stdin to a directory
+can't connect the route
+can't connect to remote host
+can't create backup status file
+can't create directory '%s'
+can't create link '%s'
+can't create mail file %s for user %s, discarding output
+can't create pipe
+can't create raw socket
+can't create '%s'
+can't create %slink from %s to %s
+can't create '%s': Path does not exist
+can't create %s: %s
+can't create %s/%s
+can't create symlink '%s'
+can't create temp file '%s'
+can't determine tunnel mode (ipip, gre or sit)
+can't duplicate file descriptor
+can't enable bcast on raw socket
+can't execute passwd, you must set password manually
+can't execute '%s'
+can't execute '%s' for user %s
+can't extract control file
+can't find device '%s'
+can't find file table
+can't find free pty
+can't find hostname for %s
+can't find label for jump to '%s'
+can't find open VT
+can't find %s in %s
+can't find string "%s"
+can't find syslogd buffer
+can't fit single argument within argument list size limit
+can't flush link addresses
+can't flush routing cache
+can't fork
+can't format mounted filesystem
+can't get access to semaphores for syslogd buffer
+can't get probe addr
+can't get type of [%s]
+can't guess
+can't kill pid %d
+can't log to %s
+can't make dir %s
+can't move '%s' to '%s'
+can't open console
+can't open '%s'
+can't open %s: %s
+can't open %s, %s.zip, %s.ZIP
+can't overwrite %sdirectory with %sdirectory
+can't parse line %u in %s
+can't parse %s
+can't preserve %s of '%s'
+can't read all of file "%s"
+can't read from %s
+can't read inode map
+can't read inodes
+can't read input
+can't read /proc/stat
+can't read '%s'
+can't read superblock
+can't read user input
+can't read zone map
+can't remount %s read-only
+can't remove file '%s'
+can't remove old file %s
+can't remove '.' or '..'
+can't remove '%s'
+can't rename '%s'
+can't resolve long filename
+can't resolve '%s'
+can't run '%s': %s
+can't %s directory '%s'
+can't seek on %s
+can't send dump request
+can't send flush request
+can't send signal
+can't set date
+can't set groups
+can't set multicast source interface
+can't set SCANCODE %x to KEYCODE %d
+can't set time of day
+can't set tty process group (%m)
+can't setup loop device
+can't skip past end of combined input
+can't stat old file
+can't stat '%s'
+can't stat '%s': Path has non-directory component
+can't stat tar file
+can't store file '%s' of size %llu, aborting
+can't %sumount %s
+can't talk to rtnetlink
+can't tcsetattr for %s
+can't update password file %s
+can't vfork
+can't write inode map
+can't write inodes
+can't write superblock
+can't write zone map
+Capacity
+category == __LC_CTYPE
+%c%c  %-14s %s
+%c    cache 
+cCdDJoOpPrRxX<>~
+c	change number of cylinders
+%c  Checksum in received packet is required.
+%c  Checksum output packets.
+CD$(9D$$
+CD$(;D$$
+c:de:fl:a:M:p:
+cdereference
+c:d:h:r:p:ifv
+cdiouxXeEfgG
+%c  Drop packets out of sequence.
+cduf:s:w:
+cdykjHL+-{}
+c--efXx:e--cfXx:f--ceXx:X--cefx:x--cefX
+%cetpriority
+cfvdt123456789qzs
+cfvdtq123456789n
+cgi-bin/
+/cgi-bin/index.cgi
+cGNU HURD or SysV
+ c	go to character mode
+changed ownership of '%s' to %u:%u
+Changed system type of partition %u to %x (%s)
+Changing display/entry units to %s
+Changing password for %s
+Channel number out of range
+((char*)p + new_size) == ((char*)heap + heap->size)
+(char *) p + size > paligned_mem
+charset=
+(char *) ((void*)((char*)(p) + 2*(sizeof(size_t)))) + 4 * (sizeof(size_t)) <= paligned_mem
+chdir(%s)
+Check aborted
+checking for version `%s' in file %s [%lu] required by file %s [%lu]
+Check line %u
+check_match
+check_matching
+Child exited
+ci:l:n:v
+CilPruF:
+-%c is meaningful only with -c
+clientid-none
+%c    link/%s 
+CLOCKERR
+clock_gettime(MONOTONIC) failed
+clock not synchronized
+clock synchronized
+close_all_fds
+close failed
+CLOSE_WAIT
+closing file=%s; direct_opencount=%u
+closing paren expected
+cmd. line
+cmd %s %s
+cmp: EOF on %s
+Cnoclobber
+cnt <= nlist
+cnt < sizeof (map) / sizeof (map[0])
+cnt < (sizeof (_nl_value_type_LC_ADDRESS) / sizeof (_nl_value_type_LC_ADDRESS[0]))
+cnt < (sizeof (_nl_value_type_LC_COLLATE) / sizeof (_nl_value_type_LC_COLLATE[0]))
+cnt < (sizeof (_nl_value_type_LC_IDENTIFICATION) / sizeof (_nl_value_type_LC_IDENTIFICATION[0]))
+cnt < (sizeof (_nl_value_type_LC_MEASUREMENT) / sizeof (_nl_value_type_LC_MEASUREMENT[0]))
+cnt < (sizeof (_nl_value_type_LC_MESSAGES) / sizeof (_nl_value_type_LC_MESSAGES[0]))
+cnt < (sizeof (_nl_value_type_LC_MONETARY) / sizeof (_nl_value_type_LC_MONETARY[0]))
+cnt < (sizeof (_nl_value_type_LC_NAME) / sizeof (_nl_value_type_LC_NAME[0]))
+cnt < (sizeof (_nl_value_type_LC_NUMERIC) / sizeof (_nl_value_type_LC_NUMERIC[0]))
+cnt < (sizeof (_nl_value_type_LC_PAPER) / sizeof (_nl_value_type_LC_PAPER[0]))
+cnt < (sizeof (_nl_value_type_LC_TELEPHONE) / sizeof (_nl_value_type_LC_TELEPHONE[0]))
+cnt < (sizeof (_nl_value_type_LC_TIME) / sizeof (_nl_value_type_LC_TIME[0]))
+cnt < (((uint32_t) (*_nl_current_LC_CTYPE)->values[((int) (_NL_CTYPE_MB_CUR_MAX) & 0xffff)].word))
+C/o Keld Simonsen, Skt. Jorgens Alle 8, DK-1615 Kobenhavn V
+          collisions:%lu 
+Command action
+	Command being timed: "%C"
+Command exited with non-zero status %u
+command line is not complete, try option "help"
+Command (m for help): 
+command only uses one address
+Command terminated by signal %u
+Common subdirectories: %s and %s
+Communication error on send
+Compaq diagnostics
+compatibility mode supports at most three arguments
+compat [NOTFOUND=return] files
+compressed
+compressed data not read from terminal, use -f to force it
+             compressed:%lu
+compressed:%lu 
+compressed with %d bits, can only handle 16 bits
+conffiles
+config error '%s' in '%s'
+config-files
+configure
+Conflicts
+conflict_time
+connected
+Connecting to %s (%s)
+Connection: close
+Connection closed by foreign host
+Connection refused
+Connection reset by peer
+Connection timed out
+Consider leaving partition 3 as Whole disk (5),
+Consider leaving partition 9 as volume header (0),
+Console escape. Commands are:
+content-length
+Content-length:
+CONTENT_LENGTH=%d
+content-length %s is garbage
+Content-Length: %u
+Content-Type:
+CONTENT_TYPE
+Content-Type: application/x-www-form-urlencoded
+Content-type: %s
+continue
+continued
+continuing...
+./control
+control.tar.bz2
+control.tar.gz
+control.tar.lzma
+Copyright (C) 1998-2009 Erik Andersen, Rob Landley, Denys Vlasenko
+ (core dumped)
+core file size (blocks)
+correction >= 0
+corrupted data
+corrupted double-linked list
+corrupted octal value in tar header
+covers the entire disk and is of type 'SGI volume'
+*cp <= *re
+CPU:%4u%% usr%4u%% sys%4u%% nic%4u%% idle%4u%% io%4u%% irq%4u%% sirq
+cpu %llu %llu %llu %llu %llu %llu %llu %llu
+CPU time limit exceeded
+cpu time (seconds)
+c).r&16AaF"
+crc error
+cr:d:t:fma
+   creating: %s
+creating %s
+creference
+crond (busybox 1.18.5) started, log level %d
+cron.update
+crterase
+CSASCII//
+c	select sgi swap partition
+%c  Sequence packets on output.
+csqO:P:Y:U:T:t:
+   %c   %s%s%s
+%c %s %s:%s
+%c %s%s%s %d/%d %d%%
+CSUCS4//
+<ct0<dtH
+c	toggle the dos compatibility flag
+c	toggle the mountable flag
+cto-stdout
+ctrlaltdel
+%c: unknown command
+Currently defined functions:
+current time matches remote time
+%c %u %u %u %d %*s %*s %*s %*s %*s %*s %lu %lu %*s %*s %*s %ld %*s %*s %lu %lu %lu 
+Cvendorclass
+cverbose
+CV:H:h:F:i:np:qRr:s:T:t:SA:O:ox:fbav
+cvu:p:P:
+cwd != ((void *)0)
++c:wslfv
+cxa_atexit.c
+Cylinders
+cylinderskew
+cylinderskew: %u
+cylinders: %lu
+%*d: %32[0-9A-Fa-f]:%X %32[0-9A-Fa-f]:%X %X %lX:%lX %*X:%*X %*X %d %*d %ld 
+	# D: %.3f MHz, H: %.3f kHz, V: %.3f Hz
+D$(3T$T3D$P	
+D$49D$tu
+D$49D$,v,
+D$4;D$8s
+D$4;T$4t'
++D$8;D$8
++D$,9D$<
+D$(9D$0|n~$
+D$<9D$Ps
+D$(9D$,r
+D$,9D$@r%w
+D$ 9D$,w(
+damaged cpio file
+DARPA Internet
+Darwin boot
+Darwin UFS
+database %s is corrupted at line %d
+datacompression
+data.__outbuf[-1] == '\0'
+data.__outbuf != (unsigned char *) dst
+data seg size (kb)
+((data.__statep)->__count == 0)
+data.tar.bz2
+data.tar.gz
+data.tar.lzma
+Date: %s
+%d bad block(s)
+%d bytes from %s: seq=%u ttl=%d
+%d bytes from %s to %s: icmp type %d (%s) code %d
+ %d bytes to %s
+D$C4_OFf
++D$,;D$,
++D$$;D$$
+D$|+D$$)
+D$$+D$4;D$4
+D$D9D$4u
+D$D9D$$u
+: %d data bytes
+%d day%s, 
+%d.%d.%d.%d
+%d %d %d %d %d %d %d
+D$`;D$dr
+D$d+D$X9D$T}
+ %%%d.%de
+d	delete a BSD partition
+d	delete a partition
+dDgGhHlnNpPqx={}
+ %%%d.%dLe
+D$`;D$pr
+D$(;D$ t\
+D$@+D$Tk
+D$`+D$X1
+deallocvt
+./DEBIAN
+DEBUG ONLY: this shouldnt happen
+December
+*decimal != '\0' && decimalwc != L'\0'
+decimal_len > 0
+decline_time
+deconfig
+default 
+defaults
+deficit %d, rta_len=%d!
+def_offset != 0
+deinstall
+Deleted 
+delete leap second
+Delete/shrink them before retry.
+delgroup
+Dempty-password
+deprecated 
+deriv->steps[cnt].__shlib_handle != ((void *)0)
+Description :
+Destination
+Destination address required
+Destination     Gateway         Genmask         Flags %s Iface
+Destination Unreachable
+Dest Unreachable
+Detected an OSF/1 disklabel on %s, entering disklabel mode
+Detected sgi disklabel with wrong checksum
+Detected sun disklabel with wrong checksum.
+/dev/cdrom
+/dev/console
+/dev/fb0
+/dev/full
+Device contains neither a valid DOS partition table, nor Sun, SGI, OSF or GPT disklabel
+device has more than 2^32 sectors, can't use all of them
+Device not a stream
+Device not found
+Device or resource busy
+Device: %s
+/dev/input/event
+/dev/loop%d
+/dev/misc/rtc
+/dev/net/tun
+DEV_PLUS_VID
+DEV_PLUS_VID_NO_PAD
+/dev/ptmx
+/dev/pts
+/dev/rtc
+/dev/rtc0
+ dev %s 
+"dev" (%s) must match "label" (%s)
+/dev/stderr
+/dev/stdin
+/dev/stdout
+/dev/tape
+/dev/tty
+/dev/tty0
+/dev/tty2
+/dev/tty3
+/dev/tty4
+/dev/tty5
+/dev/tty%d
+/dev/urandom
+D$,f+D$8
+D$H9D$(r
+, %d hops max, %d byte packets
+digcnt > 0
+digits_dots.c
+dig_no >= int_no
+dig_no > int_no && exponent <= 0
+diouxXfeEgGcs
+diratime
+----- Directory Entries -----
+Directory not empty
+DISCONNECTING
+disk full
+Disk quota exceeded
+disk: %.*s
+Disk %s doesn't contain a valid partition table
+Disk %s: %lu.%lu GB, %llu bytes
+Disk %s: %lu MB, %llu bytes
+Disk %s (SGI disk label): %u heads, %u sectors
+Disk %s (SGI disk label): %u heads, %u sectors, %u cylinders
+Disk %s (Sun disk label): %u heads, %u sectors, %u cylinders
+Disk %s (Sun disk label): %u heads, %u sectors, %u rpm
+Disk %s: %u heads, %u sectors, %u cylinders
+divide by zero
+division by zero
+\$d#\$l1
+D$L3T$t3D$x	
+D$L9D$8ty1
+D$l9D$pw
+_dl_add_to_slotinfo
+_dl_allocate_tls_init
+-D_LARGEFILE64_SOURCE
+-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+dl-cache.c
+_dl_check_map_versions
+_dl_close
+dl-close.c
+_dl_close_worker
+_dl_debug_initialize (0, args->nsid)->r_state == RT_CONSISTENT
+_dl_debug_initialize (0, args.nsid)->r_state == RT_CONSISTENT
+_dl_debug_vdprintf
+dl-deps.c
+_dlfcn_hook
+_dl_fini
+dl-fini.c
+_dl_fixup
+_dl_get_origin
+%d lines, %d chars
+%d lines%s, %d chars
+_dl_init_paths
+dl-load.c
+_dl_load_cache_lookup
+dl-lookup.c
+_dl_lookup_symbol_x
+_dl_map_object
+_dl_map_object_deps
+_dl_map_object_from_fd
+dl-misc.c
+_dl_next_tls_modid
+-d:lnopqxv
+_dl_nothread_init_static_tls
+_dl_open
+dl-open.c
+_dl_open_hook
+dl_open_worker
+_dl_pagesize != 0
+_dl_profile_fixup
+dl-reloc.c
+dl-runtime.c
+_dl_setup_hash
+dl-tls.c
+dl-version.c
+DMA chan:%x 
+%d min, 
+%d more file(s) to edit
+DNES-318350
+dnsdomainname
+dns [!UNAVAIL=return] files
+D$O4_OFf
+DO %d: %s
+Done(%d)
+don't seem to have all the variables for %s/%s
+do_release_shlib
+DORS-32160
+dos2unix
+DOS Compatibility flag is not set
+DOS Compatibility flag is set
+DOS disklabel
+DOS secondary
+double free or corruption (fasttop)
+double free or corruption (out)
+double free or corruption (!prev)
+double free or corruption (top)
+Do you really want to continue
+Do you want to create a disklabel? (y/n) 
+DPES-31080
+dpkg-deb
+*.dpkg-new
+d	print the raw data in the partition table
+D$+/prof
+#D$P#T$T
+dreference
+drivedata: 
+Drive type
+drvbuffer
+@	;D$(sQ
+d--s:s--d:R--I:I--R
+DST not allowed in SUID/SGID programs
+D$tk|$ ,
+DUAqfbc:w:I:s:
+dumpkmap
+dumpleases
+dump terminated
+duncompress
+duplicate interface "%s"
+duplicate option "%s"
+duplicate script in mapping "%s"
+duplicate "%s": "%s" is the second value
+;D$ v@+D$ 
+D$x3T$`3D$d	
+|$d+|$X;|$T
+dynamic 
+  dynamic: 0x%0*lx  base: 0x%0*lx   size: 0x%0*Zx
+DYNAMIC LINKER BUG!!!
+dynamic-link.h
+e	change number of extra sectors per cylinder
+Echo Reply
+Echo Request
+e	edit drive data
+eerrexit
+ e	exit telnet
+e   extended
+EFI (FAT-12/16/32)
+e::f::nn
+   (e.g., DOS FDISK, OS/2 FDISK)
+e.g. heads, sectors, cylinders and partitions
+	e.g. "/unix" or "/unix.save".
+Eighth Edition
+Eignore-space-change
+either "%s" is duplicate, or "%s" is garbage
+	Elapsed (wall clock) time (h:mm:ss or m:ss): %E
+elem != ((void *)0)
+ELF file ABI version invalid
+ELF file data encoding not little-endian
+ELF file OS ABI invalid
+ELF file's phentsize not the expected size
+ELF file version does not match current one
+ELF file version ident does not match current one
+elf_get_dynamic_info
+ELF load command address/offset not properly aligned
+ELF load command alignment not page-aligned
+elf_machine_rel_relative
+e	list extended partitions
+empty == 1
+empty archive
+empty dynamic string token substitution
+empty filename
+empty long option specified
+end of file
+endutent_file
+Enhances
+enlarge_userbuf
+Enter 'help' for a list of built-in commands.
+Entering character mode%s'^]'.
+Entering line mode%s'^C'.
+Entering released state
+(Enter:next line Space:next page Q:quit R:show the rest)
+    entry: 0x%0*lx  phdr: 0x%0*lx  phnum:   %*u
+*ENVIRON
+EOF in backquote substitution
+EOF on netlink
+error, base %u is not supported
+error exit delayed from previous errors
+error getting response
+error inflating
+error: invalid response [%c]
+error: malformed setting '%s'
+error moving root
+error: no inet socket available
+Error opening log file
+error reading input font
+error reading key '%s'
+error reading rpm header
+error setting limit
+error %sing key '%s'
+error: '%s' is an unknown key
+error: '%s' must be of the form name=value
+ERROR truncated
+error unpacking
+error while loading shared libraries
+error writing to '%s'
+err == REG_ESPACE
+Escape character is 
+ESTABLISHED
+    esterror:     %ld
+--:--:-- ETA
+/etc/acpi
+/etc/acpid.conf
+/etc/acpi.map
+/etc/busybox.conf
+/etc/fb.modes
+/etc/filesystems
+/etc/fstab
+/etc/gai.conf
+/etc/group
+/etc/gshadow
+/etc/host.conf
+/etc/hostid
+/etc/init.d/rcS
+/etc/iproute2/rt_dsfield
+/etc/iproute2/rt_protos
+/etc/iproute2/rt_realms
+/etc/iproute2/rt_scopes
+/etc/iproute2/rt_tables
+/etc/issue
+/etc/issue.net
+/etc/ld.so.cache
+/etc/ld.so.nohwcap
+/etc/localtime
+/etc/mactab
+/etc/motd
+/etc/network/interfaces
+/etc/nologin
+/etc/nsswitch.conf
+/etc/passwd
+/etc/profile
+/etc/resolv.conf
+/etc/securetty
+/etc/shadow
+/etc/shells
+/etc/skel
+/etc/suid-debug
+/etc/sysctl.conf
+/etc/udhcpd.conf
+Ethernet
+Every %us: %-*s
+Examine: 
+Exchange full
+Exec failed: %s -c %s
+Exec format error
+	Exit status: %x
+expand_dynamic_string_token
+expected a list of bytes, characters, or fields
+ (expecting %s)
+Expert command (m for help): 
+ expires %dsec
+exponent less than 0
+expression expected
+expression recursion loop detected
+Extended
+(__extension__ ({ __const struct in6_addr *__a = (__const struct in6_addr *) (sin6->sin6_addr.__in6_u.__u6_addr32); __a->__in6_u.__u6_addr32[0] == 0 && __a->__in6_u.__u6_addr32[1] == 0 && __a->__in6_u.__u6_addr32[2] == (__extension__ ({ register unsigned int __v, __x = (0xffff); if (__builtin_constant_p (__x)) __v = ((((__x) & 0xff000000) >> 24) | (((__x) & 0x00ff0000) >> 8) | (((__x) & 0x0000ff00) << 8) | (((__x) & 0x000000ff) << 24)); else __asm__ ("bswap %0" : "=r" (__v) : "0" (__x)); __v; })); }))
+__extension__ ({ size_t __s1_len, __s2_len; (__builtin_constant_p (&zone_names[info->idx]) && __builtin_constant_p (__tzname[tp->tm_isdst]) && (__s1_len = __builtin_strlen (&zone_names[info->idx]), __s2_len = __builtin_strlen (__tzname[tp->tm_isdst]), (!((size_t)(const void *)((&zone_names[info->idx]) + 1) - (size_t)(const void *)(&zone_names[info->idx]) == 1) || __s1_len >= 4) && (!((size_t)(const void *)((__tzname[tp->tm_isdst]) + 1) - (size_t)(const void *)(__tzname[tp->tm_isdst]) == 1) || __s2_len >= 4)) ? __builtin_strcmp (&zone_names[info->idx], __tzname[tp->tm_isdst]) : (__builtin_constant_p (&zone_names[info->idx]) && ((size_t)(const void *)((&zone_names[info->idx]) + 1) - (size_t)(const void *)(&zone_names[info->idx]) == 1) && (__s1_len = __builtin_strlen (&zone_names[info->idx]), __s1_len < 4) ? (__builtin_constant_p (__tzname[tp->tm_isdst]) && ((size_t)(const void *)((__tzname[tp->tm_isdst]) + 1) - (size_t)(const void *)(__tzname[tp->tm_isdst]) == 1) ? __builtin_strcmp (&zone_names[info->idx], __tzname[tp->tm_isdst]) : (__extension__ ({ __const unsigned char *__s2 = (__const unsigned char *) (__const char *) (__tzname[tp->tm_isdst]); register int __result = (((__const unsigned char *) (__const char *) (&zone_names[info->idx]))[0] - __s2[0]); if (__s1_len > 0 && __result == 0) { __result = (((__const unsigned char *) (__const char *) (&zone_names[info->idx]))[1] - __s2[1]); if (__s1_len > 1 && __result == 0) { __result = (((__const unsigned char *) (__const char *) (&zone_names[info->idx]))[2] - __s2[2]); if (__s1_len > 2 && __result == 0) __result = (((__const unsigned char *) (__const char *) (&zone_names[info->idx]))[3] - __s2[3]); } } __result; }))) : (__builtin_constant_p (__tzname[tp->tm_isdst]) && ((size_t)(const void *)((__tzname[tp->tm_isdst]) + 1) - (size_t)(const void *)(__tzname[tp->tm_isdst]) == 1) && (__s2_len = __builtin_strlen (__tzname[tp->tm_isdst]), __s2_len < 4) ? (__builtin_constant_p (&zone_names[info->idx]) && ((size_t)(const void *)((&zone_names[info->idx]) + 1) - (size_t)(const void *)(&zone_names[info->idx]) == 1) ? __builtin_strcmp (&zone_names[info->idx], __tzname[tp->tm_isdst]) : (__extension__ ({ __const unsigned char *__s1 = (__const unsigned char *) (__const char *) (&zone_names[info->idx]); register int __result = __s1[0] - ((__const unsigned char *) (__const char *) (__tzname[tp->tm_isdst]))[0]; if (__s2_len > 0 && __result == 0) { __result = (__s1[1] - ((__const unsigned char *) (__const char *) (__tzname[tp->tm_isdst]))[1]); if (__s2_len > 1 && __result == 0) { __result = (__s1[2] - ((__const unsigned char *) (__const char *) (__tzname[tp->tm_isdst]))[2]); if (__s2_len > 2 && __result == 0) __result = (__s1[3] - ((__const unsigned char *) (__const char *) (__tzname[tp->tm_isdst]))[3]); } } __result; }))) : __builtin_strcmp (&zone_names[info->idx], __tzname[tp->tm_isdst])))); }) == 0
+ext_match
+Extra sectors per cylinder
+ext_wmatch
+F$9D$X|2
+facility
+failed to map segment from shared object
+falling back to blocksize 512
+    family %d 
+FAT12   
+FAT16   
+FAT16 <32M
+FAT32   
+FATAL: cannot determine kernel version
+fatal error, package dependencies corrupt: %d != %d - 1
+FATAL: kernel too old
+fbackground
+f-b:b-f:S-L:L-S:l+:d+
+FBIOGET_VSCREENINFO
+FBIOPUT_VSCREENINFO
+fc:n:qs:vF
+fcts.tomb_nsteps == 1
+fcts.towc_nsteps == 1
+features
+February
+f	fix partition order
+-f  frequency:    %ld
+file already exists
+File descriptor in bad state
+File exists
+file_fd >= 0
+ (file %i of %i)
+FILENAME
+File name too long
+file not found
+File %s is a %s while file %s is a %s
+File %s is not a regular file or directory and was skipped
+File size limit exceeded
+file=%s [%lu];  destroying link map
+file=%s [%lu];  dynamically loaded by %s [%lu]
+file=%s [%lu];  generating link map
+file=%s [%lu];  needed by %s [%lu]
+file=%s [%lu];  needed by %s [%lu] (relocation dependency)
+Files %s and %s are identical
+Files %s and %s differ
+Filesystem           %-15sUsed Available %s Mounted on
+FILE SYSTEM HAS BEEN CHANGED
+	File system inputs: %I
+Filesystem on %s is dirty, needs checking
+	File system outputs: %O
+Filesystem state=%u
+File too large
+file too short
+FIlnrdvxt:i:m:p:q:s:w:z:f:46
+Filters not supported with LD_TRACE_PRELINKING
+find library=%s [%lu]; searching
+findlocale.c
+Finstall
+finteractive
+Finterface
+FIN_WAIT1
+FIN_WAIT2
+FIRMWARE
+Firstdatazone=%ld (%ld)
+Firstdatazone=%u (%u)
+first-only
+First %s
+< FIRSTZONE
+-f is for root only
+flags %02x 
+fldnravdt:i
+f:l:Kip:b:F
+floating point
+Floating point exception
+flushbufs
+(((fmt[i]) & ~0x7f) == 0)
+__fnmatch
+fnmatch.c
+fnmatch_loop.c
+fno-clobber
+Forbidden
+force-confnew
+force-confold
+forcibly 
+Forcing filesystem check on %s
+Foreign Address
+found->handle == ((void *)0)
+Found static lease: %x
+free(): corrupted unsorted chunks
+free_derivation
+free(): invalid next size (fast)
+free(): invalid next size (normal)
+free(): invalid pointer
+free(): invalid size
+freeramdisk
+FREQHOLD
+from 0/%u 
+from %s 
+from %s/%u 
+ from %s via %s
+fsck.minix
+f+:s+:w+
+fto-stdout
+ftp error: %s
+ftp login: %s
+ftp_proxy
+function
+Function not implemented
+fverbose
+F:v:f:W:
+(fwd->size & 0x4) == 0
+fwmark %#x 
+__fxprintf
+fxprintf.c
+g0k q w }
+gaih_inet
+GATEWAY_INTERFACE=CGI/1.1
+gateway %s is a NETWORK
+gconv_builtin.c
+gconv_conf.c
+gconv_db.c
+gconv_dl.c
+gconv_end
+__gconv_find_shlib
+__gconv_get_builtin_trans
+__gconv_get_path
+gconv_init
+GCONV_PATH
+__gconv_release_step
+gconv_simple.c
+gconv_trans
+gconv_trans.c
+gconv_trans_context
+gconv_trans_end
+__gconv_transform_ascii_internal
+__gconv_transform_internal_ascii
+__gconv_transform_internal_ucs2
+__gconv_transform_internal_ucs2reverse
+__gconv_transform_internal_ucs4
+__gconv_transform_internal_ucs4le
+__gconv_transform_internal_utf8
+__gconv_transform_ucs2_internal
+__gconv_transform_ucs2reverse_internal
+__gconv_transform_ucs4_internal
+__gconv_transform_ucs4le_internal
+__gconv_transform_utf8_internal
+gconv_trans_init
+__gconv_translit_find
+g	create an IRIX (SGI) partition table
+Gdisabled-password
+__gen_tempname
+geometry
+	geometry %u %u %u %u %u
+getaddrinfo
+getcanonname_r
+GETCONF_DIR
+__getcwd
+getgrnam_r
+gethostbyaddr_r
+gethostbyname2_r
+gethostbyname3_r
+gethostbyname4_r
+gethostbyname_r
+getifaddrs_internal
+getlogin
+getnameinfo failed
+GETOPT_COMPATIBLE
+__getpagesize
+! "getpt: internal error: invalid exit code from pt_chown"
+getpwuid_r
+getservbyname_r
+getservbyport_r
+GET /%s HTTP/1.1
+getsize64
+GET %stp://%s/%s HTTP/1.1
+getty: %s
+getutent_r_file
+getutid_r_file
+getutline_r_file
+GHRDMDAC
+Give root password for system maintenance
+Give the 'b' command to go to BSD mode.
+glibc 2.15
+*** glibc detected *** %s: %s: 0x%s ***
+glibc-ld.so.cache1.1
+GLIBC_PRIVATE
+GNU/Linux
+g:p:g--p:p--g:
+gpl:r:b:
+Group       : %-30sSource RPM: %s
+ groups=
+h11AY&SY
+\$h8\$lr
+handle_amd
+h	change number of heads
+hchanges
+headswitch
+headswitch: %lu		# milliseconds
+heap->ar_ptr == av
+<heap nr="%d">
+heap_trim
+%h %e %T 
+Hex code (type L to list codes): 
+h:g:s:G:DSHu:
+H-h:C-AB:e::f::m+:A+:B+:C+
+Hidden FAT12
+Hidden FAT16
+Hidden FAT16 <32M
+Hidden HPFS/NTFS
+Hidden W95 FAT16 (LBA)
+Hidden W95 FAT32 (LBA)
+Hidden Win95 FAT32
+[Hit return to continue]
+h-km:k-hm:m-hk:H-L:L-H:s-d:d-s:d+
+%H:%M:%S
+/home/%s
+HOSTALIASES
+Host is down
+hostname
+Host name lookup failure
+HOSTNAME=%s
+Host: %s
+Host: scsi%u Channel: %02u Id: %02u Lun: %02u
+HPFS/NTFS
+-HSaf::t::d::s::c::m::l::p::n::v::w::
+.htm.html
+<HTML><HEAD><TITLE>%d %s</TITLE></HEAD>
+HTTP/1.0 200 OK
+HTTP/1.0 %d %s
+HTTP_ACCEPT
+HTTP_ACCEPT_LANGUAGE
+HTTP_COOKIE
+httpd.conf
+HTTP_HOST
+http_proxy
+HTTP_REFERER
+HTTP_USER_AGENT
+%hu%n:%hu%n:%hu%n
+Hunk %d FAILED %ld/%ld.
+Hverbose
+hwaddress
+HWaddr %s  
+i18n:1999
+i386-linux-gnu
+IBM367//
+IBM OEM 0662S12         3 30
+Ican't get uid for %s
+i	change interleave factor
+Ichdir(%s)
+../iconv/loop.c
+../iconv/skeleton.c
+Identifier removed
+idna_to_ascii_lz
+idna_to_unicode_lzlz
+idx == 0
+idx == nloaded
+ieee1394
+ieee802.11
+iface %s
+ifa_data_ptr <= (char *) &ifas[newlink + newaddr] + ifa_data_size
+ifaddrs != ((void *)0)
+ifconfig
+IF_%s=%s
+If you want to add DOS-type partitions, create a new empty DOS partition
+If you want to maintain SunOS/Solaris compatibility, consider leaving this
+igeometry
+ignore-case
+ignorecase 
+*IGNORECASE
+ignore-environment
+ignoring all arguments
+Ignoring extra extended partition %u
+ignoring file '%s' (no such user)
+ignoring unknown interface %s
+Iignoreeof
+iignore-tab-expansion
+i	install bootstrap
+iinteractive
+ ikey %s 
+I:LH:f:hil:mt:wn
+illegal eof marker for << redirection
+Illegal instruction
+illegal mode: %s
+Illegal number: %s
+illegal operator
+illegal option -%c
+illegal option %c%c
+illegal option %co %s
+Illegal seek
+illegal status in __nss_next
+image/gif
+image is too small
+image/jpeg
+image/png
+image size is too big
+imap->l_need_tls_init == 0
+imap->l_ns == nsid
+imap->l_type == lt_loaded
+imap->l_type == lt_loaded && (imap->l_flags_1 & 0x00000008) == 0
+%I:%M:%S %p
+Inappropriate ioctl for device
+in compatibility mode the last two arguments must be offsets
+incompatible size/inode count, try different -i N
+ (incomplete)
+incorrect length
+incorrect password
+incorrect password for %s
+index.html
+inend != &bytebuf[4]
+inend != &bytebuf[6]
+inend - inptr <= 7
+inend - *inptrp < 4
+inend - inptr > (state->__count & ~7)
+    inet 
+    inet6 
+          inet6 addr: %s/%d
+infiniband
+inflate error
+  inflating: %s
+info[19]->d_un.d_val == sizeof (Elf32_Rel)
+info[20]->d_un.d_val == 17 || info[20]->d_un.d_val == 7
+info[9]->d_un.d_val == sizeof (Elf32_Rela)
+Info Reply
+Info Request
+Information Reply
+Information Request
+ inherit
+initgroups
+/init is not a regular file
+init started: %s
+i < nloaded
+Inode %d has non-zero mode. 
+Inode %d is marked as 'unused', but it is used for file '%s'
+Inode %d is used, but marked as 'unused' in the bitmap. 
+Inode %d (mode=%07o), i_nlinks=%d, counted=%d. 
+   Inodes
+inptr - bytebuf > (state->__count & 7)
+input file: bad length
+input file: bad length or unsupported font type
+Input/output error
+input overrun
+inserting at bad line number
+insert leap second
+insize:%d posbits:%d inbuf:%02X %02X %02X %02X %02X (%d)
+--install
+Install date: %-30sBuild Host: %s
+install reinstreq not-installed
+integral
+intel_check_word
+interactive
+interface declared auto twice "%s"
+interface name '%s' too long
+interface=%s
+interface %s already configured
+interface %s not configured
+interface %s %%s
+interlaced
+interleave
+Interleave factor
+interleave: %u
+INTERNAL
+=INTERNAL->ascii
+internal_ascii_loop_single
+Internal error
+internal error %d
+internal error, please report
+Internal error: trying to write bad block
+Internal Server Error
+=INTERNAL->ucs2
+internal_ucs2_loop_single
+=INTERNAL->ucs2reverse
+internal_ucs2reverse_loop_single
+=INTERNAL->ucs4
+=INTERNAL->ucs4le
+=INTERNAL->utf8
+internal_utf8_loop_single
+Interrupt
+Interrupt:%d 
+Interrupted system call
+Interrupted system call should be restarted
+_int_free
+_int_malloc
+_int_memalign
+int_no <= (uintmax_t) (exponent < 0 ? ((9223372036854775807LL) - bits + 1) / 4 : ((9223372036854775807LL) - exponent - bits + 1) / 4)
+_int_realloc
+in use bytes     = %10u
+Invalid argument
+invalid argument '%s'
+invalid argument '%s' to '%s'
+invalid ar header
+invalid ar magic
+Invalid back reference
+Invalid Bootfile!
+invalid character '%c' in type string '%s'
+Invalid character class name
+Invalid collation character
+Invalid content of \{\}
+invalid control file in %s
+invalid count
+Invalid cross-device link
+invalid date '%s'
+invalid ELF header
+Invalid exchange
+! "Invalid extended matching operator"
+invalid fastbin entry (free)
+invalid file descriptor
+! "invalid format specifier"
+Invalid format specifier
+invalid gzip magic
+invalid hw-addr %s
+! "invalid KIND in __gen_tempname"
+invalid line %d: '%s'
+invalid magic
+invalid mode for dlopen()
+invalid mode parameter
+invalid mode '%s'
+invalid namespace
+invalid number '%s'
+*** invalid %N$ use detected ***
+invalid open64 call: O_CREAT without mode
+invalid openat64 call: O_CREAT without mode
+invalid openat call: O_CREAT without mode
+Invalid or incomplete multibyte or wide character
+Invalid partition number for type '%c'
+invalid password for '%s'%s
+Invalid preceding regular expression
+Invalid range end
+Invalid regular expression
+Invalid request code
+Invalid request descriptor
+invalid RPM header magic or unsupported version
+invalid RPM magic
+invalid second operand in compatibility mode '%s'
+Invalid slot
+invalid source address %s
+invalid target namespace in dlmopen()
+invalid tar header checksum
+invalid tar magic
+invalid timeout
+invalid type string '%s'; %u-byte %s type is not supported
+invalid zip magic %08X
+	Involuntary context switches: %c
+ioctl error for %s
+ioctl failed with %s, %s, %p
+_IO_fwide
+_IO_new_file_fopen
+ioperating-system
+I/O possible
+ioprio_%cet
+_IO_vfprintf_internal
+_IO_vfscanf_internal
+_IO_vfwprintf
+_IO_wfile_underflow
+ip6-bytestring
+ip6-dotint
+ip addr add 127.0.0.1/8 dev %iface%
+ip addr add ::1 dev %iface%
+ip addr add %address%/%bnmask%[[ broadcast %broadcast%]] dev %iface%[[ peer %pointopoint%]][[ label %label%]]
+ip addr add %address%/%netmask% dev %iface%
+ip addr add %address%/%netmask% dev %iface%[[ label %label%]]
+ip addr flush dev %iface%
+ip link set[[ addr %hwaddress%]] %iface% up
+ip link set %iface% down
+ip link set %iface% up
+ip link set[[ mtu %mtu%]][[ addr %hwaddress%]] %iface% up
+[[ip route add ::/0 via %gateway%]]
+[[ip route add default via %gateway% dev %iface%]]
+"ip route flush"
+ip tunnel add %iface% mode sit remote %endpoint%[[ local %local%]][[ ttl %ttl%]]
+ip tunnel del %iface%
+IPv6-in-IPv4
+IRIX likes when Partition 11 covers the entire disk
+irreversible != ((void *)0)
+Is a directory
+ is an alias for %s
+Is a named type file
+ is a shell function
+ is a shell keyword
+ is a %sshell builtin
+is in an indeterminate state
+is installed
+is interface %s up and configured?
+is marked to be installed
+is marked to be purged
+is marked to be removed
+is not ARPable
+is not ARPable (no ll address)
+is not installed or flagged to be installed
+ISO-10646//
+ISO-10646/UCS2/
+ISO-10646/UCS4/
+ISO-10646/UTF-8/
+ISO-10646/UTF8/
+ISO_646.IRV:1991//
+ISO646-US//
+ISO-9660
+is of type "SGI volhdr", the IRIX system will rely on it to
+ISO/IEC 14652 i18n FDCC-set
+ISO/IEC JTC1/SC22/WG20 - internationalization
+ISO-IR-193//
+ISO-IR-6//
+ispeed %lu baud; ospeed %lu baud;
+ is%s %s
+is UFS, EXT2FS filesystem or SunOS swap. Putting Linux swap
+it0uvdmLF:oH:
+<it_<dti
+Itime disparity of %ld minutes detected
+It is highly recommended that eleventh partition
+It is highly recommended that the partition at offset 0
+It is highly recommended that the third partition covers the whole disk
+Iuser %s: parse error at %s
+Iuser %s: too many lines
+jaddress-radix
+janfebmaraprmayjunjulaugsepoctnovdec
+jmap->l_idx >= 0 && jmap->l_idx < nloaded
+job %s not created under job control
+	Job suspend and resume with ^Z
+.jpg.jpeg
+KDFONTOP
+keepalive
+keld@dkuug.dk
+Keld Simonsen
+Kernel IP routing table
+Kernel IPv6 routing table
+Key has been revoked
+Key has expired
+KEY_POWER
+keys are not allowed with ipip and sit
+Key was rejected by service
+keyword outside section
+klogctl(2) error
+klogd: exiting
+klogd started: %s
+k-mB:m-Bk:B-km
+ kMGTPEZY
+KMGTPEZYgetaddrinfo: %s: %d
+kPaiB:hm
+KSbqtma:n:s:u:c:x:p:ovN:R:
+K:S:K--S:S--K:m?p:K?xpun:S?xaq-v
+.<kt/<mt
+l$49l$,v
+L$$9|$$}
+L$<9L$4s
+L$(9L$4u
+|$L9|$(s
+label: %.*s
+ LABEL="%s"
+laentuwxr
+LAST_ACK
+	Last command repeat with '.'
+Last-Modified: %s
+last_modifying_cmd overrun
+last->next == mapped
+lastp != ((void *)0)
+ Last %s
+Last %s or +size or +sizeM or +sizeK
+last_type != 0
+LC_ADDRESS
+LC_COLLATE
+LC_CTYPE
+LC_IDENTIFICATION
+LC_MEASUREMENT
+LC_MESSAGES
+LC_MONETARY
+LC_NUMERIC
+LC_PAPER
+LC_TELEPHONE
+LD_AOUT_LIBRARY_PATH
+LD_AOUT_PRELOAD
+LD_ASSUME_KERNEL
+LD_AUDIT
+LD_BIND_NOT
+LD_BIND_NOW
+%ld blocks
+LD_DEBUG
+LD_DEBUG_OUTPUT
+LD_DYNAMIC_WEAK
+ldereference
+%ld inodes
+LD_KEEPDIR
+LD_LIBRARY_PATH
+LD_NOWARN
+LD_ORIGIN_PATH
+LD_PRELOAD
+LD_PROFILE
+LD_PROFILE_OUTPUT
+LD_SHOW_AUXV
+ld.so-1.7.0
+LD_TRACE_LOADED_OBJECTS
+LD_USE_LOAD_BIAS
+lead_zero == 0 && int_no <= (uintmax_t) (9223372036854775807LL)
+lead_zero == 0 && int_no <= (uintmax_t) (9223372036854775807LL) / 4
+lead_zero <= (base == 16 ? ((uintmax_t) exponent - (uintmax_t) (-9223372036854775807LL-1)) / 4 : ((uintmax_t) exponent - (uintmax_t) (-9223372036854775807LL-1)))
+leap second has occurred
+leap second in progress
+leasefail
+lease_file
+Lease lost, entering init state
+Lease of %s obtained, lease time %u
+left > -1
+  Length     Date   Time    Name
+ Length   Method    Size  Ratio   Date   Time   CRC-32    Name
+Level 2 halted
+Level 2 not synchronized
+Level 3 halted
+Level 3 reset
+ l	go to line mode
+__libc_calloc
+__libc_errno != 34 || buf != ((void *)0) || size != 0
+LIBC_FATAL_STDERR_
+__libc_fork
+libcidn.so.1
+__libc_malloc
+__libc_memalign
+__libc_pvalloc
+__libc_realloc
+__libc_valloc
+/lib/i386-linux-gnu/
+libnss_%s.so.%d.%d
+.lib section in a.out corrupted
+LID/00000080
+line %d: 
+line %d: can't chmod %s
+line %d: can't chown %s
+line %d: can't create node %s
+line %d: regular file '%s' does not exist
+line %d: unsupported file type %c
+	Line marking with 'x
+line number %d does not exist
+ lines %i-%i/%i 
+Link has been severed
+link_nfa_nodes
+Link number out of range
+	link to busybox for each function they wish to use and BusyBox
+linkval[0] == '/'
+Linux custom
+Linux extended
+Linux LVM
+Linux native
+Linux/PA-RISC boot
+Linux RAID
+Linux raid autodetect
+Linux swap
+Linux User,,,
+Listener Query
+Listener Reduction
+Listener Report
+LISTENING
+listp != ((void *)0)
+list != ((void *)0)
+L$$#L$,	
+l:L:fbSc:
+l	list known filesystem types
+l	list known partition types
+(l)->l_name[0] == '\0' || 0
+l   logical (5 or over)
+%llu blocks
+	%llu%*c
+%llu+%llu records in
+%llu+%llu records out
+%llu%llu%u%u%u%u%n%n%llu%llu%u%u%u%u%u
+%llu%llu%u%u%u%u%u%u%llu%llu%u%u%u%u%u%u
+%llu.%u%c
+l$ ;L$ w
+Lno-dereference
+lnqvscFiHhe:f:Lorm:wA:B:C:EzaI
+loadarchive.c
+load auxiliary object=%s requested by file=%s
+load average: %ld.%02ld, %ld.%02ld, %ld.%02ld
+Load average: %s
+load filtered object=%s requested by file=%s
+loadfont
+loadkmap
+loadlocale.c
+Local Address
+LOCALDOMAIN
+locale_codeset != ((void *)0)
+localhost
+Local Loopback
+localtime
+location
+Location: %s/%s%s
+locked memory (kb)
+Log file: 
+   logically from your AIX machine. (Otherwise you become an AIXpert).
+Logical partition %u not entirely in partition %u
+logical=(%u, %u, %u)
+ login: 
+login incorrect
+Login timed out after %d seconds
+../login/utmp_file.c
+longjmp causes uninitialized stack frame
+././@LongLink
+lookup %s 
+loopback
+LOWERLAYERDOWN
+LOWER_UP
+Low memory, forcing swapon
+LP64_OFF64
+LPBIG_OFFBIG
+(*lp)->l_idx >= 0 && (*lp)->l_idx < nloaded
+lp:w:i:f:e:
+lseek(%llu)
+Lshow-c-function
+)l$,;t$,w
+%lu duplicates, 
+%lu%lu%lu%lu%lu%lu%lu%*d%lu%lu%lu%lu%lu%lu%lu
+%lum%lu.%03lus%c
+%lu%% packet loss
+%lu packets received, 
+%lu packets transmitted, 
+'}(lU${xT
+l != ((void *)0)
+%lx:%lx:%lx:%lx
+%lx:%lx:%lx:%lx%n
+-m32 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+Mac Address       IP Address      Host Name           Expires %s
+Machine is not on the network
+MAC length != 6, ignoring packet
+MAILPATH
+<main program>
+	Major (requiring I/O) page faults: %F
+makedevs
+malformed hex string '%s'
+malformed message: len=%d!
+malformed ?: operator
+</malloc>
+malloc.c
+MALLOC_CHECK_
+malloc_consolidate
+malloc(): corrupted unsorted chunks
+malloc(): corrupted unsorted chunks 2
+malloc(): memory corruption
+malloc(): memory corruption (fast)
+__malloc_set_state
+malloc(): smallbin double linked list corrupted
+malloc: top chunk is corrupt
+MALLOC_TRACE
+<malloc version="1">
+map->l_init_called
+map->l_searchlist.r_list[0] == map
+map->l_searchlist.r_list == ((void *)0)
+map->l_tls_blocksize >= map->l_tls_initimage_size
+map->l_tls_modid == cnt
+map->l_tls_modid <= dtv[-1].counter
+mapped->counter == 0
+map-to %s 
+Mark as 'in use'
+ Mask:%s
+masquerade
+master %s 
+MATCHEOF=%c
+match_symbol
+Math support is not compiled in
+-maxdepth
+    maxerror:     %ld
+	Maximum resident set size (kbytes): %M
+max_leases
+max_leases=%u is too big, setting to %u
+max mmap bytes   = %10lu
+max mmap regions = %10u
+Maxsize=%ld
+Maxsize=%u
+MAYBE: %s
+mbroadcast
+__mbrtowc
+mbrtowc.c
+__mbsnrtowcs
+mbsnrtowcs.c
+__mbsrtowcs_l
+mbsrtowcs_l.c
+((&mbstate)->__count == 0)
+mdev.seq
+%m/%d/%y
+Media:%s
+m)ek?$Km:
+Membership Query
+Membership Reduction
+Membership Report
+MemFree: %ld kB
+MemFree: %lu %s
+Mem: %luK used, %luK free, %luK shrd, %luK buff, %luK cached
+Mem: %lu %lu %lu %lu %lu %lu
+!mem || ((((mchunkptr)((char*)(mem) - 2*(sizeof(size_t)))))->size & 0x2) || av == (((((mchunkptr)((char*)(mem) - 2*(sizeof(size_t)))))->size & 0x4) ? ((heap_info *)((unsigned long)(((mchunkptr)((char*)(mem) - 2*(sizeof(size_t))))) & ~((2 * (512 * 1024))-1)))->ar_ptr : &main_arena)
+memory exhausted
+Memory:%lx-%lx 
+======= Memory map: ========
+MemShared: %lu %s
+mem_start
+MemTotal: %ld kB
+MemTotal: %lu %s
+Message too long
+message truncated
+ metric %d 
+Metric Ref    Use
+ mgtpezy
+M%hu.%hu.%hu%n
+microcom
+.mid.midi
+-mindepth
+Minix / old Linux
+min_lease
+	Minor (reclaiming a frame) page faults: %R
+min = %u; time = %u;
+misplaced option "%s"
+missing '))'
+missing '}'
+missing ]
+missing ]]
+missing 2nd delimiter for substitute
+missing command
+missing filename
+missing list of positions
+missing optstring argument
+mkfs.minix
+MMAP_MAX_
+MMAP_THRESHOLD_
+mmonitor
+m:nO:l:SR:LC::
+mode & 0x00004
+    mode:         %d
+mode of '%s' changed to %04o (%s)
+modes may not be set when specifying an output style
+mode "%ux%u-%u"
+ [Modified]
+More than one entire disk entry present
+mounting %s on %s failed
+mount.%s
+mount -t proc proc /proc
+mparents
+.mpe.mpeg
+mprocessor
+mremap_chunk
+ms->av[2*i+3] == 0
+msstaticroutes
+  MSS Window  irtt
+mto-command
+ MTU:%d  Metric:%d
+ multi-call binary.
+multicast
+Multihop attempted
+munmap_chunk
+munmap_chunk(): invalid pointer
+must be run as PID 1
+Must be <= sectors/track * tracks/cylinder (default)
+must be suid to work properly
+must have at least 10 blocks
+mv: overwrite '%s'? 
+N09O0u=_^
+N49O4u(_^
+N(9O(uc_^
+N$9O$ux_^
+N,9O,uX_^
+n	add a new BSD partition
+n	add a new partition
+Name        : %-29sRelocations: %s
+	Named buffers with "x
+namelen=%u
+Name not unique on network
+Name of Bootfile too long (>16 bytes)
+nameserver
+    Name           Version
+name with '..' encountered: '%s'
+nclears >= 3
+ncopies >= 3
+n+:c+:p+
+need at least destination address
+need "dev IFACE"
+needed != ((void *)0)
+need terminal for interactive repairs
+Neighbor Advert
+Neighbor Solicit
+net/appletalk
+net/ax25
+netgroup
+net/if_inet6
+netmask %.8x and host route conflict
+netmask and route address conflict
+NETMASK=%s
+net/rose
+net/unix
+Network dropped connection on reset
+Network is down
+Network is unreachable
+networks
+NETWORK=%s
+Nevertheless some advice:
+New beginning of data
+__new_exitfn
+ [New file]
+new name: 
+New password: 
+!newp || ((((mchunkptr)((char*)(newp) - 2*(sizeof(size_t)))))->size & 0x2) || ar_ptr == (((((mchunkptr)((char*)(newp) - 2*(sizeof(size_t)))))->size & 0x4) ? ((heap_info *)((unsigned long)(((mchunkptr)((char*)(newp) - 2*(sizeof(size_t))))) & ~((2 * (512 * 1024))-1)))->ar_ptr : &main_arena)
+new_size>0 && new_size<(2 * (512 * 1024))
+new_size>0 && new_size<(long)(2*(unsigned long)((((__builtin_offsetof (struct malloc_chunk, fd_nextsize))+((2 * (sizeof(size_t))) - 1)) & ~((2 * (sizeof(size_t))) - 1))))
+newsize >= nb && (((unsigned long)(((void*)((char*)(p) + 2*(sizeof(size_t)))))) % alignment) == 0
+next->bk_nextsize->fd_nextsize == next
+nextchunk->bk_nextsize->fd_nextsize == nextchunk
+nextchunk->fd_nextsize->bk_nextsize == nextchunk
+next->fd_nextsize->bk_nextsize == next
+nextfile
+Next Hop
+next_line
+ngMucszbrdfimS:T:o:k:t:
+nil ifname
+*** %n in writable segment detected ***
+niov < 64
+nisdomain
+nis [NOTFOUND=return] files
+NIS_PATH
+nkernel-release
+_nl_archive_subfreeres
+_nl_find_locale
+_nl_intern_locale_data
+_nl_load_locale_from_archive
+%n%llu%u%u%u%u%n%n%n%llu%u%u%u%u%u
+no address after comma
+No address allowed on this command
+No address associated with name
+No anode
+no arg for -%c option
+no arguments allowed
+no 'begin' line
+No bracket in bottom line
+No bracket in top line
+No buffer space available
+NO-CARRIER,
+no-check-certificate
+no-check-names
+No child processes
+no %cids left
+no-create
+No CSI structure available
+No current filename
+No current job
+No data available
+node->next == ((void *)0)
+no-dereference
+!((node->token.type) & 8)
+nodiratime
+no file name
+No filename given
+no file name specified
+no files
+[NO FLAGS] 
+no free IP addresses. OFFER abandoned
+No free sectors available
+no gzip/bzip2/xz magic
+No help available.
+no-ip6-dotint
+no IP address configured
+No lease, failing
+No lease, forking to background
+no lease time with ACK, using 1 hour lease
+No locks available
+No match
+No matching bracket found
+No medium found
+No message of desired type
+no message type option, ignoring packet
+No more files to edit
+no more namespaces available for dlmopen()
+NO NAME    
+[NONE SET]
+\ No newline at end of file
+nonexistent directory
+No next file
+non-numeric argument
+nonzero padding in e_ident
+no or bad message type option, ignoring packet
+no package files specified
+No partition is defined yet!
+No partitions defined
+no password entry for root
+nopmtudisc
+ nopmtudisc
+No previous file
+No previous job
+no previous regexp
+No previous regular expression
+no previous search string
+no process info in /proc
+no record of %s in %s, using %s
+norelatime
+No request appeared within 60 seconds
+no response from server
+Normal startup
+No route to host
+no-same-permissions
+ no scope
+no server ID, ignoring packet
+no %s found; none killed
+No space left on device
+no status file found, creating new one
+no substitutions found for "%s"
+No such device
+No such device or address
+no such file
+No such file or directory
+No such process
+no such user
+Not a directory
+Not an array
+not an http or ftp url: %s
+not a REQUEST, ignoring packet
+not a route?
+Not a route: %08x %08x %08x
+not a sg device or old sg driver
+not a symlink
+not at diskblock %u
+not a tty
+not a valid binary keymap
+Not a XENIX named type file
+ not defined in file 
+not enough good blocks
+Note: sector size is %u (not 512)
+: not found
+Not Found
+NOTFOUND
+' not found (required by 
+nothing in /proc - not mounted?
+Nothing in register %c
+notify_file
+Not Implemented
+(not installed)
+no_tld_query
+no-tld-query
+NOTPRESENT
+NOTRAILERS
+(not relocateable)
+no type may be specified when dumping strings
+November
+no version information available (required by 
+ (no version symbols)
+No write since last change (:edit! overrides)
+No write since last change (:rewind! overrides)
+No write since last change (:%s! overrides)
+No XENIX semaphores available
+npidfile
+nplurals=
+NPTL 2.15
+../nptl/sysdeps/unix/sysv/linux/i386/../fork.c
+Nr AF  Hd Sec  Cyl  Hd Sec  Cyl      Start       Size ID
+nrbtfavx\01234567
+Nreport-identical-files
+ns != 0 || i == nloaded
+ns == 0 || i == nloaded || i == nloaded - 1
+__nscd_getai
+nscd_getai.c
+nscd_getgr_r
+nscd_getgr_r.c
+nscd_getserv_r
+nscd_getserv_r.c
+nscd_helper.c
+__nscd_unmap
+nsid >= 0
+nsid < _dl_nns
+*nsize < ((((1024 + 2 * 53) + ((32) - 1)) / (32)) + 2)
+*nsize < ((((128 + 2 * 24) + ((32) - 1)) / (32)) + 2)
+*nsize < ((((16384 + 2 * 64) + ((32) - 1)) / (32)) + 2)
+ns == l->l_ns
+nslookup
+__nss_hostname_digits_dots
+Nstartas
+nstatus == __GCONV_FULL_OUTPUT
+NTFS volume set
+nullfd == 0
+nullfd == 1
+nulsohstxetxeotenqackbel bs ht nl vt ff cr so sidledc1dc2dc3dc4naksynetbcan emsubesc fs gs rs us sp
+num >= 0
+Number of alternate cylinders
+Number of cylinders
+Number of heads
+Number of physical cylinders
+Number of sectors
+number %s is not in %lld..%lld range
+number %s is not in %llu..%llu range
+Numerical argument out of domain
+Numerical result out of range
+numeric-owner
+numsize == 1 && n < d
+numsize < (((24) + ((32) - 1)) / (32))
+numsize < (((53) + ((32) - 1)) / (32))
+numsize == densize
+num_types == 1
+num_types == 2
+obj->counter > 0
+object file has no dynamic section
+object file has no loadable segments
+Object is remote
+object=%s [%lu]
+o	change rotation speed (rpm)
+o	create a new empty DOS partition table
+Odirectory-prefix
+of a basic regular expression is not portable; it is ignored
+Offered address is in use (got ARP reply), declining
+offer_time
+offset == 2
+offset >= oldend
+oforeground
+ of Verdef record
+ of Verneed record
+ okey %s 
+old_map->l_tls_modid == idx
+Old Minix
+Old password: 
+!((oldp)->size & 0x2)
+(old_top == (((mbinptr) (((char *) &((av)->bins[((1) - 1) * 2])) - __builtin_offsetof (struct malloc_chunk, fd)))) && old_size == 0) || ((unsigned long) (old_size) >= (unsigned long)((((__builtin_offsetof (struct malloc_chunk, fd_nextsize))+((2 * (sizeof(size_t))) - 1)) & ~((2 * (sizeof(size_t))) - 1))) && ((old_top)->size & 0x1) && ((unsigned long)old_end & pagemask) == 0)
+olongoptions
+Omitting empty partition (%u)
+One Partition (#11) should cover the entire disk
+only 1k blocks/zones supported
+only a beginning address can be specified for edit commands
+only ET_DYN and ET_EXEC can be loaded
+Only in %s: %s
+only one argument may be specified with -c
+only one device may be specified
+(only servers)
+Only the "SGI volume" entire disk section may violate this.
+ only when operating on fields
+Ono-default-options
+Ono-same-owner
++o:n:qQs:Tual:
+ on '%s'
+ on '%s' from '%s'
+-o  offset:       %ld
+o--o:t--t:k::
+opening file=%s [%lu]; direct_opencount=%u
+open pidfile %s
+__opensock
+Operation already in progress
+Operation canceled
+Operation not permitted
+Operation not possible due to RF-kill
+Operation not supported
+Operation now in progress
+OPTIND=1
+option 0x%02x did not fit into the packet
+option with empty value "%s"
+   or: busybox --list[-full]
+Ordering is already correct
+or force a fresh label (s command in main menu)
+   or: function [arguments]...
+orig_name != ((void *)0)
+ or null
+(or type Control-D for normal startup):
+OS/2 Boot Manager
+OS/2 hidden C: drive
+osame-permissions
+OSF00010020//
+OSF00010100//
+OSF00010101//
+OSF00010102//
+OSF00010104//
+OSF00010105//
+OSF00010106//
+OSF05010001//
+Other partitions already cover the whole disk.
+   (Otherwise you may erase the other disks as well, if unmirrored.)
+o:t:rwanfvsiO:
+outbuf == outerr
+outbufstart == ((void *)0)
+outbuf != ((void *)0) && *outbuf != ((void *)0)
+out of file descriptors
+out of memory
+Out of memory while initializing profiler
+OUT-OF-RANGE
+Out of streams resources
+*outptrp + 4 > outend
+OUTPUT_CHARSET
+overbose
+overwrite
+Owner died
+ownership
+O::x::T+:t+:A+
+#P*0xYei
+p[-1] == ')'
+p[-1] == L')'
+Package:
+Package not installed
+Package: %s
+package %s conflicts with %s
+package %s is uninstalled or unknown
+package %s %sdepends on %s, which cannot be satisfied
+package %s %sdepends on %s, which %s
+Packet too big
+packet too short (%d bytes) from %s
+Packet with bad magic, ignoring
+	Page size (bytes): %Z
+parameter not set
+Parameter Problem
+Param Problem
+parse_bracket_exp
+Parse error in %s, line %d: %s
+Partition (a-%c): 
+partition as Whole disk (5), starting at 0, with %u sectors
+Partition number
+Partition overlap detected
+----- partitions -----
+Partition %s has invalid starting sector 0
+Partitions %u and %u overlap by %u sectors
+Partition table entries are not in disk order
+Partition %u contains sector 0
+Partition %u: cylinder %u greater than maximum %u
+Partition %u does not end on cylinder boundary
+Partition %u does not exist yet!
+Partition %u doesn't end on cylinder boundary
+Partition %u has different physical/logical beginnings (non-Linux?):
+Partition %u has different physical/logical endings:
+Partition %u has no data area
+Partition %u: head %u greater than maximum %u
+Partition %u is already defined, delete it before re-adding
+Partition %u overlaps with others in sectors %u-%u
+Partition %u: previous sectors %u disagrees with total %u
+Partition %u: sector %u greater than maximum %u
+<Part.Magic recovery
+Password: 
+Password for %s changed by %s
+password for %s is already %slocked
+password for %s is unchanged
+Password incorrect
+Passwords don't match
+patching file %s
+PATH_INFO
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+Pattern not found
+	Pattern searches with / and ?
+p->bk_nextsize->fd_nextsize == p
+?pc?d?b?-?l?s???rwxSTst
+pdRfilsLHarPv
+ peer %s/%d 
+pelem->dirname[0] == '/'
+	Percent of CPU this job got: %P
+Performing a DHCP renew
+Permission denied
+permission denied (are you root?)
+permissions
+PERTURB_
+p->fd_nextsize->bk_nextsize == p
+phardware-platform
+phostname
+Physical cylinders
+     phys=(%u, %u, %u) 
+pid >= 0 && sizeof (pid_t) <= 4
+  PID  PPID USER     STAT   VSZ %MEM %CPU COMMAND
+pid,user,args
+pignore-fail-on-non-empty
+PING %s (%s)
+PIO_UNIMAP
+PIO_UNIMAPCLR
+pipe call failed
+pipefail
+pivot_root
+pixclock
+PLATFORM
+Please enter the name of the new boot file: 
+Please press Enter to activate this console. 
+%*p: %lX %lX %lX %X %X %lu %n
+pmatch[0].rm_so == start
+!p || ((((mchunkptr)((char*)(p) - 2*(sizeof(size_t)))))->size & 0x2) || ar_ptr == (((((mchunkptr)((char*)(p) - 2*(sizeof(size_t)))))->size & 0x4) ? ((heap_info *)((unsigned long)(((mchunkptr)((char*)(p) - 2*(sizeof(size_t))))) & ~((2 * (512 * 1024))-1)))->ar_ptr : &main_arena)
+pmtudisc
+poff[[ %provider%]]
+pointopoint
+Point-to-Point Protocol
+pon[[ %provider%]]
+pop_fail_stack
+POSIXLY_CORRECT
+POSIXLY_CORRECT=1
+posixrules
+Possible syntax error
+Possibly reversed hunk %d at %ld
+post-data
+post-down
+postinst
+POST /%s HTTP/1.1
+Power failure
+poweroff
+(p->prev_size == offset)
+   p   primary partition (1-4)
+p	print BSD partition table
+p	print the partition table
+PPSERROR
+PPSJITTER
+PPSSIGNAL
+PPSWANDER
+pqrstuvwxyzabcde
+precedence
+    precision:    %ld
+Precursive
+Pre-Depends
+preference
+ preferred_lft %dsec
+ preferred_lft forever
+PREFIX=%i
+Premature end of regular expression
+Preparing to replace %s %s (using %s)...
+__printf_fphex
+priority
+Probably you'll have to set all the values,
+/proc/cpuinfo
+process(es) owned by '%s'
+process in pidfile '%s'
+processor
+process '%s' (pid %d) exited. Scheduling for restart.
+/proc/filesystems
+/proc/ide/%s/media
+/proc/meminfo
+/proc/mounts
+/proc/net
+/proc/net/if_inet6
+/proc/net/ipv6_route
+/proc/net/psched
+/proc/net/raw
+/proc/net/raw6
+/proc/net/route
+/proc/net/tcp
+/proc/net/tcp6
+/proc/net/udp
+/proc/net/udp6
+/proc/net/unix
+/proc/net/vlan/config
+/proc/partitions
+/proc/scsi/scsi
+/proc/self/exe
+/proc/self/fd
+/proc/self/loginuid
+/proc/self/maps
+/proc/sys
+/proc/sys/kernel/ngroups_max
+/proc/sys/kernel/osrelease
+/proc/sys/kernel/rtsig-max
+/proc/sys/net/ipv4/route/flush
+/proc/%u
+/proc/%u/
+/proc/%u/cmdline
+/proc/%u/stat
+\\/proc/%u/task
+ProDrive 105S
+ProDrive 80S
+.profile
+Profiling timer expired
+<program name unknown>
+prohibit
+protected
+protocol
+Protocol driver not attached
+Protocol error
+protocol family
+Protocol family not supported
+Protocol not available
+Protocol not supported
+protocols
+Protocol wrong type for socket
+Proto Recv-Q Send-Q %-23s %-23s State       %s
+Proto RefCnt Flags       Type       State         I-Node %sPath
+Provides
+Proxy-Authorization: Basic %s
+prterase
+((((ps) - 1) & (ps)) == 0)
+PS1=\w \$ 
+((&ps)->__count == 0)
+p->size == (0|0x1)
+((p)->size & 0x2)
+%p%t%g%t%m%t%f
+-p  timeconstant: %ld
+ptimings
+ P-t-P:%s 
+Pt# %*s  Info     Start       End   Sectors  Id  System
+ptsname error (is /dev/pts mounted?)
+publickey
+Purging %s (%s)...
+p:u:rt:n:s
+Put %d lines (%d chars) from [%c]
+pututline_file
+pverbose
+PWRF/00000080
+qdisc %s 
+qexpand-tabs
+qo:f:p:t:
+qoutput-document
+QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQj
+qquiet-output
+q	quit without saving changes
+qrelease
+QUERY_STRING
+qvc:s:w:W:I:46
+          R
+Range: bytes=%llu-
+ranges[cnt].from >= from
+Rdereference
+read error from '%s'
+Read error: %s, reopening socket
+read from /dev/log
+Reading disklabel of %s at sector %u
+readlink
+ [Readonly]
+Read-only file system
+	Readonly if vi is called as "view"
+	Readonly with -R command line arg
+read: '%s': not a valid identifier
+realloc(): invalid next size
+realloc(): invalid old size
+realloc(): invalid pointer
+Really quit? 
+realms %s/
+REALNAME
+realpath
+__realpath
+realtime
+Real-time signal %d
+Recalculate C/H/S values? (Y/N): 
+Received DHCP NAK
+Received SIGTERM
+Received SIGUSR1
+Received %u repl%s (%u request(s), %u broadcast(s))
+Recommends
+re_copy_regs
+recursion detected, omitting directory '%s'
+recursive
+recvfrom
+redirect
+Redirect (change route)
+redirection
+redir error
+Referer:
+regcomp.c
+regexec.c
+regex_internal.c
+regs_allocated == 2
+regs->num_regs >= nregs
+Regular expression too big
+#reinstate
+reinstreq
+ReIsEr2Fs
+ReIsEr3Fs
+ReIsErFs
+	 reject
+relatime
+Release     : %-30sBuild Date: %s
+reloading /etc/inittab
+relocation error
+relocation processing: %s%s
+((reloc->r_info) & 0xff) == 7
+((reloc->r_info) & 0xff) == 8
+remnant of size %d!
+REMOTE_ADDR
+Remote address changed
+remote filename is too long
+Remote I/O error
+REMOTE_PORT
+REMOTE_USER
+removable
+Remove block
+remove_slotinfo
+removing leading '/' from member names
+removing %s
+Removing %s (%s)...
+Replaces
+replace %s? [y]es, [n]o, [A]ll, [N]one, [r]ename: 
+Requesting system %s
+REQUEST_METHOD
+Request Timeout
+REQUEST_URI
+Required key not available
+rereadpt
+re_search_stub
+res_hconf.c
+_res_hconf_reorder_addrs
+resident set size (kb)
+RESOLV_ADD_TRIM_DOMAINS
+resolved == ((void *)0) || resolved == rpath
+Resolver Error 0 (no error)
+Resolver internal error
+RESOLV_HOST_CONF
+resolving %s
+RESOLV_MULTI
+RESOLV_OVERRIDE_TRIM_DOMAINS
+RESOLV_REORDER
+RESOLV_SPOOF_CHECK
+RES_OPTIONS
+Resource deadlock avoided
+Resource temporarily unavailable
+response:%u
+REST %llu
+result > 0
+result <= _dl_tls_max_dtv_idx + 1
+result == _dl_tls_max_dtv_idx + 1
+retension
+retrieve from its directory standalone tools like sash and fx.
+    return value: %d (%s)
+Retype password: 
+rewoffline
+rextsync
+rfc3484_sort
+RFS specific error
+	rgba %u/%u,%u/%u,%u/%u,%u/%u
+rhctosys
+RhvcfLHP
+right > -1
+rkernel-version
+rnew-file
+-rom1fs-
+rootdir=%s
+root filesystem is not ramfs/tmpfs
+root inode isn't a directory
+root login%s
+rootpath
+Rotation speed (rpm)
+rounds=%u$
+round-trip min/avg/max = %u.%03u/%u.%03u/%u.%03u ms
+Router Advert
+Router Solicit
+rows %u; columns %u;
+rpm2cpio
+rprivate
+rrelease
+Rrequest
+r	return to main menu
+Rrfc-2822
+r->r_state == RT_ADD
+Rs:ud:r:I::D:
+Rsymbolic-link
+RTC_RD_TIME
+RTC_SET_TIME
+RTLD_NEXT used in code not dynamically loaded
+RTNETLINK answers
+runbindable
+runlevel
+Running mapping script %s on %s
+run-parts
+run-parts /etc/network/if-%s.d
+Rup:i:NEx
+r--ws:w--rs:s--wr:l--u:u--l
+RX packets:%llu errors:%lu dropped:%lu overruns:%lu frame:%lu
+==> %s <==
+       %s
+%s  0.000000 seconds
+%s%0*.*f
+S1SUSPEND
+S2SUSPEND
+%s %.64s %s %s
+%s   %6ld %6ld %-23s %-23s %-12s
+S(9S$|31
+S\9Vpu#;CXu
+          %s addr:%s 
+%s: ambiguous
+'%s' and '%s' are the same file
+Saturday
+%sautoindent %sflash %signorecase %sshowmatch tabstop=%u
+Sbackground
+%s: bad block %u in file '%s'
+%s: bad directory: '.' isn't first
+%s: bad directory: '..' isn't second
+%s: bad directory: size<32
+%.*s: bad variable name
+%s belongs to someone, reserving it for %u seconds
+%s-blocks
+%s: bogus data on line %d
+%s/boot%s
+%*s Boot      Start         End      Blocks  Id System
+%s busy - remounted read-only
+%s  %c %11u %11u %11u%c %2x %s
+%s: cannot create file: %s
+%s: cannot map file: %s
+%s: cannot open file: %s
+%s: cannot perform all requested operations
+%s: cannot read link: %s
+%s: cannot stat file: %s
+%s can't change password for %s
+%s: can't find mount point
+%scast re%s from %s [%s]
+%s %c%c %9lu %9lu %9lu%c  %2x  %s
+s	change number of sectors/track
+%s contains a bad inode number for file '%.*s'. 
+%s contains no disklabel
+scope %s 
+ scope %u:
+s	create a new empty Sun disklabel
+SCRIPT_FILENAME
+SCRIPT_NAME
+%s/cron.%s.%d
+%s%*c%s%s
+s.decided == loc
+%s: descend into directory '%s'? 
+%s did not send the complete time
+"%s" %dL, %dC
+%s %d lines (%d chars) using [%c]
+%s.dpkg-new
+SDt%;S@} 
+ search cache=%s
+search hit BOTTOM, continuing at TOP
+search hit TOP, continuing at BOTTOM
+ search path=
+secondary 
+section header
+sectors/cylinder
+sectors/cylinder: %lu
+Sectors/track
+sectors/track: %lu
+Sector %u is already allocated
+security
+seek failed during testing of blocks
+seek failed in check_blocks
+seek failure
+seek to 0 failed
+seek to BLOCK_SIZE failed
+See source distribution for full notice.
+Segmentation fault
+Selected partition %u
+Select type (? for auto, 0 for custom): 
+SELinux support is disabled
+semop[SMrdn]
+semop[SMrup]
+sender address length == %d
+Sending ACK to %s
+Sending decline...
+Sending discover...
+Sending OFFER of %s
+Sending release...
+Sending renew...
+Sending select for %s...
+sendmail
+sent %d octets, ret=%d
+Sent SIG%s to all processes
+Sent %u probe(s) (%u broadcast(s))
+September
+SEQPACKET
+%s: error fetching interface information: %s
+%s: error: %s: %s (%s)
+server error: (%u) %s
+serverid
+SERVER_PROTOCOL=HTTP/1.0
+server returned error: %s
+(servers and established)
+SERVER_SOFTWARE=busybox httpd/1.18.5
+services
+set %co %s
+setdensity
+set_egress_map
+set_flag
+sethostname
+set_ingress_map
+Set i_nlinks to count
+setkeycodes
+set_name_type
+set permissions of
+setpriority(%d)
+setresgid
+setresuid
+setsockopt(ICMP6_FILTER)
+setsockopt RAW_CHECKSUM
+setsockopt(SO_DONTROUTE)
+setsockopt tos %d
+setsockopt ttl %d
+setsockopt UNICAST_HOPS %d
+Set '%s' %spersistent
+ (settable in the extra functions menu)
+	Settable options with ":set"
+set_thread_area failed when setting up thread-local storage
+settimeofday
+Setting up %s (%s)...
+Setting up swapspace version 1, size = %llu bytes
+'%s' exists but is not directory
+'%s' exists but is not regular file
+%s exited with code %d
+%s: exited with status 255; aborting
+:s expression missing delimiters
+%s: FAILED
+%s failed, exit code %d
+%s: file is no correct profile data file for `%s'
+"%s" File is read only
+%s: file is the archive; skipping
+s->_flags2 & 4
+%*s Flag    Start       End    Blocks   Id  System
+		(%s from file %s)
+Sfx version 5.3, Oct 18, 1994
+SGI disklabel
+sgilabel
+SGI lvol
+	SGI rlvol
+	SGI's default is "/unix" and for backup "/unix.save".
+SGI secrepl
+SGI sysv
+SGI trkrepl
+SGI volhdr
+SGI volume
+SGI xfslog
+sha256sum
+sha512sum
+shared object cannot be dlopen()ed
+shared object not open
+%s has become inaccessible
+%s has mode %05o
+%s has %s; following end of new file
+SHELL=/bin/sh
+shell returned %i
+short file
+short read
+Short read at block %u
+short write
+! should_be_there
+showmatch 
+shutdown
+SIFBRDADDR
+SIFDSTADDR
+SIFMETRIC
+SIFNETMASK
+	Signal catching- ^C
+	Signals delivered: %k
+similar to gecos
+similar to hostname
+similar to old password
+similar to username
+single-request
+single-request-reopen
+singroup
+%s: invalid format
+%s: invalid option -- '%c'
+%s: invalid signal specification
+SIOCADDRT
+SIOCADDTUNNEL
+SIOCCHGTUNNEL
+SIOCDELRT
+SIOCDELTUNNEL
+SIOCGETTUNNEL
+SIOCGIFCONF
+SIOCGIFFLAGS
+SIOCGIFHWADDR
+SIOCGIFINDEX
+SIOCGIFMAP
+SIOCGIFNAME
+SIOCGIFTXQLEN
+SIOCSIFFLAGS
+SIOCSIFHWADDR
+SIOCSIFMTU
+SIOCSIFNAME
+SIOCSIFTXQLEN
+%s: I/O error
+SIOGIFINDEX
+%s:%i: %s
+%s: is a directory
+%s is already purged
+%s is already removed
+%s is already running
+%s is clean, check is skipped
+"%s" is invalid lladdr
+%s is mounted. 
+'%s' is not implemented
+'%s' is opened for read only
+%.*s: is read only
+%s is write-protected, mounting read-only
+     Size
+Size        : %-33dLicense: %s
+<size from="%zu" to="%zu" total="%zu" count="%zu"/>
+((size + offset) & (_dl_pagesize-1)) == 0
+</sizes>
+(size_t) done <= (size_t) 2147483647
+(size_t) map->l_tls_offset >= map->l_tls_blocksize
+((size_t)((void*)((char*)(mm) + 2*(sizeof(size_t)))) & ((2 * (sizeof(size_t))) - 1)) == 0
+SIZE value is garbage
+SKEEPALIVE
+skip-bytes
+skip-bytes + read-bytes is too large
+%s: line %d: bad command `%s'
+%s: line %d: cannot specify more than %d trim domains
+%s: line %d: expected `on' or `off', found `%s'
+%s: line %d: ignoring trailing garbage `%s'
+%s: line %d: list delimiter not followed by domain
+"%s" may be inet %s, but it is not allowed in this context
+Sminimal
+sname=%.64s
+Sno-create-home
+snodename
+%s: no PLTREL found in object %s
+%s: no process killed
+%s: no size information for this device
+%s: no such job
+"%s" Not a regular file
+%s not created: newer or same age file exists
+%s not defined in %s
+%s: not found
+%s: not found in archive
+snrvmpioa
+%s (n/y)? 
+SO_BROADCAST
+sock == -1
+	Socket messages received: %r
+	Socket messages sent: %s
+Socket operation on non-socket
+socket(%s)
+Socket type not supported
+Software caused connection abort
+Solaris boot
+	Some colon mode commands with ':'
+%s on %s type %s (%s)
+%s: option '%c%s' doesn't allow an argument
+%s: option requires an argument -- '%c'
+%s: option '--%s' doesn't allow an argument
+%s: option '%s' is ambiguous; possibilities:
+%s: option '--%s' requires an argument
+%s: option '-W %s' doesn't allow an argument
+%s: option '-W %s' is ambiguous
+%s: option '-W %s' requires an argument
+	Sorry, no experts menu for SGI partition tables available
+Sorry - this fdisk cannot handle AIX disk labels.
+Sorry you may change the Tag of non-empty partitions
+sortlist
+SO_SNDBUF
+Source Quench
+SOUTFILL
+%s: out of memory to store relocation results for %s
+%s: overwrite '%s'? 
+special 
+speed %lu baud;
+--- %s ping statistics ---
+spoofalert
+%s: prio %d
+src->results[i].native == -1 || src->results[i].native == a1_native
+src->results[i].native == -1 || src->results[i].native == a2_native
+ src %s 
+%s: read error
+%s: remove directory '%s'? 
+%s: remove '%s'? 
+Srequest-option
+%s requires an argument
+%%s requires a precision or a byte count
+'%s' returned status %d
+Srmount error
+%s.rpmorig
+  %s (%s)
+%s = %s;
+%.*s%s%-2u
+%*.*s%s%-2u
+%s%*s%4u%% 
+%s/%sboot
+%s %s differ: char %llu, line %u
+"%s"%s %dL, %dC
+s	show complete disklabel
+%s '%s' in use
+%s: %s/ip  remote %s  local %s 
+%s: %s not found
+%s: socket ignored
+%.*s: %s%s
+%s=%s?%s
+%s %s %s
+%s-%s-%s
+%s %s/%s %9llu %4u-%02u-%02u %02u:%02u:%02u %s
+%s%s%s cyl %u alt %u hd %u sec %u
+"%s"%s%s %dL, %dC
+%s%s%.*s%s
+%s%s%s: %s
+%s %s %s %s %d %d
+%s: %s: %s%s%s%s%s
+%s:%s:%s:%s:%s:%s:%s:%s
+%s%s%s:%u: %s%sAssertion `%s' failed.
+sstarting-file
+*** %s ***: %s terminated
+'%s' still has '%s' as their primary group!
+%s%s:%u%s
+%.*s/%.*sXXXXXX
+%s: Symbol `%s' has different size in shared object, consider re-linking
+ssystohc
+Stack fault
+stack overflow
+stack size (kb)
+stack smashing detected
+stack underflow
+Stale NFS file handle
+ - stalled -
+(standard input)
+standard input
+standard output
+#       start       end      size     fstype   [fsize bsize   cpg]
+starting pid %d, tty '%s': '%s'
+start-stop-daemon
+start-stop-daemon --start -x wvdial -p /var/run/wvdial.%iface% -b -m --[[ %provider%]]
+start-stop-daemon --stop -x wvdial -p /var/run/wvdial.%iface% -s 2
+State not recoverable
+state %s 
+static_lease
+staticroutes
+static-sh
+Status: 
+status == __codecvt_partial
+    status:       %d (
+status == __GCONV_OK || status == __GCONV_EMPTY_INPUT || status == __GCONV_ILLEGAL_INPUT || status == __GCONV_INCOMPLETE_INPUT || status == __GCONV_FULL_OUTPUT
+Status: %s
+stdin is not open for read/write
+../stdio-common/printf_fphex.c
+../stdlib/strtod_l.c
+step->__end_fct == ((void *)0)
+%s: terminated by signal %d
+'%s' terminated on signal %d
+stimeout
+S(;T$lto
+Stopped (signal)
+stopped %s (pid
+Stopped (tty input)
+Stopped (tty output)
+Streams pipe error
+strftime
+STRING2 cannot be empty
+../string/strcoll_l.c
+strops.c
+__strptime_internal
+strptime_l.c
+____strtod_l_internal
+____strtof_l_internal
+____strtold_l_internal
+str_to_mpn
+Structure needs cleaning
+%s tunnel mode
+%s (%u): 
+Subject: cron: %s
+SUBSYSTEM
+Suggests
+Summary     : %s
+sun disklabel
+%s: unknown file type
+%s: unknown operand
+%s: unknown suffix - ignored
+sunmontuewedthufrisat
+SunOS home
+SunOS root
+SunOS stand
+SunOS swap
+SunOS usr
+SunOS var
+%s: unrecognized option '%c%s'
+%s: unrecognized option '--%s'
+suppressing non-delimited lines makes sense%s
+%s (%u-%u): 
+%s %u/%u%7llu %s %s
+%s (%u-%u, default %u): 
+%s%u.%u.%u.%u
+%s (v1.18.5) started
+sverbose
+swapoff -a
+swapon -a
+SWAP-SPACE
+SWAPSPACE2
+SWAPSPACE2--More-- 
+	Swaps: %W
+switch_root
+%sXXXXXX
+symbol lookup error
+symbol=%s;  lookup in file=%s [%lu]
+%s (y/n)? 
+Syncing disks
+SYN_RECV
+SYN_SENT
+syntax error at '%s'
+syntax error: %s
+/sys/block
+/sys/block/
+/sys/class
+/sys/class/
+/sys/class/block
+../sysdeps/i386/dl-machine.h
+../sysdeps/posix/getaddrinfo.c
+../sysdeps/posix/tempname.c
+../sysdeps/unix/grantpt.c
+../sysdeps/unix/sysv/linux/dl-origin.c
+../sysdeps/unix/sysv/linux/getcwd.c
+../sysdeps/unix/sysv/linux/getpagesize.c
+../sysdeps/unix/sysv/linux/getsysstats.c
+../sysdeps/unix/sysv/linux/grantpt.c
+../sysdeps/unix/sysv/linux/ifaddrs.c
+../sysdeps/unix/sysv/linux/opensock.c
+../sysdeps/x86_64/cacheinfo.c
+/sys/devices/system/cpu
+/sys/devices/system/cpu/online
+syslogd exiting
+syslogd started: BusyBox v1.18.5
+syslog: unknown facility/priority: %x
+sYSMALLOc
+sys/net/ash
+sys/net/econet
+system boot
+system bytes     = %10u
+System closed for routine maintenance
+System Maintenance Mode
+system search path
+	System time (seconds): %S
+<system type="current" size="%zu"/>
+<system type="max" size="%zu"/>
+System V
+T$0G;|$(
+t2f=BZt3f=
+T$,3T$@3D$H	
+T$,3T$@3D$L	
+t$49t$|} 
+t4<[tS<*t7<?
+t$89t$du
+t$89t$dv
+T$89T$ tU
+T$89T$@v
+t$(9t$,|
+T$$9T$0w
+T$(9T$Hr
+t$,9t$Hu
+T$(9T$Lr
+table first (use 'o'). This will destroy the present disk contents.
+table ID
+tabstop=
+tagged with 82 (Linux swap): 
+TAR_FILETYPE=f
+target '%s' is not a directory
+TAR_%s=%llu
+TAR_%s=%lo
+TAR_%s=%s
+tcgetattr
+t	change a partition's filesystem id
+t	change a partition's system id
+tcsetattr
+T$(	D$,e
+T$,+D$L;D$,
+<!tD<#t7
+templates
+tentative 
+Terminated
+TERM=linux
+TERM=vt102
+test -f /var/run/udhcpc.%iface%.pid && kill `cat /var/run/udhcpc.%iface%.pid` 2>/dev/null
+text/css
+Text file busy
+text/html
+text/plain
+textract
+	The bootfile must be an absolute non-zero pathname,
+The boot partition does not exist
+The current boot file is: %s
+the delimiter must be a single character
+The entire disk is already covered with partitions
+The entire disk partition should start at block 0,
+The maximum number of partitions has been created
+The number of cylinders for this disk is set to %u.
+The partition table has been altered!
+There is a valid AIX label on this disk.
+There is no *BSD partition on %s
+There is nothing wrong with that, but this is larger than 1024,
+there may destroy your partition table and bootblock.
+The requested method is not recognized
+The requested URL was not found
+These features are available:
+The swap partition does not exist
+The swap partition has no swap type
+The system is going down NOW!
+Thinkpad hibernation
+This disk has both DOS and BSD magic.
+This is not GNU sed version 4.0
+This partition already exists
+This value may be truncated for devices > 33.8 GB.
+Thursday
+Time Exceeded
+timeout:
+timeout connecting to time server
+Timer expired
+Timestamp
+Timestamp Reply
+Timestamp Request
+    time.tv_sec:  %ld
+    time.tv_usec: %ld
+ time=%u.%03u ms
+TIME_WAIT
+timezone
+	timings %u %u %u %u %u %u %u
+tinitial-tab
+tJf;T$ uC
+T$l3T$d#D$p#T$t
+T$L9T$4w
+t$L;D$@s
+TLS generation counter wrapped!  Please report as described in <http://www.debian.org/Bugs/>.
+TLS generation counter wrapped!  Please report this.
+tmake-pidfile
+tmap->l_ns == nsid
+/tmp/difXXXXXX
+tmp.XXXXXX
+to 0/%d 
+to_inpunct
+    tolerance:    %ld
+too few arguments
+Too few arguments for builtin
+too few parameters for line "%s"
+too many alternate speeds
+too many bad blocks
+too many leases while loading %s
+Too many levels of symbolic links
+Too many links
+Too many open files
+Too many open files in system
+too many parameters "%s"
+too many redirections
+Too many references: cannot splice
+too many similar characters
+Too many users
+to_outpunct
+too weak
+TOP_PAD_
+to-stdout
+to %s/%u 
+Total allocated sectors %u greater than the maximum %u
+Total (incl. mmap):
+total %llu
+<total type="fast" count="%zu" size="%zu"/>
+<total type="rest" count="%zu" size="%zu"/>
+, total %u sectors
+toutput-duplicates
+Trace/breakpoint trap
+traceroute
+traceroute6
+traceroute to %s (%s)
+tracks/cylinder: %lu
+trackskew
+trackskew: %u
+track-to-track seek
+track-to-track seek: %lu	# milliseconds
+TRAILER!!!
+trailers
+Trailing backslash
+transfer-encoding
+transfer encoding '%s' is not supported
+trans->name != ((void *)0)
+Transport endpoint is already connected
+Transport endpoint is not connected
+trap -- %s %s
+Trecursive
+TRIM_THRESHOLD_
++trn:s:e::E:
+truncated base64 input
+truncated message
+TRYAGAIN
+  trying file=%s
+Trying to insert file outside of memory
+Trying to keep parameters of partition %u
+|$$;t$(t
+T$$;T$4u
+-t  tick:         %ld
+ttl != 0 and noptmudisc are incompatible
+ ttl %d 
+ ttl inherit 
+TTL must be <=255
+<.t	</tO
+ttryagain
+t.<+t*<@t&<!
+T$,;T$(t+
+(<_t-<-t)<.t%<,t!<:t
+--:tt:vv:?:X::T::c:t:x:c--tx:t--cx:x--ct
+Tunquoted
+\$$;T$$v8
+Tversion
+txC:f:OopvkchjazZm
+TX packets:%llu errors:%lu dropped:%lu overruns:%lu carrier:%lu
+txqueuelen
+txqueuelen:%d 
+.txt.h.c.cc.cpp
+type 0 is probably unwise.
+Type 0 means free space to many systems
+({ __typeof (self->tid) __value; if (sizeof (__value) == 1) asm volatile ("movb %%gs:%P2,%b0" : "=q" (__value) : "0" (0), "i" (__builtin_offsetof (struct pthread, tid))); else if (sizeof (__value) == 4) asm volatile ("movl %%gs:%P1,%0" : "=r" (__value) : "i" (__builtin_offsetof (struct pthread, tid))); else { if (sizeof (__value) != 8) abort (); asm volatile ("movl %%gs:%P1,%%eax\n\t" "movl %%gs:%P2,%%edx" : "=A" (__value) : "i" (__builtin_offsetof (struct pthread, tid)), "i" (__builtin_offsetof (struct pthread, tid) + 4)); } __value; }) != ppid
+({ __typeof (({ struct pthread *__self; asm ("movl %%gs:%c1,%0" : "=r" (__self) : "i" (__builtin_offsetof (struct pthread, header.self))); __self;})->tid) __value; if (sizeof (__value) == 1) asm volatile ("movb %%gs:%P2,%b0" : "=q" (__value) : "0" (0), "i" (__builtin_offsetof (struct pthread, tid))); else if (sizeof (__value) == 4) asm volatile ("movl %%gs:%P1,%0" : "=r" (__value) : "i" (__builtin_offsetof (struct pthread, tid))); else { if (sizeof (__value) != 8) abort (); asm volatile ("movl %%gs:%P1,%%eax\n\t" "movl %%gs:%P2,%%edx" : "=A" (__value) : "i" (__builtin_offsetof (struct pthread, tid)), "i" (__builtin_offsetof (struct pthread, tid) + 4)); } __value; }) == ppid
+type: %s
+type: %u
+Type YES if you are sure about tagging this partition differently.
+Type YES if you're very sure you would like that partition
+tzfile.c
+__tzfile_compute
+__tzfile_read
+  %u.%03u ms
+ %u.%03ums
+!:%u:0:99999:7:::
+|$'$u!9L$(
+u<9\$$u'
+ualternative
+%u blocks
+u,B;T$$r
+u	change display/entry units
+u	change units (cylinders/sectors)
+u:c:lerd
+UCS-2BE//
+=ucs2->INTERNAL
+ucs2_internal_loop_single
+UCS-2LE//
+=ucs2reverse->INTERNAL
+ucs2reverse_internal_loop_single
+UCS-4BE//
+=ucs4->INTERNAL
+UCS-4LE//
+=ucs4le->INTERNAL
+ucs4le_internal_loop
+%u cylinders, %u alternate cylinders, %u physical cylinders
+%u cylinders, %u physical cylinders
+%u days 
+u--d:d--u
+udhcp 1.18.5
+udhcpc -R -n -p /var/run/udhcpc.%iface%.pid -i %iface%[[ -H %hostname%]][[ -c %client%]][[ -s %script%]][[ %udhcpc_opts%]]
+u&;D$lu 
+%u extra sects/cyl, interleave %u:1
+uforce-depends
+ ugorwx 
+%u heads, %u sectors/track, %u cylinders
+%uh %um %02us
+<uid>.<gid>
+%u inodes
+((uintptr_t) extra) % __alignof__ (extra[0]) == 0
+((uintptr_t) indirect) % __alignof__ (indirect[0]) == 0
+((uintptr_t) len & (__alignof__ (*len) - 1)) == 0
+((uintptr_t) table) % __alignof__ (table[0]) == 0
+((uintptr_t) weights) % __alignof__ (weights[0]) == 0
+ULSUSPEND
+umount -a -r
+%um %u.%02us
+un9t$0tX
+Unauthorized
+unbindable
+uncompress
+undefined symbol: 
+unexpand
+unexpected end of file
+Unexpected end of string
+unexpected EOF
+Unexpected error.
+unexpected PLT reloc type 0x
+unexpected reloc type 0x
+unexpected reloc type in static binary
+unexpected reply!
+unexpected %s
+unexpected server response%s%s: %s
+Unexpected token
+Unfortunately Linux cannot handle these disks at the moment.
+Unicasting a release of %s to %s
+UNICODEBIG//
+UNICODELITTLE//
+unimplemented command
+Units = %s of %u * 512 bytes
+Units = %s of %u * %u = %u bytes
+Universal
+unix2dos
+<unknown>
+(unknown)
+unknown address type "%s"
+unknown command %s
+Unknown error
+Unknown error 
+unknown gid %u
+unknown group %s
+Unknown host
+unknown ICMP type
+unknown ID %u
+unknown key option
+unknown method "%s"
+unknown option for substitute
+unknown option '%s', known options: %s
+Unknown resolver error
+Unknown server error
+unknown shell '%s', assuming bash
+Unknown signal %d
+unknown signal '%s'
+unknown %s name: %s
+unknown sort type
+unknown transfer id
+unknown typeflag: 0x%x
+unknown uid %u
+unknown user/group %s
+unknown user %s
+Unknown value(s) for:
+unknown video mode '%s'
+unlimited
+Unmatched \{
+unmatched '%c'
+Unmatched ( or \(
+Unmatched ) or \)
+Unmatched [ or [^
+unounset
+unpacked
+Unpacking %s (from %s)...
+unpaired '('
+unreachable
+(unreachable)
+unrecognized file '%s' with mode %x
+unrecognized file type
+unrecognized opcode %s
+unrecognized: %s
+(unsigned int) done < (unsigned int) 2147483647
+((unsigned long)((char*)p + new_size) & (pagesz-1)) == 0
+(unsigned long)(newsize) >= (unsigned long)(nb)
+(unsigned long)(old_size) < (unsigned long)(nb + (unsigned long)((((__builtin_offsetof (struct malloc_chunk, fd_nextsize))+((2 * (sizeof(size_t))) - 1)) & ~((2 * (sizeof(size_t))) - 1))))
+(unsigned long)(size) >= (unsigned long)(nb)
+((unsigned long)((void*)((char*)(brk) + 2*(sizeof(size_t)))) & ((2 * (sizeof(size_t))) - 1)) == 0
+(((unsigned long)(((void*)((char*)(p) + 2*(sizeof(size_t))))) & ((2 * (sizeof(size_t))) - 1)) == 0)
+ UNSOLICITED?
+<unsorted from="%zu" to="%zu" total="%zu" count="%zu"/>
+unsupported command %c
+unsupported cpio format, use newc or crc
+unsupported dlinfo request
+Unsupported method
+unsupported method %d
+unsupported psf file mode
+unterminated {
+unterminated quoted string
+until you decide to write them. After that the previous content
+Unused gap of %u sectors - sectors %u-%u
+Unused gap - sectors %u-%u
+Unused inode %d is marked as 'used' in the bitmap. 
+(%u%% of %llu bytes)
+uox776CSIL
+%u partitions:
+Upassive-ftp
+upassword
+Urgent I/O condition
+URL         : %s
+Usage: busybox [function] [arguments]...
+usage: getopts optstring var [arg]
+usage: printf FORMAT [ARGUMENT...]
+US-ASCII//
+Use "exit" to leave shell.
+use prefix or netmask, not both
+User-Agent:
+User-Agent: %s
+User defined signal 1
+User defined signal 2
+USER=root
+user %s cannot read %s
+USER %s pid %3d cmd %s
+user %s: process already running: %s
+	User time (seconds): %U
+USER		TTY		IDLE	TIME		 HOST
+Using default value %u
+using restricted shell
+/usr/bin/
+/usr/lib/
+/usr/lib/getconf
+/usr/lib/i386-linux-gnu/
+/usr/lib/i386-linux-gnu/gconv/gconv-modules.cache
+/usr/lib/locale
+/usr/lib/locale/locale-archive
+/usr/lib/pt_chown
+/usr/sbin/
+/usr/share/locale
+/usr/share/locale-langpack
+/usr/share/udhcpc/default.script
+/usr/share/zoneinfo
+/usr/ucb/mdec
+u=<'t9<&t5<)t1<(t-<-t)<*t%<=t!<.t
+=utf8->INTERNAL
+utf8_internal_loop_single
+	utilities into a single executable.  Most people will create a
+uudecode
+uuencode
+UUID=%.8s-%.4s-%.4s-%.4s-%.12s
+ UUID="%s"
+%u unallocated sectors
+ %u %u %u %[^
+%u-%u-%u %u:%u%c
+%u.%u.%u-%u:%u%c
+%u %u %u %u %u %u %d
+UUUUUUUU
+v4tunnel
+valid_lft %dsec
+valid_lft forever
+Value is out of range
+Value too large for defined data type
+/var/lib/dpkg/info/%s.%s
+/var/lib/dpkg/status
+/var/lib/dpkg/status.udeb
+/var/lib/dpkg/status.udeb.bak
+/var/lib/hwclock/adjtime
+/var/lib/misc/udhcpd.leases
+/var/lock/LCK..%s
+/var/log/acpid.log
+/var/log/messages
+/var/log/wtmp
+/var/log/wtmpx
+/var/profile
+/var/run/acpid.pid
+/var/run/crond.pid
+/var/run/ifstate
+/var/run/syslogd.pid
+/var/run/udhcpd.pid
+/var/run/utmp
+/var/run/utmpx
+/var/spool/cron
+/var/spool/cron/crontabs
+/var/tmp
+vdecompress
+Vendor: 
+verbose and stty-readable output styles are mutually exclusive
+--version
+, version 
+Version     : %-34sVendor: %s
+Version 6
+Version 7
+version->filename == ((void *)0) || ! _dl_name_match_p (version->filename, map)
+version lookup error
+version != ((void *)0)
+version == ((void *)0) || (flags & ~(DL_LOOKUP_ADD_DEPENDENCY | DL_LOOKUP_GSCOPE_LOCK)) == 0
+vfprintf.c
+vfscanf.c
+Vhostname
+victim->bk_nextsize->fd_nextsize == victim
+victim->fd_nextsize->bk_nextsize == victim
+!victim || ((((mchunkptr)((char*)(victim) - 2*(sizeof(size_t)))))->size & 0x2) || ar_ptr == (((((mchunkptr)((char*)(victim) - 2*(sizeof(size_t)))))->size & 0x4) ? ((heap_info *)((unsigned long)(((mchunkptr)((char*)(victim) - 2*(sizeof(size_t))))) & ~((2 * (512 * 1024))-1)))->ar_ptr : &main_arena)
+video/mpeg
+video/quicktime
+video/x-msvideo
+Virtual console%s locked by %s.
+Virtual timer expired
+vkeep-old
+VLAN_PLUS_VID
+VLAN_PLUS_VID_NO_PAD
+vmachine
+vnicelevel
+	Voluntary context switches: %w
+vparents
+vretries
+_!v!rUqkH
+vstrings
+VT_ACTIVATE
+VT_DISALLOCATE
+VT_GETMODE
+VT_GETSTATE
+VT_WAITACTIVE
+vusername
+VUUU+\$0
+VUUU+L$@
+VUUU+L$8
+vverbose
+v	verify the partition table
++|$@;|$@w
+Warning: bad start-of-data in partition %u
+Warning: BLKGETSIZE ioctl failed on %s.  Using geometry cylinder value of %u.
+warning: can't create backup copy '%s'
+warning: can't lock '%s'
+Warning: Creating %s as %s.dpkg-new
+Warning: deleting partitions after %u
+WARNING: %d of %d computed checksums did NOT match
+Warning: extra link pointer in partition table %u
+warning: firstzone!=norm_firstzone
+warning: got ICMP %d (%s)
+Warning: ignoring extra data in partition table %u
+Warning: inode count too big
+Warning: invalid flag 0x%02x,0x%02x of partition table %u will be corrected by w(rite)
+warning: invalid width %u; using %d instead
+warning: killing process %u
+Warning: partition %u has empty type
+WARNING: Partition %u is an extended partition
+Warning: partition %u is empty
+Warning: partition %u overlaps partition %u
+WARNING: rereading partition table failed, kernel still uses old table
+Warning: setting sector offset for DOS compatiblity
+warning: skipping header '%c'
+warning: '%s': using '^' as the first character
+warning: swap file has holes
+Warning: too many partitions (%u, maximum is %u)
+warning: unrecognized option '-W %s' ignored
+watchdog
+WCHAR_T//
+((wchar_t *) data.__outbuf)[-1] == L'\0'
+__wcrtomb
+wcrtomb.c
+__wcscoll_l
+__wcsrtombs
+wcsrtombs.c
+WDIOC_SETOPTIONS
+WDIOC_SETTIMEOUT
+weak version `
+Web Server Authentication
+Wednesday
+wfileops.c
+Whole disk
+wignore-blank-lines
+	will act like whatever it was invoked as.
+Win95 Ext'd (LBA)
+Win95 FAT16 (LBA)
+Win95 FAT32
+Win95 FAT32 (LBA)
+Window changed
+ with link time reference
+with --parents, the destination must be a directory
+won't be recoverable.
+(w/o servers)
+Wren IV 94171-344
+write error
+Write error: %s
+Write request ignored
+Writing disklabel to %s
+writing '%s'
+wrong address (%s) length: expected %d bytes
+wrong ELF class: ELFCLASS64
+wrong format of /proc/net/dev
+wrong len %d
+Wrong medium type
+wrong nlmsg len %d
+wtraditional
+w	write disklabel to disk
+w	write table to disk and exit
+WWW-Authenticate: Basic realm="%s"
+\$X8\$Lr
+X bytes:%llu (%llu.%u %sB)%s
+xdirectory
+x	extra functionality (experts only)
+%*x formats are not supported
+x	link BSD partition to non-BSD partition
+xpidfile
+xresolve
+X<?tN<*tJ<[u.
+x:%u:%u:%s:%s:%s
+%x:%x:%x:%x:%x:%x
+Yank %d lines (%d chars) into [%c]
+y	change number of physical cylinders
+%Y-%m-%d
+%Y-%m-%d %H:%M:%S
+%Y.%m.%d-%H:%M:%S
+%Y-%m-%dT%H:%M:%S
+You cannot change a partition into an extended one or vice versa
+You got a partition overlap on the disk. Fix it first!
+	You have chosen an unusual boot file name
+you have mail
+you have no permission to run this applet!
+You haven't covered the whole disk with the 3rd partition,
+You have stopped jobs.
+you managed to ask for more than one
+You may change all the disk params from the x menu
+you must be root
+You must delete some partition and add an extended partition first
+you need to specify whom to kill
+Your entry has been changed to %u %s
+You will get a partition overlap on the disk. Fix it first!
+Y<pt:<utE
+Yuser-agent
+zcompress
+zip flag 1 (encryption) is not supported
+Zo:aAdeflT
+Zone %d is marked 'in use', but no file uses it. 
+Zone %d: %sin use, counted=%d
+Zone nr %s in file '%s'. 
+>= ZONES
+Zonesize=%d
+Zonesize=%u
+ z	suspend telnet
+_%z ]{vR*

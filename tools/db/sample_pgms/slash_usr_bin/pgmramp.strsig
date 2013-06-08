@@ -1,0 +1,23 @@
+__bss_start
+can't happen
+-ellipse
+GLIBC_2.0
+GLIBC_2.7
+__gmon_start__
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+-lr|-tb|-rectangle|-ellipse <width> <height>
+pgm_init
+pgm_writepgminit
+pgm_writepgmrow
+pm_allocrow
+pm_close
+pm_error
+pm_keymatch
+pm_usage
+-rectangle

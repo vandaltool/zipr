@@ -1,0 +1,48 @@
+  -0       reset tabs
+1,12,20,44
+1,5,9,13,17,21,25,29,33,37,41,45,49,53,57,61
+1,7,11,15,19,23
+  -8       set tabs to standard interval
+  -a2      Assembler, IBM S/370, second format
+  -a       Assembler, IBM S/370, first format
+ansi+tabs
+A tabstop-list is an ordered list of column numbers, e.g., 1,11,21
+__bss_start
+----+----%c
+  -c2      COBOL compact format
+  -c3      COBOL compact format extended
+  -c       COBOL, normal format
+__ctype_b_loc
+cur_term
+  -d       debug (show ruler with expected/actual tab positions)
+  -f       FORTRAN
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libtinfo.so.5
+  -n       no-op (do not modify terminal settings)
+Options:
+or 1,+10,+10 which is the same.
+  -p       PL/I
+__printf_chk
+setupterm
+%s: no tab-list given
+__sprintf_chk
+  -s       SNOBOL
+%s: terminal type '%s' cannot reset tabs
+%s: terminal type '%s' cannot set tabs
+%s: trailing comma found '%s'
+__strdup
+%s: unexpected character found '%c'
+tab-stops are not in increasing order: %d %d
+  -T name  use terminal type 'name'
+Usage: tabs [options] [tabstop-list]
+  -u       UNIVAC 1100 Assembler

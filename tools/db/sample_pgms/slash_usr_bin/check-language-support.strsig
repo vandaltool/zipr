@@ -1,0 +1,59 @@
+            action='store_true', default=False,
+                Also supported are 'zh-hans' and 'zh-hant'.")
+        # been properly configured.
+            default="/usr/share/language-selector/",
+    elif options.language:
+    elif options.package:
+            else:
+    else:
+    except locale.Error:
+            for country in countries:
+        for lang, countries in ls.lang_country_map.items():
+        for package in options.package.split(','):
+from gettext import gettext as _
+from optparse import OptionParser
+            help=_("alternative datadir"))
+                      help=_("output all available language support packages for all languages"))
+            help=_("show installed packages as well as missing ones"))
+            help=_("target language code"))
+if __name__ == "__main__":
+    if options.all:
+    if options.datadir:
+            if options.language:
+    if (options.language and 
+import language_support_pkgs
+import locale
+import os.path
+import re
+import sys
+                'll_CC' or 'lll_CC'\n\
+                'll_CC@variant' or 'lll_CC@variant'\n\
+                'll@variant' or 'lll@variant'\n\
+        locale.setlocale(locale.LC_ALL, '')
+        ls._countries_for_lang('de') # initialize cache
+    ls = language_support_pkgs.LanguageSupport(None, pkg_depends)
+        missing = ls.missing(options.show_installed)
+        missing = set()
+        missing = set(ls.by_locale(options.language, options.show_installed))
+                missing.update(ls.by_locale('%s_%s' % (lang, country), options.show_installed))
+                missing.update(ls.by_package_and_locale(package, options.language, options.show_installed))
+                missing.update(ls.by_package(package, options.show_installed))
+            not re.match('^([a-z]{2,3}(_[A-Z]{2})?(@[a-z]+)?|(zh-han[st]))$', options.language)):
+    (options, args) = parser.parse_args()
+    parser.add_option("-a", "--all", action='store_true', default=False,
+    parser.add_option("-d", "--datadir",
+    parser.add_option("-l", "--language",
+    parser.add_option("-p", "--package", default=None, help=_("check for the given package(s) only -- separate packagenames by comma"))
+    parser.add_option("--show-installed",
+    parser = OptionParser()
+        pass
+        pkg_depends = None
+        pkg_depends = os.path.join(options.datadir, 'data', 'pkg_depends')
+        print ("Error: Unsupported language code format.\n\
+    print(' '.join(sorted(missing)))
+    # sanity check for language code
+                Supported formats: 'll' or 'lll'\n\
+        sys.exit(1)
+    try:
+#!/usr/bin/python
+        # We might well be running from the installer before locales have

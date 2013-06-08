@@ -1,0 +1,61 @@
+------------------------------------ ----------------- --- --- --- ---------
+%-36s %-17s %-3s %-3s %-3s
+ %6d %2d
+__bss_start
+CID TrueType
+CID TrueType (OT)
+CID Type 0
+CID Type 0C
+CID Type 0C (OT)
+Copyright 1996-2004 Glyph & Cog, LLC
+Copyright 2005-2011 The Poppler Developers - http://poppler.freedesktop.org
+__ctype_b_loc
+first page to examine
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBCXX_3.4
+globalParams
+__gmon_start__
+Internal error in arg table
+_IO_stdin_used
+_Jv_RegisterClasses
+last page to examine
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpoppler.so.19
+libpthread.so.0
+libstdc++.so.6
+name                                 type              emb sub uni object ID
+owner password (for encrypted files)
+<PDF-file>
+pdffonts
+pdffonts version %s
+print copyright and version info
+__printf_chk
+print usage information
+ <string>
+T$(9T$,|
+T$(9T$,}^
+Type 1C (OT)
+Usage: %s [options]
+user password (for encrypted files)
+_ZN12GlobalParamsC1EPKc
+_ZN12GlobalParamsD1Ev
+_ZN13PDFDocFactory12createPDFDocERK9GooStringPS0_S3_Pv
+_ZN13PDFDocFactoryC1EP7GooList
+_ZN13PDFDocFactoryD1Ev
+_ZN15FontInfoScanner4scanEi
+_ZN15FontInfoScannerC1EP6PDFDoci
+_ZN15FontInfoScannerD1Ev
+_ZN6Object8memCheckEP8_IO_FILE
+_ZN6PDFDoc11getNumPagesEv
+_ZN6PDFDocD1Ev
+_ZN7GooListD1Ev
+_ZN8FontInfoD1Ev
+_ZN9GooString3SetEPKciS1_i
+_ZN9GooStringC1EPKc
+_ZN9GooStringD1Ev
+_ZNK9GooString3cmpEPKc

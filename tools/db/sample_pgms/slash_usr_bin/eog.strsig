@@ -1,0 +1,2881 @@
+#%02X%02X%02X
+ %.0f' %.2f"
+0Widget Size allocate: %i, %i   Bar: %i, %i
+%.1f (35mm film)
+%.1f (lens)
+ 2000-2010 Free Software Foundation, Inc.
+2008:12:24 20:30:45
+4@eog_scroll_view_zoom_out
+About this application
+accept-items-only
+access::can-read
+access::can-trash
+access::can-write
+ ACould not migrate config file %s: %s
+action_fscreen != NULL
+action_gallery != NULL
+action != NULL
+action_print != NULL
+action_request
+action_sidebar != NULL
+action_sshow != NULL
+action (to trash)
+active-plugins
+%a, %d %B %Y  %X
+All files
+<Alt>End
+<Alt>Home
+<Alt>Left
+<alt>Return
+<Alt>Right
+An error occured while deleting the old config folder %s: %s
+antialiasing-in
+antialiasing-out
+Aperture Value:
+application-id
+application/x-toolbar-item
+apply_transformation
+APPx or COM Marker Found: %x
+Are you sure you want to move
+Arik Devens <arik@gnome.org>
+Asking for unknown data, remaining: %i
+atk_object_set_name
+atk_object_set_role
+At least two file names are equal.
+A trash for "%s" couldn't be found. Do you want to remove this image permanently?
+autorotate
+autorotate_check
+background_radio
+BackSpace
+<b><big>%s</big></b>
+_Best Fit
+bg_color_button
+bg_color_check
+bindtextdomain
+bind_textdomain_codeset
+border-width
+both-horiz
+_Bottom:
+Bottom margin of the page in inches
+ BParent window
+Bp+B<+B@
+<b>%s</b>
+__bss_start
+build_absolute_file
+building menus failed: %s
+build_single_img_dialog
+button_press_event
+button-press-event
+button_press_event_cb
+button_release_event
+button-release-event
+bytes_label
+cairo_clip
+cairo_create
+cairo_destroy
+cairo_fill
+cairo_format_stride_for_width
+cairo_get_source
+cairo_image_surface_create_for_data
+Cairo is unhappy: %s
+cairo_matrix_init
+cairo_matrix_init_identity
+cairo_matrix_init_rotate
+cairo_matrix_init_scale
+cairo_matrix_init_translate
+cairo_matrix_invert
+cairo_matrix_invert (&reverse->priv->affine) == CAIRO_STATUS_SUCCESS
+cairo_matrix_multiply
+cairo_matrix_transform_point
+cairo_paint
+cairo_pattern_set_extend
+cairo_pattern_set_filter
+cairo_rectangle
+cairo_scale
+cairo_set_fill_rule
+cairo_set_line_width
+cairo_set_matrix
+cairo_set_source
+cairo_set_source_rgb
+cairo_set_source_rgba
+cairo_set_source_surface
+cairo_status
+cairo_status_to_string
+cairo_stroke
+cairo_surface_destroy
+cairo_surface_set_user_data
+cairo_translate
+_calculate_wday_yday
+Camera Model:
+can-focus
+caption != NULL
+C_enter:
+CEogTransform
+changed::disable-save-to-disk
+Changes the visibility of the image gallery pane in the current window
+Changes the visibility of the side pane in the current window
+Changes the visibility of the statusbar in the current window
+Changes the visibility of the toolbar in the current window
+check_for_metadata_img_format
+check_if_file_is_writable
+Check image format for jpeg: %x%x - length: %i
+Checking CRC: Chunk: 0x%X - Target: 0x%X
+checkpattern_radio
+check_scrollbar_visibility
+chunk size larger than 2^31-1; stopping parser
+Class "%s" does not implement the required run action
+Claudio Saavedra <csaavedra@igalia.com> (maintainer)
+close_button
+Close window
+Close _without Saving
+cmsBuildGamma
+cmsCloseProfile
+cmsCreateRGBProfile
+cmsCreate_sRGBProfile
+cmsCreateTransform
+cmsDeleteTransform
+cmsDoTransform
+cmsFreeToneCurve
+cmsGetColorSpace
+cmsOpenProfileFromMem
+Colorcorrecting RGBA images is unsupported.
+color_radio
+column-spacing
+comments
+configure_event
+_Contents
+<control>0
+<control>C
+<control>equal
+ControlEqual
+<control>F8
+<control>F9
+<control>KP_Add
+ControlKpAdd
+ControlKpSub
+<control>KP_Subtract
+<control>M
+<control>minus
+control-not-found
+<control>O
+<control>p
+<control>plus
+<control>r
+<control>s
+<control><shift>s
+<control>W
+<control>z
+converter != NULL
+converter != NULL || g_list_length (images) == 1
+?convert-spaces
+copy_file_cid
+copyright
+Copyright 
+Copyright:
+Copy the selected image to the clipboard
+Could not display help for Image Viewer
+Could not load CSS data: %s
+Could not load image '%s'.
+Could not save image '%s'.
+Couldn't access trash.
+Couldn't allocate memory for loading JPEG file
+Couldn't create temporary file for saving: %s
+Couldn't delete file
+Couldn't delete temporary file: %s
+Couldn't load icon: %s
+Couldn't query file info: %s
+Couldn't show containing folder "%s": %s
+counter [%lu]
+counter-n-digits
+counter_spin
+counter-start
+create-custom-widget
+created_label
+create_item_from_action
+create_thumbnail_from_pixbuf
+<ctrl><shift>r
+__ctype_b_loc
+current-page
+Current page
+custom-widget-apply
+D$@9D$Hv}
+data->nth_image >= 0 && data->nth_image < data->n_images
+data != NULL
+data != NULL && length != NULL
+data != NULL && len != NULL
+__data_start
+Date/Time:
+dcgettext
+dcngettext
+deactivate
+delete-event
+_Delete Toolbar
+description
+Description:
+deselect
+_details_button_clicked_cb
+D$(+F8+FD
+dialog != NULL
+dimension
+dir_chooser
+dir_file != NULL
+disable-close-confirmation
+disable-gallery
+Disable image gallery
+disable-printing
+disable-print-setup
+disable-trash-confirmation
+disconnect_proxy
+display_draw
+display_map_event
+dlg != NULL
+dlg->priv->unsaved_images->data != NULL
+dock != NULL
+documenters
+_Do not ask again during this session
+drag_begin
+drag-begin
+drag_data_delete
+drag_data_delete_cb
+drag_data_get
+drag-data-get
+drag_data_get_cb
+drag_data_received
+drag_drop
+drag_end
+drag_leave
+drag_motion
+draw_page
+D$x+BD+B4
+edit-copy
+EditCopyImage
+EditFlipHorizontal
+EditFlipVertical
+Edit Image
+edit-mode
+Edit Mode
+Edit-Mode
+EditMoveToTrash
+editor_create_item_from_name
+editor != NULL
+EditPreferences
+Edit the application toolbar
+Edit the current image using %s
+EditToolbar
+EditUndo
+egg-collate-key
+EggEditableToolbar
+egg_editable_toolbar_add_visibility
+egg_editable_toolbar_build
+egg-editable-toolbar.c:1618
+egg-editable-toolbar.c:1646
+egg_editable_toolbar_deconstruct
+egg_editable_toolbar_get_edit_mode
+egg_editable_toolbar_get_manager
+egg_editable_toolbar_get_model
+egg_editable_toolbar_get_selected
+egg_editable_toolbar_get_type
+egg_editable_toolbar_hide
+egg_editable_toolbar_new
+_egg_editable_toolbar_new_separator_image
+egg_editable_toolbar_new_with_model
+egg_editable_toolbar_set_edit_mode
+egg_editable_toolbar_set_fixed
+egg_editable_toolbar_set_model
+egg_editable_toolbar_set_primary_class
+egg_editable_toolbar_set_selected
+egg_editable_toolbar_show
+EGG_IS_EDITABLE_TOOLBAR (etoolbar)
+EGG_IS_TOOLBAR_EDITOR (editor)
+EGG_IS_TOOLBAR_EDITOR (t)
+EGG_IS_TOOLBARS_MODEL (model)
+egg-item-name
+_egg_marshal_VOID__INT_INT
+EGG_TB_MODEL_ACCEPT_ITEMS_ONLY
+EGG_TB_MODEL_BOTH
+EGG_TB_MODEL_BOTH_HORIZ
+EggTbModelFlags
+EGG_TB_MODEL_HIDDEN
+EGG_TB_MODEL_ICONS
+EggTbModelNameFlags
+EGG_TB_MODEL_NAME_INFINITE
+EGG_TB_MODEL_NAME_KNOWN
+EGG_TB_MODEL_NAME_USED
+EGG_TB_MODEL_NOT_EDITABLE
+EGG_TB_MODEL_NOT_REMOVABLE
+EGG_TB_MODEL_STYLES_MASK
+EGG_TB_MODEL_TEXT
+EggToolbarEditor
+egg_toolbar_editor_get_type
+egg_toolbar_editor_new
+egg_toolbar_editor_set_model
+egg_toolbar_editor_set_ui_manager
+EggToolbarsModel
+egg_toolbars_model_add_item
+egg_toolbars_model_add_toolbar
+egg_toolbars_model_delete_item
+egg_toolbars_model_get_data
+egg_toolbars_model_get_flags
+egg_toolbars_model_get_name
+egg_toolbars_model_get_name_avail
+egg_toolbars_model_get_name_flags
+egg_toolbars_model_get_type
+egg_toolbars_model_get_types
+egg_toolbars_model_item_nth
+egg_toolbars_model_load_names
+egg_toolbars_model_load_toolbars
+egg_toolbars_model_move_item
+egg_toolbars_model_new
+egg_toolbars_model_n_items
+egg_toolbars_model_n_toolbars
+egg_toolbars_model_remove_item
+egg_toolbars_model_remove_toolbar
+egg_toolbars_model_save_toolbars
+egg_toolbars_model_set_flags
+egg_toolbars_model_set_name_flags
+egg_toolbars_model_set_types
+egg_toolbars_model_toolbar_nth
+egg_toolbars_model_to_xml
+ejob->error == NULL
+Eliot Landrum <eliot@landrum.cx>
+end-print
+Enlarge the image
+enter-notify-event
+EogApplication
+eog_application_get_empty_window
+eog_application_get_file_window
+eog_application_get_first_window
+eog_application_get_instance
+eog_application_get_toolbars_model
+eog_application_get_type
+eog_application_open_file_list
+eog_application_open_uri_list
+eog_application_open_uris
+eog_application_open_window
+eog_application_reset_toolbars_model
+eog_application_save_toolbars_model
+eog_application_screensaver_disable
+eog_application_screensaver_enable
+eog-application-startup-flags
+EogClipboardHandler
+eog-clipboard-handler.c
+eog-clipboard-handler.c:120
+eog-clipboard-handler.c:152
+eog_clipboard_handler_clear_func
+eog_clipboard_handler_copy_to_clipboard
+eog_clipboard_handler_dispose
+eog_clipboard_handler_get_func
+eog_clipboard_handler_get_pixbuf
+eog_clipboard_handler_get_property
+eog_clipboard_handler_get_type
+eog_clipboard_handler_get_uri
+eog_clipboard_handler_new
+eog_clipboard_handler_set_pixbuf
+eog_clipboard_handler_set_property
+eog_clipboard_handler_set_uri
+EogCloseConfirmationDialog
+eog-close-confirmation-dialog.c:259
+eog-close-confirmation-dialog.c:281
+eog_close_confirmation_dialog_get_selected_images
+eog_close_confirmation_dialog_get_unsaved_images
+eog_close_confirmation_dialog_new
+eog_close_confirmation_dialog_new_single
+eog_close_confirmation_dialog_set_sensitive
+EOG could not save some of your preferences in its settings directory due to a file with the same name (%s) blocking its creation. Please remove that file, or move it away.
+eog_debug
+?EogDebug
+EOG_DEBUG
+eog_debug_get_type
+EOG_DEBUG_IMAGE_DATA
+EOG_DEBUG_IMAGE_LOAD
+EOG_DEBUG_IMAGE_SAVE
+eog_debug_init
+EOG_DEBUG_JOBS
+EOG_DEBUG_LCMS
+EOG_DEBUG_LIST_STORE
+eog_debug_message
+EOG_DEBUG_NO_DEBUG
+EOG_DEBUG_PLUGINS
+EOG_DEBUG_PREFERENCES
+EOG_DEBUG_PRINTING
+EOG_DEBUG_THUMBNAIL
+EOG_DEBUG_VIEW
+EOG_DEBUG_WINDOW
+EogDialog
+eog-dialog.c
+eog_dialog_construct
+eog_dialog_construct_impl
+eog_dialog_dispose
+eog_dialog_get_controls
+eog_dialog_get_type
+eog_dialog_hide
+eog_dialog_hide_impl
+eog_dialog_show
+eog_dialog_show_impl
+EogExifData
+eog_exif_data_copy
+eog_exif_data_free
+eog_exif_data_get_type
+eog_exif_data_get_value
+EogExifDetails
+eog_exif_details_get_type
+eog_exif_details_new
+eog_exif_details_update
+eog_exif_details_xmp_update
+eog_exif_util_format_date
+eog_exif_util_set_focal_length_label_text
+eog_exif_util_set_label_text
+EogFileChooser
+eog-file-chooser.c
+eog_file_chooser_get_format
+eog_file_chooser_get_type
+eog_file_chooser_new
+eog-image
+EogImage
+eog_image_apply_display_profile
+eog_image_apply_transformations
+eog_image_autorotate
+eog-image.c
+eog_image_cancel_load
+eog_image_copy_file
+EogImageData
+EOG_IMAGE_DATA_DIMENSION
+EOG_IMAGE_DATA_EXIF
+eog_image_data_get_type
+EOG_IMAGE_DATA_IMAGE
+eog_image_data_ref
+eog_image_data_unref
+EOG_IMAGE_DATA_XMP
+EogImageError
+EOG_IMAGE_ERROR_FILE_EXISTS
+EOG_IMAGE_ERROR_GENERIC
+eog_image_error_get_type
+EOG_IMAGE_ERROR_NOT_LOADED
+EOG_IMAGE_ERROR_NOT_SAVED
+eog_image_error_quark
+eog-image-error-quark
+EOG_IMAGE_ERROR_SAVE_NOT_LOCAL
+EOG_IMAGE_ERROR_TMP_FILE_FAILED
+EOG_IMAGE_ERROR_UNKNOWN
+EOG_IMAGE_ERROR_VFS
+eog_image_file_changed
+eog-image-gallery
+eog-image-gallery-scrollbar
+eog_image_get_bytes
+eog_image_get_caption
+eog_image_get_collate_key
+eog_image_get_exif_info
+eog_image_get_file
+eog_image_get_metadata_status
+eog_image_get_pixbuf
+eog_image_get_profile
+eog_image_get_size
+eog_image_get_status
+eog_image_get_supported_mime_types
+eog_image_get_svg
+eog_image_get_thumbnail
+eog_image_get_transform
+eog_image_get_type
+eog_image_get_uri_for_display
+eog_image_get_xmp_info
+eog_image_has_data
+eog_image_has_data (image, EOG_IMAGE_DATA_IMAGE)
+EOG_IMAGE (image)->priv->file != NULL
+EOG_IMAGE (image)->priv->image != NULL
+eog_image_is_animation
+eog_image_is_file_changed
+eog_image_is_file_writable
+eog_image_is_modified
+eog_image_is_supported_mime_type
+eog_image_is_svg
+eog_image_iter_advance
+eog-image-jpeg.c
+eog_image_jpeg_save_file
+eog_image_link_with_target
+eog_image_load
+eog_image_load_error_message_area_new
+EOG_IMAGE_METADATA_NOT_AVAILABLE
+EOG_IMAGE_METADATA_NOT_READ
+EOG_IMAGE_METADATA_READY
+EogImageMetadataStatus
+eog_image_metadata_status_get_type
+eog_image_modified
+eog_image_needs_transformation
+eog_image_new
+eog_image_new_file
+eog_image_pre_size_prepared
+eog_image_properties_dialog
+eog-image-properties-dialog.ui
+eog_image_real_autorotate
+eog_image_real_load
+eog_image_real_transform
+eog_image_reset_modifications
+eog_image_save_as_by_info
+eog_image_save_by_info
+eog_image_save_error_message_area_new
+EogImageSaveInfo
+eog-image-save-info.c
+eog_image_save_info_get_type
+eog_image_save_info_new_from_file
+eog_image_save_info_new_from_image
+eog_image_save_info_new_from_uri
+eog_image_set_exif_data
+eog_image_set_orientation
+eog_image_set_thumbnail
+eog_image_set_xmp_data
+eog_image_size_prepared
+eog_image_start_animation
+EogImageStatus
+EOG_IMAGE_STATUS_FAILED
+eog_image_status_get_type
+EOG_IMAGE_STATUS_LOADED
+EOG_IMAGE_STATUS_LOADING
+EOG_IMAGE_STATUS_SAVING
+EOG_IMAGE_STATUS_UNKNOWN
+eog_image_transform
+eog_image_undo
+eog_image_update_exif_data
+EOG_IS_APPLICATION (app)
+EOG_IS_APPLICATION (application)
+EOG_IS_CLIPBOARD_HANDLER (handler)
+EOG_IS_CLIPBOARD_HANDLER (obj)
+EOG_IS_CLIPBOARD_HANDLER (object)
+EOG_IS_CLIPBOARD_HANDLER (owner)
+EOG_IS_CLOSE_CONFIRMATION_DIALOG (dlg)
+EOG_IS_DIALOG (dialog)
+EOG_IS_DIALOG (object)
+EOG_IS_EXIF_DETAILS (exif_details)
+EOG_IS_EXIF_DETAILS (view)
+EOG_IS_FILE_CHOOSER (chooser)
+EOG_IS_IMAGE (data)
+EOG_IS_IMAGE (image)
+EOG_IS_IMAGE (img)
+EOG_IS_IMAGE_SAVE_INFO (source)
+EOG_IS_IMAGE_SAVE_INFO (target)
+EOG_IS_JOB_COPY (ejob)
+EOG_IS_JOB (job)
+EOG_IS_JOB_LOAD (job)
+EOG_IS_JOB_MODEL (ejob)
+EOG_IS_JOB_SAVE_AS (ejob)
+EOG_IS_JOB_SAVE (ejob)
+EOG_IS_JOB_THUMBNAIL (ejob)
+EOG_IS_JOB_TRANSFORM (ejob)
+EOG_IS_LIST_STORE (data)
+EOG_IS_LIST_STORE (store)
+EOG_IS_METADATA_READER (emr)
+EOG_IS_METADATA_READER_JPG (emr)
+EOG_IS_METADATA_READER_PNG (emr)
+EOG_IS_METADATA_SIDEBAR (object)
+EOG_IS_METADATA_SIDEBAR (sidebar)
+EOG_IS_METADATA_SIDEBAR (user_data)
+EOG_IS_PRINT_IMAGE_SETUP (setup)
+EOG_IS_PRINT_PREVIEW (preview)
+EOG_IS_PROPERTIES_DIALOG (dlg)
+EOG_IS_PROPERTIES_DIALOG (object)
+EOG_IS_PROPERTIES_DIALOG (prop_dlg)
+EOG_IS_PROPERTIES_DIALOG (user_data)
+EOG_IS_SCROLL_VIEW (data)
+EOG_IS_SCROLL_VIEW (gobject)
+EOG_IS_SCROLL_VIEW (object)
+EOG_IS_SCROLL_VIEW (view)
+EOG_IS_SIDEBAR (eog_sidebar)
+EOG_IS_STATUSBAR (statusbar)
+EOG_IS_THUMB_NAV (nav)
+EOG_IS_THUMB_VIEW (thumbview)
+EOG_IS_TRANSFORM (compose)
+EOG_IS_TRANSFORM (trans)
+EOG_IS_URI_CONVERTER (conv)
+EOG_IS_URI_CONVERTER (converter)
+EOG_IS_URI_CONVERTER (object)
+EOG_IS_WINDOW_ACTIVATABLE (activatable)
+EOG_IS_WINDOW (data)
+EOG_IS_WINDOW (object)
+EOG_IS_WINDOW (user_data)
+EOG_IS_WINDOW (widget)
+EOG_IS_WINDOW (window)
+EogJobCopy
+eog_job_copy_get_type
+eog_job_copy_new
+eog_job_copy_run
+eog_job_finished
+eog_job_get_type
+EogJobLoad
+eog_job_load_cb
+eog_job_load_get_type
+eog_job_load_new
+eog_job_load_run
+EogJobModel
+eog_job_model_cb
+eog_job_model_get_type
+eog_job_model_new
+eog_job_model_run
+eog_job_progress_cb
+EogJobQueue
+eog_job_queue_add_job
+eog-job-queue.c
+eog_job_queue_init
+eog_job_queue_remove_job
+eog_job_run
+EogJobSave
+EogJobSaveAs
+eog_job_save_as_get_type
+eog_job_save_as_new
+eog_job_save_as_run
+eog_job_save_get_type
+eog_job_save_new
+eog_job_save_progress_cb
+EogJobSaveResponse
+eog_job_save_response_get_type
+eog_job_save_run
+eog-jobs.c
+eog_job_set_progress
+EogJobThumbnail
+eog_job_thumbnail_cb
+eog_job_thumbnail_get_type
+eog_job_thumbnail_new
+eog_job_thumbnail_run
+EogJobTransform
+eog_job_transform_cb
+eog_job_transform_get_type
+eog_job_transform_image_modified
+eog_job_transform_new
+eog_job_transform_run
+EogListStore
+eog_list_store_add_files
+eog_list_store_append_directory
+eog_list_store_append_image
+eog_list_store_append_image_from_file
+EogListStoreColumn
+eog_list_store_column_get_type
+EOG_LIST_STORE_EOG_IMAGE
+EOG_LIST_STORE_EOG_JOB
+eog_list_store_get_image_by_pos
+eog_list_store_get_initial_pos
+eog_list_store_get_pos_by_image
+eog_list_store_get_pos_by_iter
+eog_list_store_get_type
+eog_list_store_length
+eog_list_store_new
+eog_list_store_new_from_glist
+EOG_LIST_STORE_NUM_COLUMNS
+eog_list_store_remove_image
+EOG_LIST_STORE_THUMBNAIL
+eog_list_store_thumbnail_refresh
+eog_list_store_thumbnail_set
+eog_list_store_thumbnail_unset
+EOG_LIST_STORE_THUMB_SET
+eog_marshal_VOID__INT_INT
+EogMetadataReader
+_eog_metadata_reader_default_get_raw_exif
+eog_metadata_reader_finished
+eog_metadata_reader_get_exif_chunk
+EogMetadataReaderJpg
+eog-metadata-reader-jpg.c
+eog_metadata_reader_jpg_consume
+eog_metadata_reader_jpg_finished
+eog_metadata_reader_jpg_get_exif_chunk
+eog_metadata_reader_jpg_get_exif_data
+eog_metadata_reader_jpg_get_icc_profile
+eog_metadata_reader_jpg_get_xmp_data
+@EogMetadataReaderPng
+eog-metadata-reader-png.c
+eog_metadata_reader_png_consume
+eog_metadata_reader_png_finished
+eog_metadata_reader_png_get_icc_profile
+eog_metadata_reader_png_get_xmp_data
+EogMetadataSidebar
+eog-metadata-sidebar.c:615
+eog-metadata-sidebar.c:643
+eog_metadata_sidebar_get_property
+eog_metadata_sidebar_set_parent_window
+eog_metadata_sidebar_set_property
+eog_metadata_sidebar_update
+eog_multiple_save_as_dialog
+eog-multiple-save-as-dialog.ui
+eog_pixbuf_get_format
+eog_pixbuf_get_format_by_suffix
+EogPluginEngine
+eog-plugin-engine.c
+eog_plugin_engine_init
+eog_preferences_dialog
+EogPreferencesDialog
+eog-preferences-dialog.c
+eog_preferences_dialog_constructor
+eog-preferences-dialog.ui
+eog-print.c
+eog_print_create_custom_widget
+eog_print_custom_widget_apply
+eog_print_draw_page
+eog_print_end_print
+EogPrintImageSetup
+eog-print-image-setup.c
+eog-print-image-setup.c:785
+eog-print-image-setup.c:806
+eog_print_image_setup_get_options
+eog_print_operation_new
+EogPrintPreview
+eog-print-preview.c:146
+eog-print-preview.c:204
+eog_print_preview_get_image_position
+eog_print_preview_get_scale
+eog_print_preview_new_with_pixbuf
+eog_print_preview_point_in_image_area
+eog_print_preview_set_from_page_setup
+eog_print_preview_set_image_position
+eog_print_preview_set_page_margins
+eog_print_preview_set_scale
+eog-print-settings.ini
+EogPropertiesDialog
+eog-properties-dialog.c:507
+eog-properties-dialog.c:530
+eog_properties_dialog_delete
+eog_properties_dialog_dispose
+eog_properties_dialog_get_type
+eog_properties_dialog_new
+EOG_PROPERTIES_DIALOG_N_PAGES
+EogPropertiesDialogPage
+EOG_PROPERTIES_DIALOG_PAGE_DETAILS
+EOG_PROPERTIES_DIALOG_PAGE_EXIF
+EOG_PROPERTIES_DIALOG_PAGE_GENERAL
+eog_properties_dialog_page_get_type
+eog_properties_dialog_set_netbook_mode
+eog_properties_dialog_set_page
+eog_properties_dialog_update
+eog_save_as_dialog_get_converter
+eog-save-as-dialog-helper.c
+eog_save_as_dialog_new
+EOG_SAVE_RESPONSE_CANCEL
+EOG_SAVE_RESPONSE_LAST
+EOG_SAVE_RESPONSE_NONE
+EOG_SAVE_RESPONSE_OVERWRITE
+EOG_SAVE_RESPONSE_RETRY
+EOG_SAVE_RESPONSE_SKIP
+eog-save-XXXXXX
+EogScrollView
+eog-scroll-view.c
+eog-scroll-view.c:2765
+eog-scroll-view.c:2814
+eog_scroll_view_dispose
+eog_scroll_view_get_image
+eog_scroll_view_get_property
+eog_scroll_view_get_type
+eog_scroll_view_get_zoom
+eog_scroll_view_get_zoom_is_max
+eog_scroll_view_get_zoom_is_min
+eog_scroll_view_get_zoom_mode
+eog_scroll_view_hide_cursor
+eog_scroll_view_new
+eog_scroll_view_override_bg_color
+eog_scroll_view_scrollbars_visible
+eog_scroll_view_scroll_event
+eog_scroll_view_set_antialiasing_in
+eog_scroll_view_set_antialiasing_out
+eog_scroll_view_set_background_color
+eog_scroll_view_set_image
+eog_scroll_view_set_popup
+eog_scroll_view_set_property
+eog_scroll_view_set_scroll_wheel_zoom
+eog_scroll_view_set_transparency
+eog_scroll_view_set_transparency_color
+eog_scroll_view_set_use_bg_color
+eog_scroll_view_set_zoom
+eog_scroll_view_set_zoom_mode
+eog_scroll_view_set_zoom_multiplier
+eog_scroll_view_set_zoom_upscale
+eog_scroll_view_show_cursor
+eog_scroll_view_zoom_fit
+eog_scroll_view_zoom_in
+eog_scroll_view_zoom_out
+eog_session_init
+EogSidebar
+eog_sidebar_add_page
+eog-sidebar.c:158
+eog-sidebar.c:175
+eog_sidebar_get_n_pages
+eog_sidebar_get_type
+eog_sidebar_is_empty
+eog_sidebar_menu_position_under
+eog_sidebar_new
+eog_sidebar_remove_page
+eog_sidebar_set_page
+EOG_STARTUP_DISABLE_GALLERY
+EogStartupFlags
+eog_startup_flags_get_type
+EOG_STARTUP_FULLSCREEN
+EOG_STARTUP_SINGLE_WINDOW
+EOG_STARTUP_SLIDE_SHOW
+EogStatusbar
+eog_statusbar_get_type
+eog_statusbar_new
+eog_statusbar_set_image_number
+eog_statusbar_set_progress
+eog_thumb_data_new
+eog-thumb-error-quark
+eog_thumbnail_add_frame
+eog-thumbnail.c
+eog_thumbnail_fit_to_size
+eog_thumbnail_init
+eog_thumbnail_load
+eog-thumbnail-orig-height
+eog-thumbnail-orig-width
+EogThumbNav
+eog-thumb-nav.c
+eog_thumb_nav_get_mode
+eog_thumb_nav_get_show_buttons
+eog_thumb_nav_get_type
+EogThumbNavMode
+eog_thumb_nav_mode_get_type
+EOG_THUMB_NAV_MODE_MULTIPLE_COLUMNS
+EOG_THUMB_NAV_MODE_MULTIPLE_ROWS
+EOG_THUMB_NAV_MODE_ONE_COLUMN
+EOG_THUMB_NAV_MODE_ONE_ROW
+eog_thumb_nav_new
+eog_thumb_nav_scroll_event
+eog_thumb_nav_set_mode
+eog_thumb_nav_set_show_buttons
+EogThumbView
+eog_thumb_view_add_range
+eog-thumb-view.c
+eog_thumb_view_clear_range
+eog_thumb_view_get_first_selected_image
+eog_thumb_view_get_n_selected
+eog_thumb_view_get_selected_images
+eog_thumb_view_get_type
+eog_thumb_view_new
+EOG_THUMB_VIEW_SELECT_CURRENT
+EOG_THUMB_VIEW_SELECT_FIRST
+EogThumbViewSelectionChange
+eog_thumb_view_selection_change_get_type
+EOG_THUMB_VIEW_SELECT_LAST
+EOG_THUMB_VIEW_SELECT_LEFT
+EOG_THUMB_VIEW_SELECT_RANDOM
+EOG_THUMB_VIEW_SELECT_RIGHT
+eog_thumb_view_select_single
+eog_thumb_view_set_current_image
+eog_thumb_view_set_item_height
+eog_thumb_view_set_model
+eog_thumb_view_set_thumbnail_popup
+eog_toolbar.xml
+eog_transform_apply
+eog_transform_compose
+EOG_TRANSFORM_FLIP_HORIZONTAL
+eog_transform_flip_new
+EOG_TRANSFORM_FLIP_VERTICAL
+eog_transform_get_affine
+eog_transform_get_transform_type
+eog_transform_get_type
+eog_transform_identity_new
+eog_transform_is_identity
+eog_transform_new
+EOG_TRANSFORM_NONE
+eog_transform_reverse
+EOG_TRANSFORM_ROT_180
+EOG_TRANSFORM_ROT_270
+EOG_TRANSFORM_ROT_90
+eog_transform_rotate_new
+EOG_TRANSFORM_TRANSPOSE
+EOG_TRANSFORM_TRANSVERSE
+EogTransformType
+eog_transform_type_get_type
+EogTransformType not supported!
+EogTransparencyStyle
+eog_transparency_style_get_type
+EOG_TRANSP_BACKGROUND
+EOG_TRANSP_CHECKED
+EOG_TRANSP_COLOR
+EogURIConverter
+eog-uri-converter.c
+eog_uri_converter_check
+EOG_URI_CONVERTER (conv)
+eog_uri_converter_do
+eog-uri-converter-error-quark
+eog_uri_converter_get_property
+eog_uri_converter_new
+eog_uri_converter_parse_string
+eog_uri_converter_preview
+eog_uri_converter_print_list
+eog_uri_converter_requires_exif
+eog_uri_converter_set_property
+eog-util.c
+eog_util_make_valid_utf8
+eog_util_show_file_in_filemanager
+eog-wallpaper
+EogWindow
+EogWindowActivatable
+eog_window_activatable_activate
+eog_window_activatable_deactivate
+eog_window_activatable_get_type
+eog-window.c
+eog-window.c:5231
+eog-window.c:5261
+eog_window_can_save_changed_cb
+eog_window_cmd_about
+eog_window_cmd_close_window
+eog_window_cmd_copy_image
+eog_window_cmd_edit_toolbar
+eog_window_cmd_edit_toolbar_cb
+eog_window_cmd_file_open
+eog_window_cmd_flip_horizontal
+eog_window_cmd_flip_vertical
+eog_window_cmd_fullscreen
+eog_window_cmd_go_first
+eog_window_cmd_go_last
+eog_window_cmd_go_next
+eog_window_cmd_go_prev
+eog_window_cmd_go_random
+eog_window_cmd_help
+eog_window_cmd_move_to_trash
+eog_window_cmd_open_containing_folder
+eog_window_cmd_pause_slideshow
+eog_window_cmd_preferences
+eog_window_cmd_rotate_270
+eog_window_cmd_rotate_90
+eog_window_cmd_save_as
+eog_window_cmd_show_hide_bar
+eog_window_cmd_slideshow
+eog_window_cmd_undo
+eog_window_cmd_wallpaper
+eog_window_cmd_zoom_fit
+eog_window_cmd_zoom_in
+eog_window_cmd_zoom_normal
+eog_window_cmd_zoom_out
+eog_window_construct_ui
+eog_window_create_fullscreen_popup
+eog_window_delete
+eog_window_display_image
+eog_window_dispose
+EogWindowError
+EOG_WINDOW_ERROR_CONTROL_NOT_FOUND
+EOG_WINDOW_ERROR_GENERIC
+eog_window_error_get_type
+EOG_WINDOW_ERROR_IO
+eog_window_error_message_area_response
+EOG_WINDOW_ERROR_NO_PERSIST_FILE_INTERFACE
+eog-window-error-quark
+EOG_WINDOW_ERROR_TRASH_NOT_FOUND
+EOG_WINDOW_ERROR_UI_NOT_FOUND
+EOG_WINDOW_ERROR_UNKNOWN
+eog_window_focus_out_event
+EogWindowGalleryPos
+EOG_WINDOW_GALLERY_POS_BOTTOM
+eog_window_gallery_pos_get_type
+EOG_WINDOW_GALLERY_POS_LEFT
+EOG_WINDOW_GALLERY_POS_RIGHT
+EOG_WINDOW_GALLERY_POS_TOP
+eog_window_get_display_profile
+eog_window_get_image
+eog_window_get_mode
+eog_window_get_properties_dialog
+eog_window_get_property
+eog_window_get_sidebar
+eog_window_get_statusbar
+eog_window_get_store
+eog_window_get_thumb_nav
+eog_window_get_thumb_view
+eog_window_get_type
+eog_window_get_ui_manager
+eog_window_get_view
+eog_window_init
+eog_window_is_empty
+eog_window_is_not_initializing
+EogWindowMode
+EOG_WINDOW_MODE_FULLSCREEN
+eog_window_mode_get_type
+EOG_WINDOW_MODE_NORMAL
+EOG_WINDOW_MODE_SLIDESHOW
+EOG_WINDOW_MODE_UNKNOWN
+eog_window_new
+eog_window_obtain_desired_size
+eog_window_open_file_list
+eog_window_open_recent_cb
+eog_window_print
+eog_window_reload_image
+eog_window_retrieve_save_as_file
+eog_window_run_fullscreen
+eog_window_set_gallery_mode
+eog_window_set_mode
+eog_window_set_property
+eog_window_stop_fullscreen
+eog_window_update_fullscreen_popup
+EogZoomMode
+EOG_ZOOM_MODE_FREE
+eog_zoom_mode_get_type
+EOG_ZOOM_MODE_SHRINK_TO_FIT
+__errno_location
+Error in getting image file info
+Error interpreting JPEG image file: %s
+Error launching System Settings: 
+Error loading Eog typelib: %s
+Error loading PeasGtk typelib: %s
+Error loading Peas typelib: %s
+Error loading print settings file: %s
+error != NULL
+error != NULL && *error == NULL
+Error on deleting image %s
+Error printing file:
+Error saving print settings file: %s
+Error while inflating ICC profile: %s (%d)
+etoolbar->priv->manager != NULL
+exif_aperture_label
+exif_box
+exif_content_foreach_entry
+exif_content_get_entry
+exif_content_get_ifd
+exif_data_foreach_content
+exif_data_get_byte_order
+exif_data_get_mnote_data
+exif_data_new_from_data
+exif_data_ref
+exif_data_save_data
+exif_data_unref
+exif_date_label
+exif_date != NULL && g_date_valid (exif_date)
+exif_details_expander
+exif_entry_get_value
+Exif entry has unsupported size
+exif_exposure_label
+exif_flash_label
+exif_focal_label
+exif_format_get_size
+exif_get_rational
+exif_get_short
+exif_iso_label
+exif_metering_label
+exif_mnote_data_count
+exif_mnote_data_get_title
+exif_mnote_data_get_value
+exif_model_label
+EXIF not supported for this file format.
+exif_set_long
+exif_set_short
+exif_tag_get_name_in_ifd
+exit_fullscreen_button_clicked_cb
+Exposure Time:
+extension-added
+extension-removed
+external-editor
+extrapolate
+extrapolate_check
+factory != NULL
+Failed to create directory %s: %s
+Failed to delete old file %s
+Failed to load XML data from %s
+Failed to open input stream for file
+Failed to read from input stream
+Failed to rename %s to %s
+Failed to restore %s from %s
+Failed to write XML data to %s
+Federico Mena-Quintero <federico@gnu.org>
+Felix Riemann <friemann@gnome.org> (maintainer)
+ffffff9@page-setup
+[%f (%f)] %s:%d (%s)
+[%f (%f)] %s:%d (%s) %s
+file-changed
+filechooser-xdg-fallback
+File doesn't exist. Checking parent directory.
+file-exists
+File exists
+file-format
+File format is unknown or unsupported
+File information not available. Setting default attributes.
+filename
+File size:
+file %s: line %d (%s): should not be reached
+file_type == G_FILE_TYPE_DIRECTORY
+find_action
+find_queue
+finished
+_First Image
+Fit the image to the window
+Flip _Horizontal
+Flip _Vertical
+Focal Length:
+focus_in_event
+focus_out_event
+folder_button
+_folder_button_clicked_cb
+follow-state
+format_combobox
+format_str != NULL
+format-value
+__fprintf_chk
+_Fullscreen
+fullscreen_clear_timeout
+fullscreen_leave_notify_cb
+fullscreen_motion_notify_cb
+fullscreen_set_timeout
+/FullscreenToolbar
+g_app_info_create_from_commandline
+g_app_info_equal
+g_app_info_get_all_for_type
+g_app_info_get_executable
+g_app_info_get_icon
+g_app_info_get_name
+g_app_info_launch
+g_app_launch_context_get_type
+g_application_get_flags
+g_application_run
+g_application_set_flags
+g_ascii_strcasecmp
+g_ascii_strdown
+g_ascii_strtoll
+g_assertion_message
+g_assertion_message_expr
+g_boxed_type_register_static
+G_BROKEN_FILENAMES
+g_build_filename
+g_cclosure_marshal_VOID__DOUBLE
+g_cclosure_marshal_VOID__FLOAT
+g_cclosure_marshal_VOID__INT
+g_cclosure_marshal_VOID__OBJECT
+g_cclosure_marshal_VOID__STRING
+g_cclosure_marshal_VOID__VOID
+g_clear_error
+g_cond_broadcast
+g_cond_wait
+GCONF_VALUE
+g_content_type_get_description
+g_content_type_get_mime_type
+g_date_free
+g_date_new_dmy
+g_date_to_struct_tm
+g_date_valid
+g_dbus_proxy_call
+g_dbus_proxy_call_finish
+g_dbus_proxy_call_sync
+g_dbus_proxy_get_type
+g_dbus_proxy_new_for_bus
+g_dbus_proxy_new_for_bus_finish
+g_dbus_proxy_new_for_bus_sync
+g_desktop_app_info_new
+g_direct_equal
+g_direct_hash
+gdk_app_launch_context_set_icon
+gdk_app_launch_context_set_screen
+gdk_app_launch_context_set_timestamp
+gdk_atom_intern
+gdk_atom_name
+gdk_cairo_set_source_pixbuf
+gdk_color_copy
+gdk_color_equal
+gdk_color_free
+gdk_color_get_type
+gdk_color_parse
+gdk_cursor_new
+gdk_cursor_new_for_display
+gdk_device_manager_get_client_pointer
+gdk_display_get_app_launch_context
+gdk_display_get_default
+gdk_display_get_device_manager
+gdk_drag_context_get_selected_action
+gdk_drag_context_get_suggested_action
+gdk_drag_status
+gdk_event_free
+gdk_event_get_coords
+gdk_event_get_device
+gdk_event_get_root_coords
+gdk_event_get_scroll_deltas
+gdk_event_get_state
+gdk_event_get_time
+gdk_event_new
+gdk_event_set_device
+gdk_flush
+GDK_IS_PIXBUF_ANIMATION_ITER (img->priv->anim_iter)
+GDK_IS_PIXBUF (pixbuf)
+GDK_IS_PIXBUF (thumbnail) || thumbnail == NULL
+gdk_pixbuf_animation_get_iter
+gdk_pixbuf_animation_get_static_image
+gdk_pixbuf_animation_is_static_image
+gdk_pixbuf_animation_iter_advance
+gdk_pixbuf_animation_iter_get_delay_time
+gdk_pixbuf_animation_iter_get_pixbuf
+gdk_pixbuf_animation_iter_get_type
+gdk_pixbuf_copy
+gdk_pixbuf_copy_area
+gdk_pixbuf_error_quark
+gdk_pixbuf_fill
+gdk_pixbuf_format_get_description
+gdk_pixbuf_format_get_extensions
+gdk_pixbuf_format_get_mime_types
+gdk_pixbuf_format_get_name
+gdk_pixbuf_format_is_writable
+gdk_pixbuf_get_bits_per_sample
+gdk_pixbuf_get_formats
+gdk_pixbuf_get_has_alpha
+gdk_pixbuf_get_height
+gdk_pixbuf_get_n_channels
+gdk_pixbuf_get_option
+gdk_pixbuf_get_pixels
+gdk_pixbuf_get_rowstride
+gdk_pixbuf_get_type
+gdk_pixbuf_get_width
+gdk_pixbuf_loader_close
+gdk_pixbuf_loader_get_animation
+gdk_pixbuf_loader_get_format
+gdk_pixbuf_loader_get_pixbuf
+gdk_pixbuf_loader_new
+gdk_pixbuf_loader_new_with_mime_type
+gdk_pixbuf_loader_write
+gdk_pixbuf_new
+gdk_pixbuf_new_from_file
+gdk_pixbuf_save
+gdk_pixbuf_scale_simple
+gdk_screen_get_default
+gdk_screen_get_display
+gdk_screen_get_monitor_at_window
+gdk_screen_get_monitor_geometry
+gdk_screen_get_number
+gdk_screen_get_root_window
+gdk_threads_add_idle_full
+gdk_threads_init
+gdk_window_create_similar_surface
+gdk_window_get_background_pattern
+gdk_window_get_device_position
+gdk_window_get_origin
+gdk_window_process_updates
+gdk_window_scroll
+gdk_window_set_cursor
+gdk_x11_display_get_xdisplay
+gdk_x11_get_xatom_by_name_for_display
+gdk_x11_window_get_xid
+g_dpgettext
+general_box
+g_enum_register_static
+g_error_free
+g_error_matches
+get_file_directory
+get_scale_to_px_factor
+get_toolbar_nth
+get_transparency_params
+g_file_copy
+g_file_delete
+g_file_dup
+g_file_enumerate_children
+g_file_enumerator_next_file
+g_file_equal
+g_file_find_enclosing_mount
+g_file_get_basename
+g_file_get_child
+g_file_get_parent
+g_file_get_path
+g_file_get_type
+g_file_get_uri
+g_file_get_uri_scheme
+g_file_info_get_attribute_boolean
+g_file_info_get_attribute_byte_string
+g_file_info_get_attribute_uint32
+g_file_info_get_attribute_uint64
+g_file_info_get_content_type
+g_file_info_get_file_type
+g_file_info_get_name
+g_file_info_get_size
+g_file_info_has_attribute
+g_file_is_native
+g_file_monitor_cancel
+g_file_monitor_directory
+g_file_monitor_get_type
+g_file_move
+g_filename_to_uri
+g_filename_to_utf8
+g_file_new_for_commandline_arg
+g_file_new_for_path
+g_file_new_for_uri
+g_file_query_exists
+g_file_query_file_type
+g_file_query_info
+g_file_read
+g_file_set_attribute
+g_file_set_attribute_uint32
+g_file_set_attribute_uint64
+g_file_set_contents
+g_file_test
+g_file_trash
+g_flags_register_static
+g_format_size
+g_get_application_name
+g_get_current_dir
+g_get_current_time
+g_getenv
+g_get_home_dir
+g_get_prgname
+g_get_tmp_dir
+g_get_user_config_dir
+g_get_user_data_dir
+g_get_user_special_dir
+g_hash_table_destroy
+g_hash_table_foreach
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_remove_all
+ghelp:eog
+ghelp:eog?%s
+g_idle_add
+g_idle_add_full
+g_initially_unowned_get_type
+g_input_stream_get_type
+g_input_stream_read
+g_intern_static_string
+g_io_error_quark
+girepository-1.0
+g_irepository_get_default
+g_irepository_get_option_group
+g_irepository_require
+g_irepository_require_private
+G_IS_FILE (file)
+G_IS_FILE (target_file)
+G_IS_FILE (temp_file)
+g_key_file_free
+g_key_file_has_group
+g_key_file_load_from_file
+g_key_file_new
+g_key_file_to_data
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+g_list_append
+g_list_copy
+g_list_find_custom
+g_list_first
+g_list_foreach
+g_list_free
+g_list_index
+g_list_insert_sorted
+g_list_length
+g_list_nth_data
+g_list_prepend
+g_list_reverse
+g_list_sort
+g_locale_to_utf8
+g_main_current_source
+g_malloc
+g_malloc0
+g_malloc0_n
+g_malloc_n
+g_markup_escape_text
+g_markup_printf_escaped
+g_mkdir_with_parents
+g_mkstemp
+__gmon_start__
+g_mount_can_unmount
+g_mutex_clear
+g_mutex_init
+g_mutex_lock
+g_mutex_unlock
+g_node_child_position
+g_node_children_foreach
+g_node_destroy
+g_node_insert
+g_node_n_children
+g_node_new
+g_node_nth_child
+g_node_unlink
+gnome-control-center background
+gnome_desktop_thumbnail_factory_can_thumbnail
+gnome_desktop_thumbnail_factory_create_failed_thumbnail
+gnome_desktop_thumbnail_factory_generate_thumbnail
+gnome_desktop_thumbnail_factory_has_valid_failed_thumbnail
+gnome_desktop_thumbnail_factory_lookup
+gnome_desktop_thumbnail_factory_new
+gnome_desktop_thumbnail_factory_save_thumbnail
+gnome_desktop_thumbnail_is_valid
+gnome_desktop_thumbnail_path_for_uri
+gnome_desktop_thumbnail_scale_down_pixbuf
+GNOME Image Viewer
+g_object_add_weak_pointer
+g_object_bind_property
+g_object_bind_property_full
+g_object_class_install_property
+g_object_get
+g_object_get_data
+g_object_get_property
+g_object_interface_install_property
+g_object_new
+g_object_notify
+g_object_ref
+g_object_ref_sink
+g_object_set
+g_object_set_data
+g_object_set_data_full
+g_object_unref
+g_once_impl
+g_once_init_enter
+g_once_init_leave
+GoPrevious
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+GoRandom
+Go to a random image of the gallery
+Go to the first image of the gallery
+Go to the last image of the gallery
+Go to the next image of the gallery
+Go to the previous image of the gallery
+g_param_spec_boolean
+g_param_spec_boxed
+g_param_spec_char
+g_param_spec_double
+g_param_spec_enum
+g_param_spec_flags
+g_param_spec_float
+g_param_spec_int
+g_param_spec_object
+g_param_spec_pointer
+g_param_spec_string
+g_param_spec_uint
+g_param_spec_ulong
+g_path_get_basename
+g_path_get_dirname
+g_printerr
+GPS Data
+g_ptr_array_add
+g_ptr_array_free
+g_ptr_array_new
+g_ptr_array_remove_index_fast
+g_quark_from_static_string
+g_quark_from_string
+g_queue_delete_link
+g_queue_find
+g_queue_is_empty
+g_queue_new
+g_queue_pop_head
+g_queue_push_tail
+g_random_int_range
+Graphics
+g_realloc
+g_return_if_fail_warning
+GRIP_0.1
+grip_gesture_manager_get
+grip_gesture_manager_register_window
+g_set_application_name
+g_set_error
+g_settings_bind
+g_settings_bind_with_mapping
+g_settings_get_boolean
+g_settings_get_enum
+g_settings_get_int
+g_settings_get_string
+g_settings_get_type
+g_settings_new
+g_settings_set_boolean
+g_settings_set_enum
+g_settings_set_string
+g_signal_connect_data
+g_signal_connect_object
+g_signal_emit
+g_signal_handler_disconnect
+g_signal_handler_is_connected
+g_signal_handlers_block_matched
+g_signal_handlers_disconnect_matched
+g_signal_handlers_unblock_matched
+g_signal_new
+g_signal_stop_emission_by_name
+g_slice_alloc
+g_slice_alloc0
+g_slice_free1
+g_slist_append
+g_slist_delete_link
+g_slist_foreach
+g_slist_free
+g_slist_length
+g_slist_prepend
+g_slist_reverse
+g_snprintf
+g_source_attach
+g_source_destroy
+g_source_is_destroyed
+g_source_remove
+g_source_remove_by_user_data
+g_source_set_callback
+g_source_unref
+g_strcmp0
+g_strconcat
+g_strdup
+g_strdup_printf
+g_strdup_vprintf
+g_str_equal
+g_strfreev
+g_str_hash
+g_str_has_prefix
+g_string_append
+g_string_append_len
+g_string_append_printf
+g_string_append_unichar
+g_string_free
+g_string_insert_c
+g_string_new
+g_string_sized_new
+g_string_truncate
+g_strjoin
+g_strjoinv
+g_strndup
+g_strsplit
+g_strv_length
+g_thread_new
+g_thread_unref
+g_timeout_add
+g_timeout_source_new
+g_timer_elapsed
+g_timer_new
+gtk-about
+gtk_accel_map_load
+gtk_accel_map_save
+gtk_action_create_tool_item
+gtk_action_get_name
+gtk_action_get_type
+gtk_action_group_add_action
+gtk_action_group_add_actions
+gtk_action_group_add_toggle_actions
+gtk_action_group_get_action
+gtk_action_group_get_type
+gtk_action_group_list_actions
+gtk_action_group_new
+gtk_action_group_remove_action
+gtk_action_group_set_sensitive
+gtk_action_group_set_translation_domain
+gtk_action_new
+gtk_action_set_accel_group
+gtk_action_set_always_show_image
+gtk_action_set_gicon
+gtk_action_set_is_important
+gtk_action_set_sensitive
+gtk_action_set_visible
+gtk_activatable_get_related_action
+gtk_activatable_get_type
+gtk_activatable_set_related_action
+gtk_adjustment_configure
+gtk_adjustment_get_page_increment
+gtk_adjustment_get_page_size
+gtk_adjustment_get_type
+gtk_adjustment_get_upper
+gtk_adjustment_get_value
+gtk_adjustment_new
+gtk_adjustment_set_value
+gtk_adjustment_value_changed
+gtk_alignment_get_type
+gtk_alignment_new
+gtk_alignment_set_padding
+gtk_application_get_type
+gtk_application_get_windows
+gtk-application-prefer-dark-theme
+gtk_arrow_new
+gtk_aspect_frame_get_type
+gtk_aspect_frame_set
+gtk_bin_get_child
+gtk_bin_get_type
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_box_reorder_child
+gtk_box_set_spacing
+gtk_builder_add_from_file
+gtk_builder_add_from_file (priv->xml, filename, NULL)
+gtk_builder_add_from_file (xml, filepath, NULL)
+gtk_builder_get_object
+gtk_builder_new
+gtk_builder_set_translation_domain
+gtk_button_get_type
+gtk_button_new
+gtk_button_new_from_stock
+gtk_button_new_with_label
+gtk_button_set_label
+gtk_button_set_relief
+gtk-cancel
+gtk_cell_layout_add_attribute
+gtk_cell_layout_get_type
+gtk_cell_layout_pack_start
+gtk_cell_layout_set_attributes
+gtk_cell_renderer_pixbuf_new
+gtk_cell_renderer_text_new
+gtk_cell_renderer_toggle_get_type
+gtk_cell_renderer_toggle_new
+gtk_cell_renderer_toggle_set_activatable
+gtk_check_button_new_with_mnemonic
+gtk_clipboard_clear
+gtk_clipboard_get
+gtk_clipboard_set_with_owner
+gtk-close
+gtk_combo_box_get_active
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_set_active
+gtk_combo_box_set_active_iter
+gtk_combo_box_set_model
+gtk_combo_box_text_get_type
+gtk_combo_box_text_insert_text
+gtk_combo_box_text_new
+gtk_container_add
+gtk_container_forall
+gtk_container_get_children
+gtk_container_get_focus_child
+gtk_container_get_type
+gtk_container_remove
+gtk_container_set_border_width
+gtk_css_provider_load_from_path
+gtk_css_provider_new
+gtk-delete
+gtk_dialog_add_button
+gtk_dialog_add_buttons
+gtk-dialog-error
+gtk_dialog_get_action_area
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_new_with_buttons
+gtk-dialog-question
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk_dialog_set_response_sensitive
+gtk-dialog-warning
+gtk-directory
+gtk_drag_begin
+gtk_drag_dest_add_uri_targets
+gtk_drag_dest_find_target
+gtk_drag_dest_get_target_list
+gtk_drag_dest_set
+gtk_drag_finish
+gtk_drag_get_data
+gtk_drag_get_source_widget
+gtk_drag_set_icon_pixbuf
+gtk_drag_source_add_uri_targets
+gtk_drag_source_set
+gtk_drag_source_set_icon_pixbuf
+gtk_drawing_area_get_type
+gtk_drawing_area_new
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_set_width_chars
+gtk_event_box_get_type
+gtk_event_box_new
+gtk_event_box_set_visible_window
+gtk_expander_get_expanded
+gtk_file_chooser_add_filter
+gtk_file_chooser_dialog_get_type
+gtk_file_chooser_get_action
+gtk_file_chooser_get_current_folder
+gtk_file_chooser_get_file
+gtk_file_chooser_get_filter
+gtk_file_chooser_get_preview_uri
+gtk_file_chooser_get_type
+gtk_file_chooser_get_uris
+gtk_file_chooser_set_current_folder
+gtk_file_chooser_set_current_folder_file
+gtk_file_chooser_set_current_folder_uri
+gtk_file_chooser_set_current_name
+gtk_file_chooser_set_do_overwrite_confirmation
+gtk_file_chooser_set_file
+gtk_file_chooser_set_filter
+gtk_file_chooser_set_preview_widget
+gtk_file_chooser_set_preview_widget_active
+gtk_file_filter_add_mime_type
+gtk_file_filter_add_pattern
+gtk_file_filter_add_pixbuf_formats
+gtk_file_filter_get_type
+gtk_file_filter_new
+gtk_file_filter_set_name
+gtk-fullscreen
+gtk_get_current_event
+gtk_get_current_event_time
+gtk_get_option_group
+gtk-go-back
+gtk-go-forward
+gtk-goto-first
+gtk-goto-last
+gtk_grid_attach
+gtk_grid_attach_next_to
+gtk_grid_get_type
+gtk_grid_new
+gtk_grid_set_column_spacing
+gtk_grid_set_row_spacing
+gtk-help
+gtk_icon_size_lookup_for_settings
+gtk_icon_theme_append_search_path
+gtk_icon_theme_get_default
+gtk_icon_theme_get_for_screen
+gtk_icon_theme_load_icon
+gtk_icon_view_enable_model_drag_source
+gtk_icon_view_get_model
+gtk_icon_view_get_path_at_pos
+gtk_icon_view_get_selected_items
+gtk_icon_view_get_tooltip_context
+gtk_icon_view_get_type
+gtk_icon_view_get_visible_range
+gtk_icon_view_path_is_selected
+gtk_icon_view_scroll_to_path
+gtk_icon_view_selected_foreach
+gtk_icon_view_select_path
+gtk_icon_view_set_columns
+gtk_icon_view_set_column_spacing
+gtk_icon_view_set_cursor
+gtk_icon_view_set_margin
+gtk_icon_view_set_model
+gtk_icon_view_set_row_spacing
+gtk_icon_view_set_selection_mode
+gtk_icon_view_unselect_all
+gtk_image_get_icon_name
+gtk_image_get_pixbuf
+gtk_image_get_stock
+gtk_image_get_storage_type
+gtk_image_get_type
+gtk_image_menu_item_get_type
+gtk_image_menu_item_new_with_label
+gtk_image_menu_item_set_always_show_image
+gtk_image_new
+gtk_image_new_from_icon_name
+gtk_image_new_from_stock
+gtk_image_set_from_pixbuf
+gtk_info_bar_add_button
+gtk_info_bar_get_content_area
+gtk_info_bar_get_type
+gtk_info_bar_new
+gtk_info_bar_new_with_buttons
+gtk_info_bar_set_default_response
+gtk_info_bar_set_message_type
+GTK_IS_ACTION (next_image_action)
+GTK_IS_ACTION (previous_image_action)
+?GTK_IS_BUTTON (user_data)
+GTK_IS_DRAWING_AREA (widget)
+GTK_IS_INFO_BAR (message_area)
+GTK_IS_LABEL (label)
+GTK_IS_PAGE_SETUP (setup)
+GTK_IS_TOOLBAR (etoolbar->priv->fixed_toolbar)
+GTK_IS_TOOLBAR (t->priv->fixed_toolbar)
+GTK_IS_UI_MANAGER (manager)
+GTK_IS_WIDGET (main_widget)
+GTK_IS_WIDGET (menubar)
+GTK_IS_WIDGET (toolbar)
+GTK_IS_WINDOW (parent)
+gtk_label_get_type
+gtk_label_new
+gtk_label_new_with_mnemonic
+gtk_label_set_line_wrap
+gtk_label_set_markup
+gtk_label_set_mnemonic_widget
+gtk_label_set_selectable
+gtk_label_set_text
+gtk_label_set_use_markup
+gtk-leave-fullscreen
+gtk_list_store_append
+gtk_list_store_get_type
+gtk_list_store_insert_with_values
+gtk_list_store_move_before
+gtk_list_store_new
+gtk_list_store_remove
+gtk_list_store_set
+gtk_list_store_set_column_types
+gtk_main_iteration
+gtk_menu_attach_to_widget
+gtk_menu_detach
+gtk_menu_get_active
+gtk_menu_get_type
+gtk_menu_item_get_type
+gtk_menu_new
+gtk_menu_popup
+gtk_menu_set_active
+gtk_menu_shell_append
+gtk_menu_shell_get_type
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_message_dialog_new_with_markup
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk_notebook_append_page
+gtk_notebook_get_current_page
+gtk_notebook_get_nth_page
+gtk_notebook_get_type
+gtk_notebook_new
+gtk_notebook_prev_page
+gtk_notebook_remove_page
+gtk_notebook_set_current_page
+gtk_notebook_set_show_border
+gtk_notebook_set_show_tabs
+gtk_offscreen_window_get_pixbuf
+gtk_offscreen_window_get_type
+gtk_offscreen_window_new
+gtk-open
+gtk_orientable_get_type
+gtk_orientable_set_orientation
+gtk_page_setup_copy
+gtk_page_setup_get_bottom_margin
+gtk_page_setup_get_left_margin
+gtk_page_setup_get_page_height
+gtk_page_setup_get_page_width
+gtk_page_setup_get_paper_height
+gtk_page_setup_get_paper_width
+gtk_page_setup_get_right_margin
+gtk_page_setup_get_top_margin
+gtk_page_setup_get_type
+gtk_page_setup_new
+gtk_page_setup_new_from_key_file
+gtk_page_setup_to_key_file
+gtk_paned_get_type
+gtk_paned_new
+gtk_paned_pack1
+gtk_paned_pack2
+gtk-preferences
+gtk-print
+gtk_print_context_get_cairo_context
+gtk_print_context_get_dpi_x
+gtk_print_context_get_dpi_y
+gtk_print_context_get_page_setup
+gtk_print_operation_get_default_page_setup
+gtk_print_operation_get_print_settings
+gtk_print_operation_new
+gtk_print_operation_run
+gtk_print_operation_set_custom_tab_label
+gtk_print_operation_set_default_page_setup
+gtk_print_operation_set_embed_page_setup
+gtk_print_operation_set_job_name
+gtk_print_operation_set_n_pages
+gtk_print_operation_set_print_settings
+gtk_print_settings_new
+gtk_print_settings_new_from_key_file
+gtk_print_settings_to_key_file
+gtk_progress_bar_get_type
+gtk_progress_bar_new
+gtk_progress_bar_set_fraction
+gtk-properties
+gtk_range_get_type
+gtk_range_get_value
+gtk_range_set_increments
+gtk_range_set_range
+gtk_range_set_value
+gtk-recent-info
+gtk_recent_info_get_application_info
+gtk_recent_info_get_display_name
+gtk_recent_info_get_uri
+gtk_recent_info_get_uri_display
+gtk_recent_info_has_application
+gtk_recent_info_ref
+gtk_recent_info_unref
+gtk_recent_manager_add_full
+gtk_recent_manager_get_default
+gtk_recent_manager_get_items
+gtk-remove
+gtk_render_focus
+gtk-save
+gtk-save-as
+gtk_scale_get_type
+gtk_scale_new_with_range
+gtk_scale_set_value_pos
+gtk_scrollbar_new
+gtk_scrolled_window_add_with_viewport
+gtk_scrolled_window_get_hadjustment
+gtk_scrolled_window_get_hscrollbar
+gtk_scrolled_window_get_type
+gtk_scrolled_window_get_vadjustment
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_scrolled_window_set_shadow_type
+gtk_selection_data_get_data
+gtk_selection_data_get_data_type
+gtk_selection_data_get_length
+gtk_selection_data_get_target
+gtk_selection_data_set
+gtk_selection_data_set_pixbuf
+gtk_selection_data_set_text
+gtk_selection_data_set_uris
+gtk_separator_new
+gtk_separator_tool_item_get_type
+gtk_separator_tool_item_new
+gtk_settings_get_default
+gtk_settings_get_for_screen
+gtk_show_about_dialog
+gtk_show_uri
+gtk_spin_button_get_range
+gtk_spin_button_get_type
+gtk_spin_button_get_value
+gtk_spin_button_get_value_as_int
+gtk_spin_button_new_with_range
+gtk_spin_button_set_digits
+gtk_spin_button_set_increments
+gtk_spin_button_set_range
+gtk_spin_button_set_value
+gtk_statusbar_get_context_id
+gtk_statusbar_get_type
+gtk_statusbar_pop
+gtk_statusbar_push
+gtk_statusbar_remove_all
+gtk_style_context_add_class
+gtk_style_context_add_provider_for_screen
+gtk_style_context_remove_class
+gtk_style_provider_get_type
+gtk_table_attach
+gtk_table_get_type
+gtk_target_list_add
+gtk_target_list_add_image_targets
+gtk_target_list_add_text_targets
+gtk_target_list_add_uri_targets
+gtk_target_list_new
+gtk_target_list_unref
+gtk_targets_include_uri
+gtk_target_table_free
+gtk_target_table_new_from_list
+gtk_toggle_action_get_active
+gtk_toggle_action_get_type
+gtk_toggle_action_new
+gtk_toggle_action_set_active
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_new
+gtk_toggle_button_set_active
+gtk_toolbar_get_drop_index
+gtk_toolbar_get_item_index
+gtk_toolbar_get_n_items
+gtk_toolbar_get_nth_item
+gtk_toolbar_get_type
+gtk_toolbar_insert
+gtk_toolbar_new
+gtk_toolbar_set_drop_highlight_item
+gtk_toolbar_set_show_arrow
+gtk_toolbar_set_style
+gtk_toolbar_unset_style
+gtk_tool_item_get_type
+gtk_tool_item_set_use_drag_window
+gtk_tooltip_set_markup
+gtk_tooltip_trigger_tooltip_query
+gtk_tree_model_get
+gtk_tree_model_get_iter
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_iter_from_string
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_iter_n_children
+gtk_tree_model_iter_next
+gtk_tree_model_iter_nth_child
+gtk_tree_path_copy
+gtk_tree_path_free
+gtk_tree_path_get_indices
+gtk_tree_path_new_first
+gtk_tree_path_new_from_indices
+gtk_tree_path_new_from_string
+gtk_tree_path_next
+gtk_tree_path_prev
+gtk_tree_path_to_string
+gtk_tree_sortable_get_type
+gtk_tree_sortable_set_default_sort_func
+gtk_tree_sortable_set_sort_column_id
+gtk_tree_store_append
+gtk_tree_store_clear
+gtk_tree_store_get_type
+gtk_tree_store_new
+gtk_tree_store_set
+gtk_tree_view_append_column
+gtk_tree_view_column_new_with_attributes
+gtk_tree_view_get_model
+gtk_tree_view_get_type
+gtk_tree_view_new
+gtk_tree_view_set_enable_search
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_model
+gtk_tree_view_set_rules_hint
+gtk_ui_manager_add_ui
+gtk_ui_manager_add_ui_from_file
+gtk_ui_manager_ensure_update
+gtk_ui_manager_get_accel_group
+gtk_ui_manager_get_action
+gtk_ui_manager_get_action_groups
+gtk_ui_manager_get_type
+gtk_ui_manager_get_widget
+gtk_ui_manager_insert_action_group
+gtk_ui_manager_new
+gtk_ui_manager_new_merge_id
+gtk_ui_manager_remove_action_group
+gtk_ui_manager_remove_ui
+gtk-undo
+gtk_widget_add_events
+gtk_widget_destroy
+gtk_widget_event
+gtk_widget_get_accessible
+gtk_widget_get_allocation
+gtk_widget_get_ancestor
+gtk_widget_get_default_direction
+gtk_widget_get_direction
+gtk_widget_get_display
+gtk_widget_get_has_window
+!gtk_widget_get_has_window (user_data)
+gtk_widget_get_mapped
+gtk_widget_get_parent
+gtk_widget_get_preferred_size
+gtk_widget_get_realized
+gtk_widget_get_screen
+gtk_widget_get_style
+gtk_widget_get_style_context
+gtk_widget_get_toplevel
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_get_window
+gtk_widget_grab_focus
+gtk_widget_has_focus
+gtk_widget_hide
+gtk_widget_is_drawable
+gtk_widget_modify_bg
+gtk_widget_new
+gtk_widget_queue_draw
+gtk_widget_queue_resize_no_redraw
+gtk_widget_realize
+gtk_widget_render_icon_pixbuf
+gtk_widget_reparent
+gtk_widget_reset_style
+gtk_widget_set_can_focus
+gtk_widget_set_events
+gtk_widget_set_margin_bottom
+gtk_widget_set_margin_left
+gtk_widget_set_margin_right
+gtk_widget_set_margin_top
+gtk_widget_set_name
+gtk_widget_set_no_show_all
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_set_style
+gtk_widget_set_tooltip_text
+gtk_widget_set_vexpand
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_add_accel_group
+gtk_window_fullscreen
+gtk_window_get_group
+gtk_window_get_screen
+gtk_window_get_size
+gtk_window_get_type
+gtk_window_group_add_window
+gtk_window_list_toplevels
+gtk_window_move
+gtk_window_new
+gtk_window_present
+gtk_window_present_with_time
+gtk_window_resize
+gtk_window_set_application
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_destroy_with_parent
+gtk_window_set_geometry_hints
+gtk_window_set_icon
+gtk_window_set_modal
+gtk_window_set_position
+gtk_window_set_resizable
+gtk_window_set_screen
+gtk_window_set_skip_taskbar_hint
+gtk_window_set_title
+gtk_window_set_transient_for
+gtk_window_unfullscreen
+gtk-zoom-100
+gtk-zoom-fit
+gtk-zoom-in
+gtk-zoom-out
+g_try_malloc
+g_type_add_interface_static
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_interface_add_prerequisite
+g_type_interface_peek
+g_type_name
+g_type_register_static_simple
+g_unichar_isspace
+g_uri_list_extract_uris
+g_uri_unescape_string
+g_utf8_collate_key
+g_utf8_collate_key_for_filename
+g_utf8_get_char
+g_utf8_offset_to_pointer
+g_utf8_skip
+g_utf8_strlen
+g_utf8_strncpy
+g_utf8_strrchr
+g_utf8_validate
+g_utf8_validate (string->str, -1, NULL)
+g_value_dup_object
+g_value_dup_string
+g_value_get_boolean
+g_value_get_boxed
+g_value_get_double
+g_value_get_enum
+g_value_get_flags
+g_value_get_float
+g_value_get_int
+g_value_get_object
+g_value_get_pointer
+g_value_get_schar
+g_value_get_string
+g_value_get_uint
+g_value_get_ulong
+g_value_init
+g_value_peek_pointer
+g_value_set_boolean
+g_value_set_boxed
+g_value_set_double
+g_value_set_enum
+g_value_set_flags
+g_value_set_float
+g_value_set_int
+g_value_set_object
+g_value_set_pointer
+g_value_set_schar
+g_value_set_string
+g_value_set_uint
+g_value_set_ulong
+G_VALUE_TYPE (value) == GDK_TYPE_COLOR
+g_value_unset
+g_variant_builder_add
+g_variant_builder_clear
+g_variant_builder_init
+g_variant_get
+g_variant_get_byte
+g_variant_get_string
+g_variant_is_of_type
+g_variant_is_of_type (variant, G_VARIANT_TYPE_STRING)
+g_variant_iter_init
+g_variant_iter_loop
+g_variant_new
+g_variant_new_byte
+g_variant_new_string
+g_variant_type_checked_
+g_variant_type_equal
+g_variant_type_equal (expected_type, G_VARIANT_TYPE_STRING)
+g_variant_unref
+g_warn_message
+hadjustment
+handle_image_selection_changed_cb
+has-tooltip
+_Height:
+height_label
+height != NULL
+HelpAbout
+HelpManual
+Help on this application
+homogeneous
+Horizontal alignment for the image
+hscrollbar-policy
+http://ns.adobe.com/xap/1.0/
+http://projects.gnome.org/eog/
+_ICC_PROFILE
+ICC_PROFILE
+_ICC_PROFILE_%d
+ICC profile is too large. Ignoring.
+icons-only
+If you don't save, all your changes will be lost.
+If you don't save, your changes will be lost.
+ImageClose
+image-data
+Image Data
+_Image Gallery
+image-gallery-position
+image-gallery-resizable
+image_info_message
+image-load
+image-loading
+Image loading failed.
+image-missing
+image_moved
+image-moved
+ImageOpen
+ImageOpenContainingFolder
+ImageOpenWith
+ImagePrint
+ImageProperties
+Image Properties
+image-save
+ImageSave
+ImageSaveAs
+image-scale
+image_scaled
+ImageSetAsWallpaper
+Image Settings
+images != NULL && dest != NULL
+image/svg+xml
+image/svg+xml-compressed
+Image Taking Conditions
+image_thumb_changed_cb
+Image to show in the preview
+Image Viewer could not determine a supported writable file format based on the filename.
+image-x-align
+image-x-generic
+?image-y-align
+img_file != NULL
+img != NULL
+img->priv->data_ref_count <= G_OBJECT (img)->ref_count
+impl_add_item
+infinite
+inflateEnd
+inflateInit_
+info->format != NULL
+info != NULL
+init_transform_info
+Input file not openable: %s
+interpolate
+interpolate_check
+Invalid display profile set, not using it
+ (invalid Unicode)
+[Invalid Unicode]
+_IO_stdin_used
+ %i pixel  %s    %i%%
+ %i pixels  %s    %i%%
+i < priv->visibility_actions->len
+is-important
+is_local_file
+__isoc99_sscanf
+ISO Speed Rating:
+item_added
+item != NULL
+item_removed
+item_removed_cb
+%i x %i %s
+jcopy_block_row
+jcopy_markers_execute
+jcopy_markers_setup
+jdiv_round_up
+Jens Finke <jens@triq.net>
+jpeg_copy_critical_parameters
+jpeg_core_output_dimensions
+jpeg_CreateCompress
+jpeg_CreateDecompress
+jpeg_destroy_compress
+jpeg_destroy_decompress
+jpeg_finish_compress
+jpeg_finish_decompress
+JPEG has ICC profile
+JPEG has invalid ICC profile
+JPEG is Adobe RGB (Disabled)
+JPEG is calibrated
+JPEG is sRGB
+jpeg_read_coefficients
+jpeg_read_header
+jpeg_save_markers
+jpeg_set_colorspace
+jpeg_set_defaults
+jpeg_set_quality
+jpeg_start_compress
+jpeg_std_error
+jpeg_stdio_dest
+jpeg_stdio_src
+jpeg_write_coefficients
+jpeg_write_marker
+jpeg_write_scanlines
+jtransform_adjust_parameters
+jtransform_execute_transform
+jtransform_parse_crop_spec
+jtransform_perfect_transform
+jtransform_request_workspace
+_Jv_RegisterClasses
+key_press_event
+key-press-event
+Keywords:
+L$\9L$Hu
+_Last Image
+launchpad_integration_add_ui
+leave-notify-event
+Left margin of the page in inches
+libatk-1.0.so.0
+libcairo.so.2
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libexempi.so.3
+libexif.so.12
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libgirepository-1.0.so.1
+libglib-2.0.so.0
+libgnome-desktop-3.so.2
+libgobject-2.0.so.0
+libgrip.so.0
+libgtk-3.so.0
+LIBJPEG_8.0
+libjpeg.so.8
+liblaunchpad-integration-3.0.so.1
+liblcms2.so.2
+/lib/ld-linux.so.2
+libm.so.6
+libpeas-1.0.so.0
+libpeas-gtk-1.0.so.0
+libpthread.so.0
+librsvg-2.so.2
+libX11.so.6
+LIBXML2_2.4.30
+libxml2.so.2
+libz.so.1
+license-type
+list != NULL
+List of Unsaved Images
+list-store
+L$`kT$@X
+ller <urc8@rz.uni-karlsruhe.de>
+loaded-plugins
+local-only
+Location
+Location:
+logo-icon-name
+__longjmp_chk
+loop_check
+Lucas Rocha <lucasr@gnome.org>
+/MainMenu
+/MainMenu/Edit/EditFlipHorizontal
+/MainMenu/Edit/EditFlipVertical
+/MainMenu/Edit/EditRotate270
+/MainMenu/Edit/EditRotate90
+/MainMenu/Help/LaunchpadItems
+/MainMenu/Image/ImageOpenWith/Applications Placeholder
+/MainMenu/Image/ImageOpenWith/Applications Placeholder/%s
+/MainMenu/Image/RecentDocuments
+/MainMenu/View/ImageGalleryToggle
+/MainMenu/View/SidebarToggle
+/MainMenu/View/StatusbarToggle
+/MainMenu/View/ToolbarToggle
+Maker Note
+map_event
+Martin Baulig <martin@home-of-linux.org>
+media-playback-pause
+MenuActionsGallery
+MenuActionsImage
+MenuActionsWindow
+menu_item_select_cb
+menu != NULL
+MessageArea
+Metadata
+metadata_details_box
+metadata::nautilus-icon-position
+Metering Mode:
+Michael Meeks <mmeeks@gnu.org>
+migrate_config_folder
+Millimeters
+Mirror the image horizontally
+Mirror the image vertically
+model != NULL
+modified_label
+More image data unrefs than refs.
+motion_notify_event
+motion-notify-event
+_Move on Toolbar
+Move the selected image to the trash folder
+Move the selected item on the toolbar
+MoveToolItem
+Move to _Trash
+move_to_trash_real
+multiple-columns
+multiple-rows
+*name != 0
+name_label
+name != NULL
+nav->priv->button_left != NULL
+nav->priv->button_right != NULL
+n_columns
+Netbook Mode
+new-instance
+new_toolbar != NULL
+next_button
+next-frame
+_Next Image
+n-images
+nl_langinfo
+no-debug
+No gamma found
+No image loaded.
+No images found in '%s'.
+no-persist-file-interface
+No primary chromaticities found
+_Normal Size
+not-available
+notebook
+not-editable
+notify::expanded
+notify::image
+_notify_image_cb
+notify::sensitive
+notify::visible
+not-loaded
+not-read
+not-removable
+not-saved
+No valid display profile set, assuming sRGB
+No whitepoint found
+n_param_values == 3
+NS_EXIF_AUX
+NS_IPTC4XMP
+NS_XAP_RIGHTS
+num-columns
+object-flip-horizontal
+object-flip-vertical
+object != NULL
+object-rotate-left
+object-rotate-right
+old_suffix != NULL
+one-column
+One or both ICC profiles not in RGB colorspace; not correcting
+on_token_entry_changed
+on_unit_changed
+Open a file
+_Open Background Preferences
+OpenEditor
+Open Folder
+Open Image
+Open in a single window, if multiple windows are open the first one is used
+Open in fullscreen mode
+Opening image "%s"
+Open in slideshow mode
+Open the selected image with a different application
+Open _with
+OpenWithActions
+OpenWith%u
+/org/freedesktop/FileManager1
+org.freedesktop.FileManager1
+org.gnome.desktop.background
+org.gnome.desktop.lockdown
+org.gnome.eog.ApplicationService
+org.gnome.eog.fullscreen
+org.gnome.eog.plugins
+org.gnome.eog.ui
+org.gnome.eog.view
+/org/gnome/SessionManager
+org.gnome.SessionManager
+orientation
+Output file not openable: %s
+overwrite
+page-added
+page-bottom-margin
+page-details
+page-exif
+page-general
+page-left-margin
+page-removed
+page-right-margin
+Page Setup
+page-top-margin
+Paolo Borelli <pborelli@katamail.com>
+paper-height
+paper-width
+parent-set
+parent-window
+Pause or resume the slideshow
+PauseSlideshow
+Pause Slideshow
+pd_color_to_string_mapping
+pd_string_to_color_mapping
+pd_update_metadata_tab
+peas_engine_add_search_path
+peas_engine_enable_loader
+peas_engine_garbage_collect
+peas_engine_get_type
+peas_extension_call
+peas_extension_set_call
+peas_extension_set_new
+peas_gtk_plugin_manager_new
+Philip Van Hoof <pvanhoof@gnome.org>
+picture-uri
+pixbuf != NULL
+pixbuf == NULL || GDK_IS_PIXBUF (pixbuf)
+pixels != NULL
+Please try a different file extension like .png or .jpg.
+plugin_manager_container
+plugin_manager != NULL
+plugins/
+PNG has %s ICC profile
+PNG is sRGB
+popup_context_menu
+popup_context_menu_cb
+popup != NULL
+popup-path
+Position
+Prefere_nces
+Preferences for Image Viewer
+preview_label
+preview_label_from
+previous_button
+_Previous Image
+primary-toolbar
+Print Settings
+Print the selected image
+priv->edit_mode > 0
+priv->exif_chunk == NULL
+priv->image == NULL
+priv->image != NULL
+priv->list_store
+priv->parent_window == NULL
+priv->parent_window != NULL
+priv->pixbuf == NULL
+priv->unsaved_images == NULL
+Problem inhibiting the screensaver: %s
+Problem uninhibiting the screensaver: %s
+program-name
+progress >= 0.0 && progress <= 1.0
+Prope_rties
+property
+propsdialog-netbook-mode
+query-tooltip
+Question
+_Random Image
+Read APP1 data, Length: %i
+Read cHRM Chunk - size: %u
+Read continuation of EXIF data, length: %i
+Read continuation of ICC data, length: %i
+Read continuation of IPTC data, length: %i
+Read continuation of XMP data, length: %i
+Read gAMA-Chunk - size: %u
+Read ICC Chunk - size: %u
+!read_image_data || priv->image == NULL
+Read sRGB Chunk - value: %u
+Read XMP Chunk - size: %u
+Real paper height in inches
+Real paper width in inches
+RecentFilesActions
+recent-info-%d
+released
+_Remove from Toolbar
+Remove the selected item from the toolbar
+Remove the selected toolbar
+RemoveToolbar
+RemoveToolItem
+replace_remove_chars
+replace_spaces_check
+request_preview_update
+_Reset to Default
+response
+response_cb
+Right margin of the page in inches
+_Rotate Clockwise
+Rotate Counterc_lockwise
+Rotate the image 90 degrees to the left
+Rotate the image 90 degrees to the right
+row-deleted
+row-inserted
+row-spacing
+rsvg_handle_close
+rsvg_handle_get_pixbuf
+rsvg_handle_new
+rsvg_handle_render_cairo
+rsvg_handle_set_base_uri
+rsvg_handle_write
+Run '%s --help' to see a full list of available command line options.
+_save_any_as_jpeg
+Save _As
+saveas_job->file != NULL
+Save changes in currently selected images
+Save changes to image "%s" before closing?
+Save Image
+_save_jpeg_as_jpeg
+save-not-local
+save-progress
+Save the selected images with a different name
+Saving image locally
+Saving image "%s" (%u/%u)
+%s: bad permissions or valid failed thumbnail present
+_Scaling:
+%s: creating from file
+%s: creating from pixbuf
+screensaver_inhibit_dbus
+scroll-buttons
+scroll_event
+scroll-event
+scroll-wheel-zoom
+scrollwheel-zoom
+scr->priv->reason != NULL
+%s_%d. %s
+seconds_spin
+selected
+Selected toolitem
+selection_changed
+selection-done
+select-multiple
+S_elect the images you want to save:
+_separator
+Separator
+set_action_properties
+Set as _Desktop Background
+set_edit_mode
+set_fixed_style
+set_minimum_zoom_factor
+set_preview_pixbuf
+set_scale_unit
+Set the selected image as the desktop background
+Setting window size: %d x %d
+set_unsaved_image
+set_zoom
+%s: failed thumbnail saved
+short_label
+short-label
+show-buttons
+Show Buttons
+Show Containing _Folder
+Show Folder
+show_fullscreen_popup
+ShowItems
+Show the application's version
+Show the current image in fullscreen mode
+Show the folder which contains this file in the file manager
+Show the image at its normal size
+Show the properties and metadata of the selected image
+Shrink the image
+shrink-to-fit
+Side _Pane
+__sigsetjmp
+single-window
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+size-allocate
+size-changed
+size-prepared
+Skip bytes: %i
+Skip bytes: %u
+slide-show
+S_lideshow
+slideshow_clear_timeout
+slideshow-play
+slideshow_set_timeout
+slideshow_switch_cb
+%s: loaded from cache
+<small>%s</small>
+%s: normal thumbnail saved
+Some of the selected images can't be moved to the trash and will be removed permanently. Are you sure you want to proceed?
+source != NULL
+space-character
+<span weight="bold" size="larger">
+<span weight="bold" size="larger">%s</span>
+__sprintf_chk
+%s (*.%s)
+__stack_chk_fail
+standard::content-type
+standard::content-type,standard::name
+standard::content-type,time::modified,thumbnail::path,thumbnail::failed,access::can-read
+standard::size,standard::content-type
+standard::type
+standard::type,standard::content-type
+Start a new instance instead of reusing an existing one
+Start a slideshow view of the images
+start_thumb <= end_thumb
+statusbar
+_Statusbar
+stock_drag-mode
+stock-id
+"%s" to the trash?
+__strdup
+strerror
+strftime
+string [%s]
+strptime
+style_set
+styles-mask
+Sun GNOME Documentation Team <gdocteam@sun.com>
+Supported image files
+Supposed ICC chunk didn't validate. Ignoring.
+sv_color_to_string_mapping
+sv_string_to_color_mapping
+switch-page
+%s x %s %s
+System Settings
+T$09T$4~ 
+T$0+T$,9
+Taken on
+Target file doesn't exist. Setting default attributes.
+target != NULL
+Temporary file creation failed.
+tEXt::Thumb::Image::Height
+tEXt::Thumb::Image::Width
+tEXt::Thumb::Size
+text/uri-list
+The currently visible page
+the %d selected images to the trash?
+The EogWindow this instance it attached to
+The given locations contain no images.
+The GNOME image viewer.
+The image "%s" has been modified by an external application.
+The image "%s" has been set as Desktop Background.
+The image whose printing properties will be set up
+The information for the page where the image will be printed
+The internal thumbnail viewer widget
+There are %d images with unsaved changes. Save changes before closing?
+There is %d image with unsaved changes. Save changes before closing?
+The scale for the image
+the selected image to the trash?
+T$H+T$L9
+thumbnail_changed
+thumbnail-changed
+Thumbnail creation failed
+thumbnail::failed
+thumbnail_image
+thumbnail::path
+/ThumbnailPopup
+/ThumbnailPopup/ImageOpenWith/Applications Placeholder
+/ThumbnailPopup/ImageOpenWith/Applications Placeholder/%s
+Thumbnail View
+Thumb navigator mode
+thumb-set
+thumbview
+thumbview->priv->menu == NULL
+Tiffany Antopolski <tiffany@antopolski.com>
+time::modified
+time::modified,standard::type,standard::size,standard::content-type
+time::modified-usec
+timer != NULL
+Tim Gerla <tim+gnomebugs@gerla.net>
+tip_message
+tmp-file-failed
+tmp_file_restore_unix_attributes
+toggled_visibility_cb
+token_entry
+_Toolbar
+T_oolbar
+ToolbarActions
+toolbar_added
+toolbar_changed
+Toolbar Editor
+!toolbar || GTK_IS_TOOLBAR (toolbar)
+toolbar#modify
+toolbar_node != NULL
+toolbar_removed
+toolbars
+Toolbars Model
+ToolbarToggle%d
+Top margin of the page in inches
+TOTEM_IS_SCRSAVER (scr)
+TotemScrsaver
+totem-scrsaver.c:393
+totem-scrsaver.c:419
+totem_scrsaver_disable
+totem_scrsaver_enable
+totem_scrsaver_get_type
+totem_scrsaver_new
+totem_scrsaver_set_state
+trans-color
+Transformation failed.
+Transformation on unloaded image.
+translator-credits
+transparency
+transparency-color
+transparency-style
+transpose
+transverse
+trash-not-found
+Trying to calculate color profile
+txt_uri != NULL
+type_label
+ui-manager
+UI Manager
+UI-Manager
+UI-Mmanager
+ui-not-found
+Unable to read profile, not correcting
+Undo the last change in the image
+Uninhibit
+unix::gid
+unix::mode
+unix::uid
+unix::uid,unix::gid,unix::mode
+unparent_fixed
+unsaved_images
+unsaved_images != NULL
+unset_fixed_style
+update_action_groups_state
+update-custom-widget
+update_editor_sheet
+update_preview
+update-preview
+update_status_bar
+update_ui_visibility
+upscale_check
+use-background-color
+user-trash
+Use "%s" to open the selected image
+/usr/lib
+/usr/lib/eog/plugins
+/usr/share/eog
+/usr/share/eog/eog.css
+/usr/share/eog/eog-toolbar.xml
+/usr/share/eog/eog-ui.xml
+/usr/share/eog/icons
+/usr/share/eog/pixmaps/thumbnail-frame.png
+/usr/share/eog/plugins
+/usr/share/locale
+vadjustment
+value_changed
+value-changed
+Vertical alignment for the image
+VFS error making a thumbnail
+VFS error moving the temp file
+ViewFullscreen
+ViewImageGallery
+/ViewPopup
+/ViewPopup/ImageOpenWith/Applications Placeholder
+/ViewPopup/ImageOpenWith/Applications Placeholder/%s
+ViewSidebar
+ViewSlideshow
+ViewStatusbar
+ViewToolbar
+view_zoom_changed_cb
+ViewZoomFit
+ViewZoomIn
+ViewZoomNormal
+ViewZoomOut
+vscrollbar-policy
+w <= dest_width
+Whether to show navigation buttons or not
+widget != NULL
+width_label
+width != NULL
+Would you like to modify its appearance?
+Would you like to reload it?
+wrap-license
+XGetScreenSaver
+XGetWindowProperty
+XLockDisplay
+XML:com.adobe.xmp
+xmlDocGetRootElement
+xmlFreeDoc
+xmlGetProp
+__xmlIndentTreeOutput
+xmlNewChild
+xmlNewDoc
+xmlNewDocNode
+xmlNewTextChild
+xmlNodeGetContent
+xmlParseFile
+xmlSaveFormatFile
+xmlSetProp
+xmlStrEqual
+xmp_copy
+xmp_creator_label
+xmp_description_label
+XMP Exif
+xmp_free
+xmp_get_property
+xmp_init
+XMP IPTC
+xmp_iterator_free
+xmp_iterator_new
+xmp_iterator_next
+xmp_keywords_label
+xmp_location_label
+XMP Other
+xmp_rights_label
+XMP Rights Management
+xmp_string_cstr
+xmp_string_free
+xmp_string_new
+xmp_terminate
+XSetScreenSaver
+XUnlockDisplay
+%Y:%m:%d %T
+You do not have the permissions necessary to change the file GID. Setting user default GID.
+You do not have the permissions necessary to change the file MODE.
+You do not have the permissions necessary to change the file UID.
+You do not have the permissions necessary to save the file.
+zoom > 0.0
+zoom %.2f, xofs: %i, yofs: %i scaled w: %i h: %i
+zoom_changed
+zoom_fit_size
+_Zoom In
+zoom-mode
+zoom-multiplier
+Zoom _Out

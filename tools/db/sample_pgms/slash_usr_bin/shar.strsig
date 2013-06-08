@@ -1,0 +1,405 @@
+# ------ ---------- ------------------------------------------
+1994-1996, 2002, 2005-2007, 2010
+# %6s %s %s
+      all) ${echo} %s ; break ;;
+allocating output file name
+a multipart
+a multipart archive
+  -a, --net-headers         output Submitted-by: & Archive-name: headers
+ans_all='%s'    all_means='%s'
+ans_help='%s'   help_means='%s'
+ans_list="
+[<${ans_no}>, ${ans_yes}, ${ans_all}, ${ans_none}, ${ans_help}, ${ans_quit}] ? "
+ans_none='%s'   none_means='%s'
+ans_no='%s'     no_means='%s'
+ans_quit='%s'   quit_means='%s'
+  answer='help'
+    answer=${shar_wish}
+ans_yes='%s'    yes_means='%s'
+archive-name
+Archive-name: %s%s%02d
+Archives must be unpacked in sequence!
+, a shell
+basename
++$BDFL:MPQSTVXZab:cd:fg:hjl:mn:o:pqs:wxz
+begin 600 
+(binary)
+bindtextdomain
+#!/bin/sh
+bits-per-code
+      break
+      break ;;
+bug-gnu-utils@gnu.org
+bunzipping file %s
+  -B, --uuencode               treat all files as binary, use uuencode
+bzip2 -d < ${lock_dir}/bzi > %s && \
+bzip2 < %s
+(bzipped)
+Cannot access %s
+Cannot get current directory name
+Cannot open file %s
+Cannot use -a option without -n
+Cannot use -l or -L option without -o
+  case "${ans_all}"  in "${shar_wish}"* ) answer=all  ; break ;; esac
+  case "${ans_no}"   in "${shar_wish}"* ) answer=no   ; break ;; esac
+  case "${ans_none}" in "${shar_wish}"* ) answer=none ; break ;; esac
+  case "${ans_quit}" in "${shar_wish}"* ) answer=quit ; break ;; esac
+  case "${ans_yes}"  in "${shar_wish}"* ) answer=yes  ; break ;; esac
+    case `$dir/gettext --version 2>&1 | sed 1q` in
+    case $shar_wish in
+  case "${shar_wish}" in
+  -c, --cut-mark            start the shar with a cut line
+  chmod %04o %s
+-C is being deprecated, use -Z instead
+closedir
+Closing `%s'
+compress
+compress -b%d < %s
+compress -d < ${lock_dir}/cmp > %s && \
+compressed
+(compressed)
+continuing file %s
+Controlling the shar headers:
+Copyright (C) %s Free Software Foundation, Inc.
+Could not fork
+Could not popen 'wc' command:  %s
+Created %d files
+__ctype_b_loc
+__ctype_get_mb_cur_max
+---- Cut Here and feed the following to sh ----
+cut-mark
+dcgettext
+DEBUG was not selected at compile time
+/dev/null
+  -d, --here-delimiter=STRING   use STRING to delimit the files in the shar
+     && ($dir/gettext --version >/dev/null 2>&1)
+       && ($dir/shar --print-text-domain-dir >/dev/null 2>&1)
+  -D, --no-md5-digest           do not use `md5sum' digest to verify
+    do eval printf "'%%-9s %%s\n'" \"\${ans_${f}}\" \"\${${f}_means}\"
+    done
+# Do not concatenate these parts, unpack them in order with `/bin/sh'.
+Do not concatenate these parts, unpack them in orderwith `/bin/sh'.
+D$P3T$p3D$t	
+# %%-%ds
+D$t3T$d3D$h	
+echo %d > ${lock_dir}/seq
+echo=echo
+    echo="$gettext_dir/gettext -s"
+  ${echo} %s
+  echo '%s'
+ ${echo} '%s'
+${echo} %s
+      *) ${echo} $shar_n "? - %s${ans_list}"$shar_c
+  ${echo} 'x - %s'
+elif touch -am ${st2} ${f} >/dev/null 2>&1 && \
+elif touch -am ${st3} ${f} >/dev/null 2>&1 && \
+else ${echo} %s%s
+else keep_file=true
+         else read shar_wish
+     else shar_n=-n shar_c= ; fi
+else shar_n= shar_c='\c' ; fi
+else shar_tty= ; fi
+End of part %d, continue with part %d
+End of %s part %d
+endpwent
+__errno_location
+    esac
+eval_ans='
+         eval "${eval_ans}" ;;
+   eval "${shar_touch}") && \
+# everything before the `#!/bin/sh' line above, then type `sh FILE'.
+# Existing files %s.
+     exit 1
+  exit 1
+exit immediately
+explain choices
+    export TEXTDOMAIN
+    export TEXTDOMAINDIR
+extraction aborted
+failed to create %s lock directory
+  -f, --basename            restore in one directory, despite hierarchy
+fdopendir
+fflush_unlocked
+  -F, --force-prefix            force the prefix character on every line
+fgets_unlocked
+         fi
+# File `%s' is being continued...
+File %s is complete
+File %s is continued in part %d
+File %s (%s)
+f=`${MD5SUM} --version | egrep '^md5sum .*(core|text)utils'`
+fopen(3) of file %s
+force-prefix
+  for dir in $PATH
+for dir in $PATH
+    for f in ${user_answers}
+__fprintf_chk
+fputs_unlocked
+fread_unlocked
+freopen64
+fseeko64
+f=shar-touch.$$
+ftello64
+fwrite_unlocked
+__fxstat64
+__fxstatat64
+getopt_long
+getpwuid
+gettext_dir=
+Giving feedback:
+  -g, --level-for-gzip=LEVEL   pass -LEVEL (default 9) to gzip
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+      *GNU*) gettext_dir=$dir
+gunzipping file %s
+gzip -d < ${lock_dir}/gzi > %s && \
+gzip -%d < %s
+(gzipped)
+      --help              display this help and exit
+here-delimiter
+if (echo "testing\c"; echo 1,2,3) | grep c >/dev/null
+  if ${md5check}
+  if ${set_echo}
+if ${set_echo}
+IFS="${IFS}:"
+IFS="$save_IFS"
+if %s ; then :
+if test ! -d %s; then
+  if test -f $dir/gettext \
+    if test -f $dir/shar \
+if test ! -f ${lock_dir}/new
+if test -f ${lock_dir}/new; then
+if test -n "${keep_file}" && test -f %s
+if test -n "`ls /dev/tty 2>/dev/null`"
+         if test -n "$shar_tty"
+if test ! -r ${lock_dir}/seq; then
+if test $shar_skip = yes; then
+if test "X$1" = "X-c"
+if test -z "${shar_wish}" ; then answer=no ; else
+if touch -am -t ${st1} ${f} >/dev/null 2>&1 && \
+illegal output prefix
+installing GNU `touch', distributed in GNU coreutils...
+intermix-type
+invalid file size limit `%s'
+invalid format (count field too wide): '%s'
+_IO_stdin_used
+iswprint
+  -j, --bzip2                  bzip2 and uuencode all files
+LC_ALL=C wc -c <
+# length mode       name
+level-for-gzip
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+L$L3T$h3L$d
+locale_dir=
+      locale_dir=`$dir/shar --print-text-domain-dir`
+localtime
+${lock_dir}
+lock directory %s exists
+  > ${lock_dir}/new
+lock_dir=_sh%05d
+> ${lock_dir}/uue &&
+  -L, --split-size-limit=SIZE   split archive, or files, to SIZE kilobytes
+  -l, --whole-size-limit=SIZE   split archive, not files, to SIZE kilobytes
+__lxstat64
+# Made on %s by <%s>.
+Mandatory arguments to long options are mandatory for short options too.
+MAY be overwritten
+${md5check} || \
+MD5 check failed
+       ${MD5SUM} -c >/dev/null 2>&1 || ${echo} %s: '%s'
+MD5SUM=${MD5SUM-md5sum}
+memory exhausted
+mixed-uuencode
+mkdir ${lock_dir}
+  mkdir %s
+  mkdir %s || exit 1
+  -M, --mixed-uuencode         dynamically decide uuencoding (default)
+  -m, --no-timestamp        do not restore file modification dates & times
+  -n, --archive-name=NAME   use NAME to document the archive
+net-headers
+no-character-count
+no-check-existing
+      --no-i18n             do not produce internationalized shell script
+No input files
+no-md5-digest
+      none) break ;;
+    none) ${echo} 'x - %s' ; shar_skip=yes ;;
+no-piping
+    no)   shar_skip=yes ;;
+Note: not verifying md5sums.  Consider installing GNU coreutils.
+no-timestamp
+  -o, --output-prefix=PREFIX    output to file PREFIX.01 through PREFIX.NN
+openat64
+Opening `%s'
+Option -g implies -z.
+Option -o is required with -l or -L, option -n is required with -a.
+output-prefix
+__overflow
+overwrite all files
+overwrite no files
+overwrite %s
+overwrite this file
+part %02d of %s 
+  -p, --intermix-type     allow -[BTz] in file lists to change mode
+pipe(2) failed
+PLEASE avoid -X shars on Usenet or public networks
+Please unpack part 1 first!
+Please unpack part `cat ${lock_dir}/seq` next.
+Please unpack part ${shar_sequence} next!
+  -P, --no-piping           exclusively use temporary files at unshar time
+popen(3) on: %s
+__printf_chk
+printf formatting error:  %s
+print-text-domain-dir
+Producing different kinds of shars:
+Protecting against transmission:
+  -q, --quiet, --silent   do not output verbose messages locally
+  -Q, --quiet-unshar        avoid verbose messages at unshar time
+query-user
+quiet-unshar
+    quit) ${echo} '%s'; exit 1 ;;
+readdir64
+Report bugs to <%s>.
+restoration warning:  size of %s is not %s
+restore of %s failed
+rewinddir
+  rm -f ${lock_dir}/new
+rm -fr ${lock_dir}
+rm -f ${st1} ${st2} ${st2tr} ${st3} ${f}
+-rwxrwxrwx
+  > %s &&
+       ) << \%s
+# ============= %s ==============
+save_IFS="${IFS}"
+Saving %s (%s)
+  sed 's/^%c//' << '%s' 
+  sed 's/^%c//' << '%s' >> 
+  sed 's/^%c//' << '%s' > %s &&
+Selecting files:
+Selecting how files are stocked:
+  (set %02d %02d %02d %02d %02d %02d %02d %s
+  set_echo=false
+set_echo=false
+      set_echo=true
+setlocale
+%s (GNU %s) %s
+_sh%05d/bzi
+_sh%05d/cmp
+_sh%05d/gzi
+shar_c='\n'
+SHAR_EOF
+shar_sequence=`cat ${lock_dir}/seq`
+  shar_skip=no
+  shar_touch=:
+  shar_touch='touch -am $3$4$5$6$1$2.$7 "$8"'
+  shar_touch='touch -am $3$4$5$6$2 "$8"'
+  shar_touch='touch -am -t $1$2$3$4$5$6.$7 "$8"'
+shar_tty=
+sharutils
+sharutils bug - no status
+shar_wish=
+  shar_wish=${answer}
+    shar_wish=help
+shar_wish='no'
+shell-always
+skip this file
+%s: Not a regular file
+__snprintf_chk
+# Source directory was `%s'.
+split-size-limit
+Splitting output:
+__sprintf_chk
+  -S, --stdin-file-list   read file list from standard input
+  -s, --submitter=ADDRESS   override the submitter name
+st1=200112312359.59
+st2=123123592001.59
+st2tr=123123592001.5 # old SysV 14-char limit
+st3=1231235901
+__stack_chk_fail
+Starting file %s
+stdin-file-list
+__strdup
+strftime
+__strtoll_internal
+Submitted-by: %s
+submitter
+T$\3T$x3D$|	
+T$43T$\1
+test ! -d ${lock_dir}
+test $? -eq 0
+   test ! -f ${st1} && test -f ${f}; then
+   test ! -f ${st2} && test ! -f ${st2tr} && test -f ${f}; then
+   test ! -f ${st3} && test -f ${f}; then
+test $? -ne 0
+test -n "${f}" && md5check=true || md5check=false
+test ! -r ${lock_dir}/seq
+test "$shar_sequence" = %d
+test `%s %s` -ne %s && \
+    TEXTDOMAINDIR=$locale_dir
+    TEXTDOMAIN=sharutils
+text-files
+    then
+  then (
+then ${echo} 
+then ${echo} %s
+then if (echo -n test; echo 1,2,3) | grep n >/dev/null
+then keep_file=''
+         then read shar_wish < $shar_tty
+     then shar_n= shar_c='
+then shar_tty=/dev/tty
+# The unsharer will be INTERACTIVELY queried.
+This is free software; see the source for copying conditions.  There is NO
+This is part 1 of a multipart archive.
+# This is `%s' (part %d of %s).
+# This is %s%s archive (produced by GNU %s %s).
+# This shar contains:
+This system doesn't support -Z ('compress'), use -z instead
+# To extract the files from this archive, save it to some FILE, remove
+Too many directories for mkdir generation
+translate
+Try `%s --help' for more information.
+  -T, --text-files             treat all files as text
+  -t, --translate           translate messages in the script
+uncompressing file %s
+Usage: %s [OPTION]... [FILE]...
+user_answers='no yes all none help quit'
+/usr/share/locale
+| uudecode &&
+uudecode ${lock_dir}/uue < ${lock_dir}/uue && \
+uudecoding file %s
+vanilla-operation
+      --version           output version information and exit
+  -V, --vanilla-operation   produce very simple and undemanding shars
+WARNING: Non-text storage options overridden
+WARNING: not restoring timestamps.  Consider getting and
+WARNING: No user interaction in vanilla mode
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  while : ; do
+whole-size-limit
+WILL be overwritten
+will *not* be overwritten, unless `-c' is specified
+  -w, --no-character-count      do not use `wc -c' to check size
+x - created directory %s.
+x - created lock directory %s.
+x - extracting %s %s
+x - failed to create directory %s.
+x - failed to create lock directory %s.
+x - failed to remove lock directory %s.
+  -x, --no-check-existing   blindly overwrite existing files
+x - overwriting %s
+  -X, --query-user          ask user before overwriting files (not for Net)
+x - removed lock directory %s.
+x - SKIPPING %s (file already exists)
+__xstat64
+x - STILL SKIPPING %s
+    yes | all)  shar_skip=no  ;;
+%Y-%m-%d %H:%M %Z
+You have unpacked the last part
+  -z, --gzip                   gzip and uuencode all files

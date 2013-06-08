@@ -1,0 +1,64 @@
+ -a, --append            append the output
+ac:efqt::Vh
+bindtextdomain
+cannot open timing file %s
+cannot write script file
+ -c, --command <command> run command rather than interactive shell
+cfmakeraw
+dcgettext
+__errno_location
+failed to execute %s
+ -f, --flush             run flush after each write
+     --force             use output file even when it is a link
+fork failed
+__fprintf_chk
+getopt_long
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ -h, --help              display this help and exit
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libutil.so.1
+localtime
+__lxstat64
+open failed: %s
+openpty failed
+Options:
+output file `%s' is a link
+__printf_chk
+__progname
+program_invocation_short_name
+Program not started.
+ -q, --quiet             be quiet
+ -r, --return            return exit code of the child process
+Script done, file is %s
+Script done on %s
+Script started, file is %s
+Script started on %s
+setlocale
+%s from %s
+sigaction
+sigaddset
+sigemptyset
+sigprocmask
+ %s [options] [file]
+__stack_chk_fail
+strftime
+tcgetattr
+tcsetattr
+ -t, --timing[=<file>]   output timing data to stderr (or to FILE)
+typescript
+Use --force if you really want to use it.
+/usr/share/locale
+util-linux
+util-linux 2.20.1
+ -V, --version           output version information and exit
+write failed

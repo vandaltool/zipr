@@ -1,0 +1,26 @@
+__bss_start
+    -chars cc        chars to use for 0 and 1 bits, respectively
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libXmu.so.6
+%s:  bad character list "%s", must have exactly 2 characters
+%s:  error copying stdin to file (%d of %d chars)
+__stack_chk_fail
+%s:  unable to allocate %d bytes for scanline
+%s:  unable to genererate temporary file name for stdin.
+%s:  unable to read bitmap from file "%s"
+T$09T$4t
+/tmp/bmtoa.XXXXXX
+usage:  %s [-options ...] [filename]
+where options include:
+XmuReadBitmapDataFromFile

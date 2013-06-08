@@ -1,0 +1,676 @@
+ !"#$%&'()*+,-./0123456789:;<
+\*[0l%d]
+>?0+\n[0eh]+\n[0ed]-1/(\n[0eh]+\n[0ed])
+.0ras 0delim \n[0temp] \v'\n[0eh]u'\Z\(EQ%s\(EQ\v'\n[0ed]u'
+.0ras \\$1 \\$2-1 "\\$3"
+\*[0r%d]
+\*[0sqr%d]
+\*[0str%d]
+.0tempmac
+10accent_box
+10file_input
+10lineup_box
+10matrix_box
+10script_box
+10simple_box
+11hmotion_box
+11macro_input
+11pointer_box
+11special_box
+11uaccent_box
+11vcenter_box
+11vmotion_box
+12overline_box
+13underline_box
+14half_space_box
+15quoted_text_box
+16special_char_box
+17overline_char_box
+18underline_char_box
+{1 smallover 2}
+20argument_macro_input
+/2+\n[0lw%d]
+,$+4$+l$
+7fat_box
+7tab_box
+8char_box
+8font_box
+8list_box
+8mark_box
+8over_box
+8pile_box
+8size_box
+8sqrt_box
+9delim_box
+9limit_box
+9prime_box
+9space_box
+9top_input
+&aacute;
+ } accent { 
+accent { ".." }
+accent { "." }
+accent { \(<> }
+accent { \(-> }
+accent { dot_def }
+accent { dotdot_def }
+accent { dyad_def }
+accent { hat_def }
+accent { tilde_def }
+accent { vec_def }
+accent_width
+&agrave;
+\[angleleft%s]
+\[angleright%s]
+\[arrowdown%s]
+\[arrowupdown%s]
+\[arrowup%s]
+\[arrowvertbt]
+\[arrowvertex]
+\[arrowverttp]
+.as 0delim \(EQ
+.as 0delim \h'\n[0dwidth]u'
+.as 0delim \v'\n[0bh]u'\Z\(EQ%s\(EQ\v'\n[0bd]u'
+.as 0delim \v'\n[0mh]u'\Z\(EQ%s\(EQ\v'\n[0md]u'
+.as 0delim \v'\n[0th]u'\Z\(EQ%s\(EQ\v'\n[0td]u'
+.as 0sqr%d \l'\n[0temp]u\&\*[0sqb]'
+.as 10 "%s
+.as1 10 \&\E*[0sfont]
+.as1 %s 
+&atilde;
+axis_height
+back %d { 
+bad argument `%1' to space command
+bad argument to gbfont command
+bad argument to gfont command
+bad argument to grfont command
+bad argument to gsize command
+bad argument to space command
+bad character type `%1'
+bad chartype
+bad definition
+bad delimiter `%1'
+bad escape
+bad filename for include
+bad ifdef
+bad number `%1'
+bad size `%1'
+bad undef command
+\[bardblex]
+\[barex]
+\[bar%s]
+baseline_sep
+BCCDDEEEFFFFFGGGGHHIIIJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJKLLMMNNOOPPQQQQRRSSS
+big_op_spacing1
+big_op_spacing2
+big_op_spacing3
+big_op_spacing4
+big_op_spacing5
+body_depth
+body_height
+&b.omega;
+&b.phiv;
+\[braceleftbt]
+\[braceleftex]
+\[braceleftmid]
+\[braceleft%s]
+\[bracelefttp]
+\[bracerightbt]
+\[bracerightex]
+\[bracerightmid]
+\[braceright%s]
+\[bracerighttp]
+\[bracketleftbt]
+\[bracketleftex]
+\[bracketleft%s]
+\[bracketlefttp]
+\[bracketrightbt]
+\[bracketrightex]
+\[bracketright%s]
+\[bracketrighttp]
+&brvbar;
+&b.thetas;
+/build/buildd/groff-1.21/debian/build/../../src/include/stringclass.h
+/build/buildd/groff-1.21/src/libs/libgroff/errarg.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/ptable.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/searchpath.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/string.cpp
+/build/buildd/groff-1.21/src/preproc/eqn/box.cpp
+/build/buildd/groff-1.21/src/preproc/eqn/delim.cpp
+/build/buildd/groff-1.21/src/preproc/eqn/lex.cpp
+/build/buildd/groff-1.21/src/preproc/eqn/main.cpp
+/build/buildd/groff-1.21/src/preproc/eqn/pile.cpp
+/build/buildd/groff-1.21/src/preproc/eqn/script.cpp
+/build/buildd/groff-1.21/src/preproc/eqn/text.cpp
+&cacute;
+cannot expand table
+can't open `%1': %2
+can't open included file `%1'
+&ccedil;
+\[ceilingleft%s]
+\[ceilingright%s]
+column_sep
+&commat;
+ context is
+.cp \n(0C
+%c%s %d { 
+__ctype_b_loc
+&curren;
+__cxa_atexit
+__cxa_pure_virtual
+CXXABI_1.3
+&dagger;
+DCRvd:f:p:s:m:T:M:rN
+D$,;D$0}-
+D$,;D$0}0
+.de 0ras
+.de 0tempmac
+default_rule_thickness
+delimiter_factor
+delimiter_shortfall
+&divide;
+\D'l%dM 0'
+\D'l\n[0w%d]u 0'
+&dollar;
+-D option is obsolete: use `set draw_lines 1' instead
+dotdot_def
+down 75 "~"
+down %d { 
+draw_lines
+-d requires two character argument
+.ds 0delim
+.ds 0delim \Z\(EQ\v'-%dM-(\n[0tot]u/2u)'
+.ds 0delim \Z\(EQ\v'\n[rsb]u+\n[rst]u/2u-%dM'\f[%s]%s\fP\(EQ
+.ds 0delim \Z\(EQ\v'\\n[rsb]u+\\n[rst]u/2u-%dM'%s\(EQ
+.ds 0rfont \f[\En[0sipfont]]\f[\En[0sifont]]\s'\En[0sipsize]u'\s'\En[0sisize]u'
+.ds 0s "
+.ds 0sfont \R'0sifont \En[.f]'\fP\R'0sipfont \En[.f]'\R'0sisize \En[.ps]'\s0\R'0sipsize \En[.ps]'
+.ds 0sqb \[sqrtex]
+.ds 0sqr%d \[sqrt]
+dyad_def
+\E*[0rfont]
+&eacute;
+&egrave;
+.el .ds 0sqb \[sqrtex]
+.el .nr 0i 0-1
+end of file before .EN
+end of file while reading argument to `delim'
+end of input
+end of input while defining macro
+end of input while scanning macro arguments
+&epsilon;
+&equals;
+__errno_location
+Failed assertion at line %d, file `%s'.
+fatal error:
+fat_offset
+&ffilig;
+&ffllig;
+\[floorleft%s]
+\[floorright%s]
+\f[\n[0f%d]]
+font %s { 
+&forall;
+__fprintf_chk
+&frac12;
+&frac14;
+&frac34;
+ from { 
+.ft \n[0f%d]
+.ft \n[0sfont]
+.ft \n[0spfont]
+fwd %d { 
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBCXX_3.4
+__gmon_start__
+GNU eqn (groff) version %s
+GROFF_TMAC_PATH
+GROFF_TYPESETTER
+__gxx_personality_v0
+&hearts;
+HFNO()GD()()_`ab()PQR_`abE
+\h'\n[0cw%d,%d]u'
+\h'\n[0cw%d,%d]u-\n[0w%d]u'
+\h'\n[0cw%d,%d]u-\n[0w%d]u/2u'
+\h'-\n[0k%d]u'
+\h'\n[0lw%d]u+(-\n[0k%d]u-\n[0w%d]u/2u)'
+\h'\n[0lw%d]u+\n[0s%d]u-(\n[0w%d]u/2u)'
+\h'\n[0lw%d]u-(\n[0w%d]u/2u)'
+\h'\n[0lw%d]u+(-\n[0w%d]u+\n[0k%d]u/2u)'
+\h'-\n[0w%d]u'
+\h'\n[0w%d]u'
+\h'\n[0w%d]u-\n[0cw%d,%d]u'
+\h'\n[0w%d]u-\n[0cw%d,%d]u/2u'
+\h'\n[0w%d]u-\n[0w%d]u'
+\h'\n[0w%d]u-\n[0w%d]u/2u'
+\h'\n[0w%d]u-\n[0w%d]u+\n[0sq%d]u/2u'
+&horbar;
+&hyphen;
+&iacute;
+.ie c%s \{\
+.ie c\[sqrtex\\n[0i]] .ds 0sqb \[sqrtex\\n[0i]]
+.ie c\[sqrt\\n[0i]] \{.ds 0sqr%d \[sqrt\\n[0i]]
+.if \\$2 \{.as \\$1 "\\$3
+.if !dEN .ds EN
+.if !dEQ .ds EQ
+.if \n[0i]<0 \{
+.if \n[0i]<0 \{.if c%s \{\
+.if \n[0temp] \{
+.if \n[0tot]<\n[0delta] \{
+.if \\n[0tot]<\n[0delta] \{.nr 0i +1
+.if !\n[0x] .as1 10 \x'-%dM'
+.if !\n[0x] .as1 10 \x'%dM'
+.if !\n[0x] .if \n[0d%d]>%dM .as1 10 \x'\n[0d%d]u-%dM'
+.if !\n[0x] .if \n[0h%d]>%dM .as1 10 \x'-(\n[0h%d]u-%dM)'
+.if \n[rst]-\n[rsb]-%dM<\n[0temp] \{
+.if \\n[rst]-\\n[rsb]-%dM<\n[0temp] \{.nr 0i +1
+.if \\n[rst]&(\\n[rst]-\\n[rsb]-%dM<\n[0temp])&(\\n[.ps]<\n[0mxsz]) \{.ps +1
+.if r0smark .as1 10 \h'\n[0mwidth]u-\n[0smark]u-(\n[0w%d]u-\n[0mark]u)'
+.if r0smark .as1 10 \h'\n[0smark]u-\n[0mark]u'
+.if !r0x .nr 0x 0
+.if '\*(.T'html' .if !'%s'ps' .tm warning: (it is advisable to invoke groff via: groff -Thtml -e)
+.if '\*(.T'html' .if !'%s'ps' .tm warning: %s should have been given a `-Tps' option
+.if !'\*(.T'%s' .if !'\*(.T'html' .tm warning: %s should have been given a `-T\*(.T' option
+`\' ignored at end of equation
+`\' ignored because followed by newline
+`\' ignored because followed by tab
+&igrave;
+&inodot;
+invalid input character code `%1'
+invalid input character code %1
+invalid size `%1'
+_IO_getc
+_IO_putc
+_IO_stdin_used
+&iquest;
+ j'@A356;<=>nq?I./0qWB
+&jnodot;
+_Jv_RegisterClasses
+l$,9l$$t$
+&Lambda;
+\l'%dM\&\(ru'
+&ldquor;
+left "%s" { 
+.lf 1 %s
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+libstdc++.so.6
+lineup { 
+\l'\n[0w%d]u\&\(ru'
+&lowast;
+&lowbar;
+&lsquor;
+&lstrok;
+L<%t`<1t|
+.MATHML 
+mathml:xhtml
+matrix { 
+matrix_side_sep
+medium_space
+memory exhausted
+<merror>eqn horizontal motion cannot be expessed in MathML</merror>
+<merror>eqn specials cannot be expressed in MathML</merror>
+<merror>eqn vertical motion cannot be expressed in MathML</merror>
+<merror>unknown eqn/troff special char %s</merror>
+</mfrac>
+&middot;
+minimum_size
+missing "
+missing `%1'
+ML$$9T$(
+&mnplus;
+<mo>&lowbar;</mo>
+<mo>&macr;</mo>
+<mo>&macr;</mo></mover>
+<mo>&macr;</mo></munder>
+<mo>%s</mo></mrow>
+<mover accent='false'>
+<mover accent='true'>
+<mrow><mo>%s</mo>
+</msqrt>
+</mstyle>
+<mstyle mathsize='%s'>
+<mstyle mathvariant='double-struck'>
+<mstyle mathvariant='%s'>
+</msubsup>
+<msubsup>
+</mtable>
+<mtable>
+<mtable columnalign='%s'>
+<mtd columnalign='%s'>
+</mtd></mtr>
+<mtext>&ensp;</mtext>
+<mtext>&ThinSpace;</mtext>
+<mtr><mtd>
+multiple marks and lineups
+<munder>
+<munder accent='true'>
+</munderover>
+<munderover>
+>?(\n[0b%d]+\n[0d%d])
+>?(-\n[0b%d]+\n[0h%d])
++\n[0bh]+\n[0bd]
++\n[0cw%d,%d]
+>?\n[0d%d]
+>?(\n[0d%d]+\n[0h%d]+%dM)
+>?\n[0h%d]
+>?(-\n[0k%d]+\n[0w%d])
+>?(\n[0k%d]+\n[0w%d])
++\n[0mh]+\n[0md]
+>?(-\n[0p%d]+\n[0d%d])
+>?(\n[0p%d]+\n[0h%d])
++\n[0th]+\n[0td]
++\n[0w%d]
++(\n[0w%d]+%dM)>?0
++(\n[0w%d]-\n[0k%d]+%dM)>?0
++((\n[0w%d]-\n[0k%d]>?\n[0w%d])+%dM)>?0
+\n[0w%d]u-%dM
+.ne \n[0h%d]u-%dM>?0+(\n[0d%d]u-%dM>?0)
+&nequiv;
+nested .EQ
+newline before end of quoted text
+.nr 0b%d 0
+.nr 0bd 0-\n[rsb]
+.nr 0b%d %dM
+.nr 0b%d %dM+\n[0h%d]>?%dM+\n[0d%d]
+.nr 0b%d \n[0b%d]>?%dM
+.nr 0b%d \n[0b%d]>?%dM>?(\n[0h%d]-(%dM*4/5))
+.nr 0b%d \n[0d%d]+%dM
+.nr 0b%d +(\n[0h%d]-\n[0b%d]-%dM+(%dM/2)+%dM)>?0
+.nr 0b%d -\n[0temp]
+.nr 0b%d +\n[0temp]
+.nr 0bh 0\n[rst]
+.nr 0bs%d %dM
+.nr 0C \n(.C
+.nr 0cw%d,%d 0
+.nr 0d%d 0
+.nr 0d%d 0>?\n[0d]
+.nr 0d%d 0-\n[rsb]>?0
+.nr 0d%d 0-\n[rsb]>?\n[0d%d]
+.nr 0d%d %dM+\n[0d%d]>?0
+.nr 0d%d \n[0b%d]+\n[0d%d]
+.nr 0d%d \n[0b%d]+\n[0d%d]+%dM
+.nr 0d%d \n[0bs%d]*%d+\n[0d%d]-\n[0p%d]
+.nr 0d%d \n[0bs%d]*%d-\n[0p%d]+(0
+.nr 0d%d \n[0d%d]
+.nr 0d%d \n[0d%d]+%dM
+.nr 0d%d \n[0d%d]>?\n[0d%d]
+.nr 0d%d \n[0d%d]+\n[0d%d]
+.nr 0d%d \n[0d%d]-\n[0p%d]>?0
+.nr 0d%d \n[0d%d]>?(-\n[0p%d]-\n[rsb])
+.nr 0d%d \n[0d%d]>?(\n[0tot]/2-%dM)
+.nr 0delta 0\n[0delta]*%d/500>?(\n[0delta]*2-%dM)
+.nr 0delta \n[0h%d]-%dM>?(\n[0d%d]+%dM)
+.nr 0d \n[0d%d]
+.nr 0dwidth 0
+.nr 0dwidth 0\n[0dwidth]>?\w\(EQ%s\(EQ
+.nr 0dwidth 0\w\(EQ\f[%s]%s\fP\(EQ
+.nr 0dwidth 0\w\(EQ%s\(EQ
+.nr 0ed 0-\n[rsb]
+.nr 0eh 0\n[rst]
+.nr 0f%d \n[.f]
+.nr 0h%d 0
+.nr 0h%d 0>?\n[0h]
+.nr 0h%d 0\n[0p%d]+(0
+.nr 0h%d 0>?\n[rst]
+.nr 0h%d +%dM
+.nr 0h%d %dM+\n[0h%d]
+.nr 0h%d \n[0h%d]
+.nr 0h%d \n[0h%d]+%dM
+.nr 0h%d \n[0h%d]>?\n[0h%d]
+.nr 0h%d \n[0h%d]+\n[0p%d]
+.nr 0h%d \n[0h%d]+\n[0p%d]>?0
+.nr 0h%d \n[0h%d]>?(\n[0p%d]+\n[rst])
+.nr 0h%d \n[0h%d]>?(\n[0tot]/2+%dM)
+.nr 0h%d \n[0p%d]+\n[0h%d]
+.nr 0h%d \n[0p%d]+\n[0h%d]+%dM
+.nr 0h%d \n[rst]>?\n[0h%d]
+.nr 0h \n[0h%d]
+.nr 0i 0
+.nr 0k%d 0
+.nr 0k%d 0>?\n[0skern]
+.nr 0k%d 0\n[0w%d]+\n[0k%d]>?0
+.nr 0k%d 0-\n[ssc]>?0
+.nr 0k%d \n[0k%d]
+.nr 0lw%d 0\n[0w%d]
+.nr 0lw%d 0\n[0w%d]/2>?(\n[0w%d]/2)
+.nr 0lw%d 0\n[0w%d]/2>?(\n[0w%d]/2-\n[0s%d])
+.nr 0mark 0
+.nr 0mark +%dM
+.nr 0mark +\n[0dwidth]
+.nr 0mark +(\n[0lw%d]-(\n[0w%d]/2))
+.nr 0mark +\n[0lw%d]-(\n[0w%d]/2)'
+.nr 0mark +\n[0sq%d]
+.nr 0mark +\n[0temp]
+.nr 0mark +(\n[0w%d]-\n[0w%d]/2)
+.nr 0md 0-\n[rsb]
+.nr 0mh 0\n[rst]
+.nr 0mwidth 0\n[0w%d]
+.nr 0mxsz \n[.ps]
+.nr 0p%d 0
+.nr 0p%d %dM
+.nr 0p%d %dM+\n[0d%d]>?%dM+\n[0h%d]
+.nr 0p%d \n[0bs%d]*%d/2+%dM
+.nr 0p%d \n[0d%d]-\n[0h%d]/2+%dM
+.nr 0p%d +(\n[0d%d]-\n[0p%d]+%dM+(%dM/2)+%dM)>?0
+.nr 0p%d \n[0h%d]-%dM>?0
+.nr 0p%d \n[0p%d]>?%dM>?(\n[0d%d]+(%dM/4))
+.nr 0p%d +\n[0temp]
+.nr 0p%d (-\n[0temp]>?(-\n[0temp]/2))-\n[rsb]-\n[0d%d]
+.nr 0s%d 0
+.nr 0s%d 0\n[0s%d]
+.nr 0s%d 0\n[0skew]
+.nr 0s%d 0\n[skw]
+.nr 0sfont \n[.f]
+.nr 0skern \n[0k%d]
+.nr 0skew 0\n[0s%d]
+.nr 0smark \n[0mark]
+.nr 0spfont \n[.f]
+.nr 0sq%d 0\w\(EQ\*[0sqr%d]\(EQ
+.nr 0sq%d 0\w\(EQ\[sqrt]\(EQ
+.nr 0sq%d 0\w\(EQ\[sqrt\\n[0i]]\(EQ
+.nr 0ssize \n[.ps]
+.nr 0td 0-\n[rsb]
+.nr 0temp %dM
+.nr 0temp (%dM*4/5)-\n[0p%d]+\n[0d%d]>?0
+.nr 0temp \n[0d%d]-\n[0p%d]+\n[0h%d]-\n[0b%d]+(4*%dM)
+.nr 0temp \n[0delta]-\n[0tot]
+.nr 0temp \n[0h%d]+\n[0d%d]+%dM+(%dM/4)
+.nr 0temp \n[0w%d]>?\w\(EQ\*[0sqb]\(EQ
+.nr 0temp \n[rst]-\n[rsb]-%dM-\n[0temp]
+.nr 0th 0\n[rst]
+.nr 0tot 0
+.nr 0tot +(\n[0eh]+\n[0ed]*\n[0temp]
+.nr 0tot \\n[rst]-\\n[rsb]
+.nr 0tot \n[rst]-\n[rsb]
+.nr 0w 0\n[0w%d]
+.nr 0w%d 0
+.nr 0w%d 0\n[0w]
+.nr 0w%d 0\n[0w%d]
+.nr 0w%d 0\n[0w%d]/2>?(\n[0w%d]/2)+\n[0lw%d]
+.nr 0w%d 0\n[0w%d]/2>?(\n[0w%d]/2+\n[0s%d])+\n[0lw%d]
+.nr 0w%d 0\n[0w%d]+%dM
+.nr 0w%d 0\n[0w%d]+\n[0w%d]
+.nr 0w%d 0\w\(EQ
+.nr 0w%d %dM
+.nr 0w%d +\n[0dwidth]
+.nr 0w%d \n[0temp]+\n[0sq%d]
+.nr 0w%d (\n[0w%d]>?\n[0w%d]
+.nr 0w%d +\w\(EQ
+.nr 0z%d \n[.ps]
+.nr MK %d
+&ntilde;
+null_delimiter_space
+/\n(.V+(\n(.V/2)*\n(.V
+&oacute;
+&ograve;
+\O[HTML-IMAGE-INLINE-BEGIN]
+\O[HTML-IMAGE-INLINE-END]
+operator
+ordinary
+&oslash;
+&otilde;
+&otimes;
+out of memory
+output error
+ } over { 
+over_hang
+<overline char>
+\[parenleftbt]
+\[parenleftex]
+\[parenleft%s]
+\[parenlefttp]
+\[parenrightbt]
+\[parenrightex]
+\[parenright%s]
+\[parenrighttp]
+&permil;
+&phonexb;
+&planck;
+&plusmn;
+POSIXLY_CORRECT
+__printf_chk
+.ps 1000
+.ps \n[0z%d]u
+.ps \n[.s]-%d>?%d
+.ps (u;\n[.ps]*7+5/10>?%d)
+punctuation
+relation
+ right "%s"
+.rn 0delim 0l%d
+.rn 0delim 0r%d
+.rn 0s 0str%d
+roman "^"
+{roman "and"}
+{roman "for"}
+{roman "if"}
+\,\[%s]\/
+&scaron;
+script_space
+\s'\En[0ssize]u'
+shift_down
+&sigmav;
+%s: illegal option -- %c
+%s: invalid option -- %c
+size %s { 
+smallover
+ } smallover { 
+\s[\n[0z%d]u]
+%s: option `%c%s' doesn't allow an argument
+%s: option requires an argument -- %c
+%s: option `--%s' doesn't allow an argument
+%s: option `%s' is ambiguous
+%s: option `%s' requires an argument
+%s: option `-W %s' doesn't allow an argument
+%s: option `-W %s' is ambiguous
+&spades;
+special %s { 
+__sprintf_chk
+%s (%s):%d:
+__stack_chk_fail
+<standard input>
+strerror
+sub_drop
+%s: unrecognized option `%c%s'
+%s: unrecognized option `--%s'
+sup_drop
+suppress
+syntax error
+tabs allowed only at outermost level
+&there4;
+there is no `%1' delimiter
+thick_space
+thin_space
+Tl12IC*IuJKhi{kPQRJKLM
+type "binary" \(+-
+type "binary" \(md
+type "binary" \(mu
+type "inner" { . . . }
+type "inner" { \(md \(md \(md }
+type "inner" vcenter { . . . }
+{type "operator" roman "arc"}
+{type "operator" roman "cos"}
+{type "operator" roman "cosh"}
+{type "operator" roman "det"}
+{type "operator" roman "exp"}
+{type "operator" roman "Im"}
+{type "operator" roman "lim"}
+{type "operator" roman "ln"}
+{type "operator" roman "log"}
+{type "operator" roman "max"}
+{type "operator" roman "min"}
+{type "operator" roman "Re"}
+{type "operator" roman "sin"}
+{type "operator" roman "sinh"}
+{type "operator" roman "tan"}
+{type "operator" roman "tanh"}
+{type "operator" size big \(ca}
+{type "operator" size big \(cu}
+{type "operator" size big \(is}
+{type "operator" size big \(*P}
+{type "operator" size big \(*S}
+{type "operator" vcenter size +5 \(ca}
+{type "operator" vcenter size +5 \(cu}
+{type "operator" vcenter size +5 \(*P}
+{type "operator" vcenter size +5 \(*S}
+{type "operator" vcenter size +8 \(is}
+type "relation" "\(~="
+type "relation" \(<<
+type "relation" \(<-
+type "relation" \(==
+type "relation" \(>>
+type "relation" \(->
+type "relation" \(!=
+ } uaccent { 
+uaccent { "~" }
+uaccent { utilde_def }
+&uacute;
+&ugrave;
+ } under
+<underline char>
+unquoted escape
+unrecognised parameter `%1'
+unrecognised type `%1'
+unterminated `%1' at line %2, looking for `%3'
+_Unwind_Resume
+up 52 back 15 "."
+up 52 back 25 ".."
+up 52 size -5 { \(<> }
+up 52 size -5 \(->
+up %d { 
+updownarrow
+&upsilon;
+usage: %s [ -rvDCNR ] -dxx -fn -sn -pn -mn -Mdir -Ts [ files ... ]
+/usr/lib/groff/site-tmac:/usr/share/groff/site-tmac:/usr/share/groff/1.21/tmac:/usr/share/groff/tmac
+utilde_def
+vcenter { 
+\v'-%dM'
+\v'-%dM/2u'
+\v'%dM/2u'
+\v'-%dM/2u-%dM'
+\v'%dM/2u+%dM'
+\v'-(%du*\n[0bs%d]u)'
+&verbar;
+\v'\n[0b%d]u'
+\v'\n[0bs%d]u'
+\v'\n[0d%d]u'
+\v'\n[0d%d]u+(%dM/2u)'
+\v'-\n[0h%d]u-(%dM/2u)'
+\v'-\n[0p%d]u'
+\v'\n[0p%d]u'
+warning:
+&weierp;
+>?\w\(EQ\(ru\(EQ
+x_height
+&yacute;
+&zcaron;
+&zerosp;'
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE

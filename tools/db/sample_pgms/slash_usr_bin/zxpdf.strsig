@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "IMPORTANT: The zxpdf script has been deprecated.  Support for compressed pdf's"
+echo "           is now provided automatically by the standard xpdf command."
+echo "           zxpdf will no longer be available after the release of Debian 7."

@@ -1,0 +1,187 @@
+	    });
+		       );
+			     @all });
+	    "all|a" => \$all,
+    --all                       include all changes
+#    along with this program; if not, write to the Free Software
+along with this program; if not, write to the Free Software
+already supports configuration, however, this isn't exposed by this
+as one stanza each, i.e. they are not merged. This is probably the format
+(at your option) any later version.
+#    (at your option) any later version.
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+C<--all> overrides all other range selecting options. C<--count>
+change. Comments and Improvements welcome.
+changed until version 1.0. The used Parse::DebianChangelog module
+    $changes->parse({ infile => $file })
+    $changes->parse({ instring => join('', @input) })
+# Copyright 2005 Frank Lichtenheld <frank@lichtenheld.de>
+Copyright (C) 2005 by Frank Lichtenheld
+	    "count|c|n=i" => \$count,
+    --count, -c, -n <number>    include <number> entries from the top
+			     count => $count, offset => $offset,
+                                counted from the top (or the tail if
+default to showing all entries.
+Description of the Debian changelog format in the Debian policy:
+die gettext('too many arguments')."\n" if @ARGV > 1;
+	die sprintf( gettext('changelog format %s not supported')."\n",
+	die sprintf( gettext('more than one file specified (%s and %s)')."\n",
+	die sprintf( gettext('output format %s not supported')."\n",
+		       dpkg => 1,
+DTD currently, just some made up XML. The actual format might still
+} else {
+eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
+    exit 0;
+	      -exitstatus => 0);
+	-exitvalue => 2,
+    -F<changelogformat>         ignored if changelogformat = 'debian'
+F<debian/changelog> will be used. If two different files are
+			$file );
+    $file = $ARGV[0];
+		     $file, $ARGV[0] );
+$file ||= $default_file;
+    --file, -l <file>           changelog file to parse, defaults
+For a more extensive documentation of the range selecting options and
+                                for compatibility with dpkg-dev
+Format as known from L<dpkg-parsechangelog(1)>. All requested entries
+    --format <outputformat>     see man page for list of available
+	    "format=s" => \&set_format,
+    $format = $val;
+#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+Frank Lichtenheld, E<lt>frank@lichtenheld.deE<gt>
+			     from => $from, to => $to,
+	    "from|f=s" => \$from,
+    --from, -f <version>        include all changes equal or later
+	    "F=s" => \&unsupported,
+GetOptions( "file|l=s" => \$file,
+	      gettext( "Copyright (C) 2005 by Frank Lichtenheld\n" ).
+	      gettext( "This is free software; see the GNU General Public ".
+#    GNU General Public License for more details.
+GNU General Public License for more details.
+=head1 AUTHOR
+=head1 COPYRIGHT AND LICENSE
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	    "help|h" => \&help,
+    --help, -h                  print usage information
+		       html => 1,
+    if 0; # not running under some shell
+if (@ARGV) {
+if ($file eq '-') {
+    if ($file && ($file ne $ARGV[0])) {
+If neither C<changelogfile> nor C<-l E<lt>fileE<gt>> are specified,
+    if ($opt eq 'F' and $val ne 'debian') {
+    if ($opt eq 'L') {
+If the filename is C<-> the program reads the changelog from
+    # I know that looks ugly, but at least it is safer than an eval...
+in a F<.changes> file.
+			'input' );
+=item dpkg
+=item html
+=item rfc822
+=item xml
+#    it under the terms of the GNU General Public License as published by
+it under the terms of the GNU General Public License as published by
+Just a simple XML dump of the changelog data. Without any schema or
+L<http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog>.
+		       "Licence version 2 or later for copying conditions. ".
+    -L<libdir>                  ignored for compatibility with dpkg-dev
+locations where to find the full format definition.
+L<Parse::DebianChangelog/"COMMON OUTPUT OPTIONS">.
+	    "L=s" => \&unsupported,
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+my @all = $all ? ( all => $all ) : ();
+my %allowed_formats = (
+my $changes = Parse::DebianChangelog->init();
+my $default_file = 'debian/changelog';
+my $format = 'dpkg';
+    my $func_name = "Parse::DebianChangelog::${format}_str";
+    my @input = <STDIN>;
+    my ($opt, $val) = @_;
+my ( $since, $until, $from, $to, $all, $count, $offset, $file );
+    no strict 'refs';
+NOTE: This is not configurable yet and was specifically designed
+                                <number> is lower than 0)
+of C<--since> and C<--from> and one of C<--until> and C<--to> can be
+	    "offset|o=i" => \$offset,
+    --offset, -o <number>       change the starting point for --count,
+    $opt ||= '';
+ Options:
+	or die sprintf( gettext('fatal error occured while parsing %s')."\n",
+    or pod2usage({
+                                (or the tail if <number> is lower than 0)
+                                output formats, defaults to 'dpkg'
+overrides all other range selection options except for C<--all>.
+parsechangelog [options] [changelogfile]
+parsechangelog - parse Debian changelogs and output them in other formats
+parsechangelog parses Debian changelogs as described in the Debian
+Parse::DebianChangelog, the underlying Perl module
+# -*- perl -*-
+    pod2usage(-msg => "$0 $Parse::DebianChangelog::VERSION\n".
+policy (version 3.6.2.1 at the time of this writing) and converts
+    print "$0 $Parse::DebianChangelog::VERSION\n";
+    print &{"$func_name"}( $changes,
+program yet.
+		       rfc822 => 1,
+(see L<"SYNOPSIS"> on how to select specific entries) are returned in
+setlocale(LC_MESSAGES, '');
+Similar to the C<dpkg> format, but the requested entries are returned
+			   { since => $since, until => $until,
+    --since, -s, -v <version>   include all changes later than version
+	    "since|v=s" => \$since,
+some (hopefully enlightening) examples see
+some nice features as a quick-link bar with direct links to every entry.
+specified at the same time.
+specified the program will abort.
+standard input.
+sub help {
+sub set_format {
+sub unsupported {
+sub version {
+textdomain('Parse-DebianChangelog');
+	      -textdomain => 'Parse-DebianChangelog-Pod',
+	-textdomain => 'Parse-DebianChangelog-Pod'
+                                than version
+The changelog is converted to a somewhat nice looking HTML file with
+The dpkg and rfc822 formats default to showing only the first entry
+#    the Free Software Foundation; either version 2 of the License, or
+the Free Software Foundation; either version 2 of the License, or
+them to other output formats. See section L<"SEE ALSO"> for
+The output formats supported are currently:
+The range selecting options can be mixed together, but only one
+		       "There is NO warranty." )."\n",
+the usual Debian control format, merged in one stanza, ready to be used
+#    This program is distributed in the hope that it will be useful,
+This program is distributed in the hope that it will be useful,
+#    This program is free software; you can redistribute it and/or modify
+This program is free software; you can redistribute it and/or modify
+to be used on L<http://packages.debian.org/>. This is planned to be
+                                to 'debian/changelog'
+	    "to|t=s" => \$to,
+    --to, -t <version>          include all changes up to or equal
+to use if you want a machine-usable representation of the changelog.
+    unless ($allowed_formats{$val}) {
+	    "until|u=s" => \$until,
+    --until, -u <version>       include all changes earlier than version
+use Getopt::Long qw(:config gnu_getopt auto_help);
+use Locale::gettext;
+use Parse::DebianChangelog;
+use Pod::UsageTrans;
+use POSIX;
+    use strict;
+use warnings;
+#!/usr/bin/perl 
+    $val ||= '';
+		     $val );
+    --version, -V               print version information
+	    "version|V" => \&version,
+	warn gettext('ignored option -L')."\n";
+when no other options are given with while the HTML and XML formats
+		       xml => 1,
+#    You should have received a copy of the GNU General Public License
+You should have received a copy of the GNU General Public License

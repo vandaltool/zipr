@@ -1,0 +1,66 @@
+__bss_start
+Cannot open /dev/null
+Cannot setrlimit: %m
+		Chroot to directory
+	Communications channel (netlink or miscdev)
+cryptfs_get_ctx_opts
+  -%c, --%s
+		Don't fork into background
+ecryptfsd_exit
+ecryptfs_get_version
+ecryptfs_init_messaging
+ecryptfs_messaging_exit
+ecryptfs_run_daemon
+ecryptfs_send_message
+ecryptfs-utils
+__errno_location
+Failed to attach handler to SIGINT
+Failed to attach handler to SIGTERM
+Failed to change directory: %m
+Failed to chroot to '%s': %m
+Failed to create daemon process: %m
+Failed to dup null: %m
+Failed to open pid file '%s': %m
+Failed to setup initial signals
+foreground
+__fprintf_chk
+getdtablesize
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libecryptfs.so.0
+/lib/ld-linux.so.2
+password
+p:fC:R:Vd:h
+__printf_chk
+Program to execute for user prompt
+prompt-prog
+pthread_mutex_init
+pthread_mutex_lock
+pthread_mutex_unlock
+%s: Closing eCryptfs userspace daemon
+%s: Error attempting to send message to eCryptfs kernel module via transport of type [0x%.8x]; rc = [%d]
+%s: Error attempting to send quit message to kernel; rc = [%d]
+%s: Error attempting to shut down messaging; rc = [%d]
+	Set pid file name
+setrlimit64
+%s: Failed to initialize messaging; rc = [%d]
+			Show usage information
+			Show version information
+%s (%s) %s
+__strdup
+%s: Unable to retrieve versioning info from kernel module; falling back on default values
+__syslog_chk
+TERM_DEVICE
+the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.
+There is NO WARRANTY, to the extent permitted by law.
+This is free software.  You may redistribute copies of it under the terms of
+Usage: %s [options]
+__xpg_basename

@@ -1,0 +1,177 @@
+ after byte 
+all 223s
+arithmetic overflow! parameter changed from 
+__assert_fail
+backpointer in byte 
+Bad DVI file: 
+bad postamble pointer in byte 
+: beginning of page 
+---beware: check sums do not agree!
+---beware: design sizes do not agree!
+bop occurred before eop!
+both the %s copyright and
+__bss_start
+/build/buildd/texlive-bin-2009/inst/lib
+ bytes long
+character 
+---check sum doesn't match previous definition!
+Copyright 2009 %s.
+covered by the terms of 
+%c%s%ld%c
+%c%s%ld%s
+%c%s%ld%s%ld
+ current font is 
+deeper than claimed in postamble!
+D.E. Knuth
+denominator doesn't match the preamble!
+denominator is 
+---design size doesn't match previous definition!
+-dpi=REAL              set resolution to REAL pixels per inch; default 300.0
+DVItype capacity exceeded (max fonts=
+DVItype capacity exceeded (name size=
+DVItype capacity exceeded (stack size=
+dvitype: More than ten count registers specified.
+dvitype: Need exactly one file argument.
+dvitype: -page-start values must be numeric or *.
+ DVI units
+Email bug reports to %s.
+extend_filename
+First byte isn't start of preamble!
+---font name doesn't match previous definition!
+For more information about these matters, see the file
+__fprintf_chk
+getopt_long_only
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ height 
+-help                  display this help and exit
+ID byte is 
+identification in byte 
+identification in byte 1 should be 
+(illegal at level zero)!
+illegal command at byte 
+invalid font selection: font 
+ invalid in font 
+ (invisible)
+_IO_getc
+_IO_putc
+_IO_stdin_used
+ is not bop
+ is not post
+ is not postpost!
+_Jv_RegisterClasses
+kpathsea_version_string
+kpse_find_file
+kpse_fopen_trace
+kpse_set_progname
+%ld%c%ld%s%ld
+%ld%s%c%ld%c%ld
+%ld%s%s%ld
+%ld%s%s%ld%c
+%ld%s%s%ld%c%ld
+%ld%s%s%ld%s
+%ld%s%s%ld%s%ld
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+---loaded at size 
+magnification
+magnification=
+magnification doesn't match the preamble!
+magnification is 
+-magnification=NUMBER  override existing magnification with NUMBER
+  Maximum number of pages = 
+max-pages
+-max-pages=NUMBER      process NUMBER pages; default one million
+, maxstackdepth=
+ (mnemonics)
+named COPYING and the %s source.
+  New magnification factor = 
+non-ASCII character in xxx command!
+not enough signature bytes at end of file (
+---not loaded, bad design size (
+---not loaded, bad scale (
+---not loaded, DVItype needs larger width table
+---not loaded, TFM file can't be opened!
+---not loaded, TFM file is bad
+null font name!
+numerator/denominator=
+numerator doesn't match the preamble!
+numerator is 
+Options selected:
+output-level
+  Output level = 
+-output-level=NUMBER   verbosity level, from 0 to 4; default 4
+page ended unexpectedly
+page link 
+ pages, not 
+page-start
+-page-start=PAGE-SPEC  start at PAGE-SPEC, for example `2' or `5.*.-2'
+ pixels)
+ pixels per DVI unit
+ pixels per inch
+postamble command within a page!
+Postamble starts at byte 
+post pointer 
+preamble command within a page!
+Primary author of %s: %s.
+__printf_chk
+printversionandexit
+prog_name_end && prog_version
+  Resolution = 
+ scaled 
+---scaled size doesn't match previous definition!
+ should be 
+ should be 223
+ (showing bops, fonts, and error messages only)
+show-opcodes
+-show-opcodes          show numeric opcodes (in decimal)
+signature in byte 
+%s%ld%c%ld
+%s%ld%c%ld%s
+%s%ld%s%ld
+%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%c
+%s: Oops; not enough arguments.
+__sprintf_chk
+%s%s%ld%c
+%s%s%ld%s%c
+%s%s%ld%s%ld%c
+__stack_chk_fail
+stack not empty at end of page (level 
+  Starting page = 
+starting page number could not be found!
+string of negative length!
+ (terse)
+tex-k@mail.tug.org
+../../../../texk/web2c/lib/printversion.c
+ (TeX Live 2009/Debian)
+the file ended prematurely
+the Lesser GNU General Public License.
+there are really 
+There is NO warranty.  Redistribution of this software is
+ (the works)
+ (this font is magnified 
+---this font was already defined!
+---this font wasn't loaded before!
+This is DVItype, Version 3.6
+, totalpages=
+Try `%s --help' for more information.
+UNDEFINED!
+undefined command 
+Usage: dvitype [OPTION]... DVIFILE[.dvi]
+Value for --output-level must be >= 0 and <= 4.
+ (verbose)
+  Verify and translate DVIFILE to human-readable form,
+-version               output version information and exit
+warning: |h|>
+warning: observed maxh was 
+warning: observed maxstackdepth was 
+warning: observed maxv was 
+warning: |v|>
+ was never defined!
+, width 
+  written to standard output.
+xH%%%d.%dlf

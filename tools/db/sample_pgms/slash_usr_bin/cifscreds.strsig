@@ -1,0 +1,54 @@
+\/"[]:|<>+=;,?*@
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-.
+Ambiguous command
+basename
+__bss_start
+cifscreds
+cifscreds:
+clearall
+__ctype_tolower_loc
+%*[^;];%*d;%*d;%*x;%n
+error: Add credential key for %s
+error: Could not resolve address for %s
+error: Deleting key from keyring
+error: Deleting key from keyring for %s (%s)
+error: Incorrect domain name
+error: Incorrect username
+error: Problem parsing address list
+error: Removing key from keyring for %s (%s)
+error: Setting permissons on key, attempt to delete...
+error: Update credential key for %s
+__fprintf_chk
+freeaddrinfo
+getaddrinfo
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+<host> <user> [domain]
+If you want to add them use:
+If you want to update them use:
+inet_ntop
+_IO_stdin_used
+_Jv_RegisterClasses
+keyctl_describe_alloc
+keyctl_read_alloc
+KEYUTILS_0.3
+libc.so.6
+__libc_start_main
+libkeyutils.so.1
+/lib/ld-linux.so.2
+Password: 
+__printf_chk
+__snprintf_chk
+__sprintf_chk
+%s:%s:%s:
+	%s %s %s
+__stack_chk_fail
+	%s update
+Unknown command
+You already have stashed credentials for %s (%s)
+You have no same stashed credentials  for %s
+You have no same stashed credentials for %s
+You have no stashed cifscreds credentials

@@ -1,0 +1,56 @@
+--action-id
+  annotation:        %s -> %s
+__bss_start
+Cannot show manual page: %s
+  description:       %s
+Error enumerating actions: %s
+Error getting authority: %s
+g_error_free
+GLIBC_2.0
+g_list_foreach
+g_list_free
+g_list_sort
+__gmon_start__
+g_object_unref
+g_printerr
+g_spawn_command_line_sync
+g_strcmp0
+g_strdup
+g_type_check_instance_cast
+g_type_init
+  icon:              %s
+  implicit active:   %s
+  implicit any:      %s
+  implicit inactive: %s
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpolkit-gobject-1.so.0
+libpthread.so.0
+man pkaction
+  message:           %s
+No action with action id %s
+pkaction version %s
+polkit_action_description_get_action_id
+polkit_action_description_get_annotation
+polkit_action_description_get_annotation_keys
+polkit_action_description_get_description
+polkit_action_description_get_icon_name
+polkit_action_description_get_implicit_active
+polkit_action_description_get_implicit_any
+polkit_action_description_get_implicit_inactive
+polkit_action_description_get_message
+polkit_action_description_get_type
+polkit_action_description_get_vendor_name
+polkit_action_description_get_vendor_url
+polkit_authority_enumerate_actions_sync
+polkit_authority_get_sync
+polkit_implicit_authorization_to_string
+  vendor:            %s
+  vendor_url:        %s
+--verbose
+--version

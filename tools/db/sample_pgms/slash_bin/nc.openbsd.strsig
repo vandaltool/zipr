@@ -1,0 +1,146 @@
+46Ddhi:jklnP:p:q:rSs:tT:UuZvw:X:x:zC
+		-4		Use IPv4
+		-6		Use IPv6
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+authentication method negotiation failed
+bind failed: %s
+__bss_start
+cannot use -C and -U
+Cannot use -l with multiple ports!
+cannot use -p and -l
+cannot use -s and -l
+cannot use -u and -U
+cannot use -z and -l
+can't set O_NONBLOCK - timeout not avaliable
+	Command Summary:
+connection failed, SOCKS error %d
+Connection from %s port %s [%s/%s] accepted
+Connection to %s %s port [%s/%s] succeeded!
+CONNECT [%s]:%d HTTP/1.0
+CONNECT %s:%d HTTP/1.0
+connect to %s port %s (%s) failed
+connect to %s port %s (%s) timed out
+		-C		Send CRLF as line-ending
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+		-d		Detach from stdin
+		-D		Enable the debug socket option
+/dev/tty
+__errno_location
+__fprintf_chk
+freeaddrinfo
+gai_strerror
+getaddrinfo
+getaddrinfo("%.64s", "%.64s"): %s
+getaddrinfo: %s
+getservbyname
+getservbyport
+getsockopt
+getsockopt error: %s
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+g_strlcpy
+hostname too long
+host name too long for SOCKS5
+		-h		This help text
+HTTP/1.0 200 
+HTTP/1.0 407 
+HTTP/1.1 200 
+inet_ntoa
+internal error: addrlen < res->ai_addrlen
+internal error: silly AF
+interval cannot be negative
+in the netcat-traditional package.
+Invalid hostname
+invalid IP Type of Service
+_IO_stdin_used
+		-i secs		Delay interval for lines sent, ports scanned
+__isoc99_sscanf
+_Jv_RegisterClasses
+		-k		Keep inbound sockets open for multiple connects
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+/lib/ld-linux.so.2
+		-l		Listen mode, for inbound connects
+lowdelay
+__memcpy_chk
+must use -l with -k
+no proxy support for DCCP mode
+no proxy support for IPv6
+no proxy support for listen
+no proxy support for local source address
+no proxy support for UDP mode
+no proxy support for unix sockets
+		-n		Suppress name/port resolutions
+OpenBSD netcat (Debian patchlevel 1.89-4ubuntu1)
+Polling Error
+	Port numbers can be individual or ranges: lo-hi [inclusive]
+port range not valid
+		-p port		Specify local port for remote connects
+		-P proxyuser	Username for proxy authentication
+Proxy authentication failed
+Proxy-Authorization: Basic %s
+Proxy auth response too long
+Proxy error: "%s"
+Proxy password for %s@%s: 
+proxy read
+proxy read too long
+Proxy username/password too long
+		-q secs		quit after EOF on stdin and delay of secs
+__read_chk
+read failed (%d/10)
+read failed (%d/3)
+read failed (%d/8)
+recvfrom
+__recvfrom_chk
+reliability
+		-r		Randomize remote ports
+		-s addr		Local source address
+select error: %s
+ 		-S		Enable the TCP MD5 signature option
+set IP ToS
+setsockopt
+shutdown
+sigaction
+sigemptyset
+__snprintf_chk
+	  [-s source_ip_address] [-T ToS] [-w timeout] [-X proxy_protocol]
+__stack_chk_fail
+strcasecmp
+__strdup
+		-t		Answer TELNET negotiation
+tcgetattr
+tcsetattr
+td;l$HsN*D$
+This is nc from the netcat-openbsd package. An alternative nc is available
+throughput
+timeout cannot be negative
+timeout too large
+Too many authentication failures
+Too many proxy headers received
+		-T ToS		Set IP Type of Service
+Unable to read proxy passphrase
+unknown port "%.64s"
+Unknown proxy protocol %d
+unsupported proxy protocol
+usage: nc [-46DdhklnrStUuvzC] [-i interval] [-P proxy_username] [-p source_port]
+		-u		UDP mode
+		-U		Use UNIX domain socket
+		-v		Verbose
+Write Error!
+write failed (2/%d)
+write failed (%d/3)
+write failed (%d/%d)
+		-w secs		Timeout for connects and final net reads
+		-x addr[:port]	Specify proxy address and port
+		-X proto	Proxy protocol: "4", "5" (SOCKS) or "connect"
+	  [-x proxy_address[:port]] [hostname] [port[s]]
+		-Z		DCCP mode
+		-z		Zero-I/O mode [used for scanning]

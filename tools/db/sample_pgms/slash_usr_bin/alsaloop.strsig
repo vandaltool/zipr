@@ -1,0 +1,381 @@
+                               3=zerohold,4=linear)
+                         5=auto)
+    access = %s, format = %s, rate = %u, channels = %u
+Access type not available for %s: %s
+ALSA_0.9
+ALSA_0.9.0rc4
+		    ALSA_ID@OSS_ID  (for example: "Master@VOLUME")
+alsaloop
+  alsaloop -t 1000
+  alsaloop -t 500000
+-A,--samplerate use converter (0=sincbest,1=sincmedium,2=sincfastest,
+-a,--slave     stream parameters slave mode (0=auto, 1=on, 2=off)
+-B,--buffer    buffer size in frames
+-b,--nblock    non-block mode (very early process wakeup)
+Broken configuration for %s PCM: no configurations available: %s
+Buffer size too big
+    buffer_size = %u, period_size = %u, avail_min = %li
+    buf_size = %li, buf_pos = %li, buf_count = %li, buf_over = %li
+Cannot get PCM Channels element for %s: %s
+Cannot get PCM Format element for %s: %s
+Cannot get PCM Notify element for %s: %s
+Cannot get PCM Rate element for %s: %s
+Cannot get PCM Slave Active element for %s: %s
+Cannot set PCM Notify element for %s: %s
+Cannot set PCM Rate Shift element for %s: %s
+CAPTRATESHIFT
+    card_number = %i
+-C,--cdevice   capture device
+-c,--channels  channels
+channels
+Channels count (%i) not available for %s: %s
+closelog
+__ctype_b_loc
+daemon() failed: %s
+daemonize
+-d,--daemonize daemonize the main process and use syslog for errors
+    device = '%s', ctldev '%s'
+-e,--effect    apply an effect (bandpass filter sweep)
+-E,--period    period size in frames
+__errno_location
+  expected %.4fms, processing %.4fms, max missing %.4fms
+-f,--format    sample format
+fork() failed: %s
+__fprintf_chk
+-g,--config    configuration file (one line = one job specified)
+getopt_long
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GT;D$8sS
+hdg:P:C:X:Y:l:t:F:f:c:r:s:benvA:S:a:m:T:O:w:UW:
+-h,--help      help
+Invalid numid %d
+_IO_stdin_used
+@%i,%s,%i,%i,%s,%i
+  job started before %.4fms
+_Jv_RegisterClasses
+;l$8~%+l$8t
+  last wake %.4fms, last check %.4fms, avail_min %.4fms
+  last write before %.4fms, queued %.4fms/%.4fms -> missing %.4fms
+libasound.so.2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+libsamplerate.so.0
+libsamplerate.so.0.0
+libsamplerate.so.0.1
+-l,--latency   requested latency in frames
+Loopback initialization failure.
+Loopback start failure.
+  max buf %.4fms, pfilled %.4fms, cfilled %.4fms
+Maximum redirected mixer controls reached (max %i)
+-m,--mixer	redirect mixer, argument is:
+New pitch for %s: %.8f (min/max samples = %li/%li)
+No enough memory
+No loopback defined...
+Not enough memory
+-n,--resample  resample in alsa-lib
+-O,--ossmixer	rescan and redirect oss mixer, argument is:
+ossmixer
+Output failed: %s
+overrun for %s
+pcm drop %s error: %s
+pcm hw_free %s error: %s
+pcmjob failed.
+PCM Notify
+PCM Rate Shift 100000
+PCM Slave Active
+PCM Slave Channels
+PCM Slave Format
+PCM Slave Rate
+pcm start %s error: %s
+    pitch = %.8f
+  pitch = %.8f, delta = %.8f, diff = %li, min = %li, max = %li
+playback
+PLAYRATESHIFT
+Poll failed: %s
+  pollfd_count = %i
+Poll FD initialization failed.
+Poll FDs allocation failed.
+pool took %lius
+-P,--pdevice   playback device
+Prepare %s error: %s
+__printf_chk
+/proc/asound/card%i/oss_mixer
+pthread_create
+pthread_exit
+pthread_join
+pthread_kill
+pthread_mutex_lock
+pthread_mutex_unlock
+pthread_self
+Rate %iHz not available for %s: %s
+Recognized sample formats are:
+resample
+Resample setup failed for %s (val %i): %s
+-r,--rate      rate
+  running = %i
+Sample format not available for %s: %s
+samplerate
+samplerate conversion required but disabled
+samplerate conversion supports only %s or %s formats (play=%s, capt=%s)
+%s: avail_min1=%li
+%s: avail_min2=%li
+%s: buffer_size=%li
+%s: capt->buffer_size = %li, play->buffer_size = %li
+%s capture delay failed: %s
+sched_getparam
+sched_get_priority_max
+sched_setscheduler
+Scheduler getparam failed.
+Scheduler set to Round Robin with priority %i
+!!!Scheduler set to Round Robin with priority %i FAILED!
+%s: ctl event active %i
+%s: ctl event!!!! %s
+%s: delay error: %s / %li / %li
+%s: delay %li / %li / %li
+%s: Disabling OSS mixer ID '%s'
+%s: Disabling playback control '%s'
+%s: end delay error: %s / %li / %li
+%s: end delay %li / %li / %li
+sequencer
+serialopen
+shared buffer!!!
+sincbest
+sincfastest
+sincmedium
+%s: Initialize OSS volume %s: %s
+%s: initial playback fill error (%i/%i/%i)
+  slave = %i
+%s %li frames, %.3fus, %.6fms (%.4fHz)
+snd_ctl_close
+snd_ctl_elem_add_boolean
+snd_ctl_elem_add_integer
+snd_ctl_elem_id_get_device
+snd_ctl_elem_id_get_index
+snd_ctl_elem_id_get_interface
+snd_ctl_elem_id_get_name
+snd_ctl_elem_id_get_numid
+snd_ctl_elem_id_get_subdevice
+snd_ctl_elem_id_malloc
+snd_ctl_elem_id_set_device
+snd_ctl_elem_id_set_index
+snd_ctl_elem_id_set_interface
+snd_ctl_elem_id_set_name
+snd_ctl_elem_id_set_numid
+snd_ctl_elem_id_set_subdevice
+snd_ctl_elem_id_sizeof
+snd_ctl_elem_iface_name
+snd_ctl_elem_info
+snd_ctl_elem_info_copy
+snd_ctl_elem_info_get_count
+snd_ctl_elem_info_get_max
+snd_ctl_elem_info_get_min
+snd_ctl_elem_info_get_step
+snd_ctl_elem_info_get_type
+snd_ctl_elem_info_is_tlv_writable
+snd_ctl_elem_info_malloc
+snd_ctl_elem_info_set_id
+snd_ctl_elem_read
+snd_ctl_elem_remove
+snd_ctl_elem_tlv_read
+snd_ctl_elem_tlv_write
+snd_ctl_elem_type_name
+snd_ctl_elem_unlock
+snd_ctl_elem_value_clear
+snd_ctl_elem_value_free
+snd_ctl_elem_value_get_boolean
+snd_ctl_elem_value_get_id
+snd_ctl_elem_value_get_integer
+snd_ctl_elem_value_malloc
+snd_ctl_elem_value_set_boolean
+snd_ctl_elem_value_set_device
+snd_ctl_elem_value_set_id
+snd_ctl_elem_value_set_integer
+snd_ctl_elem_value_set_interface
+snd_ctl_elem_value_set_name
+snd_ctl_elem_value_set_subdevice
+snd_ctl_elem_write
+snd_ctl_event_elem_get_id
+snd_ctl_event_elem_get_mask
+snd_ctl_event_elem_get_name
+snd_ctl_event_get_type
+snd_ctl_event_sizeof
+snd_ctl_open
+snd_ctl_poll_descriptors
+snd_ctl_poll_descriptors_count
+snd_ctl_poll_descriptors_revents
+snd_ctl_read
+snd_ctl_subscribe_events
+snd_output_printf
+snd_output_stdio_attach
+snd_pcm_access_name
+snd_pcm_avail_update
+snd_pcm_close
+snd_pcm_delay
+snd_pcm_drop
+snd_pcm_dump
+snd_pcm_format_name
+snd_pcm_format_physical_width
+snd_pcm_format_set_silence
+snd_pcm_format_value
+snd_pcm_format_width
+snd_pcm_hw_free
+snd_pcm_hw_params
+snd_pcm_hw_params_any
+snd_pcm_hw_params_copy
+snd_pcm_hw_params_get_buffer_size
+snd_pcm_hw_params_get_period_size
+snd_pcm_hw_params_get_rate
+snd_pcm_hw_params_set_access
+snd_pcm_hw_params_set_buffer_size_near
+snd_pcm_hw_params_set_channels
+snd_pcm_hw_params_set_format
+snd_pcm_hw_params_set_period_size_near
+snd_pcm_hw_params_set_rate_near
+snd_pcm_hw_params_set_rate_resample
+snd_pcm_hw_params_sizeof
+snd_pcm_info
+snd_pcm_info_free
+snd_pcm_info_get_card
+snd_pcm_info_get_device
+snd_pcm_info_get_subdevice
+snd_pcm_info_malloc
+snd_pcm_open
+snd_pcm_poll_descriptors
+snd_pcm_poll_descriptors_count
+snd_pcm_poll_descriptors_revents
+snd_pcm_prepare
+snd_pcm_readi
+snd_pcm_resume
+snd_pcm_start
+snd_pcm_state
+snd_pcm_sw_params
+snd_pcm_sw_params_current
+snd_pcm_sw_params_get_avail_min
+snd_pcm_sw_params_set_avail_min
+snd_pcm_sw_params_set_start_threshold
+snd_pcm_sw_params_sizeof
+snd_pcm_writei
+snd_strerror
+__snprintf_chk
+%s open error: %s
+%s: period_size=%li
+%s playback delay failed: %s
+%s: pollfds handle
+%s prepare failed: %s
+%s: prevents = 0x%x, crevents = 0x%x
+__sprintf_chk
+%s: processing time %lius
+%s: queued %li/%li samples
+src_delete
+src_float_to_int_array
+src_float_to_short_array
+src_int_to_float_array
+SRC_LINEAR
+src_process
+src_short_to_float_array
+SRC_SINC_BEST_QUALITY
+SRC_SINC_FASTEST
+SRC_SINC_MEDIUM_QUALITY
+		    SRC_SLAVE_ID(PLAYBACK)[@DST_SLAVE_ID(CAPTURE)]
+SRC_ZERO_ORDER_HOLD
+  %s: %s:
+%s: Samplerate src_ratio update1: %.8f
+%s: Samplerate src_ratio update2: %.8f
+%s: Samplerate src_ratio update3: %.8f
+%s [%s] ctl open error: %s
+-s,--seconds   duration of loop in seconds
+%s "%s" %i
+%s: silence error
+%s: silence queued %i samples
+%s start failed: %s
+%s: sync diff %li old diff %li
+-S,--sync      sync mode(0=none,1=simple,2=captshift,3=playshift,4=samplerate,
+%s sync type: %s
+%s: sync verify: %li
+__stack_chk_fail
+State dump for thread %p job %i: %s:
+strcasecmp
+__strdup
+strncasecmp
+subdevice=
+%s: Unable to initialize OSS Mixer ID '%s'
+%s: Unable to remove control '%s': %s
+%s: Unable to remove OSS control '%s'
+%s: xrun sync %i %i
+%s: xrun sync ok
+sync: capt stop removed %li samples
+sync: cbufcount=%li, pbufcount=%li
+sync: cdelay=%li(%li), pdelay=%li(%li), fill=%li (delay=%li), src_out=%li
+  sync = %i
+sync: playback buf_remove %li samples
+sync: playback silence added %li samples
+sync: playback wrote %li samples
+sync: removed %li captured samples, delay1=%li
+sync: removed %li playback samples, delay1=%li
+sync: removing %li captured samples, delay1=%li
+sync: removing %li playback samples, delay1=%li
+sync: xrun_pending, silence filling %li / buf_count=%li
+__syslog_chk
+T$8+L$,+T$0
+T$D9T$Hv\
+Tip #1 (usable 500ms latency, good CPU usage, superb xrun prevention):
+Tip #2 (superb 1ms latency, but heavy CPU usage):
+tlatency
+Too many arguments.
+-T,--thread    thread number (-1 = create unique)
+-t,--tlatency  requested latency in usec (1/1000000sec)
+Unable to add mixer controls.
+Unable to add ossmixer controls.
+Unable to copy control value for type %s
+Unable to create capture handle.
+Unable to create control '%s': %s
+Unable to create loopback handle.
+Unable to create playback handle.
+Unable to determine current swparams for %s: %s
+unable to enable slave mode for %s
+Unable to handle control type %s
+Unable to open file '%s': %s
+Unable to parse arguments or configuration...
+Unable to read control info for '%s'
+Unable to read control info '%s': %s
+Unable to read control value (event1) '%s': %s
+Unable to read control value (event2) '%s': %s
+Unable to read control value (init1) '%s': %s
+Unable to read TLV for '%s': %s
+Unable to set avail min for %s: %s
+Unable to set buffer parameters for %s stream: %s
+Unable to set buffer size %li for %s
+Unable to set buffer size %li for %s: %s
+Unable to set hw params for %s: %s
+Unable to set parameters for %s stream: %s
+Unable to set period size %li for %s: %s
+Unable to set start threshold mode for %s: %s
+Unable to set sw parameters for %s stream: %s
+Unable to set sw params for %s: %s
+Unable to unlock control info '%s': %s
+Unable to write control value (event1) '%s': %s
+Unable to write control value (event2) '%s': %s
+Unable to write control value '%s': %s
+Unable to write TLV for '%s': %s
+underrun for %s
+Unknown format, setting to default S16_LE
+Usage: alsaloop [OPTION]...
+  use_samplerate = %i
+-U,--xrun      xrun profiling
+-v,--verbose   verbose mode (more -v means more verbose)
+workaround
+Wrong mixer control ID syntax '%s'
+-W,--wake      process wake timeout in ms
+-w,--workaround use workaround (serialopen)
+-X,--pctl      playback ctl device
+    xrun_pending = %i
+-Y,--cctl      capture ctl device
+zerohold

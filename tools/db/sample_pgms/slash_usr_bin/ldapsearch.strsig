@@ -1,0 +1,537 @@
+%02ld%02ld
+      1.1   no attributes
+1.2.826.0.1.3344810.2.3
+1.2.840.113556.1.4.1339
+1.2.840.113556.1.4.319
+1.2.840.113556.1.4.473
+1.2.840.113556.1.4.474
+1.3.6.1.1.12
+1.3.6.1.1.13.1
+1.3.6.1.1.13.2
+1.3.6.1.1.8
+1.3.6.1.4.1.21008.108.63.1
+1.3.6.1.4.1.21008.108.63.1.3
+1.3.6.1.4.1.4203.1.10.1
+1.3.6.1.4.1.4203.1.9.1.1
+1.3.6.1.4.1.4203.1.9.1.4
+1.3.6.1.4.1.4203.666.11.3
+1.3.6.1.4.1.4203.666.5.12
+1.3.6.1.4.1.4203.666.5.15
+1.3.6.1.4.1.4203.666.5.16
+1.3.6.1.4.1.4203.666.5.17
+1.3.6.1.4.1.4203.666.5.2
+1.3.6.1.4.1.42.2.27.8.5.1
+2.16.840.1.113730.3.4.10
+2.16.840.1.113730.3.4.12
+2.16.840.1.113730.3.4.18
+2.16.840.1.113730.3.4.2
+2.16.840.1.113730.3.4.9
+a:Ab:cE:F:l:Ls:S:tT:uz:Cd:D:e:f:h:H:IMnNO:o:p:P:QR:U:vVw:WxX:y:Y:Z
+             abandon, cancel, ignore (SIGINT sends abandon/cancel,
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+Additional information: %s
+	additional info: %s
+  -a deref   one of never (default), always, search, or find
+alias deref should be never, search, find, or always
+      +     all operational attributes
+All userApplication attributes
+      *     all user attributes
+             and version
+  -A         retrieve attribute names only (no values)
+assert control previously specified
+assert: control value expected
+assertctl
+__assert_fail
+             [!]assert=<filter>     (RFC 4528; a RFC 4515 Filter string)
+assertion
+assertionvalue
+assertion == ((void *)0)
+  attributes	whitespace-separated list of attribute descriptions
+authmethod
+             [!]authzid=<authzid>   (RFC 4370; "dn:<dn>" or "u:<user>")
+authzid control incompatible with proxydn
+authzid control previously specified
+authzid: control value expected
+authzid: must be marked critical
+Bad filter pattern "%s"
+Bad filter pattern: "%s"
+Bad ValuesReturnFilter: %s
+baseObject
+# base <%s>%s with scope %s
+  -b basedn  base dn for search
+ber_alloc_t
+ber_bvarray_free
+ber_bvfree
+ber_dupbv
+ber_flatten
+ber_flatten2
+ber_free
+ber_init
+ber_init2
+ber_memalloc
+ber_memalloc_x
+ber_memfree
+ber_memfree_x
+ber_memrealloc
+ber_memvfree
+ber_printf
+ber_pvt_opt_on
+ber_scanf
+ber_set_option
+ber_str2bv
+ber_strdup
+__bss_start
+bufsize > 0
+buf != ((void *)0)
+	buildd@panlong:/build/buildd/openldap-2.4.28/debian/build/clients/tools
+Cancelled 
+cancel_msgid = %d
+  -c         continuous operation mode (do not stop on errors)
+chaining
+chaining behavior control continuation value "%s" invalid
+Chaining behavior control encoding error!
+chaining behavior control resolve value "%s" invalid
+chainingPreferred
+chainingRequired
+             [!]chaining[=<resolveBehavior>[/<continuationBehavior>]]
+Challenge: %s
+children
+../../../../clients/tools/common.c
+../../../../clients/tools/ldapsearch.c
+Common options:
+contoper
+Could not create LDAP session handle for URI=%s (%d): %s
+Could not parse LDAP URI(s)=%s (%d)
+Could not set LBER_OPT_DEBUG_LEVEL %d
+Could not set LDAP_OPT_DEBUG_LEVEL %d
+Could not set LDAP_OPT_DEREF %d
+Could not set LDAP_OPT_NETWORK_TIMEOUT %ld
+Could not set LDAP_OPT_PROTOCOL_VERSION %d
+Could not set LDAP_OPT_REFERRALS %s
+Could not set LDAP_OPT_X_SASL_NOCANON %s
+Could not set LDAP_OPT_X_SASL_SECPROPS: %s
+Could not set %scontrols
+Could not unset controls
+critical 
+__ctype_b_loc
+__cxa_finalize
+  -D binddn  bind DN
+ (default)
+<DEFAULT>
+Default: %s
+defs != ((void *)0)
+             [!]deref=derefAttr:attr[,...][;derefAttr:attr[,...][;...]]
+deref specs "%s" invalid
+/dev/tty
+  -d level   set LDAP debugging level to `level'
+DNS SRV: Could not parse hostlist="%s"
+DNS SRV: Could not turn DN="%s" into a domain
+DNS SRV: Could not turn domain=%s into a hostlist
+DNS SRV: out of memory?
+domainScope
+domainScope control previously specified
+             [!]domainScope              (domain scope)
+domainScope: no control value expected
+dontUseCopy
+dontUseCopy control previously specified
+dontUseCopy: critical flag required
+             !dontUseCopy                (Don't Use Copy)
+dontUseCopy: no control value expected
+(%d) %s%s%s
+ds != ((void *)0)
+  -e [!]<ext>[=<extparam>] general extensions (! indicates criticality)
+  -E [!]<ext>[=<extparam>] search extensions (! indicates criticality)
+Enter LDAP Password: 
+__errno_location
+estimate=%d
+expire=%d
+extended
+# extended LDIF
+# extended partial response
+# extended result response
+  -f file    read operations from `file'
+file:///%s/
+  filter	RFC 4515 compliant LDAP search filter
+# filter: %s
+filter: %s
+# filter%s: %s
+filter%s: %s
+fmt != ((void *)0)
+  -F prefix  URL prefix for files (default: %s)
+__fprintf_chk
+__fxstat64
+gethostbyname
+gethostname
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+got interrupt, abandon got %d: %s
+got interrupt, cancel got %d: %s
+  -h host    LDAP server
+  -H URI     LDAP Uniform Resource Identifier(s)
+inet_ntoa
+Interact
+Invalid general control name: %s
+Invalid general option name: %s
+Invalid search extension name: %s
+Invalid value for PagedResultsControl.
+Invalid value for PagedResultsControl, %s.
+Invalid value for PagedResultsControl, %s/%s.
+_IO_getc
+_IO_putc
+_IO_stdin_used
+  -I         use SASL Interactive mode
+_Jv_RegisterClasses
+ldap_abandon_ext
+LDAP APIInfo version mismatch: library %d, header %d
+LDAP API version mismatch: library %d, header %d
+ldap_bind
+ldap_bind parse result
+ldap_cancel_s
+ldap_charray2str
+ldap_charray_add
+ldap_charray_free
+ldap_control_find
+ldap_controls_free
+ldap_create_assertion_control_value
+ldap_create_deref_control_value
+ldap_create_page_control_value
+ldap_create_session_tracking_value
+ldap_create_sort_control_value
+ldap_create_sort_keylist
+ldap_create_vlv_control_value
+ldap_derefresponse_free
+ldap_dn2domain
+ldap_dn2ufn
+ldap_domain2hostlist
+ldap_err2string
+ldap_extended_operation
+ldap_first_message
+ldap_free_sort_keylist
+ldap_free_urldesc
+ldap_free_urllist
+ldap_get_attribute_ber
+ldap_get_dn_ber
+ldap_get_entry_controls
+ldap_get_option
+ldaphost
+ldap_initialize
+ldap_initialize( %s )
+ldap_memalloc
+ldap_memcalloc
+ldap_memfree
+ldap_msgfree
+ldap_msgid
+ldap_msgtype
+ldap_next_message
+ldap_parse_derefresponse_control
+ldap_parse_extended_result
+ldap_parse_intermediate
+ldap_parse_pageresponse_control
+ldap_parse_passwordpolicy_control
+ldap_parse_reference
+ldap_parse_result
+ldap_parse_sortresponse_control
+ldap_parse_vlvresponse_control
+ldap_passwordpolicy_err2txt
+ldapport
+ldap_put_vrFilter
+ldap_pvt_tls_destroy
+ldap_result
+ldap_sasl_bind
+ldap_sasl_bind(SIMPLE)
+ldap_sasl_interactive_bind_s
+ldapsearch
+ldap_search_ext
+ldap_set_option
+ldap_sort_entries
+ldap_start_tls
+ldap_start_tls_s
+ldap_str2charray
+ldap sync control encoding error!
+ldap_unbind_ext
+ldap_url_desc2str
+ldap_url_parselist
+                                         (ldapv3-vlv-09 virtual list views)
+# LDAPv%d
+LDAP vendor name mismatch: library %s, header %s
+LDAP vendor version mismatch: library %d, header %d
+ldif_debug
+ldif_is_not_printable
+ldif_parse_line2
+ldif_put_wrap
+ldif_wrap
+ldif-wrap
+             ldif-wrap=<width> (in columns, or "no" for no wrapping)
+libc.so.6
+__libc_start_main
+liblber-2.4.so.2
+libldap-2.4.so.2
+/lib/ld-linux.so.2
+libpthread.so.0
+../../../../libraries/liblutil/base64.c
+../../../../libraries/liblutil/sasl.c
+../../../../libraries/liblutil/utils.c
+libsasl2.so.2
+L$,)L$0t!
+  -l limit   time limit (in seconds, or "none" or "max") for search
+  -LLL       print responses in LDIF format without comments
+  -LL        print responses in LDIF format without comments
+  -L         print responses in LDIFv1 format
+lutil_atoix
+lutil_atollx
+lutil_atolx
+lutil_atoullx
+lutil_atoulx
+lutil_atoux
+lutil_b64_ntop
+lutil_sasl_freedefs
+lutil_sasl_interact
+lutil_snprintf
+manageDIT
+manageDSAit
+manageDSAit control previously specified
+manageDSAit: no control value expected
+             [!]manageDSAit         (RFC 3296)
+matchedDN
+	matched DN: %s
+Matched DN: %s
+  -M         enable Manage DSA IT control (-MM to make critical)
+missing filter in ValuesReturnFilter control
+missing specification of sss control
+missing specification of sync control
+missing specification of vlv control
+mkstemp64
+             [!]mv=<filter>              (RFC 3876 matched values filter)
+  -N         do not use reverse DNS to canonicalize SASL host name
+nettimeout
+nettimeout option previously specified
+nettimeout: option value expected
+             nettimeout=<timeout> (in seconds, or "none" or "max")
+No memory
+             [!]noop
+noop control previously specified
+noop: no control value expected
+noprompt
+             not really controls)
+  -n         show what would be done but don't actually do it
+# numEntries: %d
+# numExtended: %d
+# numPartial: %d
+# numReferences: %d
+# numResponses: %d
+(objectclass=*)
+             [!]<oid>[=:<b64value>] (generic control; no response handling)
+oneLevel
+                     one of "chainingPreferred", "chainingRequired",
+  -o <opt>[=<optparam] general options
+OpenLDAP
+OPENLDAP_2.4_2
+@(#) $OpenLDAP: ldapsearch  (Oct 17 2012 19:48:08) $
+  -O props   SASL security properties
+             or ignores response; if critical, doesn't wait for SIGINT.
+output[0] < 64
+output[1] < 64
+output[2] < 64
+pagedresults
+pagedresults: 
+PagedResultsControl incompatible with VLV
+PagedResultsControl previously specified
+passwd.bv_val == ((void *)0) && passwd.bv_len == 0
+ (Password expired, %d grace logins remain)
+ (Password expires in %d seconds)
+ pattern
+pos=%d count=%d context=%s (%d) %s
+postread
+postread attrs encode failed.
+             [!]postread[=<attrs>]  (RFC 4527; comma-separated attr list)
+postread control previously specified
+postread flatten failed (%d)
+             ppolicy
+ppolicy: 
+ppolicy control previously specified
+ppolicy: critical flag not allowed
+ppolicy: no control value expected
+  -p port    port on LDAP server
+pr_cookie
+preread attrs encode failed.
+             [!]preread[=<attrs>]   (RFC 4527; comma-separated attr list)
+preread control previously specified
+preread flatten failed (%d)
+Press [before/after(/offset/count|:value)] Enter for the next window.
+Press [size] Enter for the next {%d|size} entries.
+print_deref
+print_entry: %d
+__printf_chk
+pr_morePagedResults
+protocol
+proxydn control incompatible with authzid
+proxydn control previously specified
+proxydn: control value expected
+proxydn: must be marked critical
+             [!]pr=<size>[/prompt|noprompt] (RFC 2696 paged results/prompt)
+ptr <= buf + len
+  -P version protocol version (default: 3)
+  -Q         use SASL Quiet mode
+referrals
+	referrals:
+Referral: %s
+referralsPreferred
+                     "referralsPreferred", "referralsRequired"
+referralsRequired
+             [!]relax
+relax control previously specified
+relax: no control value expected
+# requesting: 
+requesting: 
+result: %d %s
+                                         (RFC 2891 server side sorting)
+                     rp[/<cookie>][/<slimit>] (refreshAndPersist)
+  -R realm   SASL realm
+sasl_authc_id
+sasl_authz_id
+sasl_done
+sasl_flags
+SASL Interaction
+sasl_mech
+sasl_realm
+sasl_secprops
+  -S attr    sort the results by attribute `attr'
+%s: -%c incompatible with -w
+%scookie=
+%scookie=%s
+scope should be base, one, or sub
+%s: -D previously specified
+Search options:
+# search reference
+# search result
+%s: -E incompatible with LDAPv%d
+%s: -e/-M incompatible with LDAPv2
+%serror=%d (%s)
+server side sorting control previously specified
+server side sorting control value "%s" invalid
+sessiontracking
+             [!]sessiontracking
+Session tracking control encoding error!
+sessiontracking: critical flag not allowed
+%s: -f previously specified
+%sgrace=%d
+%s: -H incompatible with -h
+%s: -H incompatible with -p
+%s: -h previously specified
+sigaction
+sigemptyset
+%s: incompatible previous authentication choice
+%s: incompatible with authentication choice
+%s: incompatible with previous authentication choice
+%s: invalid network timeout (%ld) specified
+%s: invalid sizelimit (%d) specified
+%s: invalid timelimit (%d) specified
+%s: -[IOQRUXY] incompatible with LDAPv2
+%s: ldap_get_option(API_INFO) failed
+%s/ldapsearch-%s-XXXXXX
+%s: no memory?
+__snprintf_chk
+%s: -O previously specified
+sortResult
+sortResult: 
+%s: -P 2 incompatible with version %d
+%s: -p previously specified
+__sprintf_chk
+%s: protocol version should be 2 or 3
+%s: -p without -h is invalid.
+%s: -R previously specified
+  -s scope   one of base, one, sub or children (search scope)
+%s: %s (%d)%s
+%s: session tracking can be only specified once
+%s: %s	(LDAP library: %s %d)
+             [!]sss=[-]<attr[:OID]>[/[-]<attr[:OID]>...]
+__stack_chk_fail
+strcasecmp
+__strcpy_chk
+__strdup
+strftime
+strncasecmp
+strtoull
+subentries
+Subentries control encoding error!
+subentries control previously specified
+subentries control value "%s" invalid
+             [!]subentries[=true|false]  (RFC 3672 subentries)
+subordinate
+%s: unable to parse debug value "%s"
+%s: unable to parse port number "%s"
+%s: unable to parse protocol version "%s"
+%s: unrecognized option -%c
+%s: -U previously specified
+%s: -X incompatible with authentication choice
+%s: -X previously specified
+sync control previously specified
+sync control value "%s" invalid
+SyncInfo Received
+             [!]sync=ro[/<cookie>]       (RFC 4533 LDAP Sync refreshOnly)
+%s: -Y previously specified
+%s: -Z incompatible with LDAPv2
+tcgetattr
+tcsetattr
+tL;l$Hs6+D$
+tool_args
+tool_bind
+tool_type
+  -T path    write files to directory specified by path (default: %s)
+  -tt        write all values to files in temporary directory
+  -t         write binary values to files in temporary directory
+  -U authcid SASL authentication identity
+  -u         include User Friendly entry names in the output
+Unable to create assertion value "%s" (%d)
+unable to make room for control; out of memory?
+Unable to parse ldif-wrap="%s"
+Unable to parse network timeout "%s"
+unable to parse %s control value
+Unable to parse size limit "%s"
+Unable to parse sync control value "%s"
+Unable to parse time limit "%s"
+Unable to parse value of general control %s
+unknown_ctrls
+unknown_ctrls_num
+usage: %s [options] [filter [attributes...]]
+ValuesReturnFilter previously specified
+__Version
+version: %d
+virtual list view control previously specified
+             [!]vlv=<before>/<after>(/<offset>/<count>|:<value>)
+vlvContext
+VLV control requires server side sort control
+VLV control value "%s" invalid
+vlvCount
+vlvResult
+  -V         print version info (-VV only)
+  -v         run in verbose mode (diagnostics to standard output)
+__vsnprintf_chk
+v != ((void *)0)
+want_bindpw
+Warning: Password file %s is publicly readable/writeable
+ what failed:
+    which may include:
+# with dereference %scontrol
+# with manageDSAit %scontrol
+# with noop %scontrol
+# with pagedResults %scontrol: size=%d
+# with server side sorting %scontrol
+# with subentries %scontrol: %s
+# with valuesReturnFilter %scontrol: %s
+# with virtual list view %scontrol: %d/%d
+  -w passwd  bind password (for simple authentication)
+  -W         prompt for bind password
+  -X authzid SASL authorization identity ("dn:<dn>" or "u:<user>")
+  -x         Simple authentication
+  -y file    Read password from file
+%Y%m%d%H%M%SZ
+  -Y mech    SASL mechanism
+  -z limit   size limit (in entries, or "none" or "max") for search
+  -Z         Start TLS request (-ZZ to require successful response)

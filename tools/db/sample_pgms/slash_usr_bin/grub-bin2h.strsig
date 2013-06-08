@@ -1,0 +1,40 @@
+, 0x%02x
+1.99-21ubuntu3.9
+A NULL argv[0] was passed through an exec system call.
+bug-grub@gnu.org
+Convert a binary file to a C header.
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+  -h, --help                display this message and exit
+_IO_getc
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+POSIXLY_CORRECT
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+Report bugs to <%s>.
+%s: invalid option -- '%c'
+snm:r:hVv
+%s: option '%c%s' doesn't allow an argument
+%s: option requires an argument -- '%c'
+%s: option '--%s' doesn't allow an argument
+%s: option '%s' is ambiguous
+%s: option '--%s' requires an argument
+%s: option '-W %s' doesn't allow an argument
+%s: option '-W %s' is ambiguous
+%s: option '-W %s' requires an argument
+%s (%s) %s
+%s: unrecognized option '%c%s'
+%s: unrecognized option '--%s'
+/* THIS CHUNK OF BYTES IS AUTOMATICALLY GENERATED */
+Try ``%s --help'' for more information.
+unsigned char %s[] =
+Usage: %s [OPTIONS] SYMBOL-NAME
+  -V, --version             print version information and exit

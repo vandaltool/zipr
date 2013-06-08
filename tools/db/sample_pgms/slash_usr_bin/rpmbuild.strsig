@@ -1,0 +1,143 @@
+ 2>&1 > 
+addMacro
+arguments to --root (-r) must begin with a /
+argvFree
+argvJoin
+argvSplit
+__assert_program_name
+__bss_start
+build binary package from <source package>
+build binary package only from <specfile>
+build binary package only from <tarball>
+Building for target %s
+Building target platforms: %s
+Build options with [ <specfile> | <tarball> | <source package> ]:
+buildroot
+buildroot already specified, ignoring %s
+build source and binary packages from <specfile>
+build source and binary packages from <tarball>
+build source package only from <specfile>
+build source package only from <tarball>
+build through %build (%prep, then compile) from <specfile>
+build through %build (%prep, then compile) from <tarball>
+build through %install (%prep, %build, then install) from <source package>
+build through %install (%prep, %build, then install) from <specfile>
+build through %install (%prep, %build, then install) from <tarball>
+build through %prep (unpack sources and apply patches) from <specfile>
+build through %prep (unpack sources and apply patches) from <tarball>
+Common options for all rpm modes and executables:
+Copyright (C) 1998-2002 - Red Hat, Inc.
+CPU-VENDOR-OS
+creating a pipe for --pipe failed: %m
+__ctype_b_loc
+dcgettext
+debug file state machine
+DIRECTORY
+do not accept i18N msgstr's from specfile
+do not execute any stages of the build
+do not verify build dependencies
+__errno_location
+exec failed
+Failed build dependencies:
+Failed to open tar pipe: %m
+Failed to read spec file from %s
+Failed to rename %s to %s: %m
+failed to stat %s: %m
+File %s does not appear to be a specfile.
+File %s is not a regular file.
+__fprintf_chk
+fsmdebug
+_fsm_debug
+generate package header(s) compatible with (legacy) rpm v3 packaging
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Help options:
+ignore ExcludeArch: directives from spec file
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+LIBPOPT_0
+libpopt.so.0
+libpthread.so.0
+librpmbuild.so.2
+librpmio.so.2
+librpm.so.2
+mkstemp64
+nodirtokens
+Options implemented via popt alias/exec:
+override build root
+override target platform
+poptAliasOptions
+poptGetArg
+poptHelpOptions
+poptPeekArg
+poptPrintHelp
+poptPrintUsage
+__printf_chk
+rasprintf
+recompile
+remove build tree when done
+remove sources when done
+remove specfile when done
+rmsource
+rpmcliAllPoptTable
+rpmcliFini
+rpmcliInit
+rpmcliPipeOutput
+rpmcliQueryFlags
+rpmcliRcfile
+rpmcliRootDir
+rpmExpand
+rpmExpandNumeric
+rpmFreeMacros
+rpmFreeRpmrc
+rpmGenPath
+rpmGetCwd
+rpmGetPath
+rpmInstallSource
+rpmlogSetMask
+rpmMkdirs
+rpmpsFree
+rpmpsPrint
+rpmReadConfigFiles
+rpmSetTables
+rpmSpecBuild
+rpmSpecCheckDeps
+rpmSpecFree
+rpmSpecParse
+rpm-spec.XXXXXX
+rpmtsCreate
+rpmtsFree
+rpmtsRootDir
+rpmtsSetRootDir
+rpmtsSetVSFlags
+RPM version %s
+rstrscat
+short-circuit
+skip straight to specified stage (only for c,i)
+_sourcedir
+<source package>
+%{_specdir}
+%{_specdir}/
+<specfile>
+Specfile
+__stack_chk_fail
+strerror
+<tarball>
+%{__tar} xOvf - --wildcards 
+This program may be freely redistributed under the terms of the GNU GPL
+%{_topdir}:%{_specdir}:%{_sourcedir}:%{_builddir}:%{_rpmdir}:%{_srcrpmdir}:%{_buildrootdir}
+Unable to open spec file %s: %s
+%{uncompress: 
+verify %files section from <specfile>
+verify %files section from <tarball>
+%{_vsflags_build}
+__xpg_basename
+__xstat64

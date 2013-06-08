@@ -1,0 +1,76 @@
+      addsubstvar($package, $variable, $value);
+by scanning libraries /usr/lib/gstreamer-0.10/*.so and
+chop $deb_host_multiarch;
+          close(F);
+codecs, demultiplexers and other media-handling components for
+  delsubstvar($package, "gstreamer:Decoders");
+  delsubstvar($package, "gstreamer:Encoders");
+  delsubstvar($package, "gstreamer:URISinks");
+  delsubstvar($package, "gstreamer:URISources");
+  delsubstvar($package, "gstreamer:Version");
+  dh_gstscancodecs [debhelper options]
+dh_gstscancodecs - enumerate and classify gstreamer codecs
+dh_gstscancodecs generates substitution variable for debian/control,
+      die("gst-codec-info-$gstversion call failed: '".$command."' rc: $? output: $output");
+foreach my $package (@{$dh{DOPACKAGES}}) {
+  foreach my $sodir (glob "$tmp$::pluginlibdirprefix* $tmp$::pluginlibdirlegacy*") {
+ge <sebastian.droege@collabora.co.uk>
+gstreamer-based applications.
+    $gstversion =~ s/^$tmp$::pluginlibdirlegacy//;
+    $gstversion =~ s/^$tmp$::pluginlibdirprefix//;
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+helper to install required missing GStreamer elements.
+Ian Jackson <iwj@ubuntu.com>
+    if ($?) {
+=item gstreamer:Decoders
+=item gstreamer:Elements
+=item gstreamer:Encoders
+=item gstreamer:Provides
+=item gstreamer:URISinks
+=item gstreamer:URISources
+=item gstreamer:Version
+L<debhelper(1)>
+          local $/;
+          local *F;
+    local *F;
+    my $command="GST_REGISTRY=$registryfile GST_PLUGIN_SYSTEM_PATH= GST_PLUGIN_PATH=$sodir gst-codec-info-$gstversion " . join(' ', (glob "$sodir/*.so")) . " > $tmpfile";
+my $deb_host_multiarch = `dpkg-architecture -qDEB_HOST_MULTIARCH`;
+    my $gstversion = $sodir;
+      my $output;
+  my $tmp = tmpdir($package);
+    my (undef, $registryfile) = File::Temp::tempfile("/tmp/".basename($0).".XXXX", UNLINK => 1);
+    my (undef, $tmpfile) = File::Temp::tempfile("/tmp/".basename($0).".XXXX", UNLINK => 1);
+    my ($variable, $value);
+          open(F, $tmpfile);
+    open(F, $tmpfile);
+          $output = <F>;
+$::pluginlibdirlegacy = '/usr/lib/gstreamer-';
+$::pluginlibdirprefix = '/usr/lib/'.$deb_host_multiarch.'/gstreamer-';
+Sebastian Dr
+Should be added to Provides
+Should be added to XB-GStreamer-Decoders
+Should be added to XB-GStreamer-Elements
+Should be added to XB-GStreamer-Encoders
+Should be added to XB-GStreamer-URI-Sinks
+Should be added to XB-GStreamer-URI-Sources
+Should be added to XB-GStreamer-Version
+    system($command);
+The generated substitution variables are
+The standard debhelper options are supported.
+This control fields will be used by the /usr/bin/gstreamer-codec-install
+This program is an extension to debhelper.
+This program is meant to assist in building a package that provides
+use Debian::Debhelper::Dh_Lib;
+use File::Temp;
+use strict;
+#!/usr/bin/perl -w
+/usr/lib/$DEB_HOST_MULTIARCH/gstreamer-0.10/*.so.
+      $value = $2 if /([a-zA-Z]*:[a-zA-Z]*)=(.*)\n/;
+      $variable = $1 if /([a-zA-Z]*:[a-zA-Z]*)=/;
+    verbose_print("# gstreamer version $gstversion");
+    while(<F>) {

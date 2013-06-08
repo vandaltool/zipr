@@ -1,0 +1,4 @@
+#!/bin/sh
+# convert nuweb to noweb
+$LIB/numarkup "$@" | $LIB/unmarkup
+LIB=/usr/lib/noweb

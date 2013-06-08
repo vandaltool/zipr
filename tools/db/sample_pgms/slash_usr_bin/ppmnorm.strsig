@@ -1,0 +1,35 @@
+bpercent
+brightmax
+__bss_start
+GLIBC_2.0
+__gmon_start__
+Internal error: computeBottomPercentile() receiveda 'total' value greater than the sum of the hist[]values
+_IO_stdin_used
+_Jv_RegisterClasses
+keephues
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_message
+pm_openr_seekable
+pm_optParseOptions3
+pnm_init
+pnm_readpnminit
+pnm_readpnmrow
+pnm_writepnminit
+pnm_writepnmrow
+Program takes at most one argument: the input file specification.  You specified %d arguments.
+remapping %d..%d to %d..%d
+The colors which become black would overlap the colors which become white.
+wpercent
+You may specify only one of -bpercent and -bvalue
+You may specify only one of -wpercent and -wvalue
+You specified a negative value for bpercent: %f
+You specified a negative value for wpercent: %f
+You specified a per centage > 100 for bpercent: %f
+You specified a per centage > 100 for wpercent: %f

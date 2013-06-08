@@ -1,0 +1,58 @@
+		addsubstvar($package, "misc:Depends", "libgcj-common (>> 1:4.1.1-13)");
+			autoscript($package,"postinst", "postinst-rebuild-gcj-db", "");
+			autoscript($package,"postrm", "postrm-rebuild-gcj-db", "");
+B<dh_nativejava> [S<I<debhelper options>>] [B<-n>] [B<-o>] [B<--sourcedir=>I<dir>]
+between invocations of this command. Otherwise, it may cause multiple
+			complex_doit("find $pwd -type f ! -type l > $sourcelist");
+			complex_doit("mv $tmp/usr/lib/gcj/*.db $tmp/usr/share/gcj/classmap.d");
+	$destdir = "/usr/lib/gcj";
+dh_nativejava - compile jar files to native code and register them
+dh_nativejava is a debhelper program that is responsible for compiling
+			doit("aot-compile", "-L", $destdir, "-c", "-fsource-filename=$sourcelist", "$jardir", "$tmp/usr/lib/gcj");
+			doit("mkdir", "-p", "$tmp/usr/share/gcj/classmap.d");
+Do not modify postinst/postrm scripts.
+END { unlink($sourcelist) or die "Couldn't unlink $sourcelist : $!" }
+	# Figure out if this is a GCJ package.
+foreach my $package (@{$dh{DOPACKAGES}}) {
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 NOTES
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+if (! $dh{DESTDIR}) {
+		if (! $dh{NOSCRIPTS}) {
+		if (! $dh{ONLYSCRIPTS}) {
+	if ($tmp =~ '-gcj$') {
+		# Install scripts to rebuild global classmap.db.
+instances of the same text to be added to maintainer scripts.
+It also automatically generates the postinst and postrm commands needed
+=item B<--destdir=>I<directory>
+=item B<-n>, B<--noscripts>
+=item B<-o>, B<--onlyscripts>
+		$jardir =~ s/-gcj$//;
+jars to native code and to make them known to the system.
+L<debhelper(7)>
+libgcj-common in the misc:Depends substitution variable.
+Michael Koch <mkoch@debian.org>, Matthias Klose <doko@ubuntu.com>
+my $destdir = $dh{DESTDIR};
+		my $jardir =$tmp;
+my $pwd = getcwd;
+my $sourcelist;
+	my $tmp=tmpdir($package);
+Note that this command is not idempotent. "dh_clean -k" should be called
+Only modify postinst/postrm scripts, do not actually compile any files
+or register them. May be useful if the files are already built and
+other than the default of "/usr/lib/gcj"
+registered.
+  $sourcelist = tmpnam();
+to updated the global classmap database and adds a dependency on
+} until my $fh = IO::File->new($sourcelist, O_RDWR|O_CREAT|O_EXCL);
+use Cwd;
+use Debian::Debhelper::Dh_Lib;
+use IO::File;
+use POSIX qw(tmpnam);
+use strict;
+Use this if you want the compiled files to be put in a directory
+#!/usr/bin/perl -w

@@ -1,0 +1,33 @@
+allimages
+__bss_start
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+PAM, %d by %d by %d maxval %ld
+PBM plain, %d by %d
+PBM raw, %d by %d
+PGM plain, %d by %d  maxval %ld
+PGM raw, %d by %d  maxval %ld
+pm_close
+pm_freerow
+pm_openr
+pm_optParseOptions2
+pnm_allocpamrow
+pnm_checkpam
+pnm_init
+pnm_nextimage
+pnm_readpaminit
+pnm_readpamrow
+PPM plain, %d by %d  maxval %ld
+PPM raw, %d by %d  maxval %ld
+__printf_chk
+%s:	Image %d:	
+__stack_chk_fail
+    Tuple type: %s

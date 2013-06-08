@@ -1,0 +1,33 @@
+can't find your tty's name
+__ctype_b_loc
+endutent
+gethostname
+getlogin
+getpwnam
+getpwuid
+getutent
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Message from %s@%s on %s at %s ...
+__printf_chk
+setlocale
+setutent
+%s has messages disabled
+%s has messages disabled on %s
+%s is logged in more than once; writing to %s
+%s is not logged in
+%s is not logged in on %s
+__snprintf_chk
+__stack_chk_fail
+usage: write user [tty]
+warning: write will appear from %s
+write: you have write permission turned off.
+you are uid %d, but your login is as uid %d
+you're %s, eh? Never heard of you.

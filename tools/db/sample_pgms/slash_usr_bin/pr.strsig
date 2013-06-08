@@ -1,0 +1,202 @@
+-0123456789D:FJN:S::TW:abcde::fh:i::l:mn::o:rs::tvw:
+0 <= strtol_base && strtol_base <= 36
+  -a, --across      print columns across rather than down, used together
+                    affect -w or -W, MARGIN will be added to PAGE_WIDTH
+                    alignment, --sep-string[=STRING] sets separators
+                    and trailer without -F)
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+                    begin [stop] printing with page FIRST_[LAST_]PAGE
+%b %e %H:%M %Y
+bindtextdomain
+bug-coreutils@gnu.org
+                    (by a 3-line page header with -F or a 5-line header
+                    by form feeds set in input files
+cannot specify both printing across and printing in parallel
+cannot specify number of columns when printing in parallel
+`-%c' extra characters or invalid number in the argument: %s
+clock_gettime
+  -COLUMN, --columns=COLUMN
+                    columns on each page
+Copyright %s %d Free Software Foundation, Inc.
+  -c, --show-control-chars
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+__ctype_toupper_loc
+__cxa_atexit
+D$03D$<1
++D$(9D$4
+date-format
+dcgettext
+  -D, --date-format=FORMAT
+  -d, --double-space
+                    default counting starts with 1st line of input file
+                    (default number of lines of text 56, and with -F 63)
+double-space
+                    double space the output
+  -e[CHAR[WIDTH]], --expand-tabs[=CHAR[WIDTH]]
+__errno_location
+                    expand input CHARs (TABs) to tab WIDTH (8)
+expand-tabs
+  -F, -f, --form-feed
+first-line-number
+  +FIRST_PAGE[:LAST_PAGE], --pages=FIRST_PAGE[:LAST_PAGE]
+For complete documentation, run: info coreutils '%s invocation'
+form-feed
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+__fxstat64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+  -h, --header=HEADER
+%H:%M:%S
+                    -h "" prints a blank line, don't use -h""
+http://www.gnu.org/software/coreutils/
+  -i[CHAR[WIDTH]], --output-tabs[=CHAR[WIDTH]]
+invalid number of columns: %s
+invalid page range %s
+invalid %s%s argument `%s'
+invalid suffix in %s%s argument `%s'
+_IO_stdin_used
+                    is the <TAB> character without -w and 'no char' with -w
+iswcntrl
+iswprint
+  -J, --join-lines  merge full lines, turns off -W line truncation, no column
+join-lines
+_Jv_RegisterClasses
+%ld.%09d
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+librt.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+  -l, --length=PAGE_LENGTH
+localtime
+`-l PAGE_LENGTH' invalid number of lines: %s
+Mandatory arguments to long options are mandatory for short options too.
+%m/%d/%y
+memory exhausted
+  -m, --merge       print all files in parallel, one in each column,
+                    multiple text-column output only, -s[char] turns off (72)
+  -N, --first-line-number=NUMBER
+`-N NUMBER' invalid starting line number: %s
+no-file-warnings
+  -n[SEP[DIGITS]], --number-lines[=SEP[DIGITS]]
+number-lines
+                    number lines, use DIGITS (5) digits, then SEP (TAB),
+                    offset each line with MARGIN (zero) spaces, do not
+  -o, --indent=MARGIN
+`-o MARGIN' invalid line offset: %s
+omit-header
+                    omit page headers and trailers, eliminate any pagination
+omit-pagination
+                    omit warning when a file cannot be opened
+                    options (-COLUMN|-a -COLUMN|-m) except -w is set
+                    otherwise (same as -S" "), no effect on column options
+                    output COLUMN columns and print columns down,
+output-tabs
+__overflow
+Page %llu
+page number overflow
+                    page printed (see +FIRST_PAGE)
+`--pages=FIRST_PAGE[:LAST_PAGE]' missing argument
+page-width
+page width too narrow
+Paginate or columnate FILE(s) for printing.
+Pete TerMaat
+posix_fadvise64
+POSIXLY_CORRECT
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+                    replace spaces with CHARs (TABs) to tab WIDTH (8)
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+  -r, --no-file-warnings
+Roland Huebner
+%s, and %s.
+  -s[CHAR], --separator[=CHAR]
+                    -s[CHAR] turns off line truncation of all 3 column
+                    separate columns by a single character, default for CHAR
+                    separate columns by STRING,
+separator
+sep-string
+setlocale
+                    set page width to PAGE_WIDTH (72) characters always,
+                    set page width to PAGE_WIDTH (72) characters for
+                    set the page length to PAGE_LENGTH (66) lines
+shell-always
+%s home page: <%s>
+show-control-chars
+show-nonprinting
+__sprintf_chk
+%s, %s, and others.
+%s, %s, and %s.
+%s%s argument `%s' too large
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+%*s%s%*s%s%*s%s
+  -SSTRING, --sep-string[=STRING]
+__stack_chk_fail
+standard input
+standard input.
+                    start counting with NUMBER at 1st line of first
+starting page number %llu exceeds page count %llu
+strftime
+__strtoull_internal
+T$8+T$09T$(
+T$8+T$09T$4
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+-t is implied if PAGE_LENGTH <= 10.  With no FILE, or when FILE is -, read
+tK;D$(v'+t$(
+  -t, --omit-header  omit page headers and trailers
+  -T, --omit-pagination
+                    truncate lines, but join lines of full length with -J
+                    truncate lines, except -J option is set, no interference
+Try `%s --help' for more information.
+                    unless -a is used. Balance number of lines in the
+Usage: %s [OPTION]... [FILE]...
+                    use a centered HEADER instead of filename in page header,
+                    use FORMAT for the header date
+                    use form feeds instead of newlines to separate pages
+                    use hat notation (^G) and octal backslash notation
+                    use octal backslash notation
+/usr/share/locale
+      --version  output version information and exit
+  -v, --show-nonprinting
+                    with -COLUMN
+                    without -S: Default separator <TAB> with -J and <space>
+                    with -S or -s
+`-w PAGE_WIDTH' invalid number of characters: %s
+  -W, --page-width=PAGE_WIDTH
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  -w, --width=PAGE_WIDTH
+xstrtol.c
+xstrtoumax
+%Y-%m-%d
+%Y-%m-%d %H:%M

@@ -1,0 +1,92 @@
+0123456789ABCDEF
+ // ALIAS
+// ARRAY
+ [ -A, --suppressAliases]
+ // BINARY
+__bss_start
+ bundle ...
+// -*- Coding: 
+ Copyright (C) 2011, International Business Machines Corporation and others. All Rights Reserved. 
+%csage: %s [ -h, -?, --help ] [ -V, --version ]
+// derb(8) by Vladimir Weinstein and Yves Arrouye
+encoding
+__fprintf_chk
+getLongPathname
+getting binary value
+getting int vector
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+icudatadir
+ [ -i, --icudatadir directory ] [ -c, --to-stdout ]
+// INTVECTOR
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libicutu.so.48
+libicuuc.so.48
+/lib/ld-linux.so.2
+opening resource file
+__printf_chk
+processing bundle "%s"
+res_getAlias_48
+res_getArrayItem_48
+res_getPublicType_48
+res_getTableItemByIndex_48
+%s: couldn't configure converter for encoding
+%s: couldn't create %s
+%s: couldn't create %s converter for encoding
+%s: error %d while %s: %s
+%s: error in command line argument "%s"
+sourcedir
+__sprintf_chk
+ [ -s, --sourcedir source ] [ -d, --destdir destination ]
+__stack_chk_fail
+__strcat_chk
+__strcpy_chk
+// STRING
+__strncat_chk
+__strncpy_chk
+suppressAliases
+%s version %s (ICU version %s).
+// TABLE
+the ICU internal 
+// This file was dumped by derb(8) from 
+to-stdout
+truncate
+ [ -t, --truncate [ size ] ]
+ucnv_close_48
+UCNV_FROM_U_CALLBACK_ESCAPE_48
+ucnv_fromUnicode_48
+ucnv_getDefaultName_48
+ucnv_getStandardName_48
+ucnv_open_48
+ucnv_setFromUCallBack_48
+ucnv_toUnicode_48
+u_errorName_48
+u_parseArgs
+uprv_free_48
+uprv_itou_48
+uprv_malloc_48
+ures_close_48
+ures_getBinary_48
+ures_getByIndex_48
+ures_getInt_48
+ures_getIntVector_48
+ures_getKey_48
+ures_getNextResource_48
+ures_getSize_48
+ures_getString_48
+ures_getType_48
+ures_hasNext_48
+ures_open_48
+ures_openDirect_48
+ures_resetIterator_48
+u_setDataDirectory_48
+u_strlen_48
+ [ -v, --verbose ] [ -e, --encoding encoding ] [ --bom ]
+// WARNING: this resource, size %li is truncated to %li
+While processing table

@@ -1,0 +1,1568 @@
+|&;<>()$`\"' 	
+        
+------------
+::::::::::::::::::::::::::::::::
+0123456789
+0123456789abcdef
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~38;5;%d
+%02x%02x%02x... lo %u hi %u nr %u
+%04d-%02d-%02d
+%04d-%02d-%02d %02d:%02d:%02d %+05d
+:%06o %06o %s 
+ 0 files changed
+0 <= graph->expansion_row && graph->expansion_row < num_expansion_rows
+%10s: %8u (%llu kB)
+|$ 3|$\3|$$
+\$@3\$<3\$X3\$(
+\$<3\$41
+3D$,3D$D
+\$,3l$01
+3L$$3L$@
+3L$@3L$H
+%.3s %.3s %d %02d:%02d:%02d %d%c%+05d
+%.3s, %d %.3s %d %02d:%02d:%02d %+05d
+3T$$3D$ 	
+3T$|3D$x	
+3T$L3D$H	
+\$43\$$1
+\$43T$0!
+\$83T$\3\$(
+--abbrev
+--abbrev=
+--abbrev-commit
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
+aborting due to possible repository corruption on the remote side.
+absurdly long hostname
+ACK %s common
+ACK %s continue
+ACK %s ready
+add_note
+add '%s'
+--advertise-refs
+--all-match
+[[:alpha:]_'][[:alnum:]_']*|0[xb]?[0-9a-fA-F_]*|[0-9a-fA-F_]+(\.[0-9a-fA-F_]+)?([eE][-+]?[0-9_]+)?|=>|-[rwxoRWXOezsfdlpSugkbctTBMAC>]|~~|::|&&=|\|\|=|//=|\*\*=|&&|\|\||//|\+\+|--|\*\*|\.\.\.?|[-+*/%.^&<>=!|]=|=~|!~|<<|<>|<=>|>>|[^[:space:]]|[
+--always
+ambiguous argument '%s': both revision and filename
+ambiguous argument '%s': unknown revision or path not in the working tree.
+Ambiguous option: %s (could be --%s%s or --%s%s)
+--ancestry-path
+--ancestry-path given but there are no bottom commits
+and have %d and %d different commit each, respectively.
+and have %d and %d different commits each, respectively.
+--and not followed by pattern expression
+and then use 'git add/rm <file>' as
+a NUL byte in commit log message not allowed.
+appropriate to mark resolution and make a commit,
+__assert_fail
+assertion failure lo %u mi %u hi %u %s
+attachment
+attempt to fetch/clone from a shallow repository
+[attr]binary -diff -text
+attr_stack->origin
+author %s
+a want line
+(@[a-zA-Z]{1,}[ 	]*\{{0,1}[ 	]*[^ 	"@',\#}{~%]*).*$
+\\[a-zA-Z@]+|\\.|[a-zA-Z0-9
+!^[ 	]*[A-Za-z_][A-Za-z_0-9]*:.*$
+(@|@@|\$)?[a-zA-Z_][a-zA-Z0-9_]*|[-+0-9.e]+|0[xXbB]?[0-9a-fA-F]+|\?(\\C-)?(\\M-)?.|//=?|[-+*/<>%&^|=!]=|<<=?|>>=?|===|\.{1,3}|::|[!=]~|[^[:space:]]|[
+[a-zA-Z_][a-zA-Z0-9_]*|[-+0-9.e]+|0[xXbB]?[0-9a-fA-F]+|<>|<=|>=|:=|\.\.|[^[:space:]]|[
+[a-zA-Z_][a-zA-Z0-9_]*|[-+0-9.e]+|0[xXbB]?[0-9a-fA-F]+|[-+*/<>%&^|=!.]=|--|\+\+|<<=?|>>=?|===|&&|\|\||::|->|[^[:space:]]|[
+[a-zA-Z_][a-zA-Z0-9_]*|[-+0-9.e]+[fFlL]?|0[xXbB]?[0-9a-fA-F]+[lL]?|[-+*/<>%&^|=!]=|--|\+\+|<<=?|>>=?|&&|\|\||::|->|[^[:space:]]|[
+[a-zA-Z_][a-zA-Z0-9_]*|[-+0-9.e]+[fFlL]?|0[xXbB]?[0-9a-fA-F]+[lL]?|[-+*/<>%&^|=!]=|--|\+\+|<<=?|>>>?=?|&&|\|\||[^[:space:]]|[
+[a-zA-Z_][a-zA-Z0-9_]*|[-+0-9.e]+[jJlL]?|0[xX]?[0-9a-fA-F]+[lL]?|[-+*/<>%&^|=!]=|//=?|<<=?|>>=?|\*\*=?|[^[:space:]]|[
+[a-zA-Z_][a-zA-Z0-9_]*|[-+0-9.e]+|[=~<>]=|\.[*/\^']|\|\||&&|[^[:space:]]|[
+^[ 	]*([-+][ 	]*\([ 	]*[A-Za-z_][A-Za-z_0-9* 	]*\)[ 	]*[A-Za-z_].*)$
+^[ 	]*(([A-Za-z_][A-Za-z_0-9]*[ 	]+)+[A-Za-z_][A-Za-z_0-9]*[ 	]*\([^;]*)$
+^([A-Za-z_][A-Za-z_0-9]*([ 	*]+[A-Za-z_][A-Za-z_0-9]*([ 	]*::[ 	]*[^[:space:]]+)?){1,}[ 	]*\([^;]*)$
+[a-zA-Z][a-zA-Z0-9_]*|\.([Ee][Qq]|[Nn][Ee]|[Gg][TtEe]|[Ll][TtEe]|[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee]|[Aa][Nn][Dd]|[Oo][Rr]|[Nn]?[Ee][Qq][Vv]|[Nn][Oo][Tt])\.|[-+]?[0-9.]+([AaIiDdEeFfLlTtXx][Ss]?[-+]?[0-9.]*)?(_[a-zA-Z0-9][a-zA-Z0-9_]*)?|//|\*\*|::|[/<>=]=|[^[:space:]]|[
+bad blob object
+bad color value '%.*s' for variable '%s'
+bad config file line %d in %s
+bad config value for '%s'
+bad config value for '%s' in %s
+bad --default argument
+bad default revision '%s'
+bad flag '%s' used after filename
+bad git namespace path "%s"
+bad graft data: %s
+bad --ignore-submodules argument: %s
+bad index file sha1 signature
+bad index version
+bad object header
+bad object %s
+bad offset for revindex
+bad packed object CRC for %s
+bad parent line in commit
+bad parents in commit %s
+/bad-path/
+bad ref for %s
+bad replace ref name: %s
+bad revision '%s'
+bad %s argument: %s
+bad shallow line: %s
+bad signature
+: BAD signature from 
+bad tree compare for commit %s
+bad tree object
+bad tree object %s
+bad tree pointer in commit %s
+bad tree %s
+bad type %d
+bad --word-diff argument: %s
+bad zlib compression level %d
+^(BEGIN|END|INIT|CHECK|UNITCHECK|AUTOLOAD|DESTROY)[ 	]*(\{[ 	]*)?(#.*)?$
+-----BEGIN PGP MESSAGE-----
+-----BEGIN PGP SIGNATURE-----
+begins with refs/, and we are unable to guess a prefix based on the source ref.
+--binary
+Binary file 
+Binary files differ
+bindtextdomain
+bind_textdomain_codeset
+--bisect
+blank-at-eof
+blank-at-eol
+bogus commit object %s
+bogus config parameter: %s
+bogus format in GIT_CONFIG_PARAMETERS
+--boundary
+branch.autosetupmerge
+branch.autosetuprebase
+--branches
+--branches=
+branches/%.*s
+--break-rewrites
+--break-rewrites=
+broken output pipe
+bug: a non-header pattern in grep header list.
+BUG: assertion failed in binary search
+BUG: diff is failing to clean up its tempfiles
+BUG: invalid grep_source type
+bug: malformed header expr
+BUG: non-INDEX attr direction in a bare repo
+BUG: option '%s' %s
+BUG: shell command is empty
+BUG: should not happen
+BUG: signal out of range: %d
+BUG: startup_info struct is not initialized.
+BUG: strbuf_setlen() beyond buffer
+BUG: switch '%c' %s
+BUG: total_in mismatch
+BUG: total_out mismatch
+bug: unknown binary handling mode
+bug: unknown header field %d
+BUG: your vsnprintf is broken (insatiable)
+BUG: your vsnprintf is broken (returned %d)
+[builtin]
+built-in 3-way text merge
+built-in binary merge
+(builtin)false
+(builtin)true
+built-in union merge
+(builtin)unknown
+by using:
+!^([C*]|[ 	]*!)
+%c%03d%c
+cachetextconv
+cache-tree.c: '%.*s' in '%s' not found
+cache-tree: internal error
+Cannot change to '%s/..'
+cannot combine --parents and --children
+cannot combine --reverse with --graph
+cannot combine --reverse with --walk-reflogs
+cannot combine --walk-reflogs with --graph
+Cannot come back to cwd
+cannot create an empty blob in the object database
+cannot create pipe for %s: %s
+cannot create pipe: %s
+cannot create thread: %s
+cannot delete '%s' from packed refs
+cannot determine file descriptor flags
+Cannot determine the current working directory
+cannot enforce both tab-in-indent and indent-with-non-tab
+cannot exec '%s'
+cannot expand target domain name in SRV RR
+cannot feed the input to external filter %s
+cannot find the current offset
+cannot fix permission bits on %s
+cannot fork() for %s: %s
+cannot fork to run external filter %s
+cannot get host name: %s
+cannot get RLIMIT_NOFILE
+Cannot handle files this big
+cannot happen -- lo and hi are identical
+cannot hash %s
+Cannot lock the ref '%s'.
+Cannot merge binary files: %s (%s vs. %s)
+cannot open /etc/mailname: %s
+cannot open pack access log '%s' for writing: %s
+cannot open '%s' for copying
+cannot parse DNS RR: %s
+cannot parse SRV response: %s
+cannot read data blob for %s
+cannot read /etc/mailname: %s
+cannot read sha1_file for %s
+cannot run %s: %s
+cannot seek back
+cannot set FD_CLOEXEC
+cannot simplify commit %s (because of %s)
+cannot simplify commit %s (invalid %s)
+cannot start proxy %s
+cannot stat the open index
+cannot unmerge '%s'
+cannot unpack %s from %s at offset %llu
+Cannot update the ref '%s'.
+cannot use Perl-compatible regexes when not compiled with USE_LIBPCRE
+cannot use %s as an exclude file
+Cannot walk reflogs for %s
+can't find the current directory
+Can't verify ref %s
+!^[ 	]*(catch|do|for|if|instanceof|new|return|switch|throw|while)
+cat <<\EOF
+checkdiff_consume
+checkout: moving from 
+--cherry
+--cherry is incompatible with --left-only
+--cherry-mark
+--cherry-mark is incompatible with --cherry-pick
+--cherry-pick
+--cherry-pick is incompatible with --cherry-mark
+--children
+^[	 ]*(class.*)$
+^[ 	]*((class|def)[ 	].*)$
+^[ 	]*((class|module|def)[ 	].*)$
+^(((class[ 	]+)?(procedure|function)|constructor|destructor|interface|implementation|initialization|finalization)[ 	]*.*)$
+^(.*=[ 	]*(class|record).*)$
+closedir
+--color=
+color.diff
+color.diff.
+color.pager
+color.ui
+--color-words
+--color-words=
+command line
+command line too long
+commitbeforemerge
+commits don't follow merge-base
+Commit %s in submodule path %s%s not found
+(commits not present)
+commits not present
+committer
+committer 
+committer %s
+Config remote shorthand cannot begin with '/': %s
+conflict-marker-size
+confused by unstable object source data for %s
+Connecting to %s (port %s) ... 
+construct_path_with_fanout
+contains
+Content-Disposition: %s; filename="%s"
+Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="%s%s"
+Content-Type: text/plain; charset=%s
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Type: text/x-patch; name="%s"
+copy-fd: read returned %s
+copy-fd: write returned 0
+copy-fd: write returned %s
+core.abbrev
+core.askpass
+core.attributesfile
+core.autocrlf
+core.autocrlf=input conflicts with core.eol=crlf
+core.bare
+core.bare and core.worktree do not make sense
+core.bigfilethreshold
+core.compression
+core.createobject
+core.deltabasecachelimit
+core.editor
+core.eol
+core.excludesfile
+core.filemode
+core.fsyncobjectfiles
+core.gitproxy
+core.ignorecase
+core.ignorestat
+core.logallrefupdates
+core.logpackaccess
+core.loosecompression
+core.notesref
+core.packedgitlimit
+core.packedgitwindowsize
+core.pager
+core.prefersymlinkrefs
+core.preloadindex
+core.quotepath
+core.repositoryformatversion
+core.safecrlf
+core.sharedrepository
+core.sparsecheckout
+core.symlinks
+core.trustctime
+core.warnambiguousrefs
+core.whitespace
+core.worktree
+corrupt commit
+corrupt loose object '%s'
+corrupt tag
+corrupt tree file
+corrupt tree sha %s
+Could not change back to '%s'
+Could not chdir to '%s'
+could not close alternates file
+Could not come back to cwd
+could not commit config file %s
+could not create temporary file '%s': %s
+Could not get current working directory
+Could not get directory '%s'
+could not lock config file %s
+could not lock config file %s: %s
+Could not open /dev/null
+Could not open '%s'
+Could not open %s
+Could not open '%s' for tracing: %s
+could not parse %s
+Could not read %s
+Could not read %s for notes-index
+Could not run 'git rev-list %s --not --remotes -n 1' command in submodule %s
+Could not run 'git status --porcelain' in submodule %s
+could not run gpg.
+Could not set GIT_DIR to '%s'
+Could not stat %s
+Could not switch to '%s'
+Could not trace into fd given by GIT_TRACE environment variable
+Couldn't find remote ref %s
+Couldn't set %s
+Couldn't write %s
+cr-at-eol
+create_delta_index
+CRLF will be replaced by LF in %s.
+CRLF would be replaced by LF in %s.
+__ctype_b_loc
+--cumulative
+Current worktree: %s
+custom merge driver %s lacks command line.
+__cxa_atexit
+D$03D$H3D$8
+D$0+D$@9
+D$@3D$<1
+D$43D$$3D$P3D$0
+D$4#D$8#D$0#D$,#D$(
+D$(9D$0v$
+D$,9D$4t3
+D$@9D$<r
+D$ 9D$$t\1
+D$<9D$@vHk
+D$<9D$X|
+data stream error
+data[sz] == '\0'
+Data too large to fit into virtual memory space.
+--date-order
+Date:   %s
+dcgettext
+dcngettext
+DD$4;|$(
++D$D9D$<}
+, %d deletion(-)
+, %d deletions(-)
+December
+--default
+Defaulting to tracing on stderr...
+deflateBound
+deflateEnd
+deflateEnd on object %s failed (%d)
+deflateEnd: %s (%s)
+deflateInit_
+deflateInit2_
+deflateInit2: %s (%s)
+deflateInit: %s (%s)
+deflate: out of memory
+deflate: %s (%s)
+(delete)
+--delta-base-offset
+delta data unpack-initial failed
+delta replay has gone wild
+detachedhead
+ %d file changed
+ %d files changed
+D$H3D$T3D$(1
++D$h9t$h
+did not find object for %s
+Didn't think it matches any more
+Did you mean ':%d:%s'?
+Did you mean ':%d:%s' aka ':%d:./%s'?
+Did you mean '%s:%s' aka '%s:./%s'?
+did you mean `--%s` (with two dashes ?)
+diff.autorefreshindex
+diff --cc 
+diff.color
+diff.color.
+diff --combined 
+diffcore-pickaxe.c
+diff-delta.c
+diff.dirstat
+diff.external
+diff-filter
+diff--gita/%.*sb/%.*s---a/%.*s+++b/%.*s
+diff--gita/%.*sb/%.*sdeletedfilemode%06o---a/%.*s+++/dev/null
+diff--gita/%.*sb/%.*snewfilemode%06o---/dev/null+++b/%.*s
+diff.ignoresubmodules
+diff.mnemonicprefix
+diff.noprefix
+diff_output_prefix_callback
+diff.renamelimit
+diff.renames
+diff_setup_done failed
+diff.suppressblankempty
+diff.suppress-blank-empty
+diff=true
+diff.wordregex
+@@diff_words_show
+, %d insertion(+)
+, %d insertions(+)
+Directory not empty: logs/%s
+Directory not empty: %s
+dir_inside_of
+--dirstat
+--dirstat=
+--dirstat-by-file
+--dirstat-by-file=
+dir && subdir && *dir && *subdir
+!display_notes_trees
+__dn_expand
+D$Nremof
+!^[ 	]*(do|for|if|else|return|switch|while)
+--do-walk
+!^[ 	]*(do|while|for|if|else|instanceof|new|return|switch|case|throw|catch|using)
+dst-prefix
+dst refspec %s matches more than one.
+dst ref %s receives from more than one src.
+D$T9D$<|x
+D$T9D$X}
+D$(;|$,uM
+Duplicated ref, and SHA1s don't match: %s
+Duplicated ref: %s
+duplicate graft data: %s
+duplicate replace ref: %s
+D$X3D$D3D$41
+early EOF '%s'
+--early-output
+emit_line_0
+empty ident %s <%s> not allowed
+encoding 
+encoding %s
+end of packfile %s is unavailable
+^[ 	]*((END[ 	]+)?(PROGRAM|MODULE|BLOCK[ 	]+DATA|([^'" 	]+[ 	]+)*(SUBROUTINE|FUNCTION))[ 	]+[A-Z].*)$
+__errno_location
+Error opening '%s'
+error reading from textconv command '%s'
+Error reading %s
+error when closing sha1 file
+error while reading from stdin %s
+/etc/gitattributes
+/etc/gitconfig
+/etc/mailname
+everybody
+exec '%s': cd to '%s' failed
+--exit-code
+Exiting because of an unresolved conflict.
+Expected git repo version <= %d, found %d
+expected SRV RR, found RR type %d
+expects a numerical value
+--ext-diff
+--extended-regexp
+external diff died, stopping at %s.
+external filter %s failed
+external filter %s failed %d
+F4f;E4tu
+Failed seeking to start of '%s'
+failed to apply delta
+Failed to checksum '%s'
+Failed to expand user dir in: '%s'
+Failed to load %s %s into notes tree from %s
+Failed to merge submodule %s (%s)
+  Failed to parse dirstat cut-off percentage '%.*s'
+Failed to parse --dirstat/-X option parameter:
+failed to read %d bytes from '%s'
+failed to read delta base object %s at offset %llu from %s
+Failed to read notes tree referenced by %s (%s)
+failed to read object %s
+failed to read object %s at offset %llu from %s
+Failed to simplify parents of commit %s
+failed to stat '%s'
+failed to stat '%s%s%s'
+Failed to traverse parents of commit %s
+failed to unpack compressed delta at offset %llu from %s
+failed to validate delta base reference at offset %llu from %s
+failed to write new configuration file %s
+failed utime() on %s: %s
+failed writing detached signature to '%s': %s
+fanout < 20
+fatal - unsorted cache subtree
+February
+feeding unmodified %s to diffcore
+Fetching submodule %s%s
+.fetchrecursesubmodules
+fetch.recursesubmodules
+file %s is far too short to be a packfile
+file %s is not a GIT packfile
+file write error (%s)
+--find-copies
+--find-copies=
+--find-copies-harder
+--find-renames
+--find-renames=
+--first-parent
+--fixed-strings
+Fix them up in the work tree,
+flushed.
+fn_out_diff_words_aux
+--follow
+for_each_note
+for_each_note_helper
+--format=
+format_display_notes
+Found a possible merge resolution for the submodule:
+Found errors in 'diff.dirstat' config variable:
+__fprintf_chk
+freeaddrinfo
+ (from %s)
+From %s Mon Sep 17 00:00:00 2001
+fsync error on '%s'
+ftruncate64
+--full-diff
+--full-history
+--full-index
+--function-context
+__fxstat64
+gai_strerror
+garbage at end of loose object '%s'
+getaddrinfo
+gethostbyname
+gethostname
+getnameinfo
+get_note
+getpagesize
+getpwnam
+getpwuid
+getrlimit64
+gettimeofday
+GIT_ALTERNATE_OBJECT_DIRECTORIES
+.gitattributes
+GIT_ATTR_NOSYSTEM
+GIT_AUTHOR_DATE
+GIT_AUTHOR_EMAIL
+GIT_AUTHOR_NAME
+GIT_CEILING_DIRECTORIES
+GIT_COMMITTER_DATE
+GIT_COMMITTER_EMAIL
+GIT_COMMITTER_NAME
+GIT_CONFIG
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+GIT_CONFIG_NOSYSTEM
+GIT_CONFIG_PARAMETERS
+GIT_DEBUG_LOOKUP
+GIT_DEBUG_SEND_PACK
+GIT_DIFF_OPTS
+gitdir: 
+GIT_DISCOVERY_ACROSS_FILESYSTEM
+GIT_EXEC_PATH
+GIT_EXTERNAL_DIFF
+GIT_FLUSH
+.git/.git
+GIT_GRAFT_FILE
+.gitignore
+GIT_INDEX_FILE
+GIT_INDEX_FILE=%s
+/.gitmodules
+GIT_NAMESPACE
+GIT_NO_REPLACE_OBJECTS
+GIT_NOTES_DISPLAY_REF
+GIT_NOTES_REF
+GIT_OBJECT_DIRECTORY
+;GIT_PAGER
+GIT_PAGER_IN_USE
+GIT_PREFIX
+git process crashed in this repository earlier. Make sure no other git
+GIT_PROXY_COMMAND
+'git status --porcelain' failed in submodule %s
+GIT_TEXTDOMAINDIR
+GIT_TRACE
+GIT_TRACE_PACKET
+GIT_TRACE_SETUP
+  git update-index --cacheinfo 160000 %s "%s"
+git upload-pack: cannot find object %s:
+git upload-pack: expected SHA1 list, got '%s'
+git upload-pack: expected SHA1 object, got '%s'
+git upload-pack: git-pack-objects died with error.
+git upload-pack: not our ref %s
+git upload-pack: protocol error, expected to get sha, not '%s'
+git upload-pack: %s
+git upload-pack [--strict] [--timeout=<n>] <dir>
+git upload-pack: unable to fork git-pack-objects
+git upload-pack: unable to fork git-rev-list
+GIT_USE_LOOKUP
+.git_vtag_tmpXXXXXX
+GIT_WORK_TREE
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+GLIBC_2.9
+__gmon_start__
+gmtime_r
+: Good signature from 
+gpg did not accept the data
+gpg failed to sign the data
+gpg.program
+graph->new_mapping[i] == -1
+graph->new_mapping[i - 1] > target
+graph->new_mapping[i - 2] < 0
+graph->new_mapping[i - 3] == target
+graph_next_line
+graph->num_parents >= 3
+graph_output_collapsing_line
+graph_output_commit_char
+graph_output_post_merge_line
+graph_output_pre_commit_line
+graph->revs->boundary
+\$H3\$T1
+^=head[0-9] .*
+help-all
+^[ 	]*(<[Hh][1-6][ 	].*>.*)$
+hint: %.*s
+--histogram
+ %h: %m %s
+hooks/%s
+|$H#T$\1
+i18n.commitencoding
+i18n.logoutputencoding
+I am totally screwed
+iconv_close
+iconv_open
+I don't handle protocol '%s'
+If no other git process is currently running, this probably means a
+If this is correct simply add it to the index for example
+If you want to trace into a file, then please set %s to an absolute pathname (starting with /).
+--ignore-all-space
+--ignore-missing
+--ignore-space-at-eol
+--ignore-space-change
+--ignore-submodules
+--ignore-submodules=
+ignoring %.4s extension
+ignoring broken ref %s.
+ignoring dangling symref %s.
+* Ignoring funny ref '%s' locally
+^(@(implementation|interface|protocol)[ 	].*)$
+implicitidentity
+Impossibly long personal identifier
+--include-tag
+incomplete pattern expression: %s
+indent-with-non-tab
+indent with spaces
+index CRC mismatch for object %s from %s at offset %llu
+index file corrupt
+index file open failed
+index file %s is too small
+index file %s is version %u and is not supported by this binary (try upgrading GIT to a newer version)
+index file smaller than expected
+index_name
+Index records invalid resolve-undo information
+index uses %.4s extension, which we do not understand
+inexact rename detection was skipped due to too many files.
+inflateEnd
+inflateEnd: %s (%s)
+inflateInit_
+inflateInit2_
+inflateInit2: %s (%s)
+inflateInit: %s (%s)
+inflate: out of memory
+inflate: %s (%s)
+info/attributes
+info/exclude
+info/grafts
+init_display_notes
+init_notes
+i == n && parent_stack[i] == tree
+In-Reply-To: <%s>
+insanely long object directory %s
+In '%s' at %d, 
+insertions == 0 && deletions == 0
+.insteadof
+insufficient permission for adding an object to repository database %s
+inter-hunk-context
+internal diff status error
+internal error: asking to populate invalid file.
+internal error: ce_mode is %o
+internal error: dst already matched.
+internal error in diff-resolve-rename-copy
+internal error in merge #1
+internal error in merge #2
+internal error in merge #3
+internal error in merge #4
+internal error pack-check nth-packed-object
+internal error: pack revindex fubar
+internal error: work tree has already been set
+in the future
+invalid argument to -B: %s
+invalid argument to -C: %s
+invalid argument to -M: %s
+invalid base85 alphabet %c
+invalid base85 sequence %.5s
+invalid commit
+Invalid commit %s in submodule path %s%s
+invalid config file %s
+invalid date format: %s
+Invalid deepen: %s
+invalid diff
+Invalid gitfile format: %s
+invalid key (newline): %s
+invalid key: %s
+invalid log-grep regex: %s
+Invalid mode for object creation: %s
+invalid object %06o %s for '%.*s'
+Invalid object name '%s'.
+invalid object type "%s"
+Invalid parameter "%s" for config option "submodule.%s.ignore"
+Invalid path '%s'
+Invalid pathspec magic '%.*s' in '%s'
+invalid pattern: %s
+invalid pickaxe regex: %s
+invalid --pretty format: %s
+invalid --pretty format: '%s' references an alias which points to itself
+Invalid refspec '%s'
+Invalid regexp to look for hunk header: %s
+Invalid regular expression: %s
+invalid replace ref %s
+Invalid revision range %s..%s
+invalid rule in ref_rev_parse_rules: %s
+Invalid search pattern: %s
+invalid shallow line: %s
+Invalid symlink '%s'
+Invalid symmetric difference expression %s...%s
+_IO_putc
+_IO_stdin_used
+--irreversible-delete
+isn't available
+`jG*?[{\
+_Jv_RegisterClasses
+key does not contain a section: %s
+key does not contain variable name: %s
+Key '%s' of pattern had no '*'
+|$,;L$,~ 
+l$ 3l$01
+l$(3l$ 1
+l$(3l$\1
+l$$3l$\1
+L$$3L$ 3L$<
+l$,3l$81
+l$$3\$P1
+L$@3T$01
+l$4+D$H+l$L9l$4
+l$83\$@1
+l$8)H8)P<
+L$,9L$(sp
+)l$,9t$$v
+Last expression must not be negated: %s
+l$D3\$41
+--left-only
+--left-only is incompatible with --right-only or --cherry
+--left-right
+LESS=FRSX
+LF will be replaced by CRLF in %s.
+LF would be replaced by CRLF in %s
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+libresolv.so.2
+libz.so.1
+l$L3l$,3l$03l$4
+L$L9L$Ht&
+ll_binary_merge
+ll_ext_merge
+ll-merge.c
+%llu	%llu	
+ll_union_merge
+ll_xdl_merge
+load_subtree
+localtime
+localtime_r
+Log for '%.*s' only goes back to %s.
+Log for '%.*s' only has %d entries.
+Log %s has gap after %s.
+Log %s is corrupt.
+Log %s is empty.
+--log-size
+log size %i
+logs/refs/.tmp-renamed-log
+Log %s unexpectedly ended on %s.
+Looking up %s ... 
+loose object %s (stored in %s) is corrupt
+lo %u hi %u rg %u mi %u
+lo %u hi %u rg %u mi %u 
+lov < hiv
+%lu %+05d
+%lu %c%02d%02d
+%lu days ago
+%lu hours ago
+ -%lu,%lu
+ +%lu,%lu 
+%lu minutes ago
+, %lu month%s ago
+%lu months ago
+%lu seconds ago
+%lu weeks ago
+%lu year%s
+%lu years ago
+__lxstat64
+.mailmap
+mailmap.
+mailmap.file
+malformed diff output: %s
+malformed mergetag
+Malformed value for %s
+Malformed value for %s: %s
+ matches
+matching
+match_one_pattern
+max-count
+--max-parents=
+MD$L9l$P
+memchr(path + 3 * n, '/', path_len - (3 * n)) == ((void *)0)
+__memcpy_chk
+__memmove_chk
+memory exhausted
+merge.conflictstyle
+merge.default
+merged tag '%s'
+merge following commits not found
+MERGE_HEAD
+--merges
+mergetag
+--merge without HEAD?
+--merge without MERGE_HEAD?
+Message-Id: <%s>
+midnight
+MIME-Version: 1.0
+--minimal
+--min-parents=
+missing object referenced by '%.*s'
+Missing value for '%s'
+mkstemp64
+!^[ 	]*MODULE[ 	]+PROCEDURE[ 	]
+more than one receivepack given, using the first
+more than one uploadpack given, using the first
+multi_ack
+multi_ack_detailed
+multi_ack thin-pack side-band side-band-64k ofs-delta shallow no-progress include-tag multi_ack_detailed
+multiple merges found
+Must be one of nothing, matching, tracking or current.
+n < (1 << 16)
+--name-only
+--name-only, --name-status, --check and -s are mutually exclusive
+^[ 	]*(namespace[ 	]+.*)$
+--name-status
+-name-width
+needs dictionary
+new blank line at EOF
+(new submodule)
+New worktree: %s
+nl_langinfo
+--no-abbrev
+--no-abbrev-commit
+--no-color
+--no-commit-id
+No current branch
+ no-done
+--no-ext-diff
+--no-function-context
+--no-max-parents
+--no-merges
+no message
+--no-minimal
+--no-min-parents
+noncumulative
+\ No newline at end of file
+non-monotonic index %s
+--no-notes
+No path in gitfile: %s
+No path specified. See 'man git-pull' for valid url syntax
+--no-prefix
+no-progress
+--no-renames
+No signature
+--no-standard-notes
+no symlink - falling back to symbolic ref
+Not a git repository (or any of the parent directories): %s
+Not a git repository (or any parent up to mount parent %s)
+Not a git repository: '%s'
+Not a git repository: %s
+--no-tags
+not a pattern expression %s
+Not a valid grep expression
+(not checked out)
+not checked out
+note_path_len <= 40 + 19
+--notes=
+notes.displayref
+notes ref %s is invalid
+Notes (%s):
+note_tree_consolidate
+note_tree_insert
+note_tree_remove
+--no-textconv
+not fast-forward
+--not followed by non pattern expression
+--not not followed by pattern expression
+No upstream branch found for '%s'
+November
+--no-walk
+-n requires an argument
+ns_initparse
+ns_parserr
+--numstat
+object directory %s does not exist; check .git/objects/info/alternates.
+object file %s is empty
+object names
+--objects
+/objects/
+--objects-edge
+object %s has unknown type id %d
+objects/info/alternates
+Object %s is a %s, not a blob
+Object %s is a %s, not a commit
+Object %s is a %s, not a tag
+Object %s is a %s, not a tree
+object '%s' is not a blob!
+Object %s not a commit
+Object %s not a tag
+Object %s not a tree
+_obstack_begin
+obstack_free
+_obstack_newchunk
+offset beyond end of packfile (truncated pack?)
+ofs-delta
+ofs %u lov %x, hiv %x, kyv %x
+Omit --global to set the identity only in this repository.
+on-demand
+--oneline
+only found copies from modified paths due to too many files.
+oops in prep_exclude
+oops (%s)
+__open64_2
+opening %s: %s
+open("%s"): %s
+option `color' expects "always", "auto", or "never"
+Option '%c' requires a value
+option `no-%s' %s
+options not supported in --stdin mode
+Option '--%s' requires a value
+option `%s' %s
+Option '--stat-count' requires a value
+Option '--stat-name-width' requires a value
+Option '--stat-width' requires a value
+   or: %s
+or use 'git commit -a'.
+%o %.*s%c
+Out of memory, calloc failed
+Out of memory? fdopen failed
+Out of memory, malloc failed (tried to allocate %lu bytes)
+Out of memory? mmap failed
+Out of memory, realloc failed
+Out of memory, strdup failed
+|$P3|$@1
+PACK ...
+^package .*
+packed_entry - (struct index_entry *)mem == entries
+packed object %s (stored in %s) is corrupt
+packed-refs
+packed %s from %s is corrupt
+packet: %12s%c 
+Packfile index for %s SHA1 mismatch
+packfile %s cannot be accessed
+packfile %s cannot be mapped: %s
+packfile %s claims to have %u objects while index indicates %u objects
+packfile %s does not match index
+packfile %s index not opened
+packfile %s index unavailable
+packfile %s is version %u and not supported (try upgrading GIT to a newer version)
+packfile %s not a regular file
+packfile %s signature is unavailable
+packfile %s size changed
+pack-objects
+pack.packsizelimit
+# pack-refs with:
+pack_report: core.packedGitLimit      = %10llu
+pack_report: core.packedGitWindowSize = %10llu
+pack_report: getpagesize()            = %10llu
+pack_report: pack_mapped              = %10llu / %10llu
+pack_report: pack_mmap_calls          = %10u
+pack_report: pack_open_windows        = %10u / %10u
+pack_report: pack_used_ctr            = %10u
+pack '%s' still has open windows to it
+pack/tmp_idx_XXXXXX
+pack/tmp_pack_XXXXXX
+pack-write.c
+pager.color
+par_column
+parent #%d, tagged '%s'
+--parents
+--patch-with-raw
+--patch-with-stat
+path_len < 40 + 19
+Path '%s' does not exist in '%s'
+Path '%s' does not exist (neither on disk nor in the index).
+Path '%s' exists, but not '%s'.
+Path '%s' exists on disk, but not in '%s'.
+Path '%s' exists on disk, but not in the index.
+Path '%s' is in the index, but not at stage %d.
+Path '%s' is in the index, but not '%s'.
+--patience
+ peeled 
+Performing inexact rename detection
+p->field < (sizeof(header_field)/sizeof(header_field[0]))
+--pickaxe-all
+--pickaxe-regex
+*** Please tell me who you are.
+Please upgrade Git
+poll failed, resuming: %s
+--porcelain
+`pos' is too far after the end of the buffer
+`pos + len' is too far after the end of the buffer
+prefix_len * 2 >= n
+prepare_attr_stack
+--pretty
+--pretty=
+--pretty format
+__printf_chk
+print_stat_summary
+Problem with core.sharedRepository filemode value (0%.3o).
+process is running and remove the file manually to continue.
+--progress
+protocol error: bad line length character: %.4s
+protocol error: bad line length %d
+protocol error: expected sha/ref, got '%s'
+protocol error: impossibly long line
+prune_notes
+pthread_create
+pthread_exit
+pthread_getspecific
+pthread_join
+pthread_join failed
+pthread_key_create
+pthread_mutex_lock
+pthread_mutex_unlock
+pthread_self
+pthread_setspecific
+^[	 ]*(((public|protected|private|static)[	 ]+)*function.*)$
+push.default
+.pushinsteadof
+pushnonfastforward
+.pushurl
+query_refspecs: need either src or dst
+__rawmemchr
+readdir64
+read error '%s'
+read from external filter %s failed
+readlink
+readlink(%s)
+readlink("%s"): %s
+readlink(%s): %s
+.receivepack
+--recurse-submodules-default
+recursive
+Reference has invalid format: '%s'
+References: 
+--reflog
+reflog for %s is a symlink
+Reflog message: %s
+reflog of '%s' references pruned commits
+Reflog: %s (%s)
+refname '%.*s' is ambiguous.
+refname %s is a symbolic ref, renaming it is not supported
+refname %s not found
+refname too long: %s
+refs/bisect/bad
+refs/bisect/good
+refs/heads/
+:refs/heads/master
+:refs/heads/%s
+refs/heads/%.*s
+Ref %s is at %s but expected %s
+refs/namespaces/%s
+refs/notes/
+refs/notes/commits
+refs/notes/%s
+refs/remotes/
+refs/remotes/%.*s
+refs/remotes/%.*s/HEAD
+refs/replace/
+refs/%.*s
+refs/stash
+refs/tags/
+refs/tags/*
+refs/tags/%.*s
+regerror
+--regexp-ignore-case
+regexp returned nonsense
+--relative
+--relative=
+--relative-date
+relative path syntax can't be used outside working tree.
+remoteBranch
+remote error: %s
+--remotes
+--remotes=
+--remotes=%s
+remotes/%s
+--remove-empty
+remove_note
+replaced
+replace depth too high for object %s
+replacement %s not found for %s
+# repo-abbrev:
+resolveconflict
+__res_query
+--reverse
+(revision walker failed)
+revision walk setup failed
+rev-list
+ (rewind)
+--right-only
+--right-only is incompatible with --left-only
+%s: %3u%% (%u/%u)%s%s
+%s%4d.%01d%% %.*s
+'%s' appears as both a file and as a directory
+Saturdays
+%sBinary files %s and %s differ
+%s cannot be resolved to branch.
+%s: cannot drop to stage #0
+%s: can only add regular files, symbolic links or git-directories
+%s: close error: %s
+%s/config
+%sDate: %s
+%sdeleted file 
+%sdelta %lu
+%s died of signal %d
+'%s' does not appear to be a git repository
+%s does not point to a valid object!
+%s[%d: %s]: errno=%s
+%s[%d: %s:%s]: %s
+September
+%s: error when reading the tail of sha1 file
+setitimer
+setlocale
+setsockopt
+setup: cwd: %s
+setup: git_dir: %s
+setup: prefix: %s
+setup: worktree: %s
+'%s' exists; cannot create '%s'
+%.*s: expected %s type, but the object dereferences to %s type
+%s: failed to insert into database
+%sGIT binary patch
+%s/.gitconfig
+sha1_entry_pos
+sha1 file '%s' validation error
+sha1 file '%s' write error
+sha1 file '%s' write error. Out of diskspace
+sha1-lookup.c
+sha1 mismatch %s
+shallow 
+%s has multiple values
+short SHA1 %.*s is ambiguous.
+--shortstat
+should not accept an argument
+should not happen, someone must be hit on the forehead
+--show-all
+--show-notes
+--show-notes=
+--show-signature
+shuffle_one
+side-band
+side-band-64k
+sigaction
+sigemptyset
+Signed-off-by: 
+%s: ignoring alternate object stores, nesting too deep.
+%s: ignoring relative alternate object store %s
+--simplify-by-decoration
+--simplify-merges
+%s/index
+%sindex 
+'%s' is not a boolean
+%.*s is not a valid attribute name: %s:%d
+%s is not a valid object
+%s is not a valid '%s' object
+'%s' is not possible because you have unmerged files.
+'%s' is outside repository
+%s is unknown object
+.skipdefaultupdate
+.skipfetchall
+%s: lacks value
+%sliteral %lu
+%s%llu%s
+%sMIME-Version: 1.0
+ %s mode %06o 
+%s mode change %06o => %06o%c
+%s: needs merge
+%s needs update
+%s: needs update
+%snew file mode %06o
+%s not allowed: %s:%d
+snprintf
+__snprintf_chk
+%s/objects
+[^<>= 	]+|[^[:space:]]|[
+[={}"]|[^={}" 	]+|[^[:space:]]|[
+]+|[^[:space:]]|[
+space-before-tab
+space before tab in indent
+^[[:space:]]*((classdef|function)[[:space:]].*)$|^%%[[:space:]].*$
+%s/pack/pack-
+%s/pack/pack-1234567890123456789012345678901234567890.%s
+%s/pack/pack-%s.keep
+--sparse
+__sprintf_chk
+%s: protocol error: bad band #%d
+%s: protocol error: no band designator
+ =?%s?q?
+src-prefix
+src refspec %s does not match any.
+src refspec %s matches more than one.
+%s rewrite 
+SRV RR is too short
+ %s%-*s |
+%s %s^{}
+%s%s@@ -
+	%.*s = %s
+%s %s%chost=%s%c
+%s%scopy from 
+%s%scopy to 
+%s %s%c%s%s
+ %s %s (%d%%)
+%s%sdeleted file mode %06o%s
+%s%sdiff --git %s %s%s
+%s%sdissimilarity index %d%%%s
+%s%s:%d: leftover conflict marker
+%s%s:%d: %s.
+%s SHA1 checksum mismatch
+%s SHA1 does not match its index
+%s: sha1 file error on close
+%s: sha1 file has trailing garbage
+%s: sha1 file read error
+%s: sha1 file truncated
+'%s': short read %s
+%s%sindex %s..
+%s %s is not a commit!
+%s%snew file mode %06o%s
+%s%snew mode %06o%s
+%s%sold mode %06o%s
+%s%srename from 
+%s%srename to 
+%.*s%s%s
+%s %s %s
+%s: %.*s%.*s
+%s'%s': %s
+%s%ssimilarity index %d%%
+%s%.*s%s%s
+%s%s %s%s
+%s%s--- %s%s%s
+%s%s+++ %s%s%s
+%s: symlink too long
+__stack_chk_fail
+--standard-notes
+--stateless-rpc
+^[ 	]*(((static|public|internal|private|protected|new|unsafe|sealed|abstract|partial)[ 	]+)*(class|enum|interface|struct)[ 	]+.*)$
+^[ 	]*(((static|public|internal|private|protected|new|virtual|sealed|override|unsafe)[ 	]+)*[][<>@.~_[:alnum:]]+[ 	]+[<>@._[:alnum:]]+[ 	]*\(.*\))[ 	]*$
+^[ 	]*(((static|public|internal|private|protected|new|virtual|sealed|override|unsafe)[ 	]+)*[][<>@.~_[:alnum:]]+[ 	]+[@._[:alnum:]]+)[ 	]*$
+stat(%s)
+statushints
+--stdin given twice?
+--stdout
+'$%s' too big
+STOP_AT_NON_OPTION and KEEP_UNKNOWN don't go together
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+%s tracks both %s and %s
+strcasecmp
+strcasestr
+__strcat_chk
+strchrnul
+__strcpy_chk
+__strdup
+stream consistency error
+--strict
+strncasecmp
+__strncpy_chk
+__strtoll_internal
+__strtoull_internal
+^((struct|class|enum)[^;]*)$
+^sub [[:alnum:]_':]+[ 	]*(\([^)]*\)[ 	]*)?(:[^;#]*)?(\{[ 	]*)?(#.*)?$
+Subject: 
+Subject: [%s] 
+Subject: [%s%s%0*d/%d] 
+--submodule
+--submodule=
+submodule.
+(submodule deleted)
+--submodule-prefix
+Submodule %s contains modified content
+Submodule %s contains untracked content
+Submodule %s %s..
+Subproject commit %s
+Subproject commit %s%s
+^(\\((sub)*section|chapter|part)\*{0,1}\{.*)$
+--summary
+'%s': unable to read %s
+%s: unmerged (%s)
+%s: unsupported file type
+%s: %u%s%s
+switch `%c' %s
+%s: write error (%s)
+symbolic link too long: %s
+t$0xb9t$xt\
+|$ #T$\1
+T$ 3T$03L$H
+T$,3T$$1
+T$@3T$(1
+T$(3T$ 3T$L3T$X
+T$4#|$\1
+t$43t$ 1
+T$49D$4|-
++t$49t$0~
++T$49T$0
+t$4+\$l9D$l
+<.t4< v0<:t,<,f
+T$8#|$\1
+t$83t$\1
+t8;T$ s2
++T$ 9T$(
+T$@9T$0v!
+tab-in-indent
+tabwidth=
+tabwidth %.*s out of range
+tag %s names a non-parent %s
+takes no value
+target * 2 <= i
+--textconv
+textconv/%s
+tformat:
+t$H3t$T!
+The destination refspec neither matches an existing ref on the remote nor
+The file will have its original line endings in your working directory.
+The owner of files must always have read and write permissions.
+There are still logs under '%s'
+there are still refs under '%s'
+The remote end hung up unexpectedly
+The same object %s appears twice in the pack
+thin-pack
+This is a multi-part message in MIME format.
+This operation must be run in a work tree
+Thursdays
+--timeout=
+!t->initialized
+t$L3t$,!
++T$l9D$0
+T$L+T$(9
+too long a refname '%s'
+Too long path name: '%s/%s'
+Too long path: %.*s
+too many args to run %s
+too many matches for %s
+Too many or long arguments
+--topo-order
+tortoiseplink
+to set your account's default identity.
++T$p+\$D
+trace: exec:
+trace: exec failed: %s
+trace: run_command:
+tracking
+trailing-space
+trailing whitespace
+tree && parent
+tree_write_stack_init_subtree
+Trying to write non-commit object %s to branch %s
+Trying to write ref %s with nonexistent object %s
+<.t*</t.
+<$t <:t$
+T$<+T$,)
+t\+T$\9T$(
++t$<;t$p
+t(<"t$<\t 
+t&<<t"<;t
+Tuesdays
+<"tU<\t1
+<!tU<-tQ
+!tws->next
+tws->path[0] == '\0' && tws->path[1] == '\0'
+, %u.%2.2u GiB
+, %u.%2.2u KiB
+, %u.%2.2u MiB
+ | %u.%2.2u MiB/s
+, %u bytes
+((uintptr_t) (entry) & 3) == 0
+((uintptr_t) (*p) & 3) == 2 || ((uintptr_t) (*p) & 3) == 3
+ | %u KiB/s
+unable to add %s to index
+Unable to append to %s
+Unable to append to %s: %s
+unable to connect to %s:
+unable to create directory for %s
+unable to create '%s'
+Unable to create %s
+Unable to create '%s.lock': %s
+Unable to create '%s.lock': %s.
+unable to create temp-file
+Unable to create temporary file '%s'
+unable to create temporary sha1 filename %s: %s
+unable to deflate new object %s (%d)
+unable to delete existing %s
+unable to delete old %s
+unable to find %s
+Unable to fix permissions on %s
+unable to fork
+Unable to get current working directory
+unable to index file %s
+unable to lock %s for rollback
+unable to lock %s for update
+Unable to look up %s
+Unable to look up %s (port %s) (%s)
+unable to make temporary index file readable
+unable to make temporary pack file readable
+unable to map index file
+unable to move logfile logs/refs/.tmp-renamed-log to logs/%s: %s
+unable to move logfile logs/%s to logs/refs/.tmp-renamed-log: %s
+unable to open object pack directory: %s: %s
+Unable to open %s for writing
+unable to parse command-line config
+unable to parse commit %s
+unable to parse %s header
+unable to push to unqualified destination: %s
+unable to read blob object %s
+Unable to read current working directory
+unable to read destination tree (%s)
+unable to read files to diff
+Unable to read log '%s'
+unable to read root tree (%s)
+unable to read source tree (%s)
+unable to read tree %s
+unable to rename temporary index file
+unable to rename temporary pack file
+Unable to reread header of '%s'
+unable to resolve reference %s: %s
+unable to restore logfile %s from logs/refs/.tmp-renamed-log: %s
+unable to restore logfile %s from %s: %s
+unable to set permission to '%s'
+unable to set SO_KEEPALIVE on socket: %s
+unable to set up diff options to follow renames
+unable to %s %s: %s
+unable to stat '%s'
+unable to unpack %s header
+unable to write current sha1 into %s
+unable to write pack header
+unable to write sha1 file
+unable to write sha1 filename %s: %s
+unable to write temp-file
+Unable to write to %s
+Unexpected checksum for %s (disk corruption?)
+unexpected deflate failure: %d
+unexpected delta opcode 0
+Unexpected node type (internal error) %d
+--unified=
+Unimplemented pathspec magic '%c' in '%s'
+unknown date format %s
+  Unknown dirstat parameter '%.*s'
+unknown error
+Unknown index entry format %08x
+unknown object type %i at offset %llu in %s
+unknown option `%s'
+unknown pending object %s (%s)
+unknown style '%s' given for '%s'
+unknown switch `%c'
+Unknown type %s
+unmatched parenthesis
+  Unmerged
+* Unmerged path %s
+--unpacked
+--unpacked=
+--unpacked=<packfile> no longer supported.
+unsetenv
+unshallow %s
+untracked
+update notes cache
+.uploadpack
+upload-pack
+upstream
+@{upstream}
+usage: %s
+user.email
+user.name
+user.signingkey
+uses feature not supported for dashless options
+uses incompatible flags LASTARG_DEFAULT and OPTARG
+Use '--' to separate filenames from revisions
+Use '--' to separate paths from revisions
+/usr/bin:/bin
+/usr/lib/git-core
+/usr/share/locale
+Value '%s' of pattern has no '*'
+variable i18n.commitencoding to the encoding your project uses.
+--verify
+--verify-objects
+__vfprintf_chk
+>/Vm-ikP I
+((void *) ((uintptr_t) (parent->a[index]) & ~3)) == tree
+__vsnprintf_chk
+waitpid for %s failed: %s
+waitpid is confused (%s)
+--walk-reflogs
+warning: 
+Warning: commit message does not conform to UTF-8.
+Wednesdays
+weighted_shuffle
+What does '%s' for %s mean?
+which will accept this suggestion.
+Will not add file alias '%s' ('%s' already exists in index)
+--word-diff
+--word-diff=
+word-diff-regex
+write_each_note
+write_each_note_helper
+write error (disk full?)
+write failure on '%s'
+write_idx_file
+write_notes_tree
+wrong index v1 file size in %s
+wrong index v2 file size in %s
+wrong version
+wt < (1 << 16)
+!((wt + 1) > ((18446744073709551615ULL) >> ((8 * sizeof(uintmax_t)) - (8 * sizeof(total)))) - (total))
+xfuncname
+__xpg_basename
+__xstat64
+yesterday
+You don't exist. Go away!
+You have both %s and %s
+You may want to amend it after fixing the message, or set the config
+you may want to set your %s variable to at least %d and retry the command.
+Your branch and '%s' have diverged,
+Your branch is ahead of '%s' by %d commit.
+Your branch is ahead of '%s' by %d commits.
+Your branch is behind '%s' by %d commit, and can be fast-forwarded.
+Your branch is behind '%s' by %d commits, and can be fast-forwarded.
+Your parents must have hated you!
+Your sysadmin must hate you!
+you want to use way too much memory
+ZLIB_1.2.0

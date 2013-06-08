@@ -1,0 +1,101 @@
+Ack! newleft=%d, newright=%d, left=%d, right=%d
+    -b <botmarg>    bottom margin in 1"/600 (default: 150 = 0.25")
+ bottom: %d
+bottommargin
+__bss_start
+  command-line parameters.  Parameters in the configuration file act as though
+    # Comment
+  Configuration files specified with the '-f' parameter have the following
+cutswath(): A-could not read top margin
+cutswath(): B-could not read next line
+cutswath(): C-could not read next line
+cutswath(): could not clear bottom margin
+cutswath(): could not malloc data storage
+cutswath(): could not malloc ppa storage
+D$09|$(t
+    [etc.]
+/etc/pbmtoppa.conf
+    -f <cfgfile>    read <cfgfile> as parameters
+  file before any command-line parameters are processed.
+  format:
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+*HP DeskJet 1000C Prin (Copy 2)*FILE!!
+_IO_getc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+    <key1> <value1>
+    <key2> <value2>
+ left:   %d
+leftmargin
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+    -l <leftmarg>   left margin in 1"/600   (default: 150 = 0.25")
+main(): couldn't open file '%s'
+main(): unrecognized parameter '%s'
+margins:
+No pages printed!
+overflow_add
+Page size is controlled by options and the configuration file.
+papersize
+  parameter which specified the file.
+parm_iversion(): unknown printer version '%d'
+parm_version(): unknown printer version '%s'
+pbm_init
+pbm_readheader(): unknown PBM magic '%s'
+pbm_readline(): error reading line data (%d)
+pbm_readline(): unknown PBM version
+pbmtoppa
+ppa_eject_page(): unknown printer verson
+ppa_init_job(): unknown printer verson
+ppa_init_page(): unknown printer verson
+ppa_load_page(): unknown printer verson
+ppa_print_sweep(): could not malloc storage for compressed data
+ppa_print_sweep(): truncating nozzle data from %d rows to 6 rows
+ppa_print_sweep(): unknown printer verson
+__printf_chk
+print_pbm(): error calling cut_pbm_swath()
+print_pbm(): Input image is not the size of a page for Page %d.
+print_pbm(): unknown return code from cut_pbm_swath()
+  Prints a pbm- or pbmraw-format <infile> to HP720/820/1000-format <outfile>.
+read_config_file(): couldn't open file '%s'
+read_config_file(): error parsing config file
+read_config_file(): error parsing config file (line %d)
+read_config_file(): unknown paper size %s
+read_config_file(): unrecognized parameter '%s' (line %d)
+ right:  %d
+rightmargin
+  'rightmargin', 'bottommargin', 'papersize', or any non-null truncated
+    -r <rightmarg>  right margin in 1"/600  (default: 150 = 0.25")
+set_printer_defaults(): unknown printer version
+    -s <paper>      paper size (us, a4, default: us)
+__stack_chk_fail
+strcasecmp
+!!TAZ            
+  the corresponding parameters were substituted, in order, for the '-f'
+  The file /etc/pbmtoppa.conf, if it exists, is processed as a configuration
+The input is %dW x %dH, while a page is %dW x %dH pixels.
+  The -x and -y options accumulate.  The -v option resets the horizontal and
+ top:    %d
+topmargin
+  to stdin and stdout.  '-' is a synonym for stdin and stdout.
+    -t <topmarg>    top margin in 1"/600    (default: 150 = 0.25")
+unknown paper size %s
+usage: %s [ options ] [ <infile> [ <outfile> ] ]
+  Valid keys are 'version', 'xoffset', 'yoffset', 'topmargin', 'leftmargin',
+version:  
+  version of these words.  Valid values are the same as with the corresponding
+  vertical adjustments to an internal default.  <infile> and <outfile> default
+    -v <version>    printer version (720, 820, or 1000)
+x-offset: %d
+    -x <xoff>       vertical offset adjustment in 1"/600
+y-offset: %d
+    -y <yoff>       horizontal offset adjustment in 1"/600

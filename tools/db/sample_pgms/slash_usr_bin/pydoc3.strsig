@@ -1,0 +1,4 @@
+if __name__ == '__main__':
+import pydoc
+    pydoc.cli()
+#! /usr/bin/python3.2

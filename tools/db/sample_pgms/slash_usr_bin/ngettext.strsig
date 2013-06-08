@@ -1,0 +1,85 @@
+1995-1997, 2000-2007
+%50s %50s
+abcfnrtv\01234567
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+basename
+bindtextdomain
+CHARSETALIASDIR
+Copyright (C) %s Free Software Foundation, Inc.
+  COUNT                     choose singular/plural form based on this value
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+dcgettext
+dcngettext
+  -d, --domain=TEXTDOMAIN   retrieve translated message from TEXTDOMAIN
+Display native language translation of a textual message whose grammatical
+  -e                        enable expansion of some escape sequences
+  -E                        (ignored for compatibility)
+environment variable TEXTDOMAIN.  If the message catalog is not found in the
+__errno_location
+form depends on a number.
+__fprintf_chk
+getopt_long
+gettext-runtime
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -h, --help                display this help and exit
+iconv_close
+iconv_open
+If the TEXTDOMAIN parameter is not given, the domain is determined from the
+IN_HELP2MAN
+_IO_stdin_used
+iswalnum
+iswspace
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+@localedir@
+mbiter.h
+mbiter_multi_next
+mbsinit (&iter->state)
+mbuiter.h
+mbuiter_multi_next
+memory exhausted
+missing arguments
+  MSGID MSGID-PLURAL        translate MSGID (singular) / MSGID-PLURAL (plural)
+nl_langinfo
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+regular directory, another location can be specified with the environment
+Report bugs to <bug-gnu-gettext@gnu.org>.
+setlocale
+%s (GNU %s) %s
+__sprintf_chk
+__stack_chk_fail
+Standard search directory: %s
+__strdup
+TEXTDOMAIN
+TEXTDOMAINDIR
+  [TEXTDOMAIN]              retrieve translated message from TEXTDOMAIN
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+too many arguments
+Try `%s --help' for more information.
+Ulrich Drepper
+Usage: %s [OPTION] [TEXTDOMAIN] MSGID MSGID-PLURAL COUNT
+/usr/lib
+/usr/share/locale
+variable TEXTDOMAINDIR.
+  -V, --version             display version information and exit
+write error
+Written by %s.

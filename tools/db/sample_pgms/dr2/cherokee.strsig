@@ -1,0 +1,76 @@
+__bss_start
+  Cherokee        (%s) %s
+  Cherokee-worker (%s) %s
+Could not create semaphore: %s
+Could not initialize semaphore: %s
+(critical) Cannot execute '%s'
+(critical) Could not allocate memory for valgrind args.
+(critical) Couldn't find the version string: '%s -i'
+(critical) Couldn't fork(): %s
+(critical) Couldn't launch '%s'
+(critical) Couldn't spawning thread..
+(critical) Couldn't spawn: sh -c %s
+--detach
+/dev/null
+__errno_location
+ERROR: Broken installation detected
+ERROR: Could not execute %s
+ERROR: Could not find cherokee-worker
+find `echo $PATH | sed 's/:/ /g'` -name 'cherokee*' -exec dirname "{}" \; | uniq
+__fprintf_chk
+ftruncate64
+getpwnam
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+__gmon_start__
+inherited
+initgroups
+_IO_stdin_used
+_Jv_RegisterClasses
+--leak-check=full
+--leak-resolution=high
+libcrypto.so.1.0.0
+libc.so.6
+__libc_start_main
+libdl.so.2
+/lib/ld-linux.so.2
+libpthread.so.0
+__lxstat64
+--num-callers=40
+/opt/stonesoup/TH-workspace/install/etc/cherokee/cherokee.conf
+/opt/stonesoup/TH-workspace/install/sbin/cherokee-worker
+PID %d: exited re=%d
+PID %d: launched '/bin/sh -c %s' with uid=%d, gid=%d, env=%s
+PID %d: received a signal=%d
+__printf_chk
+--print-server-info
+/proc/%d/exe
+/proc/%d/file
+/proc/%d/path/a.out
+pthread_create
+readlink
+%s:%d - (warning) Couldn't open '%s' for writing..
+%s:%d - (warning) Couldn't set GID=%d
+%s:%d - (warning) Couldn't set UID=%d
+%s:%d - (warning) initgroups failed User=%s, GID=%d
+server!pid_file = 
+server!user = 
+sigaction
+sigemptyset
+__snprintf_chk
+%s/%s-worker
+__strdup
+strerror
+The following command might help to find where the installations were performed:
+This issue is usually caused by a secondary Cherokee installation in your $PATH.
+/tmp/cherokee-spawner-%d
+--valgrind
+--version
+Version: 
+(warning) Couldn't get UID for user '%s'
+(warning) Couldn't initialize spawn mechanism.
+(warning) Couldn't IPC_SET: uid=%d errno=%d
+(warning) Couldn't IPC_STAT: errno=%d
+(warning) Couldn't write PID file '%s'

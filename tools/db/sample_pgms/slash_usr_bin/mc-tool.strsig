@@ -1,0 +1,237 @@
+=========
+%12s: %s
+%12s: %s (%d) "%s"
+    %1$s add <manager>/<protocol> <display name> [<param> ...]
+    %1$s auto-connect <account name> [(on|off)]
+    %1$s auto-presence <account name> <presence status> [<message>]
+    %1$s disable <account name>
+    %1$s display <account name> <display name>
+    %1$s enable <account name>
+    %1$s get <account name> [key...]
+    %1$s icon <account name> <icon name>
+    %1$s list
+    %1$s nick <account name> <nick name>
+    %1$s reconnect <account name>
+    %1$s remove <account name>
+    %1$s request <account name> <presence status> [<message>]
+    %1$s service <account name> <service name>
+    %1$s show <account name>
+    %1$s summary
+    %1$s update <account name> [<param>|clear:key] ...
+Addressing:
+AUTHENTICATION_FAILED
+auto-connect
+Automatic
+automatically
+AutomaticPresenceMessage
+AutomaticPresenceStatus
+AutomaticPresenceType
+auto-presence
+available
+__bss_start
+CERT_EXPIRED
+CERT_FINGERPRINT_MISMATCH
+CERT_HOSTNAME_MISMATCH
+CERT_NOT_ACTIVATED
+CERT_NOT_PROVIDED
+CERT_OTHER_ERROR
+CERT_SELF_SIGNED
+CERT_UNTRUSTED
+Changing
+command_summary
+ConnectAutomatically
+CONNECTING
+connection
+Connects
+CurrentPresenceMessage
+CurrentPresenceStatus
+CurrentPresenceType
+dbus_g_object_path_get_g_type
+disabled
+DISCONNECTED
+DisplayName
+Display Name
+donotdisturb
+do_not_disturb
+ENCRYPTION_ERROR
+Error: %s
+extendedaway
+extended-away
+__fprintf_chk
+g_ascii_strcasecmp
+g_ascii_strncasecmp
+g_clear_error
+g_datalist_get_data
+g_datalist_id_set_data_full
+g_error_free
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_replace
+GLIBC_2.0
+GLIBC_2.3.4
+g_list_free
+g_list_sort
+g_main_loop_new
+g_main_loop_quit
+g_main_loop_run
+g_main_loop_unref
+g_malloc0
+__gmon_start__
+g_object_unref
+g_ptr_array_add
+g_ptr_array_new
+g_quark_from_static_string
+g_return_if_fail_warning
+g_strdup
+g_strdup_printf
+g_strdup_value_contents
+g_str_equal
+g_strfreev
+g_str_hash
+g_str_has_prefix
+g_strjoinv
+g_strsplit
+g_type_check_instance_cast
+g_type_check_value_holds
+g_type_init
+g_type_name
+g_value_dup_boxed
+g_value_dup_string
+g_value_get_boolean
+g_value_get_int
+g_value_get_uint
+g_value_init
+g_value_set_boolean
+g_value_set_boxed
+g_value_set_int
+g_value_set_string
+g_value_set_uint
+g_value_unset
+Invalid add command.
+Invalid auto-connect command.
+Invalid auto-presence command.
+Invalid connection command.
+Invalid disable command.
+Invalid display command.
+Invalid enable command.
+Invalid get command.
+Invalid icon command.
+Invalid list command.
+Invalid nick command.
+Invalid reconnect command.
+Invalid remove command.
+Invalid request command.
+Invalid service command.
+Invalid show command.
+Invalid summary command.
+Invalid update command.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libdbus-glib-1.so.2
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+libtelepathy-glib.so.0
+longest_account >= 7
+NAME_IN_USE
+NETWORK_ERROR
+Nickname
+No command specified
+Normalized
+NormalizedName
+not found
+only when requested
+/org/freedesktop/Telepathy/Account/
+Presences:
+__printf_chk
+reconnect
+Requested
+RequestedPresenceMessage
+RequestedPresenceStatus
+RequestedPresenceType
+%s: bad parameter: %s
+%s: couldn't load account '%s': %s
+%s: no connection
+  %s reconnect %s
+%s %s: Failed to connect to D-Bus: %s
+%s %s: param=%s: %s
+%-*s %s %s
+%s %s %s
+%s %s: %s
+%*s (%s) %s = %s
+%s %s: %s: unknown
+%s: %s: unknown presence %s
+TELEPATHY_GLIB_0.11.3
+TELEPATHY_GLIB_0.11.6
+TELEPATHY_GLIB_0.11.9
+TELEPATHY_GLIB_0.13.8
+TELEPATHY_GLIB_0.13.9
+TELEPATHY_GLIB_0.7.17
+TELEPATHY_GLIB_0.7.26
+TELEPATHY_GLIB_0.7.29
+TELEPATHY_GLIB_0.7.32
+TELEPATHY_GLIB_0.9.0
+To apply changes to these parameters:
+tp_account_get_automatic_presence
+tp_account_get_changing_presence
+tp_account_get_connect_automatically
+tp_account_get_connection
+tp_account_get_connection_status
+tp_account_get_current_presence
+tp_account_get_display_name
+tp_account_get_feature_quark_addressing
+tp_account_get_feature_quark_core
+tp_account_get_icon_name
+tp_account_get_nickname
+tp_account_get_normalized_name
+tp_account_get_parameters
+tp_account_get_path_suffix
+tp_account_get_requested_presence
+tp_account_get_service
+tp_account_get_type
+tp_account_get_uri_schemes
+tp_account_is_enabled
+tp_account_is_valid
+tp_account_manager_create_account_async
+tp_account_manager_create_account_finish
+tp_account_manager_get_type
+tp_account_manager_get_valid_accounts
+tp_account_manager_new
+tp_account_new
+tp_account_reconnect_async
+tp_account_reconnect_finish
+tp_account_remove_async
+tp_account_remove_finish
+tp_account_request_presence_async
+tp_account_request_presence_finish
+tp_account_set_automatic_presence_async
+tp_account_set_connect_automatically_async
+tp_account_set_connect_automatically_finish
+tp_account_set_display_name_async
+tp_account_set_display_name_finish
+tp_account_set_enabled_async
+tp_account_set_enabled_finish
+tp_account_set_icon_name_async
+tp_account_set_icon_name_finish
+tp_account_set_nickname_async
+tp_account_set_nickname_finish
+tp_account_set_service_async
+tp_account_set_service_finish
+tp_account_update_parameters_async
+tp_account_update_parameters_finish
+tp_asv_new
+tp_dbus_daemon_dup
+tp_proxy_get_object_path
+tp_proxy_prepare_async
+tp_proxy_prepare_finish
+Try '%s list' to list known accounts.
+<unknown>
+Unknown command.
+URIScheme
+  where <param> matches (int|uint|bool|string|path):<key>=<value>
+__xpg_basename

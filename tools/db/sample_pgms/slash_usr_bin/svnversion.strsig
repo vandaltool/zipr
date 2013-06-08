@@ -1,0 +1,72 @@
+   4123:4168     mixed revision working copy
+   4123:4168MS   mixed revision, modified, switched working copy
+   4123P         partial working copy, from a sparse checkout
+   4123S         switched working copy
+    4168
+   4168M         modified working copy
+  an URL that matches the TRAIL_URL argument.  If the working
+apr_allocator_create
+apr_allocator_max_free_set
+apr_allocator_owner_set
+apr_getopt_long
+apr_pool_destroy
+__bss_start
+committed
+  copy is single revision, unmodified, not switched and with
+  copy is unusual the version number will be more complex:
+dcgettext
+  determine if WC_PATH itself is switched (detection of switches
+display this help
+do not output the trailing newline
+  exported directory say, the program will output 'exported'.
+exported%s
+GLIBC_2.0
+__gmon_start__
+  If invoked on a directory that is not a working copy, an
+  If invoked without arguments WC_PATH will be the current directory.
+_IO_stdin_used
+  is written to standard output.  For example:
+_Jv_RegisterClasses
+last changed rather than current revisions
+libapr-1.so.0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+libsvn_subr-1.so.1
+libsvn_wc-1.so.1
+no-newline
+  Produce a compact 'version number' for the working copy path
+show program version information
+'%s' not versioned, and not exported
+subversion
+svn_cmdline_fflush
+svn_cmdline_fprintf
+svn_cmdline_fputs
+svn_cmdline__getopt_init
+svn_cmdline_handle_exit_error
+svn_cmdline_init
+svn_cmdline_printf
+svn_error_clear
+svn_handle_error2
+svn_io_check_path
+svn_opt_format_option
+svn_opt_print_help3
+svn_path_internal_style
+svn_pool_create_ex
+svn_subr
+svn_subr_version
+svn_utf_cstring_to_utf8
+svn_ver_check_list
+svnversion
+svnversion: 
+    $ svnversion . /repos/svn/trunk
+svn_wc_check_wc
+svn_wc_revision_status
+svn_wc_version
+  The version number will be a single number if the working
+Type 'svnversion --help' for usage.
+usage: svnversion [OPTIONS] [WC_PATH [TRAIL_URL]]
+Valid options:
+  WC_PATH.  TRAIL_URL is the trailing portion of the URL used to
+  within WC_PATH does not rely on TRAIL_URL).  The version number

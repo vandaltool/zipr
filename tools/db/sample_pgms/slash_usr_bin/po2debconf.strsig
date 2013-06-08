@@ -1,0 +1,189 @@
+                 ;;
+        ;;
+        :
+        : ;;
+        }
+  1 | 2 )
+#  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+#  along with this program; if not, write to the
+#! /bin/sh
+             * ) break ;;
+case $encoding in
+case $format in
+        case $option in
+        cat <<EOT 1>&2
+                        cat "$f" > "$outdir/$l.po"
+cleanup()
+                continue
+#  Copyright (C) 2002-2005  Denis Barbier <barbier@debian.org>
+                            (Default, map is $PODEBCONF_ENCODINGS)
+                          (Default: <master directory>/po)
+#   Default values
+dftencoding=utf8
+dftformat=2
+        do
+        done
+        #   Do nothing
+[ -d "$podir" ] || {
+            -* ) echo "$0: unknown option: $option ...exiting" 1>&2
+        echo "ERROR: Directory $podir does not exist ...exiting" 1>&2
+        echo "ERROR: File $origfile does not exist ...exiting" 1>&2
+                echo "ERROR: File $PODEBCONF_ENCODINGS does not exist ...exiting" 1>&2
+                echo "ERROR: Unable to create temporary directory ...exiting" 1>&2
+                echo "ERROR: Unable to create temporary file ...exiting" 1>&2
+        echo "ERROR: Unable to create temporary file ...exiting" 1>&2
+  * )   echo "ERROR: Wrong --encoding argument, must be po, popular or utf8 ...exiting" 1>&2
+                echo "Warning: Both no.po and nb.po files exist, please consider removing no.po" 1>&2
+        echo "Warning:Invalid encoding: $encoding, set to '$dftencoding'" 1>&2
+        echo "Warning:Invalid format: $format, set to '$dftformat'" 1>&2
+                                echo "Warning: msgconv failed when converting file $f to $encto ... file skipped" >&2
+                echo "Warning: no.po is obsolete and should be renamed into nb.po" 1>&2
+                        echo "Warning: Unknown default encoding for $l, get it from $f" 1>&2
+            -E | --E | --alt-encoding )
+            -e | --e | --encoding )
+            --e=* | --encoding=* )
+  -e,  --encoding=STRING  convert encoding, STRING is chosen between
+elif [ -r "$podir/nb.po" ]; then
+        else
+                else
+                        else
+        encoding=$dftencoding ;;
+encoding=$dftencoding
+                encoding=$optarg
+                 encoding=po
+        encoding=po ;;
+                 encoding=popular
+        encoding=popular ;;
+[ "$encoding" = popular ] || format=2
+                 encoding=utf8
+        encoding=utf8 ;;
+[ "$encoding" = utf8 ] && utf8="-u"
+                encto=`grep "^$l[ 	]" "$PODEBCONF_ENCODINGS" | sed -e "s/^$l[ 	][ 	]*//" -e 1q`
+        esac
+                eval "$prev=\$option"
+                 exit 1
+                exit 1
+        exit 1
+        exit 1 ;;
+        exit $fail
+        exit $rc
+        fake=no
+                [ -f "$f" ] || continue
+        fi
+                fi
+                        fi
+        for f in $podir/*.po
+[ -f "$origfile" ] || {
+                 format=1
+        format=$dftformat
+format=$dftformat
+for option
+        [ -f "$PODEBCONF_ENCODINGS" ] || {
+#  Free Software Foundation, Inc.,
+#  General Public License for more details.
+                 help=1
+#  Helps no.po -> nb.po transition
+  -h,  --help             display this help message
+            -h | --h | --help )
+if [ "$encoding" = popular ]; then
+if [ $format -le 1 ]; then
+if [ -f "$podir/output" ]; then
+                        if msgconv -t "$encto" "$f" -o "$tmpfile" 2>/dev/null; then
+                if [ -n "$encto" ]; then
+        if [ -n "$prev" ]; then
+        if [ -r "$podir/nb.po" ]; then
+if [ -r "$podir/no.po" ]; then
+if [ "x$help" = x1 ] || [ "x$fail" = x1 ]; then
+if [ "x$outfile" = 'x-' ] || [ -z "$outfile" ]; then
+                            in PODEBCONF_ENCODINGS environment variable
+        #   Invalid value, set default encoding
+        is_tmp=1
+#  it under the terms of the GNU General Public License as published by
+                l=`echo $f | sed -e 's/.*\///' -e 's/\.po$//'`
+        ln -s nb.po "$podir/no.po"
+        #  localized fields and thus ease no -> nb transition for Norwegian
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+                                mv "$tmpfile" "$outdir/$l.po"
+        #  nb.po was found, copy it to no.po to provide both -nb and -no
+        [ -n "$fake" ] && [ -L "$podir/$fake.po" ] && rm -f "$podir/$fake.po"
+[ -n "$is_tmp" ] && cat "$outfile"
+        [ -n "$is_tmp" ] && [ -f "$outfile" ] && rm -f "$outfile"
+            -n | --n | --no-utf8 )
+[ -n "$origfile" ] || fail=1
+        [ -n "$outdir" ] && [ -d "$outdir" ] && {
+        [ -n "$outputencoding" ] && encoding=$outputencoding
+        [ -n "$outputformat" ] && format=$outputformat
+[ -n "$podir" ] || podir=`dirname $origfile`/po
+                        [ -n "$quiet" ] || echo "Converting $f to $encto..." 1>&2
+        [ -n "$tmpfile" ] && [ -f "$tmpfile" ] && rm -f "$tmpfile"
+                 #  Obsolete
+                 #  Obsoleted
+                 #  Obsolete, use po/output file instead
+            -O | --O | --old-format )
+            -o=* | --o=* | --output=* )
+            -o | --o | --output )
+  -o,  --output=FILE      specify output file (Default: stdout)
+        optarg=`expr "x$option" : 'x[^=]*=\(.*\)'`
+Options:
+origfile=
+origfile=$1
+        outdir=`mktemp -t -d po2debconf.XXXXXXXXXX` || {
+outfile=
+        outfile=`mktemp -t po2debconf.XXXXXXXXXX` || {
+                 outfile=$optarg
+        outputencoding=`sed -e 1q "$podir/output" | awk '{printf "%s", $2}'`
+        outputformat=`sed -e 1q "$podir/output" | awk '{printf "%s", $1}'`
+#  Override values when $podir/output file is found
+#  po2debconf  - merge translations into Debconf templates file
+: ${PODEBCONF_ENCODINGS=/usr/share/po-debconf/encodings}
+$PODEBCONF_LIB/intltool-merge $quiet --rfc822deb-style $utf8 $podir $origfile $outfile 1>&2 || exit 1
+: ${PODEBCONF_LIB=/usr/share/intltool-debian}
+            --podir=* )
+            --podir )
+       --podir=DIR        specify PO output directory
+                podir=$optarg
+        podir=$outdir
+                        po: no conversion
+  po | PO )
+  po | popular | utf8 )
+  pop* | POP* )
+                   popular: change encoding according to file map found
+                prev=
+                prev=encoding
+#   Prevent automatic conversion to UTF-8 by Perl
+                 prev=outfile
+                prev=podir
+                 quiet=
+quiet=--quiet
+        rc=$?
+                rmdir "$outdir"
+                rm -f "$outdir"/*.po
+        rm -f "$tmpfile"
+        sed -e 's/^\([^ 	:]*\)\.[^ 	:]*:/\1:/' $outfile > $tmpfile && mv -f $tmpfile $outfile
+sed -e 's/^DefaultChoice/Default/' $outfile > $tmpfile && mv -f $tmpfile $outfile
+#  Set $? to 0
+                shift
+                 shift ;;
+                shift ;;
+        #  speaking people.
+#   Test validity of $encoding and $format values
+#  the Free Software Foundation; either version 2 of the License, or (at
+#  This program is distributed in the hope that it will be useful, but
+#  This program is free software; you can redistribute it and/or modify
+#   This script is part of po-debconf
+tmpfile=
+        tmpfile=`mktemp -t po2debconf.XXXXXXXXXX` || {
+tmpfile=`mktemp -t po2debconf.XXXXXXXXXX` || {
+               traditional: obsolete, replaced by popular
+  trad* | TRAD* )
+trap 'cleanup' HUP INT QUIT BUS PIPE TERM
+unset LANGUAGE LANG LC_ALL LC_CTYPE
+Usage: po2debconf [options] master
+                      utf8: convert to UTF-8
+  utf8 | utf-8 | UTF8 | UTF-8 )
+            -u | --u | --utf8 )
+  -v,  --verbose          enable verbose mode
+            -v | --v | --verbose )
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  your option) any later version.
+#  You should have received a copy of the GNU General Public License

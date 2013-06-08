@@ -1,0 +1,34 @@
+__bss_start
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+-jbottom
+-jcenter
+_Jv_RegisterClasses
+-leftright
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+one of -lr or -tb must be specified
+only one of -lr and -tb may be specified
+out of memory
+pm_allocrow
+pm_close
+pm_error
+pm_keymatch
+pm_openr
+pm_usage
+pnm_backgroundxelrow
+pnm_blackxel
+pnm_init
+pnm_promoteformatrow
+pnm_readpnminit
+pnm_readpnmrow
+pnm_whitexel
+pnm_writepnminit
+pnm_writepnmrow
+shouldn't happen
+-topbottom
+[-white|-black] -leftright|-lr [-jtop|-jbottom] pnmfile ...
+               [-white|-black] -topbottom|-tb [-jleft|-jright] pnmfile ...

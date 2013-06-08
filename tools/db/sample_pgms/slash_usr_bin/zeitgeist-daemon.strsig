@@ -1,0 +1,2149 @@
+            
+               
+                
+                    
+                        
+                         
+                        )
+                    ?,
+                    ?, ?
+                    ?, ?,
+                    ?, ?, ?
+                    ?, ?, ?, ?
+                    ?, ?, ?, ?, ?,
+                )
+A bookmark of a webbrowser. Use nie:title for the name/label, nie:contentCreated to represent the date when the user added the bookmark, and nie:contentLastModified for modifications. nfo:bookmarks to store the link.
+A calendar. Inspirations for this class can be traced to the VCALENDAR component defined in RFC 2445 sec. 4.4, but it may just as well be used to represent any kind of Calendar.
+ACCEPT_EVENT
+ACCESS_EVENT
+A compressed file. May contain other files or folder inside.
+A Contact. A piece of data that can provide means to identify or communicate with an entity.
+A contact list, this class represents an addressbook or a contact list of an IM application. Contacts inside a contact list can belong to contact groups.
+A Contact that denotes a Person. A person can have multiple Affiliations.
+A Contact that denotes on Organization.
+activity.sqlite
+activity.sqlite.bck
+                    actor INTEGER,
+                            actor, payload, subj_id, subj_interpretation,
+actor: %s
+A Cursor.
+A DataObject found in a calendar. It is usually interpreted as one of the calendar entity types (e.g. Event, Journal, Todo etc.)
+A DataObject representing a piece of software. Examples of interpretations of a SoftwareItem include an Application and an OperatingSystem.
+add_storage_medium
+AddTemplate
+A file attached to another data object. Many data formats allow for attachments: emails, vcards, ical events, id3 and exif...
+A file containing a list of media files.e.g. a playlist
+A file containing an image.
+A file containing a text document, that is unambiguously divided into pages. Examples might include PDF, DOC, PS, DVI etc.
+A file containing audio content
+A file containing plain text (ASCII, Unicode or other encodings). Examples may include TXT, HTML, XML, program source code etc.
+A file data object stored at a remote location. Don't confuse this class with a RemotePortAddress. This one applies to a particular resource, RemotePortAddress applies to an address, that can have various interpretations.
+A file embedded in another data object. There are many ways in which a file may be embedded in another one. Use this class directly only in cases if none of the subclasses gives a better description of your case.
+A file entity inside an archive.
+A file entity that has been deleted from the original source. Usually such entities are stored within various kinds of 'Trash' or 'Recycle Bin' folders.
+A filesystem. Examples of filesystems include hard disk partitions, removable media, but also images thereof stored in files such as ISO.
+A folder/directory. Examples of folders include folders on a filesystem and message folders in a mailbox.
+A folder with bookmarks of a webbrowser. Use nfo:containsBookmark to relate Bookmarks. Folders can contain subfolders, use containsBookmarkFolder to relate them.
+A generic document. A common superclass for all documents on the desktop.
+aggregation_type != NULL
+A group of Contacts. Could be used to express a group in an addressbook or on a contact list of an IM application. One contact can belong to many groups.
+A HTML document, may contain links to other files.
+ALTER TABLE event RENAME TO event_old
+ALTER TABLE %s RENAME TO %s_old
+ALTER TABLE storage ADD COLUMN display_name VARCHAR
+ALTER TABLE storage ADD COLUMN icon VARCHAR
+A mailbox - container for MailboxDataObjects.
+A message. Could be an email, instant messanging message, SMS message etc.
+A message sent with Instant Messaging software.
+A MIME entity, as defined in RFC2045, Section 2.4.
+A MindMap, created by a mind-mapping utility. Examples might include FreeMind or mind mapper.
+An address specifying a remote host and port. Such an address can be interpreted in many ways (examples of such interpretations include mailboxes, websites, remote calendars or filesystems), depending on an interpretation, various kinds of data may be extracted from such an address.
+An application
+                    AND interpretation!=? AND timestamp<?
+                        AND subj_id IN (
+An email.
+An entity encountered in a mailbox. Most common interpretations for such an entity include Message or Folder
+An entity occuring on a contact list (usually interpreted as an nco:Contact)
+An event send to the user by the operating system. Examples could include when the user inserts a USB stick or when the system warns that the hard disk is full
+An event that is caused indirectly from user activity or deducted via analysis of other events. Fx. if an algorithm divides a user workflow into disjoint 'projects' based on temporal analysis it could insert heuristic events when the user changed project
+An event that was actively performed by the user. For example saving or opening a file by clicking on it in the file manager
+An event that was directly triggered by some user initiated sequence of actions. For example a music player automatically changing to the next song in a playlist
+An event that was performed by an entity, usually human or organization, other than the user. An example could be logging the activities of other people in a team
+An executable file.
+An existing instance was found. Please use --replace to stop it and start a new instance.
+An Icon (regardless of whether it's a raster or a vector icon. A resource representing an icon could have two types (Icon and Raster, or Icon and Vector) if required.
+An image of a filesystem. Instances of this class may include CD images, DVD images or hard disk partition images created by various pieces of software (e.g. Norton Ghost). Deprecated in favor of nfo:Filesystem.
+An information resources of which representations (files, streams) can be retrieved through a web server. They may be generated at retrieval time. Typical examples are pages served by PHP or AJAX or mp3 streams.
+An object attached to a calendar entity. This class has been introduced to serve as a structured value of the ncal:attach property. See the documentation of ncal:attach for details.
+An OperatingSystem
+A partition on a hard disk
+A piece of media content. This class may be used to express complex media containers with many streams of various media content (both aural and visual).
+A piece of software. Examples may include applications and the operating system. This interpretation most commonly applies to SoftwareItems.
+Application
+application/ecmascript
+application/javascript
+application/json
+application/msexcel
+application/ms-excel
+application/ms-powerpoint
+application/msword
+application/ogg
+application/pdf
+application/postscript
+application/ps
+application/rtf
+application/soap+xml
+application/vnd\..*
+application/vnd.corel-draw
+application/vnd.ms-excel
+application/vnd.ms-excel.*
+application/vnd.ms-powerpoint
+application/vnd.ms-powerpoint.*
+application/vnd.oasis.opendocument.graphics.*
+application/vnd.oasis.opendocument.presentation.*
+application/vnd.oasis.opendocument.spreadsheet.*
+application/vnd.oasis.opendocument.text.*
+application/vnd.openxmlformats-officedocument.presentationml.presentation.*
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.*
+application/vnd.openxmlformats-officedocument.wordprocessingml.document.*
+application/x-7z-compressed
+application/x-abiword
+application/x-applix-.*
+application/x-applix-presents
+application/x-applix-spreadsheet
+application/x-applix-word
+application/x-archive
+application/x-bzip
+application/x-bzip-compressed-tar
+application/x-cd-image
+application/x-compressed-tar
+application/x-csh
+application/x-deb
+application/x-designer
+application/x-desktop
+application/x-dia-diagram
+application/x-executable
+application/x-fluid
+application/x-glade
+application/x-gnucash
+application/x-gnumeric
+application/x-gzip
+application/xhtml+xml
+application/x-java-archive
+application/x-javascript
+application/x-killustrator
+application/x-kpresenter
+application/x-kspread
+application/x-kword
+application/x-lzma
+application/x-lzma-compressed-tar
+application/x-m4
+application/xml
+application/xml-dtd
+application/x-ms-dos-executable
+application/x-perl
+application/x-php
+application/x-rpm
+application/x-ruby
+application/x-shellscript
+application/x-shockwave-flash
+application/x-sql
+application/x-stuffit
+application/zip
+A Presentation made by some presentation software (Corel Presentations, OpenOffice Impress, MS Powerpoint etc.)
+A raster image.
+ArchiveItem
+A resource containing a finite sequence of bytes with arbitrary information, that is available to a computer program and is usually based on some kind of durable storage. A file is durable in the sense that it remains available for programs to use after the current program has finished.
+args != NULL
+                            AS actor_uri
+a{s(asaasay)}
+(asassay)
+a(sa{sv})
+A service published by a piece of software, either by an operating system or an application. Examples of such services may include calendar, addressbook and mailbox managed by a PIM application. This category is introduced to distinguish between data available directly from the applications (Via some Interprocess Communication Mechanisms) and data available from files on a disk. In either case both DataObjects would receive a similar interpretation (e.g. a Mailbox) and wouldn't differ on the content level.
+                            AS event_origin_uri,
+                            AS payload,
+A spreadsheet, created by a spreadsheet application. Examples might include Gnumeric, OpenOffice Calc or MS Excel.
+a(sssa(asaasay)bxb)
+                            AS subj_current_uri,
+                            AS subj_origin_uri,
+                            AS subj_storage,
+                            AS subj_storage_state,
+                            AS subj_text,
+                            AS subj_uri,
+A stream of multimedia content, usually contained within a media container such as a movie (containing both audio and video) or a DVD (possibly containing many streams of audio and video). Most common interpretations for such a DataObject include Audio and Video.
+A superclass for all entities, whose primary purpose is to serve as containers for other data object. They usually don't have any "meaning" by themselves. Examples include folders, archives and optical disc images.
+A text document
+Attachment
+A TV Series has multiple seasons and episodes
+A TV Show
+audio/.*
+audio/x-scpls
+A unit of content the user works with. This is a superclass for all interpretations of a DataObject.
+A unit of data that is created, annotated and processed on the user desktop. It represents a native structure the user works with. The usage of the term 'native' is important. It means that a DataObject can be directly mapped to a data structure maintained by a native application. This may be a file, a set of files or a part of a file. The granularity depends on the user. This class is not intended to be instantiated by itself. Use more specific subclasses.
+A video file.
+A website, usually a container for remote resources, that may be interpreted as HTMLDocuments, images or other types of content.
+Base class for event interpretations. Please do no instantiate directly, but use one of the sub classes. The interpretation of an event describes 'what happened' - fx. 'something was created' or 'something was accessed'
+Base class for event manifestation types. Please do no instantiate directly, but use one of the sub classes. The manifestation of an event describes 'how it happened'. Fx. 'the user did this' or 'the system notified the user'
+blacklist
+blacklist != NULL
+b != NULL
+Bookmark
+Bookmark Folder
+__bss_start
+Calendar
+CalendarDataObject
+Can't create database: %d, %s
+Can't init %s table
+Can't insert data for event: 
+Can't open database: %d, %s
+clause != NULL
+Code in a compilable or interpreted programming language.
+column != NULL
+condition != NULL
+connection != NULL
+conn != NULL
+                    CONSTRAINT actor_fk
+                    CONSTRAINT interpretation_fk
+                    CONSTRAINT manifestation_fk
+                    CONSTRAINT origin_fk
+                    CONSTRAINT payload_fk
+                    CONSTRAINT subj_id_current_fk
+                    CONSTRAINT subj_id_fk
+                    CONSTRAINT subj_interpretation_fk
+                    CONSTRAINT subj_manifestation_fk
+                    CONSTRAINT subj_mimetype_fk
+                    CONSTRAINT subj_origin_fk
+                    CONSTRAINT subj_storage_fk
+                    CONSTRAINT subj_text_fk
+                    CONSTRAINT unique_event UNIQUE (timestamp, interpretation,
+                    CONSTRAINT unique_extension UNIQUE (extension, key)
+ContactGroup
+ContactList
+ContactListDataObject
+Could not access the database file.
+Could not rename database: %s
+                COUNT(*)
+, COUNT(%s) AS num_events
+CREATE_EVENT
+                CREATE INDEX IF NOT EXISTS event_actor
+                CREATE INDEX IF NOT EXISTS event_id
+                CREATE INDEX IF NOT EXISTS event_interpretation
+                CREATE INDEX IF NOT EXISTS event_manifestation
+                CREATE INDEX IF NOT EXISTS event_origin
+                CREATE INDEX IF NOT EXISTS event_subj_id
+                CREATE INDEX IF NOT EXISTS event_subj_id_current
+                CREATE INDEX IF NOT EXISTS event_subj_interpretation
+                CREATE INDEX IF NOT EXISTS event_subj_manifestation
+                CREATE INDEX IF NOT EXISTS event_subj_mimetype
+                CREATE INDEX IF NOT EXISTS event_subj_origin
+                CREATE INDEX IF NOT EXISTS event_subj_storage
+                CREATE INDEX IF NOT EXISTS event_subj_text
+                CREATE INDEX IF NOT EXISTS event_timestamp
+                CREATE TABLE IF NOT EXISTS actor (
+                CREATE TABLE IF NOT EXISTS event (
+                CREATE TABLE IF NOT EXISTS extensions_conf (
+                CREATE TABLE IF NOT EXISTS interpretation (
+                CREATE TABLE IF NOT EXISTS manifestation (
+                CREATE TABLE IF NOT EXISTS mimetype (
+                CREATE TABLE IF NOT EXISTS payload
+                CREATE TABLE IF NOT EXISTS schema_version (
+                CREATE TABLE IF NOT EXISTS storage (
+                CREATE TABLE IF NOT EXISTS text (
+                CREATE TABLE IF NOT EXISTS uri (
+                CREATE UNIQUE INDEX IF NOT EXISTS actor_value
+                CREATE UNIQUE INDEX IF NOT EXISTS extensions_conf_key
+                CREATE UNIQUE INDEX IF NOT EXISTS interpretation_value
+                CREATE UNIQUE INDEX IF NOT EXISTS manifestation_value
+                CREATE UNIQUE INDEX IF NOT EXISTS mimetype_value
+                CREATE UNIQUE INDEX IF NOT EXISTS storage_value
+                CREATE UNIQUE INDEX IF NOT EXISTS text_value
+                CREATE UNIQUE INDEX IF NOT EXISTS uri_value ON uri(value)
+                CREATE VIEW IF NOT EXISTS event_view AS
+CRITICAL
+current_uri
+    current_uri: %s
+_data1_->last_id != (-1)
+database
+Database backup failed: 
+Database corruption flag is set.
+database_creation
+database != NULL
+DataContainer
+datamodel.c
+datamodel.c:2298
+datamodel.c:2333
+datamodel.c:3354
+datamodel.c:3389
+datamodel.c:702
+datamodel.c:719
+datamodel.vala:283: Unrecognized ResultType: %u
+datamodel.vala:461: there was payload with length: %u
+datamodel.vala:654: %s
+data != NULL
+data_source
+data_source_disconnected
+data-source-disconnected
+DataSourceDisconnected
+data_source_enabled
+data-source-enabled
+data_source_registered
+data-source-registered
+DataSourceRegistered
+Datasource with unique ID: %s not found
+__data_start
+dbname != NULL
+db-reader.c
+db-reader.c:4664
+db-reader.c:4678
+db-reader.vala:138: SQL error
+db-reader.vala:276: %s
+db-reader.vala:288: SQL error
+db-reader.vala:314: %s
+db-reader.vala:447: SQL error
+db-reader.vala:68: TableLookup initialization failed: %s
+db-reader.vala:816: %s
+db-reader.vala:832: %s
+db-reader.vala:847: %s
+Deleted %d (out of %d) events.
+DeletedResource
+DELETE_EVENT
+DeleteEvents
+DELETE FROM event WHERE id IN (%s)
+DENY_EVENT
+description != NULL
+display-name
+display_name != NULL
+                    display_name VARCHAR
+Do not start zeitgeist-datahub automatically
+DROP TABLE event_old
+DROP TABLE %s_old
+DROP VIEW IF EXISTS event_view
+%d [%s] - %s - %s
+EmbeddedFileDataObject
+engine.c
+engine != NULL
+engine.vala:167: Events with two subjects with the same URI are not supported
+engine.vala:195: %s
+engine.vala:245: SQL error: %d, %s
+engine.vala:266: SQL error: %d, %s
+engine.vala:297: %s
+engine.vala:304: SQL Error
+engine.vala:305: %s
+engine.vala:350: SQL error: %d, %s
+engine.vala:375: SQL error: %d, %s
+Error in find_event_ids: %d, %s
+Error in find_related_uris
+Error in get_histogram_data
+Error in get_value
+Error in id_for_string
+error_message != NULL
+errors.c
+                        event.actor,
+                        event.interpretation,
+EVENT_INTERPRETATION
+                        event.manifestation,
+EVENT_MANIFESTATION
+                        event.origin,
+event-origin-uri
+                        event.subj_id_current,
+                        event.subj_id, --//this points to an id in the uri table
+                        event.subj_interpretation,
+                        event.subj_manifestation,
+                        event.subj_mimetype,
+                        event.subj_origin,
+                        event.subj_storage AS subj_storage_id,
+                        event.subj_text AS subj_text_id,
+event_template
+event_template != NULL
+event-templates
+event_templates != NULL
+                        event.timestamp,
+Event triggered because a resource has been deleted or otherwise made permanently unavailable. Fx. when deleting a file. FIXME: How about when moving to trash?
+Event triggered by closing, leaving, or stopping a resource. Most zg:LeaveEvents will be following a zg:Access event, but this need not always be the case
+Event triggered by modifying an existing resources. Fx. when editing and saving a file on disk or correcting a typo in the name of a contact
+Event triggered by opening, accessing, or starting a resource. Most zg:AccessEvents will have an accompanying zg:LeaveEvent, but this need not always be the case
+Event triggered when a resource has been moved from a location to another. Fx. moving a file from a folder to another.
+Event triggered when something expires or times out. These types of events are normally not triggered by the user, but by the operating system or some external party. Examples are a recurring calendar item or task deadline that expires or a when the user fails to respond to an external request such as a phone call
+Event triggered when something is received from an external party. The event manifestation must be set according to the world view of the receiving party. Most often the item that is being received will be some sort of message - an email, instant message, or broadcasted media such as micro blogging
+Event triggered when something is send to an external party. The event manifestation must be set according to the world view of the sending party. Most often the item that is being send will be some sort of message - an email, instant message, or broadcasted media such as micro blogging
+Event triggered when the user accepts a request of some sort. Examples could be answering a phone call, accepting a file transfer, or accepting a friendship request over an IM protocol. See also DenyEvent for when the user denies a similar request
+Event triggered when the user denies a request of some sort. Examples could be rejecting a phone call, rejecting a file transfer, or denying a friendship request over an IM protocol. See also AcceptEvent for the converse event type
+Event type triggered when an item is created
+event_variant != NULL
+Executable
+EXPIRE_EVENT
+ext-benchmark.c
+ext-benchmark.vala:107: %s
+ext-benchmark.vala:110: %s, this.ref_count = %u
+ext-benchmark.vala:53: %s
+ext-blacklist.c
+ext-blacklist.vala:110: Could not load blacklist from variant: %s
+ext-blacklist.vala:128: %s
+ext-blacklist.vala:145: %s
+ext-blacklist.vala:148: %s, this.ref_count = %u
+ext-blacklist.vala:179: Added blacklist template: [#%u]
+ext-blacklist.vala:189: Removed blacklist template: [#%u]
+ext-blacklist.vala:195: Blacklist template [#%u] not found.
+ext-data-source-registry.c
+ext-data-source-registry.c:1289
+ext-data-source-registry.c:1321
+ext-data-source-registry.vala:199: Error while loading datasource registry: %s
+ext-data-source-registry.vala:224: %s
+ext-data-source-registry.vala:244: %s
+ext-data-source-registry.vala:248: %s, this.ref_count = %u
+ext-data-source-registry.vala:270: %s: %s, %s, %s
+ext-data-source-registry.vala:273: %s: sender == null, ignoring request
+ext-data-source-registry.vala:335: %s: %s, %d
+ext-data-source-registry.vala:348: DataSource "%s" isn't registered!
+ext-data-source-registry.vala:429: Client disconnected: %s [%s]
+ext-data-source-registry.vala:437: No remaining client running: %s [%s]
+extension.c:549
+extension.c:563
+extension.c:680
+extension.c:694
+extension.c:870
+extension.c:884
+extension-collection.c
+extension-collection.c:1143
+extension-collection.c:1157
+extension-collection.vala:101: Ignored file "%s/%s"
+extension-collection.vala:121: Skipping %s (disabled)
+extension-collection.vala:83: Couldn't open local extensions directory: %s
+extension-collection.vala:94: Loading extension: "%s"
+                    extension, key, value
+extension != NULL
+extensions
+extension-store.c
+extension-store.vala:113: SQL error: %d, %s
+extension-store.vala:42: %s
+extension-store.vala:59: Storage query error
+extension-store.vala:68: Retrieval query error
+extension-store.vala:90: SQL error: %d, %s
+extension-type
+extension.vala:146: Loaded extension: %s
+extension.vala:176: %s
+extension.vala:200: %s
+                    extension VARCHAR,
+ext-fts.c
+ext-fts.vala:105: %s
+ext-fts.vala:134: %s
+ext-fts.vala:170: %s
+ext-fts.vala:173: %s, this.ref_count = %u
+ext-fts.vala:186: Got %u[/%u] results from indexer (in %f seconds)
+ext-fts.vala:205: Got %u[/%u] results from indexer (in %f seconds)
+ext-histogram.c
+ext-histogram.vala:49: %s
+ext-histogram.vala:66: %s
+ext-histogram.vala:69: %s, this.ref_count = %u
+ext-histogram.vala:90: SQL error
+ext-storage-monitor.c
+ext-storage-monitor.vala:136: Storage Monitor couldn't communicate with DB - bye
+ext-storage-monitor.vala:149: %s
+ext-storage-monitor.vala:217: %s
+ext-storage-monitor.vala:220: %s, this.ref_count = %u
+ext-storage-monitor.vala:237: Storage retrieval query error
+ext-storage-monitor.vala:246: Storage insertion query error
+ext-storage-monitor.vala:254: Storage update query error
+ext-storage-monitor.vala:263: insert_unavailable_medium_stmt error
+ext-storage-monitor.vala:272: update_medium_state_stmt error
+ext-storage-monitor.vala:370: %s
+ext-storage-monitor.vala:390: Could not add storage medium: %s
+ext-storage-monitor.vala:399: %s
+ext-storage-monitor.vala:416: Could not remove storage medium: %s
+ext-storage-monitor.vala:469: Creating NetworkManager network monitor
+ext-storage-monitor.vala:482: %s
+ext-storage-monitor.vala:488: NetworkManager network state: %u
+ext-storage-monitor.vala:512: Creating ConnmanNetworkManager network monitor
+ext-storage-monitor.vala:530: %s
+ext-storage-monitor.vala:536: ConnmanNetworkMonitor network state: %s
+field != NULL
+Field '%s' doesn't support negation
+Field '%s' doesn't support prefix search
+Field '%s' doesn't support the no-expand operator
+File containing visual content.
+file %s: line %d: uncaught error: %s (%s, %d)
+file %s: line %d: unexpected error: %s (%s, %d)
+Filesystem
+FilesystemImage
+File to which the log output will be appended
+filter_templates
+find_event_ids
+FindEventIds
+FindEvents
+FindRelatedUris
+                        FOREIGN KEY(actor)
+                        FOREIGN KEY(interpretation)
+                        FOREIGN KEY(manifestation)
+                        FOREIGN KEY(origin)
+                        FOREIGN KEY(payload)
+                        FOREIGN KEY(subj_id)
+                        FOREIGN KEY(subj_id_current)
+                        FOREIGN KEY(subj_interpretation)
+                        FOREIGN KEY(subj_manifestation)
+                        FOREIGN KEY(subj_mimetype)
+                        FOREIGN KEY(subj_origin)
+                        FOREIGN KEY(subj_storage)
+                        FOREIGN KEY(subj_text)
+format != NULL
+' for value type `
+__fprintf_chk
+Freebusy
+                    FROM event
+                FROM event
+                         FROM event_old
+                FROM event_view %s
+                FROM extensions_conf
+                FROM storage
+g_ascii_strtoll
+g_ascii_strtoull
+g_assertion_message
+g_assertion_message_expr
+g_async_initable_new_async
+g_async_initable_new_finish
+g_async_result_get_source_object
+g_boxed_type_register_static
+g_build_filename
+g_bus_get_sync
+g_bus_own_name_on_connection_with_closures
+g-bus-type
+g_bus_unown_name
+g_bus_unwatch_name
+g_bus_watch_name_with_closures
+g_byte_array_append
+g_byte_array_get_type
+g_byte_array_new
+g_byte_array_ref
+g_byte_array_sized_new
+g_byte_array_unref
+g_cclosure_marshal_VOID__STRING
+g_cclosure_marshal_VOID__UINT
+g_cclosure_marshal_VOID__VOID
+g_cclosure_new
+g_cclosure_user_marshal_VOID__STRING_BOOLEAN
+g_cclosure_user_marshal_VOID__STRING_VARIANT
+g_cclosure_user_marshal_VOID__VARIANT
+g_clear_error
+g-connection
+g_date_time_format
+g_date_time_get_microsecond
+g_date_time_new_now_local
+g_date_time_unref
+g_dbus_connection_emit_signal
+g_dbus_connection_flush_sync
+g_dbus_connection_get_type
+g_dbus_connection_register_object
+g_dbus_connection_send_message
+g_dbus_connection_send_message_with_reply
+g_dbus_connection_send_message_with_reply_finish
+g_dbus_connection_send_message_with_reply_sync
+g_dbus_connection_signal_subscribe
+g_dbus_connection_unregister_object
+g_dbus_error_register_error_domain
+g_dbus_is_unique_name
+g_dbus_message_get_body
+g_dbus_message_new_method_call
+g_dbus_message_new_method_reply
+g_dbus_message_set_body
+g_dbus_message_to_gerror
+g_dbus_method_invocation_get_connection
+g_dbus_method_invocation_get_message
+g_dbus_method_invocation_get_sender
+g_dbus_method_invocation_return_gerror
+g_dbus_proxy_call_sync
+g_dbus_proxy_get_cached_property
+g_dbus_proxy_get_connection
+g_dbus_proxy_get_default_timeout
+g_dbus_proxy_get_name
+g_dbus_proxy_get_object_path
+g_dbus_proxy_get_type
+g_dir_close
+g_direct_equal
+g_direct_hash
+g_dir_open
+g_dir_read_name
+g_enum_register_static
+g_error_copy
+g_error_free
+g_error_matches
+g_error_new_literal
+GetDataSourceFromId
+GetDataSources
+GetEvents
+GetHistogramData
+GetState
+get_storages
+GetStorages
+GetTemplates
+g_file_copy
+g_file_get_uri_scheme
+g_file_new_for_path
+g_file_new_for_uri
+g_file_set_display_name
+g_file_test
+g_get_current_time
+g_getenv
+g_get_user_data_dir
+g_hash_table_get_keys
+g_hash_table_get_values
+g_hash_table_insert
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_remove
+g_hash_table_unref
+g_initable_new
+g_initially_unowned_get_type
+g-interface-name
+g_intern_static_string
+g_io_error_quark
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+g_list_append
+g_list_find_custom
+g_list_foreach
+g_list_free
+g_list_index
+g_list_length
+g_list_prepend
+g_list_sort
+g_log_set_handler
+g_main_loop_new
+g_main_loop_quit
+g_main_loop_run
+g_main_loop_unref
+g_malloc
+g_malloc0
+g_malloc0_n
+g_memdup
+g_mkdir_with_parents
+g_module_close
+g_module_error
+g_module_open
+g_module_symbol
+__gmon_start__
+g_object_class_install_property
+g_object_get
+g_object_new
+g_object_notify
+g-object-path
+g_object_ref
+g_object_ref_sink
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_param_spec_boolean
+g_param_spec_boxed
+g_param_spec_gtype
+g_param_spec_int64
+g_param_spec_internal
+g_param_spec_object
+g_param_spec_string
+g_param_spec_types
+g_param_spec_uint
+g_propagate_error
+g_ptr_array_add
+g_ptr_array_foreach
+g_ptr_array_get_length
+g_ptr_array_get_type
+g_ptr_array_new_with_free_func
+g_ptr_array_ref
+g_ptr_array_remove_index_fast
+g_ptr_array_set
+g_ptr_array_set_length
+g_ptr_array_set_size
+g_ptr_array_unref
+gptrarr != NULL
+g_quark_from_static_string
+g_quark_from_string
+g_quark_to_string
+g_realloc_n
+g_regex_error_quark
+g_regex_match
+g_regex_new
+g_regex_unref
+g_return_if_fail_warning
+                GROUP BY daystamp
+                GROUP BY %s)
+            GROUP BY %s
+g_signal_connect_data
+g_signal_connect_object
+g_signal_emit_by_name
+g_signal_handlers_disconnect_matched
+g_signal_new
+g_simple_async_result_complete
+g_simple_async_result_complete_in_idle
+g_simple_async_result_get_op_res_gpointer
+g_simple_async_result_get_type
+g_simple_async_result_new
+g_simple_async_result_propagate_error
+g_simple_async_result_set_from_error
+g_simple_async_result_set_op_res_gpointer
+g_slice_alloc0
+g_slice_free1
+g_slist_append
+g_slist_find_custom
+g_slist_foreach
+g_slist_free
+g_slist_prepend
+g_slist_reverse
+g_spawn_command_line_async
+g_spawn_error_quark
+g_strcmp0
+g_strcmp0 (_tmp2_, "a(" ZEITGEIST_UTILS_SIG_EVENT ")") == 0
+g_strcmp0 (_tmp4_, ZEITGEIST_BLACKLIST_TEMPLATES_SIG_BLACKLIST) == 0
+g_strcmp0 (_tmp4_, ZEITGEIST_DATA_SOURCES_SIG_DATASOURCES) == 0
+g_strconcat
+g_strdup
+g_strdup_printf
+g_str_equal
+g_str_hash
+g_str_has_prefix
+g_str_has_suffix
+g_string_append
+g_string_append_printf
+g_string_append_unichar
+g_string_chunk_free
+g_string_chunk_insert_const
+g_string_chunk_new
+g_string_free
+g_string_new
+g_string_truncate
+g_strjoinv
+g_strndup
+g_strsplit
+g_strsplit_set
+g_timeout_add_full
+g_timeout_add_seconds_full
+g_timer_destroy
+g_timer_elapsed
+g_timer_new
+g_time_val_to_iso8601
+g_type_add_interface_static
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+G_TYPE_CHECK_INSTANCE_TYPE (v_object, ZEITGEIST_SYMBOL_TYPE_INFO)
+g_type_check_value_holds
+G_TYPE_CHECK_VALUE_TYPE (value, ZEITGEIST_SYMBOL_TYPE_INFO)
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_create_instance
+g_type_free_instance
+g_type_fundamental_next
+g_type_init
+g_type_instance_get_private
+g_type_interface_add_prerequisite
+g_type_interface_peek
+g_type_interface_peek_parent
+g_type_is_a
+g_type_is_a (object_type, ZEITGEIST_SYMBOL_TYPE_INFO)
+g_type_module_add_interface
+g_type_module_get_type
+g_type_module_register_type
+g_type_module_set_name
+g_type_module_unuse
+g_type_module_use
+g_type_name
+g_type_register_fundamental
+g_type_register_static
+g_type_register_static_simple
+g_type_set_qdata
+g_utf8_get_char
+g_utf8_offset_to_pointer
+g_utf8_strlen
+g_utf8_strup
+g_value_get_boolean
+g_value_get_boxed
+g_value_get_gtype
+g_value_get_int64
+g_value_get_object
+g_value_get_string
+g_value_get_uint
+g_value_get_variant
+g_value_set_boolean
+g_value_set_boxed
+g_value_set_gtype
+g_value_set_int64
+g_value_set_object
+g_value_set_string
+g_value_set_uint
+g_value_type_compatible
+g_value_type_compatible (G_TYPE_FROM_INSTANCE (v_object), G_VALUE_TYPE (value))
+g_variant_builder_add
+g_variant_builder_add_value
+g_variant_builder_close
+g_variant_builder_end
+g_variant_builder_init
+g_variant_builder_new
+g_variant_builder_open
+g_variant_builder_unref
+g_variant_dup_string
+g_variant_get
+g_variant_get_boolean
+g_variant_get_child_value
+g_variant_get_data
+g_variant_get_double
+g_variant_get_int32
+g_variant_get_int64
+g_variant_get_normal_form
+g_variant_get_size
+g_variant_get_string
+g_variant_get_type_string
+g_variant_get_uint32
+g_variant_get_variant
+g_variant_iter_free
+g_variant_iter_init
+g_variant_iter_loop
+g_variant_iter_n_children
+g_variant_iter_new
+g_variant_iter_next_value
+g_variant_n_children
+g_variant_new
+g_variant_new_boolean
+g_variant_new_double
+g_variant_new_from_data
+g_variant_new_int32
+g_variant_new_object_path
+g_variant_new_string
+g_variant_new_strv
+g_variant_new_uint32
+g_variant_new_variant
+g_variant_ref
+g_variant_ref_sink
+g_variant_store
+g_variant_type_checked_
+g_variant_type_free
+g_variant_type_new
+g_variant_unref
+g_warn_message
+HardDiskPartition
+HEURISTIC_ACTIVITY
+How much information should be printed; possible values: DEBUG, INFO, WARNING, ERROR, CRITICAL
+HtmlDocument
+https://
+http://www.semanticdesktop.org/ontologies/2007/01/19/nie#DataObject
+http://www.semanticdesktop.org/ontologies/2007/01/19/nie#InformationElement
+http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact
+http://www.semanticdesktop.org/ontologies/2007/03/22/nco#ContactGroup
+http://www.semanticdesktop.org/ontologies/2007/03/22/nco#ContactList
+http://www.semanticdesktop.org/ontologies/2007/03/22/nco#ContactListDataObject
+http://www.semanticdesktop.org/ontologies/2007/03/22/nco#OrganizationContact
+http://www.semanticdesktop.org/ontologies/2007/03/22/nco#PersonContact
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Application
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Archive
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#ArchiveItem
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Attachment
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Audio
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Bookmark
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#BookmarkFolder
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Cursor
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#DataContainer
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#DeletedResource
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Document
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#EmbeddedFileDataObject
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Executable
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#FileDataObject
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Filesystem
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#FilesystemImage
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Folder
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Font
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#HardDiskPartition
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#HtmlDocument
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Icon
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Image
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Media
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#MediaList
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#MediaStream
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#MindMap
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#OperatingSystem
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#PaginatedTextDocument
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#PlainTextDocument
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Presentation
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#RasterImage
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#RemoteDataObject
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#RemotePortAddress
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Software
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#SoftwareItem
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#SoftwareService
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#SourceCode
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Spreadsheet
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#TextDocument
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Trash
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#VectorImage
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Video
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Visual
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#WebDataObject
+http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#Website
+http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#Email
+http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#IMMessage
+http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#Mailbox
+http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#MailboxDataObject
+http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#Message
+http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#MimeEntity
+http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Alarm
+http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Attachment
+http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Calendar
+http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#CalendarDataObject
+http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Event
+http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Freebusy
+http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Journal
+http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Timezone
+http://www.semanticdesktop.org/ontologies/2007/04/02/ncal#Todo
+http://www.semanticdesktop.org/ontologies/2009/02/19/nmm#Movie
+http://www.semanticdesktop.org/ontologies/2009/02/19/nmm#MusicAlbum
+http://www.semanticdesktop.org/ontologies/2009/02/19/nmm#MusicPiece
+http://www.semanticdesktop.org/ontologies/2009/02/19/nmm#TVSeries
+http://www.semanticdesktop.org/ontologies/2009/02/19/nmm#TVShow
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#AcceptEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#AccessEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#CreateEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#DeleteEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#DenyEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#EventInterpretation
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#EventManifestation
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#ExpireEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#HeuristicActivity
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#LeaveEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#ModifyEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#MoveEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#ReceiveEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#ScheduledActivity
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#SendEvent
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#SystemNotification
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#UserActivity
+http://www.zeitgeist-project.com/ontologies/2010/01/27/zg#WorldActivity
+icon != NULL
+                    icon VARCHAR,
+id: %d	timestamp: %lli
+                    id INTEGER,
+                    id INTEGER PRIMARY KEY,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    (id INTEGER PRIMARY KEY, value BLOB)
+                            id, timestamp, interpretation, manifestation,
+                    id, timestamp, interpretation, manifestation, actor,
+If another Zeitgeist instance is already running, replace it
+ifc_name != NULL
+%i %lld %s
+Illegal event: unless event.interpretation is 'MOVE_EVENT' then subject.uri and subject.current_uri have to be the same
+image/.*
+image/gif
+image/jpeg
+image/pjpeg
+image/png
+image/svg+xml
+image/tiff
+image/vnd.microsoft.icon
+image/x-xcf
+IMMessage
+Incomplete event struct.
+InformationElement
+inode/directory
+InsertEvents
+INSERT INTO 
+                        INSERT INTO event
+                INSERT INTO event (
+                INSERT INTO payload (value) VALUES (?)
+INSERT INTO schema_version VALUES ('%s', %d)
+INSERT INTO schema_version VALUES ('%s', %lli)
+INSERT INTO %s SELECT id, value FROM %s_old
+                INSERT INTO storage (
+INSERT OR IGNORE INTO 
+INSERT OR IGNORE INTO manifestation (value) VALUES ('%s')
+                        INSERT OR IGNORE INTO storage (value, state)
+                INSERT OR REPLACE INTO extensions_conf (
+InstallMonitor
+int64_parse
+interface_name != NULL
+Internet
+                    interpretation INTEGER,
+    interpretation: %s
+interpretation: %s
+interpretation_uri != NULL
+Invalid D-Bus signature.
+invalid object type `
+Invalid ResultType.
+invalid unclassed object pointer for value type `
+_IO_stdin_used
+It looks like another Zeitgeist instance is already running (the database is locked). If you want to start a new instance, use --replace.
+It looks like your database is corrupt. It will be renamed and a new one will be created.
+It looks like your database is corrupt: %s
+_Jv_RegisterClasses
+key != NULL
+                    key VARCHAR,
+L$ 9D$(uX
+__lambda0_
+__lambda8_
+least-popular-actor
+least-popular-current-uri
+least-popular-event-origin
+least-popular-mimetype
+least-popular-origin
+least-popular-subject-interpretation
+least-popular-subjects
+least-recent-actor
+least-recent-current-uri
+least-recent-event-origin
+least-recent-events
+least-recent-mimetype
+least-recent-origin
+least-recent-subject-interpretation
+least-recent-subjects
+LEAVE_EVENT
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgmodule-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libsqlite3.so.0
+loader != NULL
+                'localtime'), 'start of day') AS daystamp,
+log-file
+log-level
+lookup_table != NULL
+MailboxDataObject
+                        manifestation, actor, subj_id)
+                    manifestation=? AND actor=?
+                    manifestation INTEGER,
+    manifestation: %s
+manifestation: %s
+manifestation_type != NULL
+manifestation_uri != NULL
+marsh_events
+MediaList
+MediaStream
+medium_name != NULL
+:memory:
+message/alternative
+message/partial
+message/related
+MimeEntity
+mime-type
+mimetype.c
+mimetype != NULL
+mimetype_regex != NULL
+    mimetype: %s
+Missing event information.
+Missing subject information
+MODIFY_EVENT
+module != NULL
+module-path
+module_path != NULL
+monitor_path
+monitor_path != NULL
+most-popular-actor
+most-popular-current-uri
+most-popular-event-origin
+most-popular-mimetype
+most-popular-origin
+most-popular-subject-interpretation
+most-popular-subjects
+most-recent-actor
+most-recent-current-uri
+most-recent-event-origin
+most-recent-events
+most-recent-mimetype
+most-recent-origin
+most-recent-subject-interpretation
+most-recent-subjects
+MOVE_EVENT
+msg != NULL
+<multiple>
+music album
+NameHasOwner
+NameOwnerChanged
+name_owner != NULL
+            NATURAL JOIN (
+needle != NULL
+net.connman
+net.connman.Manager
+no-datahub
+no-passive-loggers
+No results found for the event_templates
+not-available
+Not connected to SimpleIndexer
+notify.c
+NotifyDelete
+notify::g-name-owner
+NotifyInsert
+notify.vala:161: %s
+notify.vala:234: Notifying %s about %d insertions
+notify.vala:241: Queueing notification about %d insertions
+notify.vala:290: Installed new monitor for %s
+notify.vala:294: There's already a monitor installed for %s
+notify.vala:300: Removing monitor %s%s
+notify.vala:306: There's no monitor installed for %s
+notify.vala:81: Client disconnected %s
+notify.vala:91: Cannot subscribe to NameOwnerChanged signal! %s
+n_param_values == 2
+n_param_values == 3
+num_events %s,
+num subjects: %d
+object_path != NULL
+OD$`9D$H
+oldest-actor
+                    ON actor(value)
+                        ON DELETE CASCADE,
+                    ON event(actor)
+                    ON event(id)
+                    ON event(interpretation)
+                    ON event(manifestation)
+                    ON event(origin)
+                    ON event(subj_id)
+                    ON event(subj_id_current)
+                    ON event(subj_interpretation)
+                    ON event(subj_manifestation)
+                    ON event(subj_mimetype)
+                    ON event(subj_origin)
+                    ON event(subj_storage)
+                    ON event(subj_text)
+                    ON event(timestamp)
+                    ON extensions_conf (extension, key)
+                    ON interpretation(value)
+                    ON manifestation(value)
+                    ON mimetype(value)
+on_network_down
+on-network-down
+on_network_up
+on-network-up
+                    ON storage(value)
+                    ON text(value)
+ ORDER BY 
+                ORDER BY daystamp DESC
+            ORDER BY %s 
+OrganizationContact
+/org/freedesktop/DBus
+org.freedesktop.DBus
+org.freedesktop.DBus.Properties.Get
+/org/freedesktop/NetworkManager
+org.freedesktop.NetworkManager
+/org/gnome/zeitgeist/benchmark
+org.gnome.zeitgeist.Benchmark
+/org/gnome/zeitgeist/blacklist
+org.gnome.zeitgeist.Blacklist
+/org/gnome/zeitgeist/data_source_registry
+org.gnome.zeitgeist.DataSourceRegistry
+org.gnome.zeitgeist.Engine
+org.gnome.zeitgeist.EngineError.BackupFailed
+org.gnome.zeitgeist.EngineError.DatabaseBusy
+org.gnome.zeitgeist.EngineError.DatabaseCantopen
+org.gnome.zeitgeist.EngineError.DatabaseCorrupt
+org.gnome.zeitgeist.EngineError.DatabaseError
+org.gnome.zeitgeist.EngineError.DatabaseRetireFailed
+org.gnome.zeitgeist.EngineError.ExistingInstance
+org.gnome.zeitgeist.EngineError.InvalidArgument
+org.gnome.zeitgeist.EngineError.InvalidKey
+org.gnome.zeitgeist.EngineError.InvalidSignature
+org.gnome.zeitgeist.EngineError.TooManyResults
+org.gnome.zeitgeist.Histogram
+org.gnome.zeitgeist.Index
+/org/gnome/zeitgeist/index/activity
+/org/gnome/zeitgeist/journal/activity
+org.gnome.zeitgeist.Log
+/org/gnome/zeitgeist/log/activity
+org.gnome.zeitgeist.Monitor
+/org/gnome/zeitgeist/monitor/special
+org.gnome.zeitgeist.SimpleIndexer
+/org/gnome/zeitgeist/storagemonitor
+org.gnome.zeitgeist.StorageMonitor
+                    origin INTEGER,
+                    origin, payload, subj_id, subj_id_current,
+    origin: %s
+origin: %s
+                                OR value LIKE "https://%"
+PaginatedTextDocument
+parameters != NULL
+parent_uri != NULL
+                    payload INTEGER,
+peer != NULL
+PersonContact
+PlainTextDocument
+Please check the permissions of file %s.
+PRAGMA journal_mode = WAL
+PRAGMA locking_mode = NORMAL
+Presentation
+Print program's version number and exit
+property
+Provide a grouping of calendar properties that describe a to-do.
+Provide a grouping of component properties that define an alarm.
+Provide a grouping of component properties that defines a time zone.
+Provide a grouping of component properties that describe a journal entry.
+Provide a grouping of component properties that describe an event.
+Provide a grouping of component properties that describe either a request for free/busy time, describe a response to a request for free/busy time or describe a published set of busy time.
+proxy_object != NULL
+Query exceeded size limit of % uMiB (roughly ~%d events).
+query_string
+Quit running Zeitgeist daemon instance
+RasterImage
+RECEIVE_EVENT
+Redundant event: event.interpretation indicates the uri has been moved yet the subject.uri and subject.current_uri are identical
+                        REFERENCES actor(id)
+                        REFERENCES interpretation(id)
+                        REFERENCES manifestation(id)
+                        REFERENCES mimetype(id)
+                        REFERENCES payload(id)
+                        REFERENCES storage(id)
+                        REFERENCES text(id)
+                        REFERENCES uri(id)
+RegisterDataSource
+registry
+relevancies
+RemoteDataObject
+RemotePortAddress
+RemoveMonitor
+remove_storage_medium
+RemoveTemplate
+Represents a container for deleted files, a feature common in modern operating systems.
+res != NULL
+result_event_templates
+result_event_templates != NULL
+result_type
+ROLLBACK
+                %s
+SCHEDULED_ACTIVITY
+                    schema VARCHAR PRIMARY KEY ON CONFLICT REPLACE,
+%s: %d, %s
+SearchWithRelevancies
+                        SELECT
+                    SELECT event.id,
+            SELECT * FROM event_view
+                SELECT id FROM event
+SELECT id FROM event_view 
+                            SELECT id FROM manifestation WHERE value='http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#WebDataObject')
+                        SELECT id FROM manifestation WHERE value='http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#WebDataObject')
+                    (SELECT id FROM storage WHERE value=?)
+                            (SELECT id FROM storage WHERE value='unknown')
+                    (SELECT id FROM text WHERE value=?),
+                            SELECT id FROM uri
+                    (SELECT id FROM uri WHERE value=?),
+               SELECT id, timestamp, subj_uri FROM event_view 
+SELECT id, value FROM 
+SELECT MAX(id) FROM event
+                SELECT MIN(timestamp), MAX(timestamp)
+                SELECT %s,
+SELECT %s FROM %s
+SELECT %s FROM %s WHERE (value >= ? AND value < ?)
+                        (SELECT state FROM storage
+                SELECT strftime('%s', datetime(timestamp/1000, 'unixepoch',
+                SELECT value
+SELECT value FROM 
+                        (SELECT value FROM actor
+                        (SELECT value FROM payload
+                        (SELECT value FROM storage
+                        (SELECT value FROM text
+                        (SELECT value FROM uri
+                SELECT value, state, icon, display_name
+SELECT version FROM schema_version 
+self != NULL
+sender_array != NULL
+sender != NULL
+SEND_EVENT
+SetDataSourceEnabled
+                SET state=?
+                SET subj_id_current=(SELECT id FROM uri WHERE value=?)
+                    SET subj_manifestation=(
+shell-completion
+signal_name != NULL
+sig_name != NULL
+%s IN (%s)
+%s IN (SELECT id FROM %s WHERE value %s= ?)
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+(%s NOT IN (%s) OR %s is NULL)
+Software
+SoftwareItem
+SoftwareService
+SourceCode
+sources != NULL
+sources_variant != NULL
+Spreadsheet
+sqlite3_bind_blob
+sqlite3_bind_int
+sqlite3_bind_int64
+sqlite3_bind_text
+sqlite3_changes
+sqlite3_close
+sqlite3_column_blob
+sqlite3_column_bytes
+sqlite3_column_int
+sqlite3_column_int64
+sqlite3_column_text
+sqlite3_errmsg
+_sqlite3_exec
+sqlite3_exec
+sqlite3_finalize
+sqlite3_free
+sqlite3_last_insert_rowid
+sqlite3_open_v2
+sqlite3_prepare_v2
+sqlite3_reset
+sqlite3_step
+sqlite3_update_hook
+sql-schema.c
+sql-schema.vala:153: Upgraded database to schema version 6.
+sql-schema.vala:180: schema_version is %d
+sql.vala:145: %s
+sql.vala:182: Can't query database
+sql.vala:231: SQL Error
+sql.vala:251: SQL error
+sql.vala:263: Can't start transaction
+sql.vala:269: Can't commit transaction
+sql.vala:275: Can't rollback transaction
+sql.vala:326: %s
+sql.vala:348: %s
+sql.vala:373: Event ID retrieval query error
+sql.vala:402: Insertion query error
+sql.vala:412: Move handling error
+sql.vala:419: Payload insertion query error
+%s %s= ?
+%s %s= %d
+sssa(asaasay)
+%s[%s %s]%s %s
+state_changed
+state-changed
+StateChanged
+                state=?, icon=?, display_name=? 
+                    state INTEGER,
+state != NULL
+                    state, value
+                %s(timestamp) AS timestamp
+stmt != NULL
+stock_internet
+storage_available
+storage-available
+StorageAvailable
+storage_description
+    storage: %s
+storage_state
+storage_unavailable
+storage-unavailable
+StorageUnavailable
+string_get_data
+string_substring
+str != NULL
+subject-current-uri
+  Subject #%d:
+subject-id
+subject-id-current
+subject interpretation
+subject-interpretation
+subject manifestation
+subject-manifestation
+subject-mimetype
+subject origin
+subject-origin
+subject-origin-uri
+subject storage
+subject-storage
+subject-storage-state
+subject-text
+subject-uri
+subject_variant != NULL
+                            subj_id AS subj_id_current
+subj_id_current
+                    subj_id_current INTEGER,
+                    subj_id INTEGER,
+subj_interpretation
+                    subj_interpretation INTEGER,
+                    subj_interpretation, subj_manifestation, subj_origin,
+                        subj_manifestation=(
+subj_manifestation
+                    subj_manifestation INTEGER,
+                            subj_manifestation, subj_origin, subj_mimetype,
+subj_mimetype
+                    subj_mimetype INTEGER,
+                    subj_mimetype, subj_text, subj_storage
+subj_origin
+                    subj_origin INTEGER,
+subj_storage_id
+                    subj_storage INTEGER,
+(subj_storage_state=? OR subj_storage_state IS NULL)
+subj_text_id
+                    subj_text INTEGER,
+                            subj_text, subj_storage, NULL as origin,
+symbol != NULL
+symbol_uri != NULL
+SYSTEM_NOTIFICATION
+table-lookup.c
+table-lookup.vala:135: Error getting data from table: %d, %s
+table-lookup.vala:62: Error creating insertion_stmt
+table-lookup.vala:66: Error creating retrieval_stmt
+table_name != NULL
+template_added
+template-added
+TemplateAdded
+template_event != NULL
+template_id
+template_id != NULL
+template_removed
+template-removed
+TemplateRemoved
+template_subject != NULL
+templates_variant != NULL
+text/css
+text/csv
+text/html
+text/javascript
+text != NULL
+text/plain
+    text: %s
+text/vcard
+text/x-c
+text/x-c++
+text/x-chdr
+text/x-copying
+text/x-credits
+text/x-csharp
+text/x-csrc
+text/x-c++src
+text/x-dsrc
+text/x-eiffel
+text/x-gettext-translation
+text/x-gettext-translation-template
+text/x-haskell
+text/x-idl
+text/x-java
+text/x-jquery-tmpl
+text/x-latex
+text/x-lisp
+text/x-lua
+text/x-m4
+text/x-makefile
+text/xml
+text/x-objcsrc
+text/x-ocaml
+text/x-pascal
+text/x-patch
+text/x-python
+text/x-sql
+text/x-tcl
+text/x-tex
+text/x-troff
+text/x-vala
+text/x-vhdl
+The music album as provided by the publisher. Not to be confused with media lists or collections.
+time_range
+time_range != NULL
+timestamp
+                    timestamp INTEGER,
++timestamp <= %lli
++timestamp >= %lli
+ timestamp %s
+Timezone
+_tmp0__length1 > 0
+_tmp0_ != NULL
+_tmp13_ <= _tmp14_
+_tmp15_ == _tmp18_
+(_tmp18_ + _tmp19_) <= _tmp20_
+_tmp2_ > 0
+_tmp2_ == 1
+_tmp2_ == ((guint32) 0)
+_tmp4_ > 0
+_tmp8_ >= ((gsize) 4)
+Tried to delete non-existing event(s): %s
+tv != NULL
+tv series
+Type implemented in "%s" does not subclass Zeitgeist.Extension!
+Type "%s" implemented by [%p] does not subclass Zeitgeist.Extension!
+uint64_parse
+Unable to execute SQL:
+Unable to open database: old schema version
+Unable to upgrade from schema version %d
+ UNION SELECT ?
+unique_id
+unique-id
+unique_id != NULL
+Unknown storage state '%u'
+Unsupported RelevantResultType
+                    UPDATE event
+            UPDATE event
+                        UPDATE event SET subj_storage =
+                UPDATE storage
+                UPDATE storage SET 
+    uri: %s
+uri_scheme != NULL
+Used to assign music-specific properties such a BPM to video and audio
+USER_ACTIVITY
+utils.vala:111: LOCAL_EXTENSIONS_PATH = %s
+utils.vala:128: Backing up database to "%s" for schema upgrade...
+utils.vala:59: DATA_PATH = %s
+utils.vala:78: DATABASE_FILE_PATH = %s
+utils.vala:93: DATABASE_FILE_BACKUP_PATH = %s
+vala-dbus-interface-name
+vala-dbus-proxy-type
+vala-dbus-register-object
+val != NULL
+                    value BLOB,
+                                value LIKE "http://%"
+value location for `%s' passed as NULL
+                ) VALUES (
+ (value) SELECT ?
+values != NULL
+                    value, state, icon, display_name
+                            VALUES ('unknown', 1)
+ (value) VALUES (?)
+                    value VARCHAR UNIQUE
+                    value VARCHAR UNIQUE,
+VectorImage
+                    version INT
+vevents != NULL
+video/.*
+VOLUME ADDED: %s
+VOLUME REMOVED: %s
+web data object
+                    WHERE
+                            WHERE
+                            WHERE actor.id=event.actor)
+where-clause.c
+                WHERE extension=? AND key=?
+ WHERE id=?
+                WHERE id IN (%s)
+            WHERE id IN (%s)
+               WHERE id IN (%s) ORDER BY timestamp ASC
+where != NULL
+                            WHERE payload.id=event.payload)
+WHERE schema='%s'
+where_sql != NULL
+                            WHERE storage.id=event.subj_storage)
+                    WHERE subj_id_current=(SELECT id FROM uri WHERE value=?)
+                        WHERE subj_storage IS NULL
+                            WHERE text.id = event.subj_text)
+                WHERE timestamp=? AND interpretation=? AND
+                            WHERE uri.id=event.origin)
+                            WHERE uri.id=event.subj_id)
+                            WHERE uri.id=event.subj_id_current)
+                            WHERE uri.id=event.subj_origin)
+                WHERE value=?
+WORLD_ACTIVITY
+.*/x-dvi
+%Y-%m-%d %H:%M:%S
+%Y%m%d-%H%M%S
+zDZeitgeistMonitorManagerMonitor
+zeitgeist
+zeitgeist_assert_sig
+ZeitgeistBenchmarker
+zeitgeist_benchmarker_get_type
+zeitgeist_benchmarker_real_find_events_co
+zeitgeist_benchmarker_register_type
+Zeitgeist.Benchmarker.unload
+zeitgeist_benchmark_init
+ZeitgeistBlacklist
+zeitgeist_blacklist_flush
+zeitgeist_blacklist_get_type
+zeitgeist_blacklist_init
+zeitgeist_blacklist_real_add_template
+zeitgeist_blacklist_real_pre_insert_events
+zeitgeist_blacklist_real_remove_template
+zeitgeist_blacklist_register_type
+zeitgeist_blacklist_templates_from_variant
+zeitgeist_blacklist_templates_to_variant
+Zeitgeist.Blacklist.unload
+ZeitgeistBuiltinExtension
+zeitgeist_builtin_extension_construct
+zeitgeist_builtin_extension_get_type
+zeitgeist_builtin_extension_new
+zeitgeist_check_field_match
+ZeitgeistConnmanManagerDBus
+zeitgeist_connman_manager_dbus_get_state
+zeitgeist_connman_manager_dbus_get_type
+ZeitgeistConnmanManagerDBusProxy
+zeitgeist_connman_manager_dbus_proxy_get_type
+zeitgeist_connman_manager_dbus_register_object
+ZeitgeistConnmanNetworkMonitor
+zeitgeist_connman_network_monitor_construct
+zeitgeist_connman_network_monitor_get_type
+zeitgeist_connman_network_monitor_new
+zeitgeist_connman_network_monitor_on_state_changed
+zeitgeist_connman_network_monitor_register_type
+ - Zeitgeist daemon
+ZeitgeistDaemon
+zeitgeist-daemon.c
+zeitgeist-daemon.c:1841
+zeitgeist_daemon_construct
+zeitgeist_daemon_do_quit
+Zeitgeist.Daemon.find_events
+Zeitgeist.Daemon.get_events
+zeitgeist_daemon_get_type
+zeitgeist_daemon_name_acquired_callback
+zeitgeist_daemon_new
+zeitgeist_daemon_quit_running_instance
+zeitgeist_daemon_real_delete_events
+zeitgeist_daemon_real_find_event_ids
+zeitgeist_daemon_real_find_events
+zeitgeist_daemon_real_find_related_uris
+zeitgeist_daemon_real_get_events
+zeitgeist_daemon_real_insert_events
+zeitgeist_daemon_real_install_monitor
+zeitgeist_daemon_real_remove_monitor
+zeitgeist_daemon_register_dbus_object
+zeitgeist_daemon_unregister_dbus_object
+zeitgeist-daemon.vala:120: Unable to parse version info!
+zeitgeist-daemon.vala:140: %s executed in %f seconds
+zeitgeist-daemon.vala:178: %s executed in %f seconds
+zeitgeist-daemon.vala:279: %s
+zeitgeist-daemon.vala:298: %s
+zeitgeist-daemon.vala:317: Waiting 10 seconds to acquire name...
+zeitgeist-daemon.vala:325: Timeout reached, unable to acquire name!
+zeitgeist-daemon.vala:363: %s
+zeitgeist-daemon.vala:389: %s
+zeitgeist-daemon.vala:418: %s
+zeitgeist-daemon.vala:473: %s
+ZEITGEIST_DATABASE_BACKUP_PATH
+ZEITGEIST_DATABASE_PATH
+zeitgeist-datahub
+ZEITGEIST_DATA_PATH
+ZeitgeistDataSource
+zeitgeist_data_source_construct
+zeitgeist_data_source_construct_from_variant
+zeitgeist_data_source_construct_full
+zeitgeist_data_source_get_description
+zeitgeist_data_source_get_enabled
+zeitgeist_data_source_get_event_templates
+zeitgeist_data_source_get_name
+zeitgeist_data_source_get_running
+zeitgeist_data_source_get_timestamp
+zeitgeist_data_source_get_type
+zeitgeist_data_source_get_unique_id
+zeitgeist_data_source_new
+zeitgeist_data_source_new_from_variant
+zeitgeist_data_source_new_full
+zeitgeist_data_source_register_type
+ZeitgeistDataSourceRegistry
+zeitgeist_data_source_registry_flush
+zeitgeist_data_source_registry_get_type
+zeitgeist_data_source_registry_init
+zeitgeist_data_source_registry_is_sender_known
+zeitgeist_data_source_registry_name_owner_changed
+zeitgeist_data_source_registry_real_get_data_source_from_id
+zeitgeist_data_source_registry_real_pre_insert_events
+zeitgeist_data_source_registry_real_register_data_source
+zeitgeist_data_source_registry_real_set_data_source_enabled
+Zeitgeist.DataSourceRegistry.register_data_source
+zeitgeist_data_source_registry_register_type
+Zeitgeist.DataSourceRegistry.set_data_source_enabled
+Zeitgeist.DataSourceRegistry.unload
+zeitgeist_data_source_set_description
+zeitgeist_data_source_set_enabled
+zeitgeist_data_source_set_event_templates
+zeitgeist_data_source_set_name
+zeitgeist_data_source_set_running
+zeitgeist_data_source_set_timestamp
+zeitgeist_data_source_set_unique_id
+zeitgeist_data_sources_from_variant
+zeitgeist_data_sources_to_variant
+zeitgeist_data_source_to_variant
+ZeitgeistDbReader
+zeitgeist_db_reader_assert_no_negation
+zeitgeist_db_reader_assert_no_noexpand
+zeitgeist_db_reader_assert_no_wildcard
+zeitgeist_db_reader_close
+zeitgeist_db_reader_construct
+zeitgeist_db_reader_delete_from_cache
+zeitgeist_db_reader_find_event_ids
+zeitgeist_db_reader_find_event_ids_for_clause
+zeitgeist_db_reader_find_events
+zeitgeist_db_reader_find_related_uris
+zeitgeist_db_reader_get_database
+zeitgeist_db_reader_get_event_from_row
+zeitgeist_db_reader_get_events
+zeitgeist_db_reader_get_subject_from_row
+zeitgeist_db_reader_get_type
+zeitgeist_db_reader_get_where_clause_for_query
+zeitgeist_db_reader_get_where_clause_for_symbol
+zeitgeist_db_reader_get_where_clause_from_event_template
+zeitgeist_db_reader_get_where_clause_from_event_templates
+zeitgeist_db_reader_group_and_sort
+zeitgeist_db_reader_new
+zeitgeist_db_reader_set_database
+ZEITGEIST_DISABLED_EXTENSIONS
+ZeitgeistEngine
+zeitgeist_engine_construct
+zeitgeist_engine_delete_events
+zeitgeist_engine_error_quark
+zeitgeist_engine_error-quark
+zeitgeist_engine_get_extension_names
+zeitgeist_engine_get_type
+zeitgeist_engine_insert_event
+zeitgeist_engine_insert_events
+zeitgeist_engine_new
+zeitgeist_engine_preprocess_event
+zeitgeist_ensure_mimetypes_loaded
+zeitgeist_ensure_schemes_loaded
+ZeitgeistEvent
+zeitgeist_event_add_subject
+zeitgeist_event_construct
+zeitgeist_event_construct_from_variant
+zeitgeist_event_construct_full
+zeitgeist_event_debug_print
+zeitgeist_event_get_actor
+zeitgeist_event_get_id
+zeitgeist_event_get_interpretation
+zeitgeist_event_get_manifestation
+zeitgeist_event_get_origin
+zeitgeist_event_get_payload
+zeitgeist_event_get_subjects
+zeitgeist_event_get_timestamp
+zeitgeist_event_get_type
+zeitgeist_event_matches_template
+zeitgeist_event_new
+zeitgeist_event_new_from_variant
+zeitgeist_event_new_full
+zeitgeist_event_num_subjects
+zeitgeist_event_optimize_variant_allocation
+zeitgeist_event_set_actor
+zeitgeist_event_set_id
+zeitgeist_event_set_interpretation
+zeitgeist_event_set_manifestation
+zeitgeist_event_set_origin
+zeitgeist_event_set_payload
+zeitgeist_event_set_subjects
+zeitgeist_event_set_timestamp
+zeitgeist_events_from_variant
+zeitgeist_events_get_null_event_variant
+zeitgeist_events_to_variant
+zeitgeist_events_to_variant_with_limit
+zeitgeist_event_take_subject
+zeitgeist_event_to_variant
+ZeitgeistExtension
+ZeitgeistExtensionCollection
+zeitgeist_extension_collection_call_post_delete_events
+zeitgeist_extension_collection_call_post_insert_events
+zeitgeist_extension_collection_call_pre_delete_events
+zeitgeist_extension_collection_call_pre_insert_events
+zeitgeist_extension_collection_construct
+zeitgeist_extension_collection_get_engine
+zeitgeist_extension_collection_get_extension_names
+zeitgeist_extension_collection_get_type
+zeitgeist_extension_collection_instantiate_extension
+_zeitgeist_extension_collection___lambda7_
+zeitgeist_extension_collection_new
+zeitgeist_extension_collection_set_engine
+zeitgeist_extension_construct
+zeitgeist_extension_get_engine
+zeitgeist_extension_get_type
+ZeitgeistExtensionLoader
+zeitgeist_extension_loader_construct
+zeitgeist_extension_loader_create_instance
+zeitgeist_extension_loader_get_extension_type
+zeitgeist_extension_loader_get_type
+zeitgeist_extension_loader_real_create_instance
+zeitgeist_extension_loader_set_extension_type
+zeitgeist_extension_post_delete_events
+zeitgeist_extension_post_insert_events
+zeitgeist_extension_pre_delete_events
+zeitgeist_extension_pre_insert_events
+zeitgeist_extension_real_post_insert_events
+zeitgeist_extension_real_pre_insert_events
+zeitgeist_extension_register
+zeitgeist_extension_retrieve_config
+zeitgeist_extension_set_engine
+ZeitgeistExtensionStore
+zeitgeist_extension_store_config
+zeitgeist_extension_store_construct
+zeitgeist_extension_store_get_type
+zeitgeist_extension_store_new
+zeitgeist_extension_store_retrieve
+zeitgeist_extension_store_store
+zeitgeist_extension_unload
+zeitgeist_fts_init
+ZeitgeistHistogram
+zeitgeist_histogram_construct
+zeitgeist_histogram_get_type
+zeitgeist_histogram_init
+zeitgeist_histogram_new
+zeitgeist_histogram_register_type
+Zeitgeist.Histogram.unload
+zeitgeist_i_know_its_unused
+zeitgeist_interpretation_for_mimetype
+Zeitgeist is running already.
+zeitgeist_logging_get_log_level_string
+zeitgeist_logging_log_file
+zeitgeist_logging_log_handler
+zeitgeist_logging_setup_logging
+zeitgeist_manifestation_for_uri
+zeitgeist_mime_regex_free
+zeitgeist_mime_regex_new
+zeitgeist_mimetypes
+zeitgeist_mimetypes_loaded
+zeitgeist_mimetypes_regexs
+ZeitgeistModuleLoader
+zeitgeist_module_loader_construct
+zeitgeist_module_loader_get_module_path
+zeitgeist_module_loader_get_type
+zeitgeist_module_loader_new
+zeitgeist_module_loader_set_module_path
+ZeitgeistMonitorManager
+zeitgeist_monitor_manager_get_default
+zeitgeist_monitor_manager_get_type
+zeitgeist_monitor_manager_install_monitor
+_zeitgeist_monitor_manager____lambda9_
+zeitgeist_monitor_manager_monitor_flush_notifications
+zeitgeist_monitor_manager_monitor_name_owner_changed
+zeitgeist_monitor_manager_monitor_notify_delete
+zeitgeist_monitor_manager_monitor_notify_insert
+zeitgeist_monitor_manager_monitor_queued_notification_new_deletion
+zeitgeist_monitor_manager_monitor_queued_notification_new_insertion
+zeitgeist_monitor_manager_monitor_queued_notification_send
+zeitgeist_monitor_manager_notify_delete
+zeitgeist_monitor_manager_notify_insert
+zeitgeist_monitor_manager_remove_monitor
+ZeitgeistNetworkManagerDBus
+zeitgeist_network_manager_dbus_get_type
+ZeitgeistNetworkManagerDBusProxy
+zeitgeist_network_manager_dbus_proxy_get_type
+zeitgeist_network_manager_dbus_register_object
+zeitgeist_network_manager_dbus_state
+ZeitgeistNetworkMonitor
+zeitgeist_network_monitor_get_type
+zeitgeist_network_monitor_register_type
+zeitgeist_network_monitor_setup
+ZeitgeistNMNetworkMonitor
+zeitgeist_nm_network_monitor_construct
+zeitgeist_nm_network_monitor_get_type
+zeitgeist_nm_network_monitor_new
+zeitgeist_nm_network_monitor_on_state_changed
+zeitgeist_nm_network_monitor_register_type
+zeitgeist_register_mimetype
+zeitgeist_register_mimetype_regex
+zeitgeist_register_uri_scheme
+ZeitgeistRelevantResultType
+zeitgeist_relevant_result_type_get_type
+ZEITGEIST_RELEVANT_RESULT_TYPE_RECENT
+ZEITGEIST_RELEVANT_RESULT_TYPE_RELATED
+ZeitgeistRemoteBenchmarker
+zeitgeist_remote_benchmarker_find_events
+zeitgeist_remote_benchmarker_find_events_finish
+zeitgeist_remote_benchmarker_get_type
+ZeitgeistRemoteBenchmarkerProxy
+zeitgeist_remote_benchmarker_proxy_get_type
+zeitgeist_remote_benchmarker_register_object
+zeitgeist_remote_benchmarker_register_type
+ZeitgeistRemoteBlacklist
+zeitgeist_remote_blacklist_add_template
+zeitgeist_remote_blacklist_get_templates
+zeitgeist_remote_blacklist_get_type
+ZeitgeistRemoteBlacklistProxy
+zeitgeist_remote_blacklist_proxy_get_type
+zeitgeist_remote_blacklist_register_object
+zeitgeist_remote_blacklist_register_type
+zeitgeist_remote_blacklist_remove_template
+ZeitgeistRemoteDBus
+zeitgeist_remote_dbus_get_type
+zeitgeist_remote_dbus_name_has_owner
+ZeitgeistRemoteDBusProxy
+zeitgeist_remote_dbus_proxy_get_type
+zeitgeist_remote_dbus_register_object
+ZeitgeistRemoteHistogram
+zeitgeist_remote_histogram_get_histogram_data
+zeitgeist_remote_histogram_get_type
+ZeitgeistRemoteHistogramProxy
+zeitgeist_remote_histogram_proxy_get_type
+zeitgeist_remote_histogram_register_object
+zeitgeist_remote_histogram_register_type
+ZeitgeistRemoteLog
+zeitgeist_remote_log_delete_events
+zeitgeist_remote_log_find_event_ids
+zeitgeist_remote_log_find_events
+zeitgeist_remote_log_find_related_uris
+zeitgeist_remote_log_get_events
+zeitgeist_remote_log_get_extensions
+zeitgeist_remote_log_get_type
+zeitgeist_remote_log_get_version
+zeitgeist_remote_log_insert_events
+zeitgeist_remote_log_install_monitor
+ZeitgeistRemoteLogProxy
+zeitgeist_remote_log_proxy_get_type
+zeitgeist_remote_log_quit
+zeitgeist_remote_log_register_object
+zeitgeist_remote_log_remove_monitor
+ZeitgeistRemoteMonitor
+zeitgeist_remote_monitor_get_type
+zeitgeist_remote_monitor_notify_delete
+zeitgeist_remote_monitor_notify_delete_finish
+zeitgeist_remote_monitor_notify_insert
+zeitgeist_remote_monitor_notify_insert_finish
+ZeitgeistRemoteMonitorProxy
+zeitgeist_remote_monitor_proxy_get_type
+zeitgeist_remote_monitor_register_object
+ZeitgeistRemoteRegistry
+zeitgeist_remote_registry_get_data_source_from_id
+zeitgeist_remote_registry_get_data_sources
+zeitgeist_remote_registry_get_type
+ZeitgeistRemoteRegistryProxy
+zeitgeist_remote_registry_proxy_get_type
+zeitgeist_remote_registry_register_data_source
+zeitgeist_remote_registry_register_object
+zeitgeist_remote_registry_register_type
+zeitgeist_remote_registry_set_data_source_enabled
+ZeitgeistRemoteSearchEngine
+zeitgeist_remote_search_engine_get_type
+ZeitgeistRemoteSearchEngineProxy
+zeitgeist_remote_search_engine_proxy_get_type
+zeitgeist_remote_search_engine_register_object
+zeitgeist_remote_search_engine_register_type
+zeitgeist_remote_search_engine_search
+zeitgeist_remote_search_engine_search_finish
+zeitgeist_remote_search_engine_search_with_relevancies
+zeitgeist_remote_search_engine_search_with_relevancies_finish
+ZeitgeistRemoteSimpleIndexer
+zeitgeist_remote_simple_indexer_get_type
+ZeitgeistRemoteSimpleIndexerProxy
+zeitgeist_remote_simple_indexer_proxy_get_type
+zeitgeist_remote_simple_indexer_register_object
+zeitgeist_remote_simple_indexer_search
+zeitgeist_remote_simple_indexer_search_finish
+zeitgeist_remote_simple_indexer_search_with_relevancies
+zeitgeist_remote_simple_indexer_search_with_relevancies_finish
+ZeitgeistRemoteStorageMonitor
+zeitgeist_remote_storage_monitor_get_storages
+zeitgeist_remote_storage_monitor_get_type
+ZeitgeistRemoteStorageMonitorProxy
+zeitgeist_remote_storage_monitor_proxy_get_type
+zeitgeist_remote_storage_monitor_register_object
+zeitgeist_remote_storage_monitor_register_type
+ZeitgeistResultType
+zeitgeist_result_type_get_type
+zeitgeist_result_type_is_sort_order_asc
+ZEITGEIST_RESULT_TYPE_LEAST_POPULAR_ACTOR
+ZEITGEIST_RESULT_TYPE_LEAST_POPULAR_CURRENT_URI
+ZEITGEIST_RESULT_TYPE_LEAST_POPULAR_EVENT_ORIGIN
+ZEITGEIST_RESULT_TYPE_LEAST_POPULAR_MIMETYPE
+ZEITGEIST_RESULT_TYPE_LEAST_POPULAR_ORIGIN
+ZEITGEIST_RESULT_TYPE_LEAST_POPULAR_SUBJECT_INTERPRETATION
+ZEITGEIST_RESULT_TYPE_LEAST_POPULAR_SUBJECTS
+ZEITGEIST_RESULT_TYPE_LEAST_RECENT_ACTOR
+ZEITGEIST_RESULT_TYPE_LEAST_RECENT_CURRENT_URI
+ZEITGEIST_RESULT_TYPE_LEAST_RECENT_EVENT_ORIGIN
+ZEITGEIST_RESULT_TYPE_LEAST_RECENT_EVENTS
+ZEITGEIST_RESULT_TYPE_LEAST_RECENT_MIMETYPE
+ZEITGEIST_RESULT_TYPE_LEAST_RECENT_ORIGIN
+ZEITGEIST_RESULT_TYPE_LEAST_RECENT_SUBJECT_INTERPRETATION
+ZEITGEIST_RESULT_TYPE_LEAST_RECENT_SUBJECTS
+ZEITGEIST_RESULT_TYPE_MOST_POPULAR_ACTOR
+ZEITGEIST_RESULT_TYPE_MOST_POPULAR_CURRENT_URI
+ZEITGEIST_RESULT_TYPE_MOST_POPULAR_EVENT_ORIGIN
+ZEITGEIST_RESULT_TYPE_MOST_POPULAR_MIMETYPE
+ZEITGEIST_RESULT_TYPE_MOST_POPULAR_ORIGIN
+ZEITGEIST_RESULT_TYPE_MOST_POPULAR_SUBJECT_INTERPRETATION
+ZEITGEIST_RESULT_TYPE_MOST_POPULAR_SUBJECTS
+ZEITGEIST_RESULT_TYPE_MOST_RECENT_ACTOR
+ZEITGEIST_RESULT_TYPE_MOST_RECENT_CURRENT_URI
+ZEITGEIST_RESULT_TYPE_MOST_RECENT_EVENT_ORIGIN
+ZEITGEIST_RESULT_TYPE_MOST_RECENT_EVENTS
+ZEITGEIST_RESULT_TYPE_MOST_RECENT_MIMETYPE
+ZEITGEIST_RESULT_TYPE_MOST_RECENT_ORIGIN
+ZEITGEIST_RESULT_TYPE_MOST_RECENT_SUBJECT_INTERPRETATION
+ZEITGEIST_RESULT_TYPE_MOST_RECENT_SUBJECTS
+ZEITGEIST_RESULT_TYPE_OLDEST_ACTOR
+zeitgeist_schemes
+zeitgeist_schemes_loaded
+ZeitgeistSearchEngine
+zeitgeist_search_engine_get_type
+zeitgeist_search_engine_proxy_acquired
+zeitgeist_search_engine_real_search_co
+zeitgeist_search_engine_real_search_with_relevancies_co
+zeitgeist_search_engine_register_type
+Zeitgeist.SearchEngine.unload
+zeitgeist_search_engine_wait_for_proxy
+zeitgeist_search_engine_wait_for_proxy_co
+zeitgeist_search_engine_wait_for_proxy_finish
+ZeitgeistSQLiteDatabase
+zeitgeist_sq_lite_database_abort_transaction
+zeitgeist_sq_lite_database_assert_not_corrupt
+zeitgeist_sq_lite_database_assert_query_success
+zeitgeist_sq_lite_database_begin_transaction
+zeitgeist_sq_lite_database_close
+zeitgeist_sq_lite_database_construct
+zeitgeist_sq_lite_database_construct_read_only
+zeitgeist_sq_lite_database_end_transaction
+zeitgeist_sq_lite_database_get_last_id
+zeitgeist_sq_lite_database_get_sql_string_from_event_ids
+zeitgeist_sq_lite_database_get_time_range_for_event_ids
+zeitgeist_sq_lite_database_get_type
+zeitgeist_sq_lite_database_insert_or_ignore_into_table
+zeitgeist_sq_lite_database_new
+zeitgeist_sq_lite_database_new_read_only
+zeitgeist_sq_lite_database_open_database
+zeitgeist_sq_lite_database_prepare_modification_queries
+zeitgeist_sq_lite_database_prepare_read_queries
+ZeitgeistSQLiteDatabaseSchema
+zeitgeist_sq_lite_database_schema_construct
+zeitgeist_sq_lite_database_schema_create_schema
+zeitgeist_sq_lite_database_schema_ensure_schema
+zeitgeist_sq_lite_database_schema_exec_query
+zeitgeist_sq_lite_database_schema_get_creation_date
+zeitgeist_sq_lite_database_schema_get_schema_metadata
+zeitgeist_sq_lite_database_schema_get_schema_version
+zeitgeist_sq_lite_database_schema_get_type
+zeitgeist_sq_lite_database_schema_new
+zeitgeist_sq_lite_database_schema_set_corruption_flag
+zeitgeist_sq_lite_database_schema_set_schema_version
+zeitgeist_sq_lite_database_set_deletion_callback
+zeitgeist_sq_lite_database_update_callback
+ZeitgeistSQLiteEventViewRows
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_ACTOR
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_EVENT_ORIGIN_URI
+zeitgeist_sq_lite_event_view_rows_get_type
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_ID
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_INTERPRETATION
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_MANIFESTATION
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_ORIGIN
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_PAYLOAD
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_CURRENT_URI
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_ID
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_ID_CURRENT
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_INTERPRETATION
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_MANIFESTATION
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_MIMETYPE
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_ORIGIN
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_ORIGIN_URI
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_STORAGE
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_STORAGE_STATE
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_TEXT
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_SUBJECT_URI
+ZEITGEIST_SQ_LITE_EVENT_VIEW_ROWS_TIMESTAMP
+ZeitgeistSQLiteTableLookup
+zeitgeist_sq_lite_table_lookup_construct
+zeitgeist_sq_lite_table_lookup_get_type
+zeitgeist_sq_lite_table_lookup_get_value
+zeitgeist_sq_lite_table_lookup_id_for_string
+zeitgeist_sq_lite_table_lookup_id_try_string
+zeitgeist_sq_lite_table_lookup_new
+zeitgeist_sq_lite_table_lookup_remove
+zeitgeist_storage_media_to_variant
+ZeitgeistStorageMonitor
+zeitgeist_storage_monitor_add_storage_medium
+zeitgeist_storage_monitor_find_storage_for_uri
+zeitgeist_storage_monitor_get_type
+zeitgeist_storage_monitor_init
+zeitgeist_storage_monitor_name_appeared_handler
+zeitgeist_storage_monitor_prepare_queries
+zeitgeist_storage_monitor_real_pre_insert_events
+zeitgeist_storage_monitor_register_type
+zeitgeist_storage_monitor_remove_storage_medium
+Zeitgeist.StorageMonitor.unload
+ZeitgeistStorageState
+ZEITGEIST_STORAGE_STATE_ANY
+ZEITGEIST_STORAGE_STATE_AVAILABLE
+zeitgeist_storage_state_get_type
+ZEITGEIST_STORAGE_STATE_NOT_AVAILABLE
+ZeitgeistSubject
+zeitgeist_subject_construct
+zeitgeist_subject_construct_from_variant
+zeitgeist_subject_construct_full
+zeitgeist_subject_get_current_uri
+zeitgeist_subject_get_interpretation
+zeitgeist_subject_get_manifestation
+zeitgeist_subject_get_mimetype
+zeitgeist_subject_get_origin
+zeitgeist_subject_get_storage
+zeitgeist_subject_get_text
+zeitgeist_subject_get_type
+zeitgeist_subject_get_uri
+zeitgeist_subject_matches_template
+zeitgeist_subject_new
+zeitgeist_subject_new_from_variant
+zeitgeist_subject_new_full
+zeitgeist_subject_set_current_uri
+zeitgeist_subject_set_interpretation
+zeitgeist_subject_set_manifestation
+zeitgeist_subject_set_mimetype
+zeitgeist_subject_set_origin
+zeitgeist_subject_set_storage
+zeitgeist_subject_set_text
+zeitgeist_subject_set_uri
+zeitgeist_subject_to_variant
+zeitgeist_symbol_all_symbols
+zeitgeist_symbol_get_all_children
+zeitgeist_symbol_get_all_parents
+zeitgeist_symbol_get_children
+zeitgeist_symbol_get_description
+zeitgeist_symbol_get_display_name
+zeitgeist_symbol_get_parents
+ZeitgeistSymbolInfo
+zeitgeist_symbol_info_get_type
+zeitgeist_symbol_info_ref
+zeitgeist_symbol_info_register
+zeitgeist_symbol_info_unref
+zeitgeist_symbol_initialized
+zeitgeist_symbol_initialize_symbols
+zeitgeist_symbol_is_a
+zeitgeist_symbol_param_spec_info
+zeitgeist_symbol_value_get_info
+zeitgeist_symbol_value_set_info
+zeitgeist_symbol_value_take_info
+ZeitgeistTimeRange
+zeitgeist_time_range_construct
+zeitgeist_time_range_construct_anytime
+zeitgeist_time_range_construct_from_now
+zeitgeist_time_range_construct_from_variant
+zeitgeist_time_range_construct_to_now
+zeitgeist_time_range_get_end
+zeitgeist_time_range_get_start
+zeitgeist_time_range_get_type
+zeitgeist_time_range_intersect
+zeitgeist_time_range_new
+zeitgeist_time_range_new_anytime
+zeitgeist_time_range_new_from_now
+zeitgeist_time_range_new_from_variant
+zeitgeist_time_range_new_to_now
+zeitgeist_time_range_set_end
+zeitgeist_time_range_set_start
+zeitgeist_time_range_to_variant
+zeitgeist_timestamp_from_timeval
+zeitgeist_timestamp_now
+zeitgeist_uri_scheme_free
+zeitgeist_uri_scheme_new
+zeitgeist_utils_backup_database
+zeitgeist_utils_DATABASE_FILE_BACKUP_PATH
+zeitgeist_utils_DATABASE_FILE_PATH
+zeitgeist_utils_DATA_PATH
+zeitgeist_utils_get_database_file_backup_path
+zeitgeist_utils_get_database_file_path
+zeitgeist_utils_get_database_file_retire_name
+zeitgeist_utils_get_data_path
+zeitgeist_utils_get_default_data_path
+zeitgeist_utils_get_local_extensions_path
+zeitgeist_utils_is_empty_string
+zeitgeist_utils_LOCAL_EXTENSIONS_PATH
+zeitgeist_utils_parse_negation
+zeitgeist_utils_parse_noexpand
+zeitgeist_utils_parse_wildcard
+zeitgeist_utils_retire_database
+zeitgeist_utils_using_in_memory_database
+zeitgeist_vala_bug_workaround
+ZeitgeistVersionStruct
+zeitgeist_version_struct_dup
+zeitgeist_version_struct_free
+zeitgeist_version_struct_get_type
+ZeitgeistWhereClause
+zeitgeist_where_clause_add
+zeitgeist_where_clause_add_match_condition
+zeitgeist_where_clause_add_text_condition
+zeitgeist_where_clause_add_text_condition_subquery
+zeitgeist_where_clause_add_wildcard_condition
+zeitgeist_where_clause_add_with_array
+zeitgeist_where_clause_construct
+zeitgeist_where_clause_extend
+zeitgeist_where_clause_generic_array_to_unowned_array
+zeitgeist_where_clause_get_bind_arguments
+zeitgeist_where_clause_get_right_boundary
+zeitgeist_where_clause_get_search_table_for_column
+zeitgeist_where_clause_get_sql_conditions
+zeitgeist_where_clause_get_type
+zeitgeist_where_clause_is_empty
+zeitgeist_where_clause_may_have_results
+zeitgeist_where_clause_new
+zeitgeist_where_clause_optimize_glob
+ZeitgeistWhereClauseType
+ZEITGEIST_WHERE_CLAUSE_TYPE_AND
+zeitgeist_where_clause_type_get_type
+ZEITGEIST_WHERE_CLAUSE_TYPE_OR

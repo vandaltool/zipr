@@ -1,0 +1,95 @@
+# 02111-1307 USA.
+" "2012"
+#! /bin/bash
+    break
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+  case "$1" in
+# Copyright (C) 2011, 2012 Free Software Foundation, Inc.
+    do_ambiguous '--from' '--follow'
+    do_help
+      do_missing_arg "$1"
+    echo "sotruss (Ubuntu EGLIBC 2.15-0ubuntu10.4) 2.15"
+  echo $"Usage: sotruss [OPTION...] [--] EXECUTABLE [EXECUTABLE-OPTION...]
+  -e | --e | --ex | --exi | --exit)
+  -e, --exit              Also show exits from the function calls
+exec "$@"
+	    EXECUTABLE [EXECUTABLE-OPTION...]\n" sotruss
+    exit 0
+  exit 0
+    exit 1
+  exit 1
+export LD_AUDIT="$lib"
+export SOTRUSS_EXIT
+export SOTRUSS_FROMLIST
+export SOTRUSS_OUTNAME
+export SOTRUSS_TOLIST
+export SOTRUSS_WHICH
+  -f | --fo | --fol | --foll | --follo | --follow)
+  -f, --follow            Trace child processes
+  -F | --fr | --fro | --from)
+  -F, --from FROMLIST     Trace calls from objects on FROMLIST
+			  -f is also used) instead of standard error
+	    [--follow] [--from FROMLIST] [--output FILENAME] [--to TOLIST]
+function do_ambiguous {
+function do_help {
+function do_missing_arg {
+  -?, --help              Give this help list
+	    [--help] [--usage] [--version] [--]
+  -\? | --h | --he | --hel | --help)
+<http://www.debian.org/Bugs/>.
+    if test $# -eq 1; then
+# Lesser General Public License for more details.
+    lib="$1"
+lib='/usr/$LIB/audit/sotruss-lib.so'
+# License along with the GNU C Library; if not, write to the Free
+# License as published by the Free Software Foundation; either
+  -l | --l | --li | --lib)
+# Local Variables:
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  mode:ksh
+# modify it under the terms of the GNU Lesser General Public
+  -o | --o | --ou | --out | --outp | --outpu | --output)
+  -o, --output FILENAME   Write output to FILENAME (or FILENAME.$PID in case
+  printf >&2 "\n"
+    printf >&2 " '%s'" $1
+  printf >&2 $"%s: option is ambiguous; possibilities:"
+  printf >&2 $"%s: option requires an argument -- '%s'\n" sotruss "$1"
+    printf >&2 $"%s: unrecognized option '%c%s'\n" sotruss '-' ${1#-}
+    printf >&2 $"Try \`%s --help' or \`%s --usage' for more information.\n" sotruss sotruss
+  printf >&2 $"Try \`%s --help' or \`%s --usage' for more information.\n" sotruss sotruss
+    printf $"Copyright (C) %s Free Software Foundation, Inc.
+  printf $"For bug reporting instructions, please see:
+  printf $"Mandatory arguments to long options are also mandatory for any corresponding\nshort options.\n"
+    printf $"Usage: %s [-ef] [-F FROMLIST] [-o FILENAME] [-T TOLIST] [--exit]
+    printf $"Written by %s.\n" "Ulrich Drepper"
+    shift
+# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+    SOTRUSS_EXIT=1
+    SOTRUSS_FROMLIST="$2"
+    SOTRUSS_OUTNAME="$1"
+    SOTRUSS_TOLIST="$2"
+SOTRUSS_WHICH=$$
+TEXTDOMAINDIR=/usr/share/locale
+TEXTDOMAIN=libc
+# The GNU C Library is distributed in the hope that it will be useful,
+# The GNU C Library is free software; you can redistribute it and/or
+# This file is part of the GNU C Library.
+This is free software; see the source for copying conditions.  There is NO
+  -T, --to TOLIST         Trace calls to objects on TOLIST
+  -T | --t | --to)
+unset SOTRUSS_EXIT
+unset SOTRUSS_FROMLIST
+unset SOTRUSS_NOINDENT
+unset SOTRUSS_OUTNAME
+unset SOTRUSS_TOLIST
+    unset SOTRUSS_WHICH
+      --usage             Give a short usage message
+  --u | --us | --usa | --usag | --usage)
+# version 2.1 of the License, or (at your option) any later version.
+      --version           Print program version"
+  --v | --ve | --ver | --vers | --versi | --versio | --version)
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# We should be able to find the translation right at the beginning.
+  while test $# -gt 0; do
+while test $# -gt 0; do
+# You should have received a copy of the GNU Lesser General Public

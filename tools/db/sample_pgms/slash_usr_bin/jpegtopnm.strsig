@@ -1,0 +1,200 @@
+  (35mm equivalent: %dmm)
+Aperture     : f/%3.1f
+BatteryLevel
+BitsPerSample
+BrightnessValue
+__bss_start
+Camera make  : %s
+Camera model : %s
+Can't open %s.  Errno=%s(%d).
+CCD Width    : %4.2fmm
+CFAPattern
+CFARepeatPatternDim
+Color/bw     : Black and white
+ColorSpace
+Comment      : 
+COMMENT:
+Comment marker (COM):
+comments
+ComponentsConfiguration
+CompressedBitsPerPixel
+Compression
+Copyright
+__ctype_b_loc
+D$`9D$DrN
+DateTime
+DateTimeDigitized
+DateTimeOriginal
+Date/Time    : %s
+Directory with %d entries
+DocumentName
+dumpexif
+__errno_location
+Error writing output file.  Errno = %s (%d).
+Exif header %d bytes long
+ExifImageLength
+ExifImageWidth
+EXIF INFO:
+ExifOffset
+Exif section in Intel order
+Exif section in Motorola order
+ExifVersion
+Exposure     : aperture priority (semi-auto)
+Exposure bias:%4.2f
+ExposureBiasValue
+ExposureIndex
+ExposureProgram
+Exposure     : program (auto)
+Exposure     : shutter priority (semi-auto)
+ExposureTime
+Exposure time:%6.3f s 
+?ffffff9@
+FileSource
+FillOrder
+FlashEnergy
+FlashPixVersion
+Flash used   : %s
+FocalLength
+Focal length : %4.1fmm
+FocalPlaneResolutionUnit
+FocalPlaneXResolution
+FocalPlaneYResolution
+Focus Dist.  :%5.2fm
+Focus Dist.  : Infinite
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.7
+__gmon_start__
+Illegal format code in EXIF dir
+Illegally sized directory
+Illegal pointer offset value in EXIF.  Offset %d bytes %d ExifLen %d
+Illegal subdirectory link
+ImageDescription
+Incorrect Exif header
+input color space is %d (%s)
+Input image data precision = %d bits
+Input JPEG image has 'unknown' color space (JCS_UNKNOWN).
+InterColorProfile
+INTERNAL ERROR: %d of %d bytes of marker were saved.
+Internal error: unacceptable output color space from JPEG decompressor.
+Internal error: unknown color space code %d passed to set_color_spaces().
+Internal error: unknown color space %d passed to read_rgb().
+InteroperabilityOffset
+Invalid Exif alignment marker.
+Invalid Exif start (1)
+Invalid value for --maxmemory option: '%s'.
+Invalid value for the --dct option: '%s'.
+_IO_putc
+_IO_stdin_used
+IPTC/NAA
+__isoc99_sscanf
+ISO equiv.   : %2d
+ISOSpeedRatings
+JCS_CMYK
+JCS_GRAYSCALE
+JCS_UNKNOWN
+JCS_YCbCr
+JCS_YCCK
+jpeg_calc_output_dimensions
+jpeg_CreateDecompress
+jpeg_destroy_decompress
+jpeg_finish_decompress
+JPEGProc
+jpeg_read_header
+jpeg_read_scanlines
+jpeg_save_markers
+jpeg_start_decompress
+jpeg_std_error
+jpeg_stdio_src
+JPG Quality  : basic
+JPG Quality  : fine
+JPG Quality  : normal
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+LIBJPEG_8.0
+libjpeg.so.8
+/lib/ld-linux.so.2
+libm.so.6
+libnetpbm.so.10
+LightSource
+MakerNote
+MaxApertureValue
+maxmemory
+MeteringMode
+Metering Mode: center weight
+Metering Mode: matrix
+Metering Mode: spot
+Miscellaneous marker of unknown type (0x%X):
+Miscellaneous markers (excluding APP0, APP12) in header:
+Miscellaneous marker type APP%d:
+No EXIF info in image.
+No miscellaneous markers (excluding APP0, APP12) in header
+Non settings part of Exif header: %d bytes
+nosmooth
+notadobe
+Orientation
+Output file will have format %c%c with max sample value of %d.
+overflow2
+PhotometricInterpretation
+PlanarConfiguration
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_message
+pm_openw
+pm_optParseOptions2
+pm_writebigshort
+pnm_init
+pnm_writepnminit
+pnm_writepnmrow
+PrimaryChromaticities
+__printf_chk
+ReferenceBlackWhite
+Resolution   : %d x %d
+RowsPerStrip
+    %s = 
+SamplesPerPixel
+SceneType
+SensingMethod
+ShutterSpeedValue
+Software
+SpatialFrequencyResponse
+SpectralSensitivity
+__strdup
+strerror
+StripByteCounts
+StripOffsets
+SubjectDistance
+SubjectLocation
+SubSecTime
+SubSecTimeDigitized
+SubSecTimeOriginal
+ThumbnailLength
+ThumbnailOffset
+Thumbnail size: %d bytes
+Too many arguments.  The only argument accepted is the input file specificaton
+tracelevel
+TransferFunction
+TransferRange
+Unknown format %d:
+  Unknown Tag %04x Value = 
+UserComment
+We cannot interpret this image.
+Whitebalance : cloudy
+Whitebalance : fluorescent
+Whitebalance : incandescent
+Whitebalance : sunny
+WhitePoint
+Write of Exif header file '%s' failed.
+Write of Exif header to %s failed on first byte.
+Write of Exif header to '%s' failed.  Wrote length successfully, but then failed after %d characters of data.
+WRITING %s FILE
+YCbCrCoefficients
+YCbCrPositioning
+YCbCrSubSampling
+You cannot specify both -adobe and -notadobe options.

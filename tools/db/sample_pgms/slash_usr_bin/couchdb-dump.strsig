@@ -1,0 +1,8 @@
+# EASY-INSTALL-ENTRY-SCRIPT: 'CouchDB==0.8','console_scripts','couchdb-dump'
+from pkg_resources import load_entry_point
+if __name__ == '__main__':
+import sys
+        load_entry_point('CouchDB==0.8', 'console_scripts', 'couchdb-dump')()
+__requires__ = 'CouchDB==0.8'
+    sys.exit(
+#!/usr/bin/python

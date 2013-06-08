@@ -1,0 +1,133 @@
+-----------------------
+Bad Argument (%s)
+__bss_start
+-cacheroot
+Can't access rules
+Can't open `%s'\n
+ComLine_new
+Content Length found to be %ld
+Don't know this method
+-endvalidate
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+HTAlert_add
+HTAlert_deleteOpcode
+HTAlert_find
+HTAlert_setInteractive
+HTAlert_setReplyMessage
+HTAlert_setReplySecret
+HTAnchor_findAddress
+HTAnchor_length
+HTAssocList_delete
+HTAssocList_new
+HTAtom_for
+HTBlackHole
+HTCache_flushAll
+HTCacheInit
+HTChunk_delete
+HTChunk_new
+HTChunk_putc
+HTChunk_puts
+HTContentCounter
+HTDeleteAnchor
+HTEscape
+HTEventList_loop
+HTFormat_addCoding
+HTFWriter_new
+HTGetCurrentDirectoryURL
+HTGetFormAnchor
+HTHeadAnchor
+HTHost_setEventTimeout
+HTIdentityCoding
+HTLib_version
+HTLine.c
+HTLoadAnchor
+HTLoadRulesAutomatically
+HTLoadSocket
+HTLog_close
+HTLogFilter
+HTLog_open
+HTMemory_calloc
+HTMemory_free
+HTMemory_outofmem
+HTNet_addAfter
+HTOptionsAnchor
+HTParseFormInput
+HTPostFormAnchor
+HTPrint_setCallback
+HTProfile_delete
+HTProfile_newNoCacheClient
+HTPrompt
+HTPromptPassword
+HTPutDocumentAnchor
+HTRequest_context
+HTRequest_delete
+HTRequest_error
+HTRequest_new
+HTRequest_setAnchor
+HTRequest_setContext
+HTRequest_setFlush
+HTRequest_setMaxForwards
+HTRequest_setMethod
+HTRequest_setOutputFormat
+HTRequest_setOutputStream
+HTRequest_setPreemptive
+HTRequest_setReloadMode
+HTSearchAnchor
+HTSetTraceMessageMask
+http://www.w3.org/ComLine/README
+HTTraceAnchor
+HTTrace_setCallback
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libdl.so.2
+/lib/ld-linux.so.2
+libmd5.so.0
+libm.so.6
+libwwwapp.so.0
+libwwwcache.so.0
+libwwwcore.so.0
+libwwwdir.so.0
+libwwwfile.so.0
+libwwwftp.so.0
+libwwwgopher.so.0
+libwwwhtml.so.0
+libwwwhttp.so.0
+libwwwinit.so.0
+libwwwmime.so.0
+libwwwmux.so.0
+libwwwnews.so.0
+libwwwstream.so.0
+libwwwtelnet.so.0
+libwwwtrans.so.0
+libwwwutils.so.0
+libwwwxml.so.0
+libxmlparse.so.0
+libxmltok.so.0
+-maxforwards
+-nocache
+Nothing to post to this address
+-options
+/opt/stonesoup/TH-workspace/install/lib
+	Please send feedback to the <www-lib@w3.org> mailing list,
+	See "http://www.w3.org/ComLine/" for general information
+	See "http://www.w3.org/ComLine/User/" for user information
+	see "http://www.w3.org/Library/#Forums" for details
+Sorry, can't access resource
+strcasecomp
+text/html
+-timeout
+	Try "%s -help" for help
+	using the W3C libwww library version %s.
+-validate
+-version
+__vfprintf_chk
+w3c.conf
+W3C OpenSource Software
+W3C-WebCon
+	WebCon version %s
+www/void

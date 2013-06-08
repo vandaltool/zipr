@@ -1,0 +1,48 @@
+Added %s
+Added %u records with %u failures
+Adds records to a ldb, reading ldif the specified list of files
+__bss_start
+ERR: Message canonicalize failed - %s
+ERR: %s : "%s" on DN %s
+Failed to commit transaction: %s
+Failed to start transaction: %s
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+LDB_0.9.10
+LDB_0.9.15
+LDB_1.1.4
+ldb_add_ctrl
+ldb_cmdline_help
+ldb_cmdline_process
+ldb_dn_get_linearized
+ldb_errstring
+ldb_init
+ldb_ldif_read_file
+ldb_ldif_read_free
+ldb_msg_normalize
+ldb_parse_control_strings
+ldb_strerror
+ldb_transaction_cancel
+ldb_transaction_commit
+ldb_transaction_start
+libc.so.6
+__libc_start_main
+libldb-cmdline.so
+libldb.so.1
+/lib/ld-linux.so.2
+libtalloc.so.2
+Only CHANGETYPE_ADD records allowed
+parsing controls failed: %s
+__printf_chk
+TALLOC_2.0.2
+_talloc_free
+talloc_named_const
+talloc_new: ../tools/ldbadd.c:108
+../tools/ldbadd.c:149
+Usage: ldbadd <options> <ldif...>
+/usr/lib/i386-linux-gnu/ldb

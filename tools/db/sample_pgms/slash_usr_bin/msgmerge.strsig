@@ -1,0 +1,359 @@
+1995-1998, 2000-2010
+Abkhazian
+Achinese
+add-location
+      --add-location          preserve '#: filename:line' lines (default)
+(Afan) Oromo
+Afrikaans
+Albanian
+any translations or comments in the file will be discarded, however dot
+Aragonese
+Argentinian
+Armenian
+Assamese
+Asturian
+Austrian
+Azerbaijani
+--backup
+      --backup=CONTROL        make a backup of def.po
+backup type
+Balinese
+basename
+Belarusian
+Bhojpuri
+bindtextdomain
+bison-runtime
+Brazilian Portuguese
+__bss_start
+Buginese
+Bulgarian
+but extracted comments and file positions will be discarded.  The ref.pot
+...but this definition is similar
+cannot be found, fuzzy matching is used to produce better results.
+  -C, --compendium=FILE       additional library of message translations,
+C:D:eEFhimNo:pPqsUvVw:
+Central Khmer
+Chamorro
+charset=
+check_msgid_msgstr_format_i
+check_plural_eval
+Chinese (Hong Kong)
+Chinese (simplified)
+Chinese (traditional)
+Church Slavic
+close_stdout
+color_test_mode
+      --color                 use colors and other text attributes always
+      --color=WHEN            use colors and other text attributes if WHEN.
+comments and file positions will be preserved.  Where an exact match
+compendium
+Content-Transfer-Encoding:
+Content-Type:
+copy_file_preserving
+Copyright (C) %s Free Software Foundation, Inc.
+Corsican
+created file as long as they still match; comments will be preserved,
+Crimean Tatar
+Croatian
+c_strncasecmp
+c_strstr
+__cxa_atexit
+dcgettext
+  -D, --directory=DIRECTORY   add DIRECTORY to list for input files search
+  def.po                      translations referring to old sources
+directory
+dir_list_append
+                              do nothing if def.po already up to date
+Dzongkha
+  -E, --escape                use C escapes in output, no extended chars
+English (British)
+  -e, --no-escape             do not use C escapes in output (default)
+environment variable.
+error_message_count
+error_print_progname
+Esperanto
+Estonian
+exactly 2 input files required
+  existing, nil   numbered if numbered backups exist, simple otherwise
+existing PO file with translations which will be taken over to the newly
+extract_plural_expression
+file is the last created PO file with up-to-date source references but
+Filipino
+find_backup_file_name
+force-po
+      --force-po              write PO file even if empty
+__fprintf_chk
+Friulian
+  -F, --sort-by-file          sort output by file location
+fuzzy_search_goal_function
+Galician
+Georgian
+getopt_long
+gettext-tools
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GOMP_1.0
+GOMP_loop_dynamic_next
+GOMP_loop_dynamic_start
+GOMP_loop_end_nowait
+GOMP_parallel_end
+GOMP_parallel_start
+gram_max_allowed_errors
+Gujarati
+handle_color_option
+handle_style_option
+hash_destroy
+hash_find_entry
+hash_init
+hash_insert_entry
+hash_iterate
+hash_iterate_modify
+hash_set_value
+  -h, --help                  display this help and exit
+Hiligaynon
+Hiri Motu
+Hungarian
+Icelandic
+iconv_message_list
+iconv_msgdomain_list
+  -i, --indent                indented output style
+Inari Sami
+Indonesian
+Informative output:
+Input file location:
+Input file syntax:
+input_format_po
+input_format_properties
+input_format_stringtable
+Interlingua
+Interlingue
+Inuktitut
+_IO_stdin_used
+is_message_list_iconvable
+Japanese
+Javanese
+_Jv_RegisterClasses
+Kabardian
+Kalaallisut
+Kashmiri
+Kashubian
+Kimbundu
+Kinyarwanda
+Kuanyama
+      --lang=CATALOGNAME      set 'Language' field in the header entry
+Language:
+Language-Team:
+Last-Translator:
+Letzeburgesch
+libcroco-0.6.so.3
+libc.so.6
+__libc_start_main
+libgettextlib-0.18.1.so
+libgettextsrc-0.18.1.so
+libglib-2.0.so.0
+libgomp.so.1
+/lib/ld-linux.so.2
+libm.so.6
+libncurses.so.5
+libpthread.so.0
+libtinfo.so.5
+libunistring.so.0
+libxml2.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+Limburgish
+line_comment
+Lithuanian
+Lower Sorbian
+Low Saxon
+Luba-Katanga
+Luba-Lulua
+Lule Sami
+Macedonian
+Madurese
+Maithili
+Malagasy
+Malayalam
+Mandatory arguments to long options are mandatory for short options too.
+Mandingo
+Manipuri
+Mapudungun
+Marshallese
+maybe_print_progname
+                              may be specified more than once
+Merges two Uniforum style .po files together.  The def.po file is an
+message_alloc
+message_comment_append
+message_comment_dot_append
+message_comment_filepos
+message_copy
+message_list_alloc
+message_list_append
+message_list_free
+message_list_list_alloc
+message_list_list_append
+message_list_list_append_list
+message_list_list_free
+message_list_list_search
+message_list_prepend
+message_list_search
+message_page_width_ignore
+message_page_width_set
+message_print_style_escape
+message_print_style_indent
+message_print_style_uniforum
+MIME-Version:
+Minangkabau
+  -m, --multi-domain          apply ref.pot to each of the domains in def.po
+Moldavian
+Mongolian
+msgdomain_list_alloc
+msgdomain_list_equal
+msgdomain_list_print
+msgdomain_list_sort_by_filepos
+msgdomain_list_sort_by_msgid
+msgdomain_list_sublist
+msgmerge.c
+multi-domain
+Neapolitan
+  -N, --no-fuzzy-matching     do not use fuzzy matching
+no-escape
+no-fuzzy-matching
+no input files given
+--no-location
+      --no-location           suppress '#: filename:line' lines
+  none, off       never make backups (even if --backup is given)
+Northern Sami
+Northern Sotho
+North Ndebele
+Norwegian
+Norwegian Bokmal
+Norwegian Nynorsk
+      --no-wrap               do not break long message lines, longer than
+  numbered, t     make numbered backups
+Nyamwezi
+Nyankole
+_obstack_begin
+obstack_free
+_obstack_newchunk
+Old English
+old translations, or a PO Template file (generally created by xgettext);
+  -o, --output-file=FILE      write output to specified file
+Operation mode:
+Operation modifiers:
+or if it is -.
+Ossetian
+Output details:
+--output-file
+Output file location:
+Output file location in update mode:
+output_format_po
+output_format_properties
+output_format_stringtable
+Pampanga
+Pangasinan
+Papiamento
+Peter Miller
+po_charset_ascii
+po_charset_canonicalize
+po_charset_character_iterator
+po_charset_utf8
+po_gram_error_at_line
+PO-Revision-Date:
+possible_format_p
+POT-Creation-Date:
+po_xerror
+  -P, --properties-input      input files are in Java .properties syntax
+  -p, --properties-output     write out a Java .properties file
+previous
+      --previous              keep previous msgids of translated messages
+__printf_chk
+Project-Id-Version:
+proper_name
+properties-input
+properties-output
+pthread_cancel
+pthread_mutex_init
+pthread_mutex_lock
+pthread_mutex_unlock
+  -q, --quiet, --silent       suppress progress indicators
+Rajasthani
+__rawmemchr
+read_catalog_file
+  ref.pot                     references to new sources
+Report bugs to <bug-gnu-gettext@gnu.org>.
+Report-Msgid-Bugs-To:
+Romanian
+%s and %s are mutually exclusive
+Sanskrit
+Sardinian
+Scottish Gaelic
+setlocale
+set_program_name
+Setswana
+%s (GNU %s) %s
+Sichuan Yi
+Sicilian
+simple_backup_suffix
+  simple, never   always make simple backups
+%s is only valid with %s
+Skolt Sami
+Slovenian
+--sort-by-file
+--sort-output
+Southern Sami
+South Ndebele
+Spanish (Canary Islands)
+%sRead %ld old + %ld reference, merged %ld, fuzzied %ld, missing %ld, obsolete %ld.
+  -s, --sort-output           generate sorted output
+__stack_chk_fail
+      --strict                strict Uniforum output style
+string_list_alloc
+string_list_append
+string_list_free
+stringtable-input
+      --stringtable-input     input files are in NeXTstep/GNUstep .strings
+stringtable-output
+      --stringtable-output    write out a NeXTstep/GNUstep .strings file
+      --style=STYLEFILE       specify CSS style rule file for --color
+--suffix
+      --suffix=SUFFIX         override the usual backup suffix
+Sundanese
+Swiss German
+                              syntax
+T$`9T$ds
+Tahitian
+The backup suffix is `~', unless set with --suffix or the SIMPLE_BACKUP_SUFFIX
+                              the output page width, into several lines
+There is NO WARRANTY, to the extent permitted by law.
+The result is written back to def.po.
+The results are written to standard output if no output file is specified
+the VERSION_CONTROL environment variable.  Here are the values:
+The version control method may be selected via the --backup option or through
+This is free software: you are free to change and redistribute it.
+this message is used but not defined...
+this message is used but not defined in %s
+this message should define plural forms
+this message should not define plural forms
+Tigrinya
+Try `%s --help' for more information.
+Ukrainian
+--update
+Upper Sorbian
+Usage: %s [OPTION] def.po ref.pot
+/usr/share/locale
+  -U, --update                update def.po,
+Vietnamese
+  -v, --verbose               increase verbosity level
+  -V, --version               output version information and exit
+Western Frisian
+                              WHEN may be 'always', 'never', 'auto', or 'html'.
+Written by %s.
+  -w, --width=NUMBER          set output page width
+xalloc_die
+xget_version
+xmmalloca
+xrealloc

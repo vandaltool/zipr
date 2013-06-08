@@ -1,0 +1,48 @@
+ATTR_1.0
+bad input encoding
+basename
+bindtextdomain
+__bss_start
+__ctype_b_loc
+dcgettext
+__errno_location
+# file: 
+__fprintf_chk
+getopt_long
+getpagesize
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+      --help              this help text
+  -h, --no-dereference    do not dereference symbolic links
+_IO_stdin_used
+_Jv_RegisterClasses
+libattr.so.1
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+lremovexattr
+lsetxattr
+  -n, --name=name         set the value of the named extended attribute
+{-n name} [-v value] [-h] file...
+no-dereference
+No such attribute
+__printf_chk
+      --restore=file      restore extended attributes
+%s 2.4.46
+setlocale
+%s: No filename found in line %d of standard input, aborting
+       %s %s
+%s: %s: No filename found in line %d, aborting
+%s: %s: %s
+%s %s -- set extended attributes
+strerror
+Try `%s --help' for more information.
+Usage: %s %s
+/usr/share/locale
+      --version           print version and exit
+  -v, --value=value       use value as the attribute value
+{-x name} [-h] file...
+  -x, --remove=name       remove the named extended attribute

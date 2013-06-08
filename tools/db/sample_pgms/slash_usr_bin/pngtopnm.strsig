@@ -1,0 +1,83 @@
+2.37.4 (5 December 1999) +netpbm
+, Adam7 interlaced
+-background
+background {index, gray, red, green, blue} = {%d, %d, %d, %d, %d}
+__bss_start
+cannot allocate LIBPNG structure
+cannot allocate LIBPNG structures
+couldn't allocate space for image
+December
+different bit depths for color channels not supported
+February
+__fprintf_chk
+             ... [-gamma value] [-text file] [-time] [pngfile]
+GLIBC_2.0
+GLIBC_2.11
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+, image gamma = %4.2f
+image gamma assumed 1.0, converted for display gamma of %4.2f
+image gamma is %4.2f, converted for display gamma of %4.2f
+image has fewer significant bits, writing file with %d bits
+image has fewer significant bits, writing file with %d bits per channel
+input file empty or too short
+input file not a PNG file
+_IO_putc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libnetpbm.so.10
+libpng12.so.0
+__longjmp_chk
+modification time: %02d %s %d %02d:%02d:%02d
+November
+overflow2
+pm_allocrow
+pm_closer
+pm_closew
+pm_error
+pm_freerow
+pm_keymatch
+pm_message
+pm_openr
+pm_openw
+pm_usage
+png_create_info_struct
+png_create_read_struct
+png_destroy_read_struct
+png_get_error_ptr
+png_init_io
+png_read_end
+png_read_image
+png_read_info
+png_set_gamma
+png_set_packing
+png_set_shift
+png_set_sig_bytes
+png_sig_cmp
+pngtopnm version %s, compiled with libpng version %s
+pnm_init
+pnmtopng:  EXTREMELY fatal error: jmpbuf unrecoverable; terminating.
+pnmtopng:  fatal libpng error: %s
+pnm_writepnminit
+pnm_writepnmrow
+ppm_parsecolor
+reading a %ldw x %ldh image, %d bit%s %s%s%s%s
+September
+setjmp returns error condition
+__sprintf_chk
+__stack_chk_fail
++transparency
+truecolor
+unknown PNG color type
+-verbose
+[-verbose] [-alpha | -mix] [-background color] ...
+warning - non-square pixels; to fix do a 'pnmscale -%cscale %g'
+writing a %s file (maxval=%u)
+writing file with %d bit resolution

@@ -1,0 +1,38 @@
+[-0|-1|...|-9] [-header=headerfile] [-quality=n]
+__bss_start
+__ctype_b_loc
+__ctype_toupper_loc
+D$`;\$d}5
+#define %sOVERALLX %u
+#define %sOVERALLY %u
+#define %s%sSZX %u
+#define %s%sSZY %u
+#define %s%sX %u
+#define %s%sY %u
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+out of memory
+pm_close
+pm_error
+pm_openr
+pm_openw
+pm_optParseOptions2
+pm_usage
+pnm_allocpamrow
+pnm_init
+pnm_readpaminit
+pnm_readpamrow
+pnm_writepaminit
+pnm_writepamrow
+    [-prefix=defprefix] [KEY:]pnmfile ...
+__stack_chk_fail

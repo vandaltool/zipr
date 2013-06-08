@@ -1,0 +1,31 @@
+__assert_fail
+Error closing tdb
+Failed to open %s
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+high == (high & 0xf0)
+Invalid hex: %c
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libtdb.so.1
+low == (low & 0x0f)
+__printf_chk
+read_data
+__stack_chk_fail
+TDB_1.2.1
+tdb_close
+TDB error: %s
+tdb_errorstr
+tdb_open
+tdb_store
+../tools/tdbrestore.c
+Unexpected EOF in data
+Unexpected \" sequence
+Usage: %s dbname < tdbdump_output

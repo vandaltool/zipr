@@ -1,0 +1,51 @@
+      ;;
+#!/bin/sh
+  case "$1" in
+  case $1 in
+	cat <<EOF
+    --cflags)
+	[--cflags]
+      echo 0.1.12
+      echo_cflags=yes
+	echo $exec_prefix
+      echo_exec_prefix=yes
+	echo $includes
+      echo_libs=yes
+	echo -L/usr/lib/i386-linux-gnu -lusb 
+	echo $prefix
+      echo_prefix=yes
+    --exec-prefix=*)
+    --exec-prefix)
+	[--exec-prefix[=DIR]]
+        exec_prefix=$optarg
+      exec_prefix=$optarg
+exec_prefix=${prefix}
+exec_prefix_set=no
+      exec_prefix_set=yes
+      exit 0
+	exit $1
+      fi
+if test "$echo_cflags" = "yes"; then
+if test "$echo_exec_prefix" = "yes"; then
+if test "$echo_libs" = "yes"; then
+if test "$echo_prefix" = "yes"; then
+if test $# -eq 0; then
+      if test $exec_prefix_set = no ; then
+      if test "${prefix}/include" != /usr/include ; then
+        includes="-I${prefix}/include"
+    --libs)
+	[--libs]
+  *) optarg= ;;
+  -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+Options:
+    --prefix=*)
+    --prefix)
+	[--prefix[=DIR]]
+      prefix=$optarg
+prefix=/usr
+      usage 1 1>&2
+	usage 1 1>&2
+Usage: libusb-config [OPTIONS] [LIBRARIES]
+    --version)
+	[--version]
+while test $# -gt 0; do

@@ -1,0 +1,41 @@
+blackedge
+__bss_start
+Can't specify both -blackedge and -dropedge options.
+createBlackTuple
+D$,+\$,9T$
+dropedge
+GLIBC_2.0
+__gmon_start__
+Image is too narrow.  Must be at least 2 columns.
+Image is too short.  Must be at least 2 lines.
+INTERNAL ERROR: invalid value for edge_mode
+INTERNAL ERROR: processing last row, but edge_mode is EDGE_DROP.
+_IO_stdin_used
+_Jv_RegisterClasses
+L$`9L$du
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+L$t)D$h9L$ls
+pamstretch: promoting from PBM to PGM
+pm_close
+pm_error
+pm_freerow
+pm_message
+pm_openr
+pm_optParseOptions3
+pnm_allocpamrow
+pnm_init
+pnm_readpaminit
+pnm_readpamrow
+pnm_writepaminit
+pnm_writepamrow
+Scale argument contains non-numeric character '%c'.
+Scale argument is a null string.  Must be a number.
+Scale argument must be at least 2.  You specified %d
+\$,+t$,;\$
+Too many arguments (%d).  With a scale option, the only argument is the optional file specification
+Wrong number of arguments (%d).  Without scale options, you must supply 1 or 2 arguments:  scale and optional file specification
+You specified zero for the X scale factor.
+You specified zero for the Y scale factor.

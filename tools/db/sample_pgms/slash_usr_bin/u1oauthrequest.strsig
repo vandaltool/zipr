@@ -1,0 +1,39 @@
+        access_token=OPTIONS.access_token, token_secret=OPTIONS.token_secret,
+        consumer_key=OPTIONS.consumer_key,
+        consumer_secret=OPTIONS.consumer_secret)
+                      default="GET",
+                      default="HMAC_SHA1",
+                      default=None,
+from optparse import OptionParser
+from ubuntuone.couch import auth
+                      help="HTTP method to use")
+                      help="HTTP request body")
+                      help="OAUth access token")
+                      help="OAUth consumer key")
+                      help="OAUth consumer secret")
+                      help="OAuth signature method to use (PLAINTEXT or "
+                      help="OAUth token secret")
+                      "HMAC_SHA1)")
+        http_method=OPTIONS.http_method, request_body=OPTIONS.body,
+    if len(ARGS) != 1:
+if __name__ == "__main__":
+    if RESULT == auth.NO_CREDENTIALS:
+import socket
+import sys
+    (OPTIONS, ARGS) = PARSER.parse_args()
+    PARSER.add_option("--access-token", dest="access_token",
+    PARSER.add_option("--body", dest="body",
+    PARSER.add_option("--consumer-key", dest="consumer_key",
+    PARSER.add_option("--consumer-secret", dest="consumer_secret",
+    PARSER.add_option("--http-method", dest="http_method",
+    PARSER.add_option("--oauth-signature-method", dest="sigmeth",
+    PARSER.add_option("--token-secret", dest="token_secret",
+        PARSER.error("You must specify a url")
+    PARSER = OptionParser(usage="prog [options] urlpath")
+    print RESULT
+    RESULT = auth.request(
+socket.setdefaulttimeout(5)
+        sys.exit(1)
+"""ubuntuone-sign-uri: Request an Ubuntu One URI and sign it with OAuth"""
+        url=ARGS[0], sigmeth=OPTIONS.sigmeth,
+#!/usr/bin/python

@@ -1,0 +1,33 @@
+            }
+        }
+		autoscript($PACKAGE,"postinst","postinst-defoma",
+		autoscript($PACKAGE,"postinst","postinst-defoma-hints",
+		autoscript($PACKAGE,"postrm","postrm-defoma",
+		autoscript($PACKAGE,"prerm","prerm-defoma",
+            	autoscript($PACKAGE,"prerm","prerm-defoma-hints",
+              doit("install","-d","$TMP/etc/defoma/hints/");
+              doit("install","-d","$TMP/usr/share/defoma/scripts/");
+            doit("install","-m0644","$defoma","$TMP/usr/share/defoma/scripts/$PACKAGE.defoma");
+            doit("install","-m0644","$hints","$TMP/etc/defoma/hints/$PACKAGE.hints");
+            doit("install","-m0644","$udefoma","$TMP/usr/share/defoma/scripts/$PACKAGE.udefoma");
+$fh->close();
+foreach $PACKAGE (@{$dh{DOPACKAGES}}) {
+	if ($defoma) {
+        if ( $defoma ne '' ) {
+	    if (! $dh{NOSCRIPTS}) {
+            if ( ! -d "$TMP/etc/defoma/hints/") {
+            if ( ! -d "$TMP/usr/share/defoma/scripts/") {
+	if ($hints) {
+        if ( $hints ne '' ) {
+	if ( $udefoma ne '' ) {
+	my $defoma = pkgfile($PACKAGE, "defoma");
+my $fh = new FileHandle("debian/control", "r");
+        my $hints = pkgfile($PACKAGE, "defoma-hints");
+my @l = $fh->getlines();
+	my $udefoma = pkgfile($PACKAGE, "udefoma");
+# Registration with defoma.
+			   "s/#PACKAGE#/$PACKAGE/;");
+        $TMP=tmpdir($PACKAGE);
+use Debian::Debhelper::Dh_Lib;
+use FileHandle;
+#!/usr/bin/perl -w

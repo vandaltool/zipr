@@ -1,0 +1,26 @@
+  addsubstvar($package, 'perl:Depends', 'perl-dbdabi-94', undef);
+A debhelper addon is also provided.  This makes it possible to just use
+B<dh_perl_dbi> [S<I<debhelper options>>]
+Copyright 2010, Ansgar Burchardt <ansgar@debian.org>
+dh_perl_dbi - add dependencies required for DBI modules
+dh_perl_dbi is a debhelper program that is responsible for adding a dependency
+          dh $@ --with perl_dbi
+for F<debian/rules>.
+for my $package (@{ $dh{DOPACKAGES} }) {
+=head1 COPYRIGHT AND LICENSE
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+interface; do I<not> use this for packages that only use the DBI module.
+L<debhelper(7)>
+L<http://bugs.debian.org/577209>
+on perl-dbdabi-* to the ${perl:Depends} substitution variable.
+Such a dependency is required for packages that use the DBDE<lt>E<gt>DBI binary
+the same terms as Perl itself.
+This program is free software, you can redistribute it and/or modify it under
+use Debian::Debhelper::Dh_Lib;
+use strict;
+use warnings;
+  #!/usr/bin/make -f
+#! /usr/bin/perl

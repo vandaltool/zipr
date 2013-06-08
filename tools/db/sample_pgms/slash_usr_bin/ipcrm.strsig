@@ -1,0 +1,39 @@
+already removed id
+already removed key
+bindtextdomain
+cannot remove id %s (%s)
+__ctype_b_loc
+__ctype_tolower_loc
+dcgettext
+deprecated usage: %s {shm | msg | sem} id ...
+__errno_location
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+invalid id
+invalid id: %s
+invalid key
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+permission denied for id
+permission denied for key
+__printf_chk
+          [-Q msgkey] [-M shmkey] [-S semkey] ... ]
+q:m:s:Q:M:S:
+resource(s) deleted
+setlocale
+%s: illegal key (%s)
+%s: %s (%s)
+strerror
+%s: unknown argument: %s
+unknown error in id
+unknown error in key
+unknown resource type: %s
+usage: %s [ [-q msqid] [-m shmid] [-s semid]
+/usr/share/locale
+util-linux

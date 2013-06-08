@@ -1,0 +1,121 @@
+%02d:%02d
+%-8.*s%s %-12.*s %-*s%s%s %-8s%s
+  -a, --all         same as -b -d --login -p -r -t -T -u
+abdlmpqrstuwHT
+A NULL argv[0] was passed through an exec system call.
+  -b, --boot        time of last system boot
+%b %e %H:%M
+bindtextdomain
+bug-coreutils@gnu.org
+                    canonicalizes based on stored IP, if available,
+clock change
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+David MacKenzie
+dcgettext
+  -d, --dead        print dead processes
+endutxent
+__errno_location
+extra operand %s
+For complete documentation, run: info coreutils '%s invocation'
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+freeaddrinfo
+fseeko64
+gai_strerror
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getaddrinfo
+getnameinfo
+getopt_long
+getutxent
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+  -H, --heading     print line of column headings
+http://www.gnu.org/software/coreutils/
+If ARG1 ARG2 given, -m presumed: `am i' or `mom likes' are usual.
+If FILE is not specified, use %s.  %s as FILE is common.
+_IO_stdin_used
+      --ips         print ips instead of hostnames. with --lookup,
+iswprint
+Joseph Arceneaux
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+  -l, --login       print system login processes
+localtime
+      --lookup      attempt to canonicalize hostnames via DNS
+memory exhausted
+      --message     same as -T
+Michael Stone
+  -m                only hostname and user associated with stdin
+nl_langinfo
+  -p, --process     print active processes spawned by init
+__printf_chk
+Print information about users who are currently logged in.
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+  -q, --count       all login names and number of users logged on
+                    rather than stored hostname
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+  -r, --runlevel    print current runlevel
+runlevel
+run-level
+%s, and %s.
+%s%d %s%d
+setlocale
+setutxent
+shell-always
+%s home page: <%s>
+__snprintf_chk
+__sprintf_chk
+%s, %s, and others.
+%s, %s, and %s.
+  -s, --short       print only name, line, and time (default)
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+__strdup
+strftime
+system boot
+T$<9T$4t
+t$dkT$$,
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+Try `%s --help' for more information.
+  -t, --time        print last system clock change
+  -T, -w, --mesg    add user's message status as +, - or ?
+Usage: %s [OPTION]... [ FILE | ARG1 ARG2 ]
+# users=%lu
+/usr/share/locale
+utmpxname
+  -u, --users       list users logged in
+/var/log/wtmp
+/var/run/utmp
+      --version  output version information and exit
+writable
+      --writable    same as -T
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+__xstat64
+%Y-%m-%d %H:%M

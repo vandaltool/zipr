@@ -1,0 +1,79 @@
+2775. This is useful, since that is the group and mode policy recommends for
+Andrew Stribblehill <ads@debian.org>
+			autoscript($package,"postinst", "postinst-usrlocal",
+			autoscript($package,"prerm", "prerm-usrlocal",
+B<dh_usrlocal> is a debhelper program that can be used for building packages
+B<dh_usrlocal> [S<I<debhelper options>>] [B<-n>]
+between invocations of this command. Otherwise, it may cause multiple
+by root.root, it will be treated as if it is owned by root.staff and is mode
+Debian policy, version 2.2
+dh_usrlocal - migrate usr/local directories to maintainer scripts
+directories in F</usr/local>.
+				   "/#DIRS#/ c${ebs}\n${dirs}");
+				# @dirs is in parents-first order for dir creation...
+				doit("rmdir $_");
+		doit("rmdir $tmp/usr/local");
+Do not modify F<postinst>/F<prerm> scripts.
+			else {
+		find({bydepth => 1,
+				$fn =~ s!^\Q$tmp\E!!;
+foreach my $package (@{$dh{DOPACKAGES}}) {
+					$group = 'staff';
+=head1 AUTHOR
+=head1 CONFORMS TO
+=head1 DESCRIPTION
+=head1 NAME
+=head1 NOTES
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+			if (-d $fn) {
+		if (! $dh{NOSCRIPTS}) { 
+	if (-d "$tmp/usr/local") {
+				if ($stat->uid == 0 && $stat->gid == 0) {
+If the directories found in the build tree have unusual owners, groups, or
+instances of the same text to be added to maintainer scripts.
+		# is parsed by the shell in double-quotes
+is used) to create the directories at install time, and remove them when
+=item B<-n>, B<--noscripts>
+It finds subdirectories of F<usr/local> in the package build directory, and
+				   "/#JUSTDIRS#/ c${ebs}\n${justdirs}") if length $justdirs;
+L<debhelper(7)>
+L<dh_installdeb(1)> for an explanation of debhelper maintainer script
+					$mode = '2775';
+		my $bs = "\\";     # A single plain backslash
+		my $dirs = join("$ebs\n", @dirs);
+		my (@dirs, @justdirs);
+		my $ebs = $bs x 2; # Escape the backslash from the shell
+			my $fn = $File::Find::name;
+				my $group = getgrgid $stat->gid;
+		my $justdirs = join("$ebs\n", @justdirs);
+				my $mode = sprintf "%04lo", ($stat->mode & 07777);
+				my $stat = stat $fn;
+	my $tmp = tmpdir($package);
+				my $user = getpwuid $stat->uid;
+		      no_chdir => 1,
+Note that this command is not idempotent. L<dh_prep(1)> should be called
+permissions, then those values will be preserved in the directories made by
+		pop @justdirs; # don't remove directories directly in /usr/local
+				push @justdirs, $fn;
+removes them, replacing them with maintainer script snippets (unless B<-n>
+				return if $fn eq '/usr/local';
+snippets.
+snippets are inserted into the maintainer scripts by B<dh_installdeb>. See
+that will provide a subdirectory in F</usr/local> when installed.
+the F<postinst> script. However, as a special exception, if a directory is owned
+the package is removed, in a manner compliant with Debian policy. These
+		# This constructs the body of a 'sed' c\ expression which
+This program is a part of debhelper.
+		      }}, "$tmp/usr/local");
+				unshift @dirs, "$fn $mode $user $group";
+use Debian::Debhelper::Dh_Lib;
+use File::Find;
+use File::stat;
+use strict;
+use warnings;
+#!/usr/bin/perl
+		      wanted => sub {
+				warning("$fn is not a directory");
+				# ...whereas @justdirs is depth-first for removal.

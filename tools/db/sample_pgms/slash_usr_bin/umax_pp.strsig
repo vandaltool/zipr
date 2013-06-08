@@ -1,0 +1,556 @@
+Aborting ...
+Aborting...
+adding %s to valid devices ...
+Altered buffer value at %03X, expected %02X, found %02X
+Altered buffer value at %03X, expected 0x%02X, found 0x%02X
+../backend/umax_pp_low.c
+Blindly going on ...
+Blindly going on .....
+Bottom side of scan area exceed physical limits (y+height>%d)
+	->bytes/line=0x%X (%d)
+case not handled! (%s:%d)
+checkEPAT: expected EPAT version 0xC7, got 0x%X! (%s:%d)
+checkEPAT() passed... (%s:%d)
+checkModel() failed (%s:%d)
+ClearRegister(0) passed...
+ClearRegister(0) passed... (%s:%d)
+ClearRegister(3) passed...
+cmdGet(0x%02X,%d,read) failed (%s:%d)
+cmdGet(0x08,36,readcmd) passed (%s:%d)
+cmdGetBlockBuffer(4,%ld,%d);
+cmdGetBlockBuffer(4,%ld,%d) failed (%s:%d)
+cmdGetBlockBuffer failed: unexpected value reg0C=0x%02X  ...(%s:%d)
+cmdGetBlockBuffer: prologue failed !   (%s:%d)
+cmdGetBuffer(0x%02X,%ld,buffer) failed (%s:%d)
+cmdGetBuffer32 failed: unexpected status 0x%02X  ...(%s:%d)
+cmdGetBuffer(4,%ld);
+cmdGetBuffer(4,%ld) failed (%s:%d)
+cmdGetBuffer610p found 0x%02X expected 0xFF  (%s:%d)
+cmdGetBuffer failed (%s:%d)
+cmdGetBuffer failed: unexpected status 0x%02X  ...(%s:%d)
+cmdGetBuffer got all %d bytes out of %d , read=%d...(%s:%d)
+cmdGetBuffer(%ld) passed ... (%s:%d)
+cmdGetBuffer only got %d bytes out of %d ...(%s:%d)
+cmdGet() passed ...  (%s:%d)
+cmdGet: prologue failed !   (%s:%d)
+cmdSet(0x%02X,%d,sent) failed (%s:%d)
+cmdSetDataBuffer(initbuf) failed ! (%s:%d) 
+cmdSetDataBuffer(initbuf) passed... (%s:%d)
+cmdSetDataBuffer(voidbuf) failed ! (%s:%d) 
+cmdSetDataBuffer(voidbuf) passed... (%s:%d)
+cmdSetGet(0x%02X,%d,sent) failed (%s:%d)
+cmdSetGet failed !  (%s:%d)
+cmdSetGet() passed ...  (%s:%d)
+cmdSet() passed ...  (%s:%d)
+cmdSet: prologue failed !   (%s:%d)
+cmdSync(0x%02X)=%02X passed ... (%s:%d)
+cmdSync(0x%02X) failed (%s:%d)
+cmdSync: prologue failed !   (%s:%d)
+coarseGainCalibration1220p()=%d,%d,%d done ...
+coarseGainCalibration1220p failed !!! (%s:%d)
+coarseGainCalibration1220p passed ... (%s:%d)
+coarseGainCalibration610p, blue: min=%d, max=%d
+coarseGainCalibration610p end ...
+coarseGainCalibration610p failed !!! (%s:%d)
+coarseGainCalibration610p, green: min=%d, max=%d
+coarseGainCalibration610p passed ... (%s:%d)
+coarseGainCalibration610p, red: min=%d, max=%d
+coarseGainCalibration610p, target/2.8=%f
+coarseGainCalibration610p: xstart=%d, xend=%d ->left=%d
+coarseGainCalibration(%d,%d,%d,%d=>%d,%d,%d) passed ... (%s:%d)
+coarseGainCalibration failed !!! (%s:%d)
+	->color scan       
+Command bloc 2: %s
+Command bloc 8: %s
+completionWait() failed (%s:%d)
+completionWait() passed ...  (%s:%d)
+connect610p control=%02X, expected 0x04 (%s:%d)
+connect610p control=%02X, expected 0x0C (%s:%d)
+connect610p control=%02X, expected 0x0E (%s:%d)
+connect_epat: connect() failed! (%s:%d)
+connect() passed... (%s:%d)
+Controling %s: 
+could not open %s for writing
+Count-down value is 0x%02X  (%s:%d)
+__ctype_toupper_loc
+current user cannot use existing %s device ...
+D$8 D$8k
+%d bits EPP data transfer
+DC (R,G,B)=(%d,%d,%d)
+device %s does not fit ...
+/dev/parport0
+/dev/parport1
+/dev/parport2
+/dev/parport3
+/dev/parports/0
+/dev/parports/1
+/dev/parports/2
+/dev/parports/3
+/dev/ppi0
+/dev/ppi1
+/dev/ppi2
+/dev/ppi3
+disconnect610p failed expected 0x0C got %02X (%s:%d)
+disconnect610p failed (idx %d=%02X)! (%s:%d)
+disconnect() passed... (%s:%d)
+Done ....
+dpi value has to be 75, 150, 300, 600 or 1200
+dpi value has to be between 75 and 1200
+D$T+T$X+D$P
+dump%04d.bin
+dump%04d.pnm
+ECP access not implemented yet (WIP) ! (%s:%d)
+ECPbufferRead(%d,buffer+read) passed (%s:%d)
+ECPbufferRead(%d,dest) passed (%s:%d)
+ECPbufferRead failed, FIFO time-out (%s:%d)
+ECPbufferRead failed, time-out waiting for FIFO idx=%d (%s:%d)
+ECPbufferRead failed, time-out waiting for FIFO (%s:%d)
+ECPbufferWrite failed, expected status=0xF8, got 0x%02X (%s:%d)
+ECPbufferWrite failed, time-out waiting for FIFO (%s:%d)
+ECPprobe(), write/read buffer loop passed (%s:%d)
+ECPregisterRead failed, expecting 0x20, got 0x%02X (%s:%d)
+ECPregisterRead failed, FIFO time-out (%s:%d)
+ECPregisterWrite failed, time-out waiting for FIFO (%s:%d)
+ECPSetBuffer(%d) passed ...
+ECPSetBuffer failed, time-out waiting for FIFO (%s:%d)
+ECPWriteBuffer failed, time-out waiting for FIFO (%s:%d)
+Edge=%f, val=%d, delta=%d
+End session done ...
+entering coarseGainCalibration1220p() ... (%s:%d) 
+entering coarseGainCalibration610p ...
+entering leftShadingCalibration610p ...
+entering offsetCalibration1220p() ... (%s:%d)
+entering offsetCalibration610P() ... (%s:%d)
+entering parkWait ...
+entering shadingCalibration610p ...
+EPPcmdGet610p: Found 0x%02X expected 0xC0  (%s:%d)
+EPPcmdGet610p: Found 0x%02X expected 0xC8  (%s:%d)
+EPPcmdGet610p: Found 0x%X expected 0xC8  (%s:%d)
+EPPcmdGet610p: Found 0x%X expected 0xC8, status=0x%02X  (%s:%d)
+EPPcmdGet610p: Found 0x%X expected 0xD0, status=0x%02X  (%s:%d)
+EPPcmdGet610p: loop %d, found 0x%02X expected 0xC8  (%s:%d)
+EPPcmdGet610p: loop %d, found 0x%X expected 0xD0 or 0xC0  (%s:%d)
+EPPcmdGetBuffer610p: %d loops to do 
+EPPcmdGetBuffer610p: Found 0x%02X expected 0xC8 or 0xD0 (%s:%d)
+EPPcmdGetBuffer610p found 0x%02X expected 0xD0 or 0xC0 (%s:%d)
+EPPcmdGetBuffer610p found 0x%02X expected 0xFF  (%s:%d)
+EPPcmdGetBuffer610p: Found 0x%X expected 0xC0 or 0xD0 (%s:%d)
+EPPcmdGetBuffer610p: Found 0x%X expected 0xC8 or 0xD0 (%s:%d)
+EPPcmdGetBuffer610p: loop %d, found 0x%02X expected 0xC0 or 0xC8  (%s:%d)
+EPPcmdGetBuffer610p: ppdev ioctl returned <%s>  (%s:%d)
+EPPcmdGetBuffer610p: ppdev read failed <%s> (%s:%d)
+EPPcmdSet610p: Found 0x%02X expected 0xC0 or 0xC8  (%s:%d)
+EPPcmdSet610p: Found 0x%X expected 0xC0 or 0xC8  (%s:%d)
+EPPcmdSet610p: loop %d, found 0x%02X expected 0xC0 or 0xC8  (%s:%d)
+EPPcmdSet610p: loop %d, found 0x%02X expected 0xC8 (%s:%d)
+EPPcmdSync610p: Found 0x%X expected 0xC0 (%s:%d)
+EPPcmdSync610p: Found 0x%X expected 0xC8, 0xC0 or 0xD0 (%s:%d)
+EPPcmdSync610p: Found 0x%X expected 0xC8 (%s:%d)
+EPPconnect: sendCommand(0xE0) failed! (%s:%d)
+EPPputByte610p failed, expected 0xC8, 0xD0 or 0xC0 got 0x%02X ! (%s:%d)
+EPPsendWord610p failed, expected tmp=0xC8 , found 0x%02X (%s:%d)
+EPPsendWord610p failed  got 0x%02X instead of 0xC0 or 0xD0 (%s:%d)
+EPP write/read buffer loop passed... (%s:%d)
+errno=%d
+__errno_location
+Error data altered: byte %d=0x%02X, should be 0x%02X !    (%s:%d)
+Error data altered: expected %d=(0x%02X,0x04), found (0x%02X,0x%02X) !    (%s:%d)
+Error! expected reg0B=0x%02X, found 0x%02X! (%s:%d) 
+expected color mode value
+expected device name ( ex: /dev/parport0 )
+expected dpi value
+expected height value
+expected hex gain value ( ex: A59 )
+expected hex io port value ( ex: 378 )
+expected hex io port value ( ex: 3BC )
+expected hex offset value ( ex: A59 )
+expected lamp value
+expected trace value
+expected width value
+expected x value
+expected y value
+ failed again! (%s:%d)
+Failed to allocate 2096100 bytes... (%s:%d)
+Failed to allocate 64 Ko !
+Failed to allocate 64K (%s:%d)
+Failed to allocate %ld bytes, giving up....
+Failed to allocate room for %d int ! (%s:%d)
+failed to detect a valid device or port!
+failed to gain acces to device %s!
+failed to gain direct acces to port 0x%X!
+Failed to open 'out.pnm', giving up....
+Fct001() passed (%s:%d) 
+FFFF in loop passed...
+fonc001() failed ! (%s:%d) 
+fonc001() passed ...  (%s:%d) 
+fonc001() passed (%s:%d) 
+foncSendWord(word) failed (%s:%d)
+	->forward direction
+Found 0x%02X expected 0xC0 or 0xD0 (%s:%d)
+Found 0x%02X expected 0xC0  (%s:%d)
+Found 0x%X expected 0x00  (%s:%d)
+Found 0x%X expected 0xC0 or 0xD0 (%s:%d)
+Found 0x%X expected 0xC0  (%s:%d)
+Found 0x%X expected 0xC7 (%s:%d)
+Found 0x%X expected 0xFF  (%s:%d)
+__fprintf_chk
+gettimeofday
+Getting buffer %d*%d*%d=%ld=0x%lX    (%s:%d)  
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Going on...
+Hardware can't do ECP, giving up (%s:%d) ...
+--height
+height must be between 1 and %d
+if not compiled with --enable-parport-directio
+Inb(0x%03X) escaped ppdev
+init001() passed... (%s:%d)
+init002(0) passed... (%s:%d)
+init005(0x80) failed... (%s:%d)
+init005(0x80) passed... (%s:%d)
+init005(0xEC) failed... (%s:%d)
+init005(0xEC) passed... (%s:%d)
+initScanner610p done ...
+initScanner610p() failed (%s:%d)
+initScanner() failed (%s:%d)
+initTransport1220P done ...
+initTransport610p done...   (%s:%d)
+initTransport610p() failed (%s:%d)
+initTransport() failed (%s:%d)
+initTransport passed...
+inquire() failed ! (%s:%d) 
+inquire() passed ... (%s:%d)
+inquire() passed ... (%s:%d) 
+INQUIRE SCANNER STATUS IS 0x%02X  (%s:%d)
+inquire() signals re-homing needed ... (%s:%d) 
+iopl could not raise IO permission to level 3
+_IO_stdin_used
+isfdtype
+*** It appears that EPP data transfer doesn't work    ***
+It is likely that the hardware address (0x%X) you specified is wrong
+_Jv_RegisterClasses
+Lamp already off ... (%s:%d)
+Lamp already on ... (%s:%d)
+	->lamp off    
+	->lamp on    
+%ld bytes transfered in %f seconds ( %.2f Kb/s)
+leftShadingCalibration610p(%d,%d,%d,%d,%d,%d,%d) passed ... (%s:%d)
+leftShadingCalibration610p end ...
+leftShadingCalibration610p failed !!! (%s:%d)
+leftShadingCalibration610p: failed to allocate memory (%s:%d)
+leftShadingCalibration610p: trying to read 0x%06X bytes ... (%s:%d)
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+loadDefaultTables() failed ! (%s:%d) 
+loadDefaultTables() passed ... (%s:%d)
+loadDefaultTables() passed ... (%s:%d) 
+Loop %d: bufferRead(0x400,dest) passed... (%s:%d)
+Loop %d: bufferRead(0x400) passed... (%s:%d)
+Loop %d: bufferWrite(0x400,dest) passed... (%s:%d)
+Loop %d, char %d bufferRead failed! (%s:%d)
+Loop %d: cmdSetDataBuffer(initbuf) passed... (%s:%d)
+Loop %d: cmdSetDataBuffer(voidbuf) failed ! (%s:%d) 
+loop %d passed, status=0x%02X (%s:%d)
+Loop %d: PS2bufferRead passed ... (%s:%d)
+Loop %d: PS2bufferWrite passed ... (%s:%d)
+L$T9L$P}
+MAX VALUE=%f        (%s:%d)
+__memcpy_chk
+	->move and scan (head doesn't stop at each row)    
+move(%d,%d,buffer) failed (%s:%d)
+move() passed ...  (%s:%d)
+MOVE STATUS IS 0x%02X  (%s:%d)
+moveToOrigin() detected a 1600P
+moveToOrigin() failed ... (%s:%d)
+moveToOrigin() passed ... (%s:%d)
+Must be RGB, RGB12, BW, or BW12
+No 1220P/2000P scanner detected by 'ringScanner()'...
+	->no color scan    
+*NO* ECP support
+No EPP mode detected
+No EPP or ECP mode working, giving up ... (%s:%d)
+	->normal scan (head stops at each row)    
+No scanner attached, sendCommand(0x%X) failed
+No scanner detected by 'ringScanner(2,0)'...
+No scanner detected by 'ringScanner(5,0)'...
+No scanner detected by 'ringScanner(5,10000)'...
+no %s device ...
+not enough memory for debugging ...  (%s:%d)
+--offset
+offsetCalibration1220p(%d=>%d,%d,%d) passed ... (%s:%d)
+offsetCalibration1220p() done ...
+offsetCalibration1220p failed !!! (%s:%d)
+offsetCalibration610p(%d=>%d,%d,%d) passed ... (%s:%d)
+offsetCalibration610p failed !!! (%s:%d)
+offsetCalibration(%d=>%d,%d,%d) passed ... (%s:%d)
+offsetCalibration failed !!! (%s:%d)
+OUCH! %s:%d
+Outb(0x%03X,0x%02X) escaped ppdev
+Park command issued ...
+Park failed !!! (%s:%d)
+PARKING polling status is 0x%02X   (%s:%d)
+PARKING STATUS is 0x%02X (%s:%d)
+parkWait done ...
+parport modes: %s
+parport modes: %X
+pausedBufferRead(%d,dest) failed, only got %d bytes (%s:%d)
+pausedBufferRead(%d,dest) passed (%s:%d)
+pausedReadData(2048,dest) failed (%s:%d)
+pausedReadData(2048,dest) passed (%s:%d)
+*** Please read SETTING EPP section in sane-umax_pp.5 ***
+port 0x%X can't be set to EPP or ECP, giving up ...
+port 0x%X does not have EPP or ECP, giving up ...
+ppdev character device built-in.
+ppdev ioctl returned <%s>  (%s:%d)
+ppdev short read (%s:%d)
+ppdev short write (%s:%d)
+Previous probe detected ... (%s:%d)
+__printf_chk
+probe610p done ...
+probe done ...
+probeECP() failed at sync step %d, status=0x%02X, expected 0x48 (%s:%d)
+probeECP failed because of waitAck() (%s:%d) 
+probeECP() failed, reg10=0x%02X, expected 0x0B (%s:%d)
+probeECP failed ... (%s:%d)
+probeECP() failed, status=0x%02X, expected 0x48 (%s:%d)
+probeECP() failed, status=0x%02X, expected 0xC8 (%s:%d)
+probeECP(), loop %d failed (%s:%d)
+probeECP(), loop passed (%s:%d)
+probeECP passed ... (%s:%d)
+probeEPP failed ... (%s:%d)
+probeEPP passed ... (%s:%d)
+probePS2 passed ... (%s:%d)
+Probing scanner ....
+PS2registerRead(0x0A)=0x%X passed ...(%s:%d)
+PS2registerRead(0x0B)=0x%X passed...
+PS2registerRead(0x0F) passed... (%s:%d)
+PS2registerRead(0x%X)=0x%X passed... (%s:%d)
+PS2registerRead: found 0x%X expected 0x%X (%s:%d)
+PS2registerWrite(0x%X,0x%X) passed...   (%s:%d)
+PS2registerWrite(8,0) passed...   (%s:%d)
+PS2Something failed, expecting 0x08, got 0x%02X (%s:%d)
+PS2Something returned 0x%02X, 0x0B expected (%s:%d)
+putByte610p failed, expected 0x48 or 0x40 got 0x%02X ! (%s:%d)
+putByte610p failed, expected 0xC8 or 0xC0 got 0x%02X ! (%s:%d)
+	->raw       =0x%X (%d)
+readBlock(%ld,%d,%d,%d)
+Read %d blocks ... 
+Read %d bytes out of %d (last block is %d bytes) (%s:%d)
+Read error (%s:%d)
+Read %ld bytes out of %ld ...
+receiveData610p failed  got 0x%02X instead of 0xC0 (%s:%d)
+receiveData failed: acknowledge not received (%s:%d)
+receiveData failed: received only %d bytes out of %d (%s:%d)
+receiveData, reg19=0x%02X (%s:%d)
+receiveData, reg1C=0x%02X (%s:%d)
+receiveData(val,len) failed (%s:%d)
+--recover
+Recover done !
+Recover failed ....
+Register 0x0F=0x1B, scanner powered off ! (%s:%d)
+registerRead(0x0A)=0x00 passed... (%s:%d)
+registerRead(0x%X)=0x%X passed... (%s:%d)
+registerRead, found 0x%X expected 0x00 (%s:%d)
+registerRead, found 0x%X expected 0x%X (%s:%d)
+registerWrite(0x%X,0x%X) passed...   (%s:%d)
+RESET done...   (%s:%d)
+Retrying ...
+	->reverse direction
+Right side of scan area exceed physical limits (x+witdh>%d)
+ringScanner passed...
+SANE_DEBUG_UMAX_PP_LOW=%d
+sanei_debug
+?[sanei_debug] malloc() failed
+sanei_debug_sanei_debug
+sanei_ioperm() could not gain access to 0x%X
+SANE_INB level %d
+sanei_umax_pp_InitPort(0x%X,%s)
+sanei_umax_pp_InitPort cannot use direct hardware access
+sanei_umax_pp_initTransport  (%s:%d)
+sanei_umax_pp_park failed!   (%s:%d)
+sanei_umax_pp_parkWait failed!   (%s:%d)
+sanei_umax_pp_readBlock failed, cancelling scan ...
+sanei_umax_pp_setLamp passed...
+Scan done ...
+	->scan height   =0x%04X (%d)
+SCANNER INFORMATION=%s
+Scanner in idle state .... (%s:%d)
+Scanner init done ...
+Scanner needs probing ... 
+SCANNER STATE=%s
+Scanning ....
+	->scan width=0x%X (%d)
+%s [-c color_mode] [-x coord] [-y coord] [-w width] [-h height] [-g gain] [-z offset] [-d dpi] [-t level] [-s] [-p] [-l 0|1] [-a ioport_addr] [-r]
+  (%s:%d)
+%s:%d failed to allocate 256 Ko !
+(%s:%d) passed 
+sendCommand(0x00) passed... (%s:%d)
+sendCommand(0x00) (%s:%d) failed ...
+sendCommand(0x30) passed ... (%s:%d)
+sendCommand(0x30) (%s:%d) failed ...
+sendCommand(0x40) passed...
+sendCommand(0x40) (%s:%d) failed ...
+sendCommand(0xE0) passed...
+sendCommand(0xE0) (%s:%d) failed ...
+sendData610p() failed, status=0x%02X, expected 0xC0 or 0xD0 (%s:%d)
+sendData610p(val,%d) failed  (%s:%d)
+sendData(cmd2) passed (%s:%d) 
+sendData(data,2048) passed ...  (%s:%d)
+sendData(data,%d) failed (%s:%d)
+sendData failed: acknowledge not received (%s:%d)
+sendData failed  got 0x%02X instead of 0xC0 or 0xD0 (%s:%d)
+sendData failed: sent only %d bytes out of %d (%s:%d)
+sendData, reg19=0x%02X (%s:%d)
+sendData, reg1C=0x%02X (%s:%d)
+sendData(val,len) passed ...  (%s:%d)
+sendData(word,%d) failed (%s:%d)
+sendLength610p failed, expected 0xC0 or 0xD0 got 0x%02X ! (%s:%d)
+sendLength610p failed, expected 0xC8 got 0x%02X ! (%s:%d)
+sendLength610p failed, expected 0xC8 or 0xC0 got 0x%02X ! (%s:%d)
+sendLength610p() failed... (%s:%d)
+sendLength610p(word) failed... (%s:%d)
+sendLength failed: acknowledge not received (%s:%d)
+sendLength failed, expected reg & 0x10=0x10 , found 0x%02X (%s:%d)
+sendLength failed  got 0x%02X instead of 0xC0 or 0xD0 (%s:%d)
+sendLength failed: sent only %d bytes out of %d (%s:%d)
+sendLength, reg19=0x%02X (%s:%d)
+sendLength, reg1C=0x%02X (%s:%d)
+sendLength retry failed (%s:%d)
+sendLength retry success (retry %d time%s) ... (%s:%d)
+sendLength(word,4) failed (%s:%d)
+sendLength(word,4) passed ...  (%s:%d)
+sendWord(cmd1) passed (%s:%d) 
+sendWord(cmd3) passed (%s:%d) 
+sendWord(cmd4) passed (%s:%d) 
+sendWord(cmd) failed (%s:%d)
+sendWord failed: acknowledge not received (%s:%d)
+sendWord failed  got 0x%02X instead of 0xC0 or 0xD0 (%s:%d)
+sendWord failed (reg1C=0x%02X)   (%s:%d)
+sendWord failed: short send  (%s:%d)
+sendWord() passed   (%s:%d)
+sendWord, reg1C=0x%02X (%s:%d)
+sendWord retry success (retry %d time%s) ... (%s:%d)
+sendWord(zero) failed (%s:%d)
+sendWord(zero) passed (%s:%d)
+setLamp passed ...  (%s:%d)
+Setting debug level of %s to %d.
+Setting EPP I/O to 8 bits ... (%s:%d)
+Setting lamp state failed!
+shadingCalibration1220p() done ...
+shadingCalibration610p end ...
+shadingCalibration610p: failed to allocate memory (%s:%d)
+shadingCalibration610p: trying to read 0x%06X bytes ... (%s:%d)
+shadingCalibration(%d,%d,%d,%d,%d,%d,%d) passed ... (%s:%d)
+shadingCalibration failed !!! (%s:%d)
+	->skip height   =0x%04X (%d)
+%s		PARPORT_MODE_COMPAT
+%s		PARPORT_MODE_DMA
+%s		PARPORT_MODE_ECP
+%s		PARPORT_MODE_EPP
+%s		PARPORT_MODE_PCSPP
+%s		PARPORT_MODE_TRISTATE
+SPPResetLPT() passed...
+SPPsendWord610p found 0x%02X expected 0x88  (%s:%d)
+SPPsendWord610p found 0x%X expected 0x80 or 0xA0 (%s:%d)
+SPPsendWord610p found 0x%X expected 0xC0  (%s:%d)
+SPPsendWord610p found 0x%X expected 0xFF  (%s:%d)
+SPPsendWord610p(zero) failed! (%s:%d)
+SPPsendWord610p(zero) passed...   (%s:%d)
+__sprintf_chk
+__stack_chk_fail
+startScan(%d,%d,%d,%d,%d,%d,%X);
+startScan failed..... 
+Status after block read is 0x%02X (%s:%d)
+Status after waiting is 0x%02X (pass=%d) (%s:%d)
+status %d doesn't match count 0x%X! %s:%d
+status %d doesn't match! %s:%d
+STEF: gMode BYTE in registerRead !!
+STEF: gMode BYTE in registerWrite !!
+STEF: gMode PS2 in bufferRead !!
+STEF: gMode PS2 in bufferWrite !!
+STEF: gMode PS2 in registerRead !!
+STEF: gMode PS2 in registerWrite !!
+STEF: gMode unset in bufferRead !!
+STEF: gMode unset in connect() !!
+STEF: gMode unset in disconnect() !!
+STEF: gMode unset in registerRead !!
+STEF: gMode unset in registerWrite !!
+STEF: unimplemented gMode BYTE in connect() !!
+STEF: unimplemented gMode BYTE in disconnect() !!
+STEF: unimplemented gMode PS2 in connect() !!
+STEF: unimplemented gMode PS2 in disconnect() !!
+__strdup
+strerror
+String received for %02X: %s
+String sent     for %02X: %s
+ success ...
+sync610p failed (got 0x%02X expected 0x38)! (%s:%d)
+sync610p failed (got 0x%02X expected 0xF8)! (%s:%d)
+sync610p failed! Scanner not present or powered off ...  (%s:%d)
+__syslog_chk
+testVersion(0) passed...
+testVersion(0) (%s:%d) failed ...
+testVersion(1) failed (expected) ... (%s:%d)
+There is a new scanner revision in town, or a bug ....
+Time-out (%.2f s) waiting for scanner ... giving up on status 0x%02X !   (%s:%d)
+Trying 610p (%s:%d)
+Trying again ...
+Trying again ... 
+Tryning to set lamp %s
+Try to scan at lower resolution, or a smaller area.
++t$(;t$,
+UMAX 610P/1220P/2000P scanning program version 6.4 starting ...
+UMAX Astra 1220/1600/2000 P ASIC detected (mode=%d)
+UMAX Astra 610p detected
+UMAX Astra %dP detected 
+umax_pp.c
+umax_pp: cannot claim port '%s'
+umax_pp: current user has not R/W permissions on '%s' 
+umax_pp_low
+umax_pp: mode set to PARPORT_MODE_ECP for '%s'
+umax_pp: mode set to PARPORT_MODE_EPP for '%s'
+umax_pp: ppdev couldn't gave modes for port '%s'
+umax_pp: ppdev couldn't negociate mode IEEE1284_MODE_ECP for '%s' (ignored)
+umax_pp: ppdev couldn't negociate mode IEEE1284_MODE_EPP for '%s' (ignored)
+umax_pp: ppdev couldn't set mode to IEEE1284_MODE_ECP for '%s'
+umax_pp: ppdev couldn't set mode to IEEE1284_MODE_EPP for '%s'
+umax_pp: '%s' does not exist 
+unexpected argument <%s>
+unexpected color mode value <%s>
+Unexpected reg19: 0x%02X instead of 0xC0 or 0xD0 (%s:%d)
+Unexpected reg19=0x%2X  (%s:%d)
+Unexpected status 0x%02X, expected 0xC0 or 0xD0 ! (%s:%d)
+Unexpected success on testVersion(1) ... (%s:%d)
+Unexpected value for for register 0x0D, expected 0x00 or 0x40, got 0x%02X ! (%s:%d)
+Unexpected value for for register 0x0F, expected 0x07 or 0x1F, got 0x%02X ! (%s:%d)
+UNEXPLORED BRANCH %s:%d
+Using %s ...
+UTA: reg1C=0x%02X   (%s:%d)
+__vfprintf_chk
+VGA (R,G,B)=(%d,%d,%d)
+__vsyslog_chk
+waitAck failed, time-out waiting for Ack (%s:%d)
+waitFifoEmpty failed, time-out waiting for FIFO (%s:%d)
+waitFifoFull failed, time-out waiting for FIFO (%s:%d)
+waitFifoNotEmpty failed, time-out waiting for FIFO (%s:%d)
+Warning cmdSync(0x00) failed! (%s:%d)
+Warning cmdSync(0xC2) failed! (%s:%d)
+Warning data read back differs: expected %02X found dest[%d]=%02X ! (%s:%d)
+Warning data read back differs: expected %02X found tampon[%d]=%02X ! (%s:%d)
+Warning! expected reg0A=0x00, found 0x%02X! (%s:%d) 
+Warning! expected reg0A=0x1C, found 0x%02X! (%s:%d) 
+Warning! expected reg0C=0x04, found 0x%02X! (%s:%d) 
+Warning! expected reg13=0x00, found 0x%02X! (%s:%d) 
+Warning: scanner motor on, giving up ...  (%s:%d)
+width must be between 1 and %d
+	->xend      =0x%X (%d)
+x must be between 0 and %d
+	->xskip     =0x%X (%d)
+	->y dpi         =0x%04X (%d)
+y must be between 0 and %d

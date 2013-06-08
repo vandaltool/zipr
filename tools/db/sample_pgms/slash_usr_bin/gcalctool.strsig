@@ -1,0 +1,1345 @@
++,,,,,--............................../////////000
+0.000001x
+0.02834952x
+?*"#/0123456
+0123456789ABCDEF
+0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F
+0.152449
+0.45359237x
+0.4731765x
+0.9463529x
+1000000000x
+1000000x
+149597870691x
+1609.344x
+%1$s %2$s
+2010 The Gcalctool authors
+219.456x
+30857000000000000x
+3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679
+31557600x
+3.785412x
+4046.8564224x
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+)*+,&(569:-A
+9:123<456
+9460730472580800x
+>.=9:DE&<GH@M?=
+*** ABS(N) TOO LARGE IN CALL TO MP_ROOT ***
+Absolute value [|]
+*** ABS(X) > 1 IN CALL TO MPSIN1 ***
+*** ABS(X) NOT LESS THAN 1 IN CALL TO MP_EXP ***
+accessories-calculator
+acre,acres
+activate
+Additional Functions
+adjustment1
+adjustment2
+advanced
+_Advanced
+Algerian Dinar
+along with Gcalctool; if not, write to the Free Software Foundation, Inc.,
+AngleUnit
+angle_unit_combobox
+angle_unit_combobox_changed_cb
+angle_unit_model
+Angle units
+Application Options:
+Argument not defined for zero
+Argument --solve requires an equation to solve
+astronomical-unit
+Astronomical Units
+atk_object_set_name
+atk_object_set_role
+(at your option) any later version.
+Australian Dollar
+automatic
+bad buffer in _mp_equation__scan_bytes()
+Bahrain Dinar
+Bahraini Dinar
+base_combo
+base_label
+Base to use in programming mode
+bindtextdomain
+bind_textdomain_codeset
+bit_eventbox_%d
+bit_index
+bit_label_%d
+bit_table
+bit_toggle_cb
+Bolivar Fuerte
+Boolean AND
+Boolean Exclusive OR
+Boolean NOT
+Boolean NOT is only defined for positive integers
+Boolean OR
+Boolean OR is only defined for positive integers
+Boolean XOR is only defined for positive integers
+Botswana Pula
+Brazilian Real
+Brunei Dollar
+<b>%s</b>
+<b>%s</b> = %s
+__bss_start
+Bulgarian Lev
+button_cb
+button-mode
+Button mode
+ButtonMode
+button_panel
+buttons != NULL
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+cable,cables,cb
+calc_%d_button
+calc_digit
+calc_finc_compounding_term_button
+calc_finc_double_declining_depreciation_button
+calc_finc_future_value_button
+calc_finc_gross_profit_margin_button
+calc_finc_periodic_interest_rate_button
+calc_finc_periodic_payment_button
+calc_finc_present_value_button
+calc_finc_straight_line_depreciation_button
+calc_finc_sum_of_the_years_digits_depreciation_button
+calc_finc_term_button
+calcmode
+calc_numeric_point_button
+calc_%s_button
+calc_subscript_button
+calc_superscript_button
+calc_text
+Calculate Result
+Calculating
+_Calculator
+Calculator with financial and scientific modes.
+Canadian Dollar
+Cannot use ECB rates as don't have EUR rate
+Can't add variable %s, the display is not a number
+Can't save variable %s, the display is not a number
+category != NULL
+centimeter,centimeters,cm,cms
+CFA Franc
+character
+character_code_dialog
+character_code_dialog_activate_cb
+character_code_dialog_delete_cb
+character_code_dialog_response_cb
+character_code_entry
+Chilean Peso
+Chinese Yuan
+  --class=CLASS                   Program class as used by the window manager
+clear_cb
+Clear Display [Escape]
+clearerr
+Colombian Peso
+comments
+Complex argument
+Complex conjugate
+Compounding Term
+_Contents
+contents != NULL
+converter != NULL
+convert_from_radians
+convert_to_radians
+copyright
+Couldn't create XPath context
+Couldn't create XPath object
+Couldn't download ECB currency rate file: %s
+Couldn't download IMF currency rate file: %s
+Couldn't parse ECB rate file %s
+Croatian Kuna
+ctrm_dialog
+ctrm_pint
+__ctype_tolower_loc
+cubic-meter
+Cubic Meters
+currency_dialog
+currency_get_display_name
+currency_get_name
+currency_get_symbol
+currency_get_type
+currency_get_value
+CurrencyManager
+currency_manager_get_currencies
+currency_manager_get_currency
+currency_manager_get_default
+currency_manager_get_type
+currency_manager_get_value
+currency_new
+currency != NULL
+currency_set_value
+Currency %s is not in the currency table
+Currency %s is not provided by IMF or ECB
+cursor-position
+Czech Koruna
+*?D:4\\l
+Danish Krone
+__data_start
+day,days
+dcgettext
+dcngettext
+ddb_cost
+ddb_dialog
+ddb_life
+ddb_period
+decimal_places_adjustment
+decimal_places_label1
+decimal_places_label2
+decimal_places_spin
+decimal_places_spin_change_value_cb
+Default number base
+Default number base (derived from number-format)
+degree-celcius
+degree,degrees,deg
+degree-farenheit
+degree-kelvin
+degree-rankine
+delete-event
+delete-range
+difftime
+digit < 16
+digit_cb
+Display accuracy
+Displayed equation text
+Displayed value not an integer
+Display format
+displayitem
+display_name != NULL
+Divide [/]
+Division by zero is undefined
+documenters
+do_finc_expression
+Double Declining Depreciation
+Downloading rates from the ECB...
+Downloading rates from the IMF...
+_%d place
+_%d places
+duration
+ECB rates updated
+end_group
+End Group [)]
+engineering
+equation
+Equation being calculated
+Equation being configured
+Equation being controlled
+Equation being displayed
+equation != NULL
+Equation status
+Equation text
+__errno_location
+*** ERROR IN MP_LN, ITERATION NOT CONVERGING ***
+Error loading button UI: %s
+Error loading preferences UI: %s
+*** ERROR OCCURRED IN MP_ATAN, RESULT INCORRECT ***
+*** ERROR OCCURRED IN MP_EPOWY, RESULT INCORRECT ***
+*** ERROR OCCURRED IN MP_LNS, NEWTON ITERATION NOT CONVERGING PROPERLY ***
+*** ERROR OCCURRED IN MP_RECIPROCAL, NEWTON ITERATION NOT CONVERGING PROPERLY ***
+*** ERROR OCCURRED IN MP_ROOT, NEWTON ITERATION NOT CONVERGING PROPERLY ***
+Error: %s
+?Error: the number of periods must be positive
+Estonian Kroon
+eulers_number
+eurofxref-daily.xml
+exponent_cb
+exponential
+Exponent [^ or **]
+factorial
+Factorial [!]
+Factorial is only defined for natural numbers
+factorize_cb
+Factorize [Ctrl+F]
+Failed to convert value: %s
+Failed to read exchange rates: %s
+Farenheit
+fatal flex scanner internal error--end of buffer missed
+fatal flex scanner internal error--no action found
+fathom,fathoms,ftm
+financial
+_Financial
+Financial Term
+finc_activate_cb
+finc_compounding_term
+finc_dialog
+finc_double_declining_depreciation
+finc_field
+finc_future_value
+finc_gross_profit_margin
+finc_periodic_interest_rate
+finc_periodic_payment
+finc_present_value
+finc_response_cb
+finc_straight_line_depreciation
+finc_sum_of_the_years_digits_depreciation
+finc_term
+*** FLOATING-POINT OVER/UNDER-FLOW IN MP_CAST_TO_DOUBLE ***
+*** FLOATING-POINT OVER/UNDER-FLOW IN MP_CAST_TO_FLOAT ***
+focus-out-event
+foot,feet,ft
+__fprintf_chk
+Fractional Component
+fractional_portion
+from_unit != NULL
+function_cb
+Function '%s' is not defined
+Future Value
+fv_dialog
+gallon,gallons,gal
+g_async_queue_new
+g_async_queue_push
+g_async_queue_try_pop
+g_build_filename
+Gcalctool
+Gcalctool is distributed in the hope that it will be useful,
+Gcalctool is free software; you can redistribute it and/or modify
+g_cclosure_marshal_VOID__VOID
+g_clear_error
+gdk_event_copy
+gdk_event_free
+gdk_keyval_to_unicode
+gdk_window_get_origin
+gdk_window_get_root_coords
+g_dpgettext2
+g_enum_register_static
+ger <kniederk@umpa.ens-lyon.fr>
+g_error_free
+  --g-fatal-warnings              Make all warnings fatal
+g_file_copy_async
+g_file_copy_finish
+g_file_get_contents
+g_file_get_type
+g_file_new_for_path
+g_file_new_for_uri
+g_file_test
+g_get_user_cache_dir
+g_get_user_data_dir
+g_hash_table_insert
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_remove
+g_hash_table_remove_all
+g_hash_table_size
+g_idle_add
+g_intern_static_string
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+g_list_append
+g_list_copy
+g_list_free
+g_list_prepend
+g_list_remove_link
+g_list_sort
+g_locale_to_utf8
+g_malloc
+g_malloc0
+g_mkdir_with_parents
+__gmon_start__
+GNU General Public License for more details.
+g_object_class_install_property
+g_object_get
+g_object_get_data
+g_object_new
+g_object_notify
+g_object_ref
+g_object_set
+g_object_set_data
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_param_spec_boolean
+g_param_spec_enum
+g_param_spec_int
+g_param_spec_object
+g_param_spec_string
+g_path_get_basename
+g_path_get_dirname
+gpm_cost
+gpm_dialog
+gpm_margin
+gradian,gradians,grad
+Gradians
+gram,grams,gramme,grammes,g
+g_return_if_fail_warning
+Gross Profit Margin
+g_settings_get_boolean
+g_settings_get_enum
+g_settings_get_int
+g_settings_get_string
+g_settings_new
+g_settings_set_boolean
+g_settings_set_enum
+g_settings_set_int
+g_settings_set_string
+g_signal_connect_data
+g_signal_emit
+g_signal_emit_by_name
+g_signal_new
+g_slice_alloc
+g_slice_alloc0
+g_slice_free1
+g_strchomp
+g_strchug
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strfreev
+g_str_hash
+g_string_append
+g_string_append_printf
+g_string_append_unichar
+g_string_assign
+g_string_free
+g_string_insert_c
+g_string_new
+g_string_prepend
+g_string_prepend_c
+g_string_prepend_unichar
+g_string_sized_new
+g_string_truncate
+g_strndup
+g_strsplit
+g_thread_new
+g_timeout_add
+gtk-about
+gtk_accel_group_new
+gtk_adjustment_get_page_size
+gtk_adjustment_get_upper
+gtk_adjustment_get_value
+gtk_adjustment_set_value
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_box_set_homogeneous
+gtk_box_set_spacing
+gtk_builder_add_objects_from_file
+gtk_builder_connect_signals
+gtk_builder_get_object
+gtk_builder_new
+gtk_button_get_type
+gtk_button_new
+gtk_button_new_with_label
+gtk_button_set_label
+gtk_button_set_relief
+gtk_cell_layout_add_attribute
+gtk_cell_layout_get_type
+gtk_cell_layout_pack_start
+gtk_cell_layout_set_cell_data_func
+gtk_cell_renderer_text_new
+gtk_check_menu_item_get_active
+gtk_check_menu_item_get_type
+gtk_check_menu_item_set_active
+gtk_clipboard_get
+gtk_clipboard_request_text
+gtk_clipboard_set_text
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_new
+gtk_combo_box_set_active
+gtk_combo_box_set_active_iter
+gtk_combo_box_set_model
+gtk_container_add
+gtk_container_get_border_width
+gtk_container_get_type
+gtk_container_set_border_width
+gtk-copy
+gtk-delete
+gtk_dialog_add_button
+gtk_dialog_add_buttons
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_response
+gtk_dialog_run
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_set_text
+gtk_get_current_event_time
+gtk_hbox_get_type
+gtk_image_menu_item_new_from_stock
+gtk_image_new_from_stock
+gtk_init
+gtk_label_get_type
+gtk_label_new
+gtk_label_new_with_mnemonic
+gtk_label_set_text
+gtk_label_set_text_with_mnemonic
+gtk_label_set_use_markup
+gtk_list_store_append
+gtk_list_store_get_type
+gtk_list_store_new
+gtk_list_store_set
+gtk_main
+gtk_main_quit
+gtk_menu_bar_new
+gtk_menu_get_type
+gtk_menu_item_get_type
+gtk_menu_item_new
+gtk_menu_item_new_with_label
+gtk_menu_item_new_with_mnemonic
+gtk_menu_item_set_submenu
+gtk_menu_new
+gtk_menu_popup
+gtk_menu_set_reserve_toggle_size
+gtk_menu_shell_append
+gtk_menu_shell_get_type
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_misc_get_type
+gtk_misc_set_alignment
+  --gtk-module=MODULES            Load additional GTK+ modules
+GTK+ Options:
+gtk-paste
+gtk-preferences
+gtk-quit
+gtk_radio_menu_item_get_group
+gtk_radio_menu_item_get_type
+gtk_radio_menu_item_new_with_mnemonic
+gtk-redo
+gtk-save
+gtk_scrolled_window_get_hadjustment
+gtk_scrolled_window_get_type
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_separator_menu_item_new
+gtk_show_about_dialog
+gtk_show_uri
+gtk_spin_button_get_type
+gtk_spin_button_get_value_as_int
+gtk_spin_button_set_value
+gtk_spinner_get_type
+gtk_spinner_new
+gtk_spinner_start
+gtk_spinner_stop
+gtk_text_buffer_apply_tag
+gtk_text_buffer_backspace
+gtk_text_buffer_create_mark
+gtk_text_buffer_create_tag
+gtk_text_buffer_delete
+gtk_text_buffer_delete_mark
+gtk_text_buffer_delete_selection
+gtk_text_buffer_get_bounds
+gtk_text_buffer_get_char_count
+gtk_text_buffer_get_end_iter
+gtk_text_buffer_get_has_selection
+gtk_text_buffer_get_insert
+gtk_text_buffer_get_iter_at_mark
+gtk_text_buffer_get_iter_at_offset
+gtk_text_buffer_get_selection_bounds
+gtk_text_buffer_get_text
+gtk_text_buffer_get_type
+gtk_text_buffer_insert
+gtk_text_buffer_insert_at_cursor
+gtk_text_buffer_insert_with_tags
+gtk_text_buffer_move_mark
+gtk_text_buffer_place_cursor
+gtk_text_buffer_remove_tag
+gtk_text_buffer_set_text
+gtk_text_iter_backward_char
+gtk_text_iter_get_char
+gtk_text_iter_get_offset
+gtk_text_view_get_buffer
+gtk_text_view_get_type
+gtk_text_view_new
+gtk_text_view_new_with_buffer
+gtk_text_view_set_accepts_tab
+gtk_text_view_set_cursor_visible
+gtk_text_view_set_editable
+gtk_text_view_set_justification
+gtk_text_view_set_pixels_above_lines
+gtk_text_view_set_pixels_below_lines
+gtk_text_view_set_wrap_mode
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_set_active
+gtk_tree_model_get
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_type
+gtk_tree_model_iter_children
+gtk_tree_model_iter_has_child
+gtk_tree_model_iter_next
+gtk_tree_store_append
+gtk_tree_store_new
+gtk_tree_store_set
+gtk-undo
+gtk_vbox_get_type
+gtk_viewport_get_type
+gtk_widget_add_accelerator
+gtk_widget_destroy
+gtk_widget_ensure_style
+gtk_widget_get_accessible
+gtk_widget_get_allocation
+gtk_widget_get_screen
+gtk_widget_get_style
+gtk_widget_get_toplevel
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_get_window
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_is_toplevel
+gtk_widget_modify_bg
+gtk_widget_modify_font
+gtk_widget_set_can_focus
+gtk_widget_set_name
+gtk_widget_set_sensitive
+gtk_widget_set_tooltip_text
+gtk_widget_set_visible
+gtk_widget_show
+gtk_window_add_accel_group
+gtk_window_get_type
+gtk_window_move
+gtk_window_present
+gtk_window_set_decorated
+gtk_window_set_icon_name
+gtk_window_set_resizable
+gtk_window_set_role
+gtk_window_set_skip_taskbar_hint
+gtk_window_set_title
+gtk_window_set_transient_for
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_init
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+g_unichar_isdigit
+g_unichar_isspace
+g_unichar_to_utf8
+g_utf8_get_char
+g_utf8_offset_to_pointer
+g_utf8_skip
+g_value_get_boolean
+g_value_get_int
+g_value_get_object
+g_value_get_string
+g_value_set_boolean
+g_value_set_enum
+g_value_set_int
+g_value_set_object
+g_value_set_string
+hectare,hectares,ha
+Hectares
+--help-all
+  --help-all                      Show all help options
+help:gcalctool
+--help-gtk
+  --help-gtk                      Show GTK+ options
+Help Options:
+Hexadecimal
+  -h, -?, --help                  Show help options
+Hong Kong Dollar
+hour,hours
+http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
+http://www.ecb.int/vocabulary/2002-08-01/eurofxref
+http://www.imf.org/external/np/fin/data/rms_five.aspx?tsvflag=Y
+Hungarian Forint
+hyperbolic_cosine
+Hyperbolic Cosine
+hyperbolic_sine
+Hyperbolic Sine
+hyperbolic_tangent
+Hyperbolic Tangent
+Icelandic Krona
+Ifunction
+*** ILLEGAL BASE B DIGIT IN CALL TO MP_MULTIPLY, POSSIBLE OVERWRITING PROBLEM ***
+imaginary
+Imaginary Component
+imaginary_portion
+IMF rates updated
+inch,inches,in
+Indian Rupee
+Indonesian Rupiah
+input buffer overflow, can't enlarge buffer because scanner uses REJECT
+input in flex scanner failed
+Input number mode
+Insert Character Code
+insert_character_code_cb
+insert-text
+Integer Component
+*** INTEGER OVERFLOW IN MP_DIVIDE_INTEGER, B TOO LARGE ***
+*** INTEGER OVERFLOW IN MP_MULTIPLY, B TOO LARGE ***
+*** INTEGER OVERFLOW IN mp_multiply_integer, B TOO LARGE ***
+integer_portion
+Inverse cosine is undefined for values outside [-1, 1]
+Inverse [Ctrl+I]
+Inverse hyperbolic cosine is undefined for values less than one
+Inverse hyperbolic tangent is undefined for values outside [-1, 1]
+Inverse sine is undefined for values outside [-1, 1]
+_IO_getc
+_IO_stdin_used
+Iranian Rial
+__isoc99_sscanf
+Israeli New Shekel
+Israeli New Sheqel
+|$,iT$8P
+it under the terms of the GNU General Public License as published by
+*** J == 0 IN CALL TO MP_SET_FROM_FRACTION ***
+Japanese Yen
+_Jv_RegisterClasses
+Kazakhstani Tenge
+k"@Boolean AND is only defined for positive integers
+key-press-event
+kilogram,kilograms,kilogramme,kilogrammes,kg,kgs
+kilograms
+kilometer
+kilometer,kilometers,km,kms
+Kilometers
+Klaus Niederkr
+Kuwaiti Dinar
+L$$9L$4t
+Latvian Lats
+launchpad_integration_add_items
+libatk-1.0.so.0
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+liblaunchpad-integration-3.0.so.1
+/lib/ld-linux.so.2
+libm.so.6
+libpango-1.0.so.0
+libpthread.so.0
+LIBXML2_2.4.30
+LIBXML2_2.6.0
+libxml2.so.2
+Libyan Dinar
+lightyear
+lightyear,lightyears,ly
+Light Years
+Lithuanian Litas
+litre,litres,liter,liters,L
+Logarithm of zero is undefined
+logo-icon-name
+Malaysian Ringgit
+Malformed expression
+manager != NULL
+MathButtons
+math-buttons.c:1276
+math-buttons.c:1303
+math_buttons_get_mode
+math_buttons_get_programming_base
+math_buttons_get_type
+math_buttons_new
+math_buttons_set_mode
+math_buttons_set_programming_base
+MathConverter
+math_converter_get_category
+math_converter_get_conversion
+math_converter_get_type
+math_converter_new
+math_converter_set_category
+math_converter_set_conversion
+MathDisplay
+math-display.c:400
+math-display.c:421
+math_display_get_equation
+math_display_get_type
+math_display_new
+math_display_new_with_equation
+MathEquation
+math_equation_backspace
+math-equation.c:1550
+math-equation.c:1621
+math_equation_clear
+math_equation_copy
+math_equation_delete
+math_equation_factorize
+math_equation_get_accuracy
+math_equation_get_angle_units
+math_equation_get_answer
+math_equation_get_base
+math_equation_get_digit_text
+math_equation_get_display
+math_equation_get_equation
+math_equation_get_number
+math_equation_get_number_format
+math_equation_get_number_mode
+math_equation_get_serializer
+math_equation_get_show_thousands_separators
+math_equation_get_show_trailing_zeroes
+math_equation_get_source_currency
+math_equation_get_source_units
+math_equation_get_status
+math_equation_get_target_currency
+math_equation_get_target_units
+math_equation_get_type
+math_equation_get_variables
+math_equation_get_word_size
+math_equation_insert
+math_equation_insert_digit
+math_equation_insert_exponent
+math_equation_insert_number
+math_equation_insert_numeric_point
+math_equation_insert_subtract
+math_equation_in_solve
+math_equation_is_empty
+math_equation_is_result
+math_equation_new
+math_equation_paste
+math_equation_recall
+math_equation_redo
+math_equation_set
+math_equation_set_accuracy
+math_equation_set_angle_units
+math_equation_set_base
+math_equation_set_number
+math_equation_set_number_format
+math_equation_set_number_mode
+math_equation_set_show_thousands_separators
+math_equation_set_show_trailing_zeroes
+math_equation_set_source_currency
+math_equation_set_source_units
+math_equation_set_status
+math_equation_set_target_currency
+math_equation_set_target_units
+math_equation_set_word_size
+math_equation_shift
+math_equation_solve
+math_equation_store
+math_equation_toggle_bit
+math_equation_undo
+math_mp_display_format_get_type
+math-preferences.c:345
+math-preferences.c:366
+MathPreferencesDialog
+math_preferences_dialog_new
+math_preferences_get_type
+MathVariablePopup
+math-variable-popup.c:244
+math-variable-popup.c:265
+math_variable_popup_get_type
+math_variable_popup_new
+MathVariables
+math_variables_delete
+math_variables_get
+math_variables_get_names
+math_variables_get_type
+math_variables_new
+math_variables_set
+MathWindow
+math-window.c:486
+math-window.c:507
+math_window_critical_error
+math_window_get_buttons
+math_window_get_display
+math_window_get_equation
+math_window_get_menu_bar
+math_window_get_type
+math_window_new
+Mauritian Rupee
+memory_cb
+memory exhausted
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+meter,meters,m
+Mexican Peso
+microlitre
+Microlitres
+micrometer
+micrometer,micrometers,um
+Micrometers
+microsecond
+microsecond,microseconds,us,
+Microseconds
+mile,miles,mi
+millilitre
+millilitre,millilitres,milliliter,milliliters,mL,cm
+Millilitres
+millimeter,millimeters,mm
+millisecond
+millisecond,milliseconds,ms
+Milliseconds
+minute,minutes
+modulus_divide
+Modulus divide
+Modulus division is only defined for integers
+mp_acosh
+mp_add_fraction
+mp_add_integer
+mp_asinh
+mp_atanh
+mp_cast_to_double
+mp_cast_to_float
+mp_cast_to_int
+mp_cast_to_unsigned_int
+mp_ceiling
+mp_clear_error
+mp_compare_mp_to_mp
+mp_conjugate
+?MpDisplayFormat
+MP_DISPLAY_FORMAT_AUTOMATIC
+MP_DISPLAY_FORMAT_ENGINEERING
+MP_DISPLAY_FORMAT_FIXED
+MP_DISPLAY_FORMAT_SCIENTIFIC
+mp_divide
+mp_divide_integer
+mp_epowy
+_mp_equation_alloc
+_mp_equation__create_buffer
+_mp_equation__delete_buffer
+_mp_equation_error
+_mp_equation__flush_buffer
+_mp_equation_free
+_mp_equation_get_column
+_mp_equation_get_debug
+_mp_equation_get_extra
+_mp_equation_get_in
+_mp_equation_get_leng
+_mp_equation_get_lineno
+_mp_equation_get_lloc
+_mp_equation_get_lval
+_mp_equation_get_out
+_mp_equation_get_text
+_mp_equation_lex
+_mp_equation_lex_destroy
+_mp_equation_lex_init
+_mp_equation_lex_init_extra
+_mp_equation_parse
+_mp_equation_pop_buffer_state
+_mp_equation_push_buffer_state
+_mp_equation_realloc
+_mp_equation_restart
+_mp_equation__scan_buffer
+_mp_equation__scan_bytes
+_mp_equation__scan_string
+_mp_equation_set_column
+_mp_equation_set_column called with no buffer
+_mp_equation_set_debug
+_mp_equation_set_extra
+_mp_equation_set_in
+_mp_equation_set_lineno
+_mp_equation_set_lineno called with no buffer
+_mp_equation_set_lloc
+_mp_equation_set_lval
+_mp_equation_set_out
+_mp_equation__switch_to_buffer
+mp_error
+mp_error_code_to_string
+mp_factorial
+mp_factorize
+mp_floor
+mp_fractional_component
+mp_fractional_part
+mp_get_error
+mp_get_eulers
+mp_get_i
+mp_get_pi
+mp_imaginary_component
+mp_integer_component
+mp_invert_sign
+mp_is_complex
+mp_is_equal
+mp_is_greater_equal
+mp_is_greater_than
+mp_is_integer
+mp_is_less_equal
+mp_is_less_than
+mp_is_natural
+mp_is_negative
+mp_is_overflow
+mp_is_positive_integer
+mp_is_zero
+mp_logarithm
+mp_modulus_divide
+mp_multiply
+mp_multiply_fraction
+mp_multiply_integer
+mp_normalize
+mp_ones_complement
+mp_real_component
+mp_reciprocal
+mp_round
+MpSerializer
+mp-serializer.c:524
+mp-serializer.c:549
+mp_serializer_from_string
+mp_serializer_get_base
+mp_serializer_get_leading_digits
+mp_serializer_get_number_format
+mp_serializer_get_radix
+mp_serializer_get_show_thousands_separators
+mp_serializer_get_show_trailing_zeroes
+mp_serializer_get_thousands_separator
+mp_serializer_get_thousands_separator_count
+mp_serializer_get_trailing_digits
+mp_serializer_get_type
+mp_serializer_new
+mp_serializer_set_base
+mp_serializer_set_leading_digits
+mp_serializer_set_number_format
+mp_serializer_set_radix
+mp_serializer_set_show_thousands_separators
+mp_serializer_set_show_trailing_zeroes
+mp_serializer_set_thousands_separator
+mp_serializer_set_trailing_digits
+mp_serializer_to_string
+mp_set_from_complex
+mp_set_from_double
+mp_set_from_float
+mp_set_from_fraction
+mp_set_from_integer
+mp_set_from_mp
+mp_set_from_polar
+mp_set_from_random
+mp_set_from_string
+mp_set_from_unsigned_integer
+mp_shift
+mp_subtract
+mp_twos_complement
+mp_xpowy
+mp_xpowy_integer
+multiply
+Multiply [*]
+  --name=NAME                     Program name as used by the window manager
+nanometer
+nanometer,nanometers,nm
+Nanometers
+natural_logarithm
+Natural Logarithm
+nautical-mile
+Nautical Miles
+Need an integer to factorize
+Negative root of zero is undefined
+Nepalese Rupee
+New Romanian Leu
+New Turkish Lira
+New Zealand Dollar
+nl_langinfo
+No redo history
+Norwegian Krone
+No sane value to bitwise shift
+No sane value to store
+notify::accuracy
+notify::angle-units
+notify::base
+notify::display
+notify::mode
+notify::number-format
+notify::number-mode
+notify::programming-base
+notify::show-thousands-separators
+notify::show-trailing_zeroes
+notify::show-trailing-zeroes
+notify::source-currency
+notify::source-units
+notify::status
+notify::target-currency
+notify::target-units
+notify::word-size
+No undo history
+nth root of negative number is undefined for even n
+number_base_model
+number_format_combobox
+number_format_combobox_changed_cb
+number_format_model
+NumberMode
+numeric_point
+numeric_point_cb
+Omani Rial
+ones_complement
+Ones' Complement
+'OPQRSTUVYNWB[X
+org.gnome.gcalctool
+ounce,ounces,oz
+out of dynamic memory in _mp_equation__create_buffer()
+out of dynamic memory in _mp_equation_ensure_buffer_stack()
+out of dynamic memory in _mp_equation_lex()
+out of dynamic memory in _mp_equation__scan_buffer()
+out of dynamic memory in _mp_equation__scan_bytes()
+out of dynamic memory in yy_get_next_buffer()
+Overflow: the result couldn't be calculated
+Overflow. Try a bigger word size
+Pakistani Rupee
+pango_font_description_copy
+pango_font_description_free
+pango_font_description_set_size
+parsec,parsecs,pc
+PARSER_ERR_INVALID
+PARSER_ERR_MP
+PARSER_ERR_NONE
+PARSER_ERR_OVERFLOW
+PARSER_ERR_UNKNOWN_CONVERSION
+PARSER_ERR_UNKNOWN_FUNCTION
+PARSER_ERR_UNKNOWN_VARIABLE
+percentage
+Percentage [%]
+ Perform mathematical calculations
+Periodic Interest Rate
+Periodic Payment
+Peruvian Nuevo Sol
+Peso Uruguayo
+Philippine Peso
+Pi [Ctrl+P]
+pint,pints,pt
+pmt_dialog
+pmt_pint
+pmt_prin
+Polish Zloty
+pound,pounds,lb
+Preferences
+preferences_table
+Present Value
+programming
+_Programming
+property
+pv_dialog
+Qatari Riyal
+Qatar Riyal
+quart,quarts,qt
+radian,radians,rad
+rate_dialog
+Rates loaded
+Real Component
+real_portion
+Reciprocal of zero is undefined
+registers
+response
+Rial Omani
+Rich Burridge <rich.burridge@gmail.com>
+rms_five.xls
+Robert Ancell <robert.ancell@gmail.com>
+Robin Sonefors <ozamosi@flukkost.nu>
+Root [Ctrl+R]
+Root must be non-zero
+Russian Rouble
+Russian Ruble
+%s acres
+Saudi Arabian Riyal
+Saudi Riyal
+scientific
+Scientific exponent [Ctrl+E]
+  --screen=SCREEN                 X screen to use
+%s degrees
+second,seconds,s
+sensitive
+serializer
+setlocale
+set_subscript_cb
+set_superscript_cb
+%s gradians
+shiftcount
+Shift is only possible on integer values
+shift_left
+Shift Left
+shift_left_cb
+shift_right
+Shift Right
+shift_right_cb
+%s hours
+Show %d decimal _places
+show-thousands
+show-thousands-separators
+Show thousands separators
+Show trailing zeroes
+show-zeroes
+Singapore Dollar
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+sln_cost
+sln_dialog
+sln_life
+sln_salvage
+%s minutes
+snprintf
+s Number
+solve_cb
+Source Currency
+Source Units
+South African Rand
+South Korean Won
+__sprintf_chk
+square-centimeter
+Square Centimeters
+Square [Ctrl+2]
+square-meter
+Square Meters
+square-millimeter
+Square Millimeters
+square_root
+Square root [Ctrl+R]
+%s radians
+Sri Lankan Rupee
+Sri Lanka Rupee
+  -s, --solve <equation>          Solve the given equation
+__stack_chk_fail
+start_group
+Start Group [(]
+status != NULL
+Straight Line Depreciation
+__strdup
+sub_atoi
+subscript
+Subscript mode [Alt]
+subtract
+Subtract [-]
+subtract_cb
+Sum of the Years Digits Depreciation
+Sun Microsystems
+super_atoi
+superscript
+Superscript mode [Ctrl]
+Swedish Krona
+Swiss Franc
+Switch conversion units
+syd_cost
+syd_dialog
+syd_life
+syd_period
+syd_salvage
+%s years
+  --sync                          Make X calls synchronous
+syntax error
+T$$9T$4t
+Tangent is undefined for angles that are multiples of 
+target Currency
+target Units
+temperature
+term_dialog
+term_pint
+term_pmt
+text != NULL
+Thai Baht
+the Free Software Foundation; either version 2 of the License, or
+The power of zero is undefined for a negative exponent
+thousands_separator_check
+thousands_separator_check_toggled_cb
+title != NULL
+tonne,tonnes
+to_unit != NULL
+trailing_zeroes_check
+trailing_zeroes_check_toggled_cb
+translator_credits
+translator-credits
+Trinidad And Tobago Dollar
+Truncate
+T&T Dollar (TTD)
+T$,+t$,i
+Tunisian Dinar
+twos_complement
+Two's Complement
+U.A.E. Dirham
+UAE Dirham
+U.K. Pound Sterling
+Unable to open help file
+Undo [Ctrl+Z]
+unit_a != NULL
+unit_b != NULL
+UnitCategory
+unit_category_add_unit
+unit_category_convert
+unit_category_get_display_name
+unit_category_get_name
+unit_category_get_type
+unit_category_get_unit_by_name
+unit_category_get_unit_by_symbol
+unit_category_get_units
+unit_category_new
+unit_convert_from
+unit_convert_to
+unit_format
+unit-format
+unit_get_display_name
+unit_get_name
+unit_get_symbols
+unit_get_type
+UnitManager
+unit_manager_add_category
+unit_manager_convert_by_symbol
+unit_manager_get_categories
+unit_manager_get_category
+unit_manager_get_category(manager, name) == NULL
+unit_manager_get_default
+unit_manager_get_type
+unit_manager_get_unit_by_name
+unit_manager_get_unit_by_symbol
+unit_matches_symbol
+unit_new
+unit-symbols
+Unknown argument '%s'
+Unknown conversion
+Unknown currency '%s'
+Unknown parser error
+Unknown variable '%s'
+Uruguayan Peso
+U.S. Dollar
+US Dollar
+Using ECB fixed rate of %s for %s
+Using ECB rate of %s for %s
+Using IMF rate of %s for %s
+/usr/share/gcalctool/buttons-advanced.ui
+/usr/share/gcalctool/buttons-basic.ui
+/usr/share/gcalctool/buttons-financial.ui
+/usr/share/gcalctool/buttons-programming.ui
+/usr/share/gcalctool/preferences.ui
+/usr/share/locale
+value-changed
+value != NULL
+variable_name
+variables != NULL
+Venezuelan Bol
+--version
+__vsnprintf_chk
+  -v, --version                   Show release version
+window != NULL
+word_size_combobox
+word_size_combobox_changed_cb
+Word size in bits
+word_size_model
+x/0.0254
+x/0.02834952
+x/0.3048
+x/0.45359237
+x/0.4731765
+x/0.9144
+x/0.9463529
+x/1000000
+x/1000000000
+x/149597870691
+x/1609.344
+x/1.8288
+x/219.456
+x-273.15
+x+273.15
+x/30857000000000000
+x/31557600
+x/3.785412
+x/4046.8564224
+(x+459.67)*5/9
+x/9460730472580800
+x*9/5-459.67
+xmlCleanupParser
+xmlFreeDoc
+xmlInitParser
+xmlNodeGetContent
+xmlReadFile
+xmlXPathEvalExpression
+xmlXPathFreeContext
+xmlXPathFreeObject
+xmlXPathNewContext
+xmlXPathRegisterNs
+x != NULL
+//xref:Cube[@currency][@rate]
+x_squared
+x_symbol != NULL
+x_units != NULL
+yard,yards,yd
+year,years
+You should have received a copy of the GNU General Public License
+z != NULL
+z_symbol != NULL
+z_units != NULL

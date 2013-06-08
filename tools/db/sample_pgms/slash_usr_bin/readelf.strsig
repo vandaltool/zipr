@@ -1,0 +1,4312 @@
+                 
+/               
+//              
+      0  %-10lu (%5.1f%%)
+ !"#$%&'()*+,-./0123456789:;<=>?@abcdefghijklmnopqrstuvwxyz[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+%04u-%02u-%02uT%02u:%02u:%02u
+  %#06x:   Name index: %lx
+  %#06x:   Name: %s
+  %#06x: Parent %d, name index: %ld
+  %#06x: Parent %d: %s
+  %#06x: Rev: %d  Flags: %s
+  %#06x: Version: %d
+%08lx..%08lx
+%08lx %08lx %08lx CIE
+%08lx %08lx %08lx CIE "%s" cf=%d df=%d ra=%d
+%08lx %08lx %08lx FDE cie=%08lx pc=
+%08lx ZERO terminator
+%08x: <unknown>
+   0 (*local*)    
+  0x%02x 
+ 0x%08x                       
+0x%08x                      
+<0x%.2x>
+0x%5.5lx 
+0x%6.6lx
+0x%6.6lx 
+  0x%8.8lx 
+  %-11u/-%3u
+%12.12llx  %12.12llx 
+  %-14.14s 
+       %-15.15s 
+       %-15.15s  
+%16.16llx  %16.16llx 
+  %16.16lx
+  %-16u  %lu
+%-17.17s
+   %-18s:
+    %-18s %s
+   1 (*global*)   
+%-20.20s
+  %-20s 0x%08lx	%s
+  %-20s %10s	Description
+%-22.22s
+   %2.2d     
+2's complement, big endian
+2's complement, little endian
+     %2u
+  [%2u] %-17.17s %-15.15s 
+  [%2u] %-17s %-15s 
+  %2u/-%3u
+%2u %3u 
+%2u/-%3u 
+%2u %3u %2lu
+     %2u   %3u     %lu
+  [%2u] %s
+, 32-bit
+, 32bitmode
+%-35s  %11d  %#18llx
+%-35s  %11d  %#18llx[%d]
+ %3d ???     %d %lx
+[%3u] 0x%lx - 0x%lx
+[%3u] 0x%lx 0x%lx 
+ %3u/-%3u
+%3u/-%3u 
+[%3u] %s:
+%5lu: %8lu  
+   [%5u/-%3u]   %s
+   [%5u]   %s
+, 64-bit
+, 64-bit doubles
+ %6.6lx %6.6lx %2.2lx
+    %-6lx	%s
+  [%6tx]  
+%7lu  %-10lu (%5.1f%%)    %5.1f%%
+ %-7s %3s 
+    %8.8lx 
+  %8.8lx
+%8.8lx  %8.8lx 
+, 8 bit structure alignment
+8-byte and up to %d-byte extended
+8-byte, except leaf SP
+  -a --all               Equivalent to: -h -l -S -s -r -d -V -A -I
+  -A --arch-specific     Display architecture specific information (if any).
+[Abbrev Number: %ld
+   Abbrev Offset: %s
+ABI_align_needed
+ABI_align_preserved
+ABI_enum_size
+ABI_FP_16bit_format
+ABI_FP_denormal
+ABI_FP_exceptions
+ABI_FP_number_model
+ABI_FP_optimization_goals
+ABI_FP_rounding
+ABI_FP_user_exceptions
+ABI_HardFP_use
+ABI_optimization_goals
+ABI_PCS_GOT_use
+ABI_PCS_R9_use
+ABI_PCS_RO_data
+ABI_PCS_RW_data
+ABI_PCS_wchar_t
+  ABI Version:                       %d
+ABI_VFP_args
+ABI_WMMX_args
+, absolute
+Absolute
+(ADA 95)
+Ada_Region 
+  Addr: 0x
+    Address    Length
+    Address            Length
+Address table:
+ADDRRNGLO
+ADHINR:SVWacdeghi:lnp:rstuvw::x:
+Advanced Logic Corp. TinyJ embedded processor
+Advanced Micro Devices X86-64
+Advanced_SIMD_arch
+  Advance Line by %s to %d
+  Advance PC by constant %s to 0x%s
+  Advance PC by fixed size amount %s to 0x%s
+  Advance PC by %s to 0x%s
+  Advance PC by %s to 0x%s[%d]
+Aggressive Accuracy
+Aggressive Debug
+Aggressive Size
+Aggressive Speed
+Allowed in Thumb-ISA, v7-R or v7-M
+Allowed in v7-A with integer division extension
+Alphamosaic VideoCore processor
+ALPHA_PLTRO
+also_compatible_with
+Altera Nios
+Altera Nios II
+Alternative Format
+Altium TSK3000 core
+Analog Devices Blackfin
+Andes Technology compact code size embedded RISC processor family
+ and Line by %s to %d
+(ANSI C)
+(ANSI C99)
+ANSI_COM
+(ANSI Pascal)
+Application
+Application or Realtime
+ar.bspstore
+Arca RISC microprocessor
+archive-index
+arch-specific
+ARC International ARCompact processor
+Args_stored 
+    Arguments: %s
+ARM_ATTRIBUTES
+ARM_DEBUGOVERLAY
+ARM_EXIDX
+ARM_ISA_use
+ARM_OVERLAYSECTION
+ARM_PREEMPTMAP
+arm_process_unwind
+__assert_fail
+As Tag_FP_arch
+Atmel AVR 8-bit microcontroller
+Atmel Corporation 32-bit microprocessor family
+attributes
+Attribute Section: %s
+attr->type & 0x80
+Audit library
+  Augmentation data:    
+  Augmentation:          "%s"
+AUXILIARY
+Auxiliary library
+aux.strtab == ((void *)0)
+Axis Communications 32-bit embedded processor
+bad dynamic symbol
+badly formed extended line op encountered!
+bad register: 
+Bad sh_info in group section `%s'
+Bad sh_link in group section `%s'
+ bad symbol index: %08lx
+Bare-metal C6000
+Bare platform
+, Base: 
+(base address)
+B(GNU Binutils for Ubuntu) 2.22
+Binary %s contains:
+bindtextdomain
+binutils
+../../binutils/readelf.c
+Bogus end-of-siblings marker detected at offset %lx in .debug_info section
+(boolean)
+Broadcom VideoCore III processor
+    Build ID: 
+ (bytes)
+ (bytes into file)
+C6000_ATTRIBUTES
+C6000_DSBT_BASE
+C6000_DSBT_SIZE
+C6000_PHATTR
+C6000_PREEMPTMAP
+C6000_UNWIND
+     __c6xabi_pop_rts
+ CALL_DEBUG
+Cannot interpret virtual addresses without program headers.
+Cannot_unwind 
+ Canonical gp value: 
+ [cantunwind]
+  -c --archive-index     Display the symbol/file index in an archive
+(case_insensitive)
+(case_sensitive)
+  %c%c%c    
+ %c%c%c 
+, cf, isa 
+  Class:                             %s
+Cleanup_defined 
+  Cnt: %d
+(Cobol 74)
+(Cobol 85)
+Code addressing position-dependent
+Code addressing position-independent
+  Code alignment factor: %u
+, code in L1
+(column major)
+ (compact) 
+  Compact model %d
+compatibility
+  Compilation Unit @ offset 0x%s:
+(complex float)
+ CONFEXP
+Configuration file
+conflict
+conflict list found without a dynamic symbol table
+conformance
+ CONLFAT
+, constant gp
+Contents of the %s section:
+Copyright 2011 Free Software Foundation, Inc.
+CORE (Core file)
+<corrupt>
+ <corrupt: %14ld>
+<corrupt: %19ld>
+<corrupt: %9ld>
+Corrupt header in group section `%s'
+Corrupt header in the %s section.
+<corrupt: %ld>
+corrupt library name index of 0x%lx found in dynamic entry
+corrupt note found at offset %lx into core notes
+ <corrupt: out of range>
+<corrupt string table index: %3ld>
+Corrupt unit length (0x%s) found in section %s
+Could not find unwind info section for 
+Could not locate .ARM.extab section containing 0x%lx.
+Could not locate '%s'.  System error message: %s
+            CPR0 %08lx  CPR1 %08lx  CPR2 %08lx  CPR3 %08lx
+CPU_arch
+CPU_arch_profile
+CPU_name
+CPU_raw_name
+CPU_unaligned_access
+Cray Inc. NV2 vector architecture
+    Creation date  : %.17s
+CU at offset %s contains corrupt or unsupported version number: %d.
+(current)
+CU: %s/%s:
+CU table:
+cxx_info 
+cxx_try_catch 
+Cyan Technology eCOG16 family
+Cyan Technology eCOG1X family
+Cyan Technology eCOG2 microprocessor
+Cypress M8C microprocessor
+??? (%d)
+%d (0x%x)
+D$\89\$x
+Dallas Semiconductor MAXQ30 Core microcontrollers
+Data addressing position-dependent
+Data addressing position-independent, GOT far from DP
+Data addressing position-independent, GOT near DP
+  Data alignment factor: %d
+, data in L1
+  Data:                              %s
+Data size
+ DBG_IN_DSF
+ DBG_IN_IMG
+dcgettext
+  -d --dynamic           Display the dynamic section (if present)
+.debug_abbrev
+.debug_aranges
+debug-dump
+  --debug-dump[=rawline,=decodedline,=info,=abbrev,=pubnames,=aranges,=macro,=frames,
+.debug_frame
+.debug_info
+Debug info is corrupted, abbrev offset (%lx) is larger than abbrev section size (%lx)
+Debug info is corrupted, length of CU at %s extends beyond end of section (length = %s)
+.debug_info offset of 0x%lx in %s section does not point to a CU header.
+.debug_line
+.debug_loc
+.debug_macinfo
+.debug_macro
+.debug_macro section not zero terminated
+.debug_pubnames
+.debug_pubtypes
+.debug_ranges
+.debug_static_func
+.debug_static_vars
+.debug_str
+.debug_types
+.debug_weaknames
+(decimal float)
+(declared as inline and inlined)
+(declared as inline but ignored)
+decode_arm_unwind_bytecode
+Decoded dump of debug contents of section %s:
+decodedline
+decode_tic6x_unwind_bytecode
+DEFAULT_DELAY_LOAD
+  define new File Table entry
+ DELAY_LOAD
+DELTA_C_PLUS_PLUS
+Denso NDR1 microprocesspr
+DEPAUDIT
+Dependency audit library
+, D-Float
+DIE at offset %lx refers to abbreviation number %lu which does not exist
+Digital Alpha (old)
+Digital Equipment Corp. PDP-10
+Digital Equipment Corp. PDP-11
+Digital VAX
+ DISMISS
+display_arm_attribute
+ Display information about the contents of ELF format files
+Displaying the debug contents of section %s is not yet supported.
+                         Display the contents of DWARF2 debug sections
+D$LH;D$\
+DLT_SIZE
+ <%d><%lx>: ...
+ <%d><%lx>: Abbrev Number: %lu
+Donald Knuth's educational 64-bit processor
+Don't know about relocations on this machine architecture
+(down_case)
+D$@p9|$8
+DSBT addressing not used
+DSBT addressing used
+                         Dump the contents of section <number|name> as bytes
+                         Dump the contents of section <number|name> as relocated bytes
+                         Dump the contents of section <number|name> as strings
+  -D --use-dynamic       Use the dynamic section info when displaying symbols
+dwarf-depth
+  --dwarf-depth=N        Do not display DIEs at depth N or greater
+dwarf-start
+  --dwarf-start=N        Display DIEs starting with N, at the same depth
+  DWARF Version:               %d
+DW_AT_abstract_origin
+DW_AT_accessibility
+DW_AT_address_class
+DW_AT_allocated
+DW_AT_artificial
+DW_AT_associated
+DW_AT_base_types
+DW_AT_binary_scale
+DW_AT_bit_offset
+DW_AT_bit_size
+DW_AT_body_begin
+DW_AT_body_end
+DW_AT_byte_size
+DW_AT_call_column
+DW_AT_call_file
+DW_AT_calling_convention
+DW_AT_call_line
+DW_AT_common_reference
+DW_AT_comp_dir
+DW_AT_const_expr
+DW_AT_const_value
+DW_AT_containing_type
+DW_AT_count
+DW_AT_data_bit_offset
+DW_AT_data_location
+DW_AT_data_member_location
+DW_AT_decimal_scale
+DW_AT_decimal_sign
+DW_AT_declaration
+DW_AT_decl_column
+DW_AT_decl_file
+DW_AT_decl_line
+DW_AT_default_value
+DW_AT_description
+DW_AT_digit_count
+DW_AT_discr
+DW_AT_discr_list
+DW_AT_discr_value
+DW_AT_elemental
+DW_AT_element_list
+DW_AT_encoding
+DW_AT_endianity
+DW_AT_entry_pc
+DW_AT_enum_class
+DW_AT_explicit
+DW_AT_extension
+DW_AT_external
+DW_AT_frame_base
+DW_AT_friend
+DW_AT_GNAT_descriptive_type
+DW_AT_GNU_all_call_sites
+DW_AT_GNU_all_source_call_sites
+DW_AT_GNU_all_tail_call_sites
+DW_AT_GNU_call_site_data_value
+DW_AT_GNU_call_site_target
+DW_AT_GNU_call_site_target_clobbered
+DW_AT_GNU_call_site_value
+DW_AT_GNU_exclusive_locks_required
+DW_AT_GNU_guarded
+DW_AT_GNU_guarded_by
+DW_AT_GNU_locks_excluded
+DW_AT_GNU_macros
+DW_AT_GNU_odr_signature
+DW_AT_GNU_pt_guarded
+DW_AT_GNU_pt_guarded_by
+DW_AT_GNU_shared_locks_required
+DW_AT_GNU_tail_call
+DW_AT_GNU_vector
+DW_AT_high_pc
+DW_AT_HP_actuals_stmt_list
+DW_AT_HP_all_variables_modifiable
+DW_AT_HP_block_index
+DW_AT_HP_cold_region_high_pc
+DW_AT_HP_cold_region_low_pc
+DW_AT_HP_linkage_name
+DW_AT_HP_opt_flags
+DW_AT_HP_opt_level
+DW_AT_HP_pass_by_reference
+DW_AT_HP_proc_per_section
+DW_AT_HP_prof_flags
+DW_AT_HP_prof_version_id
+DW_AT_HP_raw_data_ptr
+DW_AT_identifier_case
+DW_AT_import
+DW_AT_inline
+DW_AT_is_optional
+DW_AT_language
+DW_AT_linkage_name
+DW_AT_location
+DW_AT_lower_bound
+DW_AT_low_pc
+DW_AT_mac_info
+DW_AT_macro_info
+DW_AT_main_subprogram
+DW_AT_member
+DW_AT_MIPS_abstract_name
+DW_AT_MIPS_clone_origin
+DW_AT_MIPS_epilog_begin
+DW_AT_MIPS_fde or DW_AT_HP_unmodifiable
+DW_AT_MIPS_has_inlines
+DW_AT_MIPS_linkage_name
+DW_AT_MIPS_loop_begin
+DW_AT_MIPS_loop_unroll_factor
+DW_AT_MIPS_software_pipeline_depth
+DW_AT_MIPS_stride
+DW_AT_MIPS_tail_loop_begin
+DW_AT_mutable
+DW_AT_name
+DW_AT_namelist_items
+DW_AT_object_pointer
+DW_AT_ordering
+DW_AT_PGI_lbase
+DW_AT_PGI_lstride
+DW_AT_PGI_soffset
+DW_AT_picture_string
+DW_AT_priority
+DW_AT_producer
+DW_AT_prototyped
+DW_AT_pure
+DW_AT_ranges
+DW_AT_recursive
+DW_AT_return_addr
+DW_AT_segment
+DW_AT_sf_names
+DW_AT_sibling
+DW_AT_signature
+DW_AT_small
+DW_AT_specification
+DW_AT_src_coords
+DW_AT_src_info
+DW_AT_start_scope
+DW_AT_static_link
+DW_AT_stmt_list
+DW_AT_stride
+DW_AT_stride_size
+DW_AT_string_length
+DW_AT_subscr_data
+DW_AT_threads_scaled
+DW_AT_trampoline
+DW_AT_type
+DW_AT_upc_threads_scaled
+DW_AT_upper_bound
+DW_AT_use_GNAT_descriptive_type
+DW_AT_use_location
+DW_AT_use_UTF8
+DW_AT_variable_parameter
+DW_AT_virtuality
+DW_AT_visibility
+DW_AT_vtable_elem_location
+  DW_CFA_advance_loc1: %ld to %08lx
+  DW_CFA_advance_loc2: %ld to %08lx
+  DW_CFA_advance_loc4: %ld to %08lx
+  DW_CFA_advance_loc: %d to %08lx
+  DW_CFA_def_cfa_expression (
+  DW_CFA_def_cfa_offset: %d
+  DW_CFA_def_cfa_offset_sf: %d
+  DW_CFA_def_cfa_register: %s
+  DW_CFA_def_cfa_sf: %s ofs %d
+  DW_CFA_def_cfa: %s ofs %d
+  DW_CFA_expression: %s%s (
+  DW_CFA_GNU_args_size: %ld
+  DW_CFA_GNU_negative_offset_extended: %s%s at cfa%+ld
+  DW_CFA_GNU_window_save
+  DW_CFA_MIPS_advance_loc8: %ld to %08lx
+  DW_CFA_nop
+  DW_CFA_offset_extended_sf: %s%s at cfa%+ld
+  DW_CFA_offset_extended: %s%s at cfa%+ld
+  DW_CFA_offset: %s%s at cfa%+ld
+  DW_CFA_register: %s%s in 
+  DW_CFA_remember_state
+  DW_CFA_restore_extended: %s%s
+  DW_CFA_restore: %s%s
+  DW_CFA_restore_state
+  DW_CFA_same_value: %s%s
+  DW_CFA_set_loc: %08lx
+  DW_CFA_undefined: %s%s
+  DW_CFA_??? (User defined call frame op: %#x)
+  DW_CFA_val_expression: %s%s (
+  DW_CFA_val_offset_sf: %s%s at cfa%+ld
+  DW_CFA_val_offset: %s%s at cfa%+ld
+DW_FORM_addr
+DW_FORM_block
+DW_FORM_block1
+DW_FORM_block2
+DW_FORM_block4
+DW_FORM_data1
+DW_FORM_data2
+DW_FORM_data4
+DW_FORM_data8
+DW_FORM_exprloc
+DW_FORM_flag
+DW_FORM_flag_present
+DW_FORM_indirect
+DW_FORM_ref1
+DW_FORM_ref2
+DW_FORM_ref4
+DW_FORM_ref8
+DW_FORM_ref_addr
+DW_FORM_ref_sig8
+DW_FORM_ref_udata
+DW_FORM_sdata
+DW_FORM_sec_offset
+DW_FORM_string
+DW_FORM_strp
+DW_FORM_strp offset too big: %s
+DW_FORM_udata
+DW_LNE_HP_define_proc
+DW_LNE_HP_negate_front_end_logical
+DW_LNE_HP_negate_function_exit
+DW_LNE_HP_negate_is_UV_update
+DW_LNE_HP_negate_post_semantics
+DW_LNE_HP_pop_context
+DW_LNE_HP_push_context
+DW_LNE_HP_set_file_line_column
+DW_LNE_HP_set_routine_name
+DW_LNE_HP_set_sequence
+    DW_LNE_HP_SFC_associate 
+    DW_LNE_HP_SFC_formfeed
+    DW_LNE_HP_SFC_set_listing_line (%s)
+DW_LNE_HP_source_file_correlation
+ DW_MACINFO_define - lineno : %d macro : %s
+ DW_MACINFO_end_file
+ DW_MACINFO_start_file - lineno: %d filenum: %d
+ DW_MACINFO_undef - lineno : %d macro : %s
+ DW_MACINFO_vendor_ext - constant : %d string : %s
+ DW_MACRO_GNU_%02x
+ DW_MACRO_GNU_%02x -
+    DW_MACRO_GNU_%02x arguments: 
+    DW_MACRO_GNU_%02x has no arguments
+ DW_MACRO_GNU_define_indirect - lineno : %d macro : %s
+ DW_MACRO_GNU_define - lineno : %d macro : %s
+ DW_MACRO_GNU_end_file
+ DW_MACRO_GNU_start_file - lineno: %d filenum: %d
+ DW_MACRO_GNU_start_file - lineno: %d filenum: %d filename: %s%s%s
+DW_MACRO_GNU_start_file used, but no .debug_line offset provided.
+ DW_MACRO_GNU_transparent_include - offset : 0x%lx
+ DW_MACRO_GNU_undef_indirect - lineno : %d macro : %s
+ DW_MACRO_GNU_undef - lineno : %d macro : %s
+DW_OP_abs
+DW_OP_addr: %s
+DW_OP_and
+DW_OP_bit_piece: 
+DW_OP_bra: %ld
+DW_OP_breg%d (%s): %s
+DW_OP_bregx: %s (%s) %s
+DW_OP_call2: <0x%s>
+DW_OP_call4: <0x%s>
+DW_OP_call_frame_cfa
+DW_OP_call_ref: <0x%s>
+(DW_OP_call_ref in frame info)
+DW_OP_const1s: %ld
+DW_OP_const1u: %lu
+DW_OP_const2s: %ld
+DW_OP_const2u: %lu
+DW_OP_const4s: %ld
+DW_OP_const4u: %lu
+DW_OP_const8s: %ld %ld
+DW_OP_const8u: %lu %lu
+DW_OP_consts: %s
+DW_OP_constu: %s
+DW_OP_deref
+DW_OP_deref_size: %ld
+DW_OP_div
+DW_OP_drop
+DW_OP_dup
+DW_OP_eq
+DW_OP_fbreg: %s
+DW_OP_form_tls_address
+DW_OP_ge
+DW_OP_GNU_const_type: <0x%s> 
+DW_OP_GNU_convert <0x%s>
+DW_OP_GNU_deref_type: %ld
+DW_OP_GNU_encoded_addr: fmt:%02x addr:
+DW_OP_GNU_entry_value: (
+DW_OP_GNU_implicit_pointer: <0x%s> %s
+(DW_OP_GNU_implicit_pointer in frame info)
+DW_OP_GNU_parameter_ref: <0x%s>
+DW_OP_GNU_push_tls_address or DW_OP_HP_unknown
+DW_OP_GNU_regval_type: %s (%s)
+DW_OP_GNU_reinterpret <0x%s>
+DW_OP_GNU_uninit
+DW_OP_gt
+DW_OP_HP_fltconst4
+DW_OP_HP_fltconst8
+DW_OP_HP_is_value
+DW_OP_HP_mod_range
+DW_OP_HP_tls
+DW_OP_HP_unmod_range
+DW_OP_implicit_value
+DW_OP_le
+DW_OP_lit%d
+DW_OP_lt
+DW_OP_minus
+DW_OP_mod
+DW_OP_mul
+DW_OP_ne
+DW_OP_neg
+DW_OP_nop
+DW_OP_not
+DW_OP_or
+DW_OP_over
+DW_OP_PGI_omp_thread_num
+DW_OP_pick: %ld
+DW_OP_piece: %s
+DW_OP_plus
+DW_OP_plus_uconst: %s
+DW_OP_push_object_address
+DW_OP_reg%d (%s)
+DW_OP_regx: %s (%s)
+DW_OP_rot
+DW_OP_shl
+DW_OP_shr
+DW_OP_shra
+DW_OP_skip: %ld
+DW_OP_stack_value
+DW_OP_swap
+DW_OP_xderef
+DW_OP_xderef_size: %ld
+DW_OP_xor
+DW_TAG_access_declaration
+DW_TAG_array_type
+DW_TAG_base_type
+DW_TAG_catch_block
+DW_TAG_class_template
+DW_TAG_class_type
+DW_TAG_common_block
+DW_TAG_common_inclusion
+DW_TAG_compile_unit
+DW_TAG_condition
+DW_TAG_constant
+DW_TAG_const_type
+DW_TAG_dwarf_procedure
+DW_TAG_entry_point
+DW_TAG_enumeration_type
+DW_TAG_enumerator
+DW_TAG_file_type
+DW_TAG_formal_parameter
+DW_TAG_format_label
+DW_TAG_friend
+DW_TAG_function_template
+DW_TAG_GNU_call_site
+DW_TAG_GNU_call_site_parameter
+DW_TAG_imported_declaration
+DW_TAG_imported_module
+DW_TAG_imported_unit
+DW_TAG_inheritance
+DW_TAG_inlined_subroutine
+DW_TAG_interface_type
+DW_TAG_label
+DW_TAG_lexical_block
+DW_TAG_member
+DW_TAG_MIPS_loop
+DW_TAG_module
+DW_TAG_namelist
+DW_TAG_namelist_item
+DW_TAG_namespace
+DW_TAG_packed_type
+DW_TAG_padding
+DW_TAG_partial_unit
+DW_TAG_pointer_type
+DW_TAG_ptr_to_member_type
+DW_TAG_reference_type
+DW_TAG_restrict_type
+DW_TAG_rvalue_reference_type
+DW_TAG_set_type
+DW_TAG_shared_type
+DW_TAG_string_type
+DW_TAG_structure_type
+DW_TAG_subprogram
+DW_TAG_subrange_type
+DW_TAG_subroutine_type
+DW_TAG_template_alias
+DW_TAG_template_type_param
+DW_TAG_template_value_param
+DW_TAG_thrown_type
+DW_TAG_try_block
+DW_TAG_typedef
+DW_TAG_type_unit
+DW_TAG_union_type
+DW_TAG_unspecified_parameters
+DW_TAG_unspecified_type
+DW_TAG_upc_relaxed_type
+DW_TAG_upc_shared_type
+DW_TAG_upc_strict_type
+DW_TAG_variable
+DW_TAG_variant
+DW_TAG_variant_part
+DW_TAG_volatile_type
+DW_TAG_with_stmt
+.dynamic
+Dynamic info segment at offset 0x%lx contains %d entries:
+dynamic section
+Dynamic section at offset 0x%lx contains %u entries:
+dynamic section image fixups
+dynamic section image relas
+dynamic strings
+dynamic string section
+dynamic string table
+Dynamic symbol information is not available for displaying symbols.
+, dynamic symbols use segment index
+DYN (Shared object file)
+dyn-syms
+  --dyn-syms             Display the dynamic symbol table
+, eabi32
+, eabi64
+(edited)
+ ehandler
+  -e --headers           Equivalent to: -h -l -S
+.eh_frame
+Element 14 64-bit DSP processor
+Elf file type is %s
+ELF Header:
+<End of list>
+End of Sequence
+ Entries:
+  Entry	Dir	Time	Size	Name
+Entry_FR=%d 
+Entry_GR=%d 
+Entry point 
+  Entry point address:               
+Entry_SR 
+__environ
+__errno_location
+ERROR: Bad section length (%d > %d)
+ERROR: Bad subsection length (%d > %d)
+ EXACT_MATCH
+ EXCEPTIONS fpe_min(
+eXcess 16/32/64-bit configurable embedded CPU
+EXEC (Executable file)
+ EXE_INIT
+(exported)
+ EXPORTS
+  Extended opcode %d: 
+  Extension opcode arguments:
+extn_ptr_defined 
+Failed to determine last chain length
+Failed to read in number of buckets
+Failed to read in number of chains
+, fido_a
+File Attributes
+File contains multiple dynamic string tables
+File contains multiple dynamic symbol tables
+File contains multiple symtab shndx tables
+file-header
+  File: %lx
+File name                            Line number    Starting address
+  @<file>                Read options from <file>
+  File: %s
+File: %s
+File %s is not an archive so its index cannot be displayed.
+                 FileSiz            MemSiz              Flags  Align
+ FILL       
+Filter library
+FINI_ARRAY
+FINI_ARRAYSZ
+     finish
+flag = %d, vendor = %s
+       Flags
+  Flags:                             0x%lx%s
+  Flags: %s  Version: %d
+forced to int
+(FORTRAN 77)
+(Fortran 90)
+(Fortran 95)
+) fpe_max(
+FP_HP_extension
+   FP mode: 0x%016llx
+__fprintf_chk
+Frame_Extension_Millicode 
+frames-interp
+               =frames-interp,=str,=loc,=Ranges,=pubtypes,
+__fread_chk
+Freescale Communication Engine RISC core
+Freescale Extended Time Processing Unit
+Freescale RS08 embedded processor
+Fujitsu F2MC16
+Fujitsu FR20
+Fujitsu FR30
+Fujitsu FR-V
+Fujitsu Multimedia Accelerator
+full-section-name
+Further warnings about bogus end-of-sibling markers suppressed
+.gcc_compiled_long32
+__gcc_personality_v0
+__gcj_personality_v0
+.gdb_index
+               =gdb_index,=trace_info,=trace_abbrev,=trace_aranges]
+getopt_long
+, G-Float
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+ Global entries:
+    Global symbol table name: %s
+__gmon_start__
+, gnu calling convention
+GNU_CONFLICT
+GNU_CONFLICTSZ
+, GNU EABI
+GNU_EH_FRAME
+GNU_HASH
+GNU_LIBLIST
+GNU_LIBLISTSZ
+.gnu.linkonce.ia64unw.
+.gnu.linkonce.ia64unwi.
+.gnu.linkonce.wi.
+__gnu_objc_personality_v0
+GNU_PRELINKED
+GNU_RELRO
+GNU %s %s
+GNU_STACK
+GOT-indirect
+ GP_GROUP  %#06lx  self-contained %#06lx
+GPR %08lx  GP 0x
+GPR %08lx  GP 0x%lx
+ GROUPPERM
+  -g --section-groups    Display the section groups
+GUARANTEE_INIT
+GUARANTEE_START_INIT
+__gxx_personality_v0
+Hard float
+Hard float (double precision)
+Hard float (MIPS32r2 64-bit FPU)
+Hard float (single precision)
+Hard or soft float
+Harvard Universitys's machine-independent object format
+has children
+, has entry point
+   Header flags: 0x%08x
+hex-dump
+Hex dump of section '%s':
+  -h --file-header       Display the ELF file header
+  -H --help              Display this information
+, highgprs
+histogram
+Histogram for bucket list length (total of %lu buckets):
+Histogram for `.gnu.hash' bucket list length (total of %lu buckets):
+HP_BIND_DEPTH_FIRST
+HP_BIND_NONFATAL
+HP_BIND_NOW
+HP_BIND_NOW_COUNT
+HP_BIND_RESTRICTED
+HP_BIND_SYMBOLIC
+HP_BIND_VERBOSE
+HP_CHECKSUM
+HP_COMPAT_FILTERED
+(HP_complex_float128)
+(HP_complex_float80)
+HP_CORE_COMM
+HP_CORE_KERNEL
+HP_CORE_LOADABLE
+HP_CORE_MMF
+HP_CORE_NONE
+HP_CORE_PROC
+HP_CORE_SHM
+HP_CORE_STACK
+HP_CORE_UTSNAME
+HP_CORE_VERSION
+HP_DEBUG_CALLBACK
+HP_DEBUG_CALLBACK_BOR
+HP_DEBUG_PRIVATE
+HP_DLD_FLAGS
+HP_DLD_HOOK
+HP_FASTBIND
+HP_FILTERED
+HP_FILTER_TLS
+(HP_float128)
+(HP_float80)
+(HP_floathpintel)
+HP_GROUP
+HP_GST_EPLTREL
+HP_GST_EPLTRELSZ
+HP_GST_HASHVAL
+HP_GST_SIZE
+HP_GST_VERSION
+HP_HSL_ANNOT
+(HP_imaginary_float128)
+(HP_imaginary_float80)
+HP_LAZYLOAD
+HP_LOAD_MAP
+HP_MERGE_SHLIB_SEG
+HP_NEEDED
+HP_NODELETE
+HP_NO_ENVVAR
+HP - Non-Stop Kernel
+HP_OPAQUE
+HP_OPT_ANNOT
+hppa_process_unwind
+HP_PARALLEL
+HP_PREINIT
+HP_PREINITSZ
+HP_PROTECT_LINKAGE_TABLE
+HP_RPATH_FIRST
+HP_SHLIB_FIXED
+HP_STACK
+HP_TIME_STAMP
+HP_UX10_INIT
+HP_UX10_INITSZ
+HP_UX_interrupt_marker 
+<http://www.sourceware.org/bugzilla/>
+ HWAND     
+ HWOR      
+ HWPATCH   
+IA_64_ARCHEXT
+IA_64_EXT
+IA_64_PLT_RESERVE
+IA_64_PRIORITY_INIT
+ia64_process_unwind
+.IA_64.unwind
+IA_64_UNWIND
+.IA_64.unwind_info
+IBM S/390
+IBM System/370
+Icera Semiconductor Inc. Deep Execution Processor
+ IDENT     %#06lx  self-contained %#06lx
+IEEE 754
+ IGNORE_INT_VER
+  -I --histogram         Display histogram of bucket list lengths
+  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+Image fixups for needed library #%d: %s - ident: %lx
+    Image id: %s
+   Image id    : %s
+    Image name: %s
+Image relocs
+(imaginary float)
+Imagination Technologies META processor architecture
+(implementation defined: %s)
+  Index: %d  Cnt: %d  
+   [Index]    Name
+Index of archive %s: (%ld entries, 0x%lx bytes in the symbol table)
+ (indirect string, offset: 0x%s): %s
+Infineon Technologies 32-bit embedded cpu
+Infineon Technologies SLE9X core
+Infineon Technologies xc16x
+inflateEnd
+inflateInit_
+inflateReset
+], info at +0x%lx
+INFO LINK
+ INITFIRST
+ INITIALIZE
+  Initial value of 'is_stmt':  %d
+(inlined)
+Input file '%s' is not readable.
+Intel 80386
+Intel 80486
+Intel 8051 and variants
+Intel 80860
+Intel 90860
+Intel IA-64
+Intel K1OM
+Intel L1OM
+Interface Version: %s
+INTERNAL
+Internal error: DWARF version is not 2, 3 or 4.
+Internal error: failed to create format string to display program interpreter
+ INTERPOSE
+, interworking enabled
+*invalid*
+Invalid address size in %s section!
+Invalid CIE pointer %#08lx in FDE at %#08lx
+Invalid extension opcode form %s
+invalid index into symbol array
+Invalid length %#08lx in FDE at %#08lx
+Invalid maximum operations per insn.
+Invalid option '-%c'
+[invalid reg 13]
+[invalid reg 14]
+[invalid reg 15]
+Invalid sh_entsize
+    Invalid size
+_IO_getc
+_IO_putc
+_IO_stdin_used
+i < sizeof (buf)
+JSRDIRECT
+_Jv_RegisterClasses
+Key to Flags:
+L$49L$(u
++l$4+T$4
+L$@9O,vK
+   Language: %s
+LARGE_COM
+LARGE_COMMON
+Large_frame 
+    Last patch date: %.17s
+Lattice Mico32
+ LAZYLOAD
+ Lazy resolver
+, lazyswap
+   %ld      %s    [%s]
+, ledata
+   Length:        0x%s (%s)
+length %d [
+  Length:                              %ld
+  Length:                      %ld
+  Length:                   %ld
+ Length  Number     %% of total  Coverage
+len == i + 1
+L$H9L$0}2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+liblist string table
+Library list section '%s' contains %lu entries:
+Library rpath: [%s]
+Library runpath: [%s]
+Library soname: [%s]
+     Library              Time Stamp          Checksum   Version Flags
+libz.so.1
+  Line Base:                   %d
+ Line Number Statements:
+  Line Range:                  %d
+    Linker id: %s
+   Link flags  : 0x%016llx
+LINK ORDER
+   Link time: 
+Linux application
+Linux C6000
+Linux DSO
+ LOADFLTR
+ Local entries:
+    Location: 
+(location list)
+Location lists in %s section start at 0x%s
+Location list starting at offset 0x%lx is not terminated.
+, loongson-2e
+, loongson-2f
+, loongson-3a
+LOOS+%lx
+LOPROC+%lx
+LOPROC+%x
+LOUSER+%x
+L$P9O,vK
+  -l --program-headers   Display the program headers
+LSI Logic's 16-bit DSP processor
++\$l+T$l
+    <%lx>
+[%*.*lx]: 
+M2000 Reconfigurable RISC Microprocessor
+, m68000
+(machine address)
+  Machine:                           %s
+  Magic:   
+   Major id: %u,  minor id: %u
+   Manip date  : 
+, mapping symbols precede others
+, Maverick FP
+  Maximum Ops per Instruction: %d
+MAX Processor
+MCST Elbrus general purpose hardware architecture
+Microchip Technology dsPIC30F Digital Signal Controller
+Microcontroller
+, micromips
+MICROMIPS
+MICROMIPS, MIPS PIC
+Millicode_save_sr0 
+  Minimum Instruction Length:  %d
+, mips16
+, mips32
+, mips32r2
+, mips64
+, mips64r2
+(MIPS assembler)
+MIPS_AUX_DYNAMIC
+MIPS_AUXSYM
+MIPS_BASE_ADDRESS
+MIPS_COMPACT_SIZE
+MIPS_CONFLICT
+MIPS_CONFLICTNO
+MIPS_CONTENT
+MIPS_CXX_FLAGS
+MIPS_DEBUG
+MIPS_DELTACLASS
+MIPS_DELTA_CLASS
+MIPS_DELTA_CLASS_NO
+MIPS_DELTA_CLASSSYM
+MIPS_DELTA_CLASSSYM_NO
+MIPS_DELTADECL
+MIPS_DELTAINST
+MIPS_DELTA_INSTANCE
+MIPS_DELTA_INSTANCE_NO
+MIPS_DELTA_RELOC
+MIPS_DELTA_RELOC_NO
+MIPS_DELTASYM
+MIPS_DELTA_SYM
+MIPS_DELTA_SYM_NO
+MIPS_DENSE
+MIPS_DWARF
+MIPS_DYNSTR_ALIGN
+MIPS_EH_REGION
+MIPS_EVENTS
+MIPS_EXTSYM
+MIPS_FDESC
+MIPS_FLAGS
+MIPS_GOTSYM
+MIPS_GPTAB
+MIPS_GP_VALUE
+MIPS_HIDDEN_GOTIDX
+MIPS_HIPAGENO
+MIPS_ICHECKSUM
+MIPS_IFACE
+MIPS_INTERFACE
+MIPS_INTERFACE_SIZE
+MIPS_IVERSION
+MIPS_LIBLIST
+MIPS_LIBLISTNO
+MIPS_LINE
+MIPS_LOCAL_GOTIDX
+MIPS_LOCAL_GOTNO
+MIPS_LOCALPAGE_GOTIDX
+MIPS_LOCSTR
+MIPS_LOCSYM
+MIPS_MSYM
+MIPS_OPTIONS
+MIPS_OPTSYM
+MIPS_PACKAGE
+MIPS_PACKSYM
+MIPS_PDESC
+MIPS_PDR_EXCEPTION
+MIPS_PERF_SUFFIX
+MIPS_PIXIE
+MIPS_PIXIE_INIT
+MIPS PLT
+MIPS_PLTGOT
+MIPS_PROTECTED_GOTIDX
+MIPS R3000
+MIPS R4000 big-endian
+MIPS_REGINFO
+MIPS_RELD
+MIPS_RFDESC
+MIPS_RLD_MAP
+MIPS_RLD_TEXT_RESOLVE_ADDR
+MIPS_RLD_VERSION
+MIPS_RWPLT
+MIPS_SHDR
+MIPS_SYMBOL_LIB
+MIPS_SYMTABNO
+MIPS_TIME_STAMP
+MIPS_TRANSLATE
+MIPS_UCODE
+MIPS_UNREFEXTNO
+MIPS_WHIRL
+MIPS_XLATE
+MIPS_XLATE_DEBUG
+MIPS_XLATE_OLD
+Mismatched DW_CFA_restore_state
+Missing knowledge of 32-bit reloc types used in DWARF sections of machine number %d
+ MKTHREADS
+(Modula 2)
+    Module name    : %s
+ Module pointer
+ Module pointer (GNU extension)
+    Module version : %s
+more than one dynamic segment
+Morpho Techologies MT processor
+Motorola Coldfire
+Motorola M68HC12
+Motorola MC68HC05 Microcontroller
+Motorola MC68HC08 Microcontroller
+Motorola MC68HC11 Microcontroller
+Motorola MC68HC16 Microcontroller
+Motorola Star*Core processor
+     MOV FP, SP
+MPE_XL_interrupt_marker 
+MPextension_use
+MPextension_use_legacy
+     MV %s, B3
+Name index: %ld
+    Name: %s
+National Semiconductor 32000 series
+National Semiconductor CompactRISC
+National Semiconductor CRX microprocessor
+National Semiconductor's CR16
+NEC V800
+NEONv1 with Fused-MAC
+NetBSD-CORE
+NetBSD procinfo structure
+, new calling convention
+New Japan Radio (NJR) 16-bit DSP Processor
+New Japan Radio (NJR) 24-bit DSP Processor
+  -n --notes             Display the core notes (if present)
+(nocall)
+no children
+No comp units in %s section ?
+<no .debug_str section>
+nodefaults
+ NODEFLIB
+ NODELETE
+no .dynamic section in the dynamic segment
+, no function descriptors, constant gp
+, no kabp
+NO_LIBRARY_REPLACEMENT
+No location lists in .debug_info section!
+<no-name>
+(non-ANSI C)
+NONE (None)
+No note segments present in the core file.
+, non-PIC
+ NOP0BUFS
+No range lists in .debug_info section!
+, noreorder
+(normal)
+  No strings found in this section.
+Not allowed
+Not an ELF file - it has the wrong magic bytes at the start
+Not enough memory for a debug info array of %u entries
+Notes at offset 0x%08lx with length 0x%08lx:
+  Note: This section has relocations against it, but these have NOT been applied to this dump.
+ NOTE: This section has relocations against it, but these have NOT been applied to this dump.
+Nothing to do.
+(not inlined)
+Not needed object: [%s]
+Not used
+NO_UNRES_UNDEF
+Novell - Modesto
+No version information found in this file.
+  [Nr] Name
+  [Nr] Name              Type             Address           Offset
+  [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+NT_ARCH (architecture)
+NT_ARM_VFP (arm VFP registers)
+NT_AUXV (auxiliary vector)
+NT_FPREGSET (floating point registers)
+NT_FPREGS (floating point registers)
+NT_GNU_ABI_TAG (ABI version tag)
+NT_GNU_BUILD_ID (unique build ID bitstring)
+NT_GNU_GOLD_VERSION (gold version)
+NT_GNU_HWCAP (DSO-supplied software HWCAP info)
+NT_LWPSINFO (lwpsinfo_t structure)
+NT_LWPSTATUS (lwpstatus_t structure)
+NT_PPC_VMX (ppc Altivec registers)
+NT_PPC_VSX (ppc VSX registers)
+NT_PRPSINFO (prpsinfo structure)
+NT_PRSTATUS (prstatus structure)
+NT_PRXFPREG (user_xfpregs structure)
+NT_PSINFO (psinfo structure)
+NT_PSTATUS (pstatus structure)
+NT_S390_CTRS (s390 control registers)
+NT_S390_HIGH_GPRS (s390 upper register halves)
+NT_S390_PREFIX (s390 prefix register)
+NT_S390_TIMER (s390 timer register)
+NT_S390_TODCMP (s390 TOD comparator register)
+NT_S390_TODPREG (s390 TOD programmable register)
+NT_STAPSDT (SystemTap probe descriptors)
+NT_TASKSTRUCT (task structure)
+NT_VERSION (version)
+NT_VMS_EIDC (consistency check)
+NT_VMS_FPMODE (FP mode)
+NT_VMS_GSTNAM (sym table name)
+NT_VMS_IMGBID (build id)
+NT_VMS_IMGID (image id)
+NT_VMS_IMGNAM (image name)
+NT_VMS_LINKID (link id)
+NT_VMS_LINKTIME
+NT_VMS_LNM (language name)
+NT_VMS_MHD (module header)
+NT_VMS_ORIG_DYN
+NT_VMS_PATCHTIME
+NT_VMS_SRC (source files)
+NT_VMS_TITLE
+NT_WIN32PSTATUS (win32_pstatus structure)
+NT_X86_XSTATE (x86 XSAVE extended state)
+ NULL       %d %lx
+  Number of program headers:         %ld
+  Number of section headers:         %ld
+  Number TAG
+  Num Buc:    Value          Size   Type   Bind Vis      Ndx Name
+  Num Buc:    Value  Size   Type   Bind Vis      Ndx Name
+num_dump_sects >= num_cmdline_dump_sects
+(numeric_string)
+  Num:    Index       Value  Name
+ Num: Name                           BoundTo     Flags
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+NVIDIA CUDA architecture
+NXP Semiconductors TriMedia architecture family
+(Objective C)
+(Objective C++)
+, octeon
+, octeon2
+, odk first
+  O (extra OS processing required) o (OS specific), p (processor specific)
+  Offset: %#08lx  Link: %u (%s)
+  Offset:                      0x%lx
+Offset 0x%lx is bigger than .debug_loc section size.
+    Offset   Begin    End
+    Offset   Begin    End      Expression
+    Offset             Info             Type               Symbol's Value  Symbol's Name
+    Offset             Info             Type               Symbol's Value  Symbol's Name + Addend
+ Offset     Info    Type                Sym. Value  Symbol's Name
+ Offset     Info    Type                Sym. Value  Symbol's Name + Addend
+  Offset          Info           Type           Sym. Value    Sym. Name
+ Offset     Info    Type            Sym.Value  Sym. Name
+  Offset          Info           Type           Sym. Value    Sym. Name + Addend
+ Offset     Info    Type            Sym.Value  Sym. Name + Addend
+  Offset into .debug_info:  0x%lx
+  Offset into .debug_info section:     0x%lx
+  Offset into .debug_line:     0x%lx
+<offset is too big>
+    Offset	Name
+offset: %s 
+  Offset size:                 %d
+Offset %s used as value for DW_AT_import attribute of DIE at offset %lx is too big.
+Only DWARF 2 and 3 aranges are currently supported.
+Only DWARF 2 and 3 pubnames are currently supported
+Only DWARF version 2, 3 and 4 line info is currently supported.
+Only GNU extension to DWARF 4 of %s is currently supported.
+  Opcode Base:                 %d
+  Opcode %d has %d args
+ Opcodes:
+OpenRISC
+Operating System specific: %lx
+OPTIONAL
+ Options are:
+                         or deeper
+OS [0x%04x]
+  OS/ABI:                            %s
+OS (%*.*lx)
+OS NONCONF
+    OS: %s, ABI: %ld.%ld.%ld
+<OS specific>: %d
+OS Specific: (%x)
+<other>: %x
+out of memory
+Out of memory allocating 0x%lx bytes for %s
+Out of memory allocating dump request table.
+out of memory parsing relocs
+Out of memory reading long symbol names in archive
+Out of memory whilst trying to convert the archive symbol index
+Out of memory whilst trying to read archive index symbol table
+Out of memory whilst trying to read archive symbol index
+ P0IMAGE
+(packed_decimal)
+ PAD       
+PalmOS 2004
+PalmOS (reserved)
+PARENT     
+ PARINIT
+PARISC_ANNOT
+PARISC_ARCHEXT
+PARISC_DLKM
+PARISC_DOC
+PARISC_EXT
+PARISC_MILLI
+PARISC_STUBS
+PARISC_SYMEXTN
+.PARISC.unwind
+PARISC_UNWIND
+PARISC_WEAKORDER
+ PASSTHRU
+   Patch time: 
+PC-relative
+PCS_config
+  Personality routine: 
+picoJava
+PLT GOT:
+ PLT lazy resolver
+PLTPADSZ
+PLT_SIZE
+   Pointer Size:  %d
+  Pointer Size:             %d
+Pointer size + Segment size is not a power of two.
+  Pointer Size:          %u
+     pop {
+pop compact {
+pop {D%d
+pop frame {
+     pop {wR10
+pop {wR%d
+POSFLAG_1
+, position independent
+possibly corrupt ELF file header - it has a non-zero section header offset, but no section headers
+possibly corrupt ELF header - it has a non-zero program header offset, but no program headers
+ POSTFIX
+PowerPC64
+Power PC (old)
+PPC64_GLINK
+PPC64_OPD
+PPC64_OPDSZ
+PPC64_TLSOPT
+PPC_TLSOPT
+PRC[0x%04x]
+Prefer Accuracy
+Prefer Debug
+Prefer Size
+Prefer Speed
+PREINIT_ARRAY
+PREINIT_ARRAYSZ
+Primary GOT:
+__printf_chk
+@priunat
+(private)
+process_dynamic_section
+process_object
+<processor specific>: %d
+Processor Specific: %lx
+Processor Specific: (%x)
+PROC (%*.*lx)
+PROGBITS
+(program)
+program headers
+program-headers
+Program Headers:
+ program interpreter
+prologue
+  Prologue Length:             %d
+(protected)
+    Provider: %s
+Pseudo_SP_Set 
+  -p --string-dump=<number|name>
+PT_FIRSTMACH+%d
+PT_GETFPREGS (fpreg structure)
+PT_GETREGS (reg structure)
+(public)
+(pure_virtual)
+(Python)
+QUALCOMM DSP6 Processor
+(qualified)
+R_386_16
+R_386_32
+R_386_32PLT
+R_386_COPY
+R_386_GLOB_DAT
+R_386_GNU_VTENTRY
+R_386_GNU_VTINHERIT
+R_386_GOT32
+R_386_GOTOFF
+R_386_GOTPC
+R_386_IRELATIVE
+R_386_JUMP_SLOT
+R_386_NONE
+R_386_PC16
+R_386_PC32
+R_386_PC8
+R_386_PLT32
+R_386_RELATIVE
+R_386_TLS_DESC
+R_386_TLS_DESC_CALL
+R_386_TLS_DTPMOD32
+R_386_TLS_DTPOFF32
+R_386_TLS_GD
+R_386_TLS_GD_32
+R_386_TLS_GD_CALL
+R_386_TLS_GD_POP
+R_386_TLS_GD_PUSH
+R_386_TLS_GOTDESC
+R_386_TLS_GOTIE
+R_386_TLS_IE
+R_386_TLS_IE_32
+R_386_TLS_LDM
+R_386_TLS_LDM_32
+R_386_TLS_LDM_CALL
+R_386_TLS_LDM_POP
+R_386_TLS_LDM_PUSH
+R_386_TLS_LDO_32
+R_386_TLS_LE
+R_386_TLS_LE_32
+R_386_TLS_TPOFF
+R_386_TLS_TPOFF32
+R_386_USED_BY_INTEL_200
+R_390_12
+R_390_16
+R_390_20
+R_390_32
+R_390_64
+R_390_COPY
+R_390_GLOB_DAT
+R_390_GNU_VTENTRY
+R_390_GNU_VTINHERIT
+R_390_GOT12
+R_390_GOT16
+R_390_GOT20
+R_390_GOT32
+R_390_GOT64
+R_390_GOTENT
+R_390_GOTOFF16
+R_390_GOTOFF32
+R_390_GOTOFF64
+R_390_GOTPC
+R_390_GOTPCDBL
+R_390_GOTPLT12
+R_390_GOTPLT16
+R_390_GOTPLT20
+R_390_GOTPLT32
+R_390_GOTPLT64
+R_390_GOTPLTENT
+R_390_JMP_SLOT
+R_390_NONE
+R_390_PC16
+R_390_PC16DBL
+R_390_PC32
+R_390_PC32DBL
+R_390_PC64
+R_390_PLT16DBL
+R_390_PLT32
+R_390_PLT32DBL
+R_390_PLT64
+R_390_PLTOFF16
+R_390_PLTOFF32
+R_390_PLTOFF64
+R_390_RELATIVE
+R_390_TLS_DTPMOD
+R_390_TLS_DTPOFF
+R_390_TLS_GD32
+R_390_TLS_GD64
+R_390_TLS_GDCALL
+R_390_TLS_GOTIE12
+R_390_TLS_GOTIE20
+R_390_TLS_GOTIE32
+R_390_TLS_GOTIE64
+R_390_TLS_IE32
+R_390_TLS_IE64
+R_390_TLS_IEENT
+R_390_TLS_LDCALL
+R_390_TLS_LDM32
+R_390_TLS_LDM64
+R_390_TLS_LDO32
+R_390_TLS_LDO64
+R_390_TLS_LE32
+R_390_TLS_LE64
+R_390_TLS_LOAD
+R_390_TLS_TPOFF
+ R4KEOP_CHECKED
+ R4KEOP_CLEAN
+ R5KCVTL
+R_68K_16
+R_68K_32
+R_68K_COPY
+R_68K_GLOB_DAT
+R_68K_GNU_VTENTRY
+R_68K_GNU_VTINHERIT
+R_68K_GOT16
+R_68K_GOT16O
+R_68K_GOT32
+R_68K_GOT32O
+R_68K_GOT8
+R_68K_GOT8O
+R_68K_JMP_SLOT
+R_68K_NONE
+R_68K_PC16
+R_68K_PC32
+R_68K_PC8
+R_68K_PLT16
+R_68K_PLT16O
+R_68K_PLT32
+R_68K_PLT32O
+R_68K_PLT8
+R_68K_PLT8O
+R_68K_RELATIVE
+R_68K_TLS_DTPMOD32
+R_68K_TLS_DTPREL32
+R_68K_TLS_GD16
+R_68K_TLS_GD32
+R_68K_TLS_GD8
+R_68K_TLS_IE16
+R_68K_TLS_IE32
+R_68K_TLS_IE8
+R_68K_TLS_LDM16
+R_68K_TLS_LDM32
+R_68K_TLS_LDM8
+R_68K_TLS_LDO16
+R_68K_TLS_LDO32
+R_68K_TLS_LDO8
+R_68K_TLS_LE16
+R_68K_TLS_LE32
+R_68K_TLS_LE8
+R_68K_TLS_TPREL32
+R_860_32
+R_860_COPY
+R_860_GLOB_DAT
+R_860_HAGOT
+R_860_HAGOTOFF
+R_860_HAPC
+R_860_HIGH
+R_860_HIGHADJ
+R_860_HIGOT
+R_860_HIGOTOFF
+R_860_JUMP_SLOT
+R_860_LOGOT0
+R_860_LOGOT1
+R_860_LOGOTOFF0
+R_860_LOGOTOFF1
+R_860_LOGOTOFF2
+R_860_LOGOTOFF3
+R_860_LOPC
+R_860_LOW0
+R_860_LOW1
+R_860_LOW2
+R_860_LOW3
+R_860_NONE
+R_860_PC16
+R_860_PC26
+R_860_PLT26
+R_860_RELATIVE
+R_860_SPGOT0
+R_860_SPGOT1
+R_860_SPGOTOFF0
+R_860_SPGOTOFF1
+R_860_SPLIT0
+R_860_SPLIT1
+R_860_SPLIT2
+ R8KPFETCH
+R_960_12
+R_960_32
+R_960_IP24
+R_960_NONE
+R_960_OPTCALL
+R_960_OPTCALLX
+R_960_OPTCALLXA
+R_960_SUB
+ra      
+R_ALPHA_BRADDR
+R_ALPHA_BRSGP
+R_ALPHA_COPY
+R_ALPHA_DTPMOD64
+R_ALPHA_DTPREL16
+R_ALPHA_DTPREL64
+R_ALPHA_DTPRELHI
+R_ALPHA_DTPRELLO
+R_ALPHA_GLOB_DAT
+R_ALPHA_GOTDTPREL
+R_ALPHA_GOTTPREL
+R_ALPHA_GPDISP
+R_ALPHA_GPREL16
+R_ALPHA_GPREL32
+R_ALPHA_GPRELHIGH
+R_ALPHA_GPRELLOW
+R_ALPHA_HINT
+R_ALPHA_JMP_SLOT
+R_ALPHA_LITERAL
+R_ALPHA_LITUSE
+R_ALPHA_NONE
+R_ALPHA_REFLONG
+R_ALPHA_REFQUAD
+R_ALPHA_RELATIVE
+R_ALPHA_SREL16
+R_ALPHA_SREL32
+R_ALPHA_SREL64
+R_ALPHA_TLSGD
+R_ALPHA_TLSLDM
+R_ALPHA_TPREL16
+R_ALPHA_TPREL64
+R_ALPHA_TPRELHI
+R_ALPHA_TPRELLO
+Range lists in %s section start at 0x%lx
+R_ARC_32
+R_ARC_B22_PCREL
+R_ARC_B26
+R_ARC_NONE
+R_ARM_ABS12
+R_ARM_ABS16
+R_ARM_ABS32
+R_ARM_ABS32_NOI
+R_ARM_ABS8
+R_ARM_ALU_PC_G0
+R_ARM_ALU_PC_G0_NC
+R_ARM_ALU_PC_G1
+R_ARM_ALU_PC_G1_NC
+R_ARM_ALU_PC_G2
+R_ARM_ALU_PCREL15_8
+R_ARM_ALU_PCREL23_15
+R_ARM_ALU_PCREL7_0
+R_ARM_ALU_SB_G0
+R_ARM_ALU_SB_G0_NC
+R_ARM_ALU_SB_G1
+R_ARM_ALU_SB_G1_NC
+R_ARM_ALU_SB_G2
+R_ARM_ALU_SBREL_19_12
+R_ARM_ALU_SBREL_27_20
+R_ARM_BASE_ABS
+R_ARM_BASE_PREL
+R_ARM_BREL_ADJ
+R_ARM_CALL
+R_ARM_COPY
+R_ARM_GLOB_DAT
+R_ARM_GNU_VTENTRY
+R_ARM_GNU_VTINHERIT
+R_ARM_GOT_ABS
+R_ARM_GOT_BREL
+R_ARM_GOT_BREL12
+R_ARM_GOTOFF12
+R_ARM_GOTOFF32
+R_ARM_GOT_PREL
+R_ARM_GOTRELAX
+R_ARM_IRELATIVE
+R_ARM_JUMP24
+R_ARM_JUMP_SLOT
+R_ARM_LDC_PC_G0
+R_ARM_LDC_PC_G1
+R_ARM_LDC_PC_G2
+R_ARM_LDC_SB_G0
+R_ARM_LDC_SB_G1
+R_ARM_LDC_SB_G2
+R_ARM_LDR_PC_G0
+R_ARM_LDR_PC_G1
+R_ARM_LDR_PC_G2
+R_ARM_LDR_SB_G0
+R_ARM_LDR_SB_G1
+R_ARM_LDR_SB_G2
+R_ARM_LDR_SBREL_11_0
+R_ARM_LDRS_PC_G0
+R_ARM_LDRS_PC_G1
+R_ARM_LDRS_PC_G2
+R_ARM_LDRS_SB_G0
+R_ARM_LDRS_SB_G1
+R_ARM_LDRS_SB_G2
+R_ARM_ME_TOO
+R_ARM_MOVT_ABS
+R_ARM_MOVT_BREL
+R_ARM_MOVT_PREL
+R_ARM_MOVW_ABS_NC
+R_ARM_MOVW_BREL
+R_ARM_MOVW_BREL_NC
+R_ARM_MOVW_PREL_NC
+R_ARM_NONE
+R_ARM_PC24
+R_ARM_PLT32
+R_ARM_PLT32_ABS
+R_ARM_PREL31
+R_ARM_RABS32
+R_ARM_RBASE
+R_ARM_REL32
+R_ARM_REL32_NOI
+R_ARM_RELATIVE
+R_ARM_RPC24
+R_ARM_RREL32
+R_ARM_RSBREL32
+R_ARM_RXPC25
+R_ARM_SBREL31
+R_ARM_SBREL32
+R_ARM_TARGET1
+R_ARM_TARGET2
+R_ARM_THM_ABS5
+R_ARM_THM_ALU_PREL_11_0
+R_ARM_THM_CALL
+R_ARM_THM_JUMP11
+R_ARM_THM_JUMP19
+R_ARM_THM_JUMP24
+R_ARM_THM_JUMP6
+R_ARM_THM_JUMP8
+R_ARM_THM_MOVT_ABS
+R_ARM_THM_MOVT_BREL
+R_ARM_THM_MOVT_PREL
+R_ARM_THM_MOVW_ABS_NC
+R_ARM_THM_MOVW_BREL
+R_ARM_THM_MOVW_BREL_NC
+R_ARM_THM_MOVW_PREL_NC
+R_ARM_THM_PC12
+R_ARM_THM_PC8
+R_ARM_THM_RPC22
+R_ARM_THM_SWI8
+R_ARM_THM_TLS_CALL
+R_ARM_THM_TLS_DESCSEQ
+R_ARM_THM_XPC22
+R_ARM_TLS_CALL
+R_ARM_TLS_DESC
+R_ARM_TLS_DESCSEQ
+R_ARM_TLS_DTPMOD32
+R_ARM_TLS_DTPOFF32
+R_ARM_TLS_GD32
+R_ARM_TLS_GOTDESC
+R_ARM_TLS_IE12GP
+R_ARM_TLS_IE32
+R_ARM_TLS_LDM32
+R_ARM_TLS_LDO12
+R_ARM_TLS_LDO32
+R_ARM_TLS_LE12
+R_ARM_TLS_LE32
+R_ARM_TLS_TPOFF32
+R_ARM_V4BX
+R_ARM_XPC25
+R_AVR_13_PCREL
+R_AVR_16
+R_AVR_16_PM
+R_AVR_32
+R_AVR_6_ADIW
+R_AVR_7_PCREL
+R_AVR_CALL
+R_AVR_HH8_LDI
+R_AVR_HH8_LDI_NEG
+R_AVR_HH8_LDI_PM
+R_AVR_HH8_LDI_PM_NEG
+R_AVR_HI8_LDI
+R_AVR_HI8_LDI_GS
+R_AVR_HI8_LDI_NEG
+R_AVR_HI8_LDI_PM
+R_AVR_HI8_LDI_PM_NEG
+R_AVR_LDI
+R_AVR_LO8_LDI
+R_AVR_LO8_LDI_GS
+R_AVR_LO8_LDI_NEG
+R_AVR_LO8_LDI_PM
+R_AVR_LO8_LDI_PM_NEG
+R_AVR_MS8_LDI
+R_AVR_MS8_LDI_NEG
+R_AVR_NONE
+Raw dump of debug contents of section %s:
+__rawmemchr
+rB9T$8v<
+R_BFIN_ADD
+R_BFIN_ADDR
+R_BFIN_AND
+R_BFIN_BYTE2_DATA
+R_BFIN_BYTE4_DATA
+R_BFIN_BYTE_DATA
+R_BFIN_COMP
+R_BFIN_CONST
+R_BFIN_DIV
+R_BFIN_FUNCDESC
+R_BFIN_FUNCDESC_GOT17M4
+R_BFIN_FUNCDESC_GOTHI
+R_BFIN_FUNCDESC_GOTLO
+R_BFIN_FUNCDESC_GOTOFF17M4
+R_BFIN_FUNCDESC_GOTOFFHI
+R_BFIN_FUNCDESC_GOTOFFLO
+R_BFIN_FUNCDESC_VALUE
+R_BFIN_GNU_VTENTRY
+R_BFIN_GNU_VTINHERIT
+R_BFIN_GOT
+R_BFIN_GOT17M4
+R_BFIN_GOTHI
+R_BFIN_GOTLO
+R_BFIN_GOTOFF17M4
+R_BFIN_GOTOFFHI
+R_BFIN_GOTOFFLO
+R_BFIN_HUIMM16
+R_BFIN_HWPAGE
+R_BFIN_LAND
+R_BFIN_LEN
+R_BFIN_LOR
+R_BFIN_LSHIFT
+R_BFIN_LUIMM16
+R_BFIN_MOD
+R_BFIN_MULT
+R_BFIN_NEG
+R_BFIN_OR
+R_BFIN_PAGE
+R_BFIN_PCREL10
+R_BFIN_PCREL11
+R_BFIN_PCREL12_JUMP
+R_BFIN_PCREL12_JUMP_S
+R_BFIN_PCREL24
+R_BFIN_PCREL24_CALL_X
+R_BFIN_PCREL24_JUMP_L
+R_BFIN_PCREL24_JUMP_X
+R_BFIN_PCREL5M2
+R_BFIN_PLTPC
+R_BFIN_PUSH
+R_BFIN_RIMM16
+R_BFIN_RSHIFT
+R_BFIN_SUB
+R_BFIN_UNUSED0
+R_BFIN_UNUSED1
+R_BFIN_UNUSEDB
+R_BFIN_UNUSEDC
+R_BFIN_VAR_EQ_SYMB
+R_BFIN_XOR
+R_C6000_ABS16
+R_C6000_ABS32
+R_C6000_ABS8
+R_C6000_ABS_H16
+R_C6000_ABS_L16
+R_C6000_ABS_S16
+R_C6000_ALIGN
+R_C6000_COPY
+R_C6000_DSBT_INDEX
+R_C6000_EHTYPE
+R_C6000_FPHEAD
+R_C6000_JUMP_SLOT
+R_C6000_NOCMP
+R_C6000_NONE
+R_C6000_PCR_H16
+R_C6000_PCR_L16
+R_C6000_PCR_S10
+R_C6000_PCR_S12
+R_C6000_PCR_S21
+R_C6000_PCR_S7
+R_C6000_PREL31
+R_C6000_SBR_GOT_H16_W
+R_C6000_SBR_GOT_L16_W
+R_C6000_SBR_GOT_U15_W
+R_C6000_SBR_H16_B
+R_C6000_SBR_H16_H
+R_C6000_SBR_H16_W
+R_C6000_SBR_L16_B
+R_C6000_SBR_L16_H
+R_C6000_SBR_L16_W
+R_C6000_SBR_S16
+R_C6000_SBR_U15_B
+R_C6000_SBR_U15_H
+R_C6000_SBR_U15_W
+R_CR16_ABS20
+R_CR16_ABS24
+R_CR16_DISP16
+R_CR16_DISP24
+R_CR16_DISP24a
+R_CR16_DISP4
+R_CR16_DISP8
+R_CR16_GLOB_DAT
+R_CR16_GOTC_REGREL20
+R_CR16_GOT_REGREL20
+R_CR16_IMM16
+R_CR16_IMM20
+R_CR16_IMM24
+R_CR16_IMM32
+R_CR16_IMM32a
+R_CR16_IMM4
+R_CR16_IMM8
+R_CR16_NONE
+R_CR16_NUM16
+R_CR16_NUM32
+R_CR16_NUM32a
+R_CR16_NUM8
+R_CR16_REGREL14
+R_CR16_REGREL14a
+R_CR16_REGREL16
+R_CR16_REGREL20
+R_CR16_REGREL20a
+R_CR16_REGREL4
+R_CR16_REGREL4a
+R_CR16_SWITCH16
+R_CR16_SWITCH32
+R_CR16_SWITCH8
+R_CRIS_16
+R_CRIS_16_DTPREL
+R_CRIS_16_GOT
+R_CRIS_16_GOT_GD
+R_CRIS_16_GOTPLT
+R_CRIS_16_GOT_TPREL
+R_CRIS_16_PCREL
+R_CRIS_16_TPREL
+R_CRIS_32
+R_CRIS_32_DTPREL
+R_CRIS_32_GD
+R_CRIS_32_GOT
+R_CRIS_32_GOT_GD
+R_CRIS_32_GOTPLT
+R_CRIS_32_GOTREL
+R_CRIS_32_GOT_TPREL
+R_CRIS_32_IE
+R_CRIS_32_PCREL
+R_CRIS_32_PLT_GOTREL
+R_CRIS_32_PLT_PCREL
+R_CRIS_32_TPREL
+R_CRIS_8
+R_CRIS_8_PCREL
+R_CRIS_COPY
+R_CRIS_DTP
+R_CRIS_DTPMOD
+R_CRIS_GLOB_DAT
+R_CRIS_GNU_VTENTRY
+R_CRIS_GNU_VTINHERIT
+R_CRIS_JUMP_SLOT
+R_CRIS_NONE
+R_CRIS_RELATIVE
+R_CRX_ABS16
+R_CRX_ABS32
+R_CRX_IMM16
+R_CRX_IMM32
+R_CRX_NONE
+R_CRX_NUM16
+R_CRX_NUM32
+R_CRX_NUM8
+R_CRX_REGREL12
+R_CRX_REGREL22
+R_CRX_REGREL28
+R_CRX_REGREL32
+R_CRX_REL16
+R_CRX_REL24
+R_CRX_REL32
+R_CRX_REL4
+R_CRX_REL8
+R_CRX_REL8_CMP
+R_CRX_SWITCH16
+R_CRX_SWITCH32
+R_CRX_SWITCH8
+R_D10V_10_PCREL_L
+R_D10V_10_PCREL_R
+R_D10V_16
+R_D10V_18
+R_D10V_18_PCREL
+R_D10V_32
+R_D10V_GNU_VTENTRY
+R_D10V_GNU_VTINHERIT
+R_D10V_NONE
+R_D30V_15
+R_D30V_15_PCREL
+R_D30V_15_PCREL_R
+R_D30V_21
+R_D30V_21_PCREL
+R_D30V_21_PCREL_R
+R_D30V_32
+R_D30V_32_NORMAL
+R_D30V_32_PCREL
+R_D30V_6
+R_D30V_9_PCREL
+R_D30V_9_PCREL_R
+R_D30V_NONE
+R_DLX_GNU_VTENTRY
+R_DLX_GNU_VTINHERIT
+R_DLX_NONE
+R_DLX_RELOC_16
+R_DLX_RELOC_16_HI
+R_DLX_RELOC_16_LO
+R_DLX_RELOC_16_PCREL
+R_DLX_RELOC_26_PCREL
+R_DLX_RELOC_32
+R_DLX_RELOC_8
+r%d (%s)
+, reduced fp model
+Refuse to unwind
+ REGINFO    
+  Registers restored: 
+RELACOUNT
+RELCOUNT
+, relocatable
+, relocatable executable
+, relocatable-lib
+, relocatable module
+relocated-dump
+Relocation section 
+REL (Relocatable file)
+ REL_SEG_OFF
+Renesas H8/300
+Renesas H8/300H
+Renesas H8/500
+Renesas H8S
+Renesas M16C series microprocessors
+Renesas M32c
+Renesas M32R (formerly Mitsubishi M32r)
+Renesas R32C series microprocessors
+Renesas RX
+Renesas / SuperH SH
+Renesas v850
+Report bugs to %s
+      [Requesting program interpreter: %s]
+REQUICKSTART
+REQUICKSTARTED
+ REQUIRE_MINOR
+  [reserved]
+     [Reserved]
+ Reserved entries:
+Reserved length value (0x%s) found in section %s
+  Restore stack from frame pointer
+     RETURN
+  Return address column: %d
+  Return register: %s
+R_FR30_10_IN_8
+R_FR30_12_PCREL
+R_FR30_20
+R_FR30_32
+R_FR30_48
+R_FR30_6_IN_4
+R_FR30_8
+R_FR30_8_IN_8
+R_FR30_9_IN_8
+R_FR30_9_PCREL
+R_FR30_GNU_VTENTRY
+R_FR30_GNU_VTINHERIT
+R_FR30_NONE
+R_FRV_32
+R_FRV_FUNCDESC
+R_FRV_FUNCDESC_GOT12
+R_FRV_FUNCDESC_GOTHI
+R_FRV_FUNCDESC_GOTLO
+R_FRV_FUNCDESC_GOTOFF12
+R_FRV_FUNCDESC_GOTOFFHI
+R_FRV_FUNCDESC_GOTOFFLO
+R_FRV_FUNCDESC_VALUE
+R_FRV_GETTLSOFF
+R_FRV_GETTLSOFF_RELAX
+R_FRV_GNU_VTENTRY
+R_FRV_GNU_VTINHERIT
+R_FRV_GOT12
+R_FRV_GOTHI
+R_FRV_GOTLO
+R_FRV_GOTOFF12
+R_FRV_GOTOFFHI
+R_FRV_GOTOFFLO
+R_FRV_GOTTLSDESC12
+R_FRV_GOTTLSDESCHI
+R_FRV_GOTTLSDESCLO
+R_FRV_GOTTLSOFF12
+R_FRV_GOTTLSOFFHI
+R_FRV_GOTTLSOFFLO
+R_FRV_GPREL12
+R_FRV_GPREL32
+R_FRV_GPRELHI
+R_FRV_GPRELLO
+R_FRV_GPRELU12
+R_FRV_HI16
+R_FRV_LABEL16
+R_FRV_LABEL24
+R_FRV_LO16
+R_FRV_NONE
+R_FRV_TLSDESC_RELAX
+R_FRV_TLSDESC_VALUE
+R_FRV_TLSMOFF
+R_FRV_TLSMOFF12
+R_FRV_TLSMOFFHI
+R_FRV_TLSMOFFLO
+R_FRV_TLSOFF
+R_FRV_TLSOFF_RELAX
+R_H8_ABS32
+R_H8_ABS32A16
+R_H8_BPOS
+R_H8_DIR16
+R_H8_DIR16A8
+R_H8_DIR16R8
+R_H8_DIR16S
+R_H8_DIR16S_20
+R_H8_DIR16S_24
+R_H8_DIR16S_28
+R_H8_DIR16S_32
+R_H8_DIR16U
+R_H8_DIR24
+R_H8_DIR24_16
+R_H8_DIR24_20
+R_H8_DIR24A8
+R_H8_DIR24R8
+R_H8_DIR24U
+R_H8_DIR24U_16
+R_H8_DIR24U_20
+R_H8_DIR32
+R_H8_DIR32_16
+R_H8_DIR32_24
+R_H8_DIR32_28
+R_H8_DIR32A16
+R_H8_DIR32U
+R_H8_DIR32U_16
+R_H8_DIR32U_20
+R_H8_DIR32U_24
+R_H8_DIR32U_28
+R_H8_DIR8
+R_H8_DIR8U
+R_H8_DIR8Z_16
+R_H8_DIR8Z_20
+R_H8_DIR8Z_24
+R_H8_DIR8Z_28
+R_H8_DIR8Z_32
+R_H8_NONE
+R_H8_OPadd
+R_H8_OPdiv
+R_H8_OPhigh
+R_H8_OPhword
+R_H8_OPlow
+R_H8_OPlword
+R_H8_OPmul
+R_H8_OPneg
+R_H8_OPsctsize
+R_H8_OPscttop
+R_H8_OPshla
+R_H8_OPshra
+R_H8_OPsub
+R_H8_PCREL16
+R_H8_PCREL8
+R_H8_SYM
+R_I370_ADDR12
+R_I370_ADDR16
+R_I370_ADDR31
+R_I370_ADDR32
+R_I370_ADDR8
+R_I370_COPY
+R_I370_NONE
+R_I370_REL12
+R_I370_REL31
+R_I370_REL32
+R_I370_REL8
+R_I370_RELATIVE
+R_IA64_COPY
+R_IA64_DIR32LSB
+R_IA64_DIR32MSB
+R_IA64_DIR64LSB
+R_IA64_DIR64MSB
+R_IA64_DTPMOD64LSB
+R_IA64_DTPMOD64MSB
+R_IA64_DTPREL14
+R_IA64_DTPREL22
+R_IA64_DTPREL32LSB
+R_IA64_DTPREL32MSB
+R_IA64_DTPREL64I
+R_IA64_DTPREL64LSB
+R_IA64_DTPREL64MSB
+R_IA64_FPTR32LSB
+R_IA64_FPTR32MSB
+R_IA64_FPTR64I
+R_IA64_FPTR64LSB
+R_IA64_FPTR64MSB
+R_IA64_GPREL22
+R_IA64_GPREL32LSB
+R_IA64_GPREL32MSB
+R_IA64_GPREL64I
+R_IA64_GPREL64LSB
+R_IA64_GPREL64MSB
+R_IA64_IMM14
+R_IA64_IMM22
+R_IA64_IMM64
+R_IA64_IPLTLSB
+R_IA64_IPLTMSB
+R_IA64_LDXMOV
+R_IA64_LTOFF22
+R_IA64_LTOFF22X
+R_IA64_LTOFF64I
+R_IA64_LTOFF_DTPMOD22
+R_IA64_LTOFF_DTPREL22
+R_IA64_LTOFF_FPTR22
+R_IA64_LTOFF_FPTR32LSB
+R_IA64_LTOFF_FPTR32MSB
+R_IA64_LTOFF_FPTR64I
+R_IA64_LTOFF_FPTR64LSB
+R_IA64_LTOFF_FPTR64MSB
+R_IA64_LTOFF_TPREL22
+R_IA64_LTV32LSB
+R_IA64_LTV32MSB
+R_IA64_LTV64LSB
+R_IA64_LTV64MSB
+R_IA64_NONE
+R_IA64_PCREL21B
+R_IA64_PCREL21BI
+R_IA64_PCREL21F
+R_IA64_PCREL21M
+R_IA64_PCREL22
+R_IA64_PCREL32LSB
+R_IA64_PCREL32MSB
+R_IA64_PCREL60B
+R_IA64_PCREL64I
+R_IA64_PCREL64LSB
+R_IA64_PCREL64MSB
+R_IA64_PLTOFF22
+R_IA64_PLTOFF64I
+R_IA64_PLTOFF64LSB
+R_IA64_PLTOFF64MSB
+R_IA64_REL32LSB
+R_IA64_REL32MSB
+R_IA64_REL64LSB
+R_IA64_REL64MSB
+R_IA64_SECREL32LSB
+R_IA64_SECREL32MSB
+R_IA64_SECREL64LSB
+R_IA64_SECREL64MSB
+R_IA64_SEGREL
+R_IA64_SEGREL32LSB
+R_IA64_SEGREL32MSB
+R_IA64_SEGREL64LSB
+R_IA64_SEGREL64MSB
+R_IA64_TPREL14
+R_IA64_TPREL22
+R_IA64_TPREL64I
+R_IA64_TPREL64LSB
+R_IA64_TPREL64MSB
+R_IA64_VMS_ACC_ADD
+R_IA64_VMS_ACC_AND
+R_IA64_VMS_ACC_ASH
+R_IA64_VMS_ACC_DIV
+R_IA64_VMS_ACC_EOR
+R_IA64_VMS_ACC_IOR
+R_IA64_VMS_ACC_LOAD
+R_IA64_VMS_ACC_MUL
+R_IA64_VMS_ACC_STO16LSH
+R_IA64_VMS_ACC_STO32LSH
+R_IA64_VMS_ACC_STO64LSH
+R_IA64_VMS_ACC_STO8
+R_IA64_VMS_ACC_SUB
+R_IA64_VMS_CALL_SIGNATURE
+R_IA64_VMS_DIR16LSB
+R_IA64_VMS_DIR8
+R_IA64_VMS_EXECLET_DATA
+R_IA64_VMS_EXECLET_FUNC
+R_IA64_VMS_FIX16
+R_IA64_VMS_FIX32
+R_IA64_VMS_FIX64
+R_IA64_VMS_FIX8
+R_IA64_VMS_FIXFD
+R_IP2K_16
+R_IP2K_32
+R_IP2K_ADDR16CJP
+R_IP2K_BANK
+R_IP2K_EX8DATA
+R_IP2K_FR9
+R_IP2K_FR_OFFSET
+R_IP2K_HI8DATA
+R_IP2K_HI8INSN
+R_IP2K_LO8DATA
+R_IP2K_LO8INSN
+R_IP2K_NONE
+R_IP2K_PAGE3
+R_IP2K_PC_SKIP
+R_IP2K_TEXT
+R_IQ2000_16
+R_IQ2000_26
+R_IQ2000_32
+R_IQ2000_32_DEBUG
+R_IQ2000_GNU_VTENTRY
+R_IQ2000_GNU_VTINHERIT
+R_IQ2000_HI16
+R_IQ2000_LO16
+R_IQ2000_NONE
+R_IQ2000_OFFSET_16
+R_IQ2000_OFFSET_21
+R_IQ2000_PC16
+R_IQ2000_UHI16
+RLD_ORDER_SAFE
+R_LM32_16
+R_LM32_16_GOT
+R_LM32_32
+R_LM32_8
+R_LM32_BRANCH
+R_LM32_CALL
+R_LM32_COPY
+R_LM32_GLOB_DAT
+R_LM32_GNU_VTENTRY
+R_LM32_GNU_VTINHERIT
+R_LM32_GOTOFF_HI16
+R_LM32_GOTOFF_LO16
+R_LM32_GPREL16
+R_LM32_HI16
+R_LM32_JMP_SLOT
+R_LM32_LO16
+R_LM32_NONE
+R_LM32_RELATIVE
+R_M32C_16
+R_M32C_16_PCREL
+R_M32C_24
+R_M32C_32
+R_M32C_8
+R_M32C_8_PCREL
+R_M32C_HI16
+R_M32C_HI8
+R_M32C_LO16
+R_M32C_NONE
+R_M32C_RL_1ADDR
+R_M32C_RL_2ADDR
+R_M32C_RL_JUMP
+R_M32R_10_PCREL
+R_M32R_10_PCREL_RELA
+R_M32R_16
+R_M32R_16_RELA
+R_M32R_18_PCREL
+R_M32R_18_PCREL_RELA
+R_M32R_24
+R_M32R_24_RELA
+R_M32R_26_PCREL
+R_M32R_26_PCREL_RELA
+R_M32R_26_PLTREL
+R_M32R_32
+R_M32R_32_RELA
+R_M32R_COPY
+R_M32R_GLOB_DAT
+R_M32R_GNU_VTENTRY
+R_M32R_GNU_VTINHERIT
+R_M32R_GOT16_HI_SLO
+R_M32R_GOT16_HI_ULO
+R_M32R_GOT16_LO
+R_M32R_GOT24
+R_M32R_GOTOFF
+R_M32R_GOTOFF_HI_SLO
+R_M32R_GOTOFF_HI_ULO
+R_M32R_GOTOFF_LO
+R_M32R_GOTPC24
+R_M32R_GOTPC_HI_SLO
+R_M32R_GOTPC_HI_ULO
+R_M32R_GOTPC_LO
+R_M32R_HI16_SLO
+R_M32R_HI16_SLO_RELA
+R_M32R_HI16_ULO
+R_M32R_HI16_ULO_RELA
+R_M32R_JMP_SLOT
+R_M32R_LO16
+R_M32R_LO16_RELA
+R_M32R_NONE
+R_M32R_REL32
+R_M32R_RELA_GNU_VTENTRY
+R_M32R_RELA_GNU_VTINHERIT
+R_M32R_RELATIVE
+R_M32R_SDA16
+R_M32R_SDA16_RELA
+R_M68HC11_16
+R_M68HC11_24
+R_M68HC11_32
+R_M68HC11_3B
+R_M68HC11_8
+R_M68HC11_GNU_VTENTRY
+R_M68HC11_GNU_VTINHERIT
+R_M68HC11_HI8
+R_M68HC11_LO16
+R_M68HC11_LO8
+R_M68HC11_NONE
+R_M68HC11_PAGE
+R_M68HC11_PCREL_16
+R_M68HC11_PCREL_8
+R_M68HC11_RL_GROUP
+R_M68HC11_RL_JUMP
+R_MCORE_ADDR32
+R_MCORE_COPY
+R_MCORE_GLOB_DAT
+R_MCORE_GNU_VTENTRY
+R_MCORE_GNU_VTINHERIT
+R_MCORE_JUMP_SLOT
+R_MCORE_NONE
+R_MCORE_PCREL32
+R_MCORE_PCRELIMM11BY2
+R_MCORE_PCRELIMM4BY2
+R_MCORE_PCRELIMM8BY4
+R_MCORE_PCRELJSR_IMM11BY2
+R_MCORE_RELATIVE
+R_MEP_16
+R_MEP_32
+R_MEP_ADDR24A4
+R_MEP_GNU_VTENTRY
+R_MEP_GNU_VTINHERIT
+R_MEP_GPREL
+R_MEP_HI16S
+R_MEP_HI16U
+R_MEP_LOW16
+R_MEP_NONE
+R_MEP_PCABS24A2
+R_MEP_PCREL12A2
+R_MEP_PCREL17A2
+R_MEP_PCREL24A2
+R_MEP_PCREL8A2
+R_MEP_TPREL
+R_MEP_TPREL7
+R_MEP_TPREL7A2
+R_MEP_TPREL7A4
+R_MEP_UIMM24
+R_MICROBLAZE_32
+R_MICROBLAZE_32_LO
+R_MICROBLAZE_32_PCREL
+R_MICROBLAZE_32_PCREL_LO
+R_MICROBLAZE_32_SYM_OP_SYM
+R_MICROBLAZE_64
+R_MICROBLAZE_64_NONE
+R_MICROBLAZE_64_PCREL
+R_MICROBLAZE_COPY
+R_MICROBLAZE_GLOB_DAT
+R_MICROBLAZE_GNU_VTENTRY
+R_MICROBLAZE_GNU_VTINHERIT
+R_MICROBLAZE_GOT_64
+R_MICROBLAZE_GOTOFF_32
+R_MICROBLAZE_GOTOFF_64
+R_MICROBLAZE_GOTPC_64
+R_MICROBLAZE_JUMP_SLOT
+R_MICROBLAZE_NONE
+R_MICROBLAZE_PLT_64
+R_MICROBLAZE_REL
+R_MICROBLAZE_SRO32
+R_MICROBLAZE_SRW32
+R_MICROMIPS_26_S1
+R_MICROMIPS_CALL16
+R_MICROMIPS_CALL_HI16
+R_MICROMIPS_CALL_LO16
+R_MICROMIPS_GOT16
+R_MICROMIPS_GOT_DISP
+R_MICROMIPS_GOT_HI16
+R_MICROMIPS_GOT_LO16
+R_MICROMIPS_GOT_OFST
+R_MICROMIPS_GOT_PAGE
+R_MICROMIPS_GPREL16
+R_MICROMIPS_GPREL7_S2
+R_MICROMIPS_HI0_LO16
+R_MICROMIPS_HI16
+R_MICROMIPS_HIGHER
+R_MICROMIPS_HIGHEST
+R_MICROMIPS_JALR
+R_MICROMIPS_LITERAL
+R_MICROMIPS_LO16
+R_MICROMIPS_PC10_S1
+R_MICROMIPS_PC16_S1
+R_MICROMIPS_PC23_S2
+R_MICROMIPS_PC7_S1
+R_MICROMIPS_SCN_DISP
+R_MICROMIPS_SUB
+R_MICROMIPS_TLS_DTPREL_HI16
+R_MICROMIPS_TLS_DTPREL_LO16
+R_MICROMIPS_TLS_GD
+R_MICROMIPS_TLS_GOTTPREL
+R_MICROMIPS_TLS_LDM
+R_MICROMIPS_TLS_TPREL_HI16
+R_MICROMIPS_TLS_TPREL_LO16
+R_MIPS_16
+R_MIPS16_26
+R_MIPS16_CALL16
+R_MIPS16_GOT16
+R_MIPS16_GPREL
+R_MIPS16_HI16
+R_MIPS16_LO16
+R_MIPS16_TLS_DTPREL_HI16
+R_MIPS16_TLS_DTPREL_LO16
+R_MIPS16_TLS_GD
+R_MIPS16_TLS_GOTTPREL
+R_MIPS16_TLS_LDM
+R_MIPS16_TLS_TPREL_HI16
+R_MIPS16_TLS_TPREL_LO16
+R_MIPS_26
+R_MIPS_32
+R_MIPS_64
+R_MIPS_ADD_IMMEDIATE
+R_MIPS_CALL16
+R_MIPS_CALL_HI16
+R_MIPS_CALL_LO16
+R_MIPS_COPY
+R_MIPS_DELETE
+R_MIPS_GLOB_DAT
+R_MIPS_GNU_REL16_S2
+R_MIPS_GNU_VTENTRY
+R_MIPS_GNU_VTINHERIT
+R_MIPS_GOT16
+R_MIPS_GOT_DISP
+R_MIPS_GOT_HI16
+R_MIPS_GOT_LO16
+R_MIPS_GOT_OFST
+R_MIPS_GOT_PAGE
+R_MIPS_GPREL16
+R_MIPS_GPREL32
+R_MIPS_HI16
+R_MIPS_HIGHER
+R_MIPS_HIGHEST
+R_MIPS_INSERT_A
+R_MIPS_INSERT_B
+R_MIPS_JALR
+R_MIPS_JUMP_SLOT
+R_MIPS_LITERAL
+R_MIPS_LO16
+R_MIPS_NONE
+R_MIPS_PC16
+R_MIPS_PC32
+R_MIPS_PJUMP
+R_MIPS_REL16
+R_MIPS_REL32
+R_MIPS_RELGOT
+R_MIPS_SCN_DISP
+R_MIPS_SHIFT5
+R_MIPS_SHIFT6
+R_MIPS_SUB
+R_MIPS_TLS_DTPMOD32
+R_MIPS_TLS_DTPMOD64
+R_MIPS_TLS_DTPREL32
+R_MIPS_TLS_DTPREL64
+R_MIPS_TLS_DTPREL_HI16
+R_MIPS_TLS_DTPREL_LO16
+R_MIPS_TLS_GD
+R_MIPS_TLS_GOTTPREL
+R_MIPS_TLS_LDM
+R_MIPS_TLS_TPREL32
+R_MIPS_TLS_TPREL64
+R_MIPS_TLS_TPREL_HI16
+R_MIPS_TLS_TPREL_LO16
+R_MIPS_UNUSED1
+R_MIPS_UNUSED2
+R_MIPS_UNUSED3
+R_MMIX_16
+R_MMIX_24
+R_MMIX_32
+R_MMIX_64
+R_MMIX_8
+R_MMIX_ADDR19
+R_MMIX_ADDR27
+R_MMIX_BASE_PLUS_OFFSET
+R_MMIX_CBRANCH
+R_MMIX_CBRANCH_1
+R_MMIX_CBRANCH_2
+R_MMIX_CBRANCH_3
+R_MMIX_CBRANCH_J
+R_MMIX_GETA
+R_MMIX_GETA_1
+R_MMIX_GETA_2
+R_MMIX_GETA_3
+R_MMIX_GNU_VTENTRY
+R_MMIX_GNU_VTINHERIT
+R_MMIX_JMP
+R_MMIX_JMP_1
+R_MMIX_JMP_2
+R_MMIX_JMP_3
+R_MMIX_LOCAL
+R_MMIX_NONE
+R_MMIX_PC_16
+R_MMIX_PC_24
+R_MMIX_PC_32
+R_MMIX_PC_64
+R_MMIX_PC_8
+R_MMIX_PUSHJ
+R_MMIX_PUSHJ_1
+R_MMIX_PUSHJ_2
+R_MMIX_PUSHJ_3
+R_MMIX_PUSHJ_STUBBABLE
+R_MMIX_REG
+R_MMIX_REG_OR_BYTE
+R_MN10200_16
+R_MN10200_24
+R_MN10200_32
+R_MN10200_8
+R_MN10200_NONE
+R_MN10200_PCREL16
+R_MN10200_PCREL24
+R_MN10200_PCREL8
+R_MN10300_16
+R_MN10300_24
+R_MN10300_32
+R_MN10300_8
+R_MN10300_ALIGN
+R_MN10300_COPY
+R_MN10300_GLOB_DAT
+R_MN10300_GNU_VTENTRY
+R_MN10300_GNU_VTINHERIT
+R_MN10300_GOT16
+R_MN10300_GOT24
+R_MN10300_GOT32
+R_MN10300_GOTOFF16
+R_MN10300_GOTOFF24
+R_MN10300_GOTOFF32
+R_MN10300_GOTPC16
+R_MN10300_GOTPC32
+R_MN10300_JMP_SLOT
+R_MN10300_NONE
+R_MN10300_PCREL16
+R_MN10300_PCREL32
+R_MN10300_PCREL8
+R_MN10300_PLT16
+R_MN10300_PLT32
+R_MN10300_RELATIVE
+R_MN10300_SYM_DIFF
+R_MOXIE_32
+R_MOXIE_NONE
+R_MOXIE_PCREL10
+R_MSP430_10_PCREL
+R_MSP430_16
+R_MSP430_16_BYTE
+R_MSP430_16_PCREL
+R_MSP430_16_PCREL_BYTE
+R_MSP430_2X_PCREL
+R_MSP430_32
+R_MSP430_NONE
+R_MSP430_RL_PCREL
+R_MT_32_PCREL
+R_MT_HI16
+R_MT_LO16
+R_MT_NONE
+R_MT_PC16
+R_OR32_16
+R_OR32_32
+R_OR32_8
+R_OR32_CONST
+R_OR32_CONSTH
+R_OR32_GNU_VTENTRY
+R_OR32_GNU_VTINHERIT
+R_OR32_JUMPTARG
+R_OR32_NONE
+(row major)
+R_PARISC_BASEREL14DR
+R_PARISC_BASEREL14F
+R_PARISC_BASEREL14R
+R_PARISC_BASEREL14WR
+R_PARISC_BASEREL17F
+R_PARISC_BASEREL17R
+R_PARISC_BASEREL21L
+R_PARISC_COPY
+R_PARISC_DIR14DR
+R_PARISC_DIR14F
+R_PARISC_DIR14R
+R_PARISC_DIR14WR
+R_PARISC_DIR16DF
+R_PARISC_DIR16F
+R_PARISC_DIR16WF
+R_PARISC_DIR17F
+R_PARISC_DIR17R
+R_PARISC_DIR21L
+R_PARISC_DIR32
+R_PARISC_DIR64
+R_PARISC_DLTIND14DR
+R_PARISC_DLTIND14F
+R_PARISC_DLTIND14R
+R_PARISC_DLTIND14WR
+R_PARISC_DLTIND21L
+R_PARISC_DLTREL14DR
+R_PARISC_DLTREL14F
+R_PARISC_DLTREL14R
+R_PARISC_DLTREL14WR
+R_PARISC_DLTREL21L
+R_PARISC_DPREL14DR
+R_PARISC_DPREL14F
+R_PARISC_DPREL14R
+R_PARISC_DPREL14WR
+R_PARISC_DPREL21L
+R_PARISC_EPLT
+R_PARISC_FPTR64
+R_PARISC_GNU_VTENTRY
+R_PARISC_GNU_VTINHERIT
+R_PARISC_GPREL16DF
+R_PARISC_GPREL16F
+R_PARISC_GPREL16WF
+R_PARISC_GPREL64
+R_PARISC_IPLT
+R_PARISC_LTOFF16DF
+R_PARISC_LTOFF16F
+R_PARISC_LTOFF16WF
+R_PARISC_LTOFF64
+R_PARISC_LTOFF_FPTR14DR
+R_PARISC_LTOFF_FPTR14R
+R_PARISC_LTOFF_FPTR14WR
+R_PARISC_LTOFF_FPTR16DF
+R_PARISC_LTOFF_FPTR16F
+R_PARISC_LTOFF_FPTR16WF
+R_PARISC_LTOFF_FPTR21L
+R_PARISC_LTOFF_FPTR32
+R_PARISC_LTOFF_FPTR64
+R_PARISC_LTOFF_TP14DR
+R_PARISC_LTOFF_TP14F
+R_PARISC_LTOFF_TP14R
+R_PARISC_LTOFF_TP14WR
+R_PARISC_LTOFF_TP16DF
+R_PARISC_LTOFF_TP16F
+R_PARISC_LTOFF_TP16WF
+R_PARISC_LTOFF_TP21L
+R_PARISC_LTOFF_TP64
+R_PARISC_NONE
+R_PARISC_PCREL12F
+R_PARISC_PCREL14DR
+R_PARISC_PCREL14F
+R_PARISC_PCREL14R
+R_PARISC_PCREL14WR
+R_PARISC_PCREL16DF
+R_PARISC_PCREL16F
+R_PARISC_PCREL16WF
+R_PARISC_PCREL17C
+R_PARISC_PCREL17F
+R_PARISC_PCREL17R
+R_PARISC_PCREL21L
+R_PARISC_PCREL22C
+R_PARISC_PCREL22F
+R_PARISC_PCREL32
+R_PARISC_PCREL64
+R_PARISC_PLABEL14R
+R_PARISC_PLABEL21L
+R_PARISC_PLABEL32
+R_PARISC_PLTOFF14DR
+R_PARISC_PLTOFF14F
+R_PARISC_PLTOFF14R
+R_PARISC_PLTOFF14WR
+R_PARISC_PLTOFF16DF
+R_PARISC_PLTOFF16F
+R_PARISC_PLTOFF16WF
+R_PARISC_PLTOFF21L
+R_PARISC_SECREL32
+R_PARISC_SECREL64
+R_PARISC_SEGBASE
+R_PARISC_SEGREL
+R_PARISC_SEGREL32
+R_PARISC_SEGREL64
+R_PARISC_SETBASE
+R_PARISC_TLS_DTPMOD32
+R_PARISC_TLS_DTPMOD64
+R_PARISC_TLS_DTPOFF32
+R_PARISC_TLS_DTPOFF64
+R_PARISC_TLS_GD14R
+R_PARISC_TLS_GD21L
+R_PARISC_TLS_GDCALL
+R_PARISC_TLS_LDM14R
+R_PARISC_TLS_LDM21L
+R_PARISC_TLS_LDMCALL
+R_PARISC_TLS_LDO14R
+R_PARISC_TLS_LDO21L
+R_PARISC_TPREL14DR
+R_PARISC_TPREL14R
+R_PARISC_TPREL14WR
+R_PARISC_TPREL16DF
+R_PARISC_TPREL16F
+R_PARISC_TPREL16WF
+R_PARISC_TPREL21L
+R_PARISC_TPREL32
+R_PARISC_TPREL64
+R_PJ_CODE_DIR16
+R_PJ_CODE_DIR32
+R_PJ_CODE_HI16
+R_PJ_CODE_LO16
+R_PJ_CODE_REL16
+R_PJ_CODE_REL32
+R_PJ_DATA_DIR32
+R_PJ_GNU_VTENTRY
+R_PJ_GNU_VTINHERIT
+R_PJ_NONE
+R_PPC64_ADDR14
+R_PPC64_ADDR14_BRNTAKEN
+R_PPC64_ADDR14_BRTAKEN
+R_PPC64_ADDR16
+R_PPC64_ADDR16_DS
+R_PPC64_ADDR16_HA
+R_PPC64_ADDR16_HI
+R_PPC64_ADDR16_HIGHER
+R_PPC64_ADDR16_HIGHERA
+R_PPC64_ADDR16_HIGHEST
+R_PPC64_ADDR16_HIGHESTA
+R_PPC64_ADDR16_LO
+R_PPC64_ADDR16_LO_DS
+R_PPC64_ADDR24
+R_PPC64_ADDR32
+R_PPC64_ADDR64
+R_PPC64_COPY
+R_PPC64_DTPMOD64
+R_PPC64_DTPREL16
+R_PPC64_DTPREL16_DS
+R_PPC64_DTPREL16_HA
+R_PPC64_DTPREL16_HI
+R_PPC64_DTPREL16_HIGHER
+R_PPC64_DTPREL16_HIGHERA
+R_PPC64_DTPREL16_HIGHEST
+R_PPC64_DTPREL16_HIGHESTA
+R_PPC64_DTPREL16_LO
+R_PPC64_DTPREL16_LO_DS
+R_PPC64_DTPREL64
+R_PPC64_GLOB_DAT
+R_PPC64_GNU_VTENTRY
+R_PPC64_GNU_VTINHERIT
+R_PPC64_GOT16
+R_PPC64_GOT16_DS
+R_PPC64_GOT16_HA
+R_PPC64_GOT16_HI
+R_PPC64_GOT16_LO
+R_PPC64_GOT16_LO_DS
+R_PPC64_GOT_DTPREL16_DS
+R_PPC64_GOT_DTPREL16_HA
+R_PPC64_GOT_DTPREL16_HI
+R_PPC64_GOT_DTPREL16_LO_DS
+R_PPC64_GOT_TLSGD16
+R_PPC64_GOT_TLSGD16_HA
+R_PPC64_GOT_TLSGD16_HI
+R_PPC64_GOT_TLSGD16_LO
+R_PPC64_GOT_TLSLD16
+R_PPC64_GOT_TLSLD16_HA
+R_PPC64_GOT_TLSLD16_HI
+R_PPC64_GOT_TLSLD16_LO
+R_PPC64_GOT_TPREL16_DS
+R_PPC64_GOT_TPREL16_HA
+R_PPC64_GOT_TPREL16_HI
+R_PPC64_GOT_TPREL16_LO_DS
+R_PPC64_IRELATIVE
+R_PPC64_JMP_IREL
+R_PPC64_JMP_SLOT
+R_PPC64_NONE
+R_PPC64_PLT16_HA
+R_PPC64_PLT16_HI
+R_PPC64_PLT16_LO
+R_PPC64_PLT16_LO_DS
+R_PPC64_PLT32
+R_PPC64_PLT64
+R_PPC64_PLTGOT16
+R_PPC64_PLTGOT16_DS
+R_PPC64_PLTGOT16_HA
+R_PPC64_PLTGOT16_HI
+R_PPC64_PLTGOT16_LO
+R_PPC64_PLTGOT16_LO_DS
+R_PPC64_PLTREL32
+R_PPC64_PLTREL64
+R_PPC64_REL14
+R_PPC64_REL14_BRNTAKEN
+R_PPC64_REL14_BRTAKEN
+R_PPC64_REL16
+R_PPC64_REL16_HA
+R_PPC64_REL16_HI
+R_PPC64_REL16_LO
+R_PPC64_REL24
+R_PPC64_REL30
+R_PPC64_REL32
+R_PPC64_REL64
+R_PPC64_RELATIVE
+R_PPC64_SECTOFF
+R_PPC64_SECTOFF_DS
+R_PPC64_SECTOFF_HA
+R_PPC64_SECTOFF_HI
+R_PPC64_SECTOFF_LO
+R_PPC64_SECTOFF_LO_DS
+R_PPC64_TLS
+R_PPC64_TLSGD
+R_PPC64_TLSLD
+R_PPC64_TOC
+R_PPC64_TOC16
+R_PPC64_TOC16_DS
+R_PPC64_TOC16_HA
+R_PPC64_TOC16_HI
+R_PPC64_TOC16_LO
+R_PPC64_TOC16_LO_DS
+R_PPC64_TOCSAVE
+R_PPC64_TPREL16
+R_PPC64_TPREL16_DS
+R_PPC64_TPREL16_HA
+R_PPC64_TPREL16_HI
+R_PPC64_TPREL16_HIGHER
+R_PPC64_TPREL16_HIGHERA
+R_PPC64_TPREL16_HIGHEST
+R_PPC64_TPREL16_HIGHESTA
+R_PPC64_TPREL16_LO
+R_PPC64_TPREL16_LO_DS
+R_PPC64_TPREL64
+R_PPC64_UADDR16
+R_PPC64_UADDR32
+R_PPC64_UADDR64
+R_PPC_ADDR14
+R_PPC_ADDR14_BRNTAKEN
+R_PPC_ADDR14_BRTAKEN
+R_PPC_ADDR16
+R_PPC_ADDR16_HA
+R_PPC_ADDR16_HI
+R_PPC_ADDR16_LO
+R_PPC_ADDR24
+R_PPC_ADDR30
+R_PPC_ADDR32
+R_PPC_COPY
+R_PPC_DTPMOD32
+R_PPC_DTPREL16
+R_PPC_DTPREL16_HA
+R_PPC_DTPREL16_HI
+R_PPC_DTPREL16_LO
+R_PPC_DTPREL32
+R_PPC_EMB_BIT_FLD
+R_PPC_EMB_MRKREF
+R_PPC_EMB_NADDR16
+R_PPC_EMB_NADDR16_HA
+R_PPC_EMB_NADDR16_HI
+R_PPC_EMB_NADDR16_LO
+R_PPC_EMB_NADDR32
+R_PPC_EMB_RELSDA
+R_PPC_EMB_RELSEC16
+R_PPC_EMB_RELST_HA
+R_PPC_EMB_RELST_HI
+R_PPC_EMB_RELST_LO
+R_PPC_EMB_SDA21
+R_PPC_EMB_SDA2I16
+R_PPC_EMB_SDA2REL
+R_PPC_EMB_SDAI16
+R_PPC_GLOB_DAT
+R_PPC_GNU_VTENTRY
+R_PPC_GNU_VTINHERIT
+R_PPC_GOT16
+R_PPC_GOT16_HA
+R_PPC_GOT16_HI
+R_PPC_GOT16_LO
+R_PPC_GOT_DTPREL16
+R_PPC_GOT_DTPREL16_HA
+R_PPC_GOT_DTPREL16_HI
+R_PPC_GOT_DTPREL16_LO
+R_PPC_GOT_TLSGD16
+R_PPC_GOT_TLSGD16_HA
+R_PPC_GOT_TLSGD16_HI
+R_PPC_GOT_TLSGD16_LO
+R_PPC_GOT_TLSLD16
+R_PPC_GOT_TLSLD16_HA
+R_PPC_GOT_TLSLD16_HI
+R_PPC_GOT_TLSLD16_LO
+R_PPC_GOT_TPREL16
+R_PPC_GOT_TPREL16_HA
+R_PPC_GOT_TPREL16_HI
+R_PPC_GOT_TPREL16_LO
+R_PPC_IRELATIVE
+R_PPC_JMP_SLOT
+R_PPC_LOCAL24PC
+R_PPC_NONE
+R_PPC_PLT16_HA
+R_PPC_PLT16_HI
+R_PPC_PLT16_LO
+R_PPC_PLT32
+R_PPC_PLTREL24
+R_PPC_PLTREL32
+R_PPC_REL14
+R_PPC_REL14_BRNTAKEN
+R_PPC_REL14_BRTAKEN
+R_PPC_REL16
+R_PPC_REL16_HA
+R_PPC_REL16_HI
+R_PPC_REL16_LO
+R_PPC_REL24
+R_PPC_REL32
+R_PPC_RELATIVE
+R_PPC_SDAREL16
+R_PPC_SECTOFF
+R_PPC_SECTOFF_HA
+R_PPC_SECTOFF_HI
+R_PPC_SECTOFF_LO
+R_PPC_TLS
+R_PPC_TLSGD
+R_PPC_TLSLD
+R_PPC_TOC16
+R_PPC_TPREL16
+R_PPC_TPREL16_HA
+R_PPC_TPREL16_HI
+R_PPC_TPREL16_LO
+R_PPC_TPREL32
+R_PPC_UADDR16
+R_PPC_UADDR32
+  -R --relocated-dump=<number|name>
+  -r --relocs            Display the relocations (if present)
+R_RX_ABS16
+R_RX_ABS16_REV
+R_RX_ABS16S
+R_RX_ABS16S_PCREL
+R_RX_ABS16U
+R_RX_ABS16UL
+R_RX_ABS16UW
+R_RX_ABS24S
+R_RX_ABS24S_PCREL
+R_RX_ABS32
+R_RX_ABS32_REV
+R_RX_ABS8
+R_RX_ABS8S
+R_RX_ABS8S_PCREL
+R_RX_ABS8U
+R_RX_ABS8UL
+R_RX_ABS8UW
+R_RX_DIR16
+R_RX_DIR16_REV
+R_RX_DIR16S
+R_RX_DIR16S_PCREL
+R_RX_DIR16U
+R_RX_DIR16UL
+R_RX_DIR16UW
+R_RX_DIR24S
+R_RX_DIR24S_PCREL
+R_RX_DIR32
+R_RX_DIR32_REV
+R_RX_DIR3U_PCREL
+R_RX_DIR8
+R_RX_DIR8S
+R_RX_DIR8S_PCREL
+R_RX_DIR8U
+R_RX_DIR8UL
+R_RX_DIR8UW
+R_RX_NONE
+R_RX_OPadd
+R_RX_OPand
+R_RX_OPdiv
+R_RX_OPmod
+R_RX_OPmul
+R_RX_OPneg
+R_RX_OPnot
+R_RX_OPor
+R_RX_OPramtop
+R_RX_OPromtop
+R_RX_OPsctsize
+R_RX_OPscttop
+R_RX_OPshla
+R_RX_OPshra
+R_RX_OPsub
+R_RX_OPxor
+R_RX_RH_16_NEG
+R_RX_RH_16_OP
+R_RX_RH_24_NEG
+R_RX_RH_24_OP
+R_RX_RH_24_UNS
+R_RX_RH_32_NEG
+R_RX_RH_32_OP
+R_RX_RH_3_PCREL
+R_RX_RH_8_NEG
+R_RX_RH_DIFF
+R_RX_RH_GPRELB
+R_RX_RH_GPRELL
+R_RX_RH_GPRELW
+R_RX_RH_RELAX
+R_RX_SYM
+R_SCORE16_11
+R_SCORE16_PC8
+R_SCORE_24
+R_SCORE_ABS16
+R_SCORE_ABS32
+R_SCORE_BCMP
+R_SCORE_CALL15
+R_SCORE_DUMMY2
+R_SCORE_DUMMY_HI16
+R_SCORE_GNU_VTENTRY
+R_SCORE_GNU_VTINHERIT
+R_SCORE_GOT15
+R_SCORE_GOT_LO16
+R_SCORE_GP15
+R_SCORE_GPREL32
+R_SCORE_HI16
+R_SCORE_IMM30
+R_SCORE_IMM32
+R_SCORE_LO16
+R_SCORE_NONE
+R_SCORE_PC19
+R_SCORE_REL32
+R_SH_64_PCREL
+R_SH_ALIGN
+R_SH_CODE
+R_SH_COPY
+R_SH_COPY64
+R_SH_COUNT
+R_SH_DATA
+R_SH_DIR10S
+R_SH_DIR10SL
+R_SH_DIR10SQ
+R_SH_DIR10SW
+R_SH_DIR16
+R_SH_DIR16S
+R_SH_DIR32
+R_SH_DIR4U
+R_SH_DIR4UL
+R_SH_DIR4UW
+R_SH_DIR5U
+R_SH_DIR6S
+R_SH_DIR6U
+R_SH_DIR8
+R_SH_DIR8BP
+R_SH_DIR8L
+R_SH_DIR8S
+R_SH_DIR8SW
+R_SH_DIR8U
+R_SH_DIR8UL
+R_SH_DIR8UW
+R_SH_DIR8W
+R_SH_DIR8WPL
+R_SH_DIR8WPN
+R_SH_DIR8WPZ
+R_SH_FUNCDESC
+R_SH_FUNCDESC_VALUE
+R_SH_GLOB_DAT
+R_SH_GLOB_DAT64
+R_SH_GNU_VTENTRY
+R_SH_GNU_VTINHERIT
+R_SH_GOT10BY4
+R_SH_GOT10BY8
+R_SH_GOT20
+R_SH_GOT32
+R_SH_GOTFUNCDESC
+R_SH_GOTFUNCDESC20
+R_SH_GOT_HI16
+R_SH_GOT_LOW16
+R_SH_GOT_MEDHI16
+R_SH_GOT_MEDLOW16
+R_SH_GOTOFF
+R_SH_GOTOFF20
+R_SH_GOTOFFFUNCDESC
+R_SH_GOTOFFFUNCDESC20
+R_SH_GOTOFF_HI16
+R_SH_GOTOFF_LOW16
+R_SH_GOTOFF_MEDHI16
+R_SH_GOTOFF_MEDLOW16
+R_SH_GOTPC
+R_SH_GOTPC_HI16
+R_SH_GOTPC_LOW16
+R_SH_GOTPC_MEDHI16
+R_SH_GOTPC_MEDLOW16
+R_SH_GOTPLT10BY4
+R_SH_GOTPLT10BY8
+R_SH_GOTPLT32
+R_SH_GOTPLT_HI16
+R_SH_GOTPLT_LOW16
+R_SH_GOTPLT_MEDHI16
+R_SH_GOTPLT_MEDLOW16
+R_SH_IMM_HI16
+R_SH_IMM_HI16_PCREL
+R_SH_IMM_LOW16
+R_SH_IMM_LOW16_PCREL
+R_SH_IMM_MEDHI16
+R_SH_IMM_MEDHI16_PCREL
+R_SH_IMM_MEDLOW16
+R_SH_IMM_MEDLOW16_PCREL
+R_SH_IMMS16
+R_SH_IMMU16
+R_SH_IND12W
+R_SH_JMP_SLOT
+R_SH_JMP_SLOT64
+R_SH_LABEL
+R_SH_LOOP_END
+R_SH_LOOP_START
+R_SH_NONE
+R_SH_PLT32
+R_SH_PLT_HI16
+R_SH_PLT_LOW16
+R_SH_PLT_MEDHI16
+R_SH_PLT_MEDLOW16
+R_SH_PSHA
+R_SH_PSHL
+R_SH_PT_16
+R_SH_REL32
+R_SH_RELATIVE
+R_SH_RELATIVE64
+R_SH_SHMEDIA_CODE
+R_SH_SWITCH16
+R_SH_SWITCH32
+R_SH_SWITCH8
+R_SH_TLS_DTPMOD32
+R_SH_TLS_DTPOFF32
+R_SH_TLS_GD_32
+R_SH_TLS_IE_32
+R_SH_TLS_LD_32
+R_SH_TLS_LDO_32
+R_SH_TLS_LE_32
+R_SH_TLS_TPOFF32
+R_SH_USES
+R_SPARC_10
+R_SPARC_11
+R_SPARC_13
+R_SPARC_16
+R_SPARC_22
+R_SPARC_32
+R_SPARC_5
+R_SPARC_6
+R_SPARC_64
+R_SPARC_7
+R_SPARC_8
+R_SPARC_COPY
+R_SPARC_DISP16
+R_SPARC_DISP32
+R_SPARC_DISP64
+R_SPARC_DISP8
+R_SPARC_GLOB_DAT
+R_SPARC_GNU_VTENTRY
+R_SPARC_GNU_VTINHERIT
+R_SPARC_GOT10
+R_SPARC_GOT13
+R_SPARC_GOT22
+R_SPARC_GOTDATA_HIX22
+R_SPARC_GOTDATA_LOX10
+R_SPARC_GOTDATA_OP
+R_SPARC_GOTDATA_OP_HIX22
+R_SPARC_GOTDATA_OP_LOX10
+R_SPARC_H34
+R_SPARC_H44
+R_SPARC_HH22
+R_SPARC_HI22
+R_SPARC_HIPLT22
+R_SPARC_HIX22
+R_SPARC_HM10
+R_SPARC_IRELATIVE
+R_SPARC_JMP_IREL
+R_SPARC_JMP_SLOT
+R_SPARC_L44
+R_SPARC_LM22
+R_SPARC_LO10
+R_SPARC_LOPLT10
+R_SPARC_LOX10
+R_SPARC_M44
+R_SPARC_NONE
+R_SPARC_OLO10
+R_SPARC_PC10
+R_SPARC_PC22
+R_SPARC_PC_HH22
+R_SPARC_PC_HM10
+R_SPARC_PC_LM22
+R_SPARC_PCPLT10
+R_SPARC_PCPLT22
+R_SPARC_PCPLT32
+R_SPARC_PLT32
+R_SPARC_PLT64
+R_SPARC_REGISTER
+R_SPARC_RELATIVE
+R_SPARC_REV32
+R_SPARC_SIZE32
+R_SPARC_SIZE64
+R_SPARC_TLS_DTPMOD32
+R_SPARC_TLS_DTPMOD64
+R_SPARC_TLS_DTPOFF32
+R_SPARC_TLS_DTPOFF64
+R_SPARC_TLS_GD_ADD
+R_SPARC_TLS_GD_CALL
+R_SPARC_TLS_GD_HI22
+R_SPARC_TLS_GD_LO10
+R_SPARC_TLS_IE_ADD
+R_SPARC_TLS_IE_HI22
+R_SPARC_TLS_IE_LD
+R_SPARC_TLS_IE_LDX
+R_SPARC_TLS_IE_LO10
+R_SPARC_TLS_LDM_ADD
+R_SPARC_TLS_LDM_CALL
+R_SPARC_TLS_LDM_HI22
+R_SPARC_TLS_LDM_LO10
+R_SPARC_TLS_LDO_ADD
+R_SPARC_TLS_LDO_HIX22
+R_SPARC_TLS_LDO_LOX10
+R_SPARC_TLS_LE_HIX22
+R_SPARC_TLS_LE_LOX10
+R_SPARC_TLS_TPOFF32
+R_SPARC_TLS_TPOFF64
+R_SPARC_UA16
+R_SPARC_UA32
+R_SPARC_UA64
+R_SPARC_UNUSED_42
+R_SPARC_WDISP16
+R_SPARC_WDISP19
+R_SPARC_WDISP22
+R_SPARC_WDISP30
+R_SPARC_WPLT30
+R_SPU_ADD_PIC
+R_SPU_ADDR10
+R_SPU_ADDR10I
+R_SPU_ADDR16
+R_SPU_ADDR16_HI
+R_SPU_ADDR16I
+R_SPU_ADDR16_LO
+R_SPU_ADDR16X
+R_SPU_ADDR18
+R_SPU_ADDR32
+R_SPU_ADDR7
+R_SPU_NONE
+R_SPU_PPU32
+R_SPU_PPU64
+R_SPU_REL16
+R_SPU_REL32
+R_SPU_REL9
+R_SPU_REL9I
+RSV[0x%04x]
+R_TILEGX_16
+R_TILEGX_16_PCREL
+R_TILEGX_32
+R_TILEGX_32_PCREL
+R_TILEGX_64
+R_TILEGX_64_PCREL
+R_TILEGX_8
+R_TILEGX_8_PCREL
+R_TILEGX_BROFF_X1
+R_TILEGX_COPY
+R_TILEGX_DEST_IMM8_X1
+R_TILEGX_GLOB_DAT
+R_TILEGX_GNU_VTENTRY
+R_TILEGX_GNU_VTINHERIT
+R_TILEGX_HW0
+R_TILEGX_HW0_LAST
+R_TILEGX_HW1
+R_TILEGX_HW1_LAST
+R_TILEGX_HW2
+R_TILEGX_HW2_LAST
+R_TILEGX_HW3
+R_TILEGX_IMM16_X0_HW0
+R_TILEGX_IMM16_X0_HW0_GOT
+R_TILEGX_IMM16_X0_HW0_LAST
+R_TILEGX_IMM16_X0_HW0_LAST_GOT
+R_TILEGX_IMM16_X0_HW0_LAST_PCREL
+R_TILEGX_IMM16_X0_HW0_LAST_TLS_GD
+R_TILEGX_IMM16_X0_HW0_LAST_TLS_IE
+R_TILEGX_IMM16_X0_HW0_PCREL
+R_TILEGX_IMM16_X0_HW0_TLS_GD
+R_TILEGX_IMM16_X0_HW0_TLS_IE
+R_TILEGX_IMM16_X0_HW1
+R_TILEGX_IMM16_X0_HW1_GOT
+R_TILEGX_IMM16_X0_HW1_LAST
+R_TILEGX_IMM16_X0_HW1_LAST_GOT
+R_TILEGX_IMM16_X0_HW1_LAST_PCREL
+R_TILEGX_IMM16_X0_HW1_LAST_TLS_GD
+R_TILEGX_IMM16_X0_HW1_LAST_TLS_IE
+R_TILEGX_IMM16_X0_HW1_PCREL
+R_TILEGX_IMM16_X0_HW1_TLS_GD
+R_TILEGX_IMM16_X0_HW1_TLS_IE
+R_TILEGX_IMM16_X0_HW2
+R_TILEGX_IMM16_X0_HW2_GOT
+R_TILEGX_IMM16_X0_HW2_LAST
+R_TILEGX_IMM16_X0_HW2_LAST_GOT
+R_TILEGX_IMM16_X0_HW2_LAST_PCREL
+R_TILEGX_IMM16_X0_HW2_LAST_TLS_GD
+R_TILEGX_IMM16_X0_HW2_LAST_TLS_IE
+R_TILEGX_IMM16_X0_HW2_PCREL
+R_TILEGX_IMM16_X0_HW2_TLS_GD
+R_TILEGX_IMM16_X0_HW2_TLS_IE
+R_TILEGX_IMM16_X0_HW3
+R_TILEGX_IMM16_X0_HW3_GOT
+R_TILEGX_IMM16_X0_HW3_PCREL
+R_TILEGX_IMM16_X0_HW3_TLS_GD
+R_TILEGX_IMM16_X0_HW3_TLS_IE
+R_TILEGX_IMM16_X1_HW0
+R_TILEGX_IMM16_X1_HW0_GOT
+R_TILEGX_IMM16_X1_HW0_LAST
+R_TILEGX_IMM16_X1_HW0_LAST_GOT
+R_TILEGX_IMM16_X1_HW0_LAST_PCREL
+R_TILEGX_IMM16_X1_HW0_LAST_TLS_GD
+R_TILEGX_IMM16_X1_HW0_LAST_TLS_IE
+R_TILEGX_IMM16_X1_HW0_PCREL
+R_TILEGX_IMM16_X1_HW0_TLS_GD
+R_TILEGX_IMM16_X1_HW0_TLS_IE
+R_TILEGX_IMM16_X1_HW1
+R_TILEGX_IMM16_X1_HW1_GOT
+R_TILEGX_IMM16_X1_HW1_LAST
+R_TILEGX_IMM16_X1_HW1_LAST_GOT
+R_TILEGX_IMM16_X1_HW1_LAST_PCREL
+R_TILEGX_IMM16_X1_HW1_LAST_TLS_GD
+R_TILEGX_IMM16_X1_HW1_LAST_TLS_IE
+R_TILEGX_IMM16_X1_HW1_PCREL
+R_TILEGX_IMM16_X1_HW1_TLS_GD
+R_TILEGX_IMM16_X1_HW1_TLS_IE
+R_TILEGX_IMM16_X1_HW2
+R_TILEGX_IMM16_X1_HW2_GOT
+R_TILEGX_IMM16_X1_HW2_LAST
+R_TILEGX_IMM16_X1_HW2_LAST_GOT
+R_TILEGX_IMM16_X1_HW2_LAST_PCREL
+R_TILEGX_IMM16_X1_HW2_LAST_TLS_GD
+R_TILEGX_IMM16_X1_HW2_LAST_TLS_IE
+R_TILEGX_IMM16_X1_HW2_PCREL
+R_TILEGX_IMM16_X1_HW2_TLS_GD
+R_TILEGX_IMM16_X1_HW2_TLS_IE
+R_TILEGX_IMM16_X1_HW3
+R_TILEGX_IMM16_X1_HW3_GOT
+R_TILEGX_IMM16_X1_HW3_PCREL
+R_TILEGX_IMM16_X1_HW3_TLS_GD
+R_TILEGX_IMM16_X1_HW3_TLS_IE
+R_TILEGX_IMM8_X0
+R_TILEGX_IMM8_X1
+R_TILEGX_IMM8_Y0
+R_TILEGX_IMM8_Y1
+R_TILEGX_JMP_SLOT
+R_TILEGX_JUMPOFF_X1
+R_TILEGX_JUMPOFF_X1_PLT
+R_TILEGX_MF_IMM14_X1
+R_TILEGX_MMEND_X0
+R_TILEGX_MMSTART_X0
+R_TILEGX_MT_IMM14_X1
+R_TILEGX_NONE
+R_TILEGX_RELATIVE
+R_TILEGX_SHAMT_X0
+R_TILEGX_SHAMT_X1
+R_TILEGX_SHAMT_Y0
+R_TILEGX_SHAMT_Y1
+R_TILEGX_TLS_DTPMOD32
+R_TILEGX_TLS_DTPMOD64
+R_TILEGX_TLS_DTPOFF32
+R_TILEGX_TLS_DTPOFF64
+R_TILEGX_TLS_TPOFF32
+R_TILEGX_TLS_TPOFF64
+R_TILEPRO_16
+R_TILEPRO_16_PCREL
+R_TILEPRO_32
+R_TILEPRO_32_PCREL
+R_TILEPRO_8
+R_TILEPRO_8_PCREL
+R_TILEPRO_BROFF_X1
+R_TILEPRO_COPY
+R_TILEPRO_DEST_IMM8_X1
+R_TILEPRO_GLOB_DAT
+R_TILEPRO_GNU_VTENTRY
+R_TILEPRO_GNU_VTINHERIT
+R_TILEPRO_HA16
+R_TILEPRO_HI16
+R_TILEPRO_IMM16_X0
+R_TILEPRO_IMM16_X0_GOT
+R_TILEPRO_IMM16_X0_GOT_HA
+R_TILEPRO_IMM16_X0_GOT_HI
+R_TILEPRO_IMM16_X0_GOT_LO
+R_TILEPRO_IMM16_X0_HA
+R_TILEPRO_IMM16_X0_HA_PCREL
+R_TILEPRO_IMM16_X0_HI
+R_TILEPRO_IMM16_X0_HI_PCREL
+R_TILEPRO_IMM16_X0_LO
+R_TILEPRO_IMM16_X0_LO_PCREL
+R_TILEPRO_IMM16_X0_PCREL
+R_TILEPRO_IMM16_X0_TLS_GD
+R_TILEPRO_IMM16_X0_TLS_GD_HA
+R_TILEPRO_IMM16_X0_TLS_GD_HI
+R_TILEPRO_IMM16_X0_TLS_GD_LO
+R_TILEPRO_IMM16_X0_TLS_IE
+R_TILEPRO_IMM16_X0_TLS_IE_HA
+R_TILEPRO_IMM16_X0_TLS_IE_HI
+R_TILEPRO_IMM16_X0_TLS_IE_LO
+R_TILEPRO_IMM16_X1
+R_TILEPRO_IMM16_X1_GOT
+R_TILEPRO_IMM16_X1_GOT_HA
+R_TILEPRO_IMM16_X1_GOT_HI
+R_TILEPRO_IMM16_X1_GOT_LO
+R_TILEPRO_IMM16_X1_HA
+R_TILEPRO_IMM16_X1_HA_PCREL
+R_TILEPRO_IMM16_X1_HI
+R_TILEPRO_IMM16_X1_HI_PCREL
+R_TILEPRO_IMM16_X1_LO
+R_TILEPRO_IMM16_X1_LO_PCREL
+R_TILEPRO_IMM16_X1_PCREL
+R_TILEPRO_IMM16_X1_TLS_GD
+R_TILEPRO_IMM16_X1_TLS_GD_HA
+R_TILEPRO_IMM16_X1_TLS_GD_HI
+R_TILEPRO_IMM16_X1_TLS_GD_LO
+R_TILEPRO_IMM16_X1_TLS_IE
+R_TILEPRO_IMM16_X1_TLS_IE_HA
+R_TILEPRO_IMM16_X1_TLS_IE_HI
+R_TILEPRO_IMM16_X1_TLS_IE_LO
+R_TILEPRO_IMM8_X0
+R_TILEPRO_IMM8_X1
+R_TILEPRO_IMM8_Y0
+R_TILEPRO_IMM8_Y1
+R_TILEPRO_JMP_SLOT
+R_TILEPRO_JOFFLONG_X1
+R_TILEPRO_JOFFLONG_X1_PLT
+R_TILEPRO_LO16
+R_TILEPRO_MF_IMM15_X1
+R_TILEPRO_MMEND_X0
+R_TILEPRO_MMEND_X1
+R_TILEPRO_MMSTART_X0
+R_TILEPRO_MMSTART_X1
+R_TILEPRO_MT_IMM15_X1
+R_TILEPRO_NONE
+R_TILEPRO_RELATIVE
+R_TILEPRO_SHAMT_X0
+R_TILEPRO_SHAMT_X1
+R_TILEPRO_SHAMT_Y0
+R_TILEPRO_SHAMT_Y1
+R_TILEPRO_TLS_DTPMOD32
+R_TILEPRO_TLS_DTPOFF32
+R_TILEPRO_TLS_TPOFF32
+R_V850_16
+R_V850_16_GOT
+R_V850_16_GOTOFF
+R_V850_16_PCREL
+R_V850_16_S1
+R_V850_16_SPLIT_OFFSET
+R_V850_17_PCREL
+R_V850_22_PCREL
+R_V850_22_PLT
+R_V850_23
+R_V850_32_ABS
+R_V850_32_GOT
+R_V850_32_GOTOFF
+R_V850_32_GOTPCREL
+R_V850_32_PCREL
+R_V850_32_PLT
+R_V850_8
+R_V850_9_PCREL
+R_V850_ABS32
+R_V850_ALIGN
+R_V850_CALLT_15_16_OFFSET
+R_V850_CALLT_16_16_OFFSET
+R_V850_CALLT_6_7_OFFSET
+R_V850_CODE
+R_V850_COPY
+R_V850_DATA
+R_V850_GLOB_DAT
+R_V850_GNU_VTENTRY
+R_V850_GNU_VTINHERIT
+R_V850_HI16
+R_V850_HI16_S
+R_V850_JMP_SLOT
+R_V850_LO16
+R_V850_LO16_S1
+R_V850_LO16_SPLIT_OFFSET
+R_V850_LONGCALL
+R_V850_LONGJUMP
+R_V850_NONE
+R_V850_REL32
+R_V850_RELATIVE
+R_V850_SDA_15_16_OFFSET
+R_V850_SDA_16_16_OFFSET
+R_V850_SDA_16_16_SPLIT_OFFSET
+R_V850_TDA_16_16_OFFSET
+R_V850_TDA_4_4_OFFSET
+R_V850_TDA_4_5_OFFSET
+R_V850_TDA_6_8_OFFSET
+R_V850_TDA_7_7_OFFSET
+R_V850_TDA_7_8_OFFSET
+R_V850_ZDA_15_16_OFFSET
+R_V850_ZDA_16_16_OFFSET
+R_V850_ZDA_16_16_SPLIT_OFFSET
+R_VAX_16
+R_VAX_32
+R_VAX_COPY
+R_VAX_GLOB_DAT
+R_VAX_GNU_VTENTRY
+R_VAX_GNU_VTINHERIT
+R_VAX_GOT32
+R_VAX_JMP_SLOT
+R_VAX_NONE
+R_VAX_PC16
+R_VAX_PC32
+R_VAX_PC8
+R_VAX_PLT32
+R_VAX_RELATIVE
+R_X86_64_16
+R_X86_64_32
+R_X86_64_32S
+R_X86_64_64
+R_X86_64_8
+R_X86_64_COPY
+R_X86_64_DTPMOD64
+R_X86_64_DTPOFF32
+R_X86_64_DTPOFF64
+R_X86_64_GLOB_DAT
+R_X86_64_GNU_VTENTRY
+R_X86_64_GNU_VTINHERIT
+R_X86_64_GOT32
+R_X86_64_GOT64
+R_X86_64_GOTOFF64
+R_X86_64_GOTPC32
+R_X86_64_GOTPC32_TLSDESC
+R_X86_64_GOTPC64
+R_X86_64_GOTPCREL
+R_X86_64_GOTPCREL64
+R_X86_64_GOTPLT64
+R_X86_64_GOTTPOFF
+R_X86_64_IRELATIVE
+R_X86_64_JUMP_SLOT
+R_X86_64_NONE
+R_X86_64_PC16
+R_X86_64_PC32
+R_X86_64_PC64
+R_X86_64_PC8
+R_X86_64_PLT32
+R_X86_64_PLTOFF64
+R_X86_64_RELATIVE
+R_X86_64_RELATIVE64
+R_X86_64_TLSDESC
+R_X86_64_TLSDESC_CALL
+R_X86_64_TLSGD
+R_X86_64_TLSLD
+R_X86_64_TPOFF32
+R_X86_64_TPOFF64
+R_XC16X_8_PCREL
+R_XC16X_ABS_16
+R_XC16X_ABS_32
+R_XC16X_ABS_8
+R_XC16X_NONE
+R_XC16X_PAG
+R_XC16X_POF
+R_XC16X_SEG
+R_XC16X_SOF
+R_XSTORMY16_12
+R_XSTORMY16_16
+R_XSTORMY16_24
+R_XSTORMY16_32
+R_XSTORMY16_8
+R_XSTORMY16_FPTR16
+R_XSTORMY16_GNU_VTENTRY
+R_XSTORMY16_GNU_VTINHERIT
+R_XSTORMY16_HI16
+R_XSTORMY16_LO16
+R_XSTORMY16_NONE
+R_XSTORMY16_PC16
+R_XSTORMY16_PC32
+R_XSTORMY16_PC8
+R_XSTORMY16_REL_12
+R_XTENSA_32
+R_XTENSA_32_PCREL
+R_XTENSA_ASM_EXPAND
+R_XTENSA_ASM_SIMPLIFY
+R_XTENSA_DIFF16
+R_XTENSA_DIFF32
+R_XTENSA_DIFF8
+R_XTENSA_GLOB_DAT
+R_XTENSA_GNU_VTENTRY
+R_XTENSA_GNU_VTINHERIT
+R_XTENSA_JMP_SLOT
+R_XTENSA_NONE
+R_XTENSA_OP0
+R_XTENSA_OP1
+R_XTENSA_OP2
+R_XTENSA_PLT
+R_XTENSA_RELATIVE
+R_XTENSA_RTLD
+R_XTENSA_SLOT0_ALT
+R_XTENSA_SLOT0_OP
+R_XTENSA_SLOT10_ALT
+R_XTENSA_SLOT10_OP
+R_XTENSA_SLOT11_ALT
+R_XTENSA_SLOT11_OP
+R_XTENSA_SLOT12_ALT
+R_XTENSA_SLOT12_OP
+R_XTENSA_SLOT13_ALT
+R_XTENSA_SLOT13_OP
+R_XTENSA_SLOT14_ALT
+R_XTENSA_SLOT14_OP
+R_XTENSA_SLOT1_ALT
+R_XTENSA_SLOT1_OP
+R_XTENSA_SLOT2_ALT
+R_XTENSA_SLOT2_OP
+R_XTENSA_SLOT3_ALT
+R_XTENSA_SLOT3_OP
+R_XTENSA_SLOT4_ALT
+R_XTENSA_SLOT4_OP
+R_XTENSA_SLOT5_ALT
+R_XTENSA_SLOT5_OP
+R_XTENSA_SLOT6_ALT
+R_XTENSA_SLOT6_OP
+R_XTENSA_SLOT7_ALT
+R_XTENSA_SLOT7_OP
+R_XTENSA_SLOT8_ALT
+R_XTENSA_SLOT8_OP
+R_XTENSA_SLOT9_ALT
+R_XTENSA_SLOT9_OP
+R_XTENSA_TLS_ARG
+R_XTENSA_TLS_CALL
+R_XTENSA_TLSDESC_ARG
+R_XTENSA_TLSDESC_FN
+R_XTENSA_TLS_DTPOFF
+R_XTENSA_TLS_FUNC
+R_XTENSA_TLS_TPOFF
+       %s
+./%s:[++]
+ %s %#010lx %-7ld %-7ld
+ %s %#10lx %-7ld
+  %*s %10s %*s
+  %*s %10s %*s Purpose
+  %*s %10s %*s %*s %-7s %3s %s
+%s  %11d  %#18llx
+%s  %11d  %#18llx[%d]
+S1C33 Family of Seiko Epson processors
+Sanyo XStormy16 CPU core
+%sASIBlkInit
+Save_MRP_in_frame 
+Save_RP 
+Save_SP 
+%s: bad archive file name
+SB-relative
+	%s:br_gr(brmask=[%s],gr=r%u)
+	%s:br_mem(brmask=[%s])
+ %s byte block: 
+%-*s CFA      
+sched_entry_seq 
+	%s:copy_state(label=%lu)
+SCORE_BASE_ADDRESS
+SCORE_GOTSYM
+SCORE_HIPAGENO
+SCORE_LOCAL_GOTNO
+SCORE_SYMTABNO
+SCORE_UNREFEXTNO
+%scspare
+@%s (%d)
+%s: did not find a valid archive header
+section 0 in group section [%5u]
+<section 0x%x>
+section [%5u] in group section [%5u] already in group section [%5u]
+section [%5u] in group section [%5u] > maximum section [%5u]
+Section Attributes:
+Section '.conflict' contains %lu entries:
+section contents
+section-details
+Section %d has invalid sh_entsize %lx (expected %lx)
+Section %d was not dumped because it does not exist!
+section-groups
+Section Header:
+section headers
+section-headers
+Section Headers:
+Section headers are not available!
+  Section header string table index: %ld
+Section '.liblist' contains %lu entries:
+sections
+     --sections          An alias for --section-headers
+Section '%s' contains %d entries:
+Section '%s' has no data to dump.
+Section '%s' has no debugging data.
+section '%s' has the NOBITS type - its contents are unreliable.
+Section '%s' was not dumped because it does not exist!
+ Section to Segment mapping:
+section %u: sh_link value of %u is larger than the number of sections
+segments
+     --segments          An alias for --program-headers
+  Segment Sections...
+  Segment Size:             %d
+  Segment Size:          %u
+Seg Offset   Type                            Addend            Seg Sym Off
+Seg Offset           Type                             SymVec DataType
+Seiko Epson C17 family
+SELF       
+, Semaphore: 
+%s: end of the symbol table reached before the end of the index
+Separate_Package_Body 
+	%s:epilogue(t=%lu,ecount=%lu)
+%s: Error: 
+%s: error: too many @-files encountered
+set Address to 0x%s
+  Set basic block
+  Set column to %s
+set Discriminator to %s
+  Set epilogue_begin to true
+  Set File Name to entry %s in the File Name Table
+  Set ISA to %lu
+  Set ISA to %s
+  Set is_stmt to %s
+  Set prologue_end to true
+%s: failed to read archive header
+%s: failed to read archive header following archive index
+%s: failed to read archive index
+%s: failed to read archive index symbol table
+%s: Failed to read file header
+%s: Failed to read file's magic number
+%s: failed to read long symbol name string table
+%s: failed to seek back to start of object files in the archive
+%s: failed to seek to archive member.
+%s: failed to seek to first archive header
+%s: failed to seek to next archive header
+%s: failed to seek to next file name
+%s: failed to skip archive symbol table
+%sfjfmau
+	%s:frgr_mem(grmask=[%s],frmask=[%s])
+	%s:fr_mem(frmask=[%s])
+%sfsmuld
+SGI_ONLY
+	%s:gr_gr(grmask=[%s],r%u)
+	%s:gr_mem(grmask=[%s])
+%sgroup section [%5u] `%s' [%s] contains %u sections:
+, sh2a-nofpu
+, sh2a-nofpu-or-sh3-nommu
+, sh2a-nofpu-or-sh4-nommu-nofpu
+, sh2a-or-sh3e
+, sh2a-or-sh4
+, sh3-dsp
+, sh3-nommu
+, sh4al-dsp
+, sh4a-nofpu
+, sh4-nofpu
+, sh4-nommu-nofpu
+Shared library: [%s]
+Sharp embedded microprocessor
+%s has no archive index
+, sh-dsp
+sh_entsize is zero
+Siemens FX66 microcontroller
+Siemens PCP
+Siemens Tricore
+ signature: 
+   Signature:     
+ SIGNATURES
+(signed)
+(signed char)
+(signed_fixed)
+Sign only
+Silicon Graphics SVx
+, simple
+Single-precision hard float
+'%s' is not an ordinary file
+       Size              EntSize          Flags  Link  Info  Align
+       Size              EntSize          Info              Align
+  Size of area in .debug_info section: %ld
+sizeof (Elf_External_Syminfo) == entry->d_un.d_val
+  Size of program headers:           %ld (bytes)
+  Size of section headers:           %ld (bytes)
+  Size of this header:               %ld (bytes)
+size: %s 
+skipping invalid relocation offset 0x%lx in section %s
+Skipping unexpected relocation at offset 0x%lx
+Skipping unexpected relocation type %s
+skipping unexpected symbol type %s in %ld'th relocation in section %s
+	%s:label_state(label=%lu)
+	%s:mem_stack_f(t=%lu,size=%lu)
+	%s:mem_stack_v(t=%lu)
+'%s': No such file
+__snprintf_chk
+Soft float
+, software FP
+Sony DSP processor
+Sony nCPU embedded RISC processor
+, sorted symbol tables
+SP and DP
+Sparc v8+
+Sparc v9
+Sparc v9 (old)
+  Special opcode %d: advance Address by %s to 0x%s
+  Special opcode %d: advance Address by %s to 0x%s[%d]
+__sprintf_chk
+	%s:priunat_gr(reg=r%u)
+	%s:priunat_psprel(pspoff=0x10-0x%lx)
+	%s:priunat_sprel(spoff=0x%lx)
+	%s:priunat_when_gr(t=%lu)
+	%s:priunat_when_mem(t=%lu)
+    %s:prologue_gr(mask=[%s],grsave=%s,rlen=%lu)
+     sp = sp + %d
+sp = sp + %ld
+%srandom
+'%s' relocation section at offset 0x%lx contains %ld bytes:
+	%s:restore_p(qp=p%u,t=%lu,reg=%s)
+	%s:restore(t=%lu,reg=%s)
+	%s:rp_br(reg=b%u)
+ (%s)%*s
+%s section data
+  -S --section-headers   Display the sections' header
+	%s:%s_gr(reg=r%u)
+%s%sout of memory allocating %lu bytes after a total of %lu bytes
+	%s:spill_base(pspoff=0x10-0x%lx)
+	%s:spill_mask(imask=[
+	%s:spill_psprel_p(qp=p%u,t=%lu,reg=%s,pspoff=0x10-0x%lx)
+	%s:spill_psprel(reg=%s,t=%lu,pspoff=0x10-0x%lx)
+	%s:spill_reg_p(qp=p%u,t=%lu,reg=%s,treg=%s)
+	%s:spill_reg(t=%lu,reg=%s,treg=%s)
+	%s:spill_sprel_p(qp=p%u,t=%lu,reg=%s,spoff=0x%lx)
+	%s:spill_sprel(reg=%s,t=%lu,spoff=0x%lx)
+	%s:%s_psprel(pspoff=0x10-0x%lx)
+  %*s %*s Purpose
+    %s:%s(rlen=%lu)
+%s[%s(%s)]
+  %*s %*s %*s %-7s %3s %s
+	%s:%s_sprel(spoff=0x%lx)
+	%s:%s_when(t=%lu)
+%s: symbols remain in the index symbol table, but without corresponding entries in the index table
+  -s --syms              Display the symbol table
+__stack_chk_fail
+  Stack increment %d
+Stack_Overflow_Check 
+Standalone App
+Stanford MIPS-X
+ (start == end)
+ (start > end)
+  Start of program headers:          
+  Start of section headers:          
+STATIC_TLS
+%s: the archive has an index but no symbols
+%s: the archive index is empty
+%s: the archive index is supposed to have %ld entries, but the size in the header is too small
+STMicroelectronics 64bit VLIW Data Signal Processor
+STMicroelectronics ST100 processor
+STMicroelectronics ST19 8-bit microcontroller
+STMicroelectronics ST200 microcontroller
+STMicroelectronics ST7 8-bit microcontroller
+STMicroelectronics ST9+ 8/16 bit microcontroller
+STMicroelectronics STxP7x family
+STMicroeletronics STM8 8-bit microcontroller
+__strcat_chk
+__strdup
+strerror
+string-dump
+String dump of section '%s':
+<string table index: %3ld>
+%s: unable to dump the index as none was found
+SUNPLUS S+Core
+	%s:unwabi(abi=%s,context=0x%02x)
+%sv8plus
+%s: Warning: 
+/SYM64/         
+SymbianOS 2004
+SymbianOS (reserved)
+Symbol Attributes:
+symbol information
+     --symbols           An alias for --syms
+Symbol table:
+Symbol table for image:
+Symbol table of `.gnu.hash' for image:
+Symbol table '%s' contains %lu entries:
+Symbol table '%s' has a sh_entsize of zero!
+SYMINENT
+SYMTAB SECTION INDICIES
+symtab shndx
+Sym.Val.
+T$09T$hw
+T2EE_use
+  Tag_ABI_array_object_align_expected: 
+  Tag_ABI_array_object_alignment: 
+  Tag_ABI_compatibility: 
+  Tag_ABI_conformance: 
+  Tag_ABI_DSBT: 
+  Tag_ABI_PIC: 
+  Tag_ABI_PID: 
+  Tag_ABI_stack_align_needed: 
+  Tag_ABI_stack_align_preserved: 
+  Tag_ABI_wchar_t: 
+  Tag_GNU_MIPS_ABI_FP: 
+  Tag_GNU_Power_ABI_FP: 
+  Tag_GNU_Power_ABI_Struct_Return: 
+  Tag_GNU_Power_ABI_Vector: 
+  Tag_GNU_Sparc_HWCAPS: 
+  Tag_ISA: 
+  Tag_%s: 
+ TAGS       
+  Tag        Type                         Name/Value
+  Tag_unknown_%d: 
+ TBK_IN_DSF
+ TBK_IN_IMG
+Tenor Network TPC processor
+Tensilica Xtensa Processor
+Texas Instruments msp430 microcontroller
+Texas Instruments TMS320C2000 DSP family
+Texas Instruments TMS320C55x DSP family
+Texas Instruments TMS320C6000 DSP family
+The address table data in version 3 may be wrong.
+ The Directory Table:
+ The Directory Table is empty.
+the .dynamic section is not contained within the dynamic segment
+the .dynamic section is not the first section in the dynamic segment.
+ The File Name Table:
+ The File Name Table is empty.
+the GNU General Public License version 3 or (at your option) any later version.
+The information in section %s appears to be corrupt - the section is too small
+The line info appears to be corrupt - the section is too small
+There are %d program headers, starting at offset 
+There are %d section headers, starting at offset 0x%lx:
+There are %ld unused bytes at the end of section %s
+There are no dynamic relocations in this file.
+There are no program headers in this file.
+There are no relocations in this file.
+There are no section groups in this file.
+There are no sections in this file.
+There are no sections to group in this file.
+There are no unwind sections in this file.
+There is a hole [0x%lx - 0x%lx] in .debug_loc section.
+There is a hole [0x%lx - 0x%lx] in %s section.
+There is an overlap [0x%lx - 0x%lx] in .debug_loc section.
+There is an overlap [0x%lx - 0x%lx] in %s section.
+There is no dynamic section in this file.
+The %s section is empty.
+This program has absolutely no warranty.
+This program is free software; you may redistribute it under the terms of
+Thompson Multimedia General Purpose Processor
+THUMB_FUNC
+THUMB_ISA_use
+TI_HANDLER
+TI_ICODE
+TI_INITINFO
+Tilera TILE64 multicore architecture family
+Tilera TILE-Gx multicore architecture family
+Tilera TILEPro multicore architecture family
+Time Stamp: %s
+TI_PHATTRS
+TLSDESC_GOT
+TLSDESC_PLT
+, tomcat
+Toshiba MeP Media Engine
+Total_frame_size=%d 
+Toyota ME16 processor
+.trace_abbrev
+.trace_aranges
+.trace_info
+, trapnil
+Truncated header in the %s section.
+[Truncated opcode]
+TrustZone
+TrustZone and Virtualization Extensions
+TRW RH32
+  -t --section-details   Display the section details
+TU table:
+Two_Instruction_SP_Increment 
+                    Type2: 
+                    Type3: 
+       Type              Address          Offset            Link
+       Type            Address          Off    Size   ES   Lk Inf Al
+       Type            Addr     Off    Size   ES   Lk Inf Al
+ type: %lx, namesize: %08lx, descsize: %08lx
+   Type Offset:   0x%s
+  Type           Offset             VirtAddr           PhysAddr
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  Type:                              %s
+  %u/-%3u
+Ubicom IP2xxx 8-bit microcontrollers
+, ugen_reserved
+ uhandler
+, ultrasparcI
+, ultrasparcIII
+unable to apply unsupported reloc type %d to section %s
+Unable to determine the length of the dynamic string table
+Unable to determine the number of symbols to load
+Unable to find program interpreter name
+Unable to load/parse the .debug_info section, so cannot interpret the %s section.
+Unable to locate %s section!
+Unable to read in 0x%lx bytes of %s
+Unable to read in dynamic data
+Unable to read program interpreter name
+Unable to seek to 0x%lx for %s
+Unable to seek to end of file
+Unable to seek to end of file!
+Unable to seek to start of dynamic information
+(undefined)
+Unhandled data length: %d
+Unhandled MN10300 reloc type found after SYM_DIFF reloc
+(Unified Parallel C)
+UNIX - AIX
+UNIX - FreeBSD
+UNIX - GNU
+UNIX - HP-UX
+UNIX - IRIX
+UNIX - NetBSD
+UNIX - OpenBSD
+UNIX - Solaris
+UNIX - System V
+UNIX - TRU64
+    UNKNOW DW_LNE_HP_SFC opcode (%u)
+| <unknown>
+, <unknown>
+UNKNOWN: 
+<unknown>: 0x%x
+[<unknown>: 0x%x] 
+Unknown11
+Unknown12
+Unknown13
+Unknown14
+Unknown15
+, unknown ABI
+(unknown accessibility)
+<unknown addend: %lx>
+Unknown AT value: %lx
+(unknown case)
+Unknown code 0x%02x
+(unknown convention)
+, unknown CPU
+<unknown>: %d
+Unknown format '%c'
+Unknown FORM value: %lx
+  (Unknown inline attribute value: %s)
+, unknown ISA
+UNKNOWN: length %d
+(Unknown location op)
+<unknown>: %lx
+<unknown: %lx>
+UNKNOWN (%*.*lx)
+unknown mac
+ Unknown macro opcode %02x seen
+Unknown note type: (0x%08x)
+  Unknown opcode %d with operands: 
+(Unknown: %s)
+  Unknown section contexts
+Unknown tag: %d
+Unknown TAG value: %lx
+(unknown type)
+, unknown v850 architecture variant
+	Unknown version.
+(unknown virtuality)
+(unknown visibility)
+<unknown>: %x
+<unknown: %x>
+unrecognized: %-7lx
+Unrecognized debug option '%s'
+Unrecognized debug section: %s
+, <unrecognized EABI>
+Unrecognized form: %lu
+(unsigned)
+(unsigned char)
+(unsigned_fixed)
+     [unsupported opcode]
+unsupported or unknown Dwarf Call Frame Instruction number: %#x
+Unsupported version %lu.
+unwind data
+unwind info
+Unwind section 
+unwind table
+Unwind table index '%s' at offset 0x%lx contains %lu entries:
+ UPCALLS
+(up_case)
+Usage: readelf <option(s)> elf-file(s)
+use-dynamic
+(user defined)
+user defined: 
+(User defined location op)
+(user defined type)
+, uses APCS/26
+, uses APCS/float
+, uses new ABI
+, uses old ABI
+/usr/share/locale
+  -u --unwind            Display the unwind info (if present)
+, v850e1
+, v850e2
+, v850e2v3
+Variable_Frame 
+VERDEFNUM
+VERNEEDNUM
+  Version:                           0x%lx
+, Version1 EABI
+, Version2 EABI
+, Version3 EABI
+Version 4 does not support case insensitive lookups.
+, Version4 EABI
+, Version5 EABI
+   Version:       %d
+  Version:                             %d
+  Version:                     %d
+  Version:                  %d
+  Version:               %d
+version data
+version def
+version def aux
+  Version def aux past end of section
+  Version definition past end of section
+version definition section
+Version definition section '%s' contains %u entries:
+  Version:                           %d %s
+version-info
+Version %ld
+version need
+version need aux (2)
+version need aux (3)
+  Version need aux past end of section
+  Version need past end of section
+version need section
+Version needs section '%s' contains %u entries:
+version string table
+version symbol data
+Version symbols section '%s' contains %d entries:
+VFP registers
+__vfprintf_chk
+VFPv3-D16
+VFPv4-D16
+(virtual)
+Virtual address 0x%lx not located in any PT_LOAD segment.
+Virtualization Extensions
+Virtualization_use
+Vitesse IQ2000
+Vitesse Prism
+VMS_ALLOC_64BIT
+VMS_DEBUG
+VMS_DEBUG_STR
+VMS_FIXUP
+VMS_FIXUP_NEEDED
+VMS_FIXUP_RELA_CNT
+VMS_FIXUP_RELA_OFF
+VMS_FPMODE
+VMS_GLOBAL
+VMS_IDENT
+VMS_IMGIOCNT
+VMS_IMG_RELA_CNT
+VMS_IMG_RELA_OFF
+, vms_linkages
+VMS_LINKAGES
+VMS_LNKFLAGS
+VMS_NEEDED_IDENT
+VMS - OpenVMS
+VMS_OVERLAID
+VMS_PLTGOT_OFFSET
+VMS_PLTGOT_SEG
+VMS_PROTECTED
+VMS_SEG_NO
+VMS_SEG_RELA_CNT
+VMS_SEG_RELA_OFF
+VMS_SHARED
+VMS_STACKSIZE
+VMS_STRTAB_OFFSET
+VMS_SUBTYPE
+VMS_SYMBOL_VECTOR
+VMS_SYMVEC
+VMS_SYMVEC_CNT
+VMS_SYMVEC_OFFSET
+VMS_SYMVEC_SEG
+VMS_SYSVER_OFFSET
+VMS_TIE_SIGNATURES
+VMS_TRACE
+VMS_UNWIND_CODSEG
+VMS_UNWIND_INFOSEG
+VMS_UNWIND_OFFSET
+VMS_UNWIND_SEG
+VMS_UNWINDSZ
+VMS_VECTOR
+VMS_VIR_MEM_BLK_SIZ
+VMS_XLATED
+     vsp = r%d
+     vsp = vsp - %d
+     vsp = vsp + %d
+vsp = vsp + %ld
+  v%u, flags=0x%lx (%s%s), len=%lu bytes
+  -v --version           Display the version number of readelf
+  -V --version-info      Display the version sections (if present)
+, warning
+ [without DW_AT_frame_base]
+  -w[lLiaprmfFsoRt] or
+WMMX_arch
+WMMX registers
+Wrong size in print_dwarf_vma
+  -W --wide              Allow output width to exceed 80 characters
+  W (write), A (alloc), X (execute), M (merge), S (strings)
+  W (write), A (alloc), X (execute), M (merge), S (strings), l (large)
+X86_64_UNWIND
+\$x9\$Xu09|$X
+  -x --hex-dump=<number|name>
+Xilinx MicroBlaze
+__xstat64
+.zdebug_
+.zdebug_abbrev
+.zdebug_aranges
+.zdebug_frame
+.zdebug_info
+.zdebug_line
+.zdebug_loc
+.zdebug_macinfo
+.zdebug_macro
+.zdebug_pubnames
+.zdebug_pubtypes
+.zdebug_ranges
+.zdebug_static_func
+.zdebug_static_vars
+.zdebug_str
+.zdebug_types
+.zdebug_weaknames

@@ -1,0 +1,184 @@
+%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x
+Address unreachable
+Administratively prohibited
+ All rights reserved.
+ (BAD CHECKSUM!)
+Beyond scope of source address
+can't disable multicast loopback
+can't receive hop limit
+can't set multicast hop limit
+can't set unicast hop limit
+, code=%d
+code %d 
+@(#) Copyright (c) 1989 The Regents of the University of California.
+__ctype_b_loc
+__ctype_tolower_loc
+%d bytes from %s:
+%d data bytes
+Defragmentation failure
+Destination unreachable: 
+__dn_comp
+__dn_expand
+, %d%% packet loss
+Echo reply
+Echo request
+__errno_location
+ff02::2:%02x%02x:%02x%02x
+, flow 0x%05x, 
+Flow labels are not supported.
+__fprintf_chk
+freeaddrinfo
+From %s: 
+From %s icmp_seq=%u 
+From %s: icmp_seq=%u 
+from %s %s: 
+getaddrinfo
+gethostbyaddr
+getsockname
+getsockopt
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+             [hop1 ...] destination
+Hop limit
+h?VQ:I:M:aUc:dfi:w:l:S:np:qrs:vLt:AW:Bm:DF:N:
+ icmp_seq=%u
+if_nametoindex
+inet_ntop
+inet_pton
+_IO_putc
+_IO_stdin_used
+ipv4-all
+ipv6-all
+ipv6-compatible
+ipv6-global
+ipv6-linklocal
+ipv6-sitelocal
+_Jv_RegisterClasses
+, +%ld corrupted
+, +%ld duplicates
+, +%ld errors
+%ld/%ld packets, %d%% loss
+%ld packets transmitted, 
+%ld received
+libcrypto.so.1.0.0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libresolv.so.2
+[%lu.%06lu] 
+mark cannot be negative
+MD5_Final
+MD5_Init
+MD5_Update
+, min/avg/ewma/max = %ld.%03ld/%lu.%03ld/%d.%03d/%ld.%03ld ms
+MLD Query
+MLD Reduction
+MLD Report
+             [-M pmtudisc-hint] [-S sndbuf] [-F flowlabel] [-Q tclass]
+             [[-N nodeinfo-option] ...]
+no room for options
+No route
+OPENSSL_1.0.0
+Packet too big: mtu=%u
+Parameter problem: 
+ parse error (too short)
+ parse error (truncated)
+PATTERN: 0x
+ping6: Inappropriate subject name: %s
+ping6: label too long for subject: %s
+ping6: out of memory.
+ping6: scope too long: %s
+ping6 utility, iputils-ss%s
+ping: bad linger time.
+ping: bad number of packets to transmit.
+ping: bad preload value, should be 1..%d
+ping: bad sndbuf value.
+ping: bad timing interval.
+ping: bad wait time.
+ping: bind icmp socket
+ping: cannot flood; minimal interval, allowed for user, is %dms
+ping: cannot set preload to value > 3
+ping: icmp open socket
+ping: illegal negative packet size %d.
+ping: illegal preload and/or interval
+ping: invalid source address %s
+ping: IPV6_MTU_DISCOVER
+ping: local error: Message too long, mtu=%u
+ping: local error: %s
+ping: multicast ping does not fragment.
+ping: multicast ping with too short interval.
+ping: out of memory
+ping: out of memory.
+ping: packet size too large: %d
+ping: packet too short (%d bytes)
+ping: patterns must be specified as hex digits.
+ping: recvmsg
+ping: sendmsg
+ping: setuid
+PING %s(%s) 
+ping: ttl %u out of range
+ping: unknown iface %s
+ping utility, iputils-ss%s
+ping: wrong value for -M: do, dont, want are valid ones.
+Port unreachable
+             [-p pattern] [-s packetsize] [-t ttl] [-I interface]
+__printf_chk
+Qtype conflict
+ refused
+rtt min/avg/max/mdev = %ld.%03ld/%lu.%03ld/%ld.%03ld/%ld.%03ld ms
+s20101006
+sched_yield
+scope discrepancy among the nodes
+setitimer
+setsockopt
+setsockopt(ICMP6_FILTER)
+setsockopt(IPV6_TCLASS)
+setsockopt(RAW_CHECKSUM) failed - try to continue.
+setsockopt(SO_BINDTODEVICE)
+sigaction
+%sipg/ewma %d.%03d/%d.%03d ms
+--- %s ping statistics ---
+%spipe %d
+__sprintf_chk
+srcrt_space failed
+__stack_chk_fail
+__strcat_chk
+__strdup
+strerror
+subject-fqdn
+subject-ipv4
+subject-ipv6
+subject-name
+Subject type conflict
+t4<.t0<%u
+Time exceeded: 
+ time=%ld.%01ld ms
+ time=%ld.%02ld ms
+ time=%ld.%03ld ms
+ time=%ld ms
+, time %ldms
+ unexpeced error in inet_ntop(%s)
+ unknown
+ unknown code(%02x)
+Unknown code %d
+Unknown header 
+unknown host
+Unknown host: %s
+unknown icmp type
+Unknown option 
+ unknown qtype(0x%02x)
+Usage: ping6 [-LUdfnqrvVaAD] [-c count] [-i interval] [-w deadline]
+WARNING: failed to install socket filter
+Warning: Failed to set mark %d
+Warning: no SO_TIMESTAMP support, falling back to SIOCGSTAMP
+WARNING: probably, rcvbuf is not enough to hold preload.
+Warning: time of day goes back (%ldus), taking countermeasures.
+WARNING: your kernel is veeery old. No problems.
+wrong data byte #%d should be 0x%x but was 0x%x
+Wrong header field 

@@ -1,0 +1,153 @@
+    $all_exit
+    all_exit=
+    all_exit="exit 0"
+# All Rights Reserved.
+    # Assumes /usr/lib is the standard library directory everywhere...
+#!/bin/sh
+    case $1 in
+CC_LINK='$(CC) $(PROG_LIBPATH) $(PROG_RPATH_FLAGS) $(CFLAGS) $(LDFLAGS)'
+	--cflags)
+# Configurable parameters set by autoconf
+# Copyright 2001, 2002, 2003 by the Massachusetts Institute of Technology.
+# Defaults for program
+	--deps)
+# distribute this software and its documentation for any purpose and
+DL_LIB='-ldl'
+	    do_all=1
+	    do_cflags=1
+	    do_deps=1
+    do_exec_prefix=1
+	    do_exec_prefix=1
+    do_help=1
+	    do_help=1
+	    do_libs=1
+    do_prefix=1
+	    do_prefix=1
+    do_vendor=1
+	    do_vendor=1
+    do_version=1
+	    do_version=1
+        echo ''
+	    echo "$0: Unknown option \`$1' -- use \`--help' for usage"
+    echo "        [--all]           Display version, vendor, and various values"
+    echo "        [--cflags]        Compile time CFLAGS"
+    echo "        [--deps]          Include dependent libraries"
+    echo "        [--exec-prefix]   Kerberos installed exec_prefix"
+    echo "        gssapi            GSSAPI application with Kerberos 5 bindings"
+    echo "        [--help]          Help"
+        echo "-I${includedir}"
+    echo "        kadm-client       Kadmin client"
+    echo "        kadm-server       Kadmin server"
+    echo "        kdb               Application that accesses the kerberos database"
+    echo "        krb5              Kerberos 5 application"
+    echo $lib_flags
+    echo "Libraries:"
+    echo "        [--libs]          List libraries required to link [LIBRARIES]"
+    echo "Options:"
+    echo "        [--prefix]        Kerberos installed prefix"
+    echo "$title_exec_prefix$exec_prefix"
+    echo "$title_prefix$prefix"
+    echo "$title_vendor$vendor_string"
+    echo "$title_version$version_string"
+    echo "Usage: $0 [OPTIONS] [LIBRARIES]"
+    echo "        [--vendor]        Vendor information"
+    echo "        [--version]       Version information"
+    else
+    esac
+	    -e 's#\$(CFLAGS)##'`
+	    -e 's#\$(LDFLAGS)#'"$LDFLAGS"'#' \
+	    -e 's#\$(PROG_LIBPATH)#'$libdirarg'#' \
+	    -e 's#\$(PROG_RPATH_FLAGS)#'"$PROG_RPATH_FLAGS"'#' \
+	    -e 's#\$(PROG_RPATH)#'$libdir'#' \
+	    -e 's#\$(PTHREAD_CFLAGS)#'"$PTHREAD_CFLAGS"'#' \
+	    -e 's/\$(PURE)//' \
+	    -e 's#\$(RPATH_FLAG)#'"$RPATH_FLAG"'#' \
+	--exec-prefix)
+exec_prefix=${prefix}
+    exit 0
+	    exit 1
+# Export of this software from the United States of America may
+#   export to obtain such a license before exporting.
+# fashion that it might be confused with the original M.I.T. software.
+GEN_LIB=
+	gssapi)
+	--help)
+    # here.
+# If required options - provide help
+    if test "$libdir" = /usr/lib; then
+    if test $library = 'gssapi'; then
+    if test $library = 'kadm_client'; then
+    if test $library = 'kadm_common'; then
+    if test $library = 'kadm_server'; then
+    if test $library = 'kdb'; then
+    if test $library = 'krb5'; then
+if test -n "$do_all"; then
+if test -n "$do_cflags"; then
+if test -n "$do_exec_prefix"; then
+if test -n "$do_help"; then
+if test -n "$do_libs"; then
+if test -n "$do_prefix"; then
+if test -n "$do_vendor"; then
+if test -n "$do_version"; then
+    if test x"$includedir" != x"/usr/include" ; then
+if test -z "$do_all" -a -z "$do_version" -a -z "$do_vendor" -a -z "$do_prefix" -a -z "$do_vendor" -a -z "$do_exec_prefix" -a -z "$do_cflags" -a -z "$do_libs"; then
+    # If we ever support a flag to generate output suitable for static
+includedir=${prefix}/include
+#   It is the responsibility of any person or organization contemplating
+	kadm-client)
+	kadm-server)
+KDB5_DB_LIB=
+LDFLAGS='-Wl,-Bsymbolic-functions -Wl,-z,relro'
+	libdirarg=
+	libdirarg="-L$libdir"
+libdir=${prefix}/lib/i386-linux-gnu
+    lib_flags=`echo $CC_LINK | sed -e 's/\$(CC)//' \
+	lib_flags="$lib_flags -lgssapi_krb5"
+	lib_flags="$lib_flags -lgssrpc"
+	lib_flags="$lib_flags -lkadm5clnt_mit"
+	lib_flags="$lib_flags -lkadm5srv_mit -lkdb5 $KDB5_DB_LIB"
+	lib_flags="$lib_flags -lkdb5 $KDB5_DB_LIB"
+	lib_flags="$lib_flags -lkrb5 -lk5crypto -lcom_err"
+	    library=gssapi
+	library=gssapi
+	    library=kadm_client
+	library=kadm_common
+	    library=kadm_server
+	    library=kdb
+	    library=krb5
+	library=krb5
+library=krb5
+	--libs)
+LIBS='-lkeyutils -lresolv '
+    # linking, we would output "-lkrb5support $GEN_LIB $LIBS $DL_LIB"
+# M.I.T. makes no representations about the suitability of
+# notice appear in all copies and that both that copyright notice and
+# or implied warranty.
+# permission.  Furthermore if you modify this software you must label
+	--prefix)
+prefix=/usr
+# Process arguments
+PROG_RPATH_FLAGS=''
+PTHREAD_CFLAGS='-pthread'
+#   require a specific license from the United States Government.
+RPATH_FLAG=''
+    shift
+# Some constants
+# the name of M.I.T. not be used in advertising or publicity pertaining
+# this permission notice appear in supporting documentation, and that
+# this software for any purpose.  It is provided "as is" without express
+    title_exec_prefix="Exec_prefix: "
+    title_prefix="Prefix:      "
+    title_vendor="Vendor:      "
+    title_version="Version:     "
+# to distribution of the software without specific, written prior
+    # Ugly gross hack for our build tree
+	--vendor)
+vendor_string="Massachusetts Institute of Technology"
+	--version)
+version_string="Kerberos 5 release 1.10-beta1"
+while test $# != 0; do
+# WITHIN THAT CONSTRAINT, permission to use, copy, modify, and
+# without fee is hereby granted, provided that the above copyright
+# Yes, we are sloppy, library specifications can come before options
+# your software as modified software and not distribute it in such a

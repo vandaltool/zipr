@@ -1,0 +1,211 @@
+		       {
+		       });
+		    }))
+ 2009-2010 Rapha
+# - a - => a
+	$a = $a->get_part($item);
+    $a = $a->get_version() if ref($a) and $a->isa("Dpkg::Changelog::Entry");
+    @a = @{$a} if ref($a) eq "ARRAY";
+	$a = $a->{$item};
+                           after the last '~' in the version.
+		       $a->get_part('changes'), $b->get_part('changes'),
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    $a = &$preprocess($a) if defined($a);
+	$a =~ s/~[^~]*$//;
+    $a =~ s/~(bpo|vola)/+$1/;
+# (at your option) any later version.
+    # Backport and volatile are not real prereleases
+# - - b => b
+	$b = $b->get_part($item);
+    $b = $b->get_version() if ref($b) and $b->isa("Dpkg::Changelog::Entry");
+    @b = @{$b} if ref($b) eq "ARRAY";
+	$b = $b->{$item};
+    $b = &$preprocess($b) if defined($b);
+	$b =~ s/~[^~]*$//;
+    $b =~ s/~(bpo|vola)/+$1/;
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+$cha = Dpkg::Changelog::Debian->new();
+$cha->load($new_a);
+$chb = Dpkg::Changelog::Debian->new();
+$chb->load($new_b);
+$cho = Dpkg::Changelog::Debian->new();
+$cho->load($old);
+			chomp $tail if defined $tail;
+    close(OUT) || syserr(_g("cannot write %s"), $out_file);
+# Compares the versions taking into account some oddities like the fact
+			   CONFLICT => sub {
+# Copyright 
+    } else {
+} else {
+	} else {
+	    } elsif ($cmp < 0) {
+    } elsif ((defined($a) and defined($o) and ($a eq $o)) or
+    } elsif ((defined($b) and defined($o) and ($b eq $o)) or
+    } elsif (ref $a) {
+    } elsif (ref $b) {
+    } elsif (ref $o) {
+        -e $old and -e $new_a and -e $new_b)
+	eval q{
+    eval 'use Algorithm::Merge qw(merge);';
+    exit(2);
+    $exitcode = 1;
+				$exitcode = 1;
+exit $exitcode;
+    foreach my $i (0 .. 2) {
+		foreach my $j (0 .. $i - 1) {
+# GNU General Public License for more details.
+  --help, -h, -?           show this help message.
+    if ($@) {
+    if (blessed($a) and $a->isa('Dpkg::Changelog::Entry')) {
+    if (blessed($b) and $b->isa('Dpkg::Changelog::Entry')) {
+    if (blessed($o) and $o->isa('Dpkg::Changelog::Entry')) {
+	    if ($cmp > 0) {
+    if (defined $a and defined $b) {
+    if (defined($a) and defined($b) and ($a eq $b)) {
+	if (defined $minver and defined $items[$i]) {
+if (defined($out_file) and $out_file ne "-") {
+    if ($merge_prereleases) {
+# if the next item on the given changelog is skipped)
+		$items[$i] = undef;
+		    $items[$j] = undef;
+# it under the terms of the GNU General Public License as published by
+    last unless defined $o or defined $a or defined $b;
+later for copying conditions. There is NO warranty.
+l Hertzog <hertzog@debian.org>
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# Merge changelog entries smartly by merging individually the different
+	merge_conflict($a, $b);
+	merge_conflict($a->get_part('header'), $b->get_part('header'));
+	merge_conflict($a->get_part('trailer'), $b->get_part('trailer'));
+    merge_conflict($cha->get_unparsed_tail(), $chb->get_unparsed_tail());
+	merge_entries($o, $a, $b);
+		   'merge-prereleases|m' => \$merge_prereleases,
+  --merge-prereleases, -m  merge pre-releases together, ignores everything
+    # Merge the changes
+    # Merge the header line
+    # Merge the trailer line
+		$minver = $items[$i]->get_version();
+	    $minver = $items[$i]->get_version() if defined $items[$i];
+    my (@a, @b);
+    my ($a, $b) = @_;
+my @a = reverse @$cha;
+    my $array = shift;
+    my @arrays = (\@o, \@a, \@b);
+my @b = reverse @$chb;
+my ($cho, $cha, $chb, $res);
+	    my $cmp = compare_versions($minver, $items[$i]->get_version());
+my $exitcode = 0; # 1 if conflict encountered
+    my ($item, $o, $a, $b) = @_;
+    my @items = (shift @o, shift @a, shift @b);
+    my @merged = merge(defined $o ? $o->get_part('changes') : [],
+my $merge_prereleases;
+    my $minver;
+    my ($o, $a, $b) = @_;
+		my ($o, $a, $b) = @_;
+    my ($o, $a, $b) = get_items_to_merge();
+    my ($o, $a, $b, $preprocess) = @_;
+my ($old, $new_a, $new_b, $out_file) = @ARGV;
+my @o = reverse @$cho;
+my @result; # Lines to output
+			my $tail = $_[0]->get_unparsed_tail();
+    next if merge_block($o, $a, $b);
+	# Non-existing on one side, changed on the other side
+	     (not defined($a) and not defined($o))) {
+	     (not defined($b) and not defined($o))) {
+    # NOTE: Only $o can be undef
+# o a o => a
+# on which they are based.
+# o o b => b
+	$o = $o->get_part($item);
+	$o = $o->{$item};
+    open(OUT, ">", $out_file) || syserr(_g("cannot write %s"), $out_file);
+    $o = &$preprocess($o) if defined($o);
+Options:
+# parts constituting an entry
+    $preprocess = \&join_lines unless defined $preprocess;
+    print ((blessed $_) ? "$_" : "$_\n") foreach @result;
+    printf(_g(
+    printf _g("Debian %s version %s.\n"), $progname, $version;
+    printf "\n" . _g(
+    printf "\n" . _g("Copyright (C) 2009-2010 Raphael Hertzog.");
+    print OUT ((blessed $_) ? "$_" : "$_\n") foreach @result;
+"), $progname);
+    push @a, $a if defined $a;
+    push @b, $b if defined $b;
+	return 0;
+    return 0 if not defined $a and not defined $b;
+    return 1;
+    return -1 if not defined $a;
+    return 1 if not defined($a) and not defined($b);
+    return 1 if not defined $b;
+    return ("<<<<<<<", @a, "=======", @b, ">>>>>>>");
+		return @$a if join("\n", @$a) eq join("\n", @$b);
+    return $array;
+				return get_conflict_block($_[0], $_[1]);
+		return get_conflict_block($a, $b);
+    return @items;
+    return join("\n", @$array) if ref($array) eq "ARRAY";
+    return merge_block($o, $a, $b);
+# Returns the next items to merge, all items returned correspond to the
+			return $tail;
+    return version_compare($a, $b);
+	# Same entry, merge sub-items separately for a nicer result
+# same minimal version among the 3 possible next items (undef is returned
+sub compare_versions {
+sub get_conflict_block($$) {
+sub get_conflict_block($$);
+sub get_items_to_merge {
+sub join_lines($) {
+sub join_lines($);
+	    sub merge {
+sub merge_block($$$;&) {
+sub merge_block($$$;&);
+sub merge_conflict($$) {
+sub merge_conflict($$);
+sub merge_entries($$$) {
+sub merge_entries($$$);
+sub merge_entry_item($$$$) {
+sub merge_entry_item($$$$);
+sub usage {
+sub version {
+textdomain("dpkg-dev");
+# that we want backport/volatile versions to sort higher than the version
+# the Free Software Foundation; either version 2 of the License, or
+"This is free software; see the GNU General Public License version 2 or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+# Try to merge the obvious cases, return 1 on success and 0 on failure
+unless (defined $old and defined $new_a and defined $new_b and
+unless (GetOptions('help|?' => sub { usage(); exit(0) },
+unless (merge_block($cho, $cha, $chb, sub {
+    unless (merge_entry_item("blank_after_changes", $o, $a, $b)) {
+    unless (merge_entry_item("blank_after_header", $o, $a, $b)) {
+    unless (merge_entry_item("blank_after_trailer", $o, $a, $b)) {
+    unless (merge_entry_item("header", $o, $a, $b)) {
+    unless (merge_entry_item("trailer", $o, $a, $b)) {
+		unshift @{$arrays[$i]}, $items[$i];
+		    unshift @{$arrays[$j]}, $items[$j];
+	unshift @result, "";
+	unshift @result, $a;
+	unshift @result, $a if defined $a;
+	unshift @result, $b if defined $b;
+    unshift @result, get_conflict_block($a, $b);
+    unshift @result, @merged;
+    usage();
+"Usage: %s [<option> ...] <old> <new-a> <new-b> [<out>]
+use Dpkg;
+use Dpkg::Changelog::Debian;
+use Dpkg::ErrorHandling;
+use Dpkg::Gettext;
+use Dpkg::Version;
+use Getopt::Long;
+use Scalar::Util qw(blessed);
+use strict;
+use warnings;
+#!/usr/bin/perl
+  --version                show the version.
+		   'version' => sub { version(); exit(0) })) {
+    # We only have the usually conflicting cases left
+while (1) {
+# - x x => x
+# You should have received a copy of the GNU General Public License

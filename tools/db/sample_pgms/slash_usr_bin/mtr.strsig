@@ -1,0 +1,254 @@
+.123abc>
+127.0.0.1
+ %%2d.|-- %%-%ds
+ %4.1f%%
+A: Average RTT(ms)
+A: host address
+Amalloc() of %u bytes failed: %s
+Authority reference
+  b <c>   set ping bit pattern to c(0..255) or random(c<0)
+bitpattern
+ BITPATTERN=0x%02X
+ BITPATTERN=rand(0x00-FF)
+B: Min/Best RTT(ms)
+__bss_start
+  %c:%d ms
+Change Packet Size: %d
+CH: CHAOS
+CNAME: name alias
+  c <n>   report cycle n, default n=infinite
+Command:
+Could not open IPv6 socket
+Couldn't get fd's flags
+Couldn't set fd's flags
+CS: CSNET (OBSOLETE)
+__ctype_tolower_loc
+D$(9D$$t^
+D$(9D$$tZ
+D: Dropped Packets
+@@d %d %s
+default 0x00, min cost 0x02, rel 0x04,, thr 0x08, low del 0x10...
+__dn_expand
+DR AGJMXI
+  d       switching display mode
+__errno_location
+ERROR: Attempt to free pointer twice.
+ERROR: Corrupted free() buffer. (header)
+estart statistics   
+Failed to resolve host
+Failed to resolve host: %s
+Fields: %s
+first-ttl
+First TTL: %d
+  f <n>   set the initial time-to-live(ttl), default n=1
+format error in query
+__fprintf_chk
+gai_strerror
+getaddrinfo
+gethostbyaddr
+gethostbyname
+gethostname
+getopt_long
+getsockname
+gettimeofday
+G: Geometric Mean
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  ?|h     help
+HINFO: host information
+HOST: %%-%ds
+HS: Hesoid [Dyer 87]
+    </HUB>
+    <HUB COUNT=%d HOST=%s>
+HUPCOUNT, HOST
+I: Interarrival Jitter
+inet_aton
+inet_ntoa
+inet_ntop
+inet_pton
+  i <n>   set the ping interval to n seconds, default n=1
+interval
+Interval : %0.0f
+		[--interval=SECONDS] HOSTNAME [PACKETSIZE]
+IN: the Internet
+inverse query
+_IO_stdin_used
+isplay mode   
+J: Current Jitter
+  j       toggle latency(LS NABWV)/jitter(DR AGJMXI) stats
+_Jv_RegisterClasses
+ Last %3d pings
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libncurses.so.5
+libresolv.so.2
+L: Loss Ratio
+localhost
+LS NABWV
+Max TTL: %d
+MB: mailbox domain name (EXPERIMENTAL)
+MD: mail destination (OBSOLETE)
+__memset_chk
+MF: mail forwarder (OBSOLETE)
+MG: mail group member (EXPERIMENTAL)
+MINFO: mailbox or mail list information
+M: Jitter Mean/Avg.
+  m <n>   set the max time-to-live, default n= # of hops
+MR: mail rename domain name (EXPERIMENTAL)
+mtr 0.80
+mtr: bad interface address: %s
+mtr: Couldn't determine raw socket type.
+mtr: Couldn't set interface address.
+mtr: failed to bind to interface
+MTR_OPTIONS
+<MTR SRC=%s DST=%s
+mtr: Unable to drop permissions.
+mtr: unable to get raw sockets.
+mtr: Unable to start net module.
+mtr unknown address type
+mtr: wait time must be positive
+mvprintw
+MX: mail exchange
+My traceroute  [v0.80]
+net_open bad address type
+net_reopen bad address type
+N: Newest RTT(ms)
+no error
+No GTK support. Sorry.
+No nameservers defined.
+NS: authoritative name server
+  n       toggle DNS on/off
+NULL: NULL RR (EXPERIMENTAL)
+  o str   set the columns to display, default str='LRS N BAWV'
+   Packets               Pings
+Pattern Range: 0(0x00)-255(0xff), <0 random.
+Ping Bit Pattern: %d
+ press any key to go back...
+__printf_chk
+		[--psize=bytes/-s bytes]
+ PSIZE=%d
+ PSIZE=rand(%d-%d)
+PTR: domain name pointer
+  Q <t>   set ping packet's TOS to t
+queried domain name does not exist
+query class: %u (%s)
+		[--raw] [--split] [--no-dns] [--address interface]
+rder of fields   
+recvfrom
+refused by name server
+report-cycles
+report-wide
+		[--report-wide] [--report-cycles=COUNT] [--curses] [--gtk]
+		[--report-wide|-w] [-u]
+requested query type not implemented
+__res_ninit
+__res_nmkquery
+Resolver: Added to new record.
+Resolver: answered domain query: "%s"
+Resolver: Answered domain: "%s"
+Resolver: Cache record for "%s" (%s) has expired. (state: %u)  Marked for expire at: %g, time: %g.
+Resolver error: Answered class does not match queried class.
+Resolver error: dn_expand() failed while expanding answer domain.
+Resolver error: dn_expand() failed while expanding domain in rdata.
+Resolver error: dn_expand() failed while expanding query domain.
+Resolver error: Domain name too long.
+Resolver error: Invalid opcode in response packet.
+Resolver error: Nameserver packet truncated.
+Resolver error: No error returned but no answers given.
+Resolver error: Packet does not contain all specified resouce records.
+Resolver error: Packet has empty body.
+Resolver error: Packet smaller than standard header size.
+Resolver error: Query packet received on nameserver communication socket.
+Resolver error: Query resource record truncated.
+Resolver error: Query too large.
+Resolver error: Received reply from unknown source: %s
+Resolver error: Received unimplemented data type: %u (%s)
+Resolver error: Received unimplemented query type: %u (%s)
+Resolver error: Received unsupported query class: %u (%s)
+Resolver error: Reply does not contain one query.
+Resolver error: Reply too short.
+Resolver error: Resource record truncated.
+Resolver error: Specified rdata length exceeds packet size.
+Resolver error: Unsupported rdata format for "A" type. (%u bytes)
+Resolver error: Zero size rdata.
+Resolver: Host not found.
+Resolver: Ignoring resource type %u. (%s)
+Resolver: Lookup failed.
+Resolver: Lookup successful: %s
+Resolver: "PTR" query timed out.
+Resolver: Queried domain name: "%s"
+Resolver: Received error response %u. (%s)
+Resolver: Received nameserver reply. (qd:%u an:%u ns:%u ar:%u)
+Resolver: Reverse authentication complete: %s == "%s".
+Resolver: Reverse authentication failed: %s != 
+Resolver: Send #2 for "PTR" query...
+Resolver: Send #3 for "PTR" query...
+Resolver: Sent domain lookup request for "%s".
+Resolver: Sent reverse authentication request for "%s".
+Resolver: Socket error: %s
+Resolver: TTL: %s
+Resolver: Unknown query packet dropped. ("%s" does not match "%s")
+Resolver: Used cached record: %s == "%s".
+Resolver: Used failed record: %s == ???
+Resolver warning: Ignoring response with unexpected query type "PTR".
+Resource reference
+rr class: %u (%s)
+R: Received Packets
+    |  `|-- %s
+    |   |-- %s
+%s %d %d %d %d %d %d
+Select failed
+server failure
+server status request
+setsockopt
+setsockopt(IP_HDRINCL,1)
+setsockopt IPV6_CHECKSUM
+setsockopt IPV6_UNICAST_HOPS
+Size Range: %d-%d, < 0:random.
+snprintf
+__snprintf_chk
+  s <n>   set the packet size to n or random(n<0)
+SOA: authority record
+sockaddrtop unknown address type
+__sprintf_chk
+<sp>: Space between fields
+<SRC=%s DST=%s
+S: Sent Packets
+__stack_chk_fail
+standard query
+statmalloc() error: %s
+statmalloc() failed: %s
+strcasecmp
+__strcat_chk
+__strcpy_chk
+ TESTS=%d>
+Too many fields: %s
+ TOS=0x%X
+TXT: text string
+Type of Service(tos): %d
+Unable to allocate socket for nameserver communication: %s
+Unable to setsockopt() on nameserver communication socket: %s
+unknown class
+unknown error
+Unknown field identifier: %c
+UNKNOWNHOST
+unknown type
+usage: %s [-hvrwctglspniu46] [--help] [--version] [--report]
+  u       switch between ICMP ECHO and UDP datagrams
+%u.%u.%u.%u.in-addr.arpa
+V: Standard Deviation
+Warning: extra arguments ignored: %s
+wattr_off
+wattr_on
+WKS: well known service description
+W: Max/Worst RTT(ms)
+wrefresh
+X: Worst Jitter
+zDvhrwxtglpo:i:c:s:b:Q:na:f:m:u46

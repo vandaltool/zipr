@@ -1,0 +1,576 @@
+							}
+								}
+						# $2 contains target dependencies if any.
+	# 3 space indent lines the command being run up under the
+			$add->($command);
+			$add->($_) foreach optimize_sequence(@{$sequences{$rules_target}});
+Adding to the example above, suppose you need to chmod a file, but only
+# Additional command options
+additional options, or run entirely different commands instead. See
+				$addons{$name} = 1;
+Add the debhelper commands specified by the given addon to appropriate places
+A F<debian/rules> file using B<dh> can override the command that is run
+		# a fresh invocation of debian/rules and any sub-dh commands.
+after a particular debhelper command is run.
+		"after=s" => \$dh{AFTER},
+A long build process for a separate documentation package can
+# Also support completly empty override targets.
+		# an arch-specific override target.
+	# and 1 if target has dependencies or executes commands.
+and B<override_>I<dh_command>B<-indep>.
+	# (and comes first so python-central loads later and can disable it).
+And here is an example of how to tell the B<dh_auto_>I<*> commands to build
+Another common case is wanting to do something manually before or
+anything:
+architecture dependent or architecture independent packages.
+architecture independent packages, and commands in the B<build-arch>,
+		@ARGV_orig=grep { $_ ne $sequence } @ARGV_orig;
+	# as an optimisation, remove from the list any packages
+A sequence can also run dependent targets in debian/rules.  For
+as follows. Then B<dpkg-buildpackage -j> will work.
+a substring. It'll first search for a command in the sequence exactly
+at any step in a sequence, by defining an override target.
+					# a target name, so resetting this one
+at build time, you can use some commands provided in B<autotools-dev>
+	@ba=();
+B<build-indep>, B<build>, B<clean>, B<install-indep>, B<install-arch>,
+B<dh> I<sequence> [B<--with> I<addon>[B<,>I<addon> ...]] [B<--list>] [S<I<debhelper options>>]
+B<dh> runs a sequence of debhelper commands. The supported I<sequence>s
+B<dh> uses the B<DH_INTERNAL_OPTIONS> environment variable to pass information
+		"before=s" => \$dh{BEFORE},
+	# Before v8, the sequence could be at any position in the parameters,
+		# be run again.
+be separated out using architecture independent overrides.
+better to use override targets instead.
+B<install-arch> and B<binary-arch> sequences are passed the B<-a>
+B<install>, B<binary-arch>, B<binary-indep>, and B<binary>.
+	bundling => 0,
+	# Bundling does not work well since there are unknown options.
+	# (But avoid logging for dh_clean since it removes
+can be repeated more than once, or multiple addons to disable can be
+can be used to set an option like B<-v> or B<-X> or B<-N>, as well as for more
+can't guess what to do for a strange package. Here's how to avoid running
+	# Check for override targets in debian/rules, and run instead of
+								# Check if target has commands to execute
+	# Checks if a specified target exists as an explicit target
+	# Check which packages are of the right architecture for the
+		chmod 4755 debian/foo/usr/bin/foo
+	clean_jobserver_makeflags();
+		# Clear all additional options
+		close MAKE;
+COMMAND:	foreach my $command (reverse @log) {
+		# command is in the sequence, we're starting at the beginning.. 			
+			$command_opts{$command} = $opts;
+		# commands can appear multiple times when sequences are
+Commands in the B<build-indep>, B<install-indep> and B<binary-indep>
+	# Commands not to run:
+commands work with no additional options.
+		# command was, in fact, run. This handles the case where
+		commit_override_log(@todo);
+contents (and indeed, existence) of this environment variable, as the name
+		# continue with the next command after it. If no logged
+correspond to the targets of a F<debian/rules> file: B<build-arch>,
+						$current_target = $1;
+								$current_target = undef;
+debhelper 7.0.50 or above.)
+debhelper 8.9.7 or above.)
+debhelper commands. See the F<PROGRAMMING> file for documentation about
+		(defined $override_type ? "-".$override_type : "");
+		    ! defined rules_explicit_target($rules_target)) {
+# Definitions of sequences.
+		delete $command_opts{$command};
+		delete $ENV{DH_INTERNAL_OPTIONS};
+	delete $ENV{DH_INTERNAL_OPTIONS};
+		delete $ENV{DH_INTERNAL_OVERRIDE};
+	delete $ENV{DH_INTERNAL_OVERRIDE};
+	dh_auto_build
+	dh_auto_clean
+	dh_auto_configure
+		dh_auto_configure -- --with-foo --disable-bar
+	dh_auto_install
+	dh_auto_test
+	dh binary-arch --no-act
+	dh_bugfiles
+	dh_builddeb
+		dh $@ --builddirectory=build
+		dh $@ --buildsystem=perl_build
+	dh_clean
+	dh_compress
+dh - debhelper command sequencer
+		dh_fixperms
+	dh_fixperms
+	dh_gconf
+	dh_gencontrol
+	dh_icons
+	dh_install
+	dh_installcatalogs
+	dh_installchangelogs
+	dh_installcron
+	dh_installdeb
+	dh_installdebconf
+	dh_installdirs
+	dh_installdocs
+	dh_installemacsen
+	dh_installexamples
+	dh_installgsettings
+	dh_installifupdown
+	dh_installinfo
+	dh_installinit
+	dh_installlogcheck
+	dh_installlogrotate
+	dh_installman
+	dh_installmenu
+	dh_installmime
+	dh_installmodules
+	dh_installpam
+	dh_installppp
+	dh_installudev
+	dh_installwm
+	dh_installxfonts
+	dh_link
+	dh_lintian
+	dh_makeshlibs
+	dh_md5sums
+		dh $@ --parallel
+	dh_perl
+	dh_prep
+	dh_shlibdeps
+		dh $@ --sourcedirectory=src
+	dh_strip
+		dh_strip -Xfoo
+	dh_testdir
+	dh_testroot
+	dh_usrlocal
+		dh $@ --with autotools_dev
+			@{$dh{WITH}} = grep { ! $without{$_} } @{$dh{WITH}};
+		dh $@ --with python2
+	# Disable complaints about unknown options; they are passed on to 
+	# ditto optimisation for arch indep
+		# Don't pass DH_ environment variables, since this is
+Each debhelper command will record when it's successfully run in
+Each time B<dh> is run, it examines the log, and finds the last logged command
+easy way to do with is by adding an override target for that command.
+either and instead run your own commands.
+							else {
+					else {
+				else {
+			else {
+		else {
+elsif ($dh{BEFORE}) {
+	elsif ($dh{REMAINING}) {
+			elsif (/^# Files$/) {
+	elsif ($opt=~/^-/) {
+	elsif (@options) {
+	elsif ($opt =~ /^--?(no-act|remaining|(after|until|before|with|without)=)/) {
+	elsif ($ret) {
+elsif ($sequence eq 'build-indep' ||
+		# Ensure appropriate -a or -i option is passed when running
+	$ENV{DH_INTERNAL_OPTIONS}=join("\x1e", @options);
+	$ENV{DH_INTERNAL_OVERRIDE}=$command;
+		error "command specification \"$command\" does not match any command in the sequence"
+	error "specify a sequence to run";
+		error("unable to load addon $addon: $@");
+	error "Unknown sequence $sequence (choose from: ".
+		error "Unknown sequence $sequence (options should not come before the sequence)";
+		eval q{use File::Spec};
+	eval "use $mod";
+examples below.
+example, the "binary" sequence runs the "install" target.
+	exit 0;
+		exit 1;
+		exit $ret >> 8;
+F<config.guess> with newer versions from the B<autotools-dev> package
+F<debian/package.debhelper.log>. (Which B<dh_clean> deletes.) So B<dh> can tell
+# Figure out at what point in the sequence to start for each package.
+# Figure out what point in the sequence to go to.
+	# Figure out which packages need to run this command.
+# Filter out options intended only for this program.
+		# Find the last logged command that is in the sequence, and
+	# finished successfully.
+foreach my $addon (@{$dh{WITH}}) {
+	foreach my $command (@_) {
+		foreach my $command (@list) {
+	foreach my $deprecated ('until', 'after', 'before', 'remaining') {
+			foreach my $i (0..$#sequence) {
+	foreach my $i (0..$#sequence) {
+foreach my $i (0..$stoppoint) {
+			foreach my $opt (@_) {
+	foreach my $override_type (undef, "arch", "indep") {
+		foreach my $package (@packages) {
+	foreach my $package (@packages) {
+foreach my $package (@packages) {
+	foreach my $sequence (keys %sequences) {
+	for my $inc (@INC) {
+			for my $module_path (glob "$path/*.pm") {
+	for my $name (sort keys %addons) {
+	# for simplest semantics; mixing it with arch-specific overrides
+	# From v8, the sequence is the very first parameter.
+	# From v9, sequences take standard rules targets into account.
+		# future dh instances that the specified command should not
+# Get the options to pass to commands in the sequence.
+=head1 AUTHOR
+=head1 DEPRECATED OPTIONS
+=head1 DESCRIPTION
+=head1 EXAMPLES
+=head1 INTERNALS
+=head1 NAME
+=head1 OPTIONS
+=head1 OVERRIDE TARGETS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+Here is an example of overriding where the B<dh_auto_>I<*> commands find
+Here is a way to prevent B<dh> from running several commands that you don't
+Here is how to force use of Perl's B<Module::Build> build system,
+Here is how to use B<dh_python2>.
+					# here is safe.
+							if (/^#/) {
+	if (@_) {
+	if ($@) {
+	if ($command =~ /^debian\/rules\s+(.*)/) {
+			if ($command eq $existing) {
+				if ($command eq $sequence[$i]) {
+		if ($command eq $sequence[$i]) {
+if (! compat(7)) {
+if (! compat(8)) {
+if (compat(8, 1)) {
+						if (defined $current_target) {
+		if (defined $dh{uc $deprecated}) {
+	if (defined $override_type) {
+		if (defined $rules_target &&
+	if (defined $rules_target) {
+	if (defined $sequence) {
+if (! defined $sequence) {
+	if (defined $sequence && $sequence=~/^-/) {
+	if ($dh{AFTER}) {
+	if (! $dh{NO_ACT} && $command ne 'dh_clean') {
+if ($dh{UNTIL}) {
+		if (-d $path) {
+		if exists $command_opts{$command};
+if (! exists $sequences{$sequence}) {
+if (! getpackages("arch")) {
+if (is_make_jobserver_unavailable()) {
+# If make is using a jobserver, but it is not available
+	if (! @matches) {
+		if (my $opts = $command_opts{$command}) {
+				if (/^# Not a target:/) {
+					if (!$not_a_target && /^([^#:]+)::?\s*(.*)$/) {
+	if ($opt =~ /^--?(after|until|before|with|without)$/) {
+		if ($options[$#options]=~/^-O--/) {
+			if (($override_type eq 'indep' && $isall) ||
+			if ($processing_targets) {
+	if ($ret >> 8 != 0) {
+	if (! $rules_parsed) {
+								if (/^#\s*(commands|recipe) to execute/) {
+		if (! $seen{$command}) {
+if ($sequence eq 'build-arch' ||
+if ($sequence eq 'debian/rules' ||
+		if ($sequence[$i] =~ /\Q$command\E/) {
+		if ($startpoint{$package} > $i ||
+If you're curious about B<dh>'s internals, here's how it works under the hood.
+If your package can be built in parallel, you can support parallel building
+If your package uses autotools and you want to freshen F<config.sub> and
+	ignore_unknown_options => 1,
+in a subdirectory, which will be removed on B<clean>.
+	# Include additional command options if any
+	# in debian/rules.
+inhibit_log();
+init(options => {
+		# inlined together; only the first should be needed
+			# inline the sequence for this implicit target
+	_insert(-1, @_);
+	_insert(1, @_);
+	# inside the target.
+instead call that target. The override target can then run the command with
+in that area. (Before compatibility level v9, dh does run B<dh_pysupport>.)
+In the above options, I<cmd> can be a full name of a debhelper command, or
+in the sequence of commands that is run. This option can be repeated more
+in the sequence. The B<--until>, B<--before>, B<--after>, and B<--remaining>
+=item B<--after> I<cmd>
+=item B<--before> I<cmd>
+=item B<--list>, B<-l>
+=item B<--no-act>
+=item B<--remaining>
+=item B<--until> I<cmd>
+=item B<--with> I<addon>[B<,>I<addon> ...]
+=item B<--without> I<addon>
+Joey Hess <joeyh@debian.org>
+		join(" ", sort keys %sequences).")";
+					last COMMAND;
+L<debhelper(7)>
+List all available addons.
+listed, separated by commas.
+		"list" => \&list_addons,
+		"l" => \&list_addons,
+# Load addons, which can modify sequences.
+		    $logged{$package}{$sequence[$i]}) {
+# make -B causes the rules file to be run as a target.
+		$(MAKE) -C docs
+		$(MAKE) -C docs install
+	# makes little sense.)
+		make universe-explode-in-delight
+matches, the last one in the sequence will be used.
+matching the name, to avoid any ambiguity. If there are multiple substring
+might suggest, is subject to change at any time.
+	$mod=~s/-/_/g;
+		./mondoconfig
+	my %addons;
+	my $add=sub {
+	my %arch_packages = map { $_ => 1 } getpackages("arch");
+my @ARGV_orig=@ARGV;
+my @ba=qw{
+my @bd_minimal = qw{
+my @bd = qw{
+my @b=qw{
+my %command_opts;
+	my $command=$sequence[$i];
+		my $command=shift;
+	my $command=shift;
+		my $current_target;
+my $dummy_target="debhelper-fail-me";
+	my $existing=shift;
+	my $has_explicit_target = rules_explicit_target($override);
+	my %indep_packages = map { $_ => 1 } getpackages("indep");
+my @i = qw{
+			my $isall=package_arch($package) eq 'all';
+		my @list=@{$sequences{$sequence}};
+my %logged;
+	my @log=load_log($package, \%logged);
+	my @matches;
+	my $mod="Debian::Debhelper::Sequence::$addon";
+				my $name = basename($module_path);
+		my @new;
+	my $new=shift;
+		my $not_a_target = 0;
+	my $offset=shift;
+	my @options=@_;
+my @options;
+			my ($option,$value)=@_;
+		my $opt=$override_type eq "arch" ? "-a" : "-i";
+	my $opt=shift @ARGV_orig;
+	my @opts=@options;
+	my $override="override_$command".
+	my $override_type=shift; # arch, indep, or undef
+my @packages=@{$dh{DOPACKAGES}};
+	my @packages=@{shift()};
+		my $path = File::Spec->catdir($inc, "Debian/Debhelper/Sequence");
+		my $processing_targets = 0;
+	my $ret=system($command, @options);
+my $rules_parsed;
+		my $rules_target=rules_target($command);
+	my $rules_target = rules_target($command);
+	my %seen;
+	my @sequence=@_;
+	my @sequence;
+my $sequence;
+my @sequence=optimize_sequence(@{$sequences{$sequence}});
+my %sequences;
+	my $sequence=shift;
+my %startpoint;
+my $stoppoint=$#sequence;
+my %targets;
+	my $target=shift;
+	my @todo;
+	my (@todo, @rest);
+			my %without = map { $_ => 1 } split(",", $value);
+				$name =~ s/_/-/g;
+				$name =~ s/\.pm$//;
+		next unless grep $existing, @list;
+	next unless @todo;
+		# no commands remain to run after it, communicating to
+					$not_a_target = 0;
+					$not_a_target = 1;
+					# "Not a target:" is always followed by
+# Note: it's not safe to use rules_explicit_target before this check,
+	# No tests needed for docs
+(Note that to use this feature, you should Build-Depend on
+# Now run the commands in the sequence.
+Often you'll want to pass an option to a specific debhelper command. The
+		open(MAKE, "LC_ALL=C make -Rrnpsf debian/rules $dummy_target 2>/dev/null |");
+options can override this behavior.
+			$options[$#options].="=".$opt;
+			$options[$#options].=$opt;
+option to ensure they only work on architecture dependent packages.
+				$opts = [ grep { $_ ne $opt } @$opts ];
+Other options passed to B<dh> are passed on to each command it runs. This
+	override_dh_auto_build:
+	override_dh_auto_build-indep:
+	override_dh_auto_configure:
+	override_dh_auto_install-indep:
+	override_dh_auto_test-indep:
+	override_dh_auto_test override_dh_compress override_dh_fixperms:
+	override_dh_fixperms:
+	override_dh_fixperms-arch:
+	override_dh_strip:
+Override targets can also be defined to run only when building
+	# override_type.
+			    ($override_type eq 'arch' && !$isall)) {
+	@packages = grep { $arch_packages{$_} } @packages;
+	@packages = grep { $indep_packages{$_} } @packages;
+# packages that it was unable to run an override target for.
+						# .PHONY it will be defined too but that's ok.
+	print "   ".escape_shell($command, @options)."\n";
+		print "$name\n";
+Prints commands that would run for a given sequence, but does not run them.
+				$processing_targets = 1;
+# Process the sequence parameter.
+	push @{$command_opts{$command}}, @_;
+			push @{$dh{WITH}},split(",", $value);
+			push @matches, $i;
+				push @new, $command;
+				push @new, $new if $offset < 0;
+				push @new, $new if $offset > 0;
+	push @options, "-a";
+	push @options, "-i";
+				push @options, "-N$package";
+		push @options, "-O".$opt;
+		push @options, $opt unless grep { $_ eq $opt } @options;
+			push @opts, "-N$package";
+				push @rest, $package;
+			push @sequence, $command;
+				push @todo, $package;
+			push @todo, $package;
+	# python-support was enabled by default before v9.
+Python tools are not run by dh by default, due to the continual change
+		"remaining" => \$dh{REMAINING},
+		# Remove only specified options
+		return $1
+	return "debian/rules ".join(" ", @_);
+			return $i;
+	return if $dh{NO_ACT};
+	return @packages unless defined $has_explicit_target; # no such override
+		return pop @matches;
+	return @rest;
+	return @rest if ! $has_explicit_target; # has empty override
+	return @rest unless @todo; # has override, but no packages to act on
+	return @sequence;
+	return $targets{$target};
+		return undef;
+		$rules_parsed = 1;
+		# run.
+Run all commands in the sequence that have yet to be run.
+	run($command, @opts);
+Run commands in the sequence before I<cmd>, then stop.
+Run commands in the sequence that come after I<cmd>.
+		# Run commands in the sequence that come after the
+Run commands in the sequence until and including I<cmd>, then stop.
+	run("debian/rules", $override);
+		run("debian/rules", $rules_target);
+			$seen{$command}=1;
+# sequence addon interface
+    $sequence eq 'binary-arch') {
+       $sequence eq 'binary-indep') {
+    $sequence eq $dummy_target) {
+    $sequence eq 'install-arch' ||
+       $sequence eq 'install-indep' ||
+	# sequence name after "dh ".
+    $sequence =~ /^override_dh_/ ||
+sequences are passed the B<-i> option to ensure they only work on
+	$sequences{'binary-arch'} = [rules("install-arch"), @ba, @b];
+	$sequences{'binary-arch'} = [@{$sequences{'install-arch'}}, @ba, @b];
+	$sequences{'binary-indep'} = [rules("install-indep"), @b];
+	$sequences{'binary-indep'} = [@{$sequences{'install-indep'}}, @b];
+	$sequences{binary} = [rules("install"), rules("binary-arch"), rules("binary-indep")];
+	$sequences{binary} = [@{$sequences{install}}, @ba, @b];
+$sequences{'build-arch'} = [@bd];
+	$sequences{build} = [@bd];
+	$sequences{build} = [@bd_minimal, rules("build-arch"), rules("build-indep")];
+$sequences{'build-indep'} = [@bd];
+$sequences{clean} = [qw{
+	$sequence=shift;
+	$sequence=shift @ARGV_orig;
+	$sequences{'install-arch'} = [rules("build-arch"), @i];
+	$sequences{'install-arch'} = [@{$sequences{'build-arch'}}, @i];
+	$sequences{'install-indep'} = [rules("build-indep"), @i];
+	$sequences{'install-indep'} = [@{$sequences{'build-indep'}}, @i];
+	$sequences{'install'} = [rules("build"), rules("install-arch"), rules("install-indep")];
+	$sequences{'install'} = [@{$sequences{build}}, @i];
+		$sequences{$sequence}=[grep { $_ ne $command } @{$sequences{$sequence}}];
+		$sequences{$sequence}=\@new;
+set_buildflags();
+		shift @ARGV_orig;
+# since it causes dh to be run.
+Sometimes the automated L<dh_auto_configure(1)> and L<dh_auto_build(1)>
+	# so was what was left after parsing.
+specialised options.
+		# specified command.
+		# Start at the beginning so all remaining commands will get
+		$startpoint{$package}=0;
+		$startpoint{$package}=command_pos($dh{AFTER}, @sequence) + 1;
+					$startpoint{$package}=$i+1;
+# Stash this away before init modifies it.
+	$stoppoint=command_pos($dh{BEFORE}, @sequence) - 1;
+	$stoppoint=command_pos($dh{UNTIL}, @sequence);
+sub add_command {
+sub add_command_options {
+sub command_pos {
+subdirectory.
+sub _insert {
+sub insert_after {
+sub insert_before {
+sub list_addons {
+sub optimize_sequence {
+sub remove_command {
+sub remove_command_options {
+sub rules {
+sub rules_explicit_target {
+sub rules_target {
+sub run {
+sub run_override {
+sub warn_deprecated {
+						# Target is defined. NOTE: if it is a depenency of
+								# Target parsed.
+									$targets{$current_target} = 1;
+						$targets{$current_target} = ($2) ? 1 : 0;
+than once, or multiple addons can be listed, separated by commas.
+	# that are not arch dependent
+that automate it, like this.
+that is in the specified sequence. It then continues with the next command
+	# the debhelper commands.
+The following options are deprecated. It's much 
+The inverse of B<--with>, disables using the given addon. This option
+# The list of all packages that can be acted on.
+	# the log earlier.)
+the package's source, for a package where the source is located in a
+the rules file. When it would normally run I<dh_command>, B<dh> will
+the sequence addon interface.
+These will be skipped when running build-arch and binary-arch sequences.
+	# the usual command. (The non-arch-specific override is tried first,
+This is a very simple rules file, for packages where the default sequences of
+This is used when there is a third-party package that provides
+	# This passes the options through to commands called
+This program is a part of debhelper.
+those commands again.
+through to debhelper commands that are run inside override targets. The
+		@todo=@packages;
+		@todo = run_override($override_type, $command, \@todo, @opts);
+To override I<dh_command>, add a target named B<override_>I<dh_command> to
+To see what commands are included in a sequence, without actually doing
+# to this process, clean out MAKEFLAGS. This avoids
+# Tries to run an override target for a command. Returns the list of
+# ugly warnings when calling make.
+	# undef is returned if target does not exist, 0 if target is noop
+	unshift @ARGV, "--with=python-support";
+	unshift @options, @{$command_opts{$command}}
+	unshift @{$sequences{$sequence}}, $command;
+		"until=s" => \$dh{UNTIL},
+	# Update log for overridden command now that it has
+use Debian::Debhelper::Dh_Lib;
+uses MakeMaker.
+use strict;
+Use targets with names like B<override_>I<dh_command>B<-arch>
+	#!/usr/bin/make -f
+#!/usr/bin/perl -w
+want it to run, by defining empty override targets for each command.
+warn_deprecated();
+			warning("The --$deprecated option is deprecated. Use override targets instead.");
+when building only documentation.
+when building the architecture dependent package, as it's not present
+which can be necessary if debhelper wrongly detects that the package
+which commands have already been run, for which packages, and skip running
+while (@ARGV_orig) {
+		while (<MAKE>) {
+		"without=s" => sub {
+		"with=s" => sub {
+		# Write a dummy log entry indicating that the specified
+		write_log($command, @todo);
+		write_log($sequence[$startpoint{$package}-1], $package);

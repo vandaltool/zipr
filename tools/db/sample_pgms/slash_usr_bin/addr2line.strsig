@@ -1,0 +1,123 @@
+%.12s %.4s
+  -a --addresses         Show addresses
+ab:Ce:sfHhij:pVv
+abfd != ((void *)0)
+addr2line
+addresses
+__assert_fail
+basenames
+bfd_arch_list
+bfd_check_format
+bfd_check_format_matches
+bfd_close
+bfd_close_all_done
+bfd_demangle
+bfd_errmsg
+bfd_fprintf_vma
+bfd_get_archive_filename
+bfd_get_error
+bfd_get_section_by_name
+BFD header file version %s
+bfd_init
+bfd_malloc
+bfd_map_over_sections
+bfd_openr
+bfd_openw
+bfd_printable_arch_mach
+bfd_scan_vma
+bfd_set_default_target
+bfd_set_format
+bfd_target_list
+bfd_target_vector
+big endian
+bindtextdomain
+binutils
+../../binutils/bucomm.c
+__bss_start
+  -b --target=<bfdname>  Set the binary file format
+Cannot create temporary file in %s: %s
+can't set BFD default target to `%s': %s
+  -C --demangle[=style]  Demangle function names
+ Convert addresses into line number/file name pairs.
+Copyright 2011 Free Software Foundation, Inc.
+cplus_demangle_name_to_style
+cplus_demangle_set_style
+dcgettext
+demangle
+  -e --exe=<executable>  Set the input file name (default is a.out)
+endianness unknown
+__errno_location
+  -f --functions         Show function names
+  @<file>                Read options from <file>
+__fprintf_chk
+functions
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+(GNU Binutils for Ubuntu) 2.22
+GNU %s %s
+ (header %s, data %s)
+  -h --help              Display this information
+<http://www.sourceware.org/bugzilla/>
+i686-pc-linux-gnu
+ If no addresses are specified on the command line, they will be read from stdin
+  -i --inlines           Unwind inlined functions
+ (inlined by) 
+_IO_putc
+_IO_stdin_used
+  -j --section=<name>    Read section-relative offsets instead of addresses
+_Jv_RegisterClasses
+libbfd-2.22-system.so
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+little endian
+mkstemp64
+mkstemps64
+out of memory
+  -p --pretty-print      Make the output easier to read for humans
+pretty-print
+__printf_chk
+Report bugs to %s
+%s: bad number: %s
+  -s --basenames         Strip directory names
+%s: cannot find section %s
+%s: cannot get addresses from archive
+_sch_istable
+%s: error: too many @-files encountered
+%s %ld/%ld %6ld %s 
+%s: Matching formats:
+'%s': No such file
+__sprintf_chk
+%s: %s: %s
+%s: supported architectures:
+%s: supported targets:
+__stack_chk_fail
+__strdup
+strerror
+Supported architectures:
+Supported targets:
+T$,9T$8}Q
+the GNU General Public License version 3 or (at your option) any later version.
+ The options are:
+This program has absolutely no warranty.
+This program is free software; you may redistribute it under the terms of
+UNKNOWN!
+unknown demangling style `%s'
+Usage: %s [option(s)] [addr(s)]
+/usr/share/locale
+/usr/tmp
+/var/tmp
+__vfprintf_chk
+  -v --version           Display the program's version
+Warning: could not locate '%s'.  reason: %s
+Warning: '%s' has negative size, probably it is too large
+Warning: '%s' is not an ordinary file
+xmalloc_set_program_name
+xrealloc
+__xstat64

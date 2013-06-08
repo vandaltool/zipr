@@ -1,0 +1,42 @@
+__bss_start
+D$d;\$lu
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+L$d;D$lu
+-leftright
+[-leftright|-lr] [-topbottom|-tb] [-transpose|-xy]
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
++L$<;t$l
+overflow2
+overflow_add
+pbm_readpbmrow
+pbm_writepbm
+pm_allocarray
+pm_allocrow
+pm_close
+pm_error
+pm_freearray
+pm_freerow
+pm_keymatch
+pm_openr
+pm_usage
+pnm_init
+pnm_readpnminit
+pnm_readpnmrow
+pnm_writepnm
+pnm_writepnminit
+pnm_writepnmrow
+-rotate180
+            [-rotate180|-r180] [pnmfile]
+-rotate270
+-rotate90
+            [-rotate90|-r90|-ccw] [-rotate270|r270|-cw]
+shouldn't happen!
+-topbottom
+-transpose
+T$X9L$\u

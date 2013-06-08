@@ -1,0 +1,21 @@
+__bss_start
+Copyright (C) 1999 Terje Sannum <terje@looplab.com>
+EOF / read error
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+L$89L$<t_
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pbm_init
+pbm_writepbm
+pm_allocarray
+pm_close
+pm_error
+pm_openr
+pm_usage
+Unsupported WBMP type
+[wbmpfile]

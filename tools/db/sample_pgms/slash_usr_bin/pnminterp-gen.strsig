@@ -1,0 +1,32 @@
+#!/bin/sh
+# by Russell Marks, 1999.
+# Contributed to the public domain.
+# 	down with pnmscale.
+  echo 'pamstretch-gen: error reading file' 1>&2
+  echo 'pamstretch-gen: not a PNM file' 1>&2
+  echo 'usage: pamstretch-gen N [pnmfile]'
+  exit 1
+# 	form of pamstretch, by scaling up with pamstretch then scaling
+# height are being scaled equally, so this should be ok.
+if [ "$1" = "" ]; then
+if ! cat $2 >$tempfile 2>/dev/null; then
+if [ "$int_scale" -eq 1 ]; then
+if [ "$width" = "" ]; then
+  int_scale++
+int_scale=1;int_width='"$width"'
+int_scale=`awk '
+  int_width+='"$width"'
+# it also copes with N<1, but then it just uses pnmscale. :-)
+# new width is >= the target width.
+# pamstretch-gen - a shell script which acts a little like a general
+  pamstretch "$int_scale" $tempfile | pnmscale -xsi "$target_width"
+  pnmscale "$1" $tempfile
+print int_scale
+rm -f $tempfile;
+# should really use dc for maths, but awk is less painful :-)
+target_width=`awk 'BEGIN{printf("%d",'0.5+"$width"*"$1"')}'`
+tempfile=$(mktemp -t pnmig.XXXXXXXXXX) || exit 1 #219019
+# we use the width as indication of how much to scale; width and
+while(int_width<'"$target_width"')
+width=`pnmfile $tempfile 2>/dev/null|cut -d " " -f 3`
+# work out how far we have to scale it up with pnmstretch so that the

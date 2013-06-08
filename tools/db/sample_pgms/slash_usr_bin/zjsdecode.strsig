@@ -1,0 +1,215 @@
+ !"#	%&'()*+,-./0123456789:;<=>? ABCDEFGHIJKLMNO0QRSTUVWGYZ[\]^V`abcd]fghcjkgmkomoarith_decode
+$&'(*+-.0134689;<>? !
+16k 184x260
+16k 195x270
+16k 197x273
+%6x:    
+%8d %8d 3
+\$@9\$0s
+9J|~:;0u
+ABORT marker segment encountered
+@ACDEFHIJKMNO0223456789:;==
+arith_encode
+__assert_fail
+	A ZjStream is the printer langauge used by some Minolta/QMS and
+BD$d;t$d
+ [black]
+cx >= 0 && cx < 4096
+%d:     
+D$0+D$$=
+D$0+D$$i
+D$,9D$(t
+D$(9D$\v
+	Data: %d bytes
+	Data: %d bytes (0x%x)
+       -d basename Basename of .pbm file for saving decompressed planes
+D$D+L$X)
+	Decode a ZjStream into human readable form.
+d:hopr:D:?h
+		DL = %d, D = %d, P = %d, - = %d, XY = %d x %d
+       -D lvl      Set Debug level [%d]
+	Don't understand magic number 0x%lx
+efghcijkg
+envMonarch
+EOF on file reading header.
+__errno_location
+executive
+fanfold german legal
+file '%s' doesn't exist
+__fprintf_chk
+ (funny siggy 0x%x)
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+glossy / unknown
+__gmon_start__
+	HP printers, such as the 2300DL and LJ-1000.
+       -h          Print hex file offsets
+		http://ddk.zeno.com
+$Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $ 
+Incremental BIE does not continue previous one
+Input data stream contains invalid data
+Input data stream uses unimplemented JBIG features
+_IO_getc
+_IO_stdin_used
+	#items is wrong!
+jbig_ar.c
+JBIG-KIT 2.0 -- (c) 1995-2008 Markus Kuhn -- Licence: GPL
+JBIG uses unimplemented feature
+		L0 = %d, MX = %d, MY = %d
+labels / rough
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+ [magenta]
+Missing image %dx%d!
+Missing ZJS Magic number
+	More information on Zenographics ZjStream can be found at:
+Not enough memory available
+       -o          Print file offsets
+Options:
+		Options = %d %s%s%s%s%s%s%s%s
+		Order   = %d %s%s%s%s%s
+ [Page %d]
+       -p          Don't do 4 byte padding
+@PJL ENTER LANGUAGE = ZJS
+@PJL SET JOBATTR=
+@PJL USTATUS TIMED = 
+postcard / heavy 111-130g
+PQRSTVWWHHJJKMM
+__printf_chk
+       -r basename Basename of .jbg file for saving raw planes
+Reached specified image size
+ (reserved=0x%x)
+%s-%02d-%d.jbg
+%s-%02d-%d.pbm
+%s-%02d-%d.pgm
+s->buffer != 0xff
+	%s, BYTELUT (len=%d)
+	%s, %ld (0x%lx)
+%s, %ld items
+__sprintf_chk
+	%s, '%s'
+ss < 113
+__stack_chk_fail
+standard / plain
+strerror
+thickstock / cardstock
+Total size: %d bytes
+transparency / transparency
+ (unaligned size)
+Unexpected end of input data stream
+unk / bond
+unk / color
+unk / envelope
+unk / extra heavy 131-175g
+unk / labels
+unk / letterhead
+unk / light
+unk / medium / z3: mid-weight 96-110g
+Unknown error code passed to jbg_strerror()
+Unknown marker segment encountered
+unk / preprinted
+unk / prepunched
+unk / recycled
+unk / unspecified
+unk / vellum
+unk / z3: card glossy 176-220g
+unk / z3: extra heavy glossy 131-175g
+unk / z3: heavy envelope
+unk / z3: heavy glossy 111-130g
+unk / z3: heavy rough
+unk / z3: hp color laser brochure glossy 160g
+unk / z3: hp color laser brochure matte 160g
+unk / z3: hp color laser matte 105g
+unk / z3: hp color laser photo glossy 220g
+unk / z3: hp cover matte 200g
+unk / z3: hp laserjet 90g
+unk / z3: hp matte photo 200g
+unk / z3: hp premium choice matte 120g
+unk / z3: hp presentation glossy 130g
+unk / z3: hp professional laser glossy 130g
+unk / z3: hp superior laser glossy 160g
+unk / z3: hp superior laser matte 160g
+unk / z3: hp tough paper
+unk / z3: hp tri-fold color laser brochure 160g
+		%u stripes, %d layers, %d planes
+u&;t$@s 
+__vfprintf_chk
+ VLENGTH
+Warning: 
+ [yellow]
+z1-double postcard
+z1-postcard
+z2-double postcard rotated
+z3-10x15cm
+	ZJI_0x%x, BYTELUT (len=%d)
+	ZJI_0x%x, %ld (0x%lx)
+	ZJI_0x%x, '%s'
+ZJI_BITMAP_BPP
+ZJI_BITMAP_PIXELS
+ZJI_BITMAP_STRIDE
+ZJI_BITMAP_TYPE
+ZJI_COLLATE
+ZJI_DMCOLLATE
+ZJI_DMCOPIES
+ZJI_DMDEFAULTSOURCE
+ZJI_DMDUPLEX
+ZJI_DMMEDIATYPE
+ZJI_DMPAPER
+ZJI_ECONOMODE
+ZJI_HP_CDOTS
+ZJI_HP_CWHITE
+ZJI_HP_KDOTS
+ZJI_HP_KWHITE
+ZJI_HP_MDOTS
+ZJI_HP_MWHITE
+ZJI_HP_YDOTS
+ZJI_HP_YWHITE
+ZJI_INCRY
+ZJI_INTERLACE
+ZJI_JBIG_BIH
+ZJI_MINOLTA_CUSTOM_X
+ZJI_MINOLTA_CUSTOM_Y
+ZJI_MINOLTA_FILENAME
+ZJI_MINOLTA_PAGE_NUMBER
+ZJI_MINOLTA_USERNAME
+ZJI_NBIE
+ZJI_OFFSET_X
+ZJI_OFFSET_Y
+ZJI_PAGECOUNT
+ZJI_PALETTE
+ZJI_PLANE
+ZJI_QMS_FINEMODE
+ZJI_QMS_OUTBIN
+ZJI_QUANTITY
+ZJI_RASTER_X
+ZJI_RASTER_Y
+ZJI_RESOLUTION_X
+ZJI_RESOLUTION_Y
+ZJI_VIDEO_BPP
+ZJI_VIDEO_X
+ZJI_VIDEO_Y
+ZJI_ZX_0x6c
+ZJI_ZX_0x6f
+ZJI_ZX_COLOR_OPT
+	zjsdecode [options] < zjs-file
+ZJS_MAGIC, 0x%lx (%.4s)
+ZJT_0x%lx, %ld items
+ZJT_2600N
+ZJT_2600N_PAUSE
+ZJT_END_DOC
+ZJT_END_JBIG
+ZJT_END_PAGE
+ZJT_END_PLANE
+ZJT_JBIG_BID
+ZJT_JBIG_BIH
+ZJT_RAW_IMAGE
+ZJT_SIGNATURE
+ZJT_START_DOC
+ZJT_START_PAGE
+ZJT_START_PLANE
+ZJT_ZX_0x0d
+ZJT_ZX_0x0e
+ZJT_ZX_0x0f

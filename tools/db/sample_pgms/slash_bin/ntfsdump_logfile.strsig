@@ -1,0 +1,165 @@
+2012.1.15AR.1
+Aborting...
+Alternative usage: %s -f file
+and you are welcome to redistribute it under certain conditions.
+Array of lcns:
+attribute_offset = 0x%x
+AT_UNNAMED
+__bss_start
+chkdsk_lsn = %lli (0x%llx)
+=CHKDt\=RCRDtU
+=CHKDtr=RSTR
+client_array_offset = %u (0x%x)
+client data length = 0x%x
+client_free_list = %i (0x%x)
+client_id.client_index = 0x%x
+client_id.seq_number = 0x%x
+client_in_use_list = %i (0x%x)
+client_name_length = %u (0x%x)
+client_name = %s
+client previous lsn = 0x%llx
+client_restart_lsn = %lli (0x%llx)
+client undo next lsn = 0x%llx
+<conversion error>
+copy.last_lsn/file_offset = 0x%llx
+Copyright (c) 2000-2005 Anton Altaparmakov.
+Could not seek to offset %u
+current_lsn = %lli (0x%llx)
+__cxa_finalize
+device_err_exit
+distribution directory.
+dump_log_record
+dump_log_records
+dump_restart_areas
+dump_restart_areas_area
+dump_restart_areas_header
+    e.g. %s /dev/hda6
+    e.g. %s -f MyCopyOfTheLogFile
+__errno_location
+Error getting information about %s: %s
+Failed to allocate buffer for file data
+Failed to convert log client name
+Failed to mount %s: %s
+Failed to open file %s: %s
+Failed to open $LogFile/$DATA (attribute 0x%x): %s
+Failed to open $LogFile (inode %i): %s
+Failed to read $LogFile/$DATA: %s
+file_size = %lli (0x%llx)
+Finished with restart pages.  Beginning with log pages.
+flags = 0x%.4x
+flags = 0x%x
+flags = 0x%x:
+General Public License to be found in the file COPYING in the main Linux-NTFS
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+__gmon_start__
+header.last_end_lsn = 0x%llx
+header.next_record_offset = 0x%llx
+_IO_stdin_used
+ is corrupt (magic is not RCRD or CHKD).
+ is empty.
+_Jv_RegisterClasses
+last_lsn_data_length = %u (0x%x)
+lcn_list[%u].lcn = 0x%llx
+lcns_to_follow = 0x%x
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libntfs-3g.so.831
+Log client record number %i:
+log_clients = %u (0x%x)
+log_err_exit
+logfile_close
+$LogFile contents are corrupt (magic RSTR is missing).  Cannot handle this yet.
+$LogFile has zero length.  Run chkdsk /f to correct this.
+$LogFile incomplete multi sector transfer detected in restart page header.  Cannot handle this yet.
+$LogFile is corrupt:  Restart page header magic is not CHKD but a chkdsk LSN is specified.  Cannot handle this yet.
+$LogFile is corrupt:  Restart page header specifies invalid log page size.  Cannot handle this yet.
+$LogFile is corrupt:  Restart page header specifies invalid system page size.  Cannot handle this yet.
+$LogFile is not initialized.
+($LogFile) of an NTFS volume.
+logfile_open
+logfile_pread
+$LogFile version %i.%i.
+log_page_data_offset = %u (0x%x)
+log_page_size = %u (0x%x)
+log_record_header_length = %u (0x%x)
+Log record %i:
+ LOG_RECORD_MULTI_PAGE
+Log record page number %i
+magic = %s
+Mounted NTFS volume %s (NTFS v%i.%i) on device %s.
+next_client = %i (0x%x)
+<NO_NAME>
+ntfs_attr_close
+ntfs_attr_open
+ntfs_attr_pread
+ntfsdump_logfile.c
+ntfs_inode_close
+ntfs_inode_open
+ntfs_log_handler_outerr
+ntfs_log_redirect
+ntfs_log_set_handler
+ntfs_mount
+ntfs_mst_post_read_fixup
+ntfs_ucstombs
+ntfs_umount
+ntfs_version_is_supported
+oldest_lsn = %lli (0x%llx)
+Only %d out of %d bytes read starting at %d
+page count = %i
+page position = %i
+Partial read.
+prev_client = %i (0x%x)
+record_offset = 0x%x
+record type = 0x%x
+redo_length = 0x%x
+redo_offset = 0x%x
+redo_operation = 0x%x
+Restart area:
+restart_area_length = %u (0x%x)
+restart_log_open_count = %u (0x%x)
+restart_offset = %u (0x%x)
+Restart page header:
+Restart page header in $LogFile is corrupt:  Restart area offset is not aligned to 8-byte boundary.  Cannot handle this yet.
+Restart page header in $LogFile is corrupt:  Update sequence array overlaps or is behind first protected sequence number.  Cannot handle this yet.
+Restart page header in $LogFile is corrupt:  Update sequence array overlaps or is behind restart area.  Cannot handle this yet.
+Restart page header in $LogFile is corrupt:  Update sequence array overlaps restart page header.  Cannot handle this yet.
+Restart page header in $LogFile is corrupt:  Update sequence array size is wrong.  Cannot handle this yet.
+%s comes with ABSOLUTELY NO WARRANTY; for details read the GNU
+Second restart area specifies different $LogFile version to first restart area.  Cannot handle this yet.
+seq_number_bits = %u (0x%x)
+seq_number = %u (0x%x)
+%s is free software, released under the GNU General Public License
+Skipping analysis of second restart page because it fully matches the first one.
+%s restart page:
+strerror
+%s v%s (libntfs-3g) - Interpret and display information about the journal
+system_page_size = %u (0x%x)
+target_attribute = 0x%x
+target_vcn = 0x%llx
+The file %s does not exist.  Did you specify it correctly?
+The %s restart page header in $LogFile has been modified by chkdsk.  Do not know how to handle this yet.  Reboot into Windows to fix this.
+this lsn = 0x%llx
+transaction_id = 0x%x
+undo_length = 0x%x
+undo_offset = 0x%x
+undo_operation = 0x%x
+ Unknown flags
+Unknown $LogFile version %i.%i.  Only know how to handle version 1.1.
+Unsupported NTFS version.
+usa_count = %u (0x%x)
+Usage: %s device
+usa_ofs = %u (0x%x)
+__vfprintf_chk
+Warning: Failed to close file %s
+Warning: Failed to close $LogFile (inode %i)
+Warning: Failed to umount
+Warning: Failed to umount %s
+Warning: $LogFile is too big.  Only analysing the first 64MiB.
+Warning:  Sanity checking of array of log client records not implemented yet.
+Warning:  Sanity checking of restart area not implemented yet.
+__xstat64

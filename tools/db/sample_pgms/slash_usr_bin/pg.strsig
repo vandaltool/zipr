@@ -1,0 +1,89 @@
+-------------------------------------------------------
+::::::::::::::
++1<newline> (next page); -1<newline> (previous page); 1<newline> (first page).
+All rights reserved.
+bindtextdomain
+__bss_start
+cannot allocate %zu bytes
+Cannot open 
+: !command not allowed in rflag mode.
+  !command                shell escape
+__ctype_b_loc
+__ctype_get_mb_cur_max
+cur_term
+dcgettext
+  d or ^D                 next halfpage
+__errno_location
+fork() failed, try again later
+__fprintf_chk
+fseeko64
+  f                       skip a page forward
+ftello64
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  h                       this screen
+_IO_stdin_used
+iswprint
+_Jv_RegisterClasses
+  $                       last page
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libncurses.so.5
+libtinfo.so.5
+  l                       next line
+__longjmp_chk
+Many commands accept preceding numbers, for example:
+  <newline>               next page
+(Next file: 
+  n                       go to next file
+No next file
+No previous file
+No remembered search string
+  . or ^L                 redraw screen
+Pattern not found
+@(#)pg 1.44 2/8/02. Copyright (c) 2000-2001 Gunnar Ritter. 
+  p                       go to previous file
+  q or Q                  quit program
+RE error: 
+regerror
+  ?regex? or ^regex^      search backward for regex
+  /regex/                 search forward for regex
+%s: Cannot create tempfile
+See pg(1) for more information.
+setlocale
+setupterm
+  s filename              save current file to filename
+sigaction
+sigaddset
+sigemptyset
+sigprocmask
+%s: illegal option -- %s
+...skipping backward
+...skipping forward
+%s: option requires an argument -- %s
+__sprintf_chk
+%s: Read error from %s file
+%s: %s: %s
+__stack_chk_fail
+__strcat_chk
+__strcpy_chk
+strerror
+%s: Unexpected EOF in %s file
+%s: Unknown error in %s file
+%s: Usage: %s [-number] [-p string] [-cefnrs] [+line] [+/pattern/] [files]
+T$43D$x3T$|	
+tcgetattr
+tcsetattr
+tmpfile64
+/usr/share/locale
+util-linux
+wcstombs
+__wcstombs_chk
+  w or z                  set page size and go to next page
+__xpg_basename

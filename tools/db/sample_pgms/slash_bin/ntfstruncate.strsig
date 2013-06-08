@@ -1,0 +1,258 @@
+2012.1.15AR.1
+Aborting...
+ABSOLUTELY NO WARRANTY; for details read the GNU General Public License to be
+Access is denied because the NTFS journal file is unclean. Choices are:
+Access is denied because the NTFS volume is already exclusively opened.
+Allocated size = %lli (0x%llx)
+and may lead to data corruption.
+and you are welcome to redistribute it under certain conditions.  It comes with
+ A) Shutdown Windows properly.
+attrdef_ntfs3x_array
+attr_defs
+Attribute flags = 0x%x: 
+Attribute instance = %u
+Attribute is not the first extent. The following sizes are meaningless:
+Attribute is %sresident
+attribute name = "%s" (length %u Unicode characters)
+attribute name = "" (UNNAMED)
+Attribute name was truncated.
+attribute type = 0x%x
+Attribute type = 0x%x ($END)
+Attribute type = 0x%x (%s)
+Attribute type was truncated.
+Attribute value length = %u (0x%x)
+Attribute value offset = %u (0x%x)
+ATTR_IS_COMPRESSED
+ATTR_IS_ENCRYPTED
+ATTR_IS_SPARSE
+attr_name
+attr_name_len
+attr_type
+ATTR_UNKNOWN_COMPRESSION
+AT_UNNAMED
+    automatically initialize the journal.
+Base mft record reference:
+ B) Click the 'Safely Remove Hardware' icon in the Windows taskbar
+-- Beginning dump of attribute record at offset 0x%x. --
+-- Beginning dump of attributes within mft record. --
+-- Beginning dump of mft record. --
+__bss_start
+Bytes allocated = %u (0x%x)
+Bytes in use = %u (0x%x)
+Cannot display unknown %s defined attribute type 0x%x.
+Compressed size = %lli (0x%llx)
+Compression unit = 0x%x: %sCOMPRESSED
+Copyright (c) 2002-2005 Anton Altaparmakov
+Copyright (c) 2003 Richard Russon
+could be identified for example by the help of the 'fuser' command.
+Could not convert Unicode string to single byte string in current locale.
+Could not set up exit() function because atexit() failed: %s Aborting...
+Couldn't create a search context.
+Couldn't open $Bitmap
+Couldn't open inode %llu.
+Couldn't open $MFT/$DATA
+Couldn't read $Bitmap
+Couldn't read $MFT/$BITMAP
+Couldn't read MFT Record %llu
+Couldn't translate attribute name to current locale.
+Couldn't translate attribute type to current locale.
+Couldn't translate filename to current locale.
+ C) Use 'Eject' from Windows Explorer to safely remove the device.
+__cxa_atexit
+__cxa_finalize
+Data size = %lli (0x%llx)
+Developers' email address: ntfs-3g-devel@lists.sf.net
+device name = %s
+dev_name
+different device under /dev/mapper, (e.g. /dev/mapper/nvidia_eahaabcc1)
+ D) If you ran chkdsk previously then boot Windows again which will
+distribution are broken. Please report to your distribution developers
+Don't know what to do with this attribute type yet.
+dump_attr_record
+Dumping mft record after calling ntfs_attr_truncate():
+Dumping mft record before calling ntfs_attr_truncate():
+-- End of attributes. --
+__errno_location
+Error closing inode %llu.
+Error converting Unicode string
+Error getting information about %s
+Error reading inode %llu.
+Error reading inode %llu.  Aborting.
+ E) Submit 'force' option (WARNING: This solution it not recommended).
+EXEC_NAME
+Failed to allocate internal buffer: %s
+Failed to close inode %lli: %s
+Failed to determine whether %s is mounted
+Failed to mount '%s'
+Failed to mount %s: %s
+Failed to open attribute 0x%x: %s
+Failed to open inode %lli: %s
+Failed to set locale, using default '%s'.
+Failed to truncate attribute 0x%x: %s
+    -f    Force execution despite errors
+fh?nqvVl
+find_first_attribute
+First attribute offset = %u (0x%x)
+Flags = %u: 
+ F) ntfsmount: Mount the volume read-only by using the 'ro' mount option.
+Forced to continue.
+found in the file "COPYING" distributed with this program, or online at:
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+    -h    Display this help
+Highest VCN = %lli (0x%llx)
+http://www.gnu.org/copyleft/gpl.html
+    If attr-name is not specified, an unnamed attribute is assumed.
+    If attr-type is not specified, 0x80 (i.e. $DATA) is assumed.
+Initialized size = %lli (0x%llx)
+inode = %lli
+Internal error, strtoll didn't return a suffix.
+Invalid attribute name "%s": %s
+Invalid attribute type %s: %s
+Invalid inode number: %s
+Invalid new length: %s
+Invalid number '%.*s'.
+Invalid size '%s'.
+Invalid size suffix '%s'.  Use T, G, M, or K.
+_IO_stdin_used
+_Jv_RegisterClasses
+    -l    Display licensing information
+Length of resident part = %u (0x%x)
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libntfs-3g.so.831
+$LogFile sequence number (lsn) = %llu
+Lowest VCN = %lli (0x%llx)
+made to NTFS by this software.
+Mapping pairs array offset = 0x%x
+Maybe you selected the wrong device? Or the whole disk instead of a
+<MFT%llu>
+mft_next_record
+MFT_RECORD_IN_USE
+ | MFT_RECORD_IS_DIRECTORY
+MFT_RECORD_NOT_IN_USE
+	Mft record number = %llu
+Mft record signature (magic) = %c%c%c%c
+Name length = %u unicode characters
+Name offset = %u (0x%x)
+Name = %s
+    -n    Do not write to disk
+new length = %lli
+Next attribute instance = %u
+NOTE: If you had not scheduled check and last time accessed this volume
+    notification area before disconnecting the device.
+(NOT to us!) that init scripts kill ntfsmount or mount.ntfs-fuse during
+ntfs_attr_close
+ntfs_attr_find_in_attrdef
+ntfs_attr_get_search_ctx
+ntfs_attr_lookup
+ntfs_attr_open
+ntfs_attr_pread
+ntfs_attr_put_search_ctx
+ntfs_attr_truncate
+ntfs_bugs
+ntfs_check_if_mounted
+ntfs_gpl
+ntfs_home
+NTFS_INDEX_I30
+ntfs_inode_close
+ntfs_inode_open
+NTFS is inconsistent. Run chkdsk /f on Windows then reboot it TWICE!
+ntfs_log_clear_levels
+ntfs_log_handler_outerr
+ntfs_log_redirect
+ntfs_log_set_handler
+ntfs_log_set_levels
+ntfs_malloc
+ntfs_mbstoucs
+ntfs_mount
+ntfstruncate
+ntfstruncate.c
+ntfstruncate completed successfully. Have a nice day.
+ntfstruncate_exit
+ntfstruncate forced anyway. Hope /etc/mtab is incorrect.
+ntfs_ucsfree
+ntfs_ucsnlen
+ntfs_ucstombs
+ntfs_umount
+NTFS version %i.%i
+off properly, so mounting could be done safely.
+Out of memory.  Aborting.
+parse_options
+partition (e.g. /dev/hda, not /dev/hda1)? Or the other way around?
+Pathname was truncated.
+Please boot into Windows TWICE, or use the 'force' option.
+__printf_chk
+    -q    Quiet execution
+Reference (hard link) count = %u
+Refusing to run!
+RESIDENT_ATTR_IS_INDEXED
+Resident flags = 0x%x: 
+Running in READ-ONLY mode!
+	Sequence number = %u
+Sequence number = %u
+setlocale
+shutdown instead of proper umount.
+%s is mounted.
+Skipping display of $%s attribute value.
+snprintf
+__snprintf_chk
+__stack_chk_fail
+strerror
+%s v%s (libntfs-3g)
+The device %s doesn't exist
+The device '%s' doesn't have a valid NTFS.
+The directory structure is too deep (over %d) nested directories.
+The NTFS partition is hibernated. Please resume Windows and turned it 
+The usage of the /f parameter is very IMPORTANT! No modification was
+The volume may be already mounted, or another software may use it which
+This is still work in progress.
+This program is free software, released under the GNU General Public License
+to mount NTFS. Please see the 'dmraid' documentation for help.
+Truncate a specified attribute of a specified inode.
+<UNKNOWN>
+Unknown attribute type 0x%02x
+UNKNOWN FLAG(S)
+UNKNOWN_TYPE
+Update sequence array offset = %u (0x%x)
+Update sequence array size = %u
+Usage: %s [options] device inode [attr-type [attr-name]] new-length
+Use the force option to ignore this error.
+using ntfsmount and shutdown system properly, then init scripts in your
+utils_attr_get_name
+utils_cluster_in_use
+utils_inode_get_name
+utils_mftrec_in_use
+utils_mount_volume
+utils_parse_size
+utils_set_locale
+utils_valid_device
+    -V    Display version information
+__vfprintf_chk
+VOLUME_DELETE_USN_UNDERWAY
+Volume flags = 0x%x: 
+VOLUME_IS_DIRTY
+Volume is scheduled for check.
+VOLUME_MODIFIED_BY_CHKDSK
+VOLUME_MOUNTED_ON_NT4
+Volume name contains non-displayable Unicode characters.
+Volume name length = %u
+Volume name = %s
+VOLUME_REPAIR_OBJECT_ID
+VOLUME_RESIZE_LOG_FILE
+VOLUME_UPGRADE_ON_MOUNT
+    -v    Verbose execution
+    -vv   Very verbose execution
+Warning: Could not umount %s
+WARNING: Dirty volume mount was forced by the 'force' mount option.
+Warning: Failed to close inode %lli
+Warning: Failed to umount %s
+__xstat64
+You can use force option to avoid this check, but this is not recommended
+You seem to have a SoftRAID/FakeRAID hardware and must use an activated,

@@ -1,0 +1,77 @@
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+Causes the screensaver to exit gracefully
+connection != NULL
+Couldn't allocate the dbus message
+dcgettext
+dcngettext
+deactivate
+Did not receive a reply from the screensaver.
+Failed to get session bus: %s
+g_bus_get_sync
+g_clear_error
+g_dbus_connection_call_sync
+g_dbus_connection_flush_sync
+g_dbus_connection_send_message
+g_dbus_connection_send_message_with_reply_sync
+g_dbus_message_get_body
+g_dbus_message_new_method_call
+g_dbus_message_set_body
+g_error_free
+GetActive
+GetActiveTime
+GetNameOwner
+g_idle_add
+GLIBC_2.0
+GLIBC_2.2
+g_main_loop_new
+g_main_loop_quit
+g_main_loop_run
+__gmon_start__
+gnome-screensaver
+g_object_unref
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_return_if_fail_warning
+g_set_prgname
+g_type_init
+g_variant_get
+g_variant_new
+g_variant_unref
+If the screensaver is active then deactivate it (un-blank the screen)
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+Locale not understood by C library, internationalization will not work
+name != NULL
+/org/freedesktop/DBus
+org.freedesktop.DBus
+/org/gnome/ScreenSaver
+org.gnome.ScreenSaver
+Query the length of time the screensaver has been active
+Query the state of the screensaver
+Screensaver is not running!
+screensaver_is_running
+screensaver_send_message_bool
+screensaver_send_message_void
+SetActive
+setlocale
+Tells the running screensaver process to lock the screen immediately
+The screensaver has been active for %d second.
+The screensaver has been active for %d seconds.
+The screensaver is active
+The screensaver is inactive
+The screensaver is not currently active.
+Turn the screensaver on (blank the screen)
+unable to flush message queue: %s
+unable to send message: %s
+/usr/share/locale
+Version of this application

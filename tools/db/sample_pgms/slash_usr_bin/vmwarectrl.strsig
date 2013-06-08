@@ -1,0 +1,31 @@
+__bss_start
+Could not open default X Display
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+Got Extension version %d.%d
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXext.so.6
+__printf_chk
+Requesting hard-coded topology
+Set Res failed
+Setres needs x and y too
+Set Res was successful
+settopology
+SetTopology failed
+SetTopology was successful
+VMWARE_CTRL
+VMWARE_CTRL Extension not found.
+VMWARE_CTRL version >= 0.2 is required
+XextAddDisplay
+XextCreateExtension
+XextFindDisplay
+XextRemoveDisplay
+_XGetRequest
+XMissingExtension
+XOpenDisplay

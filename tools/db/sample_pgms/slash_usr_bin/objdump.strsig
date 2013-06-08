@@ -1,0 +1,1331 @@
+                
+/               
+//              
+01000000000000000000000;
+01777777777777777777777;
+0777777777777777777777;
+%08lx..%08lx
+%08lx %08lx %08lx CIE
+%08lx %08lx %08lx CIE "%s" cf=%d df=%d ra=%d
+%08lx %08lx %08lx FDE cie=%08lx pc=
+  %08lx  2**%u
+%08lx ZERO terminator
+  0x%8.8lx 
+%.12s %.4s
+%16.16llx 
+ %-16d  
+ %-16s  
+   %-18s:
+    %-18s %s
+%-35s  %11d  %#18llx
+%-35s  %11d  %#18llx[%d]
+%3d %-13s %08lx  
+[%3u] 0x%lx - 0x%lx
+[%3u] 0x%lx 0x%lx 
+[%3u] %s:
+ %-6d %-6d 
+    %-6lx	%s
+    %8.8lx 
+  -a, --archive-headers    Display archive header information
+[Abbrev Number: %ld
+   Abbrev Offset: %s
+abfd != ((void *)0)
+(ADA 95)
+    Address    Length
+    Address            Length
+Address table:
+--adjust-vma
+      --adjust-vma=OFFSET        Add OFFSET to all displayed section addresses
+  Advance Line by %s to %d
+  Advance PC by constant %s to 0x%s
+  Advance PC by fixed size amount %s to 0x%s
+  Advance PC by %s to 0x%s
+  Advance PC by %s to 0x%s[%d]
+all-headers
+ and Line by %s to %d
+__anon%u
+%%anon%u
+(ANSI C)
+(ANSI C99)
+(ANSI Pascal)
+append_parent
+append_type
+architecture
+architecture: %s, 
+archive-headers
+__assert_fail
+ At least one of the following switches must be given:
+  Augmentation data:    
+  Augmentation:          "%s"
+bad ATN65 record
+bad C++ field bit pos or size
+badly formed extended line op encountered!
+bad mangled name `%s'
+bad misc record
+bad register: 
+Bad stab: %s
+bad type for C++ method function
+(base address)
+BCD float type not supported
+bfd_abs_section
+bfd_arch_bits_per_address
+bfd_arch_list
+bfd_canonicalize_reloc
+bfd_check_format
+bfd_check_format_matches
+bfd_close
+bfd_close_all_done
+bfd_coff_get_auxent
+bfd_coff_get_auxent failed: %s
+bfd_coff_get_comdat_section
+bfd_coff_get_syment
+bfd_coff_get_syment failed: %s
+bfd_demangle
+bfd_errmsg
+bfd_fprintf_vma
+bfd_get_arch
+bfd_get_archive_filename
+bfd_get_arch_size
+bfd_get_error
+bfd_get_full_section_contents
+bfd_get_mach
+bfd_get_reloc_upper_bound
+bfd_get_section_by_name
+bfd_get_section_contents
+bfd_get_stab_name
+bfd_hash_allocate
+bfd_hash_lookup
+bfd_hash_newfunc
+bfd_hash_table_free
+bfd_hash_table_init
+bfd_hash_traverse
+BFD header file version %s
+bfd_init
+BFD_IS_RELAXABLE
+bfd_make_section
+bfd_make_section_with_flags
+bfd_malloc
+bfd_map_over_sections
+bfd_octets_per_byte
+bfd_openr
+bfd_openr_next_archived_file
+bfd_openw
+bfd_printable_arch_mach
+bfd_scan_arch
+bfd_scan_vma
+bfd_set_default_target
+bfd_set_error
+bfd_set_format
+bfd_set_section_contents
+bfd_set_section_size
+bfd_simple_get_relocated_section_contents
+bfd_sprintf_vma
+bfd_target_list
+bfd_target_vector
+bfd_und_section
+big endian
+bindtextdomain
+binutils
+../../binutils/bucomm.c
+../../binutils/debug.c
+../../binutils/ieee.c
+../../binutils/prdbg.c
+ /* bitpos 
+bitsize 
+/* bitstring */
+blocks left on stack at end
+Bogus end-of-siblings marker detected at offset %lx in .debug_info section
+(boolean)
+__bss_start
+  -b, --target=BFDNAME           Specify the target object format as BFDNAME
+Cannot create temporary file in %s: %s
+can't disassemble for architecture %s
+Can't get contents for section '%s'.
+can't set BFD default target to `%s': %s
+can't use supplied machine %s
+(case_insensitive)
+(case_sensitive)
+C++ base class not defined
+C++ base class not found in container
+C++ data member not found in container
+C++ default values not in a function
+  -C, --demangle[=STYLE]         Decode mangled/processed symbol names
+character
+	class:%s
+C++ object has no fields
+(Cobol 74)
+(Cobol 85)
+  Code alignment factor: %u
+(column major)
+ (COMDAT %s %ld)
+  Compilation Unit @ offset 0x%s:
+complex 
+(complex float)
+const double %s = %g;
+const int %s = %s;
+CONSTRUCTOR
+const %s %s = %s;
+const/volatile indicator missing
+Contents of section %s:
+Contents of %s section:
+Contents of the %s section:
+context 
+Copyright 2011 Free Software Foundation, Inc.
+Corrupt header in the %s section.
+Corrupt unit length (0x%s) found in section %s
+could not determine the type of symbol number %ld
+Couldn't get demangled builtin type
+cplus_demangle
+cplus_demangle_builtin_types
+cplus_demangle_init_info
+cplus_demangle_mangled_name
+cplus_demangle_name_to_style
+cplus_demangle_operators
+cplus_demangle_print
+cplus_demangle_set_style
+cplus_demangle_type
+cplus_mangle_opname
+C++ reference in class with no fields
+C++ reference is not pointer
+C++ reference not found
+C++ static virtual method
+CU at offset %s contains corrupt or unsupported version number: %d.
+CU: %s/%s:
+CU table:
+D$\89\$x
+D$,9D$8u
+  Data alignment factor: %d
+dcgettext
+  -D, --disassemble-all    Display assembler contents of all sections
+  -d, --disassemble        Display assembler contents of executable sections
+.debug_abbrev
+debug_add_to_current_namespace: no current file
+.debug_aranges
+debug_end_block: attempt to close top level block
+debug_end_block: no current block
+debug_end_common_block: not implemented
+debug_end_function: no current function
+debug_end_function: some blocks were not closed
+debug_find_named_type: no current compilation unit
+.debug_frame
+debug_get_real_type: circular debug information for %s
+debugging
+debugging-tags
+.debug_info
+Debug info is corrupted, abbrev offset (%lx) is larger than abbrev section size (%lx)
+Debug info is corrupted, length of CU at %s extends beyond end of section (length = %s)
+.debug_info offset of 0x%lx in %s section does not point to a CU header.
+.debug_line
+.debug_loc
+.debug_macinfo
+.debug_macro
+.debug_macro section not zero terminated
+debug_make_undefined_type: unsupported kind
+debug_name_type: no current file
+.debug_pubnames
+.debug_pubtypes
+.debug_ranges
+debug_record_function: no debug_set_filename call
+debug_record_label: not implemented
+debug_record_line: no current unit
+debug_record_parameter: no current function
+debug_record_variable: no current file
+debug_set_class_id
+debug_set_filename
+debug_start_block: no current block
+debug_start_common_block: not implemented
+debug_start_source: no debug_set_filename call
+.debug_static_func
+.debug_static_vars
+.debug_str
+debug_tag_type: extra tag attempted
+debug_tag_type: no current file
+.debug_types
+.debug_weaknames
+debug_write_class_type
+debug_write_type
+debug_write_type: illegal type encountered
+(decimal float)
+(declared as inline and inlined)
+(declared as inline but ignored)
+Decoded dump of debug contents of section %s:
+decodedline
+  define new File Table entry
+demangle
+Demangled name is not a function
+DIE at offset %lx refers to abbreviation number %lu which does not exist
+disassemble
+disassemble-all
+disassemble_fn returned length %d
+disassemble_init_for_target
+disassembler
+disassembler-options
+disassembler_usage
+disassemble-zeroes
+Disassembly of section %s:
+                           Display DWARF info in the file
+ Display information from object <file(s)>.
+Displaying the debug contents of section %s is not yet supported.
+D$l9D$Lv$
+ <%d><%lx>: ...
+ <%d><%lx>: Abbrev Number: %lu
+double complex
+(down_case)
+dwarf-depth
+      --dwarf-depth=N        Do not display DIEs at depth N or greater
+  --dwarf[=rawline,=decodedline,=info,=abbrev,=pubnames,=aranges,=macro,=frames,
+dwarf-start
+      --dwarf-start=N        Display DIEs starting with N, at the same depth
+  DWARF Version:               %d
+DW_AT_abstract_origin
+DW_AT_accessibility
+DW_AT_address_class
+DW_AT_allocated
+DW_AT_artificial
+DW_AT_associated
+DW_AT_base_types
+DW_AT_binary_scale
+DW_AT_bit_offset
+DW_AT_bit_size
+DW_AT_body_begin
+DW_AT_body_end
+DW_AT_byte_size
+DW_AT_call_column
+DW_AT_call_file
+DW_AT_calling_convention
+DW_AT_call_line
+DW_AT_common_reference
+DW_AT_comp_dir
+DW_AT_const_expr
+DW_AT_const_value
+DW_AT_containing_type
+DW_AT_count
+DW_AT_data_bit_offset
+DW_AT_data_location
+DW_AT_data_member_location
+DW_AT_decimal_scale
+DW_AT_decimal_sign
+DW_AT_declaration
+DW_AT_decl_column
+DW_AT_decl_file
+DW_AT_decl_line
+DW_AT_default_value
+DW_AT_description
+DW_AT_digit_count
+DW_AT_discr
+DW_AT_discr_list
+DW_AT_discr_value
+DW_AT_elemental
+DW_AT_element_list
+DW_AT_encoding
+DW_AT_endianity
+DW_AT_entry_pc
+DW_AT_enum_class
+DW_AT_explicit
+DW_AT_extension
+DW_AT_external
+DW_AT_frame_base
+DW_AT_friend
+DW_AT_GNAT_descriptive_type
+DW_AT_GNU_all_call_sites
+DW_AT_GNU_all_source_call_sites
+DW_AT_GNU_all_tail_call_sites
+DW_AT_GNU_call_site_data_value
+DW_AT_GNU_call_site_target
+DW_AT_GNU_call_site_target_clobbered
+DW_AT_GNU_call_site_value
+DW_AT_GNU_exclusive_locks_required
+DW_AT_GNU_guarded
+DW_AT_GNU_guarded_by
+DW_AT_GNU_locks_excluded
+DW_AT_GNU_macros
+DW_AT_GNU_odr_signature
+DW_AT_GNU_pt_guarded
+DW_AT_GNU_pt_guarded_by
+DW_AT_GNU_shared_locks_required
+DW_AT_GNU_tail_call
+DW_AT_GNU_vector
+DW_AT_high_pc
+DW_AT_HP_actuals_stmt_list
+DW_AT_HP_all_variables_modifiable
+DW_AT_HP_block_index
+DW_AT_HP_cold_region_high_pc
+DW_AT_HP_cold_region_low_pc
+DW_AT_HP_linkage_name
+DW_AT_HP_opt_flags
+DW_AT_HP_opt_level
+DW_AT_HP_pass_by_reference
+DW_AT_HP_proc_per_section
+DW_AT_HP_prof_flags
+DW_AT_HP_prof_version_id
+DW_AT_HP_raw_data_ptr
+DW_AT_identifier_case
+DW_AT_import
+DW_AT_inline
+DW_AT_is_optional
+DW_AT_language
+DW_AT_linkage_name
+DW_AT_location
+DW_AT_lower_bound
+DW_AT_low_pc
+DW_AT_mac_info
+DW_AT_macro_info
+DW_AT_main_subprogram
+DW_AT_member
+DW_AT_MIPS_abstract_name
+DW_AT_MIPS_clone_origin
+DW_AT_MIPS_epilog_begin
+DW_AT_MIPS_fde or DW_AT_HP_unmodifiable
+DW_AT_MIPS_has_inlines
+DW_AT_MIPS_linkage_name
+DW_AT_MIPS_loop_begin
+DW_AT_MIPS_loop_unroll_factor
+DW_AT_MIPS_software_pipeline_depth
+DW_AT_MIPS_stride
+DW_AT_MIPS_tail_loop_begin
+DW_AT_mutable
+DW_AT_name
+DW_AT_namelist_items
+DW_AT_object_pointer
+DW_AT_ordering
+DW_AT_PGI_lbase
+DW_AT_PGI_lstride
+DW_AT_PGI_soffset
+DW_AT_picture_string
+DW_AT_priority
+DW_AT_producer
+DW_AT_prototyped
+DW_AT_pure
+DW_AT_ranges
+DW_AT_recursive
+DW_AT_return_addr
+DW_AT_segment
+DW_AT_sf_names
+DW_AT_sibling
+DW_AT_signature
+DW_AT_small
+DW_AT_specification
+DW_AT_src_coords
+DW_AT_src_info
+DW_AT_start_scope
+DW_AT_static_link
+DW_AT_stmt_list
+DW_AT_stride
+DW_AT_stride_size
+DW_AT_string_length
+DW_AT_subscr_data
+DW_AT_threads_scaled
+DW_AT_trampoline
+DW_AT_type
+DW_AT_upc_threads_scaled
+DW_AT_upper_bound
+DW_AT_use_GNAT_descriptive_type
+DW_AT_use_location
+DW_AT_use_UTF8
+DW_AT_variable_parameter
+DW_AT_virtuality
+DW_AT_visibility
+DW_AT_vtable_elem_location
+  DW_CFA_advance_loc1: %ld to %08lx
+  DW_CFA_advance_loc2: %ld to %08lx
+  DW_CFA_advance_loc4: %ld to %08lx
+  DW_CFA_advance_loc: %d to %08lx
+  DW_CFA_def_cfa_expression (
+  DW_CFA_def_cfa_offset: %d
+  DW_CFA_def_cfa_offset_sf: %d
+  DW_CFA_def_cfa_register: %s
+  DW_CFA_def_cfa_sf: %s ofs %d
+  DW_CFA_def_cfa: %s ofs %d
+  DW_CFA_expression: %s%s (
+  DW_CFA_GNU_args_size: %ld
+  DW_CFA_GNU_negative_offset_extended: %s%s at cfa%+ld
+  DW_CFA_GNU_window_save
+  DW_CFA_MIPS_advance_loc8: %ld to %08lx
+  DW_CFA_nop
+  DW_CFA_offset_extended_sf: %s%s at cfa%+ld
+  DW_CFA_offset_extended: %s%s at cfa%+ld
+  DW_CFA_offset: %s%s at cfa%+ld
+  DW_CFA_register: %s%s in 
+  DW_CFA_remember_state
+  DW_CFA_restore_extended: %s%s
+  DW_CFA_restore: %s%s
+  DW_CFA_restore_state
+  DW_CFA_same_value: %s%s
+  DW_CFA_set_loc: %08lx
+  DW_CFA_undefined: %s%s
+  DW_CFA_??? (User defined call frame op: %#x)
+  DW_CFA_val_expression: %s%s (
+  DW_CFA_val_offset_sf: %s%s at cfa%+ld
+  DW_CFA_val_offset: %s%s at cfa%+ld
+DW_FORM_addr
+DW_FORM_block
+DW_FORM_block1
+DW_FORM_block2
+DW_FORM_block4
+DW_FORM_data1
+DW_FORM_data2
+DW_FORM_data4
+DW_FORM_data8
+DW_FORM_exprloc
+DW_FORM_flag
+DW_FORM_flag_present
+DW_FORM_indirect
+DW_FORM_ref1
+DW_FORM_ref2
+DW_FORM_ref4
+DW_FORM_ref8
+DW_FORM_ref_addr
+DW_FORM_ref_sig8
+DW_FORM_ref_udata
+DW_FORM_sdata
+DW_FORM_sec_offset
+DW_FORM_string
+DW_FORM_strp
+DW_FORM_strp offset too big: %s
+DW_FORM_udata
+DW_LNE_HP_define_proc
+DW_LNE_HP_negate_front_end_logical
+DW_LNE_HP_negate_function_exit
+DW_LNE_HP_negate_is_UV_update
+DW_LNE_HP_negate_post_semantics
+DW_LNE_HP_pop_context
+DW_LNE_HP_push_context
+DW_LNE_HP_set_file_line_column
+DW_LNE_HP_set_routine_name
+DW_LNE_HP_set_sequence
+    DW_LNE_HP_SFC_associate 
+    DW_LNE_HP_SFC_formfeed
+    DW_LNE_HP_SFC_set_listing_line (%s)
+DW_LNE_HP_source_file_correlation
+ DW_MACINFO_define - lineno : %d macro : %s
+ DW_MACINFO_end_file
+ DW_MACINFO_start_file - lineno: %d filenum: %d
+ DW_MACINFO_undef - lineno : %d macro : %s
+ DW_MACINFO_vendor_ext - constant : %d string : %s
+ DW_MACRO_GNU_%02x
+ DW_MACRO_GNU_%02x -
+    DW_MACRO_GNU_%02x arguments: 
+    DW_MACRO_GNU_%02x has no arguments
+ DW_MACRO_GNU_define_indirect - lineno : %d macro : %s
+ DW_MACRO_GNU_define - lineno : %d macro : %s
+ DW_MACRO_GNU_end_file
+ DW_MACRO_GNU_start_file - lineno: %d filenum: %d
+ DW_MACRO_GNU_start_file - lineno: %d filenum: %d filename: %s%s%s
+DW_MACRO_GNU_start_file used, but no .debug_line offset provided.
+ DW_MACRO_GNU_transparent_include - offset : 0x%lx
+ DW_MACRO_GNU_undef_indirect - lineno : %d macro : %s
+ DW_MACRO_GNU_undef - lineno : %d macro : %s
+DW_OP_abs
+DW_OP_addr: %s
+DW_OP_and
+DW_OP_bit_piece: 
+DW_OP_bra: %ld
+DW_OP_breg%d (%s): %s
+DW_OP_bregx: %s (%s) %s
+DW_OP_call2: <0x%s>
+DW_OP_call4: <0x%s>
+DW_OP_call_frame_cfa
+DW_OP_call_ref: <0x%s>
+(DW_OP_call_ref in frame info)
+DW_OP_const1s: %ld
+DW_OP_const1u: %lu
+DW_OP_const2s: %ld
+DW_OP_const2u: %lu
+DW_OP_const4s: %ld
+DW_OP_const4u: %lu
+DW_OP_const8s: %ld %ld
+DW_OP_const8u: %lu %lu
+DW_OP_consts: %s
+DW_OP_constu: %s
+DW_OP_deref
+DW_OP_deref_size: %ld
+DW_OP_div
+DW_OP_drop
+DW_OP_dup
+DW_OP_eq
+DW_OP_fbreg: %s
+DW_OP_form_tls_address
+DW_OP_ge
+DW_OP_GNU_const_type: <0x%s> 
+DW_OP_GNU_convert <0x%s>
+DW_OP_GNU_deref_type: %ld
+DW_OP_GNU_encoded_addr: fmt:%02x addr:
+DW_OP_GNU_entry_value: (
+DW_OP_GNU_implicit_pointer: <0x%s> %s
+(DW_OP_GNU_implicit_pointer in frame info)
+DW_OP_GNU_parameter_ref: <0x%s>
+DW_OP_GNU_push_tls_address or DW_OP_HP_unknown
+DW_OP_GNU_regval_type: %s (%s)
+DW_OP_GNU_reinterpret <0x%s>
+DW_OP_GNU_uninit
+DW_OP_gt
+DW_OP_HP_fltconst4
+DW_OP_HP_fltconst8
+DW_OP_HP_is_value
+DW_OP_HP_mod_range
+DW_OP_HP_tls
+DW_OP_HP_unmod_range
+DW_OP_implicit_value
+DW_OP_le
+DW_OP_lit%d
+DW_OP_lt
+DW_OP_minus
+DW_OP_mod
+DW_OP_mul
+DW_OP_ne
+DW_OP_neg
+DW_OP_nop
+DW_OP_not
+DW_OP_or
+DW_OP_over
+DW_OP_PGI_omp_thread_num
+DW_OP_pick: %ld
+DW_OP_piece: %s
+DW_OP_plus
+DW_OP_plus_uconst: %s
+DW_OP_push_object_address
+DW_OP_reg%d (%s)
+DW_OP_regx: %s (%s)
+DW_OP_rot
+DW_OP_shl
+DW_OP_shr
+DW_OP_shra
+DW_OP_skip: %ld
+DW_OP_stack_value
+DW_OP_swap
+DW_OP_xderef
+DW_OP_xderef_size: %ld
+DW_OP_xor
+DW_TAG_access_declaration
+DW_TAG_array_type
+DW_TAG_base_type
+DW_TAG_catch_block
+DW_TAG_class_template
+DW_TAG_class_type
+DW_TAG_common_block
+DW_TAG_common_inclusion
+DW_TAG_compile_unit
+DW_TAG_condition
+DW_TAG_constant
+DW_TAG_const_type
+DW_TAG_dwarf_procedure
+DW_TAG_entry_point
+DW_TAG_enumeration_type
+DW_TAG_enumerator
+DW_TAG_file_type
+DW_TAG_formal_parameter
+DW_TAG_format_label
+DW_TAG_friend
+DW_TAG_function_template
+DW_TAG_GNU_call_site
+DW_TAG_GNU_call_site_parameter
+DW_TAG_imported_declaration
+DW_TAG_imported_module
+DW_TAG_imported_unit
+DW_TAG_inheritance
+DW_TAG_inlined_subroutine
+DW_TAG_interface_type
+DW_TAG_label
+DW_TAG_lexical_block
+DW_TAG_member
+DW_TAG_MIPS_loop
+DW_TAG_module
+DW_TAG_namelist
+DW_TAG_namelist_item
+DW_TAG_namespace
+DW_TAG_packed_type
+DW_TAG_padding
+DW_TAG_partial_unit
+DW_TAG_pointer_type
+DW_TAG_ptr_to_member_type
+DW_TAG_reference_type
+DW_TAG_restrict_type
+DW_TAG_rvalue_reference_type
+DW_TAG_set_type
+DW_TAG_shared_type
+DW_TAG_string_type
+DW_TAG_structure_type
+DW_TAG_subprogram
+DW_TAG_subrange_type
+DW_TAG_subroutine_type
+DW_TAG_template_alias
+DW_TAG_template_type_param
+DW_TAG_template_value_param
+DW_TAG_thrown_type
+DW_TAG_try_block
+DW_TAG_typedef
+DW_TAG_type_unit
+DW_TAG_union_type
+DW_TAG_unspecified_parameters
+DW_TAG_unspecified_type
+DW_TAG_upc_relaxed_type
+DW_TAG_upc_shared_type
+DW_TAG_upc_strict_type
+DW_TAG_variable
+DW_TAG_variant
+DW_TAG_variant_part
+DW_TAG_volatile_type
+DW_TAG_with_stmt
+dynamic-reloc
+DYNAMIC RELOCATION RECORDS
+DYNAMIC SYMBOL TABLE:
+dynamic-syms
+  -EB --endian=big               Assume big endian format when disassembling
+  -e, --debugging-tags     Display debug information using ctags style
+(edited)
+.eh_frame
+eh_throw
+  -EL --endian=little            Assume little endian format when disassembling
+endianness unknown
+<End of list>
+End of Sequence
+  Entry	Dir	Time	Size	Name
+__errno_location
+error: instruction width must be positive
+error: prefix strip must be non-negative
+error: the start address should be before the end address
+error: the stop address should be after the start address
+(exported)
+expression stack mismatch
+expression stack overflow
+expression stack underflow
+  Extended opcode %d: 
+  Extension opcode arguments:
+Failed to print demangled template
+  -f, --file-headers       Display the contents of the overall file header
+  -F, --file-offsets             Include file offsets when displaying information
+file-headers
+filename_cmp
+File name                            Line number    Starting address
+ (File Offset: 0x%lx)
+file-offsets
+  @<file>                  Read options from <file>
+/* file %s line %lu addr %s */
+file-start-context
+      --file-start-context       Include context from start of file (with -S)
+flags 0x%08x:
+__float128
+(FORTRAN 77)
+(Fortran 90)
+(Fortran 95)
+__fprintf_chk
+frames-interp
+          =frames-interp,=str,=loc,=Ranges,=pubtypes,
+full-contents
+Further warnings about bogus end-of-sibling markers suppressed
+__fxstat64
+gcc2_compiled
+gcc2_compiled.
+gcc_compiled.
+.gdb_index
+          =gdb_index,=trace_info,=trace_abbrev,=trace_aranges]
+$GDB_STRINGS$
+$GDB_SYMBOLS$
+  -g, --debugging          Display debug information in object file
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+*global*
+*globals*
+__gmon_start__
+(GNU Binutils for Ubuntu) 2.22
+gnu_compiled
+.gnu.linkonce.wi.
+GNU objcopy
+GNU %s %s
+  -G, --stabs              Display (in raw form) any STABS info in the file
+has children
+HAS_DEBUG
+HAS_LINENO
+HAS_LOAD_PAGE
+HAS_LOCALS
+HAS_RELOC
+HAS_SYMS
+ (header %s, data %s)
+  -H, --help               Display this information
+(HP_complex_float128)
+(HP_complex_float80)
+(HP_float128)
+(HP_float80)
+(HP_floathpintel)
+(HP_imaginary_float128)
+(HP_imaginary_float80)
+  -h, --[section-]headers  Display the contents of the section headers
+<http://www.sourceware.org/bugzilla/>
+h != ((void *)0)
+i686-pc-linux-gnu
+ /* id %u */
+Idx Name          Size      VMA               LMA               File off  Algn
+Idx Name          Size      VMA       LMA       File off  Algn
+ieee_builtin_type
+ieee_class_baseclass
+ieee_class_end_method
+ieee_class_method_var
+ieee_class_start_method
+ieee_class_static_member
+ieee_end_class_type
+ieee_end_function
+ieee_end_range
+ieee_end_struct_type
+ieee_finish_compilation_unit
+ieee_function_parameter
+ieee_lineno
+IEEE numeric overflow: 0x
+ieee_pop_type_used
+ieee_start_class_type
+ieee_start_function
+ieee_start_struct_type
+IEEE string length overflow: %u
+ieee_struct_field
+ieee_typedef_type
+IEEE unsupported complex type size %u
+IEEE unsupported float type size %u
+IEEE unsupported integer type size %u
+ieee_variable
+/* ignore */
+  -I, --include=DIR              Add DIR to search list for source files
+  -i, --info               List object formats and architectures supported
+illegal type index
+illegal variable index
+(imaginary float)
+(implementation defined: %s)
+In archive %s:
+ (indirect string, offset: 0x%s): %s
+indx < (60)
+info->block_depth == 1
+info->filename != ((void *)0)
+info->indent == 0
+info->indent >= 2
+info->pending_ranges != ((void *)0)
+info->stack->next->method != ((void *)0)
+info->stack->next != ((void *)0)
+info->stack->visibility != DEBUG_VISIBILITY_IGNORE
+info->stack != ((void *)0)
+info->stack != ((void *)0) && info->stack->next != ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->next != ((void *)0) && ! ((&info->type_stack->next->type.strdef)->head == ((void *)0))
+info->type_stack != ((void *)0) && info->type_stack->type.classdef != ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->type.classdef != ((void *)0) && info->type_stack->type.classdef->method == ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->type.classdef != ((void *)0) && info->type_stack->type.classdef->method != ((void *)0)
+info->type_stack != ((void *)0) && info->type_stack->type.name != ((void *)0) && info->type_stack->next != ((void *)0) && info->type_stack->next->type.classdef != ((void *)0) && ! ((&info->type_stack->next->type.strdef)->head == ((void *)0))
+info->type_stack != ((void *)0) && ! ((&info->type_stack->type.strdef)->head == ((void *)0))
+info->units == ((void *)0)
+! ((&info->vars)->head == ((void *)0))
+	inherits:%s
+init_disassemble_info
+  Initial value of 'is_stmt':  %d
+(inlined)
+insn-width
+      --insn-width=WIDTH         Display WIDTH bytes on a single line for -d
+instruction address
+integer*1
+integer*2
+integer*4
+integer*8
+Internal error: DWARF version is not 2, 3 or 4.
+Invalid address size in %s section!
+Invalid CIE pointer %#08lx in FDE at %#08lx
+INVALID_CPLUSPLUS_ABBREV
+Invalid extension opcode form %s
+Invalid length %#08lx in FDE at %#08lx
+Invalid maximum operations per insn.
+invalid number
+invalid string length
+_IO_getc
+_IO_putc
+_IO_stdin_used
+  -j, --section=NAME             Only display information for section NAME
+_Jv_RegisterClasses
+;"	kind:%c	type:%s
+L$49L$(u
+l$49l$x}
++l$4+T$4
+\$L9\$lsY
+Last stabs entries before error:
+lbasename
+LC_SYMTAB.stabs
+LC_SYMTAB.stabstr
+%ld: .bf without preceding function
+   %ld      %s    [%s]
+%ld: unexpected .ef
+   Length:        0x%s (%s)
+length %d [
+  Length:                              %ld
+  Length:                      %ld
+  Length:                   %ld
+libbfd-2.22-system.so
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libopcodes-2.22-system.so
+  Line Base:                   %d
+line-numbers
+ Line Number Statements:
+  Line Range:                  %d
+LINK_ONCE_DISCARD
+LINK_ONCE_ONE_ONLY
+LINK_ONCE_SAME_CONTENTS
+LINK_ONCE_SAME_SIZE
+little endian
+  -l, --line-numbers             Include line numbers and filenames in output
+localp == nt->type.localp
+(location list)
+Location lists in %s section start at 0x%s
+Location list starting at offset 0x%lx is not terminated.
+logical*1
+logical*2
+logical*4
+logical*8
+long long double
+long long int
+long long unsigned int
++\$l+T$l
+                                  `lucid', `arm', `hp', `edg', `gnu-v3', `java'
+    <%lx>
+(machine address)
+  -m, --architecture=MACHINE     Specify the target architecture as MACHINE
+  Maximum Ops per Instruction: %d
+  -M, --disassembler-options=OPT Pass text OPT on to the disassembler
+member function type missing
+  Minimum Instruction Length:  %d
+(MIPS assembler)
+Mismatched DW_CFA_restore_state
+missing index type
+missing required ASN
+missing required ATN65
+mkstemp64
+mkstemps64
+(Modula 2)
+name->kind == DEBUG_OBJECT_TAG
+NEVER_LOAD
+N_LBRAC not within function
+no argument types in mangled string
+(nocall)
+no children
+No comp units in %s section ?
+<no .debug_str section>
+no information for symbol number %ld
+No location lists in .debug_info section!
+No mangling for "%s"
+(non-ANSI C)
+No range lists in .debug_info section!
+(normal)
+no-show-raw-insn
+      --[no-]show-raw-insn       Display hex alongside symbolic disassembly
+No %s section present
+::NoSuchStrinG
+NoSuchStrinG__
+no symbols
+Not enough memory for a debug info array of %u entries
+(not inlined)
+no type information for C++ method function
+n_type n_desc n_value  string
+  Number TAG
+numeric overflow
+(numeric_string)
+O 3T$ 3L$$	
+(Objective C)
+(Objective C++)
+  Offset:                      0x%lx
+Offset 0x%lx is bigger than .debug_loc section size.
+    Offset   Begin    End
+    Offset   Begin    End      Expression
+  Offset into .debug_info:  0x%lx
+  Offset into .debug_info section:     0x%lx
+  Offset into .debug_line:     0x%lx
+<offset is too big>
+    Offset	Name
+offset: %s 
+  Offset size:                 %d
+OFFSET %*s TYPE %*s VALUE 
+Offset %s used as value for DW_AT_import attribute of DIE at offset %lx is too big.
+Only DWARF 2 and 3 aranges are currently supported.
+Only DWARF 2 and 3 pubnames are currently supported
+Only DWARF version 2, 3 and 4 line info is currently supported.
+Only GNU extension to DWARF 4 of %s is currently supported.
+  Opcode Base:                 %d
+  Opcode %d has %d args
+ Opcodes:
+                             or deeper
+                                  or `gnat'
+out of memory
+Out of memory reading long symbol names in archive
+Out of memory whilst trying to convert the archive symbol index
+Out of memory whilst trying to read archive index symbol table
+Out of memory whilst trying to read archive symbol index
+(packed_decimal)
+parse_coff_type: Bad type code 0x%x
+Pascal file name not supported
+   Pointer Size:  %d
+  Pointer Size:             %d
+Pointer size + Segment size is not a power of two.
+  Pointer Size:          %u
+pop_type
+pP:ib:m:M:VvCdDlfFaHhrRtTxsSI:j:wE:zgeGW::
+  -p, --private-headers    Display object format specific file header contents
+  -P, --private=OPT,OPT... Display object format specific contents
+pr_class_baseclass
+pr_class_method_variant
+pr_class_start_method
+pr_class_static_method_variant
+prefix-addresses
+      --prefix-addresses         Print complete address alongside disassembly
+      --prefix=PREFIX            Add PREFIX to absolute paths for -S
+prefix-strip
+      --prefix-strip=LEVEL       Strip initial directory names for -S
+pr_end_struct_type
+prepend_type
+pr_fix_visibility
+pr_function_type
+__printf_chk
+(private)
+private 
+private-headers
+(program)
+  Prologue Length:             %d
+protected
+(protected)
+protected 
+pr_pointer_type
+pr_range_type
+pr_reference_type
+pr_start_compilation_unit
+pr_start_source
+(public)
+(pure_virtual)
+(Python)
+(qualified)
+QUOTED STRING
+ra      
+Range lists in %s section start at 0x%lx
+Raw dump of debug contents of section %s:
+__rawmemchr
+r%d (%s)
+  -R, --dynamic-reloc      Display the dynamic relocation entries in the file
+Reading section failed
+reading %s section of %s failed: %s
+READONLY
+reference parameter is not a pointer
+	register:
+register 
+RELOCATION RECORDS FOR [%s]:
+Report bugs to %s.
+Reserved length value (0x%s) found in section %s
+  Return address column: %d
+(row major)
+rP9L$(vJ
+  -r, --reloc              Display the relocation entries in the file
+R_SPARC_13
+R_SPARC_LO10
+R_SPARC_OLO10
+./%s:[++]
+{ /* %s */
+} /* %s */
+s[0] == ' ' && s[1] == ' ' && s[2] == '\0'
+%s: 0x%lx: %s (0x%x)
+%s  %11d  %#18llx
+%s  %11d  %#18llx[%d]
+%s: bad number: %s
+ %s byte block: 
+%-*s CFA      
+_sch_istable
+%s: did not find a valid archive header
+section-headers
+Sections:
+section '%s' mentioned in a -j option, but not found in any input file
+  Segment Size:             %d
+  Segment Size:          %u
+%s: Error: 
+%s: error: too many @-files encountered
+set Address to 0x%s
+  Set basic block
+  Set column to %s
+set Discriminator to %s
+  Set epilogue_begin to true
+  Set File Name to entry %s in the File Name Table
+  Set ISA to %lu
+  Set ISA to %s
+  Set is_stmt to %s
+  Set prologue_end to true
+%s: failed to read archive header
+%s: failed to read archive header following archive index
+%s: failed to read archive index
+%s: failed to read archive index symbol table
+%s: failed to read long symbol name string table
+%s: failed to seek to first archive header
+%s: failed to seek to next file name
+%s: failed to skip archive symbol table
+%s:     file format %s
+  -s, --full-contents      Display the full contents of all sections requested
+%s has no archive index
+short real
+short unsigned int
+ signature: 
+   Signature:     
+(signed)
+(signed char)
+(signed_fixed)
+  Size of area in .debug_info section: %ld
+size: %s 
+ size %u
+	... (skipping %d zeroes, resuming at file offset: 0x%lx)
+%s %ld/%ld %6ld %s 
+SMALL_DATA
+%s: Matching formats:
+%s: no recognized debugging information
+'%s': No such file
+%s: not a dynamic object
+__snprintf_chk
+SORT_ENTRIES
+  Special opcode %d: advance Address by %s to 0x%s
+  Special opcode %d: advance Address by %s to 0x%s[%d]
+special-syms
+      --special-syms             Include special symbols in symbol dumps
+__sprintf_chk
+%s: printing debugging information failed
+|[%s:%s]
+%s /* %s */
+%s /* %s */;
+%s	%s	0;"	kind:%c
+%s	%s	0;"	kind:c	type:%s
+%s	%s	0;"	kind:e	type:%s
+%s	%s	0;"	kind:g	enum:%s	value:%s
+%s	%s	0;"	kind:m	type:%s	%s:%s	access:%s
+%s	%s	0;"	kind:p	type:%s	class:%s
+%s	%s	0;"	kind:p	type:%s	class:%s	access:%s
+%s	%s	0;"	kind:t	type:%s
+%s	%s	0;"	kind:v	type:const double	value:%g
+%s	%s	0;"	kind:v	type:const int	value:%s
+%s	%s	0;"	kind:v	type:const %s	value:%s
+%s	%s	0;"	kind:v	type:%s
+%s	%s	0;"	kind:x	type:%s	class:%s	access:%s
+__%s%s%d
+  -S, --source             Intermix source code with disassembly
+%s: %s: %s
+%s[%s(%s)]
+%s: %s: stab entry %ld is corrupt, strx = 0x%x, type = %d
+%s: supported architectures:
+%s: supported targets:
+.stab.excl
+.stab.exclstr
+.stab.index
+.stab.indexstr
+__stack_chk_fail
+--start-address
+start address 0x
+      --start-address=ADDR       Only process data whose address is >= ADDR
+ (start == end)
+ (start > end)
+  (Starting at file offset: 0x%lx)
+%s: the archive has an index but no symbols
+%s: the archive index is empty
+%s: the archive index is supposed to have %ld entries, but the size in the header is too small
+--stop-address
+      --stop-address=ADDR        Only process data whose address is <= ADDR
+__strdup
+strerror
+ /* string */
+stringptr
+((struct pr_handle *) p)->stack != ((void *)0)
+substitute_type
+Supported architectures:
+Supported targets:
+%s: Warning: 
+/SYM64/         
+Symbol table:
+Symnum n_type n_othr n_desc n_value  n_strx String
+T$<9\$<r
+T$,9T$8}Q
+!_TAG_FILE_FORMAT	2	/extended format/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted/
+!_TAG_PROGRAM_AUTHOR	Ian Lance Taylor, Salvador E. Tropea and others	//
+!_TAG_PROGRAM_NAME	objdump	/From GNU binutils/
+target specific dump '%s' not supported
+  -T, --dynamic-syms       Display the contents of the dynamic symbol table
+tg_class_baseclass
+tg_class_method_variant
+tg_class_static_method_variant
+tg_end_struct_type
+tg_fix_visibility
+The address table data in version 3 may be wrong.
+ The Directory Table:
+ The Directory Table is empty.
+ The File Name Table:
+ The File Name Table is empty.
+ The following switches are optional:
+the GNU General Public License version 3 or (at your option) any later version.
+The information in section %s appears to be corrupt - the section is too small
+The line info appears to be corrupt - the section is too small
+There are %ld unused bytes at the end of section %s
+There is a hole [0x%lx - 0x%lx] in .debug_loc section.
+There is a hole [0x%lx - 0x%lx] in %s section.
+There is an overlap [0x%lx - 0x%lx] in .debug_loc section.
+There is an overlap [0x%lx - 0x%lx] in %s section.
+The %s section is empty.
+                                  The STYLE, if specified, can be `auto', `gnu',
+This program has absolutely no warranty.
+This program is free software; you may redistribute it under the terms of
+THREAD_LOCAL
+t[len - 1] == ' '
+Too many N_RBRACs
+.trace_abbrev
+.trace_aranges
+.trace_info
+Truncated header in the %s section.
+ts != ((void *)0)
+  -t, --syms               Display the contents of the symbol table(s)
+T$t9T$Tr
+TU table:
+typedef %s;
+Type file number %d out of range
+Type index number %d out of range
+type->kind == DEBUG_KIND_STRUCT || type->kind == DEBUG_KIND_UNION || type->kind == DEBUG_KIND_CLASS || type->kind == DEBUG_KIND_UNION_CLASS
+   Type Offset:   0x%s
+type->u.kclass->id > info->base_id
+Unable to load/parse the .debug_info section, so cannot interpret the %s section.
+Unable to locate %s section!
+<undefined>
+/* undefined */
+(undefined)
+undefined C++ object
+undefined C++ vtable
+Undefined N_EXCL
+undefined variable in ATN
+undefined variable in TY
+Unexpected demangled varargs
+unexpected end of debugging information
+unexpected number
+unexpected record type
+unexpected string in C++ misc
+Unexpected type in v3 arglist demangling
+Unhandled data length: %d
+(Unified Parallel C)
+union class
+union class 
+    UNKNOW DW_LNE_HP_SFC opcode (%u)
+ *unknown*         
+: *unknown*	
+*unknown*
+UNKNOWN: 
+UNKNOWN!
+(unknown accessibility)
+unknown ATN type
+Unknown AT value: %lx
+unknown BB type
+unknown builtin type
+(unknown case)
+unknown C++ encoded name
+(unknown convention)
+unknown C++ visibility
+unknown demangling style `%s'
+Unknown FORM value: %lx
+  (Unknown inline attribute value: %s)
+UNKNOWN: length %d
+(Unknown location op)
+ Unknown macro opcode %02x seen
+  Unknown opcode %d with operands: 
+(Unknown: %s)
+unknown section
+Unknown TAG value: %lx
+unknown TY code
+(unknown type)
+unknown virtual character for baseclass
+(unknown virtuality)
+/* unknown visibility */ 
+(unknown visibility)
+unknown visibility character for baseclass
+unknown visibility character for field
+unnamed $vb type
+unrecognized C++ abbreviation
+unrecognized C++ default type
+unrecognized C++ misc record
+unrecognized C++ object overhead spec
+unrecognized C++ object spec
+unrecognized C++ reference type
+unrecognized cross reference type
+Unrecognized debug option '%s'
+Unrecognized demangle component %d
+Unrecognized demangled builtin type
+unrecognized --endian type `%s'
+unrecognized -E option
+Unrecognized form: %lu
+Unrecognized XCOFF type %d
+unsigned
+(unsigned)
+(unsigned char)
+unsigned char
+(unsigned_fixed)
+unsigned __int128
+unsigned long
+unsigned long long
+unsigned short
+unsigned short int
+unsupported ATN11
+unsupported ATN12
+unsupported C++ object type
+unsupported IEEE expression operator
+unsupported or unknown Dwarf Call Frame Instruction number: %#x
+unsupported qualifier
+Unsupported version %lu.
+(up_case)
+Usage: %s <option(s)> <file(s)>
+(user defined)
+user defined: 
+(User defined location op)
+(user defined type)
+/usr/share/locale
+/usr/tmp
+/var/tmp
+vclass != ((void *)0)
+Version 4 does not support case insensitive lookups.
+   Version:       %d
+  Version:                             %d
+  Version:                     %d
+  Version:                  %d
+  Version:               %d
+Version %ld
+__vfprintf_chk
+(virtual)
+virtual 
+voffset 
+ volatile
+volatile |
+__vsnprintf_chk
+ vtable 
+  -v, --version            Display this program's version number
+Warning: changing type size from %d to %d
+Warning: could not locate '%s'.  reason: %s
+Warning: '%s' has negative size, probably it is too large
+Warning: '%s' is not an ordinary file
+Warning: %s: %s
+__wchar_t
+ [without DW_AT_frame_base]
+  -W[lLiaprmfFsoRt] or
+Wrong size in print_dwarf_vma
+  -w, --wide                     Format output for more than 80 columns
+\$x9\$Xu09|$X
+  -x, --all-headers        Display the contents of all headers
+xmalloc_set_program_name
+xrealloc
+__XRYCPP
+__xstat64
+.zdebug_abbrev
+.zdebug_aranges
+.zdebug_frame
+.zdebug_info
+.zdebug_line
+.zdebug_loc
+.zdebug_macinfo
+.zdebug_macro
+.zdebug_pubnames
+.zdebug_pubtypes
+.zdebug_ranges
+.zdebug_static_func
+.zdebug_static_vars
+.zdebug_str
+.zdebug_types
+.zdebug_weaknames
+  -z, --disassemble-zeroes       Do not skip blocks of zeroes when disassembling

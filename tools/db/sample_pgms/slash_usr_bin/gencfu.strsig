@@ -1,0 +1,52 @@
+__bss_start
+confusables file, whole script confusables file and output file must all be specified.
+copyright
+ Copyright (C) 2011, International Business Machines Corporation and others. All Rights Reserved. 
+	-c or --copyright   include a copyright notice
+	-d or --destdir     destination directory, followed by the path
+error in command line argument "%s"
+	                    followed by path, defaults to %s
+__fprintf_chk
+gencfu: Could not open output file "%s", "%s"
+gencfu: Error %d writing the output file
+gencfu: error reading file  "%s"
+gencfu: Error writing to output file "%s"
+gencfu: tool completed successfully.
+gencfu: uspoof_openFromSource error "%s"  at file %s, line %d, column %d
+gencfu: uspoof_serialize() returned %s
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBCXX_3.4
+__gmon_start__
+	-h or -? or --help  this usage text
+icudatadir
+	-i or --icudatadir  directory for locating any needed intermediate data files,
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libicui18n.so.48
+libicutu.so.48
+libicuuc.so.48
+/lib/ld-linux.so.2
+libstdc++.so.6
+options:
+__printf_chk
+	Read in Unicode confusable character definitions and write out the binary data
+%s: can not initialize ICU.  status = %s
+u_cleanup_48
+udata_create
+udata_finish
+udata_writeBlock
+u_errorName_48
+u_getDataDirectory_48
+u_init_48
+u_parseArgs
+Usage: %s [-v] [-options] -r confusablesRules.txt -w wholeScriptConfusables.txt -o output-file
+u_setDataDirectory_48
+uspoof_close_48
+uspoof_openFromSource_48
+uspoof_serialize_48
+	-v or --verbose     turn on verbose output
+	-V or --version     show a version message

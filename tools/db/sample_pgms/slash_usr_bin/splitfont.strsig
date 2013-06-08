@@ -1,0 +1,24 @@
+call: splitfont fontfile 17,23-30,...
+cannot open fontfile %s
+cannot open %s for writing
+cannot stat fontfile %s
+error reading fontfile %s
+error writing %s
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__read_chk
+splitfont
+splitfont: bad argument %s,%s
+splitfont: file size not a multiple of 256
+splitfont: file unexpectedly large
+splitfont: garbage in %s
+splitfont: ridiculously long name
+__sprintf_chk
+__stack_chk_fail

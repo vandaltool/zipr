@@ -1,0 +1,185 @@
+100 MHz (66 MHz on 855)
+3rd party
+96 MHz (48 MHz on 855)
+		AIM offset: %d
+	Allow display switching when in Full Screen DOS: %s
+	als_high_trip: %d
+	als_low_trip: %d
+		Aux channel: 0x%02x
+Available sections: 
+	backlight: %d
+Backlight info block (len %d):
+	Backlight struct sizes don't match (expected %zu, got %u), skipping
+BDB sig: %s
+BDB vers: %d
+	Block display switching when DVD active: %s
+	Boot Device Algorithm: %s
+	Boot display type: 0x%02x%02x
+	Boot Mode Bpp: %u
+	Boot Mode Refresh: %u
+	Boot Mode X: %u
+	Boot Mode Y: %u
+	Child device %d
+	Child device info:
+Child devices block:
+	Clear screen: %d
+	clock: %d
+CMOS LFP
+Couldn't open "%s": %s
+%c	panel type %02i: %dx%d clock %d
+	CRT DDC GMBUS addr: 0x%02x
+	CRT hotplug: %s
+		DDC pin: 0x%02x
+	Default Power Scheme user interface: %s
+	Default Render Clock Frequency: %s
+	Define Display statically: %s
+		Device type: %04x (%s)
+		Device type: 0x%04x (%s)
+disabled
+	Disable smooth vision: %s
+	Disable SSC on clone: %s
+	Display Maintain Aspect Scaling via CUI: %s
+DisplayPort/DVI
+DisplayPort/HDMI/DVI
+DL-DVI-D
+		Dock port: 0x%02x (%s)
+		Dongle detect: 0x%02x
+driver default
+Driver feature Data Block:
+	Driver INT 15h hook: %s
+	Dual-Frequency Graphics Technology: %s
+	Dual View Zoom: %s
+	DVO color flip required: %s
+		DVO config: 0x%02x
+		DVO port: 0x%02x
+		DVO wiring: 0x%02x
+eDP block: type %d
+	eDP sDRRs MSA timing delay: %d
+	EFP device info:
+Embedded DisplayPort
+	Enable LFP as primary: %s
+	Enable SDVO device power down: %s
+	Enable Sprite in Clone Mode: %s
+	Enable SSC: %s
+__errno_location
+	External VBT: %s
+failed to map "%s": %s
+failed to read "%s": %s
+failed to stat "%s": %s
+	Flexaim: %s
+General definitions block:
+General features block:
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+	  GMBUS speed: %d
+__gmon_start__
+	    GPIO pins: %d
+graphics only
+	h40 type: %d
+	hdisplay: %d
+HDMI certified
+		HDMI compatible? %s
+	Hot Plug DVO: %s
+	hsync [%d, %d] %s
+	htotal: %d
+	I2C command: 0x%02x
+		I2C pin: 0x%02x
+	I2C slave addr: 0x%02x
+		Info: %s
+	Integrated CRT: %s
+Integrated LVDS
+	Integrated TV: %s
+Invalid VBT found, BDB points beyond end of data block
+	Inverter type: %d
+_IO_stdin_used
+		lanes: 
+	Legacy CRT max refresh: %d
+	Legacy CRT max X: %d
+	Legacy CRT max Y: %d
+	Legacy monitor detect: %s
+	LFP on override: %s
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+	Link params:
+		  LVDS: 0x%08lx
+	LVDS config: 
+	LVDS EDID available: %s
+LVDS panel data block (preferred block marked with '*'):
+LVDS timing pointer data:
+	Message: %s
+	Minimum brightness: %d
+	misc[0]: %x
+	misc[1]: %x
+	misc[2]: %x
+	misc[3]: %x
+No child device table found
+No Driver feature data block
+No EDP data block
+No LFP data pointers block
+No LVDS data block
+No LVDS options block
+No LVDS ptr block
+No SDVO LVDS options block
+No SDVO panel dtds block
+	NT 4.0 Dual Display Clone Support: %s
+  Number of entries: %d
+os default
+out of memory
+	Panel color depth: 
+	Panel fitting: 
+PanelLink
+	panel type %02i: %dx%d
+	Panel type: %d
+		  PFIT: 0x%08lx
+	PFIT auto ratio: %s
+	PFIT enhanced graphics mode: %s
+	PFIT enhanced text mode: %s
+	PFIT mode: %d
+	Pixel dither: %s
+	     polarity: %d
+		Port: 0x%02x (%s)
+	Power Sequence: T3 %d T7 %d T9 %d T10 %d T12 %d
+		  PP_DIVISOR: 0x%08lx
+		  PP_OFF_DELAYS: 0x%08lx
+		  PP_ON_DELAYS: 0x%08lx
+		pre-emphasis: 
+	Preserve Aspect Ratio: %s
+__printf_chk
+	     PWM freq: %d
+		rate: 
+SDVO LVDS
+SDVO LVDS options block:
+SDVO panel dtds:
+secondary
+	Selective Mode Pruning: %s
+		Signature: %s
+	Single DVI for CRT/DVI: %s
+	Skip CRT detect at boot: %s
+		Slave addr: 0x%02x
+	Sprite Display Assignment when Overlay is Active in Clone Mode: %s
+	ssc_clk_freq: %d
+	SSC frequency: %s
+__stack_chk_fail
+strerror
+text & graphics
+text only
+		timings: %d %d %d %d %d %d %d %d %.2f (%s)
+TV composite
+	TV data block present: %s
+TV SCART
+TV S-Video
+		Type: 0x%04x (%s)
+	type: %d
+usage: %s <rom file>
+	Use 00000110h ID for Primary LFP: %s
+	Use ACPI DPMS CRT power states: %s
+	Use DPMS on AIM devices: %s
+VBT signature missing
+VBT vers: %d.%d
+	vdisplay: %d
+		vswing: 
+	vsync [%d, %d] %s
+	vtotal: %d
+Warning: could not find PCI device ID!

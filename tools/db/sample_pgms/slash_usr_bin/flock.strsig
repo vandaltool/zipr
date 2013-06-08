@@ -1,0 +1,49 @@
+ %1$s [-sxon][-w #] directory [-c] command...
+ %1$s [-sxon][-w #] file [-c] command...
+ %1$s [-sxun][-w #] fd#
+bindtextdomain
+ -c  --command    Run a single command string through the shell
+--command
+__ctype_b_loc
+dcgettext
+__errno_location
+exclusive
+flock (%s)
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+ -h  --help       Display this text
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+ -n  --nonblock   Fail rather than wait
+nonblocking
+ -o  --close      Close file descriptor before running command
+Options:
+__printf_chk
+%s: bad number: %s
+%s: cannot open lock file %s: %s
+%s: %d: %s
+setitimer
+setlocale
++sexnouw:hV?
+%s: fork failed: %s
+sigaction
+%s: requires file descriptor, file or directory
+ -s  --shared     Get a shared lock
+%s: %s requires exactly one command argument
+%s: %s: %s
+strerror
+%s: waitpid failed: %s
+/usr/share/locale
+util-linux
+util-linux 2.20.1
+ -u  --unlock     Remove a lock
+ -V  --version    Display version
+ -w  --timeout    Wait for a limited amount of time
+ -x  --exclusive  Get an exclusive lock

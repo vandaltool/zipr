@@ -1,0 +1,51 @@
+3.95 of 20 January 2009
+cannot find input file
+cannot find stdin
+cannot handle multi-part gzip files
+cannot write to stdout
+/dev/tty
+Enter password: 
+__errno_location
+Extracts to stdout the gzip file or first zip entry of stdin or the given file.
+first entry not deflated or stored--cannot unpack
+funzip error: %s
+fUnZip (filter UnZip), version %s
+       funzip%s infile.gz > outfile
+       funzip%s infile.zip > outfile
+       ... | funzip%s > outfile
+funzip warning: zipfile has more than one entry--rest ignored
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+gzip file ended prematurely
+gzip file not deflated
+(incomplete d-tree)  
+(incomplete l-tree)  
+incorrect password for first entry
+input not a zip or gzip file
+invalid compressed data--crc error
+invalid compressed data--format violated
+invalid compressed data--length error
+invalid compressed data--length mismatch
+invalid gzip file
+invalid zipfile
+_IO_getc
+_IO_putc
+_IO_stdin_used
+len %ld, siz %ld
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+(line too long--try again)
+no tty to prompt for password
+out of memory
+out of space on stdout
+ [-password]
+__sprintf_chk
+__stack_chk_fail
+tcgetattr
+tcsetattr
+usage: ... | funzip%s | ...
+zipfile ended prematurely

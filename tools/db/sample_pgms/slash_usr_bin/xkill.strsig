@@ -1,0 +1,60 @@
+Aborting.
+    -all                    kill all clients with top level windows
+any button
+__bss_start
+button %d
+    -button number          specific button to be pressed to select window
+__ctype_b_loc
+__ctype_tolower_loc
+    -display displayname    X server to contact
+__fprintf_chk
+    -frame                  don't ignore window manager frames
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+    -id resource            resource whose client is to be killed
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXmuu.so.1
+__printf_chk
+Select %s with 
+%s:  invalid button specification "%s"
+%s:  killing creator of resource 0x%lx
+%s:  no button number %u in pointer map, can't select window
+%s:  no pointer mapping, can't select window
+__stack_chk_fail
+%s:  unable to create selection cursor
+%s:  unable to grab cursor
+%s:  unable to open display "%s"
+T$D9T$Lt
+the root window
+the window whose client you wish to kill
+usage:  %s [-option ...]
+where options include:
+WM_STATE
+XAllowEvents
+XCloseDisplay
+XCreateFontCursor
+XDisplayName
+XFreeCursor
+XGetDefault
+XGetPointerMapping
+XGetWindowAttributes
+XGetWindowProperty
+XGrabPointer
+XInternAtom
+XKillClient
+XmuClientWindow
+XOpenDisplay
+XQueryTree
+XSetErrorHandler
+XUngrabPointer
+XWindowEvent

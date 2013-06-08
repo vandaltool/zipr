@@ -1,0 +1,146 @@
+appendstr
+=	A	P	U	
+argp_err_exit_status
+argp_error
+argp_parse
+argp_program_bug_address
+argp_program_version
+argp_state_help
+__assert_fail
+AT&T System V.1 UNIX
+AT&T System V.2 UNIX
+AT&T System V.3 UNIX
+AT&T System V.4 UNIX
+AT&T System V UNIX
+bad buffer in yy_scan_bytes()
+base_name
+BSD (currently in alpha test)
+BSD (currently in beta test)
+BSD (currently under development
+__bss_start
+byte %jd: iconv
+byte %jd: %s
+canonicalize_file_name
+can't open %s
+can't resolve %s
+can't search directory %s
+can't write to standard output
+check_preprocessor_encoding
+cjwatson@debian.org
+closedir
+comp_list
+__ctype_b_loc
+__cxa_finalize
+dcgettext
+dcngettext
+debug_level
+decompress_fdopen
+decompress_open
+drop_effective_privs
+emit debugging messages
+ENCODING
+__errno_location
+fatal error - scanner input buffer overflow
+fatal flex scanner internal error--end of buffer missed
+fatal flex scanner internal error--no action found
+__fprintf_chk
+get_page_encoding
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+gzip -dc -S ""
+iconv_close
+iconv: incomplete character at end of buffer
+iconv_open
+iconv_open ("%s", "%s")
+iconv_open ("%s", "UTF-8")
+iconv_open ("UTF-8", "%s")
+idpriv_drop
+init_debug
+init_locale
+init_security
+_IO_stdin_used
+_Jv_RegisterClasses
+lang_dir
+lexgrog 2.6.1
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libman-2.6.1.so
+libpipeline.so.1
+__lxstat64
+out of dynamic memory in yy_create_buffer()
+out of dynamic memory in yyensure_buffer_stack()
+out of dynamic memory in yy_get_next_buffer()
+out of dynamic memory in yy_scan_buffer()
+out of dynamic memory in yy_scan_bytes()
+parse as cat page
+parse as man page
+pipecmd_arg
+pipecmd_exec
+pipecmd_new_args
+pipecmd_new_function
+pipeline_command
+pipeline_free
+pipeline_install_post_fork
+pipeline_peek
+pipeline_peek_skip
+pipeline_read
+pipeline_readline
+pipeline_start
+pipeline_wait
+pop_all_cleanups
+__printf_chk
+program_name
+q	r	v	w	
+__rawmemchr
+readdir64
+record = '%s'
+regain_effective_privs
+running_setuid
+show guessed series of preprocessing filters
+show whatis information
+%s: incompatible options
+%s is self referencing
+%s: parse failed
+../../../src/ult_src.c
+: "%s - %s"
+%s/%s%s/%s.%s
+__stack_chk_fail
++t$|9|$t
+The defaults are --man and --whatis.
+trim_spaces
+trying encoding %s -> %s
+ult_hardlink
+ult_hardlink: (%s)
+ult_softlink: (%s)
+ult_src: File %s in mantree %s
+ult_src: points to %s
+use selected output encoding
+/usr/lib/man-db
+/usr/lib/man-db/manconv
+UTF-8//IGNORE
+V	\	^	`	d	f	j	
+Version 1 AT&T UNIX
+Version 2 AT&T UNIX
+Version 32V AT&T UNIX
+Version 3 AT&T UNIX
+Version 4 AT&T UNIX
+Version 5 AT&T UNIX
+Version 6 AT&T UNIX
+Version 7 AT&T UNIX
+warning: %s: ignoring bogus filename
+warning: %s is a dangling symlink
+warning: whatis for %s exceeds %d bytes, truncating.
+warning: whatis for %s exceeds %d byte, truncating.
+xasprintf
+xrealloc
+__xstat64
+xstrndup
+yy_flex_debug
+yylineno

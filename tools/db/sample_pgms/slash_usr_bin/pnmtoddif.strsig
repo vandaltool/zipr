@@ -1,0 +1,39 @@
+allocating line buffer
+__bss_start
+Can't encode length > 127 yet (%d)
+Closing output file
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+overflow2
+overflow_add
+Overran buffer area %d >= 30
+Overran buffer area %d >= 300
+PBMPLUS Writer V1.0
+pbm_readpbmrow
+pgm_readpgmrow
+pm_allocrow
+pm_close
+pm_freerow
+pm_openr
+pm_usage
+pnm_init
+pnm_readpnminit
+ppm_readppmrow
+-resolution
+[-resolution x y] [pnmfile [ddiffile]]
+__stack_chk_fail
+Unreasonable resolution values: %d x %d
+Unrecognized PBMPLUS format %d
+Writing header
+Writing image data
+Writing trailer

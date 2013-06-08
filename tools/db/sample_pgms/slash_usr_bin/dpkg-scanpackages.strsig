@@ -1,0 +1,189 @@
+                {
+            }
+        }
+	      );
+  -a, --arch <arch>        architecture to scan for.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+                        'arch|a=s', 'multiversion|m!', 'extra-override|e=s',
+	       arch            => undef,
+# (at your option) any later version.
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+    close($comp_file);
+close($find_h);
+close(STDOUT) or syserr(_g("Couldn't close stdout"));
+-d $binarydir or error(_g("Binary dir %s not found"), $binarydir);
+	defined($fields->{'Package'})
+defined($override) and (-e $override or
+# Do not pollute STDOUT with info messages
+# dpkg-scanpackages
+  -e, --extra-override <file>
+            } else {
+		    } else {
+		} else {
+		} elsif ($$package{Maintainer} eq $maintainer) {
+    error(_g("Override file %s not found"), $override));
+    exit;
+	       'extra-override'=> undef,
+                $fields->{$alg} = $sums->get_checksum($fn, $alg);
+	$fields->{'Filename'} = "$pathprefix$fn";
+	        $fields->{'MD5sum'} = $sums->get_checksum($fn, $alg);
+	$fields->parse($output, $fn)
+	$fields->{'Size'} = $sums->get_size($fn);
+        $fields->{'X-Medium'} = $options{medium} if defined $options{medium};
+		            $_->{Filename});
+     @find_args = ('(', '-name', "*_all.$type", '-o',
+     @find_args = ('-name', "*.$type");
+	            $fn, $?);
+        foreach my $alg (checksums_get_list()) {
+	    foreach (@{$packages{$p}}) {
+    for my $package (@{$packages{$p}}) {
+	for my $package (@{$packages{$p}}) {
+for my $p (sort keys %packages) {
+# GNU General Public License for more details.
+                        'help|h|?', 'version', 'type|t=s', 'udeb|u!',
+  -h, --help               show this help message.
+	if ($?) {
+            if ($alg eq "md5") {
+if (@changedmaint) {
+	    if defined($fields->{'Filename'});
+    if (defined($override) and not defined($overridden{$p})) {
+	if (defined($packages{$p}) and not $options{multiversion}) {
+		    if (!grep($debmaint eq $_, split(m:\s*//\s*:, $oldmaint))) {
+	    if ($maintainer) {
+		if ($maintainer =~ m/(.+?)\s*=\>\s*(.+)/) {
+if (@missingover) {
+if (not @ARGV >= 1 && @ARGV <= 3) {
+	if (not defined($packages{$p})) {
+if ($options{arch}) {
+if (@samemaint) {
+if (@spuriousover) {
+		if (version_compare_relation($fields->{'Version'}, REL_GT,
+info(_g("Wrote %s entries to output Packages file."), $records_written);
+# it under the terms of the GNU General Public License as published by
+load_override_extra($options{'extra-override'}) if defined $options{'extra-override'};
+load_override($override) if defined $override;
+                        'medium|M=s');
+               medium          => undef,
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -M, --medium <medium>    add X-Medium field for dselect multicd access method
+  -m, --multiversion       allow multiple versions of a single package.
+	       multiversion    => 0,
+my $arch = $options{arch};
+my ($binarydir, $override, $pathprefix) = @ARGV;
+    my $comp_file = Dpkg::Compression::FileHandle->new(filename => $extra_override);
+    my $comp_file = Dpkg::Compression::FileHandle->new(filename => $override);
+		    my $debmaint = $$package{Maintainer};
+    my $extra_override = shift;
+	my $fields = Dpkg::Control->new(type => CTRL_INDEX_PKG);
+my @find_args;
+my $find_h = new IO::Handle;
+	my $fn = $_;
+my @missingover=();
+		    my $newmaint = $2;
+		    my $oldmaint = $1;
+my %options = (help            => sub { usage(); exit 0; },
+	my $output;
+my %overridden;
+    my $override = shift;
+my %packages;
+	my $p = $fields->{'Package'};
+	my ($p, $field, $value) = split(/\s+/, $_, 3);
+	my $pid = spawn('exec' => [ "dpkg-deb", "-I", $fn, "control" ],
+	my ($p, $priority, $section, $maintainer) = split(/\s+/, $_, 4);
+my $records_written = 0;
+my $result = GetOptions(\%options,
+my (@samemaint, @changedmaint);
+my @spuriousover;
+        my $sums = Dpkg::Checksums->new();
+my $type = defined($options{type}) ? $options{type} : 'deb';
+			'-name', "*_${arch}.$type", ')');
+	    next;
+		    next FILE;
+	next unless $_;
+	next unless defined($packages{$p});
+open($find_h, '-|', 'find', '-L', "$binarydir/", @find_args, '-print')
+Options:
+    $options{type} = 'udeb';
+	    or error(_g("couldn't parse control information from %s."), $fn);
+	    or error(_g("No Package field in control file of %s"), $fn);
+     or syserr(_g("Couldn't open %s for reading"), $binarydir);
+	$overridden{$p} = 1;
+	    $$package{$field} = $value;
+		    $$package{Maintainer} = $maintainer;
+			$$package{Maintainer} = $newmaint;
+	    $$package{Priority} = $priority;
+	    $$package{Section} = $section;
+		    $packages{$p} = [];
+$pathprefix = '' if not defined $pathprefix;
+		            $p, $fn);
+			             $p, $$package{Maintainer}, $oldmaint));
+    printf _g(
+    printf _g("Debian %s version %s.\n"), $progname, $version;
+	 print(STDOUT "$package\n") or syserr(_g("Failed when writing stdout"));
+"), $progname;
+			push(@changedmaint,
+        push(@missingover,$p);
+	push @{$packages{$p}}, $fields;
+		    push(@samemaint, "  $p ($maintainer)");
+	    push(@spuriousover, $p);
+         $records_written++;
+report_options(info_fh => \*STDERR);
+	s/\#.*//;
+			     sprintf(_g("  %s (package says %s, not %s)"),
+	s/\s+$//;
+sub load_override
+sub load_override_extra
+sub set_type_udeb()
+sub usage {
+sub version {
+	$sums->add_from_file($fn);
+textdomain("dpkg-dev");
+# the Free Software Foundation; either version 2 of the License, or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+			'to_pipe' => \$output);
+  -t, --type <type>        scan for <type> packages (default is 'deb').
+	       type            => undef,
+	       udeb            => \&set_type_udeb,
+usage() and exit 1 if not $result;
+    usageerr(_g("one to three arguments expected"));
+"Usage: %s [<option> ...] <binarypath> [<overridefile> [<pathprefix>]] > Packages
+use Dpkg;
+use Dpkg::Checksums;
+use Dpkg::Compression::FileHandle;
+use Dpkg::Control;
+use Dpkg::ErrorHandling;
+use Dpkg::Gettext;
+use Dpkg::IPC;
+use Dpkg::Version;
+                           use extra override file.
+use Getopt::Long qw(:config posix_default bundling no_ignorecase);
+use IO::File;
+use IO::Handle;
+use strict;
+use warnings;
+#!/usr/bin/perl
+  -u, --udeb               scan for udebs (obsolete alias for -tudeb).
+					     $_->{'Version'}))
+      --version            show the version.
+	       version         => \&version,
+	wait_child($pid, no_check => 1);
+    warning($_) foreach (@changedmaint);
+    warning($_) foreach (@samemaint);
+	    warning(_g("\`dpkg-deb -I %s control' exited with %d, skipping package"),
+		    warning(_g("ignored that one and using data from %s!"),
+	warning(_g("Package %s (filename %s) has Filename field!"), $p, $fn)
+		    warning(_g("Package %s (filename %s) is repeat but newer version;"),
+		    warning(_g("Package %s (filename %s) is repeat;"), $p, $fn);
+    warning(_g("Packages in archive but missing from override file:"));
+    warning(_g("Packages in override file but not in archive:"));
+    warning(_g("Packages in override file with incorrect old maintainer value:"));
+    warning(_g("Packages specifying same maintainer as override file:"));
+		    warning(_g("Unconditional maintainer override for %s"), $p);
+		    warning(_g("used that one and ignored data from %s!"),
+    warning(_g("-u, --udeb option is deprecated (see README.feature-removal-schedule)"));
+    warning("  %s", join(' ', @missingover));
+    warning("  %s", join(' ', @spuriousover));
+    while (<$comp_file>) {
+    while (<$find_h>) {
+# You should have received a copy of the GNU General Public License

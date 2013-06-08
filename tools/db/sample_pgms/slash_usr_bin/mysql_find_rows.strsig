@@ -1,0 +1,89 @@
+$0 --regexp "problem_table" < update.log
+$0 --regexp "problem_table" update-log.1 update-log.2
+$0 takes the following options:
+$0  Ver $version
+# along with this program; if not, write to the Free Software
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+      {				# Comment
+# Copyright (c) 2000, 2004, 2006 MySQL AB, 2009 Sun Microsystems, Inc.
+database' or 'set ..' command to stdout.  A SQL query may contain
+	  $database=$query;
+	  $database=$set="";
+	   "dbregexp=s", "skip-use-db")
+  Don\'t include \'use database\' commands in the output.
+      else
+	elsif ($query =~ /^SET/)
+      elsif (substr($row,$i,1) eq '\\') # Escaped char in string
+      elsif (substr($row,$i,1) eq $search)
+    elsif (substr($row,$i,1) eq "'" || substr($row,$i,1) eq '"')
+  $eoq=1 if (!length($search) && $row =~ /;\s*$/);
+Example:
+  exit(0);
+  for ($i=0 ; $i < length($row) ; $i++)
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+GetOptions("Information","help","regexp=s","start_row=i","rows=i",
+# GNU General Public License for more details.
+--help or --Information
+      $i++;
+	  $i++;
+	if ($database)
+  if ($eoq)
+    if (length($search))
+      if (length($search) > 1)
+      if ($opt_skip_use_db && $query =~ /^use /i)
+      if ($opt_start_row <= 1)
+	if ($query =~ /^use /)
+    if ($query =~ /^use /i || $query =~ /^SET / ||
+	if (substr($row,$i+1,1) eq $search)	# Double " or '
+    if (substr($row,$i,2) eq '/*')	# Comment
+	$i+=length($search)-1;
+# it under the terms of the GNU General Public License as published by
+	last if (--$opt_rows == 0);
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  my($i);
+  my($row)=shift;
+newlines.  This is useful to find things in a MySQL update log.
+      next;	
+  next if (length($query) == 0 && /^\#/); # Skip comments
+	next if (substr($row,$i,length($search)) ne $search);
+$opt_help=$opt_Information=$opt_skip_use_db=0;
+$opt_regexp=$opt_dbregexp=".*";
+	$opt_start_row--;
+$opt_start_row=1; $opt_rows=9999999999;
+	  print $database, $set;
+    print <<EOF;
+  Print queries that matches this.
+	print $query;
+Prints all SQL queries that matches a regexp or contains a 'use
+	$query="";
+	($query =~ /$opt_regexp/o && $database =~ /$opt_dbregexp/o))
+  $query.=search($_);
+$query=$search=$database=$set=""; $eoq=0;
+    $query=""; $search=""; $eoq=0;
+  Quit after this many rows.
+--regexp=#
+  return $row;
+--rows=#
+      $search="*/";
+	  $search="";
+	$search="";
+      $search=substr($row,$i,1);
+	  $set="";
+	  $set=$query;
+  Shows this help
+--skip-use-db
+  Start output from this row (first row = 1)
+--start_row=#
+sub search
+sub usage
+# the Free Software Foundation; version 2 of the License.
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+  || usage();
+usage() if ($opt_help || $opt_Information);
+use Getopt::Long;
+# Use is subject to license terms.
+#!/usr/bin/perl
+$version="1.02";
+while (<>)
+# You should have received a copy of the GNU General Public License

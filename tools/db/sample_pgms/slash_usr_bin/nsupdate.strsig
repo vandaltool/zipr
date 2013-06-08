@@ -1,0 +1,413 @@
+About to create rcvmsg
+algorithm
+answer                    (show the answer to the last request)
+bad default class: %s
+bad library debug value '%s'
+bad port number '%s'
+bad timeout '%s'
+bad udp retries '%s'
+bad udp timeout '%s'
+bind9_getaddresses
+__bss_start
+cannot reset server in localhost-only mode
+can't read key from %s: %s
+cfg_map_get
+cfg_map_getname
+cfg_obj_asstring
+cfg_obj_destroy
+cfg_parse_file
+cfg_parser_create
+cfg_parser_destroy
+cfg_type_sessionkey
+class CLASS               (set the zone's DNS class, e.g. IN (default), CH)
+class mismatch: %s
+cleanup()
+; Communication with server failed: %s
+; Communication with %s failed: %s
+could not allocate large enough buffer to display message
+could not convert message to text format.
+could not create entropy object
+could not create key from %s: %s
+could not create key from %s %s: %s
+could not find either IPv4 or IPv6
+could not find enclosing zone
+could not initialize entropy source: %s
+could not open '%s': %s
+could not parse class name: %s
+could not parse key name
+could not parse zone name
+could not read class name
+could not read class or type
+could not read key from %.*s.{private,key}: %s
+could not read key name
+could not read key secret
+could not read operation code
+could not read owner name
+could not read owner ttl
+could not read rdata
+could not read server name
+could not read type
+could not read zone name
+could not talk to any default name server
+could not talk to specified name server
+could not ttl
+couldn't get address for '%s': %s
+count == 1
+Creating key...
+__ctype_b_loc
+__cxa_finalize
+dDML:y:ghlovk:p:rR::t:u:
+default_debug
+Destroy DST lib
+Destroying event
+Destroying hash context
+Destroying memory context
+Destroying name state
+Destroying request manager
+Destroying request [%p]
+Detaching GSS-TSIG keyring
+detach tsigkey x%p
+digest-bits out of range [0..128]
+digest-bits out of range [0..160]
+digest-bits out of range [0..224]
+digest-bits out of range [0..256]
+digest-bits out of range [0..384]
+digest-bits out of range [0..512]
+dns_dispatch_detach
+dns_dispatch_getudp
+dns_dispatch_getudp (v4)
+dns_dispatch_getudp (v6)
+dns_dispatchmgr_create
+dns_dispatchmgr_destroy
+dns_log_init
+dns_log_setcontext
+dns_master_style_debug
+dns_message_addname
+dns_message_create
+dns_message_create failed: %s
+dns_message_currentname
+dns_message_destroy
+dns_message_findtype
+dns_message_firstname
+dns_message_gettempname
+dns_message_gettemprdata
+dns_message_gettemprdatalist
+dns_message_gettemprdataset
+dns_message_gettsig
+dns_message_nextname
+dns_message_puttempname
+dns_message_puttemprdata
+dns_message_puttemprdataset
+dns_message_removename
+dns_message_renderreset
+dns_message_reset
+dns_message_setsig0key
+dns_message_settsigkey
+dns_message_takebuffer
+dns_message_totext
+dns_name_clone
+dns_name_countlabels
+dns_name_destroy
+dns_name_dup
+dns_name_equal
+dns_name_format
+dns_name_free
+dns_name_fromtext
+dns_name_fromtext(keyname) failed: %s
+dns_name_fromtext(servname) failed: %s
+dns_name_getlabelsequence
+dns_name_init
+dns_name_setbuffer
+dns_name_totext
+dns_rcode_totext
+dns_rdatacallbacks_init
+dns_rdataclass_fromtext
+dns_rdata_freestruct
+dns_rdata_fromregion
+dns_rdata_fromtext
+dns_rdata_init
+dns_rdatalist_init
+dns_rdatalist_tordataset
+dns_rdataset_current
+dns_rdataset_disassociate
+dns_rdataset_first
+dns_rdataset_init
+dns_rdataset_makequestion
+dns_rdata_tostruct
+dns_rdatatype_fromtext
+dns_request_createvia
+dns_request_createvia3
+dns_request_destroy
+dns_request_getresponse
+dns_requestmgr_create
+dns_requestmgr_detach
+dns_requestmgr_shutdown
+dns_result_register
+dns_result_totext
+dns_rootname
+dns_socketmgr_create
+DNS/%s%s
+dns_timermgr_create
+dns_tkey_buildgssquery
+dns_tkey_buildgssquery failed: %s
+dns_tkey_gssnegotiate
+dns_tkey_negotiategss: %s %s
+dns_tsig_hmacmd5_name
+dns_tsig_hmacsha1_name
+dns_tsig_hmacsha224_name
+dns_tsig_hmacsha256_name
+dns_tsig_hmacsha384_name
+dns_tsig_hmacsha512_name
+dns_tsigkey_create
+dns_tsigkey_createfromkey
+dns_tsigkey_detach
+dns_tsigkeyring_create
+dns_tsigkeyring_create failed: %s
+dns_tsigkeyring_detach
+dns_tsigrcode_totext
+done_update()
+dst_key_alg
+dst_key_attach
+dst_key_free
+dst_key_fromnamedfile
+dst_key_name
+dst_key_setbits
+dst_lib_destroy
+dst_lib_init
+/etc/resolv.conf
+evaluate_prereq()
+evaluate_update()
+event->ev_type == (((4) << 16) + 20)
+Found realm from ticket: %s
+Found zone name: %s
+__fprintf_chk
+Freeing SIG(0) key
+Freeing the dispatchers
+Freeing TSIG key
+get_next_command()
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+gsstsig                   (use GSS_TSIG to sign the request)
+help                      (display this message_
+hmac-md5
+hmac-md5-
+hmac-sha1
+hmac-sha1-
+hmac-sha224
+hmac-sha224-
+hmac-sha256
+hmac-sha256-
+hmac-sha384
+hmac-sha384-
+hmac-sha512
+hmac-sha512-
+hmacstr != ((void *)0)
+hmac != ((void *)0) && *hmac == ((void *)0)
+incorrect operation code: %s
+incorrect section name: %s
+inet_pton
+invalid address %s
+invalid rdata format: %s
+invalid type: %s
+_IO_stdin_used
+isc__app_block
+isc__app_finish
+isc__app_onrun
+isc_app_onrun
+isc__app_run
+isc__app_shutdown
+isc__app_start
+isc__app_unblock
+isc_assertion_failed
+isc_base64_decodestring
+isc__buffer_add
+isc_buffer_allocate
+isc_buffer_free
+isc__buffer_init
+isc__buffer_invalidate
+isc__buffer_putmem
+isc__buffer_putstr
+isc_buffer_remaininglength
+isc__buffer_usedregion
+isc_commandline_argument
+isc_commandline_index
+isc_commandline_option
+isc_commandline_parse
+isc_commandline_reset
+isc_entropy_create
+isc_entropy_destroysource
+isc_entropy_detach
+isc_entropy_usebestsource
+isc_event_free
+isc_file_exists
+isc_hash_create
+isc_hash_destroy
+isc_hash_init
+isc_lex_create
+isc_lex_destroy
+isc_lex_openbuffer
+isc_log_create
+isc_log_destroy
+isc_log_setcontext
+isc_log_setdebuglevel
+isc_log_usechannel
+isc___mem_allocate
+isc__mem_create
+isc_mem_create
+isc_mem_debugging
+isc__mem_destroy
+isc___mem_free
+isc___mem_get
+isc___mem_put
+isc__mem_stats
+isc___mem_strdup
+isc_net_probeipv4
+isc_net_probeipv6
+isc_parse_uint16
+isc_parse_uint32
+isc_random_get
+isc_result_totext
+isc_sockaddr_any
+isc_sockaddr_any6
+isc_sockaddr_format
+isc_sockaddr_fromin
+isc_sockaddr_fromin6
+isc__socketmgr_create
+isc__socketmgr_destroy
+isc_stdio_open
+isc_string_printf
+isc_string_printf(keystr) failed: %s
+isc_string_printf(servicename) failed: %s
+isc__task_create
+isc_task_create
+isc__task_detach
+isc__taskmgr_create
+isc_taskmgr_create
+isc__taskmgr_destroy
+isc__task_onshutdown
+isc_task_onshutdown
+isc__task_send
+isc__timermgr_create
+isc__timermgr_destroy
+_Jv_RegisterClasses
+keyboard
+keycreate
+key [hmac:]keyname secret (use TSIG to sign the request)
+key must have algorithm and secret
+key option must specify [hmac:]keyname:secret
+krb5_3_MIT
+krb5_cc_close
+krb5_cc_default
+krb5_cc_get_principal
+krb5_free_context
+krb5_free_principal
+krb5_init_context
+krb5_unparse_name
+libbind9.so.80
+libc.so.6
+__libc_start_main
+libdns.so.81
+libisccfg.so.82
+libisc.so.83
+libkrb5.so.3
+/lib/ld-linux.so.2
+liblwres.so.80
+local address [port]      (set local resolver)
+lwres_conf_clear
+lwres_conf_get
+lwres_conf_parse
+lwres_context_create
+lwres_context_create failed
+lwres_context_destroy
+make_prereq()
+namefromtext
+(name->list).head == (rdataset)
+(name->list).tail == (rdataset)
+./nsupdate.c
+nxdomain
+oldgsstsig
+oldgsstsig                (use Microsoft's GSS_TSIG to sign the request)
+Outgoing update query:
+out of memory
+Out of recvgss
+Out of recvsoa
+parse_args
+port '%s' is not numeric
+port '%s' is out of range (1 to 65535)
+prereq nxdomain name      (does this name not exist)
+prereq nxrrset ....       (does this RRset exist)
+prereq yxdomain name      (does this name exist)
+prereq yxrrset ....       (does this RRset not exist)
+.private
+quit                      (quit, any pending update is not sent
+recvgss()
+recvgss creating rcvmsg
+recvgss trying %s GSS-TSIG
+recvmsg reply from GSS-TSIG query
+recvsoa()
+Removing log context
+Reply from SOA query:
+Reply from update query:
+reset_system()
+response to GSS-TSIG query was unsuccessful
+response to SOA query was unsuccessful
+result == 0
+retrying soa request without TSIG
+%s: cannot specify both -k and -y
+%s: cannot specify -g with -k or -y
+send_gssrequest
+Sending update to %s
+send                      (send the update request)
+send_update()
+server address [port]     (set master server for zone)
+setup_system()
+show_message()
+show                      (show the update request)
+shutdown_program()
+Shutting down dispatch manager
+Shutting down request manager
+Shutting down socket manager
+Shutting down task manager
+Shutting down timer manager
+%s: invalid argument -%c
+'%s' is not a valid class or type: %s
+'%s' is not a valid type: %s
+__snprintf_chk
+(sources).tail == (source)
+specified zone '%s' does not exist (NXDOMAIN)
+%s:%s:%s
+__stack_chk_fail
+Standard
+start_gssrequest
+start_update()
+strcasecmp
+strncasecmp
+__strncpy_chk
+%s: unhandled option: %c
+syntax error
+task == global_task
+The master is: %s
+tkey query failed: %s
+; TSIG error with server: %s
+tsig verification successful
+ttl '%s' is out of range (0 to %u)
+ttl '%s': %s
+unknown error
+unknown key type '%.*s'
+unknown key type '%s'
+update add ....           (add the given record to the zone)
+update_addordelete()
+update_completed()
+update delete ....        (remove the given record(s) from the zone)
+update failed: %.*s
+usage: nsupdate [-dD] [-L level] [-l][-g | -o | -y keyname:secret | -k keyfile] [-v] [filename]
+user_interaction()
+%u.sig-%s
+/var/run/named/session.key
+__vfprintf_chk
+yxdomain
+zone name                 (set the zone to be updated)

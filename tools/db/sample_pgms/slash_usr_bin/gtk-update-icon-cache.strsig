@@ -1,0 +1,140 @@
+0x%02x, 
+AttachPoints
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+/build/buildd/gtk+2.0-2.24.10/gtk/updateiconcache.c
+Cache file created successfully.
+Could not rename %s to %s: %s
+dcgettext
+different idatas found for symlinked '%s' and '%s'
+DisplayName
+Don't check for the existence of index.theme
+Don't include image data in the cache
+EmbeddedTextRectangle
+__errno_location
+Failed to open file %s : %s
+Failed to rewrite header
+Failed to write cache file: %s
+Failed to write folder index
+Failed to write hash table
+Failed to write header
+File not found: %s
+g_ascii_table
+g_assertion_message_expr
+g_build_filename
+g_convert_with_fallback
+g_dir_close
+g_dir_open
+g_dir_read_name
+gdk_pixbuf_new_from_file
+gdk_pixdata_deserialize
+gdk_pixdata_from_pixbuf
+gdk_pixdata_serialize
+g_error_free
+get_image_meta_data_size
+get_image_pixel_data_size
+g_file_get_contents
+g_file_read_link
+g_file_test
+g_get_charset
+g_get_prgname
+g_hash_table_destroy
+g_hash_table_foreach_remove
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new
+g_hash_table_size
+g_key_file_free
+g_key_file_get_integer_list
+g_key_file_get_keys
+g_key_file_get_locale_string
+g_key_file_get_string
+g_key_file_load_from_file
+g_key_file_new
+g_key_file_set_list_separator
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+g_list_append
+g_list_foreach
+g_list_free
+g_list_length
+g_list_prepend
+g_malloc0
+g_malloc0_n
+g_malloc_n
+g_mapped_file_get_contents
+g_mapped_file_get_length
+g_mapped_file_new
+g_mapped_file_unref
+__gmon_start__
+g_option_context_add_main_entries
+g_option_context_new
+g_option_context_parse
+g_path_get_dirname
+g_path_is_absolute
+g_printerr
+g_printf
+g_set_printerr_handler
+g_spaced_primes_closest
+g_strdup
+g_str_equal
+g_strerror
+g_strfreev
+g_str_hash
+g_str_has_prefix
+g_str_has_suffix
+g_strndup
+g_strsplit
+g_strv_length
+g_type_init
+g_unlink
+g_utf8_validate
+Icon Data
+ICONPATH
+.icon-theme.cache
+#ifdef __GNUC__
+#ifdef __SUNPRO_C
+If you really want to create an icon cache here, use --ignore-theme-index.
+ignore-theme-index
+image_data_size % 4 == 0
+image->icon_data_size % 4 == 0
+image->pixel_data_size % 4 == 0
+index-only
+index.theme
+_IO_stdin_used
+_Jv_RegisterClasses
+L$(9L$,t+
+libc.so.6
+__libc_start_main
+libgdk_pixbuf-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+node_offset % 4 == 0
+Not a valid icon cache: %s
+No theme index file.
+No theme index file in '%s'.
+*offset == ftell (cache)
+ofs == ftell (cache)
+Output a C header file
+Overwrite an existing cache, even if up to date
+#pragma align 4 (%s)
+safe_fclose
+setlocale
+static const guint8 %s[] = 
+static const guint8 %s[] __attribute__ ((__aligned__ (4))) = 
+T$D9T$<tF
+The generated cache was invalid.
+tmp2 != 0 && tmp2 != -1
+tmp2 == ftell (cache)
+Turn off verbose output
+/usr/share/locale
+validate
+Validate existing icon cache
+write_bucket
+write_dir_index
+write_hash_table
+write_icon_data
+__xstat64

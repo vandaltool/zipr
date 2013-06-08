@@ -1,0 +1,523 @@
+                                   0x%08x end
+1 channel
+%20.20s: 0x%08x
+%20.20s: 0x%08x (%s)
+2 channels
+%30.30s: 0x%08x
+%30.30s: 0x%08x (%s)
+8%s/%i/name
+__assert_fail
+AUD_CNTL_ST
+AUD_CONFIG
+AUD_CONV_CHCNT
+AUD_GRP_CAP
+AUD_HDMIW_STATUS
+AUD_OUT_CWCAP
+AUD_OUT_DIG_CNVT
+AUD_PIN_CAP
+AUD_PINW_CAP
+AUD_PINW_CNTR
+AUD_PINW_UNSOLRESP
+ AUDUNIT
+BCLRPAT_A
+BCLRPAT_B
+blacklight %s, %spower down on reset, panel %s
+BLC_PWM_CPU_CTL
+BLC_PWM_CPU_CTL2
+BLC_PWM_PCH_CTL1
+BLC_PWM_PCH_CTL2
+__bss_start
+CACHE_MODE_0
+centerspread
+CHDECMISC
+clock gates disabled:%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s
+Couldn't find graphics card
+Couldn't find path to dri/debugfs entry
+Couldn't initialize PCI system: %s
+Couldn't map MMIO region: %s
+Couldn't mmap %s: %s
+Couldn't open %s: %s
+Couldn't probe graphics card: %s
+CPU_eDP_A
+cpu source %s, ssc_source %s, nonspread_source %s, superspread_source %s, ssc4_mode %s, ssc1 %s, ssc4 %s
+CPU_VGACNTRL
+ CRC_DONE_ENABLE
+ CRC_DONE_INT_STATUS
+ CRC_ERROR_ENABLE
+ CRC_ERROR_INT_STATUS
+CURSOR_A_BASE
+CURSOR_A_CONTROL
+CURSOR_A_POSITION
+CURSOR_B_BASE
+CURSOR_B_CONTROL
+CURSOR_B_POSITION
+DAC/serial
+%d active, %d total
+%d bytes
+ DDBUNIT
+default 120Mhz
+DIGITAL_PORT_HOTPLUG_CNTRL
+DISPLAY_PORT_PLL_BIOS_0
+DISPLAY_PORT_PLL_BIOS_1
+DISPLAY_PORT_PLL_BIOS_2
+ DLINE_COMPARE_ENABLE
+ DLINE_COMPARE_STATUS
+double-wide
+downspread
+DPB_AUX_CH_CTL
+DPB_AUX_CH_DATA1
+DPB_AUX_CH_DATA2
+DPB_AUX_CH_DATA3
+DPB_AUX_CH_DATA4
+DPB_AUX_CH_DATA5
+ DPBMUNIT
+ DPBUNIT
+DPC_AUX_CH_CTL
+DPC_AUX_CH_DATA1
+DPC_AUX_CH_DATA2
+DPC_AUX_CH_DATA3
+DPC_AUX_CH_DATA4
+DPC_AUX_CH_DATA5
+ DPCUNIT
+DPD_AUX_CH_CTL
+DPD_AUX_CH_DATA1
+DPD_AUX_CH_DATA2
+DPD_AUX_CH_DATA3
+DPD_AUX_CH_DATA4
+DPD_AUX_CH_DATA5
+ DPFUNIT
+ DPIOUNIT
+, DPLLA input buffer disabled
+, DPLLA M bypassed
+DPLL_A_MD
+, DPLLA N bypassed
+, DPLLB input buffer disabled
+, DPLLB M bypassed
+DPLL_B_MD
+, DPLLB N bypassed
+DPLL_TEST
+ DPLSUNIT
+ DPLUNIT
+ DPOUNIT
+ DPRUNIT
+ DPST_EVENT_ENABLE
+ DPST_EVENT_STATUS
+ DPUNIT_A
+ DPUNIT_B
+DSPABASE
+DSPACNTR
+DSPASIZE
+DSPASTRIDE
+DSPASURF
+DSPATILEOFF
+DSPBBASE
+DSPBCNTR
+DSPBSIZE
+DSPBSTRIDE
+DSPBSURF
+DSPBTILEOFF
+DSPCLK_GATE_D
+ DSSUNIT
+%d start, %d end
+dual channel asymmetric
+dual channel interleaved
+DVOA_SRCDIM
+DVOB_SRCDIM
+DVOC_SRCDIM
+ DVSUNIT
+edge_enhance
+edge_soften
+ EFIELD_INT_ENABLE
+ EFIELD_INT_STATUS
+ enabled
+enabled, %c tiled, %4d pitch, 0x%08x - 0x%08x (%dkb)
+__errno_location
+FBC_CFB_BASE
+FBC_COMMAND
+FBC_CONTROL
+FBC_CONTROL2
+FBC_FENCE_OFF
+FBC_LL_BASE
+FBC_MOD_NUM
+FBC_STATUS
+FDI Delay %d
+FDI_PLL_BIOS_0
+FDI_PLL_BIOS_1
+FDI_PLL_BIOS_2
+FDI_PLL_CTL_1
+FDI_PLL_CTL_2
+FDI_PLL_FREQ_CTL
+FDI_RXA_CTL
+FDI_RXA_IIR
+FDI_RXA_IMR
+FDI_RXA_MISC
+FDI_RXA_TUSIZE1
+FDI_RXA_TUSIZE2
+FDI_RXB_CTL
+FDI_RXB_IIR
+FDI_RXB_IMR
+FDI_RXB_MISC
+FDI_RXB_TUSIZE1
+FDI_RXB_TUSIZE2
+FDI_RXC_CTL
+FDI_RXC_MISC
+FDI_RXC_TUSIZE1
+FDI_RXC_TUSIZE2
+FDI_TXA_CTL
+FDI_TXB_CTL
+FDI_TXC_CTL
+FDL_TP1 timer %s, FDL_TP2 timer %s, freq %d
+FENCE  0
+FENCE  1
+FENCE  10
+FENCE  11
+FENCE  12
+FENCE  13
+FENCE  14
+FENCE  15
+FENCE  2
+FENCE  3
+FENCE  4
+FENCE  5
+FENCE  6
+FENCE  7
+FENCE  8
+FENCE  9
+FENCE END 0
+FENCE END 1
+FENCE END 10
+FENCE END 11
+FENCE END 12
+FENCE END 13
+FENCE END 14
+FENCE END 15
+FENCE END 2
+FENCE END 3
+FENCE END 4
+FENCE END 5
+FENCE END 6
+FENCE END 7
+FENCE END 8
+FENCE END 9
+FENCE START 0
+FENCE START 1
+FENCE START 10
+FENCE START 11
+FENCE START 12
+FENCE START 13
+FENCE START 14
+FENCE START 15
+FENCE START 2
+FENCE START 3
+FENCE START 4
+FENCE START 5
+FENCE START 6
+FENCE START 7
+FENCE START 8
+FENCE START 9
+ FIFO_UNDERRUN
+__fprintf_chk
+fp select out of range
+__fxstat
+, gang mode
+Gen2/3 Ranges are not supported. Please use unsafe access.
+GEN6_INSTDONE_1
+GEN6_INSTDONE_2
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+ GMBUS_EVENT_ENABLE
+ GMBUS_INT_STATUS
+__gmon_start__
+Graphics card is non-intel
+hardcoded
+HAS_PCH_SPLIT
+hscale %f
+HW DRRS %s
+inactive
+INST_DONE
+intel_get_drm_devid
+intel_get_total_ram_mb
+intel_get_total_swap_mb
+intel_register_access_init
+intel_register_read
+intel_register_write
+invalid bpc
+_IO_stdin_used
+_Jv_RegisterClasses
+ LBLC_EVENT_ENABLE
+ LBLC_EVENT_STATUS
+libc.so.6
+__libc_start_main
+../../lib/intel_drm.c
+../../lib/intel_mmio.c
+/lib/ld-linux.so.2
+libpciaccess.so.0
+low %d, high %d
+LVDS P1 0x%x invalid encoding
+MI_ARB_STATE
+MI_RDRET_STATE
+mmio_data.inited
+mmio_data.key != -1
+mmio != ((void *)0)
+moderate
+n = %d, m1 = %d, m2 = %d
+non-detected
+nonspread
+no stall
+not ready
+not train
+ OFIELD_INT_ENABLE
+ OFIELD_INT_STATUS
+ OREG_UPDATE_ENABLE
+ OREG_UPDATE_STATUS
+ OVBUNIT
+ OVCUNIT
+ OVFUNIT
+ OVHUNIT
+ OVLUNIT
+ OVRUNIT
+ OVUUNIT
+p1 out of range
+p2 out of range
+pattern_1
+pattern_2
+pattern_idle
+PCH_ADPA
+PCH_DP_B
+PCH_DP_C
+PCH_DP_D
+PCH_DPLL_A
+PCH_DPLL_ANALOG_CTL
+PCH_DPLL_B
+PCH_DPLL_SEL
+PCH_DPLL_TMR_CFG
+PCH_DREF_CONTROL
+PCH_FPA0
+PCH_FPA1
+PCH_FPB0
+PCH_FPB1
+PCH_LVDS
+PCH_PP_CONTROL
+PCH_PP_DIVISOR
+PCH_PP_OFF_DELAYS
+PCH_PP_ON_DELAYS
+PCH_PP_STATUS
+PCH_RAWCLK_FREQ
+PCH_SSC4_AUX_PARMS
+PCH_SSC4_PARMS
+pci_device_find_by_slot
+pci_device_map_range
+pci_device_probe
+pci_system_init
+PFA_CTL_1
+PFA_CTL_2
+PFA_CTL_3
+PFA_CTL_4
+PFA_WIN_POS
+PFA_WIN_SIZE
+PFB_CTL_1
+PFB_CTL_2
+PFB_CTL_3
+PFB_CTL_4
+PFB_WIN_POS
+PFB_WIN_SIZE
+PFIT_CONTROL
+PFIT_PGM_RATIOS
+PGETBL_CTL
+PGTBL_ER
+PIPEACONF
+PIPEA_DATA_M1
+PIPEA_DATA_M2
+PIPEA_DATA_N1
+PIPEA_DATA_N2
+PIPEA_DP_LINK_M
+PIPEA_DP_LINK_N
+PIPEA_GMCH_DATA_M
+PIPEA_GMCH_DATA_N
+PIPEA_LINK_M1
+PIPEA_LINK_M2
+PIPEA_LINK_N1
+PIPEA_LINK_N2
+PIPEASRC
+PIPEASTAT
+PIPEBCONF
+PIPEB_DATA_M1
+PIPEB_DATA_M2
+PIPEB_DATA_N1
+PIPEB_DATA_N2
+PIPEB_DP_LINK_M
+PIPEB_DP_LINK_N
+PIPEB_GMCH_DATA_M
+PIPEB_GMCH_DATA_N
+PIPEB_LINK_M1
+PIPEB_LINK_M2
+PIPEB_LINK_N1
+PIPEB_LINK_N2
+PIPEBSRC
+PIPEBSTAT
+pipe %s dot %d n %d m1 %d m2 %d p1 %d p2 %d
+PORT_DBG
+PORT_HOTPLUG_EN
+PORT_HOTPLUG_STAT
+power target: %s
+__printf_chk
+programmed
+RC6pp_RESIDENCY_TIME
+RC6p_RESIDENCY_TIME
+RC6_RESIDENCY_TIME
+ref out of range
+Register read blocked for safety (*0x%08x)
+Register write blocked for safety (*0x%08x = 0x%x)
+RENCLK_GATE_D1
+RENCLK_GATE_D2
+reserved
+ret == 0
+RR_HW_CTL
+%s, auto_scale %s, auto_scale_cal %s, v_filter %s, vadapt %s, mode %s, filter_sel %s,chroma pre-filter %s, vert3tap %s, v_inter_invert %s
+%s, ch2 enh %sabled, ch1 enh %sabled, ch0 enh %sabled, flex %sabled, ep %spresent
+%s, %c tile walk, %4d pitch, 0x%08x start
+, SDVO mult %d
+SDVO phase shift %d out of range -- probobly not an issue.
+SDVO TVClkIn
+%s/%i/i915_forcewake_user
+single channel
+single or dual channel asymmetric
+single-wide
+snprintf
+__snprintf_chk
+%s, pipe %c
+%s, pipe %c, %chsync, %cvsync
+%s, pipe %c, %d bit, %s
+%s, pipe %c, %s, %chsync, %cvsync
+%s pipe %c %s %s %s audio %s %s %s %s
+%s, pipe %c, stall %s, %sdetected%s%s
+%s port %s %s %s %s
+spread spectrum
+__sprintf_chk
+%s, sdvo high speed %s, mode %s, p2 %s, FPA0 P1 %d, FPA1 P1 %d, refclk %s, sdvo/hdmi mul %d
+%s, %s, %s
+%s, %s, sequencing %s
+%s, %s%s, %s clock, %s mode, p1 = %d, p2 = %d%s%s
+%s%s%s%s%s%s
+__stack_chk_fail
+status:%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s
+%s, train pattern %s, port width %s, %s,link_reverse_strap_overwrite %s, dmi_link_reverse %s, FDI PLL %s,FS ecc %s, FE ecc %s, FS err report %s, FE err report %s,scrambing %s, enhanced framing %s, %s
+%s, train pattern %s, voltage swing %s,pre-emphasis %s, port width %s, enhanced framing %s, FDI PLL %s, scrambing %s, master mode %s
+%s, transcoder %c, %chsync, %cvsync
+strerror
+SuperSSC 120Mhz
+ SVBLANK_INT_ENABLE
+ SVBLANK_INT_STATUS
+swap bank
+%s, XOR randomization: %sabled, XOR bit: %d
+/sys/kernel/debug/dri
+#t$$9t$$t
+TRANSACONF
+TRANSA_DATA_M1
+TRANSA_DATA_M2
+TRANSA_DATA_N1
+TRANSA_DATA_N2
+TRANSA_DP_LINK_M1
+TRANSA_DP_LINK_M2
+TRANSA_DP_LINK_N1
+TRANSA_DP_LINK_N2
+TransA DPLL %s (DPLL %s), TransB DPLL %s (DPLL %s)
+TRANSBCONF
+TRANSB_DATA_M1
+TRANSB_DATA_M2
+TRANSB_DATA_N1
+TRANSB_DATA_N2
+TRANSB_DP_LINK_M1
+TRANSB_DP_LINK_M2
+TRANSB_DP_LINK_N1
+TRANSB_DP_LINK_N2
+TRANSCCONF
+TRANSC_DATA_M1
+TRANSC_DATA_M2
+TRANSC_DATA_N1
+TRANSC_DATA_N2
+TRANSC_DP_LINK_M1
+TRANSC_DP_LINK_M2
+TRANSC_DP_LINK_N1
+TRANSC_DP_LINK_N2
+TRANS_DP_CTL_A
+TRANS_DP_CTL_B
+TRANS_DP_CTL_C
+TRANS_HBLANK_A
+TRANS_HBLANK_B
+TRANS_HBLANK_C
+TRANS_HSYNC_A
+TRANS_HSYNC_B
+TRANS_HSYNC_C
+TRANS_HTOTAL_A
+TRANS_HTOTAL_B
+TRANS_HTOTAL_C
+TRANS_VBLANK_A
+TRANS_VBLANK_B
+TRANS_VBLANK_C
+TRANS_VSYNC_A
+TRANS_VSYNC_B
+TRANS_VSYNC_C
+TRANS_VSYNCSHIFT_A
+TRANS_VSYNCSHIFT_B
+TRANS_VSYNCSHIFT_C
+TRANS_VTOTAL_A
+TRANS_VTOTAL_B
+TRANS_VTOTAL_C
+TU %d, val 0x%x %d
+TV_CC_CONTROL
+TV_CC_DATA
+TV_CLR_KNOBS
+TV_CLR_LEVEL
+TV_CSC_U
+TV_CSC_U2
+TV_CSC_V
+TV_CSC_V2
+TV_CSC_Y
+TV_CSC_Y2
+ TVCUNIT
+ TVEUNIT
+TV_FILTER_CTL_1
+TV_FILTER_CTL_2
+TV_FILTER_CTL_3
+ TVFUNIT
+TV_H_CHROMA_0
+TV_H_CHROMA_59
+TV_H_CTL_1
+TV_H_CTL_2
+TV_H_CTL_3
+TV_H_LUMA_0
+TV_H_LUMA_59
+ TVRUNIT
+TV_SC_CTL_1
+TV_SC_CTL_2
+TV_SC_CTL_3
+TV stall
+TV_V_CTL_1
+TV_V_CTL_2
+TV_V_CTL_3
+TV_V_CTL_4
+TV_V_CTL_5
+TV_V_CTL_6
+TV_V_CTL_7
+TV_WIN_POS
+TV_WIN_SIZE
+unknown channel layout
+unknown stall
+, using FPx1!
+ VBLANK_INT_ENABLE
+ VBLANK_INT_STATUS
+VCLK_DIVISOR_VGA0
+VCLK_DIVISOR_VGA1
+VCLK_POST_DIV
+vga0 p1 = %d, p2 = %d, vga1 p1 = %d, p2 = %d
+VIDEO_DIP_CTL
+ VRDUNIT
+ VRHUNIT
+vscale %f
+vscale initial phase %f
+ VSYNC_INT_ENABLE
+ VSYNC_INT_STATUS
+XOR bank
+XOR bank/rank

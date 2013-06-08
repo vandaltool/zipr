@@ -1,0 +1,61 @@
+# Automatically generated file, do not edit
+__bss_start
+Cannot load module %s: %s
+Engine reported invalid script value %d
+g_ascii_table
+g_build_filename
+g_dir_close
+g_dir_open
+g_dir_read_name
+g_enum_get_value
+g_get_current_dir
+GLIBC_2.0
+g_module_close
+g_module_error
+g_module_open
+g_module_symbol
+__gmon_start__
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_path_is_absolute
+g_printerr
+g_printf
+g_strdup
+g_strfreev
+g_string_append
+g_string_free
+g_string_insert_c
+g_string_new
+g_type_class_ref
+g_type_init
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgmodule-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpango-1.0.so.0
+libpthread.so.0
+- [MODULE]...
+module interface version: %s
+# ModulesPath = %s
+pango_config_key_get
+pango_get_lib_subdirectory
+# Pango Modules file
+Pango/ModulesPath
+pango-querymodules (%s) %s
+pango_script_get_type
+pango_split_file_list
+Parse option error
+Parse option error: %s
+script_engine_create
+script_engine_exit
+script_engine_init
+script_engine_list
+%s does not export Pango module API
+Show version numbers
+%s%s%s %s %s %s

@@ -1,0 +1,933 @@
+    ^     ^      ^
+                   );
+             {
+             }
+         }
+        );
+        {
+        }
+       ) {
+      };
+      #}
+    }	  
+    }	   
+  --------------------------------------
+   ( 0.09 cusr + 0.01 csys = 0.09 CPU)
+     # 0 - round trip safe
+  128 bytes in string tables
+      1356  average shared memory size
+      1394  average shared memory size
+     14969  average unshared data size
+     18566  average unshared data size
+  1 bytes (0.775%) saved using substrings
+     # 1 - fallback for unicode -> enc
+       229  average unshared stack size
+       236  average unshared stack size
+     28159  page reclaims
+     # 2 - skip sub-char mapping
+     33373  page faults
+      342.16 real        27.11 user         3.54 sys
+  384 bytes (75%) saved spotting duplicates
+     # 3 - fallback enc -> unicode
+     46080  page reclaims
+# 4 "do_now"s, {"A" => [...,"a",...], "B" => [...,"b",...], "C"=>..., "D"=>...}
+      7904  maximum resident set size
+      8388  maximum resident set size
+      865.66 real        28.80 user         8.79 sys
+      # 9.5% faster changing that loop to this:
+      9839  page faults
+    # above)
+        # accumulator
+  $a->{Cname} = $name;
+# ["A", "D", "abcd", 1, ...]
+add a new encoding, just read this chapter and forget the rest.
+    addstrings(\*C,$e2u);
+    addstrings(\*C,$u2e);
+   addstrings($fh,$t) unless $t->{'DoneStrings'};
+# adjacent bytes where possible. The aggregate is for a contiguous range of
+ $a->{'Done'} = 1;
+ $a->{'DoneStrings'} = 1;
+  $a->{'Entries'} = \@ent;
+After that, "use Encode;" is enough to load your encodings on demand.
+      # AGG_FALLBACK => 6,
+  AGG_FALLBACK => 6,
+                       $agg_fallback = $fallback];
+        $agg_fallback == $fallback
+      # AGG_IN_LEN => 4,
+  AGG_IN_LEN => 4,
+        $agg_in_len == $in_len &&
+                       $agg_in_len = $in_len, $agg_out_len = length $out_bytes,
+# AGG is an aggreagated do_now, as built up by &process
+  $agg_max_in = 0;
+      # AGG_MAX_IN => 1,
+  AGG_MAX_IN => 1,
+      # AGG_MIN_IN => 0,
+  AGG_MIN_IN => 0,
+      # AGG_NEXT => 3,
+  AGG_NEXT => 3,
+        $agg_next == $next &&
+      # AGG_OUT_BYTES => 2,
+  AGG_OUT_BYTES => 2,
+      # AGG_OUT_LEN => 5,
+  AGG_OUT_LEN => 5,
+        $agg_out_len == length $out_bytes &&
+  All tests successful.
+and customize it.  For the UCM format, see the next Chapter.  In the
+	$@ and die "Can't require $mod: $@\n";
+    $@ and die "File::Basename needed.  Are you on miniperl?;\nerror: $@\n";
+    $@ and die "Unable to require Encode: $@\n";
+    $@ and die "You need to install Encode to use enc2xs -M\nerror: $@\n";
+And finally, END OF CHARMAP ends the section.
+And make sure the '|1' or '|3' entry FOLLOWS the '|0' entry.
+Anything that follows C<#> is treated as a comment.
+        # append the first bit on the start.
+          # append the last bit on the end.
+# as before the leaves will point back to the start state.
+        'ascii-ctrl', 'null',       'utf-8-strict'
+        'ascii',      'iso-8859-1', 'utf8',
+  # as current state.
+        $asis = 1; next;
+    # as it's easier to sort these in &process.
+             $atime,$mtime,$ctime,$blksize,$blocks)
+# at the state-switching characters) but so far no input format defines these.
+     $attr{$1} = $2;
+   #$attr{'subchar'} =~ /^\s*/cg;
+A UCM file looks like this.
+# back to it, and each "do_now" will cause bytes. There is no state.
+        $b == ++$agg_max_in &&
+B<CAVEAT>: not all features in UCM are implemented.  For example,
+Besides being used internally during the build process of the Encode
+# branching out from the start state, one step for each input byte.
+  # but we don't actually edit the string. [this alone seems to be 14% speedup]
+by Nick Ing-Simmons for use with the Encode module.  Since UCM is
+# bytes which each produce the same length of output, each move to the
+ call_pv("Encode::define_encoding",G_DISCARD);
+       $ch++;
+character for the decode map only.
+character for the encode map only.
+  CHARMAP
+CHARMAP starts the character map section.  Each line has a form as
+CHARMAP. This section has a form of I<E<lt>keywordE<gt> value>, one
+ char_names();
+    # check @enc;
+chmod(0666,$cname) if -f $cname && !-w $cname;
+  chmod(0666,$dname) if -f $cname && !-w $dname;
+  chmod(0666,$hname) if -f $cname && !-w $hname;
+  chmod 644 blib/arch/auto/Encode/My/My.bs
+    chomp(@encfiles = <FLIST>);
+   chomp($line);
+ chomp($type);
+    # choosing between 3 and 4 element array. (hence why we set it defined
+ # chr() works in native space so convert value from table
+close(C) or die "Error closing '$cname': $!";
+  close(D) or warn "Error closing '$dname': $!";
+    close(FLIST);
+  close(H) or warn "Error closing '$hname': $!";
+  # Close in void context is bad, m'kay
+  <code_set_alias> "ascii"   # Optional
+  <code_set_name> "US-ascii" # Required
+  # Comments
+      compile_enc(\*E,lc($name));
+      compile_ucm(\*E,lc($name));
+   const char *name = enc->name[i++];
+# containing:
+  cp My.pm blib/lib/Encode/My.pm
+    $current = $do_now->[RAW_NEXT];
+$data> stands for all characters that are marked as C<|0>.  Here is
+    -d $d or mkdir $d, 0755 or die  "mkdir $d : $!";
+                    D => \&encode_D,
+  die "Can't find string " . join (',',unpack "C*",$s) . " in accumulator"
+ die "Changed - fix me for new structure";
+ die "char_names: unicore/Name.pl: $!\n" unless defined $s;
+ die "$errors mapping conflicts\n" if ($errors && $opt{'S'});
+     die "$.:${line}Line should be exactly 65 characters long including
+ die "\$min_el=$min_el, \$max_el=$max_el - seems we read no lines"
+   die "$nfb entries without fallback, $hfb entries with\n";
+# disk is bad, m'kay
+  $dname =~ s/(\.[^\.]*)?$/.exh/;
+  $doC = 1;
+  $doEnc = 1;
+     # Doing it as while ($line =~ /(....)/g) took 74.63
+ !!!!!!!   DO NOT EDIT THIS FILE   !!!!!!!
+# "do_now" (an array, two variants of what needs storing) is whatever we need
+      $do_now->[RAW_NEXT] = $next;
+      $do_now->[RAW_OUT_BYTES] = $outbytes;
+  $doPet = 1;
+ # Do the hash lookup once, rather than once per function call. 4% speedup.
+  $doUcm = 1;
+down, here is what happens.
+    $_E2X 
+    $_E2X = $d;
+             $e2x_dir{$File::Find::dir} ||= $mtime;
+    $_E2X = find_e2x();
+    $_E2X      = find_e2x();
+Edit the files generated.  You don't have to if you have no time AND no
+  # effectively we are removing 1 character from the front each time
+    else
+     else
+       else
+           else
+    } else {
+} else {
+elsif ($cname =~ /\.enc$/)
+elsif ($cname =~ /\.pet$/)
+elsif ($cname =~ /\.ucm$/)
+elsif ($doEnc)
+elsif ($doUcm)
+    } elsif (length $out_bytes) {
+    $_Enc2xs
+    $_Enc2xs = $0;
+  enc2xs -C
+  enc2xs -M ModName mapfiles...
+  $ enc2xs -M My Encode/*ucm
+  $ enc2xs -M My my.ucm
+  enc2xs -[options]
+enc2xs -- Perl Encode Module Generator
+ enc2xs VERSION $VERSION
+  # encengine.c rules say that last entry must be for 255
+    @encfiles = @ARGV;
+Encode/bin directory.
+Encode/bin directory for this.
+	    $Encode::Config::ExtModule{$enc} and next;
+    |     +-------- Encoded byte sequence
+ # encode double byte MS byte first
+ # encode Multi-byte - single for 0..255 otherwise double
+ # encode single byte
+Encode uses the Unicode Character Map (UCM) format for source character
+Encode_XSEncoding(pTHX_ encode_t *enc)
+ $encoding{$name} = [$e2u,$u2e,$erep,$min_el,$max_el];
+ $encoding{$name} = [$e2u,$u2e,$rep,$min_el,$max_el];
+   # $end |= 0x80 if $fb; # what the heck was on your mind, Nick?  -- Dan
+  END CHARMAP
+    # end of null tweak -- dankogai
+# End of the main program.
+     enter($e2u,$ech,$uch,$e2u,$fb+0) if ($fb =~ /[03]/);
+         # enter($e2u,$ech,undef,$e2u);
+         enter_fb0($e2u,$ech,$uch);
+         enter_fb0($u2e,$uch,$ech);
+     enter($u2e,$uch,$ech,$u2e,$fb+0) if ($fb =~ /[01]/);
+        eq substr ($s, 0, $sublength)) {
+          eq substr ($s, -$sublength);
+   $erep = $attr{'subchar'}; 
+   #$erep = join('',map(chr(hex($_)),@byte));
+   $erep =~ s/^\s+//; $erep =~ s/\s+$//;
+               $errors++;
+  E to U               U to E
+    -e 'use Test::Harness  qw(&runtests $verbose); \
+eval "\@ARGV = map(glob(\$_),\@ARGV)" if ($^O eq 'MSWin32');
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+	eval qq{ require $mod; };
+    eval { require Encode; };
+    eval { require File::Basename; };
+    eval { require File::Find; };
+    eval { require File::Spec; };
+         # Even with having to add $fallback ||= 0 later
+example below, I'll call my theoretical encoding myascii, defined
+        # existing offsets forwards
+    exit;
+    $fallback ||= 0;
+    |     |      +- Fallback flag
+fallback flag: | followed by 0..3.   The meaning of the possible
+Fallback for encoding -> unicode.  When seen, enc2xs adds this
+Fallback for unicode -> encoding.  When seen, enc2xs adds this
+       $fb = '0';
+     # $fb is fallback flag
+       $fb = substr($fb,1);
+F<enc2xs> builds a Perl extension for use by Encode from either
+    File::Basename->import();
+    File::Find::find(
+    File::Find::find({wanted => $wanted, follow => 1}, grep -d && !/^\./, @INC);
+	$File::Find::name =~ /\A\./        and return;
+	$File::Find::name =~ m/\bEncode\b/ or  return;
+	$File::Find::name =~ /\.pm\z/      or  return;
+  Files=1, Tests=2,  0 wallclock secs
+        File::Spec->catfile( $_Inc, "ConfigLocal.pm" ), 1 );
+# -f <inlist> to give a file with a list of input files (else use the args)
+    # -F is followed by name of file containing list of filenames
+         }, follow => 1}, @inc);
+follows:
+# For a multi-byte encoding where all characters in the input are the same
+# For an encoding where there are varaible length input byte sequences, you
+# For a single byte encoding it's the only "do_next" - each "do_now" points
+# for each input byte. Say we are mapping a single byte encoding to a
+ foreach my $b (@{$a->{'Entries'}})
+ foreach my $b (sort keys %$a)
+      #foreach my $c (split(//,$out_bytes)) {
+   foreach my $c (split(//,$rep))
+foreach my $enc (sort cmp_name @encfiles)
+  foreach my $enc (sort cmp_name keys %encoding)
+  foreach my $fh (\*C,\*D,\*H)
+  foreach my $key (sort keys %$raw) {
+ foreach my $line (sort { substr($a,8) cmp substr($b,8) } @cmap)
+  foreach my $name (sort cmp_name keys %encoding)
+  foreach my $s (sort {length $b <=> length $a || $a cmp $b} keys %strings) {
+     foreach my $val (unpack "n*", pack "H*", $line)
+    for my $d (sort {$e2x_dir{$a} <=> $e2x_dir{$b}} keys %e2x_dir){
+	for my $enc ( Encode->encodings() ) {
+    for my $enc ( sort keys %LocalMod ) {
+    for my $inc (grep -d, @INC){
+    for (my $i = (scalar @info) - 1;  $i >= 0; --$i){
+   for (my $i = $s; $i <= $e; $i++)
+         -f _ or return;
+	-f $_ or return;
+    # from unicode can be very sparse, favouring a hash.
+  generating Changes
+  generating Makefile.PL
+  generating My.pm
+  generating README
+getopts('CM:SQqOo:f:n:',\%opt);
+    # hash using the bytes (all length 1) as keys rather than ord value,
+Have a .ucm file ready.  You can get it from somewhere or you can write
+=head1 Bookmarks
+=head1 DESCRIPTION
+=head1 NAME
+=head1 Quick Guide
+=head1 SEE ALSO
+=head1 SYNOPSIS
+=head1 The Unicode Character Map
+=head2 Coping with duplicate mappings
+  # Hence -$pos is the length of the remaining string.
+Here is an example from big5-eten.
+       $hfb++;
+  $hname =~ s/(\.[^\.]*)?$/.h/;
+how large your encoding is.  Unless you are working on something big
+how %seen is storing things its seen. So it is pathalogically bad on a 16M
+how to make sure:
+ HV *stash = gv_stashpv("Encode::XS", TRUE);
+ICU Character Mapping Tables
+ICU:Conversion Data
+ICU Home Page 
+icu:state is not used.  Because of that, you need to write a perl
+# ie, for an input byte $_ in "A".."D", output 1 byte, found as
+ if ($a =~ /^.*-(\d+)/)
+ if ($a->{'Forward'})
+  if ($agg_max_in < 255) {
+   if ($b =~ /^.*-(\d+)/)
+    if (!$clobber and -e $dst){
+if ($cname =~ /\.(c|xs)$/i) # VMS may have upcased filenames with DECC$ARGV_PARSE_STYLE defined
+  if ($cname =~ /(\w+)\.xs$/)
+ if (!defined($cs =  $attr{'code_set_name'}))
+ if (defined $max_el)
+ if (defined $min_el)
+ if (defined $rep)
+if ($doC)
+         if (/^.*\.e2x$/o){
+    if (/^#### END_OF_HEADER/){
+ if (exists $attr{'subchar'})
+    if (exists $next->{Cname}) {
+if (exists $opt{'f'}) {
+           if (exists $seen->{$uch})
+    if ($index >= 0) {
+    if ($l &&
+   if ($l)
+     if (length($fb))
+   if $min_el > $max_el;
+    if ((my $d = dirname($dst)) ne '.'){
+    if ($next != $a && $next != $t) {
+ if ($nfb && $hfb)
+  if (open(E,$enc))
+    if ($opt{'O'}) {
+      if ($pre) {
+	if $running_under_some_shell;
+         if ($seen) {
+    if ($sfx eq 'enc')
+        if (substr ($string_acc, -$sublength)
+   if (/^\s*<(\w+)>\s+"?([^"]*)"?\s*$/i) # " # Grrr
+        # If this == fails, we're going to reset $agg_max_in below anyway.
+   if (@uni)
+       if ($val || (!$ch && !$page))
+If you are content with the test result, just "make install"
+If you want to add your encoding to Encode's demand-loading list
+If you want to know as little about Perl as possible but need to
+If you want *.ucm installed together with the modules, do as follows;
+    $_Inc
+    # In case we need it in future...
+    $_Inc      = $INC{"Encode.pm"};
+	    $in_core{$enc}                   and next;
+    # @INC poking  no longer needed w/ new MakeMaker and Makefile.PL's
+    $_Inc =~ s/\.pm$//o;
+    $info[$i] ||= 1;
+in I<my.ucm>.  C<$> is a shell prompt.
+# input format does this yet.
+intention to give it to someone else.  But it is a good idea to edit
+Internally Encoding -> Unicode and Unicode -> Encoding Map looks like
+ int i = 0;
+ # into that space before using chr().
+# is generated by &enter as the input file is read. There is one structure
+Issue a command as follows;
+is, unless your environment is EBCDIC.
+=item * 
+=item |0 
+=item 0.
+=item |1
+=item 1.
+=item 1.1.
+=item |2 
+=item 2.
+=item |3 
+=item 3.
+=item 4.
+=item 5.
+=item 6.
+=item 7.
+# I think these are:
+    # It's faster to always add $fallback even if it's undef, rather than
+# It's housed in a "do_next" (which is how we got to it), and in turn points
+    join(',',unpack "C*",$string_acc);
+      $l->[AGG_MAX_IN] = $b;
+      $l->[AGG_OUT_BYTES] .= $out_bytes;
+   last if $s >= 0x10000;
+   last if /^\s*CHARMAP\s*$/i;
+   last if /^\s*END\s+CHARMAP\s*$/i;
+   last if $type !~ /^\s*#/;
+          last OPTIMISER;
+        last OPTIMISER;
+L<Encode>,
+L<Encode::KR::2022_KR>, and L<Encode::TW::HZ>.
+        # && length($l->[AGG_OUT_BYTES]) < 16
+# length, then there will be a tree of "do_now"->"do_next"->"do_now"
+L<http://site.icu-project.org/charts/charset>
+L<http://www.icu-project.org/>
+L<http://www.icu-project.org/userguide/conversion-data.html>
+like euc-tw, it won't take too long.
+     $line =~ s/\r\n$/\n/;
+	    $LocalMod{$enc} ||= $mod;
+        $_LocalVer
+    $_LocalVer = _mkversion();
+L<perlmod>,
+L<perlpod>
+  $ ls -F
+             = lstat($_) or return;
+  $ make
+  Makefile.PL - MakeMaker script
+  Makefile.PL   My.pm         my.ucm        t/
+  $ make test
+  # Make the big string in the string accumulator. Longest first, on the hope
+  # Making sure it is defined seems to be faster than {no warnings;} in
+     # map {hex $_} $line =~ /(....)/g
+mappings.  This format is used by IBM's ICU package and was adopted
+     $max_el = $el if (!defined($max_el) || $el > $max_el);
+         $max_el = $el if $el > $max_el;
+  <mb_cur_max> 1             # Max. # of bytes/char
+  <mb_cur_min> 1             # Required; usually 1
+                    M => \&encode_M,
+     $min_el = $el if (!defined($min_el) || $el < $min_el);
+         $min_el = $el if $el < $min_el;
+        $min_el,$max_el);
+  $ mkdir Encode
+        $_ModLines
+        $_ModLines .=
+    $_ModLines = "";
+	$mod =~ s/.*\bEncode\b/Encode/o;
+	$mod =~ s,/,::,og;
+	$mod =~ s/\.pm\z//o;
+module if you want to support algorithmical encodings, notably
+module, you can use F<enc2xs> to add your own encoding to perl.
+more flexible than Tcl's Encoding Map and far more user-friendly,
+Most of the keywords are self-explanatory. I<subchar> means
+  $ mv *.ucm Encode
+   my $an = $1;
+# my ($a,$s,$d,$t,$fb) = @_;
+    my $asis = 0;
+ my %attr;
+    my $b = ord $key;
+   #my @byte;
+    my $byte = substr $inbytes, $pos, 1;
+   my $ch = 0;
+ my $ch = chr(utf8::unicode_to_native($_[0]));
+ ## my ($ch,$page) = @_;
+ ## my ($ch,$page) = @_; return chr($ch);
+ ## my ($ch,$page) = @_; return chr($page).chr($ch);
+ my @cmap;
+  my ($cmap,$a,$t,$pre) = @_;
+my $cname = (exists $opt{'o'}) ? $opt{'o'} : shift(@ARGV);
+   my $const = $cpp ? '' : 'const';
+ my $const = $cpp ? '' : 'const';
+   my $cpp = ($Config{d_cplusplus} || '') eq 'define';
+  my $cpp = ($Config{d_cplusplus} || '') eq 'define';
+ my $cpp = ($Config{d_cplusplus} || '') eq 'define';
+ my $cs;
+  my ($current,$inbytes,$outbytes,$next) = @_;
+  my ($current,$inbytes,$outbytes,$next,$fallback) = @_;
+  my $definition = "\n$var const U8 $name\[$strings] = { " .
+ my ($def,$sym,$pages) = split(/\s+/,scalar(<$fh>));
+         my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+my $dname = $cname;
+my ($doC,$doEnc,$doUcm,$doPet);
+    my $do_now = $current->{Raw}{$byte} ||= [{},-$pos,''];
+    my $do_now = $current->{Raw}{$byte} ||= [{},-$pos,'',$fallback];
+ my $e2u = {};
+    my ($e2u,$u2e,$erep,$min_el,$max_el) = @{$encoding{$name}};
+    my ($e2u,$u2e,$rep,$min_el,$max_el) = @{$encoding{$enc}};
+    # my ($e2u,$u2e,$rep,$min_el,$max_el,$rsym) = @{$encoding{$enc}};
+     my $ech = join('',map(chr(hex($_)),@byte));
+       my $ech = &$type_func($ch,$page);
+   my $e = length($2) ? hex($2) : $s;
+         my $el  = length($ech);
+     my $el  = length($ech);
+my @encfiles;
+my %encode_types = (U => \&encode_U,
+my %encoding;
+  my @ent;
+ my $erep;
+ my $errors;
+  my $exta = $cpp ? 'extern "C" ' : "static";
+  my $extb = $cpp ? 'extern "C" ' : "";
+ my ($fh,$a) = @_;
+ my ($fh,$a,$bigname) = @_;
+  my ($fh,$name) = @_;
+ my ($fh,$name) = @_;
+ my ($fh,$name,$a) = @_;
+ my ($fh,$name,$h,$rep,$min_el,$max_el) = @_;
+    my $flist = $opt{'f'};
+ my $hfb = 0;
+my $hname = $cname;
+   my $i = 16;
+    my (@inc, %e2x_dir);
+    my %in_core = map { $_ => 1 } (
+    my $index = index $string_acc, $s;
+    #my @info = ($e2u->{Cname},$u2e->{Cname},$rsym,length($rep),$min_el,$max_el);
+    my @info = ($e2u->{Cname},$u2e->{Cname},"${sym}_rep_character",$replen,
+      #     my $i = ord($b)-ord($l->[AGG_MIN_IN]);
+  my ($l, $agg_max_in, $agg_next, $agg_in_len, $agg_out_len, $agg_fallback);
+     my $line = <$fh>;
+   my $line = <$fh>;
+    my %LocalMod = ();
+ my $max_el;
+ my $max_el = 0;  # Anything must be longer than 0
+ my $min_el;
+ my $min_el = ~0; # A very big integer
+    my $mod = $1;
+	my $mod = $File::Find::name;
+   my $name = $3;
+  my ($name,$a) = @_;
+ my $name = $a->{'Cname'};
+  my ($name,$s) = @_;
+  my ($name,$sfx) = $enc =~ /^.*?([\w-]+)\.(enc|ucm)$/;
+    my ($next, $in_len, $out_bytes, $fallback) = @{$raw->{$key}};
+ my $nfb = 0;
+  my $offset = $strings_in_acc{$s};
+my %opt;
+my @orig_ARGV = @ARGV;
+   my $page = hex($line);
+  my $perc_saved    = $saved/($strings + $saved) * 100;
+  my $perc_subsaved = $subsave/($strings + $subsave) * 100;
+  My.pm       - Encode submodule
+  my $pos = -length $inbytes;
+     my $r = $an <=> $1;
+  my $raw = $a->{Raw};
+  my $raw = $t->{Raw};
+ my $rep = '';
+    my $replen = 0; 
+my $saved = 0;
+   my ($sc,$ec,$out,$t,$end,$l,$fb) = @$b;
+ my $s = do "unicore/Name.pl";
+ my $seen;
+   my ($s,$e,$out,$t,$end,$l) = @$b;
+   my ($s,$e,$out,$t,$end,$l,$fb) = @{$a->{$b}};
+   my $s = hex($1);
+    my ($src, $dst, $clobber) = @_;
+ my $s = shift;
+    #my ($ss,$mm,$hh,$dd,$mo,$yyyy) = localtime();
+      my $s = sprintf "<U%04X> ",$u;
+my $string_acc;
+my %strings;
+my $strings = 0;
+my %strings_in_acc;
+      my $sublength = length $s;
+my $subsave = 0;
+    my $sym = "${enc}_encoding";
+ my $type;
+ my $type_func = $encode_types{$type};
+ my $u2e = {};
+         my $uch = encode_U($val);
+     my $uch =  join('', map { encode_U(hex($_)) } @uni );
+  my.ucm
+my @uname;
+   my (@uni, @byte) = ();
+   my ($uni, $byte, $fb) = m/^(\S+)\s+(\S+)\s+(\S+)\s+/o
+    my $u = ord $key;
+ my $urep;
+ ## my $uv = shift;
+  my $var = $cpp ? '' : 'static';
+ my $var = $cpp ? '' : 'static';
+   my $var = $^O eq 'MacOS' || $cpp ? 'extern' : 'static';
+  my $v = hex($def);
+    my $wanted = sub{
+    $_Name
+   $name = $cs unless exists $opt{'n'};
+  "$name + $offset";
+  $name = $opt{'n'} if exists $opt{'n'};
+    $_Name = shift;
+  $name =~ s/\W+/_/g;
+     newline (".length($line).")" unless length ($line) == 65;
+  $next ||= $current;
+      $next->{'Forward'} = 1 if $next != $a;
+   next if /^\s*$/;
+       next if $val == 0xFFFD;
+   next unless $b->[AGG_OUT_LEN];
+        next unless substr ($string_acc, 0, $sublength)
+       $nfb++;
+# -n <name> to name the encoding (else use the basename of the input file.
+         # No character at this position
+No knowledge of XS is necessary.
+  # Not sure if it helps sorting strings of the same length lexcically.
+    $_Now
+Now all you have to do is make.
+	    no warnings;
+             no warnings 'once';
+ # Now get core perl to encode that the way it likes.
+Now issue a command all Perl Mongers love:
+    $_Now = scalar localtime();
+Now take a look at your current directory.  It should look like this.
+    # Now we are converting from raw to aggregate, switch from 1 byte strings
+    -o encode_t.c -f encode_t.fnm
+# of 0, using only a 3 entry array ref to save memory for every entry.
+      # (only gains .6% on euc-jp  -- is it worth it?)
+# only the leaf "do_now"s cause output bytes, and they in turn point back to
+# -o <output> to specify the output file name (else it's the first arg)
+open(C,">$cname") || die "Cannot open $cname:$!";
+  open(D,">$dname") || die "Cannot open $dname:$!";
+    open(FLIST,$flist) || die "Cannot open $flist:$!";
+  open(H,">$hname") || die "Cannot open $hname:$!";
+    open my $in, $src or die "$src : $!";
+    open my $out, ">$dst" or die "$!";
+$opt{C} and make_configlocal_pm($opt{C}, @ARGV);
+    OPTIMISER: {
+    # Optimiser (if it ran) found nothing, so just going have to tack the
+$opt{M} and make_makefile_pl($opt{M}, @ARGV);
+or an existing encoding which is close to yours, rather than write
+       or die "Bad line: $_";
+        # or if the end of the new string overlaps the start of the
+# -O to enable the (brute force) substring optimiser
+    # our used for variable expanstion
+our $VERSION  = do { my @r = (q$Revision: 2.7 $ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+  outbigstring(\*C,"enctable");
+    output_enc(\*C,$name,$e2u);
+# output files to be written.
+    output_ucm(\*C,$name,$u2e,$erep,$min_el,$max_el);
+      output_ucm_page($cmap,$a,$next,(($pre|($u &0x3F)) << 6)&0xFFFF);
+ output_ucm_page(\@cmap,$h,$h,0);
+    outtable(\*C,$e2u, "enctable");
+    outtable(\*C,$u2e, "enctable");
+   outtable($fh,$t,$bigname) unless $t->{'Done'};
+pair per line.  Strings used as values must be quoted. Barewords are
+         # Passing 2 extra args each time is 3.6% slower!
+#!./perl
+  PERL_DL_NONLAZY=1 /usr/local/bin/perl -Iblib/arch -Iblib/lib \
+  $ perl Makefile.PL
+ pos($s) = 0;
+    print C "BOOT:\n{\n";
+    print C "#define U8 U8\n";
+    print C <<'END';
+    print C "${exta} const char ${sym}_enc_name[] = \"$enc\";\n\n";
+    print C "${exta} const U8 ${sym}_rep_character[] = \"$rep\";\n";
+    print C "${extb} const encode_t $sym = \n";
+    print C "#include \"$dname\"\n";
+  print C "#include \"encode.h\"\n\n";
+    print C "#include <EXTERN.h>\n";
+    print C "#include <perl.h>\n";
+    print C "#include <XSUB.h>\n";
+    print C " {",join(',',@info,"{${sym}_enc_name,(const char *)0}"),"};\n\n";
+    print C "}\n";
+    print C "\nMODULE = Encode::$mod\tPACKAGE = Encode::$mod\n\n";
+    print D " Encode_XSEncoding(aTHX_ &$sym);\n";
+    _print_expand(File::Spec->catfile($_E2X,"Changes.e2x"),    "Changes");
+    _print_expand( File::Spec->catfile( $_E2X, "ConfigLocal_PM.e2x" ),
+    _print_expand(File::Spec->catfile($_E2X,"Makefile_PL.e2x"),"Makefile.PL");
+    _print_expand(File::Spec->catfile($_E2X,"_PM.e2x"),        "$_Name.pm");
+    _print_expand(File::Spec->catfile($_E2X,"README.e2x"),     "README");
+    _print_expand(File::Spec->catfile($_E2X,"_T.e2x"),         "t/$_Name.t");
+   printf $fh ",0x%02x,0x%02x,$l,$end},\n",$sc,$ec;
+     printf $fh findstring($bigname,$out);
+     printf $fh "\\x%02X",ord($c);
+   print  $fh "{";
+     print  $fh "0";
+ print $fh "# $0 @orig_ARGV\n" unless $opt{'q'};
+  print $fh $1, "\n" while $definition =~ /\G(.{74,77},)/gcs;
+ print $fh "<code_set_name> \"$name\"\n";
+ print $fh "END CHARMAP\n";
+   print $fh <<"END" unless $opt{'q'};
+   print $fh $line;
+   print $fh "<mb_cur_max> $max_el\n";
+   print $fh "<mb_cur_min> $min_el\n";
+   print $fh "\n";
+ print $fh "};\n";
+ print $fh "#\nCHARMAP\n";
+ print $fh "\n$var $const encpage_t $name\[",
+   print $fh "<subchar> ";
+  print $fh substr ($definition, pos $definition), " };\n";
+   print  $fh ",",$t->{Cname};
+   print $fh "$var $const encpage_t $name\[",scalar(@{$a->{'Entries'}}),"];\n";
+  printf STDERR "%d bytes (%.3g%%) saved spotting duplicates\n",
+  printf STDERR "%d bytes (%.3g%%) saved using substrings\n",
+  printf STDERR "%d bytes in string tables\n",$strings;
+    print H "extern encode_t $sym;\n";
+    print $out $_;
+ print "Reading $name ($cs)\n";
+#    print sprintf("U%04X $name\n",$i);
+  print STDERR "Writing compiled form\n";
+    process($name.'_utf8',$e2u);
+  # &process, or passing it in as 0 explicity.
+      process(sprintf("%s_%02x",$name,$b),$next);
+# &process then walks the tree, building aggregate "do_now" structres for
+    process('utf8_'.$name,$u2e);
+        # progressively lop characters off the end, to see if the start of
+       push @byte, $1;
+   #push(@byte,$1) while $attr{'subchar'} =~ /\G\\x([0-9a-f]+)/icg;
+      push(@$cmap,$s);
+    # push(@{$encoding{$name}},outstring(\*C,$e2u->{Cname}.'_def',$erep));
+    push @ent, [1+$agg_max_in, 255,undef,$a,0,0];
+      push @ent, $l = [$b, $agg_max_in = $b, $out_bytes, $agg_next = $next,
+    push @inc, $inc unless $inc eq '.'; #skip current dir
+ PUSHMARK(sp);
+       push @uni, map { substr($_, 1) } split(/\+/, $1);
+ PUTBACK;
+          qq(\$Encode::ExtModule{'$enc'} = "$LocalMod{$enc}";\n);
+# -Q to disable the duplicate codepoint test
+# -q to remove comments written to output files
+           # RAM and may make us faster on low RAM systems. [see __END__]
+RAM machine, but it's going to help even on modern machines.
+           # rather than 3 (anon array, plus the 2 scalars it holds) saves
+    #  RAW_FALLBACK => 3,
+  RAW_FALLBACK => 3,
+    #  RAW_IN_LEN => 1,
+  RAW_IN_LEN => 1,
+# RAW is a do_now as inserted by &enter
+    #  RAW_NEXT => 0,
+  RAW_NEXT => 0,
+    #  RAW_OUT_BYTES => 2,
+  RAW_OUT_BYTES => 2,
+  Reading myascii (myascii)
+        # References in numeric context give the pointer as an int.
+    $replen++ while($rep =~ /\G\\x[0-9A-Fa-f]/g);
+  $rep = &$type_func($v & 0xFF, ($v >> 8) & 0xffe);
+    require Config; import Config;
+      # Reset the last thing we saw, plus set 5 lexicals to save some derefs.
+         return;
+      return;
+    return;
+ return $a cmp $b;
+ return $ch;
+ return chr $_[0];
+ return chr ($_[1]) . chr $_[0];
+ return chr ($_[1]) . chr $_[0] if $_[1];
+    return $_E2X;
+ ## return &encode_D if $page;
+ ## return &encode_S;
+ return if $type eq 'E';
+     return $r if $r;
+    #return sprintf("v%04d.%04d.%04d", $yyyy, $mo*100+$dd, $hh*100+$mm);
+    return time();
+Round trip safe.  A character decoded to Unicode encodes back to the
+   s/#.*$//;
+same byte sequence.  Most characters have this flag.
+# same next state, and each have the same fallback flag.
+ # Save a defined test by setting these to defined values.
+      $saved += length($s);
+    $saved, $perc_saved              if $saved;
+    s/(\$_[A-Z][A-Za-z0-9]+)_/$1/gee unless $asis;
+   scalar(@{$a->{'Entries'}}), "] = {\n";
+               $seen->{$uch} = $page << 8 | $ch;
+ $seen = {} unless $opt{Q};
+# (See the algorithm in encengine.c - we're building structures for it)
+# self-contained tree for each escape state, and cross links between trees
+                    S => \&encode_S,
+sequence defined here will be used.  For most cases, the value here is
+sequence to this encoding but no matching character is found, the byte
+# single byte encoding, with  "ABCD" going "abcd". There will be
+Skip sub-char mapping should there be no code point.
+# -S make mapping errors fatal
+        # so as we're prepending to the accumulator, need to shift all our
+So it is round-trip safe for \xF9\xF9.  But if the line above is upside
+# So our 4 RAW "do_now"s above become replaced by a single structure
+Sort your map in Unicode order.
+     # So why is it 1% faster to leave the my here?
+(so you don't have to "use Encode::YourEncoding"), run
+     # Split line into groups of 4 hex digits, convert groups to ints
+      $s .= sprintf " |%d # %s\n",($fallback ? 1 : 0),$uname[$u];
+      #  $s .= sprintf "\\x%02X",ord($c);
+      $s .= sprintf +("\\x%02X" x length $out_bytes), unpack "C*", $out_bytes;
+  # Start at the beginning and work forwards through the string to zero.
+  # state we shift to after this (multibyte) input character defaults to same
+static void
+  $string_acc = '';
+    $string_acc .= $s;
+        $string_acc = substr ($s, 0, -$sublength) . $string_acc;
+          $string_acc .= substr ($s, $sublength);
+   $strings{$b->[AGG_OUT_BYTES]} = undef;
+        $strings_in_acc{$s} = 0;
+      $strings_in_acc{$s} = $index;
+    $strings_in_acc{$s} = length $string_acc;
+          $strings_in_acc{$s} = length ($string_acc) - $sublength;
+  $strings = length $string_acc;
+ # String tables
+sub addstrings
+sub char_names
+  <subchar> \x3F             # Substitution char
+sub cmp_name
+sub compile_enc
+sub compile_ucm
+sub decode_U
+sub encode_D
+sub encode_M
+sub encode_S
+sub encode_U
+sub enter {
+sub enter_fb0 {
+sub find_e2x{
+sub findstring {
+        $_ += $sublength foreach values %strings_in_acc;
+sub make_configlocal_pm {
+sub make_makefile_pl
+sub _mkversion{
+sub outbigstring
+sub output_enc
+sub output_ucm
+sub output_ucm_page
+sub outtable
+sub _print_expand{
+sub process
+    $subsave, $perc_subsaved         if $subsave;
+          $subsave += $sublength;
+        $subsave += $sublength;
+substitution character, not subcharacter.  When you decode a Unicode
+# substr ("abcd", (ord $_ - ord "A") * 1, 1)
+ SvREFCNT_dec(sv);
+ SV *sv    = sv_bless(newRV_noinc(newSViv(PTR2IV(enc))),stash);
+Swapping is bad, m'kay :-)
+    $sym =~ s/\W+/_/g;
+    $_TableFiles
+    $_TableFiles = join(",", map {qq('$_')} @_);
+    # Tail recursion. The intermdiate state may not have a name yet.
+That is, C<encode('your-encoding', decode('your-encoding', $data)) eq
+  # that this makes it more likely that we find the short strings later on.
+# the bifurcating branches, not just at the extremities, but again no
+The Encode package comes with F<ucmlint>, a crude but sufficient
+The following files were created.
+The format is roughly the same as a header section except for the
+The header section continues until a line containing the word
+the ISO-2022 series.  Such modules include L<Encode::JP::2022_JP>,
+# The leaf "do_now"s will all be at the same distance from the start state,
+        # the new string overlaps the end of the accumulator.
+the pod and to add more tests.
+# There are two sorts of structures.
+# There are two variants of the "do_now" structure. The first, smaller variant
+     # There's an implicit loop in map. Loops are bad, m'kay. Ops are bad, m'kay
+# There will be a "do_next" which is the start state.
+# These may get re-ordered.
+# the start state.
+# The system will also cope with having output "leaves" in the middle of
+# The system will cope with escape encodings (imagine them as a mostly
+The time it takes varies depending on how fast your machine is and
+ This file was autogenerated by:
+# This is purely for optimistation. It's just &enter hard coded for $fallback
+this is the recommended format for Encode now.
+    # This is to make null encoding work -- dankogai
+# This really should go first, else the die here causes empty (non-erroneous)
+     # This takes 63.75 (2.5% less time)
+     # This takes 65.35		
+  t/My....ok
+  t/My.t      - test file
+# to a "do_next" which contains all the "do_now"s for the next input byte.
+# to do now we've read an input byte.
+    # to numbers
+    # to unicode an array would seem to be better, because the pages are dense.
+to update Encode::ConfigLocal, a module that controls local settings.
+treated as numbers.  I<\xXX> represents a byte.
+  <U0000> \x00 |0 # <control>
+  <U0001> \x01 |0 # <control>
+  <U0002> \x02 |0 # <control>
+  <U007C> \x7C |0 # VERTICAL LINE
+  <U007D> \x7D |0 # RIGHT CURLY BRACKET
+  <U007E> \x7E |0 # TILDE
+  <U007F> \x7F |0 # <control>
+  <U2550> \xA2\xA4 |3
+  <U2550> \xF9\xF9 |0
+     $uname[$i] = $name;
+    +-------------- Unicode Character ID in hex
+Unicode Character Mapping files (.ucm) or Tcl Encoding Files (.enc).
+    unless defined $offset;
+    unless (++$pos) {
+     # unpack "n*", pack "H*", $line
+        $u = $pre|($u &0x3f);
+use Config;
+use constant {
+    use File::Find ();
+use Getopt::Std;
+ # use -Q to silence the seen test. Makefile.PL uses this by default.
+use strict;
+use vars qw(
+use warnings;
+#!/usr/bin/perl
+  /usr/local/bin/perl /usr/local/bin/enc2xs -Q -O \
+ utf8::encode($ch);
+ # UTF-8 encode long hand - only covers part of perl's range
+utility to check the integrity of a UCM file.  Check under the
+  <UXXXX> \xXX.. |0 # comment
+                            $val,$page,$ch,$seen->{$uch});
+values is as follows:
+    $verbose=0; runtests @ARGV;' t/*.t
+    $_Version
+    $_Version = $VERSION;
+    # v-string is now depreciated; use time() instead;
+         { wanted => sub {
+     warn $_;
+    warn "Cannot open $enc for $name:$!";
+    warn "$dst exists. skipping\n";
+    # warn "$_E2X => ", scalar localtime($e2x_dir{$d});
+    warn "Generating $dst...\n";
+    warn join("\n", keys %e2x_dir), "\n";
+      warn join(',',$u, @{$raw->{$key}},$a,$t);
+    warn $_ModLines;
+   warn "No <code_set_name> in $name\n";
+	warn qq{ require $mod;\n};
+  # warn sprintf("Page %x\n",$pre);
+               warn sprintf("U%04X is %02X%02X and %04X\n",
+ warn "$type encoded $name\n";
+      # we can aggregate this byte onto the end.
+           # We don't need to read this quickly, so storing it as a scalar,
+  # We have a single long line. Split it at convenient commas.
+        # well, the last $sublength characters of the accumulator match.
+           # We're doing the test.
+When in doubt, you can use F<ucmsort>, yet another utility under
+    # When $pos was -1 we were at the last input character.
+When you are manually creating a UCM file, you should copy ascii.ucm
+When you create a map, you SHOULD make your mappings round-trip safe.
+When you do so, make sure you leave at least B<U0000> to B<U0020> as
+When you have a duplicate entry, mark either one with '|1' or '|3'.
+# which maps very nicely into pointer arithmetic in C for encengine.c
+  while (1) {
+   while ($byte =~ m/\G\\x([0-9a-fA-F]+)/g){
+ while (enc->name[i])
+ while (<$fh>)
+    } while --$i;
+    while (<$in>){ 
+  } while --$pages;
+ while ($s =~ /\G([0-9a-f]+)\t([0-9a-f]*)\t(.*?)\s*\n/igc)
+      while (--$sublength > 0) {
+ while ($type = <$fh>)
+   while ($uni =~  m/\G<([U0-9a-fA-F\+]+)>/g){
+    # whole thing on the end.
+# will encounter a leaf "do_now" sooner for the shorter input sequences, but
+# Win32 does not expand globs on command line
+    # with $ENV{PERL_CORE} set
+With %seen holding array refs:
+With %seen holding simple scalars:
+  Writing compiled form
+# writing half meg files and then not checking to see if you just filled the
+  Writing Makefile for Encode::My
+ $^X $0 @orig_ARGV
+\x3F; in ASCII, this is a question mark.
+  \xA2\xA4 => U2550
+  \xA2\xA4 => U2550    U2550 => \xF9\xF9
+  (\xF9\xF9 => U2550 is now overwritten!)
+  \xF9\xF9 => U2550    U2550 => \xF9\xF9
+ XPUSHs(sv);
+   XPUSHs(sv_2mortal(newSVpvn(name,strlen(name))));
+  # XXX $fallback ||= 0;
+Yes, 5 minutes is faster than 15. Above is for CP936 in CN. Only difference is
+You can "make install" already but you should test first.
+your own from scratch.
+your own from scratch or you can grab one from the Encode distribution
+    #$yyyy += 1900, $mo +=1;

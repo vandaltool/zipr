@@ -1,0 +1,156 @@
+Applying stylesheet
+Applying stylesheet %d times
+__bss_start
+cannot parse %s
+--catalogs
+	--catalogs : use SGML catalogs from $SGML_CATALOG_FILES
+	--debug: dump the tree of the result instead
+--dumpextensions
+	--dumpextensions: dump the registered extension elements and functions to stdout
+--encoding
+	--encoding: the input document character encoding
+exsltLibexsltVersion
+exsltLibraryVersion
+exsltLibxmlVersion
+exsltRegisterAll
+failed to load external entity "%s"
+	         file:///etc/xml/catalog are activated by default
+__fprintf_chk
+gettimeofday
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+htmlReadFile
+	--html: the input document is(are) an HTML file(s)
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libexslt %d was compiled against libxml %d
+libexslt.so.0
+/lib/ld-linux.so.2
+LIBXML2_1.0.11
+LIBXML2_1.0.17
+LIBXML2_1.0.18
+LIBXML2_1.0.22
+LIBXML2_1.0.24
+LIBXML2_1.1.2
+LIBXML2_2.4.30
+LIBXML2_2.6.0
+LIBXML2_2.6.3
+libxml2.so.2
+libxslt %d was compiled against libxml %d
+libxslt.so.1
+Loaded URL="%s" ID="%s"
+--load-trace
+	--load-trace : print trace of all external entites loaded
+--maxdepth
+	--maxdepth val : increase the maximum depth
+--maxparserdepth
+	--maxparserdepth val : increase the maximum parser depth
+MAX_PATHS reached: too many paths
+--nodict
+--nodtdattr
+	--nodtdattr do not default attributes from the DTD
+--nomkdir
+	--nomkdir : refuse to create directories
+	--nonet : refuse to fetch DTDs or entities over network
+non standard output xhtml
+	--noout: do not dump the result
+no result for %s
+--norman
+--novalid
+	--novalid skip the Dtd loading phase
+--nowrite
+	--nowrite : refuse to write to any file or resource
+   Options:
+	             otherwise XML Catalogs starting from 
+--output
+	--output file or -o file: save to a given file
+	--param name value : pass a (parameter,value) pair
+Parsing document %s
+Parsing stylesheet %s
+	--path 'paths': provide a set of paths for resources
+__printf_chk
+--profile
+	--profile or --norman : dump profiling informations 
+Project libxslt home page: http://xmlsoft.org/XSLT/
+--repeat
+	--repeat: run the transformation 20 times
+Running stylesheet and saving result
+Saving result
+SGML_CATALOG_FILES
+--stringparam
+stringparam contains both quote and double-quotes !
+	--stringparam name value : pass a (parameter, UTF8 string value) pair
+	       string values must be quoted like "'string'"
+--timing
+	--timing: display the time used
+ took %ld ms
+too many params increase MAX_PARAMETERS 
+To report bugs and get help: http://xmlsoft.org/XSLT/bugs.html
+unable to parse %s
+Unknown option %s
+Unsupported non standard output %s
+Usage: %s [options] stylesheet file [file ...]
+	       use stringparam to avoid it
+Using libxml %s, libxslt %s and libexslt %s
+	       value is an UTF8 XPath expression.
+Variable $SGML_CATALOG_FILES not set
+--verbose
+	--verbose or -v: show logs of what's happening
+--version
+	--version or -V: show the version of libxml and libxslt used
+__vfprintf_chk
+--writesubtree
+	--writesubtree path : allow file write only with the path subtree
+--xinclude
+	--xinclude : do XInclude processing on document input
+XInclude processing %s
+--xincludestyle
+	--xincludestyle : do XInclude processing on stylesheets
+xmlCheckVersion
+xmlCleanupParser
+xmlDebugDumpDocument
+xmlFreeDoc
+xmlGetExternalEntityLoader
+xmlInitMemory
+xmlLoadCatalogs
+xmlMemoryDump
+xmlNoNetExternalEntityLoader
+xmlParserMaxDepth
+xmlParserVersion
+xmlReadFile
+xmlSetExternalEntityLoader
+xmlStrcat
+xmlStrchr
+xmlStrdup
+xmlStrEqual
+xmlStrlen
+xmlStrncmp
+xmlStrndup
+xmlXIncludeProcessFlags
+xsltApplyStylesheet
+xsltApplyStylesheetUser
+xsltCleanupGlobals
+xsltDebugDumpExtensions
+xsltEngineVersion
+xsltFreeSecurityPrefs
+xsltFreeStylesheet
+xsltFreeTransformContext
+xsltLibxsltVersion
+xsltLoadStylesheetPI
+xsltMaxDepth
+xsltNewSecurityPrefs
+xsltNewTransformContext
+xsltParseStylesheetDoc
+xsltproc was compiled against libxml %d, libxslt %d and libexslt %d
+xsltRegisterTestModule
+xsltRunStylesheetUser
+xsltSaveResultToFile
+xsltSecurityForbid
+xsltSetCtxtParseOptions
+xsltSetDefaultSecurityPrefs
+xsltSetGenericDebugFunc
+xsltSetSecurityPrefs
+xsltSetXIncludeDefault

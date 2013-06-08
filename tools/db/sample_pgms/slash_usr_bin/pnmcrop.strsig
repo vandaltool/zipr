@@ -1,0 +1,45 @@
+Background color is %s
+__bss_start
+cropping %d col%s off the left
+cropping %d col%s off the right
+cropping %d row%s off the bottom
+cropping %d row%s off the top
+__errno_location
+fseek() failed to reset the image file to the beginning after examining it for borders.  Errno = %s (%d)
+ftell() was unable to tell the position of the file, for purposes of resetting after checking the background color.  Errno = %s (%d)
+GLIBC_2.0
+__gmon_start__
+Internal error: impossible value for background_choice
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+lseek() failed to reposition file after checking background color.  Errno = %s (%d)
+Not cropping.  No border found.
+overflow_add
+pm_allocarray
+pm_allocrow
+pm_close
+pm_error
+pm_freearray
+pm_freerow
+pm_message
+pm_openr_seekable
+pm_optParseOptions2
+pnm_backgroundxel
+pnm_backgroundxelrow
+pnm_blackxel
+pnm_init
+pnm_readpnminit
+pnm_readpnmrow
+pnm_whitexel
+pnm_writepnminit
+pnm_writepnmrow
+ppm_colorname
+strerror
+The image is entirely background; there is nothing to crop.
+Too many arguments (%d).  Only need one: the input filespec
+You cannot specify both -black and -white
+You cannot specify both -sides and either -black or -white

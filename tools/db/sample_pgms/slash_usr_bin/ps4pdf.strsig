@@ -1,0 +1,93 @@
+    "$@"
+###############################################################################
+# 2005-03-08: New option "--crop", Rolf Niepraschk. 
+# 2005-06-27: ps2pdf call only if the ps file exist (RN). 
+# 2006-04-05: "\RequirePackage{pst-pdf}" added to the (pdf)LaTeX calls 
+# 2006-07-14: Better temp dir handling (suggested by Karl Berry) (RN).
+# 2006-07-23: New option --Xps2pdf and code cleanup (thanks to Karl Berry) (RN).
+# 2008-08-04: Remove the parameter "-Ppdf" from the dvips call (RN).
+    || abort "could not create directory \`$tmpdir'"
+#             as suggested by Niall Murphy.
+    "\AtBeginDocument{\RequirePackage{pst-pdf}} \input{$file}"
+#!/bin/sh
+    *) break;;
+  case $1 in
+    cat <$log
+    cleanup
+# cleanup()
+cleanup()
+#   clean up the temp area and exit with proper exit status
+# Copyright (C) 2004, Thomas Esser. Public domain.
+   --crop|-c) crop=true;;
+crop=false
+# dvips call only if the dvi file exist (RN). 
+    echo "$0: command $@ returned with code $rc"
+  echo "$0: no file to process, try --help for more information." >&2
+    echo "$0: running $@"
+              echo "--crop runs pdfcrop on ps2pdf output."
+              echo " (-dAutoRotatePages=/None is always passed.)"
+              echo "including running latex, dvips, and ps2pdf as necessary."
+              echo "Process LaTeX document FILE using the pst-pdf package,"
+    -*) echo "$progname: unknown option $1 ignored";;
+              echo "--Xps2pdf OPT passes OPT to ps2pdf."
+# entfernen.
+#   execute the command given as "args"; abort on error; redirect messages to
+  		                   exit 0;;
+  exit 1
+  (exit $rc); exit $rc
+    (exit $rc) # set return value
+# First, work around bugs/limitations in some shells on some systems:
+# hack around a bug in zsh:
+   --help|-h) echo "$0 [-v|-q|--crop|--version|--Xps2pdf OPT] FILE"
+if $crop; then
+  if $silent; then
+  if test $rc != 0; then
+if test -z "$file"; then
+job=`echo "x$1" | sed 's@x@@; s@.*/@@; s@\.[^.]*$@@'`
+# jobname von TeX: Verzeichnisse entfernen, evtl. vorhandene Extension
+    "$@" >$log 2>&1 </dev/null
+#   log in "silent" mode; redirect stdin (</dev/null) in silent mode
+log=$tmpdir/log
+# look for optional things first
+  mv "$job-pics-crop.pdf" "$job-pics.pdf"
+myexec()
+# myexec(args)
+myexec latex \
+  myexec pdfcrop "$job-pics.pdf" "$job-pics-crop.pdf" 
+myexec pdflatex \
+needsCleanup=false
+  $needsCleanup && return
+  $needsCleanup && test -n "$tmpdir" && test -d "$tmpdir" \
+  needsCleanup=true
+progname=pdflatexps
+ps2pdf_opts="-dAutoRotatePages=/None"
+  "$ps2pdf_opts" "$job-pics.ps" "$job-pics.pdf"
+   -q) silent=true;;
+    rc=$?
+# remaining option: filename
+    && { rm -f "$tmpdir"/*; cd /; rmdir "$tmpdir"; }
+  && { RUNNING_BSH=true; export RUNNING_BSH; exec /bin/bsh $0 ${1+"$@"}; }
+  && { RUNNING_SH5=true; export RUNNING_SH5; exec /bin/sh5 $0 ${1+"$@"}; }
+  # set exit code in a portable way; see the autoconf manual for details:
+#   set up a temp directory and a trap to remove it
+setupTmpDir
+# setupTmpDir()
+setupTmpDir()
+silent=true # default setting; change if you like
+# some initializations
+test -f /bin/bsh && test -z "$RUNNING_BSH" \
+test -f /bin/sh5 && test -z "$RUNNING_SH5" \
+test -f "$job.dvi" && myexec dvips -o "$job-pics.ps" "$job.dvi"
+test -f "$job-pics.ps" && myexec ps2pdf \
+test -n "${ZSH_VERSION+set}" && alias -g '${1+"$@"}'='"$@"'
+tmpdir=${TMPDIR-${TEMP-${TMP-/tmp}}}/.$progname$$
+  trap 'cleanup' 1 2 3 7 13 15
+  (umask 077; mkdir "$tmpdir") \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xAIX; } 2>/dev/null \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xULTRIX; } 2>/dev/null \
+unset RUNNING_BSH
+unset RUNNING_SH5
+version="1.0"
+   --version) echo "$progname version $version"; exit 0;;
+   -v) silent=false;;
+   --Xps2pdf|-Xps2pdf) shift; ps2pdf_opts="$ps2pdf_opts $1";;

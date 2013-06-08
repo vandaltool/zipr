@@ -1,0 +1,12 @@
+__bss_start
+__data_start
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgcj.so.12
+libgij.so.12
+/lib/ld-linux.so.2
+/usr/lib/i386-linux-gnu/gcj-4.6-12:/usr/lib/i386-linux-gnu

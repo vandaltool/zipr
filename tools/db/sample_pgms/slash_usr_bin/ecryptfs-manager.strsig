@@ -1,0 +1,68 @@
+-------------------------------
+"3DUfw%s: 
+Added key to keyring with signature [%s].
+__asprintf_chk
+__bss_start
+	Confirm passphrase: 
+	%d. Add passphrase key to keyring
+	%d. Add public key to keyring
+	%d. Exit
+	%d. Generate new public/private keypair
+ecryptfs_add_passphrase_key_to_keyring
+ecryptfs_free_key_mod_list
+ecryptfs_get_version
+eCryptfs key management menu
+ecryptfs_process_decision_graph
+ecryptfs_process_key_gen_decision_graph
+ecryptfs_validate_keyring
+Enabling passphrase-mode only for now.
+__errno_location
+Error attempting to validate keyring integrity; rc = [%d]
+Error: %m
+Error processing key generation decision graph; rc = [%d]
+Error reading input
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+__gmon_start__
+Invalid passphrase. Aborting mount.
+Invalid selection
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+kernel module loaded, you have sysfs mounted, and
+kernel options are supported.
+libc.so.6
+__libc_start_main
+libecryptfs.so.0
+/lib/ld-linux.so.2
+Make selection: 
+Make sure that your system is set up to auto-load
+module. Please make sure that you have the eCryptfs
+	Mount-wide passphrase: 
+necessary so that the mount helper knows which 
+Passphrase mismatch. Aborting mount
+__printf_chk
+read_passphrase_salt
+Returning to main menu
+%s/.ecryptfs/
+%s/.ecryptfs/pki/
+%s/.ecryptfs/pki/%s/
+%s/.ecryptfs/pki/%s/%s
+Select desired key module [%d]: 
+%s: Failed to allocate memory
+%s: Failed to read passphrase
+__stack_chk_fail
+__syslog_chk
+tcgetattr
+tcsetattr
+That key was already in the keyring.
+The following PKI modules are available:
+the sysfs mount point is in /etc/mtab. This is
+Unable to free key modules
+Unable to get the version number of the kernel
+Unknown option, aborting
+	Using the default salt value
+your filesystem kernel module on mount.

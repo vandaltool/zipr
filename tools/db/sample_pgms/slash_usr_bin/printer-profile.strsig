@@ -1,0 +1,160 @@
+    *1600*)
+    *2300*)
+    *2530*)
+    *2600*)
+    *300*)
+    *315*)
+    -b 1|2        Bits per pixel ($BPP)
+    `basename $PROGNAME` [options] manuf model [rgb|cmyk] [patches] [ink-limit]
+    `basename $PROGNAME` - printer-profile using X-Rite ColorMunki and Argyll CMS
+	b)	BPP="$OPTARG";;
+    $BETABIN/chartread $mrp
+$BETABIN/printtarg -h -v -iCM -p Letter -R0 $mrp
+BETABIN=~/src/Argyll_V1.1.0_Beta/bin
+#!/bin/sh
+BPP_b="-b$BPP"
+case "$MANUF" in
+    case "$MODEL" in
+	case $opt in
+case "$REMPRINT" in
+case "$REMSCAN" in
+case "$RGB" in
+case $RGB in
+    case "$yes" in
+case "$yes" in
+	cat <<EOF
+    cat $mrp.err1
+cmyk|CMYK)	targen_opts="$targen_opts -d4";;
+    colprof -v -D"$mrp" -qm  -cmt -dpp -kr $mrp
+    colprof -v -D"$mrp" -qm -cmt -dpp $mrp
+    computes an ICM profile using the Argyll Color Management System.
+    *cp1215*)
+    cp $mrp.prn xxx.prn
+    data.  Don't use!
+	D)	DEBUG="$OPTARG";;
+debug() {
+DESCRIPTION
+    -D lvl        Debug level
+	echo "`basename $PROGNAME`: $1" >&2
+	    echo "`basename $PROGNAME`: $2" >&2
+    echo "$BETABIN/chartread $mrp"
+echo "$BETABIN/printtarg -h -v -iCM -p Letter -R0 $mrp"
+echo "******************************* chartread ******************************"
+echo "******************************** colprof *******************************"
+    echo "colprof -v -D\"$mrp\" -qm  -cmt -dpp -kr $mrp"
+    echo "colprof -v -D\"$mrp\" -qm -cmt -dpp $mrp"
+echo "$mrp"
+echo -n "Print it? [y|n]? "
+    echo  -n "Scanned on remote system $REMSCAN? [y/n]? "
+    echo "	$OUT"
+echo "******************************* print it *******************************"
+echo "******************************* printtarg ******************************"
+    echo "scp $mrp.ti2 mac:"
+echo "******************************** targen ********************************"
+echo "targen $targen_opts $mrp"
+echo "/usr/share/$FOO/icm/testing.icm created!"
+echo "$WRAPPER"
+    Edit the script for additional models.
+    else
+error() {
+    error "No beta bin in $BETABIN!"
+*)		error "Parm2: Must be rgb or cmyk";;
+    esac
+    eval $OUT
+evince $mrp.ps &
+#	Execute a command as root
+    exit 1
+    FOO=foo2hp
+	FOO=foo2lava
+    FOO=foo2qpdl
+	FOO=foo2zjs
+	from Amazon, \$390 shipped
+    gs 8.64 and before has problems with 32-bit machines and color profile
+    http://www.argyllcms.com/
+    http://www.xritephoto.com/html/colormunkisplash.htm
+	h|\?)	usage;;
+if [ "$BPP" != "" ]; then
+	if [ $DEBUG -ge $1 ]; then
+if [ $# -ge 3 ]; then
+if [ $# -ge 4 ]; then
+if [ "$INK" != "" ]; then
+if [ $# -lt 2 ]; then
+if [ "$RES" != "" ]; then
+if ! targen $targen_opts $mrp >$mrp.err1; then
+if [ ! -x $BETABIN/printtarg ]; then
+    if [ -x /usr/bin/root ]; then
+INK="$5"
+ls -l $mrp.prn
+ls -l /usr/share/$FOO/icm/
+#	Main Program
+MANUF="$1"
+    MANUF=hp
+    Manuf is "hp".  Model is "2600" or "cp1215".
+    Manuf is "km".  Model is "1600" or "2300" or "2530".
+    Manuf is "sam".  Model is "clp-300" or "clp-315".
+    MANUF=km
+    MANUF=sam
+MODEL="$2"
+mrp="$MANUF-$MODEL-$RGB-$PATCHES"
+    mrp="$mrp-bpp$BPP"
+    mrp="$mrp-ink$INK"
+    mrp="$mrp-$RES"
+''|none)
+	OUT="nc 192.168.1.10 9100 < xxx.prn"
+	OUT="nc 192.168.1.11 9100 < xxx.prn"
+	OUT="nc 192.168.1.12 9100 < xxx.prn"
+	OUT="nc 192.168.1.13 9100 < xxx.prn"
+	OUT="root cp xxx.prn /dev/usb/lp1"
+	OUT="root cp xxx.prn /dev/usb/lp2"
+PATCHES=196	#Per page!
+    PATCHES="$4"
+	P)	REMPRINT="$OPTARG";;
+    -P rem-print  Remote print (64-bit) machine, or none ($REMPRINT)
+    $ printer-profile sam 315 rgb 196
+    Prints a test chart, uses the ColorMunki instrument to scan it in, then
+#       Process the options
+PROGNAME="$0"
+    read yes
+read yes
+REMPRINT=amd
+REMSCAN=mac
+REMSCAN=none
+#       Report an error and exit
+    RES_r="-r$RES"
+    RGB="$3"
+    "rgb" is the usual setting.  "patches" is a multiple 196 per page.
+rgb|RGB)	targen_opts="$targen_opts -d3";;
+    rm -f xxx.prn
+root() {
+root cp $mrp.icc /usr/share/$FOO/icm/testing.icm
+	r)	RES="$OPTARG";;
+    -r XRESxYRES  Resolution. Default=''. ($RES)
+    scp $mrp.ti2 mac:
+	scp $REMSCAN:$mrp.ti3 .
+SEE ALSO
+shift `expr $OPTIND - 1`
+	S)	REMSCAN="$OPTARG";;
+    -S rem-scan   Remote scan (ColorMunki) machine, or none ($REMSCAN)
+    ssh $REMPRINT "$WRAPPER" <$mrp.ps >$mrp.prn
+        su -c "$*"
+SYNOPSIS
+    targen and colprof core dumps.
+targen_opts=
+targen_opts="$targen_opts -f$PATCHES"
+    targen_opts="$targen_opts -l$INK"
+trap "exit 1" ERR
+#	trap on error
+    usage
+usage() {
+        /usr/bin/root $@
+while getopts "b:r:P:S:D:h?" opt
+	WRAPPER="foo2hp2600-wrapper $RES_r $BPP_b -z0 -c -C10 -Gnone.icm"
+	WRAPPER="foo2hp2600-wrapper $RES_r $BPP_b -z1 -c -C10 -Gnone.icm"
+	WRAPPER="foo2lava-wrapper $RES_r -z0 -c -C10 -Gnone.icm"
+	WRAPPER="foo2lava-wrapper $RES_r -z2 -c -C10 -Gnone.icm"
+	WRAPPER="foo2qpdl-wrapper $RES_r -z0 -c -C10 -Gnone.icm"
+	WRAPPER="foo2qpdl-wrapper $RES_r -z2 -c -C10 -Gnone.icm"
+	WRAPPER="foo2zjs-wrapper $RES_r -c -C10 -Gnone.icm"
+    $WRAPPER <$mrp.ps >$mrp.prn
+    You need two copies of Argyll: must be 1.0.3 and 1.1.0beta. Otherwise,
+    y|Y)

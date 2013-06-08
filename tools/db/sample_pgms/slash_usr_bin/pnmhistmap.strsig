@@ -1,0 +1,33 @@
+__bss_start
+Done: height = %d
+finding max. slot height...
+GLIBC_2.0
+GLIBC_2.1
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+making histogram...
+Max. value (%d) must be positive
+no histograms for PBM files
+no space for output array (%d bits)
+no space for output array (%d pixels)
+pbm_writepbm
+pgm_readpgmrow
+pm_allocarray
+pm_allocrow
+pm_error
+pm_freerow
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+pnm_init
+pnm_readpnminit
+ppm_readppmrow
+ppm_writeppm
+-verbose
+[-white] [-black] [-max maxvalue] [-verbose] [pnmfile]

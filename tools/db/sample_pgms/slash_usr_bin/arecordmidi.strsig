@@ -1,0 +1,113 @@
+%3d:%-3d  %-32.32s %s
+ALSA_0.9
+arecordmidi
+arecordmidi metronome
+arecordmidi port %i
+arecordmidi version 1.0.25
+Available options:
+  -b,--bpm=beats             tempo in beats per minute
+Cannot connect from port %d:%d - %s
+Cannot connect to port %d:%d - %s
+Cannot open %s - %s
+Cannot set queue tempo (%u/%i)
+Cannot %s - %s
+create metronome port
+create port
+create queue
+__errno_location
+  -f,--fps=frames            resolution in frames per second (SMPTE)
+__fprintf_chk
+get client id
+getopt_long
+get queue status
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -h,--help                  this help
+hVlp:b:f:t:sdm:i:
+Invalid number of frames/s
+Invalid number of ticks
+Invalid port %s - %s
+Invalid SMPTE frames %d
+Invalid tempo
+Invalid time signature (%s)
+_IO_stdin_used
+  -i,--timesig=nn:dd         time signature
+_Jv_RegisterClasses
+libasound.so.2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+  -l,--list                  list input ports
+  -m,--metronome=client:port play a metronome signal
+open sequencer
+out of memory
+Please specify a file to record to.
+Pleast specify a source port with --port.
+ Port    Client name                      Port name
+  -p,--port=client:port,...  source port(s)
+__printf_chk
+set client name
+set nonblock mode
+snd_seq_alloc_named_queue
+snd_seq_client_id
+snd_seq_client_info_get_client
+snd_seq_client_info_get_name
+snd_seq_client_info_set_client
+snd_seq_client_info_sizeof
+snd_seq_close
+snd_seq_connect_from
+snd_seq_connect_to
+snd_seq_control_queue
+snd_seq_create_port
+snd_seq_drain_output
+snd_seq_event_input
+snd_seq_event_output
+snd_seq_event_types
+snd_seq_get_queue_status
+snd_seq_nonblock
+snd_seq_open
+snd_seq_parse_address
+snd_seq_poll_descriptors
+snd_seq_poll_descriptors_count
+snd_seq_port_info_get_capability
+snd_seq_port_info_get_client
+snd_seq_port_info_get_name
+snd_seq_port_info_get_port
+snd_seq_port_info_get_type
+snd_seq_port_info_set_capability
+snd_seq_port_info_set_client
+snd_seq_port_info_set_midi_channels
+snd_seq_port_info_set_name
+snd_seq_port_info_set_port
+snd_seq_port_info_set_port_specified
+snd_seq_port_info_set_timestamping
+snd_seq_port_info_set_timestamp_queue
+snd_seq_port_info_set_type
+snd_seq_port_info_sizeof
+snd_seq_query_next_client
+snd_seq_query_next_port
+snd_seq_queue_status_get_tick_time
+snd_seq_queue_status_sizeof
+snd_seq_queue_tempo_get_ppq
+snd_seq_queue_tempo_get_tempo
+snd_seq_queue_tempo_set_ppq
+snd_seq_queue_tempo_set_tempo
+snd_seq_queue_tempo_sizeof
+snd_seq_set_client_name
+snd_seq_set_queue_tempo
+snd_strerror
+split-channels
+__sprintf_chk
+  -s,--split-channels        create a track for each channel
+__stack_chk_fail
+start queue
+__strdup
+The --dump option isn't supported anymore, use aseqdump instead.
+  -t,--ticks=ticks           resolution in ticks per beat or frame
+Usage: %s [options] outputfile
+__vfprintf_chk
+  -V,--version               show version

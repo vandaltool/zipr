@@ -1,0 +1,97 @@
+3T$03D$4	
+3T$43D$0	
+A NULL argv[0] was passed through an exec system call.
+bindtextdomain
+bug-coreutils@gnu.org
+cannot open directory %s
+closedir
+Copyright %s %d Free Software Foundation, Inc.
+couldn't find directory entry in %s with matching i-node
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+dcgettext
+D$P3T$p3D$t	
+D$t3T$`3D$d	
+__errno_location
+failed to chdir to %s
+failed to get attributes of %s
+failed to stat %s
+fdopendir
+For complete documentation, run: info coreutils '%s invocation'
+for details about the options it supports.
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+__fxstat64
+__fxstatat64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+ignoring non-option arguments
+_IO_stdin_used
+iswprint
+Jim Meyering
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+L$L3T$d3L$`
+  -L, --logical   use PWD from environment, even if it contains symlinks
+__lxstat64
+memory exhausted
+NOTE: your shell may have its own version of %s, which usually supersedes
+openat64
+physical
+POSIXLY_CORRECT
+  -P, --physical  avoid all symlinks
+__printf_chk
+Print the full filename of the current working directory.
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+readdir64
+reading directory %s
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+rewinddir
+%s, and %s.
+setlocale
+shell-always
+%s home page: <%s>
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+__strdup
+T$43T$X1
+There is NO WARRANTY, to the extent permitted by law.
+the version described here.  Please refer to your shell's documentation
+This is free software: you are free to change and redistribute it.
+Try `%s --help' for more information.
+T$X3T$x3D$|	
+Usage: %s [OPTION]...
+/usr/share/locale
+      --version  output version information and exit
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+__xstat64

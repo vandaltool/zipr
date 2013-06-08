@@ -1,0 +1,399 @@
+10SpreadView
+12QDBusContext
+13SpreadAdaptor
+13SpreadControl
+13SpreadManager
+1fitToAvailableSpace()
+1onScreenCountChanged(int)
+1onViewVisibleChanged(bool)
+2cancelAndExitStarted()
+2panelsFreeGeometryChanged(QRect)
+2screenCountChanged(int)
+2startCancelAndExit()
+2visibleChanged(bool)
+                            Activate filtering so that only the windows of the application with
+                  An interface to activate the workspace switcher in Unity 2D.
+applicationDesktopFile
+                            applicationDesktopFile are shown. Pass an empty string to disable filtering.
+      </arg>
+      <arg direction="in" type="s" name="applicationDesktopFile">
+      <arg direction="out" type="b" name="IsShown">
+      <arg direction="out" type="b" name="result">
+__bss_start
+/build/buildd/unity-2d-5.14.0/
+/build/buildd/unity-2d-5.14.0/obj-i686-linux-gnu/libunity-2d-private/
+/build/buildd/unity-2d-5.14.0/obj-i686-linux-gnu/spread/app/moc_spreadcontrol.cxx
+/build/buildd/unity-2d-5.14.0/obj-i686-linux-gnu/spread/app/moc_spreadmanager.cxx
+/build/buildd/unity-2d-5.14.0/obj-i686-linux-gnu/spread/app/moc_spreadview.cxx
+/build/buildd/unity-2d-5.14.0/obj-i686-linux-gnu/spread/app/spreadadaptor.moc
+/build/buildd/unity-2d-5.14.0/spread/app/spreadmanager.cpp:41
+/build/buildd/unity-2d-5.14.0/spread/app/spreadmanager.cpp:79
+/build/buildd/unity-2d-5.14.0/spread/app/spreadmanager.cpp:89
+/build/buildd/unity-2d-5.14.0/spread/app/spreadview.cpp:33
+com.canonical.Unity2d.Spread
+currentSwitcher
+currentSwitcherChanged()
+__cxa_begin_catch
+__cxa_end_catch
+__cxa_guard_abort
+__cxa_guard_acquire
+__cxa_guard_release
+__cxa_rethrow
+CXXABI_1.3
+__data_start
+D-Bus Interface
+D-Bus Introspection
+declarativeView
+    <dox:d>
+                </dox:d>
+                        ]]></dox:d>
+      <dox:d><![CDATA[
+        <dox:d>Desktop file of the application.</dox:d>
+      <dox:d>Signals when the workspaces switcher appears or disappears</dox:d>
+        <dox:d>True if the workspace switcher is visible</dox:d>
+        <dox:d>True if the workspace switcher is visible.</dox:d>
+filterByApplication(QString)
+fitToAvailableSpace()
+GLIBC_2.0
+GLIBCXX_3.4
+__gmon_start__
+__gxx_personality_v0
+                           Hide the workspace switcher without changing the currently active
+  </interface>
+  <interface xmlns:dox="http://www.ayatana.org/dbus/dox.dtd" name="com.canonical.Unity2d.Spread">
+_IO_stdin_used
+!isEmpty()
+IsShown()
+IsShownChanged(bool)
+_Jv_RegisterClasses
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+libQtCore.so.4
+libQtDBus.so.4
+libQtDeclarative.so.4
+libQtGui.so.4
+libstdc++.so.6
+libunity-2d-private.so.0
+    </method>
+    <method name="FilterByApplication">
+    <method name="Hide">
+    <method name="IsShown">
+    <method name="ShowAllWorkspaces">
+    <method name="ShowCurrentWorkspace">
+onScreenCountChanged(int)
+onViewVisibleChanged(bool)
+                            Optionally show only the windows of the application with the
+                           Optionally show only the windows of the application with the
+&other != this
+QDBusContext
+QDeclarativeListProperty<
+Q_NOREPLY
+QObject*
+                            Query whether the workspace switcher is visible or not.
+showAllWorkspaces(QString)
+showCurrentWorkspace(QString)
+                           Show the workspace switcher without any workspace zoomed in.
+                            Show the workspace switcher with the current workspace zoomed in.
+    </signal>
+    <signal name="IsShownChanged">
+                            specified applicationDesktopFile (if not an empty string).
+                           specified applicationDesktopFile (if not an empty string).
+/spread/
+SpreadAdaptor
+SpreadControl
+spreadManager
+SpreadView
+SpreadView*
+startCancelAndExit()
+staticMetaObject.cast(_o)
+The impossible happened, MouseEvent and window was not a SpreadView
+This can only be created from C++
+Unity 2D Workspace Switcher
+_Unwind_Resume
+/usr/bin
+/usr/include/qt4/QtCore/qlist.h
+/usr/include/qt4/QtCore/qscopedpointer.h
+/usr/include/qt4/QtCore/qstring.h
+/usr/lib/qt4/imports
+/usr/share/unity-2d
+uV~g.(2=k
+                           workspace or application.
+./Workspaces.qml
+_Z13qFlagLocationPKc
+_Z17qRegisterMetaTypeIP10SpreadViewEiPKcPT_
+_Z17qt_message_output9QtMsgTypePKc
+_Z21qMetaTypeDeleteHelperI24QDeclarativeListPropertyI10SpreadViewEEvPT_
+_Z21qMetaTypeDeleteHelperIP10SpreadViewEvPT_
+_Z24qMetaTypeConstructHelperI24QDeclarativeListPropertyI10SpreadViewEEPvPKT_
+_Z24qMetaTypeConstructHelperIP10SpreadViewEPvPKT_
+_Z26qmlRegisterUncreatableTypeI10SpreadViewEiPKciiS2_RK7QString
+_Z5qFreePv
+_Z9qt_assertPKcS0_i
+_ZGVZ18isRunningInstalledvE9installed
+_ZN10QByteArray6appendEc
+_ZN10QByteArray6appendEPKc
+_ZN10QByteArray6appendERKS_
+_ZN10QByteArray7reallocEi
+_ZN10QByteArrayC1EPKc
+_ZN10QByteArrayD1Ev
+_ZN10QByteArrayD2Ev
+_ZN10ScreenInfoC1EiP7QObject
+_ZN10SpreadView11qt_metacallEN11QMetaObject4CallEiPPv
+_ZN10SpreadView11qt_metacastEPKc
+_ZN10SpreadView16staticMetaObjectE
+_ZN10SpreadView19fitToAvailableSpaceEv
+_ZN10SpreadViewC1Ei
+_ZN10SpreadViewC2Ei
+_ZN10SpreadViewD0Ev
+_ZN10SpreadViewD1Ev
+_ZN10SpreadViewD2Ev
+_ZN11QMetaObject8activateEP7QObjectPKS_iPPv
+_ZN11QMouseEventC1EN6QEvent4TypeERK6QPointN2Qt11MouseButtonE6QFlagsIS6_ES7_INS5_16KeyboardModifierEE
+_ZN11QMouseEventD1Ev
+_ZN11QStringListD1Ev
+_ZN11QStringListD2Ev
+_ZN11QTextStreamC1EP7QString6QFlagsIN9QIODevice12OpenModeFlagEE
+_ZN11QTextStreamD1Ev
+_ZN11QTextStreamlsEc
+_ZN11QTextStreamlsERK7QString
+_ZN12QApplication4execEv
+_ZN12QApplication7desktopEv
+_ZN12QApplication8widgetAtERK6QPoint
+_ZN12QDBusContextC2Ev
+_ZN12QDBusContextD2Ev
+_ZN13QGraphicsView10paintEventEP11QPaintEvent
+_ZN13QGraphicsView10wheelEventEP11QWheelEvent
+_ZN13QGraphicsView11resizeEventEP12QResizeEvent
+_ZN13QGraphicsView12focusInEventEP11QFocusEvent
+_ZN13QGraphicsView12setSceneRectERK6QRectF
+_ZN13QGraphicsView13dragMoveEventEP14QDragMoveEvent
+_ZN13QGraphicsView13focusOutEventEP11QFocusEvent
+_ZN13QGraphicsView13viewportEventEP6QEvent
+_ZN13QGraphicsView14dragEnterEventEP15QDragEnterEvent
+_ZN13QGraphicsView14dragLeaveEventEP15QDragLeaveEvent
+_ZN13QGraphicsView14drawBackgroundEP8QPainterRK6QRectF
+_ZN13QGraphicsView14drawForegroundEP8QPainterRK6QRectF
+_ZN13QGraphicsView14mouseMoveEventEP11QMouseEvent
+_ZN13QGraphicsView15mousePressEventEP11QMouseEvent
+_ZN13QGraphicsView16contextMenuEventEP17QContextMenuEvent
+_ZN13QGraphicsView16inputMethodEventEP17QInputMethodEvent
+_ZN13QGraphicsView16scrollContentsByEii
+_ZN13QGraphicsView17mouseReleaseEventEP11QMouseEvent
+_ZN13QGraphicsView18focusNextPrevChildEb
+_ZN13QGraphicsView21mouseDoubleClickEventEP11QMouseEvent
+_ZN13QGraphicsView5eventEP6QEvent
+_ZN13QGraphicsView9drawItemsEP8QPainteriPP13QGraphicsItemPK24QStyleOptionGraphicsItem
+_ZN13QGraphicsView9dropEventEP10QDropEvent
+_ZN13SpreadAdaptor11qt_metacallEN11QMetaObject4CallEiPPv
+_ZN13SpreadAdaptor11qt_metacastEPKc
+_ZN13SpreadAdaptor14IsShownChangedEb
+_ZN13SpreadAdaptor16staticMetaObjectE
+_ZN13SpreadAdaptor17ShowAllWorkspacesERK7QString
+_ZN13SpreadAdaptor19FilterByApplicationERK7QString
+_ZN13SpreadAdaptor20ShowCurrentWorkspaceERK7QString
+_ZN13SpreadAdaptor4HideEv
+_ZN13SpreadAdaptor7IsShownEv
+_ZN13SpreadAdaptorC1EP13SpreadControl
+_ZN13SpreadAdaptorC2EP13SpreadControl
+_ZN13SpreadAdaptorD0Ev
+_ZN13SpreadAdaptorD1Ev
+_ZN13SpreadAdaptorD2Ev
+_ZN13SpreadControl10setIsShownEb
+_ZN13SpreadControl11qt_metacallEN11QMetaObject4CallEiPPv
+_ZN13SpreadControl11qt_metacastEPKc
+_ZN13SpreadControl12connectToBusEv
+_ZN13SpreadControl14IsShownChangedEb
+_ZN13SpreadControl16staticMetaObjectE
+_ZN13SpreadControl17showAllWorkspacesE7QString
+_ZN13SpreadControl19filterByApplicationE7QString
+_ZN13SpreadControl20showCurrentWorkspaceE7QString
+_ZN13SpreadControl4hideEv
+_ZN13SpreadControlC1EP7QObject
+_ZN13SpreadControlC2EP7QObject
+_ZN13SpreadControlD0Ev
+_ZN13SpreadControlD1Ev
+_ZN13SpreadControlD2Ev
+_ZN13SpreadManager10initSpreadEi
+_ZN13SpreadManager11eventFilterEP7QObjectP6QEvent
+_ZN13SpreadManager11qt_metacallEN11QMetaObject4CallEiPPv
+_ZN13SpreadManager11qt_metacastEPKc
+_ZN13SpreadManager16staticMetaObjectE
+_ZN13SpreadManager18startCancelAndExitEv
+_ZN13SpreadManager20onScreenCountChangedEi
+_ZN13SpreadManager20onViewVisibleChangedEb
+_ZN13SpreadManager22currentSwitcherChangedEv
+_ZN13SpreadManagerC1EP7QObject
+_ZN13SpreadManagerC2EP7QObject
+_ZN13SpreadManagerD0Ev
+_ZN13SpreadManagerD1Ev
+_ZN13SpreadManagerD2Ev
+_ZN15QDBusConnection10sessionBusEv
+_ZN15QDBusConnection14registerObjectERK7QStringP7QObject6QFlagsINS_14RegisterOptionEE
+_ZN15QDBusConnection15registerServiceERK7QString
+_ZN15QDBusConnection17unregisterServiceERK7QString
+_ZN15QDBusConnectionD1Ev
+_ZN16QCoreApplication14notifyInternalEP7QObjectP6QEvent
+_ZN16QCoreApplication18applicationDirPathEv
+_ZN16QCoreApplication18setApplicationNameERK7QString
+_ZN16QCoreApplication4selfE
+_ZN16QCoreApplication9argumentsEv
+_ZN16QDeclarativeItem8setWidthEd
+_ZN16QDeclarativeItem9setHeightEd
+_ZN18QDeclarativeEngine10setBaseUrlERK4QUrl
+_ZN18QDeclarativeEngine13addImportPathERK7QString
+_ZN18Unity2dApplication10earlySetupERiPPc
+_ZN18Unity2dApplicationC1ERiPPc
+_ZN18Unity2dApplicationD1Ev
+_ZN19QDeclarativeContext18setContextPropertyERK7QStringP7QObject
+_ZN19QDeclarativePrivate11qmlregisterENS_16RegistrationTypeEPv
+_ZN20QDBusAbstractAdaptor11qt_metacallEN11QMetaObject4CallEiPPv
+_ZN20QDBusAbstractAdaptor11qt_metacastEPKc
+_ZN20QDBusAbstractAdaptor16staticMetaObjectE
+_ZN20QDBusAbstractAdaptor19setAutoRelaySignalsEb
+_ZN20QDBusAbstractAdaptorC2EP7QObject
+_ZN20QDBusAbstractAdaptorD2Ev
+_ZN22Unity2DDeclarativeView11qt_metacallEN11QMetaObject4CallEiPPv
+_ZN22Unity2DDeclarativeView11qt_metacastEPKc
+_ZN22Unity2DDeclarativeView12setUseOpenGLEb
+_ZN22Unity2DDeclarativeView13keyPressEventEP9QKeyEvent
+_ZN22Unity2DDeclarativeView15keyReleaseEventEP9QKeyEvent
+_ZN22Unity2DDeclarativeView16staticMetaObjectE
+_ZN22Unity2DDeclarativeView19forceActivateWindowEv
+_ZN22Unity2DDeclarativeView6engineEv
+_ZN22Unity2DDeclarativeView9hideEventEP10QHideEvent
+_ZN22Unity2DDeclarativeView9moveEventEP10QMoveEvent
+_ZN22Unity2DDeclarativeView9setSourceERK4QUrlRK4QMapIPKc8QVariantE
+_ZN22Unity2DDeclarativeView9showEventEP10QShowEvent
+_ZN22Unity2DDeclarativeViewC2EP7QWidget
+_ZN22Unity2DDeclarativeViewD2Ev
+_ZN4QDirC1ERK7QString
+_ZN4QDirD1Ev
+_ZN4QMapIPKc8QVariantE13detach_helperEv
+_ZN4QUrl13fromLocalFileERK7QString
+_ZN4QUrlC1ERK7QString
+_ZN4QUrlD1Ev
+_ZN5QListI7QStringE13detach_helperEi
+_ZN5QListIP10SpreadViewE18detach_helper_growEii
+_ZN5QListIP10SpreadViewE6appendERKS1_
+_ZN5QListIP10SpreadViewED1Ev
+_ZN5QListIP10SpreadViewED2Ev
+_ZN6QDebugD1Ev
+_ZN6QDebugD2Ev
+_ZN6QFrame11changeEventEP6QEvent
+_ZN7QObject10childEventEP11QChildEvent
+_ZN7QObject10timerEventEP11QTimerEvent
+_ZN7QObject11customEventEP6QEvent
+_ZN7QObject11deleteLaterEv
+_ZN7QObject11eventFilterEPS_P6QEvent
+_ZN7QObject11qt_metacallEN11QMetaObject4CallEiPPv
+_ZN7QObject11qt_metacastEPKc
+_ZN7QObject13connectNotifyEPKc
+_ZN7QObject16disconnectNotifyEPKc
+_ZN7QObject16staticMetaObjectE
+_ZN7QObject18installEventFilterEPS_
+_ZN7QObject5eventEP6QEvent
+_ZN7QObject7connectEPKS_PKcS1_S3_N2Qt14ConnectionTypeE
+_ZN7QObjectC2EPS_
+_ZN7QObjectD2Ev
+_ZN7QString11shared_nullE
+_ZN7QString16fromAscii_helperEPKci
+_ZN7QString4freeEPNS_4DataE
+_ZN7QString6appendERKS_
+_ZN7QString9fromAsciiEPKci
+_ZN7QStringD1Ev
+_ZN7QStringD2Ev
+_ZN7QWidget10closeEventEP11QCloseEvent
+_ZN7QWidget10enterEventEP6QEvent
+_ZN7QWidget10fontChangeERK5QFont
+_ZN7QWidget10leaveEventEP6QEvent
+_ZN7QWidget10setVisibleEb
+_ZN7QWidget11actionEventEP12QActionEvent
+_ZN7QWidget11setGeometryERK5QRect
+_ZN7QWidget11styleChangeER6QStyle
+_ZN7QWidget11tabletEventEP12QTabletEvent
+_ZN7QWidget12grabKeyboardEv
+_ZN7QWidget12mouseGrabberEv
+_ZN7QWidget12releaseMouseEv
+_ZN7QWidget12setAttributeEN2Qt15WidgetAttributeEb
+_ZN7QWidget12setFixedSizeERK5QSize
+_ZN7QWidget13enabledChangeEb
+_ZN7QWidget13paletteChangeERK8QPalette
+_ZN7QWidget14languageChangeEv
+_ZN7QWidget15releaseKeyboardEv
+_ZN7QWidget22windowActivationChangeEb
+_ZN7QWidget8x11EventEP7_XEvent
+_ZN7QWidget9grabMouseEv
+_ZN8QMapData10createDataEi
+_ZN8QMapData11node_createEPPNS_4NodeEii
+_ZN8QMapData11node_deleteEPPNS_4NodeEiS1_
+_ZN8QMapData11shared_nullE
+_ZN8QMapData16continueFreeDataEi
+_ZN8QVariantaSERKS_
+_ZN8QVariantC1EiPKvj
+_ZN8QVariantC1ERKS_
+_ZN8QVariantD1Ev
+_ZN9QListData11detach_growEPii
+_ZN9QListData11shared_nullE
+_ZN9QListData5eraseEPPv
+_ZN9QListData6appendEv
+_ZN9QListData6detachEi
+_ZN9QMetaType12registerTypeEPKcPFvPvEPFS2_PKvE
+_ZN9QMetaType15registerTypedefEPKci
+_ZN9QtPrivate20QStringList_containsEPK11QStringListRK7QStringN2Qt15CaseSensitivityE
+_ZNK10ScreenInfo18panelsFreeGeometryEv
+_ZNK10SpreadView10metaObjectEv
+_ZNK11QMetaObject4castEP7QObject
+_ZNK13QGraphicsView16inputMethodQueryEN2Qt16InputMethodQueryE
+_ZNK13QGraphicsView8sizeHintEv
+_ZNK13SpreadAdaptor10metaObjectEv
+_ZNK13SpreadControl10metaObjectEv
+_ZNK13SpreadManager10metaObjectEv
+_ZNK13SpreadManager15currentSwitcherEv
+_ZNK14QDesktopWidget10numScreensEv
+_ZNK19QAbstractScrollArea15minimumSizeHintEv
+_ZNK19QAbstractScrollArea8viewportEv
+_ZNK22Unity2DDeclarativeView10rootObjectEv
+_ZNK22Unity2DDeclarativeView11rootContextEv
+_ZNK4QDir13canonicalPathEv
+_ZNK7QString11toLocal8BitEv
+_ZNK7QStringeqERKS_
+_ZNK7QWidget11mapToGlobalERK6QPoint
+_ZNK7QWidget11paintEngineEv
+_ZNK7QWidget13mapFromGlobalERK6QPoint
+_ZNK7QWidget14heightForWidthEi
+_ZNK7QWidget6metricEN12QPaintDevice17PaintDeviceMetricE
+_ZNK7QWidget6windowEv
+_ZNK7QWidget7devTypeEv
+_ZNK7QWidget8hasFocusEv
+_ZThn8_N10SpreadViewD0Ev
+_ZThn8_N10SpreadViewD1Ev
+_ZThn8_NK7QWidget11paintEngineEv
+_ZThn8_NK7QWidget6metricEN12QPaintDevice17PaintDeviceMetricE
+_ZThn8_NK7QWidget7devTypeEv
+_ZTI10SpreadView
+_ZTI12QDBusContext
+_ZTI13SpreadAdaptor
+_ZTI13SpreadControl
+_ZTI13SpreadManager
+_ZTI20QDBusAbstractAdaptor
+_ZTI22Unity2DDeclarativeView
+_ZTI7QObject
+_ZTISt9bad_alloc
+_ZTS10SpreadView
+_ZTS12QDBusContext
+_ZTS13SpreadAdaptor
+_ZTS13SpreadControl
+_ZTS13SpreadManager
+_ZTV10SpreadView
+_ZTV13SpreadAdaptor
+_ZTV13SpreadControl
+_ZTV13SpreadManager
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE
+_ZTVN10__cxxabiv121__vmi_class_type_infoE
+_ZZ18isRunningInstalledvE9installed
+_ZZN11QMetaTypeIdIP10SpreadViewE14qt_metatype_idEvE11metatype_id

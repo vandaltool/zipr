@@ -1,0 +1,41 @@
+__bss_start
+__errno_location
+g_build_filename
+g_dir_close
+g_dir_open
+g_dir_read_name
+g_error_free
+g_file_set_contents
+giomodule.cache
+g_io_module_query
+GLIBC_2.0
+g_module_close
+g_module_open
+g_module_supported
+g_module_symbol
+__gmon_start__
+g_printerr
+g_strerror
+g_strfreev
+g_str_has_prefix
+g_str_has_suffix
+g_string_append
+g_string_append_printf
+g_string_free
+g_string_new
+g_type_init
+g_unlink
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgmodule-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+Unable to create %s: %s
+Unable to open directory %s: %s
+Unable to unlink %s: %s
+Usage: gio-querymodules <directory1> [<directory2> ...]
+Will update giomodule.cache in the listed directories

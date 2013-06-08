@@ -1,0 +1,3660 @@
+0123456789abcdef
+0123456789abcdefghijklmnopqrstuvwxyz
+0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.-
+%02d:%02d:%02d
+%03d.%03d.%03d.%03d
+0 && "unhandled response"
+10-------
+127.0.0.1
+177*.66BILJ
+%1$'d of %2$'d Torrent
+%1$'d of %2$'d Torrents
+%1$'d Piece @ %2$s
+%1$'d Pieces @ %2$s
+1:q13:announce_peer
+1:q4:ping
+1:q9:find_node
+1:q9:get_peers
+%1$s; %2$'d File
+%1$s; %2$'d Files
+%1$s (%2$'d piece)
+%1$s (%2$'d piece @ %3$s)
+%1$s (%2$'d pieces)
+%1$s (%2$'d pieces @ %3$s)
+%1$s (%2$s%%)
+%1$s %2$s
+%1$s %2$s, %3$s %4$s
+%1$s (+%2$s corrupt)
+%1$s (%2$s%% of %3$s%% Available)
+%1$s (%2$s%% of %3$s%% Available); %4$s Unverified
+%1$s ago
+(%1$s down, %2$s up)
+%1$s of %2$s (%3$s%%)
+%1$s of %2$s (%3$s%%), uploaded %4$s (Ratio: %5$s)
+%1$s of %2$s (%3$s%%), uploaded %4$s (Ratio: %5$s Goal: %6$s)
+%1$s, uploaded %2$s (Ratio: %3$s)
+%1$s, uploaded %2$s (Ratio: %3$s Goal: %4$s)
+1. The MIT-licensed portions of Transmission listed above are exempt from GPLv2 clause 2(b) and may retain their MIT license.
+2001:1890:1112:1::20
+239.192.152.143
+2. Permission is granted to link the code in this release with the OpenSSL project's 'OpenSSL' library and to distribute the linked executables. Works derived from Transmission may, at their authors' discretion, keep or delete this exception.
+%3d.%3d.%3d.%3d - %3d.%3d.%3d.%3d , %3d , 
+3T$t3D$p	
+4;;'2778588A;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M;?>M9<;H/996077%...
+4:porti%ue5:token%d:
+4:wantl%s%se
+5:nodes%d:
+6:nodes6
+6:nodes6%d:
+6:target20:
+6:valuesl
+/77<CGEuY[W
+8tr_crypto
+\$@9\$8}8
+999	-55?QTQ
+999	-55?VXT
+999	.66=WYU
+999.99 kB/s
+9:info_hash20:
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.!~*'();/?:@&=+$,<>#%<"{}|\^[]`
+aborting
+Accepted
+Accept-Encoding
+ActionInvoked
+action != NULL
+actions.c
+activate
+Active now
+activeTorrentCount
+activity-date
+activityDate
+ADBd077%333
+%a, %d %b %Y %H:%M:%S GMT
+added6.f
+added-date
+addedDate
+add-error
+Adding address to whitelist: %s
+Adding address to whitelist: %s (And it has a '+' or '-'!  Are you using an old ACL by mistake?)
+adding task to curl: [%s]
+add-prompt
+addrbuf2
+Addresses:
+addr %p -- connected %d (%zu %zu) -- connecting_at %zu
+A fast and easy BitTorrent client
+ age %d%s
+age %ld, %ld
+ A/icon-popup
+alignment
+All files
+Allow encryption
+Allowing desktop hibernation
+Alternative Speed Limits
+<alt>Return
+alt-speed-down
+alt-speed-enabled
+alt-speed-off
+alt-speed-on
+alt-speed-time-begin
+alt-speed-time-day
+alt-speed-time-enabled
+alt-speed-time-end
+alt-speed-up
+Amazon S3 %c.%c.%c
+announce-list
+announceMore: slotsAvailable is %d
+Announce peer!
+Announce_peer with forbidden port %d.
+Announce_peer with forbidden port number
+Announce_peer with no info_hash
+Announce_peer with no info_hash.
+Announce_peer with wrong token
+announce queue is %s
+announcer.c
+Announce response:
+Announce response contained scrape info; rescheduling next scrape to %d seconds from now.
+Announce response was not in benc format
+announcer-http.c
+announcer-udp.c
+announceState
+_Announce URL:
+announcing in %d seconds
+announcing tier %d of %d
+Announcing to tracker
+another seed tried to reconnect to us!
+appendColumn
+Append "._part" to incomplete files' names
+app_indicator_new
+app_indicator_set_menu
+app_indicator_set_status
+app_indicator_set_title
+application/javascript
+application/json; charset=UTF-8
+application/octet-stream
+arglebargle
+  "arguments": { "id": %d, "trackerAdd": [ "%s" ] }
+  "arguments": { "id": %d, "trackerRemove": [ %d ] }
+Asking for more peers in %s
+Asking for more peers now
+Asking for peer counts in %s
+Asking for peer counts now
+Ask Tracker for _More Peers
+Attempted to insert node in the wrong family.
+Attempting bootstrap from dht.transmissionbt.com
+Attempting manual bootstrap
+Attempting to send to blacklisted node.
+Authorization
+Automatically _add torrents from:
+awaiting crypto_provide
+awaiting crypto select
+awaiting handshake
+awaiting ia
+awaiting pad a
+awaiting pad c
+awaiting pad d
+awaiting peer id
+awaiting vc
+awaiting ya
+awaiting yb
+AZ2500BT
+Bad Gateway
+bad packet - BT message #%d with a length of %d
+Bad Request
+bandwidth.c
+bandwidth is %p; its parent is %p
+bandwidth-priority
+bandwidthPriority
+Banned IP address "%s" tried to connect to us
+banned peer %s tried to reconnect
+banning peer %s
+bar-height
+Bar Height
+Basic realm="Transmission"
+<b>Closing Connections</b>
+bencode.c
+<big><b>%s</b></big>
+bind-address-ipv4
+bind-address-ipv6
+bindtextdomain
+bind_textdomain_codeset
+BIO_ctrl
+BIO_f_base64
+BIO_free_all
+BIO_new_mem_buf
+BIO_push
+BIO_read
+BIO_set_flags
+BIO_s_mem
+BIO_write
+BitBuddy
+BitComet
+BitComet 
+BitKitten (libtorrent)
+BitLord 
+BitMagnet
+BitRocket %c.%c (%c%c)
+ bits %d age 
+Bits on Wheels 1.0.5
+Bits on Wheels 1.0.6
+Bits on Wheels %c.%c.%c
+BitSpirit
+BitSpirit %u
+BitTornado
+BitTorrent
+BitTorrent Activity
+BitTorrent DNA %d.%d.%d
+BitTorrent Pro (Azureus + Spyware)
+BitTorrent protocol
+BitTorrent SDK
+BittorrentX
+BitTyrant (Azureus Mod)
+BitWombat
+Blacklisting broken node.
+Blizzard Downloader %d.%d
+blocklist.bin
+blocklist.c
+Blocklist contains %'d rule
+Blocklist contains %'d rules
+blocklist-date
+blocklist-enabled
+Blocklist has %'d rule.
+Blocklist has %'d rules.
+blocklists
+Blocklist "%s" contains %zu entries
+blocklist-size
+blocklist skipped invalid address at line %d
+Blocklist "%s" updated with %zu entries
+blocklist.tmp
+blocklist-update
+blocklist-updated
+blocklist-updates-enabled
+blocklist-url
+BN_bin2bn
+BN_bn2bin
+BN_num_bits
+Bootstrapping from %d IPv4 nodes
+Bootstrapping from %d IPv6 nodes
+boundary=
+Bound socket %d to port %d on %s
+Broken node truncates transaction ids: 
+<b>%s</b>
+__bss_start
+BT Next Evolution
+BT Protocol Daemon %c%c%c
+BT-SEARCH * HTTP/%d.%d
+BT-SEARCH * HTTP/%u.%u
+<b>Unable to update.</b>
+<b>Update succeeded!</b>
+burst! %c.%c.%c
+button-press-event
+button-release-event
+bytesCompleted
+ (cached)
+cache-size-mb
+calling event_loopbreak()
+Calling script "%s"
+calling UTP_Connect
+calling UTP_SetCallbacks &utp_function_table
+Call _script when torrent is completed:
+canberra-gtk-play -i complete-download -d 'transmission torrent downloaded'
+cancelling %u:%u->%u...
+cancel rate is %.3f -- reducing the number of peers we're interested in by %.0f percent
+cannot get default gateway ip address
+Cannot serve torrent #%s
+canRead: inlen is %zu, msgs->state is %d
+canRead: ret is %d
+can't find that torrent...
+Can't set congestion control algorithm '%s': %s
+Changed open file limit from %d to %d
+checking out '%s'
+%cinfo_hash=%s
+Click to disable Alternative Speed Limits
+Click to enable Alternative Speed Limits
+clientIsChoked
+clientIsInterested
+clientName
+clock_gettime
+closedir
+close() failed
+closenatpmp
+Closing libevent thread
+closing trevent pipe
+CLUTCH_HOME
+command is [%c], ret is %d, errno is %d
+Co_mment:
+Comment:
+comments
+comment.utf-8
+Compact Mode
+compact-view
+_Compact View
+compareInt
+completed
+com.transmissionbt.transmission_%lu_%lu
+config-dir
+Conflict
+connected
+connect() failed
+Connection failed
+Content-Encoding
+_Contents
+Content-Type
+<control>E
+<control>P
+<control>U
+<control>V
+ConvertUTF16toUTF32
+ConvertUTF16toUTF8
+ConvertUTF32toUTF16
+ConvertUTF32toUTF8
+ConvertUTF8toUTF16
+ConvertUTF8toUTF32
+cookies.txt
+copy-magnet-link-to-clipboard
+Copy _Magnet Link to Clipboard
+copyright
+Copyright (c) The Transmission Project
+core->priv
+corruptEver
+&corrupt=%llu
+Could not connect to tracker
+could not load icon pixbuf: %s
+Couldn't add corrupt torrent
+Couldn't add corrupt torrents
+Couldn't add duplicate torrent
+Couldn't add duplicate torrents
+Couldn't allocate IPv4 event
+Couldn't allocate IPv6 event
+Couldn't bind IPv4 socket
+Couldn't bind port %d on %s: %s
+Couldn't bind port %d on %s: %s (%s)
+Couldn't connect socket %d to %s, port %d (errno %d - %s)
+Couldn't create "%1$s": %2$s
+Couldn't create IPv4 socket
+Couldn't create socket: %s
+Couldn't find 'pieces' or 'have' or 'bitfield'
+Couldn't find settings key "%s"
+Couldn't inhibit desktop hibernation: %s
+Couldn't load DND flags. DND list (%p) has %zu children; torrent has %d files
+Couldn't move torrent
+Couldn't open "%1$s": %2$s
+Couldn't parse %s
+Couldn't parse UDP tracker packet.
+Couldn't read "%1$s": %2$s
+Couldn't read "%s"
+Couldn't read "%s": %s
+Couldn't rebind IPv6 socket
+Couldn't save file "%1$s": %2$s
+Couldn't save "%s"
+Couldn't save temporary file "%1$s": %2$s
+couldn't select '%s'
+Couldn't set source address %s on %d: %s
+Couldn't truncate "%1$s": %2$s
+Couldn't uninhibit desktop hibernation: %s.
+ count %d age %d%s%s:
+Create a torrent
+created by
+Created by %1$s
+Created by %1$s on %2$s
+created by.utf-8
+Created on %1$s
+Created "%s"!
+Creating "%s"
+Creating torrent
+creation date
+crypto.c
+crypto_provide is %d
+crypto select is %d
+CTorrent %d.%d.%02d
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+cumulative-stats
+CURL_CA_BUNDLE
+curl_easy_cleanup
+curl_easy_getinfo
+curl_easy_init
+curl_easy_setopt
+curl_free
+curl_global_init
+CURL_GNUTLS_3
+curl_multi_add_handle
+curl_multi_cleanup
+curl_multi_fdset
+curl_multi_info_read
+curl_multi_init
+curl_multi_perform
+curl_multi_remove_handle
+curl_multi_timeout
+curl_unescape
+Current Session
+current-stats
+__cxa_atexit
+d1:ad2:id20:
+d1:eli%de%d:
+d1:rd2:id20:
+D$(3T$$3D$,	
+D$,9D$(s
+D$$9D$ w
+__data_start
+dateCreated
+%d %b %Y
+dcgettext
+dcngettext
+%'d days
+%d.%d.%d.%d-%d.%d.%d.%d
+  (%d+%d nodes.)
+ %d/%d nodes:
+%d	%d	%s
+deadline+3 reached... calling break...
+ (Debug)
+default-download-directory
+deflateEnd
+deflateInit2_
+deflateReset
+delete-event
+_Delete Files and Remove
+delete_JSON_parser
+delete-local-data
+Delete these %d torrents' downloaded files?
+Delete this torrent's downloaded files?
+delete-torrent
+deselect-all
+Dese_lect All
+desiredAvailable
+desktop.ini
+destination
+_Destination folder:
+dgb7fidyjmg
+DH_compute_key
+DH_generate_key
+%'d hour
+%'d hours
+;D$Hr);D$Lw#1
+dht_blacklisted
+dht.bootstrap
+dht_debug
+dht_dump_tables
+dht-enabled
+dht_get_nodes
+dht_hash
+dht_init
+DHT initialization failed (errno = %d)
+DHT initialized
+dht_insert_node
+DHT is a tool for finding peers without a tracker.
+dht_nodes
+dht_periodic
+dht_periodic failed: %s
+dht_ping_node
+dht_random_bytes
+dht_search
+dht.transmissionbt.com
+dht_uninit
+difftime
+direction-key
+DIRTY_KEY == 0
+disabling libevent ready-to-read polling
+disabling libevent ready-to-write polling
+Discarded invalid multicast message
+Discarding task "%s"
+disk_G_str
+disk_K_str
+disk_M_str
+disk_T_str
+display-name
+D$L;D$,~
+D$L+D$89
+%'d minute
+%'d minutes
+Dn Blocks
+DNS Lookup failed: %s
+DNS lookup succeeded
+done-date
+doneDate
+Done uninitialising Local Peer Discovery
+Done uninitializing DHT
+downloadCount
+download-dir
+downloadDir
+download-dir-free-space
+downloaded
+Downloaded:
+downloaded-bytes
+downloadedBytes
+downloadedEver
+downloaders
+Downloading
+Downloading from %1$'d of %2$'d connected peer
+Downloading from %1$'d of %2$'d connected peers
+Downloading from this peer
+Downloading metadata from %1$'d peer (%2$d%% done)
+Downloading metadata from %1$'d peers (%2$d%% done)
+downloading-time-seconds
+downloadLimit
+downloadLimited
+download-queue-enabled
+download-queue-size
+Downloads
+_Download (%s):
+Do_wnload (%s):
+downloadSpeed
+Downloads sharing data in the last N minutes are _active:
+down-mode
+down-speed
+D$(;p,}A
+%d peers to go round-robin for %s
+drag-data-received
+dropped6
+Dropped %d announces in the last interval (max. %d allowed)
+Dropping request due to rate limiting.
+%'d second
+%'d seconds
+.DS_Store
+%'d Torrent
+%'d Torrent Properties
+%'d Torrents
+duplicate torrent
+Duration:
+e1:q13:announce_peer1:t%d:
+e1:q4:ping1:t%d:
+e1:q9:find_node1:t%d:
+e1:q9:get_peers1:t%d:
+editable
+edit-menu
+edit-preferences
+Eek!  Got get_peers with no info_hash.
+Eek... numstorage became negative.
+Eek!  Overlong token.
+eek... unexpected end for values.
+eek... unexpected end for want.
+eek... unexpected want flag (%c)
+Electric Sheep
+ellipsize
+Enable Alternative Speed _Limits
+Enable _automatic updates
+Enable _blocklist:
+enabled-key
+Enable _uTP for peer communication
+_Enable web client
+enabling libevent ready-to-read polling
+enabling libevent ready-to-write polling
+encoding
+encrypted
+Encrypted connection
+encrypted-connections-only
+encryption handshake: pad_d_len is too long
+_Encryption mode:
+endpwent
+Enhanced CTorrent
+ERR_error_string_n
+ERR_get_error
+err is %d
+__errno_location
+Error: invalid announce URL "%s"
+error moving "%s" to "%s": %s
+Error opening "%s"
+Error opening torrent
+Error reading "%s": %s
+Error registering Transmission as x-scheme-handler/magnet handler: %s
+Error: %s
+error setting announce list
+errorString
+Error uncompressing blocklist: %s (%d)
+Error while flushing completed pieces from cache
+Error writing "%s": %s
+evbuffer_add
+evbuffer_add_buffer
+evbuffer_add_cb
+evbuffer_add_printf
+evbuffer_add_reference
+evbuffer_add_uint16
+evbuffer_add_uint32
+evbuffer_add_uint64
+evbuffer_add_uint8
+evbuffer_add_vprintf
+evbuffer_commit_space
+evbuffer_copyout
+evbuffer_drain
+evbuffer_expand
+evbuffer_free
+evbuffer_free_to_str
+evbuffer_get_length
+evbuffer_new
+evbuffer_peek
+evbuffer_ptr_set
+evbuffer_pullup
+evbuffer_read
+evbuffer_remove
+evbuffer_remove_buffer
+evbuffer_reserve_space
+evbuffer_search
+evbuffer_write_atmost
+evdns_base_free
+evdns_base_new
+evdns_err_to_string
+evdns_getaddrinfo
+event_add
+event_base_dispatch
+event_base_free
+event_base_loopbreak
+event_base_new
+event_del
+event_free
+event_new
+event_read_cb got an error. res is %d, what is %hd, errno is %d (%s)
+&event=%s
+event_set_log_callback
+event_write_cb got an error. res is %d, what is %hd, errno is %d (%s)
+Every Day
+evhttp_add_header
+evhttp_bind_socket
+evhttp_find_header
+evhttp_free
+evhttp_new
+evhttp_send_reply
+evhttp_set_gencb
+evutil_ascii_strcasecmp
+evutil_ascii_strncasecmp
+evutil_closesocket
+evutil_freeaddrinfo
+evutil_inet_ntop
+evutil_inet_pton
+evutil_make_socket_nonblocking
+evutil_strtoll
+evutil_vsnprintf
+Expectation Failed
+Expiring old DNS result
+Failed to create proxy for %s
+Failed to set receive buffer: requested %d, got %d
+Failed to set receive buffer: %s
+Failed to set send buffer: requested %d, got %d
+Failed to set send buffer: %s
+failure reason
+favicons
+fcntl() failed
+fdlimit.c
+fidydgb7egc
+FileCroc
+file-data
+file index out of range
+file-is-chosen
+File listing not available for combined torrent properties
+file-menu
+file://%s
+files-added
+filesAdded
+File "%s" is in the way
+file://%s/%s
+fileStats
+files-unwanted
+files-wanted
+_Filterbar
+filter.c
+Find node!
+Finished bootstrapping
+finished web task %p; got %ld
+FireTorrent
+firewalled
+FlashGet
+flushing file %d from cache to disk: blocks [%zu...%zu]
+flushing outMessages... to %p (length is %zu)
+flushing peer-io, direction %d, limit %zu, bytesUsed %d
+focus-in-event
+font-desc
+Forbidden
+foreground
+foreground-rgba
+forestgreen
+ for get_peers
+Forwarded
+for_widget != NULL
+Found %d blocklists in "%s"
+Found %d new blocklists in "%s"
+Found %d torrents in "%s"
+Found file #%d: %s
+Found Internet Gateway Device "%s"
+found it... looking setting to awaiting_crypto_provide
+Found public address "%s"
+FoxTorrent/RedSwoosh
+__fprintf_chk
+freeUPNPDevlist
+FreeUPNPUrls
+fromCache
+fromIncoming
+fromLtep
+fromTracker
+ftruncate64
+fwo2z<4m
+__fxstat64
+G3 Torrent
+gai_strerror
+g_app_info_create_from_commandline
+g_app_info_get_default_for_uri_scheme
+g_app_info_launch_default_for_uri
+g_app_info_set_as_default_for_type
+g_application_hold
+g_application_new
+g_application_release
+g_application_run
+g_array_append_vals
+g_array_free
+g_array_new
+g_ascii_toupper
+g_assertion_message
+g_assertion_message_expr
+Gateway Timeout
+g_build_filename
+g_build_filenamev
+g_bus_get_sync
+g_cclosure_marshal_VOID__BOOLEAN
+g_cclosure_marshal_VOID__INT
+g_cclosure_marshal_VOID__POINTER
+g_cclosure_marshal_VOID__STRING
+g_cclosure_marshal_VOID__UINT_POINTER
+g_clear_error
+g_content_type_get_icon
+g_content_type_guess
+g_current_ms
+g_dbus_connection_call_sync
+g_dbus_proxy_call
+g_dbus_proxy_call_finish
+g_dbus_proxy_get_type
+g_dbus_proxy_new_for_bus
+g_dbus_proxy_new_for_bus_finish
+g_dir_close
+g_dir_open
+g_dir_read_name
+gdk_cursor_new_for_display
+gdk_display_flush
+gdk_pixbuf_fill
+gdk_pixbuf_get_type
+gdk_pixbuf_get_width
+gdk_pixbuf_new
+gdk_pixbuf_new_from_file_at_size
+gdk_pixbuf_new_from_inline
+gdk_threads_add_idle
+gdk_threads_add_timeout_seconds
+gdk_threads_enter
+gdk_threads_leave
+gdk_window_get_state
+gdk_window_set_cursor
+g_dpgettext
+g_dpgettext2
+Generating new id
+g_error_free
+GetCapabilities
+getCompat090PrefsFilename
+getdefaultgateway
+GET  extended-handshake, couldn't get dictionary
+getForegroundColor
+getnatpmprequesttimeout
+getpagesize
+Get_peers!
+Get_peers with no info_hash
+getPrefsFilename
+getpwuid
+GetRight
+getrlimit64
+getsockname
+getsockopt
+gettimeofday
+gettimeofday() failed
+Getting new blocklist
+g_file_delete
+g_file_equal
+g_file_get_basename
+g_file_get_parse_name
+g_file_get_path
+g_file_get_type
+g_file_has_uri_scheme
+g_file_icon_get_file
+g_file_icon_get_type
+g_file_info_get_attribute_string
+g_file_info_get_attribute_uint64
+g_file_load_contents_async
+g_file_load_contents_finish
+g_file_monitor_cancel
+g_file_monitor_directory
+g_filename_from_uri
+g_file_new_for_path
+g_file_new_for_uri
+g_file_query_info
+g_file_set_contents
+g_file_set_display_name
+g_file_test
+g_file_trash
+g_get_application_name
+g_get_current_dir
+g_get_home_dir
+g_get_user_cache_dir
+g_get_user_config_dir
+g_get_user_special_dir
+g_hash_table_destroy
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_remove
+g_hash_table_unref
+g_int_equal
+g_intern_static_string
+g_int_hash
+G_IS_DBUS_PROXY( proxy )
+g_key_file_free
+g_key_file_get_keys
+g_key_file_get_value
+g_key_file_load_from_file
+g_key_file_new
+gl_confdir != NULL
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.1.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+g_list_foreach
+g_list_free
+g_locale_to_utf8
+g_malloc
+g_malloc0
+g_malloc0_n
+g_malloc_n
+g_markup_escape_text
+g_markup_printf_escaped
+g_memdup
+g_mkdir_with_parents
+__gmon_start__
+g_node_children_foreach
+g_node_destroy
+g_node_insert_before
+g_node_new
+g_object_class_install_property
+g_object_get
+g_object_get_data
+g_object_get_qdata
+g_object_new
+g_object_ref
+g_object_ref_sink
+g_object_set
+g_object_set_data
+g_object_set_data_full
+g_object_set_qdata
+g_object_set_qdata_full
+g_object_steal_data
+g_object_steal_qdata
+g_object_unref
+g_object_weak_ref
+g_once_init_enter
+g_once_init_leave
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_translation_domain
+got a bitfield
+Got a BT_FEXT_ALLOWED_FAST
+Got a BT_FEXT_HAVE_ALL
+Got a BT_FEXT_HAVE_NONE
+Got a BT_FEXT_REJECT
+Got a BT_FEXT_SUGGEST
+Got a BT_LTEP
+Got a BT_PORT
+got a Cancel %u:%u->%u
+got a compact peers length of %zu
+Got a list of %1$s%2$'d peers%3$s %4$s ago
+Got an error %1$s"%2$s"%3$s %4$s ago
+got a new atom: %s
+Got a new connection ID from tracker: %llu
+Got announce response
+Got announce response: connected:%d timeout:%d seeders:%d leechers:%d downloads:%d interval:%d min_interval:%d tracker_id_str:%s pex:%zu pex6:%zu err:%s warn:%s
+got a peers6 length of %zu
+got a peers list with %zu entries
+Got a scrape error "%s%s%s" %s ago
+got a %s handshake
+got block %u:%u->%u
+got BT id %d, len %d, buffer size is %zu
+got Choke
+got %d peers; seed prob %d
+got Have: %u
+got incoming block header %u:%u->%u
+got INCOMING connection's encrypted handshake for torrent [%s]
+got Interested
+got KeepAlive
+got ltep handshake
+gotMetadataFromURL: http error %ld: %s
+got metadata piece %d
+gotNewBlocklist: http error %ld: %s
+got Not Interested
+Got reply to announce_peer.
+got Request: %u:%u->%u
+Got scrape response for "%s"
+Got signal %d; trying to shut down cleanly. Do it again if it gets stuck.
+got Unchoke
+got ut metadata
+got ut_metadata msg: type %d, piece %d, total_size %d
+got ut pex
+Got values (%d+%d)!
+got %zu bytes for block %u:%u->%u ... %d remain
+Got %zu peers from tracker
+Got %zu seeds from tracker
+g_param_spec_boolean
+g_param_spec_double
+g_param_spec_int
+g_param_spec_pointer
+g_path_get_basename
+g_path_get_dirname
+g_path_is_absolute
+g_ptr_array_add
+g_ptr_array_free
+g_ptr_array_new
+g_quark_from_static_string
+g_return_if_fail_warning
+g_rst_info
+g_set_application_name
+g-signal
+g_signal_callback
+g_signal_connect_data
+g_signal_emit
+g_signal_emit_by_name
+g_signal_handler_block
+g_signal_handler_disconnect
+g_signal_handlers_disconnect_matched
+g_signal_handler_unblock
+g_signal_new
+g_slist_append
+g_slist_copy
+g_slist_delete_link
+g_slist_find_custom
+g_slist_foreach
+g_slist_free
+g_slist_length
+g_slist_prepend
+g_slist_remove
+g_slist_sort
+g_snprintf
+g_source_remove
+g_spawn_async
+g_spawn_command_line_async
+GSTorrent
+g_strchomp
+g_strchug
+g_strconcat
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strerror
+g_strfreev
+g_str_hash
+g_str_has_suffix
+g_string_append
+g_string_append_printf
+g_string_assign
+g_string_chunk_free
+g_string_chunk_insert_const
+g_string_chunk_new
+g_string_free
+g_string_insert_c
+g_string_new
+g_string_printf
+g_string_set_size
+g_string_sized_new
+g_string_truncate
+g_strjoinv
+g_strlcpy
+g_strndup
+g_strsplit
+g_strv_length
+g_themed_icon_get_type
+g_thread_create
+g_thread_init
+g_timer_destroy
+g_timer_elapsed
+g_timer_new
+g_timer_start
+gtk-about
+gtk_action_activate
+gtk_action_get_name
+gtk_action_get_type
+gtk_action_group_add_actions
+gtk_action_group_add_radio_actions
+gtk_action_group_add_toggle_actions
+gtk_action_group_get_type
+gtk_action_group_list_actions
+gtk_action_group_new
+gtk_action_group_set_translation_domain
+gtk_alignment_new
+gtk-apply
+gtk_bin_get_child
+gtk_bin_get_type
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_button_get_type
+gtk_button_new
+gtk_button_new_from_stock
+gtk_button_new_with_mnemonic
+gtk_button_set_alignment
+gtk_button_set_image
+gtk_button_set_relief
+gtk-cancel
+gtk_cell_layout_get_type
+gtk_cell_layout_pack_end
+gtk_cell_layout_pack_start
+gtk_cell_layout_set_attributes
+gtk_cell_layout_set_cell_data_func
+gtk_cell_renderer_get_padding
+gtk_cell_renderer_get_preferred_size
+gtk_cell_renderer_get_type
+gtk_cell_renderer_pixbuf_new
+gtk_cell_renderer_progress_new
+gtk_cell_renderer_render
+gtk_cell_renderer_text_new
+gtk_cell_renderer_toggle_new
+gtk_check_button_new_with_mnemonic
+gtk_check_menu_item_get_active
+gtk_check_menu_item_get_type
+gtk_check_menu_item_set_active
+gtk-clear
+GTK+ client doesn't support connections to remote servers yet.
+gtk_clipboard_get
+gtk_clipboard_get_for_display
+gtk_clipboard_set_text
+gtk_clipboard_wait_for_text
+gtk-close
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_new_with_model
+gtk_combo_box_set_active
+gtk_combo_box_set_active_iter
+gtk_combo_box_set_row_separator_func
+gtk_combo_box_set_wrap_width
+gtk_container_add
+gtk_container_get_type
+gtk_container_remove
+gtk_container_set_border_width
+gtk-copy
+gtk-delete
+gtk_dialog_add_button
+gtk_dialog_add_buttons
+gtk-dialog-error
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_get_widget_for_response
+gtk_dialog_new_with_buttons
+gtk_dialog_response
+gtk_dialog_run
+gtk_dialog_set_alternative_button_order
+gtk_dialog_set_default_response
+gtk_dialog_set_response_sensitive
+gtk_drag_dest_add_uri_targets
+gtk_drag_dest_set
+gtk_drag_finish
+gtk-edit
+gtk_editable_get_chars
+gtk_editable_get_type
+gtk_entry_get_text
+gtk_entry_get_text_length
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_set_icon_from_stock
+gtk_entry_set_text
+gtk_entry_set_visibility
+gtk_entry_set_width_chars
+gtk-execute
+gtk_file_chooser_add_filter
+gtk_file_chooser_add_shortcut_folder
+gtk_file_chooser_button_get_type
+gtk_file_chooser_button_new
+gtk_file_chooser_dialog_new
+gtk_file_chooser_get_current_folder
+gtk_file_chooser_get_extra_widget
+gtk_file_chooser_get_filename
+gtk_file_chooser_get_files
+gtk_file_chooser_get_type
+gtk_file_chooser_set_current_folder
+gtk_file_chooser_set_extra_widget
+gtk_file_chooser_set_filename
+gtk_file_chooser_set_select_multiple
+gtk_file_filter_add_pattern
+gtk_file_filter_new
+gtk_file_filter_set_name
+gtk_frame_get_type
+gtk_frame_new
+gtk_frame_set_shadow_type
+gtk_get_current_event_time
+gtk-go-down
+gtk-goto-bottom
+gtk-goto-top
+gtk-go-up
+gtk-help
+gtk_icon_factory_add
+gtk_icon_factory_add_default
+gtk_icon_factory_new
+gtk_icon_info_free
+gtk_icon_info_get_filename
+gtk_icon_info_load_icon
+gtk_icon_set_new_from_pixbuf
+gtk_icon_set_unref
+gtk_icon_size_lookup_for_settings
+gtk_icon_theme_add_builtin_icon
+gtk_icon_theme_choose_icon
+gtk_icon_theme_get_default
+gtk_icon_theme_get_for_screen
+gtk_icon_theme_has_icon
+gtk_icon_theme_lookup_icon
+gtk_image_get_type
+gtk_image_new
+gtk_image_new_from_stock
+gtk_image_set_from_stock
+gtk_init
+gtk_label_get_text
+gtk_label_get_type
+gtk_label_new
+gtk_label_new_with_mnemonic
+gtk_label_set_justify
+gtk_label_set_markup
+gtk_label_set_markup_with_mnemonic
+gtk_label_set_mnemonic_widget
+gtk_label_set_single_line_mode
+gtk_label_set_text
+gtk_label_set_use_markup
+gtk_list_store_append
+gtk_list_store_clear
+gtk_list_store_get_type
+gtk_list_store_insert_with_values
+gtk_list_store_new
+gtk_list_store_newv
+gtk_list_store_remove
+gtk_list_store_set
+gtk-media-pause
+gtk-media-play
+gtk_menu_get_type
+gtk_menu_item_get_type
+gtk_menu_item_new_with_label
+gtk_menu_item_set_submenu
+gtk_menu_new
+gtk_menu_popup
+gtk_menu_shell_append
+gtk_menu_shell_get_type
+gtk_message_dialog_format_secondary_markup
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_message_dialog_new_with_markup
+gtk_message_dialog_set_markup
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk_misc_set_padding
+gtk-network
+gtk_notebook_append_page
+gtk_notebook_get_type
+gtk_notebook_new
+gtk-open
+gtk_paned_get_type
+gtk_paned_new
+gtk_paned_pack1
+gtk_paned_pack2
+gtk-preferences
+gtk_progress_bar_get_type
+gtk_progress_bar_new
+gtk_progress_bar_set_fraction
+gtk_progress_bar_set_text
+gtk-properties
+gtk-quit
+gtk_radio_action_get_current_value
+gtk_radio_button_get_group
+gtk_radio_button_get_type
+gtk_radio_button_new_with_mnemonic
+gtk_radio_button_new_with_mnemonic_from_widget
+gtk_radio_menu_item_get_group
+gtk_radio_menu_item_get_type
+gtk_radio_menu_item_new_with_label
+gtk_radio_menu_item_new_with_label_from_widget
+gtk-refresh
+gtk-remove
+gtk-save
+gtk-save-as
+gtk_scrolled_window_get_type
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_scrolled_window_set_shadow_type
+gtk-select-all
+gtk_selection_data_get_uris
+gtk_separator_menu_item_new
+gtk_separator_tool_item_new
+gtk_show_about_dialog
+gtk_show_uri
+gtk_spin_button_get_type
+gtk_spin_button_get_value
+gtk_spin_button_get_value_as_int
+gtk_spin_button_new_with_range
+gtk_spin_button_set_digits
+gtk_spin_button_set_value
+gtk_style_context_add_class
+gtk_style_context_get_color
+gtk_table_attach
+gtk_table_attach_defaults
+gtk_table_get_type
+gtk_table_new
+gtk_table_resize
+gtk_table_set_col_spacing
+gtk_table_set_col_spacings
+gtk_table_set_row_spacings
+gtk_text_buffer_get_bounds
+gtk_text_buffer_get_text
+gtk_text_buffer_new
+gtk_text_buffer_set_text
+gtk_text_view_get_buffer
+gtk_text_view_get_type
+gtk_text_view_new
+gtk_text_view_new_with_buffer
+gtk_text_view_set_editable
+gtk_text_view_set_wrap_mode
+gtk_toggle_action_get_active
+gtk_toggle_action_get_type
+gtk_toggle_action_set_active
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_new
+gtk_toggle_button_set_active
+gtk_toggle_tool_button_get_active
+gtk_toggle_tool_button_new_from_stock
+gtk_toolbar_get_type
+gtk_toolbar_insert
+gtk_toolbar_new
+gtk_toolbar_set_style
+gtk_tool_button_new_from_stock
+gtk_tool_item_new
+gtk_tooltip_set_markup
+gtk_tooltip_set_text
+gtk_tree_model_filter_get_type
+gtk_tree_model_filter_new
+gtk_tree_model_filter_refilter
+gtk_tree_model_filter_set_visible_func
+gtk_tree_model_foreach
+gtk_tree_model_get
+gtk_tree_model_get_iter
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_iter_children
+gtk_tree_model_iter_has_child
+gtk_tree_model_iter_n_children
+gtk_tree_model_iter_next
+gtk_tree_model_iter_nth_child
+gtk_tree_model_iter_parent
+gtk_tree_model_sort_new_with_model
+gtk_tree_path_compare
+gtk_tree_path_free
+gtk_tree_path_get_depth
+gtk_tree_path_is_descendant
+gtk_tree_path_new_from_string
+gtk_tree_row_reference_free
+gtk_tree_row_reference_get_model
+gtk_tree_row_reference_get_path
+gtk_tree_row_reference_new
+gtk_tree_selection_count_selected_rows
+gtk_tree_selection_get_selected
+gtk_tree_selection_get_selected_rows
+gtk_tree_selection_get_type
+gtk_tree_selection_iter_is_selected
+gtk_tree_selection_path_is_selected
+gtk_tree_selection_select_all
+gtk_tree_selection_selected_foreach
+gtk_tree_selection_select_path
+gtk_tree_selection_set_mode
+gtk_tree_selection_unselect_all
+gtk_tree_sortable_get_sort_column_id
+gtk_tree_sortable_get_type
+gtk_tree_sortable_set_sort_column_id
+gtk_tree_sortable_set_sort_func
+gtk_tree_store_get_type
+gtk_tree_store_insert_with_values
+gtk_tree_store_new
+gtk_tree_store_remove
+gtk_tree_store_set
+gtk_tree_view_append_column
+gtk_tree_view_column_add_attribute
+gtk_tree_view_column_get_type
+gtk_tree_view_column_new
+gtk_tree_view_column_new_with_attributes
+gtk_tree_view_column_pack_start
+gtk_tree_view_column_set_attributes
+gtk_tree_view_column_set_cell_data_func
+gtk_tree_view_column_set_expand
+gtk_tree_view_column_set_fixed_width
+gtk_tree_view_column_set_resizable
+gtk_tree_view_column_set_sizing
+gtk_tree_view_column_set_sort_column_id
+gtk_tree_view_column_set_title
+gtk_tree_view_column_set_visible
+gtk_tree_view_expand_all
+gtk_tree_view_get_column
+gtk_tree_view_get_model
+gtk_tree_view_get_path_at_pos
+gtk_tree_view_get_selection
+gtk_tree_view_get_tooltip_context
+gtk_tree_view_get_type
+gtk_tree_view_get_visible_range
+gtk_tree_view_new
+gtk_tree_view_new_with_model
+gtk_tree_view_remove_column
+gtk_tree_view_scroll_to_cell
+gtk_tree_view_set_cursor
+gtk_tree_view_set_expander_column
+gtk_tree_view_set_fixed_height_mode
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_model
+gtk_tree_view_set_rules_hint
+gtk_tree_view_set_search_column
+gtk_tree_view_set_search_equal_func
+gtk_tree_view_set_tooltip_column
+gtk_ui_manager_add_ui_from_string
+gtk_ui_manager_ensure_update
+gtk_ui_manager_get_accel_group
+gtk_ui_manager_get_action_groups
+gtk_ui_manager_get_widget
+gtk_ui_manager_insert_action_group
+gtk_ui_manager_new
+gtk_widget_create_pango_context
+gtk_widget_create_pango_layout
+gtk_widget_destroy
+gtk_widget_destroyed
+gtk_widget_get_ancestor
+gtk_widget_get_display
+gtk_widget_get_realized
+gtk_widget_get_screen
+gtk_widget_get_settings
+gtk_widget_get_style_context
+gtk_widget_get_toplevel
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_get_window
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_set_tooltip_text
+gtk_widget_set_visible
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_add_accel_group
+gtk_window_get_position
+gtk_window_get_size
+gtk_window_get_transient_for
+gtk_window_get_type
+gtk_window_list_toplevels
+gtk_window_maximize
+gtk_window_move
+gtk_window_new
+gtk_window_present_with_time
+gtk_window_resize
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_role
+gtk_window_set_skip_taskbar_hint
+gtk_window_set_title
+gtk_window_set_transient_for
+gtk_window_set_urgency_hint
+gtr_action_activate
+gtr_action_get_widget
+gtr_action_set_important
+gtr_action_set_sensitive
+gtr_action_set_toggled
+gtr_actions_handler
+gtr_actions_init
+gtr_actions_set_core
+gtr_add_torrent_error_dialog
+gtr-child-hidden
+gtr_combo_box_get_active_enum
+gtr_combo_box_new_enum
+gtr_combo_box_set_active_enum
+gtr_confirm_remove
+gtr_core_add_ctor
+gtr_core_add_files
+gtr_core_add_from_url
+gtr_core_add_torrent
+gtr_core_blocklist_update
+gtr_core_clear
+gtr_core_close
+gtr_core_exec
+gtr_core_exec_json
+gtr_core_find_torrent
+gtr_core_get_active_torrent_count
+gtr_core_get_torrent_count
+gtr_core_load
+gtr_core_model
+gtr_core_new
+gtr_core_open_folder
+gtr_core_port_test
+gtr_core_pref_changed
+gtr_core_remove_torrent
+gtr_core_session
+gtr_core_set_hibernation_allowed
+gtr_core_set_pref
+gtr_core_set_pref_bool
+gtr_core_set_pref_double
+gtr_core_set_pref_int
+gtr_core_torrents_added
+gtr_core_update
+gtr_dialog_set_content
+gtr_file_list_clear
+gtr_file_list_new
+gtr_file_list_set_torrent
+gtr_file_trash_or_remove
+gtr_filter_bar_new
+gtr_get_favicon
+gtr_get_favicon_from_url
+gtr_get_help_uri
+gtr_get_host_from_url
+gtr_get_mime_type_from_filename
+gtr_get_mime_type_icon
+gtr_get_unicode_string
+gtr_hbox_new
+gtr_http_failure_dialog
+gtr_icon_new
+gtr_icon_refresh
+gtr_is_hex_hashcode
+gtr_is_magnet_link
+gtr_label_set_text
+gtr_message_log_window_new
+gtr_notify_init
+gtr_notify_torrent_added
+gtr_notify_torrent_completed
+gtr_open_file
+gtr_open_uri
+gtr_paste_clipboard_url_into_entry
+gtr_pref_double_get
+gtr_pref_double_set
+gtr_pref_flag_get
+gtr_pref_flag_set
+gtr_pref_get_all
+gtr_pref_init
+gtr_pref_int_get
+gtr_pref_int_set
+gtr_pref_save
+gtr_prefs_dialog_new
+gtr_pref_string_get
+gtr_pref_string_set
+gtr_priority_combo_new
+gtr-relocate-data
+gtr_relocate_dialog_new
+gtr_stats_dialog_new
+gtr_torrent_creation_dialog_new
+gtr_torrent_details_dialog_new
+gtr_torrent_details_dialog_set_torrents
+gtr_torrent_open_from_file_dialog_new
+gtr_torrent_open_from_url_dialog_new
+gtr_torrent_options_dialog_new
+gtr_unrecognized_url_dialog
+gtr_vbox_new
+gtr_widget_set_visible
+gtr_window_get_selection
+gtr_window_new
+gtr_window_refresh
+gtr_window_set_busy
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_init
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+g_utf8_casefold
+g_utf8_strdown
+g_utp_sockets
+g_value_get_boolean
+g_value_get_double
+g_value_get_int
+g_value_get_pointer
+g_value_set_boolean
+g_value_set_double
+g_value_set_int
+g_value_set_pointer
+g_variant_builder_add
+g_variant_builder_init
+g_variant_get
+g_variant_get_child_value
+g_variant_get_uint32
+g_variant_is_of_type
+g_variant_is_of_type( params, G_VARIANT_TYPE( "(u*)" ) )
+g_variant_new
+g_variant_type_checked_
+g_variant_unref
+gzip;q=1.0, deflate, identity
+<h1>%d: %s</h1>
+handling canRead; state is [%s]
+handshake.c
+handshakeDone: %s
+handshake failed, trying plaintext...
+hasAnnounced
+hashString
+hasScraped
+has-tooltip
+haveUnchecked
+haveValid
+help-menu
+here is the handshake: [%*.*s]
+hig_workarea_add_label
+hig_workarea_add_label_w
+hig_workarea_add_row
+hig_workarea_add_row_w
+hig_workarea_add_section_divider
+hig_workarea_add_section_title
+hig_workarea_add_section_title_widget
+hig_workarea_add_tall_row
+hig_workarea_add_wide_checkbutton
+hig_workarea_add_wide_control
+hig_workarea_add_wide_tall_control
+hig_workarea_create
+hig_workarea_finish
+HJF7LNJyQSO
+H}:L$HuP
+%H:%M:%S
+Honor global _limits
+honorsSessionLimits
+Host: %s:%u
+/html/preferences.html
+http://localhost:%d/
+HTTP _port:
+http://portcheck.transmissionbt.com/%d
+https://
+http://%s/favicon.%s
+HTTP Version Not Supported
+http://www.example.com/blocklist
+http://www.transmissionbt.com/
+http://www.transmissionbt.com/donate.php
+http://www.transmissionbt.com/help/gtk/%d.%dx
+Hydranode
+I _Accept
+ia_len is %d
+icon_cache_new
+icon-release
+iconv_close
+iconv_open
+idle-data
+idle-limit
+idle-mode
+idle-seeding-limit
+idle-seeding-limit-enabled
+If your router supports UPnP, please make sure UPnP is enabled!
+image/gif
+image/png
+image/vnd.microsoft.icon
+Importing "%s"
+Impossible state UTP_STATE_DESTROYING
+incomplete
+incomplete-dir
+incomplete-dir-enabled
+inconsistent
+Incorrect token for announce_peer.
+increasing peer %s strike count to %d
+incremented atom %s numFails to %d
+index.html
+index %lu offset %lu length %lu err %d
+inflateEnd
+inflateInit2_
+Infohash
+Infohash: %s
+inhibit-desktop-hibernation
+_Inhibit hibernation when torrents are active
+Inhibiting desktop hibernation
+Initialising Local Peer Discovery
+Initializing DHT
+init_JSON_config
+initnatpmp
+<i>No source selected</i>
+In readBtPiece
+in readYa... need %d, have %zu
+Internal Server Error
+in tr_peerIo destructor
+in tr_peerIoFree
+in tr_peerIoTryWrite %zu
+invalid argument
+invalid arguments
+Invalid metadata
+Invalid metadata entry "%s"
+invalid or corrupt torrent file
+Invalid value for "blocks"
+Invalid value for HAVE
+invoking function in libevent thread
+_IO_putc
+_IO_stdin_used
+IP addresses may use wildcards, such as 192.168.*.*
+IPv4 DHT announce done
+IPv6 DHT announce done
+Is another copy of Transmission already running?
+isBackup
+isDownloadingFrom
+isEncrypted
+isFinished
+<i>%s</i>
+is-important
+isIncoming
+isLegalUTF8Sequence
+ISO-8859-15
+__isoc99_sscanf
+isPeerGood == %d
+isPrivate
+isStalled
+isUploadingTo
+<i>Testing TCP port
+I think peer has sent us a corrupt handshake...
+I think peer is sending us an encrypted handshake...
+Jordan Lee (Backend; GTK+)
+JSON_parser_char
+JSON_parser_done
+JSON parser failed at line %d, column %d: "%.16s"
+JSON parser failed in %s at line %d, column %d: "%.16s"
+JSON_parser_is_legal_white_space_string
+_Jv_RegisterClasses
+JVtorrent
+kD$(<iT$8
+Keep _incomplete torrents in:
+KMIyHJF7
+ (known)
+KTorrent
+KTorrent %d.%d Dev %d
+KTorrent %d.%d RC %d
+L$,9D$Lu
++\$L9\$tv
+Last activity:
+lastAnnouncePeerCount
+lastAnnounceResult
+lastAnnounceStartTime
+lastAnnounceSucceeded
+lastAnnounceTime
+lastAnnounceTimedOut
+lastScrapeResult
+lastScrapeStartTime
+lastScrapeSucceeded
+lastScrapeTime
+lastScrapeTimedOut
+launchpad_integration_add_ui
+[LAZY] checked just-completed piece %zu
+[LAZY] tr_torrentCheckPiece tested piece %zu, pass==%d
+[LAZY] uh oh, the files disappeared
+L$D9L$lu+
+Learned %d local peer from LPD (%s:%u)
+Learned %d %s peers from DHT
+LeechCraft
+leecherCount
+leftUntilDone
+Length Required
+L$H9L$8u
+libappindicator3.so.1
+__libc_csu_fini
+__libc_csu_init
+libcrypto.so.1.0.0
+libc.so.6
+__libc_start_main
+libcurl-gnutls.so.4
+libevent-2.0.so.5
+libevent got an error what==%d, errno=%d (%s)
+libevent got an error! what=%hd, errno=%d (%s)
+libevent got a timeout, what=%hd
+libevent says this peer is ready to read
+libevent says this peer is ready to write
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgthread-2.0.so.0
+libgtk-3.so.0
+liblaunchpad-integration-3.0.so.1
+/lib/ld-linux.so.2
+libminiupnpc.so.8
+libm.so.6
+libpango-1.0.so.0
+libpthread.so.0
+librt.so.1
+libTorrent (Rakshasa)
+libtorrent (Rasterbar)
+libz.so.1
+Limewire
+Limit Download Speed
+Limit _download speed (%s):
+Limit Upload Speed
+Limit _upload speed (%s):
+List contains invalid URLs
+listening-port
+Listening Port
+%llu-%llu
+Loaded %d IPv4 peers from resume file
+Loaded %d IPv6 peers from resume file
+Loaded %d torrents
+Local Address is "%s"
+Local data is _already there
+localeconv
+Local Peer Discovery initialised
+localtime
+logo-icon-name
+lowdelay
+lowering batch interval to %d seconds
+LPD announce message away
+lpd-enabled
+LPD initialisation failed (errno = %d)
+LPD is a tool for finding peers on your local network.
+lpd_mcastGroup
+lpd_mcastPort
+;L$(wp+D$ 
+magnet:?
+magnet-info
+magnetLink
+magnet:%s
+magnet status: checksum passed %d, metainfo parsed %d
+Magnet torrent's metadata is not usable
+magnet:?xt=urn:btih:%s
+main-window-height
+main-window-is-maximized
+/main-window-menu
+/main-window-menu/help-menu/launchpad-items
+/main-window-menu/torrent-menu/torrent-reannounce
+/main-window-popup
+main_window_setup
+/main-window-toolbar
+main-window-width
+main-window-x
+main-window-y
+makemeta.c
+makemeta-ui.c
+manualAnnounceTime
+marking peer %s as a seed
+marking peer %s as unreachable... numFails is %d
+Martini Man
+max atom count is %d... pruned from %d to %d
+maxConnectedPeers
+Maximum active _downloads:
+Maximum cache size set to %s (%d blocks)
+_Maximum peers:
+Maximum peers _overall:
+Maximum peers per _torrent:
+max-peers
+__memcpy_chk
+mem_G_str
+mem_K_str
+mem_M_str
+Memory allocation failed
+memory-bytes
+memory-units
+__memset_chk
+mem_T_str
+    </menu>
+      </menu>
+    <menu action='edit-menu'>
+    <menu action='file-menu'>
+    <menu action='help-menu'>
+    <menu action='queue-menu'>
+      <menu action='queue-menu'>
+    <menu action='sort-menu'>
+    <menu action='torrent-menu'>
+    <menu action='view-menu'>
+  </menubar>
+  <menubar name='main-window-menu'>
+    <menuitem action='alt-speed-enabled'/>
+      <menuitem action='compact-view'/>
+    <menuitem action='copy-magnet-link-to-clipboard'/>
+      <menuitem action='copy-magnet-link-to-clipboard'/>
+    <menuitem action='delete-torrent'/>
+      <menuitem action='delete-torrent'/>
+      <menuitem action='deselect-all'/>
+      <menuitem action='donate'/>
+      <menuitem action='edit-preferences'/>
+      <menuitem action='help'/>
+      <menuitem action='new-torrent'/>
+    <menuitem action='open-torrent-folder'/>
+      <menuitem action='open-torrent-folder'/>
+    <menuitem action='open-torrent-from-url'/>
+      <menuitem action='open-torrent-from-url'/>
+    <menuitem action='open-torrent-menu'/>
+      <menuitem action='open-torrent-menu'/>
+    <menuitem action='pause-all-torrents'/>
+      <menuitem action='pause-all-torrents'/>
+      <menuitem action='queue-move-bottom'/>
+        <menuitem action='queue-move-bottom'/>
+      <menuitem action='queue-move-down'/>
+        <menuitem action='queue-move-down'/>
+      <menuitem action='queue-move-top'/>
+        <menuitem action='queue-move-top'/>
+      <menuitem action='queue-move-up'/>
+        <menuitem action='queue-move-up'/>
+    <menuitem action='quit'/>
+      <menuitem action='quit'/>
+    <menuitem action='relocate-torrent'/>
+      <menuitem action='relocate-torrent'/>
+    <menuitem action='remove-torrent'/>
+      <menuitem action='remove-torrent'/>
+      <menuitem action='select-all'/>
+      <menuitem action='show-about-dialog'/>
+      <menuitem action='show-filterbar'/>
+      <menuitem action='show-stats'/>
+      <menuitem action='show-statusbar'/>
+      <menuitem action='show-toolbar'/>
+    <menuitem action='show-torrent-properties'/>
+      <menuitem action='show-torrent-properties'/>
+      <menuitem action='sort-by-activity'/>
+      <menuitem action='sort-by-age'/>
+      <menuitem action='sort-by-name'/>
+      <menuitem action='sort-by-progress'/>
+      <menuitem action='sort-by-queue'/>
+      <menuitem action='sort-by-ratio'/>
+      <menuitem action='sort-by-size'/>
+      <menuitem action='sort-by-state'/>
+      <menuitem action='sort-by-time-left'/>
+      <menuitem action='sort-reversed'/>
+    <menuitem action='start-all-torrents'/>
+      <menuitem action='start-all-torrents'/>
+    <menuitem action='toggle-main-window'/>
+      <menuitem action='toggle-message-log'/>
+    <menuitem action='torrent-reannounce'/>
+      <menuitem action='torrent-reannounce'/>
+    <menuitem action='torrent-start'/>
+      <menuitem action='torrent-start'/>
+    <menuitem action='torrent-start-now'/>
+      <menuitem action='torrent-start-now'/>
+    <menuitem action='torrent-stop'/>
+      <menuitem action='torrent-stop'/>
+    <menuitem action='torrent-verify'/>
+      <menuitem action='torrent-verify'/>
+message-level
+Message Log
+Message _Log
+metadata error; trying again. %d pieces left
+@metadata is %d bytes in %d pieces
+metadataPercentComplete
+metadata_size
+metainfo
+metainfo.c
+metainfo piece %d was the last one
+{ "method": "blocklist-update", "tag": %d }
+method name not recognized
+Method Not Allowed
+{ "method": "port-test", "tag": %d }
+  "method": "torrent-set",
+{ "method": "torrent-start" }
+{ "method": "torrent-stop" }
+Migrated %1$d files from "%2$s" to "%3$s"
+minimized
+min interval
+min_request_interval
+Mitchell Livingston (Backend; OS X)
+mkstemp64
+MLDonkey %c%c%c%c%c
+(Mod 2) 
+MonoTorrent
+Moonlight
+MooPolice
+Move _Down
+Moved Permanently
+_Move from the current folder
+Move to _Bottom
+Mo_ve .torrent file to the trash
+Move to _Top
+Move _Up
+Moving "%s"
+Moving "%s" location from currentDir "%s" to "%s"
+moving "%s" to "%s"
+msgs->incoming.id is now %d; msgs->incoming.length is %zu
+msgs->ut_metadata_id is %d
+msgs->ut_pex is %d
+msg_type
+msgwin.c
+Multiple Choices
+name.utf-8
+nanosleep
+natpmp.c
+nat-pmp server out of resources
+nat-traversal-enabled
+NB: invalid certs will show up as 'Could not connect to tracker' like many other errors
+NB: this only works if you built against libcurl with openssl or gnutls, NOT nss
+Net Transport
+network failure
+new incoming connection %d (%s)
+new_JSON_parser
+New OUTGOING connection %d (%s)
+New tau_tracker created
+new-torrent
+New Torrent
+nextAnnounceTime
+next_blacklisted
+next piece to request: %d
+nextScrapeTime
+[no atom]
+No Content
+No data found! Ensure your drives are connected or use "Set Location". To re-download, remove the torrent and re-add it.
+    Node 
+Node %d id 
+Nodes found (%d+%d)%s!
+No errors
+no fields specified
+no filename or metainfo specified
+no location
+no longer forwarding port %d
+no method name
+Non-Authoritative Information
+no pending request
+No Response
+No source selected
+Not Acceptable
+Not a regular file
+not authorized
+Not changing choke to %d to avoid fibrillation
+not enough bytes... returning read_more
+Not forwarded
+Not Found
+Notification
+NotificationClosed
+Not Implemented
+Not Modified
+No Torrents Selected
+Not saving nodes, DHT not ready
+No updates scheduled
+N Torrents
+NULL == cbdata->wind
+OmegaTorrent
+Once removed, continuing the transfers will require the torrent files or magnet links.
+Once removed, continuing the transfer will require the torrent file or magnet link.
+on_core_error
+_On days:
+One of these torrents has not finished downloading.
+One of these torrents is connected to peers.
+OneSwarm
+Only allow these IP a_ddresses to connect:
+onProgressDialogRefresh
+onProgressDialogResponse
+On_read called on closed socket
+On read evbuffer_add
+on_tree_view_button_pressed
+on_tree_view_button_released
+On_write called on closed socket
+Open a torrent
+open-dialog.c
+open-dialog-dir
+open-dialog-folder
+opened '%s' writable %c
+Open File
+Open Folder
+Open Fold_er
+OPENSSL_1.0.0
+open-torrent-folder
+open-torrent-from-url
+Open torrent from URL
+open-torrent-menu
+open-torrent-toolbar
+Open URL
+Open _URL
+_Open web client
+Opera (Build %c%c%c%c)
+Optimistic unchoke
+/org/freedesktop/Notifications
+org.freedesktop.Notifications
+/org/gnome/SessionManager
+org.gnome.SessionManager
+outMessage size is now %zu
+Override normal speed limits manually or at scheduled times
+P	$3 D`6
+packet not received from the default gateway
+padc is %d
+pad_d_len is %d
+pad d: need %zu, got %zu
+pango_context_get_font_description
+pango_font_description_copy
+pango_font_description_free
+pango_font_description_get_size
+pango_font_description_set_size
+pango_layout_get_pixel_size
+parseHandshake returned %d
+Partial Content
+Pass_word:
+Password required
+path.utf-8
+_Pause All
+pause-all-torrents
+Pause all torrents
+pausedTorrentCount
+paused=true
+Pause torrent
+payload: need %d, got %zu
+Payment Required
+<p>Couldn't find Transmission's web interface files!</p><p>Users: to tell Transmission where to look, set the TRANSMISSION_WEB_HOME environment variable to the folder where the web interface's index.html is located.</p><p>Package Builders: to set a custom default at compile time, #define PACKAGE_DATA_DIR in libtransmission/platform.c or tweak tr_getClutchDir() by hand.</p>
+peer-congestion-algorithm
+Peer Connections
+peer didn't offer an encryption mode we like.
+peer #%d of %d used %d bytes in this pass
+Peer has unchoked us, but we're not interested
+peer-id is [%*.*s]
+peer-id is [%s] ... isIncoming is %d
+peer-io.c
+peerIo not created; marking peer %s as unreachable
+Peer is an incoming connection
+peerIsChoked
+Peer is connected over 
+peerIsInterested
+peer is trying to connect to us for a torrent we don't have.
+peer is unencrypted, and we're disallowing that
+peer-limit
+peer-limit-global
+peer-limit-per-torrent
+Peer Limits
+Peer list request %1$stimed out%2$s %3$s ago; will retry
+peer-mgr.c
+peer-msgs.c
+peer-port
+peer-port-random-high
+peer-port-random-low
+peer-port-random-on-start
+peer returned the wrong hash. wtf?
+peers2-6
+peersConnected
+peer %s contributed to corrupt piece (%d); now has %d strikes
+peer selected an encryption option we didn't provide
+peer sent us an UNKNOWN: %d
+peersFrom
+peersGettingFromUs
+peer-socket-tos
+peer's port is now %d
+peersSendingToUs
+Peer %s sent an out-of-range reject message
+Peer was found through DHT
+Peer was found through Peer Exchange (PEX)
+percentDone
+pex-enabled
+PEX is a tool for exchanging peer lists with the peers you're connected to.
+pex: old peer count %d+%d, new peer count %d+%d, added %d+%d, removed %d+%d
+Pick a _random port every time Transmission is started
+pieceCount
+piece-download-speed
+piece length
+Piece %lu, which was just downloaded, failed its checksum test
+pieceSize
+piece-upload-speed
+Ping (%d)!
+pipe eof reached... removing event listener
+      <placeholder name='launchpad-items' />
+plaintext
+?platform.c
+Play a _sound when torrents finish
+Please add the line "net.core.rmem_max = %d" to /etc/sysctl.conf
+Please add the line "net.core.wmem_max = %d" to /etc/sysctl.conf
+Please correct the errors and try again.
+Please Verify Local Data! Piece #%zu is corrupt.
+Plus! v2 %c.%c%c
+  </popup>
+popup-menu
+  <popup name='icon-popup'>
+  <popup name='main-window-popup'>
+Port %d forwarded successfully
+Port %d isn't forwarded
+Port Forwarding
+port-forwarding.c
+port-forwarding-enabled
+Port Forwarding (NAT-PMP)
+Port forwarding successful!
+Port forwarding through "%s", service "%s". (local address: %s:%d)
+Port Forwarding (UPnP)
+Port is <b>closed</b>
+Port is <b>open</b>
+port-is-open
+port-test
+port-tested
+portTested: http error %ld: %s
+Port: %u
+_Port used for incoming connections:
+posix_fadvise64
+posix_fallocate64
+posix_memalign
+Preallocated file "%s"
+preallocation
+Precondition Failed
+Prefer encryption
+preferred
+prefetch-enabled
+pref-key
+prefs-changed
+prefs.ini
+present-main-window
+Present Main Window
+primary-toolbar
+priorities
+priority-high
+priority-low
+priority-normal
+Privacy:
+>private-data
+_Private torrent
+Private to this tracker -- DHT and PEX disabled
+/proc/net/route
+property
+Propogate Data Client
+Proxy Authentication Required
+pthread_create
+pthread_detach
+pthread_mutexattr_init
+pthread_mutexattr_settype
+pthread_mutex_destroy
+pthread_mutex_init
+pthread_mutex_lock
+pthread_mutex_unlock
+pthread_self
+<p>Tsk, tsk.</p>
+Public torrent
+<p>Unauthorized IP Address.</p><p>Either disable the IP address whitelist or add your address to it.</p><p>If you're editing settings.json, see the 'rpc-whitelist' and 'rpc-whitelist-enabled' entries.</p><p>If you're still using ACLs, use a whitelist instead. See the transmission-daemon manpage for details.</p>
+purging peer %s because it's been %d secs since we shared anything
+purging peer %s because its doPurge flag is set
+pwrite64
+<p>Your request had an invalid session-id header.</p><p>To fix this, follow these steps:<ol><li> When reading a response, get its X-Transmission-Session-Id header and remember it<li> Add the updated header to your outgoing requests<li> When you get this 409 error message, resend your request with the updated header</ol></p><p>This requirement has been added to help prevent <a href="http://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a> attacks.</p><p><code>%s: %s</code></p>
+qBittorrent
+QQDownload
+Queen Bee
+query-tooltip
+Queued for download
+Queued for seeding
+Queued for verification
+queued "%s"
+Queued to ask for more peers
+Queued to ask for peer counts
+queue-menu
+queue-move-bottom
+queue-move-down
+queue-move-top
+queue-move-up
+queuePosition
+queue-stalled-enabled
+queue-stalled-minutes
+_Quit Now
+r8;D$Xt/
+RAND_pseudo_bytes
+rateDownload
+rateToClient
+rateToPeer
+rateUpload
+ratio-limit
+ratio-limit-enabled
+ratio-mode
+Ratio %s
+Ratio: %s
+__rawmemchr
+RC4_set_key
+read %d from peer (%s)
+readdir64
+read failed for "%s": %s
+readFromPipe: eventType is %hd
+reading bool as an int
+reading IA... have %zu, need %zu
+reading obfuscated torrent hash...
+reading payload stream... have %zu, need %zu
+readnatpmpresponse
+readnatpmpresponseorretry
+Read resume file "%s"
+Received message from self.
+Received packet from blacklisted node.
+Received weird value -- %d bytes.
+recent-download-dir-%d
+recently-active
+recheckProgress
+reconnect interval for %s is %d seconds
+recvfrom
+recvfrom() failed
+Refreshing the turtle mode clock due to user changes
+rejecting an invalid request.
+rejecting request for a piece we don't have.
+rejecting request from choked peer
+rejecting request ... reqq is full
+rejecting %u:%u->%u...
+reliability
+relocate-torrent
+Remaining time:
+Remaining time unknown
+?Remove %d torrents?
+remove-torrent
+Remove torrent
+Remove torrent?
+removing bad peer %s
+Removing torrent
+rename-partial-files
+ (replied)
+Requested Range Not Satisfiable
+Request Entity Too Large
+requesting metadata piece #%d
+requesting %u:%u->%u...
+Request Timeout
+Request-URI Too Long
+&requirecrypto=1
+Require encryption
+Reset Content
+resetting atom %s numFails to 0
+Reset your statistics?
+resizable
+Restarted manually -- disabling its seed ratio
+resume.c
+Resume file found %d files listed as dnd
+Resume file found %d files marked for download
+Retriever
+Retrying announce in %d seconds.
+Retrying scrape in %zu seconds.
+Reusing old id
+Re_verse Sort Order
+RezTorrent
+row_activated
+row-activated
+row-changed
+row-deleted
+row-inserted
+rpc-authentication-required
+rpc-bind-address
+rpc-enabled
+rpcimpl.c
+rpc-password
+rpc-port
+RPC Server
+rpc-server.c
+rpc-username
+rpc-version
+rpc-version-minimum
+rpc-whitelist
+rpc-whitelist-enabled
+rules-hint
+Running time:
+Run '%s --help' to see a full list of available command line options.
+%s.%16.16s
+%s.added
+%s - Add Tracker
+%s at %d
+Saturday
+Saved "%s"
+Save Log
+Sa_ve to:
+Save to _Location:
+Saving completed metadata to "%s"
+Saving %d (%d + %d) nodes
+saving metainfo piece %d... %d remain
+Saving stats to "%s"
+Scanned %s
+%s %c.%c.%c
+%s %c.%c%c.%c
+_Scheduled times:
+%s%cinfo_hash=%s&peer_id=%*.*s&port=%d&uploaded=%llu&downloaded=%llu&left=%llu&numwant=%d&key=%x&compact=1&supportcrypto=1
+scraped url:%s -- did_connect:%d did_timeout:%d seeders:%d leechers:%d downloads:%d downloaders:%d min_request_interval:%d err:%s 
+Scrape error: %s
+scrape-paused-torrents-enabled
+Scrape response:
+Scrape response was not in benc format
+scrapeState
+Scrape successful. Rescraping in %d seconds.
+script-torrent-done-enabled
+script-torrent-done-filename
+%s%c%s-%s
+ (%s:%d)
+ [%s]:%d 
+%s %d.%02d
+%s %d.%d.%d
+%s %d.%d.%d.%d
+%s DHT announce failed (%s, %d nodes): %s
+%s DHT not ready (%s, %d nodes)
+%s:%d is decrementing the IO's refcount from %d to %d
+%s:%d is incrementing the IO's refcount from %d to %d
+%s:%d %s
+Searching for web interface file "%s"
+Search%s id 
+seconds-active
+secondsActive
+secondsDownloading
+secondsSeeding
+%s - Edit Trackers
+seederCount
+Seed Forever
+seedIdleLimit
+seedIdleMode
+Seeding idle limit reached; pausing torrent
+Seeding Limits
+seeding-time-seconds
+Seeding to %1$'d of %2$'d connected peer
+Seeding to %1$'d of %2$'d connected peers
+seed-queue-enabled
+seed-queue-size
+seedRatioLimit
+seedRatioLimited
+seedRatioMode
+Seed ratio reached; pausing torrent
+Seed regardless of activity
+Seed regardless of ratio
+See Other
+selectable
+Select _All
+Select Destination Folder
+selecting crypto mode '%d'
+selection-changed
+Select Source File
+send() failed
+sending a keepalive message
+sending an ltep handshake
+Sending announce_peer.
+sending announce req %p
+Sending announce to libcurl: "%s"
+sending a pex message; outMessage size is now %zu
+sending B->A: Diffie Hellman Yb, PadB
+sending bitfield... outMessage size is now %zu
+sending block %u:%u->%u
+Sending closest nodes (%d).
+Sending find_node for%s bucket maintenance.
+Sending find_node for%s neighborhood maintenance.
+Sending found%s peers.
+Sending get_peers.
+sending handshake
+sending HAVE_ALL...
+sending HAVE_NONE...
+sending Have %u
+Sending nodes for get_peers.
+sending pad d
+Sending peer announced.
+Sending periodic reannounce in %d seconds
+Sending ping.
+Sending ping to cached node.
+Sending ping to dubious node.
+Sending pong.
+sending Port %u
+sending request w/connection id %llu
+sending %s...
+Sending %s
+sending scrape req %p
+Sending scrape to libcurl: "%s"
+Sending upload/download totals to tracker
+sending vc
+sendnatpmprequest
+sendnewportmappingrequest
+sendpendingrequest
+sendpublicaddressrequest
+sensitive
+    <separator/>
+      <separator/>
+Server returned "%1$ld %2$s"
+Service Unavailable
+Serving RPC and Web requests on port 127.0.0.1:%d%s
+session.c
+session-close
+session-count
+sessionCount
+session-get
+session-ratio
+Session Ratio
+session-set
+session-stats
+session-transfer
+Session Transfer
+setlocale
+Set _Location
+setrlimit64
+setsockopt
+setting our Password to [%s]
+setting our URL to [%s]
+setting our Username to [%s]
+setting 'password enabled' to %d
+setting %s doPurge flag because we got an ERANGE, EMSGSIZE, or ENOTCONN error
+settings.json
+setting to state [%s]
+Set Torrent Location
+%s failed. Natpmp returned %d (%s); errno is %d (%s)
+SHA1_Final
+SHA1_Init
+SHA1_Update
+Shareaza
+SharkTorrent
+<shift><control>A
+<shift><control>S
+<shift>Delete
+Short write: %d < %ld
+show-about-dialog
+Show a notification when torrents are a_dded
+Show a notification when torrents _finish
+show-backup-trackers
+Show _backup trackers
+show-extra-peer-details
+show-filterbar
+Show _more details
+show-notification-area-icon
+Show _options dialog
+show-options-window
+show-stats
+show-statusbar
+show-toolbar
+show-torrent-properties
+show-tracker-scrapes
+_Show Transmission
+Show Transmission icon in the _notification area
+Show version number and exit
+shutting down transmission session %p... now is %zu, deadline is %zu
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+%s is not an IPv4 address. RPC listeners must be IPv4
+%s is not a valid address
+size-allocate
+size-bytes
+size|Down: %1$s, Up: %2$s
+size-units
+sizeWhenDone
+skipping unknown ltep message (%d)
+Skipping unknown torrent "%s"
+<small>%s</small>
+ <small>%s</small>
+__snprintf_chk
+socket() failed
+socket is %d, utp_socket is %p
+(Solidox Mod) 
+Some of these torrents are connected to peers.
+Some of these torrents have not finished downloading.
+SO_RCVBUF size is %d
+sort-by-activity
+Sort by _Activity
+sort-by-age
+Sort by A_ge
+sort-by-name
+Sort by _Name
+sort-by-progress
+Sort by _Progress
+sort-by-queue
+Sort by _Queue
+sort-by-ratio
+Sort by Rati_o
+sort-by-size
+Sort by Si_ze
+sort-by-state
+Sort by Stat_e
+sort-by-time-left
+Sort by Time _Left
+sort-menu
+sort-mode
+sort-reversed
+_Sort Torrents By
+SO_SNDBUF size is %d
+Source _File:
+Source F_older:
+<span color="#008B00">
+<span color="#224466">
+<span color="red">
+speed-Bps
+speed-bytes
+speed_G_str
+speed-key
+speed_K_str
+speed-limit-down
+speed-limit-down-enabled
+speed-limit-up
+speed-limit-up-enabled
+speed_M_str
+speed_T_str
+speed-units
+Splitting.
+%s Port forwarding failed with error %d (errno %d - %s)
+%s Properties
+%s (Ratio: %s)
+%s remaining
+[%s---%s]
+%s/%*.*s.bin
+%s://%s:%d
+%s%s%d.%02d
+%s%s%d.%d
+%s/%s.resume
+[%s] %s: %s
+%s:%s: %s
+%s:%s:%s
+?[%s] %s - %s [%s]: 
+%s	%s	%s	%s
+%s %s started
+%s/%s.torrent
+%s succeeded (%d)
+__stack_chk_fail
+standard::edit-name
+start-added-torrents
+_Start All
+start-all-torrents
+Start all torrents
+startDate
+started an outMessages batch (length is %zu)
+Started %'d time
+Started %'d times
+?Starting
+Starting an OUTGOING%s connection with %s
+Starting %s DHT announce (%s, %d nodes)
+Start minimized in notification area
+Start _Now
+Start torrent
+Start torrent now
+_Start when added
+Start with all torrents paused
+State changed from "%1$s" to "%2$s"
+_Statistics
+stats.benc
+@stats.json
+stats-mode
+_Statusbar
+statusbar-stats
+Status unknown
+statvfs64
+%s.tmp.XXXXXX
+stock-id
+stock-ratio-index
+Stop at Ratio (%s)
+Stopping
+Stopping port forwarding through "%s", service "%s"
+Stop seeding at _ratio:
+Stop seeding at ratio:
+Stop Seeding at Ratio
+Stop seeding if idle for _N minutes:
+Stop seeding if idle for N minutes:
+Storage 
+__strcat_chk
+__strdup
+streuth!  we've connected to ourselves.
+strftime
+strnatpmperr
+__strsep_g
+style-updated
+{ "success": false, "msg": "Bad Session-Id" }
+{ "success": true, "msg": "Torrent Added" }
+ %s:%u (%ld)
+(susssasa{sv}i)
+SwarmScope
+Switching Protocols
+%s__XXXXXX
+SymTorrent
+T$ 9r8t`
+tau_handle_message
+<"td<\tP<
+Temporary Redirect
+Te_st Port
+text/css
+text/html
+text-x-generic
+the gateway does not support nat-pmp
+The OS X client, CLI client, and parts of libtransmission are licensed under the terms of the MIT license.
+These statistics are for your information only. Resetting them doesn't affect the statistics logged by your BitTorrent trackers.
+These torrents are connected to peers.
+These torrents have not finished downloading.
+The torrent file "%s" contains invalid data.
+The torrent file "%s" encountered an unknown error.
+The torrent file "%s" is already in use.
+The Transmission daemon, GTK+ client, Qt client, Web client, and most of libtransmission are licensed under the terms of the GNU GPL version 2, with two special exceptions:
+They Cancelled
+This magnet link appears to be intended for something other than BitTorrent. BitTorrent magnet links have a section containing "%s".
+This may take a moment
+This torrent has not finished downloading.
+This torrent is connected to peers.
+throughput
+T$H+T$Tt&
+Thumbs.db
+Thursday
+time-checked
+time::modified
+timeout announce req %p
+timeout scrape req %p
+time since last cancel is %li -- increasing the number of peers we're interested in by %d
+Time to turn %s turtle mode!
+To add a backup URL, add it on the line after the primary URL.
+To add another primary URL, add it after a blank line.
+toggle-main-window
+toggle-message-log
+tolerated
+  </toolbar>
+_Toolbar
+  <toolbar name='main-window-toolbar'>
+    <toolitem action='open-torrent-toolbar'/>
+    <toolitem action='remove-torrent'/>
+    <toolitem action='show-torrent-properties'/>
+    <toolitem action='torrent-start'/>
+    <toolitem action='torrent-stop'/>
+*.torrent
+_Torrent
+torrent-add
+torrent-added
+Torrent Added
+torrent-added-notification-enabled
+torrentAdd: filename is "%s"
+torrentAdd: HTTP response code was %ld (%s); response length was %zu bytes
+torrent.c
+TorrentCellRenderer
+torrent-cell-renderer.c:836
+torrent-cell-renderer.c:856
+torrent_cell_renderer_get_type
+torrent_cell_renderer_new
+Torrent Complete
+torrent-complete-notification-enabled
+torrent-complete-sound-command
+torrent-complete-sound-enabled
+torrentCount
+Torrent Creator is skipping file "%s": %s
+Torrent %d.%d.%d%s
+Torrent Embedded %d.%d.%d%s
+torrentFile
+_Torrent file:
+Torrent files
+[torrent files or urls]
+torrent-get
+Torrent _location:
+Torrent Mac %d.%d.%d%s
+torrent-magnet.c
+Torrent needs to be verified - %s
+Torrent .NET
+Torrent Options
+Torrent _priority:
+Torrent properties
+torrent-reannounce
+torrent-remove
+torrent-set
+torrent-set-location
+Torrent size:
+torrent-start
+torrent-start-now
+torrent-stop
+TorrentStorm
+TorrentTopia
+torrent-verify
+total-ratio
+Total Ratio
+total_size
+totalSize
+total-transfer
+Total Transfer
+trackerAdd
+Tracker Announce URLs
+Tracker did not respond
+Tracker error: "%s"
+Tracker gave an error: "%s"
+Tracker gave a warning: "%s"
+Tracker gave HTTP response code %1$ld (%2$s)
+tracker gave "%s"
+Tracker had %s%'d seeders and %'d leechers%s %s ago
+tracker id
+&trackerid=%s
+trackerRemove
+trackerReplace
+_Trackers:
+trackerStats
+Tracker warning: "%s"
+Tracker will allow requests in %s
+tr_address_compare
+tr_address_from_sockaddr_storage
+tr_address_from_string
+tr_addressIsIP
+tr_address_is_valid_for_peers
+tr_address_to_string
+tr_address_to_string_with_buf
+tr_amInEventThread
+tr_amInThread
+tr_announce_event_get_string
+tr_announcerAddBytes
+tr_announcerAddTorrent
+tr_announcerCanManualAnnounce
+tr_announcerChangeMyPort
+tr_announcerClose
+tr_announcerHasBacklog
+tr_announcerInit
+tr_announcerManualAnnounce
+tr_announcerNextManualAnnounce
+tr_announcerRemoveTorrent
+tr_announcerResetTorrent
+tr_announcerStats
+tr_announcerStatsFree
+tr_announcerTorrentCompleted
+tr_announcerTorrentStarted
+tr_announcerTorrentStopped
+translator-credits
+/transmission/
+.transmission
+Transmission 0.%02d
+Transmission 0.%c
+Transmission 2.51
+Transmission/2.51
+Transmission/2.51 (13280)
+Transmission BitTorrent Client
+Transmission %d.%02d%s
+Transmission doesn't know how to use "%s"
+transmission-gtk
+TRANSMISSION_HOME
+Transmission is a file-sharing program. When you run a torrent, its data will be made available to others by means of upload. You and you alone are fully responsible for exercising proper judgement and abiding by your local laws.
+transmission-lock
+transmission-main-window-icon
+transmission-notification-icon
+Transmission Preferences
+transmission-preferences-dialog
+transmission-tray-icon
+TRANSMISSION_WEB_HOME
+TR_APP_VERSION=%s
+tr-arg-key
+trash-can-enabled
+trash-original-torrent-files
+tr_bandwidthAllocate
+tr_bandwidthClamp
+tr_bandwidthConstruct
+tr_bandwidthDestruct
+tr_bandwidthGetPieceSpeed_Bps
+tr_bandwidthGetRawSpeed_Bps
+tr_bandwidthSetParent
+tr_bandwidthSetPeer
+tr_bandwidthUsed
+tr_base64_decode
+tr_base64_encode
+tr_basename
+tr_bencDictAdd
+tr_bencDictAddBool
+tr_bencDictAddDict
+tr_bencDictAddInt
+tr_bencDictAddList
+tr_bencDictAddRaw
+tr_bencDictAddReal
+tr_bencDictAddStr
+tr_bencDictChild
+tr_bencDictFind
+tr_bencDictFindBool
+tr_bencDictFindDict
+tr_bencDictFindInt
+tr_bencDictFindList
+tr_bencDictFindRaw
+tr_bencDictFindReal
+tr_bencDictFindStr
+tr_bencDictRemove
+tr_bencDictReserve
+tr_bencFree
+tr_bencGetBool
+tr_bencGetInt
+tr_bencGetRaw
+tr_bencGetReal
+tr_bencGetStr
+tr_bencInitBool
+tr_bencInitDict
+tr_bencInitInt
+tr_bencInitList
+tr_bencInitRaw
+tr_bencInitReal
+tr_bencInitStr
+tr_bencListAdd
+tr_bencListAddBool
+tr_bencListAddDict
+tr_bencListAddInt
+tr_bencListAddList
+tr_bencListAddRaw
+tr_bencListAddReal
+tr_bencListAddStr
+tr_bencListChild
+tr_bencListCopy skipping item
+tr_bencListRemove
+tr_bencListReserve
+tr_bencListSize
+tr_bencLoad
+tr_bencLoadFile
+tr_bencMergeDicts
+tr_bencMergeDicts skipping "%s"
+tr_bencParse
+tr_bencParseInt
+tr_bencParseStr
+tr_bencToBuf
+tr_bencToFile
+tr_bencToStr
+tr_bitfieldAdd
+tr_bitfieldAddRange
+tr_bitfieldConstruct
+tr_bitfieldCountRange
+tr_bitfieldCountTrueBits
+tr_bitfieldGetRaw
+TR_BITFIELD_INIT
+tr_bitfieldRem
+tr_bitfieldRemRange
+tr_bitfieldSetFromBitfield
+tr_bitfieldSetFromFlags
+tr_bitfieldSetHasAll
+tr_bitfieldSetHasNone
+tr_bitfieldSetRaw
+_tr_block
+_tr_blocklistExists
+_tr_blocklistFree
+_tr_blocklistGetFilename
+_tr_blocklistGetRuleCount
+tr_blocklistGetURL
+_tr_blocklistHasAddress
+_tr_blocklistIsEnabled
+_tr_blocklistNew
+_tr_blocklistSetContent
+_tr_blocklistSetEnabled
+tr_blocklistSetURL
+tr_buildPath
+tr_cacheFlushDone
+tr_cacheFlushFile
+tr_cacheFlushTorrent
+tr_cacheFree
+tr_cacheGetLimit
+tr_cacheNew
+tr_cachePrefetchBlock
+tr_cacheReadBlock
+tr_cacheSetLimit
+tr_cacheWriteBlock
+tr_clientForId
+tr_close_file
+tr-core.c
+tr_core_get_type
+tr_cpBlockAdd
+tr_cpBlockInit
+tr_cpConstruct
+tr_cpCreatePieceBitfield
+tr_cpFileIsComplete
+tr_cpGetAmountDone
+tr_cpGetStatus
+tr_cpHaveValid
+tr_cpLeftUntilDone
+tr_cpMissingBlocksInPiece
+tr_cpMissingBytesInPiece
+tr_cpPercentComplete
+tr_cpPercentDone
+tr_cpPieceAdd
+tr_cpPieceRem
+tr_cpSizeWhenDone
+tr_cryptoComputeSecret
+tr_cryptoConstruct
+tr_cryptoDecrypt
+tr_cryptoDecryptInit
+tr_cryptoDestruct
+tr_cryptoEncrypt
+tr_cryptoEncryptInit
+tr_cryptoGetMyPublicKey
+tr_cryptoGetTorrentHash
+tr_cryptoHasTorrentHash
+tr_cryptoRandBuf
+tr_cryptoRandInt
+tr_cryptoSetTorrentHash
+tr_cryptoWeakRandInt
+tr_ctorFree
+tr_ctorGetBandwidthPriority
+tr_ctorGetDeleteSource
+tr_ctorGetDownloadDir
+tr_ctorGetIncompleteDir
+tr_ctorGetMetainfo
+tr_ctorGetPaused
+tr_ctorGetPeerLimit
+tr_ctorGetSave
+tr_ctorGetSession
+tr_ctorGetSourceFile
+tr_ctorInitTorrentPriorities
+tr_ctorInitTorrentWanted
+tr_ctorNew
+tr_ctorSetBandwidthPriority
+tr_ctorSetDeleteSource
+tr_ctorSetDownloadDir
+tr_ctorSetFilePriorities
+tr_ctorSetFilesWanted
+tr_ctorSetIncompleteDir
+tr_ctorSetMetainfo
+tr_ctorSetMetainfoFromFile
+tr_ctorSetMetainfoFromHash
+tr_ctorSetMetainfoFromMagnetLink
+tr_ctorSetPaused
+tr_ctorSetPeerLimit
+tr_ctorSetSave
+TR_CURL_SSL_VERIFY
+TR_CURL_VERBOSE
+__tr_current_time
+TR_DEBUG_FD
+tr_deepLog
+tr_deepLoggingIsActive
+tr-details-data-key
+tr_dhtAddNode
+tr-dht.c
+tr_dhtCallback
+tr_dhtEnabled
+tr_dhtInit
+tr_dhtPort
+tr_dhtPrintableStatus
+tr_dhtStatus
+tr_dhtUninit
+tr_dhtUpkeep
+TR_DHT_VERBOSE
+tr_dirname
+trevent.c
+tr_eventClose
+tr_eventInit
+tr_fdClose
+tr_fdFileCheckout
+tr_fdFileCheckout failed for "%s": %s
+tr_fdFileClose
+tr_fdFileGetCached
+tr_fdFileGetCachedMTime
+tr_fdSocketAccept
+tr_fdSocketClose
+tr_fdSocketCreate
+tr_fdTorrentClose
+tr-filter-dirty-key
+tr-filter-text-key
+tr-filter-torrent-model-key
+tr_formatter_get_units
+tr_formatter_mem_B
+tr_formatter_mem_init
+tr_formatter_size_B
+tr_formatter_size_init
+tr_formatter_speed_init
+tr_formatter_speed_KBps
+tr_freeMessageList
+tr_fsync
+tr_getBlockSize
+tr_getDefaultConfigDir
+tr_getDefaultDownloadDir
+tr_getFreeSpace
+tr_getLog
+tr_getLogTimeStr
+tr_getMessageQueuing
+tr_getQueuedMessages
+tr_getRatio
+tr_getResumeDir
+tr_getTorrentDir
+tr_getWebClientDir
+tr_globalIPv6
+tr_handshakeAbort
+tr_handshakeGetAddr
+tr_handshakeGetIO
+tr_handshakeNew
+tr_handshakeStealIO
+tr_hex_to_sha1
+tr_historyAdd
+tr_historyGet
+tr_htonll
+tr_http_escape
+tr_http_escape_sha1
+tr_http_unescape
+tr_in6addr_any
+tr_inaddr_any
+tr_ioFindFileLocation
+tr_ioPrefetch
+tr_ioRead
+tr_ioTestPiece
+tr_ioWrite
+tr_is_same_file
+tr_jsonParse
+tr_list_append
+tr_list_find
+tr_list_free
+tr_list_insert_sorted
+tr_list_pop_front
+tr_list_prepend
+tr_list_remove
+tr_list_remove_data
+tr_list_size
+tr_loadFile
+tr_localtime_r
+tr_lockFree
+tr_lockHave
+tr_lockLock
+tr_lockNew
+tr_lockUnlock
+tr_lowerBound
+tr-lpd.c
+tr_lpdEnabled
+tr_lpdInit
+tr_lpdSendAnnounce
+tr_lpdUninit
+tr_magnetCreateMetainfo
+tr_magnetFree
+tr_magnetParse
+tr_makeMetaInfo
+tr_malloc
+tr_malloc0
+tr_memdup
+tr_mem_K
+tr_memmem
+__tr_message_level
+tr_metaInfoBuilderCreate
+tr_metaInfoBuilderFree
+tr_metainfoFree
+tr_metainfoGetBasename
+tr_metainfoMigrate
+tr_metainfoParse
+tr_metainfoRemoveSaved
+tr_mkdir
+tr_mkdirp
+tr_mkdtemp
+tr-model-column-id-key
+tr_moveFile
+tr_natpmpClose
+tr_natpmpInit
+tr_natpmpPulse
+tr_netAccept
+tr_netBindTCP
+tr_netClose
+tr_netCloseSocket
+tr_net_hasIPv6
+tr_netInit
+tr_netOpenPeerSocket
+tr_netOpenPeerSocket returned fd %d
+tr_netOpenPeerUTPSocket
+tr_netSetCongestionControl
+tr_netSetTOS
+tr_net_strerror
+tr_ntohll
+tr_open_file_for_scanning
+tr_open_file_for_writing
+tr_parseNumberRange
+tr_peerAddress
+tr_peerConstruct
+tr_peerDestruct
+TR_PEER_EVENT_INIT
+tr_peerGetPieceSpeed_Bps
+tr_peerIdInit
+tr_peerIoAddrStr
+tr_peerIoClear
+tr_peerIoDrain
+tr_peerIoFlush
+tr_peerIoFlushOutgoingProtocolMsgs
+tr_peerIoGetAddress
+tr_peerIoGetAddrStr
+tr_peerIoGetTorrentHash
+tr_peerIoGetWriteBufferSpace
+tr_peerIoHasTorrentHash
+tr_peerIoNewIncoming
+tr_peerIoNewOutgoing
+tr_peerIoReadBytes
+tr_peerIoReadBytesToBuf
+tr_peerIoReadUint16
+tr_peerIoReadUint32
+tr_peerIoReconnect
+tr_peerIoRefImpl
+tr_peerIoSetEnabled
+tr_peerIoSetEncryption
+tr_peerIoSetIOFuncs
+tr_peerIoSetPeersId
+tr_peerIoSetTorrentHash
+tr_peerIoTryRead got an error. res is %d, what is %hd, errno is %d (%s)
+tr_peerIoTryWrite got an error. res is %d, what is %hd, errno is %d (%s)
+tr_peerIoUnrefImpl
+tr_peerIoWriteBuf
+tr_peerIoWriteBytes
+tr_peerMgrAddIncoming
+tr_peerMgrAddPex
+tr_peerMgrAddTorrent
+tr_peerMgrArrayToPex
+tr_peerMgrClearInterest
+tr_peerMgrCompact6ToPex
+tr_peerMgrCompactToPex
+tr_peerMgrDidPeerRequest
+tr_peerMgrFree
+tr_peerMgrGetDesiredAvailable
+tr_peerMgrGetNextRequests
+tr_peerMgrGetPeers
+tr_peerMgrMarkAllAsSeeds
+tr_peerMgrNew
+tr_peerMgrOnBlocklistChanged
+tr_peerMgrOnTorrentGotMetainfo
+tr_peerMgrPeerIsSeed
+tr_peerMgrPeerStats
+tr_peerMgrRebuildRequests
+tr_peerMgrRemoveTorrent
+tr_peerMgrSetUtpFailed
+tr_peerMgrSetUtpSupported
+tr_peerMgrStartTorrent
+tr_peerMgrStopTorrent
+tr_peerMgrTorrentAvailability
+tr_peerMgrTorrentStats
+tr_peerMgrWebSpeeds_KBps
+tr_peerMsgsCancel
+tr_peerMsgsFree
+tr_peerMsgsHave
+tr_peerMsgsIsReadingBlock
+tr_peerMsgsNew
+tr_peerMsgsPulse
+tr_peerMsgsSetChoke
+tr_peerMsgsSetInterested
+tr_peerUpdateProgress
+tr_pexCompare
+tr_pieceOffset
+tr_pread
+tr_prefetch
+tr_ptrArrayDestruct
+tr_ptrArrayErase
+tr_ptrArrayFindSorted
+tr_ptrArrayForeach
+TR_PTR_ARRAY_INIT
+tr_ptrArrayInsert
+tr_ptrArrayInsertSorted
+tr_ptrArrayLowerBound
+tr_ptrArrayPeek
+tr_ptrArrayPop
+tr_ptrArrayRemoveSorted
+tr_pwrite
+tr_realpath
+tr_removeElementFromArray
+tr_rpcClose
+tr_rpcGetBindAddress
+tr_rpcGetPassword
+tr_rpcGetPort
+tr_rpcGetUrl
+tr_rpcGetUsername
+tr_rpcGetWhitelist
+tr_rpcGetWhitelistEnabled
+tr_rpcInit
+tr_rpcIsEnabled
+tr_rpcIsPasswordEnabled
+tr_rpc_parse_list_str
+tr_rpc_request_exec_json
+tr_rpc_request_exec_uri
+tr_rpcSetEnabled
+tr_rpcSetPassword
+tr_rpcSetPasswordEnabled
+tr_rpcSetPort
+tr_rpcSetUrl
+tr_rpcSetUsername
+tr_rpcSetWhitelist
+tr_rpcSetWhitelistEnabled
+tr_runInEventThread
+tr_sessionAllowsDHT
+tr_sessionAllowsLPD
+tr_sessionClearAltSpeedFunc
+tr_sessionClearStats
+tr_sessionClose
+tr_sessionCountQueueFreeSlots
+tr_sessionCountTorrents
+tr_sessionFindTorrentFile
+tr_sessionGetActiveSpeedLimit_Bps
+tr_sessionGetActiveSpeedLimit_KBps
+tr_sessionGetAltSpeedBegin
+tr_sessionGetAltSpeed_Bps
+tr_sessionGetAltSpeedDay
+tr_sessionGetAltSpeedEnd
+tr_sessionGetAltSpeed_KBps
+tr_sessionGetCacheLimit_MB
+tr_sessionGetConfigDir
+tr_sessionGetCumulativeStats
+tr_sessionGetDefaultSettings
+tr_sessionGetDeleteSource
+tr_sessionGetDownloadDir
+tr_sessionGetDownloadDirFreeSpace
+tr_sessionGetEncryption
+tr_sessionGetIdleLimit
+tr_sessionGetIncompleteDir
+tr_sessionGetNextQueuedTorrent
+tr_sessionGetPaused
+tr_sessionGetPeerLimit
+tr_sessionGetPeerLimitPerTorrent
+tr_sessionGetPeerPort
+tr_sessionGetPeerPortRandomOnStart
+tr_sessionGetPieceSpeed_Bps
+tr_sessionGetPortForwarding
+tr_sessionGetPublicAddress
+tr_sessionGetQueueEnabled
+tr_sessionGetQueueSize
+tr_sessionGetQueueStalledEnabled
+tr_sessionGetQueueStalledMinutes
+tr_sessionGetRatioLimit
+tr_sessionGetRawSpeed_Bps
+tr_sessionGetRawSpeed_KBps
+tr_sessionGetRPCBindAddress
+tr_sessionGetRPCPassword
+tr_sessionGetRPCPort
+tr_sessionGetRPCUrl
+tr_sessionGetRPCUsername
+tr_sessionGetRPCWhitelist
+tr_sessionGetRPCWhitelistEnabled
+tr_sessionGetSettings
+tr_sessionGetSpeedLimit_Bps
+tr_sessionGetSpeedLimit_KBps
+tr_sessionGetStats
+tr_sessionGetTorrentDoneScript
+tr_sessionInit
+tr_sessionInit: the session's top-level bandwidth object is %p
+tr_sessionIsAddressBlocked
+tr_sessionIsDHTEnabled
+tr_sessionIsIdleLimited
+tr_sessionIsIncompleteDirEnabled
+tr_sessionIsIncompleteFileNamingEnabled
+tr_sessionIsLocked
+tr_sessionIsLPDEnabled
+tr_sessionIsPexEnabled
+tr_sessionIsPortForwardingEnabled
+tr_sessionIsRatioLimited
+tr_sessionIsRPCEnabled
+tr_sessionIsRPCPasswordEnabled
+tr_sessionIsSpeedLimited
+tr_sessionIsTorrentDoneScriptEnabled
+tr_sessionIsUTPEnabled
+tr-session-key
+tr_sessionLimitSpeed
+tr_sessionLoadSettings
+tr_sessionLoadTorrents
+tr_sessionLock
+tr_sessionReloadBlocklists
+tr_sessionSaveSettings
+tr_sessionSet
+tr_sessionSetAltSpeedBegin
+tr_sessionSetAltSpeed_Bps
+tr_sessionSetAltSpeedDay
+tr_sessionSetAltSpeedEnd
+tr_sessionSetAltSpeedFunc
+tr_sessionSetAltSpeed_KBps
+tr_sessionSetCacheLimit_MB
+tr_sessionSetDeleteSource
+tr_sessionSetDHTEnabled
+tr_sessionSetDownloadDir
+tr_sessionSetEncryption
+tr_sessionSetIdleLimit
+tr_sessionSetIdleLimited
+tr_sessionSetIncompleteDir
+tr_sessionSetIncompleteDirEnabled
+tr_sessionSetIncompleteFileNamingEnabled
+tr_sessionSetLPDEnabled
+tr_sessionSetPaused
+tr_sessionSetPeerLimit
+tr_sessionSetPeerLimitPerTorrent
+tr_sessionSetPeerPort
+tr_sessionSetPeerPortRandom
+tr_sessionSetPeerPortRandomOnStart
+tr_sessionSetPexEnabled
+tr_sessionSetPortForwardingEnabled
+tr_sessionSetQueueEnabled
+tr_sessionSetQueueSize
+tr_sessionSetQueueStalledEnabled
+tr_sessionSetQueueStalledMinutes
+tr_sessionSetRatioLimit
+tr_sessionSetRatioLimited
+tr_sessionSetRPCCallback
+tr_sessionSetRPCEnabled
+tr_sessionSetRPCPassword
+tr_sessionSetRPCPasswordEnabled
+tr_sessionSetRPCPort
+tr_sessionSetRPCUrl
+tr_sessionSetRPCUsername
+tr_sessionSetRPCWhitelist
+tr_sessionSetRPCWhitelistEnabled
+tr_sessionSetSpeedLimit_Bps
+tr_sessionSetSpeedLimit_KBps
+tr_sessionSetTorrentDoneScript
+tr_sessionSetTorrentDoneScriptEnabled
+tr_sessionSetTorrentFile
+tr_sessionSetUTPEnabled
+tr_sessionUnlock
+tr_sessionUseAltSpeed
+tr_sessionUseAltSpeedTime
+tr_sessionUsesAltSpeed
+tr_sessionUsesAltSpeedTime
+tr_setConfigDir
+tr_set_file_for_single_pass
+tr_setMessageLevel
+tr_setMessageQueuing
+tr_sha1_to_hex
+tr_sharedClose
+tr_sharedInit
+tr_sharedPortChanged
+tr_sharedTraversalEnable
+tr_sharedTraversalIsEnabled
+tr_sharedTraversalStatus
+tr_snprintf
+tr_speed_K
+tr_ssha1
+tr_ssha1_matches
+tr_stat.pieceDownloadSpeed_KBps
+tr_stat.pieceUploadSpeed_KBps
+tr_statsAddDownloaded
+tr_statsAddUploaded
+tr_statsClose
+tr_statsFileCreated
+tr_statsInit
+tr_statsSaveDirty
+tr_strcmp0
+tr_strdup
+tr_strdup_printf
+tr_strerror
+tr_str_has_suffix
+tr_strip_positional_args
+tr_strlcpy
+tr_strlpercent
+tr_strlratio
+tr_strlsize
+tr_strltime
+tr_strndup
+tr_strpercent
+tr_strratio
+tr_strsep
+tr_strstrip
+tr-text-buffer-key
+tr_threadNew
+TR_TIME_LOCALTIME=%s
+tr_time_msec
+tr_timerAdd
+tr_timerAddMsec
+tr_torGetFileBlockRange
+tr_torGetPieceBlockRange
+tr_torrent*
+tr_torrentAmountFinished
+tr_torrentAvailability
+tr_torrentBuildPartial
+tr_torrentCanManualUpdate
+tr_torrentChangeMyPort
+tr_torrentCheckPiece
+tr_torrentCheckSeedLimit
+tr_torrentClearCompletenessCallback
+tr_torrentClearIdleLimitHitCallback
+tr_torrentClearRatioLimitHitCallback
+TR_TORRENT_DIR=%s
+tr_torrentFileCompleted
+tr_torrentFiles
+tr_torrentFilesFree
+tr_torrentFindFile
+tr_torrentFindFile2
+tr_torrentFindFromHash
+tr_torrentFindFromHashString
+tr_torrentFindFromId
+tr_torrentFindFromMagnetLink
+tr_torrentFindFromObfuscatedHash
+tr_torrentFree
+tr_torrentGetActivity
+tr_torrentGetBlockLocation
+tr_torrentGetBytesLeftToAllocate
+tr_torrentGetCurrentDir
+tr_torrentGetCurrentSizeOnDisk
+tr_torrentGetDownloadDir
+tr_torrentGetFileMTime
+tr_torrentGetFilePriorities
+tr_torrentGetIdleLimit
+tr_torrentGetIdleMode
+tr_torrentGetMagnetLink
+tr_torrentGetMetadataPercent
+tr_torrentGetMetadataPiece
+tr_torrentGetNextMetadataRequest
+tr_torrentGetPeerLimit
+tr_torrentGetPriority
+tr_torrentGetQueuePosition
+tr_torrentGetRatioLimit
+tr_torrentGetRatioMode
+tr_torrentGetSeedIdle
+tr_torrentGetSeedRatio
+tr_torrentGetSpeedLimit_Bps
+tr_torrentGetSpeedLimit_KBps
+tr_torrentGotNewInfoDict
+TR_TORRENT_HASH=%s
+tr_torrentId
+TR_TORRENT_ID=%d
+tr-torrent-id-key
+tr_torrentInfo
+tr_torrentInitFileDLs
+tr_torrentInitFilePriority
+tr_torrentIsPieceTransferAllowed
+tr_torrentIsStalled
+tr_torrentLoadResume
+tr_torrentManualUpdate
+tr_torrentName
+TR_TORRENT_NAME=%s
+tr_torrentNew
+tr_torrentParse
+tr_torrentPeers
+tr_torrentPeersFree
+tr_torrentPieceNeedsCheck
+tr_torrentRecheckCompleteness
+tr_torrentRemove
+tr_torrentRemoveResume
+tr_torrentReqIsValid
+tr_torrentSave
+tr_torrentSaveResume
+tr_torrentSetActivityDate
+tr_torrentSetAddedDate
+tr_torrentSetAnnounceList
+tr_torrentSetChecked
+tr_torrentSetCompletenessCallback
+tr_torrentSetDoneDate
+tr_torrentSetDownloadDir
+tr_torrentSetFileDLs
+tr_torrentSetFilePriorities
+tr_torrentSetHasPiece
+tr_torrentSetIdleLimit
+tr_torrentSetIdleLimitHitCallback
+tr_torrentSetIdleMode
+tr_torrentSetLocalError
+tr_torrentSetLocation
+tr_torrentSetMetadataCallback
+tr_torrentSetMetadataPiece
+tr_torrentSetMetadataSizeHint
+tr_torrentSetPeerLimit
+tr_torrentSetPieceChecked
+tr_torrentSetPriority
+tr_torrentSetQueuePosition
+tr_torrentSetQueueStartCallback
+tr_torrentSetRatioLimit
+tr_torrentSetRatioLimitHitCallback
+tr_torrentSetRatioMode
+tr_torrentSetSpeedLimit_Bps
+tr_torrentSetSpeedLimit_KBps
+tr_torrentSetVerifyState
+tr_torrentsQueueMoveBottom
+tr_torrentsQueueMoveDown
+tr_torrentsQueueMoveTop
+tr_torrentsQueueMoveUp
+tr_torrentStart
+tr_torrentStartNow
+tr_torrentStat
+tr_torrentStatCached
+tr_torrentStop
+tr_torrentTrackers
+tr_torrentTrackersFree
+tr_torrentUseSessionLimits
+tr_torrentUseSpeedLimit
+tr_torrentUsesSessionLimits
+tr_torrentUsesSpeedLimit
+tr_torrentVerify
+tr_torrentWebSpeeds_KBps
+tr_tracker_http_announce
+tr_tracker_http_scrape
+tr_tracker_udp_announce
+tr_tracker_udp_close
+tr_tracker_udp_is_idle
+tr_tracker_udp_scrape
+tr_tracker_udp_start_shutdown
+tr_tracker_udp_upkeep
+tr_truncd
+tr-udp.c
+tr_udpInit
+tr_udpSetSocketBuffers
+tr_udpUninit
+Truncated message.
+tr_upnpClose
+tr_upnpInit
+tr_upnpPulse
+tr-url-entry-key
+tr_urlIsValid
+tr_urlIsValidTracker
+tr_urlParse
+tr_utf8clean
+tr_utf8_validate
+tr-utp.c
+tr_utpClose
+tr_utpPacket
+tr_utpSendTo
+tr_valloc
+tr_verifyAdd
+tr_verifyClose
+tr_verifyRemove
+tr_wait_msec
+tr_webClose
+tr_webGetResponseStr
+tr_webGetTaskInfo
+tr_webInit
+tr_webRun
+tr_webRunWithBuffer
+tr_webseedFree
+tr_webseedGetSpeed_Bps
+tr_webseedIsActive
+tr_webseedNew
+tr_wildmat
+Trying a new DNS lookup
+Trying to connect. Transaction ID is %u
+;t$,t39t$$
+T$(;T$8w
+t,;|$|w&f
+%u is an announce request!
+%u is a scrape request!
+%u is my connection request!
+uLeecher!
+Unable to delete file "%s": %s
+Unable to open "%s"
+Unable to save resume file: %s
+Unable to save torrent file: %s
+Unable to set SO_RCVBUF on socket %d: %s
+Unable to trash file "%s": %s
+Unauthorized
+Unauthorized User
+undefined nat-pmp server error
+Unexpected length for node info!
+Unexpected reply: 
+Unexpected UDP packet
+Unhandled action: %s
+unhandled error: %s
+Uninhibit
+Uninitialising Local Peer Discovery
+Uninitializing DHT
+Unknown Client
+unknown(%d)
+Unknown error
+Unknown libnatpmp error
+Unknown search!
+Unknown socket family
+Unknown state %d
+Unlimited
+Unparseable message: 
+Unrecognized URL
+Unsupported Media Type
+unsupported nat-pmp opcode error from server
+unsupported nat-pmp version error from server
+Unsupported url: %s
+Unterminated message.
+(Unused)
+Up Blocks
+Update Blocklist
+uploaded
+Uploaded:
+uploaded-bytes
+uploadedBytes
+uploadedEver
+Uploading to peer
+uploadLimit
+uploadLimited
+upload_only
+uploadRatio
+_Upload (%s):
+U_pload (%s):
+upload-slots-per-torrent
+uploadSpeed
+UPNP_AddPortMapping
+UPNP_DeletePortMapping
+upnpDiscover
+upnpDiscover failed (errno %d - %s)
+UPNP_GetSpecificPortMappingEntry
+UPNP_GetValidIGD
+UPNP_GetValidIGD failed (errno %d - %s)
+UPnP NAT Bit Torrent
+up-speed
+url-entry
+url-list
+urn:btih:
+Use _authentication
+Use _DHT to find more peers
+Use global settings
+use-global-speed-limit
+Use _Local Peer Discovery to find more peers
+Use PE_X to find more peers
+Use Proxy
+user-dirs.dirs
+user-has-given-informed-consent
+_Username:
+use-speed-limit
+Use UPnP or NAT-PMP port _forwarding from my router
+/usr/local/share:/usr/share
+/usr/share/locale
+ut_holepunch
+utilities
+ut_metadata
+UTP_CheckTimeouts
+UTP_Close
+UTP_Connect
+UTP_Create
+utp-enabled
+UTP_GetDelays
+UTP_GetGlobalStats
+UTP_GetPacketSize
+UTP_GetPeerName
+utp_get_rb_size is saying it's ready to read %zu bytes
+UTP_HandleICMP
+uTP is a tool for reducing network congestion.
+UTP_IsIncomingUTP
+utp_on_error -- errcode is %d
+utp_on_overhead -- count is %zu
+utp_on_read got %zu bytes
+utp_on_state_change -- changed to connected
+utp_on_state_change -- changed to writable
+utp_on_write sending %zu bytes... evbuffer_remove returned %d
+UTP_RBDrained
+UTP_SetCallbacks
+UTP_SetSockopt
+UTP_Write
+	UWS7hkg
+value-changed
+Verification is done. It took %d seconds to verify %llu bytes (%llu bytes per second)
+verify.c
+Verifying
+Verifying local data
+Verifying local data (%.1f%% tested)
+verifying torrent...
+_Verify Local Data
+__vfprintf_chk
+view-menu
+vL<.tH<_tD<-t@<~t<
+void-pixbuf
+waiting for libtransmission thread to finish... now %zu deadline %zu
+waiting for the libtransmission thread to finish
+waiting on port unmap (%p) or announcer (%p)... now %zu deadline %zu
+warning message
+warning: %s
+watch-dir
+watch-dir-enabled
+watch-folder
+watch-folder-enabled
+Web Client
+webseeds
+webseedsSendingToUs
+website-label
+We Cancelled
+we did ask for this message, but the piece is already complete...
+we didn't ask for this message...
+Wednesday
+Weekdays
+Weekends
+we have this block already...
+We unchoked this peer, but they're not interested
+We would download from this peer if they would let us
+We would upload to this peer if they asked
+Where to look for configuration files
+Whitelist enabled
+width-request
+will verify tracker certs using envvar CURL_CA_BUNDLE: %s
+wrap-license
+write failed for "%s": %s
+wrong block size -- expected %u, got %d
+wrote %d to peer (%s)
+wrote %zu bytes to task %p's buffer
+WWW-Authenticate
+XanTorrent
+XBT Client %c.%c.%c%s
+XDG_CONFIG_HOME
+XDG_DATA_DIRS
+XDG_DATA_HOME
+XDG_DOWNLOAD_DIR="
+xdg-open
+__xpg_basename
+x-scheme-handler/magnet
+__xstat64
+XSwifter
+Xtorrent
+Xtorrent %d.%d (%d)
+X-Transmission-Session-Id
+xt=urn:btih
+X@Verifying torrent
+_Z10no_rb_sizePv
+_Z10UTP_Randomv
+_Z11no_overheadPvbji
+_Z12send_to_addrPFvPvPKhjPK8sockaddrjES_S1_jRK14PackedSockAddr
+_Z13UTP_GetUDPMTUPK8sockaddrj
+_Z15UTP_DelaySamplePK8sockaddri
+_Z17UTP_GetPacketSizePK8sockaddr
+_Z18UTP_GetUDPOverheadPK8sockaddrj
+_Z19UTP_GetMicrosecondsv
+_Z19UTP_GetMillisecondsv
+_Z19UTP_ProcessIncomingP9UTPSocketPKhjb
+_Z21wrapping_compare_lessjj
+_Z25UTP_GetGlobalUTPBytesSentPK8sockaddrj
+_Z7no_readPvPKhj
+_Z7utp_logPKcz
+_Z8no_errorPvi
+_Z8no_statePvi
+_Z8no_writePvPhj
+_Z8UTP_FreeP9UTPSocket
+zero_funcs
+Zip Torrent
+_ZN21SizableCircularBuffer4growEjj
+_ZN5ArrayI8RST_InfoLj16EED1Ev
+_ZN5ArrayI8RST_InfoLj16EED2Ev
+_ZN5ArrayIP9UTPSocketLj16EED1Ev
+_ZN5ArrayIP9UTPSocketLj16EED2Ev
+_ZN9UTPSocket10ack_packetEt
+_ZN9UTPSocket11is_writableEj
+_ZN9UTPSocket11send_packetEP14OutgoingPacket
+_ZN9UTPSocket13flush_packetsEv
+_ZN9UTPSocket13selective_ackEjPKhh
+_ZN9UTPSocket14check_timeoutsEv
+_ZN9UTPSocket15get_packet_sizeEv
+_ZN9UTPSocket15send_keep_aliveEv
+_ZN9UTPSocket17update_send_quotaEv
+_ZN9UTPSocket19selective_ack_bytesEjPKhhRx
+_ZN9UTPSocket21apply_ledbat_ccontrolEjjx
+_ZN9UTPSocket21write_outgoing_packetEjj
+_ZN9UTPSocket8send_ackEb
+_ZN9UTPSocket8send_rstEPFvPvPKhjPK8sockaddrjES0_RK14PackedSockAddrjtth
+_ZN9UTPSocket9send_dataEP12PacketFormatj16bandwidth_type_t

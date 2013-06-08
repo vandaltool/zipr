@@ -1,0 +1,208 @@
+accept unknown SSL server certificates without
+another repository.
+apr_array_make
+apr_array_push
+apr_gethostname
+apr_getopt_long
+apr_hash_first
+apr_hash_get
+apr_hash_make
+apr_hash_next
+apr_hash_set
+apr_hash_this
+apr_palloc
+apr_pool_clear
+apr_pool_destroy
+apr_psprintf
+apr_signal
+apr_sleep
+Available subcommands:
+__bss_start
+/build/buildd/subversion-1.6.17dfsg/subversion/svnsync/main.c
+Cannot copy revprops for a revision (%ld) that has not been synchronized yet
+Cannot initialize a repository with content in it
+Cannot use --username or --password with any of --source-username, --source-password, --sync-username, or --sync-password.
+Can't get local hostname
+Caught signal
+Commit created rev %ld but should have created %ld
+commit-revprops
+Committed revision %ld.
+config-dir
+connect to source repository with password ARG
+connect to source repository with username ARG
+connect to sync repository with password ARG
+connect to sync repository with username ARG
+Copied properties for revision %ld.
+Copied properties for revision %ld (%s* properties skipped).
+copy properties for all revisions previously transferred to the
+copy properties for that revision alone.  If REV is not provided,
+copy-revprops
+Copy the revision properties in a given range of revisions to the
+Couldn't get lock on destination repos after %d attempts
+dcgettext
+Describe the usage of this program or its subcommands.
+destination.
+destination from the source with which it was initialized.
+Destination HEAD (%ld) is not the last merged revision (%ld); have you committed to the destination without using svnsync?
+Destination repository has not been initialized
+Destination repository is already synchronizing from '%s'
+do no interactive prompting
+do not cache authentication tokens
+Failed to get lock on destination repos, currently held by '%s'
+general usage: svnsync SUBCOMMAND DEST_URL  [ARGS & OPTIONS ...]
+GLIBC_2.0
+GLIBC_2.4
+__gmon_start__
+If REV and REV2 are provided, copy properties for the revisions
+If the source URL is not the root of a repository, only the
+initialize
+Initialize a destination repository for synchronization from
+In other words, the destination repository should be a read-only
+Invalid revision number (%ld)
+_IO_stdin_used
+_Jv_RegisterClasses
+Last Merged Revision: %s
+libapr-1.so.0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+libsvn_delta-1.so.1
+libsvn_ra-1.so.1
+libsvn_subr-1.so.1
+located at DEST_URL.
+mean "the last revision transferred".
+mirror of the source repository.
+no-auth-cache
+no committed revisions.  The destination repository must allow
+non-interactive
+NOTE: Dropped Subversion mergeinfo from this revision.
+NOTE: Migrated 'svnmerge-integrated' in this revision.
+NOTE: Normalized %s* properties to LF line endings (%d rev-props, %d node-props).
+NOTE: Saw 'svnmerge-blocked' in this revision (but didn't migrate it).
+partial-replay
+Path '%s' is not a URL
+print as little as possible
+Print information about the synchronization destination repository
+                             prompting (but only with '--non-interactive')
+read user configuration files from directory ARG
+Repository '%s' is not initialized for synchronization
+REV and REV2 must be revisions which were previously transferred
+Revision being currently copied (%ld), last merged revision (%ld), and destination HEAD (%ld) are inconsistent; have you committed to the destination without using svnsync?
+revision property changes.
+                             see --source-password and --sync-password)
+                             see --source-username and --sync-username)
+Session is rooted at '%s' but the repos root is '%s'
+show help on a subcommand
+show program version information
+'%s' is not a valid revision range
+source-password
+Source Repository UUID: %s
+Source URL: %s
+source-username
+specified by that range, inclusively.  If only REV is provided,
+specified part of the repository will be synchronized.
+specify a password ARG (deprecated;
+specify a username ARG (deprecated;
+__stack_chk_fail
+(*str)->data != NULL
+Subcommand '%s' doesn't accept option '%s'
+subversion
+svn:author
+svn_cmdline_create_auth_baton
+svn_cmdline_fflush
+svn_cmdline__getopt_init
+svn_cmdline_handle_exit_error
+svn_cmdline_init
+svn_cmdline_printf
+svn_config_ensure
+svn_config_get_config
+svn_cstring_split
+svn:date
+svn_delta
+svn_delta_default_editor
+svn_delta_get_cancellation_editor
+svn_delta_version
+svn_error_clear
+svn_error_create
+svn_error_createf
+svn_error__locate
+svn_error__malfunction
+svn_error_quick_wrap
+svn_error_wrap_apr
+svn_io_open_unique_file3
+svnmerge-blocked
+svn:mergeinfo
+svn_mergeinfo_parse
+svn_mergeinfo_to_string
+svnmerge-integrated
+svn_opt__args_to_target_array
+svn_opt_format_option
+svn_opt_get_canonical_subcommand2
+svn_opt_get_option_from_code2
+svn_opt_parse_revision
+svn_opt_print_help3
+svn_opt_subcommand_takes_option3
+svn_path_is_child
+svn_path_is_url
+svn_path_uri_decode
+svn_path_uri_encode
+svn_path_url_add_component2
+svn_pool_create_ex
+svn_property_kind
+svn_prop_needs_translation
+svn_ra_change_rev_prop
+svn_ra_get_commit_editor3
+svn_ra_get_latest_revnum
+svn_ra_get_repos_root2
+svn_ra_get_uuid2
+svn_ra_has_capability
+svn_ra_initialize
+svn_ra_open3
+svn_ra_print_modules
+svn_ra_replay_range
+svn_ra_rev_prop
+svn_ra_rev_proplist
+svn_ra_version
+svn_stringbuf_appendcstr
+svn_stringbuf_create
+svn_string_create
+svn_string_createf
+svn_subr
+svn_subr_version
+svn_subst_translate_cstring2
+svn:sync-
+svnsync: 
+svn:sync-currently-copying
+svn:sync-from-url
+svn:sync-from-uuid
+svn:sync-last-merged-rev
+svn:sync-lock
+SVNSYNC_UNSUPPORTED_MIGRATE_SVNMERGE
+SVNSYNC_UNSUPPORTED_STRIP_MERGEINFO
+svn_uuid_generate
+svn_ver_check_list
+synchronize
+sync-password
+sync-username
+synsync: 
+the destination repository by any method other than 'svnsync'.
+The destination URL must point to the root of a repository with
+The following repository access (RA) modules are available:
+to the destination.  You may use "HEAD" for either revision to
+Transfer all pending revisions to the destination from the source
+Transmitting file data 
+trust-server-cert
+--trust-server-cert requires --non-interactive
+Try 'svnsync help' for more info
+Type 'svnsync help %s' for usage.
+Type 'svnsync help <subcommand>' for help on a specific subcommand.
+Type 'svnsync --version' to see the program version and RA modules.
+usage: svnsync copy-revprops DEST_URL [REV[:REV2]]
+usage: svnsync help [SUBCOMMAND...]
+usage: svnsync info DEST_URL
+usage: svnsync initialize DEST_URL SOURCE_URL
+usage: svnsync synchronize DEST_URL
+--version
+with which it was initialized.
+You should not commit to, or make revision property changes in,

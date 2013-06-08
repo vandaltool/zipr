@@ -1,0 +1,11 @@
+# Copyright (c) Twisted Matrix Laboratories.
+except ImportError:
+extra = os.path.dirname(os.path.dirname(sys.argv[0]))
+from twisted.conch.scripts.cftp import run
+    import _preamble
+import sys, os
+# See LICENSE for details.
+    sys.exc_clear()
+sys.path.insert(0, extra)
+sys.path.remove(extra)
+#! /usr/bin/python

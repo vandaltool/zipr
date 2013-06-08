@@ -1,0 +1,29 @@
+__bss_start
+dcgettext
+Error trashing file: %s
+g_error_free
+g_error_matches
+g_file_new_for_commandline_arg
+g_file_trash
+g_io_error_quark
+GLIBC_2.0
+__gmon_start__
+g_object_unref
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_printerr
+g_type_init
+ignore nonexistent files, never prompt
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+- move files to trash
+setlocale

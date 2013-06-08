@@ -1,0 +1,407 @@
+014578ABb:C:cef:HhI:JjLM:mNOoPpqRrSs:tuvwXxZz
+0aB:b:cDdE:f:G:HiJjkLlM:nOo:Pp:rs:T:tU:uvwXx:YZz
+3T$43D$0	
+%4lu,%4lu 
+6AaBbC:cdE:F:fH:I:iJjkLlM:mO:oprSstuVvZz
+abcdfiklnoprstuvwxBDEGHLPTUXYZ0
+Access/modification time set failed on: %s
+Actual crc does not match expected crc %s
+A hard link to the directory %s is not allowed
+ and make sure it is WRITE ENABLED.
+ar can only archive regular files, which %s is not
+Archive I/O error, cannot continue
+Archive I/O error. Trying to recover.
+Archive may create improper hard links when extracted
+Archive name > 
+Archive read error limit (%d) reached
+Attempting to recover from an archive read failure.
+ATTENTION! %s archive volume change required.
+ATTENTION: %s interactive file rename operation.
+B"</~4<9
+Bad option %c with time range %s
+Bcpio header field is too small for file %s
+%b %e %H:%M
+%b %e  %Y
+           [blocking-factor | archive | replstr] [-C directory] [-I file]
+__bss_start
+Cannot access destination directory %s
+Cannot allocate memory for %s
+Cannot allocate memory for temp file name.
+Cannot allocate space for directory access time table
+Cannot allow updates to an archive with flaws.
+Cannot append, device record size %d does not support %s spec
+Cannot append to an archive obtained from a pipe.
+Cannot append to an archive that may have flaws.
+Cannot canonicalise %s
+ cannot change storage media, type "s"
+Cannot chdir to %s
+cannot compress while appending
+Cannot determine archive tape blocksize.
+Cannot determine gid for group name: %s
+cannot follow symlink %s in chain for %s
+Cannot identify format. Searching...
+Cannot mix current archive format %s with %s
+Cannot open %s, try again
+Cannot re-open %s, try again
+Cannot save archive name.
+Cannot update rename table
+Cannot write an archive on top of a directory %s
+Can't chdir to %s
+Can't fchdir to starting directory
+Can't open current working directory.
+           [-C directory] [-f archive] [-I file] [-M flag] [-s replstr]
+' checksum 
+compress
+Could not access %s (stat)
+Could not create: %s
+could not exec %s
+Could not finish writing
+could not fork
+Could not link to %s from %s
+could not pipe
+Could not set permissions on %s
+Could not unlink %s
+Could not write bcpio header for %s
+Could not write bcpio link name for %s
+Could not write sv4cpio header for %s
+Could not write sv4cpio link name for %s
+cpio file name in header is corrupted
+cpio file name length %d is out of range
+cpio header field is too small to store file %s
+       cpio -i [-6BbcdfJjmrSstuVvZz] [-C bytes] [-E file] [-F archive]
+cpio: Known -H formats are:
+cpio link name is corrupt
+cpio link name length is invalid: %lu
+cpio link name read error
+       cpio -p [-adLlmuVv] destination-directory <name-list
+CPU time limit reached, cleaning up.
+__ctype_b_loc
+__cxa_finalize
+debug: -M 0x%08X -x %s
+Destination directory was not supplied
+Destination is not a directory %s
+Destination pathname too long %s
+ device '
+device mapping table
+Device map table
+/dev/rmt0
+/dev/rst0
+/dev/rst1
+/dev/rst4
+/dev/rst5
+/dev/rst7
+/dev/rst8
+/dev/tty
+Directory access time reset table
+directory name is too long %s
+Empty file name, try again
+Empty pattern string
+Empty replacement string
+Empty time range string
+endgrent
+End of archive volume %d reached
+endpwent
+__errno_location
+Error count value must be positive
+Failed chdir to %s
+Failed open to read on %s
+Failed open to read/write on %s
+Failed open to write on %s
+Failed read on archive volume %d
+Failed seek on file %s
+Failed %s on %s
+Failed stat of %s
+Failed stat on %s
+Failed write during copy of %s to %s
+Failed write to archive volume: %d
+Failed write to file %s
+Fatal error, cannot open %s
+__fgets_chk
+           [file ...]
+File changed size during read %s
+File changed size %s
+File is too large for bcpio format %s
+File is too large for cpio format %s
+File is too large for sv4cpio format %s
+File is too large for tar %s
+File is too long for ustar %s
+File name %s/%s, too long
+File name too long for tar %s
+File name too long for ustar %s
+File name too long, try again
+File rewind failed on: %s
+File %s changed size during copy to %s
+File seek on %s
+File %s was modified during copy to archive
+File %s was modified during copy to %s
+File %s was modified during read
+File system cycle found at %s
+File system traversal error
+file time table
+Forward positioning operation on archive failed
+__fprintf_chk
+ftruncate
+fts_close
+fts_open
+fts_read
+__fxstat
+getgrgid
+getgrnam
+getpwnam
+getpwuid
+getrlimit
+           [-G group] [-M flag] [-o options] [-s replstr] [-T range]
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Group selection table out of memory
+hard link table
+               [-H format] [-I archive] [-M flag] [pattern ...] [<archive]
+Ignoring too-long pathname: %s
+Ignoring unterminated pathname at EOF
+Illegal file name: .. try again
+Illegal lower time range %s
+Illegal upper time range %s
+impossible M value: %s
+Improperly specified time range: %s
+Input > 
+Input archive name or "." to quit %s.
+Input new name, or a "." to keep the old name, 
+interactive rename table
+internal error: %s should never have been called
+Invalid block size %s
+Invalid file name argument
+Invalid header, starting valid header search.
+Invalid inode number for file %s
+Invalid option name
+Invalid options format
+Invalid -p string: %c
+Invalid replacement string option %s
+Invalid replacement string %s
+Invalid write limit %s
+_IO_getc
+_IO_putc
+_IO_stdin_used
+Is the device ready and online? > 
+_Jv_RegisterClasses
+LIBBSD_0.0
+LIBBSD_0.1
+libbsd.so.0
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+ linked to '
+Link name too long for tar %s
+Link name too long for ustar %s
+Load the NEXT STORAGE MEDIA (if required)
+Load the NEXT TAPE on the tape drive
+localtime
+%lu blocks
+__lxstat
++l$X;T$,tv
+' magic '
+__memcpy_chk
+__memmove_chk
+               [-M flag] [-O archive] <name-list [>archive]
+next_file
+	nlink %3ld mtime %08lX name '%s'
+No interactive rename table, links may fail
+           [-o options] [-p string] [-s replstr] [-T range] [-U user]
+or a "return" to skip this file.
+ or "s" to switch to new device.
+Out of memory
+           [pattern ...]
+Pattern list inconsistent
+Pattern select out of memory
+pax: Known -x formats are:
+       pax -r [-0cDdiJjknOuvYZz] [-E limit] [-f archive] [-G group] [-M flag]
+       pax -rw [-0DdHikLlnOPtuvXYZ] [-G group] [-p string] [-s replstr]
+       pax -w [-0adHiJjLOPtuvXz] [-B bytes] [-b blocksize] [-f archive]
+paxXXXXXXXXXX
+' prefix '
+Premature end of file on archive read
+Problem while reading stdin
+Problem with file '%s'
+Processing continues, name changed to: %s
+Processing continues, name unchanged.
+Quitting %s!
+__rawmemchr
+@(#)rcsid: $MirOS: src/bin/pax/ar.c,v 1.6 2012/02/16 17:41:40 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/ar_io.c,v 1.14 2012/02/16 17:27:30 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/ar_subs.c,v 1.12 2012/02/16 17:27:30 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/buf_subs.c,v 1.4 2012/02/12 00:27:14 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/cache.c,v 1.6 2012/02/12 01:02:05 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/cpio.c,v 1.18 2012/02/16 17:27:31 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/file_subs.c,v 1.16 2012/02/12 00:42:28 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/ftree.c,v 1.5 2012/02/12 00:44:57 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/gen_subs.c,v 1.11 2012/02/16 17:11:45 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/getoldopt.c,v 1.4 2012/02/12 00:27:16 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/options.c,v 1.44 2012/02/16 17:27:31 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/pat_rep.c,v 1.4 2012/02/12 00:44:57 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/pax.c,v 1.16 2012/02/16 17:34:35 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/sel_subs.c,v 1.4 2012/02/12 00:27:17 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/tables.c,v 1.14 2012/02/16 17:27:32 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/tar.c,v 1.12 2012/02/16 17:27:32 tg Exp $
+@(#)rcsid: $MirOS: src/bin/pax/tty_subs.c,v 1.4 2012/02/16 16:01:09 tg Exp $
+__read_chk
+Read fault on %s
+readlink
+__readlink_chk
+Ready for archive volume: %d
+realpath
+__realpath_chk
+regerror
+Removing leading / from absolute path names in the archive
+Replacement name error %s
+Replacement name too long %s >> %s
+Reverse positioning on pipes is not supported.
+Reverse position on previous volume.
+%s%2u %-*.*s %-*.*s 
+%s: %c argument missing
+%s >> <empty string>
+setgrent
+setpwent
+setrlimit
+%s has an unknown file type, skipping
+sigaction
+sigaddset
+sigemptyset
+Signal caught, cleaning up.
+sigprocmask
+%s: Invalid combination of options:
+Skipping file.
+__snprintf_chk
+Sorry, unable to determine archive format.
+%s out of memory
+%s overflow for %s
+%s: Reading archive to position at the end...
+%s ready for archive tape volume: %d
+%s ready for archive volume: %d
+%s >> %s
+	%s = %s
+%s=%s is only supported when writing.
+%s=%s is the only supported tar format option
+%s skipped. Sockets cannot be copied or extracted
+%s: %s vol %d, %lu files, %lu bytes read, %lu bytes written.
+__stack_chk_fail
+<STDOUT>
+__strdup
+strerror
+strftime
+%s unknown command, try again
+%s: unknown format, %lu bytes skipped.
+%s: unknown option %c
+sv4cpio header field is too small for file %s
+%s: Waiting for tape drive close to complete...
+%s while compiling regular expression %s
+Switching to a different archive
+< t3</t/
+Tape drive unable to backspace requested amount
+tar cannot archive a block device %s
+tar cannot archive a character device %s
+tar cannot archive a fifo %s
+tar cannot archive a socket %s
+       tar {-crtux} [-014578AeHhJjLmNOoPpqRSvwXZz] [-b blocking-factor]
+tar_dbgfld: wrong call
+tar header field is too small for %s
+These format options are not supported
+Time range format is: [[[[[cc]yy]mm]dd]HH]MM[.SS][/[c][m]]
+TRAILER!!!
+           [-T range] [-U user] [file ...] directory
+           [-T range] [-U user] [pattern ...]
+Try again, file name too long
+Try again, illegal file name: ..
+Type "y" to continue, "." to quit %s,
+uar_trail
+Unable to access %s
+Unable to allocate memory fo group selection table
+Unable to allocate memory for directory times
+Unable to allocate memory for filename
+Unable to allocate memory for file name buffer
+Unable to allocate memory for group id cache table
+Unable to allocate memory for group name cache table
+Unable to allocate memory for pattern string
+Unable to allocate memory for replacement string
+Unable to allocate memory for time range
+Unable to allocate memory for user id cache table
+Unable to allocate memory for user name cache table
+Unable to allocate memory for user selection table
+Unable to allocate space for option list
+Unable to append, archive header flaw
+Unable to append, trailer re-write failed. Quitting.
+Unable to append when there are archive read errors.
+Unable to backspace over last tape block.
+Unable to backspace over tape filemark.
+Unable to backspace tape %d blocks.
+Unable to backspace tape over %d pad blocks
+Unable to close file descriptor on %s
+Unable to copy %s, file would overwrite itself
+Unable to create %s
+Unable to create temporary file: %s
+Unable to find uid for user: %s
+Unable to fix truncated inode/device field when storing %s
+Unable to link file %s to itself
+Unable to link to %s from %s
+Unable to locate tape filemark.
+Unable to obtain block size for file %s
+Unable to obtain current archive byte offset
+Unable to obtain file stats %s
+Unable to open file '%s' for read
+Unable to open %s to read
+Unable to read directory %s
+Unable to read symlink %s
+Unable to recover from an archive read failure.
+Unable to remove directory %s
+Unable to remove %s
+Unable to re-open %s
+Unable to restore signal mask
+Unable to rewrite archive trailer, cannot append.
+Unable to seek archive backwards
+Unable to set file uid/gid of %s
+Unable to set signal mask
+Unable to set up signal handler
+Unable to set up signal mask
+Unable to store mode and times for created directory: %s
+Unable to truncate archive file
+Unable to write cpio header for %s
+Unable to write cpio link name for %s
+Unknown -H format: %s
+Unknown tar format -o option/value pair %s=%s
+Unknown -x format: %s
+Upper %s and lower %s time overlap
+usage: cpio -o [-AaBcJjLVvZz] [-C bytes] [-F archive] [-H format]
+usage: pax [-0cdJjnOvz] [-E limit] [-f archive] [-G group] [-s replstr]
+usage: tar {crtux}[014578AbefHhJjLmNOoPpqRSsvwXZz]
+User selection table out of memory
+User specified archive volume byte limit reached.
+ustar cannot archive a socket %s
+ustar header field is too small for gid %lu, using nobody
+ustar header field is too small for %s
+ustar header field is too small for uid %lu, using nobody
+           [-U user] [-x format] [file ...]
+__vfprintf_chk
+WARNING! Major Internal Error! GNU hack Failing!
+WARNING: partial archive write. Archive IS FLAWED
+WARNING: partial archive write. Archive MAY BE FLAWED
+WARNING! These file names were not selected:
+WARNING! These patterns were not matched:
+Write block size %d is not a %d byte multiple
+Write block size %d too large, maximium is: %d
+Write block size of %d is not a %d byte multiple
+Write block size of %d larger than POSIX max %d, archive may not be portable
+Write block size of %d too large, maximium is: %d
+Write failed, archive is write protected.
+Write limit is not a %d byte multiple
+write_opt
+write_opt=nodir
+writing dev %lX inode %10lX mode %8lo user %ld:%ld
+writing dev %lX:%lx inode %10lX mode %8lo user %ld:%ld
+writing mode %8lo user %ld:%ld mtime %08lX name '%s'
+writing name '
+__xmknod

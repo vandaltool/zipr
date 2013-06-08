@@ -1,0 +1,252 @@
+2012.1.15AR.1
+3L$d3D$`	
+    -a       --all         Wipe all unused space
+-ab:c:dfh?ilmnpqtuvV
+ABSOLUTELY NO WARRANTY; for details read the GNU General Public License to be
+Access is denied because the NTFS journal file is unclean. Choices are:
+Access is denied because the NTFS volume is already exclusively opened.
+and may lead to data corruption.
+and you are welcome to redistribute it under certain conditions.  It comes with
+ A) Shutdown Windows properly.
+Attribute name was truncated.
+Attribute type was truncated.
+AT_UNNAMED
+    automatically initialize the journal.
+ B) Click the 'Safely Remove Hardware' icon in the Windows taskbar
+    -b list  --bytes list  List of values to write(default = 0)
+__bss_start
+bug or damaged fs: we want allocate buffer size %lld bytes
+Bytes must be in range 0-255.
+Can't map runlist for $INDEX_ALLOCATION (inode %lld)
+Can't map runlist (inode %lld)
+    -c num   --count num   Number of times to write(default = 1)
+Copyright (c) 2002-2005 Richard Russon
+Copyright (c) 2004 Yura Pakhuchiy
+could be identified for example by the help of the 'fuser' command.
+Could not open inode
+Couldn't allocate %lld bytes
+Couldn't allocate memory for byte list.
+Couldn't allocate memory in parse_list().
+Couldn't allocate %u bytes
+Couldn't create a search context.
+Couldn't determine size of INDX record
+Couldn't open $Bitmap
+Couldn't open $DATA attribute
+Couldn't open $INDEX_ALLOCATION
+Couldn't open $INDEX_ROOT
+Couldn't open inode %llu.
+Couldn't open $MFT/$DATA
+Couldn't read $Bitmap
+Couldn't read INDX record
+Couldn't read $MFT/$BITMAP
+Couldn't read MFT Record %llu
+Couldn't translate attribute name to current locale.
+Couldn't translate attribute type to current locale.
+Couldn't translate filename to current locale.
+Couldn't wipe tail
+Couldn't wipe tail of INDX record
+ C) Use 'Eject' from Windows Explorer to safely remove the device.
+__cxa_finalize
+damaged fs: $INDEX_ALLOCATION is present, but we can't open $BITMAP with same name (inode %lld)
+damaged fs: $INDEX_ALLOCATION is present, but we can't open $INDEX_ROOT with same name (inode %lld)
+damaged fs: mst_post_read_fixup failed
+damaged fs: mst_pre_write_protect failed
+damaged fs: Not resident $INDEX_ROOT (inode %lld)
+damaged fs: Resident $INDEX_ALLOCATION (inode %lld)
+    -d       --directory   Wipe directory indexes
+Developers' email address: ntfs-3g-devel@lists.sf.net
+different device under /dev/mapper, (e.g. /dev/mapper/nvidia_eahaabcc1)
+ D) If you ran chkdsk previously then boot Windows again which will
+directory
+distribution are broken. Please report to your distribution developers
+#D$P#L$H
+%d: usa_size out of bounds (%u)
+__errno_location
+error attr mst read %lld
+error attr mst write %lld
+Error closing inode %llu.
+Error getting information about %s
+Error reading inode %llu.
+Error reading inode %llu.  Aborting.
+ E) Submit 'force' option (WARNING: This solution it not recommended).
+Failed to determine whether %s is mounted
+Failed to mount '%s'
+Failed to set locale, using default '%s'.
+    -f       --force       Use less caution
+	file tails
+find_first_attribute
+ F) ntfsmount: Mount the volume read-only by using the 'ro' mount option.
+Forced to continue.
+found in the file "COPYING" distributed with this program, or online at:
+get_indx_record_size
+getopt_long
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+    -h       --help        Print this help
+http://www.gnu.org/copyleft/gpl.html
+    -i       --info        Show volume information (default)
+INDX record should be 0
+INDX record should be %u bytes
+ (inode %lld)
+Inode %lld - 
+Internal error
+Internal error, strtoll didn't return a suffix.
+Invalid list '%s'
+Invalid number '%.*s'.
+Invalid size '%s'.
+Invalid size suffix '%s'.  Use T, G, M, or K.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libntfs-3g.so.831
+%lld bytes were wiped
+    -l       --logfile     Wipe the logfile (journal)
+made to NTFS by this software.
+malloc failed
+Maybe you selected the wrong device? Or the whole disk instead of a
+<MFT%llu>
+mft_next_record
+    -m       --mft         Wipe mft space
+NAttrCompressed
+NAttrEncrypted
+    -n       --no-action   Do not write to disk
+no-action
+Not base mft record. Skipping
+NOTE: If you had not scheduled check and last time accessed this volume
+Not enough memory
+Not enough memory to allocate %lld bytes
+Nothing to wipe
+    notification area before disconnecting the device.
+Not resident $INDEX_ROOT
+(NOT to us!) that init scripts kill ntfsmount or mount.ntfs-fuse during
+ntfs_attr_close
+ntfs_attr_find_in_attrdef
+ntfs_attr_get_search_ctx
+ntfs_attr_lookup
+ntfs_attr_map_whole_runlist
+ntfs_attr_mst_pread
+ntfs_attr_mst_pwrite
+ntfs_attr_open
+ntfs_attr_pread
+ntfs_attr_pread failed
+ntfs_attr_put_search_ctx
+ntfs_attr_pwrite
+ntfs_bugs
+ntfs_check_if_mounted
+ntfs_gpl
+ntfs_home
+NTFS_INDEX_I30
+ntfs_inode_close
+ntfs_inode_open
+NTFS is inconsistent. Run chkdsk /f on Windows then reboot it TWICE!
+ntfs_log_clear_levels
+ntfs_log_get_levels
+ntfs_log_handler_outerr
+ntfs_log_parse_option
+ntfs_log_redirect
+ntfs_log_set_handler
+ntfs_log_set_levels
+ntfs_malloc
+ntfs_mbstoucs
+ntfs_mount
+ntfs_mst_post_read_fixup
+ntfs_mst_pre_write_fixup
+ntfs_pathname_to_inode
+ntfs_pwrite
+ntfs_rl_pread
+ntfs_rl_pread failed
+ntfs_rl_pwrite
+ntfs_rl_pwrite failed
+ntfs_rl_pwrite failed, offset %llu, size %lld, vcn %lld
+ntfs_ucsnlen
+ntfs_ucstombs
+ntfs_umount
+ntfswipe
+ntfswipe.c
+off properly, so mounting could be done safely.
+Option '%s' requires an argument.
+Out of memory.  Aborting.
+pagefile
+pagefile.sys
+parse_list
+parse_options
+partition (e.g. /dev/hda, not /dev/hda1)? Or the other way around?
+Pathname was truncated.
+Please boot into Windows TWICE, or use the 'force' option.
+    -p       --pagefile    Wipe pagefile (swap space)
+print_summary
+    -q       --quiet       Less output
+Resident $DATA attribute. Skipping.
+Resident $INDEX_ALLOCATION
+setlocale
+shutdown instead of proper umount.
+%s is about to wipe:
+%s is in 'no-action' mode, it will NOT write to disk.
+snprintf
+__snprintf_chk
+__stack_chk_fail
+%s v%s (libntfs-3g) - Overwrite the unused space on an NTFS Volume.
+%s will begin in 5 seconds, press CTRL-C to abort.
+%s will overwrite these areas with: 
+%s will repeat these operations %d times.
+The device %s doesn't exist
+The device '%s' doesn't have a valid NTFS.
+The directory structure is too deep (over %d) nested directories.
+The iteration count must be between 1 and 100.
+	the logfile (journal)
+The NTFS partition is hibernated. Please resume Windows and turned it 
+	the pagefile (swap space)
+The usage of the /f parameter is very IMPORTANT! No modification was
+The volume may be already mounted, or another software may use it which
+This program is free software, released under the GNU General Public License
+to mount NTFS. Please see the 'dmraid' documentation for help.
+    -t       --tails       Wipe file tails
+<UNKNOWN>
+Unknown attribute type 0x%02x
+Unknown option '%s'.
+	unused directory index space
+	unused disk space
+	unused mft areas
+Usage: %s [options] device
+Use the force option to ignore this error.
+using ntfsmount and shutdown system properly, then init scripts in your
+utils_attr_get_name
+utils_cluster_in_use
+utils_inode_get_name
+utils_mftrec_in_use
+utils_mount_volume
+utils_parse_size
+utils_set_locale
+utils_valid_device
+    -u       --unused      Wipe unused clusters
+Volume is scheduled for check.
+    -v       --verbose     More output
+    -V       --version     Version information
+WARNING: Dirty volume mount was forced by the 'force' mount option.
+wipe_attribute
+wipe_compressed_attribute
+wipe_directory
+wipe_directory 0x%02x, %lld bytes
+Wiped %llu bytes
+wipe_index_allocation
+wipe_logfile
+wipe_logfile 0x%02x, %lld bytes
+wipe_mft
+wipe_mft 0x%02x, %lld bytes
+wipe_pagefile
+wipe_pagefile 0x%02x, %lld bytes
+wipe_tails
+wipe_tails 0x%02x, %lld bytes
+wipe_unused
+wipe_unused 0x%02x, %lld bytes
+__xstat64
+You can use force option to avoid this check, but this is not recommended
+You may not use --quiet and --verbose at the same time.
+You must specify exactly one device.
+You seem to have a SoftRAID/FakeRAID hardware and must use an activated,

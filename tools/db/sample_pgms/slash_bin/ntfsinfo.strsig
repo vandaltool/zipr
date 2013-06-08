@@ -1,0 +1,494 @@
+(0x%04x)
+ (0x%08x)
+			0x%llx		0x%llx		0x%llx
+			0x%llx		%s	0x%llx
+    2002-2004 Matthew J. Fanto
+    2002-2005 Richard Russon
+    2002-2006 Anton Altaparmakov
+    2003-2006 Szabolcs Szakacsits
+    2003      Leonard Norrg
+    2004-2005 Yuval Fledel
+    2004-2007 Yura Pakhuchiy
+2012.1.15AR.1
+%3s %3s %2u %02u:%02u:%02u %4u UTC
+	512-byte Units Per Block:	 %u (0x%x)
+ABSOLUTELY NO WARRANTY; for details read the GNU General Public License to be
+Access is denied because the NTFS journal file is unclean. Choices are:
+Access is denied because the NTFS volume is already exclusively opened.
+	Allocated size:		 %llu (0x%llx)
+and may lead to data corruption.
+and you are welcome to redistribute it under certain conditions.  It comes with
+ ARCHIVE
+ A) Shutdown Windows properly.
+	Attribute Allocated Size: %lld
+	Attribute Compressed Size: %lld
+	Attribute Data Size: %lld
+	Attribute flags:	 0x%04x
+	Attribute Initialized Size: %lld
+	Attribute instance:	 %u (0x%x)
+	Attribute length:	 %u (0x%x)
+$ATTRIBUTE_LIST
+	Attribute List: %s
+	Attribute Name Length: %u
+	Attribute name:		 '%s'
+Attribute name was truncated.
+Attribute Offset:	 %u (0x%x)
+	Attribute State: %lu
+		Attribute type:	0x%x
+	Attribute Types: not done yet
+Attribute type was truncated.
+AT_UNNAMED
+    automatically initialize the journal.
+	Base Inode: %llu
+Base MFT Record:	 %llu (0x%llx)
+ B) Click the 'Safely Remove Hardware' icon in the Windows taskbar
+		Birth object id GUID:	 %s
+	Birth Object ID:	 missing
+	Birth Object ID:		 %s
+		Birth volume id GUID:	 %s
+	Birth Volume ID:	 missing
+	Birth Volume ID:		 %s
+__bss_start
+Bytes Allocated:	 %u (0x%x) bytes
+		Bytes used:		 %llu (0x%llx)
+Bytes Used:		 %u (0x%x) bytes
+CHKDSK_UNDERWAY 
+	Class ID:		 %u 
+	Cluster Size: %u
+	Clusters Per Block:	 %u (0x%x)
+	Collation Rule:		 %u (0x%x)
+ COMPRESSED
+	Compressed size:	 %llu (0x%llx)
+	Compression Block Clusters: %u
+	Compression Block Size Bits: %u
+	Compression Block Size: %u
+	Compression unit:	 %u (0x%x)
+Copyright (c)
+could be identified for example by the help of the 'fuser' command.
+Couldn't create a search context.
+Couldn't open $Bitmap
+Couldn't open inode %llu.
+Couldn't open $MFT/$DATA
+Couldn't read $Bitmap
+Couldn't read $MFT/$BITMAP
+Couldn't read MFT Record %llu
+Couldn't translate attribute name to current locale.
+Couldn't translate attribute type to current locale.
+Couldn't translate filename to current locale.
+	Current Position in First Data Zone: %lld
+	Current Position in Second Data Zone: %lld
+ C) Use 'Eject' from Windows Explorer to safely remove the device.
+__cxa_finalize
+Damaged INDX record
+		Data length:		 %u (0x%x)
+		Data offset:		 %u (0x%x)
+	Data size:		 %llu (0x%llx)
+	Data size:		 %u (0x%x)
+	Decompressed Runlist: not done yet
+defaulted
+DEL_USN 
+Developers' email address: ntfs-3g-devel@lists.sf.net
+	Device state: %lu
+-:dfhi:F:mqtTvV
+different device under /dev/mapper, (e.g. /dev/mapper/nvidia_eahaabcc1)
+ D) If you ran chkdsk previously then boot Windows again which will
+ DIRECTORY
+DIRECTORY 
+DIRECTORY_I30
+distribution are broken. Please report to your distribution developers
+		Domain id GUID:		 %s
+	Domain ID:		 missing
+	Domain ID:			 %s
+	Dumping attribute list:
+Dumping attribute %s (0x%x) from mft record %lld (0x%llx)
+	Dumping index block:
+	Dumping index root:
+Dumping Inode %llu (0x%llx)
+	Dumping some of the attribute data:
+	EA flags:		 
+$EA_INFORMATION
+<EINVAL>	
+ ENCRYPTED
+	End of attribute list reached.
+	End of index block reached
+End of inode reached
+<ENOENT>	
+		Entry length:		 %u (0x%x)
+__errno_location
+Error closing inode %llu.
+Error: couldn't decompress runlist
+Error: couldn't parse attribute name
+Error getting information about %s
+Error loading node
+Error reading inode %llu.
+Error reading inode %llu.  Aborting.
+ E) Submit 'force' option (WARNING: This solution it not recommended).
+		Exceeded time:		 %lld (0x%llx)
+/$Extend/$ObjId
+/$Extend/$Quota
+Failed to determine whether %s is mounted
+Failed to mount '%s'
+Failed to open '%s'.
+Failed to parse command line options
+Failed to read $BITMAP attribute
+Failed to read $INDEX_ALLOCATION attribute
+Failed to read $INDEX_ROOT attribute
+Failed to read $SDS attribute
+Failed to set locale, using default '%s'.
+    -F, --file FILE  Display information about this file (absolute path)
+    -f, --force      Use less caution
+	File Altered Time:	 %s
+FILE_Bitmap Data Attribute Information
+FILE_Bitmap Information 
+	FILE_Bitmap MFT Record Number: %llu
+	File Creation Time:	 %s
+	FILE_MFTMirr Size: %d
+$FILE_NAME
+		FILE record number:	 %llu (0x%llx)
+find_first_attribute
+ F) ntfsmount: Mount the volume read-only by using the 'ro' mount option.
+Forced to continue.
+found in the file "COPYING" distributed with this program, or online at:
+get_index_attr_type
+getopt_long
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+		Hash:			 0x%08x
+	have $OBJECT_ID. Your version of NTFS is %d.
+    -h, --help       Display this help
+	Highest VCN:		 %lld (0x%llx)
+http://www.gnu.org/copyleft/gpl.html
+ I30_INDEX
+    -i, --inode NUM  Display information about this inode
+$INDEX_ALLOCATION
+		Index attr type is UNKNOWN: 	 0x%08x
+	Index Block Size: %u
+	Index Block Size:	 %u (0x%x)
+	Indexed Attr Type:	 
+	Index entries:		 %d
+	Index entries total:	 %d
+		Index entry flags:	 0x%02x
+$INDEX_ROOT
+	INDX blocks total:	 %d
+	Initialized size:	 %llu (0x%llx)
+		Instance:	%u (0x%x)
+Internal error, strtoll didn't return a suffix.
+Invalid LCN value %llx passed to ntfs_dump_lcn().
+Invalid number '%.*s'.
+Invalid size '%s'.
+Invalid size suffix '%s'.  Use T, G, M, or K.
+_IO_stdin_used
+_Jv_RegisterClasses
+		Key Data:
+		Key file id:		 %llu (0x%llx)
+		Key GUID:		 %s
+		Key hash:		 0x%08x
+		Key length:		 %u (0x%x)
+		Key owner id:		 %u (0x%x)
+		Key reparse tag:	 0x%08x
+		Key security id:	 %u (0x%x)
+		Key SID:		 %s
+	Last Accessed Time:	 %s
+		Last changed:		 %s
+	LCN of Data Attribute for FILE_MFT: %lld
+	LCN of Data Attribute for File_MFTMirr: %lld
+		Length in $SDS:		 %u (0x%x)
+	Length of Attribute List: %u
+		Length:			 %u (0x%x)
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libntfs-3g.so.831
+		Limit:			 %lld (0x%llx)
+$LOGGED_UTILITY_STREAM
+	Lowest VCN		 %lld (0x%llx)
+L$t3L$d1
+made to NTFS by this software.
+	Mapping pairs offset:	 %u (0x%x)
+	Maximum versions:	 %u 
+Maybe you selected the wrong device? Or the whole disk instead of a
+	MFT Changed Time:	 %s
+	MFT Data Position: %lld
+MFT Information 
+<MFT%llu>
+mft_next_record
+		MFT Number:		 0x%llx
+MFT Padding:	
+MFT Record Flags:	 
+MFT Record Seq. Numb.:	 %u (0x%x)
+	MFT Record Size: %u
+		MFT reference:	%lld (0x%llx)
+		MFT Sequence Number:	 0x%x
+	MFT Zone End: %lld
+	MFT Zone Multiplier: %u
+	MFT Zone Position: %lld
+	MFT Zone Start: %lld
+    -m, --mft        Dump information about the volume
+MOD_BY_CHKDSK 
+MOUNTED_NT4 
+		Name:		
+	Name length:	 %d (0x%x)
+		Name length:	%u (0x%x)
+	Name length:		 %u (0x%x)
+	Name of device: %s
+		Name offset:	%u (0x%x)
+	Name offset:		 %u (0x%x)
+	Name:		 '%s'
+	NEED_EA count:		 %u (0x%x)
+Next Attribute Instance: %u (0x%x)
+		Node VCN:		 %lld (0x%llx)
+none set (0x0000)
+ NOT_CONTENT_INDEXED
+NOTE: If you had not scheduled check and last time accessed this volume
+    notification area before disconnecting the device.
+(NOT to us!) that init scripts kill ntfsmount or mount.ntfs-fuse during
+ntfs-3g-devel@lists.sf.net
+ntfs_attr_close
+ntfs_attr_find_in_attrdef
+ntfs_attr_get_search_ctx
+ntfs_attr_lookup
+ntfs_attr_open
+ntfs_attr_pread
+ntfs_attr_put_search_ctx
+ntfs_attr_readall
+ntfs_bugs
+ntfs_check_if_mounted
+ntfs_dump_attr_ea
+ntfs_dump_attribute_header
+ntfs_dump_attr_index_allocation
+ntfs_dump_attr_index_root
+ntfs_dump_attr_list
+ntfs_dump_attr_security_descriptor
+ntfs_dump_attr_volume_name
+ntfs_dump_file_attributes
+ntfs_dump_filename
+ntfs_dump_index_block
+ntfs_dump_index_data
+ntfs_dump_index_entries
+ntfs_dump_index_key
+ntfs_dump_lcn
+ntfs_dump_sds
+ntfs_dump_sds_entry
+ntfs_get_attribute_value
+ntfs_get_attribute_value failed
+ntfs_get_attribute_value_length
+ntfs_get_attribute_value_length failed
+ntfs_gpl
+ntfs_guid_is_zero
+ntfs_guid_to_mbs
+ntfs_home
+ntfs_ie_get_vcn
+NTFS_INDEX_I30
+NTFS_INDEX_O
+NTFS_INDEX_Q
+NTFS_INDEX_R
+ntfs_index_root_get
+NTFS_INDEX_SDH
+NTFS_INDEX_SII
+ntfsinfo
+ntfsinfo.c
+ntfsinfo error: could not decompress runlist
+ntfsinfo error: could not parse file name
+ntfsinfo error: could not parse volume name
+ntfsinfo error: could not read security descriptor
+ntfsinfo error: stopped before finished enumerating attributes
+ntfs_inode_close
+ntfs_inode_open
+NTFS is inconsistent. Run chkdsk /f on Windows then reboot it TWICE!
+ntfs_log_clear_levels
+ntfs_log_get_levels
+ntfs_log_handler_outerr
+ntfs_log_parse_option
+ntfs_log_redirect
+ntfs_log_set_handler
+ntfs_log_set_levels
+ntfs_malloc
+ntfs_mapping_pairs_decompress
+ntfs_mapping_pairs_decompress failed
+ntfs_mbstoucs
+ntfs_mount
+ntfs_mst_post_read_fixup
+ntfs_names_are_equal
+ntfs_pathname_to_inode
+ntfs_rl_pread
+ntfs_rl_pread failed
+ntfs_sid_to_mbs
+ntfs_ucsnlen
+ntfs_ucstombs
+ntfs_ucstombs failed
+ntfs_umount
+	Number of Attached Extent Inodes: %d
+Number of Hard Links:	 %u (0x%x)
+$OBJECT_ID
+	$OBJECT_ID not present. Only NTFS versions > 3.0
+	Object ID:		 %s
+ OFFLINE
+off properly, so mounting could be done safely.
+		Offset in $SDS:		 %llu (0x%llx)
+		Offset:			 %llu (0x%llx)
+Option '%s' requires an argument.
+Option 'T' is deprecated, it was replaced by 't'.
+Out of memory.  Aborting.
+		Owner id:		 %u (0x%x)
+		Owner SID:		 %s
+<P9|$x~5
+	Packed EA length:	 %u (0x%x)
+		Padding:	
+parse_options
+partition (e.g. /dev/hda, not /dev/hda1)? Or the other way around?
+Pathname was truncated.
+Please boot into Windows TWICE, or use the 'force' option.
+=====  Please report this unknown attribute type to %s =====
+__printf_chk
+$PROPERTY_SET
+    -q, --quiet      Less output
+	Quota charged:		 %llu (0x%llx)
+		Quota flags:		 0x%08x
+ READONLY
+		Record length:	%u (0x%x)
+REPAIR_OBJID 
+ REPARSE_POINT
+$REPARSE_POINT
+REPARSE_R
+	ReservedR:		 %d (0x%x)
+	Resident flags:		 0x%02x
+	Resident: 		 %s
+RESIZE_LOG 
+<RL_NOT_MAPPED>
+	Runlist:	VCN		LCN		Length
+%sACE:		 type:%s  flags:0x%x  access:0x%x
+%sAllocated Size:		 %lld (0x%llx)
+%sAllocated Size:		 %u (0x%x)
+%s	Control:		 0x%04x
+%s	DACL pointer:		 %p
+%sData Size:		 %lld (0x%llx)
+%s	Discretionary ACL:	 
+%sEA Length:		 %d (0x%x)
+	Sector Size: %hu
+SECURE_SDH
+SECURE_SII
+$SECURITY_DESCRIPTOR
+		Security id:		 %u (0x%x)
+	Security ID:		 %u (0x%x)
+%sEntries Offset:		 %u (0x%x)
+SETFILEBITS
+setlinebuf
+setlocale
+%sFile Altered Time:	 %s
+%sFile attributes:	
+%sFile Creation Time:	 %s
+%sFilename Length:	 %d (0x%x)
+%sFilename:		 '%s'
+%sFile Name:		 unnamed?!?
+%s	Group SID:		 missing
+%s	Group SID pointer:	 %p
+%s	Group SID:		 %s
+shutdown instead of proper umount.
+%sIndex header flags:	 0x%02x
+%sIndex Size:		 %u (0x%x)
+	Size of Attribute Definition Table: %d
+	Size of STANDARD_INFORMATION is %u (0x%x).  It should be either 72 or 48, something is wrong...
+%sLast Accessed Time:	 %s
+%sLogFile Seq. Number:	 0x%llx
+%sMFT Changed Time:	 %s
+%sNamespace:		 %s
+snprintf
+__snprintf_chk
+%s	Owner SID:		 missing
+%s	Owner SID pointer:	 %p
+%s	Owner SID:		 %s
+%sParent directory:	 %lld (0x%llx)
+ SPARSE_FILE
+__sprintf_chk
+%sReparse point tag:	 0x%x
+%sReserved:		 %d (0x%x)
+%s	Revision:		 %u
+%sRevision	 %u
+%s	SACL pointer:		 %p
+%s		 SID: %s
+%s	System ACL:		 
+__stack_chk_fail
+$STANDARD_INFORMATION
+		Starting VCN:	%lld (0x%llx)
+	State of FILE_Bitmap Inode: %lu
+		Subnode VCN:		 %lld (0x%llx)
+%sUpd. Seq. Array Count:	 %u (0x%x)
+%sUpd. Seq. Array Off.:	 %u (0x%x)
+%sUpd. Seq. Number:	 %u (0x%x)
+%s v%s (libntfs-3g) - Display information about an NTFS Volume.
+ TEMPORARY
+The device %s doesn't exist
+The device '%s' doesn't have a valid NTFS.
+The directory structure is too deep (over %d) nested directories.
+The NTFS partition is hibernated. Please resume Windows and turned it 
+The usage of the /f parameter is very IMPORTANT! No modification was
+The volume may be already mounted, or another software may use it which
+This program is free software, released under the GNU General Public License
+		Threshold:		 %lld (0x%llx)
+    -t, --notime     Don't report timestamps
+to mount NTFS. Please see the 'dmraid' documentation for help.
+Total runs: %lu (fragments: %lu)
+Unhandled option case: %d.
+(unknown)
+<UNKNOWN>
+$UNKNOWN
+Unknown (0x%02x)
+UNKNOWN: 0x%04x
+ UNKNOWN: 0x%08x
+Unknown attribute type 0x%02x
+				 Unknown Flags: 0x%04x
+Unknown index attribute type: 0x%0X
+Unknown option '%s'.
+		Unknown (padding):	 0x%08x
+		Unknown:		 %u (0x%x)
+	Unpacked EA length:	 %u (0x%x)
+	Update Sequence Number:	 %llu (0x%llx)
+UPG_ON_MOUNT 
+Usage: %s [options] device
+	User ID:		 %u (0x%x)
+Use the force option to ignore this error.
+using ntfsmount and shutdown system properly, then init scripts in your
+utils_attr_get_name
+@@utils.c
+utils_cluster_in_use
+utils_inode_get_name
+utils_mftrec_in_use
+utils_mount_volume
+utils_parse_size
+utils_set_locale
+utils_valid_device
+	Value:		 
+	Value length:	 %d (0x%x)
+	Version number:		 %u 
+		Version:		 %u
+ VIEW_INDEX
+VIEW_INDEX 
+	Volume Flags:		 
+Volume Information 
+$VOLUME_INFORMATION
+Volume is scheduled for check.
+$VOLUME_NAME
+	Volume Name: %s
+	Volume Name:		 '%s'
+	Volume Name:		 unnamed
+	Volume Size in Clusters: %lld
+	Volume State: %lu
+	Volume Version:		 %d.%d
+	Volume Version: %u.%u
+    -v, --verbose    More output
+    -V, --version    Display version information
+	WARNING: Corrupt index entry, skipping the remainder of this index block.
+WARNING: Dirty volume mount was forced by the 'force' mount option.
+Weird: %s attribute type was found, please report this.
+Win32 & DOS
+__xstat64
+You can use force option to avoid this check, but this is not recommended
+You may not specify --inode and --file together.
+You may not use --quiet and --verbose at the same time.
+You must specify an inode to learn about.
+You must specify exactly one device.
+You seem to have a SoftRAID/FakeRAID hardware and must use an activated,

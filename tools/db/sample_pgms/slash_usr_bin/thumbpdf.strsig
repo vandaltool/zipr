@@ -1,0 +1,1070 @@
+            "\"";
+            {
+            }
+            }{
+          {
+          }
+         }
+        {
+        }
+       }
+      $_ = $';
+        0 rmoveto
+      $_ = $1;
+    $|=1;
+#   1999/02/14 v1.0: First release.
+#   1999/02/23 v1.1:
+#   1999/03/01 v1.2:
+#   1999/03/12 v1.3:
+#   1999/05/05 v1.4:
+#   1999/06/13 v1.5:
+#   1999/07/27 v1.6
+#   1999/08/08 v1.7:
+#   1999/09/06 v1.9:
+#   1999/09/09 v1.8
+        { 1 add 2 div } forall
+                  1 index /CropBox pget
+1. Run `Ghostscript' manually:
+        1 string dup 0 4 -1 roll put
+#   2000/01/11 v1.10:
+#   2000/01/19 v1.11:
+#   2000/02/11 v1.12:
+#   2000/02/22 v2.0:
+#   2000/02/28 v2.1:
+#   2000/03/07 v2.2:
+#   2000/03/22 v2.3:
+#   2000/04/10 v2.4:
+#   2000/07/29 v2.5:
+#   2000/09/27 v2.6
+#   2000/10/27 v2.7:
+#   2001/01/12 v2.8:
+#   2001/03/29 v2.9:
+#   2001/04/02 v2.10
+#   2001/04/26 v2.11
+#   2002/01/11 v3.0
+#   2002/05/26 v3.1
+#   2002/05/26 v3.2
+#   2003/03/19 v3.3
+#   2003/06/06 v3.4
+#   2004/10/24 v3.5
+#   2004/11/19 v3.6
+#   2004/11/19 v3.7:
+#   2005/07/06 v3.8:
+#   2007/11/07 v3.9:
+#   2008/04/16 v3.10
+2. Call `thumbpdf' again with the additional option `--nomakepng':
+  2 dict begin
+                  { 2 index exch /MediaBox exch put
+        2 index sub exch 3 index sub exch rectfill
+    [ 3 1 roll currentfile${filter}
+    [ 3 1 roll $dictbegin exch /Thumb exch $dictend /PUT pdfmark
+    3 -1 roll dup
+              3 copy 32 eq { add } { exch pop } ifelse 0 rmoveto pop
+             3 copy 32 eq { add } { exch pop } ifelse 0 Vexch rmoveto pop
+           4 -1 roll cshow pop pop
+    [ 4 -2 roll /PUT pdfmark
+  4 dict begin
+      { % 5.50, 6.51, 7.00, 7.02
+      6 -1 roll string $read pop
+      }{ % 7.10
+% adding thumbnails to pages
+% and the filter /FlateDecode (level 3), that is used by pdfTeX's
+# and version 1.3 or later is part of all distributions of LaTeX
+$AntiAliasGraphics = "1" if $AntiAliasGraphics eq "0";
+  $AntiAlias = "\n-dTextAlphaBits=$AntiAliasText\n" .
+  --antialias <num1>[num2] anti-aliasing, 0 = disable, 4 = max   ($::opt_antialias)
+  "antialias=s",
+$AntiAliasText     = "1" if $AntiAliasText     eq "0";
+#      A patch is added to disable the hack.
+@ARGV == 1 or die "$usage$Error Missing jobname!\n";
+@ARGV < 2 or die "$usage$Error Too many files!\n";
+* ARGV: @OrgArgv
+      $_ = ASCII85Encode(substr($_, 0, 4));
+      $_ = ASCII85Encode(substr($s, $i, 4));
+% as Distiller. Therefore detection for this versions is added.
+        % assuming white background
+#   because pdfshowpage_setpage does not contain /OutputFile.
+#      because there exist perl versions that have problems with.
+#      before the error message of "die" is printed.
+    begin
+      % be overwritten, because it was defined with `bind'.
+#   be part of the MediaBox, the MediaBox is overwritten
+  # between pages.
+          } bind def
+    } bind def
+  } bind def
+    binmode(DTA_PM);
+    binmode(DTA_PT);
+      binmode(MB);
+  binmode(PDF);
+#    * Bug fix for dvips mode and gs < 8.00 (/stackunderflow in pop).
+#    * Bug fix in dvips mode and active option `level2':
+#    * Bug fix: /Length (direct) as last entry.
+#    * Bug fix: The signal function for __DIE__ "cleanup" aborts
+#    * Bug fix, two forgotten "pop"s added for Distiller case.
+#    * Bug fix: --useps now works.
+#      by pdfTeX 1.20a.
+  $c[0] = int($val/85) + 33;
+  $c[1] = $val % 85 + 33;
+  $c[2] = $val % 85 + 33;
+  $c[3] = $val % 85 + 33;
+  $c[4] = $val % 85 + 33;
+#    * Call of gs is changed in order to show the currently processed
+                        % can't parse multi-byte strings any other way.
+      $capture .= $_;
+    $capture = `$gs_cmd`;
+  /.charboxpath where
+#    * Check for direct /Length values (for jpg images)
+      # check /Indexed /DeviceRGB
+% Check the version of Ghostscript. If it is below 6.0,
+      # check width and height
+      chomp;
+              chomp($dict);
+          chomp($dict);
+    chomp($dictstart);
+  chomp($gs_cmd);
+    chomp($str);
+  chomp $str;
+        chop($objstream[$i]);
+  "clean!",
+  clean();
+clean();
+    cleartomark exch pop
+    close(DTA_PM);
+    close(DTA_PT);
+    close(GSCNF);
+  close(::GSKID) if $gskidrunning;
+      close(MB);
+  close(PDF);
+          "$`/ColorSpace [/Indexed /DeviceRGB $1 \\the\\pdflastobj\\ 0 R]$'";
+        /\/ColorSpace\s+\[\/Indexed\s+\/DeviceRGB\s+(\d+)\s+(\d+)\s+0\s+R\]/m)
+  $compress = 9 if $::opt_compress == 10;
+  "compress=i",
+% compression.
+  --compress <n>           thumbnail compress level, n = 0..10   ($::opt_compress)
+# conditions of the LaTeX Project Public License, either version 1.3
+    # continue, if comment line (2nd line of PDF output by pdfTeX 1.30)
+# Copyright (C) 1999-2008 Heiko Oberdiek.
+#    * Copyright: LPPL
+        # correct thumb object text
+      $count++;
+    $count++;
+  $count = 0;
+    counttomark 2 idiv dup dict begin {def} repeat pop
+-c "$PSHeader"
+    currentdict end
+    currentfont /FontType get 1 eq
+currentglobal true setglobal
+      currentpoint newpath moveto
+        [ currentrgbcolor ]
+    Current `thumbpdf.tex': $1 v$2
+      ] cvx def
+% Date: $timestamp
+  "debug!",
+                } def
+% Default definition of pdfmark
+\\DefRGB{$i}
+            "\\def\\thumbjob{$jobname}" .
+            "\\def\\thumbmax{$MaxThumb}" .
+\\DefThumb{$thumbpageno[$i]}
+#    * Deprecation warning of perl 5.8.8 fixed.
+#    * Detecting of cygwin32 environment.
+  --device|png [png]<dev>  Ghostscript device for thumbnails,
+  "device|png=s",
+                           dev = mono, gray, 16, 256, 16m        ($::opt_device)
+#    * -dFIXEDMEDIA=0 added in gs call
+               "-dGraphicsAlphaBits=$AntiAliasGraphics"
+      $dictbegin = "<<";
+    $dictbegin = "[";
+      $dictend = ">>";
+    $dictend exch
+% dictionary (perhaps userdict should explicitly be set).
+$dict>>$J
+            $dict =~ s/\/Length\s+\d+\s*//;
+        $dict =~ s/\/Length\s+\d+\s*//;
+              $dict =~ s/[ ]+\//\//mg;
+          $dict =~ s/[ ]+\//\//mg;
+          $dict =~ s/[ ]+\[/\[/mg;
+              $dict =~ s/\n([^\/])/^^J\n$1/mg;
+          $dict =~ s/\n([^\/])/^^J\n$1/mg;
+              $dict =~ s/\n/^^J\n/mg;
+          $dict =~ s/\n/^^J\n/mg;
+            $dict =~ s/^\s+//;
+            $dict =~ s/\s+$//;
+        $dict =~ s/^\s+//;
+        $dict =~ s/\s+$//;
+$dictstart
+      $dictstart = "  3 dict begin";
+        $dict =~ s/\\the\\pdflastobj\\\s*\d+\s*R/{RGB_$i}/;
+        $dict =~ s/\\UseRGB{(\d+)}\\\s*\d+\s*R/{RGB_$1}/;
+%         <dict> THB_DistillerPatch <dict> <filter>
+    die <<"END_DIE";
+      die "$Error Cannot execute Ghostscript!\n";
+    die "$Error Cannot execute pdfTeX!\n";
+        die "$Error Closing Ghostscript (exit status: $exitvalue)!\n";
+      die "$Error Closing Ghostscript (exit status: $exitvalue)!\n";
+    die "$Error Closing Ghostscript ($exitvalue)!\n";
+        die "$Error Closing Ghostscript ($!)!\n";
+      die "$Error Closing pdfTeX (exit status: $exitvalue)!\n";
+    die "$Error Closing pdfTeX ($exitvalue)!\n";
+          die "$Error `/Length' entry not found!\n";
+            die "$Error Length entry of rgb object not found\n";
+            die "$Error length value not found!\n";
+          die "$Error length value not found!\n";
+    die "$Error $maxthumb thumbnails found, but there should be $pagecount!\n";
+      die "$Error `obj' expected on line $lineno!\n";
+    die "$Error Unknown device `$1' (Ghostscript)!\n";
+        die "$Error width/height of thumbnail not found!\n";
+    die "$usage$Error Missing mode!\n";
+  die "$usage$Error Unknown mode(s): `$::opt_modes'\n";
+  die "$usage$Error Wrong value for option --antialias!\n";
+#    * Direct /Length in RGB objects supported.
+% Distiller ignores the compression of previously compressed
+-dNOPAUSE
+  # Doing an initial `save' helps keep fonts from being flushed
+    /^(\d+)\s+0\s+obj\s*(<<)?$/ or
+      dup
+    dup dup 5 -1 roll
+              dup dup /Filter get exch /Filter undef
+            dup /Filter known {
+              dup /MediaBox eq revision 650 ge and
+          { dup /OutputFile eq
+        dup stringwidth pop exch
+        { dup type /nametype eq
+    else
+      else
+        else
+            else
+      else # $j with same rgb obj
+        else # looking for indirect reference
+      else # looking for indirect reference
+      else # no dict
+    else  { $str .= $_; }
+  else # without pages
+    elsif ($num == 123) { $str .= '\\{'; } # curly brace left
+    elsif ($num == 125) { $str .= '\\}'; } # curly brace right
+    elsif ($num < 32)   { $str .= '^^' . chr($num + 64); }
+    elsif ($num == 32)  { $str .= '\\~'; } # space
+    elsif ($num == 37)  { $str .= '\\%'; } # percent
+    elsif ($num == 92)  { $str .= '\\\\'; } # backslash
+    elsif ($num == 94)  { $str .= '\\+'; } # caret
+  /enddict {
+END_DICT
+END_GREEK
+END_HEAD
+% \\endinput
+          /^endobj$/ or die "$Error `endobj' expected on line $lineno!\n";
+% end of thumbnail data file
+END_OF_USAGE
+END_PERL
+endstream}
+END_WARN
+### environment variable THUMBPDF
+#    * Environment variable `THUMBPDF' supported.
+$Error `$1' (Ghostscript)!
+### error strings
+eval '(exit $?0)' && eval 'exec perl -S $0 ${1+"$@"}' && eval 'exec perl -S $0 $argv:q'
+    [ exch /CLOSE pdfmark
+      exch dup type /booleantype ne {true} if {filter} if
+    exch $read pop pop
+    exit(0);
+  exit 1;
+      $exitvalue >>= 8;
+       { { false charpath textrenderingprocs TextRenderingMode get exec } }
+            }{false} ifelse
+% File: $DTA_PM
+% File: $DTA_PT
+      $filter = " /ASCII85Decode filter";
+      # find the same rgb object
+#    * "first line" from epstopdf
+#    * Fix because of pdfTeX 1.30.
+#    * Fix for ActiveState Perl 5.6.0: uc line changed, fork removed.
+#    * Fix for gs 8.00 in mode dvips:
+#    * Fix: "MacOS/X: darwin" is now not interpreted as
+-f $jobfile
+        (FlateDecode) {
+        } (FlateDecode) /Filter resourceforall
+        } forall
+      } forall
+    } forall
+    foreach (@capture)
+  foreach (@capture)
+    foreach (@cleanlist) {
+    foreach (glob("$thumbprefix*.png"))
+  foreach (glob("$thumbprefix*.png")) {
+  foreach (@objtext)
+  foreach (split(//, $_[0]))
+#    * For easier debugging, the special thumbpdf objects of
+#      for Ghostscript
+    for ($i=0; $i<$len-4; $i+=4)
+    for ($i=0; $i<$maxobj; $i++)
+  for ($i=0; $i<$maxobj; $i++)
+    for ($i=0; $i<$maxpagethumb; $i++)
+  for ($i=0; $i<$maxthumb; $i++)
+    for ($i=1; $i<=$MaxThumb; $i++)
+    for ($i=$maxpagethumb; $i<$maxthumb; $i++)
+# for installation purposes.
+      for ($j=0; $j<$i; $j++)
+    for ($j=0; $j<@thumbpageno; $j++)
+#    * "for (my $j=0;...;...)"  replaced by "my $j; for($j=0;...;...)",
+#      for the Ghostscript call.
+      $found = 1;
+  $found or die "$Error `/ListThumbs' not found!\n";
+Function: Support of thumbnails for pdfTeX or dvips/ps2pdf (pdfmark).
+# get Ghostscript command name
+### get jobname
+    # get max thumb number to speed up the pdfTeX run
+### get modes
+    # get obj
+    $getobjindex[$1] = $count;
+        $getobjindex[$1] or die "$Error Length obj not found!\n";
+          $getobjindex[$1] or die "$Error RGB length object not found!\n";
+        $_ = $getobjindex[$2];
+        $getobjindex[$2] or die "$Error RGB object not found!\n";
+GetOptions(
+        # get RGB obj number
+          # get rgb stream length
+          # get stream
+        # get stream length
+      # get stream length
+### get thumbnail page numbers
+        "* Ghostscript png device: `$::opt_device'\n" if $::opt_verbose;
+# Ghostscript's pdfshowpage_setpage is patched for solving
+#    * Ghostscript uses the MediaBox for calculating the
+#      ghostscript versions around 6.01 have added a hack
+  "greek!"
+  $Greek = <<'END_GREEK' if $::opt_greek;
+#    * Greek mode added (see readme.txt).
+      grestore
+# gs5.50 gets a /PageSize problem with this fix.
+# * gs6.0* includes a hack that ignores the /Rotate entry
+#   gs6.50 does not need a fix and it is not applied,
+$GS$AntiAlias
+      gsave
+GS_CMD_END
+  "gscmd=s",
+  $gs_cmd =~ s/\n/ /mg;
+    $gs_cmd =~ s/^[^\r\n]+[\r\n]+//;
+#    * gs detection extended.
+$GS = "gs386"    if $^O =~ /dos/i;
+   ==> $GS \@$gscnffile
+$GS = "gsos2"    if $^O =~ /os2/i;
+$GS = "gswin32c" if $^O =~ /mswin32/i;
+    *::GSKID = *KID;
+    $gskidrunning =0;
+    $gskidrunning = 1;
+$GS = $::opt_gscmd if $::opt_gscmd;
+  "gspages!",
+$gspages = 0 if $^O =~ /dos/i;
+$gspages = $::opt_gspages;
+    GS_PDF_ProcSet {
+    /GS_PDF_ProcSet exch def
+    % GS_PDF_ProcSet is readonly, so it will be copied first
+    GS_PDF_ProcSet length 10 add dict dup
+  "help!",
+  --help          print usage
+# History:
+#   http://www.latex-project.org/lppl.txt
+### identify thumb objects
+                  } if
+              } if
+          } if
+        if (/^>>/)
+      } if
+      if ($!)
+    } if
+  if ($?)
+        if $1 > 106;
+      if ($1 ne $date or $2 ne $version) {
+        if $2 > 106;
+  if (!@capture)
+  if ($capture =~ /Error:\s*(.*)\n/)
+  if ($capture =~ /Processing pages \d+ through (\d+)./)
+  if ($capture =~ /Unknown device:\s*(.*)\n/)
+    if (!close(KID))
+# * If /CropBox is set, then it should be used instead
+    if (!defined($capture))
+      ifelse
+         ifelse
+            ifelse
+            } ifelse
+      } ifelse
+    } ifelse
+  } ifelse
+} ifelse
+   ifelse /Show gput
+            if (/(.*)endstream$/)
+if ($ENV{$envvar}) {
+    if ($exitvalue > 255)
+% \\iffalse
+    if (/File:.*thumbpdf.*(\d\d\d\d\/\d\d\/\d\d)\s+v(\d+\.\d+)/)
+    if ($gspages)
+  if ($gspages)
+      if ($j==$i) # not found
+      if (/\/Length\s+(\d+)\s+([\/\>]|$)/m)
+    if (/^<<\/ListThumbs\s+(.+)>>$/)
+  if ($MaxThumb > 0)
+  if ($maxthumb != @thumbpageno)
+    if ($max_x <= 0 || $max_y <= 0)
+        if (/\/MediaBox\s*\[\s*($xy_patt+)\s+($xy_patt+)\s+($xy_patt+)\s+($xy_patt+)\s*\]/)
+    if ($mod == 26)
+        if ($mode_pdfmark)
+    if ($mode_pdfmark)
+  if ($mode_pdfmark)
+        if ($mode_pdftex)
+    if ($mode_pdftex)
+  if ($mode_pdftex)
+    if    ($num == 13)  { $str .= '\\/'; }
+      if ($objdict[$count])
+      if ($objtext[$i] =~
+    if ($objtext[$i] =~
+      if ($objtext[$i] =~ /<<\/MaxThumbNumber\s+(\d+)>>/)
+        if ($objtext[$_] =~ /\/Length\s+(\d+)\s+([\/\>]|$)/m)
+    if $::opt_antialias;
+  if ($::opt_clean) {
+            if ($::opt_compress == 10)
+        if ($::opt_compress == 10)
+  if ($::opt_debug)
+if ($::opt_debug) {
+    if ($::opt_level2)
+  if ($::opt_level2)
+if ($::opt_makedata)
+if ($::opt_makepdf)
+if ($::opt_makepng)
+if ($::opt_modes =~ /all/)
+if ($::opt_modes ne "")
+if ($::opt_modes =~ /pdfmark/)
+if ($::opt_modes =~ /pdftex/)
+  if ($::opt_printgscmd)
+        if (!$::opt_quiet)
+  if ($::opt_resolution)
+  if ($::opt_useps)
+if ($::opt_useps)
+      if ($::opt_verbose)
+  if ($::opt_verbose)
+          if (/^Page\s+(\d+)/)
+    if ($r)
+      if ($thumblength[$count] < length($objstream[$i])) {
+#      if thumbpdf is called: thumbpdf jobname[.pdf] [options]
+    if ($thumbrgbobj[$i])
+    if !$versionfound;
+#    * \immediate before \pdfobj (pdfTeX 0.14a)
+\\immediate\\pdfobj{<<$J
+                        % Implement the combination of t3 and false charpath.
+#      in /pdfshowpage_setpage, that ignores the /Rotate entry.
+            "\\input $texfile" .
+        # insert obj length directly:
+          # insert RGB object length directly:
+#   in the PDF page, if OutputFile is set.
+            "is larger than recommended (106).\n"
+$J = "" if $::opt_compress == 10;
+  $jobfile = $jobname . $pdfext;
+  $jobfile = $jobname . $psext;
+$jobname = $ARGV[0];
+          `<jobname>$pdftexext' (pdfTeX), `<jobname>$pdfmarkext' (pdfmark)
+  $jobname =~ s/\\/\//g;
+  $jobname =~ s/\.pdf$//i;
+  $jobname =~ s/\.ps$//i;
+#      <jobname>.top replaces thumbopt.tex
+#      <jobname>.tpm (for pdfmark)
+#    * <jobname>.tpt replaces thumbdta.tex (for pdfTeX)
+    languagelevel 2 ge {
+  /languagelevel where {
+              last;
+          last;
+        last;
+      last;
+        last if /^endobj$/;
+          last if /^>>\s+endobj$/; # obj without stream
+    last if /^xref$/;
+#      later for VTeX in PDF mode.
+        /\/Length\s+(\d+)\s+0\s+R/m or
+  "level2!",
+            $lineno++;
+      $lineno++;
+    $lineno++;
+        # look for length obj
+    # looking for max. number of regular thumbnails
+    # looking for MediaBox
+#    * Looking for the media box to calculate the resolution
+#    * LPPL 1.3.
+  "makedata!",
+#      `makedef' renamed to `makedata'.
+  "makepdf!",
+  "makepng!",
+### make thumbnails
+### make thumbpdf.pdf file
+%         <mark> <key value pairs> streamobj -
+  $maxobj = $count;
+        $maxpagethumb = $1;
+    $maxpagethumb = $maxthumb;
+    $MaxThumb = 0;
+    $MaxThumb = $1;
+      $MaxThumb = $1 if $1 > $MaxThumb;
+  $maxthumb = $count;
+          $max_x = $x if $x > $max_x;
+          $max_y = $y if $y > $max_y;
+#    * Minor corrections of output of error messages.
+#      mix versions, sigh.
+    $mod++;
+      $mod = 0;
+% Mode: pdfmark
+  $mode_pdfmark = 1;
+% Mode: pdftex
+  $mode_pdftex = 1;
+  $mode_pdftex or $mode_pdfmark or
+  --modes <mode>[,mode]    mode=pdftex|pdfmark|dvips|ps2pdf|
+  "modes=s",
+    $mon++;
+  my $AntiAlias = "";
+my $antialias_default = "4";
+my $AntiAliasGraphics = substr($::opt_antialias, 1, 1);
+my $AntiAliasText     = substr($::opt_antialias, 0, 1);
+my @arglist      = @ARGV;
+my $author      = "Heiko Oberdiek";
+my @bool = ("false", "true");
+  my @c;
+  my $capture = "";
+  my @capture = `$cmd`;
+my @cleanlist    = ();
+  my $cmd = "pdftex \"" .
+  my $compress = $::opt_compress;
+my $copyright   = "Copyright (c) 1999-2008 by $author.";
+  my $count = 0;
+my $date        = "2008/04/16";
+  my $dictbegin;
+    my $dictend = "enddict";
+        my $dict = $objtext[$thumbobj[$i]];
+            my $dict = $objtext[$thumbrgbobj[$i]];
+    my $dictstart = <<'END_DICT';
+    my $DTA_PM = $pdfmarkfile;
+    my $DTA_PT = $pdftexfile;
+my $envvar       = "THUMBPDF";
+my $Error = "!!! Error:"; # error prefix
+    my $exitvalue = $?;
+        my $exitvalue = $? >> 8;
+my $file        = "thumbpdf.pl";
+    my $filter = "";
+  my $found = 0;
+  my $func = $_[0];
+  my @getobjindex = (); # $getobj[obj number] ==> index for $obj...[index]
+  my $Greek = "";
+  my $gs_cmd = <<"GS_CMD_END";
+my $gscnffile    = "thumbpdf.gs";
+my $GS = "gs";
+my $gskidrunning = 0;
+my $gspages = 1;
+my $gssection    = "section I. `Known Problems'";
+    my $i;
+  my $i;
+      my $j;
+    my $j;
+my $J = "^^J";
+my $jobfile      = "";
+my $jobname      = "";
+        my $length = $thumblength[$i];
+    my $len = length($s);
+  my $lineno = 0;
+my $logfile      = "thumbpdf.log";
+  my $maxobj = 0;
+  my $maxpagethumb;
+  my $maxthumb = 0;
+my $MaxThumb = 0;
+    my $max_x = 0;
+    my $max_y = 0;
+      my $MB = $jobfile;
+  my $mod = 0;
+my $mode_pdfmark = 0;
+my $mode_pdftex  = 0;
+    my $newline = 0;
+    my $num = ord($_);
+  my @objdict = (); # boolean, object is dict
+  my @objno = (); # obj number
+        my $objpost = $';
+        my $objpre = $`;
+          my $objrgbpost = $';
+          my $objrgbpre = $`;
+  my @objstream = (); # stream of object if any
+  my @objtext = (); # text of object
+    my $options = "@arglist";
+my @OrgArgv = @ARGV;
+    my $orgbar = $|;
+my $package      = "thumbpdf.sty";
+    my $pagecount = @thumbpageno;
+my $pdfext       = ".pdf";
+my $pdffile      = "thumbpdf.pdf";
+my $pdfmarkext   = ".tpm";
+my $pdfmarkfile  = "";
+  my $PDF = $pdffile;
+my $pdftexext    = ".tpt";
+my $pdftexfile   = "";
+my $program     = uc($&) if $file =~ /^\w+/;
+my $psext        = ".ps";
+    my $PS_Header = <<"END_HEAD";
+  my $PSHeader = "save pop $SetPassword $SetPageHack $Greek";
+my $readme       = "readme.txt";
+    my $read = "readhexstring";
+my $resolution   = 9;
+            my $rgblength = $thumbrgblength[$i];
+            my $rgbstream = pdfmarkstream($objstream[$thumbrgbobj[$i]]);
+            my $rgbstream = pdftexstream($objstream[$thumbrgbobj[$i]]);
+    my $r = $len % 4;
+      my $rx = 106 * 72 / $max_x;
+      my $ry = 106 * 72 / $max_y;
+    my $s = $_[0];
+    my ($sec, $min, $hour, $mday, $mon, $year) = localtime();
+  my $SetPageHack = <<'SET_PAGE_HACK';
+  my $SetPassword = "";
+  my $str = "";
+  my $str;
+    my $stream = 0;
+        my $stream = pdfmarkstream($objstream[$thumbobj[$i]]);
+        my $stream = pdftexstream($objstream[$thumbobj[$i]]);
+my $texfile      = "thumbpdf";
+        my $thismarker = "";
+  my @thumblength = (); # stream length values
+  my @thumbobj = ();    # index for @obj... with image stream
+  my @thumbpageno = ();
+my $thumbprefix  = "thb";
+  my @thumbrgblength = (); # rgb stream length values
+  my @thumbrgbobj = (); # index for @obj... with rgb stream
+  my $timestamp;
+my $title = "$program $version, $date - $copyright\n";
+my $usage = <<"END_OF_USAGE";
+  my $val = unpack("N", $_[0]);
+my $version     = "3.10";
+  my $versionfound = 0;
+my $Win = 0;
+          my $x = $3 - $1;
+      my $xy_patt = '[\-\.\d]';
+          my $y = $4 - $2;
+            $newline = 1;
+#    * new option --resolution
+    next if /^%/;
+        next unless $objstream[$thumbrgbobj[$j]] eq
+        next unless $objtext[$thumbrgbobj[$j]] eq
+      next unless /$thumbprefix(\d+).png/;
+        next unless $thumbrgbobj[$j];
+      "\n" if $::opt_debug;
+  --(no)clean     clear temp files                               ($bool[$::opt_clean])
+  --(no)debug     debug informations                             ($bool[$::opt_debug])
+  --(no)greek     text in greek style (experimental)             ($bool[$::opt_greek])
+  --(no)level2    `<jobname>.tpm' with ps level 2 features       ($bool[$::opt_level2])
+  --(no)makedata  make data file(s) for package `$package'   ($bool[$::opt_makedata])
+  --(no)makepdf   make `$pdffile' with thumbnails as images  ($bool[$::opt_makepdf])
+  --(no)makepng   make thumbnails `$thumbprefix*.png'                     ($bool[$::opt_makepng])
+            "\\nonstopmode" .
+  --(no)quiet     suppress messages                              ($bool[$::opt_quiet])
+                        % Note that we must use cshow for this, because we
+  --(no)useps     `makepng' uses `.ps' instead of `.pdf' file    ($bool[$::opt_useps])
+  --(no)verbose   verbose printing                               ($bool[$::opt_verbose])
+% Now ghostscript versions greater than 8 behave in the same way
+    [ /_objdef 3 -1 roll /type /stream /OBJ pdfmark
+    $objdict[$count] = ($2); # boolean (if $2 exists)
+      (($objdict[$count]) ? " (dict)" : "") .
+    $objno[$count] = $1;
+            $objstream[$count] .= $_;
+          $objstream[$count] = "";
+              $objstream[$count] .= $1;
+                    $objstream[$thumbrgbobj[$i]];
+      $objtext[$count] .= $_;
+    $objtext[$count] = "";
+          $objtext[$getobjindex[$1]] =~ /^(\d+)$/m or
+        $objtext[$getobjindex[$1]] =~ /^(\d+)$/m or
+        $objtext[$i] =
+      $objtext[$i] = $_;
+        $objtext[$i] = $objpre . "/Length $1" . $objpost;
+        $objtext[$i] =~ s/(\/Length\s+\d+)\s+\n/$1\n/;
+          $objtext[$_] =~ /\/Length\s+(\d+)\s+0\s+R/m or
+          $objtext[$_] = $objrgbpre . "/Length $1" . $objrgbpost;
+          $objtext[$_] =~ s/(\/Length\s+\d+)\s+\n/$1\n/;
+        $objtext[$thumbobj[$i]] =~
+                    $objtext[$thumbrgbobj[$i]];
+#   of the /MediaBox entry. Because the CropBox area should
+# of this license or (at your option) any later version.
+            "of thumbnail `$thumbpageno[$count]' " .
+    open(DTA_PM, ">$DTA_PM") or die "$Error Cannot open `$DTA_PM'!\n";
+    open(DTA_PT, ">$DTA_PT") or die "$Error Cannot open `$DTA_PT'!\n";
+  # open file
+    open(GSCNF, ">$gscnffile") or die "$Error Cannot open `$gscnffile'!\n";
+    open(KID, "$gs_cmd|") or die "$Error Cannot open Ghostscript ($!)!\n";
+      open(MB, $MB) or die "$Error Cannot open `$MB'!\n";
+  open(PDF, $PDF) or die "$Error Cannot open `$PDF'!\n";
+$::opt_antialias =~ /^[0124][0124]?$/ or
+$::opt_antialias  = $antialias_default;
+$::opt_antialias = $antialias_default if $::opt_antialias eq "";
+$::opt_antialias .= $::opt_antialias if length($::opt_antialias) < 2;
+$::opt_clean = 0 if $::opt_debug or !$::opt_makepdf or !$::opt_makedata;
+$::opt_clean      = 1;
+$::opt_compress = 0 if $::opt_compress < 0;
+$::opt_compress   = "10";
+$::opt_compress = 10 if $::opt_compress > 10;
+$::opt_debug      = 0;
+$::opt_device     = "png16m";
+$::opt_device = "png$::opt_device" unless $::opt_device =~ /^png/;
+$::opt_greek      = 0;
+$::opt_gscmd      = "";
+$::opt_gspages    = $gspages; # undocumented
+$::opt_help       = 0;
+!$::opt_help or die $usage;
+#    * optimization: indirect objects for length values removed.
+#    * Option --antialias added (suggestion of Juergen Bausa).
+#    * Option `clean' added.
+#    * Option --password added.
+#    * Option --printgscmd creates the command line file `thumbpdf.gs'
+Options:                                                         (defaults:)
+    $options =~ s/^\s+//;
+    $options =~ s/\s+$//;
+    $options =~ s/\s*--?pr[intgscmd]*\s*/ /i;
+#    * Options `useps', `modes' added,
+### option variables
+$::opt_level2     = 0;
+$::opt_makedata   = 1;
+$::opt_makepdf    = 1;
+$::opt_makepng    = 1;
+$::opt_modes = "\L$::opt_modes\E";
+$::opt_modes      = "pdftex";
+$::opt_modes =~ s/^,//;
+$::opt_modes =~ s/,$//;
+  $::opt_modes =~ s/all//g;
+$::opt_modes =~ s/dvips/pdfmark/g;
+$::opt_modes =~ s/,+/,/g;
+  $::opt_modes =~ s/pdfmark//g;
+  $::opt_modes =~ s/pdftex//g;
+$::opt_modes =~ s/ps2pdf/pdfmark/g;
+$::opt_modes =~ s/\s+//g;
+$::opt_modes =~ s/vtexpdfmark/pdfmark/g;
+$::opt_password   = "";
+$::opt_printgscmd = 0;
+$::opt_quiet      = 0;
+$::opt_quiet = 0 if $::opt_verbose;
+$::opt_resolution = "";
+$::opt_useps      = 0;
+$::opt_verbose    = 0;
+      or
+  $_ or die "$Error Cannot read header of `$PDF' or file is empty!\n";
+) or die $usage;
+    $| = $orgbar;
+* OSNAME: $^O
+#      pack parameter corrected for little-endian machines.
+#      page number of the pdf file.
+#      page size. For version 6.50 a patch is added to use
+  /pagethumb {
+{Page$thumbpageno[$i]} {THB$thumbpageno[$i]} pagethumb
+  /pagethumb {pop pop} bind def
+### parse thumbpdf.pdf
+  --password apassword     for an encrypted pdf file             ($::opt_password)
+  "password=s",
+  % * Patch for `show'
+  % * Patch for the PDF case
+            "\\pdfcompresslevel$compress" .
+    pdfdict begin
+      [ pdfdict /pdfshowpage_setpage get
+{ /pdfdict where {
+          $_ = <PDF>; $lineno++;
+  $_ = <PDF>; $lineno++;
+$pdfmarkfile = $jobname . $pdfmarkext;
+#    * pdfmark support for dvips/ps2pdf route added.
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+  /^%PDF/ or die "$Error No PDF specification found!\n";
+      /pdfshowpage_setpage
+$pdftexfile  = $jobname . $pdftexext;
+* Perl interpreter: $^X
+* Perl script: $0
+* PERL_VERSION: $]
+    Please install version: $date v$version
+          pop
+            { pop /AntiRotationHack
+  $_ = pop(@cleanlist);
+      }{pop false} ifelse
+  }{pop} ifelse
+        pop pop pop
+    pop pop pop
+            { pop pop (x) dup 0 3 index put false charpath
+      pop true
+% PostScript definitions
+        print;
+            print "[$1]";
+    print @capture;
+    print $capture if $::opt_verbose;
+    print "*** clear temp files ***\n" unless $::opt_quiet;
+  print "> $cmd\n" if $::opt_verbose;
+      print DTA_PM "% \\DefThisThumb{$thumbpageno[$i]}\n";
+            print DTA_PM <<"END_DTA";
+        print DTA_PM <<"END_DTA";
+      print DTA_PM <<"END_DTA";
+    print DTA_PM <<"END_DTA";
+    print DTA_PM "\n% thumbnail data\n";
+    print DTA_PM $PS_Header;
+            print DTA_PT <<"END_DTA";
+        print DTA_PT <<"END_DTA";
+    print DTA_PT <<"END_DTA";
+    print DTA_PT "\\endinput\n";
+  print <<"END_DEB";
+    print <<"END_GS";
+    print <<"END_PERL" if $::opt_verbose;
+        print <<"END_WARN";
+  print "* Ghostscript command: `$GS'\n" .
+      print "* Ghostscript without page numbers\n";
+      print "* Ghostscript with page numbers\n";
+  "printgscmd!",
+  print "> $gs_cmd\n" if $::opt_verbose;
+    print GSCNF $gs_cmd;
+      print "==> Height ($2) " .
+            print " " if $newline;
+          print if /^Processing pages/;
+      print if /^!\s/;
+print "* jobname: `$jobname'\n" if $::opt_verbose;
+        print "* Length (direct): $1\n" if $::opt_debug;
+        print "* Length (indirect): $1\n" if $::opt_debug;
+      print "* ListThumbs: @thumbpageno\n" if $::opt_debug;
+  print "*** make `$pdffile' / run pdfTeX ***\n" unless $::opt_quiet;
+  print "*** make png files / run Ghostscript ***\n"
+  print "* $maxobj objects found.\n" if $::opt_debug;
+  print "* max. page: $MaxThumb\n" if $::opt_debug;
+      print "* Max. Size of MediaBox: $max_x x $max_y\n" if $::opt_verbose;
+  print "* $maxthumb thumbnails found.\n" if $::opt_verbose;
+    print "\n" if $newline;
+  print "\n" unless $::opt_quiet;
+    print "* obj $objno[$count]" .
+  print "*** parse `$pdffile' ***\n" unless $::opt_quiet;
+    print "* pdf file: $jobfile\n" if $::opt_verbose;
+  print "* pdf header: $_" if ($::opt_debug);
+      print pop false
+    print "* ps file: $jobfile\n" if $::opt_verbose;
+print "*** ready. ***\n" unless $::opt_quiet;
+      print "* Resolution: $resolution DPI\n" if $::opt_verbose;
+        print "* Reuses RGB object $j for $i\n" if $::opt_debug;
+          print "* RGB length (direct): $1\n" if $::opt_debug;
+          print "* RGB length (indirect): $1\n" if $::opt_debug;
+      print "* Size: $1x$2\n" if $::opt_debug;
+          print "* stream\n" if $::opt_debug;
+print $title unless $::opt_quiet;
+      print "!!! Warning: MediaBox not found, " .
+  print "!!! Warning: Version of `thumbpdf.tex' not found!\n"
+      print "==> Width ($1) " .
+    print "*** write `$pdfmarkfile' (pdfmark thumbnail data) ***\n"
+    print "*** write `$pdftexfile' (pdfTeX thumbnail data) ***\n"
+### process options
+% Producer: $program $version
+      product (Distiller) search {pop pop pop true}{pop false} ifelse
+      product (Ghostscript) search {
+  product (Ghostscript) search {
+/product where {
+### program identification
+    $PS_Header =~ s/%[^\r\n]*[\r\n]+//gm;
+  $PSHeader =~ s/\s+$//;
+  $PSHeader =~ s/([\)\[\]\{\}])\s+/$1/g;
+  $PSHeader =~ s/\s+([\(\/\[\]\{\}])/$1/g;
+  $PSHeader =~ s/\s+/ /g;
+  $PSHeader =~ s/%\s.*\n/ /g;
+      push(@cleanlist, $_);
+  push(@cleanlist, $logfile);
+  push(@cleanlist, $pdffile);
+      push(@cleanlist, "$thumbprefix$i.png");
+      put dup
+      /PUT pdfmark
+  "quiet!",
+  # read body objects
+  # read header
+### reading file and parse obj structure
+    readonly pop
+      $read = "readstring";
+#      removed from list. "vtexpdfmark" was detected,
+      # remove \n from end of stream
+#    * Remove of extra '\n' before "endstream" that is added
+        # remove whitespace after length obj
+#      Replaced by "clean" that does not contain "exit 1".
+# Reqirements: Perl5, Ghostscript
+  "resolution=f",
+    $resolution = $::opt_resolution
+  --resolution <res>       thumbnail resolution for makepng      ($resolution)
+      $resolution = $rx;
+      $resolution = $ry if $ry < $rx;
+  return pack("C*", @c);
+  return $str;
+#    * Revert Cygwin detection: is unix (request by Jan Nieuwenhuizen).
+    revision 600 ge {
+    revision 600 lt {
+      revision 710 lt
+        revision 800 ge
+{RGB_$i} $rgblength $dictbegin
+    # rgb object
+$rgbstream
+#    * /Rotate in pdf pages:
+-r$resolution
+          # save obj text for later correction
+        # save obj text for later correction
+#    * `save' trick in call of ghostscript.
+    # scan first obj line
+-sDEVICE=$::opt_device
+# See file "readme.txt" for a list of files that belong to this project.
+See `$readme', $gssection, for further information.
+       { { setfillstate show } }
+          { { setfillstate TextSpacing 0 Vexch 3 -1 roll ashow } }
+          { { setfillstate TextSpacing exch 0 exch ashow } }
+            { { setfillstate WordSpacing 0 Vexch 32
+            { { setfillstate WordSpacing 0 Vexch 32 4 -1 roll widthshow } }
+             { { setfillstate WordSpacing exch 0 exch 32 exch widthshow } }
+             { { setfillstate WordSpacing exch TextSpacing exch 0 32 4 2 roll 0 exch awidthshow } }
+setglobal
+SET_PAGE_HACK
+  $SetPassword = "/PDFPassword($::opt_password)def" if $::opt_password;
+        setrgbcolor
+/setshowstate
+      % `setshowstate' contains the use of `show', so it has to
+### set signals
+  setsignals(\&cleanup);
+setsignals(\&cleanup);
+  setsignals(\&gscleanup);
+#    * Sharing RGB objects.
+  /show {
+$SIG{__DIE__} = \&clean;
+  $SIG{'HUP'}   = $func unless $Win;
+#    * SIG_HUP unkown in Windows.
+  $SIG{'INT'}   = $func;
+#    * Signal handlers added for cleanup.
+  $SIG{'QUIT'}  = $func;
+  $SIG{'TERM'}  = $func;
+#    * Small bug fix in mode detection and mode "vtex"
+# some problems:
+-sOutputFile=$thumbprefix%d.png
+% Stack: <dict> <length> <thumb>
+% Stack: <dict> <length> <thumb> <thumb>
+% Stack: <length> <thumb> <thumb> <filter/false>
+% Stack: <length> <thumb> [ <thumb> <filter/false> <file>
+% Stack: <length> <thumb> <thumb> <thumb> <dict>
+% Stack: <length> <thumb> <thumb> <thumb> <dict> <filter/false>
+                        % Stack: string xword xchar
+% Stack: <thumb>
+% Stack: <thumb> <dict> <length>
+% Stack: <thumb> [ <thumb> <file>
+% Stack: <thumb> [ <thumb> <filter/false> <string>
+                        % Stack: xword xchar ccode
+          s/\\the\\pdflastobj/\\UseRGB{$j}/;
+    # stop at xref
+      $str .= $_;
+    $str = "";
+    $str .= "~>";
+stream^^J
+streamobj
+  /streamobj {
+          /^stream$/ or die "$Error `stream' expected on line $lineno!\n";
+% streams and uses its own settings. Therefore for Distiller
+### string constants for Ghostscript run
+    string currentfile${filter}
+      stringwidth pop 0 rmoveto
+      $str .= "\n";
+    $str =~ s/(.{60})/$1\n/g;
+      $str .= substr($_, 0, $r+1);
+    $str = uc(unpack('H*', $_[0]));
+sub ASCII85Encode
+sub clean {
+sub cleanup {
+sub gscleanup {
+sub pdfmarkstream
+sub pdftexstream
+sub setsignals {
+      $_ = substr($s, $i, $r) . "\000\000\000";
+#    * Support for Distiller 3 and 4, the streams are uncompressed.
+#    * Support for VTeX's PS mode added.
+% Syntax: <dict> THB_DistillerPatch <dict> false
+#    * Syntax of option --antialias changed (see readme.txt).
+% Syntax: <page object> <thumb object> pagethumb -
+% Syntax: <thumb object> <stream length>
+% Syntax: <thumb object> thisTHB -
+      s/!!!!!/z/;
+  # test version
+% TeX part ends here
+    { TextRenderingMode 0 eq
+           textrenderingprocs TextRenderingMode get exec
+          { TextSpacing 0 eq
+                 TextSpacing 0 Vexch 6 -1 roll awidthshow } }
+#      (Thanks to Andreas Buehmann <andreas.buehmann@gmx.de>.)
+              { /THB.CropHack {
+                /THB.CropHack cvx
+          /THB_DistillerPatch {
+    THB_DistillerPatch
+#      THB_DistillerPatch also applied to ghostscript >= 8.00.
+  /THB_DistillerPatch false def
+        THB_greekstring
+  /THB_greekstring
+      THB_ORG_show
+  /THB_ORG_show {show} bind def
+{THB$thismarker$thumbpageno[$i]} $length $dictbegin
+% the commands, that produce the thumbnails, are defined
+#      the /CropBox instead.
+      % The definition is taken from `pdf_ops.ps'.
+% The detection and patch for distiller require features of level 2
+# The fixes are only applied for versions >= 6.0, because
+# The latest version of this license is in
+#    * The name of thumbnail data file: jobname.tnd,
+% the streams are uncompressed.
+  # The trick with `save' comes from `ps2pdf':
+# This Current Maintainer of this work is Heiko Oberdiek.
+# This file "thumbpdf.pl" may be renamed to "thumbpdf"
+        $thismarker = "_", if $i >= $maxpagethumb;
+  /thisTHB {[ exch /Thumb exch /PAGE pdfmark} bind def
+% thisTHB is used globally, so it is defined in the current
+  /thisTHB {pop} bind def
+# This work has the LPPL maintenance status "maintained".
+# This work may be distributed and/or modified under the
+        $thumblength[$count] = $1;
+          Thumbnails are generated by Ghostscript and the result is
+      $thumbobj[$count] = $i;
+    # thumb object
+      $thumbpageno[$j] = $1 if $thumbpageno[$j] =~ /^{(.+)}$/;
+      @thumbpageno = split / /; # split(/ /, $_);
+   ==> thumbpdf --nomakepng $options
+#      thumbpdf.pdf are now valid PDF objects (dictionaries).
+# thumbpdf.pl
+          $thumbrgblength[$count] = $1;
+        $thumbrgbobj[$count] = $_;
+    $timestamp = sprintf("%04d/%02d/%02d %02d:%02d:%02d",
+${title}Syntax:   \L$program\E [options] <jobname[.pdf|.ps]>
+% to be dummies.
+      true .charboxpath closepath fill
+        true charpath flattenpath pathbbox
+        /^\/Type\s+\/XObject\n\/Subtype\s+\/Image\n/m)
+#    * Undocumented option --gspages added.
+      unless $::opt_quiet;
+    unless $::opt_quiet or $::opt_printgscmd;
+      unlink;
+    unlink;
+  unshift(@ARGV, split(/\s+/, $ENV{$envvar}));
+use Getopt::Long;
+  "useps!",
+userdict begin
+  userdict /GS_PDF_ProcSet known
+use strict;
+            "using default resolution: $resolution DPI\n";
+  $val = int($val/85);
+### variables
+  "verbose!",
+# version 2003/12/01 or later.
+      $versionfound = 1;
+#    * Version test for thumbpdf.tex added for users that
+#      "vtex" did not work and perhaps it will be used
+                                vtexpdfmark|all                  ($::opt_modes)
+$^W=1; # turn warning on
+      (!!! Warning (thumbpdf): Ghostscript 6.0 required for thumbnails!\\n)
+!!! Warning: Version of `thumbpdf.tex' does not match with perl script!
+    while (<KID>)
+      while (<MB>)
+          while (<PDF>)
+    while (<PDF>)
+  while (<PDF>)
+      /\/Width\s+(\d+)\n\/Height\s+(\d+)/m or
+$Win = 1 if $^O =~ /mswin32/i;
+#      Windows.
+# Windows detection (no SIGHUP)
+#   with the CropBox values for generating the thumbnails.
+       { WordSpacing 0 eq
+ { WordSpacing 0 eq TextSpacing 0 eq and
+       { { WordSpacing TextSpacing
+### write data files
+    # write PostScript header
+    # write tex part
+          written to data files for package `$package':
+    $year += 1900;
+      $year, $mon, $mday, $hour, $min, $sec);

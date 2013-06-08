@@ -1,0 +1,42 @@
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+Could not connect to the session manager
+Couldn't connect to session bus: %s
+dbus_g_bus_get
+dbus_g_proxy_call
+dbus_g_proxy_new_for_name
+dcgettext
+Don't prompt for user confirmation
+Failed to call logout
+Failed to call logout: %s
+Failed to call shutdown
+Failed to call shutdown: %s
+g_error_free
+GLIBC_2.0
+GLIBC_2.2
+__gmon_start__
+gnome-session-3.0
+g_object_unref
+g_printerr
+gtk_init_with_args
+Ignoring any existing inhibitors
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libdbus-glib-1.so.2
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+no-prompt
+/org/gnome/SessionManager
+org.gnome.SessionManager
+power-off
+Power off
+Program called with conflicting options
+Shutdown
+Unable to start: %s
+/usr/share/locale

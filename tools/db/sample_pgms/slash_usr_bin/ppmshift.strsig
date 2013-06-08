@@ -1,0 +1,27 @@
+__bss_start
+GLIBC_2.0
+GLIBC_2.7
+__gmon_start__
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_message
+pm_openr
+pm_usage
+ppm_init
+ppm_readppminit
+ppm_readppmrow
+ppm_writeppminit
+ppm_writeppmrow
+shift amount is larger than picture width - reset to %d
+shift factor must be 0 or more
+        shift: maximum number of pixels to shift a line by
+shift [ppmfile]

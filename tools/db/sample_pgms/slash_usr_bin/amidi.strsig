@@ -1,0 +1,98 @@
+-a, --active-sensing   don't ignore active sensing bytes
+active-sensing
+ALSA_0.9
+amidi version 1.0.25
+cannot create %s: %s
+cannot determine card number: %s
+cannot determine device number: %s
+cannot determine length of %s: %s
+cannot get poll events: %s
+cannot get rawmidi information %d:%d:%d: %s
+cannot open control for card %d: %s
+cannot open port "%s": %s
+cannot open %s - %s
+cannot read from port "%s": %s
+cannot read from %s: %s
+cannot send data: %s
+cannot set blocking mode: %s
+%c%c  hw:%d,%d,%d  %s
+%c%c  hw:%d,%d    %s
+__ctype_b_loc
+%d bytes read
+-d, --dump             print received data as hexadecimal bytes
+Dir Device    Name
+ (%d subdevices)
+__errno_location
+                       for the specified duration
+getopt_long
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+-h, --help             this help
+hVlLp:s:r:S::dt:a
+invalid character %c
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libasound.so.2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+list-devices
+list-rawmidis
+-l, --list-devices     list all hardware ports
+-L, --list-rawmidis    list all RawMIDI definitions
+no sound card found
+out of memory
+Please specify at least one of --send, --receive, --send-hex, or --dump.
+Please specify some data for --send-hex.
+poll failed: %s
+-p, --port=name        select port by name
+__printf_chk
+RawMIDI list:
+-r, --receive=file     write received data into a file
+--send and --send-hex cannot be specified at the same time.
+send-hex
+%s is a Standard MIDI File; use aplaymidi to send it
+%s is not an option.
+snd_card_next
+snd_config
+snd_config_save
+snd_config_search
+snd_config_update
+snd_config_update failed: %s
+snd_ctl_close
+snd_ctl_open
+snd_ctl_rawmidi_info
+snd_ctl_rawmidi_next_device
+snd_output_close
+snd_output_stdio_attach
+snd_output_stdio_attach failed: %s
+snd_rawmidi_close
+snd_rawmidi_info_get_name
+snd_rawmidi_info_get_subdevice_name
+snd_rawmidi_info_get_subdevices_count
+snd_rawmidi_info_set_device
+snd_rawmidi_info_set_stream
+snd_rawmidi_info_set_subdevice
+snd_rawmidi_info_sizeof
+snd_rawmidi_nonblock
+snd_rawmidi_open
+snd_rawmidi_poll_descriptors
+snd_rawmidi_poll_descriptors_count
+snd_rawmidi_poll_descriptors_revents
+snd_rawmidi_read
+snd_rawmidi_write
+snd_strerror
+__sprintf_chk
+-s, --send=file        send the contents of a (.syx) file
+-S, --send-hex="..."   send hexadecimal bytes
+__stack_chk_fail
+Try `amidi --help' for more information.
+-t, --timeout=seconds  exits when no data has been received
+Usage: amidi options
+__vfprintf_chk
+-V, --version          print current version

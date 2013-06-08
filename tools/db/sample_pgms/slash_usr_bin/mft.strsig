@@ -1,0 +1,81 @@
+__assert_fail
+both the %s copyright and
+__bss_start
+/build/buildd/texlive-bin-2009/inst/lib
+byte memory
+ capacity exceeded
+-change=CHFILE  apply the change file CHFILE as with tangle and weave
+. (change file 
+! Change file ended after @x
+! Change file ended before @y
+! Change file ended without @z
+! Change file entry did not match
+Copyright 2009 %s.
+covered by the terms of 
+D.E. Knuth  (MP changes by W. Bzyl)
+(Did you see the warning message above?)
+Email bug reports to %s.
+extend_filename
+find_suffix
+For more information about these matters, see the file
+__fprintf_chk
+getopt_long_only
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+-help           display this help and exit
+! Hmm... 
+! Incomplete string will be ignored
+! Input line too long
+\input mftmac
+\input mptmac
+! Invalid character will be ignored
+_IO_getc
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+kpathsea_version_string
+kpse_open_file
+kpse_set_program_name
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+! Line had to be broken (output l.
+metapost
+-metapost       assume NAME is a METAPOST source file
+! MF file ended during a change
+mft: Need exactly one file argument.
+mplain.mft
+  mptmac.tex) macros.  Output goes to basename of NAME extended
+named COPYING and the %s source.
+(No errors were found.)
+ of the preceding lines failed to match
+! Only symbolic tokens should appear after %%%
+(Pardon me, but I think I spotted something wrong.)
+Primary author of %s: %s.
+__printf_chk
+printversionandexit
+prog_name_end && prog_version
+%s: Oops; not enough arguments.
+! Sorry, 
+. (style file 
+-style=MFTNAME  use MFTNAME instead of plain.mft (or mplain.mft)
+tex-k@mail.tug.org
+../../../../texk/web2c/lib/printversion.c
+ (TeX Live 2009/Debian)
+(That was a fatal error, my friend.)
+the Lesser GNU General Public License.
+There is NO warranty.  Redistribution of this software is
+This is MFT, Version 2.0
+                 (this option can be given more than once)
+Too many style files specified.
+  Translate MFNAME to TeX for printing, using the mftmac.tex (or
+Try `%s --help' for more information.
+Usage: mft [OPTION]... NAME[.mf|.mp]
+-version        output version information and exit
+! Where is the matching @x?
+! Where is the matching @y?
+! Where is the matching @z?
+  with `.tex'.
+xbasename

@@ -1,0 +1,72 @@
+        
+a:cd:e:Ii:k:m:np:qQSrsVw
+backspace.
+__bss_start
+cfgetospeed
+clearerr
+control-%c (^%c).
+  -c          set control characters
+__ctype_b_loc
+__ctype_tolower_loc
+curses_version
+cur_term
+  -e ch       erase character
+__environ
+__fprintf_chk
+getttynam
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -i ch       interrupt character
+illegal -m option format: %s
+  -I          no initialization strings
+Interrupt
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+  -k ch       kill character
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libtinfo.so.5
+  -m mapping  map identifier to type
+_nc_basename
+_nc_first_name
+_nc_is_abs_path
+_nc_progname
+_nc_rootname
+Options:
+plugboard
+__printf_chk
+  -Q          do not output control key settings
+  -r          display term on stderr
+%s: can't initialize terminal type %s (error %d)
+setenv TERM %s;
+set noglob;
+setupterm
+  -s          output TERM set command
+__stack_chk_fail
+standard error
+__strcat_chk
+__strcpy_chk
+__strdup
+__strncat_chk
+%s: unknown terminal type %s
+tcgetattr
+tcsetattr
+TERMCAP=
+Terminal type? 
+Terminal type is %s.
+Terminal type? [%s] 
+TERM=%s;
+The -S option is not supported under terminfo.
+unknown baud rate %s
+unset noglob;
+Usage: %s [options] [terminal]
+__vfprintf_chk
+  -V          print curses-version
+write to stderr
+  -w          set window-size

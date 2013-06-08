@@ -1,0 +1,44 @@
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# (at your option) any later version.
+#!/bin/bash
+bindir='/bin'
+--__bindir) bindir=${2?}; shift; shift;;
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+case $1 in
+Copyright (C) 2007, 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2007 Free Software Foundation
+  -c, --stdout      write on standard output, keep original files unchanged
+exec gzip -d "$@"
+  -f, --force       force overwrite of output file and compress links
+# GNU General Public License for more details.
+      --help        display this help and exit
+--help)    exec echo "$usage";;
+# it under the terms of the GNU General Public License as published by
+  -l, --list        list compressed file contents
+Mandatory arguments to long options are mandatory for short options too.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -N, --name        save or restore the original name and time stamp
+  -n, --no-name     do not save or restore the original name and time stamp
+PATH=$bindir:$PATH
+  -q, --quiet       suppress all warnings
+Report bugs to <bug-gzip@gnu.org>."
+  -r, --recursive   operate recursively on directories
+  -S, --suffix=SUF  use suffix SUF on compressed files
+# the Free Software Foundation; either version 3 of the License, or
+the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.
+There is NO WARRANTY, to the extent permitted by law.
+This is free software.  You may redistribute copies of it under the terms of
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+  -t, --test        test compressed file integrity
+Uncompress FILEs (by default, in-place).
+# Uncompress files.  This is the inverse of gzip.
+usage="Usage: $0 [OPTION]... [FILE]...
+      --version     display version information and exit
+--version) exec echo "$version";;
+version="gunzip (gzip) 1.4
+  -v, --verbose     verbose mode
+With no FILE, or when FILE is -, read standard input.
+# with this program; if not, write to the Free Software Foundation, Inc.,
+Written by Paul Eggert."
+# You should have received a copy of the GNU General Public License along

@@ -1,0 +1,38 @@
+3D$X3T$\	
+   block %d runs from %Lu to %Lu
+   block %d runs from %Lu to %Lu (incomplete)
+bzip2recover 1.0.6: extracts blocks from damaged .bz2 files.
+D$<9D$\w
+__errno_location
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+_IO_getc
+_IO_putc
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+	restrictions on size of recovered file: None
+%s: and cannot be handled.  To fix, increase
+%s: BZ_MAX_HANDLED_BLOCKS in bzip2recover.c, and recompile.
+%s: can't open `%s'
+%s: can't read `%s'
+%s: can't write `%s'
+%s: finished
+%s: I/O error reading `%s', possible reason follows.
+%s: malloc failed on request for %d bytes.
+__sprintf_chk
+%s: `%s' appears to contain more than %d blocks
+%s: searching for block boundaries ...
+%s: sorry, I couldn't find any block boundaries.
+%s: splitting into blocks
+%s: supplied filename is suspiciously (>= %d chars) long.  Bye!
+__strcat_chk
+__strcpy_chk
+%s: usage is `%s damaged_file_name'.
+%s: warning: output file(s) may be incomplete.
+T$89T$Xr)
+   writing block %d to `%s' ...

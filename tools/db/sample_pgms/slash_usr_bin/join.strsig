@@ -1,0 +1,128 @@
+0 <= strtol_base && strtol_base <= 36
+  -1 FIELD          join on this FIELD of file 1
+  -2 FIELD          join on this FIELD of file 2
+add_field
+-a:e:i1:2:j:o:t:v:
+  -a FILENUM        print unpairable lines coming from file FILENUM, where
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+bindtextdomain
+both files cannot be standard input
+bug-coreutils@gnu.org
+by whitespace.  When FILE1 or FILE2 (not both) is -, read standard input.
+  --check-order     check that the input is correctly sorted, even
+conflicting empty-field replacement strings
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_toupper_loc
+__cxa_atexit
+dcgettext
+each being `FILENUM.FIELD' or `0'.  Default FORMAT outputs the join field,
+  -e EMPTY          replace missing input fields with EMPTY
+E.g., use ` sort -k 1b,1 ' if `join' has no options,
+else fields are separated by CHAR.  Any FIELD is a field number counted
+__errno_location
+extra operand %s
+file != 0 || field == 0
+file == 0 || file == 1 || file == 2
+                      FILENUM is 1 or 2, corresponding to FILE1 or FILE2
+For complete documentation, run: info coreutils '%s invocation'
+For each pair of input lines with identical join fields, write a line to
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+from 1.  FORMAT is one or more comma or blank separated specifications,
+fseeko64
+fwrite_unlocked
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+  --header          treat the first line in each file as field headers,
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+                      if all input lines are pairable
+If the input is not sorted and some lines cannot be joined, a
+ignore-case
+  -i, --ignore-case  ignore differences in case when comparing fields
+Important: FILE1 and FILE2 must be sorted on the join fields.
+incompatible join fields %lu, %lu
+incompatible tabs
+invalid field number: %s
+invalid field specifier: %s
+invalid file number in field spec: %s
+_IO_stdin_used
+iswprint
+  -j FIELD          equivalent to `-1 FIELD -2 FIELD'
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+line of each file determines the number of fields output for each line.
+memory exhausted
+Mike Haertel
+missing operand
+missing operand after %s
+multi-character tab %s
+nocheck-order
+  --nocheck-order   do not check that the input is correctly sorted
+Note, comparisons honor the rules specified by `LC_COLLATE'.
+  -o FORMAT         obey FORMAT while constructing output line
+or use ` join -t '' ' if `sort' has no options.
+__overflow
+posix_fadvise64
+__printf_chk
+                      print them without trying to pair them
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+read error
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+%s, and %s.
+separated by CHAR.  If FORMAT is the keyword 'auto', then the first
+Set LC_ALL='C' to work around the problem.
+setlocale
+shell-always
+%s home page: <%s>
+%s:%ju: is not sorted: %.*s
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+standard output.  The default join field is the first, delimited
+string comparison failed
+t6< t2<	t.
+  -t CHAR           use CHAR as input and output field separator
+There is NO WARRANTY, to the extent permitted by law.
+the remaining fields from FILE1, the remaining fields from FILE2, all
+The strings compared were %s and %s.
+This is free software: you are free to change and redistribute it.
+Try `%s --help' for more information.
+Unless -t CHAR is given, leading blanks separate fields and are ignored,
+Usage: %s [OPTION]... FILE1 FILE2
+/usr/share/locale
+      --version  output version information and exit
+  -v FILENUM        like -a FILENUM, but suppress joined output lines
+warning message will be given.
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+xstrtol.c
+xstrtoul

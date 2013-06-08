@@ -1,0 +1,36 @@
+# 1997-08-25 fl   created
+# 2002-03-10 fl   use "from PIL import"
+# drivers
+    else:
+        except SyntaxError:
+    except (SyntaxError, IOError):
+files = []
+    files = files + glob.glob(f)
+for f in files:
+for f in sys.argv[1:]:
+        fp = open(f, "rb")
+            fp.seek(0)
+from PIL import BdfFontFile
+from PIL import PcfFontFile
+# history:
+if len(sys.argv) <= 1:
+import glob, os, sys
+import site
+            p = BdfFontFile.BdfFontFile(fp)
+# PIL raster font compiler
+            p = PcfFontFile.PcfFontFile(fp)
+    print
+    print "Convert given font files to the PIL raster font format."
+    print f + "...",
+        print "failed"
+        print "OK"
+    print "PILFONT", VERSION, "-- PIL font compiler."
+    print "This version of pilfont supports X BDF and PCF fonts."
+    print "Usage: pilfont fontfiles..."
+        p.save(f)
+    sys.exit(1)
+# The Python Imaging Library
+        try:
+    try:
+#! /usr/bin/python
+VERSION = "0.4"

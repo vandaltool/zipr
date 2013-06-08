@@ -1,0 +1,129 @@
+-24force
+-annotation
+BODY compression: %ld%%
+BODY compression (%s): %ld%%
+__bss_start
+byterun1
+-cmaponly
+-cmethod
+colormap too large - using first %d colors
+-compress
+compress_row(): unknown compression method %d
+computing colormap...
+-copyright
+-dcforce
+%d colors found
+%d colors found in colormap
+%d colors in HAM colormap
+-dcplanes
+-deepbits
+-deepforce
+-deepplanes
+empty colormap??
+-fixplanes
+GLIBC_2.0
+GLIBC_2.7
+__gmon_start__
+-hambits
+-hamforce
+-hamplanes
+if you want a non-deep file, try doing a 'ppmquant %d'
+if you want a non-direct color file, try doing a 'ppmquant %d'
+if you want a non-HAM file, try doing a 'ppmquant %d'
+[-ilbm|-rgb8|-rgbn] [-ecs|-aga] [-ham6|-ham8] [-maxplanes|-mp <n>] [-fixplanes|-fp <n>] [-normal|-hamif|-hamforce|-24if|-24force|-deepif|-deepforce|-dcif|-dcforce|-cmaponly] [-hamplanes|-hambits <n>] [-hammap gray|fixed|rgb4|rgb5] [-deepplanes|-deepbits <n>] [-dcplanes|-dcbits <r> <g> <b>] [-annotation <str>] [-author <str>] [-copyright <str>] [-name <str>] [-text <str>] [-hires] [-lace] [-camg <hexval>] [-nocompress] [-cmethod 0|1|none|byterun1] [-mapfile <ppmfile>] [-sortcmap] [-floyd|-fs] [-mmethod 0|1|2|3|none|maskplane|transparentcolor|lasso] [-maskfile <pbmfile>] [-transparent <color>] [ppmfile]
+initializing HAM colormap...
+_IO_putc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+-mapfile
+-maskfile
+maskfile too small - try scaling it
+masking method "%s" not supported yet
+masking method "%s" not usable with deep ILBM - using "%s" instead
+masking method "%s" not usable with HAM - using "%s" instead
+maskplane
+mask plane
+-maxplanes
+maxval is not 15 - automatically rescaling colors
+maxval is not 255 - automatically rescaling colors
+maxval is not %d - automatically rescaling colors
+-mmethod
+-no24force
+-nocompress
+-nodcforce
+-nodeepforce
+-nodeepif
+-nofloyd
+-nohamforce
+-nohamif
+-nohires
+option "%s" argument value must be divisible by 3
+option "%s" argument value out of range (%d..%d)
+option "%s" needs integer argument
+out of memory adding to hash table, proceeding without it
+out of memory allocating %d bytes
+overflow2
+overflow_add
+pbm_readpbminit
+pbm_readpbmrow
+pm_allocarray
+pm_allocrow
+pm_bitstomaxval
+pm_close
+pm_error
+pm_freerow
+pm_keymatch
+pm_maxvaltobits
+pm_message
+pm_openr
+pm_usage
+pm_writebiglong
+pm_writebigshort
+ppm_addtocolorhash
+ppm_addtocolorrow
+ppm_alloccolorhash
+ppm_colorrowtocolorhash
+ppm_computecolorrow
+ppm_findclosestcolor
+ppm_freecolorhash
+ppm_fs_endrow
+ppm_fs_free
+ppm_fs_init
+ppm_fs_next
+ppm_fs_startrow
+ppm_fs_update
+ppm_fs_update3
+ppm_init
+ppm_lookupcolor
+ppm_mapfiletocolorrow
+ppm_parsecolor
+ppm_readppminit
+ppm_readppmrow
+ppm_sortcolorrow
+ppm_to_ham(): unknown hammapmode - can't happen
+reading colormap file...
+selecting HAM colormap from %d colors...
+-sortcmap
+T$,9T$$u
+too many colors for %d planes - proceeding to write a %d-bit 'deep' ILBM
+too many colors for %d planes - proceeding to write a %d:%d:%d direct color ILBM
+too many colors for %d planes - proceeding to write a HAM%d file
+too many colors for %d planes - try doing a 'ppmquant %d'
+too many colors for masking method "%s" - using "%s" instead
+too many colors in mapfile for %d planes
+too many colors - try doing a 'ppmquant %d'
+-transparent
+transparentcolor
+transparent color
+Unable to allocate memory for HAM colormap.
+unknown compression method: %s
+unknown HAM colormap selection mode: %s
+unknown masking method: %s
+warning - maskfile larger than image
+warning - %s compression increases BODY size by %ld%%
+write error

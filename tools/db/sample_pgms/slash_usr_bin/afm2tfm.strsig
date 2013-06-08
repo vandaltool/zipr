@@ -1,0 +1,219 @@
+! 256 chars with different widths
+afm2tfm(k) (dvips(k) 5.98) 8.1
+afm2tfm: Need at least one file argument.
+ampersand
+and the Dvips copyright.
+arrowdown
+asterisk
+backslash
+! Bad extension factor
+! bad form in LIGKERN command
+! bad ligature op specified
+! Bad slant parameter
+! Bad small caps height
+! boundary character number must be 0..255
+(BOUNDARYCHAR O %lo)
+braceleft
+braceright
+bracketleft
+bracketright
+__bss_start
+/build/buildd/texlive-bin-2009/inst/lib
+! can't open tfm output file
+! can't open vpl output file
+CHARACTER %s
+(CHARDP R %.1f)
+(CHARDP R %d)
+(CHARHT R %.1f)
+(CHARHT R %d)
+(CHARIC R %.1f)
+(CHARIC R %d)
+(CHARWD R %.1f)
+(CHARWD R %d)
+circumflex
+(CODINGSCHEME %s)
+Coding scheme too long; shortening to 39 characters.
+(COMMENT DESIGNSIZE (1 em) IS IN POINTS)
+(COMMENT OTHER DIMENSIONS ARE MULTIPLES OF DESIGNSIZE/1000)
+(COMMENT Please edit that VTITLE if you edit this file)
+ (comment %s)
+! composite character name not found
+  Convert an Adobe font metric file to TeX font metric format.
+Copyright 2009 Radical Eye Software.
+couldn't open encoding file `%s'
+-c REAL             use REAL for height of small caps made with -V [0.8]
+__ctype_b_loc
+__ctype_tolower_loc
+(DESIGNSIZE R 10.0)
+(DESIGNUNITS R 1000)
+dieresis
+dotlessi
+dotlessj
+EncodingScheme
+-e REAL             widen (extend) characters by a factor of REAL
+exclamdown
+! expected number assignment for boundary char
+(EXTRASPACE D %d)
+(FAMILY %s)
+find_suffix
+! first token in encoding must be literal encoding name
+(FONTAT D %d)
+FONTDIMEN
+FontName
+(FONTNAME %s)
+For more information about these matters, see the files
+__fprintf_chk
+germandbls
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+--help              print this message and exit.
+! I forgot to match the parentheses
+! input line too long; perhaps input file is malformed?
+! integer expected
+! internal error: boundary char
+_IO_getc
+_IO_putc
+_IO_stdin_used
+IsFixedPitch
+__isoc99_sscanf
+ItalicAngle
+_Jv_RegisterClasses
+kern char not found
+kpathsea_bug_address
+kpathsea_version_string
+kpse_def
+kpse_fclose_trace
+kpse_open_file
+kpse_set_program_name
+(KRN %s R %.1f)%s
+(KRN %s R %d)%s
+(LABEL BOUNDARYCHAR)
+(LABEL %s)%s
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+libm.so.6
+% LIGKERN Aacute <> A ; aacute <> a ;
+% LIGKERN Acircumflex <> A ; acircumflex <> a ;
+% LIGKERN Adieresis <> A ; adieresis <> a ;
+% LIGKERN Agrave <> A ; agrave <> a ;
+% LIGKERN Aring <> A ; aring <> a ;
+% LIGKERN Atilde <> A ; atilde <> a ;
+% LIGKERN Ccedilla <> C ; ccedilla <> c ;
+% LIGKERN Eacute <> E ; eacute <> e ;
+% LIGKERN Ecircumflex <> E ; ecircumflex <> e ;
+% LIGKERN Edieresis <> E ; edieresis <> e ;
+% LIGKERN Egrave <> E ; egrave <> e ;
+% LIGKERN exclam quoteleft =: exclamdown ;
+% LIGKERN ff l =: ffl ;
+% LIGKERN f i =: fi ; f l =: fl ; f f =: ff ; ff i =: ffi ;
+% LIGKERN five {} * ; * {} five ; six {} * ; * {} six ;
+% LIGKERN hyphen hyphen =: endash ; endash hyphen =: emdash ;
+% LIGKERN Iacute <> I ; iacute <> i ;
+% LIGKERN Icircumflex <> I ; icircumflex <> i ;
+% LIGKERN Idieresis <> I ; idieresis <> i ;
+% LIGKERN Igrave <> I ; igrave <> i ;
+% LIGKERN nine {} * ; * {} nine ;
+% LIGKERN Ntilde <> N ; ntilde <> n ;
+% LIGKERN Oacute <> O ; oacute <> o ;
+% LIGKERN Ocircumflex <> O ; ocircumflex <> o ;
+% LIGKERN Odieresis <> O ; odieresis <> o ;
+% LIGKERN Ograve <> O ; ograve <> o ;
+% LIGKERN one {} * ; * {} one ; two {} * ; * {} two ;
+% LIGKERN Oslash <> O ; oslash <> o ;
+% LIGKERN Otilde <> O ; otilde <> o ;
+% LIGKERN question quoteleft =: questiondown ;
+% LIGKERN quoteleft quoteleft =: quotedblleft ;
+% LIGKERN quoteright quoteright =: quotedblright ;
+% LIGKERN Scaron <> S ; scaron <> s ;
+% LIGKERN seven {} * ; * {} seven ; eight {} * ; * {} eight ;
+% LIGKERN space l =: lslash ; space L =: Lslash ;
+% LIGKERN space {} * ; * {} space ; zero {} * ; * {} zero ;
+% LIGKERN three {} * ; * {} three ; four {} * ; * {} four ;
+% LIGKERN Uacute <> U ; uacute <> u ;
+% LIGKERN Ucircumflex <> U ; ucircumflex <> u ;
+% LIGKERN Udieresis <> U ; udieresis <> u ;
+% LIGKERN Ugrave <> U ; ugrave <> u ;
+% LIGKERN Yacute <> Y ; yacute <> y ;
+% LIGKERN Ydieresis <> Y ; ydieresis <> y ;
+% LIGKERN Zcaron <> Z ; zcaron <> z ;
+LIGTABLE
+MAPFONT D 0
+MAPFONT D 1
+(MOVERIGHT R %.1f)
+(MOVERIGHT R %d)
+(MOVEUP R %.1f)
+(MOVEUP R %d)
+! multiple boundary character commands?
+named COPYING and afm2tfm.c.
+! need at most two non-option arguments
+! no Adobe characters
+! number expected
+numbersign
+! oops; internal afmin error
+Original author of afm2tfm: T. Rokicki.
+-O                  use octal for all character codes in the vpl file
+! out of memory
+parenleft
+parenright
+-p ENCFILE          read/download ENCFILE for the PostScript encoding
+! premature end in encoding file
+__printf_chk
+(QUAD D %d)
+question
+questiondown
+quotedbl
+quoteleft
+quoteright
+quotesingle
+! second token in encoding must be mark ([) token
+(SELECTFONT D 1)
+semicolon
+(SETCHAR O %o)
+%s expected: 
+ %s ExtendFont
+%s: fatal: 
+(SHRINK D %d)
+(SLANT R %f)
+(SPACE D %d)
+__sprintf_chk
+-s REAL             oblique (slant) characters by REAL, generally <<1
+ %s ReEncodeFont
+ %s SlantFont
+(%s %s O %o)
+__stack_chk_fail
+__strcat_chk
+__strcpy_chk
+(STRETCH D %d)
+! syntax error
+-T ENCFILE          equivalent to -p ENCFILE -t ENCFILE
+-t ENCFILE          read ENCFILE for the encoding of the vpl file
+TeX-%s%s%s%s
+TeX text
+There is NO warranty.  You may redistribute this software
+! token 258 in encoding must be make-array (])
+! tokens 3 to 257 in encoding must be literal names
+! too few parameters in lig kern data
+! too many parameters in lig kern data
+Try `afm2tfm --help' for more information.
+underscore
+under the terms of the GNU General Public License
+Unknown option %s %s will be ignored.
+Unspecified
+-u                  output only characters from encodings, nothing extra
+Usage: afm2tfm FILE[.afm] [OPTION]... [FILE[.tfm]]
+--version
+--version           print version number and exit.
+-v FILE[.vpl]       make a VPL file for conversion to VF
+-V SCFILE[.vpl]     like -v, but synthesize smallcaps as lowercase
+(VTITLE Created by %s)
+xbasename
+(XHEIGHT D %d)
+! you can't lig boundarychar boundarychar!
+! you can't lig to the boundary character!

@@ -1,0 +1,21 @@
+AJPATH=/usr/share/java/aspectjtools.jar
+#!/bin/sh
+	    echo "$0: could not guess JAVA_HOME! Please define it" >&2
+exec "$JAVACMD" -classpath "$AJPATH:$TOOLS_JAR${CLASSPATH:+:$CLASSPATH}" \
+	    exit 1
+	    # gij special case
+guess_java_home
+guess_java_home() {
+	if echo "$JAVACMD" | grep -E '^/usr/bin/gij-' >/dev/null;
+    if test "a$JAVA_HOME" = "a"; then
+if test "a$JAVA_HOME" = "a/usr/lib/jvm/java-gcj";
+	if ! test -f "$JAVA_HOME/lib/tools.jar"; then
+	JAVACMD=${JAVACMD:-`which java`}
+	JAVACMD=`readlink -f $JAVACMD`
+	    JAVA_HOME=${JAVACMD%%/jre/bin/java}
+	    JAVA_HOME=${JAVA_HOME%%/bin/java}
+	    JAVA_HOME=/usr/lib/jvm/java-gcj
+  ${JAVA_OPTS:=-Xmx64M} \
+  org.aspectj.tools.ajdoc.Main "$@"
+    TOOLS_JAR="$JAVA_HOME/lib/tools.jar"
+    TOOLS_JAR=/usr/share/java/gnu-classpath-tools-gjdoc.jar:"$JAVA_HOME/lib/tools.jar"

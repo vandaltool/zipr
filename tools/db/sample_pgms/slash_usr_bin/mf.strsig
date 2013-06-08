@@ -1,0 +1,823 @@
+1 or ... or 9 to ignore the next 1 to 9 tokens of input,
+256w,16h,16d,64i,
+<3t:<Mt6
+<3tR<MtN
+<3wz<-vv
+|$4FM2Wt2
+4+l$D+T$@
+<7w><3v:
+-8bit                   make all characters printable by default
+a bad variable
+above this error message. So I'll try a zero subscript.
+A bracketed subscript must have a known numeric value;
+A colon should follow a headerbyte or fontinfo location.
+A curl must be a known, nonnegative number.
+(a font metric dimension
+A forbidden `outer' token occurred in skipped text.
+, after choices
+After `exitif <boolean exp>' I expect to see a semicolon.
+after finding a nice xpart `x' I found a ypart `y'
+  after MFNAME is read.
+, after subdivision
+, after subdivision and autorounding
+, after subdivision and double autorounding
+After `vardef a' you can't say `vardef a.b'.
+A funny symbol that I can't read has just been input.
+A group begun on line 
+  Alternatively, if the first non-option argument begins with a backslash,
+  Alternatively, if the first non-option argument begins with a &, the
+Always cull by known amounts that exclude 0.
+Always say `randomseed:=<numeric expression>'.
+A message should be a known string expression.
+and deduce the truth by inspired guesses.
+and the final value `c' must have known numeric values.
+An equation between already-known quantities can't help.
+An error might have occurred before I noticed any problems.
+angle(0,0) is taken as zero
+  Any following COMMANDS are processed as Metafont input,
+A path join command should end with two dots.
+A previous error seems to have propagated,
+A primary
+Are you trying to use a reserved word in a variable name?
+<argument> 
+argument (see above) as the result of the operation.
+argument (shown above) as the result of the operation.
+Arithmetic overflow
+A secondary
+__assert_fail
+A statement can't begin with `
+A tertiary
+a text argument
+At least one of the coordinates in the path I'm about to
+ at line 
+At most 127 lig/kern steps can separate skipto1 from 1::.
+At this point I needed to see the name of a picture variable.
+autorounding
+AVAIL list clobbered at 
+a value of 4096 or more. Continue and I'll try to cope
+background
+Backwards path (turning number is negative)
+Bad culling amounts
+Bad flag at 
+Bad PREVDEP at 
+Bad window number
+-base=BASENAME          use BASENAME instead of program name or a %& line
+base file name
+batchmode
+because I've already looked at the definition heading.
+, before choices
+, before subdivision into octants
+begingroup
+ % beginning in octant `
+Beginning to dump on file 
+both the %s copyright and
+boundarychar
+__bss_start
+b stack positions out of 
+buffer size
+/build/buildd/texlive-bin-2009/inst/lib
+But don't worry; continue and I'll just ignore it.
+But don't worry; I'll pretend that an equals sign
+but I can only do integer operations on pictures.
+but I'll try to get myself back together, by ignoring
+but nevertheless you nearly hornswoggled me...
+But perhaps no harm has been done; let's continue.
+but watch out, I'll probably miss it later.
+by `endgroup'. So I've inserted `endgroup' now.
+ bytes).
+call_edit: `%%d' appears twice in editor command
+call_edit: `%%s' appears twice in editor command
+Calling BLANKRECTANGLE(%ld,%ld,%ld,%ld)
+Calling PAINTROW(%ld,%ld;
+Calling UPDATESCREEN
+*** (cannot readstring in nonstop modes)
+Can't swap a %d-byte item for (un)dumping
+(%CAPSULE)
+%CAPSULE
+---case 
+causing me to read past where you wanted me to stop.
+(Chapter 27 of The METAFONTbook explains that
+ character
+Character 
+ characters
+charcode
+charexists
+%c%ld%s%ld
+%c%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%c
+ CLOBBERED
+combination of types. Continue, and I'll return the second
+command, so I can't give any explicit help.
+command, something happened, and the left-hand side
+computing got too large, so I'm afraid your answers will be
+Continue, and I'll forget that it ever happened.
+..control?
+controls
+   ..controls 
+Copyright 2009 %s.
+Could not open char translation file `%s'
+Could not undump %d %d-byte item(s)
+! Could not write %d %d-byte item(s).
+covered by the terms of 
+__ctype_b_loc
+Curve out of range
+ .. cycle
+ & cycle
+Cycle spec
+D$@3D$d+D$@9
+D$@3D$h+D$@9
++D$,;D$<
++D$$;D$ 
++D$\;D$,
+debug # (-1 to exit):
+Declared variable conflicts with previous vardef
+default-translate-file
+definition?
+definition will be completed without mixing me up too badly.
+D.E. Knuth
+delete this zero and insert something else;
+delimiters
+designsize
++D$H9D$@
+digitize was really huge (potentially bigger than 4095).
+directiontime
+Division by zero
+'d macro:
+ doesn't match 
+Double-AVAIL list clobbered at 
+doublepath
+Doubly free location at 
+dropping
++D$$+T$(
+D$<+T$H)
+(dump is performed only by INIMF)
+D$X)D$4;|$4
+Edge structure
+Email bug reports to %s.
+Emergency stop
+endgroup
+endinput
+(end occurred when 
+End of file on the terminal!
+! End of file on the terminal... why?
+Enormous 
+Enormous number has been reduced
+% entering octant `
+Equation cannot be performed (
+errmessage
+__errno_location
+errorstopmode
+E to edit your file,
+everyjob
+everything from here to `endfor' will be iterated.
+everything up to the next `;'. Please insert a semicolon
+except to a fully known pair or transform.
+expandafter
+Explicit subscripts like `x15a' aren't permitted.
+<expr>->
+ expression can't begin with `
+expression that is shown above this error message,
+<expr>of<primary>->
+extensible
+Extra `endfor'
+Extra `endgroup'
+Extra tokens will be flushed
+(Fatal base file error; I'm stymied)
+File ended
+file_line_error_style
+file name for font metrics
+file name for output
+File names can't appear within macros
+final value
+find_suffix
+fontdimen
+fontmaking
+ font metric dimensions
+Font metric dimensions must be less than 2048pt.
+Font metrics written on 
+Forbidden token found
+foreground
+<forever> 
+For more information about these matters, see the file
+For safety's sake I'll ignore the present command.
+forsuffixes
+__fprintf_chk
+), from 
+ (future pen)
+future pen
+getopt_long_only
+gf_buf_size
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+granularity
+ had to be decreased)
+half_error_line
+halt-on-error
+-halt-on-error          stop processing at the first error
+' has been inserted
+ has been obliterated
+ has been reduced
+ has been replaced by 0
+hash size
+have missed it, if it wasn't followed by the proper token.)
+headerbyte
+-help                   display this help and exit
+Here is how much of METAFONT's memory
+H for help, X to quit.
+I already knew that this equation was true.
+I assume you meant to say `until' after `step'.
+I can apply complicated transformations to paths,
+I can't find file `
+I can't find the base file `
+I can't go on meeting you like this
+I can't handle numbers bigger than about 4095.99998;
+I can't make a pen from the given path.
+I can't set an internal quantity to anything but a known
+I can't shift the picture as requested---it would
+I can't write on file `
+I can't xscale the picture as requested---it would
+I can't yscale the picture as requested---it would
+I couldn't find an `=' or `:=' after the
+I didn't find a variable name at the left of the `:=',
+``If all else fails, read the instructions.''
+  If no arguments or options are specified, prompt for input.
+I found no right delimiter to match a left one. So I've
+  If the first line of MFNAME is %&BASE, and BASE is an existing .base file,
+If you just proceed without changing anything, I'll ignore
+If you really absolutely need more capacity,
+Ignoring unknown argument `%s' to --interaction
+I have just deleted some text, as you asked.
+I have trouble with numbers greater than 4095; watch out.
+I'll continue by pretending that each missing argument
+(illegal design size has been changed to 128pt)
+Illegal ligtable step
+Illegal suffix of declared variable will be flushed
+I'll ignore the bad `with' clause and look for another.
+I'll pretend that you meant to divide by 1.
+I'll read it as a right delimiter this time;
+I'll try to recover; but if the error is serious,
+I'm afraid I don't know how to apply that operation to that
+I'm afraid I need some sort of value in order to continue,
+I'm broken. Please show this to someone who can fix can fix
+I'm confused; after exiting from a loop, I still seem
+I'm going to assume that the comma I just read was a
+I'm going to discard the junk I found here,
+I'm going to flush this expression, since
+I'm ignoring this; it doesn't match any if.
+I'm not currently working on a `begingroup',
+I'm not currently working on a for loop,
+ IMPOSSIBLE
+I'm processing `extensible c: t,m,b,r'.
+Improper 
+Improper `addto'
+Improper curl has been replaced by 1
+Improper font parameter
+Improper kern
+Improper location
+Improper `openwindow'
+Improper subscript has been replaced by zero
+Improper tension has been set to 1
+Improper transformation argument
+Improper type
+Improper `:=' will be changed to `='
+I'm sorry, but I don't know how to make such things equal.
+I'm unable to apply a partially specified transformation
+I'm zeroing this one. Proceed, with fingers crossed.
+ INACCESSIBLE
+in a charlist
+in a ligtable
+Incomplete if; all text was ignored after line 
+Incomplete string token has been flushed
+Inconsistent equation
+independent
+independent variables
+I need a `known' x value for this part of the path.
+I need a `known' y value for this part of the path.
+I need x and y numbers for this part of the path.
+in fact, I'm barely conscious. Please fix it and try again.
+-ini                    be inimf, for dumping bases; this is implicitly
+ (INIMF)
+initial value
+In order to get back on my feet, I've inserted `0' instead.
+inputfile
+                          input file
+input file name
+input stack size
+<insert>
+insert another by typing, e.g., `I"new string"'.
+<inserted text> 
+interaction
+-interaction=STRING     set interaction mode (STRING=batchmode/nonstopmode/
+Internal quantity `
+  interpret all non-option arguments as a line of Metafont input.
+Interruption
+intersectiontimes
+Invalid code has been replaced by 0
+inwindow
+_IO_getc
+_IO_putc
+_IO_stdin_used
+ is already 
+I saw a `begingroup' back there that hasn't been matched
+is either zero or null.
+I shall pretend that one was there.
+' is no longer a right delimiter
+is no longer a variable! So I won't change anything.
+' isn't an internal quantity
+Isolated expression
+ is the wrong type (
+I suspect you have forgotten an `enddef',
+I suspect you have forgotten an `endfor',
+I thought you were giving me a pair `(x,y)'; but
+I to insert something, 
+It seems that a right delimiter was left out,
+It seems you did a nasty thing---probably by accident,
+It should be the number of an open window.
+It's not legal to label a character more than once.
+I've deleted the partial string; you might want to
+I've finished reading a macro argument and am about to
+I've gotten to the end of the macro parameter list.
+I've got the first argument; will look now for the other.
+I've got the x coordinate of a path direction;
+I've inserted an inaccessible symbol so that your
+I've just read as much of that statement as I could fathom,
+I've scanned a direction spec for part of a path,
+I've scanned an expression of the form `a[b,c',
+I've seen a `[' and a subscript value, in a suffix,
+I was looking for a "known" picture variable.
+I was looking for a known, positive number.
+I was looking for a number between 0 and 255, or for a
+I was looking for `=:' or `kern' here.
+I was looking for the beginning of a new statement.
+I zeroed out characters that weren't hex digits.
+I zeroed out characters that weren't in the range 0..7.
+ JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC
+*** (job aborted, file error in nonstop mode)
+*** (job aborted, no legal end found)
+-jobname=STRING         set the job name to STRING
+ (just shipped out)
+_Jv_RegisterClasses
+kpathsea-debug
+-kpathsea-debug=NUMBER  set path searching debugging flags according to
+kpathsea_version_string
+kpse_absolute_p
+kpse_def
+kpse_def_inst
+kpse_fclose_trace
+kpse_find_file
+kpse_fopen_trace
+kpse_maketex_option
+kpse_readable_file
+kpse_reset_program_name
+kpse_set_program_enabled
+kpse_set_program_name
+kpse_var_value
+L$09L$8|(
+l$@3l$T+l$@9
+l$@3l$X+l$@9
+l$8)l$T)
++l$D+T$@
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+libX11.so.6
+libXt.so.6
+ligtable size
+linearform
+(local label 
+localtime
+Logarithm of 
+*** (loop confusion)
+{loop value=
+Lost loop
+L$(t$9L$ t
+main_memory
+main memory size
+makepath
+make some coordinates too large or too small.
+maketexstring
+max_print_line
+max strings
+Maybe you should try asking a human?
+ memory locations dumped; current usage is 
+Memory usage 
+message by zero. I'm going to divide it by one instead.
+metafont
+METAFONT capacity exceeded, sorry [
+ METAFONT output 
+mf: Couldn't initialize online display for `%s'.
+mf: does contain X window support.
+mfextra.c
+mf: If you need to recompile, remember to give the --with-x
+mf: option to configure
+mf: (Or perhaps you just failed to specify the mode.)
+mf: There may be a binary called `mfw' on your system which
+mf: Window support for X was not compiled into this binary.
+  Missing `
+Missing argument to 
+Missing parameter type; `expr' will be assumed
+Missing symbolic token inserted
+  most commonly `mf'.
+move table size
+must be exactly equal to the starting point of q.
+---! Must increase the 
+' must receive a known value
+named COPYING and the %s source.
+names and collective subscripts, e.g., `x[]a'.
+negative, or zero. So this comparison test won't be `true'.
+ never ended
+New busy locs:
+newinternal
+ (newly created)
+Next time say `withpen <known pen expression>';
+Next time say `withweight <known numeric expression>';
+  next word is taken as the BASE to read, overriding all else. Any
+no-file-line-error
+[-no]-file-line-error   disable/enable file:line:error style messages
+no-file-line-error-style
+No loop is in progress
+no-mktex
+[-no]-mktex=FMT         disable/enable mktexFMT generation (FMT=mf)
+(No new edges added.)
+ NONEXISTENT
+Nonnumeric ypart has been replaced by 0
+nonstopmode
+no-parse-first-line
+[-no]-parse-first-line  disable/enable parsing of the first line of the
+normaldeviate
+Not a cycle
+Not a string
+Not a suitable variable
+Not implemented: 
+now in front of anything that you don't want me to delete.
+<Nt'<Ou1
+nullpicture
+number of internals
+number of strings
+Number too large (
+numeric value, so I'll have to ignore this assignment.
+numspecial
+@ Octant 
+ (off by 
+ offsets
+Oh dear. I can't decide if the expression above is positive,
+OK, entering 
+One of your faux pas seems to have wounded me deeply...
+openin_any
+openout_any
+openwindow
+   or: mf [OPTION]... &BASE ARGS
+   or: mf [OPTION]... \FIRST-LINE
+(Or perhaps you have indeed presented me with one; I might
+or turns right or turns through more than 360 degrees.
+Ouch---my internal constants have been clobbered!
+(outer) 
+  out of 
+Out of order at 
+output-directory
+-output-directory=DIR   use DIR as the directory to write files to
+Output written on 
+parameter stack size
+parse_first_line
+parse_options
+particular type. Continue, and I'll simply return the
+Paths don't touch; `&' will be changed to `..'
+path size
+pencircle
+Pen cycle must be convex
+penoffset
+Pen path must be a cycle
+Pen polygon
+pen polygon size
+Pen too large
+Please delete the tokens and insert the name again.
+Please increase buf_size in texmf.cnf.
+(Please type a command or say `end')
+Please type another 
+Please type the name of your input file.
+p metric file positions
+possibly garbaging the name you gave.
+postcontrol
+post && *post
+precontrol
+Pretend that you're Miss Marple: Examine all clues,
+Primary author of %s: %s.
+primarydef
+__printf_chk
+printversionandexit
+Proceed, and I'll ignore the illegal redeclaration.
+Proceed, and I'll omit the transformation.
+progname
+prog_name_end && prog_version
+-progname=STRING        set program (and base) name to STRING
+proofing
+proto-dependent
+putbyte(%ld) failed
+put one in, behind the scenes; this may fix the problem.
+Pythagorean subtraction 
+randomseed
+{randomseed:=
+read another; the arguments weren't delimited correctly.
+read_line
+readstring
+<recently read> 
+recorder
+-recorder               enable filename recorder
+Redundant equation
+Redundant or inconsistent equation
+  remaining arguments are processed as above.
+[repeat the loop]
+{restoring 
+@ retrograde line from 
+right delimiter, and then I'll begin expanding the macro.
+rounding table size
+R to run without stopping, Q to run quietly,
+Runaway 
+  Run Metafont on MFNAME, usually creating MFNAME.tfm and MFNAME.NNNNgf,
+Say `openwindow k from (r0,c0) to (r1,c1) at (x,y)',
+%s: Bad value (%ld) in texmf.cnf for %s, keeping %ld.
+Scaled picture would be too big
+scantokens
+<scantokens>
+scantokens should be followed by a known string.
+scrollmode
+                          scrollmode/errorstopmode)
+%s:%d: Destination charcode %d <0 or >%d.
+%s:%d: Expected numeric constant, not `%s'.
+secondarydef
+see Chapter 27 of The METAFONTbook for an example.
+(See Chapter 27 of The METAFONTbook for an example.)
+(See Chapter 27 of The METAFONTbook for more help.)
+ (see the transcript file)
+(see the transcript file for additional information)
+(See the two expressions just above the error message.)
+ % segment 
+(Set warningcheck:=0 to suppress this message.)
+%s: fatal: 
+showdependencies
+showstats
+showstopping
+showtoken
+showvariable
+sigaction
+sigaddset
+sigemptyset
+Since I don't take logs of non-positive numbers,
+Since I don't take square roots of negative numbers,
+%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s%ld%s
+smoothing
+%s: Not %s to %s (%s = %s).
+so a right brace should have come next.
+so a right bracket should have come next.
+so a semicolon should have been next. It's very puzzling...
+so I can't transform anything using it.
+so I guess I'll just ignore it and carry on.
+so I had better not try to end anything.
+So I'll have to discard this definition.
+So I'll look for the final value and colon next.
+So I'll not change anything just now.
+So I'll pretend that a colon was present;
+so I'll probably have trouble drawing it.
+so I'll try to keep going by using zero instead.
+so I'm going to pretend that you said `=' instead.
+So I'm going to pretend that you said `p..q' instead.
+So it will probably look funny. Proceed, for a laugh.
+so I've changed your constant to that maximum amount.
+So I've cut it back to the maximum size.
+So I've replaced it by the trivial path `(0,0)..cycle'.
+so I've tentatively inserted `0'. You may want to
+so I won't change the random seed just now.
+Some number got too big
+Something like `tracingonline' should follow `interim'.
+something was redefined, and it's no longer a variable!
+somewhat askew. You'll probably have to adopt different
+Sorry, I already gave what help I could...
+Sorry, I can't find the base `
+Sorry, I don't know how to help in this situation.
+Sorry...I've converted what follows to tokens,
+Sorry: You can't redefine a number, string, or expr.
+Sorry: You can't redefine my error-recovery tokens.
+__sprintf_chk
+Square root of 
+%s%s%ld%s%ld%s%ld%s
+%s%s%s%ld
+%s%s%s%s
+__stack_chk_fail
+step size
+ still untouched)
+Strange path (turning number is zero)
+Strange: This token has lost its former meaning!
+ string characters out of 
+String contains illegal digits
+string of length 1. Didn't find it; will use 0 instead.
+string pool overflow [%i bytes]
+string pool size
+ strings of total length 
+Strings should finish on the same line as they began.
+String usage 
+structured
+substring
+<suffix>->
+ symbolic tokens
+ symbolic tokens out of 
+\$\+T$0+D$,
+t$89t$(~
+T$@9T$\u
+tactics next time. But I shall try to carry on anyway.
+tcx_get_num
++t$D9t$|
+t delimiter that matches 
+..tension 
+tertiarydef
+tex-k@mail.tug.org
+../../../../texk/web2c/lib/printversion.c
+ (TeX Live 2009/Debian)
+TEXMFOUTPUT
+<text>->
+text input levels
+Text line contains an invalid character
+That contour should have ended with `..cycle' or `&cycle'.
+that isn't of numeric type. So I've changed y to zero.
+That macro has more parameters than you thought.
+(That makes 100 errors; please try again.)
+That transformation is too hard
+(That was another `errmessage'.)
+The amount of kern should be a known numeric value.
+The `angle' between two identical points is undefined.
+                          the bits of NUMBER
+The cycle you specified either has consecutive equal points
+The cycle you specified has a coordinate of 4095.5 or more.
+the definition of 
+The equation I just processed has given some variable
+The equation I just read contradicts what was said before.
+The expression above should have been a number >=3/4.
+The expression shown above has the wrong type,
+The expression shown above has the wrong type to be output.
+The expression shown above should have had a definite
+The file ended while I was skipping conditional text.
+the initial value `a' and the step size `b'
+the Lesser GNU General Public License.
+the matching `fi'. I've inserted a `fi'; this might work.
+The next thing in this `def' should have been `=',
+The next thing in this loop should have been a `:'.
+The next thing in this loop should have been `=' or `:='.
+The path doesn't have a counterclockwise orientation,
+The path that I just computed is out of range.
+The quantities shown above have not been equated.
+There is NO warranty.  Redistribution of this software is
+There should've been a colon after the condition.
+The results will probably be pretty wild.
+(There's unbounded black in character shipped out!)
+the text of a 
+The token `
+The value I found (see above) was no good;
+(The y that I didn't like appears above the error message.)
+This can't happen (
+This error message was generated by an `errmessage'
+This expression should have been a known path.
+This expression should have specified a known picture.
+This is Metafont, Version 2.718281
+This isn't an error message; I'm just showing something.
+This kind of error happens when you say `if...' and forget
+This variable already starts with a macro
+<to be read again> 
+token list
+Too far to shift
+Too far to skip
+Too many arguments to 
+totalweight
+to the end of the statement
+to want to repeat it. I'll try to forget the problem.
+tracingcapsules
+tracingchoices
+tracingcommands
+tracingedges
+Tracing edges
+tracingequations
+tracingmacros
+tracingonline
+tracingoutput
+tracingpens
+tracingrestores
+tracingspecs
+tracingstats
+tracingtitles
+transcript file name
+Transcript written on 
+transform
+Transform components aren't all known
+transformed
+@ transition line 
+--translate-file
+--translate-file=
+-translate-file=TCXNAME use the TCX file TCXNAME
+! Trouble executing `%s'.
+                          true if the program name is `inimf'
+true-or-false value. I'm changing it to `false'.
+Try `%s --help' for more information.
+Try to insert some instructions for me (e.g.,`I show x'),
+t$$+T$D)
+T$<+T$@+l$D
+<)t$<(t <?uP
+turningcheck
+turningnumber
+Type <return> to proceed, S to scroll future error messages,
+Uh, oh. A little while ago one of the quantities that I was
+! Unable to read an entire line---bufsize=%u.
+! Unbalanced quotes in %s %s
+undefined
+Undefined condition will be treated as `false'
+Undefined coordinates have been replaced by (0,0)
+Undefined x coordinate has been replaced by 0
+Undefined y coordinate has been replaced by 0
+unfortunately, what I found was the value that appears just
+uniformdeviate
+unknown boolean
+[unknown command code!]
+unknown numeric
+unknown pair
+unknown path
+unknown pen
+unknown picture
+Unknown relation will be considered false
+unknown string
+Unknown value will be ignored
+unless you just want to quit by typing `X'.
+unsuffixed macro
+Unsuitable expression
+up to the next comma or the end of the declaration.
+Usage: mf [OPTION]... [MFNAME[.mf]] [COMMANDS]
+Usage: %s
+  use it.  Else use `NAME.base', where NAME is the program invocation name,
+Value is too large (
+ values had to be adjusted by as much as 
+Variable 
+Variables in declarations must consist entirely of
+-version                output version information and exit
+vi +%d %s
+warning: 
+warningcheck
+ was incomplete)
+:: was missing)
+was present, and I'll look for the values next.
+was present. Everything from here to `enddef'
+was present. The next token I read will be `something'.
+ was written by 
+ (weight 
+Weight must be -3, -2, -1, +1, +2, or +3
+When you join paths `p&q', the ending point of p
+When you say `for x=a step b until c',
+where all quantities are known and k is between 0 and 15.
+  where NNNN is the resolution of the specified mode (2602 by default).
+While I was evaluating the right-hand side of this
+While I was evaluating the suffix of this variable,
+ while scanning 
+Why say `exitif' when there's nothing to exit from?
+widgetClass
+will be the replacement text of this macro.
+will look for the y coordinate next.
+'; will try `
+with that big value; but it might be dangerous.
+withweight
+ words of memory out of 
+|$X3|$\+|$X9|$D
+xbasename
+XChangeWindowAttributes
+XCheckTypedEvent
+XCopyArea
+XCopyPlane
+XCreateGC
+XCreatePixmap
+XDrawLine
+XFillRectangle
+XFreePixmap
+XtAddEventHandler
+XtAppNextEvent
+XtAppPending
+XtCreateManagedWidget
+XtDispatchEvent
+XtDisplay
+XtGetApplicationResources
+XtInitialize
+XtRealizeWidget
+XtSetValues
+XtStrings
+XtWidgetToApplicationContext
+XtWindow
+you can ask a wizard to enlarge me.
+You can now delete more, or insert, or whatever.
+You can't use, e.g., `numeric foo[]' after `vardef foo'.
+you'd better type `E' or `X' now and fix your file.
+! You have to increase POOLSIZE.
+You might want to delete some tokens before continuing.
+you might want to type `I ???' now.)
+You rang?
+You're trying to divide the quantity shown above the error
+Your expression was too random for me to handle,
+You should have said `let symbol = something'.
+You should've had `expr' or `suffix' or `text' here.
+ you used:
+(You used 

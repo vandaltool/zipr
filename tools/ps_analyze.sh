@@ -632,6 +632,17 @@ perform_step find_strings none $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strin
 perform_step appfw none $PEASOUP_HOME/tools/do_appfw.sh $newname.ncexe logs/find_strings.log
 
 #
+# check signatures to determine if we know which program this is.
+#
+perform_step determine_program find_strings $PEASOUP_HOME/tools/match_program.sh 
+program=$(cat logs/determine_program.log |grep "Program is a version of "|sed -e "s/Program is a version of .//" -e "s/.$//")
+if [ "$program" != "" ]; then
+	echo "Detected program is a version of '$program'"
+else
+	echo "Program not detected in signature database."
+fi
+
+#
 # Run script to setup manual tests
 #
 perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script $manual_test_coverage_file

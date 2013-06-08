@@ -1,0 +1,34 @@
+BITPIX  =           %10d                                                  
+BSCALE  =         %E                                                   
+__bss_start
+BZERO   =         %E                                                   
+\$D9\$8|
+DATAMAX =         %E                                                   
+DATAMIN =         %E                                                   
+END                                                                             
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.7
+__gmon_start__
+HISTORY Created by pnmtofits.                                                   
+_IO_putc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+[-max f] [-min f] [pnmfile]
+NAXIS   =           %10d                                                  
+NAXIS1  =           %10d                                                  
+NAXIS2  =           %10d                                                  
+NAXIS3  =                    3                                                  
+pm_close
+pm_keymatch
+pm_openr
+pm_usage
+pnm_init
+pnm_readpnm
+SIMPLE  =                    T                                                  
+__sprintf_chk

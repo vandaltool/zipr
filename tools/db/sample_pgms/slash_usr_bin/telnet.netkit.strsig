@@ -1,0 +1,400 @@
+%-15s "%s"
+%-15s [%s]
+%-15s %s
+%-15s %s %s
+%-15s toggle %s
+3270 REGIME
+4678EKLS:X:ab:de:k:l:n:rt:x
+[-4] [-6] [-8] [-E] [-L] [-a] [-d] [-e char] [-l user]
+All rights reserved.
+?Already connected to %s
+Already in network ascii mode with remote host.
+Already operating in binary mode with remote host.
+Already receiving in binary mode.
+Already receiving in network ascii mode.
+Already transmitting in binary mode.
+Already transmitting in network ascii mode.
+alternate AYT character
+alternate end of line character
+?Ambiguous argument '%s'.
+?Ambiguous command
+?Ambiguous help command %s
+Ambiguous mode '%s' ('mode ?' for help).
+Ambiguous send argument '%s'
+asprintf
+__asprintf_chk
+__assert_fail
+AUTHENTICATION
+autoflush
+automatic sending of interrupt characters in urgent mode
+autosynch
+Bad source route option: %s
+: Bad TOS argument '
+__bss_start
+buffer, if this might help.)
+BYTE MACRO
+%c 0x%x	
+%c %-20s %s
+Cannot open %s.
+Cannot send '%s': Telnet ENVIRON option disabled
+Cannot send '%s': variable not defined
+ CANTCHANGE
+%c%c%c%c%c%c%c%c%c
+%c%c%c%c%ld,%ld%c%c
+%c%c%c%c%s%c%c
+cfgetispeed
+cfgetospeed
+change environment variables ('environ ?' for more)
+character to cause an Abort Output
+character to cause an Abort process
+character to cause an EOF 
+character to cause an Interrupt Process
+character to cause a Suspend Process
+character to escape back to telnet command mode
+character to toggle local echoing on/off
+character to use for line reprint
+character to use for literal next
+character to use for XOFF
+character to use for XON
+character to use to erase a character
+character to use to erase a line
+character to use to erase a word
+close current connection
+commands.cc
+Commands may be abbreviated.  Commands are:
+Connected to %s.
+Connection closed.
+Connection closed by foreign host.
+connect to a site
+@(#) Copyright (c) 1988, 1990 Regents of the University of California.
+count>=0
+__cxa_atexit
+__cxa_guard_acquire
+__cxa_guard_release
+__cxa_pure_virtual
+CXXABI_1.3
+DATA ENTRY TERMINAL
+ %d %d (%d)
+debugging
+(debugging) toggle printing of hexadecimal terminal data
+ DEFAULT
+Define an environment variable
+deprecated command -- use 'set escape' instead
+deprecated command -- use 'toggle crmod' instead
+Deprecated usage - please use 'set escape%s%s' in the future.
+Deprecated usage - please use 'toggle crmod' in the future.
+Disable character editing
+Disable LINEMODE option
+Disable literal character echo
+Disable signal trapping
+display help information
+display operating parameters
+Display send options
+     DO   %d
+Don't mark an environment variable for automatic export
+don't read the telnetrc files
+     DO   %s
+ %d (unknown)
+ (empty suboption???)
+(Empty suboption???)
+Enable character editing
+Enable LINEMODE option
+Enable literal character echo
+Enable signal trapping
+Enable tab expansion
+END OF RECORD
+__environ
+ENVIRON 
+env_opt_add: realloc() failed!!!
+env_opt_start: malloc()/realloc() failed!!!
+__errno_location
+Escape character is '%s'.
+/etc/telnetrc
+exit telnet
+EXTEND ASCII
+file to write trace information to
+|FLUSHIN
+flushing of output when sending interrupt characters
+|FLUSHOUT
+flushoutput
+flush output when sending interrupt characters
+forcibly logout remote user and close the connection
+Fork failed
+format is:  'mode Mode', where 'Mode' is one of:
+Format is 'set Name Value'
+Format is 'set togglename [on|off]'
+Forward Mask
+__fprintf_chk
+freeaddrinfo
+gai_strerror
+getaddrinfo
+gethostbyname
+__gethostname_chk
+getnameinfo
+getpwnam
+getpwuid
+getstatus
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.1.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+GLIBCXX_3.4
+__gmon_start__
+((head - tail - count) % size) == 0
+[host-name [port]]
+$Id: commands.cc,v 1.34 2000/07/23 04:16:24 dholland Exp $
+$Id: genget.cc,v 1.3 1996/07/26 09:54:09 dholland Exp $
+$Id: main.cc,v 1.14 1999/08/01 05:06:37 dholland Exp $
+$Id: network.cc,v 1.15 1996/08/13 08:09:58 dholland Exp $
+$Id: ring.cc,v 1.23 2000/07/23 03:25:09 dholland Exp $
+$Id: sys_bsd.cc,v 1.24 1999/09/28 16:29:24 dholland Exp $
+$Id: telnet.cc,v 1.36 2000/07/23 03:24:53 dholland Exp $
+$Id: terminal.cc,v 1.25 1999/12/12 19:48:05 dholland Exp $
+$Id: tn3270.cc,v 1.9 1996/08/13 09:08:34 dholland Exp $
+$Id: utilities.cc,v 1.19 1999/12/12 15:33:40 dholland Exp $
+inbinary
+inet_aton
+inet_ntoa
+In SUBOPTION processing, RCVD
+int command_entry::call(int, const char**)
+interrupt
+int ringbuf::flush()
+int ringbuf::gets(char*, int)
+?Invalid command
+?Invalid help command %s
+_IO_putc
+_IO_stdin_used
+IS "%.*s"
+ix>=0 && ix<n
+_Jv_RegisterClasses
+kludgeline
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+libm.so.6
+libncurses.so.5
+libstdc++.so.6
+LINEMODE
+LINEMODE 
+List the current environment variables
+-litecho
++litecho
+|LIT_ECHO
+lm_do: no command!!!
+lm_dont: no command!!!
+lm_will: no command!!!
+lm_wont: no command!!!
+localchars
+local recognition of certain control characters
+__longjmp_chk
+map carriage return on output
+mapping of received carriage returns
+Mark an environment variable for automatic export
+__memcpy_chk
+'mode ?' for help.
+Need an argument to 'environ' command.  'environ ?' for help.
+Need an argument to 'toggle' command.  'toggle ?' for help.
+Need an argument to 'unset' command.  'unset ?' for help.
+need at least one argument for 'send' command
+Need %d argument%s to 'send %s' command.  'send %s ?' for help.
+Need %s%d argument%s to 'environ %s' command.  'environ ?' for help.
+?Need to be connected first.
+Need to be connected first for `bye'.
+Need to be connected first for `logout'.
+?Need to have LINEMODE option enabled first.
+Negotiating binary mode on input.
+Negotiating binary mode on output.
+Negotiating binary mode with remote host.
+Negotiating network ascii mode on input.
+Negotiating network ascii mode on output.
+Negotiating network ascii mode with remote host.
+$NetKit: netkit-telnet-0.17 $
+NEW-ENVIRON
+new escape character: 
+No connection.
+No help available
+(no mode???)
+(no option???)
+ NOSUPPORT
+, not IAC SE!) 
+	[-n tracefile] [ -b addr ]
+OLD-ENVIRON
+(or disable obsolete line-by-line mode)
+(or enable obsolete line-by-line mode)
+outbinary
+OUTPUT MARKING
+output of "netdata" to user readable format (debugging)
+Perform Telnet 'Synch operation'
+prettydump
+__printf_chk
+Print help information
+print hexadecimal representation of network traffic
+print hexadecimal representation of terminal traffic
+printing of hexadecimal network data (debugging)
+print status information
+print user readable output for "netdata"
+ptrarray.h
+receiving of binary data
+recognize certain control characters
+remote default
+Remote side does not support STATUS option
+resp DO_DONT %d: %d
+resp DO_DONT %s: %d
+resp WILL_WONT %d: %d
+resp WILL_WONT %s: %d
+rlogin escape character
+'%s': ambiguous argument ('environ ?' for help).
+'%s': ambiguous argument ('send %s ?' for help).
+'%s': ambiguous argument ('set ?' for help).
+'%s': ambiguous argument ('toggle ?' for help).
+'%s': ambiguous argument ('unset ?' for help).
+%s character is '%s'.
+%s %d %d
+Send an environment variable
+Send current escape character
+'send ?' for help
+'send ?' for help.
+sending and receiving of binary data
+sending carriage returns as telnet <CR><LF>
+sending of binary data
+send interrupt characters in urgent mode
+SEND LOCATION
+Send request for STATUS
+('send synch' will throw away most data in the network
+Send Telnet Abort output
+Send Telnet 'Abort Process'
+Send Telnet 'Are You There'
+Send Telnet Break
+Send Telnet End of File Character
+Send Telnet 'End of Record'
+Send Telnet Erase Character
+Send Telnet Erase Line
+Send Telnet 'Go Ahead' sequence
+Send Telnet Interrupt Process
+Send Telnet 'No operation'
+Send Telnet 'Suspend Process'
+'set ?' for help.
+set operating parameters ('set ?' for more)
+setsockopt
+setsockopt (IP_OPTIONS)
+setsockopt (SO_DEBUG)
+set treatment of special characters
+show option processing
+shutdown
+%s IAC %d
+%s IAC %s
+%s IAC SB 
+__sigsetjmp
+((size+head-tail)%size)==count
+%s: -k ignored, no Kerberos V4 support.
+sleep(5) from telnet, after select
+%s map carriage return on output.
+__snprintf_chk
+|SOFT_TAB
+-softtabs
++softtabs
+Source route is only supported for IPv4
+Special characters are %s values
+`%s' requires a subcommand.
+%s reset to "%s".
+%s set to "%s".
+%s%s%s%s%s
+__stack_chk_fail
+(standard output)
+%s/.telnetrc
+strcasecmp
+__strcat_chk
+__strcpy_chk
+strncasecmp
+__strncpy_chk
+%s (unknown)
+'%s': unknown argument ('environ ?' for help).
+'%s': unknown argument ('send %s ?' for help).
+'%s': unknown argument ('set ?' for help).
+'%s': unknown argument ('toggle ?' for help).
+'%s': unknown argument ('unset ?' for help).
+SUPDUP OUTPUT
+SUPPRESS GO AHEAD
+suspend telnet
+%s: Warning: -t ignored, no TN3270 support.
+%s: -x ignored, no encryption support.
+TACACS UID
+T& array<T>::operator[](int) const [with T = enviro]
+tcgetattr
+tcsetattr
+telnet: bind
+telnet: buffer overflow, losing data, sorry
+telnet: could not resolve %s: %s
+telnet: could not resolve %s/%s: %s
+Telnet escape character is '%s'.
+telnet: port %s out of range
+telnet: port %s overflows
+Telnet rlogin escape character is '%s'.
+Telnet 'send' error - argument disappeared!
+telnet: setsockopt (IP_TOS) (ignored)
+telnet: socket
+telnet: Unable to connect to remote host
+telnet: Unable to connect to remote host: Bad port number
+termdata
+TERMINAL-SPEED
+TERMINAL TYPE
+TERMINAL-TYPE 
+(terminated by 
+The following are for local editing in linemode
+The following need 'localchars' to be toggled true
+There is not enough room in the buffer TO the network
+These require the LINEMODE option to be enabled
+TIMING MARK
+TOGGLE-FLOW-CONTROL
+toggle operating parameters ('toggle ?' for more)
+top-bot > 0 && top-bot <= count
+to process your request.  Nothing will be done.
+T*& ptrarray<T>::operator[](int) const [with T = const char]
+tracefile
+transmit special characters ('send ?' for more)
+|TRAPSIG
+Trying %s...
+Try ? %s for help
+Try %s ? for help
+try to enter line or character mode ('mode ?' for more)
+turn on socket level debugging
+undefine
+Undefine an environment variable
+unexport
+?Unknown argument '%s'.
+Unknown mode '%s' ('mode ?' for help).
+- unknown qualifier %d (0x%x).
+Unknown send argument '%s'
+unset operating parameters ('unset ?' for more)
+Usage: send %s <option>
+usage: %s [-l user] [-a] host-name [port]
+Usage: %s %s%s%s%s
+Use local special character definitions
+Use remote special character definitions
+Valid options are:
+" VALUE 
+ VARIABLE
+Verify remote special character definitions
+viewing of options processing (debugging)
+__vsnprintf_chk
+want DO   %d
+want DONT %d
+want DONT %s
+want DO   %s
+want WILL %d
+want WILL %s
+want WONT %d
+want WONT %s
+     WILL %d
+     WILL %s
+Will send carriage returns as telnet <CR><LF>.
+Will send carriage returns as telnet <CR><NUL>.
+; will try to use default TOS
+worderase
+Wrong number of arguments for command.
+X-DISPLAY-LOCATION 
+XDISPLOC

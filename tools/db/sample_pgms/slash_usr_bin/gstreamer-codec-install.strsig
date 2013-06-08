@@ -1,0 +1,20 @@
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# any later version.
+__author__  = "Sebastian Heinlein <devel@glatzor.de>"
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# -*- coding: utf-8 -*-
+# Copyright (C) 2010 Sebastian Heinlein <devel@glatzor.de>
+from sessioninstaller.gstinstaller import main
+# GNU General Public License for more details.
+"""gstinstaller - install GStreamer components using PackageKit"""
+if __name__ == "__main__":
+# it under the terms of the GNU General Public License as published by
+    main()
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# the Free Software Foundation; either version 2 of the License, or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+#!/usr/bin/python
+# vim:ts=4:sw=4:et
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# You should have received a copy of the GNU General Public License along

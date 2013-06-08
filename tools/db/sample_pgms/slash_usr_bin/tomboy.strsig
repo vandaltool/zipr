@@ -1,0 +1,22 @@
+    case "x--debug" in ("x$arg")
+    case "x--profile=" in ("x${arg:0:10}")
+    case "x--trace=" in ("x${arg:0:8}")
+    echo "** Running Mono with $MONO_OPTIONS **"
+    esac
+exec mono $MONO_OPTIONS $THIS_EXE "$@"
+export LD_LIBRARY_PATH="/usr/lib/tomboy${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    export MONO_GAC_PREFIX=":$MONO_GAC_PREFIX"
+export MONO_PATH=$MONO_PATH:/usr/lib/tomboy:/usr/lib/tomboy/addins
+export TOMBOY_WRAPPER_PATH="/usr/bin/tomboy"
+for arg in $*; do
+if [ -n "" ]; then
+if [ -n "$TOMBOY_DEBUG" -o -n "$TOMBOY_TRACE" -o -n "$TOMBOY_PROFILE" -o -n "$MONO_EXTRA_ARGS" ]; then
+    MONO_OPTIONS="$TOMBOY_DEBUG $TOMBOY_TRACE $TOMBOY_PROFILE $MONO_EXTRA_ARGS"
+[ -n "$TOMBOY_DEBUG" ] && TOMBOY_DEBUG="--debug"
+[ -n "$TOMBOY_PROFILE" ] && TOMBOY_PROFILE="--profile=$TOMBOY_PROFILE"
+[ -n "$TOMBOY_TRACE" ] && TOMBOY_TRACE="--trace=$TOMBOY_TRACE"
+THIS_EXE="/usr/lib/tomboy/Tomboy.exe"
+        TOMBOY_DEBUG=$arg
+        TOMBOY_PROFILE=$arg
+        TOMBOY_TRACE=$arg
+#!/usr/bin/env bash

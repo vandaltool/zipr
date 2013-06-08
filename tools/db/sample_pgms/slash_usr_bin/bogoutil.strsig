@@ -1,0 +1,433 @@
+0123456789
+10F_UNLCK
+%-30s %6lu %6lu
+%-30s %6lu  %6lu  %f
+%-30s %6s %6s
+%-30s %6s  %6s  %6s
+%3.2f %8u %5.2f 
+%5s%8s  %3s  %s
+  -a age                      - exclude tokens with older ages.
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-
+abcdghilmrstuwyz
+Aborting.
+Aborting program
+absolute
+:a:c:Cd:DhH:I:k:l:m:nO:p:r:R:s:u:vVw:x:X:y:
+ and removing environment
+and start from scratch.
+__assert_fail
+BF_DEBUG_DB_OPEN
+BF_FORCE_NON_TRANSACTIONAL
+BF_FORCE_TRANSACTIONAL
+BF_PAGESIZE
+BF_PAGESIZE must be 512 ... 65536, ignoring
+BF_PAGESIZE must be a power of 2, ignoring
+bfp->isfile == is_file_or_missing(bfp->filepath)
+bft_recover_open: cannot lock %s for exclusive use: %s
+@bft_recover_open: cannot open %s: %s
+bogofilter
+.bogofilter
+~/.bogofilter.cf
+BOGOFILTER_DIR
+bogofilter or related application has crashed or directory damaged, aborting.
+Bogofilter requires shared environments to support Berkeley DB transactions.
+BOGOTEST
+bogoutil
+but it is linked against DB version %d.%d.
+but your system does not support NPTL.
+can handle the format of the data base file (after updates in particular).
+cannot begin transaction!
+Cannot begin transaction.
+cannot close database %s: %s
+cannot close environment %s: %s
+cannot commit transaction!
+cannot create environment handle: %s
+cannot join environment: %s
+cannot open database %s: %s
+cannot open directory %s: %s
+cannot query flags: %s
+Cannot read from database.
+Cannot recover environment "%s": %s
+@Cannot set signal %d handler to %p: %s
+cannot stat %s: %s
+Cannot stat "%s": %s
+Cannot %s transaction.
+cannot unlink "%s": %s
+Can't find default wordlist.
+Can't find HOME or BOGOFILTER_DIR in environment.
+Can't mix database encodings, i.e. utf-8 and any other.
+Can't open file '%s'
+Can't open file '%s' in directory '%s'.
+Can't open wordlist '%s'
+Can't read file '%s'
+Can't write file '%s'
+catastrophic
+### Catastrophic recovery failed. ###
+(c_close): %s
+  -c cnt                      - exclude tokens with lower counts.
+(c_get): %s
+checkpoint database
+closedir
+close_lockfile
+close_lockfile: close(%d) failed: %s
+closing environment
+  -C, --no-config-file        - don't read standard config files.
+cnt: %4lu,  sum: %11.6f,  ratio: %9.6f,  sp: %3lu,  gd: %3lu,  p: %9.6f,  t: %.*s
+commit failed
+config-file
+Conversion from '%s' to '%s' is not supported.
+converting %s to %s
+Copyright (C) 2002-2003 Gyepi Sam.
+Copyright (C) 2002-2010 David Relson, Matthias Andree
+Created directory %s .
+csgb2312
+(cursor): %s
+__cxa_atexit
+         data base corruption.
+database maintenance, the "-m file" option is required in this group:
+    Database: %s
+database %s does not verify: %s
+Date format for '-y' option is YYYYMMDD
+DB_AUTO_COMMIT 
+db-checkpoint
+      --db-checkpoint=dir     - flush buffer cache and checkpoint database
+DB_CHKSUM 
+db_close
+db_close called with transaction still open, program fault!
+DB->close error: %s
+DB->close(%s, %s)
+db_create
+DB_CREATE 
+db_created
+(db) db_create, err: %d, %s
+(db) DB->get(TXN=%lu,  '%.*s' ), err: %d, %s
+db_delete
+DB->del(%.*s)
+DB->del('%.*s'), err: %d, %s
+DBE->dbx_checkpoint err: %d, %s
+DB_ENV->close(%p): %s
+db_env_create
+db_env_create, err: %d, %s
+db_env_create: %p
+DB_ENV->dbx_begin(%p), tid: %lx
+DB_ENV->log_archive failed: %s
+DB_ENV->log_flush(%p): %s
+DB_ENV->open, err: %d, %s
+DB_ENV->open(home=%s)
+DB_ENV->set_cachesize(%u)
+DB_ENV->set_cachesize(%u), err: %d, %s
+DB_ENV->set_lg_max(%lu)
+DB_ENV->set_lg_max(%lu) err: %d, %s
+DB_ENV->txn_begin(%p), err: %d, %s
+DB_ENV->txn_checkpoint failed: %s
+DB_EXCL 
+DB->fd: %d
+DB->fd: %s
+db_flush
+db_flush(%s)
+db_foreach
+DB->get_byteswapped: %s
+db_get_dbvalue
+db_get_env
+DB->get_flags returned error: %s
+DB->get(%.*s): %s
+dbh->magic == 0xdb4
+dbh->txn == 0
+db_is_swapped
+db-list-logfiles
+      --db-list-logfiles=dir [FLAGS]
+      --db-lk-max-locks       - set max lock count.
+      --db-lk-max-objects     - set max object count.
+db-log-autoremove
+      --db-log-autoremove     - set autoremoving of logs.
+DB_NOMMAP 
+DB_NOSYNC
+DB->open(%s) - actually %s, directory %s, err %s
+db-print-leafpage-count
+db-print-pagesize
+db-prune
+      --db-prune=dir          - remove inactive log files in dir.
+DB->put(%.*s): %s
+DB_RDONLY 
+db-recover
+      --db-recover=dir        - run recovery on database in dir.
+db-recover-harder
+      --db-recover-harder=dir - run catastrophic recovery on database.
+db-remove-environment
+      --db-remove-environment - remove environment.
+db_set_dbvalue
+db_set_dbvalue( '%.*s' ), err: %d, %s
+DB->stat
+DB->stat success, pagesize: %lu
+db_strerror
+db_sync: err: %d, %s
+DB->sync(%p): %s
+db-transaction
+      --db-transaction=BOOL   - enable or disable transactions
+DB_TXN->abort(%lx)
+DB_TXN->abort(%lx) error: %s
+DB_TXN->commit(%lx, 0)
+DB_TXN->commit(%lx) error: %s
+db_verify
+db-verify
+      --db-verify=file        - verify data file.
+db_version
+db_version: Header version %d.%d, library version %d.%d
+dbx_abort
+dbx_begin
+dbx_commit
+  -D, --debug-to-stdout       - direct debug output to stdout.
+  -d, --dump=file             - dump data from file to stdout.
+deleting '%.*s'
+disabled
+do_replace_nonascii_characters
+ds_read( '%.*s' ), err: %d, %s
+ds_read: [%.*s] -- %lu,%lu
+ds_read: [%.*s] not found
+ds_read('%.*s') was aborted to recover from a deadlock.
+ds_write: [%.*s] -- %lu,%lu,%lu
+%d tokens dumped
+%d tokens loaded
+.ENCODING
+env->dbe
+environment found but does not support transactions.
+environment maintenance:
+__errno_location
+Error accessing directory '%s': %s
+Error accessing file or directory '%s'.
+Error - bad parameter '%s'
+Error closing environment "%s": %s
+error creating DB handle: %s
+Error creating directory '%s': %s
+error #%d - %s.
+error dumping tokens!
+ERROR: only one database _environment_ (directory) can be used at a time.
+Error reading file "%s"
+Error: %s is not a directory.
+error: the data base file size is within 16 pages
+err: %s (%d), tx: %p, rd: %d, ln: %d, sz: %d
+@/etc/bogofilter.cf
+(eTransaction == T_DISABLED) == (handle->txn == ((void *)0))
+Expecting non-empty directory or file name.
+  Fisher
+for help.
+__fxstat64
+getopt_long
+getpwnam
+getpwuid
+getrlimit64
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.4
+__gmon_start__
+got_charset( '%s' )
+handle->magic == 0xdb4
+hapaxes:  ham %7u (%5.2f%%), spam %7u (%5.2f%%)
+hapaxes:  ham %7u, spam %7u
+  -H file                     - display histogram and statistics for wordlist.
+  -h, --help                  - print this help message and exit.
+histogram
+@Histogram
+Histogram without hapaxes
+Histogram without pure ham and spam
+iconv_close
+iconv_open
+If you have just got a message that only private environments are supported,
+If you need multiple wordlists in different directories,
+  -I, --input-file=file       - read 'file' instead of standard input.
+info options:
+input-file
+Internal error in %s:%lu
+Invalid boolean value - %s
+Invalid buffer size, exiting.
+Invalid buff_shift() parameters.
+Invalid option '%s'
+_IO_getc
+_IO_stdin_used
+iso2022-jp
+iso2022-kr
+iso-8859-1
+iso8859-1
+iso8859-10
+iso8859-13
+iso8859-14
+iso8859-15
+iso8859-2
+iso8859-3
+iso8859-4
+iso8859-5
+iso8859-6
+iso8859-7
+iso8859-8
+iso8859-9
+_Jv_RegisterClasses
+  -k, --db-cachesize=size     - set Berkeley DB cache size (MB).
+keep_count:  %lu > %lu -> %c
+keep_date: %ld < %ld -> %c
+keep_size:  %lu <= %lu <= %lu -> %c
+ks-c-5601-1987
+libc.so.6
+__libc_start_main
+libdb-5.1.so
+/lib/ld-linux.so.2
+                              - list logfiles in environment
+  -l, --load=file             - load data from stdin into file.
+localtime
+lockfile-d
+/lockfile-p
+lock(%s): %s
+                                (low and high).
+Make sure that the database version this program is linked against
+max-multi-token-len
+  --max-multi-token-len       - max len for multi-word tokens
+max-token-len
+  --max-token-len             - max len for single tokens
+  -m file                     - enable maintenance works (expiring tokens).
+min-token-len
+  --min-token-len             - min len for single tokens
+Missing or extraneous argument.
+mkdir(%s): %s
+Modes of operation are:
+.MSG_COUNT
+multi-token-count
+  --multi-token-count         - number of tokens per multi-word token
+no-config-file
+Note that the data base will no longer be crash-proof in that case.
+  -n                          - replace non-ascii characters with '?'.
+       of the resource limit. Cowardly refusing
+                                (only effective at creation time)
+open_lockfile: open(%s): %s
+open_lockfile: open(%s) succeeded, fd #%d
+open(%s): %s
+OPTIONS are:
+Option %s requires an argument.
+or by using the BOGOFILTER_DIR or HOME environment variables.
+   or: %s [OPTIONS] {--db-checkpoint} directory
+   or: %s [OPTIONS] {--db-list-logfiles} directory [list options]
+   or: %s [OPTIONS] {--db-print-leafpage-count} file%s
+   or: %s [OPTIONS] {--db-print-pagesize} file%s
+   or: %s [OPTIONS] {--db-prune|--db-remove-environment} directory
+   or: %s [OPTIONS] {--db-recover|--db-recover-harder} directory
+   or: %s [OPTIONS] {-d|-l|-u|-m|-w|-p|--db-verify} file%s
+   or: %s [OPTIONS] {-H|-r|-R} file
+output-file
+p: %d, s: %d
+  -p file                     - display word counts and probabilities.
+[pid %lu] DB->open(db=%p, file=%s, database=%s, type=%x, flags=%#lx=%s, mode=%#o) -> %d %s
+[pid %lu] DB->set_flags(db=%p, flags=%#lx=%s) -> %d %s
+Please accept our apologies for the inconvenience.
+Please check section 3.3 in bogofilter's README.db file
+Please check the README.db file that came with bogofilter for hints,
+probing "%s" and "%s" for environment...
+Program aborting.
+   pure:  ham %7u (%5.2f%%), spam %7u (%5.2f%%)
+   pure:  ham %7u, spam %7u
+readdir64
+Reading %s
+read or write error, aborting.
+Reconfigure and recompile Berkeley DB with the right mutex interface,
+Remember to register some spam and ham messages before you
+removing inactive logfiles
+ removing logfile %s
+ret=%d, DS_NOTFOUND=%d
+  -R file                     - compute Robinson's X and save it in wordlist.
+  -r file                     - compute Robinson's X for the specified file.
+running regular data base recovery%s
+running %s data base recovery
+%s: cannot find bogofilter directory.
+%s comes with ABSOLUTELY NO WARRANTY.  This is free software, and
+section 3.3, or remove all __db.*, log.* and *.db files in "%s"
+see the docs/ref/build_unix/conf.html file that comes with your db source code.
+%s: error getting leaf page count.
+%s: error getting page size.
+set_celllock(fd=%d, offset=%ld, type=%d (%s)) = %d%s%s
+set_debug_mask:  unknown mask specification '%c'
+setting pagesize to %d failed: %s
+%s: Exactly one of the file or directory commands must be present.
+sigaction
+sigemptyset
+"%s" is not a file.
+%s[%ld]: %s
+  -s l,h                      - exclude tokens with lengths between 'l' and 'h'
+%.*s %lu %lu
+%s:%lu: %s
+%s: Out of memory
+../../src/buff.c
+../../src/datastore.c
+../../src/datastore_db.c
+../../src/datastore_db_trad.c
+../../src/datastore_db_trans.c
+../../src/db_lock.c
+../../src/find_home_tildeexpand.c
+../../src/maint.c
+%s -> %s
+%s: %s:%d %s
+%s,%s,%s,%d
+%s: String too long
+__stack_chk_fail
+### Standard recovery failed. ###
+strcasecmp
+str != ((void *)0)
+%s: Unexpected input [%s]. Does not end with newline or line too long.
+%s: Unexpected input [%s] on line %lu. Expecting whitespace before count.
+%s: %u, %u, scale: %f, sum: %f, cnt: %6d, .ROBX: %f
+%s version %s
+%s (version %s) is part of the bogofilter package.
+syntax error in argument "%s" of -s
+T_DEFAULT_OFF
+T_DEFAULT_ON
+T_DISABLED
+T_DONT_KNOW
+T_ENABLED
+Testing:  %s
+the COPYING file with the source distribution for details.
+The DB versions do not match.
+the non-transactional interface, i. e. ./configure --disable-transactions
+then type make clean, after that rebuild and install as usual.
+This can happen when the DB library was compiled with POSIX threads
+This program was compiled for DB version %d.%d,
+timestamp-date
+token parsing options:
+To recover, run: bogoutil -v --db-recover "%s"
+tot  %8u
+       to write to avoid data base corruption.
+trying to lock database directory
+tx: %p, rd: %d, ln: %d, sz: %d
+  --unicode=yes/no            - convert wordlist to/from unicode
+Unknown option '%s'.
+Unknown wordlist type - '%c'
+Upgrading wordlist.
+Usage: %s {-h|-V}
+us-ascii
+use bogofilter to evaluate mail for its probable spam status!
+                                - use with -v  to exclude hapaxes.
+                                - use with -vv to exclude pure spam/ham.
+  -u, --upgrade=file          - upgrade wordlist version.
+verbosity
+vsnprintf
+  -v, --verbosity             - set debug verbosity level.
+  -V, --version               - print version information and exit.
+warning: data base file size approaches resource limit.
+  -w file                     - display counts for words from stdin.
+windows-1251
+windows-1252
+windows-1256
+wordlist
+@wordlist.db
+wordlist.db
+Wordlist has already been upgraded.
+.WORDLIST_VERSION
+         write errors (bumping into the limit) can cause
+X-Bogosity
+  -x, --debug-flags=list      - set flags to display debug information.
+xrealloc
+__xstat64
+you are welcome to redistribute it under the General Public License.  See
+you cannot use the transactional interface, but you must configure
+You CAN use multiple wordlists that are in the same directory.
+You must specify a directory on the command line, in the config file,
+your Berkeley DB %d.%d was not configured properly.
+  -y, --timestamp-date=date   - set default date (format YYYYMMDD).

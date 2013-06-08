@@ -1,0 +1,96 @@
+%%-12345X
+%%-12345X@PJL EOJ
+%%-12345X@PJL SET STRINGCODESET=UTF8
+  Bitmap size %ix%i (%gx%g in)
+Bit per sample is %i (unsupported), aborting!
+__bss_start
+%c%c%c%c%c%c%c%c
+%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c
+%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c
+ColorSpace
+Copies not set, using default (1)
+DDeviceRGB,DeviceGray,DeviceCMYK
+DeviceManufacturer
+DeviceModel
+Dpi not set, using default (600)
+Dpi of bitmap (%gx%g) is different from selected dpi (%gx%g)
+Duplex not set, using default Off (0)
+__fprintf_chk
+getting page header
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+HEWLETT-PACKARD
+hp color LaserJet 3500
+hp color LaserJet 3500,hp color LaserJet 3550
+hp color LaserJet 3550
+%% IJS parameter: %s = 
+ijs_server_done
+ijs_server_get_data
+ijs_server_get_page_header
+ijs_server_get_page_header failed: %d
+ijs_server_init
+ijs_server_install_enum_cb
+ijs_server_install_get_cb
+ijs_server_install_list_cb
+ijs_server_install_set_cb
+ijs_server_install_status_cb
+_IO_stdin_used
+jinit_color_converter
+jpeg_add_quant_table
+jpeg_CreateCompress
+jpeg_finish_compress
+jpeg_set_defaults
+jpeg_start_compress
+jpeg_std_error
+jpeg_suppress_tables
+jpeg_write_scanlines
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libijs-0.35.so
+LIBJPEG_8.0
+libjpeg.so.8
+/lib/ld-linux.so.2
+__memcpy_chk
+Number of channels is %i (unsupported), aborting!
+output error
+OutputFD
+OutputFile
+OutputFile,OutputFD,DeviceManufacturer,DeviceModel,PageImageFormat,Dpi,Width,Height,BitsPerSample,ByteSex,ColorSpace,NumChan,PaperSize,PrintableArea,PrintableTopLeft,TopLeft,PS:Duplex,PS:Tumble,Quality,Quality:Quality,PaperType,Copies
+page aborted!
+PageImageFormat
+PaperSize
+PaperSize not set, using default (A4 210x297mm)
+PaperSize = %s
+PaperType
+PaperType not set, using default Normal (0)
+parameters conversion failed, aborting
+@PJL SET COPIES=%d
+PrintableArea
+PrintableTopLeft
+Printer DeviceModel not set, aborting!
+Printing %d copies
+PS:Duplex
+PS:Tumble
+Quality: Best
+Quality: Low
+Quality: Medium
+Quality not set, set HPIJS compatible
+Quality:Quality
+Quality: unrecognised, set to Low
+Received header for page %d: width %d x height %d
+Setting %s is not allowed
+__sprintf_chk
+__stack_chk_fail
+true,false
+Tumble not set, using default Off (0)
+Unknown Copies value %s, aborting!
+Unknown Dpi value %s, aborting!
+Unknown Duplex value %s, aborting!
+Unknown PaperType value %s, aborting!
+Unknown Printer %s, aborting!
+Unknown Tumble value %s, aborting!
+Unparsable PaperSize %s, aborting!

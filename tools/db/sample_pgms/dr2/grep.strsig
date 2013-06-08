@@ -1,0 +1,323 @@
+0123456789A:B:C:D:EFGHIPTUVX:abcd:e:f:hiLlm:noqRrsuvwxyZz
+0 <= strtol_base && strtol_base <= 36
+%50s %50s
+  -A, --after-context=NUM   print NUM lines of trailing context
+                            ACTION is 'read' or 'skip'
+                            ACTION is 'read', 'recurse', or 'skip'
+after-context
+(^|[^[:alnum:]_])(
+)([^[:alnum:]_]|$)
+\(^\|[^[:alnum:]_]\)\(
+\)\([^[:alnum:]_]\|$\)
+ambiguous argument %s for %s
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+  -a, --text                equivalent to --binary-files=text
+basic-regexp
+  -B, --before-context=NUM  print NUM lines of leading context
+  -b, --byte-offset         print the byte offset with output lines
+before-context
+binary-files
+Binary file %s matches
+      --binary-files=TYPE   assume that binary files are TYPE;
+bindtextdomain
+__bss_start
+# buckets:         %lu
+# buckets used:    %lu (%.2f%%)
+bug-grep@gnu.org
+byte-offset
+  -C, --context=NUM         print NUM lines of output context
+  -c, --count               print only a count of matching lines per FILE
+character class syntax is [[:space:]], not [:space:]
+CHARSETALIASDIR
+check_matching
+closedir
+      --color[=WHEN],
+      --colour[=WHEN]       use markers to highlight the matching strings;
+conflicting matchers specified
+Context control:
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+(__ctype_get_mb_cur_max ()) == 1
+__ctype_tolower_loc
+__ctype_toupper_loc
+__cxa_atexit
+cycle_check
+cycle-check.c
+dcgettext
+  -D, --devices=ACTION      how to handle devices, FIFOs and sockets;
+  -d, --directories=ACTION  how to handle directories;
+dereference-recursive
+Direct invocation as either 'egrep' or 'fgrep' is deprecated.
+--directories
+  -E, --extended-regexp     PATTERN is an extended regular expression (ERE)
+'egrep' means 'grep -E'.  'fgrep' means 'grep -F'.
+# entries:         %lu
+  -e, --regexp=PATTERN      use PATTERN for matching
+__errno_location
+err == _REG_ESPACE
+Example: %s -i 'hello world' menu.h main.c
+exceeded PCRE's backtracking limit
+exclude-dir
+      --exclude-dir=PATTERN  directories that match PATTERN will be skipped.
+      --exclude=FILE_PATTERN  skip files and directories matching FILE_PATTERN
+exclude-from
+      --exclude-from=FILE   skip files matching any file pattern from FILE
+Exit status is 0 if any line is selected, 1 otherwise;
+extended-regexp
+ext_match
+ext_wmatch
+fdopendir
+  -f, --file=FILE           obtain PATTERN from FILE
+  -F, --fixed-strings       PATTERN is a set of newline-separated fixed strings
+fflush_unlocked
+files-with-matches
+files-without-match
+fixed-regexp
+fixed-strings
+fnmatch.c
+fnmatch_loop.c
+__fpending
+__fprintf_chk
+fputc_unlocked
+fputs_unlocked
+fread_unlocked
+fstatfs64
+fts_children
+fts_close
+fts_open
+fts_read
+fwrite_unlocked
+__fxstat64
+__fxstatat64
+  -G, --basic-regexp        PATTERN is a basic regular expression (BRE)
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getpagesize
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU grep
+GNU Grep home page: <%s>
+GREP_COLOR
+GREP_COLORS
+GREP_OPTIONS
+      --help                display this help and exit
+  -h, --no-filename         suppress the file name prefix on output
+http://www.gnu.org/software/grep/
+  -H, --with-filename       print the file name for each match
+iconv_close
+iconv_open
+((Idx) (left) < ((Idx) -2))
+((Idx) (num) < ((Idx) -2))
+((Idx) (right) < ((Idx) -2))
+  -I                        equivalent to --binary-files=without-match
+if any error occurs and -q is not given, the exit status is 2.
+ignore-case
+  -i, --ignore-case         ignore case distinctions
+      --include=FILE_PATTERN  search only files that match FILE_PATTERN
+initial-tab
+input file %s is also the output
+input is too large to count
+invalid argument %s for %s
+Invalid back reference
+invalid character class
+Invalid character class name
+Invalid collation character
+Invalid content of \{\}
+invalid context length argument
+! "Invalid extended matching operator"
+invalid matcher %s
+invalid max count
+Invalid preceding regular expression
+Invalid range end
+Invalid regular expression
+invert-match
+_IO_stdin_used
+iswalnum
+iswalpha
+iswctype
+iswlower
+iswprint
+iswspace
+iswupper
+isxdigit
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+_Jv_RegisterClasses
+      --label=LABEL         use LABEL as the standard input file name prefix
+  -l, --files-with-matches  print only names of FILEs containing matches
+  -L, --files-without-match  print only names of FILEs containing no match
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpcre.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+line-buffered
+      --line-buffered       flush output on every line
+line-number
+line-regexp
+link_nfa_nodes
+list != ((void *)0)
+lseek failed
+__lxstat64
+max bucket length: %lu
+max-count
+mbiter.h
+mbiter_multi_next
+mbsinit (&iter->state)
+mbsinit (&ps)
+mbsrtowcs
+mbtolower
+mbuiter.h
+mbuiter_multi_next
+memory exhausted
+Mike Haertel
+Miscellaneous:
+      --mmap                deprecated no-op; evokes a warning
+  -m, --max-count=NUM       stop after NUM matches
+mp == &musts[1]
+                            (MSDOS/Windows)
+&musts[2] <= mp
+musts < mp
+!"neither LPAREN nor RPAREN may appear here"
+  -n, --line-number         print line number with output lines
+nl_langinfo
+node->next == ((void *)0)
+!((node->token.type) & 8)
+no-filename
+no-group-separator
+No match
+no-messages
+no syntax specified
+null-data
+  -NUM                      same as --context=NUM
+_obstack_begin
+obstack_free
+_obstack_newchunk
+only-matching
+  -o, --only-matching       show only the part of a line matching PATTERN
+!"oops! t >= END"
+openat64
+/opt/stonesoup/TH-workspace/install/lib
+/opt/stonesoup/TH-workspace/install/share/locale
+others, see <http://git.sv.gnu.org/cgit/grep.git/tree/AUTHORS>
+Output control:
+__overflow
+p[-1] == ')'
+p[-1] == L')'
+parse_bracket_exp
+PATTERN is, by default, a basic regular expression (BRE).
+pcre_compile
+pcre_exec
+pcre_maketables
+pcre_study
+perl-regexp
+pmatch[0].rm_so == start
+pop_fail_stack
+posix_fnmatch
+POSIXLY_CORRECT
+  -P, --perl-regexp         PATTERN is a Perl regular expression
+Premature end of regular expression
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+  -q, --quiet, --silent     suppress all normal output
+  -R, --dereference-recursive  likewise, but follow all symlinks
+readdir64
+re_copy_regs
+recursive directory loop
+regcomp.c
+regexec.c
+Regexp selection and interpretation:
+regs_allocated == 2
+regs->num_regs >= nregs
+Regular expression too big
+Report bugs to: %s
+re_search_stub
+-r is given, - otherwise.  If fewer than two FILEs are given, assume -h.
+  -r, --recursive           like --directories=recurse
+%s, and %s.
+%s can only use the %s pattern syntax
+Search for PATTERN in each FILE or standard input.
+searchutils.c
+setlocale
+shell-always
+%s home page: <%s>
+%s: invalid option -- '%c'
+  -s, --no-messages         suppress error messages
+%s: option '%c%s' doesn't allow an argument
+%s: option requires an argument -- '%c'
+%s: option '--%s' doesn't allow an argument
+%s: option '%s' is ambiguous; possibilities:
+%s: option '--%s' requires an argument
+%s: option '-W %s' doesn't allow an argument
+%s: option '-W %s' is ambiguous
+%s: option '-W %s' requires an argument
+__sprintf_chk
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+(standard input)
+state->magic == 9827862
+strcasecmp
+__strdup
+__strncpy_chk
+__strtoll_internal
+%s: unrecognized option '%c%s'
+%s: unrecognized option '--%s'
+the --mmap option has been a no-op since 2010
+the -P option only supports a single pattern
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+  -T, --initial-tab         make tabs line up (if needed)
+towlower
+towupper
+Trailing backslash
+Try '%s --help' for more information.
+                            TYPE is 'binary', 'text', or 'without-match'
+  -U, --binary              do not strip CR characters at EOL (MSDOS/Windows)
+unbalanced (
+unbalanced )
+unbalanced [
+unfinished \ escape
+unix-byte-offsets
+unknown binary-files type
+unknown devices method
+Unmatched \{
+Unmatched ( or \(
+Unmatched ) or \)
+Unmatched [ or [^
+Usage: %s [OPTION]... PATTERN [FILE]...
+using_utf8 ()
+  -u, --unix-byte-offsets   report offsets as if CRs were not there
+Valid arguments are:
+  -v, --invert-match        select non-matching lines
+  -V, --version             print version information and exit
+warning: %s: %s
+When FILE is -, read standard input.  With no FILE, read . if a command-line
+                            WHEN is 'always', 'never', or 'auto'
+with-filename
+wmempcpy
+word-regexp
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  -w, --word-regexp         force PATTERN to match only whole words
+  -x, --line-regexp         force PATTERN to match only whole lines
+__xstat64
+xstrtoimax
+xstrtoimax.c
+  -z, --null-data           a data line ends in 0 byte, not newline
+  -Z, --null                print 0 byte after FILE name

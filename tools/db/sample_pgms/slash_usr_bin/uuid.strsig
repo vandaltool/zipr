@@ -1,0 +1,49 @@
+1n:rF:dmo:v:h
+binary input mode only possible if reading from stdin
+__bss_start
+__errno_location
+fopen: %s
+__fprintf_chk
+fread: failed to read %d (UUID_LEN_BIN) bytes from stdin
+fread: failed to read %d (UUID_LEN_SIV) bytes from stdin
+fread: failed to read %d (UUID_LEN_STR) bytes from stdin
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+invalid argument to option 'n'
+invalid argument to option 'v'
+invalid format "%s" (has to be "bin", "str" or "siv")
+invalid length of UUID string representation
+invalid number of arguments
+invalid option '%c'
+invalid version on option 'v'
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libossp-uuid.so.16
+multiple output files are not allowed
+option 'n' specified multiple times
+__stack_chk_fail
+strcasecmp
+strerror
+usage: uuid -d [-F format] [-o filename] [uuid]
+usage: uuid [-v version] [-m] [-n count] [-1] [-F format] [-o filename] [namespace name]
+uuid_create
+uuid_create: %s
+uuid_destroy
+uuid_destroy: %s
+uuid_error
+uuid:ERROR: 
+uuid_export
+uuid_export: %s
+uuid_import
+uuid_import: %s
+uuid_load
+uuid_load: %s
+uuid_make
+uuid_make: %s
+__vfprintf_chk

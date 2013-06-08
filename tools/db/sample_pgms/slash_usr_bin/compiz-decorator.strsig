@@ -1,0 +1,62 @@
+# along with this program; if not, write to the Free Software
+# (at your option) any later version.
+# Based on compiz-manager script by Kristian Lyngst
+#!/bin/sh
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+COMPIZ_BIN_PATH=/usr/bin/
+# Contributions by: crdlb
+# Copyright (c) 2007 CyberOrg <cyberorg@cyberorg.info>
+DECORATOR=""
+        DECORATOR=emerald
+    DECORATOR=emerald
+    DECORATOR=gtk-window-decorator
+	DECORATOR=gtk-window-decorator
+    DECORATOR=kde4-window-decorator
+	DECORATOR=kde4-window-decorator
+# Default to gtk/kde4-window-decorator
+#Do not leave users without decoration if decorator fails
+# Echos the arguments if verbose
+elif [ -x ${COMPIZ_BIN_PATH}gtk-window-decorator ] && [ -n "$GNOME_DESKTOP_SESSION_ID" ]; then
+    elif [ -x ${COMPIZ_BIN_PATH}gtk-window-decorator ]; then
+    elif [ -x ${COMPIZ_BIN_PATH}kde4-window-decorator ]; then
+elif [ -x ${COMPIZ_BIN_PATH}kde4-window-decorator ] && [ x$KDE_SESSION_VERSION = x"4" ]; then
+    exec ${COMPIZ_BIN_PATH}$DECORATOR "$@"
+    exec $FALLBACKWM $FALLBACKWM_OPTIONS
+# fall back to any decorator that is installed
+    FALLBACKWM="${KWIN}"
+    FALLBACKWM="${METACITY}"
+FALLBACKWM_OPTIONS=" --replace"
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# GNU General Public License for more details.
+if [ "$DESKTOP_SESSION" = "kde" ]; then
+if [ -n "$DECORATOR" ]; then
+    if [ -x ${COMPIZ_BIN_PATH}emerald ]; then
+if [ -x ${COMPIZ_BIN_PATH}emerald ] && [ "$USE_EMERALD" = "yes" ]; then
+    if [ "x$VERBOSE" = "xyes" ]; then
+if [ -z "$DECORATOR" ]; then
+if [ -z "$XDG_CONFIG_DIRS" ]; then
+if [ -z "$XDG_CONFIG_HOME" ]; then
+# it under the terms of the GNU General Public License as published by
+KWIN=`which kwin`
+l <kristian@bohemians.org>
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+METACITY="/usr/bin/metacity"
+        printf "$*"
+# Read configuration from XDG paths
+# Set to yes to enable verbose
+# start a decorator
+# Starts Compiz Decorator depending on the DE
+    test -f /etc/xdg/compiz/compiz-manager && . /etc/xdg/compiz/compiz-manager
+    test -f $HOME/.config/compiz/compiz-manager && . $HOME/.config/compiz/compiz-manager
+    test -f $XDG_CONFIG_DIRS/compiz/compiz-manager && . $XDG_CONFIG_DIRS/compiz/compiz-manager
+    test -f $XDG_CONFIG_HOME/compiz/compiz-manager && .  $XDG_CONFIG_HOME/compiz/compiz-manager
+# the Free Software Foundation; either version 2 of the License, or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+USE_EMERALD="no"
+verbose()
+    verbose "Couldn't find a perfect decorator match; trying all decorators\n"
+    verbose "Found no decorator to start\n"
+    verbose "Starting ${DECORATOR}\n"
+VERBOSE="yes"
+# You should have received a copy of the GNU General Public License

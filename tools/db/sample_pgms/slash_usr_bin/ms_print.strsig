@@ -1,0 +1,475 @@
+          
+                                                
+                     )
+                    );
+                }
+            }
+        ) .
+        );
+        }
+       }
+    #                       -    -----------
+    #-------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+##--------------------------------------------------------------------##
+    # 0  +-------------
+#  02111-1307, USA.
+            # '0' means it's not the top node of the tree.
+    #    1000 --> 0.977 KB
+                ($1 >= 0 && $1 <= 100) or die($usage);
+    # 10 |    :::::::::     1    1 * 10 = 10
+    # 1024000 --> 0.977 MB
+    #  102400 --> 100.0 KB
+    #   10240 --> 10.00 KB
+    #    1024 --> 1.000 KB
+    # 1048576 --> 1.000 MB
+    #       1 -->     1  B
+            # '1' means it's the top node of the tree.
+    1 while ($val =~ s/^(\d+)(\d{3})/$1,$2/);
+    # 20 |        :::::     2    2 * 10 = 20
+    # 29, 30 would be drawn like this (showing one per column):
+    # 30 |            :     3    3 * 10 = 30
+                (4 <= $graph_x && $graph_x <= 1000) or die($usage);
+                (4 <= $graph_y && $graph_y <= 1000) or die($usage);
+    #     999 -->   999  B
+#  along with this program; if not, write to the Free Software
+    # (and K can be non-integral).  When drawing the column for a snapshot,
+  and licensed under the GNU General Public License, version 2.
+    # any children of this node with "$this_prefix$child_midfix$arrow".
+# Args passed, for printing.
+# Argument and option handling
+        # Axis and data for the row.
+# bother showing it.
+  Bug reports, feedback, admiration, abuse, etc, to: njn\@valgrind.org.
+# but the fourth part is much easier to print while we're reading the file.  So
+    # but they're not in common use.)
+# bytes.
+                     ($char eq $detailed_char and 
+                     ($char eq $normal_char and
+                    (($char eq $peak_char)
+        # Choose the column char.
+    close(INPUTFILE);
+    close(TMPFILE);
+    $cmd = $1;
+    # Column 0 ([0][0..graph_y]) is the Y-axis.
+        # column, as if the end_time was actually end_time+epsilon.
+# Command line of profiled program.
+        ,   commify($mem_heap_B)
+        ,   commify($mem_heap_extra_B)
+        ,   commify($mem_stacks_B)
+        ,   commify($mem_total_B)
+        ,   commify($time)
+#  Copyright (C) 2007-2007 Nicholas Nethercote
+    defined($line) 
+    (defined $line and $line =~ /^\s*n(\d+):\s*(\d+)(.*)$/)
+            $desc .= $line;
+            $details);
+         || die "Cannot open $input_file for reading\n";
+         || die "Cannot open $tmp_file for reading\n";
+            die("Line $.: expected 'empty' or '...' after 'heap_tree='\n");
+        die("Line $.: missing 'time_unit' line\n");
+                die("ms_print-$version\n");
+                die($usage);
+        die($usage);
+        # doesn't get shown.  So we fudge that one and pull it back a
+    # Each row represents K bytes, which is 1/graph_y of the peak size
+    # each scaling.
+            } else {
+        } else {
+    } else {
+        } else {                         # anywhere else
+        else                      { $char = $normal_char;   }
+    else                       { die "bad time_unit: $time_unit\n"; }
+            } else {            # -h and --help fall under this case
+    else                       { return sprintf("%5.1f", $szB_scaled); }
+        } elsif (0 == $y) {              # bottom row
+            } elsif ($arg =~ /^--threshold=([\d\.]+)%?$/) {
+            } elsif ($arg =~ /^--x=(\d+)$/) {
+            } elsif ($arg =~ /^--y=(\d+)$/) {
+        } elsif ($heap_tree =~ "(detailed|peak)") {
+        elsif ($is_detaileds[$i]) { $char = $detailed_char; }
+    elsif ($szB_scaled < 100)  { return sprintf("%5.2f", $szB_scaled); }
+    elsif ($szB_scaled < 10)   { return sprintf("%5.3f", $szB_scaled); }
+    elsif ($time_unit eq "B")  { ($x_label, $x_unit) = B_max_label($end_time) }
+    elsif ($time_unit eq "ms") { ($x_label, $x_unit) = t_max_label($end_time) }
+##--- end                                              ms_print.in ---##
+    ($end_time >= 0) or die;
+                            # entry is in the file.
+    # Examples (for bytes):
+        ,   "extra-heap(B)"
+        $fancy_nl .
+        $fancy_nl;
+                $first_detailed = 0;
+        # format string.
+    for my $arg (@ARGV) { 
+    for (my $i = 0; $i < $n_children; $i++) {
+    for (my $i = 0; $i < $n_snapshots; $i++) {
+            for (my $x2 = $prev_x + 1; $x2 < $x; $x2++) {
+    # For the label, if $szB is 999B or below, we print it as an integer.
+# Forward declaration, because it's recursive.
+        for ($x = 0; $x <= $graph_x; $x++) {
+    for ($x = 1; $x <= $graph_x; $x++) { $graph[$x][0] = '-'; } # X-axis
+    for ($x = 1; $x <= $graph_x; $x++) {                        # usable area
+        for ($y = 1; $y <= $graph_y; $y++) {
+       for ($y = 1; $y <= $graph_y; $y++) {
+    for ($y = 1; $y <= $graph_y; $y++) { $graph[0][$y] = '|'; } # Y-axis
+    for ($y = $graph_y; $y >= 0; $y--) {
+#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+#  General Public License for more details.
+# Gets the next line, stripping comments and skipping blanks.
+# Global variables, main data structures
+    # Grab a copy of the arguments, for printing later.
+    $graph[0][0] = '+';                                     # axes join point
+    $graph[0][$graph_y] = '^';                                  # Y-axis arrow 
+    $graph[$graph_x][0] = '>';                                  # X-axis arrow
+                $graph_x = $1;
+                $graph[$x2][$prev_y_max] = $prev_char;
+# Graph x and y dimensions.
+          $graph[$x][$y] = ' ';
+                    $graph[$x][$y] = $char;
+                      $graph[$x][$y] ne $detailed_char
+                      $graph[$x][$y] ne $peak_char
+                      $graph[$x][$y] ne $peak_char and
+                $graph_y = $1;
+        # Grow this snapshot bar from bottom to top.
+    -h --help             show this message
+    if (0 == $end_time          ) { $end_time           = 1; }
+        if (0 == $n_children) {
+    if (0 == $peak_mem_total_szB) { $peak_mem_total_szB = 1; }
+        if (0 == $y) {
+        if ($arg =~ /^-/) {
+            if ($arg =~ /^--version$/) {
+        # If child is the last sibling, the midfix is empty.
+            if (defined $line) {
+            if ($first_detailed) {
+        if ($graph_y == $y) {            # top row
+        if      ($heap_tree eq "empty") {
+            if ($heap_tree eq "peak") {
+            if ($i == $peak_num) {
+        if    ($i == $peak_num)   { $char = $peak_char;     }
+        if ($is_detaileds[$i]) {
+    if ($is_significant) {
+        if ($line !~ /^\s*$/) {
+        if ($line =~ s/^desc://) {
+            if $mem_total_B > $peak_mem_total_szB;
+            if ($mem_total_Bs[$i] >= $y * $K) {
+        if ($n_insig_children > 0) {
+    if ($nI_scaled >= 1000) { $unit = "Ei"; $nI_scaled /= 1024; }
+    if ($nI_scaled >= 1000) { $unit = "Gi"; $nI_scaled /= 1024; }
+    if ($nI_scaled >= 1000) { $unit = "ki"; $nI_scaled /= 1024; }
+    if ($nI_scaled >= 1000) { $unit = "Mi"; $nI_scaled /= 1024; }
+    if ($nI_scaled >= 1000) { $unit = "Pi"; $nI_scaled /= 1024; }
+    if ($nI_scaled >= 1000) { $unit = "Ti"; $nI_scaled /= 1024; }
+    if ($nI_scaled >= 1000) { $unit = "Yi"; $nI_scaled /= 1024; }
+    if ($nI_scaled >= 1000) { $unit = "Zi"; $nI_scaled /= 1024; }
+            # If "peak", remember the number.
+        if ($prev_y_max > 0) {
+    if (scalar @files) {
+                if ($should_draw_char) {
+    if    ($szB < 1000)        { return sprintf("%5d",   $szB);        }
+    if ($szB_scaled >= 1000) { $unit = "EB"; $szB_scaled /= 1024; }
+    if ($szB_scaled >= 1000) { $unit = "GB"; $szB_scaled /= 1024; }
+    if ($szB_scaled >= 1000) { $unit = "KB"; $szB_scaled /= 1024; }
+    if ($szB_scaled >= 1000) { $unit = "MB"; $szB_scaled /= 1024; }
+    if ($szB_scaled >= 1000) { $unit = "PB"; $szB_scaled /= 1024; }
+    if ($szB_scaled >= 1000) { $unit = "s"; $szB_scaled /= 1000; }
+    if ($szB_scaled >= 1000) { $unit = "TB"; $szB_scaled /= 1024; }
+    if ($szB_scaled >= 1000) { $unit = "YB"; $szB_scaled /= 1024; }
+    if ($szB_scaled >= 1000) { $unit = "ZB"; $szB_scaled /= 1024; }
+    if ($szB_scaled >= 3600) { $unit = "h"; $szB_scaled /= 3600; }
+        # If there was a gap between the previous snapshot's column and this
+        # If this node has no children, print an extra (mostly) empty line.
+        # If this was significant but any children were insignificant, print
+        if ($times[$i] == $end_time) {
+    if    ($time_unit eq "i")  { ($x_label, $x_unit) = i_max_label($end_time) }
+    # Info about each snapshot.
+    # in order to fill the slot in row y (where the first row drawn on is
+        $input_file = $files[0];
+# Input file name
+# insignificant, the first element is 1 and the second is the number of
+    # K = 10 bytes, then the values 0, 4, 5, 9, 10, 14, 15, 19, 20, 24, 25,
+            last;
+#  License, or (at your option) any later version.
+    # Likewise for end_time.
+    ($line =~ /^cmd:\s*(.*)$/) or die("Line $.: missing 'cmd' line\n");
+            $line = get_line();
+    $line = get_line();
+    $line =~ s/^$fieldname=(.*)\s*$//
+        $line =~ s/#.*$//;          # remove comments
+    ($line =~ /^time_unit:\s*(.*)$/) or
+# "main()"
+    # make it 1 so that the Y-axis covers a non-zero range of values.
+##--- Massif's results printer                         ms_print.in ---##
+                $mem_total_B);
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Misc functions
+#  modify it under the terms of the GNU General Public License as
+        $ms_print_args .= " $arg";       # The arguments.
+  ms_print is Copyright (C) 2007-2007 Nicholas Nethercote.
+                 . "ms_print's threshold (%05.2f%%)\n",
+    # Must have chosen exactly one input file.
+    my $bytes      = $2;
+        my $char;
+        my $child_midfix2 = ( $i+1 == $n_children ? "  " : "| " );
+my $cmd;
+    my $column_format = "%3s %14s %16s %16s %13s %12s\n";
+    my $desc = "";              # Concatenated description lines.
+    my $detailed_char = '@';
+    my $details    = $3;
+    my $end_time = $times[$n_snapshots-1];
+my $fancy_nl = $fancy . "\n";
+my $fancy    = '-' x 80;
+    my @files;
+    my $first_detailed = 1;
+    my @graph;
+my $graph_x = 72;
+my $graph_y = 20;
+    my $header =
+        my $heap_tree        = equals_num_line(get_line(), "heap_tree");
+my $input_file = undef;
+        my ($is_child_insignificant, $child_insig_bytes) =
+    my @is_detaileds  = ();
+    my $is_significant = is_significant_XPt($is_top_node, $bytes, $mem_total_B);
+    my ($is_top_node, $this_prefix, $child_midfix, $arrow, $mem_total_B) = @_;
+    my ($is_top_node, $xpt_szB, $total_szB) = @_;
+    my $K = $peak_mem_total_szB / $graph_y;
+    my $line;
+    my ($line, $fieldname) = @_;
+    my $line = get_line();
+        my $mem_heap_B       = equals_num_line(get_line(), "mem_heap_B");
+        my $mem_heap_extra_B = equals_num_line(get_line(), "mem_heap_extra_B");
+        my $mem_stacks_B     = equals_num_line(get_line(), "mem_stacks_B");
+        my $mem_total_B      = $mem_heap_B + $mem_heap_extra_B + $mem_stacks_B;
+    my @mem_total_Bs  = ();
+my $ms_print_args;
+    my $n_children = $1;
+    my ($nI) = @_;
+    my $n_insig_children = 0;
+    my $nI_scaled = $nI;
+    my $normal_char   = ':';
+    my $n_snapshots = scalar(@snapshot_nums);
+    my $peak_char     = '#';                            
+    my $peak_mem_total_szB = 0;
+    my $peak_num = -1;      # An initial value that will be ok if no peak
+    my $perc       = safe_div_0(100 * $bytes, $mem_total_B);
+    my $prev_char  = ':';
+    my $prev_x     = 0;
+    my $prev_y_max = 0;
+                my $should_draw_char = 
+        my $snapshot_num     = equals_num_line($line,      "snapshot");
+    my @snapshot_nums = ();
+    my ($szB) = @_;
+    my $szB_scaled = $szB;
+    my ($szB, $szB_scaled) = @_;
+    my $this_prefix2 = $this_prefix . $child_midfix;
+my $threshold = 1.0;
+    my $time_column = sprintf("%14s", "time($time_unit)");
+        my $time             = equals_num_line(get_line(), "time");
+    my @times         = ();
+my $time_unit;
+my $tmp_file = "ms_print.tmp.$$";
+    my $total_insig_children_szB = 0;
+    my $unit = "B";
+    my $unit = "i";
+    my $unit = "ms";
+my $usage = <<END
+    my ($val) = @_;
+my $version = "3.7.0";
+    my $x;
+    my ($x_label, $x_unit);
+        my $x_pos_frac = ($times[$i] / ($end_time)) * $graph_x;
+    my ($x, $y) = @_;
+    my $y;
+    my ($y_label, $y_unit) = B_max_label($peak_mem_total_szB);
+        my $y_max = 0;
+        ,   "n"
+        # Nb: $details might have '%' in it, so don't embed directly in the
+    # Nb: 'k' is the "kilo" (1000) prefix.
+    # Nb: 'K' or 'k' are acceptable as the "binary kilo" (1024) prefix.
+    # Nb: we always consider the alloc-XPt significant, even if the size is
+    # Nb: we always print the alloc-XPt, even if its size is zero.
+        $n_insig_children += $is_child_insignificant;
+                $n_insig_children, $threshold);
+#     njn@valgrind.org
+            # Not an option.  Remember it as a filename. 
+    # Now read all the children.
+    ($n_snapshots > 0) or die;
+        # one, we draw a horizontal line in the gap (so long as it doesn't
+    open(INPUTFILE, "< $input_file") 
+    open(TMPFILE, "< $tmp_file") 
+    open(TMPFILE, "> $tmp_file") 
+        # Option handling
+  options for the user, with defaults in [ ], are:
+                     or
+        or die("Line $.: expected a tree node line, got:\n$line\n");
+        or die("Line $.: expected \"$fieldname\" line, got end of file\n");
+        or die("Line $.: expected \"$fieldname\" line, got:\n$line");
+    # Otherwise, we print it as a float with 5 characters (including the '.').
+        $peak_mem_total_szB = $mem_total_B
+                $peak_num = $snapshot_num;
+            $perc = safe_div_0(100 * $total_insig_children_szB, $mem_total_B);
+        $prev_char = $char;
+        $prev_x = $x;
+        $prev_y_max = $y_max;
+            print("     ");
+            print("   0 ");
+    print("Command:            $cmd\n");
+    print(" Detailed snapshots: [");
+    printf("     0%s%5s\n", ' ' x ($graph_x-5), $x_label);
+    printf("    %2s\n", $y_unit);
+    print($fancy_nl);
+                printf(", $i");
+                printf("$i");
+            printf("%s", $graph[$x][$y]);
+        printf(TMPFILE
+        printf(TMPFILE $column_format,
+            printf(TMPFILE "%s->%05.2f%% (%sB) in %d+ places, all below "
+    # Print graph[][].
+    # Print header.
+        print($line);
+    print("Massif arguments:  $desc");
+    print("ms_print arguments:$ms_print_args\n");
+            print("\n");
+    print("\n");
+    print("]\n\n");
+    print("\n\n");
+    print("Number of snapshots: $n_snapshots\n");
+                print(" (peak)");
+    # Print snapshot list header to $tmp_file.
+    # Print snapshot numbers.
+    # Print snapshots, from $tmp_file.
+            # Print the header, unless there are no more snapshots.
+        # Print the snapshot data to $tmp_file.
+                print(TMPFILE $header);
+    print(TMPFILE $header);
+            print(TMPFILE "$this_prefix2\n");
+            print("$x_unit\n");
+            print($y_label);
+                # Priority order for chars: peak > detailed > normal
+process_cmd_line();
+#  published by the Free Software Foundation; either version 2 of the
+            push(@files, $arg);
+        push(@is_detaileds,  ( $heap_tree eq "empty" ? 0 : 1 ));
+        push(@mem_total_Bs,  $mem_total_B);
+        push(@snapshot_nums, $snapshot_num);
+        push(@times,         $time);
+    # Read body of input file.
+    # Read "cmd:" line (Nb: will already be in $line from "desc:" loop above).
+    # Read "desc:" lines.
+            read_heap_tree(0, $this_prefix2, $child_midfix2, "->",
+            read_heap_tree(1, "", "", "", $mem_total_B);
+# Reading the input file: auxiliary functions
+# Reading the input file: main
+# Reading the input file: reading heap trees
+read_input_file();
+    # Read start of input file.
+        # Read the heap tree, and if it's detailed, print it and a subsequent
+    # Read the line and determine if it is significant.
+    # Read "time_unit:" line.
+        # Remember the snapshot data.
+        return (0, 0);
+    return $1;
+        return (1, $bytes);
+    return $is_top_node || 0 == $threshold ||
+            return $line;           # return $line if non-empty
+    return (max_label_2($nI, $nI_scaled), $unit);
+    return (max_label_2($szB, $szB_scaled), $unit);
+# Return pair:  if the tree was significant, both are zero.  If it was
+# Returns 0 if the denominator is 0.
+# Returns undef at EOF.
+    return undef;       # EOF: return undef
+    return $val;
+    return ($y ? $x / $y : 0);
+    # Row    0 ([0..graph_x][0]) is the X-axis.
+    # row 1) with a full-char (eg. ':'), it must be >= y*K.  For example, if
+    # Setup for graph.
+    # Setup graph[][].
+        # snapshot list header to $tmp_file.
+        ,   $snapshot_num
+        # snapshots look funny -- as if the memory usage is in temporary
+        # spikes.
+        sprintf($column_format
+        ,   "stacks(B)"
+    # (Strictly speaking, should use "KiB" (kibibyte), "MiB" (mebibyte), etc,
+sub B_max_label($)
+sub commify ($) {
+sub equals_num_line($$)
+sub get_line()
+sub i_max_label($)
+sub is_significant_XPt($$$)
+sub max_label_2($$)
+sub process_cmd_line() 
+sub read_heap_tree($$$$$)
+sub read_heap_tree($$$$$);
+sub read_input_file() 
+sub safe_div_0($$)
+sub t_max_label($)
+    # The ASCII graph.
+        # The final snapshot will spill over into the n+1th column, which
+# The first three parts can't be printed until we've read the whole input file;
+#  The GNU General Public License is contained in the file COPYING.
+#   - the graph
+        # the "in N places" line for them.
+#   - the output header
+    # The rest ([1][1]..[graph_x][graph_y]) is the usable graph area.
+#   - the snapshots
+#   - the snapshot summaries (number, list of detailed ones)
+#  This file is part of Massif, a Valgrind tool for profiling memory
+                $this_prefix2, $perc, commify($total_insig_children_szB),
+            "$this_prefix$arrow%05.2f%% (%sB)%s\n", $perc, commify($bytes),
+# This prints four things:
+#  This program is distributed in the hope that it will be useful, but
+#  This program is free software; you can redistribute it and/or
+                $threshold = $1;
+# Threshold dictating what percentage an entry must represent for us to
+    --threshold=<m.n>     significance threshold, in percent [$threshold]
+            # --threshold=X (tolerates a trailing '%')
+        ,   $time_column
+    $time_unit = $1;
+# Time unit used in profile.
+# Tmp file name.
+        ,   "total(B)"
+        $total_insig_children_szB += $child_insig_bytes;
+        ( $total_szB != 0 && $xpt_szB * 100 / $total_szB >= $threshold );
+        # trash the x-axis).  Without this, graphs with a few sparse
+    unlink($tmp_file);
+# Usage message.
+usage: ms_print [options] massif-out-file
+#  usage of programs.
+# Used in various places of output.
+        ,   "useful-heap(B)"
+use strict;
+use warnings;
+#! /usr/bin/perl
+            # --version
+# Version number.
+    --version             show version
+    # We precede this node's line with "$this_prefix.$arrow".  We precede
+# we print the fourth part to a tmp file, and then dump the tmp file at the
+    # We repeat until the number is less than 1000.
+    # We repeat until the number is less than 1000, but we divide by 1024 on
+    # We scale from millisecond to seconds to hours.
+    while (defined $line) {
+    while ($line = get_line()) {
+    while (my $line = <INPUTFILE>) {
+    while (my $line = <TMPFILE>) {
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+    # Work out how many bytes each row represents.  If the peak size was 0,
+# Work out the units for the max value, measured in bytes.
+# Work out the units for the max value, measured in instructions.
+# Work out the units for the max value, measured in ms/s/h.
+        # Work out which column this snapshot belongs to.  
+    # Write snapshot bars into graph[][].
+       $x          = 0;
+    --x=<4..1000>         graph width, in columns [72]
+            $x = $graph_x;
+            ($x == $graph_x+1) or die;
+        $x = int($x_pos_frac) + 1;    # +1 due to Y-axis
+    ($xpt_szB <= $total_szB) or die;
+    # XXX: this allows a number with 6 chars, eg. "3599.0 s"
+    --y=<4..1000>         graph height, in rows [20]
+                $y_max = $y;
+#  You should have received a copy of the GNU General Public License
+    #                       y    y * K
+    # zero.

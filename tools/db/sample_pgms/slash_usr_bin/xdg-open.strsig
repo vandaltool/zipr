@@ -1,0 +1,293 @@
+            ;;
+         ;;
+        ;;
+      -*)
+      *)
+#--------------------------------------
+#----------------------------------------
+#-----------------------------------------
+#---------------------------------------------
+#------------------------------------------------------------
+#-------------------------------------------------------------
+#----------------------------------------------------------------------------
+    # All output to stderr
+#   and/or sell copies of the Software, and to permit persons to whom the
+An exit code of 0 indicates success while a non-zero exit code indicates
+application.
+    A required tool could not be found.
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+       [a-zA-Z]*-*)
+    # Be silent
+#!/bin/sh
+                $browser "$1";
+    BROWSER=links2:links:lynx:w3m
+                browser_with_arg=$browser;
+            browser_with_arg=`printf "$browser" "$1" 2>/dev/null`
+        BROWSER=x-www-browser:firefox:mozilla:epiphany:konqueror:chromium-browser:google-chrome:$BROWSER
+case "$DE" in
+    case "$file" in
+        case "$parm" in
+    case "$parm" in
+cat << _MANUALPAGE
+cat << _USAGE
+check_common_commands "$@"
+check_common_commands()
+check_input_file()
+        check_input_file "$file"
+check_output_file()
+# Checks for known desktop environments
+# Checks for shared commands, e.g. --help
+check_vendor_prefix()
+                    $command_exec "$1"
+                command_exec=`which $command 2>/dev/null`
+                command="`grep -E "^Exec(\[[^]=]*])?=" "$file" | cut -d= -f 2- | first_word`"
+#   Common utility functions included in all XDG wrapper scripts
+#   copy of this software and associated documentation files (the "Software"),
+#   Copyright 2006, Jeremy White <jwhite@codeweavers.com>
+#   Copyright 2006, Kevin Krammer <kevin.krammer@gmx.at>
+#   Copyright 2009-2010, Fathi Boudra <fabo@freedesktop.org>
+#   Copyright 2009-2010, Rex Dieter <rdieter@fedoraproject.org>
+        # Decode URLs
+    default=`xdg-mime query default "$filetype"`
+    DE=generic
+Description
+detectDE
+detectDE()
+        DIR=`dirname "$1"`
+    done
+        done
+        echo
+        echo "$@"
+        ! echo "$1" | egrep -q '^[a-zA-Z+\.\-]+:')
+        ! echo "$1" | egrep -q '^[a-zA-Z+\.\-]+:'); then
+  echo "$@" >&2
+    echo 'A vendor prefix consists of alpha characters ([a-zA-Z]) and is terminated' >&2
+    echo "$first"
+        echo "Try 'xdg-open --help' for more information." >&2
+            echo "Use 'man xdg-open' or 'xdg-open --manual' for additional info."
+        echo "Use 'man xdg-open' or 'xdg-open --manual' for additional info."
+    echo "Use --novendor to override or 'xdg-open --manual' for additional info." >&2
+    echo 'with a dash ("-"). An example '"$file_label"' is '"'example-$file'" >&2
+            echo "xdg-open 1.0.2"
+        echo "xdg-open: $@" >&2
+    echo "xdg-open: $file_label '$file' does not have a proper vendor prefix" >&2
+    elif `dbus-send --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.GetNameOwner string:org.gnome.SessionManager > /dev/null 2>&1` ; then DE=gnome;
+    elif [ x"$DESKTOP_SESSION" = x"LXDE" ]; then DE=lxde;
+    elif [ x"$GNOME_DESKTOP_SESSION_ID" != x"" ]; then DE=gnome;
+    elif xprop -root _DT_SAVE_MODE 2> /dev/null | grep ' = \"xfce4\"$' >/dev/null 2>&1; then DE=xfce;
+    else
+        else
+    else DE=""
+            else eval '$browser_with_arg'$xdg_redirect_output;
+    Error in command line syntax.
+    esac
+        esac
+Examples
+    exit 0
+    exit 1
+    exit 2
+    exit 3
+    exit 4
+    exit 5
+    exit 6
+Exit Codes
+exit_failure_file_missing()
+        exit_failure_file_missing "file '$1' does not exist"
+exit_failure_file_permission_read()
+        exit_failure_file_permission_read "no permission to read file '$1'"
+exit_failure_file_permission_write()
+            exit_failure_file_permission_write "no permission to create file '$1'"
+            exit_failure_file_permission_write "no permission to write to file '$1'"
+        exit_failure_operation_failed
+exit_failure_operation_failed()
+exit_failure_operation_impossible()
+    exit_failure_operation_impossible "no method available for opening '$1'"
+    exit_failure_operation_impossible "no method available for opening '$url'"
+exit_failure_syntax()
+    exit_failure_syntax "file or URL argument missing"
+            exit_failure_syntax "unexpected argument '$parm'"
+        exit_failure_syntax "unexpected option '$parm'"
+# Exit script on failure returned by a tool application
+# Exit script on failure to locate necessary tool applications
+# Exit script on insufficient permission to read a specified file
+# Exit script on insufficient permission to write a specified file
+# Exit script on malformed arguments, not enough arguments
+# Exit script on missing file specified on command line
+# Exit script on successfully completing the desired operation
+                        exit_success
+                exit_success
+                exit_success;
+            exit_success
+        exit_success
+exit_success()
+    exo-open "$1"
+failure. The following failure codes can be returned:
+        fi
+            fi
+                fi
+                    fi
+    file=`basename "$1"`
+            file=${file#file://}
+    file_label="$2"
+            file="$($printf "$(echo "$file" | sed -e 's@%\([a-f0-9A-F]\{2\}\)@\\x\1@g')")"
+            file="$(pwd)/$file"
+    filetype=`xdg-mime query filetype "$1" | sed "s/;.*//"`
+first_word()
+#   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    for browser in $BROWSER; do
+        for x in `echo "$xdg_user_dir:$xdg_system_dirs" | sed 's/:/ /g'`; do
+    generic)
+    gnome)
+        gnome-open "$1"
+        gvfs-open "$1"
+        # handle relative paths
+            --help)
+# if BROWSER variable is not set, check some well known browsers instead
+    if [ -e "$1" ]; then
+    if [ ! -e "$1" ]; then
+    if (echo "$1" | grep -q '^file://' ||
+        if echo "$file" | grep -q '^file:///'; then
+        if ! echo "$file" | grep -q '^/'; then
+                    if [ $? -eq 0 ]; then
+            if [ $? -eq 0 ]; then
+    if [ $? -eq 0 ]; then
+        if [ -f /etc/debian_version ] &&
+    if [ $# -gt 0 ]; then
+    if gvfs-open --help 2>/dev/null 1>&2; then
+    # if it does not exists, check if we are allowed to write on the directory
+    if kde-open -v 2>/dev/null 1>&2; then
+        if mimeopen -v 2>/dev/null 1>&2; then
+    if [ -n "$default" ] ; then
+    if [ -n "$DISPLAY" ]; then
+            if [ $? -ne 0 ]; then
+        if [ -n "$url" ] ; then
+    if [ ! -r "$1" ]; then
+            if [ -r "$file" ] ; then
+    IFS=":"
+        IFS="$OLDIFS"
+    # if the file exists, check if it is writeable
+        if [ ! -w "$1" ]; then
+        if [ ! -w "$DIR" -o ! -x "$DIR" ]; then
+            if [ x"$browser_with_arg" = x"$browser" ]; then
+        if [ x"$browser" != x"" ]; then
+if [ x"$BROWSER" = x"" ]; then
+                if [ -x "$command_exec" ] ; then
+if [ x"$DE" = x"" ]; then
+if [ ${XDG_UTILS_DEBUG_LEVEL-0} -lt 1 ]; then
+    if [ x"$KDE_FULL_SESSION" = x"true" ]; then DE=kde;
+        if [ x"$KDE_SESSION_VERSION" = x"4" ]; then
+            if [ -x /usr/bin/printf ]; then
+if [ -z "${url}" ] ; then
+#   in all copies or substantial portions of the Software.
+is provided the file will be opened in the preferred application for files of
+# It also always returns 1 in KDE 3.4 and earlier
+    kde)
+        kde-open "$1"
+            kfmclient exec "$1"
+# kfmclient exec/openURL can give bogus exit value in KDE <= 3.5.4
+            kfmclient_fix_exit_code $?
+kfmclient_fix_exit_code()
+            kfmclient openURL "$1"
+#   LICENSE:
+        local file="$1"
+        local file="$(echo "$1" | sed 's%^file://%%')"
+            local file="$x/applications/$default"
+            local printf=printf
+    lxde)
+    major=`echo $version | sed 's/KDE.*: \([0-9]\).*/\1/'`
+            --manual)
+--manual
+            manualpage
+manualpage()
+_MANUALPAGE
+            mimeopen -L -n "$file"
+    minor=`echo $version | sed 's/KDE.*: [0-9]*\.\([0-9]\).*/\1/'`
+    [ -n "$file_label" ] || file_label="filename"
+        [ -n "$xdg_system_dirs" ] || xdg_system_dirs=/usr/local/share/:/usr/share/
+        [ -n "$xdg_user_dir" ] || xdg_user_dir="$HOME/.local/share"
+    OLDIFS="$IFS"
+    One of the files passed on the command line did not exist.
+open_generic()
+        open_generic "$1"
+    open_generic "$url"
+open_generic_xdg_mime()
+        open_generic_xdg_mime "$file"
+open_gnome()
+    open_gnome "$url"
+open_kde()
+    open_kde "$url"
+open_lxde()
+    open_lxde "$url"
+Opens the Freedesktop.org website in the user's default browser
+Opens the PNG image file /tmp/foobar.png in the user's default image viewing
+open_xfce()
+    open_xfce "$url"
+#   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# or missing required option.
+#   OTHER DEALINGS IN THE SOFTWARE.
+#   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+        parm="$1"
+    parm="$1"
+    # Paths or file:// URLs
+        pcmanfm "$file"
+    # pcmanfm only knows how to handle file:// urls and filepaths, it seems.
+#   Permission is hereby granted, free of charge, to any person obtaining a
+                printf=/usr/bin/printf
+# prints usage information
+provided the URL will be opened in the user's preferred web browser. If a file
+    read first rest
+#   Refer to the usage() function below for usage.
+    release=`echo $version | sed 's/KDE.*: [0-9]*\.[0-9]*\.\([0-9]\).*/\1/'`
+         return
+    return 0
+            run-mailcap --action=view "$file"
+# set variable DE to the desktop environments name, lowercase
+    shift
+        shift
+    Show command synopsis.
+    Show the xdg-utils version information.
+    Show this manualpage.
+# Simply return 0 in such case
+#   Software is furnished to do so, subject to the following conditions:
+Synopsis
+    test "$major" -gt 3 && return $1
+    test "$minor" -gt 5 && return $1
+    test "$release" -gt 4 && return $1
+that type. xdg-open supports file, ftp, http and https URLs.
+#   The above copyright notice and this permission notice shall be included
+    The action failed.
+#   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+    then
+#   the rights to use, copy, modify, merge, publish, distribute, sublicense,
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# This handles backslashes but not quote marks.
+#   to deal in the Software without restriction, including without limitation
+        url="$parm"
+        usage
+            usage
+#   Utility script to open a URL in the registered default application.
+            --version)
+--version
+    version=`kde${KDE_SESSION_VERSION}-config --version 2>/dev/null | grep '^KDE'`
+            which run-mailcap 2>/dev/null 1>&2; then
+    while [ $# -gt 0 ] ; do
+while [ $# -gt 0 ] ; do
+[ x"$1" != x"" ] || exit_failure_syntax
+#   xdg-open
+xdg-open as root.
+xdg-open { file | URL }
+xdg-open { --help | --manual | --version }
+xdg-open 'http://www.freedesktop.org/'
+xdg-open is for use inside a desktop session only. It is not recommended to use
+xdg-open - opens a file or URL in the user's preferred application
+xdg-open opens a file or URL in the user's preferred application. If a URL is
+xdg-open /tmp/foobar.png
+    xdg_redirect_output=" >&2"
+    xdg_redirect_output=" > /dev/null 2> /dev/null"
+        xdg_system_dirs="$XDG_DATA_DIRS"
+        xdg_user_dir="$XDG_DATA_HOME"
+#@xdg-utils-common@
+  [ ${XDG_UTILS_DEBUG_LEVEL} -lt $1 ] && return 0;
+    xfce)
+  [ -z "${XDG_UTILS_DEBUG_LEVEL}" ] && return 0;
+[ -z "${XDG_UTILS_DEBUG_LEVEL}" ] && unset XDG_UTILS_DEBUG_LEVEL;

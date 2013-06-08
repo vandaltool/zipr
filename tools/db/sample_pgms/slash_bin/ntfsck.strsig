@@ -1,0 +1,209 @@
+ABSOLUTELY NO WARRANTY; for details read the GNU General Public License to be
+Access is denied because the NTFS journal file is unclean. Choices are:
+Access is denied because the NTFS volume is already exclusively opened.
+and may lead to data corruption.
+and you are welcome to redistribute it under certain conditions.  It comes with
+ A) Shutdown Windows properly.
+Assertion failed for '%lld:%s'. should be 0x%x, was 0x%x.
+Assertion failed for '%lld:%s'. should not be 0x%x.
+Assertion failed for '%s'. 0x%x >= 0x%x
+Assertion failed for '%s'. 0x%x > 0x%x
+assert_u32_equal
+assert_u32_less
+assert_u32_lesseq
+assert_u32_noteq
+Attribute (0x%x) is larger than FILE record at offset %lld (0x%llx).
+Attribute (0x%x) is larger than FILE record (%lld).
+Attribute 0x%x is not AT_END, yet no room for the length field.
+Attribute 0x%x not found in file record at offset %lld (0x%llx).
+Attribute %lld:0x%x Length too short (%u).
+Attribute %lld:0x%x Unknown flags (0x%x).
+Attribute %lld:0x%x Unknown non-resident flag (0x%x).
+Attribute name was truncated.
+Attribute type was truncated.
+attrs_offset < bytes_in_use
+AT_UNNAMED
+    automatically initialize the journal.
+ B) Click the 'Safely Remove Hardware' icon in the Windows taskbar
+Boot sector: Bad jump.
+Boot sector: Bad NTFS magic.
+Boot sector: Bytes per sector is 0.
+Boot sector: Bytes per sector is not a multiple of 512.
+Boot sector verification complete. Proceeding to $MFT
+__bss_start
+bytes_allocated <= max_record_size
+bytes_in_use <= bytes_allocated
+check_attr_record
+check_file_record
+Checking %lld MFT records.
+check_volume
+Compressed attribute %lld:0x%x too short (%u).
+could be identified for example by the help of the 'fuser' command.
+Could not load $MFT/Bitmap.
+Couldn't create a search context.
+Couldn't open $Bitmap
+Couldn't open inode %llu.
+Couldn't open $MFT/$DATA
+Couldn't read $Bitmap
+Couldn't read $MFT/$BITMAP
+Couldn't read $MFT record %lld
+Couldn't read MFT Record %llu
+Couldn't translate attribute name to current locale.
+Couldn't translate attribute type to current locale.
+Couldn't translate filename to current locale.
+ C) Use 'Eject' from Windows Explorer to safely remove the device.
+__cxa_finalize
+Developers' email address: ntfs-3g-devel@lists.sf.net
+different device under /dev/mapper, (e.g. /dev/mapper/nvidia_eahaabcc1)
+ D) If you ran chkdsk previously then boot Windows again which will
+distribution are broken. Please report to your distribution developers
+D$x9D$Xv
+__errno_location
+Error closing inode %llu.
+Error getting bit value for record %lld.
+Error getting information about %s
+Error opening partition device
+Error reading inode %llu.
+Error reading inode %llu.  Aborting.
+Error setting volume flags.
+Errors found.
+ E) Submit 'force' option (WARNING: This solution it not recommended).
+Failed to close the device.
+Failed to determine whether %s is mounted
+Failed to mount '%s'
+Failed to read boot sector.
+Failed to read file record at offset %lld (0x%llx).
+Failed to set locale, using default '%s'.
+file record corrupted at offset %lld (0x%llx).
+FILE record magic
+find_first_attribute
+First attribute must be after the header (%u).
+First attribute type
+ F) ntfsmount: Mount the volume read-only by using the 'ro' mount option.
+Forced to continue.
+found in the file "COPYING" distributed with this program, or online at:
+get_last_vcn
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+http://www.gnu.org/copyleft/gpl.html
+Internal error, strtoll didn't return a suffix.
+Invalid number '%.*s'.
+Invalid size '%s'.
+Invalid size suffix '%s'.  Use T, G, M, or K.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libntfs-3g.so.831
+Loading $MFT/Bitmap runlist failed. Trying $MFTMirr.
+Loading $MFTMirr/Bitmap runlist failed too. Aborting.
+Loading $MFTMirr runlist failed too. Aborting.
+Loading $MFT runlist failed. Trying $MFTMirr.
+load_runlist
+made to NTFS by this software.
+Maybe you selected the wrong device? Or the whole disk instead of a
+mft_bitmap_load
+<MFT%llu>
+mft_next_record
+MFT record %lld
+Named resident attribute with value before name.
+Non-resident attribute %lld:0x%x too short (%u).
+NOTE: If you had not scheduled check and last time accessed this volume
+Not-first attribute type
+    notification area before disconnecting the device.
+(NOT to us!) that init scripts kill ntfsmount or mount.ntfs-fuse during
+ntfs_attr_close
+ntfs_attr_find_in_attrdef
+ntfs_attr_get_search_ctx
+ntfs_attr_lookup
+ntfs_attr_open
+ntfs_attr_pread
+ntfs_attr_put_search_ctx
+ntfs_bit_get
+ntfs_boot_sector_parse
+ntfs_bugs
+ntfs_check_if_mounted
+ntfsck.c
+ntfs_device_alloc
+ntfs_device_free
+ntfs_device_mount
+ntfs_device_unix_io_ops
+ntfs_gpl
+NTFS_INDEX_I30
+ntfs_inode_close
+ntfs_inode_open
+NTFS is inconsistent. Run chkdsk /f on Windows then reboot it TWICE!
+ntfs_log_handler_outerr
+ntfs_log_redirect
+ntfs_log_set_handler
+ntfs_malloc
+ntfs_mapping_pairs_decompress
+ntfs_mbstoucs
+ntfs_mount
+ntfs_pread
+ntfs_rl_pread
+ntfs_ucsnlen
+ntfs_ucstombs
+ntfs_umount
+ntfs_volume_write_flags
+off properly, so mounting could be done safely.
+Out of memory.  Aborting.
+partition (e.g. /dev/hda, not /dev/hda1)? Or the other way around?
+Pathname was truncated.
+Please boot into Windows TWICE, or use the 'force' option.
+Record %lld unused. Skipping.
+replay_log
+reset_dirty
+Resetting dirty flag.
+Resident attribute with name intersecting header.
+Resident flags mark attribute 0x%x as indexed.
+Resident Reserved
+setlocale
+shutdown instead of proper umount.
+snprintf
+__snprintf_chk
+__stack_chk_fail
+The device %s doesn't exist
+The device '%s' doesn't have a valid NTFS.
+The directory structure is too deep (over %d) nested directories.
+The NTFS partition is hibernated. Please resume Windows and turned it 
+The usage of the /f parameter is very IMPORTANT! No modification was
+The volume may be already mounted, or another software may use it which
+This program is free software, released under the GNU General Public License
+to mount NTFS. Please see the 'dmraid' documentation for help.
+<UNKNOWN>
+Unknown attribute type 0x%02x
+Unknown attribute type 0x%x.
+Unknown MFT record flags (0x%x).
+Unknown resident flags (0x%x) for attribute 0x%x.
+Unsupported cases found.
+Unsupported: check_volume()
+Unsupported: replay_log()
+USA length
+usa_ofs+usa_count <= attrs_offset
+Use the force option to ignore this error.
+using ntfsmount and shutdown system properly, then init scripts in your
+utils_attr_get_name
+utils_cluster_in_use
+utils_inode_get_name
+utils_mftrec_in_use
+utils_mount_volume
+utils_parse_size
+utils_set_locale
+utils_valid_device
+value_length(%d)+value_offset(%d)>length(%d) for attribute 0x%x.
+vcn: %lld, length: %lld.
+verify_boot_sector
+verify_mft_preliminary
+verify_mft_record
+Volume is dirty.
+Volume is scheduled for check.
+WARNING: Dirty volume mount was forced by the 'force' mount option.
+__xstat64
+You can use force option to avoid this check, but this is not recommended
+You seem to have a SoftRAID/FakeRAID hardware and must use an activated,

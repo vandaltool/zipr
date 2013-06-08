@@ -1,0 +1,9 @@
+    ${BINDIR}/checksctp;
+BINDIR=/usr/bin
+#!/bin/sh
+exec "$*"
+    exit 1;
+export LD_PRELOAD=${LIBDIR}/libwithsctp.so.1.0.11
+if ! ${BINDIR}/checksctp 2> /dev/null
+LIBDIR=/usr/lib/lksctp-tools
+# -*- sh -*-

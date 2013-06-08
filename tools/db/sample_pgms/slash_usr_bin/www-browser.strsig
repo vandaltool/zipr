@@ -1,0 +1,5836 @@
+ _-:./@~$&+=	
+ _-:./@~$+=	
+----------------------------------
+"()<>@,;:\/[]?.=
+\&#$^*?(){}<>"';`|
+ &   ! 0 `
+0123456789abcdef
+% %!%"%#%$%%%&%'%(%)%*%+%,%-%.%/%0%1%2%3%4%5%6%7%8%9%:%;%<%=%>%?%@%A%B%C%D%E%F%G%H%I%J%K%L%M%N%O%P%Q%R%S%T%U%V%W%X%Y%Z%[%\%]%^%_%`%a%b%c%d%e%f%g%h%i%j%k%l%
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+!'*'+','-'.'/'0'1'2'3'4'5'6'7'8'9':';'<'='B'C'D'E'F'G'H'I'J'K'
+ %02d:%.2s
+ &   ! 0 9 
+, 0x0 } }
+0xFFFFFFFFUL
+'0xFFFFFFFFUL'
+&_10000R_
+&_1000r_
+&_1000RCD_
+1.2.840.113549.1.9.1
+150 Opening ASCII mode data connection for /bin/dl.
+15:53:38
+%16s %16s %16s %16s
+  19%.2s
+  20%.2s
+2.5.4.10
+2.5.4.11
+2.8.8dev.9
+[%2d,%2d] LYwaddnstr(%.*s, %u)
+            2 = Down Arrow
+2.Ok, we're trying type=[%s] (present=%p)
+%-35s %s
+3.Ok, we're trying type=[%s]
+%.3s %.2s
+3T$l3D$h	
+3T$p3D$l	
+%$%,%4%<%
+|$49|$(}
+===    %4d:
+=>     %4d:
+%4d. form field = %s
+  4 = Left Arrow    6 = Right Arrow
+4.Ok, we're trying type=[%s]
+&_5000R_
+'5.9.20110404'
+%.60s '%.400s': %.60s
+%.60s: %.60s: %.60s
+%.6s  %.4s
+%.6s %.5s
+7 bit approximations
+7 bit approximations (US-ASCII)
+%.7s %.4s 
+            8 = Up Arrow
+9999%02d%.2s
+]%^%_%`%a%
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./-_$
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/BASIC
+%$%a%b%V%U%c%Q%W%]%\%[%
+Accept: 
+accept all
+accept_all_cookies
+accept_all_cookies allows the user to tell Lynx to automatically
+accept all cookies if desired.  The default is "FALSE" which will
+Accept all types
+Accept Changes
+ Accept-charset:
+Accept-Charset: 
+ACCEPT-CHARSET
+accept cookies without prompting if Set-Cookie handling
+ACCEPT-ENCODING
+Accept-Encoding: %s%c%c
+Accept invalid cookie domain=%s for '%s'?
+Accept invalid cookie path=%s as a prefix of '%s'?
+Accept-Language: %s%c%c
+Accept lynx's internal types
+accept only http URLs (meant for validation)
+Accept: %s%s
+Access forbidden by rule
+ACCESSKEY
+Access links
+Access Permissions
+Access to dot files is disabled!
+Access to local files denied.
+Access without authorization denied -- retrying
+according to the Accept-Charset header, then the server SHOULD send
+ACCT noaccount
+A component of path is not a directory
+'acs_map'
+ACTIVATE
+Activate links to gobble up cookies or entire domains,
+Activate this link
+add 5 new blank lines to the bottom of a textarea
+ADD_BOOKMARK
+addClassName
+add_environment_value
+Adding file to BTree: %s
+Adding message to help cache: %s
+add_item_to_list
+additional goto restrictions for specific URL schemes
+add_menu_item
+Address contains a username: %s
+Address List Page
+address qualifier '@'
+  address %s
+...address{%s}
+	address %s
+	address: %s
+Address should begin with
+address will be sent during HTTP file transfers for authorization and
+ADDRLIST
+Add to LYNXMESSAGES
+add_to_reject_list(%s)
+Add to trace-file
+add to your personal bookmark list
+adjusted anchor %d, topline %d, link %d, offset %d
+     administrator.
+Advanced
+Advanced    
+ADVANCED
+A Fatal error has occurred in %s Ver. %s
+<a href=
+ -<A HREF="
+   <a href="LYNXDIRED://UPLOAD=%d/TO=%s">
+<a href="LYNXDIRED://UPLOAD=%d/TO=%s"> %s </a><br>
+<a href="%s
+   <a href="%s//LOCAL_FILE/lines=%d">%s</a>
+   <a href="%s//LPANSI/lines=%d">%s</a>
+ <a href="%s">lynx.cfg</a> 
+   <a href="%s//MAIL_FILE/lines=%d">%s</a>
+   <a href="%s//Method=-1/File=%s/SugFile=%s%s">%s</a>
+   <a href="%s//Method=%d/File=%s/SugFile=%s">
+   <a href="%s//PRINTER/number=%d/pagelen=%d/lines=%d">
+  <a href="%s//reload">%s</a>
+<a href="%s">%s</a>
+   <a href="%s">%s</a>
+<a href="%s%s">%s</a>
+<a href="%s%s">%s</a><br>
+   <a href="%s//TO_SCREEN/lines=%d">%s</a>
+'a', 'i' or 'o'
+Alert!: %s
+alertsecs
+  a->line_num=%d, a->number=%d
+All available articles in 
+all cookies.
+all cookies.  If a domain is specified in both options, rejection will
+All cookies in the domain have been eaten!
+allocAnchorIndex
+All of the cookies in the jar have been eaten!
+Allowing this cookie.
+allow non-http startfile and homepage with -validate
+allow searching of an index
+all restricted, except for: inside_telnet, outside_telnet,
+"all" restrictions are set.
+.alpha_exe
+.alpha-exe
+alphanumeric string '%.*s'
+Also accept lynx.cfg's types
+Also accept system's types
+Also accept user's types
+alt_char_set
+Alternate
+Alternate Bindings
+...alter %s
+ALWAYS    
+alwaysalert
+'A'lways allowing from domain '%s'.
+always_resubmit_posts
+always_trusted_exec
+Always try
+"always" will force color mode on even if the terminal appears to be
+a monochrome terminal unless color capability is inferred at startup
+<A NAME=current></A>
+a->name != ((void *)0)
+anchor_ptr != ((void *)0)
+Anchor %p with address `%s' already exists.
+anchor text: '%s'
+and if the server cannot send a response which is acceptable
+    and Set-Cookie2: '%s'
+    and Set-Cookie: '%s'
+and the corresponding keyboard numbers will act as arrow keys,
+and the keymap display, respectively.
+an error response, though the sending of an unacceptable response
+anonftp_password
+anonftp_password allows the user to tell Lynx to use the personal
+/anonymou.
+anonymous
+Anonymous restrictions are set.
+Anonymous restrictions set, restriction "all" was given.
+ansfer-encoding:
+ansi-1251
+ANSI_X3.4-1968
+@ ANYADDRESS
+	ANYBODY 
+'a' or 'e'
+'a' or 'i'
+'a' or 'o'
+'a' or 'w'
+  a=%p, l=%p, curanchor=%d
+a popup menu, even if the option isn't visible on the screen.  Reference
+appear next to each link and numbers are used to select links.
+Appendix
+Append '%s'?
+[APPLET]
+application
+application/
+application/bzip2
+application/compress
+application/deflate
+application/gzip
+application/html
+application/mac-binhex40
+application/octet-stream
+application/oda
+application/pdf
+application/postscript
+application/rtf
+application/sgml-form-urlencoded
+application/visio
+application/x-
+application/x-bcpio
+application/x-Binary
+application/x-bzip2
+application/x-compress
+application/x-compressed
+application/x-cpio
+application/x-csh
+application/x-deflate
+application/x-dms
+application/x-dvi
+application/x-Executable
+application/x-gzip
+application/x-hdf
+application/xhtml+xml
+application/x-iff
+application/x-ksh
+application/x-latex
+application/x-lha
+application/x-lzh
+application/xml
+application/x-netcdf
+application/x-RUNOFF-MANUAL
+application/x-sea
+application/x-sh
+application/x-shar
+application/x-share
+application/x-stuffit
+application/x-sv4cpio
+application/x-sv4crc
+application/x-tar
+application/x-texinfo
+application/x-troff
+application/x-troff-man
+application/x-troff-me
+application/x-troff-ms
+application/x-ustar
+application/x-uuencoded
+application/x-wais-source
+application/x-www-form-urlencoded
+application/x-Zoo File
+application/zip
+apply restrictions for anonymous account,
+(approximately)
+Arabic (ISO-8859-6)
+Arabic (windows-1256)
+arc4random
+'arc4random_stir/arc4random'
+are saved from the Options Screen this file will be completely rewritten.
+Are you sure you want to quit?
+ar_flags
+# Arg%d = %s
+...arg:%s
+argv[%d] = '%s'
+argv != ((void *)0)
+  Arrow keys: Up and Down to move.  Right to follow a link; Left to go back.  
+ARTICLE 
+ARTICLE <
+Articles in 
+ARTICLE %s%.*s%s
+ask for confirmation:
+ask user
+as labels
+as links
+   AS %s
+__assert_fail
+assoc != ((void *)0)
+assume_charset
+(^A)ssume charset if unknown : 
+(assumed)
+assumed_color
+assumed_color_fun
+Assumed document character set
+assume_default_colors
+assume_local_charset
+assume_unrec_charset
+as the default while a value of "off" will set use of radio boxes.
+As Visit Tree
+at startup even if the terminal appears to be color capable.  A value of
+!ATTLIST
+attribute cache FULL, dropping last
+audio/basic
+audio/midi
+audio/mod
+audio/x-aiff
+audio/x-wav
+A URL specified by redirection
+A URL specified by the user
+authentication information for protected documents
+authentication information for protected proxy server
+authentication scheme:
+AUTHINFO PASS %.*s%c%c
+AUTHINFO USER %.*s%c%c
+Authorization failed.  Retry?
+Authorization info cleared.
+auto_session
+Auto Session
+auto_uncache_dirlists
+A value of "default" will yield the behavior of assuming
+ awaits your command
+.AXP_exe
+.AXP-exe
+BACKGROUND
+Back Tab
+baddef_remove
+bad format of PRETTYSRC_SPEC setting value, ignored %s
+bad format of PRETTYSRC_SPEC setting value, ignored %s:%s
+Bad HText structure!
+bad_html
+Bad HTML messages
+Bad HTML: Missing TEXTAREA end tag
+Bad HTML: Missing TEXTAREA end tag.
+** Bad HTML!!  No form action defined. **
+Bad HTML: Open SELECT at FORM end. Faking SELECT end tag. *****
+Bad HTML: OPTION tag not within SELECT tag
+Bad HTML: SELECT end tag not within FORM element *****
+Bad HTML: SELECT or OPTION not ended properly *****
+Bad HTML: SELECT start tag in SELECT element.  Faking SELECT end tag. *****
+Bad HTML: %s%s%s%s%s not closed before BODY end tag *****
+Bad HTML: %s%s%s%s%s not closed before HTML end tag *****
+Bad HTML: TEXTAREA not used properly *****
+Bad HTML!!  Unable to create popup window!
+Bad HTML: Unmatched FORM end tag
+Bad HTML: Unmatched OBJECT start and end tags.  Discarding content:
+Bad HTML: Unmatched OBJECT start and end tags.  Discarding content.
+Bad HTML: Unmatched SELECT end tag
+Bad HTML: Unmatched SELECT end tag *****
+Bad HTML: Unmatched TEXTAREA end tag
+** Bad HTML!!  Use -trace to diagnose. **
+Badly formed address %s
+Bad partial reference!  Stripping lead dots.
+Bad request!
+Bad rule
+Bad syntax in TAGSPEC %s:%s
+bad value for htmlsrc_attrname_xform (ignored - must be one of 0,1,2): %d
+bad value for htmlsrc_attrname_xform (ignored): %s
+bad value for htmlsrc_tagname_xform (ignored - must be one of 0,1,2): %d
+bad value for htmlsrc_tagname_xform (ignored): %s
+Baltic Rim (cp775)
+Baltic Rim (ISO-8859-13)
+Baltic Rim (windows-1257)
+based on the terminal type, or the -color command line switch is used, or
+BASEFONT
+<base href="%s">
+Bash-like Bindings
+b%c%d%e%f%g%h%i%j%k%l%
+be applied.  A domain with loose checking will be allowed to set cookies
+been defined (see below), then all bookmark operations will first
+     been remapped by you or your system administrator.
+BeginForm: action:%s Method:%d%s%s%s%s%s%s
+beginInput: HTCurrentForm is missing!
+Beginning of document
+Beginning underline
+Begin pumpData
+Be sure your printer is on-line.  Press <return> to start printing:
+b.gammad
+[BGSOUND]
+bg != ((void *)0)
+Biblioentry
+Bibliography
+bibp1.0/bibpicon.jpg
+bibp1.0/resolve?citehost=
+bibp1.0/resolve?usin=
+bibp_bibhost
+bibp_globalserver
+/bin/bzip2
+'/bin/bzip2'
+"/bin/bzip2"
+bindtextdomain
+/bin/gunzip
+'/bin/gunzip'
+"/bin/gunzip"
+/bin/gzip
+'/bin/gzip'
+"/bin/gzip"
+'/bin/mv'
+"/bin/mv"
+'/bin/rm'
+"/bin/rm"
+/bin/tar
+'/bin/tar'
+"/bin/tar"
+/bin/zcat
+'/bin/zcat'
+"/bin/zcat"
+%B&@&j&k&<&
+b.kappav
+b.lambda
+  ^B = left    ^F = right
+    Block after is %s
+    Block before is %s
+block_multi_bookmarks
+Blockquote
+</body></html>
+BODYTEXT
+bold_headers
+bold_name_anchors
+Bookmark deletion failed.
+bookmark_exec
+Bookmark features are currently disabled.
+, bookmark file
+(B)ookmark file: 
+Bookmark file
+Bookmark file is not defined. Use %s to see options.
+Bookmark files cannot be traversed (only http URLs).
+bookmark_file specifies the name and location of the default bookmark
+Bookmarks
+Bookmarks file
+bool_defs
+bottom, if possible) of the screen, or to place it to the left of the
+bottom of the screen.
+bottom of the screen to aid the user in learning the basic Lynx
+; boundary=%s
+break_data
+break_data(calloc)
+break_data(realloc)
+break_data %s
+<BR><EM>&nbsp;&nbsp;&nbsp;
+brightblue
+brightcyan
+brightgreen
+brightmagenta
+brightred
+broken_ftp_epsv
+broken_ftp_retr
+b %.*s%c[...]
+b.sigmav
+__bss_start
+b.thetas
+b.thetav
+BUG: comparing empty domain in domain_matches
+BUG: comparing empty value in domain_matches
+BUG: could not find anchor for TEXTAREA.
+BUG *** Emergency freeing document %d/%d for '%s'%s!
+BUG: HText_endAnchor0: internal error: last anchor was input field!
+BUG: insertBlanks: resulting table too wide by %d positions!
+BUG: justification: shouldn't happen - new line is not empty!
+BUG: style overflow after split_line.
+BUG: style overflow before split_line.
+BUG: styles improperly nested.
+bug which treated '>' as a co-terminator for
+build_alias
+BuildCommand: Ignoring unrecognized format code in mailcap file '%%%c'.
+BuildCommand no value for %s
+builtin chmod %.4o ->%d
+builtin copy ->%d
+builtin mkdir ->%d
+builtin move ->%d
+builtin remove ->%d
+builtin rmdir ->%d
+builtin touch ->%d
+Built on %s %s %s
+buried_news
+but didn't check out!
+                          but %d, ignoring!
+(but still allow it for directories) when local file
+[BUTTON Input]
+buttons or via a popup menu.  Note that if the MULTIPLE attribute is
+By Date    
+   BY_DATE     -- sorts on the date of the file
+by default.  May be a comma-separated list.
+By Filename
+BY_FILENAME
+   BY_FILENAME -- sorts on the name of the file
+By First Visit
+By First Visit Reversed
+By Group
+By Last Visit
+By Last Visit Reversed
+By Size    
+   BY_SIZE     -- sorts on the size of the file
+byte_count %d, byte_num %d
+BYTES,ETA
+By Type    
+   BY_TYPE     -- sorts on the type of the file
+bzip2_path
+Cache-Control
+Cache-Control:
+Cache-Control: no-cache%c%c
+Cache-Control: %s  
+CACHED: <%s> @(%d,%d)
+cache_item != ((void *)0)
+Cache jar
+CACHE_JAR
+CacheThru_new
+called LYgetstr
+called "lynx.cfg".  It has different content and a different format.
+, cancelled
+Cancelling!
+Cancelling file.
+cancelStbl: ignored.
+cancelStbl: ok, will do.
+can not access directory .
+Cannot find a handle for MIME name "%s"
+Cannot find a MIME name for locale
+Cannot find HOME directory
+Cannot locate jump file!
+Cannot open jump file!
+Cannot open temporary file for news POST.
+Cannot open tty input
+Cannot POST to this host.
+  Cannot read file %s
+Cannot save form fields/links
+Cannot write to file.
+CAN_SET_ERRNO
+Can't Access
+Can't access requested file.
+Can't find common name in certificate
+Can't open file for reading.
+Can't open file for uploading
+Can't open output file!  Cancelling!
+Can't open `%s', errno=%d
+Can't open temporary file!
+Can't proceed without a username and password.
+Can't read news info, empty response from host %s
+Can't read news info.  News host %.20s responded: %.200s
+Can't retry with authorization!  Contact the server's WebMaster.
+Can't retry with proxy authorization!  Contact the server's WebMaster.
+Can't stat() or fopen() '%s'
+Capital 'H', 'J' and 'K will still activate help, jump shortcuts,
+capital letter
+CAPTION:
+case_insensitive
+Case insensitive
+case_sensitive
+Case sensitive
+CASE SENSITIVE  
+case_sensitive_always_on
+case_sensitive_searching
+(%c%c%c%d%c)
+c_compiler_gnu
+![CDATA[
+cd %s ; 
+cd %s; %s -qdc %s |  %s %s %s
+cd %s; %s -q %s
+cd %s; %s -rq %s.zip %s
+cd %s; %s %s %s
+cd %s; %s %s |  %s %s %s
+cd %s; %s %s %s %s | %s -qc >%s%s
+cd %s; %s %s %s %s | %s >%s%s
+cd %s; %s %s %s %s.tar %s
+cellalign
+CELLPADDING
+CELLSPACING
+Celtic (ISO-8859-14)
+cept-ranges:
+	cert_host '%s'
+Certificate issued by: %s
+cgi support has been disabled.
+CHALLENGE
+CHANGE_CENTER
+change current directory
+Change directory
+            changed to '%s'
+change_exec_perms
+CHANGE_LINK
+Change Location
+Change password?
+change path '%s'
+Change username?
+changing directory to '%s'
+changing offsets
+Changing of the User-Agent string is disabled!
+Changing working-directory is currently disabled.
+character_set
+character set is acceptable.  If an Accept-Charset header is present,
+characters for your terminal.  If 8 bit characters do not show up
+Charset:
+charset assumed for local files
+charset for documents that don't specify it
+charset for the terminal output
+charset for this document specified explicitly, sorry...
+; charset=%s
+checkbox
+checkbox:
+CHECKBOX
+(Checkbox Field)   Use right-arrow or <return> to toggle.
+check_color(%s,%d)
+CHECK %d:%s
+ checked
+Checking cookie %p %s=%s
+checkmail
+check '%s' to translate x/y/ to [.x.y]
+che-control:
+*** child anchor already has destination, exiting!
+Child anchor %p of parent %p with name `%s' already exists.
+CHILD fill_rehostent
+CHILD gethostbyname
+child_relaxed
+chmod %.4o %s
+chmod_path
+(Choice list) Hit return and use arrow keys and return to select option.
+chtype_decl
+chtype_type
+    Chunk will be (%d-%d)
+ch != ((void *)0)
+c_inline
+citehost
+CJK mode
+...clean_extra_history
+clear all authorization info for this session
+Clear all authorization info for this session?
+CLEAR_AUTH
+clearerr
+cleartext != ((void *)0)
+CLICKABLE_IMAGES
+Client-side image MAP is not accessible!
+Client-side image MAP is not available!
+Clipboard empty or Not text data.
+ClipBoard to Lynx
+, closed
+closedir
+closelog
+close master socket
+closing control socket %d
+cmd_script
+CODEBASE
+CODETYPE
+COLGROUP
+collapse_br_tags
+color_cfg[%u] = %d/%d
+color_curses
+COLOR:INTEGER:FOREGROUND:BACKGROUND
+COLOR_PAIRS
+COLOR:%s
+color_style
+color-style configuration
+*** COLSPAN=%d is too large, ignored!
+.com,.edu,.net,.org
+Command: 
+# Command logfile created by %s %s (%s)
+command: %s
+commands.  Set user_mode to "INTERMEDIATE" to turn off the extra info.
+Commands: Use arrow keys to move, '?' for help, 'q' to quit, '<-' to go back.
+command != ((void *)0)
+commentURL
+compare %d to [%d..%d]
+comparing command
+comparing source
+compileopts_info
+compile time options
+...complete:%s
+compose_auth_string
+compose_auth_string: realm:
+Composing Authorization for %s:%d/%s
+Composing Proxy Authorization for %s:%d/%s
+Compress
+confidence
+CONFIGFILE
+Configuration Definitions
+Configuration file "%s" is not available.
+confirm-not-ready connect
+confirm-ready connect
+Confirm: %s
+Confirm: %s (%c) 
+Confirm: %s (%c/%c) 
+CONNECT 
+connect for data
+Connecting to NewsHost ...
+Connection closed ???
+Connection failed (too many retries).
+Connection interrupted.
+connect_timeout
+contact-at
+ CONTAINS AS NORMAL SUBGROUP 
+ CONTAINS AS NORMAL SUBGROUP OR EQUAL TO 
+Content-Base: %s
+Content-Disposition
+Content-Disposition: form-data
+Content-Disposition: %s  
+Content-Encoding: %s  
+content is%s compressed
+Content-Language: %s  
+Content-Length:
+CONTENT_LENGTH=%d
+Content-length: %d%c%c
+Content-Location: %s
+Content-Location: %s  
+Content-MD5: %s  
+	content: %s
+Contents
+Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
+Content-Type
+CONTENT_TYPE=
+  Content type is "%s"
+Content-type: %s
+Content-Type: %s  
+Content-type: %s%c%c
+Content-Type: text/html
+Content-Type: text/plain
+Content-Type: text/plain; charset=%s
+content != ((void *)0)
+context != ((void *)0)
+CONTINUE
+control connection close
+control socket is %d
+Converted Mosaic Hotlist
+Converted '%s' to '%s'
+        Converted to integer: '%ld'
+?convert_to_base64
+convert_to_base64
+convert_to_idna: `%s' is malformed
+convert_to_idna: `%s': %s
+conv_jisx0201kana
+con != ((void *)0)
+Cookie: 
+Cookie2: $Version="1"
+cookie_accept_domains
+cookie_accept_domains and cookie_reject_domains are comma-delimited
+cookie_domain_flag_set
+cookie_domain_flag_set error, aborting program
+cookie_domain_flag_set (%s, bv=%u, invcheck_bv=%u)
+cookie_file
+cookie file can be changed in next session only, restored.
+cookie_file specifies the file from which to read persistent cookies.
+Cookie jar
+COOKIE_JAR
+cookie_loose_invalid_domains
+cookie_loose_invalid_domains, cookie_strict_invalid_domains, and
+cookie_query_invalid_domains
+cookie_query_invalid_domains are comma-delimited lists of which domains
+cookie_reject_domains
+(Cookies allowed via prompt.)
+(Cookies always allowed.)
+cookie_save_file
+cookie save file can be changed in next session only, restored.
+(Cookies never allowed.)
+cookie_strict_invalid_domains
+copiousoutput
+Copy D)ocument's or L)ink's URL to clipboard or C)ancel?
+copy_path
+Copyright
+Copyrights held by the Lynx Developers Group,
+Copy to clipboard failed.
+correctly on your screen you may try changing to a different 8 bit
+cost-unit
+could leave this field blank, but then you won't have it included in
+Could not access directory.
+Could not access file.
+Could not access finger host.
+Could not access %s.
+Could not find suitable representation for transmission.
+Could not get ttyname (returned %s) or open UTMP file %s
+Could not load data.
+Could not load data (no sitename in finger URL)
+Could not make connection non-blocking.
+Could not open file for decompression!
+Could not restore socket to blocking.
+countHTLines %u
+cp != ((void *)0)
+c%Q%W%]%
+c%Q%W%]%.
+c%Q%W%]%{
+-crawl'ing, mark wrapped lines in interactive session
+create a new file or directory
+  C)reate  D)ownload  E)dit  F)ull menu  M)odify  R)emove  T)ag  U)pload     
+Create file or directory (f or d): 
+Creation date:
+creation of chunk
+CS__0new
+CS_invalid
+CSO index
+CSO/PH request sent; waiting for response.
+cso_proxy
+CSO Search Results
+CSS:Can't open style file '%s', using defaults
+CSS.CS:<%s%s> style %d code %#x, color %#x
+CSS.CS:Style %d not configured
+CSS(CURPAIR):%d
+CSS(DEF):default_fg=%d, default_bg=%d
+CSS.elt:<%s>
+CSS:LYAttrset (A_NORMAL)
+CSS:LYAttrset color %#x -> (%s)
+CSS:LYAttrset mono %#x -> (%s)
+CSS(NC): maximum of %d colorpairs exhausted
+CSSPARSE:%s => %d %s
+CSS(PA):style d=%d / h=%d, e=%s
+CSS:Reading styles from file: %s
+%c%s%s%s
+CSS:%s -> %d
+CSS(SET): <%s> hash=%d, ca=%#x, ma=%#x
+CSSTRIM:link=%s
+CSSTRIM:%s -> %d
+CSSTRIM: start_element: top <%s>
+CSSTRIM:trying to set [%s] style - 
+    Ctrl-U to delete all text in field, [Backspace] to delete a character    
+      Ctrl-U to delete text in field, [Backspace] to delete a character    
+__ctype_b_loc
+__ctype_tolower_loc
+curanchor=%d at line %d on screen
+cur_item != ((void *)0)
+ curline=%d, LYlines=%d, display too small!
+  curpage=%d
+#current
+Current directory:
+Current directory is 
+Current document has POST data.
+Current Key Map
+Current lineedit modes are:
+current link in documents, or current option in select popup windows.
+Currently viewing document source.  Press '\' to return to rendered version.
+(current selection)
+Current selection:
+Current URL is empty.
+Current valid characters sets are:
+curses_dir
+curses_pads
+curses_version
+Cursor backwards
+Cursor backwards or left link
+Cursor forwards
+Cursor forwards or right link
+cur_term
+cur != ((void *)0)
+customize Lynx trace mode
+Cyrillic-Asian (PT154)
+Cyrillic (ISO-8859-5)
+Cyrillic (KOI8-R)
+Cyrillic (windows-1251)
+D$`00:0f
+	%d:[%03d]:[%s]
+%d  %-16.16t %a  %K
++D$89D$X
++D$8;D$X
+D$8f+D$,
+database-name
+...data: %s
+Data transfer complete
+Data transfer interrupted.
+<!-- Date: %s -->
+Date: %s  
+DATETIME
+'-DCC_HAS_PROTOS'
+dcgettext
+dcl_errno
+dcl_sys_errlist
+dcl_sys_nerr
+<dd><a href="%s//%s/%s"><em>%s</em>=%s</a>
+ %d %d %d %d
+%d.%d.%d.%d
+->[%d](%d,%d,%d,%d)
+%d,%d,%d,%d,%d,%d
+<dd><em>Comment:</em> %s
+<dd><em>CommentURL:</em> <a href="%s">%s</a>
+<dd><em>Path:</em> %s
+<dd><em>Port:</em> %d <em>Secure:</em> %s <em>Discard:</em> %s
+<dd><em>PortList:</em> "%s"
+<dd><em>%s</em> %s%s
+    <DD>First: <input name="q_$(FID)" type="text" size=48$(FSIZE2)>
+    <DD><input name="q_$(FID)" type="text" $(FSIZE)>
+    <DD>Last: <input name="q_$(FID)" type="text" size=49$(FSIZE2)>
+ %d:done
+   <DD>Returned data option: <select name="return">
+debug_partial
+DEC BookReader
+december
+DEC Multinational
+DECOMPRESS
+.decw$book
+de_escape
+default 
+default:
+Default Binding
+default_bookmark_file
+Default Bookmark File
+default_cache_size
+=> default %d
+default_editor
+default_index_file
+default is "NOVICE" which displays two extra lines of help at the
+default_keypad_mode
+default_keypad_mode_is_numbers_as_arrows
+default protection is not set!!
+default selection.  When this option is set to "advanced", and the
+default service restrictions for anonymous users.  Set to
+@default.style
+default_user_mode
+default while a value of "off" will set 'hiding' of the cursor.
+define_key
+define_sigwinch
+Definition
+definitions when this copy of Lynx was built.
+delaysecs
+DEL_BOOKMARK
+<delete>
+Delete all cookies in this domain?
+Delete back to BOL
+D)elete cached document or C)ancel? (d,c): 
+ Delete char: ^H    ^R        ^A    = Beginning of line
+D)elete domain's cookies, set allow A)lways/P)rompt/neV)er, or C)ancel? 
+D)elete domain, set allow A)lways/P)rompt/neV)er, or C)ancel? 
+delete from your personal bookmark list
+Delete next/curr char
+Delete next word
+Delete prev      char
+Delete prev word
+Delete this cookie?
+Delete this empty domain?
+Delete thru EOL
+ Delete word: ^B    ^F        ^E    = End of line
+ description
+Description:
+Destination has different owner!  Request denied.
+Destination is not a valid directory!  Request denied.
+*dest != ((void *)0)
+development version
+/dev/null
+/dev/tty
+D$$f+D$X
+'-D_FORTIFY_SOURCE=2'
+did NOT match template
+, different dest %p or type, creating unnamed child
+Direct access
+Directories first
+DIRECTORIES_FIRST
+"DIRECTORIES_FIRST" lists directories first.
+Directory browsing is not allowed.
+Directory that you are currently viewing
+Directory that you have currently selected
+dired_by_date
+dired_by_group
+dired_by_mode
+dired_by_name
+dired_by_size
+dired_by_type
+dired_by_user
+dired_dir
+dired_files
+dired_menu
+dired_mixed
+dired_support
+dir_list_order
+dir_list_order specifies the directory list order under DIRED_SUPPORT
+dir_list_style
+dir_list_styles specifies the directory list style under DIRED_SUPPORT
+disable bold video-attribute
+disable Cc: prompts for self copies of mailings
+disabled
+DISABLED form reset button.  Use UP or DOWN arrows or tab to move off.
+DISABLED form submit button.  Use UP or DOWN arrows or tab to move off.
+disable directory browsing
+DISABLED Script button.  Use UP or DOWN arrows or tab to move off.
+disable execution scripts
+disable extended lynx.cfg viewing and reloading
+disable forced pauses for statusline messages
+disable ftp access
+disable info on options used to compile the binary
+disable local program execution (DEFAULT)
+disable mailing of error messages to document owners
+disable -more- string in statusline messages
+disable passing URLs to some external programs
+disable reverse video-attribute
+disable rlogins
+disable SIGINT cleanup handler
+disable some print functions, like -restrictions=print
+disable telnets
+disable the 'g' (goto) command
+disable the 'j' (jump) command
+disable the link/form numbering feature in dumps
+disable the link list feature in dumps
+disable the miscellaneous information messages
+disable the right/left margins in the default
+disable the title at the top of each page
+disable transmission of Referer headers
+disable transmission of Referer headers for file URLs
+disable underline video-attribute
+disable URLs that point to remote hosts
+disable viewing of lynx.cfg configuration file info
+disallow access to, or creation of, hidden (dot) files
+disallow changing the eXecute permission on files
+disallow changing the location of the bookmark file
+disallow changing the working directory of lynx, e.g.,
+disallow Control-Z suspends with escape to shell
+disallow editing
+disallow execution links via the bookmark file
+disallow execution of Lynx CGI URLs
+disallow ftp coming from outside your domain
+disallow ftps coming from inside your domain
+disallow local file management
+disallow mail
+disallow modifications of the User-Agent header
+disallow most print options
+disallow multiple bookmark files
+disallow rlogins coming from inside your domain
+disallow rlogins coming from outside your domain
+disallow saving options in .lynxrc
+disallow saving to disk in the download and print menus
+disallow shell escapes, and lynxexec, lynxprog or lynxcgi
+disallow some downloaders in the download menu
+disallow specifying a port in telnet G)oto's
+disallow telnets coming from inside your domain
+disallow telnets coming from outside your domain
+disallow the user from changing the execution link option
+disallow USENET News posting.
+disallow USENET news reading and posting coming
+disallow using G)oto, served links or bookmarks for
+discarding params "%s" in request URI
+discarding "%s" from request URI
+Disclaimer
+disk_save
+=DISPLAY
+display a full menu of file operations
+display and change option settings
+Display and Character Set
+display an index of potentially useful documents
+display character set
+display (C)haracter set      : 
+Display character set
+display_charset
+display choices for printing the current document
+display help on using the browser
+display help page that may depend on context
+display information on the current document and link
+display_page
+display_page: MAXLINKS reached.
+DISPLAY=%s
+display stack of currently-suspended documents
+display the current key map
+(D)ISPLAY variable           : 
+DISP_PARTIAL
+Distributed under the GNU General Public License (Version 2).
+DivCenter
+<div><em>Note:</em> %s
+DivRight
+   </DL>
+    </DL>
+<dl compact>
+</DL></DL>
+   </DL></FORM><HR>
+dms File
+ -d --no-name %s
+!DOCTYPE
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+Document:
+Document address invalid or access not authorised
+Document Appearance
+Documentation
+Document from Form with POST content.  Resubmit?
+Document from POST action, HEAD may not be understood.  Proceed?
+Document has no Toolbar links or Banner.
+Document has only hidden links.  Use the 'l'ist command.
+DOCUMENT_ROOT=
+Documents from forms with POST content cannot be saved as bookmarks.
+Document URL put to clipboard.
+Document will not be reloaded!
+Document with POST content not found in cache.  Resubmit?
+do justification of text
+domain is set to strict checking, strict conformance to RFC2109 will
+; $Domain="%s"
+...done }}reconnecting
+...done stdin startfile
+...done with stdin arguments
+Do Nothing
+(DO_NOTHING)
+DO_NOTHING
+Do nothing (refresh)
+Do NOT mail the core file if one was generated.
+DO NOT MAP:  follow current link, submit
+Do not show rate
+don't follow Location: redirection
+DONT_TRACK_INTERNAL_LINKS
+dont_wrap_pre
+DosArabic (cp864)
+DosBaltRim (cp775)
+DosCyrillic (cp866)
+DosGreek2 (cp869)
+DosGreek (cp737)
+DosHebrew (cp862)
+DosLatin1 (cp850)
+DosLatin2 (cp852)
+DosLatinUS (cp437)
+do syntax highlighting and hyperlink handling in source
+dot after '!' at column %d:
+DoTraversal(%d:%d) -> %s
+double-quotes and tags
+doupdate
+Down Arrow
+DOWN_HALF
+DOWN_LINK
+Download
+Download document URL put to clipboard.
+Downloaded link:
+downloader
+Download options:
+Download Options
+download the current link to your computer
+DOWN_TWO
+do_www_search: newfile: %s
+Do you really want to delete this link from your bookmark file?
+Do you really want to go to the Main screen?
+Do you want to execute "%s"?
+Do you want to go back to the previous document?
+Do you wish to include the original message?
+Do you wish to include the preparsed source?
+Do you wish to send a comment?
+, %d pending
+Draw right-scroller offset (%d + %d)
+%*d: %.*s
+DTD XHTML 
+<dt><em>%s</em> <xmp>%.*s</xmp>
+    <DT><I>$(FDESC)</I>$(FNDX)
+<DT><I>%s</I><DD>
+<DT><I>%s</I><DD><A HREF="%s">%s</A>
+<dt>&nbsp;%s
+   <DT>Output format:
+<dt>%s<dd><a href="%s//%s/"><em>Domain:</em> %s</a>
+   <DT>Search parameters (* indicates indexed field):
+                     due to excessive length!
+                     due to excessive %s%s%s
+                     due to invalid port!
+dump %d:%s
+dumping %d:%d %s
+dump the first file to stdout and exit
+dump the source of the first file to stdout and exit
+*** Duplicate ChildAnchor %p named `%s'
+DWIMEDIT
+DWIMHELP
+D$X00:0f
++D$X;D$p
+Earlier articles
+Eastern European (cp852)
+Eastern European (ISO-8859-2)
+Eastern European (windows-1250)
+eatures:
+ebuf != ((void *)0)
+e"d" #!#
+edit.active
+edit.active.arrow
+edit.active.marked
+edit.active.pad
+Edit a previous filename: 
+Edit a previous Goto URL: 
+Edit a previous query: 
+Edit a previous shortcut: 
+edit.current
+edit_current_file(newfile=%s, cur=%d, lineno=%d)
+edit_current_file returns %d
+Edit Doc URL and load
+         Editing Bookmark DESCRIPTION and FILEPATH
+Editing Bookmark DESCRIPTION and FILEPATH (%d of 2)
+Edit Link URL and load
+(E)ditor                     : 
+Editor killed by signal
+Editor returned with error status %s
+edit.prompt
+edit.prompt.arrow
+edit.prompt.marked
+edit.prompt.pad
+EDITTEXTAREA
+edit the current document or a form's textarea
+edit the current document's URL and go to it
+Edit the current Goto URL: 
+Edit the current link's URL: 
+edit the current link's URL or ACTION and go to it
+Edit the current query: 
+Edit the current shortcut: 
+Edit the previous filename: 
+Edit the previous Goto URL: 
+Edit the previous query: 
+Edit the previous shortcut: 
+Edit this document's URL: 
+eep-alive:
+:&;&e&f&c&`&" 
+e"g"d"f" #
+!ELEMENT
+emacskeys
+emacs_keys
+e(M)acs keys: 
+Emacs keys
+emacs_keys_always_on
+emacs-like exchange-point-and-mark
+emacs-like kill-region
+emacs-like set-mark-command
+emacs-like yank
+email address as the password for anonymous ftp.  If no value is given,
+<em>config.cache</em>
+<EM>Error:</EM> At least one indexed field value must be specified!
+emit backspaces in output if -dumping or -crawling
+ </em>lynx.cfg<em> 
+<em>lynx_cfg.h</em>
+!?! empty !?!
+?!? empty ?!?
+Empty Directory
+Empty item not allowed
+    #<em>%s <a href="%s">%s</a></em>
+<em>%s</em>
+<em>%s</em> 
+   <em>%s</em>
+   <em>%s</em> %d
+<em>%s</em> %d %s
+   <em>%s</em> %d %s %s
+   <em>%s</em> %s
+<em>%s</em> %s<br>
+enable case sensitive user searching
+enabled.
+enable edit mode with specified editor
+enable emacs-like key movement
+ENABLE_IPV6
+enable local program execution
+enable local program execution from local files only
+enable_lynxrc
+ENABLE_NLS
+enable print functions (DEFAULT), opposite of -noprint
+enable_scrollback
+enables examination of beginning and end of long URL in
+enable vi-like key movement
+enable XHTML 1.0 parsing
+encoding=
+encoding_all
+encoding_bzip2
+encoding_compress
+encoding_deflate
+encoding_gzip
+encoding_none
+ Enctype:
+end_anchor->input_field != ((void *)0)
+end_anchor != ((void *)0)
+endForm:    HTCurrentForm is missing!
+endForm:    HText is missing!
+End of document
+end-of-file
+End of LYGetHostByName
+...end of pumpData
+(End of session.)
+endStblTABLE: changed %d lines, done.
+endStblTABLE: finally free %p
+endStblTABLE: have%s enclosing table (%p)
+endStblTABLE: ignored.
+endStblTABLE: ncols = %d.
+endStblTABLE: ok, will try.
+endStblTABLE: postpone free %p
+Enter a database query: 
+Enter a filename: 
+ Enter a mail address for a CC of your message.
+Enter a new filename: 
+Enter a terminal type:
+Enter a whereis query: 
+Entered HTAnchor_findAddress
+Entered HTAnchor_findChildAndLink:  tag=`%s',%s href=`%s'
+Entering HText_setLastOptionValue: value:"%s", checked:%s
+Entering mainloop, startfile=%s
+Enter Lynx keystroke command: 
+Enter name for new directory: 
+Enter name of file to create: 
+Enter new location for directory: 
+Enter new location for file: 
+Enter new location for tagged items: 
+Enter new name for directory: 
+Enter new name for file: 
+Enter password for user %s@%s:
+            Enter text into the field by typing on the keyboard              
+Enter text.  Use arrows or tab to move off of field.
+entry_info != ((void *)0)
+Entry into main screen
+env_build_alias_set
+env_build_alias_value
+env_CC_set
+env_CC_value
+env_CFLAGS_set
+env_CFLAGS_value
+env_CPPFLAGS_set
+env_CPPFLAGS_value
+env_CPP_set
+env_CPP_value
+env_host_alias_set
+env_host_alias_value
+env_LDFLAGS_set
+env_LDFLAGS_value
+env_target_alias_set
+env_target_alias_value
+env != ((void *)0)
+EPRT |%d|%s|%s|%c%c
+Erase the line
+ernates:
+=> ERR_COLOR
+__errno_location
+Error accessing document!
+Error deleting file
+ERROR! - download command is misconfigured.
+Error drawing page!
+error_file
+Error in LYToggleSigDfl: %s
+Error on rx: closing socket %d
+ERROR! - printer is misconfigured!
+Error processing line %d of %s
+Error reading jump file!
+Error renaming temporary file.
+error seeking in stream
+Error spawning editor, check your editor definition in the options menu
+Error starting editor, %s
+ErrorStream
+ErrorStream. Created
+ERROR - Unable to allocate file space!!!
+ERROR - Unable to mail file
+ERROR - unable to open bookmark file.
+Error uncompressing temporary file!
+ERROR! - upload command is misconfigured
+escaped != ((void *)0)
+escape from the browser to the system
+ETag: %s  
+, ETA %s
+/etc/lynx-cur/lynx.cfg
+"/etc/lynx-cur/lynx.cfg"
+/etc/lynx-cur/lynx.lss
+"/etc/lynx-cur/lynx.lss"
+/etc/mailcap
+/etc/mime.types
+/etc/organization
+ethernet
+examine list of cached documents
+examine the Cookie Jar
+Excellent!!!
+exec, and goto.  The settings for these, as well as
+exec_frozen
+EXEC_LINKS
+exec of %s failed
+EXEC_SCRIPTS
+exec $SHELL
+Executable link rejected due to `%c' character.
+Executable link rejected due to location or path.
+Executable link rejected due to malformed request.
+Executable link rejected due to relative path string ('../').
+, execute
+Executing %s 
+Executing system command. This might take a while.
+Execution is disabled.
+Execution is not enabled for this file.  See the Options menu (use %s).
+Execution via bookmarks is disabled.
+execve failed
+exists and is writable, 
+      Exiting...
+Exiting via interrupt:
+exit on left-arrow in startfile (allows save to disk)
+exit on left-arrow in startfile, and disable save to disk
+expanded path %s
+Expected address part (single address or list)
+expected text after dot at column %d:
+Expecting an address template
+Expecting a single address or '(' beginning list
+Expecting a single name or '(' beginning list
+Expecting ')' closing address list
+Expecting ')' closing user/group list
+Expecting user or group name
+Expires:
+                    expires: %d, %s
+expires:	%s
+Expires: %s  
+EXP_JAPANESEUTF8_SUPPORT
+EXP_NESTED_TABLES
+ExtEditForm: system() returned %d (0x%x), %s
+external
+External editing is currently disabled.
+external_menu
+externals
+EXTERNAL: '%s' <==> '%s'
+External support is currently disabled.
+EXTERN_LINK
+EXTERN_PAGE
+extract_body(%s) = '%s'
+extract_field(%s) = '%s'
+extract_subject(%s) = '%s'
+failed select
+failed to change directory
+Failed to clear DISPLAY variable!
+Failed to obtain status of current link!
+Failed to open file %s for reading!
+Failed to register %s
+Failed to set DISPLAY variable!
+Fall back to no-modifier command
+fancy_curses
+FASTBACKW_LINK
+FASTFORW_LINK
+Fatal error - could not open output file %s
+father_of_element->left != ((void *)0)
+father_of_element->right != ((void *)0)
+__fdelt_chk
+$(FDESC)
+february
+fflush(nfp): %s
+f%g%h%i%j%
+fg != ((void *)0)
+fields%c%c
+field "%s" %d %s -> %d %s %s
+field "%s" %d %s OK
+field separator ':'
+FIELDSET
+field will wrap: %d
+<FIG ISOBJECT IMAGEMAP
+[FIGURE]
+file:///
+file: ACTIONs are disallowed!
+File-Cache: <a href="file://%s">%s</a>  
+File does not exist.
+File does not exist - reenter or cancel:
+file_editor
+file_editor specifies the editor to be invoked when editing local files
+file entry field
+(File entry field) Enter filename.  Use UP or DOWN arrows or tab to move off.
+File exists.  Overwrite?
+File insert cancelled!!!
+file into which the user can paste links for easy access at a later
+File is %d pages long.  Are you sure you want to print?
+File is %d screens long.  Are you sure you want to print?
+	File is not editable.
+File is not readable.
+File is not readable - reenter or cancel:
+file lists such as FTP directories.  The options are:
+file://localhost
+file://localhost/
+file://localhost/%s%u
+file://localhost%s%u
+File Management Options
+File management support is disabled!
+File may be recoverable from %s during this session
+File mode is 0%o, uid=%d, gid=%d. My uid=%d, %d groups (
+=FILENAME
+File name may not begin with a dot.
+; filename="%s"
+filename != ((void *)0)
+file not specified for Protect rule, and
+Filepath:
+File Permission Options
+File `%s'
+files and directories together.  "FILES_FIRST" lists files first and
+Files first
+Files first      
+FILES_FIRST
+File size:
+file_sorting_method
+File that you are currently viewing
+File that you have currently selected
+file_url
+file: URL's
+file: URLs via bookmarks are disallowed!
+file: URLs via served links are disallowed!
+File: Value of %s is %.3f
+FileWriter
+find_domain_entry(%s) bv:%d, invcheck_bv:%d
+Find key
+FIND_KEY
+find_linkage_gnutls
+find_linkage_iconv
+find_linkage_idn
+find_linkage_intl
+find_linkage_z
+FindPound: searching for "%s"
+FindPound: Selecting anchor [%d] at line %d
+FindPresentation: found exact match: %s -> %s
+finger://
+finger_proxy
+Finger server on 
+finish_ExtEditForm
+FIRST_LINK
+FIRST_REVERSED
+first_visited
+first_visited_reversed
+fix_httplike_urls: URL '%s'
+F_LINK_NUM
+flushes the cache on a proxy server
+fn != ((void *)0)
+follow_link_number(%d,%d,...)
+Follow link (or goto link or page) number: 
+Followup to:
+FOLLOWUP-TO:
+font-size
+Footnote
+FOOTNOTE:
+F<option value="%s" %s>%s
+force_8bit_toupper
+force_cookie_prompt
+***forced by
+                    Forced the 'secure' flag on.
+force_empty_hrefless_a
+force HREF-less 'A' elements to be empty (close them as
+force_html
+force no-response
+force numbering of links
+force numbering of links as well as form input fields
+force reset of the current link on the page
+ !FORCES 
+ FORCES 
+force_secure
+force_ssl_cookies_secure
+force_ssl_prompt
+forces the first document to be interpreted as HTML
+force submission of form or link with no-cache
+force_use_gnu_gettext
+force yes-response
+Forcing curses on to %s
+fork() failed
+<form action="%s" method="post">
+<Form Action="%s//PERMIT_LOCATION%s">
+... format %s
+Formatting refresh-url as first line of result
+(Form field)
+(Form field) Enter text.  Use <return> to submit.
+(Form field) Enter text.  Use <return> to submit, arrows or tab to move off.
+(Form field) Enter text.  Use <return> to submit (%s for no cache).
+(Form field) Inactive. Press <return> to edit, press <return> twice to submit.
+(Form field) Inactive.  Use <return> to edit.
+(Form field) Inactive.  Use <return> to edit (%s to submit with no cache).
+Form fields are numbered
+Form fields are numbered          
+Form field value exceeds buffer length!  Trim the tail.
+Form has a mailto action!  Cannot download.
+form input field or button.  In addition, options in popup menus are
+for more comments.
+(Form reset button)   Use right-arrow or <return> to reset form to defaults.
+forms mode
+forms_numbered
+forms_options
+Form submit action is POST, HEAD may not be understood.  Proceed?
+(Form submit button) Use right-arrow or <return> to submit.
+(Form submit button) Use right-arrow or <return> to submit ('x' for no cache).
+form to permit
+For security reasons, this is not allowed when
+For `%s' proxy server ignored: %s
+For `%s' using `%s'
+For `%s' will not use proxy
+'f' or 't'
+Forwarding received authorization
+forwbackw.arrow
+found anchor at end of line
+found anchor at end of line, leaving it there
+found %d.
+found %d, x_offset=%d.
+Found name "%s" -> %d
+__fprintf_chk
+FRAMEBORDER
+FRAMESET
+freeaddrinfo
+freopen64
+fr, may be a comma-separated list in decreasing preference)
+From: anonymous@nowhere.you.know
+(from a previous session)
+ (From History)
+from inside your domain
+from outside your domain
+From: %s
+From: %.*s
+From: %s%c%c
+$(FSIZE)
+$(FSIZE2)
+Ftp access is disabled!
+ftp_by_date
+ftp_by_name
+ftp_by_size
+ftp_by_type
+FTP connected, socket %d  control %p
+FTP data
+FTP data connected, socket %d
+ftp_format
+ftp_passive
+ftp_proxy
+(F)TP sort criteria          : 
+FTP sort criteria
+Full name:
+func_alloca_works
+func___argz_count
+func___argz_next
+func___argz_stringify
+func_assume_default_colors
+func_cbreak
+func_ctermid
+func_curses_version
+func_cuserid
+func_dcgettext
+func_decl_getgrgid
+func_decl_getgrnam
+func_decl_strstr
+func_define_key
+func_delscreen
+func_feof_unlocked
+func_fgets_unlocked
+func_fork
+func_fork_works
+func_fseeko
+func_ftime
+func_getattrs
+func_getbegx
+func_getbegy
+func_getcwd
+func_getegid
+func_geteuid
+func_getgid
+func_getgroups
+func_gethostbyname
+func_gethostname
+func_getpagesize
+func_gettext
+func_gettimeofday
+func_getuid
+func_gnutls_priority_set_direct
+func_iconv
+func_keypad
+func_lstat
+func_mempcpy
+func_mkdtemp
+func_mktemp
+func_mktime
+func_mmap_fixed_mapped
+func_munmap
+func_napms
+func__nc_freeall
+func__nc_free_and_exit
+func_newpad
+func_newterm
+func_pnoutrefresh
+func_popen
+func_putenv
+func_readdir
+func_resizeterm
+func_setenv
+func_setlocale
+func_setuid
+func_sigaction
+func_socket
+func_stpcpy
+func_strcasecmp
+func_strchr
+func_strdup
+func_strerror
+func_strstr
+func_strtoul
+func_touchline
+func_touchwin
+func_truncate
+func_tsearch
+func_ttyname
+func_unsetenv
+func_use_default_colors
+func_use_legacy_coding
+func_usleep
+func_vasprintf
+func_vfork
+func_vfork_works
+func_waitpid
+func_wattr_get
+func_wborder
+func_wredrawln
+func_wresize
+func_zError
+gai_strerror
+Garbage after group definition
+Gateway found: %s
+'gcc -E'
+GCRYPT_1.2
+gcry_randomize
+General Preferences
+getaddrinfo
+get_bookmark_filename: SEEKING %s
+GETCH: Got %#x.
+GetCommand
+get_connection
+get_connection(%s)
+get_data
+get_data:%s
+getfile: Adding fragment '%s' to redirection URL.
+getfile: dropping post_data!
+getfile: getting %s
+GetFileInfo: '%s' is a%s %s %s file, charset=%s (%d).
+GetFileName
+getfile:    resetting LYCancelDownload to FALSE
+getfile: URL '%s'
+getgrgid
+getgrnam
+getgroups
+GETGROUPS_T
+gethostbyname
+gethostname
+getnameinfo
+getpeername
+get_physical %s
+getpwnam
+getpwuid
+GET %.*s%c%c%c%c
+getsockname
+getsockname failed
+gettimeofday
+Getting %s
+ghostview %s&
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+global_extension_map
+global_mailcap
+Glossary
+Glossary1
+Glossary2
+Glossary3
+Glossary4
+Glossary5
+Glossary6
+GlossaryCompact
+GlossaryCompact1
+GlossaryCompact2
+GlossaryCompact3
+GlossaryCompact4
+GlossaryCompact5
+GlossaryCompact6
+__gmon_start__
+GNU Compressed
+GNU Compr. Tar
+gnu_library_2_1
+gnu_source
+GNUTLS_1_4
+GNUTLS 2.12.14 
+gnutls_certificate_allocate_credentials
+gnutls_certificate_free_credentials
+gnutls_certificate_get_peers
+gnutls_certificate_set_verify_flags
+gnutls_certificate_set_x509_key_file
+gnutls_certificate_set_x509_trust_file
+gnutls_certificate_type_get
+gnutls_certificate_verify_peers2
+gnutls_cipher_get
+gnutls_cipher_get_key_size
+gnutls_cipher_get_name
+gnutls_cipher_suite_get_name
+gnutls_compat
+gnutls_compression_get
+gnutls_compression_get_name
+gnutls_credentials_set
+gnutls_deinit
+gnutls_global_init
+gnutls_handshake
+gnutls_init
+gnutls_kx_get
+gnutls_kx_get_name
+gnutls_mac_get
+gnutls_mac_get_name
+gnutls_priority_set_direct
+gnutls_protocol_get_name
+gnutls_protocol_get_version
+gnutls_record_recv
+gnutls_record_send
+gnutls_strerror
+gnutls_transport_set_ptr
+gnutls_x509_crt_deinit
+gnutls_x509_crt_get_dn_by_oid
+gnutls_x509_crt_get_issuer_dn_by_oid
+gnutls_x509_crt_get_subject_alt_name
+gnutls_x509_crt_import
+gnutls_x509_crt_init
+'-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security'
+go back half a page in the document
+go back to the previous document
+go back two lines in the document
+go directly to a target document or action
+go forward half a page in the document
+go forward two lines in the document
+gopher://
+gopher://error.host:1/0
+Gopher index
+Gopher Menu
+gopher_proxy
+Gopher request sent; waiting for response.
+'g' or 'l'
+Got EOF with EINTR, recent_sizechange so far is %d
+Got KEY_RESIZE, recent_sizechange so far is %d
+go to a document given as a URL
+Goto a non-http URL is disallowed!
+Goto a random URL is disallowed!
+Go to begin of line
+goto_bibp
+gotobuffer
+goto_configinfo
+goto_cso
+Go to end   of line
+goto_file
+goto_finger
+goto_ftp
+goto_gopher
+goto_http
+goto_https
+goto is allowed for http and https
+goto_line(%d) -> link %d -> %d
+goto_lynxcgi
+goto_lynxexec
+goto_lynxprog
+goto_mailto
+Goto multi-bookmark menu
+goto_news
+goto_nntp
+goto_rlogin
+goto_snews
+goto_telnet
+go to the beginning of the current document
+go to the document given by the current link
+go to the end of the current document
+Goto the URL in the clipboard
+goto_tn3270
+go to Toolbar or Banner in the current document
+goto_wais
+got popup option number %d, 
+Got redirection with a bad Location header.
+Got redirection with no Location header.
+ *** Got simulated 'Z' ***
+Got unexpected 304 Not Modified status.
+Got unexpected Informational Status.
+Greek (ISO-8859-7)
+Greek (windows-1253)
+GridText:     add link on line %d col %d [%d] %s
+GridText: adjusting struct's to add %d new line(s)
+GridText: Anchor found on line:%d col:%d [%05d:%d] ext:%d
+GridText: Auto-uncaching
+GridText.c
+GridText: Change to style %s
+GridText: %d blank line(s) added to TEXTAREA name=|%s|
+GridText: edited text inserted into lynx struct's
+GridText: entered HText_ExpandTextarea()
+GridText: entered HText_ExtEditForm()
+GridText: entered HText_InsertFile()
+GridText: Entering HText_beginInput type=%s
+GridText: Entering HText_endAppend
+GridText: Entering HText_trimHightext (final)
+GridText: Entering HText_trimHightext (partial: 0..%d/%d)
+GridText: exiting HText_ExpandTextarea()
+GridText: exiting HText_ExtEditForm()
+GridText: exiting HText_InsertFile()
+GridText: file insert aborted - file=|%s|- was 0-length
+GridText: file insert cancelled - no filename provided
+GridText: file inserted into lynx struct's
+GridText: Freeing off cached doc.
+GridText:HText_endAnchor0: number:%d link_type:%d
+GridText: HText_pageDisplay at line %d started
+GridText: HText_pageDisplay finished
+GridText: invoking editor (%s) on tempfile
+GridText: New bottom line: `%s'
+GridText: No name present in input field; not displaying
+GridText: Not showing link, hightext=%s
+GridText - post_data set:
+GridText: Removing bottom blank line: `%s'
+GridText: returned from editor (%s)
+GridText: start HText_new
+GridText: TextAnchor and HTLine struct's adjusted
+GridText: TEXTAREA name=|%s| dumped to tempfile
+group_def != ((void *)0)
+Group name:
+Group %s:
+GROUP %.*s
+GROWTEXTAREA
+.GT.NOT.EQ.
+, guessing...
+gzclose   
+gzclose   : error number %d
+gzerror   
+gzerror   : %s
+gzip_path
+gzopen64
+<h1><em>%s</em></h1>
+<H1>%s%s</H1>
+<h1>%s %s (%s) (<a href="%s">%s</a>)
+<h1>%s (%s)%s<a href="%s%s">%s</a></h1>
+<h1>%s (%s%s%s), <a href="%s%s">help</a></h1>
+<h1>%s (%s%s%s)</h1>
+<H2><EM>
+<h2><em>MAP:</em>&nbsp;%s</h2>
+<H2><I>CSO/PH Query Form</I> for <EM>$(HOST)</EM></H2>
+<h2>%s</h2>
+ h_addr_list = %p
+ h_addrtype = %d,
+Half page down
+Half page up
+	 h_aliases = %p
+handle_entity: Ignoring '%s'.
+Hang Detect: TextAnchor struct corrupted - suggest aborting!
+has_colors
+HAVE_ALLOCA
+HAVE_ALLOCA_H
+HAVE___ARGZ_COUNT
+HAVE_ARGZ_H
+HAVE___ARGZ_NEXT
+HAVE___ARGZ_STRINGIFY
+HAVE_ARPA_INET_H
+HAVE_ASSUME_DEFAULT_COLORS
+HAVE_BSD_STDLIB_H
+HAVE_CBREAK
+have concise descriptions of the command and/or URL which causes
+HAVE_CTERMID
+HAVE_CURSES_VERSION
+HAVE_CUSERID
+HAVE_DCGETTEXT
+HAVE_DEFINE_KEY
+HAVE_DELSCREEN
+HAVE_DIRENT_H
+have_errno
+HAVE_FCNTL_H
+HAVE_FTIME
+HAVE_GAI_STRERROR
+HAVE_GETADDRINFO
+HAVE_GETATTRS
+HAVE_GETBEGX
+HAVE_GETBEGY
+HAVE_GETBKGD
+HAVE_GETCWD
+HAVE_GETGROUPS
+HAVE_GETTEXT
+HAVE_GETTIMEOFDAY
+HAVE_GETUID
+have_gnutls
+HAVE_GNUTLS_PRIORITY_SET_DIRECT
+have_h_errno
+HAVE_ICONV
+have_inet_aton
+HAVE_INTTYPES_H
+HAVE_KEYPAD
+HAVE_LANGINFO_CODESET
+HAVE_LC_MESSAGES
+HAVE_LIBINTL_H
+HAVE_LIMITS_H
+HAVE_LOCALE_H
+HAVE_LONG_LONG
+HAVE_LSTAT
+HAVE_LYHELP_H
+HAVE_MALLOC_H
+HAVE_MBSTATE_T
+HAVE_MKDTEMP
+HAVE_MKTEMP
+HAVE_MMAP
+HAVE_MUNMAP
+HAVE_NAPMS
+HAVE__NC_FREEALL
+HAVE__NC_FREE_AND_EXIT
+HAVE_NCURSESW_NCURSES_H
+HAVE_NCURSESW_TERM_H
+HAVE_NEWPAD
+HAVE_NEWTERM
+HAVE_NL_TYPES_H
+HAVE_PNOUTREFRESH
+HAVE_POPEN
+Have POST content.  Treating Permanent Redirection as Temporary.
+HAVE_PUTENV
+HAVE_READDIR
+HAVE_RESIZETERM
+HAVE_SETENV
+HAVE_SETLOCALE
+HAVE_SETUID
+HAVE_SIGACTION
+HAVE_SIZECHANGE
+HAVE_STDLIB_H
+HAVE_STPCPY
+HAVE_STRCASECMP
+HAVE_STRCHR
+HAVE_STRERROR
+HAVE_STRING_H
+have_sys_errlist
+HAVE_SYS_FCNTL_H
+HAVE_SYS_IOCTL_H
+HAVE_SYSLOG_H
+have_sys_nerr
+HAVE_SYS_PARAM_H
+HAVE_SYS_TIMEB_H
+HAVE_SYS_TIME_H
+HAVE_SYS_WAIT_H
+HAVE_TERM_H
+HAVE_TERMIO_H
+HAVE_TERMIOS_H
+HAVE_TOUCHLINE
+HAVE_TOUCHWIN
+HAVE_TRUNCATE
+HAVE_TTYNAME
+have_ttytype
+HAVE_TYPE_CHTYPE
+HAVE_UNISTD_H
+HAVE_UNSETENV
+HAVE_USE_DEFAULT_COLORS
+HAVE_USE_LEGACY_CODING
+HAVE_USLEEP
+have_utmp
+have_utmp_ut_host
+have_utmp_ut_name
+have_utmp_ut_session
+have_utmp_ut_syslen
+have_utmp_ut_xstatus
+have_utmp_ut_xtime
+HAVE_VASPRINTF
+HAVE_WAITPID
+HAVE_WATTR_GET
+HAVE_WBORDER
+HAVE_WREDRAWLN
+HAVE_WRESIZE
+HAVE_ZERROR
+h %d %d 
+HEAD %d%c%c
+**header==
+header_argz_h
+header_arpa_inet_h
+header_dirent_dirent_h
+header_fcntl_h
+header_intl
+header_inttypes_h
+header_lastlog_h
+header_libgt
+header_libintl_h
+header_limits_h
+header_locale_h
+header_malloc_h
+header_memory_h
+header_ncursesw_ncurses_h
+header_ncursesw_term_h
+header_nl_types_h
+header_path_gnutls
+header_path_iconv
+header_path_idn
+header_path_intl
+header_paths_h
+header_path_z
+header_stdc
+header_stddef_h
+header_stdint_h
+header_stdlib_h
+Headers Transferred to Remote Servers
+header_string_h
+header_strings_h
+header_sys_fcntl_h
+header_sys_filio_h
+header_sys_ioctl_h
+header_syslog_h
+header_sys_param_h
+header_sys_stat_h
+header_sys_timeb_h
+header_sys_time_h
+header_sys_types_h
+header_sys_wait_h
+header_term_h
+header_termio_h
+header_termios_h
+header_time
+header_unistd_h
+header_vfork_h
+Heading1
+Heading2
+Heading3
+Heading4
+Heading5
+Heading6
+HeadingCenter
+HeadingLeft
+HeadingRight
+Hebrew (ISO-8859-8)
+Hebrew (windows-1255)
+helpfile
+helpful for speech or braille interfaces, and when the terminal is
+, help on 
+ H)elp O)ptions P)rint G)o M)ain screen Q)uit /=search [delete]=history list 
+Help Screen
+here can be controlled from the Options Screen, and the next time options
+Here FOREGROUND and BACKGROUND must be one of:
+here is a list of the history stack so that you may rebuild
+hGET%20/
+"hidden" (dot) files/directories.  If set "on", this will be
+hidden form field
+hidden_link_marker
+hiddenlinks
+Hidden links:
+hidden links: options are merge, listonly, or ignore
+historical
+Historical comment parsing OFF (Minimal is in effect)!
+Historical comment parsing OFF (Valid is in effect)!
+Historical comment parsing ON (Minimal is overridden)!
+Historical comment parsing ON (Valid is overridden)!
+historical_comments
+History Page
+HISTORY %s %d/%d (%d extra)
+History, showinfo, menu and list files cannot be saved as bookmarks.
+history != ((void *)0)
+Hit any key to change value; RETURN to accept.
+Hit RETURN to accept entered data.
+Hit RETURN to accept entered data.  Delete data to invoke the default.
+  h = left    l = right
+ h_length = %d,
+{ h_name = %p
+homepage
+Home page
+HOMEPAGE
+honored only if enabled via userdefs.h and/or lynx.cfg, and not
+Host: %s%c%c
+hot.paste
+hp-roman8
+HP Roman8
+<HR><DL><DT>Entry %d:<DD><DL COMPACT><DT>
+<HR><DL><DT>Information/status<DD><DL><DT>
+HREF in BASE tag is not an absolute URL.
+HREFLANG
+<HR><FORM method="POST" action="cso://$(HOST)/">
+HStyle_addStyle(%s)
+HTAA_composeAuth
+HTAA_composeAuthResult != ((void *)0)
+HTAA_composeAuth: %s
+HTAAForwardAuth != 0
+HTAAForwardAuth_set
+HTAA_getUnfoldedLine: buffer not initialized
+HTAA_GidToName: getgrgid
+HTAA_NameToGid: getgrnam
+HTAA_NameToUid: getpwnam
+HTAA_parseGroupDef
+HTAA_parseProtFile: Mask group:
+HTAA_parseProtFile: Mask group syntax error
+HTAA_parseProtFile: Name
+HTAA_parseProtFile: Syntax error
+HTAA_parseProtFile: unknown
+HTAA_parseProtFile: valid
+HTAAProt_new
+HTAAProt_new: Loading protection file `%s'
+HTAAProt_new: Protection file
+HTAAProt_new: %s `%s'
+HTAARealm_new
+HTAAServer_new
+HTAA_setCurrentProtection: ERROR: Protection
+HTAA_setCurrentProtection: Protection file
+HTAA_setDefaultProtection: ERROR: Protection file
+HTAASetup_lookup:
+HTAASetup_lookup: No template matched
+HTAASetup_lookup: resolving setup for
+HTAASetup_new
+HTAA_setupReader
+HTAA_shouldRetryWithAuth
+HTAA_UidToName: getpwuid
+HTAccess: Appending '?0,0' coordinate pair.
+HTAccess: Auto-reloading document.
+HTAccess: Can't access `%s'
+HTAccess: Document already in memory.
+**** HTAccess: Internal software error.  Please mail lynx-dev@nongnu.org!
+HTAccess: loading document %s
+HTAccess: Loading failed, use a previous copy.
+HTAccess: Redirecting to '%s'
+HTAccess: `%s' has been accessed.
+HTAccess: `%s' has been accessed, No data left.
+HTAccess: `%s' has been accessed, No data loaded.
+HTAccess: `%s' has been accessed, partial content.
+HTAccess: `%s' has been accessed, transfer interrupted.
+HTAccess: '%s' is a redirection URL.
+**** HTAccess: socket or file number returned by obsolete load routine!
+HTAccess:  status=%d
+**** HTAccess: Status returned was: %d
+HTAddGotoURL %s
+HTAddRule
+HTAnchor_addChild called with NULL parent.
+HTAnchor_findNamedChild called with NULL parent.
+HTAnchor_getUCInfoStage
+HTAnchor: New Anchor %p named `%s' is child of %p
+HTAnchor: New unnamed Anchor %p is child of %p
+HTAnchor_setTitle: New title is NULL! 
+HTAssoc_add
+HTAssoc_add: ERROR: assoc list NULL!!
+HTAssocList_add
+HTAtom_for
+HTBTree_add
+HTBTree_new
+HTcan_reparse_document -> %d
+HTCharsetFormat: Extended MIME Content-Type is %s
+HTChildAnchor_new
+HTChunkCreate2
+HTChunkCreate2 data
+HTChunkCreate2: requested %d, allocate %u
+HTChunkCreateMayFail
+HTChunkEnsure
+HTChunkRealloc
+HTCompressed
+HTCompressFileType(%s) returns %d:%s
+HTCopy: Unexpected server disconnect. Treating as completed.
+HTdocument_settings_changed: Screen size has changed (was %dx%d, now %dx%d)
+HTdocument_settings_changed: %s setting has changed (was %d, now %d)
+HTDoRead - interrupted before starting!
+HTDoRead - no file descriptor!
+HTDoRead - refusing to read fd 0 which is a tty!
+...HTDoRead returns %d (%d seconds)
+HTDumpToStdout
+HTEscape
+HTEscapeSP
+HTEscapeUnsafe
+HText_beginAnchor
+HText_beginForm
+HText_beginInput
+HText_beginSelect: name_cs=%d "%s"
+HText_beginSelect: name=%s type=%d size=%s
+HText_endAnchor0: blanks (line,pos,ext,BlankExtent):(%d,%d,%d,%d)
+HText_endAnchor0: hidden (line,pos,ext,BlankExtent):(%d,%d,%d,%d)
+HText_ExtEditForm
+HText_getOptionNum: Got number '%d'.
+HText_InsertFile
+HText_New
+HText: No such anchor in this text!
+HText_pool_ChildAnchor_new
+HText_select
+HText: Selecting anchor [%d] at line %d
+HText_setLastOptionValue
+HText_setLastOptionValue: invalid call!  value:%s!
+HText_setLastOptionValue: last input_field not F_OPTION_LIST_TYPE (%d)
+HText_setLastOptionValue:%s value="%s"
+HText_setTabID
+HText_SubmitForm
+HTFileInit: Loading default (HTInit) extension maps.
+HTFileInit: Skipping all default (HTInit) extension maps!
+HTFilterPresentations (AcceptMedia %#x)
+HTFinger command to be sent: %s
+HTFinger: Connected to finger host '%s'.
+HTFinger: doing HTDoConnect on '%s'
+HTFinger: Done DoConnect; status %d
+HTFinger: Interrupted in HTGetCharacter, apparently.
+HTFinger: Interrupted on connect; recovering cleanly.
+HTFinger: Looking for %s
+HTFinger: Reading finger information
+HTFinger: Unable to connect to finger host.
+HTFinger: Unable to send command. Disconnecting.
+HTFormat: comparing %s and %s for half match
+HTFormat: Constructing stream stack for %s to %s (%s)
+HTFormat: Evaluating stream stack for %s worth %.3f to %s
+HTFormat: File read error %d
+HTFormat(in HTParseFile): %s
+HTFormat(in HTParseGzFile): %s
+HTFormat(in HTParseMem): %s
+HTFormatInit
+HTFormat: Interrupted in HTGetCharacter
+HTFormat: Interrupted in HTGetSSLCharacter
+HTFormat: Looking up presentation for %s to %s
+HTFormat: Read error, read returns %d
+HTFormat: %s
+HTFormat: SSL_read error %d
+HTFTP: bound to port %d on %s
+HTFTP:close_connection: %s
+HTFTP: Closed master socket %u
+HTFTP: Closing control socket %d
+HTFTP: Closing data socket %d
+HTFTP: DIRSTYLE failed, treating as Generic server.
+HTFTP: EPSV reply has invalid format!
+HTFTP: Error %d sending command: closing socket %d
+HTFTP: Falling back to treating as Unix server.
+HTFTP: Filename '%s'
+HTFTP: getnameinfo failed
+HTFTP: getpeername(control) failed
+HTFTP: Interrupted at beginning of login.
+HTFTP: Interrupted in HTGetCharacter, apparently.
+HTFTP: Interrupted in response (port_command)
+HTFTP: Interrupted on connect
+HTFTP: Interrupted while sending password.
+HTFTP: Interrupted while sending username.
+HTFTP: Line in %s is %s
+HTFTPLoad: normal end; 
+HTFTPLoad(%s) %s connection
+HTFTP: Logged in.
+HTFTP: Login fail: %s
+HTFTP: Looks like a TCPC server.
+HTFTP: MS Windows filename: %s  date: %s  size: %lu
+HTFTP: No control connection set up!!
+HTFTP: Opened master socket number %d
+HTFTP: PASV reply has no inet address!
+HTFTP: Port defined.
+HTFTP: Rejecting path due to illegal escaped slash.
+HTFTP: Rejecting path due to non-Unix-style syntax.
+HTFTP: Server is listening on port %d
+HTFTP: They close so we close socket %d
+HTFTP: This host is %s
+HTFTP: Treating as AppleShare server.
+HTFTP: Treating as CMS server.
+HTFTP: Treating as DCTS server.
+HTFTP: Treating as "dls" server.
+HTFTP: Treating as Generic server.
+HTFTP: Treating as MachTen server.
+HTFTP: Treating as MSDOS (Unix emulation) server.
+HTFTP: Treating as MS Windows server.
+HTFTP: Treating as NCSA server.
+HTFTP: Treating as NetPresenz (MACOS) server.
+HTFTP: Treating as Peter Lewis (MACOS) server.
+HTFTP: Treating as %s server.
+HTFTP: Treating as Unix server.
+HTFTP: Treating as VMS server.
+HTFTP: Treating as Window_2K server.
+HTFTP: Treating as Window_NT server.
+HTFTP: Treating VMS as UNIX server.
+HTFTP: Trimmed '%s'
+HTFTP: type=%s
+HTFTP: Ugh!  A Generic server.
+HTFTP: Unable to connect to remote host for `%s'.
+HTFTP: UnEscaped %s
+HTFTP: VM/CMS filename: %s  date: %s  size: %lu
+HTFTP: VMS filename: %s  date: %s  size: %lu
+HTFTP: VMSized '%s'
+HTFWriter_abort called
+HTFWriter: Aborting: file not executed or saved.
+HTFWriter.c
+HTFWriter_new
+HTFWriter_write
+HTGetAddrInfo: getaddrinfo(%s, %s): %s
+HTGetRelLinkNum(%d,%d,%d) -- HTMainText=%p
+HTGetSSLHandle: certfile is set to %s by config SSL_CERT_FILE
+HTGetSSLHandle: certfile is set to %s by SSL_CERT_FILE
+HTGopher: adding URL: %s
+HTGopher: Bad menu item.
+HTGopher: Connected, writing command `%s' to socket %d
+HTGopher: Interrupted in HTGetCharacter, apparently.
+HTGopher: Interrupted on connect; recovering cleanly.
+HTGopher: Looking for %s
+HTGopher: Menu item: %s
+HTGopher: Passing to CSO/PH gateway.
+HTGopher: Passing to finger gateway.
+HTGopher: Unable to connect to remote host for `%s'.
+HTGopher: Unable to send command.
+HTGroup.c: %s (got %s)
+HTGroup.c: Syntax error in rule file at line
+HTGzFileCopy: Read error, gzread returns %d
+HTIME_put_character expected LF in chunked data
+HTInit.c
+HTList_addObject
+HTList_addObjectAt
+HTList_insertObjectAt
+HTList_new
+*** HTList: Refuse linking already linked obj 
+HTList: Treating negative object position %d as %d.
+HTList: Trying to add object %p to a nonexisting list
+HTList: Trying to append list %p to a nonexisting list
+HTList: Trying to link object %p to a nonexisting list
+HTLoadCSO
+HTLoadCSO: Connected, writing command `
+HTLoadCSO: Interrupted in HTGetCharacter, apparently.
+HTLoadCSO: Interrupted on connect; recovering cleanly.
+HTLoadCSO: Looking for %s
+HTLoadCSO: Unable to connect to remote host for `%s'.
+HTLoadCSO: Unable to send command.
+HTLoadCSO: Writing command `
+HTLoadExtensionsConfigFile: Could not open '%s'.
+HTLoadExtensionsConfigFile: Loading file '%s'.
+HTLoadFile: can't stat %s
+HTLoadFile: gzopen of `%s' gives %p
+HTLoadFile: Opening `%s' gives %p
+HTLoadFile: value of presenting %s is %f
+HTLoadFile: zzopen of `%s' gives %p
+HTLoadGopher
+HTLoadHTTP
+HTLoadHTTP: %s
+HTMake822Word
+HTMIME: Bad character `%c' found where `%s' expected
+HTMIME: Can't translate! ** 
+HTMIMEConvert
+HTMIME: Extended MIME Content-Type is %s
+HTMIME: Got 'A' at beginning of line, state now A
+HTMIME: Got 'C' at beginning of line, state now C
+HTMIME: Got 'D' at beginning of line, checking for 'ate:'
+HTMIME: Got 'E' at beginning of line, state now E
+HTMIME: Got 'K' at beginning of line, checking for 'eep-alive:'
+HTMIME: Got 'L' at beginning of line, state now L
+HTMIME: Got 'P' at beginning of line, state now P
+HTMIME: Got 'R' at beginning of line, state now R
+HTMIME: Got 'S' at beginning of line, state now S
+HTMIME: Got 'T' at beginning of line, state now T
+HTMIME: Got 'U' at beginning of line, state now U
+HTMIME: Got 'V' at beginning of line, state now V
+HTMIME: Got 'W' at beginning of line, state now W
+HTMIME: *** Ignoring Location!
+HTMIME: in case CONTENT_
+HTMIME: in case CONTENT_L
+HTMIME: in case CONTENT_T
+HTMIME: MIME Content-Type is '%s',
+HTMIME: MIME Content-Type is '%s', converting to '%s'
+HTMIME: PICKED UP Accept-Ranges: '%s'
+HTMIME: PICKED UP Age: '%s'
+HTMIME: PICKED UP Allow: '%s'
+HTMIME: PICKED UP Alternates: '%s'
+HTMIME: PICKED UP Cache-Control: '%s'
+HTMIME: PICKED UP Connection: '%s'
+HTMIME: PICKED UP Content-Base: '%s'
+HTMIME: PICKED UP Content-Disposition: '%s'
+HTMIME: PICKED UP Content-Encoding: '%s'
+HTMIME: PICKED UP Content-Features: '%s'
+HTMIME: PICKED UP Content-Language: '%s'
+HTMIME: PICKED UP Content-Length: '%s'
+HTMIME: PICKED UP Content-Location: '%s'
+HTMIME: PICKED UP Content-MD5: '%s'
+HTMIME: PICKED UP Content-Range: '%s'
+HTMIME: PICKED UP Content-Transfer-Encoding: '%s'
+HTMIME: PICKED UP Content-Type: '%s'
+HTMIME: PICKED UP Cookie: '%s'
+HTMIME: PICKED UP Date: '%s'
+HTMIME: PICKED UP ETag: %s
+HTMIME: PICKED UP Expires: '%s'
+HTMIME: PICKED UP Keep-Alive: '%s'
+HTMIME: PICKED UP Last-Modified: '%s'
+HTMIME: PICKED UP Link: '%s'
+HTMIME: PICKED UP Location: '%s'
+HTMIME: PICKED UP Pragma: '%s'
+HTMIME: PICKED UP Proxy-Authenticate: '%s'
+HTMIME: PICKED UP Public: '%s'
+HTMIME: PICKED UP Refresh: '%s'
+HTMIME: PICKED UP Retry-After: '%s'
+HTMIME: PICKED UP Safe: '%s'
+HTMIME: PICKED UP Server: '%s'
+HTMIME: PICKED UP Set-Cookie2: '%s'
+HTMIME: PICKED UP Set-Cookie: '%s'
+HTMIME: PICKED UP Title: '%s'
+HTMIME: PICKED UP Transfer-Encoding: '%s'
+HTMIME: PICKED UP Upgrade: '%s'
+HTMIME: PICKED UP URI: '%s'
+HTMIME: PICKED UP Vary: '%s'
+HTMIME: PICKED UP Via: '%s'
+HTMIME: PICKED UP Warning: '%s'
+HTMIME: PICKED UP WWW-Authenticate: '%s'
+HTMIME:  %s
+HTMIME:  %.*s
+HTMIME: *** Syntax error. (string too long)
+HTMIME: Was A, found C, checking for 'cept-ranges:'
+HTMIME: Was A, found G, checking for 'e:'
+HTMIME: Was A, found L, state now AL'
+HTMIME: Was AL, found L, checking for 'ow:'
+HTMIME: Was AL, found T, checking for 'ernates:'
+HTMIME: Was C, found A, checking for 'che-control:'
+HTMIME: Was C, found O, state now CO'
+HTMIME: Was CO, found N, state now CON
+HTMIME: Was CO, found O, checking for 'kie:'
+HTMIME: Was CON, found N, checking for 'ection:'
+HTMIME: Was CON, found T, checking for 'ent-'
+HTMIME: Was CONTENT_, found B, checking for 'ase:'
+HTMIME: Was CONTENT_, found D, checking for 'isposition:'
+HTMIME: Was CONTENT_, found E, checking for 'ncoding:'
+HTMIME: Was CONTENT_, found F, checking for 'eatures:'
+HTMIME: Was CONTENT_, found L, state now CONTENT_L
+HTMIME: Was CONTENT_, found M, checking for 'd5:'
+HTMIME: Was CONTENT_, found nothing; bleah
+HTMIME: Was CONTENT_, found R, checking for 'ange:'
+HTMIME: Was CONTENT_, found T, state now CONTENT_T
+HTMIME: Was CONTENT_L, found A, checking for 'nguage:'
+HTMIME: Was CONTENT_L, found E, checking for 'ngth:'
+HTMIME: Was CONTENT_L, found nothing; bleah
+HTMIME: Was CONTENT_L, found O, checking for 'cation:'
+HTMIME: Was CONTENT_T, found nothing; bleah
+HTMIME: Was CONTENT_T, found R, checking for 'ansfer-encoding:'
+HTMIME: Was CONTENT_T, found Y, checking for 'pe:'
+HTMIME: Was E, found T, checking for 'ag:'
+HTMIME: Was E, found X, checking for 'pires:'
+HTMIME: Was L, found A, checking for 'st-modified:'
+HTMIME: Was L, found I, checking for 'nk:'
+HTMIME: Was L, found O, checking for 'cation:'
+HTMIME: Was P, found R, state now PR'
+HTMIME: Was P, found U, checking for 'blic:'
+HTMIME: Was PR, found A, checking for 'gma'
+HTMIME: Was PR, found O, checking for 'xy-authenticate'
+HTMIME: Was RE, found F, checking for '%s'
+HTMIME: Was RE, found T, checking for '%s'
+HTMIME: Was R, found E
+HTMIME: Was SE, found R, checking for 'ver'
+HTMIME: Was SE, found T, checking for '-cookie'
+HTMIME: Was SET_COOKIE, found 2, checking for ':'
+HTMIME: Was SET_COOKIE, found :, processing
+HTMIME: Was S, found A, checking for 'fe:'
+HTMIME: Was S, found E, state now SE'
+HTMIME: Was T, found I, checking for 'tle:'
+HTMIME: Was T, found R, checking for 'ansfer-encoding'
+HTMIME: Was U, found P, checking for 'grade:'
+HTMIME: Was U, found R, checking for 'i:'
+HTMIME: Was V, found A, checking for 'ry:'
+HTMIME: Was V, found I, checking for 'a:'
+HTMIME: Was W, found A, checking for 'rning:'
+HTMIME: Was W, found W, checking for 'w-authenticate:'
+html5_charsets
+HTML_abort: ***** leftover option data: %s
+HTML_abort: ***** leftover textarea data: %s
+HTML_abort: SELECT or OPTION not ended properly *****
+HTML_abort: TEXTAREA not used properly *****
+HTML: ALIGN not 'left'.  Using space instead of TAB.
+*HTML_BASE: final href=`%s'
+*HTML_BASE: initial href=`%s'
+HTML: BASE '%s' is not an absolute URL.
+HTML:begin_element[%d]: adding style to stack - %s (%s)
+HTML:begin_element: internal call (level %d), leaving on stack - `%s'
+HTML: citehost '%s' found
+HTML: Column out of bounds.  Using space instead of TAB.
+HTML: DECLAREd OBJECT.  Ignoring!
+HTML: Designating '%s' as an ISMAP script
+HTML: DOC OWNER '%s' found
+HTMLDTD: Copying %s DTD element info of size %d, %d * %d
+HTML:end_element[%d]: Popped style off stack - %s
+HTML:end_element[%d]: %s (level %d), %s - %s
+HTML:end_element: Internal call (level %d), leaving on stack - %s
+HTML_end_element: Reducing List Nesting Level to %d
+HTML: end of element %s when expecting end of %s
+HTML error recovery
+HTML: Found invalid HREF="%s" TYPE="%s"!
+HTML_free: Ending HTML_A
+HTML_free: Ending underline
+HTML_free: ***** leftover option data: %s
+HTML_free: ***** leftover textarea data: %s
+HTMLGenerator
+<Html><Head>
+<HTML><HEAD><TITLE>source</TITLE></HEAD><BODY><PRE>
+HTML: Ignoring TYPE="range"
+HTML IMG: USEMAP=%d ISMAP=%d ANCHOR=%d PARA=%d
+HTML: LINK with REL="%s" and no HREF ignored.
+HTML: LINK with REL="%s" ignored.
+HTML: MAP and nested OBJECT tags.  Recycling parts
+HTML: MAP found, recycling object contents.
+HTML: ****** Maximum nesting of %d divisions exceeded!
+HTML: ****** Maximum nesting of %d divisions/tables exceeded!
+HTML: ****** Maximum nesting of %d tags exceeded!
+HTML: Missing FORM end tag.  Faking it!
+HTML: Missing SELECT end tag, faking it...
+HTML: NAMEd OBJECT.  Ignoring!
+HTML: Nested OBJECT tags.  Recycling.
+HTML: Nested OBJECT tags.  Recycling incomplete contents
+HTML_new
+HTML: Not HT_LEFT.  Using space instead of TAB.
+HTML:OBJECT content:
+HTML: OBJECT has SHAPES.  Converting to FIG.
+HTML: OBJECT has USEMAP.  Converting to IMG.
+HTMLParsedPresent calling CacheThru_new
+HTMLPresent calling CacheThru_new
+HTML: Recycling nested OBJECT%s.
+HTML: SCRIPT content =
+HTMLSetCharacterHandling: LYRawMode changed %s -> %s
+HTMLSetCharacterHandling: UCLYhndl_for_unspec changed %d -> %d
+HTML: '%s' is an ISMAP script
+htmlsrc_attrname_xform
+HTMLSRC_init_caches(%d tagspecs)
+HTMLSRC_%s
+htmlsrc_tagname_xform
+HTML: STYLE content =
+HTML: TAB tag has no attributes.  Ignored.
+HTMLToC calling CacheThru_new
+HTMLToPlain calling CacheThru_new
+HTmmdec_base64
+HTmmdecode
+HTmmdec_quote
+HTnameOfFile_WWW(%s,%d,%d) = %s
+HTNetToText
+HTNews: Connected to news host %s.
+HTNews: EOF on read, closing socket %d
+HTNews: File %s defines news host as `%s'
+HTNews..... group name too long, discarding.
+HTNews: Interrupted on connect; recovering cleanly.
+HTNews: Interrupted on read, closing socket %d
+HTNews: Looking for %s
+HTNews: NNTPSERVER defined as `%s'
+HTNews: Proxy command is '%.*s'
+HTNews: Proxy command returned status '%d'.
+HTNews: SSL: %s
+HTNews: Unable to complete SSL handshake for '%s', SSL_connect=%d, SSL error stack dump follows
+HTNews: Unable to connect to news host.
+HTNews: Unable to send command. Disconnecting.
+HTParentAnchor0_new
+HTParentAnchor_new
+HTParse: (ABS)
+HTParse: aName:`%s'
+HTParse:      encode:`%s'
+HTParse:      ignore:`%s'
+HTParse: (No inheritance)
+HTParsePort %d
+HTParse: (REL)
+HTParse: (Related-ABS)
+HTParse: (Related-REL)
+HTParse:      result:`%s'
+HTparse: `%s' expressed relative to
+HTParse:      spaces:`%s'
+HTPlain_new
+HTPlainPresent
+HTPlainToHTML
+HTPlain_write: Ignoring '%lX'.
+HTPreparsedFormatInit
+HTQuoteParameter
+HTRelative
+HTreparse_document returns FALSE
+HTRule: ...and pass `%s'
+HTRule: ...and redirect like 301 to `%s'
+HTRule: ...and redirect to `%s'
+HTRule: *** FAIL `%s'
+HTRule: Mark for redirection permitted
+HTRule: Pass `%s'
+HTRule: proxy server found: %s
+HTRules: Can't open rules file %s
+HTRule: `%s' matched %s %s: `%s'
+HTRule: %s '%s'
+HTRule: %s %s
+HTSABCat
+HTSABCat(%p, %p, %d)
+HTSABCopy
+HTSABCopy(%p, %p, %d)
+HTSACopy
+HTSACopy_extra
+HTSaveAndExecute
+HTSaveToFile
+HTSearch
+HTSetConversion
+HTSetConversion rep_in=%s, rep_out=%s, qual=%f
+HTSetPresentation
+HTSetPresentation rep=%s, command=%s, test=%s, qual=%f
+HTSetSuffix
+HTSetSuffix5
+HTStyleNew
+HTStyleSheetNew
+HTTelnet: Can't output a live session -- must be interactive!
+HTTelnet: Invalid hostname %s!
+HTTelnet: No host specified!
+HTTP/1.0
+HTTP_ACCEPT_CHARSET=
+HTTP_ACCEPT_LANGUAGE=%s
+HTTP: Access authorization required.
+http://bibhost/
+HTTP: BONZO ON WRITE Trying again with HTTP0 request.
+HTTP: BONZO Trying again with HTTP0 request.
+HTTP: close socket
+HTTP: close socket %d to retry with HTTP0
+HTTP: connect_host = '%s'
+HTTP: connect_url = '%s'
+HTTP: Doing post, content-type '%s'
+HTTP-EQUIV
+@@http-equiv="content-type"
+HTTP: Failed to pick up location.
+HTTP: format_in being changed to text/HTML
+HTTP: format_in is '%s',
+HTTP: Got status 0 in initial write
+HTTP: Have POST content.  Treating 301 (Permanent) as Temporary.
+HTTP: Hit unexpected network read error; aborting connection; status %d.
+HTTP: Hit unexpected network read error; aborting connection; status %d:%s.
+HTTP: Hit unexpected network WRITE error; aborting connection.
+HTTP: Interrupted followup read.
+HTTP: Interrupted initial read.
+HTTP: Interrupted on connect; recovering cleanly.
+HTTP: 'Location:' is zero-length!
+http://lynx.isc.org/
+http://lynx.isc.org/current/
+http://lynx.isc.org/release/lynx2-8-7/lynx_help/lynx_help_main.html
+HTTP: Not sending authorization (yet).
+HTTP: Not sending proxy authorization (yet).
+HTTP: Picked up location '%s'
+http_proxy
+HTTP: Proxy authorization required.
+HTTP: Proxy tunnel to '%s' established.
+HTTP: Proxy URL is '%s'
+HTTP: Read %d
+HTTP request sent; waiting for response.
+HTTP: Rx: %s
+https://
+HTTP: Scanned %d fields from line_buffer
+http://scout.wisc.edu/
+HTTP: Seeding PRNG
+HTTP: Sending authorization: %s
+HTTP: Sending Cookie2: $Version ="1"
+HTTP: Sending Cookie: %s
+HTTP: Sending proxy authorization: %s
+https_proxy
+HTTP: SSL: %s
+HTTP: Trying again with HTTP0 request.
+HTTP: Trying to read %d
+HTTP: Unable to complete SSL handshake for '%s', SSL_connect=%d, SSL error stack dump follows
+HTTP: Unable to connect to remote host for `%s' (errno = %d).
+HTTP_USER_AGENT=%s/%s libwww/%s
+http://usin.org/
+HTTP: WRITE delivered OK
+HTuncache.. freeing document for '%s'%s
+HTuncache.. HTMainText already is NULL!
+HTVMSname
+HTVMS_name
+HTWSRCConvert
+HTWSRC: Unknown field `%s' in source file
+HTZzFileCopy inflateInit() %s
+HTZzFileCopy inflateReset() %s
+HTZzFileCopy inflate() %s
+'i686-pc-linux-gnu'
+IBM PC character set
+IBM PC codepage 850
+IBM PC US codepage (cp437)
+iconv_close
+ICONV_CONST
+iconv_open
+identity
+idna_strerror
+idna_to_ascii_8z
+If a file in that character set is available, the server will send it.
+If a file in that language is available, the server will send it.
+If case_sensitive_searching is "on" then when the user invokes a search
+if confirmed, to notify the lynx-dev list.  Bug reports should
+If emacs_keys is to "on" then the normal EMACS movement keys:
+iff File
+(if implemented).  The default is "MIXED_STYLE", which sorts both
+(if implemented).  The default is "ORDER_BY_NAME"
+If keypad_mode is set to "LINKS_AND_FORM_FIELDS_ARE_NUMBERED", then
+If keypad_mode is set to "LINKS_ARE_NUMBERED", then numbers will
+If keypad_mode is set to "NUMBERS_AS_ARROWS", then the numbers on
+If no Accept-Charset header is present, the default is that any
+If sub_bookmarks is not turned "off", and multiple bookmarks have
+If verbose_images is "on", lynx will print the name of the image
+If vi_keys is set to "on", then the normal VI movement keys:
+If you are looking for the general configuration file - it is normally
+If you do not want this information given out, set the NO_FROM_HEADER
+(ignored)
+Ignored %d characters from standard input.
+...ignored since DEFAULT_COLORS:off
+ignoring incomplete list_item '%s'
+                Ignoring it!
+    Ignoring this Set-Cookie/Set-Cookie2 request.
+Illegal character "/" found! Request ignored.
+Illegal character (path-separator) found! Request ignored.
+Illegal filename; request ignored.
+Illegal redirection "//" found! Request ignored.
+Illegal redirection "../" found! Request ignored.
+Illegal redirection URL received from server!
+Illegal redirection using "~" found! Request ignored.
+Illegal URL: %s
+image/gif
+image/ham
+image/ief
+image/jpeg
+image_links
+Image map from POST response not available!
+image/png
+[IMAGE]-Submit
+image-submit button
+image/tiff
+IMAGE_TOGGLE
+image/x-cmu-rast
+image/x-png
+image/x-portable-anymap
+image/x-portable-bitmap
+image/x-portable-graymap
+image/x-portable-pixmap
+image/x-rgb
+image/x-tiff
+image/x-xbitmap
+image/x-xbm
+image/x-xpixmap
+image/x-xwindowdump
+<IMG ISOBJECT
+implies more restrictions than -anonymous, but
+include:
+![INCLUDE[
+included from '%s'.
+include ISO-8859-1 or US-ASCII, since those values are always assumed
+include mime headers and force source dump
+incremental display stages with MessageSecs delay
+increment_tagged_htline
+(in current directory)
+indexed 
+indexed so that the user may type an option number to select an option in
+INDEX_SEARCH
+In fields: input complete, or Do Nothing
+inflateEnd
+inflateInit_
+inflate_path
+inflateReset
+Info message: 
+Info message: %s
+Information about the current document
+information for syslog call
+infosecs
+inhibit wrapping of text in <pre> when -dump'ing and
+in HText_trimHightext
+initialise_default_stylesheet
+initializing default colors %d/%d
+init_pair
+'inline'
+[INLINE]
+Inlines without an ALT string specified will be ignored!  Reloading...
+INLINE_TOGGLE
+in LynxChangeStyle(curses_w_style)
+in protection setup file at line
+in Proxy-Authenticate: field
+Input cancelled
+Input complete, return char/lynxkeycode
+Input complete, return TAB
+Input deactivated
+Input link: name_cs=%d "%s" (from %d "%s")
+Input link: name=%s
+<input name="%s" type="hidden" value="%s">
+<input size=%d type="text" name="%s" value="%s" %s>
+<Input Type="checkbox" Name="mode" Value="IRGRP" %s> Read<Br>
+<Input Type="checkbox" Name="mode" Value="IROTH" %s> Read<Br>
+<Input Type="checkbox" Name="mode" Value="IRUSR" %s> Read<Br>
+<Input Type="checkbox" Name="mode" Value="IWGRP" %s> Write<Br>
+<Input Type="checkbox" Name="mode" Value="IWOTH" %s> Write<Br>
+<Input Type="checkbox" Name="mode" Value="IWUSR" %s> Write<Br>
+<Input Type="checkbox" Name="mode" Value="IXGRP" %s> %s<Br>
+<Input Type="checkbox" Name="mode" Value="IXOTH" %s> %s<Br>
+<Input Type="checkbox" Name="mode" Value="IXUSR" %s> %s<Br>
+<input type="checkbox" name="%s">
+<input type="checkbox" name="%s" %s %s>
+<input type="reset" value="Clear fields"> ]
+<input type="reset" value="%s"> - 
+<input type="submit" value="Accept Changes">
+<input type="submit" value="%s"> - 
+[ <input type="submit" value="Submit query"> | 
+In-Reply-To: <%s>
+Insert C1 char if printable
+INSERTFILE
+insert file into a textarea (just above cursorline)
+Insert key
+INSERT_KEY
+insert_new_textarea_anchor
+Insert printable char
+inside_ftp
+inside_ftp, outside_ftp, inside_rlogin, outside_rlogin,
+inside_news
+inside_news, outside_news, telnet_port, jump, mail, print,
+inside_rlogin
+inside_telnet
+INSTALL_ARGS
+install file or tagged files into a system area
+install_path
+instead of case INsensitive.  The default is usually "off".
+Insufficient operands:
+ INTERCALATE 
+Intermediate
+ (internal)
+Internal
+** Internal error: can't parse HTML to %s
+Internal error: Invalid mouse link %d!
+internal error: previous check didn't find bad HTML tag %s
+ (internal link)
+INTERRUPT
+*** INTERRUPTED in middle of connect.
+interrupt network connection or transmission
+in the file "%s" called "%s"
+in the form below and activate the 'Submit query' button.  At least
+in the Visited Links Page.
+\int\int\int\int 
+Invalid-Cookie Prompting
+Invalid header line `%s' ignored
+Invalid header '%s%s%s%s%s'
+Invalid hostname %s
+invalid line-editor selection %s for key %s, selecting all
+Invalid mode format.
+Invalid port number - will only use port 79!
+Invalid q=%s for SUFFIX:%s, using -1.0
+Invalid SUFFIX_ORDER:%s
+Invalid SUFFIX:%s ignored.
+Invalid syntax format.
+*invalid tag*
+Invoke command prompt
+invoke the 'Follow link (or page) number:' prompt
+in WWW-Authenticate: field
+_IO_getc
+_IO_putc
+'i' or 'r'
+_IO_stdin_used
+ip-address
+ipv6type
+is also allowed.
+I.%s, %d
+is disabled, creation of such files via Lynx also is disabled.
+I.%s have %d chars, or something
+" ISMAP>
+, ISMAP script
+is NOT our file.
+iso-2022-cn
+=?ISO-2022-JP?B?
+=?ISO-2022-JP?Q?
+iso-2022-kr
+iso-8859-
+ISO-8859
+iso-8859-1
+iso-8859-10
+ISO 8859-10
+iso-8859-13
+iso-8859-14
+iso-8859-15
+, iso-8859-1;q=0.01
+iso-8859-1-windows-3.0-latin-1
+iso-8859-1-windows-3.1-latin-1
+iso-8859-2
+ISO-8859-2, ISO-8859-5) which Lynx will indicate you prefer in requests
+iso-8859-2-windows-latin-2
+iso-8859-3
+iso-8859-4
+iso-8859-5
+ISO 8859-5 Cyrillic
+iso-8859-6
+ISO 8859-6 Arabic
+iso-8859-7
+ISO 8859-7 Greek
+iso-8859-8
+ISO-8859-8-E
+ISO 8859-8 Hebrew
+ISO-8859-8-I
+iso-8859-9
+ISO 8859-9 (Latin 5)
+ISO Latin 1
+ISO Latin 2
+ISO Latin 3
+ISO Latin 4
+is our file.
+IsOurFile(%s) %d
+IsOurSymlink(%s -> %s)
+isposition:
+issuer is not a CA
+...item[%d] tag=%s, value=%s
+item separator ','
+Item that you have currently selected
+It is not this file.
+It seems to be a JIS X 0201 code(%lX). Not supported.
+I will submit %s (from %s)
+Japanese (EUC)
+Japanese (EUC-JP)
+Japanese (Shift_JIS)
+Japanese (SJIS)
+  j = down    k = up
+.jfif-tbnl
+jtp != ((void *)0)
+jumpbuffer
+jumpfile
+JUMPFILE:%s
+Jumping to a shortcut URL is disallowed!
+jump_prompt
+Jump to (use '?' for list): 
+JUNK%c%c
+justify_max_void_percent
+_Jv_RegisterClasses
+KerberosV4
+KerberosV5
+key-0x%x
+Keyboard Input
+Key '%c' is not mapped to a jump file!
+keygen field
+KEYMAP(DEF) keysym=%#x
+KEYMAP(DEF) keysym=%#x, seq='%s'
+KEYMAP(PA): in=%s
+KEYMAP(SKIP) could not map to keysym
+KEYMAP(SKIP) could unescape key
+KEYMAP(SKIP) junk after key description: '%s'
+KEYMAP(SKIP) no key description
+KEYMAP(SKIP) no key expansion found
+KEY_MOUSE
+(K)eypad mode                : 
+Keypad mode
+KEYPAD_MODE
+key remapping of %s to %s failed
+key remapping of %s to %s for %s failed
+keys (may be incompatible with some curses packages)
+keystrokes/alt_edit_help.html.gz.gz
+keystrokes/bashlike_edit_help.html.gz.gz
+keystrokes/dired_help.html.gz
+keystrokes/edit_help.html.gz
+keystrokes/follow_help.html.gz
+keystrokes/history_help.html.gz
+keystrokes/option_help.html.gz
+keystrokes/print_help.html.gz
+keystrokes/visited_help.html.gz
+keyword-list
+keywords=
+Keywords: 
+Keywords: %s
+KOI8-R Cyrillic
+\$`kT$d8
+L$0t[9D$(
+L$49L$8}
+L$4f+T$b
+L$8+D$8+L$X
+lacks a MULTIPLE attribute are presented as a vertical list of radio
+langinfo_codeset
+Language:
+LANGUAGE
+Last accessed:
+Last attempted include was '%s',
+last-contacted
+lastline = %s
+LAST_LINK
+Last Mod:
+Last modified:
+<!-- Last-Modified: %s -->
+Last-Modified: %s  
+ LAST_ORDER
+LAST_REVERSED
+, last unfinished
+last_visited
+last_visited_reversed
+Later articles
+Latin 3 (ISO-8859-3)
+Latin 4 (ISO-8859-4)
+%ldh%ldm%lds
+ (l%d of %d)
+leading spaces: %d
+ (Leave blank if you don't want a copy.)
+leaving on stack
+Left Arrow
+Left Arrow cancels changes
+leftarrow_in_textfield_prompt
+LEFT_LINK
+Left mouse button or return to select, arrow keys to scroll.
+Letter: 
+'-lgnutls'
+lha File
+<lh><em>%s</em>
+<li><a href="
+<LI><a href="%s">
+<li><a href="%s">%s</a>
+<li><a href="%s"%s>%s%s%s%s%s</a>
+<li><a id=%d href="#%d">form field</a> = <em>%s</em>
+LIBBSD_0.0
+libbsd.so.0
+libc.so.6
+__libc_start_main
+lib_dir_opendir
+libgcrypt.so.11
+libgnutls.so.26
+LIBIDN_1.0
+libidn.so.11
+lib_inet_main
+/lib/ld-linux.so.2
+libncursesw.so.5
+library_file_gnutls
+library_file_idn
+library_file_z
+library_path_gnutls
+library_path_iconv
+library_path_idn
+library_path_intl
+library_path_z
+libtinfo.so.5
+ libwww-FM/
+libwww-FM %s,
+libz.so.1
+lightgray
+<Li><Input Type="submit" Value="Submit">  %s %s %s.
+like LIST command, but always shows the links' URLs
+(like 'man' does)
+Limited I.size to %d, was %d
+Limited me->textarea_cols to %d, was %d
+Limited me->textarea_rows to %d, was %d
+  line    %d
+line %d %d/%d [%d..%d] map %d %c->%c
+line %d.%d %d %s->%s(%s)
+line %d first to adjust  --  newpos:
+line %d true/max width:%d/%d oldpos:
+line %d true/max width:%d/%d oldpos: NONE
+lineedit_mode
+lineedit_mode specifies the key binding used for inputting strings in
+li(N)e edit style            : 
+Line edit style
+line->next != ((void *)0)
+Lines: %d  
+ [lines: lastCell=%d state=%d multi=%d] empty=%d (prev)state=(%s) %s
+line != ((void *)0)
+Linewrap OFF!
+Linewrap ON!
+LINEWRAP_TOGGLE
+  link    %d
+Linking child %p to anchor %p
+Link is not by itself all on one line in bookmark file.
+Linkname:
+  link_name=%s
+Link number %d already is current.
+LINKS_AND_FIELDS_ARE_NUMBERED
+Links and form fields are numbered
+LINKS_AND_FORM_FIELDS_ARE_NUMBERED
+links_and_forms
+LINKS_ARE_NOT_NUMBERED
+Links are numbered
+Links are numbered                
+LINKS_ARE_NUMBERED
+"LINKS_ARE_NUMBERED" or "LINKS_AND_FORM_FIELDS_ARE_NUMBERED" are
+links_numbered
+link.%s.%s
+link's URL to Clip Board
+Links will be included for all images!  Reloading...
+Link that you currently have selected
+Link URL put to clipboard.
+  link_value=%s
+'linux-glibc'
+'linux-gnu'
+"linux-gnu"
+linux-gnu
+l(I)st directory style       : 
+list_format
+List from document with POST data.  Reload %s ?
+Listing and Accessing Files
+list links visited during the current Lynx session
+list_news_dates
+LIST NEWSGROUPS%c%c
+list_news_numbers
+List of Options:
+listonly
+lists and output from the list command also enumerate form inputs.
+lists of domains from which Lynx should automatically accept or reject
+list the references (links) in the current document
+<li value=%d> <em>%s</em>
+L$Lf+L$@
+l$Lf+l$Xf+l$bf
+lnk%08d.dat
+lnsdLNSD
+Load again
+Loading cfg file '%s'.
+Loading failed, use a previous copy.
+Loading incomplete.
+Local additions:
+local bibp server (default http://bibhost/)
+Local directory sort criteria
+Local directory sort order
+local_dired: called for <%s>.
+local_domain
+locale_charset
+local_execution_links_always_on
+local_execution_links_on_but_not_remote
+LOCAL_FILE
+localhost_alias
+localtime
+Location=
+Location: 
+Location URL is not absolute.
+Log: %24.24s %s %s %s
+logging purposes, and for mailed comments.
+log keystroke commands to the given file
+log requested URLs with syslog
+LONGDESC
+LONG_LIST
+Looking for %c in %s
+Looking up 
+lookup_reject(%s) -> %d
+'l' or 't'
+lose://%.*s/
+lose://%s/
+Lower case the line
+LPOS_NEXT_LINK
+LPOS_PREV_LINK
+lp != ((void *)0)
+lstat(%s) failed, errno=%d
+    #&lt;begin  %s&gt;
+    #&lt;end of %s&gt;
+   &lt;NONE&gt;
+.LT.NOT.EQ.
+<Ltp<ltl
+L%u-%uTMP%s
+l != ((void *)0)
+__lxstat64
+LYAddImageMap
+LYAddMapElement
+LYAddVisitedLink
+LYAllocHistory
+...LYAllocHistory %d vs %d
+(LY)atexit: Too many functions, ignoring one!
+LYCharUtils.c
+LYCleanupTemp removing %s
+LYCloseTempFP
+...LYCloseTempFP(%s)
+LYCloseTemp(%s)
+...LYCloseTemp(%s)%s
+LYConfigCookies
+LYCookie.c
+LYCookie: Searching for '%s:%d', '%s'.
+LYDownload: filename is %s
+LYEdit: %s
+LYEntify
+LYexecv ->%d
+LYExecv path='%s'
+LYExpandHostForURL: Ignoring interrupt because '%s' resolved.
+LYExpandHostForURL: Ignoring interrupt because '%s' %s.
+LYExpandHostForURL: Interrupted while '%s' failed to resolve.
+LYFindLocaleCharset(%d)
+LYformTitle
+LYformTitle: kanji_code is an unexpected value.
+LYGetFile.c
+LYGetHostByName: Can't find internet node name `%s'.
+LYGetHostByName: Can't parse `NULL'.
+LYGetHostByName: INTERRUPTED for '%s'.
+LYGetHostByName: INTERRUPTED gethostbyname.
+LYGetHostByName: NSL_FORK child %d dumped core!
+LYGetHostByName: NSL_FORK child %d exited, status 0x%x.
+LYGetHostByName: NSL_FORK child %d got signal, status 0x%x!
+LYGetHostByName: NSL_FORK child %d is stopped, status 0x%x!
+LYGetHostByName: parsing `%s'.
+LYGetHostByName: Resolved name to a hostent.
+LYgetstr LYE_ABORT
+LYgetstr LYE_STOP
+LYgetstr(%s) LYE_ENTER
+LYgetstr(%s) recall
+LYgetTableString(%d)
+LYHandleMETA: HTTP-EQUIV="%s" NAME="%s" CONTENT="%s"
+LYHandleMETA: New charset: %s
+LYHandleSELECT: Ignoring SIZE="%s" for SELECT.
+LYhighlight at(%2d,%2d) %s %d [%d]:%s
+LYhighlight cur %d (bug workaround)
+LYHistory.c
+...LYhist_prev
+...LYhist_prev_register
+LYJump.c
+LYJumpInit
+LYK_COMMAND(%s.%s) = %d
+LYLegitimizeHREF: Bad value '%s' for http%s URL.
+LYLoadCGI
+LYLoadCookies: reading cookies from %s
+LYLoadCookies: tokenising %s
+LYLocal.c
+LYMainLoop: Rejected '%s'
+LYMain: User in Local domain
+LYMain: User in REMOTE domain
+LYmktime: clock=%d, ctime=%s
+LYmktime: Parsing '%s'
+LYnoVideo(%d)
+Lynx bookmark_file is defined (see above), it will be used as the
+lynx_bookmarks%s
+LYNXCACHE
+LYNXCACHE:
+LYNXCACHE:/
+LYNXCACHE:/%d
+LYNXCACHE number is %d
+Lynx cannot currently (e)dit remote WWW files.
+Lynx: cannot start, CERN rules file %s is not available
+lynx: Can't access startfile
+lynx_cfg
+LYNXCFG:
+LYNX_CFG_FILE
+lynx.cfg file not found as '%s'
+LYNX_CFG_H
+lynxcfg_info
+Lynx.cfg Information
+LYNXCFG://reload
+lynxcfg_xinfo
+lynxcgi:
+LYNXCGI: %d bytes remain unwritten!
+lynxcgi_document_root
+LYNXCGI: Doing post, content-type '%s'
+lynxcgi_environment
+LYNXCGI_LINKS
+lynxcgi://localhost
+LYNXCGI: Rx: %.*s
+LYNXCGI: %s: %s
+LYNXCGI: stat() of %s succeeded, path_info="%s".
+LYNXCGI: Writing:
+LYNXCGI: Wrote %d bytes of POST data.
+Lynx character sets not declared.
+lynx_chg_color(color=%d, fg=%d, bg=%d)
+LYNXCOMPILEOPTS:
+LYNXCOOKIE
+LYNXCOOKIE:
+LYNXCOOKIE:/
+.lynx_cookies
+lynx-dev@
+LYNXDIRED:
+LYNXDIRED://
+LYNXDIRED://CHDIR
+LYNXDIRED://CLEAR_TAGGED
+LYNXDIRED://COMPRESS%p
+LYNXDIRED://DECOMPRESS%p
+LYNXDIRED://GZIP%p
+LYNXDIRED://MODIFY_LOCATION%p
+LYNXDIRED://MODIFY_NAME%p
+LYNXDIRED://MOVE_TAGGED%d
+LYNXDIRED://NEW_FILE%d
+LYNXDIRED://NEW_FOLDER%d
+LYNXDIRED://PERMIT_SRC%p
+LYNXDIRED://REMOVE_SINGLE%p
+LYNXDIRED://REMOVE_TAGGED
+LYNXDIRED://TAR_GZ%p
+LYNXDIRED://TAR%p
+LYNXDIRED://UNGZIP%p
+LYNXDIRED://UNTAR_GZ%p
+LYNXDIRED://UNTAR%p
+LYNXDIRED://UNTAR_Z%p
+LYNXDIRED://UNZIP%p
+LYNXDIRED://UUDECODE%p
+LYNXDIRED://ZIP%p
+Lynx does not save your changes to that default value as a side-effect
+LYNXDOWNLOAD:
+Lynx edit map not declared.
+ *** LYNX ERROR ***
+lynxexec:
+Lynx file "%s" is not available.
+LYNX_HELPFILE
+LYNXHIST:
+LynxHome
+lynx_host_name
+Lynx_HTML_Handler
+Lynx: ignoring unrecognized charset=%s
+LYNXIMGMAP
+LYNXIMGMAP:
+LYNXIMGMAP:http
+lynx_init_colors (default %d/%d)
+LYNXKEYMAP
+LYNXKEYMAP:
+.lynx-keymaps
+LYNX_LOCALEDIR
+lynx_lss
+LYNX_LSS_FILE
+lynx_map_color(%d)
+LYNXMESSAGES:
+Lynx now exiting with signal:  %d
+LYNXOPTIONS:
+LYNXOPTIONS:/
+LYNXOPTIONS://MBM_MENU
+lynx: Password required!!!
+LYNXPRINT:
+LYNX_PRINT_DATE
+LYNX_PRINT_LASTMOD
+LYNX_PRINT_TITLE
+LYNX_PRINT_URL
+lynxprog:
+LynxPseudoToolbar
+lynx_rand
+LYNX_RAND_MAX
+Lynx: %s
+LYNX_SAVE_SPACE
+# lynx session
+lynx_setup_colors
+.lynxsig
+lynx_sig_file
+LYNX_SIG_FILE set to '%s'
+LYNX_SIG_FILE '%s' is bad. Ignoring.
+lynx_srand
+lynx: Start file could not be found or is not text/html or text/plain
+LYNX_TEMP_SPACE
+lynx_temp_space is not a directory %s
+lynx_temp_space is not our directory %s owner %d mode %03o
+Lynx.trace
+LYNX_TRACE
+LYNX_TRACE_FILE
+Lynx Trace Log
+Lynx User Defaults File
+lynx: Username and Password required!!!
+Lynx_users_guide.html.gz#Cache
+Lynx_users_guide.html.gz#Cookies
+Lynx_users_guide.html.gz#DirEd
+Lynx_users_guide.html.gz#RemoteSource
+LYNX_VERSION=
+Lynx will use the personal email address.  Set anonftp_password
+lynxXXXXXXXXXX
+LYOpenCmdScript(%s) %s
+LYOpenlog(%s)
+LYOpenScratch
+LYOpenScratch(%s)
+LYOpenTemp
+... LYOpenTempRewrite(%s), %s
+LYOpenTempRewrite(%s,%s,%s)
+... LYOpenTemp(%s)
+... LYOpenTemp(%s) failed: %s
+LYOpenTemp(,%s,%s)
+LYOptions.c
+LYOptions.c/postoptions(): exiting...
+LYOptions.c/postoptions(): now really exit.
+LYParseRefreshURL
+LYpop[%d]: address:%s
+LYpop_num(%d)
+LYPrint.c
+LYPrint: errno is %d
+LYPrint: filename is %s, action is `%c'
+LYProcessSetCookie: attr=value pair: '%s=%s'
+LYProcessSetCookies
+LYProcessSetCookies: Adding lead dot for domain value '%s'
+LYProcessSetCookies: Rejecting commentURL value '%s'
+LYProcessSetCookies: Rejecting Set-Cookie2: %s=%s
+LYProcessSetCookies: Rejecting Set-Cookie: %s=%s
+LYProcessSetCookies: Using Set-Cookie2 header.
+LYProcessSetCookies: Using Set-Cookie header.
+LYpush[%d]: address:%s
+LYpush: just move the cursor
+LYpush: push as internal link requested, %s
+LYpush: pushed as internal link, OK
+LYrcFile: ignored %s=%s
+LYrcFile: missing '=' %s
+LYrcFile %s:%s
+LYReadCFG.c
+LYReadCFG: ignored %s:%s
+LYReadCFG: missing ':' %s
+LYReadCFG - parsing tagspec '%s:%s' for option '%s'
+LYReadCFG %s:%s
+LYReadCmdKey(%d) ->%s (%#x)
+...LYRemoveTemp done(%d)%s
+LYRemoveTemp(%s)
+LYRenamedTemp(old=%s, new=%s)
+LYReopenInput freopen(%s,"r",stdin) returned %p, stdin is now %p with fd %d.
+LYReopenInput open(%s) returned %d.
+LYscanFloat "%s" -> %f (%s)
+LYSetConfigValue(%s, %s)
+LYSetCookie called with host '%s', path '%s',
+LYSetCookie: expires %d, %s
+LYStoreCookies: %d %s %d 
+LYStoreCookies: save cookies to %s on exit
+LYStrings.c
+LYStyle.c
+LYSyslog %s
+LYSystem(%s)
+LYTildeExpand %s
+LYUCFullyTranslateString: Ignoring '%lX'.
+LYUCPopAssumed: UCLYhndl_for_unspec changed %d -> %d
+LYUCPushAssumed: UCLYhndl_for_unspec changed %d -> %d
+LYUpload: filename is %s
+LYUtils.c
+lzh File
+Mac BinHex
+macintosh
+Macintosh (8 bit)
+MACOS AppleShare IP FTP Server
+MACOS Peter's Server
+MAC-OS TCP/Connect II
+made subdirectory %s
+Mail access is disabled!
+~/.mailcap
+Mail disallowed!  Cannot submit.
+MAIL_FILE
+Mail is disallowed so you cannot send a comment
+mailmsg: No address in '%s'.
+mailmsg: '%s' failed.
+Mail request cancelled!!!
+mail_system_error_logging
+Mail the file
+mailto:%.63s
+mailto_address: "%s"
+mailto_content: "%s"
+(mailto form field) Enter text.  Use <return> to submit, arrows to move off.
+(mailto form field) Inactive.  Press <return> to change.
+(mailto form field) Mail is disallowed so you cannot submit.
+Mailto form submission Cancelled!!!
+Mailto form submission failed!
+(mailto form submit button) Mail is disallowed so you cannot submit.
+(mailto form submit button) Use right-arrow or <return> to submit.
+mailto:%s
+mailto_subject: "%s"
+mailto_type:    "%s"
+mailto:WebMaster@
+MAIN_MENU
+main program
+maintainer
+make directory %s
+make_links_for_all_images
+make next link current, same column for input
+make previous link current, same column for input
+make_pseudo_alts_for_inlines
+      Make sure any bookmark link is saved as a single line.
+make_template: made template `%s' for file `%s'
+make the first link on the line current
+make the last link on the line current
+make the next link current
+make the previous link current
+make window size change handler non-restarting
+Making %s connection to %s
+Malformed address.
+Malformed mailto form submission!  Cancelled!
+management is enabled.
+Man Page
+	map     %s
+MAPs are present
+MARGINHEIGHT
+MARGINWIDTH
+...mark: %s
+matched template
+Matching
+  match %s %s
+max_cookies_buffer
+max_cookies_domain
+max_cookies_global
+Maximum Gobble Date:
+Maximum length reached!  Delete text or move off field.
+Maximum links per page exceeded!  Use half-page or two-line scrolling.
+Maximum nesting of HTML elements exceeded.
+maximum news articles in listings before chunking
+MAXLENGTH
+max_uri_size
+	means node `%s'
+ means to contact you, if you desire a response.
+media_all
+media_opt1
+media_opt2
+media_opt3
+media_opt4
+MemAllocCopy
+ *** MEMORY EXHAUSTED ***
+Memory exhausted!  Aborting...
+Memory exhausted, display interrupted!
+Memory exhausted!  Program aborted!
+Memory exhausted, will interrupt transfer!
+menu.active
+menu.entry
+menu.frame
+menu, or modify this file directly.
+Message has no original text!
+MESSAGE-ID:
+Message-ID: %s  
+message_language
+message/rfc822
+messagesecs
+message/x-http-redirection
+me->tag_charset: %d -> %d
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=%s">
+<META %s content="text/html;charset=%s">
+meter = %d
+method POST when the documents they returned are sought
+ (me->UCLYhndl: %d, tag_charset: %d)
+mime_header
+MIME_LIBDIR
+=MIMEname
+MIMEParser
+~/.mime.types
+Mime-Version: 1.0
+Minimal comment parsing OFF (Historical is in effect)!
+Minimal comment parsing OFF (Valid is in effect)!
+Minimal comment parsing ON (and in effect)!
+Minimal comment parsing ON (but Historical is in effect)!
+minimal_comments
+Misdirected client-side image MAP request!
+mixedcase
+Mixed style
+Mixed style      
+MIXED_STYLE
+mkdir_path
+mnemonic
+mnemonic+ascii+0
+ MODELS 
+mode reader%c%c
+Modified tail combined with head of form field value.
+Modify Directory Name
+Modify Directory Permissions
+Modify File Name
+Modify File Permissions
+MODIFY_LOCATION
+Modify Name
+MODIFY_NAME
+Modify name, location, or permission (n, l, or p): 
+modify_tagged(%s)
+modify the name or location of a file or directory
+monochrome, if this is supported by the library used to build lynx.
+More than %d nested lynx.cfg includes -- perhaps there is a loop?!?
+--More--  This is a searchable index.  Use %s to search.
+Mouse error: no event available!
+mouseinterval
+mousemask
+mouse pseudo key
+MOUSE_SUBMIT
+Move all tagged items to another location.
+   Move char: <-    ->        ^G    = Cancel input
+move down the page to another link
+move_file source=%s, target=%s
+move left to a previous link
+move right to another link
+move %s to %s
+move up the page to a previous link
+   Move word: ^P    ^N        ^U    = Erase line
+mpeg_play %s &
+MS Windows
+mtg+D$$9
+multibook
+multi_bookmark
+multi_bookmark%c
+multi_bookmark%c=
+mu(L)ti-bookmarks: 
+Multi-bookmarks
+multi_bookmark_support
+Multiformat: directory scan failed.
+ MULTIMAP 
+multipart/form-data
+MULTIPLE
+Multiple bookmark support is not available.
+my_data != ((void *)0)
+$(NAMEFLD)
+$(NAMEFLD)    <DL COMPACT>
+name is sent for mailed comments.  Lynx will prompt for this,
+Name of owner:
+; name="%s"
+name "%s" %d %s -> %d %s %s
+name "%s" %d %s OK
+name "%s" for link_name "%s", %s!
+name "%s" for link_name "%s", %s.
+Navigator
+&nbsp;&nbsp;&nbsp;%s
+ ncells=%d, stateLine=%d, pending_len=%d, pstate=%s, state=%s
+ncr_in_bookmarks
+ncsa-xmosaic-hotlist-format-1
+ncurses_broken
+ncurses_header
+ncurses_version
+'ncursesw'
+'ncursesw/ncurses.h'
+'ncursesw/term.h'
+'ncursesw/unctrl.h'
+  ^N = down    ^P = up
+                            need_end_reload = %s
+                            need_reload = %s
+needsterminal
+need_xopen_extension
+nested_tables
+NetPresenz
+NetToText
+Network Error: connection lost
+NEVER     
+ne'V'er allowing from domain '%s'.
+"never" will force color mode off (treat the terminal as monochrome)
+New anchor %p has hash %d and address `%s'
+newAnchor != ((void *)0)
+new_bucket
+newCookie
+New Directory
+New File
+NEW_FILE
+NEW_FOLDER
+newform != ((void *)0)
+newf != ((void *)0)
+newList != ((void *)0)
+newNode != ((void *)0)
+new number=%d
+new_ptr != ((void *)0)
+newreply
+.newsauth
+newschunksize
+news_chunk_size
+News: doing HTDoConnect on '%s'
+newsgroup
+Newsgroup 
+newsgroups
+Newsgroups:
+Newsgroups: %s
+Newsgroup status=%d, count=%d, (%d-%d) required:(%d-%d)
+newsmaxchunk
+news_max_chunk
+NEWS_ORGANIZATION
+news_post
+News Post Cancelled!!!
+news_posting
+News posting is disabled!
+news://%.*s/
+?new_trust
+new_trust
+NeXT character set
+NEXT_DOC
+$(NEXTFLD)
+$(NEXTFLD)    
+next link or text area, only stops on links
+NEXT_PAGE
+next screen
+ nlines=%d, npages=%d, curline=%d, curpage=%d
+nl_langinfo
+NLS_TEXTDOMAIN
+NNTP command to be sent: %s
+nntp_proxy
+NNTP Response: %s
+nntpserver
+(no address)
+No articles in this group.
+No articles in this range.
+nobrowse
+NO_BUILTIN
+, no-cache
+No client-side image MAPs are available!
+No data available!
+nodename != ((void *)0)
+Node `%s' means file `%s'
+Node `%s' means path `%s'
+(no domain)
+no_dot_files
+No editor is defined!
+No email address is present in mailto URL!
+no field name
+No filename following -cfg switch!
+nofilereferer
+no_file_referer
+no_forced_core_dump
+NOFRAMES
+no_from_header
+No index is currently available.
+no_ismap_if_usemap
+no issuer was found
+No jump file is currently available.
+NO-LEX-ITEM
+No line wrap in columns
+No link chosen
+No Links on the current page
+nomargins
+no_margins
+No matches for: %s
+(No messages yet)
+(no name)
+[no name]
+(No name.)
+No Name Given
+no name starting at column %d:
+No next document present
+NONOPTION
+- NO, not interactive.
+nonprintable %d:%#x
+nonrestarting_sigwinch
+nonumbers
+NON_XWINDOWS
+No owner is defined for this file so you cannot send a comment
+No owner is defined. Use %s?
+no_pause
+No previously visited links available!
+no_proxy
+NoProxy=
+noreferer
+no_referer_header
+NORESIZE
+No response from finger server.
+No response from server!
+No restrictions set.
+noreverse
+normal field type: %s
+(NORMAL LINK)   Use right-arrow or <return> to activate.
+Normally disabled.  See ENABLE_LYNXRC in lynx.cfg
+ NORMAL SUBGROUP OF 
+ NORMAL SUBGROUP OF OR EQUAL TO 
+'n' or 'o'
+'n' or 't'
+North European (ISO-8859-10)
+nostatus
+<NOSTYLE>
+No Subject
+ No such article
+No such directory
+ No such group 
+No system mailer configured
+no_table_center
+not a deflate-stream
+not a gzip-stream
+Not an http URL or form ACTION!
+No target for raw text!
+Not a searchable indexed document -- press '/' to search for a text string
+NOTATION
+not available
+not current link
+Note: if you edit this file manually
+Not enough memory!
+Not enough memory for file!
+NOTE: Some fixed format documents may look disfigured when
+not found, assume <a>.
+not found -- creating
+ NOT GIVEN in source file; 
+Nothing currently selected.
+Nothing to download.
+Nothing to insert - file is 0-length.
+ (not implemented)
+Not in a TEXTAREA; cannot use command.
+Not in a TEXTAREA; cannot use external editor.
+no_title
+(No title.)
+No trace log has been started for this session.
+not specified for Protect rule
+not specified (obligatory for DefProt rule)!!
+not stored - DISCARD
+not stored - EXPIRED
+not stored - no expiration time
+ NOT TRUE 
+nounderline
+No URL in the clipboard.
+Nov 19 2012
+(no value)
+[no value]
+(No value.)
+november
+Novice      
+Now recent_sizechange is %d
+Now using SortaSGML parsing of HTML!
+Now using TagSoup parsing of HTML.
+NSL_FORK
+NULL RECORD
+NULL URL pointer
+[=NUMBER]
+number_arrows
+number_fields
+number_fields_on_left
+number_links
+number_links_on_left
+number of articles in chunked news listings
+NUMBER of documents cached in memory
+Number of lines:
+number of lines to render before repainting display
+Number of pages:
+Numbers act as arrows
+Numbers act as arrows             
+Numbers are used to select links, or to move the "current link" to a
+NUMBERS_AS_ARROWS
+numbers will appear next to each link and visible form input field.
+num-docs-to-request
+N != ((void *)0)
+</OBJECT
+</OBJECT>
+<OBJECT><
+(OBJECT)
+OBJECT:MONO:COLOR (ie em:bold:brightblue:white)
+of checkboxes for the OPTIONs.  A value of "on" will set popup menus
+(of current selection)
+OFF     
+OFF       
+Offending line:
+"off" "show color" settings will be treated as "default".
+ of option line,
+(of selected directory)
+(of selected file)
+(of selected symbolic link)
+of sending email.  To update the default value, you must use the options
+of this page.
+   Ok...
+Ok, about to convert %s to mime/thingy
+ok, got a file uploader
+OK_OVERRIDE
+OK_PERMIT
+OK_UUDECODE
+ol continue
+old anchor %d -> new anchor %d
+Old title was NULL.
+Old title was "%s".
+<ol><LI>
+<Ol><Li>%s<Br><Br>
+omit Accept-Encoding to work-around interaction with -source
+ON        
+ on a line and press enter again.
+ONCHANGE
+ONDBLCLICK
+one of the entered fields must be flagged as indexed.
+One radio button must be checked at all times!
+one which does not distinguish the current link based on highlighting
+ONKEYDOWN
+ONKEYPRESS
+Only files and servers on the local host can be accessed.
+(only the first document affected)
+ONMOUSEDOWN
+ONMOUSEMOVE
+ONMOUSEOUT
+ONMOUSEOVER
+ONMOUSEUP
+on_screen
+ONSELECT
+ONSUBMIT
+ONUNLOAD
+on your own computer, you would be automatically connected.
+opening config file %s
+Opening directory %s
+=[option]
+    <option>default<option selected>all<option>selected</select><BR>
+OPTION_LIST
+(Option list) Hit return and use arrow keys and return to select option.
+Option number %d already is current.
+=[options]
+     Options allowed in this file:
+Options are:
+option_save
+(options marked with (!) will not be saved)
+         Options Menu (
+Options Menu
+Options saved!
+':' or '2'
+      or add other HTML markup.
+or CJK mode for the startup character set
+or color.  A value of "on" will set positioning to the left as the
+ORDER_BY_DATE
+ORDER_BY_GROUP
+ORDER_BY_MODE
+ORDER_BY_NAME
+ORDER_BY_SIZE
+ORDER_BY_TYPE
+ORDER_BY_USER
+Organization:
+Organization: 
+ORGANIZATION:
+original anchor %d, topline %d, link %d, offset %d
+or sending mail.  If no editor is specified, then file editing is disabled
+or -source is used
+or to change a domain's 'allow' setting.
+ (or via proxy server, if defined)
+  O)ther cmds  B)ack  E)dit  D)ownload ^R)eload ^W)ipe screen  search doc: / 
+O)ther cmds  C)omment  History: <backspace>  Bookmarks: V)iew, A)dd, R)emove 
+  O)ther cmds  H)elp  K)eymap  G)oto  P)rint  M)ain screen  o)ptions  Q)uit  
+Other restrictions (see the user's guide):
+Otherwise, the server will send the file in its default language.
+     Outdated or invalid links may be removed by using the
+     outdated or invalid links, or to change their order.
+outgoing_mail_charset
+Out of memory in LYAddMapElement
+Out of memory reading jump file!
+Out of memory reading jump table!
+outputs for -source dumps
+outside_ftp
+outside_news
+outside_rlogin
+outside_telnet
+[OVERLAY]
+Owner: <a href=%s>%s</a>  
+Owner(s):
+    %p %4l %-8.8o %-8.8g %7s %-12.12d %a
+Package and compress
+Page down
+pagelen=
+pair_content
+<p align=center>
+<p align=center>%s: 
+<p align="center">URL: 
+<p align=right> <a href="%s">[%s]</a>
+`!p!a!q!b!r!c!s!d!t!e!u!f!v!g!w!h!x!i!y!j!z!k!{!l!|!m!}!n!~!o!
+PARAM-ADD:%s
+PARAM-END:%s
+PARAM-EXP:%s
+parse_address_part
+parse_arg(arg_name=%s, mask=%u, count=%d)
+parse_arg lookup(%s)
+parse_arg startfile:%s
+parse_attribute %.*s
+parse_attributes %d/%d %d/%d %#x
+parse_color
+parse_cso_fields
+parse_dir_entry
+parsed:%s
+parse-error while caching %s tagspec of lexeme %d
+parse_html_src_spec
+parse_item
+parse_list_bool(%s) '%d'
+parse_list_int(%s) '%d'
+parse_list_string(%s) '%s'
+parse_style(%s)
+parse_user_part
+parsing lexeme %d: %s
+Parsing nested-tables toggled OFF!  Reloading...
+Parsing nested-tables toggled ON!  Reloading...
+\partial
+partial_thres
+PassesTest: Deferring test command: %s
+PassesTest: Executing test command: %s
+PassesTest: Test failed!
+PassesTest: Testing for LYNX environment.
+PassesTest: Testing for non-LYNX environment.
+PassesTest: Testing for NON_XWINDOWS environment.
+PassesTest: Testing for XWINDOWS environment.
+PassesTest: Test passed!
+passive-ftp
+pass LYFillLocalFile:`%s'
+PASS %s%c%c
+PASS %s@%s%c%c
+PassThruCache
+Password: 
+password entry field
+(Password entry field) Enter text.  Use UP or DOWN arrows or tab to move off.
+(Password entry field) Inactive.  Press <return> to activate.
+Password for anonymous ftp
+Password for news host '%s':
+, password %s
+PASTE_URL
+path_ac_pt_PKG_CONFIG
+path_BZIP2
+path_COMPRESS
+path_GMSGFMT
+path_GZIP
+PATH_INFO=
+path_install
+path_lastlog
+'_PATH_LASTLOG'
+path_MSGFMT
+path_MSGINIT
+path_NCURSES_CONFIG
+path_RLOGIN
+; $Path="%s"
+path_TAR
+path_TELNET
+Path too long
+PATH_TRANSLATED=
+path_UNCOMPRESS
+path_UNZIP
+path_UUDECODE
+path_XGETTEXT
+path_ZCAT
+path_ZIP
+Pause when showing message
+PC Latin2 CP 852
+ (p%d of %d)
+<p><em>%d.</em> Title: <a href="%s%d">%s</a><br />URL: <a href="%s">%s</a><br />
+permanent
+Permissions for 
+//PERMIT_LOCATION
+permit_location: called for file '%s'.
+permit_location: called for <%s>.
+permitredirection
+PERMIT_SRC
+persistent_cookies
+persistent cookies state will be changed in next session only.
+personal_extension_map
+personal_mail_address
+personal_mail_address.
+(P)ersonal mail address      : 
+Personal mail address
+personal_mail_address specifies your personal mail address.  The
+personal_mailcap
+personal_mail_name
+personal_mail_name specifies your personal name, for mail.  The
+Personal name for mail
+ person's name in the database.
+pipe() failed
+pkg_config_ssl
+PlainPresenter
+PLAINTEXT
+plaintexttoHTML
+PlainToHTML
+ Please enter a mail address or some other
+ Please enter a subject line.
+Please enter a valid internet mail address: 
+Please enter search keywords.
+ Please enter your message below.
+ Please enter your name, or leave it blank to remain anonymous
+Please notify your system administrator to confirm a bug, and
+ Please provide or edit the Organization: header
+ Please provide or edit the Subject: header
+ Please provide your mail address for the From: header
+Please read the distribution
+ Please review the message body:
+%p, node %p, list %p
+pnoutrefresh
+Points to file:
+popen(%s) %s
+popup menu
+popups for selec(T) fields   : 
+Popups for select fields
+popup windows or as lists of radio buttons
+'p' or 'r'
+Port 19 not permitted in URLs.
+Port 25 not permitted in URLs.
+PORT %d,%d,%d,%d,%d,%d%c%c
+Port %lu not permitted in URLs.
+, port %s
+; $Port="%s"
+positionable_editor
+Positioning the cursor to the left of the current link or option is
+Post Content Type:
+post_data
+Post Data:
+Posting to newsgroup(s)...
+POST not supported for this URL - ignoring POST data!
+Postscript
+Post this message?
+Post to 
+Pragma: no-cache%c%c
+PRECEDENCE_HERE
+PRECEDENCE_OTHER
+preferred_charset
+preferred_charset specifies the character set in MIME notation (e.g.,
+Preferred document character set
+preferred document c(H)arset : 
+preferred document lan(G)uage: 
+Preferred document language
+preferred_encoding
+Preferred encoding
+preferred_language
+preferred_language specifies the language in MIME notation (e.g., en,
+Preferred media type
+preferred_media_types
+preferred top %d
+Preformatted
+preparsed
+prepend a request URL comment and BASE tag to text/html
+prepend_base_to_source
+prepend_charset_to_source
+presentation
+presented regardless of user mode.
+present in the SELECT start tag, Lynx always will create a vertical list
+Press <return> to begin: 
+Press RETURN to continue: 
+Press <return> to finish: 
+Press <return> to return to Lynx.
+-- press space for more, use arrow keys to move, '?' for help, 'q' to quit.
+-- press space for next page --
+Press the 's' key and enter search keywords.
+ (Press 'z' to abort)
+pres != ((void *)0)
+prettysrc
+prettysrc_spec
+prettysrc_view_no_anchor_numbering
+PREV_DOC
+previous
+Previous document
+previous link or text area, only stops on links
+             Prev  Next       Enter = Accept input
+PREV_PAGE
+ => prev_state=%s, state=%s, ret=%d
+ => prev_state=%s, state=%s, return=%d
+__printf_chk
+Printing file.  Please wait...
+Printing Options
+print_local_dir() started
+print Lynx version information
+Print options:
+Print out on a printer attached to your vt100 terminal
+Print request cancelled!!!
+print this usage message
+Print to the screen
+Probable failure to %s due to system error!
+P)roceed, or C)ancel 
+P)roceed, use G)ET or C)ancel 
+Proceed without a username and password?
+processing [%d:%d] name=%s(first:%d, value=%s, data=%p)
+...processing extended HTML
+processing stdin arguments
+processing stdin startfile
+ProcessMailcapEntry
+ProcessMailcapEntry: Found testcommand:%s
+ProcessMailcapEntry: Ignoring invalid mailcap entry: %s
+ProcessMailcapEntry: Ignoring mailcap entry: %s
+ProcessMailcapEntry: Ignoring mailcap flag '%s'.
+ProcessMailcapEntry Setting up conversion %s : %s
+ProcessMailcapFile: Could not open '%s'.
+ProcessMailcapFile: Loading file '%s'.
+process of this copy of Lynx.  When reporting a bug, please include a copy
+ProFTPD 1.2.5
+prog_ac_ct_AR
+prog_ac_ct_CC
+prog_ac_ct_RANLIB
+prog_cc_g
+prog_cc_stdc
+prog_cf_ldd_prog
+prog_CPP
+Prog. Library
+prog_MAKE_LOWER_TAGS
+prog_make_make_set
+prog_MAKE_UPPER_TAGS
+Prog. Object
+progress
+prompt for each cookie.  Set accept_all_cookies to "TRUE" to accept
+prompt for, execute a command
+'P'rompting to allow from domain '%s'.
+prompt normally
+prompts and forms.  If lineedit_mode is set to "Default Binding" then
+prompt the user to select an active sub-bookmark file.  If the default
+prospero:
+Protection template set to `%s'
+proto_iconv_arg1
+proto_iconv_const
+prot != ((void *)0)
+ !PROVES 
+Proxied=
+Proxy-Authenticate:
+Proxy authorization required -- retrying
+proxy server found: %s
+Pseudo_ALTs will be inserted for inlines without ALT strings!  Reloading...
+PSEUDO_INLINE_ALTS
+pseudo_inlines
+Publisher
+...pumpData finished reading header
+<p>Upload to current directory:<p>
+;q=%4.3f
+;q=%4.3f;mxb=%lld
+$(QFIELDS)
+$(QFIELDS)    <DT><I>$(FDESC)</I>$(FNDX)
+Query %d{
+querying the user for an invalid path or domain.
+QUERY_STRING=
+quit_default_yes
+quit the browser
+quit the browser unconditionally
+q != ((void *)0)
+radio button
+(Radio Button)   Use right-arrow or <return> to toggle.
+rand_max
+Random URL is disallowed!  Use a shortcut.
+range entry field
+'ranlib'
+rate_bar
+rateBAR: bytes: %lld, total: %lld
+rate_bytes
+rate_eta_bytes
+rate_eta_kb
+rate_off
+Raw 8-bit
+Raw 8-bit or CJK m(O)de      : 
+Raw 8-bit or CJK mode toggled OFF!  Reloading...
+Raw 8-bit or CJK mode toggled ON!  Reloading...
+rawentry != ((void *)0)
+__rawmemchr
+raw_mode
+RAW_TOGGLE
+read_cfg
+READCSS.default%s:%s
+READCSS:%s
+readdir64
+read_directory: interrupted after %d bytes
+read_directory: interrupted_in_next_data_char after %d bytes
+Read from pipe
+Reading directory...
+Reading list of articles in newsgroup.
+Reading list of available newsgroups.
+Reading news article.
+Reading the directory interrupted by user
+Read Jumpfile %s
+Read jumpfile[%u] key='%s', url='%s'
+read keystroke commands from the given file
+readlink
+read() of CGI output failed
+READONLY
+read_rc opened %s
+read_rc used passed-in stream
+Read %s of data
+Read %s of %s of data
+read startfile from standard input
+read_timeout
+realm != ((void *)0)
+reason unknown
+receive options and arguments from stdin
+Receiving FTP directory.
+Receiving FTP file.
+{{reconnecting...
+record separator (newline)
+redirect
+redirected
+Redirection limit of 10 URL's reached.
+Redirection of POST content.  P)roceed, see U)RL, or C)ancel
+Redirection of POST content.  P)roceed, see U)RL, use G)ET or C)ancel
+Redirection of POST content requires user approval.
+redirectperm
+redirecttemp
+References
+References:
+References in 
+References: %s
+Referer: 
+referer_with_query
+Refresh: 
+REFRESH(
+refresh the screen to clear garbled text
+Refresh URL is not absolute.
+ref != ((void *)0)
+regardless of whether numlock is on.
+registered charset %d mime "%s" lynx "%s"
+reinterpreting as content-type:%s, encoding:%s
+reject.dat
+Rejecting this cookie.
+   relatedName:`%s'
+relaxed (TagSoup mode)
+rel='%c', c='%c', cur_choice=%d
+Reloading as bookmarks=%s
+Reloading document.  Any form entries will be lost!
+RELOAD THE CHANGES
+reload the current document
+RelTitle: 
+RememberTestResult
+REMOTE_ADDR=127.0.0.1
+REMOTE_HOST=localhost
+remote %s session:
+remove a file or directory
+Remove all tagged files and directories?
+Remove all tagged files and directories.
+     remove bookmark command, it is usually the 'R' key but may have
+remove_bookmark_link: deleting link number: %d
+remove_bookmark_link: files: %s %s
+remove_bookmark_link: SEEKING %s
+remove_bookmark_link: skipping link %d
+Remove directory?
+Remove Directory
+Remove directory '%s'?
+Remove file?
+Remove File
+Remove file '%s'?
+Remove key
+REMOVE_KEY
+RemoveProtocol
+remove %s
+REMOVE_SINGLE
+...remove source after copying ->%d
+Remove symbolic link?
+Remove Symbolic Link
+Remove symbolic link '%s'?
+rename(): %s
+renaming the file
+Reparse file %s
+Reparse memory %s
+Reparsing document under current settings...
+replaysecs
+reply_by_mail("%s", "%s", "%s", "%s")
+Reply to:
+REPLY-TO:
+representation != ((void *)0)
+Reproduce L)ink in this bookmark file or C)ancel? (l,c): 
+Request fulfilled.  Reset Content.
+REQUEST_METHOD=GET
+REQUEST_METHOD=HEAD
+REQUEST_METHOD=POST
+REQUEST_METHOD=SEARCH
+require .www_browsable files to browse directories
+reset button
+Reset Changes
+Resetting form...
+resizeterm
+resolved
+RestoreSession %s
+restricted via a command line switch.  If display of hidden files
+Restriction "default" was given.
+restrictions
+Restrictions "all" and "default" were given.
+Restrictions set:
+restricts access to URLs in the starting realm
+restricts all options.
+Resubmit POST content to %s ?
+result != 0
+... result %s
+result != ((void *)0)
+resumes from specified file on startup and
+resumes session from specified file
+ret_obj != ((void *)0)
+Retrieving file.  - PLEASE WAIT -
+Retrying as HTTP0 request.
+Retrying connection without TLS.
+Retrying with access authorization information.
+Retrying with proxy authorization information.
+<return>
+ return all
+return to the first screen (home page)
+reuse_tempfiles
+review/edit (B)ookmarks files
+review/edit B)ookmarks files
+Review/edit Bookmarks files
+RFC 1345 Mnemonic
+RFC 1345 w/o Intro
+$(RFIELDS)
+$(RFIELDS)    <input type="checkbox" name="r_$(FID)"$(FDEF)> $(FDESC)<BR>
+Right Arrow
+RIGHT_LINK
+RL_CLCOPY_CMD
+Rlogin access is disabled!
+rlogin_path
+rlogin_proxy
+RL_PASTE_CMD
+rmdir_path
+'r' or 't'
+'r' or 'u'
+*** ROWSPAN=%d is too large, ignored!
+rticle <
+ 'r' to return to Lynx 
+Rule alert:
+Rule: For `%s' op %d
+Rule: For `%s' op %d `%s'
+....... rule ignored, unrecognized `%s'!
+....... rule ignored, unrecognized `%s %s'!
+Rule: Ignoring `%s' in Redirect
+Rule: %s
+rule, setup
+rulesfile
+run external program with current link
+run external program with current page
+    Rx: %s
+ry-after:
+   `%s'.
+         * %s
+%.*s[000000]
+%s0x0 },
+........... %s (0x%x) %s
+%-*s %-13s %s
+%s//%.250s/
+">%s</a> 
+safeUCGetLYhndl_byMIME: ISO-8859-1 assumed.
+  %s<a href="%s">lynx.cfg</a>.
+%s:<a href="%s">%s</a>
+same as commandline option -anonymous.  Sets the
+%s,  Articles %d-%d
+S_attr_gap
+saturday
+save_bookmark_link: SEEKING %s
+Save D)ocument or L)ink to bookmark file or C)ancel? (d,l,c): 
+Save D)ocument to bookmark file or C)ancel? (d,c): 
+Save L)ink to bookmark file or C)ancel? (l,c): 
+save_options
+Save options to disk
+Save request cancelled!!!
+SaveSession %s
+save_space
+saves session to specified file
+saves session to that file on exit
+Save to a local file
+Save to disk
+Save to disk disabled
+Save to disk disabled.
+Saving...
+Saving Options...
+'scalar'
+scan_for_buried_news_refs
+scheme_specifics != ((void *)0)
+S_comment
+<%s compact>
+%s cookie: %.*s=%.*s  Allow? (Y/N/Always/neVer)
+Screen height must be at least 23 lines for the Options menu!
+Screen size is now %d x %d
+Screen size: %s()
+Screen too small! (8x35 min)
+screen width for formatting of dumps (default is 80)
+script button
+(Script button)   Use UP or DOWN arrows or tab to move off.
+SCRIPTENGINE
+scroll.arrow
+scroll.back
+scroll.bar
+scrollbar_arrow
+SCROLLING
+scroll.noarrow
+scrollok
+  scrtop=%d, curline=%d, curanchor=%d, display_lines=%d, %s
+%s %d before: '%s'
+%s @%d: BUG
+%s %d%c%c
+%s</div>
+S_doctype
+S_dollar
+S_dollar_dq
+S_dollar_paren
+S_dollar_paren_dq
+S_dollar_paren_sq
+S_dollar_sq
+%s  D)ownload, or C)ancel
+S_dquoted
+%s(%d) returned (%s:%d:...)
+%s -d %s
+%s %d %s
+sea File
+, search
+search for the next occurence
+search for the previous occurence
+Search index
+(S)earching type             : 
+search within the current document
+second '!' at column %d:
+	seconds: %s
+Secure %d-bit %s (%s) HTTP connection
+Secure %d-bit %s (%s) NNTP connection
+Security and Privacy
+See also
+see also -restrictions
+See also VERBOSE_IMAGES in lynx.cfg
+(see -cmd_log)
+See http://lynx.isc.org/ and the online help for more information.
+Seek fail on %s
+seek_frag_area_in_cur
+seek_frag_map_in_cur
+seeother
+</select>
+       Select Bookmark
+ Select Bookmark (screen %d of %d)
+Select destination or ^G to Cancel: 
+selected
+selected choice %d of %d
+selective
+Selective access is not enabled for this directory
+Select key
+SELECT_KEY
+<select name="%s" %s>
+Select option (or page) number: 
+select_popups specifies whether the OPTIONs in a SELECT block which
+Select subbookmark, '=' for menu, or ^G to cancel: 
+self signed certificate
+%s<em>%d</em>. <tab id=t%d><a href="%s%d">%s</a>
+%s<em>%s</em>
+send a comment to the author of the current document
+send a HEAD request
+send a HEAD request for the current document or link
+Send HEAD request for D)ocument, or C)ancel? (d,c): 
+Send HEAD request for D)ocument or L)ink, or C)ancel? (d,l,c): 
+Sending CSO/PH request.
+Sending form content...
+Sending Gopher request.
+Sending HTTP request.
+Sending your message...
+Send this comment?
+Send this message?
+send_useragent
+Send User-Agent header
+S_entity
+september
+S_equals
+Server asked for %d redirection of POST content to
+Server: <em>%s</em>  
+Server reply header lines:
+SERVER_SOFTWARE=%s/%s
+server != ((void *)0)
+S_esc_dq
+S_esc_sq
+session_file
+Session file
+sessionin
+session_limit
+sessionout
+Session over
+Session start
+Session start:%s
+set alternate Lynx User-Agent header
+Set-Cookie
+SetCookieDomain(%s)
+set_cookies
+set_errno
+, setgid
+set homepage separate from start page
+setlocale
+Set modifier 1 flag
+Set modifier 2 flag
+set NNN-second delay at statusline message
+Set Options
+set or using the 7 bit character approximations.
+set priorities %s
+ *** Set simulated 'Z'
+set terminal type to TERM
+set the default index file to URL
+set the display variable for X exec'ed programs
+set the N-second connection timeout
+set the N-second read-timeout
+setting of line-editor binding for key %s (0x%x) for %s failed
+setting of line-editor binding for key %s (0x%x) to 0x%x for %s failed
+settings made here.
+setting suffix '%s' to '%s'.
+, setuid
+setup_connection returns %d
+setup_connection(%s)
+setup != ((void *)0)
+S_exclamation
+SGML after  %s|%.*s|%c|
+SGML Attribute Declaration:
+SGML: attribute value is '%s'
+SGML: Attribute value %s ***ignored
+SGML before %s|%.*s|%c|
+SGML_begin
+SGML_character: Handling '8204' (zwnj) reference as 'WBR' element.
+SGML_character: Handling 'zwnj' entity as 'WBR' element.
+SGML_character: Ignoring '%s%s'.
+SGML: class is '%s'
+SGML Comment:
+SGML: Continue with other content model for <%s>
+SGML discarding empty %s
+SGML Doctype:
+SGML Do%s ignore_when_empty:%s
+SGML Element Declaration:
+SGML: End </%s>
+SGML: End </%s> 	<- %s end </%s>
+SGML: End </%s> 	<- %s start <%s>
+SGML Entity Declaration:
+SGML: Extra end tag </%s> found and ignored.
+SGML: ***Faking SELECT end tag before </%s> end tag.
+SGML: ***Faking SELECT end tag before <%s> start tag.
+SGML: found attribute %s, %d
+SGML: found = but no value
+SGML: Found PI in PCDATA, junking it until '>'
+SGML: Found PI, looking for '>'
+SGML: Found </%s> when expecting </%s>. </%s> ***assumed.
+SGML: Found </%s> when expecting </%s>. </%s> ***Ignored.
+SGML Identifier:
+SGML: ***Ignoring end tag </%s> in SELECT block.
+SGML: ***Ignoring start tag <%s> in SELECT block.
+SGML: ***Illegal end tag </%s> found.
+SGML: *** Invalid element %s
+SGML Marked Section:
+SGML: Nesting <%s>...<%s> 	<- ***invalid end </%s>
+SGML_new
+SGMLParser
+SGML Processing instruction:
+SGML: Restart <%s>
+SGML: `</%s%c' found!
+SGML: `</%s%c' found!  Ignoring it.
+SGML: `</%s%c' found!  Treating as '<%s%c'.
+SGML: `<%.*s/' found!
+SGML: </%s> ignored
+SGML: Start <%s>
+SGML: Still open %s, ***converting invalid <%s> to </%s>
+SGML: Still open %s 	<- ***ignoring start <%s>
+SGML: Still open %s 	<- ***invalid start <%s>
+SGML: Still open %s, ***no open %s for </%s>
+SGML: Treating <%s%c as text
+SGML: Unknown attribute %s for tag %s
+SGML: *** Unknown element "%s"
+SGML: Unknown entity '%s' %lX %ld
+SGML_write found UCS-2 BE BOM
+SGML_write found UCS-2 LE BOM
+SGML_write found UTF-8 BOM
+Shared Lib
+Shifting is disabled while line-wrap is in effect
+shift_jis
+SHIFT_LEFT
+SHIFT_RIGHT
+shift the screen left
+shift the screen right
+short_url
+should be subjected to varying degrees of validity checking.  If a
+show alert:
+show_cfg
+show color (&)  : 
+show_color
+Show color
+show_color specifies how to set the color mode at startup.  A value of
+show cursor (@) : 
+show_cursor
+Show cursor
+show_cursor specifies whether to 'hide' the cursor to the right (and
+show_dotfiles
+sho(W) dot files: 
+Show dot files
+show_dotfiles specifies that the directory listing should include
+show error warning:
+show filename
+Show images
+Show info
+showing the configured value as a default when sending mail.
+show_kb_name
+show_kb_rate
+Show `LYNX.CFG' setting
+show other commands in the novice help menu
+show parsed text/html with -source and in source view
+Show progressbar
+show_rate
+show rule message:
+Show scrollbar
+Show %s/sec, ETA
+Show %s/sec rate
+Show the 401 message body?
+Show the 407 message body?
+Show transfer rate
+sigaction
+sigaddset
+sigemptyset
+sigprocmask
+S_in_kanji
+%s: Invalid Option: %s
+   `%s' is
+%s is a directory
+%s is not a file and %s not an executable, giving up.
+%s is not allowed in the %s
+%s is not an executable file, passing the buck.
+SITE DIRSTYLE
+sizechange
+ size=%d maxlength=%d
+size %d, offset %d, length %d
+Size: %ld  
+sizeof_int
+sizeof_long
+sizeof_off_t
+sizeof_time_t
+S_junk_tag
+skip field since last %d < %d
+...skip (mask %u/%d)
+skipping
+Skipping %s
+skipping submit field with 
+%%%.*sld
+S_litteral
+S_marked
+snews://
+snewspost
+snewspost:
+snewspost://
+snewspost_proxy
+snews_proxy
+snewsreply
+snewsreply:
+snewsreply://
+snewsreply_proxy
+S_nonascii_text
+S_nonascii_text_dq
+S_nonascii_text_sq
+'%s' not found!
+socket failed: family %d addr %s port %s.
+socket for master socket
+Socket read failed (too many tries).
+Soft double-quote parsing OFF!
+Soft double-quote parsing ON!
+soft_dquotes
+Some print functions have been disabled!
+soon as they are seen)
+(so probably not protected)
+Sorry, but the service you have selected is one
+Sorry, no known way of converting %s to %s.
+Sorry, the ACTION for this form is disabled.
+Sorry, the ACTION for this form is not an http URL.
+Sorry, the document is not an http URL.
+Sorry, the link is not an http URL.
+sortasgml
+sortedList
+Source and destination are the same location!  Request ignored!
+source_cache
+Source cache error - disk full?
+Source cache error - not enough memory!
+Source-Cache-File: <a href="file://%s">%s</a>
+SourceCache: file-cache%s found
+source_cache_for_aborted
+source-cache-mem
+SourceCache: memory-cache%s found
+SourceCache: Removing file %s
+SourceCache: Removing memory chunk %p
+SourceCache: Reparsing file %s
+SourceCache: Reparsing from memory chunk %p
+SourceCache: `%s' has been accessed, partial content.
+SourceCacheWriter: Caching source for URL %s in file %s
+SourceCacheWriter: Caching source for URL %s in memory chunk %p
+SourceCacheWriter: Cannot open source cache file for URL %s
+SourceCacheWriter: Committing file %s for URL %s to anchor
+SourceCacheWriter: Committing memory chunk %p for URL %s to anchor
+SourceCacheWriter: If successful, will replace memory chunk %p
+SourceCacheWriter: If successful, will replace source cache file %s
+SourceCacheWriter: memory chunk %p had errors.
+SourceCacheWriter: Protocol is "%s"; not cached
+SourceCacheWriter: Removing active file %s
+SourceCacheWriter: Removing active memory chunk %p
+SourceCacheWriter: Removing previous file %s
+SourceCacheWriter: Removing previous memory chunk %p
+source file in place of [INLINE], [LINK] or [IMAGE]
+	source=%s
+*** SPAN=%d is too large, ignored!
+span.htmlsrc_abracket
+span.htmlsrc_abracket:!span
+span.htmlsrc_attrib
+span.htmlsrc_attrib:!span
+span.htmlsrc_attrval
+span.htmlsrc_attrval:!span
+span.htmlsrc_badattr
+span.htmlsrc_badattr:!span
+span.htmlsrc_badseq
+span.htmlsrc_badseq:!span
+span.htmlsrc_badtag
+span.htmlsrc_badtag:!span
+span.htmlsrc_comment
+span.htmlsrc_comment:!span
+span.htmlsrc_entire
+span.htmlsrc_entire:!span
+span.htmlsrc_entity
+span.htmlsrc_entity:!span
+span.htmlsrc_href
+span.htmlsrc_href:!span
+span.htmlsrc_sgmlspecial
+span.htmlsrc_sgmlspecial:!span
+span.htmlsrc_tag
+span.htmlsrc_tag:!span
+S_paren_dq
+S_paren_sq
+Spawning is currently disabled.
+Spawning your default shell.  Use 'exit' to return to Lynx.
+Spawning your selected editor to edit mail message
+Spawning your selected editor to edit news message
+S_pcdata
+Special Files and Screens
+Special OBJECT->FIG handling
+Special OBJECT handling
+special tag
+Special URL only valid from current File Permission menu!
+specifies a file to use to read cookies
+specifies a file to use to store cookies
+specifies a lynx.cfg file other than the default
+specifies a lynx.lss file other than the default
+Specify permissions below:
+                split adjusted to %u.
+split_line
+split_line_2
+split_line_3
+split_line_4
+*** split_line: split==%u greater than last_line->size==%d !
+%s</pre><ul><li>
+__sprintf_chk
+%s_proxy
+%s %p "%s"
+%s*/*;q=0.01%c%c
+srand_func
+SRCSTART %d
+SRCSTOP %d
+( %s ) < %s
+%.*s[%s]
+%s: %.*s
+%s://%.*s/
+%s//%.*s
+%s//%.*s/
+		%s (%s)
+%s `%s' already in cache
+### %s %s, at %s
+%s `%s' bound to value `%s'
+%s %s:<Br>
+%s %s%c%c
+S_script
+%s//%s:%d/
+%s%s/%d-%d
+	%s %s %d %s %s %d%s
+%s %s %d (that line ignored)
+, %s/sec
+%s seconds 
+%-*s%s<em>%d</em>. <tab id=t%d><a href="%s">%s</a>
+%-*s%s<em>%d</em>. <tab id=t%d><em>%s</em>
+S_sgmlatt
+S_sgmlele
+S_sgmlent
+%s %s	in %s
+%s	%s 	in %s
+ssl_cert_file
+SSL error:host(%s)!=cert(%s)-Continue?
+SSL error:%s-Continue?
+	ssl_host  '%s'
+ SSL-MM%s1.4.1
+SSL Prompting
+S_squoted
+%s(%s) returned (%s:%d:...)
+%.*s%.*s%s
+%.*s%s%s
+%s `%s' %s
+%s '%s'%s
+%s %s `%s'
+%s %s %s
+%s %s: %s
+%s//%s@%s/
+%s//%s%s
+%s%s (%s)
+%s %s (%s:%d:%s)
+%s%s'%s' is not a URL
+%s `%s' %s `%s'
+%s %s%s%s
+%s +%s%s %s
+%s%s:[%s]%s
+%s	%s	%s	%s	%d	%s	%s%s%s
+%s//%s%s%s/%s
+%s%s%s%s%s
+%s"%s.x"
+%s"%s.y"
+__stack_chk_fail
+stack_dump
+Stack underflow error!  Tried to pop off more styles than exist in stack
+stages != ((void *)0)
+S_tag_gap
+S_tagname_slash
+ (stalled for %s)
+STANDARD
+Standard download options:
+Standard image handling restored!  Reloading...
+Standard print options:
+standout
+start CacheThru_new
+start_color
+start_curses: done.
+start_element
+STARTFILE
+startfile_ok
+start HTML_new
+starting count for lnk#.dat files produced by -crawl
+Starting realm is '%s'
+startStblTABLE: failed.
+startStblTABLE: started.
+stat() failed
+stat() of pgm_buff failed
+Status (ARTICLE %d):
+status_buffer_size
+statusline
+status line
+statusline prompt instead of the menu seen in novice and intermediate
+STATUS=%s
+STDC_HEADERS
+...StdinArg:%s
+, sticky
+, still open!
+st-modified:
+    %s to delete all text in field, [Backspace] to delete a character    
+      %s to delete text in field, [Backspace] to delete a character    
+stop_curses: done.
+store_cookie
+store_cookie: Domain's cookie limit exceeded!  Rejecting cookie.
+store_cookie: Rejecting because '%s' has no dot.
+store_cookie: Rejecting because '%s' is not a prefix of '%s'.
+store_cookie: Rejecting domain '%s'.
+store_cookie: Rejecting domain '%s' for host '%s'.
+store_cookie: Total cookie limit exceeded!  Rejecting cookie.
+store_cookie: Value is NULL! Not storing cookie.
+STORED %s
+%s//TRANSLIT
+__strcat_chk
+__strcpy_chk
+StreamStack: found exact match: %s -> %s
+StreamStack: found strong subtype wildcard match: %s -> %s
+StreamStack: found strong wildcard match: %s -> %s
+StreamStack: found weak wildcard match: %s
+StreamStack: Returning NULL!
+StreamStack: Returning "%s"
+StreamStack: Returning *unknown* stream!
+StreamStack: Using %s
+stream != ((void *)0)
+strfnames
+strict (SortaSGML mode)
+strip_dotdot_urls
+                  Stripping lead dots.
+strnames
+__strncat_chk
+__strncpy_chk
+strrchr(pgm_buff, '/') returned NULL
+struct_dirent64
+S%T%U%V%W%X%Y%Z%[%\%]%^%_%`%a%
+STYLE:begin_element:ending EMPTY element style
+STYLE.begin_element:ending "EMPTY" element style
+Style_className != ((void *)0)
+STYLE:end_element: ending non-EMPTY style
+STYLE.end_element: ending non-"EMPTY" style <%s...>
+STYLE.fast-trim: [%s] from [%s]: 
+STYLE.getstr: switching to <edit.%s>.
+STYLE.highlight.line2: @(%d,%d), style=%d.
+STYLE.highlight.off: cached style @(%d,%d): 
+STYLE.highlight.off: can't use cache.
+STYLE.highlight.off: NOFIX branch @(%d,%d).
+STYLE.highlight.on: @(%d,%d).
+STYLE.link: using style <%s>
+style-sheet
+StyleSheet: No style named `%s'
+STYLE.start_element: <%s> (class <%s> not configured), hcode=%d.
+STYLE.start_element: <%s>, hcode=%d.
+STYLE.start_element: <%s>.<%s>, hcode=%d.
+STYLE.start_element: <%s>.type.<%s>, hcode=%d.
+STYLE.start_element: type <%s> not configured.
+sub_bookmarks
+Subdirectories:
+subject=
+SUBJECT:
+Subject: Lynx Error in %s
+Subject: %s
+Subject: %s  
+SubmitForm
+SubmitForm[%d/%d]: 
+SubmitForm: failed sanity check, %d!=%d !
+SubmitForm: form %d not in HTMainText's list!
+SubmitForm: no action given
+Submit mailto form to 
+Submitting form...
+Submitting %s
+Submit to 
+ (submit_val_cs %d "%s") submit_value%s="%s"
+Submit ('x' for no cache) to 
+Subsection
+substitute_underscores
+succeeded
+success.
+suffix_order
+SUFFIX:%s without MIME type for %s
+suff != ((void *)0)
+/SugFile=
+Suggested file name:
+suggest %s
+Summary: 
+Sun, 12 Jun 2011 17:18:54 -0700
+supplied,
+.sv4cpio
+%s Version %s (%s)
+  %s [vt100] 
+switch between two ways of parsing HTML
+SWITCH_DTD
+Switch input keymap
+%s/WWW/%s/%s%s
+%s.x=0%s%s.y=0%s
+Symbolic link that you have currently selected
+Syntax Error parsing COLOR in configuration file:
+Syntax Error parsing style in lss file:
+sys_file_offset_bits
+sys_largefile_CC
+sys_large_files
+sys_largefile_source
+__syslog_chk
+syslog_requested_urls
+syslog_text
+syslog-urls
+system_editor
+System error - failure to get status.
+System Index
+system_mail
+system_mail_flags
+system_name
+sysv_utmp
+~];T$,~ 
+T$0f+T$,
+T$49T$@~
+T$49T$8~
+T$.8T$/t
+T$(9T$8t-
+T$ 9T$(r^
+T$ 9T$$vC
+TABINDEX
+TABLE center disable.
+TABLE center enable.
+<tab to=t%d>%s
+Tab != ((void *)0)
+tag a file or directory for later action
+tagged item:
+tagged items:
+tag index(%s) = %d
+TAG_LINK
+tagnum(%p) = %d
+Taipei (Big5)
+take precedence.  The accept_all_cookies parameter will override any
+--- Talking HTTP0.
+--- Talking HTTP1.
+Tar and compress
+TAR_DOWN_OPTIONS
+Tar File
+TAR_FILE_OPTIONS
+target_alias
+	target=%s
+tar_path
+TAR_PIPE_OPTIONS
+TAR_UP_OPTIONS
+tC;D$\~=
+TCP: Accepted new socket %d
+TCP: Error %d in `SOCKET_ERRNO' after call to %s() failed.
+TCPIP implementation, and any other relevant information.
+TCP: Local host name is %s
+TCP: Master socket(), bind() and listen() all OK
+tcp-port
+tcsetattr
+T$Dth9T$T|b
+Telnet access is disabled!
+telnet_path
+telnet_port
+Telnet port specifications are disabled.
+telnet_proxy
+template string '%.*s'
+Temporary URL or list would be too long.
+temp%.*s
+  temp=%s, *num=%d, rel='%c'
+temp->styles != ((void *)0)
+temp != ((void *)0)
+TERM=%.106s
+term_header
+Terminal does not support color
+Terminal initialisation failed - unknown terminal type?
+TERMINAL TYPE IS SET TO
+terminated by '---' on a line
+termio_and_curses
+termio_and_termios
+test "$DISPLAY"
+test "$DISPLAY" != ""
+...test_domain_entry(%s) ->(%s) bv:%u, invcheck_bv:%u
+...testing %c/%c
+testing ok_lstat(%s)
+testing ok_stat(%s)
+test -n "$DISPLAY"
+test -n "$LYNX_VERSION"
+test -z "$DISPLAY"
+test -z "$LYNX_VERSION"
+.texinfo
+textarea
+(Textarea) Enter text. Use UP/DOWN arrows or TAB to move off.
+(Textarea) Enter text. Use UP/DOWN arrows or TAB to move off (%s for editor).
+(Textarea) Inactive.  Press <return> to activate.
+(Textarea) Inactive.  Press <return> to activate (%s for editor).
+text/css
+text entry area
+text entry field
+(Text entry field) Enter text.  Use UP or DOWN arrows or tab to move off.
+(Text entry field) Inactive.  Press <return> to activate.
+textfields_need_activation
+TEXTFLOW
+text/plain
+text/richtext
+text/sgml
+text-submit field
+text/tab-separated-values
+textualnewlines
+text/x-c
+text/xml
+text/x-runoff-manual
+text/x-setext
+text/x-sgml
+text/x-tex
+T$H9T$8t
+T$H9T$8t*
+that are also applied, are derived from definitions
+That key requires Advanced User mode.
+The Cache Jar is empty.
+the certificate has been revoked
+the certificate is not trusted
+The character_set definition controls the representation of 8 bit
+the -color and -nocolor command line switches.
+the COLORTERM environment variable is set.  The default behavior always is
+The cookie has been eaten!
+The Cookie Jar is empty.
+The default can be overridden via the -popup command line toggle.
+The default can be overridden via the -show_cursor command line toggle.
+The default is ~/.lynx_cookies.
+The domain has been eaten!
+The 'd'ownload command is currently disabled.
+The 'e'dit command is currently disabled.
+The effect of the saved value can be overridden via
+The file_sorting_method specifies which value to sort on when viewing
+The following allow you to define sub-bookmark files and descriptions.
+the following control characters are used for moving and deleting:
+The following data were derived during the automatic configuration/build
+The following data were used as automatically-configured compile-time
+The following is read from your lynx.cfg file.
+The format is multi_bookmark<capital_letter>=<filename>,<description>
+The '-head' switch is for http HEAD requests and cannot be used for
+The keywords that you enter will allow you to search on a
+The line must be of the form:
+The link   %s :?: %s 
+The '-mime_header' switch is for http URLs and cannot be used for
+The mode set at startup can be changed via the "show color" option in
+the 'o'ptions menu.  If the option settings are saved, the "on" and
+                  The password is:  %s
+The 'p'rint command is currently disabled.
+the problem, the operating system name with version number, the
+There are no links above this line of the document.
+There are no links below this line of the document.
+There are no links in this bookmark file!
+There are no references from this document.
+There are only hidden links from this document.
+There is already a directory with that name!  Request ignored.
+There is already a file with that name!  Request ignored.
+There is normally no need to edit this file manually, since the defaults
+     the 'R' key but may have been remapped by you or your system
+The selected item is not a file or a directory!  Request ignored.
+the simpler Options Menu instead.  Save options with that using the '>' key.
+The special strings 'nocolor' or 'default', or
+The specified name is already in use!  Request ignored.
+thetasym
+THE_TITLE:%s
+The '-traversal' switch is for http URLs and cannot be used for
+the University of Kansas, CERN, and other contributors.
+THE_URL:%s
+The visited_links setting controls how Lynx organizes the information
+This character (%X:%X) doesn't seem Japanese
+This client doesn't know how to compose authorization information for scheme
+This client doesn't know how to compose proxy authorization information for scheme
+This directory is not readable.
+this document:
+This feature not yet implemented!
+This field cannot be (e)dited with an external editor.
+     This file also may be edited with a standard text editor to delete
+This file cannot be displayed on this terminal.
+This file cannot be displayed on this terminal:  D)ownload, or C)ancel
+This file contains options saved from the Lynx Options Screen (normally
+     This file is an HTML representation of the X Mosaic hotlist file.
+THIS-IS-A-BUG
+This is a searchable Gopher index.
+This is a searchable index of a CSO database.
+This is a searchable index.  Use %s to search.
+This is not necessarily the same as a name provided as part of the
+This message was automatically generated by
+This server is broken (EPSV)
+This server is broken (RETR)
+this socket's first and only connect
+this socket's first connect
+this socket's first select
+This special URL cannot be a form ACTION!
+This special URL cannot be downloaded!
+This special URL is not allowed in external documents!
+TH_JP_AUTO_DETECT: This document's kcode is unexpected!
+TH_JP_AUTO_DETECT: This document's kcode seems EUC.
+TH_JP_AUTO_DETECT: This document's kcode seems mixed!
+TH_JP_AUTO_DETECT: This document's kcode seems SJIS.
+Thought you might want to know.
+Thu, 01 Jan 1970 00:00:01 GMT
+thursday
+t$hv6+D$<
+timed out
+TIME_WITH_SYS_TIME
+ TITLE="
+<TITLE>Bad File Request</TITLE>
+<TITLE>CSO/PH Query Form for $(HOST)</TITLE>
+<TITLE>CSO/PH Results on %s</TITLE>
+<TITLE>Help 
+        title:%s
+     title:%s
+  title   %s
+	title   %s)
+<title>%s</title>
+tm_gmtoff
+tmp_buffer != ((void *)0)
+tmp != ((void *)0)
+/tmp/W3_Cache_
+tn3270_path
+tn3270_proxy
+<=tN<,tB
+to a different value if you choose.
+to affect the behavior of download command
+TO_CLIPBOARD
+toggle center alignment in HTML TABLE
+toggle handling of all images as links
+TOGGLE_HELP
+toggle historical vs.  valid/minimal comment parsing
+toggle linewrap on/off
+toggle minimal vs.  valid comment parsing
+toggle nested-table parsing on/off
+toggle pseudo-ALTs for inlines with no ALT string
+toggle raw 8-bit translations or CJK mode ON or OFF
+toggles compatibility with comm programs' scrollback
+toggles default setting of 8-bit character translations
+toggles display of transfer rate
+toggles display partial pages while downloading
+toggles emulation of the old Netscape and Mosaic
+toggles forced core dumps on fatal errors
+toggles forced resubmissions (no-cache) of forms with
+toggles forcing of the secure flag for SSL cookies
+toggles forms-based vs old-style options menu
+toggles handling of Set-Cookie headers
+toggles handling of single-choice SELECT options via
+toggles hiding of the cursor in the lower right corner
+toggles inclusion of ISMAP links when client-side
+toggles inclusion of links for all images
+toggles [LINK], [IMAGE] and [INLINE] comments
+toggles minimal versus valid comment parsing
+toggles nested-tables logic
+toggle source/presentation for current document
+toggles passive ftp connection
+toggles pseudo-ALTs for inlines with no ALT string
+toggles scanning of news articles for buried references
+toggles showing arrows at ends of the scrollbar
+toggles showing scrollbar
+toggles use of a Lynx Trace Log for the current
+toggles use of '>' or '-->' as terminator for comments
+toggles use of underline/bold attribute for links
+toggles use of _underline_ format in dumps
+toggles use of unique-urls setting for -dump and -listonly options
+toggle tracing of browser operations
+toggle transmission of From headers
+toggle valid vs.  soft double-quote parsing
+to host %s
+to http servers using an Accept-Charset header.  The value should NOT
+'-t -oi'
+"-t -oi"
+Too many tempfiles
+...to  path '%s'
+top_of_screen %d
+to retry with Access Authorization
+to retry with Proxy Authorization
+ to return to Lynx.
+'t' or 'x'
+ to save,
+ '>' to save, or 'r' to return to Lynx 
+TO_SCREEN
+To search the database for a name, fill in one or more of the fields
+' to socket %d
+to TRUE in lynx.cfg, or use the -nofrom command line switch.  You also
+touch_path
+touch %s
+to visualize how lynx behaves with invalid HTML
+to which you have to log in.  If you were running www
+T$(+p0+p4
+TRACE_LOG
+Trace Log open failed.  Trace off!
+trace_mask
+Trace OFF!
+Trace ON!
+TRACE_TOGGLE
+Trademark
+trailing spaces: %d
+Transferred %d bytes
+Translation
+Transparent
+Transpose characters
+traversal
+Traversal host is '%s'
+TRAVERSAL WAS INTERRUPTED
+traverse2.dat
+traverse all http links derived from startfile
+traverse.dat
+traverse.errors
+treating as end FIG
+        Treating as '%s'.  Converting to '%s'
+        Treating as '%s' with encoding '%s'
+tree->top != ((void *)0)
+tree != ((void *)0)
+Tried to malloc %d bytes
+trim_input_fields
+trim input text/textarea fields in forms
+Troff me
+Troff ms
+TRST:*** COLSPAN=%d is too large, ignored!
+TRST:get_remaining_colspan; colspan = %d
+TRST:*** ROWSPAN=%d is too large, ignored!
+TRST:Stbl_addCellToRow, line=%d, pos=%d, colspan=%d
+TRST:Stbl_addCellToTable(lineno=%d, pos=%d, isheader=%d, cs=%d, rs=%d, al=%d)
+TRST:Stbl_addColInfo(cs=%d, al=%d, isgroup=%d)
+TRST:Stbl_addRowGroup()
+TRST:Stbl_addRowToTable(alignment=%d, lineno=%d)
+TRST:Stbl_cancelRowSpans()
+TRST:Stbl_fakeFinishCellInTable FAKE %d elts%s
+TRST:Stbl_fakeFinishCellInTable(lineno=%d) FINISH FAKING
+TRST:Stbl_fakeFinishCellInTable(lineno=%d, finishing=%d) START FAKING
+TRST:Stbl_fakeFinishCellInTable REALLOC ROWSPAN
+TRST:Stbl_finishCellInRow line=%d pos=%d end_td=%d ncells=%d pnd_len=%d
+TRST:Stbl_finishCellInTable(lineno=%d, pos=%d, off=%d, end_td=%d)
+TRST:Stbl_finishColGroup()
+TRST:Stbl_finishRowInTable()
+TRST:Stbl_finishTABLE()
+TRST:Stbl_finishTABLE, l=%d, offset=%d, ended=%u.
+TRST:Stbl_free()
+TRST:Stbl_reserveCellsInRow(icell=%d, colspan=%d
+TRST:Stbl_reserveCellsInTable(icell=%d, colspan=%d, rowspan=%d)
+TRST:Stbl_startTABLE(align=%d)
+TRST:Stbl_update_enclosing, width=%d, lines=%d...%d.
+TRST:Stbl_update_enclosing: width too large, aborting enclosing
+truncate64
+... truncate(%s,0) failed: %s
+trusted_lynxcgi
+Trying: '%s'
+Trying to find address in: %s
+Trying to find name in: %s
+Try to fit screen width
+ts2 != ((void *)0)
+t->str != ((void *)0)
+<+t,<-t(
++T$<;T$4~
++T$<;T$4~$
+Turkish (cp857)
+Turkish (ISO-8859-9)
+Turning off TRACE for fetch of log.
+Turning TRACE back on.
+turn off color support
+turn on mouse support
+turn on "Textfields Need Activation" mode
+turns on Lynx trace mode
+t)< v%<,t!
+Two lines down
+Two lines up
+  Tx: %s
+type_getgroups
+type_int
+type_long
+type_long_long
+type_mode_t
+type_off_t
+Type of Search
+type_pid_t
+type_size_t
+type_socklen_t
+type_ssize_t
+type_time_t
+type_uid_t
+type_unionwait
+u*9l$8u$
+UCChangeTerminalCodepage: Called, but not implemented!
+UC_Charset_Setup: Too many.  Ignoring %s/%s.
+UC_con_set_trans: Invalid charset handle %d.
+UC_con_set_unimap: Invalid charset handle %d.
+UCGetLYhndl_byAnyName(%s)
+UCGetLYhndl_byMIME: NULL argument instead of MIME name.
+UCGetLYhndl_byMIME: unrecognized MIME name "%s"
+UC_MapGN: Using %d <- %d (%s)
+UC_NoUctb_Register_with_LYCharSets: Too many.  Ignoring %s/%s.
+UC_Register_with_LYCharSets: Too many.  Ignoring %s/%s.
+UCSetTransParams: from %s(%d) to %s(%d)
+UCTransUniChar returned 0x%.2lX:'%c'.
+ukans.edu
+Ukrainian Cyrillic (cp866u)
+Ukrainian Cyrillic (KOI8-U)
+</ul><pre>
+Unable to access cgi script
+Unable to access document.
+Unable to connect to FTP host.
+Unable to connect to remote host.
+Unable to copy temporary file for deletion of link.
+Unable to download file.
+Unable to follow link
+Unable to get status of '%s'.
+Unable to locate remote host %s.
+Unable to make connection
+Unable to make secure connection to remote host.
+Unable to open bookmark file for deletion of link.
+Unable to open bookmark file, use 'a' to save a link first
+Unable to open permit options file
+Unable to open protection setup file
+Unable to open reject file.
+Unable to open scratch file for deletion of link.
+Unable to open tempfile for X Mosaic hotlist conversion.
+Unable to open temporary file for mailto URL!
+Unable to open traversal errors output file
+Unable to open traversal file.
+Unable to open traversal found file.
+Unable to reopen temporary file for deletion of link.
+Unable to save Options!
+Unable to %s due to system error!
+Unable to set up connection.
+Unable to upload file.
+Uncompress
+uncompress_path
+unctrl_header
+ (undefined) %s
+undefined, trimming at %p
+Underline Level is %d
+underline_links
+Underline links
+UNDERLINE_LINKS
+underscore
+undo going back to the previous document
+Unexpected access protocol for this URL scheme.
+unexpected char '%c' after tagname at column %d:
+Unexpected failure - unable to find trailing path separator
+Unexpected network read error; connection aborted.
+Unexpected network write error; connection aborted.
+Unexpected read error.
+Unexpected server disconnect.
+Unexpected way of accessing
+ungetmouse
+unicode-1-1-utf-8
+UNICODE (UTF-8)
+UNICODE UTF 8
+unique_urls
+UNIX Compressed
+UNIX Compr. Tar
+UNIX Type: L8 MAC-OS MachTen
+(unknown)
+<UNKNOWN>
+UNKNOWN-8BIT
+unknown anchor
+Unknown end tag </%s>
+unknown field or link
+Unknown format character `%c' in list format
+unknown form field
+Unknown key sequence: %d:%d:%d
+UNKNOWN-LEX-ITEM
+unknown option name %s in %s
+Unknown or ambiguous command
+unknown restriction
+Unknown scheme `%s' %s
+Unknown status reply from server!
+Unknown target '%s'
+unless it is activated from the command line, and the built-in line editor
+UNMAPPED
+UNMODIFIABLE choice list.  Use return or arrow keys to review or leave.
+UNMODIFIABLE file entry field.  Use UP or DOWN arrows or tab to move off.
+UNMODIFIABLE form checkbox.  Use UP or DOWN arrows or tab to move off.
+UNMODIFIABLE form field.  Use UP or DOWN arrows or tab to move off.
+UNMODIFIABLE form password.  Use UP or DOWN arrows or tab to move off.
+UNMODIFIABLE form radio button.  Use UP or DOWN arrows or tab to move off.
+UNMODIFIABLE form text field.  Use UP or DOWN arrows or tab to move off.
+UNMODIFIABLE option list.  Use return or arrow keys to review or leave.
+Unparsed data:
+unsetkey
+ *** Unset simulated 'Z'
+(Unstyled)
+Unsupported data: URL!  Use SHOWINFO, for now.
+Unsupported URL scheme!
+Untag all tagged files and directories.
+UNTAR_GZ
+UNVERIFIED connection to %s (cert=%s)
+unzip_path
+Up Arrow
+UpdateBoundary
+update-time
+uploader
+upload from your computer to the current directory
+Upload options:
+Upload Options
+Upload To:
+Upper case the line
+Up to 26 bookmark files (for the English capital letters) are allowed.
+url_domain_prefixes
+url_domain_suffixes
+URL has a bad port field.
+URL is not in starting realm!
+URLPath `%s' means path `%s'
+URL: %.*s
+   URL=%s (%s)
+URL %s%s
+URL too long
+URL to open: 
+USAGE: lynx -restrictions=[option][,option][,option]
+USAGE: %s [options] [file]
+us-ascii
+, us-ascii;q=0.01
+USE_ADDRLIST_PAGE
+Use "ADVANCED" to see the URL of the currently selected link at the
+Use a filepath off your home directory!
+USE_ALT_BINDINGS
+use an external editor to edit a form's textarea
+Use arrows or tab to move off of field.
+USE_ASCII_CTYPES
+USE_CACHEJAR
+USE_COLOR_STYLE
+Use Control-R to resubmit the current query.
+ Use Control-U to erase the default.
+Use Ctrl-G to cancel if you do not want to send a message
+...used before%s
+used in anonymous accounts or if the "option_save" restriction is set.
+use external editor for context-dependent purpose
+USE_EXTERNALS
+USE_FILE_UPLOAD
+USE_GNUTLS_FUNCS
+Use HTML5 charset replacements
+USE_IDNA
+USE_JUSTIFY_ELTS
+use_libgnutls
+use_libnss_compat
+use_libsocks
+use_libsocks5
+use_libssl
+Use locale-based character set
+USE_LOCALE_CHARSET
+Use "L_y_n_x" or "Lynx" in User-Agent, or it looks like intentional deception!
+ USEMAP="
+[USEMAP]
+use_mouse
+USENET news access is disabled!
+Use Passive FTP
+USE_PERSISTENT_COOKIES
+USE_PRETTYSRC
+USE_PROGRESSBAR
+useproxy
+user (A)gent                 : 
+User-Agent: %.*s%c%c
+User-Agent: %s/%s  libwww-FM/%s%c%c
+User-Agent string does not contain "Lynx" or "L_y_n_x"
+user data for get forms, read from stdin,
+user data for post forms, read from stdin,
+USE_READPROGRESS
+use -restrictions to see list
+User message: 
+User message: %s
+(U)ser mode                  : 
+User mode
+user mode is advanced, the 'v'iew bookmark command will invoke a
+user_mode specifies the users level of knowledge with Lynx.  The
+user modes.  When this option is set to "standard", the menu will be
+Username:
+Username: 
+Username for news host '%s':
+Username for '%s' at %s '%s%s':
+, user name %s
+userspec
+userspecified
+USE_SCROLLBAR
+uses curses pad feature to support left/right shifting
+use_select_popups
+USE_SESSIONS
+USE_SOURCE_CACHE
+Use "-stdin" or "-" to tell how to handle piped input.
+Use %s to invoke the Options menu!
+USE_SYSV_UTMP
+use TagSoup rather than SortaSGML parser
+       Use the -auth=id:pw parameter.
+use the bookmark page as the startfile
+       Use the -pauth=id:pw parameter.
+use this instead of unrecognized charsets
+Use -trace -trace-mask=8 to see details in log.
+...Use UTF-8 for XML
+USE_ZLIB
+Using bookmarks=%s
+-- using default protection
+(using GNU gzip)
+(using gzip)
+Using %s
+using the 's' or '/' keys, the search performed will be case sensitive
+(using Unix compress)
+(using zip)
+/usr/bin/compress
+'/usr/bin/compress'
+"/usr/bin/compress"
+/usr/bin/install
+"/usr/bin/install"
+'/usr/bin/install -c'
+'/usr/bin/msgfmt'
+'/usr/bin/msginit'
+'/usr/bin/ncursesw5-config'
+'/usr/bin/pkg-config'
+/usr/bin/rlogin
+'/usr/bin/rlogin'
+"/usr/bin/rlogin"
+/usr/bin/telnet
+'/usr/bin/telnet'
+"/usr/bin/telnet"
+/usr/bin/unzip
+'/usr/bin/unzip'
+"/usr/bin/unzip"
+/usr/bin/uudecode
+'/usr/bin/uudecode'
+"/usr/bin/uudecode"
+'/usr/bin/xgettext'
+/usr/bin/zip
+'/usr/bin/zip'
+"/usr/bin/zip"
+'/usr/include'
+'/usr/lib'
+/usr/local/lib/rn/server
+/usr/sbin/sendmail
+'/usr/sbin/sendmail'
+"/usr/sbin/sendmail"
+/usr/share/locale
+'ut_exit.e_exit'
+ut_exit.e_exit
+UTF-16BE
+utf8_lib
+uthenticat
+'ut_name'
+UUDecode
+uudecode_path
+UUencoded
+            val_cs=%d "%s"
+validate
+Validate and some anonymous restrictions are set.
+Validate restrictions are set.
+Validate restrictions set, additional anonymous restrictions ignored.
+Validate restrictions set, restriction "default" was given.
+Validating CNs in '%s'
+val_LC_MESSAGES
+Value accepted!
+Value accepted! -- WARNING: Lynx is configured for XWINDOWS!
+Value accepted! -- WARNING: Lynx is NOT configured for XWINDOWS!
+            value_cs=%d "%s" (from %d "%s")
+VALUEREF
+value=%s
+values are different
+VALUETYPE
+/var/run/utmp
+__vasprintf_chk
+.VAX_exe
+.VAX-exe
+  verbose images (!) : 
+verbose_images
+Verbose images
+VERBOSE_IMG
+Verified connection to %s (cert=%s)
+Verified connection to %s (subj=%s)
+ Version 
+$Version="%d"; 
+(Version wu-2.6.2-12)
+Very long lines have been truncated!
+Very long lines have been wrapped!
+, via internal link
+video/mpeg
+video/quicktime
+video/x-msvideo
+video/x-sgi-movie
+Vietnamese (VISCII)
+VIEW_BOOKMARK
+Viewing preparsed source.  Are you sure you want to mail it?
+View temporary file
+View the file 
+view the next page of the document
+view the previous page of the document
+view trace log if started in the current session
+view your personal bookmark list
+(V)I keys: 
+vi_keys_always_on
+Visible links
+Visible links:
+visited_links
+Visited Links Page
+Visited Pages
+visit_tree
+VMS BAK File
+VMS Help Libr.
+VMS Obj. Libr.
+VMS Text Libr.
+/vmsysu:
+< v$<,t 
+waddnstr
+wais_proxy
+WAIS-source
+ WAIS source file
+wait_viewer_termination
+   want:%s%s%s%s%s%s%s
+want != ((void *)0)
+Warning:
+Warning: Cannot transcode form charset %s to %s!
+Warning: Cannot transcode form data to charset %s!
+Warning!  Control codes in mail address replaced by ?
+Warning!  UUDecoded file will exist in the directory you started Lynx.
+Warn, point to trace-file
+ (was internal)
+was requested but was not available.
+wattr_off
+wattr_on
+w-authenticate:
+wbkgdset
+wclrtoeol
+wednesday
+We start with "multi_bookmarkB" since 'A' is the default (see above).
+Western (cp850)
+Western (ISO-8859-1)
+Western (ISO-8859-15)
+Western (windows-1252)
+What type is %d?
+  ?                 when used alone, list restrictions in effect.
+When you are connected, log in as:  %s
+ When you are done, press enter and put a single period (.)
+where OBJECT is one of EM,STRONG,B,I,U,BLINK etc.
+which Lynx will indicate you prefer in requests to http servers.
+widec_curses
+widec_mbstate
+      Will attempt handshake and resubmit headers.
+      Will attempt handshake and snews connection.
+will be enabled.
+will be enabled.  These keys are only lower case.
+will be used for sending mail.
+will encode as base64
+WinArabic (cp1256)
+WinBaltRim (cp1257)
+WinCyrillic (cp1251)
+window-geometry
+windows-
+windows-1250
+windows-1251
+windows-1252
+windows-1253
+windows-1255
+windows-1256
+windows-1257
+Windows2000
+Window size changed from (%d,%d) to (%d,%d)
+Windows_NT
+WinGreek (cp1253)
+WinHebrew (cp1255)
+WinLatin1 (cp1252)
+WinLatin2 (cp1250)
+with an invalid path or domain attribute.  All domains will default to
+with_backspaces
+ With copies to:
+ With copy to:
+with -dump, forces it to show only the list of links
+with -dump, format output as with -traversal, but to stdout
+with filenames of these images
+with function HTAA_setupReader()
+within userdefs.h.
+with partial-display logic
+ with POST data
+with the 'o' key).  To save options with that screen, you must select the
+with the PREV_DOC command or from the History List
+with -traversal, output each page to a file
+'-Wl,-Bsymbolic-functions -Wl,-z,relro'
+wnoutrefresh
+Word back
+Word forward
+working_alloca_h
+Wrap columns at 1/2 screen width
+Wrap columns at 1/3 screen width
+Wrap columns at 1/4 screen width
+Wrap columns at 2/3 screen width
+Wrap columns at 3/4 screen width
+Wrap columns at screen width
+wrap %d:%d, offset %d
+Wrap lines to fit displayed area?
+wrefresh
+write() of POST data failed
+write the HTTP status code here
+write warning messages to standard error when -dump
+*** wrong format: not enough tokens, ignoring line!
+/w %s%c%c
+WSRCParser
+wtouchln
+WWW-Authenticate:
+.www_browsable
+www/compressed
+www/debug
+www/dired
+www/download
+www/dump
+WWW_HOME
+../../../WWW/Library/Implementation/HTAABrow.c
+../../../WWW/Library/Implementation/HTAAProt.c
+../../../WWW/Library/Implementation/HTAAUtil.c
+../../../WWW/Library/Implementation/HTAccess.c
+../../../WWW/Library/Implementation/HTAnchor.c
+../../../WWW/Library/Implementation/HTAssoc.c
+../../../WWW/Library/Implementation/HTAtom.c
+../../../WWW/Library/Implementation/HTBTree.c
+../../../WWW/Library/Implementation/HTChunk.c
+../../../WWW/Library/Implementation/HTFile.c
+../../../WWW/Library/Implementation/HTFormat.c
+../../../WWW/Library/Implementation/HTFTP.c
+../../../WWW/Library/Implementation/HTGopher.c
+../../../WWW/Library/Implementation/HTGroup.c
+../../../WWW/Library/Implementation/HTList.c
+../../../WWW/Library/Implementation/HTMIME.c
+../../../WWW/Library/Implementation/HTMLGen.c
+../../../WWW/Library/Implementation/HTParse.c
+../../../WWW/Library/Implementation/HTPlain.c
+../../../WWW/Library/Implementation/HTRules.c
+../../../WWW/Library/Implementation/HTString.c
+../../../WWW/Library/Implementation/HTStyle.c
+../../../WWW/Library/Implementation/HTTP.c
+../../../WWW/Library/Implementation/HTWSRC.c
+../../../WWW/Library/Implementation/SGML.c
+www/mime
+www/present
+WWW-Protection-Template:
+WWW_%s_GATEWAY
+www/source
+www/unknown
+W%X%Y%Z%[%
+x-dec-graphics
+X Display
+x-euc-jp
+XGTITLE %.*s
+xhtml_parsing
+xhtml-parsing
+xli %s &
+xloadimage_command
+x-mac-roman
+X-Mailer: %s, Version %s
+!--X-Message-Id: 
+x-nextstep
+xnyLAaB03X
+X-Personal_Name
+x-shift-jis
+__xstat64
+!--X-Subject: 
+x-transparent
+X-URL: mailto:%s
+<!-- X-URL: %s -->
+X-URL: %s
+%#x -> %#x (mono %#x pair %d) fg=%d, bg=%d
+xy-authenticate:
+yDBuildCommand: Bad mailcap "test" clause: %s
+You are already at main screen!
+You are already at page %d of this document.
+You are already at page %d of this option list.
+You are already at the beginning of this option list.
+You are already at the end of this document.
+You are already at the end of this option list.
+You are already at the first document
+You are not allowed to change the bookmark file!
+You are not allowed to change which editor to use!
+You are not allowed to goto "%s" URLs
+You are not on a form submission button or normal link.
+You are sending a comment to:
+You are sending a message with body to:
+     You can delete links using the remove bookmark command.  It is usually
+You can manually connect to this service using %s
+You cannot download a mailto: link.
+You cannot download an input field.
+You cannot download an permit option.
+You cannot download an upload option.
+You cannot download a printing option.
+You cannot download cookies.
+You cannot edit File Management URLs
+You have been warned...
+You have entered an invalid link number.
+You have entered an invalid option number.
+*** You have mail. ***
+*** You have new mail. ***
+you log in to this information service remotely.
+You may also use the command-line option "-forms_options", which displays
+You must then save the settings using the link on the line above the
+your keypad when the numlock is on will act as arrow keys:
+your mailed comments.
+Your primary configuration
+Your recent statusline messages
+Your '%s' terminal does not support color.
+Your Terminal type is unknown!
+You selected:
+      you should not change the format within the lines
+You visited (POSTs, bookmark, menu and list files excluded):
+You will be posting to:
+zcat_path
+zDYou are already at the beginning of this document.
+Zip File
+Z%T%i%f%`%P%l%
+Z%T%i%f%`%P%l%}
+%<%^%_%Z%T%i%f%`%P%l%g%h%d%e%Y%X%R%S%k%j%

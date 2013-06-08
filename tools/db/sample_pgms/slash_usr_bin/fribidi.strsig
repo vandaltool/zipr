@@ -1,0 +1,91 @@
+  * %-10s: %-25s%1s
+A command line interface for the GNU FriBidi library.
+  All string indexes are zero based
+Available character sets:
+Base direction: %s
+                        --basedir, --ltov, --vtol, --levels, --changes
+      --basedir         Output Base Direction
+  -B, --bol BOL         Output string BOL before the visual string
+      --caprtl          Old style: set character set to CapRTL
+  -c, --charset CS      Specify character set, default is %s
+charsetdesc
+      --charsetdesc CS  Show descriptions for character set CS and exit
+      --clean           Remove explicit format codes in visual string
+Convert a logical string to visual.
+  -d, --debug           Output debug information
+                        (default)
+Descriptions for character set %s:
+  -E, --eol EOL         Output string EOL after the visual string
+                        environment variable COLUMNS is defined, its value
+  For each line of input, output something like this:
+__fprintf_chk
+fribidi_char_set_desc
+fribidi_char_set_name
+fribidi_char_set_title
+fribidi_charset_to_unicode
+fribidi_get_bidi_type
+fribidi_log2vis
+fribidi_parse_charset
+fribidi_remove_bidi_marks
+fribidi %s
+fribidi_set_debug
+fribidi_set_mirroring
+fribidi_set_reorder_nsm
+fribidi_unicode_to_charset
+fribidi_version_info
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -h, --help            Display this information and exit
+<http://fribidi.org/bug>.
+hVvdtc:w:B:E:
+    [input-str` => '][BOL][[padding space]visual-str][EOL]
+invalid screen width `%s'
+_IO_stdin_used
+_Jv_RegisterClasses
+                        --levels --changes
+      --levels          Output Embedding Levels
+libc.so.6
+__libc_start_main
+libfribidi must be compiled with DEBUG option to enable
+libfribidi.so.0
+/lib/ld-linux.so.2
+      --ltov            Output Logical to Visual position map
+      --ltr             Force base direction to LTR
+memory allocation failed for char_set!
+    [\n base-dir][\n ltov-map][\n vtol-map][\n levels][\n changes]
+      --nobreak         Do not break long lines
+no description available for character set `%s'
+nomirror
+      --nomirror        Turn mirroring off, to do it later
+      --nopad           Do not right justify RTL lines
+novisual
+      --novisual        Do not output the visual string, to be used with
+                        output, currently does not affect other outputs
+__printf_chk
+reordernsm
+      --reordernsm      Reorder NSM sequences to follow their base character
+Report bugs online at
+      --rtl             Force base direction to RTL
+%-*s => 
+showinput
+      --showinput       Output the input string too
+                        --showinput --reordernsm
+%s: %s: no such file or directory
+__stack_chk_fail
+Try `%s --help' for more information.
+  -t, --test            Test GNU FriBidi, same as --clean --nobreak
+turn debug info on.
+unrecognized character set `%s'
+Usage: fribidi [OPTION]... [FILE]...
+      --vtol            Output Visual to Logical position map
+  -v, --verbose         Verbose mode, same as --basedir --ltov --vtol
+  -V, --version         Display version information and exit
+                        will be used, --width overrides both of them.
+      --wltr            Set base direction to LTR if no strong character found
+      --wrtl            Set base direction to RTL if no strong character found
+  -w, --width W         Screen width for padding, default is %d, but if
+  X: Character set has descriptions, use --charsetdesc to see

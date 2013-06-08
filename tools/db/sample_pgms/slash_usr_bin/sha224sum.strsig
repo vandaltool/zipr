@@ -1,0 +1,128 @@
+0123456789abcdef8.13
+#|$ 3|$(
+|$ 3|$,#|$$3|$,
+|$,3|$(#|$ 3|$(
+\$(3\$$#\$,3\$$
+\$$3\$ #\$(3\$ 
+a line with checksum, a character indicating type (`*' for binary, ` ' for
+A NULL argv[0] was passed through an exec system call.
+  -b, --binary         read in binary mode
+bindtextdomain
+bug-coreutils@gnu.org
+  -c, --check          read %s sums from the FILEs and check them
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+__cxa_atexit
+D$(3D$$#D$,3D$$
+D$$3D$ #D$(3D$ 
+David Madore
+dcgettext
+dcngettext
+__errno_location
+For complete documentation, run: info coreutils '%s invocation'
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fread_unlocked
+fseeko64
+fwrite_unlocked
+General help using GNU software: <http://www.gnu.org/gethelp/>
+__getdelim
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+\$H3\$D#\$L3\$D
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+_IO_stdin_used
+iswprint
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+L$L3L$H#L$
+memory exhausted
+__overflow
+posix_fadvise64
+__printf_chk
+Print or check %s (%d-bit) checksums.
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+      --quiet          don't print OK for each successfully verified file
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+RFC 3874
+%s, and %s.
+Scott Miller
+setlocale
+%s: FAILED open or read
+sha224sum
+shell-always
+%s home page: <%s>
+should be a former output of this program.  The default mode is to print
+%s: %llu: improperly formatted %s checksum line
+%s: no properly formatted %s checksum lines found
+%s: read error
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+standard input
+      --status         don't output anything, status code shows success
+%s: too many checksum lines
+      --strict         with --check, exit non-zero for any invalid input
+t$03t$,#t$83t$,
+t$@3t$4#t$D3t$4
+t$<3t$8#t$43t$8
+T$,3T$(#T$03T$(
+T$(3T$$#T$,3T$$
+T$$3T$ #T$(3T$ 
+t$43t$<#t$@3t$<
+t$83t$0#t$<3t$0
+t$D3t$@#t$H3t$@
+text), and name for each FILE.
+the --binary and --text options are meaningless when verifying checksums
+The following three options are useful only when verifying checksums:
+the --quiet option is meaningful only when verifying checksums
+There is NO WARRANTY, to the extent permitted by law.
+the --status option is meaningful only when verifying checksums
+the --strict option is meaningful only when verifying checksums
+The sums are computed as described in %s.  When checking, the input
+the --warn option is meaningful only when verifying checksums
+This is free software: you are free to change and redistribute it.
+Try `%s --help' for more information.
+  -t, --text           read in text mode (default)
+Ulrich Drepper
+Usage: %s [OPTION]... [FILE]...
+/usr/share/locale
+      --version  output version information and exit
+WARNING: %llu computed checksum did NOT match
+WARNING: %llu computed checksums did NOT match
+WARNING: %llu line is improperly formatted
+WARNING: %llu lines are improperly formatted
+WARNING: %llu listed file could not be read
+WARNING: %llu listed files could not be read
+With no FILE, or when FILE is -, read standard input.
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  -w, --warn           warn about improperly formatted checksum lines
+x3T$ #T$(3T$ 

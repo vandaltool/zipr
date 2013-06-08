@@ -1,0 +1,322 @@
+00000000%s
+0123456789
+%02u:%02u
+%02u:%02u:%02u
+%-12.12s %-8.8s
+123456789-123456
+[123456789-12345] <defunct>
+2nd chance parse failed, not BSD or SysV.
+%2u.%02u
+3270/tty4
+%3u:%02u
+9-23:59:59
+99-23:59:59
+999-23:59:59
+aAdefgGlnoptuU
+-A all processes                      -C by command name
+-a all w/ tty except session leaders  -U by real user ID (supports names)
+a  all w/ tty, including other users  -t by tty
+AIX field descriptor processing bug.
+Alternate System.map file must follow -n.
+Alternate System.map file must follow N.
+archdefs:%s
+bad alignment code
+Bad sorting code.
+BSD j    %s
+BSD l    %s
+BSD s    %s
+bsdstart
+BSD u    %s
+BSD v    %s
+Bug: must reset the list first!
+Bug: parse_O_option got weirdness!
+Can't happen!  Problem #1.
+Can't happen!  Problem #2.
+Can't set width for a macro (multi-column) format specifier.
+Can't use output modifiers with user-defined output
+closeproc
+cmaj_flt
+cmin_flt
+Column widths must be unsigned decimal numbers.
+Compiled with: glibc %d.%d, gcc %d.%d
+Conflicting format options.
+Could not find ppid!
+Could not find start_time!
+cumulative
+-d all except session leaders         -g by session OR by effective group name
+deselect
+/dev/pts/%s
+/dev/pty%s
+/dev/%snsole
+dev_to_tty
+/dev/tty
+/dev/tty%s
+display_version
+-e all processes                      -p by process ID
+Embedded '-' among BSD options makes no sense.
+Embedded '-' among SysV options makes no sense.
+Empty format list.
+Empty sort list.
+end_code
+END_SYS5
+ENVIRONMENT
+Environment specified an unknown personality.
+Error: can not access /proc.
+ERROR: %s
+escape_command
+escape_str
+escape_strlist
+EUID=%d TTY=%d,%d Hertz=%Ld page_size=%d
+-F   extra full    X  registers       --heading --no-heading --context
+Fix bigness error.
+flags,state,uid,pid,ppid,cpu,intpri,nice,addr,sz,wchan,tty,time,comm
+flags,state,uid,pid,ppid,priority,nice,vsz,wchan,tty,time,comm
+flags,state,uid,pid,ppid,priority,nice,vsz,wchan,tty,time,pgid,sid,comm
+flags,state,uid,pid,ppid,priority,nice,wchan,tname,bsdtime,comm
+flags,state,uid,pid,ppid,priority,nice,wchan,tname,bsdtime,pgid,sid,comm
+flags,state,user,pid,ppid,cpu,intpri,nice,addr,sz,wchan,stime,tty,time,args
+flags,uid,pid,ppid,priority,nice,vsz,rss,wchan,stat,tname,bsdtime,args
+FLASK_context
+Format or sort specification must follow -O.
+Format or sort specification must follow O.
+Format specification must follow --format.
+Format specification must follow -o.
+Format specification must follow o.
+freesupgrp
+f,state,uid,pid,ppid,c,pri,nice,addr,sz,wchan,tt,time,ucmd
+f,state,uid,pid,ppid,pcpu,pri,nice,rss,wchan,start,time,command
+f,s,uid_hack,pid,ppid,c,opri,ni,addr,sz,wchan,stime,tname,time,cmd
+f,s,uid,pid,ppid,c,opri,ni,addr,sz,wchan,tname,time,ucmd
+Garbage option.
+getbtime
+getgrnam
+getpagesize
+get_pid_digits
+getpwnam
+GLIBC_2.0
+GLIBC_2.3.3
+GLIBC_2.4
+__gmon_start__
+gnu_dev_major
+gnu_dev_minor
+g  OBSOLETE -- DO NOT USE             -u by effective user ID (supports names)
+Group ID out of range.
+Group name does not exist.
+header_gap=%d lines_to_next_header=%d
+headings
+Improper AIX field descriptor.
+Improper format list.
+Improper list.
+Improper sort list
+Internal error in ps! Please report this bug.
+Internal error, no PID or PPID for -j option.
+Internal error, no PRI for -c option.
+_IO_stdin_used
+iseries/vtty42
+I_WANT_A_BROKEN_PS
+-j,j job control   s  signal          --group --user --sid --rows --info
+_Jv_RegisterClasses
+kb_main_total
+L2L2L2L2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libproc-3.2.8.so
+linux_version_code
+Linux version %d.%d.%d
+List member was not a TTY.
+List of command names must follow -C.
+List of effective groups must follow --group.
+List of effective users must follow --user.
+List of process IDs must follow -p.
+List of process IDs must follow p.
+List of process IDs must follow --pid.
+List of process IDs must follow --ppid.
+List of real groups must follow -G.
+List of real groups must follow --Group.
+List of real groups must follow -U.
+List of real users must follow --User.
+List of session IDs must follow -s.
+List of session leaders OR effective group IDs was invalid.
+List of session leaders OR effective group names must follow -g.
+List of terminals (pty, tty...) must follow -t.
+List of ttys must follow --tty.
+List of users must follow -u.
+List of users must follow U.
+LLLLLLLL
+-l,l long          u  user-oriented   --sort --tty --forest --version
+localtime
+Long sort specification must follow 'k'.
+Long sort specification must follow --sort.
+longtname
+look_up_our_self
+lookup_wchan
+Lost my CLS!
+Lost my PGID!
+-L/-T with H/m/-m and -o/-O/o/O is nonsense
+-L with H/-m/m but no PID/PGID/SID/SESS for NLWP to follow
+minflt,majflt,nswap,inblock,oublock,msgsnd,msgrcv,nsigs,nvcsw,nivcsw
+                    ********* misc options *********
+-m,m,-L,-T,H  threads   S  children in sum    -y change -l format
+Modifier -y without format -l makes no sense.
+mprotect
+m_resident
+Multiple sort options.
+Must set personality to get -x option.
+-M,Z  security data     c  true command name  -c scheduling class
+namelist_file="%s"
+-N negate selection                   -G by real group ID (supports names)
+noheader
+no-header
+noheaders
+no-headers
+noheading
+no-heading
+noheadings
+no-headings
+<no System.map file>
+nsignals
+Number of columns must follow --cols, --width, or --columns.
+Number of rows must follow --rows or --lines.
+Obsolete W option not supported. (You have a /dev/drum?)
+Only one heading option may be specified.
+-O,O preloaded -o  v  virtual memory  --cumulative --format --deselect
+-o,o user-defined  -f full            --Group --User --pid --cols --ppid
+openproc
+open_psdb
+Option --cumulative does not take an argument.
+Option --deselect does not take an argument.
+Option --forest does not take an argument.
+Option --heading does not take an argument.
+Option --no-heading does not take an argument.
+option -O can not follow other format options.
+option O is neither first format nor sort order.
+*********** output format **********  *********** long options ***********
+personality=0x%08x (from "%s")
+pid,context,command
+pid,sid,pgrp,tname,atime,args
+pid,start_stack,esp,eip,timeout,alarm,stat,tname,bsdtime,args
+pid,stat,time,sl,re,pagein,vsz,rss,lim,tsiz,pcpu,pmem,command
+pid,tname,majflt,minflt,m_trs,m_drs,m_size,m_swap,rss,m_share,vm_lib,m_dt,args
+pid,tname,stat,bsdtime,args
+pid,tname,stat,bsdtime,maj_flt,m_trs,m_drs,rss,pmem,args
+pid,tname,state,bsdtime,comm
+pid,tname,state,bsdtime,pgid,sid,comm
+pid,tname,state,cputime,cmd
+pid,tname,time,cmd
+pid,tt,state,time,sl,pagein,vsz,rss,pcpu,pmem,command
+pid,tt,stat,time,command
+pid,tty,time,comm
+pid,tty,time,pgid,sid,comm
+Please report the "BSD \0 can't happen" bug.
+Please report the "SysV \0 can't happen" bug.
+please report this bug
+Please send bug reports to <feedback@lists.sf.net> or <albert@users.sf.net>
+POSIXLY_CORRECT
+ppid,pid,pgid,sid,tname,tpgid,stat,uid,bsdtime,args
+PPID sort and forest output conflict.
+priority
+/proc/%d/attr/current
+Process ID list syntax error.
+Process ID out of range.
+Process selection options conflict.
+procps_version
+PS_FORMAT
+PS_PERSONALITY
+pts/9999
+R2R2R2R2R2R
+readproc
+readproctab2
+readtask
+resident
+r  only running processes             U  processes for specified users
+RRRRRRRRRRR
+                  ?    %s
+screen_cols=%d screen_rows=%d
+Seriously crashing. Goodbye cruel world.
+setlocale
+sigaction
+sig_block
+sigcatch
+sig_catch
+sigfillset
+sigignore
+sig_ignore
+Signal %d (%s) caught by ps (%s).
+signal_number_to_name
+sig_pend
+********* simple selection *********  ********* selection by list *********
+sizeof(proc_t)=%d sizeof(long)=%d sizeof(KLONG)=%d
+snprintf
+solaris2
+Some sid thing(s) must follow --sid.
+Something broke.
+__stack_chk_fail
+start_code
+start_stack
+start_time
+state,tname,cputime,comm
+state,tname,time,command
+strcasecmp
+strftime
+SysV -fl %s
+SysV -f  %s
+SysV -j  %s
+SysV -l  %s
+T  all processes on this terminal     -s processes in the sessions given
+Tell procps-feedback@lists.sf.net what you expected.
+Tell procps-feedback@sf.net what you want. (-L/-T, -m/m/H, and $PS_FORMAT)
+The --help option is exclusive.
+The --info option is exclusive.
+The L option is exclusive.
+The --version option is exclusive.
+The -V option is exclusive.
+The V option is exclusive.
+Thread display conflicts with forest display.
+Thread flags conflict; can't use both -L and -T.
+Thread flags conflict; can't use both m and -m.
+Thread flags conflict; can't use H with m or -m.
+tsession
+TTY could not be found.
+-T with H/-m/m but no PID for SPID to follow
+uid_hack
+uid_hack,pid,ppid,c,stime,tname,time,cmd
+uid,pid,cursig,sig,sigmask,sigignore,sigcatch,stat,tname,command
+uid,pid,pending,sig_block,sig_ignore,caught,stat,tname,bsdtime,args
+uid,pid,ppid,cp,pri,nice,vsz,rss,wchan,state,tname,cputime,command
+uid,pid,ppid,cpu,pri,nice,vsz,rss,wchan,stat,tt,time,command
+uid,pid,ppid,start_time,tname,bsdtime,args
+uid,pid,ppid,start_time,tname,bsdtime,pgid,sid,args
+uname,pid,pcpu,pmem,vsz,rss,tt,state,start,time,command
+uname,pid,ppid,c,start,tname,time,cmd
+Unknown AIX field descriptor.
+Unknown gnu long option.
+Unknown page size! (assume 4096)
+Unknown sort specifier.
+Unknown user-defined format specifier "%s".
+unlimited
+_unlimited
+_unlimited2
+Unsupported option (BSD syntax)
+Unsupported SysV option.
+User ID out of range.
+User name does not exist.
+user,pcpu,pri,scnt,wchan,usertime,systime
+user,pcpu,pri,usrpri,nice,psxpri,psr,policy,pset
+user,pid,pcpu,pmem,vsz,rss,tname,stat,start_time,bsdtime,args
+user,pid,pcpu,pmem,vsz,rss,tt,stat,start,time,command
+user,pid,ppid,cpu,stime,tty,time,args
+user,pid,ppid,pgid,sess,jobc,state,tname,cputime,command
+user,pid,ppid,pgid,sess,jobc,stat,tt,time,command
+user,pid,ppid,start_time,tty,time,comm
+user,pid,ppid,start_time,tty,time,pgid,sid,comm
+usertime
+--version
+vm_stack
+-V,V  show version      L  list format codes  f  ASCII art forest
+Warning: bad ps syntax, perhaps a bogus '-'? See http://procps.sf.net/faq.html
+Warning: $PS_FORMAT ignored. (%s)
+-w,w  wide output       n  numeric WCHAN,UID  -H process hierarchy
+x  processes w/o controlling ttys     t  by tty
+You found a bug!
+Your %dx%d screen size is bogus. Expect trouble.

@@ -1,0 +1,98 @@
+ 2010-2011 Rapha
+        $action = $1;
+        $action = "dump";
+$action = "dump" unless defined($action);
+        $action = "export-$type";
+        $action = "list";
+Actions:
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# (at your option) any later version.
+$build_flags->load_config();
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+                     compilation flags in a shell script, in make,
+# Copyright 
+Copyright (C) 2010-2011 Raphael Hertzog <hertzog\@debian.org>.");
+# dpkg-buildflags
+  --dump             output all compilation flags with their values
+    } else {
+} elsif ($action eq "dump") {
+} elsif ($action eq "origin") {
+} elsif ($action =~ m/^export-(.*)$/) {
+	} elsif ($export_type eq "configure") {
+	} elsif ($export_type eq "make") {
+    } elsif (m/^--dump$/) {
+    } elsif (m/^--export(?:=(sh|make|configure))?$/) {
+    } elsif (m/^-(h|-help)$/) {
+    } elsif (m/^--list$/) {
+    } elsif (m/^--version$/) {
+        exit 0;
+    exit(0);
+	exit(0);
+exit(1);
+  --export=(sh|make|configure)
+    foreach my $flag ($build_flags->list()) {
+  --get <flag>       output the requested flag to stdout.
+# GNU General Public License for more details.
+  --help             show this help message.
+if ($action eq "get") {
+if ($action eq "list") {
+    if ($build_flags->has($param)) {
+            if defined($action);
+	if ($export_type eq "sh") {
+    if (m/^--(get|origin)$/) {
+# it under the terms of the GNU General Public License as published by
+later for copying conditions. There is NO warranty.
+l Hertzog <hertzog@debian.org>
+  --list             output a list of the flags supported by the current vendor.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+my $build_flags = Dpkg::BuildFlags->new();
+    my $export_type = $1;
+my ($param, $action);
+        my $type = $1 || "sh";
+	my $value = $build_flags->get($flag);
+	next unless $flag =~ /^[A-Z]/; # Skip flags starting with lowercase
+  --origin <flag>    output the origin of the flag to stdout:
+                     or on a ./configure command line.
+                     output something convenient to import the
+        $param = shift(@ARGV);
+	print $build_flags->get_origin($param) . "\n";
+	print $build_flags->get($param) . "\n";
+	    print "export $flag=\"$value\"\n";
+	    print "export $flag := $value\n";
+    printf _g(
+    printf _g("
+    printf _g("Debian %s version %s.\n"), $progname, $version;
+	print "$flag\n";
+	    print "$flag=\"$value\" ";
+	print "$flag=$value\n";
+"), $progname;
+    $_ = shift(@ARGV);
+sub usage {
+sub version {
+textdomain("dpkg-dev");
+# the Free Software Foundation; either version 2 of the License, or
+This is free software; see the GNU General Public License version 2 or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+        usage();
+	usageerr(_g("%s needs a parameter"), $_) unless defined $param;
+        usageerr(_g("two commands specified: --%s and --%s"), $1, $action)
+        usageerr(_g("two commands specified: --%s and --%s"), "dump", $action)
+        usageerr(_g("two commands specified: --%s and --%s"), "export", $action)
+        usageerr(_g("two commands specified: --%s and --%s"), "list", $action)
+	usageerr(_g("unknown option \`%s'"), $_);
+"Usage: %s [<action>]
+use Dpkg;
+use Dpkg::BuildFlags;
+use Dpkg::ErrorHandling;
+use Dpkg::Gettext;
+use strict;
+use warnings;
+#!/usr/bin/perl
+                     value is one of vendor, system, user, env.
+	    $value =~ s/"/\"/g;
+	    $value =~ s/\$/\$\$/g;
+        version();
+  --version          show the version.
+while (@ARGV) {
+# You should have received a copy of the GNU General Public License

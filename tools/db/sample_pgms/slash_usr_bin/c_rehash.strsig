@@ -1,0 +1,123 @@
+# and add symbolic links to their hash values.
+# case we skip the link. We check for duplicates by comparing the
+			($cert, $crl) = check_file("$openssl x509 -in \"$fname\" -inform der  -outform pem | ");
+# certificate fingerprints
+	chdir $_[0];
+	chdir $dirlist[0];
+	chdir $pwd;
+		# Check to see if certificates and/or CRLs present.
+		chomp $fprint;
+		chomp $hash;
+	closedir DIR;
+			close IN;
+	close IN;
+			close OUT;
+	# Delete any existing symbolic links
+	$dirlist[0] = "$dir/certs";
+	@dirlist = @ARGV;
+	@dirlist = split /$path_delim/, $ENV{SSL_CERT_DIR};
+} else {
+		} else {
+} elsif($ENV{SSL_CERT_DIR}) {
+			} elsif($hdr eq "X509 CRL") {
+	$ENV{OPENSSL} = $openssl;
+$ENV{PATH} = "$prefix/bin" . ($ENV{PATH} ? $path_delim . $ENV{PATH} : ""); # prefix our path
+eval "require Cwd";
+		exit 0;
+	FILE: foreach $fname (grep {/\.pem$|\.crt$/} @flist) {
+		$fname =~ s/'/'\\''/g;
+foreach (@dirlist) {
+	foreach (grep {/^[\da-f]+\.r{0,1}\d+$/} @flist) {
+	foreach (split /$path_delim/, $ENV{PATH}) {
+			$found = 1;
+		$fprint =~ s/^.*=//;
+		$fprint =~ tr/://d;
+		hash_dir($_);
+			($hash, $fprint) = `"$openssl" crl -hash -fingerprint -noout -in '$fname' -inform der`;
+		$hashlist{$hash} = $fprint;
+			# Hash matches: if fingerprint matches its a duplicate cert
+		$hash .= ".r$suffix";
+		$hash .= ".$suffix";
+if(@ARGV) {
+		if(/^-----BEGIN (.*)-----/) {
+			if(!$cert && !$crl) {
+		if(!$cert && !$crl) {
+	if(-d $_ and -w $_) {
+if (-d $dirlist[0]) {
+if (defined(&Cwd::getcwd)) {
+if(defined $ENV{OPENSSL}) {
+	if($found == 0) {
+		if(!$hash || !fprint) {
+			if($hashlist{"$hash.r$suffix"} eq $fprint) {
+			if($hashlist{"$hash.$suffix"} eq $fprint) {
+			if($hdr =~ /^(X509 |TRUSTED |)CERTIFICATE$/) {
+		if(-l $_) {
+		if ($symlink_exists) {
+		if(-x "$_/$openssl") {
+if(! -x $openssl) {
+				$is_cert = 1;
+				$is_crl = 1;
+			last;
+				last if($is_cert);
+				last if($is_crl);
+# Link a certificate to its subject name hash value, each hash is of
+		link_hash_cert($_[0], '-subject_hash_old');
+		link_hash_cert($fname) if($cert);
+		link_hash_cert_old($fname) if($cert);
+		link_hash_crl($fname) if($crl);
+		my ($cert, $crl) = check_file($fname);
+my $dir = "/usr/lib/ssl";
+	my @flist = readdir(DIR);
+		my $fname = $_[0];
+	my $fname = $_[0];
+	my $found = 0;
+		my ($hash, $fprint) = `"$openssl" crl -hash -fingerprint -noout -in '$fname'`;
+		my ($hash, $fprint) = `"$openssl" x509 $hashopt -fingerprint -noout -in "$fname"`;
+	my %hashlist;
+		my $hashopt = $_[1] || '-subject_hash';
+			my $hdr = $1;
+	my ($is_cert, $is_crl) = (0,0);
+my $openssl;
+my $path_delim = ($pwd =~ /^[a-z]\:/i) ? ';' : ':'; # DOS/Win32 or Unix delimiter?
+my $prefix = "/usr";
+my $pwd;
+		my $suffix = 0;
+				next;
+	opendir(DIR, ".");
+	open IN, $fname;
+			open IN,"<$fname" or die "can't open $fname for read";
+			open OUT,">$hash" or die "can't open $hash for write";
+	$openssl = $ENV{OPENSSL};
+	$openssl = "openssl";
+			$openssl = "$_/$openssl";
+	$openssl="$pwd/$openssl" if (!-x $openssl);
+# Perl c_rehash script, scan all files in a directory
+	print "Doing $_[0]\n";
+		print "$fname => $hash\n";
+			print OUT <IN>;	# does the job for small text files
+		print STDERR "c_rehash: rehashing skipped ('openssl' program not available)\n";
+				print STDERR "WARNING: $fname does not contain a certificate or CRL: skipping\n";
+				print STDERR "WARNING: Skipping duplicate certificate $fname\n";
+				print STDERR "WARNING: Skipping duplicate CRL $fname\n";
+	$pwd=Cwd::getcwd();
+	$pwd=`pwd`; chomp($pwd);
+				return;
+	return ($is_cert, $is_crl);
+# Same as above except for a CRL. CRL links are of the form <hash>.r<n>
+		# Search for an unused hash filename
+sub check_file {
+sub hash_dir {
+sub link_hash_cert {
+sub link_hash_cert_old {
+sub link_hash_crl {
+			$suffix++;
+		$symlink_exists=eval {symlink("",""); 1};
+			symlink $fname, $hash;
+			system ("cp", $fname, $hash);
+# the form <hash>.<n> where n is an integer. If the hash value already exists
+# then we need to up the value of n, unless its a duplicate in which
+			unlink $_;
+#!/usr/bin/perl
+		while(exists $hashlist{"$hash.r$suffix"}) {
+		while(exists $hashlist{"$hash.$suffix"}) {
+	while(<IN>) {

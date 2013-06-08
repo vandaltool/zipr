@@ -1,0 +1,492 @@
+Added section `%s'.
+adding mandatory man directories
+adding %s to manpath
+adding %s to manpathlist
+add_nls_manpaths(): processing %s
+add_output_iconv: source %s, target %s
+add_system_manpath(): internal manpath equates to NULL
+(Alternatively, what manual page do you want from section %s?)
+and doesn't have ../man, man, ../share/man, or share/man subdirectories
+appendstr
+argp_err_exit_status
+argp_error
+argp_parse
+argp_program_bug_address
+argp_program_version
+argp_state_help
+__assert_fail
+bad buffer in yy_scan_bytes()
+base_name
+__bss_start
+but does have a ../man, man, ../share/man, or share/man subdirectory
+byte %jd: iconv
+byte %jd: %s
+candidate: %d %d %s %s %s %c %s %s %s
+cannot write to %s in catman mode
+canonicalize_file_name
+can't change to directory %s
+can't chdir to %s
+can't chmod %s
+can't chown %s
+Can't convert %s to cat name
+can't create temporary cat for %s
+can't create temporary directory
+can't determine current directory
+can't make sense of the manpath configuration file %s
+can't open directory %s
+can't open %s
+can't open %s; continuing anyway
+can't open temporary file %s
+can't open the manpath configuration file %s
+can't parse directory list `%s'
+can't remove directory %s
+can't rename %s to %s
+can't resolve %s
+can't search directory %s
+can't set times on %s
+can't stat %s
+can't unlink %s
+can't write to standard output
+can't write to temporary cat for %s
+cat dir %s does not exist
+cat_file
+cat-saver exited with status %d
+catXXXXXX
+chdir %s
+checking for locale %s
+Checking physical location: %s
+check_preprocessor_encoding
+cjwatson@debian.org
+closedir
+command exited with status %d: %s
+command line
+compare_ids
+comp_list
+config-file
+Controlling formatted output:
+converted %s to %s
+couldn't convert %s to FSSTND cat file
+couldn't execute any browser from %s
+create_tempdir
+creating temporary cat for %s
+__ctype_b_loc
+__ctype_toupper_loc
+__cxa_atexit
+__cxa_finalize
++D$@9D$0
+database
+dbdelete
+dbdelete_wrapper (%s, %p)
+dblookup_all
+dblookup_pattern
+dbprintf
+dbver_rd
+dcgettext
+debug_error
+debug_level
+decompress_fdopen
+decompress_open
+decompressor
+DEFINE %49s %511[^
+Defined `%s' as `%s'.
+define the locale for this particular man search
+/dev/null
+directory cache update failed
+directory_on_path
+dir_name
+disable_cache
+disp_cmd
+display ASCII translation of certain latin1 chars
+don't try subpages, e.g. 'man foo bar' => 'man foo-bar'
+do_system_drop_privs
+drop_effective_privs
+echo .mso %s.tmac
+echo .na && echo .de ad && echo ..
+echo .nh && echo .de hy && echo ..
+emit debugging messages
+enable warnings from groff
+ENCODING
+e - [n]eqn, p - pic, t - tbl,
+environment
+equivalent to apropos
+equivalent to whatis
+__errno_location
+escape_shell
+/etc/manpath.config
+exec www-browser
+extension
+External formatter %s
+Failed to open %s O_RDONLY
+fatal error - scanner input buffer overflow
+fatal flex scanner internal error--end of buffer missed
+fatal flex scanner internal error--no action found
+final search path = 
+find all matching manual pages
+find_charset_locale
+Finding manual pages:
+fixing temporary cat's mode
+fixing temporary cat's ownership
+force a cache consistency check
+!format_cmd
+format_display
+format: %d, save_cat: %d, found: %d
+formatted_encoding = %s
+Found %d man pages
+found ultimate source file %s
+found valid FSSTND cat file %s
+__fprintf_chk
+free_mandata_struct
+freopen64
+From the config file %s:
+__fxstat64
+get_canonical_charset_name
+get_default_device
+__getdelim
+get_groff_preconv
+get_jless_charset
+get_less_charset
+get_line_length
+get_locale_charset
+get_man_owner
+get_output_encoding
+get_page_encoding
+get_roff_encoding
+get_source_encoding
+g - grap, r - refer, v - vgrind
+gimme gimme gimme
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+global-apropos
+globbing pattern in %s: %s
+__gmon_start__
+groff -mandoc
+GROFF_NO_SGR
+gxditview
+gzip -c7
+gzip -dc -S ""
+hashtable_create
+hashtable_free
+hashtable_install
+hashtable_lookup
+hashtable_remove
+iconv_close
+iconv: incomplete character at end of buffer
+iconv_open
+iconv_open ("%s", "%s")
+iconv_open ("%s", "UTF-8")
+iconv_open ("UTF-8", "%s")
+i < count
+i == count
+idpriv_drop
+.if (\n[.g] & ((\n[.x] > 1) : ((\n[.x] == 1) & (\n[.y] > 20)) : ((\n[.x] == 1) & (\n[.y] == 20) & (\n[.Y] >= 2)))) \{\
+ignore-case
+ignoring unknown preprocessor `%c'
+/index.db
+init_debug
+init_locale
+init_security
+internal error: candidate type %d out of range
+interpret PAGE argument(s) as local filename(s)
+_IO_getc
+_IO_putc
+_IO_stdin_used
+is a tty
+is_changed
+is_directory
+is in the config file
+is not in the config file
+is_roff_device
+-ix8RmPm%s$PM%s$
+JLESSCHARSET
+jless_charset = %s
+_Jv_RegisterClasses
+lang_dir
+LANGUAGE
+Layout is %s (%d)
+LC_CTYPE
+.lf 1 %s
+.lf %d %s
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libman-2.6.1.so
+libmandb-2.6.1.so
+libpipeline.so.1
+limit search to extension type EXTENSION
+locale_charset = %s
+local-file
+localtime
+location
+location-cat
+look for pages case-insensitively (default)
+look for pages case-sensitively
+__lxstat64
+Macro language %s; hyphenation language %s
+main(): locale = %s, internal_locale = %s
+Main modes of operation:
+make --regex and --wildcard match page names only, not descriptions
+make_roff_command
+man 2.6.1
+man 7 undocumented
+MANBIN %*s
+Mandatory mandir `%s'.
+MANDATORY_MANPATH %49s
+mandb command failed with exit status %d
+MANDB_MAP %49s %511s
+./mandb_nfmt
+./mandb_tfmt
+man_file
+man_gdbm_close
+man_gdbm_open_wrapper
+MAN_KEEP_FORMATTING
+MAN_KEEP_STDERR
+--Man-- next: %s [ view (return) | skip (Ctrl-D) | quit (Ctrl-C) ]
+MAN_ORIG_LESS
+MANPAGER
+/.manpath
+manpath list too long
+MANPATH_MAP %49s %511s
+manpath search path (with duplicates) = %s
+MANROFFOPT
+MANROFFSEQ
+ Manual page $MAN_PN ?ltline %lt?L/%L.:byte %bB?s/%s..?e (END):?pB %pB\%.. (press h for help or q to quit)
+match-case
+matched: %s/%s
+max_cat_width
+MAXCATWIDTH %d
+min_cat_width
+MINCATWIDTH %d
+mkstemp64
+.  mso %s.tmac
+names-only
+_nl_msg_cat_cntr
+no cat path for %s
+no filters
+no-hyphenation
+no-justification
+No manual entry for %s
+No manual entry for %s in section %s
+no-subpages
+no useful manpath for executable
+nroff -mandoc
+(!oldpath || *oldpath) && appendage
+opened %s
+opening %s
+opening %s (parent path: %s)
+other duplicate is at least as good
+out of dynamic memory in yy_create_buffer()
+out of dynamic memory in yyensure_buffer_stack()
+out of dynamic memory in yy_get_next_buffer()
+out of dynamic memory in yy_scan_buffer()
+out of dynamic memory in yy_scan_bytes()
+output_encoding = %s
+output source page encoded in ENCODING
+page_encoding = %s
+pager -s
+pathappend
+path directory %s 
+pathsearch_executable
+Path `%s' mapped to mandir `%s'.
+pipecmd_arg
+pipecmd_argf
+pipecmd_args
+pipecmd_argstr
+pipecmd_argv
+pipecmd_discard_err
+pipecmd_exec
+pipecmd_free
+pipecmd_new
+pipecmd_new_args
+pipecmd_new_argstr
+pipecmd_new_function
+pipecmd_new_passthrough
+pipecmd_new_sequence
+pipecmd_nice
+pipecmd_sequence_command
+pipecmd_setenv
+pipeline_command
+pipeline_command_args
+pipeline_command_argstr
+pipeline_connect
+pipeline_dump
+pipeline_free
+pipeline_get_command
+pipeline_get_ncommands
+pipeline_get_ncommands (decomp) <= 1
+pipeline_ignore_signals
+pipeline_install_post_fork
+pipeline_new
+pipeline_new_command_args
+pipeline_new_commands
+pipeline_peek
+pipeline_peekline
+pipeline_peek_skip
+pipeline_pump
+pipeline_read
+pipeline_readline
+pipeline_run
+pipeline_set_command
+pipeline_start
+pipeline_tostring
+pipeline_wait
+pipeline_want_out
+pop_all_cleanups
+pop_cleanup
+*pp_string
+preprocessor
+pre-processors `%s' from %s
+__printf_chk
+print physical location of cat file(s)
+print physical location of man page(s)
+program_name
+provide the `less' pager with a prompt
+push_cleanup
+__rawmemchr
+readdir64
+real user = %d; effective user = %d
+recalculating manpath for executable in %s
+regain_effective_privs
+--regex 
+remove_directory
+Removing duplicate manpath entry %s (%td) -> %s (%td)
+renaming temporary cat to %s
+reset all options to their default values
+RESOLUTION
+Retrying section %s as name
+-rLL=%dn
+-rLT=%dn
+roff_device (locale) = %s
+roff_encoding = %s
+rpl_globfree
+running mandb: 
+running_setuid
+%s:%d: .so requests nested too deeply or are recursive
+%s:%d: warning: failed .so request
+%s:%d: warning: malformed .lf request, ignoring
+%s:%d: warning: newline in .lf request, ignoring
+%s:%d: warning: newline in .so request, ignoring
+search: %d %d %s %s %s %c %s %s %s (dup: %d)
+search for text in all pages
+searching in %s, section %s
+SECTION %511[^
+[SECTION] PAGE...
+sections
+section: %s
+SECTIONS %511[^
+See '%s' for help when manual pages are not available.
+setlocale
+set search path for manual pages to PATH
+Setting LESS to %s
+Setting MAN_PN to %s
+setting modtime on cat file %s
+show all pages matching regex
+show all pages matching wildcard
+%s: incompatible options
+%s is already in the manpath
+%s is self referencing
+%.*s/man
+%s mandir `%s', catdir `%s'.
+%s needs to be recached: %ld %ld
+sort_candidates
+source_encoding = %s
+../../../src/man.c
+../../../src/manp.c
+../../../src/ult_src.c
+%s: relying on whatis refs is deprecated
+`%s'	`%s'	`%d'
+%.*s/share/man
+%s(%s) not in db!
+%s:%s reduced to %s%s%s
+%s/%s%s/%s.%s
+__stack_chk_fail
+%s//TRANSLIT
+strcasecmp
+strcasestr
+STRING indicates which preprocessors to run:
+strncasecmp
+Succeeded in opening %s O_RDONLY
++t$|9|$t
+tcgetattr
+tcsetattr
+Terminal width %d
+Terminal width %d not within cat page range [%d, %d]
+Terminal width %d within cat page range [%d, %d]
+this duplicate is better; removing old one
+tr '\255\267\264\327' '\055\157\047\170'
+troff-device
+trying a db located file.
+Trying browser: %s
+trying encoding %s -> %s
+trying %s
+trying section %s with globbing
+try_section(): bad link %s
+t'<.t#<@u
+-[tTZH] 
+turn off hyphenation
+turn off justification
+ult_hardlink
+ult_hardlink: (%s)
+ult_softlink: (%s)
+ult_src: File %s in mantree %s
+ult_src: points to %s
+unlinking temporary cat
+update_directory_cache %s: hit
+update_directory_cache %s: miss
+use colon separated section list
+used by catman to reformat out of date cat pages
+use groff and display through gxditview (X11):
+use groff and force it to produce ditroff
+use manual pages from other systems
+use program PAGER to display output
+user_config_file
+use selected output encoding
+use %s or BROWSER to display HTML output
+use %s to format pages
+use %s with selected device
+use this user configuration file
+Using %d-character lines
+using %s as pager
+/usr/bin/apropos
+/usr/bin/whatis
+/usr/bin/zsoelim
+/usr/lib/man-db
+/usr/lib/man-db/manconv
+/usr/man
+UTF-8//IGNORE
+warning: empty $PATH
+warning: mandatory directory %s doesn't exist
+warning: $MANPATH set, appending %s
+warning: $MANPATH set, ignoring %s
+warning: $MANPATH set, inserting %s
+warning: $MANPATH set, prepending %s
+warning: $PATH not set
+warnings
+warning: %s
+WARNINGS
+warning: %s does not begin with %s
+warning: %s: ignoring bogus filename
+warning: %s is a dangling symlink
+warning: %s isn't a directory
+.  warn (\n[.warn] - (\n[.warn] / 1048576 %% 2 * 1048576))
+What manual page do you want?
+where-cat
+wildcard
+--wildcard 
+will try cat file %s
+xalloc_die
+xasprintf
+xrealloc
+xregcomp
+__xstat64
+xstrndup
+-X = -TX75, -X100 = -TX100, -X100-12 = -TX100-12
+yy_flex_debug
+yylineno
+zsoelim_stdin
+zsoelim_stdin_data_free

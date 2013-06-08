@@ -1,0 +1,453 @@
+````````
+``````````````````
+""""""!"""""""""""""""""""""
+"""""""!"""""""""""""""""""""
+""""""""
+""""""""""""
+""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+)*%((((((((%%((%((((((((((((((((((%((((&((&&(((((&''''''''''((&(&((((((((((((((((((((((((((((&(&(((((((((((((((((((((((((((((&(&((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((
+01+////////++//+//////////////////+////,//,,/////,..........//,/,//////-/////////////////////,/,///////-/////////////////////,/,//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+             |  %12.3f  %12.3f  |
+. . [%5d] %5d      "
+. . [%5d] %5d     "
+. . [%5d] %5d    @ %p[%x]
+672555555552255255555555555555555525555355335555535555555555553535555554555555555555555555555353555555545555555555555555555553535555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
+=>8<<<<<<<<88<<8<<<<<<<<<<<<<<<<<<8<<<<9<<99<:<:<9;;;;;;;;;;<<9<9<<<<<<<<<<<<<<<<<<<<<<<<<<<<9<9<<<<<<<<<<<<<<<<<<<<<<<<<<<<<9<9<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ABORT: reason='%s'
+acircumflex
+ADD_STYLE_NAME
+adieresis
+-adobe-utopia-medium-r-normal--0-0-0-0-p-0-iso8859-1
+afmfile = %s
+Allocating at %p: %x %x %x
+Allocating edge of %d pels
+ampersand
+ARGUMENT ERROR-- %s.
+asciicircum
+asciitilde
+aspect ratio=%d / %d
+asterisk
+. at %x type=%d flag=%x
+. . at %x[%x] range %d:%d, 
+AVERAGE_WIDTH
+ Avertjoin not disjoint
+backslash
+Bad char metric in %s (no char):
+Bad char metric in %s (no name):
+Bad char metric in %s (no width):
+Bad object is of %s type %p
+bad path segment?
+bad subpath chain
+basename of %s = 
+BEGIN Subpath
+Bezier: bad B
+Bezier: bad C
+Bezier: bad D
+Beziers this big not yet supported
+. bezier to (%p,%p), B=(%p,%p)
+..Bezier(%z, %z, %z)
+Bf+t$@f+L$@f9
+BlueFuzz
+BlueScale
+BlueShift
+BlueValues
+BNot that many pixels!
+ bounding box HxW is %dx%d at (%d,%d)
+BoxClip:  bottom clip old %d new %d
+BoxClip:  left clip old %d new %d
+BoxClip of %x:
+BoxClip:  right clip old %d new %d
+BoxClip:  top clip old %d new %d
+braceleft
+braceright
+bracketleft
+bracketright
+brokenbar
+__bss_start
+/build/buildd/texlive-bin-2009/inst/lib
+CACHEBLIMIT
+CACHEDCHARS
+CACHEDFONTS
+CallOtherSubr %d
+CallOtherSubr: PSFakeStack low
+CallSubr %d
+CallSubr: subrno out of range
+Can not open %s
+Can't handle long format yet!
+Can't open %s
+C*<at?<mt;<r
+, %c %c %c %c
+ccedilla
+CD?BBBBBBBB??BB?BBBBBBBBBBBBBBBBBB?BBBB@BB@@BBBBB@AAAAAAAAAABB@B@BBBBBBBBBBBBBBBBBBBBBBBBBBBB@B@BBBBBBBBBBBBBBBBBBBBBBBBBBBBB@B@BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+Change Y direction (%d) from (%p,%p), dy=%p
+Char code %d ignored (out of range).
+CHARSET_ENCODING
+CHARSET_REGISTRY
+CharStrings
+CHECKARGS
+Checking type1 font %s ...
+Closed point= (%p,%p)
+ClosePath forced closed by (%p,%p)
+ClosePath(%z)
+codingscheme=%s
+ComputeHint: invalid hinttype
+ComputeHint: invalid orientation
+CONICDEBUG
+. conic to (%p,%p),
+CONTINUITY
+--Coordinate space at %x,ID=%d,convert=%x,iconvert=%x
+Copy: invalid object
+CopyPath: invalid segment
+copyright
+@Copyright Notice not available
+, C=(%p,%p)
+CRASHONUSERERROR
+CRASTERCOMPRESSIONTYPE
+Creating character glyphs for %s ...
+Creating %s from %s
+__ctype_b_loc
+__ctype_toupper_loc
+currency
+  currX=%dl, currY=%dl, currRef=%dl, currWidth=%dl
++D$@9D$4
+daggerdbl
+%d+%d/%d
+Decode: Premature end of Type 1 CharString
+Destroy: invalid object
+Destroy of immortal object %p ignored
+Destroy(%p)
+D$"f9D$(|2f9C
+D$"f9l$(
+discarding %x
+discard:  l=%x, r=%x
+discard():  ran off end
+disjoint subpath?
+Div %f %f
+divide algorithm error
+DLdiv:  dividend too large
+DoClosePath
+DoCommand: ESCAPE is last byte
+DoCommand: Stack low
+DoCommand: Unassigned code %d
+dotaccent
+dotlessi
+DotSection
+. Downgoing edge's top at %p
+DropSegment: arg not a non-null path
+DropSegment(%z)
+Dumping area %x,
+Dumping path, anchor=%x:
+ecircumflex
+EDGE ERROR: non EDGETYPE in list
+edieresis
+ellipsis
+encfile = %s
+EncodingScheme
+EndCharMetrics
+Ending point = (%p,%p)
+Escape: Unassigned code %d
+exclamdown
+ExpansionFactor
+<^f9|$*}_
+FamilyBlues
+FamilyName
+FAMILY_NAME
+FamilyOtherBlues
+ %f %f %f %f)
+Fill: sub-path not closed
+FLUSHCACHE
+FontBBox
+FONTDEBUG
+fontfacebyte
+fontid=%s
+FontMatrix
+FontName
+FontType
+ForceBold
+FPdiv: overflow, %dl/%dl
+FPmult: overflow, %dlx%dl
+FPstarslash: overflow, %dl*%dl/%dl
+fraction
+Freeing at %p: %x %x %x
+Free of already freed object?
+FullName
+germandbls
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+guillemotleft
+guillemotright
+guilsinglleft
+guilsinglright
+HeadSegment: arg not a path
+HeadSegment(%z)
+HIEGGGGGGGGEEGGEGGGGGGGGGGGGGGGGGGEGGGGFGGFFGGGGGFGGGGGGGGGGGGFGFGGGGGGGGGGGGGGGGGGGGGGGGGGGGFGFGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFGFGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+HINTDEBUG
+  hint=(%dl,%dl)
+  Hint %d was open, hint=(%dl,%dl)
+Hinted ending point = (%p,%p)
+  hint not vertical or horizontal
+Hint: orient not 'h' or 'v'
+. hint ref=(%p,%p), width=(%p,%p)
+  hintValue=%dl
+  horizontal hint
+?Hstem %f %f
+HStem: Too many hints
+hungarumlaut
+````H``XX`````H````````````H`H````````````````````````````HpH`````````````````````````````H`H``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+icircumflex
+  idealWidth=%d, 
+idieresis
+..ILoc(S=%z, x=%d, y=%d)
+IMAGEDEBUG
+ImpliedHorizontalLine:  why ask?
+Interior: bad fill rule
+Interior:  bad path
+Interior:  path not closed
+Interior: path type error
+.  INTERIOR(%x, %d)
+Invalid accent ('%03o) in SEAC
+invalid name in %s
+INVALID (previously consumed?)
+_IO_putc
+_IO_stdin_used
+isFixedPitch
+ISOLatin1Encoding
+ItalicAngle
+Join: left arg not anchor
+Join: right arg not anchor
+..Join(%x, %x)
+..Join(%z, %z)
+_Jv_RegisterClasses
+KillPath: bad segment
+KillRegion:  negative reference count
+kpse_absolute_p
+kpse_def_inst
+kpse_fclose_trace
+kpse_find_file
+kpse_fopen_trace
+kpse_set_progname
+l$0f9t$0
+l$8f99~	
+L$\9L$PtI
+, label=%d
+  label=%d, thisHint=(%dl,%dl)
+LanguageGroup
+l$@f9t$@
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+Line: arg not a location
+LINEDEBUG
+LINEIOTRACE
+linestyle
+. line<%x> to
+..Line(%z)
+Loading encoding vector from %s ...
+..Loc(S=%z, x=%f, y=%f)
+logicalnot
+l$pf9t$p
+magstep(%.1f)
+malloc attempted %d bytes.
+MatrixInvert:  can't
+MEMORYDEBUG
+missing %d symbols in %s
+missing '/encoding' in %s
+missing '[' in %s
+missing ']' in %s
+MOVE<%x> to
+ M=(%p,%p), r=%f
+multiply
+name too long in %s (%s)
+negative sized edge?
+newedge: height not positive
+....new edge: ymin=%d, ymax=%d 
+NOJMMMMMMMMJJMMJMMMMMMMMMMMMMMMMMMJMMMMKMMKKMMMMMKLLLLLLLLLLMMKMKMMLLLLLLLLLLLLLLLLLLLLLLLLLLKMKMMMLLLLLLLLLLLLLLLLLLLLLLLLLLKMKMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+Non-positive allocate?
+    NULL area.
+null splitedge
+numbersign
+ocircumflex
+odieresis
+OFFPAGEDEBUG
+onequarter
+onesuperior
+options: -d -v -e<enc> -X<xres> -E<expansion> -S<slant>
+options: -O -P<pointsize> -Y<yres> -a<AFM> -R<baseres>
+ordfeminine
+ordmasculine
+ origin=(%p,%p), ending=(%p,%p)
+Out of memory
+Out of memory %s
+PaintType
+paragraph
+parenleft
+parenright
+PATHDEBUG
+path (from StrokePath)
+path or region (from TextPath)
+PathTransform:  invalid segment
+path = %z
+periodcentered
+Permanent(%p)
+perthousand
+PIXEL_SIZE
+pixels_per_inch=%d
+?PK string exceeds 255 characters
+plusminus
+POINT_SIZE
+PopCall: Stack empty
+   [  %p  %p ]
+ (%p,%p), delta=(%p,%p)
+Pragmatics:  flag not known
+Pragmatics flag = '%s'
+Pragmatics name too large
+__printf_chk
+ProcessHint: invalid adjusttype
+ProcessHint: invalid label
+ProcessHint: label is not in use
+PROCESSHINTS
+Program error: increase FIRST_COUNT!
+Program error: report to author
+Program error: report to author!
+ps2pk options: %s
+Ps2pk: version 1.5 (1992-96)
+PSFakePop : Stack empty
+PSFakePush: Stack full
+psfile = %s
+PushCall: Stack full
+QueryBounds:  bad object
+QueryBounds:  bad XYspace
+QueryBounds: unknown type
+QueryBounds(%z, %z,
+QueryLoc: first arg not a location
+QueryLoc(P=%z, S=%z, (%x, %x))
+QueryLoc: second arg not a space
+QueryPath: arg not a valid path
+QueryPath: unknown segment
+QueryPath(%z, %x, %x, ...)
+QuerySpace: not a space
+question
+questiondown
+quotedbl
+quotedblbase
+quotedblleft
+quotedblright
+quoteleft
+quoteright
+quotesinglbase
+quotesingle
+__rawmemchr
+  ref=(%dl,%dl), width=(%dl,%dl)
+REGIONDEBUG
+registered
+RESOLUTION_X
+RESOLUTION_Y
+result=%x
+Reverse: bad path segment
+Reverse: invalid path
+ReverseSubPaths: invalid path
+ReverseSubPaths(%z)
+Reverse(%z)
+RLineTo %f %f
+RMoveTo %f %f
+RndStemUp
+RRCurveTo %f %f %f %f 
+%s: AFM file %s not found!
+SAVEFONTPATHS
+SBW %f %f %f %f
+Scale(%z, %f, %f)
+%s: %c illegal option
+%s%d.%dpk
+%s%d.%sx
+SEAC %f %f %f %d 
+semicolon
+%s: enc file %s not found!
+SetCurrentPoint %f %f
+SETWIDTH_NAME
+%s: more than two codes for %s (%d,%d,%d)
+%s: no characters selected
+%s: no metrics info
+SortSwath(anchor=%x, edge=%x, fcn=%x)
+SortSwath:  disjoint edges
+SortSwath:  in between %x and %x are %x
+SPACEDEBUG
+splitedge: above top of list
+splitedge of %x at %d 
+splitedge: would be null
+__sprintf_chk
+%s: PS file %s not found!
+%s rendered at %f points
+__stack_chk_fail
+StandardEncoding
+StartCharMetrics
+StartDecrypt: Premature end of CharString
+StemSnapH
+StemSnapV
+.....StepLine: (%dl,%dl) to (%dl,%dl)
+sterling
+%s: too many PostScript names
+STPRRRRRRRRPPRRPRRRRRRRRRRRRRRRRRRPRRRRQRRQQRRRRRQRRRRRRRRRRRRQRQRRRRRRRRRRRRRRRRRRRRRRRRRRRRQRQRRRRRRRRRRRRRRRRRRRRRRRRRRRRRQRQRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+__strcpy_chk
+__strncpy_chk
+STROKEDEBUG
+StrokeWidth
+SubLoc: bad first arg
+SubLoc: bad second arg
+SubLoc(%z, %z)
+subpath=%x,
+%s: unexpected line
+Suspect that InitImager() was omitted.
+. Swath from %d to %d:
+SwathUnion:  0 height swath?
+SwathUnion entered, before=%x, edge=%x
+SwathUnion is overlapped until %d: before=%x after=%x
+SwathUnion starts disjoint: before=%x after=%x
+swathxsort: exactly equal edges
+T$89T$Xu
+Temporary(%p)
+Terminating because of CrashOnUserError...
+threequarters
+threesuperior
+t$,+l$,)
+TRACECALLS
+Transform(%z,
+Trying to allocate %d bytes (%d maximum)
+<]t\<[tX</tT<
+twosuperior
+Type1OpenScalable error (result: %d) on %s 
+ucircumflex
+udieresis
+unable to fix subpath break?
+UnClose:  no LASTCLOSED
+UnderlinePosition
+UnderlineThickness
+underscore
+unexpected EOF while reading %s
+UniqueID
+UnJumble:  unpaired edge?
+?Untransformable object
+Unwind:  uneven edges
+...Unwind(%x)
+. Upgoing edge's top at %p
+Usage: %s [ options ] type1font [pkname]
+  vertical hint
+__vfprintf_chk
+__vsprintf_chk
+Vstem %f %f
+VStem: Too many hints
+We have REALLY run out of memory
+WEIGHT_NAME
+Wrong object type in %s; expected %s seen %s
+ X %d:%d Y %d:%d;
+xiFill: unknown format
+xiStub called
+ %x, %x, %x, %x)
+. . . Y[%5d] 
+ydieresis
+yields %x

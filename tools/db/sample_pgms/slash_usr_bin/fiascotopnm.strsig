@@ -1,0 +1,231 @@
+      --
+2.) $HOME/%s	 3.) command line	 4.) --config=file
+address out of bounds.
+alloc_decoder
+alloc_encoder
+alloc_list
+arith && model
+__assert_fail
+Assertion `image && image_name != NULL' failed.
+Assertion `img1 && img2 != NULL' failed.
+At least one dictionary element has to be used in an approximation.
+bits_bin_code
+__bss_start
+/build/buildd/netpbm-free-10.0/pnm/fiasco/dwfa.c
+/build/buildd/netpbm-free-10.0/pnm/fiasco/input/tree.c
+/build/buildd/netpbm-free-10.0/pnm/fiasco/lib/arith.c
+/build/buildd/netpbm-free-10.0/pnm/fiasco/lib/bit-io.c
+/build/buildd/netpbm-free-10.0/pnm/fiasco/lib/misc.c
+?/build/buildd/netpbm-free-10.0/pnm/fiasco/params.c
+  -%c, --
+Can't allocate memory for %d items of size %d
+Can't decode FIASCO files of file format release `%d'.
+Can't free image <NULL>.
+Can't free memory block <NULL>.
+Can't free model <NULL>.
+Can't read float value!
+Can't read integer value!
+Can't read more than %d weights.
+Can't read next bit from bitfile %s.
+Can't write next bit of bitfile %s!
+Can't write remaining %d bytes of bitfile (only %d bytes written)!
+close_bitfile
+COFIASCO
+__ctype_b_loc
+Current file format release is `%d'.
+D$<9D$@u
+D$df9T$"f
+decode_array
+Decode FIASCO-FILEs and write frame(s) to disk.
+decode_symbol
+decode_tree
+Decoding frame %d to file `%s.%0*d.%s
+DFirst frame is %c-frame but no reference frame is given.
+Display control panel.
+DOFIASCO
+E/build/buildd/netpbm-free-10.0/pnm/fiasco/lib/list.c
+encode_array
+encode_symbol
+Environment:
+EOF reached, input seems to be truncated!
+__errno_location
+FIASCO_DATA
+FIASCO_DATA   Search path for automata files. Default: ./
+ [FIASCO-FILE]...
+FIASCO_IMAGES Save path for image files. Default: ./
+filename
+filename && wfa
+filename && wi
+File `%s': I/O Error - %s.
+Flags should be initialized and set on demand, not request
+Format error: ASCII FIASCO initial basis file %s
+for short options too. Default values are surrounded by {}.
+__fprintf_chk
+framerate
+Frame type pattern contains invalid character `%c' (choose I, B or P).
+Frame type pattern doesn't contain any character.
+free_decoder
+free_encoder
+free_list
+getopt_long
+get_parameter_index
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+HC/build/buildd/netpbm-free-10.0/pnm/fiasco/input/read.c
+high > low
+Image must have a height of at least 32 pixels.
+Image must have a width of at least 32 pixels.
+input && c_symbols
+Input file %s is not an ASCII FIASCO initial basis!
+Input file %s is not a valid FIASCO file!
+Interpolate images to double size before display.
+Invalid config filename.
+Invalid parameter `%s'.
+Invalid parameter %s.
+Invalid parameter type for %s
+Invalid progress meter `%d' specified (valid values are 0, 1, or 2).
+Invalid RPF ranges `%d', `%d' specified.
+Invalid RPF range specified. Using default value 1.0.
+Invalid tiling method `%d' specified (valid methods are 0, 1, 2, or 3).
+Invalid type %d for parameter %s
+Invalid value `%s' converted to %d
+Invalid value `%s' converted to %f
+_IO_getc
+_IO_stdin_used
+__isoc99_fscanf
+__isoc99_scanf
+_Jv_RegisterClasses
+L$4f9L$>r
+L$8)L$,;l$,
+L$\9L$Xt"
+last_timer
+l$ f9l$4
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libnetpbm.so.10
+list && data
+list_element_n
+list_foreach
+list && function && data
+list_insert
+list_remove
+list_sizeof
+\$L+|$L)\$H
+Loading basis from disk instead.
+Load `%s' to initialize parameters.
+__longjmp_chk
+Magnifaction factor `%d' is too large. Maximium value is %d.
+Magnifaction factor `%d' is too small. Minimum value is %d.
+Magnify/reduce image size by a factor of 4^`%s'.
+Mandatory or optional arguments to long options are mandatory or optional
+Maximum block size has to be larger or equal minimum block size.
+Maximum image block size has to be at least level 4.
+Maximum prediction block size has to be at least level 6
+Maximum prediction block size has to be larger or equal minimum block size.
+maxval && value <= maxval
+Minimum image block size has to be at least level 4.
+Minimum prediction block size has to be at least level 6
+model && arith
+mode == READ_ACCESS || mode == WRITE_ACCESS
+(name not initialized)
+n_context == 1 || context
+number %d: address %d
+Number of RPF mantissa bits `%d', `%d' have to be in the interval [2,8].
+Only %d domains have been used in the luminance.
+open_file
+open_wfa
+Options set in file `%s' will override command line options.
+Out of memory!
+Out of memory.
+output && c_symbols && data
+output && maxval && value <= maxval
+parameter
+Parameter `dfiasco' doesn't match required type.
+Parameter `image' doesn't match required type.
+Parameter initialization order:
+Parameter `options' doesn't match required type.
+Parameters must be not NULL.
+Parameter `%s' not defined (NULL).
+params && file
+params && search_string
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_openr
+pm_openw
+pnm_readpnminit
+pnm_readpnmrow
+pnm_writepnminit
+pnm_writepnmrow
+prg_timer
+Print brief help, then exit.
+Print detailed help, then exit.
+Print program version number, then exit.
+Print this help, then exit.
+Quality of chroma channel compression has to be positive value.
+read_basis
+read_bin_code
+read_int
+read_next_wfa
+read_parameter_file
+read_real
+read_rice_code
+?Reduced precision format: value %d out of range.
+remove_comments
+%s.%0*d.%s
+Set display rate to `%s' frames per second.
+Set level of verbosity to `%s'.
+set_parameter
+Size of chroma compression dictionary has to be a positive number.
+Size of dictionary has to be a positive number.
+size_of_element > 0
+Size of RPF mantissa has to be in the interval [2,8]. Using maximum value 8.
+Size of RPF mantissa has to be in the interval [2,8]. Using minimum value 2.
+size of tile must be less or equal than image size.
+small.fco
+small.wfa
+Smooth image(s) by factor `%s' (0-100)
+smoothing
+Smoothing percentage must be in the range [-1, 100].
+__sprintf_chk
+%s=%-*s  
+%s: %s: line %d:
+%s=[%s]%-*s  
+__stack_chk_fail
+strcasecmp
+__strcpy_chk
+__strdup
+strerror
+system.fiascorc
+T$\9T$dv2
+T$p9T$Du
+Try `%s --help' for more information.
+Try `%s -h' or `%s --help' for more information.
+T$,;T$Tv
+type %d for %s invalid
+Unknow file access mode '%d'.
+unknown color component.
+Usage: %s [OPTION]...%s
+Use 4:2:0 format for fast, low quality output.
+variance
+__vfprintf_chk
+__vsprintf_chk
+Warning: 
+WFA initial basis '%s' isn't linked with the excecutable yet.
+wfa && input
+Width and height of images must be even numbers.
+With no FIASCO-FILE, or if FIASCO-FILE is -, read standard input.
+write_bin_code
+Write raw PNM frame(s) to `%s'.
+write_rice_code
+Writing of images in 4:2:0 format not supported.
+wrong huffman code !

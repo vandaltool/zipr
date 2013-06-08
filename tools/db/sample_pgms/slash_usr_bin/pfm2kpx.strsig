@@ -1,0 +1,170 @@
+##############################################################################
+$0 =~ s!.*/!!;
+    acute mu paragraph periodcentered
+Added C<binmode PFM> to make B<pfm2kpx> work on Windows platforms
+    adieresis aring ae ccedilla
+	$afm = <AFM>;
+AFM file>".) In this case, the resulting F<afm> is incomplete and contains
+    $afm =~ s/(?<=Comment ).*?$/Converted at $time by $0 from $ARGV[0]/m;
+    $afm =~ s/\r\n*/\n/gs;
+    $afm =~ s/StartKernData.*//s;
+    agrave aacute acircumflex atilde
+    at A B C
+    backslash bracketright asciicircum underscore
+    bar braceright asciitilde .notdef
+($base = $ARGV[0]) =~ s!.*/|\.pfm!!g;
+binmode PFM;
+B<pfm2kpx> extracts the correct kerning pairs from such F<pfm> files and
+    cedilla onesuperior ordmasculine guillemotright
+changed by specifying the B<-f> option (see below).
+character ocurred among kern pairs -- you'd better check the resulting 
+    (chop($fn = `findtexmf '$ARGV[0]' 2>&1`) and -e $fn)) 
+    circumflex perthousand Scaron guilsinglleft
+    comma hyphen period slash
+creation tools) instead use the Windows ANSI (aka codepage 1252) encoding.
+C<stdout> instead.
+    currency yen brokenbar section
+    d e f g
+    degree plusminus twosuperior threesuperior
+$dfCharSet = unpack "C", substr($pfm, 85, 1);
+$dfPairKernTable = getdword(substr $pfm, 131, 4);
+	    die "Error: can't open `$ARGV[0]' - $!\n";
+    die "Error: `dfCharSet' is $dfCharSet, not 0\n";
+    dieresis copyright ordfeminine guillemotleft
+die "Usage: $0 pfmfile\n" if @ARGV != 1;
+    dollar percent ampersand quotesingle
+    egrave eacute ecircumflex edieresis
+    eight nine colon semicolon
+    else {
+EndFontMetrics
+EndKernData
+    $errmsg = `pf2afm '${base}.pfb'`;
+    eth ntilde ograve oacute
+$etmKernPairs = getword(substr $pfm, 195, 2);
+    Euro .notdef quotesinglbase florin
+    exit;
+    	exit 0;
+F<font2afm>, F<ot2kpx>.
+First version
+    for (@bytes) {
+Force updating of the F<afm> file, even if I<pf2afm> doesn't complain.
+for $i (0 .. $n - 1) {
+for this is that I<pf2afm> interprets C<dfCharSet = 0x00> to mean that
+    four five six seven
+F<pf2afm> (part of GhostScript), F<afm2afm>, F<autoinst>, F<cmap2enc>, 
+F<pfb> and F<pfm> files, but no F<afm> (Adobe Font Metrics) files. These can be
+generated with I<pf2afm> (which comes with I<GhostScript>), but
+getopts "f", \%options;
+    grave a b c
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 HISTORY
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+    h i j k
+if ((chop($fn = `kpsewhich '$ARGV[0]' 2>&1`) and -e $fn) or
+if ($dfCharSet != 0) {
+if ($dfPairKernTable == 0 or $etmKernPairs == 0) {
+    if ($errmsg !~ /\.notdef character ocurred among kern pairs/ and
+If for some reason it can't update the F<afm>, it prints the kerning pairs to
+if ($n != $etmKernPairs) {
+if (open AFM, "<${base}.afm") {
+    if (open AFM, ">${base}.afm") {select AFM}
+	     "	       If you disagree, rerun $0 with the `-f' option\n";
+    igrave iacute icircumflex idieresis
+Improved the documentation
+Input files searched using B<kpsewhich> or B<findtexmf>
+Input files searched via B<kpsewhich> (where available)
+=item B<-f>
+=item I<2005-02-17>
+=item I<2005-02-18>
+=item I<2005-03-08>
+=item I<2005-03-14>
+=item I<2005-03-15>
+=item I<2005-04-29>
+=item I<2005-05-24>
+=item I<2005-07-29>
+    $kern = getword(substr($pair, 2, 2));
+ @{KPX}EndKernPairs
+    $left = unpack "C", substr($pair, 0, 1);
+    less equal greater question
+    l m n o
+    	local $/;
+    local $/;
+    logicalnot .notdef registered macron
+Many PostScript Type1 fonts contain only
+    map print, @KPX;
+Marc Penninga <marc@penninga.info>
+    my @bytes = reverse(split(//, substr($_[0], 0, 2)));
+    my @bytes = reverse(split(//, substr($_[0], 0, 4)));
+    my $r = 0;
+$n = getword(substr $pairkern, 0, 2);
+    .notdef exclamdown cent sterling
+    .notdef .notdef .notdef .notdef
+    .notdef quoteleft quoteright quotedblleft
+    	not exists $options{f}) 
+    ocircumflex otilde odieresis divide
+    Ocircumflex Otilde Odieresis multiply
+    OE .notdef Zcaron .notdef
+    oe .notdef zcaron Ydieresis
+    onequarter onehalf threequarters questiondown
+    open PFM, "<$ARGV[0]" or 
+    open PFM, "<$fn" or die "Error: can't open `$fn' - $!\n";
+    oslash ugrave uacute ucircumflex
+=over 12
+$pairkern = substr $pfm, $dfPairKernTable;
+    $pair = substr $pairkern, 2 + 4 * $i, 4;
+    parenleft parenright asterisk plus
+pfm2kpx - extract correct kerning information from F<pfm> 
+pfm2kpx [options] I<pfm>
+    $pfm = <PFM>;
+    	 "  	   please check the resulting AFM file!\n";
+    p q r s
+    print "EndKernPairs\nEndKernData\n";
+    print <<EOF;
+(Printer Font Metrics) files
+    	 "printing only kerning pairs\n";
+	     "	       printing to <STDOUT> instead\n";
+    print "StartKernData\nStartKernPairs $n\n";
+    push @KPX, "KPX $winansi[$left] $winansi[$right] $kern\n";
+    quotedblbase ellipsis dagger daggerdbl
+    quotedblright bullet endash emdash
+repairs the F<afm> (if necessary creating it first by running I<pf2afm>).
+    return $r;
+    return $r >= 32768 ? $r - 65536 : $r;
+Rewrote some of the code to make it more robust, added the B<-f> option
+    $right = unpack "C", substr($pair, 1, 1);
+    	$r = ($r << 8) + unpack "C", $_;
+Some updates to the documentation.
+    space exclam quotedbl numbersign
+StartKernData
+StartKernPairs $n
+sub getdword($) {
+sub getword($) {
+the Adobe StandardEncoding has been used, whereas many fonts (or font
+thinks the resulting F<afm> file is fine and quits; this can be
+this might not yield all kerning pairs from the F<pfm> file. The reason
+    tilde trademark scaron guilsignlright
+    $time = localtime;
+    t u v w
+    Udieresis Yacute Thorn germandbls
+    udieresis yacute thorn ydieresis
+unless (-e "${base}.afm") {
+use Getopt::Std;
+use integer;
+use warnings; no warnings qw(uninitialized);
+#!/usr/bin/perl
+    	warn "Warning: can't create `${base}.afm' - $!\n" .
+    warn "Warning: file `${base}.afm' not found, " . 
+    warn "Warning: incorrect number of kerning pairs in `$ARGV[0]';\n",
+    warn "Warning: no kerning pairs found in `$ARGV[0]'\n";
+    	warn "Warning: output from <pf2afm> seems OK; skipping `$ARGV[0]'.\n",
+When I<pf2afm> doesn't complain about the kerning pairs, B<pfm2kpx> 
+@winansi = qw(
+wrong kerning pairs.
+    x y z braceleft
+    X Y Z bracketleft
+(You know you've hit this problem when B<pf2afm> complains "C<.notdef 
+    zero one two three

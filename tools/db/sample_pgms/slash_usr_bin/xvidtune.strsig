@@ -1,0 +1,248 @@
+%-11s   %6.2f   %4d %4d %4d %4d   %4d %4d %4d %4d
+AckError
+adInstalled
+applicationShellWidgetClass
+Apply-button
+asciiTextWidgetClass
+AutoApply-toggle
+Blank1Dec-button
+Blank1Inc-button
+Blank1-label
+Blank1-text
+Blank2Dec-button
+Blank2Inc-button
+Blank2-label
+Blank2-text
+BlankDelay	"%dx%d" %d %d
+boxWidgetClass
+__bss_start
+	<Btn1Down>: select-start()
+Buttons2-form
+Buttons-form
+commandWidgetClass
+ composite
+__ctype_b_loc
+ doublescan
+Down-button
+EarlySC		"%dx%d" %d
+EarlySc-toggle
+	<EnterWindow>: enter-window()
+ErrorMessage
+Failed to disable mode-switch hot-keys
+Fetch-button
+Flags-form
+Flags-label
+Flags-text
+	<FocusIn>: focus-in()
+<FocusOut>: focus-out()
+formWidgetClass
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+HDisplay-form
+HDisplay-label
+HDisplay-text
+HSyncEnd-form
+HSyncEnd-label
+hSyncEndRange
+HSyncEnd-scrollbar
+HSyncEnd-text
+hsync range %d: %6.2f - %6.2f
+HSyncRate-form
+HSyncRate-label
+HSyncRate-text
+HSyncStart-form
+HSyncStart-label
+hSyncStartRange
+HSyncStart-scrollbar
+HSyncStart-text
+HTotal-form
+HTotal-label
+hTotalRange
+HTotal-scrollbar
+HTotal-text
+ interlace
+invalidBox
+invalidMode
+Invalid Mode requested
+InvertVCLK	"%dx%d" %d
+InvertVclk-toggle
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+	<Key>0: insert-char()
+<Key>1: insert-char()
+	<Key>2: insert-char()
+<Key>3: insert-char()
+	<Key>4: insert-char()
+<Key>5: insert-char()
+	<Key>6: insert-char()
+<Key>7: insert-char()
+	<Key>8: insert-char()
+<Key>9: insert-char()
+	<Key>a: insert-char()
+	<Key>BackSpace: delete-previous-character()
+<Key>b: insert-char()
+	<Key>c: insert-char()
+	<Key>Delete: delete-previous-character()
+<Key>d: insert-char()
+	<Key>e: insert-char()
+<Key>f: insert-char()
+<Key>-: insert-char()
+	<Key>+: insert-char()
+	<Key>KP_Delete: delete-previous-character()
+<Key>KP_Left: backward-character()
+<Key>KP_Right: forward-character()
+	<Key>Left: backward-character()
+<Key>q: xvidtune-quit()
+	<Key>Right: forward-character()
+	<Key>r: xvidtune-restore()
+labelWidgetClass
+<LeaveWindow>: leave-window()
+Left-button
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXaw.so.7
+libXmu.so.6
+libXt.so.6
+libXxf86vm.so.1
+<Message>WM_PROTOCOLS: xvidtune-quit()
+Minimum required version is %d.%d
+Narrower-button
+Next-button
+        -next                             Switch to next video mode
+NoTuneLabel
+NoTuneOK
+Num hsync: %d, Num vsync: %d
+PixelClock-form
+PixelClock-label
+PixelClock-text
+Please install the program before using
+Prev-button
+        -prev                             Switch to previous video mode
+__printf_chk
+Quit-button
+Restore-button
+Right-button
+scrollbarWidgetClass
+Shorter-button
+Show-button
+        -show                             Print current modeline to stdout
+__snprintf_chk
+__stack_chk_fail
+__strcat_chk
+Taller-button
+Test-button
+Testing_1_2_3
+TestingBox
+testingMessage
+-timeout
+        -timeout [seconds]                Set testmode timeout in seconds,
+toggleWidgetClass
+transientShellWidgetClass
+Unable to get mode info
+Unable to query monitor info
+Unable to query video extension information
+Unable to query video extension version
+        -unlock                           Enable mode switch hot-keys
+Up-button
+Usage: xvidtune [option]
+VDisplay-form
+VDisplay-label
+VDisplay-text
+Vendor: %s, Model: %s
+Video modes are not settable on this chip
+VSyncEnd-form
+VSyncEnd-label
+vSyncEndRange
+VSyncEnd-scrollbar
+VSyncEnd-text
+vsync range %d: %6.2f - %6.2f
+VSyncRate-form
+VSyncRate-label
+VSyncRate-text
+VSyncStart-form
+VSyncStart-label
+vSyncStartRange
+VSyncStart-scrollbar
+VSyncStart-text
+VTotal-form
+VTotal-label
+vTotalRange
+VTotal-scrollbar
+VTotal-text
+WarnCancel
+WarningBox
+WarnLabel
+    where option is one of:
+Wider-button
+WM_DELETE_WINDOW
+XawFmt8Bit
+XawScrollbarSetThumb
+XawTextGetInsertionPoint
+XawTextReplace
+XawTextSetInsertionPoint
+XF86VidModeGetModeLine
+XF86VidModeGetMonitor
+XF86VidModeLockModeSwitch
+XF86VidModeModModeLine
+XF86VidModeQueryExtension
+XF86VidModeQueryVersion
+XF86VidModeSwitchMode
+XInternAtom
+XMapWindow
+XmuConvertStandardSelection
+Xserver is running an old XFree86-VidModeExtension version (%d.%d)
+XSetErrorHandler
+XSetWMProtocols
+XtAddCallback
+XtAppAddActions
+XtAppAddSignal
+XtAppAddTimeOut
+XtAppMainLoop
+XtAppSetExitFlag
+XtCreateWidget
+XtDestroyWidget
+XtDisplay
+XtGetApplicationResources
+XtLastTimestampProcessed
+XtManageChild
+XtManageChildren
+XtNoticeSignal
+XtOverrideTranslations
+XtOwnSelection
+XtParent
+XtParseTranslationTable
+XtPopdown
+XtRealizeWidget
+XtRemoveTimeOut
+XtShellStrings
+XtStrings
+XtVaCreateManagedWidget
+XtVaCreatePopupShell
+XtVaCreateWidget
+XtVaGetValues
+XtVaOpenApplication
+XtVaSetValues
+XtWidgetToApplicationContext
+XtWindow
+Xvidtune
+xvidtune-movedown
+xvidtune-moveleft
+xvidtune-moveright
+xvidtune-moveup
+xvidtune-narrower
+xvidtune-nextmode
+xvidtune-prevmode
+xvidtune-quit
+xvidtune-restore
+xvidtune-shorter
+xvidtune-show
+xvidtune-taller
+xvidtune-wider

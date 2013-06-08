@@ -1,0 +1,52 @@
+  %3d  %15s - %s
+  %3d  %15s : %s
+  %3d  %15s : Unknown error
+Bad host: %s != %s
+__bss_start
+Cache buckets   :     IP number * hostname
+Cache hits      : %d
+Cache size      : %d
+__ctype_b_loc
+__cxa_finalize
+Entries: %d
+__fprintf_chk
+__getdelim
+gethostbyaddr
+gethostbyname
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+__h_errno_location
+Host not found
+inet_addr
+inet_ntoa
+Insufficient memory
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+logresolve: could not open statistics file '%s'
+logresolve: missing filename to -s
+logresolve Statistics:
+No address
+    - No address: %d
+    - No data   : %d
+Non recoverable error
+    - No reverse: %d
+No reverse entry
+    - Not found : %d
+__printf_chk
+    Resolves    : %d
+__stack_chk_fail
+__strdup
+Try again
+    - Try again : %d
+Unknown error
+Usage: logresolve [-s statfile] [-c] < input > output
+    With name   : %d

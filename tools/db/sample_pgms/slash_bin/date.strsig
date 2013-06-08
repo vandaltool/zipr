@@ -1,0 +1,212 @@
+         !"####$$$%%&''((((((())))*********+,,,---------------------....../0011223455
+  0  (zero) pad with zeros
+3L$83T$4
+-69?BE<'$Z KLNOPM7:@CF=(
+8;ADI>Q%#
+9=>?@AB<0P/
+%a %b %e %H:%M:%S %Z %Y
+%a, %d %b %Y %H:%M:%S %z
+After any flags comes an optional field width, as a decimal number;
+  %%   a literal %
+  %a   locale's abbreviated weekday name (e.g., Sun)
+  %A   locale's full weekday name (e.g., Sunday)
+ambiguous argument %s for %s
+A NULL argv[0] was passed through an exec system call.
+argument must be a format string beginning with `+'
+                            a single space: 2006-08-07 12:34:56-06:00
+bindtextdomain
+  %b   locale's abbreviated month name (e.g., Jan)
+  %B   locale's full month name (e.g., January)
+bug-coreutils@gnu.org
+By default, date pads numeric fields with zeroes.
+cannot set date
+  %C   century; like %Y, except omit last two digits (e.g., 20)
+  %c   locale's date and time (e.g., Thu Mar  3 23:05:25 2005)
+clock_gettime
+clock_settime
+Convert seconds since the epoch (1970-01-01 UTC) to a date
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+__ctype_toupper_loc
+__cxa_atexit
+                            Date and time components are separated by
+                            date and time to the indicated precision.
+  $ date --date='@2147483647'
+  $ date --date='TZ="America/Los_Angeles" 09:00 next Fri'
+David MacKenzie
+dcgettext
+  %D   date; same as %m/%d/%y
+  -d, --date=STRING         display time described by STRING, not `now'
+  %d   day of month (e.g., 01)
+DECEMBER
+d:f:I::r:Rs:u
+Display the current time in the given FORMAT, or set the system date.
+  %e   day of month, space padded; same as %_d
+ELEVENTH
+__errno_location
+E to use the locale's alternate representations if available, or
+                            Example: Mon, 07 Aug 2006 12:34:56 -0600
+Examples:
+extra operand %s
+FEBRUARY
+  -f, --file=DATEFILE       like --date once for each line of DATEFILE
+  %F   full date; same as %Y-%m-%d
+For complete documentation, run: info coreutils '%s invocation'
+FORMAT controls the output.  Interpreted sequences are:
+FORTNIGHT
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+__getdelim
+getopt_long
+gettimeofday
+ !"#gh$%&'()*+,	
+  %g   last two digits of year of ISO week number (see %G)
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+  %G   year of ISO week number (see %V); normally useful only with %V
+      --help     display this help and exit
+  %H   hour (00..23)
+%H:%M:%S
+  %h   same as %b
+http://www.gnu.org/software/coreutils/
+  -  (hyphen) do not pad the field
+  %I   hour (01..12)
+invalid argument %s for %s
+invalid date %s
+_IO_stdin_used
+--iso-8601
+iswprint
+  %j   day of year (001..366)
+_Jv_RegisterClasses
+  %k   hour, space padded ( 0..23); same as %_H
+  %l   hour, space padded ( 1..12); same as %_I
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+librt.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+localtime
+%m/%d/%y
+memory exhausted
+  %M   minute (00..59)
+  %m   month (01..12)
+multiple output formats specified
+  %n   a newline
+nl_langinfo
+  %N   nanoseconds (000000000..999999999)
+NOVEMBER
+OCDEFGH:IdkJKenL12efqM;N=>?@AB=>?@ABee\oZ[jpXo
+  or:  %s [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
+O to use the locale's alternate numeric symbols if available.
+__overflow
+  %P   like %p, but lower case
+  %p   locale's equivalent of either AM or PM; blank if not known
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+  %R   24-hour hour and minute; same as %H:%M
+reference
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+rfc-2822
+--rfc-3339
+      --rfc-3339=TIMESPEC   output date and time in RFC 3339 format.
+  %r   locale's 12-hour clock time (e.g., 11:11:04 PM)
+  -r, --reference=FILE      display the last modification time of FILE
+  -R, --rfc-2822            output date and time in RFC 2822 format.
+  - `%s'
+%s, and %s.
+SATURDAY
+SEPTEMBER
+setlocale
+settimeofday
+shell-always
+%s home page: <%s>
+Show the local time for 9AM next Friday on the west coast of the US
+Show the time on the west coast of the US (use tzselect(1) to find TZ)
+__sprintf_chk
+%s, %s, and others.
+%s, %s, and %s.
+  %S   second (00..60)
+  %s   seconds since 1970-01-01 00:00:00 UTC
+  -s, --set=STRING          set time described by STRING
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+standard input
+__stpcpy_chk
+strftime
+  %t   a tab
+the argument %s lacks a leading `+';
+The following optional flags may follow `%':
+then an optional modifier, which is either
+the options to print and set the time may not be used together
+the options to specify dates for printing are mutually exclusive
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+THURSDAY
+time %s is out of range
+                            TIMESPEC=`date', `seconds', or `ns' for
+TOMORROW
+Try `%s --help' for more information.
+  %T   time; same as %H:%M:%S
+TUVW^_`Yiabc
+  $ TZ='America/Los_Angeles' date
+  %u   day of week (1..7); 1 is Monday
+  _  (underscore) pad with spaces
+universal
+unsetenv
+Usage: %s [OPTION]... [+FORMAT]
+  #  use opposite case if possible
+  ^  use upper case if possible
+/usr/share/locale
+  -u, --utc, --universal    print or set Coordinated Universal Time
+  %U   week number of year, with Sunday as first day of week (00..53)
+Valid arguments are:
+      --version  output version information and exit
+  %V   ISO week number, with Monday as first day of week (01..53)
+  %w   day of week (0..6); 0 is Sunday
+WEDNESDAY
+when using an option to specify date(s), any non-option
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  %W   week number of year, with Monday as first day of week (00..53)
+  %x   locale's date representation (e.g., 12/31/99)
+  %X   locale's time representation (e.g., 23:13:48)
+__xstat64
+XXX%s%ld:%02d
+YESTERDAY
+  %y   last two digits of year (00..99)
+%Y-%m-%d
+%Y-%m-%d %H:%M:%S.%N%:z
+%Y-%m-%d %H:%M:%S%:z
+%Y-%m-%dT%H:%M:%S,%N%z
+%Y-%m-%dT%H:%M:%S%z
+%Y-%m-%dT%H:%M%z
+%Y-%m-%dT%H%z
+  %Y   year
+  %Z   alphabetic time zone abbreviation (e.g., EDT)
+  %:z  +hh:mm numeric time zone (e.g., -04:00)
+  %z   +hhmm numeric time zone (e.g., -0400)
+  %::z  +hh:mm:ss numeric time zone (e.g., -04:00:00)
+  %:::z  numeric time zone with : to necessary precision (e.g., -04, +05:30)

@@ -1,0 +1,37 @@
+__bss_start
+<< /Columns %u /Rows %u >> /CCITTFaxDecode filter
+%%%%Creator: pbmtopsg3, Copyright (C) 2001 Kristof Koehler
+currentfile /ASCII85Decode filter
+%%%%EndComments
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+%%%%Pages: (atend)
+%%%%Pages: %u
+%%%%Page: %u %u
+pbm_init
+pbm_nextimage
+pbm_readpbminit
+pbm_readpbmrow
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_message
+pm_openr
+pm_optParseOptions3
+__printf_chk
+%%!PS-Adobe-3.0
+showpage
+__stack_chk_fail
+%%%%Title: %s
+Too many arguments.  The only argument is the input file specification
+%%%%Trailer
+%u %u 1 [ %f 0 0 %f 0 %u ]

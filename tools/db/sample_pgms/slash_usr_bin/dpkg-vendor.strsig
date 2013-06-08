@@ -1,0 +1,78 @@
+ 2009 Rapha
+        $action = $1;
+Actions:
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# (at your option) any later version.
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# Copyright 
+Copyright (C) 2009 Raphael Hertzog <hertzog\@debian.org>.");
+  --derives-from <vendor> returns true if current vendor derives from <vendor>.
+# dpkg-vendor
+    } else {
+} elsif ($action eq 'derives-from') {
+} elsif ($action eq 'query') {
+    } elsif (m/^-(h|-help)$/) {
+    } elsif (m/^--(is|derives-from|query)$/) {
+    } elsif (m/^--version$/) {
+    error(_g("vendor %s doesn't exist in /etc/dpkg/origins/"),
+        exit 0;
+        exit(0);
+        exit(0) if lc($param) eq lc($info->{'Vendor'});
+    exit(0) if lc($param) eq lc($info->{'Vendor'});
+        exit(1);
+    exit(1);
+# GNU General Public License for more details.
+  --help                  show this help message.
+if ($action eq 'is') {
+            if defined($action);
+    if (exists $info->{$param}) {
+    if (m/^--vendor$/) {
+        $info = get_vendor_info($info->{'Parent'});
+  --is <vendor>           returns true if current vendor is <vendor>.
+# it under the terms of the GNU General Public License as published by
+later for copying conditions. There is NO warranty.
+l Hertzog <hertzog@debian.org>
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+my $info = get_vendor_info($vendor);
+my ($vendor, $param, $action);
+Options:
+        $param = shift(@ARGV);
+    printf _g(
+    printf _g("
+    printf _g("Debian %s version %s.\n"), $progname, $version;
+        print $info->{$param} . "\n";
+"), $progname;
+  --query <field>         print the content of the vendor-specific field.
+    $_ = shift(@ARGV);
+sub usage {
+sub version {
+textdomain("dpkg-dev");
+# the Free Software Foundation; either version 2 of the License, or
+This is free software; see the GNU General Public License version 2 or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+unless (defined($info)) {
+        usage();
+usageerr(_g("need an action option")) unless defined($action);
+        usageerr(_g("%s needs a parameter"), $_) unless defined $param;
+        usageerr(_g("%s needs a parameter"), $_) unless defined $vendor;
+        usageerr(_g("two commands specified: --%s and --%s"), $1, $action)
+	usageerr(_g("unknown option \`%s'"), $_);
+"Usage: %s [<option> ...] [<action>]
+use Dpkg;
+use Dpkg::ErrorHandling;
+use Dpkg::Gettext;
+use Dpkg::Vendor qw(get_vendor_info get_current_vendor);
+# Uses $ENV{DEB_VENDOR} if set
+use strict;
+use warnings;
+#!/usr/bin/perl
+          $vendor || "default");
+$vendor = get_current_vendor() unless defined($vendor);
+        $vendor = shift(@ARGV);
+  --vendor <vendor>       assume <vendor> is the current vendor
+        version();
+  --version               show the version.
+while (@ARGV) {
+    while (defined($info) && exists $info->{'Parent'}) {
+# You should have received a copy of the GNU General Public License

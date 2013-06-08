@@ -1,0 +1,262 @@
+2012.1.15AR.1
+ABSOLUTELY NO WARRANTY; for details read the GNU General Public License to be
+Access is denied because the NTFS journal file is unclean. Choices are:
+Access is denied because the NTFS volume is already exclusively opened.
+and may lead to data corruption.
+and you are welcome to redistribute it under certain conditions.  It comes with
+ A) Shutdown Windows properly.
+Attempting to correct errors... 
+    Attempt to fix an NTFS partition.
+Attempt to fix an NTFS partition.
+$AttrDef
+Attribute name was truncated.
+Attribute type was truncated.
+Attribute $VOLUME_INFORMATION in $Volume is corrupt!
+Attribute $VOLUME_INFORMATION must be resident (and it isn't)!
+Attribute $VOLUME_INFORMATION was not found in $Volume!
+AT_UNNAMED
+    automatically initialize the journal.
+$BadClus
+    -b, --clear-bad-sectors Clear the bad sector list
+ B) Click the 'Safely Remove Hardware' icon in the Windows taskbar
+__bss_start
+Cannot handle this yet. )-:
+Checking for self-located MFT segment... 
+clear_badclus
+clear-bad-sectors
+clear-dirty
+Comparing $MFTMirr to $MFT... 
+Copyright (c) 2000-2006 Anton Altaparmakov
+Copyright (c) 2002-2006 Szabolcs Szakacsits
+Copyright (c) 2007      Yura Pakhuchiy
+Copyright (c) 2011      Jean-Pierre Andre
+Correcting differences in $MFT%s record %d...
+Corrupt cluster map size %lld (allocated %lld minimum %lld)
+Corrupted file $UpCase
+could be identified for example by the help of the 'fuser' command.
+Couldn't create a search context.
+Couldn't open $Bitmap
+Couldn't open inode %llu.
+Couldn't open $MFT/$DATA
+Couldn't read $Bitmap
+Couldn't read $MFT/$BITMAP
+Couldn't read MFT Record %llu
+Couldn't translate attribute name to current locale.
+Couldn't translate attribute type to current locale.
+Couldn't translate filename to current locale.
+ C) Use 'Eject' from Windows Explorer to safely remove the device.
+__cxa_finalize
+    -d, --clear-dirty       Clear the volume dirty flag
+Developers' email address: ntfs-3g-devel@lists.sf.net
+different device under /dev/mapper, (e.g. /dev/mapper/nvidia_eahaabcc1)
+ D) If you ran chkdsk previously then boot Windows again which will
+distribution are broken. Please report to your distribution developers
+empty_journal
+__errno_location
+Error closing inode %llu.
+Error correcting $MFT%s
+Error: Failed to set volume dirty flag (%d (%s))!
+Error: Failed to un-mark bad sectors.
+Error getting information about %s
+Error opening '%s'
+Error reading alternate bootsector
+Error reading bootsector
+Error reading inode %llu.
+Error reading inode %llu.  Aborting.
+Error rewriting the bootsector
+Error setting volume flags.
+ERROR: Too many arguments.
+Error: Unknown NTFS version.
+ERROR: Unknown option '%s'.
+Error: Upcase table is too big (max 32-bit allowed).
+Error writing $Volume
+ERROR: You must specify a device.
+ E) Submit 'force' option (WARNING: This solution it not recommended).
+Failed to allocate device
+Failed to allocate memory
+Failed to close $UpCase
+Failed to determine whether %s is mounted
+Failed to mount '%s'
+Failed to open $BadClus::$Bad
+Failed to open bitmap data attribute
+Failed to open bitmap inode
+Failed to open inode FILE_BadClus
+Failed to open inode FILE_UpCase
+Failed to open ntfs attribute
+Failed to read alternate bootsector (size=0)
+Failed to read bootsector (size=0)
+Failed to read $MFT
+Failed to read $MFTMirr
+Failed to read $UpCase, unexpected length (%lld != %lld).
+Failed to read $Volume
+Failed to reset $LogFile
+Failed to rewrite the bootsector (size=0)
+Failed to rewrite $UpCase
+Failed to set locale, using default '%s'.
+Failed to startup volume
+Failed to un-mark the bad clusters
+find_first_attribute
+Fixing the self-located MFT segment... 
+fix_mftmirr
+fix_mount
+fix_self_located_mft
+fix_startup
+fix_upcase
+ F) ntfsmount: Mount the volume read-only by using the 'ro' mount option.
+Forced to continue.
+For example: %s /dev/hda6
+found in the file "COPYING" distributed with this program, or online at:
+getopt_long
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+__gmon_start__
+Going to empty the journal ($LogFile)... 
+Going to un-mark the bad clusters ($BadClus)... 
+    -h, --help              Display this help
+http://www.gnu.org/copyleft/gpl.html
+Internal error, strtoll didn't return a suffix.
+Invalid number '%.*s'.
+Invalid size '%s'.
+Invalid size suffix '%s'.  Use T, G, M, or K.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libntfs-3g.so.831
+made to NTFS by this software.
+Maybe you selected the wrong device? Or the whole disk instead of a
+$MFT error: Incomplete multi sector transfer detected in %s.
+$MFT error: Invalid mft record for %s.
+<MFT%llu>
+$MFTMirr error: Incomplete multi sector transfer detected in %s.
+$MFTMirr error: Invalid mft record for %s.
+mft_next_record
+mft record
+Mounting volume... 
+    -n, --no-action         Do not write anything
+no-action
+No bad clusters...
+No change made
+NOTE: If you had not scheduled check and last time accessed this volume
+    notification area before disconnecting the device.
+(NOT to us!) that init scripts kill ntfsmount or mount.ntfs-fuse during
+ntfs_attr_close
+ntfs_attr_find_in_attrdef
+ntfs_attr_get_search_ctx
+ntfs_attr_lookup
+ntfs_attr_map_whole_runlist
+ntfs_attr_mst_pread
+ntfs_attr_open
+ntfs_attr_pread
+ntfs_attr_put_search_ctx
+ntfs_attr_pwrite
+ntfs_attr_truncate
+ntfs_boot_sector_is_ntfs
+ntfs_boot_sector_parse
+ntfs_bugs
+ntfs_check_if_mounted
+ntfs_device_alloc
+ntfs_device_free
+ntfs_device_sector_size_get
+ntfs_device_size_get
+ntfs_device_unix_io_ops
+ntfs_file_record_read
+ntfsfix.c
+ntfs_gpl
+ntfs_home
+NTFS_INDEX_I30
+ntfs_inode_close
+ntfs_inode_open
+NTFS is inconsistent. Run chkdsk /f on Windows then reboot it TWICE!
+ntfs_logfile_reset
+ntfs_log_handler_outerr
+ntfs_log_redirect
+ntfs_log_set_handler
+ntfs_malloc
+ntfs_mapping_pairs_decompress
+ntfs_mbstoucs
+ntfs_mft_records_write
+ntfs_mount
+ntfs_mst_post_read_fixup
+ntfs_mst_pre_write_fixup
+NTFS partition %s was processed successfully.
+ntfs_pread
+ntfs_pwrite
+ntfs_ucsnlen
+ntfs_ucstombs
+ntfs_umount
+ntfs_upcase_build_default
+ntfs_version_is_supported
+ntfs_volume_alloc
+ntfs_volume_startup
+NTFS volume version is %i.%i.
+ntfs_volume_write_flags
+off properly, so mounting could be done safely.
+OLD_ntfs_volume_set_flags
+Out of memory.  Aborting.
+parse_options
+partition (e.g. /dev/hda, not /dev/hda1)? Or the other way around?
+Pathname was truncated.
+Please boot into Windows TWICE, or use the 'force' option.
+Processing $MFT and $MFTMirr...
+Processing of $MFT and $MFTMirr completed successfully.
+Reading $MFT... 
+Reading $MFTMirr... 
+Refusing to operate on read-write mounted device %s.
+Remount failed
+rewrite_boot
+rewrite_upcase
+Rewriting the bootsector
+Rewriting $UpCase file
+root directory
+%s: dev = %p
+set_dirty_flag
+setlocale
+Set sector count to %lld instead of %lld
+Setting required flags on partition... 
+shutdown instead of proper umount.
+snprintf
+__snprintf_chk
+strerror
+%s v%s (libntfs-3g)
+system file
+The alternate bootsector is usable
+The boot sector has been rewritten
+The device %s doesn't exist
+The device '%s' doesn't have a valid NTFS.
+The directory structure is too deep (over %d) nested directories.
+The NTFS partition is hibernated. Please resume Windows and turned it 
+The startup data can be fixed, but no change was requested
+The usage of the /f parameter is very IMPORTANT! No modification was
+The volume may be already mounted, or another software may use it which
+This program is free software, released under the GNU General Public License
+to mount NTFS. Please see the 'dmraid' documentation for help.
+try_alternate_boot
+try_fix_boot
+Trying the alternate boot sector
+<UNKNOWN>
+Unknown attribute type 0x%02x
+Unrecoverable error
+$UpCase has been set to default
+Usage: %s [options] device
+Use the force option to ignore this error.
+using ntfsmount and shutdown system properly, then init scripts in your
+utils_attr_get_name
+utils_cluster_in_use
+utils_inode_get_name
+utils_mftrec_in_use
+utils_mount_volume
+utils_parse_size
+utils_set_locale
+utils_valid_device
+$Volume has been deleted. Cannot handle this yet. Run chkdsk to fix this.
+Volume is corrupt. You should run chkdsk.
+Volume is scheduled for check.
+    -V, --version           Display version information
+WARNING: Dirty volume mount was forced by the 'force' mount option.
+__xstat64
+You can use force option to avoid this check, but this is not recommended
+You seem to have a SoftRAID/FakeRAID hardware and must use an activated,

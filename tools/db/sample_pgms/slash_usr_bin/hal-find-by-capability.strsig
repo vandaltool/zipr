@@ -1,0 +1,42 @@
+__bss_start
+capability
+        --capability     HAL Device Capability to search for
+Could not initialise connection to hald.
+dbus_bus_get
+dbus_error_free
+dbus_error_init
+dbus_error_is_set
+error: libhal_ctx_init: %s: %s
+error: libhal_ctx_new
+error: libhal_ctx_set_dbus_connection: %s: %s
+error: %s: %s
+Found %d device objects of capability '%s'
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+hal-find-by-capability 0.5.14
+        --help           Show this information and exit
+                              [--help] [--verbose] [--version]
+If there is an error, the program exits with an exit code different
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libdbus-1.so.3
+libhal_ctx_init
+libhal_ctx_new
+libhal_ctx_set_dbus_connection
+libhal_find_device_by_capability
+libhal_free_string_array
+libhal.so.1
+/lib/ld-linux.so.2
+Normally this means the HAL daemon (hald) is not running or not ready.
+objects of a given capability on stdout and exits with exit code 0
+__printf_chk
+__strdup
+This program prints the Unique Device Identifiers for HAL device
+usage : hal-find-by-capability --capability <capability>
+        --verbose        Be verbose
+        --version        Show version and exit

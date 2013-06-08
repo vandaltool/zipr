@@ -1,0 +1,326 @@
+                                                                          
+| %02i%%
+-A, --avail-min=#       min available space for wakeup is # microseconds
+Aborted by signal %s...
+Access type not available
+ALSA_0.9
+ALSA_0.9.0rc4
+ALSA_0.9.0rc8
+alsa-utils
+__assert_fail
+audio open error: %s
+Available formats:
+avail-min
+bad speed value %i
+-B, --buffer-time=#     buffer duration is # microseconds
+begin_au
+begin_voc
+begin_wave
+Broken configuration for this PCM: no configurations available
+buffer-size
+    --buffer-size=#     buffer duration is # frames
+buffer-time
+BUFPOS: avg%li/%li min%li/%li max%li/%li (%li) (%li:%li/%li)
+Cannot create process ID file %s: %s
+can't allocate buffer for silence
+can't play loops; %s isn't seekable
+can't play packed .voc files
+can't play WAVE-file format 0x%04x which is not PCM or FLOAT encoded
+can't play WAVE-files with %d tracks
+ can't play WAVE-files with sample %d bits in %d bytes wide (%d channels)
+ can't play WAVE-files with sample %d bits wide
+Can't use period equal to buffer size (%lu == %lu)
+capture stream format change? attempting recover...
+capturev
+card %i: %s [%s], device %i: %s [%s]
+-c, --channels=#        channels
+Channels count non available
+Channels %i
+ !clip  
+clock_gettime
+command should be named either arecord or aplay
+control digital audio info (%i): %s
+control digital audio playback info (%i): %s
+control hardware info (%i): %s
+control open (%i): %s
+Creative Voice File
+dcgettext
+-D, --device=NAME       select PCM by name
+-d, --duration=#        interrupt after # seconds
+device_list
+disable-channels
+    --disable-channels  disable automatic channel conversions
+disable-format
+    --disable-format    disable automatic format conversions
+disable-resample
+    --disable-resample  disable automatic rate resample
+disable-softvol
+    --disable-softvol   disable software volume control (softvol)
+do_pause
+(-Dplug:%s)
+duration
+err >= 0
+__errno_location
+                        expression for validation is: coef * (buffer_size / 2)
+Failed. Restarting stream. 
+-f cd (16 bit little endian, 44100, stereo)
+-f cdr (16 bit big endian, 44100, stereo)
+-f dat (16 bit little endian, 48000, stereo)
+-f, --format=FORMAT     sample format (case insensitive)
+file-type
+                        for this many seconds
+-F, --period-time=#     distance between interrupts is # microseconds
+__fprintf_chk
+getopt_long
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+-h, --help              help
+hnlLD:qt:c:f:r:d:MNF:A:R:T:B:vV:IPCi
+-i, --interactive       allow interactive operation from stdin
+info error: %s
+interactive
+_IO_putc
+_IO_stdin_used
+-I, --separate-channels one file for each channel
+_Jv_RegisterClasses
+libasound.so.2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+librt.so.1
+list-devices
+list-devnames
+**** List of %s Hardware Devices ****
+list-pcms
+-l, --list-devices      list all soundcards and digital audio devices
+-L, --list-pcms         list device names
+localtime
+malloc error
+max-file-time
+    --max-file-time=#   start another output file when the old file has recorded
+Max peak (%li samples): 0x%08x 
+__memcpy_chk
+__memset_chk
+mmap_area[%i] = %p,%u,%u (%u)
+-M, --mmap              mmap stream
+mystrftime returned 0
+-N, --nonblock          nonblocking mode
+nonblock
+nonblock setting error: %s
+no soundcards found...
+not enough memory
+=== PAUSE ===                                                            
+PAUSE command ignored (no hw support)
+pause push error: %s
+pause release error: %s
+pcm_read
+pcm_readv
+pcm_write
+pcm_writev
+period-size
+    --period-size=#     distance between interrupts is # frames
+period-time
+playback
+playbackv
+Playing Creative Labs Channel file '%s'...
+         please, try the plug plugin %s
+__printf_chk
+Problem creating directory %s
+process-id-file
+    --process-id-file   write the process ID here
+-q, --quiet             quiet mode
+Rate %d Hz, 
+raw data
+read error
+read error (called from line %i)
+read error: %s
+readv error: %s
+read/write error, state = %s
+Recognized sample formats are:
+Recording
+                        (relative to buffer size if <= 0)
+-r, --rate=#            sample rate
+-R, --start-delay=#     delay for automatic PCM start is # microseconds 
+%s-01.%s
+%s-%02i.%s
+Sample format non available
+%s!!! (at least %.3f ms long)
+separate-channels
+setlocale
+set_params
+snd_card_next
+snd_config_update_free_global
+snd_ctl_card_info
+snd_ctl_card_info_get_id
+snd_ctl_card_info_get_name
+snd_ctl_card_info_sizeof
+snd_ctl_close
+snd_ctl_open
+snd_ctl_pcm_info
+snd_ctl_pcm_next_device
+snd_device_name_free_hint
+snd_device_name_get_hint
+snd_device_name_hint
+snd_output_close
+snd_output_stdio_attach
+snd_pcm_access_mask_none
+snd_pcm_access_mask_set
+snd_pcm_access_mask_sizeof
+snd_pcm_avail_delay
+snd_pcm_close
+snd_pcm_drain
+snd_pcm_dump
+snd_pcm_format_description
+snd_pcm_format_little_endian
+snd_pcm_format_name
+snd_pcm_format_physical_width
+snd_pcm_format_set_silence
+snd_pcm_format_silence
+snd_pcm_format_silence_16
+snd_pcm_format_silence_32
+snd_pcm_format_size
+snd_pcm_format_value
+snd_pcm_hw_params
+snd_pcm_hw_params_any
+snd_pcm_hw_params_can_pause
+snd_pcm_hw_params_dump
+snd_pcm_hw_params_get_buffer_size
+snd_pcm_hw_params_get_buffer_time_max
+snd_pcm_hw_params_get_period_size
+snd_pcm_hw_params_is_monotonic
+snd_pcm_hw_params_set_access
+snd_pcm_hw_params_set_access_mask
+snd_pcm_hw_params_set_buffer_size_near
+snd_pcm_hw_params_set_buffer_time_near
+snd_pcm_hw_params_set_channels
+snd_pcm_hw_params_set_format
+snd_pcm_hw_params_set_period_size_near
+snd_pcm_hw_params_set_period_time_near
+snd_pcm_hw_params_set_rate_near
+snd_pcm_hw_params_sizeof
+snd_pcm_hw_params_test_format
+snd_pcm_info
+snd_pcm_info_get_id
+snd_pcm_info_get_name
+snd_pcm_info_get_subdevice_name
+snd_pcm_info_get_subdevices_avail
+snd_pcm_info_get_subdevices_count
+snd_pcm_info_set_device
+snd_pcm_info_set_stream
+snd_pcm_info_set_subdevice
+snd_pcm_info_sizeof
+snd_pcm_mmap_begin
+snd_pcm_mmap_begin problem: %s
+snd_pcm_mmap_commit
+snd_pcm_mmap_readi
+snd_pcm_mmap_readn
+snd_pcm_mmap_writei
+snd_pcm_mmap_writen
+snd_pcm_name
+snd_pcm_nonblock
+snd_pcm_open
+snd_pcm_pause
+snd_pcm_prepare
+snd_pcm_readi
+snd_pcm_readn
+snd_pcm_resume
+snd_pcm_state_name
+snd_pcm_status
+snd_pcm_status_dump
+snd_pcm_status_get_state
+snd_pcm_status_get_trigger_htstamp
+snd_pcm_status_get_trigger_tstamp
+snd_pcm_status_sizeof
+snd_pcm_stream_name
+snd_pcm_sw_params
+snd_pcm_sw_params_current
+snd_pcm_sw_params_dump
+snd_pcm_sw_params_set_avail_min
+snd_pcm_sw_params_set_start_threshold
+snd_pcm_sw_params_set_stop_threshold
+snd_pcm_sw_params_sizeof
+snd_pcm_wait
+snd_pcm_writei
+snd_pcm_writen
+snd_strerror
+__snprintf_chk
+Some of these may not be available on selected hardware
+Sparc Audio
+Sparc Audio doesn't support %s format...
+__sprintf_chk
+%s: %s:%d: 
+%s %s '%s' : 
+__stack_chk_fail
+start-delay
+Status(DRAINING):
+status error: %s
+Status(R/W):
+stdin O_NONBLOCK flag setup failed
+stop-delay
+strcasecmp
+__strdup
+strftime
+strsignal
+  Subdevice #%i: %s
+  Subdevices: %i/%i
+Suspended. Trying resume. 
+suspend: prepare error: %s
+Suspicious buffer position (%li total): avail = %li, delay = %li, buffer = %li
+%s: version 1.0.25 by Jaroslav Kysela <perex@perex.cz>
+tcgetattr
+tcsetattr
+test-coef
+    --test-coef=#       test coefficient for ring buffer position (default 8)
+test-nowait
+    --test-nowait       do not wait for ring buffer - eats whole CPU
+test-position
+    --test-position     test ring buffer position
+test_wavefile
+test_wavefile_read
+textdomain
+-t, --file-type TYPE    file type (voc, wav, raw or au)
+The available format shortcuts are:
+Try `%s --help' for more information.
+-T, --stop-delay=#      delay for automatic PCM stop is # microseconds from xrun
+Unable to install hw params:
+unable to install sw params:
+underrun
+unknown blocktype %d. terminate.
+unknown length of extensible 'fmt ' chunk (read %u, should be %u at least)
+unknown length of 'fmt ' chunk (read %u, should be %u at least)
+unrecognized file format %s
+Unsupported bit size %d.
+Usage: %s [OPTION]... [FILE]...
+use-strftime
+    --use-strftime      apply the strftime facility to the output file name
+value %i for channels is invalid
+    --version           print current version
+voc_pcm_flush
+voc_pcm_flush error
+voc_pcm_flush - silence error
+voc_play
+voc_write_silence
+-v, --verbose           show PCM structure and setup (accumulative)
+-V, --vumeter=TYPE      enable VU meter (TYPE: mono or stereo)
+Warning: format is changed to MU_LAW
+Warning: format is changed to S16_BE
+Warning: format is changed to S16_LE
+Warning: format is changed to S24_3LE
+Warning: format is changed to S24_LE
+Warning: format is changed to U8
+Warning: rate is not accurate (requested = %iHz, got = %iHz)
+Wave doesn't support %s format...
+write error
+write error: %s
+writev error: %s
+wrong extended format '%s'
+wrong format tag in extensible 'fmt ' chunk
+xrun(DRAINING): prepare error: %s
+xrun: prepare error: %s
+You need to specify %d files

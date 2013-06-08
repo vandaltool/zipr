@@ -1,0 +1,17 @@
+#! /bin/sh
+# Call the appropriate C compiler with options to accept ANSI/ISO C
+    case "$i" in
+	    echo >&2 "`basename $0` called with non ISO C99 option $i"
+    esac
+exec gcc $extra_flag ${1+"$@"}
+	    exit 1
+	    extra_flag=
+extra_flag=-std=c99
+for i; do
+	-std=*|-ansi)
+# 	-std=c99
+	-std=c9[9x]|-std=iso9899:199[9x])
+# 	-std=c9x
+# 	-std=iso9899:1999
+# 	-std=iso9899:199x
+# The following options are the same (as of gcc-3.3):

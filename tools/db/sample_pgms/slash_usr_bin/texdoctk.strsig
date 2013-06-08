@@ -1,0 +1,1338 @@
+       }
+      };
+###############################################################################
+	      };
+		      }
+		      };
+			    }
+			   },
+				 });
+# -0-: no specific place; -1-: at end, behind \endinput; -2-: at beginning,
+  -a		autostart viewer if a listbox of search results
+accessed with this browser, which is simply an interface to find a
+	     '-activebackground'=>$tdcolors[2],
+				     '-activebackground'=>$tdcolors[2],
+	     '-activeforeground'=>$tdcolors[3]);
+				     '-activeforeground'=>$tdcolors[3]);
+				$actlabel->
+Additionally, the settings can be changed temporarily with this
+# alternative main window, launched for fatal error messages on startup
+					  -anchor=>'s');
+					-anchor=>'s');
+			     -anchor=>'sw');
+						     -anchor=>'sw');
+						  -anchor=>'sw');
+							   -anchor=>'sw');
+							  -anchor=>'sw');
+							 -anchor=>'sw');
+							-anchor=>'sw');
+		    -anchor=>'w',
+				  -anchor=>'w',
+					    -anchor=>'w',
+					    -anchor=>'w');
+					   -anchor=>'w',
+					   -anchor=>'w');
+					 -anchor=>'w',
+					 -anchor=>'w');
+							   -anchor=>'w');
+							  -anchor=>'w');
+							 -anchor=>'w');
+							-anchor=>'w');
+# and the full disclaimer.
+# auto-fill-hook: do-auto-fill
+AUTOVIEW=$autoview_tmp
+    $autoview=($autoview =~ /y/i || $autoview eq "1") ? 1 : 0;
+				-background=>$entryvar[2],
+belonging to this topic.
+			     -borderwidth=>2)->pack(-anchor=>'w',
+				  -borderwidth=>2)->pack(-side=>'top',
+				 -borderwidth=>2)->pack(-side=>'top',
+				-borderwidth=>2)->pack(-side=>'top',
+		   -borderwidth=>3)->pack(-side=>'top',
+	      $browser=1 if (-e $lockfile || -l $lockfile);
+	      $browser=1 unless ($?);
+# build complete path and check existence of file
+# build complete path and start viewer if file exists
+    %butcol=('-background'=>$tdcolors[0],
+			    %butcol=('-background'=>$tdcolors[0],
+$button[17]="Miscellaneous";
+# button colours: default and active back-/foreground
+$buttonframe->pack(-side=>'bottom');
+	      $button[$i]=substr($line,1,-1);
+#   buttons
+# buttons and key bindings
+#   buttons frame
+  CALL: {
+# can be left empty if \$TEXMFHOME is undefined
+cancel. Just hitting <Return> without typing something in will
+#       cancel multiple entries
+    $catg[$#button]->configure(-state=>'disabled');
+	($catg[$i2]=$buttonframe->Button(-text=>$button[$i2],
+	 $catg[$i3]=$buttonframe->Button(-text=>$button[$i3],
+    $catg[$i]=$buttonframe->Button(-text=>$button[$i],
+#       change to doc directory in case there are pictures
+#   change to doc directory in case there are pictures
+    chdir ($docpath);
+	chdir ($docpath);
+	Checkbutton(-variable=>\$autoview_tmp)->pack(-side=>'left',
+	Checkbutton(-variable=>\$htmlps_redir_tmp)->pack(-side=>'left',
+	Checkbutton(-variable=>\$quiet_tmp)->pack(-side=>'left',
+	Checkbutton(-variable=>\$txtps_redir_tmp)->pack(-side=>'left',
+	Checkbutton(-variable=>\$txt_view_flag,
+	Checkbutton(-variable=>\$xfmt_viewer_tmp)->pack(-side=>'left',
+# check colours set in popcolor; relies on the existence of X11's showrgb
+			    $chngflag=1 if (&colcheck($dlgwin,@entryvar));
+chomp $homedatabase;
+  chomp $HomeEnv;
+	chomp $line;
+chomp $locdatabase;
+    chomp $slc;
+	chomp $slcdoc;
+chomp $sysrc;
+	chomp $texmfdist;
+	  chomp $texmfdoc;
+	chomp $texmfhome;
+	chomp $texmflocal;
+	chomp $texmfmain;
+        chop;
+# clean up and exit
+    close(DATABASE);
+close(DATABASE);
+    close(MYRC);
+close(NULL);' &");
+    close(RC);
+    close(STY);
+    close(TMPSTY);
+    close(TXTFILE);
+close(VIEWQ); \
+      close(XINF);
+  $CmdConsole = "cmd /c ";
+    $cmdframe->pack(-side=>'bottom',-fill=>'x');
+$cmdframe->pack(-side=>'top',-fill=>'x');
+      CMPREND: foreach my $cmprtype ("gz","bz2","zip") {
+		      ($cmprtype eq "bz2") && do {
+		      ($cmprtype eq "gz") && do {
+		      ($cmprtype eq "zip") && do {
+#   colours: create array
+#   colours of GUI
+			   -command=>\&clean_exit)->pack(-side=>'left');
+						      -command=>\&helptext
+# command line options
+						      -command=>\&mksrch
+						      -command=>\&settings
+		    -command=>sub {
+			   -command=>sub {
+			-command=>sub {
+			-command=>sub{
+			-command=>sub{destroy $dlgwin;
+		      -command=>sub{destroy $help;
+			-command=>sub{destroy $msgwin})->pack(-side=>'bottom',
+			-command=>sub{destroy $setmenu;
+			-command=>sub{ destroy $tfv_tk;
+			  -command=>sub{ destroy $tpwin; undef $tlwins{$opt};},
+			       -command=>sub { exit })->pack(-fill=>'x');
+			  -command=>sub{ &prtslc($docselect,$tpbframe);},
+			  -command=>sub{ &viewslc($docselect,$tpbframe);},
+					 -command=>[\&tpslct,$i2,\@dummy]),
+					 -command=>[\&tpslct,$i3,\@dummy]));
+				   -command=>[\&tpslct,$i,\@dummy])->grid
+Comments and suggestions to:
+		  COMPRESS: { # determine compression type
+		configuration file
+		configuration file; default: off
+configuration file $sysrc.
+				    configure(-background=>$entryvar[0],
+				    configure(-background=>$entryvar[2],
+				    $_->configure(%butcol);
+		contains only one item; can also be set in a
+#     convert dvi files to ps before printing
+#   converter: output redirection flags for HTML/Text->PS converters
+converters, certain options and the printer are set in the global
+#     convert extracted comments from sty files to ps before printing
+#     convert html files to ps before printing
+#     convert pdf files to ps before printing
+#     convert txt files to ps before printing
+# Copyright (C) 2000-2004  Thomas Ruedas
+# create frame for main window
+# create frames for main window: commands on top, frame for buttons below
+  <Ctrl-c>	Cancel/close subwindow or search entry widget
+  <Ctrl-h>	Open this help
+  <Ctrl-k>	Kill fatal error message window (same as
+  <Ctrl-m>	Raise the Main window to the foreground
+  <Ctrl-p>	Print selected document (topic windows)
+		<Ctrl-q>)
+  <Ctrl-q>	Quit browser
+  <Ctrl-s>	Search a keyword in database (case insensitive)
+  <Ctrl-t>	Open settings menu
+  <Ctrl-v>	View selected document (topic windows)
+				-cursor=>'hand2')->pack(-side=>'left',
+database for a string; it does not search file names. Enter the
+    $datadir,
+$datadir=join('/',@dummy);
+    $datlabel="Database file(s) used: teTeX";
+    $datlabel.=", local database" if (-e $locdatabase);
+    $datlabel.=", user database" if (-e $homedatabase);
+			  $dcmp="bzip2";
+				"$dcmp: Couldn't decompress file, cancelling.",
+			  $dcmp="gzip";
+			  $dcmp_opt="-cd";
+			  $dcmp_opt="-p";
+			  $dcmp="zip";
+Defaults for the documentation root directory, the viewers, the
+# defaults: unix values
+		++$defcol;
+    $deffont='Helvetica -16 bold' if &x_resolution > 1200;
+$deffont='Helvetica -16 bold' if &x_resolution > 1200;
+# define common default font for labels and text explicitly
+				defined $ENV{PAGER}) {
+		  (defined $keywords[$i][$j]) && do {
+				$deflabel->
+	$degree="Warning";
+    destroy $dlgwin;
+# destroy entry widget and show results
+			    destroy $setmenu},
+    destroy $srchentry;
+	destroy $srchentry;
+# determine existence and show paths of files (Button-3)
+# determine resolution if xwininfo is available
+# dialog toplevel for color settings
+      die "Can't import API GetDeviceCaps: $!\n";
+      die "Can't import API GetTempPath: $!\n";
+      die "Can't import API ShellExecute: $!\n";
+directory to modify them according to his needs; modification or
+# disable last button (lower right) if no local specials are found in list
+# display frame
+				   "$distdocpath/$docselect",
+	$distdocpath=join('/',"$texmfdist",basename($texdocpath,""))
+    $dlgtfr0->Entry(-textvariable=>\$entryvar[0],
+    $dlgtfr0->Label(-text=>"Default background",
+    $dlgtfr1->Entry(-textvariable=>\$entryvar[1],
+    $dlgtfr1->Label(-text=>"Default foreground",
+    $dlgtfr2->Entry(-textvariable=>\$entryvar[2],
+    $dlgtfr2->Label(-text=>"Active background",
+    $dlgtfr3->Entry(-textvariable=>\$entryvar[3],
+    $dlgtfr3->Label(-text=>"Active foreground",
+    $dlgwin->bind('<Control-c>'=>sub{destroy $dlgwin;
+    $dlgwin->Label(-text=>'Enter colours as names or RGB #xxxxxx values',
+    $dlgwin->resizable(0,0);
+    $dlgwin->waitVariable(\$chngflag);
+				   "$docdocpath/$docselect",
+	  $docdocpath="$texmfdoc/$docdocpath";
+  DOC_FORMAT: { # determine document type
+    $docframe->Label(-text=>"$datlabel.",
+    $docframe->Label(-text=>"$docframestring",
+    $docframestring.=", $distdocpath" if (-e $distdocpath);
+    $docframestring.=", $docdocpath" if (length $docdocpath);
+	$docframestring.="\nLocal documentation root path: $localdocpath\n";
+       $doc[$i][$j]=$dummy[2];
+	  $doc[$i][$j]=$dummy[2];
+    DOCPATH: foreach my $fullpath ("$texdocpath/$docselect",
+        $docselect=$lbdocs[0];
+				    $docselect=$lbdocs[$slctind];});
+documentation more easily. It starts the respective viewer for
+# documentation path
+        $dspselect=$lbitems[0];
+				    $dspselect=$lbitems[$slctind];
+      ($dummy[-1] =~ /dvi/) && do {
+      ($dummy[-1] =~ /dvi/) && do { $viewer=$dvi_viewer; last DOC_FORMAT; };
+      ($dummy[-1] =~ /htm/) && do {
+      ($dummy[-1] =~ /pdf/) && do {
+      ($dummy[-1] =~ /pdf/) && do { $viewer=$pdf_viewer; last DOC_FORMAT; };
+      ($dummy[-1] =~ /ps/) && do {
+      ($dummy[-1] =~ /ps/) && do { $viewer=$ps_viewer; last DOC_FORMAT; };
+       || $dummy[-1] =~ /README/i) && do {
+      ($dummy[-1] =~ /README/i || $dummy[-2] =~ /\/README$/i) && do {
+      ($dummy[-1] =~ /sty$/) && do {
+      ($dummy[-1] =~ /txt/ || $dummy[-1] =~ /faq$/
+      ($dummy[-1] =~ /txt/ || $dummy[-1] =~ /faq$/) && do {
+		$dummy="$_.$cmprtype";
+       @dummy=split(";",$line);
+	@dummy=split(";",$line);
+@dummy=split("/",$sysrc);
+    $dviclabel->configure(-width=>1.1*$dvilbwidth);
+DVIPS_CONV=$dvips_conv_tmp
+    $dvips_conv.=" $dvips_opts" if ($dvips_opts);
+# DVI settings
+			     $dvi_viewer,$dvips_conv,
+	     $dvi_viewer,$dvips_conv,$ps_viewer,
+    $dvi_viewer,$dvips_conv,$ps_viewer,$pdf_viewer,
+DVI_VIEWER=$dvi_viewer_tmp
+	$dvi_viewer_tmp,$dvips_conv_tmp,
+				     $dvi_viewer_tmp,$dvips_conv_tmp,
+				  $dvi_viewer_tmp,$dvips_conv_tmp,
+    $dvivlabel->configure(-width=>1.1*$dvilbwidth);
+	++$ecnt;
+      } else {
+    } else {
+    else {
+} else {
+	    } else {
+	  } else {
+	  else {
+	} else {
+			} else {
+    } else { $defcol=4; }
+ 	    } else { # open doc in existing Netscape/Mozilla window
+	    } else { # open doc in existing window (Netscape or Mozilla)
+    } else { # persistent message window
+    } else { # return full database
+	  } else { # viewer messages written to /dev/null instead of terminal
+	  } elsif ($html_viewer =~ /mozilla/i) { # check if Mozilla is open
+# ensure readability on high-res screens (suggested by R.Kotucha)
+#   entry widgets for default/active back/foreground
+	      eval(join("",("\$",lc($var),"=\$val")));
+	  eval(join("",("\$",lc($var),"=\$val")));
+    exit;
+					    -expand=>1);
+						       -expand=>1);
+							  -expand=>1);
+							 -expand=>1);
+							-expand=>1);
+				-exportselection=>0,
+# extract documentation of .sty files; a flag in the @keywords array shows
+	  &fatalmsg("Couldn't open personal config file ~/.texdocrc.\n");
+	  &fatalmsg("Couldn't open system-wide default config file ${TeXDocRcDefaults}.\n");
+					    -fill=>'x',
+					    -fill=>'x');
+					  -fill=>'x',
+					 -fill=>'x');
+						       -fill=>'x',
+						    -fill=>'x',
+							      -fill=>'x');
+							 -fill=>'x',
+							-fill=>'x',
+							  -fill=>'y',
+							 -fill=>'y',
+							-fill=>'y',
+# find index of an array entry
+#   find texmf/doc, and possibly other distribution texmf trees
+#   find texmf-local/doc, if there is one
+#   find user's $HOMETEXMF/doc, if there is one
+		   -font=>$deffont,
+			      -font=>$deffont,
+			     -font=>$deffont,
+				    -font=>$deffont,
+				  -font=>$deffont,
+				 -font=>$deffont,
+				-font=>$deffont,
+		      -font=>$deffont,%butcol,
+			  -font=>$deffont,%butcol,
+			-font=>$deffont,%butcol,
+				   -font=>$deffont,%butcol,
+					 -font=>$deffont,%butcol,
+						      -font=>$deffont,%butcol,
+			   -font=>$deffont,%butcol)->pack(-side=>'right');
+			       -font=>$deffont)->pack(-anchor=>'w',,
+			      -font=>$deffont)->pack(-anchor=>'w',
+		    -font=>$deffont)->pack(-side=>'left');
+				    -font=>$deffont)->pack(-side=>'left',
+				    -font=>$deffont)->pack(-side=>'left');
+				   -font=>$deffont)->pack(-side=>'left',
+				   -font=>$deffont)->pack(-side=>'left');
+				  -font=>$deffont)->pack(-side=>'left',
+				  -font=>$deffont)->pack(-side=>'left');
+				 -font=>$deffont)->pack(-side=>'left',
+				 -font=>$deffont)->pack(-side=>'left');
+					  -font=>$deffont)->pack(-side=>'left');
+		     -font=>$deffont)->pack(-side=>'top',
+		   -font=>$deffont)->pack(-side=>'top');
+		 -font=>$deffont)->pack(-side=>'top',
+		     -font=>$deffont)->pack(-side=>'top', -fill=>'x');
+			   -font=>$deffont)->pack(-side=>'top', -fill=>'x');
+#   for backward compatibility of converter/printer options
+foreach (0..$ncols) {
+  foreach (@array) {
+foreach (@button) { $l=length $_; $lbut=$l if ( $l > $lbut) }
+    foreach (@dummy) {
+    foreach (@entryvar) { # all colours defined?
+			    foreach (@entryvar) { # RGB form with leading #
+	foreach ('','.gz','.bz2','.zip') {
+	foreach my $colour (@entryvar) {
+foreach my $dbfile ($locdatabase,$homedatabase) {
+			    foreach my $tlkey (keys %tlwins) {
+	    foreach (@srchslcdoc) {
+    foreach (@stydoc) { print TMPSTY $_; }
+				foreach (@{$tlwins{$tlkey}{'buttons'}}) {
+    foreach (@tmpfiles) { if (-e $_) { unlink $_; } }
+					      -foreground=>$entryvar[1]);
+				-foreground=>$entryvar[3],
+					      -foreground=>$entryvar[3]);
+	     '-foreground'=>$tdcolors[1],
+				     '-foreground'=>$tdcolors[1],
+	for ($i=0; $i<$ncat; ++$i) {
+	for ($i=0; $i<$#results; $i+=2) {
+for ($i=0,$j=4; $i<@catg; ++$i,++$j) {
+	    for ($j=0; $j<$maxind[$i]+1; ++$j) {
+	    for ($j=0; $j<$maxind[$i]+1; ++$j) { push @results,($i,$j); }
+	for ($j=0; $j <= $maxind[$opt]; ++$j) {
+	    for ($j=0; $j<$#reslist; $j+=2) {
+	for ($j=0; $j < $#srchitems; $j+=2) {
+	  for (my $i=0; $i<9; ++$i) { $stydoc[$i]=<STY>; } # after the 8th line
+    for (my $i=0; $i<=$maxcnt; $i++) { $namestr.=$chars[rand(51)] }
+#       for text files use built-in text viewer if set
+	    $found=1;
+	  $found=1;
+#       found where it should be
+# General viewer behaviour
+# general viewer behaviour (y or yes to make active)
+# generate a random name for temporary files
+generation of ~/.texdocrc can also be done with the Settings menu.
+	$genvframe->Button(-text=>'Change viewer colours',
+GetOptions('v'=>\$quiet,'a'=>\$autoview);
+Getopt::Long::config('bundling');
+#   get size of message text
+    $GetTempPath->Call(80, $lpBuffer);
+#       get the search string
+# handle selection; only one selection possible
+# hash table for toplevel windows; used to avoid multiple calls of same window
+#				-height=>0,
+				  -height=>20,
+				 -height=>20,
+				-height=>2)->pack(-side=>'right',
+			      -height=>$nline,
+				-height=>$nline,
+    $help->bind('<Control-c>'=>sub{destroy $help; undef $tlwins{"helptext"};});
+    $helpbody->configure(-state=>'disabled');
+	$helpbody->insert('end',$_);
+	$help->Button(-text=>'Close',
+    $help->Label(-text=>"texdoctk
+    $help->resizable(0,1);
+# help window (toplevel)
+	    $homedocpath=basename($texdocpath,"");
+				   "$homedocpath/$docselect") {
+HOMEDOCPATH=$homedocpath_tmp
+	    ($homedocpath,$quiet,$autoview,$xfmt_viewer,
+	  $homedocpath="$texmfhome/$homedocpath";
+			    $homedocpath="$texmfhome/$homedocpath_tmp";
+      $homedocpath_tmp=basename($homedocpath_tmp,"");
+  $HomeEnv = $ENV{'USERPROFILE'};
+However, each user can put a copy of it as .texdocrc into his home
+# HTML handling
+HTMLPS_CONV=$htmlps_conv_tmp
+			     $htmlps_conv,$htmlps_redir,
+	     $htmlps_conv,$htmlps_redir,$txt_viewer,
+	$htmlps_conv_tmp,$htmlps_redir_tmp,
+				     $htmlps_conv_tmp,$htmlps_redir_tmp,
+				  $htmlps_conv_tmp,$htmlps_redir_tmp,
+HTMLPS_REDIR=$htmlps_redir_tmp
+    $htmlps_redir=($htmlps_redir =~ /(y|1)/i) ? 1 : 0;
+# HTMLPS_REDIR must be on, if the html->ps converter normally writes its output
+HTML_VIEWER=$html_viewer_tmp
+	$html_viewer_tmp,
+				     $html_viewer_tmp,
+				  $html_viewer_tmp,
+	$html_viewer_tmp,$htmlps_conv_tmp,$htmlps_redir_tmp,
+    $i=$_;
+    ++$i;
+	  ++$i;
+    $i=17; # local/user: if no category is specified in database, add to "Misc"
+    $i2=$i+$nbutt/3;
+    $i3=$i+2*$nbutt/3;
+	  $i=&arrindex(@button,substr($line,1,-1));
+	    $i=$#button;
+      ($icall == 1) && do {
+      ($icall == 2) && do {
+				$_="#$_" if (/^[A-Fa-f0-9]{6}$/);
+	  if ($autoview && $wtitle =~ /^Search results/);
+ 	    if ($browser == 0) { # normal viewers or new Netscape/Mozilla
+			    if (&colcheck($dlgwin,@entryvar)) {
+	    if ($colour =~ /^#[A-Fa-f0-9]{6}$/ || grep /\b$colour\b/i,@rgb) {
+	if ($defcol != 4) {
+    if (defined $texmfhome && -d $texmfhome) {
+    if (!(defined $txt_viewer) && defined $ENV{PAGER}) {
+       if ($doc[$i][$j] =~ /sty$/ && $keywords[$i][$j]) {
+	  if ($doc[$i][$j] =~ /sty$/ && $keywords[$i][$j]) {
+	if ($docselect) {
+    if ($docselect =~ /\.sty$/) {
+    if ($dummy[-1] =~ /sty$/) {
+	  if ($dvips_conv eq "") {
+  if (-e "$dbfile") {
+		if (-e $dummy) { # yes, it is compressed
+	if (-e $fullpath) {
+	  if (-e $fullpathext) {
+	if (!(-e $myrc) || (-e $myrc && $icall == 2)) {
+if (-e $myrc) { &readrc($myrc,2); }
+      if (-e $slcdoc) {
+	if (-e $texmfdoc) {
+    if (Exists($tlwins{'chngcol'}{'addr'})) {
+    if (Exists($tlwins{"helptext"}{'addr'})) {
+	if (Exists($tlwins{$opt}{'addr'})) {
+    if (Exists($tlwins{"setmenu"}{'addr'})) {
+    if (Exists($tlwins{$txtfile}{'addr'})) {
+      if (!$found) {
+	if ($homedocpath) {
+	  # if HOMEDOCPATH is not explicitly defined, it equals TEXDOCPATH
+	  if ($htmlps_conv eq "") {
+	  if ($html_viewer =~ /netscape/i) { # check if Netscape is open
+	  if ($i == $#button) {
+	  if ($i >= $#button) {
+	    if ($icall == 2 && length $val > 0) { # set only in ~/.texdocrc
+    if ($icall == 2 || $pathflagh == 1) {
+    if (! $IsWin32) {
+    if ($IsWin32) {
+	if ($IsWin32) {
+if ($IsWin32) {
+	if ($j > $#{$packname[$i]}) {
+		      if ($keywords[$i][$j] =~ /$string/i) {
+			  if (length $texmfdist);
+	if (length $texmfhome) {
+	if (length $texmflocal) {
+	    if (length $val > 0) {
+    if ($level < 0) { # transient message window
+	if ($lline > $msgwidth) { $msgwidth=$lline; }
+	if ($localdocpath) {
+	  # if LOCALDOCPATH is not explicitly defined, it equals TEXDOCPATH
+    if ($localdocpath && $localdocpath ne $texdocpath) {
+    if(not defined $GetDeviceCaps) {
+    if(not defined $GetTempPath) {
+    if(not defined $ShellExecute) {
+	    if ($omit == 0) { push @reslist,($results[$i],$results[$i+1]); }
+#   if only 1 item is in the list (most likely in search results), select it
+    if ($opt >= 0) {
+		if ($pack1 eq $pack2) { $omit=1; last; }
+	  if ($pdfps_conv eq "") {
+    if ($print_cmd eq "") {
+	  if ($quiet == 0) { # show messages
+    if ($rcfile eq $sysrc || $pathflag == 1) {
+    if ($rcfile eq $sysrc || $pathflagl == 1) {
+    if (scalar @lbitems == 1) {
+    if (scalar @results == 0) {
+    if (scalar @tdcolors != 4) { # if old texdocrc file is used
+      if ($slcdoc eq "") { # nothing found; cancel
+    if ($slcdoc ne "") {
+if ($special == 0) {
+    if ($srchflag == 1) {
+    if ($status != 0) {
+	  if ($status != 0) {
+		    if ($status != 0) { # failure
+    if ($string) {
+	if ($styflag) {
+	  if ($txtps_conv eq "") {
+			    if ($txt_viewer eq "" &&
+    if ($txt_viewer_tmp eq "TDK_OWN") {
+			if ($txt_view_flag == 1) {
+    if ($viewer eq "") {
+	  if ($viewer eq "TDK_OWN") {
+    if (`which showrgb`) { # test for proper name
+        if (/Width:/) { ($x_res=$_)=/Width:\s+(\d+)/; last; }
+      if ($xfmt_viewer == 1) {
+      if ($xfmt_viewer != 1) {
+# initialization of some internal variables
+					  -ipady=>10,
+					-ipady=>10,
+						       -ipady=>10,
+							-ipady=>10,
+					    -ipady=>2,
+					    -ipady=>3);
+					   -ipady=>6);
+					 -ipady=>6);
+							 -ipady=>6,
+							-ipady=>6,
+item you get the complete path of the file.
+       ++$j;
+	  ++$j;
+	  $j=0;
+	$j=&arrindex(@{$packname[$i]},$dummy[0]);
+#       key binding
+#   key bindings
+       $keywords[$i][$j]=$dummy[3];
+	  $keywords[$i][$j]=$dummy[3];
+	  `kpsewhich --format=${qq}TeX system documentation${qq} $rawname`;
+	`kpsewhich $rawname` :
+#   label for listbox
+	last CALL;
+#		    last CMPREND; does not work, what we need is:
+			  last COMPRESS;
+	  last DOC_FORMAT;
+	    last DOCPATH;
+	last if (/^#/);
+    last if ($_ eq $item);
+	      last if ($line =~ /^%{4,}/);
+	      last if ($line =~ /^\s*$/);
+	      last if ($line =~ /^\s*\\endinput/ && !($line =~ /^%/));
+	last LEVEL
+	  last LINETYPE;
+	  last LOC;
+	    last RCVARS;
+		      last SRCH;
+			  last SRCH;
+	  last STYPATH;
+	last unless ($_);
+  LEVEL: {
+      ($level == 0) && do { $degree="Note"; last LEVEL; };
+      ($level == 1) && do {
+      ($level == -1) && do { $degree="Info"; last LEVEL; };
+      ($level == 2) && do { $degree="Error"; last LEVEL; };
+      ($line =~ /^\@/) && do { # category
+	($line =~ /^\@/) && do { # category
+      ($line =~ /^(#|$)/) && do { # comment or empty line
+	($line =~ /^(#|$)/) && do { # comment or empty line
+    LINETYPE: {
+  LINETYPE: {
+#   listbox with optional scrollbar
+#       list item
+#     list item
+	$lline=length $_;
+  LOC: {
+	    $localdocpath=basename($texdocpath,"");
+				   "$localdocpath/$docselect",
+	  $localdocpath="$texmflocal/$localdocpath";
+# Local Variables:
+$main->bind('all','<Control-h>'=>\&helptext);
+$main->bind('all','<Control-m>'=>sub { $main->raise(); });
+$main->bind('all','<Control-q>'=>\&clean_exit);
+$main->bind('all','<Control-s>'=>sub { $main->raise(); &mksrch; });
+$main->bind('all','<Control-t>'=>\&settings);
+    $main->bind('<Control-k>'=>sub { exit });
+    $main->bind('<Control-q>'=>sub { exit });
+    $main->configure(-cursor=>$defcursor);
+    $main->configure(-cursor=>'watch');
+    MainLoop;
+MainLoop;
+    $main->resizable(0,0);
+$main->resizable(0,0);
+    $main->title("TeX Documentation Browser");
+$main->title("TeX Documentation Browser");
+#       main window buttons
+main window; pressing one of its buttons lists all documentations
+# make buttons for category button frame
+#   make buttons for command frame
+# make buttons for command frame
+# make or destroy search entry widget
+Many TeX programmers provide more or less detailed manuals for
+       $maxind[$i]=$j;
+	  $maxind[$i]=$j;
+    $message->configure(-state=>'disabled');
+    $message->insert('end',$msg);
+might be cluttered with program comments.',
+# mode: perl
+		`mozilla -remote 'openFile($texmfmain/doc/index.html)'`;
+    $msgframe->Label(-text=>'FATAL ERROR',
+    $msgframe->pack(-side=>'top');
+	$msgwin->after(3000,sub{destroy $msgwin});
+	$msgwin->bind('<Control-c>'=>sub{destroy $msgwin});
+	$msgwin->Button(-text=>'Close',
+    mv $myrc,"$myrc.save" if (-e $myrc);
+    my $actlabel=$dlgact->Label(-text=>'Active',
+  my @array=@_;
+my $autoview;
+    my $browser=0;
+my %butcol;
+my @button;
+my $buttonframe=$main->Frame;
+my %buttonlist;
+my @catg;
+    my @chars=("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z");
+    my $chngflag=0;
+my $CmdConsole="xterm -e ";
+    my $cmdframe=$main->Frame;
+my $cmdframe=$main->Frame(-background=>"#ffcc99");
+    my ($command, $file) = @_;
+my $database=`kpsewhich --progname=texdoctk --format=${qq}other text files${qq} texdoctk.dat`;
+    my $datlabel;
+		    my ($dcmp,$dcmp_opt);
+    my $defcol=0;
+my $defcursor=$main->cget(-cursor);
+my $deffont=$Qbut->cget(-font);
+    my @deffont=$Qbut->configure(-font);
+    my $deflabel=$dlgdef->Label(-text=>'Default',
+    my $degree;
+    my $dlgact1=$dlgact->Frame()->pack(-side=>'left');
+    my $dlgact=$dlgwin->Frame()->pack(-side=>'top');
+    my $dlgdef1=$dlgdef->Frame()->pack(-side=>'left');
+    my $dlgdef=$dlgwin->Frame()->pack(-side=>'top');
+    my $dlgtfr0=$dlgdef1->Frame()->pack(-side=>'top');
+    my $dlgtfr1=$dlgdef1->Frame()->pack(-side=>'top');
+    my $dlgtfr2=$dlgact1->Frame()->pack(-side=>'top');
+    my $dlgtfr3=$dlgact1->Frame()->pack(-side=>'top');
+    my ($dlgwin,@entryvar)=@_;
+    my $dlgwin=$parframe->Toplevel(-title=>'Change colours');
+    my $docframe=$setmenu->Frame(-relief=>'groove',
+    my $docframestring="\nDistribution documentation root path(s):\n$texdocpath";
+    my $docpath=substr($slcdoc,0,(rindex($slcdoc,'/',(length $slcdoc))));
+	my $docpath=substr($slcdoc,0,(rindex($slcdoc,'/',(length $slcdoc))));
+    my ($docselect,$tpbframe)=@_;
+    my $dsplabel=$tpdsp->Label(-text=>'Selection:',
+    my $dspslc=$tpdsp->Label(-textvariable=>\$dspselect,
+    my @dummy=split("\n",$msg);
+    my @dummy=split('\.',$slc);
+    my ($dummy,$status);
+my \$dump=\"\"; \
+    my $dvicentry=$dvisub2->Entry(-textvariable=>\$dvips_conv_tmp,
+    my $dviclabel=$dvisub2->Label(-text=>'DVI->PS converter command',
+    my $dviframe=$setmenu->Frame(-label=>'DVI',
+    my $dvilbwidth=length 'DVI->PS converter command';
+    my ($dvips_opts,$pdfps_opts,$print_opts);
+    my $dvisub1=$dviframe->Frame()->pack(-side=>'top',
+    my $dvisub2=$dviframe->Frame()->pack(-side=>'top',
+    my $dviventry=$dvisub1->Entry(-textvariable=>\$dvi_viewer_tmp,
+    my $dvivlabel=$dvisub1->Label(-text=>'Viewer command',
+    my $ecnt=0;
+    my $err=0;
+    my $found=0;
+	  my $fullpathext="$fullpath$_";
+    my $genvecbut=$genvsub1->
+    my $genvelabel=$genvsub1->Label(-text=>'Suppress error messages',
+    my $genvframe1=$genvframe->Frame()->pack(-side=>'left');
+    my $genvframe=$setmenu->Frame(-label=>'General viewer behaviour',
+    my $genvscbut=$genvsub2->
+    my $genvslabel=$genvsub2->Label(-text=>'Autostart viewer for one-item listboxes',
+    my $genvsub1=$genvframe1->Frame()->pack(-side=>'top',
+    my $genvsub2=$genvframe1->Frame()->pack(-side=>'top',
+    my $genvsub3=$genvframe1->Frame()->pack(-side=>'top',
+    my $genvxcbut=$genvsub3->
+    my $genvxlabel=$genvsub3->Label(-text=>'Use text viewer for unknown file format',
+    my $GetDeviceCaps = new Win32::API('gdi32', 'GetDeviceCaps', 'NN', 'N');
+    my $GetTempPath = new Win32::API('kernel32', 'GetTempPath', 'NP', 'N');
+    my $helpbody=$help->Scrolled("Text",
+    my $help=$main->Toplevel(-title=>'Help/About');
+my $homedatabase=`kpsewhich --progname=texdoctk --format=${qq}other text files${qq} texdoctk-pers.dat`;
+    my ($homedocpath_tmp,$quiet_tmp,$autoview_tmp,$xfmt_viewer_tmp,
+my $HomeEnv=$ENV{HOME};
+    my $home = $ENV{'HOME'};
+    my $HORZRES = 8; # from WinGDI.h
+    my $htmlcentry=$htmlsub2->Entry(-textvariable=>\$htmlps_conv_tmp,
+    my $htmlclabel=$htmlsub2->Label(-text=>'HTML->PS converter command',
+    my $htmlframe=$setmenu->Frame(-label=>'HTML',
+	  my $htmlps_redir_sign=($htmlps_redir == 1) ? ">" :"";
+    my $htmlrcbut=$htmlsub2->
+    my $htmlrlabel=$htmlsub2->Label(-text=>'Output redirect needed',
+    my $htmlsub1=$htmlframe->Frame()->pack(-side=>'top',
+    my $htmlsub2=$htmlframe->Frame()->pack(-side=>'top',
+    my $htmlventry=$htmlsub1->Entry(-textvariable=>\$html_viewer_tmp,
+    my $htmlvlabel=$htmlsub1->Label(-text=>'Viewer command',
+  my $i=0;
+my $i=-1;
+my ($i2,$i3);
+    my ($i,$j,$string);
+my $IsWin32 = ($^O =~ /MSWin32/i);
+  my $item=pop @array;
+    my $itype=-1;
+	    my $k=$j+1;
+    my (@lbitems,@lbdocs,$dspselect,$docselect,$wtitle);
+    my $lbl=$msgwin->Label(-text=>uc($degree),
+my $lbut=0;
+    my($level,$msg,$parframe)=@_;
+my ($line,@dummy);
+    my $lline;
+my $locdatabase=`kpsewhich --progname=texdoctk --format=${qq}other text files${qq} texdoctk-local.dat`;
+	      my $lockfile="${HomeEnv}/.netscape/lock";
+    my $lpBuffer = " " x 260;
+    my $main=new MainWindow;
+my $main=new MainWindow;
+    my $maxcnt=3+substr($time,-1);
+    my $message=$msgframe->Text(-relief=>'flat',
+    my $message=$msgwin->Text(-relief=>'flat',
+	      my $mozcheck=
+    my($msg)=@_;
+    my $msgframe=$main->Frame(-background=>"#ffcc99");
+    my $msgwidth=0;
+    my $msgwin=$parframe->Toplevel(-title=>$degree);
+my $myrc="${HomeEnv}/.texdocrc"; # optional personal settings file
+    my $namestr;
+    my $n_buttons = 0;
+my $nbutt=scalar @button;
+my $ncat;
+my $ncols=$nbutt/3-1;
+    my $nline=scalar @dummy;
+	my @norgb;
+	    my $norgb=join("\n",@norgb);
+	my ($omit,$pack1,$pack2);
+    my($opt,@srchitems)=@_;
+my (@packname,@topic,@doc,@keywords,@maxind,%stydoc);
+    my ($parframe,@entryvar)=@_;
+    my $pathflag=0;
+    my $pathflagh=0;
+    my $pathflagl=0;
+    my $pdfcentry=$pdfsub2->Entry(-textvariable=>\$pdfps_conv_tmp,
+    my $pdfclabel=$pdfsub2->Label(-text=>'PDF->PS converter command',
+    my $pdfframe=$setmenu->Frame(-label=>'PDF',
+    my $pdfsub1=$pdfframe->Frame()->pack(-side=>'top',
+    my $pdfsub2=$pdfframe->Frame()->pack(-side=>'top',
+    my $pdfventry=$pdfsub1->Entry(-textvariable=>\$pdf_viewer_tmp,
+    my $pdfvlabel=$pdfsub1->Label(-text=>'Viewer command',
+    my $pos=tell DATA;
+    my $prtcentry=$prtframe->Entry(-textvariable=>\$print_cmd_tmp,
+    my $prtclabel=$prtframe->Label(-text=>'Command',
+    my $prtframe=$setmenu->Frame(-label=>'Printer',
+    my $psframe=$setmenu->Frame(-label=>'PostScript',
+    my $pstmpfile="${TempDir}/texdoc_$tmpfno.ps";
+    my $psventry=$psframe->Entry(-textvariable=>\$ps_viewer_tmp,
+    my $psvlabel=$psframe->Label(-text=>'Viewer command',
+    my $Qbut=$cmdframe->Button(-text=>'Kill',%butcol,
+my $Qbut=$cmdframe->Button(-text=>'Quit',%butcol,
+my $qq="'";
+my $quiet=1;
+      my $rawname=basename($slc,"");
+		    my $rawname=basename($slc,"");
+    my($rcfile,$icall)=@_;
+    my (@results,@reslist);
+	my @rgb=`showrgb`;
+    my $setbfr=$dlgwin->Frame()->pack(-side=>'bottom');
+    my $setbfr=$setmenu->Frame()->pack(-side=>'bottom');
+    my $setmenu=$main->Toplevel(-title=>'Settings');
+    my $ShellExecute = new Win32::API('shell32', 'ShellExecute', 'NPPPPN', 'N');
+    my $slcdoc;
+    my ($slcdoc,$slc)=@_;
+    my($slcdoc,$slc,$parframe)=@_;
+    my($slc,$parframe)=@_;
+my $special=0;
+        my $spec_wtitle=shift @srchitems;
+my $srchentry;
+my $srchflag=0;
+	my @srchslcdoc=($slcdoc);
+    my $status;
+    my @stydoc;
+    my $styflag=0;
+my $sysrc=`kpsewhich --progname=texdoctk --format=${qq}other text files${qq} ${TeXDocRcDefaults}`;
+    my $tdcolors='';
+my @tdcolors;
+    my @tdcolors_d=@tdcolors_tmp;
+			    my $tdcolors_tmp=join(' ',@tdcolors_tmp);
+    my @tdcolors_tmp=@tdcolors;
+my $TempDir; $TempDir=$ENV{TMPDIR} or $TempDir="/tmp";
+my $TeXDocRcDefaults="texdocrc.defaults";
+my ($texmfmain,$texmfdist,$texmfdoc,$texmflocal,$texmfhome,
+    my $tfv_tk=$main->Toplevel(-title=>"Text file viewer");
+    my $time=time;
+my %tlwins;
+my @tmpfiles;
+my $tmpfno;
+    my $tmpslcdoc="${TempDir}/texdoc_$tmpfno.txt";
+    my @tmp=split(/./,$time/$$);
+    my $tpbframe=$tpslc->Frame(-borderwidth=>8);
+    my $tpdsp=$tpwin->Frame(-relief=>'groove')->pack(-side=>'top');
+    my $tplabel=$tpslc->Label(-text=>'Topics',
+    my $tplist=$tpslc->Scrolled("Listbox",
+    my $tpslc=$tpwin->Frame()->pack(-side=>'top');
+    my $tpwin=$main->Toplevel(-title=>$wtitle);
+    my $txtbody=$tfv_tk->Scrolled("Text",
+    my $txtcentry=$txtsub2->Entry(-textvariable=>\$txtps_conv_tmp,
+    my $txtclabel=$txtsub2->Label(-text=>'Text->PS converter command',
+    my($txtfile)=@_;
+    my $txtframe=$setmenu->Frame(-label=>'Plain text',
+	  my $txtps_redir_sign=($txtps_redir == 1) ? ">" :"";
+    my $txtrcbut=$txtsub2->
+    my $txtrlabel=$txtsub2->Label(-text=>'Output redirect needed',
+    my $txtsub1=$txtframe->Frame()->pack(-side=>'top',
+    my $txtsub2=$txtframe->Frame()->pack(-side=>'top',
+    my $txtvcbut=$txtsub1->
+    my $txtventry=$txtsub1->Entry(-textvariable=>\$txt_viewer_tmp,
+    my $txt_view_flag;
+    my $txtvilabel=$txtsub1->Label(-text=>"\tUse texdoctk\'s own viewer",
+    my $txtvlabel=$txtsub1->Label(-text=>'Viewer command',
+      my $usrdocentry=$usrdocframe->Entry(-textvariable=>\$homedocpath_tmp,
+      my $usrdocframe=$docframe->Frame(-relief=>'flat')->pack(-side=>'top',
+      my $usrdoclabel=$usrdocframe->Label(-text=>"User's documentation root path: $texmfhome/",
+    my ($var,$val);
+    my $viewer;
+my $xfmt_viewer=1,
+    my $x_res;
+# names and RGB values are both allowed; use the form #xxxxxx for RGB
+    $namestr.=$tmp[1];
+    $ncat=$nbutt;
+    $ncat=$nbutt-1;
+\n# end of config\n";
+	next if ($line =~ /^($|#)/);
+# normal cursor
+	      # not quiet; I didn't get an inline perl call like in
+of individual user texmf trees with corresponding databases is also
+		OK in selection menu and search
+	    $omit=0;
+open(DATABASE,"$database") || &fatalmsg("Couldn't open database $database.\n");
+    open(DATABASE,"$dbfile") ||
+    open(MYRC,">$myrc");
+open(NULL,\">/dev/null\"); \
+	open (RC,"$rcfile") ||
+    open (STY,"$slcdoc");
+    open(TMPSTY,">$tmpslcdoc");
+    open(TXTFILE,"$txtfile");
+open (VIEWQ,\"$viewer $slcdoc |\"); \
+      open(XINF,"xwininfo -root|") or return 1200;
+#       ... or the user's doc tree...
+	  # other variables
+#       ... otherwise proceed with searching
+	    $pack1=$packname[$results[$i]][$results[$i+1]];
+		$pack2=$packname[$reslist[$j]][$reslist[$j+1]];
+       $packname[$i][$j]=$dummy[0];
+	  $packname[$i][$j]=$dummy[0];
+		  ($packname[$i][$j] =~ /$string/i) && do {
+				   })->pack(-side=>'bottom',
+				})->pack(-side=>'bottom',
+		    })->pack(-side=>'left',
+			})->pack(-side=>'left',
+				  })->pack(-side=>'left',
+						      )->pack(-side=>'left');
+				  })->pack(-side=>'right',
+						      )->pack(-side=>'right');
+				 -padx=>10);
+					   -padx=>10);
+					 -padx=>10,
+					   -padx=>5,
+					 -padx=>5,
+						  -padx=>7);
+					   -pady=>10);
+					 -pady=>10);
+		      $parframe);
+		    $parframe);
+		$parframe);
+				$parframe);
+      $parframe->configure(-cursor=>$defcursor);
+    $parframe->configure(-cursor=>$defcursor);
+ 	    $parframe->configure(-cursor=>$defcursor);
+	$parframe->configure(-cursor=>$defcursor);
+      $parframe->configure(-cursor=>'watch');
+    $parframe->configure(-cursor=>'watch');
+	      $pathflag=1;
+	      $pathflagh=1;
+	      $pathflagl=1;
+# PDF handling
+			     $pdfps_conv,$html_viewer,
+    $pdfps_conv,$html_viewer,$htmlps_conv,$htmlps_redir,
+PDFPS_CONV=$pdfps_conv_tmp
+    $pdfps_conv.=" $pdfps_opts" if ($pdfps_opts);
+	     $pdf_viewer,$pdfps_conv,$html_viewer,
+PDF_VIEWER=$pdf_viewer_tmp
+	$pdf_viewer_tmp,$pdfps_conv_tmp,
+				     $pdf_viewer_tmp,$pdfps_conv_tmp,
+				  $pdf_viewer_tmp,$pdfps_conv_tmp,
+# plain text
+# Plain text handling
+	      pop @button;
+	    pop @button;
+pop @dummy;
+	&popmsg(0,"Search for $string: no matches found.\n".
+	    &popmsg(0,"Selected file:\n$fullpathext",$tpbframe);
+	  &popmsg(0,"Selected file:\n$fullpath",$tpbframe);
+	  &popmsg(-1,"Converting dvi to ps for printing and sending file to print...",$parframe);
+	  &popmsg(-1,"Converting html to ps for printing and sending file to print...",$parframe);
+	  &popmsg(-1,"Converting pdf to ps for printing and sending file to print...",$parframe);
+	  &popmsg(-1,"Converting sty(txt) to ps for printing and sending file to print...",$parframe);
+	  &popmsg(-1,"Converting txt to ps for printing and sending file to print...",$parframe);
+	      &popmsg(-1,"Opening document in existing $viewer window.",
+	  &popmsg(-1,"Sending file to $print_cmd...",$parframe);
+	    &popmsg(-1,'Trying to extract documentation out of .sty file;
+	  &popmsg(-1,'Trying to extract documentation out of .sty file;
+	    &popmsg(-1,'Unknown format; assuming plain text.',$parframe);
+			    &popmsg(-1,"Writing settings to $myrc",$setmenu);
+			&popmsg(2,
+      &popmsg(2,"$dummy[-1]: cannot print document format",$parframe);
+	&popmsg(2,"$dummy[-1]: not a known document format",$parframe);
+	&popmsg(2,"$dummy[-1]: no viewer available/specified for this format",
+	      &popmsg(2,"Error: Conversion dvi->ps failed!",$parframe);
+	      &popmsg(2,"No converter available for dvi->ps conversion.",
+	      &popmsg(2,"No converter available for html->ps conversion.",
+	      &popmsg(2,"No converter available for pdf->ps conversion.",
+	      &popmsg(2,"No converter available for sty(txt)->ps conversion.",
+	      &popmsg(2,"No converter available for txt->ps conversion.",
+	&popmsg(2,"No printer specified.",$parframe);
+	    &popmsg(2,"No selection;\nuse left mouse button.",$tpbframe);
+	&popmsg(2,"No selection was made.",$parframe);
+	&popmsg(2,"$rawname not found, cancelling.",$parframe);
+	&popmsg(2,"Selected file:\n$docselect\ndoes not exist (neither in normal form nor compressed).",$tpbframe) }
+	&popmsg(2,"Selected file:\n$docselect\ndoes not exist.",$tpbframe) }
+	    &popmsg(2,"Some colours invalid:\n$norgb",$dlgwin);
+    &popmsg(2,'Some colours undefined.',$dlgwin) if ($ecnt != 4);
+# pop up a note or an error or warning message toplevel window
+possible.
+# possibly use personal settings instead of defaults
+# PostScript
+# PostScript handling
+#     PostScript is printed directly
+PRINT_CMD=$print_cmd_tmp
+    $print_cmd.=" $print_opts" if ($print_opts);
+      print "Couldn't open additional database $dbfile.\n";
+# print document selected in listbox
+# printer
+    print MYRC "# user's .texdocrc, generated by program\n
+	    print "NOTE: Button colours not set in $rcfile; using defaults.\n";
+    print STDERR $msg; # also print to stderr
+	&prtslc($docselect,$tpbframe);});
+.ps, .pdf, .html or plain text files (sometimes included in the
+	  $pstmpfile=$slcdoc;
+			     $ps_viewer,$pdf_viewer,
+PS_VIEWER=$ps_viewer_tmp
+	$ps_viewer_tmp,
+				     $ps_viewer_tmp,
+				  $ps_viewer_tmp,
+	$ps_viewer_tmp,$pdf_viewer_tmp,$pdfps_conv_tmp,
+	      push @button,(substr($line,1,-1));
+	    push @button,(substr($line,1,-1));
+	    push @lbdocs,$doc[$opt][$j];
+	    push @lbdocs,$doc[$srchitems[$j]][$srchitems[$k]];
+	    push @lbitems,$topic[$opt][$j];
+	    push @lbitems,$topic[$srchitems[$j]][$srchitems[$k]];
+		push @norgb,$colour;
+		      push @results,($i,$j);
+			  push @results,($i,$j);
+	    push @srchslcdoc,"$homedocpath/$slc";
+	    push @srchslcdoc,"$localdocpath/$slc";
+	      push @stydoc,$line;
+    push @tmpfiles,$pstmpfile;
+		    push @tmpfiles,$slcdoc;
+    push @tmpfiles,$tmpslcdoc;
+    $Qbut->configure(-font=>$deffont);
+$Qbut->configure(-font=>$deffont);
+  $qq = "\"";
+			    ($quiet,$autoview,$xfmt_viewer,
+QUIET=$quiet_tmp
+    $quiet=($quiet =~ /y/i || $quiet eq "1") ? 1 : 0;
+				     $quiet_tmp,$autoview_tmp,$xfmt_viewer_tmp,
+				 ($quiet_tmp,$autoview_tmp,$xfmt_viewer_tmp,
+      RCVARS: {
+# read config file; personal settings override the default settings
+# read database file
+#   read defaults resp. local/personal settings
+reading the selected documentation making use of a database file
+# README.texdoctk for details about requirements, installation, configuration,
+&readrc($sysrc,1);
+# Read site-local and user's database(s) if it/they exist(s)
+# read system-wide defaults from texdocrc.defaults
+				  -relief=>'flat',
+				 -relief=>'flat',
+				  -relief=>'groove',
+				 -relief=>'groove',
+				-relief=>'groove',
+		   -relief=>'ridge',
+				-relief=>'ridge',
+  require Win32::API;
+	@reslist=($results[0],$results[1]);
+      return;
+ 	    return;
+	      return;
+	    return;
+	return;
+    return ($ecnt == 4 && $defcol == 4) ? 1 : 0;
+    return @entryvar;
+  <Return>	Equivalent to button press;
+    return $GetDeviceCaps->Call(0, $HORZRES);
+    return $home;
+  return $i;
+	return if ($quiet == 1);
+    return if ($slcdoc eq "");
+    return $namestr;
+    return $slcdoc;
+		    return $slcdoc;
+			return $slcdoc;
+	return $slcdoc;
+	    return $srchslcdoc[-1] if (-e $srchslcdoc[-1]);
+    return $tmpslcdoc;
+    return $x_res;
+# root of user's doc directory (from \$HOMETEXMF)
+				  -scrollbars=>"e")->pack(-side=>'top',
+				 -scrollbars=>"e")->pack(-side=>'top',
+				-scrollbars=>'osoe',
+# search
+# search a string in @packname, @topic and @keywords
+#       search results
+#       see if the documentation file is compressed
+#       see if the documentation file is in the local doc tree...
+#       see if toplevel window is already there
+#   see if toplevel window is already there
+#   see if toplevel window with this file is already there
+    seek(DATA,$pos,0);
+# selection frame with listbox and buttons
+				-selectmode=>'single',
+send it to the default printer. By right-clicking on the selected
+	$setbfr->Button(-text=>'Cancel',
+	$setbfr->Button(-text=>'OK',
+	$setbfr->Button(-text=>'Preview',
+	$setbfr->Button(-text=>'Save',
+    $setmenu->bind('<Control-c>'=>sub{destroy $setmenu;
+			    $setmenu->configure(-cursor=>$defcursor);
+			    $setmenu->configure(-cursor=>'watch');
+    $setmenu->resizable(0,0);
+    $ShellExecute->Call(0, $command, $file, '', '', 0);
+ 	    &ShellExecute('open', $slcdoc);
+    # Should check for CSIDL_...
+# show/change settings (don't show this to an expert :-/ )
+	    &showpath($docselect,$tpbframe);
+show the full list of files in the database.
+							 -side=>'left');
+						    -side=>'right');
+						     -side=>'top');
+	$slcdoc="";
+			$slcdoc="";
+    $slcdoc=&finddoc($slcdoc,$slc,$parframe);
+  SLCDOCFIND: foreach ($texdocpath,$distdocpath,$docdocpath) {
+      $slcdoc="$_/$slc";
+      $slcdoc=($slcdoc =~ /\.sty$/) ?
+	    $slcdoc=&stripsty($slcdoc,substr($slc,7));
+	  $slcdoc=&stripsty($slcdoc,substr($slc,7));
+		    $slcdoc="${TempDir}/texdoc_$tmpfno$rawname";
+	  $slc="../tex/$slc"; # .sty files are in ${tex,local}docpath/../tex/
+	$slc="../tex/$slc"; # .sty files are in ${tex,local,home}docpath/../tex
+# slightly modified from a patch contributed by Reinhard Kotucha
+Some more information is available in the manpage of texdoctk.
+#     some packages have no normal documentation but useful info in the .sty
+#    &something
+	      $special=1;
+	    $special=1;
+    $special=1 if ($i == 17 && $j > 0);
+	      SRCH: {
+	$srchentry->bind('<Control-c>'=>sub{destroy $srchentry; $srchflag=0;});
+	$srchentry->bind('<Return>'=>[\&srchstr, $srchentry]);
+	$srchentry=$cmdframe->Entry(-cursor=>'xterm',
+	$srchentry->focus();
+    $srchflag=0;
+	$srchflag=0;
+	$srchflag=1;
+	$_ =~ s/\$sysrc/$sysrc/;
+	$status=-1;
+		    $status=system("$dcmp $dcmp_opt $dummy > $slcdoc");
+	  $status=system("$dvips_conv $slcdoc -o $pstmpfile");
+		stderr and of certain permanent message popup
+	$string='all database entries';
+string and hit <Return> to start the search or <Control-c> to
+    $string=$srchentry->get();
+	       $stydoc{"$doc[$i][$j]"}=0;
+	      $stydoc{"$doc[$i][$j]"}=0;
+	    $stydoc{"$doc[$i][$j]"}=substr($keywords[$i][$j],1,1);
+	   $stydoc{"$doc[$i][$j]"}=substr($keywords[$i][$j],1,1);
+      ($stydoc{$slc} == 0) && do { # no specific place, suck in everything :-(
+      ($stydoc{$slc} == 1) && do { # at end, behind \endinput
+      ($stydoc{$slc} == 2) && do { # up to a certain %%%%%%%, hopefully the 1st
+      ($stydoc{$slc} == 3) && do { # up to 1st blank/apparently empty line
+.sty files instead of a separate documentation file) and can be
+	  $styflag=1;
+    STYPATH: foreach my $fullpath ("$texmfmain/tex/$docselect",
+sub arrindex {
+sub clean_exit {
+sub colcheck {
+sub fatalmsg {
+sub finddoc {
+  sub GetHomeDir {
+  sub GetScreenWidth {
+  sub GetTempPath {
+sub helptext {
+sub mksrch {
+sub popcolor {
+sub popmsg {
+sub prtslc {
+sub randname {
+sub readrc {
+########## SUBROUTINES ########################################################
+sub settings {
+  sub ShellExecute {
+sub showpath {
+sub srchstr {
+sub stripsty {
+sub textview {
+sub tpslct {
+sub viewslc {
+sub writerc {
+sub x_resolution {
+	  system("$htmlps_conv $slcdoc $htmlps_redir_sign $pstmpfile");
+	  system("$pdfps_conv $slcdoc $pstmpfile");
+	      system("perl -we 'use strict; \
+    system("$print_cmd $pstmpfile");
+	  system("$txtps_conv $slcdoc $txtps_redir_sign $pstmpfile");
+# system variables
+	      system("$viewer -remote 'openFile($slcdoc)' &");
+	      system("$viewer $slcdoc &");
+	    system("$viewer $slcdoc");
+  <Tab>		Next/previous widget
+				    -takefocus=>1)->pack(-side=>'left');
+	    @tdcolors=('#d9d9d9','Black','#ececec','red');
+			       @tdcolors_d=@tdcolors_tmp;
+    @tdcolors=split(' ',$tdcolors);
+			    @tdcolors=@tdcolors_tmp;
+TDCOLORS=$tdcolors_tmp
+	$tdcolors_tmp,
+				     $tdcolors_tmp,
+			       @tdcolors_tmp=&popcolor($setmenu,@tdcolors_tmp);
+# TDK_OWN is texdoctk's own text file viewer
+  $TempDir = &GetTempPath;
+# terminated by %%%%%%; -3-: at beginning, terminated with blank line
+# test existence and search a documentation which is not in specified place
+    $texdocpath,$distdocpath,$docdocpath,$localdocpath,$homedocpath,
+	$texdocpath="$texmfmain/$texdocpath";
+  $TeXDocRcDefaults = "texdocrc-win32.defaults";
+# texdoctk v.0.6.0 (Nov 5, 2004) - GUI for TeX documentation access
+TeX documentation browser
+	# TeXLive has this texmf-doc
+	$texmfdist=`kpsewhich --expand-path=${qq}\$TEXMFDIST${qq}`;
+				   "$texmfdist/tex/$docselect",
+	$texmfdoc=join('/',"$texmfmain-doc",basename($texdocpath,""));
+texmf/doc structure; additional usage of a system-wide local and
+        $texmfhome=`kpsewhich --expand-path=${qq}\$HOMETEXMF${qq}`;
+				   "$texmfhome/tex/$docselect") {
+	$texmflocal=`kpsewhich --expand-path=${qq}\$TEXMFLOCAL${qq}`;
+				   "$texmflocal/tex/$docselect",
+	$texmfmain=`kpsewhich --expand-path=${qq}\$TEXMFMAIN${qq}`;
+                              -text=>'Search texdoctk\'s database',
+ 	    &textview($slcdoc);
+    $tfv_tk->bind('<Control-c>'=>sub{destroy $tfv_tk;
+	$tfv_tk->Button(-text=>'Close',
+    $tfv_tk->Label(-text=>"File: $txtfile",
+    $tfv_tk->resizable(0,1);
+The documentations are grouped in several categories shown in the
+The following key shortcuts are defined for use with the browser:
+# the following variables contain whole commands, i.e. options can be given
+their programs or packages. They are usually available as .dvi,
+	      # the other branch working
+There are the following command line options:
+The search button of the main window allows you to search the
+The topic window lets you select one documentation file, view or
+# This program is provided under the GNU Public License; see the file
+Thomas Ruedas
+# Tk widget for text document
+	$tlwins{'chngcol'}{'addr'}->deiconify();
+    $tlwins{'chngcol'}{'addr'}=$dlgwin;
+	$tlwins{'chngcol'}{'addr'}->raise();
+    $tlwins{'chngcol'}{'buttons'}[0]=
+    $tlwins{'chngcol'}{'buttons'}[1]=
+    $tlwins{'chngcol'}{'buttons'}[2]=
+	$tlwins{"helptext"}{'addr'}->deiconify();
+    $tlwins{'helptext'}{'addr'}=$help;
+	$tlwins{"helptext"}{'addr'}->raise();
+    $tlwins{'helptext'}{'buttons'}[0]=
+$tlwins{'mainwindow'}{'addr'}=$main;
+$tlwins{'mainwindow'}{'buttons'}[0]=$Qbut;
+$tlwins{'mainwindow'}{'buttons'}[1]=$cmdframe->Button(
+$tlwins{'mainwindow'}{'buttons'}[2]=$cmdframe->Button(-text=>'Help/About',
+$tlwins{'mainwindow'}{'buttons'}[3]=$cmdframe->Button(-text=>'Settings',
+    $tlwins{'mainwindow'}{'buttons'}[$j]=$catg[$i];
+	    $tlwins{$opt}{'addr'}->deiconify();
+	    $tlwins{$opt}{'addr'}->raise();
+    $tlwins{$opt}{'addr'}=$tpwin;
+      $tlwins{$opt}{'buttons'}[$n_buttons++]=
+    $tlwins{$opt}{'buttons'}[$n_buttons++]=
+	$tlwins{"setmenu"}{'addr'}->deiconify();
+	$tlwins{"setmenu"}{'addr'}->raise();
+    $tlwins{"setmenu"}{'addr'}=$setmenu;
+    $tlwins{'setmenu'}{'buttons'}[0]=
+    $tlwins{'setmenu'}{'buttons'}[1]=
+    $tlwins{'setmenu'}{'buttons'}[2]=
+    $tlwins{'setmenu'}{'buttons'}[3]=
+	$tlwins{$txtfile}{'addr'}->deiconify();
+	$tlwins{$txtfile}{'addr'}->raise();
+    $tlwins{$txtfile}{'addr'}=$tfv_tk;
+    $tlwins{$txtfile}{'buttons'}[0]=
+        	    $tmpfno=&randname;
+    $tmpfno=&randname;
+       $topic[$i][$j]=$dummy[1];
+	  $topic[$i][$j]=$dummy[1];
+		  ($topic[$i][$j] =~ /$string/i) && do {
+# toplevel for selecting a topic of a category for viewing or printing
+# toplevel window of category $opt with two frames
+# to stdout instead of a file (e.g. as a2ps) (y or yes to make active)
+# to stdout instead of a file (e.g. as html2ps) (y or yes to make active)
+	$tpbframe->Button(-text=>'Cancel',
+	$tpbframe->Button(-text=>'Print',
+	$tpbframe->Button(-text=>'View',
+    $tpbframe->pack(-side=>'right');
+    $tplist->bind('<Button-1>'=>sub{my ($slctind)=$tplist->curselection();
+    $tplist->bind('<Button-3>'=>sub{
+    $tplist->bind('<Double-Button-1>'=>sub{
+    $tplist->insert('end',@lbitems); # fill topics into listbox
+        $tplist->selectionSet(0);
+	&tpslct(-1,@reslist);
+    $tpwin->bind('<Control-c>'=>sub{destroy $tpwin; undef $tlwins{$opt};});
+    $tpwin->bind('<Control-p>'=>sub{
+    $tpwin->bind('<Control-v>'=>sub{
+tr@dlc.ku.dk or tex-k@tug.org
+        "Try `texdoc $string' in a command line.",$cmdframe);
+#                   try to decompress
+#     try to find it elsewhere with kpsewhich
+#         try to get doc out of .sty file
+#       try to get doc out of .sty file
+    $txtbody->configure(-state=>'disabled');
+TXTPS_CONV=$txtps_conv_tmp
+	     $txtps_conv,$txtps_redir,$print_cmd);
+# TXTPS_REDIR must be on, if the txt->ps converter normally writes its output
+				  $txtps_redir_tmp,$print_cmd_tmp);
+	$txtps_redir_tmp,$print_cmd_tmp,$parframe)=@_;
+				     $txtps_redir_tmp,$print_cmd_tmp,$setmenu);
+TXTPS_REDIR=$txtps_redir_tmp
+    $txtps_redir=($txtps_redir =~ /(y|1)/i) ? 1 : 0;
+	$txtventry->configure(-state=>'disabled');
+			    $txtventry->configure(-state=>'disabled');
+	$txtventry->configure(-state=>'normal');
+			    $txtventry->configure(-state=>'normal');
+			    $txtventry->focus();
+		       $txt_viewer : "${CmdConsole} $txt_viewer";
+	$txt_viewer=$ENV{PAGER};
+				$txt_viewer=$ENV{PAGER};
+			    $txt_viewer_tmp="TDK_OWN";
+	$txt_viewer_tmp,$txtps_conv_tmp,
+				     $txt_viewer_tmp,$txtps_conv_tmp,
+				  $txt_viewer_tmp,$txtps_conv_tmp,
+	$txt_viewer_tmp,$txtps_conv_tmp,$txtps_redir_tmp,$print_cmd_tmp)=
+			    $txt_viewer_tmp=$txt_viewer;
+    $txt_viewer,$txtps_conv,$txtps_redir,$print_cmd);
+			     $txt_viewer,$txtps_conv,$txtps_redir,$print_cmd)=
+TXT_VIEWER=$txt_viewer_tmp
+		     $txt_viewer =~ /xterm/) ?
+		   $txt_viewer =~ /xterm/) ?
+	$txt_view_flag=0;
+	$txt_view_flag=1;
+    undef $tlwins{'chngcol'};
+				      undef $tlwins{'chngcol'};
+				     undef $tlwins{'chngcol'}; });
+				    undef $tlwins{"helptext"};
+				      undef $tlwins{"setmenu"};
+				      undef $tlwins{"setmenu"};});
+				       undef $tlwins{$txtfile};
+				     undef $tlwins{$txtfile};
+	  unless (defined $homedocpath) {
+	  unless (defined $localdocpath) {
+    unless (defined $slc) {
+	    unless ($stydoc{"$doc[$i][$j]"} =~ /^\d$/) {
+	   unless ($stydoc{"$doc[$i][$j]"} =~ /^\d$/) {
+	unshift @reslist,$string;
+    until (length($namestr) > 16) { $namestr.=int(rand(1000000)) }
+use File::Basename;
+    use File::Copy qw/cp mv/;
+use Getopt::Long;
+use strict;
+#! /usr/bin/env perl
+ v.0.6.0a (Nov 5, 2004)",
+	  ($var =~ /homedocpath/i) && do { # HOMEDOCPATH
+	  ($var =~ /localdocpath/i) && do { # LOCALDOCPATH
+	  ($var =~ /texdocpath/i) && do { # TEXDOCPATH
+	($var,$val)=split("=",$line,2);
+  -v		disable suppression of viewer messages sent to
+# view document selected in listbox
+#   viewer: autostart viewer if listbox of search results contains only 1 item
+	  $viewer=$html_viewer;
+#   viewer: suppress viewer warnings/use $PAGER if no $txt_viewer is defined
+	    $viewer=($txt_viewer eq "TDK_OWN" ||
+	  $viewer=($txt_viewer eq "TDK_OWN" ||
+#   viewer: use text viewer to open files with unrecognized format
+	&viewslc($docselect,$tpbframe)
+	&viewslc($docselect,$tpbframe);});
+# where the doc is located:
+which contains the path entries according to the current teTeX
+    while (<DATA>) {
+while (\$dump=<VIEWQ>) { print NULL \$dump; } \
+    while ($line = <DATABASE>) {
+while ($line = <DATABASE>) {
+    while ($line = <RC>) {
+	  while ($line = <STY>) {
+	  while ($line = <STY>) { push @stydoc,$line; }
+	  while ($line = <STY>) { push @stydoc,$line if ($line =~ /^%/); }
+    while (<TXTFILE>) {	$txtbody->insert('end',$_); }
+      while (<XINF>) {
+				-width=>0,
+				-width=>10,
+		    -width=>18,
+				    -width=>20,
+				 -width=>60,
+			  -width=>6)->pack(-side=>'bottom');
+			-width=>6)->pack(-side=>'left',
+			  -width=>6)->pack(-side=>'top');
+				  -width=>80,
+				   -width=>$lbut,
+					 -width=>$lbut,
+			      -width=>$msgwidth)->pack(-side=>'top');
+				-width=>$msgwidth)->pack(-side=>'top');
+#  Win32::API->import( qw(
+		windows, in case this was not set in a
+			    &writerc($homedocpath_tmp,
+# write user's ~/.texdocrc
+	$wtitle=$button[$opt];
+	$wtitle="Search results for $spec_wtitle";
+XFMT_VIEWER=$xfmt_viewer_tmp
+    $xfmt_viewer=($xfmt_viewer =~ /y/i || $xfmt_viewer eq "1") ? 1 : 0;
+      $x_res = &GetScreenWidth;

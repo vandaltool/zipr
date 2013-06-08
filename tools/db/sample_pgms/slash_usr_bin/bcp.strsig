@@ -1,0 +1,919 @@
+([^(]+)\(
+]+(([(<].*)?$)?
+0123456789
+(?1$1)(?2$2)(?3$3)(?4Public Domain)
+(?1:(?2: ))
+15bcp_application
+18bcp_implementation
+3L$,3T$(	
+3L$X3T$T	
+(?4Craig W. McPheeters, Alias|Wavefront)(?5Christopher Seiwald and Perforce Software, Inc)
+(?4Free Software Foundation, Inc)
+(?4University of Toronto)
+88x30+10+10
+\$$9\$4t0
+accompanying file LICENSE_1_0.txt or copy at
+Add the file 
+<a href="
+   <A href="#
+<a href="#authors">Files with no recognised copyright holder</a>
+  <a href="#bsl-converted">Files that can be automatically converted to the Boost Software License</a>
+<a href="#copyright">Copyright Holder Information</a>
+<a href="#depend">File Dependency Information</a>
+<a href="#details">Licence Details</a>
+<a href="#files">Files with no recognised license</a>
+  <a href="#need-bsl-authors">Authors we need to move to the Boost Software License</a>
+  <a href="#not-to-bsl">Files that can <b>NOT</b> be moved to the Boost Software License</a>
+<a href="#summary">Licence Summary</a>
+  <a href="#to-bsl">Files that can be manually converted to the Boost Software License</a>
+alnumalphablankcntrldigitgraphlowerprintpunctspaceunicodeuppervwordxdigit
+Alternation operators are not allowed inside a DEFINE block.
+ampersand
+<a name="details"></a><h2>Licence Details</h2>
+<a name="input"></a><h2>Input Information</h2>
+<a name="summary"></a><h2>Licence Summary</h2>
+and with no claim as to its suitability for any purpose.</P>
+An invalid combination of regular expression syntax flags was used.
+An invalid or unterminated recursive sub-expression.
+apostrophe
+A regular expression can start with the alternation operator |.
+A repetition operator cannot be applied to a zero-width assertion.
+ASCII escape sequence terminated prematurely.
+^(?:A\s+)?D/([^/\n]+)/
+^(?:A\s+)?/([^/\n]+)/[^/\n]*/[^/\n]*/[^k/\n]*(kb[^/\n]*)?/[^/\n]*
+asterisk
+Attempt to access an uninitialzed boost::match_results<> class.
+ authors and 
+ authors (list omitted for brevity).</P>
+AUX778076_INCLUDE_STRING
+(^)?[^-(<a-zA-Z
+backslash
+backspace
+Bad file name: 
+basic_string::erase
+basic_string::_S_construct null not valid
+basic_string::substr
+   bcp --list [options] module-list
+   bcp --list-short [options] module-list
+   bcp [options] module-list output-path
+   bcp --report [options] module-list html-file
+BGL_PYTHON_EVENTS_HEADER
+bin-stage
+]*?)[[:blank:]]*$
+)[[:blank:]]+){1,2}(?:\d[^[:alpha:]]+([[:alpha:]](?:(?!Use\b|Permission\b|All\b|<P|(?:-\s*)\w+(?:://|@)|\\)[^\n\d])+)|([[:alpha:]][^\n\d]+(?:\n[^\n\d]+)??)(?:19|20)\d{2})|Authors:[[:blank:]]+([[:alpha:]][^\n\d]+|((?:The|This) code is considered to be in the public domain))
+^[[:blank:]]*(?://@bcp[[:blank:]]+([^\n]*)
+^[[:blank:]]*#[[:blank:]]*define[[:blank:]]+(?:BOOST_PP_FILENAME|BOOST_PP_ITERATION_PARAMS|BOOST_PP_INDIRECT_SELF)[^\n]+?["<]([^">]+)[">]
+^[[:blank:]]*#[[:blank:]]*define[[:blank:]]+BOOST_VERSION[[:blank:]]+(\d+)
+^[[:blank:]]*#[[:blank:]]*include[[:blank:]]+([^"<][^
+blanket-permission.txt
+)?#[[:blank:]]*include[[:blank:]]*["<]([^">]+)[">]
+^(?>[[:blank:]]*)(?!#)[^;{}\r\n]*(?|(?:class|struct)[^:;{}#]*(
+<BLOCKQUOTE>
+<BLOCKQUOTE><P>
+</body></html>
+--boost=
+BOOST_ABI_PREFIX
+BOOST_ABI_SUFFIX
+boost-build.jam
+BOOST_COMPILER_CONFIG
+boost/config
+boost/config.hpp
+boost/([^/]+/[^/]+)/(?!detail).*
+boost/([^\./]+)(?!detail).*
+boost::filesystem::copy
+boost::filesystem::copy_directory
+boost::filesystem::copy_file
+boost::filesystem::create_directories
+boost::filesystem::create_directory
+boost::filesystem::create_directory_symlink
+boost::filesystem::create_hard_link
+boost::filesystem::create_symlink
+boost::filesystem::current_path
+boost::filesystem::directory_iterator::construct
+boost::filesystem::directory_iterator::operator++
+boost::filesystem::equivalent
+boost::filesystem::file_size
+boost::filesystem::hard_link_count
+boost::filesystem::is_empty
+boost::filesystem::last_write_time
+boost::filesystem::read_symlink
+boost::filesystem::remove
+boost::filesystem::remove_all
+boost::filesystem::rename
+boost::filesystem::resize_file
+boost::filesystem::space
+boost::filesystem::status
+boost::filesystem::temp_directory_path
+BOOST_FT_AL_INCLUDE_FILE
+BOOST_FT_AL_PREPROCESSED
+BOOST_FT_cc_file
+BOOST_FT_loop
+BOOST_FT_variate_file
+boost/function
+boost/function/detail
+boost/function.hpp
+boost/function_types/components.hpp
+boost/function_types/detail
+boost/function_types/detail/components_impl
+boost/function_types/detail/pp_cc_loop
+boost/function_types/detail/pp_loop.hpp
+boost/graph/distributed/detail/tag_allocator.hpp
+boost/graph/distributed/mpi_process_group.hpp
+Boost.Graph license (Indiana University)
+Boost.Graph license (Notre Dame)
+BOOST_HASH_MAP_HEADER
+BOOST_HASH_SET_HEADER
+BOOST_HEADER()
+BOOST_INTRUSIVE_INVARIANT_ASSERT_INCLUDE
+BOOST_INTRUSIVE_SAFE_HOOK_DEFAULT_ASSERT_INCLUDE
+BOOST_INTRUSIVE_SAFE_HOOK_DESTRUCTOR_ASSERT_INCLUDE
+boost/.*|libs/[^/]*/(?:[^/]*/)?/src/.*
+boost/math/tools/detail
+boost/math/tools/rational.hpp
+boost/mpl/aux_/include_preprocessed.hpp
+boost/mpl/aux_/preprocessed
+boost/mpl/deque.hpp
+boost/mpl/list
+boost/mpl/list/aux_/include_preprocessed.hpp
+boost/mpl/list/aux_/preprocessed
+boost/mpl/list_c.hpp
+boost/mpl/list.hpp
+boost/mpl/map
+boost/mpl/map/aux_/include_preprocessed.hpp
+boost/mpl/map/aux_/preprocessed
+boost/mpl/map.hpp
+boost/mpl/set
+boost/mpl/set/aux_/include_preprocessed.hpp
+boost/mpl/set/aux_/preprocessed
+boost/mpl/set_c.hpp
+boost/mpl/set.hpp
+boost/mpl/vector
+boost/mpl/vector/aux_/include_preprocessed.hpp
+boost/mpl/vector/aux_/preprocessed
+boost/mpl/vector_c.hpp
+boost/mpl/vector.hpp
+   --boost=path     sets the location of the boost tree to path
+BOOST_PLATFORM_CONFIG
+Boost.Pool license
+BOOST_PP_ASSIGN_SLOT(1)
+BOOST_PP_ASSIGN_SLOT(2)
+BOOST_PP_ASSIGN_SLOT(3)
+BOOST_PP_ASSIGN_SLOT(4)
+BOOST_PP_ASSIGN_SLOT(5)
+BOOST_PP_FILENAME_1
+BOOST_PP_FILENAME_2
+BOOST_PP_FILENAME_3
+BOOST_PP_FILENAME_4
+BOOST_PP_FILENAME_5
+BOOST_PP_INCLUDE_SELF()
+BOOST_PP_INDIRECT_SELF
+BOOST_PP_ITERATE
+BOOST_PP_ITERATE()
+BOOST_PP_ITERATION_PARAMS_1
+BOOST_PP_ITERATION_PARAMS_2
+BOOST_PP_ITERATION_PARAMS_3
+BOOST_PP_ITERATION_PARAMS_4
+BOOST_PP_ITERATION_PARAMS_5
+BOOST_PP_LOCAL_ITERATE
+BOOST_PP_LOCAL_ITERATE()
+BOOST_PP_STRINGIZE(boost/mpl/aux_/preprocessed/AUX778076_PREPROCESSED_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/aux_/preprocessed/AUX_PREPROCESSED_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/list/AUX778076_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/list/AUX778076_LIST_C_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/list/AUX778076_LIST_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/map/AUX778076_MAP_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/map/aux_/preprocessed/AUX778076_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/set/AUX778076_SET_C_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/set/AUX778076_SET_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/set/aux_/preprocessed/AUX778076_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/vector/AUX778076_DEQUE_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/vector/AUX778076_VECTOR_C_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/vector/AUX778076_VECTOR_HEADER)
+BOOST_PP_STRINGIZE(boost/mpl/vector/aux_/preprocessed/AUX778076_HEADER)
+BOOST_PP_UPDATE_COUNTER()
+boost/preprocessor/iterate.hpp
+boost/preprocessor/iteration
+boost/preprocessor/slot/counter.hpp
+boost/preprocessor/slot/detail
+boost/preprocessor/slot/detail/counter.hpp
+boost/preprocessor/slot/slot.hpp
+BOOST_PRG_MON_CONFIRM
+boost/proto/detail/local.hpp
+BOOST_PROTO_LOCAL_ITERATE()
+boost/proto/repeat.hpp
+boost_python
+boost_python3
+boost/regex/config.hpp
+BOOST_REGEX_USER_CONFIG
+boost/regex/user.hpp
+BOOST_SIGNAL_FUNCTION_N_HEADER
+boost/signals/signal_template.hpp
+BOOST_SLIST_HEADER
+Boost Software License, Version 1.0
+Boost Software License, Version 1.0 (variant #1)
+Boost Software License, Version 1.0 (variant #2)
+BOOST_STDLIB_CONFIG
+BOOST_TEST_CATCH_SYSTEM_ERRORS
+boost/test/detail/config.hpp
+Boost.Test execution monitor failed to start a debugger:
+BOOST_TR1_HEADER(cmath)
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(array))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(complex))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(functional))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(memory))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(random))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(regex))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(tuple))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(type_traits))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(unordered_map))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(unordered_set))
+BOOST_TR1_STD_HEADER(BOOST_TR1_PATH(utility))
+BOOST_TR1_STD_HEADER(utility)
+boost/typeof.hpp
+BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
+boost/typeof/incr_registration_group.hpp
+BOOST_USER_CONFIG
+boost/version.hpp
+BSD Regex License
+--bsl-convert
+--bsl-summary
+Cannot open file for license conversion: 
+Can't parse filename 
+Can't terminate a sub-expression with an alternation operator |.
+carriage-return
+CAUTION: Boost is no longer in CVS, cvs mode may not work anymore!!!
+CAUTION: Boost.Preprocessor iterated file 
+CAUTION: dependent file 
+CAUTION: don't know how to trace depenencies through macro: "
+.*\.(?:c|cxx|cpp|h|hxx|hpp|inc|html?|css|mak|in)|(Jamfile|makefile|configure)
+.*\.(?:c|cxx|h|hxx|inc|inl|.?pp|yy?)
+Character class declaration starting with [ terminated prematurely - either no ] was found or the set had no content.
+Character set declaration starting with [ terminated prematurely - either no ] was found or the set had no content.
+child has exited; pid: %d; uid: %d; exit value: %d
+child has stopped; pid: %d; uid: %d; exit value: %d
+child terminated abnormally; pid: %d; uid: %d; exit value: %d
+child was killed; pid: %d; uid: %d; exit value: %d
+circumflex
+closedir
+Closing } missing from property escape sequence.
+</code></P>
+commercial-at
+Copying (and overwriting) file: 
+Copying file: 
+(?:(?:Copyright|\(c\)|
+ copyright holders:</P>
+Copyright\W+(c)\W+2001\W+2002\W+Python\W+Software\W+Foundation\W+All\W+Rights\W+Reserved
+Copyright\W+Kevlin\W+Henney\W+2000\W+All\W+rights\W+reserved\W+Permission\W+to\W+use\W+copy\W+modify\W+and\W+distribute\W+this\W+software\W+for\W+any\W+purpose\W+is\W+hereby\W+granted\W+without\W+fee\W+provided\W+that\W+this\W+copyright\W+and\W+permissions\W+notice\W+appear\W+in\W+all\W+copies\W+and\W+derivatives\W+and\W+that\W+no\W+charge\W+may\W+be\W+made\W+for\W+the\W+software\W+and\W+its\W+documentation\W+except\W+to\W+cover\W+cost\W+of\W+distribution\W+This\W+software\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty\W+
+|(Craig\W+W\W+McPheeters\W+Alias\W+Wavefront)|(Generated by mkjambase from Jambase)
+C string: %s
+CVS/Entries
+CVS/Entries.Log
+__cxa_allocate_exception
+__cxa_atexit
+__cxa_begin_catch
+__cxa_call_unexpected
+__cxa_end_catch
+__cxa_free_exception
+__cxa_guard_abort
+__cxa_guard_acquire
+__cxa_guard_release
+__cxa_pure_virtual
+__cxa_rethrow
+__cxa_throw
+CXXABI_1.3
+D$49D$,tJ
+D$ 9D$$t
+D$,9D$(t)
+data input available; band event %d
+dbx-emacs
+dbx-xemacs
+dbx-xterm
+|(Definitions\W+etc\W+for\W+regexp\W+3\W+routines)
+Destination path does not exist: 
+-display
+Distributed under the Boost Software License, Version 1.0. (See
+distributed\W+under(\W+the)?[^"[:word:]]+Boost\W+Software\W+License\W+Version\W+1.0
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+ does not exist.
+dollar-sign
+ due to presence of "
+echo " ";list -w3;
+Empty regular expression.
+Encountered a forward reference to a marked sub-expression that does not exist.
+Encountered a forward reference to a recursive sub-expression that does not exist.
+Encountered an infinite recursion.
+equals-sign
+__errno_location
+**** error(
+Error: insufficient arguments, don't know what to do.
+Error in thread safety code: could not acquire a lock
+Error opening 
+**** error return code: 
+******** errors detected; see standard output for details ********
+Error: Unknown argument 
+Error writing to 
+Escape sequence did not encode a valid character.
+Escape sequence terminated prematurely.
+Escape sequence was neither a valid property nor a valid character class name.
+**** exception(
+exclamation-mark
+**** expression at fault: 
+**** failed to initialize execution monitor.
+^\f([^\f]*)
+__FILE__
+ files <a href="#
+ files can be automatically converted to the Boost Software License, but require manual verification before they can be committed to CVS:</P>
+ files cannot be converted to the Boost Software License because we need the permission of more authors:</P>
+ files could be manually converted to the Boost Software License, but have not yet been:</P>
+ files had no recognisable copyright holder:</P>
+ files had no recognisable license information:</P><BLOCKQUOTE><P>
+ files (list omitted for brevity).</P>
+ files:</P>
+                    files to scan for boost dependencies
+] File: <tt>
+form-feed
+ for output.
+Found a closing repetition operator } with no corresponding {.
+Found a closing ) with no corresponding openening parenthesis.
+   Found while scanning file 
+gdb-emacs
+gdb-xemacs
+gdb-xterm
+-geometry
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBCXX_3.4
+GLIBCXX_3.4.11
+GLIBCXX_3.4.15
+GLIBCXX_3.4.9
+__gmon_start__
+GNU Parser Licence
+grave-accent
+greater-than-sign
+__gxx_personality_v0
+<H1>Boost Licence Dependency Information
+<h2><a name="authors"></a>Files With No Recognisable Copyright Holder</h2>
+<h2><a name="bsl-converted"></a>Files that can be automatically converted to the Boost Software License</h2>
+<H2><a name="copyright"></a>Copyright Holder Information</H2><table border="1">
+<H2><a name="depend"></a>File Dependency Information</H2><BLOCKQUOTE><pre>
+<h2><a name="files"></a>Files With No Recognisable Licence</h2>
+<h2><a name="need-bsl-authors"></a>Authors we need for the BSL</h2>
+<h2><a name="not-to-bsl"></a>Files that can NOT be converted to the Boost Software License</h2>
+<h2><a name="to-bsl"></a>Files that could be converted to the Boost Software License</h2>
+<H2>Contents</h2>
+<H3><A name="
+has-props
+>>>HERE>>>
+Hexadecimal escape sequence terminated prematurely.
+Hexadecimal escape sequence was invalid.
+high priority input available; band event %d
+.*\.(?:html?|css)
+html-file:           the name of a html file to which the report will be written
+http://www.boost.org/LICENSE_1_0.txt)
+ <I>(Circular dependency!)</I>
+	>	@	I	L	
+<(?:img[^>]*src=|link[^>]*href=)("[^"]+"|\w+)[^>]*>
+ included by file 
+Incomplete \g escape found.
+Incomplete property escape found.
+" in file 
+" in file: 
+INFO: tracking source dependencies of library 
+input message available; band event %d
+Invalid alternation operators within (?...) block.
+Invalid back reference: specified capturing group does not exist.
+Invalid character class name, collating name, or character range.
+Invalid collation character.
+Invalid content of repeat range.
+Invalid lookbehind assertion encountered in the regular expression.
+Invalid octal escape sequence.
+Invalid or empty zero width assertion.
+Invalid or unterminated escape sequence.
+Invalid or unterminated Perl (?...) sequence.
+Invalid preceding regular expression prior to repetition operator.
+Invalid range end in character class
+Invalid regular expression.
+Invalid regular expression object
+i/o error; band event %d
+_IO_stdin_used
+is granted provided this copyright notice appears in all copies.<BR>
+(?!is)\w\w\W+subject\W+to(\W+the)?[^"[:word:]]+Boost\W+Software\W+License\W+Version\W+1.0
+Jamrules
+.*\.(?:jam|v2)|(Jamfile|Jamroot)\.?
+Jan  2 2012
+_Jv_RegisterClasses
+L$D+L$@)
+left-curly-bracket
+left-parenthesis
+left-square-bracket
+less-than-sign
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+\<lib\s+(boost\w+)\s+[:;]
+libs/graph_parallel
+libs/graph/src/python
+libs/graph/src/python/visitor.hpp
+libs/python/build/Jamfile.v2
+libstdc++.so.6
+libs/test/build
+libs/test/src
+--list-namespaces
+--list-short
+L$,#L$ 9L$,
+__longjmp_chk
+__lxstat64
+MATCHPREMATCHPOSTMATCHLAST_PAREN_MATCHLAST_SUBMATCH_RESULT^N
+MATCHPREMATCHPOSTMATCHLAST_PAREN_MATCHLAST_SUBMATCH_RESULT^N(
+MATCHPREMATCHPOSTMATCHLAST_PAREN_MATCHLAST_SUBMATCH_RESULT^Nbad lexical cast: source type value could not be interpreted as target
+memory access violation at address: 0x%08lx: invalid address alignment
+memory access violation at address: 0x%08lx: invalid permissions
+memory access violation at address: 0x%08lx: no mapping at fault address
+memory access violation at address: 0x%08lx: non-existent physical address
+memory access violation at address: 0x%08lx: object specific hardware error
+Missing } in hexadecimal escape sequence.
+Missing } in quantified repetition.
+module-list:         a list of boost files or library names to copy
+More than one alternation operator | was encountered inside a conditional expression.
+Moving to the Boost Software License...
+*N12_GLOBAL__N_121system_error_categoryE
+*N12_GLOBAL__N_122generic_error_categoryE
+N5boost11filesystem314basic_ifstreamIcSt11char_traitsIcEEE
+N5boost11filesystem316filesystem_errorE
+N5boost11regex_errorE
+N5boost12noncopyable_11noncopyableE
+N5boost12system_errorE
+N5boost16bad_lexical_castE
+N5boost16exception_detail10clone_baseE
+N5boost16exception_detail10clone_implINS0_19error_info_injectorINS_11regex_errorEEEEE
+N5boost16exception_detail10clone_implINS0_19error_info_injectorINS_16bad_lexical_castEEEEE
+N5boost16exception_detail10clone_implINS0_19error_info_injectorISt11logic_errorEEEE
+N5boost16exception_detail10clone_implINS0_19error_info_injectorISt13runtime_errorEEEE
+N5boost16exception_detail10clone_implINS0_19error_info_injectorISt16invalid_argumentEEEE
+N5boost16exception_detail19error_info_injectorINS_11regex_errorEEE
+N5boost16exception_detail19error_info_injectorINS_16bad_lexical_castEEE
+N5boost16exception_detail19error_info_injectorISt11logic_errorEE
+N5boost16exception_detail19error_info_injectorISt13runtime_errorEE
+N5boost16exception_detail19error_info_injectorISt16invalid_argumentEE
+N5boost17execution_abortedE
+N5boost19execution_exceptionE
+N5boost6detail15sp_counted_baseE
+N5boost6detail17sp_counted_impl_pI15bcp_applicationEE
+N5boost6detail17sp_counted_impl_pIN8fileview14implementationEEE
+N5boost6detail17sp_counted_impl_pINS_11filesystem316filesystem_error5m_impEEE
+N5boost6detail17sp_counted_impl_pINS_11filesystem36detail11dir_itr_impEEE
+N5boost6detail17sp_counted_impl_pINS_20regex_traits_wrapperINS_12regex_traitsIcNS_16cpp_regex_traitsIcEEEEEEEE
+N5boost6detail17sp_counted_impl_pINS_29regex_iterator_implementationIN9__gnu_cxx17__normal_iteratorIPcSt6vectorIcSaIcEEEEcNS_12regex_traitsIcNS_16cpp_regex_traitsIcEEEEEEEE
+N5boost6detail17sp_counted_impl_pINS_29regex_iterator_implementationIN9__gnu_cxx17__normal_iteratorIPKcSsEEcNS_12regex_traitsIcNS_16cpp_regex_traitsIcEEEEEEEE
+N5boost6detail17sp_counted_impl_pINS_29regex_iterator_implementationIPKccNS_12regex_traitsIcNS_16cpp_regex_traitsIcEEEEEEEE
+N5boost6detail17sp_counted_impl_pINS_35regex_token_iterator_implementationIN9__gnu_cxx17__normal_iteratorIPKcSsEEcNS_12regex_traitsIcNS_16cpp_regex_traitsIcEEEEEEEE
+N5boost6detail17sp_counted_impl_pINS_35regex_token_iterator_implementationIPKccNS_12regex_traitsIcNS_16cpp_regex_traitsIcEEEEEEEE
+N5boost6detail17sp_counted_impl_pINS_9re_detail26basic_regex_implementationIcNS_12regex_traitsIcNS_16cpp_regex_traitsIcEEEEEEEE
+N5boost6detail17sp_counted_impl_pINS_9re_detail31cpp_regex_traits_implementationIcEEEE
+*N5boost6detail17sp_counted_impl_pINS_9unit_test9ut_detail16callback0_impl_tIiN12_GLOBAL__N_115cpp_main_callerEEEEE
+N5boost6detail17sp_counted_impl_pINS_9unit_test9ut_detail16callback1_impl_tINS3_6unusedERKNS_5debug16dbg_startup_infoEPFvS9_EEEEE
+N5boost6detail23system_signal_exceptionE
+N5boost6detail26lexical_stream_limited_srcIcSt15basic_streambufIcSt11char_traitsIcEES4_EE
+N5boost6system12system_errorE
+N5boost6system14error_categoryE
+N5boost9exceptionE
+N5boost9re_detail10parser_bufIcSt11char_traitsIcEEE
+N5boost9unit_test9ut_detail14callback0_implIiEE
+N5boost9unit_test9ut_detail14callback1_implINS1_6unusedERKNS_5debug16dbg_startup_infoEEE
+*N5boost9unit_test9ut_detail16callback0_impl_tIiN12_GLOBAL__N_115cpp_main_callerEEE
+N5boost9unit_test9ut_detail16callback1_impl_tINS1_6unusedERKNS_5debug16dbg_startup_infoEPFvS7_EEE
+--namespace=
+; namespace 
+--namespace-alias
+   --namespace-alias Makes namespace boost an alias of the namespace set with --namespace.
+{} namespace boost = 
+   --namespace=name rename the boost namespace to name (also changes library names).
+namespace\s+
+(?|(namespace\s+)boost(_\w+)?(?:(\s*::\s*)phoenix)?|(namespace\s+)(adstl|phoenix|rapidxml)\>|()\<boost((?:_(?!intrusive_tags)\w+)?\s*(?:::))(?:(\s*)phoenix)?|()\<((?:adstl|phoenix|rapidxml)\s*(?:::))|(namespace\s+\w+\s*=\s*(?:::\s*)?)boost(_\w+)?(?:(\s*::\s*)phoenix)?|(namespace\s+\w+\s*=\s*(?:::\s*)?(?:\w+\s*::\s*)?)(adstl|phoenix|rapidxml)\>|(^\s*#\s*define\s+\w+\s+)boost((?:_\w+)?\s*)$|(^\s*#\s*define[^\n]+)((?:adstl|phoenix|rapidxml)\s*)$|()boost(_asio_detail_posix_thread_function|_regex_free_static_mutex)|()(lw_thread_routine|at_thread_exit|on_process_enter|on_process_exit|on_thread_enter|on_thread_exit|tss_cleanup_implemented)|(BOOST_CLASS_REQUIRE4?[^;]*)boost((?:_\w+)?\s*,)|(\(\s*)boost(\s*\)))
+\n[[:blank:]]*([^\n]*)
+^(?<!\\\n)[[:blank:]]*+namespace\s++(\w++)\s++(\{[^{}]*(?:(?2)[^{}]*)*\})
+no errors detected
+No match
+Nothing to repeat.
+number-sign
+Octal escape sequence is invalid.
+Old style Boost license #1
+Old style Boost license #10
+Old style Boost license #11
+Old style Boost license #12
+Old style Boost license #13
+Old style Boost license #14
+Old style Boost license #2
+Old style Boost license #3
+Old style Boost license #4
+Old style Boost license #5
+Old style Boost license #6
+Old style Boost license #7
+Old style Boost license #8
+Old style Boost license #9
+Optional functionality won't be copied: 
+Options:
+Out of memory.
+output buffers available; band event %d
+output-path:         the path to which files will be copied
+pathconf
+</p></BLOCKQUOTE>
+<P>(C) Copyright <I>Author</I> <I>Date</I>.  Permission to copy, use, modify, sell, and distribute this software is granted provided this copyright notice appears in all copies.  This software is provided "as is" without express or implied warranty, and with no claim at to its suitability for any purpose.</p>
+<P>Copyright 1993-2002 Christopher Seiwald and Perforce Software, Inc.</P><P>This file is part of jam.</P><P>License is hereby granted to use this software and distribute it freely, as long as this copyright notice is retained and modifications  are clearly marked.</P><P>ALL WARRANTIES ARE HEREBY DISCLAIMED</P>
+<P>Copyright (c) 1986 by University of Toronto.</P><P>Written by Henry Spencer.  Not derived from licensed software.</P><P>Permission is granted to anyone to use this software for anypurpose on any computer system, and to redistribute it freely,subject to the following restrictions:</P><P>The author is not responsible for the consequences of use ofthis software, no matter how awful, even if they arisefrom defects in it.</P><p>The origin of this software must not be misrepresented, eitherby explicit claim or by omission.</p><p>Altered versions must be plainly marked as such, and must notbe misrepresented as being the original software.</P>
+<p>Copyright (c) 2001, 2002 Python Software Foundation;</p><P>All Rights Reserved</P>
+<P>Copyright (C) <I>Date Author</I><BR><BR>Permission to copy, use, sell and distribute this software is granted
+<P>Copyright (C) <I>Date Author</I></P><P>Permission to copy and use this software is granted, provided this copyright notice appears in all copies. Permission to modify the code and to distribute modified code is granted, provided this copyright notice appears in all copies, and a notice that the code was modified is included with the copyright notice.</P><P>This software is provided "as is" without express or implied warranty, and with no claim as to its suitability for any purpose.</P>
+<P>Copyright (C) <I>Date Author</I></P><P>Permission to copy, use, and distribute this software is granted, provided that this copyright notice appears in all copies.<BR>Permission to modify the code and to distribute modified code is granted, provided that this copyright notice appears in all copies, and a notice that the code was modified is included with the copyright notice.</P><P>This software is provided "as is" without express or implied warranty, and with no claim as to its suitability for any purpose.</P>
+<P>Copyright (C) <I>Date Author</I></P><p>Permission to copy, use, modify, sell and distribute this software is granted, provided this copyright notice appears in all copies and modified version are clearly marked as such. This software is provided "as is" without express or implied warranty, and with no claim as to its suitability for any purpose.</P>
+<P>Copyright (c) <I>Date</I><BR><I>Author</I><BR><BR>Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose is hereby granted without fee, provided that the above copyright notice appear in all copies and that both that copyright notice and this permission notice appear in supporting documentation.  <I>Author</I> makes no representations about the suitability of this software for any purpose. It is provided "as is" without express or implied warranty.</P>
+<P>Copyright (c) <I>Date</I><BR><I>Author</I><BR><BR>Permission to use, copy, modify, distribute and sell this software for any purpose is hereby granted without fee, provided that the above copyright notice appear in all copies and that both that copyright notice and this permission notice appears? in supporting documentation.  <I>Author</I> makes no representations about the suitability of this software for any purpose. It is provided "as is" without express or implied warranty.</P>
+<P>Copyright (c) <I>Date</I> <I>Author</I>.<BR><BR>
+<P>Copyright (c) <I>Date</I> <I>Author</I></P><P>Distributed under the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">http://www.boost.org/LICENSE_1_0.txt)</a></P>
+<P>Copyright (c) <I>Date</I> <I>Author</I></P><P>Subject to the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">http://www.boost.org/LICENSE_1_0.txt)</a></P>
+<P>Copyright (c) <I>Date</I> <I>Author</I></P><P>Use, modification and distribution is subject to the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">http://www.boost.org/LICENSE_1_0.txt)</a></P>
+<P>Copyright <I>Author Data</I></P><P>Permission to use, copy, modify, sell, and distribute this software is hereby granted without fee provided that the above copyright notice appears in all copies and that both that copyright notice and this permission notice appear in supporting documentation, <I>Author</I> makes no representations about the suitability of this software for any purpose. It is provided "as is" without express or implied warranty.</P>
+<P>Copyright <I>Author Date</I>. All rights reserved.</P><P>Permission to use, copy, modify, and distribute this software for any purpose is hereby granted without fee, provided that this copyright and permissions notice appear in all copies and derivatives.</P><P>This software is provided "as is" without express or implied warranty.</P>
+<P>Copyright <I> Author Date</I><BR>Permission to use, copy, modify, sell, and distribute this software is hereby granted without fee provided that the above copyright notice appears in all copies and that both that copyright notice and this permission notice appear in supporting documentation, <BR>None of the above authors nor <I>Author's Organisation</I> make any representation about the suitability of this software for any purpose. It is provided "as is" without express or implied warranty.
+<P>Copyright <I>Author Date</I>. Permission to copy, use, modify, sell and distribute this software is granted provided this copyright notice appears in all copies of the source. This software is provided "as is" without express or implied warranty, and with no claim as to its suitability for any purpose.
+<P>Copyright <I>Date</I> Indiana University.<BR>Authors: Andrew Lumsdaine, Lie-Quan Lee, Jeremy G. Siek</P><P>This file is part of the Boost Graph Library</P><P>You should have received a copy of the <A href="http://www.boost.org/libs/graph/LICENCE">License Agreement</a> for the Boost Graph Library along with the software; see the file <A href="http://www.boost.org/libs/graph/LICENCE">LICENSE</a>. If not, contact Office of Research, Indiana University, Bloomington,IN 47404.</P><P>Permission to modify the code and to distribute modified code is granted, provided the text of this NOTICE is retained, a notice that the code was modified is included with the above COPYRIGHT NOTICE and with the COPYRIGHT NOTICE in the <A href="http://www.boost.org/libs/graph/LICENCE">LICENSE</a> file, and that the <A href="http://www.boost.org/libs/graph/LICENCE">LICENSE</a> file is distributed with the modified code.</P><P>LICENSOR MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.<BR> By way of example, but not limitation, Licensor MAKES NO REPRESENTATIONS OR WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE LICENSED SOFTWARE COMPONENTS OR DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.</P>
+<P>Copyright <I>Date</I> University of Notre Dame.<BR>Authors: Andrew Lumsdaine, Lie-Quan Lee, Jeremy G. Siek</P><P>This file is part of the Boost Graph Library</P><P>You should have received a copy of the <A href="http://www.boost.org/libs/graph/LICENCE">License Agreement</a> for the Boost Graph Library along with the software; see the file <A href="http://www.boost.org/libs/graph/LICENCE">LICENSE</a>. If not, contact Office of Research, University of Notre Dame, Notre Dame, IN 46556.</P><P>Permission to modify the code and to distribute modified code is granted, provided the text of this NOTICE is retained, a notice that the code was modified is included with the above COPYRIGHT NOTICE and with the COPYRIGHT NOTICE in the <A href="http://www.boost.org/libs/graph/LICENCE">LICENSE</a> file, and that the <A href="http://www.boost.org/libs/graph/LICENCE">LICENSE</a> file is distributed with the modified code.</P><P>LICENSOR MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.<BR> By way of example, but not limitation, Licensor MAKES NO REPRESENTATIONS OR WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE LICENSED SOFTWARE COMPONENTS OR DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.</P>
+<P>Copyright The Author, The Date. All rights reserved.</P><P>Permission to use, copy, modify, and distribute this software for any purpose is hereby granted without fee, provided that this copyright and permissions notice appear in all copies and derivatives, and that no charge may be made for the software and its documentation except to cover cost of distribution.</P><P>This software is provided "as is" without express or implied warranty.</P>
+percent-sign
+Perforce Jam License
+Permission to copy, use, modify, sell and distribute this software<BR>
+Permission to modify the code and to distribute modified code is granted
+Permission\W+is\W+granted\W+to\W+anyone\W+to\W+use\W+this\W+software\W+for\W+any\W+purpose\W+on\W+any\W+computer\W+system\W+and\W+to\W+redistribute\W+it\W+freely\W+subject\W+to\W+the\W+following\W+restrictions\W+1\W+The\W+author\W+is\W+not\W+responsible\W+for\W+the\W+consequences\W+of\W+use\W+of\W+this\W+software\W+no\W+matter\W+how\W+awful\W+even\W+if\W+they\W+arise\W+from\W+defects\W+in\W+it\W+2\W+The\W+origin\W+of\W+this\W+software\W+must\W+not\W+be\W+misrepresented\W+either\W+by\W+explicit\W+claim\W+or\W+by\W+omission\W+3\W+Altered\W+versions\W+must\W+be\W+plainly\W+marked\W+as\W+such\W+and\W+must\W+not\W+be\W+misrepresented\W+as\W+being\W+the\W+original\W+software|Definitions\W+etc\W+for\W+regexp\W+3\W+routines
+Permission\W+to\W+copy\W+and\W+use\W+this\W+software\W+is\W+granted\W+provided\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+Permission\W+to\W+modify\W+the\W+code\W+and\W+to\W+distribute\W+modified\W+code\W+is\W+granted\W+provided\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+and\W+a\W+notice\W+that\W+the\W+code\W+was\W+modified\W+is\W+included\W+with\W+the\W+copyright\W+notice\W+This\W+software\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty\W+and\W+with\W+no\W+claim\W+as\W+to\W+its\W+suitability\W+for\W+any\W+purpose
+Permission\W+to\W+copy[^"[:word:]]+use\W+modify\W+sell\W+and\W+distribute\W+this\W+software\W+is\W+granted\W+provided\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+of\W+the\W+source\W+This\W+software\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty\W+and\W+with\W+no\W+claim\W+as\W+to\W+its\W+suitability\W+for\W+any\W+purpose
+Permission\W+to\W+copy\W+use\W+and\W+distribute\W+this\W+software\W+is\W+granted\W+provided\W+that\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+Permission\W+to\W+modify\W+the\W+code\W+and\W+to\W+distribute\W+modified\W+code\W+is\W+granted\W+provided\W+that\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+and\W+a\W+notice\W+that\W+the\W+code\W+was\W+modified\W+is\W+included\W+with\W+the\W+copyright\W+notice\W+This\W+software\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty\W+and\W+with\W+no\W+claim\W+as\W+to\W+its\W+suitability\W+for\W+any\W+purpose
+Permission\W+to\W+copy\W+use\W+modify\W+sell\W+and\W+distribute\W+this\W+software\W+is\W+granted\W+provided\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+This\W+software\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty\W+and\W+with\W+no\W+claim\W+as\W+to\W+its\W+suitability\W+for\W+any\W+purpose
+Permission\W+to\W+copy\W+use\W+modify\W+sell\W+and\W+distribute\W+this\W+software\W+is[^"[:word:]]+granted\W+provided\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+and\W+modified\W+version\W+are\W+clearly\W+marked\W+as\W+such\W+This\W+software\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty\W+and\W+with\W+no\W+claim\W+as\W+to\W+its\W+suitability\W+for\W+any\W+purpose
+Permission\W+to\W+copy\W+use[^"[:word:]]+modify\W+sell\W+and\W+distribute\W+this\W+software\W+is\W+granted\W+provided\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+This\W+software\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty\W+and\W+with\W+no\W+claim\W+at\W+to\W+its\W+suitability\W+for\W+any\W+purpose
+Permission\W+to\W+copy\W+use\W+sell\W+and\W+distribute\W+this\W+software\W+is\W+granted\W+provided\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+Permission\W+to\W+modify\W+the\W+code\W+and\W+to\W+distribute\W+modified\W+code\W+is\W+granted\W+provided\W+this\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+and\W+a\W+notice\W+that\W+the\W+code\W+was\W+modified\W+is\W+included\W+with\W+the\W+copyright\W+notice\W+This\W+software\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty\W+and\W+with\W+no\W+claim\W+as\W+to\W+its\W+suitability\W+for\W+any\W+purpose
+Permission\W+to\W+use\W+copy\W+modify\W+and\W+distribute\W+this\W+software\W+for\W+any\W+purpose\W+is\W+hereby\W+granted\W+without\W+fee\W+provided\W+that\W+this\W+copyright\W+and\W+permissions\W+notice\W+appear\W+in\W+all\W+copies\W+and\W+derivatives\W+This\W+software\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty
+Permission\W+to\W+use\W+copy\W+modify\W+distribute\W+and\W+sell\W+this\W+software\W+and\W+its\W+documentation\W+for\W+any\W+purpose\W+is\W+hereby\W+granted\W+without\W+fee\W+provided\W+that\W+the\W+above\W+copyright\W+notice\W+appears?\W+in\W+all\W+copies\W+and\W+that\W+both\W+(the|that)\W+copyright\W+notice\W+and\W+this\W+permission\W+notice\W+appears?\W+in\W+supporting\W+documentation[^<>]{1, 100}\W+no\W+representations\W+(are\W+made\W+)?about\W+the\W+suitability\W+of\W+this\W+software\W+for\W+any\W+purpose\W+It\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty
+Permission\W+to\W+use\W+copy\W+modify\W+distribute\W+and\W+sell\W+this\W+software\W+for\W+any\W+purpose\W+is\W+hereby\W+granted\W+without\W+fee\W+provided\W+that\W+the\W+above\W+copyright\W+notice\W+appears?\W+in\W+all\W+copies\W+and\W+that\W+both\W+(the|that)\W+copyright\W+notice\W+and\W+this\W+permission\W+notice\W+appears?\W+in\W+supporting\W+documentation[^<>]{1, 100}\W+no\W+representations\W+(are\W+made\W+)?about\W+the\W+suitability\W+of\W+this\W+software\W+for\W+any\W+purpose\W+It\W+is\W+provided\W+as\W+is\W+without\W+express(ed)?\W+or\W+implied\W+warranty
+Permission\W+to\W+use\W+copy\W+modify\W+sell\W+and\W+distribute\W+this\W+software\W+is\W+hereby\W+granted\W+without\W+fee\W+provided\W+that\W+the\W+above\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+and\W+that\W+both\W+that\W+copyright\W+notice\W+and\W+this\W+permission\W+notice\W+appear\W+in\W+supporting\W+documentation[^<>]{1,100}\W+(make\W+any\W+representation|makes\W+no\W+representations)\W+about\W+the\W+suitability\W+of\W+this\W+software\W+for\W+any\W+purpose\W+It\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty
+Permission\W+to\W+use\W+copy\W+modify\W+sell\W+and\W+distribute\W+this\W+software\W+is\W+hereby\W+granted\W+without\W+fee\W+provided\W+that\W+the\W+above\W+copyright\W+notice\W+appears\W+in\W+all\W+copies\W+and\W+that\W+both\W+that\W+copyright\W+notice\W+and\W+this\W+permission\W+notice\W+appear\W+in\W+supporting\W+documentation\W+None\W+of\W+the\W+above\W+authors\W+nor.{1,100}make\W+any\W+representation\W+about\W+the\W+suitability\W+of\W+this\W+software\W+for\W+any\W+purpose\W+It\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty
+<P>For brevity, only files not under the BSL are shown</P>
+phoenix)
+plus-sign
+<P>Permission of the following authors is needed before we can convert to the Boost Software License. The list of authors that have given their permission is contained in <code>more/blanket-permission.txt</code>.</P>
+<P>Phoenix V0.9<BR>Copyright (c) <I>Date</I> Joel de Guzman</P><P>This software is provided 'as-is', without any express or implied warranty. In no event will the copyright holder be held liable for any damages arising from the use of this software.</P><P>Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:</P><P>1.  The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.</P>2.  Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software. </P><P>3.  This notice may not be removed or altered from any source distribution. 
+</p><p>The Boost path was: <code>
+<pre><a href="#input">Input Information</a>
+</pre></BLOCKQUOTE>
+Premature end of regular expression
+preprocessed\W+version\W+of\W+boost/mpl/.*\.hpp\W+header\W+see\W+the\W+original\W+for\W+copyright\W+information
+</pre></td>
+__printf_chk
+/proc/%d/exe
+/proc/%d/stat
+(progn (gdb "gdb -q -x %s"))
+project-root.jam
+prop-base
+provided this copyright notice appears in all copies.
+provided this copyright notice appears in all copies, and a notice
+<P>Skeleton parser for Yacc-like parsing with Bison,<BR>Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002 Free Software Foundation, Inc.</P><P>This program is free software; you can redistribute it and/or modifyit under the terms of the GNU General Public License as published bythe Free Software Foundation; either version 2, or (at your option)any later version.</P><P>This program is distributed in the hope that it will be useful,but WITHOUT ANY WARRANTY; without even the implied warranty ofMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See theGNU General Public License for more details.</P><P>You should have received a copy of the GNU General Public Licensealong with this program; if not, write to the Free SoftwareFoundation, Inc., 59 Temple Place - Suite 330,Boston, MA 02111-1307, USA.</P><P>As a special exception, when this file is copied by Bison into aBison output file, you may use that output file without restriction.This special exception was added by the Free Software Foundationin version 1.24 of Bison.</P>
+<p>The Boost version is: 
+<P>The code has no license terms, it has been explicity placed in the
+<P>The following 
+<P>The following Boost modules were checked:<BR>
+<P>The following files were scanned for boost dependencies:<BR>
+<P>This file can be redistributed and/or modified under the terms found in <a href="http://www.boost.org/libs/pool/doc/copyright.html">copyright.html</a></P>
+<P>This license applies to 
+<P>This license applies to the following 
+<P>This license is used by 
+<P>This license is used by the following 
+<P>This material is provided "as is", with absolutely no warranty expressed or implied. Any use is at your own risk.</P><P>Permission to use or copy this software for any purpose is hereby granted without fee, provided the above notices are retained on all copies. Permission to modify the code and to distribute modified code is granted, provided the above notices are retained, and a notice that the code was modified is included with the above copyright notice.</P>
+<P>This software and its documentation is provided "as is" without express or implied warranty, and with no claim as to its suitability for any purpose</P>
+<P>This software is provided "as is" without express or implied warranty,
+pthread_cancel
+pthread_mutex_lock
+pthread_mutex_unlock
+Public Domain
+public domain by it's author(s).</P>
+Python Software License
+question-mark
+quotation-mark
+Ran out of stack space trying to match the regular expression.
+readdir64
+readdir64_r
+readlink
+Regular expression is too large.
+--report
+right-curly-bracket
+right-parenthesis
+right-square-bracket
+   --scan           treat the module list as a list of (possibly non-boost)
+">(see details)</a>
+semicolon
+SGI Style Licence (MPL preprocessed file)
+SGI Style License
+shell unlink 
+sigaction
+::sigaction( m_sig, &m_new_action, &m_old_action ) != -1
+::sigaction( m_sig , sigaction_ptr(), &m_new_action ) != -1
+sigaltstack
+::sigaltstack( 0, &sigstk ) != -1
+::sigaltstack( &sigstk, 0 ) != -1
+sigemptyset
+sigemptyset( &m_new_action.sa_mask ) != -1
+signal: co-processor error; address of failing instruction: 0x%08lx
+signal: floating point divide by zero; address of failing instruction: 0x%08lx
+signal: floating point inexact result; address of failing instruction: 0x%08lx
+signal: floating point overflow; address of failing instruction: 0x%08lx
+signal: floating point underflow; address of failing instruction: 0x%08lx
+signal: generated by kill() (or family); uid=%d; pid=%d
+signal: generated by the completion of an asynchronous I/O request
+signal: generated by the the arrival of a message on an empty message queue
+signal: illegal addressing mode; address of failing instruction: 0x%08lx
+signal: illegal opcode; address of failing instruction: 0x%08lx
+signal: illegal operand; address of failing instruction: 0x%08lx
+signal: illegal trap; address of failing instruction: 0x%08lx
+signal: integer divide by zero; address of failing instruction: 0x%08lx
+signal: integer overflow; address of failing instruction: 0x%08lx
+signal: internal stack error; address of failing instruction: 0x%08lx
+signal: invalid floating point operation; address of failing instruction: 0x%08lx
+signal: privileged opcode; address of failing instruction: 0x%08lx
+signal: privileged register; address of failing instruction: 0x%08lx
+signal: sent by sigqueue()
+signal: SIGABRT (application abort requested)
+signal: SIGALRM (timeout while executing function)
+signal: SIGCHLD, si_code: %d (child process has terminated; pid: %d; uid: %d; exit value: %d)
+signal: SIGFPE, si_code: %d (errnoneous arithmetic operations; address of failing instruction: 0x%08lx)
+signal: SIGILL, si_code: %d (illegal instruction; address of failing instruction: 0x%08lx)
+signal: SIGPOLL, si_code: %d (asynchronous I/O event occured; band event %d)
+signal: SIGSEGV, si_code: %d (memory access violation at address: 0x%08lx)
+::signal( sig, ((__sighandler_t) 0) ) != ((__sighandler_t) -1)
+signal: subscript out of range; address of failing instruction: 0x%08lx
+signal: the expiration of a timer set by timer_settimer()
+__sigsetjmp
+^\s*int\s+(?:cpp_main|test_main|unit_test_main)
+Skeleton\W+parser\W+for\W+Yacc\W+like\W+parsing\W+with\W+Bison\W+Copyright.{0,100}Free\W+Software\W+Foundation\W+Inc\W+\W+This\W+program\W+is\W+free\W+software\W+you\W+can\W+redistribute\W+it\W+and\W+or\W+modify\W+it\W+under\W+the\W+terms\W+of\W+the\W+GNU\W+General\W+Public\W+License\W+as\W+published\W+by\W+the\W+Free\W+Software\W+Foundation\W+either\W+version\W+2\W+or\W+at\W+your\W+option\W+any\W+later\W+version|\{\s*"!"\s*,\s*_BANG_t\s*\}
+__snprintf_chk
+)\s*\([^;()]*\)\s*;)
+(?:\s*,(?!\s*(?:inc|ltd)\b)\s*|\s+(,\s*)?(and|&)\s+)|by\s+
+)\s*(?:<[^;{>]*>\s*)?(?::[^;{]*)?\{|\<(?!return)\w+\>[^:;{}#=<>!~%.\w]*(
+|(\{\s*"!"\s*,\s*_BANG_t\s*\})
+__stack_chk_fail
+statvfs64
+std::bad_alloc: %s
+std::bad_cast: %s
+std::bad_exception: %s
+std::bad_typeid: %s
+std::domain_error: %s
+std::exception: %s
+std::invalid_argument: %s
+std::length_error: %s
+std::logic_error: %s
+std::out_of_range: %s
+std::overflow_error: %s
+std::range_error: %s
+std::runtime_error: %s
+std::string: %s
+std::underflow_error: %s
+stopped child had continued; pid: %d; uid: %d; exit value: %d
+strerror
+strerror_r
+.svn-base
+.svn/entries
+svn:mime-type[[:blank:]]*(?:\n|\r|\r\n)[^\r\n]*(?:\n|\r|\r\n)[[:blank:]]*text/
+   --svn            only copy files under cvs version control
+system_error produced by: %s: %s
+\$$;\$(t;
+T$$9T$8t3
+</table>
+<table border="1">
+    <td><pre>
+</td><td>
+</td></tr>
+that the code was modified is included with the copyright notice.</P>
+The Boost path appears to have been incorrectly set: could not find boost/version.hpp in 
+The \c and \C escape sequences are not supported by POSIX basic regular expressions: try the Perl syntax instead.
+The complexity of matching the regular expression exceeded predefined bounds.  Try refactoring the regular expression to make each choice made by the state machine unambiguous.  This exception is thrown to prevent "eternal" matches that take an indefinite period time to locate.
+  The error occured while parsing the regular expression: '
+  The error occured while parsing the regular expression fragment: '
+The recursive sub-expression refers to an invalid marking group, or is unterminated.
+The repeat operator "?" cannot start a regular expression.
+The repeat operator "*" cannot start a regular expression.
+The repeat operator "+" cannot start a regular expression.
+(?:The|This)\W+code\W+is\W+considered\W+to\W+be\W+in\W+the\W+public\W+domain
+The top level namespaces found for all other source files were:
+The top level namespaces found for header and source files were:
+This software is provided "as is" without express or implied<BR>
+This\W+file\W+can\W+be\W+redistributed\W+and\W+or\W+modified\W+under\W+the\W+terms\W+found\W+in\W+copyright\W+html\W+This\W+software\W+and\W+its\W+documentation\W+is\W+provided\W+as\W+is\W+without\W+express\W+or\W+implied\W+warranty\W+and\W+with\W+no\W+claim\W+as\W+to\W+its\W+suitability\W+for\W+any\W+purpose
+This\W+file\W+is\W+part\W+of\W+jam\W+License\W+is\W+hereby\W+granted\W+to\W+use\W+this\W+software\W+and\W+distribute\W+it\W+freely\W+as\W+long\W+as\W+this\W+copyright\W+notice\W+is\W+retained\W+and\W+modifications\W+are\W+clearly\W+marked\W+ALL\W+WARRANTIES\W+ARE\W+HEREBY\W+DISCLAIMED|This\W+file\W+is\W+part\W+of\W+Jam\W+see\W+jam\.c\W+for\W+Copyright\W+information|This file has been donated to Jam|Generated by mkjambase from Jambase
+This\W+file\W+is\W+part\W+of\W+the\W+(Boost\W+Graph|Generic\W+Graph\W+Component)\W+Library\W+You\W+should\W+have\W+received\W+a\W+copy\W+of\W+the\W+License\W+Agreement\W+for\W+the\W+(Boost|Generic)\W+Graph\W+(Component\W+)?Library\W+along\W+with\W+the\W+software;\W+see\W+the\W+file\W+LICENSE(\W+If\W+not\W+contact\W+Office\W+of\W+Research\W+Indiana\W+University\W+Bloomington\W+IN\W+47405)?\W+Permission\W+to\W+modify\W+the\W+code\W+and\W+to\W+distribute(\W+modified|\W+the)\W+code\W+is\W+granted\W+provided\W+the\W+text\W+of\W+this\W+NOTICE\W+is\W+retained\W+a\W+notice\W+(that|if)\W+the\W+code\W+was\W+modified\W+is\W+included\W+with\W+the\W+above\W+COPYRIGHT\W+NOTICE\W+and\W+with\W+the\W+COPYRIGHT\W+NOTICE\W+in\W+the\W+LICENSE\W+file\W+and\W+that\W+the\W+LICENSE\W+file\W+is\W+distributed\W+with\W+the\W+modified\W+code\W+\W+LICENSOR\W+MAKES\W+NO\W+REPRESENTATIONS\W+OR\W+WARRANTIES\W+EXPRESS\W+OR\W+IMPLIED\W+By\W+way\W+of\W+example\W+but\W+not\W+limitation\W+Licensor\W+MAKES\W+NO\W+REPRESENTATIONS\W+OR\W+WARRANTIES\W+OF\W+MERCHANTABILITY\W+OR\W+FITNESS\W+FOR\W+ANY\W+PARTICULAR\W+PURPOSE\W+OR\W+THAT\W+THE\W+USE\W+OF\W+THE\W+LICENSED\W+SOFTWARE\W+COMPONENTS\W+OR\W+DOCUMENTATION\W+WILL\W+NOT\W+INFRINGE\W+ANY\W+PATENTS\W+COPYRIGHTS\W+TRADEMARKS\W+OR\W+OTHER\W+RIGHTS
+This\W+file\W+is\W+part\W+of\W+the\W+(Boost\W+Graph|Generic\W+Graph\W+Component)\W+Library\W+You\W+should\W+have\W+received\W+a\W+copy\W+of\W+the\W+License\W+Agreement\W+for\W+the\W+(Boost|Generic)\W+Graph\W+(Component\W+)?Library\W+along\W+with\W+the\W+software;\W+see\W+the\W+file\W+LICENSE(\W+If\W+not\W+contact\W+Office\W+of\W+Research\W+University\W+of\W+Notre\W+Dame\W+Notre\W+Dame\W+IN\W+46556)?\W+Permission\W+to\W+modify\W+the\W+code\W+and\W+to\W+distribute(\W+modified|\W+the)\W+code\W+is\W+granted\W+provided\W+the\W+text\W+of\W+this\W+NOTICE\W+is\W+retained\W+a\W+notice\W+(that|if)\W+the\W+code\W+was\W+modified\W+is\W+included\W+with\W+the\W+above\W+COPYRIGHT\W+NOTICE\W+and\W+with\W+the\W+COPYRIGHT\W+NOTICE\W+in\W+the\W+LICENSE\W+file\W+and\W+that\W+the\W+LICENSE\W+file\W+is\W+distributed\W+with\W+the\W+modified\W+code\W+\W+LICENSOR\W+MAKES\W+NO\W+REPRESENTATIONS\W+OR\W+WARRANTIES\W+EXPRESS\W+OR\W+IMPLIED\W+By\W+way\W+of\W+example\W+but\W+not\W+limitation\W+Licensor\W+MAKES\W+NO\W+REPRESENTATIONS\W+OR\W+WARRANTIES\W+OF\W+MERCHANTABILITY\W+OR\W+FITNESS\W+FOR\W+ANY\W+PARTICULAR\W+PURPOSE\W+OR\W+THAT\W+THE\W+USE\W+OF\W+THE\W+LICENSED\W+SOFTWARE\W+COMPONENTS\W+OR\W+DOCUMENTATION\W+WILL\W+NOT\W+INFRINGE\W+ANY\W+PATENTS\W+COPYRIGHTS\W+TRADEMARKS\W+OR\W+OTHER\W+RIGHTS
+This\W+material\W+is\W+provided\W+as\W+is\W+with\W+absolutely\W+no\W+warranty\W+expressed\W+or\W+implied\W+Any\W+use\W+is\W+at\W+your\W+own\W+risk\W+Permission\W+to\W+use\W+or\W+copy\W+this\W+software\W+for\W+any\W+purpose\W+is\W+hereby\W+granted\W+without\W+fee\W+provided\W+the\W+above\W+notices\W+are\W+retained\W+on\W+all\W+copies\W+Permission\W+to\W+modify\W+the\W+code\W+and\W+to\W+distribute\W+modified\W+code\W+is\W+granted\W+provided\W+the\W+above\W+notices\W+are\W+retained\W+and\W+a\W+notice\W+that\W+the\W+code\W+was\W+modified\W+is\W+included\W+with\W+the\W+above\W+copyright\W+notice
+This\W+software\W+is\W+provided\W+as-is\W+without\W+any\W+express\W+or\W+implied\W+warranty\W+In\W+no\W+event\W+will\W+the\W+copyright\W+holder\W+be\W+held\W+liable\W+for\W+any\W+damages\W+arising\W+from\W+the\W+use\W+of\W+this\W+software\W+Permission\W+is\W+granted\W+to\W+anyone\W+to\W+use\W+this\W+software\W+for\W+any\W+purpose\W+including\W+commercial\W+applications\W+and\W+to\W+alter\W+it\W+and\W+redistribute\W+it\W+freely\W+subject\W+to\W+the\W+following\W+restrictions:\W+1\W+The\W+origin\W+of\W+this\W+software\W+must\W+not\W+be\W+misrepresented;\W+you\W+must\W+not\W+claim\W+that\W+you\W+wrote\W+the\W+original\W+software\W+If\W+you\W+use\W+this\W+software\W+in\W+a\W+product\W+an\W+acknowledgment\W+in\W+the\W+product\W+documentation\W+would\W+be\W+appreciated\W+but\W+is\W+not\W+required\W+2\W+Altered\W+source\W+versions\W+must\W+be\W+plainly\W+marked\W+as\W+such\W+and\W+must\W+not\W+be\W+misrepresented\W+as\W+being\W+the\W+original\W+software\W+3\W+This\W+notice\W+may\W+not\W+be\W+removed\W+or\W+altered\W+from\W+any\W+source\W+distribution
+</title>
+<title>Boost Licence Dependency Information
+/tmp/btl_gdb_cmd_XXXXXX
+tools/build/allyourbase.jam
+tools/build/v1/allyourbase.jam
+tools/build/v2/boost-build.jam
+ to the list of dependencies to extract to copy this functionality.
+towlower
+towupper
+traced child has trapped; pid: %d; uid: %d; exit value: %d
+<tr><td>
+truncate
+</tt><br>
+T$ tZ;D$ tN
+tU9D$ tE
+Unable to open message catalog: 
+uncaught exception, system error or abort requested
+underscore
+--unix-lines
+   --unix-lines     make sure that all copied files use Unix style line endings
+unknown boost::exception
+Unknown error
+Unknown error.
+unknown location
+unknown type
+unlink %s;cont;%s%s
+Unmatched marking parenthesis ( or \(.
+Unmatched ) or \)
+Unmatched [ or [^ in character class declaration.
+Unmatched quantified repeat operator { or \{.
+unrecognized signal
+Unterminated named capture.
+Unterminated \Q...\E sequence.
+_Unwind_Resume
+Usage Error: Can't mix regular expression captures with POSIX matching rules
+Use\W+\modification\W+and\W+distribution(\W+is|\W+are)\W+subject\W+to(\W+the)?[^"[:word:]]+Boost\W+Software\W+License\W+Version\W+1.0
+vector::_M_fill_insert
+vector::_M_insert_aux
+vector::_M_range_check
+vector::reserve
+--version
+vertical-line
+vertical-tab
+__vsnprintf_chk
+warranty, and with no claim as to its suitability for any purpose.</P>
+wslowerupperalphapunct(?>
+ <Wvd+SD
+(?|(?:\<\w+\>[^>;{},:]*)(?:(\<\w+\>)\s*(?:<[^>;{]*>)?::\s*)?(\<(?!throw|if|while|for|catch)\w+\>)\s*\([^\(\);{}]*\)\s*\{|(\<\w+\>)\s*(?:<[^>;{]*>)?::\s*~?\1\s*\([^\(\);{}]*\)\s*\{)
+__xstat64
+_ZNKSs12find_last_ofEPKcjj
+_ZNKSs13find_first_ofEPKcjj
+_ZNKSs4findEcj
+_ZNKSs4findEPKcjj
+_ZNKSs5rfindEcj
+_ZNKSs7compareEjjPKc
+_ZNKSs7compareEPKc
+_ZNKSt11logic_error4whatEv
+_ZNKSt13runtime_error4whatEv
+_ZNKSt5ctypeIcE13_M_widen_initEv
+_ZNSi3getEv
+_ZNSiD0Ev
+_ZNSiD1Ev
+_ZNSirsERi
+_ZNSo3putEc
+_ZNSo5flushEv
+_ZNSo5writeEPKci
+_ZNSo9_M_insertIlEERSoT_
+_ZNSo9_M_insertImEERSoT_
+_ZNSolsEi
+_ZNSs12_M_leak_hardEv
+_ZNSs14_M_replace_auxEjjjc
+_ZNSs4_Rep10_M_destroyERKSaIcE
+_ZNSs4_Rep20_S_empty_rep_storageE
+_ZNSs4_Rep9_S_createEjjRKSaIcE
+_ZNSs6appendEjc
+_ZNSs6appendEPKc
+_ZNSs6appendEPKcj
+_ZNSs6appendERKSs
+_ZNSs6assignEPKcj
+_ZNSs6assignERKSs
+_ZNSs6insertEjPKcj
+_ZNSs7_M_leakEv
+_ZNSs7replaceEjjPKcj
+_ZNSs7reserveEj
+_ZNSs9_M_mutateEjjj
+_ZNSsC1EjcRKSaIcE
+_ZNSsC1EPKcjRKSaIcE
+_ZNSsC1EPKcRKSaIcE
+_ZNSsC1ERKSs
+_ZNSsC1ERKSsjj
+_ZNSsD1Ev
+_ZNSt11logic_errorC1ERKSs
+_ZNSt11logic_errorD1Ev
+_ZNSt11logic_errorD2Ev
+_ZNSt12__basic_fileIcED1Ev
+_ZNSt13basic_filebufIcSt11char_traitsIcEE4openEPKcSt13_Ios_Openmode
+_ZNSt13basic_filebufIcSt11char_traitsIcEE5closeEv
+_ZNSt13basic_filebufIcSt11char_traitsIcEEC1Ev
+_ZNSt13basic_filebufIcSt11char_traitsIcEED1Ev
+_ZNSt13runtime_errorC1ERKSs
+_ZNSt13runtime_errorC2ERKSs
+_ZNSt13runtime_errorD1Ev
+_ZNSt13runtime_errorD2Ev
+_ZNSt14basic_ifstreamIcSt11char_traitsIcEEC1EPKcSt13_Ios_Openmode
+_ZNSt14basic_ifstreamIcSt11char_traitsIcEEC2EPKcSt13_Ios_Openmode
+_ZNSt14basic_ifstreamIcSt11char_traitsIcEED0Ev
+_ZNSt14basic_ifstreamIcSt11char_traitsIcEED1Ev
+_ZNSt14basic_ofstreamIcSt11char_traitsIcEEC1EPKcSt13_Ios_Openmode
+_ZNSt14basic_ofstreamIcSt11char_traitsIcEEC1Ev
+_ZNSt14basic_ofstreamIcSt11char_traitsIcEED1Ev
+_ZNSt15basic_streambufIcSt11char_traitsIcEE4syncEv
+_ZNSt15basic_streambufIcSt11char_traitsIcEE5imbueERKSt6locale
+_ZNSt15basic_streambufIcSt11char_traitsIcEE5uflowEv
+_ZNSt15basic_streambufIcSt11char_traitsIcEE6setbufEPci
+_ZNSt15basic_streambufIcSt11char_traitsIcEE6xsgetnEPci
+_ZNSt15basic_streambufIcSt11char_traitsIcEE6xsputnEPKci
+_ZNSt15basic_streambufIcSt11char_traitsIcEE7seekoffExSt12_Ios_SeekdirSt13_Ios_Openmode
+_ZNSt15basic_streambufIcSt11char_traitsIcEE7seekposESt4fposI11__mbstate_tESt13_Ios_Openmode
+_ZNSt15basic_streambufIcSt11char_traitsIcEE8overflowEi
+_ZNSt15basic_streambufIcSt11char_traitsIcEE9pbackfailEi
+_ZNSt15basic_streambufIcSt11char_traitsIcEE9showmanycEv
+_ZNSt15basic_streambufIcSt11char_traitsIcEE9underflowEv
+_ZNSt15basic_streambufIcSt11char_traitsIcEED2Ev
+_ZNSt16invalid_argumentC1ERKSs
+_ZNSt16invalid_argumentD1Ev
+_ZNSt16invalid_argumentD2Ev
+_ZNSt6localeaSERKS_
+_ZNSt6localeC1EPKc
+_ZNSt6localeC1ERKS_
+_ZNSt6localeC1Ev
+_ZNSt6localeD1Ev
+_ZNSt8bad_castD2Ev
+_ZNSt8__detail15_List_node_base11_M_transferEPS0_S1_
+_ZNSt8__detail15_List_node_base7_M_hookEPS0_
+_ZNSt8__detail15_List_node_base9_M_unhookEv
+_ZNSt8ios_base4InitC1Ev
+_ZNSt8ios_base4InitD1Ev
+_ZNSt8ios_baseC2Ev
+_ZNSt8ios_baseD2Ev
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+_ZNSt9basic_iosIcSt11char_traitsIcEED2Ev
+_ZNSt9exceptionD2Ev
+_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_i
+_ZSt16__throw_bad_castv
+_ZSt17__throw_bad_allocv
+_ZSt18_Rb_tree_decrementPKSt18_Rb_tree_node_base
+_ZSt18_Rb_tree_decrementPSt18_Rb_tree_node_base
+_ZSt18_Rb_tree_incrementPKSt18_Rb_tree_node_base
+_ZSt19__throw_logic_errorPKc
+_ZSt20__throw_length_errorPKc
+_ZSt20__throw_out_of_rangePKc
+_ZSt21__copy_streambufs_eofIcSt11char_traitsIcEEiPSt15basic_streambufIT_T0_ES6_Rb
+_ZSt28_Rb_tree_rebalance_for_erasePSt18_Rb_tree_node_baseRS_
+_ZSt29_Rb_tree_insert_and_rebalancebPSt18_Rb_tree_node_baseS0_RS_
+_ZSt4cerr
+_ZSt4cout
+_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+_ZSt7getlineIcSt11char_traitsIcESaIcEERSt13basic_istreamIT_T0_ES7_RSbIS4_S5_T1_ES4_
+_ZSt9has_facetISt8messagesIcEEbRKSt6locale
+_ZSt9terminatev
+_ZSt9use_facetISt5ctypeIcEERKT_RKSt6locale
+_ZSt9use_facetISt7codecvtIwc11__mbstate_tEERKT_RKSt6locale
+_ZSt9use_facetISt7collateIcEERKT_RKSt6locale
+_ZSt9use_facetISt8messagesIcEERKT_RKSt6locale
+_ZSt9use_facetISt8numpunctIcEERKT_RKSt6locale
+_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKSbIS4_S5_T1_E
+_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+_ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_EPKS3_RKS6_
+_ZTISt10bad_typeid
+_ZTISt11logic_error
+_ZTISt11range_error
+_ZTISt12domain_error
+_ZTISt12length_error
+_ZTISt12out_of_range
+_ZTISt13bad_exception
+_ZTISt13runtime_error
+_ZTISt14basic_ifstreamIcSt11char_traitsIcEE
+_ZTISt14overflow_error
+_ZTISt15basic_streambufIcSt11char_traitsIcEE
+_ZTISt15underflow_error
+_ZTISt16invalid_argument
+_ZTISt8bad_cast
+_ZTISt9bad_alloc
+_ZTISt9exception
+_ZTTSt14basic_ifstreamIcSt11char_traitsIcEE
+_ZTTSt14basic_ofstreamIcSt11char_traitsIcEE
+_ZTv0_n12_NSiD0Ev
+_ZTv0_n12_NSiD1Ev
+_ZTv0_n12_NSt14basic_ifstreamIcSt11char_traitsIcEED0Ev
+_ZTv0_n12_NSt14basic_ifstreamIcSt11char_traitsIcEED1Ev
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE
+_ZTVN10__cxxabiv121__vmi_class_type_infoE
+_ZTVSt11logic_error
+_ZTVSt13basic_filebufIcSt11char_traitsIcEE
+_ZTVSt13runtime_error
+_ZTVSt14basic_ifstreamIcSt11char_traitsIcEE
+_ZTVSt14basic_ofstreamIcSt11char_traitsIcEE
+_ZTVSt15basic_streambufIcSt11char_traitsIcEE
+_ZTVSt16invalid_argument
+_ZTVSt9basic_iosIcSt11char_traitsIcEE

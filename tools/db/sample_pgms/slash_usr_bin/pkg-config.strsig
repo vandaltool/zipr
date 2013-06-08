@@ -1,0 +1,241 @@
+Adding directory '%s' from PKG_CONFIG_PATH
+Adding '%s' to list of known packages, returning as package '%s'
+Adding virtual 'pkg-config' package to list of known packages
+atleast-pkgconfig-version
+atleast-version
+be silent about errors (default unless --cflags or --libsgiven on the command line)
+__bss_start
+Cannot open directory '%s' in package search path: %s
+Cannot open log file: %s
+Cflags field occurs twice in '%s'
+cflags-only-I
+cflags-only-other
+C_INCLUDE_PATH
+closedir
+(command line arguments)
+Comparison operator but no version after package name '%s' in file '%s'
+comparison_to_str
+Conflicts
+Conflicts field occurs twice in '%s'
+Considering '%s' to be a filename rather than a package name
+Couldn't parse Cflags field into an argument vector: %s
+Couldn't parse Libs field into an argument vector: %s
+Couldn't parse Libs.private field into an argument vector: %s
+CPLUS_INCLUDE_PATH
+__ctype_b_loc
+debug_spew
+define-variable
+--define-variable argument does not have a value for the variable
+Description
+Description field occurs twice in '%s'
+disabling auto-preference for uninstalled packages
+Duplicate definition of variable '%s' in '%s'
+Empty package name in Requires or Conflicts in file '%s'
+end >= start
+__errno_location
+Error printing disabled
+Error printing disabled by default, value of --print-errors: %d
+Error printing enabled
+Error printing enabled by default due to use of --version, --libs, --cflags, --libs-only-l, --libs-only-L, --libs-only-other, --cflags-only-I, --cflags-only-other or --list. Value of --silence-errors: %d
+errors-to-stdout
+exact-version
+Failed to open '%s': %s
+Failed to parse '%s'
+File '%s' appears to be a .pc file
+File '%s' ignored, we already know about package '%s'
+format != NULL
+__fprintf_chk
+-framework
+g_assertion_message
+g_assertion_message_expr
+get the value of variable named NAME
+g_file_test
+g_getenv
+g_hash_table_destroy
+g_hash_table_foreach
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+Global variable definition '%s' = '%s'
+g_malloc
+g_malloc0
+__gmon_start__
+g_path_get_dirname
+g_realloc
+g_return_if_fail_warning
+g_slist_append
+g_slist_concat
+g_slist_copy
+g_slist_find
+g_slist_foreach
+g_slist_free
+g_slist_prepend
+g_slist_remove
+g_slist_reverse
+g_slist_sort
+g_strchomp
+g_strchug
+g_strconcat
+g_strdup
+g_strdup_vprintf
+g_str_equal
+g_strerror
+g_strfreev
+g_str_hash
+g_string_append
+g_string_free
+g_string_insert_c
+g_string_new
+g_string_truncate
+g_strndup
+g_strnfill
+g_strsplit
+Help options:
+http://pkg-config.freedesktop.org/
+-idirafter
+Ignoring file '%s' in search directory; not a .pc file
+Ignoring '%s' while looking for '%s'; not a regular file.
+internal_get_package
+Internal pkg-config error, package with no key, please file a bug report
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+/lib/ld-linux.so.2
+/lib:/lib64:/usr/lib:/usr/lib/i386-linux-gnu:/usr/lib64
+LIBPOPT_0
+libpopt.so.0
+Libs field occurs twice in '%s'
+libs-only-l
+libs-only-other
+Libs.private
+Libs.private field occurs twice in '%s'
+  line>%s
+list-all
+list all known packages
+Looking for package '%s'
+max-version
+modversion
+Must specify package names on the command line
+Name field occurs twice in '%s'
+NAME=VALUE
+No package '%s' found
+No pcfiledir determined for package
+Option --%s seen
+original
+output all linker flags
+output all pre-processor and compiler flags
+output cflags not covered by the cflags-only-I option
+output -I flags
+output -l flags
+output linker flags for static linking
+output list of variables defined by the module
+output other libs (e.g. -pthread)
+output version for package
+output version of pkg-config
+Package file '%s' appears to be empty
+package_get_cflags
+Package %s has -L %s in Libs
+Package '%s' has no Description: field
+Package '%s' has no Name: field
+Package '%s' has no Version: field
+Package %s has %s in Cflags
+Package '%s', required by '%s', not found
+Package '%s' requires '%s %s %s' but version of %s is %s
+Package %s was not found in the pkg-config search path.
+parse_module_list
+Parsing package file '%s'
+Path position of '%s' is %d
+pcfiledir
+pc_sysrootdir
+pc_top_builddir
+Perhaps you should add the directory containing `%s.pc'
+PKG_CONFIG_ALLOW_SYSTEM_CFLAGS
+PKG_CONFIG_ALLOW_SYSTEM_LIBS
+PKG_CONFIG_DEBUG_SPEW
+PKG_CONFIG_DEBUG_SPEW variable enabling debug spew
+PKG_CONFIG_DISABLE_UNINSTALLED
+pkg-config is a system for managing compile/link flags for libraries
+PKG_CONFIG_LIBDIR
+PKG_CONFIG_LOG
+PKG_CONFIG_PATH
+PKG_CONFIG_SYSROOT_DIR
+PKG_CONFIG_SYSTEM_INCLUDE_PATH
+PKG_CONFIG_SYSTEM_LIBRARY_PATH
+PKG_CONFIG_TOP_BUILD_DIR
+poptBadOption
+poptFreeContext
+poptGetArg
+poptGetContext
+poptGetNextOpt
+poptHelpOptions
+poptParseArgvString
+poptStrerror
+Preferring uninstalled version of package '%s'
+print-errors
+print errors from --print-errors to stdout not stderr
+__printf_chk
+print-provides
+print-requires
+print-requires-private
+print short errors
+print-variables
+print which packages the package provides
+print which packages the package requires
+print which packages the package requires for static linking
+Reading '%s' from file '%s'
+ removing duplicate (from back) "%s"
+ removing duplicate "%s"
+Removing -L %s from libs for %s
+Removing %s from cflags for %s
+Requested '%s %s %s' but version of %s is %s
+require given version of pkg-config
+Requires
+Requires field occurs twice in '%s'
+Requires.private
+Requires.private field occurs twice in '%s'
+return 0 if the module is at exactly version VERSION
+return 0 if the module is at least version VERSION
+return 0 if the module is at no newer than version VERSION
+return 0 if the module(s) exist
+return 0 if the uninstalled version of one or more module(s) or their dependencies will be used
+Scanning directory '%s'
+set variable NAME to VALUE
+short-errors
+show verbose debug information
+show verbose information about missing or conflicting packages,default if --cflags or --libs given on the command line
+silence-errors
+%s NOT-FOUND
+split_module_list
+%s %s %s
+(%s %s %s conflicts with %s %s)
+%s%s%s - %s
+__stack_chk_fail
+str != NULL
+$(top_builddir)
+to the PKG_CONFIG_PATH environment variable
+trim_string
+-uninstalled
+uninstalled.pc
+Unknown keyword '%s' in '%s'
+Unknown version comparison operator '%s' after package name '%s' in file '%s'
+URL field occurs twice in '%s'
+/usr/include
+/usr/local/lib/i386-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/lib/i386-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
+ Variable declaration, '%s' has value '%s'
+Variable '%s' defined twice globally
+Variable '%s' not defined in '%s'
+verbose_error
+ver->name
+Version field occurs twice in '%s'
+Version %s of %s creates a conflict.
+version_test
+Will find package '%s' in file '%s'
+You may find new versions of %s at %s

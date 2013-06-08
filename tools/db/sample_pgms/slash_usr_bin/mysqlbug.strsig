@@ -1,0 +1,265 @@
+        ;;
+  # 1) Severity
+  # 2) Priority
+  # 3) Class
+  # 4) Synopsis
+      a*)
+    # Absolute path ?. 
+admin=`which_1 mysqladmin`
+# along with this program; if not, write to the Free Software
+  # and to protect shell metacharacters in the expansion of $LOGNAME
+ARCH=`test -f /bin/arch  && /bin/arch`
+# Based on glibc bug reporting script.
+#!/bin/sh
+        break 2
+BUGADDR=${1-$BUGmysql}
+BUGmysql="mysql@lists.mysql.com"
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+  case "$CLASS" in
+    case "$input" in
+case "$N" in
+  case "$PRIORITY" in
+  case "$SEVERITY" in
+  case "$VALUE" in
+>Category:	mysql
+cat > $TEMP <<EOF
+  cat $TEMP >> $HOME/dead.mysqlbug
+	cat $TEMP >> $HOME/dead.mysqlbug
+>C++ compiler:  g++-4.5.real (Ubuntu/Linaro 4.5.3-12ubuntu2) 4.5.3
+>C compiler:    gcc-4.5.real (Ubuntu/Linaro 4.5.3-12ubuntu2) 4.5.3
+  *c)	ECHON1='echo -n' ECHON2= ;;
+  change_editor
+change_editor ()
+  #       Check if subject of mail was changed, if not, use Synopsis field
+#       Check the enumeration fields
+chmod u+w $TEMP
+>Class:		$CLASS_C
+CLASS_C='<[ sw-bug | doc-bug | change-request | support ] (one line)>'
+  CLASS=`eval sed -n -e "\"$SED_CMD\"" $TEMP`
+/^>Class:/s;<.*>;;
+    *) CNT=`expr $CNT + 1` 
+COMMAND=`echo $0|sed 's%.*/\([^/]*\)%\1%'`
+COMP_CALL_INFO="CC='/usr/bin/i686-linux-gnu-gcc-4.5'  CFLAGS='-O2 -DBIG_JOINS=1  -fno-strict-aliasing  -Wall -O2 -g -DDBUG_OFF'  CXX='/usr/bin/i686-linux-gnu-g++-4.5'  CXXFLAGS='-O3 -DBIG_JOINS=1 -felide-constructors -fno-exceptions -fno-rtti  -fno-strict-aliasing  -Wall -Wno-unused-parameter -fno-implicit-templates -fno-exceptions -fno-rtti -O2 -g -DDBUG_OFF'  LDFLAGS=''  ASFLAGS=''"
+COMPILATION_COMMENT="(Ubuntu)"
+COMP_RUN_INFO="CC='/usr/bin/i686-linux-gnu-gcc-4.5'  CFLAGS='-O2 -DBIG_JOINS=1  -fno-strict-aliasing  -Wall -O2 -g -DDBUG_OFF'  CXX='/usr/bin/i686-linux-gnu-g++-4.5'  CXXFLAGS='-O3 -DBIG_JOINS=1 -felide-constructors -fno-exceptions -fno-rtti  -fno-strict-aliasing  -Wall -Wno-unused-parameter -fno-implicit-templates -fno-exceptions -fno-rtti -O2 -g -DDBUG_OFF'  LDFLAGS=''  ASFLAGS=''"
+/^>Confidential:/s;<.*>;;
+CONFIGURE_LINE=""
+        continue 2
+# Copyright (C) 2000-2002, 2004 MySQL AB
+cp $TEMP $TEMP.x
+# Create a bug report and mail it to the mysql mailing list
+>Description:
+/^>Description:/,/^>[A-Za-z-]*:/s;$DESCRIPTION_C;;
+	$DESCRIPTION_C
+DESCRIPTION_C='<precise description of the problem (multiple lines)>'
+      do
+      done
+      e*)
+      echo "$cmd"
+    *)  echo "$COMMAND: \`$CLASS' is not a valid value for \`Class'."
+  echo "$COMMAND: mysterious mail failure, report not sent."
+    *)  echo "$COMMAND: \`$PRIORITY' is not a valid value for \`Priority'."
+  echo "$COMMAND: problem report saved in $HOME/dead.mysqlbug."
+	echo "$COMMAND: problem report saved in $HOME/dead.mysqlbug."
+  echo "$COMMAND: problem report sent"
+    *)  echo "$COMMAND: \`$SEVERITY' is not a valid value for \`Severity'."
+  echo "Could not find a text editor. (tried $EDIT)"
+    echo "Errors were found with the problem report."
+	  echo "$file"
+  echo "File not changed, no bug report submitted."
+echo "Finding system information for a MySQL bug report"
+  echo "If your shell is a bourne shell (sh) do"
+  echo "If your shell is a C shell (csh) do"
+  echo "If you use this remember that the first lines of the report are now a lie.."
+    $ECHON1 "a)bort, e)dit or s)end? $ECHON2"
+  *)	ECHON1=echo ECHON2='\c' ;;
+  echo "setenv VISUAL your_editors_name"
+echo "test -x $used_editor"
+  echo "The raw bug report exists in /tmp/failed-mysql-bugreport"
+  echo "Using editor $used_editor";
+  echo "VISUAL=your_editors_name; export VISUAL"
+  echo "You can change editor by setting the environment variable VISUAL."
+    EDIT="$EDITOR"
+      EDIT=emacs
+      EDIT=/usr/bin/sensible-editor
+  EDIT="$VISUAL"
+    elif test $cmd = "perl"
+elif test -f $HOME/.fullname
+  elif test -f $HOME/.signature
+elif test -f /usr/sbin/sendmail
+    else
+>Environment:
+/^>Environment:/,/^>[A-Za-z-]*:/s;$ENVIRONMENT_C;;
+	$ENVIRONMENT_C
+ENVIRONMENT_C='<machine, os, target, libraries (multiple lines)>'
+ENVIRONMENT=`uname -a`
+    esac
+        eval $EDIT $TEMP
+eval $EDIT $TEMP
+      exit 0
+	  exit 0
+  exit 1
+export PATH
+# Figure out how to echo a string without a trailing newline
+	file="$d/$cmd"
+FILE_PATHS=
+    FILE_PATHS="$FILE_PATHS $file"
+  file=`which_1 $cmd`
+# Find out some information.
+# Find out the name of the originator of this PR.
+/^>Fix:/,/^>[A-Za-z-]*:/s;$FIX_C;;
+FIX_C='<how to correct or work around the problem, if known (multiple lines)>'
+  for cmd
+for cmd in perl make gmake gcc cc
+      for d in $PATH_DIRS
+for pat in /lib/libc.* /lib/libc-* /usr/lib/libc.* /usr/lib/libc-*
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+From: ${USER}
+      GCC_INFO=`$file -v 2>&1`
+# GNU General Public License for more details.
+    # Honor debian sensible-editor
+# How to read the passwd database.
+>How-To-Repeat:
+/^>How-To-Repeat:/,/^>[A-Za-z-]*:/s;$HOW_TO_REPEAT_C;;
+	$HOW_TO_REPEAT_C
+HOW_TO_REPEAT_C='<code/input/activities to reproduce the problem (multiple lines)>'
+if cmp -s $TEMP $TEMP.x
+    if expr "x$cmd" : "x/" > /dev/null
+if $MAIL_AGENT < $TEMP.x
+    if test $? = 0
+  if test $? = 0
+  if test "$?" = "1"
+    if test $cmd = "gcc"
+  if test -f $HOME/.organization
+  if test -f "$ORGANIZATION"
+if test -f /usr/lib/sendmail
+if test -n "$NAME" 
+if test -n "$ORGANIZATION"
+if test -x "$admin"
+	if test -x "$file" -a ! -d "$file"
+if test -x "$used_editor"
+    if test -x "/usr/bin/sensible-editor"
+  if test -z "$EDITOR"
+if test -z "$VISUAL"
+# If they don't have a preferred editor set, then use emacs
+  if [ X"$subject" = X"$SUBJECT_C" -o X"$subject" = X"$SYNOPSIS_C" ]; then
+# it under the terms of the GNU General Public License as published by
+LIBC_INFO=""
+      LIBC_INFO="$LIBC_INFO
+LICENCE_C='[none | licence | email support | extended email support ]'
+    ""|low|medium|high) CNT=`expr $CNT + 1` ;;
+MACHINE=`test -f /bin/machine  && /bin/machine`
+  MAIL_AGENT="rmail $BUGmysql"
+  MAIL_AGENT="/usr/lib/sendmail -oi -t"
+  MAIL_AGENT="/usr/sbin/sendmail -oi -t"
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+mkdir $TEMPDIR || (echo "can not create directory in /tmp, aborting"; exit 1;)
+  # Must use temp file due to incompatibilities in quoting behavior
+  mv -f $TEMP /tmp/failed-mysql-bugreport
+    mv -f $TEMP.tmp $TEMP
+    MYSQL_SERVER=""
+MYSQL_SERVER=
+  MYSQL_SERVER=`$admin version 2> /dev/null`
+>MySQL support: $LICENCE_C
+N=`echo 'hi there\c'`
+    ""|non-critical|serious|critical) CNT=`expr $CNT + 1` ;;
+>Organization:
+/^>Organization:/,/^>[A-Za-z-]*:/s;$ORGANIZATION_C;;
+    ORGANIZATION="`cat $HOME/.organization`"
+    ORGANIZATION="`cat $ORGANIZATION`"
+ORGANIZATION_C='<organization of PR author (multiple lines)>'
+${ORGANIZATION- $ORGANIZATION_C}
+    ORGANIZATION=`sed -e "s/^/  /" $HOME/.signature; echo ">"`
+  ORIGINATOR="`cat $TEMP`"
+  ORIGINATOR="$NAME"
+>Originator:	${ORIGINATOR}
+  ORIGINATOR="`sed -e '1q' $HOME/.fullname`"
+# /^>Originator:/s;$ORIGINATOR;;
+PASSWD="cat /etc/passwd"
+  $PASSWD | grep "^$LOGNAME:" | awk -F: '{print $5}' | sed -e 's/,.*//' > $TEMP
+PATH=../client:$PATH:/bin:/usr/bin:/usr/local/bin
+PATH_DIRS=`echo $PATH | sed -e 's/^:/. /' -e 's/:$/ ./' -e 's/::/ . /g' -e 's/:/ /g' `
+/$PATTERN/{
+  PATTERN=">Class:"
+  PATTERN=">Priority:"
+  PATTERN=">Severity:"
+      PERL_INFO=`$file -v | grep -i version 2>&1`
+PRIORITY_C='<[ low | medium | high ] (one line)>'
+  PRIORITY=`eval sed -n -e "\"$SED_CMD\"" $TEMP`
+>Priority:	$PRIORITY_C
+/^>Priority:/s;<.*>;;
+    read input
+/^>Release:/,/^>[A-Za-z-]*:/s;$RELEASE_C;;
+RELEASE_C='<release number or tag (one line)>'
+>Release:	mysql-${VERSION} ($COMPILATION_COMMENT)
+#       Remove comments and send the problem report
+  rm -f $TEMP
+      s*)
+s|^[ 	]*||
+s|<.*>||
+s|[ 	]*$||
+SED_CMD='
+sed  -e "
+    sed "s/^Subject:[ 	]*.*/Subject: $subject/" $TEMP > $TEMP.tmp
+SEND-PR:
+/^SEND-PR:/d
+SEND-PR: Lines starting with \`SEND-PR' will be removed automatically, as
+SEND-PR: -*- send-pr -*-
+SEND-PR: will all comments (text enclosed in \`<' and \`>').
+SEVERITY_C='<[ non-critical | serious | critical ] (one line)>'
+  SEVERITY=`eval sed -n -e "\"$SED_CMD\"" $TEMP`
+/^>Severity:/s;<.*>;;
+>Severity:	$SEVERITY_C
+  sleep 2
+SUBJECT_C="[50 character or so descriptive subject here (for reference)]"
+  subject=`grep "^Subject" $TEMP| sed 's/^Subject:[ 	]*//'`
+    subject=`grep Synopsis $TEMP | sed 's/>Synopsis:[     ]*//'`
+Subject: $SUBJECT_C
+>Submitter-Id:	<submitter ID>
+    ""|sw-bug|doc-bug|change-request|support) CNT=`expr $CNT + 1` ;;
+    "$SYNOPSIS_C")  echo "$COMMAND: \`$VALUE' is not a valid value for \`Synopsis'." ;;
+SYNOPSIS_C='<synopsis of the problem (one line)>'
+/^>Synopsis:/s;$SYNOPSIS_C;;
+>Synopsis:	$SYNOPSIS_C
+SYSTEM=`( test -f /bin/uname  && /bin/uname -a ) || \
+TEMPDIR=/tmp/mysqlbug-$$
+TEMP=${TEMPDIR}/mysqlbug
+" $TEMP > $TEMP.x
+  test $CNT -lt 4  &&
+        ( test -f /usr/bin/uname  && /usr/bin/uname -a ) || echo ""`
+`test -n "$ARCH"  && echo "Architecture: $ARCH"`
+`test -n "$COMP_CALL_INFO"  && echo "Compilation info (call): $COMP_CALL_INFO"`
+`test -n "$COMP_RUN_INFO"   && echo "Compilation info (used): $COMP_RUN_INFO"`
+`test -n "$CONFIGURE_LINE"  && echo "Configure command: $CONFIGURE_LINE"`
+`test -n "$FILE_PATHS"  && echo "Some paths: $FILE_PATHS"`
+`test -n "$GCC_INFO"  && echo "GCC: $GCC_INFO"`
+`test -n "$LIBC_INFO"  && echo "LIBC: $LIBC_INFO"`
+`test -n "$MACHINE"  && echo "Machine: $MACHINE"`
+`test -n "$MYSQL_SERVER" && echo ">Server: $MYSQL_SERVER"`
+`test -n "$PERL_INFO"  && echo "Perl: $PERL_INFO"`
+`test -n "$SYSTEM"  && echo "System: $SYSTEM"`
+# the Free Software Foundation; version 2 of the License.
+    then
+# This is a "sed-subroutine" with one keyword parameter
+# This is set by configure
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+    TMP=`ls -l $pat 2>/dev/null`
+To: ${BUGADDR}
+trap 'rm -f $TEMP $TEMP.x; rmdir $TEMPDIR' 0
+trap 'rm -f $TEMP $TEMP.x; rmdir $TEMPDIR; exit 1' 1 2 3 13 15
+# Try to create a secure tmpfile
+umask 077
+used_editor=`which_1 $EDIT`
+: ${USER=${LOGNAME-`whoami`}}
+  VALUE=`grep "^>Synopsis:" $TEMP | sed 's/>Synopsis:[ 	]*//'`
+VERSION="5.5.31-0ubuntu0.12.04.2"
+#       (we have to use patterns, where the comment contains regex chars)
+which_1 ()
+#which_1 $EDIT
+  while :; do
+while :; do
+# (with workaround for Sun sed bug)
+  xs=0; exit
+        xs=1; exit
+# You should have received a copy of the GNU General Public License

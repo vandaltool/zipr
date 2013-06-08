@@ -1,0 +1,3871 @@
+|&*+-=!?:.
+    =>  
+ 	$#+-'"
+?$@@%&*$
+([{< )]}> )]}>
+[#!%*<>()-=
+$@%*;[]&\_+
+$&*(){}[]'";\|?<>~`
+\[$@%*]$@
+\[$%@];$
++-*/%.^&|<
+0000000000
+####'''***-./0000055789999=>?@@@@@@@@@@PPPPNOPQRSPUUUUYZ[\]^^^aaaaaaghijklm5oUUQQ<<==========..;;;;JJ999999eeccddffgg
+' '\012\012\012\012'|
+ !"#$%&'()*+,-./0123456789:;<=>?
++-0123456789_
+0123456789abcdef0123456789ABCDEF
+`!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_
+ !"#$%&'()*+,-./0123456789:;<=>?@abcdefghijklmnopqrstuvwxyz[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKMPQRSTUVYZ[\]^_`c
+ !"#$%&')*+,-./012456789:;<=?@ABCDEFGHJKLMNOPQRSVWXYZ[\]^_abcdefghijlmnopqrstuwxyz{|}~
+ "#%&'()*./01Dcltw
+037777777777
+%04lx		%04lx
+%04Lx	%04Lx
+%04lx	%04lx	%04lx
+%04lx	%04lx	XXXX
+%04lx		XXXX
+0b11111111111111111111111111111111
+0 but true
+0@Number too long
+  -0[octal]         specify record separator (\0, if no argument)
+'()*.0str
+0xffffffff
+(0x%Lx) at 0x%Lx
+_<(%.10s_eval %lu)
+_<(%.10seval %lu)[%s:%Ld]
+!11q((r 0G
+&`'123456789+-
+1's complement (~)
+$2456789>?@ABCEKWXY^_b
+%2d. 0x%Lx<%lu>
+%2d. 0x%Lx<%lu> FAKE "%s" flags=0x%lx index=%lu
+%2d. 0x%Lx<%lu> (%lu,%lu) "%s"
+      %2Ld: %Lu -> %Lu
+3D$@3T$D	
+(3>IU`kv
+3L$l3\$h
+3:;<=MNPQRSTUV[\]`
+3T$t3D$p	
+3|$x3\$|	
+%.40s:%Ld 
+|$49|$Lt
+/5.14.2/i686-linux-gnu-thread-multi-64int
+-./789:;<=@ABCDEFGHILMP
+\$8;],t!
+\$8;Z,t,
+\$8;Z,tr
+|$,9|$0tC
+\$,9\$4w
+|$,9|$8u[
+|$ 9B,u	
+|$@9|$ps#
+|$(9|$,r4
+9T$4|+~#
+  -a                autosplit mode with -n or -p (splits $_ into @F)
+ACan't undef active subroutine
+a constant (%-p)
+a constant (undef)
+  (*** Active iterator; skipping element dump ***)
+aelemfast
+after '_' 
+AHOCORASICK
+AHOCORASICKC
+  ALLOC = 0x%Lx
+amagicelem
+Ambiguous call resolved as CORE::%s(), qualify as such or use &
+Ambiguous range in transliteration operator
+Ambiguous use of %c resolved as operator %c
+Ambiguous use of %c{%s} resolved to %c%s
+Ambiguous use of %c{%s%s} resolved to %c%s%s
+Ambiguous use of 's//le...' resolved as 's// le...'; Rewrite as 's//el' if you meant 'use locale rules and evaluate rhs as an expression'.  In Perl 5.16, it will be resolved the other way
+Ambiguous use of -%s resolved as -&%s()
+an ARRAY
+ANCH_BOL
+ANCH_BOL,
+ANCH_GPOS
+ANCH_GPOS,
+ANCH_MBOL
+ANCH_MBOL,
+ANCH_SBOL
+ANCH_SBOL,
+andassign
+__ANON__::__ANON__
+anoncode
+anonhash
+__ANONIO__
+anonlist
+(anonymous)
+anonymous hash ({})
+anonymous list ([])
+anonymous subroutine
+ANot an ARRAY reference
+another variable
+AnyDBM_File
+AnyDBM_File::ISA
+AnyDBM_File.pm
+Apanic: paren_elems_to_push < 0
+append I/O operator
+Applying %s to %s will act on scalar(%s)
+a readonly value
+    are supported and installed on your system.
+	(Are you trying to call %s%s on dirhandle?)
+	(Are you trying to call %s%s on dirhandle %s?)
+Arg too short for msgsnd
+Argument list not closed for PerlIO layer "%.*s"
+Argument "%s" isn't numeric
+Argument "%s" isn't numeric in %s
+ARNING_BITS
+  ARRAY = 0x%Lx
+array dereference
+array length
+Array @%-p missing the @ in argument %Ld of %s()
+array slice
+,ARYBASE
+arylen(#)
+  ARYLEN = 0x%Lx
+arylen_p
+arylen_p(@)
+a SCALAR
+assigning to $^O
+Assignment to both a list and a scalar
+ASSUMECV,
+a subroutine
+a symbol
+a temporary
+at end of line
+ at %s line %Ld
+ at %s line %Ld, 
+,ATTACHED
+Attempt to access disallowed key '%-p' in a restricted hash
+Attempt to bless into a reference
+Attempt to delete disallowed key '%-p' from a restricted hash
+Attempt to delete readonly key '%-p' from a restricted hash
+Attempt to free non-existent shared string '%s'%s, Perl interpreter: 0x%p
+Attempt to free unreferenced glob pointers, Perl interpreter: 0x%p
+Attempt to free unreferenced scalar: SV 0x%Lx, Perl interpreter: 0x%p
+Attempt to pack pointer to temporary value
+Attempt to reload %s aborted.
+Attempt to set length of freed array
+Attempt to use reference as lvalue in substr
+attributes
+attributes.pm
+AUnimplemented
+AUTOLOAD
+    AV = 0x%Lx
+av2arylen
+a variable
+backref(<)
+  BACKREFS = 0x%Lx
+Backslash
+Backticks
+,BACKWARDS
+Bad arg length for %s, is %lu, should be %ld
+Bad evalled substitution pattern
+Bad filehandle: %-p
+Bad filehandle: %s
+Bad name after %s%s
+Bad plugin affecting keyword '%s'
+Bad symbol for %s
+bad top format reference
+Bareword
+Bareword found in conditional
+Bareword "%-p" not allowed while "strict subs" in use
+Bareword "%s" refers to nonexistent package
+BASH_ENV
+BEGIN failed--compilation aborted
+BEGIN { require 'perl5db.pl' };
+Binary number > 0b11111111111111111111111111111111 non-portable
+"\b{" is deprecated; use "\b\{" instead in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+Bit vector size > 32 non-portable
+bitwise and (&)
+bitwise or (|)
+bitwise xor (^)
+Bizarre copy of %s
+Bizarre copy of %s in %s
+Bizarre SvTYPE [%Ld]
+block entry
+block exit
+block or sub {}
+boolkeys
+boot_DynaLoader
+bootstrap parameter %-p
+  BOTTOM_GV
+  BOTTOM_GV = 0x%Lx
+  BOTTOM_NAME = "%s"
+BRANCH_next
+BRANCH_next_fail
+__bss_start
+<bt(<tt4<+f
+  CACHE_GEN = 0x%Lx
+'%c' allowed only after types %s in %s
+Call to &{$^H{
+Cannot compress integer in pack
+Cannot compress negative numbers in pack
+Cannot convert a reference to %s to typeglob
+Cannot copy to %s
+Cannot copy to %s in %s
+Cannot find %.*s
+Cannot find version of an unblessed reference
+Cannot flush f=%p
+Cannot modify shared string table in hv_%s
+Can only compress unsigned integers in pack
+Can't bless non-reference value
+Can't "break" in a loop topicalizer
+Can't "break" outside a given block
+Can't call method "%-p" on an undefined value
+Can't call method "%-p" %s
+Can't call method "%s" on unblessed reference
+Can't call mro_isa_changed_in() on anonymous symbol table
+Can't call mro_method_changed_in() on anonymous symbol table
+Can't chdir to %s
+Can't coerce readonly %s to string
+Can't coerce readonly %s to string in %s
+Can't coerce %s to integer in %s
+Can't coerce %s to number in %s
+Can't coerce %s to string in %s
+Can't "continue" outside a when block
+Can't declare %s in "%s"
+Can't do inplace edit on %s: %s
+Can't do inplace edit: %s is not a regular file
+Can't do {n,m} with n > m
+Can't emulate -%.1s on #! line
+Can't exec %s
+Can't exec "%s": %s
+Can't find an opnumber for "%s"
+Can't find label %s
+Can't find string terminator %c%s%c anywhere before EOF
+Can't find Unicode property definition "%-p"
+Can't fix broken locale name "%s"
+Can't fork: %s
+Can't fork, trying again in 5 seconds
+Can't "goto" into the middle of a foreach loop
+Can't "goto" out of a pseudo block
+Can't goto subroutine from an eval-block
+Can't goto subroutine from an eval-string
+Can't goto subroutine from a sort sub (or similar callback)
+Can't goto subroutine outside a subroutine
+Can't ignore signal CHLD, forcing to default
+Can't kill a non-numeric process ID
+Can't "last" outside a loop block
+Can't linearize anonymous symbol table
+Can't localize lexical variable %s
+Can't localize through a reference
+Can't locate object method "%s" via package "%-p"
+Can't locate object method "%s" via package "%.*s"
+Can't locate object method "%s" via package "%.*s" (perhaps you forgot to load "%.*s"?)
+Can't locate package %-p for @%s::ISA
+Can't locate %s
+Can't locate %s in @INC%s%s (@INC contains:%-p)
+Can't locate %s:   %s
+Can't modify non-existent substring
+Can't modify non-lvalue subroutine call
+Can't modify %s in %s
+Can't "next" outside a loop block
+Can't open bidirectional pipe
+Can't open /dev/null: %s
+Can't open perl script "%s": %s
+Can't open %s: %s
+Can't "redo" outside a loop block
+Can't remove %s: %s, skipping file
+Can't rename %s to %-p: %s, skipping file
+Can't resolve
+Can't return array to lvalue scalar context
+Can't return a %s from lvalue subroutine
+Can't return hash to lvalue scalar context
+Can't return outside a subroutine
+Can't return %s from lvalue subroutine
+Can't return %s to lvalue scalar context
+Can't set $0 with prctl(): %s
+Can't %s %s%s%s
+Can't take %s of %g
+Can't upgrade %s (%Lu) to %Lu
+Can't use anonymous symbol table for method lookup
+Can't use an undefined value as %s reference
+Can't use bareword ("%-p") as %s ref while "strict refs" in use
+Can't use both '<' and '>' after type '%c' in %s
+Can't use '%c' after -mname
+Can't use '%c' in a group with different byte-order in %s
+Can't use \%c to mean $%c in expression
+Can't use global %c^%c%.*s in "%s"
+Can't use global %.*s in "%s"
+Can't use "my %s" in sort comparison
+Can't use %s for loop variable
+Can't use %s ref as %s ref
+Can't use string ("%-32p") as %s ref while "strict refs" in use
+Can't use string ("%-32p"%s) as %s ref while "strict refs" in use
+Can't use string ("%.32s") as %s ref while "strict refs" in use
+Can't use string ("%.32s"%s) as a subroutine ref while "strict refs" in use
+Can't use when() outside a topicalizer
+Can't weaken a nonreference
+CANY_SEEN
+CANY_SEEN,
+cat_decode
+	...caught
+\%c better written as $%c
+  -c                check syntax only (runs BEGIN and CHECK blocks)
+"\c%c" is more clearly written simply as "%s"
+cCsSiIlLnNUWvVqQjJ
+CDIMUdmtwW
+ (change .h to .ph maybe?) (did you run h2ph?)
+Character following "\c" must be ASCII
+Character in 'c' format wrapped in pack
+Character in '%c' format wrapped in unpack
+Character in 'W' format wrapped in pack
+Character(s) in '%c' format wrapped in %s
+charnames
+C?HD.dSR
+CHECK_ALL
+CHECK_ALL,
+checkcall(])
+"\c{" is deprecated and is more clearly written as ";"
+$%c is no longer supported
+"-%c" is on the #! line, it must also be used on the command line%s
+classname
+class, version
+Cleanup layers for %p
+CLONEABLE,
+Clone %p from %p
+CLONE_SKIP
+Cloning substitution context is unimplemented
+closedir
+closedir() attempted on invalid dirhandle %s
+Closure prototype called
+  -C[number/list]   enables the listed Unicode features
+Code missing after '/' in pack
+Code missing after '/' in unpack
+Code point 0x%04LX is not Unicode, may not be portable
+Code point 0x%04LX is not Unicode, no properties match it; all inverse properties do
+Code point beginning with byte 0x%02LX is not Unicode, and not portable
+collxfrm
+collxfrm(o)
+# comment
+COMMIT_next
+COMMIT_next_fail
+Compilation error
+Compilation failed in require
+Compiled at Mar 18 2013 18:45:14
+complement
+,COMPLEMENT
+Complete documentation for Perl, including FAQ lists, should be found on
+Complex regular subexpression recursion
+  COMP_STASH
+concatenation (.) or string
+cond_expr
+conditional expression
+constant array element
+Constant is not %s reference
+constant item
+Constant(%s): %s%s%s
+Constant subroutine %s redefined
+Constant subroutine %s::%s redefined
+Constant subroutine %s undefined
+Constant(%s) unknown: %s
+ construct
+CONSTRUCT
+continue
+,CONTINUE
+;}continue{print or die qq(-p destination: $!\n);}
+  COP_HIGH = %Lu
+  COP_LOW = %Lu
+      COPY
+COPY_DONE
+COPY_DONE,
+Copy method did not return a reference
+Copyright 1987-2011, Larry Wall
+CORE::backtick
+, core dumped
+CORE::GLOBAL::
+CORE::GLOBAL::glob
+CORE::%s is not a keyword
+Corrupted regexp opcode %d > %d
+corrupted regexp pointers
+corrupted regexp program
+Count after length/code in unpack
+'%c' outside of string in pack
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+  CUR = %Ld
+CURLY_B_max
+CURLY_B_max_fail
+CURLY_B_min
+CURLY_B_min_fail
+CURLY_B_min_known
+CURLY_B_min_known_fail
+CURLYM_A
+CURLYM_A_fail
+CURLYM_B
+CURLYM_B_fail
+CURLYX_end
+CURLYX_end_fail
+%cutf8::Is%s
+%cutf8::%s%.*s%s
+CUTGROUP
+CUTGROUP_next
+CUTGROUP_next_fail
+    CV = 0x%Lx
+cv_flags_names
+    CVGEN = 0x%Lx
+CVGV_RC,
+%cx{%Lx}
+D$\3D$ 	
+D$|3t$x1
+D$4 L$49
+D$@9D$<t|9D$<
+__data_start
+DB::args
+DB::dbline
+DB_File::
+dbfile(L)
+DB::goto
+dbline(l)
+DB::lsub
+dbmclose
+DB::postponed
+DB::signal
+DB::single
+DB::trace
+(%d byte%s, need %d, after start byte 0x%02Lx)
+D$$+D$89D$H
+D$d9D$Xrw
+  -d[:debugger]     run program under debugger
+\.^$@dDwWsSbB+*?|()-nrtfeaxc0123456789[{]}
+DEBPKG:CVE-2013-1667.patch - [PATCH] Prevent premature hsplit() calls, and only trigger REHASH after hsplit()
+DEBPKG:debian/arm_thread_stress_timeout - http://bugs.debian.org/501970 Raise the timeout of ext/threads/shared/t/stress.t to accommodate slower build hosts
+DEBPKG:debian/cpan_definstalldirs - Provide a sensible INSTALLDIRS default for modules installed from CPAN.
+DEBPKG:debian/cpanplus_config_path - Save local versions of CPANPLUS::Config::System into /etc/perl.
+DEBPKG:debian/cpanplus_definstalldirs - http://bugs.debian.org/533707 Configure CPANPLUS to use the site directories by default.
+DEBPKG:debian/db_file_ver - http://bugs.debian.org/340047 Remove overly restrictive DB_File version check.
+DEBPKG:debian/deprecate-with-apt - http://bugs.debian.org/580034 Point users to Debian packages of deprecated core modules
+DEBPKG:debian/disable-zlib-bundling - Disable zlib bundling in Compress::Raw::Zlib
+DEBPKG:debian/doc_info - Replace generic man(1) instructions with Debian-specific information.
+DEBPKG:debian/enc2xs_inc - http://bugs.debian.org/290336 Tweak enc2xs to follow symlinks and ignore missing @INC directories.
+DEBPKG:debian/errno_ver - http://bugs.debian.org/343351 Remove Errno version check due to upgrade problems with long-running processes.
+DEBPKG:debian/extutils_set_libperl_path - EU:MM: Set location of libperl.a to /usr/lib
+DEBPKG:debian/fakeroot - Postpone LD_LIBRARY_PATH evaluation to the binary targets.
+DEBPKG:debian/find_html2text - http://bugs.debian.org/640479 Configure CPAN::Distribution with correct name of html2text
+DEBPKG:debian/hurd_test_skip_io_pipe - http://bugs.debian.org/650096 Disable failing GNU/Hurd tests dist/IO/t/io_pipe.t
+DEBPKG:debian/hurd_test_skip_libc - http://bugs.debian.org/650097 Disable failing GNU/Hurd tests dist/threads/t/libc.t
+DEBPKG:debian/hurd_test_skip_pipe - http://bugs.debian.org/650187 Disable failing GNU/Hurd tests io/pipe.t
+DEBPKG:debian/hurd_test_skip_recv - http://bugs.debian.org/650095 Disable failing GNU/Hurd tests cpan/autodie/t/recv.t
+DEBPKG:debian/hurd_test_skip_sigdispatch - http://bugs.debian.org/650188 Disable failing GNU/Hurd tests op/sigdispatch.t
+DEBPKG:debian/hurd_test_skip_socketpair - http://bugs.debian.org/650186 Disable failing GNU/Hurd tests ext/Socket/t/socketpair.t
+DEBPKG:debian/hurd_test_skip_stack - http://bugs.debian.org/650175 Disable failing GNU/Hurd tests dist/threads/t/stack.t
+DEBPKG:debian/hurd_test_todo_syslog - http://bugs.debian.org/650093 Disable failing GNU/Hurd tests in cpan/Sys-Syslog/t/syslog.t
+DEBPKG:debian/instmodsh_doc - Debian policy doesn't install .packlist files for core or vendor.
+DEBPKG:debian/ld_run_path - Remove standard libs from LD_RUN_PATH as per Debian policy.
+DEBPKG:debian/libnet_config_path - Set location of libnet.cfg to /etc/perl/Net as /usr may not be writable.
+DEBPKG:debian/libperl_embed_doc - http://bugs.debian.org/186778 Note that libperl-dev package is required for embedded linking
+DEBPKG:debian/m68k_thread_stress - http://bugs.debian.org/517938 http://bugs.debian.org/495826 Disable some threads tests on m68k for now due to missing TLS.
+DEBPKG:debian/mod_paths - Tweak @INC ordering for Debian
+DEBPKG:debian/module_build_man_extensions - http://bugs.debian.org/479460 Adjust Module::Build manual page extensions for the Debian Perl policy
+DEBPKG:debian/no_packlist_perllocal - Don't install .packlist or perllocal.pod for perl or vendor
+DEBPKG:debian/patchlevel - http://bugs.debian.org/567489 List packaged patches for 5.14.2-6ubuntu2.3 in patchlevel.h
+DEBPKG:debian/perlivp - http://bugs.debian.org/510895 Make perlivp skip include directories in /usr/local
+DEBPKG:debian/prefix_changes - Fiddle with *PREFIX and variables written to the makefile
+DEBPKG:debian/prune_libs - http://bugs.debian.org/128355 Prune the list of libraries wanted to what we actually need.
+DEBPKG:debian/skip-kfreebsd-crash - http://bugs.debian.org/628493 [perl #96272] Skip a crashing test case in t/op/threads.t on GNU/kFreeBSD
+DEBPKG:debian/skip-upstream-git-tests - Skip tests specific to the upstream Git repository
+DEBPKG:debian/squelch-locale-warnings - http://bugs.debian.org/508764 Squelch locale warnings in Debian package maintainer scripts
+DEBPKG:debian/writable_site_dirs - Set umask approproately for site install directories
+DEBPKG:fixes/CVE-2012-5195 - avoid calling memset with a negative count
+DEBPKG:fixes/CVE-2012-5526 - [PATCH 1/4] CR escaping for P3P header
+DEBPKG:fixes/digest_eval_hole - http://bugs.debian.org/644108 Close the eval "require $module" security hole in Digest->new($algorithm)
+DEBPKG:fixes/document_makemaker_ccflags - http://bugs.debian.org/628522 [rt.cpan.org #68613] Document that CCFLAGS should include $Config{ccflags}
+DEBPKG:fixes/extutils-cbuilder-cflags - [011e8fb] http://bugs.debian.org/624460 [perl #89478] Append CFLAGS and LDFLAGS to their Config.pm counterparts in EU::CBuilder
+DEBPKG:fixes/h2ph-multiarch - [e7ec705] http://bugs.debian.org/625808 [perl #90122] Make h2ph correctly search gcc include directories
+DEBPKG:fixes/hurd-ccflags - [a190e64] http://bugs.debian.org/587901 [perl #92244] Make hints/gnu.sh append to $ccflags rather than overriding them
+DEBPKG:fixes/hurd-hints - http://bugs.debian.org/636609 Improve general GNU hints, needed for GNU/Hurd.
+DEBPKG:fixes/hurd-largefile - [1fda587] [perl #103014] http://bugs.debian.org/645790 enable LFS on GNU/Hurd
+DEBPKG:fixes/hurd-ndbm - [f0d0a20] [perl #102680] http://bugs.debian.org/645989 Add GNU/Hurd hints for NDBM_File
+DEBPKG:fixes/hurd_skip_itimer_virtual - [rt.cpan.org #72754] http://bugs.debian.org/650094 Skip interval timer tests in Time::HiRes on GNU/Hurd
+DEBPKG:fixes/index-tainting - [3b36395] http://bugs.debian.org/291450 [perl #64804] RT 64804: tainting with index() of a constant
+DEBPKG:fixes/module-build-home-directory - http://bugs.debian.org/624850 [rt.cpan.org #67893] Fix failing tilde test when run under a UID without a passwd entry
+DEBPKG:fixes/net_smtp_docs - [rt.cpan.org #36038] http://bugs.debian.org/100195 Document the Net::SMTP 'Port' option
+DEBPKG:fixes/pod_fixes - [7698aed] http://bugs.debian.org/637816 Fix typos in several pod/perl*.pod files
+DEBPKG:fixes/respect_umask - Respect umask during installation
+DEBPKG:fixes/sysconf.t-posix - [8040185] [perl #102888] http://bugs.debian.org/646016 Fix hang in ext/POSIX/t/sysconf.t on GNU/Hurd
+DEBPKG:fixes/sys-syslog-socket-timeout-kfreebsd.patch - http://bugs.debian.org/627821 [rt.cpan.org #69997] Use a socket timeout on GNU/kFreeBSD to catch ICMP port unreachable messages
+debug next statement
+Deep recursion on anonymous subroutine
+Deep recursion on subroutine "%-p"
+defelem(y)
+defined(@array) is deprecated
+defined(%%hash) is deprecated
+(?(DEFINE)....) does not allow branches
+defined operator
+defined or (//)
+defined or assignment (//=)
+define %s %p
+Delimiter for here document is too long
+Deprecated character in \N{...}; marked by <-- HERE  in \N{%.*s<-- HERE %.*s
+Deprecated use of my() in false conditional
+  DEPTH = %Ld
+,DEREFed
+,DESCEND
+DESTROY created new reference to dead object '%s'
+Destruct %p
+Destruct popping %s
+/dev/fd/
+/dev/null
+/dev/urandom
+dfegeheiejekelmnopqqrrssttttttutttttttttttttvtttwwwwwwwwxxxyyz{{||}~
+#D$H3D$8
+D$H9D$(s2
++D$H9D$x
+D$H;|$Hv;
+#D$h#T$l
+}} did not return a defined value
+	(Did you mean "local" instead of "our"?)
+	(Did you mean &%s instead?)
+ (did you run h2ph?)
+dirhandle
+  DIRP = 0x%Lx
+D$L9D$hvr
+D$L9D$hw
+  -D[number/list]   set debugging flags (argument is a bit mask or alphabets)
+do block
+'/' does not take a repeat count in %s
+do "file"
+Don't know how to get file name
+Don't know how to handle magic of type \%o
+dorassign
+do_study: out of memory
+	(Do you need to predeclare %.*s?)
+DPKG_RUNNING_VERSION
+;D$prD;T$p
+drand48_r
++D$`+T$`
+D$$+T$8)
+\$D<.tJ9\$D
+D$Tt(9D$Ht"
+dump() better written as CORE::dump()
+ ???? - dump.c does not know how to handle this MG_LEN
+      DUP
+Duplicate modifier '%c' after '%c' in %s
+ during global destruction
+D$%XXXXf
+DynaLoader::boot_DynaLoader
+DynaLoader.c
+DynaLoader::CLONE
+DynaLoader::dl_error
+DynaLoader::dl_find_symbol
+DynaLoader::dl_install_xsub
+DynaLoader::dl_load_file
+DynaLoader::dl_undef_symbols
+DynaLoader::dl_unload_file
+each on array
+each on reference
+,EARLY_CV
+ehostent
+  EITER = 0x%Lx
+elseif should be elsif
+Elt No. %Ld
+Empty array
+Empty \%c{}
+(empty string)
+  ENAME = "%s"
+  ENAME = %s
+:encoding(%-p)
+endgrent
+endhostent
+endnetent
+end of string
+endprotoent
+endpwent
+endservent
+  ENGINE = 0x%Lx
+,ENTERED
+entereval
+entergiven
+enteriter
+enterloop
+entersub
+entertry
+enterwhen
+enterwrite
+envelem(e)
+__environ
+%%ENV is aliased to %%%s%s
+%%ENV is aliased to %s%s
+$ENV{PATH}
+  -E program        like -e, but enables all optional features
+  -e program        one line of program (several -e's allowed, omit programfile)
+eprotoent
+__errno_location
+error creating/fetching widecharmap entry for 0x%LX
+eservent
+esMACOozScbfdpugk
+/etc/perl
+E_TRIE_MAXBUF
+EVAL_AB_fail
+eval {block}
+eval {block} exit
+Eval-group in insecure regular expression
+Eval-group not allowed at runtime, use re 'eval'
+eval hints
+_<(eval %lu)
+_<(eval %lu)[%s:%Ld]
+EVAL_SEEN
+EVAL_SEEN,
+eval "string"
+eval "string" exit
+eval_sv()
+EVAL without pos change exceeded limit in regex
+Excessively long <> operator
+Execution of %s aborted due to compilation errors.
+,EXISTS_SUB
+Exiting %s via %s
+,EXIT_VMSISH
+Expecting close bracket
+Explicit blessing to '' (assuming package main)
+exponentiation (**)
+Exporter::
+EXTENDED
+  EXTFLAGS = 0x%Lx (%s)
+Eyzuir	pUsx
+False [] range "%*.*s" in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+  -f                don't do $sitelib/sitecustomize.pl at startup
+fdupopen f=%p param=%p
+FETCHSIZE
+FETCHSIZE returned a negative value
+Field too wide in 'u' format in pack
+File::Glob
+File::Glob::csh_glob
+filehandle
+filehandle[,args]
+Filehandle opened only for %sput
+Filehandle %s opened only for %sput
+Filehandle STDIN reopened as %s only for output
+Filehandle STD%s reopened as %s only for input
+filename, flags=0
+    FILE = "%s"
+  FILL = %Ld
+filter_del can only delete in reverse order (currently)
+Final $ should be \$ or $name
+FIRSTKEY
+first_sv_flags_names
+FIX YOUR KERNEL, PUT A C WRAPPER AROUND THIS SCRIPT, OR USE -u AND UNDUMP!
+    FLAGS = 0x%Lx
+  FLAGS = (%s)
+  FLAGS = %u
+flipflop
+  FMT_GV
+  FMT_GV = 0x%Lx
+  FMT_NAME = "%s"
+FOLDCHAR
+foreach loop entry
+foreach loop iterator
+    FORM = 0x%Lx  
+Format not terminated
+Format %-p redefined
+FORMAT %s = 
+Format STDOUT redefined
+Found = in conditional, should be ==
+  -F/pattern/       split() pattern for -a switch (//'s are optional)
+freopen64
+,FROM_UTF
+fseeko64
+,FT_ACCESS
+ftbinary
+ftello64
+fteowned
+ftewrite
+ftrowned
+ftruncate64
+ftrwrite
+,FT_STACKED
+&fxC&(_^X
+__fxstat64
+GCB=Prepend
+GDBM_File::
+getgrent
+getgrent_r
+getgrgid
+getgrgid_r
+getgrnam
+getgrnam_r
+getgroups
+gethostbyaddr
+gethostbyaddr_r
+gethostbyname
+gethostbyname_r
+gethostent
+gethostent_r
+get_layers: unknown argument '%s'
+getlogin
+getlogin_r
+getnetbyaddr
+getnetbyaddr_r
+getnetbyname
+getnetbyname_r
+getnetent
+getnetent_r
+getpeername
+getpriority
+getprotobyname
+getprotobyname_r
+getprotobynumber
+getprotobynumber_r
+getprotoent
+getprotoent_r
+getpwent
+getpwent_r
+getpwnam
+getpwnam_r
+getpwuid
+getpwuid_r
+getservbyname
+getservbyname_r
+getservbyport
+getservbyport_r
+getservent
+getservent_r
+getsockname
+getsockopt
+getspnam
+getspnam_r
+gettimeofday
+ghbyaddr
+ghbyname
+ghostent
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.1.2
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.2
+GLIBC_2.3.4
+GLIBC_2.4
+Global symbol "%s%s" requires explicit package name
+glob elem
+glob failed (can't start child: %s)
+glob failed (child exited with status %d%s)
+Glob not terminated
+glob value
+__gmon_start__
+gnbyaddr
+gnbyname
+GNU General Public License, which may be found in the Perl 5 source kit.
+  GOFS = %Lu
+goto must have label
+Goto undefined subroutine
+Goto undefined subroutine &%-p
+  GP = 0x%Lx
+gpbyname
+gpbynumber
+gp_flags_imported_names
+gp_flags_names
+GPOS_FLOAT
+GPOS_FLOAT,
+GPOS_SEEN
+GPOS_SEEN,
+gprotoent
+grep iterator
+grepstart
+grepwhile
+()-group starts with a count in %s
+gsbyname
+gsbyport
+gservent
+GSize magic not implemented
+      GSKIP
+gsockopt
+GSort subroutine didn't return single value
+,GUESSED
+  GVGV::GV
+GV_NAME = %s
+  GvSTASH
+Had to create %s unexpectedly
+<HANDLE>
+HASH = 0x%Lx
+hash dereference
+hash element
+Hash %%%-p missing the %% in argument %Ld of %s()
+  hash quality = %.1f%%
+HASH_SEED = %Lu
+hash slice
+HASKFLAGS,
+has no overloaded magic
+,HASTARG
+Having no space between pattern and following word is deprecated
+ => HEf_SVKEY
+__h_errno_location
+hexadecimal
+Hexadecimal number > 0xffffffff non-portable
+HILD_ERROR_NATIVE
+hintselem
+hintselem(h)
+hintseval
+hints(H)
+HorizSpace
+HST=Not_Applicable
+\$H;t$4t
+|$H}T9l$$
+,HUSH_VMSISH
+    HV = 0x%Lx
+hv_flags_names
+/i686-linux-gnu-thread-multi-64int
+,IDENTICAL
+Identifier too long
+  -Idirectory       specify @INC/#include directory (several -I's allowed)
+i_divide
+  -i[extension]     edit <> files in place (makes backup if extension supplied)
+IFMATCH_A
+IFMATCH_A_fail
+  IFP = 0x%Lx
+Ignoring zero length \N{} in character class in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+ !"#$%&'()*+,ijkl
+ILEHANDLE
+Illegal binary digit '%c'
+Illegal binary digit '%c' ignored
+Illegal character %sin prototype for %-p : %s
+Illegal declaration of anonymous subroutine
+Illegal declaration of subroutine %-p
+Illegal division by zero
+Illegal hexadecimal digit '%c' ignored
+Illegal modulus zero
+Illegal number of bits in vec
+Illegal octal digit '%c'
+Illegal octal digit '%c' ignored
+Illegal pattern
+Illegal switch in PERL5OPT: -%c
+i_modulo
+i_multiply
+	(in cleanup) %s
+,IN_CRLF
+i_negate
+Infinite recursion in regex
+Initialization of state variables in list context currently forbidden
+in overloaded package 
+,INPLACE
+inplace open
+Insecure dependency in %s%s
+Insecure directory in %s%s
+Insecure $ENV{%s}%s
+Insecure %s%s
+,INTEGER
+integer addition (+)
+integer comparison (<=>)
+integer division (/)
+integer eq (==)
+integer ge (>=)
+integer gt (>)
+integer le (<=)
+integer lt (<)
+integer modulus (%)
+integer multiplication (*)
+integer ne (!=)
+integer negation (-)
+Integer overflow in binary number
+Integer overflow in decimal number
+Integer overflow in format string for %s
+Integer overflow in hexadecimal number
+Integer overflow in octal number
+Integer overflow in %s number
+Integer overflow in version
+Integer overflow in version %d
+integer postdecrement (--)
+integer postincrement (++)
+integer predecrement (--)
+integer preincrement (++)
+integer subtraction (-)
+internal %%<num>p might conflict with future printf extensions
+Internals::hash_seed
+Internals::hv_clear_placeholders
+Internals::HvREHASH
+Internals::HvREHASH $hashref
+Internals::rehash_seed
+Internals::SvREADONLY
+Internals::SvREFCNT
+Internals::V
+Internal urp
+Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+  INTFLAGS = 0x%Lx
+INTUIT_TAIL
+INTUIT_TAIL,
+Invalid argument to sv_cat_decode
+Invalid [::] class
+Invalid conversion in %sprintf: 
+Invalid escape in the specified encoding in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+Invalid hexadecimal number in \N{U+...}
+Invalid module name %.*s with -%c option: contains single ':'
+Invalid mro name: '%-p'
+Invalid range "%c-%c" in transliteration operator
+Invalid [] range "%*.*s"
+Invalid separator character %c%c%c in attribute list
+Invalid separator character %c%c%c in PerlIO layer specification %s
+Invalid type '%c' in pack
+Invalid type '%c' in %s
+Invalid type '%c' in unpack
+Invalid type ',' in %s
+Invalid version format (0 before decimal required)
+Invalid version format (alpha without decimal)
+Invalid version format (dotted-decimal versions must begin with 'v')
+Invalid version format (dotted-decimal versions require at least three parts)
+Invalid version format (fractional part required)
+Invalid version format (maximum 3 digits between decimals)
+Invalid version format (misplaced underscore)
+Invalid version format (multiple underscores)
+Invalid version format (no leading zeros)
+Invalid version format (non-numeric data)
+Invalid version format (no underscores)
+Invalid version format (underscores before decimal)
+Invalid version format (version required)
+Invalid version object
+    IO = 0x%Lx
+IO::File
+IO::File::
+IO::File::ISA
+IO/File.pm
+IO::Handle::
+IO::Seekable::
+_IO_stdin_used
+i_postdec
+i_postinc
+i_predec
+i_preinc
+  ISA = 0x%Lx
+isaelem(i)
+IsLowercase
+} is not defined
+IsPerlSpace
+IsPerlWord
+IsPosixDigit
+IsSpacePerl
+i_subtract
+IsUppercase
+IsXDigit
+iteration finalizer
+  IV = %Ld
+join or string
+Junk on end of regexp
+_Jv_RegisterClasses
+KEEPCOPY
+KEEPS_next
+KEEPS_next_fail
+  KEYS = %Ld
+keys on array
+keys on reference
+L$09L$4uV
+l$0<.tp)
+L$43D$03T$<)
+L$4#D$0#T$<)
+L$>8L$4t
+#L$8#T$<
+L$<9L$0t3
+L$@9\$,tK;t$,
+Label not found for "last %s"
+Label not found for "next %s"
+Label not found for "redo %s"
+LABEL = "%s"
+	LANG = %c%s%c
+LANGUAGE
+	LANGUAGE = %c%s%c,
+LAST ===> 
+  LASTCLOSEPAREN = %Lu
+  LASTPAREN = %Lu
+,LATEFREE
+,LATEFREED
+Layer %Ld is %s
+LAZYDEL,
+	LC_ALL = %c%s%c,
++L$\+D$\
++l$ )D$X
+leaveeval
+leavegiven
+leave given block
+leaveloop
+leavesub
+leavesublv
+leavetry
+leavewhen
+leave when block
+leavewrite
+left bitshift (<<)
+left_shift
+length/code after end of string in unpack
+  LEN = %Ld
+lex_discard_to
+Lexing code attempted to stuff non-Latin-1 character into Latin-1 input
+Lexing code internal error (%s)
+lex_next_chunk
+lex_peek_unichar
+lex_read_space
+lex_read_to
+lex_read_unichar
+lex_start
+lex_stuff_pvn
+lex_stuff_sv
+lex_unstuff
+L$H3D$8	
+L$H9L$Lt
+__libc_csu_fini
+__libc_csu_init
+libcrypt.so.1
+libc.so.6
+__libc_start_main
+libdl.so.2
+libhandle, symbolname
+/lib/ld-linux.so.2
+libm.so.6
+libpthread.so.0
+_LIB_VERSION
+    LINE = %Ld
+LINE = %Lu
+,LINENUM
+line sequence
+  LINES = %Ld
+  LINES_LEFT = %Ld
+LINE: while (<>) {
+list assignment
+list slice
+/loader/0x%Lx/%s
+LOBAL_PHASE
+lobj, ...
+lobj is not of type version
+      LOCAL
+localeconv
+localtime
+localtime_r
+  -l[octal]         enable line ending processing, specifies line terminator
+logical and (&&)
+logical and assignment (&&=)
+logical or (||)
+logical or assignment (||=)
+logical xor
+__longjmp_chk
+Lookbehind longer than %Lu not implemented in regex m/%.*s%s/
+LOOKBEHIND_SEEN
+LOOKBEHIND_SEEN,
+loop exit
+Lost precision when decrementing %f by 1
+Lost precision when incrementing %f by 1
++L$p9T$p
+lstat() on filehandle %s
++l$ )T$X
+,LVAL_DEFER
+lvalue attribute ignored after the subroutine has been defined
+lvalue subroutine return
+__lxstat64
+M=56C3478
+  MAGIC = 0x%Lx
+Malformed integer in [] in %s
+Malformed prototype for %s: %-p
+Malformed UTF-16 surrogate
+Malformed UTF-8 character 
+Malformed UTF-8 character (fatal)
+Malformed UTF-8 character (unexpected end of string)
+Malformed UTF-8 character (unexpected non-continuation byte 0x%02x, immediately after start byte 0x%02x)%s%s
+Malformed UTF-8 returned by \N
+Malformed UTF-8 string in '%c' format in unpack
+Malformed UTF-8 string in pack
+Malformed UTF-8 string in unpack
+map iterator
+mapstart
+mapwhile
+MARKPOINT
+MARKPOINT_next
+MARKPOINT_next_fail
+match position
+MATCH_UTF8
+MATCH_UTF8,
+Maximal count of pending signals (%lu) exceeded
+  MAX = %Ld
+,MAYBE_LVSUB
+	(Maybe you meant system() when you said exec()?)
+	(Maybe you should just omit the defined()?)
+'%%' may not be used in pack
+__memcpy_chk
+method lookup
+method_named
+method with known name
+    MG_FLAGS = 0x%02X
+    MG_LEN = %ld
+    MG_OBJ = 0x%Lx
+    MG_PRIVATE = %d
+    MG_PTR = 0x%Lx
+    MG_TYPE = PERL_MAGIC_%s
+    MG_TYPE = UNKNOWN(\%o)
+    MG_VIRTUAL = 0
+    MG_VIRTUAL = 0x%Lx
+    MG_VIRTUAL = &PL_vtbl_%s
+  (Might be a runaway multi-line %c%c string starting on line %Ld)
+  MINLEN = %Ld
+  MINLENRET = %Ld
+      MINMATCH
+Misplaced _ in number
+Missing argument in %s
+Missing argument to -%c
+Missing braces on \N{}
+Missing braces on \o{}
+Missing comma after first argument to %s function
+Missing command in piped open
+Missing control char name in \c
+Missing name in "my sub"
+Missing $ on loop variable
+	(Missing operator before %.*s?)
+Missing right brace on \%c{}
+Missing right brace on \N{}
+Missing right brace on \N{} or unescaped left brace after \N.
+Missing right brace on \o{
+Missing right brace on \x{}
+Missing right curly or square bracket
+	(Missing semicolon on previous line?)
+Missing (suid) fd script name
+mkstemp64
+  -[mM][-]module    execute "use/no module..." before executing program
+Modification of a read-only value attempted
+Modification of non-creatable array value attempted, subscript %d
+Modification of non-creatable hash value attempted, subscript "%-p"
+Module name must be constant
+Module name required with -%c option
+More fds - old=%d, need %d, new=%d
+More than one argument to '<%c' open
+More than one argument to '>%c' open
+More than one argument to '%c&' open
+More than one argument to open(,':%s')
+  MOTHER_RE = 0x%Lx
+  MRO_LINEAR_ALL = 0x%Lx
+  MRO_LINEAR_CURRENT = 0x%Lx
+mro::method_changed_in
+  MRO_NEXTMETHOD = 0x%Lx
+  MRO_WHICH = "%.*s" (0x%Lx)
+msixopadlu
+msixopadlugc
+msixopadlugcer
+<mt;<wt$1
+Multidimensional syntax %.*s not supported
+MULTILINE
+ MULTIPLICITY PERL_IMPLICIT_CONTEXT USE_64_BIT_INT USE_ITHREADS USE_LARGE_FILES USE_PERLIO USE_REENTRANT_API
+'/' must follow a numeric type in unpack
+"my sub" not yet implemented
+name[, all ]
+  NAMECOUNT = %Ld
+  NAMELEN = %Ld
+  NAME = "%s"
+Name "%s::%s" used only once: possible typo
+  -n                assume "while (<>) { ... }" loop around program
+ND$8;\$4
+NDBM_File::
+near "%.*s"
+Negative '/' count in unpack
+NEGATIVE_INDICES
+Negative length
+Negative offset to vec in lvalue context
+negative pattern binding (!~)
+Nested quantifiers
+NEXT ===> 
+next char 
+nextstate
+next token ???
+NHORIZWS
+\N in a character class must be a named character: \N{...}
+nkeys(k)
+nl_langinfo
+\N{NAME} must be resolved by the lexer
+No code specified for -%c
+No comma allowed after %s
+No DB::DB routine defined
+No dbm on this machine
+No DB::sub routine defined
+NODEBUG,
+no Devel::
+No directory specified for -I
+No group ending character '%c' found in template
+,NONDESTRUCT
+non-destructive substitution (s///r)
+non-destructive transliteration (tr///r)
+<none>::
+NoNe  SuCh
+non-lvalue subroutine call
+Non-octal character '%c'.  Resolved as "\o{%.*s}"
+Non-string passed as bitmask
+No package name allowed for variable %s in "our"
+,NOPAREN
+No Perl script found in input
+No %s allowed with (suid) fdscript
+No such class %.1000s
+No such class field "%s" in variable %s of type %s
+No such class: '%-p'!
+No such hook: %s
+No such signal: SIG%s
+Not a CODE reference
+Not a format reference
+Not a GLOB reference
+Not a HASH reference
+Not an unblessed ARRAY reference
+Not a SCALAR reference
+Not a subroutine reference
+Not enough arguments for %s
+Not enough format arguments
+, '.' not in PATH
+Not %s reference
+  NPARENS = %Lu
+, (null)
+NULL array element in re::regnames()
+Null filename used
+null operation
+NULL OP IN RUN
+Null picture in formline
+NULL regexp parameter
+Number with no digits
+,NUMERIC
+numeric comparison (<=>)
+numeric eq (==)
+numeric ge (>=)
+numeric gt (>)
+numeric le (<=)
+numeric lt (<)
+numeric ne (!=)
+  NV = %.*g
+;&/|})]oaiuwef!=
+object-ref, method
+Octal number > 037777777777 non-portable
+ODBM_File::
+Odd number of elements in anonymous hash
+Odd number of elements in hash assignment
+  OFFS = 0x%Lx
+ (offset=%Ld)
+  OFFSET = %Lu
+Offset outside string
+  OFP = 0x%Lx
+on an undefined value
+one of %.*s
+ on PATH
+oops: oopsAV
+oops: oopsHV
+oop+,xxay
+op_aassign_names
+op_const_names
+op_delete_names
+op_die_names
+open_dir
+Opening dirhandle %s also as a file
+Opening filehandle %s also as a directory
+openn(%s,'%s','%s',%d,%x,%o,%p,%d,%p)
+open_OUT
+op_entersub_names
+operation not supported with version object
+Operation "%s": no method found,%sargument %s%s%s%s
+Operation "%s" returns its argument for non-Unicode code point 0x%04LX
+Operation "%s" returns its argument for UTF-16 surrogate U+%04LX
+() operator
+Operator or semicolon missing before %c%s
+op_exists_names
+op_exit_names
+op_flags_names
+op_flip_names
+op_gv_names
+op_leavesub_names
+op_list_names
+op_open_names
+op_private_names
+op_repeat_names
+op_reverse_names
+op_rv2cv_names
+op_sassign_names
+op_sort_names
+OPTIMIZED
+op_trans_names
+original
+OSTMATCH
+OTHER ===> 
+our @F=split(' ');
+our @F=split(q
+our @F=split(%s);
+,OUR_INTRO
+  OURSTASH
+"our" variable %-p redeclared
+,OUT_CRLF
+Out of memory!
+Out of memory during array extend
+Out of memory during list extend
+Out of memory during string extend
+[out of range]
+,OUT_RAW
+  OUTSIDE = 0x%Lx (%s)
+'@' outside of string in unpack
+'@' outside of string with malformed UTF-8 in unpack
+  OUTSIDE_SEQ = %Lu
+(overflow at 0x%Lx, byte 0x%02x, after start byte 0x%02Lx)
+overload
+OVERLOAD,
+overload(A)
+Overloaded dereference did not return a reference
+Overloaded qr did not return a REGEXP
+overload_elem(a)
+overloading
+overload_table(c)
+__PACKAGE__
+PACKAGE = "%s"
+packelem
+pack/unpack repeat count overflow
+PADIX = %Ld
+  PADLIST = 0x%Lx
+PADNAME = 0x%Lx(0x%Lx) PAD = 0x%Lx(0x%Lx)
+PADSTALE,
+  PAGE = %Ld
+  PAGE_LEN = %Ld
+page overflow
+panic: allocmy illegal flag bits 0x%Lx
+panic: attempting to append to an inversion list, but wasn't at the end of the list
+panic: attempt to copy freed scalar %p
+panic: attempt to copy freed scalar %p to %p
+panic: attempt to copy value %-p to a freed scalar %p
+panic: av_fetch() unexpectedly failed
+panic: avhv_delete no longer supported
+panic: bad flag in reg_scan_name
+panic: bad gimme: %d
+panic: bad pagesize %Ld
+panic: can't register custom OP %s
+panic: Can't use %%%c because %-p does not support method %s
+panic: Can't use %%%c because %-p is not available
+panic: ck_entersub_args_proto CV with no proto
+panic: ck_grep
+panic: ck_split
+panic: constant overflowed allocated space
+panic: corrupt saved stack index
+panic: del_backref
+panic: die 
+panic: do_trans_complex line %d
+panic: do_trans_complex_utf8 line %d
+panic: do_trans_count line %d
+panic: do_trans_simple line %d
+panic: do_trans_simple_utf8 line %d
+panic: do_vop called for op %u (%s)
+panic: fold_constants JMPENV_PUSH returned %d
+panic: frexp
+panic: goto
+panic: gp_free failed to free glob pointer - something is repeatedly re-creating entries
+panic: gv name too long (%Lu)
+panic: hfreeentries failed to free hash - something is repeatedly re-creating entries
+panic: hv name too long (%Lu)
+panic: hv_placeholders_p
+panic: hv_placeholders_set
+panic: hv_store() failed in mro_register() for '%.*s' %d
+panic: hv_store() failed in set_mro_private_data() for '%.*s' %d
+panic: hv_store() unexpectedly failed
+panic: input overflow
+panic! In trie construction, no char mapping for %Ld
+panic: invalid MRO!
+panic: invalid PL_utf8_foldclosures structure
+panic: kid popen errno read
+panic: last
+panic: leave_scope inconsistency
+panic: leave_scope pad code
+panic: magic_killbackrefs (flags=%Lx)
+panic: magic_killbackrefs (freed backref AV/SV)
+panic: magic_len: %Ld
+panic: marks beyond string end
+panic: memory wrap
+panic: MUTEX_DESTROY (%d) [%s:%d]
+panic: MUTEX_INIT (%d) [%s:%d]
+panic: MUTEX_LOCK (%d) [%s:%d]
+panic: MUTEX_UNLOCK (%d) [%s:%d]
+panic: my_snprintf buffer overflow
+panic: my_vsnprintf buffer overflow
+panic: no address for '%s' in '%s'
+panic: no svname in reg_scan_name
+panic: op_contextualize bad context
+panic: pad_add_name illegal flag bits 0x%Lx
+panic: pad_alloc
+panic: pad_findmy illegal flag bits 0x%Lx
+panic: pad_free curpad
+panic: pad_free po
+panic: pad offset %Lu out of range (%p-%p)
+panic: pad_swipe curpad
+panic: pad_swipe po
+panic: paren_elems_to_push offset %Lu out of range (%lu-%ld)
+panic: paren_name hash element allocation failed
+panic: PerlIO layer array corrupt
+panic: POPSTACK
+panic: pp_iter
+panic: pp_match
+panic: pp_match start/end pointers
+panic: pp_split
+panic: pp_subst
+panic: predicted utf8 length not available
+panic: pregfree comppad
+panic: pthread_key_create failed
+panic: pthread_setspecific
+panic: pthread_setspecific (%d) [%s:%d]
+panic: re_dup unknown data code '%c'
+panic: refcounted_he_chain_2hv bad flags %Lx
+panic: refcounted_he_fetch_pvn bad flags %Lx
+panic: refcounted_he_fetch_sv bad flags %Lx
+panic: refcounted_he_new_sv bad flags %Lx
+panic: refcounted_he_value bad flags %Lx
+panic: reference miscount on nsv in sv_replace() (%Lu != 1)
+panic: regfree data code '%c'
+panic: reg_node overrun trying to emit %d
+panic: reg_scan_name returned NULL
+panic: restartop
+panic: return
+panic: rv2cv_op_cv bad flags %x
+panic: save_alloc elems %Lu out of range (%ld-%ld)
+panic: %s cache %Lu real %Lu for %-p
+panic: scan_num
+panic: snprintf buffer overflow
+panic: ss_dup inconsistency (%Ld)
+panic: store_cop_label illegal flag bits 0x%Lx
+panic: string is shorter than advertised
+panic: sv_chop ptr=%p, start=%p, end=%p
+panic: sv_chop ptr=%p (was %p), start=%p, end=%p
+panic: sv_insert
+panic: sv_pos_b2u: bad byte offset
+panic: sv_upgrade to unknown type %lu
+panic: swash_fetch got improper swatch
+panic: swash_fetch got swatch of unexpected bit width
+panic: swash_get doesn't expect bits %Lu
+panic: swash_get found swatch length mismatch
+panic: swash_get found swatch size mismatch
+panic: swash_get got improper swatch
+panic: swash_inversion_hash doesn't expect bits %Lu
+panic: sysconf: pagesize unknown
+panic: sysconf: %s
+panic: sysopen with multiple args
+panic: top_env
+panic: Unexpected FLAGS %u in op %u
+panic: unexpected lvalue entersub args: type/targ %ld:%Lu
+panic: unexpected lvalue entersub entry via type/targ %ld:%Lu
+panic: Unexpected op %u
+panic: unimplemented op %s (#%d) called
+panic: Unknown flags %d in named_buff
+panic: Unknown flags %d in named_buff_iter
+panic: Unknown flags %d in named_buff_scalar
+panic: Unknown regex character set encoding: %u
+panic: unknown regstclass %d
+panic: utf16_textfilter called after error (status=%Ld)
+panic: utf16_textfilter called in block mode (for %d characters)
+panic: utf16_to_utf8: odd bytelen %Lu
+panic: utf16_to_utf8_reversed: odd bytelen %Lu
+panic: vsnprintf buffer overflow
+panic: yylex
+  PAREN_NAMES = 0x%Lx
+Parentheses missing around "%s" list
+parse_barestmt
+parse_block
+Parse error
+parse_expr
+parse_fullstmt
+parse_label
+parse_stmtseq
+Parsing code internal error (%s)
+  -p                assume loop like -n but print line also, like sed
+    PAT = %s
+pattern match (m//)
+pattern quote (qr//)
+Pattern subroutine nesting without pos change exceeded limit in regex
+%-p() called too early to check prototype
+PCS_IMPORTED,
+%-p did not return a true value
+PERL5DB_THREADED
+PERL5LIB
+PERL5OPT
+perl_alloc
+Perl_allocmy
+Perl_amagic_call
+Perl_amagic_deref_call
+Perl_any_dup
+Perl API version %-p of %-p does not match %-p
+Perl__append_range_to_invlist
+Perl_apply
+Perl_apply_attrs_string
+Perl_atfork_lock
+Perl_atfork_unlock
+Perl_av_arylen_p
+Perl_av_clear
+Perl_av_create_and_push
+Perl_av_create_and_unshift_one
+Perl_av_delete
+Perl_av_exists
+Perl_av_extend
+Perl_av_fetch
+Perl_av_fill
+Perl_av_iter_p
+Perl_av_len
+Perl_av_make
+Perl_av_pop
+Perl_av_push
+Perl_av_reify
+Perl_av_shift
+Perl_av_store
+Perl_av_undef
+Perl_av_unshift
+PERL_BADLANG
+Perl_bind_match
+Perl_block_end
+Perl_block_gimme
+Perl_blockhook_register
+Perl_block_start
+Perl_boot_core_mro
+Perl_boot_core_PerlIO
+Perl_boot_core_UNIVERSAL
+Perl_bytes_cmp_utf8
+Perl_bytes_from_utf8
+Perl_bytes_to_utf8
+Perl_call_argv
+Perl_call_atexit
+Perl_caller_cx
+Perl_call_list
+Perl_call_method
+Perl_calloc
+Perl_call_pv
+Perl_call_sv
+Perl_cando
+Perl_cast_i32
+Perl_cast_iv
+Perl_cast_ulong
+Perl_cast_uv
+Perl_check_utf8_print
+Perl_ck_anoncode
+Perl_ck_bitop
+Perl_ck_chdir
+Perl_ck_concat
+Perl_ck_defined
+Perl_ck_delete
+Perl_ck_die
+Perl_ck_each
+Perl_ck_entersub_args_list
+Perl_ck_entersub_args_proto
+Perl_ck_entersub_args_proto_or_list
+Perl_ck_eof
+Perl_ck_eval
+Perl_ck_exec
+Perl_ck_exists
+Perl_ck_exit
+Perl_ck_ftst
+Perl_ck_fun
+Perl_ck_glob
+Perl_ck_grep
+Perl_ck_index
+Perl_ck_join
+Perl_ck_lfun
+Perl_ck_listiob
+Perl_ck_match
+Perl_ck_method
+Perl_ck_null
+Perl_ck_open
+Perl_ck_readline
+Perl_ck_repeat
+Perl_ck_require
+Perl_ck_return
+Perl_ck_rfun
+Perl_ck_rvconst
+Perl_ck_sassign
+Perl_ck_select
+Perl_ck_shift
+Perl_ck_smartmatch
+Perl_ck_sort
+Perl_ck_spair
+Perl_ck_split
+Perl_ck_subr
+Perl_ck_substr
+Perl_ck_svconst
+Perl_ck_trunc
+Perl_ck_unpack
+Perl_ckwarn
+Perl_ckwarn_d
+Perl_ck_warner
+Perl_ck_warner_d
+perl_clone
+Perl_clone_params_del
+Perl_clone_params_new
+perl_construct
+Perl_convert
+Perl_create_eval_scope
+Perl_croak
+Perl_croak_nocontext
+Perl_croak_no_modify
+Perl_croak_sv
+Perl_croak_xs_usage
+Perl_csighandler
+Perl_custom_op_desc
+Perl_custom_op_name
+Perl_custom_op_register
+Perl_custom_op_xop
+Perl_cv_ckproto_len
+Perl_cv_clone
+Perl_cv_const_sv
+Perl_cv_get_call_checker
+Perl_cvgv_set
+Perl_cv_set_call_checker
+Perl_cvstash_set
+Perl_cv_undef
+Perl_cx_dump
+Perl_cx_dup
+Perl_cxinc
+Perl_deb
+Perl_deb_nocontext
+Perl_debop
+Perl_debprofdump
+Perl_debstack
+Perl_deb_stack_all
+Perl_debstackptrs
+Perl_delete_eval_scope
+Perl_delimcpy
+Perl_despatch_signals
+perl_destruct
+Perl_die
+Perl_die_nocontext
+Perl_die_sv
+Perl_die_unwind
+Perl_dirp_dup
+PERL_DL_NONLAZY
+Perl_do_aexec
+Perl_do_aexec5
+Perl_do_binmode
+Perl_do_close
+Perl_do_dump_pad
+Perl_do_eof
+Perl_do_exec
+Perl_do_exec3
+Perl_do_execfree
+Perl_dofile
+Perl_do_gv_dump
+Perl_do_gvgv_dump
+Perl_do_hv_dump
+Perl_doing_taint
+Perl_do_ipcctl
+Perl_do_ipcget
+Perl_do_join
+Perl_do_kv
+Perl_do_magic_dump
+Perl_do_msgrcv
+Perl_do_msgsnd
+ PERL_DONT_CREATE_GVSV PERL_MALLOC_WRAP PERL_PRESERVE_IVUV USE_PERL_ATOF
+Perl_do_op_dump
+Perl_do_open
+Perl_do_open9
+Perl_do_openn
+Perl_do_pmop_dump
+Perl_do_print
+Perl_do_readline
+Perl_doref
+Perl_do_seek
+Perl_do_semop
+Perl_do_shmio
+Perl_do_sprintf
+Perl_do_sv_dump
+Perl_do_sysseek
+Perl_do_tell
+Perl_do_trans
+Perl_dounwind
+Perl_do_vecget
+Perl_do_vecset
+Perl_do_vop
+Perl_dowantarray
+Perl_dump_all
+Perl_dump_all_perl
+Perl_dump_eval
+Perl_dump_form
+Perl_dump_indent
+Perl_dump_packsubs
+Perl_dump_packsubs_perl
+Perl_dump_sub
+Perl_dump_sub_perl
+Perl_dump_vindent
+Perl_emulate_cop_io
+Perl_eval_pv
+Perl_eval_sv
+Perl_fbm_compile
+Perl_fbm_instr
+Perl_feature_is_enabled
+Perl_fetch_cop_label
+Perl_filter_add
+Perl_filter_del
+Perl_filter_read
+Perl_find_runcv
+Perl_find_rundefsv
+Perl_find_rundefsvoffset
+Perl_find_script
+Perl_foldEQ
+Perl_foldEQ_latin1
+Perl_foldEQ_locale
+Perl_foldEQ_utf8_flags
+Perl folding rules are not up-to-date for 0x%x; please use the perlbug utility to report; in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+Perl_form
+Perl_form_nocontext
+Perl_fp_dup
+Perl_fprintf_nocontext
+perl_free
+Perl_free_tied_hv_pool
+Perl_free_tmps
+Perl_get_av
+Perl_get_context
+Perl_get_cv
+Perl_get_cvn_flags
+Perl_getcwd_sv
+Perl_get_db_sub
+Perl_getenv_len
+Perl_get_hash_seed
+Perl_get_hv
+Perl_get_no_modify
+Perl_get_opargs
+Perl_get_op_descs
+Perl_get_op_names
+Perl_get_ppaddr
+Perl_get_re_arg
+Perl_get_sv
+Perl_get_vtbl
+Perl_gp_dup
+Perl_gp_free
+Perl_gp_ref
+Perl_grok_bin
+Perl_grok_hex
+Perl_grok_number
+Perl_grok_numeric_radix
+Perl_grok_oct
+Perl_gv_add_by_type
+Perl_Gv_AMupdate
+Perl_gv_autoload4
+Perl_gv_AVadd
+Perl_gv_check
+Perl_gv_const_sv
+Perl_gv_dump
+Perl_gv_efullname
+Perl_gv_efullname3
+Perl_gv_efullname4
+Perl_gv_fetchfile
+Perl_gv_fetchfile_flags
+Perl_gv_fetchmeth
+Perl_gv_fetchmeth_autoload
+Perl_gv_fetchmethod
+Perl_gv_fetchmethod_autoload
+Perl_gv_fetchmethod_flags
+Perl_gv_fetchpv
+Perl_gv_fetchpvn_flags
+Perl_gv_fetchsv
+Perl_gv_fullname
+Perl_gv_fullname3
+Perl_gv_fullname4
+Perl_gv_handler
+Perl_gv_HVadd
+Perl_gv_init
+Perl_gv_IOadd
+Perl_gv_name_set
+Perl_gv_stashpv
+Perl_gv_stashpvn
+Perl_gv_stashsv
+Perl_gv_SVadd
+Perl_gv_try_downgrade
+PERL_HASH_SEED
+PERL_HASH_SEED_DEBUG
+Perl_he_dup
+Perl_hek_dup
+Perl_huge
+Perl_hv_backreferences_p
+Perl_hv_clear
+Perl_hv_clear_placeholders
+Perl_hv_common
+Perl_hv_common_key_len
+Perl_hv_copy_hints_hv
+Perl_hv_delayfree_ent
+Perl_hv_delete
+Perl_hv_delete_ent
+Perl_hv_eiter_p
+Perl_hv_eiter_set
+Perl_hv_ename_add
+Perl_hv_ename_delete
+Perl_hv_exists
+Perl_hv_exists_ent
+Perl_hv_fetch
+Perl_hv_fetch_ent
+Perl_hv_fill
+Perl_hv_free_ent
+Perl_hv_iterinit
+Perl_hv_iterkey
+Perl_hv_iterkeysv
+Perl_hv_iternext
+Perl_hv_iternext_flags
+Perl_hv_iternextsv
+Perl_hv_iterval
+Perl_hv_kill_backrefs
+Perl_hv_ksplit
+Perl_hv_magic
+Perl_hv_name_set
+Perl_hv_placeholders_get
+Perl_hv_placeholders_p
+Perl_hv_placeholders_set
+Perl_hv_riter_p
+Perl_hv_riter_set
+Perl_hv_scalar
+Perl_hv_store
+Perl_hv_store_ent
+Perl_hv_store_flags
+Perl_hv_undef_flags
+Perl_init_argv_symbols
+Perl_init_dbargs
+Perl_init_debugger
+Perl_init_i18nl10n
+Perl_init_i18nl14n
+Perl_init_stacks
+Perl_init_tm
+Perl_instr
+Perl_intro_my
+Perl_invert
+PerlIO_allocate
+PerlIO_apply_layera
+PerlIO_apply_layers
+PerlIO_arg_fetch
+PerlIOBase_binmode
+PerlIOBase_clearerr
+PerlIOBase_close
+PerlIOBase_dup
+PerlIOBase_dup %s f=%p o=%p param=%p
+PerlIOBase_eof
+PerlIOBase_error
+PerlIOBase_fileno
+PerlIOBase_flush_linebuf
+PerlIOBase_noop_fail
+PerlIOBase_noop_ok
+PerlIOBase_open
+PerlIOBase_popped
+PerlIOBase_pushed
+PerlIOBase_read
+PerlIOBase_setlinebuf
+PerlIOBase_unread
+PerlIO_binmode
+PerlIO_binmode f=%p %s %c %x %s
+PerlIOBuf_bufsiz
+PerlIOBuf_close
+PerlIOBuf_dup
+PerlIOBuf_fill
+PerlIOBuf_flush
+PerlIOBuf_get_base
+PerlIOBuf_get_cnt
+PerlIOBuf_get_ptr
+PerlIOBuf_open
+PerlIOBuf_popped
+PerlIOBuf_pushed
+PerlIOBuf_read
+PerlIOBuf_seek
+PerlIOBuf_set_ptrcnt
+PerlIOBuf_tell
+PerlIOBuf_unread
+PerlIOBuf_write
+PerlIO_byte
+perlio.c
+PerlIO_canset_cnt
+PerlIO_cleantable
+PerlIO_cleanup
+PerlIO_clone
+PerlIO_clone_list
+Perl_io_close
+PerlIO__close
+PerlIO_crlf
+PerlIOCrlf_binmode
+PerlIOCrlf_flush
+PerlIOCrlf_get_cnt
+PerlIOCrlf_pushed
+PerlIOCrlf_set_ptrcnt
+PerlIOCrlf_unread
+PerlIOCrlf_write
+PerlIO_debug
+PerlIO_default_buffer
+PerlIO_default_layer
+PerlIO_default_layers
+PerlIO_define_layer
+PerlIO_destruct
+PerlIO_exportFILE
+PerlIO_fast_gets
+PerlIO_fdopen
+PerlIO_fdupopen
+PerlIO_findFILE
+PerlIO_find_layer
+PerlIO_getc
+PerlIO::get_layers
+PerlIO_getname
+PerlIO_getpos
+PerlIO_has_base
+PerlIO_has_cntptr
+PerlIO_importFILE
+PerlIO_init
+PerlIO_intmode2str
+PerlIO_isutf8
+PerlIO::Layer
+PerlIO_layer_fetch
+PerlIO::Layer::find
+PerlIO layer function table size
+PerlIO layer instance size
+PerlIO::Layer::NoWarnings
+PerlIO_list_alloc
+PerlIO_list_free
+PerlIO_list_push
+PerlIO_mmap
+PerlIOMmap_close
+PerlIOMmap_dup
+PerlIOMmap_fill
+PerlIOMmap_flush
+PerlIOMmap_get_base
+PerlIOMmap_map
+PerlIOMmap_unmap
+PerlIOMmap_unread
+PerlIOMmap_write
+PerlIO_modestr
+PerlIO_open
+PerlIO_openn
+PerlIO_parse_layers
+PerlIO_pending
+PerlIOPending_close
+PerlIOPending_fill
+PerlIOPending_flush
+PerlIOPending_pushed
+PerlIOPending_read
+PerlIOPending_seek
+PerlIOPending_set_ptrcnt
+PerlIO_perlio
+PerlIO_pop
+PerlIO_pop f=%p %s
+PerlIOPop_pushed
+PerlIO_printf
+PerlIO_push
+PerlIO_push f=%p %s %s %p
+PerlIO_putc
+PerlIO_puts
+PerlIO_raw
+PerlIORaw_pushed
+PerlIO_releaseFILE
+PerlIO_remove
+PerlIO_reopen
+PerlIO_resolve_layers
+PerlIO_rewind
+PerlIO_setpos
+PerlIO_sprintf
+PerlIO_stdio
+PerlIOStdio_clearerr
+PerlIOStdio_close
+PerlIOStdio_dup
+PerlIOStdio_eof
+PerlIOStdio_error
+PerlIOStdio_fileno
+PerlIOStdio_fill
+PerlIOStdio_flush
+PerlIOStdio_get_base
+PerlIOStdio_get_bufsiz
+PerlIOStdio_get_cnt
+PerlIOStdio_get_ptr
+PerlIOStdio_mode
+PerlIOStdio_open
+PerlIOStdio_pushed
+PerlIOStdio_read
+PerlIOStdio_seek
+PerlIOStdio_setlinebuf
+PerlIOStdio_set_ptrcnt
+PerlIOStdio_tell
+PerlIOStdio_unread
+PerlIOStdio_write
+PerlIO_stdoutf
+PerlIO_stdstreams
+PerlIO_sv_dup
+PerlIO_tab_sv
+PerlIO_teardown
+PerlIO_tmpfile
+PerlIO_ungetc
+PerlIO_unix
+PerlIOUnix_close
+PerlIOUnix_dup
+PerlIOUnix_fileno
+PerlIOUnix_oflags
+PerlIOUnix_open
+PerlIOUnix_pushed
+PerlIOUnix_read
+PerlIOUnix_refcnt
+PerlIOUnix_refcnt_dec
+PerlIOUnix_refcnt_inc
+PerlIOUnix_seek
+PerlIOUnix_tell
+PerlIOUnix_write
+PerlIO_utf8
+PerlIOUtf8_pushed
+PerlIO_vprintf
+PerlIO_vsprintf
+Perl_is_ascii_string
+Perl_is_gv_magical_sv
+Perl_is_lvalue_sub
+Perl_is_uni_alnum
+Perl_is_uni_alnum_lc
+Perl_is_uni_alpha
+Perl_is_uni_alpha_lc
+Perl_is_uni_ascii
+Perl_is_uni_ascii_lc
+Perl_is_uni_cntrl
+Perl_is_uni_cntrl_lc
+Perl_is_uni_digit
+Perl_is_uni_digit_lc
+Perl_is_uni_graph
+Perl_is_uni_graph_lc
+Perl_is_uni_idfirst
+Perl_is_uni_idfirst_lc
+Perl_is_uni_lower
+Perl_is_uni_lower_lc
+Perl_is_uni_print
+Perl_is_uni_print_lc
+Perl_is_uni_punct
+Perl_is_uni_punct_lc
+Perl_is_uni_space
+Perl_is_uni_space_lc
+Perl_is_uni_upper
+Perl_is_uni_upper_lc
+Perl_is_uni_xdigit
+Perl_is_uni_xdigit_lc
+Perl_is_utf8_alnum
+Perl_is_utf8_alpha
+Perl_is_utf8_ascii
+Perl_is_utf8_char
+Perl_is_utf8_cntrl
+Perl_is_utf8_digit
+Perl_is_utf8_graph
+Perl_is_utf8_idcont
+Perl_is_utf8_idfirst
+Perl_is_utf8_lower
+Perl_is_utf8_mark
+Perl_is_utf8_perl_space
+Perl_is_utf8_perl_word
+Perl_is_utf8_posix_digit
+Perl_is_utf8_print
+Perl_is_utf8_punct
+Perl_is_utf8_space
+Perl_is_utf8_string
+Perl_is_utf8_string_loc
+Perl_is_utf8_string_loclen
+Perl_is_utf8_upper
+Perl_is_utf8_X_begin
+Perl_is_utf8_xdigit
+Perl_is_utf8_X_extend
+Perl_is_utf8_xidcont
+Perl_is_utf8_xidfirst
+Perl_is_utf8_X_L
+Perl_is_utf8_X_LV
+Perl_is_utf8_X_LV_LVT_V
+Perl_is_utf8_X_LVT
+Perl_is_utf8_X_non_hangul
+Perl_is_utf8_X_prepend
+Perl_is_utf8_X_T
+Perl_is_utf8_X_V
+Perl_jmaybe
+Perl_keyword
+Perl_keyword_plugin_standard
+Perl_leave_scope
+Perl_lex_bufutf8
+Perl_lex_discard_to
+Perl_lex_grow_linestr
+Perl_lex_next_chunk
+Perl_lex_peek_unichar
+Perl_lex_read_space
+Perl_lex_read_to
+Perl_lex_read_unichar
+Perl_lex_start
+Perl_lex_stuff_pv
+Perl_lex_stuff_pvn
+Perl_lex_stuff_sv
+Perl_lex_unstuff
+Perl_list
+Perl_load_module
+Perl_load_module_nocontext
+Perl_localize
+Perl_looks_like_number
+Perl_magic_clear_all_env
+Perl_magic_clearenv
+Perl_magic_clearhint
+Perl_magic_clearhints
+Perl_magic_clearisa
+Perl_magic_clearpack
+Perl_magic_clearsig
+Perl_magic_dump
+Perl_magic_existspack
+Perl_magic_freearylen_p
+Perl_magic_freeovrld
+Perl_magic_get
+Perl_magic_getarylen
+Perl_magic_getdefelem
+Perl_magic_getnkeys
+Perl_magic_getpack
+Perl_magic_getpos
+Perl_magic_getsig
+Perl_magic_getsubstr
+Perl_magic_gettaint
+Perl_magic_getuvar
+Perl_magic_getvec
+Perl_magic_killbackrefs
+Perl_magic_len
+Perl_magic_methcall
+Perl_magic_nextpack
+Perl_magic_regdata_cnt
+Perl_magic_regdatum_get
+Perl_magic_regdatum_set
+Perl_magic_scalarpack
+Perl_magic_set
+Perl_magic_set_all_env
+Perl_magic_setamagic
+Perl_magic_setarylen
+Perl_magic_setcollxfrm
+Perl_magic_setdbline
+Perl_magic_setdefelem
+Perl_magic_setenv
+Perl_magic_sethint
+Perl_magic_setisa
+Perl_magic_setmglob
+Perl_magic_setnkeys
+Perl_magic_setpack
+Perl_magic_setpos
+Perl_magic_setregexp
+Perl_magic_setsig
+Perl_magic_setsubstr
+Perl_magic_settaint
+Perl_magic_setutf8
+Perl_magic_setuvar
+Perl_magic_setvec
+Perl_magic_sizepack
+Perl_magic_wipepack
+Perl_malloc
+Perl_markstack_grow
+Perl may be copied only under the terms of either the Artistic License or the
+Perl_mem_collxfrm
+Perl_mess
+Perl_mess_nocontext
+Perl_mess_sv
+Perl_mfree
+Perl_mg_clear
+Perl_mg_copy
+Perl_mg_dup
+Perl_mg_find
+Perl_mg_findext
+Perl_mg_free
+Perl_mg_free_type
+Perl_mg_get
+Perl_mg_length
+Perl_mg_localize
+Perl_mg_magical
+Perl_mg_set
+Perl_mg_size
+Perl_mini_mktime
+Perl_mod
+Perl_mode_from_discipline
+Perl_more_bodies
+Perl_moreswitches
+Perl_mro_get_from_name
+Perl_mro_get_linear_isa
+Perl_mro_get_private_data
+Perl_mro_isa_changed_in
+Perl_mro_meta_dup
+Perl_mro_meta_init
+Perl_mro_method_changed_in
+Perl_mro_package_moved
+Perl_mro_register
+Perl_mro_set_mro
+Perl_mro_set_private_data
+Perl_munge_qwlist_to_paren_list
+Perl_my_atof
+Perl_my_atof2
+Perl_my_attrs
+Perl_my_clearenv
+Perl_my_cxt_init
+Perl_my_dirfd
+Perl_my_exit
+Perl_my_failure_exit
+Perl_my_fflush_all
+Perl_my_fork
+Perl_my_lstat
+Perl_my_lstat_flags
+Perl_my_pclose
+Perl_my_popen
+Perl_my_popen_list
+Perl_my_setenv
+Perl_my_snprintf
+Perl_my_socketpair
+Perl_my_stat
+Perl_my_stat_flags
+Perl_my_strftime
+Perl_my_strlcat
+Perl_my_strlcpy
+Perl_my_swabn
+Perl_my_unexec
+Perl_my_vsnprintf
+perl_name, symref, filename="$Package"
+Perl_newANONATTRSUB
+Perl_newANONHASH
+Perl_newANONLIST
+Perl_newANONSUB
+Perl_newASSIGNOP
+Perl_newATTRSUB
+Perl_newAV
+Perl_newAVREF
+Perl_newBINOP
+Perl_new_collate
+Perl_newCONDOP
+Perl_newCONSTSUB
+Perl_new_ctype
+Perl_newCVREF
+Perl_newFORM
+Perl_newFOROP
+Perl_newGIVENOP
+Perl_newGP
+Perl_newGVgen
+Perl_newGVOP
+Perl_newGVREF
+Perl_newHV
+Perl_newHVhv
+Perl_newHVREF
+Perl__new_invlist
+Perl_newIO
+Perl_newLISTOP
+Perl_newLOGOP
+Perl_newLOOPEX
+Perl_newLOOPOP
+Perl_newMYSUB
+Perl_newNULLLIST
+Perl_new_numeric
+Perl_newOP
+Perl_newPADOP
+Perl_newPMOP
+Perl_newPROG
+Perl_newPVOP
+Perl_newRANGE
+Perl_newRV
+Perl_newRV_noinc
+Perl_newSLICEOP
+Perl_new_stackinfo
+Perl_newSTATEOP
+Perl_newSUB
+Perl_newSV
+Perl_newSVhek
+Perl_newSViv
+Perl_newSVnv
+Perl_newSVOP
+Perl_newSVpv
+Perl_newSVpvf
+Perl_newSVpvf_nocontext
+Perl_newSVpvn
+Perl_newSVpvn_flags
+Perl_newSVpvn_share
+Perl_newSVpv_share
+Perl_newSVREF
+Perl_newSVrv
+Perl_newSVsv
+Perl_newSV_type
+Perl_newSVuv
+Perl_newUNOP
+Perl_new_version
+Perl_new_warnings_bitfield
+Perl_newWHENOP
+Perl_newWHILEOP
+Perl_newXS
+Perl_newXS_flags
+Perl_nextargv
+Perl_ninstr
+Perl_nothreadhook
+Perl_oopsAV
+Perl_oopsHV
+Perl_op_append_elem
+Perl_op_append_list
+Perl_op_clear
+Perl_op_const_sv
+Perl_op_contextualize
+Perl_op_dump
+Perl_op_free
+Perl_op_linklist
+Perl_op_lvalue
+Perl_op_null
+Perl_op_prepend_elem
+Perl_op_refcnt_lock
+Perl_op_refcnt_unlock
+Perl_op_scope
+Perl_package
+Perl_package_version
+Perl_pack_cat
+Perl_packlist
+Perl_pad_add_anon
+Perl_pad_add_name
+Perl_pad_alloc
+Perl_pad_block_start
+Perl_pad_compname_type
+Perl_pad_findmy
+Perl_pad_fixup_inner_anons
+Perl_pad_free
+Perl_pad_leavemy
+Perl_padlist_dup
+Perl_pad_new
+Perl_pad_push
+Perl_pad_swipe
+Perl_pad_tidy
+perl_parse
+Perl_parse_arithexpr
+Perl_parse_barestmt
+Perl_parse_block
+Perl_parse_fullexpr
+Perl_parse_fullstmt
+Perl_parse_label
+Perl_parse_listexpr
+Perl_parser_dup
+Perl_parser_free
+Perl_parse_stmtseq
+Perl_parse_termexpr
+Perl_parse_unicode_opts
+Perl_peep
+Perl_PerlIO_clearerr
+Perl_PerlIO_close
+Perl_PerlIO_context_layers
+Perl_PerlIO_eof
+Perl_PerlIO_error
+Perl_PerlIO_fileno
+Perl_PerlIO_fill
+Perl_PerlIO_flush
+Perl_PerlIO_get_base
+Perl_PerlIO_get_bufsiz
+Perl_PerlIO_get_cnt
+Perl_PerlIO_get_ptr
+Perl_PerlIO_read
+Perl_PerlIO_seek
+Perl_PerlIO_set_cnt
+Perl_PerlIO_setlinebuf
+Perl_PerlIO_set_ptrcnt
+Perl_PerlIO_stderr
+Perl_PerlIO_stdin
+Perl_PerlIO_stdout
+Perl_PerlIO_tell
+Perl_PerlIO_unread
+Perl_PerlIO_write
+Perl_pmop_dump
+Perl_pmruntime
+Perl_pop_scope
+Perl_populate_isa
+Perl_pp_aassign
+Perl_pp_abs
+Perl_pp_accept
+Perl_pp_add
+Perl_pp_aeach
+Perl_pp_aelem
+Perl_pp_aelemfast
+Perl_pp_akeys
+Perl_pp_alarm
+Perl_pp_and
+Perl_pp_anoncode
+Perl_pp_anonhash
+Perl_pp_anonlist
+Perl_pp_aslice
+Perl_pp_atan2
+Perl_pp_av2arylen
+Perl_pp_backtick
+Perl_pp_bind
+Perl_pp_binmode
+Perl_pp_bit_and
+Perl_pp_bit_or
+Perl_pp_bless
+Perl_pp_boolkeys
+Perl_pp_break
+Perl_pp_caller
+Perl_pp_chdir
+Perl_pp_chop
+Perl_pp_chown
+Perl_pp_chr
+Perl_pp_chroot
+Perl_pp_close
+Perl_pp_closedir
+Perl_pp_complement
+Perl_pp_concat
+Perl_pp_cond_expr
+Perl_pp_const
+Perl_pp_continue
+Perl_pp_crypt
+Perl_pp_dbmopen
+Perl_pp_dbstate
+Perl_pp_defined
+Perl_pp_delete
+Perl_pp_die
+Perl_pp_divide
+Perl_pp_each
+Perl_pp_ehostent
+Perl_pp_enter
+Perl_pp_entereval
+Perl_pp_entergiven
+Perl_pp_enteriter
+Perl_pp_enterloop
+Perl_pp_entersub
+Perl_pp_entertry
+Perl_pp_enterwhen
+Perl_pp_enterwrite
+Perl_pp_eof
+Perl_pp_eq
+Perl_pp_exec
+Perl_pp_exists
+Perl_pp_exit
+Perl_pp_fileno
+Perl_pp_flip
+Perl_pp_flock
+Perl_pp_flop
+Perl_pp_fork
+Perl_pp_formline
+Perl_pp_ftis
+Perl_pp_ftlink
+Perl_pp_ftrowned
+Perl_pp_ftrread
+Perl_pp_fttext
+Perl_pp_fttty
+Perl_pp_ge
+Perl_pp_gelem
+Perl_pp_getc
+Perl_pp_getlogin
+Perl_pp_getpeername
+Perl_pp_getpgrp
+Perl_pp_getppid
+Perl_pp_getpriority
+Perl_pp_ggrent
+Perl_pp_ghostent
+Perl_pp_glob
+Perl_pp_gmtime
+Perl_pp_gnetent
+Perl_pp_goto
+Perl_pp_gprotoent
+Perl_pp_gpwent
+Perl_pp_grepstart
+Perl_pp_grepwhile
+Perl_pp_gservent
+Perl_pp_gt
+Perl_pp_gv
+Perl_pp_gvsv
+Perl_pp_helem
+Perl_pp_hintseval
+Perl_pp_hslice
+Perl_pp_i_add
+Perl_pp_i_divide
+Perl_pp_i_eq
+Perl_pp_i_ge
+Perl_pp_i_gt
+Perl_pp_i_le
+Perl_pp_i_lt
+Perl_pp_i_modulo
+Perl_pp_i_multiply
+Perl_pp_i_ncmp
+Perl_pp_index
+Perl_pp_i_ne
+Perl_pp_i_negate
+Perl_pp_int
+Perl_pp_ioctl
+Perl_pp_i_subtract
+Perl_pp_iter
+Perl_pp_join
+Perl_pp_last
+Perl_pp_lc
+Perl_pp_le
+Perl_pp_leave
+Perl_pp_leaveeval
+Perl_pp_leavegiven
+Perl_pp_leaveloop
+Perl_pp_leavesub
+Perl_pp_leavesublv
+Perl_pp_leavetry
+Perl_pp_leavewhen
+Perl_pp_leavewrite
+Perl_pp_left_shift
+Perl_pp_length
+Perl_pp_link
+Perl_pp_list
+Perl_pp_listen
+Perl_pp_lock
+Perl_pp_lslice
+Perl_pp_lt
+Perl_pp_mapwhile
+Perl_pp_match
+Perl_pp_method
+Perl_pp_method_named
+Perl_pp_mkdir
+Perl_pp_modulo
+Perl_pp_multiply
+Perl_pp_ncmp
+Perl_pp_ne
+Perl_pp_negate
+Perl_pp_next
+Perl_pp_nextstate
+Perl_pp_not
+Perl_pp_null
+Perl_pp_oct
+Perl_pp_once
+Perl_pp_open
+Perl_pp_open_dir
+Perl_pp_or
+Perl_pp_ord
+Perl_pp_pack
+Perl_pp_padav
+Perl_pp_padhv
+Perl_pp_padsv
+Perl_pp_pipe_op
+Perl_pp_pos
+Perl_pp_postdec
+Perl_pp_postinc
+Perl_pp_pow
+Perl_pp_predec
+Perl_pp_preinc
+Perl_pp_print
+Perl_pp_prototype
+Perl_pp_prtf
+Perl_pp_push
+Perl_pp_pushmark
+Perl_pp_pushre
+Perl_pp_qr
+Perl_pp_quotemeta
+Perl_pp_rand
+Perl_pp_range
+Perl_pp_rcatline
+Perl_pp_readdir
+Perl_pp_readline
+Perl_pp_readlink
+Perl_pp_redo
+Perl_pp_ref
+Perl_pp_refgen
+Perl_pp_regcomp
+Perl_pp_regcreset
+Perl_pp_rename
+Perl_pp_repeat
+Perl_pp_require
+Perl_pp_reset
+Perl_pp_return
+Perl_pp_reverse
+Perl_pp_rewinddir
+Perl_pp_right_shift
+Perl_pp_rkeys
+Perl_pp_rmdir
+Perl_pp_rv2av
+Perl_pp_rv2cv
+Perl_pp_rv2gv
+Perl_pp_rv2sv
+Perl_pp_sassign
+Perl_pp_schop
+Perl_pp_scmp
+Perl_pp_seekdir
+Perl_pp_select
+Perl_pp_semctl
+Perl_pp_semget
+Perl_pp_seq
+Perl_pp_setpgrp
+Perl_pp_setpriority
+Perl_pp_shift
+Perl_pp_shmwrite
+Perl_pp_shostent
+Perl_pp_shutdown
+Perl_pp_sin
+Perl_pp_sle
+Perl_pp_sleep
+Perl_pp_smartmatch
+Perl_pp_sne
+Perl_pp_socket
+Perl_pp_sockpair
+Perl_pp_sort
+Perl_pp_splice
+Perl_pp_split
+Perl_pp_sprintf
+Perl_pp_srand
+Perl_pp_srefgen
+Perl_pp_sselect
+Perl_pp_ssockopt
+Perl_pp_stat
+Perl_pp_stringify
+Perl_pp_stub
+Perl_pp_study
+Perl_pp_subst
+Perl_pp_substcont
+Perl_pp_substr
+Perl_pp_subtract
+Perl_pp_syscall
+Perl_pp_sysopen
+Perl_pp_sysread
+Perl_pp_sysseek
+Perl_pp_system
+Perl_pp_syswrite
+Perl_pp_tell
+Perl_pp_telldir
+Perl_pp_tie
+Perl_pp_tied
+Perl_pp_time
+Perl_pp_tms
+Perl_pp_trans
+Perl_pp_truncate
+Perl_pp_uc
+Perl_pp_ucfirst
+Perl_pp_umask
+Perl_pp_undef
+Perl_pp_unpack
+Perl_pp_unshift
+Perl_pp_unstack
+Perl_pp_untie
+Perl_pp_vec
+Perl_pp_wait
+Perl_pp_waitpid
+Perl_pp_wantarray
+Perl_pp_warn
+Perl_pp_xor
+Perl_pregcomp
+Perl_pregexec
+Perl_pregfree
+Perl_pregfree2
+Perl %-p required (did you mean %-p?)--this is only %-p, stopped
+Perl %-p required--this is only %-p, stopped
+Perl_prescan_version
+Perl_printf_nocontext
+Perl_ptr_table_clear
+Perl_ptr_table_fetch
+Perl_ptr_table_free
+Perl_ptr_table_new
+Perl_ptr_table_split
+Perl_ptr_table_store
+Perl_push_scope
+Perl_pv_display
+Perl_pv_escape
+Perl_pv_pretty
+Perl_pv_uni_display
+Perl_qerror
+Perl_realloc
+PERL_RE_COLORS
+Perl_re_compile
+Perl_re_dup_guts
+Perl_reentrant_free
+Perl_reentrant_init
+Perl_reentrant_retry
+Perl_reentrant_size
+Perl_ref
+Perl_refcounted_he_chain_2hv
+Perl_refcounted_he_fetch_pv
+Perl_refcounted_he_fetch_pvn
+Perl_refcounted_he_fetch_sv
+Perl_refcounted_he_free
+Perl_refcounted_he_inc
+Perl_refcounted_he_new_pv
+Perl_refcounted_he_new_pvn
+Perl_refcounted_he_new_sv
+Perl_regclass_swash
+Perl_regdump
+Perl_regdupe_internal
+Perl_regexec_flags
+Perl_regfree_internal
+Perl_reginitcolors
+Perl_reg_named_buff
+Perl_reg_named_buff_all
+Perl_reg_named_buff_exists
+Perl_reg_named_buff_fetch
+Perl_reg_named_buff_firstkey
+Perl_reg_named_buff_iter
+Perl_reg_named_buff_nextkey
+Perl_reg_named_buff_scalar
+Perl_regnext
+Perl_reg_numbered_buff_fetch
+Perl_reg_numbered_buff_length
+Perl_reg_numbered_buff_store
+Perl_regprop
+Perl_reg_qr_package
+Perl_reg_temp_copy
+Perl_re_intuit_start
+Perl_re_intuit_string
+Perl_repeatcpy
+Perl_report_evil_fh
+Perl_report_uninit
+Perl_report_wrongway_fh
+Perl_require_pv
+Perl_rninstr
+Perl_rpeep
+Perl_rsignal
+Perl_rsignal_restore
+Perl_rsignal_save
+Perl_rsignal_state
+perl_run
+Perl_runops_debug
+Perl_runops_standard
+Perl_rv2cv_op_cv
+Perl_rvpv_dup
+Perl_rxres_save
+Perl_safesyscalloc
+Perl_safesysfree
+Perl_safesysmalloc
+Perl_safesysrealloc
+Perl_save_adelete
+Perl_save_aelem_flags
+Perl_save_alloc
+Perl_save_aptr
+Perl_save_ary
+Perl_save_bool
+Perl_save_clearsv
+Perl_save_delete
+Perl_save_destructor
+Perl_save_destructor_x
+Perl_save_freeop
+Perl_save_freepv
+Perl_save_freesv
+Perl_save_generic_pvref
+Perl_save_generic_svref
+Perl_save_gp
+Perl_save_hash
+Perl_save_hdelete
+Perl_save_helem_flags
+Perl_save_hints
+Perl_save_hptr
+Perl_save_I16
+Perl_save_I32
+Perl_save_I8
+Perl_save_int
+Perl_save_item
+Perl_save_iv
+Perl_save_list
+Perl_save_long
+Perl_save_mortalizesv
+Perl_save_nogv
+Perl_save_op
+Perl_save_padsv_and_mortalize
+Perl_save_pptr
+Perl_save_pushi32ptr
+Perl_save_pushptr
+Perl_save_pushptrptr
+Perl_savepv
+Perl_savepvn
+Perl_save_re_context
+Perl_save_scalar
+Perl_save_set_svflags
+Perl_savesharedpv
+Perl_savesharedpvn
+Perl_save_shared_pvref
+Perl_savesharedsvpv
+Perl_save_sptr
+Perl_savestack_grow
+Perl_savestack_grow_cnt
+Perl_savesvpv
+Perl_save_svref
+Perl_save_vptr
+Perl_sawparens
+Perl_scalar
+Perl_scalarvoid
+Perl_scan_bin
+Perl_scan_hex
+Perl_scan_num
+Perl_scan_oct
+Perl_scan_version
+Perl_scan_vstring
+Perl_screaminstr
+Perl_seed
+Perl_set_context
+Perl_setdefout
+Perl_set_numeric_local
+Perl_set_numeric_radix
+Perl_set_numeric_standard
+Perl_share_hek
+Perl_si_dup
+Perl_sighandler
+PERL_SIGNALS
+PERL_SIGNALS illegal: "%s"
+perlsio_binmode
+Perl_softref2xv
+Perl_sortsv
+Perl_sortsv_flags
+Perl_ss_dup
+Perls since %-p too modern--this is %-p, stopped
+Perl_stack_grow
+Perl_start_glob
+Perl_start_subparse
+Perl_stashpv_hvname_match
+Perl_store_cop_label
+Perl_str_to_version
+Perl_sub_crush_depth
+Perl_sv_2bool
+Perl_sv_2bool_flags
+Perl_sv_2cv
+Perl_sv_2io
+Perl_sv_2iv
+Perl_sv_2iv_flags
+Perl_sv_2mortal
+Perl_sv_2num
+Perl_sv_2nv
+Perl_sv_2nv_flags
+Perl_sv_2pv
+Perl_sv_2pvbyte
+Perl_sv_2pvbyte_nolen
+Perl_sv_2pv_flags
+Perl_sv_2pv_nolen
+Perl_sv_2pvutf8
+Perl_sv_2pvutf8_nolen
+Perl_sv_2uv
+Perl_sv_2uv_flags
+Perl_sv_add_backref
+Perl_sv_backoff
+Perl_sv_bless
+Perl_sv_cat_decode
+Perl_sv_catpv
+Perl_sv_catpvf
+Perl_sv_catpv_flags
+Perl_sv_catpvf_mg
+Perl_sv_catpvf_mg_nocontext
+Perl_sv_catpvf_nocontext
+Perl_sv_catpv_mg
+Perl_sv_catpvn
+Perl_sv_catpvn_flags
+Perl_sv_catpvn_mg
+Perl_sv_catsv
+Perl_sv_catsv_flags
+Perl_sv_catsv_mg
+Perl_sv_chop
+Perl_sv_clean_all
+Perl_sv_clean_objs
+Perl_sv_clear
+Perl_sv_cmp
+Perl_sv_cmp_flags
+Perl_sv_cmp_locale
+Perl_sv_cmp_locale_flags
+Perl_sv_collxfrm
+Perl_sv_collxfrm_flags
+Perl_sv_compile_2op
+Perl_sv_compile_2op_is_broken
+Perl_sv_copypv
+Perl_sv_dec
+Perl_sv_dec_nomg
+Perl_sv_del_backref
+Perl_sv_derived_from
+Perl_sv_destroyable
+Perl_sv_does
+Perl_sv_dump
+Perl_sv_dup
+Perl_sv_dup_inc
+Perl_sv_eq
+Perl_sv_eq_flags
+Perl_sv_force_normal
+Perl_sv_force_normal_flags
+Perl_sv_free
+Perl_sv_free2
+Perl_sv_free_arenas
+Perl_sv_gets
+Perl_sv_grow
+Perl_sv_inc
+Perl_sv_inc_nomg
+Perl_sv_insert
+Perl_sv_insert_flags
+Perl_sv_isa
+Perl_sv_isobject
+Perl_sv_iv
+Perl_sv_kill_backrefs
+Perl_sv_len
+Perl_sv_len_utf8
+Perl_sv_magic
+Perl_sv_magicext
+Perl_sv_mortalcopy
+Perl_sv_newmortal
+Perl_sv_newref
+Perl_sv_nolocking
+Perl_sv_nosharing
+Perl_sv_nounlocking
+Perl_sv_nv
+Perl_sv_peek
+Perl_sv_pos_b2u
+Perl_sv_pos_u2b
+Perl_sv_pos_u2b_flags
+Perl_sv_pv
+Perl_sv_pvbyte
+Perl_sv_pvbyten
+Perl_sv_pvbyten_force
+Perl_sv_pvn
+Perl_sv_pvn_force
+Perl_sv_pvn_force_flags
+Perl_sv_pvn_nomg
+Perl_sv_pvutf8
+Perl_sv_pvutf8n
+Perl_sv_pvutf8n_force
+Perl_sv_recode_to_utf8
+Perl_sv_reftype
+Perl_sv_replace
+Perl_sv_report_used
+Perl_sv_reset
+Perl_sv_rvweaken
+Perl_sv_setiv
+Perl_sv_setiv_mg
+Perl_sv_setnv
+Perl_sv_setnv_mg
+Perl_sv_setpv
+Perl_sv_setpvf
+Perl_sv_setpvf_mg
+Perl_sv_setpvf_mg_nocontext
+Perl_sv_setpvf_nocontext
+Perl_sv_setpviv
+Perl_sv_setpviv_mg
+Perl_sv_setpv_mg
+Perl_sv_setpvn
+Perl_sv_setpvn_mg
+Perl_sv_setref_iv
+Perl_sv_setref_nv
+Perl_sv_setref_pv
+Perl_sv_setref_pvn
+Perl_sv_setref_uv
+Perl_sv_setsv
+Perl_sv_setsv_flags
+Perl_sv_setsv_mg
+Perl_sv_setuv
+Perl_sv_setuv_mg
+Perl_sv_taint
+Perl_sv_tainted
+Perl_sv_true
+Perl_sv_uni_display
+Perl_sv_unmagic
+Perl_sv_unmagicext
+Perl_sv_unref
+Perl_sv_unref_flags
+Perl_sv_untaint
+Perl_sv_upgrade
+Perl_sv_usepvn
+Perl_sv_usepvn_flags
+Perl_sv_usepvn_mg
+Perl_sv_utf8_decode
+Perl_sv_utf8_downgrade
+Perl_sv_utf8_encode
+Perl_sv_utf8_upgrade
+Perl_sv_utf8_upgrade_flags_grow
+Perl_sv_uv
+Perl_sv_vcatpvf
+Perl_sv_vcatpvf_mg
+Perl_sv_vcatpvfn
+Perl_sv_vsetpvf
+Perl_sv_vsetpvf_mg
+Perl_sv_vsetpvfn
+Perl_swash_fetch
+Perl_swash_init
+Perl__swash_inversion_hash
+Perl__swash_to_invlist
+Perl_sys_init
+Perl_sys_init3
+Perl_sys_term
+Perl_taint_env
+Perl_taint_proper
+Perl_tied_method
+Perl_tmps_grow
+Perl__to_uni_fold_flags
+Perl_to_uni_lower
+Perl_to_uni_lower_lc
+Perl_to_uni_title
+Perl_to_uni_title_lc
+Perl_to_uni_upper
+Perl_to_uni_upper_lc
+Perl_to_utf8_case
+Perl__to_utf8_fold_flags
+Perl_to_utf8_lower
+Perl_to_utf8_title
+Perl_to_utf8_upper
+Perl_try_amagic_bin
+Perl_try_amagic_un
+PERL_UNICODE
+Perl_unimplemented_op
+Perl_unpack_str
+Perl_unpackstring
+Perl_unshare_hek
+Perl_unsharepvn
+Perl_upg_version
+Perl_utf16_to_utf8
+Perl_utf16_to_utf8_reversed
+Perl_utf8_distance
+Perl_utf8_hop
+Perl_utf8_length
+Perl_utf8n_to_uvchr
+Perl_utf8n_to_uvuni
+Perl_utf8_to_bytes
+Perl_utf8_to_uvchr
+Perl_utf8_to_uvuni
+Perl_utilize
+Perl_uvchr_to_utf8
+Perl_uvchr_to_utf8_flags
+Perl_uvuni_to_utf8
+Perl_uvuni_to_utf8_flags
+Perl_vcmp
+Perl_vcroak
+Perl_vdeb
+Perl_vform
+Perl_vivify_defelem
+Perl_vivify_ref
+Perl_vload_module
+Perl_vmess
+Perl_vnewSVpvf
+Perl_vnormal
+Perl_vnumify
+Perl_vstringify
+Perl_vverify
+Perl_vwarn
+Perl_vwarner
+Perl_wait4pid
+Perl_warn
+Perl_warner
+Perl_warner_nocontext
+perl: warning: Failed to fall back to the standard locale ("C").
+perl: warning: Falling back to the standard locale ("C").
+perl: warning: Please check that your locale settings:
+perl: warning: Setting locale failed.
+Perl_warn_nocontext
+Perl_warn_sv
+Perl_watch
+Perl_whichsig
+Perl_write_to_stderr
+Perl_xs_apiversion_bootcheck
+Perl_xs_version_bootcheck
+Perl_yyerror
+Perl_yylex
+Perl_yyparse
+Perl_yyunlex
+  PKG_GEN = 0x%Lx
+PL_bincompat_options
+PL_bitcount
+PL_charclass
+PL_check
+PL_core_reg_engine
+PL_csighandlerp
+PL_curinterp
+PL_dollarzero_mutex
+PL_do_undump
+PL_fold_latin1
+PL_fold_locale
+PL_hexdigit
+PL_hints_mutex
+PL_interp_size
+PL_interp_size_5_10_0
+PL_keyword_plugin
+PL_latin1_lc
+PL_memory_wrap
+PL_mmap_page_size
+PL_mod_latin1_uc
+PL_my_ctx_mutex
+PL_my_cxt_index
+PL_no_aelem
+PL_no_dir_func
+PL_no_func
+PL_no_helem_sv
+PL_no_localize_ref
+PL_no_mem
+PL_no_modify
+PL_no_myglob
+PL_no_security
+PL_no_sock_func
+PL_no_symref
+PL_no_symref_sv
+PL_no_usym
+PL_no_wrongref
+PL_opargs
+PL_op_desc
+PL_op_mutex
+PL_op_name
+PL_op_seq
+PL_op_sequence
+PL_patleave
+PL_perlio_debug_fd
+PL_perlio_fd_refcnt
+PL_perlio_fd_refcnt_size
+PL_perlio_mutex
+PL_phase_names
+PL_ppaddr
+PL_reg_extflags_name
+PL_regkind
+PL_reg_name
+PL_revision
+PL_runops_dbg
+PL_runops_std
+PL_sh_path
+PL_sigfpe_saved
+PL_sig_name
+PL_sig_num
+PL_simple
+PL_simple_bitmask
+PL_subversion
+PL_sv_placeholder
+PL_thr_key
+PL_use_safe_putenv
+PL_utf8skip
+PL_uudmap
+PL_uuemap
+PL_varies
+PL_varies_bitmask
+PL_version
+PL_veto_cleanup
+PL_vtbl_amagic
+PL_vtbl_amagicelem
+PL_vtbl_arylen
+PL_vtbl_arylen_p
+PL_vtbl_backref
+PL_vtbl_bm
+PL_vtbl_collxfrm
+PL_vtbl_dbline
+PL_vtbl_defelem
+PL_vtbl_env
+PL_vtbl_envelem
+PL_vtbl_fm
+PL_vtbl_hints
+PL_vtbl_hintselem
+PL_vtbl_isa
+PL_vtbl_isaelem
+PL_vtbl_mglob
+PL_vtbl_nkeys
+PL_vtbl_ovrld
+PL_vtbl_pack
+PL_vtbl_packelem
+PL_vtbl_pos
+PL_vtbl_regdata
+PL_vtbl_regdatum
+PL_vtbl_regexp
+PL_vtbl_sig
+PL_vtbl_sigelem
+PL_vtbl_substr
+PL_vtbl_sv
+PL_vtbl_taint
+PL_vtbl_utf8
+PL_vtbl_uvar
+PL_vtbl_vec
+PL_warn_nl
+PL_warn_nosemi
+PL_warn_reserved
+PL_warn_uninit
+PMf_EXTENDED,
+PMf_FOLD,
+PMf_KEEPCOPY,
+pmflags_flags_names
+PMFLAGS = (%s)
+PMf_MULTILINE,
+PMf_PRE %c%s%c%s
+PMf_PRE (RUNTIME)
+PMf_REPL = 
+PMf_SINGLELINE,
+  PMROOT = 0x%Lx
+'P' must have an explicit size in unpack
+%-p never introduced
+%-p object version %-p does not match 
+POSIX class [:%.*s:] unknown
+POSIX syntax [%c %c] belongs inside character classes in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+POSIX syntax [%c %c] is reserved for future extensions
+Possible attempt to put comments in qw() list
+Possible attempt to separate words with commas
+Possible memory corruption: %s overflowed 3rd argument
+Possible precedence problem on bitwise %c operator
+Possible unintended interpolation of $\ in regex
+Possible unintended interpolation of %s in string
+(possibly a missing "use charnames ...")
+%-p(%-p)
+  PPRIVATE = 0x%Lx
+Precedence problem: open %.*s should be open(%.*s)
+  PRE_PREFIX = %Lu
+  PREVIOUS = %Lu
+private array
+private hash
+PRIVATE = (%s)
+private value
+private variable
+/proc/self/exe
+@program input from stdin
+PROPAGATE
+	...propagated
+Propagated
+Prototype after '%c' for %-p : %s
+Prototype mismatch:
+Prototype not terminated
+  PROTOTYPE = "%.*s"
+pseudo-block
+%-p%s has too many errors.
+$%-p::%s %-p
+ <PtD<Dtp
+pthread_getspecific
+pthread_key_create
+pthread_key_delete
+pthread_mutex_destroy
+pthread_mutex_init
+pthread_mutex_lock
+pthread_mutex_unlock
+pthread_setspecific
+Pushing %s
+pushmark
+push regexp
+  PV = 0
+  PV = 0x%Lx 
+Quantifier follows nothing
+Quantifier in {,} bigger than %d
+Quantifier unexpected on zero-length expression in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+quoted execution (``, qx)
+quotemeta
+Range iterator outside integer range
+range (or flip)
+range (or flop)
+  RARE = %u
+:raw f=%p :%s
+rcatline
+readdir64_r
+readdir() attempted on invalid dirhandle %s
+readline
+readlink
+READONLY,
+readpipe
+Recompile perl with -DDEBUGGING to use -D switch (did you mean -d ?)
+Recursive call to Perl_load_module in PerlIO_find_layer
+Recursive inheritance detected in package '%s'
+recvfrom
+REDO ===> 
+refcnt_dec: fd %d < 0
+refcnt_dec: fd %d: %d <= 0
+refcnt_dec: fd %d refcnt=%d
+refcnt_dec: fd %d >= refcnt_size %d
+refcnt: fd %d < 0
+refcnt: fd %d: %d <= 0
+refcnt: fd %d >= refcnt_size %d
+refcnt_inc: fd %d < 0
+refcnt_inc: fd %d: %d <= 0
+refcnt_inc: fd %d refcnt=%d
+    REFCNT = %Ld
+REFCNT = %Lu
+      REFCOUNTED
+,REFCOUNTED
+reference constructor
+Reference found where even-sized list expected
+Reference is already weak
+reference, kind
+Reference to invalid group 0
+Reference to nonexistent group
+Reference to nonexistent named group
+Reference to nonexistent or unclosed group
+reference-type operator
+reflags_charset
+ref-to-glob cast
+regcmaybe
+regcomp.c
+regcreset
+regdata(D)
+regdatum(d)
+REGERROR
+regex_global(g)
+Regexp::
+regexp compilation
+regexp_flags_names
+regexp internal guard
+regexp internal reset
+regexp memory corruption
+Regexp modifier "/a" may appear a maximum of twice
+Regexp modifier "%c" may appear a maximum of twice
+Regexp modifier "%c" may not appear after the "-"
+Regexp modifier "/%c" may not appear twice
+Regexp modifier "%c" may not appear twice
+Regexp modifiers "/%c" and "/%c" are mutually exclusive
+Regexp modifiers "%c" and "%c" are mutually exclusive
+Regexp out of space
+__register_atfork
+[REHASH] 
+re::is_regexp
+Repeated format line will never terminate (~~ and @#)
+repeat (x)
+Replacement list is longer than search list
+require q%c%s%c
+re::regexp_pattern
+re::regname
+re::regnames
+re::regnames_count
+,RETAINT
+,REVERSE
+Reversed %c= operator
+rewinddir
+rewinddir() attempted on invalid dirhandle %s
+rhash(%)
+	right argument has no overloaded magic
+	right argument in overloaded package 
+right bitshift (>>)
+right_shift
+  RITER = %Ld
+rnftbxcav
+  ROOT = 0x%Lx
+Runaway prototype
+Run 'perldoc perl' for more help with Perl.
+ (RUNTIME)
+  RV = 0x%Lx
+( %s . ) 
+%s" :: "
+%s(%.0f) failed
+%s(%.0f) too large
+%s(%.0f) too small
+%s = 0x%Lx
+%s::__ANON__
+%s argument is not a HASH or ARRAY element or a subroutine
+%s argument is not a HASH or ARRAY element or slice
+%s argument is not a subroutine name
+scalar assignment
+scalar chomp
+scalar chop
+scalar dereference
+SCALAR[, ON]
+SCALAR[, REFCOUNT]
+Scalars leaked: %ld
+Scalar value %.*s better written as $%.*s
+scalar variable
+,SCANFIRST
+%s%c...%c
+%sCompilation failed in regexp
+%sCompilation failed in require
+%s::DATA
+SDBM_File::
+%s defines neither package nor VERSION--version check failed
+%s does not define $%s::VERSION--version check failed
+Search pattern not terminated
+Search pattern not terminated or ternary operator parsed as search pattern
+second_sv_flags_names
+seekdir() attempted on invalid dirhandle %s
+  SEEN_EVALS = %Lu
+select system call
+Self-ties of arrays and hashes are not supported
+Semicolon seems to be missing
+semi-panic: attempt to dup freed string
+  -s                enable rudimentary parsing for switches after programfile
+Sequence %.2s... not terminated
+Sequence %.3s... not terminated
+Sequence (?%c...) not implemented
+Sequence (?(%c... not terminated
+Sequence (?%c... not terminated
+Sequence (? incomplete
+Sequence (?#... not terminated
+Sequence (?{...}) not terminated or not {}-balanced
+Sequence (?R) not terminated
+Sequence (%.*s...) not recognized
+setgrent
+setgroups
+sethostent
+setlocale
+setnetent
+setpriority
+setprotoent
+setpwent
+setregid
+setresgid
+setresuid
+setreuid
+setservent
+setsockopt
+%s failed--call queue aborted
+%*s  FLAGS = (
+%s found where operator expected
+%s::_GEN_%ld
+%s had compilation errors.
+shared(N)
+shared_scalar(n)
+SHAREKEYS,
+shmwrite
+,SHORTCIRCUIT
+shostent
+!=~ should be !~
+<> should be quotes
+shutdown
+sigaction
+sigaddset
+sigelem(s)
+sigemptyset
+sigismember
+Signal SIG%s received, but no signal handler set.
+sigprocmask
+__sigsetjmp
+SIG%s handler "%s" not defined.
+%s: illegal mapping '%s'
+SINGLELINE
+single ref constructor
+%s in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+%s in regex m/%.*s%s/
+%s (...) interpreted as function
+size expected by this perl
+SKIP_next
+SKIP_next_fail
+,SKIPWHITE
+SKIPWHITE,
+%s:%ld-%ld
+%s limit (%d) exceeded
+  -S                look for programfile using PATH environment variable
+%s (%Lu) does not match %s (%Lu)
+%s (%Lu) smaller than %s (%Lu)
+smartmatch
+smart match
+Smart matching a non-overloaded object breaks encapsulation
+%.*s matches null string many times in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+%s method "%.256s" overloading "%s" in package "%.256s"
+S_mg_findext_flags
+"%s" not allowed in expression
+__snprintf_chk
+%s number > %s non-portable
+;\$$sO9|$(vI
+socketpair
+sockpair
+sort is now a reserved word
+%.*s => %p
+,SPECIAL
+splice() offset past end of array
+Split loop
+ split(/,/,q
+ split(/,/,q{%s});
+sprotoent
+srand48_r
+%*s  REFCNT = %Ld
+%s returned from lvalue subroutine in scalar context
+	%.*s = "%s",
+%s %s %2d %02d:%02d:%02d %.0f
+sservent
+/%.*s/ should probably be written as "%.*s"
+sSiIlLqQjJfFdDpP(
+sSiIlLxXnNvV@.
+, <%s> %s %Ld
+%s[%s:%Ld]
+ssockopt
+%s%s on %s %s
+%s%s on %s %s %s
+%s::SUPER
+S_sv_unmagicext_flags
+%s syntax OK
+__stack_chk_fail
+,STACKED
+  START = 0x%Lx ===> %Ld
+START_ONLY
+START_ONLY,
+Statement unlikely to be reached
+STORESIZE
+'%s' trapped by operation mask
+strerror_r
+,STRICT_REFS
+string comparison (cmp)
+string eq
+string ge
+string gt
+string le
+string lt
+string ne
+strtoull
+strxfrm() gets absurd
+Stub found while resolving
+%*sTYPE = %s  ===> 
+  SUBBEG = 0x0
+  SUBBEG = 0x%Lx %s
+  SUBLEN = %Ld
+ sub %-p
+subroutine dereference
+subroutine entry
+subroutine exit
+subroutine name
+subroutine prototype
+Subroutine %s redefined
+Subroutine %s::%s redefined
+SUB %s = 
+substcont
+substitution
+substitution iterator
+Substitution loop
+Substitution pattern not terminated
+Substitution replacement not terminated
+substitution (s///)
+substr outside of string
+  SUBSTRS = 0x%Lx
+substr(x)
+    SV = 0x%Lx
+sv_2iv assumed (U_V(fabs((double)SvNVX(sv))) < (UV)IV_MAX) but SvNVX(sv)=%g U_V is 0x%Lx, IV_MAX is 0x%Lx
+"%s" variable %-p masks earlier declaration in same %s
+"%s" variable %s can't be in a package
+%s version %-p required--this is only version %-p
+sv, failok=0
+sv_len_utf8
+SV_PLACEHOLDER
+sv_pos_b2u
+sv_pos_u2b_cache
+SV_UNDEF
+sv_upgrade from type %d down to type %d
+sv_vcatpvfn
+sv_vcatpvfn()
+SWASHNEW
+SWASHNEW didn't return an HV ref
+Switch (?(condition)... contains too many branches
+Switch condition not recognized
+symbol reset
+symtab(:)
+syntax error
+syswrite
+T$09T$,t
+t0;l$Ds*
+T$,3D$03T$4	
+t7<Jt><8t:<R
+t$8;r,t%
++T$\9\$P
+T$<9Stu	
+T$,9T$0t
+T$<9T$Tw
+T$(9T$ v
+T$$9T$ w>
+ [tainted]
+,TAINTED
+TAINTED,
+      TAINTEDDIR
+TAINTED_SEEN
+TAINTED_SEEN,
+taint(t)
+-T and -B not implemented on filehandles
+  TARG = 0x%Lx
+,TARGET_MY
+Target of goto is too deeply nested
+TARG = %ld
+  TARGLEN = %Ld
+  TARGOFF = %Ld
+T$d9S t5
+t(;D$Dt";D$Ht
+telldir() attempted on invalid dirhandle %s
+  -T                enable tainting checks
+  -t                enable tainting warnings
+TF8CACHE
+TF8LOCALE
++T$H9D$H
+T$H9S,tI
+That use of $[ is unsupported
+The %s function is unimplemented
+The stat preceding lstat() wasn't an lstat
+The stat preceding -l _ wasn't an lstat
+The 'unique' attribute may only be applied to 'our' variables
+This is perl 5, version 14, subversion 2 (%-p) built for i686-linux-gnu-thread-multi-64int
+this system using "man perl" or "perldoc perl".  If you have access to the
++T$h;T$L
+TIEARRAY
+tiedelem(p)
+tiedscalar(q)
+TIEHANDLE
+Tie::Hash::NamedCapture
+TIESCALAR
+:t(;L$4t"
+t@;l$Ht:
+<!tl<=tp
+T$l<,tP<#u
+T$l;T$<w
+Too deeply nested ()-groups in %s
+Too few args to syscall
+Too late for "-%.*s" option
+Too late to run CHECK block
+Too late to run INIT block
+Too many args to syscall
+Too many arguments for %s
+  TOP_GV
+  TOP_GV = 0x%Lx
+  TOP_NAME = "%s"
+T$p9T$lt
+<?tp<QtH<Lt9<Jt@<8t<<Rf
+Trailing \
+Transliteration pattern not terminated
+Transliteration replacement not terminated
+transliteration (tr///)
+TRIE_next
+TRIE_next_fail
+|tr -s ' 	
+truncate
+T$<;S,t#
+t.;\$\t$
+T$t9T$HrH
+T$T+T$89
+< t^<	tZ<
+tX;D$<tR
+T$X+T$\9
+  TYPE = '%c'
+  TYPE = %c
+  TYPE = '\%o'
+Type of arg %d to %s must be %s (not %s)
+Type of argument to %s must be unblessed hashref or arrayref
+U0 mode on a byte string
+  -U                allow unsafe operations
+  -u                dump core after parsing program
+uK9|$<rEw
+Unable to create sub named "%-p"
+Unbalanced context: %ld more PUSHes than POPs
+Unbalanced saves: %ld more saves than restores
+Unbalanced scopes: %ld more ENTERs than LEAVEs
+Unbalanced string table refcount: (%ld) for "%s"
+Unbalanced tmps: %ld more allocs than frees
+UNDEFINED
+Undefined format "%s" called
+Undefined sort subroutine "%-p" called
+Undefined subroutine called
+Undefined subroutine in sort
+Undefined subroutine &%-p called
+Undefined top format called
+Undefined top format "%s" called
+Undefined value assigned to typeglob
+undef operator
+Unexpected constant lvalue entersub entry via type/targ %ld:%Lu
+(unexpected continuation byte 0x%02Lx, with no preceding start byte)
+(unexpected non-continuation byte 0x%02Lx, %d byte%s after start byte 0x%02Lx, expected %d bytes)
+(unexpected non-continuation byte 0x%02Lx, immediately after start byte 0x%02Lx)
+Unicode non-character U+%04LX is illegal for open interchange
+Unicode surrogate U+%04LX is illegal in UTF-8
+unimport
+UNITCHECK
+UNIVERSAL
+universal.c
+UNIVERSAL::can
+UNIVERSAL::DOES
+UNIVERSAL::isa
+UNIVERSAL::VERSION
+(unknown)
+,UNKNOWN
+UNKNOWN(0x%Lx) %s
+unknown custom operator
+Unknown error
+Unknown open() mode '%.*s'
+Unknown PerlIO layer "%.*s"
+Unknown PerlIO layer "scalar"
+Unknown switch condition (?(%.2s
+Unknown Unicode option letter '%c'
+Unknown Unicode option value %Lu
+Unknown verb pattern '%.*s'
+Unmatched (
+Unmatched )
+Unmatched [
+Unmatched right curly bracket
+Unmatched right square bracket
+unopened
+Unquoted string "%s" may clash with future reserved word
+Unrecognized character \x%02X; marked by <-- HERE after %s<-- HERE near column %d
+Unrecognized escape \%c in character class passed through in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+Unrecognized escape \%c passed through
+Unrecognized escape \%.*s passed through in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+Unrecognized signal name "%s"
+Unrecognized switch: -%s  (-h will show valid options)
+unsetenv
+Unsuccessful %s on filename containing newline
+Unsupported directory function "%s" called
+Unsupported script encoding UTF-32BE
+Unsupported script encoding UTF-32LE
+Unsupported socket function "%s" called
+Unterminated attribute list
+Unterminated attribute parameter in attribute list
+Unterminated compressed integer in unpack
+Unterminated \g... pattern
+Unterminated \g{...} pattern
+Unterminated <> operator
+Unterminated verb pattern
+Unterminated verb pattern argument
+untie attempted while %Lu inner references still exist
+UNUSED_BIT_8
+Usage class->find(name[,load])
+Usage: CODE(0x%Lx)(%s)
+Usage: invocand->DOES(kind)
+Usage: %s(%s)
+Usage: %s::%s(%s)
+Usage: %s [switches] [--] [programfile] [arguments]
+use Config; Config::config_vars(qw%c%s%c)
+use Config; Config::_V()
+use Devel::
+use feature ':5.14';
+  USEFUL = %Ld
+USE_INTUIT_ML
+USE_INTUIT_ML,
+USE_INTUIT_NOML
+USE_INTUIT_NOML,
+Useless localization of %s
+Useless (%s%c) - %suse /%c modifier in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+Useless (%sc) - %suse /gc modifier in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+Useless use of /d modifier in transliteration operator
+Useless use of (?-p) in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+Useless use of %s in void context
+Useless use of sort in scalar context
+Useless use of %s with no values
+Use of assignment to $[ is deprecated
+Use of bare << to mean <<"" is deprecated
+Use of chdir('') or chdir(undef) as chdir() is deprecated
+Use of /c modifier is meaningless in s///
+Use of /c modifier is meaningless without /g
+Use of comma-less variable list is deprecated
+Use of "do" to call subroutines is deprecated
+Use of := for an empty attribute list is not allowed
+Use of freed value in iteration
+Use of *glob{FILEHANDLE} is deprecated
+Use of /g modifier is meaningless in split
+Use of "goto" to jump into a construct is deprecated
+Use of inherited AUTOLOAD for non-method %s::%.*s() is deprecated
+Use of :locked is deprecated
+Use of -l on filehandle %s
+Use of ?PATTERN? without explicit operator is deprecated
+Use of qw(...) as parentheses is deprecated
+Use of reference "%-p" as array index
+Use of tied on a handle without * is deprecated
+Use of tie on a handle without * is deprecated
+Use of uninitialized value%s%s%s
+Use of :unique is deprecated
+Use of untie on a handle without * is deprecated
+Using a hash as a reference is deprecated
+Using an array as a reference is deprecated
+Using just the first character returned by \N{} in character class in regex; marked by <-- HERE in m/%.*s <-- HERE %s/
+Using !~ with s///r doesn't make sense
+Using !~ with tr///r doesn't make sense
+/usr/lib/perl5
+/usr/lib/perl/5.14
+/usr/local/lib/perl/5.14.2
+/usr/local/lib/site_perl
+/usr/local/share/perl/5.14.2
+/usr/share/perl5
+/usr/share/perl/5.14
+UTF-16 surrogate U+%04LX
+utf8::decode
+utf8::downgrade
+utf8::encode
+utf8::is_utf8
+utf8_mg_pos_cache_update
+utf8::native_to_unicode
+ [UTF8 "%s"]
+[UTF8 "%s"] 
+utf8::ToSpecFold
+utf8::ToSpecLower
+utf8::ToSpecTitle
+utf8::ToSpecUpper
+utf8::unicode_to_native
+utf8::upgrade
+utf8::valid
+utf8 "\x%02X" does not map to Unicode
+UUUUUUUUUUUUU
+uvar_elem(u)
+  UV = %Lu
+Value of %s%s can be "0"; test with defined()
+values on array
+values on reference
+Variable "%c%s" is not imported
+Variable length lookbehind not implemented
+Variable "%s" is not available
+Variable "%s" will not stay shared
+v%d.%d.0
+vector argument not supported with alpha versions
+Verb pattern '%.*s' has a mandatory argument
+Verb pattern '%.*s' may not have an argument
+version::(<=>
+version::(""
+version::()
+version::(0+
+version::(bool
+version::boolean
+version::(cmp
+version::declare
+version::is_alpha
+version::is_qv
+version::new
+version::(nomethod
+version::noop
+version::normal
+Version number must be a constant number
+version::numify
+version::parse
+version::qv
+version::stringify
+Version string '%s' contains invalid data; ignoring: '%s'
+version::vcmp
+VertSpace
+  -v                print version, patchlevel and license
+__vsnprintf_chk
+vstring(V)
+V ;T$\tM
+  -V[:variable]     print configuration summary (or a single Config.pm variable)
+v	v	v	v	
+v	v	v	v	v	
+v	v	v	v	v	v	
+v	v	v	v	v	v	v	
+v	v	v	v	v	v	v	v	v	v	v	v	v	v	v	
+wantarray
+__WARN__
+,WARNING
+WARNING: %Lx changed from %Lx to %Lx
+warning:%s
+warnings::Bits
+Warning: something's wrong
+Warning: unable to close filehandle %s properly.
+Warning: Use of "%.*s" without parentheses is ambiguous
+  (was %s)
+WATCHING: %Lx cloned as %Lx with value %Lx
+WATCHING, %Lx is currently %Lx
+WEAKOUTSIDE,
+WEAKREF,
+  -W                enable all warnings
+  -w                enable many useful warnings
+WHILEM_A_max
+WHILEM_A_max_fail
+WHILEM_A_min
+WHILEM_A_min_fail
+WHILEM_A_pre
+WHILEM_A_pre_fail
+WHILEM_B_max
+WHILEM_B_max_fail
+WHILEM_B_min
+WHILEM_B_min_fail
+ while running setgid
+ while running setuid
+ while running with -t switch
+Wide character
+Wide character in $/
+Wide character in %s
+(with %d registered patch%s, see perl -V for more detail)
+Within []-length '%c' not allowed in %s
+Within []-length '*' not allowed in %s
+within pattern
+within string
+without a package or object reference
+write exit
+Wrong syntax (suid) fd script name "%s"
+\$x9\$,v
+_X_Begin
+  -x[directory]     ignore text before #!perl line (optionally cd to directory)
+  -X                disable all warnings
+_X_Extend
+XIdContinue
+XIdStart
+_X_LV_LVT_V
+'X' outside of string in %s
+'x' outside of string in unpack
+XPosixAlnum
+XPosixAlpha
+XPosixBlank
+XPosixCntrl
+XPosixGraph
+XPosixLower
+XPosixPrint
+XPosixPunct
+XPosixSpace
+XPosixUpper
+XPosixXDigit
+XS_DynaLoader_CLONE
+XS_DynaLoader_dl_error
+XS_DynaLoader_dl_find_symbol
+XS_DynaLoader_dl_install_xsub
+XS_DynaLoader_dl_load_file
+XS_DynaLoader_dl_undef_symbols
+XS_DynaLoader_dl_unload_file
+XS_Internals_hash_seed
+XS_Internals_hv_clear_placehold
+XS_Internals_HvREHASH
+XS_Internals_rehash_seed
+XS_Internals_SvREADONLY
+XS_Internals_SvREFCNT
+XS_mro_method_changed_in
+XS_PerlIO_get_layers
+XS_PerlIO__Layer__find
+XS_PerlIO__Layer__NoWarnings
+XS_re_is_regexp
+XS_re_regexp_pattern
+XS_re_regname
+XS_re_regnames
+XS_re_regnames_count
+__xstat64
+  XSUB = 0x%Lx
+(xsub 0x%Lx %d)
+  XSUBANY = 0x%Lx (CONST SV)
+  XSUBANY = %Ld
+XS_UNIVERSAL_can
+XS_UNIVERSAL_DOES
+XS_UNIVERSAL_isa
+XS_UNIVERSAL_VERSION
+XS_utf8_decode
+XS_utf8_downgrade
+XS_utf8_encode
+XS_utf8_is_utf8
+XS_utf8_native_to_unicode
+XS_utf8_unicode_to_native
+XS_utf8_upgrade
+XS_utf8_valid
+XS_VERSION
+XS_version_boolean
+XS_version_is_alpha
+XS_version_is_qv
+XS_version_new
+XS_version_noop
+XS_version_normal
+XS_version_numify
+XS_version_qv
+XS_version_stringify
+XS_version_vcmp
+YOU HAVEN'T DISABLED SET-ID SCRIPTS IN THE KERNEL YET!
+You need to quote "%s"
+Your random numbers are not that random
+Z8MGg&~CmsF
+Zeroing %p, %d
+zz	oo~o|aao

@@ -1,0 +1,6 @@
+#!/bin/sh
+find_jars xercesImpl batik-all xml-apis-ext js
+find_java_runtime java6
+# Include the wrappers utility script
+run_java org.apache.batik.apps.svgbrowser.Main "$@"
+. /usr/lib/java-wrappers/java-wrappers.sh

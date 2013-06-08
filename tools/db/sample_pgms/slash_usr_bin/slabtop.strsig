@@ -1,0 +1,54 @@
+%6s %6s %4s %8s %6s %8s %10s %-23s
+%6u %6u %3u%% %7.2fK %6u %8u %9uK %-23s
+ Active / Total Caches (%% used)     : %d / %d (%.1f%%)
+ Active / Total Objects (%% used)    : %d / %d (%.1f%%)
+ Active / Total Size (%% used)       : %.2fK / %.2fK (%.1f%%)
+ Active / Total Slabs (%% used)      : %d / %d (%.1f%%)
+  a: sort by number of active objects
+  b: sort by objects per slab
+__bss_start
+CACHE SIZE
+  c: sort by cache size
+  --delay=n, -d n    delay n seconds between updates
+display_version
+__errno_location
+error: can't have a negative delay
+free_slabinfo
+getopt_long
+get_slabinfo
+GLIBC_2.0
+GLIBC_2.4
+__gmon_start__
+  --help             display this help and exit
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libncurses.so.5
+libproc-3.2.8.so
+libtinfo.so.5
+  l: sort by number of slabs
+ Minimum / Average / Maximum Object : %.2fK / %.2fK / %.2fK
+  n: sort by name
+OBJ SIZE
+OBJ/SLAB
+  --once, -o         only display once, then exit
+options:
+  o: sort by number of objects
+  p: sort by pages per slab
+put_slabinfo
+resizeterm
+  --sort=S, -s S     specify sort criteria S (see below)
+  s: sort by object size
+__stack_chk_fail
+tcgetattr
+tcsetattr
+The following are valid sort criteria:
+usage: %s [options]
+  u: sort by cache utilization
+  --version, -V      display version information and exit
+  v: sort by number of active slabs
+wattr_off
+wattr_on
+wrefresh

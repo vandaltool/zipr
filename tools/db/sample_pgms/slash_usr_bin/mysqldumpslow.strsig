@@ -1,0 +1,163 @@
+	# abbreviate massive "in (...)" statements and similar
+    'a!',	# don't abstract all numbers to N and strings to 'S'
+  -a           don't abstract all numbers to N and strings to 'S'
+                al: average lock time
+                ar: average rows sent
+        @ARGV = <$datadir/$opt{h}-slow.log>;
+        @ARGV = ($slowlog);
+# at, al, and ar are the corresponding averages
+                at: average query time
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+	    $c, $at,$t, $al,$l, $ar,$r, $_;
+                 c: count
+# Copyright (c) 2000-2002, 2005-2008 MySQL AB, 2008, 2009 Sun Microsystems, Inc.
+	$datadir = ($instances =~ m/--$opt{i}-datadir=(.*)/)[0]
+  -d           debug
+    'd|debug+',	# debug
+  --debug      debug
+               default is '*', i.e. match all
+	# determine the datadir from the instances section of /etc/my.cnf, if any
+	die "Can't determine datadir from 'my_print_defaults mysqld' output: $defaults"
+        die "Can't find '$datadir/$opt{h}-slow.log'\n" unless @ARGV;
+        die "Can't find '$slowlog'\n" unless @ARGV;
+	die "Instance '$opt{i}' is unknown (known instances: @instances)\n"
+	die "No -i 'instance_name' specified to select among known instances: @instances.\n"
+    } else {
+      exit 0;
+      exit 1;
+foreach (keys %stmt) {
+foreach (@sorted) {
+# Further changes by Tim Bunce, 8th March 2001.
+GetOptions(\%opt,
+  -g PATTERN   grep: only consider stmts that include this string
+    'g=s',	# grep: only consider stmts that include this string
+    h => '*',
+# Handling of strings with \ and double '' by Monty 11 Aug 2001.
+  --help       write this text to standard output
+    'help+',	# write usage info
+  -h HOSTNAME  hostname of db server for *-slow.log filename (can be wildcard),
+    'h=s',	# hostname of db server for *-slow.log filename (can be wildcard)
+    if (@chunks > 1) {
+    if (!$datadir or $opt{i}) {
+    if ( -f $slowlog ) {
+    if ($str) {
+  -i NAME      name of server instance (if using mysql.server startup script)
+    'i=s',	# name of server instance (if using mysql.server startup script)
+    'l!',	# don't subtract lock time from total time
+  -l           don't subtract lock time from total time
+# Library General Public License for more details.
+# License along with this library; if not, write to the Free
+# License as published by the Free Software Foundation; version 2
+                 l: lock time
+# MA 02110-1301, USA
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# modify it under the terms of the GNU Library General Public
+    my $basedir = ($defaults =~ m/--basedir=(.*)/)[0]
+    my @chunks = split /^\/.*Version.*started with[\000-\377]*?Time.*Id.*Command.*Argument.*\n/m;
+    my ($c, $t,$at, $l,$al, $r,$ar) = @{ $v }{qw(c t at l al r ar)};
+    my ($c, $t, $l, $r) = @{ $v }{qw(c t l r)};
+    my $datadir = ($defaults =~ m/--datadir=(.*)/)[0];
+    my $defaults   = `my_print_defaults mysqld`;
+    my $host  = (@hosts==1) ? $hosts[0] : sprintf "%dhosts",scalar @hosts;
+    my @hosts = keys %{$v->{hosts}};
+	my @instances = ($instances =~ m/^--(\w+)-/mg);
+	my $instances  = `my_print_defaults instances`;
+my %opt = (
+my @pending;
+    my $slowlog = ($defaults =~ m/--log-slow-queries=(.*)/)[0];
+my @sorted = sort { $stmt{$b}->{$opt{s}} <=> $stmt{$a}->{$opt{s}} } keys %stmt;
+# mysqldumpslow - parse and summarize the MySQL slow query log
+    my $s = $stmt{$_} ||= { users=>{}, hosts=>{} };
+my %stmt;
+    my $str= shift;
+    my $text= <<HERE;
+    my ($t, $l, $r) = ($1, $2, $3);
+    my ($user,$host) = s/^#? User\@Host:\s+(\S+)\s+\@\s+(\S+).*\n// ? ($1,$2) : ('','');
+    my @users = keys %{$v->{users}};
+    my $user  = (@users==1) ? $users[0] : sprintf "%dusers",scalar @users;
+    my $v = $stmt{$_} || die;
+	# -n=8: turn log_20001231 into log_NNNNNNNN
+    next if $opt{g} and !m/$opt{g}/io;
+    'n=i',	# abstract numbers with at least n digits within names
+  -n NUM       abstract numbers with at least n digits within names
+$/ = ";\n#";		# read entire statements using paragraph mode
+# of the License.
+$opt{'help'} and usage();
+	or die "Can't determine basedir from 'my_print_defaults mysqld' output: $defaults";
+	    or die "Can't determine --$opt{i}-datadir from 'my_print_defaults instances' output: $instances";
+# Original version by Tim Bunce, sometime in 2000.
+) or usage("bad option");
+Parse and summarize the MySQL slow query log. Options are
+    printf "Count: %d  Time=%.2fs (%ds)  Lock=%.2fs (%ds)  Rows=%.1f (%d), $user\@$host\n%s\n\n",
+      print STDERR "ERROR: $str\n\n";
+      print STDERR $text;
+      print $text;
+    # remove fluff that mysqld writes to log when it (re)starts:
+    'r!',	# reverse the sort order (largest last instead of first)
+  -r           reverse the sort order (largest last instead of first)
+                 r: rows sent
+    s => 'at',
+	s/([a-z_]+)(\d{$opt{n},})/$1.('N' x length($2))/ieg if $opt{n};
+	s/\b0x[0-9A-Fa-f]+\b/N/g;
+	s/\b\d+\b/N/g;
+    $s->{c} += 1;
+        s/(\\')//g;
+        s/(\\")//g;
+    $s->{hosts}->{$host}++ if $host;
+    $s->{l} += $l;
+    s/^[ 	]*/  /mg;	# normalize leading whitespace
+    s/^[ 	]*\n//mg;	# delete blank lines
+	s!(([NS],){100,})!sprintf("$2,{repeated %d times}",length($1)/2)!eg;
+# Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+  -s ORDER     what to sort by (al, at, ar, c, l, r, t), 'at' is default
+@sorted = reverse @sorted         if $opt{r};
+@sorted = @sorted[0 .. $opt{t}-1] if $opt{t};
+    s/^# Query_time: ([0-9.]+)\s+Lock_time: ([0-9.]+)\s+Rows_sent: ([0-9.]+).*\n//;
+    $s->{r} += $r;
+    s/^SET timestamp=\d+;\n//;
+        s/''/'S'/g;
+        s/'[^']+'/'S'/g;
+        s/""/"S"/g;
+        s/"[^"]+"/"S"/g;
+    s/\s*;\s*(#\s*)?$//;	# remove trailing semicolon(+newline-hash)
+    's=s',	# what to sort by (al, at, ar, c, t, l, r)
+    s!^Tcp port: \d+  Unix socket: \S+\n!!mg;
+    s/^#? Time: \d{6}\s+\d+:\d+:\d+.*\n//;
+    s!^Time.*Id.*Command.*Argument.*\n!!mg;
+    $s->{t} += $t;
+sub usage {
+    $s->{users}->{$user}++ if $user;
+    s/^use \w+;\n//;	# not consistently added
+    s!^/.*Version.*started with:.*\n!!mg;
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or
+    't=i',	# just show the top n queries
+    $t -= $l unless $opt{l};
+  -t NUM       just show the top n queries
+                 t: query time  
+# t=time, l=lock time, r=rows
+unless (@ARGV) {
+	    unless grep { $_ eq $opt{i} } @instances;
+	    unless $instances;
+    unless ($opt{a}) {
+	    unless $opt{i};
+	unshift @pending, map { length($_) ? $_ : () } @chunks;
+Usage: mysqldumpslow [ OPTS... ] [ LOGS... ]
+use Getopt::Long;
+# Use is subject to license terms.
+use strict;
+#!/usr/bin/perl
+    $v->{al} = $l / $c;
+    $v->{ar} = $r / $c;
+    $v->{at} = $t / $c;
+  --verbose    verbose
+  -v           verbose
+    'v|verbose+',# verbose
+    warn "basedir=$basedir\n" if $opt{v};
+	warn "datadir=$datadir\n" if $opt{v};
+	warn "<<".join(">>\n<<",@chunks).">>" if $opt{d};
+    warn "[[$_]]\n" if $opt{d};	# show raw paragraph being read
+    warn "{{$_}}\n\n" if $opt{d};	# show processed statement string
+warn "\nReading mysql slow query log from @ARGV\n";
+while ( defined($_ = shift @pending) or defined($_ = <>) ) {
+# You should have received a copy of the GNU Library General Public

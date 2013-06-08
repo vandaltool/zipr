@@ -1,0 +1,12 @@
+$0 = shift(@ARGV);              # rename the script
+die $@ if $@;                   # die on parse/execute error
+#die $! if not defined $rv;      # die on execute error
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+	if $running_under_some_shell;
+my $old = select STDERR; $|++;  # turn on autoflush
+my $rv = do($0);                # execute the file
+select $old;             $|++;  # turn on autoflush
+### undef as well. So don't die in that case.
+use strict;
+#!/usr/bin/perl
+### XXX 'do' returns last statement evaluated, which may be

@@ -1,0 +1,340 @@
+#---------------------------------------------------------------------------
+############################################################################
+$0: Usage: $0 [-c] [-d] [-i oldconfigile] [-o newconfigfile] [-h]
+1) -----------------------
+2) -----------------------
+3) -----------------------
+4) -----------------------
+5) -----------------------
+6) -----------------------
+7) -----------------------
+a dialup line then you may not want me to perform these lookups, as
+Ah, I see you already have installed libnet before.
+and then from your module path.
+ $ans = Prompt($msg,$def);
+$ans = Prompt("\nWhat is your local internet domain name :",$def);
+   $ans =~ s/(\A\s+|\s+\Z)//g;
+a port to connect to, and the server initiates a connection to the client.
+     AUTH fwuser
+By default Net::FTP assumes that it only needs to use a firewall if it
+cannot resolve the name of the host given. This only works if your DNS
+case and your DNS will resolve external hostnames, then another method
+   -c change the configuration
+$cfg{'daytime_hosts'} = get_host_list($msg,$def);
+  $cfg{'ftp_ext_passive'} = get_bool($msg,$def);
+ $cfg{'ftp_firewall'} = get_hostname("FTP proxy hostname :", $def);
+ $cfg{'ftp_firewall_type'} = 0+$ans;
+$cfg{'ftp_int_passive'} = get_bool($msg,$def);
+$cfg{'ftp_testhost'} = get_hostname($msg,$oldcfg{'ftp_testhost'})
+$cfg{'inet_domain'} = ($ans =~ /(\S+)/)[0];
+  $cfg{'local_netmask'} = $mask if ref($mask) && @$mask;
+$cfg{'nntp_hosts'} = get_host_list($msg,$def);
+$cfg{'ph_hosts'}   =  get_host_list($msg,$def);
+$cfg{'pop3_hosts'} = get_host_list($msg,$def);
+$cfg{'smtp_hosts'} = get_host_list($msg,$def);
+$cfg{'snpp_hosts'} = get_host_list($msg,$def);
+###$cfg{'socks_hosts'}   =  get_host_list($msg,$def);
+$cfg{'test_exist'} = get_bool($msg, $oldcfg{'test_exist'});
+$cfg{'test_hosts'} = get_bool($msg,$oldcfg{'test_hosts'});
+$cfg{'time_hosts'} = get_host_list($msg,$def);
+ chomp($prompt);
+C<-i oldfile>, and it is searched first from the current directory,
+current list and an empty line to continue with Configure.
+    daytime_hosts        ntp1.none.such
+   $def =""
+$def = [];
+default, hit <CR>
+	[ default_hostname('dirserv') ];
+	[ default_hostname($ENV{NNTPSERVER},$ENV{NEWSHOST},'news') ];
+###	[ default_hostname($ENV{SOCKS5_SERVER},
+	[ default_hostname(split(/:/,$ENV{SMTPHOSTS} || ""), 'mailhost') ];
+default it is written to the current directory, unless otherwise
+defaults for some of the modules in the libnet distribution.
+###$def = $cfg{'socks_hosts'} ||
+ $def = exists $oldcfg{'ftp_firewall_type'}  ? $oldcfg{'ftp_firewall_type'} : 1;
+ defined($h) && (($cfg{'test_exist'} == 0) || gethostbyname($h));
+ $def = join(" ",@$def) if ref($def);
+$def = $oldcfg{'daytime_hosts'} || $oldcfg{'time_hosts'};
+  $def = $oldcfg{'ftp_ext_passive'} || 0;
+ $def = $oldcfg{'ftp_firewall'} || $ENV{FTP_FIREWALL};
+$def = $oldcfg{'ftp_int_passive'} || 0;
+$def = $oldcfg{'inet_domain'} || $ENV{LOCALDOMAIN};
+  $def = $oldcfg{'local_netmask'};
+$def = $oldcfg{'nntp_hosts'} ||
+$def = $oldcfg{'ph_hosts'} ||
+$def = $oldcfg{'pop3_hosts'} || [];
+$def = $oldcfg{'smtp_hosts'} ||
+$def = $oldcfg{'snpp_hosts'} || [];
+$def = $oldcfg{'time_hosts'} || [];
+ $def = "" unless defined $def;
+ delete $cfg{'ftp_firewall'};
+     delete $list{$mask};
+describe your internal network. Each netmask should be entered in the
+	die "Cannot create `$libnet_cfg_out': $!";
+distribution, but the libnetcfg can be used for any libnet
+do some basic tests when you run `make test'
+Do you have a firewall/ftp proxy  between your machine and the internet 
+Do you want me to perform hostname lookups (y|n) ?
+Do you want me to run these tests (y|n) ?
+Do you want to modify/update your configuration (y|n) ?
+   -d use defaults from the old config (implies -c, non-interactive)
+    else {
+   else {
+elsif (eval { require Net::Config }) 
+    elsif(ref($val)) {
+###Enter a list of available SOCKS hosts :
+Enter one netmask at each prompt, prefix with a - to remove a netmask
+###			   $ENV{SOCKS4_SERVER}) ];
+###			   $ENV{SOCKS_SERVER},
+   $err++;
+ $err ? join(" ",@h) : undef;
+*** ERROR:
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+    exit(0);
+ exit(0);
+$fh->close;
+firewall to connect to an external host.
+ foreach $host (@_)
+ foreach $host (@$hlist)
+foreach $key (keys %cfg) {
+   foreach my $byte (@ip) {
+   for (@inc) {
+form x.x.x.x/y, for example 127.0.0.0/8 or 214.8.16.32/24
+   for (sort keys %oldcfg) {
+from the list, enter a '*' to clear the whole list, an '=' to show the
+    ftp_int_passive      0
+    ftp_testhost         ftp.funet.fi
+fwuser/fwpass => firewall user & password
+getopts('dcho:i:');
+Graham Barr, the original Configure script of libnet.
+  $have_old = 1;
+=head1 AUTHORS
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 USAGE
+ @$hlist = @h;
+	? $host
+   $host = ($ans =~ /(\S*)/)[0];
+    Hostname `$host' does not seem to exist, please enter again
+ \@hosts;
+   @hosts = split(/\s+/, $ans);
+   -h show this help
+# $Id: Configure,v 1.8 1997/03/04 09:22:32 gbarr Exp $
+   if($ans eq '=') {
+   if($ans eq '*') {
+     if ( $byte > 255 ) {
+	if $cfg{'test_hosts'};
+	if $def eq $host;
+		if(defined $_) {
+if (defined $cfg{'ftp_firewall'})
+if (defined $cfg{'ftp_firewall'}) {
+   if(defined($host) && valid_host($host))
+    if(!defined($val)) {
+if( -f $libnet_cfg_in )
+    if (-f $trycfgfile && -r $trycfgfile) {
+if(get_bool($msg,0)) {
+if($have_old && !$opt_d)
+   if ( $ip[0] < 1 || $bits < 1 || $bits > 32) {
+	if(!length($host) || valid_host($host));
+ if($opt_d)
+if ($opt_h) {
+if(ref($oldcfg{'local_netmask'}))
+   if ($remove) {
+	if $running_under_some_shell;
+   if(valid_host($host))
+If you specified some default hosts above, it is possible for me to
+If you use a SOCKS firewall answer no
+    inet_domain          none.such
+installation.
+internet connection is via dialup, will require you to be on-line
+is needed. Net::Config can do this if you provide the netmasks that
+It tells where the old configuration file was found (if found).
+it will require you to be on-line.
+   -i use a specific file as the old config file
+Jarkko Hietaniemi, conversion into libnetcfg for inclusion into Perl 5.8.
+	join("\n\t",@{$def}),"\n\n";
+ [ keys %list ];
+     last;
+ length $host
+    $ libnetcfg
+libnetcfg - configure libnet
+    # libnetcfg -h for help
+$libnet_cfg_in = "libnet.cfg"
+$libnet_cfg_out = "libnet.cfg"
+"libnet.cfg", unless otherwise specified using the -i option,
+     %list = ();
+ @list{@$def} = ();
+     $list{$mask} = 1;
+L<Net::Config>, L<Net::libnetFAQ>
+lookup on each hostname you enter. If your internet connection is via
+	    map {
+map { $cfg{lc $_} = $cfg{$_}; delete $cfg{$_} if /[A-Z]/ } keys %cfg;
+  $msg = <<'EDQ';
+  $msg = <<EDQ;
+$msg = <<EDQ;
+###$msg =<<EDQ;
+$msg = 'Enter a list of available DAYTIME Hosts   :'  ;
+$msg = 'Enter a list of available NNTP hosts :';
+$msg = 'Enter a list of available PH Hosts   :'  ;
+$msg = 'Enter a list of available POP3 hosts :';
+$msg = 'Enter a list of available SMTP hosts :';
+$msg = 'Enter a list of available SNPP hosts :';
+$msg = 'Enter a list of available TIME Hosts   :'  ;
+  $msg = "\nShould all FTP connections be passive (y|n) ?";
+  $msg = "\nShould all FTP connections via a firewall/proxy be passive (y|n) ?";
+  $msg = "\nShould all other FTP connections be passive (y|n) ?";
+   my $ans = Prompt($prompt,$def);
+   my $ans = Prompt($prompt) or last;
+   my $bad = 0;
+my @cfg = ();
+my %cfg = ();
+ my $err = 0;
+my $fh = IO::File->new($libnet_cfg_out, "w") or
+ my @h = ();
+ my $hlist = shift;
+ my @host;
+ my $host;
+ my @hosts;
+ my $h = shift;
+   my @inc;
+my $key;
+my($libnet_cfg_in,$libnet_cfg_out,$msg,$ans,$def,$have_old);
+ my %list;
+  my $mask = get_netmask("netmask :",$def);
+   my $mask = sprintf("%d.%d.%d.%d/%d",@ip[0..3],$bits); 
+my %oldcfg = ();
+   my $oldcfgfile;
+ my($prompt,$def) = @_;
+   my($remove,$bits,@ip) = ($1,$3,split(/\./, $2),0,0,0);
+    my $trycfgfile = File::Spec->catfile($_, $libnet_cfg_in);
+    my $val = $cfg{$key};
+ my $val = Prompt($prompt,$def ? "yes" : "no");
+		my $v = "undef";
+$Net::Config::CONFIGURE = 1; # Suppress load of user overrides
+     next;
+       next MASK;
+     next MASK;
+    nntp_hosts           nntp.none.such
+Normally when FTP needs a data connection the client tells the server
+OK I will not check if the hostnames you give are valid
+  %oldcfg = ( %{ do $libnet_cfg_in } );
+     $oldcfgfile = $trycfgfile;
+  %oldcfg = %Net::Config::NetConfig;
+$oldcfg{'test_exist'} = 1 unless exists $oldcfg{'test_exist'};
+$oldcfg{'test_hosts'} = 1 unless exists $oldcfg{'test_hosts'};
+    # old config ./libnet.cfg
+     OPEN remote.site
+ $opt_d = 1
+    or a single space to clear any default
+   -o use a specific file as the new config file
+     PASS fwpass
+     PASS pass
+     PASS pass@fwpass
+    ph_hosts             
+    pop3_hosts           pop.none.such
+    print "# $0 -h for help\n";
+   print <<"EDQ";
+  print <<EDQ;
+print <<EDQ;
+print <<EDQ unless $cfg{'test_exist'};
+ print <<EOU;
+	printf "%-20s %s\n", $_,
+print $fh "{\n";
+print $fh "}\n";
+    print $fh "\t'",$key,"' => ",$val,",\n";
+print "\n";
+     print "\n",( %list ? join("\n", sort keys %list) : 'none'),"\n\n";
+   print "# old config $oldcfgfile\n" if defined $oldcfgfile;
+   print $prompt,," [",$def,"]\n";
+print "Writing $libnet_cfg_out\n";
+   print "Your current netmasks are :\n\n\t",
+ prompt($prompt,$def);
+protocol. In these situations the client must make the connection to the
+     push(@h, $host);
+     push(@host,$host);
+   push @inc, $ENV{PERL5LIB} if exists $ENV{PERL5LIB};
+   push @inc, $ENV{PERLLIB}  if exists $ENV{PERLLIB};
+   push @inc, @INC;
+               ref $oldcfg{$_} ? @{$oldcfg{$_}} : $oldcfg{$_};
+     RESP fwpass
+   return $def;
+     return $host
+ return wantarray ? @host : undef;
+server, this is called a passive transfer.
+services, then enter a single space, followed by <CR>. To accept the
+should allow anonymous access and have a /pub directory
+     SITE remote.site
+    smtp_hosts           smtp.none.such
+    snpp_hosts           
+so be very cafeful
+###SOCKS is a commonly used firewall protocol. If you use SOCKS firewalls
+Some setups, in particular firewall setups, can/do not work using this
+specified using the -o option.
+specified using the -o option, C<-o newfile>.
+Starting from perl 5.8 libnet is part of the standard Perl
+sub default_hostname
+sub get_bool ($$)
+sub get_host_list
+sub get_hostname
+sub get_netmask ($$)
+sub Prompt
+sub test_hostnames (\@)
+sub valid_host
+system is setup to only resolve internal hostnames. If this is not the
+    test_exist           1
+    test_hosts           1
+the C<-d> options.
+The C<-h> option will show a usage message.
+The default name of the new configuration file is "libnet.cfg", and by
+The default name of the old configuration file is by default
+The following questions all require a list of host names, separated
+The libnetcfg utility can be used to configure the libnet.
+###then enter a list of hostames
+This script will prompt you to enter hostnames that can be used as
+This will cause `make test' to be quite a bit slower and, if your
+    time_hosts           ntp.none.such
+To allow Net::FTP to be tested I will need a hostname. This host
+To change the configuration you will need to use either the C<-c> or
+To ensure that you do not enter an invalid hostname, I can perform a
+	: undef;
+   unless ($ans =~ m{^\s*(?:(-?\s*)(\d+(?:\.\d+){0,3})/(\d+))}) {
+	unless(defined($libnet_cfg_in  = $opt_i));
+	unless(defined($libnet_cfg_out = $opt_o));
+	unless get_bool($msg,0);
+   unless ($opt_c || $opt_d) {
+unless the hosts are local.
+	unless wantarray;
+use ExtUtils::MakeMaker qw(prompt);
+use File::Spec;
+use Getopt::Std;
+use IO::File;
+     USER fwuser
+     USER fwuser@remote.site
+user/pass     => external user & password
+     USER user
+     USER user@fwuser@remote.site
+     USER user@remote.host
+use strict;
+use vars qw($opt_d $opt_c $opt_h $opt_o $opt_i);
+#!/usr/bin/perl
+	    } @$val ) . ']';
+	$val = '[' . join(",",
+	$val =~ s/'/\'/sog;
+	$val = "undef";
+	$val = "'" . $val . "'" if $val =~ /\D/;
+ $val =~ /^y/i ? 1 : 0;
+		    ($v = $_) =~ s/'/\'/sog;
+		    $v = "'" . $v . "'";
+   warn "Bad hostname: '$host'\n";
+       warn "Bad netmask '$ans'\n";
+     warn "Bad netmask '$ans'\n";
+*** WARNING *** WARNING *** WARNING *** WARNING *** WARNING ***
+What host can I use :
+What series of FTP commands do you need to send to your
+ while(1)
+ while(1) {
+ while(@hosts && defined($def = test_hostnames(@hosts)));
+Without arguments libnetcfg displays the current configuration.
+Without options, the old configuration is shown.
+with spaces. If you do not have a host available for any of the

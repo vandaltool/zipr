@@ -1,0 +1,96 @@
+                                                  
+	%-8s %-10s	%s
+Available devices with DFU support:
+bcdDevice	%x
+bcdDFU		%x.%x
+bLength		%d
+__bss_start
+Bus %s Device %s: ID %04x:%04x Interface %d%s
+Can't abort previous action: %s (%d)
+Can't access firmware
+Can't claim interface: %s (%d)
+Can't clear status: %s (%d)
+Can't detach device: %s (%d)
+Can't find any DFU devices
+Can't get status: %s (%d)
+Can't identify device with DFU mode
+Can't load firmware
+Can't open device: %s (%d)
+Can't open firmware
+Can't open firmware file: %s (%d)
+Can't send final block: %s (%d)
+Can't upload next block: %s (%d)
+Can't write next block: %s (%d)
+Can't write suffix block: %s (%d)
+Change firmware attributes
+Check firmware file
+Checksum	%08x
+Checksum	%08x (%s)
+Commands:
+CSR-dfu1
+CSR-dfu2
+__ctype_b_loc
+__cxa_finalize
+	-d, --device <device>   USB device
+Device is not idle, can't detach it (state %d)
+Device is not in detach mode, try again
+Device is not in DFU mode, can't use it
+<dfu-file>
+ (DFU mode)
+DFU suffix	
+dfutool - Device Firmware Upgrade utility ver %s
+	dfutool [options] <command>
+download
+Download a new firmware
+dwCRC		%08x
+__errno_location
+Filename	%s
+Filesize	%zd
+Finishing firmware download ... 
+Firmware check	%s checksum
+Firmware download ... 
+Firmware download ... aborting (status %d state %d)
+Firmware download ... %d bytes 
+Firmware type	%s
+Firmware upload ... 
+Firmware upload ... aborting (status %d state %d)
+Firmware upload ... %d bytes 
+getopt_long
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+	-h, --help              Display help
+idProduct	%04x
+idVendor	%04x
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libusb-0.1.so.4
+Options:
+__printf_chk
+Scanning USB busses ... 
+Select device (abort with 0): 
+__stack_chk_fail
+__strdup
+strerror
+Switching device into DFU mode ... 
+ucDfuSignature	%c%c%c
+Unable to allocate file buffer
+Upload the current firmware
+usb_claim_interface
+usb_close
+usb_control_msg
+usb_find_busses
+usb_find_devices
+usb_get_busses
+usb_init
+usb_open
+usb_release_interface
+usb_reset
+Waiting for device ... 
+__xpg_basename

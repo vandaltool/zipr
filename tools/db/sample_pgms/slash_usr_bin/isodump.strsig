@@ -1,0 +1,1278 @@
+                                     
+.             
+..            
+0	current session not fixated for append
+]0data channel impending failure general hard drive failure
+]1data channel impending failure drive error rate too high
+24 (I2S)
+%255s %10s %10s %80s
+]2data channel impending failure data error rate too high
+]3data channel impending failure seek error rate too high
+]4data channel impending failure too many block reassigns
+]5data channel impending failure access times too high
+]6data channel impending failure start unit times too high
+]7data channel impending failure channel parametrics
+]8data channel impending failure controller detected
+]9data channel impending failure throughput performance
+Aborted Command
+ACB-4520
+ACB-4525
+access controls code 1 (99-314) [proposed]
+access controls code 2 (99-314) [proposed]
+access controls code 3 (99-314) [proposed]
+access controls code 4 (99-314) [proposed]
+access controls code 5 (99-245) [proposed]
+ 	access controls code 6 (99-245) [proposed]
+access controls code 7 (99-245) [proposed]
+access controls code 8 (99-245) [proposed]
+actual retry count %d
+Adaptec 4000
+Adaptec 4000/4010/4070
+Adaptec 4010
+Adaptec 4070
+Adaptec 4520A
+Adaptec 4525
+Adaptec 5500
+ADAPTEC ACB-4000        FAKE
+ADAPTEC ACB-4010        FAKE
+ADAPTEC ACB-4070        FAKE
+ADAPTEC ACB-40X0        FAKE
+ADAPTEC ACB-5500        FAKE
+adapter parity error
+add logical unit failed
+address mark not found for data field
+address mark not found for id field
+]afirmware impending failure drive error rate too high
+Allocated DMA copy buffer, addr: 0x%8.8lX size: %ld
+allow_atapi
+allow media to be locked in the drive via PREVENT/ALLOW command
+any_other
+^Apower state change to active
+]Aservo impending failure drive error rate too high
+assign failure occurred
+associated write protect
+asymmetric access code 1 (00-232) [proposed]
+asymmetric access code 2 (00-232) [proposed]
+asymmetric access code 3 (00-232) [proposed]
+asymmetric access code 4 (00-232) [proposed]
+asymmetric access code 5 (00-232) [proposed]
+asymmetric access code 6 (00-232) [proposed]
+asymmetric access code 7 (00-232) [proposed]
+asynchronous information protection error detected
+ATA Packet specific SCSI transport
+ATA Packet specific SCSI transport using sg interface
+ATAPI:1,2,0
+?  ATIP start of lead in:  %ld (%02d:%02d/%02d)
+  ATIP start of lead out: %ld (%02d:%02d/%02d)
+attachment of logical unit failed
+audio play operation in progress
+audio play operation paused
+audio play operation stopped due to error
+audio play operation successfully completed
+automatic document feeder cover up
+automatic document feeder lift up
+Automation/Drive Interface
+auxiliary memory code 1 (99-148) [proposed]
+auxiliary memory code 2 (99-148) [proposed]
+auxiliary memory code 3 (99-148) [proposed]
+auxiliary memory code 4 (99-148) [proposed]
+B0 lout: %ld
+B0 start: %ld
+Bad Argument: '%s'
+Bad CDR_FIFOSIZE environment (%s).
+Bad CDR_MAXFIFOSIZE setting (%s).
+Bad CDR_SPEED environment (%s).
+Bad default CDR_SPEED setting (%s).
+Bad fifo size (%s) in the config, device description.
+_badfile
+bad_file
+bad_file_mode
+bad_file_op
+bad format on drive
+_badmode
+Bad Option: '%s'
+**BAD RRVERSION (%d) for %c%c
+Bad speed default setting (%s).
+Bad speed (%s) in the config, drive description.
+beginning-of-partition/medium detected
+BERTHOLD
+Berthold HR-Scanner
+]bfirmware impending failure data error rate too high
+BFree: %ld K BSize: %ld K
+bias magnet failure
+Blank Check
+blank unit
+Blocklen:%ld
+block not compressible
+block sequence error
+blocksize
+Blocks:  %ld
+^Bpower state change to idle
+Bridging expander
+]Bservo impending failure data error rate too high
+__bss_start
+Buffer size in KB
+Bus: %d cookie: %X
+bus device reset function occurred
+Bus: %d Target: %d Lun: %d Chan: %d Ino: %d
+C4324/C4325
+Cannot create socketpair.
+cannot decompress using declared algorithm
+cannot format medium - incompatible medium
+Cannot get connection to remote host
+Cannot get default %s data.
+Cannot get saved %s data.
+Cannot get SCSI I/O buffer.
+Cannot get %s data.
+Cannot get %s mask.
+Cannot load media with %s drive!
+Cannot open '%s'
+Cannot put tty into normal mode
+Cannot put tty into raw mode
+Cannot read CD-Text
+Cannot read CD-Text header
+cannot read medium - incompatible format
+cannot read medium - unknown format
+Cannot read TOC
+Cannot read TOC header
+Cannot send SCSI cmd via ioctl
+Cannot set SG_SET_TIMEOUT.
+cannot write - application code mismatch
+cannot write medium - incompatible format
+cannot write medium - unknown format
+Capabilities   : 
+Capacity: %ld Blocks = %ld kBytes = %ld MBytes = %ld prMB
+capacity_not_set
+cartridge changer
+cartridge fault
+ (CD %3ux,
+cdb decryption error
+CD capabilities
+cd control error
+CDD521/00
+CDD521/02
+CDR100IPW
+CD-R2004
+CD-R2006 
+CD-R2006PLUS
+CD-R4012
+CDR-632P
+CD-R 650
+CD-R   CDU92
+CD-R   CDU94
+CD-R   CW-7501
+CD-R   CW-7502
+cdr_defaults
+CDR_DEVICE
+CDR_FIFOSIZE
+cdrkit-team
+CDR_MAXFIFOSIZE
+CD-R   PX-R24CS
+CDR_SPEED
+cdr_underrun
+CD-RW226
+cdtext.dat
+CD-Text len: %d
+CD-WO CRD-R24S
+CD-WO DR-R504X
+CD-WO DW-S114X
+CD-WO EW-50
+CD-Writer 6020
+cfg_close
+cfg_get_next
+cfg_open
+cfg_restart
+]cfirmware impending failure seek error rate too high
+changed operating definition
+CHECK CONDITION
+check_linux_26
+circ unrecovered error
+cleaning cartridge installed
+cleaning failure
+cleaning requested
+close track/session
+CLV/PCAV
+cmd finished after %ld.%03lds timeout %ds
+cmd timeout after %ld.%03ld (%d) s
+comerrno
+command phase error
+commands cleared by another initiator
+command sequence error
+command to logical unit failed
+Communication
+component device attached
+compression check miscompare error
+conditional write protect
+CONDITION MET/GOOD
+Condition not caught: 
+configuration failure
+configuration of incapable logical units failed
+]%controller impending failure access times too high
+]'controller impending failure channel parametrics
+](controller impending failure controller detected
+]"controller impending failure data error rate too high
+],controller impending failure drive calibration retry count
+]!controller impending failure drive error rate too high
+] controller impending failure general hard drive failure
+]#controller impending failure seek error rate too high
+]*controller impending failure seek time performance
+]+controller impending failure spin-up retry count
+]&controller impending failure start unit times too high
+])controller impending failure throughput performance
+]$controller impending failure too many block reassigns
+Copy Aborted
+copy cannot execute since host cannot disconnect
+Copy management revision supported
+copy protection key exchange failure - authentication failure
+copy protection key exchange failure - key not established
+copy protection key exchange failure - key not present
+copy segment granularity violation
+copy target device data overrun
+copy target device data underrun
+copy target device not reachable
+^Cpower state change to standby
+CR-4020C
+creation of logical unit failed
+CREATIVE
+]Cservo impending failure seek error rate too high
+<Ctr<ctn<I
+__ctype_b_loc
+currently in a media-locked state
+Currently running '%s' command.
+current program area is empty
+current program area is not empty
+Current read  speed
+Current write speed
+]<data channel impending failure drive calibration retry count
+]:data channel impending failure seek time performance
+];data channel impending failure spin-up retry count
+data decryption error
+data expansion occurred during compression
+data loss on logical unit
+data path failure (should use 40 nn)
+data phase crc error detected
+data phase error
+Data Protect
+data re-synchronization error
+__data_start
+data sync error - data auto-reallocated
+data sync error - data rewritten
+data sync error - recommend reassignment
+data sync error - recommend rewrite
+data synchronization mark error
+%d.%d.%d
+de-compression crc error
+decompression exception long algorithm id
+decompression exception short algorithm id of 0x%X
+decompression exception short algorithm id of nn
+defective track
+defect list error
+defect list error in grown list
+defect list error in primary list
+defect list not available
+defect list not found
+defect list update failed
+defect list update failure
+, deferred error
+deliver composite A/V data
+Density: 0x%X
+/dev/cdroms/cdrom%i
+DEVFS not detected, continuing with old dev
+/dev/hd%c
+/device/
+device identifier changed
+device internal reset
+Device seems to be: 
+Device type    : 
+devname: '%s'
+/dev/scd%d
+/dev/sg%d
+/dev/sr%i
+	dev=target	SCSI target to use as CD/DVD-Recorder
+]dfirmware impending failure too many block reassigns
+diagnostic failure on component 0x%X
+diagnostic failure on component nn (80h-ffh)
+disc changer
+disk not inserted
+DMA addr: 0x%8.8lX size: %d - using copy buffer
+DMA overrun, 
+document jam in automatic document feeder
+document miss feed automatic in document feeder
+  Does %s%s
+do_inquiry
+Drive capabilities, per
+drive region must be permanent/region reset count error
+]Dservo impending failure too many block reassigns
+dup2 failed.
+ DVD %2ux)
+DVD-R DVR-S101
+ECC error during verify
+echo buffer overwritten
+]efirmware impending failure access times too high
+empty or partially written reserved track
+Emulex MD21
+Emulex MD23
+Emulex MT02
+EMULEX  MT02            FAKE
+enclosure failure
+Enclosure services
+enclosure services failure
+enclosure services transfer failure
+enclosure services transfer refused
+enclosure services unavailable
+end-of-data detected
+end-of-data not found
+end of medium 
+end of medium reached
+end-of-partition/medium detected
+end of user area encountered on this track
+Enter new search string:
+Enter new starting block (in hex):
+^Epower state change to sleep
+erase failure
+erase failure - incomplete erase operation detected
+errmsgno
+errmsgstr
+Errno: %d (%s), %s scsi sendcmd: %s
+errno (EACCESS), you don't have the needed rights for %s
+__errno_location
+error counter overflow
+error: %d
+Error %d
+error detected by third party temporary initiator
+error: %d scb.chk: %d sense_count: %d sense.code: 0x%x
+ERROR: in usalo_get_first_free_shillybus(...). Too many CDROMs, more than %i
+error log overflow
+error reading isrc number
+error reading upc/ean number
+error refers to %s part, bit ptr %d %s field ptr %d
+ERROR: this cdrom is already mapped %s(%d,%d,%d)
+error too long to correct
+Error trying to open %s exclusively (%s)... %s
+ERROR: unknown format
+ERROR: unknow subsystem (%s) in (%s)
+ERROR: with link merging! base %s link %s, result of merging %i
+ERROR: with link reading! link %s, result of readlink %i
+]Eservo impending failure access times too high
+esn - device busy class event
+esn - media class event
+esn - power management class event
+/etc/wodim.conf
+event status notification
+EXAMPLE: /dev/hda or /dev/sr0
+EXAMPLE: /dev/ide/host0/bus0/target1/lun0/cd
+EXAMPLE: /dev/scsi/host1/bus2/target3/lun4/cd
+excessive write errors
+exchange of logical unit failed
+execlp '%s' failed.
+Executing '%s' command on Bus %d Target %d, Lun %d timeout %ds
+failed to sense bottom-of-form
+failed to sense top-of-form
+failure prediction threshold exceeded
+failure prediction threshold exceeded (false)
+fatal error
+_fcons64
+]ffirmware impending failure start unit times too high
+file_addr
+file (%d,%d,%d): %d
+file mark detected 
+filemark detected
+filemark or setmark not found
+fileopen64
+filewrite
+file_write_err
+fillbytes
+]`firmware impending failure general hard drive failure
+Flag %x != %x
+flush cache
+focus failure
+focus servo failure
+forked version from cdrkit
+format command failed
+Formating in progress: 0.00 %% done.
+Formating in progress: 100.00 %% done.        
+Formating in progress: %.2f %% done [%d].                           
+format unit
+__fprintf_chk
+from_bcd
+fseeko64
+]Fservo impending failure start unit times too high
+__fxstat64
+generation does not exist
+Generic CCS Disk
+Generic CD-ROM
+Generic mmc2 DVD-R/DVD-RW
+Generic mmc2 DVD-ROM
+Generic mmc CD-R
+Generic mmc CD-ROM
+Generic mmc CD-RW
+Generic NON CCS Disk
+Generic transport independent SCSI
+getallargs
+getarg_bad_format
+_getargs
+geterrno
+getfiles
+getllnum
+get_mode_params
+getpagesize
+get_progname
+getpwnam
+getpwuid
+getservbyname
+gettimeofday
+]gfirmware impending failure channel parametrics
+giving up.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+globfree64
+__gmon_start__
+g	multiply assigned logical unit
+Got %d (0x%X), expecting %d (0x%X) bytes of data.
+^Gpower state change to device control
+grown defect list not found
+]Gservo impending failure channel parametrics
+Hardware Error
+hardware impending failure access times too high
+hardware impending failure channel parametrics
+hardware impending failure controller detected
+hardware impending failure data error rate too high
+hardware impending failure drive calibration retry count
+hardware impending failure drive error rate too high
+hardware impending failure general hard drive failure
+hardware impending failure seek error rate too high
+hardware impending failure seek time performance
+hardware impending failure spin-up retry count
+hardware impending failure start unit times too high
+hardware impending failure throughput performance
+hardware impending failure too many block reassigns
+hardware write protected
+have load-empty-slot-in-changer feature
+have valid data on falling edge of clock
+head select fault
+	-help, -h	Print this help
+help,h,version,i*,dev*
+]hfirmware impending failure controller detected
+ host adapter detected error
+host_status: %02X driver_status: %02X
+]Hservo impending failure controller detected
+id crc or ecc error
+Identification : '%.16s'
+idle condition activated by command
+idle condition activated by timer
+	-i filename	Filename to read ISO-9660 image from
+]ifirmware impending failure throughput performance
+If neither -i nor dev= are speficied, <image> is needed.
+illegal block length 
+illegal command while in explicit address model
+illegal command while in implicit address model
+illegal function for medium type
+illegal function (use 20 00, 24 00, or 26 00)
+illegal mode for this track
+illegal power condition request
+Illegal remote device syntax
+Illegal Request
+Illegal value for busno, target or lun '%d,%d,%d'
+Illegal value for bus, target or lun '%d,%d,%d'
+import or export element accessed
+incompatible medium installed
+incomplete block read
+incorrect copy target device type
+Incorrect length in symlink component
+Increase MAX_SCHILLY_HOSTS in scsi-linux-ata.c and recompile!
+INFO: Bus: %d Target: %d Lun: %d Chan: %d Ino: %d
+INFO: /dev/%s, (host%d/bus%d/target%d/lun%d) will be mapped on the schilly bus No %d (%d,%d,%d)
+INFO: do usalo_open openbydev
+INFO: l1: 0x%lX l2: 0x%lX
+informational, refer to log
+information unit crc error detected
+INFO: scan_internal(...) failed
+INFO: %s -> %s
+INFO: subsystem %s: h %i, b %i, t %i, l %i
+in_image
+initiator detected error
+initiator detected error message received
+initiator id
+inline data length exceeded
+Inquiry Data   :
+Inquiry Data   : 
+inquiry data has changed
+insufficient registration resources
+insufficient reservation resources
+insufficient resources
+insufficient time for operation
+interleave error
+INTERMEDIATE CONDITION MET/GOOD
+INTERMEDIATE GOOD STATUS
+internal target failure
+invalid address for write
+invalid bits in identify message
+Invalid bus or target specifier in '%s'
+invalid cdb field while in explicit block address model
+invalid cdb field while in implicit block address model
+invalid combination of windows specified
+invalid command operation code
+invalid element address
+invalid field in cdb
+invalid field in parameter list
+Invalid lun specifier in '%s'
+Invalid lun specifier '%s'
+invalid message error
+invalid operation for copy source or destination
+invalid packet size
+invalid release of persistent reservation
+invalid sense code 0x%X
+Invalid target or lun specifier in '%s'
+Invalid value for bus, target or lun (%d,%d,%d)
+_io_add_my_flag
+ioctl(CDROM_SEND_PACKET) ret: %d
+ioctl ret: %d
+_IO_getc
+_io_get_my_flag
+_io_glflag
+_io_myfl
+i/o process terminated
+_io_set_my_flag
+_IO_stdin_used
+is_cddrive
+]Iservo impending failure throughput performance
+ISO-9660 image not specified
+__isoc99_scanf
+__isoc99_sscanf
+isodump %s (%s)
+  Is %s%s
+is_unknown_dev
+It is recommended to mount sysfs to allow better device configuration
+]jfirmware impending failure seek time performance
+]Jservo impending failure seek time performance
+Juke Box
+_Jv_RegisterClasses
+]kfirmware impending failure spin-up retry count
+Kodak PCD-600
+]Kservo impending failure spin-up retry count
+lamp failure
+laser focus coil over-current
+laser tracking coil over-current
+lba_to_msf
+l-ec uncorrectable error
+Length of data in BCLKs
+]lfirmware impending failure drive calibration retry count
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpthread.so.0
+limited laser life
+Linux sg driver version: %d.%d.%d
+L$L<Lt(<lt$<St
+Loading mechanism type
+load/unload failure
+lock media on power up via prevent jumper
+locuser: '%s' rscsiuser: '%s' host: '%s'
+log counter at maximum
+log exception
+logical block address out of range
+logical unit communication crc error (ultra-dma/32)
+logical unit communication failure
+logical unit communication parity error
+logical unit communication time-out
+logical unit does not respond to selection
+logical unit failed self-configuration
+logical unit failed self-test
+logical unit failure
+logical unit failure prediction threshold exceeded
+logical unit has not self-configured yet
+logical unit is in process of becoming ready
+logical unit not configured
+logical unit not ready, cause not reportable
+logical unit not ready, format in progress
+logical unit not ready, initializing cmd. required
+logical unit not ready, long write in progress
+logical unit not ready, manual intervention required
+logical unit not ready, operation in progress
+logical unit not ready, rebuild in progress
+logical unit not ready, recalculation in progress
+	logical unit not ready, self-test in progress
+logical unit not supported
+logical unit software write protected
+logical unit unable to update self-test log
+log list codes exhausted
+log parameters changed
+Looking for data for major:minor: %ld:%ld
+Lost connection to remote host ??
+low power condition on
+]Lservo impending failure drive calibration retry count
+__lxstat64
+Mapping device specification to ATA: method now.
+MATSHITA
+Matsushita CW-7501
+Matsushita CW-7502
+Maximum read  speed
+Maximum write speed
+Maxtor RXT800S
+mechanical positioning error
+mechanical positioning or changer error
+media failure prediction threshold exceeded
+media load or eject failed
+media region code is mismatched to logical unit region
+medium auxiliary memory accessible
+medium destination element full
+Medium Error
+medium format corrupted
+medium loadable
+medium load/unload
+medium magazine inserted
+medium magazine locked
+medium magazine not accessible
+medium magazine removed
+medium magazine unlocked
+medium not formatted
+medium not present
+medium not present - loadable
+medium not present - medium auxiliary memory accessible
+medium not present - tray closed
+medium not present - tray open
+medium removal prevented
+medium source element empty
+__memcpy_chk
+message error
+microcode has been changed
+Microtek MS300A
+Miscompare
+miscompare during verify operation
+miscorrected error
+Missing Entry for dev %d
+MITSBISH
+mmc_check
+mmc_getval
+Mode Page  Data
+Mode Parameters
+mode parameters changed
+Mode Parameters (un-converted)
+mode_select
+Mode Select Data
+mode select g0
+mode_select_g0
+mode select g1
+mode_select_g1
+mode_select_sg0
+mode_sense
+Mode Sense Data
+Mode Sense Data (converted)
+mode sense g0
+mode_sense_g0
+mode sense g1
+mode_sense_g1
+mode_sense_sg0
+modification of logical unit failed
+movebytes
+msf_to_lba
+multiple logical unit failures
+multiple peripheral devices selected
+multiple read errors
+_nixwrite
+No Additional Sense
+no additional sense information
+no current audio status to return
+no defect spare location available
+no error
+	no gap found
+no index/sector signal
+ [No matching qualifier]
+No memory for SCSI structure
+no more track reservations allowed
+no reference position found
+No remote SCSI transport available.
+no seek complete
+no sense
+NOT IMPELEMENTED: usalo_initiator_id
+not present 
+Not Ready
+not ready to ready change, medium may have changed
+(not valid)
+(not valid) 
+no write current
+  Number of supported write speeds: %d
+Number of volume control levels
+Object based storage
+obsolete ATAPI driver in cdrkit
+OLDATAPI
+on_comerr
+Only one of -i or dev= allowed
+__open64_2
+Open via UNIX device:	%ssupported
+operation %d%% done
+operation in progress
+operator medium removal request
+operator request or state change input
+operator selected write permit
+operator selected write protect
+Optical card r/w
+Optical Storage
+Options:
+out of focus
+overlapped commands attempted
+overwrite error on update in place
+packet does not fit in available space
+pack_len: %d, reply_len: %d pack_id: %d result: %d sense[0]: %02X
+ page 2A:
+paper jam
+parameter list length error
+parameter not supported
+parameters changed
+parameter value invalid
+parity/data mismatch
+partial defect list transfer
+peripheral device write fault
+permanent write protect
+persistent prevent conflict
+persistent write protect
+Philips CDD-2000
+Philips CDD-2600
+Philips CDD-521
+Philips CDD-522
+Philips old CDD-521
+PINNACLE
+Pioneer DVD-R S101
+Pioneer DW-S114X
+Plasmon RF-4100
+play audio CDs
+position error related to timing
+positioning error detected by read of medium
+position past beginning of medium
+position past end of medium
+power calibration area almost full
+power calibration area error
+power calibration area is full
+power on occurred
+power-on or self-test failure (should use 40 nn)
+power on, reset, or bus device reset occurred
+prevent/allow medium removal
+primary defect list not found
+print_capabilities
+print_capacity
+__printf_chk
+printinq
+print_min_atip
+Processor
+/proc/mounts
+program memory area is full
+program memory area update failure
+Protocol error (got %s).
+]Pspindle impending failure general hard drive failure
+]Qspindle impending failure drive error rate too high
+raisecond
+ram failure (should use 40 nn)
+random positioning error
+RCD-1000
+rcmdsh: fork to lose parent failed.
+rcvsize: %d
+read_buff_cap
+read buffer
+read_buffer
+read buffer cap
+read capacity
+read_capacity
+read CD bar code
+read CD-R media
+read CD-RW media
+read_cdtext
+read digital audio blocks
+read disk info
+read_disk_info
+read DVD-RAM media
+read DVD-R media
+read DVD-ROM media
+read dvd structure
+read_dvd_structure
+read error - loss of streaming
+Read error on old image
+read fixed-packet CD media using Method 2
+read header
+read_header
+readlink
+read master cue
+read_master_cue
+read Mode 2 Form 1 blocks
+read Mode 2 Form 2 blocks
+read multi-session CDs
+read of scrambled sector without authentication
+read past beginning of medium
+;	read past end of medium
+read raw P-W subcode data from lead in
+read retries exhausted
+read R-W subcode information
+read_rzone_info
+read_scsi
+readsecs
+read_session_offset
+read_session_offset_philips
+read subchannel
+read_subchannel
+read toc
+read_toc
+read_tochdr
+read_toc_philips
+read track info
+read_trackinfo
+read_track_info
+read_track_info_philips
+read type operation while in write capable state
+rebuild failure occurred
+recalculate failure occurred
+Received Data: 
+recorded entity not found
+record not found
+record not found - data auto-reallocated
+record not found - recommend reassignment
+recoverable write error
+recovered data - data auto-reallocated
+recovered data - recommend reassignment
+recovered data - recommend rewrite
+recovered data using previous sector id
+recovered data with circ
+recovered data with ecc - data rewritten
+recovered data with error correction applied
+recovered data with error corr. & retries applied
+recovered data with l-ec
+recovered data with linking
+recovered data with negative head offset
+recovered data with no error correction applied
+recovered data without ecc - data auto-reallocated
+	recovered data without ecc - data rewritten
+recovered data without ecc - recommend reassignment
+recovered data without ecc - recommend rewrite
+recovered data with positive head offset
+recovered data with retries
+recovered data with retries and/or circ applied
+Recovered Error
+recovered id with ecc correction
+recovery_needed
+redundancy group created or modified
+redundancy group deleted
+redundancy level got better
+redundancy level got worse
+registrations preempted
+remote-1.18
+REMOTE:rscsi@host:1,2,0
+Remote SCSI
+Remote status(%s): %d '%s'.
+Removable 
+remove of logical unit failed
+reported luns data has changed
+reposition error
+request_sense
+request_sense_b
+RESERVATION CONFLICT
+reservations preempted
+reservations released
+reserved 
+Reserved
+reserved(2)
+reserved(3)
+reserved(6)
+reserved(7)
+Reserved bit setting in symlink
+reserve track
+reserve_track
+reserve_track_rzone
+reserve_tr_rzone
+resid: %d
+Response Format: %d
+restart non-streamed digital audio reads accurately
+ret < 0 errno: %d ux_errno: %d error: %d
+retryable error
+retrying in 1 second.
+return CD ISRC information
+return CD media catalog number
+return R-W subcode de-interleaved and error-corrected
+Revision       : '%.4s'
+rezero unit
+rezero_unit
+ribbon, ink, or toner failure
+Ricoh RO-1060C
+Ricoh RO-1420C
+rma/pma is almost full
+rols_fgetline
+rols_getline
+__roothandle
+Rotational control selected
+rounded parameter
+rpl status change
+rscsi@host:bus,target,lun
+]Rspindle impending failure data error rate too high
+Run "wodim --devices" for details.
+RXT-800S
+  %s: %5d kB/s
+save_args
+saved_ac
+saved_av
+saved_av0
+saving parameters not supported
+scan head positioning error
+SCSI ALREADY RUNNING !!
+scsi_blank
+SCSI Bus: %d (mapped from %d)
+scsibus: %d target: %d lun: %d
+scsi bus reset occurred
+SCSI Bus scanning:	%ssupported
+scsi_cdr_write
+scsi_close_tr_session
+SCSI command name not set by caller
+scsi_compliant
+scsidev_close
+scsidev_open
+scsidev: '%s'
+scsi_flush_cache
+scsi_format
+scsi_format: post processing %d
+scsi_format: preparing
+scsi_format: running
+scsi_get_speed
+scsihack.c-1.44
+scsi_in_progress
+scsi-linux-ata.c-1.7
+scsi-linux-sg.c-1.86
+scsi_load
+scsi_load_unload
+SCSI open usage error.
+scsi parity error
+scsi parity error detected during st data phase
+scsi_prevent_removal
+scsi_set_speed
+scsi_set_streaming
+scsi_start_stop_unit
+scsi to host system interface failure
+@(#)scsitransp.c	1.91 04/06/17 Copyright 1988,1995,2000-2004 J. Schilling
+scsi_unload
+SCSI unsupported with '%s'
+  %s: %d
+sec_to_msf
+Sectorsize: %ld Bytes
+Seek error on old image
+seek_scsi
+select or reselect failure
+select_secsize
+self test failed
+send_cue_sheet
+send digital data LSB-first
+send dvd structure
+send_dvd_structure
+Sending %d (0x%X) bytes of data.
+send opc
+send_opc
+Sense Bytes:
+Sense Code: 0x%02X Qual 0x%02X %s%s%s%s Fru 0x%X
+Sense flags: Blk %d %s%s%s%s
+sense_secsize
+sequential positioning error
+]@servo impending failure general hard drive failure
+session fixation error
+session fixation error - incomplete track in session
+session fixation error writing lead-in
+session fixation error writing lead-out
+Session info too big.
+set cd speed
+seterrno
+seteuid(%lld) failed.
+set limit violation
+set LRCK high for left-channel data
+setmark detected
+set_mode_params
+set_progname
+setreuid
+setsockopt
+set streaming
+setuid(%lld) failed.
+sg_open_excl
+shell/tcp: unknown service
+Short read on old image
+Simple direct access
+%s is not a cdrom, skipping
+slew failure
+sndsize: %d
+snprintf
+__snprintf_chk
+socketpair
+SOFTRESET 
+Sony CDU-924S
+Sony SMO-C501
+spare area exhaustion prediction threshold exceeded
+spare created or modified
+?	spare deleted
+spindle failure
+]\spindle impending failure drive calibration retry count
+][spindle impending failure spin-up retry count
+spindle servo failure
+spindles not synchronized
+spindles synchronized
+__sprintf_chk
+  %s: %s
+%s: %s. 
+%s%sCannot open SCSI driver.
+%sSense Key: 0x%X %s%s, Segment %d
+]Sspindle impending failure seek error rate too high
+__stack_chk_fail
+standby condition activated by command
+standby condition activated by timer
+start/stop unit
+state change has occurred
+status: 0x%x 
+Stdin must be a tty
+Storage array
+__strcat_chk
+__strcpy_chk
+__strdup
+strerror
+__strncat_chk
+__strncpy_chk
+<St&<st"<Cf
+support Buffer-Underrun-Free recording
+support C2 error pointers
+support changing side of disk
+support digital output on port 1
+support digital output on port 2
+Supported SCSI transports for this platform:
+support ejection of CD via START/STOP command
+Support for that may cease in the future versions of wodim. For now,
+support independent mute setting for each channel
+support Individual Disk Present feature
+support individual volume control setting for each channel
+support test writing
+synchronous data transfer error
+/sys/block/*/device/block*/queue/max_sectors_kb
+/sys/class/scsi_generic/*/device/block*/queue/max_sectors_kb
+Sysgen SC4000
+SYSGEN  SC4000          FAKE
+/sys/kernel
+system buffer full
+system resource failure
+tagged overlapped commands (nn = queue tag)
+tagged overlapped commands, queue tag is 0x%X
+tape length error
+tape or electronic vertical forms unit not ready
+tape position error at beginning-of-medium
+tape position error at end-of-medium
+Target (%d,%d,%d): DMA max %d old max: %ld
+Target example:		%s
+target operating conditions have changed
+Target specifier:	%s
+tcgetattr
+tcsetattr
+Teac CD-R50S
+temperature alarm
+TERMIOP 
+test unit ready
+test_unit_ready
+the device will be mapped to a block device file where possible.
+third party device failure
+threshold condition met
+threshold parameters not supported
+timeout on logical unit
+TOC data: 
+tocheader: 
+To force the old ATAPI: method, replace ATAPI: with OLDATAPI:
+too many segment descriptors
+too many target descriptors
+too many windows specified
+track following error
+tracking failure
+tracking servo failure
+transceiver mode changed to lvd
+transceiver mode changed to single-ended
+Transp. layer ind.:	%s
+Transport descr.:	%s
+Transport name:		%s
+Traxdata
+try open(%s) return %i, errno %i
+try open(%s) return %i errno %i calling sg_mapdev(...)
+try open(%s) return %i, errno %i, cancel
+try open(%s) return %i, errno %i, trying next cdrom
+Try to load media by hand.
+]Tspindle impending failure too many block reassigns
+unable to acquire video
+- [unable to fork()]
+unable to recover table-of-contents
+unexpected inexact segment
+Unit Attention
+unit not present
+unknown device type 0x%x
+unknown/no device
+Unknown user: %s
+unload tape failure
+unreachable copy target
+unrecovered read error
+unrecovered read error - auto reallocate failed
+unrecovered read error - recommend reassignment
+unrecovered read error - recommend rewrite the data
+unsuccessful soft reset
+unsupported
+unsupported 
+unsupported enclosure function
+&	unsupported segment descriptor type code
+unsupported target descriptor type code
+updated block read
+Usage: %s [options] image
+usal_bufsize
+usal_close
+usal__close
+usal_cmd
+usal_cmd_err
+usal_cmd_status
+usal_dummy_ops
+usal_errfflush
+usal_errflush
+usal__errmsg
+usal_fileno
+usal_fprascii
+usal_fprbytes
+usal_fprintdev
+usal_fprinterr
+usal_fprsense
+usal_freebuf
+usal_getbuf
+usal_getdmacnt
+usal_getresid
+usal_havebus
+__usal_help
+usal_initiator_id
+usal_isatapi
+usal_natname
+usalo_getbuf: %ld bytes
+usal_open
+usal__open
+usal__open(%s) %d,%d,%d
+usalo_send(%s) wrote %d bytes (expected %d).
+usal_prascii
+usal_prbytes
+usal_printcdb
+usal_printdev
+usal_printerr
+usal_printf
+usal_printrdata
+usal_printresult
+usal_printstatus
+usal_printwdata
+usal_prsense
+usal_remote
+usal_remote_ops
+usal_reset
+usal_sense_code
+usal_sense_key
+usal_sensemsg
+usal_sense_qual
+usal_sense_table
+usal_setnonstderrs
+usal_settarget
+usal_settimeout
+usal_sfree
+usal_smalloc
+usal_sprascii
+usal_sprbytes
+usal_sprintcdb
+usal_sprinterr
+usal__sprinterr
+usal_sprintrdata
+usal_sprintresult
+usal_sprintstatus
+usal_sprintwdata
+usal_sprsense
+usal_std_ops
+usal_svhead
+usal_svtail
+__usal_times
+usal_version
+usal_vhead
+usal_vsetup
+usal_vtail
+usal_yes
+Use --devices to display the native names.
+]Uspindle impending failure access times too high
+/usr/sbin/netscsid
+(valid) 
+Value %lld is too large for data type 'long'.
+Vendor_info    : '%.8s'
+vendor specific %d 
+Vendor Unique
+vendor unique sense code 0x%X
+Version        : %d
+	-version	Print version info and exit
+__vfprintf_chk
+video acquisition error
+voltage fault
+volume overflow
+volume set created or modified
+volume set deassigned
+volume set deleted
+volume set reassigned
+__vsnprintf_chk
+]Vspindle impending failure start unit times too high
+wait_unit_ready
+Warning: controller creates hard SCSI failure when retrieving %s page.
+Warning: controller does not support %s page.
+Warning: controller returns wrong page %X for %s page (%X).
+Warning: controller returns wrong size for %s page.
+Warning: controller returns zero sized %s page.
+WARNING: device not valid, trying to use default target...
+warning - enclosure degraded
+Warning - host_name requested
+Warning - mount point requested
+warning - specified temperature exceeded
+WARNING: %s seems to be mounted!
+Warning, sysfs is not mounted on /sys!
+WARNING: the ATA: method is considered deprecated on modern kernels!
+WARNING: the ATAPI: method is considered deprecated on modern kernels!
+WARNING: the deprecated pseudo SCSI syntax found as device specification.
+Warning: There is absolutely NO DMA, operations thus are slow.
+Warning: The related Linux kernel interface code seems to be unmaintained.
+Warning: Using ATA Packet interface.
+Warning: using default %s data.
+Warning: Using remote SCSI interface.
+Well known lun
+who are you? No passwd entry found.
+write append error
+write append position error
+write_buffer
+write CD-R media
+write CD-RW media
+Write Data: 
+write DVD-RAM media
+write DVD-R media
+write error
+write error - auto reallocation failed
+	write error - loss of streaming
+write error - padding blocks added
+write error - recommend reassignment
+write error - recovered with auto reallocation
+write error - recovery failed
+write error recovery failed
+write error - recovery needed
+write_g0
+write_g1
+write_g5
+write protected
+  Write speed # %d:
+write type operation while in read capable state
+write_xg0
+write_xg1
+write_xg5
+write_xscsi
+]Wspindle impending failure channel parametrics
+XR-W2001
+XR-W2010
+]Xspindle impending failure controller detected
+__xstat64
+<xt:<*t6
+=[%x,%x,%d]
+Yamaha CDR-100
+Yamaha CDR-400
+]Yspindle impending failure throughput performance
+zoned formatting failed due to spare linking
+ Zone, zone offset: %14llx %12.12llx  
+]Zspindle impending failure seek time performance

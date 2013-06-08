@@ -1,0 +1,1409 @@
+>>>>>>>>>>>>>
+        
+/?.*~[^$\
+/.*~[^$\
+/\*?[|<>
+(:),{:},[:]
+@*!=><&~#
+*?[{`$\%#'"|!<
+*?[{`$\%#'"|!<>();&
+	 "&'$;<>()\|
+ 	0123456789.$%'/?-+,;
+                                 !"#$%&'()*+,-./0123456789:;<=>?@abcdefghijklmnopqrstuvwxyz[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+0123456789cegriIp|"
+[101;%p1%dm
+[102;%p1%dm
+@,161-255
+!-~,^*,^|,^",192-255
+(1) Another program may be editing the same file.  If this is the case,
+1 line changed
+1 line less
+1 line moved
+1 line %sed 1 time
+1 line %sed %d times
+1 more line
+1 substitution
+[203;%p1%d;%p2%d/y
+[205;%p1%d;%p2%d/y
+(2) An edit session for this file crashed.
+3D$l3T$h	
+3L$43D$0	
+[3%p1%dm
+[3;%p1%d;%p2%dt
+3T$$3D$ 	
+@,48-57,_
+@,48-57,/,.,-,_,+,,,#,$,%,~,=
+@,48-57,_,192-255
+|$49|$X~k
+[4%p1%dm
+%6ld %7ld  
+[8;%p1%d;%p2%dt
+8:SpecialKey,@:NonText,d:Directory,e:ErrorMsg,i:IncSearch,l:Search,m:MoreMsg,M:ModeMsg,n:LineNr,r:Question,s:StatusLine,S:StatusLineNC,t:Title,v:Visual,w:WarningMsg,W:WildMenu,>:SignColumn,*:TabLine,#:TabLineSel,_:TabLineFill
+9h<|1;Hx
+~'9t$(~!
+aAbBcCdDeEfFgHiIjJkKlLmMnoOpPqrRsStuvwWxXyZ$!%*-+<>;
+aAbBcCdDeEfFgHiIjJkKlLmMnoOpPqrRsStuvwWxXyZ$!%*-+<>#{|&/\.;
+AaIiRrOo
+aboveleft
+Al;D$$}#
+allowrevins
+Already at newest change
+Already at oldest change
+Already only one tab page
+Already only one window
+altkeymap
+ambiwidth
+and run diff with the original file to check for changes)
+anoremenu
+antialias
+ appended
+arabicshape
+argdelete
+argglobal
+arglocal
+Argument missing after
+Arguments:
+Attempt to open script file again: "
+-autocmd
+autoindent
+autoprint
+autoread
+autowrite
+autowriteall
+^\[#a-zA-Z_]\.\*\<%s\s\*(
+background
+backspace
+backspace:]
+BackSpace
+backupcopy
+backupdir
+backupext
+backupskip
+Backwards range given, OK to swap
+.bak,~,.o,.h,.info,.swp,.obj
+-balloon_eval
+-b			Binary mode
+beautify
+    be careful not to end up with two different instances of the same
+Become a registered Vim user!
+Before byte %ld
+belowright
+???BLOCK MISSING
+block of 1 line yanked
+block of %ld lines yanked
+botright
+breakadd
+breakdel
+breakhardlink
+breaklist
+breaksymlink
+browsedir
+bshl<>[],~
+__bss_start
+buf %d: 
+ <buffer>
+bufhidden
+buflisted
+    builtin_
+builtin_iris-ansi
++builtin_terms
+builtin_vt320
+builtin_xterm
+bwipeout
+by Bram Moolenaar et al.
+-byte_offset
+%c%2d %2d %-15s %5ld  
+%c %2d %5ld %4d 
+%c %3d %5ld %4d 
+ %c %6ld %4d 
+cabclear
+caddbuffer
+caddexpr
+caddfile
+Calling shell to execute: "%s"
+         [cannot be opened]
+         [cannot be read]
+ cannot be used on this computer.
+ cannot be used with this version of Vim.
+Cannot create pipes
+Cannot execute shell 
+Cannot fork
+Cannot open for reading: "
+Cannot open for script output: "
+Cannot source a directory: "%s"
+cannot yank; delete anyway
+-c <command>		Execute <command> after loading the first file
+-C			Compatible with Vi: 'compatible'
+cgetbuffer
+cgetexpr
+cgetfile
+change line  col text
+charconvert
+chdir(%s)
+checkpath
+checktime
+children
+-cindent
+cinoptions
+cinwords
+-clientserver
+-clipboard
+closedir
+cmapclear
+--cmd <command>	Execute <command> before loading any vimrc file
+cmdheight
+-cmdline_compl
++cmdline_hist
+-cmdline_info
+cmdwinheight
+cnoreabbrev
+cnoremap
+cnoremenu
+colorcolumn
+COLORFGBG
+colorscheme
+colors/%s.vim
+Col %s of %s; Line %ld of %ld; Word %ld of %ld; Byte %ld of %ld
+Col %s of %s; Line %ld of %ld; Word %ld of %ld; Char %ld of %ld; Byte %ld of %ld
+comclear
+Command terminated
+-comments
+commentstring
+Compilation: 
+Compiled 
+compiler
+complete
+completefunc
+completeopt
+-conceal
+concealcursor
+conceallevel
+conflict
+continue
+continuing in %s
+ CONVERSION ERROR
+[CONVERSION ERROR in line %ld]
+[converted]
+copyindent
+Could not get security context for 
+Could not set security context for 
+could not source "%s"
+\[count]
+cpoptions
+cprevious
+cryptmethod
+cscopepathcomp
+cscopeprg
+cscopequickfix
+cscoperelative
+cscopetag
+cscopetagorder
+cscopeverbose
+<ctl<ntx<et|<rf
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+cunabbrev
+Current %slanguage: "%s"
+-cursorbind
+cursorcolumn
+cursorline
+-cursorshape
+cyrillic
+D$0+D$49
+D$89C$t.|<
++D$,9D$pw
+DarkBlue
+DarkCyan
+DarkGray
+DarkGreen
+DarkGrey
+DarkMagenta
+DarkYellow
+             dated: 
+D$,;D$4t
+debuggreedy
+defaulting to '
+delcombine
+delcommand
+delfunction
+delmarks
+[Device]
+/dev/null
+%d files to edit
+D$H;D$@}
+D$h+D$@+D$l
+> %d, Hex %04x, Octal %o
+> %d, Hex %08x, Octal %o
+dictionary
+diffexpr
+diffpatch
+diffsplit
+diffthis
+diffupdate
+-digraphs
+Directory term=bold ctermfg=DarkBlue
+Directory term=bold ctermfg=LightCyan
+D$J L$J<p
+D$L;D$D~
+D$l:helf
+doautoall
+doautocmd
+doc/tags
+         [does not look like a Vim swap file]
+(%d) of %d)
+%d of %d)
+don't quit the editor until the file is successfully written!
+[dos format]
+Do you really want to write to it
+E10: \ should be followed by /, ? or &
+E12: Command not allowed from exrc/vimrc in current dir or tag search
+E134: Move lines into themselves
+E139: File is loaded in another buffer
+E13: File exists (add ! to override)
+E140: Use ! to write partial buffer
+E141: No file name for buffer %ld
+E142: File not written: Writing is disabled by 'write' option
+E144: non-numeric argument to :z
+E145: Shell commands not allowed in rvim
+E146: Regular expressions can't be delimited by letters
+E147: Cannot do :global recursive
+E148: Regular expression missing from global
+E149: Sorry, no help for %s
+E14: Invalid address
+E162: No write since last change for buffer "%s"
+E163: There is only one file to edit
+E164: Cannot go before first file
+E165: Cannot go beyond last file
+E166: Can't open linked file for writing
+E167: :scriptencoding used outside of a sourced file
+E169: Command too recursive
+E16: Invalid range
+E172: Only one file name allowed
+E173: 1 more file to edit
+E173: %ld more files to edit
+E17: "%s" is a directory
+E185: Cannot find color scheme %s
+E186: No previous directory
+E187: Unknown
+E188: Obtaining window position not implemented for this platform
+E189: "%s" exists (add ! to override)
+E190: Cannot open "%s" for writing
+E191: Argument must be a letter or forward/backward quote
+E194: No alternate file name to substitute for '#'
+E196: No digraphs in this version
+E197: Cannot set language to "%s"
+E19: Mark has invalid line number
+E205: Patchmode: can't save original file
+E206: patchmode: can't touch empty original file
+E207: Can't delete backup file
+E208: Error writing to "%s"
+E209: Error closing "%s"
+E20: Mark not set
+E210: Error reading "%s"
+E211: File "%s" no longer available
+E212: Can't open file for writing
+E213: Cannot convert (add ! to write without conversion)
+E219: Missing {.
+E21: Cannot make changes, 'modifiable' is off
+E220: Missing }.
+E222: Add to read buffer
+E223: recursive mapping
+E226: abbreviation already exists for %s
+E227: mapping already exists for %s
+E228: makemap: Illegal mode
+E22: Scripts nested too deep
+E23: No alternate file
+E24: No such abbreviation
+E25: GUI cannot be used: Not enabled at compile time
+E26: Hebrew cannot be used: Not enabled at compile time
+E27: Farsi cannot be used: Not enabled at compile time
+E282: Cannot read from "%s"
+E283: No marks matching "%s"
+E293: block was not locked
+E294: Seek error in swap file read
+E295: Read error in swap file
+E296: Seek error in swap file write
+E297: Write error in swap file
+E298: Didn't get block nr 0?
+E298: Didn't get block nr 1?
+E298: Didn't get block nr 2?
+E29: No inserted text yet
+E300: Swap file already exists (symlink attack?)
+E301: Oops, lost the swap file!!!
+E302: Could not rename swap file
+E303: Unable to open swap file for "%s", recovery impossible
+E304: ml_upd_block0(): Didn't get block 0??
+E305: No swap file found for %s
+E306: Cannot open %s
+E307: %s does not look like a Vim swap file
+E308: Warning: Original file may have been changed
+E309: Unable to read block 1 from %s
+E30: No previous command line
+E310: Block 1 ID wrong (%s not a .swp file?)
+E311: Recovery Interrupted
+E312: Errors detected while recovering; look for lines starting with ???
+E313: Cannot preserve, there is no swap file
+E314: Preserve failed
+E315: ml_get: invalid lnum: %ld
+E316: ml_get: cannot find line %ld
+E317: pointer block id wrong
+E317: pointer block id wrong 2
+E317: pointer block id wrong 3
+E317: pointer block id wrong 4
+E318: Updated too many blocks?
+E319: Sorry, the command is not available in this version
+E31: No such mapping
+E320: Cannot find line %ld
+E321: Could not reload "%s"
+E322: line number out of range: %ld past the end
+E323: line count wrong in block %ld
+E325: ATTENTION
+E326: Too many swap files found
+E32: No file name
+E339: Pattern too long
+E33: No previous substitute regular expression
+E341: Internal error: lalloc(%ld, )
+E342: Out of memory!  (allocating %lu bytes)
+E348: No string under cursor
+E349: No identifier under cursor
+E34: No previous command
+E353: Nothing in register %s
+E354: Invalid register name: '%s'
+E355: Unknown option: %s
+E356: get_varp ERROR
+E359: Screen mode setting not supported
+E35: No previous regular expression
+E363: pattern uses more memory than 'maxmempattern'
+E369: invalid item in %s%%[]
+E36: Not enough room
+E37: No write since last change (add ! to override)
+E383: Invalid search string: %s
+E384: search hit TOP without match for: %s
+E385: search hit BOTTOM without match for: %s
+E386: Expected '?' or '/'  after ';'
+E38: Null argument
+E411: highlight group not found: %s
+E412: Not enough arguments: ":highlight link %s"
+E413: Too many arguments: ":highlight link %s"
+E414: group has settings, highlight link ignored
+E415: unexpected equal sign: %s
+E416: missing equal sign: %s
+E417: missing argument: %s
+E418: Illegal value: %s
+E419: FG color unknown
+E41: Out of memory!
+E420: BG color unknown
+E421: Color name or number not recognized: %s
+E422: terminal code too long: %s
+E423: Illegal argument: %s
+E424: Too many different highlighting attributes in use
+E425: Cannot go before first matching tag
+E426: tag not found: %s
+E427: There is only one matching tag
+E428: Cannot go beyond last matching tag
+E429: File "%s" does not exist
+E431: Format error in tags file "%s"
+E433: No tags file
+E434: Can't find tag pattern
+E435: Couldn't find tag, just guessing!
+E436: No "%s" entry in termcap
+E437: terminal capability "cm" required
+E438: u_undo: line numbers wrong
+E439: undo list corrupt
+E43: Damaged match string
+E440: undo line missing
+E442: Can't split topleft and botright at the same time
+E444: Cannot close last window
+E445: Other window contains changes
+E44: Corrupted regexp program
+E459: Cannot go back to previous directory
+E45: 'readonly' option is set (add ! to override)
+E462: Could not prepare for reloading "%s"
+E465: :winsize requires two number arguments
+E466: :winpos requires two number arguments
+E470: Command aborted
+E471: Argument required
+E472: Command failed
+E473: Internal error
+E474: Invalid argument
+E475: Invalid argument: %s
+E476: Invalid command
+E477: No ! allowed
+E478: Don't panic!
+E479: No match
+E480: No match: %s
+E481: No range allowed
+E482: Can't create file %s
+E483: Can't get temp file name
+E484: Can't open file %s
+E485: Can't read file %s
+E486: Pattern not found: %s
+E487: Argument must be positive
+E488: Trailing characters
+E493: Backwards range given
+E494: Use w or w>>
+E498: no :source file name to substitute for "<sfile>"
+E499: Empty file name for '%' or '#', only works with ":p:h"
+E49: Invalid scroll size
+E500: Evaluates to an empty string
+E501: At end-of-file
+E505: "%s" is read-only (add ! to override)
+E506: Can't write to backup file (add ! to override)
+E507: Close error for backup file (add ! to override)
+E508: Can't read file for backup (add ! to override)
+E509: Cannot create backup file (add ! to override)
+E510: Can't make backup file (add ! to override)
+E512: Close failed
+E513: write error, conversion failed in line %ld (make 'fenc' empty to override)
+E513: write error, conversion failed (make 'fenc' empty to override)
+E514: write error (file system full?)
+E518: Unknown option
+E519: Option not supported
+E51: Too many %s(
+E520: Not allowed in a modeline
+E521: Number required after =
+E521: Number required: &%s = '%s'
+E522: Not found in termcap
+E523: Not allowed here
+E529: Cannot set 'term' to empty string
+E538: No mouse support
+E539: Illegal character <%s>
+E53: Unmatched %s%%(
+E54: Unmatched %s(
+E554: Syntax error in %s{...}
+E555: at bottom of tag stack
+E556: at top of tag stack
+E557: Cannot open termcap file
+E558: Terminal entry not found in terminfo
+E55: Unmatched %s)
+E589: 'backupext' and 'patchmode' are equal
+E591: 'winheight' cannot be smaller than 'winminheight'
+E593: Need at least %d lines
+E594: Need at least %d columns
+E59: invalid character after %s@
+E60: Too many complex %s{...}s
+E61: Nested %s*
+E62: Nested %s%c
+E63: invalid use of \_
+E64: %s%c follows nothing
+E65: Illegal back reference
+E662: At start of changelist
+E663: At end of changelist
+E664: changelist is empty
+E667: Fsync failed
+E669: Unprintable character in group name
+E678: Invalid character after %s%%[dxouU]
+E685: Internal error: %s
+E68: Invalid character after \z
+E69: Missing ] after %s%%[
+E70: Empty %s%%[]
+E71: Invalid character after %s%%
+E72: Close error on swap file
+E73: tag stack empty
+E747: Cannot change directory, buffer is modified (add ! to override)
+E748: No previously used register
+E749: empty buffer
+E74: Command too complex
+E75: Name too long
+E767: Too many arguments to printf()
+E768: Swap file exists: %s (:silent! overrides)
+E769: Missing ] after %s[
+E76: Too many [
+E773: Symlink loop for "%s"
+E775: Eval feature not available
+E77: Too many file names
+E784: Cannot close last tab page
+E78: Unknown mark
+E790: undojoin is not allowed after undo
+E79: Cannot expand wildcards
+E800: Arabic cannot be used: Not enabled at compile time
+E809: #< is not available without the +eval feature
+E80: Error while writing
+E82: Cannot allocate any buffer, exiting...
+E830: Undo number %ld not found
+E833: %s is encrypted and this version of Vim does not support encryption
+E834: Conflicts with value of 'listchars'
+E835: Conflicts with value of 'fillchars'
+E83: Cannot allocate buffer, using other one...
+E842: no line number to use for "<slnum>"
+E846: Key code not set
+E849: Too many highlight and syntax groups
+E850: Invalid register name
+E854: path too long for completion
+E91: 'shell' option is empty
+E92: Buffer %ld not found
+E95: Buffer with this name already exists
+eadirection
+edcompatible
+-e			Ex mode (like "ex")
+e ++ff=%s ++enc=%s
+-emacs_tags
+???EMPTY BLOCK
+endfunction
+endofline
+endwhile
+Entering Ex mode.  Type "visual" to go to Normal mode.
+Enter number of swap file to use (0 to quit): 
+equalalways
+equalprg
+__errno_location
+errorbells
+Error detected while processing %s:
+errorfile
+errorformat
+ErrorMsg term=standout ctermbg=DarkRed ctermfg=White
+escape:]
+eventignore
+exclusive
+-ex_extra
+expandtab
+-extra_search
+  fall-back for $VIM: "
+ f-b for $VIMRUNTIME: "
+fchdir() to previous dir
+__fdelt_chk
+  Features included (+) or not (-):
+[file ..]       edit specified file(s)
+fileencoding
+fileencodings
+fileformat
+fileformats
+-file_in_path
+         file name: 
+File preserved
+File "%s" does not exist
+[File too big]
+    file when making changes.
+fillchars
+filnxtToO
+-find_in_path
+finished sourcing %s
+foldclose
+folddoclosed
+folddoopen
+-folding
+foldopen
+formatexpr
+formatlistpat
+formatoptions
+formatprg
+Found a swap file by the name "
+Free typebuf 1
+Free typebuf 2
+??? from here until ???END lines may be messed up
+??? from here until ???END lines may have been inserted/deleted
+         [from Vim version 3.0]
+ftello64
+__fxstat64
+G\3C\3SX	
+Garbage after option argument
+gcc -c -I. -Iproto -DHAVE_CONFIG_H     -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -DTINY_VIMRC -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1      
+gcc   -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,--as-needed -o vim    -lSM -lICE -lXpm -lXt -lX11 -lXdmcp -lSM -lICE -lm -ltinfo  -lselinux -ldl           
+gdefault
+getfilecon
+getpwnam
+getpwuid
+getrlimit64
+-gettext
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+--- Global option values ---
+__gmon_start__
+Greetings, Vim user!
+grepformat
+guicursor
+guifontset
+guifontwide
+guiheadroom
+guioptions
+guitablabel
+guitabtooltip
+-hangul_input
+hardcopy
+hardtabs
+ has been damaged (page size is smaller than minimum value).
+help ex-cmd-index
+helpfile
+helpfind
+helpheight
+helplang
+help normal-index
+Help poor children in Uganda!
+helptags
+highlight
+'history' option is zero
+$HOME/.exrc
+$HOME/.vimrc
+-h  or  --help	Print Help (this message) and exit
+         host name: 
+hp-roman8
+iabclear
+iconstring
+iconv_close
+iconv_open
+if !&cp | set cp | endif
+if &cp | set nocp | endif
+    If this is the case, use ":recover" or "vim -r 
+    If you did this already, delete the swap file "
+Ignoring long line in tags file
+.iIkKfFpPsSdDxXoOwWhHaAlLuU
+[ILLEGAL BYTE in line %ld]
+Illegal file name
+imactivatekey
+imapclear
+imcmdline
+imdisable
+iminsert
+imsearch
+Included patches: 
+includeexpr
+inclusive
+[Incomplete last line]
+incsearch
+IncSearch term=reverse cterm=reverse
+   In current directory:
+indent,eol
+indent,eol,start
+indentexpr
+indentkeys
+   In directory 
+infercase
+ in line %ld;
+inoreabbrev
+inoremap
+inoremenu
+ (insert)
+-insert_expand
+insertmode
+internal
+internal,keepascii
+Interrupt: 
+Interrupted
+ (Interrupted)
+-invalid-
+(invalid)
+Invalid argument for
+_IO_getc
+_IO_putc
+_IO_stdin_used
+[%i%p1%d;%p2%dH
+[%i%p1%d;%p2%dr
+IPLPPPQPP TPHPLIPpLpItpplpipbp
+is a directory
+iskeyword
+is not a file
+is not a file or writable device
+iso-8859
+iso-8859-
+iso-8859-1
+iso-8859-10
+iso-8859-11
+iso-8859-13
+iso-8859-14
+iso-8859-15
+iso-8859-2
+iso-8859-3
+iso-8859-4
+iso-8859-5
+iso-8859-6
+iso-8859-7
+iso-8859-8
+iso-8859-9
+is read-only (add ! to override)
+is read-only (cannot override: "W" in 'cpoptions')
+is_selinux_enabled
+iswupper
+iunabbrev
+joinspaces
+ jump line  col file/text
++jumplist
+_Jv_RegisterClasses
+keepjumps
+keepmarks
+keymodel
+keywordprg
+ kind file
+kMultiply
+kPageDown
+l$09\$<~
+L$09L$$}
+)l$49t$,
+L$8#t$D	
+laddbuffer
+laddexpr
+laddfile
+-langmap
+langmenu
+language
+lastline
+laststatus
+lazyredraw
+LC_CTYPE
+LC_MESSAGES
+%ld Cols; 
+%ld fewer lines
+(+%ld for BOM)
+%ld lines, 
+%ld lines changed
+%ld lines filtered
+%ld lines moved
+%ld lines %sed 1 time
+%ld lines %sed %d times
+%ldL, %lldC
+%ld matches
+%ld more lines
+%ld seconds ago
+%ld %s; %s #%ld  %s
+%ld substitutions
+leftabove
+LeftDrag
+LeftMouse
+LeftMouseNM
+LeftRelease
+LeftReleaseNM
+let &cpo=s:cpo_save
+let s:cpo_save=&cpo
+lgetbuffer
+lgetexpr
+lgetfile
+lgrepadd
+lhelpgrep
+-libcall
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libselinux.so.1
+libtinfo.so.5
+LightBlue
+LightCyan
+LightGray
+LightGreen
+LightGrey
+LightMagenta
+LightRed
+LightYellow
+line %4ld:
+-linebreak
+???LINE COUNT WRONG
+LineFeed
+line %ld: could not source "%s"
+line %ld of %ld --%d%%-- col 
+line %ld: %s
+line %ld: sourcing "%s"
+LineNr term=underline ctermfg=Brown
+LineNr term=underline ctermfg=Yellow
+???LINES MISSING
+linespace
+Linking: 
+links to
+-lispindent
+lispwords
+listchars
+-listcmds
+%lld characters
+lmapclear
+lnoremap
++<lnum>		Start at line <lnum>
+loadkeymap
+loadplugins
+loadview
+*local-additions*
+-localmap
+--- Local option values ---
+localtime
+lockmarks
+__longjmp_chk
+lprevious
+-L			Same as -r
+lvimgrep
+lvimgrepadd
+__lxstat64
+[mac format]
+macroman
+mac-roman
+???MANY LINES MISSING
+mappings
+mark line  col file/text
+matchpairs
+matchtime
+maxcombine
+maxfuncdepth
+maxmapdepth
+maxmempattern
+maxmemtot
+Maybe no changes were made or Vim did not update the swap file.
+__memmove_chk
+menu  Help->Sponsor/Register  for information    
+menuitems
+menutranslate
+messages
+messages 
+Messages maintainer: Bram Moolenaar <Bram@vim.org>
+microsoft-cp
+MiddleDrag
+MiddleMouse
+MiddleRelease
+-mksession
+mkspellmem
+-M			Modifications in text not allowed
+-m			Modifications (writing files) not allowed
+modeline
+modelines
+ModeMsg term=bold cterm=bold
+modifiable
+          modified: 
+ [Modified]
+Modified by 
+-modify_fname
+-- More --
+More info with: "vim -h"
+MoreMsg term=bold ctermfg=DarkGreen
+MoreMsg term=bold ctermfg=LightGreen
+-mouse_dec
+MouseDown
+mousefocus
+-mouse_gpm
+mousehide
+-mouse_jsbterm
+mouse,key
+mousemodel
+-mouse_netterm
+mouseshape
+-mouse_sysmouse
+mousetime
+-mouse_urxvt
+-mouse_xterm
+  <M-%s>
++multi_byte
+-multi_lang
+MYGVIMRC
+mzquantum
+-mzscheme
+N\$$)\$$
+nanosleep
+'-nb' cannot be used: not enabled at compile time
+-netbeans_intg
+[New DIRECTORY]
+      NEWER than swap file!
+[New file]
+nl_langinfo
+_nl_msg_cat_cntr
+nmapclear
+nnoremap
+nnoremenu
+-n			No swap file, use memory only
+-N			Not fully Vi compatible: 'nocompatible'
+No abbreviation found
+noautocmd
+nohlsearch
+--No lines in buffer--
+No mapping found
+No marks set
+[No Name]
+      -- none --
+NonText term=bold ctermfg=Blue
+noplugin
+--noplugin		Don't load plugin scripts
+No swap file
+[NOT converted]
+[Not edited]
+not found in 'runtimepath': "%s"
+Nothing to undo
+' not known. Available builtin terminals are:
+         [not usable on this computer]
+No undo possible; continue anyway
+[No write since last change]
+nrformats
+nrtebdoxuU
+number changes  when               saved
+numberwidth
+O\3K\3SX	
+octal,hex
+oldfiles
+omapclear
+omnifunc
+ on 1 line
+ on %ld lines
+-O[N]		Like -o but split vertically
+--			Only file names after this
+-o[N]		Open N windows (default: one for each file)
+onoremap
+onoremenu
+opendevice
+operatorfunc
+optimize
+--- Options ---
+Original file "%s"
+ or more
+or the file has been damaged.
+osfiletype
+          owned by: 
+ownsyntax
+paragraphs
+ (paste)
+pastetoggle
+patchexpr
+patchmode
+-path_extra
+\[pattern]
+Pattern found in every line: %s
+[Permission Denied]
+-persistent_undo
+pkg-vim-maintainers@lists.alioth.debian.org
+-p[N]		Open N tab pages (default: one for each file)
+popup_setpos
+precedes
+preserve
+preserveindent
+Press ENTER or type command to continue
+previewheight
+previewwindow
+pre-vimrc command line
+  # pri kind tag
+printdevice
+printencoding
+-printer
+printexpr
+printfont
+printheader
+printmbcharset
+printmbfont
+printoptions
+        process ID: 
+-profile
+promptfind
+promptrepl
+ptprevious
+ptrewind
+ptselect
+pumheight
+-python3
+Question term=standout ctermfg=DarkGreen
+Question term=standout ctermfg=LightGreen
+-quickfix
+  Quit, or continue with caution.
+quoteescape
+quotestar
+\[quotex]
+\[range]
+readdir64
+[Read errors]
+readlink
+readonly
+[readonly]
+-               read text from stdin
+recording
+Recovery completed. Buffer contents equals file contents.
+Recovery completed. You should check if everything is OK.
+redrawstatus
+redrawtime
+registers
+--- Registers ---
+relativenumber
+-reltime
+ (replace)
+ REPLACE
+replace with %s (y/n/a/q/l/^E/^Y)?
+restorescreen
+return:]
+rightbelow
+RightDrag
+-rightleft
+rightleftcmd
+RightMouse
+RightRelease
+-r			List swap files and exit
+rmfixlnw
+rmfixlnwaWtToOsAI
+-R			Readonly mode (like "view")
+rubyfile
+rulerformat
+Running in Vi compatible mode
+runtimepath
+rviminfo
+-r (with file name)	Recover crashed session
+>%s 2>&1
+sargument
+sbmodified
+sbprevious
+sbrewind
+screen.linux
+scriptencoding
+scriptnames
+-scrollbind
+scrolljump
+scrollopt
+ScrollWheelDown
+ScrollWheelLeft
+ScrollWheelRight
+ScrollWheelUp
+^\s*\d\+[\]:.)}\t ]\s*
+Search ctermfg=black
+search hit BOTTOM, continuing at TOP
+search hit TOP, continuing at BOTTOM
+Searching for "%s"
+Searching for "%s" in "%s"
+Searching tags file %s
+Search term=reverse ctermbg=Yellow ctermfg=Black
+Search term=reverse ctermbg=Yellow ctermfg=NONE
+sections
+See ":help E312" for more information.
+See ":help W11" for more info.
+See ":help W12" for more info.
+See ":help W16" for more info.
+ SELECT BLOCK
+Selected %s%ld of %ld Lines; %ld of %ld Words; %ld of %ld Bytes
+Selected %s%ld of %ld Lines; %ld of %ld Words; %ld of %ld Chars; %ld of %ld Bytes
+selection
+ SELECT LINE
+selectmode
+sessionoptions
+Session.vim
+set cpo&vim
+setfilecon
+setfiletype
+setglobal
+setlocal
+setlocale
+set_string_option_direct()
+shellcmdflag
+shellpipe
+shellquote
+shellredir
+shell returned 
+shellslash
+shelltemp
+shelltype
+shellxquote
+shift-jis
+shiftround
+shiftwidth
+SHNHH HUnhsh
+shortmess
+shortname
+showbreak
+showfulltag
+showmatch
+showmode
+showtabline
+sidescroll
+sidescrolloff
+sigaction
+sigaltstack
+sigemptyset
+ <silent>
+slowopen
+Small version 
+smapclear
+smartcase
+-smartindent
+smarttab
+snomagic
+snoremap
+snoremenu
+softtabstop
+Sorry, help file "%s" not found
+sourceany
+ SPACE/d/j: screen/page/line down, b/u/k: up, q: quit 
+<special>
+SpecialKey term=bold ctermfg=DarkBlue
+SpecialKey term=bold ctermfg=LightBlue
+spellcapcheck
+spelldump
+spellfile
+spellgood
+spellinfo
+spelllang
+spellrepall
+spellsuggest
+spellundo
+spellwrong
+splitbelow
+splitright
+Sponsor Vim development!
+sprevious
+__sprintf_chk
+^%s\s\*(
+-s <scriptin>	Read Normal mode commands from file <scriptin>
+-S <session>		Source file <session> after loading the first file
+-s			Silent (batch) mode (only for "ex")
+%s%s%%p1%%dm
+<%s>%s%s  %d,  Hex %02x,  Octal %03o
+"%s%s%s%s%s%s
+__stack_chk_fail
+standout
+starstar
++			Start at end of file
+startgreplace
+startinsert
+startofline
+startreplace
+startsel
+startsel,stopsel
+-startuptime
+-statusline
+StatusLineNC term=reverse cterm=reverse
+StatusLine term=reverse,bold cterm=reverse,bold
+ (still running)
+stopinsert
+strcasecmp
+__strcat_chk
+__strcpy_chk
+strerror
+strftime
+strncasecmp
+stselect
+substitute
+suffixes
+suffixesadd
+-sun_workshop
+swapfile
+Swap files found:
+swapname
+swapsync
+switchbuf
+%s (y/n)?
+syncbind
+synmaxcol
+   system vimrc file: "
+<+t0< t.<#f
+T$49T$,s%
+T$89T$Dt
+T$89T$<t
+T$$9P<us
+tabclose
+tabfirst
+TabLineFill term=reverse cterm=reverse
+TabLineSel term=bold cterm=bold
+TabLine term=underline cterm=underline ctermfg=black ctermbg=LightGrey
+TabLine term=underline cterm=underline ctermfg=white ctermbg=DarkGrey
+Tab page %d
+tabpagemax
+tabprevious
+tabrewind
+-tag_any_white
+-tag_binary
+tagbsearch
+tag %d of %d%s
+!_TAG_FILE_ENCODING	
+taglength
+-tag_old_static
+tagrelative
+tagstack
+./tags,tags
+tA;t$(~;
+<#tb<%t^1
+tcgetattr
+tcroq2vlb1mMBn,aw
+tcsetattr
+t";Ct|E;Cx
+tD< t@<	u
+termbidi
+termencoding
+--- Terminal codes ---
+--- Terminal keys ---
++terminfo
+-termresponse
+te<:ta<\u
+textauto
+textmode
+-textobjects
+textwidth
+tgetflag
+The file was created on 
+thesaurus
+This Vim was not compiled with the diff feature.
+titlelen
+titleold
+titlestring
+Title term=bold ctermfg=DarkMagenta
+Title term=bold ctermfg=LightMagenta
+t$(+l$()
+.,~/tmp,~/
+.,~/tmp,/var/tmp,/tmp
+    to avoid this message.
+-toolbar
+Too many "+command", "-c command" or "--cmd command" arguments
+Too many edit arguments
+    to recover the changes (see ":help recovery").
+  # TO tag         FROM line  in file/text
+towlower
+towupper
+<	t<< t81
+t$,+t$(9
+T$$+T$(9
+-t tag          edit file where tag is defined
+-T <terminal>	Set terminal type to <terminal>
+ttimeout
+ttimeoutlen
+<[t\<]t`<O
+t(<	t&< t"<\
+t%<	t!< t
+ttybuiltin
+ttymouse
+ttyscroll
+<_t^<%tZ
+type  :help cp-default<Enter> for info on this
+type  :help<Enter>  or  <F1>  for on-line help
+type  :help iccf<Enter>       for information 
+type  :help register<Enter>   for information 
+type  :help sponsor<Enter>    for information 
+type  :help version7<Enter>   for version info
+Type number and <Enter> (empty cancels): 
+Type number and <Enter> or click with mouse (empty cancels): 
+type  :q<Enter>               to exit         
+Type  :quit<Enter>  to exit Vim
+type  :set nocp<Enter>        for Vim defaults
+ucs-bom,utf-8,default,latin1
+uM9T$$|G
+unabbreviate
+Unable to read block 0 from 
+undercurl
+underline
+undofile
+undojoin
+undolevels
+undolist
+undoreload
+undo_time()
+<unique>
+unix,dos
+unix-jis
+Unknown!
+Unknown option argument
+unlet s:cpo_save
+unlockvar
+unsilent
+updatecount
+updatetime
+uR9l$$}*
+-user_commands
+      user exrc file: "
+         user name: 
+     user vimrc file: "
+Use Vim version 3.0.
+   Using specified name:
+Using swap file "%s"
+.,/usr/include,,
+/usr/share/vim
+utf-16be
+utf-16le
+utf-32be
+utf-32le
+                                                                 UUUUUUUUUUUUUUUUUUUUUUUUUU      llllllllllllllllllllllllll                                                                     UUUUUUUUUUUUUUUUUUUUUUU UUUUUUUllllllllllllllllllllllll llllllll
+-u <vimrc>		Use <vimrc> instead of any .vimrc
+verbosefile
+version 6.0
+--version		Print version information and exit
+vert:|,fold:-
+vertical
+-vertsplit
+viewoptions
+ vim [arguments] 
+Vim: Caught deadly signal %s
+Vim: Double signal, exiting
+Vim: Finished.
+vimglob() { while [ $# -ge 1 ]; do echo "$1"; shift; done }; vimglob >
+-viminfo
+Vim is open source and freely distributable
+VIM_POSIX
+Vim: preserving files...
+Vim: Reading from stdin...
+VIMRUNTIME
+$VIMRUNTIME/doc/help.txt
+$VIMRUNTIME/evim.vim
+" vim: set ft=vim :
+VIM - Vi IMproved
+VIM - Vi IMproved 7.3 (2010 Aug 15, compiled May  4 2012 04:09:37)
+$VIM/vimrc
+$VIM/vimrc.tiny
+~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
+Vim: Warning: Input is not from a terminal
+Vim: Warning: Output is not to a terminal
+-virtualedit
+visualbell
+ VISUAL BLOCK
+Visual cterm=NONE ctermbg=DarkGrey
+Visual cterm=NONE ctermbg=LightGrey
+Visual cterm=reverse ctermbg=NONE
+-visualextra
+ VISUAL LINE
+Visual term=reverse
+vmapclear
+-V[N][fname]		Be verbose [level N] [log messages to fname]
+vnoremap
+vnoremenu
+ (vreplace)
+-vreplace
+\V\<%.*s\>
+-v			Vi mode (like "vi")
+W10: Warning: Changing a readonly file
+W11: Warning: File "%s" has changed since editing started
+W12: Warning: File "%s" has changed and the buffer was changed in Vim as well
+W13: Warning: File "%s" has been created after editing started
+W14: Warning: List of file names overflow
+W16: Warning: Mode of file "%s" has changed since editing started
+W18: Invalid character in group name
+WarningMsg term=standout ctermfg=DarkRed
+WarningMsg term=standout ctermfg=LightRed
+WARNING: Original file may be lost or damaged
+Warning: terminal cannot highlight
+WARNING: The file has been changed since reading it!!!
+weirdinvert
+whichwrap
+While opening file "
+wildchar
+wildcharm
++wildignore
+wildignorecase
+-wildmenu
+wildmode
+wildoptions
+winaltkeys
+win_close_othertab()
++windows
+winfixheight
+winfixwidth
+winminheight
+winminwidth
+winwidth
+without GUI.
+wprevious
+wrapmargin
+wrapscan
+writeany
++writebackup
+writedelay
+ written
+-w <scriptout>	Append all typed commands to file <scriptout>
+-W <scriptout>	Write all typed commands to file <scriptout>
+wviminfo
+X1Release
+X2Release
+xdigit:]
++xfontset
+xmapclear
+xnoremap
+xnoremenu
+__xstat64
+-xterm_clipboard
+-xterm_save
+xXDCsSY&
+-y			Easy mode (like "evim", modeless)
+%Y/%m/%d %H:%M:%S
+You may want to delete the .swp file now.
+(You might want to write out this file under another name
+YpuU;YL|H
+YyDdCcxdXdAAIIrr
+/\\z(\\)
+Zero count
+-Z			Restricted mode (like "rvim")
+zsh-beta

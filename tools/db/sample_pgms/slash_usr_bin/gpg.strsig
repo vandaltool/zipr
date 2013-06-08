@@ -1,0 +1,3990 @@
+<[^>]+[@.]
+                      
+!"#$&'()+,-.
+0000:%04X:%s:0
+0123456789
+01234567890abcdefABCDEF
+01234567890_-.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+0123456789abcdef
+0123456789abcdefABCDEF
+0123456789abcdefx
+ %02X%02X
+::%02x%c
+:%02x%c:
+:%02x%s:
+|$03|$ 1
+%04d-%02d-%02d
+%04d-%02d-%02d %02d:%02d:%02d
+%04X:%04X:
+%08lX%08lX [?]
+%08lX%08lX %08lX%08lX %d 0
+%08lX%08lX %d %d %02x %lu %d
+%08lX%08lX %.*s
+%08lX%08lX.%s
+%08lX%08lX [uncertain] 
+%08X%08X 
+0choosing a random k 
+   (0) I will not answer.%s
+         0 = key does not expire
+"0" means you make no particular claim as to how carefully you verified the
+  0 = %s
+         0 = signature does not expire
+0x0000000000000000
+0x%08lX%08lX
+%-10s %s
+10 translator see trustdb.c:uid_trust_string_fixed
+11223300
+%-11s %s
+12345678
+1 bad signature
+1 - change PIN
+)(1:e%u:
+   (1) I have not checked at all.%s
+1l$<#T$H
+"1" means you believe the key is owned by the person who claims to own it
+       1 <= N <= 3
+       1 <= N <= 4
+)(1:p%u:
+)(1:q%u:
+  1 = %s
+   (1) Signature key
+1 signature not checked due to a missing key
+1 signature not checked due to an error
+,$1t$03l$0
+1 user ID without valid self-signature detected
+%.20s %c 0 0
+[%.20s image of size %lu]
+%.20s ? %lu %lu
+%.20s X 100 100
+22Vd::Nt
+   (2) Encryption key
+   (2) I have done casual checking.%s
+"2" means you did casual verification of the key.  For example, this could
+2]rhFr&e
+  2 = %s
+2 - unblock PIN
+2Vd2:Nt:
+|$@3|$01
+|$(3|$$1
+3\$,3|$8
+3<-3_Ly_
+3\$,3T$(1
+3\$43|$8
+   (3) Authentication key
+3 - change Admin PIN
+3|$D3|$$
+3D$(3T$,#D$ #T$$
+|$$3|$H1
+3\$h3|$0
+   (3) I have done very careful checking.%s
+3|$L3|$(1
+3L$t3L$P
+"3" means you did extensive verification of the key.  For example, this could
+  3 = %s
+3t$03t$H3t$`
+3t$P3t$ 1
+3T$t3D$p	
+--3<yy_L
+$4,8-9'66.:$?#1*HhXpAeS~ZrNlS
+4,8$9'6-.:$6#1*?hXpHeS~ArNlZ
+\$4#L$41
+  4 = %s
+4 - set the Reset Code
+%4u%c/%s %s
+%4u%c/%s %s "
+4Wsquiggle
+	#	%	+	/	5	C	I	M	O	U	Y	_	k	q	w	
+|$83|$01
+8$4,6-9'$6.:*?#1pHhX~AeSlZrNbS
+,8$4'6-9:$6.1*?#XpHhS~AeNlZrEbS
+|$ 9|$(|=9
++|$@9|$hry
+abcdefghijklmnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+about to export an unprotected subkey
+!a->buflen
+a->buflen <= 512
+accept failed
+access to the secret key.  Answer "yes" to set this key to
+access to this certificate he can use it to make your key unusable.
+action `%s' not supported with keyserver scheme `%s'
+active_handles > 0
+add a key to a smartcard
+add a photo ID
+add a revocation key
+add a subkey
+add a user ID
+addcardkey
+add_gpg_control
+add_history
+Adding notation: %s=%s
+addphoto
+addrevoker
+add_signature
+A depth greater than 1 allows the key you are signing to make
+a->d.len < a->d.size
+Admin commands are allowed
+Admin commands are not allowed
+Admin-only command
+a->d.start == 1
+a->d.start == a->d.len
+afx->what=%d
+agent_get_passphrase
+                aka "%s"
+  aka "%s"
+Algo-Attr-Change: %s
+, algo: %d,%s hash: %d
+|algo [files]|print message digests
+Algorithm Attributes Authentication
+Algorithm Attributes Decryption
+Algorithm Attributes Signature
+         algorithms on these user IDs:
+All certificates are then also lost!
+allow-local-sigs
+allow-multisig-verification
+allow-secret-key-import
+along with this software.  If not, see <http://www.gnu.org/licenses/>.
+already connected
+ALREADY_SIGNED
+always-trust
+ambiguous option `%s'
+An all inclusive hardware error occurred
+An empty line ends the text.
+|AN|New Admin PIN
+anonymous recipient; trying secret key %s ...
+a notation name must have only printable characters or spaces, and end with an '='
+a notation name must not contain more than one '@' character
+a notation value must not use any control characters
+ANSI_X3.4-1968
+Answer "yes" if it is okay to delete the subkey
+Answer "yes" if it is okay to overwrite the file
+Answer "yes" if you really want to delete this user ID.
+Answer "yes" if you want to sign ALL the user IDs
+Answer "yes" (or just "y") if it is okay to generate the sub key.
+Answer "yes" or "no"
+apdulen <= apdu_buffer_size
+apdu_open_ct_reader failed on port %d: %s
+apdu_open_reader: failed to open driver: %s
+apdu_open_reader: failed to open driver `%s': %s
+apdu_open_reader: invalid CT-API driver
+apdu_open_reader: invalid PC/SC driver (%d%d%d%d%d%d%d%d%d%d%d%d)
+apdu_send_direct
+apdu_send_direct(%d): %d more bytes available
+apdu_send_direct(%d) failed: %s
+apdu_send_direct(%d) for get response failed: %s
+apdu_send_direct(%d) got unexpected status %04X from get response
+apdu_send_simple(%d): %d more bytes available
+apdu_send_simple(%d) failed: %s
+apdu_send_simple(%d) for get response failed: %s
+apdu_send_simple(%d) got unexpected status %04X from get response
+    a "persona" verification, where you sign the key of a pseudonymous user.
+a->pkt->pkttype == PKT_PUBLIC_KEY || a->pkt->pkttype == PKT_PUBLIC_SUBKEY
+a->pkt->pkttype == PKT_SECRET_KEY || a->pkt->pkttype == PKT_SECRET_SUBKEY
+|A|Please enter the Admin PIN
+|A|Please enter the Admin PIN%%0A[remaining attempts: %d]
+append_key
+append_uid
+Application ID ...: %s
+Application Related Data
+Are you sure that you want to sign this key with your
+Are you sure you still want to add it? (y/N) 
+Are you sure you still want to revoke it? (y/N) 
+Are you sure you still want to sign it? (y/N) 
+Are you sure you want to appoint this key as a designated revoker? (y/N) 
+Are you sure you want to delete it? (y/N) 
+Are you sure you want to replace it? (y/N) 
+Are you sure you want to use it? (y/N) 
+argidx < argspecs_len
+args expanded to "%s", use %u, keep %u
+arg->vt == valuetable[arg->arg_pos-1].vt
+armor_filter
+armor-filter: control: %d
+armor: %s
+ASCII armored output forced.
+a second one is available.
+(A single dash may be used instead of the double ones)
+ask_expire_interval
+ask_for_detached_datafile
+ask_revocation_reason.code
+ask_revocation_reason.okay
+ask_revocation_reason.text
+ask_revoke_sig.expired
+ask_revoke_sig.okay
+ask_revoke_sig.one
+ask_user_id
+__assert_fail
+_assuan_read_line
+assuming bad signature from key %s due to an unknown critical bit
+assuming %s encrypted data
+assuming signed data in `%s'
+  a `t' for trust signatures (tsign), an `nr' for non-revocable signatures
+ATR returned by pcsc_status is too large
+a trust connection through another already certified key.
+atticlen < 1002
+ATTRIBUTE
+attribute-fd
+attribute-file
+:attribute packet: %s
+(at your option) any later version.
+a->use == 1 || a->use == 2
+a user notation name must contain the '@' character
+Authenticate
+Authentication key:
+$AUTHKEYID
+auto-key-locate found fingerprint %s
+--auto-key-retrieve
+automatically retrieved `%s' via %s
+automatically retrieve keys when verifying signatures
+Automatic sequence ongoing
+backsign
+BACKUP_KEY_CREATED
+BADARMOR
+[bad attribute packet of size %lu]
+bad certificate
+Bad checksum in ATR
+bad P0 or P1
+bad parameter
+bad passphrase
+BAD_PASSPHRASE
+bad public key
+bad secret key
+bad signature
+BAD signature from "%s"
+Bad TS in ATR
+begin bzDecompress: avail_in=%u, avail_out=%u, inbuf=%u
+BEGIN_DECRYPTION
+BEGIN_ENCRYPTION
+begin inflate: avail_in=%u, avail_out=%u, inbuf=%u
+BEGIN PGP ARMORED FILE
+BEGIN PGP MESSAGE
+BEGIN PGP PRIVATE KEY BLOCK
+BEGIN PGP PUBLIC KEY BLOCK
+BEGIN PGP SECRET KEY BLOCK
+-----BEGIN PGP SIGNATURE-----
+BEGIN PGP SIGNATURE
+-----BEGIN PGP SIGNED MESSAGE-----
+BEGIN PGP SIGNED MESSAGE
+BEGIN_SIGNING
+BEGIN_STREAM
+belongs to the person named in the user ID.  It is useful for others to
+Big Brother's key (ignored): 
+bindtextdomain
+bind_textdomain_codeset
+bit sizes: prime=%u, q=%u
+bkuptocard
+block_filter
+block_filter: 1st length byte missing
+block_filter: 2nd length byte missing
+block_filter: invalid 4 byte length
+block_filter: pending bytes!
+block_filter %p: read error (size=%lu,a->size=%lu)
+block_filter: write error: %s
+BLOWFISH
+Blowfish selftest failed (1).
+Blowfish selftest failed (2).
+Blowfish selftest failed (3).
+Blowfish selftest failed (4).
+bogus read from random device (n=%d)
+!bp_marker
+broken-http-proxy
+__bss_start
+buffer shorter than attribute subpacket
+buffer shorter than subpacket
+build onepass_sig packet failed: %s
+build_packet
+build_packet(%d) failed: %s
+build_packet(ENCR_DATA) failed
+build_packet failed for backsig: %s
+build packet failed: %s
+build_packet failed: %s
+build_packet(PKT_COMPRESSED) failed
+build_packet(PLAINTEXT) failed: %s
+build_packet(pubkey_enc) failed: %s
+build_packet() type=%d
+build_privkey_template
+build signature packet failed: %s
+build_sig_subpkt
+build symkey_enc packet failed: %s
+build symkey packet failed: %s
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+    but you could not, or did not verify the key at all.  This is useful for
+(by looking at passports, checking fingerprints from different sources, etc.)
+BZ2_bzCompress
+BZ2_bzCompressEnd
+BZ2_bzCompressInit
+BZ2_bzDecompress
+BZ2_bzDecompressEnd
+BZ2_bzDecompressInit
+bz2lib deflate problem: rc=%d
+bz2lib inflate problem: rc=%d
+bz2lib problem: %d
+bzCompress: iobuf_write failed
+bzip2-compress-level
+bzip2-decompress-lowmem
+%c::::::::
+c=%02x a=%d f=
+c <= 0x1f
+|c]]("66'
+c]|]"6(6
+C,9C(s?1
+cache_public_key: already in cache
+cache_user_id
+cache_user_id: already in cache
+caching keyring `%s'
+CA fingerprint: 
+CA fingerprint %d .:
+CA Fingerprints
+CA-FPR-1
+CA-FPR-2
+CA-FPR-3
+calc_packet_length
+CAMELLIA128
+CAMELLIA128 test decryption failed.
+CAMELLIA128 test encryption failed.
+CAMELLIA192
+CAMELLIA192 test decryption failed.
+CAMELLIA192 test encryption failed.
+CAMELLIA256
+CAMELLIA256 test decryption failed.
+CAMELLIA256 test encryption failed.
+cancel|cancel
+canceled
+cancelled by user
+cannot appoint a PGP 2.x style key as a designated revoker
+cannot avoid weak key for symmetric cipher; tried %d times!
+cannot open `%s': %s
+cannot read lockfile
+can't access %s - invalid OpenPGP card?
+can't access `%s': %s
+can't acquire lock - giving up
+can't allocate lock for `%s'
+can't allocate memory pool of %u bytes
+can't attach %uk shared memory: %s
+Can't check signature: %s
+can't close `%s': %s
+can't connect to server: %s
+can't connect to `%s': %s
+can't cope with hdrlen yet
+can't create backup file `%s': %s
+can't create directory `%s': %s
+can't create lock for `%s'
+can't create socket: %s
+can't create `%s': %s
+can't disable cipher algo %d: table full
+can't disable core dumps: %s
+can't disable pubkey algo %d: table full
+can't dispose
+can't do this in batch mode
+can't do this in batch mode without "--yes"
+Can't edit this key: %s
+can't encode a %d bit key in a %d bits frame
+can't encode a %d bit MD into a %d bits frame
+can't generate a prime with less than %d bits
+can't gen prime with pbits=%u qbits=%u
+can't get %uk of shared memory: %s
+can't handle public key algorithm %d
+can't handle text lines longer than %d characters
+can't handle this ambiguous signature data
+can't hash datafile: %s
+can't init trustdb: %s
+can't lock memory: %s
+can't lock `%s'
+can't lock `%s': %s
+can't lseek: %s
+can't mmap pool of %u bytes: %s - using malloc
+can't open fd %d for attribute output: %s
+can't open fd %d for logging: %s
+can't open fd %d for status output: %s
+can't open `%s'
+can't open signed data `%s'
+can't open `%s': %s
+can't open %s: %s
+Can't open `%s': %s
+can't open the keyring
+can't query passphrase in batch mode
+can't read `%s': %s
+can't remove the last filter from the chain
+can't rewind fd %d: %s
+can't seek `%s'
+can't seek: %s
+can't stat `%s': %s
+can't truncate `%s': %s
+can't unlock `%s'
+can't write public key: %s
+can't write secret key: %s
+can't write `%s': %s
+ capture
+card_busy
+CARDCTRL
+cardctrl.change_card.okay
+cardctrl.insert_card.okay
+card does not support digest algorithm %s
+card-edit
+cardedit.change_cafpr
+cardedit.change_lang
+cardedit.change_login
+cardedit.change_private_do
+cardedit.change_sex
+cardedit.change_url
+cardedit.genkeys.backup_enc
+cardedit.genkeys.replace_key
+cardedit.genkeys.replace_keys
+cardedit.genkeys.size
+cardedit.genkeys.storekeytype
+cardedit.genkeys.subkeytype
+cardedit.prompt
+Cardholder certificate
+Cardholder Related Data
+Cardholder's given name: 
+Cardholder's surname: 
+card inactive
+card I/O error
+card is permanently locked!
+card-no: 
+card reader not available
+      Card serial no. =
+--card-status
+card_store_subkey
+card unsupported
+cardutil.change_pin.menu
+:CAST5 selftest failed (%s).
+ caught ... exiting
+              cause a different user ID to become the assumed primary.
+" %c%c%c%c
+ccid-driver:   [%04lu] 
+ccid-driver:     Auto activation on insert
+ccid-driver:     Auto baud rate change
+ccid-driver:     Auto clock change
+ccid-driver:     Auto configuration based on ATR
+ccid-driver:     Auto IFSD exchange
+ccid-driver:     Auto parameter negotiation made by CCID
+ccid-driver:     Auto PPS made by CCID
+ccid-driver:     Auto voltage selection
+ccid-driver:   bBMI ..............: 0x%02x
+ccid-driver:   bBWI ..............: 0x%02x
+ccid-driver:   bcdCCID             %2x.%02x
+ccid-driver:   bChainParameter ...: 0x%02x%s
+ccid-driver:   bClassEnvelope       
+ccid-driver:   bClassEnvelope ....: 0x%02x
+ccid-driver:   bClassGetResponse    
+ccid-driver:   bClassGetResponse .: 0x%02x
+ccid-driver:   bClockCommand .....: 0x%02x
+ccid-driver:   bClockStatus ......: 0x%02x%s
+ccid-driver:   bClockStop ........: %02X
+ccid-driver:   bDescriptorType     %5u
+ccid-driver:   bError ............: %u
+ccid-driver:   bFunction .........: 0x%02x
+ccid-driver:   bGuardTimeT1 ......: %02X
+ccid-driver:   bIFSC .............: %d
+ccid-driver:   bLength             %5u
+ccid-driver:   bMaxCCIDBusySlots   %5u
+ccid-driver:   bmChanges .........: 0x%02x
+ccid-driver:   bMessageType ......: %02X
+ccid-driver:   bmFindexDindex ....: %02X
+ccid-driver:   bmTCCKST1 .........: %02X
+ccid-driver:   bmWaitingIntegersT1: %02X
+ccid-driver:   bNadValue .........: %d
+ccid-driver:   bNumClockSupported  %5u
+ccid-driver:   bNumDataRatesSupp.  %5u
+ccid-driver:   bPINSupport         %5u 
+ccid-driver:   bPowerSelect ......: 0x%02x (%s)
+ccid-driver:   bProtocolNum ......: 0x%02x
+ccid-driver:   bSeq ..............: %u
+ccid-driver:   bSlot .............: %u
+ccid-driver:   bStatus ...........: %u
+ccid-driver:   buffer[9] .........: %02X
+ccid-driver: bulk-in msg in abort_cmd too short (%u)
+ccid-driver: bulk-in msg too short (%u)
+ccid-driver: bulk-in seqno does not match (%d/%d)
+ccid-driver:   bVoltageSupport     %5u  %s
+ccid-driver:     CCID can set ICC in clock stop mode
+ccid-driver: CCID command failed: %s
+ccid-driver: CCID device descriptor is too short
+ccid-driver: chaining not supported on Secure operation
+ccid-driver: chaining requested but not supported for Secure operation
+ccid-driver: ChipCard Interface Descriptor:
+ccid-driver: device not supported
+ccid-driver:   dwClockFrequency ..: %u
+ccid-driver:   dwDataRate        %7u bps
+ccid-driver:   dwDataRate ..... ..: %u
+ccid-driver:   dwDefaultClock      %5u
+ccid-driver:   dwFeatures       %08X
+ccid-driver:   dwLength ..........: %u
+ccid-driver:   dwMaxCCIDMsgLen     %5u
+ccid-driver:   dwMaxDataRate     %7u bps
+ccid-driver:   dwMaxIFSD           %5u
+ccid-driver:   dwMaxiumumClock     %5u
+ccid-driver:   dwMechanical     %08X 
+ccid-driver:   dwProtocols         %5u 
+ccid-driver:   dwSyncProtocols  %08X 
+ccid-driver: enabling workaround for buggy SCM readers
+ccid-driver: failed to open `%s': %s
+ccid-driver: found CCID reader %d (ID=%s)
+ccid-driver: GetParameters failed
+ccid-driver: hardware error occured
+ccid-driver: I-block with wrong seqno received
+ccid-driver: idVendor: %04X  idProduct: %04X  bcdDevice: %04X
+ccid-driver: IFSD has been set to %d
+ccid-driver: intr-in msg too short
+ccid-driver: invalid response for S-block (Change-IFSD)
+ccid-driver:   junk             
+ccid-driver:     NAD value other than 0x00 accepted
+ccid-driver:   nMaxSlotIndex       %5u
+ccid-driver: no CCID readers found
+ccid-driver: no CCID reader with ID %s
+ccid-driver: no CCID reader with number %d
+ccid-driver: No retries supported for Secure operation
+ccid-driver: notify slot change:
+ccid-driver: out of memory
+ccid-driver:   protocol ..........: T=%d
+ccid-driver: provided buffer too short for received data (%u/%u)
+ccid-driver: R-block with wrong seqno received on more bit
+ccid-driver: read from %d failed: %s
+ccid-driver: %s:
+ccid-driver: sending abort sequence for seqno %d
+ccid-driver: sending abort sequence succeeded
+ccid-driver: sending escape sequence to switch to a case 1 APDU
+ccid-driver: SetParameters failed (ignored)
+ccid-driver: setting up transport for CardMan 4040
+ccid-driver:     Short and extended APDU level exchange
+ccid-driver:     Short APDU level exchange
+ccid-driver: status: %02X  error: %02X  octet[9]: %02X
+ccid-driver: T=1: 3 failed retries
+ccid-driver: T=1: got %c-block seq=%d err=%d%s
+ccid-driver: T=1: put %c-block seq=%d%s
+ccid-driver: T=1: requesting an ifsc=%d
+ccid-driver: T=1: requesting resync
+ccid-driver: T=1: resync ack from reader
+ccid-driver: T=1: S-block %s received cmd=%d
+ccid-driver: T=1: S-block %s received cmd=%d for Secure operation
+ccid-driver: T=1: waittime extension of bwi=%d
+ccid-driver: this drivers requires that the reader supports T=1, TPDU or APDU level exchange and auto configuration - this is not available
+ccid-driver: time extension requested (%02X,%02X)
+ccid-driver:     TPDU level exchange
+ccid-driver: unexpected ACK R-block received
+ccid-driver: unexpected bulk-in msg type (%02x)
+ccid-driver: unexpected bulk-in slot (%d)
+ccid-driver: unexpected bulk-in slot (%d) in abort_cmd
+ccid-driver: unknown intr-in msg of type %02X
+ccid-driver: usb_bulk_read error in abort_cmd: %s
+ccid-driver: usb_bulk_read error: %s
+ccid-driver: usb_bulk_write error in abort_cmd: %s
+ccid-driver: usb_bulk_write error: %s
+ccid-driver: usb_bulk_write failed: %d
+ccid-driver: usb_bulk_write failed in abort_cmd: %d
+ccid-driver: USB: CALLING USB_CLEAR_HALT
+ccid-driver: usb_claim_interface failed: %d
+ccid-driver: usb_control_msg error: %s
+ccid-driver: usb_intr_read error: %s
+ccid-driver: usb_open failed: %s
+ccid-driver: USB: RETRYING bulk_in AGAIN
+ccid-driver: using CCID reader %d (ID=%s)
+ccid-driver:     WARNING: conflicting exchange levels
+ccid-driver:     WARNING: conflicting negotiation features
+ccid-driver:   wlcdLayout           
+ccid-driver:   wLevelParameter ...: 0x%04x%s
+ccid-driver: writen to %d failed: %s
+ccid_open_reader
+ccid-reader-id
+CCID timed out while talking to the ICC
+ccid_transceive
+ccid_transceive_apdu_level
+ccid_transceive failed: (0x%lx)
+%c %d %d %02x %lu 
+cert-digest-algo
+cert-notation
+cert-policy-url
+cfg:ccid-reader-id:%s
+cfg:cipher:
+cfg:ciphername:
+cfg:compress:
+cfg:digest:
+cfg:digestname:
+cfg:group:
+cfg:pubkey:
+cfg:version:
+   (%c) Finished
+change a CA fingerprint
+change a card's PIN
+change card holder's name
+change card holder's sex
+change data on a card
+Change-Force-PW1: %s
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? 
+Change (N)ame, (C)omment, (E)mail or (Q)uit? 
+change_passwd.empty.okay
+change-pin
+--change-pin [no]
+change the expiration date for the key or selected subkeys
+change the language preferences
+change the login name
+change the ownertrust
+change the passphrase
+Change the preferences of all user IDs (or just of the selected ones)
+change URL to retrieve key
+Changing expiration time for a subkey.
+Changing expiration time for the primary key.
+changing ownertrust from %u to %u
+checking created signature failed: %s
+checking g: 
+	checking subkey %08lX
+checking the trustdb
+check_key_signature2
+checkmdc
+check_permissions
+check_revocation_keys
+check-sig
+check_sig_and_print
+check signatures
+check-sigs
+	checksum: %04hx
+checksum error
+choosing a random k of %u bits
+choosing a random x 
+choosing a random x of size %u
+CHV blocked
+chvno == 1 || chvno == 2
+chvno == 1 || chvno == 3
+CHV-STATUS
+CHV-STATUS-1
+CHV Status Bytes
+CHV wrong
+Cipher: 
+cipher algorithm %d%s is unknown or disabled
+../../cipher/cipher.c
+cipher_decrypt
+cipher_decrypt: invalid mode %d
+cipher %d not found
+../../cipher/dsa.c
+cipher %d w/o blocksize
+cipher %d w/o key length
+../../cipher/elgamal.c
+cipher_encrypt
+cipher_encrypt: invalid mode %d
+cipher extension `%s' not loaded due to unsafe permissions
+cipher_filter
+../../cipher/md.c
+ciphername
+cipher_open: algorithm %d not available
+../../cipher/primegen.c
+../../cipher/pubkey.c
+../../cipher/random.c
+  class=%02x keyid=%08lX ts=%lu
+clean_one_uid
+clean_sigs_from_uid
+clearerr
+clearing min_ownertrust (old value %u)
+clearing ownertrust (old value %u)
+clearsig encountered while not expected
+--clearsign
+clearsign_file
+ --clearsign [file]         make a clear text signature
+--clearsign [filename]
+cleartext signature without data
+client modified shm control block - abort
+client returns too large data (%u bytes)
+!c->list
+Cmd-Chaining ...: %s
+code=%02x
+colon missing
+Command "%.50s" is ambiguous
+Command expects a filename argument
+command-fd
+command-file
+COMMAND GET
+COMMAND GETNAME
+Command not supported
+@Commands:
+COMMAND SEARCH
+COMMAND SEND
+Comment: 
+Comment: A designated revocation certificate should follow
+Comment: A revocation certificate should follow
+Comment: Use "gpg --dearmor" for unpacking
+comm error
+communication error with SCD
+compacting user ID "%s" on key %s: %s
+compact unusable user IDs and remove all signatures from key
+compact unusable user IDs and remove unusable signatures from key
+compare_fingerprint
+compare_name
+completes-needed
+completes-needed must be greater than 0
+compress
+compress-algo
+:compressed packet: algo=%d
+compress_filter
+compress_filter_bz2
+Compression: 
+compression-algo
+compress-keys
+compress-sigs
+[Confidential data not shown]
+conflicting commands
+connect failed
+connect_pcsc_card
+_CONSOLE
+context you have the ability to choose from this list:
+ (continued)
+ (continues+continued)
+ (continues+ends)
+control d found
+conversion from `%s' to `%s' failed: %s
+conversion from `%s' to `%s' not available
+convert-sk-to-pk
+copying input to output failed: %s
+copy_packet: compressed!
+copy_public_key
+Copyright (C) 2010 Free Software Foundation, Inc.
+corresponding key.  You should postpone its deletion until you
+could not parse keyserver URL
+, count %lu (%lu)
+!c->pipemode.op
+c->pipemode.op == 'B'
+CRC error; %06lX - %06lX
+Create a designated revocation certificate for this key? (y/N) 
+create a public key when importing a secret key
+Create a revocation certificate for this key? (y/N) 
+Create a revocation certificate for this signature? (y/N) 
+create ascii armored output
+created-at
+      created ....: %s
+created: %s
+create_hashtable
+Creation-Date
+creation timestamp missing
+creatmdc
+critical 
+Critical preferred keyserver: 
+Critical signature notation: 
+Critical signature policy: 
+cross-certify
+%c       %s %s   
+ct_activate_card: can't get status of reader %d: %s
+ct_activate_card(%d): activation failed: %s
+ct_activate_card(%d): ATR too long
+c->tag != tag
+ctapi-driver
+CT_close
+  CT_data:
+ct error
+C  to change the comment.
+   (%c) Toggle the authenticate capability
+   (%c) Toggle the encrypt capability
+   (%c) Toggle the sign capability
+ ctrl=%d len=%u
+ctx->inbound.eof
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+Current allowed actions: 
+Current notations for user ID "%s":
+Current preferred keyserver for user ID "%s": 
+Current recipients:
+__cxa_atexit
+%d:%08lX%08lX:K::%c::::
+::%d:%08lX%08lX:%s:%s:
+%d:%08lX%08lX:U:::%c:::
+D$0$9L$8
+%d 1 %u %u %d
+;d22Vt::N
+D27600012401
+|$D3|$<1
+D$ 9D$$u
+D$,9D$$u
+D$\9D$$v
+%d Admin PIN attempts remaining before card is permanently locked
+ (DataBlock-expected)
+datalen <= sizeof data
+data not saved; use option "--output" to save it
+[%d attributes of size %lu]
+%d bad signatures
+db_fd == -1
+dbgmd-%05d.%.10s
+ %d:%c%c
+dcgettext
+:%d:%d:%d
+%d %d %d
+   (%d) DSA and Elgamal
+   (%d) DSA (set your own capabilities)
+   (%d) DSA (sign only)
+Deactivated Protocol
+(deadlock?) 
+--dearmor [file]
+dearmoring failed: %s
+dearmour
+debug-all
+debug-ccid-driver
+debug-level
+decode_filter
+decrypt_data
+decrypt data (default)
+--decrypt [filename]
+decrypt-files
+DECRYPTION_FAILED
+decryption okay
+DECRYPTION_OKAY
+decrypt_message failed: %s
+default-cert-check-level
+default-cert-expire
+default-cert-level
+--default-comment
+default-key
+default-keyserver-url
+default operation depends on the input data
+default-preference-list
+default-recipient-self
+default-sig-expire
+deflateEnd
+deflateInit_
+deflateInit2_
+deflate: iobuf_write failed
+DEK frame:
+DEK is: 
+dek->keylen <= 32
+ - deleted
+Deleted %d signature.
+Deleted %d signatures.
+delete_key.okay
+delete-keys
+delete_key.secret.okay
+DELETE_PROBLEM
+delete-secret-and-public-keys
+delete-secret-keys
+delete selected subkeys
+delete selected user IDs
+delete signatures from the selected user IDs
+delete_sig_subpkt
+delete_subpkt: buffer shorter than subpacket
+Delete this good signature? (y/N/q)
+Delete this invalid signature? (y/N/q)
+Delete this key from the keyring? (y/N) 
+Delete this unknown signature? (y/N/q)
+deleting keyblock failed: %s
+   (%d) Elgamal (encrypt only)
+delphoto
+depth: %d  valid: %3d  signed: %3d  trust: %d-, %dq, %dn, %dm, %df, %du
+desig-revoke
+--desig-revoke user-id
+DES maintenance test failed.
+DES weak key detection failed
+Detached signature.
+detached_signature.filename
+--detach-sign
+ --detach-sign [file]       make a detached signature
+detected reader `%s'
+/dev/cmx0
+/dev/cmx1
+/dev/null
+/dev/random
+/dev/tty
+/dev/urandom
+D""fT**~;
+dfx->cipher_hd
+dfx->eof_seen
+dfx->mdc_hash
+dfx->refcount
+  %d = I do NOT trust
+  %d = I don't know or won't say
+                did (%s)
+Digest: 
+	digest algo %d, begin of digest %02x %02x
+digestname
+Digital Signature Counter
+dinsig-card:
+directory `%s' created
+disable-ccid
+disable-cipher-algo
+disable-dsa2
+disable key
+disable-pubkey-algo
+disconnect_pcsc_card
+Discretionary Data Objects
+disks) during the prime generation; this gives the random number
+DISP-LANG
+display-charset
+Displaying %s photo ID of size %ld for key %s (uid %d)
+display photo IDs during key listings
+display photo IDs during signature verification
+display -title 'KeyID 0x%k' %i
+DISP-NAME
+$DISPSERIALNO
+DISP-SEX
+  %d = I trust fully
+  %d = I trust marginally
+  %d = I trust ultimately
+%d keys processed (%d validity counts cleared)
+D$:KPINf
+Dl_idea_get_info
+:%d:%lu:%lu
+%d marginal(s) needed, %d complete(s) needed, %s trust model
+__dn_expand
+DNS CERT
+__dn_skipname
+do_change_pin
+do_check
+do_check_sig
+do_create
+      documentation of your card to see what sizes are allowed.
+do_edit_ownertrust
+do_encrypted_mdc
+does_key_exist
+do_format
+do_generate_keypair
+do not delete temporary files after using them
+do not make any changes
+do not update the trustdb after import
+do not use
+[don't know]
+DON'T USE ANY DATA GENERATED BY THIS PROGRAM!!
+do_plaintext(): wrote %lu bytes but expected %lu bytes
+do_reorder_keyblock
+DO `%s': 
+do_secret_key
+do_shm_get
+DO `%s' not available: %s
+DO `%s': `%.*s'
+do_symkey_enc
+do_symkey_enc: s2k=%d
+do_uncompress: returning %u bytes
+Do we really need this here?
+do_we_trust
+do_writekey
+Do you really want to delete the selected keys? (y/N) 
+Do you really want to delete this key? (y/N) 
+Do you really want to do this? (y/N) 
+Do you really want to revoke the entire key? (y/N) 
+Do you really want to revoke the selected subkeys? (y/N) 
+Do you really want to revoke this subkey? (y/N) 
+Do you really want to set this key to ultimate trust? (y/N) 
+Do you want to import this key? (y/N) 
+Do you want to issue a new signature to replace the expired one? (y/N) 
+Do you want to promote it to a full exportable signature? (y/N) 
+Do you want to promote it to an OpenPGP self-signature? (y/N) 
+Do you want to sign it again anyway? (y/N) 
+Do you want your signature to expire at the same time? (Y/n) 
+drop_from_hashtable: read failed: %s
+drop_from_hashtable: read hlst failed: %s
+drop_from_hashtable: read item failed: %s
+drop_from_hashtable: write htbl failed: %s
+   (%d) RSA and RSA (default)
+   (%d) RSA (encrypt only)
+   (%d) RSA (set your own capabilities)
+   (%d) RSA (sign only)
+%dry-run
+dry-run mode - key generation skipped
+(%d)	%s  
+dsa2_generate failed: %s
+DSA (aka DSS) is the Digital Signature Algorithm and can only be used
+dsa  g= 
+DSA key %s requires a %u bit or larger hash
+DSA key %s uses an unsafe (%u bit) hash
+dsa  p= 
+dsa  q= 
+DSA requires the hash length to be a multiple of 8 bits
+DSA:: sign, verify failed
+dsa  x= 
+dsa  y= 
+%d signatures not checked due to errors
+%d signatures not checked due to missing keys
+dst->pkt->pkttype == PKT_PUBLIC_SUBKEY || dst->pkt->pkttype == PKT_SECRET_SUBKEY
+dst->pkt->pkttype == PKT_USER_ID
+dummydata
+dummy m_size called
+      dump: 
+dump_attribs
+--dump-options
+dump-options
+duplicate keyword
+duplicate reader
+%d user IDs without valid self-signatures detected
+%d %u %u 
+e::::::::
+Ebl\tHeQ
+EbS\tHlQ
+ec=%u.%u
+edit-key
+--edit-key user-id [commands]
+edit_ownertrust.set_ultimate.okay
+edit_ownertrust.value
+ed->mdc_method
+eeprom failure
+EHl\tFeQ
+elevate the trust of signatures with valid PKA data
+Elgamal is an encrypt-only algorithm.
+Elgamal operation: encrypt, decrypt failed
+elg  g= 
+elg  p= 
+elg  x= 
+elg  y= 
+Email address: 
+enable-dsa2
+enable key
+enable-progress-filter
+enable-special-filenames
+--enarmor [file]
+enarmoring failed: %s
+enarmour
+encode_md_value
+encode_seskey
+encode_session_key
+encrypt 
+encrypt data
+:encrypted data packet:
+encrypted_mdc packet with unknown version %d
+	encrypted stuff follows
+encrypted with 1 passphrase
+encrypted with %lu passphrases
+encrypted with %s key, ID %s
+encrypted with %u-bit %s key, ID %s, created %s
+encrypted with unknown algorithm %d
+encrypt-files
+encrypt_filter
+encrypting a message in --pgp2 mode requires the IDEA cipher
+Encryption key....:
+encryption of `%s' failed: %s
+encryption only with symmetric cipher
+encryption.  This algorithm should only be used in certain domains.
+enc->version == 4
+END_DECRYPTION
+END dummy
+END_ENCRYPTION
+END PGP ARMORED FILE
+END PGP MESSAGE
+END PGP PRIVATE KEY BLOCK
+END PGP PUBLIC KEY BLOCK
+END PGP SECRET KEY BLOCK
+END PGP SIGNATURE
+END_STREAM
+Enter Admin PIN: 
+Enter an optional description; end it with an empty line:
+enter bzCompress: avail_in=%u, avail_out=%u, flush=%d
+enter bzDecompress: avail_in=%u, avail_out=%u
+enter deflate: avail_in=%u, avail_out=%u, flush=%d
+enter inflate: avail_in=%u, avail_out=%u
+Enter JPEG filename for photo ID: 
+Enter New Admin PIN: 
+Enter new filename
+Enter New PIN: 
+Enter number(s), N)ext, or Q)uit > 
+Enter passphrase
+Enter passphrase: 
+Enter PIN: 
+Enter the name of the key holder
+Enter the new passphrase for this secret key.
+Enter the notation: 
+Enter the required value as shown in the prompt.
+Enter the size of the key
+Enter the user ID.  End with an empty line: 
+Enter the user ID of the addressee to whom you want to send the message.
+Enter the user ID of the designated revoker: 
+Enter your preferred keyserver URL: 
+EOF encountered at wrong state
+eof reached
+__errno_location
+error allocating enough memory: %s
+error allocating memory for reader list
+error allocating memory for reader name
+error changing size of key %d to %u bits
+error changing size of key %d to %u bits: %s
+Error changing the PIN: %s
+error checking the PIN: %s
+error checking usability status of %s
+error clearing forced signature PIN flag: %s
+error closing `%s': %s
+Error code %02X
+Error: Combined name too long (limit is %d characters).
+error creating keyring `%s': %s
+error creating passphrase: %s
+error creating `%s': %s
+Error: Double spaces are not allowed.
+error finding trust record in `%s': %s
+Error flushing plaintext: %s
+error getting current key info: %s
+error getting current status: %s
+error getting main key %s of subkey %s: %s
+error getting new PIN: %s
+Error: invalid characters in preference string.
+Error: invalid formatted fingerprint.
+Error: invalid length of preference string.
+Error: invalid response.
+error: LF detected in status line - not sending
+Error: Login data too long (limit is %d characters).
+Error: Only plain ASCII is currently allowed.
+error opening lockfile `%s': %s
+error parsing received key data
+Error: Private DO too long (limit is %d characters).
+error reading application data
+Error reading backup key from `%s': %s
+error reading certificate from card: %s
+error reading DO 0x%02X
+error reading fingerprint DO
+error reading keyblock: %s
+error reading key: %s
+error reading lockfile `%s'
+error reading secret keyblock "%s": %s
+error reading `%s': %s
+error retrieving CHV status from card
+error retrieving key fingerprint from card: %s
+error retrieving URL from card: %s
+error setting cafpr: %s
+error setting forced signature PIN flag: %s
+error setting lang: %s
+error setting login data: %s
+error setting Name: %s
+error setting private DO: %s
+error setting sex: %s
+Error setting the Reset Code: %s
+error setting URL: %s
+Error: The "<" character may not be used.
+Error: The trustdb is corrupted.
+error toggling signature PIN flag: %s
+Error unblocking the PIN: %s
+ERROR: unexpected packet type %d
+Error: URL too long (limit is %d characters).
+error writing certificate to card: %s
+error writing keyring `%s': %s
+error writing key to card: %s
+error writing public keyring `%s': %s
+error writing secret keyring `%s': %s
+error writing `%s': %s
+error writing to `%s': %s
+estream_asprintf failed: %s
+estream_vasprintf
+E  to change the email address.
+Examples:
+exceeded --max-output limit
+execlp: %s
+execlp: %s -c %s
+exec-path
+exec_write
+existing key will be replaced
+exit-on-status-write-error
+expanding string "%s"
+expected public key but found secret key - must stop
+experimental / private subpacket
+[ expired]
+Expire-Date
+expired: %s
+Expired signature from "%s"
+expires: %s
+EXPKEYSIG
+export-attributes
+export attribute user IDs (generally photo IDs)
+export-clean
+export-clean-sigs
+export-clean-uids
+export keys
+export keys to a key server
+export-local-sigs
+export-minimal
+export-options
+--export-ownertrust
+export-reset-subkey-passwd
+export revocation keys marked as "sensitive"
+export-secret-keys
+export-secret-subkeys
+export-sensitive-revkeys
+export signatures that are marked as local-only
+export-unusable-sigs
+Extended Capability Flags
+Extended Card Capabilities
+extension `%s' already registered
+external
+external program calls are disabled due to unsafe options file permissions
+Ext-Lc-Le ......: %s
+factor pi: 
+factor  q: 
+factor q0: 
+failed to create temporary file `%s': %s
+failed to drop setuid
+failed to get the keyblock
+failed to initialize the TrustDB: %s
+failed to rebuild keyring cache: %s
+failed to recreate version record of `%s'
+failed to reset uid: %s
+failed to set `%s': %s
+failed to store the creation date: %s
+failed to store the fingerprint: %s
+failed to store the key: %s
+failed to sync `%s'
+failed to unprotect the subkey: %s
+failed to use default PIN as %s: %s - disabling further default use
+failed to write trust record of `%s'
+fast-import
+fast-list-mode
+fast_random_poll
+fatal: out of memory
+fatal: too many args for xstrconcat
+fd_cache_close (%d) real
+fd_cache_close (%s) new slot created
+fd_cache_close (%s) used existing slot
+fd_cache_invalidate (all)
+fd_cache_invalidate (%s)
+fd_cache_open (%s) not cached
+fd_cache_open (%s) using cached fp
+fd_cache_synchronize (%s)
+__fdelt_chk
+""fD**~T
+"fD"*~T*
+fD""~T**
+features:
+Features: 
+FeFbT~KiZw
+FeQbT~FiZwK
+fetch-keys
+fetch the key specified in the card URL
+F~FbTwKiZ
+file close error
+file create error
+file delete error
+FILE_DONE
+FILE_ERROR
+file exists
+file_filter
+file_filter(fd)
+|[file]|make a clear text signature
+|[file]|make a signature
+file not found
+file open error
+file read error
+file rename error
+File `%s' exists. 
+FILE_START
+file (which is shown in brackets) will be used.
+file write error
+fingerprint_from_pk
+fingerprint_from_sk
+ --fingerprint [names]      show fingerprints
+fingerprint on card does not match requested one
+finish_lookup
+finish_lookup: checking key %08lX (%s)(req_usage=%x)
+fixed-list-mode
+fix-trustdb
+flag the selected user ID as primary
+flush_cache_item
+flush on non-output iobuf
+--force 
+--force %d 1 %u
+ --force %d %d %u
+--force-ownertrust
+forcepin:%d:::
+forcesig
+force trust for key %s to %s
+forcing symmetric cipher %s (%d) violates recipient preferences
+for signatures.
+--for-your-eyes-only
+found %d ownertrust records
+fpr:::::::::
+__fprintf_chk
+fpr_len<=20
+fprtime:%lu:%lu:%lu:
+free block_filter %p
+free, next=%lu
+free_packet() type=%d
+free_user_id
+from the Real Name, Comment and Email Address in this form:
+fseeko64
+fstat() failed: %s
+ftruncate64
+[  full  ]
+__fxstat64
+^fZxZKe\eNbXbE
+../../g10/apdu.c
+../../g10/app-openpgp.c
+../../g10/armor.c
+../../g10/build-packet.c
+../../g10/cardglue.c
+../../g10/card-util.c
+../../g10/ccid-driver.c
+../../g10/cipher.c
+../../g10/compress-bz2.c
+../../g10/compress.c
+../../g10/encode.c
+../../g10/encr-data.c
+g10err=%d
+../../g10/exec.c
+../../g10/free-packet.c
+../../g10/getkey.c
+../../g10/gpg.c
+../../g10/import.c
+../../g10/keydb.c
+../../g10/keyedit.c
+../../g10/keygen.c
+../../g10/keyid.c
+../../g10/keylist.c
+../../g10/keyring.c
+../../g10/keyserver.c
+../../g10/mainproc.c
+../../g10/parse-packet.c
+../../g10/passphrase.c
+../../g10/pipemode.c
+../../g10/pkclist.c
+../../g10/plaintext.c
+../../g10/pubkey-enc.c
+../../g10/revoke.c
+../../g10/seckey-cert.c
+../../g10/seskey.c
+../../g10/sig-check.c
+../../g10/signal.c
+../../g10/sign.c
+../../g10/status.c
+../../g10/tdbio.c
+../../g10/textfilter.c
+../../g10/trustdb.c
+gc=%d ki=%d fc=%d pd=%d mcl3=%u aac=%d sm=%d
+gcry_md_hash_buffer
+GELDKARTE
+geldkarte-card:
+gen_card_key_with_backup
+gen_desig_revoke
+gen_desig_revoke.okay
+general error
+General key info..: 
+generate
+generate a new key pair
+generate a revocation certificate
+generate_card_subkeypair
+generate_elg_prime
+generate new keys
+generate PGP 2.x compatible messages
+generate_raw_key
+generate_subkeypair
+generating key failed
+generating new key
+generating the deprecated 16-bit checksum for secret key protection
+Generation time
+generator a better chance to gain enough entropy.
+--gen-key
+--gen-key [parameterfile]
+gen-prime
+--gen-prime mode bits [qbits] 
+gen prime: pbits=%u qbits=%u fbits=%u/%u n=%d
+gen-random
+--gen-random 0|1|2 [count]
+gen_revoke
+gen-revoke
+gen_revoke.okay
+--gen-revoke user-id
+get a good error response - instead the system tries to interpret
+get_cached_data
+Get-Challenge ..: %s
+GET_LINE
+get_parameter_u32
+get_pubkey_byfprint_fast
+get_pubkey_byname
+get_pubkey_fast
+getpwnam
+getpwuid
+getrusage
+gettimeofday
+Give the name of the file to which the signature applies
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+	gnu-divert-to-card S2K
+	gnu-dummy S2K
+GNU General Public License for more details.
+GNU/Linux
+~/.gnupg
+[GNUPG:] 
+GnuPG 1.x
+GnuPG-Def-PW2 ..: %s
+GNUPGHOME
+GnuPG might not be able to use this key anymore.  So do this
+GnuPG-No-Sync ..: %s
+gnupg-ring:
+[GNUPG:] %s 
+Go ahead and type your message ...
+GOOD_PASSPHRASE
+Good signature from "%s"
+      got access to your secret key.
+  gpg2 --export-ownertrust > otrust.tmp
+  gpg2 --import-ownertrust < otrust.tmp
+gpg-agent-info
+GPG_AGENT_INFO
+gpg-agent is not available in this session
+gpg-agent protocol version %d is not supported
+gpg/card> 
+gpg.conf
+gpg.conf-1.4.11
+gpgconf-gpg.conf:%lu:"%s
+gpgconf-list
+gpgconf-test
+gpg-control
+- gpg control packet
+gpg: fatal: unable to reopen standard input, output, or error
+gpg (GnuPG)
+gpgkeys_%s does not support handler version %d
+gpg --rebuild-keydb-caches
+gpg: WARNING: standard error reopened
+gpg: WARNING: standard input reopened
+gpg: WARNING: standard output reopened
+|$H3|$<1
+|$H3|$l1
+handle plaintext failed: %s
+has expired.
+hashlen == 20
+--hash=md5 
+hashname
+hash_passphrase
+--hash=rmd160 
+--hash=sha1 
+--hash=sha224 
+--hash=sha256 
+--hash=sha384 
+--hash=sha512 
+hashtable has invalid indirections
+hashtable has invalid indirections.
+hashtable read failed: %s
+hashtbl %lu: %lu/%d points to an invalid record %lu
+hashtbl %lu: %lu/%d points to wrong record %lu
+hash_uid_node
+!hd->current.iobuf
+    "Heinrich Heine (Der Dichter) <heinrichh@duesseldorf.de>"
+hex2str_alloc
+--hidden-encrypt-to
+--hidden-recipient
+Hint: backup your keys and try running `%s'
+Hint: Select the user IDs to sign
+Historical Bytes
+Historical Bytes: 
+Hit return when ready or enter 'c' to cancel: 
+hlst, next=%lu,
+--honor-http-proxy
+honor-keyserver-url
+honor-pka-record
+honor the PKA record set on a key when retrieving keys
+honor the preferred keyserver URL set on the key
+Host aborted the current activity
+How carefully have you verified the key you are about to sign actually belongs
+However, it will be correctly handled up to 2106.
+How much do you trust that this key actually belongs to the named user?
+HTSI error
+http://www.gnupg.org/faq/features-not-in-gnupg-1.html
+http://www.gnupg.org/faq/subkey-cross-certify.html
+http://www.gnupg.org/faq/weak-digest-algos.html
+http://www.gnupg.org/faq/why-not-idea.html
+ICC class not supported
+ICC not present
+ICC protocol not supported
+iconv_close
+iconv_open
+iconv_open failed: %s
+IDEA cipher unavailable, optimistically attempting to use %s instead
+idx >= 0 && idx < (1<<k)
+If that does not work, please consult the manual
+      If the key generation does not succeed, please check the
+If you don't know what the right answer is, answer "0".
+If you like, you can enter a text describing why you issue this
+If you want to use this untrusted key anyway, answer "yes".
+ignore-crc-error
+ignore-mdc-error
+ignore-time-conflict
+ignore-valid-from
+I have checked this key casually.
+I have checked this key very carefully.
+I have not checked this key at all.
+IIhrFFDUww
+iImMqQsS
+image/jpeg
+image/x-unknown
+IMPORT_CHECK
+import-clean
+import-clean-sigs
+import-clean-uids
+IMPORTED
+              imported: %lu
+import from `%s' failed: %s
+import keys from a key server
+import-local-sigs
+import/merge keys
+import-minimal
+IMPORT_OK
+import.okay
+import_one
+--import-options 
+import-options
+import-ownertrust
+--import-ownertrust [file]
+IMPORT_RES
+import_revoke_cert
+import_secret_one
+import signatures that are marked as local-only
+import-unusable-sigs
+include-attributes
+include-local-sigs
+include-revoked
+include revoked keys in search results
+include-sensitive-revkeys
+include-subkeys
+include subkeys when searching by key ID
+increasing temp iobuf from %lu to %lu
+inflateEnd
+inflateInit_
+inflateInit2_
+INFO %08lX%08lX BEGIN
+INFO %08lX%08lX END
+In general it is not a good idea to use the same key for signing and
+init block_filter %p
+init_trustdb
+i == nlimbs
+input line longer than %d characters
+input line %u too long or missing LF
+inquire error
+inquire unknown
+(insecure!)
+inserted card
+inserting ownertrust of %u
+insert min_ownertrust %u
+insert ownertrust %u
+instruction not supported
+insufficient buffer
+interactive
+[internal]
+internal error
+In the end, it is up to you to decide just what "casual" and "extensive"
+in the user ID.  If you *really* know what you are doing,
+invalid argument
+Invalid argument for ArgParse
+invalid armor
+invalid armor header: 
+invalid armor: line longer than %d characters
+invalid ATR
+invalid auto-key-locate list
+Invalid character in comment
+Invalid character in name
+invalid clearsig header
+invalid command
+Invalid command "%.50s"
+Invalid command  (try "help")
+invalid compression level; using default level
+invalid control packet CTRLPKT_CLEARSIGN_START
+invalid creation date in line %d
+invalid dash escaped line: 
+invalid data
+invalid default-cert-level; must be 0, 1, 2, or 3
+invalid default preferences
+invalid default secret key: %s
+invalid escape sequence 0x%02x in stream
+invalid export options
+invalid fingerprint
+invalid flag value in mpi
+invalid handle
+invalid hash algorithm `%s'
+invalid import options
+invalid index
+invalid item `%s' in preference string
+invalid key resource URL `%s'
+invalid keyring
+invalid keyserver options
+invalid keyserver protocol (us %d!=handler %d)
+Invalid key %s made valid by --allow-non-selfsigned-uid
+invalid lib version
+invalid marker packet
+invalid min-cert-level; must be 1, 2, or 3
+invalid module `%s': %s
+invalid node with packet of type %d
+invalid operation for this state
+invalid option
+Invalid option "%.50s"
+invalid ownertrust `%s'
+invalid packet
+invalid packet type in build_packet()
+invalid packet type in calc_packet_length()
+invalid parameter
+invalid passphrase
+Invalid passphrase; please try again
+invalid PC/SC error code
+invalid personal cipher preferences
+invalid personal compress preferences
+invalid personal digest preferences
+invalid pid %d in lockfile `%s'
+invalid pipemode control packet code
+invalid pipemode control packet length
+invalid radix64 character %02X skipped
+[invalid regexp subpacket]
+invalid response
+invalid response from pcsc_list_readers
+invalid root packet detected in proc_tree()
+invalid root packet for sigclass %02x
+invalid S2K mode; must be 0, 1 or 3
+Invalid selection.
+invalid serial number in keyring detected
+invalid signature
+invalid size of lockfile `%s'
+invalid state for @>
+invalid state for @.
+invalid state for operation code
+invalid state for @t
+invalid status
+invalid structure of OpenPGP card (DO 0x93)
+invalid symkey encrypted packet
+invalid target
+invalid trustlevel %u returned from validation layer
+[invalid trust subpacket]
+invalid value
+ (Invalid values detected)
+invalid verify options
+INV_RECP
+iobuf chain: %d.%d `%s' filter_eof=%d start=%d len=%d
+iobuf_close -> %p
+IOBUFCTRL_FREE failed on close: %s
+IOBUFCTRL_FREE failed: %s
+IOBUFCTRL_INIT failed: %s
+iobuf-%d.%d: close `%s'
+iobuf-%d.%d: create `%s'
+iobuf-%d.%d: error
+iobuf-%d.%d: fdopen `%s'
+iobuf-%d.%d: ioctl `%s' keep=%d
+iobuf-%d.%d: ioctl `%s' no_cache=%d
+iobuf-%d.%d: openrw `%s'
+iobuf-%d.%d: open `%s' fd=%d
+iobuf-%d.%d: pop in underflow (!len)
+iobuf-%d.%d: popped filter
+iobuf-%d.%d: pop `%s'
+iobuf-%d.%d: pop `%s' in underflow
+iobuf-%d.%d: push `%s'
+iobuf-%d.%d: underflow: eof
+iobuf-%d.%d: underflow: eof (due to filter eof)
+iobuf-%d.%d: underflow: eof (no filter)
+iobuf-%d.%d: underflow: got=%lu rc=%d
+iobuf-%d.%d: underflow: req=%lu
+iobuf_flush did not write all!
+iobuf_flush failed in pop_filter: %s
+iobuf_flush failed on close: %s
+iobuf_flush: no filter
+iobuf-*.*: ioctl `%s' fsync
+iobuf-*.*: ioctl `%s' invalidate
+iobuf_peek
+iobuf_push_filter2
+iobuf_set_partial_block_mode
+iobuf_write
+iobuf_writebyte
+_IO_getc
+_IO_putc
+_IO_stdin_used
+IrFhFUwDw
+is a local signature.
+is a PGP 2.x-style signature.
+iso-8859-1
+is_prime
+issuer key ID %08lX%08lX
+Is this correct? (y/N) 
+Is this okay? (y/N) 
+Is this photo correct (y/N/q)? 
+item==0 || item==1 || item==2
+	iter+salt S2K
+It is distributed in the hope that it will be useful,
+It is NOT certain that the key belongs to the person named
+         It is not certain that the signature belongs to the owner.
+It is possible to enter a ISO date (YYYY-MM-DD) but you won't
+It is smart to print this certificate and store it away, just in case
+it is strongly suggested that you update your preferences and
+it run - it is in no way a strong RNG!
+It's up to you to assign a value here; this value will never be exported
+it under the terms of the GNU General Public License as published by
+I will do it anyway.  You can change your passphrase at any time,
+=&&jL66Zl??A~
+&jL&6Zl6?A~?
+jL&&Zl66A~??
+J%%o\..r8
+_Jv_RegisterClasses
+Keeping the image close to 240x288 is a good size to use.
+keep-temp-files
+    key.
+KEY %08lX%08lX BEGIN
+KEY %08lX%08lX END
+key %08lX%08lX: overriding ownertrust `%s' with `%s'
+key %08lX%08lX: update min_ownertrust from %u to %u
+    key against a photo ID.
+key already exists
+KEY-ATTR
+keyattr:%d:%d:%u:
+Key attributes ...:
+Key-Attr-%s ..: 
+Key available at: 
+[keybind]
+[key binding]:
+keyblock->pkt->pkttype == PKT_PUBLIC_KEY
+keyblock->pkt->pkttype == PKT_PUBLIC_KEY || keyblock->pkt->pkttype == PKT_PUBLIC_SUBKEY
+keyblock resource `%s': %s
+key_byname
+KEY-CREATED-AT
+KEY-DATA
+keydb_get_keyblock failed: %s
+keydb_locate_writable
+keydb_new
+keydb_release
+keydb_search2
+keydb_search failed: %s
+keydb_search_first failed: %s
+keydb_search_next failed: %s
+keydb_search_reset failed: %s
+key does not expire
+Key does not expire at all
+Key does not match the card's capability.
+keyedit.add_keyserver
+keyedit.add_notation
+keyedit.add_revoker
+keyedit.add_revoker.okay
+keyedit.cancel.okay
+keyedit.confirm_keyserver
+keyedit.confirm_notation
+keyedit.delsig.invalid
+keyedit.delsig.selfsig
+keyedit.delsig.unknown
+keyedit.delsig.valid
+keyedit.keytocard.use_primary
+keyedit_menu
+keyedit.prompt
+keyedit.remove.subkey.okay
+keyedit.remove.uid.okay
+keyedit.revoke.subkey.okay
+keyedit.revoke.uid.okay
+keyedit.save.okay
+keyedit.setpref.okay
+keyedit.sign_all.okay
+keyedit.sign_revoked.okay
+keyedit.updpref.okay
+keyedit.v3_photo.okay
+keyedit.v3_revoker.okay
+KEYEXPIRED
+key expires after %s
+Key expires at %s
+key export failed: %s
+key fetch failed: %s
+      Key fingerprint =
+key flags:
+keygen.algo
+keygen.algo.rsa_se
+keygen.cardsub.okay
+keygen.comment
+keygen.email
+Key generation canceled.
+key generation completed (%d seconds)
+key generation failed: %s
+keygen.flags
+keygen.name
+keygen.size
+keygen.size.huge.okay
+keygen.size.large.okay
+keygen.smartcard.givenname
+keygen.smartcard.surname
+keygen.sub.okay
+keygen.userid.cmd
+keygen.valid
+keygen.valid.okay
+  "Key has been compromised"
+Key has been compromised
+key has been created %lu second in future (time warp or clock problem)
+key has been created %lu seconds in future (time warp or clock problem)
+Key has only stub or on-card key items - no passphrase to change.
+  keyid=%08lX a=%d u=%d %c%c%c%c
+keyid-format
+keyidx >=0 && keyidx <= 2
+Key-Import .....: %s
+key incomplete
+  "Key is no longer used"
+Key is no longer used
+key is not flagged as insecure - can't use it with the faked RNG!
+Key is protected.
+Key is revoked.
+  "Key is superseded"
+Key is superseded
+Key is valid for? (0) 
+Key-Length
+keyno >=0 && keyno <= 2
+keyno >= 0 && keyno <= 3
+keyno >= 1 && keyno <= 3
+Key not changed so no update needed.
+KEY_NOT_CREATED
+key not found on keyserver
+key operation not possible: %s
+KEYREVOKED
+keyring_delete_keyblock
+keyring_get_keyblock failed: %s
+keyring_get_keyblock: read error: %s
+keyring_new
+keyring_register_filename
+keyring_release
+keyring `%s' created
+keyring_search
+keyring_search failed: %s
+keyring_search_reset
+keyring_update_keyblock
+key %s%08lX
+key %s: accepted as trusted key
+key %s: accepted non self-signed user ID "%s"
+key %s: already in secret keyring
+key %s: can't locate original keyblock: %s
+key %s: can't read original keyblock: %s
+Keys %d-%d of %d for "%s".  
+key %s: direct key signature added
+key %s: doesn't match our copy
+key %s: duplicated user ID detected - merged
+keysearch.prompt
+Keyserver
+keyserver communications error: %s
+keyserver did not send VERSION
+keyserver error
+keyserver internal error
+keyserver:%lu:
+Keyserver no-modify
+--keyserver-options 
+keyserver-options
+key server preferences:
+keyserver receive failed: %s
+keyserver refresh failed: %s
+keyserver search failed: %s
+keyserver send failed: %s
+keyserver_spawn
+keyserver timed out
+key setup failed: %s
+key %s has no user IDs
+key %s: invalid direct key signature
+key %s: invalid direct key signature removed
+key %s: invalid revocation certificate: %s - rejected
+key %s: invalid revocation certificate: %s - skipped
+key %s: invalid self-signature on user ID "%s"
+key %s: invalid subkey binding
+key %s: invalid subkey revocation
+Key %s is already revoked.
+keysize invalid; using %u bits
+keysize rounded up to %u bits
+key %s: key material on-card - skipped
+key %s marked as ultimately trusted
+key %s: new key - skipped
+key %s: non exportable signature (class 0x%02X) - skipped
+key %s: no public key - can't apply revocation certificate
+key %s: no public key for trusted key - skipped
+key %s: no subkey for key binding
+key %s: no subkey for key revocation
+key %s: no subkey for subkey binding signature
+key %s: no subkey for subkey revocation signature
+key "%s" not found on keyserver
+key "%s" not found: %s
+key %s: not protected - skipped
+key %s: no user ID
+key %s: no user ID for key signature packet of class %02x
+key %s: no user ID for signature
+key %s: no valid user IDs
+key %s occurs more than once in the trustdb
+key %s: PGP 2.x style key - skipped
+key %s: PKS subkey corruption repaired
+key %s: public key not found: %s
+key %s: public key "%s" imported
+key %s: removed multiple subkey binding
+key %s: removed multiple subkey revocation
+key %s: revocation certificate at wrong place - skipped
+key "%s" (%s)
+key %s: "%s" 1 new signature
+key %s: "%s" 1 new subkey
+key %s: "%s" 1 new user ID
+key %s: "%s" %d new signatures
+key %s: "%s" %d new subkeys
+key %s: "%s" %d new user IDs
+key %s: "%s" %d signature cleaned
+key %s: "%s" %d signatures cleaned
+key %s: "%s" %d user ID cleaned
+key %s: "%s" %d user IDs cleaned
+key %s: secret key imported
+key %s: secret key not found: %s
+key %s: secret key with invalid cipher %d - skipped
+key %s: secret key without public key - skipped
+key %s: skipped subkey
+key %s: skipped user ID "%s"
+key %s: "%s" not changed
+key %s: "%s" revocation certificate added
+key %s: "%s" revocation certificate imported
+key %s: subkey signature in wrong place - skipped
+keystr_from_desc
+keystrlen
+key %s: unexpected signature class (0x%02X) - skipped
+key %s: unsupported public key algorithm
+key %s: unsupported public key algorithm on user ID "%s"
+key %s was created %lu second in the future (time warp or clock problem)
+key %s was created %lu seconds in the future (time warp or clock problem)
+KEY-TIME
+keytocard
+Key-Type
+key unavailable
+Key-Usage
+know how carefully you verified this.
+know which key was used because this signing key might establish
+k->pkt->pkttype == PKT_PUBLIC_KEY || k->pkt->pkttype == PKT_PUBLIC_SUBKEY
+k->pkt->pkttype == PKT_USER_ID
+-k[v][v][v][c] [user-id] [keyring]
+|$(#L$(1
+\$<#L$<1
+|$L3|$,1
+#L$`3L$\
+l$<3l$,1
+L$,3l$$1
+L$(3|$L1
+L$(3L$T1
+L$$3t$,1
+L$(3T$(#\$x#l$|
+L$83l$@1
+L$83t$@1
+L$@9L$Hu
+L$<9T$<rZ
+Language preferences
+Language preferences: 
+Language prefs ...: 
+lc-ctype
+lc-messages
+l$<#D$@3D$
+L$d3L$\#L$h3L$d
+learn_status_cb
+leave bzCompress: avail_in=%u, avail_out=%u, n=%u, zrc=%d
+leave bzDecompress: avail_in=%u, avail_out=%u, zrc=%d
+leave deflate: avail_in=%u, avail_out=%u, n=%u, zrc=%d
+leave inflate: avail_in=%u, avail_out=%u, zrc=%d
+len <= 20
+	length: %lu
+	length: unknown
+L$H3l$D1
+libbz2.so.1.0
+libc.so.6
+__libc_start_main
+libdl.so.2
+/lib/ld-linux.so.2
+libpcsclite.so.1
+libreadline.so.6
+libresolv.so.2
+libusb-0.1.so.4
+libz.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+limit-card-insert-tries
+line not terminated
+line too long
+list all available data
+list and check key signatures
+list-config
+list-key
+list key and user IDs
+list keys
+list-keys
+list keys and fingerprints
+list keys and signatures
+ --list-keys [names]        show keys
+# List of assigned trustvalues, created %s
+list-only
+--list-options 
+list-options
+--list-ownertrust
+list-packets
+list preferences (expert)
+list preferences (verbose)
+list-public-keys
+list secret keys
+list-secret-keys
+list-sig
+list-sigs
+list-trustdb
+--list-trust-path <user-ids>
+:literal data packet:
+L&&jl66Z~??A
+L$L3|$(1
+load_digest_module
+load-extension
+locale problem
+localtime
+local-user
+lockfile disappeared
+locking failed
+locking shared memory %d failed: %s
+lock-multiple
+lock-never
+lock not made: link() failed: %s
+lock-once
+logger-fd
+logger-file
+Login data .......: 
+Login Data
+LOGIN-DATA
+Login data (account name): 
+log_set_logfile
+lookup_hashtable failed: %s
+lookup_hashtable: read hlst failed: %s
+lookup_hashtable: read item failed: %s
+lsign-key
+--lsign-key user-id
+\$L#T$D!
+%lu bytes
+%lu keys cached (%lu signatures)
+%lu keys cached so far (%lu signatures)
+%lu keys processed so far
+%lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu
+%lu: read expected rec type %d, got %d
+ %lu %u %u %u %lu %lu %u
++LVvuOx39]O#2
+L_yyTAkk
+Magrathea
+ (main key ID %s)
+make a detached signature
+make_attribute_uidname
+make_backsig
+make_backsig failed: %s
+make_control
+make_keysig_packet
+make_keysig_packet failed for backsig: %s
+make_keysig_packet failed: %s
+Make off-card backup of encryption key? (Y/n) 
+malformed CRC
+malformed GPG_AGENT_INFO environment variable
+malformed user id
+Manufacturer .....: %s
+mapped %uk shared memory at %p, id=%d
+marginal
+[marginal]
+marginals-needed
+marginals-needed must be greater than 1
+:marker packet: PGP
+Max-Cert3-Len ..: %u
+max-cert-depth
+max-cert-depth must be in the range from 1 to 255
+max-cert-size
+Max-Cmd-Data ...: %u
+max_namelen > 70
+max-output
+maxpinlen:%d:%d:%d:
+Max. PIN lengths .: %d %d %d
+Max-Rsp-Data ...: %u
+  m = back to the main menu
+mdc_decode_filter
+	mdc_method: %d
+:mdc packet: length=%lu
+mdc_packet with invalid encoding
+md debug: can't open %s
+md_digest
+md_enable: algorithm %d not available
+md_filter
+md_write
+    mean that you verified the key fingerprint and checked the user ID on the
+    mean that you verified the key fingerprint with the owner of the key in
+mean to you when you sign other keys.
+__memcpy_chk
+memory allocation error
+memory allocation error in send_key_data
+Memory ICC present
+__memset_chk
+menu_addrevoker
+menu_adduid
+menu_backsign
+menu_revsig
+menu_select_uid_namehash
+menu to change or unblock the PIN
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+merge_keysigs
+--merge-only
+merge_public_with_secret
+merge_selfsigs
+merge_selfsigs_main
+merge_selfsigs_subkey
+merge_sigs
+MessageID
+migrated %d version 2 ownertrusts
+migrate_from_v2: lseek failed: %s
+migrate_from_v2: read error or short read
+migrate_vfrom_v2: read error or short read
+min-cert-level
+minimize
+missing argument
+Missing argument for option "%.50s"
+missing colon
+MISSING_PASSPHRASE
+mk_notation_policy_etc
+mn`I:T`H
+	mode %c (%X), created %lu, name="
+ modification
+more data available
+     more: sw=%04X  datalen=%d
+more than algorithm in md_digest(0)
+more than algorithm in md_read(0)
+m_out_of_n
+move a backup key to a smartcard
+move a key to a smartcard
+moving a key signature to the correct place
+mpi_alloc_limb_space(%u)
+mpi_alloc_secure(%u)
+mpi_alloc(%u)
+mpi_cmp( x, nminus1 ) < 0 && mpi_cmp_ui( x, 1 ) > 0
+mpi_encode: mpi too large (%u bits)
+mpi_free
+mpi_free_limb_space of size %lu
+mpi_fromstr
+mpi_get_opaque on normal mpi
+mpi larger than buffer
+mpi larger than indicated length (%u bytes)
+../../mpi/mpicoder.c
+../../mpi/mpi-mpow.c
+../../mpi/mpi-pow.c
+../../mpi/mpiutil.c
+mpi_mulpowm
+[MPI_NULL]
+mpi_powm
+mpi_set_buffer
+mpi_set_secure
+mpi too large for this implementation (%u bits)
+mpi too large (%u bits)
+mpi too small
+!mp_marker
+--multifile
+multiple files can only be detached signed
+n == 512
+Name-Comment
+Name-Email
+|NAME|encrypt for NAME
+    name in the user ID on the key, and finally that you verified (by exchange
+Name may not start with a digit
+Name must be at least 5 characters long
+Name of cardholder: 
+Name-Real
+nbits >= 512
+nbytes < 512
+!(nbytes%c->blocksize)
+nbytes == (nbits + 7)/8
+ndata >= 2
+ndata == ((p[0] << 8 | p[1]) + 7)/8 + 2
+NEED_PASSPHRASE
+NEED_PASSPHRASE_PIN
+NEED_PASSPHRASE_SYM
+Need the secret key to do this.
+nested begin of stream
+nested clear text signatures
+nested commands
+netkey-card:
+network error
+never     
+new configuration file `%s' created
+ (new_ctb)
+   new key revocations: %lu
+new_reader_slot: out of slots
+        new signatures: %lu
+           new subkeys: %lu
+          new user IDs: %lu
+next trustdb check due at %s
+      <n>  = key expires in n days
+nl_langinfo
+nllDP22]
+      <n>m = key expires in n months
+      <n>m = signature expires in n months
+NnCcEeOoQq
+|N|New PIN
+n == nframe
+no >= 0 && no <= 3
+no-allow-freeform-uid
+no-allow-multiple-messages
+no-allow-non-selfsigned-uid
+no-armor
+no-armour
+no-ask-cert-expire
+no-ask-cert-level
+no-ask-sig-expire
+no asn for md algo %d
+no-auto-check-trustdb
+no-auto-key-locate
+--no-auto-key-retrieve
+no-batch
+--no-comments
+no corresponding public key: %s
+No corresponding signature in secret ring
+no data available
+no data callback
+no decrypt() for %d
+nodefault
+no-default-keyring
+no-default-recipient
+no default secret keyring: %s
+no default secret key: %s
+!node->next
+node %p %02x/%02x type=%s
+node->pkt->pkttype == PKT_PUBLIC_SUBKEY || node->pkt->pkttype == PKT_SECRET_SUBKEY
+node->pkt->pkttype == PKT_SECRET_KEY || node->pkt->pkttype == PKT_SECRET_SUBKEY
+node->pkt->pkttype == PKT_SIGNATURE
+node->pkt->pkttype == PKT_USER_ID
+(No description given)
+no-disable-mdc
+no driver
+no-emit-version
+no encrypt() for %d
+no-encrypt-to
+no error
+no-escape-from-lines
+no-expensive-trust-checks
+no-expert
+no-force-mdc
+no-force-v3-sigs
+no-force-v4-certs
+no-for-your-eyes-only
+no-greeting
+no-groups
+no handler for keyserver scheme `%s'
+No help available
+No help available for `%s'
+no-honor-http-proxy
+no-http-proxy
+no input
+no inquire callback
+no keypad
+no keyserver action!
+no keyserver known (use option --keyserver)
+ [no-ks-modify]
+,no-ks-modify
+--no-literal
+no-mangle-dos-filenames
+no-mdc-warning
+no memory
+no need for a trustdb check
+no need for a trustdb check with `%s' trust model
+no need for a trustdb update with `%s' trust model
+ (non-exportable)
+No notations on user ID "%s"
+ (non-revocable)
+no-options
+no output
+no-permission-warning
+no photo viewer set
+NO_PUBKEY
+no-random-seed-file
+no reader
+No reason specified
+no-require-backsigs
+no-require-cross-certification
+no-require-secmem
+no revocation keys found for "%s"
+no-rfc2440-text
+NO_SECKEY
+no-secmem-warning
+no secret key
+no secret subkey for public subkey %s - ignoring
+no service
+--no-show-notation
+no-show-notations
+--no-show-photos
+--no-show-policy-url
+no-show-policy-urls
+no-sig-cache
+no-sig-create-check
+no signature found
+no signed data
+no sign() for %d
+no = sign found in group definition `%s'
+no-sk-comments
+no smartcard
+no-strict
+No subkey with index %d
+No such file, try again or hit enter to quit.
+no such user id
+No such user ID.
+	no suitable key found -  giving up
+	no suitable subkeys found - trying primary
+not a client
+not a detached signature
+@@ not allowed in current state
+not an OpenPGP card
+not a server
+notation-data
+NOTATION_DATA
+NOTATION_NAME
+Notations: 
+Not a valid email address
+not confirmed
+not-dash-escaped
+NotDashEscaped:
+NotDashEscaped: You need GnuPG to verify this message
+NOTE: a key's S/N does not match the card's one
+NOTE: backup of card key saved to `%s'
+NOTE: Bad translation at %s:%d. Please report.
+NOTE: creating subkeys for v3 keys is not OpenPGP compliant
+NOTE: key has been revoked
+NOTE: keys are already stored on the card!
+not encrypted
+NOTE: no default option file `%s'
+not enough bytes for checksum
+not enough bytes for SHA-1 checksum
+Not enough random bytes available.  Please do some other work to give
+NOTE: old default options file `%s' ignored
+NOTE: primary key is online and stored on card
+note: random_seed file is empty
+note: random_seed file not updated
+NOTE: secondary key is online and stored on card
+NOTE: secret key %s expired at %s
+NOTE: sender requested "for-your-eyes-only"
+NOTE: signature key %s expired %s
+Note: Signer's address `%s' does not match DNS entry
+NOTE: simple S2K mode (0) is strongly discouraged
+NOTE: %s is not for normal use!
+Note that the examples given above for levels 2 and 3 are *only* examples.
+Note that the key does not use the suggested creation date
+Note that this key cannot be used for encryption.  You may want to use
+NOTE: There is no guarantee that the card supports the requested size.
+NOTE: This feature is not available in %s
+Note: This key has been disabled.
+Note: This key has expired!
+NOTE: This key is not protected!
+NOTE: trustdb not writable
+Note: Verified signer's address is `%s'
+no-textmode
+not forced
+Nothing deleted.
+Nothing to sign with key %s
+no-throw-keyid
+no-throw-keyids
+[not human readable]
+not human readable
+not implemented
+          not imported: %lu
+not processed
+!"no transport"
+not ready
+No trust check due to `--trust-model always' option
+No trust value assigned to:
+not secure
+[not set]
+Not signed by you.
+not transacted
+no ultimately trusted keys found
+no-use-agent
+no-use-embedded-filename
+No user ID with hash %s
+No user ID with index %d
+no-use-temp-files
+no-utf8-strings
+no valid addressees
+no valid OpenPGP data found.
+no valid signators
+no-verbose
+no verify() for %d
+no-version
+No way to gather entropy for the RNG
+no writable keyring found: %s
+no writable public keyring found: %s
+no writable secret keyring found: %s
+n_packets
+  (nrsign), or any combination thereof (ltsign, tnrsign, etc.).
+|N|set compress level N (0 disables)
+      <n>  = signature expires in n days
+nskey <= 6 && npkey < nskey
+N  to change the name.
+number of one-pass packets does not match number of signature packets
+      <n>w = key expires in n weeks
+      <n>w = signature expires in n weeks
+      <n>y = key expires in n years
+      <n>y = signature expires in n years
+    of email) that the email address on the key belongs to the key owner.
+         of PGP to reject this key.
+Ohhhh jeeee: 
+Ohh jeee, trying to remove a head filter
+Ohh jeee, trying to remove an intermediate filter
+%%oJ..r\
+okay_cb_parm.pw
+okay|okay
+okay, we are the anonymous recipient.
+old encoding of the DEK is not supported
+old style (PGP 2.x) signature
+onepass-sig
+:onepass_sig packet: keyid %08lX%08lX
+onepass_sig with unknown version %d
+only accept updates to existing keys
+only if this self-signature is for some reason not valid and
+ooops: invalid pkttype %d encountered
+Ooops; the key vanished  - can't check the trust
+Oops: keyid_from_fingerprint: no pubkey
+Oops; key lost!
+Oops; key not found anymore!
+Oops: lock already held by us
+Oops: md debug already started
+Oops: no user ID for signature
+Oops, PK not in keyblock
+oops: public key not found for preference check
+Oops; secret key not found anymore!
+Oops, secure memory pool already initialized
+oops, `%s' is already locked
+oops, `%s' is not locked
+OPAQUE %s
+open_ct_reader: invalid port %d requested
+openfile.askoutname
+openfile.overwrite.okay
+OpenFortress
+--openpgp
+OPENPGP 1
+OPENPGP 1 
+OPENPGP.1
+OPENPGP.2
+OPENPGP 3
+OPENPGP 3 
+OPENPGP.3
+openpgp-card:
+OpenPGP card no. %s detected
+OpenPGP card not available: %s
+OPENPGP.%d
+OpenPGP draft 
+OpenPGP (older)
+operation is not possible without initialized secure memory
+Option "%.50s" does not expect an argument
+Option "%.50s" is ambiguous
+option file `%s': %s
+OPTION OUTOFBAND
+Options:
+OPTION %s
+opt.show_subpackets
+original file name='%.*s'
+orphaned user ID
+, ot=%d, d=%d, vl=%lu
+O  to continue with key generation.
+outctrl->pub.stream
+outctrl->sec.stream
+              outmix=%lu getlvl1=%lu/%lu getlvl2=%lu/%lu
+out of core
+out of %s memory while allocating %u bytes
+--output doesn't work for this command
+overflow in prime generation
+override-session-key
+Overrun error while talking to the ICC
+Overwrite? (y/N) 
+ownertrust information cleared
+Owner trust may not be set while using a user provided trust database
+ownertrust value missing
+:packet 63: length %lu 
+packet(%d) too large
+packet(%d) too short
+packet(%d) too short (%lu)
+packet(%d) with unknown version %d
+packet shorter tham mpi
+packet with S2K %d too short
+parameter block does not start with "Key-Type"
+parameter conflict
+parameter error
+Parameter error at offset %d
+Parity error while talking to the ICC
+parm.used
+parse_algorithm_attribute
+parse_keyserver_uri
+parse_packet(iob=%d): type=%d length=%lu%s (%s.%s.%d)
+parse_subpacket_list
+parse_symkeyenc
+Passphrase
+passphrase.adminpin.ask
+passphrase.adminpin.new.ask
+passphrase.ask
+passphrase.enter
+passphrase-fd
+passphrase-file
+passphrase generated with unknown digest algorithm %d
+passphrase not correctly repeated; try again
+passphrase.pin.ask
+passphrase.pin.new.ask
+passphrase.pin.repeat
+passphrase-repeat
+passphrase.repeat
+password
+pause_on_sigusr
+PCI too small
+pcsc_connect failed: %s (0x%lx)
+  PCSC_data:
+pcsc_disconnect failed: %s (0x%lx)
+pcsc-driver
+pcsc_establish_context failed: %s (0x%lx)
+pcsc_get_status_change failed: %s (0x%lx)
+pcsc_list_readers failed: %s (0x%lx)
+pcsc_status failed: %s (0x%lx) %lu
+pcsc_transmit failed: %s (0x%lx)
+PC_to_RDR_Abort
+PC_to_RDR_Escape
+PC_to_RDR_GetParameters
+PC_to_RDR_GetSlotStatus
+PC_to_RDR_IccClock
+PC_to_RDR_IccPowerOff
+PC_to_RDR_IccPowerOn
+PC_to_RDR_Mechanical
+PC_to_RDR_ResetParameters
+PC_to_RDR_Secure
+PC_to_RDR_SetDataRate
+PC_to_RDR_SetParameters
+PC_to_RDR_T0APDU
+PC_to_RDR_XfrBlock
+p == data+ndata
+, p%d=%u
+personal-cipher-preferences
+personal-cipher-prefs
+personal-compress-preferences
+personal-compress-prefs
+personal-digest-preferences
+personal-digest-prefs
+    person, and that you checked, by means of a hard to forge document with a
+_pgpkey-ldap._tcp.%s
+photoid.jpeg.add
+photoid.jpeg.okay
+photoid.jpeg.size
+    photo ID (such as a passport) that the name of the key owner matches the
+photo-viewer
+Pick an image to use for your photo ID.  The image must be a JPEG file.
+PIN callback returned error: %s
+PIN cancelled
+pin_cb called without proper PIN info hack
+PIN changed.
+PIN for CHV%d is too short; minimum length is %d
+PIN not correctly repeated; try again
+PIN retry counter : %d %d %d
+pinretry:%d:%d:%d:
+   PIN = `%s'     Admin PIN = `%s'
+PIN timeout
+PIN unblocked and new PIN set.
+!*pinvalue
+--pipemode
+pipemode_filter
+pka-address@gnupg.org
+pka-lookups
+PKA_TRUST_BAD
+PKA_TRUST_GOOD
+pka-trust-increase
+pka_uri_from_sig
+pkcs15-card:
+pkcs1_encode_md
+pkd:%d:%u:
+pkdecrypt_failed %d
+	pkey[%d]: 
+pk_from_block
+pklist.user_id.enter
+pk || sk
+pk && sk
+!pkt->pkt.generic
+plaintext
+PLAINTEXT_LENGTH
+Please consult your security expert first.
+Please correct the error first
+Please decide how far you trust this user to correctly verify other users' keys
+please do a --check-trustdb
+Please don't put the email address into the real name or the comment
+Please enter a domain to restrict this signature, or enter for none.
+Please enter a new filename. If you just hit RETURN the default
+please enter an optional but highly suggested email address
+Please enter an optional comment
+Please enter name of data file: 
+Please enter the depth of this trust signature.
+Please enter the passhrase; this is a secret sentence 
+||Please enter the PIN
+||Please enter the PIN%%0A[sigs done: %lu]
+||Please enter the Reset Code for the card
+Please fix this possible security flaw
+Please insert the card and hit return or enter 'c' to cancel: 
+Please move it to a medium which you can hide away; if Mallory gets
+Please note that the factory settings of the PINs are
+Please note that the shown key validity is not necessarily correct
+Please remember that the signature file (.sig or .asc)
+Please remove selections from the secret keys.
+Please remove the current card and insert the one with serial number:
+Please repeat the last passphrase, so you are sure what you typed in.
+Please report bugs to <gnupg-bugs@gnu.org>.
+please see http://www.gnupg.org/faq.html for more information
+please see %s for more information
+Please select at most one subkey.
+Please select exactly one user ID.
+Please select the reason for the revocation:
+Please select the type of key to generate:
+Please select what kind of key you want:
+Please select where to store the key:
+Please specify how long the key should be valid.
+Please specify how long the signature should be valid.
+please use "%s%s" instead
+Please use the command "toggle" first.
+please wait while key is being generated ...
+POLICY_URL
+pop_filter
+pop_filter called in iobuf_seek - please report
+pop_filter called in set_partial_block_mode - please report
+pop_filter(): filter function not found
+Possible actions for a %s key: 
+PPC Card Systems
+pqT3^-ZI
+Preferences
+preference `%s' duplicated
+preferred-email-encoding@pgp.com
+preferred key server: 
+Preferred keyserver: 
+pref-hash-algos:
+pref-sym-algos:
+pref-zip-algos:
+premature eof (no CRC)
+premature eof while reading hashed signature data
+premature eof while reading unhashed signature data
+premerge_public_with_secret
+prepare_search
+prepare_special_transport
+preserve-permissions
+primary0
+ Primary key fingerprint:
+	primary key has been revoked
+	primary key has expired
+primary key is not really primary!
+	primary key may be used
+	primary key not valid
+primary-keyring
+	primary key usage does not match: want=%x have=%x
+primary_pk
+primary user ID
+prime    : 
+primegen
+__printf_chk
+print_keyrec
+print-md
+--print-md algo [files]
+print-mds
+print_revokers
+print_subpackets_colon
+print the card status
+print_userid
+privatedo
+PRIVATE-DO-
+Private DO 1
+Private DO 1 .....: 
+PRIVATE-DO-1
+Private DO 2
+Private DO 2 .....: 
+PRIVATE-DO-2
+Private DO 3
+Private DO 3 .....: 
+PRIVATE-DO-3
+Private DO 4
+Private DO 4 .....: 
+PRIVATE-DO-4
+private_do:%d:
+Private DO data: 
+Private-DOs ....: %s
+- private (rest length %lu)
+(Probably you want to select %d here)
+problem handling encrypted packet
+Problem reading source (%u bytes remaining)
+problem starting server
+problem with the agent - disabling agent use
+Procedure byte conflict
+Proceed? (y/N) 
+processing message failed: %s
+Processor ICC present
+proc_parameter_file
+proc_pkt.plaintext 89_BAD_DATA
+PROGRAM 
+PROGRAM %s
+PROGRESS
+progress_filter
+prompt before overwriting
+	protect algo: %d  (hash algo: %d)
+	protect count: %lu
+protected-private-key
+protected-private-key passed to writekey
+protection algorithm %d%s is not supported
+protection digest %d is not supported
+	protect IV: 
+protect_secret_key
+protect_secret_key failed: %s
+proto mismatch
+pub   %4u%c/%s %s
+pub   %4u%c/%s %s 
+pub  %4u%c/%s %s  
+pub  %4u%c/%s %s %s
+pubblock->pkt->pkttype == PKT_PUBLIC_KEY
+Pubkey: 
+pub_keyblock->pkt->pkttype==PKT_PUBLIC_KEY
+pubkey_decrypt: algo=%d
+:pubkey enc packet: version %d, algo %d, keyid %08lX%08lX
+pubkey_encrypt: algo=%d
+pubkey_encrypt failed: %s
+pubkey_generate failed: %s
+pubkey_sign: algo=%d
+PUBKEY-URL
+public and secret key created and signed.
+public-enc
+public-key
+public key decryption failed: %s
+public key does not match secret key!
+public key encrypted data: good DEK
+Public key is disabled.
+public key is %s
+public key not found
+public key of ultimately trusted key %s not found
+public key %s is %lu second newer than the signature
+public key %s is %lu seconds newer than the signature
+public key %s not found: %s
+public sub
+public-subkey
+pub == pubblock
+%pubring
+pubring.gpg
+push_compress_filter2
+put_record_into_cache
+pv=1 pid=%d shmid=%d sz=%u lz=%u
+qbits >= 160
+qbits %8 == 0
+  q = quit
+Q - quit
+  Q = %s
+Q  to to quit the key generation.
+quick-random
+quiet:%lu:
+quit this menu
+Quit without saving? (y/N) 
+quoted printable character in armor - probably a buggy MTA has been used
+r::::::::
+random_seed
+random usage: poolsize=%d mixed=%lu polls=%lu/%lu added=%lu/%lu
+ raw apdu:
+	raw data: 
+RDR_to_PC_DataBlock
+RDR_to_PC_DataRate
+RDR_to_PC_Escape
+RDR_to_PC_Parameters
+RDR_to_PC_SlotStatus
+read_block: read error: %s
+readcert
+__read_chk
+reader-port
+reader-port:%lu:
+read error in `%s': %s
+read error on random device: %s
+reader slot %d: active protocol:
+reader slot %d: not connected
+reader slot %d: %s
+reader slot %d: using ccid driver
+reader unavailable
+reader unsupported
+reading from `%s'
+reading options from `%s'
+Reading passphrase from file descriptor %d ...
+reading stdin ...
+readline
+read_pool
+Really create the revocation certificates? (y/N) 
+Really create? (y/N) 
+Really delete this self-signature? (y/N)
+Really move the primary key? (y/N) 
+Really remove all selected user IDs? (y/N) 
+Really remove this user ID? (y/N) 
+Really revoke all selected user IDs? (y/N) 
+Really revoke this user ID? (y/N) 
+Really sign all user IDs? (y/N) 
+Really sign? (y/N) 
+Really update the preferences for the selected user IDs? (y/N) 
+Really update the preferences? (y/N) 
+Real name: 
+reason for revocation: 
+Reason for revocation: %s
+rec %5lu, 
+  received data:
+record not found
+recv-keys
+re-distribute this key to avoid potential algorithm mismatch problems
+reference not found
+refresh-add-fake-v3-keyids
+refreshing 1 key from %s
+refreshing %d keys from %s
+refresh-keys
+regexp `%s' (`%s') on `%s': %s
+regular expression: "%s"
+release_dfx_context
+release_dotlock: error removing lockfile `%s'
+release_dotlock: lockfile error
+release_dotlock: not our lock (pid=%d)
+Remember that the image is stored within your public key.  If you use a
+remote-user
+remove as much as possible from key after import
+remove as much as possible from key during export
+removed card
+remove keys from the public keyring
+remove keys from the secret keyring
+remove the passphrase from exported subkeys
+remove unusable parts from key after import
+remove unusable parts from key during export
+Removing all notations
+Removing notation: %s=%s
+removing signature from key %s on user ID "%s": %s
+removing stale lockfile (created by %d)
+renaming `%s' to `%s' failed: %s
+repair damage from the pks keyserver during import
+repair-hkp-subkey-bug
+repair-pks-subkey-bug
+Repeat passphrase
+Repeat passphrase: 
+Repeat this PIN: 
+replace_existing_key_p
+Replace existing keys? (y/N) 
+Replace existing key? (y/N) 
+replacing trust value %d with %d and depth %d with %d
+Requested keysize is %u bits
+requesting key %s from %s
+requesting key %s from %s server %s
+require-cross-certification
+--require-secmem
+re-reading keyblock failed: %s
+ --reset
+reset card
+Reset Code is too short; minimum length is %d
+Reset Code not or not anymore available
+Reset Code set.
+resource limit
+resource && !resource->secret == !secret
+response does not contain the public key data
+response does not contain the RSA modulus
+response does not contain the RSA public exponent
+ response: sw=%04X  datalen=%d
+__res_query
+resultlen < bufsize
+!ret_kdbhd
+REVKEYSIG
+[revocation]
+Revocation certificate created.
+revocation certificate.  Please keep this text concise.
+revocation comment: 
+revocation key: 
+revocation reason 0x%02x (
+[ revoked]
+[revoked]
+[revoked]:
+revoked by your key %s on %s
+revoked: %s
+revoke key or selected subkeys
+revoke selected user IDs
+revoke signatures on the selected user IDs
+revphoto
+--rfc1991
+:rfc1991 comment packet: "
+--rfc2440
+RIJNDAEL
+Rijndael-128 test decryption failed.
+Rijndael-128 test encryption failed.
+RIJNDAEL192
+Rijndael-192 test decryption failed.
+Rijndael-192 test encryption failed.
+RIJNDAEL256
+Rijndael-256 test decryption failed.
+Rijndael-256 test encryption failed.
+ring trust w/o key
+RIPEMD160
+rl_attempted_completion_function
+rl_attempted_completion_over
+rl_catch_signals
+rl_cleanup_after_signal
+rl_completion_matches
+rl_free_line_state
+rl_inhibit_completion
+rl_instream
+rl_outstream
+RMD160 = 
+|RN|New Reset Code
+root->pkt->pkttype == PKT_PUBLIC_KEY
+rounded up to %u bits
+r;rlTpTL)
+rsa_e_len <= 4
+rsa_e_len <= rsa_e_reqlen
+  (RSA: %lu)
+RSA may be used for signatures or encryption.
+RSA modulus missing or not of size %d bits
+RSA modulus size is %u bits (%u bytes)
+RSA, n=%u, e=%u, fmt=%s
+RSA operation: public, secret failed
+RSA operation: secret, public failed
+RSA_OR_IDEA
+RSA prime %s missing or not of size %d bits
+RSA public exponent missing or larger than %d bits
+rtv:1:%u:
+rtv:2:%u:
+run-as-shm-coprocess
+ (running)
+rvk:::%d::::::
+      "%s"
+    "%s"
+%s:::::::::
+%s: 1st length byte missing
+s2k-cipher-algo
+s2k-count
+s2k-digest-algo
+s2k->hash_algo
+s2k-mode
+%s: 2nd length byte missing
+%s: 4 byte length invalid
+%s  %4u%c/%s
+%s  %4u%c/%s  
+%s  %4u%c/%s %s 
+%s  %4u%c/%s %s%s
+S,9S(s&1
+`%s' already compressed
+, salt: 
+	salted S2K
+save and quit
+Save changes? (y/N) 
+save_unprotected_key_to_card
+%sb:%08lX%08lX:%u:%u:%u:%u:
+%s:%c::::
+%s%c  %4u%c/%s  
+%s%c %4u%c/%s  
+scan_or_find_devices
+SCardBeginTransaction
+SCardConnect
+SCardDisconnect
+SCardEndTransaction
+SCardEstablishContext
+SCardGetStatusChange
+SCardListReaders
+SCardReconnect
+SCardReleaseContext
+SCardSetTimeout
+SCardStatus
+SCardTransmit
+%s%c%c %c%c%c%c%c%c %s %s
+SCD CHECKPIN
+SCD GENKEY
+SCD GENKEY %s%d
+SCD GETATTR
+SCD LEARN
+SCD LEARN --force
+SCD PASSWD
+SCD PASSWD%s %d
+SCD PKDECRYPT
+SCD PKDECRYPT %s
+SCD PKSIGN
+SCD PKSIGN %s%s
+SCD SERIALNO openpgp
+SCD SETATTR
+SCD SETDATA
+SCD WRITEKEY
+SCD WRITEKEY --force OPENPGP.%d
+SCHEME %s
+%s: clearsign failed: %s
+%s: close failed: %s
+%s: close fd %d
+:%scomment packet: "
+SC_OP_FAILURE
+SC_OP_SUCCESS
+%s: copy to `%s' failed: %s
+%s:%d: deprecated option "%s"
+%s: decryption failed: %s
+%s: delete key failed: %s
+%s:%d: invalid algorithm
+%s:%d: invalid auto-key-locate list
+%s:%d: invalid creation date
+%s:%d: invalid expire date
+%s:%d: invalid export options
+%s:%d: invalid import options
+%s:%d: invalid keyserver options
+%s:%d: invalid keyserver url
+%s:%d: invalid list options
+%s:%d: invalid revocation key
+%s:%d: invalid usage list
+%s:%d: invalid verify options
+%s: directory does not exist!
+%s does not yet work with %s
+%s:%d: only one ring name is set
+%s:%d: read error
+%s:%d: %s
+%s:%d: specified Key-Usage not allowed for algo %d
+%s:%d: specified Subkey-Usage not allowed for algo %d
+%s:e::::
+search for keys on a key server
+searching for names from %s
+searching for names from %s server %s
+searching for "%s" from %s
+searching for "%s" from %s server %s
+search-keys
+sec  %4u%c/%s %s   
+sec  %4u%c/%s %s %s
+secblock->pkt->pkttype == PKT_SECRET_KEY
+sec%c  %4u%c/%s %s
+sec_keyblock->pkt->pkttype==PKT_SECRET_KEY
+secmem usage: %u/%u bytes in %u/%u blocks of pool %lu/%lu
+seconds=
+secret-key
+secret key already stored on a card
+Secret key is available.
+secret key not available
+secret key parts are not available
+secret-keyring
+  secret keys imported: %lu
+secret key "%s" not found: %s
+      secret keys read: %lu
+ secret keys unchanged: %lu
+secret parts of key are not available
+Secret parts of primary key are not available.
+Secret parts of primary key are stored on-card.
+secret sub
+secret-subkey
+%secring
+secring.gpg
+sec::%u:%d:%08lX%08lX:%s:%s:::
+secure memory corrupted at block %p
+secure memory is disabled
+Security Support Template
+(See the man page for a complete listing of all commands and options)
+selected certification digest algorithm is invalid
+selected cipher algorithm is invalid
+selected compression algorithm is invalid
+selected digest algorithm is invalid
+select() error: %s
+selecting openpgp failed: %s
+select subkey N
+Select the algorithm to use.
+select user ID N
+[selfsig]
+[self-signature]
+self-signatures will be advanced by one second.
+selftest failed
+%s encrypted session key
+%s: encryption failed: %s
+%s encryption will be used
+send apdu: c=%02X i=%02X p1=%02X p2=%02X lc=%d le=%d em=%d
+sending command `%s' to agent failed: %s
+sending key %s to %s
+sending key %s to %s server %s
+send-keys
+sensitive
+(sensitive)
+ -se -r Bob [file]          sign and encrypt for user Bob
+serial:%.8s:
+	serial-number: 
+Serial number ....: %.8s
+serial number longer than expected
+%s: error reading free record: %s
+%s: error reading version record: %s
+%s: error updating version record: %s
+%s: error writing dir record: %s
+%s: error writing version record: %s
+server bug
+server fault
+server io error
+server resource problem
+service stopped
+, seskey %d bits
+SESSION_KEY
+session key: `%s'
+set a notation for the selected user IDs
+set_exec_path: %s
+--set-filename
+--set-filesize
+setlocale
+set-notation
+set_one_pref
+set-policy-url
+set preference list for the selected user IDs
+Set preference list to:
+set_random_seed_file
+setrlimit64
+set the preferred keyserver URL for the selected user IDs
+setting ownertrust to %u
+setup_cipher_table
+setup_pubkey_table
+Sex ((M)ale, (F)emale or space): 
+%sexportable
+Sex ..............: %s
+%s: failed to append a record: %s
+%s: failed to create hashtable: %s
+%s: failed to create version record: %s
+%s: failed to zero a record: %s
+%s: garbled packet detected
+%s: get secret key: %s
+%s/gpg-XXXXXX
+ SHA1 protection,
+shadowed-private-key
+shadowed-private-key passed to writekey
+sharing violation
+shmctl IPC_RMDID of %d failed: %s
+shmctl IPC_SET of %d failed: %s
+shmctl IPC_STAT of %d failed: %s
+SHM_GET_BOOL
+SHM_GET_HIDDEN
+SHM_INFO
+should be the first file given on the command line.
+show admin commands
+show all notations during signature listings
+show all notations during signature verification
+show expiration dates during signature listings
+show IETF standard notations during signature listings
+show IETF standard notations during signature verification
+show key fingerprint
+--show-keyring
+show-keyserver-urls
+show_key_with_all_names
+--show-notation
+show only the primary user ID in signature verification
+showphoto
+--show-photos
+--show-policy-url
+show policy URLs during signature listings
+show policy URLs during signature verification
+showpref
+show preferred keyserver URLs during signature listings
+show preferred keyserver URLs during signature verification
+show-primary-uid-only
+show revoked and expired subkeys in key listings
+show revoked and expired user IDs in key listings
+show revoked and expired user IDs in signature verification
+show selected photo IDs
+show-session-key
+show-sig-expire
+show-sig-subpackets
+show-standard-notations
+show-std-notations
+show the keyring name in key listings
+show this help
+show-uid-validity
+show-unusable-subkeys
+show-unusable-uids
+show user ID validity during key listings
+show user ID validity during signature verification
+show-user-notations
+show user-supplied notations during signature listings
+show user-supplied notations during signature verification
+sig::::::::::%02x%c:
+sig:%08lX%08lX:%X:%u:%u
+sigaction
+sigaddset
+sig:%c::%d:%08lX%08lX:%lu:%lu:
+(sigclass >= 0x10 && sigclass <= 0x13) || sigclass == 0x1F || sigclass == 0x20 || sigclass == 0x18 || sigclass == 0x19 || sigclass == 0x30 || sigclass == 0x28
+SIG-COUNTER
+sigcount:%lu:::
+SIG_CREATED
+sig created %s
+sig does not expire
+sigemptyset
+SIGEXPIRED deprecated-use-keyexpired-instead
+sig expires after %s
+siggen.valid
+(sig->keyid[0]!=pk->keyid[0]) || (sig->keyid[0]!=pk->keyid[1])
+sig-keyserver-url
+sign a key
+sign a key locally
+signature: 
+Signature counter : %lu
+Signature does not expire at all
+Signature expired %s
+Signature expires at %s
+Signature expires %s
+Signature is valid for? (%s) 
+Signature key ....:
+Signature made %s
+Signature made %s using %s key ID %s
+Signature notation: 
+:signature packet: algo %d, keyid %08lX%08lX
+signature packet: hashed data too long
+signature packet: too much data
+signature packet: unhashed data too long
+signature packet without keyid
+signature packet without timestamp
+Signature PIN ....: %s
+Signature policy: 
+    signatures cleaned: %lu
+signatures created so far: %lu
+signature superseded
+signature verification suppressed
+sign, check, encrypt or decrypt
+signed by your key %s on %s%s%s
+--sign --encrypt [filename]
+signer's user ID
+--sign [filename]
+signing:
+signing failed: %s
+signing subkey %s is already cross-certified
+Sign it? (y/N) 
+--sign-key user-id
+sign or edit a key
+sig-notation
+sign selected user IDs locally
+sign selected user IDs [* see below for related commands]
+sign selected user IDs with a non-revocable signature
+sign selected user IDs with a trust signature
+--sign --symmetric [filename]
+sign_uid.class
+sign_uid.dupe_okay
+sign_uid.expire
+sign_uid.expired_okay
+sign_uid.expire_okay
+sign_uid.local_promote_okay
+sign_uid.nosig_okay
+sign_uid.okay
+sign_uid.replace_expired_okay
+sign_uid.revoke_okay
+sign_uids
+sign_uid.sign_okay
+sign_uid.v4_on_v3_okay
+sign_uid.v4_promote_okay
+sign-with
+!sig->pka_info
+sig-policy-url
+sigprocmask
+((sig)->sig_class == 0x20)
+SIG_SUBPACKET
+sigsuspend
+sig                             [unexpected signature class 0x%02x]
+sig->version>=4
+ simple checksum,
+	simple S2K
+simple-sk-checksum
+%s: indeterminate length for invalid packet type %d
+%s: invalid file version %d
+%s: invalid packet (ctb=%02x)
+%s: invalid record type %d at recnum %lu
+%s: invalid trustdb
+%s: invalid trustdb created
+`%s' is not a JPEG file
+`%s' is not a regular file - ignored
+`%s' is not a valid character set
+`%s' is not a valid long keyID
+`%s' is not a valid signature expiration
+%s is the new one
+%s is the unchanged one
+size > 10
+size > 44
+size of key %d changed to %u bits
+sk_%08lX%08lX.gpg
+	skey[%d]: 
+	skey[%d]: [encrypted]
+:%s key packet:
+%s: keyring created
+%s keysizes must be in the range %u-%u
+%s keys may be between %u and %u bits long.
+sk_from_block
+skipped compressed packet in keyring
+      skipped new keys: %lu
+skipped: public key already set
+skipped: public key already set as default recipient
+skipped "%s": duplicated
+skipped: secret key already present
+skipped "%s": %s
+skipping block of type %d
+skipping control `%s' (%s)
+Skipping notation: %s=%s
+skipping v3 self-signature on user ID "%s"
+skip-verify
+!sk->is_protected
+sk->protect.ivlen <= (sizeof(sk->protect.iv)/sizeof((sk->protect.iv)[0]))
+((sk->pubkey_algo)==1 || (sk->pubkey_algo)==2 || (sk->pubkey_algo)==3 )
+!((sk->skey[i]) && (mpi_get_flags (sk->skey[i])&4))
+((sk->skey[i]) && (mpi_get_flags (sk->skey[i])&4))
+((sk->skey[npkey]) && (mpi_get_flags (sk->skey[npkey])&4))
+%.*s/.#lk%p.%n%s.%d
+slot >= 0 && slot < 4
+Slot busy
+slot %d: ATR=
+ %s %lu %lu %d 0 %d %d %02X 
+%s makes no sense with %s!
+SM-KEY-ENC
+SM-KEY-MAC
+SM-Support .....: %s
+%s: no Key-Type specified
+"%s" not a key ID: skipping
+%s not allowed with %s!
+%s: not a trustdb file
+%s: no User-ID specified
+__snprintf_chk
+socket://
+somedata
+somedata=
+some other action (type on the keyboard, move the mouse, utilize the
+         some versions of PGP to reject this key.
+Sorry, no terminal at all requested - can't get input
+Sorry, we are in batchmode - can't get input
+%s: partial length for invalid packet type %d
+spk:%d:%u:%u:
+         "%s": preference for cipher algorithm %s
+         "%s": preference for compression algorithm %s
+         "%s": preference for digest algorithm %s
+__sprintf_chk
+%s:r::::
+src->pkt->pkttype == PKT_USER_ID
+%s: read error: %s
+%srevocable
+%s [%s]: 
+ssb%c  %4u%c/%s %s
+ssb::%u:%d:%08lX%08lX:%s:%s:::::
+SsEeAaQq
+%s/%s encrypted for: "%s"
+%s signature, digest algorithm %s
+%s: sign+encrypt failed: %s
+%s: sign+symmetric failed: %s
+%s: skipped: public key already present
+%s: skipped: public key is disabled
+%s: skipped: %s
+%s: skipping %u packets failed: %s
+  s = skip this key
+%s %s %lu
+%s %s; %s
+%s%s: %s
+%s/%s signature from: "%s"
+	%s%ssubpkt %d len %u (
+%s: symmetric+sign+encrypt failed: %s
+__stack_chk_fail
+standalone revocation - use "gpg --import" to apply
+standalone signature of class 0x%02x
+standard
+stat() off %s failed: %s
+status-fd
+status-file
+Status Indicator: %02X
+[stdout]
+%s: There is limited assurance this key belongs to the named user
+%s: There is no assurance this key belongs to the named user
+ (stopped)
+ (stopped-H)
+ (stopped-L)
+--store [filename]
+storing key onto card failed: %s
+storing `%s' failed: %s
+__stpcpy_chk
+strcasecmp
+__strcat_chk
+__strcpy_chk
+__strdup
+[stream]
+strerror
+strftime
+string!=((void *)0)
+strlen(namehash)==20*2
+strncasecmp
+%s: trustdb created
+%s:%u: argument not expected
+sub   %4u%c/%s %s
+      Subkey fingerprint:
+	subkey has been revoked
+	subkey has expired
+Subkey-Length
+	subkey looks fine
+	subkey not valid
+	subkey not yet valid
+         (subkey on main key ID %s)
+[subkey revoked]:
+subkey %s does not sign and so does not need to be cross-certified
+Subkey %s is already revoked.
+Subkey-Type
+Subkey-Usage
+subkey w/o mainkey
+subpacket of type %d has critical bit set
+subpacket of type %d too short
+	subpkt %d len %u (additional recipient request)
+%s::%u:%d:%08lX%08lX:%s:%s:::
+%s:%u: invalid alias definition
+%s:%u: invalid command
+%s:%u: invalid option
+%s:%u: keyword too long
+%s:%u: missing argument
+%s: unknown suffix
+%s[%u.%p] DBG: <- 
+%s[%u.%p] DBG: -> 
+%s[%u.%p] DBG: <- [EOF]
+%s[%u.%p] DBG: <- [Error: %s]
+%s[%u.%p] DBG: <- [Invalid line]
+%s[%u.%p] DBG: -> [supplied line contained a LF -truncated]
+%s[%u.%p] DBG: -> [supplied line too long -truncated]
+Supported algorithms:
+%s:%u: read error
+%s: version record with recnum %lu
+"%s" was already locally signed by key %s
+"%s" was already signed by key %s
+%s: write error: %s
+symc-sign
+:symkey enc packet: version %d, cipher %d, s2k %d, hash %d
+--symmetric
+--symmetric --encrypt
+--symmetric --encrypt [filename]
+symmetric encryption of `%s' failed: %s
+--symmetric --sign --encrypt [filename]
+syntax error
+Syntax: gpg [options] [files]
+sys_siglist
+system cancelled
+system() command is %s
+system error while calling external program: %s
+t$03t$ 1
+t}<0~}<9
+t$@3t$01
+t$<3t$(1
+t$(3t$$1
+t$,3t$D1
+t$$3t$H1
+t$43t$@1
+t{9|$4t~
+tag <= 0xffff
+tcgetattr
+tcgetattr() failed: %s
+tcsetattr
+tcsetattr() failed: %s
+t$D3t$<1
+tdbio_new_recnum
+tdbio_set_dbname
+tdbio_write_record
+temp-directory
+tempin.bin
+tempin.txt
+tempout.bin
+tempout.txt
+test card
+text_filter
+--textmode
+T~FbZwKi
+The card does not support the import of keys
+The card will now be re-configured to generate a key of %u bits
+the command "--edit-key" to generate a subkey for this purpose.
+The first (primary) key must always be a key which is capable of signing.
+the Free Software Foundation; either version 3 of the License, or
+the given certification policy URL is invalid
+the given preferred keyserver URL is invalid
+the given signature policy URL is invalid
+the given value as an interval.
+the IDEA cipher plugin is not present
+The minimum trust level for this key is: %s
+the OS a chance to collect more entropy! (Need %d more bytes)
+The random number generator is only a kludge to let
+There are no preferences on a PGP 2.x-style user ID.
+there is a secret key for public key "%s"!
+         There is no indication that the signature belongs to the owner.
+There is NO WARRANTY, to the extent permitted by law.
+The self-signature on "%s"
+the signature could not be verified.
+The signature is not valid.  It does make sense to remove it from
+         The signature is probably a FORGERY.
+The signature will be marked as non-exportable.
+The signature will be marked as non-revocable.
+* The `sign' command may be prefixed with an `l' for local signatures (lsign),
+This command is not allowed while in %s mode.
+This command is only available for version 2 cards
+         This could mean that the signature is forged.
+... this is a bug (%s:%d:%s)
+this is a DINSIG compliant card
+this is a Geldkarte compliant card
+# This is a GnuPG %s keyserver communications file
+this is a NetKey card
+this is a PGP generated Elgamal key which is not secure for signatures!
+this is a PKCS#15 compliant card
+This is a secret key! - really delete? (y/N) 
+(This is a sensitive revocation key)
+This is a signature which binds the user ID to the key. It is
+This is a valid signature on the key; you normally don't want
+This is free software: you are free to change and redistribute it.
+This is free software; you can redistribute it and/or modify
+      this is normally used to mark an email address invalid.
+This JPEG is really large (%d bytes) !
+This key belongs to us
+this key has already been designated as a revoker
+This key has been disabled
+This key has expired!
+This key is due to expire on %s.
+This key is not protected.
+This key may be revoked by %s key %s
+This key probably belongs to the named user
+This key was revoked on %s by %s key %s
+this may be caused by a missing self-signature
+(this may be caused by too many secret keys used simultaneously or due to excessive large key sizes)
+this message may not be usable by %s
+This signature can't be checked because you don't have the
+This signature expired on %s.
+This will be a self-signature.
+This would make the key unusable in PGP 2.x.
+--throw-keyid
+timestamp conflict
+<<ti<>te
+t$L3t$,1
+to any 3rd party.  We need it to implement the web-of-trust; it has nothing
+To be revoked by:
+To build the Web-of-Trust, GnuPG needs to know which keys are
+to delete this signature because it may be important to establish a
+to do with the (implicitly created) web-of-certificates.
+toggle between the secret and public key listings
+toggle the signature force PIN flag
+too many cipher preferences
+too many compression preferences
+too many digest preferences
+too many entries in pk cache - disabled
+too much data
+too much shared memory requested; only 8k are allowed
+[too short]
+too short: buffer is only %u)
+Total number processed: %lu
+to the current list of preferences.  The timestamp of all affected
+to the person named above?  If you don't know what to answer, enter "0".
+t$P3t$41
+T$p3T$P3T$ 
+tp - template == template_len
+tp - template <= template_size
+tq<0tm<(ti
+transmission error
+!"transport not defined"
+Triple-DES SSLeay test pattern no. %d failend on decryption.
+Triple-DES SSLeay test pattern no. %d failend on encryption.
+Triple-DES test failed.
+trust connection to the key or another key certified by this key.
+trust database error
+trustdb.gpg
+trustdb: lseek failed: %s
+trustdb: lseek to end failed: %s
+trustdb-name
+trustdb: read failed (n=%d): %s
+trustdb rec %lu: lseek failed: %s
+trustdb rec %lu: write failed (n=%d): %s
+trustdb: record %lu is not a trust record
+TrustDB: %s
+trustdb: searching trust record failed: %s
+trustdb: sync failed: %s
+trusted-key
+TRUST_FULLY
+trustlevel adjusted to FULL due to valid PKA info
+trustlevel adjusted to NEVER due to bad PKA info
+TRUST_MARGINAL
+trust-model
+TRUST_NEVER
+:trust packet: empty
+:trust packet: flag=%02x sigcache=%02x
+trust record %lu is not of requested type %d
+trust record %lu, req type %d: read failed: %s
+trust record %lu, type %d: write failed: %s
+trust: %s
+trust signature of depth %d, value %d
+trust signatures on your behalf.
+trust sig on %s, sig depth is %d, kr depth is %d
+trustsig_prompt.trust_depth
+trustsig_prompt.trust_regexp
+trustsig_prompt.trust_value
+TRUST_ULTIMATE
+TRUST_UNDEFINED
+try-all-secrets
+trying to load an extension while still setuid
+t-;T$Pt'
+t&<,t"<=t
+t?<,t;<=u
+TWOFISH128
+Twofish-128 test decryption failed.
+Twofish-128 test encryption failed.
+Twofish-256 test decryption failed.
+Twofish-256 test encryption failed.
+u@9t$4t-
+uat:::::::::%u %lu
+[%u bits]
+%u-bit %s key, ID %s, created %s
+%u-bit %s key, ID %s, created %s%s
+ (%u bytes max)
+%u cols %u lines
+:%u:%d:%08lX%08lX:%lu:%lu::
+:%u:%d:%08lX%08lX:%s:%s::
+:%u:%d:%08lX%08lX:%s:%s:::::
+uid:::::::::
+uidnode->pkt->pkttype==PKT_USER_ID
+uid->ref > 0
+uid%*s%s 
+ultimate
+[ultimate]
+ultimately trusted
+ultimately trusted - those are usually the keys for which you have
+unable to display photo ID!
+unable to execute external program
+unable to execute program `%s': %s
+unable to execute shell `%s': %s
+unable to open JPEG file `%s': %s
+unable to read external program response: %s
+unable to set exec-path to %s
+  Unable to sign.
+unable to update trustdb version record: write failed: %s
+unable to use the IDEA cipher for all of the keys you are encrypting to.
+unable to use unknown trust model (%d) - assuming %s trust model
+unblock the PIN using a Reset Code
+[uncertain]
+             unchanged: %lu
+uncompressed
+uncompressed|none
+uncompressing failed: %s
+[  undef ]
+undefined
+underflow
+UNEXPECTED
+unexpected armor: 
+unexpected command
+unexpected data
+unexpected EOF in bz2lib
+unexpected keyblock found (pkttype=%d)%s
+unexpected status
+unimplemented cipher algorithm
+unimplemented pubkey algorithm
+[ unknown]
+unknown 
+unknown:
+	unknown algorithm %d
+unknown armor header: 
+[unknown attribute of size %lu]
+unknown card
+unknown cipher algorithm
+unknown command
+unknown compress algorithm
+unknown configuration item `%s'
+unknown CT-API error
+unknown default recipient "%s"
+unknown digest algorithm
+unknown error
+unknown host status error
+unknown keyid-format `%s'
+unknown key protection algorithm
+unknown keyword
+unknown length
+unknown option `%s'
+unknown packet type
+:unknown packet: type %2d, length %lu
+unknown parameter name in received key data
+unknown PC/SC error code
+Unknown PC_to_RDR command
+unknown protection algorithm
+unknown pubkey algorithm
+Unknown RDR_to_PC command
+unknown reader
+	unknown S2K %d
+unknown signature class
+Unknown signature type `%s'
+	unknown %sS2K %d
+unknown status error
+unknown trust model `%s'
+unknown type %d
+unknown type of key resource `%s'
+unknown version
+unless you restart the program.
+(unless you specify the key by fingerprint)
+unmanaged S/N range
+unnatural exit of external program
+unode->pkt->pkttype == PKT_USER_ID
+unpowered card
+unresponsive card
+unspecified
+unsupported algorithm
+	unsupported algorithm %d
+unsupported blocksize %u
+unsupported card
+unsupported feature
+unsupported URI
+untrusted_key.override
+unusable pubkey algorithm
+unusable public key
+unusable secret key
+unused <= area->len
+update all keys from a keyserver
+update failed: %s
+update_keysig_packet failed: %s
+update ownertrust from %u to %u
+update secret failed: %s
+update the trust database
+--update-trustdb
+upd_hashtable: read failed: %s
+upd_hashtable: read hlst failed: %s
+upd_hashtable: read item failed: %s
+upd_hashtable: update htbl failed: %s
+upd_hashtable: write ext hlst failed: %s
+upd_hashtable: write hlst failed: %s
+upd_hashtable: write htbl failed: %s
+upd_hashtable: write new hlst failed: %s
+URL of public key : 
+URL to retrieve public key: 
+usage: cafpr N
+	usage does not match: want=%x have=%x
+usage error: redirection to file required
+usage: gpg [options] 
+Usage: gpg [options] [files] (-h for help)
+usage: privatedo N
+usage: readcert 3 > FILE
+usage: %s
+usage: writecert 3 < FILE
+usb_bulk_read
+usb_bulk_write
+usb_claim_interface
+usb_clear_halt
+usb_close
+usb_control_msg
+usb_find_busses
+usb_find_devices
+usb_get_busses
+usb_init
+usb_open
+usb_release_interface
+use as output file
+use canonical text mode
+use conditions not satisfied
+used_resources <= 40
+# (Use "gpg --import-ownertrust" to restore them)
+use option "--delete-secret-keys" to delete it first.
+user error first
+user error last
+USERID_HINT
+  "User ID is no longer valid"
+User ID is no longer valid
+[User ID not found]
+:user ID packet: "
+user ID: "%s"
+User ID "%s": already clean
+User ID "%s": already minimized
+      user IDs cleaned: %lu
+User ID "%s" compacted: %s
+User ID "%s": %d signature removed
+User ID "%s": %d signatures removed
+user ID "%s" is already revoked
+User ID "%s" is expired.
+User ID "%s" is not self-signed.
+User ID "%s" is revoked.
+User ID "%s" is signable.  
+user: "%s"
+use strict OpenPGP behavior
+use temporary files to pass data to keyserver helpers
+      Use this if you have a reason to believe that unauthorized persons
+      Use this if you have replaced this key with a newer one.
+      Use this if you have retired this key.
+Use this key anyway? (y/N) 
+      Use this to state that the user ID should not longer be used;
+use this user-id to sign or decrypt
+using character set `%s'
+using cipher %s
+using default PIN as %s
+	using key %08lX
+               using %s key %s
+using %s trust model
+using subkey %s instead of primary key %s
+using temp file `%s'
+using this program with the option "--edit-key".
+/usr/lib/gnupg
+/usr/share/locale
+usually not a good idea to remove such a signature.  Actually
+utf8_to_native
+../../util/assuan-buffer.c
+../../util/convert.c
+../../util/estream-printf.c
+../../util/iobuf.c
+../../util/logger.c
+../../util/strgutil.c
+UUUUUUUU
+%uy%ud%uh%um
+?v3 fpr?
+validate_key_list failed
+validate signatures with PKA data
+validity: %s
+VALIDSIG
+valuetable[arg->precision_pos-1].vt == VALTYPE_INT
+valuetable[arg->width_pos-1].vt == VALTYPE_INT
+Vd22Nt::
+v%d, class 0x%02X, algo %d, digest algo %d
+, v=%d, next=%lu
+vendor:%04x:%s:
+verbose:%lu:
+ verification
+verification of Admin PIN is currently prohibited through this command
+verify_a_chv
+verify a signature
+verify CHV%d failed: %s
+verify-files
+verify files failed: %s
+--verify-options 
+verify-options
+verify signatures failed: %s
+verify the PIN and list all data
+--version
+VERSION 
+Version ..........: %.1s%c.%.1s%c
+Version-2 ......: %s
+version:%.4s:
+VERSION %d
+	version %d, algo %d, created %lu, expires %lu
+	version %d, created %lu, md5len %d, sigclass 0x%02x
+	version %d, sigclass 0x%02x, digest %d, pubkey %d, last=%d
+Version: GnuPG v1.4.11 (GNU/Linux)
+version, td=%lu, f=%lu, m/c/d=%d/%d/%d tm=%d nc=%lu (%s)
+very large picture, your key will become very large as well!
+__vfprintf_chk
+v(<%t$< 
+waited too long
+waiting for lock (held by %d%s) %s...
+waiting for lock on `%s'...
+WARNING: 
+WARNING: 2 files with confidential information exists.
+WARNING: appointing a key as a designated revoker cannot be undone!
+WARNING: a user ID signature is dated %d seconds in the future
+warning: bad category indicator in historical bytes
+warning: bad Compact-TLV in historical bytes
+WARNING: cipher algorithm %s not found in recipient preferences
+WARNING: cipher_setiv: ivlen=%u blklen=%u
+warning: constructed DO too short
+WARNING: digest algorithm %s is deprecated
+WARNING: Elgamal sign+encrypt keys are deprecated
+WARNING: encrypted message has been manipulated!
+WARNING: forcing compression algorithm %s (%d) violates recipient preferences
+WARNING: forcing digest algorithm %s (%d) violates recipient preferences
+WARNING: forcing symmetric cipher %s (%d) violates recipient preferences
+warning: historical bytes are too short
+WARNING: invalid notation data found
+WARNING: invalid size of random_seed file - not used
+WARNING: key %s contains preferences for unavailable
+WARNING: keyserver handler from a different version of GnuPG (%s)
+WARNING: key %s may be revoked: fetching revocation key %s
+WARNING: key %s may be revoked: revocation key %s not present.
+WARNING: message was encrypted with a weak key in the symmetric cipher.
+WARNING: message was not integrity protected
+WARNING: more than algorithm in md_get_algo()
+WARNING: multiple plaintexts seen
+WARNING: multiple signatures detected.  Only the first will be checked.
+WARNING: no length for md algo %d
+WARNING: nothing exported
+WARNING: no user ID has been marked as primary.  This command may
+  (Warning: Only accurate for version 1.0)
+WARNING: options in `%s' are not yet active during this run
+WARNING: PGP versions > 5.0 and < 6.5.8 will automagically encrypt to this key and thereby reveal the plaintext to the owner of this ARR key. Detailed info follows:
+WARNING: potentially insecure symmetrically encrypted session key
+WARNING: program may create a core file!
+WARNING: recipients (-r) given without using public key encryption
+WARNING: secret key %s does not have a simple SK checksum
+WARNING: signature digest conflict in message
+WARNING: signing subkey %s has an invalid cross-certification
+WARNING: signing subkey %s is not cross-certified
+WARNING: "%s" is a deprecated command - do not use it
+WARNING: "%s" is a deprecated option
+WARNING: `%s' is an empty file
+WARNING: some OpenPGP programs can't handle a DSA key with this digest size
+WARNING: %s overrides %s
+WARNING: such a key has already been stored on the card!
+WARNING: the signature will not be marked as non-exportable.
+WARNING: the signature will not be marked as non-revocable.
+WARNING: This is a PGP2-style key.  Adding a photo ID may cause some versions
+WARNING: This is a PGP 2.x-style key.  Adding a designated revoker may cause
+WARNING: This key has been revoked by its designated revoker!
+WARNING: This key has been revoked by its owner!
+WARNING: This key is not certified with a trusted signature!
+WARNING: This key is not certified with sufficiently trusted signatures!
+WARNING: this key might be revoked (revocation key not present)
+WARNING: This subkey has been revoked by its owner!
+WARNING: unable to %%-expand notation (too large).  Using unexpanded.
+WARNING: unable to %%-expand policy URL (too large).  Using unexpanded.
+WARNING: unable to %%-expand preferred keyserver URL (too large).  Using unexpanded.
+WARNING: unable to fetch URI %s: %s
+WARNING: unable to parse URI %s
+WARNING: unable to refresh key %s via %s: %s
+WARNING: unable to remove temp directory `%s': %s
+WARNING: unable to remove tempfile (%s) `%s': %s
+WARNING: unable to restore permissions to `%s': %s
+WARNING: unsafe enclosing directory ownership on configuration file `%s'
+WARNING: unsafe enclosing directory ownership on extension `%s'
+WARNING: unsafe enclosing directory ownership on homedir `%s'
+WARNING: unsafe enclosing directory permissions on configuration file `%s'
+WARNING: unsafe enclosing directory permissions on extension `%s'
+WARNING: unsafe enclosing directory permissions on homedir `%s'
+WARNING: unsafe ownership on configuration file `%s'
+WARNING: unsafe ownership on extension `%s'
+WARNING: unsafe ownership on homedir `%s'
+WARNING: unsafe permissions on configuration file `%s'
+WARNING: unsafe permissions on extension `%s'
+WARNING: unsafe permissions on homedir `%s'
+WARNING: using experimental cipher algorithm %s
+WARNING: using experimental digest algorithm %s
+WARNING: using experimental public key algorithm %s
+WARNING: using insecure memory!
+WARNING: using insecure random number generator!!
+WARNING: Using untrusted key!
+WARNING: Weak key detected - please change passphrase again.
+WARNING: We do NOT trust this key!
+warranty
+--warranty
+weak key
+weak key created - retrying
+weird size for an encrypted session key (%d)
+We need to generate a lot of random bytes. It is a good idea to perform
+Wewid AB
+What keysize do you want for the Authentication key? (%u) 
+What keysize do you want for the Encryption key? (%u) 
+What keysize do you want for the Signature key? (%u) 
+What keysize do you want for the subkey? (%u) 
+What keysize do you want? (%u) 
+When you sign a user ID on a key, you should first verify that the key
+which == 1
+will not run with insecure memory due to %s
+with-colons
+with-fingerprint
+with-key-data
+word search mode does not yet work
+          w/o user IDs: %lu
+writecert
+write_direct_sig
+write_keybinding
+write_selfsigs
+writing direct signature
+writing key binding signature
+writing MDC packet failed
+writing new key
+writing public key to `%s'
+writing secret key stub to `%s'
+writing secret key to `%s'
+writing self signature
+writing sigcache packet failed
+writing to `%s'
+writing to stdout
+wrong length
+wrong secret key used
+]w_<%t[<:tW
+\$x3\$p1
+x-broken-hkp
+ (XferBlock-expected)
+^^xfZZ\KeeXNbb
+xloadimage
+xloadimage -fork -quiet -title 'KeyID 0x%k' stdin
+x%oJ%.r\.
+xrealloc
+__xstat64
+xxoJ%%r\..$8
+_yLyAkTk
+You are about to revoke these signatures:
+You are using the `%s' character set.
+you cannot appoint a key as its own designated revoker
+you cannot use --symmetric --encrypt while in %s mode
+you cannot use --symmetric --encrypt with --s2k-mode 0
+you cannot use --symmetric --sign --encrypt while in %s mode
+you cannot use --symmetric --sign --encrypt with --s2k-mode 0
+you can only clearsign with PGP 2.x style keys while in --pgp2 mode
+you can only detach-sign with PGP 2.x style keys while in --pgp2 mode
+you can only encrypt to RSA keys of 2048 bits or less in --pgp2 mode
+you can only make detached or clear signatures while in --pgp2 mode
+You can't change the expiration date of a v3 key
+You can't delete the last user ID!
+you can't sign and encrypt at the same time while in --pgp2 mode
+you can update your preferences with: gpg --edit-key %s updpref save
+You did not specify a user ID. (you may use "-r")
+You don't want a passphrase - this is probably a *bad* idea!
+You have signed these user IDs on key %s:
+you may answer the next question with yes.
+(you may have used the wrong program for this task)
+You may not add a designated revoker to a PGP 2.x-style key.
+You may not add a photo ID to a PGP2-style key.
+You may not make an OpenPGP signature on a PGP 2.x key while in --pgp2 mode.
+you may not use cipher algorithm `%s' while in %s mode
+you may not use compression algorithm `%s' while in %s mode
+you may not use digest algorithm `%s' while in %s mode
+you may not use %s while in %s mode
+You may only store a 1024 bit RSA key on the card
+You may try to re-create the trustdb using the commands:
+You must select at least one key.
+You must select at least one user ID.
+You must select exactly one key.
+you must use files (and not a pipe) when working with --pgp2 enabled.
+You need a Passphrase to protect your secret key.
+You need a passphrase to unlock the secret key for
+You need a passphrase to unlock the secret key for user:
+You need a user ID to identify your key; the software constructs the user ID
+Your current signature on "%s"
+Your decision? 
+your keyring.
+your machine might store the data and make it available to others!
+your media become unreadable.  But have some caution:  The print system of
+Your selection? 
+Your selection? (enter `?' for more information): 
+Your system can't display dates beyond 2038.
+You selected this USER-ID:
+You should change them using the command --change-pin
+You should have received a copy of the GNU General Public License
+You should specify a reason for the certification.  Depending on the
+ZeitControl
+zlib deflate problem: rc=%d
+zlib deflate problem: %s
+zlib inflate problem: rc=%d
+zlib inflate problem: %s
+zlib problem: %s

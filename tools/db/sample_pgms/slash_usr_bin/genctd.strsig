@@ -1,0 +1,69 @@
+__bss_start
+copyright
+ Copyright (C) 2011, International Business Machines Corporation and others. All Rights Reserved. 
+	-c or --copyright   include a copyright notice
+Could not open file "%s"
+CXXABI_1.3
+	-d or --destdir     destination directory, followed by the path
+error in command line argument "%s"
+Error reading file "%s"
+Error writing to output file "%s"
+	                    followed by path, defaults to %s
+__fprintf_chk
+genctd: Could not open output file "%s", "%s"
+genctd: error "%s" writing the output file
+genctd: tool completed successfully.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBCXX_3.4
+__gmon_start__
+__gxx_personality_v0
+	-h or -? or --help  this usage text
+icudatadir
+input and output file must both be specified.
+	-i or --icudatadir  directory for locating any needed intermediate data files,
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+libicutu.so.48
+libicuuc.so.48
+/lib/ld-linux.so.2
+libstdc++.so.6
+MutableTrieDictionary::addWord: ICU Error "%s"
+new CompactTrieDictionary: ICU Error "%s"
+new MutableTrieDictionary: ICU Error "%s"
+options:
+__printf_chk
+	Read in word list and write out compact trie dictionary
+%s: can not initialize ICU.  status = %s
+u_cleanup_48
+ucnv_close_48
+ucnv_detectUnicodeSignature_48
+ucnv_open_48
+ucnv_open: ICU Error "%s"
+ucnv_toUChars_48
+ucnv_toUChars: ICU Error "%s"
+udata_create
+udata_finish
+udata_writeBlock
+u_errorName_48
+u_getDataDirectory_48
+u_init_48
+u_isspace_48
+_Unwind_Resume
+u_parseArgs
+Usage: %s [-v] [-options] -o output-file dictionary-file
+u_setDataDirectory_48
+	-v or --verbose     turn on verbose output
+	-V or --version     show a version message
+_ZN6icu_4810UnicodeSet3addEi
+_ZN6icu_4810UnicodeSetC1Ev
+_ZN6icu_4810UnicodeSetD1Ev
+_ZN6icu_4821CompactTrieDictionaryC1ERKNS_21MutableTrieDictionaryER10UErrorCode
+_ZN6icu_4821MutableTrieDictionaryC1EtR10UErrorCode
+_ZN6icu_487UMemorydlEPv
+_ZN6icu_487UMemorynwEj
+_ZNK6icu_4810UnicodeSet8containsEi

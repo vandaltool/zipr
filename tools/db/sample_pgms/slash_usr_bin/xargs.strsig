@@ -1,0 +1,126 @@
++0a:E:e::i::I:l::L:n:prs:txP:d:
+0 == pids[i]
+add_proc
+arg-file
+argument line too long
+argument list too long
+__assert_fail
+bc_ctl.arg_max >= 2048
+bc_ctl.arg_max <= (val-XARGS_POSIX_HEADROOM)
+bc_init_controlinfo
+BC_INIT_OK == bcstatus
+bc_init_state
+bindtextdomain
+/bin/echo
+buildcmd.c
+Built using GNU gnulib version %s
+can not fit single argument within argument list size limit
+cannot fork
+Cannot open input file %s
+command too long
+Copyright %s %d Free Software Foundation, Inc.
+ctl->arg_max <= (2147483647L - 2048L)
+ctl->max_arg_count > 0
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+dcgettext
+delimiter
+/dev/tty
+D$&/nulf
+e5573b1bad88bfabcda181b9e0125fb0c52b7d3b
+       [-E eof-str] [-e[eof-str]]  [--eof[=eof-str]]
+__environ
+environment is too large for exec
+Eric B. Decker
+__errno_location
+error closing file
+error waiting for child process
+Execution of xargs will continue now, and it will try to read its input and run commands; if this is not what you wanted to happen, please type the end-of-file keystroke.
+__fpending
+__fprintf_chk
+fseeko64
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU findutils
+interactive
+Invalid escape sequence %s in input delimiter specification.
+Invalid escape sequence %s in input delimiter specification; character values must not exceed %lo.
+Invalid escape sequence %s in input delimiter specification; character values must not exceed %lx.
+Invalid escape sequence %s in input delimiter specification; trailing characters %s not recognised.
+Invalid input delimiter specification %s: the delimiter must be either a single character or an escape sequence starting with \.
+_IO_getc
+_IO_putc
+_IO_stdin_used
+       [-I replace-str] [-i[replace-str]] [--replace[=replace-str]]
+iswprint
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+James Youngman
+Kevin Dalley
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+       [-L max-lines] [-l[max-lines]] [--max-lines[=max-lines]]
+max-args
+max-chars
+Maximum length of command we could actually use: %ld
+max-lines
+max-procs
+mbsinit (&iter->state)
+mbuiter.h
+mbuiter_multi_next
+memory exhausted
+       [-n max-args] [--max-args=max-args]
+no-run-if-empty
+       [-P max-procs]  [--max-procs=max-procs] [--show-limits]
+POSIX smallest allowable upper limit on argument length (all systems): %lu
+POSIX upper limit on argument length (this system): %lu
+__printf_chk
+procs_executing < proc_max
+Report bugs to <bug-findutils@gnu.org>.
+%s, and %s.
+setlocale
+%s: exited with status 255; aborting
+shell-always
+show-limits
+%s: invalid number for -%c option
+Size of command buffer we are actually using: %lu
+       [-s max-chars] [--max-chars=max-chars]
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+%s: stopped by signal %d
+__stack_chk_fail
+%s: terminated by signal %d
+%s: value for -%c option should be < %ld
+%s: value for -%c option should be >= %ld
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+unmatched %s quote; by default quotes are special to xargs unless you use the -0 option
+Usage: %s [-0prtx] [--interactive] [--null] [-d|--delimiter=delim]
+/usr/share/locale
+       [--verbose] [--exit] [--no-run-if-empty] [--arg-file=file]
+       [--version] [--help] [command [initial-arguments]]
+__vfprintf_chk
+Warning: a NUL character occurred in the input.  It cannot be passed through in the argument list.  Did you mean to use the --null option?
+Warning: Lost track of %d child processes
+Warning: %s will be run at least once.  If you do not want that to happen, then press the interrupt keystroke.
+Warning: value %ld for -s option is too large, using %ld instead
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+xargs_do_exec
+Your environment variables take up %lu bytes

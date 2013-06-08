@@ -1,0 +1,90 @@
+%a %b %e %T %Z %Y
+and RUN_ERL_LOG_MAXSIZE to the number of log files to use and the
+Args before exec of shell:
+argv[%d] = %s
+Buffer already overflowed '%.*s'
+Buffer truncated '%s'
+Cannot create FIFO %s for reading.
+Cannot create FIFO %s for writing.
+Cannot disable terminal's flow control on input
+Cannot disable terminal's flow control on output
+Cannot dup
+Cannot fork
+Cannot get terminal's current mode
+Can't access log directory '%s'
+Can't access pipe directory '%s'.
+Can't open log file '%s'.
+Client expected on FIFO %s, but can't open (len=%d)
+closedir
+closelog
+Could not execv
+(could not format time in 256 positions with current format string.)
+Could not open FIFO '%s' for reading.
+Could not open pty master
+Could not open pty slave '%s'
+Erlang already running on pipe %s.
+Erlang closed the connection.
+erlang.log.
+erlang.pipe
+errno=%d '%s'
+__errno_location
+Error in reading from FIFO.
+Error in reading from terminal
+Error in select.
+Error in writing to log.
+Error in writing to terminal.
+Failed to set window size
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+Ignoring unknown ctrl command '%.*s'
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libutil.so.1
+localtime
+===== LOGGING STARTED %s
+Maximum RUN_ERL_LOG_GENERATIONS is %d
+Minimum RUN_ERL_LOG_GENERATIONS is %d
+Minimum RUN_ERL_LOG_MAXSIZE is %d
+Minimum value for RUN_ERL_LOG_ACTIVITY_MINUTES is 1 (current value is %s)
+Minimum value for RUN_ERL_LOG_ALIVE_MINUTES is 1 (current value is %s)
+Missing suffix in ctrl sequence '%.*s'
+posix_openpt
+readdir64
+run_erl:%d [%d] %s
+RUN_ERL_DISABLE_FLOWCNTRL
+run_erl [%d] %s
+/run_erl.log
+RUN_ERL_LOG_ACTIVITY_MINUTES
+RUN_ERL_LOG_ALIVE_FORMAT
+RUN_ERL_LOG_ALIVE_FORMAT can contain a maximum of %d characters
+RUN_ERL_LOG_ALIVE_IN_UTC
+RUN_ERL_LOG_ALIVE_MINUTES
+RUN_ERL_LOG_GENERATIONS
+RUN_ERL_LOG_MAXSIZE
+[run_erl v%u-%u]
+sigaction
+sigemptyset
+size of the log file when to switch to the next log file
+===== %s%s
+__stack_chk_fail
+strerror
+strftime
+tcgetattr
+tcsetattr
+unlockpt
+Usage: %s (pipe_name|pipe_dir/) log_dir "command [parameters ...]"
+version=%u
+__vfprintf_chk
+__vsnprintf_chk
+__vsyslog_chk
+winsize=%u,%u
+You may also set the environment variables RUN_ERL_LOG_GENERATIONS

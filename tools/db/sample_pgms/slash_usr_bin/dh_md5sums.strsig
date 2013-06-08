@@ -1,0 +1,55 @@
+a F<DEBIAN/md5sums> file, which lists the md5sums of each file in the package.
+All files in F<DEBIAN/> are omitted from the F<md5sums> file, as are all
+B<dh_md5sums> is a debhelper program that is responsible for generating
+B<dh_md5sums> [S<I<debhelper options>>] [B<-x>] [B<-X>I<item>] [B<--include-conffiles>]
+being listed in the md5sums file.
+	# Check if we should exclude conffiles.
+			chomp;
+		close CONFF;
+	complex_doit("(cd $tmp >/dev/null ; $find | LC_ALL=C sort -z | xargs -r0 md5sum > DEBIAN/md5sums) >/dev/null");
+conffiles (unless you use the B<--include-conffiles> switch).
+dh_md5sums - generate DEBIAN/md5sums file
+		doit("chmod",644,"$tmp/DEBIAN/md5sums");
+		doit("chown","0:0","$tmp/DEBIAN/md5sums");
+		doit("install","-d","$tmp/DEBIAN");
+		doit("rm","-f","$tmp/DEBIAN/md5sums");
+		$exclude.="! \\( $dh{EXCLUDE_FIND} \\) ";
+Exclude files that contain I<item> anywhere in their filename from
+			$exclude.="! -path \"./$_\" ";
+foreach my $package (@{$dh{DOPACKAGES}}) {
+		# Generate exclude regexp.
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	if (defined($dh{EXCLUDE_FIND}) && $dh{EXCLUDE_FIND} ne '') {
+	if (! $dh{INCLUDE_CONFFILES} && -r "$tmp/DEBIAN/conffiles") {
+	if (! -d "$tmp/DEBIAN") {
+	# If the file's empty, no reason to waste inodes on it.
+	if (-z "$tmp/DEBIAN/md5sums") {
+	"include-conffiles" => \$dh{INCLUDE_CONFFILES},
+Include conffiles in the md5sums list. Note that this information is
+init(options => {
+=item B<-x>, B<--include-conffiles>
+=item B<-X>I<item>, B<--exclude=>I<item>
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+	my $exclude="";
+	my $find="find . -type f $exclude ! -regex '.*/DEBIAN/.*' -printf '%P\\0'";
+	my $tmp=tmpdir($package);
+	next if is_udeb($package);
+		open (CONFF,"$tmp/DEBIAN/conffiles");
+redundant since it is included elsewhere in Debian packages.
+			s/^\///;
+	# See if we should exclude other files.
+The md5sums file is installed with proper permissions and ownerships.
+These files are used by the B<debsums> package.
+This program is a part of debhelper.
+use Cwd;
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w
+		while (<CONFF>) {
+	"x" => \$dh{INCLUDE_CONFFILES}, # is -x for some unknown historical reason..

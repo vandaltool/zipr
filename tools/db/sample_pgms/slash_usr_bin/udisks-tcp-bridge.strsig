@@ -1,0 +1,84 @@
+AddMatch
+Authorize
+__bss_start
+Client disconnected - shutting down
+dbus_bus_add_match
+dbus_connection_add_filter
+dbus_connection_close
+dbus_connection_open
+dbus_connection_ref
+dbus_connection_send
+dbus_connection_send_with_reply
+dbus_connection_send_with_reply_and_block
+dbus_connection_setup_with_g_main
+dbus_connection_unref
+dbus_error_free
+dbus_error_init
+dbus_error_is_set
+dbus_g_bus_get
+dbus_g_connection_get_connection
+dbus_g_connection_unref
+dbus_message_append_args
+dbus_message_copy
+dbus_message_get_destination
+dbus_message_get_sender
+dbus_message_get_serial
+dbus_message_get_type
+dbus_message_is_method_call
+dbus_message_is_signal
+dbus_message_iter_append_basic
+dbus_message_iter_init_append
+dbus_message_new_method_call
+dbus_message_new_method_return
+dbus_message_ref
+dbus_message_set_reply_serial
+dbus_message_set_sender
+dbus_message_unref
+dbus_pending_call_set_notify
+dbus_pending_call_steal_reply
+Disconnected
+Error adding match rule: %s: %s
+Error authorizing ourselves to `%s': %s: %s
+Error connecting to `%s': %s: %s
+Error connecting to the system bus: %s
+Error parsing arguments: %s
+failed to read secret
+g_error_free
+GetNameOwner
+GLIBC_2.0
+g_main_loop_new
+g_main_loop_run
+g_main_loop_unref
+g_malloc0
+__gmon_start__
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_printerr
+g_strcmp0
+g_strdup_printf
+g_type_init
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libdbus-1.so.3
+libdbus-glib-1.so.2
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+org.freedesktop.DBus
+org.freedesktop.DBus.Local
+org.freedesktop.UDisks
+/org/freedesktop/UDisks/Client
+org.freedesktop.UDisks.Client
+Port not specified
+RemoveMatch
+secret_buf has length %u
+tcp:host=localhost,port=%d
+TCP port number to connect to
+type='signal',sender='org.freedesktop.UDisks'
+udisks-tcp-bridge: Attempting to connect to port %d
+udisks-tcp-bridge: Waiting for secret
+udisks TCP/IP bridge

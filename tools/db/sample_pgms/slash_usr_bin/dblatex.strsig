@@ -1,0 +1,11 @@
+dblatex.main(base=package_base)
+error.set_errhandler(DebianHandler())
+from contrib.debian.errorhandler import DebianHandler
+from dbtexmf.core import error
+from dbtexmf.dblatex import dblatex
+import os
+import sys
+package_base = r"/usr/share/dblatex"
+# Register the Debian error analyser
+sys.path.append(os.path.realpath(os.path.join(package_base, "lib")))
+#! /usr/bin/env python

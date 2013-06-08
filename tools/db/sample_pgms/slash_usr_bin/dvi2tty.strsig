@@ -1,0 +1,64 @@
+bad option %c
+Bad signature: %d (not 223)
+BOP-command occured inside a page
+/build/buildd/texlive-bin-2009/inst/lib
+Cannot allocate memory
+Cannot create dvi stack
+Cannot create outfile
+Cannot create pipe to pager
+Cannot open dvifile
+Character code out of range, 0..127
+Copyright (C) 1988 M.J.E. Mol 1989, 1990
+ (default).
+%d signature bytes (min. 4)
+@(#) dvi2tty.c  4.1 27/03/90 M.J.E. Mol (c) 1989, 1990
+dvi2tty.c  Copyright (C) 1984, 1985, 1986 Svante Lindahl.
+dvi2tty: warning - stack not empty at eop.
+@(#) dvistuff.c  4.1 27/03/90 M.J.E. Mol (c) 1989, 1990
+__fprintf_chk
+ -Fprog   Pipe output to pager prog.
+ -f       Try to pipe to a pager if output is a tty
+__fxstat
+garbage in argument for option %c
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+__gmon_start__
+Id-byte is not correct: %d
+Illegal op-code found: %d
+_IO_getc
+_IO_putc
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+ -l       Write ''^L'' instead of formfeed between pages.
+mal-formed list of pagenumbers
+Missing beginning-of-page command
+Missing postamble
+Missing post-post command
+Missing preamble
+numeric argument expected for option %c
+ -ofile   Write output to file, else write to stdout.
+only one infile argument allowed
+only one pagelist allowed
+option argument expected for option %c
+Options are:
+ -Plist   Print pages whos sequential number are in list.
+ -plist   Print pages whos TeX-page-number are in list.
+Postamble occured before end-of-page
+Postpost occured before post-command
+Preamble occured inside a page
+ -q       Don't try to pipe to a pager
+ -s       National Swedish/Finnish characters printed as }{|][\
+Stack overflow
+Stack underflow
+__strcat_chk
+__strcpy_chk
+ -u       National Swedish/Finnish characters printed as aaoAAO
+unknown usage error
+Unkown error code
+Usage: %s [ options ] dvifile[.dvi]
+wepPousqlfF
+width arg out of range:16-132
+ -wn      Print the lines with width n characters, default 80.

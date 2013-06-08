@@ -1,0 +1,157 @@
+   -1 .. -9            set block size to 100k .. 900k
+   (1) The compressed data is corrupted, and bzip2's usual checks
+   (1) This computer has unreliable memory or cache hardware
+   (2) A bug in the compiler used to create this executable
+   (2) This computer has unreliable memory or cache hardware
+   (3) A bug in the compiler used to create this executable
+   (3) A real bug in bzip2 -- I hope this should never be the case.
+   (4) A real bug in bzip2 -- I hope this should never be the case.
+%6.3f:1, %6.3f bits/byte, %5.2f%% saved, %s in, %s out.
+	and recompiling.  Bye!
+              as `bunzip2',  default action is to decompress.
+              as `bzcat', default action is to decompress to stdout.
+       (a surprisingly common problem; try a different machine.)
+bad magic number (file not created by bzip2)
+   --best              alias for -9
+__bss_start
+   bug report should have.  If the manual is available on your
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+BZ2_bzlibVersion
+BZ2_bzRead
+BZ2_bzReadClose
+BZ2_bzReadGetUnused
+BZ2_bzReadOpen
+BZ2_bzWrite
+BZ2_bzWriteClose64
+BZ2_bzWriteOpen
+bzip2, a block-sorting file compressor.  Version %s.
+bzip2: file name
+bzip2: I'm not configured correctly for this platform!
+--compress
+   Copyright (C) 1996-2010 by Julian Seward.
+   -c --stdout         output to standard out
+__ctype_b_loc
+data from undamaged sections of corrupted files.
+data integrity (CRC) error in data
+   -d --decompress     force decompression
+--decompress
+decompress:bzReadGetUnused
+decompress:unexpected error
+__errno_location
+--exponential
+       failed to detect this.  Try bzip2 -tvv my_file.bz2.
+   --fast              alias for -1
+   -f --force          overwrite existing output files
+file ends unexpectedly
+__fprintf_chk
+   from standard input to standard output.  You can combine
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+   have the manual or can't be bothered to read it, mail me anyway.
+   -h --help           print this message
+   If invoked as `bzip2', default action is to compress.
+   If no file names are given, bzip2 compresses or decompresses
+   If you suspect this is a bug in bzip2, or are unsure about (1)
+   If you suspect this is a bug in bzip2, or are unsure about (2)
+	Input file = %s, output file = %s
+   in the bzip2-1.0.6 source distribution.
+_IO_stdin_used
+	I require Int32, Int16 and Char to have sizes
+is suspiciously (more than %d chars) long.
+It is possible that the compressed file(s) have become corrupted.
+   it under the terms set out in the LICENSE file, which is included
+	jseward@bzip.org
+_Jv_RegisterClasses
+   -k --keep           keep (don't delete) input files
+libbz2.so.1.0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+--license
+   LICENSE file for more details.
+   -L --license        display software version & license
+__lxstat64
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ no data compressed.
+	of 4, 2 and 1 bytes to run properly, and they don't.
+   or (2), feel free to report it to me at: jseward@bzip.org.
+   or (3), feel free to report it to me at: jseward@bzip.org.
+	perhaps it is corrupted?  *Possible* reason follows.
+   Possible causes are (most likely first):
+	Probably you can fix this by defining them correctly,
+   -q --quiet          suppress noncritical error messages
+--repetitive-best
+--repetitive-fast
+%s: Bad flag `%s'
+%s: -c and -t cannot be used together.
+%s: Can't create output file %s: %s.
+%s: Can't guess original name for %s -- using %s
+%s: Can't open input file %s: %s.
+%s: Can't open input file %s:%s.
+%s: Can't open input %s: %s.
+%s: Caught a SIGSEGV or SIGBUS whilst compressing.
+%s: Caught a SIGSEGV or SIGBUS whilst decompressing.
+%s: Compressed file ends unexpectedly;
+%s: Control-C or similar caught, quitting.
+%s: couldn't allocate enough memory
+%s: Data integrity error when decompressing.
+%s: Deleting output file %s, if it exists.
+%s:    %d specified on command line, %d not processed yet.
+   Section 4.3 of the user's manual describes the info a useful
+%s: For help, type: `%s --help'.
+   short flags, so `-v -4' means the same as -v4 or -4v, &c.
+%s: Input file %s already has %s suffix.
+%s: Input file %s has %d other link%s.
+%s: Input file %s is a directory.
+%s: Input file %s is not a normal file.
+%s: I/O or other error, bailing out.  Possible reason follows.
+%s:    I suggest doing an integrity test (bzip2 -tv) of it.
+%s: I won't read compressed data from a terminal.
+%s: I won't write compressed data to a terminal.
+%s: Output file %s already exists.
+%s: PANIC -- internal consistency error:
+%s: %s: 
+%s:    since input file no longer exists.  Output file
+%s: %s is not a bzip2 file.
+%s: %s is redundant in versions 0.9.5 and above
+   -s --small          use less memory (at most 2500k)
+%s:    `%s' may be incomplete.
+%s: %s: trailing garbage after EOF ignored
+__stack_chk_fail
+--stdout
+(stdout)
+__strcat_chk
+strerror
+%s: WARNING: deletion of output file (apparently) failed.
+%s: WARNING: deletion of output file suppressed
+%s: WARNING: some files have not been processed:
+   system, please try and read it before mailing me.  If you don't
+test:bzReadGetUnused
+testf: bad modes
+testf: bad srcMode
+test:unexpected error
+   The user's manual, Section 4.3, has more info on (1) and (2).
+   The user's manual, Section 4.3, has more info on (2) and (3).
+	This is a BUG.  Please report it to me at:
+   This program is distributed in the hope that it will be useful,
+   This program is free software; you can redistribute it and/or modify
+trailing garbage after EOF ignored
+Try using a reasonable file name instead.  Sorry! :-)
+   -t --test           test compressed file integrity
+uncompress: bad modes
+uncompress: bad srcMode
+       (unlikely, if you didn't compile bzip2 yourself.)
+   usage: %s [flags and input files in any order]
+--verbose
+--version
+   -v --verbose        be verbose (a 2nd -v gives more)
+   -V --version        display software version & license
+__xstat64
+You can use the `bzip2recover' program to attempt to recover
+You can use the -tvv option to test integrity of such files.
+   -z --compress       force compression

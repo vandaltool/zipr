@@ -1,0 +1,47 @@
+# All done.
+#!/bin/sh
+# Capture input file in a tmp file, in case it's a pipe.
+    case "$1" in
+case "$color" in
+# Cat things together.
+cat $@ > $tmp1
+	color="$1"
+	color="-black"
+color="-gofigure"
+	color="-white"
+# Construct spacer files.
+# Copyright (C) 1991 by Jef Poskanzer.
+# copyright notice and this permission notice appear in supporting
+# documentation for any purpose and without fee is hereby granted, provided
+# documentation.  This software is provided "as is" without express or
+    echo "usage: $0 [-white|-black|-color <colorspec>] <size> [pnmfile]" 1>&2
+	    echo "usage: $0 [-white|-black|-color <colorspec>] <size> [pnmfile]" 1>&2
+	echo "usage: $0 [-white|-black|-color <colorspec>] <size> [pnmfile]" 1>&2
+    esac
+    exit 1
+	    exit 1
+    -gofigure )
+	if [ ! ${1-""} ] ; then
+if [ ! ${1-""} ] ; then
+if [ ${2-""} ] ; then
+if [ -d $tmpdir ]; then
+# implied warranty.
+# Parse args.
+    pbmmake $color $size 1 > $tmp2
+# Permission to use, copy, modify, and distribute this software and its
+pnmcat -lr $tmp2 $tmp1 $tmp2 > $tmp4
+pnmcat -tb $tmp3 $tmp4 $tmp3
+    pnmcut 0 0 1 1 $tmp1 | pnmtile $size 1 > $tmp2
+pnmflip -rotate90 $tmp2 > $tmp3
+    ppmmake $color $size 1 > $tmp2
+# ppmmargin - add a margin to a portable anymap
+  rm -rf $tmpdir;
+size="$1"
+# that the above copyright notice appear in all copies and that both that
+tmp1=$tmpdir/tmp1
+tmp2=$tmpdir/tmp2
+tmp3=$tmpdir/tmp3
+tmp4=$tmpdir/tmp4
+tmpdir=$(mktemp -d -t ppmmargin.XXXXXXX) || exit 1 #219019
+while true ; do
+    -white | -black )

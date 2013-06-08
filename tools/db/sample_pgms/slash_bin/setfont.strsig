@@ -1,0 +1,173 @@
+01234567
+0123456789
+0123456789abcdefABCDEF
+0x%02x	U+%04x
+a default font is loaded:
+Appended Unicode map
+appendseparator
+appendunicode: illegal unicode %u
+appendunimap
+Bad character height %d
+Bad character width %d
+Bad input file size
+Bad input line: %s
+bindtextdomain
+bug: getfont called with count<256
+bug: getfont using GIO_FONT needs buf.
+bzip2 -d -c
+Cannot find default font
+Cannot find %s font
+Cannot open font file %s
+Cannot read console map
+Cannot stat map file
+Cannot write font file
+Cannot write font file header
+    -C <cons>  Indicate console device to be used.
+char %03x:
+char %03x: 
+closedir
+# combine partial fonts
+Couldn't get a file descriptor referring to the console
+Couldn't open %s
+__ctype_b_loc
+D$8;D$4u
+dcgettext
+default8x14
+default8x16
+default8x8
+default8x%d
+/dev/console
+/dev/tty
+/dev/tty0
+/dev/vc/0
+D$%/ttyf
+__errno_location
+error executing  %s
+Error parsing symbolic map from `%s', line %d
+Error reading map from file `%s'
+Error writing map to file
+Explicitly (with -m or -u) or implicitly (in the fontfile) given mappings
+Files are loaded from the current directory or %s/*/.
+Found nothing to save
+__fprintf_chk
+getfont: GIO_FONT
+getfont: GIO_FONTX
+getfont: KDFONTOP
+GIO_SCRNMAP
+GIO_UNIMAP
+GIO_UNIMAP(0)
+GIO_UNISCRNMAP
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+gzip -d -c
+Hmm - a font from restorefont? Using the first half.
+    -h<N>      (no space) Override font height.
+If no newfont and no -[o|O|om|ou|m|u] option is given,
+(if you insist: use option -f to override)
+_IO_stdin_used
+__isoc99_sscanf
+kbd 1.15.2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+Loading binary direct-to-font screen map from file %s
+Loading binary unicode screen map from file %s
+Loading %d-char %dx%d (%d) font
+Loading %d-char %dx%d (%d) font from file %s
+Loading %d-char %dx%d font
+Loading %d-char %dx%d font from file %s
+Loading symbolic screen map from file %s
+Loading unicode map from file %s
+Loading Unicode mapping table...
+mapscrn: cannot open map file _%s_
+    -m <fn>    Load console screen map.
+    -m none    Suppress loading and activation of a screen map.
+No final newline in combine file
+    -O  <filename>  Write current font and unicode map to <filename>
+    -o  <filename>  Write current font to <filename>
+    -om <filename>  Write current consolemap to <filename>
+    -ou <filename>  Write current unicodemap to <filename>
+PIO_FONTRESET
+PIO_SCRNMAP
+PIO_UNIMAP
+PIO_UNIMAPCLR
+PIO_UNISCRNMAP
+__printf_chk
+/proc/self/fd/0
+putfont: KDFONTOP
+putfont: PIO_FONT
+putfont: PIO_FONT trying ...
+putfont: PIO_FONTX
+Read %d-char %dx%d font from file %s
+Reading font file %s
+Saved %d-char %dx%d font file on %s
+Saved screen map in `%s'
+Saved unicode map on `%s'
+%s: background will look funny
+%s: Bad call of readpsffont
+%s: Bad end of range (0x%x)
+%s: Bad Unicode range corresponding to font position range 0x%x-0x%x
+%s: bad utf8
+%s: bug in do_loadtable
+%s: Error reading input font
+    setfont -{8|14|16} codepage.cp[.gz]   Load 8x<N> font from codepage.cp
+setfont: cannot both restore from character ROM and from file. Font unchanged.
+setfont: graphics console %s skipped
+    setfont         Load font "default[.gz]"
+    setfont -<N>    Load font "default8x<N>[.gz]"
+setfont: too many input files
+setlocale
+%s: font position 32 is nonblank
+%s from %s
+%s: Glyph number (0x%x) larger than font length
+%s: Input file: bad input length (%d)
+%s: Input file: trailing garbage
+%s: not loading empty unimap
+__snprintf_chk
+%s: out of memory
+__sprintf_chk
+%s: putfont: %d,%dx%d:  failed: %d
+%s: putfont: %d,%dx%d:failed: %d
+%s: short ucs2 unicode table
+%s: short unicode table
+%s: short utf8 unicode table
+%s: %s: Warning: line too long
+__stack_chk_fail
+%s: trailing junk (%s) ignored
+strange... ct changed from %d to %d
+__strcpy_chk
+__strdup
+%s: Unicode range U+%x-U+%x not of the same length as font position range 0x%x-0x%x
+%s: unknown utf8 error
+%s: Unsupported psf file mode (%d)
+%s: Unsupported psf version (%d)
+%s: zero input character size?
+%s: zero input font length?
+The -<N> option selects a font from a codepage that contains three fonts:
+This file contains 3 fonts: 8x8, 8x14 and 8x16. Please indicate
+Too many files to combine
+_to_uni.trans
+    -u <fn>    Load font unicode map.
+    -u none    Suppress loading of a unicode map.
+Usage: setfont [write-options] [-<N>] [newfont..] [-m consolemap] [-u unicodemap]
+using an option -8 or -14 or -16 which one you want loaded.
+/usr/share
+/usr/share/consolefonts/
+/usr/share/consolefonts/partialfonts/
+/usr/share/consoletrans/
+/usr/share/locale
+/usr/share/unimaps/
+    -v         Be verbose.
+    -V         Print version and exit.
+When loading several fonts, all must be psf fonts - %s isn't
+When loading several fonts, all must have the same height
+When loading several fonts, all must have the same width
+will be loaded and, in the case of consolemaps, activated.
+  write-options (take place before file loading):
+|$ ;\$Xu
+You asked for font size %d, but only 8, 14, 16 are possible here.

@@ -1,0 +1,126 @@
+0 <= opt_fileno && opt_fileno < (sizeof (stdbuf) / sizeof *(stdbuf))
+0 <= strtol_base && strtol_base <= 36
+%50s %50s
+Also some filters (like `dd' and `cat' etc.) don't use streams for I/O,
+and are thus unaffected by `stdbuf' settings.
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+bindtextdomain
+bug-coreutils@gnu.org
+CHARSETALIASDIR
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_toupper_loc
+__cxa_atexit
+dcgettext
+draig Brady
+  -e, --error=MODE   adjust standard error stream buffering
+EGkKMPTYZ0
+__errno_location
+failed to find %s
+failed to run command %s
+failed to update the environment with %s
+For complete documentation, run: info coreutils '%s invocation'
+for e.g.) then that will override corresponding settings changed by `stdbuf'.
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+iconv_close
+iconv_open
+If MODE is `0' the corresponding stream will be unbuffered.
+If MODE is `L' the corresponding stream will be line buffered.
+  -i, --input=MODE   adjust standard input stream buffering
+In this case the corresponding stream will be fully buffered with the buffer
+invalid mode %s
+_IO_stdin_used
+iswalnum
+iswprint
+iswspace
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+KB 1000, K 1024, MB 1000*1000, M 1024*1024, and so on for G, T, P, E, Z, Y.
+LD_PRELOAD
+LD_PRELOAD=%s
+LD_PRELOAD=%s:%s
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libstdbuf.so
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+line buffering stdin is meaningless
+Mandatory arguments to long options are mandatory for short options too.
+mbiter.h
+mbiter_multi_next
+mbsinit (&iter->state)
+mbuiter.h
+mbuiter_multi_next
+memory exhausted
+missing operand
+nl_langinfo
+NOTE: If COMMAND adjusts the buffering of its standard streams (`tee' does
+  -o, --output=MODE  adjust standard output stream buffering
+Otherwise MODE is a number which may be followed by one of the following:
+Padraig Brady
+__printf_chk
+/proc/self/exe
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+readlink
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+Run COMMAND, with modified buffering operations for its standard streams.
+%s, and %s.
+%s%c=%llu
+setlocale
+shell-always
+%s home page: <%s>
+size set to MODE bytes.
+__snprintf_chk
+__sprintf_chk
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+_STDBUF_
+stdbuf.c
+__strdup
+__strtoull_internal
+t$dkT$$,
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+This option is invalid with standard input.
+Try `%s --help' for more information.
+Usage: %s OPTION... COMMAND
+/usr/lib
+/usr/lib/coreutils
+/usr/share/locale
+      --version  output version information and exit
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+__xstat64
+xstrtol.c
+xstrtoumax

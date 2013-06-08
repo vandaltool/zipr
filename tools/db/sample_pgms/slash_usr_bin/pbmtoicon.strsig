@@ -1,0 +1,24 @@
+0123456789abcdef
+__bss_start
+, Depth=1, Valid_bits_per_item=16
+/* Format_version=1, Width=%d, Height=%d
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+overflow_add
+[pbmfile]
+pbm_init
+pbm_readpbminit
+pbm_readpbmrow
+pm_allocrow
+pm_close
+pm_openr
+pm_usage
+__printf_chk

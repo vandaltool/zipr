@@ -1,0 +1,29 @@
+bad code word at row %d, col %d (len %d code 0x%x), skipping to EOL
+__bss_start
+D$D+T$D9t$Ht
+EOF / read error at line %d
+GLIBC_2.0
+__gmon_start__
+internal bad poop
+internal error: addtohash fatal hash collision
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+[-kludge][-reversebits][-stretch] [g3file]
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pbm_init
+pbm_writepbminit
+pbm_writepbmrow
+pm_allocrow
+pm_close
+pm_error
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+-reversebits
+-stretch
+T$,+L$,9t$(t

@@ -1,0 +1,37 @@
+    $as_unset $as_var
+$AWK -f "${DIR}/et_c.awk" "outfile=${BASE}.c.$$" "outfn=${BASE}.c" "$ROOT.et"
+$AWK -f "${DIR}/et_h.awk" "outfile=${BASE}.h.$$" "outfn=${BASE}.h" "$ROOT.et"
+AWK=/usr/bin/awk
+BASE=`basename $ROOT`
+#!/bin/sh
+    chmod -w ${BASE}.c
+    chmod -w ${BASE}.h
+datarootdir=/usr/share
+DIR="${DIR-/usr/share/et}"
+    DIR="$ET_DIR"
+	echo "compile_et: Couldn't find compile_et's template files."
+    echo "compile_et: $ROOT.et: File not found"
+#    echo "Falling back to $DIR..."
+    echo "Usage: compile_et file"
+ET_DIR="/build/buildd/e2fsprogs-1.42/lib/et"
+    eval $as_var=C; export $as_var
+    exit 1
+    exit 1;
+for as_var in \
+  if (set +x; test -z "`(eval $as_var=C; export $as_var) 2>&1`"); then
+if test "$1" = "--build-tree" ; then
+if test -f ${BASE}.c && cmp -s ${BASE}.c.$$ ${BASE}.c ; then
+if test -f ${BASE}.h && cmp -s ${BASE}.h.$$ ${BASE}.h ; then
+    if test ! -f "$DIR/et_h.awk" || test ! -f "$DIR/et_c.awk" ; then
+if test ! -f "$DIR/et_h.awk" || test ! -f "$DIR/et_c.awk" ; then
+if test ! -f "$ROOT.et" ; then
+if test "x$1" = x ; then
+  LANG LANGUAGE LC_ADDRESS LC_ALL LC_COLLATE LC_CTYPE LC_IDENTIFICATION \
+  LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER \
+  LC_TELEPHONE LC_TIME
+    mv -f ${BASE}.c.$$ ${BASE}.c
+    mv -f ${BASE}.h.$$ ${BASE}.h
+    rm -f ${BASE}.c.$$
+    rm -f ${BASE}.h.$$
+ROOT=`echo $1 | sed -e s/.et$//`
+    shift;

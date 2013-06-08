@@ -1,0 +1,72 @@
+__assert_fail
+bad group ID `%d' for user `%s': %s
+bad user ID `%d' for user `%s': %s
+BASH_ENV=
+bindtextdomain
+Cannot determine the user name of the caller (UID %lu)
+Can't execute /usr/bin/passwd
+  Choose a new password.
+closelog
+  Contact the system administrator.
+dcgettext
+endgrent
+endpwent
+endsgent
+endspent
+__environ
+Environment overflow
+__errno_location
+/etc/gshadow
+fgetsgent
+__fprintf_chk
+getlogin
+getpwnam_r
+getpwuid_r
+getsgnam
+getspnam
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+initgroups
+initgroups failed for user `%s': %s
+_IO_putc
+_IO_stdin_used
+KRB_CONF=
+LANGUAGE=
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+LIBPATH=
+malloc(%d) failed
+NLSPATH=
+__printf_chk
+putsgent
+%s: Cannot determine your user name.
+setlocale
+setsgent
+sgetsgent
+SHLIB_PATH=
+__snprintf_chk
+%s: out of memory
+__stack_chk_fail
+__strdup
+strerror
+__strncpy_chk
+__syslog_chk
+Usage: expiry {-f|-c}
+/usr/share/locale
+wlen == (int) len -1
+wlen < (int) sizeof(variable)
+xgetpwnam
+xgetpwuid
+You may not change $%s
+You must change your password.
+Your login has expired.
+Your password has expired.
+Your password is inactive.
+Your password will expire in %ld days.
+Your password will expire today.
+Your password will expire tomorrow.

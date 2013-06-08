@@ -1,0 +1,252 @@
+%-16s - %16s
+   %-23s = format mismatch (%d)
+%-32s	id: %ld	type: %-10s
+Absolute
+AbsWheel2Down
+AbsWheel2Up
+AbsWheelDown
+AbsWheelUp
+backspace
+Bezier curve for pressure (default is 0 0 100 100 [linear]). 
+Binds this device to the serial number.
+BindToSerial
+__bss_start
+... Button map %d [%s,%s]
+Button number does not exist on device.
+Cannot find device '%s'.
+Cannot parse keyword '%s' at position %d
+Capacity
+... Checking device '%s' (%ld).
+ClickForce
+Commands:
+CommonDBG
+connected
+Control_L
+Control_R
+Coordinate Transformation Matrix
+... CRTC (%dx%d) %dx%d
+__ctype_b_loc
+... Current transformation matrix:
+CursorProx
+CursorProximity
+... custom get func for param
+%d.%d.%d
+ -d, --display "display"    - override default display
+... Desktop width: %d, height: %d
+... Device '%s' (%ld) found.
+disconnnected
+... Display is '%s'.
+displaytoggle
+displaytoggle 
+__errno_location
+Failed to open Display %s.
+... 	[ %f %f %f ]
+... Found device '%s' (%ld).
+Found %d screens, but you requested number %d.
+... Found output '%s' (%s)
+__fprintf_chk
+ --get "device name" parameter [param...]  - get current device parameter(s) value by name
+getopt_long
+... 'get' requested for '%s'.
+GetTabletID
+... Getting button map for device %ld.
+... Getting mode for device %ld.
+... Getting property %ld, offset %d
+... Getting rotation for device %ld.
+Get value for all parameters. 
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ -h, --help                 - usage
++hvVd:sx
+Incorrect number of arguments supplied.
+Invalid device mode. Use 'Relative' or 'Absolute'.
+Invalid key '%s'.
+Invalid offset into %s property.
+_IO_stdin_used
+Its use has been deprecated.
+It was replaced with '%s'.
+_Jv_RegisterClasses
+... Key map %ld (%d, '%s') [%s,%s]
+Level of debugging statements applied to shared code paths between all tools associated with the same tablet (default is 0 [off]). 
+Level of debugging trace for individual tools (default is 0 [off]). 
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libX11.so.6
+libXinerama.so.1
+libXi.so.6
+libXrandr.so.2
+ --list devices             - display detected devices
+ --list modifiers           - display supported modifier and specific keys for keystrokes
+ --list parameters          - display supported parameters
+... 'list' requested.
+... Mapping %s for device %ld.
+Map the device to the given output. 
+MapToOutput
+Minimum distance for a zoom gesture (default is 50). 
+Minimum motion before sending a scroll gesture (default is 20). 
+Minimum time between taps for a right click (default is 250). 
+modetoggle
+modetoggle 
+modifiers
+Non-rectangular transformation matrix detected.
+Note: The "core" keyword is not supported anymore and will be ignored.
+Number of points trimmed (default is 2). 
+Number of raw data used to filter the points (default is 4). 
+NV-CONTROL
+Option "%s" "
+Options:
+parameters
+Parameter '%s' is no longer in use. 
+PressCurve
+PressureCurve
+__printf_chk
+Property for '%s' has no or wrong value - this is a bug.
+Property for '%s' has unexpected type - this is a bug.
+Property for '%s' not available.
+Property offset doesn't exist.
+Property offset doesn't exist, this is a bug.
+Property '%s' does not exist on device.
+Property '%s' in an unexpected format. This is a bug.
+... RandR extension not found, too old, or NV-CONTROL extension is also present.
+RawFilter
+RawSample
+Relative
+RelWheelDown
+RelWheelUp
+... Remapping to next available output.
+... Remapping to output area %dx%d @ %d,%d.
+ResetArea
+Resets the bounding coordinates to default in tablet units. 
+Returns the serial number of the current device in proximity.
+Returns the serial number of the previous device in proximity.
+Returns the tablet ID of the associated device. 
+Returns the tool ID of the current tool in proximity.
+Returns the tool type of the associated device. 
+... Rotate '%s' for device %ld.
+ScrollDistance
+Server does not support transformation
+ --set "device name" parameter [values...] - set device parameter by name
+... Set mode '%s' for device %ld.
+... 'set' requested for '%s'.
+Sets cursor distance for proximity-out in distance from the tablet (default is 10 for Intuos series, 42 for Graphire series). 
+Sets the rotation of the tablet. Values = none, cw, ccw, half (default is none). 
+Sets tip/eraser pressure threshold (default is 27). 
+... Setting CRTC %s
+... Setting xinerama head %d
+'%s' is a read-only option.
+'%s' is a write-only option.
+'%s' is not a valid button number.
+'%s' is not a valid value for the '%s' property.
+... '%s' (%ld) is not a wacom device.
+__sprintf_chk
+'%s' requires exactly %d value(s).
+ -s, --shell                - generate shell commands for 'get'
+__stack_chk_fail
+strcasecmp
+__strcat_chk
+__strdup
+StripLeftDown
+StripLeftUp
+StripRightDown
+StripRightUp
+strncasecmp
+Switches cursor movement mode (default is absolute). 
+TabletDebugLevel
+TabletPCButton
+To ensure the correct one is selected, please use the device ID instead.
+Too few arguments provided.
+ToolDebugLevel
+ToolSerial
+ToolSerialPrevious
+ToolType
+TPCButton
+... Transformation matrix:
+Turns on/off multi-touch gesture events (default is on). 
+Turns on/off Tablet PC buttons (default is off for regular tablets, on for Tablet PC). 
+Turns on/off Touch events (default is on). 
+Unable to find an output '%s'.
+Unable to find output '%s'. Output may not be connected.
+Unable to get screen mapping. Xinerama extension not found
+Unable to locate device.
+Unable to locate property '%s'
+Unable to reallocate memory.
+Unable to set screen mapping. Xinerama extension not found
+unknown argument to list.
+Unknown parameter name '%s'.
+... unknown type %d
+Usage: xsetwacom [options] [command [arguments...]]
+Valid tablet area in device coordinates. 
+__vfprintf_chk
+ -v, --verbose              - verbose output
+ -V, --version              - version info
+Wacom button action %d
+Wacom Button Actions
+Wacom Debug Levels
+Wacom Enable Touch
+Wacom Enable Touch Gesture
+Wacom Hover Click
+Wacom Pressurecurve
+Wacom Pressure Threshold
+Wacom Proximity Threshold
+Wacom Rotation
+Wacom Sample and Suppress
+Wacom Serial ID binding
+Wacom Serial IDs
+Wacom Strip Buttons
+Wacom Tablet Area
+Wacom Tool Type
+Wacom Touch Gesture Parameters
+Wacom Wheel Buttons
+Warning: There are multiple devices named "%s".
+X11 event to which absolute wheel down should be mapped. 
+X11 event to which absolute wheel up should be mapped. 
+X11 event to which left strip down should be mapped. 
+X11 event to which left strip up should be mapped. 
+X11 event to which relative wheel down should be mapped. 
+X11 event to which relative wheel up should be mapped. 
+X11 event to which right strip down should be mapped. 
+X11 event to which right strip up should be mapped. 
+X11 event to which the given button should be mapped. 
+XChangeDeviceProperty
+XCloseDevice
+XCloseDisplay
+XDeleteDeviceProperty
+XFreeDeviceList
+XGetAtomName
+XGetDeviceButtonMapping
+XGetDeviceProperty
+Xinerama failed to query screens.
+XineramaQueryExtension
+XineramaQueryScreens
+XInternAtom
+XkbGetKeyboard
+XkbGetState
+XKeycodeToKeysym
+XKeysymToString
+XListDeviceProperties
+XListInputDevices
+XOpenDevice
+XOpenDisplay
+XParseGeometry
+XQueryExtension
+XRRFreeCrtcInfo
+XRRFreeScreenResources
+XRRGetCrtcInfo
+XRRGetOutputInfo
+XRRGetScreenResources
+XRRQueryVersion
+XSetDeviceButtonMapping
+XSetDeviceMode
+xsetwacom set "%s" "%s" "
+XStringToKeysym
+ -x, --xconf                - generate xorg.conf lines for 'get'
+xyDefault
+%zd modifiers are supported:
+%zd specialkeys are supported:
+ZoomDistance

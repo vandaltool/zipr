@@ -1,0 +1,484 @@
+-----------------------------------------------
+ 0x%lx	; name=%s, addr=0x%lx
+%4.0f%% 
+%5.1f %10.2f %8.2f
+%5.5s %10.10s %8.8s %8.8s %8.8s %8.8s  %-8.8s
+%5.5s %9.9s  %8.8s %8.8s %8.8s %8.8s  %-8.8s
+%6.2f %9.2f %8.2f
+%6.6s %-19.19s
+%-6.6s %5.1f %7.2f %11.2f
+%-6.6s %5.1f %7.2f %11.2f %7lu
+%-6.6s %5.1f %7.2f %7.2f
+%-6.6s %5.1f %7.2f %7.2f %7lu
+%6.6s %5.5s %7.2f %11.2f %7lu
+%6.6s %5.5s %7.2f %11.2f %7lu/%-7lu     
+%6.6s %5.5s %7.2f %7.2f %7lu
+%6.6s %5.5s %7.2f %7.2f %7lu/%-7lu     
+%6.6s %5.5s %7.7s %11.11s %7.7s/%-7.7s     %-8.8s
+%-6.6s %5.5s %7.7s %11.11s %7.7s+%-7.7s %-8.8s	%5.5s
+%6.6s %5.5s %7.7s %11.11s %7.7s %7.7s     <spontaneous>
+%6.6s %5.5s %7.7s %11.11s %7lu %7.7s     
+%6.6s %5.5s %7.7s %7.7s %7.7s %7.7s     <spontaneous>
+%6.6s %5.5s %7.7s %7.7s %7lu %7.7s     
+ %7.7s %7.7s 
+ %8.8s %8.8s %8.8s  
+ %8lu %8.2f %8.2f  
+%9.2f   Average executions per line
+%9.2f   Percent of the file executed
+9D$0tI;\$4v
+%9d %10lu
+%9ld   Executable lines in this file
+%9ld   Lines executed
+%9lu   Total number of line executions
+9T$,r[vc
+aA::bBcC::d::De:E:f:F:hiI:J::k:lLm:n:N:O:p::P::q::Q::rR:sS:t:Tvw:xyzZ::
+		a `+' and the number of recursive calls.
+absolute
+          accounted for by this function and its
+ (addr=%lx)
+all-lines
+          all of its parents.  This is the denominator of
+ All rights reserved.
+ and the lines below it list the functions this one called.
+>[annotate_source]: looking for %s, trying %s
+[arc_add] %lu arcs from %s to %s
+[arc_lookup] parent == 0 || child == 0
+[arc_lookup] parent %s child %s
+[arc_lookup]	 parent %s child %s
+          as an aid to locating it.
+[assign_samples] [0x%lx,0x%lx) %s gets %f ticks %ld overlap
+[assign_samples] bin_low_pc=0x%lx, bin_high_pc=0x%lx, bin_count=%u
+[assign_samples] total_time %f
+autodecrement
+autoincrement
+autoincrement deferred
+Based on BSD gprof, copyright 1983 Regents of the University of California.
+[bb_read_rec] 0x%lx->0x%lx (%s:%d) cnt=%lu
+B[cg_tally] arc from %s to %s traversed %lu times
+		between the name and the index number.
+bfd_arch_bits_per_address
+bfd_check_format
+bfd_demangle
+bfd_errmsg
+bfd_get_arch
+bfd_get_arch_size
+bfd_get_error
+bfd_get_section_by_name
+bfd_get_section_contents
+bfd_get_sign_extend_vma
+bfd_openr
+bfd_perror
+bfd_printable_name
+bindtextdomain
+__bss_start
+          by a call count of 0.
+byte displacement
+byte displacement deferred
+byte relative
+byte relative deferred
+called**  the number of times this child is called by this
+called**  the number of times this function is called by
+called    the number of times this function is called (other
+     called	This is the number of times the function called
+     called	This is the number of times the function was called.
+     called	This is the number of times this parent called the
+			Call graph
+		     Call graph (explanation follows)
+call graph profile:
+calls      the number of times this function was invoked, if
+%c%c/call
+[cg_assemble] 
+[cg_assemble] topological sort listing
+[cg_read_rec] frompc 0x%lx selfpc 0x%lx count %lu
+-> cg.top_order = %d
+[cg_write_arcs] frompc 0x%lx selfpc 0x%lx count %lu
+ child->addr 0x%lx
+ child->name %s
+children
+          children) in the same cycle as the function.  If
+          children listings:
+children  the name of this child, and an indication of its
+     children	This is the amount of time that was propagated from
+     children	This is the amount of time that was propagated from the
+     children	This is the total amount of time propagated into this
+		child's children to the function.
+[cmp_arc] 
+@(#) Copyright (c) 1983 Regents of the University of California.
+[core_create_function_syms] %ld %s 0x%lx
+[core_create_function_syms] rejecting: 0x%lx %s
+[core_create_line_syms] %lu %s 0x%lx
+[core_sym_class] %s is of class %c
+[core_sym_class] %s: not a function
+_coroutine
+cplus_demangle_name_to_style
+cplus_demangle_set_style
+cumulative
+cumulative a running sum of the number of seconds accounted
+          cycle as a whole.
+ cycle (as parents) and the members of the cycle (as children.)
+ <cycle %d>
+ <cycle %d as a whole> [%d]
+[cycle_link] 
+          cycle listings:
+		cycle, the cycle number is printed between the
+D$,9D$4w
+	%d basic-block count record
+	%d basic-block count records
+[dbg_sym_lookup] address 0x%lx
+[dbg_sym_lookup] binary search fails???
+[dbg_sym_lookup] low=0x%lx, mid=0x%lx, high=0x%lx
+[dbg_sym_lookup] sym[m]=0x%lx sym[m + 1]=0x%lx
+	%d call-graph record
+	%d call-graph records
+dcgettext
+	[--demangle[=STYLE]] [--no-demangle] [--external-symbol-table=name] [@FILE]
+descendants
+descendent*
+descendents
+          descendents.
+descendents*
+          descendent time which is due to calls from this
+	dest_pc=0x%lx, (name=%s, addr=0x%lx)
+	destpc 0x%lx (%s)
+[dfn] dfn( 
+	%d histogram record
+	%d histogram records
+		different viewpoints, functions excluded by options, etc,
+directory-path
+	[--directory-path=dirs] [--display-unused-functions]
+display-unused-functions
+	[-d[num]] [-k from/to] [-m min-count] [-t table-length]
+[dumpsum] frompc 0x%lx selfpc 0x%lx count %lu
+ Each entry in this table consists of several lines.  The line with the
+Each sample counts as %g %s.
+	   else blank.
+ ends up with printflag %d and prop-fract %f
+ entry for the cycle-as-a-whole.  This entry shows who called the
+__errno_location
+EXCL_ANNO
+EXCL_ARCS
+EXCL_EXEC
+EXCL_FLAT
+EXCL_GRAPH
+EXCL_TIME
+Execution Summary:
+external-symbol-table
+external-symbol-table: %s
+ %f + %f %lu/%lu
+ fields are blank.
+          fields as a function entry.  Below it are listed
+file-format
+	[--file-format=name] [--file-info] [--help] [--line] [--min-count=n]
+file-info
+filename_cmp
+file-ordering
+*** File %s:
+File `%s' (version %d) contains:
+[find_call] 0x%lx: bsr
+[findcall]	0x%lx:call
+[find_call] 0x%lx: callf
+[findcall]	0x%lx:callf
+[findcall]	0x%lx:calls
+[find_call] 0x%lx: jal
+[find_call] 0x%lx: jalr
+[find_call] 0x%lx: jsr%s <indirect_child>
+[findcall]	but it's a botch
+[findcall]	destpc 0x%lx
+[find_call] %s: 0x%lx to 0x%lx
+[findcall] %s: 0x%lx to 0x%lx
+[find_cycle] 
+[find_cycle] and its tail 
+[find_cycle] couldn't find head of cycle
+[find_cycle] dfn_depth %d cycle_top %d 
+[find_cycle] glommed, but not to head
+[find_cycle] glomming 
+[find_cycle] new cyclehead 
+[find_cycle] tail 
+	first operand is %s
+flat profile:
+ for %.2f%% of %.2f %s
+ for %.2f%% of %.2f seconds
+ for that member, how many times it was called from other members of
+ For the function's children, the fields have the following meanings:
+ For the function's parents, the fields have the following meanings:
+          for this listing.
+           for this listing. The index shows the location of
+__fprintf_chk
+          fraction which divides up the function's time to
+		from the child into the function.
+		from the function into this parent.
+          function.
+		function by its children.
+          function entries:
+	   function is profiled, else blank.
+function-ordering
+	[--function-ordering] [--file-ordering]
+		function's name and the index number.
+          functions.  This is the denominator of the
+		function `/' the total number of times the function
+          function.  This is the numerator of the
+getopt_long
+[get_src_info] 0x%lx -> %s:%d (%s)
+[get_src_info] no info for 0x%lx (%s:%d,%s)
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+gmon.out
+[gmon_out_read] frompc 0x%lx selfpc 0x%lx count %lu
+[gmon_out_read] lowpc 0x%lx highpc 0x%lx ncnt %d
+[gmon_out_read] samp_bytes %d hist_num_bins %d
+__gmon_start__
+gmon.sum
+(GNU Binutils for Ubuntu) 2.22
+___gnu_compiled
+GNU gprof %s
+_gprof_mcount
+GPROF_PATH
+granularity: each sample hit covers %ld byte(s)
+[hist_read_rec] 0x%lx: %u
+[hist_read_rec] n_lowpc 0x%lx n_highpc 0x%lx ncnt %u
+<http://www.sourceware.org/bugzilla/>
+		If the function called itself recursively, the number
+ If the parents of the function cannot be determined, the word
+ If there are any cycles (circles) in the call graph, there is an
+ignore-non-functions
+	[image-file] [profile-file...]
+immediate
+INCL_ANNO
+INCL_ARCS
+INCL_EXEC
+INCL_FLAT
+INCL_GRAPH
+INCL_TIME
+		included in the number after the `/'.
+     index	A unique number given to each element of the table.
+Index by function name
+ index number at the left hand margin lists the current function.
+		Index numbers are sorted numerically.
+index     the index of the function in the call graph
+index     the index of this child in the call graph listing,
+index     the index of this parent in the call graph
+index %% time    self  children    called     name
+<indirect child>
+inherits print-flag %d and prop-fract %f
+	   in parenthesis it shows where it would appear in
+		in this function and its children.  Note that due to
+_IO_putc
+_IO_stdin_used
+ is the head of cycle %d
+		it is easier to look up where the function in the table.
+          itself.
+          its membership in a cycle, if any.
+          its parents.
+_Jv_RegisterClasses
+L$<3L$$1
+l$@9l$0v
+l$`9l$8s
+l$$9l$ v
+libbfd-2.22-system.so
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+     Line      Count
+		listed in the number after the `/'.
+           listing.
+          listing, as an aid in locating it.
+          listing, as an aid to locating it.
+          listing, as an aid to locating it (see below).
+long displacement
+long displacement deferred
+long relative
+long relative deferred
+[main] debug-level=0x%x
+__mcleanup
+__mcount
+__mcount_internal
+		member of a cycle, the cycle number is printed
+		member of a cycle, the cycle number is printed between
+          membership in a cycle, if any.
+min-count
+ms/call    function and its descendents per call, if this 
+ms/call    function per call, if this function is profiled,
+     name	The name of the current function.  The index number is
+name       the name of the function.  This is the minor sort
+name      the name of the function, with an indication of
+     name	This is the name of the child.  The child's index
+     name	This is the name of the parent.  The parent's index
+no-annotated-source
+	[--[no-]annotated-source[=name]] [--[no-]exec-counts[=name]]
+no-demangle
+no-exec-counts
+no-flat-profile
+	[--[no-]flat-profile[=name]] [--[no-]graph[=name]]
+no-graph
+<non-existent-file>
+no-static
+	[--no-static] [--print-path] [--separate-files]
+No symbols in 
+ no time accumulated
+	[--[no-]time=name] [--all-lines] [--brief] [--debug[=level]]
+ no time propagated
+		number is printed after it.  If the child is a
+		number is printed after it.  If the parent is a
+		only includes non-recursive calls, and is followed by
+out of memory
+          parent.
+          parent listings:
+          parent's membership in a cycle, if any.
+parents   the name of this parent, with an indication of the
+[parse_id] %s -> 
+[post_visit]	%d: 
+[post_visit]		is part of a cycle
+[post_visit]		member 
+[pre_visit]		%d:
+		printed after it.  If the function is a member of a
+__printf_chk
+print-path
+[propagate] toporder botches
+          propagation fraction.
+          propagation fraction for this child.
+[prop_flags] 
+[prop_flags] time %f propself %f print_time %f
+[prop_time] child 	
+[prop_time] parent	
+[prop_time] share %f
+          recursively.
+register
+register deferred
+[reladdr] not relative address
+Report bugs to %s
+          represent the self time and descendent time of the
+%s: address size has unexpected value of %u
+[scale_and_align_entries] pushing 0x%lx to 0x%lx
+%s: can't do -c
+%s: can't find .text section in %s
+_sch_istable
+%s: -c not supported on architecture %s
+%s: could not locate `%s'
+?%s: could not open %s.
+%s %c %s
+%s: different scales in histogram records
+%s: dimension abbreviation changed between histogram records
+%s: dimension unit changed between histogram records
+ (%s:%d @ %lx)
+%s: don't know how to deal with file format %d
+%s:%d: (%s:0x%lx) %lu executions
+	second operand is %s
+ seconds   for by this function and those listed above it.
+seconds    function alone.  This is the major sort for this
+ self      the average number of milliseconds spent in this
+ self      the number of seconds accounted for by this
+self*     the number of seconds of this child's self time
+self*     the number of seconds of this function's self time
+self      the number of seconds spent in this function
+self      the number of times this function calls itself
+     self	This is the amount of time that was propagated directly
+     self	This is the total amount of time spent in this function.
+separate-files
+%s: error: too many @-files encountered
+setitimer
+%s: file '%s' does not appear to be in gmon.out format
+%s: file `%s' has bad magic cookie
+%s: file `%s' has no symbols
+%s: file `%s' has unsupported version %d
+%s: file too short to be a gmon file
+%s: found a symbol that covers several histogram records
+%s: from '%c'
+%s: from '%s'
+%s: gmon.out file is missing call-graph data
+%s: gmon.out file is missing histogram
+%s: incompatible with first gmon file
+%s: Only one of --function-ordering and --file-ordering may be specified.
+%s: overlapping histogram records
+ `<spontaneous>' is printed in the `name' field, and all the other
+__sprintf_chk
+%s: profiling rate incompatible with first gmon file
+%s: ran out room for %lu bytes of text space
+%s: %s: found bad tag %d (file corrupted?)
+%s: %s: not in executable format
+%s: somebody miscounted: ltab.len=%d instead of %ld
+%s: sorry, file format `prof' is not yet supported
+%s: %s: %s
+%s: %s: unexpected end of file
+%s: %s: unexpected EOF after reading %u of %u samples
+__stack_chk_fail
+static-call-graph
+	[--static-call-graph] [--sum] [--table-length=len] [--traditional]
+          ** static-only parents and children are indicated
+%s: to '%c'
+%s: to '%s'
+__strcat_chk
+__strcpy_chk
+__strdup
+%s: unable to parse mapping file %s.
+%s: unexpected EOF after reading %d/%d bins
+%s: unknown demangling style `%s'
+%s: unknown file format %s
+%s: warning: ignoring basic-block exec counts (use -l or --line)
+[sym_id_parse]: arc %s:%s(%lx-%lx) -> %s:%s(%lx-%lx) to %s
+[sym_id_parse] syms[%s]:
+[sym_lookup] %d probes (symtab->len=%u)
+[sym_lookup] %d (%u) probes, fall off
+[symtab_finalize] 0x%lx-0x%lx	%s
+[symtab_finalize] favor %s@%c%c over %s@%c%c
+[symtab_finalize]: removed %d duplicate entries
+table-length
+[tally] hit %lu += %lu
+          than recursive calls).
+ the cycle.
+          the cycle as a whole is listed with the same
+	   the function in the gprof listing. If the index is
+          the function (or child) is a member of a cycle,
+		the function's children into this parent.
+	   the gprof listing if it were to be printed.
+		The index number is printed next to every function name so
+ The lines above it list the functions that called this function,
+          the members of the cycle, and their contributions
+		the name and the index number.
+          the number of seconds of this child's descendent's
+          the number of seconds of this function's
+          the number of seconds spent in the descendents of
+ %         the percentage of the total running time of the
+          the propagated times and propagation denominator
+          the propagation fraction.
+ The `+' recursive calls entry shows the number of function calls that
+          * these fields are omitted for parents (or
+		these numbers will NOT add up to 100%.
+          The sum of self and descendents is the major sort
+ the total amount of time spent in each function and its children.
+		this child `/' the total number of times the child
+           this function is profiled, else blank.
+          this function on behalf of this function.
+ This line lists:
+          this parent.  This is the numerator of the
+This program is free software.  This program has absolutely no warranty.
+ This table describes the call tree of the program, and was sorted by
+time is in ticks, not seconds
+time       program used by this function.
+%time     the percentage of the total time of the program
+     % time	This is the percentage of the `total' time that was spent
+          time which is due to being called by this
+Top %d Lines:
+ total     the average number of milliseconds spent in this
+total*    the number of times this child is called by all
+total*    the number of times this function was called by
+          to the time and call counts of the cycle.
+traditional
+T$t3T$|3D$x	
+<unknown>
+Usage: %s [-[abcDhilLsTvwxyz]] [-[ACeEfFJnNOpPqSQZ][name]] [-I dirs]
+/usr/share/locale
+	[--version] [--width=n] [--ignore-non-functions]
+		was called.  Recursive calls by the child are not
+		was called.  Recursive calls to the function are not
+ were internal to the cycle, and the calls entry for each member shows,
+          which is due to being called by this function.
+          which is due to calls from this parent.
+ with %f %f %lu/%lu
+word displacement
+word displacement deferred
+word relative
+word relative deferred
+xmalloc_set_program_name
+xrealloc

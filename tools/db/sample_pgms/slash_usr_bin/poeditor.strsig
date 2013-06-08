@@ -1,0 +1,1746 @@
+                
+             #  
+         ...    
+        .       
+        ...     
+       ...      
+      .. ..     
+      ...       
+      .....     
+      ...+      
+     ...        
+     .......    
+     .....+     
+     ++ . ++  ++
+    .        #  
+    .........   
+    ...+ ..+    
+    ...+ .+     
+   .         .  
+   ...........  
+   ...+   ..+   
+  . .@.@# # #   
+  ....+   ..+   
+  ...+      .+  
+  ...+     .+   
+  @ . @.     #  
+  @.@+....   #  
+  #             
+  # # # # # #   
+  ++++  .  ++++ 
+  +++++ .  ++++ 
+  +++++ . ++++++
+ .  .+ .@       
+ ... @@         
+ ....+     ..+  
+ ..+        ..+ 
+ .# .@          
+ ++  ++ . ++    
+ ++  ++ . ++  ++
+10FileViewer
+10LoadParser
+10ProjectDlg
+11ListHandler
+11PoeditFrame
+11ProgressDlg
+12ManagerFrame
+12UpdateWizard
+12wxWizardBase
+13CatalogParser
+13CommentDialog
+13wxTransform2D
+14CleverListCtrl
+14GettextProcess
+14PoeditListCtrl
+14SettingsDialog
+14wxMemoryDCBase
+14wxMenuItemList
+15TextctrlHandler
+15TMUDirTraverser
+15wxDirDialogBase
+16 16 2 1
+16 16 3 1
+16 16 5 1
+16PoeditFramesList
+17CharsetInfoFinder
+17PoeditArtProvider
+17PreferencesDialog
+17wxEditableListBox
+17wxMemoryFSHandler
+17wxStringTokenizer
+18MergeSummaryDialog
+18wxBitmapButtonBase
+19UnfocusableTextCtrl
+20TransTextctrlHandler
+20wxThreadHelperThread
+22wxPoeditFramesListNode
+2.8 (no debug,Unicode,compiler with C++ ABI 1002,wx containers,compatible with 2.6)
+}3Q=&E?8
+7DbTrans
+7DbWords
+9FindFrame
+9PoeditApp
+        <accel>Ctrl-F</accel>
+        <accel>Ctrl-O</accel>
+        <accel>Ctrl-S</accel>
+        <accel platform="mac">Ctrl+?</accel>
+        <accel platform="mac">Ctrl-Alt-C</accel>
+        <accel platform="mac">Ctrl-U</accel>
+        <accel platform="mac">Shift-Ctrl-E</accel>
+        <accel platform="mac">Shift-Ctrl-S</accel>
+        <accel platform="unix">Alt-C</accel>
+        <accel platform="unix">Alt-U</accel>
+        <accel platform="unix">Ctrl-W</accel>
+        <accel platform="unix">F1</accel>
+        <accel platform="win">Alt-C</accel>
+        <accel platform="win">Alt-F4</accel>
+        <accel platform="win">Alt-U</accel>
+        <accel platform="win">F1</accel>
+        <!-- Alt-something interferes with normal typing on Mac: -->
+    <bitmap>compiled_xrc.cpp$tm_update.gif</bitmap>
+    <bitmapsize platform="mac">22,22</bitmapsize>
+    <bitmapsize platform="mac">32,32</bitmapsize>
+    <bitmapsize platform="win">22,22</bitmapsize>
+      <bitmap stock_id="document-new"/>
+      <bitmap stock_id="document-open"/>
+      <bitmap stock_id="document-properties"/>
+      <bitmap stock_id="document-save"/>
+      <bitmap stock_id="edit-delete"/>
+      <bitmap stock_id="poedit-comment"/>
+      <bitmap stock_id="poedit-fuzzy"/>
+      <bitmap stock_id="poedit-update"/>
+          <bitmap stock_id="poedit-update"/>
+      <bitmap stock_id="view-fullscreen"/>
+        <border>2d</border>
+                      <border>2d</border>
+                          <border>2d</border>
+        <border>5d</border>
+          <border>5d</border>
+            <border>5d</border>
+              <border>5d</border>
+                  <border>5d</border>
+                      <border>5d</border>
+                          <border>5d</border>
+__bss_start
+.	c #000000
+#	c #000000
++	c #00007F
+.	c #7F0000
+.	c #7F7F7F
+[C"9o`]R}
+    <centered>1</centered>
+@	c #FFFF00
++	c #FFFFFF
+        <checkable>1</checkable>
+                        <checked>1</checked>
+ 	c None
+                <cols>2</cols>
+                            </content>
+                            <content>
+__ctype_b_loc
+__cxa_atexit
+__cxa_begin_catch
+__cxa_end_catch
+__cxa_pure_virtual
+__cxa_rethrow
+CXXABI_1.3
+D$0+D$8)
+db_create
+db_strerror
+&ddN;15L
+              <default>1</default>
+                        <default>1</default>
+D$,p9t$,u
+__dynamic_cast
+                        <enabled>0</enabled>
+        <flag>wxALIGN_RIGHT</flag>
+            <flag>wxALL</flag>
+                  <flag>wxALL</flag>
+        <flag>wxALL|wxALIGN_CENTER_VERTICAL</flag>
+                  <flag>wxALL|wxALIGN_LEFT</flag>
+                  <flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+        <flag>wxALL|wxEXPAND</flag>
+          <flag>wxALL|wxEXPAND</flag>
+                  <flag>wxALL|wxEXPAND</flag>
+          <flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT</flag>
+        <flag>wxEXPAND</flag>
+            <flag>wxEXPAND</flag>
+              <flag>wxEXPAND</flag>
+                  <flag>wxEXPAND</flag>
+                      <flag>wxEXPAND</flag>
+        <flag>wxEXPAND|wxALL</flag>
+                  <flag>wxEXPAND|wxALL</flag>
+                      <flag>wxEXPAND|wxALL</flag>
+            <flag>wxEXPAND|wxLEFT</flag>
+                  <flag>wxEXPAND|wxLEFT|wxBOTTOM</flag>
+        <flag>wxEXPAND|wxLEFT|wxRIGHT</flag>
+            <flag>wxEXPAND|wxLEFT|wxRIGHT</flag>
+                  <flag>wxEXPAND|wxLEFT|wxRIGHT</flag>
+                      <flag>wxEXPAND|wxLEFT|wxRIGHT</flag>
+        <flag>wxEXPAND|wxLEFT|wxRIGHT|wxBOTTOM</flag>
+            <flag>wxEXPAND|wxLEFT|wxRIGHT|wxBOTTOM</flag>
+                  <flag>wxEXPAND|wxLEFT|wxRIGHT|wxBOTTOM</flag>
+                      <flag>wxEXPAND|wxLEFT|wxRIGHT|wxBOTTOM</flag>
+        <flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+            <flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+                  <flag>wxEXPAND|wxLEFT|wxRIGHT|wxTOP</flag>
+                  <flag>wxEXPAND|wxRIGHT|wxBOTTOM</flag>
+                  <flag>wxEXPAND|wxRIGHT|wxTOP|wxBOTTOM</flag>
+              <flag>wxLEFT</flag>
+                          <flag>wxLEFT|wxALIGN_CENTER_VERTICAL</flag>
+        <flag>wxLEFT|wxRIGHT</flag>
+            <flag>wxLEFT|wxRIGHT</flag>
+                  <flag>wxLEFT|wxRIGHT</flag>
+                      <flag>wxLEFT|wxRIGHT</flag>
+            <flag>wxLEFT|wxRIGHT|wxBOTTOM</flag>
+                      <flag>wxLEFT|wxRIGHT|wxBOTTOM</flag>
+                  <flag>wxLEFT|wxRIGHT|wxBOTTOM|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+                      <flag>wxLEFT|wxRIGHT|wxBOTTOM|wxALIGN_TOP</flag>
+                      <flag>wxLEFT|wxRIGHT|wxBOTTOM||wxEXPAND</flag>
+                      <flag>wxLEFT|wxRIGHT|wxBOTTOM|wxEXPAND</flag>
+                      <flag>wxLEFT|wxRIGHT|wxEXPAND</flag>
+        <flag>wxLEFT|wxRIGHT|wxTOP</flag>
+            <flag>wxLEFT|wxRIGHT|wxTOP</flag>
+                  <flag>wxLEFT|wxRIGHT|wxTOP</flag>
+                      <flag>wxLEFT|wxRIGHT|wxTOP</flag>
+                      <flag>wxLEFT|wxRIGHT|wxTOP|wxBOTTOM|wxALIGN_RIGHT</flag>
+                      <flag>wxLEFT|wxRIGHT|wxTOP|wxEXPAND</flag>
+                      <flag>wxLEFT|wxTOP</flag>
+                      <flag>wxLEFT|wxTOP|wxALIGN_CENTER_VERTICAL</flag>
+            <flag>wxLEFT|wxTOP|wxBOTTOM|wxALIGN_RIGHT</flag>
+        <flag>wxLEFT|wxTOP|wxRIGHT</flag>
+                  <flag>wxLEFT|wxTOP|wxRIGHT</flag>
+                          <flag>wxRIGHT</flag>
+        <flag>wxRIGHT|wxALIGN_RIGHT</flag>
+                      <flag>wxRIGHT|wxALIGN_RIGHT</flag>
+            <flag>wxRIGHT|wxBOTTOM</flag>
+                      <flag>wxRIGHT|wxBOTTOM</flag>
+        <flag>wxRIGHT|wxBOTTOM|wxALIGN_RIGHT</flag>
+                          <flag>wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL</flag>
+            <flag>wxRIGHT|wxTOP|wxBOTTOM</flag>
+            <flag>wxTOP</flag>
+        <flag>wxTOP|wxALIGN_RIGHT</flag>
+                  <flag>wxTOP|wxALIGN_RIGHT</flag>
+                          <flag>wxTOP|wxBOTTOM</flag>
+                      <flag>wxTOP|wxLEFT|wxALIGN_CENTER_VERTICAL</flag>
+            <flag>wxTOP|wxLEFT|wxBOTTOM</flag>
+          <flag>wxTOP|wxLEFT|wxRIGHT</flag>
+          <flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+          <focused>1</focused>
+                    <focused>1</focused>
+                        <focused>1</focused>
+            </font>
+            <font>
+g_error_free
+GLIBC_2.0
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.4
+GLIBCXX_3.4
+__gmon_start__
+                <growablecols>1</growablecols>
+gtk_container_get_children
+gtk_container_get_type
+gtkspell_get_from_text_view
+gtkspell_new_attach
+gtkspell_set_language
+gtk_text_view_get_type
+g_type_check_instance_cast
+g_type_check_instance_is_a
+__gxx_personality_v0
+_IO_stdin_used
+iswspace
+                              <item>current platform's default</item>
+                              <item>Macintosh</item>
+                              <item platform="unix" translate="0">nedit -line %l %f</item>
+                              <item platform="win" translate="0">notepad %f</item>
+                              <item translate="0">gvim +%l %f</item>
+                              <item>Unix</item>
+                              <item>Windows</item>
+J,Fl>GN_
+_Jv_RegisterClasses
+              <label>(0 new, 0 obsolete)</label>
+        <label>_About...</label>
+                <label>Add files</label>
+                        <label>Add</label>
+                        <label>Always change focus to text input field</label>
+              <label>An item in input files list:</label>
+              <label>An item in keywords list:</label>
+                    <label>Automatically check for new version of Poedit</label>
+                        <label>Automatically compile .mo file on save</label>
+        <label>_Automatically translate using TM</label>
+                        <label>Automatically translate when updating catalog</label>
+                        <label>Automatic spellchecking</label>
+                        <label>Base path:</label>
+                    <label>Behavior</label>
+          <label>Browse</label>
+                <label>Browse</label>
+                            <label>Browse</label>
+              <label>Cancel</label>
+                        <label>Cancel</label>
+                    <label>Case sensitive</label>
+      <label>C_atalog</label>
+        <label>Catalogs _manager</label>
+                    <label>Change UI language</label>
+                    <label>Charset:</label>
+                            <label>Choose</label>
+              <label>Clear</label>
+        <label>_Close</label>
+      <label>Comment</label>
+          <label>Comment:</label>
+                        <label>Comment window is editable</label>
+                    <label>Configuration</label>
+        <label>_Contents...</label>
+        <label>Copy original to translation field</label>
+                    <label>Country:</label>
+                    <label>CR/LF conversion</label>
+                    <label>Database</label>
+      <label>Delete</label>
+                            <label>Delete</label>
+        <label>Display _line numbers</label>
+        <label>Display _quotes</label>
+                        <label>Don't change format of existing catalogs</label>
+        <label>Edit _comment</label>
+      <label>_Edit</label>
+      <label>Edit</label>
+                            <label>Edit</label>
+                            <label>Editor executable:</label>
+            <label>Editor</label>
+        <label>E_xport...</label>
+                    <label>External editor</label>
+      <label>_File</label>
+                    <label>Find in automatic comments</label>
+                    <label>Find in comments</label>
+                    <label>Find in original strings</label>
+                    <label>Find in translations</label>
+        <label>_Find...</label>
+                    <label>Fonts</label>
+        <label>_Fullscreen view</label>
+      <label>Fuzzy</label>
+                        <label>(%f will be substituted with filename, %l with line number)</label>
+                        <label>Generate database</label>
+        <label>GNU gettext documentation</label>
+      <label>_Help</label>
+                    <label>Identity</label>
+          <label>Invocation:</label>
+            <label>Keywords</label>
+          <label>Language:</label>
+              <label>Language:</label>
+                    <label>Language:</label>
+                            <label>Line endings format:</label>
+              <label>List of extensions separated by semicolons (e.g. *.cpp;*.h):</label>
+                        <label>&lt; Previous</label>
+                            <label>Max. difference in sentence length:</label>
+                            <label>Max. # of missing words:</label>
+        <label>New catalog from POT file...</label>
+        <label>_New catalog...</label>
+      <label>New</label>
+                            <label>New</label>
+            <label>New strings</label>
+                        <label>Next &gt;</label>
+            <label>Obsolete strings</label>
+              <label>OK</label>
+                        <label>Open catalogs manager on Poedit startup</label>
+      <label>Open</label>
+        <label>_Open...</label>
+                        <label>Open source files in editor, not in file viewer</label>
+              <label>Parser command:</label>
+            <label>Parsers</label>
+            <label>Paths</label>
+                        <label>Path to DB:</label>
+            <label>Personalize</label>
+            <label>Please add directories where locale files are stored on your system:</label>
+                    <label>Plural Forms:</label>
+        <label>_Preferences</label>
+        <label>_Preferences...</label>
+              <label>Proceed</label>
+            <label>Project info</label>
+                    <label>Project name and version:</label>
+          <label>Project name:</label>
+        <label>_Purge deleted translations</label>
+                <label>Reset to defaults</label>
+        <label>Save _as...</label>
+      <label>Save</label>
+        <label>_Save</label>
+        <label>_Settings...</label>
+        <label>_Shaded translations list</label>
+        <label>Show automatic c_omments window</label>
+        <label>Show _comment window</label>
+        <label>_Show references</label>
+                        <label>Show summary after catalog update</label>
+              <label>Source code charset:</label>
+                    <label>Source code charset:</label>
+                    <label>Source code parsers:</label>
+                    <label>Start from the first item</label>
+                    <label>String to find:</label>
+                    <label>Team:</label>
+                    <label>Team's email address:</label>
+                    <label>These strings are no longer in the sources.\nPoedit will remove them from the catalog now.</label>
+                    <label>These strings were found in the sources but were not in the catalog.\nPoedit will add them to the catalog now.</label>
+              <label>This is the command used to launch the parser.\n%o expands to the name of output file, %K to list\nof keywords, %F to list of input files,\n%C to charset flag (see below).</label>
+              <label>This will be attached to the command line\nonly if source codecharset was given. %c expands to charset value.</label>
+              <label>This will be attached to the command line once\nfor each input file. %f expands to the filename.</label>
+              <label>This will be attached to the command line once\nfor each keyword. %k expands to the keyword.</label>
+        <label>Translation is _fuzzy</label>
+            <label>Translation Memory</label>
+            <label>Translation memory will be built from the files listed below.\nYou can add more files to the list now.</label>
+              <label>Undo</label>
+      <label>Update all</label>
+        <label>Update from _POT file...</label>
+        <label>_Update from sources</label>
+      <label>Update</label>
+                        <label>Use custom font for text fields</label>
+                        <label>Use custom font for translations list</label>
+                    <label>Use these keywords (function names) to recognize translatable strings\nin source files, in addition to default ones.</label>
+      <label>_View</label>
+                    <label>Whole words only</label>
+                        <label>Your email address:</label>
+                        <label>Your name and email set below are only used
+                        <label>Your name:</label>
+l$\+D$$+l$$
+libc.so.6
+__libc_start_main
+libdb-5.1.so
+libgcc_s.so.1
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtkspell.so.0
+libgtk-x11-2.0.so.0
+/lib/ld-linux.so.2
+libstdc++.so.6
+libwx_baseu-2.8.so.0
+libwx_gtk2u_adv-2.8.so.0
+libwx_gtk2u_core-2.8.so.0
+libwx_gtk2u_html-2.8.so.0
+libwx_gtk2u_xrc-2.8.so.0
+    <margins>2,2</margins>
+    <margins platform="win">2,2</margins>
+                            <max>6</max>
+                            <min>0</min>
+                      <minsize>130,-1d</minsize>
+        <minsize>140,100d</minsize>
+        <minsize>150,80d</minsize>
+          <minsize>200,100d</minsize>
+      <minsize>200,200d</minsize>
+nplurals
+  </object>
+    </object>
+      </object>
+        </object>
+          </object>
+            </object>
+              </object>
+                </object>
+                  </object>
+                    </object>
+                      </object>
+                        </object>
+                          </object>
+          <object class="notebookpage">
+    <object class="separator"/>
+      <object class="separator"/>
+    <object class="separator" platform="unix"/>
+      <object class="separator" platform="unix"/>
+    <object class="separator" platform="win"/>
+      <object class="separator" platform="win|mac"/>
+      <object class="sizeritem">
+        <object class="sizeritem">
+          <object class="sizeritem">
+            <object class="sizeritem">
+                <object class="sizeritem">
+                    <object class="sizeritem">
+                        <object class="sizeritem">
+                <object class="sizeritem" platform="mac">
+    <object class="tool" name="edit_file">
+    <object class="tool" name="menu_comment">
+    <object class="tool" name="menu_fullscreen" platform="unix">
+    <object class="tool" name="menu_fullscreen" platform="win">
+    <object class="tool" name="menu_fuzzy">
+    <object class="tool" name="menu_update">
+    <object class="tool" name="prj_delete">
+    <object class="tool" name="prj_edit">
+    <object class="tool" name="prj_new">
+    <object class="tool" name="prj_update">
+    <object class="tool" name="wxID_OPEN">
+    <object class="tool" name="wxID_SAVE">
+          <object class="unknown" name="files_list"/>
+                  <object class="unknown" name="keywords"/>
+                  <object class="unknown" name="paths"/>
+        <object class="unknown" name="prj_dirs"/>
+          <object class="unknown" name="search_paths"/>
+        <object class="unknown" name="tm_dirs"/>
+                      <object class="unknown" name="tm_langs">
+    <object class="wxBoxSizer">
+      <object class="wxBoxSizer">
+        <object class="wxBoxSizer">
+          <object class="wxBoxSizer">
+              <object class="wxBoxSizer">
+                  <object class="wxBoxSizer">
+                      <object class="wxBoxSizer">
+        <object class="wxButton" name="adddir">
+              <object class="wxButton" name="add_files">
+              <object class="wxButton" name="browse">
+            <object class="wxButton" name="clear">
+                      <object class="wxButton" name="find_next">
+                      <object class="wxButton" name="find_prev">
+                          <object class="wxButton" name="fontpicker_list">
+                          <object class="wxButton" name="fontpicker_text">
+                          <object class="wxButton" name="parser_delete">
+                          <object class="wxButton" name="parser_edit">
+                          <object class="wxButton" name="parser_new">
+              <object class="wxButton" name="reset">
+        <object class="wxButton" name="tm_adddir">
+                      <object class="wxButton" name="tm_addlang">
+                          <object class="wxButton" name="tm_browsedbpath">
+                      <object class="wxButton" name="tm_generate">
+                  <object class="wxButton" name="ui_language">
+            <object class="wxButton" name="wxID_CANCEL">
+                      <object class="wxButton" name="wxID_CANCEL">
+            <object class="wxButton" name="wxID_OK">
+                  <object class="wxCheckBox" name="auto_updates">
+                  <object class="wxCheckBox" name="case_sensitive">
+                      <object class="wxCheckBox" name="comment_window_editable">
+                      <object class="wxCheckBox" name="compile_mo">
+                      <object class="wxCheckBox" name="enable_spellchecking">
+                      <object class="wxCheckBox" name="focus_to_text">
+                  <object class="wxCheckBox" name="from_first">
+                  <object class="wxCheckBox" name="in_auto_comments">
+                  <object class="wxCheckBox" name="in_comments">
+                  <object class="wxCheckBox" name="in_orig">
+                  <object class="wxCheckBox" name="in_trans">
+                      <object class="wxCheckBox" name="keep_crlf">
+                      <object class="wxCheckBox" name="manager_startup">
+                      <object class="wxCheckBox" name="open_editor_immediately">
+                      <object class="wxCheckBox" name="show_summary">
+                      <object class="wxCheckBox" name="tm_automatic">
+                      <object class="wxCheckBox" name="use_font_list">
+                      <object class="wxCheckBox" name="use_font_text">
+                  <object class="wxCheckBox" name="whole_words">
+                          <object class="wxChoice" name="crlf_format">
+    <object class="wxChoice" name="references">
+                  <object class="wxComboBox" name="charset"/>
+                  <object class="wxComboBox" name="country"/>
+                          <object class="wxComboBox" name="ext_editor">
+                  <object class="wxComboBox" name="language"/>
+                  <object class="wxComboBox" name="source_code_charset"/>
+  <object class="wxDialog" name="comment_dlg">
+  <object class="wxDialog" name="dlg_generate_tm">
+  <object class="wxDialog" name="edit_parser">
+  <object class="wxDialog" name="manager_prj_dlg">
+  <object class="wxDialog" name="parser_progress">
+  <object class="wxDialog" name="preferences">
+  <object class="wxDialog" name="settings">
+  <object class="wxDialog" name="summary">
+              <object class="wxFlexGridSizer">
+  <object class="wxFrame" name="find_frame">
+            <object class="wxGauge" name="progress">
+                  <object class="wxListBox" name="new_strings"/>
+                  <object class="wxListBox" name="obsolete_strings"/>
+                      <object class="wxListBox" name="parsers_list"/>
+            <object class="wxListBox" name="prj_list">
+            <object class="wxListCtrl" name="prj_files">
+  <object class="wxMenuBar" name="mainmenu">
+  <object class="wxMenuBar" name="manager_menu">
+      <object class="wxMenuItem" name="menu_auto_comments_win">
+      <object class="wxMenuItem" name="menu_auto_translate">
+      <object class="wxMenuItem" name="menu_catsettings">
+      <object class="wxMenuItem" name="menu_comment">
+      <object class="wxMenuItem" name="menu_comment_win">
+      <object class="wxMenuItem" name="menu_export">
+      <object class="wxMenuItem" name="menu_find">
+      <object class="wxMenuItem" name="menu_fullscreen" platform="unix">
+      <object class="wxMenuItem" name="menu_fullscreen" platform="win">
+      <object class="wxMenuItem" name="menu_fuzzy">
+      <object class="wxMenuItem" name="menu_help">
+      <object class="wxMenuItem" name="menu_help_gettext" platform="win">
+      <object class="wxMenuItem" name="menu_insert_orig">
+      <object class="wxMenuItem" name="menu_lines">
+      <object class="wxMenuItem" name="menu_manager">
+      <object class="wxMenuItem" name="menu_new">
+      <object class="wxMenuItem" name="menu_new_from_pot">
+      <object class="wxMenuItem" name="menu_purge_deleted">
+      <object class="wxMenuItem" name="menu_quotes">
+      <object class="wxMenuItem" name="menu_references">
+      <object class="wxMenuItem" name="menu_shaded">
+      <object class="wxMenuItem" name="menu_update">
+      <object class="wxMenuItem" name="menu_update_from_pot">
+      <object class="wxMenuItem" name="wxID_ABOUT">
+      <object class="wxMenuItem" name="wxID_EXIT">
+      <object class="wxMenuItem" name="wxID_OPEN">
+      <object class="wxMenuItem" name="wxID_PREFERENCES">
+      <object class="wxMenuItem" name="wxID_PREFERENCES" platform="unix">
+      <object class="wxMenuItem" name="wxID_PREFERENCES" platform="win|mac">
+      <object class="wxMenuItem" name="wxID_SAVE">
+      <object class="wxMenuItem" name="wxID_SAVEAS">
+    <object class="wxMenu" name="menu_catalog">
+    <object class="wxMenu" name="menu_edit">
+    <object class="wxMenu" name="menu_file">
+    <object class="wxMenu" name="menu_help2">
+    <object class="wxMenu" name="menu_view">
+        <object class="wxNotebook">
+        <object class="wxNotebook" name="notebook">
+        <object class="wxPanel">
+            <object class="wxPanel">
+  <object class="wxPanel" name="manager_panel">
+            <object class="wxPanel" name="tm_page">
+                          <object class="wxSpinCtrl" name="tm_delta">
+                          <object class="wxSpinCtrl" name="tm_omits">
+        <object class="wxStaticBitmap">
+        <object class="wxStaticBoxSizer">
+                  <object class="wxStaticBoxSizer">
+        <object class="wxStaticLine"/>
+        <object class="wxStaticText">
+          <object class="wxStaticText">
+            <object class="wxStaticText">
+                  <object class="wxStaticText">
+                      <object class="wxStaticText">
+                          <object class="wxStaticText">
+            <object class="wxStaticText" name="info"/>
+            <object class="wxStaticText" name="items_count">
+          <object class="wxStaticText" name="language1">
+          <object class="wxStaticText" name="language2">
+                      <object class="wxTextCtrl" name="basepath"/>
+        <object class="wxTextCtrl" name="comment">
+                          <object class="wxTextCtrl" name="fontname_list">
+                          <object class="wxTextCtrl" name="fontname_text">
+            <object class="wxTextCtrl" name="parser_charset"/>
+            <object class="wxTextCtrl" name="parser_command"/>
+            <object class="wxTextCtrl" name="parser_extensions"/>
+            <object class="wxTextCtrl" name="parser_files"/>
+            <object class="wxTextCtrl" name="parser_keywords"/>
+            <object class="wxTextCtrl" name="parser_language"/>
+                  <object class="wxTextCtrl" name="plural_forms"/>
+        <object class="wxTextCtrl" name="prj_name">
+                  <object class="wxTextCtrl" name="prj_name">
+                  <object class="wxTextCtrl" name="string_to_find">
+                  <object class="wxTextCtrl" name="team_email">
+                  <object class="wxTextCtrl" name="team_name">
+                          <object class="wxTextCtrl" name="tm_dbpath"/>
+                      <object class="wxTextCtrl" name="user_email"/>
+                      <object class="wxTextCtrl" name="user_name">
+  <object class="wxToolBar" name="fileview_toolbar">
+  <object class="wxToolBar" name="manager_toolbar">
+  <object class="wxToolBar" name="toolbar">
+  <object class="wxWizard" name="tm_update_wizard">
+    <object class="wxWizardPageSimple" name="tm_update_1">
+    <object class="wxWizardPageSimple" name="tm_update_2">
+      <object platform="unix" class="separator"/>
+      <object platform="win" class="separator"/>
+                  <option>0</option>
+        <option>1</option>
+          <option>1</option>
+            <option>1</option>
+              <option>1</option>
+                  <option>1</option>
+                      <option>1</option>
+                          <option>1</option>
+            <option>3</option>
+      <orient>wxHORIZONTAL</orient>
+          <orient>wxHORIZONTAL</orient>
+            <orient>wxHORIZONTAL</orient>
+                    <orient>wxHORIZONTAL</orient>
+                        <orient>wxHORIZONTAL</orient>
+      <orient>wxVERTICAL</orient>
+        <orient>wxVERTICAL</orient>
+          <orient>wxVERTICAL</orient>
+            <orient>wxVERTICAL</orient>
+                <orient>wxVERTICAL</orient>
+                    <orient>wxVERTICAL</orient>
+                        <orient>wxVERTICAL</orient>
+</resource>
+<resource version="2.3.0.1">
+              <size>100,100d</size>
+          <size>100,-1d</size>
+                    <size>100,-1d</size>
+              <size>10,10d</size>
+              <size>130,-1d</size>
+                        <size>-1,60d</size>
+              <size>18</size>
+      <size>200,-1d</size>
+__stack_chk_fail
+    <style platform="mac">wxTB_TEXT|wxBORDER_NONE|wxTB_HORIZONTAL|wxTB_FLAT</style>
+    <style platform="unix">wxBORDER_NONE|wxTB_HORIZONTAL|wxTB_FLAT</style>
+    <style platform="win">wxBORDER_NONE|wxTB_HORIZONTAL|wxTB_FLAT</style>
+    <style>wxDEFAULT_DIALOG_STYLE|wxFRAME_FLOAT_ON_PARENT</style>
+    <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
+              <style>wxGA_SMOOTH</style>
+              <style>wxLC_REPORT|wxLC_SINGLE_SEL|wxSUNKEN_BORDER</style>
+      <style>wxMENU_TEAROFF</style>
+    <style>wxSUNKEN_BORDER</style>
+              <style>wxTAB_TRAVERSAL</style>
+    <style>wxTB_FLAT|wxTB_DOCKABLE</style>
+          <style>wxTE_MULTILINE</style>
+                            <style>wxTE_READONLY</style>
++T$4;D$<
++T$8;D$4
+T$(9L$(}
+T$(9L$(s
++T$@;D$8
++T$<;D$D
+T$(+D$$+T$$
+    <title>Edit comment</title>
+    <title>Edit project</title>
+    <title>Find...</title>
+    <title>Generate TM database</title>
+    <title>Parser setup</title>
+    <title>Preferences</title>
+    <title>Settings</title>
+    <title>Update summary</title>
+    <title>Update translation memory</title>
+      <toggle>1</toggle>
+          <tooltip>Add directory to the list</tooltip>
+          <tooltip>Add path to the list of directories where catalogs lie.</tooltip>
+              <tooltip>Clear the comment</tooltip>
+      <tooltip>Create new translations project</tooltip>
+      <tooltip>Delete the project</tooltip>
+      <tooltip>Edit comment</tooltip>
+      <tooltip>Edit the file in text editor</tooltip>
+      <tooltip>Edit the project</tooltip>
+                        <tooltip>Enables on-the-fly spellchecking</tooltip>
+      <tooltip>Fullscreen view</tooltip>
+                        <tooltip>If checked, the comment window will be editable.</tooltip>
+                        <tooltip>Never let the list of strings take focus. If enabled, you must use Ctrl-arrows for keyboard navigation but you can also type text immediately, without having to press Tab to change focus.</tooltip>
+      <tooltip>Open catalog</tooltip>
+                        <tooltip>Pick language from the list of known languages</tooltip>
+                        <tooltip>Regenerate translation memory from catalogs in paths listed above.</tooltip>
+      <tooltip>Save catalog</tooltip>
+      <tooltip>Toggled if selected string has fuzzy translation</tooltip>
+      <tooltip>Update all catalogs in the project</tooltip>
+      <tooltip>Update catalog - synchronize it with sources</tooltip>
+to set the Last-Translator header of GNU gettext files.</label>
+unknown_language
+_Unwind_Resume
+          <usenotebooksizer>1</usenotebooksizer>
+                            <value>2</value>
+vector::_M_fill_insert
+              <weight>bold</weight>
+wxButtonNameStr
+wxConvISO8859_1
+wxConvUTF8
+wxDefaultPosition
+wxDefaultSize
+wxDefaultValidator
+wxDirDialogNameStr
+wxEmptyString
+wxEVT_CLOSE_WINDOW
+wxEVT_COMMAND_BUTTON_CLICKED
+wxEVT_COMMAND_CHECKBOX_CLICKED
+wxEVT_COMMAND_CHOICE_SELECTED
+wxEVT_COMMAND_LISTBOX_SELECTED
+wxEVT_COMMAND_LIST_END_LABEL_EDIT
+wxEVT_COMMAND_LIST_ITEM_ACTIVATED
+wxEVT_COMMAND_LIST_ITEM_SELECTED
+wxEVT_COMMAND_MENU_SELECTED
+wxEVT_COMMAND_TEXT_UPDATED
+wxEVT_END_PROCESS
+wxEVT_IDLE
+wxEVT_KEY_DOWN
+wxEVT_NULL
+wxEVT_RIGHT_DOWN
+wxEVT_SET_FOCUS
+wxEVT_SIZE
+wxEVT_WIZARD_PAGE_CHANGING
+wxFileDialogNameStr
+wxFrameNameStr
+wxListCtrlNameStr
+wxMessageBoxCaptionStr
+wxNotebookNameStr
+wxNullBitmap
+wxNullFont
+wxPanelNameStr
+wxStaticTextNameStr
+wxStatusLineNameStr
+wxTextCtrlNameStr
+WXU_2.8.5
+<?xml version="1.0" encoding="utf-8"?>
+your program
+_Z10wxAboutBoxRK17wxAboutDialogInfo
+_Z10wxLogErrorPKwz
+_Z10wxPathOnlyRK8wxString
+_Z11wxDirExistsPKw
+_Z11wxGetLocalev
+_Z11wxSplitPathPKwP8wxStringS2_S2_
+_Z12wxFileExistsRK8wxString
+_Z12wxGetHomeDirv
+_Z12wxLogWarningPKwz
+_Z12wxMessageBoxRK8wxStringS1_lP8wxWindowii
+_Z12wxMilliSleepm
+_Z12wxRegisterIdl
+_Z12wxRemoveFileRK8wxString
+_Z12wxRenameFileRK8wxStringS1_b
+_Z14wxFileSelectorPKwS0_S0_S0_S0_iP8wxWindowii
+_Z15wxEndBusyCursorv
+_Z15wxFindFirstFilePKwi
+_Z16wxGetTranslationPKwS0_
+_Z16wxIsAbsolutePathRK8wxString
+_Z17wxBeginBusyCursorPK8wxCursor
+_Z17wxGetTempFileNameRK8wxStringPw
+_Z17wxGetTempFileNameRK8wxStringRS_
+_Z18wxFileNameFromPathRK8wxString
+_Z21wxSetWorkingDirectoryRK8wxString
+_Z22wxFileModificationTimeRK8wxString
+_Z22wxGetSingleChoiceIndexRK8wxStringS1_iPS0_P8wxWindowiibii
+_Z22wxGetSingleChoiceIndexRK8wxStringS1_RK13wxArrayStringP8wxWindowiibii
+_Z7wxEntryRiPPc
+_Z7wxMkdirRK8wxStringi
+_Z7wxNewIdv
+_Z7wxRmdirRK8wxStringi
+_Z7wxYieldv
+_Z8wxGetCwdv
+_Z8wxGetEnvRK8wxStringPS_
+_Z8wxSetEnvRK8wxStringPKw
+_Z9wxExecuteRK8wxStringiP9wxProcess
+_Z9wxStricmpPKwS0_
+_ZN10wxBoxSizerC1Ei
+_ZN10wxConvAutoD0Ev
+_ZN10wxConvAutoD1Ev
+_ZN10wxConvAutoD2Ev
+_ZN10wxDateTime3SetERK2tm
+_ZN10wxDateTime8GetTmNowEP2tm
+_ZN10wxDateTime8TimeZoneC1ENS_2TZE
+_ZN10wxFileName5MkdirERK8wxStringii
+_ZN10wxFileName6AssignERK8wxString12wxPathFormat
+_ZN10wxFileName9NormalizeEiRK8wxString12wxPathFormat
+_ZN10wxFileName9SplitPathERK8wxStringPS0_S3_S3_12wxPathFormat
+_ZN10wxFileNameD1Ev
+_ZN10wxFileNameD2Ev
+_ZN10wxFontDataC1Ev
+_ZN10wxFontDataD1Ev
+_ZN10wxListBase12DeleteObjectEPv
+_ZN10wxListBase4InitE9wxKeyType
+_ZN10wxListBase6AppendEPv
+_ZN10wxListBaseD2Ev
+_ZN10wxMemoryDC4InitEv
+_ZN10wxMemoryDC6SetPenERK5wxPen
+_ZN10wxMemoryDC8SetBrushERK7wxBrush
+_ZN10wxMemoryDCD1Ev
+_ZN10wxMenuBase4InitEl
+_ZN10wxMenuBase6EnableEib
+_ZN10wxMenuBaseD2Ev
+_ZN10wxNodeBaseC2EP10wxListBasePS_S2_PvRK9wxListKey
+_ZN10wxNodeBaseD2Ev
+_ZN10wxNotebookC1EP8wxWindowiRK7wxPointRK6wxSizelRK8wxString
+_ZN10wxStockGDI6GetPenENS_4ItemE
+_ZN10wxStockGDI9GetCursorENS_4ItemE
+_ZN10wxTextCtrl10AppendTextERK8wxString
+_ZN10wxTextCtrl10DoSetValueERK8wxStringi
+_ZN10wxTextCtrl11SetEditableEb
+_ZN10wxTextCtrl12DiscardEditsEv
+_ZN10wxTextCtrl12ms_classInfoE
+_ZN10wxTextCtrl12SetMaxLengthEm
+_ZN10wxTextCtrl12SetSelectionEll
+_ZN10wxTextCtrl12ShowPositionEl
+_ZN10wxTextCtrl14OnParentEnableEb
+_ZN10wxTextCtrl16GetConnectWidgetEv
+_ZN10wxTextCtrl17SetInsertionPointEl
+_ZN10wxTextCtrl18DoApplyWidgetStyleEP11_GtkRcStyle
+_ZN10wxTextCtrl18SetWindowStyleFlagEl
+_ZN10wxTextCtrl19SetBackgroundColourERK8wxColour
+_ZN10wxTextCtrl19SetForegroundColourERK8wxColour
+_ZN10wxTextCtrl20SetInsertionPointEndEv
+_ZN10wxTextCtrl3CutEv
+_ZN10wxTextCtrl4CopyEv
+_ZN10wxTextCtrl4RedoEv
+_ZN10wxTextCtrl4ThawEv
+_ZN10wxTextCtrl4UndoEv
+_ZN10wxTextCtrl5ClearEv
+_ZN10wxTextCtrl5PasteEv
+_ZN10wxTextCtrl6EnableEb
+_ZN10wxTextCtrl6FreezeEv
+_ZN10wxTextCtrl6RemoveEll
+_ZN10wxTextCtrl7ReplaceEllRK8wxString
+_ZN10wxTextCtrl7SetFontERK6wxFont
+_ZN10wxTextCtrl8SetStyleEllRK10wxTextAttr
+_ZN10wxTextCtrl9MarkDirtyEv
+_ZN10wxTextCtrl9WriteTextERK8wxString
+_ZN10wxTextCtrlC1EP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelRK11wxValidatorS4_
+_ZN10wxTextCtrlC2EP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelRK11wxValidatorS4_
+_ZN10wxTextCtrlD2Ev
+_ZN10wxTextFileC1ERK8wxString
+_ZN10wxTextFileD0Ev
+_ZN10wxTextFileD1Ev
+_ZN10wxTextFileD2Ev
+_ZN10wxWindowDCC2Ev
+_ZN10wxWindowDCD2Ev
+_ZN11wxClassInfo8RegisterEv
+_ZN11wxClassInfo8sm_firstE
+_ZN11wxClassInfoD1Ev
+_ZN11wxDirDialog9ShowModalEv
+_ZN11wxDirDialogC1EP8wxWindowRK8wxStringS4_lRK7wxPointRK6wxSizeS4_
+_ZN11wxFrameBase10DoGiveHelpERK8wxStringb
+_ZN11wxFrameBase10SetMenuBarEP9wxMenuBar
+_ZN11wxFrameBase13DoMenuUpdatesEP6wxMenu
+_ZN11wxFrameBase13SendSizeEventEv
+_ZN11wxFrameBase13SetStatusTextERK8wxStringi
+_ZN11wxFrameBase13sm_eventTableE
+_ZN11wxFrameBase14UpdateWindowUIEl
+_ZN11wxFrameBase15OnCreateToolBarEliRK8wxString
+_ZN11wxFrameBase15PositionMenuBarEv
+_ZN11wxFrameBase15PositionToolBarEv
+_ZN11wxFrameBase15SetStatusWidthsEiPKi
+_ZN11wxFrameBase17OnCreateStatusBarEiliRK8wxString
+_ZN11wxFrameBaseC2Ev
+_ZN11wxFrameBaseD2Ev
+_ZN11wxIconArrayD1Ev
+_ZN11wxRect2DIntaSERKS_
+_ZN11wxSizerItemC1EP7wxSizeriiiP8wxObject
+_ZN11wxSizerItemC1EP8wxWindowiiiP8wxObject
+_ZN12wxAppConsole10CallOnInitEv
+_ZN12wxAppConsole11FilterEventER7wxEvent
+_ZN12wxAppConsole12ms_appInitFnE
+_ZN12wxAppConsole13OnCmdLineHelpER15wxCmdLineParser
+_ZN12wxAppConsole14ms_appInstanceE
+_ZN12wxAppConsole14OnCmdLineErrorER15wxCmdLineParser
+_ZN12wxAppConsole16OnFatalExceptionEv
+_ZN12wxAppConsole17CheckBuildOptionsEPKcS1_
+_ZN12wxAppConsole20OnUnhandledExceptionEv
+_ZN12wxAppConsole20ProcessPendingEventsEv
+_ZN12wxAppConsole6OnInitEv
+_ZN12wxButtonBase13SetImageLabelERK8wxBitmap
+_ZN12wxButtonBase15SetImageMarginsEii
+_ZN12wxConfigBase10ms_pConfigE
+_ZN12wxConfigBase3SetEPS_
+_ZN12wxConfigBase6CreateEv
+_ZN12wxDialogBase11IsEscapeKeyERK10wxKeyEvent
+_ZN12wxDialogBase11RemoveChildEP12wxWindowBase
+_ZN12wxDialogBase12OnChildFocusER17wxChildFocusEvent
+_ZN12wxDialogBase13sm_eventTableE
+_ZN12wxDialogBase24SetFocusIgnoringChildrenEv
+_ZN12wxDialogBase4InitEv
+_ZN12wxDialogBase8SetFocusEv
+_ZN12wxEvtHandler12ProcessEventER7wxEvent
+_ZN12wxEvtHandler12TryValidatorER7wxEvent
+_ZN12wxEvtHandler13sm_eventTableE
+_ZN12wxEvtHandler15DoSetClientDataEPv
+_ZN12wxEvtHandler16SearchEventTableER12wxEventTableR7wxEvent
+_ZN12wxEvtHandler17DoSetClientObjectEP12wxClientData
+_ZN12wxEvtHandler9TryParentER7wxEvent
+_ZN12wxEvtHandlerC2Ev
+_ZN12wxEvtHandlerD2Ev
+_ZN12wxFileConfigC1ERK8wxStringS2_S2_S2_lRK8wxMBConv
+_ZN12wxFileDialog9ShowModalEv
+_ZN12wxFileDialogC1EP8wxWindowRK8wxStringS4_S4_S4_lRK7wxPointRK6wxSizeS4_
+_ZN12wxFileSystem10AddHandlerEP19wxFileSystemHandler
+_ZN12wxFileSystem8OpenFileERK8wxStringi
+_ZN12wxFileSystemD1Ev
+_ZN12wxFontDialogD1Ev
+_ZN12wxIconBundle11DeleteIconsEv
+_ZN12wxIconBundle7AddIconERK6wxIcon
+_ZN12wxIconBundleD1Ev
+_ZN12wxIconBundleD2Ev
+_ZN12wxStaticTextC1EP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelS4_
+_ZN12wxStringBase10ConcatSelfEjPKwj
+_ZN12wxStringBase15CopyBeforeWriteEv
+_ZN12wxStringBase4nposE
+_ZN12wxStringBase5AllocEj
+_ZN12wxStringBase5eraseEjj
+_ZN12wxStringBase6appendEjw
+_ZN12wxStringBase8InitWithEPKwjj
+_ZN12wxStringBaseaSEPKw
+_ZN12wxStringBaseaSERKS_
+_ZN12wxStringBaseC2Ejw
+_ZN12wxStringBaseD1Ev
+_ZN12wxStringBaseD2Ev
+_ZN12wxTextBuffer11typeDefaultE
+_ZN12wxTextBuffer4OpenERK8wxMBConv
+_ZN12wxTextBuffer4OpenERK8wxStringRK8wxMBConv
+_ZN12wxTextBuffer5CloseEv
+_ZN12wxTextBuffer5WriteE14wxTextFileTypeRK8wxMBConv
+_ZN12wxTextBuffer6CreateERK8wxString
+_ZN12wxTextBuffer6ms_eofE
+_ZN12wxTextBufferD2Ev
+_ZN12wxWindowBase10GetCaptureEv
+_ZN12wxWindowBase10InitDialogEv
+_ZN12wxWindowBase10SetMaxSizeERK6wxSize
+_ZN12wxWindowBase10SetMinSizeERK6wxSize
+_ZN12wxWindowBase10SetToolTipERK8wxString
+_ZN12wxWindowBase12GetValidatorEv
+_ZN12wxWindowBase12LayoutPhase1EPi
+_ZN12wxWindowBase12LayoutPhase2EPi
+_ZN12wxWindowBase12SetSizeHintsEiiiiii
+_ZN12wxWindowBase12SetValidatorERK11wxValidator
+_ZN12wxWindowBase12TryValidatorER7wxEvent
+_ZN12wxWindowBase13SetExtraStyleEl
+_ZN12wxWindowBase14DoSetSizeHintsEiiiiii
+_ZN12wxWindowBase14MoveConstraintEii
+_ZN12wxWindowBase14SetInitialSizeERK6wxSize
+_ZN12wxWindowBase14SetTransparentEh
+_ZN12wxWindowBase14UpdateWindowUIEl
+_ZN12wxWindowBase15AssociateHandleEP10_GtkWidget
+_ZN12wxWindowBase15PopEventHandlerEb
+_ZN12wxWindowBase15SetFocusFromKbdEv
+_ZN12wxWindowBase15SetThemeEnabledEb
+_ZN12wxWindowBase16DissociateHandleEv
+_ZN12wxWindowBase16DoSetVirtualSizeEii
+_ZN12wxWindowBase16DoUpdateWindowUIER15wxUpdateUIEvent
+_ZN12wxWindowBase16PushEventHandlerEP12wxEvtHandler
+_ZN12wxWindowBase17CanSetTransparentEv
+_ZN12wxWindowBase17InheritAttributesEv
+_ZN12wxWindowBase17SetSizeConstraintEiiii
+_ZN12wxWindowBase18DoSetWindowVariantE15wxWindowVariant
+_ZN12wxWindowBase18InvalidateBestSizeEv
+_ZN12wxWindowBase18SetConstraintSizesEb
+_ZN12wxWindowBase18SetInitialBestSizeERK6wxSize
+_ZN12wxWindowBase19SetAcceleratorTableERK18wxAcceleratorTable
+_ZN12wxWindowBase19SetVirtualSizeHintsEiiii
+_ZN12wxWindowBase20TransferDataToWindowEv
+_ZN12wxWindowBase22TransferDataFromWindowEv
+_ZN12wxWindowBase24HasTransparentBackgroundEv
+_ZN12wxWindowBase25GetClassDefaultAttributesE15wxWindowVariant
+_ZN12wxWindowBase31GetMainWindowOfCompositeControlEv
+_ZN12wxWindowBase3FitEv
+_ZN12wxWindowBase4ThawEv
+_ZN12wxWindowBase5CloseEb
+_ZN12wxWindowBase6FreezeEv
+_ZN12wxWindowBase6LayoutEv
+_ZN12wxWindowBase7DoPhaseEi
+_ZN12wxWindowBase7SetNameERK8wxString
+_ZN12wxWindowBase8DoCentreEi
+_ZN12wxWindowBase8NavigateEi
+_ZN12wxWindowBase8SetSizerEP7wxSizerb
+_ZN12wxWindowBase8ValidateEv
+_ZN12wxWindowBase9FindFocusEv
+_ZN12wxWindowBase9FitInsideEv
+_ZN12wxWindowBase9MakeModalEb
+_ZN12wxWindowBase9PrepareDCER4wxDC
+_ZN12wxWindowBase9TryParentER7wxEvent
+_ZN12wxWizardBase11HasNextPageEP12wxWizardPage
+_ZN12wxWizardBase11HasPrevPageEP12wxWizardPage
+_ZN12wxWizardBase20TransferDataToWindowEv
+_ZN12wxWizardBase22TransferDataFromWindowEv
+_ZN12wxWizardBase8ValidateEv
+_ZN12wxWizardBaseD0Ev
+_ZN12wxWizardBaseD1Ev
+_ZN12wxWizardBaseD2Ev
+_ZN13wxArrayString3AddERK8wxStringj
+_ZN13wxArrayString4InitEb
+_ZN13wxArrayString4SortEb
+_ZN13wxArrayString5AllocEj
+_ZN13wxArrayString5ClearEv
+_ZN13wxArrayString5EmptyEv
+_ZN13wxArrayString8RemoveAtEjj
+_ZN13wxArrayStringaSERKS_
+_ZN13wxArrayStringC1ERKS_
+_ZN13wxArrayStringD1Ev
+_ZN13wxArtProvider11GetSizeHintERK8wxStringb
+_ZN13wxArtProvider13DoGetSizeHintERK8wxString
+_ZN13wxArtProvider6InsertEPS_
+_ZN13wxArtProvider7GetIconERK8wxStringS2_RK6wxSize
+_ZN13wxArtProvider9GetBitmapERK8wxStringS2_RK6wxSize
+_ZN13wxArtProviderD2Ev
+_ZN13wxControlBase16DoUpdateWindowUIER15wxUpdateUIEvent
+_ZN13wxControlBase7CommandER14wxCommandEvent
+_ZN13wxControlBase7SetFontERK6wxFont
+_ZN13wxControlBaseD2Ev
+_ZN13wxFileHistory14AddFilesToMenuEv
+_ZN13wxFileHistory16AddFileToHistoryERK8wxString
+_ZN13wxFileHistory4LoadER12wxConfigBase
+_ZN13wxFileHistory4SaveER12wxConfigBase
+_ZN13wxFileHistory7UseMenuEP6wxMenu
+_ZN13wxFileHistoryC1Eji
+_ZN13wxFileHistoryD1Ev
+_ZN13wxMenuBarBase5CheckEib
+_ZN13wxMenuBarBase6EnableEib
+_ZN13wxTransform2DD0Ev
+_ZN13wxTransform2DD1Ev
+_ZN13wxTransform2DD2Ev
+_ZN13wxXmlResource10LoadDialogEP8wxDialogP8wxWindowRK8wxString
+_ZN13wxXmlResource10LoadObjectEP8wxObjectP8wxWindowRK8wxStringS6_
+_ZN13wxXmlResource11LoadMenuBarEP8wxWindowRK8wxString
+_ZN13wxXmlResource11LoadToolBarEP8wxWindowRK8wxString
+_ZN13wxXmlResource15InitAllHandlersEv
+_ZN13wxXmlResource20AttachUnknownControlERK8wxStringP8wxWindowS4_
+_ZN13wxXmlResource3GetEv
+_ZN13wxXmlResource4LoadERK8wxString
+_ZN13wxXmlResource8GetXRCIDEPKwi
+_ZN13wxXmlResource9LoadFrameEP7wxFrameP8wxWindowRK8wxString
+_ZN13wxXmlResource9LoadPanelEP8wxWindowRK8wxString
+_ZN14wxBaseArrayInt3AddEij
+_ZN14wxBaseArrayInt8RemoveAtEjj
+_ZN14wxBaseArrayIntC2Ev
+_ZN14wxBaseArrayIntD2Ev
+_ZN14wxBitmapButton4InitEv
+_ZN14wxBitmapButton6CreateEP8wxWindowiRK8wxBitmapRK7wxPointRK6wxSizelRK11wxValidatorRK8wxString
+_ZN14wxDirTraverser11OnOpenErrorERK8wxString
+_ZN14wxImageHandlerD0Ev
+_ZN14wxImageHandlerD1Ev
+_ZN14wxImageHandlerD2Ev
+_ZN14wxMemoryDCBase20SelectObjectAsSourceERK8wxBitmap
+_ZN14wxMemoryDCBaseD0Ev
+_ZN14wxMemoryDCBaseD1Ev
+_ZN14wxMemoryDCBaseD2Ev
+_ZN14wxMenuItemBase3NewEP6wxMenuiRK8wxStringS4_10wxItemKindS1_
+_ZN14wxMenuItemList10CreateNodeEP10wxNodeBaseS1_PvRK9wxListKey
+_ZN14wxMenuItemListD0Ev
+_ZN14wxMenuItemListD1Ev
+_ZN14wxMenuItemListD2Ev
+_ZN14wxTextCtrlBase10DoLoadFileERK8wxStringi
+_ZN14wxTextCtrlBase10DoSaveFileERK8wxStringi
+_ZN14wxTextCtrlBase11ChangeValueERK8wxString
+_ZN14wxTextCtrlBase15EmulateKeyPressERK10wxKeyEvent
+_ZN14wxTextCtrlBase15SetDefaultStyleERK10wxTextAttr
+_ZN14wxTextCtrlBase16DoUpdateWindowUIER15wxUpdateUIEvent
+_ZN14wxTextCtrlBase8GetStyleElR10wxTextAttr
+_ZN14wxTextCtrlBase8overflowEi
+_ZN14wxTextCtrlBase8SetValueERK8wxString
+_ZN14wxTextCtrlBase9SelectAllEv
+_ZN15wxCmdLineParser8AddParamERK8wxString18wxCmdLineParamTypei
+_ZN15wxDirDialogBase10SetMessageERK8wxString
+_ZN15wxDirDialogBase7SetPathERK8wxString
+_ZN15wxDirDialogBaseD0Ev
+_ZN15wxDirDialogBaseD1Ev
+_ZN15wxDirDialogBaseD2Ev
+_ZN15wxFlexGridSizer14AddGrowableColEji
+_ZN15wxFlexGridSizer14AddGrowableRowEji
+_ZN15wxFlexGridSizerC1Eiii
+_ZN15wxItemContainer13SetClientDataEjPv
+_ZN15wxMessageDialog9ShowModalEv
+_ZN15wxMessageDialogC1EP8wxWindowRK8wxStringS4_lRK7wxPoint
+_ZN15wxMessageDialogD1Ev
+_ZN16wxEventHashTableC1ERK12wxEventTable
+_ZN16wxEventHashTableD1Ev
+_ZN16wxFontDialogBaseD2Ev
+_ZN16wxNativeFontInfo10FromStringERK8wxString
+_ZN16wxNativeFontInfo4FreeEv
+_ZN16wxNativeFontInfo4InitEv
+_ZN16wxSplitterWindow10InitializeEP8wxWindow
+_ZN16wxSplitterWindow14SetSashGravityEd
+_ZN16wxSplitterWindow15SetSashPositionEib
+_ZN16wxSplitterWindow18SetMinimumPaneSizeEi
+_ZN16wxSplitterWindow4InitEv
+_ZN16wxSplitterWindow6CreateEP8wxWindowiRK7wxPointRK6wxSizelRK8wxString
+_ZN16wxSplitterWindow7UnsplitEP8wxWindow
+_ZN16wxWindowDisablerC1EP8wxWindow
+_ZN16wxWindowDisablerD1Ev
+_ZN17wxGenericListCtrl10DeleteItemEl
+_ZN17wxGenericListCtrl10InsertItemElRK8wxString
+_ZN17wxGenericListCtrl10InsertItemElRK8wxStringi
+_ZN17wxGenericListCtrl11DoPopupMenuEP6wxMenuii
+_ZN17wxGenericListCtrl11RefreshItemEl
+_ZN17wxGenericListCtrl11SetItemTextElRK8wxString
+_ZN17wxGenericListCtrl12InsertColumnElRK8wxStringii
+_ZN17wxGenericListCtrl12RefreshItemsEll
+_ZN17wxGenericListCtrl12SetItemCountEl
+_ZN17wxGenericListCtrl12SetItemStateElll
+_ZN17wxGenericListCtrl12SetScrollPosEiib
+_ZN17wxGenericListCtrl13EnsureVisibleEl
+_ZN17wxGenericListCtrl13SetDropTargetEP12wxDropTarget
+_ZN17wxGenericListCtrl13sm_eventTableE
+_ZN17wxGenericListCtrl14DeleteAllItemsEv
+_ZN17wxGenericListCtrl14OnInternalIdleEv
+_ZN17wxGenericListCtrl14SetColumnWidthEii
+_ZN17wxGenericListCtrl15AssignImageListEP11wxImageListi
+_ZN17wxGenericListCtrl16DeleteAllColumnsEv
+_ZN17wxGenericListCtrl18SetWindowStyleFlagEl
+_ZN17wxGenericListCtrl19SetBackgroundColourERK8wxColour
+_ZN17wxGenericListCtrl19SetForegroundColourERK8wxColour
+_ZN17wxGenericListCtrl25GetClassDefaultAttributesE15wxWindowVariant
+_ZN17wxGenericListCtrl4ThawEv
+_ZN17wxGenericListCtrl6CreateEP8wxWindowiRK7wxPointRK6wxSizelRK11wxValidatorRK8wxString
+_ZN17wxGenericListCtrl6FreezeEv
+_ZN17wxGenericListCtrl6UpdateEv
+_ZN17wxGenericListCtrl7RefreshEbPK6wxRect
+_ZN17wxGenericListCtrl7SetFontERK6wxFont
+_ZN17wxGenericListCtrl7SetItemEliRK8wxStringi
+_ZN17wxGenericListCtrl8ClearAllEv
+_ZN17wxGenericListCtrl8SetFocusEv
+_ZN17wxGenericListCtrl9EditLabelElP11wxClassInfo
+_ZN17wxGenericListCtrl9SetCursorERK8wxCursor
+_ZN17wxGenericListCtrlC2Ev
+_ZN17wxGenericListCtrlD2Ev
+_ZN17_wxHashTableBase212GetNextPrimeEm
+_ZN17wxStringTokenizer12GetNextTokenEv
+_ZN17wxStringTokenizerC1ERK8wxStringS2_21wxStringTokenizerMode
+_ZN17wxStringTokenizerD0Ev
+_ZN17wxStringTokenizerD1Ev
+_ZN17wxStringTokenizerD2Ev
+_ZN17wxTextInputStream8ReadLineEv
+_ZN17wxTextInputStreamC1ER13wxInputStreamRK8wxStringRK8wxMBConv
+_ZN17wxTextInputStreamD1Ev
+_ZN18wxBaseArrayPtrVoid5ClearEv
+_ZN18wxBaseArrayPtrVoid6InsertEPKvjj
+_ZN18wxBaseArrayPtrVoid8RemoveAtEjj
+_ZN18wxBaseArrayPtrVoidC2Ev
+_ZN18wxBaseArrayPtrVoidD2Ev
+_ZN18wxBitmapButtonBase10SetMarginsEii
+_ZN18wxBitmapButtonBase11OnSetBitmapEv
+_ZN18wxBitmapButtonBase8SetLabelERK8wxString
+_ZN18wxBitmapButtonBaseD0Ev
+_ZN18wxBitmapButtonBaseD1Ev
+_ZN18wxBitmapButtonBaseD2Ev
+_ZN18wxControlContainerC1EP8wxWindow
+_ZN18wxGenericImageList3AddERK8wxBitmap
+_ZN18wxGenericImageListC2Eiibi
+_ZN18wxVisualAttributesD1Ev
+_ZN18wxVisualAttributesD2Ev
+_ZN19wxGenericFileDialogD2Ev
+_ZN19wxTopLevelWindowGTK10RemoveGrabEv
+_ZN19wxTopLevelWindowGTK12DoMoveWindowEiiii
+_ZN19wxTopLevelWindowGTK14DoSetSizeHintsEiiiiii
+_ZN19wxTopLevelWindowGTK14OnInternalIdleEv
+_ZN19wxTopLevelWindowGTK14SetTransparentEh
+_ZN19wxTopLevelWindowGTK14ShowFullScreenEbl
+_ZN19wxTopLevelWindowGTK15DoSetClientSizeEii
+_ZN19wxTopLevelWindowGTK17CanSetTransparentEv
+_ZN19wxTopLevelWindowGTK17EnableCloseButtonEb
+_ZN19wxTopLevelWindowGTK18SetWindowStyleFlagEl
+_ZN19wxTopLevelWindowGTK20RequestUserAttentionEi
+_ZN19wxTopLevelWindowGTK4InitEv
+_ZN19wxTopLevelWindowGTK4ShowEb
+_ZN19wxTopLevelWindowGTK5RaiseEv
+_ZN19wxTopLevelWindowGTK7AddGrabEv
+_ZN19wxTopLevelWindowGTK7IconizeEb
+_ZN19wxTopLevelWindowGTK7RestoreEv
+_ZN19wxTopLevelWindowGTK7SetIconERK6wxIcon
+_ZN19wxTopLevelWindowGTK8IsActiveEv
+_ZN19wxTopLevelWindowGTK8MaximizeEb
+_ZN19wxTopLevelWindowGTK8SetIconsERK12wxIconBundle
+_ZN19wxTopLevelWindowGTK8SetShapeERK8wxRegion
+_ZN19wxTopLevelWindowGTK8SetTitleERK8wxString
+_ZN19wxTopLevelWindowGTK9DoSetSizeEiiiii
+_ZN19wxTopLevelWindowGTK9GtkOnSizeEv
+_ZN19wxTopLevelWindowGTKD2Ev
+_ZN20wxHtmlHelpController10InitializeERK8wxString
+_ZN20wxHtmlHelpController15DisplayContentsEv
+_ZN20wxHtmlHelpController7AddBookERK8wxStringb
+_ZN20wxHtmlHelpControllerC1EiP8wxWindow
+_ZN20wxHtmlHelpControllerD1Ev
+_ZN20wxThreadHelperThread5EntryEv
+_ZN20wxThreadHelperThreadD0Ev
+_ZN20wxThreadHelperThreadD1Ev
+_ZN20wxThreadHelperThreadD2Ev
+_ZN20wxTopLevelWindowBase10SetMaxSizeERK6wxSize
+_ZN20wxTopLevelWindowBase10SetMinSizeERK6wxSize
+_ZN20wxTopLevelWindowBase11RemoveChildEP12wxWindowBase
+_ZN20wxTopLevelWindowBase16DoUpdateWindowUIER15wxUpdateUIEvent
+_ZN20wxTopLevelWindowBase26GetRectForTopLevelChildrenEPiS0_S0_S0_
+_ZN20wxTopLevelWindowBase7DestroyEv
+_ZN20wxTopLevelWindowBase8DoCentreEi
+_ZN20wxTopLevelWindowBaseC2Ev
+_ZN20wxTopLevelWindowBaseD2Ev
+_ZN21wxMemoryFSHandlerBase10RemoveFileERK8wxString
+_ZN21wxMemoryFSHandlerBase19AddFileWithMimeTypeERK8wxStringPKvjS2_
+_ZN21wxMemoryFSHandlerBase7AddFileERK8wxStringS2_
+_ZN21wxMemoryFSHandlerBase7CanOpenERK8wxString
+_ZN21wxMemoryFSHandlerBase8FindNextEv
+_ZN21wxMemoryFSHandlerBase8OpenFileER12wxFileSystemRK8wxString
+_ZN21wxMemoryFSHandlerBase9FindFirstERK8wxStringi
+_ZN21wxMemoryFSHandlerBaseC2Ev
+_ZN21wxMemoryFSHandlerBaseD2Ev
+_ZN22wxSystemSettingsNative7GetFontE12wxSystemFont
+_ZN22wxSystemSettingsNative9GetMetricE14wxSystemMetricP8wxWindow
+_ZN5wxApp10InitializeERiPPw
+_ZN5wxApp10WakeUpIdleEv
+_ZN5wxApp5YieldEb
+_ZN5wxApp7CleanUpEv
+_ZN5wxApp9OnInitGuiEv
+_ZN5wxAppC2Ev
+_ZN5wxAppD2Ev
+_ZN5wxDir11GetAllFilesERK8wxStringP13wxArrayStringS2_i
+_ZN5wxDirC1ERK8wxString
+_ZN5wxDirD1Ev
+_ZN5wxLog15GetActiveTargetEv
+_ZN5wxLog15ms_suspendCountE
+_ZN5wxLog8ms_doLogE
+_ZN6wxFile5CloseEv
+_ZN6wxFile6AccessEPKwNS_8OpenModeE
+_ZN6wxFont19DoSetNativeFontInfoERK16wxNativeFontInfo
+_ZN6wxFont9SetWeightEi
+_ZN6wxFontD1Ev
+_ZN6wxIconC1Ev
+_ZN6wxMaskC1ERK8wxBitmapRK8wxColour
+_ZN6wxMenu4InitEv
+_ZN7wxBrushC1ERK8wxColouri
+_ZN7wxBrushD1Ev
+_ZN7wxFFile4OpenEPKwS1_
+_ZN7wxFFile5CloseEv
+_ZN7wxFFile5WriteEPKvj
+_ZN7wxFFile7ReadAllEP8wxStringRK8wxMBConv
+_ZN7wxFrame10SetToolBarEP9wxToolBar
+_ZN7wxFrame12SetStatusBarEP11wxStatusBar
+_ZN7wxFrame13AttachMenuBarEP9wxMenuBar
+_ZN7wxFrame13CreateToolBarEliRK8wxString
+_ZN7wxFrame13DetachMenuBarEv
+_ZN7wxFrame14OnInternalIdleEv
+_ZN7wxFrame15CreateStatusBarEiliRK8wxString
+_ZN7wxFrame15DoSetClientSizeEii
+_ZN7wxFrame17PositionStatusBarEv
+_ZN7wxFrame4InitEv
+_ZN7wxFrame6CreateEP8wxWindowiRK8wxStringRK7wxPointRK6wxSizelS4_
+_ZN7wxFrame9GtkOnSizeEv
+_ZN7wxFrameD2Ev
+_ZN7wxGauge8SetRangeEi
+_ZN7wxGauge8SetValueEi
+_ZN7wxImage10AddHandlerEP14wxImageHandler
+_ZN7wxPanel10InitDialogEv
+_ZN7wxPanel11RemoveChildEP12wxWindowBase
+_ZN7wxPanel12ms_classInfoE
+_ZN7wxPanel12OnChildFocusER17wxChildFocusEvent
+_ZN7wxPanel13sm_eventTableE
+_ZN7wxPanel24SetFocusIgnoringChildrenEv
+_ZN7wxPanel4InitEv
+_ZN7wxPanel6CreateEP8wxWindowiRK7wxPointRK6wxSizelRK8wxString
+_ZN7wxPanel8SetFocusEv
+_ZN7wxPanelD2Ev
+_ZN7wxSizer3FitEP8wxWindow
+_ZN7wxSizer4ShowEP8wxWindowbb
+_ZN8wxBitmap7SetMaskEP6wxMask
+_ZN8wxBitmap8LoadFileERK8wxString12wxBitmapType
+_ZN8wxBitmapC1Eiii
+_ZN8wxBitmapC1EPKPKc
+_ZN8wxBitmapD1Ev
+_ZN8wxBitmapD2Ev
+_ZN8wxButton10SetDefaultEv
+_ZN8wxButton18DoApplyWidgetStyleEP11_GtkRcStyle
+_ZN8wxButton6EnableEb
+_ZN8wxButtonC2Ev
+_ZN8wxButtonD2Ev
+_ZN8wxColour10FromStringEPKw
+_ZN8wxColour8InitRGBAEhhhh
+_ZN8wxColourD1Ev
+_ZN8wxCSConvC1EPKw
+_ZN8wxCSConvD1Ev
+_ZN8wxCursorC1Ev
+_ZN8wxCursorD1Ev
+_ZN8wxDialog4InitEv
+_ZN8wxDialog4ShowEb
+_ZN8wxDialog8EndModalEi
+_ZN8wxDialog9ShowModalEv
+_ZN8wxDialogD0Ev
+_ZN8wxDialogD1Ev
+_ZN8wxDialogD2Ev
+_ZN8wxLocale10AddCatalogEPKw
+_ZN8wxLocale12DoCommonInitEv
+_ZN8wxLocale26AddCatalogLookupPathPrefixERK8wxString
+_ZN8wxLocale4InitEii
+_ZN8wxLocaleD1Ev
+_ZN8wxMBConvD2Ev
+_ZN8wxObject14AllocExclusiveEv
+_ZN8wxObject3RefERKS_
+_ZN8wxObject5UnRefEv
+_ZN8wxString4TrimEb
+_ZN8wxString6FormatEPKwz
+_ZN8wxString6PrintfEPKwz
+_ZN8wxString7ReplaceEPKwS1_b
+_ZN8wxString8TruncateEj
+_ZN8wxString9FromAsciiEPKc
+_ZN8wxString9MakeLowerEv
+_ZN8wxStringC1EPKcRK8wxMBConvj
+_ZN8wxStringC1EPKw
+_ZN8wxStringC1ERKS_
+_ZN8wxStringC2EPKw
+_ZN8wxStringC2ERKS_
+_ZN8wxStringD1Ev
+_ZN8wxStringD2Ev
+_ZN8wxThread11TestDestroyEv
+_ZN8wxThread6OnExitEv
+_ZN8wxThreadD2Ev
+_ZN8wxWindow11DoPopupMenuEP6wxMenuii
+_ZN8wxWindow11RemoveChildEP12wxWindowBase
+_ZN8wxWindow11ScrollLinesEi
+_ZN8wxWindow11ScrollPagesEi
+_ZN8wxWindow11WarpPointerEii
+_ZN8wxWindow12ApplyToolTipEP12_GtkTooltipsPKw
+_ZN8wxWindow12DoMoveWindowEiiii
+_ZN8wxWindow12DoSetToolTipEP9wxToolTip
+_ZN8wxWindow12ScrollWindowEiiPK6wxRect
+_ZN8wxWindow12SetScrollbarEiiiib
+_ZN8wxWindow12SetScrollPosEiib
+_ZN8wxWindow13SetDropTargetEP12wxDropTarget
+_ZN8wxWindow14DoCaptureMouseEv
+_ZN8wxWindow14DoReleaseMouseEv
+_ZN8wxWindow14OnInternalIdleEv
+_ZN8wxWindow14OnParentEnableEb
+_ZN8wxWindow15ClearBackgroundEv
+_ZN8wxWindow15DoSetClientSizeEii
+_ZN8wxWindow15FixUpMouseEventEP10_GtkWidgetRiS2_
+_ZN8wxWindow16ApplyWidgetStyleEb
+_ZN8wxWindow16DoMoveInTabOrderEPS_N12wxWindowBase8MoveKindE
+_ZN8wxWindow16GetConnectWidgetEv
+_ZN8wxWindow18DoApplyWidgetStyleEP11_GtkRcStyle
+_ZN8wxWindow18SetBackgroundStyleE17wxBackgroundStyle
+_ZN8wxWindow18SetLayoutDirectionE17wxLayoutDirection
+_ZN8wxWindow18SetWindowStyleFlagEl
+_ZN8wxWindow19SetBackgroundColourERK8wxColour
+_ZN8wxWindow19SetForegroundColourERK8wxColour
+_ZN8wxWindow22GTKWidgetDoSetMnemonicEP10_GtkWidget
+_ZN8wxWindow4ShowEb
+_ZN8wxWindow5LowerEv
+_ZN8wxWindow5RaiseEv
+_ZN8wxWindow6EnableEb
+_ZN8wxWindow6UpdateEv
+_ZN8wxWindow7DestroyEv
+_ZN8wxWindow7RefreshEbPK6wxRect
+_ZN8wxWindow7SetFontERK6wxFont
+_ZN8wxWindow8AddChildEP12wxWindowBase
+_ZN8wxWindow8ReparentEP12wxWindowBase
+_ZN8wxWindow8SetFocusEv
+_ZN8wxWindow8SetLabelERK8wxString
+_ZN8wxWindow9DoSetSizeEiiiii
+_ZN8wxWindow9SetCursorERK8wxCursor
+_ZN8wxWindowC2Ev
+_ZN8wxWindowD2Ev
+_ZN8wxWizard11SetPageSizeERK6wxSize
+_ZN8wxWizard13sm_eventTableE
+_ZN8wxWizard16DoCreateControlsEv
+_ZN8wxWizard4InitEv
+_ZN8wxWizard9FitToPageEPK12wxWizardPage
+_ZN8wxWizard9RunWizardEP12wxWizardPage
+_ZN8wxWizard9SetBorderEi
+_ZN8wxWizardD2Ev
+_ZN9wxAppBase11ProcessIdleEv
+_ZN9wxAppBase12CreateTraitsEv
+_ZN9wxAppBase12ExitMainLoopEv
+_ZN9wxAppBase12SetPrintModeEi
+_ZN9wxAppBase13OnInitCmdLineER15wxCmdLineParser
+_ZN9wxAppBase14SendIdleEventsEP8wxWindowR11wxIdleEvent
+_ZN9wxAppBase14SetDisplayModeERK11wxVideoMode
+_ZN9wxAppBase15OnCmdLineParsedER15wxCmdLineParser
+_ZN9wxAppBase21OnExceptionInMainLoopEv
+_ZN9wxAppBase4ExitEv
+_ZN9wxAppBase5OnRunEv
+_ZN9wxAppBase6OnExitEv
+_ZN9wxAppBase7PendingEv
+_ZN9wxAppBase8DispatchEv
+_ZN9wxAppBase8MainLoopEv
+_ZN9wxAppBase9SetActiveEbP8wxWindow
+_ZN9wxControl14OnInternalIdleEv
+_ZN9wxControl8SetLabelERK8wxString
+_ZN9wxControlC2Ev
+_ZN9wxControlD0Ev
+_ZN9wxControlD1Ev
+_ZN9wxControlD2Ev
+_ZN9wxProcess11OnTerminateEii
+_ZN9wxProcess4InitEP12wxEvtHandlerii
+_ZN9wxProcessD2Ev
+_ZNK10wxDateTime6FormatEPKwRKNS_8TimeZoneE
+_ZNK10wxFileName11GetFullPathE12wxPathFormat
+_ZNK10wxFontBase21GetNativeFontInfoDescEv
+_ZNK10wxListBase4FindERK9wxListKey
+_ZNK10wxListCtrl12GetClassInfoEv
+_ZNK10wxListView12GetClassInfoEv
+_ZNK10wxTextCtrl10IsEditableEv
+_ZNK10wxTextCtrl10IsModifiedEv
+_ZNK10wxTextCtrl11GetLineTextEl
+_ZNK10wxTextCtrl12GetClassInfoEv
+_ZNK10wxTextCtrl12GetSelectionEPlS0_
+_ZNK10wxTextCtrl12GTKGetWindowER17wxArrayGdkWindows
+_ZNK10wxTextCtrl12PositionToXYElPlS0_
+_ZNK10wxTextCtrl12XYToPositionEll
+_ZNK10wxTextCtrl13DoGetBestSizeEv
+_ZNK10wxTextCtrl13GetEventTableEv
+_ZNK10wxTextCtrl13GetLineLengthEl
+_ZNK10wxTextCtrl15GetLastPositionEv
+_ZNK10wxTextCtrl15GTKProcessEventER7wxEvent
+_ZNK10wxTextCtrl15UseGTKStyleBaseEv
+_ZNK10wxTextCtrl16GetNumberOfLinesEv
+_ZNK10wxTextCtrl17GetEventHashTableEv
+_ZNK10wxTextCtrl17GetInsertionPointEv
+_ZNK10wxTextCtrl7CanRedoEv
+_ZNK10wxTextCtrl7CanUndoEv
+_ZNK10wxTextCtrl7HitTestERK7wxPointPl
+_ZNK10wxTextCtrl7HitTestERK7wxPointPlS3_
+_ZNK10wxTextCtrl7IsEmptyEv
+_ZNK10wxTextCtrl8GetValueEv
+_ZNK10wxTextCtrl8IsFrozenEv
+_ZNK11wxDirDialog7GetPathEv
+_ZNK11wxFrameBase10GetMenuBarEv
+_ZNK11wxFrameBase10GetToolBarEv
+_ZNK11wxFrameBase11IsOneOfBarsEPK8wxWindow
+_ZNK11wxFrameBase12GetStatusBarEv
+_ZNK12wxAppConsole11HandleEventEP12wxEvtHandlerMS0_FvR7wxEventES3_
+_ZNK12wxConfigBase4ReadERK8wxStringPll
+_ZNK12wxConfigBase4ReadERK8wxStringPS0_S2_
+_ZNK12wxDialogBase12AcceptsFocusEv
+_ZNK12wxDialogBase13GetEventTableEv
+_ZNK12wxDialogBase17GetEventHashTableEv
+_ZNK12wxEvtHandler12GetClassInfoEv
+_ZNK12wxEvtHandler13GetEventTableEv
+_ZNK12wxEvtHandler15DoGetClientDataEv
+_ZNK12wxEvtHandler17DoGetClientObjectEv
+_ZNK12wxEvtHandler17GetEventHashTableEv
+_ZNK12wxFileDialog12GetDirectoryEv
+_ZNK12wxFileDialog8GetPathsER13wxArrayString
+_ZNK12wxStringBase4findEwj
+_ZNK12wxStringBase6substrEjj
+_ZNK12wxStringBase7compareEjjPKwj
+_ZNK12wxTextBuffer9GuessTypeEv
+_ZNK12wxWindowBase10FindWindowEl
+_ZNK12wxWindowBase10FindWindowERK8wxString
+_ZNK12wxWindowBase10GetMaxSizeEv
+_ZNK12wxWindowBase10GetMinSizeEv
+_ZNK12wxWindowBase10HasCaptureEv
+_ZNK12wxWindowBase10IsTopLevelEv
+_ZNK12wxWindowBase13DoGetBestSizeEv
+_ZNK12wxWindowBase13GetDropTargetEv
+_ZNK12wxWindowBase13GetEventTableEv
+_ZNK12wxWindowBase15GetThemeEnabledEv
+_ZNK12wxWindowBase15IsShownOnScreenEv
+_ZNK12wxWindowBase16DoGetVirtualSizeEv
+_ZNK12wxWindowBase16GetDefaultBorderEv
+_ZNK12wxWindowBase16HasMultiplePagesEv
+_ZNK12wxWindowBase17GetEventHashTableEv
+_ZNK12wxWindowBase17GetSizeConstraintEPiS0_
+_ZNK12wxWindowBase18GetBackgroundStyleEv
+_ZNK12wxWindowBase18GetBestVirtualSizeEv
+_ZNK12wxWindowBase18GetHelpTextAtPointERK7wxPointN11wxHelpEvent6OriginE
+_ZNK12wxWindowBase18GetWindowStyleFlagEv
+_ZNK12wxWindowBase19DoGetScreenPositionEPiS0_
+_ZNK12wxWindowBase19GetClientAreaOriginEv
+_ZNK12wxWindowBase19GetWindowBorderSizeEv
+_ZNK12wxWindowBase20GetDefaultAttributesEv
+_ZNK12wxWindowBase20ShouldInheritColoursEv
+_ZNK12wxWindowBase21GetPositionConstraintEPiS0_
+_ZNK12wxWindowBase23GetClientSizeConstraintEPiS0_
+_ZNK12wxWindowBase24AcceptsFocusFromKeyboardEv
+_ZNK12wxWindowBase27AdjustForParentClientOriginERiS0_i
+_ZNK12wxWindowBase27GetWindowSizeForVirtualSizeERK6wxSize
+_ZNK12wxWindowBase7GetNameEv
+_ZNK12wxWindowBase7IsShownEv
+_ZNK12wxWindowBase8IsFrozenEv
+_ZNK12wxWindowBase9DoHitTestEii
+_ZNK12wxWindowBase9IsEnabledEv
+_ZNK13wxArrayString5IndexEPKwbb
+_ZNK13wxArrayStringeqERKS_
+_ZNK13wxArtProvider12GetClassInfoEv
+_ZNK13wxFileHistory14GetHistoryFileEj
+_ZNK13wxMenuBarBase7GetMenuEj
+_ZNK13wxMenuBarBase8FindMenuERK8wxString
+_ZNK13wxMenuBarBase9IsCheckedEi
+_ZNK13wxTransform2D16InverseTransformEP11wxRect2DInt
+_ZNK13wxTransform2D16InverseTransformERK11wxRect2DInt
+_ZNK13wxTransform2D16InverseTransformERK12wxPoint2DInt
+_ZNK13wxTransform2D9TransformEP11wxRect2DInt
+_ZNK13wxTransform2D9TransformERK11wxRect2DInt
+_ZNK13wxTransform2D9TransformERK12wxPoint2DInt
+_ZNK14wxMenuItemList4FindERK9wxListKey
+_ZNK14wxTextCtrlBase15GetDefaultStyleEv
+_ZNK14wxTextCtrlBase18GetStringSelectionEv
+_ZNK14wxTextCtrlBase20ShouldInheritColoursEv
+_ZNK14wxTextCtrlBase6CanCutEv
+_ZNK14wxTextCtrlBase7CanCopyEv
+_ZNK14wxTextCtrlBase7HitTestERK7wxPointPlS3_
+_ZNK14wxTextCtrlBase8CanPasteEv
+_ZNK14wxTextCtrlBase8GetRangeEll
+_ZNK15wxCmdLineParser13GetParamCountEv
+_ZNK15wxCmdLineParser8GetParamEj
+_ZNK15wxDirDialogBase10GetMessageEv
+_ZNK15wxDirDialogBase7GetPathEv
+_ZNK15wxItemContainer13GetClientDataEj
+_ZNK17wxGenericListCtrl11GetItemTextEl
+_ZNK17wxGenericListCtrl11GetNextItemElii
+_ZNK17wxGenericListCtrl12GetItemCountEv
+_ZNK17wxGenericListCtrl12GetScrollPosEi
+_ZNK17wxGenericListCtrl13DoGetBestSizeEv
+_ZNK17wxGenericListCtrl13GetDropTargetEv
+_ZNK17wxGenericListCtrl13OnGetItemAttrEl
+_ZNK17wxGenericListCtrl13OnGetItemTextEll
+_ZNK17wxGenericListCtrl14OnGetItemImageEl
+_ZNK17wxGenericListCtrl16DoClientToScreenEPiS0_
+_ZNK17wxGenericListCtrl16DoScreenToClientEPiS0_
+_ZNK17wxGenericListCtrl19GetBackgroundColourEv
+_ZNK17wxGenericListCtrl19GetForegroundColourEv
+_ZNK17wxGenericListCtrl20GetDefaultAttributesEv
+_ZNK17wxGenericListCtrl20OnGetItemColumnImageEll
+_ZNK17wxGenericListCtrl20ShouldInheritColoursEv
+_ZNK17wxGenericListCtrl7HitTestERK7wxPointRiPl
+_ZNK17wxStringTokenizer11CountTokensEv
+_ZNK17wxStringTokenizer13HasMoreTokensEv
+_ZNK19wxFileSystemHandler12GetClassInfoEv
+_ZNK19wxTopLevelWindowGTK10IsIconizedEv
+_ZNK19wxTopLevelWindowGTK11IsMaximizedEv
+_ZNK19wxTopLevelWindowGTK12IsFullScreenEv
+_ZNK19wxTopLevelWindowGTK15DoGetClientSizeEPiS0_
+_ZNK19wxTopLevelWindowGTK8GetTitleEv
+_ZNK19wxTopLevelWindowGTK9IsGrabbedEv
+_ZNK20wxTopLevelWindowBase10IsTopLevelEv
+_ZNK20wxTopLevelWindowBase11IsOneOfBarsEPK8wxWindow
+_ZNK20wxTopLevelWindowBase16DoClientToScreenEPiS0_
+_ZNK20wxTopLevelWindowBase16DoScreenToClientEPiS0_
+_ZNK20wxTopLevelWindowBase17IsAlwaysMaximizedEv
+_ZNK20wxTopLevelWindowBase19DoGetScreenPositionEPiS0_
+_ZNK20wxTopLevelWindowBase20ShouldPreventAppExitEv
+_ZNK20wxTopLevelWindowBase9IsVisibleEv
+_ZNK5wxApp12GetClassInfoEv
+_ZNK5wxApp13GetEventTableEv
+_ZNK5wxApp17GetEventHashTableEv
+_ZNK5wxDir7GetNextEP8wxString
+_ZNK5wxDir8GetFirstEP8wxStringRKS0_i
+_ZNK5wxDir8IsOpenedEv
+_ZNK5wxDir8TraverseER14wxDirTraverserRK8wxStringi
+_ZNK7wxFrame12GetClassInfoEv
+_ZNK7wxFrame15DoGetClientSizeEPiS0_
+_ZNK7wxFrame19GetClientAreaOriginEv
+_ZNK7wxGauge8GetValueEv
+_ZNK7wxPanel12AcceptsFocusEv
+_ZNK8wxButton12GetClassInfoEv
+_ZNK8wxButton12GTKGetWindowER17wxArrayGdkWindows
+_ZNK8wxButton13DoGetBestSizeEv
+_ZNK8wxButton20ShouldInheritColoursEv
+_ZNK8wxColour3RedEv
+_ZNK8wxColour4BlueEv
+_ZNK8wxColour5GreenEv
+_ZNK8wxDialog12GetClassInfoEv
+_ZNK8wxDialog7IsModalEv
+_ZNK8wxObject12CloneRefDataEPK15wxObjectRefData
+_ZNK8wxObject12GetClassInfoEv
+_ZNK8wxObject13CreateRefDataEv
+_ZNK8wxString10AfterFirstEw
+_ZNK8wxString10BeforeLastEw
+_ZNK8wxString11BeforeFirstEw
+_ZNK8wxString3CmpEPKw
+_ZNK8wxString3CmpERKS_
+_ZNK8wxString3MidEjj
+_ZNK8wxString4FindEPKw
+_ZNK8wxString4LeftEj
+_ZNK8wxString5LowerEv
+_ZNK8wxString5StripENS_9stripTypeE
+_ZNK8wxString6mb_strERK8wxMBConv
+_ZNK8wxString6ToLongEPli
+_ZNK8wxString7MatchesEPKw
+_ZNK8wxString7ToAsciiEv
+_ZNK8wxString9AfterLastEw
+_ZNK8wxWindow10IsRetainedEv
+_ZNK8wxWindow11DoIsExposedEii
+_ZNK8wxWindow11DoIsExposedEiiii
+_ZNK8wxWindow12AcceptsFocusEv
+_ZNK8wxWindow12GetCharWidthEv
+_ZNK8wxWindow12GetScrollPosEi
+_ZNK8wxWindow12GTKGetWindowER17wxArrayGdkWindows
+_ZNK8wxWindow13DoGetPositionEPiS0_
+_ZNK8wxWindow13GetCharHeightEv
+_ZNK8wxWindow13GetTextExtentERK8wxStringPiS3_S3_S3_PK6wxFont
+_ZNK8wxWindow13IsRadioButtonEv
+_ZNK8wxWindow14GetScrollRangeEi
+_ZNK8wxWindow14GetScrollThumbEi
+_ZNK8wxWindow15DoGetClientSizeEPiS0_
+_ZNK8wxWindow15GTKProcessEventER7wxEvent
+_ZNK8wxWindow16DoClientToScreenEPiS0_
+_ZNK8wxWindow16DoScreenToClientEPiS0_
+_ZNK8wxWindow16IsDoubleBufferedEv
+_ZNK8wxWindow18GetLayoutDirectionEv
+_ZNK8wxWindow21IsTransparentForMouseEv
+_ZNK8wxWindow22GTKWidgetNeedsMnemonicEv
+_ZNK8wxWindow24AdjustForLayoutDirectionEiii
+_ZNK8wxWindow8GetLabelEv
+_ZNK8wxWindow9DoGetSizeEPiS0_
+_ZNK8wxWindow9GetHandleEv
+_ZNK8wxWizard11GetPageSizeEv
+_ZNK8wxWizard12GetClassInfoEv
+_ZNK8wxWizard14GetCurrentPageEv
+_ZNK8wxWizard16GetPageAreaSizerEv
+_ZNK9wxAppBase12GetTopWindowEv
+_ZNK9wxAppBase14GetDisplayModeEv
+_ZNK9wxAppBase18GetLayoutDirectionEv
+_ZNK9wxAppBase8IsActiveEv
+_ZNK9wxControl15UseGTKStyleBaseEv
+_ZNK9wxControl20GetDefaultAttributesEv
+_ZNK9wxControl8GetLabelEv
+_ZNK9wxProcess12GetClassInfoEv
+_ZNSt15basic_streambufIcSt11char_traitsIcEE4syncEv
+_ZNSt15basic_streambufIcSt11char_traitsIcEE5imbueERKSt6locale
+_ZNSt15basic_streambufIcSt11char_traitsIcEE5uflowEv
+_ZNSt15basic_streambufIcSt11char_traitsIcEE6setbufEPci
+_ZNSt15basic_streambufIcSt11char_traitsIcEE6xsgetnEPci
+_ZNSt15basic_streambufIcSt11char_traitsIcEE6xsputnEPKci
+_ZNSt15basic_streambufIcSt11char_traitsIcEE7seekoffExSt12_Ios_SeekdirSt13_Ios_Openmode
+_ZNSt15basic_streambufIcSt11char_traitsIcEE7seekposESt4fposI11__mbstate_tESt13_Ios_Openmode
+_ZNSt15basic_streambufIcSt11char_traitsIcEE9pbackfailEi
+_ZNSt15basic_streambufIcSt11char_traitsIcEE9showmanycEv
+_ZNSt15basic_streambufIcSt11char_traitsIcEE9underflowEv
+_ZNSt8ios_base4InitC1Ev
+_ZNSt8ios_base4InitD1Ev
+_ZplPKwRK8wxString
+_ZplRK8wxStringPKw
+_ZplRK8wxStringS1_
+_ZplRK8wxStringw
+_ZSt17__throw_bad_allocv
+_ZSt18_Rb_tree_decrementPSt18_Rb_tree_node_base
+_ZSt18_Rb_tree_incrementPKSt18_Rb_tree_node_base
+_ZSt20__throw_length_errorPKc
+_ZSt28_Rb_tree_rebalance_for_erasePSt18_Rb_tree_node_baseRS_
+_ZSt29_Rb_tree_insert_and_rebalancebPSt18_Rb_tree_node_baseS0_RS_
+_ZSt9terminatev
+_ZThn340_N14wxTextCtrlBase8overflowEi
+_ZTI10wxListBase
+_ZTI10wxListCtrl
+_ZTI10wxListView
+_ZTI10wxNodeBase
+_ZTI10wxTextCtrl
+_ZTI12wxEvtHandler
+_ZTI12wxWizardBase
+_ZTI13wxArtProvider
+_ZTI13wxTransform2D
+_ZTI14wxDirTraverser
+_ZTI14wxMemoryDCBase
+_ZTI14wxMenuItemList
+_ZTI15wxDirDialogBase
+_ZTI17wxStringTokenizer
+_ZTI18wxBitmapButtonBase
+_ZTI20wxThreadHelperThread
+_ZTI21wxMemoryFSHandlerBase
+_ZTI5wxApp
+_ZTI7wxFrame
+_ZTI7wxPanel
+_ZTI8wxButton
+_ZTI8wxDialog
+_ZTI8wxObject
+_ZTI8wxThread
+_ZTI8wxWizard
+_ZTI9wxProcess
+_ZTS12wxWizardBase
+_ZTS13wxTransform2D
+_ZTS14wxMemoryDCBase
+_ZTS14wxMenuItemList
+_ZTS15wxDirDialogBase
+_ZTS17wxStringTokenizer
+_ZTS18wxBitmapButtonBase
+_ZTS20wxThreadHelperThread
+_ZTV10wxConvAuto
+_ZTV10wxListBase
+_ZTV10wxListCtrl
+_ZTV10wxListView
+_ZTV10wxMemoryDC
+_ZTV10wxMenuBase
+_ZTV10wxTextFile
+_ZTV11wxImageList
+_ZTV12wxDialogBase
+_ZTV12wxFileDialog
+_ZTV12wxFileSystem
+_ZTV12wxFontDialog
+_ZTV12wxGIFHandler
+_ZTV12wxPNGHandler
+_ZTV12wxTextBuffer
+_ZTV12wxWizardBase
+_ZTV13wxTransform2D
+_ZTV14wxBitmapButton
+_ZTV14wxDirTraverser
+_ZTV14wxImageHandler
+_ZTV14wxMemoryDCBase
+_ZTV14wxMenuItemList
+_ZTV15wxDirDialogBase
+_ZTV16wxFontDialogBase
+_ZTV16wxSplitterWindow
+_ZTV16wxTopLevelWindow
+_ZTV17wxGenericListCtrl
+_ZTV17wxStringTokenizer
+_ZTV18wxBitmapButtonBase
+_ZTV18wxGenericDirDialog
+_ZTV19wxTopLevelWindowGTK
+_ZTV20wxThreadHelperThread
+_ZTV20wxwxMenuItemListNode
+_ZTV6wxFont
+_ZTV6wxIcon
+_ZTV6wxMenu
+_ZTV7wxFrame
+_ZTV7wxPanel
+_ZTV8wxBitmap
+_ZTV8wxColour
+_ZTV8wxDialog
+_ZTV8wxLocale
+_ZTV8wxObject
+_ZTV8wxWizard
+_ZTV9wxControl
+_ZTV9wxProcess
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE

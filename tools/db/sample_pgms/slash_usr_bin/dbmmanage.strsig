@@ -1,0 +1,197 @@
+        }
+    @_[0]; # otherwise return plaintext
+available from CPAN:
+BEGIN { @AnyDBM_File::ISA = qw(DB_File NDBM_File GDBM_File SDBM_File) }
+    command is one of: $cmds
+    $comment = '' if $comment eq '-';
+    $comment = (split /:/, $DB{$key}, 3)[2] if !$comment || $comment eq '.';
+# contributor license agreements.  See the NOTICE file distributed with
+    $crypted_pwd = cryptpw $value;
+    $crypted_pwd .= ":" . $groups if $groups;
+    $crypted_pwd = (split /:/, $DB{$key}, 3)[0] if $crypted_pwd eq '.';
+        $crypt_method = "crypt";
+    $crypt_method = "crypt";
+        $crypt_method = "md5";
+    $crypt_method = "md5";
+        $crypt_method = "plain";
+    $crypt_method = "plain";
+        $crypt_method = "sha1";
+    $crypt_method = "sha1";
+    Crypt::PasswdMD5::apache_md5_crypt($pw, $salt);
+    crypt $pw, $salt;
+    $DB{$key} = $crypted_pwd;
+        dbmc->add;
+    dbmc->add;
+        dbmc->adduser;
+dbmc->$command();
+dbmmanage MD5 passwords require the module Crypt::PasswdMD5 available from CPAN
+dbmmanage SHA1 passwords require the interface or the module Digest::SHA1
+    delete $DB{$key}, print "`$key' deleted\n";
+    die "Can't tie $file: $!";
+    die "Can't use empty password!\n" unless $crypted_pwd;
+    die "Can't use empty password!\n" unless length $pwd;
+        die "Sorry, user `$key' already exists!\n" if $DB{$key};
+    die "Sorry, user `$key' doesn't exist!\n" unless $DB{$key};
+    die <<SYNTAX;
+    die "They don't match, sorry.\n" unless getpass("Re-type new password:") eq $value;
+# distributed under the License is distributed on an "AS IS" BASIS,
+    } else {
+    else {
+    } elsif ($crypt_method eq "crypt") {
+    } elsif ($crypt_method eq "sha1") {
+    } elsif (length($chkpass) == 13 && $chkpass ne $testpass) {
+    } elsif (substr($chkpass, 0, 5) eq '{SHA}') {
+$file =~ s/\.($chop)$//;
+#for more functionality see the HTTPD::UserAdmin module:
+        for (qw(xlwwa -le)) {
+# four bytes of iteration count and four bytes of salt).  Otherwise, just use
+    genseed() unless @range;
+    $groups .= ":" . $comment if $comment;
+    $groups = '' if $groups eq '-';
+    groups or comment of - for add and adduser commands is the empty value
+    groups or comment of - for update command clears the existing value
+    groups or comment of . (or blank) for update command retains old values
+    $groups = (split /:/, $DB{$key}, 3)[1] if !$groups || $groups eq '.';
+#     http://www.apache.org/licenses/LICENSE-2.0
+    http://www.cpan.org/modules/by-module/Crypt/Crypt-PasswdMD5-1.1.tar.gz
+    http://www.cpan.org/modules/by-module/Digest/Digest-MD5-2.12.tar.gz
+# http://www.perl.com/CPAN/modules/by-module/HTTPD/HTTPD-Tools-x.xx.tar.gz
+# I believe that 4.4BSD derived systems do (at least BSD/OS 2.0 does).
+if (@ARGV[0] eq "-d") {
+if (@ARGV[0] eq "-m") {
+if (@ARGV[0] eq "-p") {
+if (@ARGV[0] eq "-s") {
+    if (!$crypted_pwd || $crypted_pwd eq '-') {
+    if ($crypt_method eq "md5") {
+if ($crypt_method eq "md5") {
+    if (!$crypt_not_supported) {
+    if ($crypt_not_supported) {
+if ($crypt_not_supported) {
+    if (!eval ('require "Crypt/PasswdMD5.pm";')) {
+    if (!eval ('require "Digest/SHA1.pm";')) {
+    if ($not_unix) {
+    if (substr($chkpass, 0, 6) eq '$apr1$') {
+# if your osname is in $newstyle_salt, then use new style salt (starts with '_' and contains
+    join '', map $range[rand $x], 1..shift||1;
+        join '', "_", randchar, "a..", randchar(4) :
+        ($key,$crypted_pwd,$groups,$comment) = split /:/, $_, 4;
+#                               -ldb    -lndbm    -lgdbm    -lsdbm
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# limitations under the License.
+                  -m for MD5 encryption (default on Win32, Netware)
+    my $action = $is_update ? "updated" : "added";
+    my $chkpass = (split /:/, $DB{$key}, 3)[0];
+my $chop = join '|', qw{db.? pag dir};
+    my $cmds = join "|", sort keys %dbmc::;
+    my($c,$pwd);
+my $crypt_method = "crypt";
+my $crypt_not_supported = $^O =~ /(?:$crypt_not_supported_platforms)/;
+my $crypt_not_supported_platforms = join '|', qw{MSWin32 NetWare}; #others?
+my %DB = ();
+my($file,$command,$key,$crypted_pwd,$groups,$comment) = @ARGV;
+my $is_update = $command eq "update";
+my($mode, $flags) = $command =~
+my $newstyle_salt = $^O =~ /(?:$newstyle_salt_platforms)/;
+my $newstyle_salt_platforms = join '|', qw{bsdos}; #others?
+my $not_unix = $^O =~ /(?:$not_unix_platforms)/;
+my $not_unix_platforms = join '|', qw{MSWin32 NetWare}; #others?
+    my $prompt = shift || "Enter password:";
+    my $psf;
+    my ($pw, $salt) = @_;
+    my($pw, $salt) = @_;
+my @range = ();
+    my $testpass = getpass();
+    my $value = getpass "New password:";
+        need_md5_crypt;
+    need_md5_crypt();
+        need_sha1_crypt;
+    need_sha1_crypt();
+        open STDIN, "/dev/tty" or warn "couldn't open /dev/tty $!\n";
+package dbmmanage;
+                           ? " password ok\n" : " password mismatch\n");
+                  -p for plaintext
+Please install Crypt::PasswdMD5 and try again, or use a different crypt option:
+Please install Digest::SHA1 and try again, or use a different crypt option:
+    print $crypt_method . (cryptpw($testpass, $chkpass) eq $chkpass
+    print $key ? "$key:$DB{$key}\n" : map { "$_:$DB{$_}\n" if $DB{$_} } keys %DB;
+        print STDERR
+        print STDERR <<MD5ERR;
+    print STDERR "\n";
+    print STDERR $prompt;
+        print STDERR <<SHAERR;
+    print "User $key $action with password encrypted to $DB{$key} using $crypt_method\n";
+            `ps $_ 2>/dev/null`;
+            $psf = $_, last unless $?;
+        $pwd .= $c;
+    pw of . for update command retains the old password
+    pw of - (or blank) for update command prompts for the password
+        randchar(2);
+    randchar(8);
+    @range = (qw(. /), '0'..'9','a'..'z','A'..'Z');
+# remove extension if any
+        return cryptpw_crypt(@_);
+        return cryptpw_md5(@_);
+        return cryptpw_sha1(@_);
+    return $newstyle_salt ?
+    return $pwd;
+    $salt = saltpw_crypt unless $salt;
+    $salt = saltpw_md5 unless $salt;
+# See the License for the specific language governing permissions and
+# see the man page on your system to decide if you have a newer crypt() lib.
+                  -s for SHA1 encryption
+    '{SHA}' . Digest::SHA1::sha1_base64($pw) . "=";
+    shift @ARGV;
+# significant rather than only 8.
+# Some platforms just can't crypt() for Apache
+# Some platforms won't jump through our favorite hoops
+        srand (time ^ $$ or time ^ ($$ + ($$ << 15)));
+        srand (time ^ $$ ^ unpack("%L*", `ps $psf | gzip -f`));
+sub cryptpw {
+sub cryptpw_crypt {
+sub cryptpw_md5 {
+sub cryptpw_sha1 {
+sub dbmc::add {
+sub dbmc::adduser {
+sub dbmc::check {
+sub dbmc::delete {
+sub dbmc::import {
+sub dbmc::update {
+sub dbmc::view {
+sub genseed {
+sub getpass {
+sub need_md5_crypt {
+sub need_sha1_crypt {
+sub randchar {
+sub saltpw_crypt {
+sub saltpw_md5 {
+sub usage {
+        system "stty -echo;";
+    system "stty echo" unless $not_unix;
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+# The new style crypt() allows up to 20 characters of the password to be
+# the traditional two-byte salt.
+# this work for additional information regarding copyright ownership.
+    tie (%DB, "DB_File", $file, $flags, $mode, $DB_File::DB_BTREE) ||
+tie (%DB, "DB_File", $file, $flags, $mode, $DB_File::DB_HASH) ||
+    unless($is_update) {
+    unless($not_unix) {
+# Unless required by applicable law or agreed to in writing, software
+untie %DB;
+        usage();
+# usage: dbmmanage <DBMfile> <command> <user> <password> <groups> <comment>
+Usage: dbmmanage [enc] dbname command [username [pw [group[,group] [comment]]]]
+usage() unless $file and $command and defined &{$dbmc::{$command}};
+use DB_File ();
+use Fcntl;
+use strict;
+#!/usr/bin/perl
+    /^(?:view|check)$/ ? (0644, O_RDONLY) : (0644, O_RDWR|O_CREAT);
+              "Warning: Apache/$^O does not support crypt()ed passwords!\n\n";
+              "Warning: Apache/$^O does not support plaintext passwords!\n\n";
+    where enc is  -d for crypt encryption (default except on Win32, Netware)
+    while (($c = getc(STDIN)) ne '' and $c ne "\n" and $c ne "\r") {
+    while(defined($_ = <STDIN>) and chomp) {
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    $x = int scalar @range;

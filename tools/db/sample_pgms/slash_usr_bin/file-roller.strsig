@@ -1,0 +1,1855 @@
+----------
+!$&'()*+,;=:@/
+[]*?!^-\
+$'`"\!?* ()[]&|:;<>#
+^(.*\.)([0-9]+)$
+[0-9]+\) 
+2010 Free Software Foundation, Inc.
+4$9D$,t$
+5delete.ui
+7-Zip (.7z)
+,$9D$,t$
+a_add_button
+a_add_to_entry
+a_archive_label
+a_archive_type_box
+a_cancel_button
+access::*
+access::can-execute
+access::can-read
+access::can-read,access::can-write,access::can-execute
+access::can-write
+Ace (.ace)
+action != NULL
+action_performed: ERROR!
+actions.c
+activate
+Add a Folder
+Add a _Folder
+Add a folder to the archive
+AddFiles
+_Add Files
+Add Files
+Add files asking the name of the archive and quit the program
+Add files to an archive
+add-files-to-archive
+AddFiles_Toolbar
+Add files to the archive
+Add files to the specified archive and quit the program
+AddFolder
+Add Folder
+add-folder-to-archive
+AddFolder_Toolbar
+Adding    
+Adding file: 
+ADDING_FILES
+Adding files to archive
+Add only if _newer
+add_options_dialog
+add-options.ui
+a_encrypt_header_checkbutton
+A file named "%s" already exists.
+A folder named "%s" already exists.
+a_help_button
+Alexander Kirillov
+All archives
+_All files
+All Files
+All files got filtered, nothing to do.
+All Supported Files
+a_location_filechooserbutton
+a_location_label
+<alt>Return
+An archive manager for GNOME.
+An error occurred.
+An error occurred while adding files to the archive.
+An error occurred while deleting files from the archive.
+An error occurred while extracting files.
+An error occurred while loading the archive.
+An error occurred while saving the archive.
+An error occurred while testing archive.
+Another file with the same name already exists in "%s".
+aod_cancelbutton
+aod_okbutton
+aod_remove_button
+aod_treeview
+a_other_options_expander
+a_password_entry
+a_password_label
+application/file-roller-uri-list
+application/vnd.ms-cab-compressed
+application/x-7z-compressed
+application/x-7z-compressed-tar
+application/x-ace
+application/x-alz
+application/x-ar
+application/x-archive
+application/x-arj
+application/x-bzip
+application/x-bzip1
+application/x-bzip1-compressed-tar
+application/x-bzip-compressed-tar
+application/x-cbr
+application/x-cbz
+application/x-cd-image
+application/x-compress
+application/x-compressed-tar
+application/x-cpio
+application/x-deb
+application/x-ear
+application/x-gzip
+application/x-java-archive
+application/x-lha
+application/x-lrzip
+application/x-lrzip-compressed-tar
+application/x-lzip
+application/x-lzip-compressed-tar
+application/x-lzma
+application/x-lzma-compressed-tar
+application/x-lzop
+application/x-lzop-compressed-tar
+application/x-ms-dos-executable
+application/x-ms-wim
+application/x-rar
+application/x-rpm
+application/x-rzip
+application/x-stuffit
+application/x-tar
+application/x-tarz
+application/x-war
+application/x-xz
+application/x-xz-compressed-tar
+application/x-zoo
+application/zip
+Ar (.ar)
+Archive:
+archive-convert
+archive-create
+Archive created successfully
+archive%d
+archive-edit
+archive-extract
+archive->file != NULL
+archive_icon_image
+archive_is_encrypted
+archive_loaded
+archive-loaded
+Archive Manager
+Archive not created
+Archive not found
+archive-properties
+! archive->read_only
+Archive size:
+Archive type not supported.
+arg != NULL
+Arj (.arj)
+_Arrange Files
+ArrangeFilesMenu
+Attributes
+a_volume_box
+a_volume_checkbutton
+a_volume_spinbutton
+base_dir
+base_dir != NULL
+base_dir: %s
+[BATCH] ADD
+batch-add-files.ui
+[BATCH] CLOSE
+[BATCH] EXTRACT
+[BATCH] EXTRACT HERE
+[BATCH] EXTRACT_INTERACT
+[BATCH] LOAD
+[BATCH] OPEN
+[BATCH] OPEN FILES
+batch-password.ui
+[BATCH] PASTE
+[BATCH] QUIT
+[BATCH] RENAME
+[BATCH] SAVE_AS
+[BATCH] TEST
+<big><b>%s</b></big>
+bindtextdomain
+bind_textdomain_codeset
+binutils
+Breda McColgan
+<b>%s</b>
+__bss_start
+building menus failed: %s
+button_press_event
+button_release_event
+by _Date Modified
+By Extension
+by _Location
+by _Name
+by _Size
+by T_ype
+Cabinet (.cab)
+cairo_surface_destroy
+cairo_surface_set_device_offset
+Cannot delete %s: %s
+Cannot find volume
+%c%c%c %a%n %n%n:%n%n %n%n%n%n
+changed::click-policy
+changed::history-len
+changed::show-path
+changed::show-size
+changed::show-time
+changed::show-type
+changed::use-mime-icons
+changed::view-folders
+changed::view-statusbar
+changed::view-toolbar
+check_child
+child != NULL
+chooser != NULL
+chooser_response_cb
+client == global_client
+Close the current archive
+Close the folders pane
+Command exited abnormally.
+Command _Line Output
+Command not found.
+comments
+Compressing  
+compression
+compression-level
+Compression ratio:
+Compression type
+Contents
+Content size:
+context != NULL
+<control>1
+<control>2
+<control>E
+<control>R
+CopyFolderFromSidebar
+COPYING_FILES_FROM_REMOTE
+COPYING_FILES_TO_REMOTE
+Copying the file list
+copyright
+Copyright 
+Copy the selection
+could create directory %s: %s
+Could not add the files to the archive
+could not create destination folder: %s
+Could not create the archive
+Could not create the destination folder: %s.
+Could not delete the old archive.
+could not delete the options: %s
+Could not display help
+Could not display the folder "%s"
+Could not find the volume: %s
+could not get content type for %s: %s
+could not get content type: %s
+Could not get filesystem free space on volume that contains %s: %s
+could not load icon pixbuf: %s
+Could not load options file: %s
+Could not load SM state file '%s': %s
+Could not open "%s"
+Could not open this file type
+Could not perform the operation
+could not remove directory %s: %s
+could not rename %s to %s: %s
+Could not rename the file
+Could not rename the folder
+Could not save options: %s
+Could not save the archive "%s"
+cpio -idu --no-absolute-filenames 
+cpio -itv < 
+cpio,rpm
+- Create and modify an archive
+Create a new archive
+create-archive
+Create _Archive
+Create destination folder without asking confirmation
+Create _Folder
+create/save %s
+create_tmp_base_dir
+Creating archive
+Creating archive 
+CREATING_ARCHIVE
+CREATING_NEW_ARCHIVE
+__ctype_b_loc
+current-folder
+CutFolderFromSidebar
+Cut the selection
+d_all_files_radio
+%d %B %Y, %H:%M
+d_cancel_button
+dcgettext
+dcngettext
+/DEBIAN/
+Decompressed file size:
+Decompressing archive
+default-dir
+default_dir != NULL
+default-extension
+Default folder to use for the '--add' and '--extract' commands
+default-size-changed
+--delete
+delete_dialog
+delete_event
+DeleteFolderFromSidebar
+Delete the selection from the archive
+Deleting 
+DELETING_FILES
+Deleting files from archive
+Deleting from 
+deselect
+DeselectAll
+Dese_lect All
+Deselect all files
+DESKTOP_AUTOSTART_ID
+dest_dir: %s
+_Destination folder:
+Destination folder "%s" does not exist.
+destination != NULL
+d_files_entry
+%d files have been modified with an external application. If you don't update the files in the archive, all of your changes will be lost.
+Disable connection to session manager
+disconnect_proxy
+Display the File Roller Manual
+%d object (%s)
+%d object selected (%s)
+%d objects (%s)
+%d objects selected (%s)
+documenters
+d_ok_button
+Done emitting quit
+Done emitting quit_cancelled
+Done emitting quit_requested
+Done emitting save_state
+Do not e_xtract older files
+Do you want to add this file to the current archive or open it as a new archive?
+Do you want to create a new archive with these files?
+Do you want to create it?
+Do you want to search for a command to open this file?
+dpkg-deb
+drag_begin
+::DragBegin -->
+drag_data_get
+::DragDataGet <--
+::DragDataGet -->
+drag_data_received
+::DragDataReceived <--
+::DragDataReceived -->
+drag_end
+::DragEnd <--
+::DragEnd -->
+drag_motion
+d_selected_files_radio
+<dt$<?t <-t
+Ear (.ear)
+edata != NULL
+EditMenu
+e_filename : %s
+EggFileFormatChooser
+egg_file_format_chooser_add_format
+egg_file_format_chooser_add_format_impl
+egg_file_format_chooser_add_pixbuf_formats
+egg_file_format_chooser_append_extension
+eggfileformatchooser.c
+eggfileformatchooser.c:608
+eggfileformatchooser.c:919
+egg_file_format_chooser_get_format
+egg_file_format_chooser_get_format_data
+egg_file_format_chooser_realize
+egg_file_format_chooser_remove_format
+egg_file_format_chooser_set_format
+egg_file_format_chooser_set_format_data
+egg_file_format_filter_add_extensions
+EggFileFormatFilterInfo
+EGG_IS_FILE_FORMAT_CHOOSER (self)
+EGG_IS_SM_CLIENT (client)
+EGG_IS_TREE_MULTI_DRAG_SOURCE (drag_source)
+EggSMClient
+EGG_SM_CLIENT_DEBUG
+egg_sm_client_end_session
+egg_sm_client_get_state_file
+egg_sm_client_is_resumed
+egg_sm_client_quit
+egg_sm_client_quit_cancelled
+egg_sm_client_quit_requested
+egg_sm_client_save_state
+egg_sm_client_set_mode
+egg_sm_client_set_restart_command
+egg_sm_client_will_quit
+EggTreeMultiDndString
+egg_tree_multi_drag_add_drag_support
+EggTreeMultiDragSource
+egg_tree_multi_drag_source_drag_data_delete
+egg_tree_multi_drag_source_drag_data_get
+egg_tree_multi_drag_source_row_draggable
+egg-tree-view-multi-source-row
+ellipsize
+emblem-nowrite
+Emitting quit
+Emitting quit_cancelled
+Emitting quit_requested
+Emitting save_state
+Empty zipfile.
+Encountered error while enumerating children of %s (ignoring): %s
+Encountered error while enumerating children of %s, ignoring: %s
+Encrypted
+encrypt_header
+encrypt-header
+Encrypt header
+Enter password
+Enter the password for the archive '%s'.
+err code(28) (invalid password)
+__errno_location
+example: *.o; *.bak
+example: *.txt; *.doc
+exclude_files
+exclude-files
+E_xclude files:
+exclude_folders
+exclude-folders
+_Exclude folders:
+Exclude folders that are symbolic lin_ks
+Extension(s)
+_Extract
+extract-archive
+Extract archive
+Extract archives asking the destination folder and quit the program
+Extract archives to the specified folder and quit the program
+extract_data_free
+Extract files from the archive
+ExtractFolderFromSidebar
+extract-here
+Extracting  
+Extracting file: 
+EXTRACTING_FILES
+Extracting files from archive
+Extracting from 
+Extraction completed successfully
+Extraction not performed
+Extract the contents of the archives in the archive folder and quit the program
+extract-to
+extra_widget
+Failed to delete file %s: %s
+Failed to delete temp folder: %s
+Failed to delete the local copy: %s
+Failed to enumerate children of %s: %s
+Failed to enumerate children: %s
+Failed to get display name for uri %s: %s
+Failed to get file size for %s: %s
+Failed to get file type for uri %s: %s
+Failed to get info after enumerating children: %s
+Failed to get info after enumeration: %s
+Failed to get info while enumerating children: %s
+Failed to get info while enumerating: %s
+Failed to get permission for extraction dir: %s
+Failed to get %s: %s
+Failed to parse arguments: %s
+fdata != NULL
+filechooserdialog
+fileEvent
+File Format
+File format not recognized
+File _Format: %s
+file-list
+file_list_drag_begin
+file_list_drag_end
+file_list != NULL
+FileMenu
+Filename
+filename != NULL
+File not found.
+/FilePopupMenu
+File Roller
+file-roller-error
+_FILE_ROLLER_SPECIAL_CLIPBOARD
+filesystem::free
+filter_matches
+find_file_in_archive
+/FolderPopupMenu
+_Folders
+--force-local
+for_each_file_func != NULL
+format_chooser_box
+FrArchive
+fr_archive_add
+fr_archive_add_directory
+fr_archive_add_items
+fr_archive_add_with_wildcard
+fr-archive.c
+fr_archive_extract_to_local
+fr_archive_finalize
+fr_archive_load
+fr_archive_load_local
+fr_archive_reload
+fr_archive_remove
+fr_archive_rename
+FRCommand
+FRCommand7z
+fr_command_7z_finalize
+FRCommandAce
+fr_command_ace_finalize
+FrCommandAlz
+fr_command_alz_finalize
+FRCommandAr
+fr_command_ar_finalize
+FRCommandArj
+fr_command_arj_finalize
+fr-command.c
+fr-command.c:349
+FRCommandCFile
+fr_command_cfile_finalize
+FRCommandCpio
+fr_command_cpio_finalize
+FRCommandDpkg
+fr_command_dpkg_finalize
+fr_command_finalize
+FRCommandIso
+fr_command_iso_finalize
+FRCommandJar
+fr_command_jar_finalize
+FRCommandLha
+fr_command_lha_finalize
+fr_command_list
+FRCommandLrzip
+fr_command_lrzip_finalize
+FRCommandRar
+fr_command_rar_finalize
+FRCommandRpm
+fr_command_rpm_finalize
+fr_command_set_filename
+FRCommandTar
+fr_command_tar_finalize
+FRCommandUnstuff
+fr_command_unstuff_finalize
+FRCommandZip
+fr_command_zip_finalize
+FRCommandZoo
+fr_command_zoo_finalize
+FrCompression
+FR_COMPRESSION_FAST
+FR_COMPRESSION_MAXIMUM
+FR_COMPRESSION_NORMAL
+FR_COMPRESSION_VERY_FAST
+FRFileData
+fr_file_sel
+FR_IS_ARCHIVE (object)
+FR_IS_COMMAND_7Z (object)
+FR_IS_COMMAND_ACE (object)
+FR_IS_COMMAND_ALZ (object)
+FR_IS_COMMAND_ARJ (object)
+FR_IS_COMMAND_AR (object)
+FR_IS_COMMAND_CFILE (object)
+FR_IS_COMMAND (comm)
+FR_IS_COMMAND_CPIO (object)
+FR_IS_COMMAND_DPKG (object)
+FR_IS_COMMAND_ISO (object)
+FR_IS_COMMAND_JAR (object)
+FR_IS_COMMAND_LHA (object)
+FR_IS_COMMAND_LRZIP (object)
+FR_IS_COMMAND (object)
+FR_IS_COMMAND_RAR (object)
+FR_IS_COMMAND_RPM (object)
+FR_IS_COMMAND_TAR (object)
+FR_IS_COMMAND_UNSTUFF (object)
+FR_IS_COMMAND_ZIP (object)
+FR_IS_COMMAND_ZOO (object)
+FR_IS_PROCESS (object)
+FR_IS_WINDOW (window)
+FRListModel
+fr_list_model_multi_drag_data_get
+fr_list_model_multi_row_draggable
+fr_list_model_new
+fr_marshal_VOID__DOUBLE_STRING
+fr_marshal_VOID__INT_INT
+fr_marshal_VOID__INT_POINTER
+FROpenFile
+FrOverwrite
+FR_OVERWRITE_ASK
+FR_OVERWRITE_NO
+FR_OVERWRITE_YES
+FRProcess
+fr_process_add_arg
+fr_process_begin_command
+fr_process_begin_command_at
+fr-process.c
+fr_process_clear
+fr_process_end_command
+fr_process_finalize
+fr_process_set_arg_at
+fr_process_set_begin_func
+fr_process_set_continue_func
+fr_process_set_end_func
+fr_process_set_err_line_func
+fr_process_set_ignore_error
+fr_process_set_out_line_func
+fr_process_set_sticky
+fr_process_set_working_dir
+fr_process_start
+fr_process_stop_priv
+fr_process_use_standard_locale
+fr_window
+FrWindow
+fr_window_append_batch_action
+fr_window_archive_close
+fr_window_archive_is_present
+fr_window_archive_new
+fr_window_archive_open
+fr_window_archive_reload
+fr_window_archive_rename
+fr_window_archive_save_as
+fr_window_attach
+fr-window.c
+fr_window_drag_data_received
+fr_window_exec_batch_action
+fr_window_file_list_drag_data_get
+fr_window_folder_tree_drag_data_get
+fr_window_get_archive_uri
+fr_window_get_file_list_from_path_list
+fr_window_get_file_list_pattern
+fr_window_get_file_list_selection
+fr_window_get_folder_tree_selection
+fr_window_get_password
+fr_window_get_paste_archive_uri
+fr_window_get_selected_folder_in_tree_view
+fr_window_get_selected_item_from_file_list
+fr_window_go_back
+fr_window_go_forward
+fr_window_go_to_location
+fr_window_go_up_one_level
+fr_window_init_recent_chooser
+fr_window_open_extracted_files
+fr_window_paste_from_clipboard_data
+fr_window_set_add_default_dir
+fr_window_set_batch__extract
+fr_window_set_batch__extract_here
+fr_window_set_compression
+fr_window_set_default_dir
+fr_window_set_encrypt_header
+fr_window_set_extract_default_dir
+fr_window_set_folders_visibility
+fr_window_set_list_mode
+fr_window_set_open_default_dir
+fr_window_set_password
+fr_window_set_password_for_paste
+fr_window_set_statusbar_visibility
+fr_window_set_toolbar_visibility
+fr_window_set_volume_size
+fr_window_start_activity_mode
+fr_window_start_batch
+fr_window_stop_activity_mode
+/.fr-XXXXXX
+g_app_info_create_from_commandline
+g_app_info_equal
+g_app_info_get_default_for_type
+g_app_info_launch_uris
+g_app_info_supports_files
+g_app_launch_context_get_type
+g_ascii_strcasecmp
+g_ascii_strncasecmp
+g_ascii_strtoull
+g_ascii_table
+g_assertion_message_expr
+g_boxed_type_register_static
+g_build_filename
+g_bus_get_sync
+g_cancellable_cancel
+g_cancellable_is_cancelled
+g_cancellable_new
+g_cclosure_marshal_VOID__BOOLEAN
+g_cclosure_marshal_VOID__DOUBLE
+g_cclosure_marshal_VOID__INT
+g_cclosure_marshal_VOID__POINTER
+g_cclosure_marshal_VOID__STRING
+g_cclosure_marshal_VOID__VOID
+g_cclosure_new_swap
+g_clear_error
+g_content_type_get_description
+g_content_type_get_icon
+g_content_type_get_mime_type
+g_content_type_guess
+g_convert_error_quark
+g_dbus_proxy_call
+g_dbus_proxy_call_finish
+g_dbus_proxy_get_type
+g_dbus_proxy_new_sync
+g_dir_close
+g_directory_foreach_child
+g_dir_open
+g_dir_read_name
+gdk_app_launch_context_set_screen
+gdk_app_launch_context_set_timestamp
+gdk_atom_intern
+gdk_atom_intern_static_string
+gdk_cursor_new
+gdk_cursor_unref
+gdk_display_flush
+gdk_display_get_app_launch_context
+gdk_drag_context_get_source_window
+gdk_drag_context_get_source_window (context) != NULL
+gdk_drag_context_list_targets
+gdk_drag_status
+gdk_event_copy
+gdk_event_free
+gdk_pixbuf_copy
+gdk_pixbuf_format_get_description
+gdk_pixbuf_format_get_extensions
+gdk_pixbuf_format_get_mime_types
+gdk_pixbuf_format_get_name
+gdk_pixbuf_format_is_disabled
+gdk_pixbuf_format_is_writable
+gdk_pixbuf_get_formats
+gdk_pixbuf_get_type
+gdk_pixbuf_new_from_file_at_size
+gdk_property_change
+gdk_property_delete
+gdk_property_get
+gdk_threads_add_idle
+gdk_window_set_cursor
+gdk_x11_window_get_xid
+g_dpgettext
+g_dpgettext2
+[generic]
+genisoimage
+g_enum_register_static
+g_error_copy
+g_error_free
+g_error_matches
+g_error_new
+g_error_new_literal
+get_archive_filename_from_selector
+GETTING_FILE_LIST
+Getting the file list
+get_xds_atom_value
+g_file_copy_async
+g_file_copy_finish
+g_file_create
+g_file_delete
+g_file_dup
+g_file_enumerate_children
+g_file_enumerate_children_async
+g_file_enumerate_children_finish
+g_file_enumerator_close_async
+g_file_enumerator_close_finish
+g_file_enumerator_next_file
+g_file_enumerator_next_files_async
+g_file_enumerator_next_files_finish
+g_file_get_basename
+g_file_get_child
+g_file_get_child_for_display_name
+g_file_get_parent
+g_file_get_parse_name
+g_file_get_path
+g_file_get_relative_path
+g_file_get_uri
+g_file_has_uri_scheme
+g_file_icon_get_file
+g_file_icon_get_type
+g_file_info_dup
+g_file_info_get_attribute_boolean
+g_file_info_get_attribute_uint64
+g_file_info_get_content_type
+g_file_info_get_display_name
+g_file_info_get_file_type
+g_file_info_get_name
+g_file_info_get_size
+g_file_info_get_symlink_target
+g_file_info_has_attribute
+g_file_info_new
+g_file_info_set_file_type
+g_file_make_directory
+g_file_make_symbolic_link
+g_file_monitor_cancel
+g_file_monitor_file
+g_file_move
+g_filename_display_basename
+g_filename_display_name
+g_filename_from_uri
+g_filename_from_utf8
+g_filename_to_uri
+g_filename_to_utf8
+g_file_new_for_commandline_arg
+g_file_new_for_path
+g_file_new_for_uri
+g_file_query_exists
+g_file_query_filesystem_info
+g_file_query_info
+g_file_read
+g_file_replace
+g_file_resolve_relative_path
+g_file_set_attribute_uint32
+g_file_test
+g_find_program_in_path
+g_format_size
+g_get_charset
+g_get_current_dir
+g_getenv
+g_get_home_dir
+g_get_tmp_dir
+g_get_user_cache_dir
+g_get_user_config_dir
+g_hash_table_destroy
+g_hash_table_find
+g_hash_table_foreach
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_lookup_extended
+g_hash_table_new
+g_hash_table_new_full
+g_hash_table_remove_all
+g_hash_table_replace
+g_hash_table_unref
+ghelp:file-roller
+g_idle_add
+g_input_stream_get_type
+g_input_stream_read
+g_intern_static_string
+g_io_channel_read_line
+g_io_channel_set_buffer_size
+g_io_channel_set_encoding
+g_io_channel_set_flags
+g_io_channel_shutdown
+g_io_channel_unix_new
+g_io_channel_unref
+g_io_error_quark
+g_key_file_free
+g_key_file_get_boolean
+g_key_file_get_integer
+g_key_file_get_start_group
+g_key_file_get_string
+g_key_file_load_from_file
+g_key_file_new
+g_key_file_set_boolean
+g_key_file_set_integer
+g_key_file_set_string
+g_key_file_to_data
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+g_list_append
+g_list_concat
+g_list_copy
+g_list_find
+g_list_find_custom
+g_list_foreach
+g_list_free
+g_list_items_async
+g_list_last
+g_list_length
+g_list_nth
+g_list_prepend
+g_list_remove
+g_list_remove_link
+g_list_reverse
+g_list_sort
+global_client == NULL || global_client_mode == EGG_SM_CLIENT_MODE_DISABLED
+!(global_client != NULL && mode == EGG_SM_CLIENT_MODE_DISABLED)
+g_locale_from_utf8
+g_locale_to_utf8
+g_log_default_handler
+g_log_set_handler
+g_malloc
+g_malloc0
+g_malloc0_n
+g_malloc_n
+g_markup_escape_text
+g_markup_printf_escaped
+__gmon_start__
+.gnome2/file-roller/options
+gnome-mime-
+gnome-mime-image
+g_object_class_install_property
+g_object_get
+g_object_get_data
+g_object_get_qdata
+g_object_new
+g_object_ref
+g_object_ref_sink
+g_object_set
+g_object_set_data
+g_object_set_data_full
+g_object_set_property
+g_object_set_qdata_full
+g_object_unref
+GoForward
+g_once_init_enter
+g_once_init_leave
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_translation_domain
+g_option_group_add_entries
+g_option_group_new
+g_option_group_set_parse_hooks
+Go to the home location
+Go to the next visited location
+Go to the previous visited location
+Go up one level
+g_output_stream_close
+g_output_stream_get_type
+g_output_stream_write
+g_output_stream_write_all
+g_param_spec_boolean
+g_param_spec_enum
+g_param_spec_object
+g_param_spec_string
+g_param_spec_uint
+g_path_get_basename
+g_path_is_absolute
+g_ptr_array_add
+g_ptr_array_foreach
+g_ptr_array_free
+g_ptr_array_new
+g_ptr_array_remove_index
+g_ptr_array_remove_index_fast
+g_ptr_array_sized_new
+g_ptr_array_sort
+g_quark_from_static_string
+g_quark_from_string
+g_regex_match
+g_regex_match_simple
+g_regex_new
+g_regex_split
+g_regex_unref
+g_return_if_fail_warning
+g_set_application_name
+g_settings_get_boolean
+g_settings_get_enum
+g_settings_get_int
+g_settings_get_string
+g_settings_list_schemas
+g_settings_new
+g_settings_set_boolean
+g_settings_set_enum
+g_settings_set_int
+g_settings_set_string
+g_shell_quote
+g_signal_connect_data
+g_signal_emit
+g_signal_emit_by_name
+g_signal_handler_disconnect
+g_signal_handlers_disconnect_matched
+g_signal_has_handler_pending
+g_signal_new
+g_signal_stop_emission_by_name
+g_slist_append
+g_slist_find
+g_slist_foreach
+g_slist_free
+g_slist_length
+g_slist_nth_data
+g_slist_prepend
+g_source_remove
+g_spawn_async_with_pipes
+g_spawn_sync
+g_strchomp
+g_strchug
+g_strcmp0
+g_strcompress
+g_strconcat
+g_strdup
+g_strdup_printf
+g_strdup_vprintf
+g_str_equal
+g_strfreev
+g_str_hash
+g_str_has_prefix
+g_str_has_suffix
+g_string_append
+g_string_free
+g_string_insert_c
+g_string_new
+g_strjoinv
+g_strndup
+g_strsplit
+g_strv_length
+g_themed_icon_get_type
+g_timeout_add
+gtk-about
+gtk_accel_group_connect
+gtk_action_group_add_action
+gtk_action_group_add_actions
+gtk_action_group_add_radio_actions
+gtk_action_group_add_toggle_actions
+gtk_action_group_get_action
+gtk_action_group_new
+gtk_action_group_set_translation_domain
+gtk_activatable_get_related_action
+gtk_activatable_get_type
+gtk_alignment_get_type
+gtk_alignment_new
+gtk_alignment_set_padding
+gtk_app_chooser_dialog_new
+gtk_app_chooser_get_app_info
+gtk_app_chooser_get_type
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_box_set_child_packing
+gtk_box_set_homogeneous
+gtk_box_set_spacing
+gtk_builder_add_from_file
+gtk_builder_get_object
+gtk_builder_new
+gtk_button_get_type
+gtk_button_new
+gtk_button_new_with_mnemonic
+gtk_button_set_image
+gtk_button_set_label
+gtk_button_set_relief
+gtk_button_set_use_stock
+gtk-cancel
+gtk_cell_renderer_pixbuf_new
+gtk_cell_renderer_text_new
+gtk_cell_renderer_toggle_get_active
+gtk_cell_renderer_toggle_new
+gtk_check_button_new_with_mnemonic
+gtk-clear
+gtk_clipboard_get
+gtk_clipboard_set_with_owner
+gtk_clipboard_wait_for_contents
+gtk_clipboard_wait_is_target_available
+gtk-close
+gtk_combo_box_get_active
+gtk_combo_box_get_type
+gtk_combo_box_set_active
+gtk_combo_box_text_append_text
+gtk_combo_box_text_get_type
+gtk_combo_box_text_new
+gtk_container_add
+gtk_container_get_type
+gtk_container_set_border_width
+gtk-copy
+gtk-delete
+gtk_dialog_add_action_widget
+gtk_dialog_add_button
+gtk-dialog-error
+gtk_dialog_get_action_area
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk-dialog-info
+gtk_dialog_new_with_buttons
+gtk-dialog-question
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk_dialog_set_response_sensitive
+gtk-dialog-warning
+gtk-directory
+gtk_drag_begin
+gtk_drag_check_threshold
+gtk_drag_dest_set
+gtk_drag_finish
+gtk_drag_get_source_widget
+gtk_drag_set_icon_default
+gtk_drag_set_icon_surface
+gtk_drag_source_set
+gtk_editable_get_type
+gtk_editable_select_region
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_set_activates_default
+gtk_entry_set_icon_from_stock
+gtk_entry_set_max_length
+gtk_entry_set_text
+gtk_entry_set_width_chars
+gtk_expander_get_type
+gtk_expander_new_with_mnemonic
+gtk_expander_set_expanded
+gtk_expander_set_label
+gtk_expander_set_use_underline
+gtk_file_chooser_add_filter
+gtk_file_chooser_dialog_new
+gtk_file_chooser_get_action
+gtk_file_chooser_get_action (self->priv->chooser) == GTK_FILE_CHOOSER_ACTION_SAVE
+gtk_file_chooser_get_current_folder_uri
+gtk_file_chooser_get_filename
+gtk_file_chooser_get_filter
+gtk_file_chooser_get_type
+gtk_file_chooser_get_uri
+gtk_file_chooser_get_uris
+gtk_file_chooser_remove_filter
+gtk_file_chooser_select_uri
+gtk_file_chooser_set_current_folder_uri
+gtk_file_chooser_set_current_name
+gtk_file_chooser_set_extra_widget
+gtk_file_chooser_set_filter
+gtk_file_chooser_set_local_only
+gtk_file_chooser_set_select_multiple
+gtk_file_filter_add_custom
+gtk_file_filter_add_mime_type
+gtk_file_filter_add_pattern
+gtk_file_filter_get_type
+gtk_file_filter_new
+gtk_file_filter_set_name
+gtk-find
+gtk_frame_get_type
+gtk_frame_new
+gtk_frame_set_shadow_type
+gtk_get_option_group
+gtk-go-back
+gtk-go-forward
+gtk-go-up
+gtk-help
+gtk-home
+gtk_icon_factory_add
+gtk_icon_factory_add_default
+gtk_icon_factory_new
+gtk_icon_info_free
+gtk_icon_info_load_icon
+gtk_icon_set_add_source
+gtk_icon_set_new
+gtk_icon_set_unref
+gtk_icon_size_lookup_for_settings
+gtk_icon_source_free
+gtk_icon_source_new
+gtk_icon_source_set_icon_name
+gtk_icon_theme_append_search_path
+gtk_icon_theme_choose_icon
+gtk_icon_theme_get_default
+gtk_icon_theme_has_icon
+gtk_icon_theme_load_icon
+gtk_icon_theme_lookup_icon
+gtk_image_get_type
+gtk_image_new_from_pixbuf
+gtk_image_new_from_stock
+gtk_image_set_from_pixbuf
+GTK_IS_FILE_CHOOSER (self->priv->chooser)
+GTK_IS_TREE_VIEW (tree_view)
+GTK_IS_WIDGET (child)
+gtk_label_get_text
+gtk_label_get_type
+gtk_label_new
+gtk_label_new_with_mnemonic
+gtk_label_set_attributes
+gtk_label_set_ellipsize
+gtk_label_set_justify
+gtk_label_set_label
+gtk_label_set_line_wrap
+gtk_label_set_markup
+gtk_label_set_mnemonic_widget
+gtk_label_set_selectable
+gtk_label_set_text
+gtk_label_set_use_markup
+gtk_list_store_append
+gtk_list_store_clear
+gtk_list_store_get_type
+gtk_list_store_new
+gtk_list_store_remove
+gtk_list_store_set
+gtk_list_store_set_column_types
+gtk_main
+gtk_main_quit
+gtk_menu_get_type
+gtk_menu_item_get_type
+gtk_menu_popup
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+_gtk_message_dialog_new
+gtk_message_dialog_new
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk_misc_set_padding
+gtk-open
+gtk_paned_get_position
+gtk_paned_get_type
+gtk_paned_new
+gtk_paned_pack1
+gtk_paned_pack2
+gtk_paned_set_position
+gtk-paste
+gtk_progress_bar_get_type
+gtk_progress_bar_new
+gtk_progress_bar_pulse
+gtk_progress_bar_set_fraction
+gtk_progress_bar_set_pulse_step
+gtk_propagate_event
+gtk-properties
+gtk-quit
+gtk_radio_action_get_current_value
+gtk_radio_button_get_group
+gtk_radio_button_get_type
+gtk_radio_button_new_with_mnemonic
+gtk_radio_button_set_group
+gtk_recent_action_get_type
+gtk_recent_chooser_add_filter
+gtk_recent_chooser_get_current_uri
+gtk_recent_chooser_get_type
+gtk_recent_chooser_set_limit
+gtk_recent_chooser_set_local_only
+gtk_recent_chooser_set_show_not_found
+gtk_recent_chooser_set_sort_type
+gtk_recent_filter_add_application
+gtk_recent_filter_add_mime_type
+gtk_recent_filter_new
+gtk_recent_filter_set_name
+gtk_recent_manager_add_full
+gtk_recent_manager_add_item
+gtk_recent_manager_get_default
+gtk_recent_manager_remove_item
+gtk-refresh
+gtk-save
+gtk-save-as
+gtk_scrolled_window_get_type
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_scrolled_window_set_shadow_type
+gtk-select-all
+gtk_selection_data_free
+gtk_selection_data_get_data
+gtk_selection_data_get_format
+gtk_selection_data_get_length
+gtk_selection_data_get_target
+gtk_selection_data_set
+gtk_separator_tool_item_new
+gtk_show_about_dialog
+gtk_show_uri
+gtk_size_group_add_widget
+gtk_size_group_new
+gtk_spin_button_get_type
+gtk_spin_button_get_value
+gtk_spin_button_set_value
+gtk_statusbar_get_context_id
+gtk_statusbar_get_message_area
+gtk_statusbar_get_type
+gtk_statusbar_new
+gtk_statusbar_pop
+gtk_statusbar_push
+gtk_stock_add_static
+gtk_stock_lookup
+gtk-stop
+gtk_style_context_add_class
+gtk_table_attach
+gtk_table_get_type
+gtk_table_new
+gtk_table_set_col_spacings
+gtk_table_set_row_spacings
+gtk_target_list_new
+gtk_target_list_unref
+gtk_text_buffer_create_tag
+gtk_text_buffer_get_iter_at_offset
+gtk_text_buffer_insert
+gtk_text_buffer_insert_with_tags_by_name
+gtk_text_buffer_new
+gtk_text_view_get_type
+gtk_text_view_new_with_buffer
+gtk_text_view_set_cursor_visible
+gtk_text_view_set_editable
+gtk_toggle_action_get_active
+gtk_toggle_action_get_type
+gtk_toggle_action_set_active
+gtk_toggle_button_get_active
+gtk_toggle_button_get_inconsistent
+gtk_toggle_button_get_type
+gtk_toggle_button_set_active
+gtk_toggle_button_set_inconsistent
+gtk_toolbar_get_type
+gtk_toolbar_insert
+gtk_toolbar_set_show_arrow
+gtk_toolbar_set_style
+gtk_tool_item_new
+gtk_tool_item_set_expand
+gtk_tree_model_foreach
+gtk_tree_model_get
+gtk_tree_model_get_iter
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_iter_children
+gtk_tree_model_iter_next
+gtk_tree_model_iter_nth_child
+gtk_tree_model_iter_parent
+gtk_tree_model_row_changed
+gtk_tree_path_compare
+gtk_tree_path_copy
+gtk_tree_path_free
+gtk_tree_path_new_from_string
+gtk_tree_row_reference_free
+gtk_tree_row_reference_get_path
+gtk_tree_row_reference_new
+gtk_tree_selection_get_selected
+gtk_tree_selection_get_tree_view
+gtk_tree_selection_iter_is_selected
+gtk_tree_selection_path_is_selected
+gtk_tree_selection_select_all
+gtk_tree_selection_selected_foreach
+gtk_tree_selection_select_iter
+gtk_tree_selection_select_path
+gtk_tree_selection_set_mode
+gtk_tree_selection_unselect_all
+gtk_tree_sortable_get_sort_column_id
+gtk_tree_sortable_get_type
+gtk_tree_sortable_set_default_sort_func
+gtk_tree_sortable_set_sort_column_id
+gtk_tree_sortable_set_sort_func
+gtk_tree_store_append
+gtk_tree_store_clear
+gtk_tree_store_new
+gtk_tree_store_remove
+gtk_tree_store_set
+gtk_tree_view_append_column
+gtk_tree_view_column_get_width
+gtk_tree_view_column_new
+gtk_tree_view_column_new_with_attributes
+gtk_tree_view_column_pack_end
+gtk_tree_view_column_pack_start
+gtk_tree_view_column_set_attributes
+gtk_tree_view_column_set_cell_data_func
+gtk_tree_view_column_set_expand
+gtk_tree_view_column_set_fixed_width
+gtk_tree_view_column_set_resizable
+gtk_tree_view_column_set_sizing
+gtk_tree_view_column_set_sort_column_id
+gtk_tree_view_column_set_title
+gtk_tree_view_column_set_visible
+gtk_tree_view_create_row_drag_icon
+gtk_tree_view_expand_to_path
+gtk_tree_view_get_bin_window
+gtk_tree_view_get_column
+gtk_tree_view_get_model
+gtk_tree_view_get_path_at_pos
+gtk_tree_view_get_selection
+gtk_tree_view_get_type
+gtk_tree_view_new_with_model
+gtk_tree_view_row_activated
+gtk_tree_view_scroll_to_point
+gtk_tree_view_set_cursor
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_model
+gtk_tree_view_set_rules_hint
+gtk_tree_view_set_search_column
+gtk_ui_manager_add_ui_from_string
+gtk_ui_manager_get_accel_group
+gtk_ui_manager_get_action
+gtk_ui_manager_get_widget
+gtk_ui_manager_insert_action_group
+gtk_ui_manager_new
+gtk_widget_destroy
+gtk_widget_get_allocated_height
+gtk_widget_get_allocated_width
+gtk_widget_get_clipboard
+gtk_widget_get_display
+gtk_widget_get_mapped
+gtk_widget_get_parent
+gtk_widget_get_realized
+gtk_widget_get_screen
+gtk_widget_get_settings
+gtk_widget_get_style_context
+gtk_widget_get_toplevel
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_get_window
+gtk_widget_grab_focus
+gtk_widget_has_focus
+gtk_widget_hide
+gtk_widget_is_toplevel
+gtk_widget_set_can_default
+gtk_widget_set_halign
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_set_tooltip_text
+gtk_widget_set_valign
+gtk_widget_set_vexpand
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_add_accel_group
+gtk_window_get_group
+gtk_window_get_screen
+gtk_window_get_size
+gtk_window_get_type
+gtk_window_group_add_window
+gtk_window_present
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_has_resize_grip
+gtk_window_set_modal
+gtk_window_set_resizable
+gtk_window_set_title
+gtk_window_set_transient_for
+g_type_add_interface_static
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_interface_peek
+g_type_name
+g_type_register_static
+g_type_register_static_simple
+g_unichar_isspace
+g_unsetenv
+g_uri_escape_string
+g_uri_list_extract_uris
+g_uri_unescape_string
+g_utf8_collate
+g_utf8_collate_key_for_filename
+g_utf8_find_prev_char
+g_utf8_get_char
+g_utf8_offset_to_pointer
+g_utf8_skip
+g_utf8_strlen
+g_utf8_strrchr
+g_utf8_validate
+g_value_get_boolean
+g_value_get_enum
+g_value_get_object
+g_value_get_string
+g_value_get_uint
+g_value_init
+g_value_peek_pointer
+g_value_set_boolean
+g_value_set_enum
+g_value_set_object
+g_value_set_static_string
+g_value_set_string
+g_value_set_uint
+g_value_unset
+g_variant_new
+g_variant_unref
+HelpMenu
+help_message
+hide-confirm-search,hide-finished,hide-warning
+icon-release
+iface->drag_data_delete != NULL
+iface->drag_data_get != NULL
+iface->row_draggable != NULL
+[ignore error]
+include_files
+include-files
+Include _files:
+_Include subfolders
+incorrect password
+index >= 0 && index <= process->priv->n_comm
+Information about the program
+InstallPackageNames
+_IO_stdin_used
+is_important
+is-important
+ISO-8859-1
+item_activated
+Jar (.jar)
+_Jv_RegisterClasses
+--keep-newer-files
+key_press_event
+Last modified:
+LastOutput
+Last Output
+launchpad_integration_add_ui
+LC_CTYPE
+LC_MESSAGES=C
+leave_notify_event
+Lha (.lzh)
+libcairo.so.2
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+liblaunchpad-integration-3.0.so.1
+/lib/ld-linux.so.2
+libmagic.so.1
+libm.so.6
+libpango-1.0.so.0
+libpthread.so.0
+license-type
+line != NULL
+ link to 
+list_info
+Listing archive: 
+LISTING_CONTENT
+list-mode
+list__process_line
+Loading archive
+LOADING_ARCHIVE
+_Load Options
+localtime
+_Location:
+/LocationBar
+/LocationBar/GoBack
+logo-icon-name
+Lrzip (.lrz)
+-m0=lzma2
+magic_error
+magic_file
+magic_load
+magic_open
+-mem=AES128
+/MenuBar
+/MenuBar/HelpMenu/LaunchpadItems
+menu_item_select_cb
+(message != NULL) || (secondary_message != NULL)
+Mime type
+mime type not recognized: %s
+mkdir %s
+mktree %s
+monospace
+motion_notify_event
+[MS-DOS]
+Multivolume = 
+name-column-width
+Name "%s" is not valid because it contains at least one of the following characters: %s, please type other name.
+nautilus_xds_dnd_is_valid_xds_context
+n_columns > 0
+n_encrypt_header_checkbutton
+_New file name:
+_New folder name:
+New name is the same as old one, please type other name.
+New name is void, please type a name.
+n_new_button
+%n%n%n%n-%n%n-%n%n %n%n:%n%n
+--no-recursion
+--no-stdin
+no_symlinks
+no-symlinks
+Not emitting quit_requested because no one is listening
+n_other_options_expander
+nothing to update.
+notify::filter
+--no-wildcards
+n_param_values == 3
+n_password_entry
+n_password_label
+NULL != extensions
+NULL != filename
+NULL != name
+NULL == self->priv->chooser
+NULL == strchr(extensions, ',')
+Number of files:
+n_volume_box
+n_volume_checkbutton
+n_volume_spinbutton
+object != NULL
+odata != NULL
+Open archive
+Open a recently used archive
+open_file_modified_cb
+open_files_data_free
+OpenFolder
+OpenFolderFromSidebar
+OpenRecent
+Open _Recent
+OpenRecent_Toolbar
+Open selected files with an application
+OpenSelection
+_Open the Archive
+Open the selected file
+Open the selected folder
+Open_Toolbar
+_Open With
+_Options Name:
+/org/freedesktop/PackageKit
+org.freedesktop.PackageKit
+org.freedesktop.PackageKit.Modify
+org.freedesktop.Packagekit.Modify.Cancelled
+org.gnome.FileRoller.Dialogs
+org.gnome.FileRoller.Dialogs.Add
+org.gnome.FileRoller.Dialogs.BatchAdd
+org.gnome.FileRoller.Dialogs.Extract
+org.gnome.FileRoller.General
+org.gnome.FileRoller.Listing
+org.gnome.FileRoller.UI
+org.gnome.nautilus.preferences
+orig != NULL
+other_oprtions_alignment
+overwrite
+_Overwrite
+Over_write existing files
+owner_change
+p7zip,p7zip-full
+p7zip,p7zip-rar
+p7zip Version 
+Package Matches
+packages.match
+package-x-generic
+pango_attr_list_insert
+pango_attr_list_new
+pango_attr_list_unref
+pango_attr_style_new
+pango_ellipsize_mode_get_type
+pango_weight_get_type
+Paolo Bacchilega <paolo.bacchilega@libero.it>
+^.*\.part(0)*2\.rar$
+^(.*\.part)([0-9]+)(\.rar)$
+Password
+Pass_word
+password_dialog
+password incorrect
+PasteFolderFromSidebar
+Paste Selection
+Paste the clipboard
+path_list != NULL
+path != NULL
+p_cratio_label
+p_cratio_label_label
+p_date_label
+p_date_label_label
+p_files_label
+p_files_label_label
+p_help_button
+Please use a different name.
+please wait
+p_name_label
+p_name_label_label
+p_ok_button
+p_path_label
+p_path_label_label
+primary-toolbar
+process_data_line
+process_extract_line
+process_line
+process != NULL
+process->priv->current_comm >= 0
+process_zoo_line
+progress
+progressEvent - 
+prop_dialog
+properties.ui
+property
+public version
+p_uncomp_size_label
+p_uncomp_size_label_label
+pw_encrypt_header_checkbutton
+pw_password_entry
+pw_password_label
+^(.*\.r)([0-9]+)$
+Rar Archived Comic Book (.cbr)
+Rar (.rar)
+rar,unrar
+rdata != NULL
+Reading archive
+[read only]
+Recompressing archive
+recreate-folders
+Re-crea_te folders
+recursive
+Reload current archive
+Removing file: 
+rename_data_free
+RenameFolderFromSidebar
+Rename the selection
+_Replace
+Replace _All
+Replace file "%s"?
+_Reset Options
+response
+_Reversed Order
+Reverse the list order
+row_activated
+%s: area not recognized!
+Sa_ve Options
+Save Options
+save-state
+Save the current archive with a different name
+Saving archive
+SAVING_REMOTE_ARCHIVE
+_Search Command
+search.success
+SelectAll
+Select all files
+_Selected files
+selection-changed
+selection_data != NULL
+Self-extracting zip (.exe)
+sensitive
+Session management options:
+%s: File format %d doesn't provide file extensions. Cannot append extension.
+<shift><control>A
+Show archive properties
+Show session management options
+_Show the Files
+/SidebarFolderPopupMenu
+sidebar-width
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+skip-newer
+sm-client
+sm-client-disable
+sm-client-id
+sm-client-state-file
+sm-config-prefix
+sm-disable
+%s: Merge with the code in Gtk{File,Recent}ChooserDefault.
+%s: No file format selected. Cannot append extension.
+SortByDate
+SortByLocation
+SortByName
+SortBySize
+SortByType
+sort_column_changed
+Sort file list by file size
+Sort file list by location
+Sort file list by modification time
+Sort file list by name
+Sort file list by type
+sort-method
+SortReverseOrder
+sort-type
+<span weight="bold" size="larger">%s</span>
+Specify a password for this archive
+Specify file containing saved configuration
+Specify session management ID
+__sprintf_chk
+%s Properties
+%s: Replace by g_content_type_get_icon when GVFS is merged into GLib.
+%s/%s%%20(%d)
+%s: %s - %d
+<%s>%s</%s>
+__stack_chk_fail
+standard::content-type
+standard::display-name
+standard::fast-content-type
+standard::name
+standard::name,standard::type
+standard::size
+standard::type,standard::name,standard::display-name
+start_current_command
+Stat_usbar
+sticky_only
+stock-id
+Stop current operation
+stoppable
+__strcpy_chk
+strftime
+__strncpy_chk
+str_start[i] != '\0'
+symlink %s --> %s
+.tar.bz2
+tar,bzip2
+Tar compressed with 7z (.tar.7z)
+Tar compressed with bzip2 (.tar.bz2)
+Tar compressed with bzip (.tar.bz)
+Tar compressed with compress (.tar.Z)
+Tar compressed with gzip (.tar.gz)
+Tar compressed with lrzip (.tar.lrz)
+Tar compressed with lzip (.tar.lz)
+Tar compressed with lzma (.tar.lzma)
+Tar compressed with lzop (.tar.lzo)
+Tar compressed with xz (.tar.xz)
+tar,gzip
+tar,gzip,ncompress
+.tar.lrz
+tar,lrzip
+tar,lzip
+.tar.lzma
+tar,lzma
+.tar.lzo
+tar,lzop
+tar,p7zip
+Tar uncompressed (.tar)
+TestArchive
+Testing archive
+TESTING_ARCHIVE
+_Test Integrity
+Test Result
+Test whether the archive contains errors
+text/plain
+text/uri-list
+text-x-generic
+The archive filename
+The archive is already present.  Do you want to overwrite it?
+The archive password
+The compression type to use when creating the archive
+The file has been modified with an external application. If you don't update the file in the archive, all of your changes will be lost.
+The file mime-type
+The name "%s" is not valid because it cannot contain the characters: %s
+The process object used by the command
+The program was not able to find out the file format you want to use for `%s'. Please make sure to use a known extension for that file or manually choose a file format from the list below.
+There is no command installed for %s files.
+There was an internal error trying to search for applications:
+The size of each volume or 0 to not use volumes
+This archive type cannot be modified
+time::created
+time::modified
+TODO: Remove extensions from parent filter
+/ToolBar
+/ToolBar/Extract_Toolbar
+translator-credits
+<ui>  <menubar name='MenuBar'>    <menu name='Archive' action='FileMenu'>      <menuitem action='New'/>      <menuitem action='Open'/>      <menuitem action='OpenRecent'/>      <menuitem action='SaveAs'/>      <separator/>      <menuitem action='Extract'/>      <menuitem action='TestArchive'/>      <separator/>      <menuitem action='Properties'/>      <separator/>      <menuitem action='Close'/>    </menu>    <menu action='EditMenu'>      <menuitem action='Cut'/>      <menuitem action='Copy'/>      <menuitem action='Paste'/>      <menuitem action='Rename'/>      <menuitem action='Delete'/>      <separator/>      <menuitem action='SelectAll'/>      <menuitem action='DeselectAll'/>      <separator/>      <menuitem action='Find'/>      <separator/>      <menuitem action='AddFiles'/>      <menuitem action='AddFolder'/>      <separator/>      <menuitem action='Password'/>    </menu>    <menu action='ViewMenu'>      <menuitem action='ViewToolbar'/>      <menuitem action='ViewStatusbar'/>      <menuitem action='ViewFolders'/>      <separator/>      <menuitem action='ViewAllFiles'/>      <menuitem action='ViewAsFolder'/>      <separator/>      <menuitem action='Stop'/>      <menuitem action='Reload'/>    </menu>    <menu action='HelpMenu'>      <menuitem action='Contents'/>      <placeholder name="LaunchpadItems" />      <menuitem action='About'/>    </menu>  </menubar>  <toolbar name='ToolBar'>    <toolitem action='New'/>    <toolitem action='OpenRecent_Toolbar'/>    <separator/>    <toolitem action='Extract_Toolbar'/>    <separator/>    <toolitem action='AddFiles_Toolbar'/>    <toolitem action='AddFolder_Toolbar'/>    <separator/>    <toolitem action='Stop'/>  </toolbar>  <toolbar name='LocationBar'>    <toolitem action='GoBack'/>    <toolitem action='GoForward'/>    <toolitem action='GoUp'/>    <toolitem action='GoHome'/>  </toolbar>  <popup name='FilePopupMenu'>    <menuitem action='ViewSelection'/>    <menuitem action='OpenSelection'/>    <separator/>    <menuitem action='Extract'/>    <separator/>    <menuitem action='Cut'/>    <menuitem action='Copy'/>    <menuitem action='Paste'/>    <menuitem action='Rename'/>    <menuitem action='Delete'/>  </popup>  <popup name='FolderPopupMenu'>    <menuitem action='OpenFolder'/>    <separator/>    <menuitem action='Extract'/>    <separator/>    <menuitem action='Cut'/>    <menuitem action='Copy'/>    <menuitem action='Paste'/>    <menuitem action='Rename'/>    <menuitem action='Delete'/>  </popup>  <popup name='AddMenu'>    <menuitem action='AddFiles'/>    <menuitem action='AddFolder'/>  </popup>  <popup name='SidebarFolderPopupMenu'>    <menuitem action='OpenFolderFromSidebar'/>    <separator/>    <menuitem action='ExtractFolderFromSidebar'/>    <separator/>    <menuitem action='CutFolderFromSidebar'/>    <menuitem action='CopyFolderFromSidebar'/>    <menuitem action='PasteFolderFromSidebar'/>    <menuitem action='RenameFolderFromSidebar'/>    <menuitem action='DeleteFolderFromSidebar'/>  </popup></ui>
+unable to detect filetype from magic: %s
+unable to open magic database
+unalziiiing :
+uncompress
+underline
+unix::mode
+[unknown]
+unrealize
+unstuff_is_shit_with_filenames
+update_file_cancel_button
+update_file_dialog
+update_file_ok_button
+update_file_primary_text_label
+update_files_cancel_button
+update_files_dialog
+update_file_secondary_text_label
+update_files_ok_button
+update_files_primary_text_label
+update_files_secondary_text_label
+update_files_treeview
+Update the file "%s" in the archive "%s"?
+Update the files in the archive "%s"?
+update.ui
+uri != NULL
+--use-compress-program=bzip2
+--use-compress-program=lrzip
+--use-compress-program=lzip
+--use-compress-program=lzma
+--use-compress-program=lzop
+--use-compress-program=%s
+--use-compress-program=xz
+/usr/lib/file-roller/file-roller/isoinfo.sh
+/usr/lib/file-roller/file-roller/rpm2cpio 
+/usr/lib/p7zip/Codecs/Rar29.so
+/usr/sfw/bin/gtar
+/usr/share/file-roller/
+/usr/share/file-roller/icons
+/usr/share/file-roller/ui
+/usr/share/locale
+very-fast
+ViewAllFiles
+View All _Files
+View as a F_older
+ViewAsFolder
+ViewFolders
+ViewMenu
+ViewSelection
+ViewSelection_Toolbar
+ViewStatusbar
+View the folders pane
+View the main toolbar
+View the statusbar
+ViewToolbar
+volume_size
+volume-size
+Volume size
+War (.war)
+Whether to encrypt the archive header when creating the archive
+WINDOW-1252
+window->archive != NULL
+window-height
+window != NULL
+window->priv->convert_data.new_archive->command != NULL
+Windows Imaging Format (.wim)
+window-width
+working_archive
+wrap-license
+wrong password
+Wrong password?
+XdndDirectSave0
+XdndFileRoller0
+Xz (.xz)
+You can't add an archive to itself.
+You don't have permission to create an archive in this folder
+You don't have the right permissions.
+You don't have the right permissions to create an archive in the destination folder.
+You don't have the right permissions to extract archives in the folder "%s"
+You don't have the right permissions to read files from folder "%s"
+You have to specify an archive name.
+Zip Archived Comic Book (.cbz)
+zip,unzip
+Zip (.zip)
+Zoo (.zoo)

@@ -1,0 +1,75 @@
+aAdfbF:h?iIsVvy
+    -a, --alias            alias names
+    -A, --all-fqdns        all long host names (FQDNs)
+all-fqdns
+all-ip-addresses
+   also get the DNS domain or the FQDN (fully qualified domain name).
+    -b, --boot             set default hostname if none available
+__ctype_b_loc
+    -d, --domain           DNS domain name
+Description:
+dnsdomainname
+       dnsdomainname=hostname -d
+       dnsdomainname [-v]                            display dns domain name
+__errno_location
+    -F, --file             read host name or NIS domain name from given file
+    -f, --fqdn, --long     long host name (FQDN)
+   FQDN (Fully Qualified Domain Name) and the DNS domain name (which is
+freeifaddrs
+__fxstat
+gai_strerror
+getaddrinfo
+getdomainname
+gethostbyname
+gethostname
+getifaddrs
+getnameinfo
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+__h_errno_location
+hostname %s
+       hostname [-v] [-d|-f|-s|-a|-i|-y|-A|-I]             display formatted name
+       hostname [-v]                                 display host name
+       hostname -V|--version|-h|--help               print info and exit
+hstrerror
+    -I, --all-ip-addresses all addresses for the host
+    -i, --ip-address       addresses for the host name
+_IO_stdin_used
+ip-address
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnsl.so.1
+localhost
+name too long
+nisdomainname
+   part of the FQDN) in the /etc/hosts file.
+__printf_chk
+Program name:
+Program options:
+setdomainname
+sethostname
+    -s, --short            short host name
+__stack_chk_fail
+strchrnul
+__strdup
+the specified hostname is invalid
+   This command can get or set the host name or the NIS domain name. You can
+   Unless you are using bind or NIS for host lookups you can change the
+Usage: hostname [-v] [-b] {hostname|-F file}         set host name (from file)
+you must be root to change the domain name
+you must be root to change the host name
+ypdomainname
+yperr_string
+yp_get_default_domain
+       {yp,nis,}domainname=hostname -y
+       {yp,nis,}domainname [-v]                      display NIS domain name
+       {yp,nis,}domainname [-v] {nisdomain|-F file}  set NIS domain name (from file)
+    -y, --yp, --nis        NIS/YP domain name

@@ -1,0 +1,70 @@
+A floating point dB value for the sample volume (ex: 0.0)
+An arbitrary property
+application.id
+application.name
+application.version
+__bss_start
+Cache control (permanent, volatile, never)
+ca_context_change_props
+ca_context_play_full
+ca_gtk_context_get
+canberra.cache-control
+canberra-error-quark
+- canberra-gtk-play
+canberra-gtk-play.c
+canberra-gtk-play from %s
+canberra.volume
+ca_proplist_create
+ca_proplist_destroy
+ca_proplist_sets
+ca_strerror
+Display version number and quit
+event.description
+event.id
+Event sound description
+Event sound identifier
+Failed to play sound (callback): %s
+Failed to play sound: %s
+g_assertion_message_expr
+g_idle_add
+GLIBC_2.0
+__gmon_start__
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_help_enabled
+g_printerr
+g_quark_from_static_string
+g_set_error
+g_strndup
+g_thread_init
+gtk_get_option_group
+gtk_main
+gtk_main_quit
+g_type_init
+idle_play
+Invalid property.
+_IO_stdin_used
+_Jv_RegisterClasses
+libcanberra 0.28
+libcanberra-gtk3.so.0
+libcanberra.so.0
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgthread-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+Loop how many times (detault: 1)
+media.filename
+n_loops > 1
+No event id or file specified.
+Option parsing failed: %s
+org.freedesktop.libcanberra.gtk-play
+Play file
+Property lacks '='.
+setlocale

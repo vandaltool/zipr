@@ -1,0 +1,49 @@
+	# avoid gratuitous warning
+B<dh_gencontrol> is a debhelper program that is responsible for generating
+B<dh_gencontrol> [S<I<debhelper options>>] [S<B<--> I<params>>]
+		$changelog='debian/changelog';
+		complex_doit("echo misc:Depends= >> $substvars");
+control files, and installing them into the I<DEBIAN> directory with the
+dh_gencontrol - generate and install control file
+	doit("chmod","644","$tmp/DEBIAN/control");
+	doit("chown","0:0","$tmp/DEBIAN/control");
+	doit(@command, "-l$changelog", "-T$substvars", 
+		doit("install","-o",0,"-g",0,"-d","$tmp/DEBIAN");
+	"dpkg-gencontrol-params=s", => \$dh{U_PARAMS},
+foreach my $package (@{$dh{DOPACKAGES}}) {
+	# Generate and install control file.
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	if (! $changelog) {
+	if ( ! -d "$tmp/DEBIAN" ) {
+	if (! -e $substvars || system("grep -q '^misc:Depends=' $substvars") != 0) {
+	if (getpackages() > 1) {
+init(options => {
+=item B<--> I<params>
+=item B<-u>I<params>, B<--dpkg-gencontrol-params=>I<params>
+It is deprecated; use B<--> instead.
+it once for each package being acted on, and passes in some additional
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+	my $changelog=pkgfile($package,'changelog');
+	my @command="dpkg-gencontrol";
+	my $ext=pkgext($package);
+	my $substvars="debian/${ext}substvars";
+	my $tmp=tmpdir($package);
+Pass I<params> to L<dpkg-gencontrol(1)>.
+proper permissions.
+		"-P$tmp",@{$dh{U_PARAMS}});
+		push @command, "-p$package";
+	# something odd.
+	# This chmod is only necessary if the user sets the umask to
+This is another way to pass I<params> to L<dpkg-gencontrol(1)>.
+This program is a part of debhelper.
+This program is merely a wrapper around L<dpkg-gencontrol(1)>, which calls
+use Debian::Debhelper::Dh_Lib;
+useful flags.
+use strict;
+#!/usr/bin/perl -w

@@ -1,0 +1,154 @@
+# -------------------------------------------------
+# --------------------------------------------------------------------
+(as appearing in the Debconf question at installation time):
+as superuser to set it).
+a system-wide setting.
+# Autoflush output buffers
+    $available_emacsen{$emacsenname}++;
+         {a-zaeiouyaeiouyaeiouaeiouaeiouaeiouaeiouaeiosuyacdnoacnoaeoaeo};
+B<ispell-wrapper> is a wrapper script for ispell intended to be used
+B<ispell-wrapper> - smart wrapper for ispell
+By matching the emacs dict name given in --emacs option to the name of
+By matching the regexp given in option --language to the list of
+By matching the regexp stored in the environment variable
+By using the value stored in the site-wide file
+By using the value stored in the user-specific file ~/.ispell-default
+    castellano8 (Spanish 8 bit)
+    castellano (Spanish TeX mode)
+character "e".
+characters are transformed into their ASCII equivalents.  German
+Choosing the regexp (either in the --language option or in the
+Contains the name of the language to use, if no --language option is
+  ||  &dico_getsysdefault ("ispell");
+  die "$0: \"$emacsen\" does not match any available emacs dict value:\n  "
+    die ("$0: More than one installed languages matched `$regexp':\n  "
+  die "$0: No installed language matched `$regexp'\n" unless $guess;
+die " ispell-wrapper is a wrapper to ispell, but ispell is not installed.\n"
+	    'dry-run'    => \$dryrun);
+    --dry-run              Only show what would have done
+  } else {
+} else {
+          --emacs=$emacsen setting\n\n"
+    --emacs=name           Set the language to use by emacs dict name
+environment variable ISPELLDEFAULT) to be "span" will yield an error,
+ess-zet is equivalent to the character "s" and the ae ligature to the
+/etc/dictionaries-common/ispell-default (use select-default-ispell(8)
+  exec $command_to_run;
+foreach ( @ARGV ) {
+  foreach my $key ( keys %$dictionaries ) {
+  foreach my $lang (keys %$dictionaries) {
+function of the chosen language.  Of course, this only works for dictionary
+# Function to convert ISO-8859-1 (latin1) accented characters to
+# Function to try getting $lang after emacsen name
+# Function to try getting $lang after $regexp
+GetOptions ('emacs=s'    => \$emacsen,
+Getopt::Long::Configure("pass_through","no_auto_abbrev");
+  ||  &getuserdefault ()
+given or if the ISPELLDEFAULT environment variable is not set.  This
+      $guess = $key;
+=head1 AUTHORS
+=head1 DESCRIPTION
+=head1 ENVIRONMENT
+=head1 EXAMPLE
+=head1 FILES
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+Here is how the language is defined (in order of priority):
+However, if the regexp is "span.*8", the language "castellano8
+  if ( /^\-d/ ){
+  if ( defined $lang && $regexp && $emacsen );
+if ( $dryrun ){
+  if ( not $ispell_wrapper_args && defined $lang );
+    if ( /$regexp/ ) {
+  if ( scalar keys %regexp_matches == 1) {
+# Ignore $lang results if -d is explicitly set from commandline
+in a Debian system in conjunction with the infrastructure introduced by
+installed languages in the system.
+# In the POD section below there is an extensive description on the
+is a user-specific choice.
+    $_ = isoconv ( $key );
+ISPELLDEFAULT to the list of installed languages in the system.
+    $ispell_wrapper_args = "";
+ ispell-wrapper [--emacs=name] [--language=regexp] [--dry-run] [ispell options] file
+It automatically sets the B<-d>, B<-w>, and B<-T> options to ispell as a
+=item 1)
+=item 2)
+=item 3)
+=item 4)
+=item 5)
+=item /etc/dictionaries-common/ispell-default
+=item $HOME/.ispell-default
+=item ISPELLDEFAULT
+    . join("\n  ", sort keys %available_emacsen) . "\n";
+	 . join ("\n  ", sort keys %regexp_matches) . "\n");
+      $language->{"emacsen-name"} : $hashname;
+--language option is given.
+    --language=regexp      Set the language to use by name
+	    'language=s' => \$regexp,
+# languages.  We might try to find a more general solution based on
+    last;
+Let us say that the following dictionaries are installed in the system
+# Local Variables:
+  my %available_emacsen = ();
+my $class        = "ispell";
+my $cli_opts = join(' ',@ARGV);
+my $command_to_run = "ispell $ispell_wrapper_args $cli_opts";
+my $dictionaries = loaddb ($class);
+my $dryrun;
+my $emacsen;
+    my $emacsenname = exists $language->{"emacsen-name"} ?
+  my $emacsen = shift;
+  my $guess;
+    my $hashname = $language->{"hash-name"};
+my $ispell_wrapper_args = &dico_get_spellchecker_params($class,$dictionaries->{$lang});
+my $lang = &try_emacsen($emacsen)
+    my $language = $dictionaries->{$lang};
+my $regexp;
+  my %regexp_matches    = ();
+  my $regexp = shift;
+  my $s = shift;
+Name of the language to use when everything above is not set. This is
+# non-accented one.  Of course, this only works for west European
+Note: regexp matches are case-insensitive and the ISO-8859-1 special
+Note that this will override any value given in the --language option.
+# Now the main program
+one of the emacs dicts names provided by installed languages in the
+   Options (all long only options):
+packages that comply with the above mentioned Policy.
+# perl-indent-level: 2
+    portuguE<ecirc>s brasileiro (Brazilian Portuguese)
+    portuguE<ecirc>s (European Portuguese)
+  print "--\n$command_to_run\n--\n";
+print STDERR " Warning: --language=$regexp will be overriden by
+print STDERR "Warning: \'$lang\' values overriden with \'$cli_opts\'\n"
+# priority order for determining the ispell language.
+Rafael Laboissiere
+$regexp = $ENV{ISPELLDEFAULT} unless $regexp;
+  $regexp = isoconv ($regexp);
+      $regexp_matches{$key}++;
+$regexp =~ s/([^\\]|^)(\(|\))/$1\\$2/g if $regexp;   # Make sure () are escaped
+Regexp that matches the name of the default language to use, if no
+    return $guess;
+    return $lang if ( lc($emacsen) eq lc($emacsenname) );
+  return $s;
+  return unless $emacsen;
+  return unless $regexp;
+select-default-ispell(8), select-default-iwrap(1)
+since two languages will match ("castellano" and "castellano8").
+(Spanish 8 bit)" will be chosen.
+sub isoconv {
+sub try_emacsen () {
+sub try_regexp () {
+  $s =~ y{A-Z
+system. This match must be exact (although is case insensitive).
+# the current locale character set.
+the dictionaries-common package. Option --dry-run will show the string
+to be run without doing anything else.
+  ||  &try_regexp ($regexp)
+  unless ( -x "/usr/bin/ispell" );
+use Debian::DictionariesCommon q(:all);
+use Getopt::Long;
+(use select-default-iwrap(1) to set it).
+use strict;
+#!/usr/bin/perl -w

@@ -1,0 +1,1909 @@
+~~~~~~^^
+-------------
+-----------------------------------
+0123456789 
+0x%02x, 
+16-bit addresses not supported in 64-bit mode
+    %-22s  %s
+32-bit: %d: 
+3333%3333
+%4s%-12s%s
+64-bit: %d: 
+6-bit, byte-multiple
+6-bit, word-multiple
+%6lu %08lX 
+%6lu %08lX <gap>%*s%s
+%6lu %*s%s
+80-bit: %d: 
+8-bit, word-multiple
+\$8;\$Pt
+9-bit, signed, word-multiple
+9-bit, signed, word-multiple, PC-relative
+\$$9\$,sj
+<9wq<.t=</
+.absolut
+[absolute 0]
+add_default_section()
+add include path
+address size override ignored
+  Alexei Svitkine (GAS preprocessor)
+align:     
+[align %1]
+align boundary must be a constant
+.align directive must specify alignment
+align fill must be a constant
+align maximum skip must be a constant
+alignment constraint is not an integer
+alignment constraint is not a power of two
+alignment %d for section `%s' is not a power of 2
+.allocstack
+ALLOCSTACK
+.allocstack %1
+[allocstack %1]
+.allocstack 8
+[allocstack 8]
+  Anonymous "NASM64" developer (NASM preprocessor fixes)
+append argument to name of all external symbols
+architecture
+architectures
+`%%arg' missing argument parameter
+`%%arg' missing size type parameter
+argument to EXPORT must be symbol name
+argument to ORG must be expression
+argument to SAFESEH must be symbol name
+argument to `%s' is not an expression
+argument to `%s' is not an integer
+argument to `%s' is not a power of two
+argument to `%s' is not a string or identifier
+Artistic.txt - Artistic license
+%%assign %%$localsize %%$localsize+%d
+athlon64
+athlon-64
+.att_syntax
+Available %s for %s `%s':
+Available yasm %s:
+;A v";B w
+bad register group
+bad register index `%u'
+basic_block
+basicnop
+bc_reserve_tobytes called
+  Ben Skeggs (patches, bug reports)
+big endian not implemented
+binary object format does not support common variables
+binary object format does not support external references
+binary object format does not support extern variables
+binary object format does not support global variables
+[bits %1]
+[bits 16]
+[bits 32]
+[bits 64]
+bits(word) < 16
+bits(word) != 2^ld(bits(word))
+bits(word) != 2^x
+bits(word) > bits(long)
+bits(word) != sizeof(word)*8
+bitvect) are fulfilled.
+bit vector size mismatch
+bitvect, which is triple-licensed under the Artistic license, GPL, and
+Both underflow and overflow set
+braces do not enclose all of macro parameter
+  Brian Gladman (Visual Studio build files, other fixes)
+BSD.txt - 2-clause and 3-clause BSD licenses
+__bss_start
+bulldozer
+.byte 0x48
+bytecode cannot be converted to bytes
+bytecode does not have any dependent spans
+bytecode length cannot be calculated
+Byte length of BitVector does not match bit length
+cannot combine multiples and setting assembly position
+cannot combine `start' and `follows' section attributes
+cannot combine `vstart' and `vfollows' section attributes
+can not handle more than one '?'
+Cannot override address size to 16 bits in 64-bit mode
+Cannot override data size to 32 bits in 64-bit mode
+cannot override register size
+cannot reference symbol `%s' in preprocessor
+cannot use A/B/C/DH with instruction needing REX
+can only have one token of lookahead
+can't handle different types of token around &
+can't handle empty token around &
+__cat_cls_meth
+__category
+__cat_inst_meth
+Character constant too large for internal format
+character constant too long
+circular reference detected
+class:     %s
+__class_vars
+clawhammer
+__cls_meth
+__cls_refs
+cmovnael
+cmovnaeq
+cmovnaew
+cmovnbel
+cmovnbeq
+cmovnbew
+cmovngel
+cmovngeq
+cmovngew
+cmovnlel
+cmovnleq
+cmovnlew
+cmpxchg16b
+cmpxchg486
+cmpxchg8b
+cmpxchg8bq
+cmpxchgb
+cmpxchgl
+cmpxchgq
+cmpxchgw
+codes count expression too complex
+codeview: could not open source file
+CodeView debugging format for VC8
+codeview file number %d unassigned
+coff: cannot wrt across sections
+coff: common size is negative
+coff: common size too complex
+COFF (DJGPP)
+coff: expected sym data to be present
+coff: invalid relocation size
+coff: no symbol data for relocated symbol
+coff: no symbol data for SAFESEH symbol
+coff objfmt: unrecognized machine
+coff: relocation too complex
+coff: section computed size did not match actual size
+COFF section names limited to 8 characters: truncating
+coff: unrecognized aux symtab type
+coff: wrt expression too complex
+column number is not a constant
+command line too long!
+.comment
+.comment requires string parameters
+[common %1]
+COMMON data size not an integer expression
+Compiled on Jun 10 2011.
+condition code `%s' is not invertible
+.const_data
+__constructor
+.constructor
+could not calculate bc distance
+could not determine current working directory
+could not determine multiple
+could not determine start in bc_tobytes_incbin
+could not find any code alignment size
+could not find expritem in pool
+could not find filename in table
+could not find label prior to loc
+could not get file position on output file
+could not open file `%s'
+Could not open input file
+could not open temporary file
+could not seek on output file
+could not set file position on output file
+couldn't read position on output stream
+couldn't seek on output stream
+[cpu %1]
+create()
+-%c <%s>
+%c %s *2^%04x
+__cstring
+.cstring
+__ctype_b_loc
+__ctype_tolower_loc
+__ctype_toupper_loc
+cvtpd2pi
+cvtpi2pd
+cvtpi2ps
+cvtps2pi
+cvttpd2pi
+cvttps2pi
+D$49D$8}
+D$(9T$4sm9t$4w
+data expression too complex
+Data is seen as subtrie (misaligned?)
+data values can't have registers
+DB/DW/etc.
+dcgettext
+.debug_abbrev
+.debug_aranges
+debug format
+debug formats
+debug format `%s' does not work with object format `%s'
+.debug_info
+.debug_line
+.debug$S
+.debug$T
+[default %1]
+default_rel
+Defined,
+%define __FILE__
+%define __LINE__
+%define __OUTPUT_FORMAT__ __YASM_OBJFMT__
+%%define %s %%1
+%define __SECT__ [absolute %1]
+%define __SECT__ [section %1]
+%define __SECT__ [section .text]
+%define __SECT__ [segment %1]
+%%define %s (%s-%d)
+%%define %s (%s+%d)
+%define %$strucname %1
+%define __YASM_BUILD__ 2352
+%define __YASM_MAJOR__ 1
+%define __YASM_MINOR__ 1
+%define __YASM_SUBMINOR__ 0
+%define __YASM_VER__ "1.1.0"
+%define __YASM_VERSION_ID__ 001010000h
+defining with name in expansion
+destination too large
+destroy()
+__destructor
+.destructor
+details.  Consult a lawyer for legal advice.
+D$H9CHt"
+didn't get FAR expression in jmpfar
+didn't understand section
+different destroy function given to add_reloc
+directive name
+directive `%s' not recognized
+directive `%s' requires an argument
+directive `%s' requires an identifier parameter
+Disable preprocessing
+distribution.  Each source file may include the entire license (in the case
+divide by zero
+division by zero error
+DOS .EXE format binary
+double operand size override
+.drectve
+duplicate definition of `%s'; first defined on line %lu
+dwarf2 address went backwards?
+DWARF2 debugging format
+dwarf2 file number %d unassigned
+ (Each undefined symbol is reported only once.)
+effective address too complex
+ELF (32-bit)
+ELF (64-bit)
+elf: invalid relocation size
+elf: invalid relocation (WRT or size)
+ELF program header is not proper length
+elf: relocation too complex
+%elifctx
+%elifdef
+%elifidn
+%elifidni
+%elifmacro
+%elifnctx
+%elifndef
+%elifnid
+%elifnidn
+%elifnidni
+%elifnmacro
+%elifnnum
+%elifnstr
+%elifnum
+%elifstr
+`%%else': no matching `%%if'
+enables/disables warning
+ended procedure without ending prologue
+`%%endif': no matching `%%if'
+".endif" without ".if"
+%endmacro
+ENDM: bogus endm context type %d
+ENDM: not in an endm context
+".endm" without ".macro"
+end of file in comment
+end of file in procedure frame
+end of file while still defining macro `%s'
+end of line
+.endproc_frame
+[endproc_frame]
+ENDPROC_FRAME
+.endprolog
+[endprolog]
+ENDPROLOG
+%%endrep
+`%%endrep': no matching `%%rep'
+".endr" without ".rept"
+ENDS: bogus ends context type %d
+%endscope
+`%%endscope': already popped all levels
+ENDS: not in an ends context
+endstruc
+entity size for SHF_MERGE not specified
+environment variable `%s' does not exist
+epilogue_begin
+EQU value not an integer expression
+__errno_location
+error when reading from file
+%exitrep
+`%%exitrep' not within `%%rep' block
+expansion on already largest alloc
+expected ( after DUP
+expected ) after DUPlicated expression
+expected comma
+expected `%%endif' before end of file
+expected expression after [
+expected expression after ]
+expected expression after %s
+Expected < for struc field initializer in %s %s %s
+Expected > for struc field initializer in %s %s %s
+expected identifier after `@'
+expected `,' instead of `%c'
+expected `:' instead of `%c'
+expected operand, got %s
+expected %s
+Expected struc field initializer after %s %s
+`)' expected to terminate macro template
+expecting `)'
+exponent must be positive
+-export:
+.export %1
+[export %1]
+expression expected after `%s'
+expression expected after %s
+expression expected for INCBIN maximum length
+expression expected for INCBIN start
+expression is required in ".elseif" statement
+expression is required in ".if" statement
+expression missing after `%s'
+expression must not contain floating point value
+expression on line %d has too many add terms; internal limit of 32
+expression or string expected
+expression syntax error
+Extended Dynamic Object
+[extern %1]
+Failed to execute preprocessor
+Failed to write an elf section header
+Failed to write ELF program header
+family10h
+fcmovnbe
+@feat.00
+filename
+file name already ends in `.%s': output will be in `%s'
+file name already has no extension: output will be in `%s'
+filename string expected after INCBIN
+file number given but no filename
+file number is not a constant
+file number less than one
+file number required
+Files are asm sources to be assembled.
+first opcode byte of VEX must be 0x0F
+first opcode byte of XOP must be 0x08 or 0x09
+fisttpll
+flag string expected
+Flat format binary
+floating point expression too complex
+floating point value
+fnstenvl
+fnstenvs
+follows loop between section `%s' and section `%s'
+follows:   %s
+for a particular purpose.
+Forced Near
+Forced Short
+force_strict
+force-strict
+__fprintf_chk
+frame offset expression too complex
+frame offset of %ld bytes, must be between 0 and 240
+frame offset of %ld is not a multiple of 16
+Frontends
+ftruncate
+function
+__fvmlib_init0
+.fvmlib_init0
+__fvmlib_init1
+.fvmlib_init1
+fxrstorq
+gasflags
+gas_intel_mode
+generate Makefile dependencies on stdout
+get_special_sym(object, "%s", "%s")
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+[global %1]
+global EQU value not an integer expression
+_GLOBAL_OFFSET_TABLE_
+__gmon_start__
+GNU AS (GAS)-compatible parser
+GNU AS (GAS)-compatible preprocessor
+GNU_GPL-2.0 - GNU General Public License
+GNU_LGPL-2.0 - GNU Library General Public License
+got empty bytecode in bc_tobytes
+got empty bytecode in yasm_bc_calc_len
+got empty bytecode in yasm_bc_elem_size
+got empty bytecode in yasm_bc_expand
+gotntpoff
+..gotpcrel
+gottpoff
+  Henryk Richter (Mach-O object format)
+<Hw)<@wp</
+IA-32 and derivatives
+%iassign
+%idefine
+%idefine .186	CPU 186
+%idefine .286C	CPU 286
+%idefine .286	CPU 286
+%idefine .286P	CPU 286
+%idefine .386C	CPU 386
+%idefine .386	CPU 386
+%idefine .386P	CPU 386
+%idefine .486C	CPU 486
+%idefine .486	CPU 486
+%idefine .486P	CPU 486
+%idefine .586C	CPU 586
+%idefine .586	CPU 586
+%idefine .586P	CPU 586
+%idefine .8086	CPU 8086
+%idefine END
+%idefine IDEAL
+%idefine JUMPS
+%idefine P186	CPU 186
+%idefine P286	CPU 286
+%idefine P286N	CPU 286
+%idefine P286P	CPU 286 Priv
+%idefine P386	CPU 386
+%idefine P386N	CPU 386
+%idefine P386P	CPU 386 Priv
+%idefine P486	CPU 486
+%idefine P586	CPU 586
+%idefine P8086	CPU 8086
+%idefine PTR
+%%idefine %s %%{%-u}
+..identifier
+..@identifier
+%if %0==1
+%ifidni %2,nop
+%ifmacro
+%ifnidni
+%ifnmacro
+ifnotdef
+ignoring default rel in non-64-bit mode
+ignoring REX prefix on jump
+ignoring unrecognized character `%s'
+%imacro absolute 1+.nolist
+%imacro align 1-2+.nolist nop
+%imacro alignb 1-2+.nolist resb 1
+%imacro alloc_stack 1
+%imacro at 1-2+.nolist
+%imacro bits 1+.nolist
+%imacro common 1-*.nolist
+%imacro cpu 1+.nolist
+%imacro default 1+.nolist
+%imacro endproc_frame 0.nolist
+%imacro end_prolog 0.nolist
+%imacro end_prologue 0.nolist
+%imacro endstruc 0.nolist
+%imacro export 1+.nolist
+%imacro extern 1-*.nolist
+%imacro EXTRN 1-*.nolist
+%imacro global 1-*.nolist
+%imacro iend 0.nolist
+%%imacro irp 0-*
+%imacro istruc 1.nolist
+%imacro library 1+.nolist
+%imacro module 1+.nolist
+%imacro NAME 1
+%imacro org 1+.nolist
+%imacro proc_frame 1+.nolist
+%imacro PUBLIC 1-*.nolist
+%imacro push_eflags 0
+%imacro push_frame 0-1.nolist
+%imacro push_reg 1
+%imacro rex_push_eflags 0
+%imacro rex_push_reg 1
+%%imacro %s 0-*
+%imacro safeseh 1+.nolist
+%imacro save_reg 2
+%imacro save_xmm128 2
+%imacro section 1+.nolist
+%imacro segment 1+.nolist
+%imacro set_frame 1-2
+%imacro size 1+.nolist
+%imacro struc 1.nolist
+%imacro TITLE 1
+%imacro type 1+.nolist
+%imacro use16 0.nolist
+%imacro use32 0.nolist
+%imacro use64 0.nolist
+%imacro weak 1+.nolist
+immediate does not support segment
+immediate expression too complex
+incbin does not yet understand non-constant
+`incbin': start past end of file `%s'
+`incbin': unable to open file `%s'
+`incbin': unable to read %lu bytes from file `%s'
+`incbin': unable to seek on file `%s'
+-include
+%include
+`%%include' expects a file name
+%%include "%s"
+index out of range
+indirect call without `*'
+indntpoff
+inhibits warning messages
+initialized space declared in nobits section: ignoring
+init_new_section("%s", %lu)
+input string syntax error
+__instance_vars
+__inst_meth
+instruction
+instruction expected after label
+instruction expected after TIMES expression
+instruction not recognized: `%s'
+instruction prefix
+integer register index expected
+intelnop
+.intel_syntax
+internal
+INTERNAL ERROR at %s, line %u: %s
+invalid alignment size %d
+invalid arguments to [%s]
+invalid argument to directive `%s'
+invalid argument to [%s]
+invalid binary literal
+invalid combination of opcode and operands
+invalid decimal literal
+invalid displacement size; fixed
+invalid effective address
+invalid effective address (64-bit in non-64-bit mode)
+invalid effective address (displacement size)
+Invalid float conversion size
+invalid floating point constant size
+invalid hex literal
+invalid jump target
+invalid memory expression
+invalid merge entity size
+Invalid mode_bits in x86_get_fill
+invalid Mod/RM in x86 tobytes_insn
+invalid number of operands
+invalid octal literal
+invalid operand conversion
+invalid operand type
+invalid operation in intnum calculation
+invalid section name `%s'
+invalid segment in effective address
+invalid SIB in x86 tobytes_insn
+invalid size for operand %d
+Invalid size type for `%%arg' missing directive
+Invalid size type for `%%local' missing directive
+invalid target modifier type
+invalid use of '%s'
+invvpidl
+invvpidq
+_IO_stdin_used
+isa value is not a constant
+isa value less than zero
+__isoc99_sscanf
+is_stmt value is not a constant
+is_stmt value not 0 or 1
+%ixdefine
+jump op_sel cannot be JMP_NONE in tobytes
+jump target expression too complex
+jump target offset too complex
+jump target out of range
+jump target segment too complex
+junk at end of cpp line marker
+junk at end of line, first unrecognized character is `%c'
+L$8;\$<u
+label alone on a line without a colon might be in error
+label name too long, truncating to %d bytes
+label or instruction expected at start of line
+LC-3b does not support floating point
+lcomment
+LC_SEGMENT.%s.%s
+LC_SEGMENT.__TEXT.__text
+l$D9s,v`
+%ld unwind codes, maximum of 255
+lea %1, [rsp+%2]
+leaq %2(%rsp), %1
+LEB128 does not allow string constants
+LEB128 requires constant values
+length:    
+LGPL.  Libyasm is thus GPL and LGPL compatible.  In addition, this also
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+[library %1]
+libyasm/bc-data.c
+libyasm/bc-incbin.c
+libyasm/bc-reserve.c
+libyasm/bytecode.c
+libyasm/expr.c
+libyasm/floatnum.c
+libyasm/hamt.c
+libyasm/intnum.c
+Libyasm is 2-clause or 3-clause BSD licensed, with the exception of
+libyasm/section.c
+libyasm/value.c
+license if you plan on submitting code to the project.
+license of any part of Yasm.  See the individual licenses for complete
+License Texts
+linedebug
+%%line %d %.*s
+`%%line' expects line increment
+`%%line' expects line number
+line increment is negative
+%%line %ld+%d %s
+line number is negative
+line number is not a constant
+line number required
+listfile
+list formats
+__literal16
+.literal16
+__literal4
+.literal4
+__literal8
+.literal8
+, l=%li, h=%li, mH=%li
+  l->low=
+loadall286
+`%%local' missing argument parameter
+`%%local' missing size type parameter
+, %lu), returning 
+machines
+macho implementation does not support alignments > 16384
+macho: invalid WRT
+macho: relocation size unsupported
+macho: relocation too complex
+macho: relocation too complex for current implementation
+macho: SEG not supported
+macho: shifted relocations not supported
+macho: sorry, cannot apply 32 bit absolute relocations in 64 bit mode, consider "[_symbol wrt rip]" for mem access, "qword" and "dq _foo" for pointers.
+Mac OS X ABI Mach-O File Format
+Mac OS X ABI Mach-O File Format (32-bit)
+Mac OS X ABI Mach-O File Format (64-bit)
+macro call expects terminating `)'
+macro parameter %d is not a condition code
+macro `%s' exists, but not taking %d parameters
+macro[=value]
+map file already specified
+maskmovq
+  Mathieu Monnier (SSE4 instruction patches, NASM preprocessor additions)
+maximum length expression not absolute
+maximum length expression too complex
+means that libyasm is free for binary-only distribution as long as the
+memory address expected
+__message_refs
+__meta_class
+  Michael Urman
+minimum > maximum index
+minimum parameter count exceeds maximum
+misaligned value, truncating to boundary
+missing closing bracket
+missing closing parenthesis for register index
+missing parenthesis
+missing .stab or .stabstr section/data
+mode_bits
+__mod_init_func
+.mod_init_func
+__mod_term_func
+.mod_term_func
+[module %1]
+__module_info
+modules/arch/lc3b/lc3bbc.c
+./modules/arch/lc3b/lc3bid.re
+modules/arch/x86/x86bc.c
+modules/arch/x86/x86expr.c
+modules/arch/x86/x86id.c
+modules/dbgfmts/codeview/cv-symline.c
+modules/dbgfmts/codeview/cv-type.c
+modules/dbgfmts/dwarf2/dwarf2-dbgfmt.c
+modules/dbgfmts/dwarf2/dwarf2-info.c
+modules/dbgfmts/dwarf2/dwarf2-line.c
+modules/dbgfmts/stabs/stabs-dbgfmt.c
+modules/objfmts/coff/coff-objfmt.c
+modules/objfmts/coff/win64-except.c
+modules/objfmts/elf/elf.c
+modules/objfmts/elf/elf-objfmt.c
+modules/objfmts/elf/elf-x86-amd64.c
+modules/objfmts/elf/elf-x86-x86.c
+modules/objfmts/macho/macho-objfmt.c
+modules/objfmts/rdf/rdf-objfmt.c
+modules/objfmts/xdf/xdf-objfmt.c
+modules/parsers/gas/gas-parse.c
+modules/parsers/nasm/nasm-parse.c
+modules/preprocs/nasm/nasm-preproc.c
+More than one symbol visibility provided; using last
+mov %1, rsp
+movdqa %1, %2(%rsp)
+movdqa [rsp+%2], %1
+movq %1, %2(%rsp)
+movq %rsp, %1
+mov [rsp+%2], %1
+multiple expression not absolute
+multiple expression too complex
+multiple is negative
+multiple LOCK or REP prefixes, using leftmost
+multiple REX prefixes, using leftmost
+multiple segment overrides, using leftmost
+name of list-file output
+name of map-file output
+name of object-file output
+name too long, truncating to %d bytes
+NASM-compatible parser
+NASM-style list format
+near jump does not exist
+negative offset not allowed
+negative value in unsigned LEB128
+nested procedures not supported (didn't use [ENDPROC_FRAME]?)
+new segment declared without type code
+nil (unlimited)
+no associated data
+No debugging info
+nodiscard
+noeptvpid
+noexecute
+nofsgsbase
+No input files specified
+non-constant in data_tobytes
+non-constant value given to `%%rep'
+non-constant value given to `%%rotate'
+non-constant value given to `%s'
+non-constant value given to `%%%sassign'
+non-constant value given to `%%substr`
+no NEAR form of that jump instruction exists
+NONE-SHOULDN'T HAPPEN
+non-integer scale
+Non-integer value in reg expn
+no non-local label before `%s'
+non-string section attribute
+noobsolete
+nopadlock
+nopclmulqdq
+noprivileged
+noprogbits
+noprotected
+nordrand
+---- No Section 
+no section header attached to section
+no sections defined
+no SHORT form of that jump instruction exists
+no size specified
+no size specified in %s declaration
+nosse4.1
+nosse4.2
+not defined
+Note: This document does not provide legal advice nor is it the actual
+Not in Table,
+no token after &
+no token before &
+no type specified
+noundocumented
+noxsaveopt
+NULL destroy function given to add_reloc
+NULL entry
+null info struct
+Numeric constant too large for internal format
+numeric overflow error
+.objc_cat_cls_meth
+.objc_category
+.objc_cat_inst_meth
+.objc_class
+.objc_class_names
+.objc_class_vars
+.objc_cls_meth
+.objc_cls_refs
+.objc_instance_vars
+.objc_inst_meth
+.objc_message_refs
+.objc_meta_class
+.objc_meth_var_names
+.objc_meth_var_types
+.objc_module_info
+.objc_protocol
+.objc_selector_strs
+.objc_string_object
+.objc_symbols
+object format
+object formats
+object format `%s' does not support architecture `%s' machine `%s'
+ Obsolete
+octal value out of range
+OFFSET applied to non-absolute memory operand
+OFFSET applied to non-memory operand
+offset expression too complex
+offset of %ld bytes, must be between %ld and %ld
+offset of %ld is not a multiple of %ld
+of the BSD and Artistic licenses), or may reference the GPL or LGPL license
+one of source operand 1 or 3 must match dest operand
+only can have one token of lookahead
+only RES* allowed within absolute section
+operation needs an operand
+option `-%c' needs an argument!
+Options:
+option `--%s' needs an argument!
+[org %1]
+org/align went to negative offset
+ORG expression is negative
+ORG expression is too complex
+ORG overlap with already existing data
+orphan-labels
+out of memory
+Output file:  %s
+output(f, object->
+over 65535 stabs
+overflow in floating point expression
+overriding generated REX prefix
+overriding operand size from %u-bit to %u-bit
+.p2align
+ PadLock
+parameter identifier expected
+pcomment
+pentium2
+pentium-2
+pentium3
+pentium-3
+pentium4
+pentium-4
+pentiumii
+pentium-ii
+pentiumiii
+pentium-iii
+pentiumiv
+pentium-iv
+pentiumpro
+  Peter Johnson
+pfrcpit1
+pfrcpit2
+pfrsqit1
+  p->low=
+pmachriw
+pmulhriw
+pmulhrwa
+pmulhrwc
+`%%pop': context stack is already empty
+pre-define a macro, optionally to value
+prefetch
+prefetchnta
+prefetcht0
+prefetcht1
+prefetcht2
+prefetchw
+pre-include file
+prepend argument to name of all external symbols
+preprocess only (writes output to stdout by default)
+preprocessor
+preprocessor directive `%s' not yet implemented
+Preprocessor exited with failure
+preprocessors
+preproc-only
+prescott
+previous procedure started here
+__printf_chk
+ Privileged
+procedure started here
+.proc_frame
+.proc_frame %1
+[proc_frame %1]
+-- Program origin 
+program origin redefined
+prolog size expression too complex
+prologue_end
+prologue ended here
+prologue %ld bytes, must be <256
+ Protected
+__protocol
+`%%push' expects a context identifier
+.pushframe
+PUSHFRAME
+.pushframe %1
+[pushframe %1]
+%push istruc
+pushq %1
+.pushreg
+.pushreg %1
+[pushreg %1]
+%push struc
+<qtL<QtH<OtD<of
+<Qwc<.wM<"w3
+.rdata$zzz
+rdf does not support exporting EQU/absolute values
+rdf: no symbol data for relocated symbol
+rdf: relocation too complex
+rdfsbase
+rdf: section computed size did not match actual size
+rdf: WRT not supported
+rdgsbase
+Real NASM Preprocessor
+Real TASM Preprocessor
+redefining multi-line macro `%s'
+redefining symbols not yet implimented
+redefinition of `%s'
+  red=%i
+redirect error messages to file
+redirect error messages to stdout
+reg expr too complex?
+register adressing not supported
+Register expression not ADD or EXPN
+relative adressing not supported
+Relocatable Dynamic Object File Format (RDOFF) v2.0
+reloc is null
+%%rep %%0
+`%%rep' expects a repeat count
+`%%repl': context stack is empty
+`%%repl' expects a context identifier
+Report bugs to bug-yasm@tortall.net
+rept without matching endr
+`%%rep' without `%%endrep' within expansion of macro `%s'
+requested alignment not a power of two
+`:' required after segment register
+requires CPU%s
+RESB/RESW/etc.
+reserved
+result vector(s) must be distinct
+rex64xyz
+REX prefix not allowed on this instruction, ignoring
+Right side of expression must exist
+RIP-relative directive ignored in non-64-bit mode
+  r->low=
+%%rotate 1
+%rotate 1
+`%%rotate' invoked outside a macro call
+`%%rotate' invoked within macro without parameters
+`%%rotate' missing rotate count
+Run input through external C preprocessor
+Run yasm --license for licensing overview and summary.
+%*sAbsolute portion=
+%*saddr=
+%*saddr=0x%lx
+%*sAddrSize=%u OperSize=%u LockRepPre=%02x BITS=%u
+.safeseh
+[safeseh %1]
+[%s] after end of prologue
+%*salign=
+%*s_Align_
+%*salign=%lu
+Sample invocation:
+  Samuel Thibault (TASM parser and frontend)
+sandybridge
+`%%%sassign' expects a macro identifier
+%*sAssociated data:
+.savereg
+.savereg %1 %2
+[savereg %1 %2]
+.savexmm128
+SAVEXMM128
+.savexmm128 %1, %2
+[savexmm128 %1 %2]
+%*sbind=
+`%s' both defined and declared extern
+%*sBoundary=
+%*sbss=%d
+%*sBytecodes:
+%*sBytes=[
+scale factor of %u without an index register
+[%s] can only be used inside of a section
+`%s': context stack is empty
+`%s': context stack is only %d level%s deep
+%s: could not find symbol `start'
+%s: could not initialize BitVector
+%s: could not load default %s
+%*s_Data_
+%*sDeref=%d, Strict=%d
+%*sDisp:
+(%s:%d) %s
+secondary expansion of an external/complex value
+__SECT__
+.section
+section flags ignored on section redeclaration
+section name is too long, max 16 chars; truncating
+sections
+---- Section %s 
+-- Sections (detailed) 
+section `%s' follows an invalid or unknown section `%s'
+section `%s' internal align of %lu is greater than `%s' of %lu; using `%s'
+sections `%s' and `%s' overlap by %lu bytes
+section `%s' starts before origin (ORG)
+section `%s' start value too large
+-- Sections (summary) 
+section `%s' vfollows an invalid or unknown section `%s'
+section_switch(headp, 
+sect is null
+%*sEffective Address:
+SEGMENT: already in a segment context
+segment applied to non-memory operand
+segment name is too long, max 16 chars; truncating
+segment register
+segments
+select architecture (list with -a help)
+select debugging format (list with -g help)
+select error/warning message style (`gnu' or `vc')
+select list format (list with -L help)
+select machine (list with -m help)
+select object format (list with -f help)
+__selector_strs
+select parser (list with -p help)
+select preprocessor (list with -r help)
+%*sElements:
+%*sEmpty
+%*s_Empty_
+%*s_EQU_
+.setframe
+SETFRAME
+.setframe %1, %2
+[setframe %1 %2]
+'%s': expected parameter name
+%s: expected <values>
+`%s' expects a macro name
+`%s' expects a parameter count after `-'
+`%s' expects a parameter count or nothing
+`%s' expects context identifiers
+`%s' expects macro identifiers
+".%s" expects two arguments
+`%s' expects two comma-separated arguments
+"%s" expects two double-quoted arguments
+"%s" expects two single-quoted or unquoted arguments
+%*sExpn=
+%*sextreloc=%u
+%*s_Far_Jump_
+%*sFilename=`%s'
+%*sFill=
+%*sflags=
+%*sflags=0x%lx
+%*sflags=0x%x
+%*sfollows=
+shead is null
+short jump does not exist
+short jump out of range
+show help text
+show license text
+show version text
+.shstrtab
+%*sImmediate Value:
+%*s_IncBin_
+%*sindex=0x%x
+%*sindex=%ld
+single-line macro `%s' defined both with and without parameters
+%s in immediate expression
+%s in memory expression
+%*s_Instruction_
+`%s' invalid in 64-bit mode
+%*s(IP-relative)
+`%s' is an instruction in 64-bit mode
+`%s' is an instruction in CPU%s
+`%s' is a prefix in 64-bit mode
+`%s' is a register in %u-bit mode
+`%s' is not a valid debug format for object format `%s'
+%*sistart=
+%s: istruc %s
+%*sItem Size=%u
+%*sivstart=
+[size %1]
+size expected for `%s'
+size must be an absolute expression
+sizeof(word) > sizeof(size_t)
+size-override
+size specifier not an integer expression
+%*s_Jump_
+%*s(Jump target)
+skipping prefixes on this instruction
+.sleb128
+%*slength=
+%*sLength=%lu
+%*sLine Index (Declared)=%lu
+%*sLine Index (Defined)=%lu
+%*sLine Index=%lu
+%*sLine Index (Used)=%lu
+%*slink=0x%x
+%s:%lu: %s%s
+%s(%lu) : %s%s
+`%%%smacro': already defining a macro
+`%%%smacro' expects a macro name
+`%%%smacro' expects a parameter count
+`%%%smacro' expects a parameter count after `-'
+%*sMax Len=
+%*sMax Skip=
+%*sMemory=
+smintold
+%*sModRM=%03o ValidRM=%u NeedRM=%u
+`%s': more than one comma on line
+%*sMultiple=
+%*sname=%s
+%*sNear Form:
+%*sNext Bytecode:
+`%s': no matching `%%if'
+%*s(none)
+%*sNoSplit=%u
+`%s': not defining a macro
+`%s': not in a macro call
+%s not supported
+%*snreloc=%ld
+%*snreloc=%lu
+%*sNum Items=
+%*sOffset:
+%*soffset=0x%lx
+%*soffset=%lu
+%*sOffset=%lx
+%*sOpcode: %02x %02x %02x OpLen=%u
+%*sOpcode: %04x
+%*sOpSel=
+%*s_Org_
+Source file:  %s
+%*s(Overflow warnings disabled)
+`%s': parameter identifier expected
+%*sPreceding bytecode:
+`%s' previously defined here
+__sprintf_chk
+%*s(Relative to current position)
+%*sRelative to=%s%s
+%*srelocs:
+%*srelptr=0x%lx
+[%s] requires an argument
+[%s] requires an offset as the second parameter
+[%s] requires a register as the first parameter
+[%s] requires a size
+%s requires value
+%*s_Reserve_
+%*sReserved
+%*sreserved=0x%x
+%*s(Right shifted by=%u)
+--%s=<%s>
+%s.%s: at .%s, %s %s
+%*ssclass=%d
+%*sscnptr=0x%lx
+%*sscnum=%d
+%*sscnum=%ld
+`%%%s%sdefine' expects a macro identifier
+"%s" section
+%*sSection:
+%*s(Section-relative)
+%*ssection="%s"
+%*sSegment:
+%*sSegmentOv=%02x
+`%s' segment register ignored in %u-bit mode
+%*sSegReg=
+%*sShort Form:
+%*sSIB=%03o ValidSIB=%u NeedSIB=%u
+%s: `%s' is not a valid %s for %s `%s'
+%*ssize=
+%*ssize=0x%lx
+%*ssize=%ld
+%*ssize=%lu
+%*sSize=%u
+%*sSLEB128 value:
+%*s-Special-
+%*sSpPre=%02x REX=%03o PostOp=%u
+.%s %s %s
+%-*s%-*s%s
+%s : %s%s
+%s: %s%s
+%-*s%-*s%-*s%-*s%-*s%-*s%s
+%*s.stabs "%s", 0x%x, 0x%x, 0x%x, 0x%lx
+%*sstart=
+%*sStart=%lu
+%*sStatus=
+%*sSymbol `%s'
+%*sSymbol Table:
+%*ssymtab index=%lu
+%*ssymtab segment=%u
+stabs debugging conflicts with user-defined section .stab
+stabs debugging conflicts with user-defined section .stabstr
+Stabs debugging format
+stabs debugging overrides empty section .stab
+stabs debugging overrides empty section .stabstr
+.stabstr
+.stabstr has no entries
+__stack_chk_fail
+%stacksize
+`%%stacksize' invalid size type
+`%%stacksize' missing size parameter
+Standard COFF does not support read-only data sections
+  Stanislav Karchebny (options parser)
+%*sTarget:
+%*sTargetMod=%lx
+start:     
+start expression is too complex
+start expression not absolute
+start expression too complex
+start inconsistent with align; using aligned value
+__static_const
+.static_const
+__static_data
+.static_data
+  Stephen Polkowski (x86 instruction patches)
+strange EA displacement size
+strcasecmp
+__strcat_chk
+__string_object
+`%%strlen' expects a macro identifier as first parameter
+`%%strlen` requires string as second parameter
+strncasecmp
+strtab is missing initial dummy entry
+strtab is null
+STRUC: already in a struc context
+%$strucname:
+%{$strucname}_size:
+struc %s
+%$strucstart:
+%*stype=
+%*stype=0x%x
+%*s%u-bit, %ssigned
+subq $%1, %rsp
+sub rsp, %1
+`%%substr' expects a macro identifier as first parameter
+`%%substr` requires string as second parameter
+Subtrie is seen as subtrie before flag is set (misaligned?)
+%*sULEB128 value:
+%s: unknown architecture error
+%*s-Unknown (Common/Extern)-
+%s: unrecognized %s `%s'
+%*svaddr=
+%*svalign=
+%*svalue=
+%*sValue:
+%*svfollows=
+%*sVisibility=
+%*svstart=
+%*swhich=
+".%s" without ".if"
+[%s] without preceding [PROC_FRAME]
+%*s(With respect to=%s)
+symbol references section without data
+__symbols
+-- Symbols 
+symbol "%s" is already defined
+ Symbol Table:
+symdebug
+sym is null
+symtab entry is null
+symtab is missing initial dummy entry
+symtab is null
+Syntax error processing `%%arg' directive
+Syntax error processing `%%local' directive
+sysenter
+<<t4<=t0
+T$8;D$Du
+T$(9T$,t
+target modifier
+TASM-compatible parser
+T$<;D$Hu
+terms of the 3-clause BSD license and Artistic license (as it applies to
+textdomain
+The frontends are 2-clause BSD licensed.
+The full text of all licenses are provided in separate files in the source
+The modules are 2-clause or 3-clause BSD licensed.
+The primary license of Yasm is the 2-clause BSD license.  Please use this
+; this is not needed
+times ($$-$) & ((%1)-1) %2
+times %1-($-%$strucstart) db 0
+times %{$strucname}_size-($-%$strucstart) db 0
+T$L;D$Xt[
+tls_object
+<\tN</tJ
+too many expritems
+Too many initializers in structure %s %s
+too many operands
+too many parameters for macro %s
+too many relocations in section `%s'
++t$P+L$X
+Trace of all info passed to object format module
+trailing garbage after `%%clear' ignored
+trailing garbage after `%%else' ignored
+trailing garbage after `%%endif' ignored
+trailing garbage after `%%endscope' ignored
+trailing garbage after expression ignored
+trailing garbage after `%%include' ignored
+trailing garbage after macro name ignored
+trailing garbage after `%%pop' ignored
+trailing garbage after `%%push' ignored
+trailing garbage after `%%repl' ignored
+trailing garbage after `%%scope' ignored
+treat all sized operands as if `strict' was used
+tried to calc_len a codeview fileinfo bytecode
+tried to calc_len a codeview linehead bytecode
+tried to calc_len a codeview sym bytecode
+tried to calc_len a codeview symhead bytecode
+tried to calc_len a dwarf2 aranges head bytecode
+tried to calc_len a dwarf2 head bytecode
+tried to calc_len a dwarf2 line_op bytecode
+tried to calc_len a dwarf2 spp bytecode
+tried to resolve a stabs stab bytecode
+tried to resolve a stabs str bytecode
+trying to expand an already-near jump
+\$<;\$Tt
+T$T9T$Lu
+tW+T$0;W
+[type %1]
+.uleb128
+unable to allocate memory
+unable to open included file "%s"
+unable to open include file `%s'
+unable to open map file `%s'
+unable to parse parameter count `%s'
+`%%undef' expects a macro identifier
+undefine a macro
+undefined symbol `%s' (first use)
+undefined symbol `%s' in preprocessor
+%%undef irp
+%%undef %s
+underflow in floating point expression
+ Undocumented
+unexpected end of file in string
+unexpected EOF in ".macro" block
+unexpected expression in [map]
+unexpected expr op
+unexpected expr term type
+unexpected internal error - please contact author
+unexpected %s after instruction
+unhandled segment prefix
+uninit-contents
+uninitialized space declared in code/data section: zeroing
+uninitialized space: zeroing
+UNKNOWN!!
+unknown intnum type
+unknown leaf format character
+unknown operand action
+unknown operand postponed action
+unknown preprocessor directive `%s'
+unknown register size
+Unknown section name, defaulting to __TEXT segment
+unknown sym format character
+unrecognied unwind opcode
+unrecognized-char
+unrecognized CPU identifier `%s'
+unrecognized default `%s'
+unrecognized default value
+unrecognized directive `%s'
+unrecognized identifier after `@'
+Unrecognized immediate type
+unrecognized loc option `%s'
+unrecognized numeric qualifier
+Unrecognized qualifier `%s'
+Unrecognized register name `%s'
+unrecognized relative jump op_sel
+unrecognized section attribute: `%c'
+unrecognized span id
+unrecognized special prefix
+Unrecognized string qualifier
+unrecognized symbol type `%s'
+unsupported address size
+Unsupported arch/machine for elf output
+unsupported ELF format
+Unsupported ELF format for output
+Unsupported floating-point arithmetic operation
+unsupported floatnum functionality
+Unsupported machine for ELF output
+Unsupported relocation size
+Unsupported WRT
+unterminated string
+***UNVALUED***
+unwind info not present
+usage: yasm [option]* file
+<>.u'<@t#
+u,<_t(<.t$<?t <@t
+vaddsubpd
+vaddsubps
+vaesdeclast
+vaesenclast
+vaeskeygenassist
+valign:    
+value does not fit in %d bit field
+value does not fit in signed %d bit field
+Value is seen as subtrie (misaligned?)
+vblendpd
+vblendps
+vblendvpd
+vblendvps
+vbroadcastf128
+vbroadcastsd
+vbroadcastss
+vcmpeq_ospd
+vcmpeq_osps
+vcmpeq_ossd
+vcmpeq_osss
+vcmpeqpd
+vcmpeqps
+vcmpeqsd
+vcmpeqss
+vcmpeq_uqpd
+vcmpeq_uqps
+vcmpeq_uqsd
+vcmpeq_uqss
+vcmpeq_uspd
+vcmpeq_usps
+vcmpeq_ussd
+vcmpeq_usss
+vcmpfalse_ospd
+vcmpfalse_osps
+vcmpfalse_ossd
+vcmpfalse_osss
+vcmpfalsepd
+vcmpfalseps
+vcmpfalsesd
+vcmpfalsess
+vcmpge_oqpd
+vcmpge_oqps
+vcmpge_oqsd
+vcmpge_oqss
+vcmpgepd
+vcmpgeps
+vcmpgesd
+vcmpgess
+vcmpgt_oqpd
+vcmpgt_oqps
+vcmpgt_oqsd
+vcmpgt_oqss
+vcmpgtpd
+vcmpgtps
+vcmpgtsd
+vcmpgtss
+vcmple_oqpd
+vcmple_oqps
+vcmple_oqsd
+vcmple_oqss
+vcmplepd
+vcmpleps
+vcmplesd
+vcmpless
+vcmplt_oqpd
+vcmplt_oqps
+vcmplt_oqsd
+vcmplt_oqss
+vcmpltpd
+vcmpltps
+vcmpltsd
+vcmpltss
+vcmpneq_oqpd
+vcmpneq_oqps
+vcmpneq_oqsd
+vcmpneq_oqss
+vcmpneq_ospd
+vcmpneq_osps
+vcmpneq_ossd
+vcmpneq_osss
+vcmpneqpd
+vcmpneqps
+vcmpneqsd
+vcmpneqss
+vcmpneq_uspd
+vcmpneq_usps
+vcmpneq_ussd
+vcmpneq_usss
+vcmpngepd
+vcmpngeps
+vcmpngesd
+vcmpngess
+vcmpnge_uqpd
+vcmpnge_uqps
+vcmpnge_uqsd
+vcmpnge_uqss
+vcmpngtpd
+vcmpngtps
+vcmpngtsd
+vcmpngtss
+vcmpngt_uqpd
+vcmpngt_uqps
+vcmpngt_uqsd
+vcmpngt_uqss
+vcmpnlepd
+vcmpnleps
+vcmpnlesd
+vcmpnless
+vcmpnle_uqpd
+vcmpnle_uqps
+vcmpnle_uqsd
+vcmpnle_uqss
+vcmpnltpd
+vcmpnltps
+vcmpnltsd
+vcmpnltss
+vcmpnlt_uqpd
+vcmpnlt_uqps
+vcmpnlt_uqsd
+vcmpnlt_uqss
+vcmpordpd
+vcmpordps
+vcmpordsd
+vcmpord_spd
+vcmpord_sps
+vcmpordss
+vcmpord_ssd
+vcmpord_sss
+vcmptruepd
+vcmptrueps
+vcmptruesd
+vcmptruess
+vcmptrue_uspd
+vcmptrue_usps
+vcmptrue_ussd
+vcmptrue_usss
+vcmpunordpd
+vcmpunordps
+vcmpunordsd
+vcmpunord_spd
+vcmpunord_sps
+vcmpunordss
+vcmpunord_ssd
+vcmpunord_sss
+vcvtdq2pd
+vcvtdq2ps
+vcvtpd2dq
+vcvtpd2dqx
+vcvtpd2dqy
+vcvtpd2ps
+vcvtpd2psx
+vcvtpd2psy
+vcvtph2ps
+vcvtps2dq
+vcvtps2pd
+vcvtps2ph
+vcvtsd2si
+vcvtsd2sil
+vcvtsd2siq
+vcvtsd2ss
+vcvtsi2sd
+vcvtsi2sdl
+vcvtsi2sdq
+vcvtsi2ss
+vcvtsi2ssl
+vcvtsi2ssq
+vcvtss2sd
+vcvtss2si
+vcvtss2sil
+vcvtss2siq
+vcvttpd2dq
+vcvttpd2dqx
+vcvttpd2dqy
+vcvttps2dq
+vcvttsd2si
+vcvttsd2sil
+vcvttsd2siq
+vcvttss2si
+vcvttss2sil
+vcvttss2siq
+vextractf128
+vextractps
+vfmadd132pd
+vfmadd132ps
+vfmadd132sd
+vfmadd132ss
+vfmadd213pd
+vfmadd213ps
+vfmadd213sd
+vfmadd213ss
+vfmadd231pd
+vfmadd231ps
+vfmadd231sd
+vfmadd231ss
+vfmaddpd
+vfmaddps
+vfmaddsd
+vfmaddss
+vfmaddsub132pd
+vfmaddsub132ps
+vfmaddsub213pd
+vfmaddsub213ps
+vfmaddsub231pd
+vfmaddsub231ps
+vfmaddsubpd
+vfmaddsubps
+vfmsub132pd
+vfmsub132ps
+vfmsub132sd
+vfmsub132ss
+vfmsub213pd
+vfmsub213ps
+vfmsub213sd
+vfmsub213ss
+vfmsub231pd
+vfmsub231ps
+vfmsub231sd
+vfmsub231ss
+vfmsubadd132pd
+vfmsubadd132ps
+vfmsubadd213pd
+vfmsubadd213ps
+vfmsubadd231pd
+vfmsubadd231ps
+vfmsubaddpd
+vfmsubaddps
+vfmsubpd
+vfmsubps
+vfmsubsd
+vfmsubss
+vfnmadd132pd
+vfnmadd132ps
+vfnmadd132sd
+vfnmadd132ss
+vfnmadd213pd
+vfnmadd213ps
+vfnmadd213sd
+vfnmadd213ss
+vfnmadd231pd
+vfnmadd231ps
+vfnmadd231sd
+vfnmadd231ss
+vfnmaddpd
+vfnmaddps
+vfnmaddsd
+vfnmaddss
+vfnmsub132pd
+vfnmsub132ps
+vfnmsub132sd
+vfnmsub132ss
+vfnmsub213pd
+vfnmsub213ps
+vfnmsub213sd
+vfnmsub213ss
+vfnmsub231pd
+vfnmsub231ps
+vfnmsub231sd
+vfnmsub231ss
+vfnmsubpd
+vfnmsubps
+vfnmsubsd
+vfnmsubss
+vfollows
+vfollows loop between section `%s' and section `%s'
+vfollows:  %s
+__vfprintf_chk
+vinsertf128
+vinsertps
+vldmxcsr
+vmaskmovdqu
+vmaskmovpd
+vmaskmovps
+vmlaunch
+vmovddup
+vmovhlps
+vmovlhps
+vmovmskpd
+vmovmskpdl
+vmovmskpdq
+vmovmskps
+vmovmskpsl
+vmovmskpsq
+vmovntdq
+vmovntdqa
+vmovntpd
+vmovntps
+vmovshdup
+vmovsldup
+vmpsadbw
+vmresume
+vmwritel
+vmwriteq
+vpackssdw
+vpacksswb
+vpackusdw
+vpackuswb
+vpaddusb
+vpaddusw
+vpalignr
+vpblendvb
+vpblendw
+vpclmulhqhqdq
+vpclmulhqlqdq
+vpclmullqhqdq
+vpclmullqlqdq
+vpclmulqdq
+vpcmpeqb
+vpcmpeqd
+vpcmpeqq
+vpcmpeqw
+vpcmpestri
+vpcmpestrm
+vpcmpgtb
+vpcmpgtd
+vpcmpgtq
+vpcmpgtw
+vpcmpistri
+vpcmpistrm
+vpcomeqb
+vpcomeqd
+vpcomeqq
+vpcomequb
+vpcomequd
+vpcomequq
+vpcomequw
+vpcomeqw
+vpcomfalseb
+vpcomfalsed
+vpcomfalseq
+vpcomfalseub
+vpcomfalseud
+vpcomfalseuq
+vpcomfalseuw
+vpcomfalsew
+vpcomgeb
+vpcomged
+vpcomgeq
+vpcomgeub
+vpcomgeud
+vpcomgeuq
+vpcomgeuw
+vpcomgew
+vpcomgtb
+vpcomgtd
+vpcomgtq
+vpcomgtub
+vpcomgtud
+vpcomgtuq
+vpcomgtuw
+vpcomgtw
+vpcomleb
+vpcomled
+vpcomleq
+vpcomleub
+vpcomleud
+vpcomleuq
+vpcomleuw
+vpcomlew
+vpcomltb
+vpcomltd
+vpcomltq
+vpcomltub
+vpcomltud
+vpcomltuq
+vpcomltuw
+vpcomltw
+vpcomneb
+vpcomned
+vpcomneq
+vpcomneqb
+vpcomneqd
+vpcomneqq
+vpcomnequb
+vpcomnequd
+vpcomnequq
+vpcomnequw
+vpcomneqw
+vpcomneub
+vpcomneud
+vpcomneuq
+vpcomneuw
+vpcomnew
+vpcomtrueb
+vpcomtrued
+vpcomtrueq
+vpcomtrueub
+vpcomtrueud
+vpcomtrueuq
+vpcomtrueuw
+vpcomtruew
+vperm2f128
+vpermilpd
+vpermilps
+vpextrwl
+vpextrwq
+vphaddbd
+vphaddbq
+vphaddbw
+vphadddq
+vphaddsw
+vphaddubd
+vphaddubq
+vphaddubw
+vphaddudq
+vphadduwd
+vphadduwq
+vphaddwd
+vphaddwq
+vphminposuw
+vphsubbw
+vphsubdq
+vphsubsw
+vphsubwd
+vpinsrwl
+vpinsrwq
+vpmacsdd
+vpmacsdqh
+vpmacsdql
+vpmacssdd
+vpmacssdqh
+vpmacssdql
+vpmacsswd
+vpmacssww
+vpmacswd
+vpmacsww
+vpmadcsswd
+vpmadcswd
+vpmaddubsw
+vpmaddwd
+vpmovmskb
+vpmovmskbl
+vpmovmskbq
+vpmovsxbd
+vpmovsxbq
+vpmovsxbw
+vpmovsxdq
+vpmovsxwd
+vpmovsxwq
+vpmovzxbd
+vpmovzxbq
+vpmovzxbw
+vpmovzxdq
+vpmovzxwd
+vpmovzxwq
+vpmulhrsw
+vpmulhuw
+vpmuludq
+vpshufhw
+vpshuflw
+vpsubusb
+vpsubusw
+vpunpckhbw
+vpunpckhdq
+vpunpckhqdq
+vpunpckhwd
+vpunpcklbw
+vpunpckldq
+vpunpcklqdq
+vpunpcklwd
+vroundpd
+vroundps
+vroundsd
+vroundss
+vrsqrtps
+vrsqrtss
+__vsnprintf_chk
+vstart:    
+vstart expression is too complex
+vstart inconsistent with valign
+vstmxcsr
+vucomisd
+vucomiss
+vunpckhpd
+vunpckhps
+vunpcklpd
+vunpcklps
+vzeroall
+vzeroupper
+<>w9<$w%<"
+warning: 
+warning: can open only one input file, only the last file will be processed
+warning: can output to only one error file, last specified used
+warning: can output to only one list file, last specified used
+warning: can output to only one map file, last specified used
+warning: can output to only one object file, last specified used
+[warning] directive not supported; ignored
+warning: object format `%s' does not support map files
+@warnings being treated as errors
+warning: unrecognized message style `%s'
+warning: unrecognized option `%s'
+[weak %1]
+westmere
+williamette
+Win32 does not support alignments > 8192
+wrfsbase
+wrgsbase
+written length does not match optimized length
+wS<^w9<Z
+wS<^w9<Zw
+x86: got a REX prefix in non-64-bit mode
+x86 (IA-32 and derivatives), AMD64
+x86: REX.WXB set, but 2-byte VEX
+xcryptcbc
+xcryptcfb
+xcryptctr
+xcryptecb
+xcryptofb
+%xdefine
+XDF does not support alignments > 4096
+xdf: no base symbol for WRT relocation
+xdf: no symbol data for relocated base symbol
+xdf: no symbol data for relocated symbol
+XDF object format does not support common variables
+xdf: relocation too complex
+xdf: section computed size did not match actual size
+xsaveopt64
+xstorerng
+yasm 1.1.0
+yasm 1.1.0.2352
+Yasm developers and/or contributors include:
+   yasm -f elf -o object.o source.asm
+Yasm has absolutely no warranty; not even for merchantibility or fitness
+Yasm is Copyright (c) 2001-2010 Peter Johnson and other Yasm developers.
+Yasm licensing overview and summary
+- YASM Map file 
+yasm.out
+yasm: %s: 
+YASM_TEST_SUITE

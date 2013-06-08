@@ -1,0 +1,176 @@
+argument stack underflow
+array allocation size too large
+bad argument
+`BBX' field missing
+`BBX' too big
+bindtextdomain
+bind_textdomain_codeset
+broken file
+broken offset within table
+broken table
+__bss_start
+cannot open resource
+cannot open stream
+cannot render this glyph format
+character map (cmap) table missing
+`CHARS' field missing
+code overflow
+Could not create pixbuf
+Could not finalize freetype library: %s
+could not find context
+Could not initialise freetype: %s
+Could not load face '%s': %s
+Could not load glyph index '%ud': %s
+Could not render glyph index '%ud': %s
+Could not set charmap: %s
+Could not set pixel size: %s
+Could not unload face: %s
+D$8;L$<|
+division by zero
+D$@;L$D|
+`ENCODING' field missing
+Error parsing arguments: %s
+execution context too long
+Failed to convert: %s
+`FONTBOUNDINGBOX' field missing
+`FONT' field missing
+FONT-FILE OUTPUT-FILE
+Font glyphs corrupted or missing fields
+Font header corrupted or missing fields
+Font size (default: 64)
+found debug opcode
+found ENDF opcode in execution stream
+FT_Done_Face
+FT_Done_FreeType
+FT_Get_Char_Index
+FT_Init_FreeType
+FT_Load_Glyph
+FT_Open_Face
+FT_Render_Glyph
+FT_Select_Charmap
+FT_Set_Charmap
+FT_Set_Pixel_Sizes
+gdk_pixbuf_get_height
+gdk_pixbuf_get_pixels
+gdk_pixbuf_get_rowstride
+gdk_pixbuf_get_width
+gdk_pixbuf_new
+gdk_pixbuf_new_subpixbuf
+gdk_pixbuf_save
+g_error_free
+g_file_get_uri
+g_file_info_get_size
+g_filename_from_uri
+g_file_new_for_commandline_arg
+g_file_new_for_uri
+g_file_query_info
+g_file_read
+g_get_application_name
+g_get_prgname
+g_input_stream_get_type
+g_input_stream_read
+GLIBC_2.0
+GLIBC_2.2
+__gmon_start__
+gnome-font-viewer
+g_object_unref
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_get_help
+g_option_context_new
+g_option_context_parse
+g_printerr
+g_seekable_get_type
+g_seekable_seek
+g_strfreev
+g_str_has_prefix
+g_strv_length
+g_thread_exit
+g_thread_new
+g_type_check_instance_cast
+g_type_init
+g_usleep
+g_utf8_to_ucs4
+horizontal header (hhea) table missing
+horizontal metrics (hmtx) table missing
+invalid argument
+invalid cache manager handle
+invalid character code
+invalid character map (cmap) format
+invalid charmap handle
+invalid code range
+invalid composite glyph
+invalid face handle
+invalid frame operation
+invalid frame read
+invalid FreeType version
+invalid glyph index
+invalid glyph slot handle
+invalid horizontal metrics
+invalid library handle
+invalid module handle
+invalid object handle
+invalid opcode
+invalid outline
+invalid pixel size
+invalid PostScript (post) table
+invalid PostScript (post) table format
+invalid ppem value
+invalid reference
+invalid size handle
+invalid stream handle
+invalid stream operation
+invalid stream read
+invalid stream seek
+invalid stream skip
+invalid vertical metrics
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libfreetype.so.6
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+locations (loca) table missing
+module version is too low
+name table missing
+negative height while rastering
+nested DEFS
+nested frame access
+no error
+no Unicode glyph name found
+OD$0+D$D
+opcode syntax error
+out of memory
+PostScript (post) table missing
+raster corrupted
+raster overflow
+raster uninitialized
+Reason: Took too much time to process.
+?%s couldn't process file: '%s'
+setlocale
+setrlimit
+SFNT font table missing
+`SIZE' field missing
+stack overflow
+standard::size
+`STARTCHAR' field missing
+`STARTFONT' field missing
+Text to thumbnail (default: Aa)
+time-monitor
+too few arguments
+too many extensions
+too many function definitions
+too many hints
+too many instruction definitions
+too many modules
+too many registered caches
+unimplemented feature
+unknown file format
+unlisted object
+unsupported glyph image format
+/usr/share/locale

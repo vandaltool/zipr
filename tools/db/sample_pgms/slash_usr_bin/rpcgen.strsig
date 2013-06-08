@@ -1,0 +1,540 @@
+-a		generate all files, including samples
+	alarm (_RPCSVC_CLOSEDOWN);
+all : $(CLIENT) $(SERVER)
+_arg, clnt);
+ (argp, %s)
+argp->%s, 
+ (argp, %s, %s)
+*argp, %s%s)
+ *argp, struct svc_req *%s)
+ *argp, void *%s, struct svc_req *%s)
+_arg, &result_%d, clnt);
+	arg.%s = %s;
+argument
+array declaration expected
+arrays cannot be declared as arguments to procedures -- use typedef
+ * as a guideline for developing your own functions.
+-b		backward compatibility mode (generates code for SunOS 4.1)
+	bool_t retval;
+	bool_t (*%s)();
+	bool_t %s;
+	bool_t (*%s)(char *, void *, struct svc_req *);
+	bool_t (*_xdr_%s)(), (*_xdr_%s)();
+		break;
+		buf = XDR_INLINE (xdrs, %d * BYTES_PER_XDR_UNIT);
+buf = XDR_INLINE (xdrs, %d * BYTES_PER_XDR_UNIT);
+		buf = XDR_INLINE (xdrs, (%d + %s)* BYTES_PER_XDR_UNIT);
+buf = XDR_INLINE (xdrs, (%d + (%s)) * BYTES_PER_XDR_UNIT);
+		buf = XDR_INLINE (xdrs, (%s) * BYTES_PER_XDR_UNIT);
+buf = XDR_INLINE (xdrs, (%s) * BYTES_PER_XDR_UNIT);
+, (caddr_t) &arg,
+(caddr_t) NULL,
+	caddr_t result;
+cannot create %s service.
+cannot find any C preprocessor (cpp)
+cannot find C preprocessor: %s 
+cannot find %s netid.
+Cannot have more than one file generation flag!
+Cannot specify more than one input file!
+Cannot use netid flag with inetd flag!
+Cannot use netid flag without TIRPC!
+Cannot use table flags with newstyle!
+-C		ANSI C mode
+	case NULLPROC:
+	case %s:
+CFLAGS += -g 
+-c		generate XDR routines
+(char *)
+(char **)
+	(char *(*)())0,
+	char **argv;
+char *argv[];
+(char *host)
+	char *host;
+char *host;
+	char mname[FMNAMESZ + 1];
+	char *msg;
+		char *netid;
+	char	*(*proc)();
+				(char *)&_rpcfdtype, &ssize) == -1)
+	(char *(*)())RPCGEN_ACTION(
+	char *(*%s)();
+	char *%s;
+char *%s
+	char *(*%s)(char *, struct svc_req *);
+circuit_n
+circuit_v
+CLIENT *
+_client.c
+	CLIENT *clnt;
+$(CLIENT) : $(OBJECTS_CLNT) 
+CLIENT = %s
+(clnt_call (clnt, %s, (xdrproc_t) xdr_%s
+(clnt_call (clnt, %s, (xdrproc_t) xdr_void, 
+	clnt = clnt_create (host, %s, %s, "%s");
+	clnt_destroy (clnt);
+		clnt_pcreateerror (host);
+		clnt_perror (clnt, "call failed");
+clnt_res
+closedown (int sig)
+closedown (sig)
+# Compiler flags 
+constant or identifier expected
+CPPFLAGS += -D_REENTRANT
+__ctype_b_loc
+__ctype_toupper_loc
+datagram_n
+datagram_v
+__dcgettext
+	default:
+/* Default timeout can be changed using clnt_control() */
+#define	_IDLE 0
+#define _RPCSVC_CLOSEDOWN %s
+#define _%s
+#define	_SERVED 1
+#define	_SERVING 2
+#define SIG_PF void(*)(int)
+#define %s %s
+definition keyword expected
+-Dname[=value]	define a symbol (same as #define)
+-DRPC_CLIENT
+-DRPC_CLNT
+-DRPC_HDR
+-DRPC_SERVER
+-DRPC_SVC
+-DRPC_TBL
+-DRPC_XDR
+		} else {
+		} else if ((nconf = getnetconfigent(netid)) == NULL) {
+	} else if (xdrs->x_op == XDR_DECODE) {
+#else /* K&R C */
+empty char string
+#endif	 /* DEBUG */
+#endif	/* DEBUG */
+#endif /* K&R C */
+#endif /* !_%s */
+enum clnt_stat 
+enum clnt_stat retval_%d;
+enum %s {
+(enum_t *) objp
+			exit (0);
+exit (0);
+				exit(1);
+			exit (1);
+		exit (1);
+expected '%s'
+expected '%s' or '%s'
+expected '%s', '%s' or '%s'
+expected type specifier
+extern  
+extern bool_t xdr_%s ();
+extern  bool_t xdr_%s (XDR *, %s%s);
+extern "C" {
+		extern fd_set svc_fdset;
+extern int 
+extern %s_%s_nproc;
+extern struct rpcgen_table %s_%s_table[];
+failed in malloc
+Fatal error : no memory 
+file `%s' already exists and may be overwritten
+For bug reporting instructions, please see:
+for (i = 0, genp = objp->%s;
+		for (i = 0, openfd = 0; i < size && openfd < 2; i++)
+		fprintf (stderr, "%%s\n", msg);
+freeargs
+			freenetconfigent(nconf);
+_freeresult ();
+_freeresult (SVCXPRT *transp, xdrproc_t xdr_result, caddr_t result)
+_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
+_freeresult (%s, _xdr_%s, (caddr_t) &%s))
+_freeresult (transp, xdr_result, result)
+*genp++ = IXDR_GET_
+			getrlimit(RLIMIT_NOFILE, &rl);
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+__gmon_start__
+-h		generate header file
+	host = argv[1];
+_H_RPCGEN
+<http://www.debian.org/Bugs/>
+identifier
+	if (argc < 2) {
+		if (buf == NULL) {
+	if (clnt_call (clnt, %s,
+	if (clnt == NULL) {
+#ifdef __cplusplus
+#if defined(__STDC__) || defined(__cplusplus)
+#ifdef RPC_SVC_FG
+			if (FD_ISSET(i, &svc_fdset))
+	if (getsockname (0, (struct sockaddr *)&saddr, &asize) == 0) {
+		if (getsockopt (0, SOL_SOCKET, SO_TYPE,
+	if (!ioctl(0, I_LOOK, mname) &&
+			if (ioctl(0, I_POP, 0) || ioctl(0, I_PUSH, "timod")) {
+		if (nconf)
+#ifndef	DEBUG
+#ifndef RPC_SVC_FG
+#ifndef _%s
+#ifndef SIG_PF
+		if ((netid = getenv("NLSPROVIDER")) == NULL) {
+		if (openfd <= 1)
+		if (pmclose) {
+	if (result_%d == (
+	if (retval_%d != RPC_SUCCESS) {
+	if ((_rpcfdtype == 0) || (_rpcfdtype == %s)) {
+		if (_rpcfdtype == SOCK_DGRAM)
+	if (_rpcpmstart)
+	if (_rpcpmstart) {
+	if (_rpcsvcstate == _IDLE) {
+	if (_rpcsvcstate == _SERVED)
+	if (%s > 0 && !svc_sendreply(%s, (xdrproc_t) _xdr_%s, (char *)&%s)) {
+		if (saddr.sin_family != AF_INET)
+		if (size == 0) {
+			if ((size = rl.rlim_max) == 0) {
+	if (%s != NULL && !svc_sendreply(%s, (xdrproc_t) _xdr_%s, %s)) {
+		if ((%s = svc_tli_create(0, nconf, NULL, 0, 0)) == NULL) {
+	if (%s == (SVCXPRT *)NULL) {
+		if (strcmp(mname, "sockmod") == 0) {
+	if (!svc_create (
+		if (!svc_reg(%s, %s, %s, 
+	if (!svc_%s (%s, (xdrproc_t) _xdr_%s, (caddr_t) &%s)) {
+		if (!t_getinfo(0, &tinfo) && (tinfo.servtype == T_CLTS))
+ if (!xdr_%s (xdrs
+	if (xdrs->x_op == XDR_ENCODE) {
+-I		generate code for inetd support in server (for SunOS 4.1)
+illegal character in file: 
+illegal nettype: `%s'
+illegal (reserved) name :'%s' in type definition
+illegal result type
+illegal use of void in program definition
+#include <fcntl.h> /* open */
+#include <memory.h>
+#include <memory.h> /* for memset */
+#include <netconfig.h>
+#include <netinet/in.h>
+#include <pthread.h>
+#include <rpc/pmap_clnt.h>
+#include <rpc/rpc.h>
+#include "%s"
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h> /* ioctl, TIOCNOTTY */
+#include <syslog.h>
+#include <sys/resource.h> /* rlimit */
+#include <sys/socket.h>
+#include <sys/stat.h> /* open */
+#include <sys/types.h>
+#include <sys/types.h> /* open */
+#include <unistd.h> /* getdtablesize */
+"infile" is required for template generation flags.
+	 * Insert additional freeing code here, if needed
+	 * insert server code here
+	int argc;
+int argc;
+	int asize = sizeof (saddr);
+		int fill;
+		int i, openfd;
+		int pmclose;
+	int proto;
+	int sig;
+int %s_nproc =
+	int sock;
+		int ssize = sizeof (int);
+_IO_stdin_used
+, IPPROTO_%s)) {
+i < %s; ++i) {
+-i size		size at which to start generating inline code
+ * It was generated using rpcgen.
+IXDR_PUT_
+-K seconds	server exits after K seconds of inactivity
+LDLIBS += -lnsl
+LDLIBS += -lnsl -lpthread 
+-l		generate client side stubs
+_libc_intl_domainname
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+	$(LINK.c) -o $(CLIENT) $(OBJECTS_CLNT) $(LDLIBS) 
+	$(LINK.c) -o $(SERVER) $(OBJECTS_SVC) $(LDLIBS)
+-L		server errors will be printed to syslog
+main (argc, argv)
+main (int argc, char **argv)
+main (int argc, char *argv[])
+Makefile.
+malloc failed
+	memset ((char *)&%s, 0, sizeof (%s));
+	memset((char *)%s%s, 0, sizeof(%s));
+-M		generate MT-safe code
+-m		generate server side stubs
+	mutex_init (&_svcstate_lock, USYNC_THREAD, NULL);
+			/* Mutex lock for variable_rpcsvcstate */
+	mutex_lock(&_svcstate_lock);
+mutex_t _svcstate_lock;
+				mutex_unlock(&_svcstate_lock);
+	mutex_unlock(&_svcstate_lock);
+, nconf)) {
+-n netid	generate server code that supports named netid
+no array-of-pointer declarations -- use typedef
+		/* NOTREACHED */
+-N		supports multiple arguments and call-by-value
+*) NULL) {
+OBJECTS_CLNT = $(SOURCES_CLNT.c:%%.c=%%.o) $(TARGETS_CLNT.c:%%.c=%%.o)
+$(OBJECTS_CLNT) : $(SOURCES_CLNT.c) $(SOURCES_CLNT.h) $(TARGETS_CLNT.c) 
+OBJECTS_SVC = $(SOURCES_SVC.c:%%.c=%%.o) $(TARGETS_SVC.c:%%.c=%%.o)
+$(OBJECTS_SVC) : $(SOURCES_SVC.c) $(SOURCES_SVC.h) $(TARGETS_SVC.c) 
+&objp->%s
+objp->%s = IXDR_GET_
+&objp->%s_u.%s
+only one argument is allowed
+-o outfile	name of the output file
+opaque -- illegal argument type
+				openfd++;
+options:
+# Parameters
+	pid_t pid;
+ * Please do not edit this file.
+		pmclose = (t_getstate(0) != T_DATAXFER);
+pointer to string not allowed in program arguments
+preprocessor error
+		printf ("usage: %%s server_host\n", argv[0]);
+, proto)) {
+		proto = 0;
+reference
+	register int32_t *buf;
+register %s *genp;
+	register SVCXPRT *%s;
+register SVCXPRT *%s)
+ *result_%d;
+&result_%d, 
+	result_%d = 
+(&result_%d, clnt);
+	 return 
+				return;
+	return 
+	return (
+	return 1;
+	return (clnt_call(clnt, %s,
+	 return FALSE;
+		return FALSE;
+		return (NULL);
+	return &result;
+	return retval;
+	return (%s%s);
+	 return TRUE;
+		return TRUE;
+	return TRUE;
+	return (void *) &result;
+	return ((void *)%s%s);
+	retval_%d = 
+			rl.rlim_max = 0;
+	 $(RM) core $(TARGETS) $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)
+RPC_ANYSOCK
+RPCGENFLAGS = 
+	rpcgen $(RPCGENFLAGS) $(SOURCES.x)
+rpcgen %s%s
+rpcgen: too many defines
+		_rpcpmstart = 1;
+		_rpcsvcstate = _IDLE;
+	_rpcsvcstate = _SERVING;
+	%s [-abkCLNTM][-Dname[=value]] [-i size] [-I [-K seconds]] [-Y path] infile
+	%s *argp;
+		%s = (bool_t (*)()) 
+		%s = (bool_t (*) (char *, void *,  struct svc_req *))
+	%s = (bool_t) (*%s)((char *)&%s, (void *)&%s, %s);
+	%s = (bool_t) (*%s)(&%s, &%s, %s);
+%s(buf);
+%s(buf, *genp++);
+%s(buf, objp->%s);
+-Sc		generate sample client code that uses remote procedures
+		%s = (char *(*)()) 
+		%s = (char *(*)(char *, struct svc_req *)) 
+	%s [-c | -h | -l | -m | -t | -Sc | -Ss | -Sm] [-o outfile] [infile]
+%s: C preprocessor failed with exit code %d
+%s: C preprocessor failed with signal %d
+ = %s + %d
+_server.c
+$(SERVER) : $(OBJECTS_SVC) 
+SERVER = %s
+	 /* Set when a request is serviced */
+%s	exit(0);
+%sexit (0);
+%s		exit (1);
+%s		exit(1);
+%s	exit(1);
+%sfor (i = 0; i < size; i++)
+%sfprintf (stderr, "%%s", "%s");
+%s	freenetconfigent (nconf);
+%sgetrlimit(RLIMIT_NOFILE, &rl);
+%sif (i >= 0) {
+%s	if (nconf == NULL) {
+%sif (pid)
+%sif (pid < 0) {
+%s	if (!_rpcpmstart)
+%sif ((size = rl.rlim_max) == 0)
+%s	if (%s == NULL) {
+%s	if (!svc_register(%s, %s, %s, 
+%s	if (!svc_reg (%s, %s, %s, 
+(SIG_PF)
+%sint pid, i;
+%s int _rpcfdtype;
+%s int _rpcpmstart;
+%sint size;
+%si = open("/dev/console", 2);
+%si = open("/dev/tty", 2);
+			size = getdtablesize();
+sizeof (
+sizeof ( 
+sizeof (bool_t), (xdrproc_t) xdr_bool
+	sizeof(%s_table)/sizeof(%s_table[0]);
+%s, line %d: 
+-Sm 		generate makefile template 
+%s_msgout ("%s");
+%smutex_lock(&_svcstate_lock);
+%smutex_unlock(&_svcstate_lock);
+%s	nconf = getnetconfigent ("%s");
+-s nettype	generate server code that supports named nettype
+	%s [-n netid]* [-o outfile] [infile]
+		sock = 0;
+SOCK_DGRAM
+		sock = RPC_ANYSOCK;
+SOCK_STREAM
+%sopenlog("%s", LOG_PID, LOG_DAEMON);
+SOURCES_CLNT.c = 
+SOURCES_CLNT.h = 
+SOURCES_SVC.c = 
+SOURCES_SVC.h = 
+SOURCES.x = %s
+%s: output would overwrite %s
+%s	perror("cannot fork");
+%spid = fork();
+%spmap_unset (%s, %s);
+%s	proto = IPPROTO_%s;
+%sreturn;
+%srl.rlim_max = 0;
+%s_rpcsvcstate = _SERVED;
+(%s, %s)
+	%s = (*%s)((char *)&%s, %s);
+ %s %s * %d
+%ssetsid();
+-Ss		generate sample server code that defines remote procedures
+%ssize = getdtablesize();
+	%s [-s nettype]* [-o outfile] [infile]
+, %s, %s, "%s")) {
+*%s, %s%s)
+%s_%s_%s
+%s%s *%s
+%s%s %s[%s]
+	%s = (*%s)(&%s, %s);
+	%s%s *%s_val;
+%s_%s_svc
+%s	%s = svc%s_create(%s
+%s	%s = svc_tli_create (RPC_ANYFD, nconf, 0, 0, 0);
+%sstruct rlimit rl;
+&%s->%s_val, (u_int *) &%s->%s_len
+%s.%s_val, (u_int *) %s.%s_len
+%ssyslog (LOG_ERR, "%%s", "%s");
+		/* Started by a port monitor ? */
+ /* States a server can be in wrt request */
+	static 
+static int _rpcsvcstate = _IDLE;
+		static int size;
+static struct timeval TIMEOUT = { %d, 0 };
+static void
+<stdout>
+		(!strcmp(mname, "sockmod") ||
+ !strcmp(mname, "timod"))) {
+__strdup
+struct {
+		struct netconfig *nconf = NULL;
+	struct netconfig *nconf = NULL;
+			struct rlimit rl;
+struct rpcgen_table {
+struct rpcgen_table %s_table[] = {
+struct %s {
+	struct sockaddr_in saddr;
+struct svc_req *
+(struct svc_req *%s, 
+	struct svc_req *%s;
+		struct t_info tinfo;
+	} %s_u;
+%s: unable to open %s: %m
+		svcerr_%s (%s);
+		svc_run();
+	svc_run ();
+		SVCXPRT *%s;
+	SVCXPRT *transp;
+%s	(void) close(i);
+%s(void) dup2(i, 1);
+%s(void) dup2(i, 2);
+%s	(void) ioctl(i, TIOCNOTTY, (char *)NULL);
+%s	(void) rpcb_unset (%s, %s, nconf);
+%s: while writing output %s: %m
+	switch (objp->%s) {
+	switch (%s->rq_proc) {
+%s), (xdrproc_t) xdr_%s
+		syslog (LOG_ERR, "%%s", msg);
+	syslog (LOG_ERR, "%%s", msg);
+systemerr
+# Targets 
+TARGETS_CLNT.c = %s %s %s 
+$(TARGETS) : $(SOURCES.x) 
+TARGETS = %s %s %s %s %s %s
+TARGETS_SVC.c = %s %s %s 
+-T		generate code to support RPC dispatch tables
+-t		generate RPC dispatch table
+ * These are only templates and you can use them
+/* the xdr functions */
+# This is a template Makefile generated by rpcgen
+ * This is sample code generated by rpcgen.
+		TIMEOUT));
+		TIMEOUT) != RPC_SUCCESS) {
+too many files!
+typedef 
+typedef enum %s %s;
+typedef struct %s %s;
+(Ubuntu EGLIBC 2.15-0ubuntu10.4) 
+	u_int %s_len;
+unable to create (%s, %s) for %s.
+unable to register (%s, %s).
+unable to register (%s, %s, %s).
+	union {
+unsigned
+	unsigned	len_arg;
+	unsigned	len_res;
+unterminated string constant
+u_quad_t
+usage: %s infile
+/usr/ccs/lib/cpp
+variable-length array declaration expected
+--version
+(void(*)())
+		(void) alarm (_RPCSVC_CLOSEDOWN);
+			(void) alarm(_RPCSVC_CLOSEDOWN);
+void _msgout (char* msg)
+void _msgout (msg)
+voids allowed only inside union and program definitions with one argument
+	(void) signal(SIGALRM, %s closedown);
+		(void) signal (SIGALRM, %s closedown);
+			(void) signal(SIGALRM, %s closedown);
+		(void) svc_sendreply (%s, (xdrproc_t) xdr_void, (char *)NULL);
+WARNING %s table is out of order
+ * WARNING: table out of order
+		/* Whether Stream or Datagram ? */
+wrapstring
+	xdr_free (xdr_result, result);
+	xdrproc_t	xdr_arg;
+	xdrproc_t	xdr_res;
+	xdrproc_t xdr_result;
+		(xdrproc_t) xdr_%s, (caddr_t) %s%s,
+	xdrproc_t _xdr_%s, _xdr_%s;
+ 	(xdrproc_t) xdr_void,			0,
+	xdr_%s,
+xdr_%s (
+		_xdr_%s = (xdrproc_t) xdr_%s;
+		_xdr_%s = xdr_%s;
+xdr_%s (xdrs, objp)
+	XDR *xdrs;
+XDR *xdrs, 
+-Y path		directory name to find C preprocessor (cpp)

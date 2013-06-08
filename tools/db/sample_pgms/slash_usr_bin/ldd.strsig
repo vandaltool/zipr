@@ -1,0 +1,127 @@
+       ;;
+      ;;
+  */*) :
+    0|2)
+# 02111-1307 USA.
+	[02]) RTLD=${rtld}; break;;
+    1|126)
+" "2012"
+  add_env="$add_env LD_DEBUG=\"$LD_DEBUG${LD_DEBUG:+,}unused\""
+add_env="$add_env LD_LIBRARY_VERSION=\$verify_out"
+add_env="$add_env LD_VERBOSE=$verbose"
+add_env="LD_TRACE_LOADED_OBJECTS=1 LD_WARN=$warn LD_BIND_NOW=$bind_now"
+#! /bin/bash
+bind_now=
+    bind_now=yes
+    break
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+  case "$1" in
+  case $file in
+case $# in
+    case $ret in
+	case $ret in
+# Copyright (C) 1996-2011, 2012 Free Software Foundation, Inc.
+  --data-rel | --data-relo | --data-reloc | --data-relocs)
+  -d, --data-relocs       process data relocations
+  -d | --d | --da | --dat | --data | --data- | --data-r | --data-re | \
+    done
+  echo >&2 'ldd:' $"missing file arguments"
+    echo >&2 $"ldd: option \`$1' is ambiguous"
+    echo >&2 'ldd:' $"unrecognized option" "\`$1'"
+    echo >&2 $"Try \`ldd --help' for more information."
+  echo >&2 $"Try \`ldd --help' for more information."
+    echo 'ldd:' $"error: you do not have read permission for" "\`$file'" >&2
+    echo "ldd: ${file}:" $"No such file or directory" >&2
+    echo "ldd: ${file}:" $"not regular file" >&2
+      echo 'ldd:' ${RTLD} $"exited with unknown exit code" "($ret)" >&2
+    echo 'ldd (Ubuntu EGLIBC 2.15-0ubuntu10.4) 2.15'
+	echo $"	not a dynamic executable"
+  elif test ! -f "$file"; then
+  elif test -r "$file"; then
+# environments where the executed program might not have permissions
+    esac
+    eval $add_env '"$@"'
+    eval $add_env '"$@"' | cat
+    exit 0
+      exit 1
+    exit 1
+  exit 1
+exit $result
+      fi
+  *) file=./$file
+for file do
+    for rtld in ${RTLDLIST}; do
+  --function | --function- | --function-r | --function-re | --function-rel | \
+  --function-relo | --function-reloc | --function-relocs)
+      --help              print this help and exit
+  --h | --he | --hel | --help)
+" "<http://www.debian.org/Bugs/>"
+  if test ! -e "$file"; then
+if test "$unused" = yes; then
+      if test -x $rtld; then
+if x=`set -o` && test "$x" != "${x#*pipefail}" && set -o pipefail ; then
+# Lesser General Public License for more details.
+# License along with the GNU C Library; if not, write to the Free
+# License as published by the Free Software Foundation; either
+# Local Variables:
+  # Maybe extra code for non-ELF binaries.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  mode:ksh
+# modify it under the terms of the GNU Lesser General Public
+nonelf ()
+      nonelf "$file" || {
+# option, and we don't bother to handle the case for older bash versions.
+    printf $"Copyright (C) %s Free Software Foundation, Inc.
+    printf $"For bug reporting instructions, please see:
+    printf $"Usage: ldd [OPTION]... FILE...
+    printf $"Written by %s and %s.
+result=0
+    result=1
+	result=1
+    ret=1
+  return 1;
+  -r | --f | --fu | --fun | --func | --funct | --functi | --functio | \
+  -r, --function-relocs   process data and function relocations
+" "Roland McGrath" "Ulrich Drepper"
+    RTLD=
+RTLDLIST="/lib/ld-linux.so.2 /lib64/ld-linux-x86-64.so.2"
+# run-time dynamic linker as a command and setting the environment
+    shift
+    shift; break
+  single_file=f
+  single_file=t
+# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+  --)		# Stop option processing.
+  test $single_file = t || echo "${file}:"
+TEXTDOMAINDIR=/usr/share/locale
+TEXTDOMAIN=libc
+# The following use of cat is needed to make ldd work in SELinux
+# The GNU C Library is distributed in the hope that it will be useful,
+# The GNU C Library is free software; you can redistribute it and/or
+      # This can be a non-ELF binary or no binary at all.
+# This file is part of the GNU C Library.
+This is free software; see the source for copying conditions.  There is NO
+# This is the `ldd' command, which lists what shared libraries are
+# to write to the console/tty.  But only bash 3.x supports the pipefail
+  try_trace() {
+      try_trace "$RTLD" "$file" || result=1
+    unused=yes
+# used by given dynamically-linked executables.  It works by invoking the
+  -u, --unused            print unused direct dependencies
+  -u | --u | --un | --unu | --unus | --unuse | --unused)
+# variable LD_TRACE_LOADED_OBJECTS to a non-empty value.
+verbose=
+    verbose=yes
+	verify_out=`${rtld} --verify "$file"`
+# version 2.1 of the License, or (at your option) any later version.
+      --version           print version information and exit
+  --vers | --versi | --versio | --version)
+  -v, --verbose           print all information
+  -v | --verb | --verbo | --verbos | --verbose)
+  --v | --ve | --ver)
+    warn=yes
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  # We don't list the file name when there is only one.
+# We should be able to find the translation right at the beginning.
+while test $# -gt 0; do
+# You should have received a copy of the GNU Lesser General Public

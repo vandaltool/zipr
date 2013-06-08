@@ -1,0 +1,185 @@
+			addsubstvar($package, "python:Depends", $pack);
+			addsubstvar($package, "python:Depends", $python, "<< $python_nextmajor");
+			addsubstvar($package, "python:Depends", $python, "<< $python_nextversion");
+		addsubstvar($package, "python:Depends", $python, ">= $python_version");
+		addsubstvar($package, "python:Depends", $pyver) if $verdeps{$pyver};
+		# And now, the postinst and prerm stuff
+			autoscript($package,"postinst","postinst-python","s%#PYVER#%$pyver%;s%#DIRLIST#%$pydir%");
+		autoscript($package,"prerm","prerm-python","s%#PACKAGE#%$package%");
+B<dh_python> is a debhelper program that is responsible for generating the
+B<dh_python> [S<I<debhelper options>>] [B<-n>] [B<-V> I<version>] [S<I<module dirs> ...>]
+B<${python:Depends}> substitutions and adding them to substvars files. It
+B<python>I<X>B<.>I<Y> version, you can use this option to specify the desired version,
+B<Python-Version> F<control> file field exists.
+can make F<dh_python> check those directories by passing their names on the
+# Check for -V
+# Cleaning the paths given on the command line
+		close F;
+command line. By default, it will check F</usr/lib/site-python>,
+			$curdir =~ s%^$tmp/%%;
+current major version, or on B<python>I<X>B<.>I<Y> if your scripts or modules need a
+Debian policy, version 3.5.7
+	# Dependencies on current python
+# dependency types
+		$dep_on_python = 1;
+	$dep_on_python = 1 if $deps;
+				$deps |= PROGRAM;
+					$deps |= PY_MODULE;
+					$deps |= SO_MODULE;
+dh_python - calculates Python dependencies and adds postinst and prerm Python scripts (deprecated)
+				$dirlist="$dirlist /$curdir";
+	@dirs = grep -d, map "$tmp/$_", @dirs;
+	@dirs_so = grep -d, map "$tmp/$_", @dirs_so;
+						doit(("rm","-f",$_."c",$_."o"));
+					doit(("rm","-f",$_."c",$_."o"));
+Do not modify F<postinst>/F<prerm> scripts.
+} else { 
+		} else {
+			} else {
+				} else {
+				else {
+			} elsif(defined $verdeps{$2}) {
+elsif (`grep Python-Version: debian/control`) {
+elsif ($python_version =~ m/^Python\s+(\d+)\.(\d+)(\.\d+)*/) {
+	error("Python is not installed, aborting. (Probably forgot to Build-Depend on python.)");
+	error("Unable to parse python version out of \"$python_version\".");
+		error("Unknown python version $dh{V_FLAG}");
+	exit 0;
+extra names on the command line are searched for binary (F<.so>) modules.
+	# Find scripts
+				find sub {
+			find sub {
+	find sub {
+	# First, the case of python-foo and pythonX.Y-foo
+foreach (@ARGV) {
+		foreach my $curdir (@dirs) {
+		foreach my $curdir (@dirs_so) {
+foreach my $package (@{$dh{DOPACKAGES}}) {
+	foreach my $pyver (@python_allversions) {
+	foreach (@python_allversions) {
+foreach (@python_allversions) {
+F<postinst> and F<prerm> scripts will be generated. If already byte-compiled
+F</usr/lib/$PACKAGE>, F</usr/share/$PACKAGE>, F</usr/lib/games/$PACKAGE>,
+F</usr/share/games/$PACKAGE> and F</usr/lib/python?.?/site-packages>.
+		# Go for the dependencies
+					$has_module = 1;
+				$has_module = 1 if /\.so$/;
+=head1 AUTHOR
+=head1 CONFORMS TO
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+if (! defined $python_version || $python_version eq "") {
+	if ($dep_on_python) {
+				if ($dh{V_FLAG_SET}) {
+if($dh{V_FLAG_SET}) {
+	if (@dirs) {
+	if (@dirs_so) {
+if (-e "debian/pycompat") {
+			if (grep -d,"$tmp$pydir") {
+		if (grep { "$_" eq "$pack" } getpackages()) {
+	if (! grep { $_ eq $usepython } @python_allversions) {
+			if ($has_module) {
+		if ($look_for_pythonXY) {
+	if ($need_prerm && ! $dh{NOSCRIPTS}) {
+	if ($package =~ /^python-/) {
+	if ($package !~ /^python[0-9].[0-9]-/) {
+					if (/\.py$/) {
+				if (/\.py$/) {
+			if ( "python" eq $2 ) {
+		if ($pyver eq "$usepython") {
+		if (read F, local $_, 32 and m%^#!\s*/usr/bin/(env\s+)?(python(\d+\.\d+)?)\s%) {
+If some modules need to be byte-compiled at install time, appropriate
+		if ($strong_dep) {
+If the F<.py> files your package ships are meant to be used by a specific
+			if ($verdeps{$pyver} & PY_MODULE) {
+		if ($verdeps{$pyver} & (PY_MODULE|PY_MODULE_NONSTANDARD) && ! $dh{NOSCRIPTS}) {
+If your package installs Python modules in non-standard directories, you
+If you use this program, your package should build-depend on B<python>.
+=item B<-n>, B<--noscripts>
+=item B<-V> I<version>
+=item I<module dirs>
+Josselin Mouette <joss@debian.org>
+L<debhelper(7)>
+		local *F;
+	# Look for python modules
+		$look_for_pythonXY = 0;
+	# Look for specific pythonX.Y modules
+modules are found, they are removed.
+most ideas stolen from Brendan O'Dea <bod@debian.org>
+	my $dep_on_python = 0;
+	my $deps = 0;
+	my $dirlist="";
+	my @dirs_so = ("usr/lib/site-python", @ARGV );
+	my @dirs = ("usr/lib/site-python", "usr/lib/$package", "usr/share/$package", "usr/lib/games/$package", "usr/share/games/$package", @ARGV );
+			my $has_module = 0;
+	my $look_for_pythonXY = 1;
+	my $need_prerm = 0;
+		my $pack = $package;
+		my $pydir="/usr/lib/$pyver/site-packages";
+my @python_allversions = ('1.5','2.1','2.2','2.3','2.4');
+my $python_major;
+my $python_nextmajor = $python_major + 1;
+my $python_nextversion = $python_version + 0.1;
+my $python = 'python';
+my $python_version = `$python -V 2>&1`;
+	my $strong_dep = 0;
+	my $tmp = tmpdir($package);
+my $usepython = "python$python_version";
+	my %verdeps = ();
+			$need_prerm = 1;
+Note: only F</usr/lib/site-python>, F</usr/lib/python?.?/site-packages> and the
+Note: This program is deprecated. You should use B<dh_python2> instead.
+package's F<control> file wherever you place the token B<${python:Depends}>.
+		$pack =~ s/^python/python$python_version/;
+		push @dirs_so, "usr/lib/$usepython/site-packages";
+		push @dirs, "usr/lib/$usepython/site-packages";
+				$pydir = $dirlist;
+				$pydir = $pydir.$dirlist;
+	$python_major = $1 ;
+Python policy, version 0.3.7
+	$python_version = "$1.$2" ;
+					return unless -f;
+				return unless -f;
+		return unless -f and (-x or /\.py$/);
+		return unless open F, $_;
+	s#^/##;
+	s#/$##;
+specific B<python> version. The dependency will be substituted into your
+	s/^/python/;
+		$strong_dep = 1;
+	$strong_dep = 1 if($deps & (PY_MODULE|SO_MODULE));
+such as B<2.3>. Do not use if you ship modules in F</usr/lib/site-python>.
+# The current python major version
+# The next python version
+The program will look at Python scripts and modules in your package, and
+This program is a part of debhelper.
+This program will do nothing if F<debian/pycompat> or a
+	}, $tmp;
+			}, "$tmp/$curdir" ;
+				}, "$tmp$pydir";
+use constant PROGRAM   => 1;
+use constant PY_MODULE => 2;
+use constant PY_MODULE_NONSTANDARD => 4;
+use constant SO_MODULE => 8;
+use constant SO_MODULE_NONSTANDARD => 16;
+use Debian::Debhelper::Dh_Lib;
+use File::Find;
+	$usepython = $dh{V_FLAG};
+	$usepython =~ s/^/python/;
+use strict;
+#!/usr/bin/perl -w
+		$verdeps{$_} = 0;
+				$verdeps{$2} |= PROGRAM;
+						$verdeps{$pyver} |= PY_MODULE;
+			$verdeps{$pyver} |= PY_MODULE if($deps & PY_MODULE);
+					$verdeps{$pyver} |= SO_MODULE if /\.so$/;
+					$verdeps{$usepython} |= PY_MODULE_NONSTANDARD;
+					$verdeps{$usepython} |= SO_MODULE_NONSTANDARD;
+	warning("Doing nothing since dh_pycompat exists; dh_pysupport or dh_pycentral should do the work. You can remove dh_python from your rules file.");
+	warning("Doing nothing since Python-Version is set; dh_python2 should do the work. You can remove dh_python from your rules file.");
+	warning("This program is deprecated, you should use dh_python2 instead.");
+will also add a F<postinst> and a F<prerm> script if required.
+will use this information to generate a dependency on B<python>, with the

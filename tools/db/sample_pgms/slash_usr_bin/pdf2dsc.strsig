@@ -1,0 +1,22 @@
+# 2000-05-18 lpd <ghost@aladdin.com> added -dSAFER
+    >&2 echo usage: $me "pdffile [ dscfile ]"
+#! /bin/sh
+dscfile=$2
+: ${dscfile:=`echo $pdffile | sed 's,\.[^/.]*,,'`.dsc}
+exec "$GS_EXECUTABLE" -q -dNODISPLAY -P- -dSAFER -dDELAYSAFER\
+# executable name set in the makefile
+    exit 1
+gs="`dirname \"$0\"`/$GS_EXECUTABLE"
+GS_EXECUTABLE=gs
+GS_EXECUTABLE="$gs"
+	gs="$GS_EXECUTABLE"
+if [ $# -gt 2 ]
+if test ! -x "$gs"; then
+me=`basename $0`
+pdffile=$1
+# psf2dsc: generates an index of a PDF file.
+    -sPDFname="$pdffile" -sDSCname="$dscfile" pdf2dsc.ps -c quit
+# This definition is changed on install to match the
+    usage
+usage() {
+# Yves Arrouye <arrouye@debian.org>, 1996.

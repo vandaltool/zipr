@@ -1,0 +1,97 @@
+    --all                       include all changes
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+@ARGV && usageerr(_g("takes no non-option arguments"));
+# (at your option) any later version.
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+      -c<number>, -n<number>    (or the tail if <number> is lower than 0)
+Copyright (C) 1996 Ian Jackson.
+Copyright (C) 2001 Wichert Akkerman");
+    --count <number>,           include <number> entries from the top
+# dpkg-parsechangelog
+    } else {
+	} else {
+	} elsif ($1 eq "f") {
+	} elsif ($1 eq "o") {
+	} elsif (($1 eq "s") or ($1 eq "v")) {
+	} elsif ($1 eq "t") {
+	} elsif ($1 eq "u") {
+    } elsif (m/^--$/) {
+    } elsif (m/^--all$/) {
+    } elsif (m/^-([cfnostuv])(.*)$/) {
+    } elsif (m/^--(count|file|format|from|offset|since|to|until)(.*)$/) {
+    } elsif (m/^-F([0-9a-z]+)$/) {
+    } elsif (m/^-(h|-help)$/) {
+    } elsif (m/^-l(.+)$/) {
+    } elsif (m/^--version$/) {
+  -F<changelogformat>      force change log format.
+                                for compatibility with dpkg-dev
+foreach my $f (@fields) {
+    --format <outputformat>     see man page for list of available
+    --from <version>,           include all changes equal or later
+      -f<version>               than version
+# GNU General Public License for more details.
+  -h, --help               show this help message.
+	if (($1 eq "c") or ($1 eq "n")) {
+	if ($2) {
+    if (m/^-L(.+)$/) {
+# it under the terms of the GNU General Public License as published by
+    last unless $ARGV[0] =~ m/^-/;
+later for copying conditions. There is NO warranty.
+  -l<changelogfile>        get per-version info from this file.
+  -L<libdir>               look for change log parsers in <libdir>.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+my $count = 0;
+my @fields = changelog_parse(%options);
+my %options;
+                                <number> is lower than 0)
+    --offset <number>,          change the starting point for --count,
+      -o<number>                counted from the top (or the tail if
+Options:
+	    $options{$1} = $2;
+	    $options{$1} = shift(@ARGV);
+	$options{"all"} = undef;
+	$options{"changelogformat"} = $1;
+	    $options{"count"} = $2;
+	$options{"file"} = $1;
+	    $options{"from"} = $2;
+	$options{"libdir"} = $1;
+	    $options{"offset"} = $2;
+	    $options{"since"} = $2;
+	    $options{"to"} = $2;
+	    $options{"until"} = $2;
+                                output formats, defaults to 'dpkg'
+parser options:
+    printf _g(
+    printf _g("
+    printf _g("Debian %s version %s.\n"), $progname, $version;
+    print $f->output();
+    print "\n" if $count++;
+"), $progname;
+    $_ = shift(@ARGV);
+    --since <version>,          include all changes later than version
+sub usage {
+sub version {
+      -s<version>, -v<version>
+textdomain("dpkg-dev");
+                                than version
+# the Free Software Foundation; either version 2 of the License, or
+This is free software; see the GNU General Public License version 2 or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+    --to <version>, -t<version> include all changes up to or equal
+    --until <version>,          include all changes earlier than version
+	usageerr(_g("unknown option \`%s'"), $_);
+	usage(); exit(0);
+"Usage: %s [<option> ...]
+use Dpkg;
+use Dpkg::Changelog::Parse;
+use Dpkg::ErrorHandling;
+use Dpkg::Gettext;
+use strict;
+use warnings;
+#!/usr/bin/perl
+      -u<version>
+	version(); exit(0);
+      --version            show the version.
+while (@ARGV) {
+# You should have received a copy of the GNU General Public License

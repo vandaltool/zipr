@@ -1,0 +1,282 @@
+################################################################
+ 2010-2012 Piotr O
+ 2010 Canonical Ltd
+                            actual = chandle.read(8)
+# all copies or substantial portions of the Software.
+arowski <piotr@debian.org>
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                break
+    # byte compile files
+            cfn = cache_from_source(fn, version, not optimize)
+    cmd = "/usr/bin/python%s%s -m py_compile -" \
+### COMPILE ####################################################
+                compile(files, compile_versions, options.force,
+            compile(files, versions,
+        compile(files, versions,
+                                              compile_versions)
+        compile_versions = debsorted(versions)[:1]
+            continue
+                    continue
+                        continue
+                            continue
+            #    continue
+# copies of the Software, and to permit persons to whom the Software is
+# Copyright 
+            coroutine = py_compile(version, optimize, WORKERS)
+                        ctime = 0
+                        ctime = os.stat(cfn).st_mtime
+        default=False, help='be quiet')
+        default=False, help="byte-compile to .pyo files")
+        default=False, help='force rebuild even if timestamps are up-to-date')
+def compile(files, versions, force, optimize, e_patterns=None):
+def filter_files(files, e_patterns, compile_versions):
+def get_directory_files(dname):
+def get_exclude_patterns(directory='/', patterns=None, versions=None):
+def get_exclude_patterns_from_dir(name='/usr/share/python3/bcep/'):
+def get_package_files(package_name):
+def get_private_files(files, dname):
+def get_public_files(files, versions):
+def main():
+def py_compile(version, optimize, workers):
+            #    del dirs[:]
+        dest='regexpr', type='regexpr',
+    elif args:  # other directories/files (private ones mostly)
+    elif options.package:  # package's public modules
+            elif type_ == 're' and pattern.match(fn):
+            else:
+    else:
+        e_patterns = get_exclude_patterns()
+            e_patterns = get_exclude_patterns(item, options.regexpr, \
+            e_patterns = get_exclude_patterns(item, options.regexpr, versions)
+Examples:
+                    except Exception as e:
+                    except (IOError, OSError):
+                    except os.error:
+### EXCLUDES ###################################################
+       exists("/usr/bin/python%d.%d" % options.vrange[0]):
+        exit(1)
+        exit(2)
+        exit(3)
+                        expect = struct.pack('<4sl',
+        filename = (yield)
+### FILES ######################################################
+            files = get_directory_files(item)
+        files = get_package_files(options.package)
+                files = get_private_files(pkg_files, item)
+        files = get_public_files(files, versions)
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            for fn in file_names:
+    for fn in files:
+    for fn in listdir(name):
+    for fn, versions_to_compile in filter_files(files, e_patterns, versions):
+        for item in args:
+            for line in lines:
+    for line in stdout.split('\n'):
+    for process in WORKERS.values():
+        for root, dirs, file_names in walk(abspath(dname)):
+        for type_, vers, dname, pattern in e_patterns:
+    for type_, vers, dname, pattern in get_exclude_patterns_from_dir():
+    for version in versions:
+        for version in versions_to_compile:
+from debpython.option import Option, compile_regexpr
+from debpython.pydist import PUBLIC_DIR_RE
+from debpython.tools import cache_from_source, get_magic_numbers_map, memoize
+from debpython.version import SUPPORTED, debsorted, vrepr, \
+from given range, regardless of the default Python version in the system.
+from os import environ, listdir, mkdir, walk
+from os.path import abspath, dirname, exists, isdir, isfile, join
+from subprocess import PIPE, Popen
+                    ftime = os.stat(fn).st_mtime
+# furnished to do so, subject to the following conditions:
+    """Generate (file, versions_to_compile) pairs."""
+    """Generate *.py file names available in given directory."""
+    """Generate *.py file names available in given package."""
+    """Generate *.py file names that match given directory."""
+    """Generate *.py file names that match given versions."""
+        # get requested Python version
+        get_requested_versions, parse_vrange, getver
+    global STDINS, WORKERS
+        # hardcoded in path / via -V option
+        help='exclude items that match given REGEXPR. You may use this option \
+        help="""force private modules to be bytecompiled with Python version
+        help='specify Debian package name whose files should be bytecompiled')
+        help='turn verbose mode on')
+                    if ctime > ftime:
+                if exists(cfn) and not force:
+                        if expect == actual:
+                if fn.endswith('.py'):
+        if fn.startswith(dname):
+    if isfile(dname) and dname.endswith('.py'):
+        if line.endswith('.py'):
+if __name__ == '__main__':
+        if not dname.startswith(directory[:len(dname)]):
+            if not exists(item):
+                if not force:
+    if not isdir(name):
+    if not isinstance(version, str):
+            if not valid_versions:
+                if not versions:
+    if not versions:
+    if options.package and args:  # package's private directories
+    if options.regexpr and not args:
+    if options.verbose or environ.get('PYCOMPILE_DEBUG') == '1':
+    if options.vrange and options.vrange[0] == options.vrange[1] and\
+    if patterns:
+    if process.returncode != 0:
+        if process.returncode not in (None, 0):
+        if public_dir:
+            if public_dir and len(public_dir.group(1)) != 1:
+                if pycache_dir not in skip_dirs and not exists(pycache_dir):
+            #if root != dname and not exists(join(root, '__init__.py')):
+If there are no other options, bytecompile all public modules for installed
+            if type_ == 'dir' and fn.startswith(dname):
+                if type_ == 're':
+        if valid_versions:
+            if vers in shared_vstr or vers in vstr:
+            if version == (3, 1):
+        if version not in STDINS:
+        if versions and not versions & vers:
+        if versions is None:
+    if versions is not None:
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+import logging
+import optparse
+import os
+import struct
+import sys
+# initialize script
+# in the Software without restriction, including without limitation the rights
+                          item, compile_versions)
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        log.debug('args: %s', args)
+        log.debug('argv: %s', sys.argv)
+                log.debug('byte compiling %s using Python %s',
+        log.debug('compile versions: %s', versions)
+        log.debug('options: %s', options)
+                        log.error("cannot create directory %s: %r", pycache_dir, e)
+        log.error('cannot get content of %s', package_name)
+        log.error('Requested versions are not installed')
+logging.basicConfig(format='%(levelname).1s: %(module)s:%(lineno)d: '
+log = logging.getLogger(__name__)
+        log.setLevel(logging.DEBUG)
+        log.setLevel(logging.WARN)
+                log.warn('No such file or directory: %s', item)
+    magic_numbers = get_magic_numbers_map(versions)
+                                             magic_numbers[version], mtime)
+    main()
+        # make sure it's a set (debsorted returns a list)
+@memoize
+                           '%(message)s')
+                        mkdir(pycache_dir)
+            # move to the next file if all versions were removed
+                        mtime = int(os.stat(fn).st_mtime)
+multiple times to build up a list of things to exclude.')
+newer), '3.1-3.3' (version 3.1 or 3.2), '-4.0' (all supported 3.X versions)""")
+            next(coroutine)
+        # no need to limit versions here, it's either pyr mode or version is
+# of this software and associated documentation files (the "Software"), to deal
+            'only, please use /usr/share/python3/bcep to specify '
+                                   option_class=Option)
+    (options, args) = parser.parse_args()
+                    options.force, options.optimize, e_patterns)
+                options.force, options.optimize, e_patterns)
+                        options.optimize, e_patterns)
+       options.vrange != (None, None) and\
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    parser.add_option('-f', '--force', action='store_true', dest='force',
+    parser.add_option('-O', action='store_true', dest='optimize',
+    parser.add_option('-p', '--package',
+    parser.add_option('-q', '--quiet', action='store_false', dest='verbose',
+    parser.add_option('-V', type='version_range', dest='vrange',
+    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
+    parser.add_option('-X', '--exclude', action='append',
+        parser.error('--exclude option works with private directories '
+    parser = optparse.OptionParser(usage, version='%prog 0.9',
+        parser.print_usage()
+                        pass
+                    pattern = compile_regexpr(None, None, pattern)
+                    # pattern doesn't match installed Python versions
+                pattern = pattern.rstrip('\n')
+        patterns = []
+        patterns.append((type_, vers, dname, pattern))
+        patterns = [('re', versions, directory, i) for i in patterns]
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+            pipe.send(fn)
+            pipe = STDINS[version]
+        pkg_files = tuple(get_package_files(options.package))
+        process.communicate()
+    process = Popen(cmd, bufsize=1, shell=True,
+    process = Popen("/usr/bin/dpkg -L %s" % package_name,\
+     '       %prog -p PACKAGE'
+            public_dir = PUBLIC_DIR_RE.match(fn)
+        public_dir = PUBLIC_DIR_RE.match(fn)
+            'public modules to skip')
+                pycache_dir = dirname(cfn)
+    pycompile -p python3-foo /usr/share/foo # package's private files
+    pycompile -p python3-mako # package's public files
+    pycompile -V 3.1 /usr/lib/foo/bar.py # python3.1 only
+    pycompile -V 3.1 /usr/lib/python3.1/ # python3.1 only
+    pycompile -V 3.2- /usr/lib/python3/
+Python versions that match given range.
+    result = []
+                result.append((type_, versions, dname, pattern))
+        return []
+    return patterns
+    """Return patterns for files that shouldn't be bytecompiled."""
+    """Return patterns for files that shouldn't be compiled in given dir."""
+    return result
+    rv = 0
+            rv = process.returncode
+    shared_vstr = set(str(i[0]) for i in versions)
+                    shell=True, stdout=PIPE)
+                        skip_dirs.add(pycache_dir)
+    skip_dirs = set()
+        # skip patterns that do not match requested directory
+        # skip patterns that do not match requested versions
+        # specific version requested, use it even if it's not in SUPPORTED
+    # start Python interpreters that will handle byte compilation
+                    stdin=PIPE, close_fds=True)
+    stdin = process.stdin
+STDINS = {}
+            STDINS[version] = coroutine
+        stdin.write(filename.encode('utf-8') + b'\n')
+    stdout, stderr = process.communicate()
+    stdout = str(stdout, 'utf-8')
+    sys.exit(rv)
+sys.path.insert(1, '/usr/share/python3/')
+# The above copyright notice and this permission notice shall be included in
+# THE SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+"""TODO: move it to manpage
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                    try:
+                type_, vrange, dname, pattern = line.split('|', 3)
+    usage = '%prog [-V [X.Y][-][A.B]] DIR_OR_FILE [-X REGEXPR]\n' + \
+#! /usr/bin/python3
+        valid_versions = set(compile_versions)  # all by default
+                valid_versions = valid_versions - vers
+        % (version, ' -O' if optimize else '')
+VERSION_RANGE examples: '3.1' (version 3.1 only), '3.1-' (version 3.1 or
+        versions = get_requested_versions(options.vrange, available=True)
+                versions = get_requested_versions(vrange, available=True)
+        versions = {options.vrange[0]}
+            versions = set(SUPPORTED)
+        versions = set(versions)
+        version = vrepr(version)
+            vers = public_dir.group(1)
+# vim: et ts=4 sw=4
+                vrange = parse_vrange(vrange)
+    vstr = set("%d.%d" % i for i in versions)
+    # wait for all processes to finish
+    while True:
+                        with open(cfn, 'rb') as chandle:
+        with open(join(name, fn), 'r', encoding='utf-8') as lines:
+WORKERS = {}
+    workers[version] = process  # keep the reference for .communicate()
+        yield dname
+                yield fn
+            yield fn
+                yield fn, set([getver(public_dir.group(1))])
+                yield fn, valid_versions
+                    yield join(root, fn)
+            yield line

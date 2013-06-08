@@ -1,0 +1,143 @@
+-* | */*'
+' 0 1 2 3 5 10 13 15
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# (at your option) any later version.
+  */basename | */bash | */cat | */chmod | */cp | \
+#!/bin/bash
+bindir='/bin'
+--__bindir) bindir=${2?}; shift; shift;;
+  *) break;;
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+case $0 in
+  case $1 in
+case $1 in
+    case `echo X | tail -n +1 2>/dev/null` in
+case `echo X | tail -n +1 2>/dev/null` in
+  case /$file in
+  case $i in
+    case $skip_line in
+    (cat <<'EOF' &&
+  chmod 700 "$gztmp"
+    chmod u+w "$tmp" || {
+    continue
+      continue
+# Copyright (C) 1993 Jean-loup Gailly
+# Copyright (C) 1998, 2002, 2004, 2006, 2007 Free Software Foundation
+Copyright (C) 2007, 2009-2010 Free Software Foundation, Inc.
+  -d) decomp=1; shift;;
+  -d             Decompress each FILE instead of compressing it.
+decomp=0
+    # decompression
+  dir=`dirname "$file"` || dir=$TMPDIR
+  */dirname | */echo | */expr | */gzip | \
+    echo >&2 "$0: cannot backup $i as $i~"
+      echo >&2 "$0: cannot chmod $tmp"
+    echo >&2 "$0: cannot copy $file"
+    echo >&2 "$0: cannot rename $tmp to $i"
+      echo >&2 "$0: compression not possible for $i, file unchanged."
+    echo >&2 "$0: $i has setgid permission, unchanged"
+    echo >&2 "$0: $i has setuid permission, unchanged"
+      echo >&2 "$0: $i is already gzexe'd"
+    echo >&2 "$0: $i is not a readable regular file"
+    echo >&2 "$0: $i might depend on itself"; continue;;
+      echo >&2 "$0: $i probably not in gzexe format, file unchanged."
+  echo >&2 "$0: missing operand
+    echo >&2 "$0: $tmp: cannot chmod"
+  echo >&2 "Cannot decompress $0"
+    esac
+esac || { (exit 127); exit 127; }
+      eval "$skip_line";;
+# executable with the original name (for programs looking at their name).
+  exit 1
+  (exit 127); res=127
+  (exit $res); exit $res
+(exit $res); exit $res
+  fi && { cp -p "$file" "$tmp" 2>/dev/null || cp "$file" "$tmp"; } || {
+fi || { (exit 127); exit 127; }
+fi; exit $res
+  -*) file=./$i;;
+  *)  file=$i;;
+for i do
+# For safety reasons, gzexe will not create setuid or setgid shell scripts.
+# GNU General Public License for more details.
+# gzexe: compressor for Unix executables.
+    gzip -cv9 "$file") > "$tmp" || {
+  "$gztmp" ${1+"$@"}; res=$?
+gztmpdir=
+  gztmpdir=`mktemp -dt`
+  gztmpdir=/tmp/gztmp$$; mkdir $gztmpdir
+gztmp=$gztmpdir/$0
+*/*) gztmp=$gztmpdir/`basename "$0"`;;
+      --help     display this help and exit
+  --h*) exec echo "$usage";;
+    if sed -e 1d -e 2q "$file" | grep "^skip=[0-9][0-9]*$" >/dev/null; then
+IFS=" $tab$nl"
+if tail $tail_n +$skip <"$0" | gzip -cd > "$gztmp"; then
+  if test $decomp -eq 0; then
+if test $# -eq 0; then
+  if test ! -f "$file" || test ! -r "$file"; then
+  if test -g "$file"; then
+  if test $mktemp_status -eq 0; then
+  if test -u "$file"; then
+  if test -w "$tmp"; then
+  if test -z "$mktemp_status"; then
+if type mktemp >/dev/null 2>&1; then
+# it under the terms of the GNU General Public License as published by
+  ln -f "$file" "$file~" || {
+  */ln | */mkdir | */mktemp | */mv | */rm | \
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+') mkdir -p "$gztmp" && rm -r "$gztmp";;
+    mktemp_status=$?
+mktemp_status=
+  mv -f "$tmp" "$file" || {
+# On Ultrix, /bin/bash is too buggy, change the first line to: #!/bin/bash5
+PATH=$bindir:$PATH
+Rename each FILE with a compressed version of itself, renaming FILE to FILE~.
+Report bugs to <bug-gzip@gnu.org>."
+      res=$?
+    res=$?
+  */sed | */sh | */sleep | */test | */tail)
+  --) shift; break;;
+    skip=[0-9] | skip=[0-9][0-9] | skip=[0-9][0-9][0-9])
+    skip=44
+    skip_line=`sed -e 1d -e 2q "$file"`
+# skipping $skip lines of shell commands.  We try invoking the compressed
+  (sleep 5; rm -fr "$gztmpdir") 2>/dev/null &
+    *) tail_n=;;
+*) tail_n=;;
+    tail $tail_n +$skip "$file" | gzip -cd > "$tmp" || {
+  test -d "$dir" && test -w "$dir" && test -x "$dir" || dir=/tmp
+  test -n "$gztmpdir" && rm -fr "$gztmpdir"
+  test -n "$tmp" && rm -f "$tmp"
+  test $writable -eq 1 || chmod u-w "$tmp" || {
+# The compressed version is a shell script which decompresses itself after
+# the Free Software Foundation; either version 3 of the License, or
+the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.
+# The : is required for some old versions of csh.
+There is NO WARRANTY, to the extent permitted by law.
+This is free software.  You may redistribute copies of it under the terms of
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+    tmp=$dir/gzexe$$
+    tmp=`TMPDIR=$dir mktemp -t gzexeXXXXXX`
+trap 'res=$?
+Try \`$0 --help' for more information."
+    type mktemp >/dev/null 2>&1
+umask 77
+  umask $umask
+umask=`umask`
+usage="Usage: $0 [OPTION] FILE...
+# Use this only for binaries that you do not use frequently.
+version='gzexe (gzip) 1.4
+      --version  output version information and exit
+  --v*) exec echo "$version";;
+# WARNING: the first line of this file must be either : or #!/bin/bash
+# We also try to retain the original file permissions on the compressed file.
+while :; do
+# with this program; if not, write to the Free Software Foundation, Inc.,
+    writable=0
+    writable=1
+Written by Jean-loup Gailly.'
+    X) tail_n=-n;;
+X) tail_n=-n;;
+# You should have received a copy of the GNU General Public License along

@@ -1,0 +1,227 @@
+ -a,  --archive out.tgz Store the resulting TAP in an archive file.
+Additional option files may be specified with the C<--rc> option.
+All C<--sources> are combined into a hash, and passed to L<TAP::Harness/new>'s
+and can live with the risk.
+$app->process_args(@ARGV);
+as with the C<extensions=> examples above. If the option should be a hash
+ -b,  --blib            Add 'blib/lib' and 'blib/arch' to the path for
+Because C<PERL5LIB> is often used during testing to add build
+Boolean options:
+Caveat: this is a bit of a kludge. In particular note that if anything
+ -c,  --color           Colored test output (default).
+C<--color> switch.
+C<=>. If an option can take multiple values, just specify it multiple times,
+colored output will not be available.
+Colored test output is the default, but if output is not to a
+Color support requires L<Term::ANSIColor> on Unix-like platforms and
+      --count           Show the X/Y test count when not verbose
+C<PERL5LIB> environment variable do not appear in C<@INC>.
+C<PERL5LIB> is honoured even when prove is run in taint mode.
+C<pset=> examples above (escape C<=> with a backslash).
+C<sources> parameter.
+ -D   --dry             Dry run. Show test that would have run.
+                        (default)
+Default option file processing is disabled by the C<--norc> option.
+      --directives      Only show results with TODO or SKIP directives.
+directories to C<@INC> prove passes the names of any directories found
+display any diagnostics your tests emit on STDERR.
+ -?,                    Display this help
+distinction is by design. Thus the perl which is running a test starts
+Each C<--$source-option> option must specify a key/value pair separated by an
+each test is stored. The C<hot> option causes tests to be run in most-recent-
+ -e,  --exec            Interpreter to run the tests ('' for compiled
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+excluded from subsequent runs.
+exit( $app->run ? 0 : 1 );
+      --ext             Set the extension for tests (default '.t')
+failure order.
+ -f,  --failures        Show failed tests.
+file, you can add them to your tests by using a '-':
+For an up-to-date list of plugins available, please check CPAN:
+      --formatter       Result formatter to use. See FORMATTERS.
+(F<_prove> on Windows and VMS) in the current directory.
+F<.proverc> and is sought only in the current directory.
+get confused. Use this option only if you understand the consequences
+      --harness         Define test harness to use.  See TAP::Harness.
+=head1 FORMATTERS
+=head1 NAME
+=head1 NOTES
+=head1 OPTIONS
+=head1 PLUGINS
+=head1 SOURCE HANDLERS
+=head1 USAGE
+=head2 Arguments to Tests
+=head2 Available Plugins
+=head2 C<--exec>
+=head2 C<--merge>
+=head2 Colored Test Output
+=head2 C<--state>
+=head2 C<--trap>
+=head2 Default Test Directory
+=head2 Exit Code
+=head2 @INC
+=head2 .proverc
+=head2 Reading from C<STDIN>
+=head2 Taint Mode
+=head2 Writing Plugins
+ -h,  --help            Display this help
+ -H,  --man             Longer manpage for prove
+If F<~/.proverc> or F<./.proverc> exist they will be read and any
+If no files or directories are supplied, C<prove> looks for all files
+	if $running_under_some_shell;
+If the tests fail C<prove> will exit with non-zero status.
+If you also specify the C<save> option newly passing tests will be
+If you have a list of tests (or URLs, or anything else you want to test) in a
+If you need to make sure your diagnostics are displayed in the correct
+If you want to provide config to the source you can use:
+      --ignore-exit     Ignore exit status from test scripts.
+ -I                     Library paths to include.
+in C<PERL5LIB> as -I switches. The net effect of this is that
+in F<.proverc> are specified in the same way as command line options:
+=item C<all>
+=item C<failed>
+=item C<fast>
+=item C<fresh>
+=item C<hot>
+=item C<last>
+=item C<new>
+=item C<old>
+=item C<passed>
+=item C<save>
+=item C<slow>
+=item C<todo>
+It is possible to supply arguments to tests. To do so separate them from
+ -j,  --jobs N          Run N test jobs in parallel (try 9.)
+L<http://search.cpan.org/search?query=App%3A%3AProve+Plugin>
+ -l,  --lib             Add 'lib' to the path for your tests (-Ilib).
+L<Win32::Console> windows. If the necessary module is not installed
+matching the pattern C<t/*.t>.
+merge the test scripts' STDERR into their STDOUT.
+ -M                     Load a module.
+ -m,  --merge           Merge test scripts' STDERR with their STDOUT.
+my $app = App::Prove->new;
+new problems have been introduced.
+      --nocolor         Do not color test output.
+      --nocount         Disable the X/Y test count.
+      --norc            Don't process default .proverc
+      --normalize       Normalize TAP output in verbose output
+Normally when a Perl program is run in taint mode the contents of the
+Normally you can just pass a list of Perl tests and the harness will know how
+ -o,  --comments        Show comments.
+of the test scripts.
+Options that take arguments:
+options they contain processed before the command line options. Options
+order relative to test results you can use the C<--merge> option to
+parser interprets particular I<sources> of TAP.
+passed to I<SourceHandlers>.
+Please check individual plugin documentation for more details.
+Please see L<App::Prove/PLUGINS>.
+ -P                     Load plugin (searches App::Prove::Plugin::*.)
+plugin name:
+Plugins can be loaded using the C<< -PI<plugin> >> syntax, eg:
+possible, for example, to recreate the ordering of a shuffled test.
+ -p,  --parse           Show full list of TAP parse errors, if any.
+    $ prove -b --state=adrian
+    $ prove -b --state=failed
+    $ prove -b --state=failed,all,save
+    $ prove -b --state=failed,save
+    $ prove -b --state=hot,all,save
+    $ prove -b --state=hot,save
+    $ prove -b --state=hot --state=all,save
+    $ prove -b --state=last
+    $ prove -b --state=save
+    $ prove -b --state=save --shuffle
+    $ prove -b --state=slow -j9
+ prove --exec '/path/to/my/customer/exec'
+ prove --exec '/usr/bin/perl -Tw -mstrict -Ilib' t/
+ prove --exec '/usr/bin/ruby -w' t/
+  prove --formatter MyFormatter
+prove introduces a separation between "options passed to the perl which
+ prove - < my_list_of_things_to_test.txt
+ prove [options] [files or directories]
+  prove -PMyPlugin
+  prove -PMyPlugin=fou,du,fafa
+    # .proverc
+prove - Run tests through a TAP harness.
+  prove --source MyCustom \
+  prove --source MyHandler --source YetAnother t
+prove's own arguments with the arisdottle, '::'. For example
+ prove -v t/mytest.t :: --url http://example.com
+ -Q,  --QUIET           Only print summary results.
+ -q,  --quiet           Suppress some test output while running tests.
+      --rc=rcfile       Process options from rcfile
+reference, specify the value as a second pair separated by a C<=>, as in the
+    # Repeat until no more failures
+      --reverse         Run the tests in reverse order.
+ -r,  --recurse         Recursively descend into directories.
+    # Run all tests
+Run all tests in normal order. Multple options may be specified, so to
+    # Run all tests in random order
+run all tests with the failures from last time first:
+run and display the test summary even if the run is interrupted
+Run any tests with todos.
+    # Run failures
+Run only the passed tests from last time. Useful to make sure that no
+Run only the tests that failed on the last run.
+runs prove" and "options passed to the perl which runs tests"; this
+Run test tests in fastest to slowest order.
+    # Run them again in the same order
+Run the same tests as the last time the state was saved. This makes it
+Run the tests in newest to oldest order based on the modification times
+Run the tests in oldest to newest order.
+Run the tests in slowest to fastest order. This is useful in conjunction
+Run the tests that most recently failed first. The last failure time of
+Run those test scripts that have been modified since the last test run.
+Save the state on exit. The state is stored in a file called F<.prove>
+See L<TAP::Parser::IteratorFactory> for more details on how configuration is
+See the C<README> in the C<examples> directory of this distribution.
+select and/or order the tests to be run based on that saved state.
+separated list of one or more of the following options.
+        --source File --file-option extensions=.txt --file-option extensions=.tmp t
+                        SOURCE HANDLERS.
+      --source          Load and/or configure a SourceHandler. See
+        --source Perl --perl-option 'foo=bar baz' --perl-option avg=0.278 \
+        --source pgTAP --pgtap-option pset=format=html --pgtap-option pset=border=2
+ -s,  --shuffle         Run the tests in random order.
+start running first.
+    --state=hot,fast,save
+      --state=opts      Control prove's persistent state.
+ -T                     Enable tainting checks.
+ -t                     Enable tainting warnings.
+terminal, color is disabled. You can override this by adding the
+                        tests.)
+Tests that have never failed will not be selected. To run all tests with
+that appears on STDERR looks like a test result the test harness will
+that, C<MyPlugin>.  If the plugin can't be found, C<prove> will complain & exit.
+The C<--state> switch may be used more than once.
+The C<--state> switch requires an argument which must be a comma
+The C<--trap> option will attempt to trap SIGINT (Ctrl-C) during a test
+the most recently failed first use
+This combination of options may also be specified thus
+This guarantees that STDOUT (where the test results appear) and STDOUT
+This will search for a module named C<App::Prove::Plugin::MyPlugin>, or failing
+      --timer           Print elapsed time after each test.
+to execute them.  However, if your tests are not written in Perl or if you
+      --trap            Trap Ctrl-C and print summary on interrupt.
+Under Windows and VMS the option file is named F<_proverc> rather than
+use App::Prove;
+use strict;
+#!/usr/bin/perl
+#!/usr/bin/perl -w
+via the C<-Ilib> option to F<prove>.
+via the C<PERL5LIB> environment variable, via -Ifoo in C<PERL5OPT> or
+# vim:ts=4:sw=4:et:sta
+ -v,  --verbose         Print all test lines.
+want all tests invoked exactly the same way, use the C<-e>, or C<--exec>
+ -W                     Enable fatal warnings.
+ -w                     Enable warnings.
+When running multiple tests they will each receive the same arguments.
+(where the diagnostics appear) will stay in sync. The harness will
+with the C<-j> parallel testing switch to ensure that your slowest tests
+with the default C<@INC>. Additional library directories can be added
+would run F<t/mytest.t> with the options '--url http://example.com'.
+You can ask C<prove> to remember the state of previous test runs and
+You can load a custom L<TAP::Parser::Formatter>:
+You can load custom L<TAP::Parser::SourceHandler>s, to change the way the
+You can pass arguments to your plugin by appending C<=arg1,arg2,etc> to the
+                        your tests

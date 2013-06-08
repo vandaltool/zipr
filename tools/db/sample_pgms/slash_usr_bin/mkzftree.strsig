@@ -1,0 +1,69 @@
+3L$<3T$8	
+closedir
+compress2
+crib: %s -> %s
+crib-tree
+  --crib-tree              -C    Steal "crib" files from an old tree
+D$8t79D$
+D$(9D$8w
+__errno_location
+  --file                   -F    Operate possibly on a single file
+  --force                  -f    Always compress, even if result is larger
+ftruncate64
+fz:up:xXC:lLFvqV:hw
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+H43K03S,	
+  --help                   -h    Display this message
+_IO_stdin_used
+_Jv_RegisterClasses
+  --level #                -z #  Set compression level (1-9)
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libz.so.1
+  --local                  -l    Do not recurse into subdirectoires
+__lxstat64
+  --one-filesystem         -x    Do not cross filesystem boundaries
+parallelism
+  --parallelism #          -p #  Process up to # files in parallel
+  --quiet                  -q    No messages, not even errors (-V 0)
+__rawmemchr
+readdir64
+readlink
+%s: Cannot create output directory %s: %s
+%s: Failed to open directory %s: %s
+%s: Failed to stat directory %s: %s
+%s: Failed to stat file %s: %s
+%s: hard link %s -> %s failed: %s
+%s: invalid compression level: %d
+  --sloppy                 -s    Don't abort if metadata cannot be set
+%s: mknod failed for %s: %s
+%s: readlink failed for %s: %s
+%s: %s: Not a directory
+%s: %s: %s
+%s: symlink %s -> %s failed: %s
+__stack_chk_fail
+__strdup
+strerror
+strict-local
+  --strict-local           -L    Same as -l, but don't create stubs dirs
+strict-one-filesystem
+  --strict-one-filesystem  -X    Same as -x, but don't create stubs dirs
+T$,9T$<|
+uncompress
+  --uncompress             -u    Uncompress an already compressed tree
+Usage: %s [options] intree outtree
+  --verbose                -v    Increase message verbosity
+verbosity
+  --verbosity #            -V #  Set message verbosity to # (default = %d)
+  --version                -w    Display the program version
+__vfprintf_chk
+__xmknod
+__xstat64
+zisofs-tools 1.0.7

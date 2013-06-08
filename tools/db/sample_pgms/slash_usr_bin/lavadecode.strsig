@@ -1,0 +1,122 @@
+ !"#	%&'()*+,-./0123456789:;<=>? ABCDEFGHIJKLMNO0QRSTUVWGYZ[\]^V`abcd]fghcjkgmkomoarith_decode
+$&'(*+-.0134689;<>? !
+\033%c%c%c	
+\033%c%c%d%c
+%-12345X@PJL ENTER LANGUAGE=LAVAFLOW
+\$@9\$0s
+9J|~:;0u
+ABORT marker segment encountered
+@ACDEFHIJKMNO0223456789:;==
+	A LAVAFLOW stream is the printer langauge used by some Konica
+arith_encode
+__assert_fail
+BD$d;t$d
+		BLACK DOTS: [%d]
+		BLACK WHITEDOTS: [%d]
+		BW/COLOR: [%d]
+		COMPRESSION: [%d]
+config image data is not 8 or 26 bytes!
+		COPIES: [%d]
+cx >= 0 && cx < 4096
+		CYAN DOTS: [%d]
+		CYAN WHITEDOTS: [%d]
+D$0+D$$=
+D$,9D$(t
+D$(9D$\v
+       -d basename Basename of .pbm file for saving decompressed planes
+D$D+L$X)
+	Decode a LAVAFLOW stream into human readable form.
+d:hoD:?h
+       -D lvl      Set Debug level [%d]
+		DUPLEX: [%s]
+efghcijkg
+		END PAGE
+envMonarch
+__errno_location
+file '%s' doesn't exist
+__fprintf_chk
+__fread_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+       -h          Print hex file offsets
+$Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $ 
+Incremental BIE does not continue previous one
+Input data stream contains invalid data
+Input data stream uses unimplemented JBIG features
+_IO_getc
+_IO_stdin_used
+jbig_ar.c
+		JBIG data (end) [%d,0x%x]
+		JBIG data (first) [%d,0x%x]
+JBIG-KIT 2.0 -- (c) 1995-2008 Markus Kuhn -- Licence: GPL
+JBIG uses unimpl feature
+	lavadecode [options] < zjs-file
+letterhead
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+		MAGENTA DOTS: [%d]
+		MAGENTA WHITEDOTS: [%d]
+manshort
+		MEDIA TYPE: [%s]
+	Minolta printers, such as the magicolor 2530 DL and 2490 MF.
+Missing image %dx%d!
+		NBIE: [%d]
+Not enough memory available
+       -o          Print file offsets
+Options:
+		ORIENTATION: [%s]
+		[Page %d]
+		PAGE SIZE: [%s]
+		PAPER SOURCE: [%s]
+photo10x15
+photo4x6
+@PJL ENTER LANGUAGE=LAVAFLOW
+postcard
+PQRSTVWWHHJJKMM
+__printf_chk
+Reached specified image size
+recycled
+			RESET
+%s-%02d-%d.pbm
+%sBLACK:	X=%d, Y=%d, unk=%d, #=%d(%d)
+%sBLK:	X=%d, Y=%d, unk=%d, #=%d(%d)
+s->buffer != 0xff
+%sCYA:	X=%d, Y=%d, unk=%d, #=%d(%d)
+%sDL = %d, D = %d, P = %d, - = %d, XY = %d x %d
+%sfmt=%d np=%d
+%sL0 = %d, MX = %d, MY = %d
+%sMAG:	X=%d, Y=%d, unk=%d, #=%d(%d)
+%sOptions = %d %s%s%s%s%s%s%s%s
+%sOrder   = %d %s%s%s%s%s
+__sprintf_chk
+ss < 113
+__stack_chk_fail
+strerror
+%s%u stripes, %d layers, %d planes
+%sYEL:	X=%d, Y=%d, unk=%d, #=%d(%d)
+		TOP MARGIN: [%d]
+Total size: %d bytes
+		TRANSMIT ONCE COPIES: [%d]
+transparency
+Unexpected end of input data stream
+ (unknown compression scheme)
+Unknown error code passed to jbg_strerror()
+Unknown marker segment encountered
+u&;t$@s 
+__vfprintf_chk
+ VLENGTH
+Warning: 
+		X CUSTOM: [%d,0x%x]
+		X OFFSET: [%d]
+		X RASTER: [%d,0x%x]
+		X RESOLUTION: [%d]
+		Y CUSTOM: [%d,0x%x]
+		YELLOW DOTS: [%d]
+		YELLOW WHITEDOTS: [%d]
+		Y OFFSET: [%d]
+		Y RASTER: [%d,0x%x]

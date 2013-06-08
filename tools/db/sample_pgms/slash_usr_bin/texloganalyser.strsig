@@ -1,0 +1,230 @@
+	       };
+# 1. Redistributions of source code must retain the above copyright
+# 2. Redistributions in binary form must reproduce the above copyright
+  $abstract->{warnings} += 1 if ($line =~ m/Warning/);
+  added option: references and label warnings
+  added options: display of files used
+# All rights reserved
+analyze();
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+# are met:
+  close $source;
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# Copyright (c) 2006-2009 Thomas van Oudenhove
+die "Usage: $0 ".options()." <TeX log>\n"
+    # display all warnings
+    # display summary and page numbers (default)
+#    documentation and/or other materials provided with the distribution.
+	   e => '',
+    } else {
+    } elsif ($k eq 'help') {
+    } elsif ($opt->{h}) {
+    } elsif ($opt->{h} and $opt->{v}) {
+    } elsif ($opt->{o}) {
+    } elsif ($opt->{o} and $opt->{u}) {
+    } elsif ($opt->{o} and $opt->{v}) {
+    } elsif ($opt->{u}) {
+    } elsif ($opt->{u} and $opt->{h}) {
+    } elsif ($opt->{u} and $opt->{v}) {
+    } elsif ($opt->{v}) {
+	   'e' => \$opt->{e},
+  exit();
+	   f => '',
+	   'f' => \$opt->{f},
+  foreach my $k (sort keys %{$opt}) {
+      foreach my $t ('pdf', 'eps', 'ps', 'png', 'jpg') {
+GetOptions(
+Getopt::Long::Configure ("bundling");
+# Getopt::Long MUST be installed on your system for this program to work
+	   h => '',
+=head1 texloganalyser Documentation
+=head2 AUTHORS
+=head2 BUGS
+=head2 DESCRIPTION
+=head2 HISTORY
+=head2 NAME
+=head2 OPTIONS
+=head2 SYNOPSIS
+=head3 Changelog
+	   help => '',
+	   'help' => \$opt->{help},
+	   'h' => \$opt->{h},
+	   i => '',
+    if ($k eq 'version') {
+      if ($line =~ m/Here is how much/) {
+  if ($logline =~ m/.*(\[[0-9]+)/) {
+  if ($logline =~ m/^\((.*\.$filetype)/i) {
+  if (not defined $texlog and (not $opt->{help} and
+    if ($opt->{e}) {
+    if ($opt->{f}) {
+if ($opt->{help}) {
+    if ($opt->{i}) {
+    if ($opt->{o} and $opt->{h}) {
+    if ($opt->{p}) {
+    if ($opt->{r}) {
+    if ($opt->{s}) {
+    if ($opt->{t}) {
+if ($opt->{version}) {
+    if ($opt->{w}) {
+    # images (pdf, ps, jpg, png)
+  improved documentation
+	   'i' => \$opt->{i},
+=item B<-e>: displays the end of the log, about the TeX's memory.
+=item B<-f>: outputs the LaTeX Font Infos warnings and calculations.
+=item B<--help>: displays help as a summary of options.
+=item B<-h>: outputs only warnings about horizontal boxes.
+=item B<-i>: displays 'images' (pdf, [e]ps, png, jpg) used.
+=item B<-o>: outputs only warnings about overfull boxes.
+=item B<-p>: outputs the LaTeX Packages infos and warnings.
+=item B<-r>: displays warnings about references (missing or multiply-defined).
+=item B<-s>: displays .sty and .cls files used.
+=item B<-t>: displays .tex files used. This option is B<very> useful when you parse logs of master files, to know in which file to look to correct errors/warnings.
+=item B<-u>: outputs only warnings about underfull boxes.
+=item B<--version>: displays version information.
+=item B<-v>: outputs only warnings about vertical boxes.
+=item B<-w>: displays all TeX, LaTeX and font Warnings.
+=item v0.1: first version, displays only warnings about boxes
+=item v0.2: display of "Font Info" and "Packages" added
+=item v0.3: display of Warnings and last lines of the log
+=item v0.4: added features and bugs corrections (options h, v, o and u)
+=item v0.5: use of GetOpt::Long and code cleaning
+=item v0.6: default displays number of warnings (and page numbers).
+I<texloganalyser> is a program by Thomas van Oudenhove (L<vanouden@enstimac.fr>). Feel free to contact him for features requests or bugs.
+# License:
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+			   $line =~ m/\\hbox/);
+			  $line =~ m/Label(.*)/ and $1 =~ m/multiply defined/);
+			   $line =~ m/Overfull/);
+			   $line =~ m/Underfull/);
+    # look for boxes warnings
+    # look for LaTeX Font Info
+# modification, are permitted provided that the following conditions
+      $multopt .= $k;
+my $abstract = {
+my $copyright = "2006-2009";
+  my $line;
+  my $line = shift;
+  my ($logline, $filetype) = @_;
+  my $logline = shift;
+  my $multopt = '';
+my $opt = {
+  my $output;
+  my $stropts = "[";
+  my $test = 0;
+my $texlog = $ARGV[-1];
+my $version = "0.6";
+None yet identified. However, the display should be improved...
+#    notice, this list of conditions and the following disclaimer.
+#    notice, this list of conditions and the following disclaimer in the
+			       not $opt->{version}));
+	   o => '',
+# OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# (on *nix systems, the output of 'which perl')
+	   'o' => \$opt->{o},
+  open my $source, "<", $texlog;
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+      $output = $line if ($line =~ m/Font Info/);
+      $output = $line if ($line =~ m/\\hbox/);
+      $output = $line if ($line =~ m/\\hbox/ and
+      $output = $line if ($line =~ m/Overfull/);
+      $output = $line if ($line =~ m/Package/);
+      $output = $line if ($line =~ m/Reference/ or
+      $output = $line if ($line =~ m/Underfull/);
+      $output = $line if ($line =~ m/Underfull/ or
+      $output = $line if ($line =~ m/\\vbox/);
+      $output = $line if ($line =~ m/\\vbox/ and
+      $output = $line if ($line =~ m/\\vbox/ or
+      $output = $line if ($line =~ m/Warning/);
+      $output .= $line if $test;
+	$output = "\n";
+	   p => '',
+    # packages infos
+    pagenumber($line);
+# PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR
+	   'p' => \$opt->{p},
+    print "(".$1.")";
+    print $1."]";
+  print_abstract();
+  printhelp();
+  print "\n";
+    print "$output" if defined $output;
+  # prints log summary ()
+  print "\t Copyright $copyright Thomas van Oudenhove\n";
+  print "\t Displays selective infos of LaTeX logs\n";
+  print "\t e: displays the end of the log\n";
+  print "\t f: outputs the LaTeX Font Infos\n";
+  print "The log contained ".$abstract->{warnings}." warnings.\n";
+  print "These flags may be used:\n";
+  print "This is texloganalyser, version $version\n";
+  print "\t h: outputs only warnings about horizontal boxes\n";
+  print "\t i: displays 'images' (pdf, [e]ps, png, jpg) used\n";
+  print "\t o: outputs only warnings about overfull boxes\n";
+  print "\t p: outputs the LaTeX Packages infos\n";
+  print "\t r: displays warnings about references\n";
+  print "\t s: displays .sty and .cls files used\n";
+  print "\t t: displays .tex files used\n";
+  print "\t u: outputs only warnings about underfull boxes\n";
+  print "\t v: outputs only warnings about vertical boxes\n";
+  print "\t w: displays all Warnings\n";
+  print "Usage: texloganalyser ".options()." <TeX log>\n";
+  printversion();
+  print "You may want to have a look at `perldoc texloganalyser`.\n";
+	   r => '',
+# README - important notice:
+# Redistribution and use in source and binary forms, with or without
+    # references warnings
+  return $stropts;
+	   'r' => \$opt->{r},
+	   s => '',
+      scannedfiles($line, "cls");
+      scannedfiles($line, "sty");
+	scannedfiles($line, $t);
+      scannedfiles($line, "tex");
+	   's' => \$opt->{s},
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+      $stropts .= "--help|";
+  $stropts .= '-'.$multopt.']';
+      $stropts .= "--version|";
+    # sty and cls files used
+sub analyze {
+sub options {
+sub pagenumber {
+sub print_abstract {
+sub printhelp {
+sub printversion {
+sub scannedfiles {
+sub summary {
+# SUCH DAMAGE.
+    summary($line);
+	   t => '',
+	$test = 1;
+    # TeX files used
+texloganalyser -- displays selective infos from TeX log files
+texloganalyser [-efhioprstuvw] tex_log_file
+texloganalyser [--help]
+texloganalyser [--version]
+# This is texloganalyser, for parsing of TeX logs
+This program was first released in 2006. Its purpose was to display selective information of my PhD's TeX log.
+# (this program works at least with perl 5.8.8)
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS''
+	   't' => \$opt->{t},
+# TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+	   u => '',
+    undef $output;
+	   'u' => \$opt->{u},
+# USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+use Getopt::Long;
+use strict;
+use warnings;
+#!/usr/bin/env perl
+	   v => '',
+Various options may be used to select which information from the TeX log you want to see/analyze (see next section). The default is to display only page numbers (page numbers are B<always> displayed).
+	   version => '',
+	   'version' => \$opt->{version},
+	   'v' => \$opt->{v},
+	   w => '',
+		warnings => 0,
+  while (defined ($line = <$source>)) {
+	   'w' => \$opt->{w},
+# you should feed the first line with the path of your Perl executable

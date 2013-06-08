@@ -1,0 +1,63 @@
+#############################################################################
+# as Perl itself.
+Based on code for B<Pod::Text::pod2text(1)> written by
+B<podselect> [B<-help>] [B<-man>] [B<-section>S< >I<section-spec>]
+B<podselect> invokes the B<podselect()> function exported by B<Pod::Select>
+B<podselect> will read the given input files looking for pod
+Brad Appleton E<lt>bradapp@enteract.comE<gt>
+# Copyright (c) 1996-2000 by Bradford Appleton. All rights reserved.
+## Define options
+documentation and will print out (in raw pod format) all sections that
+documentation (defaults to standard input).
+## Dont default to STDIN if connected to a terminal
+    eval 'exec perl -S $0 "$@"'
+eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
+for the format to use for I<section-spec>.
+GetOptions(\%options, 'help', 'man', 'sections|select=s@')  ||  pod2usage(2);
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS AND ARGUMENTS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+        'help'     => 0,
+        if 0;
+    if 0; # not running under some shell
+[I<file>S< >...]
+if (@{ $options{'sections'} } > 0) {
+## Invoke podselect().
+=item B<-help>
+=item B<-man>
+=item B<-section>S< >I<section-spec>
+=item I<file>
+L<Pod::Parser> and L<Pod::Select>
+        'man'      => 0,
+match one ore more of the given section specifications. If no section
+my %options = (
+## Parse options
+Please report bugs using L<http://rt.cpan.org>.
+Please see L<Pod::Select/podselect()> for more details.
+pod2usage(1)  if ($options{help});
+pod2usage(2) if ((@ARGV == 0) && (-t STDIN));
+pod2usage(-verbose => 2)  if ($options{man});
+    podselect(@ARGV);
+# podselect -- command to invoke the podselect function in Pod::Select
+podselect - print selected sections of pod documentation on standard output
+    podselect({ -sections => $options{'sections'} }, @ARGV);
+Print a brief help message and exit.
+Print the manual page and exit.
+        'sections' => [],
+See L<Pod::Parser/"SECTION SPECIFICATIONS">
+specifications are given than all pod sections encountered are output.
+Specify a section to include in the output.
+The pathname of a file from which to select sections of pod
+# This file is part of "PodParser". PodParser is free software;
+This option may be given multiple times on the command line.
+Tom Christiansen E<lt>tchrist@mox.perl.comE<gt>
+#use diagnostics;
+use Getopt::Long;
+use Pod::Select;
+use Pod::Usage;
+use strict;
+#!/usr/bin/perl
+# you can redistribute it and/or modify it under the same terms

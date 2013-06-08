@@ -1,0 +1,731 @@
+ 1998-2008 Free Software Foundation, Inc.
+%a %b %e %T %Y
+AboutAction
+access::can-read,standard::content-type,standard::display-name,standard::type,standard::size,time::modified,
+ActionGroupFilter
+activate
+active-changed
+Add new filter
+%A, %e %b
+application/x-gzip
+app-quit
+A system log viewer for GNOME.
+Automatically scroll down when new lines appear
+AutoScroll
+_Auto Scroll
+Bigger text size
+bindtextdomain
+bind_textdomain_codeset
+ - Browse and monitor logs
+<b>%s</b>
+__bss_start
+buffer_lines != NULL
+Can't load the UI description: %s
+Can't read from "%s"
+Cesar Miquel <miquel@df.uba.ar>
+changed::menus-have-tearoff
+changed::monospace-font-name
+check_background
+check_foreground
+Christian Neumair  <chris@gnome-de.org>
+Clear the search string
+CloseLog
+Close this log
+color_background
+color_foreground
+comments
+configure_event
+_Contents
+<control>0
+<Control>A
+<control>C
+<control>F
+<control>minus
+<control>O
+<control>plus
+<control>Q
+<control>W
+copyright
+Copyright 
+Copyright (C) 2004-2008 Vincent Noel, Cosimo Cecchi and others.
+Copy the selection
+Cosimo Cecchi <cosimoc@gnome.org>
+Could not load filter ui: %s
+Could not open the following files:
+Couldn't create GRegex object: %s
+day_cleared
+day-cleared
+?day-selected
+day_selected
+dcgettext
+delete-event
+dialog_filter
+%d lines (%s) - %s
+documenters
+do_read_new_lines
+editable
+Edit filter
+EditMenu
+entry_name
+entry_regex
+errors->len > 1
+Error while uncompressing the GZipped log. The file might be corrupt.
+/etc/syslog.conf
+Fernando Herrera  <fherrera@onirica.com>
+FileMenu
+FilterManage
+FilterMatchOnly
+FilterMenu
+Filter name is empty!
+Filter name may not contain the ':' character
+_Filters
+_Find...
+Find a word or phrase in the log
+Find Next
+Find next occurrence of the search string
+Find Previous
+Find previous occurrence of the search string
+fontsize
+fontsize > 0
+foreground-gdk
+foreground-set
+g_ascii_strcasecmp
+g_ascii_table
+g_assertion_message
+g_assertion_message_expr
+g_buffered_input_stream_fill
+g_buffered_input_stream_get_buffer_size
+g_buffered_input_stream_get_type
+g_buffered_input_stream_peek_buffer
+g_build_filename
+g_cclosure_marshal_VOID__BOOLEAN
+g_cclosure_marshal_VOID__OBJECT
+g_cclosure_marshal_VOID__POINTER
+g_cclosure_marshal_VOID__STRING
+g_cclosure_marshal_VOID__VOID
+g_clear_error
+g_content_type_equals
+g_content_type_is_a
+g_data_input_stream_new
+g_data_input_stream_read_line
+g_date_add_years
+g_date_compare
+g_date_free
+g_date_get_julian
+g_date_new_dmy
+g_date_new_julian
+g_date_set_year
+g_date_strftime
+g_date_valid
+gdk_color_free
+gdk_color_parse
+gdk_color_to_string
+gdk_window_invalidate_rect
+g_error_free
+g_error_new_literal
+g_file_enumerate_children_async
+g_file_enumerate_children_finish
+g_file_enumerator_get_container
+g_file_enumerator_get_type
+g_file_enumerator_next_files_async
+g_file_enumerator_next_files_finish
+g_file_equal
+g_file_get_parse_name
+g_file_get_path
+g_file_get_type
+g_file_get_uri
+g_file_info_get_attribute_boolean
+g_file_info_get_content_type
+g_file_info_get_display_name
+g_file_info_get_file_type
+g_file_info_get_modification_time
+g_file_info_get_name
+g_file_info_get_size
+g_file_monitor
+g_file_monitor_set_rate_limit
+g_file_new_for_path
+g_file_parse_name
+g_file_query_info
+g_file_read
+g_format_size
+g_get_application_name
+g_hash_table_destroy
+g_hash_table_foreach
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_remove
+g_hash_table_size
+ghelp:gnome-system-log
+g_input_stream_get_type
+g_input_stream_read
+g_input_stream_skip
+g_intern_static_string
+g_io_scheduler_job_send_to_mainloop_async
+g_io_scheduler_push_job
+G_IS_FILE (file)
+G_IS_FILE (target)
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.4
+g_list_append
+g_list_free
+g_list_length
+g_list_remove
+g_locale_to_utf8
+Glynn Foster <glynn.foster@sun.com>
+g_malloc
+g_malloc0
+g_markup_printf_escaped
+g_match_info_free
+g_match_info_matches
+g_memory_input_stream_add_data
+g_memory_input_stream_get_type
+g_memory_input_stream_new
+__gmon_start__
+g_object_class_install_property
+g_object_get
+g_object_get_data
+g_object_new
+g_object_ref
+g_object_set
+g_object_set_data_full
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_ignore_unknown_options
+g_option_context_set_translation_domain
+g_param_spec_object
+g_param_spec_string
+g_ptr_array_add
+g_ptr_array_foreach
+g_ptr_array_free
+g_ptr_array_new
+g_ptr_array_remove_index
+g_quark_from_static_string
+g_realloc
+g_regex_get_pattern
+g_regex_match
+g_regex_match_simple
+g_regex_new
+g_regex_unref
+g_return_if_fail_warning
+g_set_application_name
+g_settings_get_boolean
+g_settings_get_int
+g_settings_get_string
+g_settings_get_strv
+g_settings_new
+g_settings_set_int
+g_settings_set_string
+g_settings_set_strv
+g_signal_connect_data
+g_signal_emit
+g_signal_handler_disconnect
+g_signal_handlers_block_matched
+g_signal_handlers_disconnect_matched
+g_signal_handlers_unblock_matched
+g_signal_new
+g_slice_alloc0
+g_slice_free1
+g_slist_append
+g_slist_find_custom
+g_slist_foreach
+g_slist_free
+g_slist_insert
+g_slist_last
+g_slist_length
+g_slist_prepend
+g_slist_reverse
+g_slist_sort
+g_source_remove
+g_strcmp0
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strfreev
+g_str_hash
+g_string_append
+g_string_free
+g_string_new
+g_strjoin
+g_strndup
+g_strsplit
+g_strsplit_set
+g_strv_length
+g_timeout_add
+gtk-about
+gtk_accelerator_get_default_mod_mask
+gtk_action_activate
+gtk_action_get_name
+gtk_action_get_type
+gtk_action_group_add_action
+gtk_action_group_add_actions
+gtk_action_group_add_toggle_actions
+gtk_action_group_get_action
+gtk_action_group_list_actions
+gtk_action_group_new
+gtk_action_group_remove_action
+gtk_action_group_set_translation_domain
+gtk_alignment_get_type
+gtk_alignment_new
+gtk_alignment_set_padding
+gtk_arrow_new
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_builder_add_from_file
+gtk_builder_get_object
+gtk_builder_new
+gtk_button_new_from_stock
+gtk-cancel
+gtk_cell_renderer_text_new
+gtk-clear
+gtk_clipboard_get
+gtk-close
+gtk_color_button_get_color
+gtk_color_button_get_type
+gtk_color_button_set_color
+gtk_combo_box_text_new
+gtk_container_add
+gtk_container_get_type
+gtk_container_set_border_width
+gtk-copy
+gtk_dialog_add_button
+gtk-dialog-error
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_set_text
+gtk_entry_set_width_chars
+gtk_file_chooser_dialog_new
+gtk_file_chooser_get_file
+gtk_file_chooser_get_type
+gtk_file_chooser_set_filename
+gtk-find
+gtk_get_current_event_time
+gtk_get_option_group
+gtk_grid_attach
+gtk_grid_attach_next_to
+gtk_grid_get_type
+gtk_grid_new
+gtk_grid_set_column_spacing
+gtk_grid_set_row_spacing
+gtk-help
+gtk_image_new_from_stock
+gtk_info_bar_add_button
+gtk_info_bar_get_content_area
+gtk_info_bar_get_type
+gtk_info_bar_new
+GTK_IS_WINDOW (window)
+gtk_label_get_type
+gtk_label_new
+gtk_label_new_with_mnemonic
+gtk_label_set_line_wrap
+gtk_label_set_markup
+gtk_label_set_mnemonic_widget
+gtk_label_set_selectable
+gtk_label_set_text
+gtk_label_set_use_markup
+gtk_list_store_append
+gtk_list_store_clear
+gtk_list_store_get_type
+gtk_list_store_new
+gtk_list_store_set
+gtk_main
+gtk_main_quit
+gtk_message_dialog_new
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk-open
+gtk_paned_get_type
+gtk_paned_new
+gtk_paned_pack1
+gtk_paned_pack2
+gtk-properties
+gtk-quit
+gtk_radio_button_get_group
+gtk_radio_button_get_type
+gtk_radio_button_set_group
+gtk-remove
+gtk_scrolled_window_get_type
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_scrolled_window_set_shadow_type
+gtk_separator_tool_item_new
+gtk_show_about_dialog
+gtk_show_uri
+gtk_statusbar_get_type
+gtk_statusbar_new
+gtk_statusbar_pop
+gtk_statusbar_push
+gtk_text_buffer_apply_tag
+gtk_text_buffer_apply_tag_by_name
+gtk_text_buffer_copy_clipboard
+gtk_text_buffer_create_mark
+gtk_text_buffer_delete_mark
+gtk_text_buffer_get_bounds
+gtk_text_buffer_get_char_count
+gtk_text_buffer_get_end_iter
+gtk_text_buffer_get_has_selection
+gtk_text_buffer_get_iter_at_line
+gtk_text_buffer_get_iter_at_mark
+gtk_text_buffer_get_line_count
+gtk_text_buffer_get_mark
+gtk_text_buffer_get_start_iter
+gtk_text_buffer_get_text
+gtk_text_buffer_insert
+gtk_text_buffer_move_mark
+gtk_text_buffer_move_mark_by_name
+gtk_text_buffer_new
+gtk_text_buffer_remove_tag
+gtk_text_buffer_remove_tag_by_name
+gtk_text_buffer_select_range
+gtk_text_iter_backward_search
+gtk_text_iter_copy
+gtk_text_iter_forward_char
+gtk_text_iter_forward_chars
+gtk_text_iter_forward_line
+gtk_text_iter_forward_search
+gtk_text_iter_forward_to_end
+gtk_text_iter_free
+gtk_text_tag_get_type
+gtk_text_tag_new
+gtk_text_tag_table_add
+gtk_text_tag_table_lookup
+gtk_text_tag_table_new
+gtk_text_tag_table_remove
+gtk_text_view_get_buffer
+gtk_text_view_get_type
+gtk_text_view_get_visible_rect
+gtk_text_view_new
+gtk_text_view_scroll_mark_onscreen
+gtk_text_view_scroll_to_iter
+gtk_text_view_set_buffer
+gtk_toggle_action_get_active
+gtk_toggle_action_new
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_set_active
+gtk_toolbar_get_type
+gtk_toolbar_insert
+gtk_toolbar_set_style
+gtk_tool_button_new
+gtk_tool_button_new_from_stock
+gtk_tool_item_new
+gtk_tool_item_set_expand
+gtk_tool_item_set_is_important
+gtk_tool_item_set_tooltip_text
+gtk_tree_iter_copy
+gtk_tree_iter_free
+gtk_tree_model_get
+gtk_tree_model_get_iter
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_iter_children
+gtk_tree_model_iter_next
+gtk_tree_model_iter_parent
+gtk_tree_path_free
+gtk_tree_selection_get_selected
+gtk_tree_selection_select_iter
+gtk_tree_selection_set_mode
+gtk_tree_sortable_get_type
+gtk_tree_sortable_set_sort_column_id
+gtk_tree_sortable_set_sort_func
+gtk_tree_store_append
+gtk_tree_store_get_type
+gtk_tree_store_insert
+gtk_tree_store_insert_before
+gtk_tree_store_iter_depth
+gtk_tree_store_iter_is_valid
+gtk_tree_store_new
+gtk_tree_store_remove
+gtk_tree_store_set
+gtk_tree_view_append_column
+gtk_tree_view_column_new
+gtk_tree_view_column_pack_start
+gtk_tree_view_column_set_attributes
+gtk_tree_view_get_selection
+gtk_tree_view_get_type
+gtk_tree_view_new_with_model
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_model
+gtk_tree_view_set_search_column
+gtk_ui_manager_add_ui
+gtk_ui_manager_add_ui_from_file
+gtk_ui_manager_get_accel_group
+gtk_ui_manager_get_widget
+gtk_ui_manager_insert_action_group
+gtk_ui_manager_new
+gtk_ui_manager_new_merge_id
+gtk_ui_manager_remove_ui
+gtk_ui_manager_set_add_tearoffs
+gtk_widget_destroy
+gtk_widget_destroyed
+gtk_widget_get_pango_context
+gtk_widget_get_screen
+gtk_widget_get_style
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_get_window
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_modify_font
+gtk_widget_set_can_focus
+gtk_widget_set_hexpand
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_set_valign
+gtk_widget_set_vexpand
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_add_accel_group
+gtk_window_get_type
+gtk_window_present
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_modal
+gtk_window_set_title
+gtk_window_set_transient_for
+gtk-zoom-100
+gtk-zoom-in
+gtk-zoom-out
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+g_utf8_validate
+g_value_dup_object
+g_value_dup_string
+g_value_get_string
+g_value_peek_pointer
+g_value_set_object
+g_value_set_string
+have-tearoff-changed
+HelpContents
+HelpMenu
+Impossible to monitor the log file: the changes won't be notified
+Impossible to open the file %s
+inflateInit2_
+invisible
+invisible-filter
+invisible-set
+_IO_stdin_used
+Jan Arne Petersen  <jpetersen@uni-bonn.de>
+Jason Leach  <leach@wam.umd.edu>
+Jason Long  <jlong@messiah.edu>
+Judith Samson <judith@samsonsource.com>
+Julio M Merino Vidal <jmmv@menta.net>
+_Jv_RegisterClasses
+key-press-event
+Kjartan Maraas  <kmaraas@gnome.org>
+last update: %s
+launchpad_integration_add_ui
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+liblaunchpad-integration-3.0.so.1
+/lib/ld-linux.so.2
+libm.so.6
+libpango-1.0.so.0
+libpthread.so.0
+libz.so.1
+line != NULL
+Loading...
+localtime
+log-added
+log-changed
+log-closed
+[LOGFILE...]
+logfiles
+loglist_sort_func
+logo_icon_name
+log->priv->stream != NULL
+log_read_dates
+logview_about
+LogviewApp
+logview_app_add_error
+logview_app_add_errors
+logview-app.c
+logview_app_initialize
+logview-error
+LogviewFilter
+logview-filter.c:102
+logview_filter_filter
+logview_filter_get_tag
+LogviewFilterManager
+LogviewFindbar
+logview-findbar.c
+logview_findbar_get_text
+logview_findbar_open
+logview_findbar_set_message
+LOGVIEW_IS_APP (app)
+LOGVIEW_IS_FILTER (filter)
+LOGVIEW_IS_FINDBAR (findbar)
+LOGVIEW_IS_LOGLIST (loglist)
+LOGVIEW_IS_LOG (log)
+LOGVIEW_IS_MANAGER (manager)
+LOGVIEW_IS_PREFS (prefs)
+LOGVIEW_IS_WINDOW (window)
+LogviewLog
+logview-log.c
+logview_log_get_cached_lines
+logview_log_get_cached_lines_number
+logview_log_get_days_for_cached_lines
+logview_log_get_display_name
+logview_log_get_file_size
+logview_log_get_gfile
+logview_log_get_has_days
+logview_log_get_timestamp
+logview_log_get_uri
+logview_log_has_new_lines
+LogviewLoglist
+logview-loglist.c
+logview_loglist_update_lines
+LogviewManager
+logview_manager_add_log_from_gfile
+logview_manager_add_logs_from_name_list
+logview_manager_add_logs_from_names
+logview-manager.c
+logview_manager_close_active_log
+logview_manager_get_active_log
+logview_manager_get_if_loaded
+logview_manager_get_log_count
+logview_manager_log_is_active
+logview_manager_set_active_log
+logview_marshal_VOID__OBJECT_OBJECT
+/LogviewMenu
+LogviewMenuActions
+/LogviewMenu/FilterMenu/PlaceholderFilters
+LogviewPrefs
+logview_prefs_add_filter
+logview-prefs.c
+logview_prefs_get_active_logfile
+logview_prefs_get_filter
+logview_prefs_get_filters
+logview_prefs_get_have_tearoff
+logview_prefs_get_monospace_font_name
+logview_prefs_get_stored_fontsize
+logview_prefs_get_stored_logfiles
+logview_prefs_get_stored_window_size
+logview_prefs_remove_filter
+logview_prefs_remove_stored_log
+logview_prefs_store_active_logfile
+logview_prefs_store_fontsize
+logview_prefs_store_log
+logview_prefs_store_window_size
+LogviewWindow
+logview_window_add_error
+logview_window_add_errors
+logview-window.c
+lw-search-end-mark
+lw-search-start-mark
+Manage filters
+Monospace 10
+Normal text size
+Not found
+n_param_values == 3
+old_name
+Only show lines that match one of the given filters
+_Open...
+Open a log from file
+Open Log
+Open the help contents for the log viewer
+op == NULL
+org.gnome.desktop.interface
+org.gnome.gnome-system-log
+pango_context_get_font_description
+pango_font_description_free
+pango_font_description_from_string
+pango_font_description_get_size
+pango_font_description_new
+pango_font_description_set_size
+pango_font_description_set_weight
+paragraph-background-gdk
+paragraph-background-set
+Please specify either foreground or background color!
+previous
+priv->filter_action_group != NULL
+property
+Quit the log viewer
+radio_color
+radio_visible
+regular expression
+Regular expression is empty!
+Regular expression is invalid: %s
+response
+row-expanded
+SelectAll
+Select _All
+selection_bound
+Select the entire log
+Shakti Sen  <shprasad@novell.com>
+Show matches only
+ShowSidebar
+Show Side Pane
+ShowStatusBar
+Show Status Bar
+Show the about dialog for the log viewer
+Show the application's version
+Side _Pane
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+Smaller text size
+<small>%s</small>
+__stack_chk_fail
+standard::*,access::can-read
+_Statusbar
+strptime
+style-set
+Sun GNOME Documentation Team <gdocteam@sun.com>
+%s - Version %s
+system-font-changed
+System Log Viewer
+text_changed
+text-changed
+text/plain
+The file is not a regular file or is not a text file.
+There was an error displaying help: %s
+The text tag to be set on matching lines
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+translator_credits
+ui/LogviewMenu/HelpMenu/LaunchpadItems
+Unable to create the user interface.
+Unable to parse arguments: %s
+update_filter_menu
+/usr/share/gnome-system-log/logview-filter.ui
+/usr/share/gnome-system-log/logview-toolbar.xml
+/usr/share/locale
+/var/log/
+vbox_color
+Version: 
+ViewMenu
+ViewZoom100
+ViewZoomIn
+ViewZoomOut
+Vincent Noel <vincent.noel@gmail.com>
+Vincent Noel  <vincent.noel@gmail.com>
+weight-set
+wrap-license
+You don't have enough permissions to read the file.
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA

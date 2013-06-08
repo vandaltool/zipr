@@ -1,0 +1,80 @@
+	!/^%/	{
+awk 'F==1	{
+	  *)		base=`basename "${infile}"` ;;
+		b="%%BoundingBox: 0 0 0 0\\n";
+BEGINEPS
+#!/bin/sh
+		/^%%BoundingBox:/	{b=$0; next;}
+	case "${infile}" in
+cat << BEGINEPS
+cat << ENDEPS
+cat "${infile}" |
+		c="%%Creator: Ghostscript ps2epsi from " $9;
+		cd="%%CreationDate: " $6 " " $7 " " $8;
+cleartomark countdictstack exch sub { end } repeat restore
+	  *.cps)	base=`basename "${infile}" .cps` ;;
+	/^%%CreationDate:/	{cd=$0; next;}
+	/^%%Creator:/	{c=$0; next;}
+	-e '/^%%[A-Za-z][A-Za-z]*[^!-\~]*$/d' -e '/^%%[A-Za-z][A-Za-z]*: /d'
+		echo "failed: could not create temporary file"
+	echo "Usage: `basename \"$0\"` file.ps [file.epsi]" 1>&2
+%%EndProlog
+	  *.eps)	base=`basename "${infile}" .eps` ;;
+	  *.epsf)	base=`basename "${infile}" .epsf` ;;
+# executable name set in the makefile
+		exit(0);
+		exit 1
+export outfile
+	' F=1 - F=2 "${outfile}" >>"$tmpfile"
+		f="%%For:" U " " $3;
+	/^%%For:/	{f=$0; next;}
+gs="`dirname \"$0\"`/$GS_EXECUTABLE"
+GS_EXECUTABLE=gs
+GS_EXECUTABLE="$gs"
+"$GS_EXECUTABLE" -q -dBATCH -dNOPAUSE -P- -dSAFER -dDELAYSAFER -sDEVICE=bbox -sOutputFile=/dev/null "${infile}" 2>${outfile}
+"$GS_EXECUTABLE" -q -dNOPAUSE -P- -dSAFER -dDELAYSAFER -r72 -sDEVICE=bit -sOutputFile=/dev/null "$tmpfile" ps2epsi.ps "$tmpfile" <"${infile}" 1>&2
+	gs="$GS_EXECUTABLE"
+		hb=$0;
+		/^%%HiResBoundingBox:/	{ 
+if [ $# -eq 1 ]
+if [ $# -lt 1 -o $# -gt 2 ]; then
+	if test ! -d "$tmpdir"; then
+if test ! -x "$gs"; then
+if test -z "$TMPDIR"; then
+if which mktemp >/dev/null 2>/dev/null; then
+infile=$1;
+LC_ALL=C \
+ls -l "${infile}" |
+ls -l "${outfile}" |
+	/^%!/	{next;}
+) >> "${outfile}"
+	outfile=$2
+	outfile=${base}.epsi
+%%Page 1 1
+		print "/BBoxString (" b "\\n) def";
+		print "end";
+		print "/epsicrdt (" cd "\\n) def";
+		print "/epsicreator (" c "\\n) def";
+		print "/epsifor (" f "\\n) def";
+		print "/epsititle (" t "\\n) def";
+		print "/HiresBBoxString (" hb "\\n) def";
+		print "/ps2edict 30 dict def";
+		print "ps2edict begin";
+		print "ps2edict where {pop} {/ps2edict 30 dict def} ifelse";
+	  *.ps)		base=`basename "${infile}" .ps` ;;
+rm -f "$tmpfile"
+rm -rf "$tmpdir"
+save countdictstack mark newpath /showpage {} def /setpagedevice /pop load def
+sed -e '/^%%BeginPreview:/,/^%%EndPreview[^!-\~]*$/d' -e '/^%!PS-Adobe/d'\
+# This definition is changed on install to match the
+	/^%%Title:/	{t=$0; next;}
+	TMPDIR=/tmp
+	tmpdir=$TMPDIR/ps2epsi.$$
+	tmpfile="`mktemp $TMPDIR/ps2epsi.XXXXXX`"
+	tmpfile="$tmpdir"/ps2epsi$$
+%%Trailer
+trap "rm -rf \"$tmpfile\"" 0 1 2 3 7 13 15
+# try to create a temporary file securely
+		t="%%Title: " $9;
+	(umask 077 && mkdir "$tmpdir")
+	' U="$USERNAME$LOGNAME"  F=1 - F=2 "${infile}" >"$tmpfile"

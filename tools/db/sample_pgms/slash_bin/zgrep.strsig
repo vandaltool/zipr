@@ -1,0 +1,162 @@
+      (*'
+    (*\'*)
+  (*\'?*)
+  (*\'*)
+'* | *'&'* | *'\'* | *'|'*)
+	    ');;
+  (-[0123456789abcdhHiIKLlnoqrRsTuUvVwxyzZ]?*)
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  (-[ABCDefm] | --binary-* | --file | --[lm]a* | --reg*)
+# Adapted from a version sent by Charles Levert <charles@comm.polymtl.ca>
+    arg2=-\'$(expr "X${option}X" : 'X-.[0-9]*\(.*\)' | sed "$escape")
+# (at your option) any later version.
+  (--binary-*=* | --[lm]a*=* | --reg*=*)
+#!/bin/bash
+bindir='/bin'
+--__bindir) bindir=${2?}; shift; shift;;
+          break;
+    break;;
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+case $1 in
+  case ${1?"missing pattern; try \`$0 --help' for help"} in
+    case ${1?"$option option requires an argument"} in
+      case $i in
+    case $optarg in
+    case $option in
+  case $option in
+    continue;;
+# Copyright (C) 1993 Jean-loup Gailly
+# Copyright (C) 1998, 2001, 2002, 2006, 2007, 2009 Free Software Foundation
+Copyright (C) 2007, 2009-2010 Free Software Foundation, Inc.
+    (" '-'" | " '/dev/stdin'" | " '/dev/fd/0'")
+      done
+  (-[drRzZ] | --di* | --exc* | --inc* | --rec* | --nu*)
+    echo "$usage" || exit 2
+    echo "$version" || exit 2
+  (-[ef]* | --file | --file=* | --reg*)
+    elif test $files_without_matches -eq 1; then
+    elif test $with_filename -eq 0 &&
+    else
+    esac
+      esac
+escape='
+      eval "exec $pat_fd<&0"
+        && eval 'exists(){ test -e "$@"; }' \
+        || eval 'exists(){ test -r "$@" || test -w "$@"; }'
+      eval "$grep"
+	(eval "$grep" 4>&-; echo $? >&4) 3>&- | sed "$sed_script" >&3 4>&-
+      eval "$grep" >/dev/null || {
+      eval "$grep" >/dev/null && { printf '%s\n' "$i" || exit 2; }
+    eval "set -- $arg2 "'${1+"$@"}'
+eval "set -- $operands "'${1+"$@"}'
+      eval 'test -e .' 2>/dev/null \
+exec 3>&1
+	exec 4>&1
+    exec 5>&1
+    exit;;
+          exit 2
+    exit 2;;
+      exit $r
+	exit $r
+exit $res
+      # Fail if grep or sed fails.
+  # Fail if gzip or grep (or sed) fails.
+      fd=6
+        fd=$(expr $fd + 1)
+        fi
+    fi >&3 5>&-
+    # file descriptor for the pattern.
+files_with_matches=0
+    files_with_matches=1;;
+files_without_matches=0
+    files_without_matches=1;;
+# GNU General Public License for more details.
+    grep="$grep -- '$1'";;
+grep='${GREP-grep}'
+  grep="$grep $option$optarg"
+    grep="$grep -- '"$(printf '%sX\n' "$1" | sed "$escape");;
+    (gzip -cdfq -- "$i" 5>&-; echo $? >&5) 3>&- |
+  gzip_status=$(
+have_pat=0
+    have_pat=1;;
+  (--h | --he | --hel | --help)
+  (-H | --wi | --wit | --with | --with- | --with-f | --with-fi \
+        if ! exists /proc/$$/fd/$fd; then
+if test $# -eq 0; then
+        if test $fd = 255; then
+    if test $files_with_matches -eq 1; then
+if test $have_pat -eq 0; then
+    if test $pat_on_stdin -eq 1; then
+	if test $r -eq 1; then
+    # If the file is actually stdin then we need to do a little
+        i=$(printf '%s\n' "$i" |
+# it under the terms of the GNU General Public License as published by
+  (-l | --files-with-*)
+  (-L | --files-witho*)
+Look for instances of PATTERN in the input FILEs, using their
+    # magic, (since we use stdin to pass the gzip output to grep).
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	      $!N
+# newlines correctly) turn trailing X on last line into '.
+  (--no-f*)
+no_filename=0
+    no_filename=1;;
+operands=
+      operands="$operands '$option'";;
+      operands="$operands '"$(printf '%sX\n' "$option" | sed "$escape");;
+  optarg=
+      optarg=" '$1'";;
+      optarg=/dev/fd/$pat_fd;
+      optarg=" '"$(printf '%sX\n' "$1" | sed "$escape");;
+  option=$1
+    option=$(expr "X$option" : 'X\(-.[0-9]*\)');;
+    option=\'$(expr "X${option}X" : 'X\(.*\)' | sed "$escape");;
+    option="'$option'";;
+OPTIONs are the same as for 'grep'.
+      pat_fd=
+          pat_fd=$fd
+PATH=$bindir:$PATH
+pat_on_stdin=0
+      pat_on_stdin=1
+    ${POSIXLY_CORRECT+break}
+          printf >&2 '%s: no free file descriptor\n' "$0"
+    printf >&2 '%s: %s: option not supported\n' "$0" "$option"
+	  printf '%s\n' "$i" || r=2
+      r=$(
+      ) || r=2
+Report bugs to <bug-gzip@gnu.org>."
+	    sed '
+      sed_script="s|^|$i:|"
+# sed script to escape all ' for the shell, and then (to handle trailing
+  set -- -
+  s/'\''/'\''\\'\'''\''/g
+	      $s/[&\|]/\\&/g
+    shift;;
+	      $s/\n/\\n/g
+    # So find a free fd and change the argument to then use this
+      # Start search from 6 since the script already uses 3 and 5
+  $s/X$/'\''/
+	 { test $# -eq 1 || test $no_filename -eq 1; }; then
+  test "$gzip_status" -eq 0 || test "$gzip_status" -eq 2 || r=2
+  test $res -lt $r && res=$r
+# the Free Software Foundation; either version 3 of the License, or
+the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.
+    # The pattern is coming from a file rather than the command-line.
+There is NO WARRANTY, to the extent permitted by law.
+This is free software.  You may redistribute copies of it under the terms of
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+uncompressed contents if they are compressed.
+usage="Usage: $0 [OPTION]... [-e] PATTERN [FILE]...
+version='zgrep (gzip) 1.4
+  (-V | --v | --ve | --ver | --vers | --versi | --versio | --version)
+      while : ; do
+while test $# -ne 0; do
+  | --with-filename)
+with_filename=0
+    with_filename=1
+  | --with-fil | --with-file | --with-filen | --with-filena | --with-filenam \
+# with this program; if not, write to the Free Software Foundation, Inc.,
+Written by Jean-loup Gailly.'
+# You should have received a copy of the GNU General Public License along
+# zgrep -- a wrapper around a grep program that decompresses files as needed

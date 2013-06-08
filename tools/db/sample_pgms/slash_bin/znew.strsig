@@ -1,0 +1,116 @@
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  -9     Use the slowest compression method (optimal compression).
+# (at your option) any later version.
+#!/bin/bash
+bindir='/bin'
+--__bindir) bindir=${2?}; shift; shift;;
+block=1024
+# block is the disk block size (best guess, need not be exact)
+   *)     break;;
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+case $1 in
+  case "$arg" in
+case "$opt" in
+# check if GZIP env. variable uses -S or --suffix
+	# compress $n  (might be dangerous if disk full)
+      # Copy file attributes from old file to new one, if possible.
+# Copyright (C) 1993 Jean-loup Gailly
+# Copyright (C) 1998, 2002, 2004, 2007 Free Software Foundation
+Copyright (C) 2007, 2009-2010 Free Software Foundation, Inc.
+  cpmodarg="-r"
+  cpmod=${CPMOD-cpmod}
+  cpmod="${TOUCH-touch}"
+	echo cannot backup "$n.Z"
+        echo error while recompressing $n
+        echo error while recompressing $n, left uncompressed
+      echo error while recompressing $n.Z
+      echo error while testing $n$ext, $n.Z unchanged
+      echo error while uncompressing $n.Z
+echo hi > $tmp || exit
+    echo $n.Z not found
+    echo "$n.Z smaller than $n$ext -- unchanged"
+  echo "$usage"
+  echo znew: cannot use .Z as gzip extension.
+  echo znew: error determining gzip extension
+    elif test $check -eq 1; then
+  elif test $check -eq 1; then
+  elif test $pipe -eq 1; then
+    else
+      else
+  exit 1
+exit $res
+			      `expr \( $new + $block - 1 \) / $block`; then
+ext=`echo $tmp* | sed "s|$tmp||"`
+  -f     Force recompression even if a .gz file already exists.
+      fi
+for i do
+# GNU General Public License for more details.
+      gzip -d "$n$ext" && compress "$n" && rm -f "$n$ext"
+gzip -q $tmp
+      --help     display this help and exit
+  --help)      exec echo "$usage";;
+      if cp -p "$n.Z" "$n.$$" 2> /dev/null || cp "$n.Z" "$n.$$"; then
+    if gzip -d < "$n.Z" | gzip $opt > "$n$ext"; then
+    if gzip -d "$n.Z"; then
+    if gzip $opt "$n"; then
+    if gzip -t "$n$ext" ; then
+      if test $check -eq 1; then
+    if test $check -eq 1; then
+if test $# -eq 0; then
+if test "$ext" = ".Z"; then
+  if test ! -f "$n.Z" ; then
+  if test $keep -eq 1 && test `expr \( $old + $block - 1 \) / $block` -lt \
+if test -n "$opt"; then
+    if test $pipe -eq 1; then
+  if test $pipe -eq 1; then
+if test -z "`(${CPMOD-cpmod} $tmp $tmp) 2>&1`"; then
+if test -z "$cpmod" && ${TOUCH-touch} -r $tmp $tmp 2>/dev/null; then
+if test -z "$ext"; then
+# it under the terms of the GNU General Public License as published by
+  *K*) keep=1; opt=`echo "$opt" | sed 's/K//g'`
+  -K     Keep a .Z file when it is smaller than the .gz file.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	mv "$n.$$" "$n.Z" && rm -f "$n"
+      mv "$n.$$" "$n.Z" && rm -f "$n$ext"
+  n=`echo $i | sed 's/.Z$//'`
+opt=`echo "$opt" | sed -e 's/ //g' -e 's/-//g'`
+Options:
+  opt="-$opt"
+  -*)     opt="$opt $arg"; shift;;
+PATH=$bindir:$PATH; export PATH
+  *P*) pipe=1; opt=`echo "$opt" | sed 's/P//g'`
+  -P     Use pipes for the conversion to reduce disk space usage.
+Recompress files from .Z (compress) format to .gz (gzip) format.
+Report bugs to <bug-gzip@gnu.org>."
+        res=1; continue
+      res=1; continue
+    res=1; continue
+      rm -f "$n$ext"
+      rm -f "$n.$$" "$n.Z"
+    rm -f "$n.Z"
+rm -f $tmp*
+  *t*) check=1; opt=`echo "$opt" | sed 's/t//g'`
+      test $check -eq 1 && mv "$n.$$" "$n.Z"
+  test $keep -eq 1 && new=`wc -c < "$n$ext"`
+  test $keep -eq 1 && old=`wc -c < "$n.Z"`
+      test -n "$cpmod" && $cpmod $cpmodarg "$n.Z" "$n$ext" 2> /dev/null
+      test $pipe -eq 0 && mv "$n.$$" "$n.Z"
+# the Free Software Foundation; either version 3 of the License, or
+the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.
+There is NO WARRANTY, to the extent permitted by law.
+This is free software.  You may redistribute copies of it under the terms of
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+tmp=${TMPDIR-/tmp}/zfoo.$$
+  -t     Test the new files before deleting originals.
+usage="Usage: $0 [OPTION]... [FILE]...
+  --version)   exec echo "$version";;
+      --version  output version information and exit
+version="znew (gzip) 1.4
+  -v     Verbose; display name and statistics for each file compressed.
+  warn=""
+  warn="(does not preserve file modes)"
+warn="(does not preserve modes and timestamp)"
+# with this program; if not, write to the Free Software Foundation, Inc.,
+Written by Jean-loup Gailly."
+# You should have received a copy of the GNU General Public License along

@@ -1,0 +1,3823 @@
+@;,.\?()[]{}+/
+%02d:%02d:%02d %s
+%04d-%02d-%02d
+ 2002 - 2010 Seahorse Project
+3T$\3D$X	
+%4d-%2d-%2d
+%4d%2d%2d%2d%2d%2d
+About this program
+Access a network share or resource
+Access a website
+Access to the key ring was denied
+action != NULL
+action == NULL || GTK_IS_ACTION (action)
+activate
+Actual GPG Index
+actual-index
+Actual Index
+Adam Schreiber <sadam@clemson.edu>
+_add_atk_name_desc
+add-keyserver
+add_key_to_context
+add_key_transit
+add_object
+addphoto
+addrevoker
+add_revoker_transit
+add-subkey
+Add subkey to %s
+add_uid_transit
+Add user ID to %s
+add-widget
+Albrecht Dre
+ <albrecht.dress@arcor.de>
+algo != NULL
+algorithm
+algorithm-choice
+all_bindings
+all-controls
+All files
+All image files
+All JPEG files
+All key files
+all_transfers
+already tracking progress for this part of the operation
+An object to prefer over this one
+app-about
+app-close
+app_context
+app_context == NULL
+app_context != NULL
+application/octet-stream
+application/pgp-encrypted
+application/pgp-keys
+Applications usually store new passwords in the default keyring.
+application/x-7zip
+application/x-ar
+application/x-arj
+application/x-bzip
+application/x-bzip-compressed-tar
+application/x-cd-image
+application/x-compress
+application/x-compressed-tar
+application/x-gzip
+application/x-jar
+application/x-java-archive
+application/x-lha
+application/x-lzop
+application/x-pem-key
+application/x-rar
+application/x-rar-compressed
+application/x-ssh-key
+application/x-tar
+application/x-www-form-urlencoded
+application/x-zoo
+application/zip
+app-preferences
+app-quit
+/apps/seahorse/windows/%s/
+Archive files
+Are you sure you want to delete %d certificate?
+Are you sure you want to delete %d certificates?
+Are you sure you want to delete %d password?
+Are you sure you want to delete %d passwords?
+Are you sure you want to delete %d secure shell keys?
+Are you sure you want to delete the certificate '%s'?
+Are you sure you want to delete the password keyring '%s'?
+Are you sure you want to delete the password '%s'?
+Are you sure you want to delete the secure shell key '%s'?
+Are you sure you want to permanently delete %d identities?
+Are you sure you want to permanently delete %d keys?
+Are you sure you want to permanently delete %d keys and identities?
+Are you sure you want to permanently delete %s?
+Are you sure you want to permanently delete subkey %d of %s?
+Are you sure you want to permanently delete the '%s' user ID?
+Are you sure you want to remove the current photo from your key?
+--armor --export-secret-key '%s'
+ask_revocation_reason.code
+ask_revocation_reason.okay
+ask_revocation_reason.text
+a->subkeys
+atk_object_ref_relation_set
+atk_object_set_description
+atk_object_set_name
+atk_relation_new
+atk_relation_set_add
+at != NULL
+authentication-password
+authentication-user
+authorized_keys
+auto_retrieve
+auto_sync
+avahi_address_snprint
+avahi_client_errno
+avahi_client_free
+avahi_client_new
+avahi_glib_allocator
+avahi_glib_poll_free
+avahi_glib_poll_get
+avahi_glib_poll_new
+avahi_service_browser_free
+avahi_service_browser_new
+avahi_service_resolver_free
+avahi_service_resolver_new
+avahi_set_allocator
+avahi_strerror
+bad arguments passed to gnome-keyring API
+<b>A file already exists with this name.</b>
+base-directory
+<b>%d key is selected for synchronizing</b>
+<b>%d keys are selected for synchronizing</b>
+-----BEGIN 
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+ber_free
+<big><b>The photo is too large</b></big>
+binding_dest_gone
+binding_fire
+binding->obj_dests
+binding->obj_src == was
+binding->prop_dest
+binding->references > 0
+binding_src_gone
+binding->transform
+binding_unref
+bindtextdomain
+bind_textdomain_codeset
+bind_transfer
+bits-entry
+box != NULL
+<b>Passwords:</b> %s
+browse_callback
+browser == ssd->priv->browser
+Browsing for DNS-SD services failed: %s
+<b>%s</b>
+<b>%s</b>: 
+__bss_start
+b->subkeys
+b >= text
+button_press_event
+button-press-event
+button_release_event
+byteSwap
+calc_display_id
+calculate_keyserver_uri
+calendar
+callback
+caller is trying to begin part for task that does not exist
+caller is trying to begin part of task that does not exist
+caller is trying to begin part of task that has already begun
+caller is trying to begin part of task that has already ended
+caller is trying to end part for task that does not exist
+caller is trying to end part of task that does not exist
+caller is trying to end part of task that has already ended
+caller is trying to end part of task that has not begun
+caller is trying to show progress for a task which already has displayed progress
+caller is trying to update part for task that does not exist
+caller is trying to update part of task that does not exist
+caller is trying to update part of task that has already ended
+!cancellable || G_IS_CANCELLABLE (cancellable)
+cancellable == NULL || G_IS_CANCELLABLE (cancellable)
+cancel_scheduled_refresh
+cannot display progress because seahorse window '%s' has no progress widget
+canonize
+?category
+category[0]
+CCouldn't revoke subkey
+certificate
+Certificate to display
+changed::default-key
+changed::keyserver
+changed::keyservers
+changed::%s
+changed::server-publish-to
+Change _Password
+Change preferences for this program
+change_raw_comment
+Change the unlock password of the password storage keyring
+check-option
+child_path != NULL
+child->pv->parent == NULL
+child->pv->parent == self
+children
+Choose Photo to Add to Key
+chost && g_utf8_validate (chost, -1, NULL)
+clamp-maxday
+clamp-maxhour
+clamp-maxminute
+clamp-maxmonth
+clamp-maxsecond
+clamp-maxyear
+clamp-minday
+clamp-minhour
+clamp-minminute
+clamp-minmonth
+clamp-minsecond
+clamp-minyear
+cleanup->notify
+cleanup_registry
+client_callback
+client == ssd->priv->client
+CLIPBOARD
+Close this program
+Close this window
+closure->at < (gint)closure->keyids->len
+closure->cancelled_sig == 0
+closure->exports > 0
+closure->imports > 0
+closure->keyids
+closure->num_loads == 0
+closure->num_loads > 0
+closure->num_searches > 0
+closure->num_transfers > 0
+closure->pid == 0 && closure->wpid == 0
+closure->previous_error == NULL
+!closure->request
+closure->request == NULL
+closure->requests > 0
+cn=PGPServerInfo
+_Collapse All
+Collapse all listings
+column >= 0 && column < pv->n_columns
+Column data is stored
+Column where internal data is stored
+combo != NULL
+command-actions
+command && command[0]
+commands
+comment-entry
+compare_pubkeys
+compare_pubkeys (pubkey, self->pv->pubkey)
+Compromised
+Configure Key for _Secure Shell...
+Configuring Secure Shell Keys...
+Confirm:
+confirm_callback
+confirm-entry
+Connecting to: %s
+construct-tag
+Construct Tag
+_Contents
+Context for object
+Contributions:
+<control>C
+<control>I
+<control>N
+<control>Q
+<control>V
+<control>W
+Copied keys
+Copyright 
+Copy to the clipboard
+Could not display help: %s
+could not find widget %s for seahorse-%s.xml
+Couldn't add keyring
+Couldn't add photo
+Couldn't add revoker
+Couldn't add subkey
+Couldn't add user id
+Couldn't change authorization for key.
+Couldn't change expiry date
+Couldn't change keyring password
+Couldn't change passphrase for key.
+Couldn't change password.
+Couldn't change primary photo
+Couldn't change primary user ID
+Couldn't communicate with key ring daemon
+Couldn't communicate with server '%s': %s
+Couldn't communicate with '%s': %s
+Couldn't configure Secure Shell keys on remote computer.
+couldn't create .ssh directory: %s
+Couldn't delete
+Couldn't delete item
+Couldn't delete key
+Couldn't delete keyring
+Couldn't delete photo
+Couldn't delete private key
+Couldn't delete public key
+Couldn't delete subkey
+Couldn't delete user ID
+Couldn't export key.
+Couldn't export keys
+Couldn't export key to "%s"
+couldn't find a local source for: %s
+couldn't find key fingerprint in line from server: %s
+Couldn't generate PGP key
+Couldn't generate Secure Shell key
+couldn't get default keyring name: %s
+couldn't get mime type for data
+Couldn't import keys
+couldn't initialize avahi glib poll integration
+couldn't load attributes for pkcs#11 object: %s
+couldn't load GPGME key: %s
+couldn't load key photos: %s
+couldn't load ui description for '%s': %s
+couldn't load UI description: %s
+Couldn't lock keyring
+couldn't monitor ssh directory: %s: %s
+couldn't monitor the GPG home directory: %s: %s
+couldn't open file to check for SSH key: %s: %s
+couldn't parse imported private key fingerprint
+couldn't parse ssh command line: %s
+Couldn't prepare photo
+Couldn't publish keys to server
+couldn't read file to check for SSH key: %s: %s
+couldn't read SSH file: %s (%s)
+Couldn't rename key.
+Couldn't resolve address: %s
+couldn't resolve service '%s': %s
+Couldn't retrieve data from key server
+Couldn't retrieve keys from server: %s
+Couldn't set default keyring
+Couldn't set description.
+Couldn't sign key
+couldn't start resolver for service '%s': %s
+couldn't stat output image file '%s': %s
+couldn't transform value from '%s' to '%s' when trying to transfer bound property from %s.%s to %s.%s
+Couldn't unlock keyring
+couldn't write data to socket: %s
+count > 0
+count == closure->imports
+Create a new key or item
+created-field
+Created On
+create_file
+Creating Secure Shell Key
+creation of SoupURI from '%s' failed
+credentials
+current-photoid
+cuser && g_utf8_validate (cuser, -1, NULL)
+D$7+L$89
+data-column
+data && data->rawdata
+__data_start
+date-changed
+date != NULL
+Date this key expires on
+Date this key was created on
+datetime-placeholder
+day >= 1 && day <= g_date_get_days_in_month (month, year)
+Day of month part of the lower date limit
+Day of month part of the upper date limit
+day-selected
+day-selected-double-click
+dcgettext
+dcngettext
+Decryption failed. You probably do not have the decryption key.
+default_source
+dehtmlize
+delete_event
+delete-event
+delete_gkr_free
+delete_gkr_one_object
+Delete selected items
+Deleting
+Deleting item
+Deleting items
+Deleting keyring
+Deleting keyrings
+del_key_transit
+del_uid_action
+del_uid_transit
+description-field
+destination
+destination is not of type: %s
+destination property '%s' has a different type between objects in binding: %s != %s
+detail-message
+details-actions-label
+details-add-button
+details-algo-label
+details-box
+details-calendar-button
+details-created-label
+details-date-button
+details-delete-button
+details-expires-label
+details-export-button
+details-fingerprint-label
+details-id-label
+details-revoke-button
+details-strength-label
+details-subkey-tree
+details-trust-combobox
+D$ht;9D$0
+Directory where the keys are stored
+Disabled
+disabled-area
+Displayable ID for the object.
+Displayed date and/or time properties
+Displayed day of month
+Displayed hour
+Displayed minute
+Displayed month
+Displayed second
+Displayed year
+display-flags
+Display flags
+DNS-SD initialization failed: %s
+do_details
+do_names
+do_names_signals
+_Don't Resize
+do_trust
+Do you want to replace it with a new file?
+drag_begin
+drag_data_get
+drag-data-received
+drag_end
+DSA Elgamal
+DSA (sign only)
+editable
+edit-delete
+edit_disable_transit
+edit_expire_transit
+edit-export-clipboard
+edit_gpgme_key
+edit-import-clipboard
+edit_key
+edit-menu
+edit_ownertrust.set_ultimate.okay
+edit_ownertrust.value
+edit_pass_transit
+edit_trust_transit
+edt != NULL
+e < escaped + len
+EggDateTime
+egg_datetime_get_as_gdate
+egg_datetime_get_as_struct_tm
+egg_datetime_get_as_time_t
+egg_datetime_get_clamp_date
+egg_datetime_get_clamp_time
+egg_datetime_get_date
+egg_datetime_get_date_layout
+egg_datetime_get_display_mode
+egg_datetime_get_lazy
+egg_datetime_get_property
+egg_datetime_get_time
+egg_datetime_get_time_layout
+egg_datetime_get_type
+egg_datetime_new
+egg_datetime_new_from_datetime
+egg_datetime_new_from_gdate
+egg_datetime_new_from_struct_tm
+egg_datetime_new_from_time_t
+egg_datetime_set_clamp_date
+egg_datetime_set_clamp_time
+egg_datetime_set_clamp_time_t
+egg_datetime_set_date
+egg_datetime_set_display_mode
+egg_datetime_set_from_gdate
+egg_datetime_set_from_struct_tm
+egg_datetime_set_from_time_t
+egg_datetime_set_lazy
+egg_datetime_set_none
+egg_datetime_set_property
+egg_datetime_set_time
+EGG_IS_DATETIME (edt)
+EGG_IS_DATETIME (object)
+EGG_IS_TREE_MULTI_DRAG_SOURCE (drag_source)
+EggTreeMultiDndString
+egg_tree_multi_drag_add_drag_support
+EggTreeMultiDragSource
+egg_tree_multi_drag_source_drag_data_delete
+egg_tree_multi_drag_source_drag_data_get
+egg_tree_multi_drag_source_get_type
+egg_tree_multi_drag_source_row_draggable
+egg-tree-view-multi-source-row
+ElGamal (encrypt only)
+email-entry
+emblem-readonly
+-----END 
+-----END PGP PUBLIC KEY BLOCK-----
+engine && engine->version && engine->file_name && (g_str_has_prefix (engine->version, GPG_VERSION_PREFIX1) || g_str_has_prefix (engine->version, GPG_VERSION_PREFIX2))
+engine->file_name
+engine != NULL
+engine != NULL && engine->file_name
+Enter Key Passphrase
+Enter new passphrase
+Enter new passphrase for '%s'
+Enter passphrase
+Enter passphrase for '%s'
+Enter the date directly
+Enter the passphrase for your new key twice.
+Enter the time directly
+!err || !*err
+err && !*err
+__errno_location
+err == NULL
+!error || !*error
+error == NULL || *error == NULL
+error occurred on export: %s
+escape_ldap_value
+escape_shell_arg
+execute_gpg_command
+_Expand All
+Expand all listings
+Expiration Date
+expired-area
+Expire-Date: %s
+expired-message
+expires-check
+expires-datetime
+Expires On
+expires != seahorse_pgp_subkey_get_expires (SEAHORSE_PGP_SUBKEY (subkey))
+expires-str
+Expires String
+expiry-date-container
+Expiry: %s
+E_xport...
+Export Complete Key
+Exporting data
+Exporting keys
+Export public key
+Export to a file
+export_to_filename
+export_to_text
+failed to refresh: %s
+failed to retrieve info for keyring %s: %s
+failed to retrieve item %d from keyring %s: %s
+failure browsing for services: %s
+failure communicating with to avahi: %s
+# FILE CREATED BY SEAHORSE
+file-export
+file-import
+file-menu
+filename
+file-new
+file != NULL
+file %s: line %d (%s): should not be reached
+filter_callback
+filter_matching_objects
+find_config_file
+_Find Remote Keys...
+fire_selected_action
+fire_selection_changed
+first-time-box
+focus-out-event
+For help contact your system adminstrator or the administrator of the key server.
+from != NULL
+g_app_info_launch_default_for_uri
+g_array_append_vals
+g_array_free
+g_array_new
+g_array_set_size
+g_ascii_dtostr
+g_ascii_strcasecmp
+g_ascii_strdown
+g_ascii_strncasecmp
+g_ascii_table
+g_ascii_tolower
+g_ascii_toupper
+g_assertion_message
+g_assertion_message_expr
+g_async_result_get_source_object
+g_async_result_get_type
+g_atexit
+g_base64_decode
+g_boxed_type_register_static
+g_build_filename
+g_cancellable_cancel
+g_cancellable_connect
+g_cancellable_disconnect
+g_cancellable_get_type
+g_cancellable_is_cancelled
+g_cancellable_new
+g_cancellable_set_error_if_cancelled
+g_cclosure_marshal_VOID__OBJECT
+g_cclosure_marshal_VOID__STRING
+g_cclosure_marshal_VOID__VOID
+g_child_watch_add_full
+gck_attribute_clear
+gck_attribute_get_boolean
+gck_attribute_get_date
+gck_attribute_init_copy
+gck_attribute_init_invalid
+gck_attribute_is_invalid
+!gck_attribute_is_invalid (&self->pv->der_value)
+gck_attributes_add_boolean
+gck_attributes_add_invalid
+gck_attributes_add_ulong
+gck_attributes_at
+gck_attributes_count
+gck_attributes_find
+gck_attributes_find_boolean
+gck_attributes_find_string
+gck_attributes_get_boxed_type
+gck_attributes_new
+gck_attributes_ref
+gck_attributes_unref
+gck_get_error_quark
+gck_list_unref_free
+gck_module_get_slots
+gck_modules_initialize_registered
+gck_object_destroy_async
+gck_object_destroy_finish
+gck_object_get_async
+gck_object_get_finish
+gck_object_get_handle
+gck_object_get_session
+gck_object_get_type
+gck_session_find_objects_async
+gck_session_find_objects_finish
+gck_session_get_slot
+gck_slot_get_handle
+gck_slot_get_type
+gck_slot_open_session_async
+gck_slot_open_session_finish
+g_clear_error
+g_content_type_guess
+g_convert
+gcr_certificate_get_type
+gcr_certificate_mixin_class_init
+gcr_certificate_mixin_comparable_init
+gcr_certificate_mixin_get_property
+gcr_certificate_widget_get_certificate
+gcr_certificate_widget_new
+gcr_certificate_widget_set_certificate
+gcr_comparable_get_type
+g_date_clamp
+g_date_clear
+g_date_get_days_in_month
+g_date_new
+g_date_set_dmy
+g_date_set_parse
+g_date_set_time_t
+g_date_strftime
+g_date_to_struct_tm
+g_date_valid
+g_dgettext
+g_dir_close
+g_direct_equal
+g_direct_hash
+g_dir_open
+g_dir_read_name
+gdk_atom_intern
+gdk_cursor_new
+gdk_device_grab
+gdk_device_manager_get_client_pointer
+gdk_device_ungrab
+gdk_display_get_default
+gdk_display_get_device_manager
+gdk_drag_context_get_source_window
+gdk_drag_context_get_type
+gdk_drag_context_list_targets
+gdk_event_copy
+gdk_event_free
+GDK_IS_DRAG_CONTEXT (context)
+gdk_pixbuf_format_get_mime_types
+gdk_pixbuf_format_get_name
+gdk_pixbuf_get_file_info
+gdk_pixbuf_get_formats
+gdk_pixbuf_get_type
+gdk_pixbuf_new_from_file
+gdk_pixbuf_save_to_callback
+gdk_pixbuf_scale_simple
+gdk_property_change
+gdk_property_get
+gdk_screen_get_height
+gdk_window_focus
+gdk_window_get_origin
+gdk_window_get_state
+gdk_window_set_cursor
+g_dpgettext
+generate-select
+Generating key
+generator
+g_enum_register_static
+g_error_free
+g_error_matches
+get_algorithm_text
+get_base_iter
+get_current_view
+get_expiry_date
+get_http_server_uri
+get_keyserver_selection
+get_selected_object
+get_tab_for_object
+get_tab_id
+get_tab_info
+get_upper_iter
+g_file_error_from_errno
+g_file_error_quark
+g_file_get_basename
+g_file_get_contents
+g_file_get_path
+g_file_get_uri
+g_file_info_get_content_type
+g_file_monitor_directory
+g_filename_from_uri
+g_file_new_for_path
+g_file_new_for_uri
+g_file_open_tmp
+g_file_query_exists
+g_file_query_info
+g_file_read
+g_file_replace
+g_file_replace_contents_async
+g_file_replace_contents_finish
+g_file_set_contents
+g_file_test
+g_get_current_time
+g_getenv
+g_get_home_dir
+g_get_user_name
+g_hash_table_destroy
+g_hash_table_find
+g_hash_table_foreach
+g_hash_table_foreach_remove
+g_hash_table_insert
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_lookup
+g_hash_table_lookup (pv->object_to_node, iter->user_data) == node
+g_hash_table_lookup (pv->object_to_node, node->data) == node
+g_hash_table_lookup (pv->object_to_node, sobj) == iter->user_data2
+g_hash_table_lookup (pv->object_to_node, sobj) == NULL
+g_hash_table_lookup (pv->object_to_node, sobj) != NULL
+!g_hash_table_lookup (sctx->pv->objects_by_source, ks)
+g_hash_table_new
+g_hash_table_new_full
+g_hash_table_remove
+g_hash_table_remove_all
+g_hash_table_replace
+g_hash_table_size
+g_hash_table_size (pv->object_to_node) == 0
+g_hash_table_unref
+ghelp:seahorse?introduction
+ghelp:seahorse?keyring
+ghelp:seahorse?%s
+g_idle_add
+g_idle_add_full
+g_input_stream_get_type
+g_input_stream_read_all
+g_intern_static_string
+g_io_add_watch_full
+g_io_channel_error_from_errno
+g_io_channel_error_quark
+g_io_channel_read_chars
+g_io_channel_set_close_on_unref
+g_io_channel_set_encoding
+g_io_channel_unix_new
+g_io_channel_unref
+g_io_channel_write_chars
+g_io_error_quark
+G_IS_ASYNC_RESULT (result)
+G_IS_INPUT_STREAM (input)
+G_IS_OBJECT (dest)
+G_IS_OBJECT (obj_dest)
+G_IS_OBJECT (object)
+G_IS_OBJECT (obj_src)
+G_IS_OUTPUT_STREAM (output)
+gkr-add-item
+gkr-add-keyring
+gkr-generate
+gkr-item-properties
+gkr-keyring
+gkr-request
+gkr-secure-entry
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+g_list_append
+g_list_concat
+g_list_copy
+g_list_delete_link
+g_list_find
+g_list_find_custom
+g_list_first
+g_list_foreach
+g_list_free
+GList_GObject
+g_list_last
+g_list_length
+g_list_length (objects) > 0
+g_list_nth_data
+g_list_prepend
+g_list_remove
+g_list_remove_link
+g_list_reverse
+g_list_sort
+g_locale_to_utf8
+g_main_context_default
+g_main_context_iteration
+g_main_context_pending
+g_malloc
+g_malloc0
+g_malloc0_n
+g_markup_escape_text
+g_markup_printf_escaped
+g_memdup
+g_memory_input_stream_get_type
+g_memory_input_stream_new_from_data
+g_memory_output_stream_get_data
+g_memory_output_stream_get_data_size
+g_memory_output_stream_get_type
+g_memory_output_stream_new
+g_mem_set_vtable
+g_mkstemp
+__gmon_start__
+gmtime_r
+g_node_child_position
+g_node_destroy
+!g_node_first_child (pv->root_node)
+g_node_insert_before
+g_node_n_children
+g_node_new
+g_node_nth_child
+g_node_traverse
+GnomeKeyringAttributeList
+gnome_keyring_attribute_list_copy
+gnome_keyring_attribute_list_free
+gnome_keyring_attribute_list_new
+gnome_keyring_cancel_request
+gnome_keyring_change_password
+gnome_keyring_create
+gnome_keyring_delete
+gnome_keyring_free_password
+gnome_keyring_get_default_keyring
+gnome_keyring_get_info
+GnomeKeyringInfo
+Gnome Keyring Info
+gnome_keyring_info_copy
+gnome_keyring_info_free
+gnome_keyring_info_get_ctime
+gnome_keyring_info_get_is_locked
+GNOME Keyring Item Attributes
+gnome_keyring_item_create
+gnome_keyring_item_delete
+gnome_keyring_item_get_attributes
+gnome_keyring_item_get_info
+gnome_keyring_item_get_info_full
+GNOME Keyring Item ID
+GnomeKeyringItemInfo
+GNOME Keyring Item Info
+gnome_keyring_item_info_copy
+gnome_keyring_item_info_free
+gnome_keyring_item_info_get_display_name
+gnome_keyring_item_info_get_secret
+gnome_keyring_item_info_get_type
+gnome_keyring_item_info_set_display_name
+gnome_keyring_item_info_set_secret
+gnome_keyring_item_set_info
+gnome_keyring_list_item_ids
+gnome_keyring_list_keyring_names
+gnome_keyring_lock
+gnome_keyring_memory_alloc
+gnome_keyring_memory_free
+gnome_keyring_memory_is_secure
+gnome_keyring_memory_realloc
+gnome_keyring_memory_strdup
+gnome_keyring_memory_try_alloc
+gnome_keyring_memory_try_realloc
+Gnome Keyring Name
+gnome_keyring_result_to_message
+gnome_keyring_set_default_keyring
+gnome_keyring_unlock
+gnome-stock-authentication
+gnome-stock-blank
+gnome-stock-book-open
+gnome-unknown
+</GnupgKeyParms>
+<GnupgKeyParms format="internal">
+GNUPG: %s (%d.%d.%d)
+g_object_add_weak_pointer
+gobject == binding->obj_src
+g_object_class_find_property
+g_object_class_install_property
+g_object_class_override_property
+g_object_freeze_notify
+g_object_get
+g_object_get_data
+g_object_get_property
+g_object_get_qdata
+g_object_interface_install_property
+g_object_new
+g_object_notify
+g_object_ref
+g_object_ref_sink
+g_object_remove_weak_pointer
+g_object_run_dispose
+g_object_set
+g_object_set_data
+g_object_set_data_full
+g_object_set_property
+g_object_set_qdata
+g_object_steal_data
+g_object_thaw_notify
+g_object_unref
+g_object_weak_ref
+g_object_weak_unref
+g_once_init_enter
+g_once_init_leave
+gone_object
+g_output_stream_close
+g_output_stream_flush
+g_output_stream_get_type
+g_output_stream_write_all
+g_param_spec_boolean
+g_param_spec_boxed
+g_param_spec_enum
+g_param_spec_object
+g_param_spec_pointer
+g_param_spec_ref
+g_param_spec_string
+g_param_spec_uint
+g_param_spec_ulong
+g_param_spec_unref
+g_parse_debug_string
+g_path_get_dirname
+g_pattern_match_simple
+GPG Algorithm
+/gpg.conf
+GPG_IS_OK (err)
+GPG_IS_OK (gerr)
+GPG_IS_OK (init_gpgme (&ctx))
+GPG Key ID
+GPGME_1.0
+GPGME_1.1
+gpgme_cancel
+gpgme_check_version_internal
+gpgme_data_new_from_cbs
+gpgme_data_release_and_get_mem
+gpgme_data_write
+gpgme_engine_check_version
+gpgme_err_code_to_errno
+gpgme-generate
+gpgme_get_engine_info
+gpgme_get_keylist_mode
+gpgme_index
+gpgme-index
+GPGME Index
+gpgme_key_ref
+gpgme_key_t
+gpgme_key_unref
+gpgme_new
+gpgme_op_delete
+gpgme_op_edit
+gpgme_op_export_start
+gpgme_op_genkey_start
+gpgme_op_import_result
+gpgme_op_import_start
+gpgme_op_keylist_end
+gpgme_op_keylist_ext_start
+gpgme_op_keylist_next
+gpgme_op_keylist_start
+gpgme_pubkey_algo_name
+GPGME Public Key
+GPGME Public Key that this object represents
+GPGME Public Key that this subkey is on
+GPGME Public Key that this uid is on
+gpgme_release
+GPGME Secret Key
+GPGME Secret Key that this object represents
+gpgme_set_armor
+gpgme_set_io_cbs
+gpgme_set_keylist_mode
+gpgme_set_locale
+gpgme_set_passphrase_cb
+gpgme_set_progress_cb
+gpgme_set_protocol
+gpgme_set_textmode
+gpgme_signers_add
+gpgme_strerror
+GPGME Subkey
+GPGME User ID
+GPGME User ID Index
+gpg_options_init
+gpg_options_inited
+gpg_options_init (NULL)
+(gpointer)task->cancellable == (gpointer)where_the_object_was
+g_printerr
+g_ptr_array_add
+g_ptr_array_free
+g_ptr_array_new
+g_ptr_array_new_with_free_func
+g_ptr_array_remove_index_fast
+g_quark_from_static_string
+g_quark_from_string
+g_quark_to_string
+g_quark_try_string
+g_queue_find_custom
+g_queue_foreach
+g_queue_free
+g_queue_is_empty
+g_queue_new
+g_queue_peek_head
+g_queue_pop_head
+g_queue_push_tail
+g_realloc
+g_return_if_fail_warning
+g_seekable_get_type
+g_seekable_seek
+g_setenv
+g_set_error
+g_set_error_literal
+g_settings_bind
+g_settings_get_boolean
+g_settings_get_int
+g_settings_get_string
+g_settings_get_strv
+g_settings_get_type
+g_settings_list_schemas
+g_settings_new
+g_settings_new_with_path
+g_settings_set_boolean
+g_settings_set_int
+g_settings_set_string
+g_settings_set_strv
+g_shell_parse_argv
+g_signal_connect_data
+g_signal_connect_object
+g_signal_emit
+g_signal_emit_by_name
+g_signal_handler_disconnect
+g_signal_handlers_block_matched
+g_signal_handlers_disconnect_matched
+g_signal_handlers_unblock_matched
+g_signal_new
+g_signal_stop_emission_by_name
+g_simple_async_result_complete
+g_simple_async_result_complete_in_idle
+g_simple_async_result_get_op_res_gpointer
+g_simple_async_result_get_type
+g_simple_async_result_is_valid
+g_simple_async_result_is_valid (result, G_OBJECT (item), seahorse_gkr_update_description_async)
+g_simple_async_result_is_valid (result, G_OBJECT (item), seahorse_gkr_update_secret_async)
+g_simple_async_result_is_valid (result, G_OBJECT (key), seahorse_ssh_op_change_passphrase_async)
+g_simple_async_result_is_valid (result, G_OBJECT (self), seahorse_context_retrieve_objects_async)
+g_simple_async_result_is_valid (result, G_OBJECT (self), seahorse_context_search_remote_async)
+g_simple_async_result_is_valid (result, G_OBJECT (self), seahorse_context_transfer_objects_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_gkr_keyring_load_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_gkr_source_load_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_gpgme_key_op_generate_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_gpgme_source_export_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_gpgme_source_import_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_gpgme_source_list_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_gpgme_source_load_full_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_hkp_source_export_raw_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_hkp_source_import_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_hkp_source_search_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ldap_source_connect_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ldap_source_export_raw_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ldap_source_import_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ldap_source_search_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_pkcs11_refresh_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_server_source_load_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ssh_op_authorize_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ssh_operation_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ssh_op_generate_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ssh_op_import_private_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ssh_op_rename_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ssh_op_upload_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ssh_source_export_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ssh_source_import_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_ssh_source_load_async)
+g_simple_async_result_is_valid (result, G_OBJECT (source), seahorse_unknown_source_load_async)
+g_simple_async_result_is_valid (result, NULL, seahorse_gkr_delete_async)
+g_simple_async_result_is_valid (result, NULL, seahorse_pkcs11_delete_async)
+g_simple_async_result_is_valid (result, NULL, seahorse_source_export_auto_async)
+g_simple_async_result_is_valid (result, NULL, seahorse_transfer_async)
+g_simple_async_result_new
+g_simple_async_result_propagate_error
+g_simple_async_result_set_error
+g_simple_async_result_set_op_res_gpointer
+g_simple_async_result_take_error
+g_slist_free
+g_source_add_poll
+g_source_attach
+g_source_new
+g_source_remove
+g_source_remove_poll
+g_source_set_callback
+g_source_unref
+g_spawn_async_with_pipes
+g_spawn_close_pid
+g_spawn_command_line_sync
+g_strchomp
+g_strchug
+g_strcmp0
+g_strconcat
+g_strdelimit
+g_strdup
+g_strdup_printf
+g_strdup_vprintf
+g_str_equal
+g_strerror
+g_strfreev
+g_str_hash
+g_str_has_prefix
+g_str_has_suffix
+g_string_append
+g_string_append_len
+g_string_append_printf
+g_string_erase
+g_string_free
+g_string_insert_c
+g_string_new
+g_string_new_len
+g_string_sized_new
+g_strjoinv
+g_strndup
+g_strsplit
+g_strsplit_set
+g_strstr_len
+!gsubkey->revoked
+g_thread_init
+g_thread_yield
+g_timeout_add
+g_timeout_add_seconds
+g_timeout_add_seconds_full
+gtk-about
+gtk_about_dialog_get_type
+gtk_about_dialog_new
+gtk_about_dialog_set_artists
+gtk_about_dialog_set_authors
+gtk_about_dialog_set_comments
+gtk_about_dialog_set_copyright
+gtk_about_dialog_set_documenters
+gtk_about_dialog_set_logo_icon_name
+gtk_about_dialog_set_translator_credits
+gtk_about_dialog_set_version
+gtk_about_dialog_set_website
+gtk_about_dialog_set_website_label
+gtk_action_activate
+gtk_action_get_type
+gtk_action_group_add_actions
+gtk_action_group_add_toggle_actions
+gtk_action_group_get_action
+gtk_action_group_get_type
+gtk_action_group_list_actions
+gtk_action_group_new
+gtk_action_group_set_sensitive
+gtk_action_group_set_translation_domain
+gtk_action_group_set_visible
+gtk_action_set_sensitive
+gtk_arrow_new
+gtk_bin_get_child
+gtk_bin_get_type
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_start
+gtk_box_set_spacing
+gtk_builder_add_from_file
+gtk_builder_connect_signals
+gtk_builder_get_object
+gtk_builder_new
+gtk_button_get_label
+gtk_button_get_type
+gtk_button_new_from_stock
+gtk_button_set_label
+gtk_calendar_get_date
+gtk_calendar_get_type
+gtk_calendar_new
+gtk_calendar_select_day
+gtk_calendar_select_month
+gtk_calendar_set_display_options
+gtk-cancel
+gtk_cell_layout_add_attribute
+gtk_cell_layout_clear
+gtk_cell_layout_get_type
+gtk_cell_layout_pack_start
+gtk_cell_layout_set_attributes
+gtk_cell_renderer_pixbuf_new
+gtk_cell_renderer_text_new
+gtk_check_button_get_type
+gtk_check_button_new_with_label
+gtk_check_button_new_with_mnemonic
+gtk-clear
+gtk_clipboard_get
+gtk_clipboard_get_type
+gtk_clipboard_request_text
+gtk_clipboard_set_text
+gtk-close
+gtk_combo_box_get_active
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_set_active
+gtk_combo_box_set_active_iter
+gtk_combo_box_set_model
+gtk_combo_box_set_row_separator_func
+gtk_combo_box_text_append_text
+gtk_combo_box_text_get_active_text
+gtk_combo_box_text_get_type
+gtk_combo_box_text_remove
+gtk_container_add
+gtk_container_foreach
+gtk_container_get_children
+gtk_container_get_type
+gtk_container_set_border_width
+gtk-copy
+gtk-delete
+gtk_dialog_add_action_widget
+gtk_dialog_add_button
+gtk_dialog_add_buttons
+gtk-dialog-authentication
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_get_widget_for_response
+gtk_dialog_new_with_buttons
+gtk-dialog-question
+gtk_dialog_response
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk_dialog_set_response_sensitive
+gtk_drag_begin
+gtk_drag_check_threshold
+gtk_drag_dest_set
+gtk_drag_dest_set_target_list
+gtk_drag_finish
+gtk_drag_set_icon_default
+gtk_drag_source_get_target_list
+gtk_drag_source_set
+gtk_editable_get_chars
+gtk_editable_get_type
+gtk_editable_paste_clipboard
+gtk_editable_select_region
+gtk_entry_buffer_emit_deleted_text
+gtk_entry_buffer_emit_inserted_text
+gtk_entry_buffer_get_type
+gtk_entry_get_layout
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_new_with_buffer
+gtk_entry_set_icon_activatable
+gtk_entry_set_icon_from_icon_name
+gtk_entry_set_text
+gtk_entry_set_visibility
+gtk_entry_set_width_chars
+gtk_expander_get_expanded
+gtk_expander_get_type
+gtk_expander_set_expanded
+gtk_file_chooser_add_filter
+gtk_file_chooser_dialog_new
+gtk_file_chooser_get_filename
+gtk_file_chooser_get_type
+gtk_file_chooser_get_uri
+gtk_file_chooser_set_current_name
+gtk_file_chooser_set_filter
+gtk_file_chooser_set_local_only
+gtk_file_filter_add_mime_type
+gtk_file_filter_add_pattern
+gtk_file_filter_new
+gtk_file_filter_set_name
+gtk-find
+gtk_get_current_event_time
+gtk_get_event_widget
+gtk_grab_add
+gtk_grab_remove
+gtk-help
+gtk_icon_factory_add
+gtk_icon_factory_add_default
+gtk_icon_factory_new
+gtk_icon_set_add_source
+gtk_icon_set_new
+gtk_icon_set_unref
+gtk_icon_source_free
+gtk_icon_source_new
+gtk_icon_source_set_direction_wildcarded
+gtk_icon_source_set_filename
+gtk_icon_source_set_icon_name
+gtk_icon_source_set_size
+gtk_icon_source_set_size_wildcarded
+gtk_icon_source_set_state_wildcarded
+gtk_icon_theme_get_default
+gtk_icon_theme_load_icon
+gtk_image_get_type
+gtk_image_new_from_stock
+gtk_image_set_from_pixbuf
+gtk_image_set_from_stock
+gtk-index
+gtk_init_with_args
+GTK_IS_ACTION (action)
+GTK_IS_BUTTON (button)
+GTK_IS_CLIPBOARD (board)
+GTK_IS_COMBO_BOX (combo)
+GTK_IS_DIALOG (dialog)
+GTK_IS_ENTRY (entry)
+GTK_IS_MENU (menu)
+GTK_IS_NOTEBOOK (notebook)
+GTK_IS_NOTEBOOK (tabs)
+GTK_IS_STATUSBAR (status)
+GTK_IS_TOGGLE_ACTION (action)
+GTK_IS_TREE_SELECTION (selection)
+GTK_IS_TREE_VIEW_COLUMN (col)
+GTK_IS_TREE_VIEW_COLUMN (column)
+GTK_IS_TREE_VIEW (tree_view)
+GTK_IS_TREE_VIEW (view)
+GTK_IS_UI_MANAGER (ui)
+GTK_IS_WIDGET (dialog)
+GTK_IS_WIDGET (tab)
+GTK_IS_WIDGET (view)
+GTK_IS_WIDGET (widget)
+GTK_IS_WINDOW (window)
+gtk_label_get_label
+gtk_label_get_text
+gtk_label_get_type
+gtk_label_new
+gtk_label_set_line_wrap
+gtk_label_set_markup
+gtk_label_set_mnemonic_widget
+gtk_label_set_text
+gtk_label_set_use_markup
+gtk_list_store_append
+gtk_list_store_clear
+gtk_list_store_get_type
+gtk_list_store_insert_with_values
+gtk_list_store_new
+gtk_list_store_newv
+gtk_list_store_prepend
+gtk_list_store_remove
+gtk_list_store_set
+gtk_main
+gtk_main_quit
+gtk_menu_bar_get_type
+gtk_menu_get_type
+gtk_menu_popup
+gtk_message_dialog_new
+gtk_message_dialog_new_with_markup
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk-missing-image
+gtk-network
+gtk_notebook_get_current_page
+gtk_notebook_get_type
+gtk_notebook_insert_page
+gtk_notebook_new
+gtk_notebook_page_num
+gtk_notebook_page_num (pv->tabs, view) == -1
+gtk_notebook_prepend_page
+gtk_notebook_remove_page
+gtk_notebook_set_current_page
+gtk-open
+gtk-paste
+gtk-preferences
+gtk_progress_bar_get_pulse_step
+gtk_progress_bar_get_type
+gtk_progress_bar_pulse
+gtk_progress_bar_set_fraction
+gtk_progress_bar_set_pulse_step
+gtk_propagate_event
+gtk-properties
+gtk-quit
+gtk-refresh
+gtk-remove
+gtk-save
+gtk-save-as
+gtk_scrolled_window_get_type
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_selection_data_get_length
+gtk_selection_data_get_target
+gtk_selection_data_get_text
+gtk_selection_data_get_uris
+gtk_selection_data_set
+gtk_selection_data_set_text
+gtk_separator_tool_item_get_type
+gtk_separator_tool_item_new
+gtk_separator_tool_item_set_draw
+gtk_spin_button_get_type
+gtk_spin_button_get_value_as_int
+gtk_spin_button_set_range
+gtk_spin_button_set_value
+gtk_statusbar_get_context_id
+gtk_statusbar_get_type
+gtk_statusbar_pop
+gtk_statusbar_push
+gtk_style_context_add_class
+gtk_table_attach
+gtk_table_attach_defaults
+gtk_table_get_type
+gtk_table_new
+gtk_table_set_col_spacings
+gtk_table_set_row_spacings
+gtk_target_list_add_text_targets
+gtk_target_list_add_uri_targets
+gtk_target_list_new
+gtk_toggle_action_get_active
+gtk_toggle_action_get_type
+gtk_toggle_action_set_active
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_new
+gtk_toggle_button_set_active
+gtk_toolbar_get_type
+gtk_toolbar_insert
+gtk_tool_item_get_type
+gtk_tool_item_new
+gtk_tool_item_set_expand
+gtk_tree_model_filter_convert_child_path_to_path
+gtk_tree_model_filter_convert_iter_to_child_iter
+gtk_tree_model_filter_get_model
+gtk_tree_model_filter_get_type
+gtk_tree_model_filter_new
+gtk_tree_model_filter_refilter
+gtk_tree_model_filter_set_visible_func
+gtk_tree_model_get
+gtk_tree_model_get_iter
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_iter_from_string
+gtk_tree_model_get_iter (model, &iter, path)
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_get_value
+gtk_tree_model_iter_children
+gtk_tree_model_iter_next
+gtk_tree_model_row_changed
+gtk_tree_model_row_deleted
+gtk_tree_model_row_has_child_toggled
+gtk_tree_model_row_inserted
+gtk_tree_model_sort_convert_child_iter_to_iter
+gtk_tree_model_sort_convert_iter_to_child_iter
+gtk_tree_model_sort_get_model
+gtk_tree_model_sort_get_type
+gtk_tree_model_sort_new_with_model
+gtk_tree_path_compare
+gtk_tree_path_free
+gtk_tree_path_get_depth
+gtk_tree_path_get_indices
+gtk_tree_path_new
+gtk_tree_path_prepend_index
+gtk_tree_row_reference_free
+gtk_tree_row_reference_get_path
+gtk_tree_row_reference_new
+gtk_tree_selection_count_selected_rows
+gtk_tree_selection_get_mode
+gtk_tree_selection_get_mode (selection) == GTK_SELECTION_SINGLE
+gtk_tree_selection_get_selected
+gtk_tree_selection_get_selected_rows
+gtk_tree_selection_get_type
+gtk_tree_selection_path_is_selected
+gtk_tree_selection_selected_foreach
+gtk_tree_selection_select_iter
+gtk_tree_selection_set_mode
+gtk_tree_selection_unselect_all
+gtk_tree_sortable_get_sort_column_id
+gtk_tree_sortable_get_type
+gtk_tree_sortable_set_sort_column_id
+gtk_tree_sortable_set_sort_func
+gtk_tree_store_append
+gtk_tree_store_clear
+gtk_tree_store_get_type
+gtk_tree_store_new
+gtk_tree_store_remove
+gtk_tree_store_set
+gtk_tree_store_set_column_types
+gtk_tree_view_append_column
+gtk_tree_view_collapse_all
+gtk_tree_view_column_get_type
+gtk_tree_view_column_new_with_attributes
+gtk_tree_view_column_set_expand
+gtk_tree_view_column_set_resizable
+gtk_tree_view_column_set_sort_column_id
+gtk_tree_view_column_set_visible
+gtk-tree-view-drag-info
+gtk_tree_view_expand_all
+gtk_tree_view_get_columns
+gtk_tree_view_get_model
+gtk_tree_view_get_path_at_pos
+gtk_tree_view_get_selection
+gtk_tree_view_get_type
+gtk_tree_view_insert_column_with_attributes
+gtk_tree_view_new_with_model
+gtk_tree_view_scroll_to_cell
+gtk_tree_view_set_enable_search
+gtk_tree_view_set_expander_column
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_model
+gtk_ui_manager_add_ui_from_file
+gtk_ui_manager_add_ui_from_string
+gtk_ui_manager_ensure_update
+gtk_ui_manager_get_accel_group
+gtk_ui_manager_get_type
+gtk_ui_manager_get_widget
+gtk_ui_manager_insert_action_group
+gtk_ui_manager_new
+gtk_widget_destroy
+gtk_widget_get_accessible
+gtk_widget_get_allocation
+gtk_widget_get_events
+gtk_widget_get_parent
+gtk_widget_get_preferred_size
+gtk_widget_get_realized
+gtk_widget_get_screen
+gtk_widget_get_sensitive
+gtk_widget_get_style_context
+gtk_widget_get_toplevel
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_get_window
+gtk_widget_get_window (dialog)
+gtk_widget_grab_default
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_is_focus
+gtk_widget_is_toplevel
+gtk_widget_realize
+gtk_widget_reset_style
+gtk_widget_set_can_default
+gtk_widget_set_events
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_set_tooltip_text
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_add_accel_group
+gtk_window_get_size
+gtk_window_get_type
+gtk_window_group_add_window
+gtk_window_group_new
+gtk_window_move
+gtk_window_new
+gtk_window_present
+gtk_window_resize
+gtk_window_set_default_icon_name
+gtk_window_set_icon_name
+gtk_window_set_keep_above
+gtk_window_set_position
+gtk_window_set_resizable
+gtk_window_set_title
+gtk_window_set_transient_for
+gtk_window_set_type_hint
+g_type_add_interface_static
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_check_value_holds
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_class_ref
+g_type_class_unref
+G_TYPE_FROM_INSTANCE (G_OBJECT (obj)) == SEAHORSE_SSH_TYPE_KEY
+G_TYPE_FROM_INSTANCE (G_OBJECT (obj)) == SEAHORSE_TYPE_PGP_KEY || G_TYPE_FROM_INSTANCE (G_OBJECT (obj)) == SEAHORSE_TYPE_GPGME_KEY
+g_type_instance_get_private
+g_type_interface_add_prerequisite
+g_type_interface_peek
+g_type_name
+g_type_register_static
+g_type_register_static_simple
+g_unichar_isspace
+g_unlink
+g_uri_unescape_string
+g_utf8_casefold
+g_utf8_collate
+g_utf8_find_prev_char
+g_utf8_get_char
+g_utf8_offset_to_pointer
+g_utf8_prev_char
+g_utf8_skip
+g_utf8_strdown
+g_utf8_strlen
+g_utf8_validate
+g_utf8_validate (text, -1, NULL)
+g_value_dup_object
+g_value_dup_string
+g_value_get_boolean
+g_value_get_boxed
+g_value_get_char
+g_value_get_double
+g_value_get_enum
+g_value_get_flags
+g_value_get_float
+g_value_get_int
+g_value_get_int64
+g_value_get_long
+g_value_get_object
+g_value_get_pointer
+g_value_get_string
+g_value_get_uchar
+g_value_get_uint
+g_value_get_uint64
+g_value_get_ulong
+g_value_init
+g_value_peek_pointer
+g_value_set_boolean
+g_value_set_boxed
+g_value_set_enum
+g_value_set_object
+g_value_set_pointer
+g_value_set_string
+g_value_set_uint
+g_value_set_ulong
+g_value_take_string
+g_value_transform
+G_VALUE_TYPE (from) == G_TYPE_UINT
+G_VALUE_TYPE (to) == G_TYPE_BOOLEAN
+G_VALUE_TYPE (to) == G_TYPE_STRING
+g_value_unset
+g_warn_message
+handle_gio_error
+hanlder_gpgme_add_subkey_type_changed
+has_matching_objects
+has-secret
+Has Secret
+have_keyserver_selection
+height-request
+help-menu
+help-show
+hkp://%s:%d
+host && g_utf8_validate (host, -1, NULL)
+host && *host
+host-label
+hostname && hostname[0]
+host != NULL
+hour <= 23
+Hour part of the lower time limit
+Hour part of the upper time limit
+How this object is used.
+HTTP Key Server
+http://www.gnome.org/projects/seahorse
+icon-release
+identifier
+iface->drag_data_delete != NULL
+iface->drag_data_get != NULL
+iface->export_async != NULL
+iface->export_async != NULL || iface->export_raw_async != NULL
+iface->export_finish
+iface->export_raw_finish
+iface->row_draggable != NULL
+<i>[invalid]</i>
+image-good1
+image-good2
+image/jpeg
+_Import...
+import-button
+imported key but then couldn't find it in keyring: %s
+Imported keys
+imported non key with strange keyid: %s
+import_files
+Import from a file
+Import from the clipboard
+Importing data
+Importing key. Enter passphrase
+Importing keys
+Importing key: %s
+Importing Keys
+Importing keys from key servers
+Import Key
+import_prompt
+Import selected keys to local key ring
+import_text
+include_basic_actions
+index >= 0
+index >= 0 && index < pv->n_columns
+Index of photo UID
+Info about keyring.
+init_gpgme
+init gpgme version %s
+initialize_tab
+input_read
+input_release
+input_seek
+Internal error accessing gnome-keyring
+Invalid expiry date
+/invalid/gpg/dir
+invalid id: %s
+Invalid key data (missing UIDs). This may be due to a computer with a date set in the future or a missing self-signature.
+invalid keyid (less than 16 chars): %s
+Invalid key line from server: %s
+invalid key size: %s defaulting to 2048
+invalid key size: %s defaulting to %u
+invalid port number: %s (using default)
+invalid uri passed: %s
+_IO_stdin_used
+ipath != NULL
+is-default
+Is default
+<i>%s</i>
+is-important
+ISO-8859-1
+__isoc99_sscanf
+Is the default keyring.
+item_add_done
+item-attributes
+item-info
+Item is used for
+item-keyring
+item-label
+iter_for_node
+iter->stamp == pv->last_stamp
+Jacob Perkins <jap1@users.sourceforge.net>
+Jean Schurger <yshark@schurger.org>
+Jim Pharis <binbrain@gmail.com>
+Jose Carlos Garcia Sogo <jsogo@users.sourceforge.net>
+_Jv_RegisterClasses
+key-data
+keydata->pubfile
+keydata->rawdata
+Key Description
+Key directory
+keyedit.add_revoker
+keyedit.add_revoker.okay
+keyedit.prompt
+keyedit.remove.subkey.okay
+keyedit.remove.uid.okay
+keyedit.revoke.subkey.okay
+keyedit.save.okay
+keyedit.sign_all.okay
+keygen.algo
+keygen.comment
+keygen.email
+keygen.name
+keygen.size
+keygen.valid
+Key has been compromised
+Key has been superseded
+key_hierarchy
+key-image
+key-import-keyring
+Key is no longer used
+key->keydata && key->keydata->privfile
+Key-Length: 
+key_list
+key-manager
+Key Photos
+/KeyPopup
+key_press_event
+key-press-event
+*** KEY REVOKED ***
+keyring_add_done
+keyring-default
+keyring-image
+keyring-info
+keyring && keyring[0]
+keyring_load_free
+keyring-lock
+keyring-name
+keyring-password
+Keyring this item is in
+keyring-unlock
+key_row_free
+key_row_new
+key-server
+keyserver_cell_edited
+Key Server full URI
+keyserver-host
+key-server-list
+key server missing pgp key data
+keyserver != NULL
+keyserver-port
+keyserver-publish
+keyserver-publish-to-label
+keyserver_remove
+keyserver-results
+keyserver-search
+keyserver-sync
+keyserver-tab
+Key Server to search on
+keyserver-type
+keyserver-types
+keyserver-uri
+Key Server URI
+key-sign
+keys != NULL
+!keys || SEAHORSE_IS_OBJECT (keys->data)
+Key Store Filter
+Key store filter for when in filtered mode
+key_store_from_model
+Key Store Mode
+Key store mode controls which keys to display
+key->subkeys->keyid
+key->subkeys && key->subkeys->keyid
+Key-Type: DSA
+Key-Type: RSA
+KEYTYPES_120
+KEYTYPES_124
+KEYTYPES_140
+KEYTYPES_2012
+keytype-tree
+Key-Usage: sign
+label && label[0]
+last == N_COLS - 1
+last-search-servers
+last-search-text
+last-signer
+launchpad_integration_add_ui
+Lazy mode
+Lazy mode doesn't normalize entered date and time values
+ldap_add_ext
+ldap_count_values_len
+ldap_err2string
+ldap_first_attribute
+ldap_free_urldesc
+ldap_get_dn
+ldap_get_values_len
+ldap_initialize
+LDAP Key Server
+ldap_memfree
+ldap_msgfree
+ldap_msgtype
+ldap_msgtype (res) == LDAP_RES_SEARCH_ENTRY
+ldap_msgtype (result) == LDAP_RES_ADD
+ldap_msgtype (result) == LDAP_RES_BIND
+ldap_next_attribute
+ldap_parse_result
+ldap_result
+ldap_result failed with rc = %d, errno = %s
+ldap_sasl_bind
+ldap_search_ext
+ldap://%s:%u
+ldap_unbind_ext
+ldap_url_parse
+l->data != NULL
+length >= DSA_MIN && length <= DSA_MAX
+length >= ELGAMAL_MIN && length <= LENGTH_MAX
+Length of
+length >= RSA_MIN && length <= LENGTH_MAX
+libatk-1.0.so.0
+libavahi-client.so.3
+libavahi-common.so.3
+libavahi-glib.so.1
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgck-1.so.0
+libgcr-3.so.1
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgnome-keyring.so.0
+libgobject-2.0.so.0
+libgpgme.so.11
+libgthread-2.0.so.0
+libgtk-3.so.0
+liblaunchpad-integration-3.0.so.1
+liblber-2.4.so.2
+libldap_r-2.4.so.2
+/lib/ld-linux.so.2
+libpthread.so.0
+libsoup-2.4.so.1
+line != NULL
+--list-keys '%s'
+Loaded %d key
+Loaded %d keys
+Loading image %s failed: %s
+load_key_private
+load_key_public
+load_object_attributes
+localtime_r
+location-label
+Lock the password storage keyring so a master password is required to unlock it.
+loc != SEAHORSE_LOCATION_INVALID
+login-field
+login-label
+lookup_category_values
+Lower limit day
+Lower limit hour
+Lower limit minute
+Lower limit month
+Lower limit second
+Lower limit year
+Manager Settings
+manage-trust-area
+manual-trust-area
+Marginal
+match->fingerprint
+match != NULL
+maxday >= 1 && maxday <= g_date_get_days_in_month (maxmonth, maxyear)
+/menubar/Help/LaunchpadItems
+menu-placeholder
+message || heading
+Milo Casagrande <milo_casagrande@yahoo.it>
+minday >= 1 && minday <= g_date_get_days_in_month (minmonth, minyear)
+minhour <= 23 && maxhour <= 23
+minhour <= maxhour
+minhour < maxhour || minminute <= maxminute
+minhour < maxhour || minminute < maxminute || minsecond <= maxsecond
+minminute <= 59 && maxminute <= 59
+minmonth >= 1 && minmonth <= 12 && maxmonth >= 1 && maxmonth <= 12
+minsecond <= 59 && maxsecond <= 59
+minute <= 59
+Minute part of the lower time limit
+Minute part of the upper time limit
+minyear >= 1 && minyear <= 9999 && maxyear >= 1
+minyear <= maxyear
+minyear < maxyear || minmonth <= maxmonth
+minyear < maxyear || minmonth < maxmonth || minday <= maxday
+model != NULL
+monitor_gpg_homedir
+monitor_ssh_homedir
+month >= 1 && month <= 12
+Month part of the lower date limit
+Month part of the upper date limit
+motion_notify_event
+Multiple Keys
+Name-Comment: %s
+Name/Email
+Name-Email: %s
+name-entry
+name-field
+name != NULL
+name != NULL && strlen (name) >= 5
+Name of gtkbuilder file and main widget
+Name of keyring.
+Name-Real: %s
+names-delete-button
+names-primary-button
+names-revoke-button
+names-sign-button
+names-tree
+n'D5	Yen=
+Network Credentials
+never_expires
+new-button
+nickname
+node->data == was_sobj || node->data == NULL
+node_for_iter
+node != NULL
+node != pv->root_node
+No key option
+No keys usable for signing
+None: Don't publish keys
+none-option
+no place holder found for: %s
+No private key file is available for this key.
+no property with the name '%s' exists in object of class '%s'
+No reason
+No reason for revoking key
+No such key ring exists
+Not a valid Key Server address.
+notebook
+notify::parent
+notify::%s
+Not Used
+n_param_values == 3
+n_param_values == 4
+n_results
+object_added
+object_changed
+(objectclass=*)
+Object Display Label
+Object Display Markup
+Object Flags
+object_from_iterator
+Object Icon
+Object ID
+Object Identifier
+Object Location
+object != NULL
+object_removed
+Object Set
+object_set_property
+Object Short Name
+Objects in this source are at this location. See SeahorseLocation
+Object Source
+Object Source flags.
+Object that this context belongs to
+Object Type Tag
+Object Usage
+off == 0
+on_add_item_label_changed
+on_add_item_password_toggled
+on_add_item_response
+on_add_keyring_name_changed
+on_add_keyring_properties_response
+on_address_resolved_complete
+on_add_widget
+on_app_close
+on_app_preferences
+on_app_quit
+on_cancellable_cancelled
+on_cancellable_gone
+once_resolved_start_connect
+on_change
+on_clipboard_received
+on_connect_bind_completed
+on_connect_server_info_completed
+on_delete_event
+on_export_auto_complete
+on_export_message_complete
+on_export_search_completed
+on_file_new
+on_filter_changed
+on_filter_objects
+on_first_timer
+on_generate_complete
+on_gkr_add_item
+on_gkr_add_keyring
+on_gpgme_add_subkey_never_expires_toggled
+on_gpgme_add_subkey_ok_clicked
+on_gpgme_add_uid_email_changed
+on_gpgme_add_uid_name_changed
+on_gpgme_add_uid_ok_clicked
+on_gpgme_add_watch
+on_gpgme_event
+on_gpgme_expire_ok_clicked
+on_gpgme_expire_toggled
+on_gpgme_generate_algorithm_changed
+on_gpgme_generate_entry_changed
+on_gpgme_generate_expires_toggled
+on_gpgme_generate_response
+on_gpgme_revoke_ok_clicked
+on_gpgme_sign_choice_toggled
+on_help_show
+on_idle_list_batch_of_keys
+on_import_add_completed
+on_import_message_complete
+on_import_private_complete
+on_import_public_complete
+on_io_ssh_read
+on_io_ssh_write
+on_item_description_activate
+on_item_description_focus_out
+on_item_password_expander_activate
+on_item_show_password_toggled
+on_key_delete
+on_key_export_clipboard
+on_key_export_file
+on_key_import_clipboard
+on_key_import_file
+on_key_import_keyring
+on_key_list_button_pressed
+on_key_list_popup_menu
+on_keymanager_import_button
+on_keymanager_key_list_button_pressed
+on_keymanager_key_list_popup_menu
+on_keymanager_new_button
+on_keymanager_row_activated
+on_key_properties
+on_keyring_default
+on_keyring_load_list_item_ids
+on_keyring_lock
+on_keyring_password
+on_keyring_properties_response
+on_keyring_unlock
+on_keyserver_search_control_changed
+on_keyserver_search_ok_clicked
+on_key_sign
+only-trusted
+on_manager_settings_changed
+on_pgp_details_add_subkey_button
+on_pgp_details_del_subkey_button
+on_pgp_details_expires_button
+on_pgp_details_expires_subkey
+on_pgp_details_export_button
+on_pgp_details_revoke_subkey_button
+on_pgp_details_signatures_revoke_button
+on_pgp_details_trust_changed
+on_pgp_generate_key
+on_pgp_names_add_clicked
+on_pgp_names_delete_clicked
+on_pgp_names_primary_clicked
+on_pgp_names_revoke_clicked
+on_pgp_names_sign_clicked
+on_pgp_owner_passphrase_button_clicked
+on_pgp_owner_photo_add_button
+on_pgp_owner_photo_delete_button
+on_pgp_owner_photo_drag_received
+on_pgp_owner_photoid_button
+on_pgp_owner_photoid_next
+on_pgp_owner_photoid_prev
+on_pgp_owner_photo_primary_button
+on_pgp_signature_row_activated
+on_pgp_trust_marginal_toggled
+on_pgp_trust_sign
+on_prefs_add_keyserver_uri_changed
+on_prefs_keyserver_add_clicked
+on_prefs_keyserver_remove_clicked
+on_refresh_all_keyrings_complete
+on_remote_find
+on_remote_sync
+on_response
+on_row_activated
+on_search_connect_completed
+on_search_search_completed
+on_selection_changed
+on_settings_keyservers_changed
+on_source_export_complete
+on_source_export_ready
+on_source_import_ready
+on_source_load_keyring_complete
+on_source_search_ready
+on_source_transfer_ready
+on_ssh_comment_activate
+on_ssh_comment_focus_out
+on_ssh_export_button_clicked
+on_ssh_generate_key
+on_ssh_passphrase_button_clicked
+on_ssh_trust_toggled
+on_ssh_upload
+on_sync_configure_clicked
+on_sync_ok_clicked
+on_tab_changed
+on_target_drag_data_received
+on_timeout_show_progress
+on_timeout_start_transfer
+on_upload_export_complete
+on_upload_input_changed
+on_view_collapse_all
+on_view_expand_all
+on_view_expires_activate
+on_view_selection_changed
+on_view_trust_activate
+on_view_type_activate
+on_view_validity_activate
+on_watch_ssh_process
+on_widget_closed
+on_widget_delete_event
+on_widget_help
+op_delete
+OPENLDAP_2.4_2
+operation
+operation-progress
+operation to get LDAP server info failed: %s
+/options
+org.gnome.crypto.pgp
+org.gnome.seahorse
+org.gnome.seahorse.manager
+org.gnome.seahorse.window
+org.gnome.system.proxy.http
+orientation
+other_keys.seahorse
+OU=ACTIVE,O=PGP KEYSPACE,C=US
+output == NULL || G_IS_OUTPUT_STREAM (output)
+output_release
+output_seek
+output_write
+owner-comment-label
+owner-email-label
+owner-keyid-label
+owner-name-label
+owner-photo-add-button
+owner-photo-delete-button
+owner-photo-frame
+owner-photo-next-button
+owner-photo-previous-button
+owner-photo-primary-button
+owner-userid-tree
+page != -1
+parent_node
+parent == NULL || GTK_IS_WINDOW (parent)
+parent_obj
+Parent Object
+parent_obj != sobj
+parse_hkp_index
+parse_home_directory
+parse_keyserver_uri
+passphrase-button
+Passphrase for New PGP Key
+Passphrase for New Secure Shell Key
+Passphrase: %s
+Password:
+password_activate
+password-area
+password-box-area
+password-expander
+Password Keyring
+password-list
+Passwords and Keys
+Passwords: %s
+password-tab
+path_for_node
+path_list != NULL
+pattern != NULL
+pgpbasekeyspacedn
+pgpcertid
+(pgpcertid=%.16s)
+pgpCertid=virtual,%s
+pgpdisabled
+pgp-generate
+pgp-generate-key
+pgp-image
+pgpkeycreatetime
+pgpkeyexpiretime
+pgpkeyexpiretimepgpkeysize
+PGP Key Fingerprint
+_pgpkey-hkp._tcp
+PGP key length
+pgpkeytype
+pgpkeyv2
+pgp-private-key-properties
+pgp-public-key-properties
+pgprevoked
+PGP signature flags
+PGP signature type
+pgp-signers-predicate
+PGP subkey flags
+PGP subkey index
+PGP subkeys
+pgpuserid
+(pgpuserid=*%s*)
+PGP User Ids
+photoid_add_action
+photoid_add_transit
+photoid.jpeg.add
+photoid.jpeg.size
+photoid_load_action
+photoid_load_transit
+photo_image
+Photo Pixbuf
+!photo || SEAHORSE_IS_PGP_PHOTO (photo)
+Photos for the key
+pkcs11-attributes
+pkcs11-handle
+pkcs11-object
+Pkcs#11 SLOT
+pkey != NULL && SEAHORSE_IS_GPGME_KEY (pkey)
+/pks/add
+/pks/lookup
+popup-menu
+port-block
+port >= host
+Predicate
+Predicate for matching objects into this set.
+Prefere_nces
+preferred
+Preferred Object
+prepare_photo_id
+prev != NULL
+primary_action
+primary-toolbar
+primary_transit
+private-key
+ PRIVATE KEY-----
+private key without public, not exporting: %s
+privfile
+Proceeding using insecure memory for password fields.
+process_conf_edits
+progress-bar
+progress-cancel
+progress-details
+progress_prep_va
+progress-title
+property
+protocol
+proxy-uri
+pspec == binding->prop_src
+psrc && SEAHORSE_IS_GPGME_SOURCE (psrc)
+pub-key-list
+pubkey || seckey
+pub-key-tab
+public-key
+Publish and/or synchronize your keys with those online.
+publish-keys
+publish-message
+pulse-timer
+Puts in an option for 'no key server'
+pv->action_group == NULL
+pv->all_commands == NULL
+pv->data_column == -1
+pv->data_column != -1
+pv->delete_action
+pv->delete_action == NULL
+pv->export_actions == NULL
+pv->n_columns == 0
+pv->object_actions == NULL
+pv->ui_manager == NULL
+pv->widget == NULL
+quick-predicate
+raw != NULL
+rc == LDAP_SUCCESS
+Readable expiry date
+read_config_file
+realize_signatures
+realize_uids
+refilter_now
+refresh_shared_keys
+register_child
+register_value_for_category
+register_watch
+registry_singleton
+remote-find
+Remote Host Password
+Remote Keys
+Remote Keys Containing '%s'
+remote-menu
+remote-ssh-upload
+remote-sync
+remove_each_object
+remove_object
+renumber_actual_uids
+_Replace
+resolve_callback
+Resolving server address: %s
+response
+Retrieving data
+Retrieving keys
+revoke-area
+revoked-area
+Revoke: %s
+rev_subkey_action
+rev_subkey_transit
+row-activated
+row-changed
+row-deleted
+row_inserted
+row-inserted
+RSA (encrypt only)
+RSA (sign only)
+%s: added: %s %s
+Safely store a password or secret.
+sampled != NULL
+Saved password or login
+save_keyservers
+%s --batch %s
+scalable
+%s: cancelling scheduled refresh event
+scheduled_dummy
+scheduled_refresh
+sctx == app_context
+sctx->pv->auto_sources == NULL
+sctx->pv->discovery == NULL
+sctx->pv->discovery != NULL
+sctx->pv->sources == NULL
+%s: drag_begin <--
+%s: drag_begin -->
+%s: drag_data_get <--
+%s: drag_data_get %d -->
+%s: drag_end <--
+%s: drag_end -->
+%s: dummy refresh event occurring now
+seahorse 3.2.2
+seahorse-bind.c
+seahorse_bind_disconnect
+seahorse_bind_objects
+seahorse_bind_property
+seahorse_bind_property_full
+seahorse-cleanup.c
+seahorse_cleanup_perform
+seahorse_cleanup_register
+seahorse_cleanup_unregister
+seahorse_combo_keys_attach
+seahorse_combo_keys_get_active
+seahorse_combo_keys_get_active_id
+seahorse_combo_keys_set_active
+seahorse_combo_keys_set_active_id
+SeahorseCommands
+seahorse-commands.c
+seahorse-commands.c:106
+seahorse-commands.c:122
+seahorse_commands_delete_objects
+seahorse_commands_finalize
+SEAHORSE_COMMANDS_GET_CLASS (self)->delete_objects
+seahorse_commands_get_command_actions
+seahorse_commands_get_type
+seahorse_commands_get_ui_definition
+seahorse_commands_get_view
+seahorse_commands_get_window
+seahorse_commands_set_property
+seahorse_commands_show_properties
+SeahorseContext
+seahorse_context_add_object
+seahorse_context_add_source
+seahorse-context.c
+seahorse_context_canonize_id
+seahorse_context_constructed
+seahorse_context_create
+seahorse_context_destroy
+seahorse_context_discover_objects
+seahorse_context_finalize
+seahorse_context_find_object
+seahorse_context_find_objects
+seahorse_context_find_objects_full
+seahorse_context_find_source
+seahorse_context_find_sources
+seahorse_context_for_objects_full
+seahorse_context_get_count
+seahorse_context_get_default_key
+seahorse_context_get_discovery
+seahorse_context_get_object
+seahorse_context_get_objects
+seahorse_context_get_type
+seahorse_context_instance
+seahorse_context_pgp_settings
+seahorse_context_refresh_auto
+seahorse_context_remote_source
+seahorse_context_remove_object
+seahorse_context_remove_source
+seahorse_context_retrieve_objects_async
+seahorse_context_retrieve_objects_finish
+seahorse_context_search_remote_async
+seahorse_context_search_remote_finish
+seahorse_context_settings
+seahorse_context_take_object
+seahorse_context_take_source
+seahorse_context_transfer_objects_async
+seahorse_context_transfer_objects_finish
+SEAHORSE_DEBUG
+seahorse_debug_flag_is_set
+seahorse_debug_message
+seahorse_debug_set_flags
+seahorse-dns-sd.c
+seahorse-error
+SeahorseGenerateSelect
+seahorse-generate-select.c
+seahorse_generate_select_constructor
+seahorse_generate_select_get_type
+seahorse_generate_select_show
+seahorse_gkr_add_item_show
+seahorse_gkr_add_keyring_show
+seahorse_gkr_delete_async
+seahorse_gkr_delete_finish
+seahorse_gkr_dialog_begin_request
+seahorse_gkr_dialog_complete_request
+seahorse_gkr_find_string_attribute
+SeahorseGkrItem
+seahorse-gkr-item.c
+seahorse-gkr-item.c:520
+seahorse-gkr-item.c:547
+SeahorseGkrItemCommands
+seahorse-gkr-item-commands.c
+seahorse_gkr_item_commands_constructor
+seahorse_gkr_item_commands_get_type
+seahorse_gkr_item_commands_show_properties
+seahorse_gkr_item_finalize
+seahorse_gkr_item_get_attribute
+seahorse_gkr_item_get_attributes
+seahorse_gkr_item_get_cannonical
+seahorse_gkr_item_get_info
+seahorse_gkr_item_get_item_id
+seahorse_gkr_item_get_keyring_name
+seahorse_gkr_item_get_secret
+seahorse_gkr_item_get_type
+seahorse_gkr_item_get_use
+seahorse_gkr_item_has_secret
+seahorse_gkr_item_new
+seahorse-gkr-item-properties.c
+seahorse_gkr_item_properties_show
+seahorse_gkr_item_realize
+seahorse_gkr_item_refresh
+seahorse_gkr_item_set_attributes
+seahorse_gkr_item_set_info
+seahorse_gkr_item_set_property
+SeahorseGkrKeyring
+seahorse-gkr-keyring.c
+seahorse-gkr-keyring.c:405
+seahorse-gkr-keyring.c:433
+SeahorseGkrKeyringCommands
+seahorse-gkr-keyring-commands.c
+seahorse_gkr_keyring_commands_constructor
+seahorse_gkr_keyring_commands_get_type
+seahorse_gkr_keyring_commands_show_properties
+seahorse_gkr_keyring_constructor
+seahorse_gkr_keyring_finalize
+seahorse_gkr_keyring_get_info
+seahorse_gkr_keyring_get_is_default
+seahorse_gkr_keyring_get_name
+seahorse_gkr_keyring_get_type
+seahorse_gkr_keyring_load_finish
+seahorse_gkr_keyring_new
+seahorse_gkr_keyring_properties_show
+seahorse_gkr_keyring_realize
+seahorse_gkr_keyring_refresh
+seahorse_gkr_keyring_set_info
+seahorse_gkr_keyring_set_is_default
+seahorse_gkr_keyring_set_property
+seahorse_gkr_module_init
+seahorse-gkr-operation.c
+seahorse_gkr_propagate_error
+SeahorseGkrSource
+seahorse-gkr-source.c
+seahorse_gkr_source_constructor
+seahorse_gkr_source_default
+seahorse_gkr_source_get_type
+seahorse_gkr_source_load_finish
+seahorse_gkr_source_new
+seahorse_gkr_update_description_async
+seahorse_gkr_update_description_finish
+seahorse_gkr_update_secret_async
+seahorse_gkr_update_secret_finish
+seahorse-gnome-keyring
+seahorse_gpg_homedir
+seahorse_gpgme_add_revoker_new
+seahorse_gpgme_add_subkey_new
+seahorse_gpgme_add_uid_new
+seahorse_gpgme_boxed_key_type
+seahorse-gpgme.c
+seahorse_gpgme_convert_validity
+seahorse-gpgme-data.c
+seahorse-gpgme-data.c:347
+seahorse-gpgme-data.c:372
+seahorse_gpgme_data_input
+seahorse_gpgme_data_new
+seahorse_gpgme_data_new_from_mem
+seahorse_gpgme_data_output
+seahorse_gpgme_data_release
+seahorse_gpgme_data_write_all
+seahorse-gpgme-error
+seahorse_gpgme_error_domain
+seahorse_gpgme_expires_new
+seahorse-gpgme-generate.c
+seahorse_gpgme_generate_key
+seahorse_gpgme_generate_register
+seahorse_gpgme_generate_show
+seahorse_gpgme_get_keytype_table
+seahorse_gpgme_gsource_dispatch
+seahorse_gpgme_gsource_new
+seahorse_gpgme_handle_error
+SeahorseGpgmeKey
+seahorse-gpgme-key.c
+seahorse_gpgme_key_ensure_signatures
+seahorse_gpgme_key_get_private
+seahorse_gpgme_key_get_public
+seahorse_gpgme_key_get_trust
+seahorse_gpgme_key_get_trust (pkey) != trust
+seahorse_gpgme_key_get_type
+seahorse_gpgme_key_get_validity
+seahorse_gpgme_key_new
+seahorse_gpgme_key_object_finalize
+seahorse_gpgme_key_op_add_revoker
+seahorse_gpgme_key_op_add_subkey
+seahorse_gpgme_key_op_add_uid
+seahorse-gpgme-key-op.c
+seahorse_gpgme_key_op_change_pass
+seahorse_gpgme_key_op_delete
+seahorse_gpgme_key_op_delete_pair
+seahorse_gpgme_key_op_del_subkey
+seahorse_gpgme_key_op_del_uid
+seahorse_gpgme_key_op_edit
+seahorse_gpgme_key_op_generate_async
+seahorse_gpgme_key_op_generate_finish
+seahorse_gpgme_key_op_photo_add
+seahorse_gpgme_key_op_photo_delete
+seahorse_gpgme_key_op_photo_primary
+seahorse_gpgme_key_op_photos_load
+seahorse_gpgme_key_op_primary_uid
+seahorse_gpgme_key_op_revoke_subkey
+seahorse_gpgme_key_op_set_disabled
+seahorse_gpgme_key_op_set_expires
+seahorse_gpgme_key_op_set_trust
+seahorse_gpgme_key_op_sign
+seahorse_gpgme_key_op_sign_uid
+seahorse_gpgme_key_realize
+seahorse_gpgme_key_refresh
+seahorse_gpgme_key_refresh_matching
+seahorse_gpgme_key_set_private
+seahorse_gpgme_key_set_public
+SeahorseGpgmePhoto
+seahorse_gpgme_photo_add
+seahorse_gpgme_photo_constructor
+seahorse_gpgme_photo_delete
+seahorse_gpgme_photo_get_index
+seahorse_gpgme_photo_get_pubkey
+seahorse_gpgme_photo_get_type
+seahorse_gpgme_photo_new
+seahorse-gpgme-photos.c
+seahorse_gpgme_photo_set_index
+seahorse_gpgme_photo_set_property
+seahorse_gpgme_propagate_error
+seahorse_gpgme_revoke_new
+seahorse-gpgme-sign.c
+seahorse_gpgme_sign_prompt
+seahorse_gpgme_sign_prompt_uid
+SeahorseGpgmeSource
+seahorse-gpgme-source.c
+seahorse-gpgme-source.c:986
+seahorse_gpgme_source_export_async
+seahorse_gpgme_source_export_finish
+seahorse_gpgme_source_finalize
+seahorse_gpgme_source_get_type
+seahorse_gpgme_source_import_finish
+seahorse_gpgme_source_init
+seahorse_gpgme_source_list_async
+seahorse_gpgme_source_list_finish
+seahorse_gpgme_source_load_finish
+seahorse_gpgme_source_load_full_async
+seahorse_gpgme_source_new
+seahorse_gpgme_source_new_context
+SeahorseGpgmeSubkey
+seahorse_gpgme_subkey_constructor
+seahorse_gpgme_subkey_get_pubkey
+seahorse_gpgme_subkey_get_subkey
+seahorse_gpgme_subkey_get_type
+seahorse_gpgme_subkey_new
+seahorse_gpgme_subkey_set_property
+seahorse_gpgme_subkey_set_subkey
+SeahorseGpgmeUid
+seahorse_gpgme_uid_calc_label
+seahorse_gpgme_uid_calc_markup
+seahorse_gpgme_uid_calc_name
+seahorse_gpgme_uid_get_actual_index
+seahorse_gpgme_uid_get_gpgme_index
+seahorse_gpgme_uid_get_pubkey
+seahorse_gpgme_uid_get_type
+seahorse_gpgme_uid_get_userid
+seahorse_gpgme_uid_is_same
+seahorse_gpgme_uid_is_same (self, userid)
+seahorse_gpgme_uid_new
+seahorse_gpgme_uid_set_actual_index
+seahorse_gpgme_uid_set_property
+seahorse_gpgme_uid_set_userid
+seahorse_gpg_op_export_secret
+seahorse_gpg_op_num_uids
+seahorse-gpg-options.c
+seahorse_gpg_options_change
+seahorse_gpg_options_change_vals
+seahorse_gpg_options_find
+seahorse_gpg_options_find_vals
+seahorse_gtkstock_add_icons
+seahorse_gtkstock_init
+seahorse-hkp-error
+seahorse_hkp_is_valid_uri
+seahorse_hkp_is_valid_uri (uri)
+SeahorseHKPSource
+seahorse-hkp-source.c
+seahorse_hkp_source_export_raw_async
+seahorse_hkp_source_export_raw_finish
+seahorse_hkp_source_get_type
+seahorse_hkp_source_import_async
+seahorse_hkp_source_import_finish
+seahorse_hkp_source_new
+seahorse_hkp_source_search_async
+seahorse_hkp_source_search_finish
+SEAHORSE_IMAGE_FILE
+SEAHORSE_IS_COMMANDS (commands)
+SEAHORSE_IS_COMMANDS (self)
+SEAHORSE_IS_CONTEXT (sctx)
+SEAHORSE_IS_CONTEXT (self)
+SEAHORSE_IS_GENERATE_SELECT (self)
+SEAHORSE_IS_GKR_ITEM (item)
+SEAHORSE_IS_GKR_ITEM (l->data) || SEAHORSE_IS_GKR_KEYRING (l->data)
+SEAHORSE_IS_GKR_ITEM (self)
+SEAHORSE_IS_GKR_KEYRING_COMMANDS (self)
+SEAHORSE_IS_GKR_KEYRING (l->data)
+SEAHORSE_IS_GKR_KEYRING (self)
+SEAHORSE_IS_GKR_SOURCE (self)
+SEAHORSE_IS_GPGME_KEY (obj)
+SEAHORSE_IS_GPGME_KEY (object)
+SEAHORSE_IS_GPGME_KEY (pkey)
+SEAHORSE_IS_GPGME_KEY (revoker)
+SEAHORSE_IS_GPGME_KEY (self)
+SEAHORSE_IS_GPGME_KEY (signer)
+SEAHORSE_IS_GPGME_PHOTO (photo)
+SEAHORSE_IS_GPGME_PHOTO (self)
+SEAHORSE_IS_GPGME_SOURCE (self)
+SEAHORSE_IS_GPGME_SOURCE (sksrc)
+SEAHORSE_IS_GPGME_SOURCE (source)
+SEAHORSE_IS_GPGME_SUBKEY (self)
+SEAHORSE_IS_GPGME_SUBKEY (subkey)
+SEAHORSE_IS_GPGME_UID (self)
+SEAHORSE_IS_GPGME_UID (uid)
+SEAHORSE_IS_GPGME_UID (uids->data)
+SEAHORSE_IS_KEY_MANAGER (self)
+SEAHORSE_IS_KEY_MANAGER_STORE (self)
+SEAHORSE_IS_KEY_MANAGER_STORE (skstore)
+SEAHORSE_IS_KEYSERVER_RESULTS (self)
+SEAHORSE_IS_OBJECT (a)
+SEAHORSE_IS_OBJECT (b)
+SEAHORSE_IS_OBJECT (child)
+SEAHORSE_IS_OBJECT (here->data)
+SEAHORSE_IS_OBJECT (iter->user_data)
+SEAHORSE_IS_OBJECT (k1)
+SEAHORSE_IS_OBJECT (k2)
+SEAHORSE_IS_OBJECT (l->data)
+SEAHORSE_IS_OBJECT_MODEL (self)
+SEAHORSE_IS_OBJECT (node->data)
+SEAHORSE_IS_OBJECT (obj)
+SEAHORSE_IS_OBJECT (object)
+SEAHORSE_IS_OBJECT (object) || object == NULL
+SEAHORSE_IS_OBJECT (objects->data)
+SEAHORSE_IS_OBJECT (self)
+SEAHORSE_IS_OBJECT (self->object)
+SEAHORSE_IS_OBJECT (skrow->object)
+SEAHORSE_IS_OBJECT (sobj)
+SEAHORSE_IS_OBJECT (user_data)
+SEAHORSE_IS_PGP_COMMANDS (self)
+SEAHORSE_IS_PGP_KEY (l->data)
+SEAHORSE_IS_PGP_KEY (object)
+SEAHORSE_IS_PGP_KEY (prev)
+SEAHORSE_IS_PGP_KEY (self)
+SEAHORSE_IS_PGP_PHOTO (photo)
+SEAHORSE_IS_PGP_PHOTO (self)
+SEAHORSE_IS_PGP_SIGNATURE (self)
+SEAHORSE_IS_PGP_SUBKEY (self)
+SEAHORSE_IS_PGP_UID (self)
+SEAHORSE_IS_PKCS11_CERTIFICATE_PROPS (self)
+SEAHORSE_IS_PKCS11_SOURCE (self)
+SEAHORSE_IS_REGISTRY (registry)
+SEAHORSE_IS_SERVICE_DISCOVERY (ssd)
+SEAHORSE_IS_SET_MODEL (smodel)
+SEAHORSE_IS_SET (skset)
+SEAHORSE_IS_SOURCE (closure->from)
+SEAHORSE_IS_SOURCE (sksrc)
+SEAHORSE_IS_SOURCE (source)
+SEAHORSE_IS_SSH_COMMANDS (self)
+SEAHORSE_IS_SSH_KEY (closure->key)
+SEAHORSE_IS_SSH_KEY (key)
+SEAHORSE_IS_SSH_KEY (object)
+SEAHORSE_IS_SSH_KEY (skey)
+SEAHORSE_IS_SSH_SOURCE (sksrc)
+SEAHORSE_IS_SSH_SOURCE (source)
+SEAHORSE_IS_SSH_SOURCE (src)
+SEAHORSE_IS_SSH_SOURCE (ssrc)
+SEAHORSE_IS_VIEW (base)
+SEAHORSE_IS_VIEWER (self)
+SEAHORSE_IS_VIEW (view)
+SEAHORSE_IS_WIDGET (swidget)
+seahorse-key
+SeahorseKeyManager
+seahorse-key-manager.c
+seahorse-key-manager.c:1054
+seahorse-key-manager.c:1070
+seahorse_key_manager_get_type
+seahorse_key_manager_set_selected_objects
+seahorse_key_manager_show
+SeahorseKeyManagerStore
+seahorse-key-manager-store.c
+seahorse_key_manager_store_get_all_objects
+seahorse_key_manager_store_get_object_from_path
+seahorse_key_manager_store_get_selected_object
+seahorse_key_manager_store_get_selected_objects
+seahorse_key_manager_store_get_type
+seahorse_key_manager_store_new
+seahorse_key_manager_store_set_selected_objects
+SeahorseKeyManagerTabs
+seahorse-key-personal
+SeahorseKeyserverControl
+seahorse_keyserver_control_get_type
+seahorse_keyserver_control_new
+seahorse_keyserver_control_selected
+SeahorseKeyserverResults
+seahorse-keyserver-results.c:462
+seahorse-keyserver-results.c:490
+seahorse_keyserver_results_constructor
+seahorse_keyserver_results_get_search
+seahorse_keyserver_results_get_type
+seahorse_keyserver_results_show
+seahorse_keyserver_search_show
+seahorse_keyserver_sync
+seahorse_keyserver_sync_show
+seahorse_keyset_pgp_signers_new
+seahorse-key-ssh
+seahorse-key-type
+seahorse-ldap-error
+seahorse_ldap_is_valid_uri
+seahorse_ldap_is_valid_uri (uri)
+SeahorseLDAPSource
+seahorse-ldap-source.c
+seahorse_ldap_source_connect_async
+seahorse_ldap_source_connect_finish
+seahorse_ldap_source_export_raw_finish
+seahorse_ldap_source_get_type
+seahorse_ldap_source_import_finish
+seahorse_ldap_source_new
+seahorse_ldap_source_search_finish
+SeahorseLocation
+seahorse_location_get_type
+SEAHORSE_LOCATION_INVALID
+SEAHORSE_LOCATION_LOCAL
+SEAHORSE_LOCATION_MISSING
+SEAHORSE_LOCATION_REMOTE
+SEAHORSE_LOCATION_SEARCHING
+seahorse_marshal_VOID__OBJECT_OBJECT
+seahorse_marshal_VOID__OBJECT_POINTER
+seahorse_marshal_VOID__OBJECT_UINT
+seahorse_marshal_VOID__OBJECT_UINT_POINTER
+seahorse_marshal_VOID__STRING_DOUBLE
+seahorse_md5_final
+seahorse_md5_init
+seahorse_md5_transform
+seahorse_md5_update
+SeahorseObject
+Seahorse Object
+seahorse-object.c
+seahorse-object.c:467
+seahorse-object.c:582
+seahorse_object_dispose
+seahorse_object_finalize
+seahorse_object_get_children
+seahorse_object_get_context
+seahorse_object_get_context (sobj) == sctx
+seahorse_object_get_flags
+seahorse_object_get_icon
+seahorse_object_get_id
+seahorse_object_get_identifier
+seahorse_object_get_id (sobj) != 0
+seahorse_object_get_label
+seahorse_object_get_location
+seahorse_object_get_markup
+seahorse_object_get_nickname
+seahorse_object_get_nth_child
+seahorse_object_get_parent
+seahorse_object_get_preferred
+seahorse_object_get_source
+seahorse_object_get_source (SEAHORSE_OBJECT (key)) == source
+seahorse_object_get_tag
+seahorse_object_get_tag (object) == SEAHORSE_GKR_TYPE
+seahorse_object_get_tag (obj) == SEAHORSE_SSH_TYPE
+seahorse_object_get_type
+seahorse_object_get_usage
+seahorse_object_get_usage (SEAHORSE_OBJECT (pkey)) == SEAHORSE_USAGE_PRIVATE_KEY
+seahorse_object_get_usage (SEAHORSE_OBJECT (revoker)) == SEAHORSE_USAGE_PRIVATE_KEY
+seahorse_object_list_append
+seahorse_object_list_copy
+seahorse_object_list_free
+seahorse_object_list_prepend
+seahorse_object_list_remove
+seahorse_object_list_type
+SeahorseObjectModel
+seahorse-object-model.c
+seahorse_object_model_free_rows
+seahorse_object_model_get_row_key
+seahorse_object_model_get_rows_for_object
+seahorse_object_model_get_type
+seahorse_object_model_new
+seahorse_object_model_remove_rows_for_object
+seahorse_object_model_set_column_types
+seahorse_object_model_set_property
+seahorse_object_model_set_row_object
+Seahorse Object of this widget
+seahorse_object_predicate_clear
+seahorse_object_predicate_match
+seahorse_object_set_parent
+seahorse_object_set_preferred
+seahorse_object_set_source
+SeahorseObjectWidget
+seahorse_object_widget_finalize
+seahorse_object_widget_get_type
+seahorse_object_widget_new
+seahorse-passphrase.c
+seahorse_passphrase_prompt_checked
+seahorse_passphrase_prompt_get
+seahorse_passphrase_prompt_show
+seahorse-person
+SeahorsePgpCommands
+seahorse-pgp-commands.c
+seahorse-pgp-commands.c:283
+seahorse-pgp-commands.c:294
+seahorse_pgp_commands_constructor
+seahorse_pgp_commands_delete_objects
+seahorse_pgp_commands_finalize
+seahorse_pgp_commands_get_type
+seahorse_pgp_commands_new
+seahorse_pgp_commands_show_properties
+seahorse_pgp_details_signatures_delete_button
+SeahorsePgpKey
+seahorse-pgp-key.c
+seahorse_pgp_key_calc_id
+seahorse_pgp_key_calc_identifier
+seahorse_pgp_key_calc_rawid
+seahorse_pgp_key_canonize_id
+seahorse_pgp_key_get_algo
+SEAHORSE_PGP_KEY_GET_CLASS (self)->set_photos
+SEAHORSE_PGP_KEY_GET_CLASS (self)->set_subkeys
+SEAHORSE_PGP_KEY_GET_CLASS (self)->set_uids
+seahorse_pgp_key_get_expires
+seahorse_pgp_key_get_expires_str
+seahorse_pgp_key_get_fingerprint
+seahorse_pgp_key_get_keyid
+seahorse_pgp_key_get_length
+_seahorse_pgp_key_get_photos
+seahorse_pgp_key_get_photos
+_seahorse_pgp_key_get_subkeys
+seahorse_pgp_key_get_subkeys
+seahorse_pgp_key_get_trust
+seahorse_pgp_key_get_trust_str
+seahorse_pgp_key_get_type
+_seahorse_pgp_key_get_uids
+seahorse_pgp_key_get_uids
+seahorse_pgp_key_get_validity
+seahorse_pgp_key_get_validity_str
+seahorse_pgp_key_has_keyid
+seahorse_pgp_key_new
+seahorse_pgp_key_object_finalize
+seahorse-pgp-key-properties.c
+seahorse_pgp_key_properties_show
+seahorse_pgp_key_realize
+_seahorse_pgp_key_set_photos
+seahorse_pgp_key_set_photos
+_seahorse_pgp_key_set_subkeys
+seahorse_pgp_key_set_subkeys
+_seahorse_pgp_key_set_uids
+seahorse_pgp_key_set_uids
+seahorse_pgp_module_init
+SeahorsePgpPhoto
+seahorse_pgp_photo_get_pixbuf
+seahorse_pgp_photo_get_type
+seahorse_pgp_photo_new
+seahorse_pgp_photo_set_pixbuf
+SeahorsePgpSignature
+seahorse_pgp_signature_get_flags
+seahorse_pgp_signature_get_keyid
+seahorse_pgp_signature_get_sigtype
+seahorse_pgp_signature_get_type
+seahorse_pgp_signature_new
+seahorse_pgp_signature_set_flags
+seahorse_pgp_signature_set_keyid
+SeahorsePgpSubkey
+seahorse_pgp_subkey_calc_description
+seahorse_pgp_subkey_calc_fingerprint
+seahorse_pgp_subkey_get_algorithm
+seahorse_pgp_subkey_get_created
+seahorse_pgp_subkey_get_description
+seahorse_pgp_subkey_get_expires
+seahorse_pgp_subkey_get_fingerprint
+seahorse_pgp_subkey_get_flags
+seahorse_pgp_subkey_get_index
+seahorse_pgp_subkey_get_keyid
+seahorse_pgp_subkey_get_length
+seahorse_pgp_subkey_get_type
+seahorse_pgp_subkey_new
+seahorse_pgp_subkey_set_algorithm
+seahorse_pgp_subkey_set_created
+seahorse_pgp_subkey_set_description
+seahorse_pgp_subkey_set_expires
+seahorse_pgp_subkey_set_fingerprint
+seahorse_pgp_subkey_set_flags
+seahorse_pgp_subkey_set_index
+seahorse_pgp_subkey_set_keyid
+seahorse_pgp_subkey_set_length
+SeahorsePgpUid
+seahorse_pgp_uid_calc_id
+seahorse_pgp_uid_calc_label
+seahorse_pgp_uid_calc_markup
+seahorse_pgp_uid_get_comment
+seahorse_pgp_uid_get_email
+seahorse_pgp_uid_get_name
+seahorse_pgp_uid_get_signatures
+seahorse_pgp_uid_get_type
+seahorse_pgp_uid_get_validity
+seahorse_pgp_uid_get_validity_str
+seahorse_pgp_uid_new
+seahorse_pgp_uid_realize
+seahorse_pgp_uid_set_comment
+seahorse_pgp_uid_set_email
+seahorse_pgp_uid_set_name
+seahorse_pgp_uid_set_signatures
+seahorse_pgp_uid_set_validity
+seahorse-photo.XXXXXX
+SeahorsePkcs11Certificate
+seahorse-pkcs11-certificate.c:212
+seahorse_pkcs11_certificate_constructor
+seahorse_pkcs11_certificate_get_der_data
+seahorse_pkcs11_certificate_get_expires
+seahorse_pkcs11_certificate_get_expires_str
+seahorse_pkcs11_certificate_get_fingerprint
+seahorse_pkcs11_certificate_get_trust
+seahorse_pkcs11_certificate_get_trust_str
+seahorse_pkcs11_certificate_get_type
+seahorse_pkcs11_certificate_get_validity
+seahorse_pkcs11_certificate_get_validity_str
+seahorse_pkcs11_certificate_new
+SeahorsePkcs11CertificateProps
+seahorse_pkcs11_certificate_props_add_view
+seahorse-pkcs11-certificate-props.c
+seahorse-pkcs11-certificate-props.c:110
+seahorse-pkcs11-certificate-props.c:126
+seahorse_pkcs11_certificate_props_finalize
+seahorse_pkcs11_certificate_props_focus_view
+seahorse_pkcs11_certificate_props_get_certificate
+seahorse_pkcs11_certificate_props_get_type
+seahorse_pkcs11_certificate_props_insert_view
+seahorse_pkcs11_certificate_props_new
+seahorse_pkcs11_certificate_props_remove_view
+seahorse_pkcs11_certificate_props_set_certificate
+seahorse_pkcs11_certificate_realize
+SeahorsePkcs11Commands
+seahorse-pkcs11-commands.c
+seahorse-pkcs11-commands.c:211
+seahorse-pkcs11-commands.c:222
+seahorse_pkcs11_commands_constructor
+seahorse_pkcs11_commands_delete_objects
+seahorse_pkcs11_commands_finalize
+seahorse_pkcs11_commands_get_type
+seahorse_pkcs11_commands_new
+seahorse_pkcs11_commands_show_properties
+seahorse-pkcs11-commands-window
+seahorse_pkcs11_delete_async
+seahorse_pkcs11_delete_finish
+SEAHORSE_PKCS11_IS_CERTIFICATE (cert)
+SEAHORSE_PKCS11_IS_CERTIFICATE (object)
+SEAHORSE_PKCS11_IS_CERTIFICATE (self)
+SEAHORSE_PKCS11_IS_COMMANDS (cmds)
+SEAHORSE_PKCS11_IS_OBJECT (self)
+seahorse_pkcs11_module_init
+SeahorsePkcs11Object
+seahorse-pkcs11-object.c
+seahorse-pkcs11-object.c:236
+seahorse-pkcs11-object.c:258
+seahorse_pkcs11_object_cannonical_id
+seahorse_pkcs11_object_constructor
+seahorse_pkcs11_object_finalize
+seahorse_pkcs11_object_get_pkcs11_attributes
+seahorse_pkcs11_object_get_pkcs11_handle
+seahorse_pkcs11_object_get_pkcs11_object
+seahorse_pkcs11_object_get_type
+seahorse_pkcs11_object_new
+seahorse_pkcs11_object_realize
+seahorse_pkcs11_object_refresh
+seahorse_pkcs11_object_require_attribute
+seahorse_pkcs11_object_require_attributes
+seahorse_pkcs11_object_set_pkcs11_attributes
+seahorse_pkcs11_object_set_property
+seahorse_pkcs11_refresh_async
+seahorse_pkcs11_refresh_finish
+SeahorsePkcs11Source
+seahorse-pkcs11-source.c
+seahorse_pkcs11_source_constructor
+seahorse_pkcs11_source_finalize
+seahorse_pkcs11_source_get_slot
+seahorse_pkcs11_source_get_type
+seahorse_pkcs11_source_new
+seahorse_pkcs11_source_receive_object
+seahorse_pkcs11_source_set_property
+seahorse_preferences_show
+seahorse_prefs_add_tab
+seahorse-prefs.c
+seahorse_prefs_new
+seahorse_prefs_remove_tab
+seahorse_prefs_select_tab
+seahorse_progress_attach
+seahorse_progress_begin
+seahorse-progress.c
+seahorse_progress_end
+seahorse_progress_prep
+seahorse_progress_prep_and_begin
+seahorse_progress_show
+seahorse_progress_update
+Seahorse Project Homepage
+SeahorseRegistry
+seahorse-registry.c
+seahorse_registry_get
+seahorse_registry_get_type
+seahorse_registry_lookup_function
+seahorse_registry_object_instance
+seahorse_registry_object_instances
+seahorse_registry_object_type
+seahorse_registry_object_types
+seahorse_registry_register_function
+seahorse_registry_register_object
+seahorse_registry_register_type
+seahorse: %s
+SeahorseSecureBuffer
+seahorse_secure_buffer_get_type
+seahorse_secure_buffer_new
+seahorse_secure_memory_init
+seahorse_server_set_property
+seahorse_servers_get_description
+seahorse_servers_get_names
+seahorse_servers_get_types
+seahorse_servers_get_uris
+seahorse_servers_is_valid_uri
+SeahorseServerSource
+seahorse-server-source.c
+seahorse_server_source_finalize
+seahorse_server_source_get_type
+seahorse_server_source_load_finish
+seahorse_server_source_new
+seahorse_servers_register_type
+SeahorseServiceDiscovery
+seahorse_service_discovery_finalize
+seahorse_service_discovery_get_type
+seahorse_service_discovery_get_uri
+seahorse_service_discovery_get_uris
+seahorse_service_discovery_list
+seahorse_service_discovery_new
+SeahorseSet
+seahorse-set.c
+seahorse_set_finalize
+seahorse_set_get_count
+seahorse_set_get_objects
+seahorse_set_get_type
+seahorse_set_has_object
+SeahorseSetModel
+seahorse-set-model.c
+seahorse_set_model_dispose
+seahorse_set_model_finalize
+seahorse_set_model_get_column_type
+seahorse_set_model_get_iter
+seahorse_set_model_get_n_columns
+seahorse_set_model_get_path
+seahorse_set_model_get_type
+seahorse_set_model_get_value
+seahorse_set_model_iter_children
+seahorse_set_model_iter_for_object
+seahorse_set_model_iter_has_child
+seahorse_set_model_iter_n_children
+seahorse_set_model_iter_next
+seahorse_set_model_iter_nth_child
+seahorse_set_model_iter_parent
+seahorse_set_model_new
+seahorse_set_model_new_full
+seahorse_set_model_object_for_iter
+seahorse_set_model_set_columns
+seahorse_set_model_set_property
+SEAHORSE_SET_MODEL (smodel)
+SEAHORSE_SET_MODEL (tree_model)
+seahorse_set_new
+seahorse_set_new_full
+seahorse_set_refresh
+seahorse-sign
+seahorse-sign-bad
+seahorse-signer.c
+seahorse_signer_get
+seahorse-sign-ok
+seahorse-sign-unknown
+seahorse-source.c
+seahorse_source_export_async
+seahorse_source_export_auto_async
+seahorse_source_export_auto_finish
+seahorse_source_export_auto_wait
+seahorse_source_export_finish
+seahorse_source_export_raw_async
+seahorse_source_export_raw_finish
+SEAHORSE_SOURCE (from)
+SEAHORSE_SOURCE_GET_INTERFACE (source)->import_async
+SEAHORSE_SOURCE_GET_INTERFACE (source)->import_finish
+SEAHORSE_SOURCE_GET_INTERFACE (source)->load_async
+SEAHORSE_SOURCE_GET_INTERFACE (source)->load_finish
+SEAHORSE_SOURCE_GET_INTERFACE (source)->search_async
+SEAHORSE_SOURCE_GET_INTERFACE (source)->search_finish
+seahorse_source_get_location
+seahorse_source_get_tag
+seahorse_source_get_type
+SeahorseSourceIface
+seahorse_source_import_async
+seahorse_source_import_finish
+seahorse_source_load_async
+seahorse_source_load_finish
+seahorse_source_search_async
+seahorse_source_search_finish
+SEAHORSE_SOURCE (to)
+SEAHORSE_SSH_ASKPASS_FLAGS
+SEAHORSE_SSH_ASKPASS_MESSAGE
+SEAHORSE_SSH_ASKPASS_TITLE
+SeahorseSshCommands
+seahorse-ssh-commands.c
+seahorse-ssh-commands.c:203
+seahorse-ssh-commands.c:214
+seahorse_ssh_commands_constructor
+seahorse_ssh_commands_finalize
+seahorse_ssh_commands_get_type
+seahorse_ssh_commands_new
+seahorse_ssh_commands_show_properties
+seahorse_ssh_generate_register
+seahorse_ssh_generate_show
+SeahorseSSHKey
+seahorse-ssh-key.c
+seahorse_ssh_key_calc_cannonical_id
+seahorse_ssh_key_calc_identifier
+seahorse_ssh_key_data_dup
+seahorse_ssh_key_data_filter_file
+seahorse_ssh_key_data_free
+seahorse_ssh_key_data_is_valid
+seahorse_ssh_key_data_is_valid (data)
+seahorse_ssh_key_data_match
+seahorse_ssh_key_data_parse
+seahorse_ssh_key_data_parse_file
+seahorse_ssh_key_data_parse_line
+seahorse_ssh_key_get_algo
+seahorse_ssh_key_get_algo_str
+seahorse_ssh_key_get_fingerprint
+seahorse_ssh_key_get_location
+seahorse_ssh_key_get_strength
+seahorse_ssh_key_get_trust
+seahorse_ssh_key_get_type
+seahorse_ssh_key_new
+seahorse_ssh_key_properties_show
+seahorse_ssh_key_refresh
+seahorse_ssh_module_init
+seahorse_ssh_op_authorize_async
+seahorse_ssh_op_authorize_finish
+seahorse_ssh_op_change_passphrase_async
+seahorse_ssh_op_change_passphrase_finish
+seahorse_ssh_op_delete_sync
+seahorse_ssh_operation_async
+seahorse-ssh-operation.c
+seahorse_ssh_operation_finish
+seahorse_ssh_op_generate_async
+seahorse_ssh_op_generate_finish
+seahorse_ssh_op_import_private_async
+seahorse_ssh_op_import_private_finish
+seahorse_ssh_op_import_public_async
+seahorse_ssh_op_import_public_finish
+seahorse_ssh_op_rename_async
+seahorse_ssh_op_rename_finish
+seahorse_ssh_op_upload_async
+seahorse_ssh_op_upload_finish
+seahorse_ssh_sec_data_free
+SeahorseSSHSource
+seahorse-ssh-source.c
+seahorse_ssh_source_dispose
+seahorse_ssh_source_export_async
+seahorse_ssh_source_export_finish
+seahorse_ssh_source_export_private
+seahorse_ssh_source_file_for_algorithm
+seahorse_ssh_source_file_for_public
+seahorse_ssh_source_finalize
+seahorse_ssh_source_get_type
+seahorse_ssh_source_import_async
+seahorse_ssh_source_import_finish
+seahorse_ssh_source_init
+seahorse_ssh_source_key_for_filename
+seahorse_ssh_source_load_async
+seahorse_ssh_source_load_finish
+seahorse_ssh_source_new
+seahorse-ssh-upload.c
+seahorse_ssh_upload_prompt
+seahorse_transfer_async
+seahorse-transfer.c
+seahorse_transfer_finish
+SeahorseUnknown
+seahorse_unknown_get_type
+seahorse_unknown_new
+SeahorseUnknownSource
+seahorse_unknown_source_add_object
+seahorse_unknown_source_get_type
+seahorse_unknown_source_load_finish
+seahorse_unknown_source_new
+SeahorseUsage
+SEAHORSE_USAGE_CREDENTIALS
+seahorse_usage_get_type
+SEAHORSE_USAGE_IDENTITY
+SEAHORSE_USAGE_NONE
+SEAHORSE_USAGE_OTHER
+SEAHORSE_USAGE_PRIVATE_KEY
+SEAHORSE_USAGE_PUBLIC_KEY
+SEAHORSE_USAGE_SYMMETRIC_KEY
+seahorse_use_secure_mem
+seahorse-util.c
+seahorse_util_chooser_open_new
+seahorse_util_chooser_open_prompt
+seahorse_util_chooser_save_new
+seahorse_util_chooser_save_prompt
+seahorse_util_chooser_set_filename
+seahorse_util_chooser_set_filename_full
+seahorse_util_chooser_show_archive_files
+seahorse_util_chooser_show_key_files
+seahorse_util_detect_data_type
+seahorse_util_detect_file_type
+seahorse_util_detect_mime_type
+seahorse_util_determine_popup_menu_position
+seahorse_util_dns_sd_get_poll
+seahorse_util_error_domain
+seahorse_util_filename_for_objects
+seahorse_util_get_date_string
+seahorse_util_get_display_date_string
+seahorse_util_handle_error
+seahorse_util_hex_encode
+seahorse_util_objects_sort
+seahorse_util_objects_splice
+seahorse_util_parse_version
+seahorse_util_print_fd
+seahorse_util_printf_fd
+seahorse_util_prompt_delete
+seahorse_util_read_data_block
+seahorse_util_read_to_memory
+seahorse_util_show_error
+seahorse_util_string_equals
+seahorse_util_string_is_whitespace
+seahorse_util_string_lower
+seahorse_util_string_trim_whitespace
+seahorse_util_uri_exists
+seahorse_util_uri_get_last
+seahorse_util_uri_unique
+seahorse_util_write_file_private
+seahorse_validity_get_string
+SeahorseView
+SeahorseViewer
+seahorse-viewer.c
+seahorse-viewer.c:774
+seahorse-viewer.c:790
+seahorse_viewer_ensure_updated
+seahorse_viewer_finalize
+SEAHORSE_VIEWER_GET_CLASS (self)->get_selected
+SEAHORSE_VIEWER_GET_CLASS (self)->get_selected_object_and_uid
+SEAHORSE_VIEWER_GET_CLASS (self)->get_selected_objects
+SEAHORSE_VIEWER_GET_CLASS (self)->set_selected
+SEAHORSE_VIEWER_GET_CLASS (self)->set_selected_objects
+seahorse_viewer_get_selected
+seahorse_viewer_get_selected_matching
+seahorse_viewer_get_selected_object_and_uid
+seahorse_viewer_get_selected_objects
+seahorse_viewer_get_type
+seahorse_viewer_get_window
+seahorse_viewer_include_actions
+seahorse_viewer_register_commands
+seahorse_viewer_register_ui
+seahorse_viewer_set_numbered_status
+seahorse_viewer_set_selected
+seahorse_viewer_set_selected_objects
+seahorse_viewer_set_status
+seahorse_viewer_show_context_menu
+seahorse_viewer_show_properties
+SEAHORSE_VIEW_GET_INTERFACE (self)->get_selected
+SEAHORSE_VIEW_GET_INTERFACE (self)->get_selected_matching
+SEAHORSE_VIEW_GET_INTERFACE (self)->get_selected_objects
+SEAHORSE_VIEW_GET_INTERFACE (self)->get_window
+SEAHORSE_VIEW_GET_INTERFACE (self)->register_commands
+SEAHORSE_VIEW_GET_INTERFACE (self)->register_ui
+SEAHORSE_VIEW_GET_INTERFACE (self)->set_selected
+SEAHORSE_VIEW_GET_INTERFACE (self)->set_selected_objects
+seahorse_view_get_selected
+seahorse_view_get_selected_matching
+seahorse_view_get_selected_objects
+seahorse_view_get_type
+seahorse_view_get_window
+seahorse_view_register_commands
+seahorse_view_register_ui
+seahorse_view_set_selected
+seahorse_view_set_selected_objects
+SeahorseWidget
+seahorse_widget_destroy
+seahorse_widget_find
+seahorse_widget_get_name
+seahorse_widget_get_toplevel
+seahorse_widget_get_type
+seahorse_widget_get_widget
+seahorse_widget_new
+seahorse_widget_new_allow_multiple
+seahorse_widget_set_sensitive
+seahorse_widget_set_visible
+seahorse_widget_show
+seahorse_widget_show_help
+Search for keys on a key server
+searching
+search != NULL && search[0] != 0
+search_parse_key_from_ldap_entry
+search_text != NULL
+Search was not specific enough. Server '%s' found too many keys.
+search-where
+sec-key-list
+seckey && seckey->subkeys && seckey->subkeys->keyid
+sec-key-tab
+second <= 59
+secondary-text
+Second part of the lower time limit
+Second part of the upper time limit
+Secret has been loaded
+secure-password-entry
+%s: [edit key] state: %d / status: %d / args: %s
+Select Date
+Selected
+Selected %d key
+Selected %d keys
+Selected Object
+select_inital_keyservers
+selection_changed
+selection-changed
+selection_data != NULL
+selection->uris != NULL
+Select the date from a calendar
+Select the time from a list
+Select Time
+self != NULL && SEAHORSE_IS_WIDGET (self)
+self->priv->sort
+self->pv->children == NULL
+!self->pv->command_actions
+self->pv->context == NULL
+self->pv->filter_entry
+self->pv->item_id == 0
+self->pv->keyring_name
+self->pv->keyring_name == NULL
+self->pv->monitor_handle == 0
+self->pv->parent == NULL
+self->pv->parent != self
+self->pv->parent == value
+self->pv->photos == NULL
+self->pv->pkcs11_attributes
+!self->pv->pkcs11_object
+self->pv->pkcs11_object == NULL
+self->pv->preferred == NULL
+!self->pv->pubkey
+self->pv->pubkey == NULL
+self->pv->pubkey->subkeys
+self->pv->pubkey->uids
+self->pv->req_attrs == NULL
+self->pv->req_info == NULL
+self->pv->req_secret == NULL
+self->pv->scheduled_refresh == 0
+self->pv->seckey == NULL
+!self->pv->slot
+self->pv->slot == NULL
+self->pv->source == NULL
+self->pv->subkey
+self->pv->subkeys == NULL
+self->pv->tabs[tabid].page >= 0
+self->pv->tabs[tabid].widget != NULL
+self->pv->track_selected_id == 0
+self->pv->uids == NULL
+self->pv->userid
+!self->pv->view
+sel <= G_N_ELEMENTS(available_algorithms)
+sel < (int)G_N_ELEMENTS (available_algorithms)
+Sending data
+Send public Secure Shell key to another machine, and enable logins using that key.
+sensitive
+server-auto-publish
+server-auto-retrieve
+server-field
+server-info
+server-label
+server && server[0]
+set_added
+_Set as default
+set_changed
+set-changed
+setlocale
+set_photoid_state
+set_removed
+set_sort_to
+Set source-tag during construction of object
+set_string_storage
+set_tab_current
+settings
+settings-key
+Settings key
+Settings key to read/write selection
+Set to get objects from
+setup_details
+setup_details_trust
+setup_keyservers
+setup_main
+%s: exporting to %s
+%s: exporting to text
+%s: failed to allocate gpgme_data_t
+%s: [GPGME_KEY_OP] set_trust: trust = %i
+%s: GPGME OP: io for GPGME on %d
+%s: GPGME OP: registering watch %d
+%s: GPGME OP: unregistering watch %d
+shared-keys-list
+show-expiry
+Show expiry column
+Show owner trust column
+show-password
+show-password-check
+showphoto
+show-properties
+Show properties
+show_properties_for_selected
+Show Seahorse help
+show-trust
+show-type
+Show type column
+show-validity
+Show validity column
+sign-area
+Signature ID
+signatures
+signatures-area
+signatures-delete-button
+signatures-empty-label
+Signatures on this UID
+signatures-revoke-button
+signatures-toggle
+signatures-tree
+sign-choice-careful
+sign-choice-casual
+sign-choice-not
+sign_columns
+sign-display-careful
+sign-display-casual
+sign-display-not
+signer-frame
+!signer || (SEAHORSE_IS_GPGME_KEY (signer) && seahorse_object_get_usage (SEAHORSE_OBJECT (signer)) == SEAHORSE_USAGE_PRIVATE_KEY)
+signer-select
+sign-image
+signing_key
+sign_internal
+_Sign Key...
+sign_ok_clicked
+sign-option-local
+sign-option-revocable
+sign_process
+Sign public key
+sign_transit
+sign_uid.class
+sign_uid.expire
+sign_uid.okay
+sign-uid-text
+Sig Type
+%s: Invalid file format
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+%s is a private key. Are you sure you want to proceed?
+%s: KeyProperties: Finished Setting up Trust Combo Box Store
+%s: KeyProperties: Setting up Trust Combo Box Store
+skset->pv->pred == NULL
+sksrc != NULL
+skstore->priv->drag_objects
+skstore->priv->filter
+skstore->priv->sort
+skstore->priv->sort && skstore->priv->filter
+%s:%lu/%lu
+!smodel->set
+smodel->set == NULL
+__snprintf_chk
+sobj != NULL
+sort_by_location
+sort_changed
+sort-column-changed
+sort_objects_by_source
+soup_address_get_name
+soup_address_get_physical
+soup_address_new
+soup_address_resolve_async
+soup_form_encode_hash
+soup_logger_attach
+soup_logger_new
+soup_message_new_from_uri
+soup_message_set_request
+soup_session_abort
+soup_session_async_new
+soup_session_async_new_with_options
+soup_session_queue_message
+soup_uri_free
+soup_uri_new
+_SOUP_URI_SCHEME_HTTP
+_SOUP_URI_SCHEME_HTTPS
+soup_uri_set_host
+soup_uri_set_password
+soup_uri_set_path
+soup_uri_set_port
+soup_uri_set_query_from_form
+soup_uri_set_scheme
+soup_uri_set_user
+source_load_free
+source-location
+Source Location
+source != NULL
+source == NULL || SEAHORSE_IS_SOURCE (source)
+source-tag
+Source Tag
+Source the Object came from
+source_window != NULL
+<span foreground='#555555'>%s<span size='small' rise='0'>%s%s%s%s%s</span></span>
+<span size="larger" weight="bold">%s</span>
+<span strikethrough='true' foreground='#555555'>%s<span size='small' rise='0'>%s%s%s%s%s</span></span>
+<span strikethrough='true'>%s<span foreground='#555555' size='small' rise='0'>%s%s%s%s%s</span></span>
+spec_dest
+%s: PGPOP: done event (err: %d)
+%s: PGPOP: request to register watch %d
+%s: PGPOP: start event
+%s: PhotoIDLoad Done
+%s: PhotoIdLoad KeyID %s
+%s: PhotoIDLoad Next UID %i
+%s: PhotoIDLoad Number of UIDs %i
+%s: PhotoIDLoad Quiting Load
+%s: PhotoIDLoad Reached Quit
+%s: PhotoIDLoad Start
+%s property of %s class was of type %s instead of type %s and cannot be converted
+%s: refreshing keys...
+%s: removed: %s
+%s: renaming key to: %s
+%s: Retrieved Key Entry:
+%s: returning object text
+%s:%s-%08X
+%s: scheduled a dummy refresh
+%s: scheduled refresh event ocurring now
+%s: scheduling refresh event due to file changes
+ssd->priv->browser == NULL
+ssd->priv->client == NULL
+%sseahorse-%s.ui
+%sseahorse-%s.xml
+%s: Searching Server ... base: %s, filter: %s
+%s: Server Info Result:
+%s: setting selection text
+SSH_ASKPASS
+SSH command failed: (%d)
+SSH error: %s
+ssh-generate
+ssh-generate-key
+ssh-image
+SSH Key Data
+SSH key data pointer
+ssh_key_from_data
+ssh-key-properties
+ssh_operation_free
+# SSH PRIVATE KEY: 
+%s<span foreground='#555555' size='small' rise='0'>%s</span>
+%s<span foreground='#555555' size='small' rise='0'>%s%s%s%s%s</span>
+ssrc != NULL
+ssrc->priv
+ssrc->priv->monitor_handle == 0
+ssrc->priv->scheduled_refresh == 0
+ssrc->priv->server == NULL
+ssrc->priv->server && ssrc->priv->server[0]
+ssrc->priv->uri == NULL
+ssrc->priv->uri && ssrc->priv->uri[0]
+%s/.ssh/
+%s: SSHOP: Closing SSH input channel
+%s: SSHOP: Executing SSH command: %s
+%s: SSHOP: Finished writing SSH input
+%s: SSHOP: SSH errout: 
+%s: SSHOP: SSH output: 
+%s: SSHOP: SSH process done
+%s: SSHOP: SSH ready for input
+%s: SSHOP: Will send SSH input: %s
+%s: SSHOP: Wrote %d bytes to SSH
+%s%ssign
+%s://%s%s%s
+%s/%s/%s.%s
+  %s://%s%s%s/%s
+%s: starting export
+%s:%s:%u
+__stack_chk_fail
+standard::content-type
+Stef Walter <stef@memberwebs.com>
+stock-id
+Stock ID for object.
+stock-size
+Stored Password
+%s: [transfer] export done
+%s: [transfer] import done
+%s: [transfer] nothing to import
+%s: [transfer] starting import
+%s: [transfer] stopped after export
+__strcat_chk
+Strength
+strid != NULL
+strlen (name) > 4
+strlen(name) >= 5
+__strncat_chk
+subkey_columns
+Subkey %d of %s
+Subkey-Length: %d
+subkey != NULL && SEAHORSE_IS_GPGME_SUBKEY (subkey)
+subkeys && subkeys->data
+Subkey-Type: ELG-E
+Subkey-Type: RSA
+Subkey-Usage: encrypt
+%s: Unrecognized format: %d
+Superseded
+swidget->gtkbuilder != NULL
+swidget->name == NULL
+swidget != NULL
+switch-page
+symmetric-key
+_Sync and Publish Keys...
+sync-button
+Synchronizing keys...
+sync-message
+tabid < (int)TAB_NUM_TABS
+tab->id < TAB_NUM_TABS
+Tag of objects that come from this source.
+take_source
+target_type == TARGET_URI
+task->cancellable == cancellable
+task->parts_prepped + task->parts_begun + task->parts_ended == (gint)task->parts->length
+text/plain
+text/uri-list
+The algorithm of this key.
+The expiry date must be in the future
+The file could not be loaded. It may be in an invalid format
+The gnome-keyring daemon is not running
+The item already exists
+The key ring has already been unlocked
+The length of this key
+The length of this key.
+The operation was cancelled
+The recommended size for a photo on your key is %d x %d pixels.
+The SSH command failed.
+The SSH command was terminated unexpectedly.
+This is not a image file, or an unrecognized kind of image file. Try to use a JPEG image.
+This key expired on: %s
+This key was already signed by
+This object's displayable label.
+This object's displayable markup.
+This object's flags.
+This object's ID.
+This object's parent in the tree.
+This object's short name.
+This object's type tag.
+This was the third time you entered a wrong password. Please try again.
+time-changed
+title != NULL && title[0] != '\0'
+tm != NULL
+/tmp/seahorse-photoid-XXXXXX
+toolbar-placeholder
+too many
+tracked_tasks
+transfer
+transfer_fire
+transfer_free
+transfer_gone
+transfer->object == object
+transfer_password
+transform_item_details
+transform_item_type
+transform_item_use
+transform_network_visible
+translator-credits
+treeview != NULL
+trust-check
+trust_columns
+Trust in this key
+Trust in this key as a string
+trust-marginal-check
+trust-message
+trust-page
+trust-revoke-label
+trust >= SEAHORSE_VALIDITY_NEVER
+trust != SEAHORSE_VALIDITY_ULTIMATE
+trust != SEAHORSE_VALIDITY_UNKNOWN
+trust-sign-label
+trust-str
+Trust String
+type-field
+type == LDAP_RES_SEARCH_ENTRY || type == LDAP_RES_SEARCH_RESULT
+Type `%s' does not implement abstract method `seahorse_commands_delete_objects'
+Type `%s' does not implement abstract method `seahorse_commands_show_properties'
+uid_columns
+ui-definition
+uids-area
+uidsig_columns
+<ui>	<menubar>		<menu name='File' action='file-menu'> 			<placeholder name='FileCommands'>				<menuitem action='key-sign'/>			</placeholder>		</menu>	</menubar>	<toolbar name='MainToolbar'>		<placeholder name='ToolItems'>			<toolitem action='key-sign'/>		</placeholder>	</toolbar>	<popup name='KeyPopup'>		<menuitem action='key-sign'/>	</popup></ui>
+<ui>	<menubar>		<menu name='Remote' action='remote-menu'>			<menuitem action='remote-ssh-upload'/>		</menu>	</menubar>	<popup name='KeyPopup'>		<menuitem action='remote-ssh-upload'/>	</popup></ui>
+<ui>	<popup name='KeyPopup'>		<menuitem action='keyring-default'/>		<menuitem action='keyring-lock'/>		<menuitem action='keyring-unlock'/>		<menuitem action='keyring-password'/>	</popup></ui>
+Ultimate
+Unable to allocate secure memory from gnome-keyring.
+Unable to change trust
+Unavailable
+Unique fingerprint for this key
+(unknown)
+[Unknown]
+unknown trust value: %d
+Unlocks a PGP key
+Unlocks a Secure Shell key
+Unlock the password storage keyring with a master password so it is available for use.
+unmap-event
+(Unreadable Secure Shell Key)
+Unrecognized key type, or invalid data format
+unregister_child
+unregister_watch
+unsupported key server uri scheme: %s
+unsupported 'parent' argument passed to seahorse_util_handle_error() 
+unsupported type of key data: %s
+update_description_free
+update_each_default_keyring
+update-row
+update_secret_free
+update_wait_cursor
+updating
+updating-description
+updating-password
+Updating password
+upload_keys
+upload-keys
+Upper limit day
+Upper limit hour
+Upper limit minute
+Upper limit month
+Upper limit second
+Upper limit year
+uri != NULL
+uri && *uri
+uri && uri[0]
+use-authentication
+Used to access other computers (eg: via a terminal)
+Used to encrypt email and files
+Used to store application and network passwords
+use-field
+user && g_utf8_validate (user, -1, NULL)
+User ID comment
+User ID email
+User ID name
+userid != NULL && !userid->revoked && !userid->invalid
+user-label
+username && username[0]
+/usr/bin/gpg
+/usr/bin/ssh-keygen -b '%d' -t '%s' -C %s -f '%s'
+/usr/bin/ssh-keygen -p -f '%s'
+/usr/bin/ssh-keygen -y -f '%s'
+/usr/bin/ssh '%s@%s' %s %s -o StrictHostKeyChecking=no "umask 077; test -d .ssh || mkdir .ssh ; cat >> .ssh/authorized_keys"
+/usr/lib/seahorse/
+/usr/lib/seahorse/seahorse-ssh-askpass
+/usr/share/locale
+/usr/share/pixmaps/seahorse/
+/usr/share/seahorse/ui/
+%u:%u:%u
+Validity
+_Validity
+Validity of this identity
+Validity of this identity as a string
+Validity of this key
+Validity of this key as a string
+validity-str
+Validity String
+value != self
+VER_1410
+VER_2012
+ --version
+Version of this application
+view-collapse-all
+view-expand-all
+view-expires
+view-menu
+view-trust
+view-type
+view-validity
+wait-cursor
+watch->fnc
+web-browser
+Where the object is located.
+Widget name
+Window of View
+window-state-event
+write_config_file
+Wrong passphrase.
+Wrong password
+XdndDirectSave0
+xds_get_atom_value
+xds_is_dnd_valid_context
+__xstat64
+year >= 1 && year <= 9999
+Year part of the lower date limit
+Year part of the upper date limit
+%Y-%m-%d
+You are about to add %s as a revoker for %s. This operation cannot be undone! Are you sure you want to continue?
+You have no personal PGP keys that can be used to indicate your trust of this key.
+You have no personal PGP keys that can be used to sign a document or message.

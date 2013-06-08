@@ -1,0 +1,45 @@
+#!/bin/bash
+bindir=/usr/bin
+# bugs and all.
+case "$1" in
+convert_dir=/usr/share/omf
+datadir=/usr/share
+datarootdir=/usr/share
+	echo ""
+		echo $datadir/librarian
+			echo $datadir/omf
+	echo -e " --help\t\tDisplay this message and exit"
+	echo -e " --localstatedir\t\tprint localstatedir used at package build time"
+	echo -e " --omfdir\t\t print OMF files directories (one per line)"
+	echo -e " --pkgdatadir\t\tprint scrollkeeper home directory"
+	echo -e " --pkglocalstatedir\t\tprintscrollkeeper data directory"
+	echo -e " --prefix\t\tPrint install directory"
+	echo -e " --version\t\tDisplay version for this package"
+	echo "OPTION is one of:"
+		echo $package_version \(Rarian replacement for scrollkeeper-config\)
+		echo $prefix
+	echo "(Rarian replacement for scrollkeeper-config)"
+		echo $statedir
+	echo "Usage: `basename $0` [OPTION]"
+				echo ${x##0:@:}
+exec_prefix=/usr
+			for x in $(grep -e '^0:@:' $statedir/rarian-update-mtimes > /dev/null 2>&1)
+	--help )
+if [[ $# != 1 ]]
+		if [ $omf_read_enabled = 0 ]
+	--localstatedir )
+	--omfdir )
+omf_read_enabled=1
+output_dir=${datadir}/help
+package_version=0.8.1
+	--pkgdatadir )
+	--pkglocalstatedir )
+	--prefix )
+prefix=/usr
+		print_help
+	print_help
+print_help()
+statedir=/var/lib/rarian
+# This one emulates scrollkeeper-config,
+	--version )
+# Yet another simple wrapper for scrollkeeper wierdness

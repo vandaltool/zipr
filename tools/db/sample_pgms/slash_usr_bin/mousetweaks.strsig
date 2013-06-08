@@ -1,0 +1,413 @@
+[0.2-3.0]
+[0.5-3.0]
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+button_event
+Button style of the click-type window
+cairo_create
+cairo_destroy
+cairo_fill
+cairo_image_surface_create_for_data
+cairo_rectangle
+cairo_set_operator
+cairo_set_source_rgba
+cairo_surface_destroy
+Click type
+click-type-window-geometry
+Click-type window geometry
+click-type-window-orientation
+Click-type window orientation
+click-type-window-style
+Click-type window style
+Click-type window visibility
+click-type-window-visible
+Couldn't create PID file.
+Couldn't create pipe for signal handling. Using fallback.
+ctw-geometry
+ctw-orientation
+cursor_changed
+daemonize
+dcgettext
+double_i
+double_l
+dwell-click-enabled
+Dwell click mode
+Dwell enabled
+dwell-gesture-double
+Dwell gesture double
+dwell-gesture-drag
+Dwell gesture drag
+dwell-gesture-secondary
+Dwell gesture secondary
+dwell-gesture-single
+Dwell gesture single
+Dwell mode
+dwell-threshold
+Dwell threshold
+dwell-time
+Enable dwell click
+Enable dwell clicks
+Enable simulated secondary click
+Enable simulated secondary clicks
+__errno_location
+Failed to Display Help
+finished
+fork() failed.
+g_boxed_type_register_static
+g_bus_own_name
+g_bus_unown_name
+g_cclosure_marshal_VOID__BOXED
+g_cclosure_marshal_VOID__DOUBLE
+g_cclosure_marshal_VOID__INT
+g_cclosure_marshal_VOID__STRING
+g_cclosure_marshal_VOID__VOID
+g_dbus_connection_emit_signal
+g_dbus_connection_register_object
+g_dbus_node_info_new_for_xml
+g_dbus_node_info_unref
+GDesktopMouseDwellDirection
+G_DESKTOP_MOUSE_DWELL_DIRECTION_DOWN
+G_DESKTOP_MOUSE_DWELL_DIRECTION_LEFT
+G_DESKTOP_MOUSE_DWELL_DIRECTION_RIGHT
+G_DESKTOP_MOUSE_DWELL_DIRECTION_UP
+GDesktopMouseDwellMode
+G_DESKTOP_MOUSE_DWELL_MODE_GESTURE
+G_DESKTOP_MOUSE_DWELL_MODE_WINDOW
+gdk_cursor_new
+gdk_device_get_position
+gdk_device_grab
+gdk_device_manager_get_client_pointer
+gdk_device_ungrab
+gdk_device_warp
+gdk_display_get_default
+gdk_display_get_device_manager
+gdk_display_get_n_screens
+gdk_display_get_screen
+gdk_error_trap_pop
+gdk_error_trap_push
+gdk_flush
+gdk_screen_get_default
+gdk_screen_get_root_window
+gdk_window_add_filter
+gdk_window_remove_filter
+gdk_window_set_cursor
+gdk_x11_display_get_xdisplay
+gdk_x11_get_default_root_xwindow
+g_enum_register_static
+g_error_free
+Gesture for double click
+Gesture for drag action
+Gesture for secondary click
+Gesture for single click
+g_get_application_name
+g_get_home_dir
+g_hash_table_destroy
+g_hash_table_foreach
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_new_full
+g_hash_table_remove_all
+ghelp:mousetweaks
+g_intern_static_string
+g_io_add_watch
+g_io_channel_read_chars
+g_io_channel_set_close_on_unref
+g_io_channel_set_encoding
+g_io_channel_set_flags
+g_io_channel_unix_new
+g_io_channel_unref
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+g_memdup
+__gmon_start__
+- GNOME mouse accessibility daemon
+g_object_add_weak_pointer
+g_object_class_install_property
+g_object_connect
+g_object_new
+g_object_notify
+g_object_ref
+g_object_set
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_param_spec_boolean
+g_param_spec_double
+g_param_spec_enum
+g_param_spec_int
+g_param_spec_string
+g_return_if_fail_warning
+g_set_application_name
+g_settings_bind
+g_settings_new
+g_signal_connect_data
+g_signal_emit
+g_signal_new
+g_slice_alloc0
+g_slice_free1
+g_slist_index
+g_slist_nth_data
+g_source_remove
+g_strcmp0
+g_strdup
+g_strdup_printf
+g_str_equal
+g_str_hash
+g_timeout_add
+g_timer_destroy
+g_timer_elapsed
+g_timer_new
+g_timer_start
+gtk_bin_get_child
+gtk_bin_get_type
+gtk_builder_add_from_file
+gtk_builder_get_object
+gtk_builder_new
+gtk_check_menu_item_get_active
+gtk_check_menu_item_get_type
+gtk_check_menu_item_set_active
+gtk_dialog_add_button
+gtk_dialog_get_type
+gtk_dialog_run
+gtk_get_current_event_time
+gtk_get_option_group
+gtk_init
+gtk_label_get_type
+gtk_label_set_attributes
+gtk_main
+gtk_main_quit
+gtk_menu_get_type
+gtk_menu_popup
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_orientable_get_type
+gtk_orientable_set_orientation
+gtk_radio_button_get_group
+gtk_radio_button_get_type
+gtk_settings_get_default
+gtk_show_uri
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_set_active
+gtk_toggle_button_set_mode
+gtk_widget_destroy
+gtk_widget_get_style
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_set_sensitive
+gtk_widget_set_visible
+gtk_widget_show
+gtk_window_get_position
+gtk_window_get_size
+gtk_window_get_type
+gtk_window_parse_geometry
+gtk_window_set_icon_name
+gtk_window_set_keep_above
+gtk_window_set_title
+gtk_window_stick
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+g_value_dup_string
+g_value_get_boolean
+g_value_get_double
+g_value_get_enum
+g_value_get_int
+g_value_set_boolean
+g_value_set_double
+g_value_set_enum
+g_value_set_int
+g_value_set_string
+g_variant_builder_add
+g_variant_builder_init
+g_variant_get_int32
+g_variant_new
+g_variant_new_int32
+g_variant_type_checked_
+hide-ctw
+Hide the click-type window
+Ignore small mouse movements below threshold
+Ignore small pointer movements
+image != NULL
+input-mouse
+_IO_stdin_used
+%ix%i+%i+%i
+_Jv_RegisterClasses
+left_ptr
+libcairo.so.2
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+libpango-1.0.so.0
+libpthread.so.0
+libX11.so.6
+libXcursor.so.1
+libXfixes.so.3
+libXtst.so.6
+menu_both
+menu_button_style
+menu_horizontal
+menu_icon
+menu_orientation
+menu_text
+menu_vertical
+message-type
+motion_event
+Mousetweaks is already running. (PID %u)
+MtClickTypeWindowOrientation
+MT_CLICK_TYPE_WINDOW_ORIENTATION_HORIZONTAL
+MT_CLICK_TYPE_WINDOW_ORIENTATION_VERTICAL
+MtClickTypeWindowStyle
+MT_CLICK_TYPE_WINDOW_STYLE_BOTH
+MT_CLICK_TYPE_WINDOW_STYLE_ICON
+MT_CLICK_TYPE_WINDOW_STYLE_TEXT
+?MtCursor
+mt_cursor_get_dimension
+mt_cursor_get_hotspot
+mt_cursor_get_image
+mt_cursor_get_image_copy
+mt_cursor_get_name
+MtCursorManager
+mt_cursor_manager_get_current_cursor
+mt_cursor_manager_lookup_cursor
+mt_cursor_manager_restore_all
+mt_cursor_manager_set_cursor
+mt_cursor_new
+MtDwellClickType
+MT_DWELL_CLICK_TYPE_DOUBLE
+MT_DWELL_CLICK_TYPE_DRAG
+MT_DWELL_CLICK_TYPE_MIDDLE
+MT_DWELL_CLICK_TYPE_RIGHT
+MT_DWELL_CLICK_TYPE_SINGLE
+MT_IS_CURSOR (cursor)
+MT_IS_CURSOR_MANAGER (manager)
+MT_IS_SERVICE (service)
+MT_IS_SIG_HANDLER (sigh)
+MT_IS_TIMER (timer)
+MtListener
+MtService
+mt-service.c:108
+mt-service.c:90
+mt_service_get_click_type
+mt_service_set_click_type
+MtSettings
+mt-settings.c:148
+mt-settings.c:199
+MtSigHandler
+mt_sig_handler_catch
+mt_sig_handler_setup_pipe
+mt-timer.c:75
+mt-timer.c:93
+mt_timer_elapsed
+mt_timer_get_target
+mt_timer_is_running
+mt_timer_set_target
+mt_timer_start
+mt_timer_stop
+name != NULL
+<node>  <interface name='org.gnome.Mousetweaks'>    <property type='i' name='ClickType' access='readwrite'/>  </interface></node>
+notify::click-type
+notify::gtk-cursor-theme-name
+notify::gtk-cursor-theme-size
+No XTest extension found. Aborting.
+org.freedesktop.DBus.Properties
+org.gnome.desktop.a11y.mouse
+org.gnome.mousetweaks
+/org/gnome/Mousetweaks
+org.gnome.Mousetweaks
+Orientation of the click-type window
+pango_attr_list_insert
+pango_attr_list_new
+pango_attr_list_unref
+pango_attr_weight_new
+PropertiesChanged
+property
+(sa{sv}as)
+secondary-click-enabled
+secondary-click-time
+setlocale
+Set the active dwell mode
+shutdown
+Shutdown failed or nothing to shut down.
+Shut down mousetweaks
+Shutdown successful.
+sigaction
+sigemptyset
+sigfillset
+signal::button-press-event
+signal::notify::ctw-orientation
+signal::notify::ctw-style
+signal::notify::ctw-visible
+signal::notify::dwell-enabled
+signal::notify::dwell-mode
+signal::toggled
+sigprocmask
+single_i
+single_l
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+Size and position of the click-type window
+%s/.mousetweaks.pid
+__snprintf_chk
+ssc-enabled
+SSC enabled
+ssc-time
+__stack_chk_fail
+Starting daemon.
+Start mousetweaks as a daemon
+Start mousetweaks in login mode
+target >= 0.1
+target-time
+Target time
+?Target time of the timer
+The currently active click type
+Time to wait before a dwell click
+Time to wait before a simulated secondary click
+@@Trapped X Error code %i.
+Unknown button sequence.
+Unknown click-type.
+/usr/share/locale
+/usr/share/mousetweaks/mousetweaks.ui
+width > 0 && height > 0
+WIDTHxHEIGHT+X+Y
+[window|gesture]
+XAllowEvents
+XcursorImageCreate
+XcursorImageDestroy
+XcursorImageLoadCursor
+XcursorLibraryLoadCursor
+XDefaultRootWindow
+XFixesChangeCursorByName
+XFixesGetCursorImage
+XFixesQueryExtension
+XFixesSelectCursorInput
+XFixesSetCursorName
+XFreeCursor
+XGetAtomName
+XGrabButton
+xhot <= width && yhot <= height
+XQueryPointer
+XTestFakeButtonEvent
+XTestGrabControl
+XTestQueryExtension
+XUngrabButton

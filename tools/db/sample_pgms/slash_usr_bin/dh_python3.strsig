@@ -1,0 +1,376 @@
+################################################################
+ 2010-2012 Piotr O
+# all copies or substantial portions of the Software.
+             'and add them to ${python:Depends}. '
+    # arch=False->arch:all only, arch=True->arch:any only, None->all of them
+            args = pdir
+                    args += " -V %s" % vrange_str(options.vrange)
+                args += " -V %s" % vrange_str(vr)
+                args += " -V %s" % vrepr(ver)
+                args += " -X '%s'" % pattern.replace("'", r"\'")
+arowski <piotr@debian.org>
+                # assume all extensions were build using cPython
+        # assume .so files without tag in /usr/lib/python3/ are build for Python 3.2
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        bin_dir = private_dir = None
+                    bin_dir = root
+                    break
+        # check files
+                clean_name = clean_egg_name(fn)
+                clean_name = clean_egg_name(name)
+         'compile': False,
+                    ['compile'] = True
+            continue
+                continue
+                    continue
+                        continue
+# copies of the Software, and to permit persons to whom the Software is
+# Copyright 
+DBG_EXTENSION_TAG = 'cpython-%sdmu'
+    dbg_package = package.endswith('-dbg')
+        dbg_to_check.append("usr/lib/debug/usr/lib/pyshared/python%s" % ver)
+        dbg_to_check = ['usr/lib/debug/%s' % i for i in to_check]
+        default=False, help='turn verbose mode on')
+def fix_locations(package):
+def main():
+def scan(package, dname=None, clean_dbg_pkg=True):
+def share_files(srcdir, dstdir, dbg_package=False):
+def tagged_extname(fname, version, dbg_package=False):
+             'dependencies and add them to ${python:Recommends}')
+             'dependencies and add them to ${python:Suggests}')
+        dependencies = Dependencies(package)
+        dependencies.export_to(dh)
+        dependencies.parse(stats, options)
+        dest='arch', default=None,
+        dest='arch', help='act on architecture dependent packages')
+            dest='clean_dbg_pkg', default=True,
+        dest='guess_deps', default=True, help='disable guessing dependencies')
+        dest='skip_private', default=False,
+                dh.addsubstvar(package, 'python3:Provides', \
+            dh.addsubstvar(package, 'python3:Versions', \
+            dh.autoscript(package, 'postinst', 'postinst-py3compile', '')
+            dh.autoscript(package, 'postinst', 'postinst-py3compile', args)
+                dh.autoscript(package, 'prerm', 'prerm-py3clean', '')
+            dh.autoscript(package, 'prerm', 'prerm-py3clean', '')
+        dh = DebHelper(options.package, options.no_package)
+    dh.save()
+                         'Did you forget "--install-layout=deb"?',
+                    dirs.pop(dirs.index(name))
+                dirs.pop(dirs.index(name))
+        # do the same with debug locations
+                dstdir = join('debian', package, 'usr/share/python3/dist/')
+        dstdir = sitedir(version, package)
+        dstdir = sitedir(version, package, gdb=True)
+            # .egg-info files
+        elif cmpfile(fpath1, fpath2, shallow=False):
+    elif dbg_package:
+            elif False in ext_for:  # extension's version not detected
+                elif fext == 'py':
+            elif private_dir:
+            else:
+        else:
+    else:
+            else:  # i.e. not public_dir and not private_dir
+                else:  # try shebang or default Python version
+                except:
+        except:
+    except Exception as e:
+            exit(1)
+        exit(2)
+                extensions = sorted(ext_for)
+EXTENSION_TAG = 'cpython-%smu'
+            ext_for = details.get('ext')
+         'ext': set()}
+        # fail now rather than at runtime
+                fcopy(pydist_file, join(dstdir, package))
+            fext = fn.rsplit('.', 1)[-1]
+### FILES ######################################################
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            fix_locations(package)
+        fname = "%s.%s.so" % (fname[:-3], DBG_EXTENSION_TAG % vers)
+        fname = "%s.%s.so" % (fname[:-3], EXTENSION_TAG % vers)
+        fname = "%s.%s.so" % (fname[:-5], DBG_EXTENSION_TAG % vers)
+# * fn - file name (without path)
+                    fn = tagged_extname(fn, public_dir.groups()[0], dbg_package)
+        for fn in file_names:
+    for i in os.listdir(srcdir):
+            for i in private_to_check:
+                           for i in sorted(vrepr(stats['ext']))))
+            for line in fp:
+        for location in dbg_to_check:
+        for location in to_check:
+        for name in dirs:
+    for package, pdetails in dh.packages.items():
+            for pattern in options.regexpr or []:
+    for pattern in options.regexpr or []:
+        for pdir, details in stats['private_dirs'].items():
+    for root, dirs, file_names in os.walk(proot):
+        for root, dirs, file_names in os.walk(proot, topdown=False):
+    for version in SUPPORTED:
+            fpath1 = join(srcdir, i)
+        fpath1 = join(srcdir, i)
+            fpath1_orig = fpath1
+        fpath2 = join(dstdir, i)
+# * fpath - file path
+                fpath = join(root, fn)
+from debpython.debhelper import DebHelper
+from debpython.depends import Dependencies
+from debpython.option import Option
+from debpython.pydist import validate as validate_pydist, \
+from debpython.tools import sitedir, shebang2pyver, clean_egg_name
+from debpython.version import SUPPORTED, DEFAULT, \
+from filecmp import cmp as cmpfile
+from optparse import OptionParser, SUPPRESS_HELP
+from os.path import isdir, exists, join
+from shutil import rmtree, copy as fcopy
+from stat import ST_MODE, S_IXUSR, S_IXGRP, S_IXOTH
+# furnished to do so, subject to the following conditions:
+    """Gather statistics about Python files in given package."""
+    getver, vrepr, parse_pycentral_vrange, \
+            # handle EGG related data (.egg-info dirs)
+        help='act on architecture independent packages')
+        help='act on the package named PACKAGE')
+        help='be quiet')
+        help='do not act on the specified package')
+        help='do not remove files from debug packages')
+        help='don\'t check private directories')
+        help='exclude items that match given REGEXPR. You may use this option '
+        help='specify list of supported Python versions. ' +\
+        help='translate given requirements into Debian '
+        help='translate given requirements into Debian dependencies '
+            if bin_dir:
+                if clean_name != fn:
+                if clean_name != name:
+                if dbg_package and clean_dbg_pkg:
+    if dbg_package and clean_dbg_pkg:
+                if dbg_package and clean_dbg_pkg and fext not in ('so', 'h'):
+        if dname is False:
+                if exists(join(root, fn)):
+                if exists(parent_dir) and not os.listdir(parent_dir):
+        if exists(pydist_file):
+    if exists(srcdir) and not os.listdir(srcdir):
+            if ext_for is None:  # no extension
+            if fext in ('pyc', 'pyo'):
+                if fext == 'so':
+                if fext == 'so' and 'cpython' not in fn:
+    if fname.endswith('_d.so'):
+            if fn.endswith('.egg-info'):
+        if i.rsplit('.', 1)[-1] == 'so' and 'cpython' not in i:
+        if isdir(fpath1):
+            if isdir(srcdir):
+            if len(ps) > 1 and ps[0] == 'python3':
+                if len(root.split('/', 6)) < 6 and (\
+            if len(tmp) == 5:  # debian/package/usr/foo/bar
+                if line and not line.startswith('#'):
+                    if mode & S_IXUSR or mode & S_IXGRP or mode & S_IXOTH:
+            if name.endswith('.egg-info'):
+if __name__ == '__main__':
+            if name == '__pycache__':
+            if not details.get('compile'):
+    if not dname:
+                if not exists(dstdir):
+        if not exists(fpath2):
+    if not options.vrange and dh.python_version:
+    if not options.vrange and exists('debian/pyversions'):
+        if not private_dir:
+        if not public_dir:
+            if not pyclean_added:
+            if not validate_pydist(pydist_file, True):
+        if options.arch is False and pdetails['arch'] != 'all' or \
+    if options.skip_private:
+    if options.verbose or os.environ.get('DH_VERBOSE') == '1':
+                if options.vrange and '-' not in vrange_str(options.vrange):
+                if options.vrange and options.vrange != (None, None):
+            if '-packages/' in root and not file_names:
+            if public_dir:
+            if public_dir or private_dir:
+                        if res:
+                if res:
+        if root.endswith('.egg-info') and 'requires.txt' in file_names:
+                if root.startswith(join('debian', package, i)):
+        if stats['compile']:
+        if stats['ext']:
+                    if tagver is None:
+        if '/usr/lib/python2' in root or\
+    if vers == '3':
+                           if v) or [None])[0] or DEFAULT
+        # ignore Python 2.X locations
+    # ignore some debhelper options:
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+import logging
+import os
+import re
+import sys
+# initialize script
+# in the Software without restriction, including without limitation the rights
+            i = tagged_extname(i, public_dir.groups()[0], dbg_package)
+                           ', '.join("python%s-%s" % (i, ps[1])\
+                           ', '.join(sorted(vrepr(stats['ext']))))
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                line = line.strip()
+        log.debug('args: %s', args)
+        log.debug('argv: %s', sys.argv)
+                log.debug('moving files from %s to %s', srcdir, dstdir)
+        log.debug('options: %s', options)
+    log.debug("package %s details = %s", package, r)
+        log.debug('parsing version range from debian/pyversions')
+        log.debug('processing package %s...', package)
+        log.error('cannot initialize DebHelper: %s', e)
+            log.error('regular expression is not valid: %s', pattern)
+logging.basicConfig(format='%(levelname).1s: %(module)s:%(lineno)d: '
+log = logging.getLogger(__name__)
+        log.setLevel(logging.DEBUG)
+                log.warning('Python 2.x location detected, '
+                log.warning("%s.pydist file is invalid", package)
+                log.warn('Python %s should install files in %s. '
+                    log.warn('renaming %s to %s', fn, clean_name)
+            log.warn('renaming %s to %s', fpath1_orig, fpath1)
+                    log.warn('renaming %s to %s', name, clean_name)
+                    log.warn('renaming %s to %s', old_fn, fn)
+    main()
+                           '%(message)s')
+                        # mess with non-Python libraries, don't we?
+                    mode = os.stat(join(root, fn))[ST_MODE]
+    """Move files to the right location."""
+             'multiple times to build up a list of things to exclude.')
+# naming conventions used in the file:
+# of this software and associated documentation files (the "Software"), to deal
+                    old_fn = fn
+                                   option_class=Option)
+           options.arch is True and pdetails['arch'] == 'all':
+    (options, args) = parser.parse_args(sys.argv[1:] + \
+        options.vrange = parse_pycentral_vrange(dh.python_version)
+                    options.vrange = parse_vrange(line)
+                      os.environ.get('DH_OPTIONS', '').split())
+                    os.makedirs(dstdir)
+            os.remove(fpath1)
+                    os.remove(join(root, fn))
+                os.remove(join(root, fn))
+            os.rename(fpath1_orig, fpath1)
+                    os.rename(join(root, fn), join(root, clean_name))
+                    os.rename(join(root, name), join(root, clean_name))
+                    os.rename(join(root, old_fn), join(root, fn))
+            os.renames(fpath1, fpath2)
+                    os.rmdir(parent_dir)
+                    os.rmdir(root)
+        os.rmdir(srcdir)
+os.umask(0o22)
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+### PACKAGE DETAILS ############################################
+                parent_dir = '/'.join(srcdir.split('/')[:-1])
+    parser.add_option('-a', '-s', '--arch', action='store_true',
+    parser.add_option('--depends', action='append', dest='depends',
+    parser.add_option('-i', '--indep', action='store_false',
+    parser.add_option('-N', '--no-package', action='append', dest='no_package',
+    parser.add_option('--no-dbg-cleaning', action='store_false',
+    parser.add_option('--no-guessing-deps', action='store_false',
+    parser.add_option('-O', help=SUPPRESS_HELP)
+    parser.add_option('-p', '--package', action='append', dest='package',
+    parser.add_option('-q', '--quiet', action='store_false', dest='verbose',
+    parser.add_option('--recommends', action='append', dest='recommends',
+    parser.add_option('--skip-private', action='store_true',
+    parser.add_option('--suggests', action='append', dest='suggests',
+    parser.add_option('-V', type='version_range', dest='vrange',
+    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
+    parser.add_option('-X', '--exclude', action='append', dest='regexpr',
+    parser = OptionParser(usage, version='%prog 3.0~beta2',
+    parse_vrange, vrange_str
+                    pass
+            pattern = re.compile(pattern)
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+                            'please use dh_python2: %s', root)
+        private_dir = False
+                    private_dir = '/' + i
+    private_dir = None if not args else args[0]
+         'private_dirs': {},
+            private_to_check = []
+        private_to_check = [dname[1:]]
+            private_to_check = [i % package for i in
+        proot = "debian/%s" % package
+        proot = join('debian', package, dname.strip('/'))
+        proot = proot + '/usr/lib'
+            ps = package.split('-', 1)
+        public_dir = PUBLIC_DIR_RE.match(root)
+            public_dir = PUBLIC_DIR_RE.match(srcdir)
+                             PUBLIC_DIR_RE
+        pyclean_added = False  # invoke pyclean only once in maintainer script
+                pyclean_added = True
+            pyclean_added = True
+        pydist_file = join('debian', "%s.pydist" % package)
+            # Python version is gone)
+    # regexpr option type is not used so lets check patterns here
+        # remove empty directories in -dbg packages
+                res = shebang2pyver(fpath)
+                        res = shebang2pyver(join(root, fn))
+    return fname
+    return r
+    """Return tagged extension name for given file & version."""
+                    (r if public_dir else
+                    rmtree(join(root, name))
+                rmtree(join(root, name))
+                   root.endswith('/sbin') or root.endswith('/bin') or\
+                   root.endswith('/usr/games')):
+                            r['private_dirs'].setdefault(private_dir, {})\
+                     r['private_dirs'].setdefault(private_dir, {}))\
+            r['requires.txt'].add(join(root, 'requires.txt'))
+    r = {'requires.txt': set(),
+                    r['shebangs'].add(res)
+                   # /(s)bin or /usr/(s)bin or /usr/games
+            # search for scripts in bin dirs
+             'See py3compile(1) for examples')
+                    .setdefault('ext', set()).add(tagver)
+                                .setdefault('shebangs', set()).add(res)
+            share_files(fpath1, fpath2, dbg_package)
+                share_files(srcdir, dstdir, package.endswith('-dbg'))
+         'shebangs': set(),
+            srcdir = "debian/%s/%s" % (package, location)
+        stats = scan(package, private_dir, options.clean_dbg_pkg)
+sys.path.insert(1, '/usr/share/python3/')
+TAG_RE = re.compile(r'-([0-9]{2})[^-.]*\.so$')
+# tag that will be added to .so files without one
+                    tagver = getver("%s.%s" % (tagver[0], tagver[1]))
+                    tagver = TAG_RE.search(fn)
+                    tagver = tagver.group(1)
+# The above copyright notice and this permission notice shall be included in
+# THE SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            tmp = root.replace('/local', '').split('/')
+        to_check = [i % ver for i in (\
+    # TODO: support more than one private dir at the same time (see :meth:scan)
+                # TODO: what about relative symlinks?
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                try:
+        try:
+    try:
+    """Try to move as many files from srcdir to dstdir as possible."""
+            # try to rename extension here as well (in :meth:`scan` info about
+    usage = '%prog -p PACKAGE [-V [X.Y][-][A.B]] DIR [-X REGEXPR]\n'
+             'Use it for missing items in requires.txt.')
+#! /usr/bin/python3
+                    'usr/lib/pymodules/python%s')]
+           '/usr/lib/pyshared/' in root:
+                    'usr/lib/python%s/dist-packages',
+                    'usr/lib/python%s/site-packages',
+                                ('usr/lib/%s', 'usr/lib/games/%s',
+           '/usr/local/lib/python2' in root or\
+                    'usr/local/lib/python%s/dist-packages',
+                    'usr/local/lib/python%s/site-packages',
+           '/usr/share/pyshared/' in root or\
+                                'usr/share/%s', 'usr/share/games/%s')]
+                    'var/lib/python-support/python%s',
+                    ver = (list(v for i, v in details.get('shebangs', [])
+        vers = '32'
+# * version - tuple of integers
+                         ver, sitedir(version))
+# * ver - string representation of version
+    vers = vers.replace('.', '')
+    vers = vrepr(version)  # make sure it's a string
+                    ver = vrange_str(options.vrange)
+        ver = vrepr(version)
+# vim: et ts=4 sw=4
+# * vrange - version range, pair of max and min versions
+                vr = (extensions[0], extensions[-1])
+            # warn only once
+        with open('debian/pyversions', 'r', encoding='utf-8') as fp:
+        # XXX: check symlinks
+                        # yeah, python3.1 is not covered, but we don't want to

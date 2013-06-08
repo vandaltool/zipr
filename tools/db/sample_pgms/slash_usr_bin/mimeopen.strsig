@@ -1,0 +1,223 @@
+# ######## #
+# ########## #
+# ########### #
+# ############# #
+## Actually use our modules ##
+	@app = grep defined($_), @app;
+				$app[$i]->get_value('Name'), "  ($file)\n";
+			$app[$i] = undef;
+are ignored.
+			$args{database}
+				$args{$key} .= ( $args{$key} ? ' ' : '' ).$arg; # join with whitespace
+				$args{$opt} .= ( $args{$opt} ? ' ' : '' ) . $arg;
+	'ask'		=> ['a'],
+	'ask-default'	=> ['d'],
+		# ask for custom command
+	$bn =~ s|^(.*/)*||;
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+	$c--; # base-1 => base-0
+	chomp $c;
+		chomp $cmd;
+				complain('-'.$o, 2) unless defined $arg;
+				complain('--'.$opt, 2) unless defined $arg;
+			complain($o) unless $key;
+complain(undef, 4) unless scalar(@ARGV);
+Copyright (c) 2002 Jaap G Karssenberg. All rights reserved.
+Copyright (c) 2005,2008 Jaap G Karssenberg. All rights reserved.
+# --database
+	'database'	=> ['', 1],
+database. The directories specified by the basedir specification
+# --debug
+	'debug'		=> ['D'],
+default application.
+	$default = choose($mimetype, 0, grep defined($_), $default, @other);
+	$default = choose($mimetype, 1, grep defined($_), $default, @other);
+	$default = defined($default) ? $default : $other[0];
+default desktop application. If no default application is configured the
+	$default->exec(@ARGV);
+	$default->exec($last);
+*default = \&File::MimeInfo::default;
+	($default) = (@other == 1) ? (@other) : choose($mimetype, 1, @other);
+# --dereference
+	'dereference'	=> ['L'],
+	die "Could not find perl module File::Spec\n" if $@;
+	die "Could not find perl module Pod::Usage\n" if $@;
+die $@ if $@;
+Do not check for extensions, globs or inode type, only look at the content
+Do not execute the default application but ask which application to run.
+Don't ask the user which program to use. Choose the default program or the 
+# do stuff #
+		else {
+			else { $args{$key}++; }
+			else { $args{$opt}++ }
+		else { complain('--'.$opt) }
+	else { complain($opt) }
+elsif ($args{'ask'}) {
+elsif ($args{'ask-default'}) {
+	elsif ($c > scalar(@app)) {
+elsif (! defined $default) {
+	elsif ($m == 2) { print STDERR "$bn: option '$opt' requires an argument" }
+	elsif ($m == 3) { print STDERR "$bn: $opt: No such file or directory\n" }
+	elsif ($m == 4) { print STDERR "usage: $bn [options] files" }
+	elsif ($opt =~ s/^-(?!-)//) {
+	elsif ($opt =~ s/^--([\w-]+)(?:=(.*))?/$1/) {
+	elsif ($set_default) {
+eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
+			eval { mime_applications_set_custom($mime => $cmd) };
+		eval { mime_applications_set_default($mime => $app[$c]) };
+eval 'use File::MimeInfo::Applications;';
+eval 'use File::MimeInfo::Magic qw/mimetype magic/;';
+	eval 'use File::Spec';
+	eval 'use Pod::Usage';
+	exit 0;
+	exit 5;
+	exit 6;
+exit 7; # something went wrong in the exec
+		exit 8;
+	exit $m;
+		-exitval => 0,
+					File::BaseDir::xdg_data_dirs()
+					File::BaseDir::xdg_data_home(),
+	$File::MimeInfo::DEBUG++;
+@File::MimeInfo::DIRS = split /:/, $args{database} if $args{database};
+	$File::MimeInfo::Magic::DEBUG++;
+		$file =~ s/\.desktop$//;
+			File::Spec->splitpath( $app[$i]->{file} );
+first program known to handle the file mimetype. This does not set the 
+Follow symbolic links.
+Force the program to look in these directories for the shared mime-info
+		foreach my $o (split //, $opt) {
+	fork or $default->exec($_) for @ARGV;
+for more details.
+	for my $i (0 .. $#app) {
+for some limitations.
+freedesktop desktop-file-utils package. See L<File::MimeInfo::Applications(3)>
+=head1 AUTHOR
+=head1 BUGS
+=head1 COPYRIGHT
+=head1 DESCRIPTION
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+	'help'		=> ['h'],
+    if 0; # not running under some shell
+if ($args{debug}) {
+if ($args{dereference}) {
+if ($args{help} || $args{usage}) {
+if    ($args{'no-ask'}) {
+if ($args{version}) {
+if (@ARGV == 1 or $default->wants_list) {
+		if (exists $opts{$opt}) {
+		if (grep {$_ eq $file} @done) {
+	if ($m == 1) { print STDERR "$bn: unrecognized option '$opt'" }
+	if ($opt =~ /^--?$/) {
+			if ($opts{$key}[1]) { 
+			if ($opts{$opt}[1]) { 
+	if ($set_default and $c == scalar(@done)) {
+=item B<-a>, B<--ask>
+=item B<--database>=I<mimedir>:I<mimedir>:...
+=item B<-d>, B<--ask-default>
+=item B<-D>, B<--debug>
+=item B<-h>, B<--help>
+=item B<-L>, B<--dereference>
+=item B<-M>, B<--magic-only>
+=item B<-n>, B<--no-ask>
+=item B<-u>, B<--usage>
+=item B<-v>, B<--version>
+Jaap Karssenberg E<lt>pardus@cpan.orgE<gt>
+Let the user choose a new default program for given files.
+L<File::MimeInfo(3)>,
+L<File::MimeInfo::Applications(3)>
+	$link = File::Spec->rel2abs($link, $dir);
+	$link = resolvelink($link) if -l $link; # recurs
+L<mimetype(1)>,
+L<update-desktop-database(1)>,
+L<update-mime-database(1)>,
+	? (magic($f) || default($f))
+# --magic-only
+	'magic-only'	=> ['M'],
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+mimeopen - Open files by mimetype
+mimeopen [options] [-] files
+$mimetype = $args{'magic-only'}
+	: mimetype($f) ;
+modify it under the same terms as Perl.
+				my $arg = $2 || shift @ARGV;
+my %args = ();
+				my $arg = shift @ARGV;
+	my $bn = $0;
+		my $cmd = <STDIN>;
+	my $c = <STDIN>;
+my ($default, @other) = mime_applications_all($mimetype);
+	my @done;
+my $f = ($args{dereference} && -l $file) ? resolvelink($file) : $file;
+my $file = $ARGV[0];
+	my $file = shift;
+			my ($key) = grep { $opts{$_}[0] eq $o } keys %opts;
+	my $last = pop @ARGV;
+	my $link = readlink($file) || return $file;
+	my ($mime, $set_default, @app) = @_;
+my $mimetype;
+	my $m = shift || 1;
+my %opts = (
+	my $opt = shift;
+	my $opt = shift @ARGV;
+	my (undef, $dir, undef) = File::Spec->splitpath($file);
+		my (undef, undef, $file) =
+		), "\n";
+	# name	=> [char, expect_arg_bit ]
+	'no-ask'	=> ['n'],
+No known bugs, please mail the author if you find one.
+of the file. This is particularly useful if for some reason you don't trust
+our $VERSION = '0.15';
+# Parse ARGV #
+		"Please choose a default application for files of type $mime\n\n" :
+		"Please choose an application\n\n" ;
+	pod2usage( {
+# prepare stuff #
+Print a help message and exits.
+	print	'> Data dirs are: ', join( ', ', 
+Print debug information about how the mimetype was determined.
+	print "mimeopen $VERSION\n\n", << 'EOV';
+	print "\nTry '$bn --help' for more information.\n" unless $m == 3;
+	print "\nuse application #";
+print 'Opening '.join(', ', map qq{"$_"}, @ARGV)
+	print $set_default ?
+		print STDERR "Cancelled\n";
+	print STDERR "Could not determine mimetype for file: $file\n";
+#print STDERR "exec string: ".$default->parse_Exec(@ARGV)."\n";
+	print STDERR "No applications found for mimetype: $mimetype\n";
+Print the version of the program and exit.
+			print "\t", scalar(@done), ") ",
+	print "\t", scalar(@done)+1, ") Other...\n" if $set_default;
+		print "use command: ";
+		push @app,
+			push @done, $file;
+	return $app[$c];
+	return $link;
+See File::MimeInfo::Applications(3) and File::DesktopEntry(3)
+				? ( split /:/, $args{database} )
+	'stdin'		=> [''],
+sub choose {
+sub complain { # Error messages
+sub resolvelink { # --dereference
+# Subroutines #
+the name or the extension a file has.
+This does not change the default application.
+This program is distributed in the hope that it will be useful,
+This program is free software; you can redistribute it and/or
+This script tries to determine the mimetype of a file and open it with the
+To use this script you need the freedestop mime-info database and the
+	unless ($c =~ /^\d+$/) {
+unless($default or @other) {
+unless (length $mimetype) {
+	'usage'		=> ['u'],
+user is prompted with an "open with" menu in the terminal.
+use strict;
+#!/usr/bin/perl 
+		-verbose => 1,
+	'version'	=> ['v'],
+		warn $@ if $@;
+while ((@ARGV) && ($ARGV[0] =~ /^-/)) {
+	. ' with '.$default->get_value('Name')."  ($mimetype)\n";

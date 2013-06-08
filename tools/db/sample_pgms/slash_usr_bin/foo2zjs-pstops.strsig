@@ -1,0 +1,71 @@
+        '
+	    0 $YDIMpoints translate\
+	    -90 rotate\
+	a)	ACCURATE=1;;
+    -a		Accurate Screens code
+ACCURATE=0
+	    /AccurateScreens true\
+    Add PS code for foo2zjs-wrapper.
+	    # %%aload pop translate\
+	    /Angle 37\
+    `basename $PROGNAME` - Add PS code for foo2*-wrapper
+    `basename $PROGNAME` [options] [file]
+#!/bin/sh
+	case $opt in
+case `uname -s` in
+	cat <<EOF
+    -c		CIEColor
+	c)	CIECOLOR=1;;
+CIECOLOR=0
+	    # %%currentpagedevice /PageSize get\
+Darwin)	sed=gsed;;
+	D)	DEBUG="$OPTARG";;
+debug() {
+DESCRIPTION
+    -D lvl	Debug level
+	echo "`basename $PROGNAME`: $1" >&2
+	    echo "`basename $PROGNAME`: $2" >&2
+elif [ $ACCURATE = 1 ]; then
+    -e "$n" \
+    -e "$r" \
+error() {
+    -e "$w" \
+	    /Frequency 137\
+	    /HalftoneName (Round Dot Screen) cvn\
+	    /HalftoneType 1\
+	h|\?)	usage;;
+	h)	YDIMpoints="$OPTARG";;
+    -h ydimpts	For rotate -r, y dimension points
+	if [ $DEBUG -ge $1 ]; then
+if [ $NIXCUPS = 1 ]; then
+if [ $ROTATE90 = 1 ]; then
+if [ $WTS = 1 ]; then
+	<< /Install {\
+#	Main Program
+NIXCUPS=0
+    -n		Neuter CUPS cupsPSLevel2
+	n)	NIXCUPS=1;;
+    n='s#^[^/]*cupsPSLevel2#false#'
+#       Process the options
+PROGNAME="$0"
+    r="1i\
+#       Report an error and exit
+ROTATE90=0
+	r)	ROTATE90=1;;
+    -r		Rotate 90 clockwise
+*)	sed=sed;;
+	>> sethalftone
+	} >> setpagedevice
+shift `expr $OPTIND - 1`
+	    /SpotFunction { 180 mul cos exch 180 mul cos add 2 div}\
+SYNOPSIS
+usage() {
+#	Use gsed instead of sed on Mac OSX
+	<< /UseWTS false >> setuserparams \
+	<< /UseWTS true >> setuserparams \
+	V)	echo "$VERSION"; exit 0;;
+VERSION='$Id: foo2zjs-pstops.sh,v 1.17 2011/11/23 22:07:33 rick Exp $'
+while getopts "ach:nwrD:Vh?" opt
+    w='/%%Page:[ 	]*[ 	(]1[ 	)].*$/ i\
+    -w		Well Tempered Screens code
+	w)	WTS=1;;

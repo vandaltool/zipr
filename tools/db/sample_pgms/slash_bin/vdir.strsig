@@ -1,0 +1,315 @@
+ 0  if OK,
+0 <= strtol_base && strtol_base <= 36
+                               1,048,576 bytes.  See SIZE format below.
+ 1  if minor problems (e.g., cannot access subdirectory),
+  -1                         list one file per line
+ 2  if serious trouble (e.g., cannot access command-line argument).
+3T$<3D$8	
+  -a, --all                  do not ignore entries starting with .
+  -A, --almost-all           do not list implied . and ..
+abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1
+acl_extended_file_nofollow
+acl_get_entry
+acl_get_tag_type
+almost-all
+ambiguous argument %s for %s
+                               and do not dereference symbolic links
+A NULL argv[0] was passed through an exec system call.
+                             append / indicator to directories
+__assert_fail
+                               augment with a --sort option, but any
+      --author               with -l, print the author of each file
+%b %e %H:%M
+  -b, --escape               print C-style escapes for nongraphic characters
+%b %e  %Y
+  -B, --ignore-backups       do not list implied entries ending with ~
+bindtextdomain
+block-size
+BLOCKSIZE
+                               `--block-size=M' prints sizes in units of
+      --block-size=SIZE      scale sizes by SIZE before printing them.  E.g.,
+__bss_start
+# buckets:         %lu
+# buckets used:    %lu (%.2f%%)
+bug-coreutils@gnu.org
+cannot access %s
+cannot determine device and inode of %s
+cannot open directory %s
+cannot read symbolic link %s
+                               characters specially)
+classify
+  -C                         list entries by columns
+clock_gettime
+closedir
+closing directory %s
+      --color[=WHEN]         colorize the output.  WHEN defaults to `always'
+Copyright %s %d Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+__ctype_toupper_loc
+  -c                         with -lt: sort by, and show, ctime (time of last
+__cxa_atexit
++D$(9D$4
+David MacKenzie
+dcgettext
+  -d, --directory            list directory entries instead of contents,
+  -D, --dired                generate output designed for Emacs' dired mode
+dereference
+dereference-command-line
+      --dereference-command-line-symlink-to-dir
+dereference-command-line-symlink-to-dir
+dev_ino_pop
+directory
+//DIRED//
+//DIRED-OPTIONS// --quoting-style=%s
+D$t3T$p	
+eEgGkKmMpPtTyYzZ0
+                               (e.g., 1K 234M 2G)
+# entries:         %lu
+__errno_location
+error initializing month strings
+Exit status:
+extension
+                             extension -X, size -S, time -t, version -v
+  -F, --classify             append indicator (one of */=>@|) to entries
+  -f                         do not sort, enable -aU, disable -ls --color
+fflush_unlocked
+fgetfilecon
+file-type
+                               file-type (--file-type), classify (-F)
+      --file-type            likewise, except do not append `*'
+                             follow each command line symbolic link
+                             follow symbolic links listed on the command line
+For complete documentation, run: info coreutils '%s invocation'
+--format
+                             FORMAT1<newline>FORMAT2, FORMAT1 applies to
+                             FORMAT is interpreted like `date'; if FORMAT is
+      --format=WORD          across -x, commas -m, horizontal -x, long -l,
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fseeko64
+full-iso
+                             full-iso, long-iso, iso, locale, +FORMAT.
+full-time
+      --full-time            like -l --time-style=full-iso
+fwrite_unlocked
+__fxstat64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getgrgid
+getgrnam
+getopt_long
+getpwnam
+getpwuid
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+  -g                         like -l, but do not list owner
+__gmon_start__
+  -G, --no-group             in a long listing, don't print group names
+GNU coreutils
+                             group directories before files.
+      --group-directories-first
+group-directories-first
+hash_get_n_entries (active_dir_set) == 0
+  -H, --dereference-command-line
+      --help     display this help and exit
+  -h, --human-readable       with -l, print sizes in human readable format
+hide-control-chars
+      --hide=PATTERN         do not list implied entries matching shell PATTERN
+%H:%M:%S
+horizontal
+http://www.gnu.org/software/coreutils/
+human-readable
+                             if --sort=time
+                             if STYLE is prefixed with `posix-', STYLE
+ignore-backups
+ignoring invalid tab size in environment variable TABSIZE: %s
+ignoring invalid value of environment variable QUOTING_STYLE: %s
+ignoring invalid width in environment variable COLUMNS: %s
+  -I, --ignore=PATTERN       do not list implied entries matching shell PATTERN
+  -i, --inode                print the index number of each file
+--indicator-style
+      --indicator-style=WORD  append indicator with style WORD to entry names:
+invalid argument %s for %s
+invalid line width: %s
+invalid %s%s argument `%s'
+invalid suffix in %s%s argument `%s'
+invalid tab size: %s
+invalid time style format %s
+_IO_stdin_used
+iswcntrl
+iswprint
+_Jv_RegisterClasses
+KB 1000, K 1024, MB 1000*1000, M 1024*1024, and so on for G, T, P, E, Z, Y.
+  -k                         like --block-size=1K
+KMGTPEZY
+  -L, --dereference          when showing file information for a symbolic
+lgetfilecon
+libacl.so.1
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+librt.so.1
+libselinux.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+                               link, show information for the file the link
+List information about the FILEs (the current directory by default).
+                               literal, locale, shell, shell-always, c, escape
+localeconv
+localtime
+long-iso
+LS_BLOCK_SIZE
+LS_COLORS
+  -l                         use a long listing format
+__lxstat64
+Mandatory arguments to long options are mandatory for short options too.
+max bucket length: %lu
+mbstowcs
+%m/%d/%y
+__memcpy_chk
+memory exhausted
+__mempcpy_chk
+  -m                         fill width with a comma separated list of entries
+                               modification of file status information)
+  -N, --literal              print raw entry names (don't treat e.g. control
+nl_langinfo
+  -n, --numeric-uid-gid      like -l, but list numeric user and group IDs
+no-group
+                               none (default), slash (-p),
+                             non-recent files and FORMAT2 to recent files;
+numeric-uid-gid
+_obstack_begin
+_obstack_newchunk
+  -o                         like -l, but do not list group information
+                               or can be `never' or `auto'.  More info below
+                             or status -c; use specified time as sort key
+                               otherwise: sort by access time
+                               otherwise: sort by ctime, newest first
+__overflow
+                               (overridden by -a or -A)
+?pcdb-lswd
+  -p, --indicator-style=slash
+POSIXLY_CORRECT
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+  -q, --hide-control-chars   print ? instead of non graphic characters
+  -Q, --quote-name           enclose entry names in double quotes
+quote-name
+--quoting-style
+QUOTING_STYLE
+      --quoting-style=WORD   use quoting style WORD for entry names:
+readdir64
+reading directory %s
+readlink
+recursive
+                               references rather than for the link itself
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+Richard M. Stallman
+  -R, --recursive            list subdirectories recursively
+  -r, --reverse              reverse order while sorting
+  - `%s'
+%s, and %s.
+setlocale
+shell-always
+%s home page: <%s>
+show-control-chars
+      --show-control-chars   show non graphic characters as-is (default
+sigaction
+sigaddset
+sigemptyset
+sigismember
+sigprocmask
+      --si                   likewise, but use powers of 1000 not 1024
+single-column
+                               single-column -1, verbose -l, vertical -C
+SIZE may be (or may be an integer optionally followed by) one of following:
+sizeof (struct dev_ino) <= __extension__ ({ struct obstack const *__o = (&dev_ino_obstack); (unsigned) (__o->next_free - __o->object_base); })
+%s: not listing already-listed directory
+Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.
+sort_files
+sort_type != sort_version
+      --sort=WORD            sort by WORD instead of name: none -U,
+__sprintf_chk
+%*s, %*s 
+%s, %s, and others.
+%s, %s, and %s.
+%s%s argument `%s' too large
+  -s, --size                 print the allocated size of each file, in blocks
+  -S                         sort by file size
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+standard output is connected to a terminal.  The LS_COLORS environment
+strftime
+__strtoull_internal
+//SUBDIRED//
+<*t6<:t#
+T$8+T$09T$(
+T$8+T$09T$4
+                             takes effect only outside the POSIX locale
+tcgetpgrp
+                             that points to a directory
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+                             time: atime -u, access -u, use -u, ctime -c,
+time style
+time-style
+TIME_STYLE
+      --time-style=STYLE     with -l, show times using style STYLE:
+      --time=WORD            with -l, show time as WORD instead of modification
+tK;D$(v'+t$(
+Try `%s --help' for more information.
+  -t                         sort by modification time, newest first
+  -T, --tabsize=COLS         assume tab stops at each COLS instead of 8
+  -U                         do not sort; list entries in directory order
+unlabeled
+                             unless program is `ls' and output is a terminal)
+unparsable value for LS_COLORS environment variable
+unrecognized prefix: %s
+Usage: %s [OPTION]... [FILE]...
+                               use of --sort=none (-U) disables grouping
+Using color to distinguish file types is disabled both by default and
+/usr/share/locale
+  -u                         with -lt: sort by, and show, access time
+Valid arguments are:
+variable can change the settings.  Use the dircolors command to set it.
+      --version  output version information and exit
+vertical
+  -v                         natural sort of (version) numbers within text
+wcstombs
+wcswidth
+with --color=never.  With --color=auto, ls emits color codes only when
+                               with -l: show access time and sort by name
+                               with -l: show ctime and sort by name
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  -w, --width=COLS           assume screen width instead of current value
+  -x                         list entries by lines instead of by columns
+  -X                         sort alphabetically by entry extension
+__xstat64
+xstrtol.c
+xstrtoul
+xstrtoumax
+%Y-%m-%d
+%Y-%m-%d 
+%Y-%m-%d %H:%M
+%Y-%m-%d %H:%M:%S.%N %z
+  -Z, --context              print any SELinux security context of each file

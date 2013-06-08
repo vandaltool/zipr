@@ -1,0 +1,353 @@
+--------------------------------
+'()*+,-.
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTU
+;<=>?@/012345ACEHJLMKOPQIGU
+ALEADERS
+append_command (actual=%d)
+append_command (cmd_1=%d)
+                        ascii = ascii letters and digits, hex for all else
+__assert_fail
+AXISHEIGHT
+bad ACCENT value; ignored
+bad buffer in yy_scan_bytes()
+Bad character code format (%s)
+bad FONTDIR value; ignored
+Bad number code format (%s)
+Bad text code format (%s)
+be ofm2opl, opl2ofm, ovf2ovp, or ovp2ovf
+BIGOPSPACING1
+BIGOPSPACING2
+BIGOPSPACING3
+BIGOPSPACING4
+BIGOPSPACING5
+BOTACCENT
+both the %s copyright and
+BOUNDARYCHAR
+__bss_start
+/build/buildd/texlive-bin-2009/inst/lib
+:@CEGFHIJfxo
+CGLUE not currently supported
+CHARACTER
+Character (H %X) cannot be typeset in undefined font
+CHARACTER index (H %X) not 31-bit unsigned integer; ignored
+CHARACTER index (H %X) previously defined; old definition ignored
+-charcode-format=TYPE  output character codes according to TYPE,
+char-format
+CHARFVALUE
+CHARFVALUE not currently supported
+CHARGLUE
+CHARGLUE not currently supported
+CHARIVALUE
+CHARIVALUE not currently supported
+CHARMVALUE
+CHARMVALUE not currently supported
+CHARPENALTY
+CHARPENALTY not currently supported
+CHARREPEAT
+CHARRULE
+CHARRULE not currently supported
+Char (%x) too big for OFM level-0 (max ffff); use level-2
+Char (%x) too big for OFM level-1 (max ffff); use level-2
+Char (%x) too big for TFM (max ff); use OFM file
+check_existence_and_safety (g=%d)
+CKRN not currently supported
+CLABEL not currently supported
+CLEADERS
+clearerr
+clear_map_font
+CODINGSCHEME
+CODINGSCHEME previously defined; old value ignored
+(COMMENT DESIGNSIZE IS IN POINTS)
+(COMMENT OTHER SIZES ARE MULTIPLES OF DESIGNSIZE)
+compute_ofm_character_info
+copy_characters (index %d)
+copy_characters (plane %d)
+Copyright 2009 %s.
+covered by the terms of 
+CPENALTY
+CPENGLUE
+CPENGLUE not currently supported
+CPEN not currently supported
+C value (H %X) must be ASCII (not paren); set to 'A'
+Cycle of NEXTLARGER characters has been broken at 
+  Default OFMFILE is basename of OPLFILE extended with `.ofm'.
+  Default OFMFILE is OVFFILE extended with `.ofm'.
+  Default OVFFILE is basename of OVPFILE extended with `.ovf'.
+DEFAULTRULETHICKNESS
+DESIGNSIZE
+DESIGNSIZE previously defined; old value ignored
+DESIGNSIZE value must be at least 1; set to 10
+DESIGNUNITS
+DESIGNUNITS previously defined; old value ignored
+DESIGNUNITS value must be positive; set to 1
+doublecheck_existence (g=%d)
+                        either `hex' or `ascii'; default is hex,
+Email bug reports to %s.
+EOF while scanning %s
+EOF while scanning SPECIALHEX
+__errno_location
+Error while reading file %s
+extend_filename
+EXTEN_ENTRY
+EXTRASPACE
+FACE previously defined; old value ignored
+FACE value must be less than 256
+FAMILY previously defined; old value ignored
+fatal flex scanner internal error--end of buffer missed
+fatal flex scanner internal error--no action found
+File length is negative
+File too short
+fix value (%s) too large; set to 0
+flex scanner push-back overflow
+f (new_class=%d)
+FONTAREA
+FONTAREA previously defined; old value ignored
+FONTAT previously defined; old value ignored
+FONTCHECKSUM
+FONTCHECKSUM previously defined; old value ignored
+FONTDIMEN
+FONTDIMEN previously defined;  all old parameters ignored
+FONTDIR previously defined; old value ignored
+FONTDSIZE
+FONTDSIZE previously defined; old value ignored
+FONTFVALUE
+FONTGLUE
+FONTIVALUE
+FONTMVALUE
+FONTNAME
+FONTNAME previously defined; old value ignored
+FONTPENALTY
+FONTRULE
+For more information about these matters, see the file
+__fprintf_chk
+FVALUE table (D %d) previously defined; old value ignored
+FVALUEVAL
+get_hex (a=%c)
+getopt_long_only
+GLIBC_2.0
+GLIBC_2.3.4
+GLUECHAR
+GLUERULE
+GLUESHRINK
+GLUESTRETCH
+GLUE table (D %d) previously defined; old value ignored
+GLUETYPE
+__gmon_start__
+HEADER index (%d) previously defined; old value ignored
+HEADER index must be at least 18; ignored
+-help                  display this help and exit
+-help       display this help and exit
+  If OFMNAME is not specified, OVFNAME (with `.ovf' removed) is used.
+Inappropriate font level (%d)
+Incomplete subfiles for character dimensions
+Infinite ligature loop starting with boundary and %d
+Infinite ligature loop starting with %d and %d
+init_font_fvalue_entry (index=%d)
+init_font_fvalue (tab=%d)
+init_font_glue_entry (index=%d)
+init_font_glue (tab=%d)
+init_font_ivalue_entry (index=%d)
+init_font_ivalue (tab=%d)
+init_font_mvalue_entry (index=%d)
+init_font_mvalue (tab=%d)
+init_font_penalty_entry (index=%d)
+init_font_penalty (tab=%d)
+init_font_rule_entry (index=%d)
+init_font_rule (tab=%d)
+input buffer overflow, can't enlarge buffer because scanner uses REJECT
+input in flex scanner failed
+_IO_getc
+_IO_stdin_used
+Iset_character_measure (index=%d)
+IVALUE table (D %d) previously defined; old value ignored
+IVALUEVAL
+J. Plaice, Y. Haralambous, D.E. Knuth
+_Jv_RegisterClasses
+KERN_ENTRY
+ KHEADER index must be at most 255; ignored
+kpathsea_version_string
+kpse_fclose_trace
+kpse_init_prog
+kpse_open_file
+kpse_set_program_name
+LABEL_ENTRY
+Length of char info table does not correspond to specification
+l_hash_input (case=%d)
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+LIGTABLE
+line %d (fatal): 
+line %d (internal): 
+line %d (lexing): 
+line %d (parsing): 
+line %d (warning): 
+MAPFONT index (D %d) previously defined; old definition ignored
+Maximum SKIP amount is 127; ignored
+memory exhausted
+MIDACCENT
+MOVEDOWN
+MOVELEFT
+move_ptr_incr
+MOVERIGHT
+Must be less than 16*designsize = %d designunits
+MVALUE table (D %d) previously defined; old value ignored
+MVALUEVAL
+named COPYING and the %s source.
+NATURALFONTDIR
+Need one or two file arguments.
+Need one to three file arguments.
+NEXTLARGER
+Not a VF or OVF file; final bytes should be 248
+Not a VF or OVF file; first byte should be 247
+Not a VF or OVF file; second byte should be 202
+numeric value (%s) too large; set to 0
+num-format
+OFM2OPL.EXE
+OFMLEVEL
+OFM level 1 not currently supported
+OFMLEVEL %d not supported
+OFMLEVEL previously defined; old value ignored
+OFMLEVEL value must be D 0 or D 1
+       omfomts -opl2ofm [OPTION]... FILE...
+       omfomts -ovf2ovp [OPTION]... FILE...
+       omfomts -ovp2ovf [OPTION]... FILE...
+One of the subfile sizes (2) is negative
+One of the subfile sizes (4) is negative
+OPL2OFM.EXE
+  OPLFILE or standard output.
+out_accent_kind (kind=%d)
+out_character_measure (measure=%d)
+out_extensible_piece (piece=%d)
+out_glue_kind (kind=%d)
+out_glue_order (order=%d)
+out_int (base=%d)
+out_ligature_command (command=%d)
+out_move_direction (direction=%d)
+out_named_mathex_parameter (parameter=%d)
+out_named_mathsy_parameter (parameter=%d)
+out_named_parameter (parameter = %d)
+out of dynamic memory in yy_create_buffer()
+out of dynamic memory in yyensure_buffer_stack()
+out of dynamic memory in yy_get_next_buffer()
+out of dynamic memory in yylex()
+out of dynamic memory in yy_scan_buffer()
+out of dynamic memory in yy_scan_bytes()
+out_ofm_char.1 (ofm_level=%d)
+out_ofm_char.2 (i=%x)
+out_ofm_char.3 (i=%x)
+output_ofm_subfiles
+out_rule_measure (measure=%d)
+out_shrink_stretch (shrink_stretch=%d)
+out_type_direction (direction=%d)
+OVF2OVP.EXE
+ovf_get_arg (k=%d)
+OVP2OVF.EXE
+PARAMETER
+PARAMETER index (%d) previously defined; old value ignored
+PARAMETER index must be at least 1; ignored
+PENALTYVAL
+Primary author of %s: %s.
+PRIMBASESLANT
+PRIMBOTAXIS
+PRIMBOTAXISBIS
+PRIMMIDHOR
+PRIMMIDVERT
+PRIMTOPAXIS
+PRIMTOPAXISBIS
+__printf_chk
+print_seven_bit_safe_flag (seven_bit=%d)
+printversionandexit
+print_xerox_face (face=%d)
+prog_name_end && prog_version
+RULE table (D %d) previously defined; old value ignored
+scan_int (base=%d)
+scan_string (keep=%d)
+%s character examined by (H %X)
+%s character generated by (H %X)
+%s character (H %X) converted to blank
+%s character (H %X) converted to slash
+%sCharacter (H %X) NEXTLARGER than (H %X) has no CHARACTER spec
+SECBASESLANT
+SECBOTAXIS
+SECBOTAXISBIS
+SECMIDHOR
+SECMIDVERT
+SECTOPAXIS
+SECTOPAXISBIS
+SELECTFONT
+set_character_measure (L1)
+set_extensible_piece (piece=%d)
+set_font_area
+set_font_at
+set_font_check_sum
+set_font_design_size
+set_font_name
+set_font_rule_measure (measure=%d)
+set_font_rule_measure (shrink_stretch=%d)
+set_move
+set_seven_bit_safe_flag (f=%d)
+SEVENBITSAFEFLAG
+SEVENBITSAFEFLAG previously defined; old value ignored
+SEVENBITSAFEFLAG value specified TRUE; really FALSE
+SKIP must follow LIG or KRN; ignored
+SPECIALHEX 
+SPECIALHEX string longer than %d characters; truncating
+Special string with negative length (%d)
+%s piece (H %X) of character (H %X) has no CHARACTER spec
+%s string limited to %d characters; truncated
+%s string longer than %d characters; truncating
+Stated (%d) and actual (%d) file length do not match
+STOP must follow LIG or KRN; ignored
+store_family (len=%d)
+<STUPcbutlk~}
+Subfile sizes do not add up to the stated total
+syntax error
+tex-k@mail.tug.org
+../../../../texk/web2c/lib/printversion.c
+ (TeX Live 2009/Debian)
+TeX math ex
+TeX math sy
+text-format
+The character code range %d .. %d is illegal
+The header length is only %d
+the Lesser GNU General Public License.
+There is NO warranty.  Redistribution of this software is
+The relative dimension %d is too large.
+This binary supports ofm2opl, opl2ofm, ovf2ovp, and ovp2ovf
+This is ofm2opl, Version 2.0
+This is omfomts, Version 2.0
+This is opl2ofm, Version 2.0
+This is ovf2ovp, Version 2.0
+This is ovp2ovf, Version 2.0
+token too large, exceeds YYLMAX
+TOPACCENT
+  Translate OVFNAME and companion OFMNAME to human-readable
+  Translate OVPFILE to OVFFILE and companion OFMFILE.
+  Translate the font metrics OFMNAME to human-readable property list file
+  Translate the property list OPLFILE to OFMFILE.
+Try `%s --help' for more information.
+unexpected character (%x); ignored
+Unrecognized DVI packet (%d)
+Unrecognized program: %s
+UNSPECIFIED
+Unused %s piece (H %X) refers to nonexistent character
+Unused %s step refers to nonexistent character (H %X)
+uppercasify
+Usage: ofm2opl [OPTION]... OFMNAME[.ofm] [OPLFILE[.opl]]
+Usage: omfomts -ofm2opl [OPTION]... FILE...
+Usage: opl2ofm [OPTION]... OPLFILE[.opl] [OFMFILE[.ofm]]
+Usage: ovf2ovp [OPTION]... OVFNAME[.ovf] [OFMNAME[.ofm] [OVPFILE[.ovp]]]
+Usage: ovp2ovf [OPTION]... OVPFILE[.ovp] [OVFFILE[.ovf] [OFMFILE[.ofm]]]
+value already defined
+-verbose               display progress reports
+-verbose    display progress reports
+-version               output version information and exit
+-version    output version information and exit
+  virtual property list file OVPFILE or standard output.
+VTITLE previously defined; old value ignored
+VWXXYYYYYYYYZY[YY\YYY]YYY^Y_Y`YaYbYcYdYeefffgghhhhhhhhhhhhiijjkjjljjjjjjjjmmnnooppppppqqrrrrrrrrssuttvvwwxxzyy{{||}}
+xbasename
+XLEADERS
+xrealloc

@@ -1,0 +1,493 @@
+-0000-1000-8000-0002ee000002
+00:04:6B
+00:07:E0
+00:0E:20
+AdapterAdded
+AdapterRemoved
+Adapter: %s (%s)
+address != NULL
+All types
+An unknown error occured
+An unknown error occurred
+approximately %'d hour
+approximately %'d hours
+Audio device
+AudioSource
+A/V_RemoteControl
+A/V_RemoteControlTarget
+bdaddr != NULL
+bindtextdomain
+bind_textdomain_codeset
+bluetooth
+bluetooth_browse_address
+bluetooth_browse_address_finish
+BluetoothCategory
+BLUETOOTH_CATEGORY_ALL
+bluetooth_category_get_type
+BLUETOOTH_CATEGORY_NOT_PAIRED_OR_TRUSTED
+BLUETOOTH_CATEGORY_PAIRED
+BLUETOOTH_CATEGORY_PAIRED_OR_TRUSTED
+BLUETOOTH_CATEGORY_TRUSTED
+bluetooth_chooser_get_selected_device
+bluetooth_chooser_get_selected_device_name
+bluetooth_chooser_get_type
+bluetooth_chooser_new
+bluetooth_chooser_start_discovery
+bluetooth_class_to_type
+BluetoothClient
+bluetooth-client.c
+bluetooth-client.c:1005
+bluetooth-client.c:1023
+bluetooth_client_connect_service
+bluetooth_client_create_device
+bluetooth_client_disconnect_service
+bluetooth_client_get_adapter_model
+bluetooth_client_get_default_adapter
+bluetooth_client_get_device_filter_model
+bluetooth_client_get_device_model
+bluetooth_client_get_discoverable
+bluetooth_client_get_filter_model
+bluetooth_client_get_model
+bluetooth_client_get_name
+bluetooth_client_get_type
+bluetooth_client_new
+bluetooth_client_set_discoverable
+bluetooth_client_set_trusted
+bluetooth_client_start_discovery
+bluetooth_client_stop_discovery
+BluetoothColumn
+BLUETOOTH_COLUMN_ADDRESS
+BLUETOOTH_COLUMN_ALIAS
+BLUETOOTH_COLUMN_CONNECTED
+BLUETOOTH_COLUMN_DEFAULT
+BLUETOOTH_COLUMN_DISCOVERABLE
+BLUETOOTH_COLUMN_DISCOVERING
+bluetooth_column_get_type
+BLUETOOTH_COLUMN_ICON
+BLUETOOTH_COLUMN_LEGACYPAIRING
+BLUETOOTH_COLUMN_NAME
+BLUETOOTH_COLUMN_PAIRED
+BLUETOOTH_COLUMN_POWERED
+BLUETOOTH_COLUMN_PROXY
+BLUETOOTH_COLUMN_SERVICES
+BLUETOOTH_COLUMN_TRUSTED
+BLUETOOTH_COLUMN_TYPE
+BLUETOOTH_COLUMN_UUIDS
+BLUETOOTH_IS_CLIENT (client)
+bluetooth-sendto
+bluetooth_send_to_address
+BluetoothStatus
+BLUETOOTH_STATUS_CONNECTED
+BLUETOOTH_STATUS_CONNECTING
+BLUETOOTH_STATUS_DISCONNECTED
+bluetooth_status_get_type
+BLUETOOTH_STATUS_INVALID
+BLUETOOTH_STATUS_PLAYING
+BluetoothType
+BLUETOOTH_TYPE_ANY
+BLUETOOTH_TYPE_CAMERA
+BLUETOOTH_TYPE_COMPUTER
+bluetooth_type_get_type
+BLUETOOTH_TYPE_HEADPHONES
+BLUETOOTH_TYPE_HEADSET
+BLUETOOTH_TYPE_JOYPAD
+BLUETOOTH_TYPE_KEYBOARD
+BLUETOOTH_TYPE_MODEM
+BLUETOOTH_TYPE_MOUSE
+BLUETOOTH_TYPE_NETWORK
+BLUETOOTH_TYPE_OTHER_AUDIO
+BLUETOOTH_TYPE_PHONE
+BLUETOOTH_TYPE_PRINTER
+BLUETOOTH_TYPE_TABLET
+bluetooth_type_to_string
+BLUETOOTH_TYPE_VIDEO
+bluetooth_uuid_to_string
+bluetooth_verify_address
+<b>%s</b>
+__bss_start
+Cannot set discoverable: %s
+Choose files to send
+Complete
+computer
+Connected
+connecting
+Connecting...
+Connecting to session bus failed: %s
+Connecting to system bus failed: %s
+Couldn't execute command: %s
+CreateDevice
+CreatePairedDevice
+current_transfer == NULL
+dbus_g_bus_get
+dbus_g_connection_lookup_g_object
+dbus_g_connection_register_g_object
+dbus_g_connection_unref
+dbus_g_error_has_name
+dbus_glib_marshal_obex_agent_VOID__BOXED_POINTER
+dbus_glib_marshal_obex_agent_VOID__BOXED_STRING_POINTER
+dbus_glib_marshal_obex_agent_VOID__BOXED_UINT64_POINTER
+dbus_glib_obex_agent_object_info
+dbus_g_method_get_sender
+dbus_g_method_return
+dbus_g_object_path_get_g_type
+dbus_g_object_register_marshaller
+dbus_g_object_type_install_info
+dbus_g_proxy_add_signal
+dbus_g_proxy_begin_call
+dbus_g_proxy_begin_call_with_timeout
+dbus_g_proxy_call
+dbus_g_proxy_call_no_reply
+dbus_g_proxy_connect_signal
+dbus_g_proxy_end_call
+dbus_g_proxy_get_bus_name
+dbus_g_proxy_get_interface
+dbus_g_proxy_get_path
+dbus_g_proxy_new_for_name
+dbus_g_proxy_new_for_name_owner
+dbus_g_proxy_new_from_proxy
+dbus_g_type_get_collection
+dbus_g_type_get_map
+	D-Bus Path: %s
+dcgettext
+dcngettext
+default-adapter
+	Default adapter
+DefaultAdapter
+DefaultAdapterChanged
+default-adapter-discoverable
+default-adapter-powered
+Destination
+DeviceCreated
+DeviceFound
+device != NULL
+DeviceRemoved
+--device=%s
+Device: %s (%s)
+DialupNetworking
+Disconnect
+disconnected
+Discoverable
+	Discoverable: %s
+DiscoverableTimeout
+discovering
+	Discovery in progress
+DisplayYesNo
+%'d minute
+%'d minutes
+document-send
+%'d second
+%'d seconds
+Failed to remove device '%s': %s
+[FILE...]
+File Transfer
+g_ascii_strcasecmp
+g_ascii_strtoull
+g_ascii_table
+g_assertion_message
+g_assertion_message_expr
+g_cclosure_marshal_VOID__POINTER
+g_dgettext
+GenericAudio
+GenericNetworking
+g_enum_get_value
+g_enum_get_value_by_nick
+g_enum_register_static
+g_error_free
+GetProperties
+gettimeofday
+g_file_get_parent
+g_file_get_path
+g_file_get_type
+g_file_get_uri
+g_file_has_uri_scheme
+g_file_mount_enclosing_volume
+g_file_mount_enclosing_volume_finish
+g_file_new_for_commandline_arg
+g_file_new_for_path
+g_file_new_for_uri
+g_file_test
+g_flags_register_static
+GHashTable
+g_hash_table_destroy
+g_hash_table_foreach
+g_hash_table_get_keys
+g_hash_table_get_type
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_lookup_extended
+g_hash_table_new_full
+g_hash_table_size
+g_hash_table_unref
+g_intern_static_string
+g_io_error_quark
+G_IS_OBJECT (object)
+GLIBC_2.0
+GLIBC_2.2
+g_list_remove
+g_list_sort
+g_malloc
+g_malloc0
+g_malloc_n
+g_markup_escape_text
+g_markup_printf_escaped
+__gmon_start__
+gnome-bluetooth2
+g_object_add_weak_pointer
+g_object_class_install_property
+g_object_new
+g_object_notify
+g_object_ref
+g_object_set
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_param_spec_boolean
+g_param_spec_string
+g_path_get_basename
+g_printerr
+GPtrArray
+g_ptr_array_add
+g_ptr_array_free
+g_ptr_array_new
+g_ptr_array_new_with_free_func
+g_return_if_fail_warning
+g_signal_connect_data
+g_signal_handlers_disconnect_matched
+g_simple_async_result_complete
+g_simple_async_result_get_type
+g_simple_async_result_is_valid
+g_simple_async_result_is_valid (result, object, bluetooth_browse_address)
+g_simple_async_result_new
+g_simple_async_result_propagate_error
+g_simple_async_result_set_from_error
+g_simple_async_result_set_op_res_gboolean
+g_slist_append
+g_slist_free
+g_slist_length
+g_spawn_async
+g_strcmp0
+g_strconcat
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strfreev
+g_str_hash
+g_str_has_prefix
+g_str_has_suffix
+g_string_append_printf
+g_string_free
+g_string_new
+g_strsplit
+g_strv_get_type
+g_strv_length
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_start
+gtk_box_set_spacing
+gtk_button_get_type
+gtk_button_set_image
+gtk-cancel
+gtk-close
+gtk_container_add
+gtk_container_get_type
+gtk_container_set_border_width
+gtk_dialog_add_button
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_get_widget_for_response
+gtk_dialog_new_with_buttons
+gtk_dialog_response
+gtk_dialog_run
+gtk_dialog_set_response_sensitive
+gtk-dialog-warning
+gtk_file_chooser_dialog_new
+gtk_file_chooser_get_filenames
+gtk_file_chooser_get_type
+gtk_file_chooser_set_select_multiple
+gtk_image_new_from_icon_name
+gtk_image_new_from_stock
+gtk_init_with_args
+gtk_label_get_type
+gtk_label_new
+gtk_label_set_ellipsize
+gtk_label_set_line_wrap
+gtk_label_set_markup
+gtk_label_set_text
+gtk_main
+gtk_main_quit
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk_progress_bar_get_type
+gtk_progress_bar_new
+gtk_progress_bar_set_ellipsize
+gtk_progress_bar_set_fraction
+gtk_progress_bar_set_text
+gtk_show_uri
+gtk_table_attach
+gtk_table_attach_defaults
+gtk_table_get_type
+gtk_table_new
+gtk_table_set_col_spacings
+gtk_table_set_row_spacings
+gtk_tree_model_filter_get_type
+gtk_tree_model_filter_new
+gtk_tree_model_filter_set_visible_func
+gtk_tree_model_foreach
+gtk_tree_model_get
+gtk_tree_model_get_iter
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_iter_children
+gtk_tree_model_iter_next
+gtk_tree_model_iter_parent
+gtk_tree_model_row_changed
+gtk_tree_path_free
+gtk_tree_row_reference_free
+gtk_tree_row_reference_get_path
+gtk_tree_row_reference_new
+gtk_tree_store_insert_with_values
+gtk_tree_store_new
+gtk_tree_store_remove
+gtk_tree_store_set
+gtk_widget_destroy
+gtk_widget_hide
+gtk_widget_set_no_show_all
+gtk_widget_set_visible
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_get_type
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_position
+gtk_window_set_type_hint
+g_try_malloc0
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek
+g_type_class_peek_parent
+g_type_class_ref
+g_type_class_unref
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+g_value_get_boolean
+g_value_get_boxed
+g_value_get_string
+g_value_get_type
+g_value_get_uint
+g_value_get_uint64
+g_value_init
+g_value_peek_pointer
+g_value_set_boolean
+g_value_set_string
+g_value_set_uint
+g_value_unset
+Handsfree
+HandsfreeAudioGateway
+headphones
+Headset_-_AG
+HumanInterfaceDeviceService
+_IO_stdin_used
+IrMCSync
+<i>%s</i>
+Is not powered
+Is powered
+_Jv_RegisterClasses
+keyboard
+legacypairing
+libc.so.6
+__libc_start_main
+libdbus-glib-1.so.2
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgnome-bluetooth.so.8
+libgobject-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+ListAdapters
+Make sure that the remote device is switched on and that it accepts Bluetooth connections
+marshal_VOID__STRING_BOXED
+marshal_VOID__STRING_STRING
+marshal_VOID__STRING_STRING_STRING
+marshal_VOID__STRING_STRING_UINT64
+marshal_VOID__UINT64
+NameOwnerChanged
+--name=%s
+Nokia SyncML Server
+No supported services on the '%s' device
+not-paired-or-trusted
+n_param_values == 2
+n_param_values == 3
+n_param_values == 4
+ObexAgent
+OBEXFileTransfer
+OBEXObjectPush
+obex://[%s]/
+org.bluez
+org.bluez.Adapter
+/org/bluez/agent/sendto
+org.bluez.Audio
+org.bluez.AudioSink
+org.bluez.Device
+org.bluez.Headset
+org.bluez.Input
+org.bluez.Manager
+/org/freedesktop/DBus
+org.freedesktop.DBus
+org.openobex.Agent
+org.openobex.client
+org.openobex.Error.ConnectionAttemptFailed
+org.openobex.Transfer
+other-audio
+	Paired: %s Trusted: %s Connected: %s
+Phonebook_Access_-_PSE
+Progress
+property
+PropertyChanged
+Remote device's name
+Remote device to use
+RemoveDevice
+request_callback
+response
+Select device to send to
+selected-device-activated
+selected-device-changed
+SEMC HLA
+SEMC Watch Phone
+SendFiles
+Sending file %d of %d
+Sending files via Bluetooth
+Sending %s
+SerialPort
+service != NULL
+services
+	Services: %s
+service_to_index
+SetProperty
+show-device-category
+show-device-type
+show-searching
+SIM_Access
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+<span size="larger"><b>%s</b></span>
+%s (%s) 
+%s (%s, %s)
+StartDiscovery
+StopDiscovery
+SyncMLClient
+transfer
+transferred
+	Type: %s Icon: %s
+Unhandled custom UUID %s (0x%x)
+Unhandled UUID %s (0x%x)
+_unknown
+Unknown status '%s'
+Unknown status value %d
+/usr/share/locale
+	UUIDs: 
+Video device
+VideoSource

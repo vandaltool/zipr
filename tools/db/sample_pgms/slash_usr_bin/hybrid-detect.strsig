@@ -1,0 +1,36 @@
+asprintf
+__bss_start
+Create %s for the 1st time
+dpkg --print-architecture
+Error: no alternative found
+Error: please run this program as root
+Failed to run command
+Gfx was changed in the BIOS
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.4
+__gmon_start__
+i386-linux-gnu
+I couldn't open %s for reading.
+I couldn't open %s for writing.
+_IO_stdin_used
+_Jv_RegisterClasses
+LDCONFIG_NOTRIGGER=y ldconfig
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libpciaccess.so.0
+No gfx change
+No hybrid graphics cards detected
+pci_device_is_boot_vga
+pci_device_next
+pci_iterator_destroy
+pci_slot_match_iterator_create
+pci_system_init
+Select %s
+%s is not supported for hybrid graphics
+__stack_chk_fail
+update-alternatives --list %s_gl_conf | grep %s
+update-alternatives --set %s_gl_conf %s
+/var/lib/nvidia-common/last_gfx_boot
+x86_64-linux-gnu

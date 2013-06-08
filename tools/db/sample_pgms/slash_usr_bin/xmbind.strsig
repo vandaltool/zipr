@@ -1,0 +1,25 @@
+__bss_start
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXm.so.4
+libXt.so.6
+_MOTIF_BINDINGS
+_MOTIF_DEFAULT_BINDINGS
+%s:  Can't open display
+%s:  Can't open %s
+XChangeProperty
+XDeleteProperty
+XInternAtoms
+_XmVirtKeysLoadFallbackBindings
+_XmVirtKeysLoadFileBindings
+XtCreateApplicationContext
+XtOpenDisplay
+XtToolkitInitialize

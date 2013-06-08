@@ -1,0 +1,2987 @@
+        
+                     
+                                               
+                                                                                                                                     
+ ...]].]
+_,;@=|!^()[]{}
+!!!!!!!!!!
+!$*);^-/
+!$*);~-/
+?(.)/./*
+.[()*+?{|^$&!
+.][+--??????
+";~&|()<>[]*?
+]]]]...[?
+&|()[]*?
+		*=*)	;;
+			*=*)	;;
+000001002003004005006007008009010011012013014015016017018019020021022023024025026027028029030031032033034035036037038039040041042043044045046047048049050051052053054055056057058059060061062063064065066067068069070071072073074075076077078079080081082083084085086087088089090091092093094095096097098099100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174175176177178179180181182183184185186187188189190191192193194195196197198199200201202203204205206207208209210211212213214215216217218219220221222223224225226227228229230231232233234235236237238239240241242243244245246247248249250251252253254255256257258259260261262263264265266267268269270271272273274275276277278279280281282283284285286287288289290291292293294295296297298299300301302303304305306307308309310311312313314315316317318319320321322323324325326327328329330331332333334335336337338339340341342343344345346347348349350351352353354355356357358359360361362363364365366367368369370371372373374375376377378379380381382383384385386387388389390391392393394395396397398399400401402403404405406407408409410411412413414415416417418419420421422423424425426427428429430431432433434435436437438439440441442443444445446447448449450451452453454455456457458459460461462463464465466467468469470471472473474475476477478479480481482483484485486487488489490491492493494495496497498499500501502503504505506507508509510511512513514515516517518519520521522523524525526527528529530531532533534535536537538539540541542543544545546547548549550551552553554555556557558559560561562563564565566567568569570571572573574575576577578579580581582583584585586587588589590591592593594595596597598599600601602603604605606607608609610611612613614615616617618619620621622623624625626627628629630631632633634635636637638639640641642643644645646647648649650651652653654655656657658659660661662663664665666667668669670671672673674675676677678679680681682683684685686687688689690691692693694695696697698699700701702703704705706707708709710711712713714715716717718719720721722723724725726727728729730731732733734735736737738739740741742743744745746747748749750751752753754755756757758759760761762763764765766767768769770771772773774775776777778779780781782783784785786787788789790791792793794795796797798799800801802803804805806807808809810811812813814815816817818819820821822823824825826827828829830831832833834835836837838839840841842843844845846847848849850851852853854855856857858859860861862863864865866867868869870871872873874875876877878879880881882883884885886887888889890891892893894895896897898899900901902903904905906907908909910911912913914915916917918919920921922923924925926927928929930931932933934935936937938939940941942943944945946947948949950951952953954955956957958959960961962963964965966967968969970971972973974975976977978979980981982983984985986987988989990991992993994995996997998999
+00010203040506070809101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899
+%010.10lld;%010d
+0123456789
+0123456789abcdef
+0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@_
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+%02d%s%02d
+ %05lu.%05lu.%05lu 
+[06:default?Restore all non-command line options to the default settings.][07:state?List the current option state in the form of a 
+%07.7.32I*u%07.7.32I*u
+[+-]+([0-9])
+*([0-9_])
+*([0-9.])
+		0)	break ;;
+>0, if the option 
+ > 0, the input will be read as fixed length records of length 
+\\$1 \\$2
+(1) and 
+(1), a pre-existing 
+[-1c?@(#)$Id: 
+[-1c?@(#)$Id: bg (AT&T Research) 2000-04-02 $
+[-1c?@(#)$Id: disown (AT&T Research) 2000-04-02 $
+[-1c?@(#)$Id: fg (AT&T Research) 2000-04-02 $
+[-1c?@(#)$Id: jobs (AT&T Research) 2000-04-02 $
+[-1c?@(#)$Id: let (AT&T Research) 2000-04-02 $
+[-1c?@(#)$Id: ulimit (AT&T Research) 2003-06-21 $
+[-1cn?@(#)$Id: hist (AT&T Research) 2000-04-02 $
+(1) command.][p?Causes a default path to be searched rather than the one defined by the value of 
+(1) command.][+?The variable can have one of the following values
+(1) compatible date/time.]}[s?Sleep until a signal or a timeout is received. If 
+(1).  If a symbolic value is given, the new file creation mask is the complement of the result of applying 
+(1).][m:mode]:[mode?Set the mode of created directories to 
+(1) option syntax.)][+p?
+(1).  Relative modes assume an initial mode of 
+(1).)][+s?
+(1) section number for the current command.
+(1) section title for 
+(1).][s?Used with 
+(1) to set the values. If 
+(1) when one of the corresponding conditions arise.  The action of the trap will override any previous action associated with each specified 
+(1) which does not require quoting of the operators to pass them as command arguments.]
+(1) with option 
+(1) with option	
+(2), and 
+ 2>/dev/null || :
+(2) does not return, in which case 
+(2) does not return successfully, the corresponding to the real user id of the calling process is used instead.]
+(2) function.  If 
+(2) has no failure indication, 
+(2) names and values, one per line.][S:sethost?Set the hostname or nodename to 
+(2)]		[+PC?
+(2) returned.][+>0?Option/operand syntax error.]}[+SEE ALSO?
+(2).][R:extended-release?The extended release name.][A:everything?Equivalent to 
+(2)]		[+SC?
+(2) settings unless the 
+(2)]		[+SI?
+ 2%s%s/%s
+(2)	system calls. If 
+(2) value in symbolic mode expressions. This is probably how you expect 
+(2) values	for each 
+(2), which causes all information in memory that updates file systems to be scheduled for writing out to all file systems. The writing, although scheduled, is not necessarily complete upon return from 
+(2)]		[+XX?Constant value.]}[d:defined?Only display defined values when no operands are specified.][l:lowercase?List variable names in lower case.][n:name?Display variables with name that match 
+%-30s (-%c)  
+?33333333
+))++++////33337777777>>>>BBBEEEHHHKKKNNNQQQQUUUUUUUUUU
+(3) cause	the 
+(3) characters.][+?If more than one file is specified, 
+(3)	checks only 
+(3) string interface to the native	
+(3) such as 
+3T$<3D$8	
+3T$d3D$`	
+3T$L3D$H	
+3T$T3D$P	
+ 3-tuple for each variable, specifying 
+ 3-tuples, where		
+;|$4t69u
+%..64d;%c;%.*s;%d;%d;%..64d;%..64d;%c;%d;%s
+%..64d;%c;%s;%d;%d;%..64d;%..64d;%c;%d;%s
+8 bit ascii
+|$8+L$H+O
+9l$ ~9;D$(wB
+|$$9T$$}
+[aAnN][fF][sS]*
+a|ascii|?(iso)?(-)646|?(iso)?(-)8859|latin
+-Aassociative array
+.][A?Associative array.  Each 
+abcdefghi
+{ABCDEFGHI
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'(),-./:?!"#$%&*;<=>@[]^_`{|} 	
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+ABCDEFGHIQRSTUVWXYbcdefghipqrstuvwx
+%a %b %e %T %Y
+%a %b %e %T %Z %Y
+%a %b %e %T %z %Z %Y
+ABI_AIO_XFER_MAX
+ABI_ASYNCHRONOUS_IO
+ABI_ASYNC_IO
+abkhazian
+[action condition ...]
+adding empty subscript
+.][+-?Adding or deleting built-in commands or libraries with 
+address space limit
+. A default option value may be specified in the final field as 
+ADMINISTRATIVE COMMANDS
+ADVISORY_INFO
+ affects the way errors are handled.  If an option character or longname argument not specified in 
+afrikaans
+ after the first 
+<A href="mailto:%-.*s>%-.*s</A>&gt;
+<A href="mailto:%-.*s">%-.*s</A>&gt;
+<A href="%-.*s">%-.*s</A
+aiEFLRXhTZ
+-aindexed array
+AIO_LISTIO_MAX
+AIO_PRIO_DELTA_MAX
+Alarm call
+alarm -r %s +%.3g
+alarm %s %.3f
+albanian
+alias ignore='ignore '
+alias silent='set +x X$- "$@";_coshell_flags_=$1;shift;silent '
+alias -t --
+, all characters up to and including the last 
+allexport
+allocated at
+ALLOCATION USAGE SUMMARY
+ALLOC_SIZE_MIN
+[_[:alpha:]]*([_[:alnum:]])
+already freed
+ also does not return.][+?At minimum 
+ambiguous option
+ambiguous option argument value
+.  An alias definition only affects scripts read by the current shell environment.  It does not effect scripts run by this shell.][p?Causes the output to be in the form of alias commands that can be used as input to the shell to recreate the current aliases.][t?Used for tracked aliases.  These are aliases that connect a command name to the pathname of the command and are reset when the 
+<A name="
+, and again when the shell executes the constructed command.][+?It is not an error if 
+ and do not append a new-line.  See 
+ and each modified pathname is printed on a separate line on the standard output.][s:suffix?All operands are treated as 
+ and each modified pathname, with 
+ and formfeeds as 
+, and if set it is cleared and converted back to the native encoding. Multibyte characters in the current locale are treated as printable characters.][A:show-all?Equivalent to 
+, and if set it is cleared and converted back to the native encoding. Multibyte characters in the current locale are treated as printable characters.][d:differences?Print at most 
+ and in system dependent library directories. The system dependent shared library prefix and/or suffix may be omitted. Once a library is loaded, its symbols become available for the current and subsequent invocations of 
+ and is matched by the shortest non-ambiguous prefix of all long options. * in the 
+, and non-printable characters properly escaped for use in HTML and XML documents.][+%P?Treat 
+ and positional parameters.][+?If the neither 
+ and read  
+ and setgid when 
+ and the first 
+ and then create an indexed array containing each field in the line starting at index 0.][C?Unset 
+ and the resulting string is used as the directory to which to change.][+?When invoked without operands and when the 
+() and the third one is a pointer.][+?
+ and waiting for it to complete.  Note that there is no need to use 
+?A negative number representing a command that was executed 
+, a new set of arguments can be used.][+?
+([an]fs|samb)
+(ansi|vt100|xterm)*
+?A positive number representing a command number.  A 
+]]]] appearing as the first group enables the extended interface. 
+APPLICATION USAGE
+ARCHITECTURE
+ are accepted (e.g., 
+ are executed in the current environment.  Note that the complete script is read before it begins to execute so that any aliases defined in this script will not take effect until the script completes execution.][+?When 
+ are listed, separated by space, on one line.	
+ are mutually exclusive.][+?If no 
+ are processed  as operands.  The evaluation of the expression depends on the number of operands as follows:]{[+0?Evaluates to false.][+1?True if argument is not an empty string.][+2?If first operand is 
+ are removed and placed in the variable assignment list for the command.  Ordinarily, variable assignments must precede command arguments.][m?When enabled, the shell runs background jobs in a separate process group and displays a line upon completion.  This mode is enabled by default for interactive shells on systems that support job control.][n?The shell reads commands and checks for syntax errors, but does not execute the command.  Usually specified on command invocation.][o]:?[option?If 
+ are removed. Finally, if 
+ are removed. If the remaining string consists solely of 
+ are specified, or the 
+ are specified, the last one specified is the one that is used.][+?When the 
+ are specified, the last one specified will be used.  If neither 
+ are used for setting resources.][+?If you do not specify any resource, the default is 
+[arg ...]
+[arg...]
+		arg)	argv[argc]="'"$1"'" ;;
+arg_cachehits
+		((argc=argc+1))
+argentina
+arg_expands
+			arg)	set "" "$@" "$_coshell_quote$1$_coshell_quote"
+argument expected
+ arguments using the format string 
+argv[0]]
+armenian
+ as a compound variable.][d]:[delim?Read until delimiter 
+ as a date/time string and format it.  The 
+ as a file name and returns the name of the directory containing the file name by deleting the last component from 
+ as an extended regular expression and  convert it to a shell pattern.][+%R?Treat 
+ as an shell pattern expression and  convert it to an extended regular expression.][+%T?Treat 
+ as a variable name and write the value in 
+[a?Set the export attribute for each variable whose name does not contain a 
+.as mO \\*(mS\\fB%s\\$2\\fP
+assamese
+_ast_conf_data
+_ast_conf_ndata
+_ast_conf_nprefix
+_ast_conf_prefix
+_AST_FEATURES
+astgetconf
+_ast_info
+_ast_intercepts
+_AST_KSH_VMBUSY_ABORT
+_ast_lc_categories
+_ast_lc_charsets
+_ast_lc_languages
+_ast_lc_maps
+_ast_lc_territories
+_ast_locales
+ as:]{ [+-???To generate a usage synopsis.][+--?????To generate a verbose usage message.][+--????man?To generate a formatted man page.][+--????api?To generate an easy to parse usage message.][+--????html?To generate a man page in 
+_ast_translate
+ASYNCHRONOUS EVENTS
+ASYNCHRONOUS_IO
+ASYNC_IO
+ATEXIT_MAX
+ attempts to change the process local value to 
+ (AT&T Research) 2000-04-02 $
+ attribute is also specified, then leading zeros are stripped.][M]:?[mapping?
+ attribute is also specified, then zeros will be used as the fill character.  Otherwise, spaces are used.][X]#?[n:=2*sizeof(long long)?Floating point number represented in hexadecimal notation.  
+.][a]:?[type?Indexed array.  This is the default. If 
+australia
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?alias - define or display aliases][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?bg - resume jobs in the background][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?break - break out of loop ][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?builtin - add, delete, or display shell built-ins][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?cd - change working directory ][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?command - execute a simple command][+DESCRIPTION?Without 
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?continue - continue execution at top of the loop][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?disown - disassociate a job with the current shell][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?enum - create an enumeration type][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?eval - create a shell command and process it][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?exec - execute command, open/close and duplicate file descriptors][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?exit - exit the current shell][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?export - set export attribute on variables][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?fg - move jobs to the foreground][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?jobs - display status of jobs][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?kill - terminate or signal process][+DESCRIPTION?With the first form in which 
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?let - evaluate arithmetic expressions][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?printf - write formatted output][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?print - write arguments to standard output][+DESCRIPTION?By default, 
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?pwd - write working directory name][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?readonly - set readonly attribute on variables][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?read - read a line from standard input][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?return - return from a function or dot script ][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?set - set/unset options and positional parameters][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?shift - shift positional parameters][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?sleep - suspend execution for an interval][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?test - evaluate expression][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?trap - trap signals and conditions][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?ulimit - set or display resource limits][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?umask - get or set the file creation mask][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?unalias - remove alias definitions][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?unset - unset values and attributes of variables and functions][+DESCRIPTION?For each 
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?wait - wait for process or job completion][+DESCRIPTION?
+][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?whence - locate a command and describe its type][+DESCRIPTION?Without 
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libshell][+NAME?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?basename - strip directory and suffix from filenames][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?cat - concatenate files][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?chmod - change the access permissions of files][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?cmp - compare two files][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?cut - cut out selected columns or fields of each line of a file][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?dirname - return directory portion of file name][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?getconf - get configuration values][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?head - output beginning portion of one or more files ][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?logname - return the user's login name][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?mkdir - make directories][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?sync - schedule file system updates][+DESCRIPTION?
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?uname - identify the current system ][+DESCRIPTION?By default 
+][-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1992-2011 AT&T Intellectual Property][-license?http://www.opensource.org/licenses/cpl1.0.txt][--catalog?libcmd][+NAME?wc - print the number of bytes, words, and lines in files][+DESCRIPTION?
+autoload
+AVAIL_PROCESSORS
+AVPHYS_PAGES
+*[A-Za-z][A-Za-z]*
+azerbaijan
+azerbaijani
+bad byte at
+bad directory
+bad list for c/f option
+Bad system call
+BARRIERS
+ based on a list of byte counts.][c:characters]:[list?
+ based on a list of character counts.][d:delimiter]:[delim?The field character for the 
+ based on fields separated by the delimiter character specified with the 
+ based on the complete search order that the shell uses.  If 
+basename
+base_rel
+.][b:base?List base variable name sans call and standard prefixes.][c:call?Display variables with call prefix that matches 
+-bbinary
+BC_BASE_MAX
+BC_DIM_MAX
+b, c or f option must be specified
+BC_SCALE_MAX
+bcsqHPRQTZ
+BC_STRING_MAX
+.][b?Each 
+ before 
+ before reexecuting the command.]
+ before the variable is converted to 
+ before the variable is made readonly.][+?Within a type definition, if the value is not specified, then a value must be specified when creating each instance of the type and the value is readonly for each instance.][+?If no 
+ begins with 
+%b %e %H:%M
+being freed
+being resized
+belarusian
+ below, if 
+bengali-bangla
+%b %e  %Y
+bflmnprstuxACHS
+.][+bgnice?Runs background jobs at lower priorities.][+braceexpand?Equivalent to 
+(big|euc)*
+bin/ignore
+/bin:/usr/bin
+/bin:/usr/bin:
+/bin:/usr/bin:/usr/local/bin
+ bit set.][+l?Exclusive lock bit on systems that support it. Group execute must be off.][+t?Sticky bit on systems that support it.]}[+?The 
+<=bjdef !"p#rst
+<BODY bgcolor=white>
+botswana
+braceexpand
+				break
+ brings one or more jobs into the foreground, the exit status of 
+brunei-darussalam
+.][B:squeeze-blank?Multiple adjacent new-line characters are replace by one	new-line.][D:dos-output?Output files are opened in 
+ buffer size 4.][S:silent?
+BUILTIN_LIB=
+bulgaria
+bulgarian
+Bus error
+BUSTYPES
+, but all versions will be supported. 
+ but omit line numbers from	blank lines.][d:dos-input?Input files are opened in 
+ but was not executable.][+127?
+ by default.]}[+2.?An option specification of the form [
+ by itself to also match all sub-directories during pathname expansion.][H?Enable 
+ bytes, characters, or character-delimited fields from one or more files, contatenating them on standard output.][+?The option argument 
+ bytes.]#[count][s:quiet|silent?Write nothing for differing files; return non-zero exit status only.]
+ bytes from each file.]#[chars][q:quiet|silent?Never ouput filename headers.][s:skip?Skip 
+ bytes in 
+[* call optget() before opthelp() *]
+cambodian
+ can also be used to generate help messages containing command usage and detailed descriptions.  Specify 
+ can be 
+ can be either a signal name, or a number representing either a signal number or exit status for a process that was terminated due to a signal.  If a name is given the corresponding signal number will be written to standard output.  If a number is given the corresponding signal name will be written to standard output.][l?List signal names or signal numbers rather than sending signals as described above.  The 
+ can be one of the following:]{[+
+ can be preceded by 
+ can be repeated, can overlap, and can appear in any order.  The order of the output is that of the input.][+?One and only one of 
+ can be specified.][+?
+ can be specified as one of the following:]{[+
+ can be specified to change the first occurrence of the string 
+ can be the name or number of a signal, or one of the following:]{[+EXIT?This trap is executed when the shell exits.  If defined within a function defined with the 
+ can be used to add, delete, or display built-in commands in the current shell environment. A built-in command executes in the current shell process and can have side effects in the current shell. On most systems, the invocation time for built-in commands is one or two orders of magnitude less than commands that create a separate process.][+?For each 
+ can be used to center a field to a specified width.][+-?The format modifier flag 
+ can be used to display the current trap settings on standard output.][+?If 
+ can be used to open or close files, or to manipulate file descriptors from 
+ can be used with 
+ can be used with the 
+-c and -C are mutually exclusive
+-%c and -f are mutually exclusive
+ can either be an octal number or a symbolic value as described in 
+cannot access parent directories
+cannot allocate message stream
+cannot allocate pipes
+cannot append index array to associative array %s
+ cannot be invoked from a restricted shell.][d?Deletes each of the specified built-ins. Special built-ins cannot be deleted.][f]:[lib?On systems with dynamic linking, 
+ cannot be invoked from a restricted shell to create files or to open a file for writing or appending.][c?Clear all environment variables before executions except variable assignments that are part of the current 
+ cannot be specified with the justification options 
+.  Cannot be use with any other options.][p?Causes the output to be in a format that can be used as input to the shell to recreate the attributes for variables.][r?Enables readonly.  Once enabled it cannot be disabled.  See 
+ cannot contain a 
+cannot create pipe
+cannot create temporary file
+cannot execute
+cannot fork
+cannot get %s
+cannot set alarm
+cannot set %s
+Cannot start job control
+cannot unset attribute C or A or a
+cannot write initialization message
+ can optionally be followed by one of the following characters to specify a different unit other than a single byte:]{[+b?512 bytes.][+k?1-killobyte.][+m?1-megabyte.]}[+?For backwards compatibility, 
+can't get memory
+can't set discipline %s cp=%s 
+		case $1 in
+	case $_coshell_flags_ in
+		case $_coshell_silent in
+			case $_coshell_state in
+		case $- in
+case sensitive.][+?If 
+		case $state in
+catalog?
+catclose
+CATEGORY
+ cause the options to be set.  Options that are specified with a 
+ cause the option to be unset.][+?
+%c: bad format character in time format
+.][C?Compound variable.  Each 
+cdefbghijkl+m,*n !"#$%&'()opqrstuGHIJKLMNOPQRSTUVWXYZ[\]^_`vwxyaz-./0123456789:;<=>?@ABCDEF{|}~
+%c </dev/null
+[%c=%d:%s?The %s
+cfgetospeed
+ changes the current working directory of the current shell environment.][+?In the first form with one operand, if 
+ changes the mode on the file referenced by the symbolic link, not on the symbolic link itself. The 
+ changes the permission of each file according to mode, which can be either a symbolic representation of changes to make, or an octal number representing the bit pattern for the new permissions.][+?Symbolic mode strings consist of one or more comma separated list of operations that can be perfomed on the mode. Each operation is of the form 
+ changes to the directory specified by 
+ character.][f:fields]:[list?
+ character in each 
+ character.][N!:newline?Output new-lines at end of each record when used with the 
+ characters are removed, and if there are any remaining 
+ characters are removed, and if there are no remaining 
+ characters as described above.  Otherwise, all trailing slashes are removed and the output will be this string unless this string is empty.  If empty the output will be 
+ characters.  For binary fields 
+ characters in 
+ characters in which case 
+ characters or lines from each file before copying.]#[skip][v:verbose?Always ouput filename headers.]
+ characters that must prefix long option names. The default is 
+ characters, the output will be as if the original string had consisted solely as 
+ characters the output will be a single 
+CHAR_BIT
+CHARCLASS_NAME_MAX
+CHAR_MAX
+CHAR_MIN
+CHAR_TERM
+CHILD_MAX
+chinese-simplified
+chinese-traditional
+CHOWN_RESTRICTED
+%c: invalid character in expression - %s
+%c: invalid subscript in assignment
+C LIBRARY FUNCTIONS
+CLOCKRES_MIN
+CLOCK_SELECTION
+CLOCKS_PER_SEC
+closedir
+COATTRIBUTES
+co_export
+COEXPORT
+COLL_WEIGHTS_MAX
+colombia
+command=
+command .
+ command.][a]:[name?
+ command and the commands that are reexecuted.][+?
+[command [arg ...]]
+command exec
+command exec < /dev/tcp/%s/%d || print -u2 'cannot create pipe'
+command exec > /dev/tcp/%s/%d || print -u2 'cannot create pipe'
+ command.][+?For backwards compatibility, if an invalid option is given that is a valid symbolic mode specification, 
+command -p
+ commands
+ commands back.][n?Suppress the command numbers when the commands are listed.][p?Writes the result of history expansion for each operand to standard output.  All other options are ignored.][r?Reverse the order of the commands.][s?Reexecute the command without invoking an editor.  In this case an operand of the form 
+ commands. For any 
+ commands previously. For example, 
+ commands that can be used as input to the shell to recreate the current exports.]
+ commands that can be used as input to the shell to recreate the current set of readonly variables.]
+ command that can be executed to restore the state.]
+ command that caused the editing will not be entered into the history list.  If the editor returns a non-zero exit status, this will suppress the entry into the history list and the command reexecution.  Command line variable assignments and redirections affect both the 
+<command unknown>
+ command without any options specified whose first 
+ command.][+%Z?Output a byte whose value is 
+ compares two files 
+COMPATIBILITY 
+ completed successfully.][+>0?
+ components corresponding to the new directory.  The environment variable 
+ components.][+?If both 
+compound
+condition
+condition(s) required
+conflicting flags
+conformance
+CONFORMANCE = standard
+CONSEQUENCES OF ERRORS
+ consists of multiple 
+ consists solely of 
+ contained in the pathname of the present working directory is replaced by the string 
+.][++?contained in the pipeline following 
+ contains a 
+continue
+ copies each 
+ copies from standard input starting at the current location.][b:number-nonblank?Number lines as with 
+ copies from standard input starting at the current location.][+?The option argument for 
+ copies one or more input files to standard output stopping at a designated point for each file or to the end of the file whichever comes first. Copying ends at the point indicated by the options. By default a header of the form 
+c option already specified
+copyright
+*@(\[[-+]*\?*\]|\@\(#\)|Copyright \(c\)|\$\I\d\: )*
+Copyright &copy
+copysign
+copysignl
+(coredump)
+core file size
+corrupted data
+corsican
+coshell %d invalid message "%-.*s>>>%s<<<"
+coshell %d job id %d not found [%s]
+coshell %d jobs %d user %s sys %s
+coshell %d kill co=%d cj=%d sig=%d
+coshell %d message "%c %d %s"
+coshell %d shell path %s identification "%s"
+_coshell_info_
+_COSHELL_msgfd
+_COSHELL_msgfd=%d
+COSHELL_OPTIONS
+		_coshell_quote='\\\''
+			_coshell_silent=
+		*)	_coshell_silent=1
+		_coshell_state=$?
+			*)	_coshell_state=arg ;;
+		_coshell_state=exp
+			$_coshell_stop)
+		_coshell_stop="<< -- StoP -- >>"
+costa-rica
+ could not be found.]}[+SEE ALSO?
+CPU_KEYBITS1
+cpu time
+CPU_VERSION
+ - create an instance of type 
+ creates a variable for each 
+ creates one or more directories.  By default, the mode of created directories is 
+ creates or redefines alias definitions or writes the existing alias definitions to standard output.  An alias definitions provides a string value that will replace a command name when the command is read.  Alias names can contain any printable character which is not special to the shell.  If an alias value ends in a space or tab, then the word following the command name the alias replaces is also checked to see whether it is an alias.][+?If no 
+-c requires argument
+.][C?Treat each 
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+__ctype_toupper_loc
+%c: unknown format specifier
+%c: unrecognized history modifier
+Current option settings
+ cuts from standard input.   The start of the file is defined as the current offset.][b:bytes]:[list?
+C_VERSION
+CWUUUUUUUUUUUU
+CWUwuUUUUU]U]W
+__cxa_atexit
+cyrillic
+czech-republic
+D$0+t$0+D$
+D$,3D$ 1
+D$4;|$<t
+D$6tildf
+D$83U03E,	
+D$,9B$tI
+D$`9D$@}
+D$@9D$\~5
+DATAKEYS_MAX
+data size
+[%d] %c 
++D$(+D$0
++D$D9T$D
+%d-%d: invalid range
+Death of Child
+ debug_alpha
+ debug_mblen
+ debug_mbtowc
+ debug_wctomb
+ debug_wcwidth
+December
+ decimal='%c' thousands='%c'
+ - declare or display variables with attributes][+DESCRIPTION?Without the 
+ default_wcwidth
+ defines the following discipline functions:]{
+ defines the following fields:]{
+ define the range of commands. 
+DELAYTIMER_MAX
+.deleted
+ depends on the unit of the resource listed for each resource.  In addition, 
+][+DESCRIPTION?
+detected at
+ determines the default behavior if none of these options is specified.][+?When the 
+/dev/fd/
+/dev/fd/+([0-9])
+/dev/@(fd/+([0-9])|std@(in|out|err))
+/dev/fd/%d
+DEVICES AND NETWORK INTERFACES
+/dev/null
+} </dev/null
+/dev/stdin
+/dev/tty
+D$H3U03E,	
+differences
+--differences=0
+.]#[differences][i:ignore-initial|skip?Skip the the first 
+ differences using 
+%d: invalid binary script version
+DircabefhkmnpstuvxBCGElH
+directory
+[directory]
+directory ...
+DIRECTORY
+DIRECTORY;
+ [dir] [list]
+ disables 
+discipline not replaced
+ displays information about specified 
+ displays process id's after the job number in addition to the usual information][n?Only the jobs whose status has changed since the last prompt is displayed.][p?The process group leader id's for the specified jobs are displayed.]
+ displays the current list of built-ins, or just the special built-ins if 
+ displays the status of all stopped jobs, background jobs, and all jobs whose status has changed since last reported by the shell.][+?When 
+ displays the system configuration value for	
+D$L3V03F,	
+<DL compact>
+D$L!D$<f
+_dll_state
+D$(;l$(t
+%dm%d%c%0*ds
+%d: negative field size
+		do	case $1 in
+	do	case $# in
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+ does not contain a 
+ does not exist.][+
+ does not return.  Otherwise, the exit status is one of the following:]{[+0?All I/O redirections were successful.][+>0?An error occurred.]}[+SEE ALSO?
+dominican-republic
+?Do not execute the script, but output the set of double quoted strings preceded by a 
+dos?(-)?(855)
+dos code page
+ (%d:%s)
+ (%d:%s) (%d:%s)
+.ds mO \\&
+.ds mO \\fB\\-\\$1\\fP
+.ds mS \\&
+.ds mS ,\\0
+%d: %s%s
+:dump-strings
+duration
+[ duration ]
+~^;D$(wH
+!D$X	L$X
++D$ xR9D$@
+.][+?Each time it is invoked, the 
+ebcdic-h
+ebcdic-i
+ebcdic-m
+ebcdic-o
+ebcdic-s
+ebcdic-u
+echo j %d $! >&$%s
+ && echo x %d 0 >&$%s || echo x %d $? >&$%s
+ && echo x %d 0 `times` >&$%s || echo x %d $? `times` >&$%s
+echo x %d $? >&$%s
+e %d %d %s %s %s
+ editing mode.  
+ editing mode.][+errexit?Equivalent to 
+ editing mode except for the handling of 
+ editing mode is the same as 
+ editing mode.][+viraw?Does not use canonical input mode when using 
+ edit mode.][+xtrace?Equivalent to 
+ed with the existing permissions.][+^?Cause the permission selected to be propagated to more restrictive groups.]}[+?Symbolic modes with the 
+e|ebcdic?(-)?([1e])
+eE;,TtFf%
+-Eexponential
+Ef;D$.t*
+ either follows symbolic links or does not follow symbolic links, based on the options 
+el-salvador
+		else	set -x;(set +x;exit $_coshell_status_)
+.] [+emacs?Enables/disables 
+Emit escape codes even if output is not a terminal.
+*emphasi*
+EMPHASIS
+empty subexpr in pattern
+, enables tracing for each of the specified functions.  Otherwise, 
+endmntent
+end of file
+ENH_I18N
+ENTITY;%lld;%d
+${ENV-$HOME/.kshrc}
+__environ
+environment
+[+ENVIRONMENT]{	[+_AST_FEATURES?Process local writable values that are different from		the default are stored in the 
+ environment variable is set, 
+ environment variable is set to a nonempty value,  the directory named by the 
+ENVIRONMENT VARIABLES
+ environment		variable. The 
+ environment variable will be set to the name of an absolute pathname that does not contain any 
+ environment variable will be used.  If 
+EOF on %s
+Equivalent to 
+EQUIV_CLASS_MAX
+-e - requires single argument
+__errno_location
+error breakpoint: 
+Error %d
+_error_info_
+_error_infop_
+ERROR_OPTIONS
+??????ESC
+esperanto
+estonian
+/etc/ksh.kshrc
+/etc/mtab
+/etc/profile
+/etc/suid_exec
+/etc/suid_profile
+euc family
+		eval "$@"
+	eval "${argv[@]}"
+{ { (eval 'function fun { trap ":" 0; return 1; }; trap "exit 0" 0; fun; exit 1') && PATH= print -u$_COSHELL_msgfd ksh; } || { times && echo bsh >&$_COSHELL_msgfd; } || { echo osh >&$_COSHELL_msgfd; }; } >/dev/null 2>&1
+	eval 'silent() {
+ evaluates each 
+ evaluates expressions and indicates its results based on the exit status.  Option parsing is not performed so that all arguments, including 
+ evaluates to 
+ evaluates to a non-zero value.][+>0?The last 
+exact %s
+EXAMPLES
+Exceeded CPU time limit
+Exceeded file size limit
+ except that it is ignored for files that do not already have at least one 
+EXEC_INTERPRETER_LENGTH
+ - execute commands in the current environment][+DESCRIPTION?
+ executes 
+ executes command, the exit status will be that of the last command executed.  Otherwise, it will be one of the following:]{[+0?The script or command line to be executed consists entirely of zero or more blank lines or comments.][+>1-125?A noninteractive shell detected a syntax error, a variable assignment error, or an error in a special built-in.][+126?
+.][+-?Executing 
+.][+-?Executing any command whose name as a 
+ exists and group is the effective group id of the current process.][+-L 
+ exists and has been modified since it was last read.][+-O 
+ exists and has its set-group-id bit set.][+-h 
+ exists and has its set-user-id bit set.][+-v 
+ exists and has its sticky bit on.][+-n 
+ exists and has size > 0.][+-t 
+ exists and is a block special file.][+-c 
+ exists and is a character special file.][+-d 
+ exists and is a directory.][+-e 
+ exists and is a pipe or fifo.][+-r 
+ exists and is a regular file.][+-g 
+ exists and is a socket.]}[+?Binary expressions can be one of the following:]{[+
+ exists and is a symbolic link.][+-k 
+ exists and is a symbolic link.][+-N 
+ exists and is executable.  For a directory it means that it can be searched.][+-z 
+ exists and is readable.][+-s 
+ exists and is writable.][+-x 
+ exists and owner is the effective user id of the current process.][+-R 
+ exists.][+-f 
+ exists, obsolete.][+-b 
+EXIT STATUS
+[+EXIT STATUS?]{[+0?All 
+[+EXIT STATUS?]{[+0?All directories created successfully, or the 
+[+EXIT STATUS?]{[+0?All files changed successfully.][+>0?Unable to change mode of one or more files.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?All files copied successfully.][+>0?One or more files did not copy.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?All files processed successfully.][+>0?One or more files failed to open or could not be read.]}[+SEE ALSO?
+[+EXIT STATUS]{[+0?An option specified was found.][+1?An end of options was encountered.][+2?A usage or information message was generated.]}
+[+EXIT STATUS?]{[+0?At least one matching process was found for each 
+[+EXIT STATUS?]{[+0?Directory successfully changed.][+>0?An error occurred.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?Each 
+[+EXIT STATUS?]{[+0?If all background jobs are started.][+>0?If one more jobs does not exist or there are no background jobs.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?If all jobs are successfully disowned.][+>0?If one more 
+[+EXIT STATUS?]{[+0?Indicates that the specified expression is True.][+1?Indicates that the specified expression is False.][+>1?An error occurred.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?No errors occurred.][+>0?An error occurred.]}[+SEE ALSO?
+[+EXIT STATUS?0][+SEE ALSO?
+[+EXIT STATUS?]{[+0?Successful completion.][+>0?
+[+EXIT STATUS?]{[+0?Successful completion.][+>0?An error occurred.]}[+SEE ALSO?
+[+EXIT STATUS]{[+0?Successful completion.][+>0?An error occurred.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?Successful Completion.][+>0?An error occurred.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?Successful completion.][+>0?A request for a higher limit was rejected or an error occurred.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0? Successful completion.][+>0?End of file was detected or an error occurred.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?Successful completion.][+>0?One or more 
+[+EXIT STATUS?]{[+0?The execution was successfully suspended for at least 
+[+EXIT STATUS?]{[+0?The file creation mask was successfully changed, or no 
+[+EXIT STATUS?]{[+0?The files or portions compared are identical.][+1?The files are different.][+>1?An error occurred.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?The information for each job is written to standard output.][+>0?One or more jobs does not exist.]}[+SEE ALSO?
+[+EXIT STATUS?]{[+0?The last 
+[+EXIT STATUS?]{[+0?The positional parameters were successfully shifted.][+>0?An error occurred.]}[+SEE ALSO?
+[+EXIT STATUS?If 
+[+EXIT STATUS?If a command is reexecuted, the exit status is that of the command that gets reexecuted.  Otherwise, it is one of the following:]{[+0?Successfully completion of the listing.][+>0?An error occurred.]}[+SEE ALSO?
+ exits with a non-zero exit status.][+?More than one variable may be set or queried by providing the 
+ exits with a non-zero return value and the variable 
+ expands to Control-
+ expands to the character corresponding to the hexidecimal value 
+ expands to the collating element 
+ expand to the escape character which is octal 
+		exp)	argv[argc]=${1%%=*}="'${1#*=}'" ;;
+			exp)	_coshell_arg=`echo $1 | sed "s/\\([^=]*\\)=\\(.*\\)/\\1=$_coshell_quote\\2$_coshell_quote/"`
+export PATH
+export %s
+export %-.*s
+export %s={ksh,sh,%s}
+[expr ...]
+[expression]
+EXPR_NEST_MAX
+EXTENDED DESCRIPTION
+extended-release
+faeroese
+ fails because there are too many 
+faroe-islands
+\fB\\$1\fP
+FCHR_MAX
+February
+.][f:file?Print the 
+ field indicates that only characters up to that point need to match, provided any additional characters match exactly. The enclosing [ and ]] can be omitted for an option that does not have a longname or descriptive text.][+3.?An option argument specification. Options that take arguments can be followed by : (string value) or # (numeric value) and an option argument specification.  An option argument specification consists of the option argument name as field 1. The remaining 
+[ file ... ]
+[file ...]
+file1 file2 [skip1 [skip2]]
+FILE FORMATS
+FILE_LOCKING
+filename
+FILESIZEBITS
+__finitel
+[first [last] ]
+.][f:list?List all 
+.][+float?
+Floating exception
+ -f [name...]
+ followed by a letter of the alphabet; and characters with the high bit set as the lower 7 bit character prefixed by 
+f option already specified
+ for 7 bit non-printable characters and 
+ for 7 bit space and non-printable characters and 
+ for all other characters. If the 7 bit character encoding is not ASCII then the characters are converted to ASCII to determine 
+ for details on how to specify 
+ for kilobytes or 
+ format.  Cannot be used with 
+ format.][+--????nroff?To generate a man page in 
+ formats to cause group of digits.][+-?Each of the integral format specifiers can have a third modifier after width and precision that specifies the base of the conversion from 2 to 64.  In this case the 
+ formats to treat precision as character width instead of byte count.][+-?The format modifier flag 
+format [string ...]
+ format.][+--????usage?List the current 
+.\" format with nroff|troff|groff -man
+ for megabytes.][+?If either 
+ form.	If 
+	form. If 
+ form should be used for portability. All output is written to the standard error.
+ form to the standard output, one per line.	Only one of 
+ for multiple passes. Used to optimize builtins that may be called many times within the same process.][+i?Ignore this 
+) for options that take arguments is supported for backwards compatibility.]a:[name?Use 
+FORT_DEV
+FORTRAN LIBRARY ROUTINES
+FORT_RUN
+.fp 5 CW
+.]}[f?Pathname expansion is disabled.][h?Obsolete.  Causes each command whose name has the syntax of an alias to become a tracked alias when it is first encountered.][k?This is obsolete.  All arguments of the form 
+	fpclassify
+__fpclassifyl
+freeaddrinfo
+free error
+ from the 
+ftruncate64
+fts_children
+fts_close
+fts_open
+fts_read
+funcalls
+function
+function, built-in or type definition for %s not found in %s
+() function can load built-ins by invoking an appropriate C level function. In this case there is no restriction on the C level function name.][+?The C level function will be invoked with three arguments. The first two are the same as 
+function ignore
+functions
+.][+functions?
+	function %s
+function %s
+function silent
+__fxstat64
+galician
+GAMES AND DEMOS
+georgian
+getaddrinfo
+$(getconf GETCONF)
+getdomainname
+getgroups
+GETGR_R_SIZE_MAX
+gethostid
+gethostname
+getlogin
+getmntent
+getpagesize
+getpwnam
+GETPW_R_SIZE_MAX
+getpwuid
+getrlimit
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.6
+GLIBC_2.7
+globfree
+globstar
+.][+globstar?Equivalent to 
+.][+gmacs?Enables/disables 
+__gmon_start__
+GNU/Linux
+greenland
+greenlandic
+guatemala
+gujarati
+<H4><TABLE width=100%%><TR><TH align=left>&nbsp;%s&nbsp;(&nbsp;%s&nbsp;)&nbsp;<TH align=center><A href="." title="Index">%s</A><TH align=right>%s&nbsp;(&nbsp;%s&nbsp;)</TR></TABLE></H4>
+.][H?A hard limit is set or displayed.][S?A soft limit is set or displayed.][a?Displays all current resource limits]
+ has a suffix that ends in 
+ has been made obsolete by the 
+ has been specified and an error occurred.][+126?
+ has the binary attribute and 
+h|ebcdic?(-)h|?(cp|ibm)?(00)37|[oa]s?(/-)400
+--??help
+-Hfilename
+high bit set
+Highest priority realtime signal
+histchars
+HISTEDIT
+\hist -e "${VISUAL:-${EDITOR:-vi}}" 
+histexpand
+.][+histexpand?Equivalent to 
+HISTFILE
+hist_flush: EOF seek failed errno=%d
+history file cannot open
+History file write error-%d %s: file unrecoverable
+HISTSIZE
+HLNRSVOGCaeohrwxdcbfugkvpsnzt
+%H:%M:%S
+ holds a native pathname.  Assigning a UNIX format pathname will cause it to be converted to a pathname suitable for the current host.  This has no effect when the native system is UNIX.][L]#?[n?Left justify.  If 
+$HOME/.profile
+honduras
+hong-kong
+--host-id
+hostname
+HOST_NAME_MAX
+HOSTTYPE
+.][+%H?Output 
+.][h]:[string?Used within a type definition to provide a help string  for variable 
+.html">%s%-.*s%s</A>%-.*s</NOBR>
+htqrsxuvw
+htrepqxs&
+hungarian
+HW_PROVIDER
+HW_SERIAL
+ibm OS/400 AS/400 ebcdic
+icelandic
+iconv_close
+iconv_open
+@(#)$Id: alias (AT&T Research) 1999-07-07 $
+@(#)$Id: basename (AT&T Research) 2010-05-06 $
+@(#)$Id: break (AT&T Research) 1999-04-07 $
+@(#)$Id: builtin (AT&T Research) 2010-08-04 $
+@(#)$Id: cat (AT&T Research) 2010-04-11 $
+@(#)$Id: cd (AT&T Research) 1999-06-05 $
+@(#)$Id: chmod (AT&T Research) 2010-07-28 $
+@(#)$Id: cmp (AT&T Research) 2010-04-11 $
+@(#)$Id: command (AT&T Research) 2003-08-01 $
+@(#)$Id: continue (AT&T Research) 1999-04-07 $
+@(#)$Id: cut (AT&T Research) 2010-08-11 $
+id=%d info
+@(#)$Id: dirname (AT&T Research) 2009-01-31 $
+id=%d %s
+identification message read timeout
+[-?@(#)$Id: enum (AT&T Research) 2008-01-08 $
+@(#)$Id: eval (AT&T Research) 1999-07-07 $
+@(#)$Id: exec (AT&T Research) 1999-07-10 $
+@(#)$Id: exit (AT&T Research) 1999-07-07 $
+@(#)$Id: export (AT&T Research) 1999-07-07 $
+@(#)$Id: getconf (AT&T Research) 2008-04-24 $
+@(#)$Id: getopts (AT&T Research) 2005-01-01 $
+@(#)$Id: head (AT&T Research) 2006-09-27 $
+@(#)$Id: kill (AT&T Research) 1999-06-17 $
+# @(#)$Id: libcoshell (AT&T Research) 2010-05-19 $
+@(#)$Id: logname (AT&T Research) 1999-04-30 $
+@(#)$Id: mkdir (AT&T Research) 2010-04-08 $
+@(#)$Id: print (AT&T Research) 2008-11-26 $
+@(#)$Id: printf (AT&T Research) 2009-02-02 $
+@(#)$Id: pwd (AT&T Research) 1999-06-07 $
+@(#)$Id: read (AT&T Research) 2006-12-19 $
+@(#)$Id: readonly (AT&T Research) 2008-06-16 $
+@(#)$Id: regex (AT&T Research) 2010-09-22 $
+@(#)$Id: return (AT&T Research) 1999-07-07 $
+@(#)$Id: set (AT&T Research) 1999-09-28 $
+@(#)$Id: sh (AT&T Research) 93u 2011-02-08 $
+@(#)$Id: shift (AT&T Research) 1999-07-07 $
+@(#)$Id: sleep (AT&T Research) 2009-03-12 $
+@(#)$Id: sync (AT&T Research) 2006-10-04 $
+@(#)$Id: test (AT&T Research) 2003-03-18 $
+@(#)$Id: trap (AT&T Research) 1999-07-17 $
+@(#)$Id: type (AT&T Labs Research) 2008-01-08 $
+@(#)$Id: type (AT&T Labs Research) 2008-07-01 $
+@(#)$Id: typeset (AT&T Research) 2010-12-08 $
+@(#)$Id: umask (AT&T Research) 1999-04-07 $
+@(#)$Id: unalias (AT&T Research) 1999-07-07 $
+@(#)$Id: uname (AT&T Research) 2007-04-19 $
+@(#)$Id: unset (AT&T Research) 1999-07-07 $
+@(#)$Id: Version JM 93u 2011-02-08 $
+@(#)$Id: wait (AT&T Research) 1999-06-17 $
+@(#)$Id: wc (AT&T Research) 2009-11-28 $
+@(#)$Id: whence (AT&T Research) 2007-04-24 $
+.ie !'\\$1'-' \{
+.ie '\\$2'-' \{
+i|ebcdic?(-)[2i]|ibm
+.][+?If 
+.]}[+?If 
+.if !'\\$4'-' .as mO \\0\\fI\\$4\\fP
+.if !'\\$4'-' .as mO =\\fI\\$4\\fP
+.][+?If any 
+, if any. Each dir operand that names an existing directory shall be ignored without error.][v:verbose?Print a message on the standard error for each created directory.]
+. If any unknown	options are specified then the local 
+.  If a variable already exists, the current value will become index 
+.  If a variable already exists, the current value will become subscript 
+.]}[+?If both 
+		if	((_coshell_status_==0))
+if	(eval 'f() echo') >/dev/null 2>&1
+, if it exists, as a profile, followed by 
+, if it exists, as a profile. On by default for interactive shells; use 
+.if \\n(mH==2 .in 9n
+.if \\n(mH==3 .in 13n
+.if \\n(mH==4 .in 17n
+.][+?If no 
+.]}[+?If no 
+.][+?If no editor is specified, then the editor specfied by the 
+ if no path is applicable, and		
+ if not.
+.  If one or more jobs does not exist or has completed, 
+. If the file name defined by 
+.][+?If the list of 
+.  If the new directory is found by searching the directories named by 
+If the next argument is 
+If the option value is omitted then
+. If the : or # is followed by ? then the option argument is optional. If only the option character form is specified then the optional argument value is not set if the next argument starts with - or +.][+4.?A option value description.][+5.?A argument specification. A list of valid option argument values can be specified by enclosing them inside a {...} following the option argument specification.  Each of the permitted values can be specified with a [...]] containing the value followed by a description.][+6.?A group of the form [+\n...]] will display the characters representing ... in fixed with font without adding line breaks.][+7.?A group of the form [+
+.]}[+?If there are more 
+, if they exist, are read before the first command.][r
+.][+?If you specify 
+ignorecase
+ignoreeof
+.][+ignoreeof?Prevents an interactive shell from exiting on reading an end-of-file.][+keyword?Equivalent to 
+--ignore-umask
+-iinteger
+Illegal instruction
+ILP32_OFF32
+ILP32_OFF32_CFLAGS
+ILP32_OFF32_LDFLAGS
+ILP32_OFF32_LIBS
+ILP32_OFF32_LINTFLAGS
+ILP32_OFFBIG
+ILP32_OFFBIG_CFLAGS
+ILP32_OFFBIG_LDFLAGS
+ILP32_OFFBIG_LIBS
+ILP32_OFFBIG_LINTFLAGS
+[...] imbalance
+implementation
+%I:%M:%S %p
+ in a logical fashion by moving up one level by name in the present working directory.][P?The present working directory is first converted to an absolute pathname that does not contain symbolic link components and symbolic name components are expanded in the resulting directory name.]
+ in ASCII.][+-?The escape sequence 
+ in background pool named 
+incomplete multibyte sequence at offset %I*u
+incorrect syntax
+ indicates long variant.][m?Move.  The value is the name of a variable whose value will be moved to 
+ indicates the most recently entered command that begins with 
+indirect
+indonesia
+indonesian
+information unavailable
+ initial
+initialization message exec error
+initialization not implemented
+ in it.][+-?Redirecting output of a command with 
+INITTAB_NAME
+INPUT FILES
+ in seconds when reading from a terminal or pipe.][n]#[count?Read at most 
+ in sequence to the standard	output. If no 
+ instead.]:[file][v:verbose?Describe changed permissions of all files.]
+ instead of a 
+ instead of standard input.][t]:[timeout?Specify a timeout 
+ instead of standard output.][v?Treat each 
+ instead of the command name in usage messages.]
+ instead of to the end of line.][p?Read from the current co-process instead of standard input.  An end of file causes 
+.][+integer?
+	integer argc=0
+interactive
+ interface, provides	access to the same information; vendors should spend more time	using standards than inventing them.][+?Selected information is printed in the same order as the options below.][a:all?Equivalent to 
+interlingua
+interlingue
+<!--INTERNAL-->
+ in the command to 
+ in the current shell environment as an arithmetic expression using ANSI C syntax.  Variables names are shell variables and they are recursively evaluated as arithmetic expressions to get numerical values.][+?
+ in the current shell environment using the standard redirection mechanism available with all commands.  The close-on-exec flags will be set on file descriptor numbers greater than 
+.][+?In the second form, the first occurrence of the string 
+.  In this case no 
+]]]]. In this case the first field is the option character; this is the value returned in the 
+invalid argument of type %c
+invalid character class
+invalid \char escape
+invalid collation element
+invalid \digit backreference
+invalid {...} digits
+invalid multibyte character
+invalid multibyte sequence at offset %I*u
+invalid or omitted delimiter
+invalid pointer %p passed to free or realloc
+invalid [...] range endpoint
+invalid range for c/f option
+invalid regular expression
+ inverted option characters and 
+?Invoke the shell in a restricted mode.  A restricted shell does not permit any of the following:]{[+-?Changing the working directory.][+-?Setting values or attributes of the variables 
+IO signal
+_IO_stdin_used
+IP_SECOPTS
+ is a command language interpreter that executes commands read from a command line string, the standard input, or a specified file.][+?If the 
+ is a comma-separated or blank-separated list of positive numbers and ranges.  Ranges can be of three forms.  The first is two positive integers separated by a hyphen (
+ is a date format as defined by the 
+ is a declaration command that creates an enumeration type 
+ is a filesystem specific variable then	the value is determined relative to 
+ is a function
+ is a function that hasn't been loaded yet.  With 
+ is a hard link or a symbolic link to 
+ is a keyword
+ is a %n 
+ is a name reference.][+-S 
+ is an empty string, the shell ignores each of the 
+ is another name for 
+ is an undefined function
+ is appended to directories resulting from pathname expansion.][+monitor?Equivalent to 
+ is a process id or process group id that is unknown to the current shell environment.]}[+SEE ALSO?
+ is a reserved word, a built-in, an alias, or a function.  This turns off the 
+ is a %s.]
+ is a shell builtin
+is a shell builtin version of
+ is a shell special built-in command that constructs a command by concatenating the 
+ is a shell special built-in that causes the function or dot script that invokes it to exit.  If 
+ is a shell special built-in that continues execution at the top of smallest enclosing enclosing 
+ is a shell special built-in that exits the smallest enclosing 
+ is a shell special built-in that shifts the positional parameters to the left by the number of places defined by 
+ is a special built-in command that can be used to manipulate file descriptors or to replace the current shell with a new command.][+?If 
+ is a special built-in command that executes commands from a function or a file in the current environment.][+?If 
+ is a special built-in command, then the special properties are removed so that failures will not cause the script that executes it to terminate.][+?With the 
+ is a special built-in, specifying a condition that the shell does not know about causes 
+ is a special built-in that defines actions to be taken when conditions such as receiving a signal occur.  Also, 
+ is a special command, any failure will cause the script that invokes it to exit.  This can be prevented by invoking 
+ is a special shell builtin
+is assumed
+is a tracked alias for
+ is a type that has been created with the 
+ is a user defined attribute and has no meaning to the shell.][u?Without 
+ is a valid variable name that is set.][+-w 
+ is a zero length string.][+-G 
+ is built-in to the shell as a declaration command so that field splitting and pathname expansion are not performed on the arguments.  Tilde expansion occurs on 
+ is cached and used	for subsequent tests in the calling and all child processes.	Only 
+ is called.][+?If any 
+ is called inside a function defined with the 
+ is checked.][+?Unary expressions can be one of the following:]{[+-a 
+ is defined to be a non-zero length string delimited by 
+ is empty or unset, 
+ is enabled.][+-p 
+ is enabled.][r?restricted.  Enables restricted shell.  This option cannot be unset once enabled.][t?Obsolete.  The shell reads one command and then exits.][u?If enabled, the shell displays an error message when it tries to expand a variable that is unset.][v?Verbose.  The shell displays its input onto standard error as it reads it.][x?Execution trace.  The shell will display each command after all expansion and before execution preceded by the expanded value of the 
+ is encountered.][+2.?An argument that does not begin with a 
+ is encountered.][+3.?A help argument is specified.][+4.?An error is encountered.]}[+?If 
+ is encountered when processing options, the shell variable whose name is 
+ is equal to 
+ is equivalent to 
+ is equivalent to specifiying the 
+ is equivalent to the 
+	isfinite
+ is followed by 
+ is found, then the exit status is that of the last command executed.  Otherwise, since this is a special built-in, an error will cause a non-interactive shell to exit with a non-zero exit status.  An interactive shell returns a non-zero exit status to indicate an error.][+SEE ALSO?
+ is given, it must be a positive integer >= 1. If 
+ is given it represents the field width.]
+ is given it represents the field width.  If the 
+ is given, it will be evaluated as an arithmetic expression to determinate the number of places to shift.  It is an error to shift more than the number of positional parameters or a negative number of places.]
+ is given, it will be used to set the exit status.]
+ is given, or if the 
+isgreater
+isgreaterequal
+ is greater than 
+ is greater than or equal to 
+ is ignored when setting positional parameters.][+?For backward compatibility, a 
+__isinfl
+ is initialized to 
+ is invalid or an error occurs in	determining its value, then a diagnostic written to the standard error	and 
+ is invoked inside a function defined with the 
+ is invoked outside of a function or dot script it is equivalent to 
+ is invoked, the exit status of 
+ is invoked with one or more 
+ is larger than the number of enclosing loops, the last enclosing loop will be exited.]
+ is larger than the number of enclosing loops, the last enclosing  loop will be used.]
+islessequal
+islessgreater
+ is less than 
+ is less than or equal to 
+ is newer than 
+ is non-zero.][+-o 
+	isnormal
+ is not altered by the trap execution.][+?
+ is not equal to 
+ is not found, then no output is produced.][+?If 
+ is not given.]
+ is not portable.][+?Although 
+ is not specified, 
+  is not specified, the current value of the alias corresponding to 
+ is not specified, the exit status is 
+ is not specified, the list of options and their current settings will be written to standard output.  When invoked with a 
+ is not supported by a given command then it is equivalent to 
+ is not the default native	
+iso8859-1
+ISO-8859-1
+iso8859-10
+iso8859-13
+iso8859-14
+iso8859-15
+iso8859-2
+iso8859-3
+iso8859-4
+iso8859-5
+iso8859-6
+iso8859-7
+iso8859-8
+iso8859-9
+ISO-8859-%s
+ is of the form 
+ is older than 
+ is omitted, 
+ is omitted and there are no operands, all mapped variables are displayed.][R]#?[n?Right justify.  If 
+ is omitted. Future enhancements may increment 
+ is omitted. If 
+ is omitted.  It can also generate usage messages and a man page for the command based on the information in 
+ is omitted or 0 then no timeout will be used.]
+ is omitted, the default is 
+ is omitted, the most recently started or stopped background job is moved to the foreground.][+?Each 
+ is omitted, the most recently started or stopped background job is resumed or continued in the background.][+?Each 
+ is omitted, the most recently started or stopped background job is used.][+?Each 
+ is omitted then 
+ is omitted, then 
+ is omitted then all 
+	is omitted then all 
+ is omitted.  The number of positional parameters remaining will be reduced by the number of places that are shifted.][+?If 
+ is omitted, the previous command is used, unless 
+ is open and is associated with a terminal device.][+-u 
+ is output before all but the first file but this can be changed with the 
+.][i?Specifies that the shell is interactive.][l?Invoke the shell as a login shell; 
+ is placed in a new paragraph.][+8.?A group of the form [-
+ is recognized by 
+ is selected for 
+ is set to 
+ is set to the index of the first non-option argument.][+?The obsolete long option forms 
+ is set to the value 
+ is shell special built-in that causes the shell that invokes it to exit.  Before exiting the shell, if the 
+ is silent about non-existent files.][T:show-blank?Causes tabs to be copied as 
+ is specified, 
+ is specified and 
+ is specified, and is identical the end of 
+ is specified, and no 
+ is specified, each subscript is interpreted as a value of enumeration type 
+ is specified, each subscript is interpreted as a value of type 
+ is specified.  Execution continues at the command following the loop(s).][+?If 
+ is specified, from the current shell execution environment.  Readonly variables cannot be unset.][n?If 
+ is specified.][+?If 
+ is specified in which case it will default to 
+ is specified, in which case it will default to 
+ is specified.  It will not affect any commands that have already been read and subsequently executed.][a?Causes all alias definitions to be removed.  
+ is specified, on standard output. The full pathname for built-ins that are bound to pathnames are displayed.][+?Libraries containing built-ins can be specified with the 
+ is specified, process 
+ is specified, the alias 
+ is specified, the bytes that are read are stored directly into 
+ is specified, the exit status is the least significant eight bits of the value of 
+ is specified then	
+ is specified, then 
+ is specified, the names displayed will be function names.][+?If 
+ is specified, then each 
+ is specified then the behavior will be determined by the 
+ is specified, then the current shell process will be replaced by 
+ is specified, then the first 
+ is specified, then the names and attributes of all variables that have attributes are written to standard output.  When 
+ is specified then the variable 
+ is specified, the output will also contain information that indicates how the given 
+ is specified, the resource limit is set, otherwise, its current value is displayed on standard output.][+?Increasing the limit for a resource usually requires special privileges.  Some systems allow you to lower resource limits and later increase them.  These are called soft limits.  Once a hard limit is set the resource can not be increased.][+?Different systems allow you to specify different resources and some restrict how much you can raise the limit of the resource.][+?The value of 
+ is specified, the variable 
+ is specified value is assigned before the attributes are set.][+?When 
+	issubnormal
+ is successful, the 
+ is supported, 
+ is symbolic or octal mode as in 
+ is the command-line string and must be specified.  Any remaining 
+ is the		corresponding path, 
+ is the first executable found during a path search. Otherwise, built-ins are found prior to performing the path search.][+?If no 
+ is the name of a character mapping known by 
+ is the name of a type name given to each 
+ is the number of bytes.][N]#[count?Read exactly 
+ is the number of bytes.][v?When reading from a terminal the value of the first variable is displayed and used as a default value.]
+ is the number of places after the decimal point when the value is expanded.][H?Hostname mapping.  Each 
+ is the previous command.][+
+ is the system configuration name, 
+ is the system configuration value.]}[+SEE ALSO?
+ is treated like a shell arithmetic expression and evaluated.][+?If a 
+isunordered
+ is used for listing and both 
+ is used.]:[skip1[::skip2]]:=0::0][l:verbose?Write the decimal byte number and the differing bytes (in octal) for each difference.][n:count|bytes?Compare at most 
+, is used to remove any special meaning for the next character and for line continuation unless the 
+ is used.][+?When 
+ is valid but undefined then 
+iswalnum
+iswalpha
+ iswalpha
+iswblank
+iswcntrl
+iswctype
+iswdigit
+iswlower
+iswprint
+iswpunct
+ is written to standard output.  If 
+ is written to the standard output. If	
+ is written to	the standard output. If 
+iswspace
+iswupper
+iswxdigit
+ is zero or more of the following letters:]{[+u?User permission bits.][+g?Group permission bits.][+o?Other permission bits.][+a?All permission bits. This is the default if none are specified.]}[+?The 
+, it is removed as well.][+?If 
+%#..*I*u
+%I*u%c%d%s
+japanese
+japanese-ascii|korean-ascii
+japanese|korean
+javanese
+jklmnopqr
+jklmnopqr^
+JKLMNOPQR
+}JKLMNOPQR
+[job ...]
+JOB_CONTROL
+job %d commands:
+just allocated
+just resized
+_Jv_RegisterClasses
+kashmiri
+KERNEL_CLIST
+KERNEL_CLIST_MAX
+KERNEL_DISK
+KERNEL_DISK_MAX
+KERNEL_DMABUF
+KERNEL_DMABUF_MAX
+KERNEL_FILE
+KERNEL_FILE_MAX
+KERNEL_FLCKREC
+KERNEL_FLCKREC_MAX
+KERNEL_INODE
+KERNEL_INODE_MAX
+KERNEL_MOUNT
+KERNEL_MOUNT_MAX
+KERNEL_PINODE
+KERNEL_PINODE_MAX
+KERNEL_PROC
+KERNEL_PROC_MAX
+KERNEL_REGION
+KERNEL_REGION_MAX
+KERNEL_S5INODE
+KERNEL_S5INODE_MAX
+KERNEL_STAMP
+KERNEL VM LIBRARY FUNCTIONS
+KERN_POINTERS
+KERN_SIM
+kill: %s: %s
+kill -s STOP
+kill -s STOP $$
+Ki Mi Gi Ti Pi Ei
+kinyarwanda
+k M G T P E
+KSH_VERSION
+L$(;|$0u
+|$l3|$<3D$8	
+L$89L$ps0
+L$$9L$0v
+L$@9L$8}
+L$<9L$Lu
+laothian
+ -l [arg ...]
+latin1|west-europe
+latin2|east-europe
+latin3|south-europe
+latin4|north-europe
+latin5|turkish
+latin6|nordic
+latin8|celtic
+LC_ADDRESS
+LC_COLLATE
+LC_CTYPE
+LC_IDENTIFICATION
+LC_MEASUREMENT
+LC_MESSAGES
+LC_MONETARY
+LC_NUMERIC
+LC_OPTIONS
+LC_PAPER
+LC_TELEPHONE
+LC_XLITERATE
+|$L+D$@+|$<
+LD_LIBRARY_PATH
+LD_PRELOAD
+l$(;D$(s
+LFS64_CFLAGS
+LFS64_LDFLAGS
+LFS64_LIBS
+LFS64_LINTFLAGS
+LFS_CFLAGS
+LFS_LDFLAGS
+LFS_LIBS
+LFS_LINTFLAGS
+__libc_calloc
+__libc_current_sigrtmax
+__libc_current_sigrtmin
+__libc_free
+__libc_malloc
+__libc_memalign
+libcoshell:coshell
+__libc_pvalloc
+__libc_realloc
+libc.so.6
+__libc_start_main
+__libc_valloc
+libdl.so.2
+lib_init
+../lib/ksh
+lib:LD_LIBRARY_PATH
+/lib/ld-linux.so.2
+lib/locale/%l/%C/%N
+libm.so.6
+LIBPREFIX
+. Libraries are searched in the reverse order in which they are specified.][l?List the library base name, plugin YYYYMMDD version stamp, and full path for 
++LIBRARY?
+libshell
+LIBSUFFIX
+L[%I*d] 
+L$(iD$8@B
+liechtenstein
+LIGHTWEIGHT PROCESSES LIBRARY
+line %d: -a obsolete, use -e
+line %d: '^' as first character in character class not portable
+line %d: %c quote may be missing
+line %d: %c within ${} should be quoted
+line %d: empty for list
+line %d: escape %c to avoid ambiguities
+line %d: `&>file' is nonstandard -- interpreted as `>file 2>&1' for profile input only
+line %d: \ in front of %c reserved for future use
+line %d: `{' instead of `in' is obsolete
+line %d: Invariant test
+line %d: label %s ignored
+line %d: $ not preceded by \
+line %d: `...` obsolete, use $(...)
+line %d: '=' obsolete, use '=='
+line %d: quote %c to avoid ambiguities
+ #line %d %s
+line %d: set %s obsolete
+line %d: %s invalid typeset option order
+line %d: spaces required for nested subshell
+line %d: %s unknown label
+line %d: %s within [[...]] obsolete, use ((...))
+line %d: -t requires argument
+line %d: use braces to avoid ambiguities with $id[...]
+line %d: use space or tab to separate operators %c and %c
+line %d: variable expansion makes arithmetic evaluation less efficient
+LINE_MAX
+LINENO=%d
+ lines from each file.]#[lines:=10][c:bytes?Copy 
+linesread
+LINK_MAX
+linux.i386
+List all implementation info.
+List detailed help option info.
+List detailed info in displayed man page form.
+List detailed info in html.
+List detailed info in nroff.
+List detailed info in program readable form.
+List implementation info matching 
+List long option usage.
+List posix getopt usage.
+ lists, edits, or re-executes, commands  previously entered into the current shell environment.][+?The command history list references commands by number. The first number in the list is selected arbitrarily.  The relationship of a number to its command does not change during a login session.  When the number reaches 32767 the number wraps around to 1 but maintains the ordering.][+?When commands are edited (when the 
+List short and long option details.
+List short option usage.
+List the 
+ list.][++?the command immediately following 
+List the usage string with C style escapes.
+List the usage translation key strings with C style escapes.
+lithuania
+lithuanian
+little endian unicode runes
+L$(+L$<9L$l
+-Lleftjust
+LLONG_MAX
+LLONG_MIN
+LOCAL COMMANDS
+locale      %17s %16s %16s %16s %s
+localeconv
+LOCALEDEF
+locale env  %17s %16s %16s %16s
+locale find %s
+locale make %17s %16s %16s %16s language=%s territory=%s charset=%s%s
+locale path %s
+ locales 
+locale %s catalog %s message %d.%d "%s" does not match "%s"
+locale set  %17s %16s %16s %16s
+locale stat %s
+locale test %s
+locale user %17s %16s %16s %16s%s%s
+localhost
+localtime
+locked address space
+LOGIN_NAME_MAX
+login setuid/setgid shells prohibited
+login_shell
+LOGNAME_MAX
+LONG_BIT
+_longjmp
+__longjmp_chk
+LONG_MAX
+LONG_MIN
+longname
+long-name
+long-option[=value]
+ loop, if any; or the top of the 
+ loop, or the 
+Lowest priority realtime signal
+LP64_OFF64
+LP64_OFF64_CFLAGS
+LP64_OFF64_LDFLAGS
+LP64_OFF64_LIBS
+LP64_OFF64_LINTFLAGS
+LPBIG_OFFBIG
+LPBIG_OFFBIG_CFLAGS
+LPBIG_OFFBIG_LDFLAGS
+LPBIG_OFFBIG_LIBS
+LPBIG_OFFBIG_LINTFLAGS
+{[lP}M]\Nk`Ka
+|$$;L$$r
+-ltolower
+%lu.%02lus
+%lud%02luh
+%luh%02lum
+%luM%02lud
+%lum%02lus
+%luw%02lud
+luxembourg
+%luY%02luM
+__lxstat64
+macedonia
+macedonian
+MAILCHECK
+MAILPATH
+MAKE ASSERTION OPERATORS AND RULES
+malagasy
+malayalam
+malaysia
+mallinfo
+malloc failed while growing stack
+??????MAN[=
+MAPPED_FILES
+markdirs
+.][+markdirs?A trailing 
+Massage the output for regression testing.
+MATHEMATICAL LIBRARY
+max_busy
+MAX_CANON
+MAX_INPUT
+max memory size
+max real time priority
+ may be one of the following:]{[+integer?The number of seconds to sleep.][+floating point?The number of seconds to sleep. The actual granularity depends on the underlying system, normally around 1 millisecond.][+P
+ may be specified.][+?This implementation uses the 
+ may be used in place of 
+ may contain binary data.  Its value is the mime base64 encoding of the data. It can be used with 
+ MB_CUR_MAX=%d%s%s%s%s%s
+MB_LEN_MAX
+MbP?p;%..64d;v;%..64d;%d;%d;r;
+MCAS_OFFSET
+%m/%d/%y
+m|ebcdic?(-)m|mvs
+__memcpy_chk
+MEMLOCK_RANGE
+Memory fault
+MEMORY_PROTECTION
+MESSAGE_PASSING
+message queue size
+<META name="generator" content="optget (AT&T Research) 2010-04-22">
+metaphysical
+microfocus cobol ebcdic
+M[%I*d] 
+midnight
+ minus the bits set in the 
+MISCELLANEOUS 
+mkdir -p -m $(umask -S),u+wx $(dirname dir) && mkdir [-m mode]] dir
+MMAP_FIXED_ALIGNMENT
+mode file ...
+ mode option represents that option supplied to the original invocation of 
+_mode_table_
+mode which inserts carriage	returns in front of new-lines on some systems.][E:show-ends?Causes a 
+mode which removes carriage	returns in front of new-lines on some systems.][e?Equivalent to 
+ modifier can be used with the 
+ modifier will cause 
+moldavian
+mongolian
+MONOTONIC_CLOCK
+MQ_OPEN_MAX
+MQ_PRIO_MAX
+-M requires argument when operands are specified
+MSEM_LOCKID
+msgqueue 
+multibyte 7-bit unicode
+multibyte 8-bit unicode
+multiline
+.][+multiline?Use multiple lines when editing lines that are longer than the window width.][+noclobber?Equivalent to 
+. Multiple libraries can be specified with separate invocations of 
+MULTI_PROCESS
+ must be one of the following:]{[+allexport?Equivalent to 
+ must be specified.][+?If no 
+ must name an indexed array variable with at least two elements.][i:ignorecase?The values are case insensitive.]
+mvs ebcdic
+mvs OpenEdition ebcdic
+NACLS_MAX
+.]:[name]
+[ name ... ]
+name  ...
+ name [arg ...]
+, named by 
+NAME_MAX
+[ name [ path [ value ] ] ... ]
+.][+nameref?
+ names a compound variable it will be copied to 
+ names a shared library to load and search for built-ins. Libraries are searched for in 
+++namespace
+namespace %s
+[name[=value]...]
+ [-n] [arg...]
+native code set
+nearbyint
+nearbyintl
+netherlands
+netherlands-antilles
+NETWORK FUNCTIONS
+new-zealand
+nextafter
+nextafterl
+nexttoward
+nexttowardl
+NGROUPS_MAX
+N|$h)|$h
+nicaragua
+NL_ARGMAX
+.][n:lines?Copy 
+nl_langinfo
+NL_LANGMAX
+NL_MSGMAX
+NL_SETMAX
+NL_SPECMAX
+NL_TEXTMAX
+-nnameref
+n|native|local
+.][n:number?Causes a line number to be inserted at the beginning of each line.][s?Equivalent to 
+<NOBR><A href="../man%-.*s/
+noclobber
+nodename
+*noemphasi*
+.][+noexec?Equivalent to 
+.][+noglob?Equivalent to 
+no history file
+No job control
+.][+nolog?This has no effect.  It is provided for backward compatibility.][+notify?Equivalent to 
+no match
+noncommercial
+non-empty b, c or f option must be specified
+. No output is	written to standard output.]:[name]
+no query process
+norwegian
+norwegian-bokmal
+norwegian-nynorsk
+no such job
+no such process
+.][+?Note that the following preset aliases are set by the shell:]{[+compound?
+NO_TRUNC
+ not set, 
+not supported
+.][+nounset?Equivalent to 
+--noutf8
+November
+NPROC_CONF
+NPROCESSORS_CONF
+NPROCESSORS_MAX
+NPROCESSORS_ONLN
+NPROC_ONLN
+.nr mH 0
+.nr mH 1
+.nr mH 2
+.nr mH 3
+.nr mH 4
+.nr mH 5
+n_segment
+NSS_BUFLEN_GROUP
+NSS_BUFLEN_PASSWD
+number of file locks
+number of open files
+number of processes
+number of threads
+NUM_PROCESSORS
+nv_cachehit
+nv_opens
+ nvsetdisc failed name=%s sp=%s cp=%s
+O83N83V4	
+o|ebcdic?(-)[3o]|?(cp|ibm)1047|open?(-)edition
+On by default
+On by default; use
+one operand expected
+ only fails for option/operand syntax errors, or when 
+ on one line on the standard output.][s?Display only the special built-ins.]
+ on some systems.][o:operating-system?The generic operating system name.][h:host-id|id?The host id in hex.][d:domain?The domain name returned by 
+ on standard error when standard input is a terminal or pipe.][+?If an end of file is encountered while reading a line the data is read and processed but 
+ on the export list.  See 
+.OP - - anyof
+__open64_2
+open file limit exceeded
+>OPEN_MAX
+OPEN_MAX
+OPEN_MAX_CEIL
+ operand and the index of the next argument to be processed in the shell variable 
+ operand, and the specified signal was successfully sent to at least one matching process.][+>0?An error occurred.]}[+SEE ALSO?
+ operand and use the mode of 
+ operand as described above.][s?Write the output as an entry in the shell history file instead of standard output.][u]:[fd:=1?Write to file descriptor number 
+ operand as described above. This is the default behavior.][n?Do not append a new-line character to the output.][f]:[format?Write the 
+ operand cannot be completely converted into a value appropriate for that format specifier, an error will occur, but remaining 
+ operand if the long option is matched. If 
+ operand instead of the option character. A longname is specified by 
+ operand is processed specially as follows:]{[+\a?Alert character.][+\b?Backspace character.][+\c?Terminate output without appending newline.  The remaining 
+ operand is processed specially as follows:]{[+\a?Alert character.][+\b?Backspace character.][+\c?Terminate output without appending newline. The remaining 
+OPERANDS
+ operands and 
+ operands are ignored.][+\f?Formfeed character.][+\n?Newline character.][+\t?Tab character.][+\v?Vertical tab character.][+\\?Backslash character.][+\E?Escape character (ASCII octal 033).][+\0
+ operands are optional and ignored in this case.]
+ operands are specified, 
+ operands are specified, then 
+ operands are specified then the 
+ operands could not be unset or an error occurred.]}[+SEE ALSO?
+ operands did not have an alias definition, or an error occurred.]}[+SEE ALSO?
+ operands is a process id or process group id not known by the current shell environment, 
+ operands.][+SEE ALSO?
+ operands supports the full range of ANSI C formatting specifiers plus the following additional specifiers:]{[+%b?Each character in the 
+ operands than format specifiers, the 
+ operands than format specifiers, the format string is reprocessed from the beginning.  If there are fewer 
+ operands than format specifiers, then outputting will end at the first unneeded format specifier.][e?Unless 
+ operands than format specifiers, then string specifiers will be treated as if empty strings were supplied, numeric conversions will be treated as if 0 were supplied, and time conversions will be treated as if 
+ operands will continue to be processed.][+?In addition to the format specifier extensions, the following extensions of ANSI-C are permitted in format specifiers:]{[+-?The escape sequences 
+ operands will not be quoted.][+%B?Treat the argument as a variable name and output the value without converting it to a string.  This is most useful for variables of type 
+ operand.  This mask affects the file permission bits of subsequently created files.  
+ operand to standard output and appends a newline character.][+?Unless, the 
+ operand to standard output using 
+ operand was supplied.][+>0?An error occurred.]}[+SEE ALSO?
+ operand when the option is matched.  If there is no option character then a two or more digit number should be specified. This number will be returned as the value of the 
+operating-system
+OPERATING_SYSTEM
+.OP - - oneof
+opstring name [args...]
+/opt/ast/bin
+/opt/ast/bin/basename
+/opt/ast/bin/cat
+/opt/ast/bin/chmod
+/opt/ast/bin/cmp
+/opt/ast/bin/cut
+/opt/ast/bin/dirname
+/opt/ast/bin/getconf
+/opt/ast/bin/head
+/opt/ast/bin/logname
+/opt/ast/bin/mkdir
+/opt/ast/bin/sync
+/opt/ast/bin/uname
+/opt/ast/bin/wc
+optget: option not supported
+ optiion.][n!:split?Split multibyte characters selected by the 
+ optimzations and relies on the native 
+_opt_info_
+_opt_infop_
+ option, 
+ option.]
+[option]]
+- /#option/2d
+/#option/2d
+/#option/3d
+optional
+ optionally specifies a number to be returned in the 
+ option below.	Unsupported option values are listed as 
+ option.  By default, lines with no delimiters will be passsed in untouched.][D:line-delimeter|output-delimiter]:[ldelim?The line delimiter character for the 
+ option character prefix is optional (supports obsolete 
+ option.][G?Causes 
+ option. If the library contains a function named 
+/#option/init
+ option is not specified), the resulting lines will be entered at the end of the history list and then reexecuted by the current shell.  The 
+ option is on whenever the real and effective user id is not equal or the real and effective group id is not equal.  User profiles are not processed when 
+ option is present, or there are no 
+ option is set to 
+ option is specified and there are more 
+ option is specified.][+?A numeric mode is from one to four octal digits (0-7), derived by adding up the bits with values 4, 2, and 1. Any omitted digits are assumed to be leading zeros. The first digit selects the set user ID (4) and set group ID (2) and save text image (1) attributes. The second digit selects permissions for the user who owns the file: read (4), write (2), and execute (1); the third selects permissionsfor other users in the file's group, with the same values; and the fourth for other users not in the file's group, with the same values.][+?For symbolic links, by default, 
+ option is specified, each 
+ option is specified.][+?If there are more variables than fields, the remaining variables are set to empty strings.  If there are fewer variables than fields, the leftover fields and their intervening separators are assigned to the last variable.  If no 
+ option is specified, initial bytes of the corresponding file are skipped before beginning the compare. The skip values are in bytes or can have a suffix of 
+ option is specified, the first 
+ option.][l?List the commands rather than editing and reexecuting them.][N]#[num?Start at 
+ option.][q?Quiet mode. Returns 0 if all arguments are built-ins, functions, or are programs found on the path.][v?For each name you specify, the shell displays a line that indicates if that name is one of the following:]{[+?Reserved word][+?Alias][+?Built-in][+?Undefined function][+?Function][+?Tracked alias][+?Program]}
+ option.][R|r:reclen]#[reclen?If 
+ options, 
+--??options
+?options
+ options are mutually exclusive.  If the 
+ options are specified, change notifications are written to standard output using the format, 
+* options are the same for all 
+options available to all 
+ options can be specified to change the mode of the link. When traversing directories with 
+ options cannot be specified.][n]#[signum?Specify a signal number to send.  Signal numbers are not portable across platforms, except for the following:]{[+0?No signal][+1?
+ options has been specified, the positional parameters are replaced by the list of 
+ options.  If any additional 
+ options.][+?If no 
+ options in help messages.][+n?Associate -
+ options processed successfully.][+>0?An error occurred.]}[+SEE ALSO?
+ option.][s:suppress|only-delimited?Suppress lines with no delimiter characters, when used with the 
+ options with the first option with numeric arguments.][+o?The 
+  option, the 
+ option to view all standard prefixes, including	local additions. The standard prefixes available on all systems	are:]:[RE]{		[+AES]		[+AST]		[+C]		[+GNU]		[+POSIX]		[+SVID]		[+XBS5]		[+XOPEN]		[+XPG]}[t:table?Display the internal table that contains the name, standard,	standard section, and system call symbol prefix for each variable.][w:writable?Display the named 
+ option was specified and all the specified directories now exist.][+>0?An error occurred.]}[+SEE ALSO?
+optstring
+ or an error occurred.]}[+SEE ALSO?
+, or if 
+, or if the first component is 
+, or if the two operand form is used, the new value of 
+\(...\) or (...) imbalance
+\{...\} or {...} imbalance
+ or the 
+ or the current	directory if 
+ or the positional parameters if 
+ or until a 
+OS_PROVIDER
+OSREL_MAJ
+OSREL_MIN
+OSREL_PATCH
+OS_VERSION
+ otherwise. =
+.  Otherwise, 
+. Otherwise 
+. Otherwise if the variable already exists, it will first be unset.][E]#?[n:=10?Floating point number represented in scientific notation. 
+.  Otherwise, it is ignored.][S?Used with a type definition to indicate that the variable is shared by each instance of the type.  When used inside a function defined with the 
+.  Otherwise, it is the exit status of the command defined by the 
+.  Otherwise, it will be one of the following:]{[+0?
+ otherwise.][t?Equivalent to 
+.  Otherwise, the exit status is the exit status of preceding command.][+SEE ALSO?
+.  Otherwise, the exit status is the exit status of preceding command.  When invoked inside a trap, the preceding command means the command that invoked the trap.][+SEE ALSO?
+out of buffer space
+out of memory
+ -- out of range
+[ out of space ]
+[* out of space *]
+OUTPUT FILES
+ output format. 
+ output in the 
+p;%..64d;f;%..64d;%d;%d;%c;%d
+p;%..64d;f;%..64d;%d;%d;t;
+p;%..64d;p;%..64d;%d;%d;c;
+p;%..64d;p;%..64d;%d;%d;d;
+p;%..64d;p;%..64d;%d;%d;e;
+p;%..64d;v;%..64d;%d;%d;s;
+P89T$,u&
+PAGESIZE
+PAGE_SIZE
+paraguay
+ parameter 
+ parameter.][B?Enable {...} group expansion. On by default.][C?Prevents existing regular files from being overwritten using the 
+ - parse utility options][+DESCRIPTION?The 
+PASS_MAX
+PATH_ATTRIBUTES
+pathconf
+PATH_LEADING_SLASHES
+PATH_MAX
+pathname
+[pathname ...]
+PATH_RESOLVE
+pathsearch
+pathstat
+PBS_ACCOUNTING
+PBS_CHECKPOINT
+PBS_LOCATE
+PBS_MESSAGE
+PBS_TRACK
+.][p?Causes the output to be in a form of 
+.][p?Causes the output to be in the form of 
+-pc?d?b?-Cl?sDw?
+permission denied
+physical
+PHYS_PAGES
+PII_INTERNET
+PII_INTERNET_DGRAM
+PII_INTERNET_STREAM
+PII_OSI_CLTS
+PII_OSI_COTS
+PII_OSI_M
+PII_SOCKET
+PIPE_BUF
+pipe buffer size
+pipefail
+.][+pipefail?A pipeline will not complete until all components of the pipeline have completed, and the exit status of the pipeline will be the value of the last command to exit with non-zero exit status, or will be zero if all commands return zero exit status.][+privileged?Equivalent to 
+ places the given 
+ places the option argument in the shell variable 
+PLATFORM
++PLUGIN?
+plugin_version
+plugin version %lu older than caller %lu
+plugin_version() not found
+Polling alarm
+ portion consists of one or more of the following characters:]{[++?Cause the permission selected to be added to the existing permissions. | is equivalent to +.][+-?Cause the permission selected to be removed to the existing permissions.][+=?Cause the permission to be set to the given permissions.][+&?Cause the permission selected to be 
+ portion consists of zero or more of the following letters:]{[+r?Read permission.][+s?Setuid when 
+ portion omitted are subject to 
+portugal
+portuguese
+posixfuncall
+POSIXLY_CORRECT
+posix_memalign
+Power fail
+.][p:parents?Create any missing intermediate pathname components. For each dir operand that does not name an existing directory, effects equivalent to those caused by the following command shall occur: 
+.]}[p?Privileged mode.  Disabling 
+precision
+ prefix and are case insensitive.  
+ prefix is optional.  Signals that were ignored on entry to a noninteractive shell cannot trapped or reset although doing so will not report an error.  The use of signal numbers other than 
+PREFORMAT
+ prevents the current shell from sending a 
+PREVIOUS
+; Previous command 
+print cd "$PWD"
+print -f
+print .sh.dollar=$$
+print umask $(umask)
+print -u$%s j %d $!
+"; print -u$%s x %d $1 $(times); exit $1' 0 HUP INT QUIT TERM%s
+PRIORITIZED_IO
+PRIORITY_SCHEDULING
+privileged
+process already exists
+ - process command history list][+DESCRIPTION?
+processor
+process size
+_proc_info_
+PROC_OPTIONS
+PROC_RSRC_MGR
+/proc/self/exe
+/proc/version
+.profile
+Profiling time alarm
+proprietary
+PROTOCOL FAMILIES
+PROTOCOLS
+PTHREAD_DESTRUCTOR_ITERATIONS
+PTHREAD_KEYS_MAX
+PTHREAD_STACK_MIN
+PTHREAD_THREADS_MAX
+PTRDIFF_MAX
+PTRDIFF_MIN
+PUBLIC FILES AND TABLES
+puerto-rico
+PUUUUUUUUUUUUUUUU
+.][p?Write to the current co-process instead of standard output.][r?Do not process 
+QBCDGHRSTWVXcgq
+.]}[+%q?Output 
+ quoted in a manner that it can be read in by the shell to get back the same string.  However, empty strings resulting from missing 
+QUUUWUUUUUUU
+ rather than running 
+ rather than the first.][f?Do not check for functions.][p?Do not check to see if 
+RAW_SOCKETS
+__read_chk
+readdir64
+READER_WRITER_LOCKS
+readlink
+readonly
+ reads a line from standard input and breaks it into fields using the characters in value of the 
+ reads from standard input and no filename is written to standard output.  The start of the file is defined as the current offset.][l:lines?List the line counts.][w:words?List the word counts.][c:bytes|chars:chars?List the byte counts.][m|C:multibyte-chars?List the character counts.][q:quiet?Suppress invalid multibyte character warnings.][L:longest-line|max-line-length?List the longest line length; the newline,if any, is not counted in the length.][N!:utf8?For 
+ reads one or more input files and, by default, for each file writes a line containing the number of newlines, 
+real	%2lR
+REALTIME
+REALTIME_SIGNALS
+REALTIME_THREADS
+REC_INCR_XFER_SIZE
+REC_MAX_XFER_SIZE
+REC_MIN_XFER_SIZE
+re component count overflow
+REC_XFER_ALIGN
+redirect
+redirection failed
+ redirection operator.  The 
+ redirection overrides this 
+RE_DUP_MAX
+REENTRANT_FUNCTIONS
+ references.  
+ refers to a file, the 
+ refers to a function and the only valid options are 
+ refers to a function defined with the 
+ refers to a function name and the shell will unset the function definition.][v?
+?Refers to a job whose name begins with 
+?Refers to a job whose name contains 
+?refers to all jobs in background pool named 
+ refers to a process group id.][+
+ refers to a process id.][+-
+ refers to a variable name and the shell will unset it and remove it from the environment.  This is the default behavior.]
+?refers to job 
+ %%?Refers to the current job.][+%-?Refers to the previous job.]}
+ %%?Refers to the current job.][+%-?Refers to the previous job.]}[+?If one ore more 
+ %%?Refers to the current job.][+%-?Refers to the previous job.]}[+?If the signal is not specified with either the 
+ %%?Refers to the current job.][+%-?Refers to the previous job.]}[l?
+ refers to variable that is a reference, the variable 
+ refer to a job number.][+%
+regerror
+REGEX_VERSION
+region is locked
+_reg_state
+regular expression: %s
+regular expression: %s: %s
+RELATIONSHIP;%lld;%d
+ relative executable file path for 
+ relative readable file path for 
+ relative regular file path for 
+ relative to each directory named in the colon separated list of directories defined by 
+remainder
+remainderl
+ removed if it exists, is printed on a separate line on the standard output.]:[suffix]
+ removes all leading directory components from the file name defined by 
+ removes the definition of each named alias from the current shell execution environment, or all aliases if 
+.][r?Enables readonly.  Once enabled, the value cannot be changed or unset.][a?index array.  Each 
+.][r?Enables readonly.  Once enabled, the value cannot be changed or unset.][a]:?[type?Indexed array. Each 
+ reports the termination status of a job, the shell removes the jobs from the list of known jobs in the current shell environment.][+?Each 
+.]:[RE][p:portable?Display the named 
+ represents the arithmetic base from 2 to 64.][l?Without 
+ reserved word, and 
+ reserved word syntax, then any 
+ reserved word, the specified variables will have function static scope.  Otherwise, the variable is unset prior to processing the assignment list.]
+ reserved word, the specified variables will have function static scope.  Otherwise, the variable is unset prior to processing the assignment list.][+DETAILS]
+ reserved word, the specified variables will have function static scope.  Otherwise, the variable is unset prior to processing the assignment list.][T]:?[tname?
+ reserved word, the trap is executed in the caller's environment when the function returns and the trap action is restored to the value it had when it called the function.][+0?Same as EXIT.][+DEBUG?Executed before each simple command is executed but after the arguments are expanded.][+ERR?Executed whenever 
+ resets each 
+resize error
+RESOURCE_LIMITS
+ restores the effective user and group ids to their values when the shell was invoked.  The 
+restricted
+:restricted
+restricted name
+		return 0
+	return 0
+		return $_coshell_state
+ returned by 
+ returns with a non-zero exit status.][A?Unset 
+Reverting to old tty driver...
+rhaeto-romance
+romanian
+RPC SERVICES LIBRARY
+-rreadonly
+.][r:relative?Print the 
+-R requires scriptname
+-Rrightjust
+RTSIG_MAX
+ Running
+r [varname seconds]
+==> %s <==
+ %-.*s='
+%s %08lu %s
+S?A case insensitive ISO 8601 duration except that 
+s.  A first 
+%s: alias not found
+%s: Ambiguous
+s, and all of them have terminated or were not known by the invoking shell, the exit status of 
+s, and bytes contained in each file followed by the file name to standard output in that order.  A 
+s and the standard input and standard error are attached to a terminal, the shell is considered to be interactive.][+?The 
+S?An ISO 8601 duration where at least one of the duration parts must be specified.][+P
+sanskrit
+s are specified, not even the end of options argument 
+s are specified then all the current trap settings are written to standard output.][p?Causes the current traps to be output in a format that can be processed as input to the shell to recreate the current traps.]
+s are specified then the names and values of all aliases are written to standard output.  Otherwise, for each 
+s are specified then the names and values of all exported variables are written to standard output.][+?
+s are specified then the names and values of all readonly variables are written to standard output.][+?
+s are specified then the names and values of all variables of this type are written to standard output.][+?
+s are specified then variables that have the specified options are displayed.  If the first option is specified with a leading 
+s are specified, these become the positional parameters for the duration of the function or script and are restored upon completion.]
+s are specified, they will replace the positional parameters.][s?Sort the positional parameters.][A]:[name?Assign the arguments sequentially to the array named by 
+%s: Arguments must be %%job, process ids, or job pool names
+%s: arithmetic syntax error
+%s: assignment requires lvalue
+Saturday
+saudi-arabia
+SAVED_IDS
+%s: bad file unit number
+%s: bad format
+%s: bad number
+%s: bad option(s)
+%s: bad substitution
+%s: bad trap
+%s: bad word specifier
+(( %s ))%c
+@(%s)*%c
+%s: cannot allocate service pipe
+%s: cannot be an array
+%s: cannot change mode
+%s: cannot change mode from %s to %s
+%s: cannot connect to %s service
+%s: cannot create
+%s: cannot create intermediate directory
+%s: cannot execute
+%s: cannot open
+%s: cannot open job %d serialized output
+%s: cannot read directory
+%s: cannot search directory
+%s: cannot set host name
+%s: cannot set readonly symbol
+%s: cannot set value
+%s: cannot stat
+SCHAR_MAX
+SCHAR_MIN
+scheduling priority
+%s: compound assignment requires sub-variable name
+scots-gaelic
+%s[%d]%c
+(%s,%d,%d)
+(%s,%d,%d)%s
+%s: defined as a static function in type %s and cannot be redefined
+%s: directory causes cycle
+%s: directory created
+%s: disabled in profile shell
+%s: divide by zero
+%s: dlopen failed: %s
+s does not exist.]}[+SEE ALSO?
+%s: domain exception
+ searches for 
+s|ebcdic?(-)s|siemens|posix-bc
+??????SECTION
+SECTION 
+ section.]}[+?A leading : character in 
+section not found
+ section number, 
+SECURITY_CLASS
+[+SEE ALSO?
+SEE ALSO
+SEMAPHORES
+SEM_NSEMS_MAX
+SEM_VALUE_MAX
+ sends a signal to one or more processes specified by 
+separate
+ separated fields are a type name and zero or more of the special attribute words 
+September
+ sequences in each 
+serbo-croatian
+service %s:%s
+set %co %s
+				set "" "$@" "$_coshell_arg"
+		set "$@" "$_coshell_stop"
+set --default
+set -f;_2d
+sethostname
+setitimer
+setlocale
+ setlocale
+setmntent
+set +o bgnice -o monitor
+setregid
+setreuid
+setrlimit
+, sets character mapping to 
+		"")	set "set -x;" "$@" ;;
+ sets or displays resource limits.  These limits apply to the current process and to each child process created after the resource limit has been set.  If 
+ sets or unsets options and positional parameters.  Options that are specified with a 
+ sets the effective user id to the real user id, and the effective group id to the real group id.  Enabling 
+ sets the export attribute on each of the variables specified by 
+ sets the file creation mask of the current shell execution environment to the value specified by the 
+ sets the readonly attribute on each of the variables specified by 
+ sets the type on each of the variables specified by 
+ sets, unsets, or displays attributes of variables as specified with the options.  If the first option is specified with a 
+setswana
+ - set the type of variables to 
+		"")	set -x ;;
+%s: event not found
+%s: exec error [%d]
+%s: ':' expected for '?' operator
+SF_BUFSIZE
+_Sfextern
+%s: file already exists
+%s found at k=%d
+sfreserve
+sfstderr
+sfstdout
+_Sftable
+%s: function has wrong number of arguments
+%s: function not defined
+%s: global reference cannot refer to local variable
+SHARED_MEMORY_OBJECTS
+share/lib/locale/%l/%C/%N
+share/locale/%l/%C/%N
+*/(sh|*[!cC]sh)*([[:digit:]])?(-+([.[:alnum:]]))?(.exe)
+.sh.command
+.sh.dollar
+.sh.edchar
+.sh.edcol
+.sh.edmode
+.sh.edtext
+ - Shell, the standard command language interpreter][+DESCRIPTION?
+shell will timeout in 60 seconds due to inactivity
+.sh.file
+/.sh_history
+			shift
+				shift
+.sh.level
+.sh.lineno
+.sh.match
+.sh.math
+.sh.math.
+.sh.math.%s
+.sh.math.%.*s%c
+.sh.name
+shopt -%c %s
+shopt -s
+ should be called before halting the system. Most systems provide graceful shutdown procedures that include 
+ should not contain an 
+.][+showme?Simple commands preceded by a 
+.sh.pool
+[[ ${.sh} == *pool* ]] && .sh.pool.files=(
+SHRT_MAX
+SHRT_MIN
+.sh.stats
+.sh.stats.%s
+.sh.subscript
+.sh.subscript=$(tput cuu1 2>/dev/null)
+.sh.subshell
+.sh.tilde
+.sh.type
+shutdown
+.sh.value
+.sh.version
+%s: %I*d: positive numeric option argument expected
+siemens posix-bc ebcdic
+s. If the first option is specified with a 
+s if they arise. Otherwise, the argument 
+sigaction
+sigaddset
+SIG_ATOMIC_MAX
+SIG_ATOMIC_MIN
+sigemptyset
+sigismember
+Signal %d
+<signal.h>
+ signal is received. 
+ signal is used.][+?If 
+signal queue size
+ signal to each of the given 
+ signal to start each running.][+?If 
+ signal to start them running.][+?If 
+ signal was received.][+>0?An error occurred.]}[+SEE ALSO?
+__signbit
+	signbit
+__signbitl
+ sign can precede 
+sigpending
+sigprocmask
+SIGQUEUE_MAX
+SIGRT_MAX
+SIGRTMAX-%d
+SIGRT_MIN
+SIGRTMIN+%d
+--silent
+simplecmds
+.][+?Since 
+singapore
+singhalese
+%s: interpreter not found
+s into the background and sends them a 
+s into the foreground in sequence and sends them a 
+%s: invalid alias name
+%s: invalid append to associative array
+%s: invalid character constant
+%s: invalid discipline function
+%s: invalid floating point operation
+%s: invalid function name
+%s: invalid mode
+%s: invalid name
+%s: invalid regular expression
+%s: invalid seek offset
+%s: invalid self reference
+%s: invalid shell pattern
+%s: invalid use of :
+%s:  invalid value %s
+%s: invalid variable name
+%s is an alias for 
+%s is an exported alias for 
+%s: is a required element of %s
+%.*s: is not an element of %s
+%s: is not an identifier
+s is omitted, then 
+%s: is read only
+s, it will be invoked multiple times with a subset of the arguments on each invocation.  Arguments that occur prior to the first word that expand to multiple arguments and arguments that occur after the last word that expands to multiple arguments will be passed on each invocation. The exit status will be the maximum invocation exit status.][V?Equivalent to 
+SIZE_MAX
+ sjis_mbtowc
+%s/.kshrc
+%s: label not implemented
+%s: limit exceeded
+slovakia
+slovenia
+slovenian
+SLVM_MAXNODES
+%s missing
+%s: mode changed to %0.4o (%s)
+%s: more tokens expected
+%s must name an array  containing at least two elements
+%s: no parent
+%s: no reference name
+%s: no such variable
+%s: not a known type name
+%s: not an enumeration type
+%s: not a type
+%s: not found
+%s: not implemented
+%s: not seekable
+-snrvmpio
+-snrvmpiohdR
+socket buffer size
+Socket interrupt
+socketpair
+SOCK_MAXBUF
+SOFTPOWER
+%s: only simple variables can be exported
+s option requires f option
+south-africa
+south-korea
+%s: out of space
+%s: overflow exception
+%s: parameter not set
+%s: parameter null
+%s: path expected
+%s: path not expected
+%s: pattern seek requires read access
+ specially when processing the input line.][s?Save a copy of the input as an entry in the shell history file.][u]#[fd:=0?Read from file descriptor number 
+ specific extensions and the native system calls;	invalid options and/or names not supported by 
+ specified, 
+ specified, the basename of the pathname determines the name of the built-in. For each basename, the shell looks for a C level function in the current shell whose name is determined by prepending 
+ specifier to cause the output to be written in units of 
+ specifier when no base is specified cause the output to be written in units of 
+]] specifies a section 
+]] specifies entries for the 
+ specifies microseconds, and 
+ specifies minutes and after specifies milliseconds, 
+ specifies months, 
+ specifies nanoseconds.][+date/time?Sleep until the 
+ specifies that 
+ specifies that arguments beginning with + will also be considered options.][+?The end of options occurs when:]{[+1.?The special argument 
+ specifies that the value will be displayed as an unsigned integer.][x?Puts each 
+ specifies the 
+ specifies the editor to use to edit the history command.   A value of 
+ specifies the interface version, currently 
+ specifies the number of 
+ specifies the number of significant figures when the value is expanded.][F]#?[n:=10?Floating point.  
+ specifies the number of significant figures when the value is expanded.][h]:[string?Used within a type definition to provide a help string  for variable 
+SPIN_LOCKS
+SPORADIC_SERVER
+%s: read error
+ .]}[s?Read the commands from standard input.  The positional parameters will be initialized from 
+%s: recursion too deep
+%s: reference variable cannot be an array
+s refers to a function.][i]#?[base:=10?An integer. 
+%s: relative path not found
+%s: restricted
+SRPC_DOMAIN
+[-][:%s?%s]
+[%-.*s %s] 
+%-.*s/%s
+%-*.*s/%s
+%s:%*.*s
+	[+%s?%s.
+	[+%s?%s]
+%s%s=%05d${!%s-$$}
+%s.%.*s%c
+: "%s", %s %d
+("%s", %s %d) 
+%*s %*s %d %2s %4d %5s %s
+%*s %*s %d %2s %4d %6s 
+	[+%s?%s, default value is %s.
+%s %s differ: char %I*d, line %I*u
+%s: %s error
+%s: service not responding
+-Sshared
+]}[s]:[signame?Specify a signal name to send.  The signal names are derived from their names in 
+%s: singularity exception
+%s: %s: invalid skip
+SSIZE_MAX
+%s: skip1:skip2 expected
+%s%s: no previous substitution
+SS_REPL_MAX
+ %s%s/%s
+%-.*s%s%-.*s
+%s (%ss)
+%s %s - %s
+%s[%s].%s
+%s %s%s%c
+(%s: "%s", %s %d) 
+%s%sset -%s%s
+(%s,%s,%s,%s)
+%s %s %s/%s
+%s%s%s.%s
+%s%s%s%s
+%s%s@(?([-.])%s%s|%s%s)
+%*.*s%s%s%s[%s%s%s]
+%s%s@(%s([-.])%s%s|%s.%s)
+	%s%s%s%s[%s%s%s%s%s]
+%s%s: substitution failed
+	[+%s?:static:%s]
+%s: subscript out of range
+.][s:system|sysname|kernel-name?The detailed kernel name. This is the default.][n:nodename?The hostname or nodename.][r:release|kernel-release?The kernel release level.][v:version|kernel-version?The kernel version level.][m:machine?The name of the hardware type the system is running on.][p:processor?The name of the processor instruction set architecture.][i:implementation|platform|hardware-platform?The hardware implementation;	this is 
+__stack_chk_fail
+stack size
+_Stak_data
+standard
+--standard
+STANDARD I/O FUNCTIONS
+ starting at subscript 0 rather than to the positional parameters.]
+		*)	state=arg ;;
+stat of %s failed
+s that were started by the current shell environment on standard output.  The information contains the job number enclosed in [...]], the status, and the command line that started the job.][+?If 
+%s<TITLE>%s man document</TITLE>
+s together, separating each with a space.  The resulting string is then taken as input to the shell and evaluated in the current environment.  Note that command words are expanded twice; once to construct 
+Stopped process continued
+Stopped (SIGSTOP)
+Stopped (SIGTTIN)
+Stopped (SIGTTOU)
+storage allocator out of space on %lu byte request ( region %lu segments %lu busy %lu:%lu:%lu free %lu:%lu:%lu )
+strcasecmp
+__strcat_chk
+__strcpy_chk
+STREAM_MAX
+strerror
+:[string]
+[string ...]
+string ...
+ string consists of alpha-numeric characters, the special characters +, -, ?, :, and <space>, or character groups enclosed in [...]].  Character groups may be nested in {...}. Outside of a [...]] group, a single new-line followed by zero or more blanks is ignored.  One or more blank lines separate the options from the command argument synopsis.][+?Each [...]] group consists of an optional label, optional attributes separated by :, and an optional description string following ?.  The characters from the ? to the end of the next ]] are ignored for option parsing and short usage messages.  They are used for generating verbose help or man pages. The : character may not appear in the label. The ? character must be specified as ?? in the label and the ]] character must be specified as ]]]] in the description string. Text between two \b (backspace) characters indicates that the text should be emboldened when displayed. Text between two \a (bell) characters indicates that the text should be emphasized or italicized when displayed. Text between two \v (vertical tab) characters indicates that the text should displayed in a fixed width font. Text between two \f (formfeed) characters will be replaced by the output from the shell function whose name is that of the enclosed text.][+?All output from this interface is written to the standard error.][+?There are several group types:]{[+1.?A group of the form [-[
+ string is reprocessed from the beginning.  If there are fewer 
+ string [suffix]
+strtoull
+stuvwxyz
+~stuvwxyz
+STUVWXYZ
+-style history expansion similar to 
+ style. Otherwise print 
+%s: type cannot be redefined
+%s: type definition requires compound assignment
+subsecond
+sudanese
+%s: unable to create namespace
+%s: unbalanced parenthesis
+%s unknown base
+%s: unknown function
+%s: unknown locale
+%s: unknown mapping name
+%s: unknown name
+%s: unknown name -- no native getconf(1) to defer to
+%s: unknown namespace
+%s: unknown operator
+%s: unknown signal name
+%.*s: unknown type
+%s: unknown type
+, suppressing the shell function lookup that normally occurs.  In addition, if 
+ suspends execution for at least the time specified by 
+swap size
+s were not found by the shell.][+>1?An error occurred.]}[+SEE ALSO?
+s were successfully unset.][+>0?One or more 
+s when the current shell terminates a login session.][+?If 
+s will be used to initialize 
+s will be used to initialize the positional parmaeters.][+?Any option can use a 
+Switching to new tty driver...
+switzerland
+%s: would cause loop
+SWU}}UUUUU]U
+SWU}}UUUUU]U]_
+SYMLINK_MAX
+SYMLINKS
+SYMLOOP_MAX
+SYNCHRONIZED_IO
+SYNOPSIS
+syntax error at line %d: duplicate label %s
+syntax error at line %d: invalid reference list
+syntax error at line %d: `%s' %s
+syntax error: `%s' %s
+ syntax of 
+ syntax so that there is no scoping.  Otherwise, commands from the file defined by 
+ syntax, the function executes in the current environment as if it had been defined with the 
+synthesis
+sys	%2lS
+SYSPID_MAX
+SYSTEM CALLS
+SYSTEM V LIBRARY
+T$03D$,3T$(	
+)T$0;l$0
+T$<3D$H3T$L	
+t$4;L$4v
+T$83T$X	
+T$89T$Hr
+T$89T$<r
+t:9l$,~4
+t9;l$Lt3
+t`9|$,s,
+T$<9T$8sK
+T$,9T$(s
+t?9T$ tS
+T$`9T$\tt
+T$(9T$,u
+T$$9T$ u
+T$@9T$xws
+tC9D$X|=
+tcgetattr
+tcgetpgrp
+tcsetattr
+tcsetpgrp
+T$d3D$03T$4	
+t&;D$4t 
+?[T?Enable implementation specific test code defined by mask.]#[mask]
+Terminated
+??????TEST
+t$<f)t$,
+th;|$8~,
+t$H9|$Ds(
+T$H9L$<w
+T$h9T$8s
+thailand
+ that are opened this way so that they will be closed when another program is invoked.][+?Because 
+ that can be used a separate shell script browser.  The -R option requires a script to be specified as the first operand.]
+ that can only store any one of the values in the indexed array variable 
+ that does not contains any 
+ that is specified, and 
+ that you assign a value in the current shell environment.][b?The shell writes a message to standard error as soon it detects that a background job completes rather than waiting until the next prompt.][e?A simple command that has an non-zero exit status will cause the shell to exit unless the simple command is:]{[++?contained in an 
+.][+-?The 
+?The 8-bit character whose ASCII code is the 1-, 2-, or 3-digit octal number 
+. The call	prefixes are:]:[RE]{		[+CS?
+. The configuration parameter 
+ [the current command]].
+.  The default is the 
+The default value is
+, the directory will be changed to the last directory visited.  Otherwise, if the 
+, the directory will be changed to this directory.  If directory is 
+.][+-?The escape sequence 
+.][+-?The format modifier flag 
+.  The last is a positive number followed by a hyphen (
+. The latest version is assumed if 
+, then a local variable statically scoped to  that function will be created.][+?Not all option combinations are possible.  For example, the numeric options 
+-th enclosing loop if 
+then	eval 'ignore() {
+, then file descriptor 
+ then list the 
+		then	set -x
+, then the 
+ then the attributes are set for each of the given 
+, then the behavior will be as if 
+, then the built-in is bound to this pathname. A built-in bound to a pathname will only be executed if 
+,then the first argument is processed as an option argument.][+3?If first operand is 
+ then the name and value of each variable is written to standard output.  Otherwise, only the names are written.  If no options are specified or just 
+ then the option character sense is the inverse of the longname sense. For options that do not take values 
+, then the specified attributes are unset.  If 
+ then the the 
+, then the value will be the numeric value in the underlying code set of the character following the 
+. The option argument specification may be followed by a list of option value descriptions enclosed in braces. A long option that takes an argument is specified as 
+ the options will be written in a format that can be reinput to the shell to restore the settings. This option can be repeated to enable/disable multiple options. The value of 
+The option value may be omitted.
+.  The orignal variable will be unset.  Cannot be used with any other options.][n?Name reference.  The value is the name of a variable that 
+, the positional parameters are unchanged.  Otherwise, unless the 
+, the result is True if the next three operands are a valid binary expression that is False.]}[If any 
+, the result is True if the second and third operand evaluated as a unary expression is False.  Otherwise, the three operands are evaluaged as one of the  binary expressions listed below.][+4?If first operand is 
+, the result is True if the second operand an empty string.  Otherwise, it is evaluated as one of the unary expressions defined below.  If the unary operator is invalid and the second argument is 
+, these characters are removed. The characters not removed from 
+.  The second is a positive number preceded by a hyphen (
+.  These strings are needed for localization of the script to different locales.][E?Reads the file 
+, the string 
+.  The the values are 
+.  The value of 
+(), this function will be invoked with argument 
+.  This normally terminates the processes unless the signal is being caught or ignored.][+?Each 
+.  This will be true if 
+THREAD_ATTR_STACKADDR
+THREAD_ATTR_STACKSIZE
+THREAD_CPUTIME
+THREAD_DESTRUCTOR_ITERATIONS
+THREAD_KEYS_MAX
+THREAD_PRIO_INHERIT
+THREAD_PRIO_PROTECT
+THREAD_PRIORITY_SCHEDULING
+THREAD_PROCESS_SHARED
+THREAD_SAFE_FUNCTIONS
+THREADS_MAX
+THREAD_SPORADIC_SERVER
+THREADS_PRIO_CEILING
+THREADS_PRIO_INHERIT
+THREAD_STACK_MIN
+THREAD_THREADS_MAX
+.TH %s %s%s
+Thursday
+tigrinya
+{ { time;} 2>&1;}
+timed out waiting for input
+TIMEFORMAT
+TIMEOUTS
+TIMER_MAX
+T_IOV_MAX
+t	;l$ tQ
+_tm_datap_
+_tm_infop_
+TM_OPTIONS
+/tmp/euidXXXXXXXXXX
+ to be executed.][a:all?Call the native 
+ to be inserted before each new-line.][R:regress?Regression test defaults: 
+ to be prepended to the value.][+-?The 
+ to control the output format.][+?The 
+ to disable.][R]:[file?Do not execute the script, but create a cross reference database in 
+ to disable the corresponding option.][c?Read the commands from the first 
+ to disconnect the co-process so that another can be created.][r?Do not treat 
+ to enhance performance since the shell implicitly uses the exec mechanism internally whenever possible.][+?If no operands are specified, 
+ to exit with a non-zero exit status, but does not terminate the invoking shell.][+?If no 
+ to indicate no limit for that resource.][+?If you do not specify 
+tomorrow
+ [top] [base]
+ to restrict integer size to short.][t?When used with 
+ to satisfy a numeric format specifier, if the first character of 
+, to specify fixed sized fields.][f?Each of the options and 
+ to the built-in name. If 
+ to the complement of the current file creation mask.][+?If 
+ to the default value.  If 
+ to the last field, inclusive.  Elements in the 
+to turn off
+towctrans
+towlower
+ to work.][n:show?Show actions but do not change any file modes.][F:reference?Omit the 
+towupper
+tp==NULL
+tput clear
+Trace/BPT trap
+TRACE_EVENT_FILTER
+TRACE_EVENT_NAME_MAX
+TRACE_INHERIT
+TRACE_LOG
+TRACE_NAME_MAX
+TRACE_SYS_MAX
+TRACE_USER_EVENT_MAX
+trackall
+trailing \ in pattern
+translate
+translate locale=%s catalog=%s set=%d seq=%d "%s" => "%s"
+trap '' %d
+ trap is set it will be invoked.][+?If 
+trap 'set %s$?; trap "" 0; IFS="
+ trap set within the then function will be invoked in the context of the caller before the function returns.][+?If 
+trap -- %s %s
+ treats 
+ treats each of them as if it were a process that exited with status 127.]
+ treats this as a mode specification rather than as an option specification.][H:metaphysical?Follow symbolic links for command arguments; otherwise don't follow symbolic links when traversing directories.][L:logical|follow?Follow symbolic links when traversing directories.][P:physical|nofollow?Don't follow symbolic links when traversing directories.][R:recursive?Change the mode for files in subdirectories recursively.][c:changes?Describe only files whose permission actually change.][f:quiet|silent?Do not report files whose permissioins fail to change.][h:symlink?Change the mode of the symbolic links on systems that support this.][i:ignore-umask?Ignore the 
+trinidad&tobago
+?True if 
+?True if file descriptor number 
+?True if length of 
+?True if numerical value of 
+?True if the shell option 
+TRUSTEDBSD
+;t$ sS9|$(vM
+-ttagged
+<Ttb<tt^
+<ttk<_ux
+t$<?t <=t
+<]tt<[t8
+<:t)<|t%<?t!<]f
+tttttttttt~~~
+<-t`<+t\<[tX
+TTY_NAME_MAX
+<+t+<-u3
+T$x9T$dv
+T$x9T$dv#
+TYPED_MEMORY_OBJECTS
+typename
+	typeset argv state=exp
+typeset -C
+	typeset -f
+typeset -f .sh.pool.init && .sh.pool.init
+typeset -fu
+typeset -lE
+typeset -li
+typeset -n
+typeset -p
+typeset -T %s
+typeset -T %s=
+typeset -T %s.%s
+typeset -T %s.%s=
+typeset -xf ignore silent
+ typically specifies an SCCS or CVS identification string. Zero or more 
+__tzname
+TZNAME_MAX
+u6<_t2</t.<-t*<.f
+ uA<[tH<@td<$f
+UCHAR_MAX
+UCHAR_MIN
+ucs?(-)?(2)?(be)|utf-16?(be)
+ucs?(-)?(2)le|utf-16le
+UCS-%sLE
+u|ebcdic?(-)(u|mf)|microfocus
+UINT_MAX
+UIO_MAXIOV
+ukrainian
+uK;t$,uE
+ULLONG_MAX
+ULONG_MAX
+umask 0%o
+um|ume|utf?(-)7
+unallocated block
+unary op not preceded by re
+undefined
+unexpected
+united-kingdom
+united-kingdom|great-britain|england
+united-states|usa
+UNIVERSE
+ universe and 
+<unknown>
+*unknown*
+unknown error
+unknown option
+unknown option argument value
+unknown option or attribute
+ unless 
+unlimited
+unmatched
+unrecoverable internal error
+  unsets the variable, or function if 
+un|unicode|utf
+Use 'exit' to terminate this shell
+user	%2lU
+USER COMMANDS
+USER_LIMIT
+User signal 1
+User signal 2
+ uses standard input starting at the current location.][b:print-bytes?Print differing bytes as 3 digit octal values.][c:print-chars?Print differing bytes as follows: non-space printable characters as themselves; space and control characters as 
+.	Use the 
+ -- use them if possible.][+EXIT STATUS?]{[+0?
+USHRT_MAX
+/usr/bin/getconf
+/usr/bin/uname
+/usr/lib
+?(/usr)?(/local)/?([ls])bin/?([[:lower:]])sh?(.exe)
+/usr/sbin
+/usr/spool/cron/atjobs
+/usr/tmp
+ utf8_alpha
+ utf8_mblen
+ utf8_mbtowc
+ utf8_wctomb
+ utf8_wcwidth
+ utility.][+?
+ utility can be used to retrieve options and arguments from a list of arguments given by 
+ utility places the value of the next option in the shell variable specified by the 
+ utility was invoked with no operands and all processes known by the invoking process have terminated.][+127?
+utimensat
+-utoupper
+u$<_t <.t
+u%<_t!<.t
+.][u:unbuffer?The output is not delayed by buffering.][v:show-nonprinting|print-chars?Print characters as follows: space and printable characters as themselves; control characters as 
+-uunsigned
+UUU5QUUUUUU
+UUUUTUUUUUUUUUUUUUUUUUUUUUUUU
+}UUUUU]U]
+UUUUUUPUUUUUU
+_UUUUUuUU
+UUUUUUUU
+@UUUUUUUU
+UUUUUUUUU
+UUUUUUUUuU
+UUUUUUUUUU}
+UUUUUUUUUUUU
+UUUUUUUUUUUUU
+UUUUUUUUUUUUUU
+]UUUUuUUUUUUUUUU
+UUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUUUUU
+u]UUUUUUUUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUU_UUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+U]UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU=
+UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU]UUUU
+UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUiUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU_WUUUUUUUUUUUUUUUUUUUUUUUU
+UUUUUUUUUUUUU]UUU]UUU_UWUUUU_]U
+UUUUUUUWUUUUUUUUw
+UUUUUUWUU
+UUwwUUUUUUU
+UWUWw_WQ
+uY9T$$}c
+V6_ILP32_OFF32
+V6_ILP32_OFFBIG
+V6_LP64_OFF64
+V6_LPBIG_OFFBIG
+value expected
+ value is a space-separated		list of 
+value not expected
+ values from multiple passes.][+l?Display only 
+ values may be specified to control option parsing. The flags are:]{[++?Arguments beginning with + are considered options.][+c?Cache this 
+ variable as separators.  The escape character, 
+ variable is searched for the file containing commands.  In this case execute permission is not required for 
+ variable is unset.  The tracked aliases feature is now obsolete.][x?Ignored, this option is obsolete.]
+ variables and values in a form that	can be directly executed by 
+ variables are listed.][q:quote?"..." quote values.][r:readonly?Display the named 
+ variables are listed.][s:standard?Display variables with standard prefix that matches 
+ variables are	listed.][v:specification?Call the native 
+ variables	cannot be changed.][+?The current value for 
+ variables in 
+ variables may be set; 
+ variable will be used if set, or the 
+ variable will be used if set, otherwise, 
+[var?prompt] [var ...]
+;vdb;CIAO/ksh
+VDISABLE
+venezuela
+.][v?Equivalent to 
+--verbose
+.][+verbose?Equivalent to 
+version=
+VERSION_88
+VERSION_90
+VERSION_93
+version=%d
+versions
+.][+vi?Enables/disables 
+vietnamese
+Virtual time alarm
+VMALLOC_OPTIONS
+vmbusy() inside job_reap() -- should not happen
+Vmdcheap
+Vmdcsbrk
+_Vmextern
+Vmprofile
+Vmregion
+VUUUUUUUUUUUUUUUUUUUUUU
+*[Vv][Ii]*
+w6;|$ w#
+(wait $$; exit 0) 2>/dev/null || alias wait=:
+ waits until all of them have completed.][+?Each 
+W?An ISO 8601 duration specifying 
+ was found but could not be invoked.][+127?
+ was found by the shell.][+1?One or more 
+ was not specified and one or more 
+WCHAR_MAX
+WCHAR_MIN
+__wctomb_chk
+ wcwidth
+Wednesday
+ weeks.][+p
+ were enabled but not executed.][+trackall?Equivalent to 
+ were not specified and the command script corresponding to 
+ were not specified and the command script was found on 
+ were specified.][L?Handle each pathname component 
+ were specified.][L?The absolute pathname may contains symbolic link components.  This is the default.][P?The absolute pathname will not contain any symbolic link components.][+EXIT STATUS?]{[+0?Successful completion.][+>0?An error occurred.]}[+SEE ALSO?
+ were specified.  Otherwise, the behavior will be as if  
+ were supplied.][+?
+.  When an option requires or permits an option argument, 
+whence -v
+ when generating help. Used when combining 
+ when it is not relevant.	If 
+.]}[+?When performing conversions of 
+ when querying.][+?If no operands are specified then all known variables are written in	
+.]}[+?When the end of options is encountered, 
+ when the library is loaded. The 
+ when the option is set and 
+ when the option is unset.][+?The 
+.  When the option value 
+.  When the shell is invoked 
+.  When used with 
+. When used with 
+ when used with the 
+, where 
+ where the 
+ which allows additional options to be specified.]
+ which causes them to be in the environment of subsequently executed commands.  If 
+ which prevents their values from being changed.  If 
+), which represents all fields from 
+), which represents all fields from field 
+		while	:
+	while	:
+ will be a compound variable.  If 
+ will be created or redefined.][+?
+ will be output.  Otherwise, trailing 
+ will be output. Otherwise, trailing 
+ will be read and executed by the shell as if it were processed by 
+ will be searched for an executable with this name.  Any remaining 
+ will be set to 
+ will be set to the ? character, 
+ will be set to the : character and the shell variable 
+ will be set to the character found.  If an option argument is missing or has an invalid value, then 
+ will be set to the ? character.  The shell variable 
+ will be set to the option character found. Without the leading :, 
+ will be set to the previous value of 
+ will be set to this value.  If there is no file with this pathname, and this pathame does not contain a 
+ will be that of 
+  will be that of the last 
+ will be the pathname of the file containing commands and 
+ will be traced as if 
+ will be unset, and an error message will be written to standard error when errors are encountered.][+?A leading + character or a + following a leading : in 
+ will be unset rather than the variable it references.  Otherwise, is is equivalent to 
+ will be used.][e]:[editor?
+ will be written on a single line to the standard output.][a:all?All operands are treated as 
+ will be written to standard output.][+?If both 
+ will be written to standard output.  Otherwise, all characters following the last 
+ will converted to an associate array.  If a variable already exists, the current value will become index 
+ will converted to an associate array of type 
+ will converted to an index array of type 
+ will default to 
+ will display 
+ will fail.][+?When 
+ will generate the list of signals on the current platform.]
+ will return a non-zero exit status.]}[+SEE ALSO?
+ will turn off the 
+Window size change
+WINT_MAX
+WINT_MIN
+ with arguments given by 
+, with arguments of the pathname, the numeric mode, and the resulting permission bits as would be displayed by the 
+ with a suffix of one of 
+ with characters 
+ with default value 
+ with descriptive 
+ with enumeration type 
+ with no operands, waits until all jobs known to the invoking shell have terminated.  If one or more 
+ with optional 
+ without any options or arguments displays the names and values of all shell variables in the order of the collation sequence in the current locale.  The values are quoted so that they are suitable for reinput to the shell.][+?If no 
+ without the 
+WORD_BIT
+ would be interpreted by the shell in the current execution environment.][a?Displays all uses for each 
+ would cause the shell to exit.][+KEYBD?Executed when a key is entered from a terminal device.]}[+?Signal names are case insensitive and the 
+wQ9t$8rT
+writable
+write error
+ writes all three counts.  Options can specified so that only certain counts are written.  The options 
+ writes an absolute pathname of the current working directory to standard output.   An absolute pathname is a pathname that begins with 
+ writes a total count for all of the named files with 
+ writes each 
+ writes no output if the files are the same. By default, if the files differ, the byte and line number at which the first difference occurred are written to standard output. Bytes and lines are numbered beginning with 1.][+?If 
+ writes on standard output an absolute pathname, if any, corresponding to 
+ writes the list of signals to standard output.  Otherwise, 
+ writes the operating system name to	standard output. When options are specified, one or more	system characteristics are written to standard output, space	separated, on a single line. When more than one option is specified	the output is in the order specfied by the 
+ writes the users's login name to standard output.  The login name is the string that is returned by the 
+ writes the value of the file creation mask for the current process to standard output.][S?Causes the file creation mask to be written or treated as a symbolic value rather than an octal number.]
+write to %d failed
+ written instead of the file name.][+?By default, 
+WUUUUUUUU
+_WU]]UUUUU]UUU
+WUUUUUUUUUUUQ
+WUUUUUUUUUUUU
+WUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+_WU]]UUUUU]UUW
+WUWUUUUUUUUU
+.][+w?Write permission.][+x?Execute permission for files, search permission for directories.][+X?Same as 
+WWU]]UUUUU]UUW
+XCU_VERSION
+.][x:executable?Print the 
+-xexport
+-Xhexfloat
+ ...]].][x?If 
+xm9T$8ug
+X/Open ebcdic
+X/Open ibm ebcdic (not idempotent)
+		*x*)	set -
+__xstat64
+	*x*)	trap '	_coshell_status_=$?
+yE>alloc error
+yesterday
+%Y-%m-%d
+%Y-%m-%d %H:%M:%S
+%Y-%m-%d+%H:%M:%S
+%Y-%m-%d %H:%M:%S.%N
+%Y-%m-%d+%H:%M:%S.%N
+%Y-%m-%d %H:%M:%S.%N %z
+%Y-%m-%d+%H:%M:%S.%N%z
+you have mail in $_
+You have running jobs
+You have stopped jobs
+yugoslavia
+z\3x\3HX	
+~Z;D$(wH
+{zel#|67
+zero byte
+zho|chi|chs
+zimbabwe
+.][Z]#?[n?Zero fill.  If 
+-Zzerofill

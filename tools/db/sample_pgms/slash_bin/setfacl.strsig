@@ -1,0 +1,111 @@
+acl_add_perm
+acl_calc_mask
+acl_check
+acl_copy_entry
+acl_create_entry
+acl_delete_def_file
+acl_delete_entry
+acl_delete_perm
+acl_entries
+acl_equiv_mode
+acl_error
+acl_free
+acl_from_mode
+acl_get_entry
+acl_get_file
+acl_get_perm
+acl_get_permset
+acl_get_qualifier
+acl_get_tag_type
+acl_init
+acl_set_file
+acl_set_qualifier
+acl_set_tag_type
+acl_to_any_text
+bindtextdomain
+[-bknd] {-m|-M|-x|-X ... } file ...
+[-bkndRLP] { -m|-M|-x|-X ... } file ...
+-:bkndvhm:M:x:X:
+-:bkndvhm:M:x:X:RLP
+  -b, --remove-all        remove all extended ACL entries
+__bss_start
+closedir
+dcgettext
+  -d, --default           operations apply to the default ACL
+__errno_location
+__fprintf_chk
+getgrnam
+getopt_long
+getpagesize
+getpwnam
+getrlimit64
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+  -h, --help              this help text
+high_water_alloc
+_IO_stdin_used
+_Jv_RegisterClasses
+  -k, --remove-default    remove the default ACL
+libacl.so.1
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+  -L, --logical           logical walk, follow symbolic links
+__lxstat64
+      --mask              do recalculate the effective rights mask
+  -m, --modify=acl        modify the current ACL(s) of file(s)
+  -M, --modify-file=file  read ACL entries to modify from file
+modify-file
+next_line
+  -n, --no-mask           don't recalculate the effective rights mask
+num_dir_handles
+physical
+POSIXLY_CORRECT
+  -P, --physical          physical walk, do not follow symbolic links
+__printf_chk
+__rawmemchr
+readdir64
+recursive
+remove-all
+remove-default
+remove-file
+      --restore=file      restore ACLs (inverse of `getfacl -R')
+  -R, --recursive         recurse into subdirectories
+%s 2.2.51
+      --set=acl           set the ACL of file(s), replacing the current ACL
+set-file
+      --set-file=file     read ACL entries to set from file
+setlocale
+%s: No filename found in line %d of standard input, aborting
+%s: Option -%c incomplete
+%s: Option -%c: %s near character %d
+%s: %s: Cannot change mode: %s
+%s: %s: Cannot change owner/group: %s
+%s: %s in line %d of file %s
+%s: %s in line %d of standard input
+%s: %s: Malformed access ACL `%s': %s at entry %d
+%s: %s: Malformed default ACL `%s': %s at entry %d
+%s: %s: No filename found in line %d, aborting
+%s: %s: Only directories can have default ACLs
+%s: %s,%s
+%s: %s: %s
+%s %s -- set file access control lists
+%s: %s: %s in line %d
+%s: Standard input: %s
+__stack_chk_fail
+__strcpy_chk
+strerror
+      --test              test mode (ACLs are not modified)
+Try `%s --help' for more information.
+Usage: %s %s
+/usr/share/locale
+  -v, --version           print version and exit
+walk_tree
+__xpg_basename
+  -x, --remove=acl        remove entries from the ACL(s) of file(s)
+  -X, --remove-file=file  read ACL entries to remove from file
+__xstat64

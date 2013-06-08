@@ -1,0 +1,182 @@
+0123456789abcdef
+0 < n && n <= bytes_per_block
+0 <= strtol_base && strtol_base <= 36
+A:aBbcDdeFfHhIij:LlN:OoS:st:vw::Xx
+  -A, --address-radix=RADIX   decide how file offsets are printed
+Adding a z suffix to any type displays printable characters at the end of each
+address-radix
+All arguments to long options are mandatory for short options.
+  a          named character, ignoring high-order bit
+An OFFSET operand means -j OFFSET.  LABEL is the pseudo-address
+A NULL argv[0] was passed through an exec system call.
+  -a   same as -t a,  select named characters, ignoring high-order bit
+__assert_fail
+at first byte printed, incremented when dump is progressing.
+b 512, kB 1000, K 1024, MB 1000*1000, M 1024*1024,
+bEGKkMmPTYZ0
+bindtextdomain
+  -b   same as -t o1, select octal bytes
+bug-coreutils@gnu.org
+BYTES is hexadecimal with 0x or 0X prefix, and may have a multiplier suffix:
+cannot perform formatted output
+cannot skip past end of combined input
+  c          ASCII character or backslash escape
+compatibility mode supports at most one file
+concatenate them in the listed order to form the input.
+Copyright %s %d Free Software Foundation, Inc.
+  -c   same as -t c,  select ASCII characters or backslash escapes
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__cxa_atexit
+D$49D$0v^
+D$49D$0v[
+D$49D$0vW
+D$49D$0vX
++\$D9|$4r
++|$D9t$4r
+dcgettext
+D$D9D$@v~
+decode_format_string
+decode_one_format
+%%*.%d%s
+  -d   same as -t u2, select unsigned decimal 2-byte units
+  d[SIZE]    signed decimal, SIZE bytes per integer
+__errno_location
+extra operand %s
+For complete documentation, run: info coreutils '%s invocation'
+For OFFSET and LABEL, a 0x or 0X prefix indicates hexadecimal;
+for sizeof(double) or L for sizeof(long double).
+__fpending
+__fprintf_chk
+fputs_unlocked
+__freading
+fread_unlocked
+__fread_unlocked_chk
+  -f   same as -t fF, select floats
+fseeko64
+  f[SIZE]    floating point, SIZE bytes per integer
+fwrite_unlocked
+__fxstat64
+GB 1000*1000*1000, G 1024*1024*1024, and so on for T, P, E, Z, Y.
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+http://www.gnu.org/software/coreutils/
+If first and second call formats both apply, the second format is assumed
+if the last operand begins with + or (if there are 2 operands) a digit.
+implies 32.  By default, od uses -A o -t oS -w16.
+invalid character `%c' in type string %s
+invalid output address radix `%c'; it must be one character from [doxn]
+invalid %s%s argument `%s'
+invalid suffix in %s%s argument `%s'
+invalid type string %s
+invalid type string %s;
+_IO_stdin_used
+  -i   same as -t dI, select decimal ints
+iswprint
+Jim Meyering
+  -j, --skip-bytes=BYTES      skip BYTES input bytes first
+L$| D$P;
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+localeconv
+  -l   same as -t dL, select decimal longs
+memory exhausted
+n_bytes_read == bytes_per_block
+nl_langinfo
+no type may be specified when dumping strings
+  -N, --read-bytes=BYTES      limit dump to BYTES input bytes
+of FILE to standard output.  With more than one FILE argument,
+Option --string without a number implies 3; option --width without a number
+  or:  %s [-abcdfilosx]... [FILE] [[+]OFFSET[.][b]]
+  or:  %s --traditional [OPTION]... [FILE] [[+]OFFSET[.][b] [+][LABEL][.][b]]
+  -o   same as -t o2, select octal 2-byte units
+  o[SIZE]    octal, SIZE bytes per integer
+output-duplicates
+output line.
+__overflow
+__printf_chk
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+RADIX is d for decimal, o for octal, x for hexadecimal or n for none.
+read_block
+read-bytes
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+%s, and %s.
+setlocale
+shell-always
+%s home page: <%s>
+%s is too large
+SIZE is a number.  For TYPE in doux, SIZE may also be C for
+sizeof(char), S for sizeof(short), I for sizeof(int) or L for
+sizeof(long).  If TYPE is f, SIZE may also be F for sizeof(float), D
+skip-bytes
+skip-bytes + read-bytes is too large
+s != next
+__snprintf_chk
+__sprintf_chk
+%s: read error
+  -s   same as -t d2, select decimal 2-byte units
+%s, %s, and others.
+%s, %s, and %s.
+%s%s argument `%s' too large
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+  -S, --strings[=BYTES]       output strings of at least BYTES graphic chars
+__stack_chk_fail
+standard input
+strlen (tspec->fmt_string) < FMT_BYTES_ALLOCATED
+__strtoull_internal
+suffixes may be . for octal and b for multiply by 512.
+s != ((void *)0)
++\$T9|$Dr
++\$t9|$dsy
+t$dkT$$,
+  -t, --format=TYPE           select output format or formats
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+this system doesn't provide a %lu-byte floating point type
+this system doesn't provide a %lu-byte integral type
+traditional
+      --traditional           accept arguments in traditional form
+Traditional format specifications may be intermixed; they accumulate:
+Try `%s --help' for more information.
+tspec != ((void *)0)
+t$X9t$Pt2
+t$X9t$<u
+TYPE is made up of one or more of these specifications:
+Usage: %s [OPTION]... [FILE]...
+  u[SIZE]    unsigned decimal, SIZE bytes per integer
+/usr/share/locale
+      --version  output version information and exit
+  -v, --output-duplicates     do not use * to mark line suppression
+warning: invalid width %lu; using %d instead
+With no FILE, or when FILE is -, read standard input.
+Write an unambiguous representation, octal bytes by default,
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  -w, --width[=BYTES]         output BYTES bytes per output line
+  -x   same as -t x2, select hexadecimal 2-byte units
+  x[SIZE]    hexadecimal, SIZE bytes per integer
+xstrtol.c
+xstrtoumax

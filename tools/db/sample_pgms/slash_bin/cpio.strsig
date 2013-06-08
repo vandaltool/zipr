@@ -1,0 +1,364 @@
+0123456789ABCDEF
+%3lu, %3lu 
+,$+4$+l$
+%-8.8s %-8.8s 
+%-8u %-8u 
+--absolute-pathnames
+A list of filenames is terminated by a null character instead of a newline
+A NULL argv[0] was passed through an exec system call.
+--append
+--append is used but no archive file name is given (use -F or -O options)
+Append to an existing archive.
+Archive file is local, even if its name contains colons
+Archive filename to use instead of standard input. Optional USER and HOST specify the user and host names in case of a remote archive
+Archive filename to use instead of standard output. Optional USER and HOST specify the user and host names in case of a remote archive
+Archive format is not specified in copy-pass mode (use --format option)
+Archive format multiply defined
+Archive value %.*s is out of range
+argp_err_exit_status
+argp_error
+argp_failure
+argp_help
+ARGP_HELP_FMT
+ARGP_HELP_FMT: %s value is less than or equal to %s
+argp_parse
+argp_program_bug_address
+argp_program_version
+argp_program_version_hook
+argp_state_help
+__assert_fail
+bindtextdomain
+blank line ignored
+block-size
+Both -I and -F are used in copy-in mode
+Both -O and -F are used in copy-out mode
+# buckets:         %lu
+# buckets used:    %lu (%.2f%%)
+<bug-cpio@gnu.org>
+bug-cpio@gnu.org
+Cannot connect to %s: resolve failed
+Cannot execute remote shell
+cannot get the login group of a numeric UID
+cannot link %s to %s
+cannot make directory `%s'
+can not omit both user and group
+Cannot open %s
+cannot read checksum for %s
+cannot remove current %s
+cannot seek on output
+cannot swap bytes of %s: odd number of bytes
+cannot swap halfwords of %s: odd number of halfwords
+clock_gettime
+Control warning display. Currently FLAG is one of 'none', 'truncate', 'all'. Multiple options accumulate.
+  # Copy files named in name-list to destination-directory
+  # Copy files named in name-list to the archive
+Copyright %s %d Free Software Foundation, Inc.
+  cpio -i [< archive]
+  cpio -o < name-list [> archive]
+  cpio -p destination-directory < name-list
+crc newc odc bin ustar tar (all-caps also recognized)
+--create
+Create all files relative to the current directory
+Create leading directories where needed
+Create the archive (run in copy-out mode)
+Creating intermediate directory `%s'
+ [-%c[%s]]
+[-%c %s]
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+__ctype_toupper_loc
+David MacKenzie
+dcgettext
+dcngettext
+--dereference
+Dereference  symbolic  links  (copy  the files that they point to instead of copying the links).
+[destination-directory]
+device major number
+device minor number
+device number
+/dev/tty
+doc-opt-col
+Do not change the ownership of the files
+Do not print the number of blocks copied
+Do not strip file system prefix components from the file names
+dup-args
+dup-args-note
+# entries:         %lu
+entries && short_options
+__errno_location
+error closing archive
+Examples:
+--extract
+Extract files from an archive (run in copy-in mode)
+  # Extract files from the archive
+Extract files to standard output
+-F can be used only with --create or --extract
+fflush_unlocked
+file mode
+File %s grew, %llu new byte not copied
+File %s grew, %llu new bytes not copied
+file size
+File %s shrunk by %s byte, padding with zeros
+File %s shrunk by %s bytes, padding with zeros
+File %s was modified while being copied
+flockfile
+force-local
+Found end of tape.  Load next tape and press RETURN. 
+Found end of tape.  To continue, type device/file name when ready.
+__fprintf_chk
+fputs_unlocked
+funlockfile
+futimens
+futimesat
+fwrite_unlocked
+__fxstat64
+Garbage in ARGP_HELP_FMT: %s
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getgrgid
+getgrnam
+gethostbyname
+getpwnam
+getpwuid
+gettimeofday
+give a short usage message
+give this help list
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.1
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.6
+__gmon_start__
+../../gnu/argp-help.c
+GNU cpio
+GNU `cpio' copies files to and from archives
+../../gnu/utimens.c
+hang for SECS seconds (default 3600)
+header-col
+hol_append
+hol->entries && hol->short_options
+hol->num_entries <= ((size_t) -1) / sizeof (struct hol_entry)
+Interactively rename files
+interdir
+internal error: tape descriptor changed from %d to %d
+In the verbose table of contents listing, show numeric UID and GID
+invalid archive format `%s'; valid formats are:
+invalid block size
+invalid group
+invalid header: checksum error
+invalid user
+Invalid value for --warning option: %s
+_IO_getc
+_IO_stdin_used
+iswprint
+John Oleynick
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+librt.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+Link files instead of copying them, when  possible
+long-opt-col
+%lu block
+%lu blocks
+__lxstat64
+Main operation mode:
+--make-directories
+make_hol
+Malformed number %.*s
+Mandatory or optional arguments to long options are also mandatory or optional for any corresponding short options.
+max bucket length: %lu
+Mode already defined
+modification time
+name size
+no-absolute-filenames
+--no-absolute-pathnames
+nonmatching
+--no-preserve-owner
+--no-preserve-owner cannot be used with --owner
+Not enough arguments
+number of links
+num_entries <= ((size_t) -1) / sizeof (struct hol_entry)
+numeric-uid-gid
+Only copy files that do not match any of the given patterns
+only-verify-crc
+Operation modifiers valid in any mode:
+Operation modifiers valid in copy-in and copy-out modes:
+Operation modifiers valid in copy-in and copy-pass modes:
+Operation modifiers valid in copy-out and copy-pass modes:
+Operation modifiers valid only in copy-in mode:
+Operation modifiers valid only in copy-out mode:
+Operation modifiers valid only in copy-pass mode:
+opt-doc-col
+ [OPTION...]
+! ((opts)->flags & 0x4)
+__overflow
+--owner cannot be used with --no-preserve-owner
+--pass-through
+pattern-file
+Phil Nelson
+POSIXLY_CORRECT
+premature end of archive
+premature end of file
+--preserve-modification-time
+Print a "." for each file processed
+Print a table of contents of the input
+__printf_chk
+print program version
+Print STRING when the end of a volume of the backup media is reached
+__progname
+__progname_full
+(PROGRAM ERROR) No version known!?
+(PROGRAM ERROR) Option should have been recognized!?
+program_invocation_name
+program_invocation_short_name
+program-name
+rdev major
+rdev minor
+Read additional patterns specifying filenames to extract or list from FILE
+read error
+Read error at byte %lld in file %s, padding with zeros
+readlink
+Removing leading `%s' from hard link targets
+Removing leading `%s' from member names
+--rename
+--rename-batch-file
+rename %s -> 
+Replace all files unconditionally
+Report bugs to %s.
+Report bugs to: %s
+reset-access-time
+Reset the access times of files after reading them
+Retain previous file modification times when creating files
+rsh-command
+Run in copy-pass mode
+%s %3lu 
+%s, and %s.
+%.*s: ARGP_HELP_FMT parameter must be positive
+%.*s: ARGP_HELP_FMT parameter requires a value
+%s: Cannot change mode to %s
+%s: Cannot change ownership to uid %lu, gid %lu
+%s: Cannot create symlink to %s
+%s: Cannot hard link to %s
+%s: Cannot %s
+%s: Cannot seek to %s
+%s: Cannot symlink to %s
+%s: checksum error (0x%lx, should be 0x%lx)
+Sergey Poznyakoff
+setlocale
+Set the I/O block size to 5120 bytes
+Set the I/O block size to BLOCK-SIZE * 512 bytes
+Set the I/O block size to the given NUMBER of bytes
+Set the ownership of all files created to the specified USER and/or GROUP
+set the program name
+`%s' exists but is not a directory
+%s: field width not sufficient for storing %s
+%s: file name too long
+shell-always
+%s home page: <http://www.gnu.org/software/%s/>
+short-opt-col
+%s: invalid option -- '%c'
+%s is meaningless with %s
+%s is not a directory
+%s linked to %s
+%s not created: newer or same age version exists
+%s not dumped: not a regular file
+%s: option '%c%s' doesn't allow an argument
+%s: option requires an argument -- '%c'
+%s: option '--%s' doesn't allow an argument
+%s: option '%s' is ambiguous
+%s: option '%s' requires an argument
+%s: option '-W %s' doesn't allow an argument
+%s: option '-W %s' is ambiguous
+--sparse
+__sprintf_chk
+%s: Read error at byte %s, while reading %lu byte
+%s: Read error at byte %s, while reading %lu bytes
+ [--%s=%s]
+ [--%s[=%s]]
+--%s: %s
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+%s: symbolic link too long
+__stack_chk_fail
+standard input is closed
+standard output is closed
+%s: Too many arguments
+__stpcpy_chk
+strcasecmp
+__strcat_chk
+strchrnul
+__strcpy_chk
+__strdup
+strerror
+strerror_r
+__strncat_chk
+__strncpy_chk
+%s: truncating inode number
+%s: truncating %s
+Substituting `.' for empty hard link target
+Substituting `.' for empty member name
+%.*s: Unknown ARGP_HELP_FMT parameter
+%s: unknown file type
+%s: unrecognized option '%c%s'
+%s: unrecognized option '--%s'
+Swap both halfwords of words and bytes of halfwords in the data. Equivalent to -sS
+swap-bytes
+--swap-bytes (--swap)
+swap-halfwords
+--swap-halfwords (--swap)
+Swap the bytes of each halfword in the files
+Swap the halfwords of each word (4 bytes) in the files
+%s: Warning: Cannot %s
+%s: Warning: Cannot seek to %s
+%s: Warning: Read error at byte %s, while reading %lu byte
+%s: Warning: Read error at byte %s, while reading %lu bytes
+%s: Wrote only %lu of %lu byte
+%s: Wrote only %lu of %lu bytes
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+timespec
+T$l3V\3FX	
+Too many arguments
+--to-stdout
+TRAILER!!!
+truncate
+Try `%s --help' or `%s --usage' for more information.
+--unconditional
+Unknown system error
+usage-indent
+Use given archive FORMAT
+Use remote COMMAND instead of rsh
+[USER][:.][GROUP]
+[[USER@]HOST:]FILE-NAME
+Use the old portable (ASCII) archive format
+Use this FILE-NAME instead of standard input or output. Optional USER and HOST specify the user and host names in case of a remote archive
+/usr/sbin/rmt
+/usr/share/locale
+utimensat
+validate_timespec
+Verbosely list the files processed
+__vfprintf_chk
+virtual memory exhausted
+__vsnprintf_chk
+warning: archive header has reverse byte-order
+warning: skipped %ld byte of junk
+warning: skipped %ld bytes of junk
+When reading a CRC format archive, only verify the CRC's of each file in the archive, don't actually extract the files
+write error
+Write files with large blocks of zeros as sparse files
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+__xmknod
+__xstat64
+You must specify one of -oipt options.

@@ -1,0 +1,29 @@
+ABSOLUTE
+__bss_start
+__ctype_b_loc
+__ctype_tolower_loc
+error opening device
+Extended device %s not found
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXi.so.6
+No XInput extension available
+unable to connect to X Server try to set the DISPLAY variable
+usage : %s <device name> (ABSOLUTE|RELATIVE)
+XFreeDeviceList
+XFreeExtensionList
+XInputExtension
+XListExtensions
+XListInputDevices
+XOpenDevice
+XOpenDisplay
+XSetDeviceMode

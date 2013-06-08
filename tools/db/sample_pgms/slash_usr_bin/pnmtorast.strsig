@@ -1,0 +1,36 @@
+__bss_start
+can't happen
+color not found?!?  row=%d col=%d  r=%d g=%d b=%d
+computing colormap...
+%d colors found
+error writing rasterfile
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+maxval is not 255 - automatically rescaling colors
+mem_create
+out of memory
+pm_close
+pm_error
+pm_freearray
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+pnm_init
+pnm_readpnm
+ppm_addtocolorhist
+ppm_colorhisttocolorhash
+ppm_computecolorhist
+ppm_freecolorhist
+ppm_lookupcolor
+rasterfile.  If you want 8 bits, try doing a 'ppmquant %d'.
+-standard
+[-standard|-rle] [pnmfile]
+Too many colors - proceeding to write a 24-bit non-mapped
+unable to create new pixrect

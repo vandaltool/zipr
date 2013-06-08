@@ -1,0 +1,78 @@
+# -----------------------------------------------------------------------------
+#                         All Rights Reserved
+# authorization.
+#!/bin/sh
+by setting \$$name to "${value}".
+	case $1 in
+		case $value in
+# Check environment variables that xterm does, in the same order:
+# Check for -version and -help options, to provide a simple return without
+# Check if there is a workable locale program.  If there is not, we will read
+		check=`sh -c "locale >/dev/null" 2>&1`
+# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+# copy of this software and associated documentation files (the
+# Copyright 2001-2006,2007 by Thomas E. Dickey
+		C|POSIX)
+# distribute, sublicense, and/or sell copies of the Software, and to
+			echo "$whoami tried to use locale $value by setting \$$name" >&2
+			eval export ${name}
+	eval export ${name}
+			eval ${name}=${save}
+	eval ${name}=${value}
+	eval save=\$${name}
+	eval 'value=$'$name
+# Except as contained in this notice, the name(s) of the above copyright
+exec $XTERM_PROGRAM -class UXTerm -title $whoami -u8 "$@"
+		exit $?
+			exit 1
+for name in LC_ALL LC_CTYPE LANG
+# for testing:
+found=no
+			found=yes
+# has a UTF-8 locale installed (and there appears to be no trivial/portable way
+			# here then?
+# holders shall not be used in advertising or otherwise to promote the
+if test $# = 1
+if test $found != yes ; then
+		if test -n "$check" ; then
+	if test -n "$value" ; then
+	if test -z "$locale" ; then
+# If we didn't find one that used UTF-8, modify the safest one.  Not everyone
+# in all copies or substantial portions of the Software.
+# IN NO EVENT SHALL THE ABOVE LISTED COPYRIGHT HOLDER(S) BE LIABLE FOR ANY
+locale=`sh -c "LC_ALL=C LC_CTYPE=C LANG=C locale >/dev/null" 2>&1`
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+		name="LC_CTYPE"
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# Permission is hereby granted, free of charge, to any person obtaining a
+# permit persons to whom the Software is furnished to do so, subject to
+# requiring the program to create a window:
+# sale, use or other dealings in this Software without prior written
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# "Software"), to deal in the Software without restriction, including
+# something via the standard error.  Ignore whatever is written to the
+# standard output.
+#test -f ./xterm && XTERM_PROGRAM=./xterm
+# The above copyright notice and this permission notice shall be included
+# the following conditions:
+		# The 'locale' program tries to do a sanity check.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# this file is part of xterm
+# to determine whether it is, from a shell script).  We could check if the
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# user's shell does not reset unknown locale specifiers, but not all shells do.
+		*.utf8|*.UTF8|*.utf-8|*.UTF-8)
+		*.utf8@*|*.UTF8@*|*.utf-8@*|*.UTF-8@*)
+		value=`echo ${value} |sed -e 's/[.@].*//'`.UTF-8
+			value=en_US
+		value="en_US.UTF-8"
+	-v|-ver*|-h|-he*)
+$whoami tried unsuccessfully to use locale $value
+whoami=uxterm
+# without limitation the rights to use, copy, modify, merge, publish,
+# wrapper script to setup xterm with UTF-8 locale
+			xmessage -file - <<EOF
+# $XTermId: uxterm,v 1.26 2007/12/30 16:33:36 tom Exp $
+		$XTERM_PROGRAM "$@"
+: ${XTERM_PROGRAM=xterm}
+			# Yes, I know this is not the same - but why are you

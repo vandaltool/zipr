@@ -1,0 +1,273 @@
+                        }
+                    }
+                    };
+                }
+            }
+        }
+##-------------------------------------------------------------------
+    addchars = 8; # number of additional characters like %, > or so
+and upper\n\tcase characters, \"-\" and \"_\", <output filename> can't be\
+## and version 1.2 or later is part of all distributions of LaTeX
+## Author: Dr. Jobst Hoffmann <j.hoffmann@fh-aachen.de>
+     awk -v pathcomponent="$PATHCOMPONENT" -v file="$SOURCEFILE" \
+                    begin_prefix = "%";
+                        begin_prefix = begin_prefix "=";
+                    begin_prefix = begin_prefix ">";
+#! /bin/sh
+            "caption={" caption"}\n    }%\n  }\n  {%\n" \
+                                    caption, linerange);
+            caption = "\\lstinline|" file "|";
+    caption = "\\lstinline|" file "|";
+                    caption =  "\\lstinline|" file "|: " text[1]
+    case "$1" in
+                        case "$2" in
+      -c|--command) COMMAND=1; HEADER=0; shift;;
+                closing_tag = $(NF)
+                        cnt++;
+                    cnt = 0;
+    combine = 0;
+                combine = 1;
+                            combine_array[closing_tag] = \
+                            combine_array[closing_tag] = start "-" $1-1
+                            combine_array[closing_tag] ", " start "-" $1-1
+                        combine_array[range]);
+## conditions of the LaTeX Project Public License, either version 1.2
+    configured = 0;
+## Copyright: (C) 2008-2009 Jobst Hoffmann, <j.hoffmann@fh-aachen.de>
+                cTmp = toupper(sequence[i])
+    CURR_DIR=$(basename $(pwd))
+    curr_dir = parts[n]
+DEBUGMODE=0
+ directly\n\tprocessed by TeX.\n \
+    do {
+do_the_job()
+    do_the_job $arg
+    echo "\\csname ${FILE}LstLoaded\\endcsname"
+    echo "%% -- file $1 generated on $(date) by ${ME}"
+        echo "%--> file \"${OUTFILE}\" already exists, creating backup"
+    echo "\\let\\${FILE}LstLoaded\\endinput"
+    echo "%-->" processing file \"$arg\" 1>&2  # echo the current
+        echo ${SOURCEFILE} is no valid file
+                        } else {
+                    } else {
+                } else {
+            } else {
+        } else {
+    } else {
+                    } else if ( combine ) {
+    } else if ( combine ) {
+        } else if ( match($2, /be/) > 0 ) {
+        } else if ( match($2, /ee/) > 0 ) {
+            } else if ( match(text[1], "combine") ) {
+                } else if ( opening_tag == closing_tag ) {
+                } else if ( opening_tag != closing_tag ) {
+                    end_prefix = begin_prefix;
+ERR_HELP=1
+    esac
+                        esac ;;
+eval set -- "$GETOPT"
+    exec > ${OUTFILE}           # redirect stdout to ${OUTFILE}
+      exit ${ERR_HELP}
+           -F : \
+    FILE=$1
+    FILE=$(echo $(basename $1 .lst) | sed -e s/[_\-]//g)
+                                                  # filename to stderr
+for arg do
+    for ( i = 1; i <= n; i++ )
+            for ( i = 2; i <= n; i++ ) {
+    for ( i = 2; i <= n; i++ ) {
+    for ( i = 2; i < n; i++ )
+    for ( i = 3; i <= n; i++ ) {
+        for ( range in combine_array ) {
+function break_line(input_line, line_len)
+function print_command(identifier, linerange)
+function print_error(linenumber, error_message)
+function print_linerange(identifier, caption, linerange)
+function replace_characters(identifier)
+function toB26(n10)
+      -g|--debug-mode) DEBUG_MODE=1; shift;;
+GETOPT=$(getopt -o cghno:: \
+    grep -n "[/%;#!][/\* ;]\ *[cbe]e:" $1 | \
+                    gsub(/"/, "", text[1]);
+HEADER=1
+      -h|--help) show_usage ;;
+##    http://www.latex-project.org/lppl.txt
+    idChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        identifier = identifier parts[i]
+        identifier"}\n{%\n  \\def\\inputfile{%\n    " inputfile "\n  }";
+    identifier = parts[1]
+    identifier = replace_characters(identifier)
+                                    (identifier toB26(idPt++)), \
+    idPt = 0
+                        if ( combine_array[closing_tag] == "" ) {
+                        if ( command ) {
+            if ( command ) {
+        if ( command ) {
+    if ( debugmode ) print $0 > "/dev/stderr"
+                        if ( debugmode ) printf("combine_array: >%s<\n", combine_array[closing_tag]) > "/dev/stderr"
+    if ( debugmode ) printf("file: %s\n", file) > "/dev/stderr"
+    if ( debugmode ) printf("identifier: %s\n", identifier) > "/dev/stderr"
+    if ( debugmode ) printf("path: %s\n",  pathcomponent) > "/dev/stderr"
+    if ( debugmode ) printf("print_command.linerange: >%s<\n", linerange) > "/dev/stderr"
+            if ( debugmode ) printf("range: %s, combine_array[range]: >%s<\n", \
+if [ $# -eq 0 ]
+    if [ -f "${OUTFILE}" ]
+    if [ ! -f ${SOURCEFILE} ]
+    if ( header )
+                    if ( index(text[1], "_") > 0 ) gsub(/_/, "\\_", text[1]);
+    if ( !initialised ) {
+                if ( !is_opened ) {
+            if ( is_opened ) {
+                    if ( join ) {
+    if ( join ) {
+        if ( len_curr + len_next + 1 < linelen ) {
+        if ( length(inputfile) + length(parts[i]) < linelen - 1) {
+        if ( match($2, /be/) > 0 ) {
+        if ( match($2, /ce/) > 0 ) {
+            if ( match($2, /ee/) > 0 ) {
+            if ( match(text[1], "join") ) {
+if [ $? -ne 0 ] # no success
+if [ -n "${OUTFILE}" ]
+        if ( (sequence[i] == "_") || (sequence[i] == "-") ) {
+            if ( toUppercase ) {
+    initialised = 0;
+        initialised = 1;
+            inputfile = inputfile "%\n      /" parts[i];
+            inputfile = inputfile "/" parts[i];
+    inputfile = "/" parts[2];
+                    is_opened = 0
+    is_opened = 0;
+                is_opened = 1
+            is_opened = 1
+    join = 0;
+                join = 1;
+## Keywords: LaTeX, listings
+## LaTeX file from a source file.
+    len_curr = length(output_line)
+            len_curr += len_next + 1
+            len_curr = len_next + 7
+                    len = linelen - addchars - length(caption);
+        len_next = length(parts[i])
+    linelen = 75; # length of the output line
+        linenumber, error_message > "/dev/stderr"
+                                    linerange);
+    linerange = "";
+            linerange "}", linelen)
+                        linerange = linerange ", " start "-" $1-1;
+                        linerange = start "-" $1-1;
+### listings-ext.sh ---
+## listings-ext.sh creates code to be inserted into a
+### listings-ext.sh ends here
+    local_style = "";
+        local_style="style=localStyle, "
+    --longoptions command,debug-mode,help,no-header,output-file:: \
+            "    \\lstdefinestyle{localStyle}{%\n" \
+ME=$(basename $0)
+        mv ${OUTFILE} ${OUTFILE}~
+    n++;
+      n10 = int(n10/26)
+        "}%\n" end_prefix "end{"identifier"}";
+    -n ${ME} -- "$@")
+        "%\n  {%\n    \\inputfile\n  }\n" \
+      -n|--no-header) HEADER=0; shift;;
+                " not closed")
+# now take all remaining arguments (should be all filenames) and do the job
+    n = split(file, parts, "/")
+    n = split(identifier, sequence, "") # split the string into an array
+    n = split(input_line, parts, "/");
+            n = split($(NF), text, ",");
+    n = split(parts[n], parts, ".")
+    n = split(pathcomponent, parts, "/");
+                                        # of single characters
+## of this license or (at your option) any later version.
+      -o|--output-file)
+                opening_tag = $(NF)
+            opening_tag = $(NF)
+                                *)  OUTFILE=$2; shift 2 ;;
+                                "") OUTFILE=$(basename $(pwd)).lst; shift 2 ;;
+            output_line = output_line "%\n      /" parts[i];
+            output_line = output_line "/" parts[i];
+    output_line = parts[1];
+    parts[n] = file;
+    PATHCOMPONENT=$(pwd)
+    print begin_prefix "begin{" \
+    print break_line("\\lstdef{" identifier "}{" inputfile "}{" \
+                            print_command(\
+            print_command(identifier, linerange);
+                print_command((identifier toB26(idPt++)), \
+                print_error($1, "incorrect grouping, previous group"\
+                    print_error($1, "missing \"be\" declaration")
+            print_error($1, "missing \"be\" declaration")
+                    print_error($1, "opening and closing tags differ")
+                    print_error($1, "unknown error")
+    printf "%--> error (line number %d): %s\n", \
+            printf "%%-->> %s <<--\n", range
+      printf "${USAGE}"
+print_header()
+    print_header ${OUTFILE} ${CURR_DIR}
+        print "  \\ifLecture{%\n    \\lstdefinestyle{localStyle}{%\n      " \
+                            print_linerange(\
+            print_linerange(identifier, caption, linerange);
+                print_linerange((identifier toB26(idPt++)), caption, \
+    print "  \\lstinputlisting[" local_style "linerange={" linerange "}]" \
+                    range, combine_array[range]) > "/dev/stderr"
+      remainder = n10%26
+remark:\n\tIf <filename> contains characters others than lower \
+  return $?
+        return $ERR_NOFILE
+    return output_line
+    return tmp
+    return v26
+                    # setup the prefixes
+      --) shift ; break ;;
+      *)  show_usage ;;
+    show_usage
+  show_usage
+show_usage() # display help massage
+    SOURCEFILE=$1
+    SOURCEFILE=${SOURCEFILE##${PATHCOMPONENT}/}
+    split(idChar, idArray, "")
+                    split($(NF), text, "*"); # omit a trailing comment
+                start = $1 + 1; # entry $1 is the line number
+            start = $1 + 1; # entry $1 is the line number
+                        sub(/ /, "", closing_tag)
+                    sub(/%/, "%==", end_prefix);
+        sub(/, /, "", linerange);
+                    sub(/ /, "", text[1]); # delete leading spaces
+        tag = $(NF)
+\t-c:\tgenerate commands, which can be input and later used by\n \
+\t-g:\tdebug mode, create some additional output, optional\n \
+## The commented code can be seen in listings-ext.pdf, which is provided
+## The latest version of this license is in:
+    then
+## This file belongs to the listings-ext package.
+## This file may be distributed and/or modified under the
+\t-h:\tshow this help, optional\n \
+            "      title={" caption "}\n    }%\n  }";
+    tmp = ""
+                tmp = (tmp cTmp)
+                tmp = (tmp sequence[i])
+\t-n:\twrite no header into the LaTeX code, optional; valid only,\n \
+\t-o [<output filename>]: if this argument is present, the output will\n \
+                toUppercase = 0
+    toUppercase = 0
+            toUppercase = 1
+\t\tbe written into a file <output filename>; if the\n \
+\t\tif -c isn't used\n \
+\t\tinto a file with a basename, which corresponds to the name\n \
+\t\t\\\\lstuse, optional\n \
+\t\t[-n|--no-header] \\\\\n \
+\t\tof the current directory, it has an extension of \".lst\".\n\n \
+\t\t[{-o|--output-file} [<output filename>]] <filename>, ...\n \
+\t\t<output filename> is omitted, the output is redirected\n \
+USAGE="usage:\n\t${ME} [-c|--command] [-h|--help] [-g|--debug] \\\\\n \
+    v26 = ""
+      v26 = idArray[remainder+1] v26
+         -v debugmode="$DEBUG_MODE" \
+## version 1999/12/01 or later.
+## Version: $Id: listings-ext.dtx 48 2009-08-31 18:30:48Z ax006ho $
+         -v header="$HEADER" -v command="$COMMAND" -v application="${ME}" \
+                    while ( cnt < len) {
+    } while ( n10 != 0 )
+while true
+## with the distribution package.

@@ -1,0 +1,1553 @@
+===============================================================================================
+###########+++++##-##++++|######
+%[0-9.] %[A-Za-z_0-9.]
+1234567890
+1,2,3,4,5,6,7,8,9,11,13,14,18,19,20,21,GetSelection,SetSelection,SetWinLines,SetXprop
+    %-28s %s
+;38;5;%d
+;48;5;%d
+4;%d;rgb:%04x/%04x/%04x
+~5<tt5<v
+8-bit control
+A5Z6X[================================================================================================
+A5Z6X[wwww
+A5Z6X[wwwwwwwwwwwwwwww
+A5Z6X[wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+ ABCDEFGHIJKLMNOPQRSTUVWXYZ??????abcdefghijklmnopqrstuvwxyzXXX
+activeicon
+*activeIcon
+ActiveIcon
+additional resource specifications
+addToUtmp
+allocation failure in GetOldColors
+Alloc: calloc() failed on base
+Alloc: calloc() failed on rows
+allow-bold-fonts
+allowBoldFonts
+*allowC1Printable
+AllowC1Printable
+allow-color-ops
+allowColorOps
+allow-font-ops
+allowFontOps
+allowScrollLock
+allow-send-events
+allowSendEvents
+allowsends
+allow-tcap-ops
+allowTcapOps
+allow-title-ops
+allowTitleOps
+allow-window-ops
+allowWindowOps
+altIsNotMeta
+                 Alt <Key>Return:fullscreen() 
+alt-sends-escape
+altSendsEscape
+alwaysBoldMode
+*alwaysHighlight
+AlwaysHighlight
+alwaysUseMods
+answerbackString
+a number between -100 and 100 is required for zIconBeep.  0 used by default
+appcursorDefault
+appkeypadDefault
+*autoWrap
+AutoWrap
+awaitInput
+backarrow key
+backarrowKey
+backarrowKeyIsErase
+background
+bad character
+bad range
+bad value number
+-bcf milliseconds
+-bcn milliseconds
+-bd color
+beep and flag icon of window having hidden output
+BellIsUrgent
+bellOnReset
+bellSuppressTime
+-bg color
+-b number
+*boldColors
+*boldFont
+boldMode
+border color
+.borderWidth
+border width in pixels
+both normal and bold text (by doing overstriking).  The -e option, if given,
+brokenLinuxOSC
+brokenSelections
+brokenStringTerm
+__bss_start
+                      <Btn4Down>:scroll-back(5,line,m)     
+                      <Btn5Down>:scroll-forw(5,line,m)     
+                       <BtnDown>:ignore() 
+                         <BtnUp>:select-end(SELECT, CUT_BUFFER0) 
+-bw number
+cacheDoublesize
+Cannot allocate environment %s
+Cannot allocate %lu bytes for printable text
+Cannot allocate %lu bytes for string mode %d
+Cannot chmod %s to %03lo currently %03lo: %s
+Cannot chmod %s to %03o: %s
+Cannot chown %s to %ld,%ld: %s
+Cannot exec-xterm given %s
+Cannot increase environment
+Cannot reset uid/gid
+Caps Lock
+%c%c%c%c
+-cc classrange
+C<f9C0u4
+*charClass
+CharClass
+charwidth
+-/+cjk_width
+-cjk_width
+*cjkWidth
+CjkWidth
+-class string
+class string (XTerm)
+clearsavedlines
+clear-saved-lines
+client instance, icon, and title strings
+<ClientMessage>WM_PROTOCOLS: DeleteWindow()
+clientWindow
+CLIPBOARD
+color100
+color101
+color102
+color103
+color104
+color105
+color106
+color107
+color108
+color109
+color110
+color111
+color112
+color113
+color114
+color115
+color116
+color117
+color118
+color119
+color120
+color121
+color122
+color123
+color124
+color125
+color126
+color127
+color128
+color129
+color130
+color131
+color132
+color133
+color134
+color135
+color136
+color137
+color138
+color139
+color140
+color141
+color142
+color143
+color144
+color145
+color146
+color147
+color148
+color149
+color150
+color151
+color152
+color153
+color154
+color155
+color156
+color157
+color158
+color159
+color160
+color161
+color162
+color163
+color164
+color165
+color166
+color167
+color168
+color169
+color170
+color171
+color172
+color173
+color174
+color175
+color176
+color177
+color178
+color179
+color180
+color181
+color182
+color183
+color184
+color185
+color186
+color187
+color188
+color189
+color190
+color191
+color192
+color193
+color194
+color195
+color196
+color197
+color198
+color199
+color200
+color201
+color202
+color203
+color204
+color205
+color206
+color207
+color208
+color209
+color210
+color211
+color212
+color213
+color214
+color215
+color216
+color217
+color218
+color219
+color220
+color221
+color222
+color223
+color224
+color225
+color226
+color227
+color228
+color229
+color230
+color231
+color232
+color233
+color234
+color235
+color236
+color237
+color238
+color239
+color240
+color241
+color242
+color243
+color244
+color245
+color246
+color247
+color248
+color249
+color250
+color251
+color252
+color253
+color254
+color255
+colorAttrMode
+colorAttrs
+*colorBDMode
+colorBLMode
+*colorMode
+*colorRVMode
+*colorULMode
+combiningChars
+command to execute
+COMPOUND_TEXT
+Conflicting keyboard type option (%u/%u)
+continue
+copy-selection
+Could not fork: %s
+Could not set destroy callback to IM
+-cr color
+create-menu
+                !Ctrl <Btn1Down>:popup-menu(mainMenu) 
+               !Ctrl <Btn1Down>: popup-menu(mainMenu) 
+               !Ctrl <Btn2Down>: popup-menu(tekMenu) 
+                !Ctrl <Btn2Down>:popup-menu(vtMenu) 
+                !Ctrl <Btn3Down>:popup-menu(fontMenu) 
+                 Ctrl <Btn4Down>:scroll-back(1,halfpage,m) 
+                 Ctrl <Btn5Down>:scroll-forw(1,halfpage,m) 
+ctrlFKeys
+          ~Ctrl ~Meta <Btn2Down>:ignore() 
+            ~Ctrl ~Meta <Btn2Up>:insert-selection(SELECT, CUT_BUFFER0) 
+          ~Ctrl ~Meta <Btn3Down>:start-extend() 
+     !Ctrl @Num_Lock <Btn1Down>: popup-menu(mainMenu) 
+     !Ctrl @Num_Lock <Btn2Down>: popup-menu(tekMenu) 
+__ctype_b_loc
+__ctype_get_mb_cur_max
+*cursorBlink
+CursorBlink
+*cursorColor
+CursorColor
+*cursorOffTime
+CursorOffTime
+*cursorOnTime
+CursorOnTime
+*cursorUnderLine
+CursorUnderLine
+CUT_BUFFER0
+CUT_BUFFER1
+CUT_BUFFER2
+CUT_BUFFER3
+CUT_BUFFER4
+CUT_BUFFER5
+CUT_BUFFER6
+CUT_BUFFER7
+*cutNewline
+CutNewline
+*cutToBeginningOfLine
+CutToBeginningOfLine
+D$,9D$(}
++D$,9D$0
+D$(9D$ u
+\$d9\$ |F
+dabbrev-expand
+*decTerminalID
+DecTerminalID
+defaultString
+deiconify
+delete-is-del
+deleteIsDEL
+DeleteWindow
+destroyCallback
+/dev/console
+/dev/pts/0
+/dev/tty
+dired-button
+disallowedColorOps
+disallowedFontOps
+disallowedTcapOps
+disallowedWindowOps
+-display displayname
+doublewidth bold text font
+doublewidth text font
+D$Tf9D$H
+	D$(;t$$u
+*dynamicColors
+DynamicColors
+-e command args ...
+eightBitControl
+eightBitInput
+eightBitOutput
+eightBitSelectTypes
+-encoding
+endgrent
+__environ
+__errno_location
+exec of '%s': %s
+Expected a number: %s
+*faceName
+FaceName
+*faceNameDoublesize
+FaceNameDoublesize
+*faceSize
+FaceSize
+faceSize1
+faceSize2
+faceSize3
+faceSize4
+faceSize5
+faceSize6
+Failed to create input context
+Failed to open input method
+-fa pattern
+fastScroll
+-fb fontname
+FcCharSetHasChar
+FcPatternBuild
+FcPatternDestroy
+__fdelt_chk
+-fd pattern
+-fg color
+-fi fontname
+filename of locale converter (/usr/bin/luit)
+-fn fontname
+focusWindow
+fontdefault
+fontDoublesize
+fontescape
+fontLarge
+fontMenu
+*fontMenu.Label:  VT Fonts (no app-defaults)
+fontSmall
+Fonts should be fixed width and, if both normal and bold are specified, should
+fontWarnings
+forbid/allow messages
+*forceBoxChars
+ForceBoxChars
+forcePackedFont
+force scrollbar left
+force scrollbar right (default left)
+foreground
+formatOtherKeys
+__fprintf_chk
+*freeBoldBox
+FreeBoldBox
+FreeType Doublesize font-selection pattern
+FreeType font-selection pattern
+FreeType font-size
+-fs size
+-fullscreen
+-/+fullscreen
+*fullscreen
+Fullscreen
+FullscreenWin
+-fwb fontname
+-fw fontname
+-fx fontname
+__fxstat
+-geometry
+-geometry geom
+GetAnsiColor
+GetColor
+getgrnam
+gethostname
+GetIconTitle
+getlogin
+get_pty: not enough ptys
+getpwnam
+getpwuid
+GetScreenSizeChars
+GetSelection
+gettimeofday
+GetWinPosition
+GetWinSizeChars
+GetWinSizePixels
+GetWinState
+GetWinTitle
+gin-press
+ginTerminator
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.15
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+HALFPAGE
+HandleKeymapChange: malloc failed
+hardreset
+hard-reset
+have the same size.  If only a normal font is specified, it will be used for
+HDACB  FE
+*highlightColor
+HighlightColor
+*highlightColorMode
+HighlightColorMode
+highlightReverse
+highlightSelection
+*highlightTextColor
+HighlightTextColor
+hpLowerleftBugCompat
+i18nSelections
+IceAddConnectionWatch
+IceConnectionNumber
+IceSetIOErrorHandler
+iconBorderColor
+iconBorderWidth
+*iconFont
+IconFont
+icon font for active icon
+.iconGeometry
+IconGeometry
+*iconName
+icon name for window
+icon window geometry
+:im=\E[4h:ei=\E[4l:mi:
+@im=none
+initialFont
+inputMethod
+input method doesn't support any style
+input method doesn't support my preedit type (%s)
+input: read returned unexpected error (%d)
+input: read returned zero
+in_put: select() failed
+inputStyle
+insert-eight-bit
+insert-selection
+insert-selection(SELECT, CUT_BUFFER0)
+insert-seven-bit
+intercept console messages
+*internalBorder
+internal border in pixels
+interpret
+interrupt
+-into windowId
+_IO_putc
+_IO_stdin_used
+ISO10646-1
+*italicULMode
+*jumpScroll
+JumpScroll
+_Jv_RegisterClasses
+j^wwwwwwwwwwwww
+j^wzwwwww
+keepSelection
+keyboardDialect
+KeyboardMapping
+*keyboardType
+KeyboardType
+KeyboardType resource "%s" not found
+<KeyPress> SunPaste
+<KeyPress> XF86Paste
+        <KeyRelease> Scroll_Lock:scroll-lock() 
+-kt keyboardtype
+L$(9D$4t%
+L$(9L$0}
+L$@9L$8t	1
+larger-vt-font
+-lcc path
+-leftbar
+leftBitmap
+-lf filename
+libc.so.6
+__libc_start_main
+libfontconfig.so.1
+libICE.so.6
+/lib/ld-linux.so.2
+libtinfo.so.5
+libutempter.so.0
+libX11.so.6
+libXaw.so.7
+libXft.so.2
+libXmu.so.6
+libXt.so.6
+limitResize
+*localeFilter
+LocaleFilter
+localtime
+           !Lock Ctrl <Btn1Down>:popup-menu(mainMenu) 
+          !Lock Ctrl <Btn1Down>: popup-menu(mainMenu) 
+          !Lock Ctrl <Btn2Down>: popup-menu(tekMenu) 
+           !Lock Ctrl <Btn2Down>:popup-menu(vtMenu) 
+           !Lock Ctrl <Btn3Down>:popup-menu(fontMenu) 
+            Lock Ctrl <Btn4Down>:scroll-back(1,halfpage,m) 
+            Lock Ctrl <Btn5Down>:scroll-forw(1,halfpage,m) 
+ !Lock Ctrl @Num_Lock <Btn1Down>:popup-menu(mainMenu) 
+!Lock Ctrl @Num_Lock <Btn1Down>: popup-menu(mainMenu) 
+!Lock Ctrl @Num_Lock <Btn2Down>: popup-menu(tekMenu) 
+ !Lock Ctrl @Num_Lock <Btn2Down>:popup-menu(vtMenu) 
+ !Lock Ctrl @Num_Lock <Btn3Down>:popup-menu(fontMenu) 
+  Lock @Num_Lock Ctrl <Btn4Down>:scroll-back(1,halfpage,m) 
+  Lock @Num_Lock Ctrl <Btn5Down>:scroll-forw(1,halfpage,m) 
+*logFile
+*logging
+logging filename
+logInhibit
+*loginShell
+LoginShell
+__longjmp_chk
+LowerWin
+\$$;l$`u
+luit: command-line malloc failed
+magenta3
+main: ioctl() failed on F_GETFL
+main:  ioctl() failed on FIONBIO
+main: ioctl() failed on F_SETFL
+mainMenu
+*mainMenu.Label:  Main Options (no app-defaults)
+malloc failed in ChangeIconName
+     <MappingNotify>: KeyboardMapping()
+*marginBell
+margin bell in characters from right end
+maxBufSize
+maximize
+-maximized
+-/+maximized
+*maximized
+Maximized
+MaximizeWin
+-mc milliseconds
+menuLocale
+MenuPopup
+*messages
+Messages
+<Message>WM_PROTOCOLS: DeleteWindow()
+                ~Meta<Btn1Down>: gin-press(l) 
+                ~Meta <Btn1Down>:select-start() 
+              ~Meta <Btn1Motion>:select-extend() 
+                 Meta <Btn2Down>:clear-saved-lines() 
+                ~Meta<Btn2Down>: gin-press(m) 
+                ~Meta<Btn3Down>: gin-press(r)
+              ~Meta <Btn3Motion>:select-extend() 
+meta-esc
+                 Meta<KeyPress>: insert-eight-bit() 
+                 Meta <KeyPress>:insert-eight-bit() 
+                ~Meta<KeyPress>: insert-seven-bit() 
+                ~Meta <KeyPress>:insert-seven-bit() 
+meta-sends-escape
+metaSendsEscape
+minBufSize
+MinimizeWin
+MinorError
+missing number
+MIT_CONSOLE_
+mkSamplePass
+mkSampleSize
+-/+mk_width
+-mk_width
+*mkWidth
+modifyCursorKeys
+modifyFunctionKeys
+modifyKeypadKeys
+modifyOtherKeys
+modifyStringKeys
+monoAttrs
+-ms color
+*multiClickTime
+MultiClickTime
+multiclick time in milliseconds
+*multiScroll
+MultiScroll
+must appear at the end of the command line, otherwise the user's default shell
+my_memmove: malloc/realloc failed
+-name string
+-nb number
+_NET_SUPPORTED
+_NET_WM_ICON_NAME
+_NET_WM_NAME
+_NET_WM_PID
+_NET_WM_STATE
+_NET_WM_STATE_FULLSCREEN
+nl_langinfo
+*nMarginBell
+No absolute path found for shell: %s
+noFormFeed
+noNewLine
+normal text font
+-n string
+number of scrolled lines to save
+Num Lock
+     ! @Num_Lock Ctrl <Btn1Down>:popup-menu(mainMenu) 
+     ! @Num_Lock Ctrl <Btn2Down>:popup-menu(vtMenu) 
+     ! @Num_Lock Ctrl <Btn3Down>:popup-menu(fontMenu) 
+       @Num_Lock Ctrl <Btn4Down>:scroll-back(1,halfpage,m) 
+       @Num_Lock Ctrl <Btn5Down>:scroll-forw(1,halfpage,m) 
+OffTheSpot
+oldFunctionKeys
+oldXtermFKeys
+omitTranslation
+on2Clicks
+on3Clicks
+on4Clicks
+on5Clicks
+open ttydev
+OverTheSpot
+OverTheSpot,Root
+pointer color
+*pointerColor
+PointerColor
+pointerColorBackground
+pointerMode
+pointerShape
+poponbell
+*popOnBell
+PopOnBell
+PopTitle
+popup-menu
+preeditAttributes
+preeditType
+Preparation of default font set "%s" for XIM failed.
+Preparation of font set "%s" for XIM failed.
+printAttributes
+printerAutoClose
+printerCommand
+printerControlMode
+printerExtent
+printerFormFeed
+printerNewLine
+print-everything
+__printf_chk
+printFileImmediate
+printFileOnXError
+print-immediate
+printModeImmediate
+printModeOnXError
+print-on-error
+printOptsImmediate
+printOptsOnXError
+print out this message
+print-redir
+print the version number
+/proc/%lu/cwd
+/proc/self/exe
+ptyHandshake
+*ptyInitialErase
+PtyInitialErase
+ptySttySize
+PushTitle
+queryInputStyle
+quietGrab
+RaiseWin
+rangeError
+readline-button
+readlink
+Reason: %s
+RefreshWin
+removeFromUtmp
+renderFont
+resizeGravity
+RestoreWin
+retryInputMethod
+reversevideo
+*reverseVideo
+*reverseWrap
+ReverseWrap
+rgb:00/00/00
+rgb:00/00/5f
+rgb:00/00/87
+rgb:00/00/af
+rgb:00/00/d7
+rgb:00/00/ff
+rgb:00/5f/00
+rgb:00/5f/5f
+rgb:00/5f/87
+rgb:00/5f/af
+rgb:00/5f/d7
+rgb:00/5f/ff
+rgb:00/87/00
+rgb:00/87/5f
+rgb:00/87/87
+rgb:00/87/af
+rgb:00/87/d7
+rgb:00/87/ff
+rgb:00/af/00
+rgb:00/af/5f
+rgb:00/af/87
+rgb:00/af/af
+rgb:00/af/d7
+rgb:00/af/ff
+rgb:00/d7/00
+rgb:00/d7/5f
+rgb:00/d7/87
+rgb:00/d7/af
+rgb:00/d7/d7
+rgb:00/d7/ff
+rgb:00/ff/00
+rgb:00/ff/5f
+rgb:00/ff/87
+rgb:00/ff/af
+rgb:00/ff/d7
+rgb:00/ff/ff
+rgb:08/08/08
+rgb:12/12/12
+rgb:1c/1c/1c
+rgb:26/26/26
+rgb:30/30/30
+rgb:3a/3a/3a
+rgb:44/44/44
+rgb:4e/4e/4e
+rgb:58/58/58
+rgb:5c/5c/ff
+rgb:5f/00/00
+rgb:5f/00/5f
+rgb:5f/00/87
+rgb:5f/00/af
+rgb:5f/00/d7
+rgb:5f/00/ff
+rgb:5f/5f/00
+rgb:5f/5f/5f
+rgb:5f/5f/87
+rgb:5f/5f/af
+rgb:5f/5f/d7
+rgb:5f/5f/ff
+rgb:5f/87/00
+rgb:5f/87/5f
+rgb:5f/87/87
+rgb:5f/87/af
+rgb:5f/87/d7
+rgb:5f/87/ff
+rgb:5f/af/00
+rgb:5f/af/5f
+rgb:5f/af/87
+rgb:5f/af/af
+rgb:5f/af/d7
+rgb:5f/af/ff
+rgb:5f/d7/00
+rgb:5f/d7/5f
+rgb:5f/d7/87
+rgb:5f/d7/af
+rgb:5f/d7/d7
+rgb:5f/d7/ff
+rgb:5f/ff/00
+rgb:5f/ff/5f
+rgb:5f/ff/87
+rgb:5f/ff/af
+rgb:5f/ff/d7
+rgb:5f/ff/ff
+rgb:62/62/62
+rgb:6c/6c/6c
+rgb:76/76/76
+rgb:80/80/80
+rgb:87/00/00
+rgb:87/00/5f
+rgb:87/00/87
+rgb:87/00/af
+rgb:87/00/d7
+rgb:87/00/ff
+rgb:87/5f/00
+rgb:87/5f/5f
+rgb:87/5f/87
+rgb:87/5f/af
+rgb:87/5f/d7
+rgb:87/5f/ff
+rgb:87/87/00
+rgb:87/87/5f
+rgb:87/87/87
+rgb:87/87/af
+rgb:87/87/d7
+rgb:87/87/ff
+rgb:87/af/00
+rgb:87/af/5f
+rgb:87/af/87
+rgb:87/af/af
+rgb:87/af/d7
+rgb:87/af/ff
+rgb:87/d7/00
+rgb:87/d7/5f
+rgb:87/d7/87
+rgb:87/d7/af
+rgb:87/d7/d7
+rgb:87/d7/ff
+rgb:87/ff/00
+rgb:87/ff/5f
+rgb:87/ff/87
+rgb:87/ff/af
+rgb:87/ff/d7
+rgb:87/ff/ff
+rgb:8a/8a/8a
+rgb:94/94/94
+rgb:9e/9e/9e
+rgb:a8/a8/a8
+rgb:af/00/00
+rgb:af/00/5f
+rgb:af/00/87
+rgb:af/00/af
+rgb:af/00/d7
+rgb:af/00/ff
+rgb:af/5f/00
+rgb:af/5f/5f
+rgb:af/5f/87
+rgb:af/5f/af
+rgb:af/5f/d7
+rgb:af/5f/ff
+rgb:af/87/00
+rgb:af/87/5f
+rgb:af/87/87
+rgb:af/87/af
+rgb:af/87/d7
+rgb:af/87/ff
+rgb:af/af/00
+rgb:af/af/5f
+rgb:af/af/87
+rgb:af/af/af
+rgb:af/af/d7
+rgb:af/af/ff
+rgb:af/d7/00
+rgb:af/d7/5f
+rgb:af/d7/87
+rgb:af/d7/af
+rgb:af/d7/d7
+rgb:af/d7/ff
+rgb:af/ff/00
+rgb:af/ff/5f
+rgb:af/ff/87
+rgb:af/ff/af
+rgb:af/ff/d7
+rgb:af/ff/ff
+rgb:b2/b2/b2
+rgb:bc/bc/bc
+rgb:c6/c6/c6
+rgb:d0/d0/d0
+rgb:d7/00/00
+rgb:d7/00/5f
+rgb:d7/00/87
+rgb:d7/00/af
+rgb:d7/00/d7
+rgb:d7/00/ff
+rgb:d7/5f/00
+rgb:d7/5f/5f
+rgb:d7/5f/87
+rgb:d7/5f/af
+rgb:d7/5f/d7
+rgb:d7/5f/ff
+rgb:d7/87/00
+rgb:d7/87/5f
+rgb:d7/87/87
+rgb:d7/87/af
+rgb:d7/87/d7
+rgb:d7/87/ff
+rgb:d7/af/00
+rgb:d7/af/5f
+rgb:d7/af/87
+rgb:d7/af/af
+rgb:d7/af/d7
+rgb:d7/af/ff
+rgb:d7/d7/00
+rgb:d7/d7/5f
+rgb:d7/d7/87
+rgb:d7/d7/af
+rgb:d7/d7/d7
+rgb:d7/d7/ff
+rgb:d7/ff/00
+rgb:d7/ff/5f
+rgb:d7/ff/87
+rgb:d7/ff/af
+rgb:d7/ff/d7
+rgb:d7/ff/ff
+rgb:da/da/da
+rgb:e4/e4/e4
+rgb:ee/ee/ee
+rgb:ff/00/00
+rgb:ff/00/5f
+rgb:ff/00/87
+rgb:ff/00/af
+rgb:ff/00/d7
+rgb:ff/00/ff
+rgb:ff/5f/00
+rgb:ff/5f/5f
+rgb:ff/5f/87
+rgb:ff/5f/af
+rgb:ff/5f/d7
+rgb:ff/5f/ff
+rgb:ff/87/00
+rgb:ff/87/5f
+rgb:ff/87/87
+rgb:ff/87/af
+rgb:ff/87/d7
+rgb:ff/87/ff
+rgb:ff/af/00
+rgb:ff/af/5f
+rgb:ff/af/87
+rgb:ff/af/af
+rgb:ff/af/d7
+rgb:ff/af/ff
+rgb:ff/d7/00
+rgb:ff/d7/5f
+rgb:ff/d7/87
+rgb:ff/d7/af
+rgb:ff/d7/d7
+rgb:ff/d7/ff
+rgb:ff/ff/00
+rgb:ff/ff/5f
+rgb:ff/ff/87
+rgb:ff/ff/af
+rgb:ff/ff/d7
+rgb:ff/ff/ff
+-rightbar
+*rightScrollBar
+RightScrollBar
+:%s=\%03o:
+SaltTextAway: malloc() failed
+-samename
+-/+samename
+*sameName
+SameName
+*saveLines
+SaveLines
+%s:  bad command line option "%s"
+%s:  bad tty modes "%s"
+%s: cannot allocate buffer space
+%s: Cannot allocate color "%s"
+%s: cannot load font '%s'
+%s: cannot match %s font "%s"
+%s: cannot open console: %s
+%s: cannot open %s: %d:%s
+%s: cannot open %s font "%s"
+%s: cannot support your locale.
+%s: Can't execvp %s: %s
+sched_yield
+%s: child process can find no available ptys: %s
+%s: Could not exec %s: %s
+ScrnPointers: malloc/realloc() failed
+scroll-back
+*scrollBar
+scrollBarBorder
+scrollbarWidgetClass
+ScrollCond
+scroll-forw
+scrollkey
+*scrollKey
+scrollLines
+scroll-lock
+Scroll Lock
+scrollttyoutput
+*scrollTtyOutput
+%s%d-%02d-%02d.%02d:%02d:%02d
+%s:  DISPLAY is not set
+securekbd
+-selbg color
+select-cursor-end
+select-cursor-extend
+select-cursor-start
+Selected font has no non-zero %s for ISO-8859-1 encoding
+select-end
+select-extend
+selection background color
+selection foreground color
+select-set
+select-start
+selectToClipboard
+-selfg color
+SEMIAUTO
+send-signal
+%s: Error %d, errno %d: 
+*sessionMgt
+SessionMgt
+sessionShellWidgetClass
+set-8-bit-control
+set-allow132
+set-altscreen
+set-appcursor
+set-appkeypad
+set-autolinefeed
+set-autowrap
+set-backarrow
+set-bellIsUrgent
+SetColor
+SetColor,GetColor,GetAnsiColor
+set-cursesemul
+set-cursorblink
+setegid(%d): %s
+set-font-doublesize
+SetFont,GetFont
+set-font-linedrawing
+set-font-packed
+set-jumpscroll
+set-keep-selection
+set keyboard type: tcap sun vt220
+setlocale
+set-logging
+set-marginbell
+set-num-lock
+set-old-function-keys
+set-pop-on-bell
+set-render-font
+set-reverse-video
+set-reversewrap
+set-scrollbar
+set-scroll-on-key
+set-scroll-on-tty-output
+set-select
+SetSelection
+set-sun-function-keys
+set-sun-keyboard
+SetTcap,GetTcap
+set-tek-text
+set-terminal-type
+set-titeInhibit
+setupterm
+set-utf8-fonts
+set-utf8-mode
+set-utf8-title
+set-visibility
+set-visual-bell
+set-vt-font
+SetWinLines
+SetWinPosition
+SetWinSizeChars
+SetWinSizePixels
+SetXprop
+%s:  fatal IO error %d (%s) or KillClient on X server "%s"
+%s: fatal pty error errno=%d, error=%d device "%s"
+    Shift~Ctrl <KeyPress> KP_Add:larger-vt-font() 
+    Shift Ctrl <KeyPress> KP_Add:smaller-vt-font() 
+shift-fonts
+shiftFonts
+         Shift <KeyPress> Insert:insert-selection(SELECT, CUT_BUFFER0) 
+    Shift <KeyPress> KP_Subtract:smaller-vt-font() 
+           Shift <KeyPress> Next:scroll-forw(1,halfpage) 
+          Shift <KeyPress> Prior:scroll-back(1,halfpage) 
+         Shift <KeyPress> Select:select-cursor-start() select-cursor-end(SELECT, CUT_BUFFER0) 
+          Shift ~Meta<Btn1Down>: gin-press(L) 
+          Shift ~Meta<Btn2Down>: gin-press(M) 
+          Shift ~Meta<Btn3Down>: gin-press(R) 
+showBlinkAsBold
+showMissingGlyphs
+showWrapMarks
+%s:  ICE IO error handler doing an exit(), pid = %ld, errno = %d
+sigaction
+sigemptyset
+signalInhibit
+__sigsetjmp
+%s: illegal GIN terminator setting "%s"
+*SimpleMenu*Cursor: left_ptr
+*SimpleMenu*HorizontalMargins: 16
+*SimpleMenu*menuLabel.vertSpace: 100
+*SimpleMenu*Sme.height: 16
+simpleMenuWidgetClass
+size (in characters) and position
+%sKeymap
+slave mode on "ttycc", file descriptor "n"
+-sl number
+smaller-vt-font
+smeBSBObjectClass
+smeLineObjectClass
+%s: Not enough core for Tek mode
+softreset
+soft-reset
+    %s [-options ...] [-e command args]
+spawn: can't initialize window
+spawn: exec() failed
+spawn: fork() failed
+spawn: initgroups() failed
+spawn: ioctl() failed on I_PUSH/"consem"
+spawn: ioctl() failed on I_PUSH/"ldterm"
+spawn: ioctl() failed on I_PUSH/"ptem"
+spawn: ioctl() failed on I_PUSH/"ttcompat"
+spawn: ioctl() failed on TIOCGETP
+spawn: ioctl() failed on TIOCKSET
+spawn: ioctl() failed on TIOCKSETC
+spawn: ioctl() failed on TIOCLSET
+spawn: ioctl() failed on TIOCSETC
+spawn: ioctl() failed on TIOCSETD
+spawn: ioctl() failed on TIOCSETP
+spawn: ioctl() failed on TIOCSLTC
+spawn-new-terminal
+spawn: open() failed on /dev/tty
+spawn: open() failed on ptsname
+spawn: ptsname() failed
+spawn: setuid() failed
+specify additional character classes
+spotLocation
+__sprintf_chk
+%s %s(%d)
+%s: selection too big (%lu bytes), not storing in CUT_BUFFER%d
+%s:  %s in range string "%s" (position %d)
+__stack_chk_fail
+start-cursor-extend
+start-extend
+start iconic
+StartLog: exec() failed
+__strcat_chk
+__strcpy_chk
+__strdup
+strerror
+strftime
+__strncpy_chk
+%s: unable to allocate memory for ttydev or ptydev
+%s:  unable to locate a suitable font
+%s:  unable to open font "%s", trying "%s"....
+%s: unable to reset group-id
+%s: unable to reset uid
+%s: unable to reset user-id
+%s: unexpected handshake status %d
+*sunFunctionKeys
+SunFunctionKeys
+*sunKeyboard
+SunKeyboard
+%s usage:
+%s:  warning, error event received:
+%s Xt error: %s
+%s: you do not own %s
+t+9\$ |%
+T$(9T$0u
+T$<9T$8t
++T$<9t$H
+tcapFunctionKeys
+tek-copy
+*tekGeometry
+tekInhibit
+TekInit: can't initialize window
+*tekMenu.Label:  Tek Options (no app-defaults)
+tek-page
+tekreset
+tek-reset
+tekSmall
+*tekStartup
+TekStartup
+tektext2
+tektext3
+tektextlarge
+tektextsmall
+tektronix
+Tek window geometry
+TERM environment variable name
+TerminalBell
+terminal identifier
+terminal mode keywords and characters
+terminate
+*termName
+TermName
+text cursor color
+This program doesn't support the 'OffTheSpot' preedit type
+This should not happen. Why is it so?
+tigetstr
+time text cursor is off when blinking
+time text cursor is on when blinking
+Tinput: malloc error (%d)
+Tinput: select() failed
+TiteInhibit
+-ti termid
+titleModes
+title name for window
+-title string
+tiXtraScroll
+-tm string
+-tn name
+too many numbers
+topLevelShellWidgetClass
+trimSelection
+-T string
+*ttyModes
+TtyModes
+turn off/on active icon
+turn off/on ANSI color mode
+turn off/on display of bold as color
+turn off/on display of reverse as color
+turn off/on display of underline as color
+turn off/on display of underline as italics
+turn off/on display of underlining
+turn off/on dynamic color selection
+turn off/on linedrawing characters
+turn on/off 80/132 column switching
+turn on/off always highlight
+turn on/off auto wraparound
+turn on/off C1-printable classification
+turn on/off curses emulation
+turn on/off cut newline inhibit
+turn on/off cut-to-beginning-of-line inhibit
+turn on/off fullscreen on startup
+turn on/off initialization of 'erase' from pty
+turn on/off jump scroll
+turn on/off legacy CJK width convention
+turn on/off locale mode using luit
+turn on/off logging
+turn on/off logic that retains window after exit
+turn on/off login shell
+turn on/off margin bell
+turn on/off maxmize on startup
+turn on/off multiscroll
+turn on/off normal/bold font comparison inhibit
+turn on/off PC-style bold colors
+turn on/off pop on bell
+turn on/off reverse video
+turn on/off reverse wraparound
+turn on/off scrollbar
+turn on/off scroll-on-keypress
+turn on/off scroll-on-tty-output inhibit
+turn on/off selection-color override
+turn on/off simple width convention
+turn on/off Sun Function Key escape codes
+turn on/off Sun/PC Function/Keypad mapping
+turn on/off Tek emulation window
+turn on/off text cursor blinking
+turn on/off the no-flicker option for title and icon name
+turn on/off the session-management support
+turn on/off underline cursor
+turn on/off UTF-8 mode (implies wide-characters)
+turn on/off utmp support
+turn on/off visual bell
+turn on/off wait for map before command exec
+turn on/off wide-character mode
+Type %s -help for a full description.
+*underLine
+unknown error
+unlockpt
+Unrecognized keyword: %s
+unsupported resizeGravity resource value (%s)
+usage:  %s
+useClipping
+use_extended_names
+*useInsertMode
+UseInsertMode
+use insert mode for TERMCAP
+Use the "-fa" option for the Xft fonts
+use the window id given to -into as the parent window rather than the default root window
+/usr/bin/luit
+utf8Fonts
+utf8Latin1
+utf8SelectTypes
+utf8Title
+utmpDisplayId
+*utmpInhibit
+UtmpInhibit
+-version
+Version 
+veryBoldColors
+V<f9V0u*
+V<f9V0u&
+vi-button
+visualbell
+*visualBell
+VisualBell
+visualBellDelay
+*vt100.geometry
+vt100Graphics
+VTInit: can't initialize window
+*vtMenu.Label:  VT Options (no app-defaults)
+*waitForMap
+WaitForMap
+waiting for initial map
+wheel-mouse
+where options include:
+wide-bold
+*wideBoldFont
+WideBoldFont
+*wideChars
+WideChars
+*wideFont
+WideFont
+wide-italic
+widgetClassRec
+will be started.  Options that start with a plus sign (+) restore the default.
+WINDOWID
+WM_DELETE_WINDOW
+wwwwwwwwwww
+wwwwwwwwwwwwwwww
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+_XA_COMPOUND_TEXT
+_XA_LENGTH
+_XA_LIST_LENGTH
+XAllocColor
+_XA_TARGETS
+_XA_TEXT
+_XA_UTF8_STRING
+XawPositionSimpleMenu
+XawScrollbarSetThumb
+XawSimpleMenuAddGlobalActions
+XChangeGC
+XChangeKeyboardControl
+XChangeProperty
+XClearArea
+XClearWindow
+XCloseIM
+XConfigureWindow
+XCopyArea
+XCreateBitmapFromData
+XCreateFontCursor
+XCreateFontSet
+XCreateGC
+XCreateGlyphCursor
+XCreateIC
+XCreateWindow
+XDefaultScreen
+XDefineCursor
+XDeleteProperty
+XDisplayKeycodes
+XDisplayString
+XDrawArc
+XDrawImageString
+XDrawImageString16
+XDrawLine
+XDrawLines
+XDrawRectangle
+XDrawSegments
+XDrawString
+XDrawString16
+xerror: XError event
+XExtentsOfFontSet
+XFetchBuffer
+XFillPolygon
+XFillRectangle
+XFontsOfFontSet
+XFreeCursor
+XFreeFont
+XFreeModifiermap
+XFreeStringList
+XftCharExists
+XftDrawCharSpec
+XftDrawCreate
+XftDrawRect
+XftDrawSetClip
+XftDrawSetClipRectangles
+XftFontClose
+XftFontMatch
+XftFontOpenPattern
+XftNameParse
+XftTextExtents32
+XftTextExtentsUtf8
+XGContextFromGC
+XGeometry
+XGetAtomName
+XGetGeometry
+XGetIMValues
+XGetKeyboardControl
+XGetKeyboardMapping
+XGetModifierMapping
+XGetSelectionOwner
+XGetVisualInfo
+XGetWindowAttributes
+XGetWindowProperty
+XGetWMHints
+XGetWMIconName
+XGetWMName
+XGetWMNormalHints
+XGrabKeyboard
+xh9|$@ub
+XIconifyWindow
+*ximFont
+XIM fontset
+XInternAtom
+xioerror: X I/O error
+XkbGetNamedIndicator
+XkbLibraryVersion
+XkbQueryExtension
+XkbSetNamedIndicator
+XKeycodeToKeysym
+XLoadQueryFont
+XLookupString
+XLowerWindow
+XMapWindow
+XMaxRequestSize
+XmbLookupString
+XmbTextListToTextProperty
+XmbTextPropertyToTextList
+XMoveResizeWindow
+XMoveWindow
+XmuCompareISOLatin1
+XmuConvertStandardSelection
+XmuCreateStippledPixmap
+XmuCvtStringToGravity
+XmuGetHostname
+XmuInternAtom
+XmuInternStrings
+XmuMakeAtom
+XmuPrintDefaultErrorMessage
+XmuReleaseStippledPixmap
+XmuUpdateMapHints
+XParseColor
+XParseGeometry
+XQueryColor
+XQueryColors
+XQueryFont
+XQueryPointer
+XQueryTree
+XRaiseWindow
+XRecolorCursor
+XReconfigureWMWindow
+XRefreshKeyboardMapping
+XRegisterIMInstantiateCallback
+XReparentWindow
+-xrm resourcestring
+XScreenNumberOfScreen
+XSelectInput
+XSendEvent
+X server to contact
+XSetBackground
+XSetClipMask
+XSetClipRectangles
+XSetDashes
+XSetErrorHandler
+XSetFont
+XSetForeground
+XSetICFocus
+XSetICValues
+XSetIMValues
+XSetIOErrorHandler
+XSetLineAttributes
+XSetLocaleModifiers
+XSetTextProperty
+XSetWindowBackground
+XSetWindowBorder
+XSetWMHints
+XSetWMNormalHints
+XSetWMProtocols
+XStoreBuffer
+XSupportsLocale
+XtAddCallback
+XtAddConverter
+XtAddEventHandler
+XtAppAddActions
+XtAppAddTimeOut
+XtAppNextEvent
+XtAppPending
+XtAppProcessEvent
+XtAppWarningMsg
+XtAugmentTranslations
+XtCallActionProc
+XtConfigureWidget
+XtCreateManagedWidget
+XtCreatePopupShell
+XtCreateWidget
+XtDefaultBackground
+XtDefaultForeground
+XtDisownSelection
+XtDispatchEvent
+XTermError
+XTERM_LOCALE
+Xterm.log.%.255s.%.20s.%d
+XTERM_SHELL
+XTERM_VERSION
+XTextPropertyToStringList
+XTextWidth
+XTextWidth16
+XtGetApplicationResources
+XtGetSelectionValue
+XtGetSubresources
+XtGetValues
+_XtInherit
+XtLastTimestampProcessed
+XtMakeResizeRequest
+XtMalloc
+XtOpenApplication
+XtOverrideTranslations
+XtOwnSelection
+XtParseTranslationTable
+XtRealizeWidget
+XtRealloc
+XtRegisterDrawable
+XtRegisterGrabAction
+XtReleaseGC
+XtRemoveTimeOut
+XtSetErrorHandler
+XtSetLanguageProc
+XtSetMappedWhenManaged
+XtSetValues
+XtShellStrings
+XtStrings
+XtVaCreateManagedWidget
+XtVaGetValues
+XtVaSetValues
+XtWindowOfObject
+XUngrabKeyboard
+XUnmapWindow
+XUnsetICFocus
+Xutf8LookupString
+Xutf8TextListToTextProperty
+Xutf8TextPropertyToTextList
+XVaCreateNestedList
+XVisualIDFromVisual
+XWarpPointer
+XWindowEvent
+XWithdrawWindow
+ XXXXXXXX	XXX
+xxxxxxxxxxxxxxxx
+XXXxxxxXXXXXXXXXXXXXXXXXXXXX*+,-./0123456789XXX=
+%Y.%m.%d.%H.%M.%S
+-ziconbeep
+*zIconBeep
+ZIconBeep
+-ziconbeep percent

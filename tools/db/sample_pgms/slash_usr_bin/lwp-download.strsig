@@ -1,0 +1,223 @@
+              {
+	      )
+	      }
+		      }
+			  ) {
+ 11.4 MB received in 8 seconds (1.43 MB/sec)
+$| = 1;  # autoflush
+   agent => "lwp-download/$VERSION ",
+already exists, then B<lwp-download> will prompt before it overwrites and will
+also fail is no acceptable filename can be derived from the sources mentioned
+and that you don't have much options to worry about.
+        $ani %= @ani;
+Another benefit is that it will keep you updated about its progress
+assumed.
+          binmode FILE unless $opt{a};
+B<lwp-download> [B<-a>] [B<-s>] <I<url>> [<I<local path>>]
+	      # Check if the file is already present
+    close(FILE) || die "Can't write to $file: $!\n";
+Content-Type might also be appended.  If a file with the produced filename
+# Did not manage to create any file
+		      die "Can't open $file: $!";
+    die "Usage: $progname [-a] <url> [<lpath>]\n";
+		  die "Will not save <$url> as \"$file\".\nPlease override file name on the command line.\n";
+		  die "Will not save <$url> as \"$file\".  Path exists.\n";
+		  die "Will not save <$url> as \"$file\" without verification.\nEither run from terminal or override file name on the command line.\n"
+		  die "Will not save <$url> to link \"$file\".\nPlease override file name on the command line.\n";
+	      ($directory, $argfile) = ($argfile, undef);
+      else {
+    else {
+	      else {
+	    else {
+	  else {
+		      else {
+		  else {
+	      elsif (-e _) {
+	      elsif (-f _) {
+	    elsif ($length > $size) {
+    elsif ($mins >= 2) {
+    elsif ($n >= 1024) {
+		  elsif ($url->scheme eq 'ftp' ||
+   env_proxy => 1,
+eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
+    exit 0;
+            exit 1;
+		      exit 1;
+fail if its standard input is not a terminal.  This form of invocation will
+Fetch the newest and greatest perl version:
+		  $file =~ /^\./
+	      $file = $argfile;
+	          $file = File::Spec->catfile($directory, $file);
+		      $file = "index";
+	      $file = $opt{s} && $res->filename;
+                  $file =~ s/([^a-zA-Z0-9_\.\-\+\~])/sprintf "\\x%02x", ord($1)/ge ||
+		      $file .= ".$suffix" if $suffix;
+			  $file .= ".$suffix" if $suffix;
+			   $file =~ /\.tar(\.(Z|gz|bz2?))?$/
+			   $file =~ /\.t[bg]z$/   ||
+		  $file = ($url->path_segments)[-1];
+	      # find a suitable name to use
+	  $flength = fbytes($length) if defined $length;
+#' get emacs out of quote mode
+Gisle Aas <gisle@aas.no>
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 EXAMPLE
+=head1 NAME
+=head1 SYNOPSIS
+header or any redirect URLs.  A file extension to match the server reported
+    if 0; # not running under some shell
+		      if (defined $ans) {
+	    if (defined($ans) && $ans =~ /^y\n/) {
+	  if (defined $argfile && -d $argfile) {
+	      if (defined $directory) {
+		  if (!defined($file) || !length($file)) {
+      if (defined $length) {
+    if ($dur) {
+	  if ($dur != $last_dur) {  # don't update too often
+if (fileno(FILE)) {
+    if ($hours) {
+If I<local path> is a directory, then the last segment of the path of the
+If I<local path> is not a directory, then it is simply used as the
+If I<local path> is not specified, then the current directory is
+	      if (!length($file) ||
+	      if (-l $file) {
+	if (my $died = $res->header("X-Died")) {
+    if (my $mtime = $res->last_modified) {
+if (my $xdied = $res->header("X-Died")) {
+    if ($n >= 1024 * 1024) {
+    if ($res->header("X-Died") || !$res->is_success) {
+	if (-t) {
+	      # if this fails we try to make something from the URL
+I<lwp-request> program because it does not store the file in memory.
+I<url> is appended to form a local filename.  If the I<url> path ends with
+   keep_alive => 1,
+	  $last_dur = 0;
+	      $last_dur = $dur;
+		      # leave the filename as it was
+	  $length = $res->content_length;
+library.  It is better suited to down load big files than the
+lwp-download - Fetch large files from the web
+ $ lwp-download http://www.perl.com/CPAN/src/latest.tar.gz
+make a difference on dosish systems.
+	      # might try to trick us into doing something bad.
+    my $ani = 0;
+    my @ani = qw(- \ | /);
+	    my $ans = <STDIN>;
+		  my $ans = <STDIN>;
+my $argfile = encode(locale_fs => decode(locale => shift));
+		      my $ct = guess_media_type($file);
+	  my $directory;
+    my $dur = time - $start_t;
+	  my $dur  = time - $start_t;
+my $file;      # name of file we download into
+my $flength;   # formatted length
+    my $hours = $secs / (60*60);
+my $last_dur;  # time of last callback
+my $length;    # total number of bytes to download
+        my($mess, $show_ani) = @_;
+    my $mins = $secs / 60;
+    my $n = int(shift);
+my %opt;
+	      my $perc = $size / $length;
+my $progname = $0;
+	  my $res = $_[1];
+my $res = $ua->request(HTTP::Request->new(GET => $url),
+    my $secs = int(shift);
+	      my $secs_left = fduration($dur/$perc - $dur);
+my $shown = 0; # have we called the show() function yet
+	      my $show = "$perc% of $flength";
+my $size = 0;  # number of bytes received
+	      my $speed;
+	my $speed = fbytes($size/$dur) . "/sec";
+my $start_t;   # start time of download
+		      my $suffix = media_suffix($res->content_type);
+			  my $suffix = media_suffix($res->content_type);
+my $ua = LWP::UserAgent->new(
+my $url = URI->new(decode(locale => shift) || usage());
+my $VERSION = "6.00";
+			  # need a better suffix for this type
+of the filename from server provided sources like the Content-Disposition
+	      open(FILE, ">", $file) || die "Can't open $file: $!\n";
+#parse option
+path to save into.  If the file already exists it's overwritten.
+	      $perc = int($perc*100);
+	    print "$died\n";
+    print fbytes($size);
+      print FILE $_[0] or die "Can't write to $file: $!\n";
+		print "File kept.\n";
+	print " in ", fduration($dur), " ($speed)";
+    print "\n";
+			  print "\nAborting.\n";
+print "\n" if $shown;
+    print " of ", fbytes($length) if defined($length) && $length != $size;
+			  print "Ok, aborting.\n";
+		  print "Overwrite $file? [y] ";
+    print "$progname: Aborted\n$xdied\n";
+    print "$progname: ", $res->status_line, "\n";
+    print "\r";
+    print " received";
+        print "\r$mess" . (" " x (75 - length $mess));
+		  print "Saving to '$file'...\n";
+	print $show_ani ? "$ani[$ani++]\b" : " ";
+	    print "Transfer aborted.  Delete $file? [n] ";
+	    print "Transfer aborted, $file kept\n";
+		print "Truncated file kept: ", fbytes($length - $size), " missing\n";
+$progname =~ s,.*\\,, if $^O eq "MSWin32";
+$progname =~ s,.*/,,;    # only basename left in progname
+$progname =~ s/\.\w*$//; # strip extension if any
+	          require File::Spec;
+	return "$hours hours $mins minutes";
+	return "$mins minutes";
+	return "$n bytes";
+	return "$secs seconds";
+	return sprintf "%.3g KB", $n / 1024.0;
+	return sprintf "%.3g MB", $n / (1024.0 * 1024);
+ Saving to 'latest.tar.gz'...
+    $secs %= 60;
+    $secs -= $hours * 60*60;
+	$secs += $mins * 60;
+	      $show .= " (at $speed, $secs_left remaining)" if $speed;
+    show("");  # clear text
+	  show( fbytes($size) . " received");
+        $shown++;
+		  $shown = 0;
+		  $shown = 1;
+	      show($show, 1);
+$SIG{INT} = sub { die "Interrupted\n"; };
+      $size += length($_[0]);
+slash the name "index" is used.  With the B<-s> option pick up the last segment
+	      $speed = fbytes($size/$dur) . "/sec" if $dur > 3;
+	  $start_t = time;
+sub fbytes
+sub fduration
+    sub show
+sub usage
+		  sysopen(FILE, $file, O_WRONLY|O_EXCL|O_CREAT) ||
+The B<lwp-download> program will save the file at I<url> to a local
+The I<lwp-download> program is implemented using the I<libwww-perl>
+		      unless ($ct eq $res->content_type) {
+		  unless (defined($ans) && $ans =~ /^y?\n/) {
+	  unless (defined $argfile) {
+      unless(defined $file) {
+	      unless ($file) {
+	  unless (fileno(FILE)) {
+unless (getopts('as', \%opt)) {
+		      unless -t;
+		unlink($file) && print "Deleted.\n";
+    usage();
+usage() if defined($argfile) && !length($argfile);
+use Encode;
+use Encode::Locale;
+		  use Fcntl qw(O_WRONLY O_EXCL O_CREAT);
+use Getopt::Std;
+use HTTP::Date ();
+    use integer;
+use LWP::MediaTypes qw(guess_media_type media_suffix);
+use LWP::UserAgent ();
+use strict;
+Use the C<-a> option to save the file in text (ascii) mode.  Might
+use URI ();
+#!/usr/bin/perl -w
+	utime time, $mtime, $file;
+	      # validate that we don't have a harmful filename now.  The server

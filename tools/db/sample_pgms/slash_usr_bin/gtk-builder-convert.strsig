@@ -1,0 +1,599 @@
+        """
+        # 1) Get parent dialog node
+        # 2) Get dialogs action-widgets tag, create if not found
+        # 3) Add action-widget tag for the response
+            accelerator.removeAttribute('signal')
+    accelerators = []
+            accelerators.append(child)
+        action.appendChild(self._dom.createTextNode(object_name))
+                action.appendChild(signal)
+        actions.appendChild(action)
+                actions = child
+        action = self._create_object(name,
+        action = self._dom.createElement("action-widget")
+        action.setAttribute("response", response)
+            actions = self._dom.createElement("action-widgets")
+        adj = self._create_root_object("GtkAdjustment",
+                                           a.getAttribute('id')))
+# along with this program; if not, write to the Free Software
+# as published by the Free Software Foundation; either version 2
+    assert child_node.tagName == 'child', child_node
+        assert glade_iface, ("Badly formed XML, there is "
+    assert len(nodes) == 1, nodes
+            assert len(packing_props) == 1
+            assert len(widgets) == 1
+            assert node
+    assert node.tagName == 'object'
+                "AtkObject", None,
+            atkobject = self._create_object(
+        attribute.appendChild(self._dom.createTextNode('0'))
+        attributes.appendChild(attribute)
+        attribute = self._dom.createElement('attribute')
+        attribute.setAttribute('name', 'text')
+        attributes = self._dom.createElement('attributes')
+                                   attr_val=None):
+            break
+                break
+                    break
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+        # by attribute id
+        by the dictionary key.
+            # Can be GtkImage, which will take care of later.
+        cdata = node.childNodes[0]
+        cell_renderer = self._create_object('GtkCellRendererText', None,
+            child.appendChild(accelerator)
+        child.appendChild(action)
+            child.appendChild(atkobject)
+        child.appendChild(attributes)
+        child.appendChild(cell_renderer)
+            child.appendChild(group)
+                child = get_property_node(image, 'stock')
+        child = get_property_node(node, prop_name)
+        child = minidom.parseString(data).childNodes[0]
+            child_node = children[0]
+                child.parentNode.removeChild(child)
+            child.parentNode.removeChild(child)
+                child.removeChild(obj_node)
+            child.removeChild(obj_node)
+                child.removeChild(packing_prop)
+                children[0].getAttribute('internal-child') == 'image'):
+            children = get_child_nodes(node)
+        children = get_child_nodes(obj_node)
+            child = self._dom.createElement('child')
+        child = self._dom.createElement('child')
+            child.setAttribute("internal-child", "accessible")
+                child.setAttribute(prop_name, attr_val or prop_val)
+class GtkBuilderConverter(object):
+            col.appendChild(self._dom.createTextNode(item))
+            col = self._dom.createElement('col')
+                col.setAttribute('comments', comments)
+                    col.setAttribute('context', context)
+            col.setAttribute('id', '0')
+                col.setAttribute('translatable', 'yes')
+        columns.appendChild(column)
+        column = self._dom.createElement('column')
+        column.setAttribute('type', 'gchararray')
+        columns = self._dom.createElement('columns')
+        comments_attr = prop.attributes.get('comments')
+        comments = comments_attr is not None and comments_attr.value or None
+                    context, item = splitting
+            continue
+                continue
+                    continue
+                        continue
+                        continue;
+        # Convert accessibility tag
+        # Convert Gazpachos UI tag
+Converts Glade files into XML files which can be loaded with GtkBuilder.
+    conv = GtkBuilderConverter(skip_windows=skip_windows,
+    conv.parse_file(input_filename)
+        copy_properties(node, ['active'], properties)
+        copy_properties(node, ['group'], properties)
+        copy_properties(node, ['label', 'tooltip'], properties)
+# Copyright (C) 2006-2008 Async Open Source
+                count += 1
+            count = 1
+        Creates a new <object> tag.
+            data.appendChild(row)
+        data = cdata.toxml().strip()
+        data = data[9:-3]
+            data = prop.childNodes[0].data
+        data = prop.childNodes[0].data
+        data = self._dom.createElement('data')
+    def _add_action_from_menuitem(self, uimgr, node):
+    def _convert_accessibility(self, node):
+    def _convert_adjustment(self, prop):
+    def _convert_combobox_items(self, node, prop):
+    def _convert_dialog_response(self, node, object_name, response):
+    def _convert_menuitem(self, uimgr, obj_node):
+    def _convert_menu(self, node, popup=False):
+    def _convert(self, klass, node):
+    def _convert_sizegroup(self, node, prop):
+    def _convert_textview_text(self, prop):
+    def _convert_ui(self, node):
+def copy_properties(node, props, prop_dict):
+    def _create_object(self, obj_class, obj_id, template=None, properties=None):
+    def _create_root_object(self, obj_class, template, properties=None):
+    def _default_widget_converter(self, node):
+def get_accelerator_nodes(node):
+def get_child_nodes(node):
+def get_object_node(child_node):
+    def _get_objects_by_attr(self, attribute, value):
+    def _get_object(self, name):
+def get_properties(node):
+def get_property_node(node, property_name):
+def get_property(node, property_name):
+def get_property_nodes(node):
+def get_signal_nodes(node):
+def _indent(output):
+    def __init__(self, skip_windows, target_version, root):
+def main(args):
+    def _menuitem_to_action(self, node, properties):
+    def _packing_prop_to_child_attr(self, node, prop_name, prop_val,
+    def parse_buffer(self, buffer):
+    def parse_file(self, file):
+    def _parse(self):
+    def _radiomenuitem_to_action(self, node, properties):
+    def _remove_window(self, node):
+    def _strip_root(self, root_name):
+    def _togglemenuitem_to_action(self, node, properties):
+    def to_xml(self):
+def usage():
+                del properties['label']
+            dialog.appendChild(actions)
+                dialog = node
+DIALOGS = ['GtkDialog',
+            elif klass == "GtkDialog":
+        elif klass == "GtkMenu":
+        elif klass == "GtkMenuBar":
+        elif klass in ['GtkExpander', 'GtkFrame']:
+        elif klass in WINDOWS and self.skip_windows:
+            elif node.nodeName == 'atkaction':
+            elif node.nodeName == 'atkrelation':
+        elif object_class == 'GtkCheckMenuItem':
+        elif object_class == 'GtkImageMenuItem':
+        elif object_class == 'GtkRadioMenuItem':
+        elif object_class == 'GtkSeparatorMenuItem':
+        elif o in ("-r", "--root"):
+        elif o in ("-t", "--target-version"):
+        elif o in ("-w", "--skip-windows"):
+            elif prop_name == "adjustment":
+            elif prop_name in ["response_id", 'response-id']:
+            elif prop_name == "items" and klass in ['GtkComboBox',
+            elif prop_name == "text" and klass == 'GtkTextView':
+            elif prop_name == "tooltip" and klass != "GtkAction":
+                else:
+            else:
+        else:
+    else:
+Examples:
+    except getopt.GetoptError:
+except ImportError:
+        filename = os.path.join(directory, 'xmllint')
+        # FIXME: handle comments
+        # FIXME: Use sorted(self.root_objects,
+        for accelerator in get_accelerator_nodes(node):
+        for child in dialog.childNodes:
+            for child in get_child_nodes(menu_node):
+        for child in get_child_nodes(node):
+                for child in node.childNodes:
+    for child in node.childNodes:
+            for child in self._dom.getElementsByTagName(tag):
+        for child in self._interface.childNodes[:]:
+        for child_node in nodes:
+    for directory in os.environ['PATH'].split(os.pathsep):
+        for item in value.split('\n'):
+            for name, value in properties.items():
+    for node in child_node.childNodes:
+        for node in node.childNodes:
+        for node in objects:
+        for node in self._dom.childNodes:
+        for node in self._dom.getElementsByTagName("accessibility"):
+        for node in self._dom.getElementsByTagName("ui"):
+    for o, a in opts:
+        for obj in root_objects:
+        for prop in get_property_nodes(node):
+            for prop in properties:
+    for prop_name in props:
+        for signal in get_signal_nodes(node):
+        for tag in ['requires', 'requires-version']:
+        for widget in self._dom.getElementsByTagName("widget"):
+        for widget in self._get_objects_by_attr("constructor",
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+from xml.dom import minidom, Node
+        glade_iface[0].tagName = 'interface'
+        glade_iface = self._dom.getElementsByTagName("glade-interface")
+# GNU General Public License for more details.
+        group.appendChild(child)
+            group = self._create_object('GtkActionGroup', None,
+            group = uimgr.childNodes[0].childNodes[0]
+  gtk-builder-convert preference.glade preferences.ui
+                            'GtkCheckMenuItem',
+                                                    'GtkComboBoxEntry']:
+           'GtkFileChooserDialog',
+                            'GtkImageMenuItem',
+           'GtkMessageDialog']
+                            'GtkRadioMenuItem']:
+        has_context_attr = prop.attributes.get('context')
+        has_context = has_context_attr is not None and has_context_attr.value == 'yes'
+                                   ["help",
+#                         Henrique Romano <henrique@async.com.br>
+  -h, --help             display this help and exit
+                    if (child.getAttribute("name") not in ("has-separator", "has_separator")):
+        if child.getAttribute('name') == property_name:
+                if child is not None:
+        if child is not None:
+                    if child.nodeType != Node.ELEMENT_NODE:
+            if child.nodeType != Node.ELEMENT_NODE:
+        if child.nodeType != Node.ELEMENT_NODE:
+        if children:
+            if (children and
+        if child.tagName == 'accelerator':
+            if child.tagName == 'action-widgets':
+        if child.tagName != 'child':
+                    if child.tagName != 'property':
+        if child.tagName == 'property':
+        if child.tagName != 'property':
+        if child.tagName == 'signal':
+            if comments is not None:
+        if get_property(node, 'use_stock') == 'True':
+            if has_context:
+                if isinstance(value, Node):
+            if klass == "GtkComboBoxEntry":
+        if klass == 'GtkNotebook':
+            if 'label' in properties:
+    if len(args) != 2:
+            if len(properties) == 1:
+                if len(splitting) == 2:
+            if menu_node.getAttribute('class') == 'GtkMenu':
+if __name__ == "__main__":
+        if node.hasAttribute('constructor'):
+                if node.name == 'glade-interface':
+            if node.nodeName == 'atkproperty':
+            if node.nodeType == Node.DOCUMENT_TYPE_NODE:
+        if node.nodeType != Node.ELEMENT_NODE:
+            if node.parentNode == self._interface:
+            if node == self._dom:
+        if node.tagName == 'object':
+            if (node.tagName == 'object' and
+        if not data.startswith("<![CDATA[") or not data.endswith("]]>"):
+        if not node.hasAttribute("id"):
+            if not packing_props:
+        if not prop.childNodes:
+    if not subprocess:
+        if not uimgr.childNodes:
+        if object_class == 'GtkMenuItem':
+        if object_class in ['GtkMenuItem',
+        if obj is None:
+        if o in ("-h", "--help"):
+        if os.path.exists(filename):
+    if output_filename == "-":
+        if popup:
+        if prop.childNodes:
+        if properties:
+                if (prop.getAttribute("name") != prop_name or
+        if prop.hasAttribute('translatable'):
+            if prop_name == "sizegroup":
+            if self._get_object(node.getAttribute('id')) is not None:
+        if self.root:
+                if self.skip_windows:
+        if self.target_version == "3.0":
+            if signal_name != 'activate':
+            if signal_name in ['activate', 'toggled']:
+        if template is not None:
+            if translatable:
+        if value.endswith('\n'):
+            # If we can't find the parent dialog, give up
+                      if w.getAttribute(attribute) == value]
+            if widget.getAttribute('id') == root_name:
+                if widget is None:
+            if widgets:
+        if widgets:
+                image = get_object_node(children[0])
+import getopt
+import os
+    import subprocess
+import sys
+    input_filename, output_filename = args
+                # It does not make sense to convert responses when
+                item = self._convert_menuitem(uimgr, obj_node)
+            item = self._convert_menuitem(uimgr, obj_node)
+#                         Johan Dahlin <jdahlin@async.com.br>
+        #                   key=lambda n: n.getAttribute('id'),
+        klass = node.getAttribute("class")
+                              lower=lower,
+        member = self._dom.createElement("widget")
+        member.setAttribute("name", node.getAttribute("id"))
+                menu.appendChild(item)
+            menu.appendChild(item)
+            menu_node = get_object_node(child_node)
+            menu = self._dom.createElement(name)
+        menu = self._dom.createElement(name)
+        menu.setAttribute('action', obj_node.getAttribute('id'))
+        menu.setAttribute('name', node.getAttribute('id'))
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        model.appendChild(columns)
+        model.appendChild(data)
+        model_prop.appendChild(
+        model_prop = self._dom.createElement('property')
+        model_prop.setAttribute('name', 'model')
+        model = self._create_root_object("GtkListStore",
+# modify it under the terms of the GNU Lesser General Public License
+            name = 'GtkAction'
+            name = 'GtkRadioAction'
+            name = 'GtkToggleAction'
+                name = 'menu'
+            name = 'menubar'
+        name = 'menuitem'
+            name = 'popup'
+        node.appendChild(child)
+            node.appendChild(child_node)
+                node.appendChild(prop)
+                node.getAttribute('class') in DIALOGS):
+                    node.getAttribute('class'), signal_name)
+                                                node.getAttribute("id")):
+            node = node.parentNode
+                node.parentNode.removeChild(node)
+        node.removeAttribute("id")
+        node.removeChild(cdata)
+                    node.removeChild(child)
+        node.removeChild(prop)
+    nodes = []
+        nodes.append(child)
+            nodes.append(node)
+        nodes = child.childNodes[:]
+                node.setAttribute("class","GtkComboBox")
+        node.setAttribute('constructor', uimgr.getAttribute('id'))
+                node.setAttribute('type', relation_type)
+                node.tagName = 'action'
+            node.tagName = "object"
+                node.tagName = 'property'
+                node.tagName = 'relation'
+                node, "type", "label_item", "label")
+                             "no <glade-interface> tag.")
+                obj.appendChild(prop)
+            obj.appendChild(widgets)
+        object_class = node.getAttribute('class')
+        object_class = obj_node.getAttribute('class')
+                                     object_id,
+                object_id = node.getAttribute('id')
+        object_id = node.getAttribute('id')
+            objectNode.appendChild(child)
+        object_node = get_object_node(get_child_nodes(node)[0])
+        objectNode = node.parentNode
+        objects = self._dom.getElementsByTagName("widget")
+                obj_id = template + str(count)
+                obj_node = get_object_node(child)
+            obj_node = get_object_node(child)
+        obj = self._create_object(obj_class, None, template, properties)
+                obj = self._create_root_object('GtkSizeGroup',
+        obj = self._dom.createElement('object')
+        obj = self._get_object(prop.childNodes[0].data)
+        obj.setAttribute('class', obj_class)
+        obj.setAttribute('id', obj_id)
+                obj = widgets[-1]
+# of the License, or (at your option) any later version.
+            # Only convert toplevel popups
+        open(output_filename, 'w').write(xml)
+        Optionally a name template can be provided which will be used
+        opts, args = getopt.getopt(args[1:], "hwr:",
+        # Output the newly created root objects and sort them
+            packing_prop = packing_props[0]
+                packing_prop.removeChild(prop)
+            packing_props = [p for p in child.childNodes if p.nodeName == "packing"]
+                              page_increment=page,
+                              page_size=page_size)
+        @param obj_class: class of the object (class tag)
+        @param obj_id: identifier of the object (id tag)
+        @param properties: dictionary of properties
+        @param template: name template to use, for example 'button'
+        parent.appendChild(model_prop)
+        parent.appendChild(object_node)
+        parent_id = node.parentNode.getAttribute("id")
+        parent_id = objectNode.getAttribute("id")
+        parent = node.parentNode
+        parent = prop.parentNode
+        parent.removeChild(node)
+            parent.removeChild(prop)
+        parent.removeChild(prop)
+    print __doc__
+                print 'Unhandled accelerator signal for %s::%s' % (
+                print 'Unhandled signal %s::%s' % (node.getAttribute('class'),
+		print "WARNING: duplicate id \"" + node.getAttribute('id') + "\""
+        print "Wrote", output_filename
+        print xml
+    # Private
+            prop.appendChild(self._dom.createTextNode(""))
+                prop.appendChild(self._dom.createTextNode("True"))
+                    prop.appendChild(self._dom.createTextNode(value))
+        prop.childNodes[0].data = adj.getAttribute('id')
+                    prop.childNodes[0].data != prop_val):
+        prop.childNodes[0].data = tbuffer.getAttribute('id')
+            prop_dict[prop_name] = child
+        properties = {}
+    properties = []
+    properties = {}
+            properties.append(child)
+        properties[child.getAttribute('name')] = value
+                                           properties=dict(text=data))
+    properties = get_properties(node)
+        properties['name'] = object_id
+                properties[node.getAttribute('name')] = node
+            properties = packing_prop.getElementsByTagName("property")
+                                       properties=properties)
+                                     properties=properties)
+                properties=properties)
+                    properties['stock_id'] = child
+                properties['stock_id'] = properties['label']
+            properties.update(value=value,
+            prop_name = prop.getAttribute("name")
+                prop.parentNode.removeChild(prop)
+            prop.parentNode.removeChild(prop)
+            prop.removeAttribute('translatable')
+                    prop = self._dom.createElement('property')
+                prop = self._dom.createElement("property")
+        prop.setAttribute('name', 'buffer')
+                prop.setAttribute("name", "has-entry")
+                prop.setAttribute('name', str(name))
+                prop.setAttribute("name", "tooltip-text")
+                    prop = value
+    # Public API
+            raise NotImplementedError(object_class)
+            raise SystemExit("Could not find an object called `%s'" % (
+                relation_type = node.getAttribute('type')
+                relation_type = relation_type.replace('_', '-')
+        # Remove glade-interface doc type
+        # Rename glade-interface to interface
+        # Rename widget to object
+Report bugs to http://bugzilla.gnome.org/."""
+                response = prop.childNodes[0].data
+            return
+                return
+    return 0
+        return 2
+    return accelerators
+            return child
+        return menu
+    return node
+    return nodes
+    return nodes[0]
+        return obj
+        return output
+    return properties
+    return properties.get(property_name)
+            return self._dom.createElement('separator')
+        return self.objects.get(name)
+    return signals
+        @returns: Newly created node of the object
+    return s.stdout.read()
+        return [w for w in self._dom.getElementsByTagName("object")
+        return xml.encode('utf-8')
+                    # Reuse the node, so translatable and context still will be
+        #                   reverse=True):
+                                    "root="])
+            root = a
+                root_name))
+    root = None
+        root_objects = self.root_objects[:]
+        root_objects.sort(lambda a, b: cmp(b.getAttribute('id'),
+                               root=root)
+            row.appendChild(col)
+            row = self._dom.createElement('row')
+  -r, --root             Convert only widget named root and its children
+        self._add_action_from_menuitem(uimgr, obj_node)
+            self._convert_accessibility(node)
+                self._convert_adjustment(prop)
+                self._convert_combobox_items(node, prop)
+                self._convert_dialog_response(node, object_id, response)
+            self._convert_menu(node)
+                self._convert_menu(node, popup=True)
+            self._convert(node.getAttribute("class"), node)
+                self._convert_sizegroup(node, prop)
+                self._convert_textview_text(prop)
+            self._convert_ui(node)
+        self._default_widget_converter(node)
+            self._dom.createTextNode(model.getAttribute('id')))
+        self._dom = minidom.parse(file)
+        self._dom = minidom.parseString(buffer)
+                    self._dom.removeChild(node)
+        self._interface.appendChild(widget)
+            self._interface.childNodes.insert(0, obj)
+        self._interface = glade_iface[0]
+            self._menuitem_to_action(node, properties)
+        self._menuitem_to_action(node, properties)
+        self.objects = {}
+            self.objects[node.getAttribute('id')] = node
+        self.objects[obj_id] = obj
+            self._packing_prop_to_child_attr(
+            self._packing_prop_to_child_attr(node, "type", "tab")
+        self._parse()
+            self._radiomenuitem_to_action(node, properties)
+            self._remove_window(node)
+        self.root_objects = []
+        self.root_objects.append(obj)
+        self.root = root
+        self.skip_windows = skip_windows
+            self._strip_root(self.root)
+        self.target_version = target_version
+            self._togglemenuitem_to_action(node, properties)
+        self._togglemenuitem_to_action(node, properties)
+                    # set when converting nodes. See also #509153
+                                                   signal_name)
+            signal_name = accelerator.getAttribute('signal')
+            signal_name = signal.getAttribute('name')
+    signals = []
+            signals.append(child)
+                                    "skip-windows",
+    skip_windows = False
+            skip_windows = True
+    split = False
+                splitting = item.split('|', 1)
+    s.stdin.close()
+    s.stdin.write(output)
+    s = subprocess.Popen([filename, '--format', '-'],
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE)
+                              step_increment=step,
+        # Strip unsupported tags
+    subprocess = None
+    subprocess # pyflakes
+            sys.exit()
+    sys.exit(main(sys.argv))
+                                    "target-version=",
+    target_version = "2.0"
+            target_version = a
+                               target_version=target_version,
+        tbuffer = self._create_root_object("GtkTextBuffer",
+                template='a11y-%s' % (parent_id,),
+                                        template='actiongroup')
+                                       template='adjustment',
+                                         template="model")
+                                            template='renderer')
+                                               template='sizegroup')
+                                           template='textbuffer',
+                                         template='uimanager')
+The [INPUT] file is
+        The properties dictionary can either contain string values or Node
+# The subprocess is only available in Python 2.4+
+        # This is Gazpacho only
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or
+        to avoid naming collisions.
+#  Toolbars
+        translatable_attr = prop.attributes.get('translatable')
+        translatable = translatable_attr is not None and translatable_attr.value == 'yes'
+    try:
+        @type properties: string or Node.
+        ui.appendChild(menu)
+            uimgr.appendChild(child)
+        uimgr.appendChild(ui)
+        uimgr = self._create_root_object('GtkUIManager',
+        ui = self._dom.createElement('ui')
+        # Updating references made by widgets
+                              upper=upper,
+            usage()
+        usage()
+"""Usage: gtk-builder-convert [OPTION] [INPUT] [OUTPUT]
+#!/usr/bin/env python
+        value = child.childNodes[0].data
+            value, lower, upper, step, page, page_size = data.split(' ')
+        value = prop.childNodes[0].data
+        values. If a node is provided the name of the node will be overridden
+            value = value[:-1]
+                # we're not going to output dialogs
+When OUTPUT is -, write to standard output.
+        # when we can depend on python 2.4 or higher
+            while True:
+        while True:
+            widget.getAttributeNode("constructor").value = parent_id
+        widgets.appendChild(member)
+                widget = self._get_object(obj_id)
+        widgets = obj.getElementsByTagName("widgets")
+            widgets = self._dom.createElement("widgets")
+            widgets = self._get_objects_by_attr("class", "GtkSizeGroup")
+            widgets = widgets[0]
+WINDOWS = ['GtkWindow'] + DIALOGS
+  -w, --skip-windows     Convert everything but GtkWindow subclasses.
+    xml = _indent(conv.to_xml())
+        xml = self._dom.toprettyxml("", "")
+# You should have received a copy of the GNU Lesser General Public License

@@ -1,0 +1,66 @@
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Authors: Dustin Kirkland <dustin.kirkland@gmail.com>
+#!/bin/sh
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+. "${BYOBU_PREFIX}/lib/${PKG}/include/common"
+#    byobu-reconnect-sockets - source this file to re-establish
+#                              byobu session.
+	case $BYOBU_BACKEND in
+case $BYOBU_BACKEND in
+case "$-" in
+#    Copyright (C) 2009 Canonical Ltd.
+#    Copyright (C) 2012 Dustin Kirkland <dustin.kirkland@gmail.com>
+		echo "  . $0" 2>&1
+		echo 2>&1
+		echo "ERROR: You must source this file, rather than execute it." 2>&1
+	# Enable word splitting for zsh:
+	# Ensure that screen's environment variables/values get propagated here
+	# Ensure that tmux's environment variables/values get propagated here
+# Establish gpg-agent socket, helps when reconnecting to a detached session
+		exit 1
+export_and_send () {
+export_and_send DBUS_SESSION_BUS_ADDRESS
+export_and_send SESSION_MANAGER
+			export "$expr"
+	export "$var"
+		expr="$(tmux showenv | grep "^$var=")"
+		for var in $VARS_TO_UPDATE; do
+	for var in $VARS_TO_UPDATE; do
+#    GNU General Public License for more details.
+#                              GPG_AGENT_INFO and DBUS_SESSION_BUS_ADDRESS,
+		if [ -n "$expr" ]; then
+#    it under the terms of the GNU General Public License as published by
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+newest "$HOME/.dbus/session-bus/*" && . "$_RET"
+newest "$HOME/.gnupg/"gpg-agent-info-* && . "$_RET" && export_and_send GPG_AGENT_INFO
+		# no-op
+PKG="byobu"
+# Pull environment variables/values from backend and update/export here
+[ -r "$BYOBU_RUN_DIR/sockets" ] && . "$BYOBU_RUN_DIR/sockets"
+# Reconnect dbus, source the most recently touched session-bus
+[ -r "$HOME/.byoburc" ] && . "$HOME/.byoburc"
+		rm -f "$tempfile"
+#             Ryan C. Thompson <rct@thompsonclan.org>
+		screen)
+	screen)
+			screen sh -c "echo export $var=\$$var >> \"$tempfile\""
+		screen_update
+screen_update () {
+			screen -X setenv "$var" "$value"
+# Sorry, ls -t is needed here, to sort by time
+		. "$tempfile"
+	tempfile=$(mktemp -q) && {
+#    the Free Software Foundation, version 3 of the License.
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+			tmux setenv "$var" "$value"
+		tmux_update
+tmux_update () {
+#                              useful when reconnecting to an existing
+	value="$(eval "echo \$$var")"
+	var="$1"
+VARS_TO_UPDATE="DISPLAY DBUS_SESSION_BUS_ADDRESS SESSION_MANAGER GPG_AGENT_INFO XDG_SESSION_COOKIE XDG_SESSION_PATH GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK SSH_AGENT_PID"
+# vi: syntax=sh ts=4 noexpandtab
+	[ "x$ZSH_VERSION" != x ] && setopt local_options sh_word_split
+#    You should have received a copy of the GNU General Public License
+[ -z "${BYOBU_PREFIX}" ] && export BYOBU_PREFIX="/usr" || export BYOBU_PREFIX

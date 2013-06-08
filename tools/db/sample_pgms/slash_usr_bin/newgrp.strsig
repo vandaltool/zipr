@@ -1,0 +1,146 @@
+add_list
+__assert_fail
+BASH_ENV=
+/bin/bash
+bindtextdomain
+Cannot determine the user name of the caller (UID %lu)
+Cannot execute %s
+cannot open login definitions %s [%s]
+cannot read login definitions %s [%s]
+CHFN_RESTRICT
+closelog
+comma_to_list
+configuration error - cannot parse %s value: '%s'
+configuration error - unknown item '%s' (notify administrator)
+CONSOLE_GROUPS
+could not allocate space for config info
+Could not allocate space for config info.
+CREATE_HOME
+crypt method not supported by libcrypt? (%s)
+__ctype_b_loc
+dcgettext
+DEFAULT_HOME
+del_list
+dup_list
+ENCRYPT_METHOD
+endgrent
+endpwent
+endsgent
+endspent
+__environ
+Environment overflow
+ENV_PATH
+ENV_SUPATH
+ERASECHAR
+__errno_location
+/etc/gshadow
+/etc/login.defs
+FAILLOG_ENAB
+FAKE_SHELL
+fgetsgent
+__fprintf_chk
+FTMP_FILE
+getgrent
+getgrgid
+getgrgid_r
+getgrnam
+getgrnam_r
+getgroups
+getlogin
+getpwnam_r
+getpwuid_r
+getsgnam
+getspnam_r
+GID '%lu' does not exist
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+HUSHLOGIN_FILE
+Invalid password.
+Invalid password for group '%s' from '%s'
+_IO_putc
+_IO_stdin_used
+is_on_list
+_Jv_RegisterClasses
+KILLCHAR
+KRB_CONF=
+LANGUAGE=
+libcrypt.so.1
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+LIBPATH=
+LOGIN_RETRIES
+LOGIN_TIMEOUT
+LOG_OK_LOGINS
+LOG_UNKFAIL_ENAB
+MAIL_DIR
+MAIL_FILE
+malloc(%d) failed
+MAX_MEMBERS_PER_GROUP
+MD5_CRYPT_ENAB
+newgrp.c
+NLSPATH=
+PASS_MAX_DAYS
+PASS_MIN_DAYS
+PASS_WARN_AGE
+Password: 
+__printf_chk
+putsgent
+%s: Cannot determine your user name.
+setgrent
+setgroups
+setlocale
+setsgent
+%s: failure forking: %s
+sgetsgent
+%s: GID '%lu' does not exist
+%s: group '%s' does not exist
+SHA_CRYPT_MAX_ROUNDS
+SHA_CRYPT_MIN_ROUNDS
+SHLIB_PATH=
+__snprintf_chk
+%s: out of memory
+__stack_chk_fail
+strcasecmp
+__strcpy_chk
+__strdup
+strerror
+__strncpy_chk
+SULOG_FILE
+SYS_GID_MAX
+SYS_GID_MIN
+__syslog_chk
+SYSLOG_SG_ENAB
+SYSLOG_SU_ENAB
+SYS_UID_MAX
+SYS_UID_MIN
+too many groups
+TTYGROUP
+TTYTYPE_FILE
+unknown configuration item `%s'
+unknown GID '%lu' used by user '%s'
+Usage: newgrp [-] [group]
+Usage: sg group [[-c] command]
+USERDEL_CMD
+USERGROUPS_ENAB
+user '%s' (login '%s' on %s) returned to group '%lu'
+user '%s' (login '%s' on %s) returned to group '%s'
+user '%s' (login '%s' on %s) switched to group '%s'
+/usr/share/locale
+((void *)0) != comma
+((void *)0) != grp
+((void *)0) != list
+((void *)0) != member
+wlen == (int) len -1
+wlen < (int) sizeof(variable)
+xgetgrgid
+xgetgrnam
+xgetpwnam
+xgetpwuid
+xgetspnam
+You may not change $%s

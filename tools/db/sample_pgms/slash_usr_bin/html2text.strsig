@@ -1,0 +1,441 @@
+10BlockQuote
+10HTMLParser
+11HTMLControl
+11OrderedList
+12Preformatted
+13ListBlockItem
+13UnorderedList
+14DefinitionList
+14HorizontalRule
+14ListNormalItem
+14TermDefinition
+16TableHeadingCell
+18DefinitionListItem
+7Address
+7Element
+7Heading
+7NoBreak
+8BaseFont
+8Division
+8ListItem
+8MyParser
+8TermName
+8TextArea
+9LineBreak
+9Paragraph
+9TableCell
+A.attributes.external_link
+A.attributes.internal_link
+</ADDRESS>
+<ADDRESS>
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+</APPLET>
+applet_content
+  -ascii         Use plain ASCII for output instead of ISO-8859-1
+BASEFONT
+<BASEFONT
+basic_string::assign
+basic_string::at
+basic_string::erase
+basic_string::replace
+basic_string::_S_construct NULL not valid
+basic_string::substr
+BIG.attributes
+block_except_p
+BLOCKQUOTE
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+BLOCKQUOTE.vspace.after
+BLOCKQUOTE.vspace.before
+body_content
+Cannot open input file "
+<CAPTION
+</CAPTION>
+CDATA terminal not found
+</CENTER>
+<CENTER>
+CHECKBOX
+  -check         Do syntax checking only
+Check that '
+CITE.attributes
+CODE.attributes
+CODE.vspace.after
+CODE.vspace.before
+, column 
+Could not open output file "
+__cxa_atexit
+__cxa_begin_catch
+__cxa_call_unexpected
+__cxa_end_catch
+__cxa_guard_abort
+__cxa_guard_acquire
+__cxa_guard_release
+__cxa_pure_virtual
+__cxa_rethrow
+CXXABI_1.3
+DD.indent
+-debug-parser
+  -debug-parser  Report parser activity on STDERR (debugging)
+-debug-scanner
+  -debug-scanner Report parsed tokens on STDERR (debugging)
+definition_list
+definition_list_content
+/dev/null
+DFN.attributes
+DIR.indents
+DIR.vspace.before
+Discarding token %d (%s).
+DISC CIRCLE SQUARE
+DL.vspace.after
+DL.vspace.before
+DL.vspace.between
+!DOCTYPE
+document
+document_
+DOCUMENT
+DT.indent
+DT.vspace.before
+EM.attributes
+[Empty selection]
+END_ADDRESS
+END_APPLET
+END_BODY
+END_CAPTION
+END_HEAD
+END_HTML
+END_MENU
+END_NOBR
+END_SCRIPT
+END_SELECT
+END_STYLE
+END_TABLE
+END_TEXTAREA
+Entering state %d
+__errno_location
+Error: cannot setup recoding.
+Error: Required parameter after "
+Error: state stack now
+/etc/html2textrc
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+Formats HTML document(s) read from <input-url> or STDIN and generates ASCII
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBCXX_3.4
+GLIBCXX_3.4.11
+GLIBCXX_3.4.9
+__gmon_start__
+__gxx_personality_v0
+H1.attributes
+H1.prefix
+H1.suffix
+H1.vspace.after
+H1.vspace.before
+H2.attributes
+H2.prefix
+H2.suffix
+H2.vspace.after
+H2.vspace.before
+H3.attributes
+H3.prefix
+H3.suffix
+H3.vspace.after
+H3.vspace.before
+H4.attributes
+H4.prefix
+H4.suffix
+H4.vspace.after
+H4.vspace.before
+H5.attributes
+H5.prefix
+H5.suffix
+H5.vspace.after
+H5.vspace.before
+H6.attributes
+H6.prefix
+H6.suffix
+H6.vspace.after
+H6.vspace.before
+  -help          Print this text and exit
+HR.marker
+  html2text -help
+/.html2textrc
+  html2text [ -unparse | -check ] [ -debug-scanner ] [ -debug-parser ] \
+  html2text -version
+http-equiv
+I.attributes
+iconv_close
+iconv_open
+$illegal.
+IMG.alt.prefix
+IMG.alt.suffix
+IMG.replace.all
+IMG.replace.noalt
+Input recoding failed due to 
+invalid input sequence. Unconverted part of text follows.
+??? Invalid mode 
+_IO_stdin_used
+' is a valid encoding.
+<ISINDEX
+' is not available.
+ISO_8859-1
+[Java Applet 
+[Java Applet: 
+[Java Applet]
+_Jv_RegisterClasses
+KBD.attributes
+Levels of opening and closing headings don't match
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+libm.so.6
+libstdc++.so.6
+LI.circle_bullet
+LI.custom1_bullet
+LI.custom2_bullet
+LI.custom3_bullet
+LI.disc_bullet
+", line 
+LI.square_bullet
+list_item
+map_content
+MENU.vspace.after
+MENU.vspace.before
+" missing.
+MULTIPLE
+Next token is %d (%s
+nl_langinfo
+  -nobs          Do not use backspaces for boldface and underlining
+NO_BULLET
+  -nometa        Don't try to recode input using 'meta' tag
+Non-container end tag scanned.
+Now at end of input.
+     [ -o <file> ] [ -nobs ] [ -ascii | -utf8 ] [ <input-url> ] ...
+  -o <file>      Redirect output into <file>
+OL.indents
+OL.vspace.after
+OL.vspace.before
+[One of: 
+[One or more of 
+opt_caption
+opt_END_A
+opt_END_B
+opt_END_BIG
+opt_END_BLOCKQUOTE
+opt_END_CENTER
+opt_END_CITE
+opt_END_CODE
+opt_END_DFN
+opt_END_DIV
+opt_END_DL
+opt_END_EM
+opt_END_FONT
+opt_END_FORM
+opt_END_I
+opt_END_KBD
+opt_END_LI
+opt_END_OPTION
+opt_END_P
+opt_END_PRE
+opt_END_SAMP
+opt_END_SMALL
+opt_END_STRIKE
+opt_END_STRONG
+opt_END_SUB
+opt_END_SUP
+opt_END_TD
+opt_END_TH
+opt_END_TITLE
+opt_END_TR
+opt_END_TT
+opt_END_U
+opt_END_UL
+opt_END_VAR
+opt_error
+opt_flow
+</OPTION>
+opt_pcdata
+opt_texts
+paragraph_content
+parse error
+parser stack overflow
+PASSWORD
+preformatted
+PRE.indent.left
+PRE.vspace.after
+PRE.vspace.before
+pthread_cancel
+  -rcfile <file> Read <file> instead of "$HOME/.html2textrc"
+     [ -rcfile <file> ] [ -style ( compact | pretty ) ] [ -width <w> ] \
+Reading a token: 
+Recoding from '
+Reducing via rule %d (line %d), 
+SAMP.attributes
+SCAN_ERROR
+Scanned PCDATA "
+Scanned tag "<
+</SCRIPT>
+%s.default_types
+</SELECT>
+select_content
+setlocale
+Shifting error token, 
+Shifting token %d (%s), 
+%s.indent.left
+%s.indent.right
+%s.indents
+SMALL.attributes
+" specified -- try "-help".
+__sprintf_chk
+__stack_chk_fail
+Stack size increased to %d
+Starting parse
+__strcat_chk
+__strcpy_chk
+STRIKE.attributes
+STRIKETHROUGH
+STRONG.attributes
+</STYLE>
+  -style compact Create a "compact" output format (default)
+  -style pretty  Insert some vertical space for nicer output
+SUB.attributes
+[Submit 
+[Submit]
+SUP.attributes
+%s.vspace.after
+%s.vspace.before
+%s.vspace.between
+</TABLE>
+table_cells
+table_rows
+TABLE.vspace.after
+TABLE.vspace.before
+Tag unknown -- swallowed.
+term_definition
+term_name
+TEXTAREA
+<TEXTAREA
+</TEXTAREA>
+The latest version can be found at http://userpage.fu-berlin.de/~mbayer/tools/
+This is html2text, version 1.3.2a
+This program is distributed in the hope that it will be useful, but WITHOUT
+</TITLE>
+Too many chars ungotten
+//translit
+", try "-help".
+TT.attributes
+t@<tt6<nu
+U.attributes
+UL.indents
+UL.vspace.after
+UL.vspace.before
+UNDERLINE
+[Unknown INPUT type]
+unknown reason.
+Unknown style "
+-unparse
+  -unparse       Generate HTML instead of ASCII output
+Unrecognized command line option "
+_Unwind_Resume
+  -utf8          Assume both terminal and input stream are in UTF-8 mode
+VAR.attributes
+-version
+  -version       Print program version and copyright notice
+  -width <w>     Optimize for screen widths other than 79
+_ZNKSs4findEPKcjj
+_ZNKSs7compareEPKc
+_ZNKSs7compareERKSs
+_ZNKSt12__basic_fileIcE7is_openEv
+_ZNKSt15basic_stringbufIcSt11char_traitsIcESaIcEE3strEv
+_ZNKSt5ctypeIcE13_M_widen_initEv
+_ZNSi3getEv
+_ZNSi5seekgESt4fposI11__mbstate_tE
+_ZNSo3putEc
+_ZNSo5flushEv
+_ZNSolsEi
+_ZNSs12_M_leak_hardEv
+_ZNSs12_S_constructEjcRKSaIcE
+_ZNSs12_S_constructIPcEES0_T_S1_RKSaIcESt20forward_iterator_tag
+_ZNSs14_M_replace_auxEjjjc
+_ZNSs4_Rep10_M_destroyERKSaIcE
+_ZNSs4_Rep20_S_empty_rep_storageE
+_ZNSs4_Rep9_S_createEjjRKSaIcE
+_ZNSs5eraseEjj
+_ZNSs6appendEjc
+_ZNSs6appendEPKc
+_ZNSs6appendEPKcj
+_ZNSs6appendERKSs
+_ZNSs6assignEPKc
+_ZNSs6assignEPKcj
+_ZNSs6assignERKSs
+_ZNSs7_M_leakEv
+_ZNSs7replaceEjjPKcj
+_ZNSs7reserveEj
+_ZNSs9_M_mutateEjjj
+_ZNSs9push_backEc
+_ZNSsaSEc
+_ZNSsC1EjcRKSaIcE
+_ZNSsC1EPKcjRKSaIcE
+_ZNSsC1EPKcRKSaIcE
+_ZNSsC1ERKSs
+_ZNSsC1ERKSsjj
+_ZNSsD1Ev
+_ZNSt12__basic_fileIcED1Ev
+_ZNSt13basic_filebufIcSt11char_traitsIcEE4openEPKcSt13_Ios_Openmode
+_ZNSt13basic_filebufIcSt11char_traitsIcEE5closeEv
+_ZNSt13basic_filebufIcSt11char_traitsIcEEC1Ev
+_ZNSt13basic_filebufIcSt11char_traitsIcEED1Ev
+_ZNSt14basic_ifstreamIcSt11char_traitsIcEED1Ev
+_ZNSt14basic_ofstreamIcSt11char_traitsIcEED1Ev
+_ZNSt15basic_streambufIcSt11char_traitsIcEED2Ev
+_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEE7_M_syncEPcjj
+_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+_ZNSt15_List_node_base4hookEPS_
+_ZNSt15_List_node_base8transferEPS_S0_
+_ZNSt18basic_stringstreamIcSt11char_traitsIcESaIcEED1Ev
+_ZNSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+_ZNSt6localeC1Ev
+_ZNSt6localeD1Ev
+_ZNSt8ios_base4InitC1Ev
+_ZNSt8ios_base4InitD1Ev
+_ZNSt8ios_baseC2Ev
+_ZNSt8ios_baseD2Ev
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+_ZNSt9basic_iosIcSt11char_traitsIcEE8setstateESt12_Ios_Iostate
+_ZNSt9basic_iosIcSt11char_traitsIcEED2Ev
+_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_i
+_ZSt16__throw_bad_castv
+_ZSt18_Rb_tree_decrementPKSt18_Rb_tree_node_base
+_ZSt18_Rb_tree_decrementPSt18_Rb_tree_node_base
+_ZSt18_Rb_tree_incrementPKSt18_Rb_tree_node_base
+_ZSt19__throw_logic_errorPKc
+_ZSt20__throw_out_of_rangePKc
+_ZSt29_Rb_tree_insert_and_rebalancebPSt18_Rb_tree_node_baseS0_RS_
+_ZSt3cin
+_ZSt4cerr
+_ZSt4cout
+_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+_ZSt7getlineIcSt11char_traitsIcESaIcEERSt13basic_istreamIT_T0_ES7_RSbIS4_S5_T1_ES4_
+_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKSbIS4_S5_T1_E
+_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+_ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_EPKS3_RKS6_
+_ZStrsIcSt11char_traitsIcEERSt13basic_istreamIT_T0_ES6_RS3_
+_ZTTSt14basic_ifstreamIcSt11char_traitsIcEE
+_ZTTSt14basic_ofstreamIcSt11char_traitsIcEE
+_ZTTSt18basic_stringstreamIcSt11char_traitsIcESaIcEE
+_ZTTSt19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE
+_ZTVSt13basic_filebufIcSt11char_traitsIcEE
+_ZTVSt14basic_ifstreamIcSt11char_traitsIcEE
+_ZTVSt14basic_ofstreamIcSt11char_traitsIcEE
+_ZTVSt15basic_streambufIcSt11char_traitsIcEE
+_ZTVSt15basic_stringbufIcSt11char_traitsIcESaIcEE
+_ZTVSt18basic_stringstreamIcSt11char_traitsIcESaIcEE
+_ZTVSt19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+_ZTVSt9basic_iosIcSt11char_traitsIcEE

@@ -1,0 +1,170 @@
+Benchmark
+bindtextdomain
+bind_textdomain_codeset
+Border-only window
+<Branch>
+__bss_start
+Button Layouts
+Button layout test %d
+<control>d
+<control>s
+<control>u
+dcgettext
+Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)
+Error loading theme: %s
+Fake menu item %d
+g_assertion_message_expr
+gdk_pixmap_new
+g_error_free
+g_getenv
+GLIBC_2.0
+GLIBC_2.2
+%g milliseconds to draw one window frame
+__gmon_start__
+g_object_ref
+g_object_ref_sink
+g_object_set_data_full
+g_object_unref
+g_printerr
+g_signal_connect_data
+g_strconcat
+g_strdup_printf
+g_timer_destroy
+g_timer_elapsed
+g_timer_new
+g_timer_stop
+gtk_alignment_new
+gtk_box_get_type
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_box_set_spacing
+gtk_button_box_get_type
+gtk_button_box_set_layout
+gtk_button_new_from_stock
+gtk_button_new_with_label
+gtk_button_new_with_mnemonic
+gtk_container_add
+gtk_container_get_type
+gtk_container_set_border_width
+gtk-dialog-info
+gtk_event_box_new
+gtk_frame_get_type
+gtk_frame_new
+gtk_frame_set_shadow_type
+gtk_handle_box_new
+gtk_hbox_new
+gtk_hbutton_box_new
+gtk_image_new_from_stock
+gtk_init
+gtk_item_factory_create_items
+gtk_item_factory_get_widget
+gtk_item_factory_new
+gtk_item_factory_set_translate_func
+gtk_label_get_type
+gtk_label_new
+gtk_label_set_line_wrap
+gtk_label_set_selectable
+gtk_main
+gtk_main_quit
+gtk_menu_bar_get_type
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk_notebook_append_page
+gtk_notebook_get_type
+gtk_notebook_new
+gtk-open
+gtk-quit
+gtk_scrolled_window_add_with_viewport
+gtk_scrolled_window_get_type
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_scrolled_window_set_shadow_type
+gtk_statusbar_new
+gtk_table_attach
+gtk_table_get_type
+gtk_table_new
+gtk_text_view_get_type
+gtk_text_view_new
+gtk_text_view_set_wrap_mode
+gtk_toolbar_get_type
+gtk_toolbar_insert
+gtk_toolbar_new
+gtk_tool_button_new_from_stock
+gtk_tool_item_set_tooltip_text
+gtk_vbox_new
+gtk_widget_create_pango_layout
+gtk_widget_destroy
+gtk_widget_get_pango_context
+gtk_widget_modify_bg
+gtk_widget_modify_font
+gtk_widget_realize
+gtk_widget_show_all
+gtk_window_get_type
+gtk_window_new
+gtk_window_set_default_size
+gtk_window_set_title
+g_type_check_instance_cast
+_IO_stdin_used
+_Jv_RegisterClasses
+Large Title Font
+libc.so.6
+__libc_start_main
+libgdk-x11-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-x11-2.0.so.0
+/lib/ld-linux.so.2
+libmetacity-private.so.0
+libpango-1.0.so.0
+libpthread.so.0
+Loaded theme "%s" in %g seconds
+metacity
+METACITY_DEBUG
+meta_pango_font_desc_get_text_height
+meta_preview_get_icon
+meta_preview_get_mini_icon
+meta_preview_get_type
+meta_preview_new
+meta_preview_set_button_layout
+meta_preview_set_frame_flags
+meta_preview_set_frame_type
+meta_preview_set_theme
+meta_preview_set_title
+meta_set_debugging
+meta_set_verbose
+meta_theme_draw_frame
+meta_theme_get_frame_borders
+meta_theme_load
+Modal Dialog Box
+Normal Application Window
+Normal Title Font
+Open another one of these windows
+pango_font_description_free
+pango_font_description_get_size
+pango_font_description_new
+pango_font_description_set_size
+Small Title Font
+<Tearoff>
+This is a demo button with an 'open' icon
+This is a demo button with a 'quit' icon
+This is a sample message in a sample dialog
+Torn-off Menu
+ui/theme-viewer.c
+Usage: metacity-theme-viewer [THEMENAME]
+/usr/share/locale
+Utility Palette
+/_Windows
+/Windows/_All docks
+/Windows/_Bottom dock
+/Windows/Des_ktop
+/Windows/_Dialog
+/Windows/_Left dock
+/Windows/_Modal dialog
+/Windows/_Right dock
+/Windows/_Splashscreen
+/Windows/tearoff
+/Windows/_Top dock
+window->style
+window->style->font_desc
+/Windows/_Utility
+Window Title Goes Here

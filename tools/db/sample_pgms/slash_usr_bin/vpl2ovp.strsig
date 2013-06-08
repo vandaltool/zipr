@@ -1,0 +1,690 @@
+      $_ = <>;
+   $_ = <>;
+$_ = <>;
+#------------------------------------------------------------------------#
+###############
+##################
+###################
+####################
+#####################
+######################
+########################
+	 $_ = <>;
+		[$&$1$char$acc$2]gm;
+		[$&$1$char$acc)]gm
+         [$1 . sprintf("H %04lX", oct $2) . ")"]gme
+      $acc = "breve";
+   $acc   = $def->{acc};
+$accdepth = $accheight - $thk * $scale;	# probable approx. "depth" of macron
+     \"accent\". A digraph consisting of, say, \"k\" and \"h\" will be
+     accented characters, forcing vpl2ovp to define its own
+$accents = "($subacc|$supacc|$underacc|underbar)";
+$accheight = $allchars{"macron"}{ht};
+   $acc =~ s/^under//;
+   "adieresis",      "aring",          ".notdef",        "ccedilla",
+   "Adieresis",      "Aring",          ".notdef",        "dotaccent",
+     adjust the x and y coordinates of the dotaccent placed within a
+@adobeenc=(
+     afm2pl Times-Roman.afm rptmr.pl
+     afm2tfm Times-Roman.afm -t dvips.enc -v ptmr rptmr
+   "Agrave",         "Aacute",         "Acircumflex",    "Atilde",
+   "agrave",         "aacute",         "acircumflex",    "ordfeminine",
+   @{ $allchars{$char}{num} } = ();
+     @{ $allchars{$chars[$num]{id}}{num} };
+   @{ $allchars{$chars[$num]{id}}{num} } = grep !/$num/,
+      $allchars{$enc[$i]} = $chars[$i];
+   $allchars{$id}{dp} = 0;
+   $allchars{$id}{dp} = $allchars{$acc}{dp};
+   $allchars{$id}{dp} = $allchars{$char}{dp};
+   $allchars{$id}{dp} = $dp = $underbdp * $scale;
+   $allchars{$id}{dp} = max($allchars{$char}{dp}, $allchars{$acc}{dp});
+   $allchars{$id}{ht} = 0;
+   $allchars{$id}{ht} = $allchars{$acc}{ht};
+   $allchars{$id}{ht} = $allchars{$char}{ht};
+   $allchars{$id}{ht} = max($allchars{$char}{ht}, $allchars{$acc}{ht});
+	 $allchars{$id}{ht} += $scoffset;
+	 $allchars{$id}{ht} += $v1;
+      $allchars{$id}{ht} += ($v1 + $v2);
+	 $allchars{$id}{ht} += $v2;
+   $allchars{$id}{ic} = 0;
+   $allchars{$id}{ic} = $allchars{$acc}{ic};
+   $allchars{$id}{ic} = $allchars{$char}{ic};
+   $allchars{$id}{ic} = $ic unless $ic < 0;
+   $allchars{$id}{id} = $id;
+   $allchars{$id}{map} = $s1;
+   $allchars{$id}{map} = "      $s1\n$s2$s3\n";
+   $allchars{$id}{map} = "      $s1\n$s2$s3\n$cb";
+   $allchars{$id}{map} = "      (SETCHAR H 0020)\n";
+   $allchars{$id}{wd} = 0;
+   $allchars{$id}{wd} = $allchars{$char}{wd};
+   $allchars{$id}{wd} = $allchars{$char}{wd} + $allchars{$acc}{wd};
+   $allchars{$id}{wd} += $kern;
+      $allchars{$nchar} = ();
+#   along with this program; if not, write to the Free Software
+also moved from the upper half of the original 8-bit character set to
+     \"amacron breve\": requests for \"impossible\" characters are
+and a definition file, and will generate a new ovp (Omega
+      # and character definitions; also synonyms
+	   and $char !~ /under$supacc$/) {		# double accs
+# and use it to make ligtable readable
+     A new character (such as \"amacron\" or \"kh\") may be freely
+Another approach for a PostScript font is to use afm2tfm:
+     \"A\") or consists of the word \".notdef\" (indicating that
+     appropriate Unicode position (e.g. \"0x0304 macron\"); those
+# Array to convert from number to vpl representation
+     as \"amacron breve\" or \"kh underbar\"). There is no constraint
+     as a request for a digraph formed from the \"character\" and the
+   "asciicircum",    "asciitilde",     "Ccedilla",       "Iacute",
+   "at",             "A",              "B",              "C",
+#   (at your option) any later version.
+A typical complete sequence of commands to create a new virtual
+     available, as are \"under\" versions of all the normal
+     a valid accent character, the program interprets the definition
+   "backslash",      "bracketright",   "asciicircum",    "underscore",
+   "backslash",      "bracketright",   "circumflex",     "underscore",
+bad accent placing.
+   "bar",            "braceright",     "asciitilde",     ".notdef",
+   "bar",            "braceright",     "tilde",          "dieresis",
+     being.
+  -b may optionally be specified to block the use of predefined
+     breve to form the candrabindu accent. A coordinate scheme using
+# Build the characters
+-- but this is now deprecated, as afm2tfm generates incorrect
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+     candrabindu\").
+$capheight = $allchars{"X"}{ht};
+   "caron",          "breve",          "macron",         "ring",
+      ($cb = $allchars{"dotaccent"}{map}) =~ s/\A.*(\(SETCHAR . .+?\)).*\Z/$1/s;
+      $cb .= "\n";
+	      $cb =~ s/^( +)/"$1(MOVERIGHT R " . ($cbx * $scale) . ") "/e;
+	    $cb =~ s/^( +)/"$1(MOVEUP R " . ($cby * $scale) . ") "/e;
+      $cb = $s2 . $cb;
+   $cbx /= 1000;
+   $cbx += ($allchars{"breve"}{wd} - $allchars{"dotaccent"}{wd}) / 2;
+   ($cbx, $cby) = $opt_c =~ /^(.*),(.*)$/;
+   $cby /= 1000;
+           [-c candrabindu-adjustment] [-b] vpl-file
+   "cedilla",        "germandbls",     "ae",             "oe",
+certain modifications are made to input fonts following the dvips.enc
+       $char =~ /^(.)(.)$/;
+      $character = $_;
+	 $character .= $_;
+# Character definitions: store "encoded" defs in @chars, store *all*
+     \"character\" names the character (e.g. \"comma\", \"eight\",
+characters can, however, be assigned positions in the output font if
+   $char  = $def->{char};
+   $chars[$num] = $allchars{$char};
+   $chars[$num] = $allchars{$id};
+      $chars[$num] = $allchars{$nchar};
+   $chars[$num]{id} = $enc[$num];
+   $chars[$num]{map} =~ s[(\(SETCHAR )O ([0-7]+)\)]
+   chmove("dotaccent", 0137);
+   chmove("emdash", 0174);
+   chmove("endash", 0173);
+   chmove("fi", 014);
+   chmove("fl", 015);
+   chmove("hungarumlaut", 0175);
+   chmove("quotedblleft", 0134);
+   chmove("quotedblright", 042);
+   chomp ($s2 = $allchars{$acc}{map});
+close DEF;
+  -c may optionally give two comma-separated numerical values to
+$cmdline = basename($0) . " " . join " ", @ARGV;
+   "comma",          "hyphen",         "period",         "slash",
+conclusions from it about the kind of font it is dealing with.
+     consecutively, but the digraph \"kh\" can itself receive accents
+# Convert to vpl representation, eliminating statements invoking
+#   Copyright (C) 2008 John D. Smith
+   "currency",       "copyright",      "quotedblleft",   "guillemotleft",
+   "currency",       "quotesingle",    "quotedblleft",   "guillemotleft",
+      $def = {};
+      $def->{acc}   = $acc;
+      $def->{char}  = $char;
+     deferred until their constituents have had a chance to come into
+   "d",              "e",              "f",              "g",
+     definition of \"a macron\" does not have to precede that of
+     definition they have in the input font.
+      $def->{num}   = $num;
+      $def->{qdef}  = $_;
+   $def  = shift @defs;
+# defs in %allchars
+   "degree",         "endash",         "dagger",         "daggerdbl",
+	 delete $allchars{$nchar2};
+$description =
+     \"DESIGNUNITS R 1000\" is assumed.
+   die "$filename does not seem to be a text font (no LIGTABLE): giving up\n";
+   die "$filename is a TeX math font: giving up\n";
+   die "$filename is not a vpl file: giving up\n"
+   "dieresis",        ".notdef",       "ring",           "cedilla",
+	 digraph($num, $char, $acc, $nchar);
+      do {
+   "dollar",         "percent",        "ampersand",      "quoteright",
+   "dotlessi",       "dotlessj",       "grave",          "acute",
+   # Dropped accents
+  -d should refer to a font definition file. This file (which could
+       dummychar(0x035F, "uni035F") unless defined $allchars{uni035F};
+       dummychar($dummycodepoint--, $one_) unless defined $allchars{$one_};
+$dummycodepoint = 0xF8FF;
+   $dvips = 0;
+   $dvips = 1;
+@dvipsenc = (
+dvips.enc (\"C7, \"CD). The f-ligatures, double quotes and dashes are
+   # e.g."kh" to be converted into a digraph.
+   "Egrave",         "Eacute",         "Ecircumflex",    "Edieresis",
+   "eight",          "nine",           "colon",          "semicolon",
+# Eliminate empty statements
+# Eliminate sequences orphaned by elimination of a LABEL
+   "ellipsis",       "perthousand",    ".notdef",        ".notdef",
+   "ellipsis",       "perthousand",    ".notdef",        "questiondown",
+      else {
+   else {
+      else {						# caps etc.
+   else { $chars[$num]{map} = "      (SETCHAR $nv[$num])\n" }
+      else { $def->{nchar} = $char . $acc }
+   else { die "Bad definition: $_\n" }
+      else { die "Bad definition (no such accent): $qdef\n" }
+      else { die "Bad definition (no such character): $qdef\n" }
+   else { $ligs .= "$_\n" }
+      else { next }
+      else { $s1 =~ s/(\(SETCHAR .*?\))/$1 (MOVERIGHT R $kern)/ }
+   else { $s2 = "      " }
+   else { $s2 .= " " }
+   else { $s2 .= "      (MOVEDOWN R $dp) " }
+   else  { $s2 = "      (MOVEDOWN R $v) " }
+else { $scale = 1 }
+      else {						# single accs
+   else {						# single accs
+   elsif (!$acc) {
+   elsif (!($acc and $opt_b) and $allchars{$nchar}) {
+      elsif ($acc =~ /^$supacc$/) {
+      elsif ($acc =~ /^$underacc$/) {
+      elsif ($acc =~ /^underbar$/) {
+   elsif ($allchars{$char}{ht} > 1.15 * $xheight) {
+   elsif ($allchars{$char}{ht} >= ($accheight + $v2)) {	# double accs
+   elsif ($char =~ /\A\(CHARACTER C (.)/m) { $num = ord $1 }
+   elsif ($h < 0)  {
+   elsif ($h < 0) {
+   elsif (/^   \)$/m) { $ligs .= $_ }
+elsif ($vplhead =~ /\A\(FAMILY.*\)\n\(CODINGSCHEME ADOBESTANDARDENCODING\)$/m) {
+   "emdash",         "hungarumlaut",   "tilde",          "dieresis"
+   "emdash",         ".notdef",        ".notdef",        ".notdef",
+   "emdash",         "Ntilde",         "Ograve",         "Oacute",
+     empty); and \"accent\" optionally names an accent to be placed
+   @enc = @adobeenc;
+   @enc = @dvipsenc;
+($encname = basename($opt_d)) =~ s/\..*$//;
+     encoding and may be expressed in decimal, octal or hex;
+encoding to bring them into greater conformity with the TeX norm. In
+   @enc = @TeXenc;
+# End of main program
+   "exclamdown",     "equal",          "questiondown",   "question",
+   exit 1;
+   # Extract info from a character definition and store it in @chars
+   # Extract info from @chars and build it into a character definition
+   "ffi",            "ffl",            ".notdef",        ".notdef",
+   "fi",             "fl",             "ffi",            "ffl",
+# File header
+$filename = $ARGV[0];
+   # First deal with .notdef
+      # First get rid of predefined/duplicated ligtable statements
+# First normalise dvips.enc encoding quirks
+	 fixkerns($char, $acc);
+# Flags for bold and small caps. These are probably a bit iffy, but
+     followed by the name of the accent (e.g. \"0x0310 space
+font might therefore be
+($fontname = $filename) =~ s/\..*$//;
+fonts or virtual fonts (\"input fonts\"). A successful run will
+fonts unless it was created with either of the programs afm2pl
+for a Computer Modern font, or
+for a PostScript font.
+for (@deflines) {
+   foreach (@ch) {
+foreach $i (0 .. 0xFFFF) {
+foreach $i (0 .. 0xFFFF) { if (defined $chars[$i]{id}) { printchar($i) } }
+foreach $i (0 .. 255) { $vc{$nv[$i]} = $enc[$i] }
+foreach $i (0 .. $#chars) {
+   foreach $i (@{ $allchars{$char}{num} }) { undef $chars[$i] }
+      foreach (@liglist) {
+foreach (@liglist) {
+foreach (@ligs) {
+      foreach $n (@{ $allchars{$two}{num} }) {
+foreach $newlig (@newligs) {
+foreach (@vplhead) {
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+     found useful.
+   "four",           "five",           "six",            "seven",
+   "fraction",       "yen",            "florin",         "section",
+   "Gamma",          "Delta",          "Theta",          "Lambda",
+   # Generalise the kerning info contained in the vpl file by applying
+getopts('d:s:c:bh');
+   # giving up.
+#   GNU General Public License for more details.
+      # Go!
+   "guilsinglleft",  "guilsinglright", "fi",             "fl",
+	 $hadj = sprintf("%.3f", $scoffset * $slant);
+	 $hadj = sprintf("%.3f", $v1 * $slant);
+      $hadj = sprintf("%.3f", ($v1 + $v2) * $slant);
+	 $hadj = sprintf("%.3f", $v2 * $slant);
+      $h = ($allchars{$char}{wd} - $allchars{$acc}{wd}) / 2 - $v * $slant;
+      $h = ($allchars{$char}{wd} - ($allchars{$acc}{wd} * $shrink)) / 2 - $v * $slant;
+     Here \"number\" represents the character's position in the new
+      $h = -$h;
+   $h += $hadj;
+   "h",              "i",              "j",              "k",
+  -h prints this help.
+   $h = sprintf("%.3f", ($allchars{$char}{wd} - $allchars{$acc}{wd}) / 2);
+   $h = sprintf("%.3f", ($allchars{$id}{wd} / 10 - $dp * $slant));
+   $h = sprintf("%.3f", $h);
+      $ic = $allchars{$acc}{ic};
+	 $ic = $allchars{$acc}{ic} + $hadj;
+      $ic = $allchars{$char}{ic};
+	 $ic = $allchars{$char}{ic};
+   "Icircumflex",    "atilde",         "edieresis",      "egrave",
+   if ($acc =~ /^$accents$/) { $lchar = $rchar = $char }
+   if ($acc and !$allchars{$acc} and $acc !~ /^$accents$/) {
+   if ($acc eq "candrabindu") {
+   if ($acc eq "candrabindu") { die "Bad definition (no such accent): $qdef\n" }
+   if ($acc eq "dot") { $acc = "period" }
+      if ($acc eq "overdot") {
+   if ($acc eq "overdot") { $acc = "dotaccent" }
+      if ($acc =~ /^$subacc$/) {
+   if ($acc =~ /^$supacc$/) {
+   if (!$allchars{$char} and $char ne ".notdef") {
+if ($bold) { $thk = 0.072 } else { $thk = 0.052 }	# thickness and
+   if ($cb) {						# candrabindu
+      if ($cbx) {
+      if ($cby) {
+   if ($char =~ /\A\(CHARACTER O ([0-7]+)/m) { $num = oct $1 }
+   if (/^\(CHARACTER/) {
+   if ($char =~ /^   \(CHARDP R (.*?)\)$/m) { $chars[$num]{dp} = $1 }
+   if ($char =~ /^   \(CHARHT R (.*?)\)$/m) { $chars[$num]{ht} = $1 }
+   if ($char =~ /^   \(CHARIC R (.*?)\)$/m) { $chars[$num]{ic} = $1 }
+   if ($char =~ /^   \(CHARWD R (.*?)\)$/m) { $chars[$num]{wd} = $1 }
+   if ($char eq "i" and $allchars{"dotlessi"}) { $char = "dotlessi" }
+   if ($char eq "j" and $allchars{"dotlessj"}) { $char = "dotlessj" }
+      if ($char eq "space") { $def->{nchar} = $acc }
+   if ($char =~ /^   \(MAP\n((.|\n)*)^      \)/m) { $chars[$num]{map} = $1 }
+   if ($chars[$i] and $enc[$i] ne ".notdef") {
+      if ($char =~ /$supacc$/
+   if (chr($num) =~ /[0-9A-Za-z]/) { push @ch, "C " . chr($num) }
+      if defined $chars[$num]{ht};
+      if defined $chars[$num]{wd};
+if ($dvips) {
+if (eof) {
+if ($fontname =~ /(^p.*b[oi]?[c]?$|^[^p].*bx[a-z]*[0-9]+$)/) { $bold = 1 }
+if ($fontname =~ /(^p.*c$|^[^p].*csc[a-z]*[0-9]+$)/)         { $scaps = 1 }
+      if (grep /^$acc$/, @nchars) {
+   if (grep /^$char$/, @digraphs) {
+      if (grep /^$char$/, @nchars) {
+   if ($h > 0) {
+   if ($h > 0) { $s2 = "      (MOVERIGHT R $h) " }
+   if ($h > 0) { $s2 .= " (MOVERIGHT R $h) " }
+   # If it can't be built from sub-elements, issue a warning and move on
+   if ($kern) {
+      if ($kern < 0) {
+   if (/^(   \((?:LABEL|LIG|KRN) )([^ )]+)(.*)$/) {
+   if (/^   \(LABEL /m) { $ligs .= "$_   (STOP)\n" }
+if (/   \(LIG /) {
+   if ($ligs =~ /^   \(LABEL $char\)\n(.*?)\n   \(KRN $acc R (-?[0-9.]+)\)\n/ms) {
+      if ($ligs =~ /\n   \(LABEL $char\).*?\(STOP\)/s) {
+   if (/^(   \(LIG \S+ )(\S+)\)$/) {
+      if ($n = ${ $allchars{$2}{num} }[0]) {
+   if ($nchar eq ".notdef") {
+      if ($num > 0xFFFF) { die "Bad definition (number out of range): $_\n" }
+if ($opt_c) {						# candrabindu
+if  ($opt_h or !$opt_d or $#ARGV != 0) {
+if ($opt_s) {
+   if ($opt_s and $acc =~ /^$supacc$/) { $s3 .= "\n      (SELECTFONT D 0)" }
+      if ($opt_s) { $s2 = "      (SELECTFONT D 1)\n" }
+if ($opt_s) { $shrink = $opt_s / 1000 } else { $shrink = 1 }
+if ($scaps)  {						# accented small caps
+   if ($scaps and $char =~ /^[a-z]/) {			# accented small caps
+   if (/^\s*(\d+|0[0-7]+|0x[0-9a-fA-F]+)\s+([a-zA-Z]+?|\.notdef)(?:\s+([a-zA-Z]+))?$/) {
+     If the character named in the \"accent\" position is not in fact
+   # If the character to be underscored is a digraph, fix up the LIGTABLE
+if ($vplhead =~ /^\(CODINGSCHEME TEX MATH SYMBOLS/m) {
+   if ($vplhead =~ /^\(DESIGNSIZE R (.*)\)$/m) { $dsize = $1 *$scale }
+if ($vplhead =~ s/\A\(VTITLE(.*)$/$vtitle\n(COMMENT Old vtitle:$1/m) {
+if ($vplhead =~ s/^\(DESIGNUNITS R (.+)\)\n//m) { $scale = $1 }
+if ($vplhead =~ /^   \(SLANT R (.+)\)/m)       { $slant = $1 }
+if ($vplhead =~ /^   \(XHEIGHT [DR] (.+)\)/m)  { $xheight = $1 }
+   # If we can't handle $char/$acc yet, but believe we will be able
+   "Igrave",         "hungarumlaut",   "ogonek",         "Idieresis",
+   "igrave",         "iacute",         "icircumflex",    "idieresis",
+     in cases where a font designer does not share vpl2ovp's views
+     indistinguishable from the letters \"k\" and \"h\" printed
+In order to keep the whole of the character range \"F0-\"FF free for
+     in PostScript fonts, \"underbar\" and \"underdot\" are also
+     (introduced by \"\#\").
+is assumed to adhere to the standard TeX encoding for text
+     is formed by overprinting a breve with a dotaccent. Finally,
+   # it later turns out we were wrong, allow only five loops before
+   # it to new accented chars. Do not kern lower-case chars bearing
+#   it under the terms of the GNU General Public License as published by
+	 $kern = -$kern;
+   $kern = $two if $one !~ /^   \(STOP\)$/m;
+                 [   \(LABEL $newelm1\)\n$newlig\n   \(STOP\)\n$1]m
+      $lchar = $char;
+   "less",           "equal",          "greater",        "question",
+# Ligatures and kerns
+@liglist = split /\n/, $ligs;
+      @liglist = split /\n   \(STOP\)/, $ligs;
+@liglist = split /   \(STOP\)\n/, $ligs;
+   $ligs .= $_;
+$ligs = "";
+      $ligs = join("\n   (STOP)", @liglist);
+	 $ligs .= "$one$nv[$n]$three\n";
+$ligs =~ s/^(   \((?:LABEL|KRN) )(\S+ \S+)(.*\))$/$1$vc{$2}$3/gm;
+$ligs =~ s/(^   \(LABEL .*\)\n)+   \(STOP\)\n//gm;
+$ligs =~ s/^(   \(LIG )(\S+ \S+) (\S+ \S+)\)$/$1$vc{$2} $vc{$3})/gm;
+       $ligs =~ s[^(   \)\n)]
+      $ligs =~ s[(\n   \(KRN )$lchar( .*)$]
+	 $ligs =~ s/(\n   \(LABEL )$char\).*?\(STOP\)/$olabel$nlabel/s;
+	 $ligs =~ s/\n   \((LABEL|KRN|LIG) ($nchar2 .*|.*$nchar2)\)$//gm;
+      $ligs =~ s/\n   \((LABEL|KRN|LIG) ($nchar .*|.*$nchar)\)$//gm;
+      $ligs =~ s[(\n   \(LABEL )$rchar\)(?!\n   \(LIG.*$)]
+      $ligs =~ s[(\n   \(LABEL )$rchar\)(\n   \(LIG.*$)+(?!\n   \(STOP\))]
+@ligs = split /^/, $ligs;
+     like any other character: see next paragraph.
+     lines of character definitions, in the form
+      # linked into the LIGTABLE
+   # List all digraphs for future reference
+   "l",              "m",              "n",              "o",
+   "Lslash",         "eacute",         "ecircumflex",    "ordmasculine",
+   "lslash",         "oslash",         "oe",             "germandbls",
+   "Lslash",         "Oslash",         "OE",             "ordmasculine",
+   "lslash",         "ugrave",         "uacute",         "ucircumflex",
+   # Make a new character consisting of two existing characters
+   # Make a new dummy character
+   $mapfont = "\n(MAPFONT D 0\n   (FONTNAME $fontname)\n   (FONTDSIZE R $dsize)\n   )";
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   # Move a character
+   my ($a, $b) = @_;
+   my ($cb, $h, $hadj, $tallchar, $ic, $s1, $s2, $s3);
+   my @ch;
+   my ($char, $acc) = @_;
+   my ($char, $num) = @_;
+   my $char = shift;
+   my ($h, $s1, $s2, $s3);
+   my ($h, $v, $s1, $s2, $s3);
+   my ($h, $w, $dp, $s1, $s2, $s3);
+   my $i;
+   my $num;
+   my ($num, $char, $acc, $id) = @_;
+   my ($num, $char, $id) = @_;
+   my ($num, $id) = @_;
+   my $num = shift;
+   my ($olabel, $nlabel, @liglist, $lchar, $rchar);
+   my ($one, $two, $kern, $s1, $s2, $charZWJ);
+                [$&\n${1}1$2   (FONTAT R ${ \($shrink * $scale) })\n$3]ms;
+         $nchar2 = $char . "dotaccent";
+   $nchar = $def->{nchar};
+   $newelm1 = $1;
+   $newlig =~ s/^(.+)://;
+	    next;
+   next if (/^\s*$/ || /^\#/);
+   # Next look among existing chars (unless blocked by -b)
+	 $nlabel = $olabel = $&;
+	 $nlabel =~ s/\n   \(KRN ([A-Z]|quote).*\)$//gm;
+	 $nlabel =~ s/(\n   \(LABEL $char)\)/$1$acc)/
+         $nlabel =~ s/\n   \(LABEL (?!$char$acc).*\)$//gm;
+         $nlabel =~ s/\n   \(LIG .*\)$//gm;
+   ".notdef",        "ae",             ".notdef",        ".notdef",
+   ".notdef",        "AE",             ".notdef",        "ordfeminine",
+   ".notdef",        "dotlessi",       ".notdef",        ".notdef",
+   ".notdef",        "endash",         "dagger",         "daggerdbl",
+   ".notdef",        "exclamdown",     "cent",           "sterling",
+   ".notdef",        "grave",          "acute",          "circumflex",
+   ".notdef",        "hungarumlaut",   "ogonek",         "caron",
+   ".notdef",        ".notdef",        "cent",           "sterling",
+   ".notdef",        ".notdef",        ".notdef",        ".notdef"
+   ".notdef",        ".notdef",        ".notdef",        ".notdef",
+   ".notdef",        ".notdef",        "Scaron",         ".notdef",
+   ".notdef",        "ntilde",         "ograve",         "oacute",
+   ".notdef",        "quotesingle",    "exclamdown",     "questiondown",
+   ".notdef",        "Ugrave",         "Uacute",         "Ucircumflex",
+     Note that all accents used in defining accented characters must
+not found in the lower half of the character set: quotesingle,
+# Now build a hash to convert from vpl representation to char name
+# Now build a list of definitions supplied by user
+   # Now build the char
+# Now the encoding vectors.
+               \"number\"   \"character\"
+               \"number\"   \"character\"   \"accent\"
+      ($num, $char, $acc)  = ($1, $2, $3);
+   $num   = $def->{num};
+      $num = oct $num if $num =~ /^0/;
+   $nv[$i] = (chr($i) =~ /[0-9A-Za-z]/ ? "C " . chr $i : sprintf("H %04lX", $i));
+   "ocircumflex",    "otilde",         "odieresis",      ".notdef",
+       $one_ = $one . "_uni035F";
+       ($one, $two) = ($1, $2);
+      ($one, $two) = ($1, $2);
+      ($one, $two, $three) = ($1, $2, $3);
+     on the character. In addition to the standard accents available
+     on the ordering of definitions within a definition file. The
+     on where accents should be placed.
+open DEF, $opt_d or die "Cannot open $opt_d: $!\n";
+Options:
+or afm2tfm, in which case it is assumed to conform to
+	   or ($cb =~ s/(MOVELEFT R )([0-9.]+)/$1 . ($2 - $cbx * $scale)/e)) {
+   "oslash",         "AE",             "OE",             "Oslash",
+# Output the results
+     \"overdot\" may be used as a synonym for \"dotaccent\".
+     ovp2ovf cmr10-uni1.ovp cmr10-uni1.ovf cmr10-uni1.ofm
+     ovp2ovf ptmr-uni1.ovp ptmr-uni1.ovf ptmr-uni1.ofm
+# Packages and constants
+   "parenleft",      "parenright",     "asterisk",       "plus",
+particular, the characters dotaccent and hungarumlaut are placed in
+   "periodcentered", ".notdef",        "paragraph",      "bullet",
+   "Phi",            "Psi",            "Omega",          "ff",
+     pltotf rptmr.pl rptmr.tfm
+       pop @newligs;
+   pop @newligs;
+   "p",              "q",              "r",              "s",
+   print @ch
+   print STDERR $description;
+print @vplhead, @ligs;
+# Pull in the newly created ligatures
+   push( @{ $allchars{$char}{num} }, $num);
+   push( @{ $allchars{$id}{num} }, $num);
+      push( @{ $allchars{$nchar}{num} }, $num);
+   push( @{ $chars[$num]{num} }, $num);
+   push @ch, "(CHARACTER ";
+   push @ch, "   (CHARDP R " . $chars[$num]{dp} . ")\n" if $chars[$num]{dp};
+   push @ch, "   (CHARHT R " . $chars[$num]{ht} . ")\n"
+   push @ch, "   (CHARIC R " . $chars[$num]{ic} . ")\n" if $chars[$num]{ic};
+   push @ch, $chars[$num]{map};
+   push @ch, "   (CHARWD R " . $chars[$num]{wd} . ")\n"
+      push @ch, " (COMMENT " . $chars[$num]{id} . ")";
+   push @ch, "   (MAP\n";
+   push @ch, "      )\n";
+   push @ch, "   )\n";
+   push @ch, "\n";
+      push @ch, sprintf("H %04lX", $num);
+   push @deflines, $_;
+      push @defs,   $def;
+	    push @defs, $def;
+   push @digraphs, $id;
+      push @nchars, $def->{nchar};
+      push @newligs, "$char:   (LIG $acc $nchar)";
+       push @newligs, "$one_:   (LIG $two $id)";
+       push @newligs, "$one:   (LIG uni035F $one_)"
+   $qdef  = $def->{qdef};
+quotedbl, backslash, underscore, braceleft, bar, braceright. These
+   "quotedblleft",   "bracketright",   "circumflex",     "dotaccent",
+   "quoteleft",      "a",              "b",              "c",
+   "quotesinglbase", "quotedblbase",   "quotedblright",  "guillemotright",
+    [" R " . $2 . $3/$scale . ")"]ge
+      $rchar = $acc;
+read a pl (Property List) or vpl (Virtual Property List) file
+# Read DEF file
+# Read VPL file
+   # Remove any existing claims on $num
+   # Remove the ligature info -- we don't want every occurrence of
+(respectively) the Adobe Standard Encoding or the encoding
+   return $a > $b ? $a : $b;
+   # Return greater of two values
+   return if $char eq "space";
+     ring) should be shrunk when they are used as subscript accents
+   $s1 = $allchars{$char}{map};
+      $s1 = "(PUSH) " . $s1;
+   $s1 =~ s/\A      (.*)\n\Z/(PUSH) $1 (POP)/s;
+	 $s1 =~ s/(\(SETCHAR .*?\))/$1 (MOVELEFT R $kern)/;
+   $s1 =~ s/(\(SETCHAR .*?\))/$1\n$s2/;
+      $s2 = "     ";
+      $s2 = "      (MOVEDOWN R $dp) (MOVELEFT R $h) ";
+      $s2 = "      (MOVEDOWN R $dp) (MOVERIGHT R $h) ";
+      $s2 .= "      (MOVEDOWN R $v) (MOVELEFT R $h) ";
+      $s2 .= "      (MOVEDOWN R $v) (MOVERIGHT R $h) ";
+      $s2 = "      (MOVELEFT R $h) ";
+      $s2 .= " (MOVELEFT R $h) ";
+	 $s2 = "      (MOVEUP R $scoffset)";
+	 $s2 = "      (MOVEUP R $v1)";
+      $s2 = "      (MOVEUP R ${ \($v1 + $v2) })";
+	 $s2 = "      (MOVEUP R $v2)";
+   $s3 = $allchars{$acc}{map};
+      $s3 .= " (POP)";
+   $s3 =~ s/\A.*(\(SETCHAR . .+?\)).*\Z/$1/s;
+   $s3 = "(SETRULE R ${ \($thk) } R $w)";
+   "scaron",         "zcaron",         "Eth",            "ff",
+    $scoffset = $allchars{"x"}{ht} - $xheight;
+   s/ \(comment .*$//i;
+# Set up constants
+   s[(?<!(IGNSIZE|MAPFONT)) [RD] (-?)([0-9.]+)\)]
+   s/^(   \((?:LABEL|KRN) )O ([0-7]+)(.*)$/$1 . sprintf("H %04lX", oct $2) . $3/e;
+	 s/^(   \(LIG \S+ )(\S+)\)$/$1$nv[$n])/;
+     \"Slots\" for which no new definition is given retain the
+  -s may optionally give the factor, expressed as a per-thousand
+	    s/(\n   \(KRN $char)( .*\))$/$&$1$acc$2/gm;
+    s/O ([0-7]+)/sprintf("H %04lX", oct $1)/ge;
+# Sort out ligtable
+     source font should simply be referenced by name in their
+   "space",          "exclam",         "quotedbl",       "numbersign",
+   "space",          "exclam",         "quotedblright",  "numbersign",
+specified in the file dvips.enc. In either case, the name of
+   s/ [RD] (-?)([0-9.]+)\)/" R " . $1 . $2\/$scale . ")"/ge
+   s/\s*(\#.*)?$//;
+      s/(?<!SELECTFONT) [RD] (-?)([0-9.]+)\)/" R " . $1 . $2\/$scale . ")"/ge
+      storeinfo($character);
+      # Store the info that will be needed to have the character
+$subacc = "(cedilla|ogonek|commaaccent)";
+	 subacc($num, $char, $acc, $nchar);
+sub chmove {
+sub digraph {
+sub dummychar {
+sub fixkerns {
+sub max {
+sub printchar {
+   # Subscript accents
+sub storeinfo {
+sub subacc {
+sub supacc {
+sub underacc {
+sub underb {
+     (such as underdieresis, underring). Values of around 800 may be
+$supacc = "(grave|acute|circumflex|tilde|macron|breve|dotaccent|overdot|dieresis|ring|hungarumlaut|caron|candrabindu)";
+	 supacc($num, $char, $acc, $nchar);
+   # Superscript accents
+     superscript accents (\"underdieresis\", \"underring\", etc.).
+   # superscript accents with capitals, quotes or a preceding "f".
+"Syntax: vpl2ovp -d definition-file [-s shrink-factor]
+      $tallchar = 1;
+      $tallchar = 1;					# on caps etc.
+TeX conventions for naming fonts, as vpl2ovp attempts to draw
+@TeXenc = (
+     tftopl cmr10.tfm cmr10.pl
+     The definition file may also contain blank lines and comments
+#   the Free Software Foundation; either version 2 of the License, or
+     The Indian accent \"candrabindu\" may also be specified: it
+the input font is assumed to be the name of the input file
+their dvips.enc positions if this were desired.)
+their normal TeX positions. As a result, the following characters are
+     themselves be defined in the .def file. Those which exist in the
+the positions assigned by TeX (\"5F, \"7D), not those enforced by
+the requirements of the encoding specified in the definition file,
+# there's not much that can be done about it.
+     the specified number's \"slot\" in the new encoding is to be
+they are needed. (Indeed, they could all be explicitly restored to
+#   This program is distributed in the hope that it will be useful,
+#   This program is free software; you can redistribute it and/or modify
+   "tilde",          "macron",         "breve",          "dotaccent",
+   # to later, send the definition to the back of the queue. In case
+   "t",              "u",              "v",              "w",
+   "Udieresis",      "Yacute",         "Thorn",          ".notdef",
+   "udieresis",      "yacute",         "thorn",          "ydieresis"
+      undef $chars[$num];
+	 underacc($num, $char, $acc, $nchar);
+$underacc = "(underdot|under$supacc)";
+$underadp = 0.230;				# depth of "under" accs
+   # Underbar
+$underbdp = 0.082 + $thk;				# depth of underbar
+	 underb($num, $char, $nchar);
+$underddp = 0.213;				# depth of underdot
+# "unencoded" characters
+	 unless (($cb =~ s/(MOVERIGHT R )([0-9.]+)/$1 . ($2 + $cbx * $scale)/e)
+	 unless ($cb =~ s/(MOVEUP R )([0-9.]+)/$1 . ($2 + $cby * $scale)/e) {
+   unless ($char =~ /^[a-z]/ and $acc =~ /^$supacc$/) {
+	 unless (++$def->{requeue} > 5) {
+	  unless (grep /^$one:   \(LIG uni035F $one_\)$/, @newligs);
+                unless $ligs =~ /\n   \(LABEL $char$acc\)$/m;
+	   unless $ligs =~ /\n   \(LABEL $char$acc\)/m;
+   unless ($ligs =~ s/(^   \(LABEL $newelm1\)\n)/$1$newlig\n/m) {
+	 unless (/\n   \(LABEL ([A-Zf]|quote).*\)$/m) {
+   unless ($tallchar) { $ic -= $h }
+unless ($vplhead =~ /^\(MAPFONT /m) {
+unless ($vplhead =~ s/^(\(CODINGSCHEME .*\+\s?)(\S+)\)$/$1$encname)/m) {
+unless ($vplhead =~ /^\((VTITLE|FAMILY) /) {
+      } until $_ =~ /^   \)/;
+} until $_ =~ /^   \)/;
+} until eof;
+} until ($_ =~ /^\(LIGTABLE$/ or eof);
+     used in the \"character\" position of a further definition (such
+use File::Basename;
+     usefully be named, e.g., \"Unicode1.def\") should consist of
+use Getopt::Std;
+#!/usr/bin/perl
+$v1 = $accheight - $xheight;		# vertical offset for double accents
+    $v1 += $scoffset;
+$v2 = $capheight - $xheight;		# vertical offset for accented caps etc
+      $v += ($accdepth * $shrink);
+      $v = $allchars{$id}{dp} = $underadp * $scale * $shrink;
+      $v = $allchars{$id}{dp} = $underddp * $scale + $allchars{$acc}{dp};
+     value, by which normally superscript accents (such as dieresis,
+values for the heights of some characters, and this can lead to
+$version = 0.25;
+     versions. This may be useful to secure a consistent appearance
+Virtual Property List) file on standard output. The input font
+#   Vpl2ovp: a program to generate accented virtual fonts for Omega
+Vpl2ovp creates new Omega virtual fonts based on existing TeX
+     vpl2ovp -d Unicode1.def cmr10.pl >cmr10-uni1.ovp
+     vpl2ovp -d Unicode1.def ptmr.vpl >ptmr-uni1.ovp
+     vpl2ovp -d Unicode1.def rptmr.pl >ptmr-uni1.ovp
+   $vplhead .= $_;
+$vplhead = <> or exit 1;
+   $vplhead =~ s/\A/$vtitle\n/m;
+$vplhead =~ s/^\(BOUNDARYCHAR.*\)\n//gm;
+   $vplhead =~ s/^(\(CODINGSCHEME .*)\)$/$1 + $encname)/m;
+$vplhead =~ s/^\(COMMENT.*DESIGNSIZE.*\)\n//gm;
+$vplhead =~ s/^(\(FONTDIMEN)/(SEVENBITSAFEFLAG FALSE)\n$1/m;
+   $vplhead =~ s[^(\(MAPFONT D )0(.*?)(   \))]
+   $vplhead =~ s/\n\(COMMENT Please edit that VTITLE .*\)$//m;
+   $vplhead =~ s/\n\(LIGTABLE\Z/$mapfont$&/m;
+@vplhead = split /^/, $vplhead;
+$vtitle .= ")\n(COMMENT Command line: $cmdline)";
+$vtitle .= "\n(OFMLEVEL H 0)";
+$vtitle = "(VTITLE Font $fontname modified for $encname encoding by vpl2ovp";
+$vtitle .= " v. $version" if $version;
+      warn "No such character - ignoring definition: $qdef\n";
+     which do not should be defined as the character \"space\"
+while (<DEF>) {
+while (@defs) {
+without its .vpl or .pl extension: it must conform to normal
+# Work through the list
+   $w = sprintf("%.3f", ($allchars{$id}{wd} * 8 / 10));
+   "Xi",             "Pi",             "Sigma",          "Upsilon",
+   "x",              "y",              "z",              "braceleft",
+   "X",              "Y",              "Z",              "bracketleft",
+   "x",              "y",              "z",              "endash",
+   "Ydieresis",      ".notdef",        "Zcaron",         ".notdef",
+#   You should have received a copy of the GNU General Public License
+   "zero",           "one",            "two",            "three",

@@ -1,0 +1,334 @@
+  -------------
+   0.0%% 
+  0x00000001  PF_ALIGNWARN
+  0x00000002  PF_STARTING
+  0x00000004  PF_EXITING
+  0x00000040  PF_FORKNOEXEC
+  0x00000100  PF_SUPERPRIV
+  0x00000200  PF_DUMPCORE
+  0x00000400  PF_SIGNALED
+  0x00000800  PF_MEMALLOC
+  0x00002000  PF_FREE_PAGES (2.5)
+  0x00008000  debug flag (2.5)
+  0x00024000  special threads (2.5)
+  0x00100000  PF_USEDFPU (thru 2.4)
+  0x001D0000  special states (2.5)
+   11005 
+  11.2%% 
+  12.3%% 
+-1234567890
+,.1234567890
+   17284 
+%.1f secs
+  1,I       Toggle SMP view: '
+%3s	fieldscur=%31s
+ %#4.1f%% 
+ %#5.1f%% 
+%#5.1f%%
+  76.5%% 
+  8   0  0.0   0:00.75  1380    0 S   /bin/bash 
+ 8601 pts/1    7 -10  0.4   0:00.03   916    0 R < color -b 
+  9   0  0.0   0:02.50  2852 1008 S   amor -ses 
+    A       . Alternate display mode toggle, show 
+ABcefgjlrstuvyzMKNHIWOPQDX
+ABDECGfhijlopqrstuvyzMKNWX
+' add or remove; '
+AEHIOQTWKNMbcdfgjplrsuvyzX
+ and responds to your 
+ANOPQRSTUVbcdefgjlmyzWHIKX
+any other key to continue 
+ as number:
+  a specific field group; or
+ as upper case letter:
+available anytime   -------------
+   available toggles: 
+  a , w   . Cycle through all four windows:  '
+' Backward
+bad delay '%s'
+bad iterations arg '%s'
+bad pid '%s'
+ = black,
+ = blue, 
+' bold/reverse (only if 'x' or 'y')
+__bss_start
+              by selecting a number from: 
+ can be turned 
+' change color mappings; '
+Change delay from %.1f to
+' change display order
+Choose field group (1 - 4)
+) choosing
+  c,i,S   . Toggle: '
+closeproc
+' cmd name/line; '
+Code size (kb)
+   color - 04:25:44 up 8 days, 50 min,  7 users,  load average:
+ =color/mono (
+' color/mono; '
+ = Column Heads,
+ COMMAND
+Command disabled, activate %s with '-' or '_'
+Command name/line
+Commands
+. Commands 
+ commands.  Please try the '
+commands plus the 'G' sub-commands NOW.  Press <Enter> to make 'Current' 
+          ( commands shown with '.' require a 
+' commands.  Then later you could:
+conflicting process selection
+Controlling Tty
+Cpu%-3d:
+cpu %Lu %Lu %Lu %Lu %Lu %Lu %Lu %Lu
+   Cpu(s):
+CPU Time
+CPU Time, hundredths
+cpu%u %Lu %Lu %Lu %Lu %Lu %Lu %Lu %Lu
+CPU usage
+__ctype_b_loc
+Cumulative mode 
+' cumulative time
+Cumulative time %s
+current window: 
+ - "Current Window" = 
+cur_term
+ = cyan, 
+) cycling forward/backward;
+Data+Stack size (kb)
+Delay time Not changed
+dev_to_tty
+different window
+Dirty Pages count
+ =disable bold globally (
+disabled
+' disable/enable bold
+  d or s    Set update interval
+-d requires argument
+, each with separate config opts (color,fields,sort,etc)
+__errno_location
+escape_command
+essential
+/etc/toprc
+) exiting the color mapping screen
+failed memory allocate
+Failed /proc/stat open: %s
+failed /proc/stat read
+Failed '%s' open: %s
+failed tty get
+failed tty set: %s
+  field order, the '<' and '>' keys
+  Field sorting uses internal values,
+ Flags   
+Flags field:
+  f,o     . Fields/Columns: '
+' for help with 
+  F or O  . Select sort field
+' Forward; '
+ for window 
+    g       . Change the 
+    G       . Choose another field group and make it 'current', or change now
+getpagesize
+get_pid_digits
+getpwnam
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.4
+       Global: '
+__gmon_start__
+ = green,
+ GROUP   
+Group Name
+, growing/shrinking others
+ has been activated, making it the 'current' window
+Help for color mapping
+Help for Interactive Commands
+Help for Windows / Field Groups
+ -hv | -bcisSH -d delay -n iterations [-u user | -U user] -p pid [,pid ...]
+Id:a, Mode_altscr=%d, Mode_irixps=%d, Delay_time=%.3f, Curwin=%u
+Id:a, Mode_altscr=%d, Mode_irixps=%d, Delay_time=%f, Curwin=%d
+' idle tasks; '
+  If a selected sort field can't be
+Input Prompt
+Invisible
+_IO_stdin_used
+Irix mode %s
+' Irix/Solaris mode
+ ('i','R','n','c', etc)
+_Jv_RegisterClasses
+kb_main_buffers
+kb_main_cached
+kb_main_free
+kb_main_total
+kb_main_used
+kb_swap_free
+kb_swap_total
+kb_swap_used
+' keys are your 
+' kill; '
+Kill of PID '%d' with '%d' failed: %s
+Kill PID %d with signal [%i]
+  k,r       Manipulate tasks: '
+Last used cpu (SMP)
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libproc-3.2.8.so
+libtinfo.so.5
+linux_version_code
+' load avg; '
+lookup_wchan
+  l,t,m     Toggle Summaries: '
+%lu,%02u
+%lu:%02u
+%lu:%02u.%02u
+ = magenta,
+Maximum tasks = %d, change to (0 is unlimited)
+' mem info
+Memory usage (RES)
+ = Messages/Prompts,
+' mode, '
+  <,>     . Move sort field: '
+Multiple
+ Nasty Message! 
+' next col left; '
+' next col right
+Nice value
+No colors to map!
+' normal/reverse sort; '
+  n or #  . Set maximum tasks displayed
+Nothing to highlight!
+  not those in column display.  Thus,
+Not valid
+-n requires argument
+Numerical
+ of the 'current' window/field group
+openproc
+open_psdb_message
+  -or-  
+Page Fault count
+Parent Process Pid
+        PID
+pid limit (%d) exceeded
+PID to kill
+PID to renice
+  PID TTY     PR  NI %%CPU    TIME+   VIRT SWAP STA Command  
+       PPID
+-p requires argument
+   press 'a' or 'w' to commit & change another, <Enter> to commit and end 
+   press 'q' to abort changes to window '
+Priority
+Process Id
+Process Status
+procps_version
+/proc/stat
+  q         Quit
+RCfile for 
+RCfile for "%s with windows"		# shameless braggin'
+readproc
+readtask
+Real user name
+  = , +   . Rebalance tasks:  '
+ = red,    
+Rename window '%s' to (1-3 chars)
+' renice
+Renice of PID %d to %d failed: %s
+Renice PID %d to value
+requiring
+Resident size (kb)
+  R,H     . Toggle: '
+running,
+' running tasks
+ RUSER   
+***  %s  ***
+%sCurrent Fields
+%sCurrent Sort Field
+Secure mode 
+Selected: 
+Select sort field via field letter, type any other key to return
+setbuffer
+setpriority
+setupterm
+%s	fieldscur=%s
+  (shame on you if WCHAN is chosen)
+Shared Mem size (kb)
+  - , _   . Show/Hide:  '
+  shown due to screen width or your
+' show threads
+Show threads %s
+signal_name_to_number
+' single/separate states; '
+sleeping,
+Sleeping in Function
+smp_num_cpus
+ =%s; or
+Sorry, terminal is not big enough
+' sort field; '
+sprint_uptime
+%s%s%c %c: %-10s = %s
+%s/.%src
+%s%.*s%s
+%s%.*s%s%s
+%s%s%s%s
+%s%s %s %s%s
+%s%s%s: %s%s
+__stack_chk_fail
+stopped,
+strerror
+  strict ASCII collating sequence.
+Summary Area
+ = Summary Data,
+	summclr=%d, msgsclr=%d, headclr=%d, taskclr=%d
+	summclr=%d, msgsclr=%d, headclr=%d, taskclr=%d 
+Swapped size (kb)
+%s  W         Write configuration file
+' task/cpu stats; '
+ task display 
+task display
+ task display, some commands will be 
+Task Flags <sched.h>
+ = Task Information
+   Tasks:
+ =tasks "bold"/reverse (
+tcgetattr
+tcsetattr
+  . that window's 
+ the 'current' window by: 
+. The 'current' window controls the 
+  The screen will be divided evenly between task displays.  But you can make
+  the TTY & WCHAN fields will violate
+              (this also forces the 
+    TIME+ 
+     . Toggle: '
+Toggle fields via field letter, type any other key to return
+     . Toggle highlights: '
+ TTY     
+-u missing name
+Unavailable in secure mode
+unknown argument '%c'
+Unknown command - try 'h' for help
+    until a 
+Upper case letter moves field left, lower case right
+usage:	%s%s
+. Use multiple 
+ USER    
+User ID out of range.
+User Name
+User name does not exist.
+  u       . Show specific user only
+, using '
+Virtual Image (kb)
+vsnprintf
+ WCHAN    
+Which user (blank for all)
+ = white
+  will be unavailable until a field
+ window; '
+ windows
+ window to become visible)
+	winflags=%d, sortindx=%d, maxtasks=%d
+	winflags=%d, sortindx=%u, maxtasks=%d 
+  . with 
+  within viewable range is chosen.
+Wrote configuration to '%s'
+ = yellow,

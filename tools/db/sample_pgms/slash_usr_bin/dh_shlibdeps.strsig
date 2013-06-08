@@ -1,0 +1,108 @@
+	# Add to existing paths, if set.
+a list of ELF executables and shared libraries it has found.
+B<dh_shlibdeps> is a debhelper program that is responsible for calculating
+B<dh_shlibdeps> [S<I<debhelper options>>] [B<-L>I<package>] [B<-l>I<directory>] [B<-X>I<item>] [S<B<--> I<params>>]
+Before B<dpkg-shlibdeps> is run, B<LD_LIBRARY_PATH> will have added to it the 
+build directory for the specified package, when searching for libraries,
+build multiple flavors of the same library, or other situations where
+				delete $ENV{LD_LIBRARY_PATH};
+depend on it. In your rules file, first run B<dh_makeshlibs>, then B<dh_shlibdeps>:
+	$dh{L_PARAMS}=join(':', @paths);
+	dh_makeshlibs
+	dh_shlibdeps
+dh_shlibdeps - calculate shared library dependencies
+	dh_shlibdeps -Llibbar1 -l/usr/lib/bar
+		doit("dpkg-shlibdeps","-Tdebian/${ext}substvars",
+		doit("install","-o",0,"-g",0,"-d","$tmp/DEBIAN");
+	# dpkg-shlibdeps expects this directory to exist
+	"dpkg-shlibdeps-params=s", => \$dh{U_PARAMS},
+			else {
+		else {
+			$ENV{LD_LIBRARY_PATH}=$dh{L_PARAMS};
+				$ENV{LD_LIBRARY_PATH}=$ld_library_path_orig;
+Exclude files that contain F<item> anywhere in their filename from being
+F<debian/libfoo1/usr/lib> directory to calculate shared library dependency
+		$ff=`file "$file"`;
+		$find_options="! \\( $dh{EXCLUDE_FIND} \\)";
+		# Force the path absolute.
+	foreach my $file (split(/\n/,`find $tmp -type f \\( -perm +111 -or -name "*.so*" -or -name "*.cmxs" \\) $find_options -print`)) {
+foreach my $package (@{$dh{DOPACKAGES}}) {
+	foreach (split(/:/, $dh{L_PARAMS})) {
+	# Generate a list of ELF binaries in the package, ignoring any
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 EXAMPLES
+=head1 NAME
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+If a libbar1 package is also produced, that is an alternate build of
+	if (defined($dh{EXCLUDE_FIND}) && $dh{EXCLUDE_FIND} ne '') {
+		if (defined $dh{LIBPACKAGE} && length $dh{LIBPACKAGE}) {
+			if (defined $ld_library_path_orig) {
+		if ($dh{L_PARAMS}) {
+if ($dh{L_PARAMS}) {
+	if (! -d "$tmp/DEBIAN") {
+		if exists $ENV{'LD_LIBRARY_PATH'};
+		if ($ff=~m/ELF/ && $ff!~/statically linked/) {
+	if (@filelist) {
+		if (m:^/:) {
+information.
+init(options => {
+=item B<--> I<params>
+=item B<-l>I<directory>[B<:>I<directory> ...]
+=item B<-L>I<package>, B<--libpackage=>I<package>
+=item B<-u>I<params>, B<--dpkg-shlibdeps-params=>I<params>
+=item B<-X>I<item>, B<--exclude=>I<item>
+It is deprecated; use B<--> instead.
+It tells B<dpkg-shlibdeps> (via its B<-S> parameter) to look first in the package
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>, L<dpkg-shlibdeps(1)>
+libfoo1, and using that file and the libfoo1 library in the
+libfoo, and is installed into F</usr/lib/bar/>, you can make libfoo-bin depend
+libfoo-bin binary packages. libfoo-bin links against libfoo1, and should
+	"L|libpackage=s" => \$dh{LIBPACKAGE},
+	"l=s", => \$dh{L_PARAMS},
+may be used more than once to exclude more than one thing.
+		# multiple files..
+	my $ext=pkgext($package);
+	my $ff;
+	my @filelist;
+	my $find_options='';
+		my $ld_library_path_orig=$ENV{LD_LIBRARY_PATH};
+		my @opts;
+	my @paths=();
+	my $tmp=tmpdir($package);
+needed, unless your package builds multiple flavors of the same library.
+		next if $file=~m!^\Q$tmp\E/usr/lib/debug/(lib|lib64|usr|bin|sbin|opt|dev|emul)/!;
+once for each package listed in the F<control> file, passing it
+on libbar1 as follows:
+			@opts,@{$dh{U_PARAMS}},@filelist);
+			@opts=("-S".tmpdir($dh{LIBPACKAGE}));
+passed to B<dpkg-shlibdeps>. This will make their dependencies be ignored.
+Pass I<params> to L<dpkg-shlibdeps(1)>.
+		# Prune directories that contain separated debug symbols.
+			push @filelist,$file;
+		push @opts, "-tudeb" if is_udeb($package);
+			push @paths, "/$_";
+			push @paths, $_;
+	push @paths, $ENV{'LD_LIBRARY_PATH'}
+shared library dependencies for packages.
+specified directory (or directories -- separate with colons). With recent
+Suppose that your source package produces libfoo1, libfoo-dev, and
+symbol files, and shlibs files.
+the library is installed into a directory not on the regular library search
+This is another way to pass I<params> to L<dpkg-shlibdeps(1)>.
+This may be useful in some situations, but use it with caution. This option
+This program is a part of debhelper.
+This program is merely a wrapper around L<dpkg-shlibdeps(1)> that calls it
+This will have the effect of generating automatically a shlibs file for
+		# TODO this is slow, optimize. Ie, file can run once on
+use Cwd;
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w
+			verbose_print("LD_LIBRARY_PATH=$dh{L_PARAMS}");
+versions of B<dpkg-shlibdeps>, this is mostly only useful for packages that
+	# we were told to exclude.
+With recent versions of B<dpkg-shlibdeps>, this option is generally not

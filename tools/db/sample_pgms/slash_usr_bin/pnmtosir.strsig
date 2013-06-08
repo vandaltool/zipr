@@ -1,0 +1,20 @@
+__bss_start
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_close
+pm_message
+pm_openr
+pm_usage
+pm_writelittleshort
+[pnmfile]
+pnm_init
+pnm_readpnm
+Writing a 24-bit SIR format (MGI TYPE 11)
+Writing a grayscale SIR format (MGI TYPE 17)
+Writing a monochrome SIR format (MGI TYPE 17)

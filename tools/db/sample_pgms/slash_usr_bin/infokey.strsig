@@ -1,0 +1,161 @@
+abort-key
+action name too long
+add-digit-to-numeric-arg
+backward-char
+beginning-of-line
+beginning-of-node
+bindtextdomain
+cannot create output file `%s'
+cannot open input file `%s'
+Compile infokey source file to infokey file.  Reads INPUT-FILE (default
+Copyright (C) %s Free Software Foundation, Inc.
+__ctype_b_loc
+dcgettext
+delete-window
+describe-command
+describe-key
+describe-variable
+dir-node
+do-lowercase-version
+down-line
+echo-area
+echo-area-abort
+echo-area-backward
+echo-area-backward-kill-line
+echo-area-backward-kill-word
+echo-area-backward-word
+echo-area-beg-of-line
+echo-area-complete
+echo-area-delete
+echo-area-end-of-line
+echo-area-forward
+echo-area-forward-word
+echo-area-insert
+echo-area-kill-line
+echo-area-kill-word
+echo-area-newline
+echo-area-possible-completions
+echo-area-quoted-insert
+echo-area-rubout
+echo-area-scroll-completions-window
+echo-area-tab-insert
+echo-area-transpose-chars
+echo-area-yank
+echo-area-yank-pop
+Email bug reports to bug-texinfo@gnu.org,
+end-of-node
+__errno_location
+error closing output file `%s'
+error writing to `%s'
+execute-command
+extra characters following action `%s'
+ferror on stdout
+fflush error on stdout
+find-menu
+first-node
+forward-char
+__fprintf_chk
+general questions and discussion to help-texinfo@gnu.org.
+get-help-window
+get-info-help-node
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+global-next-node
+global-prev-node
+__gmon_start__
+goto-invocation-node
+goto-node
+grow-window
+  --help               display this help and exit.
+history-node
+$HOME/.infokey) and writes compiled key file to (by default) $HOME/.info.
+incorrect number of arguments
+index-apropos
+index-search
+.infokey
+_IO_stdin_used
+isearch-backward
+isearch-forward
+keep-one-window
+key sequence too long
+kill-node
+last-menu-item
+last-node
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+list-visited-nodes
+memory exhausted
+menu-digit
+menu-sequence
+missing action name
+missing `=' immediately after variable name
+missing key sequence
+missing variable name
+move-to-next-xref
+move-to-prev-xref
+move-to-window-line
+next-index-match
+next-line
+next-window
+NUL character (\000) not permitted
+NUL character (^%c) not permitted
+numeric-arg-digit-loop
+Options:
+  --output FILE        output to FILE instead of $HOME/.info
+prev-line
+prev-window
+__printf_chk
+print-node
+redraw-display
+scroll-backward
+scroll-backward-page-only
+scroll-backward-page-only-set-window
+scroll-backward-set-window
+scroll-forward
+scroll-forward-page-only
+scroll-forward-page-only-set-window
+scroll-forward-set-window
+scroll-half-screen-down
+scroll-half-screen-up
+scroll-other-window
+scroll-other-window-backward
+search-case-sensitively
+search-next
+search-previous
+section too long
+select-reference-this-line
+select-visited-node
+setlocale
+set-screen-height
+set-variable
+%s (GNU %s) %s
+show-footnotes
+"%s", line %u: 
+split-window
+__stack_chk_fail
+strerror
+Texinfo home page: http://www.gnu.org/software/texinfo/
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+tile-windows
+toggle-regexp
+toggle-wrap
+top-node
+Try --help for more information.
+universal-argument
+unknown action `%s'
+Usage: %s [OPTION]... [INPUT-FILE]
+/usr/share/locale
+value too long
+variable name too long
+  --version            display version information and exit.
+view-file
+visit-menu
+where-is
+xref-item

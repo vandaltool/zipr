@@ -1,0 +1,31 @@
+-a: Output an ASCII pbm file
+__bss_start
+-d: Double height (to compensate for the PCW aspect ratio)
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+-i: Invert colours
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+License, version 2 or later.
+mdatopbm v1.00, Copyright (C) 1999 John Elliott <jce@seasip.demon.co.uk>
+--: No more options (use if filename begins with a dash)
+Not a .MDA file
+Not enough memory for conversion.
+overflow2
+pbm_init
+pbm_writepbm
+pm_allocarray
+pm_close
+pm_error
+pm_freearray
+pm_openr
+pm_readlittleshort
+__printf_chk
+This program is redistributable under the terms of the GNU General Public
+Unexpected end of MDA file
+Usage: %s [ -a ] [ -d ] [ -i ] [ -- ] [ infile ]

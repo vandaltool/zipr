@@ -1,0 +1,357 @@
+ 0%%  <0> (never)
+ 100%%  %5lld (longest request)
+2.3 <$Revision: 655654 $>
+                        %.2f kb/s sent
+                        %.2f kb/s total
+    -A attribute    Add Basic WWW Authentication, the attributes
+ab: Could not allocate POST data buffer
+ab: Could not open POST data file (%s): %s
+ab: Could not read POST data file: %s
+ab: Could not stat POST data file (%s): %s
+Accept: */*
+                    'application/x-www-form-urlencoded'
+apr_app_initialize
+apr_base64_encode
+apr_base64_encode_len
+apr_ctime
+apr_file_close
+apr_file_info_get
+apr_file_open
+apr_file_read_full
+apr_getopt
+apr_getopt_init
+apr_os_sock_get
+apr_palloc
+apr_parse_addr_port
+apr_poll
+apr_pollset_add
+apr_pollset_create
+apr_pollset_create failed
+apr_pollset_poll
+apr_pollset_remove
+apr_pool_clear
+apr_pool_create_ex
+apr_pool_destroy
+apr_psprintf
+apr_pstrcat
+apr_pstrdup
+apr_signal
+apr_snprintf
+apr_sockaddr_info_get
+apr_sockaddr_info_get() for %s
+apr_socket_close
+apr_socket_connect
+apr_socket_connect()
+apr_socket_create
+apr_socket_opt_set
+apr_socket_recv
+apr_socket_send
+apr_socket_timeout_set
+apr_strerror
+apr_terminate
+apr_time_now
+aprtimeout
+                    are a colon separated username and password.
+ASN1_INTEGER_get
+ASN1_UTCTIME_print
+Authentication credentials too long
+Benchmarking %s 
+(be patient)%s
+bgcolor=white
+BIO_dump
+BIO_get_callback_arg
+BIO_new_fp
+BIO_new_socket
+BIO_printf
+BIO_set_callback
+BIO_set_callback_arg
+__bss_start
+    -b windowsize   Size of TCP send/receive buffer, in bytes
+Cannot mix POST and HEAD
+Cannot mix POST/PUT and HEAD
+Cannot mix PUT and HEAD
+Cannot open CSV output file
+Cannot open gnuplot output file
+    -C attribute    Add cookie, eg. 'Apache=1234. (repeatable)
+    -c concurrency  Number of multiple requests to make
+Certificate version: %ld
+Cipher Suite Cipher Bits:%d (%d)
+Cipher Suite Name       :%s
+Cipher Suite Protocol   :%s
+colonhost
+Completed %d requests
+Complete requests:      %d
+concurrency
+Concurrency Level:      %d
+confidence
+Connect:    %5lld %4lld %5.1f %6lld %7lld
+Connect:    %5lld %5lld%5lld
+   (Connect: %d, Receive: %d, Length: %d, Exceptions: %d)
+connecthost
+Connection: Keep-Alive
+Connection Times (ms)
+connectport
+Content-length:
+content_type
+Content-type: %s
+Cookie: 
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+ Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/<br>
+Could not initialize SSL Context.
+CRYPTO_set_mem_functions
+__ctype_b_loc
+__cxa_atexit
+__cxa_finalize
+  %d%%  %5lld
+    -d              Do not show percentiles served table.
+                    Default is 'text/plain'
+       deviation apart. These results are NOT reliable.
+Document Length:        %u bytes
+Document Path:          %s
+    -e filename     Output CSV file with percentages served
+err_conn
+err_except
+err_length
+error creating request buffer: out of memory
+error setting cipher list [%s]
+ERROR: The median and mean for the initial connection time are more than twice the standard
+ERROR: The median and mean for the processing time are more than twice the standard
+ERROR: The median and mean for the total time are more than twice the standard
+ERROR: The median and mean for the waiting time are more than twice the standard
+ERR_print_errors
+ERR_print_errors_fp
+err_recv
+err_response
+EVP_PKEY_bits
+Extension Count: %d
+Failed requests:        %d
+Finished %d requests
+__fprintf_chk
+    -f protocol     Specify SSL/TLS protocol (SSL3, TLS1, or ALL)
+    -g filename     Output collected data to gnuplot format file.
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+    -H attribute    Add Arbitrary header line, eg. 'Accept-Encoding: gzip'
+    -h              Display usage information (this message)
+heartbeatres
+host_field
+hostname
+HTML transferred:       %lld bytes
+https://
+INFO: %s header == 
+                    Inserted after all normal header lines. (repeatable)
+Invalid number of requests
+_IO_stdin_used
+    -i              Use HEAD instead of GET
+_Jv_RegisterClasses
+keepalive
+keep-alive
+Keep-Alive requests:    %d
+    -k              Use HTTP KeepAlive feature
+lasttime
+libapr-1.so.0
+libaprutil-1.so.0
+libcrypto.so.1.0.0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libpthread.so.0
+libssl.so.1.0.0
+Licensed to The Apache Software Foundation, http://www.apache.org/
+ Licensed to The Apache Software Foundation, http://www.apache.org/<br>
+LOG: header received:
+LOG: Response code = %s
+              min   avg   max
+              min  mean[+/-sd] median   max
+n:c:t:b:T:p:u:v:rkVhwix:y:z:C:H:P:A:g:X:de:SqZ:f:
+Non-2xx responses:      %d
+    -n requests     Number of requests to perform
+OPENSSL_1.0.0
+opt_accept
+opt_host
+Options are:
+opt_useragent
+    -P attribute    Add Basic Proxy Authentication, the attributes
+Peer certificate
+Percentage of the requests served within a certain time (ms)
+Percentage served,Time in ms
+percentile
+postdata
+postfile
+    -p postfile     File containing data to POST. Remember also to set -T
+__printf_chk
+Processing: %5lld %4lld %5.1f %6lld %7lld
+Processing: %5lld %5lld%5lld
+Proxy-Authorization: Basic 
+Proxy credentials too long
+proxyhost
+proxyport
+Public key is %d bits
+RAND_seed
+    -r              Don't exit on socket receive errors.
+readbits
+read from %p [%p] (%d bytes => %ld (0x%lX))
+recverrok
+_request
+requests
+Requests per second:    %.2f [#/sec] (mean)
+Request too long
+$Revision: 655654 $
+%s: Cannot use concurrency level greater than total number of requests
+    -S              Do not show confidence estimators and warnings.
+Send request failed!
+Send request timed out!
+Server Hostname:        %s
+servername
+Server Port:            %hu
+Server Software:        %s
+Server timed out
+%s: Invalid Concurrency [Range 0..%d]
+%s: invalid URL
+sk_value
+%s	%lld	%lld	%lld	%lld	%lld
+socket nonblock
+socket receive buffer
+socket send buffer
+%s: %s (%d)
+%s,%s,%d,%d
+%s %s HTTP/1.0
+SSL_alert_desc_string_long
+SSL_alert_type_string_long
+ssl_cipher
+SSL_CIPHER_get_bits
+SSL_CIPHER_get_name
+SSL_CIPHER_get_version
+SSL_CTX_ctrl
+SSL_CTX_new
+SSL_CTX_set_cipher_list
+SSL_CTX_set_info_callback
+SSL_do_handshake
+SSL_free
+SSL_get_current_cipher
+SSL_get_error
+SSL_get_peer_cert_chain
+SSL_get_peer_certificate
+SSL_get_session
+SSL handshake failed (%d).
+ssl_info
+SSL_library_init
+SSL_load_error_strings
+SSL_new failed.
+SSL_read
+SSL read failed - closing connection
+SSL_SESSION_print
+SSL_set_bio
+SSL_set_connect_state
+SSL_shutdown
+SSL_state
+SSL_state_string_long
+SSL/TLS Alert [%s] %s:%s
+SSL/TLS Handshake [%s] %s
+SSL/TLS Protocol:       %s
+SSL/TLS State [%s] %s
+SSLv23_client_method
+SSLv3_client_method
+SSL_write
+SSL write failed - closing connection
+%s%s%sContent-length: %u
+%s%s%s%s
+__stack_chk_fail
+starttime	seconds	ctime	dtime	ttime	wait
+stoptime
+__strcpy_chk
+__strdup
+strncasecmp
+%s: wrong number of arguments
+</table>
+<table %s>
+tablestring
+    -T content-type Content-type header for POSTing, eg.
+tdstring
+Test aborted after 10 failures
+text/plain
+The issuer name is %s
+        These results are probably not that reliable.
+The subject name is %s
+This is ApacheBench, Version %s
+ This is ApacheBench, Version %s <i>&lt;%s&gt;</i><br>
+[through %s:%d] 
+Time per request:       %.3f [ms] (mean)
+Time per request:       %.3f [ms] (mean, across all concurrent requests)
+Time taken for tests:   %.3f seconds
+TLSv1_client_method
+Total:      %5lld %4lld %5.1f %6lld %7lld
+Total:      %5lld %5lld%5lld
+totalbread
+Total of %d requests completed
+totalposted
+Total POSTed:           %lld
+Total PUT:              %lld
+totalread
+Total transferred:      %lld bytes
+Transfer rate:          %.2f [Kbytes/sec] received
+<tr %s><td colspan=2 %s>&nbsp;</td><td colspan=2 %s>%.2f kb/s sent</td></tr>
+<tr %s><td colspan=2 %s>&nbsp;</td><td colspan=2 %s>%.2f kb/s total</td></tr>
+<tr %s><td colspan=4 %s >   (Connect: %d, Length: %d, Exceptions: %d)</td></tr>
+<tr %s><th colspan=2 %s>Complete requests:</th><td colspan=2 %s>%d</td></tr>
+<tr %s><th colspan=2 %s>Concurrency Level:</th><td colspan=2 %s>%d</td></tr>
+<tr %s><th colspan=2 %s>Document Length:</th><td colspan=2 %s>%u bytes</td></tr>
+<tr %s><th colspan=2 %s>Document Path:</th><td colspan=2 %s>%s</td></tr>
+<tr %s><th colspan=2 %s>Failed requests:</th><td colspan=2 %s>%d</td></tr>
+<tr %s><th colspan=2 %s>HTML transferred:</th><td colspan=2 %s>%lld bytes</td></tr>
+<tr %s><th colspan=2 %s>Keep-Alive requests:</th><td colspan=2 %s>%d</td></tr>
+<tr %s><th colspan=2 %s>Non-2xx responses:</th><td colspan=2 %s>%d</td></tr>
+<tr %s><th colspan=2 %s>Requests per second:</th><td colspan=2 %s>%.2f</td></tr>
+<tr %s><th colspan=2 %s>Server Hostname:</th><td colspan=2 %s>%s</td></tr>
+<tr %s><th colspan=2 %s>Server Port:</th><td colspan=2 %s>%hu</td></tr>
+<tr %s><th colspan=2 %s>Server Software:</th><td colspan=2 %s>%s</td></tr>
+<tr %s><th colspan=2 %s>Time taken for tests:</th><td colspan=2 %s>%.3f seconds</td></tr>
+<tr %s><th colspan=2 %s>Total POSTed:</th><td colspan=2 %s>%lld</td></tr>
+<tr %s><th colspan=2 %s>Total PUT:</th><td colspan=2 %s>%lld</td></tr>
+<tr %s><th colspan=2 %s>Total transferred:</th><td colspan=2 %s>%lld bytes</td></tr>
+<tr %s><th colspan=2 %s>Transfer rate:</th><td colspan=2 %s>%.2f kb/s received</td></tr>
+<tr %s><th %s colspan=4>Connnection Times (ms)</th></tr>
+<tr %s><th %s>Connect:</th><td %s>%5lld</td><td %s>%5lld</td><td %s>%5lld</td></tr>
+<tr %s><th %s>&nbsp;</th> <th %s>min</th>   <th %s>avg</th>   <th %s>max</th></tr>
+<tr %s><th %s>Processing:</th><td %s>%5lld</td><td %s>%5lld</td><td %s>%5lld</td></tr>
+<tr %s><th %s>Total:</th><td %s>%5lld</td><td %s>%5lld</td><td %s>%5lld</td></tr>
+trstring
+    -t timelimit    Seconds to max. wait for responses
+)T$x;D$x
+    -u putfile      File containing data to PUT. Remember also to set -T
+Usage: %s [options] [http[s]://]hostname[:port]/path
+use_html
+User-Agent:
+User-Agent: ApacheBench/
+Valid from: 
+Valid to  : 
+verbosity
+    -V              Print version number and exit
+    -v verbosity    How much troubleshooting info to print
+Waiting:    %5lld %4lld %5.1f %6lld %7lld
+WARNING: Response code not 2xx (%s)
+WARNING: The median and mean for the initial connection time are not within a normal deviation
+WARNING: The median and mean for the processing time are not within a normal deviation
+WARNING: The median and mean for the total time are not within a normal deviation
+WARNING: The median and mean for the waiting time are not within a normal deviation
+windowsize
+    -w              Print out results in HTML tables
+Write errors:           %d
+write to %p [%p] (%d bytes => %ld (0x%lX))
+X509_free
+X509_get_ext_count
+X509_get_issuer_name
+X509_get_pubkey
+X509_get_subject_name
+X509_NAME_oneline
+    -x attributes   String to insert as table attributes
+    -X proxy:port   Proxyserver and port number to use
+    -y attributes   String to insert as tr attributes
+    -z attributes   String to insert as td or th attributes
+    -Z ciphersuite  Specify SSL/TLS cipher suite (See openssl ciphers)

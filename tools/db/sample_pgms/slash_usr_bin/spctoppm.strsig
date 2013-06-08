@@ -1,0 +1,22 @@
+__bss_start
+GLIBC_2.0
+__gmon_start__
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+not a Spectrum picture
+pm_allocrow
+pm_close
+pm_error
+pm_openr
+pm_readbiglong
+pm_readbigshort
+pm_usage
+ppm_init
+ppm_writeppminit
+ppm_writeppmrow
+[spcfile]

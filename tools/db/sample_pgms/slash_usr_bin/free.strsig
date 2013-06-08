@@ -1,0 +1,35 @@
+%-7s %10Lu %10Lu %10Lu
+%-7s %10Lu %10Lu %10Lu %10Lu %10Lu %10Lu
+bkmglotc:s:V
+  -b,-k,-m,-g show output in bytes, KB, MB, or GB
+-/+ buffers/cache: %10Lu %10Lu
+  -c update [count] times
+display_version
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+kb_high_free
+kb_high_total
+kb_low_free
+kb_low_total
+kb_main_buffers
+kb_main_cached
+kb_main_free
+kb_main_shared
+kb_main_total
+kb_main_used
+kb_swap_free
+kb_swap_total
+kb_swap_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libproc-3.2.8.so
+  -l show detailed low and high memory statistics
+  -o use old format (no -/+buffers/cache line)
+  -s update every [delay] seconds
+  -t display total for RAM + swap
+             total       used       free     shared    buffers     cached
+usage: free [-b|-k|-m|-g] [-l] [-o] [-t] [-s delay] [-c count] [-V]
+  -V display version information and exit

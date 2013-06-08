@@ -1,0 +1,178 @@
+                
+)\$,)\$0
+%.2f %.2f scale
+All done, used font_storage of %s: %ld Bytes
+Argument is not a valid integer
+argument of -c < 1; set to 1!
+Argument of -c is not a valid integer
+Argument of mag is not a valid integer
+Argument of -p must be greater than 0
+Argument of -s is not a valid integer
+Argument of -x is not a valid floating point number
+Argument of -X is not a valid integer
+Argument of -y is not a valid floating point number
+Argument of -Y is not a valid integer
+aspect ratio is %ld:%ld (should be 1:1)!
+Bad character (%d) in PK-File
+Bad end of DVI file
+Bad pk file----more bits than required!
+__bss_start
+/build/buildd/texlive-bin-2009/inst/lib
+can handle only %d fonts! ask a wizzard...
+cannot process currently PK font patterns of that size!
+Can't handle %s=%s command; ignored.
+can't malloc space for font_entry
+checksum
+Checksum mismatch in %s
+%c is a bad mag step
+%c is not a valid flag
+*c%lda%ldb%dg2P
+*c%lda%ldb%dg3P
+*c%lda%ldbP
+Copyright (C) 1997 Gustaf Neumann.
+Could not create temporary directory %s, errno = %d; ignoring include file special
+Could not locate %s, ignoring inclusion special
+ could not seek to start of file (errno=%d), abandon %s inclusion
+*c%sd%dE
+__ctype_tolower_loc
+	-cX ..... X= number of copies
+-D1 odd pages only, -D2 even
+%d(%254[^,],%254s)
+%d characters downloaded as soft fonts
+%d %d translate
+defpoint
+defpoint %d ignored, must be between 0 and %d
+%d is an undefined command
+	-D  ..... turns doublepage output on; 
+%d: using font <%s>
+	-   ..... dvifile is stdin (must be seekable); implies -e-
+dvilj: Font %s at %d not found, using %d instead.
+dvilj: Font %s at %u not found, characters will be left blank.
+dvilj: Font %s not found, using %s at %d instead.
+dviljk (version 2.6p5)
+/dviljkXXXXXX
+dvilj-psfile-syntax
+DVI magnification of %ld over-ridden by user (%ld)
+Dynamically allocated storage: %ld Bytes 
+__errno_location
+[EvenPage] 
+execution of '%s' returned an error
+	-eX ..... X= output file
+Feeling naughty, do we? / is no temporary directory, dude
+fill ignored, point %d is undefined
+fill ignored, point %d must be between 0 and %d
+font %ld undefined
+For more information about these matters, see the files
+__fprintf_chk
+__fread_chk
+	-fX ..... print from begin of page number X
+	-g  ..... do not reset printer at begin of job (go)
+Ghostscript command for %s would be too long, skipping special
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+%hd is a bad value for pagesize (1,2,3,26,80,81,90,91)
+hpfile-verbatim
+HP LaserJet
+Huge Character <%c> (%ld Bytes)
+	-hX ..... X= name of headerfile
+Ignored invalid value '%s' for dvilj-psfile-syntax
+Ignoring psfile special without urx, ury and rwi attributes
+/include.pcl
+Invalid gray scale (%d) given; ignored.
+Invalid keyword or value in \special - <%s> ignored
+Invalid orientation (%d) given; ignored.
+Invalid pattern (%d) given; ignored.
+invalid point definition
+_IO_putc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+kpathsea_bug_address
+kpathsea_version_string
+kpse_bitmap_tolerance
+kpse_fclose_trace
+kpse_find_file
+kpse_find_glyph
+kpse_init_prog
+kpse_magstep_fix
+kpse_set_program_enabled
+kpse_set_program_name
+kpse_tex_hush
+L$09L$,|
+L$D+L$Ti
+libc.so.6
+__libc_start_main
+libkpathsea.so.5
+/lib/ld-linux.so.2
+ljetplus
+ (max = %d) rastering characters!
+More than one \special file name given, %s ignored
+More than one \special file name given. %s ignored
+	-MX ..... Don't generate missing PK files
+	-mX ..... magnification X=0;h;1;2;3;4;5;#xxxx
+named COPYING and dvi2xx.c.
+Open file %x not found in font entry list.
+OPTIONS are:
+orientation
+[Padding] 
+*p%c%d%c
+*p%dx%dY
+POST missing at head of postamble
+POST_POST missing after fontdefs
+POST_POST with no preceding POST
+PRE occurs within file
+Primary author of Dvi2xx: Gustaf Neumann; -k maintainer: K. Berry.
+PXL-file %s could not be opened
+	-pX ..... print X pages
+	-q  ..... quiet operation
+readable
+resetpoints
+	-r  ..... process pages in reverse order
+/scale.ps
+%s: DVI format = %d, can only process DVI format %d files
+%s: FATAL--
+%s is font #%d font on this page!
+%s: PRE doesn't occur first--are you sure this is a DVI file?
+__sprintf_chk
+%s -q -dSIMPLE -dSAFER -dNOPAUSE -sDEVICE=%s -sOutputFile=%s %s %s showpage.ps -c quit
+__stack_chk_fail
+stack overflow
+Stack size is too small
+stack underflow
+----------------------starting second pass
+__strcat_chk
+__strcpy_chk
+%s: warning: 
+	-sX ..... set paper size to X (see documentation)
+There is NO warranty.  You may redistribute this software
+This is the DVI to %s converter %s
+TMPDIR %s is too long, using /tmp instead
+Try to read %d bytes in an array of size %d
+	-tX ..... print to end of page number X
+Unable to allocate %ld bytes for char <%c>
+Unable to open file %s (errno=%d), skipping inclusion
+Unable to open file %s for writing
+under the terms of the GNU General Public License.
+Unexpected flagbyte %d!
+unknown font format in file <%s> !
+Unknown Version of PXL-format
+usage: %s [OPTION]... DVIFILE
+--version
+__vfprintf_chk
+	-v  ..... tell user which pixel-files are used
+	-VX  .... Vendor options (kyocara or brother)
+	-w  ..... don't print out warnings
+Whatever rhi was good for once, it is ignored now.
+Wrong Version of pk file!  (%d should be 89)
+xbasename
+	-XO ..... O= x page origin in dots (default=%d)
+	-xX ..... X= x-offset on printout in mm
+	-YO ..... O= y page origin in dots (default=%d)
+	-yX ..... X= y-offset on printout in mm
+[ZeroPage] 
+	-z  ..... print test page with pagecounter after job

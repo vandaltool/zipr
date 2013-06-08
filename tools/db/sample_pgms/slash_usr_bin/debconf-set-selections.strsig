@@ -1,0 +1,85 @@
+  -c, --checkonly   only check the input file format
+	"checkonly|c" => \$checkonly,
+	chomp $line;
+		$content='';
+Debconf::Db->load;
+	Debconf::Db->save;
+		else {
+	elsif (! grep { $_ eq $type } @knowntypes, @knownflags) {
+	$error++
+$error = 0;
+		error("Cannot find a question for $label");
+		error "parse error on line $.: '$_'";
+	exit 1;
+	exit(1);
+GetOptions(
+if (! $checkonly) {
+	if (! defined $content) {
+	if (! defined $owner || ! defined $label || ! defined $content) {
+if ($error) {
+		if (grep { $_ eq $type } @knownflags) {
+	if (ok_format($owner, $label, $type, $content)) {
+	if (! $question) {
+	if (! $template) {
+	if (! $unseen) {
+	info "Loading answer for '$label'";
+	info "Setting $flag flag";
+			info "Trying to set '$label' [$type] to '$content'";
+			info "Trying to set '$type' flag to '$content'";
+	$line=~s/\r$//;
+			load_answer($owner, $label, $type, $content);
+	$_=mungeline($_);
+		$_.=mungeline(<>);
+my @knownflags = qw(seen);
+my @knowntypes = qw(select boolean string multiselect note password text title);
+	my $line=shift;
+	my $msg = shift;
+	my ($owner, $label, $flag, $content) = @_;
+	my ($owner, $label, $type, $content) = @_;
+	my ($owner, $label, $type, $content) = /^\s*(\S+)\s+(\S+)\s+(\S+)(?:\s(.*))?/;
+	my $question=Debconf::Question->get($label);
+	my $template=Debconf::Template->get($label);
+	next if /^\s*$/ || /^\s*\#/;
+	print STDERR <<EOF;
+	print STDERR "error: $msg\n";
+	print STDERR "info: $msg\n" if $debug;
+	print STDERR "warning: $msg\n";
+	$question->addowner($owner, $type);
+	$question->flag($flag, $content);
+		$question->flag("seen", "true");
+	$question->value($content);
+		return;
+		return 1;
+	return $line;
+		s/\\$//;
+			set_flag($owner, $label, $type, $content);
+sub error {
+sub info {
+sub load_answer {
+sub mungeline ($) {
+sub ok_format {
+sub set_flag {
+sub usage {
+sub warning {
+		$template=Debconf::Template->new($label, $owner, $type);
+		$template->default($content);
+		$template->description("Dummy template");
+		$template->extended_description("This is a fake template used to pre-seed the debconf database. If you are seeing this, something is probably wrong.");
+	$template->type($type);
+# This file was preprocessed, do not edit!
+	"unseen|u" => \$unseen,
+) || usage();
+Usage: debconf-set-selections [-vcu] [file]
+use Debconf::Db;
+use Debconf::Template;
+use Getopt::Long;
+use strict;
+use vars qw(%opts $filename $debug $error $checkonly $unseen);
+use warnings;
+#!/usr/bin/perl
+  -u, --unseen      do not set the 'seen' flag when preseeding values
+	"verbose|v" => \$debug,
+  -v, --verbose     verbose output
+		warning "Unknown type $type, skipping line $.";
+while (<>) {
+	while (/\\$/ && ! eof) {

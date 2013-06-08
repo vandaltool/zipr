@@ -1,0 +1,40 @@
+    -bgamma f.f             Blue Gamma Value
+__bss_start
+-display
+    -display host:dpy       or -d
+__fprintf_chk
+    -gamma f.f              Gamma Value
+Gamma values must be between %6.3f and %6.3f
+    -ggamma f.f             Green Gamma Value
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+If no gamma is specified, returns the current setting
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXxf86vm.so.1
+Minimum required version is %d.%d
+    -quiet                  or -q
+<- Red %6.3f, Green %6.3f, Blue %6.3f
+-> Red %6.3f, Green %6.3f, Blue %6.3f
+    -rgamma f.f             Red Gamma Value
+    -screen                 or -s
+%s:  unable to open display '%s'
+Unable to query gamma correction
+Unable to query video extension information
+Unable to query video extension version
+Unable to set gamma correction
+usage:  %s [-options]
+where the available options are:
+XCloseDisplay
+XDisplayName
+XF86VidModeGetGamma
+XF86VidModeQueryExtension
+XF86VidModeQueryVersion
+XF86VidModeSetGamma
+XOpenDisplay
+Xserver is running an old XFree86-VidModeExtension version (%d.%d)

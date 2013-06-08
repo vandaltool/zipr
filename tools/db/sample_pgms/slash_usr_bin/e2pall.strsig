@@ -1,0 +1,62 @@
+        }
+#    1.5) cannot handle multiple \input{} or \includegraphics{} on one line.
+# 1) cannot handle \input{fname} split over more than one line.
+# 20030103 -- Lachlan Andrew <lha@users.sourceforge.net>
+# 2) Must be run from same directory as the Latex file.
+# 3) Does not look down $TEXINPUTS or anything fancy like that...
+# 4) Handling of \include is untested (though I guess its trivial)
+# 5) Assumes *all* your graphics inclusions are [e]ps.  But don't
+# 6) Does not distinguish between percent (\%) and comment (%).
+#	* Allow \includegraphics{} to be split over multiple lines
+#	* Allow \include the same way as \input
+#	* Allow multiple extensions for graphics files.  .eps -> .ps -> none
+# Author: Jody Klymak <jklymak@apl.washington.edu>, publisted by a posting
+    $base = "";
+        $base = $1;
+# CAVEATS:
+# Changelog:
+# check for a *.tex at the end...
+    # check for /include....
+    # check for /input....
+#	* Check that commands begin with '\', and allow spaces before arguments
+        # check that the [e]ps version is newer than the pdf version....
+close(TEXFILE);
+#	* Correctly handle lines with '}' after the \includegraphics{}
+# EDIT these two lines for your system....
+        else{
+	elsif ((-f "$base.ps")!=""){
+    elsif ($line=~/\\includegraphics/){
+    elsif ($seekingArg==1 && ($line=~/{([^}]*)}/)){
+$Eps2PdfCom = "epstopdf";
+$fname=$ARGV[0];
+    $fname = "$fname.tex";
+#    fret, because if they are not epstopdf dies anyhow....
+#	   -- given by \DeclareGraphicsExtensions{}?)
+    if ($base ne "") {
+	if ((-f "$base.eps")!="") {
+if ((-f "$fname")=="" && $fname !~ /.tex$/){
+    if ($line=~/\\include *{([^}]*)}/){
+    if ($line=~/\\includegraphics.*{([^}]*)}/){
+    if ($line=~/\\input *{([^}]*)}/){
+        if ((-M "$base.pdf")=="" || (-M "$base.pdf") >= (-M "$srcfile")){
+    $line=~s/%.*//;
+#	* Only append '.tex' if $fname doesn't exist.
+open(TEXFILE,$fname) or die "Cannot open file $fname";
+            print "$base.pdf \t is up to date with $srcfile\n";
+            print "Constructing \t $base.pdf from $srcfile\n";
+            print `$Eps2PdfCom $srcfile`;
+# print "Finding *.eps files in $fname\n";
+        print `$ThisFunCom $1`;
+# recursively finds all your eps files.  Looks down \input{fname}.
+        $seekingArg = 0;
+$seekingArg = 0;
+        $seekingArg = 1;
+#	  (Should try them in the same order as  \includegraphics  does
+	    $srcfile = $base;
+	    $srcfile = "$base.eps";
+	    $srcfile = "$base.ps";
+$ThisFunCom = "e2pall";
+#   to the pdftex mailinglist.
+    # truncate $line after % sign....
+#!/usr/bin/env perl
+while($line=<TEXFILE>){

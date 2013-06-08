@@ -1,0 +1,557 @@
+  ----------                        -----   ----   ---------------
+---------------------
+-. +0123456789
+0123456789-
+\%-10[abort-key]  Cancel the current operation.
+\%-10[beginning-of-node]  Go to the beginning of this node.
+\%-10[dir-node]  Go to the main `directory' node.
+\%-10[end-of-node]  Go to the end of this node.
+\%-10[get-info-help-node]  Invoke the Info tutorial.
+\%-10[global-next-node]  Go to the next node in the document.
+\%-10[global-prev-node]  Go to the previous node in the document.
+\%-10[goto-node]  Go to a node specified by name.
+\%-10[history-node]  Go back to the last node seen in this window.
+\%-10[index-search]  Search for a specified string in the index, and
+\%-10[last-menu-item]  Pick the last item in this node's menu.
+\%-10[menu-item]  Pick a menu item specified by name.
+\%-10[move-to-next-xref]  Skip to the next hypertext link.
+\%-10[next-line]  Move down one line.
+\%-10[next-node]  Go to the next node on this level.
+\%-10[prev-line]  Move up one line.
+\%-10[prev-node]  Go to the previous node on this level.
+\%-10[quit-help]  Close this help window.
+\%-10[quit]  Quit Info altogether.
+\%-10[scroll-backward]  Scroll backward one screenful.
+\%-10[scroll-forward]  Scroll forward one screenful.
+\%-10[search-next]  Search for next occurrence.
+\%-10[search-previous]  Search for previous occurrence.
+\%-10[search]  Search forward for a specified string.
+\%-10[select-reference-this-line]  Follow the hypertext link under the cursor.
+\%-10[top-node]  Go to the top node of this document.
+\%-10[up-node]  Go up one level.
+\%-10[xref-item]  Follow a cross reference specified by name.
+1...9       Pick the first...ninth item in this node's menu.
+abort-key
+Accept (or force completion of) this line
+add-digit-to-numeric-arg
+Add this digit to the current numeric argument
+All options
+Any remaining arguments are treated as the names of menu
+*Apropos*
+__assert_fail
+automatic-footnotes
+automatic-tiling
+ backward
+backward-char
+Bad data in infokey file -- some key bindings ignored
+Bad data in infokey file -- some var settings ignored
+Basic Info command keys
+beginning-of-line
+beginning-of-node
+bindtextdomain
+Bnext-line
+__bss_start
+Building completions...
+Cancel current operation
+Cancel or quit operation
+Cannot delete a permanent window
+Cannot delete the last window.
+Cannot execute an `echo-area' command here.
+Cannot find a window!
+Cannot find node `%s'.
+Cannot find node `(%s)%s'.
+Cannot find `%s'.
+Cannot kill node `%s'
+Cannot kill the last node
+Cannot open pipe to `%s'.
+CAN'T SEE THIS
+ case-sensitively
+cfgetospeed
+Command Arguments
+Commands available in Info windows:
+Commands available in the echo area:
+*Completions*
+Continuous
+Controls what happens when scrolling is requested at the end of a node
+Controls whether scroll-behavior affects cursor movement commands
+Copyright (C) %s Free Software Foundation, Inc.
+Could not create output file `%s'.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+__ctype_toupper_loc
+cursor-movement-scrolls
+dcgettext
+%d completions:
+  -d, --directory=DIR          add DIR to INFOPATH.
+Delete all other windows
+Delete the character behind the cursor
+Delete the character under the cursor
+Delete the current window
+delete-window
+describe-command
+Describe command: 
+describe-key
+Describe key: %s
+describe-variable
+Describe variable: 
+/dev/null
+directory
+dir-node
+(dir)Top
+Display help message
+Divide the available screen space among the visible windows
+do-lowercase-version
+down-line
+      --dribble=FILENAME       remember user keystrokes in FILENAME.
+echo-area-
+echo-area-abort
+echo-area-backward
+echo-area-backward-kill-line
+echo-area-backward-kill-word
+echo-area-backward-word
+echo-area-beg-of-line
+echo-area-complete
+echo-area-delete
+echo-area-end-of-line
+echo-area-forward
+echo-area-forward-word
+echo-area-insert
+echo-area-kill-line
+echo-area-kill-word
+echo-area-newline
+echo-area-possible-completions
+echo-area-quoted-insert
+echo-area-rubout
+echo-area-scroll-completions-window
+echo-area-tab-insert
+echo-area-transpose-chars
+echo-area-yank
+echo-area-yank-pop
+Email bug reports to bug-texinfo@gnu.org,
+end-of-node
+endpwent
+End Tag Table
+__errno_location
+Error reading infokey file `%s' - short read
+errors-ring-bell
+Examples:
+execute-command
+Explain the use of a variable
+Failing 
+__fdelt_chk
+ferror on stdout
+  -f, --file=FILENAME          specify Info file to visit.
+fflush error on stdout
+  (File)Node                        Lines   Size   Containing File
+Find file: 
+Finding index entries...
+Find Invocation node of [%s]: 
+find-menu
+Find the node describing program invocation
+first-node
+Follow menus: 
+Follow xref: 
+Follow xref (%s): 
+---------- Footnotes ----------
+*Footnotes*
+*** Footnotes appearing in the node `%s' ***
+Footnotes could not be displayed
+For a summary of key bindings, type h within Info.
+forward-char
+Found `%s' in %s. (`\[next-index-match]' tries to find next.)
+__fprintf_chk
+freopen64
+gc-compressed-files
+general questions and discussion to help-texinfo@gnu.org.
+get-help-window
+get-info-help-node
+Get Manpage: 
+getopt_long
+getpwnam
+getpwuid
+G|$@;|$H
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.15
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+global-next-node
+global-prev-node
+__gmon_start__
+../gnulib/lib/mbiter.h
+goto-invocation-node
+goto-node
+Goto node: 
+Go to the next matching index item from the last `\[index-search]' command
+Grovel all known info file's indices for a string and build a menu
+Grow (or shrink) this window
+grow-window
+Help-Small-Screen
+Here is the menu of nodes you have recently visited.
+  -h, --help                   display this help and exit.
+history-node
+If it is not present, info merges all `dir' files and shows the result.
+Ignoring invalid infokey file `%s' - too big
+Ignoring invalid infokey file `%s' - too small
+index-apropos
+Index apropos: 
+Index entry: 
+index-search
+      --index-search=STRING    go to node pointed by index entry STRING.
+(Indirect)
+Indirect:
+  info emacs buffers         start at buffers node within emacs manual
+  info emacs                 start at emacs node from top-level dir
+  info -f ./foo.info         show file ./foo.info, not searching dir
+info (GNU %s) %s
+*Info Help*
+  info info                  show the general manual for Info readers
+  info info-stnd             show the manual specific to this Info program
+-----Info: (), lines ----, 
+INFO_MAN_COMMAND
+*info-parse-and-select*
+INFOPATH
+INFO_PRINT_COMMAND
+  info --show-options emacs  start at node with emacs' command line options
+  info                       show top-level dir menu
+info-stnd
+  info --subnodes -o out.txt emacs  dump entire manual to out.txt
+Insert a TAB character
+Insert completion
+Insert next character verbatim
+Insert this character
+Internally used by \[universal-argument]
+Invalid infokey file `%s' (bad magic numbers) -- run infokey to update it
+Invalid infokey file `%s' (bad section code) -- run infokey to update it
+Invalid infokey file `%s' (bad section length) -- run infokey to update it
+Invocation
+Invoking
+Invoking `%s'
+Invoking %s
+_IO_putc
+_IO_stdin_used
+isearch-backward
+isearch-forward
+ISO-Latin
+iswalnum
+iswprint
+items relative to the initial node visited.
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+it is searched for in all `dir' files along INFOPATH.
+_Jv_RegisterClasses
+  -k, --apropos=STRING         look up STRING in all indices of all manuals.
+k:d:n:f:ho:ORws
+keep-one-window
+kill-node
+Kill node (%s): 
+Kill ring is empty
+Kill the word following the cursor
+Kill the word preceding the cursor
+Kill this node
+Kill to the beginning of the line
+Kill to the end of the line
+last-menu-item
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libtinfo.so.5
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+List possible completions
+list-visited-nodes
+localdir
+location
+Look up a string in the index for this file
+Make a window containing a menu of all of the currently visited nodes
+*manpages*
+mbiter_multi_next
+mbsinit (&iter->state)
+mbuiter.h
+mbuiter_multi_next
+memory exhausted
+menu-digit
+Menu item: 
+Menu item (%s): 
+* Menu: Nodes whose indices contain `%s':
+menu-sequence
+Move backward a character
+Move backward a word
+Move backwards or up through node structure
+Move down to the next line
+Move forward a character
+Move forward a word
+Move forwards or down through node structure
+Move the cursor to a specific line of the window
+move-to-next-xref
+move-to-prev-xref
+Move to the end of the line
+Move to the end of this line
+Move to the end of this node
+Move to the next cross reference
+Move to the previous cross reference
+Move to the start of the line
+Move to the start of this line
+Move to the start of this node
+Move to the start of this node's menu
+move-to-window-line
+Move up to the previous line
+next-index-match
+Next Only
+next-window
+  -n, --node=NODENAME          specify nodes in first visited Info file.
+No available info files have `%s' in their indices.
+No completions
+No cross references in this node.
+*Node Menu*
+*no file*
+No footnotes in this node.
+No index entries.
+no index entries found for `%s'
+No indices found.
+No menu in node `%s'.
+No menu in this node.
+No menu item `%s' in node `%s'.
+No more nodes within this document.
+*no node*
+No `Prev' for this node.
+No previous index search string.
+No previous search string
+No `Prev' or `Up' for this node within this document.
+no-raw-escapes
+      --no-raw-escapes         output escapes as literal text.
+no-show-malformed-multibytes
+No %sindex entries containing `%s'.
+No `%s' pointer for this node.
+Not complete
+Not enough room for a help window, please delete a window.
+numeric-arg-digit-loop
+One completion:
+Only one window.
+  -o, --output=FILENAME        output selected nodes to FILENAME.
+Options:
+  -O, --show-options, --usage  go to command-line options node.
+Page Only
+Pipe the contents of this node through INFO_PRINT_COMMAND
+Point doesn't appear within this window's node!
+Preliminaries
+Previous:
+prev-line
+prev-window
+Print documentation for KEY
+__printf_chk
+Printing node %s...
+print-node
+quit-help
+Quit using Info
+Read a command name in the echo area and execute it
+Read a footnote or cross reference and select its node
+Read a list of menus starting from dir and follow them
+Read a manpage reference and select it
+Read a menu item and select its node
+Read a node name and select it
+Read a string and search backward for it
+Read a string and search for it
+Read a string and search for it case-sensitively
+__read_chk
+Read documentation in Info format.
+Read the name of a file and select it
+Read the name of an Info command and describe it
+redraw-display
+Redraw the display
+regerror
+regexp error: %s
+Regexp I-search: 
+Regexp I-search backward: 
+Regexp search
+RELATED INFORMATION
+RELATED	INFORMATION
+Repeat last search in the reverse direction
+Repeat last search in the same direction
+      --restore=FILENAME       read initial keystrokes from FILENAME.
+Resulting window would be too small.
+  -R, --raw-escapes            output "raw" ANSI escapes (default).
+Run command bound to this key's lowercase variant
+Same as scroll-behaviour
+%s can be invoked via %s.
+Scanning indices of `%s'...
+%s can only be invoked via %s.
+%s cmdline
+scroll-backward
+Scroll backward in this window
+Scroll backward in this window and set default window size
+Scroll backward in this window staying within node
+Scroll backward in this window staying within node and set default window size
+scroll-backward-page-only
+scroll-backward-page-only-set-window
+scroll-backward-set-window
+scroll-behavior
+Scroll down by half screen size
+Scroll down by lines
+scroll-forward
+Scroll forward in this window
+Scroll forward in this window and set default window size
+Scroll forward in this window staying within node
+Scroll forward in this window staying within node and set default window size
+scroll-forward-page-only
+scroll-forward-page-only-set-window
+scroll-forward-set-window
+scroll-half-screen-down
+scroll-half-screen-up
+scroll-last-node
+scroll-other-window
+scroll-other-window-backward
+scroll-step
+Scroll the completions window
+Scroll the other window
+Scroll the other window backward
+Scroll up by half screen size
+Scroll up by lines
+%s (%d): %s.
+search-case-sensitively
+Search continued from the beginning of the document.
+Search continued from the end of the document.
+Search failed.
+Searching subfile %s ...
+Search interactively for a string as you type it
+search-next
+search-previous
+SEE ALSO
+SEE	ALSO
+Select a node which has been previously visited in a visible window
+Select one from this menu, or use `\[history-node]' in another window.
+Select reference or menu item appearing on this line
+select-reference-this-line
+Select the first node in this file
+Select the last item in this node's menu
+Select the last node in this file
+Select the most recently selected node
+Select the Next node
+Select the next window
+Select the node `(dir)'
+              select the node referenced by the first entry found.
+Select the node `Top' in this file
+Select the previous window
+Select the Prev node
+Select the Up node
+Select this menu item
+select-visited-node
+Select visited node: 
+setlocale
+set-screen-height
+Set screen height to (%d): 
+Set %s to value (%d): 
+Set %s to value (%s): 
+Set the height of the displayed window
+Set the value of an Info variable
+set-variable
+Set variable: 
+show-footnotes
+show-index-match
+show-options
+Show the footnotes associated with this node in another window
+Show what to type to execute a given command
+sigaction
+sigaddset
+sigemptyset
+sigprocmask
+-%s---Info: %s, %d lines --%s--
+%s invocation
+`%s' is invalid
+"%s" is invalid
+`%s' is not on any keys
+%s is undefined.
+Sole completion
+%s options
+Split the current window
+split-window
+__sprintf_chk
+* (%s)%s::
+* %s [%s]: 
+-%s%s-Info: (%s)%s, %d lines --%s--
+"(%s)%s" -- %s
+%s (%s): %s.
+%s%s < %s
+%s%s%s [%s]: 
+%s %s,  %s %s,  %s (dir)
+__stack_chk_fail
+Start (or multiply by 4) the current numeric argument
+__strcat_chk
+__strcpy_chk
+strerror
+ Subfile: %s
+subnodes
+      --subnodes               recursively output menu items.
+|$@+|$T)
+--*** Tags out of Date ***
+Tag Table:
+tcgetattr
+tcsetattr
+Terminal type `%s' is not smart enough to run Info.
+Texinfo home page: http://www.gnu.org/software/texinfo/
+tgetflag
+t$H9t$@t
+The current search path is:
+The first non-option argument, if present, is the menu entry to start from;
+The following commands cannot be invoked at all:
+The following commands can only be invoked via %s:
+The number lines to scroll when the cursor moves out of the window
+There aren't %d items in this menu.
+The reference disappeared! (%s).
+There is no function named `%s'
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+This window has no additional nodes
+tile-windows
+toggle-regexp
+Toggle the state of line wrapping in the current window
+Toggle the usage of regular expressions in searches
+toggle-wrap
+top-node
+towlower
+T$P3V83F4	
+Transpose characters at point
+Try --help for more information.
+T$ +T$,9T$(
+Unable to find node referenced by `%s' in `%s'.
+uncompress
+Undefined command: %s
+universal-argument
+unknown?!
+Unknown command (%s).
+Unknown Info command `%c'; try `?' for help.
+Usage: %s [OPTION]... [MENU-ITEM...]
+Using literal strings for searches.
+Using regular expressions for searches.
+.:/usr/local/info:/usr/info:/usr/local/lib/info:/usr/lib/info:/usr/local/gnu/info:/usr/local/gnu/lib/info:/usr/gnu/info:/usr/gnu/lib/info:/opt/gnu/info:/usr/share/info:/usr/share/lib/info:/usr/local/share/info:/usr/local/share/lib/info:/usr/gnu/lib/emacs/info:/usr/local/gnu/lib/emacs/info:/usr/local/lib/emacs/info:/usr/local/emacs/info
+/usr/share/info
+/usr/share/locale
+      --version                display version information and exit.
+view-file
+      --vi-keys                use vi-like and less-like key bindings.
+visible-bell
+Visit as many menu items at once as possible
+Visit Info node `(info)Help'
+visit-menu
+Welcome to Info version %s. Type \[get-help-window] for help, \[menu-item] for menu item.
+What to do when a scrolling command is issued at the end of the last node
+When "On", creating or deleting a window resizes other windows
+When "On", errors cause the bell to ring
+When "On", flash the screen instead of ringing the bell
+When "On", footnotes appear and disappear automatically
+When "On", Info accepts and displays ISO Latin characters
+When "On", Info garbage collects files which had to be uncompressed
+When "On", the portion of the matched search string is highlighted
+where-is
+Where is command: 
+Writing node %s...
+  -w, --where, --location      print physical location of Info file.
+xref-item
+__xstat64
+Yank back a previous kill
+Yank back the contents of the last kill
+You are already at the first page of this node.
+You are already at the last page of this node.
+Your infokey file `%s' is out of date -- run infokey to update it

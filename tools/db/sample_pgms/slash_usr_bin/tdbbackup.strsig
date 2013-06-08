@@ -1,0 +1,39 @@
+Failed to commit new tdb
+failed to copy %s
+Failed to insert into %s
+Failed to open %s
+failed to reopen %s
+Failed to start transaction on new tdb
+Failed to start transaction on old tdb
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3.4
+__gmon_start__
+   -h            this help message
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libtdb.so.1
+   -n hashsize   set the new hash size for the backup
+Out of memory!
+__printf_chk
+restoring %s
+%s : %d records
+__snprintf_chk
+   -s suffix     set the backup suffix
+TDB_1.2.1
+tdb_close
+tdb_hash_size
+tdb_name
+tdb_open_ex
+tdb_store
+tdb_transaction_commit
+tdb_transaction_start
+tdb_traverse
+Usage: tdbbackup [options] <fname...>
+__vfprintf_chk
+   -v            verify mode (restore if corrupt)
+__xstat64

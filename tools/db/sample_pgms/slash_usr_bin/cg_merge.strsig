@@ -1,0 +1,78 @@
+1 <= *i && *i <= 3
+addCounts: inconsistent number of counts
+__assert_fail
+avl_dopy
+avl_insert_wrk
+avl_nasty
+avl_remove_wrk
+Cannot open input file
+cg_merge
+cg_merge.c
+# counts doesn't match # events
+cpf->events_line[6] == ':'
+__ctype_b_loc
+events: 
+"events:" line of most recent file does not match those previously processed
+fm->stackTop == 0
+fm->stackTop <= 32
+fm->stackTop < 32
+__fprintf_chk
+garbage in counts line
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+__gmon_start__
+handle_counts:
+initIterFM
+I/O error while reading input file
+_IO_getc
+_IO_stdin_used
+left_subtree
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+merge_CacheProfInfo
+M_TMP_DESCLINES too low; increase and recompile
+n_counts >= 0
+new_Counts
+new_Counts_Zeroed
+nextIterFM
+N_TMPC too low.  Increase and recompile.
+parse_CacheProfFile
+parse_CacheProfFile(1)
+parse_CacheProfFile(2)
+parse_CacheProfFile(3)
+parse_CacheProfFile(4)
+parse_CacheProfFile(5)
+parse_CacheProfFile(6)
+parse_CacheProfFile(7)
+parse_CacheProfFile: computed vs stated SUMMARY counts mismatch
+parse_CacheProfFile: eof before EVENTS line
+parse_CacheProfFile: eof before SUMMARY line
+parse_CacheProfFile: extraneous content after SUMMARY line
+parse_CacheProfFile: no CMD line present
+parse_CacheProfFile: no DESC lines present
+parse_CacheProfFile: no EVENTS line present
+parse_CacheProfFile: unexpected line in main data
+parse_CacheProfFile: wrong # counts in SUMMARY line
+right_subtree
+(*rootp)==a
+%s: can't create output file %s
+%s: error writing output file %s
+%s: Merges multiple cachegrind output files into one
+%s: merging %s
+%s: near %s line %u
+%s: out of memory in %s
+%s: parse error: %s
+%s: parsing %s
+stackPop
+stackPush
+(stdout)
+__strdup
+summary:
+summary: 
+%s: usage: %s [-o outfile] [files-to-merge]
+%s: writing %s
+too few counts in count line
+Unexpected long line in input file

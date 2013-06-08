@@ -1,0 +1,32 @@
+__bss_start
+computing colormap...
+%d colors found
+-directcolor
+dump file.  If you want PseudoColor, try doing a 'ppmquant %ld'.
+GLIBC_2.0
+GLIBC_2.7
+__gmon_start__
+_IO_putc
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+pm_bitstomaxval
+pm_close
+pm_keymatch
+pm_message
+pm_openr
+pm_usage
+pm_writebiglong
+pm_writebigshort
+pnm_init
+pnm_readpnm
+ppm_colorhisttocolorhash
+ppm_computecolorhist
+ppm_lookupcolor
+-pseudodepth
+[-pseudodepth n] [-directcolor] [pnmfile]
+Too many colors - proceeding to write a 24-bit DirectColor

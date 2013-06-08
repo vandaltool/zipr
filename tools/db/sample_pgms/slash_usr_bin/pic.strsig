@@ -1,0 +1,232 @@
+#-+ 0123456789.
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|
+10arc_object
+10box_object
+10char_input
+10file_input
+10tex_output
+11line_object
+11macro_input
+11mark_object
+11move_object
+11text_object
+11tpic_output
+`%1%2 %3' in `with' argument ignored
+12arrow_object
+12block_object
+`%1%2 last %3' in `with' argument ignored
+12troff_output
+13circle_object
+13closed_object
+13common_output
+13linear_object
+13simple_output
+13spline_object
+14command_object
+14ellipse_object
+14graphic_object
+15copy_thru_input
+16rectangle_object
+17simple_file_input
+%1 at end of picture
+%1 before `%2'
+%1 before newline
+`%1' is not a predefined variable
+-%1 option is obsolete
+20argument_macro_input
+20copy_file_thru_input
+20copy_rest_thru_input
+.\" %.3fi %.3fi %.3fi %.3fi
+,$+4$+l$
+8invalid input character code %1
+9for_input
+9top_input
+A/build/buildd/groff-1.21/src/preproc/pic/main.cpp
+    \advance\graphtemp by %.3fin
+    \advance\graphtemp by .5ex
+arguments to `^' operator out of domain
+argument to `.ps' not an integer
+arrowhead
+arrowwid
+atan2 argument out of domain
+atan2 result out of range
+bad fill value %1
+bad sprintf format
+B\D't %.3fp'\h'%.3fp'
+body of `for' terminated enclosing block
+/build/buildd/groff-1.21/debian/build/../../src/include/stringclass.h
+/build/buildd/groff-1.21/src/libs/libgroff/errarg.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/ptable.cpp
+/build/buildd/groff-1.21/src/libs/libgroff/string.cpp
+?/build/buildd/groff-1.21/src/preproc/pic/common.cpp
+/build/buildd/groff-1.21/src/preproc/pic/lex.cpp
+/build/buildd/groff-1.21/src/preproc/pic/object.cpp
+/build/buildd/groff-1.21/src/preproc/pic/tex.cpp
+/build/buildd/groff-1.21/src/preproc/pic/troff.cpp
+cannot draw arrow on object with zero length
+cannot expand table
+can only define variable or placename
+can't open `%1': %2
+circlerad
+coloured
+   \csname newbox\expandafter\endcsname\csname %s\endcsname
+  \csname newdimen\endcsname\graphtemp
+__ctype_b_loc
+__cxa_atexit
+__cxa_guard_acquire
+__cxa_guard_release
+__cxa_pure_virtual
+CXXABI_1.3
+D$89D$<~S
+D$8;D$<|
+D$(;D$,|
+D$<;D$@}e
+\&\D'Fg %.3f'
+D$H;D$L|
+D$H;D$L}\
+diameter
+    \divide\graphtemp by 2
+division by zero
+D$,t!9D$0
+ellipseht
+ellipsewid
+end of file before .PE or .PF
+end of input while scanning macro arguments
+__errno_location
+\expandafter\ifx\csname %s\endcsname\relax
+\expandafter\setbox\csname %s\endcsname
+exp result out of range
+Failed assertion at line %d, file `%s'.
+fatal error:
+.fcolor %s
+fig support not included
+__fprintf_chk
+.gcolor %s
+.\" %g %g %g %g
+giving up on this picture
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBCXX_3.4
+__gmon_start__
+GNU pic (groff) version %s
+    \graphtemp=.5ex
+    \graphtemp=\baselineskip
+__gxx_personality_v0
+\h'%.3fi
+\h'%.3fi'
+\h'%.3fi'\v'%.3fi'
+\h'%.3fi'\v'%.3fi'\D'a %.3fi %.3fi %.3fi %.3fi'
+\h'%.3fi'\v'%.3fi'\D'%c %.3fi'
+\h'%.3fi'\v'%.3fi'\D'%c %.3fi %.3fi'
+\h'%.3fi'\v'%.3fi'\D'l %.3fi %.3fi'
+\h'%.3fi'\v'%.3fi'\X'ps: exec gsave currentpoint 2 copy translate %.4f rotate neg exch neg exch translate'
+\h'%.3fi-(\w'.'u/2u)'\v'%.3fi+%.2fm'.
+\hbox to 0pt{
+    \hbox{\vrule depth%.3fin width0pt height 0pt}%%
+height specified for picture with zero height
+.if !dPE .ds PE
+.if !dPS .ds PS
+.if \n(00 .fi
+.if \n(0p \{\
+\ifx\graphtemp\undefined
+initial `%1' in `with' argument ignored
+invalid macro argument number %1
+invisible
+_IO_getc
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+    \kern %.3fin
+`last %1' in `with' argument ignored
+.lf %d %s
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+libm.so.6
+libstdc++.so.6
+linethick
+log result out of range
+L<%t`<1t|
+maxpswid
+memory exhausted
+missing `"'
+missing closing delimiter
+missing delimiter
+missing filename after `<'
+modulus by zero
+    \multiply\graphtemp by %d
+negative pen size
+nested .PS
+newline in string
+.nr 00 \n(.u
+.nr 0x 0
+.nr 0x 1
+object does not contain a place `%1'
+only %1 macro arguments supported
+outlined
+out of memory
+output error
+POSIXLY_CORRECT
+__printf_chk
+.PS %.3fi %.3fi
+.PS was here
+result of `^' operator out of range
+    \rlap{\kern %.3fin\lower\graphtemp
+setlocale
+%s: illegal option -- %c
+%s: invalid option -- %c
+snprintf
+__snprintf_chk
+%s: option `%c%s' doesn't allow an argument
+%s: option requires an argument -- %c
+%s: option `--%s' doesn't allow an argument
+%s: option `%s' is ambiguous
+%s: option `%s' requires an argument
+%s: option `-W %s' doesn't allow an argument
+%s: option `-W %s' is ambiguous
+.sp %.3fi+1
+    \special{
+    \special{ar %d %d %d %d %f %f}%%
+    \special{ia %d %d %d %d 0 6.28319}%%
+    \special{pa %d %d}%%
+?    \special{pn %d}%%
+    \special{%s %d %d %d %d 0 6.28319}%%
+    \special{sh 1}%%
+    \special{sh %.3f}%%
+    \special{sp
+__sprintf_chk
+sqrt argument out of domain
+%s (%s):%d:
+<standard input>
+       %s -t [ -cvzCSU ] [ filename ... ]
+strerror
+%s: unrecognized option `%c%s'
+%s: unrecognized option `--%s'
+syntax error
+T$0;|$4t
+T:CDSUtcvnxzpf
+there is no %1%2 %3
+there is no %1%2 last %3
+there is no place `%1'
+there is no variable `%1'
+thickness
+too few arguments to snprintf
+unsafe to run command `%1'
+_Unwind_Resume
+usage: %s [ -nvCSU ] [ filename ... ]
+\v'%.3fi-(%dv/2u)+%dv+%.2fm
+variable `%1' not defined
+ =\vtop{\vskip 0pt\hbox{%%
+warning:
+width specified for picture with zero width
+-\w%s%s%su
+-(\w%s%s%su/2u)
+\X'ps: exec grestore'
+xslanted
+yslanted
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE

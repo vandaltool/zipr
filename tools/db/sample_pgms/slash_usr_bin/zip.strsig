@@ -1,0 +1,1013 @@
+        
+                     
+     /      
+   /    
+---------
+-----------
+05 Jan 2007
+  -0        store files (no compression)
+  -0   store only                   -l   convert LF to CR LF (-ll CR LF to LF)
+%16s:  %s
+  -1   compress faster              -9   compress better
+    1. Redistributions of source code (in whole or in part) must retain
+  -1 to -9  compress fastest to compress best (default is 6)
+%2d%2d%4d
+    2. Redistributions in binary form (compiled executables and libraries)
+ %-2s  %-18s 
+ %-2s  %-18s %-4s %-3s %-30s
+    3. Altered versions--including, but not limited to, ports to new operating
+%3ld/%3ld 
+%4d-%2d-%2d
+    4. Info-ZIP retains the right to use the names "Info-ZIP," "Zip," "UnZip,"
+\$@9\$0s
+  -A        Adjust offsets - a self extractor is created by prepending
+  -A   adjust self-extracting exe   -J   junk zipfile prefix (unzipsfx)
+aborting
+aborting: 
+  -AC       after archive created, clear archive bit of included files
+        add      - add new files/update existing files in archive (default)
+add comments for each entry
+add/delete entries to make archive match OS
+add files to archive then delete files
+  Add file.txt to z.zip (create z if needed):      zip z file.txt
+adding file
+adding filter
+  adding: %s
+Adjusting split archives not supported:  
+Adjusting split archives not yet supported
+adjust self extractor offsets
+adjust-sfx
+	Administration Regulations (section 740.13(e)) of 6 June 2002.
+  All args after just "--" arg are read verbatim as paths and not options.
+allocating temp filename
+allocating zlib/bzlib file-I/O buffers
+allow [list] matching (regex)
+  and -d (delete) because archive paths are always case sensitive.  With
+  and newfile2:
+  and on other systems in new extra fields with escaped versions in
+       and this list of conditions in documentation and/or other materials
+	and, to the best of our knowledge, can be freely distributed
+  An exception to -UN=N are entries with new UTF-8 bit set (instead
+  Any character not in the current locale is escaped as #Uxxxx, where x
+  Any number of short option and long option arguments are allowed
+append_int64_to_mem
+append_string_to_mem
+append to existing log file
+append_ulong_to_mem
+append_ushort_to_mem
+archive-comment
+Archive contains:
+  archive.  Exclude and include lists end at next option, @, or end of line.
+Archive is current
+ archive may be scrambled and not recoverable)
+archive name must end in .zip for splits
+archive not in correct format: 
+  are copied instead of being read and compressed so can be faster.
+  are needed.  If add -UN=e, Zip escapes all non-ASCII characters.
+             are skipped OPEN error (18) returned after archive created)
+             are then off.  Use -A to fix offsets.
+arising out of the use of or inability to use this software.
+  -AS       include only files with the DOS Archive bit set
+  as is supported chars, which may not be OK in path names.  -UN=Escape
+ask for archive comment
+as of above date; see http://www.info-zip.org/ for other sites.
+as -sf but also show escaped Unicode
+as -sf but only show escaped Unicode
+  Assuming single-disk archive
+attempting to restore %s to its previous state
+Attempting to salvage what can
+Attempt to read unsupported Zip64 archive
+available options:
+  Avoid -ovalue (no space between) to avoid confusion
+bad archive - could not seek back to Zip64 EOCDL: 
+bad archive - could not seek back to Zip64 EOCDR: 
+bad archive - error reading central directory
+bad archive - missing end signature
+bad archive - unexpected signature 
+bad archive - Zip64 EOCDR bad or truncated
+bad archive - Zip64 EOCDR not found in split:  
+bad flag to add_filter
+bad pack level
+bad - skipping: 
+bad split size:  '%s'
+base path
+Basic command line:
+Basic modes:
+Basic options:
+  -b dir    when creating or updating archive, create the temp archive in
+before-date
+       be misrepresented as being Info-ZIP releases--including, but not
+       be misrepresented as being the original source or, if binaries,
+block vanished
+__bss_start
+building command string for testing archive
+ bytes, actual 
+BZ2_bzCompress
+BZ2_bzCompressEnd
+BZ2_bzCompressInit
+BZ2_bzlibVersion
+BZIP2_SUPPORT        (bzip2 library version %.32s)
+              bzip2 - use bzip2 compression (need modern unzip)
+ (bzipped %d%%)
+bzlib bzCompressEnd failed
+bzlib bzCompressInit failure (%d)
+  -c   add one-line comments        -z   add zipfile comment
+               Can also use -sf to save file list before zipping files
+  can include the special name - to compress standard input.
+cannot grow split archive
+cannot initialize bzlib compress
+cannot repeat names in zip file
+Cannot select stdin when selecting archive entries
+cannot update a split archive (use --out option)
+  Cannot update split archive, so use --out to out new archive:
+cannot write zip file to terminal
+  can rename entries).  If these do not match, use below options to
+can't create split archive while fixing or adjusting
+can't create split archive with -d or -g or on stdout
+Can't get memory for arguments
+can't read input (-) and filenames (-@) both from stdin
+can't rewrite method
+can't set method, move, recurse, or comments with copy mode.
+can't use - and -@ together
+can't use -- before archive name
+can't use -d, -f, -u, -U, or -g on stdout
+can't use -d, -f, -u, -U, or -g with filesync -FS
+can't use --diff (-DF) with -d or -U
+can't use --diff (-DF) with fix (-F or -FF)
+can't use -FF with -A, -FF ignored
+Can't use -F to fix (try -FF)
+can't use -F with -A, -F ignored
+can't use -T on stdout, -T ignored
+can't use -y with -k, -y ignored
+  Can use both at same time to set a date range
+  Can use either normal path or escaped Unicode path on command line
+  Can use -fz- to turn off Zip64 if input not large (< 4 GB):
+  Can use -t and -tt to select files in archive, but NOT -x or -i, so
+       capitalizations), "Pocket UnZip," "WiZ" or "MacZip" without the
+Case matching:
+ Cen   (%2lu %6s): 
+Central Directory found...
+central directory header signature on disk %lu at %s
+central dir not where expected - could not adjust offsets
+C"f+D$.f+D$$
+   Christian Spieler, Cosmin Truta, Antoine Verheijen, Paul von Behren,
+clearerr
+closedir
+	Closing split 
+command line:
+command line arguments:
+       compiled from the original source.  Such altered versions also must not
+Compiled with %s for Unix (%s)%s.
+compress 1
+compress-1
+compress 2
+compress-2
+compress 3
+compress-3
+compress 4
+compress-4
+compress 5
+compress-5
+compress 6
+compress-6
+compress 7
+compress-7
+compress 8
+compress-8
+compress 9
+compress-9
+Compressed/stored entry unexpectedly large - do not use -fz-
+Compression:
+compression method
+compression-method
+convert text file line ends - CRLF->LF
+convert text file line ends - LF->CRLF
+copy-entries
+ copying: %s
+ copying: %s 
+  Copy Mode copies entries from old to new archive with --out and is used by
+Copy Mode (copying from archive to archive):
+Copyright (c) 1990-2008 Info-ZIP.  All rights reserved.
+Copyright (c) 1990-2008 Info-ZIP - Type '%s "-L"' for software license.
+could not allocate memory: scanzipf_reg
+Could not create output file
+Could not determine offset of entries
+Could not find:
+Could not find or open
+could not find split: 
+Could not find split
+Could not get info for input split: 
+could not open archive to read
+could not open for reading: 
+could not open input archive
+could not open input archive: 
+could not open logfile '%s'
+could not read input file: 
+could not read local entry information: 
+could not seek back to start of central directory: 
+could not seek back to Zip64 EOCDL: 
+could not seek back to Zip64 EOCDR: 
+could not seek in output file
+could not write split
+             (could require additional file copy if on another device)
+%c pattern file '%s'
+  -c        prompt for one-line comment for each entry
+create diff archive with changed/new files
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_toupper_loc
+current directory for -R
+   current dir is /a/b, 'zip -r archive .' puts c/file in archive
+Currently maintained by E. Gordon.  Please send bug reports to
+  Currently neither option fixes bad entries, as from text mode ftp get.
+ current: %s
+current zip file comment is:
+Date filtering:
+  Dates are mmddyyyy or yyyy-mm-dd
+   David Kirschbaum, Johnny Lee, Onno van der Linden, Igor Mandrichenko,
+  -db       display running count of bytes processed and bytes to go
+  -dc       display running count of entries done and entries to go
+  -dd       display dots every 10 MB (or dot size) while processing files
+  -d    delete   - delete files from archive (see below)
+  -d   delete entries in zipfile    -m   move into zipfile (delete OS files)
+  -d        delete files
+ (deflated %d%%)
+              deflate - original zip deflate, same as -1 to -9 (default)
+  Delete archive entries matching internal archive paths in list
+delete entries from archive
+  deletes all files from archive.zip with date of 27 Dec 2005 and later
+deleting directory %s (if empty)                
+deleting: %s
+Deletion, File Sync:
+description
+/dev/tty
+  -DF       (also --dif) only include files that have changed or are
+D$(f	D$$
+-DF (--diff) requires -O (--out)
+  -dg       display dots globally for archive instead of for each file
+Did not find entry for 
+difference-archive
+Difference mode:
+  Difference mode can be used to create incremental backups.  For example:
+   Dirk Haase, Greg Hartwig, Robert Heath, Jonathan Hudson, Paul Kienitz,
+dir to use for temp archive
+             dir, which allows using seekable temp file when writing to a
+display additional information
+display-bytes
+display-counts
+display-dots
+display dots as process each file
+display dots for archive instead of files
+display-globaldots
+display license
+display running bytes
+display running file count
+display uncompressed size in bytes
+display-usize
+display-volume
+display volume (disk) number
+do not specify both -r and -R
+DOS Archive bit (Windows only):
+DOS-names
+do splits, set split size (-s=0 no splits)
+  Dot options don't apply to Scanning files dots (dot/2sec) (-q turns off)
+Dots, counts:
+dot-size
+  Dot size is approximate, especially for dot sizes less than 1 MB
+dot size must be at least 32 KB:  '%s'
+    -d -s is (delete, split size) while -ds is (dot size)
+  -ds siz   each dot is siz processed where siz is nm as splits (0 no dots)
+  -du       display original uncompressed size for each entry as added
+  -dv       display volume (disk) number in format in_disk>out_disk
+  -e   encrypt                      -n   don't compress these suffixes
+    e      (end this archive - no more splits)
+  either file time or size have changed from that in full_backup.zip,
+       e-mail addresses or the Info-ZIP URL(s), such as to imply Info-ZIP
+empty name without -j or -r
+encrypt entries, ask for password
+encrypt entries, option value is password
+Encryption:
+Encryption notice:
+	[encryption, version %d.%d%s of %s] (modified for Zip 3)
+End Of Line Translation (text files only):
+End record (EOCDR) has bad disk numbers - ignoring EOCDR
+End record (EOCDR) only %s bytes - assume truncated
+Enter comment for %s:
+enter new zip file comment (end with .):
+Enter password: 
+Enter path where this split is (ENTER = same dir, . = current dir)
+  entries remains case sensitive for modes -f (freshen), -U (archive copy),
+  entries that differ only in case will match.
+Entry after central directory found (%2lu %6s)...
+entry-comments
+  entry path and comment fields for backward compatibility.
+Entry too big:
+Entry too big to split, read, or write
+entry truncated: 
+en_US.UTF-8
+EOCDR found (%2lu %6s)...
+__errno_location
+error deleting 
+error if in file not matched/not readable
+error reading entry:  
+Error rewriting local header
+error writing to zipfile
+  escaped paths and comments can be too long to be valid as the UTF-8
+     Escaped Unicode:  %s
+  escapes any character not ASCII:
+  -e        use standard (weak) PKZip 2.0 encryption, prompt for password
+      even if it doesn't exist (zip will ask for splits)
+exclude before date
+exclude files matching patterns
+excluding %s
+expected compressed/stored size %s, actual %s
+expected %s entries but found %s
+       explicit permission of Info-ZIP.  Such altered versions are further
+extended help
+Extended Help for Zip
+ External modes (selects files from file system):
+extra field copy
+extra fields copy
+failed to get information from UnZip
+-fatal error (code %d) in bzip2 library
+  -F        attempt to fix a mostly intact archive (try this first)
+ fcopy: write error
+  -F   fix zipfile (-FF try harder) -D   do not add directory entries
+  -f   freshen: only changed files  -u   update: only changed or new files
+  -f    freshen  - update existing files only (no files added)
+  -FF tries to salvage what can and may result in incomplete entries.
+  -FF       try to salvage what can (may get more but less reliable)
+  fields:
+file and directory with the same name: 
+file matches zip file -- skipping
+File not found or no read permission
+  files/entries read:  %lu
+ file size changed while zipping 
+filesync
+filetime
+  first full name: %s
+Fix archive (-F) - assume mostly intact archive
+Fix archive (-FF) - salvage what can
+Fixing archives:
+fix mostly intact archive (try first)
+  Fix options copy entries from potentially bad archive to new archive.
+fix options -F and -FF require --out:
+fix options require --out
+|$ f)L$ 
+for any direct, indirect, incidental, special or consequential damages
+force data descriptors as if streaming
+force-descriptors
+force use of 8.3 DOS names
+force use of Zip64 format, negate prevents
+force-zip64
+  For DOS and Windows, [list] is now disabled unless the new option
+  For example:
+  For example, to create new_archive like old_archive but add newfile1
+  For long option values, use either --longoption=value or --longoption value
+  for other systems planned in next release.
+  For shells that expand wildcards, escape (\* or "*") so zip can recurse
+  For short options that take values, use -ovalue or -o value or -o=value
+For the purposes of this copyright and license, "Info-ZIP" is defined as
+  Found archive comment
+ Found end record (EOCDR) - says expect %lu splits
+Found:  %s
+  Found spanning marker, but did not expect split (multi-disk) archive...
+  Found spanning marker - could be split archive...
+  Found spanning marker - expected as this is split (multi-disk) archive...
+Found UnZip version %4.2f
+__fprintf_chk
+__fread_chk
+freely, subject to the above disclaimer and the following restrictions:
+freshen existing archive entries
+freshening: %s
+from-crlf
+from-date
+  from stopping unexpectedly on unfed pipe, use -FI to enable:
+       from the binary or disabled.
+fseeko64
+  -FS       file sync
+  -FS   filesync - update if date or size changed, delete if no OS match
+fstat(stdin)
+ftello64
+  -F tries to read archive normally and copy only intact entries, while
+__fxstat64
+gcc 4.6.1
+get file names from stdin, one per line
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+  goes with standard path for that entry (as utilities like ZipNote
+grow existing archive instead of replace
+  -h2  show more help
+has binary so -l ignored
+has binary so -ll ignored
+Hit c      (change path to where this split file is)
+Hit ENTER to write to default path of
+  -ic, all matching ignores case, but it's then possible multiple archive
+  -ic       ignore case of archive entries
+(If all you have are splits (.z01, .z02, ...) and no .zip, try -FF)
+            if bzip2 is enabled:
+  If compiled with Unicode support, Zip stores UTF-8 path of entries.
+(If downloaded, was binary mode used?  If not, the
+If -F fails try -FF to try to salvage something
+  If first buffer read from file contains binary the translation is skipped
+  If input is split, output will default to same split size
+  If no input files and --out, copy all entries in old archive:
+(if no other args) show version information
+  If port supports [], must escape [ as [[] or use -nw to turn off wildcards
+(if you are trying to read a damaged archive try -F)
+  If zipfile and list are omitted, zip compresses stdin to stdout.
+  If Zip is Zip64 enabled, streaming stdin creates Zip64 archives by default
+  ignored when matching files on file system but matching against archive
+ignoring FIFO (Named Pipe) - use -FI to read: 
+ignoring special file: 
+Illegal host system mapping in local header:  %d
+Illegal PK version mapping in local header:  %d
+illegal UTF-8 name: 
+	in both source and object forms from any country, including
+Include and Exclude:
+include before date
+include informational messages in log
+include only files matching patterns
+including commercial applications, and to alter it and redistribute it
+             In cmd, {} replaced by temp archive path, else temp appended.
+incorrect compressed size
+  in new diff.zip.  Output archive not excluded automatically if exists,
+  In particular, be aware of 2-character options.  For example:
+Input file read failure
+	(in=%s) (out=%s)
+  Instead of updating input archive, create new output archive oa.
+Internal logic error
+  Internally zip supports the following wildcards:
+ Internal modes (selects entries in archive):
+Interrupted
+Invalid command arguments
+Invalid comment format
+invalid date entered for -t option - use mmddyyyy or yyyy-mm-dd
+invalid date entered for -tt option - use mmddyyyy or yyyy-mm-dd
+invalid option(s) used with -d; ignored.
+_IO_getc
+_IO_putc
+_IO_stdin_used
+  -i pattern pattern ...   include files that match a pattern
+  is hex digit, if 16-bit code is sufficient, or #Lxxxxxx if 24-bits
+                     is not readable or the end is damaged
+__isoc99_sscanf
+       is redistribution of a standard UnZipSFX binary (including SFXWiz) as
+  is "-", stream to stdout.  If any path is "-", zip stdin.
+Is this a single-disk archive?  (y/n): 
+  is used to avoid problems with file paths containing "[" and "]":
+   Jean-loup Gailly, Hunter Goatley, Ed Gordon, Ian Gorman, Chris Herborth,
+  -j        junk directory names (store just file names)
+  -J        Junk sfx - removes prepended extractor executable from
+July 5th 2008
+junk-paths
+junk-sfx
+_Jv_RegisterClasses
+   Kai Uwe Rommel, Steve Salisbury, Dave Smith, Steven M. Schweda,
+k$f+l$ f+l$
+  -la       append to existing logfile
+Large entry support disabled using -fz- but needed
+Large entry support disabled with -fz- but entry needs
+Large entry support disabled with -fz- but needed
+LARGE_FILE_SUPPORT   (can read and write large files on file system)
+last %s o %s
+Latest sources and executables are at ftp://ftp.info-zip.org/pub/infozip,
+latest-time
+  -l        change CR or LF (depending on OS) line end to CR LF (Unix->Win)
+  -lf path  open file at path as logfile (overwrite existing file)
+libbz2.so.1.0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+  -li       include info messages (default just warnings and errors)
+                     Likely entry name changed but Unicode not updated
+       limited to, labeling of the altered versions with the names "Info-ZIP"
+(line too long--try again)
+Linux ELF
+    [list]  matches char in list (regex), can do range [ac-f], all but [!bf]
+  -ll       change CR LF to CR or LF (depending on OS) line end (Win->Unix)
+-ll used on binary file - corrupted?
+ Local (%2lu %6s):
+Local Entry CRC does not match CD: 
+Local Entry Flag does not match CD: 
+Local Entry name does not match CD: 
+local flags = 0x%04x, central = 0x%04x: 
+local (%lu) and cen (%lu) crc mismatch
+localtime
+local_to_display_string
+local_to_wide_string
+Local Version Needed (%d) does not match CD (%d): 
+Local Version Needed To Extract does not match CD: 
+log-append
+logfile-path
+Logging:
+log-info
+log to log file at path (default overwrite)
+long option '%s' ambiguous
+long option '%s' not supported
+%lu>%lu: 
+-l used on binary file - corrupted?
+__lxstat64
+@made by version %d.%d on system type %d: 
+  -m        after archive created, delete original files (move into archive)
+   Mark Adler, John Bush, Karl Davis, Harald Denker, Jean-Michel Dubois,
+    *       matches any number of characters, including zero
+  match file on OS.  Also deletes entry from archive if no matching file
+mbstowcs
+minimum split size is 64 KB:  '%s'
+missing end signature--probably not a zip file (did you
+missing file after @
+missing or early
+Missing or empty zip file
+missing suffix list
+mkstemp64
+  -MM       input patterns must match at least one file and matched files
+-mm not supported, Must_Match is -MM
+       modified or added functionality, and dynamic, shared, or static library
+more-help
+More option highlights (see manual for additional options and details):
+More than 99999 splits needed
+             must be readable or exit with OPEN error and abort archive
+must-match
+       must reproduce the above copyright notice, definition, disclaimer,
+  Must use --out option to specify output archive:
+must use --out when fixing an archive
+name in zip file repeated: %s
+name not matched: 
+names-stdin
+needs unzip %d.%d on system type %d: 
+Need UnZip 6.00 or later to test this Zip64 archive
+             new as compared to the input archive
+  New Unicode extra field includes checksum to verify Unicode path
+new zip file left as: 
+              n number and m multiplier (kmgt, default m), 100k -> 100 kB
+no-dir-entries
+no end of stream entry found: 
+no entries for dirs themselves (-x */)
+no local entry: %s
+no other actions allowed when fixing archive (-F or -FF)
+  Normally * crosses dir bounds in path, e.g. 'a*b' can match 'ac/db'.  If
+  Normally Zip escapes all chars outside current char set, but leaves
+Normal successful completion
+no such option ID: %ld
+Not enough room on disk
+Not enough space to write split
+  Note the * (escape as "*" on Unix) to select all files in archive
+ not found or empty
+Nothing to do!
+nothing to select from
+not in archive: 
+Not supported
+not used
+no wildcards during add or update
+No .zip file found
+null pattern to add_filter
+Number too long to read (8 characters max): 
+  -nw       no wildcards (wildcards are like any other character)
+       of conditions.
+  of entry names between different character sets.
+       of this license, as long as the normal SFX banner has not been removed
+  of using extra fields).  These are always handled as Unicode.
+      ok: %s
+                old splits not overwritten are not needed but remain
+  -o        make zipfile as old as latest entry
+on disk %lu at %s
+ on Jun 11 2011
+  Only UTF-8 comments on UTF-8 native systems supported.  UTF-8 comments
+  On most OS the case of patterns must match the case in the archive, unless
+  on OS.
+             On Unix, to use unzip in current directory, could use:
+Opening disk %d
+option -ds (--dot-size) has bad size:  '%s'
+Options and Values:
+option %s does not allow a value
+option %s not negatable
+option %s requires a value
+option %s requires number value
+option %s requires one character value
+  Option -UN=UTF8 will force storing UTF-8 in entry path and comment
+Option -Z (--compression-method):  unknown method
+       (or any variation thereof, including, but not limited to, different
+or enter a new directory path (. for cur dir) and hit ENTER
+ or ENTER  (continue with this split): 
+ or ENTER  (try reading this split again): 
+original files unmodified
+or implied.  In no event shall Info-ZIP or its contributors be held liable
+    ?       (or %% or #, depending on OS) matches any single character
+  --out oa  output to new archive oa
+Out of memory
+out of memory in zipcopy
+--out path must be different than in path: %s
+output buffer too small for in-memory compression
+output-file
+Output file write failure
+overflow in byte count
+       own source and binary releases.
+       part of a self-extracting archive; that is permitted without inclusion
+password
+password verification failed
+      path of the last split with .zip extension,
+Path (or hit ENTER to continue): 
+  Path root in archive starts at current dir, so if /a/b/c/file and
+  Patterns are paths with optional wildcards and match paths as stored in
+pause while splitting to select destination
+Permission is granted to anyone to use this software for any purpose,
+planned 
+Poor compression resulted in unexpectedly large entry - try -fz
+  -P pswd   use standard encryption, password is pswd
+__printf_chk
+  prog1 | zip -ll z -      zip output of prog1 to zipfile z, converting CR LF
+  prog1 | zip | prog2      zip in pipe with no in or out acts like zip - -
+    prog_with_small_output | zip archive -fz-
+       prohibited from misrepresentative use of the Zip-Bugs or Info-ZIP
+       provided with the distribution.  The sole exception to this condition
+	put in the public domain.  It was originally written in Europe
+    q      (abort archive - quit)
+  -q        quiet operation
+  -q   quiet operation              -v   verbose operation/print version info
+readdir64
+reading archive
+reading archive: 
+reading archive fseek: 
+reading central directory
+reading central directory: 
+reading entry
+Reading FIFO (Named Pipe): 
+reading local entry: 
+readlink
+  -@   read names from stdin        -o   make zipfile as old as latest entry
+  -@        read names to zip from stdin (one path per line)
+read Unix FIFO (zip will wait on open pipe)
+recurse current dir and match patterns
+recurse down listed paths
+recurse-paths
+recurse-patterns
+Recursion:
+  -RE       enable [list] (regular expression) matching
+remember to use binary mode when you transferred it?)
+ replace: can't open %s
+  Result generally same as creating new archive, but unchanged entries
+  Result is same as without --out but in new archive.  Input archive
+rewinding and scanning for later entries
+   Rich Wales, Mike White
+  -R        recurse current dir and match patterns:   zip -R a ptn ptn ...
+  -r   recurse into directories     -j   junk (don't record) directory names
+  -r        recurse into directories (see Recursion below)
+  -r        recurse paths, include files in subdirs:  zip -r a path path ...
+  -sb       ring bell when pause
+ (%s bytes)
+Scanning files 
+Scanning for entries...
+  -sc       show command line arguments as processed and exit
+sd: Adding spanning/splitting signature at top of archive
+sd: Applying filters
+sd: Checking dups
+sd: Command line read
+sd: Creating new zip file
+sd: Creating new zip file (-FF)
+sd: fcount = %u
+sd: Get comment if any
+sd: Going through old zip file
+sd: Open zip file and create temp file
+sd: Open zip file and create temp file (-FF)
+sd: Reading archive
+sd: Replacing old zip file
+sd: Scanning archive entries
+sd: Scanning files
+sd: Scanning files to update
+sd: Setting file type
+  -sd       show debugging as Zip does each step
+sd: Writing central directory
+sd: Writing central directory (-FF)
+sd: Writing end of central directory
+sd: Zipfile name '%s'
+sd: Zipping to stdout
+sd: Zipping up new entries
+ second full name: %s
+seek after local: 
+seek failed on output file
+seek failed reading descriptor
+seek wrap - zip file too big to write
+See the Zip Manual for more detailed help
+select from archive instead of file system
+Self extractor:
+             self extractor, leaving a plain zip archive.
+set_extra_field
+setlocale
+set out zipfile different than in zipfile
+set progress dot size - default 10M bytes
+  set what Zip does:
+  -sf       show files to operate on and exit (-sf- logfile only)
+short option '%c' not supported
+            should work with most unzips but may not work with some
+show-command
+show command line
+show debug
+show-debug
+show-files
+Show files:
+show files to operate on and exit
+show-just-unicode
+show options
+show-options
+show-unicode
+  Similar to update, but files updated if date or size of entry does not
+  skipped:  %lu
+Skipping:  
+skipping disk %lu ...
+ skipping: %s
+skipping split file: 
+skipping this entry...
+skipping this signature...
+  so either use -x to exclude it or put outside what is being zipped.
+Some examples:
+  -so       show all available options on this system
+specify just one action
+      Split archives CANNOT be updated, but see --out and Copy Mode below
+split-bell
+split path
+split-pause
+Splits (archives created as a set of split files):
+split-size
+splitsize = 
+split-verbose
+  -sp       pause after each split closed to allow changing disks
+__sprintf_chk
+'%s' (%s)
+ s=%s, actual=%s 
+    s      (skip this split)
+  -s ssize  create split archive with splits of size ssize, where ssize nm
+__stack_chk_fail
+starts on disk %lu: 
+stderr is not a tty
+   Steve P. Miller, Sergio Monesi, Keith Owens, George Petrov, Greg Roelofs,
+* stops at /, ** includes any /
+ (stored 0%%)
+store paths
+              store   - store without compression, same as option -0
+store symbolic links
+STORE_UNIX_UIDs_GIDs (store UID/GID sizes/values using new extra field)
+__strcat_chk
+__strcpy_chk
+Streaming and FIFOs:
+strerror
+strip-extra
+strip paths and just store file names
+strip self extractor from archive
+__strncat_chk
+  -su       as -sf but show escaped UTF-8 Unicode names also if exist
+  -sU       as -sf but show escaped UTF-8 Unicode names instead
+suffixes
+suffixes to not compress: .gz:.zip
+  -sv       be verbose about creating splits
+symlinks
+SYMLINK_SUPPORT      (symbolic links supported)
+       systems, existing ports with new graphical interfaces, versions with
+tcgetattr
+tcsetattr
+T$D9T$4r)v
+  -t date   exclude before (include files modified on this date and later)
+Temporary file failure
+temp-path
+Testing archives:
+test of %s FAILED
+test of %s OK
+test updates before replacing archive
+T$,f)D$,
+T$$f+D$,f)
+   that need PKZip 4.5 unzipper like UnZip 6.0
+       the above copyright notice, definition, disclaimer, and this list
+the authors using the web page at www.info-zip.org; see README for details.
+  The default action is to add or replace zipfile entries from list, which
+	The encryption code of this program is not copyrighted and is
+             the extractor executable to archive, but internal offsets
+the following set of individuals:
+  The full command line syntax is:
+  the -ic option is used.
+             The return code is checked for success (0 on Unix)
+	the USA under License Exception TSU of the U.S. Export
+This archive requires version %d.%d
+  This is backward compatible.  Unicode paths allow better conversion
+This is %s %s (%s), by Info-ZIP.
+                     this may be a result of using -j
+  This option can be useful for multi-byte char sets on Windows where
+  This option not available on case-sensitive file systems.  On others, case
+This software is provided "as is," without warranty of any kind, express
+  To copy only files matching *.c into new archive, excluding foo.c:
+  to match files in archive.
+total bytes=%s, compressed=%s -> %d%% savings
+Total %ld entries (
+Total %s entries (%s bytes)
+towupper
+  to zip up.  If zipfile exists, the archive is read in.  If zipfile
+(try -A to adjust offsets)
+(try -F to attempt recovery)
+(try -F to attempt to fix)
+Try -F to attempt to read anyway
+try harder to fix archive (not as reliable)
+try: zip
+T$T3D$(1
+  -TT cmd   use command cmd instead of 'unzip -tqq' to test archive
+  -tt date  include before (include files modified before date)
+  -T        test completed temp archive with unzip before updating archive
+  -T   test zipfile integrity       -X   eXclude eXtra file attributes
+  -U        (also --copy) select entries in archive to copy (reverse delete)
+-U (--copy) requires -O (--out)
+  -U    copy     - select files in archive to copy (use with --out)
+UIDGID_NOT_16BIT     (old Unix 16-bit UID/GID extra field not used)
+Unable to read empty number in ReadNumString
+unable to read EOCD after seek: 
+Unable to read number (must start with digit): 
+unable to seek in input file 
+  unchanged.
+              (uncompressed size, except delete and copy show stored size)
+undefined bits used in flags = 0x%04x: 
+unexpected bzlib compress error %d
+Unexpected end of zip file
+unexpected error on zip file
+unexpected output of UnZip -v
+unexpected signature on disk %lu at %s
+Unicode:
+Unicode does not match path - ignoring Unicode: 
+Unicode does not match path:  %s
+unicode_mismatch = %d
+Unicode path error
+Unicode Path Extra Field version > 1 - skipping
+UNICODE_SUPPORT      (store and read UTF-8 Unicode paths)
+      -UN=Ignore   - if mismatch, quietly ignore UTF-8
+unknown compression method found:  
+unknown compression method %u: 
+unknown internal attributes = 0x%04x: 
+-UN must be Quit, Warn, Ignore, No, Escape, or UTF8: 
+      -UN=No       - ignore any UTF-8 paths, use standard paths for all
+      -UN=Quit     - if mismatch, exit with error
+UN=quit, warn, ignore, no, escape
+Unrecognized compression method in local header:  %d
+-UN (unicode) bad value
+      -UN=UTF8     - store UTF-8 in entry path and comment fields
+      -UN=Warn     - if mismatch, warn, ignore UTF-8 (default)
+unzip-command
+unzip command to use, name is added to end
+UnZip %f 
+unzip pipe error
+       "UnZipSFX," "WiZ," "Pocket UnZip," "Pocket Zip," and "MacZip" for its
+unzip -t 
+update existing entries and add new
+updating: %s
+(up to 4.5 if bzip2 is not compiled in)
+up to date
+USE_EF_UT_TIME       (store Universal Time)
+  Use -i and -x with either to include or exclude paths
+use latest entry time as archive time
+  Use -nw to also disable wildcards, so paths are read literally:
+user ended reading - closing archive
+user requested abort
+  Use -s=0 or -s- to turn off splitting to convert split to single file:
+               Use -T to test the archive before the bits are cleared
+                     Use -UN=i to ignore errors or n for no Unicode paths
+  Use -v (verbose) with -FF to see details:
+Using --out (output to new archive):
+  Usually better to break short options across multiple arguments by function
+UTF-8 Path cen extra field
+UTF-8 Path Extra Field
+UTF-8 Path local extra field
+utf8_to_wide_string
+  -u    update   - add new files/update existing files only if later date
+valid compression methods are:  store, deflate, bzip2
+Verify password: 
+       versions not from Info-ZIP--must be plainly marked as such and must not
+  versions tend to be shorter.
+  -v        verbose operation (just "zip -v" shows version information)
+      WARNING:  Archives created with -sp use data descriptors and should
+      WARNING:  -FS deletes entries so make backup copy of archive first
+      WARNING:  If overwriting old split archive but need less splits,
+      WARNING: Once the archive bits are cleared they are cleared
+      WARNING:  --out ALWAYS overwrites any existing output file
+  WARNING:  Some archives created with streaming use data descriptors and
+was adding files to zip file
+was copying %s
+was creating pattern list
+was deleting moved files and directories
+was getting encryption password
+was processing arguments
+was processing list of files
+was reading comment lines
+was replacing split file
+was replacing the original zip file
+was setting comments to null
+was verifying encryption password
+was zipping %s
+__wctomb_chk
+when pause for next split ring bell
+  where UTF-8 char set is default, such as most modern Unix, and
+wide_char_to_escape_string
+wide_to_escape_string
+wide_to_local_string
+wide_to_utf8_string
+Wildcards:
+wild-stop-dirs
+will just copy entry over: 
+       will provide support for the altered versions.
+  will store all new files, as well as any files in full_backup.zip where
+  (within limits) as well as any number of path arguments for files
+             (without -MM, both are warnings only, and if unreadable files
+                work with most unzips but may not work with some
+Would Add/Update:
+Would Copy:
+Would Delete:
+Would Freshen:
+write archive seek: 
+write error on zip file
+             write once CD, such archives compatible with more unzips
+write Unicode
+writing archive seek: 
+Writing to:
+   -ws option used, * does not cross dir bounds but ** does
+  -ws       wildcards don't span directory boundaries in paths
+  -X        default=strip old extra fields, -X- keep old, -X strip most
+  -x   exclude the following names  -i   include only the following names
+-X- keep all ef, -X strip but critical ef
+  -x pattern pattern ...   exclude files that match a pattern
+__xstat64
+  You may still have to escape or quote arguments to avoid shell expansion
+  -y   store symbolic links as the link instead of the referenced file
+  -Z cm     set compression method to cm:
+zero-length name for entry #
+zero length password not allowed
+zip -0 not supported for I/O on pipes or devices
+Zip64 End Of Central Directory Record not found:  
+Zip64 EOCDL found (%2lu %6s)...
+Zip64 EOCD Record bad or truncated
+Zip64 EOCDR found (%2lu %6s)...
+Zip64 EOCDR not found where expected - compensating
+Zip64 Extra Field
+Zip64 local extra field
+ZIP64_SUPPORT        (use Zip64 to store large files in archives)
+  Zip all files in current dir:                    zip z *
+    zip archive -d pattern pattern ...
+    zip archive -d "*" -t 2005-12-27
+               zip archive file1 file2 -T -TT "./unzip -tqq"
+    zip archive_to_update -FS -r dir_used_before
+Zip currently only supports up to version 4.6 archives
+zip diagnostic: deleting file %s
+zip diagnostic: %scluding %s
+zip diagnostic: %s %s
+    zip --dif full_backup.zip -r somedir --out diff.zip
+    zip -ds 10 --temp-dir=path zipfile path1 path2 --exclude pattern pattern
+Zip entry offsets appear off by %s bytes - correcting...
+Zip entry offsets do not need adjusting
+Zip environment options:
+zip error: %s (%s)
+    zip -F bad.zip --out fixed.zip
+    zip -FI archive fifo
+zipfile comment truncated - ignoring
+zip file empty
+zipfile entries.
+zip file has only directories, can't make it as old as latest entry
+Zip file invalid, could not spawn unzip, or wrong unzip
+zip file is empty, can't make it as old as latest entry
+    zip files_ending_with_number -RE foo[0-9].c
+  Zip files in current dir and subdirs also:       zip -r z .
+Zip file structure invalid
+                     zip -F indamagedarchive --out outfixedarchive
+    zip inarchive --copy pattern pattern ... --out outarchive
+    zip in_split_archive newfile1 newfile2 --out out_split_archive
+    zip in_split_archive -s 0 --out out_single_file_archive
+zip I/O error: %s
+Zip log opened %s
+  Zip now can read Unix FIFO (named pipes).  Off by default to prevent zip
+  Zip now stores UTF-8 in entry path and comment fields on systems
+    zip old_archive --copy "*.c" --out new_archive -x foo.c
+    zip old_archive newfile1 newfile2 --out new_archive
+    zip old_archive --out new_archive
+  zip options archive_name file file ...
+zip [-options] [-b path] [-t mmddyyyy] [-n suffixes] [zipfile list] [-xi list]
+    zip -qdgds 10m   will turn off most output except dots every 10 MB
+  zip - -R "*.c" | prog2   zip *.c files in current dir and stream to prog2 
+    zip -r -dbdcds 10m -lilalf logfile archive input_directory -ll
+    zip reallybad.zip -FF -v --out fixed.zip
+    zip [-shortopts ...] [--longopt ...] [zipfile [path path ...]] [-xi list]
+Zip special compilation options:
+Zip %s (%s). Usage:
+Zip stores files in zip archives.  The default action is to add or replace
+    zip -sU -UN=e archive
+zip warning
+zip warning: Not all files were readable
+zip warning: %s
+	zip warning: %s%s
+  zip when either no input files on command line or -U (--copy) used.
+    zip -x pattern pattern @ zipfile path path ...
+    zip zipfile -nw -- "-leadingdashpath" "a[path].c" "path*withwildcard"
+    zip zipfile path path ... -- verbatimpath verbatimpath ...
+    zip zipfile -r . -i "*.h"
+ziXXXXXX
+zlib deflateReset failed
+    z      (look for .zip split - the last split)
+  -z        prompt for comment for archive (end with just "." line or EOF)
+.Z:.zip:.zoo:.arc:.lzh:.arj

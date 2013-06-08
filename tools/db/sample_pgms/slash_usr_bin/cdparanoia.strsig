@@ -1,0 +1,374 @@
+===========================================================
+           
+                 
+                              
+                                                                          
+0123456789
+	[%02d:%02d.%02d]: 
+  :-0   SCSI/ATAPI transport error
+    1:[20.35]-   Specifies ripping from 1[20.35] to the end of the disc
+    1:[20.35]    Specifies ripping from track 1, second 20, sector 35 to 
+                       1[ww:xx:yy.zz]-2[aa:bb:cc.dd] 
+                 2:[30.35]
+    -2:[30.35]   Specifies ripping from the beginning of the disc up to
+    2-4          Specifies ripping from the beginning of track two to the
+    -2           Specifies ripping from the beginning of the disc up to
+%3d.  %7ld [%02d:%02d.%02d]  %7ld [%02d:%02d.%02d]  %s %s %s
+%4dms seek, %.2fms/sec read [%.1fx]
+  8-|   Finding read problems at same point during reread; hard to correct
+  8-X   Aborted (as per -X) due to a scratch/skip
+  -A --analyze-drive              : run and log a complete analysis of drive
+  ...aborting; please wait... 
+	  aborting test.
+abort-on-skip
+	        Access speed after backseek: %.2fms/sector [%dx]
+                                    addressed as LBA 0.  Necessary for some
+A few examples, protected from the shell:
+A few examples, protected from the shell where appropriate:
+always accurate (it can be fooled by machine load or random
+analyze-drive
+Analyzing cache behavior...
+                 (and including) track 2
+  -a --output-aifc                : output as AIFF-C file
+	Approximate random access cache size: %d sector(s)               
+  A) query only with exhaustive search for a drive and full reporting
+Are you sure you wanted 'batch' (-B) output with stdout?
+	at end of track, bailing.
+         Attempting to continue...
+	Attempting to reduce read speed to 1x... 
+	Attempting to reset read speed to %d... 
+	Attempting to reset read speed to %dx... 
+	Attempting to reset read speed to full... 
+Attempting to set cdrom to full speed... 
+Attempting to set speed to %dx... 
+                                    autosense
+	Average read latency: %.2fms/sector (raw speed: %.1fx)
+	Backseek flushes the cache as expected
+  -B --batch                      : 'batch' mode (saves each track to a
+  B) extract up to and including track 3, putting each track in a separate
+__bss_start
+                                    but if [n] is given, skip after [n]
+(C) 2008 Monty <monty@xiph.org> and Xiph.Org
+	Cache access insufficiently faster than media access to
+cache error
+	        Cache read speed: %.2fms/sector [%dx]
+	Cache size (considering rollbehind) too small to test cache speed.
+	Cache tail cursor tied to read cursor                      
+	Cache tail granularity: %d sector(s)                      
+	Cache tail rollbehind: %d sector(s)                        
+                                    caching, timing and reading behavior;
+Cannot open debug log file %s: %s
+Cannot open default output file %s: %s
+Cannot open log summary file %s: %s
+Cannot open specified output file %s: %s
+cdda.aifc
+cdda.aiff
+cdda_close
+cdda_disc_firstsector
+cdda_disc_lastsector
+cdda_errors
+cdda_find_a_cdrom
+cdda_identify
+cdda_identify_cooked
+cdda_identify_scsi
+cdda_messages
+cdda_open
+cdda.raw
+cdda_read
+cdda_read_timed
+cdda_sector_gettrack
+cdda_speed_set
+cdda_track_audiop
+cdda_track_channels
+cdda_track_copyp
+cdda_track_firstsector
+cdda_track_lastsector
+cdda_track_preemp
+cdda_verbose_set
+cdda_version
+cdda.wav
+       cdparanoia "1[:30.12]-1[1:10]"
+       cdparanoia -B -- -3
+cdparanoia could not find a way to read audio from this drive.
+cdparanoia III release 10.2 (September 11, 2008)
+cdparanoia.log
+  cdparanoia [options] <span> [outfile]
+cdparanoia stops searching for an accessible drive here.
+       cdparanoia -vsQ
+	CDROM speed set FAILED. Continuing anyway...
+  C) extract from track 1, time 0:30.12 to 1:10.00:
+  -C --force-cdrom-big-endian     : force treating drive as big endian
+  -c --force-cdrom-little-endian  : force treating drive as little endian
+=================== Checking drive cache/timing behavior ===================
+	  choosing new offset and trying again.
+Consider using -sv to force a more complete autosense
+                                    correct
+correction
+correctly according to this analysis run. Analysis is not
+Could not write to output.
+__cxa_atexit
+		%d >>> 
+                                    data reconstruction (don't allow 'V's)
+		>>> %d:%d:%d 
+                                    debugging output to file, default
+                                    default, cdparanoia sets drive to full
+Default sector read size must be 1<= n <= 100
+/dev/cdrom
+/dev/cdrom exists but isn't accessible.  By default,
+  :^D   Finished extracting
+  -d --force-cdrom-device   <dev> : use specified device; disallow 
+disable-extra-paranoia
+disable-fragmentation
+disable-paranoia
+Don't forget to protect square brackets and preceding hyphens from
+Don't forget to protect square brackets from the shell...
+	Drive cache tests as contiguous                           
+	Drive does not cache nonlinear access                            
+	Drive does not read ahead past read cursor (very strange)     
+	Drive readahead past read cursor: %d sector(s)                
+	drive returned OK.
+drive said OK
+Drive tests OK with Paranoia.
+	Drive timing changed during test; retrying...
+##: %d [%s] @ %ld
+eEscCn:o:O:d:g:k:S:prRwafvqVQhZz::YXWBi:Tt:l::L::A
+  -E --force-progress-bar         : force output of progress bar even if
+                 end of track 4.
+__errno_location
+Error parsing span argument
+   !    Errors are getting through stage 1 but corrected in stage2
+Error writing output: %s
+   e    SCSI/ATAPI transport error (corrected)
+  -e --stderr-progress            : force output of progress information to
+		>>> fast_read=%d:%d:%d 
+	Fast search for approximate cache size... %d sectors            
+     file:
+                                    filename cdparanoia.log
+finer-grained offset within a particular track. [aa:bb:cc.dd] is in
+finished
+	         flushing the readahead cache on backward seeks!
+force-cdrom-big-endian
+force-cdrom-device
+force-cdrom-little-endian
+force-cooked-device
+force-default-sectors
+force-generic-device
+force-progress-bar
+force-read-speed
+force-search-overlap
+                                    force use of the old SG kernel
+Forcing CDROM sense to big-endian; ignoring preset and autosense
+Forcing CDROM sense to little-endian; ignoring preset and autosense
+Forcing default to read %d sectors; ignoring preset and autosense
+Forcing search overlap to %d sectors; ignoring autosense
+  -f --output-aiff                : output as AIFF file
+__fprintf_chk
+  ;-(   Gave up trying to perform a correction
+getopt_long
+gettimeofday
+  -g --force-generic-device <dev> : use specified generic scsi device and
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+-g option incompatible with -k
+Here, 1 and 2 are track numbers; the numbers in brackets provide a
+  -h --help                       : print help
+hours/minutes/seconds/sectors format. Zero fields need not be
+http://www.xiph.org/paranoia/
+	Initial seek latency (%d sectors): %dms
+installed (or in use) libcdda_paranoia.so library.  The final verdict of this
+                                    interface. -g cannot be used with -k.
+                                    interface. -k cannot be used with -d
+_IO_stdin_used
+	         It's possible/likely that this drive is not
+   -    Jitter correction required
+_Jv_RegisterClasses
+kernel latencies), but if a failed result happens more often
+  -k --force-cooked-device  <dev> : use specified cdrom device and force
+-k option incompatible with -d and -g
+libcdda_interface.so.0
+libcdda_paranoia.so.0
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+  -L --log-debug   [<file>]       : save detailed device autosense and
+  -l --log-summary [<file>]       : save result summary to file, default
+log-debug
+log-summary
+__lxstat
+                                    modelling a sprcific drive's cache and
+More information about /dev/cdrom:
+never-skip
+  -n --force-default-sectors <n>  : force default number of sectors in read
+	No audio on disc; Cannot determine timing behavior...
+  :-|   Normal operation, considerable jitter
+  :-)   Normal operation, low/no jitter
+not compressed
+     of autosense:
+offset and ripping will continue to the end of he track.  If a single
+offset is preceded or followed by a hyphen, the implicit missing
+offset is taken to be the start or end of the disc, respectively. Thus:
+  -o --force-search-overlap  <n>  : force minimum overlap search during
+of the machine.
+	Old mean=%.2fms/sec, New mean=%.2fms/sec
+         one sector, making it very unlikely Paranoia can 
+OPTIONS:
+                                    order
+                                    or -g.
+or, most likely, a bug in cdparanoia's cache modelling.
+  -O --sample-offset <n>          : Add <n> samples to the offset when
+	Out of readable space on CDROM while performing drive checks;
+output-aifc
+output-aiff
+output-info
+output-raw
+output-raw-big-endian
+output-raw-little-endian
+OUTPUT SMILIES:
+outputting to %s
+outputting to stdout
+output-wav
+paranoia_cachemodel_size
+paranoia-dev@xiph.org to assist developers in extending
+paranoia_free
+paranoia_init
+paranoia_modeset
+paranoia_overlapset
+paranoia_read: CDROM drive unavailable, bailing.
+paranoia_read_limited
+paranoia_read: Unrecoverable error, bailing.
+paranoia_read: Unrecoverable error reading through sample_offset shift
+paranoia_seek
+Paranoia to handle this CDROM properly.
+paranoia_version
+		perform cache backseek tests
+Please consider using the -A option to perform an analysis run, then mail
+  -p --output-raw                 : output raw 16-bit PCM in host byte 
+PROGRESS BAR SYMBOLS:
+ (== PROGRESS == [%s| ...... %02d ] ==%s %c ==)   
+ (== PROGRESS == [%s| %06ld %02d ] ==%s %c ==)   
+  :-P   Unreported loss of streaming in atomic read operation
+  -Q --query                      : autosense drive, query disc and quit
+  -q --quiet                      : quiet operation
+           readahead than Paranoia can currently handle!
+                                    read behavior. Implies -vQL
+  :-/   Read drift
+	Read error while performing drive cache checks;
+	Read error while performing drive cache checks; retrying...
+                                    reading data.  May be negative.
+	Read latency standard deviation: %.2fms/sector
+Removing aborted file: %s
+Report bugs to paranoia@xiph.org
+	Retiming drive...                               
+                                    retries without progress.
+Ripping from sector %7ld (track %2d [%d:%02d.%02d])
+  -R --output-raw-big-endian      : output raw 16-bit big-endian PCM
+  -r --output-raw-little-endian   : output raw 16-bit little-endian PCM
+sample-offset
+  :-(   Scratch detected
+scratch repair
+search-for-drive
+Search overlap sectors must be 0<= n <=75
+sectors (75 sectors per second).
+seek=%d:%d:%d
+seek_read=%d:%d:%d
+seek_read:%d:%d:%d
+Seek/read timing:
+Selected span contains non audio tracks.  Aborting.
+Sending all callbacks to stderr for wrapper script
+                                    separate file.
+  -S --force-read-speed <n>       : read from device at specified speed; by
+sleep=%dus 
+		sleeping %d microseconds
+slow_read=%d:%d:%d 
+	Slow verify for approximate cache size... %d sectors
+__snprintf_chk
+<space> No corrections needed
+SPAN ARGUMENT:
+specification.  The syntax of an offset/span takes the rough form:
+specified: [::20], [:20], [20], [20.], etc, would be interpreted as
+                                    speed.
+ spinning up...  
+__sprintf_chk
+  -s --search-for-drive           : do an exhaustive search for drive
+__stack_chk_fail
+                                    stderr (for wrapper scripts)
+                                    stderr is not a terminal
+stderr-progress
+%strack%02d.%s
+__strcat_chk
+__strdup
+strerror
+__strncat_chk
+Submit bug reports to paranoia@xiph.org
+Table of contents (audio tracks only):
+	Testing background readahead past read cursor... %d
+	Testing cache tail cursor...
+	Testing cache transfer speed...
+	Testing granularity of cache tail
+testing may or may not be accurate for the actual version of the paranoialibrary.  Continuing anyway...
+	Testing that backseek flushes cache...
+than one time in twenty on an unloaded machine, please mail
+the cdparanoia.log file produced by the analysis to paranoia-dev@xiph.org
+                 the end of track 1.
+The Paranoia library may not model this CDROM drive's cache
+the %s file produced by this failed analysis to
+the shell...
+The span argument may be a simple track number or a offset/span
+This could be due to timer bugs, a drive that really is improbably fast,
+Time/sector offset goes beyond end of disc.
+Time/sector offset goes beyond end of specified track.
+	Timing error while performing drive cache checks; aborting test.
+to assist developers in correcting the problem.
+toc-bias
+toc-offset
+                                    to n sectors
+	Too many read errors while performing drive cache checks;
+	  to sector %7ld (track %2d [%d:%02d.%02d])
+                                    Toshiba drives to get track boundaries
+TOTAL %7ld [%02d:%02d.%02d]    (audio only)
+track%02d.
+                                    track 1 as reported in the TOC will be
+Track #%ld does not exist.
+track        length               begin        copy pre ch
+transport error
+  -T --toc-bias                   : Assume that the beginning offset of 
+  -t --toc-offset <n>             : Add <n> sectors to the values reported
+twenty seconds, [10:] would be ten minutes, [.30] would be thirty
+Unable to open cdrom drive; -v will give more information.
+Unable to open disc.
+Unable to open disc.  Is there an audio CD in the drive?
+   +    Unreported loss of streaming/other error in read
+                                    use of the old 'cooked ioctl' kernel
+Using cdda library version: %s
+Using paranoia library version: %s
+                                    verification to n sectors
+                                    verifies that cdparanoia is correctly
+	Verifying that cache is contiguous...
+   V    Uncorrected error/skip
+  -v --verbose                    : extra verbose operation
+  -V --version                    : print version info and quit
+	WARNING: Cannot determine drive cache size or behavior!          
+WARNING: cdparanoia application (and thus the cache tests) does not match the
+WARNING: Drive cache does not appear to be contiguous!
+	WARNING: media error during read; continuing at next offset...
+WARNING! PARANOIA MAY NOT BE TRUSTWORTHY WITH THIS DRIVE!
+	WARNING: Read timing after backseek faster than expected!
+WARNING: The autosensed/selected sectors per read value is
+WARNING: The CDROM drive appears to be seeking impossibly quickly.
+WARNING: This drive appears to be caching more sectors of
+WAVEfmt 
+                                    when addressing tracks. May be negative
+When only a single offset is supplied, it is interpreted as a starting
+         work.
+  -w --output-wav                 : output as WAV file (default)
+write (in buffering_close)
+write (in buffering_write, flushing)
+write (in buffering_write, full buffer)
+  -X --abort-on-skip              : abort on imperfect reads/skips
+  -Y --disable-extra-paranoia     : only do cdda2wav-style overlap checking
+  -Z --disable-paranoia           : disable all paranoia checking
+  -z --never-skip[=n]             : never accept any less than perfect

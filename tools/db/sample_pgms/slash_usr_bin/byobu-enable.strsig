@@ -1,0 +1,25 @@
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Authors: Dustin Kirkland <kirkland@ubuntu.com>
+#!/bin/sh -e
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    byobu-enable: enable and launch byobu
+byobu-launcher-install
+. "${BYOBU_PREFIX}/lib/${PKG}/include/common"
+#    Copyright (C) 2010 Canonical Ltd.
+echo "  byobu-disable"
+echo "The Byobu window manager will be launched automatically at each text login."
+echo "To disable this behavior later, just run:"
+exec byobu
+#    GNU General Public License for more details.
+$(head -n1)
+#    it under the terms of the GNU General Public License as published by
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+PKG="byobu"
+printf "Press <enter> to continue..."
+[ -r "$HOME/.byoburc" ] && . "$HOME/.byoburc"
+#    the Free Software Foundation, version 3 of the License.
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+# vi: syntax=sh ts=4 noexpandtab
+#    You should have received a copy of the GNU General Public License
+[ -z "${BYOBU_PREFIX}" ] && export BYOBU_PREFIX="/usr" || export BYOBU_PREFIX

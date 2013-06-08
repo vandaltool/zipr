@@ -1,0 +1,164 @@
+                }
+            }
+        }
+ 1995,1996 Erick Branderhorst <branderh@debian.org>.
+ 2009 Guillem Jover <guillem@debian.org>.
+according to the 'underscores convention'.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -a, --no-architecture    no architecture part in filename.
+        $arch = get_host_arch();
+    architecture => 1,
+@ARGV || usageerr(_g("need at least a filename"));
+# (at your option) any later version.
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -c, --create-dir         create target dir if not there (use with care).
+    close(CDATA);
+            @command = ("ln", "-s", "--");
+            @command = ("mv", "--");
+# Copyright 
+    createdir => 0,
+    destdir => "",
+                      $dir);
+        $dir = dirname($filename);
+        $dir = $options{destdir};
+                $dir = "$section/binary-$arch";
+                $dir = "unstable/binary-$arch/$section";
+# dpkg-name
+                } else {
+            } else {
+        } else {
+    } else {
+        } elsif (-f $newname and !$options{overwrite}) {
+    } elsif (m/^--$/) {
+    } elsif (m/^-a|--no-architecture$/) {
+    } elsif (m/^-c|--create-dir$/) {
+    } elsif (m/^-k|--symlink$/) {
+    } elsif (m/^-o|--overwrite$/) {
+    } elsif (m/^-s|--subdir$/) {
+    } elsif (m/^-v|--version$/) {
+        } elsif (system(@command, $filename, $newname) == 0) {
+                    error(_g("cannot create directory '%s'"), $dir);
+            error(_g("mkdir can be used to create directory"));
+                error(_g("no such directory '%s', try --create-dir (-c) option"),
+        exit 0;
+        exit(0);
+    $fields->parse(\*CDATA, sprintf(_g("binary control file %s"), $filename));
+file.deb changes to <package>_<version>_<architecture>.<package_type>
+                        $filename);
+                    $filename);
+        foreach (@ARGV) {
+# GNU General Public License for more details.
+  -h, --help               show this help message.
+        if (-d $ARGV[0]) {
+        if (! -d $dir) {
+    if (-f $filename) {
+    if (!$fields->{Architecture} and $options{architecture}) {
+    if (fileexists($filename)) {
+        if (filesame($newname, $filename)) {
+    if (m/^-[h?]|--help$/) {
+                if (mkpath($dir)) {
+    if ($options{architecture}) {
+            if ($options{createdir}) {
+    if (!$options{destdir}) {
+        if ($options{subdir}) {
+        if ($options{symlink}) {
+            if (!$section) {
+            if ($section ne "non-free" and $section ne "contrib" and
+    if ($tname ne $name) { # control fields have spaces
+                    info(_g("created directory '%s'"), $dir);
+            info(_g("moved '%s' to '%s'"), basename($filename), $newname);
+# it under the terms of the GNU General Public License as published by
+  -k, --symlink            don't create a new file, but a symlink.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            move($_);
+        move($_);
+    my ($a, $b) = @_;
+    my $arch = $fields->{Architecture};
+        my $arch = getarch($filename, $fields);
+        my @command;
+    my $dir;
+        my $dir = getdir($filename, $fields, $arch);
+    my $fields = Dpkg::Control->new(type => CTRL_PKG_DEB);
+        my $fields = getfields($filename);
+    my ($filename) = @_;
+    my ($filename, $fields) = @_;
+    my ($filename, $fields, $arch) = @_;
+        my $name = getname($filename, $fields, $arch);
+    (my $name = $tname) =~ s/ //g;
+        my $newname = "$dir/$name";
+my %options = (
+    my $pkg = $fields->{Package};
+            my $section = $fields->{Section};
+    my @sta = stat($a);
+    my @stb = stat($b);
+    my $tname;
+    my $type = $fields->{'Package-Type'} || 'deb';
+    (my $version = $fields->{Version}) =~ s/.*://;
+  -o, --overwrite          overwrite if file exists.
+    open(CDATA, '-|', "dpkg-deb", "-f", "--", $filename) ||
+Options:
+        $options{architecture} = 0;
+        $options{createdir} = 1;
+            $options{destdir} = shift(@ARGV);
+        $options{overwrite} = 1;
+        $options{subdir} = 1;
+        $options{symlink} = 1;
+    overwrite => 0,
+    printf(_g("Debian %s version %s.\n"), $progname, $version);
+    printf(_g("Usage: %s [<option>...] <file>...\n"), $progname);
+    print(_g("
+    # Read the fields
+            return;
+        return 0;
+        return 1;
+    return $arch;
+    return $dir;
+    return $fields;
+    return $name;
+    return (@sta and @stb and $sta[0] == $stb[0] and $sta[1] == $stb[1]);
+    # Same device and inode numbers.
+                $section ne "no-section") {
+                $section = "no-section";
+    $_ = shift(@ARGV);
+  -s, --subdir [dir]       move file into subdir (use with care).
+    subdir => 0,
+sub fileexists($)
+sub filesame($$)
+sub getarch($$)
+sub getdir($$$)
+sub getfields($)
+sub getname($$$)
+sub move($)
+sub usage()
+sub version()
+    symlink => 0,
+        syserr(_g("cannot open %s"), $filename);
+textdomain("dpkg-dev");
+# the Free Software Foundation; either version 2 of the License, or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+        $tname = "$pkg\_$version\_$arch.$type";
+        $tname = "$pkg\_$version.$type";
+        unless (exists $fields->{Package}) {
+        usage();
+use Dpkg;
+use Dpkg::Arch qw(get_host_arch);
+use Dpkg::Control;
+use Dpkg::ErrorHandling;
+use Dpkg::Gettext;
+use File::Basename;
+use File::Path;
+use strict;
+use warnings;
+#!/usr/bin/perl
+        version();
+  -v, --version            show the version.
+        warning(_g("assuming architecture '%s' for '%s'"), $arch, $filename);
+                warning(_g("assuming section '%s' for '%s'"), $section,
+        warning(_g("bad package control information for '%s'"), $filename);
+        warning(_g("cannot find '%s'"), $filename);
+            warning(_g("cannot move '%s' to existing file"), $filename);
+            warning(_g("no Package field found in '%s', skipping it"),
+            warning(_g("skipping '%s'"), $filename);
+while (@ARGV) {
+# You should have received a copy of the GNU General Public License

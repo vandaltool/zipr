@@ -1,0 +1,161 @@
+ !"#	%&'()*+,-./0123456789:;<=>? ABCDEFGHIJKLMNO0QRSTUVWGYZ[\]^V`abcd]fghcjkgmkomoarith_decode
+$&'(*+-.0134689;<>? !
+                  0=no, 1=Y, 2=X, 3=XY
+                    0=plain, 1=transparency, 2=labels, 3=thick1, 4=envelope1
+                    10=env#10, 11=envDL
+                  1=Cyan, 2=Magenta, 3=Yellow, 4=Black
+                    1=upper 2=lower 4=manual 7=auto
+                    2=a4, 4=b5, 5=b5iso, 6=letter, 8=executive, 9=legal,
+                    5=thin, 6=thick2, 7=envelope2, 8=middle, 9=special
+\$@9\$0s
+9J|~:;0u
+-A                AllIsBlack: convert C=1,M=1,Y=1 to just K=1
+ABORT marker segment encountered
+                  -A, -B work with bitcmyk input only
+@ACDEFHIJKMNO0223456789:;==
+	and other SLX-based and Lexmark black and white printers.
+AnyColor = %s %s %s
+arith_encode
+__assert_fail
+Bad model %d
+-B                BlackClears: K=1 forces C,M,Y to 0
+BD$d;t$d
+BlackClears = %d; AnyColor = %s %s %s
+Blank Page: %d	%ld	%ld
+Cannot allocate space for bit plane
+Can't allocate page buffer
+Can't allocate plane buffer
+Can't allocate row buffer
+Can't allocate space for chain
+Can't allocate space for compressed data
+Can't open '%s' for reading
+cd:g:n:m:p:r:s:tu:l:z:L:ABPJ:S:U:X:D:V?h
+-c                Force color mode if autodetect doesn't work
+CMYK Page: %d	%ld	%ld
+                    Code numbers may vary with printer model
+	Convert Ghostscript bitcmyk or pksmraw format to a color SLX stream,
+	Convert Ghostscript pbmraw format to a monochrome SLX stream,
+__ctype_b_loc
+cx >= 0 && cx < 4096
+D$0+D$$=
+D$,9D$(t
+D$(9D$\v
+D$D+L$X)
+Debugging Options:
+DEVICE_URI
+-D lvl            Set Debug level [%d]
+efghcijkg
+EvenPage: %d	%ld	%ld
+First chunk must be BIH and 20 bytes long
+   foo2slx [options] <bitcmyk-file >slx-file
+   foo2slx [options] <pbmraw-file >slx-file
+   foo2slx [options] <pksmraw-file >slx-file
+	| foo2slx -r1200x600 -g10200x6600 -p1 >testpage.zc
+	| foo2slx -r1200x600 -g10200x6600 -p1 >testpage.zm
+	for driving the Lexmark C500 network color laser printer
+	for driving the Lexmark C500 network color laser printer.
+__fprintf_chk
+fscanf: rc == 0!
+fwrite(10): rc == 0!
+fwrite(12): rc == 0!
+fwrite(1): rc == 0!
+fwrite(2): rc == 0!
+fwrite(3): rc == 0!
+fwrite(4): rc == 0!
+fwrite(5): rc == 0!
+fwrite(6): rc == 0!
+fwrite(7): rc == 0!
+fwrite(8): rc == 0!
+fwrite(9): rc == 0!
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+	gs -q -dBATCH -dSAFER -dQUIET -dNOPAUSE \ 
+-g <xpix>x<ypix>  Set page dimensions in pixels [%dx%d]
+$Id: foo2slx.c,v 1.24 2011/06/09 13:02:24 rick Exp $
+$Id: jbig.c,v 1.6 2011/06/09 11:54:12 rick Exp $ 
+Illegal format '%s' for -g
+Illegal format '%s' for -l
+Illegal format '%s' for -r
+Illegal format '%s' for -u
+Illegal value '%s' for -C
+Illegal value '%s' for -L
+Illegal value '%s' for -z
+Illegal X value '%d' for -l
+Illegal X value '%d' for -u
+Illegal X value '%s' for -g
+Illegal Y value '%d' for -l
+Illegal Y value '%d' for -u
+Illegal Y value '%s' for -g
+Image height changed from %d to %d on plane %d
+Image width changed from %d to %d on plane %d
+Incremental BIE does not continue previous one
+Input data stream contains invalid data
+Input data stream uses unimplemented JBIG features
+_IO_getc
+_IO_putc
+_IO_stdin_used
+__isoc99_fscanf
+jbig_ar.c
+JBIG-KIT 2.0 -- (c) 1995-2008 Markus Kuhn -- Licence: GPL
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+-L mask           Send logical clipping values from -u/-l in ZjStream [%d]
+-l <xoff>x<yoff>  Set offset of lower right printable in pixels [%dx%d]
+-m media          Media code to send to printer [%d]
+	N.B. Color correction is expected to be performed by ghostscript.
+-n copies         Number of copies [%d]
+Normal Options:
+Not a pbm file!
+Not a pbmraw data stream
+Not a pbmraw file!
+Not a pksmraw file!
+Not enough memory available
+PAGE: %d %d
+PBM Page: %d	%ld	%ld
+PKSM Page: %d	%ld	%ld
+-p paper          Paper code to send to printer [%d]
+PQRSTVWWHHJJKMM
+Premature EOF(1) on input at y=%d
+Premature EOF(2) on input at y=%d
+Premature EOF(3) on input at y=%d
+Premature EOF(4) on input at y=%d
+Premature EOF(5) on input at y=%d
+Premature EOF on input stream
+Premature EOF(pbm) on input stream
+Premature EOF(pksm) on page %d data, plane %d
+Premature EOF(pksm) on page %d hdr, plane %d
+Printer Tweaking Options:
+Reached specified image size
+-r <xres>x<yres>  Set device resolution in pixels/inch [%dx%d]
+s->buffer != 0xff
+	    -sOutputFile=- - < testpage.ps \ 
+		-sOutputFile=- - < testpage.ps \ 
+	    -sPAPERSIZE=letter -g10200x6600 -r1200x600 -sDEVICE=bitcmyk \ 
+		-sPAPERSIZE=letter -r1200x600 -sDEVICE=pbmraw \ 
+-S plane          Output just a single color plane from a color print [all]
+__sprintf_chk
+ss < 113
+-s source         Source code to send to printer [%d]
+__stack_chk_fail
+start_page: w x h = %d x %d
+There is no JBIG!
+There is no or wrong JBIG header!
+T$P;T$4t$
+Unable to allocate blank plane (%d bytes)
+Unable to allocate page buffer of %d x %d = %d bytes
+Unexpected end of input data stream
+Unknown error code passed to jbg_strerror()
+Unknown marker segment encountered
+u&;t$@s 
+-u <xoff>x<yoff>  Set offset of upper left printable in pixels [%dx%d]
+__vfprintf_chk
+-V                Version %s
+Write Plane %d
+wrong BIH length
+xxxplane%d

@@ -1,0 +1,19 @@
+B<dh_testroot> [S<I<debhelper options>>]
+B<dh_testroot> simply checks to see if you are root. If not, it exits with an
+dh_testroot - ensure that a package is built as root
+error. Debian packages must be built as root, though you can use 
+	error("You must run this as root (or use fakeroot).");
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 SEE ALSO
+=head1 SYNOPSIS
+if ($< != 0) {
+inhibit_log();
+Joey Hess <joeyh@debian.org>
+L<debhelper(7)>
+L<fakeroot(1)>
+This program is a part of debhelper.
+use Debian::Debhelper::Dh_Lib;
+use strict;
+#!/usr/bin/perl -w

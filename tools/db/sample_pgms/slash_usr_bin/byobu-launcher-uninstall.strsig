@@ -1,0 +1,32 @@
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#    Authors: Nick Barcet <nick.barcet@ubuntu.com>
+#!/bin/sh -e
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    byobu-launcher-uninstall
+. "${BYOBU_PREFIX}/lib/${PKG}/include/common"
+		$BYOBU_SED -i -e '/^\s*#/n' -e "/\b$PKG-launch\$/d" -e "/ screen-launch/d" "$dest"
+#    Copyright (C) 2008 Canonical Ltd.
+	dest=$1
+#             Dustin Kirkland <kirkland@ubuntu.com>
+	for i in ".profile" ".bashrc" ".bash_profile" ".bash_login" ".zprofile"; do
+#    GNU General Public License for more details.
+if [ -f "$1" ]; then
+	if [ -w "$dest" ]; then
+# install disabled motd printing; re-enable
+#    it under the terms of the GNU General Public License as published by
+		# keep any comments, and remove lines invoking byobu:
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+mkdir -p "$BYOBU_CONFIG_DIR"
+PKG="byobu"
+remove_launcher() {
+		remove_launcher "$1"
+		remove_launcher "$HOME/$i"
+[ -r "$HOME/.byoburc" ] && . "$HOME/.byoburc"
+rm -f "$HOME"/.hushlogin
+#    the Free Software Foundation, version 3 of the License.
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+touch "$BYOBU_CONFIG_DIR/disable-autolaunch"
+# vi: syntax=sh ts=4 noexpandtab
+#    You should have received a copy of the GNU General Public License
+[ -z "${BYOBU_PREFIX}" ] && export BYOBU_PREFIX="/usr" || export BYOBU_PREFIX

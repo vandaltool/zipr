@@ -1,0 +1,88 @@
+add command failed
+	--add 'entry' : add an SGML entry
+add_history
+add requires 2 or 3 arguments
+	add 'type' 'orig' 'replace' : add an entry
+	--add 'type' 'orig' 'replace' : add an XML entry
+	         and with --sgml it automatically updates the super catalog
+__bss_start
+Commands available:
+--convert
+could not open %s for saving
+--create
+	--create : create a new catalog
+debug has no arguments
+	debug: increase the verbosity level
+del command failed
+del requires 1
+	--del 'values' : remove values
+	del 'values' : remove values
+dump has no arguments
+	dump: print the current catalog state
+/etc/sgml/catalog
+	exit:  quit the shell
+Failed to remove entry from %s
+Failed to remove entry %s
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libreadline.so.6
+LIBXML2_2.4.30
+libxml2.so.2
+No catalog entry specified to remove from
+No entry for PUBLIC %s
+No entry for SYSTEM %s
+No entry for URI %s
+	--noout: avoid dumping the result on stdout
+--no-super-update
+	--no-super-update: do not update the SGML super catalog
+	Parse the catalog file and query it for the entities
+__printf_chk
+	public PublicID: make a PUBLIC identifier lookup
+public requires 1 arguments
+	quiet: decrease the verbosity level
+quiet has no arguments
+readline
+	resolve PublicID SystemID: do a full resolver lookup
+resolve requires 2 arguments
+Resolver failed to find an answer
+	--sgml : handle SGML Super catalogs for --add and --del
+	--shell : run a shell allowing interactive queries
+__stack_chk_fail
+system requires 1 arguments
+	system SystemID: make a SYSTEM identifier lookup
+Unknown option %s
+Unrecognized command %s
+Usage : %s [options] catalogfile entities...
+	         used with --add or --del, it saves the catalog changes
+--verbose
+	-v --verbose : provide debug informations
+xmlACatalogAdd
+xmlACatalogDump
+xmlACatalogRemove
+xmlCatalogAdd
+xmlCatalogConvert
+xmlCatalogDump
+xmlCatalogIsEmpty
+xmlCatalogRemove
+xmlCatalogResolve
+xmlCatalogResolvePublic
+xmlCatalogResolveSystem
+xmlCatalogResolveURI
+xmlCatalogSetDebug
+xmlCheckVersion
+xmlCleanupParser
+xmlFreeURI
+xmlLoadCatalog
+xmlLoadSGMLSuperCatalog
+xmlMemoryDump
+xmlNewCatalog
+xmlParseURI

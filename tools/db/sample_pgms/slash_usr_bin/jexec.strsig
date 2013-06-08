@@ -1,0 +1,20 @@
+can't locate java
+__errno_location
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.4
+__gmon_start__
+invalid file
+invalid file (bad magic number)
+invalid path
+_IO_stdin_used
+jexec failed
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+missing args
+realpath
+__realpath_chk
+__stack_chk_fail
+unknown error
+/usr/lib/jvm/java-6-openjdk-i386/jre/lib/jexec

@@ -1,0 +1,112 @@
+        
+Aborting changes to authority file 
+A dash may be used with the "merge" and "source" to read from the
+add       add an entry
+          add protoname protodata netid authname authdata
+and commands have the following syntax:
+Attempting to break locks on authority file %s
+authdata_hex contains odd number of or non-hex characters
+authname=
+Authority file:       %s
+bad "%s" command line
+    -b                             break locks on authority file
+__bss_start
+Changes honored:      %s
+Changes made:         %s
+Commands:
+__ctype_b_loc
+__ctype_tolower_loc
+Current input:        %s:%d
+%d entries read in:  %d new, %d replacement%s
+%d entries removed
+%d entries written to "%s"
+__errno_location
+exit      save changes and exit program
+extract   extract entries into file
+          extract filename <protoname=$> <protodata=$> <netid=$> <authname=$>
+    -f authfilename                name of authority file to use
+File locked:          %s
+filename too long
+File new:             %s
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+help      print help
+          help <topic>
+iceauth> 
+IceAuthFileName
+IceFreeAuthFileEntry
+IceLockAuthFile
+IceReadAuthFileEntry
+IceUnlockAuthFile
+IceWriteAuthFileEntry
+Ignoring locks and writing
+Ignoring locks on
+    -i                             ignore locks on authority file
+info      print information about entries
+internal error with help
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+KERBEROS-V5-1
+libc.so.6
+__libc_start_main
+libICE.so.6
+/lib/ld-linux.so.2
+line too long
+?         list available commands
+list      list entries
+          list <protoname=$> <protodata=$> <netid=$> <authname=$>
+          merge filename1 <filename2> <filename3> ...
+merge     merge entries from files
+no help for noexistent command "%s"
+No matches found, authority file "%s" not written
+no records added - all duplicate
+Number of entries:    %d
+ on command "%s"
+__printf_chk
+protodata=
+protodata_hex contains odd number of or non-hex characters
+protoname=
+    -q                             turn off extra messages
+quit      abort changes and exit program
+          remove <protoname=$> <protodata=$> <netid=$> <authname=$>
+remove    remove entries
+%s authority file %s
+%s:  creating new authority file %s
+          source filename
+source    read commands from file
+%s: %s:%d:  
+%s:  %s in locking authority file %s
+%s:  %s not writable, changes ignored
+%s:  %s not writable, changes will be ignored
+%s:  stdin already in use
+__stack_chk_fail
+standard input.  Commands beginning with "n" use numeric format.
+(stdout)
+__strcat_chk
+__strcpy_chk
+__strdup
+%s:  unable to allocate %d bytes for hexkey
+%s:  unable to alloc entry reading auth file
+%s:  unable to generate an authority file name
+%s:  unable to link authority file %s, use %s
+%s:  unable to open file %s
+%s:  unable to open tmp file "%s"
+%s:  unable to read auth entries from file "%s"
+%s:  unable to write authority file %s
+SUN-DES-1
+unable to allocate memory to add an entry
+unable to break line into words
+unable to merge in added record
+unable to open extraction file "%s"
+unable to read any entries from file "%s"
+unknown command "%s"
+unknown error
+usage:  %s [-options ...] [command arg ...]
+    -v                             turn on extra messages
+where options include:

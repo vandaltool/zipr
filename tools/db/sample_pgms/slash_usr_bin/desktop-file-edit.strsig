@@ -1,0 +1,477 @@
+3DGraphics
+3L$t3T$p	
+Accessibility
+ActionGame
+action group "%s%s" exists, but there is no matching action "%s"
+action != NULL
+action "%s" is defined, but there is no matching "%s%s" group
+Add a vendor prefix to the desktop files, if not already present
+add-category
+Add CATEGORY to the list of categories
+Add ENVIRONMENT to the list of desktop environment where the desktop files should be displayed
+Add ENVIRONMENT to the list of desktop environment where the desktop files should not be displayed
+add-mime-type
+Add MIME-TYPE to the list of MIME types
+add-not-show-in
+add-only-show-in
+AdventureGame
+Amusement
+application
+applications
+application/vnd.corel-draw
+application/vnd.lotus-1-2-3
+application/vnd.lotus-wordpro
+application/vnd.ms-access
+application/vnd.ms-cab-compressed
+application/vnd.ms-excel
+application/vnd.ms-word
+application/winhlp
+application/x-lzh-compressed
+ArcadeGame
+ArtificialIntelligence
+Astronomy
+AudioVideo
+AudioVideo;Audio
+AudioVideoEditing
+AudioVideo;Education
+AudioVideo;Video
+AutostartCondition
+BinaryPattern
+BlocksGame
+BoardGame
+boolean key "%s" in group "%s" has value "%s", which is deprecated: boolean values should be "false" or "true"
+__bss_start
+Building
+Calculator
+Calendar
+Can only specify --dir once
+Can only specify --vendor once
+CardGame
+Categories
+CATEGORY
+chemical
+Chemistry
+Compression
+ComputerScience
+ConsoleOnly
+Construction
+ContactManagement
+copy-generic-name-to-name
+copy-name-to-generic-name
+Copy the value of the "GenericName" key to the "Name" key
+Copy the value of the "Name" key to the "GenericName" key
+Could not parse mode string "%s"
+Could not stat "%s": %s
+Database
+DataVisualization
+dcgettext
+Debugger
+DefaultApp
+delete-original
+Delete the source desktop files, leaving only the target files (effectively "renames" the desktop files)
+.desktop
+Desktop Action 
+desktop-file-edit
+DESKTOP_FILE_INSTALL_DIR
+desktop_file_validate
+DESKTOP_FILE_VENDOR
+DesktopSettings
+dfu_edit_action_free
+dfu_key_file_copy_key
+dfu_key_file_merge_list
+dfu_key_file_remove_list
+dfu_key_file_rename_group
+dfu_key_file_to_path
+Dictionary
+.directory
+Directory
+DiscBurning
+Documentation
+Edit a desktop file.
+Edition options for desktop file
+edit-mode
+Education;Science
+Education;Science;ComputerScience
+Education;Science;Math
+Electricity
+Electronics
+Encoding
+Engineering
+ENVIRONMENT
+__errno_location
+Error on file "%s": %s
+Error removing original file "%s": %s
+Extensions
+Failed to fix the content of the desktop file
+Failed to set permissions %o on "%s": %s
+Failed to validate the created desktop file
+[FILE...]
+file contains at least one line ending with a carriage return before the line feed, while lines should only be separated by a line feed character. First such line is: "%s"
+file contains at least one line ending with a carriage return, while lines should only be separated by a line feed character. First such line is: "%s"
+file contains entry "%s" before the first group, but only comments are accepted before the first group
+file contains group "%s", but group names may contain all ASCII characters except for [ and ] and control characters
+file contains group "%s", but groups extending the format should start with "X-"
+file contains groups "%s" and "%s", which play the same role
+file contains group "%s", which has an invalid action identifier, only alphanumeric characters and '-' are allowed
+file contains group "%s", which is an action group with no action name
+file contains group "%s", which is deprecated in favor of "%s"
+file contains key "%s" in group "%s", but key names must contain only the characters A-Za-z0-9- (they may have a "[LOCALE]" postfix)
+file contains key "%s" in group "%s", but keys extending the format should start with "X-"
+file contains key "%s" in group "%s", but "%s" is not defined as a locale string
+file contains lines that are not UTF-8 encoded. There is no guarantee the validator will correctly work.
+file contains line "%s", which is not a comment, a group or an entry
+file contains multiple groups named "%s", but multiple groups may not have the same name
+file contains multiple keys named "%s" in group "%s"
+file is empty
+file is not a regular file
+file is of type "Directory", but filename does not have a .directory extension
+FileManager
+filename does not have a .desktop extension
+filename has a .kdelnk extension, which is deprecated in favor of .desktop
+FilePattern
+Filesystem
+FileTransfer
+first group is not "Desktop Entry"
+FlowChart
+flv-application/octet-stream
+Force edit mode
+fromgroup != NULL
+fromkey != NULL
+FSDevice
+__fxstat64
+g_ascii_strcasecmp
+g_ascii_strncasecmp
+g_ascii_table
+g_assertion_message
+g_assertion_message_expr
+g_build_filename
+GenericName
+GENERIC-NAME
+GenericName%s
+Geography
+Geoscience
+g_error_free
+g_file_error_from_errno
+g_file_error_quark
+g_filename_from_utf8
+g_file_set_contents
+g_getenv
+g_hash_table_destroy
+g_hash_table_foreach
+g_hash_table_foreach_remove
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_lookup_extended
+g_hash_table_new_full
+g_hash_table_remove
+g_hash_table_replace
+g_hash_table_size
+g_key_file_error_quark
+g_key_file_free
+g_key_file_get_comment
+g_key_file_get_keys
+g_key_file_get_string_list
+g_key_file_get_value
+g_key_file_has_group
+g_key_file_load_from_file
+g_key_file_new
+g_key_file_remove_group
+g_key_file_remove_key
+g_key_file_set_comment
+g_key_file_set_string
+g_key_file_set_value
+g_key_file_to_data
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.4
+GLIBC_2.7
+g_list_append
+g_list_foreach
+g_list_free
+g_list_length
+g_mkdir_with_parents
+__gmon_start__
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_summary
+g_option_error_quark
+g_option_group_add_entries
+g_option_group_new
+g_option_group_set_parse_hooks
+g_path_get_basename
+g_path_is_absolute
+g_printerr
+g_propagate_error
+Graphics;2DGraphics
+Graphics;Scanning
+g_return_if_fail_warning
+g_set_error
+g_slice_alloc
+g_slice_alloc0
+g_slice_free1
+g_slist_copy
+g_slist_free
+g_slist_free_full
+g_slist_prepend
+g_slist_reverse
+g_spawn_sync
+g_strchomp
+g_strchug
+g_strcmp0
+g_strconcat
+g_strdup
+g_strdup_printf
+g_strdup_vprintf
+g_str_equal
+g_strerror
+g_strfreev
+g_str_hash
+g_str_has_prefix
+g_str_has_suffix
+g_string_append_printf
+g_string_erase
+g_string_free
+g_string_insert_c
+g_string_new
+g_strndup
+g_strrstr
+g_strsplit
+GUIDesigner
+g_unlink
+g_utf8_strchr
+g_utf8_validate
+HamRadio
+handle_mime_key
+HardwareSettings
+HardwareSettings;Settings
+if-exists
+ImageProcessing
+InitialPreference
+Installation options for desktop file
+install.c
+Install desktop files.
+Install desktop files to the DIR directory
+InstantMessaging
+_IO_stdin_used
+IRCClient
+__isoc99_sscanf
+j != G_N_ELEMENTS (validate_for_type)
+_Jv_RegisterClasses
+KDE Desktop Entry
+keyfile != NULL
+key "%s" in group "%s" is a localized key, but there is no non-localized key "%s"
+key "%s" in group "%s" is a reserved key for KDE
+key "%s" in group "%s" is deprecated
+key "%s" is present in group "%s", but the type is "%s" while this key is only valid for type "%s"
+Keywords
+kf.current_keys == NULL
+kf != NULL && format != NULL
+KidsGame
+Languages
+Legacy-Mixed
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+/lib/ld-linux.so.2
+line "%s" ends with a space, but looks like a group. The validation will continue, with the trailing spaces ignored.
+line "%s" starts with a space. Comment, group and key-value lines should not start with a space. The validation will continue, with the leading spaces ignored.
+Literature
+LogicGame
+MapNotify
+MedicalSoftware
+message/rfc822
+MimeType
+MIME-TYPE
+MiniIcon
+misc/ultravox
+MountPoint
+multipart
+Must specify a desktop file to process.
+Must specify one or more desktop files to process.
+NoDisplay
+NotShowIn
+NumericalAnalysis
+Office;Development
+Office;Network
+Office;TextTools
+Only one desktop file can be processed at once.
+only one of "OnlyShowIn" and "NotShowIn" keys may appear in group "%s"
+OnlyShowIn
+Option "--%s" used without a following "--%s" option
+Option "--%s" used without a prior "--%s" option
+PackageManager
+ParallelComputing
+path != NULL
+Patterns
+Photography
+Presentation
+print_fatal
+print_future_fatal
+Printing
+print_warning
+process_one_file
+Profiling
+ProjectManagement
+Protocols
+Publishing
+RasterGraphics
+ReadOnly
+rebuild-mime-info-cache
+Rebuild the MIME types application database after processing desktop files
+Recorder
+RemoteAccess
+remove-category
+Remove CATEGORY from the list of categories
+Remove ENVIRONMENT from the list of desktop environment where the desktop files should be displayed
+Remove ENVIRONMENT from the list of desktop environment where the desktop files should not be displayed
+remove-key
+remove-mime-type
+Remove MIME-TYPE from the list of MIME types
+remove-not-show-in
+remove-only-show-in
+Remove the KEY key from the desktop files, if present
+required key "%s" in group "%s" is not present
+RevisionControl
+Robotics
+RolePlaying
+RPM_BUILD_ROOT
+Run '%s --help' to see a full list of available command line options.
+"%s" a media type that contains an invalid character
+"%s" contains an empty subtype
+"%s" contains an invalid character in the subtype
+Screensaver
+"%s" does not contain a subtype
+Security
+Sequencer
+%s: error: %s
+%s: error: (will be fatal in the future): %s
+ServiceType
+ServiceTypes
+set-comment
+set-generic-name
+set-icon
+setlocale
+set-name
+Set the "Comment" key to COMMENT
+Set the "GenericName" key to GENERIC-NAME
+Set the "Icon" key to ICON
+Set the KEY key from previous --set-key option to VALUE
+Set the KEY key to VALUE passed to next --set-value option
+Set the "Name" key to NAME
+Set the permissions of the destination files to MODE
+set-value
+Show desktop file edition options
+Show desktop file installation options
+Simulation
+"%s" is a media type that must not be used
+"%s" is a media type that probably does not make sense in this context
+"%s" is an old media type that should be replaced with a modern equivalent
+"%s" is an unregistered media type
+SortOrder
+SportsGame
+Spreadsheet
+"%s" should be replaced with "%s"
+__stack_chk_fail
+StartupNotify
+StartupWMClass
+StrategyGame
+SwallowExec
+SwallowTitle
+%s: warning: key "%s" is a list and does not have a semicolon as trailing character, fixing
+%s: warning: renaming deprecated "%s" group to "%s"
+%s: warning: %s
+System;FileTools
+Telephony
+TelephonyTools
+Terminal
+TerminalEmulator
+TerminalOptions
+TextEditor
+text/plain
+text/x-uuencode
+the use of "%s" as media type is strongly discouraged in favor of a subtype of the "application" media type
+togroup != NULL
+tokey != NULL
+Translation
+TrayIcon
+Unknown option "%s"
+unless-exists
+UnmountIcon
+update-desktop-database
+/usr/share
+Utility;Archiving
+validate.c
+validate_keys_for_current_group
+validate_known_key
+validate_type_keys
+value "%s" for boolean key "%s" in group "%s" contains invalid characters, boolean values must be "false" or "true"
+value "%s" for key "%s" in group "%s" contains action "%s" more than once
+value "%s" for key "%s" in group "%s" contains a deprecated field code "%%%c"
+value "%s" for key "%s" in group "%s" contains a deprecated value "%s"
+value "%s" for key "%s" in group "%s" contains an empty action
+value "%s" for key "%s" in group "%s" contains an escaped double quote (\\") outside of a quote, but the double quote is a reserved character
+value "%s" for key "%s" in group "%s" contains an invalid field code "%%%c"
+value "%s" for key "%s" in group "%s" contains a non-complete field code
+value "%s" for key "%s" in group "%s" contains a non-escaped character '%c' in a quote, but it should be escaped with two backslashes ("\\%c")
+value "%s" for key "%s" in group "%s" contains an unregistered value "%s" for the condition; values extending the format should start with "X-"
+value "%s" for key "%s" in group "%s" contains an unregistered value "%s"; values extending the format should start with "X-"
+value "%s" for key "%s" in group "%s" contains a path "%s" that depends on the value of $XDG_CONFIG_HOME (".." should be avoided)
+value "%s" for key "%s" in group "%s" contains a path "%s" that is absolute, while it should be relative (to $XDG_CONFIG_HOME)
+value "%s" for key "%s" in group "%s" contains a quote which is not closed
+value "%s" for key "%s" in group "%s" contains a reserved character '%c' outside of a quote
+value "%s" for key "%s" in group "%s" contains invalid action identifier "%s", only alphanumeric characters and '-' are allowed
+value "%s" for key "%s" in group "%s" contains "%s" more than once
+value "%s" for key "%s" in group "%s" contains value "%s" which is a MIME type that should probably not be used: %s
+value "%s" for key "%s" in group "%s" contains value "%s" which is an invalid MIME type: %s
+value "%s" for key "%s" in group "%s" does not contain a path to a file to test the condition
+value "%s" for key "%s" in group "%s" does not contain a registered main category
+value "%s" for key "%s" in group "%s" does not look like an absolute path
+value "%s" for key "%s" in group "%s" has trailing space(s)
+value "%s" for key "%s" in group "%s" is an absolute path to a directory, instead of being an absolute path to an icon or an icon name
+value "%s" for key "%s" in group "%s" is an icon name with an extension, but there should be no extension as described in the Icon Theme Specification if the value is not an absolute path
+value "%s" for key "%s" in group "%s" is a reserved value for KDE
+value "%s" for key "%s" in group "%s" is deprecated
+value "%s" for key "%s" in group "%s" is not a known version
+value "%s" for key "%s" in group "%s" is not a registered encoding value ("UTF-8", and "Legacy-Mixed")
+value "%s" for key "%s" in group "%s" is not a registered type value ("Application", "Link" and "Directory")
+value "%s" for key "%s" in group "%s" looks like a relative path, instead of being an absolute path to an icon or an icon name
+value "%s" for key "%s" in group "%s" looks redundant with value "%s" of key "%s"
+value "%s" for key "%s" in group "%s" may contain at most one "%f", "%u", "%F" or "%U" field code
+value "%s" for locale string key "%s" in group "%s" contains invalid UTF-8 characters, locale string values should be encoded in UTF-8
+value "%s" for locale string list key "%s" in group "%s" contains invalid UTF-8 characters, locale string list values should be encoded in UTF-8
+value "%s" for locale string list key "%s" in group "%s" does not have a semicolon (';') as trailing character
+value "%s" for locale string list key "%s" in group "%s" has an escaped semicolon (';') as trailing character
+value "%s" for numeric key "%s" in group "%s" contains invalid characters, numeric values must be valid floating point numbers
+value "%s" for %s list key "%s" in group "%s" contains invalid character '%c', %s list values may contain all ASCII characters except for control characters
+value "%s" for %s list key "%s" in group "%s" does not have a semicolon (';') as trailing character
+value "%s" for %s list key "%s" in group "%s" has an escaped semicolon (';') as trailing character
+value "%s" for string key "%s" in group "%s" contains invalid characters, string values may contain all ASCII characters except for control characters
+value "%s" in key "%s" in group "%s" is a reserved category, so a "OnlyShowIn" key must be included
+value "%s" in key "%s" in group "%s" requires another category to be present among the following categories: %s
+VectorGraphics
+VideoConference
+video/x-flv
+WebBrowser
+WebDevelopment
+while reading the file: %s
+WordProcessor
+x-content
+X-Desktop-File-Install-Version
+x-directory
+x-scheme-handler
+__xstat64
+zz-application/zz-winassoc-123
+zz-application/zz-winassoc-cab
+zz-application/zz-winassoc-cdr
+zz-application/zz-winassoc-doc
+zz-application/zz-winassoc-hlp
+zz-application/zz-winassoc-ini
+zz-application/zz-winassoc-lwp
+zz-application/zz-winassoc-lzh
+zz-application/zz-winassoc-mdb
+zz-application/zz-winassoc-uu
+zz-application/zz-winassoc-xls

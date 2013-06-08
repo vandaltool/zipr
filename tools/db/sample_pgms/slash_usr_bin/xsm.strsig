@@ -1,0 +1,371 @@
+Accept at networkId %s
+add %s "" %s %s 
+All clients issued SAVE YOURSELF DONE
+a 'make install' in the xsm build directory.
+Another session by the name '%s' already exists.
+Another session by the name '%s' is active.
+asciiTextWidgetClass
+Attempting to restart remote client on %s
+AUDIOSERVER
+AUDIOSERVER=
+AUTH ICE %s "" %s %s 
+Bad remote machine specified for remote execute.
+badSaveCancelButton
+badSaveForm
+badSaveLabel
+badSaveListWidget
+badSaveOkButton
+badSavePopup
+__bss_start
+Can't delete session save file - incompatible version.
+Can't remote clone client ID '%s': only local supported
+Can't remote start client ID '%s': only local supported
+Can't restart ID '%s':  no program or no args
+Checkpoint
+checkPointButton
+Choose another name for the session.
+chooseSessionBreakLockButton
+ChooseSessionBtn1Down
+chooseSessionCancelButton
+chooseSessionDeleteButton
+ChooseSessionDown
+chooseSessionFailSafeButton
+chooseSessionForm
+chooseSessionLabel
+chooseSessionListWidget
+chooseSessionLoadButton
+chooseSessionMessageLabel
+chooseSessionPopup
+ChooseSessionUp
+Client Id = %s, received CONNECTION CLOSED
+Client Id = %s, received DELETE PROPERTIES 
+Client Id = %s, received GET PROPERTIES
+Client Id = %s, received INTERACT DONE [Cancel Shutdown = %s]
+Client Id = %s, received INTERACT REQUEST [Dialog Type = 
+Client Id = %s, received SAVE YOURSELF DONE [Success = %s]
+Client Id = %s, received SAVE YOURSELF PHASE 2 REQUEST
+Client Id = %s, received SET PROPERTIES 
+Client Id = %s, sent DIE
+Client Id = %s, sent INTERACT
+Client Id = %s, sent PROPERTIES REPLY [Num props = %d]
+Client Id = %s, sent SAVE COMPLETE
+Client Id = %s, sent SAVE YOURSELF [
+Client Id = %s, sent SAVE YOURSELF PHASE 2
+Client Id = %s, sent SHUTDOWN CANCELLED
+clientInfoButton
+clientInfoDoneButton
+clientInfoForm
+clientInfoPopup
+clientListWidget
+clientPropDoneButton
+clientPropForm
+clientPropPopup
+clientPropTextWidget
+cloneButton
+CloneCommand
+Cloning id '%s', useSavedState = %d...
+closedir
+commandWidgetClass
+CONTEXT X
+Corrupt save file line ignored:
+Could not find default apps file.  Make sure you did
+Could not set authorization
+__ctype_b_loc
+CurrentDirectory
+__cxa_atexit
+defaultColumns
+DelBadSaveWinAction
+DelBadSaveWinAction()
+DelClientInfoWinAction
+DelClientInfoWinAction()
+DelLogWinAction
+DelLogWinAction()
+DelMainWinAction
+DelMainWinAction()
+DelNameInUseWinAction
+DelNameInUseWinAction()
+DelPropWinAction
+DelPropWinAction()
+DelSaveHelpWinAction
+DelSaveHelpWinAction()
+DelSaveWinAction
+DelSaveWinAction()
+DiscardCommand
+DISPLAY=
+displayCaret
+DISPLAY=%s
+Done interacting with all clients.
+__environ
+Environment
+__errno_location
+Error in SMlib: should have checked for bad value]
+EXEC %s %s
+f+l$Xf+l$Zf+l$Rf+l$T
+forceColumns
+formWidgetClass
+f+|$Pf+|$T
+__fprintf_chk
+fromHoriz
+fromVert
+gethostname
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+helpForm
+helpPopup
+helpSaveButton
+helpSaveOkButton
+helpSaveText
+Host = %s
+IceAcceptConnection
+IceAcceptConnection failed
+IceAddConnectionWatch
+iceauth source %s
+IceCloseConnection
+IceComposeNetworkIdList
+ICE Connection closed, IceConn fd = %d
+IceConnectionNumber
+ICE Connection opened by client, IceConn fd = %d, 
+ICE Connection rejected!
+IceConnectionStatus
+IceConnectionString
+IceFreeListenObjs
+IceGenerateMagicCookie
+IceGetListenConnectionNumber
+IceGetListenConnectionString
+IceListenForConnections
+IceProcessMessages
+IceSetHostBasedAuthProc
+IceSetIOErrorHandler
+IceSetPaAuthData
+IceSetShutdownNegotiation
+*** ID = 
+Insufficient memory.
+interactStyleAny
+interactStyleErrors
+interactStyleLabel
+interactStyleNone
+Interact Style = %s, Fast = False]
+IO error on connection (fd = %d)
+IO error opening ICE Connection!
+_IO_getc
+_IO_putc
+_IO_stdin_used
+__isoc99_fscanf
+_Jv_RegisterClasses
+<Key>Return: SaveOkAction()
+killClientButton
+labelWidgetClass
+leftBitmap
+leftMargin
+libc.so.6
+__libc_start_main
+libICE.so.6
+/lib/ld-linux.so.2
+libSM.so.6
+libX11.so.6
+libXaw.so.7
+libXt.so.6
+listWidgetClass
+logButton
+logOkButton
+logPopup
+mainWindow
+manualRestartCommands
+manualRestartLabel
+menuButtonWidgetClass
+menuName
+<Message>WM_PROTOCOLS: %s
+MISC X PATH=%s
+MISC X %s
+MIT-MAGIC-COOKIE-1
+nameInUseCancelButton
+nameInUseForm
+nameInUseLabel
+nameInUseOverwriteButton
+nameInUsePopup
+   Name:	%s
+noClientsLabel
+No session save file.
+[Num props = %d]
+Num values:	
+On IceConn fd = %d, client set up session mngmt protocol
+On IceConn fd = %d, received REGISTER CLIENT [Previous Id = %s]
+On IceConn fd = %d, sent REGISTER CLIENT REPLY [Client Id = %s]
+Only rstart-rsh remote execution protocol supported.
+__printf_chk
+radioData
+radioGroup
+Reading session save file...
+realloc failed, aborting
+   Reason string %d: %s
+remove protoname=%s protodata="" netid=%s authname=%s
+resizable
+)   Restart
+restartAnyway
+ (Restart Anyway)
+Restart Anyway
+RestartCommand
+restartHintButton
+restartHintMenu
+restartIfRunning
+ (Restart If Running)
+Restart If Running
+restartImmediately
+ (Restart Immediately)
+Restart Immediately
+Restarting id '%s'...
+Restarting locally : 
+Restarting locally : %s
+Restarting remotely on %s : 
+restartNever
+ (Restart Never)
+Restart Never
+RestartStyleHint
+rewinddir
+rstart-rsh
+SAMPLE-SM
+saveCancelButton
+saveForm
+saveMessageLabel
+saveName
+SaveOkAction
+saveOkButton
+savePopup
+saveTypeBoth
+saveTypeGlobal
+saveTypeLabel
+saveTypeLocal
+Save Type = %s, Shutdown = %s, 
+SAVE YOURSELF DONE, INTERACT REQUEST, or
+SAVE YOURSELF PHASE 2 REQUEST from each client.
+SAVE YOURSELF REQUEST not supported!
+%s: Can't execvp() %s
+%s: Can't fork() %s
+scrollHorizontal
+scrollVertical
+Sent SAVE YOURSELF to all clients.  Waiting for
+%s: Error creating session save file %s
+SESSION_MANAGER
+SESSION_MANAGER=
+SESSION MANAGER GOING AWAY!
+Session '%s' is locked
+setenv %s %s
+Setting initial properties for %s
+%s: execlp() of rstartd failed for remote start of %s
+%s: fork() error during remote start of %s
+Shutdown
+shutdownButton
+shutdownDontSave
+shutdownMenu
+shutdownSave
+sigaction
+sigemptyset
+simpleMenuWidgetClass
+%s (locked at %s)
+SM_CLIENT_ID
+smeBSBObjectClass
+SmFreeProperty
+SmFreeReasons
+SM Properties : %s
+SM_SAVE_DIR
+SmsCleanUp
+SmsClientHostName
+SmsGenerateClientID
+SmsGetIceConnection
+SmsInitialize
+SmsInteract
+SmsRegisterClientReply
+SmsReturnProperties
+SmsSaveComplete
+SmsSaveYourself
+SmsSaveYourselfPhase2
+SmsShutdownCancelled
+snprintf
+__snprintf_chk
+%s: pipe() error during remote start of %s
+__sprintf_chk
+%s%s (%s%s)
+%s%s (%s%s)   %s
+%s/%sXXXXXX
+__stack_chk_fail
+Starting locally : %s
+Starting PHASE 2 of SAVE YOURSELF
+state %d
+__strcat_chk
+__strdup
+%s/.XSMlock-%s
+%s/.XSM-%s
+%s/.xsmstartup
+%s/.XSMtlock-%s
+toggleWidgetClass
+topLevelShellWidgetClass
+transientShellWidgetClass
+Unsupported version number of session save file.
+usage: xsm [-display display] [-session session_name] [-verbose]
+/usr/lib/X11/xsm/system.xsm
+Value 1:	
+vertDistance
+viewPropButton
+WM_DELETE_WINDOW
+WM_STATE
+Would you like to overwrite it?
+XawFmt8Bit
+XawListChange
+XawListHighlight
+XawListShowCurrent
+XawSimpleMenuGetActiveEntry
+XawTextGetInsertionPoint
+XawTextReplace
+XawToggleGetCurrent
+XawToggleSetCurrent
+XChangeProperty
+XCreateBitmapFromData
+_XC_RestartService
+XInternAtom
+XMapRaised
+XMapWindow
+XSetInputFocus
+XSetWMProtocols
+xsm main window
+XtAddCallback
+XtAddEventHandler
+XtAppAddActions
+XtAppAddInput
+XtAppAddSignal
+XtAppMainLoop
+XtAppProcessEvent
+XtCallCallbacks
+XtCreateManagedWidget
+XtDisplay
+XtInstallAllAccelerators
+XtIsManaged
+XtMalloc
+XtManageChild
+XtNoticeSignal
+XtOverrideTranslations
+XtParseTranslationTable
+XtPopdown
+XtRealizeWidget
+XtRemoveEventHandler
+XtRemoveInput
+XtScreen
+XtSetKeyboardFocus
+XtSetSensitive
+XtShellStrings
+XtStrings
+XtTranslateCoords
+XtUnmanageChild
+XtUnrealizeWidget
+XtVaAppInitialize
+XtVaCreateManagedWidget
+XtVaCreatePopupShell
+XtVaCreateWidget
+XtVaGetValues
+XtVaSetValues
+XtWindow

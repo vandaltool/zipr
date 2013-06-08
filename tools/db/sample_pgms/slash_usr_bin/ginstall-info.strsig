@@ -1,0 +1,155 @@
+--add-once
+Add or remove entries in INFO-FILE from the Info directory DIR-FILE.
+                      and the basename of the Info file isn't found either.
+append-new-sections
+                       are added in each of the sections.
+argz_add
+argz_count
+__assert_fail
+bindtextdomain
+                       by zero or more extra lines starting with whitespace.
+Copyright (C) %s Free Software Foundation, Inc.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+dcgettext
+debug: reading dir file %s
+debug: reading input file %s
+ --debug             report what is being done.
+debug: writing dir file %s
+ --delete            delete existing entries for INFO-FILE from DIR-FILE;
+description
+ --description=TEXT  the description of the entry is TEXT; used with
+dir-file
+ --dir-file=NAME     specify file name of Info directory file;
+                      don't insert any new entries.
+ --dry-run           same as --test.
+Email bug reports to bug-texinfo@gnu.org,
+END-INFO-DIR-ENTRY
+                      entry as determined from the Info file is not present,
+                      --entry option.
+ --entry=TEXT        insert TEXT as an Info directory entry.
+                      equivalent to using the DIR-FILE argument.
+                      equivalent to using the INFO-FILE argument.
+__errno_location
+Error in regular expression `%s': %s
+excess command line argument `%s'
+Extra regular expression specified, ignoring `%s'
+ferror on stdout
+fflush error on stdout
+File: dir,	Node: Top
+__fprintf_chk
+                       from information in the Info file itself.
+general questions and discussion to help-texinfo@gnu.org.
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+ --help              display this help and exit.
+  "h" gives a primer for first-timers,
+i:d:e:s:t:E:c:C:W:A:hHrk1Ia
+                      If you don't specify any entries, they are determined
+                      If you don't specify any sections, they are determined
+                      If you specify more than one entry, all are added.
+                      If you specify more than one section, all the entries
+Individual utilities
+  In Emacs, you can click mouse button 2 on a menu item or cross reference
+info-dir
+ --info-dir=DIR      same as --dir-file=DIR/dir.
+INFO-DIR-SECTION 
+info-file
+ --info-file=FILE    specify Info file to install in the directory;
+.info.gz
+install-info
+install-info (GNU %s) %s
+INSTALL_INFO_NO_INDENT
+_IO_putc
+_IO_stdin_used
+ --item=TEXT         same as --entry=TEXT.
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+keep-old
+ --keep-old          do not replace entries, or remove empty sections.
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+L$p9L$|u
+maxwidth
+max-width
+mbsinit (&iter->state)
+mbuiter.h
+mbuiter_multi_next
+  "mEmacs<Return>" visits the Emacs manual, etc.
+memory exhausted
+menuentry
+ --menuentry=TEXT    same as --name=TEXT.
+Miscellaneous
+ --name=TEXT         the name of the entry is TEXT; used with --description
+No dir file specified; try --help for more information.
+no entries found for `%s'; nothing deleted
+no-indent
+ --no-indent         do not format new entries in the DIR file.
+no info dir entry in `%s'
+No input file specified; try --help for more information.
+Options:
+__printf_chk
+ --quiet             suppress warnings.
+__rawmemchr
+regerror
+ --regex=R           put this file's entries in all sections that match the
+--regex=%s
+                      regular expression R (ignoring case).
+remove-exactly
+ --remove-exactly    only remove if the info file name matches exactly;
+ --remove            same as --delete.
+: (%s). 
+* %s: (). 
+%s: already have dir file: %s
+%s: could not read (%s) and could not create (%s)
+--section
+ --section R SEC     equivalent to --regex=R --section=SEC --add-once.
+--section=%s
+ --section=SEC       put entries in section SEC of the directory.
+%s: empty file
+setlocale
+ --silent            suppress warnings.
+__snprintf_chk
+__sprintf_chk
+* %s: (%s).
+%s: Specify the Info file only once.
+__stack_chk_fail
+START-INFO-DIR-ENTRY
+START-INFO-DIR-ENTRY without matching END-INFO-DIR-ENTRY
+%s	This is the top of the INFO tree
+__strdup
+strerror
+                      suffixes such as .info and .gz are not ignored.
+%s: warning: 
+T$`9T$L~
+td<*t`< t\<	tX
+test mode, not updating dir file %s
+ --test              suppress updating of DIR-FILE.
+Texinfo home page: http://www.gnu.org/software/texinfo/
+                      TEXT is only removed as a last resort, if the
+                      TEXT is written as an Info menu item line followed
+The first time you invoke Info you start off looking at this node.
+                      the --name option to become synonymous with the
+There is NO WARRANTY, to the extent permitted by law.
+This is free software: you are free to change and redistribute it.
+This is the file .../info/dir, which contains the
+  This (the Directory node) gives a menu of major topics.
+                      to become synonymous with the --entry option.
+topmost node of the Info hierarchy, called (dir)Top.
+  to select it.
+towlower
+	Try `%s --help' for a complete list of options.
+T$(;|$xu
+  Typing "q" exits, "?" lists all Info commands, "d" returns here,
+Usage: %s [OPTION]... [INFO-FILE [DIR-FILE]]
+/usr/share/locale
+ --version           display version information and exit.
+                      When removing, TEXT specifies the entry to remove.

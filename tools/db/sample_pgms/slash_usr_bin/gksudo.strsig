@@ -1,0 +1,192 @@
+activate
+_Advanced
+Advanced options
+always-ask-pass
+    and focus done by the program when asking for
+    and mouse grabbed before doing so.
+application while you type it.
+    Ask gksu to print the password to stdout, just
+    Ask the user if they want to have their keyboard
+As user:
+    be used in the default message, making it nicer.
+<b>Failed to request password.</b>
+<b>Failed to run %s as user %s.</b>
+<big><b>Missing options or arguments</b></big>
+<b>Incorrect password... try again.</b>
+bindtextdomain
+bind_textdomain_codeset
+<b>Options to use when changing user</b>
+__bss_start
+<b>Would you like your screen to be "grabbed"
+    Call <command> as the specified user.
+Could not load desktop file: %s
+dcgettext
+  --debug, -d
+    default.
+delete_event
+description
+  --description <description|file>, -D <description|file>
+Desktop Entry
+    .desktop file. The Name key for will be used in
+disable-grab
+  --disable-grab, -g
+    Disable the "locking" of the keyboard, mouse,
+    display!
+endpwent
+__fprintf_chk
+g_access
+g_error_free
+getopt_long
+getpwent
+getpwnam
+g_key_file_free
+g_key_file_get_locale_string
+g_key_file_load_from_file
+g_key_file_new
+gksu_ask_password_full
+gksu_context_get_command
+gksu_context_get_description
+gksu_context_get_keep_env
+gksu_context_get_login_shell
+gksu_context_get_message
+gksu_context_get_user
+gksu_context_new
+gksu_context_set_alert
+gksu_context_set_always_ask_password
+gksu_context_set_command
+gksu_context_set_debug
+gksu_context_set_description
+gksu_context_set_grab
+gksu_context_set_keep_env
+gksu_context_set_login_shell
+gksu_context_set_message
+gksu_context_set_user
+gksu_run_fuller
+gksu_sudo_fuller
+gksu_su_fuller
+GKsu version %s
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3.4
+g_list_free
+g_list_position
+g_list_prepend
+g_list_sort
+g_malloc
+__gmon_start__
+g_path_get_basename
+g_realloc
+g_signal_connect_data
+g_spawn_command_line_sync
+g_strconcat
+g_strdup
+g_strdup_vprintf
+gtk_box_get_type
+gtk_box_pack_start
+gtk_box_set_spacing
+gtk_button_new_with_mnemonic
+gtk-cancel
+gtk_check_button_new_with_mnemonic
+gtk-close
+gtk_combo_box_append_text
+gtk_combo_box_get_active_text
+gtk_combo_box_get_type
+gtk_combo_box_new_text
+gtk_combo_box_set_active
+gtk_container_get_type
+gtk_container_set_border_width
+gtk_dialog_get_type
+gtk_dialog_new_with_buttons
+gtk_dialog_response
+gtk_dialog_run
+gtk_dialog_set_has_separator
+gtk_editable_get_chars
+gtk_editable_get_type
+gtk_entry_new
+gtk_hbox_new
+gtk_image_new_from_file
+gtk_init
+gtk_label_get_type
+gtk_label_new
+gtk_label_set_justify
+gtk_label_set_markup
+gtk_main_quit
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_message_dialog_new_with_markup
+gtk_message_dialog_set_markup
+gtk_object_get_type
+gtk_signal_connect_full
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_set_active
+gtk_vbox_new
+gtk_widget_destroy
+gtk_widget_get_parent
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_get_type
+gtk_window_set_position
+gtk_window_set_resizable
+g_type_check_instance_cast
+?hu:lpm:kt:i:gdsSwP::aD:A
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+LIBGKSU_2
+libgksu2.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-x11-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+    like ssh-askpass. Useful to use in scripts with
+  --login, -l
+_login shell
+    Make GKSu use sudo instead of su, as if it had been
+    Make GKSu use su, instead of using libgksu's
+    Make this a login shell. Beware this may cause
+  --message <message>, -m <message>
+Missing command to run.
+    nor $PATH, for example.
+    Only use this if --description does not suffice.
+Option not accepted for --disable-grab: %s
+Option not accepted for --prompt: %s
+    password.
+    password for the argument passed to the option.
+preserve-env
+_preserve environment
+  --preserve-env, -k
+preserv-env
+    Preserve the current environments, does not set $HOME
+    Print information on the screen that might be
+print-pass
+  --print-pass, -p
+    problems with the Xauthority magic. Run xhost
+    programs that accept receiving the password on
+  --prompt, -P
+    Provide a descriptive name for the command to
+    Replace the standard message shown to ask for
+    run as "gksudo".
+Run program
+setlocale
+setpwent
+    stdin.
+strcasecmp
+sudo-mode
+  --sudo-mode, -S
+  --su-mode, -w
+the eavesdropping of your password by a a malicious
+    this case.
+This means all applications will be paused to avoid
+    to allow the target user to open windows on your
+Usage: %s [-u <user>] [options] <command>
+    useful for diagnosing and/or solving problems.
+User %s does not exist.
+  --user <user>, -u <user>
+/usr/share/locale
+/usr/share/pixmaps/gksu-icon.png
+while you enter the password?</b>
+    You can also provide the absolute path for a
+You need to provide --description or --message.

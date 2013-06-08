@@ -1,0 +1,294 @@
+                && ($1 eq $oppackage)
+	        && ($3 eq $pkg_type)
+        # allowed in the binary package control information
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+			 "appear in package's architecture list (%s)"),
+    # Arch: all can't be simplified as the host architecture is not known
+# (at your option) any later version.
+    binmode(X);
+binmode(Y);
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -c<controlfile>          get control info from this file.
+    $cf= "./$cf" if $cf =~ m/^\s/;
+    $cf= "$packagebuilddir/DEBIAN/control";
+        $changelogfile= $';
+        $changelogformat=$1;
+        chdir("$packagebuilddir") ||
+        chomp;
+    close(DU);
+    close($fh_output) || syserr(_g("cannot close %s"), "$cf.new");
+    close(X) || syserr(_g("close old files list file"));
+close(Y) || syserr(_g("close new files list file"));
+        $controlfile= $';
+Copyright (C) 1996 Ian Jackson.
+Copyright (C) 2000,2002 Wichert Akkerman.");
+		    || debarch_eq($2, 'all'));
+	        && (debarch_eq($2, $fields->{'Architecture'} || "")
+    defined($fields->{$f}) || error(_g("missing information for output field %s"), $f);
+    defined($fields->{$f}) || warning(_g("missing information for output field %s"), $f);
+    defined(my $c = open(DU, "-|")) || syserr(_g("cannot fork for %s"), "du");
+    defined($pkg) || error(_g("package %s not in control info"), $oppackage);
+	# Delay the parsing until later
+    delete $fields->{$f};
+	delete $fields->{$field} unless $fields->{$field}; # Delete empty field
+    delete $fields->{'Homepage'};
+    delete $fields->{'Package-Type'};
+	    $dep = deps_parse($field_value, use_arch => 1,
+	    $dep->simplify_deps($facts);
+	    $dep->simplify_deps($facts, @seen_deps);
+            $dep->sort();
+  -D<field>=<value>        override or add a field and value.
+# dpkg-gencontrol
+	$duo .= $_;
+    $duo =~ m/^(\d+)\s+\.$/ ||
+    } else {
+} else {
+	} else {
+} elsif ($! != ENOENT) {
+    } elsif (m/^Architecture$/) {
+    } elsif (m/^-c/) {
+    } elsif (m/^-D([^\=:]+)[=:]/) {
+    } elsif (m/^-f/) {
+    } elsif (m/^-F([0-9a-z]+)$/) {
+    } elsif (m/^-(h|-help)$/) {
+    } elsif (m/^-i[sp][sp]?$/) {
+    } elsif (m/^-l/) {
+    } elsif (m/^Maintainer$/) {
+    } elsif (m/^-n/) {
+    } elsif (m/^-O$/) {
+    } elsif (m/^-p(.*)/) {
+    } elsif (m/^-P/) {
+    } elsif (m/^-T(.*)$/) {
+    } elsif (m/^-U([^\=:]+)$/) {
+    } elsif (m/^-v(.+)$/) {
+    } elsif (m/^--version$/) {
+    } elsif (m/^Version$/) {
+    } elsif (m/^-V(\w[-:0-9A-Za-z]*)[=:]/) {
+		error(_g("current host architecture '%s' does not " .
+        error(_g("du gave unexpected output \`%s'"), $duo);
+	    error(_g("error occurred while parsing %s field: %s"), $field,
+        error(_g("Illegal package name \`%s'"), $1);
+        error(_g("must specify package since control info has many (%s)"),
+	error(_g("the %s field contains an arch-specific dependency but the " .
+        exec("du", "-k", "-s", "--apparent-size", ".") or
+        exit(0);
+$facts->add_installed_package($fields->{'Package'}, $fields->{'Version'},
+		$facts->add_provided_package($subdep->{package},
+  -F<changelogformat>      force change log format.
+  -f<fileslistfile>        write files here instead of debian/files.
+    $fh_output = \*STDOUT;
+$fields->apply_substvars($substvars);
+                              $fields->{'Architecture'}, $fields->{'Multi-Arch'});
+                         $fields->{'Architecture'} || "", $pkg_type)
+	$fields->{$field} = $dep->output();
+    $fields->{$f} = $override{$f};
+	    $fields->{$_} = $host_arch;
+    $fields->{'Installed-Size'} = $substvars->get('Installed-Size');
+$fields->output($fh_output);
+                        $fields->{'Package'});
+				      $fields->{'Priority'} || '-')))
+				      $fields->{'Section'} || '-',
+    $fields->{'Source'} = $sourcepackage;
+    $fields->{'Source'} .= " (" . $substvars->get('source:Version') . ")" if $verdiff;
+	    $fields->{$_} = $v;
+$fields->{'Version'} = $forceversion if defined($forceversion);
+              $fields->{'Version'} ne $sourceversion;
+	$fields->{$_} = $v unless defined($forceversion);
+        field_transfer_single($changelog, $fields);
+        field_transfer_single($pkg, $fields);
+        field_transfer_single($src_fields, $fields);
+                  $field_value) unless defined $dep;
+        $fileslistfile= $';
+$fileslistfile="./$fileslistfile" if $fileslistfile =~ m/^\s/;
+        $forcefilename= $';
+$forcefilename = sprintf("%s_%s_%s.%s", $oppackage, $sversion,
+        $forceversion= $1;
+foreach $_ (keys %{$changelog}) {
+foreach $_ (keys %{$pkg}) {
+foreach $_ (keys %{$src_fields}) {
+foreach my $field (field_list_pkg_dep()) {
+	foreach my $subdep ($provides->get_deps()) {
+for my $f (keys %override) {
+for my $f (keys %remove) {
+for my $f (qw(Maintainer Description Architecture)) {
+for my $f (qw(Package Version)) {
+    for my $f (qw(Subarchitecture Kernel-Version Installer-Menu-Item)) {
+# GNU General Public License for more details.
+	    grep(debarch_is($host_arch, $_), @archlist) ||
+  -h, --help               show this help message.
+		      $host_arch, "@archlist");
+    if (!$c) {
+	if (debarch_eq('all', $v)) {
+            if defined($fields->{$f});
+if (defined($oppackage)) {
+    if (defined $provides) {
+if (defined($substvars->get('Extra-Size'))) {
+if (!defined($substvars->get('Installed-Size'))) {
+if (defined($substvars->get('Installed-Size'))) {
+	    if $dep->has_arch_restriction();
+    if (exists $pkg->{$field}) {
+if (exists $pkg->{"Provides"}) {
+    if (field_get_dep_type($_)) {
+	if (field_get_dep_type($field) eq 'normal') {
+		if @invalid_archs >= 1;
+    if (m/^-p([-+0-9a-z.]+)$/) {
+    if (m/^Source$/) {
+if (open(X, "<", $fileslistfile)) {
+if ($oppackage ne $sourcepackage || $verdiff) {
+if ($pkg_type eq 'udeb') {
+if (!$stdout) {
+	    if ($subdep->isa('Dpkg::Deps::Simple')) {
+	# ignored for backwards compatibility
+# initialized.
+  -is, -ip, -isp, -ips     deprecated, ignored for compatibility.
+# it under the terms of the GNU General Public License as published by
+		    join("' `", @invalid_archs))
+later for copying conditions. There is NO warranty.
+  -l<changelogfile>        get per-version info from this file.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	    msg_prefix => sprintf(_g("%s field of package %s: "), $field, $pkg->{Package}));
+	    my @archlist = split(/\s+/, $v);
+my $changelog = changelog_parse(%options);
+my $changelogfile = 'debian/changelog';
+my $changelogformat;
+my $control = Dpkg::Control::Info->new($controlfile);
+my $controlfile = 'debian/control';
+	my $dep;
+    my $duo = '';
+my $facts = Dpkg::Deps::KnownFacts->new();
+my $fh_output;
+my $fields = Dpkg::Control->new(type => CTRL_PKG_DEB);
+	my $field_value = $substvars->substvars($pkg->{$field},
+my $fileslistfile = 'debian/files';
+my $forcefilename;
+my $forceversion;
+	my $host_arch = get_host_arch();
+	    my @invalid_archs = grep m/[^\w-]/, @archlist;
+my $oppackage;
+my %options = (file => $changelogfile);
+my %override;
+my $packagebuilddir = 'debian/tmp';
+    my @packages = map { $_->{'Package'} } $control->get_packages();
+my $pkg;
+my $pkg_type = $pkg->{'Package-Type'} ||
+    my $provides = deps_parse($substvars->substvars($pkg->{"Provides"}, no_warn => 1),
+    my $reduce_arch = debarch_eq('all', $pkg->{Architecture} || "all") ? 0 : 1;
+my %remove;
+my (@seen_deps);
+    my $size = $substvars->get('Extra-Size') + $substvars->get('Installed-Size');
+my $sourceversion;
+my $src_fields = $control->get_source();
+my $stdout;
+my $substvars = Dpkg::Substvars->new();
+my $substvars_loaded = 0;
+my $sversion = $fields->{'Version'};
+    my $v = $changelog->{$_};
+my $verdiff = $fields->{'Version'} ne $substvars->get('source:Version') ||
+    my $v = $pkg->{$_};
+        next if m/^([-+0-9a-z.]+)_[^_]+_([\w-]+)\.(a-z+) /
+  -n<filename>             assume the package filename will be <filename>.
+    open($fh_output, ">", "$cf.new") ||
+open(Y, ">", "$fileslistfile.new") || syserr(_g("open new files list file"));
+        $oppackage= $1;
+$oppackage = $fields->{'Package'};
+Options:
+$options{"changelogformat"} = $changelogformat if $changelogformat;
+        $override{$1}= $';
+  -O                       write to stdout, not .../DEBIAN/control.
+        $packagebuilddir= $';
+	         "package is architecture all"), $field)
+              "@packages");
+    @packages==1 ||
+    $pkg = $control->get_pkg_by_idx(1);
+    $pkg = $control->get_pkg_by_name($oppackage);
+               $pkg->get_custom_field('Package-Type') || 'deb';
+  -P<packagebuilddir>      temporary build dir instead of debian/tmp.
+  -p<package>              print control file for package.
+    printf _g(
+    printf _g("
+    printf _g("Debian %s version %s.\n"), $progname, $version;
+        print(Y "$_\n") || syserr(_g("copy old entry to new files list file"));
+print(Y $substvars->substvars(sprintf("%s %s %s\n", $forcefilename,
+# Process dependency fields in a second pass, now that substvars have been
+"), $progname;
+	    push @seen_deps, $dep;
+                              reduce_arch => 1, union => 1);
+			      reduce_arch => $reduce_arch);
+                              reduce_arch => $reduce_arch, union => 1);
+	    # Remember normal deps to simplify even further weaker deps
+        $remove{$1}= 1;
+    rename("$cf.new", "$cf") ||
+rename("$fileslistfile.new", $fileslistfile) || syserr(_g("install new files list file"));
+			     "`%s' are not legal architecture strings.",
+			     scalar(@invalid_archs)),
+# Scan binary package
+# Scan fields of dpkg-parsechangelog
+# Scan source package
+	set_source_package($src_fields->{$_});
+	set_source_package($v);
+    $_=shift(@ARGV);
+	$sourceversion = $v;
+        $stdout= 1;
+                        $subdep->{relation}, $subdep->{version},
+    $? && subprocerr(_g("du in \`%s'"), $packagebuilddir);
+	$substvars->load($1) if -e $1;
+$substvars->load("debian/substvars") if -e "debian/substvars" and not $substvars_loaded;
+	$substvars_loaded = 1;
+	$substvars->no_warn($1);
+$substvars->no_warn('Installed-Size');
+        $substvars->set($1, $');
+$substvars->set_arch_substvars();
+$substvars->set("binary:Version", $forceversion) if defined $forceversion;
+    $substvars->set('Installed-Size', $1);
+    $substvars->set('Installed-Size', $size);
+$substvars->set_msg_prefix(sprintf(_g("package %s: "), $pkg->{Package}));
+$substvars->set_version_substvars($changelog->{"Version"});
+$substvars->warn_about_unused();
+sub usage {
+sub version {
+$sversion =~ s/^\d+://;
+        syserr(_g("cannot install output control file \`%s'"), $cf);
+        syserr(_g("cannot open new output control file \`%s'"), "$cf.new");
+            syserr(_g("chdir for du to \`%s'"), $packagebuilddir);
+    syserr(_g("read old files list file"));
+            syserr(_g("unable to execute %s"), "du");
+    || syserr(_g("write new entry to new files list file"));
+textdomain("dpkg-dev");
+        # That field must not be copied from changelog even if it's
+# the Free Software Foundation; either version 2 of the License, or
+This is free software; see the GNU General Public License version 2 or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+  -T<varlistfile>          read variables here, not debian/substvars.
+  -U<field>                remove a field.
+umask 0022; # ensure sane default permissions for created files
+	   unless ($forcefilename);
+        usage();
+        usageerr(_g("unknown option \`%s'"), $_);
+"Usage: %s [<option> ...]
+use Dpkg;
+use Dpkg::Arch qw(get_host_arch debarch_eq debarch_is);
+use Dpkg::Changelog::Parse;
+use Dpkg::Control;
+use Dpkg::Control::Fields;
+use Dpkg::Control::Info;
+use Dpkg::Deps;
+use Dpkg::ErrorHandling;
+use Dpkg::Gettext;
+use Dpkg::Substvars;
+use Dpkg::Vars;
+use POSIX;
+use POSIX qw(:errno_h);
+use strict;
+use warnings;
+#!/usr/bin/perl
+        version();
+      --version            show the version.
+  -v<forceversion>         set version of binary package.
+  -V<name>=<value>         set a substitution variable.
+        warning(_g("%s package with udeb specific field %s"), $pkg_type, $f)
+	    warning(ngettext("`%s' is not a legal architecture string.",
+while (@ARGV) {
+    while (<DU>) {
+    while (<X>) {
+# You should have received a copy of the GNU General Public License

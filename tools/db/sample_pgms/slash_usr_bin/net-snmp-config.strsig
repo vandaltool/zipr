@@ -1,0 +1,446 @@
+                *)
+      ;;
+    ####################################################
+ 	    --*)
+ 	    -*)
+		    ;;
+	    -A|-a)
+		    Aalgorithm=$1
+		    Aalgorithm=`echo $1 | tr a-z A-Z`
+      Aalgorithm="MD5"
+    # add include files
+    # add init routines
+    agent_check_and_process(1);
+    #################################################### agent lib
+    --agent-libs)
+    # (and no explicit output name)
+		    apassphrase=$1
+        app_name = optarg;
+  /* at shutdown time */
+    --base-agent-libs)
+    --base-cflags)
+    --base-lib-cflags)
+    --base-subagent-libs)
+#!/bin/sh
+      break;
+      build_dir=$1
+    --build-includes)
+    --build-lib-deps)
+    --build-lib-dirs)
+  case "$1" in
+  case $1 in
+	        case $1 in
+	case $1 in
+    case 'd':
+    case 'f':
+    case 'h':
+    case 'L':
+    case 'm':
+    case 'n':
+    case 'P':
+    case 'v':
+    case 'x':
+      cat >> $tmpfile <<EOF
+      cat > $tmpfile <<EOF
+    cat >> $tmpfile <<EOF
+      cfiles="$cfiles $1"
+        cfiles=$outname
+            --cflags)
+	        cflags=$1
+    --cflags|--cf*)
+  char* cp = NULL;
+check_build_dir()
+      check_build_dir $build_dir
+    #################################################### client lib
+      `$cmd`
+      cmd="gcc $cflags -DNETSNMP_ENABLE_IPV6 -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -DNETSNMP_USE_INLINE -Ulinux -Dlinux=linux  -D_REENTRANT -D_GNU_SOURCE -DDEBIAN -fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64  -I/usr/lib/perl/5.14/CORE   -I. -I${NSC_INCLUDEDIR} -o $outname $tmpfile $cfiles $NSC_LDFLAGS $NSC_LIBDIR $NSC_BASE_AGENT_LIBS $NSC_AGENTLIBS $ldflags"
+    #################################################### compile
+    --compile-subagent)
+    --configure-options|--con*)
+const char *app_name = "$outname";
+      cp = snmp_mib_toggle_options(optarg);
+    --create-snmpv3-user)
+      debug_register_tokens(optarg);
+    --debug-tokens|--deb*|--dbg*)
+    default:
+    --default-mibdirs|--mibdirs|--MIBDIRS)
+    --default-mibs|--mibs|--MIBS)
+#define UNUSED
+#define UNUSED __attribute__((unused))
+                des|aes|aes128)
+      do_help = 1;
+    done
+      done
+	          done=1
+	        done=1
+      dont_fork = 1;
+            "  -D TOKEN[,...]\tturn on debugging output for the specified "
+            "  -d\t\t\tdump all traffic\n"
+      echo ":"
+  echo ""
+      echo 5.4.3
+        echo "Ack.  Can't create $tmpfile."
+	echo "Ack.  Can't create $tmpfile: already exists"
+      echo "adding the following line to $outfile:"
+  echo "                      against libsnmp"
+  echo "    --agent-libs      lists libraries needed for building subagents"
+  echo "                         [-a MD5|SHA] [-x DES|AES] [username]"
+         echo "Apparently at least one snmpd demon is already running."
+  echo "  Automatted subagent building (produces an OUTPUTNAME binary file):"
+  echo "    --base-agent-libs     netsnmp specific agent libraries"
+  echo "    --base-cflags     lists additional compilation flags needed"
+  echo "    --base-lib-cflags lists additional compilation flags needed for linking"
+         echo "$build_dir does not appear to be a build directory."
+      echo " '--build=i686-linux-gnu' '--includedir=${prefix}/include' '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--localstatedir=/var' '--libexecdir=${prefix}/lib/net-snmp' '--disable-maintainer-mode' '--disable-dependency-tracking' '--prefix=/usr' '--sysconfdir=/etc' '--mandir=/usr/share/man' '--with-persistent-directory=/var/lib/snmp' '--enable-ucd-snmp-compatibility' '--enable-shared' '--with-cflags=-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -DNETSNMP_USE_INLINE' '--with-perl-modules=INSTALLDIRS=vendor' '--enable-as-needed' '--enable-ipv6' '--with-logfile=none' '--without-rpm' '--with-libwrap' '--with-openssl' '--without-dmalloc' '--without-efence' '--without-rsaref' '--with-sys-contact=root' '--with-sys-location=Unknown' '--with-mib-modules=host smux ucd-snmp/dlmod ucd-snmp/diskio ucd-snmp/lmSensors  host' '--with-out-mib-modules=' '--enable-mfd-rewrites' '--with-mnttab=/etc/mtab' '--with-mibdirs=$HOME/.snmp/mibs:/usr/share/mibs/site:/usr/share/snmp/mibs:/usr/share/mibs/iana:/usr/share/mibs/ietf:/usr/share/mibs/netsnmp' '--with-defaults' 'build_alias=i686-linux-gnu' 'CFLAGS=-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security' 'LDFLAGS=-Wl,-Bsymbolic-functions -Wl,-z,relro' 'CPPFLAGS=-D_FORTIFY_SOURCE=2'"
+  echo "    --build-includes      include path to build/source includes"
+  echo "  building external SNMP applications:"
+  echo "    --build-lib-deps      path to libraries for dependency target"
+  echo "    --build-lib-dirs      link path to libraries"
+  echo "         --cflags flags   extra cflags to use (e.g. -I...)."
+  echo "    --cflags          lists additional compilation flags needed"
+      echo checking for init_$name in $i
+  echo "                      code for a list of available debug tokens"
+  echo "    --compile-subagent OUTPUTNAME [--norm] [--cflags flags]"
+  echo "    --configure-options   display original configure arguments"
+  echo "    --create-snmpv3-user [-ro] [-A authpass] [-X privpass]"
+  echo "    --debug-tokens    displays a example command line to search to source"
+  echo "    --default-mibdirs     display default list of MIB directories"
+  echo "    --default-mibs        display default list of MIBs"
+  echo "  Details on how the net-snmp package was compiled:"
+      echo -DNETSNMP_ENABLE_IPV6 -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -DNETSNMP_USE_INLINE -Ulinux -Dlinux=linux -D_FORTIFY_SOURCE=2 -I${NSC_INCLUDEDIR}
+      echo -DNETSNMP_ENABLE_IPV6 -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -DNETSNMP_USE_INLINE -Ulinux -Dlinux=linux  -D_REENTRANT -D_GNU_SOURCE -DDEBIAN -fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64  -I/usr/lib/perl/5.14/CORE   -D_FORTIFY_SOURCE=2 -I. -I${NSC_INCLUDEDIR}
+      echo -DNETSNMP_ENABLE_IPV6 -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -DNETSNMP_USE_INLINE -Ulinux -Dlinux=linux  -D_REENTRANT -D_GNU_SOURCE -DDEBIAN -fno-strict-aliasing -pipe -fstack-protector -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64  -I/usr/lib/perl/5.14/CORE  -D_FORTIFY_SOURCE=2 -I${NSC_INCLUDEDIR}
+	  echo "Enter a SNMPv3 user name to create: "
+	  echo "Enter authentication pass-phrase: "
+	  echo "Enter encryption pass-phrase: "
+      echo "/etc/snmp:/usr/share/snmp:/usr/lib/snmp:$HOME/.snmp:/var/lib/snmp"
+  echo "    --external-agent-libs external libraries needed by netsnmp agent libs"
+  echo "  external application against an uninstalled build directory."
+  echo "    --external-libs       external libraries needed by netsnmp libs"
+      echo "find $NSC_SRCDIR -name \"*.c\" -print | xargs grep DEBUGMSGT | grep \\\" | cut -f 2 -d\\\" | sort -u"
+      echo "generating the tmporary code file: $tmpfile"
+      echo $HOME/.snmp/mibs:/usr/share/mibs/site:/usr/share/snmp/mibs:/usr/share/mibs/iana:/usr/share/mibs/ietf:/usr/share/mibs/netsnmp
+      echo :HOST-RESOURCES-MIB:HOST-RESOURCES-TYPES:UCD-DLMOD-MIB:UCD-DISKIO-MIB:LM-SENSORS-MIB:IP-MIB:IF-MIB:TCP-MIB:UDP-MIB:SNMPv2-MIB:RFC1213-MIB:NOTIFICATION-LOG-MIB:DISMAN-EVENT-MIB:DISMAN-SCHEDULE-MIB:UCD-SNMP-MIB:UCD-DEMO-MIB:SNMP-TARGET-MIB:NET-SNMP-AGENT-MIB:SNMP-FRAMEWORK-MIB:SNMP-MPD-MIB:SNMP-USER-BASED-SM-MIB:SNMP-VIEW-BASED-ACM-MIB:SNMP-COMMUNITY-MIB:IPV6-ICMP-MIB:IPV6-MIB:IPV6-TCP-MIB:IPV6-UDP-MIB:IP-FORWARD-MIB:NET-SNMP-PASS-MIB:NET-SNMP-EXTEND-MIB:SNMP-NOTIFICATION-MIB:SNMPv2-TM:NET-SNMP-VACM-MIB
+          echo "  #include \"$name.h\"" >> $tmpfile
+            echo "  #include \"$outname.h\"" >> $tmpfile
+  echo "                      (includes -I. and extra developer warning flags)"
+  echo "    --indent-options  displays the indent options from the Coding Style"
+      echo "indent -orig -nbc -bap -nut -nfca `(cd $NSC_INCDIR/net-snmp; perl -n -e 'print "-T $1 " if (/}\s*(netsnmp_\w+)\s*;/);' */*.h)`"
+        echo "  init_${name}();" >> $tmpfile
+  echo "         --ldflags flags  extra ld flags to use (e.g. -L... -l...)."
+  echo "                                  [--ldflags flags] mibmodule1.c [...]]"
+  echo "    --ldflags             link flags for external libraries"
+        echo "leaving the tmporary code file: $tmpfile"
+  echo "    --libdir              path to netsnmp libraries"
+  echo "    --libs            lists libraries needed for building applications"
+      echo "  " $line
+      echo $line >> $outfile
+  echo "  (Most of the time the simple options above should be used.)"
+  echo "    --netsnmp-agent-libs  netsnmp specific agent libraries (with path)"
+  echo "  net-snmp-config [--cflags] [--agent-libs] [--libs] [--version]"
+  echo "    --netsnmp-libs        netsnmp specific libraries (with path)"
+        echo "No MIB module codefile specified"
+  echo "         --norm           leave the generated .c file around to read."
+      echo $NSC_BASE_AGENT_LIBS
+      echo $NSC_BASE_SUBAGENT_LIBS
+      echo $NSC_EXEC_PREFIX
+      echo $NSC_LDFLAGS
+      echo $NSC_LDFLAGS $NSC_AGENTLIBS
+      echo $NSC_LDFLAGS $NSC_LIBDIR -lnetsnmp $NSC_LIBS
+      echo $NSC_LDFLAGS $NSC_LIBDIR $NSC_BASE_AGENT_LIBS $NSC_AGENTLIBS
+      echo $NSC_LDFLAGS $NSC_LIBS
+      echo $NSC_LIBDIR
+      echo $NSC_LIBDIR -lnetsnmp
+      echo $NSC_LIBDIR $NSC_BASE_AGENT_LIBS
+      echo $NSC_PREFIX
+      echo $NSC_SRCDIR
+  echo "    --perlprog            display path to perl for the perl modules"
+  echo "    --persistent-directory display default persistent directory"
+  echo "    --prefix              display the installation prefix"
+	  echo "  [press return to reuse the authentication pass-phrase]"
+        echo "removing the tmporary code file: $tmpfile"
+      echo $result
+      echo "running: $cmd"
+  echo "                  ... [see below for complete flag list]"
+	        echo "setting extra cflags: $cflags"
+	        echo "setting extra ldflags: $ldflags"
+  echo "    --snmpconfpath        display default SNMPCONFPATH"
+  echo "    --snmpd-module-list   display the modules compiled into the agent"
+  echo "  SNMP Setup commands:"
+        echo "subagent program $outname created"
+  echo "  These options produce the various compilation flags needed when"
+  echo "  These options produce the various link flags needed when"
+  echo "  These options produce various link flags broken down into parts."
+  echo "  These options produce various link flags used when linking an"
+  echo "  [this feature has not been tested very well yet.  use at your risk.]"
+echo  ucd-snmp/dlmod ucd-snmp/diskio ucd-snmp/lmSensors host/hr_system host/hr_storage host/hr_device host/hr_other host/hr_proc host/hr_network host/hr_print host/hr_disk host/hr_partition host/hr_filesys host/hr_swrun host/hr_swinst smux/smux util_funcs snmpv3/snmpEngine snmpv3/snmpMPDStats snmpv3/usmStats snmpv3/usmConf snmpv3/usmUser mibII/system_mib mibII/sysORTable mibII/at mibII/ip mibII/snmp_mib mibII/tcp mibII/icmp mibII/udp mibII/vacm_vars mibII/setSerialNo mibII/ipv6 ucd-snmp/proc ucd-snmp/versioninfo ucd-snmp/pass ucd-snmp/pass_persist ucd-snmp/disk ucd-snmp/loadave agent/extend ucd-snmp/errormib ucd-snmp/file ucd-snmp/proxy ucd-snmp/logmatch ucd-snmp/memory ucd-snmp/vmstat notification/snmpNotifyTable notification/snmpNotifyFilterProfileTable notification-log-mib/notification_log target/snmpTargetAddrEntry target/snmpTargetParamsEntry target/target target/target_counters agent/nsTransactionTable agent/nsModuleTable agent/nsDebug agent/nsCache agent/nsLogging agent/nsVacmAccessTable agentx/master agentx/subagent disman/event/mteScalars disman/event/mteTrigger disman/event/mteTriggerTable disman/event/mteTriggerDeltaTable disman/event/mteTriggerExistenceTable disman/event/mteTriggerBooleanTable disman/event/mteTriggerThresholdTable disman/event/mteTriggerConf disman/event/mteEvent disman/event/mteEventTable disman/event/mteEventSetTable disman/event/mteEventNotificationTable disman/event/mteEventConf disman/event/mteObjects disman/event/mteObjectsTable disman/event/mteObjectsConf disman/schedule/schedCore disman/schedule/schedConf disman/schedule/schedTable utilities/override utilities/execute utilities/iquery hardware/memory/hw_mem hardware/memory/memory_linux hardware/cpu/cpu hardware/cpu/cpu_linux mibII/kernel_linux mibII/ipAddr mibII/var_route mibII/route_write mibII/tcpTable mibII/udpTable mibII/vacm_context mibII/vacm_conf ip-mib/ip_scalars header_complex snmp-notification-mib/snmpNotifyFilterTable/snmpNotifyFilterTable agentx/protocol agentx/client agentx/master_admin agentx/agentx_config if-mib/ifTable/ifTable if-mib/ifXTable/ifXTable ip-mib/ipAddressTable/ipAddressTable ip-mib/inetNetToMediaTable/inetNetToMediaTable ip-mib/inetNetToMediaTable/inetNetToMediaTable_interface ip-mib/inetNetToMediaTable/inetNetToMediaTable_data_access ip-mib/ipSystemStatsTable/ipSystemStatsTable ip-mib/ipSystemStatsTable/ipSystemStatsTable_interface ip-mib/ipSystemStatsTable/ipSystemStatsTable_data_access ip-forward-mib/ipCidrRouteTable/ipCidrRouteTable ip-forward-mib/inetCidrRouteTable/inetCidrRouteTable tcp-mib/tcpConnectionTable/tcpConnectionTable tcp-mib/tcpListenerTable/tcpListenerTable udp-mib/udpEndpointTable/udpEndpointTable snmp-notification-mib/snmpNotifyFilterTable/snmpNotifyFilterTable_interface snmp-notification-mib/snmpNotifyFilterTable/snmpNotifyFilterTable_data_access if-mib/data_access/interface if-mib/ifTable/ifTable_interface if-mib/ifTable/ifTable_data_access if-mib/ifXTable/ifXTable_interface if-mib/ifXTable/ifXTable_data_access ip-mib/ipAddressTable/ipAddressTable_interface ip-mib/ipAddressTable/ipAddressTable_data_access ip-mib/data_access/arp_common ip-mib/data_access/arp_linux ip-mib/data_access/systemstats_common ip-mib/data_access/systemstats_linux ip-mib/data_access/scalars_linux ip-forward-mib/ipCidrRouteTable/ipCidrRouteTable_interface ip-forward-mib/ipCidrRouteTable/ipCidrRouteTable_data_access ip-forward-mib/inetCidrRouteTable/inetCidrRouteTable_interface ip-forward-mib/inetCidrRouteTable/inetCidrRouteTable_data_access tcp-mib/data_access/tcpConn_common tcp-mib/data_access/tcpConn_linux tcp-mib/tcpConnectionTable/tcpConnectionTable_interface tcp-mib/tcpConnectionTable/tcpConnectionTable_data_access tcp-mib/tcpListenerTable/tcpListenerTable_interface tcp-mib/tcpListenerTable/tcpListenerTable_data_access udp-mib/udpEndpointTable/udpEndpointTable_interface udp-mib/udpEndpointTable/udpEndpointTable_data_access if-mib/data_access/interface_linux if-mib/data_access/interface_ioctl ip-mib/data_access/ipaddress_common ip-mib/data_access/ipaddress_linux ip-forward-mib/data_access/route_common ip-forward-mib/data_access/route_linux ip-forward-mib/data_access/route_ioctl udp-mib/data_access/udp_endpoint_common udp-mib/data_access/udp_endpoint_linux ip-mib/data_access/ipaddress_ioctl
+      echo "unknown option $1"
+		echo "unknown suboption to --compile-subagent: $1"
+		echo "unknown suboption to --create-snmpv3-user: $1"
+  echo "Usage:"
+      echo /usr/bin/perl
+      echo /var/lib/snmp
+  echo "    --version         displays the net-snmp version number"
+         echo "You must specify a build directory."
+		    echo "You must specify an authentication algorithm or pass phrase"
+          echo "You must specify an authentication pass-phrase"
+		    echo "You must specify an encryption algorithm or pass phrase"
+          echo "You must specify a user name"
+	            echo "You must specify the extra cflags"
+	            echo "You must specify the extra ldflags"
+         echo "You must stop them in order to use this command."
+      else
+                else
+      } else {
+  } else {
+#endif /* DISABLE_MIB_LOADING */
+#endif /* HAVE_SIGNAL */
+    --env-separator)
+            "everything)\n"
+    --exec-prefix=*)
+    --exec-prefix)
+      exec_prefix=$optarg
+exec_prefix=/usr
+    exit(0);
+  exit(0);
+         exit 1
+        exit 1
+        exit(1);
+    exit(1);
+	            exit 1
+	  exit 1
+		    exit 1
+		exit 1
+    --external-agent-libs)
+    --external-libs)
+extern int netsnmp_running;
+      fi
+        fi
+          fi
+                fi
+	        fi
+    # finish file
+      for dir in $NSC_SRC_LIBDEPS; do
+      for dir in $NSC_SRC_LIBDIRS; do
+    for i in $cfiles ; do
+    fprintf(stderr,
+    fprintf(stderr, "Configuration directives understood:\n");
+      fprintf(stderr, "invalid option: -%c\n", arg);
+    fprintf(stderr, "NET-SNMP version: %s\n", netsnmp_get_version());
+        fprintf(stderr, "Unknown parser option to -P: %c.\n", *cp);
+            "  -f\t\t\tDo not fork() from the calling shell.\n"
+/* generated from net-snmp-config */
+    --help)
+            "  -H\t\t\tdisplay a list of configuration file directives\n"
+            "  -h\t\t\tdisplay this help message\n"
+# $Id: net-snmp-config.in 18651 2010-05-06 06:33:37Z bvassche $
+      if /bin/ps -e | egrep ' snmpd *$' > /dev/null 2>&1 ; then
+      if (cp != NULL) {
+#ifdef __GNUC__
+#ifdef HAVE_SIGNAL
+#ifdef SIGINT
+#ifdef SIGTERM
+  if (do_help) {
+    if (!dont_fork) {
+      if grep "init_$name" $i ; then
+        if grep "init_$name" $name.h; then
+          if grep "init_$outname" $outname.h; then
+#ifndef DISABLE_MIB_LOADING
+      if (netsnmp_daemonize(1, snmp_stderrlog_status()) != 0)
+      if (optarg != NULL) {
+      if (snmp_log_options(optarg, argc, argv) < 0) {
+      if test "$?" != 0 -o ! -f "$tmpfile" ; then
+      if test "$build_dir" != "$NSC_SRCDIR" -a "$NSC_SRCDIR" != "NET-SNMP-SOURCE-DIR"
+      if test ! -d $build_dir/snmplib/.libs ; then
+      if test ! -d $outdir ; then
+      if test ! -d $outfile ; then
+      if test -f $build_dir/net-snmp-config.in ; then
+      if test -f $name.h; then
+        if test -f $outname.h; then
+      if test -f $outname ; then
+      if test -f $tmpfile; then
+      if test "x$1" = "x" ; then
+    if test "x$1" = "x"; then
+	        if test "x$1" = "x" ; then
+		if test "x$1" = "x" ; then
+if test "x$1" = "x"; then
+      if test "x$apassphrase" = "x" ; then
+      if test "x$build_dir" = "x" ; then
+      if test "x$norm" != "x1" ; then
+      if test "x$NSC_SRCDIR" != "xNET-SNMP-SOURCE-DIR" ; then
+if test "x$NSC_SRCDIR" = "x." ; then
+                if test "x$outname" = "x"; then
+      if test "x$outname" = "x"; then
+      if test "x$prompt" = "xyes" -a "x$xpassphrase" = "x" ; then
+if test "x$usage" = "xyes"; then
+      if test "x$user" = "x" ; then
+    # If we weren't even given that, then bomb out
+    # If we were only given a single filename
+  if [ "x$shifted" = "x" ] ; then
+      # in case it hasn't ever been started yet, start it.
+  /* In case we received a request to stop (kill -TERM or kill -INT) */
+includedir=${prefix}/include
+#include <net-snmp/agent/net-snmp-agent-includes.h>
+#include <net-snmp/net-snmp-config.h>
+#include <net-snmp/net-snmp-includes.h>
+#include <signal.h>
+    --indent-options|--in*)
+# information about how the net-snmp package was compiled.  The
+# information is particularily useful for applications that need to
+  init_agent(app_name);
+    /* initialize tcpip, if necessary */
+  /* initialize the agent library */
+  /* initialize your mib code here */
+  init_snmp("$outname");
+  int arg;
+  int dont_fork = 0, do_help = 0;
+      # is it the src dir?
+            --ldflags)
+	        ldflags=$1
+    --ldflags|--ld*)
+libdir=${exec_prefix}/lib
+    --libdir|--lib-dir)
+    --libs)
+      line="createUser $user $Aalgorithm \"$apassphrase\" $Xalgorithm $xpassphrase"
+      line="$token $user"
+# link against the net-snmp libraries and hence must know about any
+    #################################################### linking
+            "  -L LOGOPTS\t\tToggle various defaults controlling logging:\n");
+main (int argc, char **argv)
+  /* main loop here... */
+      # make sure we can find build dir
+                md5|sha)
+            "  -M DIR[:...]\t\tlook in given list of directories for MIBs\n");
+          mkdir $outdir
+                       "m:M:"
+            "  -m MIB[:...]\t\tload given list of MIBs (ALL loads "
+                       "n:"
+            "\n"
+      name=`basename $1 | sed 's/\.[co]$//'`
+      name=`basename $i | sed 's/\.[co]$//'`
+    --netsnmp-agent-libs)
+                           NETSNMP_DS_AGENT_NO_ROOT_ACCESS, 1);
+                           NETSNMP_DS_AGENT_ROLE, 1);
+                              NETSNMP_DS_AGENT_X_SOCKET, optarg);
+                              NETSNMP_DS_LIB_APPTYPE, app_name);
+                             NETSNMP_DS_LIB_DUMP_PACKET, 1);
+    netsnmp_ds_set_boolean(NETSNMP_DS_APPLICATION_ID,
+      netsnmp_ds_set_boolean(NETSNMP_DS_LIBRARY_ID,
+        netsnmp_ds_set_string(NETSNMP_DS_APPLICATION_ID,
+        netsnmp_ds_set_string(NETSNMP_DS_LIBRARY_ID,
+    --netsnmp-libs)
+    netsnmp_running = 0;
+  netsnmp_running = 1;
+            --norm)
+	        norm=1
+NSC_AGENTLIBS=" -Wl,-E"
+NSC_BASE_AGENT_LIBS="-lnetsnmpagent -lnetsnmphelpers -lnetsnmpmibs -lnetsnmp"
+NSC_BASE_SUBAGENT_LIBS="-lnetsnmpagent -lnetsnmphelpers -lnetsnmp"
+      NSC_EXEC_PREFIX=${exec_prefix}
+NSC_EXEC_PREFIX=$exec_prefix
+NSC_INCDIR=${NSC_PREFIX}/include
+NSC_INCLUDEDIR=${includedir}
+      NSC_INCLUDEDIR=${prefix}/include
+NSC_LDFLAGS="-Wl,-Bsymbolic-functions -Wl,-z,relro"
+      NSC_LIBDIR=-L${exec_prefix}/lib
+NSC_LIBDIR=-L${libdir}
+      NSC_LIBDIR=-L${prefix}/lib
+NSC_LIBS=""
+      NSC_PREFIX=${prefix}
+NSC_PREFIX=$prefix
+NSC_SRCDIR=.
+   NSC_SRCDIR="NET-SNMP-SOURCE-DIR"
+NSC_SRC_LIBDEPS="agent/.libs/libnetsnmpmibs.a agent/.libs/libnetsnmpagent.a agent/helpers/.libs/libnetsnmphelpers.a snmplib/.libs/libnetsnmp.a"
+NSC_SRC_LIBDIRS="agent/.libs snmplib/.libs agent/helpers/.libs"
+    *) optarg= ;;
+    -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+            "OPTIONS:\n", prog);
+# other libraries that must be linked in as well.
+      outdir="/var/lib/snmp"
+      outfile="$outdir/snmpd.conf"
+      outfile="${prefix}/share/snmp/snmpd.conf"
+                  outname=$1
+        outname=`basename $cfiles | sed 's/\.[co]$//'`
+  /* $outname will be used to read $outname.conf files. */
+                       "P:"
+            "parsing:\n");
+    --perlprog|--perl)
+    --persistent-directory|--persistent-dir)
+            "  -P MIBOPTS\t\tToggle various defaults controlling mib "
+    --prefix=*)
+      prefix=$optarg
+    --prefix|--pre*)
+prefix=/usr
+          prompt=yes
+	  read apassphrase
+    read_config_print_usage("  ");
+	  read user
+	  read xpassphrase
+      result="-I$build_dir/include"
+          result="$result $build_dir/$dir"
+          result="$result -I$NSC_SRCDIR/include"
+          result="$result -L$build_dir/$dir"
+RETSIGTYPE
+         return
+        rm -f $tmpfile
+      rm -f $tmpfile
+	    -ro)
+        setenv("MIBDIRS", optarg, 1);
+        setenv("MIBS", optarg, 1);
+      shift
+          shift
+                  shift
+	        shift
+		    shift
+      shifted=1
+  signal(SIGINT, stop_server);
+  signal(SIGTERM, stop_server);
+    --snmpconfpath|--SNMPCONFPATH)
+    --snmpd-module-list|--mod*)
+    snmp_log_options_usage("\t\t\t  ", stderr);
+    snmp_mib_toggle_options_usage("\t\t\t  ", stderr);
+      snmp_set_do_debugging(1);
+  snmp_shutdown(app_name);
+  SOCK_CLEANUP;
+    SOCK_STARTUP;
+    --srcdir)
+static void
+stop_server(UNUSED int a) {
+    switch (arg) {
+      then
+    # then use that as the base of the output name
+# this shell script is designed to merely dump the configuration
+      tmpfile=netsnmptmp.$$.c
+	        token="rouser"
+      token=rwuser
+            "TOKENs\n"
+          touch $outfile
+            "\t\t\t   (ALL gives extremely verbose debugging output)\n"
+  unset shifted
+        usage(argv[0]);
+      usage(argv[0]);
+usage(const char *prog)
+            "USAGE: %s [OPTIONS]\n"
+      usage="yes"
+  usage="yes"
+          user=$1
+      # use this one == --netsnmp-agent-libs + --external-libs
+      # use this one == --netsnmp-libs + --external-libs
+        /usr/bin/find $NSC_SRCDIR -name "*.c" -print | xargs grep DEBUGMSGT | grep \" | cut -f 2 -d\" | sort -u
+      version();
+    --version|--ver*)
+version(void)
+            "  -v\t\t\tdisplay package version number\n"
+                       "vx:")) != EOF) {
+    /* we are a subagent */
+  while ((arg = getopt(argc, argv, "dD:fhHL:"
+  while(netsnmp_running) {
+    while test "$1" != ""; do
+  while test "x$done" = "x" -a "x$1" != "x" -a "x$usage" != "xyes"; do
+      while test "x$done" = "x" -a "x$1" != "x" ; do
+		    Xalgorithm=$1
+      Xalgorithm="DES"
+		    Xalgorithm=`echo $1 | tr a-z A-Z`
+		    xpassphrase=$1
+            "  -x TRANSPORT\tconnect to master agent using TRANSPORT\n");
+	    -X|-x)

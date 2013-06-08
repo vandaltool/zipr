@@ -1,0 +1,588 @@
+        ]
+         ("1. For checking for the proper build environment for the HPLIP supplied tarball (.tar.gz or .run),", "", "note", False),
+         ("2. For checking for the proper runtime environment for a distro supplied package (.deb, .rpm, etc),", "", "note", False),
+# along with this program; if not, write to the Free Software
+# (at your option) any later version.
+# Author: Don Welch
+                    back_end, is_hp, bus, model, serial, dev_file, host, zc, port = \
+    back_end = m.group(1).lower() or ''
+                    break
+build_str = "HPLIP will not build, install, and/or function properly without this dependency."
+                            bus, dev, vid, pid, mfg = match.groups()
+    bus = m.group(2).lower() or ''
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# (c) Copyright 2003-2009 Hewlett-Packard Development Company, L.P.
+                #check version of PyQt
+            # check version of Qt
+# -*- coding: utf-8 -*-
+                    commands_to_run = []
+                            commands_to_run.append(utils.cat(package_mgr_cmd))
+                        commands_to_run.extend(commands)
+         ("Compile and run-time checks:", "-b or --both (default)", "option", False),
+         ("Compile-time check:", "-c or --compile", "option", False),
+            continue
+                    continue
+                            continue
+                                continue
+                                    continue
+    core =  CoreInstall(MODE_CHECK)
+    core.init()
+    core.set_plugin_version()
+        cups_conf = '/etc/cups/cupsd.conf'
+        cups_ok = False
+    cups_ok = True
+        cups_printers = []
+                cups_printers.append((printer_name, device_uri))
+                            d.close()
+    dd = core.dependencies.keys()
+                                    d = device.Device(deviceuri)
+                            d = device.Device(device_uri)
+            dd.remove('cups-ddk')
+    dd.sort()
+		# Debian/ Ubuntu place hpaio in /etc/sane.d/dll.d/hplip, so lets check there too
+def parseDeviceURI(device_uri):
+def usage(typ='text'):
+            del qt
+                        desc = ''
+                        desc = nickname_pat.search(f).group(1)
+    dev_file = m.group(5) or ''
+device_avail = False
+    device_avail = True
+                                deviceid = ''
+                                deviceid = d.getDeviceID()
+                #devices = device.probeDevices(['par'])
+                devices = device.probeDevices(['usb'])
+#       (device_uri, back_end, is_hp, bus, model, serial, dev_file, host, zc, port))
+                device_uri = match.group(2)
+                    device_uri.startswith('ipp://'):
+                            devnode = os.path.join("/", "dev", "bus", "usb", bus, dev)
+                                devnode = os.path.join("/", "proc", "bus", "usb", bus, dev)
+                                d = None
+                    d = None
+__doc__ = """Check the existence and versions of HPLIP dependencies. (Run as 'python ./check.py' from the HPLIP tarball before installation.)"""
+                                d.open()
+           (d == 'pyqt4' and ui_toolkit != 'qt4'):
+                elif back_end == 'hp':
+                    elif back_end == 'hp' and 'HP Fax' in desc:
+                    elif back_end not in ('hp', 'hpfax'):
+                        elif bus == 'net':
+                elif core.dependencies[d][4] == DEPENDENCY_COMPILE_TIME:
+                elif core.dependencies[d][4] == DEPENDENCY_RUN_TIME:
+                    elif len(commands_to_run) > 1:
+        elif o == '-g':
+        elif o == '--help-desc':
+        elif o == '--help-man':
+        elif o == '--help-rest':
+        elif o in ('-b', '--both'):
+        elif o in ('-c', '--compile'):
+        elif o in ('-l', '--logging'):
+        elif o in ('-r', '--runtime', '--run'):
+        elif o == '-t':
+    elif time_flag == DEPENDENCY_COMPILE_TIME:
+    elif time_flag == DEPENDENCY_RUN_TIME:
+                                else:
+                            else:
+                    else:
+                #else:
+                else:
+            else:
+        else:
+    #else:
+    else:
+#    else:
+                                error_code, deviceid = d.getPML(pml.OID_DEVICE_ID)
+                                #error_code = pml.ERROR_COMMAND_EXECUTION
+                    except AttributeError:
+                except AttributeError:
+            except AttributeError:
+        except AttributeError:
+                                except Error:
+                            except Error:
+                        except Error:
+                except Error:
+                            except Error, e:
+    except getopt.GetoptError, e:
+            except ImportError:
+        except ImportError:
+    except ImportError:
+#    except ImportError:
+except ImportError:
+                    except IOError:
+            except IOError:
+        except (IOError, OSError):
+            except (IOError, OSError), e:
+except KeyboardInterrupt:
+                    except ValueError:
+        except (ValueError, TypeError):
+                        #f.add((d, dd[0]))
+                        f.add((d, dd[0]))
+                        '', False, '', '', '', '', '', '', 1
+            f = file(cups_conf, 'r')
+                f = file('/etc/sane.d/dll.conf', 'r')
+                       f = file('/etc/sane.d/dll.d/hplip', 'r')
+                    f = file(ppd, 'r').read(4096)
+                    #f.header = ("Device URI", "Model")
+                    f.header = ("Device URI", "Model")
+                    finally:
+            fmt = False
+fmt = True
+                        for c in commands_to_run:
+            for c in overall_commands_to_run:
+                    #for d, dd in devices.items():
+                    for d, dd in devices.items():
+    for d in dd:
+                        for line in f:
+                for line in f:
+            for l in f:
+    for l in tui.format_paragraph("1. Compile-time check mode (-c or --compile): Use this mode before compiling the HPLIP supplied tarball (.tar.gz or .run) to determine if the proper dependencies are installed to successfully compile HPLIP."):
+    for l in tui.format_paragraph("2. Run-time check mode (-r or --run): Use this mode to determine if a distro supplied package (.deb, .rpm, etc) or an already built HPLIP supplied tarball has the proper dependencies installed to successfully run."):
+    for l in tui.format_paragraph("3. Both compile- and run-time check mode (-b or --both) (Default): This mode will check both of the above cases (both compile- and run-time dependencies)."):
+    for o, a in opts:
+                    for o in output.splitlines():
+            for p in cups_printers:
+        for p in output.splitlines():
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+                        found = False
+                found = False
+                                found = True
+                        found = True
+                    #f.output()
+                    f.output()
+from base.g import *
+    from base import device, pml
+from base import utils, tui, models
+from installer.core_install import *
+from installer import dcheck
+            from PyQt4 import QtCore
+                    #f = tui.Formatter()
+                    f = tui.Formatter()
+                                    getfacl = os.path.join(getfacl, "getfacl")
+                                getfacl = utils.which('getfacl')
+# GNU General Public License for more details.
+        groups = os.path.join(groups, 'groups')
+    groups = utils.which('groups')
+            ['help', 'help-rest', 'help-man', 'help-desc', 'logging=',
+        home = sys_conf.get('dirs', 'home')
+    host = m.group(6) or ''
+		    hpaiomatched=re.match('hpaio',lineNoSpace)
+            hpmudext_avail = False
+            hpmudext_avail = True
+                if back_end == 'hpfax':
+                    if back_end == 'hpfax' and not 'HP Fax' in desc:
+                        if bus in ('par', 'usb'):
+    if bus == 'net':
+    if bus not in ('usb', 'net', 'bt', 'fw', 'par'):
+                    if commands:
+                            if core.check_for_plugin():
+                if core.dependencies[d][0]:
+                if core.dependencies[d][4] == DEPENDENCY_RUN_AND_COMPILE_TIME:
+                if core.distro_supported():
+            if core.have_dependencies[d]:
+    #if core.hpoj_present:
+    if cups_ok:
+        if cups_printers:
+    if dcheck.check_ps(['dbus-daemon']):
+        if device_avail:
+                if device_avail and is_hp:
+                #if devices:
+                if devices:
+                if device_uri.startswith("cups-pdf:/") or \
+                        if d is not None:
+        if (d == 'pyqt' and ui_toolkit != 'qt3') or \
+                if found:
+                                if getfacl:
+    if groups:
+                            if 'hpaio' in line:
+#                   if 'hpaio' in line:
+                    if hpaiomatched:
+        if hpmudext_avail:
+                #if is_hp:
+                    if len(commands_to_run) == 1:
+        if len(minor) > 1 and minor[1] >= '0' and minor[1] <= '9':
+                    #if level not in ('debug', 'debug2'):
+        if "lpadmin" in output:
+        if "lp " in output:
+            if lsusb:
+        if major > '1' or (major == '1' and minor >= 4):
+                    if maj_ver < MINIMUM_PYQT_MAJOR_VER or \
+                        if match is not None:
+    if m is None:
+                if m is not None:
+                    #if not core.have_dependencies['ppdev']:
+                            if not deviceid:
+                                if not d.supported:
+    if not fmt:
+		if not found:
+    if not host:
+    if not log.set_level(log_level):
+                            if not os.path.exists(devnode):
+    if num_errors:
+        if num_errors == 1:
+        if o in ('-h', '--help'):
+    if os.getenv("HPLIP_DEBUG"):
+                            if os.path.exists(devnode):
+    if os.path.exists(log_file):
+                if os.path.exists(ppd):
+                if output:
+        if overall_commands_to_run:
+                        if package_mgr_cmd:
+                    if packages_to_install:
+                        if plugin in (PLUGIN_REQUIRED, PLUGIN_OPTIONAL):
+                                if plugin == PLUGIN_REQUIRED:
+        if port == 0:
+            #if prop.par_build:
+            if prop.usb_build:
+                if pyqtVersion.find('snapshot') >= 0:
+            if qtMajor < MINIMUM_QT_MAJOR_VER:
+                            if result_code == hpmudext.HPMUD_R_OK:
+        if scanning_enabled:
+#    if sip_ver is not None:
+        if status == 0:
+    if status == 0:
+    if status == 0 and (string.count(output, '.') == 1 or string.count(output, '.') == 2):
+        if string.count(output, '.') == 1:
+        if string.count(output, '.') == 2:
+    if time_flag == DEPENDENCY_RUN_AND_COMPILE_TIME:
+        if time_flag == DEPENDENCY_RUN_AND_COMPILE_TIME or time_flag == core.dependencies[d][4]:
+    if time_flag in (DEPENDENCY_RUN_TIME, DEPENDENCY_RUN_AND_COMPILE_TIME):
+    if typ == 'text':
+    if  ui_toolkit == 'qt3':
+                if utils.which('scanimage'):
+        if v:
+    if ver_maj == 2:
+        if ver_min >= 1:
+import commands
+            import cupsext
+        import dbus
+import getopt
+            import hpmudext
+import os
+            import pcardext
+            import PyQt4
+#        import pyqtconfig
+            import qt
+import re
+                import scanext
+    import string
+import sys
+    is_hp = (back_end in ('hp', 'hpfax', 'hpaio'))
+# it under the terms of the GNU General Public License as published by
+                    level = m.group(1).lower()
+		    lineNoSpace = re.sub(r'\s', '', line) 
+        log.debug("***")
+        log.debug(cups_printers)
+                                log.debug(deviceid)
+    log.debug("Device library is not avail.")
+    log.debug("Log file=%s" % log_file)
+                    log.debug(output)
+#   log.debug("%s: back_end '%s' is_hp '%s' bus '%s' model '%s' serial '%s' dev_file '%s' host '%s' zc '%s' port '%s' " %
+    log.debug("sys.version_info = %s" % repr(ver))
+            log.error("1 error or warning.")
+                    log.error("A non-stable snapshot version of PyQt is installed (%s)." % pyqtVersion)
+                                log.error("Communication status: Failed")
+                                #log.error("Communication with device failed.")
+                log.error("Could not access file: %s" % e.strerror)
+            log.error("%d errors and/or warnings." % num_errors)
+                            log.error("Device initialization failed.")
+                                log.error(e.msg)
+        log.error(e.msg)
+                log.error("'/etc/sane.d/dll.conf' not found. Is SANE installed?")
+                       log.error("'/etc/sane.d/dll.d/hplip' not found.")
+                        log.error("HPLIP may not function properly with the version of PyQt that is installed (%d.%d.%d)." % (maj_ver, min_ver, pat_ver))
+                        log.error("Incorrect PPD file for a print queue '%s'. Print queues must not use 'HP-Fax-hplip.ppd'." % printer_name)
+                        log.error("Incorrect PPD file for fax queue '%s'. Fax queues must use 'HP-Fax-hplip.ppd'." % printer_name)
+                log.error("Incorrect version of Qt installed. Ver. 3.0.0 or greater required.")
+            log.error("NOT FOUND OR FAILED TO LOAD!")
+            log.error("NOT FOUND OR FAILED TO LOAD! Please reinstall HPLIP and check for the proper installation of cupsext.")
+            log.error("NOT FOUND OR FAILED TO LOAD! Please reinstall HPLIP and check for the proper installation of hpmudext.")
+            log.error("NOT FOUND OR FAILED TO LOAD! Please reinstall HPLIP and check for the proper installation of pcardext.")
+                log.error("NOT FOUND OR FAILED TO LOAD! Please reinstall HPLIP and check for the proper installation of scanext.")
+                    log.error("Not found. SANE backend 'hpaio' NOT properly setup (needs to be added to /etc/sane.d/dll.conf).")
+                    log.error("NOT FOUND! This is a REQUIRED%s dependency. Please make sure that this dependency is installed before installing or running HPLIP." % s)
+                        #log.error("'ppdev' kernel module not loaded.")
+                                    log.error("Required plug-in status: Not installed")
+                    log.error("scanimage not found.")
+#        log.error("SIP not installed or version not found.")
+        log.error("Status: (Not available. CUPS may not be installed or not running.)")
+    log.error("User exit")
+            log.error("User needs to be member of group 'lpadmin' to manage printers.")
+            log.error("User needs to be member of group 'lp' to enable print, scan & fax.")
+                        log.error("Ver. %d.%d or greater required." % (MINIMUM_PYQT_MAJOR_VER, MINIMUM_PYQT_MINOR_VER))
+            log.error("Version %d.%d.%d installed. Please update to Python >= 2.1" % ver[:3])
+        #log.error("Yes, HPOJ is running. HPLIP is not compatible with HPOJ. To run HPLIP, please remove HPOJ.")
+    log_file = os.path.normpath('./hp-check.log')
+                log.info()
+            log.info()
+        log.info()
+    log.info()
+#    log.info()
+log.info()
+                            log.info(c)
+                log.info(c)
+                        log.info(commands_to_run[0])
+                                log.info("Communication status: Good")
+    log.info(core.sys_uname_info)
+        log.info("dbus daemon is running.")
+                                log.info("    Device node: %s" % devnode)
+                                log.info("    Device URI: %s" %  deviceuri)
+                log.info("Device URI: %s" % device_uri)
+log.info("Done.")
+                    log.info("error_log is set to level: %s" % level)
+            log.info("HPLIP %s currently installed in '%s'." % (v, home))
+        log.info("http://hplip.sourceforge.net/install/index.html\n")
+                #log.info("Installed in HPLIP?: %s" % x)
+        log.info(l)
+    log.info(log.bold("Basic system information:"))
+        log.info(log.bold("Checking 'cupsext' CUPS extension..."))
+    log.info(log.bold("Checking for CUPS..."))
+    log.info(log.bold("Checking for dbus/python-dbus..."))
+            log.info(log.bold("Checking for dependency: %s..." % core.dependencies[d][2]))
+                    log.info(log.bold("Checking for permissions of USB attached printers..."))
+        log.info(log.bold("Checking 'hpmudext' I/O extension..."))
+                log.info(log.bold("Checking output of 'scanimage -L'..."))
+        log.info(log.bold("Checking 'pcardext' Photocard extension..."))
+        log.info(log.bold("Checking PyQt 3.x version..."))
+        log.info(log.bold("Checking PyQt 4.x version..."))
+    log.info(log.bold("Checking Python version..."))
+            log.info(log.bold("Checking 'scanext' SANE scanning extension..."))
+#    log.info(log.bold("Checking SIP version..."))
+            log.info(log.bold("Current contents of '/etc/hp/hplip.conf' file:"))
+            log.info(log.bold("Current contents of '~/.hplip/hplip.conf' file:"))
+            log.info(log.bold("Current contents of '/var/lib/hp/hplip.state' file:"))
+        log.info(log.bold("Currently installed HPLIP version..."))
+    log.info(log.bold("Distribution:"))
+            log.info(log.bold("'hpaio' in '/etc/sane.d/dll.conf'..."))
+		    log.info(log.bold("'hpaio' in '/etc/sane.d/dll.d/hplip'..."))
+                log.info(log.bold('-'*len(printer_name)))
+    #log.info(log.bold("\nHPOJ running?"))
+    log.info(log.bold("Note: hp-check can be run in three modes:"))
+                log.info(log.bold(printer_name))
+    log.info(log.bold("Saving output in log file: %s" % log_file))
+            log.info(log.bold("Summary of needed commands to run to satisfy missing dependencies:"))
+        log.info(log.green("No errors or warnings."))
+            log.info(log.green("User member of group 'lpadmin'."))
+            log.info(log.green("User member of group 'lp'. Enables print/ scan/ fax."))
+                                log.info("    Mode: 0%o" % (st_mode & 0777))
+                            log.info("\nHP Device 0x%x at %s:%s: " % (int(pid, 16), bus, dev))
+    log.info("\nInitializing. Please wait...")
+                    #log.info("No devices found.")
+                    log.info("No devices found.")
+        #log.info("No, HPOJ is not running (OK).")
+            log.info("Not found.")
+                log.info("OK, found.")
+            log.info("OK, found.")
+                    log.info("OK, found. SANE backend 'hpaio' is properly set up.")
+            log.info("OK, version %d.%d.%d installed" % ver[:3])
+                        log.info("OK, version %d.%d installed." % (maj_ver, min_ver))
+            log.info("OK, version %s installed." % QtCore.PYQT_VERSION_STR)
+#        log.info("OK, Version %s installed" % sip_ver)
+                                    log.info("Optional plug-in status: Installed")
+                                    log.info(output)
+                    log.info(output)
+                log.info(output)
+            log.info(output)
+        log.info("Please refer to the installation instructions at:")
+                    log.info("PPD Description: %s" % desc)
+                    log.info("PPD: %s" % ppd)
+                    log.info("Printer status: %s" % output.replace("\n", ""))
+            log.info("python-dbus version: %s" % dbus.__version__)
+                log.info("python-dbus version: %s" % '.'.join([str(x) for x in dbus.version]))
+                                    log.info("Required plug-in status: Installed")
+    log.info("%s %s" % (core.distro_name, core.distro_version))
+        log.info("Status: %s" % output.strip())
+                        log.info("To install this dependency, execute these commands:")
+                        log.info("To install this dependency, execute this command:")
+                log.info("Type: %s" % x)
+            log.info("Version: %s" % output.strip())
+            log_level = a.lower().strip()
+            log_level = 'debug'
+    log_level = 'info'
+        log.no_formatting()
+                        #log.note("and change the line near the top of the file that begins with 'LogLevel' to read:")
+                        #log.note("For troubleshooting printing issues, it is best to have the CUPS 'LogLevel'")
+                        #log.note("LogLevel debug")
+                        #log.note("Now, when you print, helpful debug information will be saved to the file:")
+                        #log.note("Save the file and then restart CUPS (see your OS/distro docs on how to restart CUPS).")
+                        #log.note("set to 'debug'. To set the LogLevel to debug, edit the file %s (as root)," % cups_conf)
+                        #log.note("tail -f /var/log/cups/error_log")
+        log.note("To check for compile-time only dependencies, re-run hp-check with the -c parameter (ie, hp-check -c).")
+        log.note("To check for run-time only dependencies, re-run hp-check with the -r parameter (ie, hp-check -r).")
+                        #log.note("/var/log/cups/error_log")
+                        #log.note("You can monitor this file by running this command in a console/shell:")
+        log.set_level('debug')
+    log.set_logfile(log_file)
+    log.set_module(__mod__)
+    log.set_where(log.LOG_TO_CONSOLE_AND_FILE)
+        log.warn("dbus daemon is not running.")
+                                log.warn("    Device URI: (Makeuri FAILED)")
+            log.warn("No queues found.")
+                    log.warn("NOT FOUND! This is an OPTIONAL%s dependency. Some HPLIP functionality may not function properly." %s)
+                                    log.warn("Optional plug-in status: Not installed")
+                        log.warn("Printer is not HPLIP installed. Printers must use the hp: or hpfax: CUPS backend to function in HPLIP.")
+                log.warn("python-dbus imported OK, but unknown version.")
+        log.warn("python-dbus not installed.")
+            log.warn("%s file not found or not accessible." % cups_conf)
+            log.warn("Version: (cups-config) Not available. Unable to determine installed version of CUPS.)")
+        lpstat_pat = re.compile(r"""(\S*): (.*)""", re.IGNORECASE)
+                lsusb = os.path.join(lsusb, 'lsusb')
+                    lsusb_pat = re.compile("""^Bus\s([0-9a-fA-F]{3,3})\sDevice\s([0-9a-fA-F]{3,3}):\sID\s([0-9a-fA-F]{4,4}):([0-9a-fA-F]{4,4})(.*)""", re.IGNORECASE)
+            lsusb = utils.which('lsusb')
+            major, minor, release = string.split(output, '.', 3)
+            major, minor = string.split(output, '.', 2)
+                        maj_ver = int(maj_ver)
+                        (maj_ver == MINIMUM_PYQT_MAJOR_VER and min_ver < MINIMUM_PYQT_MINOR_VER):
+                        maj_ver, min_ver, pat_ver = 0, 0, 0
+                (maj_ver, min_ver, pat_ver) = pyqtVersion.split('.')
+                match = lpstat_pat.search(p)
+                        match = lsusb_pat.search(o)
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            minor = ord(minor[0]) - ord('0')
+            minor = ((ord(minor[0]) - ord('0')) * 10) + (ord(minor[1]) - ord('0'))
+                        min_ver = int(min_ver)
+    model = m.group(3) or ''
+__mod__ = 'hp-check'
+                m = pat_cups_error_log.match(l)
+    m = pat_deviceuri.match(device_uri)
+                    nickname_pat = re.compile(r'''\*NickName:\s*\"(.*)"''', re.MULTILINE)
+            #non_hp = False
+                #    non_hp = True
+num_errors = 0
+                                num_errors += 1
+                        num_errors += 1
+                       num_errors += 1
+                    num_errors += 1
+                num_errors += 1
+            num_errors += 1
+        #num_errors += 1
+        num_errors += 1
+#        num_errors += 1
+                        ok = True
+        opts, args = getopt.getopt(sys.argv[1:], 'hl:gtcrb',
+        os.remove(log_file)
+                                    os.stat(devnode)
+                output = file('/etc/hp/hplip.conf', 'r').read()
+                output = file(os.path.expanduser('~/.hplip/hplip.conf'), 'r').read()
+                output = file(os.path.expanduser('/var/lib/hp/hplip.state'), 'r').read()
+overall_commands_to_run = []
+                    overall_commands_to_run.extend(commands_to_run)
+                        package_mgr_cmd = core.get_distro_data('package_mgr_cmd')
+                    packages_to_install, commands = core.get_dependency_data(d)
+                            packages_to_install = ' '.join(packages_to_install)
+                        parseDeviceURI(device_uri)
+                pass
+                                pass
+#        pass
+pat_cups_error_log = re.compile("""^loglevel\s?(debug|debug2|warn|info|error|none)""", re.I)
+#pat_deviceuri = re.compile(r"""(.*):/(.*?)/(\S*?)\?(?:serial=(\S*)|device=(\S*)|ip=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[^&]*))(?:&port=(\d))?""", re.I)
+pat_deviceuri = re.compile(r"""(.*):/(.*?)/(\S*?)\?(?:serial=(\S*)|device=(\S*)|ip=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[^&]*)|zc=(\S+))(?:&port=(\d))?""", re.I)
+                        pat_ver = int(pat_ver)
+                        plugin = d.mq.get('plugin', PLUGIN_NONE)
+            port = 1
+            port = int(port)
+    port = m.group(8) or 1
+                ppd = os.path.join('/etc/cups/ppd', printer_name + '.ppd')
+                #print back_end, is_hp, bus, model, serial, dev_file, host, zc, port
+                            #print deviceid
+            print __doc__,
+                printer_name, device_uri = p
+                printer_name = match.group(1)
+                            #print error_code
+        # PyQt 3
+        # PyQt 4
+                    pyqtVersion += '.0'
+                    pyqtVersion = qt.PYQT_VERSION
+                    pyqtVersion = qt.PYQT_VERSION_STR
+            qtMajor = int(qt.qVersion().split('.')[0])
+        raise Error(ERROR_INVALID_DEVICE_URI)
+                            result_code, deviceuri = hpmudext.make_usb_uri(bus, dev)
+    return back_end, is_hp, bus, model, serial, dev_file, host, zc, port
+             'run', 'runtime', 'compile', 'both'])
+         ("Run-time check:", "-r or --run", "option", False),
+                    s = ''
+        scanning_enabled = utils.to_bool(sys_conf.get('configure', 'scanner-build', '0'))
+                    s = '/COMPILE TIME ONLY'
+    serial = m.group(4) or ''
+#    sip_ver = None
+#        sip_ver = pyqtconfig.Configuration().sip_version_str
+                    s = '/RUNTIME ONLY'
+        status, output = utils.run('cups-config --version')
+    status, output = utils.run('cups-config --version')
+        status, output = utils.run(groups)
+                    status, output = utils.run('lpstat -p%s' % printer_name)
+    status, output = utils.run('lpstat -r')
+        status, output = utils.run('lpstat -v')
+                    status, output = utils.run("scanimage -L")
+                status, output = utils.run("%s -d03f0:" % lsusb)
+                                    status, output = utils.run("%s %s" % (getfacl, devnode))
+# Std Lib
+                                st_mode, st_ino, st_dev, st_nlink, st_uid, st_gid, \
+                                    st_size, st_atime, st_mtime, st_ctime = \
+            sys.exit(0)
+    sys.exit(0)
+            sys.exit(1)
+        sys.exit(1)
+# the Free Software Foundation; either version 2 of the License, or
+    # This can fail due to hpmudext not being present
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+            time_flag = DEPENDENCY_COMPILE_TIME
+            time_flag = DEPENDENCY_RUN_AND_COMPILE_TIME
+time_flag = DEPENDENCY_RUN_AND_COMPILE_TIME
+            time_flag = DEPENDENCY_RUN_TIME
+__title__ = 'Dependency/Version Check Utility'
+                                try:
+                            try:
+                        try:
+                    try:
+                try:
+            try:
+        try:
+    try:
+#    try:
+		    try:
+        tui.header("COMPILE AND RUNTIME DEPENDENCIES")
+        tui.header("COMPILE TIME DEPENDENCIES")
+                #tui.header("DISCOVERED PARALLEL DEVICES")
+                tui.header("DISCOVERED USB DEVICES")
+        tui.header("HPLIP INSTALLATION")
+        tui.header("INSTALLED CUPS PRINTER QUEUES")
+        tui.header("PYTHON EXTENSIONS")
+        tui.header("RUNTIME DEPENDENCIES")
+            tui.header("SANE CONFIGURATION")
+    tui.header("SUMMARY")
+    tui.header("SYSTEM INFO")
+                    tui.header("USB I/O SETUP")
+    tui.header("USER GROUPS")
+    ui_toolkit = sys_conf.get('ui_toolkit', 'qt4')
+            usage()
+        usage()
+USAGE = [(__doc__, "", "name", True),
+            usage('man')
+            usage('rest')
+         ("Usage: %s [OPTIONS]" % __mod__, "", "summary", True),
+         ("use the --compile or --both switches.", "", "note", False),
+         ("use the --runtime switch.", "", "note", False),
+#!/usr/bin/python
+    utils.format_text(USAGE, typ, __title__, __mod__, __version__)
+        utils.log_title(__title__, __version__)
+    utils.log_title(__title__, __version__)
+         utils.USAGE_HELP,
+         utils.USAGE_LOGGING1, utils.USAGE_LOGGING2, utils.USAGE_LOGGING3,
+         utils.USAGE_LOGGING_PLAIN,
+         utils.USAGE_NOTES,
+         utils.USAGE_OPTIONS,
+    ver_maj = ver[0]
+    ver_min = ver[1]
+    ver_pat = ver[2]
+__version__ = '14.3'
+    ver = sys.version_info
+        v = sys_conf.get('hplip', 'version')
+                while pyqtVersion.count('.') < 2:
+                    x = "Fax"
+                #    x = 'No, not using the hp: or hpfax: CUPS backend.'
+                    x = "Printer"
+                x = "Unknown"
+                #    x = 'Yes, using the %s: CUPS backend.' % back_end
+# You should have received a copy of the GNU General Public License
+    zc = ''
+        zc = host = m.group(7) or ''

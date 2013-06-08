@@ -1,0 +1,114 @@
+			*\(*\)*)
+# Add a version argument for debugging purposes
+		# Allow override of default window list, with BYOBU_WINDOWS environment variable
+# All sorts of things go wrong if you don't own your $HOME dir.
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# At this point, we're sure BYOBU_BACKEND is properly defined
+#    Authors: Dustin Kirkland <kirkland@ubuntu.com>
+#!/bin/sh -e
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+byobu-janitor --force
+. "${BYOBU_PREFIX}/lib/${PKG}/include/common"
+. $BYOBU_PREFIX/lib/$PKG/ip_address
+			BYOBU_PROFILE="-c $BYOBU_PREFIX/share/$PKG/profiles/byoburc"
+			BYOBU_PROFILE="-c $BYOBU_PREFIX/share/$PKG/profiles/screenrc"
+		BYOBU_PROFILE="-f $BYOBU_PREFIX/share/$PKG/profiles/tmuxrc"
+	*byobu-screen) BYOBU_BACKEND="screen" ;;
+		BYOBU_SESSION_NAME="-S $PKG"
+	*byobu-tmux) BYOBU_BACKEND="tmux" ;;
+			BYOBU_WINDOWS="$BYOBU_CONFIG_DIR/windows"
+			BYOBU_WINDOWS="$BYOBU_CONFIG_DIR/windows.$BYOBU_WINDOWS"
+			BYOBU_WINDOWS="/dev/null"
+#    byobu - wrapper script
+case "$0" in
+	case "$1" in
+case $BYOBU_BACKEND in
+			case $i in -*r*|-*d*|-*D*|-*S*|-ls|-list) BYOBU_SESSION_NAME= ;; esac
+		case "$sessions" in
+		# Check if our terminfo supports 256 colors
+# Check if we're being autolaunched, and this user explicitly does not want it.
+			# Check ulimits
+	command -v greadlink >/dev/null 2>&1 && export BYOBU_READLINK="greadlink" || export BYOBU_READLINK="readlink"
+#    Copyright (C) 2008-2009 Canonical Ltd.
+# create a bunch of files in your $HOME which will be owned by root.
+		CUSTOM_WINDOW_SET=0
+			CUSTOM_WINDOW_SET=1
+		DEFAULT_WINDOW="new-session ${BYOBU_PREFIX}/bin/byobu-shell"
+# Drop a symlink to the ssh socket in $HOME, since we can ensure that exists
+	echo "Cannot run $PKG because [$USER] does not own [$HOME]" 1>&2
+		echo "export BYOBU_PREFIX='$prefix'" >> "$HOME/.byoburc"
+			echo "$PKG version $VERSION"
+		echo "To run $PKG under sudo, you MUST use 'sudo -H'" 1>&2
+		elif [ "$#" = "0" ]; then
+		elif [ -s "$BYOBU_CONFIG_DIR/windows.$BYOBU_WINDOWS" ]; then
+	# Ensure that this configuration is usable
+			exec $BYOBU_BACKEND $BYOBU_ARG_VERSION
+		exec $BYOBU_BACKEND $SCREEN_TERM $BYOBU_SESSION_NAME $BYOBU_PROFILE
+	exec $BYOBU_BACKEND $SCREEN_TERM $BYOBU_SESSION_NAME $BYOBU_PROFILE "$@"
+				exec $BYOBU_BACKEND $SCREEN_TERM $BYOBU_SESSION_NAME $BYOBU_PROFILE $DEFAULT_WINDOW
+				exec byobu-select-session
+			exit 0
+export BYOBU_BACKEND
+		export BYOBU_WINDOWS
+	# Find and export the installation location prefix
+		for i in "$@"; do
+#    GNU General Public License for more details.
+		. "$HOME/.byoburc"
+	. "$HOME/.byoburc" || mv -f "$HOME/.byoburc".orig
+if [ "$0" = "/etc/profile.d/Z98-$PKG.sh" ] && [ -r "$BYOBU_CONFIG_DIR/disable-autolaunch" ]; then
+if [ "$#" = "0" ]; then
+if [ "$#" = "1" ]; then
+		if command -v tput >/dev/null; then
+	if [ "$CUSTOM_WINDOW_SET" = "1" ]; then
+	if [ -n "$SUDO_USER" ]; then
+if [ ! -O "$HOME" ]; then
+	if [ "$prefix" != "/usr" ]; then
+		if [ -r "$BYOBU_CONFIG_DIR/.screenrc" ]; then
+if [ -r "$HOME/.byoburc" ]; then
+		if [ -s "$BYOBU_WINDOWS" ]; then
+if [ -S "$SSH_AUTH_SOCK" ] && [ ! -h "$SSH_AUTH_SOCK" ]; then
+		# if they use both GNU Screen and byobu on the same system
+			if [ "$(tput colors 2>/dev/null || echo 0)" = "256" ] || [ "$COLORTERM" = "gnome-terminal" ] || [ "$TERM" = "xterm" ]; then
+			if [ "$(tput colors 2>/dev/null || echo 0)" = "256" ]; then
+if [ -z "${BYOBU_PREFIX}" ]; then
+#    it under the terms of the GNU General Public License as published by
+		# Launch shell, unless the user has default windows set to launch
+	# Launch with command line args
+	ln -sf "$SSH_AUTH_SOCK" "$BYOBU_CONFIG_DIR/.ssh-agent"
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+[ -n "$BYOBU_NO_TITLE" ] || printf "\033]0;${USER}@${HOSTNAME:-$(hostname)} ($(__ip_address t)) - ${PKG}\007"
+[ -n "$DBUS_SESSION_BUS_ADDRESS" ] && printf "DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS\n" > "$BYOBU_RUN_DIR/sockets"
+# Now let's execute the backend!
+[ -n "$SESSION_MANAGER" ] && printf "SESSION_MANAGER=$SESSION_MANAGER\n" >> "$BYOBU_RUN_DIR/sockets"
+# Override backend if we can determine intentions from argv[0]
+PKG="byobu"
+	prefix="$(dirname $(dirname $($BYOBU_READLINK -f $0)))"
+[ -r "$BYOBU_CONFIG_DIR/statusrc" ] && . "$BYOBU_CONFIG_DIR/statusrc"
+[ -r "$HOME/.byoburc" ] && . "$HOME/.byoburc"
+# Sanitize the environment
+# Save session info
+	screen)
+				SCREEN_TERM="-T screen"
+				# Select and attach to an existing session
+		sessions=$($BYOBU_BACKEND list-sessions 2>/dev/null) || true
+		sessions=$($BYOBU_BACKEND -wipe 2>/dev/null) || true
+# Set the window title
+		# Some users want to maintain separate configurations
+# Source local byobu config
+		# Start new custom window set session
+				# Start new default session
+#    the Free Software Foundation, version 3 of the License.
+# This happens under sudo, if you don't use the -H option; Byobu will
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+			[ $(ulimit -n) -ge 15 ] || echo "WARNING: ulimit -n is too low" 1>&2
+			[ $(ulimit -u) -ge 1600 ] || echo "WARNING: ulimit -u is too low" 1>&2
+		uncommented_lines < "$BYOBU_WINDOWS" && DEFAULT_WINDOW= || DEFAULT_WINDOW="${BYOBU_PREFIX}/bin/byobu-shell"
+		# Use 256 colors if possible
+VERSION=5.17
+# vi: syntax=sh ts=4 noexpandtab
+		-v|--version)
+#    You should have received a copy of the GNU General Public License
+[ -z "${BYOBU_PREFIX}" ] && export BYOBU_PREFIX="/usr" || export BYOBU_PREFIX
+		# Zero out $BYOBU_SESSION_NAME if user has specified a session name
+				[ -z "$SCREEN_TERM" ] && SCREEN_TERM="-2"

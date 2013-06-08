@@ -1,0 +1,114 @@
+# along with this program; if not, write to the Free Software
+                app.exec_()
+            app = QApplication(sys.argv)
+# (at your option) any later version.
+# Author: Don Welch
+                                break
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# (c) Copyright 2003-2008 Hewlett-Packard Development Company, L.P.
+                                cleanup_spinner()
+                        cleanup_spinner()
+# -*- coding: utf-8 -*-
+                d.close()
+            d.close()
+            d = device.Device(device_uri, printer_name)
+            dialog = PrintTestPageDialog(None, printer_name)
+            dialog.show()
+__doc__ = "Print a tespage to a printer. Prints a summary of device information and shows the printer's margins."
+                d.open()
+                    d.printTestPage(printer_name)
+                                d.queryDevice(quick=True)
+                            elif d.error_state == ERROR_STATE_ERROR:
+                            elif d.error_state == ERROR_STATE_WARNING:
+                    else:
+                else:
+            else:
+                            else: # ERROR_STATE_BUSY
+    #else: # INTERACTIVE_MODE
+            except Error:
+                            except Error, e:
+                except Error, e:
+        except Error, e:
+        except ImportError:
+            except KeyboardInterrupt:
+except KeyboardInterrupt:
+        finally:
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+from base.g import *
+from base import device, utils, tui, module
+from prnt import cups
+            from PyQt4.QtGui import QApplication
+            from ui4.printtestpagedialog import PrintTestPageDialog
+# GNU General Public License for more details.
+                        i = 0
+                            i += 1
+        if 1:
+                            if d.error_state == ERROR_STATE_CLEAR:
+            if d.isIdleAndNoError():
+                    if e.opt == ERROR_NO_CUPS_QUEUE_FOUND_FOR_DEVICE:
+                            if i > 24:  # 2min
+    if mode == GUI_MODE:
+    if mode == INTERACTIVE_MODE:
+        if not utils.canEnterGUIMode4():
+                    if wait_for_printout:
+import getopt
+import os
+import re
+import sys
+import time
+                        (INTERACTIVE_MODE, GUI_MODE),
+# it under the terms of the GNU General Public License as published by
+                log.debug("Starting GUI loop...")
+                                log.error("An error has occured.")
+                                log.error("An error has occured (code=%d). Please check the printer and try again." % d.status_code)
+                        log.error("An error occured (code=%d)." % e.opt)
+            log.error("Device error (%s)." % e.msg)
+                log.error("Device is busy or in an error state. Please check device and try again.")
+                        log.error("No CUPS queue found for device. Please install the printer in CUPS and try again.")
+            log.error("%s -u/--gui requires Qt4 GUI support. Entering interactive mode." % __mod__)
+            log.error("Unable to load Qt4 support. Is it installed?")
+                log.error("Unable to print to printer. Please check device and try again.")
+    log.error("User exit")
+            log.info("")
+log.info("")
+log.info("Done.")
+                log.info( "Printing test page to printer %s..." % printer_name)
+                        log.info("Test page has been sent to printer.")
+                        log.info("Test page has been sent to printer. Waiting for printout to complete...")
+            log.notice("at: http://hplip.sourceforge.net for troubleshooting and support.")
+            log.notice("If an error occured, or the test page failed to print, refer to the HPLIP website")
+        log.set_module("%s(UI)" % __mod__)
+                                log.warning("There is a problem with the printer (code=%d). Please check the printer." % d.status_code)
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            mode = INTERACTIVE_MODE
+__mod__ = 'hp-testpage'
+    mod = module.Module(__mod__, __title__, __version__, __doc__, None,
+        mod.parseStdOpts()
+    mod.setUsage(module.USAGE_FLAG_DEVICE_ARGS)
+    opts, device_uri, printer_name, mode, ui_toolkit, loc = \
+    printer_name, device_uri = mod.getPrinterName(printer_name, device_uri)
+# Std Lib
+                sys.exit(0)
+        sys.exit(0)
+                sys.exit(1)
+            sys.exit(1)
+# the Free Software Foundation; either version 2 of the License, or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+                            time.sleep(5)
+                        time.sleep(5)
+__title__ = 'Testpage Print Utility'
+            # TODO: Fix the wait for printout stuff... can't get device ID
+                            try:
+                try:
+            try:
+        try:
+                        (UI_TOOLKIT_QT4,))
+                                update_spinner()
+#!/usr/bin/python
+__version__ = '6.0'
+            wait_for_printout = False
+    wait_for_printout = False
+            # while hp: backend has device open in printing mode...
+                        while True:
+# You should have received a copy of the GNU General Public License

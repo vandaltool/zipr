@@ -1,0 +1,148 @@
+action_id != NULL
+argv[argc] == NULL
+Authentication is needed to run `$(program)' as the super user
+Authentication is needed to run `$(program)' as user $(user)
+__bss_start
+Cannot run program %s: %s
+clearenv
+COLORTERM
+command_line
+D$<9\$<~M
+       --disable-internal-agent |
+--disable-internal-agent
+__errno_location
+Error accessing %s: %s
+Error becoming real+effective uid %d and gid %d: %s
+Error becoming uid 0: %s
+Error changing to home directory %s: %s
+Error checking for authorization %s: %s
+Error clearing environment: %s
+Error creating textual authentication agent: %s
+Error enumerating actions: %s
+Error executing command as another user: No authentication agent found.
+Error executing command as another user: Not authorized
+Error executing command as another user: Request dismissed
+Error executing %s: %s
+Error getting authority: %s
+Error getting contents of /etc/shells: %s
+Error getting cwd: %s
+Error getting information for user `%s': %s
+Error getting user name.
+Error initializing groups for %s: %s
+Error registering local authentication agent: %s
+Error setting close-on-exec for file desriptors
+Error setting environment variable %s to '%s': %s
+Error setting groups: %s
+/etc/shells
+Executing command
+g_assertion_message
+g_assertion_message_expr
+g_error_free
+getpwnam_r
+g_file_get_contents
+g_find_program_in_path
+g_get_current_dir
+g_getenv
+g_get_user_name
+GLIBC_2.0
+GLIBC_2.1.2
+GLIBC_2.4
+g_list_foreach
+g_list_free
+__gmon_start__
+g_object_unref
+g_printerr
+g_ptr_array_add
+g_ptr_array_foreach
+g_ptr_array_free
+g_ptr_array_new
+g_setenv
+g_strcmp0
+g_strdup
+g_strdup_printf
+g_strdup_vprintf
+g_strerror
+g_strfreev
+g_strjoinv
+g_strsplit
+g_type_check_instance_cast
+g_type_init
+       --help |
+initgroups
+_IO_stdin_used
+_Jv_RegisterClasses
+LANGUAGE
+LC_COLLATE
+LC_CTYPE
+LC_MESSAGES
+LC_MONETARY
+LC_NUMERIC
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+LIBPAM_1.0
+libpam.so.0
+libpolkit-agent-1.so.0
+libpolkit-gobject-1.so.0
+libpthread.so.0
+org.freedesktop.policykit.exec
+org.freedesktop.policykit.exec.allow_gui
+org.freedesktop.policykit.exec.path
+pam_conversation_function
+pam_getenvlist
+pam_open_session
+pam_open_session() failed: %s
+pam_start
+pam_start() failed: %s
+pam_strerror
+pkexec.c
+pkexec must be setuid root
+PKEXEC_UID
+pkexec --version |
+pkexec version %s
+polkit-1
+polkit_action_description_get_action_id
+polkit_action_description_get_annotation
+polkit_action_description_get_type
+polkit_agent_listener_register
+polkit_agent_listener_unregister
+polkit_agent_text_listener_new
+polkit_authority_check_authorization_sync
+polkit_authority_enumerate_actions_sync
+polkit_authority_get_sync
+polkit_authorization_result_get_dismissed
+polkit_authorization_result_get_is_authorized
+polkit_authorization_result_get_is_challenge
+polkit_details_insert
+polkit_details_new
+polkit.gettext_domain
+polkit.message
+polkit_unix_process_get_pid
+polkit_unix_process_get_pid (POLKIT_UNIX_PROCESS (subject)) == pid_of_caller
+polkit_unix_process_get_start_time
+polkit_unix_process_get_start_time (POLKIT_UNIX_PROCESS (subject)) > 0
+polkit_unix_process_get_type
+polkit_unix_process_get_uid
+polkit_unix_process_get_uid (POLKIT_UNIX_PROCESS (subject)) >= 0
+polkit_unix_process_new_for_owner
+prctl(PR_SET_PDEATHSIG, SIGTERM) failed: %s
+Refusing to render service to dead parents.
+See the pkexec manual page for more details.
+setgroups
+setregid
+setreuid
+%s: %s [USER=%s] [TTY=%s] [CWD=%s] [COMMAND=%s]
+__stack_chk_fail
+subject != NULL
+__syslog_chk
+The value for environment variable %s contains suscipious content
+The value for the SHELL variable was not found the /etc/shells file
+This incident has been reported.
+User `%s' does not exist.
+       [--user username] PROGRAM [ARGUMENTS...]
+/usr/bin:/bin:/usr/sbin:/sbin:%s/bin
+/usr/sbin:/usr/bin:/sbin:/bin:%s/bin
+--version
+XAUTHORITY

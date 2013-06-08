@@ -1,0 +1,188 @@
+        }
+        } 
+        }    
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                0.53, 0.58, 0.63, 0.69, 0.74, 0.79, 0.84, 0.89, 0.95, 1.0);
+#              AHPCRC
+#  Author:     Wesley C. Barris
+#  { (b) (3) (ii) } of the Rights in Technical Data and Computer Software
+        $base_name = $ARGV[$n];
+#  by the Government is subject to restrictions as set forth in subdivision
+#  Check those command line args.
+#  clause at 52.227-7013.
+#  Converted to perl and renamed from pbmfade to ppmfade by Bryan Henderson
+#  Copyright @ 1994, Minnesota Supercomputer Center, Inc.
+#  Date:       January 7, 1994
+#  Define a couple linear ramps.
+        } else {
+    } else {
+} else {
+    } elsif ($ARGV[$n] eq "-base") {
+    } elsif ("$ARGV[$n]" eq "-bentley") {
+    } elsif ("$ARGV[$n]" eq "-block") {
+    } elsif ("$ARGV[$n]" eq "-edge") {
+    } elsif ($ARGV[$n] eq "-help" || $ARGV[$n] eq "-h") {
+    } elsif ($ARGV[$n] eq "-l") {
+    } elsif ("$ARGV[$n]" eq "-mix") {
+    } elsif ($ARGV[$n] eq "-oil") {
+    } elsif ($ARGV[$n] eq "-relief") {
+    } elsif ($ARGV[$n] eq "-shift") {
+    } elsif ($ARGV[$n] eq "-spread") {
+        } elsif ($i <= 20) {
+} elsif ($last_file ne "undefined") {
+    } elsif ($mode eq $BENTLEY) {
+    } elsif ($mode eq $BLOCK) {
+    } elsif ($mode eq $EDGE) {
+    } elsif ($mode eq $MIX) {
+    } elsif ($mode eq $OIL) {
+    } elsif ($mode eq $RELIEF) {
+    } elsif ($mode eq $SHIFT) {
+exit(0);
+        exit 100;
+   exit(100);
+            exit 20;
+        exit(50);
+    exit(90);
+        $first_file = $ARGV[$n];
+for ($i = 1; $i <= $nframes; $i++) {
+for ($n = 0; $n < @ARGV; $n++) {
+# Here's what our temporary files are:
+if (@ARGV == 0) {
+    if ("$ARGV[$n]" eq "-f") {
+        if (-e $first_file) {
+        if (-e $last_file) {
+if ($first_file eq "undefined") {
+if ($first_file ne "undefined") {
+        if ($i == 1) {
+        if ($i <= 10) {
+        if ($i == 10) {
+if ($last_file eq "undefined") {
+    if ($mode eq $SPREAD) {
+    if ((`pnmfile $first_file` =~ m{\b(\d+)\sby\s(\d+)} )) { 
+    if ((`pnmfile $last_file` =~ m{\b(\d+)\sby\s(\d+)} )) { 
+#                 image to another, this is the first frame of that 
+#   junk1a.ppm: If the fade involves a ppmmix sequence from one intermediate
+#   junk1.ppm: The original (fade-from) image
+#   junk2a.ppm: This is the last frame of the above-mentioned ppmmix sequence
+#   junk2.ppm: The target (fade-from) image
+#   junk3.ppm: The frame of the fade for the current iteration of the 
+#  Just what are we supposed to do?
+        $last_file = $ARGV[$n];
+#              Minnesota Supercomputer Center, Inc.
+        $mode = $BENTLEY;
+        $mode = $BLOCK;
+        $mode = $EDGE;
+        $mode = $MIX;
+        $mode = $OIL;
+        $mode = $RELIEF;
+        $mode = $SHIFT;
+        $mode = $SPREAD;
+my $base_name = "fade";		# default base name of output files
+my $BENTLEY = 6;
+my $BLOCK =   7;
+my $EDGE =    5;
+        my $fade_factor = sqrt(1/($nframes-$i+1));
+my $first_file = "undefined";
+my ($height, $width);    # width and height of our frames
+my $i;    # Frame number
+my $image = "ppm";		# default output storage format
+my $last_file = "undefined";
+my $MIX =     8;
+my $mode = $SPREAD;		# default fading mode
+            my $n;
+            my $n = 1 - 1.9*$spline20[31-$i];
+            my $n = 1 - 1.9*$spline20[$i];
+            my $n = (1-$spline20[$i-10]) * 100;
+            my $n = (1-$spline20[$i-10])*100;
+my $n;  # argument number
+my $nframes = 30;			# total number of files created (1 sec)
+            my $n = $spline10[$i];
+            my $n = $spline10[$i-10];
+            my $n = $spline10[$i-20];
+            my $n = $spline20[$i] * 100;
+my $OIL =     4;
+    my $outfile = sprintf("%s.%04d.ppm", $base_name, $i);
+my $RELIEF =  3;
+my $SHIFT =   2;
+my @spline10 = (0, 0, 0.11, 0.22, 0.33, 0.44, 0.55, 0.66, 0.77, 0.88, 1.0);
+my @spline20 = (0, 0, 0.05, 0.11, 0.16, 0.21, 0.26, 0.32, 0.37, 0.42, 0.47, 
+my $SPREAD =  1;
+my $tempdir = tempdir("ppmfade.XXXXXXX", CLEANUP => 1);
+        $n++;
+            $n = (1-$spline20[$i-10]) * 100;
+            $n = (1-$spline20[$i-10])*100;
+            $n = $spline10[$i-10];
+            $n = $spline20[$i] * 100;
+#  on March 31, 2000 for inclusion in Netpbm.  Also, superfluous ability to 
+#  Perform the fade.
+                   "pnmscale -width $width -height $height >$tempdir/junk2a.ppm");
+                   "pnmscale -width $width -height $height >$tempdir/junk3.ppm");
+   print "               [-base basename]\n";
+    print "black.\n";
+    print("Creating $i of $nframes...\n");
+    print "Fading from black to ";
+    print "Fading from $first_file to ";
+print("Frames are " . $width . "W x " . $height . "H\n");
+            print "I can't find $first_file\n";
+            print "I can't find $last_file\n";
+        print("Internal error: impossible mode value '$mode'\n");
+    print "$last_file\n";
+   print "Notes: Default base: fade\n";
+    print("ppmfade:  You must specify -f or -l (or both)\n");
+   print "               [-spread|-relief|-oil|-edge|-bentley|-block]\n";
+   print "       The resulting image files will be named fade.NNNN.ppm.\n";
+        print "Unknown argument: $ARGV[$n]\n";
+        print("Unrecognized results from pnmfile on $first_file.\n");
+   print "Usage: ppmfade [-f first_file] [-l last_file]\n";
+#  process other formats removed.
+#  RESTRICTED RIGHTS LEGEND
+#                 sequence.
+#  Set some defaults.
+sub usage() {
+    system("cp", $first_file, "$tempdir/junk1.ppm");
+    system("cp", $last_file, "$tempdir/junk2.ppm");
+    system("cp", "$tempdir/junk3.ppm", $outfile);
+            system("cp", "$tempdir/junk3.ppm", "$tempdir/junk1a.ppm");
+            system("pnmscale $n $tempdir/junk1.ppm | " .
+            system("pnmscale $n $tempdir/junk2.ppm | " .
+    system("ppmmake \\#000 $width $height >$tempdir/junk1.ppm");
+    system("ppmmake \\#000 $width $height >$tempdir/junk2.ppm");
+        system("ppmmix $fade_factor $tempdir/junk1.ppm $tempdir/junk2.ppm >$tempdir/junk3.ppm");
+            system("ppmmix $n $tempdir/junk1a.ppm $tempdir/junk2a.ppm >$tempdir/junk3.ppm");
+            system("ppmmix $n $tempdir/junk1o.ppm $tempdir/junk2o.ppm >$tempdir/junk3.ppm");
+            system("ppmmix $n $tempdir/junk1.ppm $tempdir/junk1o.ppm >$tempdir/junk3.ppm");
+            system("ppmmix $n $tempdir/junk1.ppm $tempdir/junk1r.ppm >$tempdir/junk3.ppm");
+            system("ppmmix $n $tempdir/junk1r.ppm $tempdir/junk2r.ppm >$tempdir/junk3.ppm");
+            system("ppmmix $n $tempdir/junk2o.ppm $tempdir/junk2.ppm >$tempdir/junk3.ppm");
+            system("ppmmix $n $tempdir/junk2r.ppm $tempdir/junk2.ppm >$tempdir/junk3.ppm");
+            system("ppmrelief $tempdir/junk1.ppm >$tempdir/junk1r.ppm");
+            system("ppmrelief $tempdir/junk2.ppm >$tempdir/junk2r.ppm");
+            system("ppmshift $n $tempdir/junk1.ppm >$tempdir/junk1a.ppm");
+            system("ppmshift $n $tempdir/junk1.ppm >$tempdir/junk3.ppm");
+            system("ppmshift $n $tempdir/junk2.ppm >$tempdir/junk2a.ppm");
+            system("ppmshift $n $tempdir/junk2.ppm >$tempdir/junk3.ppm");
+            system("ppmspread $n $tempdir/junk1.ppm >$tempdir/junk1a.ppm");
+            system("ppmspread $n $tempdir/junk1.ppm >$tempdir/junk3.ppm");
+            system("ppmspread $n $tempdir/junk2.ppm >$tempdir/junk2a.ppm");
+            system("ppmspread $n $tempdir/junk2.ppm >$tempdir/junk3.ppm");
+            system("ppmtopgm $tempdir/junk1.ppm | pgmbentley >$tempdir/junko.ppm");
+            system("ppmtopgm $tempdir/junk1.ppm | pgmedge >$tempdir/junko.ppm");
+            system("ppmtopgm $tempdir/junk1.ppm | pgmoil >$tempdir/junko.ppm");
+            system("ppmtopgm $tempdir/junk2.ppm | pgmbentley >$tempdir/junko.ppm");
+            system("ppmtopgm $tempdir/junk2.ppm | pgmedge >$tempdir/junko.ppm");
+            system("ppmtopgm $tempdir/junk2.ppm | pgmoil >$tempdir/junko.ppm");
+            system("rgb3toppm $tempdir/junko.ppm $tempdir/junko.ppm $tempdir/junko.ppm " .
+                   ">$tempdir/junk1o.ppm");
+                   ">$tempdir/junk2o.ppm");
+#                the for loop.
+# The temporary files are automatically deleted
+#  This program creates a fade (a sequence of frames) between two images.
+        usage();
+    usage();
+#  Use, duplication, or disclosure of this software and its documentation
+use File::Temp "tempdir";
+use strict;
+#!/usr/bin/perl -w
+# We create a tmp-directory right here
+# We don't use element 0 of these arrays.
+        $width = $1; $height = $2;

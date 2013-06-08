@@ -1,0 +1,31 @@
+^+=/[]:',?*\<>|". 
+__ctype_b_loc
+__ctype_tolower_loc
+D$t+D$\=`T
+__fprintf_chk
+getlogin
+getpwnam
+getpwuid
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+MTOO4012
+Mtools version %s, dated %s
+mv %s %s
+November 3rd, 2009
+Out of memory error
+__printf_chk
+__stack_chk_fail
+strcasecmp
+__strcat_chk
+Usage: mkmanifest [-V] <list-of-files>
+Warning: "%s" is out of date, removing it
+__xstat64

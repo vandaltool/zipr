@@ -1,0 +1,1015 @@
+aAbBcdHIjmMpSUwWxXyYZ
+%A, %B %-d %Y at %-I:%M:%S %p
+ACould not save "%s" document to "%s".
+activate
+add_atk_namedesc
+add_atk_relation
+Add search option
+A/history-
+A locate database has probably not been created.
+ (another copy)
+Application
+Application does not accept documents on command line
+application/octet-stream
+application/x-executable
+/apps/gnome-search-tool
+/apps/gnome-search-tool/columns_order
+/apps/gnome-search-tool/default_window_height
+/apps/gnome-search-tool/default_window_maximized
+/apps/gnome-search-tool/default_window_width
+/apps/gnome-search-tool/disable_quick_search
+/apps/gnome-search-tool/disable_quick_search_second_scan
+/apps/gnome-search-tool/look_in_folder
+/apps/gnome-search-tool/quick_search_excluded_paths
+/apps/gnome-search-tool/quick_search_second_scan_excluded_paths
+/apps/gnome-search-tool/select/contains_the_text
+/apps/gnome-search-tool/select/date_modified_less_than
+/apps/gnome-search-tool/select/date_modified_more_than
+/apps/gnome-search-tool/select/exclude_other_filesystems
+/apps/gnome-search-tool/select/file_is_empty
+/apps/gnome-search-tool/select/follow_symbolic_links
+/apps/gnome-search-tool/select/name_does_not_contain
+/apps/gnome-search-tool/select/name_matches_regular_expression
+/apps/gnome-search-tool/select/owned_by_group
+/apps/gnome-search-tool/select/owned_by_user
+/apps/gnome-search-tool/select/owner_is_unrecognized
+/apps/gnome-search-tool/select/show_hidden_files_and_folders
+/apps/gnome-search-tool/select/size_at_least
+/apps/gnome-search-tool/select/size_at_most
+/apps/gnome-search-tool/show_additional_options
+/apps/gnome-settings/
+/apps/nautilus/preferences
+/apps/nautilus/preferences/click_policy
+/apps/nautilus/preferences/date_format
+/apps/nautilus/preferences/show_image_thumbnails
+/apps/nautilus/preferences/thumbnail_limit
+Are you sure you want to open %d document?
+Are you sure you want to open %d documents?
+Are you sure you want to open %d folder?
+Are you sure you want to open %d folders?
+atk_object_ref_relation_set
+atk_object_set_description
+atk_object_set_name
+atk_relation_new
+atk_relation_set_add
+Automatically start a search
+A_vailable options:
+Available options
+bad count %d in make_next_duplicate_name()
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+button_press_event
+button-press-event
+button_release_event
+Can't pass document URIs to a 'Type=Link' desktop entry
+cells->data != NULL && cells->next == NULL
+Character set conversion failed for "%s"
+Click to add the selected available search option.
+Click to close "Search for Files".
+Click to display the help manual.
+Click to expand or collapse the list of available options.
+Click to perform a search.
+Click to remove the "%s" search option.
+Click to stop a search.
+client == global_client
+client != NULL
+CloneCommand
+columns-changed
+connection-closed
+--contains=%s
+Contains the _text
+converted != NULL
+Could not create directory '%s'
+Could not create file '%s': %s
+Could not delete "%s".
+Could not load desktop file '%s': %s
+Could not load icon pixbuf: %s
+Could not load SM state file '%s': %s
+Could not move "%s" to trash.
+Could not open document "%s".
+Could not open folder "%s".
+Could not open help document.
+Could not parse Exec line in desktop file: %s
+Could not save document.
+cranston
+current-folder-changed
+Date Modified
+_Date modified less than
+Date modified more than
+dcgettext
+dcngettext
+delete_event
+Deleting "%s" failed: %s.
+descending
+DESCRIPTION
+DESKTOP_AUTOSTART_ID
+[Desktop Entry]
+Desktop Entry
+Desktop file '%s' has malformed Icon key '%s'(should not include extension)
+/desktop/gnome/interface/enable_animations
+DESKTOP_STARTUP_ID=%s
+%'d file found
+%'d files found
+dHIjmMSUwWyY
+Directory
+dir != NULL
+Disable connection to session manager
+Disable _Quick Search
+DiscardCommand
+Disconnecting
+DISPLAY=%s
+Done emitting quit
+Done emitting quit_cancelled
+Done emitting quit_requested
+Done emitting save_state
+Do you want to delete "%s" permanently?
+drag_begin
+drag_data_get
+egg-desktop_file-error-quark
+EGG_IS_SM_CLIENT (client)
+EggSMClient
+EGG_SM_CLIENT_DEBUG
+egg_sm_client_end_session
+egg_sm_client_get_state_file
+egg_sm_client_is_resumed
+egg_sm_client_quit
+egg_sm_client_quit_cancelled
+egg_sm_client_quit_requested
+egg_sm_client_save_state
+egg_sm_client_set_restart_command
+egg_sm_client_will_quit
+EggSMClientXSMP
+eggsmclient-xsmp.c
+Emitting quit
+Emitting quit_cancelled
+Emitting quit_requested
+Emitting save_state
+Enter a filename or partial filename with or without wildcards.
+Enter a text value for the "%s" search option.
+Enter a value in %s for the "%s" search option.
+Entry changed called for a non entry option!
+entry-text-column
+ermission denied
+__errno_location
+Error parsing the search command.
+Error running the search command.
+event_after
+Exclude other filesystems
+EXCLUDE_OTHER_FILESYSTEMS
+extract_string_until
+Failed to connect to the session manager: %s
+Failed to parse command line arguments: %s
+Failed to set process group id of child %d: %s.
+File is empty
+File is not a valid .desktop file
+find /dev/null -iname 'string'
+find "%s" %s
+find "%s" %s "%s" -print
+First SaveYourself was not the expected one!
+--follow
+Follow symbolic links
+__fprintf_chk
+g_app_info_dup
+g_app_info_equal
+g_app_info_get_all_for_type
+g_app_info_get_default_for_type
+g_app_info_get_executable
+g_app_info_get_icon
+g_app_info_get_name
+g_app_info_get_type
+g_app_info_launch
+g_app_info_launch_default_for_uri
+g_app_info_launch_uris
+g_app_launch_context_get_type
+g_array_append_vals
+g_array_free
+g_array_new
+g_ascii_strcasecmp
+g_ascii_strtod
+g_ascii_table
+g_assertion_message
+g_assertion_message_expr
+g_build_filename
+g_cclosure_marshal_VOID__POINTER
+g_cclosure_marshal_VOID__VOID
+g_clear_error
+gconf_client_add_dir
+gconf_client_get_bool
+gconf_client_get_default
+gconf_client_get_int
+gconf_client_get_list
+gconf_client_get_string
+gconf_client_notify_add
+gconf_client_set_bool
+gconf_client_set_int
+gconf_client_set_list
+gconf_client_set_string
+gconf_entry_get_value
+GConf error:
+gconf_escape_key
+gconf_init
+gconf_is_initialized
+gconf_value_get_string
+g_content_type_get_description
+g_content_type_guess
+g_content_type_is_unknown
+g_date_free
+g_date_get_julian
+g_date_new
+g_date_new_dmy
+g_date_set_time_t
+g_desktop_app_info_new_from_keyfile
+gdk_app_launch_context_new
+gdk_app_launch_context_set_screen
+gdk_cursor_new
+gdk_display_get_default
+gdk_display_get_default_screen
+gdk_pixbuf_copy_area
+gdk_pixbuf_fill
+gdk_pixbuf_get_height
+gdk_pixbuf_get_type
+gdk_pixbuf_get_width
+gdk_pixbuf_new
+gdk_pixbuf_new_from_file
+gdk_pixbuf_scale_simple
+gdk_screen_get_display
+gdk_screen_get_number
+gdk_screen_make_display_name
+gdk_threads_enter
+gdk_threads_leave
+gdk_window_set_cursor
+gdk_x11_display_broadcast_startup_message
+gdk_x11_display_get_user_time
+gdk_x11_set_sm_client_id
+g_error_free
+get_history_store
+g_file_delete
+g_file_info_get_attribute_byte_string
+g_file_info_get_content_type
+g_file_info_get_icon
+g_file_info_get_is_symlink
+g_file_info_get_modification_time
+g_file_info_get_size
+g_file_info_get_symlink_target
+g_file_monitor_cancel
+g_file_monitor_file
+g_filename_display_basename
+g_filename_display_name
+g_filename_from_uri
+g_filename_from_utf8
+g_filename_to_uri
+g_filename_to_utf8
+g_file_new_for_path
+g_file_query_default_handler
+g_file_query_info
+g_file_set_contents
+g_file_test
+g_file_trash
+g_find_program_in_path
+g_format_size
+g_get_application_name
+g_get_current_dir
+g_getenv
+g_get_home_dir
+g_get_host_name
+g_get_prgname
+g_get_user_config_dir
+g_get_user_name
+g_hash_table_destroy
+g_hash_table_insert
+g_hash_table_lookup
+g_hash_table_lookup_extended
+g_hash_table_new_full
+ghelp:gnome-search-tool
+g_icon_to_string
+g_idle_add
+g_intern_static_string
+(gint) strlen (original) >= until_substring - original
+g_io_add_watch
+g_io_channel_get_buffer_condition
+g_io_channel_read_line_string
+g_io_channel_set_encoding
+g_io_channel_set_flags
+g_io_channel_shutdown
+g_io_channel_unix_new
+g_io_channel_unref
+g_key_file_free
+g_key_file_get_boolean
+g_key_file_get_double
+g_key_file_get_groups
+g_key_file_get_keys
+g_key_file_get_locale_string
+g_key_file_get_locale_string_list
+g_key_file_get_start_group
+g_key_file_get_string
+g_key_file_get_string_list
+g_key_file_get_value
+g_key_file_has_group
+g_key_file_has_key
+g_key_file_load_from_data
+g_key_file_load_from_data_dirs
+g_key_file_load_from_dirs
+g_key_file_load_from_file
+g_key_file_new
+g_key_file_set_string
+g_key_file_set_value
+g_key_file_to_data
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+g_list_append
+g_listenv
+g_list_first
+g_list_foreach
+g_list_free
+g_list_last
+g_list_length
+g_list_nth
+g_list_prepend
+g_list_remove
+g_list_remove_link
+g_list_sort
+g_locale_from_utf8
+g_locale_to_utf8
+g_log_default_handler
+g_log_set_handler
+g_malloc
+g_malloc0
+g_malloc_n
+g_mkdir_with_parents
+__gmon_start__
+g_mutex_lock
+g_mutex_unlock
+.gnome-desktop
+g_object_class_install_property
+g_object_get
+g_object_get_data
+g_object_new
+g_object_ref
+g_object_ref_sink
+g_object_set
+g_object_set_data_full
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_translation_domain
+g_option_group_add_entries
+g_option_group_new
+g_option_group_set_parse_hooks
+Got client ID "%s"
+g_param_spec_string
+g_param_spec_uint
+g_path_get_basename
+g_path_get_dirname
+g_path_is_absolute
+g_pattern_match_simple
+g_printerr
+g_propagate_error
+g_ptr_array_add
+g_ptr_array_free
+g_ptr_array_new
+g_ptr_array_remove_index_fast
+g_quark_from_static_string
+g_return_if_fail_warning
+--group=%s
+-group '%s'
+GsearchHistoryEntry
+gsearch_history_entry_append_text
+gsearch_history_entry_clear
+gsearch_history_entry_get_enable_completion
+gsearch_history_entry_get_entry
+gsearch_history_entry_get_history_id
+gsearch_history_entry_get_history_length
+gsearch_history_entry_get_property
+gsearch_history_entry_load_history
+gsearch_history_entry_new
+gsearch_history_entry_prepend_text
+gsearch_history_entry_save_history
+gsearch_history_entry_set_enable_completion
+gsearch_history_entry_set_escape_func
+gsearch_history_entry_set_history_length
+gsearch_history_entry_set_property
+GSEARCH_IS_HISTORY_ENTRY (entry)
+GSEARCH_IS_HISTORY_ENTRY (object)
+gsearchtool.c
+gsearchtool-entry.c:110
+gsearchtool-file-entry
+gsearchtool_gconf_add_dir
+gsearchtool_gconf_get_boolean
+gsearchtool_gconf_get_int
+gsearchtool_gconf_get_list
+gsearchtool_gconf_get_string
+gsearchtool_gconf_set_boolean
+gsearchtool_gconf_set_int
+gsearchtool_gconf_set_list
+gsearchtool_gconf_set_string
+gsearchtool_gconf_watch_key
+gsearchtool-preferences
+gsearchtool_strdup_strftime
+gsearchtool_strdup_strftime does not support modifier for non-numeric escape code %%%c%c
+gsearchtool_strdup_strftime does not support non-standard escape code %%%c
+gsearchtool-support.c
+GSearchWindow
+g_set_application_name
+g_set_error
+g_shell_parse_argv
+g_shell_quote
+g_signal_connect_data
+g_signal_emit
+g_signal_has_handler_pending
+g_signal_lookup
+g_signal_new
+g_slice_alloc
+g_slice_alloc0
+g_slice_free1
+g_slist_foreach
+g_slist_free
+g_slist_length
+g_slist_prepend
+g_slist_reverse
+_GSM_DesktopFile
+g_snprintf
+g_source_remove
+g_spawn_async_with_pipes
+g_spawn_command_line_async
+g_spawn_command_line_sync
+g_strconcat
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strerror
+g_strfreev
+g_str_hash
+g_str_has_suffix
+g_string_append
+g_string_append_len
+g_string_append_printf
+g_string_free
+g_string_insert_c
+g_string_new
+g_string_sized_new
+g_string_truncate
+g_strjoinv
+g_strsplit
+g_strstr_len
+g_themed_icon_get_type
+g_themed_icon_new
+g_timeout_add
+g_timeout_add_seconds
+g_timer_destroy
+g_timer_elapsed
+g_timer_new
+g_timer_reset
+g_timer_start
+gtk_accessible_get_type
+gtk_alignment_new
+gtk_bin_get_child
+gtk_bin_get_type
+gtk_box_get_type
+gtk_box_pack_end
+gtk_box_pack_start
+gtk_box_set_spacing
+gtk_button_box_get_type
+gtk_button_box_set_child_secondary
+gtk_button_box_set_layout
+gtk_button_new
+gtk_button_new_from_stock
+gtk-cancel
+gtk_cell_layout_get_cells
+gtk_cell_layout_get_type
+gtk_cell_layout_pack_start
+gtk_cell_layout_set_attributes
+gtk_cell_layout_set_cell_data_func
+gtk_cell_renderer_get_type
+gtk_cell_renderer_pixbuf_new
+gtk_cell_renderer_text_new
+gtk-close
+gtk_combo_box_get_active
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_new_with_model
+gtk_combo_box_set_active
+gtk_combo_box_set_row_separator_func
+gtk_container_add
+gtk_container_get_type
+gtk_container_remove
+gtk_container_set_border_width
+gtk-delete
+gtk_dialog_add_action_widget
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk-dnd-multiple
+gtk_drag_set_icon_pixbuf
+gtk_drag_set_icon_stock
+gtk_drag_source_set
+gtk_entry_completion_new
+gtk_entry_completion_set_inline_completion
+gtk_entry_completion_set_minimum_key_length
+gtk_entry_completion_set_model
+gtk_entry_completion_set_popup_completion
+gtk_entry_completion_set_text_column
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_set_completion
+gtk_entry_set_text
+gtk_events_pending
+gtk_expander_get_expanded
+gtk_expander_get_type
+gtk_expander_new_with_mnemonic
+gtk_expander_set_expanded
+gtk_expander_set_spacing
+gtk_file_chooser_button_new
+gtk_file_chooser_dialog_new
+gtk_file_chooser_get_current_folder
+gtk_file_chooser_get_filename
+gtk_file_chooser_get_type
+gtk_file_chooser_set_current_folder
+gtk_file_chooser_set_do_overwrite_confirmation
+gtk_file_chooser_set_filename
+gtk-find
+gtk_get_current_event_time
+gtk_get_option_group
+gtk_hbox_new
+gtk_hbutton_box_new
+gtk-help
+gtk_icon_factory_add
+gtk_icon_factory_add_default
+gtk_icon_factory_new
+gtk_icon_info_free
+gtk_icon_info_load_icon
+gtk_icon_set_add_source
+gtk_icon_set_new
+gtk_icon_set_unref
+gtk_icon_size_register
+gtk_icon_source_free
+gtk_icon_source_new
+gtk_icon_source_set_icon_name
+gtk_icon_theme_choose_icon
+gtk_icon_theme_get_default
+gtk_icon_theme_load_icon
+gtk_icon_theme_lookup_icon
+gtk_image_menu_item_get_type
+gtk_image_menu_item_new_with_mnemonic
+gtk_image_menu_item_set_always_show_image
+gtk_image_menu_item_set_image
+gtk_image_new_from_gicon
+gtk_image_new_from_pixbuf
+gtk_image_new_from_stock
+GTK_IS_LIST_STORE (store)
+GTK_IS_TREE_MODEL (model)
+GTK_IS_WIDGET (obj1)
+GTK_IS_WIDGET (obj2)
+GTK_IS_WIDGET (widget)
+gtk_label_get_type
+gtk_label_new
+gtk_label_new_with_mnemonic
+gtk_label_set_justify
+gtk_label_set_mnemonic_widget
+gtk_label_set_selectable
+gtk_label_set_text
+gtk_list_store_append
+gtk_list_store_clear
+gtk_list_store_get_type
+gtk_list_store_insert
+gtk_list_store_new
+gtk_list_store_remove
+gtk_list_store_set
+gtk_main
+gtk_main_iteration
+gtk_main_quit
+gtk_menu_get_type
+gtk_menu_item_get_type
+gtk_menu_item_new_with_mnemonic
+gtk_menu_item_set_submenu
+gtk_menu_new
+gtk_menu_popup
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk-open
+gtk-remove
+gtk-save
+gtk_scrolled_window_get_type
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_scrolled_window_set_shadow_type
+gtk_selection_data_get_target
+gtk_selection_data_set
+gtk_selection_data_set_text
+gtk_separator_menu_item_new
+gtk_show_uri
+gtk_size_group_add_widget
+gtk_size_group_new
+gtk_spin_button_get_type
+gtk_spin_button_new_with_range
+gtk_spin_button_set_value
+gtk_spinner_get_type
+gtk_spinner_new
+gtk_spinner_start
+gtk_spinner_stop
+gtk-stop
+gtk_table_attach
+gtk_table_get_type
+gtk_table_new
+gtk_table_set_col_spacings
+gtk_table_set_row_spacings
+gtk_tree_model_foreach
+gtk_tree_model_get
+gtk_tree_model_get_iter
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_iter_n_children
+gtk_tree_model_iter_next
+gtk_tree_model_iter_nth_child
+gtk_tree_model_row_changed
+gtk_tree_path_compare
+gtk_tree_path_free
+gtk_tree_path_get_indices
+gtk_tree_path_new_from_indices
+gtk_tree_path_prev
+gtk_tree_row_reference_free
+gtk_tree_row_reference_get_model
+gtk_tree_row_reference_get_path
+gtk_tree_row_reference_new
+gtk_tree_selection_count_selected_rows
+gtk_tree_selection_get_selected_rows
+gtk_tree_selection_get_type
+gtk_tree_selection_path_is_selected
+gtk_tree_selection_select_path
+gtk_tree_selection_set_mode
+gtk_tree_selection_unselect_all
+gtk_tree_selection_unselect_iter
+gtk_tree_selection_unselect_path
+gtk_tree_sortable_get_type
+gtk_tree_sortable_set_sort_column_id
+gtk_tree_view_append_column
+gtk_tree_view_column_get_sort_column_id
+gtk_tree_view_column_new
+gtk_tree_view_column_new_with_attributes
+gtk_tree_view_column_pack_start
+gtk_tree_view_columns_autosize
+gtk_tree_view_column_set_attributes
+gtk_tree_view_column_set_cell_data_func
+gtk_tree_view_column_set_reorderable
+gtk_tree_view_column_set_resizable
+gtk_tree_view_column_set_sizing
+gtk_tree_view_column_set_sort_column_id
+gtk_tree_view_column_set_title
+gtk_tree_view_column_set_visible
+gtk_tree_view_get_bin_window
+gtk_tree_view_get_columns
+gtk_tree_view_get_headers_visible
+gtk_tree_view_get_path_at_pos
+gtk_tree_view_get_selection
+gtk_tree_view_get_type
+gtk_tree_view_get_visible_rect
+gtk_tree_view_move_column_after
+gtk_tree_view_new_with_model
+gtk_tree_view_scroll_to_point
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_rules_hint
+gtk_tree_view_set_search_equal_func
+gtk_vbox_new
+gtk_widget_destroy
+gtk_widget_get_accessible
+gtk_widget_get_parent
+gtk_widget_get_screen
+gtk_widget_get_sensitive
+gtk_widget_get_type
+gtk_widget_get_visible
+gtk_widget_hide
+gtk_widget_set_can_default
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_get_focus
+gtk_window_get_type
+gtk_window_maximize
+gtk_window_new
+gtk_window_set_default
+gtk_window_set_default_icon_from_file
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_focus
+gtk_window_set_geometry_hints
+gtk_window_set_modal
+gtk_window_set_position
+gtk_window_set_resizable
+gtk_window_set_title
+gtk_window_set_wmclass
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_name
+g_type_register_static
+g_type_register_static_simple
+g_unsetenv
+g_utf8_casefold
+g_utf8_collate
+g_utf8_strlen
+g_utf8_validate
+g_utf8_validate (string->str, -1, NULL)
+g_value_dup_string
+g_value_get_uint
+g_value_set_string
+g_value_set_uint
+handle_locate_command_stdout_io(): %s
+handle_search_command_stderr_io(): %s
+handle_search_command_stdout_io(): %s
+has-entry
+--hidden
+history-id
+History ID
+history_id != NULL
+history-length
+history_length > 0
+IceAddConnectionWatch
+IceConnectionNumber
+IceGetConnectionContext
+IceProcessMessages
+IceSetErrorHandler
+IceSetIOErrorHandler
+Icon=file-manager
+'!' -iname '*%s*'
+interact
+interact-request
+Invalid option passed to sortby command line argument.
+ (invalid Unicode)
+Invalid Version string '%s' in %s
+_IO_stdin_used
+__isoc99_sscanf
+_Jv_RegisterClasses
+key != NULL
+key_press_cb
+key_press_event
+kilobytes
+leave_notify_event
+libatk-1.0.so.0
+libc.so.6
+__libc_start_main
+libgconf-2.so.4
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+libICE.so.6
+/lib/ld-linux.so.2
+libpthread.so.0
+libSM.so.6
+link (broken)
+link to %s
+LISTofARRAY8
+List View
+local_only
+localtime
+_Look in folder:
+Look in folder
+make_valid_utf8
+Max History Length
+__memset_chk
+motion_notify_event
+--mounts
+Mo_ve to Trash
+Moving "%s" failed: %s.
+-mtime -%d
+\( -mtime +%d -o -mtime %d \)
+mtimeless
+--mtimeless=%d
+mtimemore
+--mtimemore=%d
+name[0] != '\0'
+_Name contains:
+Name contains
+Na_me does not contain
+--named=%s
+Name matches regular e_xpression
+Name=Nautilus
+'!' -name '*%s*'
+nautilus
+nautilus 
+nd copy)
+--no-default-window 
+--no-desktop 
+no error message given
+No files found
+No such file or directory
+Not a launchable item
+Not emitting quit_requested because no one is listening
+notify::expanded
+notnamed
+--notnamed=%s
+NotShowIn
+--nouser
+\( -nouser -o -nogroup \)
+OnlyShowIn
+Open Containing _Folder
+Open Wit_h
+_Open with %s
+Owned by _group
+Owned by _user
+Owner is unrecognized
+panel-menu
+panel-searchtool
+parse_previous_duplicate_name
+--path=%s
+Please reference the help documentation for instructions on how to configure and enable quick searches.
+process_ice_messages
+ProcessID
+property
+rd copy)
+Received Die message in state %s
+Received Interact message in state %s
+Received SaveComplete message in state %s
+Received SaveYourself(%s, %s, %s, %s) in state %s
+Received ShutdownCancelled message in state %s
+Received XSMP %s message in state %s: client or server error
+--regex=%s
+-regex '%s'
+remove_item
+Remove "%s"
+response
+RestartCommand
+RestartStyleHint
+%s-%010x%s
+%s (another copy)%s
+SaveComplete
+_Save Results As...
+Save Search Results As...
+save-yourself
+SaveYourself
+save-yourself-done
+%s (copy)%s
+%s%csession-state%c%s-%ld.%s
+%s (%dnd copy)%s
+%s (%drd copy)%s
+%s (%dst copy)%s
+%s (%dth copy)%s
+Search for Files
+Searching...
+S_earch results:
+Select and set the "%s" search option
+Select a search option from the drop-down list.
+Select more options
+Select more _options
+Select the folder or device from which you want to begin the search.
+Select the "%s" search option
+Sending InteractDone(%s)
+Sending InteractRequest(%s)
+Sending SaveYourselfDone(False)
+Sending SaveYourselfDone(%s)
+Sending SaveYourselfDone(True)
+Sending SaveYourselfDone(True) for initial SaveYourself
+Sending SaveYourselfRequest(SmSaveGlobal, Shutdown, SmInteractStyleAny, %sFast)
+?sensitive
+separator
+Session management options:
+SESSION_MANAGER
+setlocale
+Set sort order to descending, the default is ascending
+Set the text of "Look in folder" search option
+Set the text of "Name contains" search option
+Setting initial properties
+Show hidden and backup files
+SHOW_HIDDEN_FILES
+Show more _details
+Show session management options
+Show version of the application
+!Shutdown
+shutdown-cancelled
+%s -i -I 'string' /dev/null
+single_click_to_activate_key_changed_cb
+"%s" in %s
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+%s -i 'string' /dev/null
+-size 0c \( -type f -o -type d \)
+size_allocate
+size-allocate
+S_ize at least
+Si_ze at most
+sizeless
+--sizeless=%u
+sizemore
+--sizemore=%u
+\( -size %uc -o -size -%uc \)
+\( -size %uc -o -size +%uc \)
+%s-%lu-%s-%s-%d_TIME%lu
+SmcCloseConnection
+SmcDeleteProperties
+SmcGetIceConnection
+SmcInteractDone
+SmcInteractRequest
+sm-client
+sm-client-disable
+--sm-client-id
+--sm-client-state-file
+sm_client_xsmp_will_quit
+sm-config-prefix
+SmcOpenConnection
+SmcRequestSaveYourself
+SmcSaveYourselfDone
+SmcSetErrorHandler
+SmcSetProperties
+SmcVendor
+sm-disable
+SmInteractStyleAny
+SmInteractStyleErrors
+SmInteractStyleNone
+SmSaveBoth
+SmSaveGlobal
+SmSaveLocal
+Sort files by one of the following: name, folder, size, type, or date
+Specify file containing saved configuration
+Specify session management ID
+%s "%s" 
+\( %s "*%s*" -o %s ".*%s*" \) 
+\( %s "%s" -o %s ".*%s" \) 
+\( %s "%s" -o %s ".%s" \) 
+\( %s "%s" -o %s "%s" \) 
+\( %s "*%s*" -o %s ".*%s*" -o %s "%s*" \) 
+%s %s "%s*%s"
+__stack_chk_fail
+standard::content-type
+standard::*,time::modified,thumbnail::path
+Starting %s
+StartupNotify
+StartupNotify=true
+StartupWMClass
+st copy)
+(stopped)
+strftime
+system-search
+t4<\tc<-tG
+Terminal
+Terminal=false
+text != NULL
+text/plain
+text/uri-list
+text-x-generic
+th copy)
+The document does not exist.
+The document name you selected is a folder.
+- the GNOME Search Tool
+The nautilus file manager is not running.
+There is no installed viewer capable of displaying the document.
+The search results may be invalid.  There were errors while performing this search.
+The search results may be out of date or invalid.  Do you want to disable the quick search feature?
+This will open %d separate window.
+This will open %d separate windows.
+thumbnail_frame.png
+thumbnail::path
+today at %-I:%M %p
+... Too many errors to display ...
+Trailing %% passed to gsearchtool_strdup_strftime
+Trash is unavailable.  Could not move "%s" to the trash.
+tree_model_iter_free_monitor
+Type=Application
+'!' -type p -exec %s -c '%%s' {} \;
+'!' -type p -exec %s -i -c '%%s' {} \;
+'!' -type p -exec %s -i -I -c '%%s' {} \;
+underline
+underline-set
+Unfinished %%%c modifier passed to gsearchtool_strdup_strftime
+(unknown)
+Unrecognized %%-code '%%%c' in Exec
+Unrecognized desktop file Version '%s'
+Unrecognized launch option: %d
+until_substring - original >= 0
+--user=%s
+-user '%s'
+user-trash
+/usr/share/locale
+/usr/share/pixmaps/gsearchtool
+value->type == GCONF_VALUE_STRING
+window_state_event
+xdg-open
+xdg-open %u
+xdg-terminal 
+xfce4-session
+X-GNOME-AutoRestart
+xsmp->state == XSMP_STATE_INTERACT
+x-special/fifo
+x-special/socket
+yesterday at %-I:%M %p
+%Y-%m-%d %H:%M:%S
+You did not select a document name.
+You may not have write permissions to the document.

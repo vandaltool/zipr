@@ -1,0 +1,21 @@
+[-1x2|-2x4] [pbmfile]
+ '`"-'''-```-^^".:::||/?/>/>~+/*.:::\\<<|\|?~\+*-:::~?<<~>?>=bd#.::::!/?::/?:??P,i/?|||T/?/7r}/P,:;?>?SS/)|7>$$&v??$+}$F/$/&pD&H.::::\:?:\!?:??$\\:?\|($<%?Z<$$&,\i?\\?\|||T?\49v??$\\$&+${&q&&H_::?:??$:??$:$$&\??$?L$[<Z/Zck&R,??$>\SS?$J]>&19obd&bb&6d&dH#HHM
+__bss_start
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+overflow_add
+pbm_init
+pbm_readpbminit
+pbm_readpbmrow
+pm_allocrow
+pm_close
+pm_freerow
+pm_keymatch
+pm_openr
+pm_usage

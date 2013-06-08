@@ -1,0 +1,81 @@
+and AOT_LDFLAGS environment variables.
+AOT-compile all Java bytecode in SRCDIR into DSTDIR.
+    aotcompile.PATHS["dbtool"],
+            aotcompile.PATHS["dbtool"] = a
+    aotcompile.PATHS["gcj"],
+            aotcompile.PATHS["gcj"] = a
+    aotcompile.PATHS["make"],
+            aotcompile.PATHS["make"] = a
+## (at your option) any later version.
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+  -c, --gcjflags=FLAGS   flags to pass to gcj during compilation
+  -C, --gcj=PATH         gcj executable to use (%s)
+    compiler = aotcompile.Compiler(srcdir, dstdir)
+    compiler.compile()
+            compiler.exclusions.append(a)
+            compiler.gcjflags[0:0] = a.split()
+    compiler.gcjflags[0:0] = os.environ.get("AOT_GCJFLAGS", "").split() 
+            compiler.ldflags[0:0] = a.split()
+    compiler.ldflags[0:0] = os.environ.get("AOT_LDFLAGS", "").split() 
+            compiler.libdir = a
+            compiler.makeflags[0:0] = a.split()
+    compiler.makeflags[0:0] = os.environ.get("AOT_MAKEFLAGS", "").split() 
+        compiler.makeflags.append('-j%d' % n)
+## Copyright (C) 2006, 2008 Red Hat, Inc.
+  -D, --dbtool=PATH      gcj-dbtool executable to use (%s)
+  -e, --exclude=PATH     do not compile PATH
+    except:
+except aotcompile.Error, e:
+    except (ValueError, IndexError):
+             "exclude=", "libdir="])
+Extra flags may also be passed using the AOT_MAKEFLAGS, AOT_GCJFLAGS
+    for o, a in opts:
+## GNU General Public License for more details.
+    if not [o for o in compiler.makeflags if o.startswith('-j')] and n > 1:
+        if o in ("-C", "--gcj"):
+        if o in ("-c", "--gcjflags"):
+        if o in ("-D", "--dbtool"):
+        if o in ("-e", "--exclude"):
+        if o in ("-l", "--ldflags"):
+        if o in ("-L", "--libdir"):
+        if o in ("-M", "--make"):
+        if o in ("-m", "--makeflags"):
+import aotcompile
+import getopt
+import os
+import sys
+                           in addition to %s
+## it under the terms of the GNU General Public License as published by
+-j<n> is passed with -m, --makeflags""" % (
+  -l, --ldflags=FLAGS    flags to pass to gcj during linking
+  -L, --libdir=DIR       overwrite destination directory
+             "makeflags=" "gcjflags=", "ldflags=",
+            ["make=", "gcj=", "dbtool=",
+            "M:C:D:m:c:l:e:L:",
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -m, --makeflags=FLAGS  flags to pass to make during build
+  -M, --make=PATH        make executable to use (%s)
+        n=1
+        n = [int(o.replace('parallel=', '')) for o in os.environ.get("DEB_BUILD_OPTIONS", "").replace(',',' ').split() if o.startswith('parallel=')][-1]
+Options:
+        opts, args = getopt.getopt(
+    os.path.basename(sys.argv[0]),
+        os.path.basename(sys.argv[0]), e)
+    print >>sys.stderr, "%s: error: %s" % (
+        print >>sys.stderr, usage
+    repr(" ".join(aotcompile.GCJFLAGS)),
+    repr(" ".join(aotcompile.LDFLAGS)))
+        srcdir, dstdir = args
+            sys.argv[1:],
+        sys.exit(1)
+    sys.exit(1)
+sys.path.append("/usr/lib/gcc")
+## the Free Software Foundation; either version 2 of the License, or
+The parallel=<n> option in DEB_BUILD_OPTIONS is passed to make unless
+## This program is distributed in the hope that it will be useful,
+## This program is free software; you can redistribute it and/or modify
+    try:
+usage = """\
+Usage: %s [OPTION...] SRCDIR DSTDIR
+#!/usr/bin/python
+## Written by Gary Benson <gbenson@redhat.com>

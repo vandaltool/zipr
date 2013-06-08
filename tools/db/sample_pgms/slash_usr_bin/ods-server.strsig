@@ -1,0 +1,152 @@
+        
+                      
+                      action='store_true', default=False,
+        #  bip - Basic Imaging Profile)
+        # call Create{Bluetooth|Tty}Server with specified server type 
+class ServerSession:
+class Tester:
+            command = raw_input('>>> ')
+        # connect signals
+    dbus.glib.init_threads()
+                      default='00:00:00:00:00:00',
+    def cancelled_cb(self):
+    def closed_cb(self):
+    def disconnected_cb(self):
+    def error_occurred_cb(self, error_name, error_message):
+    def __init__(self, server_type, root_path, options):
+    def __init__(self, session_object_path):
+    def remote_display_requested_cb(self, img_filename):
+    def session_created_cb(self, session_object_path):
+    def session_removed_cb(self, session_object_path):
+    def started_cb(self):
+    def stopped_cb(self):
+    def transfer_completed_cb(self):
+    def transfer_progress_cb(self, bytes_transferred):
+    def transfer_started_cb(self, filename, local_path, total_bytes):
+            else:
+        else:
+    # emitted constantly during transfer
+    # emitted when BIP RemoteDisplay feature is requested
+    # emitted when client connects to server (server session is established)    
+    # emitted when client disconnects
+    # emitted when error occurs (for instance link error)
+    # emitted when Server is closed
+    # emitted when Server is started
+    # emitted when Server is stopped
+    # emitted when session is disconnected
+    # emitted when transfer begins
+    # emitted when transfer is cancelled
+    # emitted when transfer is completed
+        exit()
+        for name,value in info.iteritems():
+from optparse import OptionParser
+from signal import *
+        #  ftp - File Transfer Profile,
+        # get bus
+        # get org.openobex.Manager object
+        # get org.openobex.Server object
+        # get org.openobex.ServerSession object
+    gobject.threads_init()
+                      help='ADDRESS of Bluetooth adapter to listen on. Default is 00:00:00:00:00:00',
+                      help='Disallow any write operations. Allowed by default')
+                      help='Listen on specified TTY device instead of Bluetooth. If TTY device is used, all Bluetooth options are ignored.',
+                      help='Prompt user to accept or reject every file. By default all files are accepted')
+                      help='Require remote devices to be paired before allowing them to connect. Disabled by default')
+                      help='Require remote device to send thumbnails when using Imaging (BIP) server')
+                      help='Search for obex-data-server on System bus instead of Session bus (use when ods is running in D-Bus System bus)')
+            if command.strip() == 'a':
+    if len(args) != 2:
+if __name__ == '__main__':
+        if options.ask_to_accept:
+        if options.system_bus:
+        if options.tty_dev:
+        if self.total_bytes > 0:
+import dbus
+import dbus.decorators
+import dbus.glib
+import gobject
+import sys
+import time
+        info = self.session.GetTransferInfo()
+        manager_obj = self.bus.get_object('org.openobex', '/org/openobex')
+                      metavar='ADDRESS')
+                      metavar='TTY_DEV')
+        # (opp - Object Push Profile,
+    options, args = parser.parse_args()
+    parser.add_option('-a', '--ask-to-accept', dest='ask_to_accept',
+    parser.add_option('-l', '--local', dest='local_device',
+    parser.add_option('-p', '--pairing', dest='pairing',
+    parser.add_option('-r', '--readonly', dest='readonly',
+    parser.add_option('-s', '--system-bus', dest='system_bus',
+    parser.add_option('-t', '--thumbnails', dest='thumbnails',
+    parser.add_option('-y', '--tty', dest='tty_dev',
+    parser = OptionParser(usage)
+        print
+            print "Accept file? Type 'a' to accept, 'r' to reject:"
+                print 'Accepting'
+        print 'Closed'
+        print 'Disconnected'
+        print 'Error occurred: %s: %s' % (error_name, error_message)
+        print 'error: Wrong number of arguments'
+            print 'Progress'
+            print 'Progress: %d %%' % int(float(bytes_transferred)/self.total_bytes*100)
+                print 'Rejecting'
+   	    print 'RemoteDisplay requested for image: ', img_filename
+        print self.prefix,
+   	    print self.prefix,
+        print self.prefix, 'All transfer info:'
+            print self.prefix, '--', name, '=', value
+        print 'Server object: ', server_path
+	print 'Session Bluetooth address: %s' % session_info['BluetoothAddress']
+        print 'Session created: %s' % session_object_path
+        print 'Session removed: %s' % session_object_path
+        print 'Started'
+        print 'Stopped'
+        print 'Transfer cancelled'
+        print 'Transfer completed'
+        print 'Transfer started (%s, %s, %d)' % (filename, local_path, total_bytes)
+        print usage
+        # require remote device to send thumbnails for BIP PutImage sessions
+        # returns Server object path
+            self.bus = dbus.SessionBus()
+        self.bus = dbus.SessionBus()
+            self.bus = dbus.SystemBus()
+        self.main_loop = gobject.MainLoop()
+        self.main_loop.run()
+        self.manager = dbus.Interface(manager_obj, 'org.openobex.Manager')
+        self.options = options
+        self.prefix = '>>'+session_object_path+'<< '
+        self.root_path = root_path
+        self.server.connect_to_signal('Closed', self.closed_cb)
+        self.server.connect_to_signal('ErrorOccurred', self.error_occurred_cb)
+        self.server.connect_to_signal('SessionCreated', self.session_created_cb)
+        self.server.connect_to_signal('SessionRemoved', self.session_removed_cb)
+        self.server.connect_to_signal('Started', self.started_cb)
+        self.server.connect_to_signal('Stopped', self.stopped_cb)
+        self.server = dbus.Interface(server_obj, 'org.openobex.Server')
+        self.server.SetOption('RequireImagingThumbnails', options.thumbnails)
+        self.server.Start(self.root_path, not options.readonly, not options.ask_to_accept)
+                                                       self.server_type)
+                                             self.server_type, options.pairing)
+        self.server_type = server_type
+                self.session.Accept()
+        self.session.connect_to_signal('Cancelled', self.cancelled_cb)
+        self.session.connect_to_signal('Disconnected', self.disconnected_cb)
+        self.session.connect_to_signal('ErrorOccurred', self.error_occurred_cb)
+        self.session.connect_to_signal('RemoteDisplayRequested', self.remote_display_requested_cb)
+        self.session.connect_to_signal('TransferCompleted', self.transfer_completed_cb)
+        self.session.connect_to_signal('TransferProgress', self.transfer_progress_cb)
+        self.session.connect_to_signal('TransferStarted', self.transfer_started_cb)
+        self.session = dbus.Interface(session_obj, 'org.openobex.ServerSession')
+                self.session.Reject()   
+        self.total_bytes = total_bytes
+        server_obj = self.bus.get_object('org.openobex', server_path)
+            server_path = self.manager.CreateBluetoothServer(options.local_device,
+            server_path = self.manager.CreateTtyServer(options.tty_dev,
+	session_info = self.server.GetServerSessionInfo(session_object_path)
+        session_obj = self.bus.get_object('org.openobex', session_object_path)
+        session = ServerSession(session_object_path)
+        # start server with specified options
+    tester = Tester(args[0], args[1], options)
+    usage = 'Usage: '+sys.argv[0]+' [options] profile path'
+#!/usr/bin/python

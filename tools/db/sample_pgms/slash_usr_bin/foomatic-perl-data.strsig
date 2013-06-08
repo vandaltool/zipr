@@ -1,0 +1,572 @@
+                         ],
+                        {
+                        },
+        ];
+        {},
+absolute
+      'absolute' => '%s',
+      Absolute values
+    Allowed characters in string: %s
+      'allowedchars' => '%s',
+      'allowedregexp' => '%s',
+arg_allowedchars
+arg_allowedregexp
+arg_composite
+arg_defval
+arg_execution
+arg_forced_composite
+arg_group
+arg_longname
+arg_maxlength
+arg_order
+arg_postscript
+arg_proto
+arg_required
+  'args' => [
+  'args_byname' => {
+arg_section
+arg_shortname
+arg_shortname_false
+arg_spot
+arg_substitution
+  'ascii' => '%s',
+  'ascii' => %s,
+autodetect
+  Available ready-made PPD file:
+      Bottom margin: %s
+      'bottom' => '%s',
+__bss_start
+    Choice ID: %s
+      Choice long name:
+      Choice short name (do not translate):
+  'cmd_cmd' => '%s',
+  'cmd_pdf' => '%s',
+  'cmd_pdf' => undef,
+  'cmd' => '%s',
+    CMD: %s
+  'cmd' => undef,
+    Code to insert: %s
+  Color printer
+  'color' => '%s',
+  'color' => %s,
+    Color: %s
+  Combo exception: Color: %s
+  Combo exception: Expected relative driver speed: %s
+  Combo exception: Expected relative system load: %s
+  Combo exception: Maximum X resolution: %s
+  Combo exception: Maximum Y resolution: %s
+  Combo exception: Support level for graphics: %s
+  Combo exception: Support level for line art: %s
+  Combo exception: Support level for photos: %s
+  Combo exception: Support level for text: %s
+  'combomargins' => {
+  'comboppdentry' => '%s',
+  'comboppdentry' => undef,
+    Command line insertion order: %s
+    Command line insertion spot: %%%s
+commandset
+    Comment:
+comments
+                   'comment' => '%s',
+          'comment' => '%s',
+      'comment' => '%s'
+    Comments:
+  'comment' => undef,
+consumables
+  Consumables:
+contrib_url
+  'contriburl' => '%s',
+  Contributed URL: %s
+   -C           Parse printer/driver combo XML data (default)
+      'default' => 'None',
+                Default option settings for the generated Perl data (combo
+      'default' => '%s',
+    Default: %s
+                    'description' => '%s',
+      'description' => '%s',
+    DES: %s
+dotmatrix
+  Dot matrix printer
+   -D           Parse driver entry XML data
+  Driver command line:
+  Driver Comment:
+  Driver downloadable packages:
+  Driver functionality: Color
+driverfunctionalityexception
+driverfunctionalityexceptions
+  Driver functionality: Graphics support rating: %s
+  Driver functionality: Line art support rating: %s
+  Driver functionality: Max X resolution: %s
+  Driver functionality: Max Y resolution: %s
+  Driver functionality: Monochrome
+  Driver functionality: Photo support rating: %s
+  Driver functionality: Speed rating: %s
+  Driver functionality: System load rating: %s
+  Driver functionality: Text support rating: %s
+  Driver group (for localization): %s
+  Driver ID: %s
+  Driver is free software
+  Driver is not free software
+  Driver is obsolete: %s
+  Driver license:
+  Driver license text:
+  Driver list of locales: %s
+  'drivermargins' => {
+  Driver name: %s
+  'drivernopageaccounting' => 0,
+  'drivernopageaccounting' => %s,
+  'drivernopjl' => 0,
+  'drivernopjl' => %s,
+  Driver part of PC file name in PPD: %s
+  Driver PDF command line:
+  'driverppdentry' => '%s',
+  'driverppdentry' => undef,
+            'driverproperties' => {
+  Driver requires driver: %s
+  Driver requires driver: %s (%s)
+                          'driver' => '%s',
+                    'driver' => '%s',
+            'drivers' => [
+            'drivers' => [],
+      'driver' => '%s',
+  Driver short description:
+  Driver supplied by a third party
+  Driver supplied by manufacturer: %s
+  Driver supplier:
+  Driver support contacts:
+  Driver supports printer:
+  Driver suppresses CUPS page accounting
+  Driver suppresses PJL options
+"<driver>" tag not found!
+  Driver type: CUPS Raster
+  Driver type: Filter
+  Driver type: Ghostscript built-in
+  Driver type: Ghostscript Uniprint
+  Driver type: IJS
+  Driver type: OpenPrinting Vector
+  Driver type: PostScript
+  Driver URL: %s
+          'driverval' => ''
+          'driverval' => '%s'
+                'drvcolor' => '%s',
+  'drvcolor' => '%s',
+                'drvmaxresx' => '%s',
+  'drvmaxresx' => '%s',
+                'drvmaxresy' => '%s',
+  'drvmaxresy' => '%s',
+  Dye sublimation printer
+Empty input document!
+                (English). If the text in the requested language is missing,
+    English text:
+                english text will be returned.
+enum_val
+enum_vals
+ev_driverval
+ev_longname
+ev_shortname
+      'exccolor' => '%s',
+      'excgraphics' => '%s',
+      'exclineart' => '%s',
+      'excload' => '%s',
+      'excmaxresx' => '%s',
+      'excmaxresy' => '%s',
+      'excphoto' => '%s',
+      'excspeed' => '%s',
+      'exctext' => '%s',
+    Expected relative driver speed: %s
+    Expected relative system load: %s
+  Extra lines for PPD file:
+   filename     Read input from a file and not from standard input
+    File name: %s
+fingerprint
+                    'fingerprint' => '%s',
+      'fingerprint' => '%s',
+foomatic
+    For driver: %s
+__fprintf_chk
+                'free' => '%s',
+  'free' => '%s',
+functionality
+  Functionality exceptions for driver: %s
+            'functionality' => '%s',
+  'functionality' => '%s',
+    '_general' => {
+            'general_cmd' => '%s',
+  'general_cmd' => '%s',
+  'general_cmd' => undef,
+            'general_des' => '%s',
+  'general_des' => '%s',
+  'general_des' => undef,
+            'general_ieee' => '%s',
+  'general_ieee' => '%s',
+  'general_ieee' => undef,
+    General Margins
+            'general_mdl' => '%s',
+  'general_mdl' => '%s',
+  'general_mdl' => undef,
+            'general_mfg' => '%s',
+  'general_mfg' => '%s',
+  'general_mfg' => undef,
+ghostscript
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+graphics
+                'graphics' => '%s',
+  'graphics' => '%s',
+                'group' => '%s',
+      'group' => '%s',
+                   'id' => '%s',
+            'id' => '%s',
+    ID: %s
+          'idx' => '%s',
+ieee1284
+    IEEE1284: %s
+  Impact printer
+  Inkjet printer
+Input document is not a Foomatic combo XML file (no "<foomatic>" tag)!
+Input document is not a Foomatic driver XML file (no "<driver>" tag)!
+Input document is not a Foomatic overview XML file (no "<overview>" tag)!
+Input document is not a Foomatic printer XML file (no "<printer>" tag)!
+_IO_stdin_used
+iso-8859-1
+iso-8859-15
+_Jv_RegisterClasses
+  'languages' => [
+Language: %s
+  Laser printer
+  Last command line insertion spot: %%%s
+  LED printer
+      Left margin: %s
+      'left' => '%s',
+                     'level' => '%s',
+                    'level' => '%s',
+      'level' => '%s',
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+LIBXML2_2.4.30
+libxml2.so.2
+                'licenselink' => '%s',
+  'licenselink' => '%s',
+                'license' => '%s',
+  'license' => '%s',
+licensetext
+                'licensetext' => '%s',
+  'licensetext' => '%s',
+                'lineart' => '%s',
+  'lineart' => '%s',
+    Link to localized text with full locale ID matched (%s):
+    Link to localized text with only language ID matched (%s):
+    Link to non-localized text:
+    Link to original English text:
+   -l language  Language in which the texts are returned, default is "en"
+                'load' => '%s',
+  'load' => '%s',
+                'locales' => '%s',
+  'locales' => '%s',
+    Localized text with full locale ID matched (%s):
+    Localized text with only language ID matched (%s):
+            'make' => '%s',
+manufacturer
+manufacturersupplied
+                'manufacturersupplied' => '%s',
+  'manufacturersupplied' => '%s',
+  'margins' => {
+    Margins for page size %s
+    Maximum string length: %s
+    Maximum value: %s
+    Maximum X resolution: %s
+    Maximum Y resolution: %s
+      'maxlength' => '%s',
+      'max' => '%s',
+  'maxspot' => 'A',
+  'maxspot' => '%s',
+  'maxxres' => '%s',
+  'maxyres' => '%s',
+    MDL: %s
+mechanism
+    MFG: %s
+    Minimum value: %s
+      'min' => '%s',
+  Model part for PC filename in PPD: %s
+            'model' => '%s',
+monochrome
+  Monochrome printer
+      'name_false' => '%s',
+                     'name' => '%s',
+                   'name' => '%s',
+      'name' => '%s',
+    Name: %s
+No choice ID found
+No driver ID found
+      No localization, using original English link
+      No localization, using original English text
+nonfreesoftware
+    Non-localized text:
+No option ID found
+No option type found
+nopageaccounting
+nopatents
+No printer ID found
+    No replacement driver found!
+noxmlentry
+            'noxmlentry' => 0,
+            'noxmlentry' => 1,
+  'noxmlentry' => '%s',
+obsolete
+                'obsolete' => '%s',
+  'obsolete' => '%s',
+                only, no range-checking)
+   -o option=setting
+                          [ -o option=setting ] [ -o ... ] [ -l language ]
+   -O           Parse overview XML data
+    Option Group: %s
+  Option ID: %s
+    Option long name:
+    Option short name (do not translate):
+    Option short name if false (do not translate):
+    Option style: Command line Substitution
+    Option style: Composite option
+    Option style: Forced composite option
+    Option style: PJL command
+    Option style: PostScript code
+    Option type: %s
+      'order' => '%s',
+    Original English text:
+                'origlicenselink' => '%s',
+  'origlicenselink' => '%s',
+                'origlicensetext' => '%s',
+  'origlicensetext' => '%s',
+Out of memory!
+overview
+packages
+                'packages' => [
+  'packages' => [
+PageSize
+Page size missing!
+parallel
+            'par_cmd' => '%s',
+  'par_cmd' => '%s',
+  'par_cmd' => undef,
+            'par_des' => '%s',
+  'par_des' => '%s',
+  'par_des' => undef,
+            'par_ieee' => '%s',
+  'par_ieee' => '%s',
+  'par_ieee' => undef,
+            'par_mdl' => '%s',
+  'par_mdl' => '%s',
+  'par_mdl' => undef,
+            'par_mfg' => '%s',
+  'par_mfg' => '%s',
+  'par_mfg' => undef,
+  --> Parsing choice data
+--> Parsing driver data
+--> Parsing option data
+--> Parsing printer data
+                'patents' => '%s',
+  'patents' => '%s',
+pcdriver
+  'pcdriver' => '%s',
+  'pcdriver' => undef,
+  'pcmodel' => '%s',
+  'pcmodel' => undef,
+                'photo' => '%s',
+  'photo' => '%s',
+  'pjl' => '%s',
+  'pjl' => %s,
+  'pnp_cmd' => '%s',
+  'pnp_cmd' => undef,
+  'pnp_des' => '%s',
+  'pnp_des' => undef,
+  'pnp_ieee' => '%s',
+  'pnp_ieee' => undef,
+  'pnp_mdl' => '%s',
+  'pnp_mdl' => undef,
+  'pnp_mfg' => '%s',
+  'pnp_mfg' => undef,
+Postscript
+   -P           Parse printer entry XML data
+ppdentry
+  'ppdentry' => '%s',
+  'ppdentry' => undef,
+                          'ppdfile' => '%s',
+                   'ppd' => '%s',
+            'ppds' => [
+  'ppdurl' => '%s',
+  Printer auto-detection info (general):
+  Printer auto-detection info (parallel port):
+  Printer auto-detection info (SNMP):
+  Printer auto-detection info (USB):
+  Printer entry is unverified
+  Printer exception: Color: %s
+  Printer exception: Expected relative driver speed: %s
+  Printer exception: Expected relative system load: %s
+  Printer exception: Maximum X resolution: %s
+  Printer exception: Maximum Y resolution: %s
+  Printer exception: Support level for graphics: %s
+  Printer exception: Support level for line art: %s
+  Printer exception: Support level for photos: %s
+  Printer exception: Support level for text: %s
+  Printer Functionality: %s
+  Printer ID: %s
+  Printer Manufacturer: %s
+  'printermargins' => {
+  Printer Model: %s
+  'printerppdentry' => '%s',
+  'printerppdentry' => undef,
+  Printer prints plain text
+  Printer prints plain text: %s
+printers
+  'printers' => [
+  'printers' => []
+  Printer supported by drivers:
+  Printer supports PJL
+"<printer>" tag not found!
+  Printer understands PDL: %s Level %s
+  Printer URL: %s
+  Printer works with: %s
+  Printer XML entry does not exist in the database
+__printf_chk
+      'proto' => '%s',
+prototype
+prototype_pdf
+    Ready-made PPD: %s
+  'recdriver' => '%s',
+  'recdriver' => undef,
+  Recommended driver: %s
+  'refill' => '%s',
+relative
+      Relative values
+      'required' => 1,
+requires
+                'requires' => [
+  'requires' => [
+resolution
+      Right margin: %s
+      'right' => '%s',
+                           '%s',
+              '%s' => {
+      %s
+    '%s' => {},
+                    'scope' => '%s',
+      'scope' => '%s',
+    Section in PostScript file: %s
+      'section' => '%s',
+  Setting default value for enumerated option %s: %s
+  Setting user default for option %s: %s
+shortdescription
+                'shortdescription' => '%s',
+  'shortdescription' => '%s',
+            'snmp_cmd' => '%s',
+  'snmp_cmd' => '%s',
+  'snmp_cmd' => undef,
+            'snmp_des' => '%s',
+  'snmp_des' => '%s',
+  'snmp_des' => undef,
+            'snmp_ieee' => '%s',
+  'snmp_ieee' => '%s',
+  'snmp_ieee' => undef,
+            'snmp_mdl' => '%s',
+  'snmp_mdl' => '%s',
+  'snmp_mdl' => undef,
+            'snmp_mfg' => '%s',
+  'snmp_mfg' => '%s',
+  'snmp_mfg' => undef,
+                'speed' => '%s',
+  'speed' => '%s',
+      'spot' => '%s',
+    %s (%s):
+    %s (%s), key fingerprint on %s
+__stack_chk_fail
+    String must match Perl regexp: %s
+      String to insert at %%s: %s
+      'style' => '%s',
+sublimation
+      'substyle' => '%s',
+supplier
+                'supplier' => '%s',
+  'supplier' => '%s',
+supportcontact
+supportcontacts
+                'supportcontacts' => [
+  'supportcontacts' => [
+    Support level for graphics: %s
+    Support level for line art: %s
+    Support level for photos: %s
+    Support level for text: %s
+                'text' => '%s',
+  'text' => '%s',
+  There are no patents applying to this driver's code
+  There are patents applying to this driver's code
+  Thermal transfer printer
+thirdpartysupplied
+    This option is required
+      Top margin: %s
+      'top' => '%s',
+transfer
+                'type' => '%s',
+      'type' => '%s',
+uniprint
+      'unit' => '%s',
+      Unit: %s
+Unknown option '-%c'!
+  Unprintable margins
+unverified
+            'unverified' => 0,
+            'unverified' => 1,
+  'unverified' => '%s',
+  URL for the PPD for this printer: %s
+                    'url' => '%s',
+      'url' => '%s',
+  'url' => undef,
+Usage: foomatic-perl-data [ -O ] [ -C ] [ -P ] [ -D ]
+us-ascii
+            'usb_cmd' => '%s',
+  'usb_cmd' => '%s',
+  'usb_cmd' => undef,
+            'usb_des' => '%s',
+  'usb_des' => '%s',
+  'usb_des' => undef,
+            'usb_ieee' => '%s',
+  'usb_ieee' => '%s',
+  'usb_ieee' => undef,
+            'usb_mdl' => '%s',
+  'usb_mdl' => '%s',
+  'usb_mdl' => undef,
+            'usb_mfg' => '%s',
+  'usb_mfg' => '%s',
+  'usb_mfg' => undef,
+      'vals' => [
+      'vals_byname' => {
+          'value' => '%s',
+$VAR1 = [
+$VAR1 = {
+$VAR1->{'args_byname'}{'%s'} = $VAR1->{'args'}[%d];
+$VAR1->{'args'}[%d]{'vals'}[%d] = $VAR1->{'args'}[%d]{'vals_byname'}{'%s'};
+                    'version' => '%s',
+      'version' => '%s',
+   -v           Verbose (debug) mode
+   -vv          Very verbose (debug) mode
+                          [ -v ] [ -vv ] [ filename ]
+xmlCheckVersion
+xmlCleanupParser
+xmlCreatePushParserCtxt
+xmlDocGetRootElement
+xmlFreeDoc
+xmlFreeParserCtxt
+xmlGetProp
+xmlIsBlankNode
+xmlKeepBlanksDefault
+xmlNodeListGetString
+xmlParseChunk
+xmlParseFile
+xmlStrcasecmp
+xmlStrchr
+xmlStrcmp
+xmlStrdup
+xmlStrlen
+xmlStrncasecmp
+xmlStrncmp

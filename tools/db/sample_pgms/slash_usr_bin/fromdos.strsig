@@ -1,0 +1,58 @@
+-a	Always convert (DOS to Unix: kill all CRs;
+abdefhl:opuvV
+-b	Make backup of original file (.bak).
+Converting %s
+Copyright 1996-2011 Christopher Heng. All rights reserved.
+__cxa_atexit
+-d	Convert DOS to Unix.
+dos2unix
+-e	Abort processing files on error in any file.
+-f	Force: convert even if file is not writeable.
+File read/write error while converting %s.
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3.4
+__gmon_start__
+-h	Display help on usage and quit.
+Insufficient memory to run program.
+Internal error: %s.
+_IO_getc
+_IO_putc
+_IO_stdin_used
+-l file	Log most errors and verbose messages to <file>
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__lxstat64
+mkstemp64
+Need to specify filename or redirect stdin.
+No read permission for %s.
+No write permission for %s. Use -f to force conversion.
+-o	Overwrite original file (no backup).
+-p	Preserve file owner and time.
+readlink
+%s resolves to %s
+strcasecmp
+__strdup
+%s: Unable to create error log file %s. Defaulting to stderr.
+%s Ver %d.%d.%d Converts text files between DOS and Unix formats.
+Terminated by user.
+tofrodos
+-u	Convert Unix to DOS.
+Unable to access file %s.
+Unable to change ownership of %s.
+Unable to create temporary file for converting %s.
+Unable to create temporary file %s for converting %s.
+Unable to dereference symbolic link %s.
+Unable to open file %s.
+unix2dos
+	Unix to DOS: convert all LFs to CRLFs)
+unknown direction
+Usage: %s [options] [file...]
+__vfprintf_chk
+-V	Show version and quit.
+-v	Verbose.
+__xstat64

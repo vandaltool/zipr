@@ -1,0 +1,33 @@
+__bss_start
+Byte image (8 bits)
+Cannot extract image %d, input contains only %d image%s
+__ctype_b_loc
+EOF / read error
+GLIBC_2.0
+GLIBC_2.3
+__gmon_start__
+[-image#] [Bioradfile]
+Image size: %d cols, %d rows
+Input contains %d image%c
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+Not a Biorad file
+Number of images in file is %d
+pgm_init
+pgm_writepgminit
+pgm_writepgmrow
+pm_allocrow
+pm_close
+pm_error
+pm_message
+pm_openr
+pm_usage
+Strange image size, cols = %d
+Strange image size, rows = %d
+T$89T$<u
+Word image (16 bits)

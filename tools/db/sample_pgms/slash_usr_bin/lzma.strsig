@@ -1,0 +1,320 @@
+  -0 ... -9           compression preset; default is 6; take compressor *and*
+%5s %7s  %11s  %11s  %5s  %-7s 
+Adjusted LZMA%c dictionary size from %s MiB to %s MiB to not exceed the memory usage limit of %s MiB
+                      after every SIZE bytes of input; 0=disabled (default)
+  --arm[=OPTS]        ARM BCJ filter (little endian only)
+armthumb
+  --armthumb[=OPTS]   ARM-Thumb BCJ filter (little endian only)
+                      `auto' (default), `xz', `lzma', and `raw'
+ Basic file format and compression options:
+bindtextdomain
+block	%llu	%llu	%llu	%llu	%llu	%llu	%llu	%s	%s
+  Blocks:
+block-size
+      --block-size=SIZE
+  Blocks:             %s
+Cannot establish signal handlers
+Cannot read data from standard input when reading filenames from standard input
+cC:defF:hHlkM:qQrS:tT:vVz0123456789
+  -C, --check=CHECK   integrity check type: `none' (use with caution),
+  Check:              %s
+      CheckVal %*s Header  Flags        CompSize    MemUsage  Filters
+Compressed data cannot be read from a terminal
+Compressed data cannot be written to a terminal
+Compressed data is corrupt
+  Compressed size:    %s
+Compression and decompression with --robot are not supported yet.
+Compress or decompress FILEs in the .xz format.
+                      `crc32', `crc64' (default), or `sha256'
+  -c, --stdout        write to standard output and don't delete input files
+__ctype_b_loc
+ Custom filter chain for compression (alternative for using presets):
+dcgettext
+dcngettext
+  -d, --decompress    force decompression
+Decompression will need %s MiB of memory.
+                      decompressor memory usage into account before using 7-9!
+delta=dist=%u
+  --delta[=OPTS]      Delta filter; valid OPTS (valid values; default):
+                        depth=NUM  maximum search depth; 0=automatic (default)
+@/dev/null
+                        dict=NUM   dictionary size (4KiB - 1536MiB; 8MiB)
+Disabled
+                        dist=NUM   distance between bytes being subtracted
+                      does not affect decompressor memory requirements
+  -e, --extreme       try to improve compression ratio by using more CPU time;
+Empty filename, skipping
+__errno_location
+Error restoring the O_APPEND flag to standard output: %s
+  -f, --force         force overwrite of output file and (de)compress links
+  -F, --format=FMT    file format to encode or decode; possible values are
+File format not recognized
+file	%llu	%llu	%llu	%llu	%s	%s	%llu
+                      filenames must be terminated with the newline character
+      --files0[=FILE] like --files but use the null character as terminator
+      --files[=FILE]  read filenames to process from FILE; if FILE is
+__fprintf_chk
+                                   from each other (1-256; 1)
+futimens
+__fxstat64
+getopt_long
+gettimeofday
+                      give an error instead of adjusting the settings downwards
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.6
+GLIBC_2.7
+__gmon_start__
+  -h, --help          display the short help (lists only the basic options)
+  -h, --help          display this short help and exit
+  -H, --long-help     display the long help (lists also the advanced options)
+  -H, --long-help     display this long help and exit
+http://tukaani.org/xz/
+  --ia64[=OPTS]       IA-64 (Itanium) BCJ filter
+                      ignore possible remaining input data
+info-memory
+      --info-memory   display the total amount of RAM and the currently active
+Internal error (bug)
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+  -k, --keep          keep (don't delete) input files
+lasse.collin@tukaani.org
+                        lc=NUM     number of literal context bits (0-4; 3)
+,lc=%u,lp=%u,pb=%u,mode=%s,nice=%u,mf=%s,depth=%u
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+liblzma %s
+liblzma.so.5
+LIBLZMA_VERSION=%u
+libpthread.so.0
+--list does not support reading from standard input
+--list works only on .xz files (--format=xz or --format=auto)
+  -l, --list          list information about .xz files
+ (%'llu B)
+ (%llu B)
+%llu	%llu	%llu
+long-help
+                        lp=NUM     number of literal position bits (0-4; 0)
+__lxstat64
+LZMA1 cannot be used with the .xz format
+  --lzma1[=OPTS]      LZMA1 or LZMA2; OPTS is a comma-separated list of zero or
+  --lzma2[=OPTS]      more of the following options (valid values; default):
+lzma_alone_decoder
+lzma_alone_encoder
+lzma_block_compressed_size
+lzma_block_header_decode
+lzma%c=dict=%s
+lzma_check_is_supported
+lzma_check_size
+lzma_code
+lzma_end
+lzma_index_block_count
+lzma_index_cat
+lzma_index_checks
+lzma_index_decoder
+lzma_index_end
+lzma_index_file_size
+lzma_index_iter_init
+lzma_index_iter_next
+lzma_index_iter_rewind
+lzma_index_memused
+lzma_index_stream_count
+lzma_index_stream_flags
+lzma_index_stream_padding
+lzma_index_total_size
+lzma_index_uncompressed_size
+lzma_lzma_preset
+lzma_memusage
+lzma_physmem
+lzma_properties_decode
+lzma_raw_decoder
+lzma_raw_decoder_memusage
+lzma_raw_encoder
+lzma_raw_encoder_memusage
+lzma_stream_decoder
+lzma_stream_encoder
+lzma_stream_flags_compare
+lzma_stream_footer_decode
+lzma_stream_header_decode
+lzma_version_number
+lzma_version_string
+Mandatory arguments to long options are mandatory for short options too.
+Maximum number of filters is four
+memlimit
+memlimit%
+memlimit-compress
+memlimit-compress%
+      --memlimit-compress=LIMIT
+memlimit-decompress
+memlimit-decompress%
+      --memlimit-decompress=LIMIT
+  Memory needed:      %s MiB
+Memory usage limit for compression:    
+Memory usage limit for decompression:  
+Memory usage limit is too low for the given filter setup.
+Memory usage limit reached
+                      memory usage limits, and exit
+                        mf=NAME    match finder (hc3, hc4, bt2, bt3, bt4; bt4)
+  -M, --memlimit=LIMIT
+                        mode=MODE  compression mode (fast, normal; normal)
+                        nice=NUM   nice length of a match (2-273; 64)
+no-adjust
+      --no-adjust     if compression settings exceed the memory usage limit,
+No integrity check; not verifying file integrity
+no-sparse
+      --no-sparse     do not create sparse files when decompressing
+  Number of files:    %s
+                      omitted, filenames are read from the standard input;
+Only one file can be specified with `--files' or `--files0'.
+__open64_2
+ Operation mode:
+ Operation modifiers:
+                      or both; LIMIT is in bytes, % of RAM, or 0 for defaults
+ Other options:
+                        pb=NUM     number of position bits (0-4; 2)
+posix_fadvise64
+  --powerpc[=OPTS]    PowerPC BCJ filter (big endian only)
+                        preset=PRE reset options to a preset (0-9[e])
+__printf_chk
+__progname_full
+program_invocation_name
+pthread_sigmask
+  -Q, --no-warn       make warnings not affect the exit status
+  -q, --quiet         suppress warnings; specify twice to suppress errors too
+  Ratio:              %s
+Report bugs to <%s> (in English or Finnish).
+      --robot         use machine-parsable messages (useful for scripts)
+%s: Cannot remove: %s
+%s: Cannot set the file group: %s
+%s: Cannot set the file owner: %s
+%s: Cannot set the file permissions: %s
+%s: Closing the file failed: %s
+%s: Error reading filenames: %s
+%s: Error seeking the file: %s
+setlocale
+                      set memory usage limit for compression, decompression,
+%s: File already has `%s' suffix, skipping
+%s: File has setuid or setgid bit set, skipping
+%s: File has sticky bit set, skipping
+%s: File is empty
+%s: Filename has an unknown suffix, skipping
+%s files
+%s: File seems to have been moved, not removing
+%s: Filter chain: %s
+%s home page: <%s>
+sigaction
+sigaddset
+sigemptyset
+sigfillset
+single-stream
+      --single-stream decompress only the first stream, and silently
+%s: Input file has more than one hard link, skipping
+%s: Invalid filename suffix
+%s: Invalid multiplier suffix
+%s: Invalid option name
+%s: Invalid option value
+%s: Is a directory, skipping
+%s: Is a symbolic link, skipping
+  Sizes in headers:   %s
+%s MiB of memory is required. The limit is %s.
+%s: Not a regular file, skipping
+snprintf
+__snprintf_chk
+%s: Null character found when reading filenames; maybe you meant to use `--files0' instead of `--files'?
+%s: Options must be `name=value' pairs separated with commas
+  --sparc[=OPTS]      SPARC BCJ filter
+%s: Read error: %s
+%-*s  %*s  %-5s %*s %*s MiB  %s
+%s: Seeking failed when trying to create a sparse file: %s
+%s %s MiB (%s B)
+%s: %s: %s
+ %*s %*s   %*s %10s   %10s
+    %*s %*s %*s %*s 
+%*s %*s  %*s  %-*s
+%*s %*s  %*s  %-*s %*s
+%*s %*s  %*s  %*s  %*s  %-*s %s
+  -S, --suffix=.SUF   use the suffix `.SUF' on compressed files
+__stack_chk_fail
+                        start=NUM  start offset for conversions (default=0)
+=start=%u
+(stdout)
+%s: Too small to be a valid .xz file
+    Stream     Block      CompOffset    UncompOffset       TotalSize      UncompSize  Ratio  Check
+    Stream    Blocks      CompOffset    UncompOffset        CompSize      UncompSize  Ratio  Check      Padding
+stream	%llu	%llu	%llu	%llu	%llu	%llu	%s	%s	%llu
+  Stream padding:     %s
+  Streams:
+  Streams:            %s
+strerror
+Strms  Blocks   Compressed Uncompressed  Ratio  Check   Filename
+summary	%llu	%s
+%s: Unexpected end of file
+%s: Unexpected end of input when reading filenames
+%s: Unknown file format type
+%s: Unsupported integrity check type
+	%s	%u	%s	%llu	%llu	%s
+%s (%u/%u)
+%s: Value is not a non-negative decimal integer
+%s: With --format=raw, --suffix=.SUF is required unless writing to stdout
+%s: Write error: %s
+The environment variable %s contains too many arguments
+The exact options of the presets may vary between software versions.
+The .lzma format supports only the LZMA1 filter
+The selected match finder requires at least nice=%u
+The sum of lc and lp must not exceed 4
+to-stdout
+Total amount of physical memory (RAM): 
+totals	%llu	%llu	%llu	%llu	%s	%s	%llu	%llu
+Try `%s --help' for more information.
+  -t, --test          test compressed file integrity
+%u:%02u:%02u
+%u d %u h
+%u h %u min
+%u min %u s
+uncompress
+  Uncompressed size:  %s
+Unexpected end of input
+Unknown-11
+Unknown-12
+Unknown-13
+Unknown-14
+Unknown-15
+Unknown-2
+Unknown-3
+Unknown-5
+Unknown-6
+Unknown-7
+Unknown-8
+Unknown-9
+Unknown error
+Unsupported filter chain or filter options
+#@Unsupported LZMA1/LZMA2 preset: %s
+Unsupported options
+Unsupported type of integrity check; not verifying file integrity
+Usage: %s [OPTION]... [FILE]...
+Using a preset in raw mode is discouraged.
+#@/usr/share/locale
+                      Valid OPTS for all BCJ filters:
+Valid suffixes are `KiB' (2^10), `MiB' (2^20), and `GiB' (2^30).
+Value of the option `%s' must be in the range [%llu, %llu]
+__vfprintf_chk
+__vsnprintf_chk
+  -v, --verbose       be verbose; specify twice for even more verbose
+  -V, --version       display the version number and exit
+                      when compressing to the .xz format, start a new block
+With no FILE, or when FILE is -, read standard input.
+Writing to standard output failed
+  --x86[=OPTS]        x86 BCJ filter (32-bit and 64-bit)
+__xstat64
+XZ_DEFAULTS
+XZ Utils
+XZ_VERSION=%u
+xz (XZ Utils) 5.1.0alpha
+  -z, --compress      force compression

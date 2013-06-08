@@ -1,0 +1,37 @@
+	# Accept but ignore
+	$arg = shift(@ARGV);
+    @args = ('--login', @args);
+    elsif ($opt eq '-bg')
+    elsif ($opt eq '-e')
+    elsif ($opt eq '-fg')
+    elsif ($opt eq '-fn')
+    elsif ($opt eq '-geometry')
+    elsif ($opt eq '-h' || $opt eq '--help')
+    elsif ($opt eq '-ls')
+    elsif ($opt eq '+ls')
+    elsif ($opt eq '-n')
+    elsif ($opt eq '-name')
+    elsif ($opt eq '-tn')
+    elsif ($opt eq '-T' || $opt eq '-title')
+	$ENV{'DISPLAY'} = shift(@ARGV);
+exec('gnome-terminal',@args);
+	if (@ARGV)
+if ($login == 1)
+    if ($opt eq '-display')
+	    last;
+	$login = 0;
+	$login = 1;
+my $login=0;
+	print STDERR "$0: to set an icon, please use -name <profile> and set a profile icon\n"
+	push(@args, "--background=$arg");
+	    push(@args, '-e', $arg);
+	push(@args, "--font=$arg");
+	push(@args, "--foreground=$arg");
+	push(@args, "--geometry=$arg");
+	push(@args, '--help');
+	push(@args, "--termname=$arg");
+	push(@args, '-t', shift(@ARGV));
+	push(@args, "--window-with-profile=$arg");
+	    push(@args, '-x', $arg, @ARGV);
+#! /usr/bin/perl -w
+while ($opt = shift(@ARGV))

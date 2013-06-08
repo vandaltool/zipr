@@ -1,0 +1,122 @@
+allow_root
+/bin/mount
+/bin/umount
+closedir
+__ctype_b_loc
+/dev/fuse
+endmntent
+__errno_location
+/etc/fuse.conf
+/etc/mtab
+/etc/mtab.fuselock
+fd=%i,rootmode=%o,user_id=%i
+fd=%i,rootmode=%o,user_id=%i,group_id=%i
+__fprintf_chk
+fuseblk.
+_FUSE_COMMFD
+fusermount version: %s
+__fxstat
+getmntent
+getopt_long
+getpwuid
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+group_id=
+ -h		    print help
+_IO_stdin_used
+large_read
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__lxstat
+__lxstat64
+__memmove_chk
+mount_max = %i
+--no-canonicalize
+nonempty
+ -o opt[,opt...]   mount options
+Options:
+__printf_chk
+/proc/filesystems
+/proc/fs/fuse/dev
+/proc/fs/fuse/version
+/proc/mounts
+/proc/self/fd/%i
+ -q		    quiet
+readdir64
+__realpath_chk
+rootmode=
+%s: bad mount point %s: %s
+%s: child terminated abnormally (status %i)
+%s: could not determine username
+sending file descriptor
+%s: entry for %s not found in %s
+%s: error getting lock: %s
+%s: error reading %s
+setfsgid
+setfsuid
+setmntent
+%s: extra arguments after the mountpoint
+%s: failed to access mountpoint %s: %s
+%s: failed to allocate memory
+%s: failed to bind parent to /: %s
+%s: failed to chdir to '/'
+%s: failed to chdir to %s: %s
+%s: failed to clone namespace: %s
+%s: failed to execute /bin/mount: %s
+%s: failed to execute /bin/umount: %s
+%s: failed to fchdir to mountpoint: %s
+%s: failed to mark mounts private: %s
+%s: failed to obtain current directory: %s
+%s: failed to open mountpoint for reading: %s
+%s: failed to open %s: %s
+%s: failed to unmount %s: %s
+%s: fork: %s
+%s: 'fuseblk' support missing
+%s: fuse device not found, try 'modprobe fuse' first
+%s: if you are sure this is safe, use the 'nonempty' mount option
+sigaddset
+sigemptyset
+sigprocmask
+%s: internal error: invalid abs path: <%s>
+%s: invalid mountpoint '%s'
+%s: kernel interface too old
+%s: missing mountpoint argument
+%s: mount failed: %s
+%s: mountpoint is not empty
+%s: mountpoint moved (%s -> %s)
+%s: mountpoint %s is no longer a regular file
+%s: mountpoint %s is not a directory or a regular file
+%s: mountpoint %s not owned by user
+%s: note: 'large_read' mount option is deprecated for %i.%i kernels
+%s: old style mounting not supported
+%s: option blkdev is privileged
+%s: [options] mountpoint
+%s: option %.*s only allowed if 'user_allow_other' is set in /etc/fuse.conf
+__sprintf_chk
+%s: reading %s: line %i too long
+%s: reading %s: missing newline at end of file
+%s: sigprocmask: %s
+%s: %s not mounted
+__stack_chk_fail
+%s: too many FUSE filesystems mounted; mount_max=N can be set in /etc/fuse.conf
+__strdup
+strerror
+subtype=
+%s: unable to open fuse lock file: %s
+%s: unknown parameter in %s at line %i: '%s'
+%s: unsafe option %s ignored
+%s: user has no write access to mountpoint %s
+%s: waitpid failed: %s
+%s: waitpid: %s
+%s: -z can only be used with -u
+user_allow_other
+user_id=
+ -u		    unmount
+ -V		    print version
+ -z		    lazy unmount

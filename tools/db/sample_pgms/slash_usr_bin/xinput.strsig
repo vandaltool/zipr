@@ -1,0 +1,334 @@
+1.5.99.1
+         %2d: %.2f (%.2f)
+%-40s	id=%d	[
+absolute
+	accelDenom is %d
+	accelNum is %d
+a[%d]=%d 
+argument %s could not be parsed
+AttachToMaster
+	Axis %d :
+__bss_start
+	button[%d]=%s
+		Button labels:
+    buttons:
+button %s %d 
+		Buttons supported: %d
+		Button state:
+     changed: %s
+    Changes happened: %s %s %s %s %s %s %s %s
+    changes: %s %s %s %s %s %s %s %s
+		Class originated from: %d. Type: 
+	click is %d
+Coordinate Transformation Matrix
+Coordinate transformation matrix not found. This server is too old
+create-master
+__ctype_b_loc
+		  Current value: %f
+%d class%s :
+delete-prop
+dependent
+    detail: %d
+		Detail for Valuator %d:
+DeviceChanged
+<device> <crtc name>
+    device: %d
+    device: %d (%d)
+<device> [<device> ...]
+[device disabled]
+    device %d [%s (%d)] is %s
+[device enabled]
+device has no buttons
+<device name> ABSOLUTE|RELATIVE
+<device name> <feedback id> <value>
+<device name> <map button 1> [<map button 2> [...]]
+<device name> <threshold> <num> <denom>
+device name with 'pointer:' or 'keyboard:' as appropriate.
+<device name> [<x index> <y index>]
+<device> <property>
+<device> <property> <format (8, 16, 32)> <val> [<val> ...]
+<device> <property> <val> [<val> ...]
+Device '%s':
+Device '%s' does not report any properties.
+<device> [--type=atom|float|int] [--format=8|16|32] <property> <val> [<val> ...]
+%d feedback class%s
+	duration is %d
+emulated
+error selecting extended events
+    event: %.2f/%.2f
+EVENT type %d (%s)
+    event x/y: %.2f / %.2f
+ Extension not supported.
+failed to get property type and format for %s
+Failed to open display.
+Failed to retrieve current property values
+	Fetch failure
+		  flags: 0x%x
+    flags: %s
+    flags: %s %s
+Float atom not found. This server is too old.
+Floating
+floating slave
+floating slave]
+FocusOut
+--format=
+Found %d screens, but you requested %s.
+__fprintf_chk
+get-button-map
+get-feedbacks
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+	global_auto_repeat is %d
+__gmon_start__
+Grab failed with %d
+    group: locked %#x latched %#x base %#x effective: %#x
+HierarchyChanged
+Holding sync grab for %d button presses.
+horizontal
+        %i: %.2f
+<id> [Floating|AttachToMaster (dflt:Floating)] [<returnPointer>] [<returnKeyboard>]
+<id> <master>
+--id-only
+<id> [<sendCore (dflt:1)>] [<enable (dflt:1)>]
+		  increment: %f
+Invalid format %d
+Invalid mode, use ABSOLUTE or RELATIVE.
+invalid option %s
+invalid property format %s
+invalid property %s
+Invalid return_mode.
+_IO_stdin_used
+_Jv_RegisterClasses
+KbdFeedbackClass id=%ld
+keyboard:
+		Keycodes supported: %d
+	key[%d]=%s
+key %s %d 
+		  Label: %s
+	led_mask is %d
+	led_values is %d
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXinerama.so.1
+libXi.so.6
+libXrandr.so.2
+list-props
+map-to-crtc
+master keyboard
+master keyboard (%d)]
+master pointer
+master pointer  (%d)]
+[master removed]
+	Max_keycode is %d
+		Max number of touches: %d
+	max_symbols is %d
+	maxVal is %d
+		Max_value is %d
+	Min_keycode is %d
+	minVal is %d
+		Min_value is %d
+	Mode is %s
+		  Mode: %s
+    mode: %s (detail %s)
+modified
+    modifiers: locked %#x latched %#x base %#x effective: %#x
+	Motion_buffer is %ld
+--name-only
+[new master]
+[new slave]
+ no-emulation 
+no event registered...
+<no items>
+NotifyAncestor
+NotifyDetailNone
+NotifyGrab
+NotifyInferior
+NotifyNonlinear
+NotifyNonlinearVirtual
+NotifyNormal
+NotifyPassiveGrab
+NotifyPassiveUngrab
+NotifyPointer
+NotifyPointerRoot
+NotifyUngrab
+NotifyVirtual
+NotifyWhileGrabbed
+	Num_axes is %d
+	Num_buttons is %d
+	Num_keys is %d
+	num_syms_supported is %d
+NV-CONTROL
+	... of unknown type %s
+	percent is %d
+	pitch is %d
+Please specify the output name as HEAD-X,where X is the screen number
+pointer:
+ preferred 
+__printf_chk
+PropertyEvent
+     property: %ld '%s'
+Property '%s' changed.
+property %s doesn't exist, you need to specify its type and format
+-proximity
+[-proximity] <device name>
+proximity %s 
+PtrFeedbackClass id=%ld
+query-state
+		  Range: %f - %f
+RawButtonPress
+RawButtonRelease
+RawKeyPress
+RawKeyRelease
+RawMotion
+RawTouchBegin
+RawTouchEnd
+RawTouchUpdate
+    reason: %s
+reattach
+relative
+remove-master
+	Reporting %d classes:
+		  Resolution: %d units/m
+	resolution is %d
+		Resolution is %d
+    root: %.2f/%.2f
+    root x/y:  %.2f / %.2f
+[same screen]
+		Scroll info for Valuator %d
+"%s" (%d)
+set-atom-prop
+set-button-map
+set-float-prop
+set-integer-feedback
+set-int-prop
+set-mode
+set-pointer
+set-prop
+set-ptr-feedback
+%s extension not available
+[--short || --long || --name-only || --id-only] [<device name>...]
+"%s"	id=%ld	[
+[slave attached]
+[slave detached]
+slave keyboard
+slave  keyboard (%d)]
+slave pointer
+slave  pointer  (%d)]
+[slave removed]
+SlaveSwitch
+"%s" (%ld)
+	%s (%ld):	
+__stack_chk_fail
+test-xi2
+	This device is disabled
+	threshold is %d
+To ensure the correct one is selected, please use the device ID instead.
+To ensure the correct one is selected, please use the device ID, or prefix the
+		Touch mode: %s
+		  type: %d (%s)
+	Type is %s
+Unable to connect to X server
+unable to find device %s
+Unable to find output '%s'. Output may not be connected.
+unable to find PtrFeedbackClass for %s
+Unable to open device
+unable to open device '%s'
+unable to open device %s
+Unable to set screen mapping. Xinerama extension not found
+<undefined>
+unexpected format %d for property %s
+unexpected size for property %s
+unexpected type for property %s
+unknown class
+unknown event type
+unknown property type %s
+Unknown string format.
+usage: xinput %s %s
+ValuatorClass Mode=%s Proximity=%s
+	valuator[%d]=%d
+    valuators:
+vertical
+Warning: There are multiple devices matching '%s'.
+Warning: There are multiple devices named "%s".
+watch-props
+what's that %d
+<window> <device>
+    windows: root 0x%lx event 0x%lx child 0x%ld
+    windows: root 0x%lx event 0x%lx child 0x%lx
+XBellFeedbackControl id=%ld
+XChangeDeviceProperty
+XChangeFeedbackControl
+XChangePointerDevice
+XCloseDevice
+XCloseDisplay
+XCreateSimpleWindow
+XDeleteDeviceProperty
+XExtensionDevice
+XExtensionKeyboard
+XExtensionPointer
+XFreeDeviceState
+XFreeEventData
+XGetAtomName
+XGetDeviceButtonMapping
+XGetDeviceProperty
+XGetEventData
+XGetExtensionVersion
+XGetFeedbackControl
+XIAllowEvents
+XIButtonClass
+XIChangeHierarchy
+XIChangeProperty
+XIDeleteProperty
+XIFreeDeviceInfo
+XIGetProperty
+XIGrabButton
+XIGrabDevice
+XIGrabKeycode
+XIKeyClass
+XIListProperties
+Xinerama failed to query screens.
+XineramaQueryExtension
+XineramaQueryScreens
+XInputExtension
+X Input extension not available.
+	xinput %s %s
+xinput version %s
+XIntegerFeedbackControl id=%ld
+XInternAtom
+XIQueryDevice
+XIQueryVersion
+XIScrollClass
+XISelectEvents
+XISetClientPointer
+XITouchClass
+XIUngrabButton
+XIUngrabDevice
+XIUngrabKeycode
+XIValuatorClass
+XI version on server: 
+XKeyboard
+XLedFeedbackState id=%ld
+XListDeviceProperties
+XListInputDevices
+XMapWindow
+XMaskEvent
+XNextEvent
+XOpenDevice
+XOpenDisplay
+XPointer
+XQueryDeviceState
+XQueryExtension
+XRRFreeScreenResources
+XRRGetCrtcInfo
+XRRGetOutputInfo
+XRRGetScreenResources
+XRRQueryVersion
+XSelectExtensionEvent
+XSelectInput
+XSetDeviceButtonMapping
+XSetDeviceMode
+XStringFeedbackControl id=%ld

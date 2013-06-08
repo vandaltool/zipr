@@ -1,0 +1,61 @@
+%-32s%-16llu%6.1f
+%-32s%-16llu%6.1f%s
+%d.%lu sampling_interval=%d time_const=%d
+__fprintf_chk
+ftruncate
+__fxstat
+getsockopt
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+h?vVzrnasd:t:
+IcmpOutAddrMaskReps
+_IO_stdin_used
+IpDefaultTTL
+IpForwarding
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+net/netstat
+net/snmp
+net/snmp6
+nstat: bind
+nstat: daemon
+nstat: fdopen history file
+nstat: flock history file
+nstat: fstat history file
+NSTAT_HISTORY
+nstat: history is aged out, resetting
+nstat: history is stale, ignoring it.
+nstat: invalid time constant divisor
+nstat: listen
+nstat: open history file
+nstat: socket
+nstat: something is so wrong with history file, that I prefer not to proceed.
+nstat utility, iproute2-ss%s
+ (overflow)
+__printf_chk
+PROC_NET_NETSTAT
+PROC_NET_SNMP
+PROC_NET_SNMP6
+PROC_ROOT
+/proc/uptime
+%s%llu%lg
+__snprintf_chk
+__sprintf_chk
+__stack_chk_fail
+__strdup
+__strncat_chk
+TcpCurrEstab
+TcpMaxConn
+TcpRtoAlgorithm
+TcpRtoMax
+TcpRtoMin
+/tmp/.nstat.u%d
+Usage: nstat [ -h?vVzrnasd:t: ] [ PATTERN [ PATTERN ] ]

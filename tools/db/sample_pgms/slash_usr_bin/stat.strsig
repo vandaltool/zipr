@@ -1,0 +1,245 @@
+0123456789
+3T$t3D$p	
+4096 <= len
+  %A   Access rights in human readable form
+  %a   Access rights in octal
+Access: (%04a/%10.10A)  Uid: (%5u/%8U)   Gid: (%5g/%8G)
+Access: %x
+  %a   Free blocks available to non-superuser
+                          and do not output a mandatory trailing newline.
+anon-inode FS
+A NULL argv[0] was passed through an exec system call.
+__assert_fail
+bindtextdomain
+binfmt_misc
+ Birth: %w
+Block size: %-10s Fundamental block size: %S
+block special file
+Blocks: Total: %-10b Free: %-10f Available: %a
+  %b   Number of blocks allocated (see %B)
+__bss_start
+  %B   The size in bytes of each block reported by %b
+  %b   Total data blocks in file system
+bug-coreutils@gnu.org
+cannot change to directory %s
+cannot get current directory
+cannot read file system information for %s
+cannot read symbolic link %s
+cannot read table of mounted file systems
+cannot stat current directory (now %s)
+cannot stat %s
+cannot stat standard input
+canonicalize_file_name
+cdb_free
+  -c  --format=FORMAT   use the specified FORMAT instead of the default;
+cgroupfs
+Change: %z
+character special file
+chdir_long
+chdir-long.c
+closedir
+! close_fail
+Context: %C
+Copyright %s %d Free Software Foundation, Inc.
+cramfs-wend
+  %C   SELinux security context string
+  %c   Total file nodes in file system
+__ctype_b_loc
+__ctype_get_mb_cur_max
+__ctype_tolower_loc
+__ctype_toupper_loc
+__cxa_atexit
++D$(9D$4
+dcgettext
+  %d   Device number in decimal
+  %D   Device number in hex
+dereference
+Device: %Dh/%dd	Inode: %-10i  Links: %-5h Device type: %t,%T
+Device: %Dh/%dd	Inode: %-10i  Links: %h
+  %d   Free file nodes in file system
+*dir != '/'
+dir <= dir_end
+Display file or file system status.
+D$P3T$p3D$t	
+D$t3T$`3D$d	
+ecryptfs
+endmntent
+__errno_location
+/etc/mtab
+ext2/ext3
+failed to canonicalize %s
+failed to get security context of %s
+failed to return to initial working directory
+fdopendir
+  -f, --file-system     display file system status instead of file status
+  %F   File type
+  %f   Free blocks in file system
+fgetfilecon
+  File: "%n"
+  File: %N
+file-system
+For complete documentation, run: info coreutils '%s invocation'
+for details about the options it supports.
+__fpending
+__fprintf_chk
+fputs_unlocked
+  %f   Raw mode in hex
+__freading
+fseeko64
+__fxstat64
+__fxstatat64
+General help using GNU software: <http://www.gnu.org/gethelp/>
+getgrgid
+getmntent
+getopt_long
+getpwuid
+gfs/gfs2
+  %g   Group ID of owner
+  %G   Group name of owner
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GNU coreutils
+      --help     display this help and exit
+%H:%M:%S
+  %h   Number of hard links
+http://www.gnu.org/software/coreutils/
+hugetlbfs
+    ID: %-8i Namelen: %-7l Type: %T
+  %i   File System ID in hex
+                          If you want a newline, include \n in FORMAT
+  %i   Inode number
+Inodes: Total: %-10c Free: %d
+inotifyfs
+_IO_stdin_used
+is_selinux_enabled
+iswprint
+_Jv_RegisterClasses
+  -L, --dereference     follow links
+lgetfilecon
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libselinux.so.1
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+L$L3T$d3L$`
+  %l   Maximum length of filenames
+localeconv
+localtime
+__lxstat64
+%m/%d/%y
+memory exhausted
+Michael Meskes
+minix (30 char.)
+minix v2
+minix v2 (30 char.)
+missing operand
+  %m   Mount point
+Modify: %y
+  %n   File name
+%n %i %l %t %s %S %b %f %a %c %d
+nl_langinfo
+NOTE: your shell may have its own version of %s, which usually supersedes
+  %N   Quoted file name with dereference if symbolic link
+%n %s %b %f %u %g %D %i %h %t %T %X %Y %Z %W %o
+%n %s %b %f %u %g %D %i %h %t %T %X %Y %Z %W %o %C
+  %o   I/O block size
+openat64
+openprom
+                          output a newline after each use of FORMAT
+__overflow
+__printf_chk
+      --printf=FORMAT   like --format, but interpret backslash escapes,
+__progname
+__progname_full
+program_invocation_name
+program_invocation_short_name
+pstorefs
+readdir64
+readlink
+regular empty file
+regular file
+reiserfs
+Report bugs to: %s
+Report %s bugs to %s
+Report %s translation bugs to <http://translationproject.org/team/>
+rewinddir
+rpc_pipefs
+%s, and %s.
+  %s   Block size (for faster transfers)
+%s%.*d%-*.*d
+securityfs
+setgrent
+setlocale
+setmntent
+setpwent
+  %S   Fundamental block size (for block counts)
+shell-always
+%s home page: <%s>
+%s: invalid directive
+  Size: %-10s	Blocks: %-10b IO Block: %-6o %F
+slash - dir < 4096
+__snprintf_chk
+__sprintf_chk
+squashfs
+%s, %s, and others.
+%s, %s, and %s.
+%s (%s) %s
+%s, %s, %s, and %s.
+%s, %s, %s, %s,
+__stack_chk_fail
+statfs64
+  %s   Total size, in bytes
+__strdup
+strftime
+symbolic link
+T$43T$X1
+T$8+T$09T$(
+T$8+T$09T$4
+t$dkT$$,
+There is NO WARRANTY, to the extent permitted by law.
+The valid format sequences for files (without --file-system):
+the version described here.  Please refer to your shell's documentation
+This is free software: you are free to change and redistribute it.
+tK;D$(v'+t$(
+  %t   Major device type in hex
+  %T   Minor device type in hex
+Try `%s --help' for more information.
+  -t, --terse           print the information in terse form
+  %t   Type in hex
+  %T   Type in human readable form
+T$X3T$x3D$|	
+UNKNOWN (0x%lx)
+unlabeled
+Usage: %s [OPTION]... FILE...
+usbdevfs
+using %s to denote standard input does not work in file system mode
+/usr/share/locale
+  %u   User ID of owner
+  %U   User name of owner
+Valid format sequences for file systems:
+      --version  output version information and exit
+warning: backslash at end of format
+warning: unrecognized escape `\%c'
+weird file
+write error
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+Written by %s, %s, %s,
+  %w   Time of file birth, human-readable; - if unknown
+  %W   Time of file birth, seconds since Epoch; 0 if unknown
+__xstat64
+  %x   Time of last access, human-readable
+  %X   Time of last access, seconds since Epoch
+%Y-%m-%d
+%Y-%m-%d %H:%M:%S.%N %z
+  %y   Time of last modification, human-readable
+  %Y   Time of last modification, seconds since Epoch
+  %z   Time of last change, human-readable
+  %Z   Time of last change, seconds since Epoch

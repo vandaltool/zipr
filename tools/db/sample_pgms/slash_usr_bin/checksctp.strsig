@@ -1,0 +1,8 @@
+checksctp
+GLIBC_2.0
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+SCTP supported

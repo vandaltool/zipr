@@ -1,0 +1,600 @@
+           ;;
+          ;;
+        "")
+        *.*)
+        *)
+      ;;
+      # 
+    -) ;;
+    /*) ;;
+    ./*)
+###############################################################################
+    } >&2
+#   2007-01-04  patch by JK to support $engine subdir (enabled by default)
+    || abort "could not create directory \`$tmpdir'"
+# abort(errmsg)
+    || abort "hyphenfile \`$hyphenation' not found"
+    abort "Infinite recursion detected, giving up!" ;;
+      *) abort "$progname: unknown option \`$1'. Try $progname --help for help";;
+           abort "unknown format type: $fullfmt"
+  # add the current directory to TEXFORMATS, too.  Currently unnecessary
+    all)
+      --all|-a)
+  --all                      recreate all format files
+#                                  and issue a warning
+  # (and nothing else), since kpathsea can only deal with one.
+#                                 are now *.fmt, nothing else, disable
+argv0=$0
+      # As a special special case, we create mplib-luatex.mem for use by
+#                                as mktexfmt, an extention was mandatory)
+bases and MetaPost mems).
+#!/bin/sh
+      "") break;;
+  byebye
+# byebye()
+byebye()
+      --byengine=*)
+      --byengine)
+    byengine)
+  --byengine ENGINENAME      (re)create formats using ENGINENAME
+      --byfmt=*)
+    byfmt)
+      --byfmt|-f)
+  --byfmt FORMATNAME         (re)create format for FORMATNAME
+      --byhyphen=*)
+    byhyphen)
+      --byhyphen|-h)
+  --byhyphen HYPHENFILE      (re)create formats that depend on HYPHENFILE
+  cache_vars
+# cache_vars()
+cache_vars()
+#   call mktexdir script, disable all features (to prevent sticky directories)
+#   call mktexupd script
+#   Calls initex. Assumes that global variables are set by parse_line.
+#   call tcfmgr script
+    case $1 in
+  case $1 in
+  case $argv0 in
+  case "$cmd" in
+  case "$cmd" in 
+  case "$cnf_file" in
+  case "$destdir" in
+  case "$engine" in
+  case "$format" in
+      case $fullfmt in
+  case $hyphenation in
+  case $hyphenfile in
+  case :$mktexfmt_loop: in
+  case $MT_TEXMFMAIN in
+      --catcfg)
+    catcfg)
+  --catcfg                   output the content of the config file
+      cat <<eof
+  cat <<eof
+  cat <<'eof'
+    && { cd / && rm -rf "$tmpdir"; }
+  cd "$tmpdir" || cleanup 1
+  cfgmaint=
+  cfgparam=
+  # Check for infinite recursion before running the iniTeX:
+# check_match()
+check_match()
+    check_match || continue
+# cleanup()
+cleanup()
+    cleanup 0
+  cleanup 0
+cleanup 0
+    cleanup 1
+  cleanup 1
+      cleanup $retval
+#   clean up the temp area and exit with proper exit status
+          cmd=all;;
+      $cmd $arg
+          cmd=byengine; arg=`echo "$1" | sed 's/--byengine=//'`; shift ;;
+          cmd=byfmt; arg=`echo "$1" | sed 's/--byfmt=//'`; shift ;;
+          cmd=byhyphen; arg=`echo "$1" | sed 's/--byhyphen=//'`; shift ;;
+          cmd=catcfg;;
+  cmd=         # desired action from command line
+          cmd=disablefmt; arg=`echo "$1" | sed 's/--disablefmt=//'`; cfgmaint=1; shift;;
+          cmd=edit; cfgmaint=1;;
+          cmd=enablefmt; arg=`echo "$1" | sed 's/--enablefmt=//'`; cfgmaint=1; shift;;
+          cmd=help;;
+          cmd=listcfg;;
+          cmd=missing;;
+          cmd=refresh;;
+          cmd=showhyphen; arg=`echo "$1" | sed 's/--showhyphen=//'`; shift ;;
+          cmd=version;;
+      --cnffile=*)
+      --cnffile)
+          cnf_file=`echo "$1" | sed 's/--cnffile=//'`; cfgparam=1; shift ;;
+  --cnffile FILE
+  cnf_file=    # global variable: full name of the config file
+      cnf_file=`tcfmgr --cmd find --file $cnf`
+    *)  cnf_file="$thisdir/$cnf_file";;
+cnf=fmtutil.cnf   # name of the config file
+configReplace()
+# configReplace(file, pattern, line)
+      co=`tcfmgr --tmp $tmpdir --cmd co --file $cnf || retval=$?`
+    cp "$poolfile" $engine.pool
+#   create all missing format files
+      create_missing;;
+# create_missing()
+create_missing()
+      debianEditWarnAndShow
+      # defined by debianize-fmtutil
+  $destdir
+          destdir=`echo "$1" | sed 's/--fmtdir=//'`; shift ;;
+  destdir=     # global variable: where do we put the format files?
+    destdir=$MT_TEXMFVAR/web2c
+    *)  destdir="$thisdir/$destdir";;
+    destfile=$fulldestdir/$fmtfile
+  ) </dev/null
+#   Di Jan 11 11:42:36 CET 2005 fix --byhyphen with relative hyphenfile
+    *) disabled=false;;
+    '#!') disabled=true; shift;;
+      --disablefmt=*)
+      --disablefmt)
+disablefmt()
+# disablefmt(format)
+  --disablefmt FORMATNAME    disable formatname in config file
+#                                  disablefmt listcfg
+#   disables format in configuration file
+#   display help (or version) message and exit
+#   Do Dez 30 21:53:27 CET 2004 rename variable verbose to verboseFlag
+  --dolinks                  (not implemented, just for compatibility)
+#   Do Mar 02 10:42:31 CET 2006 add tmpdir to TEXFORMATS
+#   Do Okt 28 11:09:36 CEST 2004 added --refresh
+  do test $# -gt 0 && shift; done
+  # due to KPSE_DOT, we don't search the current directory, so include
+    echo -
+      && echo "$destfile" && mktexfmtFirst=false
+  echo "Error: $@" >&2
+    echo "$line" >> $file
+  echo "$progname: $1." >&2
+      # Echo the (main) output filename for our caller.
+  echo "Warning: $@" >&2
+  ed $cnf_file >/dev/null 2>&1 <<-eof
+    ed "$file" >/dev/null 2>&1 <<-eof
+    edit)
+      --edit|-e)
+  --edit                     edit config file
+        else
+          else
+      --enablefmt=*)
+      --enablefmt)
+enablefmt()
+    enablefmt|disablefmt)
+#  enablefmt(format)
+  --enablefmt FORMATNAME     enable formatname in config file
+#    enables format in configuration file
+  engine=$2
+  enginename=$1
+#   engine:  name of the TeX engine, e.g. tex, etex, pdftex
+    esac
+      esac
+  eval lastarg=\$$#
+  eval $match_cmd && setmatch true
+#   Example (for fmtutil.cnf):
+#   execute cmd. Redirect output depending on $mktexfmtMode.
+  # execute the desired command:
+  (exit 0); return 0
+# exit code: returns error code if the ini file is not installed
+# exit code: returns error code if the ini file is not installed or if
+# exit code: returns error is file is not found
+  (exit $rc); exit $rc
+  export KPSE_DOT
+  export mktexfmt_loop
+  export MT_MKTEXDIR_OPT MT_MKTEXUPD MT_MKTEX_CNF MT_MKTEX_OPT
+  export MT_TEXMFMAIN
+  export MT_VARTEXFONTS MT_MKTEXNAM MT_MKTEXNAM_OPT MT_MKTEXDIR
+export PATH
+      fi
+        fi
+          fi
+  file=$1; pat=$2; line=$3
+                             filtered to available formats
+find_hyphenfile()
+  find_hyphenfile "$format" "$hyphenation" \
+# find_hyphenfile(format, hyphenation) searches for hyphenation along
+find_info_for_name()
+  find_info_for_name "$fmtname" || abort "no info for format \`$fmtname'"
+# find_info_for_name(format) 
+  # first generated filename after successful generation to stdout then
+      --fmtdir=*)
+      --fmtdir)
+  --fmtdir DIRECTORY
+    *)               fmtfile="$format.fmt";  kpsefmt=tex; texengine=$engine;;
+#   fmtfile: name of the format file (without directory, but with extension)
+        *.fmt|*.mem|*.base)
+  fmtname=$1
+# fmtutil - utility to maintain format files.
+  --force                    (not implemented, just for compatibility)
+  # for debugging, exit $rc here so $tmpdir with its logs sticks around.
+for details.
+#   for each line in config file: check match-condition and recreate format
+  # for formats that load other formats (e.g., jadetex loads latex.fmt), 
+  for line
+  format="$1"
+  format=$1
+  format="$1"; hyphenation="$2"
+  *:"$format/$engine":*)
+#   format:  name of the format, e.g. pdflatex
+  # for MFBASES and MPMEMS.
+#   for supported formats (i.e. for those which have an existing ini file)
+#   Fr Apr  8 19:15:05 CEST 2005 cleanup now has an argument for the return code
+#   Fr Dez 31 16:51:29 CET 2004 option catcfg added (for being called by texconfig)
+#   Fri Oct 25 02:29:06 CEST 2002: now more careful about find_hyphenfile()
+#   Fri Oct  4 22:33:17 CEST 2002: add more cli stuff: enablefmt
+#   Fr Sep 17 19:25:28 CEST 2004 save $0 in a variable before calling a function
+    fulldestdir="$destdir"
+    fulldestdir="$destdir/$texengine"
+      fullfmt=$1; shift
+#   further changes in texk/tetex/ChangeLog.
+	g/^$1[ 	]/s/^/#! /
+	g/^#![ 	]*$1[ 	]/s/..[ 	]*//
+# getmatch()
+getmatch()
+  getmatch || abort "no format depends on engine \`$enginename'"
+  getmatch || abort "no format depends on hyphen file \`$hyphenfile'"
+#   get $MT_TEXMFMAIN from $TEXMFMAIN
+#   global variables.
+  grep "^$1[ 	]" $cnf_file >/dev/null || { (exit 0); return 0; }
+  grep "^#![ 	]*$1[ 	]" $cnf_file >/dev/null || { (exit 0); return 0; }
+    grep '^! ' $format.log >/dev/null 2>&1 &&
+      grep -v '^ *#' "$cnf_file" | sed 's@^ *@@; s@ *$@@' | grep . | sort || retval=$?
+# hack around a bug in zsh:
+  # handle nls support: pool + tcx
+  has_errors=false
+  has_errors=true
+  has_warnings=false
+  has_warnings=true
+      # having to tamper with mpost itself.
+           help
+# help() and version()
+      --help|-help)
+    help|"") help;;
+  --help                     show this message
+  hyphenation=$3
+  hyphenfile=$1
+      hyphenfile="$KPSE_DOT/"`echo "$hyphenfile" | sed 's@..@@'`
+      hyphenfile="$KPSE_DOT/$hyphenfile"
+      id=$1; cnf_file=$3; orig=$4
+          if cp "$destfile" "$mplib_mem_file" </dev/null; then
+  if grep "$pat" "$file" >/dev/null; then
+  if $has_errors; then
+  if $has_warnings; then
+    if mv "$fmtfile" "$destfile" </dev/null; then
+    # If necessary, set TEXPOOL. Use absolute path, because of KPSE_DOT.
+  IFS=$OIFS
+    IFS=$OLDIFS
+  if test -f "$fmtfile"; then
+        if test \! -f $mplib_mem_file; then
+  if test -n "$cfgmaint"; then
+  if test -n "$cfgparam"; then
+  if test -n "$poolfile" && test -f "$poolfile"; then
+  if test $use_engine_dir; then
+      if test "x$format" = xmpost && test "x$engine" = xmpost; then
+  if test "x$hyphenation" = x-; then
+    if test -z "$cfgparam"; then
+  if test -z "$destdir"; then
+  if test -z "$log_failure_msg"; then
+  if test -z "$log_warning_msg"; then
+#   if there is a match
+  inifile=`echo $lastarg | sed 's%^\*%%'`
+  init_log_failure
+# init_log_failure()
+init_log_failure()
+  init_log_warning
+# init_log_warning()
+init_log_warning()
+  initTexmfMain
+# initTexmfMain()
+initTexmfMain()
+#   inside the 4th field in fmtutil.cnf.
+  # install a pool file and set tcx flag if requested in lang= option:
+  # it explicitly for formats that \write and later on \read
+  jobswitch="-jobname=$format"
+  : ${KPSE_DOT=$thisdir}
+  kpsewhich -progname=$format -format=$kpsefmt $inifile >/dev/null 2>&1
+    *) kpsewhich -progname="$format" -format=tex "$hyphenation";;
+#   least one match.
+#   line will be added at the end of the file if pattern does not match.
+      --listcfg)
+    listcfg)
+  --listcfg                  list (enabled and disabled) configurations,
+# listcfg_loop()
+listcfg_loop()
+      listcfg_loop || retval=$?
+    localpool=false
+    $localpool && { TEXPOOL="`pwd`:$TEXPOOL"; export TEXPOOL; }
+    localpool=true
+#   locate files / kpathsea variables and export variables to environment
+log_failure()
+    log_failure "\`$engine -ini $tcxflag $jobswitch $prgswitch $texargs' failed"
+# log_failure(errmsg)
+    log_failure_msg="$@"
+  log_failure_msg=
+$log_failure_msg
+    log_failure_msg="$log_failure_msg
+log_warning()
+            log_warning "cp $destfile $mplib_mem_file failed."
+      log_warning "\`$engine -ini $tcxflag $jobswitch $prgswitch $texargs' possibly failed."
+# log_warning(errmsg)
+    log_warning_msg="$@"
+  log_warning_msg=
+$log_warning_msg
+    log_warning_msg="$log_warning_msg
+#   Look up the config line for format `format' and call parse_line to set
+# main()
+main ${1+"$@"}
+  # make local paths absolute:
+  match=$1
+  # match_cmd='test ! -f $destdir/$fmtfile'
+  match_cmd='test -f "`kpsewhich -engine=$texengine -progname=$format $fmtfile`"'
+  match_cmd='test ! -f "`kpsewhich -engine=$texengine -progname=$format $fmtfile`"'
+  match_cmd="test x\$engine = x$enginename"
+  match_cmd="test x\$format = x$fmtname"
+  match_cmd="test x\$this_hyphenfile = x$hyphenfile"
+  match_cmd=true
+    metafun)         prgswitch=-progname=mpost;;
+#     mex-pl tex mexconf.tex nls=tex-pl,il2-pl mex.ini
+    mf|mfw|mf-nowin) fmtfile="$format.base"; kpsefmt=mf; texengine=metafont;;
+    missing)
+  --missing                  create all missing format files
+      --missing|-m)
+  mkdir -p "$fulldestdir"
+mktexdir()
+# mktexdir(args)
+  mktexfmt_loop=$mktexfmt_loop:$format/$engine
+    mktexfmt|*/mktexfmt)
+  $mktexfmtMode && ${1+"$@"} >&2 || ${1+"$@"}
+  mktexfmtMode=false
+  # mktexfmtMode: if called as mktexfmt, set to true. Will echo the
+      $mktexfmtMode && $mktexfmtFirst \
+  $mktexfmtMode || mktexfmt_loop=
+      mktexfmtMode=true
+mktexupd()
+# mktexupd(args)
+      mktexupd "$fulldestdir" "$fmtfile"
+            mktexupd "$fulldestdir" "$mplib_mem_name"
+#   Mon Sep 15 13:07:31 CEST 2003 add tmpdir to TEXINPUTS
+        mplib_mem_file=$fulldestdir/$mplib_mem_name
+        mplib_mem_name=mplib-luatex.mem
+    mpost)           fmtfile="$format.mem";  kpsefmt=mp; texengine=metapost;;
+    mptopdf|cont-??) prgswitch=-progname=context;;
+  MT_FEATURES=none "$MT_TEXMFMAIN/web2c/mktexdir" "$@" >&2
+  : ${MT_MKTEX_CNF=`kpsewhich --format='web2c files' mktex.cnf`}
+  : ${MT_MKTEXDIR=`kpsewhich --format='web2c files' mktexdir`}
+  : ${MT_MKTEXDIR_OPT=`kpsewhich --format='web2c files' mktexdir.opt`}
+  : ${MT_MKTEXNAM=`kpsewhich --format='web2c files' mktexnam`}
+  : ${MT_MKTEXNAM_OPT=`kpsewhich --format='web2c files' mktexnam.opt`}
+  : ${MT_MKTEX_OPT=`kpsewhich --format='web2c files' mktex.opt`}
+  : ${MT_MKTEXUPD=`kpsewhich --format='web2c files' mktexupd`}
+    "") MT_TEXMFMAIN=`kpsewhich --var-value=TEXMFMAIN`;;
+  "$MT_TEXMFMAIN/texconfig/tcfmgr" "$@"
+  "$MT_TEXMFMAIN/web2c/mktexupd" "$@"
+    : ${MT_TEXMFVAR=`kpsewhich -var-value=TEXMFVAR`}
+  : ${MT_VARTEXFONTS=`kpsewhich --expand-var='$VARTEXFONTS' | sed 's%^!!%%'`}
+  mv "$format.log" "$fulldestdir/$format.log" </dev/null
+  $need_find_hyphenfile && \
+  need_find_hyphenfile=false
+  need_find_hyphenfile=true
+  needsCleanup=false
+  $needsCleanup && return
+  $needsCleanup && test -n "$tmpdir" && test -d "$tmpdir" \
+  needsCleanup=true
+      # never update it if it does exist.)
+    nls=*)
+      --no-engine-subdir)
+  --no-engine-subdir         don't use engine-specific subdir of the fmtdir
+  # No match before the loop:
+  # Now check if there was at least one match:
+  OIFS=$IFS
+    OLDIFS=$IFS; IFS=
+  # otherwise double format definitions will create an infinite loop, too
+#   parse commandline arguments, initialize variables,
+  parse_line "$@"
+parse_line()
+# parse_line(config_line) sets global variables:
+    parse_line $line || continue
+    parse_line $line && echo "$line"
+#                                 "plain" symlinks
+#     pool: base name of pool file (to support translated pool files)
+      pool=`echo $1 | sed 's@nls=@@; s@,.*@@'`
+  poolfile=
+    && poolfile=`(kpsewhich -progname=$engine $pool.pool) 2>/dev/null`
+  pool=; tcx=
+    *)               prgswitch=-progname=$format;;
+#   print `errmsg' to stderr and exit with error code 1
+#   print `msg' to stderr is $verbose is true
+#   prints all format definitions in config files (enabled and disabled ones)
+#   prints full name of the hyphenfile for format
+$progname: Error! Not all formats have been built successfully.
+progname=fmtutil
+$progname version $version
+$progname: Warning! Some warnings have been issued.
+# program history:
+# Public domain.  Originally written by Thomas Esser.
+  --quiet                    (not implemented, just for compatibility)
+      --quiet|-q)
+Rebuild, manage, and otherwise manipulate TeX formats (and Metafont
+      recreate_all;;
+# recreate_all()
+recreate_all()
+#   recreate all formats
+#   recreate all formats that are based on enginename
+#   recreate all formats that depend on hyphenfile
+#   recreate all versions of fmtname
+recreate_by_engine()
+      recreate_by_engine "$arg";;
+# recreate_by_engine(enginename)
+recreate_by_fmt()
+      recreate_by_fmt "$arg";;
+# recreate_by_fmt(fmtname)
+recreate_by_hyphenfile()
+      recreate_by_hyphenfile "$arg";;
+# recreate_by_hyphenfile(hyphenfile)
+      recreate_existing;;
+# recreate_existing()
+recreate_existing()
+  recreate_loop
+# recreate_loop()
+recreate_loop()
+#   recreate only existing format files
+#    [ redefined by debianize-fmtutil ]
+    refresh)
+      --refresh|-r)
+  --refresh                  recreate only existing format files
+  # remove any * for the sake of the kpsewhich lookup.
+#   report and save failure message `errmsg'
+#   report and save warning message `errmsg'
+#   report any failures and exit the program
+#   reset the list of failure messages
+#   reset the list of warning messages
+#    return success if there was at least one match.
+retval=0
+  rm -f $fmtfile
+  rm -f "$fulldestdir/$format.log"
+  rm -f *.pool
+  # run in a subshell to get a local effect of TEXPOOL manipulation:
+    run_initex
+# run_initex()
+run_initex()
+  && { RUNNING_BSH=true; export RUNNING_BSH; exec /bin/bsh $0 ${1+"$@"}; }
+running  kpsewhich fmtutil.cnf  should show the active file.
+  && { RUNNING_KSH=true; export RUNNING_KSH; exec /bin/ksh $0 ${1+"$@"}; }
+#   Sa Dez 25 12:44:23 CET 2004 implementation adopted for teTeX-3.0 (tcfmgr)
+#   Sa Jan 15 18:13:46 CET 2005 avoid multiple variable assignments in one statement
+#   Sat Feb 15 22:01:35 CET 2003   let mf-nowin work without mf
+#                                      searchpath of format
+  # See if we can find $inifile for return code:
+  set `echo x; sed '/^#/d; /^[ 	]*$/d' "$cnf_file"`; shift
+  set `echo x; sed '/^#$/d; /^#[^!]/d; /^[ 	]*$/d' "$cnf_file"`; shift
+setmatch()
+  setmatch false
+# setmatch(match)
+#   setting the "match state" to true or false. Used to see if there was at
+#   set up a temp directory and a trap to remove it
+  # set up destdir:
+  setupTmpDir
+      setupTmpDir
+# setupTmpDir()
+setupTmpDir()
+  # set x `awk '$1 == format {print; exit}' format="$format" "$cnf_file"`; shift
+           set x --byfmt `echo $fullfmt | sed 's@\.[a-z]*$@@'` ${1+"$@"}; shift
+           set x --byfmt $fullfmt; shift
+      set x $co; shift
+  set x `egrep "^$format( |	)" "$cnf_file" | sed q`; shift
+          shift; cmd=byengine; arg=$1;;
+          shift; cmd=byfmt; arg=$1;;
+          shift; cmd=byhyphen; arg=$1;;
+          shift; cmd=disablefmt; arg=$1; cfgmaint=1;;
+          shift; cmd=enablefmt; arg=$1; cfgmaint=1;;
+          shift; cmd=showhyphen; arg=$1;;
+          shift; cnf_file=$1; cfgparam=1;;
+          shift; destdir=$1;;
+      shift      # nls stuff is not handled by the engine directly,
+  shift; shift; shift
+      --showhyphen=*)
+    showhyphen)
+  # showhyphen and edit do not need any temp. directory, so do it here:
+show_hyphen_file()
+      show_hyphen_file "$arg" || retval=$?
+# show_hyphen_file(format)
+  --showhyphen FORMATNAME    print name of hyphenfile for format FORMATNAME
+      --showhyphen|-s)
+#   So Ma 27 18:52:06 CEST 2005 honor $TMPDIR, $TEMP and $TMP, not just $TMP
+                 # so we shift this away
+#   Sun Apr 20 10:27:09 CEST 2003 allow " " as well as tab in config file
+#   Sun Aug  3 11:09:46 CEST 2003 special case for mptopdf
+#   Sun Dec 21 10:25:37 CET 2003 "mktexfmt pdflatex" did not work (if called
+#   Sun Jul  7 21:28:37 CEST 2002: look at log file for possible problems,
+#   Sun Mar 21 19:44:36 CET 2004: support aleph
+#   Sun May  9 23:24:06 CEST 2004 changes for new web2c: format names
+#   Support for building internationalized formats sets:
+#   switch into temp. direcrory, execute desired command
+tcfmgr()
+# tcfmgr(args)
+      tcx=`echo $1 | sed 's@nls=[^,]*@@; s@^,@@'`
+  tcxflag=
+#     tcx: translation file used when creating the format
+  test $# = 0 && abort "no info for format \`$format'"
+  test -d "$destdir" || abort "format directory \`$destdir' does not exist"
+  test -d "$destdir" || mktexdir "$destdir" >/dev/null 2>&1
+      --test|--dolinks|--force)
+test -f /bin/bsh && test -z "$RUNNING_BSH" \
+test -f /bin/ksh && test -z "$RUNNING_KSH" \
+    test -f "$cnf_file" || abort "config file \`$cnf_file' not found"
+      test -f "$cnf_file" || abort "config file \`$cnf' not found"
+  --test                     (not implemented, just for compatibility)
+  test -n "$pool" \
+    test -n "$tcx" && tcxflag=-translate-file=$tcx
+test -n "${ZSH_VERSION+set}" && alias -g '${1+"$@"}'='"$@"'
+      test $retval = 0 || cleanup 1
+  test -w "$destdir" || abort "format directory \`$destdir' is not writable"
+  test "x$match" = xtrue
+  texargs="$@"
+#   texargs: flags for initex and name of the ini file (e.g. -mltex frlatex.ini)
+  TEXFORMATS="$tmpdir:$TEXFORMATS"; export TEXFORMATS
+  TEXINPUTS="$tmpdir:$TEXINPUTS"; export TEXINPUTS
+The config file is named fmtutil.cnf, and
+#   The first line in file that matches pattern gets replaced by line.
+#            the hyphen file cannot be found
+      # the mplib embedded in luatex if it doesn't already exist.  (We
+#   The nls parameter (pool,tcx) can only be specified as the first argument
+  thisdir=`pwd`
+    this_hyphenfile=`find_hyphenfile "$format" "$hyphenation"`
+This is a summary of all \`failed' messages:
+This is a summary of all \`warning' messages:
+      # This is used by the luamplib package.  This way, an expert user
+#    this speeds up future calls to e.g. mktexupd
+#   Thu Dec 25 12:56:14 CET 2003: new listcfg_loop lists only supported formats
+#   Thu Dec 25 22:11:53 CET 2003: add version string
+#   Thu May  6 14:16:19 CEST 2004: "mv ...</dev/null" to avoid interaction.
+  tmpdir=${TMPDIR-${TEMP-${TMP-/tmp}}}/$progname.$$
+  trap 'cleanup 1' 1 2 3 7 13 15
+#   Tue Apr  2 00:37:39 CEST 2002: added mktexfmt functionality
+#   Tue Apr  9 22:46:34 CEST 2002: pass -progname=mpost for metafun
+#   Tue Jun  4 19:32:44 CEST 2002: be smarter about stdout / stderr
+#   Tue Jun  4 21:52:57 CEST 2002: trap / cleanup code from updmap
+#   Tue Jun  5 14:45:57 CEST 2001: added support for mf / mpost
+#   Tue Oct 22 22:46:48 CEST 2002: -jobname, oft extension
+  (umask 077; mkdir "$tmpdir") \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xAIX; } 2>/dev/null \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xULTRIX; } 2>/dev/null \
+unset RUNNING_BSH
+unset RUNNING_KSH
+Usage: fmtutil [OPTION]... CMD [ARG]...
+          use_engine_dir=false;;
+  use_engine_dir=true # whether to use web2c/$engine subdirs
+. /usr/share/texlive-bin/debianize-fmtutil
+Valid commands:
+Valid options:
+verbose()
+# verbose (cmd)
+    verbose $engine -ini $tcxflag $jobswitch $prgswitch $texargs
+          verboseFlag=false;;
+  verboseFlag=true
+  $verboseFlag && verbose echo ${1+"$@"}
+verboseMsg() {
+# verboseMsg(msg)
+    verboseMsg "$progname: attempting to create localized format using pool=$pool and tcx=$tcx."
+          verboseMsg "$progname: copying $destfile to $mplib_mem_file"
+      verboseMsg "$progname: $destfile installed."
+      verboseMsg "$progname: initial config file is \`$orig'"
+          verboseMsg "$progname: $mplib_mem_file already exists, not updating."
+  verboseMsg "$progname: running \`$engine -ini  $tcxflag $jobswitch $prgswitch $texargs' ..."
+      --version)
+version()
+version=20091223.1047
+      # version of mplib) can manually update mplib-luatex.mem without
+  --version                  show version info
+    version) version;;
+Visit the log files in directory
+#   Wed Dec 25 09:47:44 CET 2002   bugfix for localized pool files
+#   Wed Feb 19 21:14:52 CET 2003   add eomega support
+  # We don't want user-interaction for the following "mv" command:
+    # We don't want user-interaction for the following "mv" commands:
+  # We do this check only if we are running in mktexfmt mode
+      # who wants to try a new version of luatex (hence with a new

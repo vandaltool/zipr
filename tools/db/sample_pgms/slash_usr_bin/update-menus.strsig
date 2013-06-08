@@ -1,0 +1,253 @@
+10substitute
+11trans_class
+12subtranslate
+%1 menu entries found (%2 total).
+%1: missing required tag: "%2"
+9translate
+all programs providing menu-methods, usually window-managers.
+[[:alpha:]][[:alnum:]_]*
+authcron
+authdaemon
+authkern
+authlocal0
+authlocal1
+authlocal2
+authlocal3
+authlocal4
+authlocal5
+authlocal6
+authlocal7
+authmail
+authnews
+authpriv
+authsyslog
+authuser
+authuucp
+basic_string::erase
+basic_string::_S_construct null not valid
+basic_string::substr
+bindtextdomain
+Boolean (either true or false) expected.
+Cannot create pipe.
+Cannot lock %1: %2 - Aborting.
+Cannot remove lockfile %1.
+Cannot write to lockfile %1 - Aborting.
+(checking %1)
+closedir
+closelog
+__cxa_allocate_exception
+__cxa_atexit
+__cxa_begin_catch
+__cxa_end_catch
+__cxa_free_exception
+__cxa_get_exception_ptr
+__cxa_pure_virtual
+__cxa_rethrow
+__cxa_throw
+CXXABI_1.3
+CXXABI_1.3.1
+/dev/null
+Discarding entry requiring missing package %3.
+  -d                     Output debugging messages.
+Dpkg is not locking dpkg status area, good.
+dpkg-query --show --showformat="\${status} \${provides} \${package}\n" | sed -n -e "/
+dpkg-trigger --by-package=menu /usr/share/menu >/dev/null 2>&1
+endtranslate
+__errno_location
+Error reading %1.
+/etc/menu
+/etc/menu-methods
+/etc/menu-methods/menu.config
+/etc/menu-methods/translate_menus
+exec /bin/bash -o pipefail -c '
+Execution of %1 generated no output or returned an error.
+Expected: "%1"
+file %1 line %2:
+Found: "%1"
+Further output (if any) will appear in %1.
+Gather packages data from the menu database and generate menus for
+getopt_long
+getpwuid
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.4
+GLIBCXX_3.4
+GLIBCXX_3.4.11
+GLIBCXX_3.4.15
+GLIBCXX_3.4.9
+__gmon_start__
+__gxx_personality_v0
+  -h, --help             This message.
+!include
+In file "%1", at (or in the definition that ends at) line %2:
+installed\|triggers-awaited\|triggers-pending
+                         install-menu.
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgcc_s.so.1
+/lib/ld-linux.so.2
+libstdc++.so.6
+menufilesdir
+  --menufilesdir=<dir>   Add <dir> to the lists of menu directories to search.
+menumethod
+  --menumethod=<method>  Run only the menu method <method>.
+.menu-methods
+.menu-methods/menu.config
+.menu-methods/translate_menus
+N10exceptions11ferror_openE
+N10exceptions11missing_tagE
+N10exceptions13char_expectedE
+N10exceptions13except_stringE
+N10exceptions14dir_error_readE
+N10exceptions14pipeerror_readE
+N10exceptions14unknown_compatE
+N10exceptions15cond_inst_falseE
+N10exceptions16boolean_expectedE
+N10exceptions16except_pi_stringE
+N10exceptions20unknown_cond_packageE
+N10exceptions9endoffileE
+N10exceptions9endoflineE
+N10exceptions9except_piE
+N10exceptions9genexceptE
+nodefaultdirs
+  --nodefaultdirs        Disable the use of all the standard menu directories.
+nodpkgcheck
+  --nodpkgcheck          Do not check if packages are installed.
+Other update-menus processes are already locking %1, quitting.
+(probably) stdin
+pthread_cancel
+Reading installed packages list...
+Reading menu-entry files in %1.
+Reading translation rules in %1.
+re_compile_pattern
+re_match
+  --remove               Remove generated menus instead.
+replacewith($string, $replace, $with): $replace and $with must have the same length.
+re_set_syntax
+Running menu-methods in %1.
+Running method: %1
+Running method: %1 --remove
+ /{s/^.*\(
+Script %1 could not be executed.
+Script %1 received signal %2.
+Script %1 returned error status %2.
+setlocale
+Skipping file because of errors...
+\) *//; s/[, ][, ]*/\n/g; p}"
+Somewhere in input file:
+__stack_chk_fail
+  --stdout               Output menu list in format suitable for piping to
+strerror
+substitute
+subtranslate
+__syslog_chk
+/tmp/update-menus.
+t|<(t <,t
+Unable to open file "%1".
+Unexpected end of file.
+Unexpected end of line.
+Unknown compat mode: "%1"
+Unknown error.
+Unknown error, message=%1
+_Unwind_Resume
+update-menus
+update-menus[%1]: %2
+update-menus 2.1.45
+update-menus: fork
+Update-menus is run by user.
+Usage: update-menus [options] 
+/usr/lib/menu
+/usr/share/locale
+/usr/share/menu
+/usr/share/menu/default
+/var/lib/dpkg/lock
+/var/run/update-menus.pid
+  -v                     Be verbose about what is going on.
+verbosity
+  --version              Output version information and exit.
+Waiting for dpkg to finish (forking to background).
+_ZNKSs17find_first_not_ofEcj
+_ZNKSs4findEcj
+_ZNKSs4findEPKcjj
+_ZNKSs5rfindEcj
+_ZNKSs7compareEPKc
+_ZNKSt15basic_stringbufIcSt11char_traitsIcESaIcEE3strEv
+_ZNKSt5ctypeIcE13_M_widen_initEv
+_ZNSdD2Ev
+_ZNSo3putEc
+_ZNSo5flushEv
+_ZNSolsEi
+_ZNSs12_M_leak_hardEv
+_ZNSs14_M_replace_auxEjjjc
+_ZNSs4_Rep10_M_destroyERKSaIcE
+_ZNSs4_Rep20_S_empty_rep_storageE
+_ZNSs4_Rep9_S_createEjjRKSaIcE
+_ZNSs6appendEjc
+_ZNSs6appendEPKcj
+_ZNSs6appendERKSs
+_ZNSs6assignEPKcj
+_ZNSs6assignERKSs
+_ZNSs7replaceEjjPKcj
+_ZNSs7reserveEj
+_ZNSs9_M_mutateEjjj
+_ZNSsC1EPKcRKSaIcE
+_ZNSsC1ERKSs
+_ZNSsC1ERKSsjj
+_ZNSsC1IPcEET_S1_RKSaIcE
+_ZNSsC2IPcEET_S1_RKSaIcE
+_ZNSsD1Ev
+_ZNSt12__basic_fileIcED1Ev
+_ZNSt13basic_filebufIcSt11char_traitsIcEE4openEPKcSt13_Ios_Openmode
+_ZNSt13basic_filebufIcSt11char_traitsIcEE5closeEv
+_ZNSt13basic_filebufIcSt11char_traitsIcEEC1Ev
+_ZNSt13basic_filebufIcSt11char_traitsIcEED1Ev
+_ZNSt14basic_ifstreamIcSt11char_traitsIcEED1Ev
+_ZNSt15basic_streambufIcSt11char_traitsIcEED2Ev
+_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEE7_M_syncEPcjj
+_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED0Ev
+_ZNSt15basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+_ZNSt19basic_istringstreamIcSt11char_traitsIcESaIcEEC1ERKSsSt13_Ios_Openmode
+_ZNSt19basic_istringstreamIcSt11char_traitsIcESaIcEED1Ev
+_ZNSt19basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+_ZNSt6localeC1Ev
+_ZNSt6localeD1Ev
+_ZNSt8__detail15_List_node_base7_M_hookEPS0_
+_ZNSt8ios_base4InitC1Ev
+_ZNSt8ios_base4InitD1Ev
+_ZNSt8ios_baseC2Ev
+_ZNSt8ios_baseD2Ev
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_i
+_ZSt16__throw_bad_castv
+_ZSt17__throw_bad_allocv
+_ZSt18_Rb_tree_decrementPKSt18_Rb_tree_node_base
+_ZSt18_Rb_tree_decrementPSt18_Rb_tree_node_base
+_ZSt18_Rb_tree_incrementPKSt18_Rb_tree_node_base
+_ZSt19__throw_logic_errorPKc
+_ZSt20__throw_out_of_rangePKc
+_ZSt29_Rb_tree_insert_and_rebalancebPSt18_Rb_tree_node_baseS0_RS_
+_ZSt4cerr
+_ZSt4cout
+_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+_ZSt7getlineIcSt11char_traitsIcESaIcEERSt13basic_istreamIT_T0_ES7_RSbIS4_S5_T1_ES4_
+_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKSbIS4_S5_T1_E
+_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+_ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_EPKS3_RKS6_
+_ZStplIcSt11char_traitsIcESaIcEESbIT_T0_T1_ERKS6_S8_
+_ZStrsIcSt11char_traitsIcESaIcEERSt13basic_istreamIT_T0_ES7_RSbIS4_S5_T1_E
+_ZTTSt14basic_ifstreamIcSt11char_traitsIcEE
+_ZTTSt18basic_stringstreamIcSt11char_traitsIcESaIcEE
+_ZTTSt19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE
+_ZTVSt13basic_filebufIcSt11char_traitsIcEE
+_ZTVSt14basic_ifstreamIcSt11char_traitsIcEE
+_ZTVSt15basic_streambufIcSt11char_traitsIcEE
+_ZTVSt15basic_stringbufIcSt11char_traitsIcESaIcEE
+_ZTVSt18basic_stringstreamIcSt11char_traitsIcESaIcEE
+_ZTVSt19basic_ostringstreamIcSt11char_traitsIcESaIcEE
+_ZTVSt9basic_iosIcSt11char_traitsIcEE

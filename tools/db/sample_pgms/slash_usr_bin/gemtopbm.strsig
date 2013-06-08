@@ -1,0 +1,41 @@
+bad byte count
+badly formed line repeat
+bad pattern repeat count
+bad solid run repeat count
+bit string of %d bytes
+__bss_start
+[-debug] [gem IMG file]
+end of file reached
+EOF / read error
+EOL beyond edge
+EOL plane %d row %d
+__fread_chk
+GLIBC_2.0
+GLIBC_2.7
+__gmon_start__
+illegal pattern length (%d)
+_IO_getc
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+overflow_add
+pattern run of %d repetitions
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_keymatch
+pm_message
+pm_openr
+pm_readbigshort
+pm_usage
+pnm_init
+pnm_writepnminit
+pnm_writepnmrow
+short header (%d)
+solid run of %d bytes %s
+This program only supports IMGs with 1 or 4 planes
+unknown version number (%d)

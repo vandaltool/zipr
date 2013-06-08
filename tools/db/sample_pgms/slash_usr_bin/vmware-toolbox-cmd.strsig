@@ -1,0 +1,2206 @@
+- -!-"-#-$-%-
+----------------------------------------
+! !!!"!#!$!%!
+!$*);^-/
+                0000000000000000
+ !"#$%&'()*+,-./0123
+0123456789
+	 	!	"	#	$	%	&	'	(	)	*	+	,	-	.	/	_	0	1	2	3	4	5	6	7	8	9	
+0123456789ABCDEF
+0123456789abcdef?0123456789ABCDEF?
+0123456789ABCDEF/build/mts/release/bora-301548/bora/lib/misc/iovector.c
+$0,1,2,3,4,5,6,7,8,9,:,;,<,=,>,?,@,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,[,\,],^,/,0,1,2,3,4,5,6,7,8,9,:,;,<,=,>,?,@,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,[,\,],^,_,a,a,k
+$ $!$"$#$$$%$&$'$($)$*$+$,$-$.$/$0$1$2$3$4$5$6$7$8$9$:$;$<$=$>$?$@$A$B$C$D$E$F$G$H$I$J$K$L$M$N$O$P$Q$R$S$T$U$V$W$X$Y$Z$[$\$]$^$_$`$a$b$c$d$e$f$g$h$i$j$k$l$m$n$o$p$q$r$s$t$u$v$w$x$y$z${$|$}$~$
+,!-!.!/!0!1!N!3!4!5!6!7!8!9!:!;!<!=!>!?!@!A!B!C!D!E!F!G!H!I!J!K!L!M!N!O!P!Q!R!S!T!U!V!W!X!Y!Z![!\!]!^!_!p!q!r!s!t!u!v!w!x!y!z!{!|!}!~!
+0OldMachineIDMatch
+%1$s&%2$s=%3$s
+?456789:;<=
+5.%2[0-9]
+8HG|-:HF|(
+abcdefghi
+{ABCDEFGHI
+abcdefghijklmnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+ >	?	@	A	B	C	F	G	H	E	J	K	L	I	M	<	d	
+Accessibility is %s.
+Adding %s to library list.
+AddLibraryToList
+Adobe-Standard-Encoding
+Adobe-Symbol-Encoding
+Afghanistan Standard Time
+Africa/Algiers
+Africa/Casablanca
+Africa/El_Aaiun
+Africa/Tripoli
+Africa/Windhoek
+Alaskan Standard Time
+America/Asuncion
+America/Cuiaba
+America/Godthab
+America/Guatemala
+America/Havana
+America/Miquelon
+America/Montevideo
+America/Scoresbysund
+America/St_Johns
+Ami-1251
+Amiga1251
+Amiga-1251
+annotation
+ANSI1251
+ANSI_X3.110-1983
+ANSI_X3.4-1968
+ANSI_X3.4-1986
+answer.%s
+appLoader
+appLoader cannot be run as a standalone program. Exiting.
+AppLoader_LoadLibraryDependencies
+appLoader.log.filename
+apps/install/linux/appLoader/stub-crypto.c
+apps/install/linux/appLoader/stub-keySafe.c
+Arabian Standard Time
+Arabic Standard Time
+Arab Standard Time
+arklinux
+Asia/Anadyr
+Asia/Baghdad
+Asia/Baku
+Asia/Choibalsan
+Asia/Hovd
+Asia/Irkutsk
+Asia/Jerusalem
+Asia/Kamchatka
+Asia/Krasnoyarsk
+Asia/Magadan
+Asia/Novosibirsk
+Asia/Omsk
+Asia/Sakhalin
+Asia/Ulaanbaatar
+Asia/Vladivostok
+Asia/Yakutsk
+Asia/Yekaterinburg
+Asia/Yerevan
+ASMO_449
+ASMO-449+
+ASMO-708
+ASSERT %s:%d bugNr=%d
+Atlantic/Azores
+Atlantic Standard Time
+Atlantic/Stanley
+atomicFenceInitialized
+AtomicUseFence
+AT_SPI_IOR
+AUS Central Standard Time
+AUS Eastern Standard Time
+Australia/Eucla
+Australia/Lord_Howe
+Australia/South
+Australia/Sydney
+Australia/West
+AuthcAMDenti
+Azores Standard Time
+Backtrace:
+Backtrace[%d] %#08x eip %#08x 
+Backtrace for bugNr=%d
+%b %d %H:%M:%S: 
+Big5-HKSCS
+black cat
+BlackCat
+Brazil/East
+__bss_start
+BS_viewdata
+build-%05u
+build-301548
+/build/mts/release/bora-301548/bora/lib/appLoader/analyzer.c
+/build/mts/release/bora-301548/bora/lib/appLoader/appLoader.c
+/build/mts/release/bora-301548/bora/lib/appLoader/glibWrapper.c
+/build/mts/release/bora-301548/bora/lib/dict/dictll.c
+/build/mts/release/bora-301548/bora/lib/elf/loader.c
+/build/mts/release/bora-301548/bora/lib/err/err.c
+/build/mts/release/bora-301548/bora/lib/file/file.c
+/build/mts/release/bora-301548/bora/lib/file/fileIO.c
+/build/mts/release/bora-301548/bora/lib/file/fileIOPosix.c
+/build/mts/release/bora-301548/bora/lib/file/fileLockPrimitive.c
+/build/mts/release/bora-301548/bora/lib/file/filePosix.c
+/build/mts/release/bora-301548/bora/lib/log/log.c
+/build/mts/release/bora-301548/bora/lib/misc/codeset.c
+/build/mts/release/bora-301548/bora/lib/misc/codesetOld.c
+/build/mts/release/bora-301548/bora/lib/misc/escape.c
+/build/mts/release/bora-301548/bora/lib/misc/hashTable.c
+/build/mts/release/bora-301548/bora/lib/misc/hostinfoPosix.c
+/build/mts/release/bora-301548/bora/lib/misc/idLinux.c
+/build/mts/release/bora-301548/bora/lib/misc/msgfmt.c
+/build/mts/release/bora-301548/bora/lib/misc/posixInt.h
+/build/mts/release/bora-301548/bora/lib/misc/posixPosix.c
+/build/mts/release/bora-301548/bora/lib/misc/strutil.c
+/build/mts/release/bora-301548/bora/lib/misc/timeutil.c
+/build/mts/release/bora-301548/bora/lib/misc/util_misc.c
+/build/mts/release/bora-301548/bora/lib/productState/productState.c
+/build/mts/release/bora-301548/bora/lib/public/memaligned.h
+/build/mts/release/bora-301548/bora/lib/string/bsd_vsnprintf.c
+/build/mts/release/bora-301548/bora/lib/string/str.c
+/build/mts/release/bora-301548/bora/lib/sync/syncMutex.c
+/build/mts/release/bora-301548/bora/lib/sync/syncWaitQPosix.c
+/build/mts/release/bora-301548/bora/lib/unicode/unicodeCommon.c
+/build/mts/release/bora-301548/bora/lib/unicode/unicodeSimpleBase.c
+/build/mts/release/bora-301548/bora/lib/unicode/unicodeSimpleOperations.c
+/build/mts/release/bora-301548/bora/lib/unicode/unicodeSimpleTypes.c
+/build/mts/release/bora-301548/bora/lib/user/dictionary.c
+/build/mts/release/bora-301548/bora/lib/user/dictType.c
+/build/mts/release/bora-301548/bora/lib/user/msg.c
+/build/mts/release/bora-301548/bora/lib/user/panicUser.c
+/build/mts/release/bora-301548/bora/lib/user/util.c
+/build/mts/release/bora-301548/bora/lib/user/utilPosix.c
+buildnumber
+@&!*@*@(button.abort)_Abort
+@&!*@*@(button.cancel)Cancel
+@&!*@*@(button.file.create.overwrite)Overwrite
+@&!*@*@(button.file.create.retry)Retry
+@&!*@*@(button.no)_No
+@&!*@*@(button.ok)OK
+@&!*@*@(button.retry)_Retry
+@&!*@*@(button.yes)_Yes
+Calling: "%s
+Canada/Atlantic
+Canada Central Standard Time
+Canada/Saskatchewan
+Cannot get log file name.
+Cannot get temporary directory for log file.
+Cannot load message dictionary "%s".
+capabilities
+Cape Verde Standard Time
+Caucasus Standard Time
+CCSID00858
+CCSID00924
+CCSID01140
+CCSID01141
+CCSID01142
+CCSID01143
+CCSID01144
+CCSID01145
+CCSID01146
+CCSID01147
+CCSID01148
+CCSID01149
+Cen. Australia Standard Time
+Central America Standard Time
+Central Asia Standard Time
+Central European Standard Time
+Central Europe Standard Time
+Central Pacific Standard Time
+Central Standard Time
+Central Standard Time (Mexico)
+_CESU8Data
+Child exited with status %d.
+Child process was terminated with signal %d.
+Chile/Continental
+Chile/EasterIsland
+China Standard Time
+clearerr
+closedir
+cns-11643-1992
+cnvalias
+conectiva
+config.encoding
+coreDumpFlags
+coreDumpOnPanic
+coreLocation
+Could not expand environment variable HOME.
+Could not get information for user '%s'.
+Could not lseek to file header in ElfLoadHeaders
+Could not lseek to section headers in ElfLoadHeaders
+Could not lseek to strings in ElfLoadHeaders
+Could not open %s
+Could not open %s (%d)
+Could not read compressed data.
+Could not read section headers in ElfLoadHeaders
+Could not reads strings in ElfLoadHeaders
+Could not uncompress.
+(couldn't escape bytes)
+cpibm284
+cpibm297
+Created and using new argv.
+Created dependency tree.
+CreateEntryDirectory
+CreateMemberFile
+CreateNode
+CreateTree
+csAdobeStandardEncoding
+CSA_T500-1983
+CSA_Z243.4-1985-1
+CSA_Z243.4-1985-2
+CSA_Z243.4-1985-gr
+csBOCU-1
+csCESU-8
+csDECMCS
+csEBCDICATDEA
+csEBCDICCAFR
+csEBCDICDKNO
+csEBCDICDKNOA
+csEBCDICES
+csEBCDICESA
+csEBCDICESS
+csEBCDICFISE
+csEBCDICFISEA
+csEBCDICFR
+csEBCDICIT
+csEBCDICPT
+csEBCDICUK
+csEBCDICUS
+csEUCFixWidJapanese
+csEUCPkdFmtJapanese
+csGB2312
+csHalfWidthKatakana
+csHPDesktop
+csHPLegal
+csHPMath8
+csHPPiFont
+csHPPSMath
+csHPRoman8
+csIBBM904
+csIBM037
+csIBM038
+csIBM1026
+csIBM273
+csIBM274
+csIBM275
+csIBM277
+csIBM278
+csIBM280
+csIBM281
+csIBM284
+csIBM285
+csIBM290
+csIBM297
+csIBM420
+csIBM423
+csIBM424
+csIBM500
+csIBM851
+csIBM855
+csIBM857
+csIBM860
+csIBM861
+csIBM863
+csIBM864
+csIBM865
+csIBM866
+csIBM868
+csIBM869
+csIBM870
+csIBM871
+csIBM880
+csIBM891
+csIBM903
+csIBM905
+csIBM918
+csIBMEBCDICATDE
+csIBMSymbols
+csIBMThai
+csINVARIANT
+csISO102T617bit
+csISO10367Box
+csISO103T618bit
+csISO10646UTF1
+csISO10Swedish
+csISO111ECMACyrillic
+csISO115481
+csISO11SwedishForNames
+csISO121Canadian1
+csISO122Canadian2
+csISO123CSAZ24341985gr
+csISO128T101G2
+csISO139CSN369103
+csISO13JISC6220jp
+csISO141JUSIB1002
+csISO143IECP271
+csISO146Serbian
+csISO147Macedonian
+csISO14JISC6220ro
+csISO150
+csISO150GreekCCITT
+csISO151Cuba
+csISO153GOST1976874
+csISO158Lap
+csISO159JISX02121990
+csISO15Italian
+csISO16Portuguese
+csISO17Spanish
+csISO18Greek7Old
+csISO19LatinGreek
+csISO2022CN
+csISO2022JP
+csISO2022JP2
+csISO2022KR
+csISO2033
+csISO21German
+csISO25French
+csISO27LatinGreek1
+csISO2IntlRefVersion
+csISO42JISC62261978
+csISO47BSViewdata
+csISO49INIS
+csISO4UnitedKingdom
+csISO50INIS8
+csISO51INISCyrillic
+csISO5427Cyrillic
+csISO5428Greek
+csISO57GB1988
+csISO58GB231280
+csISO60DanishNorwegian
+csISO60Norwegian1
+csISO61Norwegian2
+csISO646basic1983
+csISO646Danish
+csISO6937Add
+csISO69French
+csISO70VideotexSupp1
+csISO84Portuguese2
+csISO85Spanish2
+csISO86Hungarian
+csISO87JISX0208
+csISO88596E
+csISO88596I
+csISO88598E
+csISO88598I
+csISO8859Supp
+csISO88Greek7
+csISO89ASMO449
+csISO91JISC62291984a
+csISO92JISC62991984b
+csISO93JIS62291984badd
+csISO94JIS62291984hand
+csISO95JIS62291984handadd
+csISO96JISC62291984kana
+csISO99NAPLPS
+csisolatin0
+csISOLatin1
+csISOLatin2
+csISOLatin3
+csISOLatin4
+csISOLatin5
+csISOLatin6
+csisolatin9
+csISOLatinArabic
+csISOLatinCyrillic
+csISOLatinGreek
+csISOLatinHebrew
+csISOTextComm
+csJISEncoding
+csKSC56011987
+csKSC5636
+csKZ1048
+csMacintosh
+csMicrosoftPublishing
+csMnemonic
+CSN_369103
+csNATSDANO
+csNATSDANOADD
+csNATSSEFI
+csNATSSEFIADD
+csPC775Baltic
+csPC850Multilingual
+csPC862LatinHebrew
+csPC8CodePage437
+csPC8DanishNorwegian
+csPC8Turkish
+csPCp852
+csPCp855
+csPTCP154
+csShiftJIS
+csUnicode
+csUnicode11
+csUnicode11UTF7
+csUnicodeASCII
+csUnicodeIBM1261
+csUnicodeIBM1264
+csUnicodeIBM1265
+csUnicodeIBM1268
+csUnicodeIBM1276
+csUnicodeLatin1
+csUnknown8BiT
+csVenturaInternational
+csVenturaMath
+csVenturaUS
+csVISCII
+csWindows30Latin1
+csWindows31J
+csWindows31Latin1
+csWindows31Latin2
+csWindows31Latin5
+__ctype_b
+__ctype_tolower
+curl_version_info
+curl_version_info returned NULL; can't check system %s version.
+Cyrillic-Asian
+%d %999s
+dataFileKey
+Dateline Standard Time
+%d.%d.%d.%d.%d
+%d %d %d %d %d %d %d
+%d.%d.%d%s
+/dev/urandom
+DICT %25s = %g
+DICT %25s = %i
+DICT %25s = %Ld
+DICT %25s = <not printed>
+DICT %25s = %s
+DICT %25s = <unknown parameter type>
+Dictionary_DeriveFileName
+DictionaryEncryptData
+Dictionary internal error - unknown parameter type
+Dictionary_MakeExecutable
+dictionaryNoDefault
+DictionaryParseReadLine
+Dictionary_Rekey
+Dictionary_Unlock
+Dictionary_WriteToBuffer
+DIN_66003
+DISTRIB_CODENAME=
+DISTRIB_CODENAME=%s
+DISTRIB_DESCRIPTION=
+DISTRIB_DESCRIPTION=%s
+DISTRIB_ID=
+DISTRIB_ID=%s
+DISTRIB_RELEASE=
+DISTRIB_RELEASE=%s
+Does not appear to be an ELF file
+dontcare
+Dropping all arguments after --.
+###### dumping content of iov ######
+.dynamic
+.dynsym section was empty in %s.
+E. Africa Standard Time
+Eastern Standard Time
+E. Australia Standard Time
+EBCDIC-AT-DE
+EBCDIC-AT-DE-A
+EBCDIC-BE
+EBCDIC-BR
+EBCDIC-CA-FR
+ebcdic-cp-ar1
+ebcdic-cp-ar2
+ebcdic-cp-be
+ebcdic-cp-ca
+ebcdic-cp-ch
+EBCDIC-CP-DK
+ebcdic-cp-es
+ebcdic-cp-fi
+ebcdic-cp-fr
+ebcdic-cp-gb
+ebcdic-cp-gr
+ebcdic-cp-he
+ebcdic-cp-is
+ebcdic-cp-it
+ebcdic-cp-nl
+EBCDIC-CP-NO
+ebcdic-cp-roece
+ebcdic-cp-se
+ebcdic-cp-tr
+ebcdic-cp-us
+ebcdic-cp-wt
+ebcdic-cp-yu
+EBCDIC-Cyrillic
+ebcdic-de
+ebcdic-de-273+euro
+ebcdic-dk
+ebcdic-dk-277+euro
+EBCDIC-DK-NO
+EBCDIC-DK-NO-A
+EBCDIC-ES
+ebcdic-es-284+euro
+EBCDIC-ES-A
+EBCDIC-ES-S
+ebcdic-fi-278+euro
+EBCDIC-FI-SE
+EBCDIC-FI-SE-A
+EBCDIC-FR
+ebcdic-fr-297+euro
+ebcdic-gb-285+euro
+EBCDIC-INT
+ebcdic-international-500+euro
+ebcdic-is
+ebcdic-is-871+euro
+EBCDIC-IT
+ebcdic-it-280+euro
+EBCDIC-JP-E
+EBCDIC-JP-kana
+ebcdic-Latin9--euro
+ebcdic-no-277+euro
+EBCDIC-PT
+ebcdic-se-278+euro
+ebcdic-sv
+EBCDIC-UK
+EBCDIC-US
+ebcdic-us-37+euro
+ECMA-114
+ECMA-118
+ECMA-128
+ECMA-cyrillic
+E. Europe Standard Time
+e,f,h,h,j,j,l,l,m,n,o,p,q,r,s,t,v,v,w,x,y,z,{,|,},~,
+Egypt Standard Time
+Ekaterinburg Standard Time
+ELOT_928
+encryption.data
+encryption.keySafe
+endmntent
+endpwent
+enterprise
+  entries[%d] = %p / %zu
+en_US_POSIX
+Environment variable '%s' not defined in '%s'.
+__errno_location
+Error loading application library: %s
+E. South America Standard Time
+/etc/annvix-release
+/etc/arch-release
+/etc/arklinux-release
+/etc/aurox-release
+/etc/blackcat-release
+/etc/cobalt-release
+/etc/conectiva-release
+/etc/debian_release
+/etc/debian_version
+/etc/e-smith-release
+/etc/fedora-release
+etc/fonts
+/etc/fonts/fonts.conf
+/etc/gentoo-release
+etc/gtk-2.0/gdk-pixbuf.loaders
+etc/gtk-2.0/gtk.immodules
+etc/gtk-2.0/gtkrc
+/etc/immunix-release
+/etc/knoppix_version
+/etc/lfs-release
+/etc/linuxppc-release
+/etc/localtime
+/etc/lsb-release
+/etc/mandrakelinux-release
+/etc/mandrake-release
+/etc/mandriva-release
+/etc/mklinux-release
+/etc/mtab
+/etc/nld-release
+/etc/novell-release
+etc/pango/pangorc
+/etc/pld-release
+/etc/redhat-release
+/etc/redhat_version
+/etc/release
+/etc/slackware-release
+/etc/slackware-version
+/etc/sles-release
+/etc/sun-release
+/etc/SuSE-release
+/etc/tinysofa-release
+/etc/turbolinux-release
+/etc/ultrapenguin-release
+/etc/UnitedLinux-release
+/etc/va-release
+/etc/vmware/icu
+/etc/vmware-tools/config
+/etc/yellowdog-release
+Europe/Athens
+Europe/Dublin
+Europe/London
+Europe/Moscow
+Europe/Samara
+Europe/Volgograd
+Extended_UNIX_Code_Fixed_Width_for_Japanese
+Extended_UNIX_Code_Packed_Format_for_Japanese
+Failed to initialize codeset.
+Failed to unlink log file '%s': %s
+Fb<jt?<kt{<c
+f=Cmt>f=Tou
+Fedora Core
+f	g	h	i	j	k	l	m	n	o	
+Fiji Standard Time
+FILE: Badly formatted lock file %s.
+FILE: Bad statfs using %s (%s).
+FILE: Cannot remove lock file %s (%s).
+File_Cwd
+FileDeletion
+FILE: Failed to create new lock file %s (%s).
+FILE: Failed to open existing lock file %s (%s).
+FILE: Failed to read line from lock file %s (%s).
+FILE: Failed to remove stale lock file %s (%s).
+FILE: Failed to remove temporary lock file %s (%s).
+FILE: Failed to write to new lock file %s (%s).
+FILE: Found a previous instance of lock file '%s'. It will be removed automatically.
+File_GetCapacity
+File_GetFreeSpace
+File_GetTimes
+File_GetTmpDir
+FileIO_Create
+FileIO_Lock
+FileIO_MsgError was passed bad code %d
+FileIO_Preadv
+FileIO_Pwritev
+FileIO_Unlock
+FileIsGroupsMember
+File_IsRemote
+file_Last
+FileLockIntrinsic
+FileLockIsValidProcess
+FileLockMemberValues
+FileLockValidOwner
+filePosix.coalesce.aligned
+filePosix.coalesce.count
+filePosix.coalesce.enable
+filePosix.coalesce.size
+FilePosixGetBlockDevice
+FILE: %s close of '%s' failed: %s
+FILE: %s: Could not read the directory '%s': %d
+FILE: %s: Couldn't getgroups
+FILE: %s: Couldn't realloc
+FILE: %s: Couldn't statfs
+FILE: %s creation failure on '%s': %s
+FILE: %s creationTime conversion error on %s.
+FILE: %s: did not execute properly
+FILE: %s discarding file '%s'; invalid executionID.
+FILE: %s discarding %s data from '%s'.
+FILE: %s discarding %s from %s'; invalid file name.
+FILE: %s discarding %s from %s': %s
+FILE: %s: Drive letter %s on Linux?
+FILE: %s: Error acquiring full path
+FILE: %s: error stating file "%s": %s
+File_SetFilePermissions
+File_SetTimes
+FILE: %s: failed to change permissions on file "%s": %s
+FILE: %s: failed to convert "%s" to current encoding
+FILE: %s FileRename of '%s' to '%s' failed: %s
+FILE: %s file size failure on '%s': %s
+FILE: %s file '%s': size %Lu, required size %u
+FILE: %s: getcwd() failed: %s
+FILE: %s got EINTR.  Retrying
+FILE: %s implicit %s lock succeeded on '%s'.
+FILE: %s of '%s' failed: %s
+FILE: %s on '%s' failed: %s
+FILE: %s open failure on '%s': %s
+FILE: %s payload conversion error on %s. Assuming valid.
+FILE: %s pid conversion error on %s. Assuming valid.
+FILE: %s read failure on '%s': %s
+FILE: %s read length issue on '%s': %u and %u
+FILE: %s removing problematic lock file '%s'
+FILE: %s reverting to buffered IO on %s.
+FILE: %s %s argv[%d]: '%s'
+FILE: %s '%s' contents are:
+FILE: %s: '%s' exists and is not a directory.
+FILE: %s: '%s' exists; an old style lock file?
+FILE: %s stat failure on '%s': %s
+FILE: %s: statfs(%s) failed: %s
+FILE: %s: The --[r]bind mount count exceeds %u. Giving up.
+FILE: %s timeout on '%s' due to a local process (%s)
+FILE: %s timeout on '%s' due to another machine (%s)
+FILE: %s Unexpected errno (%d), assuming valid.
+File_SupportsFileSize
+FILE: %s: utimes error on file "%s": %s
+FILE: %s write length issue on '%s': %u and %zd
+FILE: %s write of '%s' failed: %s
+FILE: %s wrote %zd out of %zu bytes.
+FILE: Unknown filesystem 0x%x. Using non-linking locking.
+File_VMFSSupportsFileSize
+-- Finished processing %s --
+FLE Standard Time
+FONTCONFIG_PATH
+format <%s>
+Found Glib system version %d.%d.
+__freelocale
+freopen64
+ftruncate64
+__fxstat64
+_g_assertion_message_expr
+g_assertion_message_expr
+GB_1988-80
+gb2312-1980
+GB2312.1980-0
+GB_2312-80
+G_BROKEN_FILENAMES
+g_build_filename
+gconftool-2 --get /desktop/gnome/interface/accessibility
+GDK_PIXBUF_MODULE_FILE
+getgrnam
+getgrnam_r
+getgrouplist
+getgroups
+gethostbyname_r
+GetLibraryLoadList
+getloadavg
+getmntent
+getmntent_r
+getopt_long
+getpwent
+getpwnam
+getpwnam_r
+getpwuid
+getpwuid_r
+getrlimit64
+gettimeofday
+G_FILENAME_ENCODING
+_g_file_test
+g_file_test
+g_getenv
+_g_hash_table_insert
+g_hash_table_insert
+_g_hash_table_iter_init
+g_hash_table_iter_init
+_g_hash_table_iter_next
+g_hash_table_iter_next
+_g_hash_table_lookup
+g_hash_table_lookup
+_g_hash_table_new_full
+g_hash_table_new_full
+_g_hash_table_unref
+g_hash_table_unref
+g_int_equal
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.2
+GLIBC_2.2
+GLIBC_2.2.4
+glib_major_version
+glib_minor_version
+Glib was already loaded.
+_g_malloc0
+g_malloc0
+_g_mapped_file_free
+g_mapped_file_free
+_g_mapped_file_get_contents
+g_mapped_file_get_contents
+_g_mapped_file_get_length
+g_mapped_file_get_length
+_g_mapped_file_new
+g_mapped_file_new
+__gmon_start__
+GMT Standard Time
+g_node_depth
+_g_node_destroy
+g_node_destroy
+_g_node_find
+g_node_find
+_g_node_insert_before
+g_node_insert_before
+_g_node_new
+g_node_new
+_g_node_n_nodes
+g_node_n_nodes
+_g_node_n_nodes(*root, G_TRAVERSE_ALL) > 0
+_g_node_traverse
+g_node_traverse
+GOST_19768-74
+_g_path_get_basename
+g_path_get_basename
+g_printf
+_g_queue_free
+g_queue_free
+_g_queue_is_empty
+g_queue_is_empty
+_g_queue_is_empty(stack)
+_g_queue_new
+g_queue_new
+_g_queue_pop_head
+g_queue_pop_head
+_g_queue_push_head
+g_queue_push_head
+greek7-old
+greek-ccitt
+Greenland Standard Time
+Greenwich Standard Time
+g_setenv
+_g_slist_append
+g_slist_append
+_g_slist_find
+g_slist_find
+_g_slist_free
+g_slist_free
+_g_spawn_command_line_sync
+g_spawn_command_line_sync
+_g_strchomp
+g_strchomp
+_g_strcmp0
+g_strcmp0
+_g_strdup
+g_strdup
+_g_strdup_printf
+g_strdup_printf
+_g_str_equal
+g_str_equal
+_g_strfreev
+g_strfreev
+_g_str_hash
+g_str_hash
+_g_str_has_prefix
+g_str_has_prefix
+g_strjoin
+_g_strrstr
+g_strrstr
+_g_strv_length
+g_strv_length
+GTB Standard Time
+GTK2_RC_FILES
+GTK_EXE_PREFIX
+GTK_IM_MODULE_FILE
+gtk_major_version
+gtk_minor_version
+GTK_PATH
+GTK_PATH64
+<<< Guest Log Throttled >>>
+guestLogThrottleInfo
+g_unsetenv
+gzdirect
+HashTable_Alloc
+Hawaiian Standard Time
+-h, --help
+HKSCS-BIG5
+HMAC-SHA-1
+Hostinfo_Daemonize
+HostinfoGetCpuInfo
+Hostinfo_GetOSName
+HostinfoGetOSShortName
+Hostinfo_MachineID
+HostinfoOSVersionInit
+Hostinfo_RawSystemTimerUS
+HostinfoReadDistroFile
+HOSTINFO: %s: Unable to open /proc/cpuinfo
+HP-DeskTop
+HP-Legal
+HP-Math8
+HP-Pi-font
+hp-roman8
+http://%s.com/info?id=%u
+HZ-GB-2312
+IBM00858
+IBM00924
+IBM01140
+IBM01141
+IBM01142
+IBM01143
+IBM01144
+IBM01145
+IBM01146
+IBM01147
+IBM01148
+IBM01149
+ibm-1025
+ibm-1025_P100-1995
+ibm-1026_P100-1995
+IBM-1047
+ibm-1047_P100-1995
+ibm-1051
+ibm-1051_P100-1995
+ibm-1089
+ibm-1089_P100-1995
+ibm-1140
+ibm-1140_P100-1997
+ibm-1141
+ibm-1141_P100-1997
+ibm-1142
+ibm-1142_P100-1997
+ibm-1143
+ibm-1143_P100-1997
+ibm-1144
+ibm-1144_P100-1997
+ibm-1145
+ibm-1145_P100-1997
+ibm-1146
+ibm-1146_P100-1997
+ibm-1147
+ibm-1147_P100-1997
+ibm-1148
+ibm-1148_P100-1997
+ibm-1149
+ibm-1149_P100-1997
+ibm-1168
+ibm-1168_P100-2002
+ibm-1200
+ibm-1201
+ibm-1202
+ibm-1203
+ibm-1204
+ibm-1205
+ibm-1208
+ibm-1209
+ibm-1212
+ibm-1213
+ibm-1214
+ibm-1215
+ibm-1232
+ibm-1233
+ibm-1234
+ibm-1235
+ibm-1236
+ibm-1237
+ibm-1250
+ibm-1250_P100-1995
+ibm-1251
+ibm-1251_P100-1995
+ibm-1252
+ibm-1252_P100-2000
+ibm-1253
+ibm-1253_P100-1995
+ibm-1254
+ibm-1254_P100-1995
+ibm-1258
+ibm-1258_P100-1997
+ibm-1276
+ibm-1276_P100-1995
+ibm-13488
+ibm-13489
+ibm-13490
+ibm-13491
+ibm-13496
+ibm-13497
+ibm-1363
+ibm-1363_P110-1997
+ibm-1363_P11B-1998
+ibm-1363_VSUB_VPUA
+ibm-1373
+ibm-1373_P100-2002
+ibm-1375
+ibm-1375_P100-2007
+ibm-1383
+ibm-1383_P110-1999
+ibm-1383_VPUA
+ibm-1386
+ibm-1386_P100-2001
+ibm-1386_VSUB_VPUA
+ibm-1392
+ibm-17584
+ibm-17585
+ibm-17586
+ibm-17587
+ibm-17592
+ibm-17593
+ibm-21680
+ibm-21681
+ibm-21682
+ibm-21683
+ibm-25776
+ibm-25777
+ibm-25778
+ibm-25779
+ibm-273_P100-1995
+ibm-277_P100-1995
+ibm-278_P100-1995
+ibm-280_P100-1995
+ibm-284_P100-1995
+ibm-290_P100-1995
+ibm-297_P100-1995
+ibm-29872
+ibm-29873
+ibm-29874
+ibm-29875
+ibm-33722
+ibm-33722_P120-1999
+ibm-33722_P12A_P12A-2004_U2
+ibm-33722_VPUA
+ibm-37_P100-1995
+ibm-420_X120-1999
+ibm-424_P100-1995
+ibm-437_P100-1995
+ibm-4902
+ibm-500_P100-1995
+ibm-5012
+ibm-5012_P100-1999
+ibm-5050
+ibm-5054
+ibm-5304
+ibm-5305
+ibm-5346
+ibm-5346_P100-1998
+ibm-5347
+ibm-5347_P100-1998
+ibm-5348
+ibm-5348_P100-1997
+ibm-5349
+ibm-5349_P100-1998
+ibm-5350
+ibm-5350_P100-1998
+ibm-5351
+ibm-5351_P100-1998
+ibm-5352
+ibm-5352_P100-1998
+ibm-5353
+ibm-5353_P100-1998
+ibm-5354
+ibm-5354_P100-1998
+ibm-5471
+ibm-5471_P100-2006
+ibm-5478
+ibm-5478_P100-1995
+ibm-61955
+ibm-61956
+ibm-720_P100-1997
+ibm-737_P100-1997
+ibm-775_P100-1996
+ibm-813_P100-1995
+ibm-838_P100-1995
+ibm-850_P100-1995
+ibm-851_P100-1995
+ibm-852_P100-1995
+ibm-855_P100-1995
+ibm-857_P100-1995
+ibm-858_P100-1997
+ibm-860_P100-1995
+ibm-861_P100-1995
+ibm-862_P100-1995
+ibm-863_P100-1995
+ibm-864_X110-1999
+ibm-865_P100-1995
+ibm-866_P100-1995
+ibm-868_P100-1995
+ibm-869_P100-1995
+ibm-870_P100-1995
+ibm-871_P100-1995
+ibm-874_P100-1995
+ibm-875_P100-1995
+ibm-878_P100-1996
+ibm-897_P100-1995
+ibm-9005
+ibm-9005_X110-2007
+ibm-9030
+ibm-9066
+ibm-912_P100-1995
+ibm-913_P100-2000
+ibm-914_P100-1995
+ibm-915_P100-1995
+ibm-918_P100-1995
+ibm-920_P100-1995
+ibm-921_P100-1995
+ibm-923_P100-1998
+ibm-9400
+ibm-9424
+ibm-942_P120-1999
+IBM-943C
+ibm-943_P130-1999
+ibm-943_P15A-2003
+ibm-943_VASCII_VSUB_VPUA
+ibm-943_VSUB_VPUA
+ibm-9447
+ibm-9447_P100-2002
+ibm-9448
+ibm-9448_X100-2005
+ibm-9449
+ibm-9449_P100-2002
+ibm-944_P100-1995
+ibm-946_P100-1995
+ibm-949_P110-1999
+ibm-954_P101-2007
+ibm-970_P110_P110-2006_U2
+ibm-970_VPUA
+ibm-eucCN
+IBM-eucJP
+ibm-eucKR
+IBM-Symbols
+IBM-Thai
+iconv_close
+iconv_open
+ICU_DATA
+ICUDATA-
+icudt38l
+icudt38l-
+icudt38l.dat
+icu-internal-25546
+IEC_P27-1
+imapmailboxname
+IMAP-mailbox-name
+India Standard Time
+INIS-cyrillic
+<INVALID>
+invalid executionID.
+invalid use of function
+_IO_getc
+_IO_stdin_used
+###### iov is NULL!! ######
+IOV: %s:%d i %d (of %d), offsets: entry %zu, iov %zu invalid iov offset
+IOV: %s:%d iov [%Lu:%Lu] and [%Lu:%Lu] - no overlap!
+Iran Standard Time
+iscii-bng
+iscii-dev
+iscii-gur
+iscii-knd
+iscii-mlm
+iscii-ori
+iscii-tlg
+iscii-tml
+ISO_10367-box
+ISO-10646
+ISO-10646-J-1
+ISO-10646-UCS-2
+ISO-10646-UCS-4
+ISO-10646-UCS-Basic
+ISO-10646-Unicode-Latin1
+ISO-10646-UTF-1
+ISO_11548-1
+ISO-11548-1
+ISO_2022
+ISO_2022_CN
+ISO-2022-CN
+ISO-2022-CN-EXT
+ISO_2022_JP
+ISO-2022-JP
+ISO-2022-JP-1
+ISO-2022-JP-2
+ISO_2022_KR
+ISO-2022-KR
+ISO_2022,locale=ja,version=
+ISO_2022,locale=ko,version=0
+ISO_2022,locale=ko,version=1
+ISO_2022,locale=zh,version=0
+ISO_2022,locale=zh,version=1
+ISO_2033-1983
+ISO_5427
+ISO_5427:1981
+ISO5427Cyrillic1981
+ISO_5428:1980
+ISO_646.basic:1983
+ISO646-CA
+ISO646-CA2
+ISO646-CN
+ISO646-CU
+ISO646-DE
+ISO646-DK
+ISO646-ES
+ISO646-ES2
+ISO646-FI
+ISO646-FR
+ISO646-FR1
+ISO646-GB
+ISO646-HU
+ISO_646.irv:1983
+ISO_646.irv:1991
+ISO646-IT
+ISO646-JP
+ISO646-JP-OCR-B
+ISO646-KR
+ISO646-NO
+ISO646-NO2
+ISO646-PT
+ISO646-PT2
+ISO646-SE
+ISO646-SE2
+ISO646-US
+ISO646-YU
+ISO_6937-2-25
+ISO_6937-2-add
+iso88591
+ISO_8859-1
+ISO-8859-1
+ISO-8859-10
+ISO_8859-10:1992
+iso-8859_10-1998
+ISO_8859-1:1987
+ISO-8859-13
+ISO_8859-14
+ISO-8859-14
+ISO_8859-14:1998
+ISO_8859-15
+ISO-8859-15
+iso8859_15_fdis
+ISO_8859-16
+ISO-8859-16
+ISO_8859-16:2001
+ISO-8859-1-Windows-3.0-Latin-1
+ISO-8859-1-Windows-3.1-Latin-1
+ISO_8859-2
+ISO-8859-2
+ISO_8859-2:1987
+ISO-8859-2-Windows-Latin-2
+ISO_8859-3
+ISO-8859-3
+ISO_8859-3:1988
+ISO_8859-4
+ISO-8859-4
+ISO_8859-4:1988
+ISO_8859-5
+ISO-8859-5
+ISO_8859-5:1988
+ISO_8859-6
+ISO-8859-6
+ISO_8859-6:1987
+ISO_8859-6-E
+ISO-8859-6-E
+ISO_8859-6-I
+ISO-8859-6-I
+ISO_8859-7
+ISO-8859-7
+ISO8859_7
+ISO_8859-7:1987
+ISO_8859-8
+ISO-8859-8
+ISO_8859-8:1988
+ISO_8859-8-E
+ISO-8859-8-E
+iso-8859-8-i
+ISO_8859-8-I
+ISO-8859-8-I
+ISO_8859-9
+ISO-8859-9
+ISO_8859-9:1989
+ISO-8859-9-Windows-Latin-5
+ISO_8859-supp
+ISO_9036
+iso-celtic
+iso-ir-10
+iso-ir-100
+iso-ir-101
+iso-ir-102
+iso-ir-103
+iso-ir-109
+iso-ir-11
+iso-ir-110
+iso-ir-111
+iso-ir-121
+iso-ir-122
+iso-ir-123
+iso-ir-126
+iso-ir-127
+iso-ir-128
+iso-ir-13
+iso-ir-138
+iso-ir-139
+iso-ir-14
+iso-ir-141
+iso-ir-142
+iso-ir-143
+iso-ir-144
+iso-ir-146
+iso-ir-147
+iso-ir-148
+iso-ir-149
+iso-ir-15
+iso-ir-150
+iso-ir-151
+iso-ir-152
+iso-ir-153
+iso-ir-154
+iso-ir-155
+iso-ir-157
+iso-ir-158
+iso-ir-159
+iso-ir-16
+iso-ir-165
+iso-ir-17
+iso-ir-18
+iso-ir-19
+iso-ir-199
+iso-ir-2
+iso-ir-21
+iso-ir-226
+iso-ir-25
+iso-ir-27
+iso-ir-37
+iso-ir-4
+iso-ir-42
+iso-ir-47
+iso-ir-49
+iso-ir-50
+iso-ir-51
+iso-ir-54
+iso-ir-55
+iso-ir-57
+iso-ir-58
+iso-ir-6
+iso-ir-60
+iso-ir-61
+iso-ir-69
+iso-ir-70
+iso-ir-8-1
+iso-ir-8-2
+iso-ir-84
+iso-ir-85
+iso-ir-86
+iso-ir-87
+iso-ir-88
+iso-ir-89
+iso-ir-90
+iso-ir-91
+iso-ir-9-1
+iso-ir-92
+iso-ir-9-2
+iso-ir-93
+iso-ir-94
+iso-ir-95
+iso-ir-96
+iso-ir-98
+iso-ir-99
+ISO_TR_11548-1
+ISO-Unicode-IBM-1261
+ISO-Unicode-IBM-1264
+ISO-Unicode-IBM-1265
+ISO-Unicode-IBM-1268
+ISO-Unicode-IBM-1276
+Israel Standard Time
+IsVMwareLibrary
+JIS_C6220-1969
+JIS_C6220-1969-jp
+JIS_C6220-1969-ro
+JIS_C6226-1978
+JIS_C6226-1983
+JIS_C6229-1984-a
+JIS_C6229-1984-b
+JIS_C6229-1984-b-add
+JIS_C6229-1984-hand
+JIS_C6229-1984-hand-add
+JIS_C6229-1984-kana
+JIS_Encoding
+JISX0201
+JIS_X0201
+JIS_X0208-1983
+JIS_X0212-1990
+jisx-208
+jisx-212
+jklmnopqr
+}JKLMNOPQR
+jp-ocr-a
+jp-ocr-b
+jp-ocr-b-add
+jp-ocr-hand
+jp-ocr-hand-add
+JUS_I.B1.002
+JUS_I.B1.003-mac
+JUS_I.B1.003-serb
+_Jv_RegisterClasses
+katakana
+KOI7-switched
+Korea Standard Time
+ksc_5601
+KS_C_5601-1987
+KS_C_5601-1989
+latin1-2-5
+_Latin1Data
+latin-greek
+Latin-greek-1
+latin-lap
+LC_CTYPE
+LD_LIBRARY_PATH
+ld-linux.so.2
+LD_PRELOAD
+libart_lgpl_2.so.2
+libatk-1.0.so.0
+libatkmm-1.6.so.1
+libc.so.6
+__libc_start_main
+libcurl.so.4
+libdir entry was not present in %s.
+--libdir requires an argument.
+libdl.so.2
+libgailutil.so.17
+libgdk_pixbuf-2.0.so.0
+libgdk_pixbuf_xlib-2.0.so.0
+libgksu2.so.0
+libglade-2.0.so.0
+libglib-2.0.so.0
+libglibmm_generate_extra_defs-2.4.so.1
+libgmodule-2.0.so.0
+libgnomecanvas-2.so.0
+libgnomecanvasmm-2.6.so.1
+libgobject-2.0.so.0
+libgthread-2.0.so.0
+lib/gtk-2.0/modules
+libgtkmm-2.4.so.1
+libgtk-x11-2.0.so.0
+libgtop-2.0.so.7
+/lib/ld-linux.so.2
+libpangox-1.0.so.0
+libpangoxft-1.0.so.0
+libpthread.so.0
+librsvg-2.so.2
+libsexymm.so.2
+libsexy.so.2
+libspi.so.0
+lib%s.so
+libview.so.2
+libvmware
+libXft.so.2
+libxml2.so.2
+libz.so.1
+licensename
+licenseversion
+linux-from-scratch
+linux-ppc
+-l, --libdir=PATH
+LMBCS-11
+LMBCS-16
+LMBCS-17
+LMBCS-18
+LMBCS-19
+lmb-excp
+LOADAVG: %.2f %.2f %.2f
+LoaderHandle: fd=%d ptr=%p size=%zu offset=%Ld return=%zd errno=%d:%s
+LoadHeaders:  Bad file header.
+Loading %s version of %s.
+LoadLibraryArray: Nothing to load, nodeCount is 0.
+localeconv
+localtime
+localtime_r
+lock file has been moved.
+Lock timed out
+log.append
+LogBackupByRenumber
+LOG failed to remove %s: %s
+LOG failed to rename %s -> %s: %s
+log.fastRotation
+LOG fstat failed: %s
+log.guestNoLogAfterThreshold
+log.guestThrottleBytesPerSec
+log.guestThrottleThreshold
+log.keep
+log.keepold
+log.millisec
+log.noLogAfterThreshold
+LOG NOT INITIALIZED | 
+LOG removing %s.
+log.rotateSize
+log.threadName
+log.throttleBytesPerSec
+<<< Log Throttled >>>
+log.throttleThreshold
+log.timeStamp
+LOG trying to remove log file when not initialized.
+Looping pid=%d
+lP}M]\Nk`Ka
+lsb_release -sd 2>/dev/null
+__lxstat64
+maccentraleurope
+macedonian
+macintosh
+macos-0_2-10.2
+macos-29-10.2
+macos-35-10.2
+macos-6_2-10.4
+macos-7_3-10.2
+mandrake
+mandriva
+memalign
+MEM_ALLOC %s:%d
+Microsoft-Publishing
+Mid-Atlantic Standard Time
+MNEMONIC
+model name
+Mountain Standard Time
+Mountain Standard Time (Mexico)
+MS950_HKSCS
+msg.autoAnswer
+@&!*@*@(msg.dictionary.alreadyDefined)File "%s" line %d: Variable "%s" is already defined.
+@&!*@*@(msg.dictionary.alreadyDefinedNoFile)Variable "%s" is already defined.
+@&!*@*@(msg.dictionary.alreadyDefinedNoLine)File "%s": Variable "%s" is already defined.
+@&!*@*@(msg.dictionary.alreadyDefined.string)Variable "%s" is already defined.
+@&!*@*@(msg.dictionary.badDefaultEncoding)File "%s": Failed to decode file in the default character encoding.
+@&!*@*@(msg.dictionary.badDefaultEncodingNoFile)Failed to decode dictionary in the default character encoding.
+@&!*@*@(msg.dictionary.badEncodedInput)File "%s" line %d: Value "%s" for variable "%s" is not valid in encoding "%s".
+@&!*@*@(msg.dictionary.badEncodedInputNoFile)Value "%s" for variable "%s" is not valid in encoding "%s".
+@&!*@*@(msg.dictionary.badEncodedInputNoLine)File "%s": Value "%s" for variable "%s" is not valid in encoding "%s".
+@&!*@*@(msg.dictionary.badEncodedOutput)Value "%s" for variable "%s" is not valid in "%s" encoding.
+@&!*@*@(msg.dictionary.close)Error closing configuration file "%s": %s.
+@&!*@*@(msg.dictionary.export)Error exporting dictionary to buffer.
+@&!*@*@(msg.dictionary.flush)Error flushing configuration file "%s": %s.
+@&!*@*@(msg.dictionary.hasEncoding)File "%s" line %d: File already has an encoding "%s".
+@&!*@*@(msg.dictionary.hasEncodingNoFile)Dictionary already has an encoding "%s".
+@&!*@*@(msg.dictionary.hasEncodingNoLine)File "%s": File already has an encoding "%s".
+@&!*@*@(msg.dictionary.integer64TooBig)Value "%s" for variable "%s" is too large. Using value "%Ld".
+@&!*@*@(msg.dictionary.integerTooBig)Value "%s" for variable "%s" is too large. Using value "%d".
+@&!*@*@(msg.dictionary.loadFile.seekFailed)Cannot seek file "%s": %s.
+@&!*@*@(msg.dictionary.load.isDirectory)"%s" is a directory.
+@&!*@*@(msg.dictionary.load.openFailed)Cannot open file "%s": %s.
+@&!*@*@(msg.dictionary.load.statFailed)Unable to get information about file "%s": %s.
+@&!*@*@(msg.dictionary.nameTooLong)%s
+@&!*@*@(msg.dictionary.notBoolean)Value "%s" for variable "%s" is not a valid boolean value. Using value "%s".
+@&!*@*@(msg.dictionary.notEnumAndNoDefault)Value "%s" for variable "%s" is not a valid value.
+@&!*@*@(msg.dictionary.notEnum)Value "%s" for variable "%s" is not a valid value. Using value "%s".
+@&!*@*@(msg.dictionary.notFloat)Value "%s" for variable "%s" is not a valid floating-point value. Using value "%f".
+@&!*@*@(msg.dictionary.notInteger64)Value "%s" for variable "%s" is not a valid integer value. Using value "%Ld".
+@&!*@*@(msg.dictionary.notInteger)Value "%s" for variable "%s" is not a valid integer value. Using value "%d".
+@&!*@*@(msg.dictionary.notTristate)Value "%s" for variable "%s" is not a valid tristate value. Using value "%s".
+@&!*@*@(msg.dictionary.open)Cannot open configuration file "%s": %s.
+@&!*@*@(msg.dictionary.permissions)Access to "%s" failed due to file system permissions issues
+@&!*@*@(msg.dictionary.read.readError)File "%s" line %d: %s.
+@&!*@*@(msg.dictionary.read.syntaxError)File "%s" line %d: Syntax error.
+@&!*@*@(msg.dictionary.read.syntaxErrorNoFile)Syntax error.
+@&!*@*@(msg.dictionary.read.syntaxErrorNoLine)File "%s": Syntax error.
+@&!*@*@(msg.dictionary.sync)Error syncing configuration file "%s": %s.
+@&!*@*@(msg.dictionary.unknownEncoding)File "%s" line %d: Character encoding "%s" is not supported.
+@&!*@*@(msg.dictionary.unknownEncodingNoFile)Character encoding "%s" is not supported.
+@&!*@*@(msg.dictionary.unknownEncodingNoLine)File "%s": Character encoding "%s" is not supported.
+@&!*@*@(msg.dictionary.write)Error writing to configuration file "%s": %s.
+@&!*@*@(msg.dictionary.writefile.descToStream)Error converting descriptor of open file "%s": %s.
+@&!*@*@(msg.dictionary.writefile.export)Error exporting dictionary to buffer.
+@&!*@*@(msg.dictionary.writefile.flush)Error flushing configuration file "%s": %s.
+@&!*@*@(msg.dictionary.writefile.seek)Error seeking configuration file "%s":%s.
+@&!*@*@(msg.dictionary.writefile.sync)Error syncing configuration file "%s": %s.
+@&!*@*@(msg.dictionary.writefile.truncate)Error truncating configuration file "%s":%s.
+@&!*@*@(msg.dictionary.writefile.write)Error writing to configuration file "%s": %s.
+@&!*@*@(msg.File.Copy.close.failure)Unable to close the '%s' file: %s.
+@&!*@*@(msg.File.CopyFromFdToFd.read.failure)Read error: %s.
+@&!*@*@(msg.File.CopyFromFdToFd.write.failure)Write error: %s.
+@&!*@*@(msg.File.CopyFromFdToName.close.failure)Unable to close the '%s' file: %s.
+@&!*@*@(msg.File.CopyFromFdToName.create.failure)Unable to create a new '%s' file: %s.
+@&!*@*@(msg.File.CopyFromNameToName.close.failure)Unable to close the '%s' file: %s.
+@&!*@*@(msg.File.CopyFromNameToName.open.failure)Unable to open the '%s' file for read access: %s.
+@&!*@*@(msg.File.Copy.open.failure)Unable to open the '%s' file for read access: %s.
+@&!*@*@(msg.File.CreatePrompt.question)The file '%s' already exists.
+@&!*@*@(msg.fileio.cancel)The operation was canceled by the user
+@&!*@*@(msg.fileio.dQuot)There is no space left on the device
+@&!*@*@(msg.fileio.eof)Tried to read beyond the end of the file
+@&!*@*@(msg.fileio.exists)The file already exists
+@&!*@*@(msg.fileio.fBig)The file is too large
+@&!*@*@(msg.fileio.generic)Generic error
+@&!*@*@(msg.fileio.lock)Failed to lock the file
+@&!*@*@(msg.fileio.namelong)The file name is too long
+@&!*@*@(msg.fileio.noPerm)Insufficient permissions to access the file
+@&!*@*@(msg.fileio.noSpc)There is no space left on the device
+@&!*@*@(msg.fileio.notfound)Could not find the file
+@&!*@*@(msg.fileio.success)Success
+@&!*@*@(msg.fileio.unknown)Unknown error
+@&!*@*@(msg.file.maketemp.fullNamespace)Failed to create temporary file "%s": The name space is full.
+@&!*@*@(msg.file.maketemp.openFailed)Failed to create temporary file "%s": %s.
+@&!*@*@(msg.filePosix.getcwd)Unable to retrieve the current working directory: %s. Please check if the directory has been deleted or unmounted.
+@&!*@*@(msg.filePosix.replaceChmodFailed)Failed to duplicate file permissions from "%s" to "%s": %s
+@&!*@*@(msg.filePosix.replaceConversionFailed)Failed to convert file path "%s" to current encoding
+@&!*@*@(msg.filePosix.replaceRenameFailed)Failed to rename "%s" to "%s": %s
+MsgFmtGetArg1: bad specifier, status %d, pos "%.*s", type "%.*s"
+MsgFmtGetArg1: %%%c%c not supported, pos "%.*s", type "%.*s"
+MsgFmtGetArg1: %%%c not understood, pos "%.*s", type "%.*s"
+MsgFmtGetArg1: incompatible specifiers for argument %d, old type %d, new type %d, pos "%.*s", type "%.*s"
+MsgFmtGetArg1: %%n not supported, pos "%.*s", type "%.*s"
+MsgFmtGetArg1: out of memory at arg %d
+MsgFmt_GetArgs: error %d
+MsgFmt_GetArgs: error in format string
+MsgFmt_GetArgs: gap in arguments at position %d
+MsgFmt_GetArgs: out of memory
+MsgIsQuestionAnswered: Using builtin default '%s' as the answer for '%s'
+MsgIsQuestionAnswered: Using config default '%s' as the answer for '%s'
+Msg_LazyProgress
+Msg_LazyProgressStart error: %s
+@&!*@*@(msg.log.copyFtruncateFailed)Cannot truncate log file '%s': %s
+@&!*@*@(msg.log.copyLseekFailed)Cannot seek to start of file '%s': %s
+@&!*@*@(msg.log.copyWriteFailed)Write error copying data to '%s': %s
+@&!*@*@(msg.log.error.unrecoverable)%s%s unrecoverable error: (%s)
+@&!*@*@(msg.log.openChanged)Log file '%s' has changed.
+@&!*@*@(msg.log.openFailed)Cannot open/create log file '%s': %s
+@&!*@*@(msg.log.openFstatFailed)Cannot fstat file %s: '%s'
+@&!*@*@(msg.log.openIsLink)Log file '%s' is a symbolic link.
+@&!*@*@(msg.log.openLstatFailed)Cannot stat file %s: '%s'
+@&!*@*@(msg.log.switchFailedHasOldFile)The current log file is still '%s'.
+@&!*@*@(msg.log.switchFailed)Unable to open log file "%s". Check your configuration to make sure that the path specified for the log file is valid, and that you have write privileges in this directory.
+@&!*@*@(msg.log.switchUnlinkFailed)Failed to remove log file '%s': %s
+@&!*@*@(msg.msg.byte.one)%s byte
+@&!*@*@(msg.msg.byte.twoOrMore)%s bytes
+@&!*@*@(msg.msg.byte.zero)%s bytes
+@&!*@*@(msg.msg.chooseNumber)Please choose a number [0-%d]: 
+@&!*@*@(msg.msg.configEditor)Configuration editor
+@&!*@*@(msg.msg.error)Error
+@&!*@*@(msg.msg.extendLicenseError)Extend license error
+@&!*@*@(msg.msg.extendLicenseInfo)Extend license info
+@&!*@*@(msg.msg.getLicenseError)Get license error
+@&!*@*@(msg.msg.gigabyte.abbreviation)%s GB
+@&!*@*@(msg.msg.hint)Hint
+@&!*@*@(msg.msg.homePageInfo)Home page info
+@&!*@*@(msg.msg.info)Information
+@&!*@*@(msg.msg.kilobyte.abbreviation)%s KB
+@&!*@*@(msg.msg.megabyte.abbreviation)%s MB
+@&!*@*@(msg.msg.question)Question
+@&!*@*@(msg.msg.systemError)Error %d [%s]
+@&!*@*@(msg.msg.systemErrorWindows)Error %d (0x%x) [%s]
+@&!*@*@(msg.msg.terabyte.abbreviation)%s TB
+@&!*@*@(msg.msg.warning)Warning
+msg.noOK
+msg.noOKnoWarning
+Msg_OKButtons
+Msg_OKCancelButtons
+@&!*@*@(msg.panic.haveCore)A core file is available in "%s".  
+@&!*@*@(msg.panic.haveLog)A log file is available in "%s".  
+@&!*@*@(msg.panic.requestSupport.vmSupport.linux)
+@&!*@*@(msg.panic.requestSupport.vmSupport.windowsOrLinux.player)
+@&!*@*@(msg.panic.requestSupport.withCore)Please request support and include the contents of the core file.  
+@&!*@*@(msg.panic.requestSupport.withLogAndCore)Please request support and include the contents of the log file and core file.  
+@&!*@*@(msg.panic.requestSupport.withLog)Please request support and include the contents of the log file.  
+@&!*@*@(msg.panic.requestSupport.withoutLog)Please request support.  
+@&!*@*@(msg.panic.response)We will respond on the basis of your support entitlement.
+Msg_Post
+Msg_Progress error: %s
+Msg_Question
+Msg_Question: %s reply=%d
+Msg_Reset
+Msg_SetLocale
+Msg_Severities
+@&!*@*@(msg.util.ExpandStringNoMemForChunk)Cannot allocate memory to expand "%s" in "%s".
+@&!*@*@(msg.util.expandStringNoMemForResult)Cannot allocate memory for the expansion of "%s".
+@&!*@*@(msg.util.expandStringTooManyChunks)Filename "%s" has too many chunks.
+@&!*@*@(msg.util.msde.mkdir)Cannot create directory "%s": %s.
+@&!*@*@(msg.util.msde.noAccess)Directory "%s" is not accessible: %s.
+@&!*@*@(msg.util.msde.notDir)The path "%s" exists, but it is not a directory.
+Msg_VCreateMsgList error: %s
+MS_Kanji
+MSZ_7795.3
+Myanmar Standard Time
+Name:   %128[^
+NATS-DANO
+NATS-DANO-ADD
+NATS-SEFI
+NATS-SEFI-ADD
+N. Central Asia Standard Time
+NC_NC00-10:81
+Nepal Standard Time
+Newfoundland Standard Time
+__newlocale
+New Zealand Standard Time
+NF_Z_62-010
+NF_Z_62-010_(1973)
+nl_langinfo
+__nl_langinfo_l
+No curl_version_info symbol; can't check system %s version.
+Node %s too long.
+North Asia East Standard Time
+North Asia Standard Time
+No system glib was found.
+not enabled
+Not enough section headers in ElfLoadHeaders
+NOT_IMPLEMENTED %s:%d
+NOT_REACHED %s:%d
+No validator for %s was found.
+NS_4551-1
+NS_4551-2
+<ntP<\u!
+numBytes = %Ld
+numEntries = %d
+numSectors = %Ld
+ObtainHardwareID
+OSD_EBCDIC_DF03_IRV
+OSD_EBCDIC_DF04_1
+OSD_EBCDIC_DF04_15
+other24xlinux
+other26xlinux
+otherlinux
+Other Linux
+Other Linux 2.4.x kernel
+Other Linux 2.6.x kernel
+Pacific/Auckland
+Pacific/Chatham
+Pacific/Pitcairn
+Pacific SA Standard Time
+Pacific Standard Time
+PANGO_RC_FILE
+panic.breakOnPanic
+Panic loop
+panic.loopOnPanic
+PANIC %s:%d
+pathconf
+PC8-Danish-Norwegian
+PC8-Turkish
+PC-Multilingual-850+euro
+!p!q!r!s!t!u!v!w!x!y!z!{!|!}!~!
+preferences.encoding
+Print this usage message.
+/proc/cpuinfo
+/proc/%d/stat
+/proc/%d/status
+ProcessCreationTime
+-- Processing %s --
+ProcessNode
+processor
+ProcessTreeStack
+/proc/self/statm
+pthread_mutex_destroy
+pthread_mutex_init
+pthread_mutex_lock
+pthread_mutex_unlock
+pthread_self
+pwrite64
+Random_Crypto
+__rawmemchr
+readdir64
+read failed, errno=%d, %s
+Read failed in reading program headers.
+Reading from pipe failed: %s.
+readlink
+Read too few section headers in ElfLoadHeaders
+Read too few strings in ElfLoadHeaders
+realpath
+release %d
+RemoveLockingFile
+Romance Standard Time
+Running post-configure on %s.
+RUSAGE size=%d resident=%d share=%d trs=%d lrs=%d drs=%d dt=%d
+Russian Standard Time
+%s---------------------------------------
+SA Eastern Standard Time
+Samoa Standard Time
+SA Pacific Standard Time
+Saving variable %s with value %s to %s.
+SA Western Standard Time
+%s: base-64 decoding failed
+%s bytes
+%s: called on a locked, encrypted dictionary.
+%s: Call to Random_Crypto failed.
+ScanDirectory
+%s: cannot change mode of file %s: %s
+%s: cannot stat configuration file %s: %s
+%s: Cannot work with empty file.
+%s: Child could not exec %s, read %d, error %u.
+%s: Child %d exited with error %d.
+%s: Child %d exited with signal %d.
+%s: could not allocate memory
+%s: could not open file%s: %d
+%s: could not read file %s: %d
+%s: could not read Red Hat Enterprise release version
+%s: could not stat the file %s: %d
+%s: Couldn't allocate memory, error %u.
+%s: Couldn't chdir to /, error %u.
+%s: Couldn't convert arguments to default encoding.
+%s: Couldn't convert path [%s] to default encoding.
+%s: Couldn't create new session, error %d.
+%s: Couldn't create pipe, error %u.
+%s: Couldn't exec %s, error %d.
+%s: Couldn't fork first child, error %u.
+%s: Couldn't fork second child, error %d.
+%s: Couldn't get a temporary directory
+%s: couldn't get filename
+%s: Couldn't open PID path [%s], error %d.
+%s: Couldn't set close-on-exec for fd %d, error %u.
+%s: Couldn't statfs %s
+%s: Couldn't write PID to path [%s], error %d.
+%s: Couldn't write to parent pipe: %u, original error: %u.
+%s: CryptoKey_DecryptWithMAC failed: %s.
+%s: CryptoKeyedHash_FromString failed: %s.
+SCSU,locale=ja
+%.*s (%d%%)
+%s:%d Buffer too small 0x%x
+%s: Did not find an IANA match for encoding "%s"
+%s-%%d%s%%n
+SE Asia Standard Time
+Seek failed in reading program headers.
+Seek failed in writing program headers.
+Seek failed in writing section.
+Seek failed when writing header.
+Seek failed when writing section headers.
+SEN_850200_B
+SEN_850200_C
+%s: Error: buffer too small
+%s: Error: Couldn't convert invalid buffer [%s] from %s to Unicode.
+%s: error encrypting data: %s.
+%s: error exporting key safe: %s.
+%s: Error: no distro file found
+%s error: %s
+server 10
+server 11
+Set directory to load libraries from.
+setitimer
+setlocale
+setmntent
+setrlimit64
+Setting libdir to %s
+%s: eventfd_write failed, %s (%d)
+%s: Failed to close: %d
+%s: Failed to create a safe temporary directory, path "%s". The maximum number of attempts was exceeded.
+%s: failed to get base dir for path '%s'.
+%s: failed to get full path for '%s'.
+%s: Failed to open random device: %d
+%s: failed to read the directory '%s'.
+%s: failed to remove %s: %s
+%s: failed to rename %s -> %s failed: %s
+%s: failure!
+%s: fcntl failed, %s (%d)
+%s: File_GetTmpDir failed.
+-- %s has already been processed. --
+Shift_JIS
+<SHIPPED>
+Shipped version of %s for %s was %d but system had %d.
+%sHost codepage=%s encoding=%s
+%s Hostinfo_HostName failure; providing default.
+%s: HostLocale=%s UserLocale=%s
+%s: ID %d doesn't exist.
+sigaction
+sigfillset
+sigprocmask
+Singapore Standard Time
+%s: input buffer too small
+%s: Invalid target ID %d.
+%s is marked to use the shipped library version.
+slackware
+%s/LCK..%s
+%sLog for %s pid=%d version=%s build=%s option=%s
+%s/LTMP..%s.t%05d
+sme server
+SMEServer
+snapshot.encoding
+%s: Not showing hint %s (%s).
+snprintf
+%s ObtainHardwareID failure (%s); providing default.
+SOFTWARE\VMware, Inc.\%s
+%s only takes powers of 2 
+%s: open failed, %s (%d)
+South Africa Standard Time
+%s: Out of memory error.
+Sri Lanka Standard Time
+%s/%s-%d%s
+%s: Short read: %d
+%s: "%s" line %d: unrecognized metavariable "%s"
+%s%smessages%s%s%s%s.%s
+%s/%s-%s
+%s/%s%s$PID.log
+%s/%s/%s/%s
+%s%s%s%s.log
+%s%s%s%s%s%s%s
+%s/%s-%s-%u
+%s: Str_Asprintf error.
+%s %s %u %s %s lc=%s
+startSector = %Ld
+statfs64
+STATINST %u %s:%-20s %-15s %10d
+_stats_file_Blk
+STAT %u %-26s %10d
+%sThe process is %zu-bit.
+%s: The system limit on the total number of open files has been reached.
+%s: Too many file descriptors are in use by the process.
+%s//TRANSLIT
+strcasecmp
+__strdup
+strerror
+strerror_r
+strftime
+STRK1048-2002
+strncasecmp
+__strtod_internal
+__strtok_r
+__strtol_internal
+__strtoll_internal
+__strtoul_internal
+__strtoull_internal
+ST_SEV_358-88
+~stuvwxyz
+STUVWXYZ
+SUDO_USER
+%s unable to get host OS version (uname): %s
+%s unable to parse host OS version string: %s
+%s: uname failed %d
+sun_eu_greek
+%s: unexpected decode problem #1 (%s)
+%s: unexpected decode problem #2 (%s)
+%s unexpected failure: %d.
+%s: Unknown encoding %d.
+%s: upgrading encoding from %s to %s
+su %s -c 'gconftool-2 --get /desktop/gnome/interface/accessibility'
+%s: UtilGetUserName failed, using numeric ID as username instead.
+%s validator returned %s.
+swaplfnl
+%s was not in the library set.
+%s: write failed, %s (%d)
+%s: write failed, %zd bytes written
+%s: write to pipe failed, %s (%d)
+%s: write to pipe failed, %zd bytes written
+SyncWaitQCreateNonBlockingPipe
+SyncWaitQPanicOnFdLimit
+SyncWaitQWakeUpAnon
+SyncWaitQWakeUpNamed
+<SYSTEM>
+System %s has version %s (need 7.19.5) and has %sbeen compiled with c-ares support.
+T.101-G2
+T.61-7bit
+T.61-8bit
+Taipei Standard Time
+Tasmania Standard Time
+<	tE< tA
+The VMware application loader controls how the application is loaded.
+__timezone
+tiny sofa
+tis620.2533
+tmpDirectory
+To cancel the operation, select Cancel.
+To collect data to submit to VMware support, run "vm-support".
+To collect data to submit to VMware support, select Help > About and click "Collect Support Data". You can also run the "vm-support" script in the Workstation folder directly.
+Tokyo Standard Time
+Tonga Standard Time
+To overwrite the content of the file, select Overwrite.
+To retry the operation after you have moved the file to another location, select Retry.
+turbolinux
+turkish8
+<	tV< tR
+type mismatch updating %s -- not changing
+__tzname
+UCNV_FROM_U_CALLBACK_SKIP
+UCNV_FROM_U_CALLBACK_STOP
+UCNV_FROM_U_CALLBACK_SUBSTITUTE
+ucnv_io_stripASCIIForCompare
+ucnv_io_stripEBCDICForCompare
+ucnv_swapAliases(): data format %02x.%02x.%02x.%02x (format version %02x) is not an alias table
+ucnv_swapAliases().swapInvChars(charset names) failed
+ucnv_swapAliases(): table of contents contains unsupported number of sections (%u sections)
+ucnv_swapAliases(): too few bytes (%d after header) for an alias table
+ucnv_swapAliases(): unable to allocate memory for sorting tables (max length: %u)
+ucnv_swapAliases().uprv_sortArray(%u items) failed
+ucnv_swap(): data format %02x.%02x.%02x.%02x (format version %02x.%02x) is not recognized as an ICU .cnv conversion table
+ucnv_swap(): error swapping converter name
+ucnv_swap(): too few bytes (%d after header) for an ICU .cnv conversion table
+ucnv_swap(): too few bytes (%d after headers) for an ICU MBCS .cnv conversion table
+ucnv_swap(): too few bytes (%d after headers) for an ICU MBCS .cnv conversion table with extension data
+ucnv_swap(): unknown conversionType=%d!=UCNV_MBCS
+ucnv_swap(): unsupported _MBCSHeader.version %d.%d
+ucnv_swap(): unsupported MBCS output type 0x%x
+UCNV_TO_U_CALLBACK_SKIP
+UCNV_TO_U_CALLBACK_STOP
+UCNV_TO_U_CALLBACK_SUBSTITUTE
+udata_swapDataHeader(): header size mismatch - headerSize %d infoSize %d length %d
+udata_swapDataHeader(): initial bytes do not look like ICU data
+uhash_compareChars
+uhash_hashChars
+ultra penguin
+UltraPenguin
+Unable to bootstrap glib: %s
+Unable to close %s.  %s
+Unable to create library dependency tree.
+Unable to create new tree for %s.  Failed to add %s to the library list.
+Unable to dlopen %s on the system.  %s
+Unable to find main symbol to launch application.
+Unable to find symbol %s in system %s.
+Unable to get output of command "%s"
+Unable to initialize logging.
+Unable to link glib function %s for bootstrapping.
+Unable to load application library dependencies.
+Unable to load %s.
+Unable to load %s from %s: %s
+Unable to load %s to find symbol %s.
+Unable to locate .dynamic section in %s.
+Unable to locate .dynstr section in %s.
+Unable to locate .dynsym section in %s.
+Unable to locate the shipped version of %s.
+Unable to lookup library directory.
+Unable to map %s.
+Unable to open file %s.
+Unable to serialize loading data back to parent.
+Unable to spawn gconftool-2 to determine whether accessibility is enabled or not.
+Unable to spawn xprop to determine whether accessibility is enabled or not.
+uncompress
+Unexpected child process was returned.
+Unexpected elf section header size.
+Unexpected error loading data from %s (%s).
+Unexpected number of nodes received.
+UNICODE-1-1
+UNICODE-1-1-UTF-7
+Unicode_AllocList1 failed.
+Unicode_AllocList2 failed.
+Unicode_AllocList3 failed.
+Unicode_AllocList4 failed.
+Unicode_AllocWithLength
+UnicodeBigUnmarked
+Unicode_EncodingEnumToName
+UnicodeIANALookup
+UnicodeLittleUnmarked
+united linux
+UnitedLinux
+UNKNOWN-8BIT
+Unrecoverable memory allocation failure at %s:%d
+Unrecoverable memory allocation failure at %s:%d.  Bug number: %d
+Unsupported local character encoding "%s".
+uprv_asciiFromEbcdic
+uprv_asciiFromEbcdic() string[%d] contains a variant character in position %d
+uprv_compareInvAscii
+uprv_compareInvEbcdic
+uprv_copyAscii
+uprv_copyEbcdic
+uprv_copyEbcdic() string[%] contains a variant character in position %d
+uprv_copyFromAscii() string[%d] contains a variant character in position %d
+uprv_ebcdicFromAscii
+uprv_ebcdicFromAscii() string[%d] contains a variant character in position %d
+URL_SetRedirect
+Usage: %s -- [OPTION]
+US/Alaska
+US/Aleutian
+US-ASCII
+US/Central
+US/Eastern
+US Eastern Standard Time
+Using configuration file %s.
+Using library directory:  %s.
+Using the shipped version of %s.
+Using the system version of %s.
+US/Mountain
+US Mountain Standard Time
+US/Pacific
+/usr/lib32
+/usr/lib/vmware
+/usr/share/zoneinfo/
+UTF-16BE
+UTF16_BigEndian
+UTF-16LE
+UTF16_LittleEndian
+utf16oppositeendian
+utf16platformendian
+UTF-32BE
+UTF32_BigEndian
+UTF-32LE
+UTF32_LittleEndian
+utf32oppositeendian
+utf32platformendian
+UTF-7,version=1
+utf8_countTrailBytes
+_UTF8Data
+UTF-EBCDIC
+UTIL: Change file descriptor limit from soft %u,hard %u to soft %u,hard %u.
+UtilCreateSafeTmpDir
+UTIL: Current file descriptor limit: soft %u, hard %u.
+UTIL: Failed to set number of fds at %u, was %u: %s (%d)
+Util_GetProcessName: Error: cannot open %s
+Util_GetProcessName: Error, could not parse contents of %s
+Util_GetProcessName: Error: could not read %s
+Util_GetProcessName: Error, process name (%zu bytes) is larger than output buffer
+Util_GetSafeTmpDir
+UtilGetUserName: Not enough memory.
+UtilGetUserName: sysconf(_SC_GETPW_R_SIZE_MAX) failed.
+UtilGetUserName: Unable to retrieve the username associated with user ID %u.
+%u.%u.%u
+va linux
+/var/lock
+Ventura-International
+Ventura-Math
+Ventura-US
+videotex-suppl
+ViewOvBox_SetVerticalOffset
+Vladivostok Standard Time
+/.vmBigFileTest
+vmlist.encoding
+VMWARE_%s
+VMware Tools
+vswprintf
+vthread-%d
+WaitForPossession
+W. Australia Standard Time
+W. Central Africa Standard Time
+West Asia Standard Time
+West Pacific Standard Time
+W. Europe Standard Time
+windows-
+Windows-10000
+Windows-10001
+Windows-10002
+Windows-10003
+Windows-10004
+Windows-10005
+Windows-10006
+Windows-10007
+Windows-10008
+Windows-10010
+Windows-10017
+Windows-10021
+Windows-10029
+Windows-10079
+Windows-10081
+Windows-10082
+windows-1250
+windows-1251
+windows-1252
+windows-1253
+windows-1254
+windows-1255
+windows-1256
+windows-1257
+windows-1258
+Windows-1361
+Windows-20000
+Windows-20001
+Windows-20002
+Windows-20003
+Windows-20004
+Windows-20005
+Windows-20105
+Windows-20106
+Windows-20107
+Windows-20108
+Windows-20269
+Windows-20833
+Windows-20949
+Windows-21027
+Windows-29001
+Windows-31J
+Windows-50229
+Windows-50930
+Windows-50931
+Windows-50933
+Windows-50935
+Windows-50936
+Windows-50937
+Windows-50939
+Windows-51950
+Windows-57002
+Windows-57003
+Windows-57004
+Windows-57005
+Windows-57006
+Windows-57007
+Windows-57008
+Windows-57009
+Windows-57010
+Windows-57011
+Windows-709
+Windows-710
+Windows-720
+Windows-737
+windows-874
+windows-874-2000
+windows-932
+windows-936
+windows-936-2000
+windows-949
+windows-949-2000
+windows-950
+windows-950-2000
+Write failed in writing program headers.
+Write failed in writing section.
+Write failed when writing header.
+Write failed when writing section headers.
+@&!*@*@X
+x-Chinese_CNS
+x_Chinese-Eten
+x-cp20001
+x-cp20003
+x-cp20004
+x-cp20005
+x-cp20269
+x-cp20949
+xdigs_lower
+xdigs_upper
+x-EBCDIC-KoreanExtended
+X-EUC-JP
+x-Europa
+x-IA5-German
+x-IA5-Norwegian
+x-IA5-Swedish
+x-iscii-as
+x-iscii-be
+x-iscii-de
+x-iscii-gu
+x-iscii-guj
+x-iscii-ka
+x-iscii-ma
+x-iscii-or
+x-iscii-pa
+x-iscii-ta
+x-iscii-te
+x-mac-arabic
+x-mac-ce
+x-mac-centraleurroman
+x-mac-chinesesimp
+x-mac-chinesetrad
+x-mac-croatian
+x-mac-cyrillic
+x-mac-greek
+x-mac-hebrew
+x-mac-icelandic
+x-mac-japanese
+x-mac-korean
+x-macroman
+x-mac-romanian
+x-mac-thai
+x-mac-turkish
+x-mac-ukrainian
+__xmknod
+x-ms-cp932
+__xpg_basename
+xprop -root
+__xstat64
+x-utf-16be
+x-utf-16le
+Yakutsk Standard Time
+yellow dog
+_ZNK3Gtk11AboutDialog16get_program_nameEv

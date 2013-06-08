@@ -1,0 +1,69 @@
+#    02111-1307, USA.
+                      action='store_true', default=False,
+#    along with this package; if not, write to the Free Software
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+# (C) 2005-08 Chris Lawrence <lawrencc@debian.org>
+                      default=False,
+                      default=False, action='store_true',
+def main():
+    distinfo = lsb_release.get_distro_information()
+        elif short:
+        else:
+#    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+from optparse import OptionParser
+#    GNU General Public License for more details.
+                      help="show all of the above information")
+                      help="show code name of this distribution")
+                      help="show description of this distribution")
+                      help="show distributor ID")
+                      help="show LSB modules this system supports")
+                      help="show release number of this distribution")
+                      help="show requested information in short format")
+    if args:
+if __name__ == '__main__':
+    if none or options.all or options.version:
+        if not verinfo:
+    if options.codename or options.all:
+    if options.description or options.all:
+    if options.id or options.all:
+    if options.release or options.all:
+        if short:
+import commands
+import lsb_release
+import os
+import re
+import sys
+#    it under the terms of the GNU General Public License as published by
+# lsb_release command for Debian
+    main()
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    none = not (options.all or options.version or options.id or
+    (options, args) = parser.parse_args()
+                options.description or options.codename or options.release)
+    parser.add_option('-a', '--all', dest='all',
+    parser.add_option('-c', '--codename', dest='codename',
+    parser.add_option('-d', '--description', dest='description',
+    parser.add_option('-i', '--id', dest='id', action='store_true',
+    parser.add_option('-r', '--release', dest='release',
+    parser.add_option('-s', '--short', dest='short',
+    parser.add_option('-v', '--version', dest='version', action='store_true',
+        parser.error("No arguments are permitted")
+    parser = OptionParser()
+            print 'Codename:\t%s' % distinfo.get('CODENAME', 'n/a')
+            print 'Description:\t%s' % distinfo.get('DESCRIPTION', 'n/a')
+            print distinfo.get('CODENAME', 'n/a')
+            print distinfo.get('DESCRIPTION', 'n/a')
+            print distinfo.get('ID', 'n/a')
+            print distinfo.get('RELEASE', 'n/a')
+            print 'Distributor ID:\t%s' % distinfo.get('ID', 'n/a')
+            print ':'.join(verinfo)
+            print 'LSB Version:\t' + ':'.join(verinfo)
+            print 'Release:\t%s' % distinfo.get('RELEASE', 'n/a')
+            print >> sys.stderr, "No LSB modules are available."
+    short = (options.short)
+#    the Free Software Foundation; version 2 dated June, 1991.
+#    This package is distributed in the hope that it will be useful,
+#    This package is free software; you can redistribute it and/or modify
+#!/usr/bin/python -Es
+        verinfo = lsb_release.check_modules_installed()
+#    You should have received a copy of the GNU General Public License

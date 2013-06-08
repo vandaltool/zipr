@@ -1,0 +1,23 @@
+#!/bin/sh -e
+c=`kpsewhich -var-value TEXMFSYSCONFIG`
+exec texconfig ${1+"$@"}
+export PATH
+export TEXMFVAR TEXMFCONFIG
+# hack around a bug in zsh:
+# $Id: texconfig-sys 5067 2007-09-30 18:06:26Z karl $
+  && { RUNNING_BSH=true; export RUNNING_BSH; exec /bin/bsh $0 ${1+"$@"}; }
+  && { RUNNING_KSH=true; export RUNNING_KSH; exec /bin/ksh $0 ${1+"$@"}; }
+test -f /bin/bsh && test -z "$RUNNING_BSH" \
+test -f /bin/ksh && test -z "$RUNNING_KSH" \
+test -n "${ZSH_VERSION+set}" && alias -g '${1+"$@"}'='"$@"'
+texconfig_sys=1
+# texconfig-sys: Thomas Esser, public domain.
+TEXMFCONFIG="$c"
+#   TEXMFSYSVAR / TEXMFSYSCONFIG
+TEXMFVAR="$v"
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xAIX; } 2>/dev/null \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xULTRIX; } 2>/dev/null \
+unset RUNNING_BSH
+unset RUNNING_KSH
+v=`kpsewhich -var-value TEXMFSYSVAR`
+# wrapper script for texconfig with TEXMFVAR and TEXMFCONFIG set to

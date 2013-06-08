@@ -1,0 +1,33 @@
+are the mask color and optional input file specificaton
+__bss_start
+correctedonly
+%d images processed.
+%d pixels were above the saturation limit.
+%d pixels were below the saturation limit.
+GLIBC_2.0
+__gmon_start__
+illegalonly
+_IO_stdin_used
+_Jv_RegisterClasses
+--legalonly, --illegalonly, and --correctedonly are conflicting options.  Specify at most one of these.
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libm.so.6
+libnetpbm.so.10
+Mapping %d %d %d -> %d %d %d
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_message
+pm_openr
+pm_optParseOptions3
+ppm_init
+ppm_nextimage
+ppm_readppminit
+ppm_readppmrow
+ppm_writeppminit
+ppm_writeppmrow
+__strdup
+Too many arguments.  The only arguments accepted

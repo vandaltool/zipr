@@ -1,0 +1,121 @@
+application-id
+Apply the given geometry to the main window
+/apps/evolution/addressbook/display/show_preview
+/apps/evolution/calendar/display/show_memo_preview
+/apps/evolution/calendar/display/show_task_preview
+/apps/evolution/mail/display/safe_list
+/apps/evolution/shell/express_mode
+/apps/evolution/shell/start_offline
+bindtextdomain
+bind_textdomain_codeset
+Birthday
+__bss_start
+categories_icon_theme_hack
+component
+Could not set up debugging output file.
+__data_start
+dcgettext
+disable-eplugin
+Disable loading of any plugins.
+disable-preview
+Disable preview pane of Mail, Contacts and Tasks.
+e_categories_get_icon_file_for
+e_get_accels_filename
+e_import_hook_get_type
+e_passwords_init
+e_plugin_load_plugins
+e_plugin_ui_hook_get_type
+es_event_hook_get_type
+e_shell_create_shell_window
+e_shell_detect_meego
+e_shell_event
+e_shell_get_default
+e_shell_get_type
+e_shell_handle_uris
+e_shell_load_modules
+e_shell_lock_network_available
+e_shell_migrate_attempt
+e_shell_quit
+e_shell_set_startup_view
+evolution
+evolution-3.2
+evolution 3.2.3
+express-mode
+filename != NULL && *filename != '\0'
+force-online
+--force-shutdown
+Forcibly shut down Evolution
+g_application_get_is_remote
+g_application_get_type
+g_assertion_message
+g_build_filename
+g_clear_error
+gconf_client_get_bool
+gconf_client_get_default
+gconf_client_set_bool
+geometry
+g_error_free
+g_idle_add
+g_initable_new
+GLIBC_2.0
+GLIBC_2.2
+__gmon_start__
+g_object_unref
+g_path_get_dirname
+g_printerr
+g_return_if_fail_warning
+g_str_equal
+gtk_accel_map_load
+gtk_accel_map_save
+gtk_icon_theme_append_search_path
+gtk_icon_theme_get_default
+gtk_init_with_args
+gtk_main
+gtk_main_quit
+gtk_window_set_default_icon_name
+g_type_check_instance_cast
+g_type_init
+g_unix_signal_add_full
+ical_set_unknown_token_handling_setting
+Ignore network availability
+Import URIs or file names given as rest of arguments.
+_IO_stdin_used
+_Jv_RegisterClasses
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libedataserver-1.2.so.15
+libedataserverui-3.0.so.1
+libeshell.so.0
+libeutil.so.0
+libgconf-2.so.4
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+libical.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+meego-mode
+module-directory
+org.gnome.Evolution
+ready-to-start
+Received terminate signal...
+Request a running Evolution process to quit
+  Run '%s --help' for more information.
+Send the debugging output of all components to a file.
+setup-only
+%s: --force-online and --offline cannot be used together.
+shell_force_shutdown
+Shell not finalized on exit
+small-screen-mode
+%s: --online and --offline cannot be used together.
+Start Evolution showing the specified component. Available options are 'mail', 'calendar', 'contacts', 'tasks', and 'memos'
+Start in "express" mode
+Start in offline mode
+Start in online mode
+- The Evolution PIM and Email Client
+/usr/lib/evolution/3.2
+/usr/lib/evolution/3.2/modules
+/usr/share/locale

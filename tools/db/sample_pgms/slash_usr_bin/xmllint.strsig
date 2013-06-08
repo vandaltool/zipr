@@ -1,0 +1,432 @@
+	                 0 Do not pretty print
+	                 1 Format the XML content, as --format
+	                 2 Add whitespace inside tags, preserving content
+%.4s...', %d
+add_history
+__assert_fail
+	--auto : generate a small doc on the fly
+Automata 
+<b>error</b>: 
+<body bgcolor="#ffffff"><h1 align="center">%s output</h1>
+</body></html>
+__bss_start
+<b>validity error</b>: 
+<b>validity warning</b>: 
+<b>warning</b>: 
+--c14n11
+	--c14n11 : save in W3C canonical format v1.1 (with comments)
+	--c14n : save in W3C canonical format v1.0 (with comments)
+Catalog 
+--catalogs
+	--catalogs : use SGML catalogs from $SGML_CATALOG_FILES
+--chkregister
+	--chkregister : verify the node registration code
+   compiled with: 
+Compiling the schemas
+--compress
+	--compress : turn on gzip compression of output
+	--copy : used to test the internal copy implementation
+could not get valid list of elements
+Could not parse DTD %s
+Couldn't allocate validation context
+, %d, %d
+%d %d %s %d %d
+	--debug : dump a debug tree of the in-memory document
+--debugent
+	--debugent : debug the entities defined in the document
+%d element types can be inserted under root:
+deregisterNode
+%d iterations
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+Document %s does not validate
+Document %s does not validate against %s
+--dropdtd
+	--dropdtd : remove the DOCTYPE of the input docs
+--dtdattr
+	--dtdattr : loaddtd + populate the tree with inherited attributes 
+--dtdvalid
+DTDValid 
+--dtdvalidfpi
+	--dtdvalidfpi FPI : same but name the DTD with a Public Identifier
+	--dtdvalid URL : do a posteriori validation against a given DTD
+--encode
+	--encode encoding : output in the given encoding
+Entity: line %d: 
+--exc-c14n
+	--exc-c14n : save in W3C exclusive canonical format (with comments)
+failed save to %s
+Failed to canonicalize
+Failed to crate a reader from the document
+failed to load external entity "%s"
+failed to open %s
+Failed to save
+failed to walk through the doc
+file:///etc/xml/catalog
+--format
+	--format : reformat/reindent the input
+__fprintf_chk
+Freeing original
+gettimeofday
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+htmlCreatePushParserCtxt
+htmlDocDump
+htmlFreeParserCtxt
+<html><head><title>%s output</title></head>
+--htmlout
+	--htmlout : output results as HTML
+htmlParseChunk
+htmlReadFile
+htmlReadMemory
+htmlSaveFile
+htmlSaveFileFormat
+	--html : use the HTML parser
+	"http://www.w3.org/TR/REC-html40/loose.dtd">
+	--huge : remove any internal arbitrary parser limits
+-Infinity
+inputPush
+--insert
+	--insert : ad-hoc test for valid insertions
+_IO_stdin_used
+ISO8859X 
+__isoc99_sscanf
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libreadline.so.6
+LIBXML2_2.4.30
+LIBXML2_2.5.0
+LIBXML2_2.5.2
+LIBXML2_2.5.6
+LIBXML2_2.5.7
+LIBXML2_2.5.8
+LIBXML2_2.6.0
+LIBXML2_2.6.18
+LIBXML2_2.6.20
+LIBXML2_2.6.21
+LIBXML2_2.6.3
+LIBXML2_2.6.8
+libxml2.so.2
+Libxml project home page: http://xmlsoft.org/
+--loaddtd
+	--loaddtd : fetch external DTD
+Loaded URL="%s" ID="%s"
+--load-trace
+	--load-trace : print trace of all external entites loaded
+*(long*)node->_private == (long) 0x81726354
+--maxmem
+	--maxmem nbbytes : limits memory allocation to nbbytes bytes
+MAX_PATHS reached: too many paths
+MemDebug 
+--memory
+	--memory : parse from memory
+Modules 
+--noblanks
+	--noblanks : drop (ignorable?) blanks spaces
+--nocatalogs
+	--nocatalogs : deactivate all catalogs
+--nocdata
+	--nocdata : replace cdata section with text nodes
+--nocompact
+	--nocompact : do not generate compact text nodes
+--nodefdtd
+	--nodefdtd : do not default HTML doctype
+node->_private != ((void *)0)
+Node %s matches pattern %s
+--nodict
+No element can be inserted under root
+	--noent : substitute entity references by their value
+--nofixup-base-uris
+	--nofixup-base-uris : do not fixup xml:base uris
+	--nonet : refuse to fetch DTDs or entities over network
+	--noout : don't output the result tree
+--nowarning
+	--nowarning : do not emit warnings from parser/validator
+--nowrap
+	--nowrap : do not put HTML doc wrapper
+--noxincludenode
+	--noxincludenode : same but do not generate XInclude nodes
+--nsclean
+	--nsclean : remove redundant namespace declarations
+--oldxml10
+	--oldxml10: use XML-1.0 parsing rules before the 5th edition
+	             otherwise XML Catalogs starting from 
+Out of memory for XPath
+--output
+	--output file or -o file: save to a given file
+	Parse the XML files and output the result of the parsing
+Parsing and validating
+Parsing DTD
+	--path 'paths' : provide a set of paths for resources
+--pattern
+	--pattern pattern_value : test the pattern support
+Patterns 
+Pattern %s failed to compile
+  pattern %s node %s
+--pedantic
+--postvalid
+	--postvalid : do a posteriori validation, i.e after parsing
+--pretty
+	--pretty STYLE : pretty-print in a particular style
+__printf_chk
+	--push : use the push mode of the parser
+Ran out of memory needs > %d bytes
+readline
+--recover
+	--recover : output what was parsable on broken XML documents
+Regexps 
+Registration count off: %d
+--relaxng
+	--relaxng schema : do RelaxNG validation against the schema
+Relax-NG schema %s failed to compile
+--repeat
+	--repeat : repeat 100 times, for timing or profiling
+RunDebug 
+	         %s are activated by default
+	--sax1: use the old SAX1 interfaces for processing
+SAX.attributeDecl(%s, %s, %d, %d, NULL, ...)
+SAX.attributeDecl(%s, %s, %d, %d, %s, ...)
+SAX.characters(%s, %d)
+SAX.comment(%s)
+	--sax: do not build a tree but work just at the SAX level
+SAX.elementDecl(%s, %d, ...)
+SAX.endDocument()
+SAX.endElementNs(%s
+SAX.endElement(%s)
+SAX.entityDecl(%s, %d, %s, %s, %s)
+SAX.error: 
+SAX.externalSubset(%s,
+SAX.fatalError: 
+SAX generated a doc !
+SAX.getEntity(%s)
+SAX.getParameterEntity(%s)
+SAX.hasExternalSubset()
+SAX.hasInternalSubset()
+SAX.ignorableWhitespace(%s, %d)
+SAX.internalSubset(%s,
+SAX.isStandalone()
+SAX.notationDecl(%s, %s, %s)
+SAX.pcdata(%.20s, %d)
+SAX.processingInstruction(%s, NULL)
+SAX.processingInstruction(%s, %s)
+SAX.reference(%s)
+SAX.resolveEntity(
+SAX.setDocumentLocator()
+SAX.startDocument()
+SAX.startElementNs(%s
+SAX.startElement(%s
+SAX.unparsedEntityDecl(%s, %s, %s, %s)
+SAX.warning: 
+--schema
+Schemas 
+	--schema schema : do validation against the WXS schema
+--schematron
+Schematron 
+	--schematron schema : do validation against a schematron
+Schematron schema %s failed to compile
+%s : failed to parse
+%s fails to validate
+SGML_CATALOG_FILES
+	--shell : run a navigating shell
+snprintf
+__snprintf_chk
+, %s:%s='
+__stack_chk_fail
+--stream
+	--stream : use the streaming interface to process very large files
+%s: using libxml version %s
+%s validates
+%s validation generated an internal error
+--testIO
+	--testIO : test user I/O support
+Threads 
+--timing
+	--timing : print some timings
+ took %ld ms
+To report bugs or get some help check: http://xmlsoft.org/bugs.html
+Unable to open %s
+Unicode 
+Unknown option %s
+Usage : %s [options] XMLfiles ...
+user_data
+Validating
+Validating against DTD
+	--valid : validate the document in addition to std well-formed check
+Variable $SGML_CATALOG_FILES not set
+--version
+	--version : display the version of the XML library used
+__vfprintf_chk
+__vsnprintf_chk
+--walker
+	--walker : create a reader and walk though the resulting doc
+walking through the doc
+WXS schema %s failed to compile
+--xinclude
+XInclude 
+	--xinclude : do XInclude processing
+Xinclude processing
+xmlAddEncodingAlias
+xmlC14NDocDumpMemory
+xmlCheckVersion
+xmlCleanupParser
+xmlCopyDoc
+xmlCreatePushParserCtxt
+xmlCtxtReadFile
+xmlCtxtReadIO
+xmlCtxtReadMemory
+xmlCtxtUseOptions
+xmlDebugDumpDocument
+xmlDebugDumpEntities
+xmlDeregisterNodeDefault
+xmlDocDumpFormatMemory
+xmlDocDumpFormatMemoryEnc
+xmlDocDumpMemory
+xmlDocDumpMemoryEnc
+xmlDocGetRootElement
+xmlDocSetRootElement
+__xmlDoValidityCheckingDefaultValue
+xmlEncodeEntitiesReentrant
+xmlFreeDoc
+xmlFreeDtd
+xmlFreeEnumeration
+xmlFreeParserCtxt
+xmlFreeParserInputBuffer
+xmlFreePattern
+xmlFreeStreamCtxt
+xmlFreeTextReader
+xmlFreeValidCtxt
+__xmlGenericError
+__xmlGenericErrorContext
+xmlGetExternalEntityLoader
+xmlGetIntSubset
+xmlGetNodePath
+__xmlGetWarningsDefaultValue
+xmlHasFeature
+xmlKeepBlanksDefault
+xmlLineNumbersDefault
+../../xmllint.c
+XMLLINT_INDENT
+xmlLoadCatalogs
+__xmlLoadExtDtdDefaultValue
+xmlMemFree
+xmlMemMalloc
+xmlMemoryDump
+xmlMemoryStrdup
+xmlMemRealloc
+xmlMemSetup
+xmlMemUsed
+xmlNewDoc
+xmlNewDocNode
+xmlNewIOInputStream
+xmlNewParserCtxt
+xmlNewValidCtxt
+xmlNodeSetContent
+xmlNoNetExternalEntityLoader
+--xmlout
+	--xmlout : force to use the XML serializer when using --html
+xmlParseChunk
+xmlParseDocument
+xmlParseDTD
+xmlParseFile
+__xmlParserDebugEntities
+xmlParserInputBufferCreateFilename
+__xmlParserVersion
+xmlPatterncompile
+xmlPatternGetStreamCtxt
+xmlPatternMatch
+xmlPatternMatch and xmlStreamPush disagree
+xmlPedanticParserDefault
+xmlReaderForFile
+xmlReaderForMemory
+xmlReaderWalker
+xmlReadFd
+xmlReadFile
+xmlReadIO
+xmlReadMemory
+xmlRegisterNodeDefault
+xmlRelaxNGCleanupTypes
+xmlRelaxNGFree
+xmlRelaxNGFreeParserCtxt
+xmlRelaxNGFreeValidCtxt
+xmlRelaxNGNewParserCtxt
+xmlRelaxNGNewValidCtxt
+xmlRelaxNGParse
+xmlRelaxNGSetParserErrors
+xmlRelaxNGSetValidErrors
+xmlRelaxNGValidateDoc
+xmlSaveClose
+xmlSaveDoc
+xmlSaveFile
+xmlSaveToFd
+xmlSaveToFilename
+xmlSaveTree
+xmlSAXDefaultVersion
+xmlSchemaFree
+xmlSchemaFreeParserCtxt
+xmlSchemaFreeValidCtxt
+xmlSchemaNewParserCtxt
+xmlSchemaNewValidCtxt
+xmlSchemaParse
+xmlSchemaSetParserErrors
+xmlSchemaSetValidErrors
+xmlSchematronFree
+xmlSchematronFreeParserCtxt
+xmlSchematronFreeValidCtxt
+xmlSchematronNewParserCtxt
+xmlSchematronNewValidCtxt
+xmlSchematronParse
+xmlSchematronValidateDoc
+xmlSchemaValidateDoc
+xmlSchemaValidateStream
+xmlSetCompressMode
+xmlSetExternalEntityLoader
+xmlShell
+xmlStrcat
+xmlStrdup
+xmlStreamPop
+xmlStreamPop() failure
+xmlStreamPush
+xmlStreamPush() failure
+xmlStrndup
+xmlSubstituteEntitiesDefault
+xmlTextReaderConstLocalName
+xmlTextReaderConstName
+xmlTextReaderConstNamespaceUri
+xmlTextReaderConstValue
+xmlTextReaderCurrentNode
+xmlTextReaderDepth
+xmlTextReaderHasValue
+xmlTextReaderIsEmptyElement
+xmlTextReaderIsValid
+xmlTextReaderNodeType
+xmlTextReaderRead
+xmlTextReaderRelaxNGValidate
+xmlTextReaderSchemaValidate
+xmlTextReaderSetParserProp
+__xmlTreeIndentString
+xmlUnlinkNode
+xmlValidateDocument
+xmlValidateDtd
+xmlValidGetValidElements
+xmlXIncludeProcessFlags
+xmlXPathEval
+xmlXPathFreeContext
+xmlXPathFreeObject
+xmlXPathIsInf
+xmlXPathIsNaN
+xmlXPathNewContext
+xmlXPathOrderDocElems
+XPath evaluation failure
+	--xpath expr: evaluate the XPath expression, inply --noout
+XPath Object is uninitialized
+XPath object of unexpected type
+XPath set is empty
+XPointer 
+XSD schema %s failed to compile
+__xstat64

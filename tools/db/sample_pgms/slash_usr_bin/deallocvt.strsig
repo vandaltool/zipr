@@ -1,0 +1,34 @@
+bindtextdomain
+Couldn't get a file descriptor referring to the console
+Couldn't open %s
+__ctype_b_loc
+dcgettext
+/dev/console
+/dev/tty
+/dev/tty0
+/dev/vc/0
+D$%/ttyf
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+kbd 1.15.2
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__printf_chk
+/proc/self/fd/0
+%s: 0: illegal VT number
+%s: could not deallocate console %d
+%s: deallocating all unused consoles failed
+setlocale
+%s from %s
+__snprintf_chk
+__stack_chk_fail
+%s: unknown option
+%s: VT 1 is the console and cannot be deallocated
+/usr/share/locale
+VT_DISALLOCATE

@@ -1,0 +1,25 @@
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * And follow the instructions in the README
+#    Authors: Dustin Kirkland <kirkland@ubuntu.com>
+#!/bin/sh -e
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    byobu-export
+. "${BYOBU_PREFIX}/lib/${PKG}/include/common"
+#    Copyright (C) 2008-2010 Canonical Ltd.
+ * Download the latest release (>= 3.0) from:
+gettext "
+#    GNU General Public License for more details.
+    https://launchpad.net/byobu/+download
+#    it under the terms of the GNU General Public License as published by
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+PKG="byobu"
+[ -r "$HOME/.byoburc" ] && . "$HOME/.byoburc"
+The byobu-export utility is now deprecated.
+#    the Free Software Foundation, version 3 of the License.
+#    This program is distributed in the hope that it will be useful,
+#    This program is free software: you can redistribute it and/or modify
+To install byobu on a system for which byobu is not packaged, or
+# vi: syntax=sh ts=4 noexpandtab
+where you are not the root user, simply:
+#    You should have received a copy of the GNU General Public License
+[ -z "${BYOBU_PREFIX}" ] && export BYOBU_PREFIX="/usr" || export BYOBU_PREFIX

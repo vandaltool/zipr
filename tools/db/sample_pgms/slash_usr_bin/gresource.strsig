@@ -1,0 +1,89 @@
+Arguments:
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+Can't find resource path %s
+Can't find resource section %s
+Can't mmap resource section
+[COMMAND]
+Commands:
+  COMMAND   The (optional) command to explain
+Data truncated
+dcgettext
+Details include the section, size and compression
+  details                   List resources with details
+Don't know how to handle %s
+elf_begin
+elf_getscn
+elf_getshdrnum
+elf_getshdrstrndx
+elf_kind
+elf_strptr
+ELFUTILS_1.0
+ELFUTILS_1.5
+elf_version
+Extract a resource file to stdout
+  extract                   Extract a resource
+  FILE      An elf file (a binary or a shared library)
+FILE PATH
+FILE [PATH]
+g_bytes_get_data
+g_bytes_new_static
+g_bytes_new_take
+g_bytes_unref
+gelf_getshdr
+g_error_free
+g_file_get_contents
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+__gmon_start__
+g_printerr
+.gresource.
+g_resource_enumerate_children
+g_resource_get_info
+g_resource_lookup_data
+g_resource_new_from_data
+  gresource [--section SECTION] COMMAND [ARGS...]
+  gresource %s%s%s %s
+g_resource_unref
+g_strconcat
+g_strdup_printf
+g_strfreev
+g_str_has_prefix
+g_string_append
+g_string_append_printf
+g_string_free
+g_string_new
+g_string_printf
+g_type_init
+  help                      Show this information
+If PATH is given, only list matching resources
+If SECTION is given, only list resources in this section
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libelf.so.1
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+  list                      List resources
+List resources
+List resources with details
+List sections containing resources in an elf FILE
+            or a compiled resource file
+  PATH      An (optional) resource path (may be partial)
+  PATH      A resource path
+Print help
+--section
+  SECTION   An (optional) elf section name
+sections
+[--section %s]
+  sections                  List resource sections
+setlocale
+%s%s%6u %s %s
+Unknown command %s
+Use 'gresource help COMMAND' to get detailed help.
+/usr/share/locale

@@ -1,0 +1,49 @@
+__bss_start
+colormap file contains no pixels
+%d colors found in colormap
+%d pixels not matched in color map
+firstisdefault
+GLIBC_2.0
+__gmon_start__
+Internal error: invalid value of missingMethod
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+Map file depth is %d, while image depth is %d.  The only depth change allowed is from 3 to 1.
+Map file depth of %d is incompatible with image tuple type of '%*s'.  Only type RGB images can have their depths changed.
+missingcolor
+out of memory adding to hash table; proceeding without it
+Out of memory allocating Floyd-Steinberg structures
+overflow_add
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_message
+pm_openr
+pm_optParseOptions3
+pnm_addtotuplehash
+pnm_allocpamrow
+pnm_assigntuple
+pnm_computetuplefreqtable
+pnm_createtuplehash
+pnm_destroytuplehash
+pnm_freepamarray
+pnm_init
+pnm_lookuptuple
+pnm_lumin_factor
+pnm_readpam
+pnm_readpaminit
+pnm_readpamrow
+pnm_writepaminit
+pnm_writepamrow
+ppm_parsecolor
+Program takes at most one argument: the input file specification.  You specified %d arguments.
+The maxval of the colormap (%u) is not equal to the maxval of the input image (%u).  This allowable only if you are doing an approximate mapping (i.e. you don't specify -firstisdefault or -missingcolor)
+too many colors in colormap!
+You cannot specify both -floyd and -nofloyd options.
+You cannot specify both -missing and -firstisdefault.
+You must specify the -mapfile option.

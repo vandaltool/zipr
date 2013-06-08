@@ -1,0 +1,981 @@
+  %3.3d:
+Access to resource has been denied
+  # Also you need support for SCSI Generic (sg) in your operating system.
+   <altsetting %d>
+  # and you have apropriate access rights.
+ASC IT8          
+__assert_fail
+) at libusb:%s:%s
+Automation/Drive 
+   bAlternateSetting  %d
+bcdDevice             %d.%d%d
+bcdUSB                %d.%d%d
+ bConfigurationValue  %d
+    bDescriptorType   %d
+   bDescriptorType    %d
+ bDescriptorType      %d
+bDescriptorType       %d
+bDeviceClass          %d
+bDeviceProtocol       %d
+bDeviceSubClass       %d
+    bEndpointAddress  0x%02X (%s 0x%02X)
+   bInterfaceClass    %d
+   bInterfaceNumber   %d
+   bInterfaceProtocol %d
+   bInterfaceSubClass %d
+    bInterval         %d ms
+    bLength           %d
+   bLength            %d
+ bLength              %d
+bLength               %d
+    bmAttributes      %d (%s)
+ bmAttributes         %d (%s%s)
+bMaxPacketSize0       %d
+bNumConfigurations    %d
+   bNumEndpoints      %d
+ bNumInterfaces       %d
+    bRefresh          %d
+Bridge controller
+__bss_start
+    bSynchAddress     %d
+	bus=%d chan=%d id=%d lun=%d num=%d
+cannot read directory `%s' (%s)
+cannot stat `%s' (%s)
+  # can't be detected by this program.
+cat /proc/scsi/sg/debug 1>&2
+CD-drive
+CD-ROM           
+CD-writer
+Channel:
+    Check 14, control message (hardware version %0x / firmware version %0x)
+    checking for GL646 ...
+    checking for GL646_HP ...
+    checking for GL660+GL646 ...
+    checking for GL84x ...
+    checking for GT-6801 ...
+    checking for GT-6816 ...
+    checking for GT-8911 ...
+    checking for HP4500C/4570C/5500C/5550C/5590/7650 chipset ...
+    checking for ICM532B ...
+    checking for LM983[1,2,3] ...
+    checking for M011 ...
+    checking for MA-1015 ...
+    checking for MA-1017 ...
+    checking for MA-1509 ...
+    checking for PV8630/LM9830 ...
+    checking for rts8801/rts8891 ...
+    checking for RTS8822 ...
+    checking for rts8858c ...
+    checking for SQ113 ...
+checking %s...
+checking %s even though doesn't look like a USB device...
+checking %s even though it looks like a USB device...
+checking %s (SCSI emulation)...
+, chip=%s
+closedir
+Communications   
+communicator
+ <configuration %d>
+  Couldn't access LM983x registers.
+    Couldn't claim interface: %s
+<Couldn't determine the type of the USB chip (result from %s)>
+    Couldn't open device: %s
+    Couldn't read register data (%s)
+    Couldn't read registers
+    Couldn't read register (%s)
+    Couldn't read USB-in-USB confirmation for data confirmation (%s)
+    Couldn't read USB-in-USB confirmation (%s)
+    Couldn't read USB-in-USB data (%s)
+    Couldn't send read control message (%s)
+    Couldn't send read register number (%s)
+    Couldn't send register data (%s)
+    Couldn't send send USB-in-USB command (%s)
+    Couldn't send USB-in-USB data confirmation (%s)
+    Couldn't send write control message (%s)
+    Couldn't send write register number (%s)
+    Couldn't set bank (%s)
+  Couldn't set configuration: %s
+    Couldn't set read register address (%s)
+    Couldn't write register (%s)
+__ctype_b_loc
+__ctype_toupper_loc
+  # Currently identification only works with Linux versions >= 2.4.8. You may
+    Data read != data written (%d/%d)
+/dev/gsc
+Device busy
+<device descriptor of 0x%04x/0x%04x at %s:%s
+  # device file but the vendor and product ids couldn't be identified.
+/dev/scanner
+/dev/scsi/host%d/bus%d/target%d/lun%d/generic
+/dev/sg0
+/dev/sg1
+/dev/sg2
+/dev/sg3
+/dev/sg4
+/dev/sg5
+/dev/sg6
+/dev/sg7
+/dev/sg8
+/dev/sg9
+/dev/sga
+/dev/sgb
+/dev/sgc
+/dev/sgd
+/dev/sge
+/dev/sgf
+/dev/sgg
+/dev/sgh
+/dev/sgi
+/dev/sgj
+/dev/sgk
+/dev/sgl
+/dev/sgm
+/dev/sgn
+/dev/sgo
+/dev/sgp
+/dev/sgq
+/dev/sgr
+/dev/sgs
+/dev/sgt
+/dev/sgu
+/dev/sgv
+/dev/sgw
+/dev/sgx
+/dev/sgy
+/dev/sgz
+/dev/usb/
+/dev/usbscanner
+/dev/usb/scanner
+/dev/usbscanner0
+/dev/usb/scanner0
+/dev/usbscanner1
+/dev/usb/scanner1
+/dev/usbscanner10
+/dev/usb/scanner10
+/dev/usbscanner11
+/dev/usb/scanner11
+/dev/usbscanner12
+/dev/usb/scanner12
+/dev/usbscanner13
+/dev/usb/scanner13
+/dev/usbscanner14
+/dev/usb/scanner14
+/dev/usbscanner15
+/dev/usb/scanner15
+/dev/usbscanner2
+/dev/usb/scanner2
+/dev/usbscanner3
+/dev/usb/scanner3
+/dev/usbscanner4
+/dev/usb/scanner4
+/dev/usbscanner5
+/dev/usb/scanner5
+/dev/usbscanner6
+/dev/usbscanner7
+/dev/usb/scanner7
+/dev/usbscanner8
+/dev/usb/scanner8
+/dev/usbscanner9
+/dev/usb/scanner9
+    Didn't get correct confirmation for USB-in-USB command (needed: 0x01, got: 0x%02x
+  # different, make sure the scanner is correctly connected to your computer
+Direct-Access    
+Direct-Access-RBC
+Document feeder jammed
+Document feeder out of documents
+Enclosure        
+End of file reached
+    <endpoint %d>
+__errno_location
+Error during device I/O
+Error initializing port
+Error interfacing system
+ failed to open (%s)
+	-F file: try to detect chipset from given /proc/bus/usb/devices file
+	-f: force opening devname as SCSI even if it looks like USB
+filename too long
+found possible Mustek parallel port scanner at "%s"
+found possible Mustek SCSI over PP scanner at "%s"
+found SCSI %s "%s %s %s" at %s
+Found %s%ld
+  # found the scanner devices, be sure to adjust access permissions as
+found USB scanner (UNKNOWN vendor and product) at device %s
+found USB scanner (vendor=0x%04x
+found USB scanner (vendor=0x%04x, product=0x%04x) at %s
+__fprintf_chk
+get_max_buffer_size for %s: %i
+GEverything went fine
+GL646_HP
+GL646_HP?
+GL660+GL646
+GL660+GL646?
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+GT-6801?
+GT-6816?
+GT-8911?
+HP4500C/4570C/5500C/5550C/5590/7650
+	-h: print this help message
+ICM532B?
+ iConfiguration       %d (%s)
+idProduct             0x%04X
+idVendor              0x%04X
+ieee1284_claim
+ieee1284_close
+ieee1284_epp_read_data
+ieee1284_epp_write_addr
+ieee1284_find_ports
+ieee1284_free_ports
+IEEE 1284 negotiation rejected
+ieee1284_open
+ieee1284_read_control
+ieee1284_read_data
+ieee1284_read_status
+ieee1284_release
+ieee1284_write_control
+ieee1284_write_data
+  # If using Linux, try "modprobe sg".
+ignored %s (not a SCSI device)
+ignored %s (not a USB device)
+ignoring libusb devices
+ignoring unknown line identifier: %c
+   iInterface         %d (%s)
+iManufacturer         %d (%s)
+    Incomplete USB-in-USB data received (needed: %u, got: %u)
+   Incorrect product ID received
+Inquiry for device:
+inquiry for device %s failed (%s)
+  <interface %d>
+interrupt
+Invalid argument
+Invalid port
+_IO_stdin_used
+iProduct              %d (%s)
+iSerialNumber         %d (%s)
+isfdtype
+isochronous
+issue: EAGAIN - cannot queue SCSI command. Trying again later.
+issue: ENOMEM - cannot queue SCSI command. Trying again later.
+_Jv_RegisterClasses
+kernel_get_vendor_product: ioctl (vendor) of device %s failed: %s
+libc.so.6
+__libc_start_main
+libieee1284.so.3
+/lib/ld-linux.so.2
+libusb-0.1.so.4
+libusb:%s:%s
+LM9832/3
+lx_chk_devicename: matched device(devfs): %s
+lx_chk_devicename: matched device(direct): %s
+lx_chk_devicename: matched device(scan): %s
+lx_chk_id: %d,%d  %d,%d  %d,%d  %d,%d
+lx_scan_sg: k=%d, exclude=%d, missed=%d
+MA-1017?
+MA-1509?
+    MA-1509 version %s
+Make sure you run as root or set appropriate permissions
+  # man-page for setup instructions.
+ MaxPower             %d mA
+Maybe the kernel scanner driver claims the scanner's interface?
+Maybe the kernel scanner driver or usblp claims the interface? Ignoring this error...
+  # may not be supported by SANE.  Please read the sane-mustek_pp
+Medium Changer   
+missing `:'?
+  # Most Scanners connected to the parallel port or other proprietary ports
+  # necessary.
+  # need to configure your backend manually, see the backend's manpage.
+Negotiation went wrong
+No IEEE 1284 ID available
+No memory left
+  # No Mustek parallel port scanners found. If you expected something
+  # No SCSI scanners found. If you expected something different, make sure that
+Not available on this system
+  # Not checking for parallel port scanners.
+                     NOTE: This value may be bogus
+Not implemented in libieee1284
+  # No USB scanners found. If you expected something different, make sure that
+Object storage   
+opening %s failed: %s
+ open ok
+ open ok, but vendor and product could NOT be identified
+ open ok, vendor and product ids were identified
+Operation not supported
+Operation timed out
+Operation was cancelled
+Optical card     
+Optical Device   
+optical-drive
+Out of memory
+pa4s2_close: can't free port '%s' (%s)
+pa4s2_close: checking whether port is enabled
+pa4s2_close: disabling port
+pa4s2_close: fd=%d
+pa4s2_close: marking port as unused
+pa4s2_close: returning SANE_STATUS_GOOD
+pa4s2_close: returning SANE_STATUS_IO_ERROR
+pa4s2_close: this is port '%s'
+pa4s2_close: trying to free io port
+pa4s2_disable: state restored
+pa4s2_disable: using alternative command set
+pa4s2_enable: failed to claim the port (%s)
+pa4s2_enable: prelock[] = {0x%02x, 0x%02x, 0x%02x}
+pa4s2_init: allocating port list
+pa4s2_init: called for the first time
+pa4s2_init: %d ports reported by IEEE 1284 library
+pa4s2_init: initialized successfully
+pa4s2_init: initializing IEEE 1284 failed (%s)
+pa4s2_init: initializing libieee1284
+pa4s2_init: not enough free memory
+pa4s2_init: port %d is `%s`
+pa4s2_init: sanei already initalized
+pa4s2_init: static int first_time = %u
+pa4s2_open: could not open device `%s` (%s)
+pa4s2_open: device `%s` is already in use
+pa4s2_open: device `%s` opened...
+pa4s2_open: enabled=SANE_FALSE mode=PA4S2_MODE_NIB
+pa4s2_open: failed to initialize
+pa4s2_open: looking up port in list
+pa4s2_open: marking port %d as unused
+pa4s2_open: name=%s in_use=SANE_TRUE
+pa4s2_open: open dev `%s` as fd %u
+pa4s2_open: opening device
+pa4s2_open: port is in list at port[%d]
+pa4s2_open: returning SANE_STATUS_DEVICE_BUSY
+pa4s2_open: returning SANE_STATUS_GOOD
+pa4s2_open: returning SANE_STATUS_INVAL
+pa4s2_open: setting up port data
+pa4s2_open: `%s` is not a valid device name
+pa4s2_open: trying to attach dev `%s`
+pa4s2_readbegin_epp: selecting register %u at '%s'
+pa4s2_readbegin_nib: selecting register %u at '%s'
+pa4s2_readbegin_uni: selecting register %u for '%s'
+pa4s2_readbyte_epp: reading value 0x%02x from '%s'
+pa4s2_readbyte_nib: reading value 0x%02x from '%s'
+pa4s2_readbyte_uni: reading value 0x%02x from '%s'
+pa4s2_readend_epp: end of reading sequence
+pa4s2_readend_nib: end of reading sequence for fd %d
+pa4s2_readend_uni: end of reading sequence for fd %d
+pa4s2_writebyte_any: writing value 0x%02x in reg %u to '%s'
+parsing line: `%s'
+	-p: enable scanning for parallel port devices
+Printer          
+__printf_chk
+/proc/devices
+processor
+Processor        
+/proc/scsi/scsi
+/proc/sys/kernel/sg-big-buff
+, product=0x%04x
+PV8630/LM9830
+PV8630/LM9830?
+	-q: be quiet (print only devices, no comments)
+RAID             
+readdir_r
+Remote Wakeup
+req == ((fdparms *) fd_info[req->fd].pdata)->sane_qhead
+  # result is different from what you expected, first make sure your
+rts8801/rts8891
+rts8801/rts8891?
+RTS8822?
+rts8858c
+rts8858c?
+sane-backends 1.0.22
+SANE_CONFIG_DIR
+  # sane-find-scanner will now attempt to detect your scanner. If the
+sanei_config
+sanei_config_get_paths: using config directories  %s
+sanei_config_open: attempting to open `%s'
+sanei_config_open: could not find config file `%s'
+sanei_config_open: using file `%s'
+sanei_configure_attach: couldn't access %s
+sanei_configure_attach: couldn't find a string to parse
+sanei_configure_attach: couldn't find a string value to parse
+sanei_configure_attach: couldn't find a valid boolean value
+sanei_configure_attach: exit
+sanei_configure_attach: failed to parse option '%s', line '%s'
+sanei_configure_attach: incorrect type %d for option %s, skipping option ...
+sanei_configure_attach: start
+sanei_configure_attach: trying to attach with '%s'
+sanei_debug
+[sanei_debug] malloc() failed
+sanei_debug_sanei_config
+sanei_debug_sanei_debug
+sanei_debug_sanei_pa4s2
+sanei_debug_sanei_scsi
+sanei_debug_sanei_usb
+sanei_pa4s2
+sanei_pa4s2_close
+sanei_pa4s2_close: could not close scanner
+sanei_pa4s2_close: failed
+sanei_pa4s2_close: fd = %d
+sanei_pa4s2_close: fd %d is invalid
+sanei_pa4s2_close: finished
+sanei_pa4s2_close: freeing resources
+sanei_pa4s2_close: port is not in use
+sanei_pa4s2_close: port is '%s'
+sanei_pa4s2_devices
+sanei_pa4s2_devices: failed to initialize (%s)
+sanei_pa4s2_devices: invoked
+sanei_pa4s2_devices: not enough free memory
+sanei_pa4s2_enable
+sanei_pa4s2_enable: aborting
+sanei_pa4s2_enable: called for fd %d with value %d
+sanei_pa4s2_enable: disable port '%s'
+sanei_pa4s2_enable: enable port '%s'
+sanei_pa4s2_enable: failed to enable port
+sanei_pa4s2_enable: fd %d is invalid
+sanei_pa4s2_enable: invalid value %d
+sanei_pa4s2_enable: port is not in use
+sanei_pa4s2_enable: returning SANE_STATUS_GOOD
+sanei_pa4s2_enable: returning SANE_STATUS_INVAL
+sanei_pa4s2_enable: returning SANE_STATUS_IO_ERROR
+sanei_pa4s2_enable: senseless call...
+sanei_pa4s2_open
+sanei_pa4s2_open: called for device '%s'
+sanei_pa4s2_open: checking for scanner
+sanei_pa4s2_open: closing port
+sanei_pa4s2_open: connected to device using fd %u
+sanei_pa4s2_open: connection failed
+sanei_pa4s2_open: could not find scanner
+sanei_pa4s2_open: detected ASIC id 1013
+sanei_pa4s2_open: detected ASIC id 1015
+sanei_pa4s2_open: detected ASIC id 1505
+sanei_pa4s2_open: mode failed
+sanei_pa4s2_open: mode works
+sanei_pa4s2_open: reading ASIC id
+sanei_pa4s2_open: reported ASIC id 0x%02x
+sanei_pa4s2_open: returned ASIC-ID 0x%02x
+sanei_pa4s2_open: returning SANE_STATUS_GOOD
+sanei_pa4s2_open: returning SANE_STATUS_INVAL
+sanei_pa4s2_open: skipping mode EPP
+sanei_pa4s2_open: skipping mode UNI
+sanei_pa4s2_open: trying better modes
+sanei_pa4s2_open: trying mode %u
+sanei_pa4s2_open: trying to connect to port
+sanei_pa4s2_open: using mode %u
+sanei_pa4s2_options
+sanei_pa4s2_options: called with options %u and set = %d
+sanei_pa4s2_options: options are set to %u
+sanei_pa4s2_options: returning SANE_STATUS_GOOD
+sanei_pa4s2_options: setting options to %u
+sanei_pa4s2_options: value of *options is invalid
+sanei_pa4s2_options: value of set is invalid
+sanei_pa4s2_readbegin
+sanei_pa4s2_readbegin: called for fd %d and register %u
+sanei_pa4s2_readbegin: EPP readbegin
+sanei_pa4s2_readbegin: invalid fd %d
+sanei_pa4s2_readbegin: invalid port mode
+sanei_pa4s2_readbegin: NIB readbegin
+sanei_pa4s2_readbegin: port info broken
+sanei_pa4s2_readbegin: port is not enabled
+sanei_pa4s2_readbegin: port is not in use
+sanei_pa4s2_readbegin: returning SANE_STATUS_GOOD
+sanei_pa4s2_readbegin: returning SANE_STATUS_INVAL
+sanei_pa4s2_readbegin: return SANE_STATUS_INVAL
+sanei_pa4s2_readbegin: UNI readbegin
+sanei_pa4s2_readbyte
+sanei_pa4s2_readbyte: called with fd %d
+sanei_pa4s2_readbyte: got NULL pointer as result buffer
+sanei_pa4s2_readbyte: got value 0x%02x
+sanei_pa4s2_readbyte: invalid fd %d
+sanei_pa4s2_readbyte: invalid port mode
+sanei_pa4s2_readbyte: I told you!!!
+sanei_pa4s2_readbyte: not my fault, if your PC burns down.
+sanei_pa4s2_readbyte: port info broken
+sanei_pa4s2_readbyte: port is not enabled
+sanei_pa4s2_readbyte: port is not in use
+sanei_pa4s2_readbyte: port mode %u
+sanei_pa4s2_readbyte: probably the port wasn't correct configured...
+sanei_pa4s2_readbyte: readbegin, so the port is ok...
+sanei_pa4s2_readbyte: read finished
+sanei_pa4s2_readbyte: read in EPP mode
+sanei_pa4s2_readbyte: read in NIB mode
+sanei_pa4s2_readbyte: read in UNI mode
+sanei_pa4s2_readbyte: returning SANE_STATUS_GOOD
+sanei_pa4s2_readbyte: returning SANE_STATUS_INVAL
+sanei_pa4s2_readbyte: return SANE_STATUS_INVAL
+sanei_pa4s2_readbyte: this means, I did not check it - it's
+sanei_pa4s2_readbyte: we hope, the backend called
+sanei_pa4s2_readend
+sanei_pa4s2_readend: called for fd %d
+sanei_pa4s2_readend: EPP mode readend
+sanei_pa4s2_readend: invalid fd %d
+sanei_pa4s2_readend: invalid port mode
+sanei_pa4s2_readend: I told you!!!
+sanei_pa4s2_readend: NIB mode readend
+sanei_pa4s2_readend: not my fault, if your PC burns down.
+sanei_pa4s2_readend: port info broken
+sanei_pa4s2_readend: port is not enabled
+sanei_pa4s2_readend: port is not in use
+sanei_pa4s2_readend: port mode %u
+sanei_pa4s2_readend: probably the port wasn't correct configured...
+sanei_pa4s2_readend: readbegin, so the port is ok...
+sanei_pa4s2_readend: returning SANE_STATUS_GOOD
+sanei_pa4s2_readend: returning SANE_STATUS_INVAL
+sanei_pa4s2_readend: return SANE_STATUS_INVAL
+sanei_pa4s2_readend: this means, I did not check it - it's
+sanei_pa4s2_readend: UNI mode readend
+sanei_pa4s2_readend: we hope, the backend called
+sanei_pa4s2_scsi_pp_get_status
+sanei_pa4s2_scsi_pp_get_status: called for fd %d
+sanei_pa4s2_scsi_pp_get_status: invalid fd %d
+sanei_pa4s2_scsi_pp_get_status: port is not enabled
+sanei_pa4s2_scsi_pp_get_status: port is not in use
+sanei_pa4s2_scsi_pp_get_status: port is '%s'
+sanei_pa4s2_scsi_pp_get_status: returning SANE_STATUS_GOOD
+sanei_pa4s2_scsi_pp_get_status: returning SANE_STATUS_INVAL
+sanei_pa4s2_scsi_pp_get_status: status=0x%02X
+sanei_pa4s2_scsi_pp_open
+sanei_pa4s2_scsi_pp_open: called for device '%s'
+sanei_pa4s2_scsi_pp_open: checking for scanner
+sanei_pa4s2_scsi_pp_open: connected to device using fd %u
+sanei_pa4s2_scsi_pp_open: connection failed
+sanei_pa4s2_scsi_pp_open: device returned status 0x%02X
+sanei_pa4s2_scsi_pp_open: error disabling device
+sanei_pa4s2_scsi_pp_open: error enabling device
+sanei_pa4s2_scsi_pp_open: error getting device status
+sanei_pa4s2_scsi_pp_open: returning SANE_STATUS_GOOD
+sanei_pa4s2_scsi_pp_open: trying to connect to port
+sanei_pa4s2_scsi_pp_reg_select
+sanei_pa4s2_scsi_pp_reg_select: invalid fd %d
+sanei_pa4s2_scsi_pp_reg_select: port is not enabled
+sanei_pa4s2_scsi_pp_reg_select: port is not in use
+sanei_pa4s2_scsi_pp_reg_select: returning SANE_STATUS_INVAL
+sanei_pa4s2_scsi_pp_reg_select: selecting register %u at port '%s'
+sanei_pa4s2_writebyte
+sanei_pa4s2_writebyte: called for fd %d, reg %u and val %u
+sanei_pa4s2_writebyte: invalid fd %d
+sanei_pa4s2_writebyte: invalid port mode
+sanei_pa4s2_writebyte: NIB/UNI/EPP write
+sanei_pa4s2_writebyte: port info broken
+sanei_pa4s2_writebyte: port is not enabled
+sanei_pa4s2_writebyte: port is not in use
+sanei_pa4s2_writebyte: port mode %u
+sanei_pa4s2_writebyte: returning SANE_STATUS_GOOD
+sanei_pa4s2_writebyte: returning SANE_STATUS_INVAL
+sanei_pa4s2_writebyte: return SANE_STATUS_INVAL
+sanei_proc_scsi_find_devices
+sanei_scsi
+sanei_scsi.c
+sanei_scsi_cmd
+sanei_scsi_find_devices
+sanei_scsi_find_devices: bad attach
+sanei_scsi.issue: bad write (errno=%i) %s %li
+sanei_scsi.issue: %p
+sanei_scsi.issue: SG_BIG_BUF inconsistency? Check file PROBLEMS.
+sanei_scsi.issue: SG_IO ioctl error (errno=%i, ret=%d) %s
+sanei_scsi_max_request_size
+sanei_scsi_open: cannot read SG buffer size - %s
+sanei_scsi_open: could not allocate SG buffer memory wanted: %i got: %i
+sanei_scsi_open_extended: using %i bytes as SCSI buffer
+sanei_scsi_open: Host adapter queue depth: %i
+sanei_scsi_open: low level command queueing enabled
+sanei_scsi_open: open of `%s' failed: %s
+sanei_scsi_open: sanei_scsi_max_request_size=%d bytes
+sanei_scsi_open: SG driver can change buffer size at run time
+sanei_scsi_open: SG driver version: %i
+sanei_scsi_open: The device found for %s does not look like a scanner
+sanei_scsi_open: The file %s is not an SG device file
+sanei_scsi_open: timeout value must be between 1 and 1200 seconds
+sanei_scsi_open: using new SG header structure
+sanei_scsi_open: using old SG driver logic
+sanei_scsi_req_enter
+sanei_scsi_req_enter2: ioctl to set command length failed
+sanei_scsi_req_enter2 warning: truncating write data from requested %li bytes to allowed %i bytes
+sanei_scsi_req_enter2 warning: truncating write data from requested %li bytes to allowed %li bytes
+sanei_scsi_req_enter: failed to malloc %lu bytes
+sanei_scsi_req_flush_all
+sanei_scsi_req_wait
+sanei_scsi_req_wait: read %ld bytes
+sanei_scsi_req_wait: read returned %ld (errno=%d)
+sanei_scsi_req_wait: SCSI command complained: %s
+sanei_scsi_req_wait: SG driver returned resid %i
+sanei_scsi_req_wait: waiting for %p
+sanei_usb
+sanei_usb_claim_interface: access method %d not implemented
+sanei_usb_claim_interface: dn >= device number || dn < 0, dn=%d
+sanei_usb_claim_interface: interface_number = %d
+sanei_usb_claim_interface: libusb complained: %s
+sanei_usb_clear_halt: BULK_IN ret=%d
+sanei_usb_clear_halt: BULK_OUT ret=%d
+sanei_usb_clear_halt: dn >= device number || dn < 0
+sanei_usb_close: closing device %d
+sanei_usb_close: device %d already closed or never opened
+sanei_usb_close: dn >= device number || dn < 0
+sanei_usb_close: usbcalls support missing
+sanei_usb_control_msg: access method %d not implemented
+sanei_usb_control_msg: dn >= device number || dn < 0, dn=%d
+sanei_usb_control_msg: libusb complained: %s
+sanei_usb_control_msg: rtype = 0x%02x, req = %d, value = %d, index = %d, len = %d
+sanei_usb_control_msg: SCANNER_IOCTL_CTRLMSG error - %s
+sanei_usb_control_msg: usbcalls support missing
+sanei_usb_find_devices: vendor=0x%04x, product=0x%04x
+sanei_usb_get_descriptor
+sanei_usb_get_descriptor: dn >= device number || dn < 0, dn=%d
+sanei_usb_get_endpoint: dn >= device number || dn < 0
+sanei_usb_get_vendor_product: access method %d not implemented
+sanei_usb_get_vendor_product_byname: can't find device `%s' in list
+sanei_usb_get_vendor_product_byname: not support for this method
+sanei_usb_get_vendor_product: device %d: vendorID: 0x%04x, productID: 0x%04x
+sanei_usb_get_vendor_product: device %d: Your OS doesn't seem to support detection of vendor+product ids
+sanei_usb_get_vendor_product: dn >= device number || dn < 0
+sanei_usb_get_vendor_product: ioctl (product) of device %s failed: %s
+sanei_usb_get_vendor_product: usbcalls support missing
+sanei_usb_init: cannot read directory %s: %s
+sanei_usb_init: can't stat %s: %s
+sanei_usb_init: couldn't open %s: %s
+sanei_usb_init: device %02d is %s
+sanei_usb_init: device 0x%04x/0x%04x doesn't have an altsetting for interface %d
+sanei_usb_init: device 0x%04x/0x%04x, interface %d doesn't look like a scanner (%d/%d)
+sanei_usb_init: device 0x%04x/0x%04x is not configured
+sanei_usb_init: device 0x%04x/0x%04x looks like a root hub
+sanei_usb_init: device 0x%04x/0x%04x: no suitable interfaces
+sanei_usb_init: found %d devices
+sanei_usb_init: found kernel scanner device (0x%04x/0x%04x) at %s
+sanei_usb_init: found libusb device (0x%04x/0x%04x) interface %d  at %s
+sanei_usb_init: Looking for kernel scanner devices
+sanei_usb_init: Looking for libusb devices
+sanei_usb_init: marking existing devices
+sanei_usb_init: %s is not a directory
+sanei_usb_open: access method %d not implemented
+sanei_usb_open: address: %d transfertype: %d
+sanei_usb_open:   alt_setting nr: %d
+sanei_usb_open: can't find device `%s' in list
+sanei_usb_open: can't open device `%s': %s
+sanei_usb_open: can't open device `%s': usbcalls support missing
+sanei_usb_open: can't open `%s': dn == NULL
+sanei_usb_open: configuration nr: %d
+sanei_usb_open: device `%s' already open
+sanei_usb_open: device `%s' not configured?
+sanei_usb_open: direction: %d
+sanei_usb_open: endpoint nr: %d
+sanei_usb_open: fcntl of `%s' failed: %s
+sanei_usb_open: found bulk-%s endpoint (address 0x%02x)
+sanei_usb_open: found control-%s endpoint (address 0x%02x)
+sanei_usb_open: found interrupt-%s endpoint (address 0x%02x)
+sanei_usb_open: found isochronous-%s endpoint (address 0x%02x)
+sanei_usb_open: interface %d not detected as a scanner by sanei_usb_init, ignoring.
+sanei_usb_open:     interface nr: %d
+sanei_usb_open: libusb complained: %s
+sanei_usb_open: more than one configuration (%d), choosing first config (%d)
+sanei_usb_open: opened usb device `%s' (*dn=%d)
+sanei_usb_open: open of `%s' failed: %s
+sanei_usb_open: trying to open device `%s'
+sanei_usb_open: we already have a bulk-in endpoint (address: 0x%02x), ignoring the new one
+sanei_usb_open: we already have a bulk-out endpoint (address: 0x%02x), ignoring the new one
+sanei_usb_open: we already have a control-in endpoint (address: 0x%02x), ignoring the new one
+sanei_usb_open: we already have a control-out endpoint (address: 0x%02x), ignoring the new one
+sanei_usb_open: we already have a int-in endpoint (address: 0x%02x), ignoring the new one
+sanei_usb_open: we already have a int-out endpoint (address: 0x%02x), ignoring the new one
+sanei_usb_open: we already have a isochronous-in endpoint (address: 0x%02x), ignoring the new one
+sanei_usb_open: we already have a isochronous-out endpoint (address: 0x%02x), ignoring the new one
+sanei_usb_read_bulk: access method %d not implemented
+sanei_usb_read_bulk: can't read without a bulk-in endpoint
+sanei_usb_read_bulk: dn >= device number || dn < 0
+sanei_usb_read_bulk: read failed: %s
+sanei_usb_read_bulk: read returned EOF
+sanei_usb_read_bulk: size == NULL
+sanei_usb_read_bulk: trying to read %lu bytes
+sanei_usb_read_bulk: usbcalls support missing
+sanei_usb_read_bulk: wanted %lu bytes, got %ld bytes
+sanei_usb_read_int: access method %d not implemented
+sanei_usb_read_int: can't read without an int endpoint
+sanei_usb_read_int: dn >= device number || dn < 0
+sanei_usb_read_int: read failed: %s
+sanei_usb_read_int: read returned EOF
+sanei_usb_read_int: size == NULL
+sanei_usb_read_int: trying to read %lu bytes
+sanei_usb_read_int: usbcalls support missing
+sanei_usb_read_int: wanted %lu bytes, got %ld bytes
+sanei_usb_release_interface: access method %d not implemented
+sanei_usb_release_interface: dn >= device number || dn < 0, dn=%d
+sanei_usb_release_interface: interface_number = %d
+sanei_usb_release_interface: libusb complained: %s
+sanei_usb_reset: ret=%d
+sanei_usb_set_altinterface: access method %d not implemented
+sanei_usb_set_altinterface: alternate = %d
+sanei_usb_set_altinterface: dn >= device number || dn < 0, dn=%d
+sanei_usb_set_altinterface: libusb complained: %s
+sanei_usb_set_configuration: access method %d not implemented
+sanei_usb_set_configuration: configuration = %d
+sanei_usb_set_configuration: dn >= device number || dn < 0, dn=%d
+sanei_usb_set_configuration: libusb complained: %s
+sanei_usb_set_endpoint: dn >= device number || dn < 0
+sanei_usb_set_endpoint: Setting endpoint of type 0x%02x to 0x%02x
+sanei_usb_write_bulk: access method %d not implemented
+sanei_usb_write_bulk: can't write without a bulk-out endpoint
+sanei_usb_write_bulk: dn >= device number || dn < 0
+sanei_usb_write_bulk: size == NULL
+sanei_usb_write_bulk: trying to write %lu bytes
+sanei_usb_write_bulk: usbcalls support missing
+sanei_usb_write_bulk: wanted %lu bytes, wrote %ld bytes
+sanei_usb_write_bulk: write failed: %s
+SANE_SCSICMD_TIMEOUT
+SANE_SG_BUFFERSIZE
+  # SANE. Try scanimage -L and read the backend's manpage.
+%s: bad attach
+  # scanimage -L and read the backend's manpage.
+Scanner          
+SCANNER 
+Scanner cover is open
+  # scanner is powered up and properly connected to your computer.
+scanning directory %s
+%s: could not open %s; falling back to /proc
+%s: could not open %s for reading
+%s: could not open %s: %s
+%s: could not read directory %s: %s
+scsi_req_enter: entered %p
+scsi_req_enter: queue_used: %i, queue_max: %i
+searching for Mustek parallel port scanners:
+searching for SCSI scanners:
+searching for USB scanners:
+Self-powered
+sense buffer: %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x
+    Sensor not home? (0x%02x)
+Sequential-Access
+%s: error reading %s
+Setting debug level of %s to %d.
+%s: found: vendor=%s model=%s type=%s
+sigfillset
+sigprocmask
+%s: interface called for the first time
+%s: invalid integer in string (%s): %s
+%s: invalid integer in type string (%s): %s
+%s: invalid type %ld
+`%s' is not a directory
+%s: looking for: v=%s m=%s t=%s b=%d c=%d i=%d l=%d
+%s: no integer found in string: %s (%d)
+%s: no integer found in type string: %s
+%s: no match
+__snprintf_chk
+%s: parse error on string %s (%d)
+__sprintf_chk
+src_size == cmd_size
+src_size >= cmd_size
+  %s    %s
+%s: skipping %s/%s, PATH_MAX exceeded on %s
+ (%s%s%s)
+%s/%s/%s
+__stack_chk_fail
+store_device: add dn %d with %s
+store_device: no room for %s
+store_device: not storing device %s
+store_device: overwrite dn %d with %s
+__strdup
+strncasecmp
+__strndup
+/sys/bus/scsi/devices
+__syslog_chk
+target status: %02x host status: %02x driver status: %02x
+target status: %02x host status: %04x driver status: %04x
+  # the USB system correctly. See man sane-usb for details.
+    this is not a GL646 (bcdUSB = 0x%x)
+    this is not a GL646 (bDeviceClass = %d, bInterfaceClass = %d)
+    this is not a GL646 (bDeviceProtocol = 0x%x)
+    this is not a GL646 (bDeviceSubClass = 0x%x)
+    this is not a GL646 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GL646 (bNumEndpoints = %d)
+    this is not a GL646_HP (bcdUSB = 0x%x)
+    this is not a GL646_HP (bDeviceClass = %d, bInterfaceClass = %d)
+    this is not a GL646_HP (bDeviceProtocol = 0x%x)
+    this is not a GL646_HP (bDeviceSubClass = 0x%x)
+    this is not a GL646_HP (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GL646_HP (bNumEndpoints = %d)
+    this is not a GL646_HP (reading register failed)
+    this is not a GL646_HP (reg 0x4e != reg 0x38)
+    this is not a GL646_HP (writing register failed)
+    this is not a GL646 (reading register failed)
+    this is not a GL646 (reg 0x4e != reg 0x38)
+    this is not a GL646 (writing register failed)
+    this is not a GL660+GL646 (bcdUSB = 0x%x)
+    this is not a GL660+GL646 (bDeviceClass = %d, bInterfaceClass = %d)
+    this is not a GL660+GL646 (bDeviceProtocol = 0x%x)
+    this is not a GL660+GL646 (bDeviceSubClass = 0x%x)
+    this is not a GL660+GL646 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GL660+GL646 (bNumEndpoints = %d)
+    this is not a GL660+GL646 (reading register failed)
+    this is not a GL660+GL646 (reg 0x4e != reg 0x38)
+    this is not a GL660+GL646 (writing register failed)
+    this is not a GL84x (bcdUSB = 0x%x)
+    this is not a GL84x (bDeviceClass = %d, bInterfaceClass = %d)
+    this is not a GL84x (bDeviceProtocol = 0x%x)
+    this is not a GL84x (bDeviceSubClass = 0x%x)
+    this is not a GL84x (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GL84x (bNumEndpoints = %d)
+    this is not a GL84x (reading register failed)
+    this is not a GL84x (reg 0x38 != 0x15)
+    this is not a GL84x (writing register failed)
+    this is not a GT-6801 (bcdUSB = 0x%x)
+    this is not a GT-6801 (bDeviceClass = %d)
+    this is not a GT-6801 (bDeviceProtocol = 0x%x)
+    this is not a GT-6801 (bDeviceSubClass = 0x%x)
+    this is not a GT-6801 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GT-6801 (bNumEndpoints = %d)
+    this is not a GT-6816 (bcdUSB = 0x%x)
+    this is not a GT-6816 (bDeviceClass = %d, bInterfaceClass = %d)
+    this is not a GT-6816 (bDeviceProtocol = 0x%x)
+    this is not a GT-6816 (bDeviceSubClass = 0x%x)
+    this is not a GT-6816 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GT-6816 (bNumEndpoints = %d)
+    this is not a GT-6816 (bNumInterfaces = 0x%x)
+    this is not a GT-8911 (check 10, bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GT-8911 (check 11, bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GT-8911 (check 12, couldn't send read control message (%s))
+    this is not a GT-8911 (check 13, couldn't send read control message (%s)
+    this is not a GT-8911 (check 1, bDeviceClass = %d, bInterfaceClass = %d)
+    this is not a GT-8911 (check 2, bcdUSB = 0x%x)
+    this is not a GT-8911 (check 3, bDeviceSubClass = 0x%x)
+    this is not a GT-8911 (check 4, bDeviceProtocol = 0x%x)
+    this is not a GT-8911 (check 5, bNumEndpoints = %d)
+    this is not a GT-8911 (check 6, bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GT-8911 (check 7, bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a GT-8911 (check 8, bNumInterfaces = %d)
+    this is not a GT-8911 (check 9, num_altsetting = %d)
+    this is not a HP4500C/4570C/5500C/5550C/5590/7650 chipset (bcdUSB = 0x%x)
+    this is not a HP4500C/4570C/5500C/5550C/5590/7650 chipset (bDeviceClass = %d)
+    this is not a HP4500C/4570C/5500C/5550C/5590/7650 chipset (bDeviceProtocol = 0x%x)
+    this is not a HP4500C/4570C/5500C/5550C/5590/7650 chipset (bDeviceSubClass = 0x%x)
+    this is not a HP4500C/4570C/5500C/5550C/5590/7650 chipset (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a HP4500C/4570C/5500C/5550C/5590/7650 chipset (bNumEndpoints = %d)
+    this is not a ICM532B (check 10, bAlternatesetting = 0x%x, wMaxPacketSize = 0x%x)
+    this is not a ICM532B (check 11, bAlternatesetting = 0x%x, wMaxPacketSize = 0x%x)
+    this is not a ICM532B (check 12, bAlternatesetting = 0x%x, wMaxPacketSize = 0x%x)
+    this is not a ICM532B (check 13, bAlternatesetting = 0x%x, wMaxPacketSize = 0x%x)
+    this is not a ICM532B (check 14, bAlternatesetting = 0x%x, wMaxPacketSize = 0x%x)
+    this is not a ICM532B (check 15, bAlternatesetting = 0x%x, wMaxPacketSize = 0x%x)
+    this is not a ICM532B (check 1, bDeviceClass = %d, bInterfaceClass = %d)
+    this is not a ICM532B (check 2, bcdUSB = 0x%x)
+    this is not a ICM532B (check 3, bDeviceSubClass = 0x%x)
+    this is not a ICM532B (check 4, bDeviceProtocol = 0x%x)
+    this is not a ICM532B (check 5, bNumEndpoints = %d)
+    this is not a ICM532B (check 6, bEndpointAddress = %d)
+    this is not a ICM532B (check 7, bEndpointAddress = %d)
+    this is not a ICM532B (check 8, bAlternateSetting = 0x%x, wMaxPacketSize = 0x%x)
+    this is not a ICM532B (check 9, bAlternatesetting = 0x%x, wMaxPacketSize = 0x%x)
+    this is not a LM983x (bcdUSB = 0x%x)
+    this is not a LM983x (bDeviceClass = %d, bInterfaceClass = %d)
+    this is not a LM983x (bDeviceProtocol = 0x%x)
+    this is not a LM983x (bDeviceSubClass = 0x%x)
+    this is not a LM983x (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a LM983x (bNumEndpoints = %d)
+    this is not a M011 (bcdUSB = 0x%x)
+    this is not a M011 (bDeviceClass = %d)
+    this is not a M011 (bDeviceProtocol = 0x%x)
+    this is not a M011 (bDeviceSubClass = 0x%x)
+    this is not a M011 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a M011 (bNumEndpoints = %d)
+    this is not a MA-1015 (bcdUSB = 0x%x)
+    this is not a MA-1015 (bDeviceClass = %d)
+    this is not a MA-1015 (bDeviceProtocol = 0x%x)
+    this is not a MA-1015 (bDeviceSubClass = 0x%x)
+    this is not a MA-1015 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a MA-1015 (bNumEndpoints = %d)
+    this is not a MA-1015 (Error during bulk read)
+    this is not a MA-1015 (Error during bulk write)
+    this is not a MA-1015 (got 0x%x, expected 0xa5)
+    this is not a MA-1017 (bcdUSB = 0x%x)
+    this is not a MA-1017 (bDeviceClass = %d, bInterfaceClass = %d)
+    this is not a MA-1017 (bDeviceProtocol = 0x%x)
+    this is not a MA-1017 (bDeviceSubClass = 0x%x)
+    this is not a MA-1017 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a MA-1017 (bNumEndpoints = %d)
+    this is not a MA-1017 (Error during bulk read)
+    this is not a MA-1017 (Error during bulk write)
+    this is not a MA-1509 (bcdUSB = 0x%x)
+    this is not a MA-1509 (bDeviceClass = %d)
+    this is not a MA-1509 (bDeviceProtocol = 0x%x)
+    this is not a MA-1509 (bDeviceSubClass = 0x%x)
+    this is not a MA-1509 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x)
+    this is not a MA-1509 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a MA-1509 (bNumEndpoints = %d)
+    this is not a MA-1509 (Error during bulk read: %d)
+    this is not a MA-1509 (Error during bulk write)
+    this is not a MA-1509 (inquiry [0] = %d)
+    this is not a MA-1509 (vendor=%s)
+    this is not a PV8630/LM9830 (bcdUSB = 0x%x)
+    this is not a PV8630/LM9830 (bDeviceClass = %d)
+    this is not a PV8630/LM9830 (bDeviceProtocol = 0x%x)
+    this is not a PV8630/LM9830 (bDeviceSubClass = 0x%x)
+    this is not a PV8630/LM9830 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a PV8630/LM9830 (bNumEndpoints = %d)
+    this is not a rts8801/rts8891 (bcdUSB = 0x%x)
+    this is not a rts8801/rts8891 (bDeviceClass = %d)
+    this is not a rts8801/rts8891 (bDeviceProtocol = 0x%x)
+    this is not a rts8801/rts8891 (bDeviceSubClass = 0x%x)
+    this is not a rts8801/rts8891 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a rts8801/rts8891 (bNumEndpoints = %d)
+    this is not a RTS8822 (bcdUSB = 0x%x)
+    this is not a RTS8822 (bDeviceClass = %d)
+    this is not a RTS8822 (bDeviceProtocol = 0x%x)
+    this is not a RTS8822 (bDeviceSubClass = 0x%x)
+    this is not a RTS8822 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a RTS8822 (bNumEndpoints = %d)
+    this is not a rts8858c (bcdUSB = 0x%x)
+    this is not a rts8858c (bDeviceClass = %d)
+    this is not a rts8858c (bDeviceProtocol = 0x%x)
+    this is not a rts8858c (bDeviceSubClass = 0x%x)
+    this is not a rts8858c (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a rts8858c (bNumEndpoints = %d)
+    this is not a SQ113 (bcdUSB = 0x%x)
+    this is not a SQ113 (bDeviceClass = %d)
+    this is not a SQ113 (bDeviceProtocol = 0x%x)
+    this is not a SQ113 (bDeviceSubClass = 0x%x)
+    this is not a SQ113 (bEndpointAddress = 0x%x, bmAttributes = 0x%x, wMaxPacketSize = 0x%x, bInterval = 0x%x)
+    this is not a SQ113 (bInterfaceClass = %d)
+    this is not a SQ113 (bInterfaceProtocol = %d)
+    this is not a SQ113 (bInterfaceSubClass = %d)
+    this is not a SQ113 (bNumEndpoints = %d)
+This is sane-find-scanner from %s
+<This USB chip looks like a %s (result from %s)>
+t-;l$$}W9l$(
+trying libusb:
+trying to enable low level command queueing
+<trying to find out which USB chip is used>
+trying to open %s
+    Unexpected result from control message (%0x/%0x)
+    Unexpected result from register 0xfe11 : 0x%0x%0x
+    Unexpected result from register reading (0x%0x/0x%0x)
+unknown device
+Unknown error
+unknown option: -%c, try -h for help
+Unknown SANE status code %d
+  # `UNKNOWN vendor and product' means that there seems to be a scanner at this
+Usage: %s [-hvqf] [devname ...]
+usb_bulk_read
+usb_bulk_write
+usb_claim_interface
+usb_clear_halt
+usb_close
+usb_control_msg
+usb_device
+usb_find_busses
+usb_find_devices
+usb_get_busses
+usb_init
+usb_interrupt_read
+usb_open
+usb_release_interface
+usb_reset
+usb_set_altinterface
+usb_set_configuration
+usb_set_debug
+usb_strerror
+uscanner
+	-v: be more verbose (can be used multiple times)
+__vfprintf_chk
+__vsyslog_chk
+    wMaxPacketSize    %d
+WORM             
+ wTotalLength         %d
+  # you have loaded a kernel driver for your USB host controller and have setup
+  # you have loaded a kernel SCSI driver for your SCSI adapter.
+  # You may want to run this program as root to find all devices. Once you
+  # Your Mustek parallel port scanner was detected.  It may or
+  # Your SCSI scanner was detected. It may or may not be supported by SANE. Try
+  # Your USB scanner was detected. It may or may not be supported by
+  # Your USB scanner was (probably) detected. It may or may not be supported by

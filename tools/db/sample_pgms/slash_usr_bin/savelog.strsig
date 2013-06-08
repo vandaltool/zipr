@@ -1,0 +1,251 @@
+#	-1 .. -9  - compression strength or memory usage (default: 9, except for xz)
+	[1-9]) COMPRESS_STRENGTH="-$opt" ;;
+#	1) Version numered files are cycled.  That is version 6 is moved to
+#	2) The new file.1 is compressed and is changed subject to 
+#	3) The main file is moved to file.0.
+#	4) If the -m, -u, -g, -t, or -p flags are given, then the file is
+#	5) The new file.0 is changed subject to the -m, -u and -g flags.
+# actions are performed.
+	# anyway, create an empty file to rotate.
+ 	# be sure that the savedir exists and is writable
+#! /bin/sh
+# Bugs: If a process is still writing to the file.0 and savelog
+	case "$opt" in
+	case "$rolldir" in
+	# catch bogus files
+	c) count="$OPTARG" ;;
+#	-c cycle  - save cycle versions of the logfile	(default: 7)
+	C) forceclean=1 ;;
+#	-C	  - force cleanup of cycled logfiles
+	chgrp -- "$group" "$1"
+ 		chmod 0755 -- "$savedir"
+	chmod -- "$mode" "$1"
+		 chmod --reference="$filename" -- "$filename.new")
+		 chown --reference="$filename" -- "$filename.new"
+	chown -- "$user" "$1"
+#       * cleanup.
+# common location
+			$COMPRESS $COMPRESS_OPTS "$newname.0"
+		$COMPRESS $COMPRESS_OPTS -- "$newname".[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
+#			$COMPRESS $COMPRESS_OPTS < $newname.0 > $newfile
+COMPRESS="gzip"
+	COMPRESS_OPTS="$COMPRESS_OPTS $COMPRESS_STRENGTH"
+	COMPRESS_OPTS="$COMPRESS_OPTS $COMPRESS_STRENGTH_DEF"
+COMPRESS_OPTS="-f"
+COMPRESS_STRENGTH_DEF="-9";
+	# compress the old uncompressed log if needed
+ 		continue
+ 			continue
+		continue
+			continue
+				continue
+#    Copyright (C) 1987, 1988 Ronald S. Karr and Landon Curt Noll
+#    Copyright (C) 1992  Ronald S. Karr
+	# create new file if needed
+		# --cycle
+		cycle=$(( $count - 1))
+	cycle=$(( $count - 1))
+		cycle=$(( $cycle - 1 ))
+		# cycle log
+	# cycle the old compressed log files
+# cycle thru filenames
+DATUM=`date +%Y%m%d%H%M%S`
+	d) datum=1 ;;
+	D) DATUM=$(date +$OPTARG) ;;
+	# (Debian default: $savedir is . and not ./OLD)
+	# determine our uncompressed file names
+#	* doesn't use $savedir; keeps saved log files in the same directory
+DOT_Z=".gz"
+#	-D	  - override date format for -d 
+#	-d	  - use standard date for rolling
+    echo "	-1 .. -9   - compression strength or memory usage (default: 9, except for xz)"
+    echo "	-c cycle   - save cycle versions of the logfile (default: 7)"
+    echo "	-C	   - force cleanup of cycled logfiles"
+    echo "	-D	   - override date format for -d"
+    echo "	-d	   - use standard date for rolling"
+				echo "Error hardlinking $filename to $newfilename" >&2
+    echo "	file 	   - log file names"
+    echo "	-g group   - chgrp log files to group"
+    echo "             [-j] [-C] [-d] [-l] [-r rolldir] [-n] [-q] file ..."
+    echo "	-j         - use bzip2 instead of gzip"
+    echo "	-J         - use xz instead of gzip"
+    echo "	-l	   - don't compress any log files (default: compress)"
+    echo "	-m mode	   - chmod log files to mode"
+    echo "	-n         - do not rotate empty files"
+    echo "	-p         - preserve mode/user/group of original file"
+       echo "$prog: Compression binary not available, please make sure '$COMPRESS' is installed" 1>&2
+ 			echo "$prog: could not mkdir $savedir" 1>&2
+				echo "$prog: could not touch $filename" 1>&2
+			echo "$prog: could not touch $filename" 1>&2
+	echo "$prog: count must be at least 2" 1>&2
+ 		echo "$prog: directory $savedir is not writable" 1>&2
+		echo "$prog: $filename is not a regular file" 1>&2
+    echo "	-q         - suppress rotation message"
+    echo "	-r rolldir - use rolldir instead of . to roll files"
+    echo "	-t	   - touch file"
+    echo "Usage: $prog [-m mode] [-u user] [-g group] [-t] [-c cycle] [-p]"
+    echo "	-u user	   - chown log files to user"
+    echo "	-x script  - invoke script with rotated log file in \$FILE"
+	elif [ ! -e "$filename" ]; then
+	elif [ -n "$touch$user$group$mode" ]; then
+#	  empty
+	# empty files, create if requested and skip to the next file.
+       exit 2
+exitcode=0	# no problems to far
+		exitcode=3
+				exitcode=4
+			exitcode=4
+ 			exitcode=5
+ 		exitcode=7
+				exitcode=8
+exit $exitcode
+export PATH=$PATH:/sbin:/bin:/usr/sbin:/usr/bin
+#	file 	  - log file names
+	filename="$1"
+		filenew=1
+	  FILE="$newfilename" $SHELL -c "$hookscript" || \
+#		'file'.<number><compress_suffix>
+#	   files are ignored.
+			# file was not compressed. move it anyway
+fixfile()
+			fixfile "$filename"
+		fixfile "$filename"
+		fixfile "$filename.new"
+		fixfile "$newfile"
+	fixfile "$newfilename"
+	[ ! -f "$newfilename" ] && touch -- "$newfilename"
+forceclean=
+# For files that do exist and have lengths greater than zero, the following 
+#	* for the sake of consistency, files are rotated even if they are
+	# get the filename
+#	-g group  - chgrp log files to group
+	g) group="$OPTARG" ;;
+hookscript=
+	h) usage; exit 0 ;;
+if [ "$count" -lt 2 ]; then
+ 	if [ ! -d "$savedir" ]; then
+	if [ -e "$filename" ] && [ ! -f "$filename" ]; then
+	if [ -f "$filename" ]; then
+	# if file does not exist or is empty, and we've been told to not rotate
+	if [ -f "$newname.0" ]; then
+		if [ -f "$newname.$cycle$DOT_Z" ]; then
+		if [ -f "$newname.$cycle" ]; then
+			if ln -f -- "$filename" "$newfilename"; then
+if [ -n "$COMPRESS_STRENGTH" ]; then
+if [ -n "$COMPRESS" ] && [ -z "`which $COMPRESS`"  ]; then
+	if [ -n "$datum" ]; then
+ 		if [ "$?" -ne 0 ]; then
+			if [ "$?" -ne 0 ]; then
+		if [ "$?" -ne 0 ]; then
+		if [ -n "$filenew" ]; then
+	if [ -n "$forceclean" ]; then
+    if [ -n "$group" ]; then 
+	if [ -n "$hookscript" ]; then
+    if [ -n "$mode" ]; then 
+	if [ -n "$preserve" ]; then
+    if [ -n "$user" ]; then
+	if [ ! -s "$filename" ] && [ "$rotateifempty" = "no" ]; then
+	if test -n "$datum" && test -n "$COMPRESS"; then
+		if test -n "$touch" && [ ! -f "$filename" ]; then 
+# if the '-d' option is specified, <number> will be YYMMDDhhmmss
+# If the 'file' does not exist and -t was given, it will be created.
+		# if -t was given and it does not exist, create it
+ 	if [ ! -w "$savedir" ]; then
+		if [ -z "$COMPRESS" ]; then
+ 	if [ -z "$savedir" ]; then
+#       is never formed.  The <cycle> count must be at least 2.
+#		 [-j] [-C] [-d] [-l] [-r rolldir] [-n] [-q] file...
+	j) COMPRESS="bzip2"; COMPRESS_OPTS="-f"; COMPRESS_STRENGTH_DEF="-9"; DOT_Z=".bz2" ;;
+	J) COMPRESS="xz"; COMPRESS_OPTS="-f"; COMPRESS_STRENGTH_DEF=""; DOT_Z=".xz" ;;
+#	-j        - use bzip2 instead of gzip
+#	-J        - use xz instead of gzip
+	l) COMPRESS="" ;;
+#	-l	  - don't compress any log files	(default: compress)
+	# link the file into the file.0 holding place
+ 		mkdir -p -- "$savedir"
+#	-m mode	  - chmod log files to mode
+	m) mode="$OPTARG" ;;
+# More modifications by Guy Maor <maor@debian.org>:
+#	moved it to file.1 and compresses it, data could be lost.
+				mv -- "$filename.new" "$filename"
+			mv -- "$filename" "$newfilename"
+			mv -f -- "$newname.$cycle$DOT_Z" \
+			mv -f -- "$newname.$cycle" "$newname.$oldcycle"
+		mv -- "$newfilename" "$newname.$DATUM"
+			mv -- "$newname.0$DOT_Z" "$newfile"
+			mv -- "$newname.0" "$newfile"
+#	-n	  - do not rotate empty files
+	newfilename="$newname.0"
+		newfilename="$newname.$DATUM"
+			newfile="$newname.1"
+			newfile="$newname.1$DOT_Z"
+	newname=`basename -- "$filename"`
+			    "$newname.$oldcycle$DOT_Z"
+	newname="$savedir/$newname"
+#	not created.
+# Note: If no -m, -u, -g, -t, or -p is given, then the primary log file is 
+# Note: Since the version numbers start with 0, version number <cycle>
+	n) rotateifempty="no" ;;
+		oldcycle=$cycle
+# Older version of 'file' are named:
+	# otherwise if the file does not exist and we've been told to rotate it
+# parse args
+	p) preserve=1 ;;
+#       -p        - preserve mode/user/group of original file
+#       * -p (preserve) option
+preserve=
+prog=`basename $0`
+#	-q	  - be quiet
+	q) quiet=1 ;;
+	# remove old files if so desired
+#	* reports successful rotation of log files
+	# report successful rotation
+#	restats files often.
+	    ret=$?
+			rm -f -- `ls -t -- $newname.[0-9]*$DOT_Z | sed -e 1,${cycle}d`
+			rm -f -- `ls -t -- $newname.[0-9]* | sed -e 1,${cycle}d`
+#			rm -f $newname.0
+	rm -f -- "$newname.$cycle" "$newname.$cycle$DOT_Z"
+rolldir=
+rotateifempty=yes
+	r) rolldir="$OPTARG" ;;
+#	-r rolldir- use rolldir instead of . to roll files
+ 		savedir=.
+ 	savedir=`dirname -- "$filename"`
+		savedir="$rolldir"
+		savedir="$savedir/$rolldir"
+# savelog - save a log file
+shift $(($OPTIND - 1))
+# Slight modifications by Ian A. Murdock <imurdock@gnu.ai.mit.edu>:
+#	Smail does not have this problem in general because it
+# still has 'file' opened for I/O.
+	    test "$quiet" -eq 1 || echo "Hook script failed with exit code $ret." 1>&2
+	test "$quiet" -eq 1 || echo "Rotated \`$filename' at `date`."
+#	   the -m, -u and -g flags.  This step is skipped if the -t flag 
+# The savelog command saves and optionally compresses old copies of files.
+#          touched into existence subject to the given flags.  The -p flag
+			touch -- "$filename"
+		touch -- "$filename"
+		 touch -- "$filename.new"
+		touch -- "$filename.new"
+	t) touch=1 ;;
+#	-t	  - touch file
+		(umask 077
+#	   uncompressed names are cycled, regardless of -t.  Missing version 
+	*) usage; exit 1 ;;
+# usage: savelog [-m mode] [-u user] [-g group] [-t] [-p] [-c cycle]
+#	* uses `gzip' rather than `compress'
+#	-u user	  - chown log files to user
+	u) user="$OPTARG" ;;
+#	   version 0 is moved to version 1.  Both compressed names and
+#	   version 7, version is moved to becomes version 6, ... and finally
+# version number 0 is never compressed on the off chance that a process
+# version numbers > 0 are compressed (unless -l prevents it). The
+#	   was given.
+# where <number> is the version number, 0 being the newest.  By default,
+	while [ $cycle -gt 1 ]; do
+while getopts m:u:g:c:r:CdD:tlphjJ123456789x:nq opt ; do
+while [ $# -gt 0 ]; do
+#          will preserve the original owner, group, and permissions.
+	x) hookscript="$OPTARG" ;;
+#	-x script - invoke script with rotated log file in $FILE

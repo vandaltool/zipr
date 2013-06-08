@@ -1,0 +1,753 @@
+        
+                
+                         ])
+    '3x5' : (76, 127, "3x5 index card", 'in'),
+    '4x6' : (102, 152, "4x6 photo", 'in'),
+    '5x7' : (127, 178, "5x7 photo", 'in'),
+    'a2_env' : (111, 146, "A2 Envelope", 'in'),
+    'a3' : (297, 420, "A3", 'mm'),
+    "a4" : (210, 297, "A4", 'mm'),
+    "a5" : (148, 210, "A5", 'mm'),
+    "a6" : (105, 148, "A6", 'mm'),
+                aa = aa.strip()
+            a = a.replace("%", "")
+            a = a.strip()
+            a = a.strip().lower()
+            a = a.strip().lower().split(',')
+adf = False
+        ("ADF mode:", "--adf (Note, only PDF output is supported when using the ADF)", "option", False),
+        adf_page_files = []
+                        adf_page_files.append(temp_output)
+        #adf_pages = []
+             adf = True
+            adf = True
+# along with this program; if not, write to the Free Software
+                    and aa not in dest:
+            and not file_saved:
+# (at your option) any later version.
+# Author: Don Welch
+    "b4" : (257, 364, "B4", 'mm'),
+    "b5" : (182, 257, "B5", 'mm'),
+        back_end_filter=['hpaio'], filter={'scan-type': (operator.gt, 0)})
+        ("Bottom right x of the scan area:", "--brx=<brx>", "option", False),
+        ("Bottom right y   of the scan area:", "--bry=<bry>", "option", False),
+            break
+                break
+                    break
+                            break
+                                break
+brightness = 0
+                brx, bry, size_desc, page_units = PAGE_SIZES[size]
+        brx = device.getOptionObj('br-x').limitAndSet(brx)
+                brx = f
+                    brx = float(brx)
+                        brx = float(width) + tlx
+                        brx = None
+                    brx = None
+brx = None
+        bry = device.getOptionObj('br-y').limitAndSet(bry)
+                bry = f
+                    bry = float(bry)
+                        bry = float(height) + tly
+                        bry = None
+                    bry = None
+bry = None
+                    buffer, format, format_name, pixels_per_line, \
+            b = utils.which(a)
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+                          'bw', 'gray', 'grayscale', 'grey',
+                bytes_read = 0
+    "c6_env" : (114, 162, "C6 Envelope", 'in'),
+            c = canvas.Canvas(output, (brx/0.3528, bry/0.3528)) 
+                c = canvas.Canvas(pdf_output, (brx/0.3528, bry/0.3528)) 
+# (c) Copyright 2003-2011 Hewlett-Packard Development Company, L.P.
+                    c.drawInlineImage(image, (tlx/0.3528), (tly/0.3528), ((brx-tlx)/0.3528),((bry-tly)/0.3528))
+                    c.drawInlineImage(im, (tlx/0.3528), (tly/0.3528), ((brx-tlx)/0.3528),((bry-tly)/0.3528))
+        #check if device has only ADF
+                    cleanup_spinner()
+        cleanup_spinner()
+                    cmd = 'hp-print %s &' % output
+                    cmd = "python ./print.py %s &" % output
+                    cmd = [sendmail,'-t','-r',email_from]
+# -*- coding: utf-8 -*-
+                    continue
+                        continue
+contrast = 0
+                contrast = 100
+                contrast = int(a.strip())
+# Contributors: Sarbeswar Meher
+        ("", "Coordinates are relative to the upper left corner of the scan area.", "option", False),
+                c.save()
+            c.save()
+                c.showPage()
+default_res = 300
+dest = []
+                    dest.append(aa)
+                    dest.append('editor')
+                dest.append('email')
+                        dest.append('file')
+        dest.append('file')
+                    dest.append('pdf')
+        dest.append('printer')
+                    dest.append('viewer')
+                         ['dest=', 'mode=', 'res=', 'resolution=',
+        dest.remove("email")
+                        dest.remove('file')
+                    dest.remove('file')
+            dest.remove("file")
+                        device.cancelScan()
+                    device.cancelScan()
+            device.cancelScan()
+        device.freeScan()
+        device.getDeviceURIByPrinterName(printer_name) is not None and \
+            device = sane.openDevice(device_uri)
+                device.setOption("batch-scan", False)
+                     device.setOption("batch-scan", True)
+        device.setOption('compression', scanner_compression)
+        device.setOption("mode", scan_mode)
+        device.setOption("resolution", res)
+                     device.setOption("source", "ADF")
+                device.setOption("source", "Flatbed")
+        devices = sane.getDevices()
+    device_uri = mod.getDeviceUri(device_uri, printer_name,
+                    device.waitForScanActive()
+    "dl_env" : (110, 220, "DL Envelope", 'in'),
+__doc__ = "SANE-based scan utility for HPLIP supported all-in-one/mfp devices."
+                          'editor='
+    editor = ''
+    editor_list = ['kolourpaint', 'gimp', 'krita', 'cinepaint', 'mirage',]
+                editor = os.path.join(b, a)
+            editor = os.path.join(ee, e)
+        ee = utils.which(e)
+            elif a in ('cm', 'centimeter', 'centimeters', 'centimetre', 'centimetres'):
+            elif a in ('gray', 'grayscale', 'grey', 'greyscale'):
+            elif a in ('lineart', 'bw', 'b&w'):
+            elif a in ('mm', 'milimeter', 'milimeters', 'millimetre', 'millimetres'):
+            elif a in ('pt', 'point', 'points', 'pts'):
+            elif a in ('px', 'pixel', 'pixels', 'pel', 'pels'):
+            elif a in ('raw', 'none'):
+            elif d == 'editor':
+            elif d == 'email':
+            elif d == 'printer':
+            elif d == 'viewer':
+        elif o == '--adf':
+        elif o == '--brx':
+        elif o == '--bry':
+        elif o in ('-a', '--area'): # tlx, tly, brx, bry
+        elif o in ('-b', '--box'): # tlx, tly, w, h
+        elif o in ('-b', '--brightness'):
+        elif o in ('-c', '--contrast'):
+        elif o in ('--color', '--colour'):
+        elif o in ('-e', '--editor'):
+        elif o in ('--email-from', '--from'):
+        elif o in ('--email-note', '--email-msg', '--msg', '--message', '--note', '--notes'):
+        elif o in ('--email-subject', '--subject', '--about'):
+        elif o in ('--email-to', '--to'):
+        elif o in ('--gray', '--grayscale', '--gray-scale', '--grey', '--greyscale', '--grey-scale'):
+        elif o in ('--lineart', '--line-art', '--bw'):
+        elif o in ('-m', '--mode'):
+        elif o in ('-o', '--output', '-f', '--file'):
+        elif o in ('--res', '--resolution', '-r'):
+        elif o in ('-s', '--dest', '--destination'):
+        elif o in ('-t', '--units', '--unit'):
+        elif o in ('-v', '--viewer'):
+        elif o == 'jpeg':
+        elif o == '--pdf':
+        elif o == 'raw':
+        elif o == '--resize':
+        elif o == '--size':
+        elif o == '--tlx':
+        elif o == '--tly':
+           elif res > valid_res[1]:
+                    elif scan_mode == 'lineart':
+        elif units == 'cm':
+    elif units == 'cm':
+        elif units == 'pt':
+    elif units == 'pt':
+        elif units == 'px':
+    elif units == 'px':
+                                    else:
+                        else:
+                else:
+               else:
+            else:
+        else:
+    else: # INTERACTIVE_MODE
+email_from = ''
+            email_from = a
+                          'email-from=', 'from=', 'email-to=',
+email_note = ''
+            email_note = a
+            email_subject = a
+        ("Email subject for 'email' dest:", '--email-subject="<subject>" or --subject="<subject>"', "option", False),
+email_subject = 'hp-scan from %s' % socket.gethostname()
+email_to = []
+            email_to = a.split(',')
+                    err = None
+                            err = std_err
+                        err = str(e)
+        event_queue = Queue.Queue()
+                    except ImportError:
+                except ImportError:
+            except ImportError:
+        except ImportError:
+            except IndexError:
+            except IOError, e:
+                    except KeyboardInterrupt:
+                except KeyboardInterrupt:
+except KeyboardInterrupt:
+                except NameError:
+                except OSError:
+                    except OSError, e:
+                            except Queue.Empty:
+            except scanext.error:
+                    except scanext.error, e:
+        except scanext.error, e:
+                        except ValueError:
+                    except ValueError:
+                except ValueError:
+            except ValueError:
+            except ValueError, e:
+    "exec" : (184, 267, "Executive", 'in'),
+                ext = os.path.splitext(output)[1]
+        extra_options=[utils.USAGE_SPACE,
+                f = float(a)
+        ("Filename for 'file' destination:", "-o<file> or -f<file> or --file=<file> or --output=<file>", "option", False),
+                          'file=', 'output=', 'pdf=', 'viewer=',
+        file_saved = False
+            file_saved = True
+        finally:
+    "flsa" : (216, 330, "Flsa", 'mm'),
+            for aa in a:
+        for d in dest:
+        for d, mfg, mdl, t in devices:
+    for e in editor_list:
+                    #For Marvell devices, expected bytes is not same as total_read
+    for o, a in opts:
+            for p in adf_page_files:
+    for v in pdf_viewer_list:
+    for v in viewer_list:
+            for x in valid_res:
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+                fp.close()
+                fp = open(output, 'r')
+        ("From: address for 'email' dest:", "--email-from=<email_from_address> (required for 'email' dest.)", "option", False),
+from base.g import *
+            from base import subproc as subprocess
+from base import tui, device, module, utils
+                    from email.mime.image import MIMEImage
+                        from email.MIMEImage import MIMEImage
+                    from email.mime.multipart import MIMEMultipart
+                        from email.MIMEMultipart import MIMEMultipart
+                    from email.mime.text import MIMEText
+                        from email.MIMEText import MIMEText
+from __future__ import division
+from prnt import cups
+                    from reportlab.pdfgen import canvas
+                from reportlab.pdfgen import canvas
+        from scan import sane
+# GNU General Public License for more details.
+                          'greyscale', 'email-subject=',
+                          'grey-scale', 'gray-scale', 'about=',
+    "higaki" : (100, 148, "Hagaki", 'mm'),
+                hp_print = utils.which("hp-print")
+        if 0 in valid_res: #min-max range in tuple
+                if aa in ('file', 'viewer', 'editor', 'printer', 'print', 'email', 'pdf') \
+                    if aa == 'print': aa = 'printer'
+                  if abs(r-x) < min_dist:
+                        if adf:
+                    if adf:
+                if adf:
+            if adf:
+        if adf:
+        if adf and output_type and output_type != 'pdf':
+                    if adf and status == scanext.SANE_STATUS_NO_DOCS:
+                if 'ADF' not in source_option:
+            if a in ('color', 'colour'):
+            if a in ('in', 'inch', 'inches'):
+            if a in ('jpeg', 'jpg'):
+        if brx is not None: brx = brx * 0.3528
+        if brx is not None: brx = brx * 10.0
+        if brx is not None: brx = brx * 25.4
+        if brx is not None: brx = brx / res * 25.4
+        if brx - tlx <= 0.0 or bry - tly <= 0.0:
+        if bry is not None: bry = bry * 0.3528
+        if bry is not None: bry = bry * 10.0
+        if bry is not None: bry = bry * 25.4
+        if bry is not None: bry = bry / res * 25.4
+                if bytes_read:
+            if d == device_uri:
+            if d == 'pdf':
+                if editor:
+        if ('editor' in dest or 'viewer' in dest or 'email' in dest or 'printer' in dest) \
+                if 'editor' not in dest:
+        if ee:
+    if 'email' in dest and (not email_from or not email_to):
+                if email_note:
+            if 'email' not in dest:
+                    if err:
+                                    if expected_bytes > 0:
+                        if expected_bytes > 0:
+                    if expected_bytes > 0:
+                if ext.lower() not in ('.jpg', '.png'):
+                    if 'file' in dest:
+                if 'file' in dest:
+        if 'file' in dest:
+        if 'file' in dest and not output:
+                    if 'file' not in dest:
+                if file_saved:
+                if hp_print:
+        if len(source_option) == 1 and 'ADF'  in source_option:
+                    if lines == -1 or total_read != expected_bytes:
+    if mode == GUI_MODE:
+                if not adf or (adf and no_docs):
+            if not b:
+    if not dest:
+                                if not log.is_debug():
+                    if not log.is_debug():
+            if not output:
+    if not prop.scan_build:
+        if o in ('-x', '--compression'):
+                    if os.path.exists(output):
+        if output_type and output_type not in ('jpeg', 'png', 'pdf'):
+               if output_type == 'jpg':
+                        if page-1 == 0:
+        if page_size:
+    if page_size:
+                if 'pdf' not in dest:
+    if printer_name is not None and \
+            if res > 600:
+        if resize != 100:
+            if resize < 1 or resize > 400:
+          if res not in valid_res:
+           if res < valid_res[0]:
+           if res < valid_res[0] or res > valid_res[1]:
+        if scan_mode == 'color':
+               if scan_mode == 'gray':
+                    if scan_mode in ('color', 'gray'):
+        if scan_size > 52428800: # 50MB
+                if sendmail:
+            if size in PAGE_SIZES:
+        if source_option is None:
+                                if status != scanext.SANE_STATUS_GOOD:
+                        if std_err != '':
+                if tlx is not None:
+    if tlx is not None and brx is not None and tlx >= brx:
+        if tlx is not None: tlx = tlx * 0.3528
+        if tlx is not None: tlx = tlx * 10.0
+        if tlx is not None: tlx = tlx * 25.4
+        if tlx is not None: tlx = tlx / res * 25.4
+                if tly is not None:
+    if tly is not None and bry is not None and tly >= bry:
+        if tly is not None: tly = tly * 0.3528
+        if tly is not None: tly = tly * 10.0
+        if tly is not None: tly = tly * 25.4
+        if tly is not None: tly = tly / res * 25.4
+        if units == 'in':
+    if units == 'in':
+            if units != 'mm':
+                if viewer:
+                if 'viewer' not in dest:
+        if vv:
+        ("Image contrast:", "--contrast=<contrast>", "option", False),
+        ("Image editor application:", "-e<editor> or --editor=<editor>", "option", False),
+                image = Image.open(p)
+        ("Image resize:", "--resize=<scale_in_%> (min=1%, max=400%, default=100%)", "option", False),
+        ("Image viewer application:", "-v<viewer> or --viewer=<viewer>", "option", False),
+                    img.add_header('Content-Disposition', 'attachment', filename=os.path.basename(output))
+                img = MIMEImage(fp.read())
+                            im = Image.frombuffer('RGBA', (pixels_per_line, lines), buffer.read(),
+                im = im.resize((new_w, new_h), Image.ANTIALIAS)
+        import cStringIO
+import getopt
+            import Image
+import operator
+import os
+import os.path
+        import Queue
+        import scanext
+import signal
+import socket
+            import subprocess
+import sys
+import time
+                im.save(output)
+                        im.save(temp_output)
+                        (INTERACTIVE_MODE,))
+# it under the terms of the GNU General Public License as published by
+    "japan_env_3" : (120, 235, "Japanese Envelope #3", 'mm'),
+    "japan_env_4" : (90, 205, "Japanese Envelope #4", 'mm'),
+                          'jpeg', 'color', 'lineart', 'colour',
+    "legal" : (215, 356, "Legal", 'in'),
+    "letter" : (215, 279, "Letter", 'in'),
+                        lines, depth, bytes_per_line, pad_bytes, total_read = device.getScan()
+                        lines = int(total_read / bytes_per_line)
+             log.debug("Device has only ADF support")
+        log.debug("Device supported resolutions %s" % (valid_res,))
+                log.debug("Error setting source or batch-scan option (this is probably OK).")
+                        log.debug("expected_bytes = %d" % expected_bytes)
+                    log.debug("PPL=%d lines=%d depth=%d BPL=%d pad=%d total=%d" %
+                    log.debug(repr(cmd))
+                        log.debug("Saved page %d to file %s" % (page, temp_output))
+        log.debug("Supported source Options: %s size=%d" % (source_option,len(source_option)))
+                        log.error("Aborted.")
+                    log.error("Aborted.")
+            log.error("ADF scans must be saved in PDF file format.")
+                    log.error("A problem has occurred with PDF generation. This is a known bug in ReportLab. Please update your install of ReportLab to version 2.0 or greater.")
+                    log.error("Cannot calculate brx since tlx is invalid. Using defaults.")
+                    log.error("Cannot calculate bry since tly is invalid. Using defaults.")
+             log.error("Device doesn't have scanner.")
+                            log.error("Did not read enough data from scanner (I/O Error?)")
+        log.error("Disabling 'email' destination.")
+                log.error("Editor application not found.")
+                    log.error("Editor not found.")
+        log.error("Email specified, but email to and/or email from address(es) were not specified.")
+                                    log.error("Error in reading data. Status=%d bytes_read=%d." % (status, bytes_read))
+                log.error("Error in setting ADF mode.")
+                log.error("Error saving file: %s (I/O)" % e)
+                log.error("Error saving file: %s (PIL)" % e)
+                log.error("Error saving temporary file: %s" % e)
+                     log.error("Failed to set ADF mode. This device doesn't support ADF.")
+        log.error("GUI mode is not implemented yet. Refer to 'hp-scan -h' for help.")
+                        log.error("hp-scan email destination requires Python 2.2+.")
+                log.error("Invalid compression value. Valid values are 'jpeg', 'raw', and 'none'.")
+                log.error("Invalid contrast value. Using default of 100.")
+                log.error("Invalid filename extension.")
+                log.error("Invalid mode. Using default of 'gray'.")
+            log.error("Invalid output file format. File formats must be 'jpeg', 'png', or 'pdf'.")
+                log.error("Invalid page size. Valid page sizes are: %s" % ', '.join(PAGE_SIZES.keys()))
+                log.error("Invalid resize value. Using default of 100%.")
+                log.error("Invalid scan area. Using defaults.")
+            log.error("Invalid scan area (width or height is negative).")
+                log.error("Invalid units. Using default of 'mm'.")
+                log.error("Invalid value for brx.")
+                    log.error("Invalid value for brx. Using defaults.")
+                log.error("Invalid value for bry.")
+                    log.error("Invalid value for bry. Using defaults.")
+                        log.error("Invalid value for height. Using defaults.")
+                log.error("Invalid value for resolution.")
+                log.error("Invalid value for tlx.")
+                    log.error("Invalid value for tlx. Using defaults.")
+                log.error("Invalid value for tly.")
+                    log.error("Invalid value for tly. Using defaults.")
+                        log.error("Invalid value for width. Using defaults.")
+        log.error("Invalid values for tlx (%d) and brx (%d) (tlx>=brx). Using defaults." % (tlx, brx))
+        log.error("Invalid values for tly (%d) and bry (%d) (tly>=bry). Using defaults." % (tly, bry))
+                    log.error("Mail send failed. 'sendmail' not found.")
+                    log.error("No data read.")
+                            log.error("No document(s). Please load documents and try again.")
+                    log.error("Only JPG (.jpg) and PNG (.png) output files are supported.")
+                    log.error("PDF output requires ReportLab.")
+                log.error("PDF output requires ReportLab.")
+                log.error("PDF viewer application not found.")
+                        log.error(repr(err))
+                log.error("Resize parameter is incorrect. Resize must be 0% < resize < 400%.")
+        log.error("Scanning disabled in build. Exiting")
+            log.error("%s requires the Python Imaging Library (PIL). Exiting." % __mod__)
+            log.error("Unable to locate device %s using SANE backend hpaio:. Please check HPLIP installation." % device_uri)
+    log.error("User exit")
+                log.error("Using defaults.")
+                log.error("Using default value of 'jpeg'.")
+                log.error("Using resize value of 100%.")
+                log.error("Valid modes are 'color', 'lineart', or 'gray'.")
+                log.error("Viewer application not found.")
+                    log.error("Viewer not found.")
+                log.info("")
+        log.info("")
+log.info("")
+            log.info("  Bottom right (x,y): (%fcm, %fcm)" % (brx/10.0, bry/10.0))
+            log.info("  Bottom right (x,y): (%fin, %fin)" % (brx/25.4, bry/25.4))
+        log.info("  Bottom right (x,y): (%fmm, %fmm)" % (brx, bry))
+            log.info("  Bottom right (x,y): (%fpt, %fpt)" % (brx/0.3528, bry/0.3528))
+            log.info("  Bottom right (x,y): (%fpx, %fpx)" % (brx*res/25.4, bry*res/25.4))
+            log.info("Closing device.")
+        log.info("Compression: %s" % scanner_compression)
+        log.info("Destination(s): %s" % ', '.join(dest))
+log.info("Done.")
+                    log.info("Editing file in %s" % editor)
+                            log.info("Expecting to read %s from scanner (per page)." % utils.format_bytes(expected_bytes))
+                            log.info("Expecting to read %s from scanner." % utils.format_bytes(expected_bytes))
+            log.info("  Height: %fcm" % ((bry - tly)/10.0))
+            log.info("  Height: %fin" % ((bry - tly)/25.4))
+        log.info("  Height: %fmm" % (bry - tly))
+            log.info("  Height: %fpt" % ((bry - tly)/0.3528))
+            log.info("  Height: %fpx" % ((bry - tly)*res/25.4))
+        log.info(log.bold("Using device %s" % device_uri))
+        log.info("Mode: %s" % scan_mode)
+            log.info("\nOutputting to destination 'file':")
+                    log.info("\nPage %d: Scanning..." % page)
+                    log.info("\nScanning...")
+            log.info("\nSending to destination '%s':" % d)
+        log.info("\nWarming up...")
+        log.info("Opening connection to device...")
+                            log.info("Out of documents. Scanned %d pages total." % (page-1))
+            log.info("Output file: %s" % output)
+            log.info("Page size: %s" % size_desc)
+                log.info("Processing page %s..." % p)
+                    log.info("Read %s from scanner." % utils.format_bytes(bytes_read))
+                log.info("Resizing from %dx%d to %dx%d..." % (pixels_per_line, lines, new_w, new_h))
+        log.info("Resolution: %ddpi" % res)
+            log.info("Saving to file %s" % output)
+                log.info("Saving to file %s" % pdf_output)
+            log.info("Scan area (cm):")
+            log.info("Scan area (in):")
+        log.info("Scan area (mm):")
+            log.info("Scan area (pt):")
+            log.info("Scan area (px @ %ddpi):" % res)
+                  log.info("Setting output format to JPEG for color/lineart mode.")
+               log.info("Setting output format to PDF for ADF mode.")
+                  log.info("Setting output format to PNG for greyscale mode.")
+            log.info("  Top left (x,y): (%fcm, %fcm)" % (tlx/10.0, tly/10.0))
+            log.info("  Top left (x,y): (%fin, %fin)" % (tlx/25.4, tly/25.4))
+        log.info("  Top left (x,y): (%fmm, %fmm)" % (tlx, tly))
+            log.info("  Top left (x,y): (%fpt, %fpt)" % (tlx/0.3528, tly/0.3528))
+            log.info("  Top left (x,y): (%fpx, %fpx)" % (tlx*res/25.4, tly*res/25.4))
+                    log.info("Viewing file in %s" % viewer)
+                log.info("Viewing PDF file in %s" % pdf_viewer)
+            log.info("Viewing PDF file in %s" % pdf_viewer)
+            log.info("  Width: %fcm" % ((brx - tlx)/10.0))
+            log.info("  Width: %fin" % ((brx - tlx)/25.4))
+        log.info("  Width: %fmm" % (brx - tlx))
+            log.info("  Width: %fpt" % ((brx - tlx)/0.3528))
+            log.info("  Width: %fpx" % ((brx - tlx)*res/25.4))
+                log.note("This scan area below in '%s' units may not be exact due to rounding errors." % units)
+            log.warn("Approx. number of bytes to read from scanner: %s" % utils.format_bytes(scan_size, True))
+            log.warn("Defaulting to '%s'." % output)
+            log.warn("File destination enabled with no output file specified.")
+             log.warn("Invalid resolution. Using closest valid resolution of %d dpi" % res)
+            log.warn("Invalid resolution. Using closest valid resolution of %d dpi" % res)
+        log.warn("No destinations specified. Adding 'file' destination by default.")
+                        log.warn("Output file '%s' exists. File will be overwritten." % output)
+                log.warn("The scan current parameters will cause very large files to be created.")
+            log.warn("This can cause the scan to take a long time to complete and may cause your system to slow down.")
+        log.warn("Units set to pixels. Using resolution of %ddpi for area calculations." % res)
+                log.warn("Using resolutions greater than 600 dpi will cause very large files to be created.")
+            log.warn("Valid resolutions are %s dpi." % ', '.join([str(x) for x in valid_res]))
+                # Make sure queue is cleared out...
+        # Make sure SANE backend sees the device...
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                        min_dist = abs(r-x)
+            min_dist = sys.maxint
+__mod__ = 'hp-scan'
+    mod = module.Module(__mod__, __title__, __version__, __doc__, None,
+        mod.parseStdOpts('s:m:r:c:t:a:b:o:v:f:c:x:e:',
+    mod.setUsage(module.USAGE_FLAG_DEVICE_ARGS,
+                msg.attach(img)
+                    msg.attach(txt)
+                msg.attach(txt)
+                msg['From'] = email_from
+                msg = MIMEMultipart()
+                msg.preamble = 'Scanned using hp-scan'
+                msg['Subject'] = email_subject
+                msg['To'] = ','.join(email_to)
+                new_h = lines * resize / 100
+                new_w = pixels_per_line * resize / 100
+    "no_10_env" : (105, 241, "Number 10 Envelope", 'in'),
+        no_docs = False
+                            no_docs = True
+                        # Note: On some scanners (Marvell) expected_bytes will be < 0 (if lines == -1)
+        ("Note or message for the 'email' dest:", '--email-msg="<msg>" or --email-note="<note>"', "option", False),
+                        ok, expected_bytes, status = device.startScan("RGBA", update_queue, event_queue)
+        ("[OPTIONS] (advanced)", "", "header", False),
+        ("[OPTIONS] ('editor' dest)", "", "header", False),
+        ("[OPTIONS] ('email' dest)", "", "header", False),
+        ("[OPTIONS] ('file' dest)", "", "header", False),
+        ("[OPTIONS] (General)", "", "header", False),
+        ("[OPTIONS] ('pdf' dest)", "", "header", False),
+        ("[OPTIONS] ('printer' dest)", "", "header", False),
+        ("[OPTIONS] (Scan area)", "", "header", False),
+        ("[OPTIONS] ('viewer' dest)", "", "header", False),
+    opts, device_uri, printer_name, mode, ui_toolkit, lang = \
+            os.close(output_fd)
+                        (os.path.basename(output), pixels_per_line, lines, scan_mode))
+                    os.remove(output)
+                os.system(cmd)
+                    os.system("%s %s &" % (editor, output))
+            os.system("%s %s &" % (pdf_viewer, output))
+                os.system("%s %s &" % (pdf_viewer, pdf_output))
+                    os.system("%s %s &" % (viewer, output))
+    "oufufu-hagaki" : (148, 200, "Oufuku-Hagaki", 'mm'),
+                    output = ''
+                output = ''
+output = ''
+            output_fd, output = utils.make_temp_file(suffix='.png')
+            output = os.path.abspath(os.path.normpath(os.path.expanduser(a.strip())))
+               output_type = ''
+                  output_type = 'jpeg'
+               output_type = os.path.splitext(output)[1].lower()[1:]
+               output_type = 'pdf'
+            output_type = 'pdf'
+                  output_type = 'png'
+                  output = utils.createSequencedFilename("hpscan", ".jpg")
+                output = utils.createSequencedFilename("hpscan", ".pdf")
+               output = utils.createSequencedFilename("hpscan", ".pdf")
+                  output = utils.createSequencedFilename("hpscan", ".png")
+                page += 1
+        page = 1
+page_size = ''
+PAGE_SIZES = { # in mm
+                page_size = size
+page_units = 'mm'
+            pass
+                    pass
+                pdf_output = utils.createSequencedFilename("hpscan", ".pdf")
+    pdf_viewer = ''
+        ("PDF viewer application:", "--pdf=<pdf_viewer>", "option", False),
+    pdf_viewer_list = ['kpdf', 'acroread', 'xpdf', 'evince',]
+                pdf_viewer = os.path.join(b, a)
+            pdf_viewer = os.path.join(vv, v)
+    "photo" : (102, 152, "Photo", 'in'),
+                        (pixels_per_line, lines, depth, bytes_per_line, pad_bytes, total_read))
+                    pm = tui.ProgressMeter("Reading data:")
+                                        pm.update(0,
+                            pm.update(0,
+                                        pm.update(int(100*bytes_read/expected_bytes),
+                            pm.update(int(100*bytes_read/expected_bytes),
+            # Pre-2.4 Python
+                          'printer=', 'compression=' , 'raw',
+        'printer' not in dest:
+        ("Printer queue/printer:", "--printer=<printer_name>", "option", False),
+                                'raw', 'RGBA', 0, 1)
+                                'raw', 'RGBA', 0, 1).convert('L')
+                res = default_res
+        res = device.getOptionObj('resolution').limitAndSet(res)
+                resize = 100
+resize = 100
+                          'resize=', 'contrast=', 'adf', 'unit=',
+                resize = int(a)
+                res = r
+              res = valid_res[0]
+            res = valid_res[0]
+              res = valid_res[1] 
+                        res = x
+                r = int(a.strip())
+r = res = 300
+        sane.deInit()
+        sane.init()
+                        sane.reportError(e)
+            sane.reportError(e)
+        ("Scan area:", "-a<tlx>,<tly>,<brx>,<bry> or --area=<tlx>,<tly>,<brx>,<bry>", "option", False),
+        scan_area = (brx - tlx) * (bry - tly) # mm^2
+        ("Scan box:", "--box=<tlx>,<tly>,<width>,<height>", "option", False),
+        ("Scan destinations:", "-s<dest_list> or --dest=<dest_list>", "option", False),
+                scan_mode = 'color'
+            scan_mode = 'color'
+                scan_mode = 'gray'
+            scan_mode = 'gray'
+scan_mode = 'gray'
+                scan_mode = 'lineart'
+            scan_mode = 'lineart'
+        ("Scan mode:", "-m<mode> or --mode=<mode>. Where <mode> is 'gray'\*, 'color' or 'lineart'.", "option", False),
+                scanner_compression = 'JPEG'
+            scanner_compression = 'JPEG'
+scanner_compression = 'JPEG'
+                scanner_compression = 'None'
+            scanner_compression = 'None'
+        ("Scanning resolution:", "-r<resolution_in_dpi> or --res=<resolution_in_dpi> or --resolution=<resolution_in_dpi>", "option", False),
+        scan_px = scan_area * res * res / 645.16 # res is in DPI
+            scan_size = scan_px # 1 byte/px
+            scan_size = scan_px * 3 # 3 bytes/px
+        see_also_list=[])
+                    sendmail = os.path.join(sendmail, 'sendmail')
+                sendmail = utils.which("sendmail")
+        ("Set the scanner compression mode:", "-x<mode> or --compression=<mode>, <mode>='raw', 'none' or 'jpeg' ('jpeg' is default) ('raw' and 'none' are equivalent)", "option", False),],
+            size = a.strip().lower()
+size_desc = ''
+        source_option = device.getOptionObj("source").constraint
+        ("Specify the scan area based on a paper size:", "--size=<paper size name>", "option", False),
+        ("Specify the units for area/box measurements:", "-t<units> or --units=<units>", "option", False),
+                        sp = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                status, bytes_read = update_queue.get(0)
+                    status, bytes_read = update_queue.get(0)
+# Std Lib
+                        std_out, std_err = sp.communicate(msg.as_string())
+                          'subject=', 'to=', 'from=', 'jpg',
+    "super_b" : (330, 483, "Super B", 'in'),
+                            sys.exit(0)
+                sys.exit(0)
+            sys.exit(0)
+                                    sys.exit(1)
+                            sys.exit(1)
+                        sys.exit(1)
+                     sys.exit(1)
+                    sys.exit(1)
+                sys.exit(1)
+             sys.exit(1)
+            sys.exit(1)
+        sys.exit(1)
+                        temp_output = utils.createSequencedFilename("hpscan_pg%d_" % page, ".png")
+        temp_saved = False
+            temp_saved = True
+# the Free Software Foundation; either version 2 of the License, or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+                        time.sleep(0.5)
+__title__ = 'Scan Utility'
+        ("", "tlx and tly coordinates are relative to the upper left corner of the scan area.", "option", False),
+        tlx = brx = None
+        tlx = device.getOptionObj('tl-x').limitAndSet(tlx)
+                tlx = f
+                    tlx = float(tlx)
+                    tlx = None
+tlx = None
+                tlx, tly = 0, 0
+                tlx, tly, brx, bry = a.split(',')[:4]
+                tlx, tly, width, height = a.split(',')[:4]
+                          'tly=', 'brx=', 'bry=', 'size=',
+        tly = bry = None
+        tly = device.getOptionObj('tl-y').limitAndSet(tly)
+                tly = f
+                    tly = float(tly)
+                    tly = None
+tly = None
+        ("To: address for 'email' dest:", "--email-to=<email__to_address> (required for 'email' dest.)", "option", False),
+                          'to=', 'email-msg=', 'msg=',
+        ("Top left x of the scan area:", "--tlx=<tlx>", "option", False),
+        ("Top left y of the scan area:", "--tly=<tly>", "option", False),
+                            try:
+                        try:
+                    try:
+                try:
+            try:
+        try:
+                    txt = MIMEText("attached: %dx%d %s PNG image." % (pixels_per_line, lines, scan_mode))
+                    txt = MIMEText("attached: %s: %dx%d %s PNG image." %
+                    txt = MIMEText(email_note)
+                          'units=', 'area=', 'box=', 'tlx=',
+        ("", "Units are specified by -t/--units (default is 'mm').", "option", False),
+                units = 'cm'
+        ("", "Units for tlx, tly, brx, and bry are specified by -t/--units (default is 'mm').", "option", False),
+        ("", "Units for tlx, tly, width, and height are specified by -t/--units (default is 'mm').", "option", False),
+                units = 'in'
+                units = 'mm'
+        units = 'mm'
+units = "mm"
+            units = page_units # for display purposes only
+                units = 'pt'
+                units = 'px'
+        update_queue = Queue.Queue()
+        ("", 'Use double quotes (") around the note/message if it contains space characters.', "option", False),
+        ("", 'Use double quotes (") around the subject if it contains space characters.', "option", False),
+        ("", "Use only commas between values, no spaces.", "option", False),
+username = prop.username
+#!/usr/bin/python
+                                            utils.format_bytes(bytes_read))
+                                utils.format_bytes(bytes_read))
+        utils.USAGE_SPACE,
+        valid_res = device.getOptionObj('resolution').constraint
+__version__ = '2.2'
+    viewer = ''
+        ("", "'viewer', 'editor', 'pdf', or 'print'. Use only commas between values, no spaces.", "option", False),
+    viewer_list = ['kview', 'display', 'gwenview', 'eog', 'kuickshow',]
+                viewer = os.path.join(b, a)
+            viewer = os.path.join(vv, v)
+        vv = utils.which(v)
+        ("", "where 300 is default.", "option", False),
+        ("", "where <dest_list> is a comma separated list containing one or more of: 'file'\*, ", "option", False),
+        ("", "where <paper size name> is one of: %s" % ', '.join(PAGE_SIZES.keys()), "option", False),
+        ("", "where <units> is 'mm'\*, 'cm', 'in', 'px', or 'pt' ('mm' is default).", "option", False),
+                    while device.isScanActive():
+            while True:
+                        while update_queue.qsize():
+                while update_queue.qsize():
+# You should have received a copy of the GNU General Public License

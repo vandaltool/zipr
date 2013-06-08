@@ -1,0 +1,129 @@
+%-10d %-10.10s
+ %-10d %-10d
+%-10d %-10o
+%-10d %-10u
+ %-10o %-10ld
+ %-10o %-10lu %-10ld %-6s %-6s
+ %-10o %-12ld %-12ld
+%-10s %-10s %-10s %-10s
+%-10s %-10s %-10s %-10s %-10s
+%-10s %-10s %-10s %-10s %-10s %-10s
+%-10s %-10s %-10s %-10s %-10s %-10s %-12s
+%-10s %-10s %-10s %-10s %-12s %-12s
+%-10s %-10s %-20s %-20s %-20s
+%-10zd %-10d %-10d %-10d %-10d
+       %1$s -h for help
+       %1$s [resource] -i id
+       %1$s [-s|-m|-q] -i id
+ %-20.16s
+  %-26.24s
+  %5d     %5d
+%-8d %-10.10s
+%-8d %-10u
+%-8s %-10s %-20s %-20s %-20s
+%-8s %-10s %-26.24s %-26.24s
+    -a      all (default)
+allocated queues = %d
+allocated semaphores = %d
+attached
+att_time=%-26.24s
+bindtextdomain
+bytes=%lu	lpid=%d	cpid=%d	nattch=%ld
+cbytes=%ld	qbytes=%ld	qnum=%ld	lspid=%d	lrpid=%d
+    -c      creator
+change_time=%-26.24s
+ctime = %-26.24s
+dcgettext
+default max size of queue (bytes) = %d
+detached
+det_time=%-26.24s
+getgrgid
+getpagesize
+getpwuid
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+    -h      display this help
+    -i id   print details on resource identified by id
+_IO_stdin_used
+kernel not configured for message queues
+kernel not configured for semaphores
+kernel not configured for shared memory
+last-changed
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+    -l      limits
+max number of arrays = %d
+max number of segments = %lu
+max ops per semop call = %d
+max queues system wide = %d
+max seg size (kbytes) = %lu
+max semaphores per array = %d
+max semaphores system wide = %d
+max size of message (bytes) = %d
+max total shared memory (kbytes) = %llu
+Message Queue msqid=%d
+------ Message Queues --------
+------ Message Queues Creators/Owners --------
+------ Message Queues PIDs --------
+------ Message Queues Send/Recv/Change Times --------
+messages
+------ Messages Limits --------
+------ Messages Status --------
+min seg size (bytes) = %lu
+mode=%#o, access_perms=%#o
+mode=%#o	access_perms=%#o
+msgctl failed
+    -m      shared memory segments
+nsems = %ld
+otime = %-26.24s
+Output format:
+pages allocated %ld
+pages resident  %ld
+pages swapped   %ld
+    -p      pid
+__printf_chk
+__progname
+program_invocation_short_name
+Provide information on IPC facilities for which you have read access.
+    -q      message queues
+rcv_time=%-26.24s
+Resource options:
+segments allocated %d
+------ Semaphore Arrays --------
+------ Semaphore Arrays Creators/Owners --------
+Semaphore Array semid=%d
+------ Semaphore Limits --------
+semaphore max value = %d
+------ Semaphore Operation/Change Times --------
+------ Semaphore Status --------
+semctl failed
+send_time=%-26.24s
+setlocale
+------ Shared Memory Attach/Detach/Change Times --------
+------ Shared Memory Creator/Last-op PIDs --------
+------ Shared Memory Limits --------
+------ Shared Memory Segment Creators/Owners --------
+------ Shared Memory Segments --------
+Shared memory Segment shmid=%d
+------ Shared Memory Status --------
+shmctl failed
+    -s      semaphores
+__stack_chk_fail
+Swap performance: %ld attempts	 %ld successes
+    -t      time
+uid=%u	 gid=%u	 cuid=%u	 cgid=%u
+uid=%u	gid=%u	cuid=%u	cgid=%u
+uid=%u	gid=%u	cuid=%u	cgid=%u	mode=%#o
+Usage: %1$s [-asmq] [-t|-c|-l|-u|-p]
+Usage: %1$s [resource]... [output-format]
+used arrays = %d
+used-bytes
+used headers = %d
+used space = %d bytes
+/usr/share/locale
+    -u      summary
+util-linux

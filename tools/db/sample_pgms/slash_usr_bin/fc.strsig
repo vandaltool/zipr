@@ -1,0 +1,183 @@
+### about multiple definitions of COMMON blocks.
+### about unnecessary -l options.
+	-a)	F2CFLAGS="$F2CFLAGS -a"
+#				arithmetic) unless they appear in save,
+		${AS:-as} -o $OFILE $AFLAGS $1
+#				Assembly language files ending in .s .
+#		-a		use automatic variable storage (on the stack)
+		b=`basename $1 .e`
+		b=`basename $1 .r`
+#				being assigned proper values.
+#! /bin/sh
+#				by default -- rather than static storage
+	case "$1"
+		case "$1" in
+case $1 in
+		case "$1" in *.f) f=".f";; *.F) f=".F";; esac
+		case $2 in
+		case $2 in -6) F2CFLAGS="$F2CFLAGS"66; shift
+			case $2 in -6) shift;; esac;; esac
+case $cOPT in 0) case $OUTO in '');; *) CFLAGS="$CFLAGS -o $OUTO";; esac;; esac
+		case $cOPT in 0) CFLAGS="$CFLAGS -o $2";; *) OUTF=$2;; esac
+		case $cOPT in 1) cOPT=2;; esac
+case $cOPT in 2)
+		case $? in 0);; *) rc=$?; exit;; esac
+case $? in 0);; *) rc=$?; exit;; esac
+		case $O in -O);; *) shift;; esac
+				case $rc in 0)
+		case $rc in 0);; *) exit;; esac
+case $show_fc_help in
+	case $strip in 1) strip $OUTF;; esac
+#	case $trapuv in 1) OFILES="$OFILES -lfpe";; esac
+CC=${CC_f2c:-'cc'}
+#CC=${CC_f2c:-'cc -common'}
+                $CC -c $CFLAGSF2C $CFLAGS $b.c
+		$CC -c $CFLAGSF2C $CFLAGS $b.c
+                $CC -c $CFLAGSF2C $CFLAGS $b.c 2>$s
+                $CC -c $CFLAGSF2C $CPPFLAGS $CFLAGS $1
+#		-C		Check that subscripts are in bounds.
+	$CC -o $OUTF -u MAIN__  $OFILES $LIBS
+	-c)	cOPT=0
+#	$CC -Wl,-dont_warn_unused -o $OUTF -u MAIN__ $OFILES $LIBS
+#		-c		Do not call linker, leave relocatables in *.o.
+	-C)	F2CFLAGS="$F2CFLAGS -C"
+		CFLAGS="$CFLAGS $O"
+#		CFLAGS="$CFLAGS $O -Olimit 2000"
+#		CFLAGS='system-specific stuff' fc ...
+#				common, or data statements.  Initialize
+#				complex to double complex
+		cOPT=0
+				$CPP $CPPFLAGS $1 >$b.i
+CPP=${CPP:-/lib/cpp}
+#				C source files ending in .c .
+	-D)	CPPFLAGS="$CPPFLAGS -D$2"
+#		-D def		passed to C compiler (for .c files)
+	echo $0 'script based on f2c:'; $F2C -v
+	'')	echo $0: 'unexpected null argument'; exit 1;;
+		echo $1: 1>&2
+	echo 'f77 script based on f2c'
+	echo 'For pointers to f2c documentation, invoke' $F2C --help
+	echo 'For usage details, see comments at the beginning of' $0 .
+			*) echo "Ignoring -r$2";; esac
+				echo "invalid parameter $1" 1>&2
+		echo "invalid parameter $1" 1>&2
+EFL=${EFL:-efl}
+		$EFL $EFLFLAGS $1 >$b.f
+EFLFLAGS=${EFLFLAGS:-'system=portable deltastno=10'}
+#				efl source files ending in .e .
+#					ending in .F .
+	;; esac
+					;;esac
+	exit 0;;
+exit $rc
+				$F2C $F2CFLAGS $1
+		$F2C $F2CFLAGS $b.f
+					$F2C $F2CFLAGS <$b.i >$b.c
+F2C=${F2C:-/usr/bin/f2c}
+		F2CFLAGS="$F2CFLAGS $1"
+F2CFLAGS=${F2CFLAGS:='-ARw8 -Nn802 -Nq300 -Nx400'}
+		F2CFLAGS="$F2CFLAGS -g"
+		F2CFLAGS="$F2CFLAGS -I$2"
+				F2CFLAGS="$F2CFLAGS -trapuv"
+#				f2c prototype files ending in .P ; such
+# f77-style shell script to compile and load fortran, C, and assembly codes
+			*.f)	b=`basename $1 .f`
+	*.[fF])
+#		files		FORTRAN source files ending in .f .
+#				files only affect subsequent files.
+#				FORTRAN with cpp preprocessor directives
+	-g)	CFLAGS="$CFLAGS -g"
+	--help)		show_fc_help=1;;
+	-h)		show_fc_help=1;;
+	-I)	CPPFLAGS="$CPPFLAGS -I$2"
+#		-I includepath	passed to C compiler (for .c files)
+LIBS="-lf2c -lm"
+#				LIBS="$LIBS -lfpe"
+	-[lL]*)
+#		-L libdir	(passed to ld)
+#		-l library	(passed to ld)
+	-L*)	OFILES="$OFILES $1"
+	-L)	OFILES="$OFILES $1$2"
+#				may attract attention if used without
+#	may be useful as way to pass system-specific stuff to the C compiler.
+	-m)	CFLAGS="$CFLAGS -m$2"
+#		-m xxx		passed to C compiler as -mxxx
+	-N)	F2CFLAGS="$F2CFLAGS $1""$2"
+#	Note that with some shells, invocations of the form
+# NOTE: you may need to adjust the references to /usr/local/... below
+#		-N tnnn		allow nnn entries in table t
+#				Object files ending in .o .
+	-O)	case $2 in 1) O=-O1;; 2) O=-O2;; 3) O=-O3;; *) O=-O;; esac
+		OFILE=`basename $1 .c`.o
+		OFILE=`basename $1 .s`.o
+		OFILES="$OFILES $1"
+		OFILES="$OFILES $1$2"
+		OFILES="$OFILES $b.o"
+		OFILES="$OFILES $OFILE"
+### On some (IRIX) systems, -Wl,-dont_warn_unused prevents complaints
+### On some systems (e.g., IRIX), -common prevents complaints
+#		-o objfile	Override default executable name a.out.
+	-o)	OUTF=$2
+#	Options:
+#	(or remove them if they're not needed on your system).
+#				or to cpp (for .F files)
+#				or to cpp (for .F files), and to f2c
+#				or to cpp (for .F files) to remove def
+#				other kinds of variables to values that
+OUTF=a.out
+		OUTO=$2
+PATH=/bin:/usr/bin
+#		-P		emit .P files
+	-P)	F2CFLAGS="$F2CFLAGS $1"
+#	processing below or change it to something more suitable for your
+#		-r8		promote real to double precision and
+			rapuv)
+#				RATFOR files ending in .r .
+RATFOR=${RATFOR:-ratfor}
+		$RATFOR $RFLAGS $1 >$b.f
+					rc=$?
+				rc=$?
+	-r)	case $2 in 8) F2CFLAGS="$F2CFLAGS -r8";;
+		rc=$?; case $rc in 0);; *) rc=$?; exit;; esac
+RFLAGS=${RFLAGS:-'-6&'}
+		rm $b.c
+		rm $b.[cf]
+				rm $b.i
+	-S)	CFLAGS="$CFLAGS -S"
+		sed '/parameter .* is not referenced/d;/warning: too many parameters/d' $s 1>&2
+set -- `getopt acCD:gI:L:m:N:O:U:o:r:sSt:uw6 "$@"`
+#				Shared libraries ending in .so .
+				shift;;
+		shift;;
+				shift 2;;
+		shift 2
+		shift 2;;
+		shift; shift
+show_fc_help=0
+	'-?')		show_fc_help=1;;
+#				signaling NaNs (on machines with IEEE
+#		-S		leave assembler output on file.s
+	-s)	strip=1
+#		-s		strip executable
+s=`tempfile --prefix=stderr` || { echo "$0: Cannot create temporary file" ; exit 1; }
+#	system.  See also the comments starting with ### below.
+	test -n "$1"
+	test X"$1" != X--
+#	The script below simply appends to the initial CFLAGS value.
+trap "rm -f $s $t; exit \$rc" 0
+				trapuv=1
+#		-trapuv		Initialize floating-point variables to
+t=`tempfile --suffix=.o --prefix=f77` || { echo "$0: Cannot create temporary file" ; exit 1; }
+#		-u		complain about undeclared variables
+	-U)	CPPFLAGS="$CPPFLAGS -U$2"
+#		-U def		passed to C compiler (for .c files)
+	-u)	F2CFLAGS="$F2CFLAGS -u"
+#	usage:	f77 [options] files [-l library]
+#		--version	same as -v
+	--version)	show_fc_help=2;;
+#		-v		show current f2c version
+	-v)		show_fc_help=2;;
+#		-w66		omit Fortran 66 compatibility warning messages
+	-w)	F2CFLAGS="$F2CFLAGS -w"
+#		-w		omit all warning messages
+#	You may need to add something like "-Olimit 2000" to the -O

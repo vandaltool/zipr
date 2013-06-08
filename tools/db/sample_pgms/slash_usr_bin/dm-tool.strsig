@@ -1,0 +1,108 @@
+add-local-x-seat
+AddLocalXSeat
+  add-local-x-seat DISPLAY_NUMBER     Add a local X seat
+add-nested-seat
+  add-nested-seat                     Start a nested display
+add-seat
+  add-seat TYPE [NAME=VALUE...]       Add a dynamic seat
+__bss_start
+Commands:
+dcgettext
+  dm-tool [OPTION...] COMMAND [ARGS...] - Display Manager tool
+Error running Xephyr: %s
+g_clear_error
+g_dbus_proxy_call_sync
+g_dbus_proxy_get_cached_property
+g_dbus_proxy_get_cached_property_names
+g_dbus_proxy_get_connection
+g_dbus_proxy_get_name_owner
+g_dbus_proxy_new_for_bus_sync
+g_dbus_proxy_new_sync
+g_file_test
+g_find_program_in_path
+g_getenv
+GLIBC_2.0
+g_main_loop_new
+g_main_loop_run
+__gmon_start__
+g_object_unref
+g_printerr
+g_shell_parse_argv
+g_spawn_async
+g_strdup
+g_strdup_printf
+g_str_has_prefix
+g_type_init
+g_variant_builder_add_value
+g_variant_builder_new
+g_variant_builder_unref
+g_variant_get
+g_variant_get_type_string
+g_variant_is_of_type
+g_variant_iter_free
+g_variant_iter_loop
+g_variant_new
+g_variant_print
+g_variant_type_checked_
+g_variant_unref
+  -h, --help        Show help options
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+lightdm %s
+list-seats
+  list-seats                          List the active seats
+  lock                                Lock the current seat
+Missing command
+Not running inside a display manager, XDG_SEAT_PATH not defined
+Options:
+/org/freedesktop/DisplayManager
+/org/freedesktop/DisplayManager/
+org.freedesktop.DisplayManager
+org.freedesktop.DisplayManager.Seat
+org.freedesktop.DisplayManager.Session
+Run 'dm-tool --help' to see a full list of available command line options.
+(sa(ss))
+--session-bus
+  --session-bus     Use session D-Bus
+Sessions
+    %s=%s
+switch-to-greeter
+SwitchToGreeter
+  switch-to-greeter                   Switch to the greeter
+switch-to-guest
+SwitchToGuest
+  switch-to-guest [SESSION]           Switch to a guest session
+switch-to-user
+SwitchToUser
+  switch-to-user USERNAME [SESSION]   Switch to a user session
+/tmp/.X%d-lock
+Unable to add local X seat: %s
+Unable to add seat: %s
+Unable to contact display manager
+Unable to contact display manager: %s
+Unable to find Xephyr, please install it
+Unable to lock seat: %s
+Unable to switch to greeter: %s
+Unable to switch to guest: %s
+Unable to switch to user %s: %s
+Unexpected response to AddLocalXSeat: %s
+Unexpected response to AddSeat: %s
+Unknown command %s
+Unknown option %s
+Usage add-seat DISPLAY_NUMBER
+Usage add-seat TYPE [NAME=VALUE...]
+Usage lock
+Usage switch-to-greeter
+Usage switch-to-guest [SESSION]
+Usage switch-to-user USERNAME [SESSION]
+--version
+  -v, --version     Show release version
+XDG_SEAT_PATH
+Xephyr :%d

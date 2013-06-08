@@ -1,0 +1,142 @@
+        
+Aborting changes to authority file 
+A dash may be used with the "merge" and "source" to read from the
+add dpyname protoname hexkey   add entry
+and commands have the following syntax:
+Attempting to break locks on authority file %s
+Authority file:       %s
+authorization id is %ld
+bad display name "%s" in "%s" command
+bad "%s" command line
+    -b                             break locks on authority file
+__bss_start
+cannot allocate memory
+Changes honored:      %s
+Changes made:         %s
+Commands:
+couldn't generate authorization
+couldn't query Security extension on display "%s"
+__ctype_b_loc
+__ctype_tolower_loc
+Current input:        %s:%d
+data contains odd number of or non-hex characters
+      data hexkey  auth protocol specific data needed to generate the entry
+%d entries read in:  %d new, %d replacement%s
+%d entries removed
+%d entries written to "%s"
+__errno_location
+exit                           save changes and exit program
+extract filename dpyname...    extract entries into file
+    -f authfilename                name of authority file to use
+File locked:          %s
+File new:             %s
+__fprintf_chk
+freeaddrinfo
+generate
+generate dpyname protoname [options]  use server to generate entry
+getaddrinfo
+gethostbyaddr
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.11
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+      group n      clients using this entry belong to application group n
+help [topic]                   print help
+Ignoring locks and writing
+Ignoring locks on
+    -i                             ignore locks on authority file
+Illegal Address
+inet_ntoa
+inet_ntop
+info                           print information about entries
+internal error with help
+_IO_getc
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+key contains odd number of or non-hex characters
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libX11.so.6
+libXau.so.6
+libXext.so.6
+libXmuu.so.1
+line too long
+?                              list available commands
+list [dpyname...]              list entries
+__longjmp_chk
+merge filename...              merge entries from files
+MIT-KERBEROS-5
+MIT-MAGIC-COOKIE-1
+nextract
+nextract filename dpyname...   numerically extract entries
+nlist [dpyname...]             numerically list entries
+nmerge filename...             numerically merge entries
+no help for noexistent command "%s"
+No matches found, authority file "%s" not written
+Number of entries:    %d
+ on command "%s"
+    options are:
+__printf_chk
+    -q                             turn off extra messages
+quit                           abort changes and exit program
+remove dpyname...              remove entries
+%s authority file %s
+%s:  file %s does not exist
+source filename                read commands from file
+__sprintf_chk
+%s: %s:%d:  
+%s:  %s in locking authority file %s
+%s:  %s not writable, changes ignored
+%s:  %s not writable, changes will be ignored
+%s:  stdin already in use
+__stack_chk_fail
+standard input.  Commands beginning with "n" use numeric format.
+(stdout)
+__strcat_chk
+__strcpy_chk
+%s:  unable to allocate %d bytes for hexkey
+%s:  unable to alloc entry reading auth file
+%s:  unable to generate an authority file name
+%s:  unable to link authority file %s, use %s
+%s:  unable to open file %s
+%s:  unable to open tmp file "%s"
+%s:  unable to read auth entries from file "%s"
+%s:  unable to write authority file %s
+SUN-DES-1
+      timeout n    authorization expiration time in seconds
+/tmp/launch
+      trusted      clients using this entry are trusted
+unable to allocate %d bytes for key
+unable to allocate %d character protocol name
+unable to break line into words
+unable to merge in added record
+unable to open display "%s".
+unable to open extraction file "%s"
+unable to read any entries from file "%s"
+unknown command "%s"
+unknown error
+untrusted
+      untrusted    clients using this entry are untrusted
+usage:  %s [-options ...] [command arg ...]
+    -v                             turn on extra messages
+where options include:
+XauDisposeAuth
+XauFileName
+XauLockAuth
+XauReadAuth
+XauUnlockAuth
+XauWriteAuth
+XCloseDisplay
+XGetErrorText
+XmuGetHostname
+XOpenDisplay
+XSecurityAllocXauth
+XSecurityFreeXauth
+XSecurityGenerateAuthorization
+XSecurityQueryExtension
+XSetErrorHandler

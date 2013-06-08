@@ -1,0 +1,71 @@
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+Error initializing: %s
+fakesink
+g_dir_close
+g_dir_open
+g_dir_read_name
+g_error_free
+g_get_prgname
+GLIBC_2.0
+GLIBC_2.2
+__gmon_start__
+g_object_set
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_printerr
+g_set_prgname
+g_signal_connect_data
+gst_bin_add_many
+gst_bus_poll
+gst_caps_copy
+gst_caps_to_string
+gst_caps_unref
+GST_CAT_DEFAULT
+gst_debug_log
+__gst_debug_min
+gst_element_factory_make
+gst_element_get_state
+gst_element_link_many
+gst_element_set_state
+gst_init_get_option_group
+gst_message_parse_error
+gst_mini_object_unref
+gst_object_unref
+gst_pipeline_get_bus
+gst_pipeline_new
+g_strconcat
+g_strdup_printf
+gstreamer-0.10
+g_strfreev
+g_strv_length
+gst-typefind
+gst-typefind.c
+gst_version_string
+have-type
+https://launchpad.net/distros/ubuntu/+source/gstreamer0.10
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgstreamer-0.10.so.0
+/lib/ld-linux.so.2
+libpthread.so.0
+location
+No type found
+pipeline
+Please give a filename to typefind
+Print version information and exit
+%s - FAILED: %s
+%s - FAILED: unknown error
+Starting typefinding for %s
+%s-%u.%u
+%s version %u.%u.%u
+typefind_file
+/usr/share/locale

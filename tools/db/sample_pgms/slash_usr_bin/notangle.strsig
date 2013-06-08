@@ -1,0 +1,26 @@
+        -)   arg="$arg '$1'" ;;
+        *)   arg="$arg '$1'" ;;
+#!/bin/sh
+        case $1 in
+# Copyright 1991 by Norman Ramsey.  All rights reserved.
+                # copy tabs at markup, use width given in notangle
+                                        # deliberately ignore nountangle args
+        esac
+eval "$markup $markopt $arg | $filters $LIB/nt $opt "'; rc=$?'
+exit $rc
+export PATH
+        -filter) filters="$filters $2 | " ; shift ;;
+# $Id: notangle.nw,v 1.2 1997/09/13 20:29:56 nr Exp nr $
+LIB=/usr/lib/noweb
+        -L*) opt="$opt -t '$1'" ; markopt="$markopt -t" ;;
+markup=$LIB/markup opt= arg= markopt= filters=
+        -markup) markup="$2" ; shift ;;
+        -ml|-m3|-awk|-icn|-icon|-pascal|-c|-c++|-f77|-f90|-tex|-w[0-9][0-9]*) ;; 
+# $Name:  $
+        -*)  opt="$opt '$1'" ;;
+PATH="$PATH:$LIB" 
+# See file COPYRIGHT for more information.
+        shift
+        -t*) markopt="$markopt -t" ; opt="$opt '$1'" ;;
+        -t)  ;; # this is default
+while [ $# -gt 0 ]; do

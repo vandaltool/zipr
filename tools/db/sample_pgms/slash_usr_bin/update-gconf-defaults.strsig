@@ -1,0 +1,145 @@
+ 2005 Josselin Mouette <joss@debian.org>
+  apply_entries(filename)
+    apply_entries(realname)
+      break
+    cleanup()
+cleanup()
+# -*- coding: utf-8 -*-
+def apply_entries(filename):
+defaults_files = []
+      defaults_files.append(f)
+defaults_files.sort()
+def bool_entry(value):
+def cleanup():
+def float_entry(value):
+def htmlescape(str):
+def int_entry(value):
+def listcmp(a,b):
+def list_entry(value):
+def read_entries(filename):
+def string_entry(value):
+def write_and_apply_entries(filename):
+    dest_stamp = 0
+    dest_stamp = os.stat(os.path.join(options.dest_dir, treefile)).st_mtime
+    # Do nothing, it will be done in the trigger
+    elif value[0] == '[' and value[-1] == ']':
+    elif value in ['true','false']:
+    elif value.isdigit():
+    else:
+           env)
+  env['HOME'] = tmp_home
+  env=os.environ.copy()
+except IOError:
+  except OSError:
+      except ValueError:
+        float(value)
+  for ext in ['.dpkg-tmp', '.bak', '.tmp', '~', '.sav', '.save']:
+  for f in defaults_files:
+for f in defaults_files:
+for f in os.listdir(options.source_dir):
+  for i in range(m):
+  for key in gconf_val:
+  for line in file(filename):
+  for v in value[1:-1].split(','):
+from optparse import OptionParser
+           ['gconftool-2','--direct','--config-source',
+      gconf_val={}
+gconf_val = {}
+      gconf_val[l[0]] = l[1]
+                  help="directory where to build the GConf tree", metavar="DIR")
+                  help="directory where to find the defaults", metavar="DIR")
+                  help="do not send SIGHUP the running gconfd-2 processes")
+                  help="only regenerate configuration if needed")
+                  help="select mandatory settings directories")
+    if a[i] != b[i]:
+if 'DPKG_RUNNING_VERSION' in os.environ and options.signal:
+  if f.endswith('.entries'):
+    if f.endswith(ext):
+    if gconf_val:
+if gconf_val:
+    if len(l) == 2 and not l[0].startswith('#'):
+if not os.access(options.dest_dir,os.W_OK|os.X_OK):
+if not os.access(options.source_dir,os.R_OK|os.X_OK):
+if not os.path.isdir(options.dest_dir):
+if not os.path.isdir(options.source_dir):
+if options.ifchanged:
+if options.mandatory:
+if options.signal:
+    if os.path.exists(os.path.join(options.source_dir, f)):
+  if res:
+  if source_stamp < dest_stamp:
+    if value[0] == '"' and value[-1] == '"':
+import os,tempfile,shutil,sys
+# Licensed under the GNU LGPL, see /usr/share/common-licenses/LGPL-2.1
+    l = line.rstrip('\n').split(None,1)
+  m = min(len(a),len(b))
+    # No existing file
+  # No %gconf-tree.xml file was created.
+  """Number of starting similar elements in a and b"""
+(options, args) = parser.parse_args()
+    options.dest_dir="/var/lib/gconf/debian.mandatory"
+    options.source_dir="/usr/share/gconf/mandatory"
+os.close(1)
+  os.close(save_stdout)
+  os.dup2(save_stdout,1)
+    os.remove(options.dest_dir+'/'+treefile)
+  os.rename(options.dest_dir+'/'+treefile+'.tmp',options.dest_dir+'/'+treefile)
+    os.system('kill -s HUP `pidof gconfd-2` >/dev/null 2>&1')
+  out.close()
+  out=file(filename,'w')
+      out.write(bool_entry(value))
+  out.write('</entrylist>\n</gconfentryfile>\n')
+    out.write('<entry>\n<key>' + key + '</key>\n<value>\n')
+        out.write(float_entry(value))
+  out.write('<gconfentryfile>\n<entrylist base="/">\n')
+      out.write(int_entry(value))
+      out.write(list_entry(value))
+        out.write(string_entry(value))
+      out.write(string_entry(value[1:-1]))
+    out.write('</value>\n</entry>\n')
+parser.add_option("--destination", dest="dest_dir", default="/var/lib/gconf/debian.defaults",
+parser.add_option("--mandatory", action="store_true", default=False, dest="mandatory",
+parser.add_option("--no-signal", action="store_false", default=True, dest="signal",
+parser.add_option("--only-if-changed", action="store_true", default=False, dest="ifchanged",
+parser.add_option("--source", dest="source_dir", default="/usr/share/gconf/defaults",
+    parser.error("Destination directory does not exist.")
+    parser.error("Destination directory is not writable.")
+    parser.error("Source directory does not exist.")
+    parser.error("Source directory is not readable.")
+parser = OptionParser()
+    pass
+    read_entries(realname)
+    realname=os.path.join(options.source_dir,f)
+  realname=os.path.join(options.source_dir,f)
+  res=os.spawnvpe(os.P_WAIT,'gconftool-2',
+  ret += '  </list>\n'
+  ret = '  <list type="string">\n'
+  return '  <bool>' + value + '</bool>\n'
+  return '  <float>' + value + '</float>\n'
+      return i
+  return '  <int>' + value + '</int>\n'
+  return m
+  return ret
+  return '  <string>' + htmlescape(value) + '</string>\n'
+  return str.replace('&','&amp;').replace('>','&gt;').replace('<','&lt;').replace('"','&quot;')
+    ret += '    <value><string>' + htmlescape(v) + '</string></value>\n'
+save_stdout=os.dup(1)
+  shutil.copyfile(tmp_gconf+'/'+treefile,options.dest_dir+'/'+treefile+'.tmp')
+  shutil.rmtree(tmp_dir)
+    source_stamp = max(os.stat(realname).st_mtime,source_stamp)
+  source_stamp = os.stat(options.source_dir).st_mtime
+    sys.exit(0)
+    sys.exit(res)
+    # This is what happens when we are called in an obsolete postinst/prerm script
+tmp_dir=tempfile.mkdtemp(prefix="gconf-")
+tmp_file=tmp_dir+'/temp.entries'
+tmp_gconf=tmp_dir+'/gconf'
+tmp_home=tmp_dir+'/home'
+treefile = '%gconf-tree.xml'
+      try:
+#! /usr/bin/python
+    value = gconf_val[key]
+      write_and_apply_entries(tmp_file)
+  write_and_apply_entries(tmp_file)
+    # write the current entry
+            'xml:merged:'+tmp_gconf,'--load',filename],

@@ -1,0 +1,128 @@
+0HPLSVbcd:ehil:mn:qr:sw
+  -0, --null             separate entries with NUL on output
+__assert_fail
+basename
+  -b, --basename         match only the base name of path names
+bindtextdomain
+can not drop privileges
+can not open `%s'
+can not read two databases from standard input
+can not stat () `%s'
+  -c, --count            only print number of found entries
+check_directory_perms
+Copyright (C) 2007 Red Hat, Inc. All rights reserved.
+__ctype_b_loc
+__ctype_get_mb_cur_max
+database
+Database %s:
+dcgettext
+dcngettext
+  -d, --database DBPATH  use DBPATH instead of default database (which is
+dest == conf_dbpath.len
+dir_path_cmp_init
+  -e, --existing         only print entries for currently existing files
+__errno_location
+                         existence
+                         existence (default)
+existing
+file name length %zu in `%s' is too large
+finish_dbpath
+__fxstat64
+getgrnam
+getopt_long
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.1
+GLIBC_2.2
+GLIBC_2.2.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+../../../gnulib/lib/mbuiter.h
+  -h, --help             print this help
+ignore-case
+  -i, --ignore-case      ignore case distinctions when matching patterns
+invalid empty directory name in `%s'
+invalid regexp `%s': %s
+invalid value `%s' of --%s
+I/O error reading `%s'
+I/O error seeking in `%s'
+I/O error while writing to standard output
+_IO_putc
+_IO_stdin_used
+iswprint
+*iter->cur.ptr == '\0'
+iter->cur.wc == 0
+	%'ju byte in file names
+	%'ju bytes in file names
+	%'ju bytes used to store database
+	%'ju byte used to store database
+	%'ju directories
+	%'ju directory
+	%'ju file
+	%'ju files
+last_slash != ((void *)0)
+left >= size
+  -L, --follow           follow trailing symbolic links when checking file
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+  -l, --limit, -n LIMIT  limit output (or counting) to LIMIT entries
+LOCATE_PATH
+__lxstat64
+mbsinit (&iter->state)
+mbstowcs
+mbuiter_multi_next
+memory exhausted
+mitr@redhat.com
+mlocate 0.23.1
+mlocatedb_read
+  -m, --mmap             ignored, for backward compatibility
+nofollow
+non-option arguments are not allowed with --%s
+no pattern to search for specified
+_obstack_begin
+obstack_free
+_obstack_newchunk
+  -P, --nofollow, -H     don't follow trailing symbolic links when checking file
+__printf_chk
+  -q, --quiet            report no error messages about reading databases
+regerror
+      --regex            patterns are extended regexps
+Report bugs to %s.
+  -r, --regexp REGEXP    search for basic regexp REGEXP instead of patterns
+                         %s)
+`%s' does not seem to be a mlocate database
+Search for entries in a mlocate database.
+setlocale
+`%s' has unknown version %u
+`%s' has unknown visibility flag %u
+size != 0
+size > 1
+../src/lib.c
+../src/locate.c
+--%s specified twice
+  -S, --statistics       don't search for entries, print statistics about each
+  -s, --stdio            ignored, for backward compatibility
+__stack_chk_fail
+statistics
+strchrnul
+__strtoull_internal
+--%s would override earlier command-line argument
+This program is provided with NO WARRANTY, to the extent permitted by law.
+This software is distributed under the GPL v.2.
+towupper
+unexpected EOF reading `%s'
+uppercase_string
+Usage: locate [OPTION]... [PATTERN]...
+                         used database
+/usr/share/locale
+val == 0
+/var/lib/mlocate/mlocate.db
+  -V, --version          print version information
+wchars < left
+wholename
+write_quoted
+  -w, --wholename        match whole path name (default)
+__xstat64

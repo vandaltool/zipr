@@ -1,0 +1,976 @@
+0org.gnome.system-tools.users
+1 numeric or special
+9D$(rV9T$(wP
+A0ab1cd2ef3gh4ij5kl6mn7op8qr9st0uvwxyz0AB1CD2EF3GH4IJ5KL6MN7OP8QR9ST0UVWXYZ
+Access external storage devices automatically
+Access /proc filesystem
+Administer the system
+Administrator account cannot be deleted
+Administrator group can not be deleted
+A group name must be specified.
+An error occurred while checking for authorizations: %s
+An unknown error occurred.
+Applying changes to user settings...
+Are you sure you want to delete group "%s"?
+ASCII//TRANSLIT
+Asked on login
+assword: 
+Authentication failed
+Be able to get administrator privileges
+<big><b>%s</b>
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+Burn CDs / DVDs
+button_press_event
+button-press-event
+_Cancel Change
+Can't delete the only administrator account
+Can't revoke administration rights
+changed::showall
+changed::showroot
+changes-allow
+changes-allow-symbolic
+changes-prevent
+changes-prevent-symbolic
+Check that this character is not used.
+Check that you have provided the same password in both text fields.
+Child exited unexpectedly
+Click to make changes
+Click to prevent further changes
+committed
+Configure printers
+config-users
+Connect to Internet using a modem
+Connect to wireless and ethernet networks
+Contact your system administrator
+Co_py Old Files
+Copy old home directory to new location?
+Could not display help
+Could not find widget: %s
+Could not load %s
+Could not shutdown backend_stdin IO channel: %s
+Could not shutdown backend_stdout IO channel: %s
+Could not write queue element "%s" to channel: %s
+create_group_members_table
+create_groups_table
+create_tables
+create_user_privileges_table
+create_users_table
+__ctype_b_loc
+__data_start
+dcgettext
+delete_event
+delete-event
+_Delete Files
+_Delete old home directory
+Description
+dialog_connect_signals
+Dialog is locked.
+Dialog is unlocked.
+dialog != NULL
+dictionary
+different
+Don't Remove Account
+edit_user_profile_button
+ellipsize
+ellipsize-set
+__errno_location
+Error accessing system permissions: %s
+Error acquiring permission: %s
+Error connecting signal `%s' in widget `%s'
+Error loading UI: %s
+Error releasing permission: %s
+/etc/gnome-system-tools/user-profiles.conf
+Files owned by user %s in <tt>%s</tt> can be completely removed if you don't need them anymore. You may want to back them up before deleting the account, or keep them so that an administrator can save them later.
+g_app_info_create_from_commandline
+g_app_info_launch
+g_app_launch_context_get_type
+g_ascii_strdown
+g_ascii_table
+g_assertion_message_expr
+g_build_filename
+g_build_path
+g_cancellable_cancel
+g_cancellable_new
+g_cclosure_marshal_VOID__VOID
+g_child_watch_add
+g_convert_with_fallback
+gdk_app_launch_context_new
+gdk_app_launch_context_set_screen
+gdk_color_parse
+gdk_cursor_new
+gdk_cursor_new_for_display
+gdk_cursor_unref
+gdk_display_flush
+gdk_pixbuf_get_type
+gdk_pixbuf_new_from_file_at_size
+gdk_window_set_cursor
+g_error_free
+g_error_new
+g_error_new_literal
+g_file_has_prefix
+g_file_new_for_path
+g_file_test
+g_get_language_names
+g_hash_table_destroy
+g_hash_table_foreach
+g_hash_table_insert
+g_hash_table_iter_init
+g_hash_table_iter_next
+g_hash_table_lookup
+g_hash_table_new
+g_hash_table_new_full
+g_hash_table_remove_all
+g_hash_table_replace
+g_hash_table_steal
+g_idle_add
+g_intern_static_string
+g_io_add_watch
+g_io_channel_read_chars
+g_io_channel_set_buffered
+g_io_channel_set_encoding
+g_io_channel_set_flags
+g_io_channel_shutdown
+g_io_channel_unix_new
+g_io_channel_unref
+g_io_channel_write_chars
+Give up administration rights
+g_key_file_free
+g_key_file_get_boolean
+g_key_file_get_groups
+g_key_file_get_integer
+g_key_file_get_locale_string
+g_key_file_get_string
+g_key_file_get_string_list
+g_key_file_load_from_file
+g_key_file_new
+g_key_file_set_list_separator
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.4
+g_list_append
+g_list_find
+g_list_find_custom
+g_list_foreach
+g_list_free
+g_list_length
+g_list_prepend
+g_list_reverse
+g_malloc0
+g_markup_printf_escaped
+__gmon_start__
+/gnome/help/
+gnome-help ghelp://
+gnome-system-config
+gnome-system-tools
+g_object_class_install_property
+g_object_get
+g_object_get_data
+g_object_get_qdata
+g_object_new
+g_object_ref
+g_object_set
+g_object_set_data
+g_object_set_data_full
+g_object_set_qdata_full
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_param_spec_boolean
+g_param_spec_object
+g_param_spec_string
+g_path_is_absolute
+g_permission_acquire_async
+g_permission_acquire_finish
+g_permission_get_allowed
+g_permission_get_can_acquire
+g_permission_get_can_release
+g_permission_get_type
+g_permission_release_async
+g_permission_release_finish
+g_ptr_array_add
+g_ptr_array_free
+g_ptr_array_new
+g_quark_from_static_string
+g_queue_clear
+g_queue_foreach
+g_queue_free
+g_queue_new
+g_queue_pop_head
+g_queue_push_tail
+g_return_if_fail_warning
+group_delete
+Group ID %d is already used by group "%s"
+Group ID of the Administrator account should not be modified
+group_members_table_save
+group_members_table_set_from_group
+Group name
+Group name has invalid characters
+Group name is empty
+Group name of the administrator group user should not be modified
+group_new
+Group "%s" already exists
+groups_dialog
+groups_dialog_help
+group_settings
+group_settings_dialog
+group_settings_dialog_get_data
+group_settings_dialog_get_group
+group_settings_dialog_group_is_new
+group_settings_dialog_new
+group_settings_dialog_run
+group_settings_gid
+group_settings_members
+group_settings_name
+Group '%s' Properties
+groups_table
+groups_table_add_group
+groups_table_begin_insertions
+groups_table_clear
+groups_table_end_insertions
+groups_table_get_model
+groups_table_get_row_references
+groups_table_set_group
+g_set_application_name
+g_set_error_literal
+g_settings_get_boolean
+g_settings_new
+g_signal_connect_data
+g_signal_emit
+g_signal_handlers_disconnect_matched
+g_signal_new
+g_slice_alloc
+g_slice_free1
+g_slist_free
+g_slist_prepend
+g_slist_remove
+g_source_remove
+g_spawn_async_with_pipes
+g_spawn_close_pid
+GstDialog
+gst_dialog_add_edit_dialog
+gst_dialog_connect_signals
+gst_dialog_connect_signals_after
+gst_dialog_freeze
+gst_dialog_get_editing
+gst_dialog_get_freeze_level
+gst_dialog_get_modified
+gst_dialog_get_policy_for_widget
+gst_dialog_get_tool
+gst_dialog_get_topmost_edit_dialog
+gst_dialog_get_type
+gst_dialog_get_widget
+gst_dialog_is_authenticated
+gst_dialog_modify
+gst_dialog_modify_cb
+gst_dialog_new
+gst_dialog_remove_edit_dialog
+gst_dialog_require_authentication_for_widget
+gst_dialog_require_authentication_for_widgets
+gst_dialog_set_cursor
+gst_dialog_set_modified
+gst_dialog_stop_editing
+gst_dialog_thaw
+gst_dialog_try_set_sensitive
+gst-dialog-widget-policy
+gst_init_tool
+GST_IS_DIALOG (dialog)
+GST_IS_DIALOG (xd)
+GST_IS_TOOL (tool)
+GST_IS_USER_PROFILES (profiles)
+GstPlatformDialog
+gst_platform_dialog_get_type
+gst_platform_dialog_new
+gst_platform_dialog_populate_list
+g_strconcat
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strfreev
+g_str_hash
+g_string_append
+g_string_append_len
+g_string_append_printf
+g_string_append_unichar
+g_string_free
+g_string_new
+g_string_prepend
+g_string_set_size
+g_string_sized_new
+g_strjoin
+g_strnfill
+g_strrstr
+g_strsplit_set
+g_strv_length
+gst_tool_add_configuration_object
+gst_tool_authenticate
+gst_tool_close
+gst_tool_commit
+gst_tool_commit_async
+gst_tool_commit_error
+gst_tool_get_icon_theme
+gst_tool_get_type
+gst_tool_load_common_ui
+gst_tool_show_help
+gst_tool_update_async
+gst_tool_update_config
+gst_tool_update_gui
+GstUserProfiles
+gst_user_profiles_apply
+gst_user_profiles_get
+gst_user_profiles_get_default_profile
+gst_user_profiles_get_for_user
+gst_user_profiles_get_from_name
+gst_user_profiles_get_list
+gst_user_profiles_get_type
+GstUsersTool
+gst_users_tool_get_type
+gst_users_tool_new
+gst_users_tool_update_groups_async
+gst_users_tool_update_gui
+g_themed_icon_new_from_names
+g_timeout_add
+gtk_action_group_add_actions
+gtk_action_group_new
+gtk_action_group_set_translation_domain
+gtk_bin_get_child
+gtk_bin_get_type
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_start
+gtk_builder_add_from_file
+gtk_builder_connect_signals
+gtk_builder_get_object
+gtk_builder_new
+gtk_button_new
+gtk-cancel
+gtk_cell_layout_get_type
+gtk_cell_layout_pack_start
+gtk_cell_layout_set_attributes
+gtk_cell_layout_set_cell_data_func
+gtk_cell_renderer_pixbuf_new
+gtk_cell_renderer_text_new
+gtk_cell_renderer_toggle_new
+gtk_check_button_new_with_mnemonic
+gtk-close
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_set_active
+gtk_combo_box_set_active_iter
+gtk_combo_box_set_entry_text_column
+gtk_combo_box_set_model
+gtk_combo_box_text_append_text
+gtk_combo_box_text_get_type
+gtk_container_add
+gtk_container_get_type
+gtk_container_remove
+gtk_container_set_border_width
+gtk-delete
+gtk_dialog_add_button
+gtk_dialog_add_buttons
+gtk_dialog_get_action_area
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk-dialog-warning
+gtk_editable_get_type
+gtk_editable_select_region
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_set_max_length
+gtk_entry_set_text
+gtk_event_box_get_type
+gtk_event_box_new
+gtk_event_box_set_visible_window
+gtk_events_pending
+gtk_get_current_event_time
+gtk_get_option_group
+gtk-help
+gtk_icon_theme_get_default
+gtk_icon_theme_load_icon
+gtk_image_get_pixbuf
+gtk_image_get_type
+gtk_image_new
+gtk_image_set_from_gicon
+gtk_image_set_from_pixbuf
+gtk_image_set_from_stock
+gtk-info
+gtk_init
+GTK_IS_WIDGET (w)
+GTK_IS_WIDGET (widget)
+gtk_label_get_type
+gtk_label_new
+gtk_label_set_attributes
+gtk_label_set_justify
+gtk_label_set_line_wrap
+gtk_label_set_markup
+gtk_label_set_text
+gtk_label_set_width_chars
+gtk_list_store_append
+gtk_list_store_clear
+gtk_list_store_get_type
+gtk_list_store_insert_with_values
+gtk_list_store_new
+gtk_list_store_remove
+gtk_list_store_set
+gtk_main
+gtk_main_iteration
+gtk_main_quit
+gtk_menu_get_type
+gtk_menu_popup
+gtk_message_dialog_format_secondary_markup
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk_misc_set_padding
+gtk_notebook_append_page
+gtk_notebook_get_type
+gtk_notebook_new
+gtk_notebook_set_current_page
+gtk_notebook_set_show_border
+gtk_notebook_set_show_tabs
+gtk_progress_bar_get_type
+gtk_progress_bar_pulse
+gtk-properties
+gtk_radio_button_get_type
+gtk_radio_button_new_with_label_from_widget
+gtk_scrolled_window_get_type
+gtk_scrolled_window_new
+gtk_scrolled_window_set_policy
+gtk_scrolled_window_set_shadow_type
+gtk_spin_button_get_type
+gtk_spin_button_get_value
+gtk_spin_button_set_range
+gtk_spin_button_set_value
+gtk_table_attach_defaults
+gtk_table_get_type
+gtk_table_resize
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_toggle_button_set_active
+gtk_tree_model_filter_convert_child_path_to_path
+gtk_tree_model_filter_convert_iter_to_child_iter
+gtk_tree_model_filter_convert_path_to_child_path
+gtk_tree_model_filter_get_model
+gtk_tree_model_filter_get_type
+gtk_tree_model_filter_new
+gtk_tree_model_filter_set_visible_func
+gtk_tree_model_get
+gtk_tree_model_get_iter
+gtk_tree_model_get_iter_first
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_iter_next
+gtk_tree_model_sort_convert_child_path_to_path
+gtk_tree_model_sort_convert_iter_to_child_iter
+gtk_tree_model_sort_convert_path_to_child_path
+gtk_tree_model_sort_get_model
+gtk_tree_model_sort_get_type
+gtk_tree_model_sort_new_with_model
+gtk_tree_path_free
+gtk_tree_path_new_first
+gtk_tree_path_new_from_string
+gtk_tree_row_reference_free
+gtk_tree_row_reference_get_path
+gtk_tree_row_reference_new
+gtk_tree_selection_count_selected_rows
+gtk_tree_selection_get_selected
+gtk_tree_selection_get_selected_rows
+gtk_tree_selection_select_path
+gtk_tree_selection_set_mode
+gtk_tree_selection_unselect_all
+gtk_tree_sortable_get_type
+gtk_tree_sortable_set_sort_column_id
+gtk_tree_store_append
+gtk_tree_store_get_type
+gtk_tree_store_new
+gtk_tree_store_set
+gtk_tree_view_append_column
+gtk_tree_view_column_add_attribute
+gtk_tree_view_column_new
+gtk_tree_view_column_new_with_attributes
+gtk_tree_view_column_pack_end
+gtk_tree_view_column_pack_start
+gtk_tree_view_column_set_attributes
+gtk_tree_view_column_set_expand
+gtk_tree_view_column_set_resizable
+gtk_tree_view_column_set_sort_column_id
+gtk_tree_view_get_bin_window
+gtk_tree_view_get_cursor
+gtk_tree_view_get_model
+gtk_tree_view_get_path_at_pos
+gtk_tree_view_get_selection
+gtk_tree_view_get_type
+gtk_tree_view_insert_column
+gtk_tree_view_new
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_model
+gtk_tree_view_set_rules_hint
+gtk_tree_view_set_search_column
+gtk_ui_manager_add_ui_from_string
+gtk_ui_manager_get_widget
+gtk_ui_manager_insert_action_group
+gtk_ui_manager_new
+gtk_vbox_new
+gtk_widget_destroy
+gtk_widget_get_display
+gtk_widget_get_parent
+gtk_widget_get_preferred_height
+gtk_widget_get_preferred_size
+gtk_widget_get_preferred_width
+gtk_widget_get_realized
+gtk_widget_get_realized (GTK_WIDGET (dialog))
+gtk_widget_get_sensitive
+gtk_widget_get_toplevel
+gtk_widget_get_type
+gtk_widget_get_window
+gtk_widget_grab_focus
+gtk_widget_hide
+gtk_widget_hide_on_delete
+gtk_widget_is_toplevel
+gtk_widget_modify_base
+gtk_widget_set_allocation
+gtk_widget_set_no_show_all
+gtk_widget_set_sensitive
+gtk_widget_set_tooltip_markup
+gtk_widget_set_visible
+gtk_widget_show
+gtk_widget_show_all
+gtk_widget_size_allocate
+gtk_window_get_screen
+gtk_window_get_type
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_focus
+gtk_window_set_title
+gtk_window_set_transient_for
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+g_usleep
+g_utf8_get_char
+g_utf8_strchr
+g_utf8_strlen
+g_value_dup_object
+g_value_dup_string
+g_value_get_boolean
+g_value_get_object
+g_value_set_object
+g_value_set_string
+HomePrefix
+ID for the root user should not be modified
+If you choose to copy the files to the new location, it's safe to delete the old directory.
+If you know for sure that it works like one of the platforms listed below, you can select that and continue. Note, however, that this might damage the system configuration or downright cripple your computer.
+Incomplete path in home directory
+Incomplete path in shell
+In doubt, keep the files, and remove them later if needed.
+In doubt, use the new directory to avoid losing data, and copy files from the old directory later.
+Invalid character "%c" in comment
+Invalid data was found.
+IO Channel read error: %s
+_IO_stdin_used
+_Jv_RegisterClasses
+Keep Files
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+liboobs-1.so.5
+libpango-1.0.so.0
+libpolkit-gobject-1.so.0
+libpthread.so.0
+lock-changed
+Lock Text
+Lock Tooltip
+;_M]4a[w
+/MainMenu
+/MainMenu/Add
+/MainMenu/Delete
+/MainMenu/Properties
+Make user the _owner of the new home directory
+manage_groups
+maximum-gid
+maximum-uid
+MenuActions
+minimum-gid
+minimum-uid
+Monitor system logs
+Mount user-space filesystems (FUSE)
+n-columns
+New group
+New home directory already exists, use it?
+nopasswdlogin
+Not asked on login
+Not Authorized Text
+Not Authorized Tooltip
+on_edit_user_advanced
+on_edit_user_name
+on_edit_user_passwd
+on_edit_user_profile
+on_group_delete_clicked
+on_group_new_clicked
+on_groups_dialog_show_help
+on_group_settings_clicked
+on_manage_groups_clicked
+on_popup_add_activate
+on_popup_delete_activate
+on_popup_settings_activate
+on_table_button_press
+on_table_popup_menu
+on_table_selection_changed
+on_user_delete_clicked
+on_user_new
+on_user_new_login_changed
+on_user_new_name_changed
+on_user_passwd_current_focus_out
+on_user_passwd_dialog_response
+on_user_passwd_no_check_released
+on_user_settings_passwd_random_new
+on_user_settings_passwd_toggled
+oobs_group_add_user
+oobs_group_get_gid
+oobs_group_get_name
+oobs_group_get_type
+oobs_group_get_users
+oobs_group_is_root
+oobs_group_new
+oobs_group_remove_user
+oobs_groups_config_add_group
+oobs_groups_config_delete_group
+oobs_groups_config_find_free_gid
+oobs_groups_config_get
+oobs_groups_config_get_from_gid
+oobs_groups_config_get_from_name
+oobs_groups_config_get_groups
+oobs_groups_config_get_type
+oobs_groups_config_is_name_used
+oobs_group_set_gid
+OOBS_IS_OBJECT (object)
+OOBS_IS_SESSION (dialog->session)
+OOBS_IS_SESSION (session)
+OOBS_IS_USER (user)
+oobs_list_get
+oobs_list_get_iter_first
+oobs_list_iter_get_type
+oobs_list_iter_next
+oobs_object_authenticate
+oobs_object_commit
+oobs_object_commit_async
+oobs_object_get_type
+oobs_object_update_async
+oobs_self_config_get
+oobs_self_config_get_type
+oobs_self_config_get_user
+oobs_self_config_is_user_self
+oobs_session_get
+oobs_session_get_authentication_action
+oobs_session_get_connected
+oobs_session_get_platform
+oobs_session_get_supported_platforms
+oobs_session_get_type
+oobs_session_process_requests
+oobs_session_set_platform
+oobs_user_get_active
+oobs_user_get_full_name
+oobs_user_get_full_name_fallback
+oobs_user_get_home_directory
+oobs_user_get_home_phone_number
+oobs_user_get_login_name
+oobs_user_get_login_name (user) != NULL
+oobs_user_get_main_group
+oobs_user_get_password_disabled
+oobs_user_get_password_empty
+oobs_user_get_room_number
+oobs_user_get_shell
+oobs_user_get_type
+oobs_user_get_uid
+oobs_user_get_work_phone_number
+oobs_user_is_in_group
+oobs_user_is_root
+oobs_user_new
+oobs_users_config_add_user
+oobs_users_config_delete_user
+oobs_users_config_find_free_uid
+oobs_users_config_get
+oobs_users_config_get_available_shells
+oobs_users_config_get_encrypted_home_support
+oobs_users_config_get_from_uid
+oobs_users_config_get_type
+oobs_users_config_get_users
+oobs_users_config_is_login_used
+oobs_user_set_encrypted_home
+oobs_user_set_full_name
+oobs_user_set_home_directory
+oobs_user_set_home_flags
+oobs_user_set_home_phone_number
+oobs_user_set_main_group
+oobs_user_set_password
+oobs_user_set_password_disabled
+oobs_user_set_password_empty
+oobs_user_set_room_number
+oobs_user_set_shell
+oobs_user_set_uid
+oobs_user_set_work_phone_number
+palindrome
+pango_attr_list_insert
+pango_attr_list_new
+pango_attr_size_new
+pango_attr_style_new
+passwd_authenticate
+passwd_change_password
+passwd_destroy
+passwd_error
+passwd_get_random
+passwd_handler
+passwd_init
+Password confirmation is not correct
+Password could not be changed
+Password is too short
+permission
+permission != NULL
+Please choose a different group name.
+Please choose a different numeric identifier for group "%s".
+Please choose a different numeric identifier for %s.
+Please choose a different numeric identifier for the new group.
+Please choose another password.
+Please ensure the user has logged out before deleting this account.
+Please enter full path for home directory
+Please enter full path for shell
+Please set a valid group name consisting of a lower case letter followed by lower case letters and numbers.
+Please type again your current password.
+polkit_permission_new_sync
+popup-menu
+popup_menu_create
+popup_menu_items
+powerdev
+priv->builder != NULL
+priv->frozen != 0
+privileges_table_add_group
+privileges_table_clear
+privileges_table_save
+privileges_table_set_from_profile
+privileges_table_set_from_user
+profile != NULL
+_Properties
+property
+radio_buttons
+recovered
+Remove home folder for %s?
+_Replace With Old Files
+report_label
+report_pixmap
+report_progress
+report_window
+response
+%s_admin
+%s-admin
+%s-admin.xml
+sambashare
+selected != NULL
+Send and receive faxes
+%s/.face
+Share files with the local network
+show_lock_button
+show-lock-button
+Show lock button
+simplistic
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+%s is currently using this computer
+%s is the only administrator on this computer. Deleting this account would lock you out of administrating the system.
+%s is the only administrator on this computer. Revoking administration rights for this account would lock you out of administrating the system.
+<span color='dark grey'><i>%s</i></span></big>
+<span size="smaller">i.e.: /bin/bash</span>.
+<span size="smaller">i.e.: /home/john</span>.
+<span weight='bold' size='larger'>%s</span>
+<span weight="bold" size="larger">%s</span>
+__stack_chk_fail
+stock_person
+strerror
+successfully
+Superuser
+Suspend and hibernate the computer
+%s will no longer be able to perform administrative tasks. This account won't be allowed to get administration rights back on its own.
+System policy prevents changes.
+T$49T$Tt<
+table_populate_profiles
+test_battery_run
+text-lock
+text-not-authorized
+text-unlock
+The configuration could not be loaded
+The configuration could not be saved
+The GPermission object controlling this button
+The home directory for %s has been set to <tt>%s</tt>, which already exists. Do you want to use files from this directory, or copy the contents of <tt>%s</tt> to the new home, overwriting it?
+The home directory for %s has been set to <tt>%s</tt>, which already exists. Do you want to use files from this directory, or delete all its contents and use a completely empty home directory?
+The home directory for %s has been set to <tt>%s</tt>, which doesn't exist. Do you want to copy the contents of the old home directory (<tt>%s</tt>), or use a completely empty home directory?
+The new password has already been used recently.
+The new password is too short
+The new password is too simple
+The new password must contain numeric or special characters
+The old and new passwords are the same
+The old and new passwords are too similar
+The platform you are running is not supported by this tool
+The system configuration has potentially changed.
+The text to display when prompting the user cannot obtain authorization
+The text to display when prompting the user to lock
+The text to display when prompting the user to unlock
+The tooltip to display when prompting the user cannot obtain authorization
+The tooltip to display when prompting the user to lock
+The tooltip to display when prompting the user to unlock
+The widget "%s" should not be a toplevel widget in the .ui file
+This may leave files with invalid group ID in the filesystem.
+This would leave the system unusable.
+tool->common_ui_path != NULL
+Tool icon
+Tool name
+tooltip-lock
+tooltip-not-authorized
+tooltip-unlock
+Tool title
+< t)<-t%<.t!<_f
+ui_description
+ui-manager
+<ui>  <popup name='MainMenu'>    <menuitem action='Add'/>    <separator/>    <menuitem action='Properties'/>    <menuitem action='Delete'/>  </popup></ui>
+UM_IS_LOCK_BUTTON (button)
+UmLockButton
+um-lockbutton.c:162
+um-lockbutton.c:213
+um_lock_button_get_permission
+um_lock_button_get_type
+um_lock_button_new
+unchanged
+Unknown error
+Unlock Text
+Unlock Tooltip
+Unsupported platform
+Update content? This will lose any modification in course.
+Use audio devices
+Use CD-ROM drives
+_Use Empty Directory
+_Use Existing Files
+Use floppy drives
+Use modems
+_Use New Files
+user_advanced_dialog
+user_advanced_face
+user_advanced_name
+user_delete
+User ID %d is already used by user %s
+user_name_dialog
+user_name_entry
+user_name_face
+user_name_name
+user_new_dialog
+user_new_encrypted_home
+user_new_login
+user_new_login_letter_notice
+user_new_login_notice
+user_new_login_used_notice
+user_new_name
+user_new_notice_image
+user_new_validate_button
+user != NULL
+user_passwd_current
+user_passwd_current_label
+user_passwd_dialog
+user_passwd_face
+user_passwd_manual
+user_passwd_name
+user_passwd_no_check
+user_passwd_random_new
+user_passwd_validate_button
+User passwords must be longer than 5 characters and preferably formed by numbers, letters and special characters.
+user_privileges
+user_profile_custom
+user_profile_custom_label
+user_profile_dialog
+user_profile_face
+user_profile_name
+user_profile_table
+users-admin
+user_settings_active_label
+user_settings_active_notice
+user_settings_check_revoke_admin_rights
+user_settings_disabled_account
+user_settings_disabled_account_image
+user_settings_enable_account
+user_settings_face
+user_settings_get_user_face
+user_settings_group
+user_settings_home
+user_settings_hphone
+user_settings_locked_account
+user_settings_passwd
+user_settings_passwd1
+user_settings_passwd2
+user_settings_profile
+user_settings_profile_label
+user_settings_random_passwd
+user_settings_real_name
+user_settings_room_number
+user_settings_shell
+user_settings_show
+user_settings_uid
+user_settings_wphone
+Users Settings
+users_table
+users_table_add_user
+users-table.c
+users_table_clear
+users_table_get_current
+users_table_get_model
+users_table_get_row_references
+users_table_select_first
+users_table_select_path
+users_table_set_user
+users_table_update_current
+Use scanners
+Use tape drives
+Use USB devices
+Use video devices
+Use VirtualBox virtualization solution
+/usr/bin/passwd
+/usr/share
+/usr/share/gnome-system-tools/ui/common.ui
+/usr/share/gnome-system-tools/ui/%s.ui
+/usr/share/locale
+valid-login
+valid-name
+vboxusers
+Whether to show lock button
+widget_name
+widget-name
+Widget name
+widget named '%s' doesn't exist
+You are about to revoke your own administration rights
+You are not allowed to access the system configuration.
+You are not allowed to modify the system configuration.
+You cannot change an account's home directory or user ID while the user is logged in.
+You cannot change the user ID for the superuser account.
+You cannot disable your own account, nor change your own home directory or user ID. Run this program from another user's session to edit these settings.
+You just need to add the widget inside a GtkWindow so that it can be deparented.
+You may report this as a bug.
+Your password has been changed since you initially authenticated!

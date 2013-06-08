@@ -1,0 +1,1176 @@
+                        }
+                    }
+                }
+                } 
+            }
+        }
+        #
+#--------------------------------------------------------------------------
+##############
+##################
+###################
+$0 =~ s/^.*?(\w+)[\.\w]*$/$1/;
+\$0 =~ s/^.*?(\\w+)\[\\.\\w+\]*\$/\$1/;
+		  ( '',      '',      0,      undef );
+		## \1 .. \9 => \1 .. \9, but check for a following digit
+		    $1 eq 'g' ? ( $global = 'g' ) :
+  		    $1 eq 'p' ? ( $print  = $1  ) : ( $nmatch .= $1 );
+`1' through `9' are permitted.
+A B<}> command without a preceding B<{> command was encountered.
+A bound appearing as the first item in a BRE is taken literally.
+a bracket expression.
+A BRE contains an unterminated backreference.
+A BRE contains an unterminated bounds specification.
+A BRE contains an unterminated bracket expression.
+A B<^> that is not first, or a B<$> that is not last does not have
+a `C<$>'. Escapes are: `\a', `\t', `\n', `\f', `\r', `\e' for
+A character class is one of the class names
+A character range is written as two characters separated by B<-> and
+		$add .= '^';
+		$add .= $1;
+		$add = '\\b(?<=\\W)' if $add eq '[[:>:]]';
+		$add = '\\b(?=\\W)'  if $add eq '[[:<:]]';
+		$add .= $cnt;
+		$add .= $nc;
+	    $addr1 = "$1"; $naddr++;
+        $addr1 .= $addr2 =~ /^\d+$/ ? "..$addr2" : "...$addr2";
+	    $addr1 .= $addr2 =~ /^\d+$/ ? "..$addr2" : "...$addr2";
+	    $addr1 = 'eofARGV()'; $naddr++;
+	    $addr1  = '$icnt = ('.$addr1.')';
+	    $addr1 .= ' == $.' if $addr1 =~ /^\d+$/;
+	$addr1 .= ' == $.' if $addr1 =~ /^\d+$/;
+		$addr1 = 'm '.bre2p( $del, $regex, $fl ).'s';
+	        $addr2 = "$1"; $naddr++;
+                                   $addr2 =~ /^\d+$/ && $addr1 > $addr2;
+	        $addr2 = 'eofARGV()'; $naddr++;
+		    $addr2 = 'm '. bre2p( $del, $regex, $fl ).'s';
+address.
+address inverter (C<!>) are used to restrict the application of a
+address is not applied to the very same line to determine the end of
+        # address modifier `!'
+		$add =~ s/^\[(\^?)(\\[dw])]$/ $1 eq '^' ? uc($2) : $2 /e;
+A dollar sign (C<$>) is the line number of the last line of the input stream.
+A file specified as argument to the B<w> edit command is by default
+after the backslash. A sequence of atoms enclosed in B<\(> and B<\)>
+A I<Basic Regular Expression> (BRE), as defined in POSIX 1003.2, consists
+A I<bracket expression> is a list of characters, character ranges
+A I<hold space> is provided for saving the contents of the
+A `[' in a BRE indicates the beginning of a I<bracket expression>.
+A `\' in a BRE is used to make the subsequent character literal.
+A `\' in a substitution string is used to make the subsequent character literal.
+all lines not matching that address.
+   alnum     digit     punct
+   alpha     graph     space
+and character classes enclosed in B<[> and B<]> and matches any
+and the replacement, precede the character by a backslash (`C<\>').
+and the second line number is less than the first line number, then
+		# another simplification
+An unescaped backslash cannot be last in a BRE.
+Any address may be followed by an exclamation mark (`C<!>'), selecting
+Any character other than backslash or newline can be used instead of a 
+Any other character except C<\> or newline may be used to delimit a
+A pattern address is a basic regular expression (see 
+Append a newline and the contents of the hold space to the pattern space.
+Append a newline and the contents of the pattern space to the hold space.
+Append a newline and the next line of input to the pattern space. If
+# append optional functions, prepend prototypes
+    # append trailing code
+applying a script consisting of edit commands, and writes resulting lines
+applying the applicable commands of the edit script, writing the final
+a range.
+arbitrarily to construct ranges. Lines are numbered across all input files.
+	    $arg = $cmd;
+		$arg .= $cmd;
+		$arg = makes( $regex, $subst,
+	    $arg .= "\n" if length( $arg );
+		$arg .= "\n" if length( $arg );
+    $$argref .= "$eod\n"; 
+arguments are ignored), a Perl program is printed on standard
+arguments) in the way defined by the sed script and the option setting
+as defined in ctype(3).
+A sed address is either a line number or a pattern, which may be combined
+# A singleton command may be the 1st argument when there are no options.
+a special significance and need not be preceded by a backslash to
+as the first parameter.
+A stream editor reads the input stream consisting of the specified files
+atom; B<\{>I<count>B<\}>, specifying that many repetitions;
+atoms (not defined in POSIX 1003.2), B<psed> is capable of translating
+	    # a trailing \ indicates embedded newline
+		# a trailing \ indicates embedded NL (in replacement string)
+a vertical tab (VT) in octal.
+avoid double printing of lines.)
+B<a>, B<c> or B<i> command indicated another line.
+		$backref++;
+backreference.
+backslash (`C<\>').
+	    ### backslash escapes
+backslashes in I<text> are deleted and the following character is taken
+backslash followed by any character other than a newline is that literal
+B<^> and B<$>, matching the null string at the beginning or end
+    # bang line, declarations, prototypes
+B<{> command (but may still have individual addresses).
+become literal. The same is true for a B<]>, that does not terminate
+becomes an atom and establishes the target for a I<backreference>,
+# BeginBlock ({ command): push block start
+begin of another range. If both addresses are line numbers,
+be given on the same line as the opening B<{> command. The commands
+BEL, HT, LF, FF, CR, ESC, respectively, and `\' followed by a three-digit
+B<\{>I<minimum>B<,\}>, giving a lower limit; and
+B<\{>I<minimum>B<,>I<maximum>B<\}> finally defines a lower and upper
+   blank     lower     upper
+		# both numeric and addr1 > addr2 => eliminate addr2
+# Branch (t, b commands): check or create label, substitute default
+Branch to the B<:> function with the specified I<label> if any B<s>
+Branch to the B<:> function with the specified I<label>. If no label
+Branch to the end of the script and quit without starting a new cycle.
+# bre2p - convert BRE to Perl RE
+B<sed> command syntax is defined as
+B<sed> returns an exit code of 0 on success or >0 if an error occurred.
+by a backslash.
+By default, a line is written to standard output after the editing script
+# case preserved or case sensitive mode, $0 will be returned in the exact
+# case which will be on the disk, and that is not predictable at this time.
+`C<\>' at the point of the split; the true end of a line is marked with
+# Change (c command): is special due to range end watching
+character.
+character, and a backslash followed by an `n' is replaced by a newline
+character at the corresponding position in I<string2>. It is possible
+		## check for \-escaped magics and \n:
+	    # check that [ is not trailing
+  chomp();
+	chomp();
+            chomp( $cmd );
+  chomp( $h );
+	chop( $sl );
+	close( ARG );
+		close( RF );
+        close( SCRIPT );
+		## \<closing bracketing-delimiter> - keep '\'
+            $cmd = '';
+	    $cmd = '';
+		    $cmd .= $Commands[$icom];
+		$cmd = $Commands[$icom];
+		$cmd .= $Commands[$icom];
+	# $cmd must be now empty - exception is {
+		$cmd =~ s/\\(.)/$1/g;
+	$cmd =~ s/^\s+//;
+		    $cnt = $red.'\d';
+			$cnt = $red.'\w';
+   cntrl     print     xdigit
+		$cnt =~ s/([\\\$])/\\$1/g; # `\', `$' are magic in Perl []
+    $code .= "}";
+$Code = '';
+### $Code .= "# $arg\n";
+	$Code .= "# $cmd\n" if $doGenerate;
+		$Code .= "# $cmd\n" if $doGenerate;
+                $Code .= "# $Commands[$icom]\n" if $doGenerate;
+	            $Code .= "# $Commands[$icom]\n" if $doGenerate;
+	$Code .= "$cond$arg\n";
+	$Code .= "$cond$opcode$arg";
+	$Code .= "$cond$opcode\n";
+	$Code .= "$h:;\n";
+    $Code .= "$kwd( $addr1 ){\n  $opcode$arg}\n";
+        $code .= '  print $_, "\n" if $s;'."\n";
+$Code = $Proto . $Code;
+        $code = <<TheEnd;
+	$code = <<TheEnd;
+    $Code .= <<'[TheEnd]';
+$Code .= <<'[TheEnd]';
+	$code .= " _w( '$path' ) if \$s;\n";
+    $$codref =~ s/TheEnd/$eod/e;
+Collating elements (of bracket expressions in BREs) are not implemented.
+# Collected and compiled script
+		$Commands[$icom--] = $cmd;
+command to the selected line(s) of input.
+# Comment (# command): A no-op. Who would've thought that!
+#  Compile Time
+$ComTab{'}'}=[ 0, '',    \&EndBlock,   ';}'                              ]; #ok
+$ComTab{'#'}=[ 0, 'str', \&Comment,    ''                                ]; #ok
+$ComTab{':'}=[ 0, 'str', \&Label,      ''                                ]; #ok
+$ComTab{'='}=[ 1, '',    \&Emit,       '{ print "$.\n" }'                ]; #ok
+$ComTab{'{'}=[ 2, '',    \&BeginBlock, '{'                               ]; #ok
+$ComTab{'a'}=[ 1, 'txt', \&Emit,       '{ push( @Q, <<'."'TheEnd' ) }\n" ]; #ok
+$ComTab{'b'}=[ 2, 'str', \&Branch,     '{ goto XXX; }'                   ]; #ok
+$ComTab{'c'}=[ 2, 'txt', \&Change,     <<'-X-'                           ]; #ok
+$ComTab{'d'}=[ 2, '',    \&Emit,       <<'-X-'                           ]; #ok
+$ComTab{'g'}=[ 2, '',    \&Emit,       '{ $_ = $Hold };'                 ]; #ok
+$ComTab{'G'}=[ 2, '',    \&Emit,       '{ $_ .= "\n"; $_ .= $Hold };'    ]; #ok
+$ComTab{'H'}=[ 2, '',    \&Emit,       '{ $Hold .= "\n"; $Hold .= $_; }' ]; #ok
+$ComTab{'h'}=[ 2, '',    \&Emit,       '{ $Hold = $_ }'                  ]; #ok
+$ComTab{'i'}=[ 1, 'txt', \&Emit,       '{ print <<'."'TheEnd' }\n"       ]; #ok
+$ComTab{'l'}=[ 2, '',    \&Emit,       '{ _l() }'                        ]; #okUTF8
+$ComTab{'n'}=[ 2, '',    \&Emit,       <<'-X-'                           ]; #ok
+$ComTab{'p'}=[ 2, '',    \&Emit,       '{ print $_, "\n"; }'             ]; #ok
+$ComTab{'P'}=[ 2, '',    \&Emit,       <<'-X-'                           ]; #ok
+$ComTab{'q'}=[ 1, '',    \&Emit,       <<'-X-'                           ]; #ok
+$ComTab{'r'}=[ 1, 'str', \&Emit,       "{ _r( '-X-' ) }"                 ]; #ok
+$ComTab{'s'}=[ 2, 'sub', \&Emit,       ''                                ]; #ok
+$ComTab{'t'}=[ 2, 'str', \&Branch,     '{ goto XXX if _t() }'            ]; #ok
+$ComTab{'w'}=[ 2, 'str', \&Write,      "{ _w( '-X-' ) }"                 ]; #ok
+$ComTab{'x'}=[ 2, '',    \&Emit,       '{ ($Hold, $_) = ($_, $Hold) }'   ]; #ok
+$ComTab{'y'}=[ 2, 'tra', \&Emit,       ''                                ]; #ok
+	$cond = $negated ? "unless( $addr1 )\n" : "if( $addr1 )\n";
+    $CondReg = 0;
+  $CondReg = 0;
+	$CondReg = 0;   # cleared on t
+  \$CondReg ||= \$s;
+consisting of the substring that actually matches the enclosed atoms.
+contents of the pattern space and a newline to the standard output.
+context (where other B<sed> implementations appear to deviate, too),
+### continue OK => next CYCLE;
+            # copy file to stdout: slow, but safe
+Copy the contents of the I<file> to standard output immediately before
+C<PSEDEXTBRE='E<lt>E<gt>wW'>.
+    $Defined{0} = ' #1';
+        $Defined{$#Commands} = " #$expr";
+	    $Defined{$fst} = "$path";
+definition of B<sed>, and is compatible with the I<OpenBSD>
+Deletes the pattern space and starts the next cycle.
+Deletes the pattern space through the first embedded newline or to the end.
+	delete( $tr{'-'} );
+    # Diagnose duplicate contradicting mappings
+    || die( "$0: can't open $file for reading ($!)\n" );
+	|| die( "$0: can't open $file for reading ($!)\n" );
+		die( "$0: can't open $path for writing: ($!)\n" );
+    die( "$0: internal error - generated incorrect Perl code: $@\n" );
+	|| die( "$0: $path: cannot open ($!)\n" );
+		# dirty hack to process command on '{' line
+distribute, and sell this program (and any modified variants) in any
+	$doAutoPrint = 0;
+$doAutoPrint = 0 if substr( $Commands[0], 0, 2 ) eq '#n';
+\$doAutoPrint = $doAutoPrint;
+	     \$doAutoPrint \$doOpenWrite \$doPrint };
+	$doOpenWrite = 0;
+\$doOpenWrite = $doOpenWrite;
+{ $doPrint = 0;
+    $doPrint = $doAutoPrint;
+	    $doPrint = $doAutoPrint;
+Each command must be on a line of its own, except where noted in
+Editing commands from the specified I<script-file> are read and appended
+                    } else {
+                } else {
+            } else {
+        } else {
+    } else {
+} else {
+	    } else {
+	} else {
+		    } else {
+		} else {
+                } else {               ## \B, \w, \W remain the same
+            } else { ## \ <char> => <char> ("as if `\' were not present")
+	    } else { ## everything else (includes &): omit \
+        } elsif( @ARGV ){
+        } elsif( $c eq '.' ){ ## . => .
+        } elsif( $c eq '[' ){
+        } elsif( $c eq '&' ){ ## & => $&
+	} elsif( $c eq '*' ){ ## * => * but \* if there's nothing preceding it
+        } elsif( $c eq $led ){ ## unescaped <closing bracketing-delimiter>
+        } elsif( $c eq '^' ){ ## not magic unless 1st, but in Perl: \-quote
+        } elsif( $c eq '$' ){ ## not magic unless last, but in Perl: \-quote
+        } elsif( $c eq ']' ){ ## unmatched ] is not magic
+	} elsif( $c =~ /[\$\@$led]/ ){ ## magic in Perl's substitution string
+	    } elsif( $cmd =~ s{^(/)}{} || $cmd =~ s{^\\(.)}{} ){
+	} elsif( $cmd =~ s{^(/)}{} || $cmd =~ s{^\\(.)}{} ){
+	    } elsif( $cmd =~ s/^\$\s*// ){
+	} elsif( $cmd =~ s/^\$\s*// ){
+        } elsif( $c =~ /[|+?{}()]/ ){ ## not magic in BRE, but in Perl: \-quote
+		    } elsif( $min == 0 && "$com$max" eq ',' ){
+		    } elsif( $min == 1 && "$com$max" eq ',' ){
+            } elsif( $nc =~ /^[1-9]$/ ){
+            } elsif( $nc =~ /[1-9]/ ){ ## \1 - \9 => ${1} - ${9}
+            } elsif( $nc eq '(' ){ ## \( => (
+            } elsif( $nc eq ')' ){ ## \) => )
+                } elsif( $nc eq '>' ){ ## \> => \b(?=\W), be precise
+	    } elsif( $nc eq $led ){
+            } elsif( $nc eq '{' ){ ## repetition factor \{<i>[,[<j>]]\}
+                } elsif( $nc eq 'y' ){ ## \y => \b
+	    } elsif( $nc =~ /([[.*\\n])/ ){
+    } elsif( $opcode =~ s/-X-/$arg/e ){
+    } elsif( $opcode =~ /TheEnd/ ){
+    } elsif( $opt eq 'a' ){
+                } elsif( $rep =~ /^(\d+)(,?)(\d*)?$/ ){
+            } elsif( substr( $res, -1, 1 ) ne '*' ){
+	} elsif( $tabref->[1] eq 'sub' ){
+	} elsif( $tabref->[1] eq 'tra' ){
+	} elsif( $tabref->[1] eq 'txt' ){
+            } elsif( $useEXTBRE && ( $nc =~ /[$useEXTBRE]/ ) ){
+Embedded newlines in I<text> must be preceded with a backslash.  Other
+    Emit( $addr1, $addr2, $negated, $opcode, $arg, $fl );
+    Emit( $addr1, $addr2, $negated, $opcode, '', $fl );
+    Emit( $addr1, $addr2, $negated, $opcode, $path, $fl );
+# Emit: create address logic and emit command
+enclosed in B<[:> and B<:]> and represents the set of characters
+# EndBlock (} command): check proper nesting
+    # Ensure that any '-' is up front.
+        $eod++;
+# eofARGV: end-of-file test
+EOS:    if( $doPrint ){
+        $error++;
+	        $error++;
+	    $error++;
+		    $error++;
+		$error++;
+			$error++;
+# Error handling
+# eval code - check for errors
+eval $Code . $Func;
+eval 'exec $perlpath -S \$0 \${1+"\$@"}'
+    eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
+    # execute: make handles (and optionally open) all w files; run!
+execution of the script is restarted.
+        exit( 0 );
+    exit( 0 );
+   exit( 0 );
+            exit( 1 );
+        exit( 1 );
+    exit( 1 ) if $error;
+        exit( 1 ) unless makeHandle( $p );
+   exit( 1 ) unless makeHandle( \$p );
+	$expr++;
+		## extensions - at most <>wWyB - not in POSIX
+files is delayed until the first line is actually written to the file.
+    # final cleanup: eliminate raw HTs
+Finally, B<\> followed by one of the digits B<0> through B<9> is a
+first address is not applied to the very same line to determine the
+		  $fl );
+				  $fl );
+            # flush open w files so that reading this file gets it all
+    for my $fc ( sort keys( %tr ) ){
+    for( my $i = 0; $i < length($fr); $i++ ){
+    for( my $ic = 0; $ic < length( $pat ); $ic++ ){
+    for( my $ic = 0; $ic < length( $subst ); $ic++ ){
+    for( my $icom = 0; $icom < @Commands; $icom++ ){
+    for my $lab ( keys( %Label ) ){
+    for my $p ( keys( %wFiles ) ){
+for my \$p ( $wf ){
+    for my $q ( @Q ){
+	    for my $used ( @{$Label{$lab}{used}} ){
+	$fr .= $fc;
+    $fr =~ s/([{}])/\$1/g;
+    $fr =~ s/\n/\\n/g;
+    $fr = $to = '';
+	$fr = $to = '';
+	( $fr, $to ) = ( '-', $tr{'-'} );
+    $Func .= <<'[TheEnd]';
+$Func = <<'[TheEnd]';
+function synopsis below.
+# generate leading code
+# generate the sed loop
+	$GenKey{$key} = 1;
+        $GenKey{'w'} = 1;
+# getsARGV: Read another input line into argument (default: $_).
+		$goon = $cmd =~ s/\\$//;
+  goto EOS;
+	    $h = $1 . $h;
+    # hack (not unbreakable :-/) to avoid // matching an empty string
+        $handle = $wFiles{$path};
+        $handle = $wFiles{$path} = gensym();
+has been applied to it. The B<-n> option suppresses automatic printing.
+=head1 AUTHOR
+=head1 BASIC REGULAR EXPRESSIONS
+=head1 BUGS
+=head1 COMMANDS
+=head1 COPYRIGHT and LICENSE
+=head1 DESCRIPTION
+=head1 DIAGNOSTICS
+=head1 ENVIRONMENT
+=head1 EXAMPLE
+=head1 NAME
+=head1 OPTIONS
+=head1 SED SCRIPT TRANSLATION
+=head1 SEE ALSO
+=head1 STANDARDS
+=head1 SYNOPSIS
+=head2 Additional Atoms
+=head2 Addresses
+=head2 Atoms
+=head2 Bounds
+=head2 Bracket Expressions
+=head2 Functions
+	$h = 'EOS';
+# Here we go again...
+# History:  Aug 12 2000: Original version.
+	    $h = $Label{$lab}{name};
+	    $h = $Label{$lab}{name} = newLabel();
+    $Hold    = '';
+#   honoring and cleaning up of \-escaped <del>'s
+	$h =~ s/\a/\\a/g;
+	$h =~ s/\e/\\e/g;
+	$h =~ s/\f/\\f/g;
+    $h =~ s/\\/\\\\/g;
+	$h =~ s/\n/\\n/g;
+        $h =~ s/([^[:print:]])/sprintf("\\%03o", ord($1))/ge;
+	$h =~ s/\r/\\r/g;
+	$h =~ s/\t/\\t/g;
+	$h = substr( $h, $mcpl );
+                $ic++;
+	    $ic++;
+		$ic++;
+                $ic = $endpos + 1;
+		$ic += length( $1 );
+		$ic += length( $cnt );
+    $ic < length($$pref)-1 ? substr( $$pref, $ic+1, 1 ) : '';
+		    $icom++;
+		$icom++;
+if( $@ ){
+    if( @ARGV == 0 ){
+If automatic printing is enabled, write the pattern space to the standard
+        if( $c eq '\\' ){
+	if( $cmd !~ /^\s*$/ ){
+        if( $cmd !~ s/^([:#={}abcdDgGhHilnNpPqrstwxy])\s*// ){
+ 	    if(      $cmd =~ s/^(\d+)\s*// ){
+	if(      $cmd =~ s/^(\d+)\s*// ){
+	    if( $cmd =~ s{^([^\\\n])}{} ){
+if( @Commands == 0 ){
+	if( $#Commands >= $fst ){
+    if( defined( $addr1 ) ){
+	if( defined( $addr1 ) ){
+        if( defined( $addr1 ) && $cmd =~ s/,\s*// ){
+        if( defined( $addr2 ) ){
+    if( defined( $addr2 ) ){
+	    if( defined( $addr2 ) ){
+		if( ! defined( $arg ) ){
+	    if( ! defined( $arg = makey( $fr, $to, $fl ) ) ){
+	    if( ! defined( $fr ) || ! length( $cmd ) ){
+    if( defined( $jcom ) ){
+    if( defined( $path ) ){
+	    if( defined( $regex ) ){
+		if( ! defined( $regex ) ){
+		if( defined( $regex ) ){
+	    if( ! defined( $to ) ){
+	    if( $d eq '\\' ){
+      if $doGenerate;
+if( $doGenerate ){
+	if( $doOpenWrite ){
+    if( ! $doOpenWrite && ! defined( fileno( $handle ) ) ){
+                if( $endpos < 0 ){
+	if( exists( $Defined{$icom} ) ){
+	if( ! exists( $Label{$lab} ) ){
+	    if( exists( $Label{$lab}{defined} ) ){
+	if( ! exists( $Label{$lab}{defined} ) ){
+    if( exists( $tr{'-'} ) ){
+	if( exists( $tr{$fc} ) && $tr{$fc} ne $tc ){
+    if( ! exists( $wFiles{$path} ) || $wFiles{$path} eq '' ){
+	    if( exists( $wFiles{$$q} ) && $wFiles{$$q} ne '' ){
+if( $GenKey{'l'} ){
+if( $GenKey{'r'} ){
+if( $GenKey{'t'} ){
+if( $GenKey{'w'} ){
+		if( $global && length( $nmatch ) || length( $nmatch ) > 1 ){
+    if( $h =~ /[^[:print:]]/ ){
+	    if( $ic < length($pat) - 1 &&
+	    if( $ic >= length( $pat ) - 1 ){
+		    if( $icom > $#Commands ){
+		if( $icom > $#Commands ){
+	    if( $key eq '{' ){
+	    if( length( $1 ) ){
+        if( length( $arg ) ){
+    if( length( $arg ) ){
+	    if( ! length( $cmd ) ){
+	    if( length($fr) != length($to) ){
+  if(length($_)){ goto BOS } else { goto EOS }
+    if( length( $lab ) ){
+                    if( length( $max ) ){
+    if( length( $nmatch ) ){
+	if( length( $sl ) % 2 == 0 ){
+	if( $l =~ s/(?<!\\)(\\[0-7]{0,2})$// ){
+                        if( $max < $min ){
+		    if( $min == 0 && $max eq '1' ){
+	if( $naddr > $tabref->[0] ){
+		if( $nc > $backref ){
+	    if( $nc =~ /[\\$del$led]/ ){ ## \ and delimiter
+            if( $nc eq '' ){
+                if(      $nc eq '<' ){ ## \< => \b(?=\w), be precise
+            if( $nc eq $del ){ ## \<pattern del> => \<pattern del>
+  	    if( $nc eq ']' || $nc eq '-' ){
+	if( ! $negated ){
+If no address is given, the command selects every line.
+If one address is given, it selects the line (or lines) matching the
+    if( $opcode eq '' ){
+	    if( ! open( $handle, ">$path" ) ){
+	    if( open( RF, "<$$q" ) ){
+    if( $opt eq '-' && $arg eq '' ){
+    if(      $opt eq 'e' ){
+    if( $opt eq 'f' ){
+    if( $opt eq 'h' || $opt eq '?' ){
+    if( $opt eq 'n' ){
+    if( $parlev ){
+                if( $parlev < 0 ){
+	    if( $pdef =~ /^ #(\d+)/ ){
+		if( peek($pat,$ic) =~ /[0-9]/ ){
+	    if( peek($pat,$ic) eq '^' ){
+    if( $print ){
+{ if( /^(.*)/ ){ print $1, "\n"; } }
+		if( $red =~ s/0-9// ){
+		    if( $red =~ s/A-Z// && $red =~ s/a-z// && $red =~ s/_// ){
+	if( ref( $q ) ){
+  	        if( $res =~ /^\^?$/ ){
+	    if( $res =~ /^\^?$/ ){
+	    if( $rstr =~ /^((?:\[:\(\w+|[><]\):\]|[^]-](?:-[^]])?)*)/ ){
+	if $running_under_some_shell;
+            if( $sub && (length( $3 ) > 0) ){
+	if(      $tabref->[1] eq 'str' ){
+	if( &{$tabref->[2]}( $addr1, $addr2, $negated,
+If the first character after B<[> is B<^>, the sense of matching is
+If the first (second) address is a matching pattern, the second 
+If the pattern space becomes empty, a new cycle is started, otherwise
+If the substitution was made, print the new value of the pattern space.
+If the substitution was made, write the new value of the pattern space
+If this program is invoked with the name F<s2p> it will act as a
+If this program is invoked with the name F<s2p>, it will act as a
+    if( $wf ne "''" ){
+implementation, except where otherwise noted (see L<"BUGS">).
+In an B<s> command, either the `g' flag and an n-th occurrence flag, or
+in B<[> and B<]> (see below); and any single character with no
+include a literal 'C<]>' place it first or immediately after an
+initial B<^>. To include a literal `C<->' make it the first (or
+    # Initialize.
+        # insert command as comment in gnerated code
+interpretation, which will re-use the "last last successfully executed
+in the BRE.
+In the pattern space, replace all characters occurring in I<string1> by the
+inverted.
+    $isEOF = 0;
+	$isEOF = 0;
+is given, branch to the end of the script.
+is "the last pattern used, at run time". This deviates from the Perl
+is written to standard output. With an address range, this occurs at
+=item [0addr]B<}>
+=item [0addr]B<#> [I<comment>]
+=item [0addr]B<:> [I<label>]
+=item [1addr]B<=>
+=item [1addr]B<a\> I<text>
+=item [1addr]B<i\> I<text>
+=item [1addr]B<q>
+=item [1addr]B<r> I<file>
+=item [2addr]B<b> [I<label>]
+=item [2addr]B<c\> I<text>
+=item [2addr]B<d>
+=item [2addr]B<g>
+=item [2addr]B<h>
+=item [2addr]B<{> [I<command>]
+=item [2addr]B<l>
+=item [2addr]B<n>
+=item [2addr]B<p>
+=item [2addr]B<s/>I<regular expression>B</>I<replacement>B</>I<flags>
+=item [2addr]B<t> [I<label>]
+=item [2addr]B<w> I<file>
+=item [2addr]B<x>
+=item [2addr]B<y>B</>I<string1>B</>I<string2>B</>
+=item ambiguous translation for character `%s' in `y' command
+=item B<$>
+=item B<1>..B<9>
+=item B<-a>
+=item B<\B> Match the empty string between any two either word or non-word characters.
+=item B<\E<gt>> This is the same as C<[[:E<lt>:]]>.
+=item B<-e> I<script>
+=item B<\E<lt>> This is the same as C<[[:E<gt>:]]>.
+=item B<-f> I<script-file>
+=item B<g>
+=item B</>I<regular expression>B</>
+=item B<-n>
+=item B<p>
+=item B<w> I<file>
+=item B<\w> This is an abbreviation for C<[[:alnum:]_]>.
+=item B<\W> This is an abbreviation for C<[^[:alnum:]_]>.
+=item B<\y> Match the empty string at a word boundary.
+=item `[' cannot be last in pattern
+=item `\' cannot be last in pattern
+=item `\' cannot be last in substitution
+=item conflicting flags `%s'
+=item duplicate label %s (first defined at %s)
+=item excess address(es)
+=item extra characters after command (%s)
+=item illegal option `%s'
+=item improper delimiter in s command
+=item I<number>
+=item invalid address after `,'
+=item invalid backreference (%s)
+=item invalid repeat clause `\{%s\}'
+=item malformed regex, 1st address
+=item malformed regex, 2nd address
+=item malformed regular expression
+=item malformed substitution expression
+=item malformed `y' command argument
+=item maximum less than minimum in `\{%s\}'
+=item no script command given
+=item `\' not valid as delimiter in `y' command
+=item option -e requires an argument
+=item option -f requires an argument
+=item `s' command requires argument
+=item start of unterminated `{'
+=item string lengths in `y' command differ
+=item undefined label `%s'
+=item unexpected `}'
+=item unexpected end of script
+=item unknown command `%s'
+=item unterminated `['
+=item unterminated `\('
+=item `\{' without closing `\}'
+=item `\)' without preceding `\('
+=item `y' command requires argument
+I<Wolfgang.Laun@alcatel.at>.
+#           Jul 23 2007: Fix bug in regex stripping (M.Thorland)
+# Label (: command): label definition
+        $Label{$lab}{defined} = $fl;
+# Labels
+$labNum = 0;
+    $lab =~ s/\s+//;
+    $lab =~ s/\s+//; # no spaces at end
+		    last;
+			last;
+  last CYCLE;
+  last CYCLE unless getsARGV();
+  last CYCLE unless getsARGV( $h );
+L<"Basic Regular Expressions">), between the delimiting character C</>.
+    $led = '' if $led eq $del;
+    $led =~ tr/{([</})]>/;
+literally.
+Literal newlines may be embedded in the replacement string by
+# _l: l command processing
+    $loc ||= '';
+    $loc .= ': ' if length( $loc );
+	    # look for [:...:] and x-y
+# lower case $0 below as a VMSism.  The VMS build procedure creates the
+# magic "#n" - same as -n option
+#### MAIN ####
+	# Make Code
+    # make embedded delimiters and newlines safe
+    # make embedded newlines safe
+# makeHandle: Generates another file handle for some file (given by its path)
+# makes - construct Perl s/// from sed s///
+# makey - construct Perl y/// from sed y///
+#           Mar 25 2002: Rearrange generated Perl program.
+matches, and ends (including that line) when the second address matches.
+matching the regular expression. The strings `C<\1>' through `C<\9>' are
+match the null string at the beginning and end of a word respectively.
+                        $max = '';
+	    ## may have a trailing `-' before `]'
+    # might just as well sort it...
+#           Move on to next input file, and reset EOF flag $isEOF.
+	    # multi-line text
+Multiple commands must be separated by newlines.
+multiple n-th occurrence flags are specified. Note that only the digits
+	    my $add = '[';
+    my( $addr1, $addr2, $negated, $opcode, $arg, $fl ) = @_;
+    my( $addr1, $addr2, $negated, $opcode, $lab, $fl ) = @_;
+    my( $addr1, $addr2, $negated, $opcode, $path, $fl ) = @_;
+	my $arg = '';
+    my $arg = $2;
+    my $argref = @_ ? shift() : \$_; 
+    my $backref  = 0;
+	my $bl = pop( @BlockStack );
+    my $bracklev = 0;
+        my $cmd;
+	my $cmd = $Commands[$icom];
+ 	        my $cnt = $1;
+    my $code;
+    my( $codref, $argref ) = @_;
+                    my $com = $2 || '';
+my( @Commands, %Defined, @BlockStack, %Label, $labNum, $Code, $Func );
+my %ComTab;
+    my $cond = '';
+        my $c = substr( $pat, $ic, 1 );
+        my $c = substr( $subst, $ic, 1 );
+	    my $del = $1;
+		my $del = $1;
+    my( $del, $pat, $fl ) = @_;
+    my( $del, $sref ) = @_;
+    my( $del, $sref, $sub ) = @_;
+    my( $del, $subst, $fl ) = @_;
+		my $dl = $Label{$lab}{defined};
+my $doAutoPrint = 1;          # automatic printing of pattern space (-n => 0)
+my $doGenerate  = lc($0) eq 's2p';
+my $doOpenWrite = 1;          # open w command output files at start (-a => 0)
+	    my $d = substr( $cmd, 0, 1 ); $cmd = substr( $cmd, 1 );
+                my $endpos = index( $pat, '\\}', $ic );
+    my $eod = 'EOD000';
+    my $error = 0;
+my $expr = 0;
+	my $fc = substr($fr,$i,1);
+    my $file = shift( @ARGV );
+	my $file = shift( @ARGV );
+        my $fl = "$pfil$plin";
+	    my $fr = stripTrans( $d, \$cmd );
+    my( $fr, $to, $fl ) = @_;
+	my $fst = $#Commands + 1;
+my %GenKey;
+		my( $global, $nmatch, $print, $write ) =
+	    my $goon = $cmd =~ /(.*)\\$/;
+    my $h = $_;
+    my $h;
+    my $handle;
+    my $handle = $wFiles{$path};
+    my( $h, $icnt, $s, $n );
+	    my $h = substr( $cmd, 0, 1 );
+    my $jcom = pop( @BlockStack );
+        my $key = $1;
+    my $kwd = $negated ? 'unless' : 'if';
+    my $led = $del;
+	my $l = substr( $h, 0, $mcpl-1 );
+                    my $max = $3;
+    my $mcpl = 70;
+                    my $min = $1;
+    my( $msg, $loc ) = @_;
+            my $nc = peek($pat,$ic);
+	    my $nc = peek($pat,$ic);
+            my $nc = peek($subst,$ic);
+	my( $negated, $naddr, $addr1, $addr2 );
+    my $opt = $1;
+    my $parlev = 0;
+        my $path;
+    my( $path ) = @_;
+    my $path = shift();
+    my $path   = shift();
+    my( $pdef, $pfil, $plin );
+my $perlpath;
+    my( $pref, $ic ) = @_;
+my $Proto = "# prototypes\n";
+    my $rc;
+    my $rc = 0;
+ 	        my $red = $cnt;
+    my $regex = $del;
+	        my $regex = stripRegex( $del, \$cmd );
+	    my $regex = stripRegex( $del, \$cmd );
+		my $regex = stripRegex( $del, \$cmd, "s" );
+    my( $regex, $subst, $path, $global, $print, $nmatch, $fl ) = @_;
+                my $rep = substr( $pat, $ic+1, $endpos-($ic+1) );
+    my $res = '';
+    my $res = $CondReg;
+	    my $rstr = substr( $pat, $ic+1 );
+	my $scom = $icom;
+        my $sl = $2;
+my $startperl;
+		my $subst = stripRegex( $del, \$cmd );
+my $svOpenWrite = 0;          # save $doOpenWrite
+    my $t = '';
+	my $tabref = $ComTab{$key};
+	my $tc = substr($to,$i,1);
+	    my $to = stripTrans( $d, \$cmd );
+    my %tr;
+my $useDEBUG    = exists( $ENV{PSEDDEBUG} );
+my $useEXTBRE   = $ENV{PSEDEXTBRE} || '';
+    my $wf = "'" . join( "', '",  keys( %wFiles ) ) . "'";
+    my $z = "\000"; $z =~ /$z/;
+		    $naddr++;
+		$naddr++;
+	$naddr = 0;
+        $negated = $cmd =~ s/^!\s*//;
+	    next;
+		    next;
+	next unless length( $cmd );
+  $_ .= "\n$h";
+  	        ### $nmatch =~ s/^(\d)\1*$/$1/; ### may be dangerous?
+{ \$n = $nmatch;
+   #no autoprint
+(Note that neither is identical to Perl's `\b' atom.)
+		## \[ \. \* \\ \n stay as they are
+    # n-th occurrence
+octal number for all other non-printable characters.
+of a string, respectively; a I<bracket expressions>, enclosed
+of: B<.>, B<^>, B<$>, B<[>, B<*>, B<\>, matching the character
+of I<atoms>, for matching parts of a string, and I<bounds>, specifying
+of input, either by executing the B<N> function or by beginning a new cycle.
+of the pattern space.
+only the first line is selected.
+on the program's own text, and piping the output into C<sort -u>.
+	    $opcode = 'if( $icnt =~ /E0$/ )' . $opcode;
+    $opcode =~ s/XXX/$h/e;
+    open( ARG, "<$file" )
+	open( ARG, "<$file" )
+    openARGV();
+# openARGV: open 1st input file
+opened before input processing starts. Using B<-a>, opening of such
+	open( $handle, ">$path" )
+        open( SCRIPT, "<$path" ) || die( "$0: $path: could not open ($!)\n" );
+		open( $wFiles{$$q}, ">>$$q" );
+or execution of a B<t> function. If no label is given, branch to the end of
+(or standard input, if none are given), processes is line by line by
+other significance (matching that character). A B<\> before one
+output. Replace the pattern space with the next line of input. If
+output, which will process the input stream (as read from all
+                $parlev--;
+                $parlev++;
+	    ## parse []: [^...] [^]...] [-...]
+    Parse();
+    # parse - avoid opening files when doing s2p
+		# parse s/// modifier: g|p|0-9|w <file>
+# part of s///, trailing spaces have to be kept as the initial
+# part of the replacement string.
+	    $path = $arg;
+	    $path = shift( @ARGV ); 
+    $pat = substr( $pat, 1, length($pat) - 2 );
+pattern address when the initial delimiter is prefixed with a
+pattern space for later use.
+	    $pdef = $Defined{$icom};
+perl(1), re_format(7)
+($perlpath = <<'/../') =~ s/\s*\z//;
+#!$perlpath -w
+		$pfil = 'expression #';
+		$pfil = "$pdef l.";
+	    $plin++;
+		$plin = $1;
+		$plin = 1;
+		# POSIX 1003.2 has this (optional) for begin/end word
+preceding a newline with a backslash.
+		print ", addr2=$addr2 " if $useDEBUG;
+   print $Code;
+    print "Code:\n$Code$Func";
+print "Code:\n$Code$Func" if $useDEBUG;
+	print " command:$cmd\n" if $useDEBUG;
+   print $Func;
+    print $handle $_, "\n";
+    print "$h\$\n";
+		    print $line;
+	print $l, "\\\n";
+            print $_, "\n";
+	print 'negated' if $useDEBUG && $negated;
+{ print $_, "\n" if $doPrint;
+	    print "Parse: addr1=$addr1" if $useDEBUG;
+	print "Parse:$cmd:\n" if $useDEBUG;
+	    print $q;
+        printQ() if @Q;
+  printQ() if @Q;
+{ printQ() if @Q;
+# printQ: Print queued output which is either a string or a reference
+   print "Run();\n";
+    print STDERR "           [-an] [-e command] [-f script-file] [file...]\n";
+print STDERR "Files: @ARGV\n" if $useDEBUG;
+    print STDERR "Usage: sed [-an] command [file...]\n";
+Prints the current line number on the standard output.
+Prints the pattern space through the first embedded newline or to the end.
+    print "stripRegex:$del:$$sref:\n" if $useDEBUG;
+    print "stripTrans:$del:$$sref:\n" if $useDEBUG;
+Print the contents of the pattern space: non-printable characters are
+    print <<TheEnd;
+	print <<TheEnd;
+{ print <<'TheEnd'; } $doPrint = 0; goto EOS;
+Print the pattern space to the standard output. (Use the B<-n> option
+   :process
+    $Proto .= "sub _l();\n";
+    $Proto .= "sub _r(\$);\n";
+    $Proto .= "sub _t();\n";
+    $Proto .= "sub _w(\$);\n";
+   psed [-an] [-e script] [-f script-file] [file ...]
+   psed [-an] script [file ...]
+# (p)sed - a stream editor
+psed - a stream editor
+    push( @BlockStack, [ $fl, $addr1, $addr2, $negated ] );
+            push( @Commands, $cmd );
+	    push( @Commands, shift( @ARGV ) ); 
+	    push( @Commands, split( "\n", $arg ) );
+    push( @Commands, split( "\n", shift( @ARGV ) ) );
+	push( @{$Label{$lab}{used}}, $fl );
+    push( @Q, \$path );
+(Ranges are very collating-sequence-dependent, and portable programs
+    $rc;
+	$rc = 1;
+		$rc = 1;
+	$rc = Emit( $addr1, $addr2, $negated, $opcode, $arg, $fl );
+reading I<file> is silently ignored.
+	$regex .= $1.$sl.$del;
+	$regex .= $3;
+		$regex = bre2p( $del, $regex, $fl );
+    $regex =~ s/\n/\\n/g;
+regular expression". Since keeping track of pattern usage would create
+	# remove incomplete \-escape from end of line
+repetitions of a preceding atom.
+replaced by the corresponding subpattern (see L<"Basic Regular Expressions">).
+Replace only the n-th matching substring of the pattern space.
+Replace the contents of the hold space with the pattern space.
+Replace the contents of the pattern space with the hold space.
+represents all characters (according to the character collating sequence)
+                $res .= '(';
+                $res .= ')';
+                $res .= '\\*';
+            $res .= ']';
+            $res .= '$&';
+    $res;
+		    $res .= '(?:)';
+			$res .= '?';
+			$res .= '*';
+			$res .= '+';
+		$res .= $add;
+                    $res .= '\\b';
+                    $res .= '\\b(?<=\\W)';
+                    $res .= '\\b(?=\\W)';
+            $res .= "\\$c";
+            $res .= $c;
+	    $res .= '\\' . $c;
+	    $res .= $c;
+		$res .= $c;
+                $res .= "\\$del";
+            $res .= $ic == length( $pat ) - 1 ? '$' : '\\$';
+            $res .= length( $res ) ? '\\^' : '^';
+			$res .= "{$min$com$max}";
+                    $res .= "\\$nc";
+                $res .= '${' . $nc . '}';
+                $res .= '\\'.$nc;
+                $res .= "\\$nc";
+                $res .= $nc;
+		$res .= '\\' . $nc;
+		$res .= "\\$nc";
+		$res .= $nc;
+		    $res .= "\\{$rep\}";
+    $res =~ s/\t/\\t/g;
+	return 0 unless @ARGV;
+    return @ARGV == 0 && ( $isEOF = eof( ARG ) );
+    return $del . $res . ( $led ? $led : $del );
+    return $error ? undef() : "{ y{$fr}{$to}; }";
+    return $handle;
+    return ( $led ? $del : $led ) . $res . ( $led ? $led : $del );
+    return 'L_'.++$labNum;
+	    return $regex;
+	    return $t;
+                            return undef();
+                    return undef();
+                return undef();
+       return undef();
+		return undef();
+# _r: r command processing: Save a reference to the pathname.
+    Run();
+# Run: the sed loop reading input and applying the script
+	    # s///
+   s2p  [-an] [-e script] [-f script-file]
+# s2p file traditionally in upper case on the disk.  When VMS is in a
+# safeHere: create safe here delimiter and  modify opcode and argument
+    safeHere( \$opcode, \$arg );
+	safeHere( \$opcode, \$arg );
+   s/$[_[:alnum:]]\{1,\}/%s/g
+script-files, in the given order. A single script argument may be specified
+script or script file.
+second after B<^>) or last character, or the second endpoint of
+sed-to-Perl translator. After option processing (all other
+sed-to-Perl translator. See L<"sed Script Translation">.
+See L<"Additional Atoms">.
+   s/\\\\/\\/g
+    shift( @ARGV );
+should avoid relying on them.)
+shown in C-style escaped form; long lines are split and have a trailing
+		    # simplify some
+Since some sed implementations provide additional regular expression
+single character from the represented set of characters.
+   s/^/=item /
+slash to delimit the regular expression and the replacement.
+slash to delimit the strings.  Within I<string1> and I<string2>, a
+{ s/^.*\n?//;
+    # split into lines of length $mcpl
+                $$sref = $3 . $$sref;
+   s/$!/%s/g
+{ \$s = s ${regex}${subst}s${global};
+  \$s = ( substr( \$_, pos() ) =~ s ${regex}${subst}s ) if \$s;
+($startperl = <<'/../') =~ s/\s*\z//;
+# stripRegex from the current command. If we're in the first
+# stripTrans: take a <del> terminated string from y command
+# sub2p - convert sed substitution to Perl substitution
+sub BeginBlock($$$$$$){
+sub Branch($$$$$$){
+sub bre2p($$$){
+sub Change($$$$$$){
+sub Comment($$$$$$){
+sub Emit($$$$$$){
+sub EndBlock($$$$$$){
+sub eofARGV();
+sub eofARGV(){
+sub getsARGV(;\$);
+sub getsARGV(;\$){
+sub _l(){        
+sub Label($$$$$$){
+sub makeHandle($){
+sub makeHandle(\$);
+sub makes($$$$$$$){
+sub makey($$$){
+sub newLabel(){
+sub openARGV();
+sub openARGV(){
+sub Parse(){
+sub peek(\$$){
+sub printQ();
+sub printQ(){
+sub _r($){
+sub Run(){
+sub safeHere($$){
+Substitute the I<replacement> string for the first substring in
+substitutions have been made since the most recent reading of an input line
+sub stripRegex($$;$){
+sub stripTrans($$){
+                substr( $pat, $ic+1 ) =~ /^(-?])/ ){
+    $subst =~ s/\n/\\n/g;
+		$subst = sub2p( $del, $subst, $fl );
+    $subst = substr( $subst, 1, length($subst) - 2 );
+sub sub2p($$$){
+sub _t(){
+sub usage(){
+sub _w($){
+sub Warn($;$){
+sub Write($$$$$$){
+such as in C</abc/s//xyz/>, will work as expected.
+suppressed, as if the B<-n> option were given on the command line.
+    ( $svOpenWrite, $doOpenWrite ) = (  $doOpenWrite, $svOpenWrite )
+Swap the contents of the pattern space and the hold space.
+   s/^.*Warn( *"\([^"]*\)".*$/\1/
+	$t .= $1;
+                             $tabref->[3], $arg, $fl ) ){
+	    # take remainder - don't care if it is empty
+terribly cluttered code, and differences would only appear in obscure
+that are not less than the first and not greater than the second.
+	# The Address(es)
+The argument I<text> consists of one or more lines following the command.
+The basic material for the preceding section was generated by running
+The B<l> command will show escape characters (ESC) as `C<\e>', but
+The BRE and substitution may not be delimited with `\' or newline.
+The BRE bounds are: B<*>, specifying 0 or more matches of the preceding
+	# The Command
+The command has more than the permitted number of addresses.
+The command specifies the position of the I<label>. It has no other effect.
+The contents of the pattern space are written to the I<file>.
+The edit cycle performed on each input line consist of reading the line
+The editing commands defined by I<script> are appended to the script.
+The edit script is composed from arguments of B<-e> options and
+[TheEnd]
+the end of the range.
+The end of the script was reached although a text line after a
+The entire line is ignored (treated as a comment). If, however, the first
+The environment variable C<PSEDEXTBRE> may be set to extend BREs.
+The first or second string of a B<y> command  is syntactically incorrect.
+the following backslash escapes:
+The following I<flags> modify the behaviour of the B<s> command:
+the function character and the argument. The I<address>es and the
+The indicated character appears twice, with different translations.
+The I<text> (which must start on the line following the command)
+The line, or range of lines, selected by the address is deleted. 
+The line with the given number is selected.
+The maximum permitted number of addresses is indicated with each
+The meaning of an empty regular expression (`C<//>'), as defined by B<sed>,
+the next attempt to read a line of input. Any error encountered while
+the pattern space that matches the I<regular expression>.
+the Perl semantics was adopted. Note that common usage of this feature,
+The possible atoms of a BRE are: B<.>, matching any single character;
+the range. Likewise, if the second address is a matching pattern, the
+there is no more input, processing is terminated.
+There must be at least one B<-e> or one B<-f> option specifying a
+The repeat clause does not contain a valid integer value, or pair of
+The replacement is performed for all matching, non-overlapping substrings
+the script. 
+the sed script
+These two commands begin and end a command list. The first command may
+The special bracket expression constructs C<[[:E<lt>:]]> and C<[[:E<gt>:]]> 
+The specified backreference number exceeds the number of backreferences
+the synopses below.
+The translation table strings in a B<y> command must have equal lengths.
+This B<sed> implementation conforms to the IEEE Std1003.2-1992 ("POSIX.2")
+This Perl implementation of I<sed> was written by Wolfgang Laun,
+This program is free and open software. You may use, modify,
+#         to a pathname.
+to a string containing the requested characters, e.g.:
+# ';' to avoid warning on empty {}-block
+#             to be written due to a w command or an s command's w flag.
+To enable this feature, the environment variable PSEDEXTBRE must be set
+To get a literal `C<&>' or `C<\>' in the replacement text, precede it
+To include a literal `C<^>', place it anywhere else but first. To
+    $to =~ s/([{}])/\$1/g;
+    $to =~ s/\n/\\n/g;
+to standard output.
+to standard output immediately before reading the next line
+to standard output. The filename `C<->' may be used to read standard input.
+to suppress automatic printing at the end of a cycle if you want to
+to the script.
+to the specified file.
+	$to .= $tr{$fc};
+to use any character (other than a backslash or newline) instead of a
+To use the delimiter as a literal character within the regular expression
+   t process
+Trailing spaces are truncated from labels in B<:>, B<t> and B<b> commands.
+    # transform non printing chars into escape notation
+	$tr{$fc} = $tc;
+		# try some simplifications
+	    $t =~ s/\\\\/\\/g;
+	    $t .= $sl;
+	$t .= $sl.$del.$3;
+# _t: t command - condition register test/reset
+Two addresses select a range that begins whenever the first address
+two characters in the script are `C<#n>', automatic printing of output is
+    undef();
+		undef( $addr2 ) if $addr1 =~ /^\d+$/ &&
+    undef( @Q );
+	unshift( @ARGV, "-$arg" );
+    unshift( @ARGV, '-' ) unless @ARGV;
+            usage();
+        usage();
+used for the translation.
+$useEXTBRE =~ s/[^<>wWyB]//g; # gawk RE's handle these
+use integer;
+use strict;
+use Symbol;
+use vars qw{ \$isEOF \$Hold \%wFiles \@Q \$CondReg
+use vars qw{ $isEOF $Hold %wFiles @Q $CondReg $doPrint };
+/usr/bin/perl
+#!/usr/bin/perl
+    warn( "$0: $loc$msg\n" );
+	    Warn( "ambiguous translation for character `$fc' in `y' command",
+                Warn( "`\\' cannot be last in pattern", $fl );
+                Warn( "`\\' cannot be last in substitution", $fl );
+		    Warn( "conflicting flags `$global$nmatch'", $fl );
+		Warn( "duplicate label $lab (first defined at $dl)", $fl );
+	    Warn( "excess address(es)", $fl );
+		Warn( "extra characters after command ($cmd)", $fl );
+        Warn( "illegal option `$opt'" );
+		Warn( "improper delimiter in s command", $fl );
+		Warn( "invalid address after `,'", $fl );
+                    Warn( "invalid backreference ($nc)", $fl );
+                    Warn( "invalid repeat clause `\\{$rep\\}'", $fl );
+		Warn( "malformed regex, 1st address", $fl );
+		    Warn( "malformed regex, 2nd address", $fl );
+		    Warn( "malformed regular expression", $fl );
+		    Warn( "malformed substitution expression", $fl );
+		Warn( "malformed `y' command argument", $fl );
+                            Warn( "maximum less than minimum in `\\{$rep\\}'",
+        Warn( "no script command given" );
+		Warn( "`\\' not valid as delimiter in `y' command", $fl );
+            Warn( "option -e requires an argument" );
+            Warn( "option -f requires an argument" );
+		Warn( "`s' command requires argument", $fl );
+	Warn( "start of unterminated `{'", $bl );
+		Warn( "string lengths in `y' command differ", $fl );
+ 	        Warn( "undefined label `$lab'", $used );
+		    Warn( "unexpected end of script", $fl );
+			Warn( "unexpected end of script", $fl );
+	Warn( "unexpected `}'", $fl );
+ 	    Warn( "unknown command `$h'", $fl );
+                    Warn( "unmatched `\\)'", $fl );
+                    Warn( "unmatched `\\{'", $fl );
+       Warn( "unmatched `\\('", $fl );
+		Warn( "unmatched `['", $fl );
+		Warn( "`y' command requires argument", $fl );
+way you wish, provided you do not restrict others from doing the same.
+        $wFiles{$path} = '';
+    $wFiles{$path} = '';
+    while( $$argref =~ /^$eod$/m ){
+while( @ARGV && $ARGV[0] =~ /^-(.)(.*)$/ ){
+    while( @BlockStack ){
+		while( $cmd =~ s/^([gp0-9])// ){
+	    while( $cmd =~ s/(?<!\\)\\$/\n/ ){
+		while( $cmd =~ s/(?<!\\)\\$/\n/ ){
+        while( defined( $cmd = <SCRIPT> ) ){
+		while( defined( my $line = <RF> ) ){
+    while( getsARGV() ){
+	    while( $goon ){
+    while( $isEOF || ! defined( $$argref = <ARG> ) ){
+    while( length( $h ) > $mcpl ){
+  while( --\$n && ( \$s = m ${regex}g ) ){}
+    while( $$sref =~ s{^(.*?)(\\*)\Q$del\E}{}s ){
+    while( $$sref =~ s{^(.*?)(\\*)\Q$del\E(\s*)}{}s ){
+within the list are jointly selected by the address(es) given on the
+Within the replacement, an ampersand (`C<&>') is replaced by the string
+(without its trailing newline character) into the I<pattern space>,
+with whitespace being permitted before or after addresses, and between
+		$write = $1 if $cmd =~ s/w\s*(.*)$//;
+    # write full Perl program
+			      $write, $global, $print, $nmatch, $fl );
+Write I<text> (which must start on the line following the command)
+Write the I<text> (which must start on the line following the command)
+# Write (w command, w flag): store pathname
+# _w: w command and s command's w flag - write to file 
+	    # y///
+Z<> Z<> Z<> Z<>[I<address>[B<,>I<address>]][B<!>]I<function>[I<argument>]

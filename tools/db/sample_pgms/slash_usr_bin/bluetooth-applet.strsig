@@ -1,0 +1,314 @@
+action_set_bold
+activate
+adapter-action-group
+add_menu_item
+address != NULL
+add_separator_item
+always_button
+app_indicator_new
+app_indicator_set_attention_icon_full
+app_indicator_set_icon_full
+app_indicator_set_menu
+app_indicator_set_status
+app_indicator_set_title
+Applet is already running, exiting
+authorisation-dialogue.ui
+Authorization request from '%s'
+auth-request
+bindtextdomain
+bind_textdomain_codeset
+bluetooth
+bluetooth-active
+- Bluetooth applet
+BluetoothApplet
+Bluetooth Applet
+bluetooth_applet_agent_reply_auth
+bluetooth_applet_agent_reply_confirm
+bluetooth_applet_agent_reply_passkey
+bluetooth_applet_agent_reply_pincode
+bluetooth_applet_browse_address
+bluetooth_applet_browse_address_finish
+bluetooth_applet_connect_device
+bluetooth_applet_disconnect_device
+bluetooth_applet_get_devices
+bluetooth_applet_get_discoverable
+bluetooth_applet_get_killswitch_state
+bluetooth_applet_get_show_full_menu
+bluetooth_applet_get_type
+bluetooth-applet-popup
+/bluetooth-applet-popup/devices-label
+/bluetooth-applet-popup/devices-placeholder
+/bluetooth-applet-popup/devices-placeholder/%s
+/bluetooth-applet-popup/devices-placeholder/%s/%s-status
+bluetooth_applet_send_to_address
+bluetooth_applet_set_discoverable
+bluetooth_applet_set_killswitch_state
+bluetooth-applet-ui-manager
+bluetooth_chooser_new
+Bluetooth device
+bluetooth-disabled
+Bluetooth: Disabled
+bluetooth_discoverable_callback
+bluetooth-manager
+Bluetooth: Off
+Bluetooth: On
+bluetooth_simple_device_get_type
+bluetooth_status_callback
+bluetooth_verify_address
+bluetooth-wizard
+browse_callback
+Browse files...
+<b>%s</b>
+__bss_start
+bt-active
+cancel-request
+changed::visible
+Check authorization
+cleanup_notification
+close_notification
+com.canonical.indicator.bluetooth
+confirm-dialogue.ui
+confirm-request
+Connected
+Connecting...
+connect-sep
+Couldn't execute command: %s
+__data_start
+dcgettext
+device-category-filter
+device-path
+devices-action-group
+devices-changed
+device-selected
+device-service-filter
+devices-label
+Device %s wants access to the service '%s'.
+Device '%s' wants to pair with this computer
+Disconnect
+Disconnected
+Disconnecting...
+Enter PIN
+Failed to load popup-menu.ui: %s
+Failed to mount OBEX volume: %s
+files-sep
+g_application_get_is_remote
+g_application_new
+g_application_register
+g_ascii_table
+g_assertion_message
+g_assertion_message_expr
+g_boxed_free
+g_error_free
+g_find_program_in_path
+g_getenv
+GLIBC_2.0
+GLIBC_2.2
+g_list_append
+g_list_find_custom
+g_list_foreach
+g_list_free
+g_list_remove
+g_list_remove_all
+g_malloc0
+__gmon_start__
+gnome-bluetooth2
+gnome-control-center
+gnome-control-center bluetooth
+gnome-control-center keyboard
+gnome-control-center mouse
+gnome-control-center sound
+gnome-control-center sound-nua
+g_object_get
+g_object_get_data
+g_object_new
+g_object_ref
+g_object_set
+g_object_set_data
+g_object_set_data_full
+g_object_unref
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_new
+g_option_context_parse
+g_option_context_set_translation_domain
+g_printerr
+Grant access to '%s'
+g_return_if_fail_warning
+g_set_application_name
+g_settings_get_boolean
+g_settings_new
+g_signal_connect_data
+g_signal_handlers_destroy
+g_signal_stop_emission_by_name
+g_spawn_command_line_async
+g_strcmp0
+g_strdup
+g_strdup_printf
+g_str_equal
+g_strfreev
+g_str_has_prefix
+g_strjoinv
+g_strsplit
+gtk_action_get_label
+gtk_action_get_name
+gtk_action_get_type
+gtk_action_group_add_action
+gtk_action_group_get_action
+gtk_action_group_get_type
+gtk_action_group_list_actions
+gtk_action_group_new
+gtk_action_group_remove_action
+gtk_action_group_set_sensitive
+gtk_action_group_set_visible
+gtk_action_new
+gtk_action_set_label
+gtk_action_set_sensitive
+gtk_action_set_visible
+gtk_bin_get_child
+gtk_bin_get_type
+gtk_box_get_type
+gtk_box_pack_start
+gtk_box_set_spacing
+gtk_builder_add_from_file
+gtk_builder_connect_signals
+gtk_builder_error_quark
+gtk_builder_get_object
+gtk_builder_new
+gtk-cancel
+gtk_container_get_type
+gtk_container_set_border_width
+gtk_dialog_add_button
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_new_with_buttons
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk_dialog_set_response_sensitive
+gtk_entry_get_text
+gtk_entry_get_type
+gtk_entry_set_activates_default
+gtk_entry_set_max_length
+gtk_entry_set_visibility
+gtk_entry_set_width_chars
+gtk_get_option_group
+gtk_label_get_type
+gtk_label_set_markup
+gtk_main
+gtk_main_quit
+gtk_menu_get_type
+gtk_menu_popdown
+gtk_message_dialog_format_secondary_markup
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_toggle_action_get_active
+gtk_toggle_action_get_type
+gtk_toggle_action_set_active
+gtk_toggle_button_get_active
+gtk_toggle_button_get_type
+gtk_ui_manager_add_ui
+gtk_ui_manager_ensure_update
+gtk_ui_manager_get_type
+gtk_ui_manager_get_widget
+gtk_ui_manager_insert_action_group
+gtk_ui_manager_new_merge_id
+gtk_ui_manager_remove_ui
+gtk_widget_destroy
+gtk_widget_get_type
+gtk_widget_hide
+gtk_widget_set_no_show_all
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_get_type
+gtk_window_present
+gtk_window_set_default_icon_name
+gtk_window_set_default_size
+gtk_window_set_focus_on_map
+gtk_window_set_keep_above
+gtk_window_set_position
+gtk_window_set_urgency_hint
+g_type_check_instance_cast
+g_type_init
+hide_icon
+init_notification
+insert-text
+_IO_stdin_used
+_Jv_RegisterClasses
+Keyboard Settings
+killswitch
+killswitch-label
+killswitch_state_changed
+label != NULL
+libappindicator3.so.1
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgnome-bluetooth-applet.so.0
+libgnome-bluetooth.so.8
+libgobject-2.0.so.0
+libgtk-3.so.0
+/lib/ld-linux.so.2
+libnotify.so.4
+libpthread.so.0
+merge-id
+Mouse and Touchpad Settings
+notification_supports_actions
+notify::discoverable
+notify_get_server_caps
+notify_init
+notify_is_initted
+notify::killswitch-state
+notify_notification_add_action
+notify_notification_close
+notify_notification_new
+notify_notification_set_timeout
+notify_notification_set_urgency
+notify_notification_show
+notify::show-full-menu
+notify_uninit
+OBEXFileTransfer
+on_connect_activate
+org.gnome.Bluetooth.applet
+Pairing confirmation for '%s'
+Pairing request for '%s'
+passkey-dialogue.ui
+pincode-request
+Please confirm whether the PIN '%s' matches the one on device %s.
+Please enter the PIN mentioned on device %s.
+popup-menu.ui
+quit_callback
+response
+Run '%s --help' to see a full list of available command line options.
+%s-action
+Select device to browse
+selected-device-changed
+Send files...
+sendto_callback
+set_device_status_label
+set_icon
+settings_callback
+setup_agents
+show_agents
+show-device-category
+show-device-type
+show_icon
+showinput_button
+show_notification
+show-searching
+Sound Settings
+%s-status
+status != NULL
+suffix != NULL
+Turn Off Bluetooth
+Turn On Bluetooth
+/usr/lib/gnome-bluetooth
+/usr/share/gnome-bluetooth/authorisation-dialogue.ui
+/usr/share/gnome-bluetooth/confirm-dialogue.ui
+/usr/share/gnome-bluetooth/passkey-dialogue.ui
+/usr/share/gnome-bluetooth/popup-menu.ui
+/usr/share/locale
+Verify PIN
+wizard_callback
+XDG_CURRENT_DESKTOP

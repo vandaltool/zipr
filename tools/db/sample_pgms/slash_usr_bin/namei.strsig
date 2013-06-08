@@ -1,0 +1,64 @@
+9T$4wwso
+__asprintf_chk
+bindtextdomain
+cannot allocate %zu bytes
+cannot duplicate string
+could not stat '%s'
+__ctype_b_loc
+dcgettext
+%d%s%jd%s
+__errno_location
+failed to read symlink: %s
+For more information see namei(1).
+__fprintf_chk
+getgrgid
+getopt_long
+getpwuid
+GLIBC_2.0
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.8
+__gmon_start__
+ -h, --help          displays this help text
+hVlmnovx
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+ -l, --long          use a long listing format (-m -o -v) 
+localeconv
+__lxstat64
+mbstowcs
+ -m, --modes         show the mode bits of each file
+mountpoints
+ -n, --nosymlinks    don't follow symlinks
+ -o, --owners        show owner and group name of each file
+Options:
+pathname argument is missing
+__printf_chk
+__progname
+program_invocation_short_name
+readlink
+setlocale
+%s: exceeded limit of symlinks
+%s from %s
+%s - No such file or directory
+__snprintf_chk
+ %s [options] pathname [pathname ...]
+ %s -> %s
+%s: '%s'
+__stack_chk_fail
+__strdup
+__strtoull_internal
+/usr/share/locale
+util-linux
+util-linux 2.20.1
+V\3S\3CX	
+vertical
+ -V, --version       output version information and exit
+ -v, --vertical      vertical align of modes and owners
+wcswidth
+ -x, --mountpoints   show mount point directories with a 'D'
+__xstat64

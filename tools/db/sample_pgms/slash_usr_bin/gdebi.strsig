@@ -1,0 +1,89 @@
+                      action="append", dest="apt_opts",
+                      action="store_true", dest="apt_line",
+                      action="store_true", dest="non_interactive",
+                      action="store_true", dest="quiet",
+#        - add check for removal of essential packages
+# along with GDebi; if not, write to the Free Software
+# AUTHOR:
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# by the Free Software Foundation; either version 2 of the License, or (at
+        c = findall("[[(](\S+)/\S+[])]", msg)[0].lower()
+    # check if we actually can install it
+# Copyright (c) 2005-2009 Canonical Ltd
+        c = "y"
+        debi = GDebiCli(options)
+        debi.install()
+    debi.show_dependencies()
+    debi.show_description()
+                      default=[],
+                      default=False,
+    except IndexError:
+    except SystemError, e:
+# FIXME: - add "--assume-yes" option
+                      "For a graphical version run gdebi-gtk\n"),"UTF-8")
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+from GDebi.GDebiCli import GDebiCli
+from GDebi.Version import VERSION
+from gettext import gettext as _
+from optparse import OptionParser
+from re import findall
+from warnings import warn
+# GDebi is distributed in the hope that it will be useful,
+# GDebi is free software; you can redistribute it and/or
+# General Public License for more details.
+    gettext.bindtextdomain(localesApp, localesDir)
+    gettext.textdomain(localesApp)
+                      help=unicode(_("Do not show progress information"),"UTF-8"))
+                      help=unicode(_("Run non-interactive (dangerous!)"),"UTF-8"))
+                      help=unicode(_("Set an APT configuration option"),"UTF-8"))
+                      help=unicode(_("Simulate only and print a apt-get install compatible line to stderr"), "UTF-8"))
+                      help=unicode(_("Use alternative root dir"), "UTF-8"))
+    if len(args) == 0:
+if __name__ == "__main__":
+    if not debi.open(args[0]):
+    if not os.path.exists(args[0]):
+    if options.apt_line == True:
+    if options.non_interactive == True:
+        if os.getuid() != 0:
+    if os.getuid() != 0:
+    if res.lower().startswith(c):
+import apt
+import gettext
+import os.path
+import sys
+import warnings
+        (install, remove, unauthenticated) = debi._deb.required_changes
+    localesApp="gdebi"
+    localesDir="/usr/share/locale"
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Michael Vogt <mvo@ubuntu.com>
+# modify it under the terms of the GNU General Public License as published
+    msg =  _("Do you want to install the software package? [y/N]:")
+    (options, args) = parser.parse_args()
+    parser.add_option("--apt-line",
+    parser.add_option("-n", "--non-interactive",
+    parser.add_option("-o", "--option",
+    parser.add_option("-q", "--quiet",
+    parser.add_option("--root", dest="rootdir", default="/",
+    parser = OptionParser(usage=usage, version = VERSION)
+        parser.print_help()
+        print "Error opening the cache:\n%s" % e
+        print " ".join(install)
+        print " ".join([pkg+"-" for pkg in remove])
+    print msg,
+            print _("Need to be root to install packages")
+        print _("Need to be root to install packages")
+    res = sys.stdin.readline()
+    # show information
+        sys.exit(0)
+            sys.exit(1)
+        sys.exit(1)
+        sys.stderr.write(_("gdebi error, file not found: %s\n" % args[0]))
+    sys.stdout.flush()
+# This file is part of GDebi
+    try:
+    usage = unicode(_("usage: %prog [options] filename\n"
+#!/usr/bin/python
+warnings.filterwarnings("ignore", "apt API not stable yet", FutureWarning)
+# your option) any later version.
+# You should have received a copy of the GNU General Public License

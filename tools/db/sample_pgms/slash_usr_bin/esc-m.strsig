@@ -1,0 +1,53 @@
+1200 dpi
+Checksum error at %08x.
+chinese 16k
+chinese 32k
+choukei-3gou
+choukei-4gou
+Command %02x not terminated at %08x.
+cor. post
+double horizontal resolution
+	dumping %d raster data bytes (%d lines):
+	effective resolution is %d x %d dpi
+envelope/postcard
+env monarch
+ESC %02x: raw data dump:
+ESC 50: select resolution and paper type:
+ESC 51: start new page and set paper format:
+ESC 52: send raster data:
+executive
+	Expected 22 data bytes for ESC 0x51 command, recieved %d.
+	Expected 6 data bytes for ESC 0x52 command, recieved %d.
+	Expected 8 data bytes for ESC 0x50 command, recieved %d.
+Expected start of a ESC sequence at %08x.
+Expected zero byte at %08x.
+ffffff9@
+g. legal
+g. letter
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+half letter
+	horizontal resolution modifier: %02x (%s)
+_IO_getc
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+manual feed
+normal paper
+	page size is %d x %d dots (%.3lf x %.3lf " or %.2lf x %.2lf mm).
+	paper code %02x (%s)
+	paper format is %02x (%s).
+	paper tray id %02x (%s)
+__printf_chk
+Reached EOF at %08x.
+	resolution code %02x (%s)
+Sequence error (is %02x, should be %02x) at %08x.
+Sequence restarts at %08x.
+__stack_chk_fail
+thick paper
+transparency
+unknown horizontal resolution modifier
+unknown paper

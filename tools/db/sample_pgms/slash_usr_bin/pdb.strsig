@@ -1,0 +1,993 @@
+                                 })
+        """
+        #
+        a breakpoint command list definition.
+                                       # a command list
+Aliases may be nested and can contain anything that can be
+alias pi for k in %1.__dict__.keys(): print "%1.",k,"=",%1.__dict__[k]
+alias ps pi self
+a linenumber was used instead of either filename:lineno or
+__all__ = ["run", "pm", "Pdb", "runeval", "runctx", "runcall", "set_trace",
+ambiguities about which list to execute.
+An arrow indicates the "current frame", which determines the
+        # and cannot occur in filename
+    # and down moves towards the most recent stack frame).
+another breakpoint--which could have its own command list, leading to
+        answer = find_function(item, fname)
+            answer = funcname, filename, lineno
+    answer = None
+applied to the first word of the command line; all other words
+"""A Python debugger."""
+are then hidden until the alias is removed.  Aliasing is recursively
+            arg = arg[colon+1:].lstrip()
+            arg = arg[:comma].rstrip()
+            arg = arg[i+1:]
+            arg = int(arg)
+        """arg is bp number followed by ignore count."""
+        # arg is breakpoint number and condition
+        args = arg.split()
+        args = arg.split(' ', 1)
+            args = line.split()
+        args = line.split()
+argument is present, it is a string specifying an expression
+            argv0 = sys.argv[0:1]
+        assignment of the _ variable in the builtins.
+                        # Assume it's a count
+        # avoid stopping before we reach the main script (see user_line and
+        bdb.Bdb.__init__(self, skip=skip)
+        bdb.Bdb.reset(self)
+becomes active when the ignore count is zero.  When non-zero, the
+be desirable for breakpoints that are to print a specific message and
+        # BEFORE debugger even reaches user's code (and the exact sequence of
+        # being handled, otherwise it returns None
+        # Best first guess at file to look at
+# be to your liking.  You can set it once pdb is imported using the
+                bnum = int(arg)
+            bnum = len(bdb.Breakpoint.bpbynumber)-1
+            bp = bdb.Breakpoint.bpbynumber[bpnum]
+            bp = bdb.Breakpoint.bpbynumber[i]
+                        bp.bpprint(self.stdout)
+            bp.cond = cond
+                bp.disable()
+                bp.enable()
+                                                                 bp.file,
+            bp.ignore = count
+                                                                 bp.line)
+bp numbers."""
+            bpnum = int(args[0].strip())
+                bp = self.get_breaks(filename, line)[-1]
+            break
+                break
+                    break
+        # break [ ([filename:]lineno | function) [, "condition"] ]
+        breaklist = self.get_file_breaks(filename)
+                'Breakpoint index %r is not a number' % args[0]
+breakpoint is not disabled and any associated condition evaluates
+breakpoint numbers."""
+breakpoint set.
+                                  "__builtins__": __builtins__,
+        but only if we are to stop at or just below this level."""
+    # B/W compatibility
+        # cache it here to ensure that modifications are not overwritten.
+        """Call every command that was set for the current active breakpoint
+    # Can be executed earlier than 'setup' if desired
+    """Causes a debugger to be restarted for the debugged python program."""
+    # changed by the user from the command line. There is a "restart" command
+        # Check for reasonable breakpoint
+        Checks whether this line is typed at the normal prompt or in
+        """Check whether specified line seems to be executable.
+class Pdb(bdb.Bdb, cmd.Cmd):
+class Restart(Exception):
+clear all breaks at that line in that file.
+        clear bpno bpno ... -> clear breakpoints by number"""
+        clear -> clear all breaks, ask for confirmation
+        clear file:lineno -> clear all breaks at file:lineno
+        cmd, arg, line = self.parseline(line)
+        cmd.Cmd.__init__(self, completekey, stdin, stdout)
+            cmdlist.append(cmd)
+            cmdlist.append(cmd+' '+arg)
+        cmdlist = self.commands[self.commands_bnum]
+            code = compile(line + '\n', '<stdin>', 'single')
+                    code = func.func_code
+        code = None
+        colon = arg.rfind(':')
+(com) ...
+(com) end
+        comma = arg.find(',')
+    # Command definitions, called by cmdloop()
+# command "pdb.line_prefix = '\n% '".
+    commands_resuming = ['do_continue', 'do_step', 'do_next', 'do_return',
+commands themselves appear on the following lines.  Type a line
+command that resumes execution.
+command with a 'global' command, e.g.:
+    # compatible with dbx and gdb: up moves towards 'main()'
+            cond = arg[comma+1:].lstrip()
+            cond = args[1]
+            cond = None
+        cond = None
+    # consumer of this info expects the first line to be 1
+containing just 'end' to terminate the commands.
+context of most commands.  'bt' is an alias for this command."""
+                continue
+Continue execution, only stop when a breakpoint is encountered."""
+Continue execution until the current function returns."""
+Continue execution until the line with a number greater than the current
+Continue execution until the next line in the current function
+        co = self.curframe.f_code
+                    #could be aliased, but co_name is invariant)
+            count = 0
+            count = int(args[1].strip())
+count is decremented each time the breakpoint is reached and the
+# Create a custom safe Repr instance and increase its maxstring.
+Creates an alias called 'name' the executes 'command'.  The command
+    cre = re.compile(r'def\s+%s\s*[(]' % re.escape(funcname))
+            currentbp = self.currentbp
+        """Custom displayhook for the exec in default(), which prevents
+        debugger loop.  If arguments were given, set them in sys.argv."""
+    def bp_commands(self,frame):
+    def checkline(self, filename, lineno):
+    def defaultFile(self):
+    def default(self, line):
+    def displayhook(self, obj):
+    def do_alias(self, arg):
+    def do_args(self, arg):
+    def do_break(self, arg, temporary = 0):
+    def do_clear(self, arg):
+    def do_commands(self, arg):
+    def do_condition(self, arg):
+    def do_continue(self, arg):
+    def do_debug(self, arg):
+    def do_disable(self, arg):
+    def do_down(self, arg):
+    def do_enable(self, arg):
+    def do_EOF(self, arg):
+    def do_ignore(self,arg):
+    def do_jump(self, arg):
+    def do_list(self, arg):
+    def do_next(self, arg):
+    def do_pp(self, arg):
+    def do_p(self, arg):
+    def do_quit(self, arg):
+    def do_return(self, arg):
+    def do_retval(self, arg):
+    def do_run(self, arg):
+    def do_step(self, arg):
+    def do_tbreak(self, arg):
+    def do_unalias(self, arg):
+    def do_until(self, arg):
+    def do_up(self, arg):
+    def do_whatis(self, arg):
+    def do_where(self, arg):
+    def execRcLines(self):
+def find_function(funcname, filename):
+    def forget(self):
+    def _getval(self, arg):
+    def handle_command_def(self,line):
+def help():
+    def help_alias(self):
+    def help_args(self):
+    def help_a(self):
+    def help_break(self):
+    def help_b(self):
+    def help_clear(self):
+    def help_cl(self):
+    def help_commands(self):
+    def help_condition(self):
+    def help_continue(self):
+    def help_cont(self):
+    def help_c(self):
+    def help_debug(self):
+    def help_disable(self):
+    def help_down(self):
+    def help_d(self):
+    def help_enable(self):
+    def help_EOF(self):
+    def help_exec(self):
+    def help_help(self):
+    def help_h(self):
+    def help_ignore(self):
+    def help_j(self):
+    def help_jump(self):
+    def help_list(self):
+    def help_l(self):
+    def help_next(self):
+    def help_n(self):
+    def help_pdb(self):
+    def help_pp(self):
+    def help_p(self):
+    def help_q(self):
+    def help_quit(self):
+    def help_return(self):
+    def help_r(self):
+    def help_run(self):
+    def help_s(self):
+    def help_step(self):
+    def help_tbreak(self):
+    def help_unalias(self):
+    def help_until(self):
+    def help_unt(self):
+    def help_up(self):
+    def help_u(self):
+    def help_whatis(self):
+    def help_where(self):
+    def help_w(self):
+        """Defines a list of commands associated to a breakpoint.
+                                  # defining a list
+    def __init__(self, completekey='tab', stdin=None, stdout=None, skip=None):
+    def interaction(self, frame, traceback):
+    def lineinfo(self, identifier):
+    def lookupmodule(self, filename):
+def main():
+    def onecmd(self, line):
+def pm():
+def post_mortem(t=None):
+    def precmd(self, line):
+    def print_stack_entry(self, frame_lineno, prompt_prefix=line_prefix):
+    def print_stack_trace(self):
+    def reset(self):
+def runcall(*args, **kwds):
+def runctx(statement, globals, locals):
+def runeval(expression, globals=None, locals=None):
+    def _runscript(self, filename):
+def run(statement, globals=None, locals=None):
+def set_trace():
+    def setup(self, f, t):
+def test():
+    def user_call(self, frame, argument_list):
+    def user_exception(self, frame, exc_info):
+    def user_line(self, frame):
+    def user_return(self, frame, return_value):
+Deletes the specified alias."""
+            del parts[0]
+            del self.aliases[args[0]]
+    del sys.argv[0]         # Hide "pdb.py" from argument list
+        # Determine if we must stop
+        dict = self.curframe_locals
+                dirname = os.readlink(dirname)
+Disables the breakpoints given as a space separated list of
+    do_a = do_args
+    do_b = do_break
+    do_bt = do_where
+    do_c = do_cont = do_continue
+    do_cl = do_clear # 'c' is already an abbreviation for 'continue'
+    do_d = do_down
+    do_exit = do_quit
+    do_h = cmd.Cmd.do_help
+    do_j = do_jump
+    do_l = do_list
+    do_n = do_next
+        # Don't allow setting breakpoint at a blank line
+    do_q = do_quit
+                         'do_quit', 'do_jump']
+    do_r = do_return
+    do_restart = do_run
+    do_rv = do_retval
+    do_s = do_step
+                # Do the jump, fix up our copy of the stack, and display the
+    do_u = do_up
+    do_unt = do_until
+    do_w = do_where
+(either in a function that is called or in the current function)."""
+        elif cmd == 'end':
+        elif len(idstring) == 3:
+        elif self.lineno is None:
+                else:
+            else:
+        else:
+    else:
+        else: exc_type_name = exc_type.__name__
+            else: exc_type_name = t.__name__
+            else: print >>self.stdout, "*** undefined ***"
+                    else: s = s + ' '
+Enables the breakpoints given as a space separated list of
+Enter a recursive debugger that steps through the code argument
+            envHome = os.environ['HOME']
+                err = "Invalid line number (%s)" % arg
+            err = self.clear_bpbynumber(i)
+                err = self.clear_break(filename, lineno)
+            err = self.set_break(filename, line, temporary, cond, funcname)
+        # events depends on python version). So we take special measures to
+(even with a simple next or step), you may encounter
+                except:
+            except:
+        except:
+        except AttributeError:
+            except EOFError:
+        except ImportError:
+        except IndexError:
+            except IOError:
+        except IOError:
+    except IOError:
+                                               "exception is being handled")
+        except KeyboardInterrupt:
+        except: pass
+        except Restart:
+        except SystemExit:
+            except ValueError:
+        except ValueError:
+            except ValueError, e:
+            except ValueError, msg:
+        exc_type, exc_value, exc_traceback = exc_info
+            exc_type_name = exc_type
+                exc_type_name = t
+                exec code in globals, locals
+            # executed only once
+Execute the current line, stop at the first possible occasion
+Execute the (one-line) statement in the context of
+        failed = (None, None, None)
+        False otherwise."""
+                                  "__file__"    : filename,
+            filename = arg[:colon].rstrip()
+            filename = arg[:i]
+                    filename = code.co_filename
+                filename = f
+            filename = filename + '.py'
+        filename = None
+        filename = self.curframe.f_code.co_filename
+            filename = self.defaultFile()
+            filename = self.mainpyfile
+file.  With a function name, set a break at first executable line
+            finally:
+        finally:
+first ask confirmation).  With a filename:lineno argument,
+                    first = int(first)
+            # First is module, second is method/class
+                    first, last = x
+                    first = max(1, int(x) - 5)
+            first = max(1, self.curframe.f_lineno - 5)
+            first = self.lineno + 1
+                fname = f
+        fname = self.defaultFile()
+follow it immediately with  end; that is, give no commands.
+            for alias in keys:
+                for bp in bdb.Breakpoint.bpbynumber:
+        for dirname in sys.path:
+    for dirname in sys.path:
+            for frame_lineno in self.stack:
+        for i in args:
+        for i in numberlist:
+        for i in range(n):
+                for line in rcFile.readlines():
+            for line in rcFile.readlines():
+            for line in rcLines:
+            for line in self.commands[currentbp]:
+            for lineno in range(first, last+1):
+            for tmpArg in args[1:]:
+        f = os.path.join(sys.path[0], filename)
+    fp.close()
+        fp = open(filename)
+        frame.f_locals['__exception__'] = exc_type, exc_value
+        frame.f_locals['__return__'] = return_value
+        frame, lineno = frame_lineno
+from repr import Repr
+            f = self.lookupmodule(filename)
+            f = self.lookupmodule(parts[0])
+            fullname = os.path.join(dirname, filename)
+        fullname = os.path.join(dirname, 'pdb.doc')
+                    func = arg
+                    func = eval(arg,
+                        func = func.im_func
+            func = getattr(self, 'do_' + cmd)
+                    funcname = code.co_name
+        funcname = None
+                    funcname = ok # ok contains a function name
+            func = self.default
+    # General interaction function
+        globals = self.curframe.f_globals
+        globs = self.curframe.f_globals if hasattr(self, 'curframe') else None
+        """Handle alias expansion and ';;' separator."""
+        """Handles one command line during command list definition."""
+Handles the receipt of EOF as a command."""
+    # handling the default
+hasn't been loaded yet).  The file is searched for on sys.path;
+        help()
+    help_bt = help_w
+        """Helper function for break/clear parsing -- may be overridden.
+"help exec" gives help on the ! command"""
+    help_exit = help_q
+    # Help methods (derived from pdb.doc)
+"help pdb" pipes the full documentation file to the $PAGER
+    help_restart = help_run
+History, breakpoints, actions and debugger options are preserved.
+            i = arg.rfind(':')
+            id = idstring[0].strip()
+            id = idstring[1].strip()
+        idstring = identifier.split("'")
+i.e., the breakpoint is made unconditional."""
+        if arg:
+        if args[0] != 'alias':
+        if args[0] in self.aliases:
+        if args[0] in self.aliases and len(args) == 1:
+                    if bp:
+            if bp:
+        if bp:
+        if cmd == 'silent':
+        if co.co_flags & 4: n = n+1
+        if co.co_flags & 8: n = n+1
+        if code:
+        if colon >= 0:
+        if comma > 0:
+            if count > 0:
+                if count > 1:
+        if cre.match(line):
+            if err:
+            if err: print >>self.stdout, '***', err
+        if ext == '':
+            if f:
+        if filename == '<string>' and self.mainpyfile:
+        if frame is self.curframe:
+        if func.func_name in self.commands_resuming:
+        if getattr(self, "currentbp", False) and \
+                    if hasattr(func, 'im_func'):
+        if 'HOME' in os.environ:
+        if id == '': return failed
+        if ':' in arg:
+            if isinstance(t, str):
+                    if last < first:
+        if last is None:
+        if len(args) == 0:
+        if len(args) == 0: return
+        if len(idstring) == 1:
+                if len(line) > 0 and line[0] != '#':
+            if len(parts) == 0:
+        if len(parts) == 1:
+                    if len(s) < 4: s = s + ' '
+        if line == '':
+        if line:
+        if line[:1] == '!': line = line[1:]
+                    if lineno in breaklist: s = s + 'B'
+                    if lineno == self.curframe.f_lineno:
+            if marker >= 0:
+            if name in dict: print >>self.stdout, dict[name]
+if __name__ == '__main__':
+            if not (0 <= i < len(bdb.Breakpoint.bpbynumber)):
+        if not arg:
+        if not cmd:
+            if not cond:
+            if not f:
+        if not filename:
+                if not line:
+        if not line:
+        if (not line or (line[0] == '#') or
+        if not line.strip():
+                    if not ok:
+    if not os.path.exists(mainpyfile):
+        if not self.commands_defining:
+            if not self.commands_silent[currentbp]:
+    if not sys.argv[1:] or sys.argv[1] in ("--help", "-h"):
+        if obj is not None:
+        if  os.path.exists(f) and self.canonic(f) == self.mainpyfile:
+            if os.path.exists(fullname):
+        if os.path.exists(fullname):
+        if os.path.isabs(filename):
+        if os.path.isabs(filename) and  os.path.exists(filename):
+        if parts[0] == 'self':
+            if pdb._user_requested_quit:
+            if reply in ('y', 'yes'):
+        if '__return__' in self.curframe_locals:
+        if self.bp_commands(frame):
+            if self.breaks:  # There's at least one
+            if self.commands_doprompt[currentbp]:
+        if self.curindex == 0:
+        if self.curindex + 1 == len(self.stack):
+        if self.curindex + 1 != len(self.stack):
+            if (self.mainpyfile != self.canonic(frame.f_code.co_filename)
+        if self.rcLines:
+        if self.stop_here(frame):
+        if self._wait_for_mainpyfile:
+        if stdout:
+If str_condition is absent, any existing condition is removed;
+            if sts: print '*** Pager exit status:', sts
+        (if there is one).
+if the second argument is less than the first, it is a count."""
+        if t is None:
+    if t is None:
+        if type(exc_type) == type(''):
+            if type(t) == type(''):
+                if type(x) == type(()):
+   If you use the 'silent' command in the command list, the
+            ii = 1
+                ii = ii + 1
+                i = int(i)
+import bdb
+import cmd
+import linecache
+        import __main__
+import os
+    import pdb
+import pprint
+import re
+            import readline
+            import shlex
+import sys
+import traceback
+indicated by %1, %2, and so on, while %* is replaced by all the
+            # In most cases SystemExit does not warrant a post-mortem session.
+        # Input is identifier, may be in single quotes
+# Interaction prompt line will separate file and call info from code
+internal pdb commands with aliases!  Those internal commands
+        """Interpret the argument as though it had been typed in response
+in the current environment)."""
+in the line are left alone.
+        into an absolute file name.
+        # Is it a function?
+        # Is it an instance method?
+is reached or it returns."""
+is removed when first hit."""
+is shown. If no name is given, all aliases are listed.
+            item = parts[0]
+            item = parts[1]
+    # It is also consistent with the up/down commands (which are
+            keys = self.aliases.keys()
+            keys.sort()
+            lastcmd_back = self.lastcmd
+            last = first + 10
+                        last = first + last
+                    last = int(last)
+        last = None
+                    # last thing to try
+legally typed at the pdb prompt.  Note!  You *can* override
+             (line[:3] == '"""') or line[:3] == "'''"):
+        line = fp.readline()
+                line = line[:-1]
+                line = linecache.getline(filename, lineno,
+        line = linecache.getline(filename, lineno, globs)
+                line = line[:marker].rstrip()
+            line = line.replace("%*", ' '.join(args[1:]))
+                line = line.replace("%" + str(ii),
+        line = line.strip()
+    lineno = 1
+                    lineno = code.co_firstlineno
+                lineno = int(arg)
+                    lineno = int(ln)
+        lineno = lineno + 1
+        lineno = None
+        line or EOF). Warning: testing is not comprehensive.
+line_prefix = '\n-> '   # Probably a better default
+# line_prefix = ': '    # Use this to get the old situation back
+            line = self.aliases[args[0]]
+        line = self.checkline(filename, lineno)
+    #list of all the commands making the program resume execution.
+List source code for the current file.
+        locals = self.curframe_locals
+        # locals whenever the .f_locals accessor is called, so we
+        lookupmodule() translates (possibly incomplete) file or module name
+        __main__.__dict__.clear()
+        __main__.__dict__.update({"__name__"    : "__main__",
+# Main program for testing
+    mainpyfile =  sys.argv[1]     # Get script filename
+        # __main__ will break).
+            # Make local copy because of recursion
+            # Make sure it works for "clear C:\foo\bar.py:12"
+            marker = line.find(';;')
+    # modified by the script being debugged. It's a bad idea when it was
+            # More than one part.
+Move the current frame one level down in the stack trace
+Move the current frame one level up in the stack trace
+                                    # must be disp. after execing the cmd list
+                                  # must be disp. after execing the cmd list
+must evaluate to true before the breakpoint is honored.
+must *not* be enclosed in quotes.  Replaceable parameters are
+            name = co.co_varnames[i]
+        n = co.co_argcount
+                                     "\n        end"
+                # new position
+                next = line[marker+2:].lstrip()
+            # no colon; can be lineno or function
+        # None of the above...
+    # Note on saving/restoring sys.argv: it's a good idea when sys.argv was
+Note that the argument is different from previous versions of
+            # not in single quotes
+            # now set the break point
+        numberlist = arg.split()
+of that function.  Without argument, list all breaks.  If a second
+of the statement resembles a debugger command.
+                    (ok, filename, ln) = self.lineinfo(arg)
+one is reached or until the current frame returns"""
+        # one of the resuming commands
+or continue the previous listing.
+                or frame.f_lineno<= 0):
+    # Override Bdb methods
+parameters.  If no command is given, the current alias for name
+        # parse arguments; comma has lowest precedence
+            # parse stuff after comma: "condition"
+        # parse stuff before comma: [filename:]lineno | function
+        parts = id.split('.')
+    pass
+            pass
+                pass
+(Pdb)"""
+(Pdb) global list_options; list_options = ['-l']
+            pdb.interaction(None, t)
+    pdb.main()
+    pdb = Pdb()
+            pdb._runscript(mainpyfile)
+    Pdb().run(statement, globals, locals)
+    Pdb().set_trace(sys._getframe().f_back)
+    p.interaction(None, t)
+           "post_mortem", "help"]
+# Post-Mortem interface
+    post_mortem(sys.last_traceback)
+    p = Pdb()
+        p = Pdb(self.completekey, self.stdin, self.stdout)
+            pprint.pprint(self._getval(arg), self.stdout)
+        p.prompt = "(%s) " % self.prompt.strip()
+    p.reset()
+Pretty-print the value of the expression."""
+        print 'along the Python search path'
+Print a stack trace, with the most recent frame at the bottom.
+    # Print a traceback starting at the top stack frame.
+        print 'Error:', mainpyfile, 'does not exist'
+# print help
+#Print instance variables in self
+#Print instance variables (usage "pi classInst")
+            print "Post mortem debugger finished. The " + mainpyfile + \
+            print repr(obj)
+            print "Restarting", mainpyfile, "with arguments:"
+        print """run [args...]
+            print "Running 'cont' or 'step' will restart the program"
+            print >>self.stdout, '>',
+            print >>self.stdout, ' ',
+            print >>self.stdout, \
+        print >>self.stdout
+        print >>self.stdout, """alias [name [command [parameter parameter ...]]]
+        print >>self.stdout, """a(rgs)
+                print >>self.stdout, '*** Bad lineno:', arg
+            print >>self.stdout, '*** Blank or comment'
+                print >>self.stdout, bpnum, 'is reached.'
+        print >>self.stdout, """b(reak) ([file:]lineno | function) [, condition]
+                print >>self.stdout, 'Breakpoint', bpnum,
+                print >>self.stdout, "Breakpoint %d at %s:%d" % (bp.number,
+                print >>self.stdout, 'Breakpoint index %r is not a number' % i
+            print >>self.stdout, 'Breakpoint index %r is not valid' % args[0]
+            print >>self.stdout, '--Call--'
+        print >>self.stdout, """cl(ear) [bpnumber [bpnumber...]]
+        print >>self.stdout, "cl(ear) filename:lineno"
+        print >>self.stdout, """commands [bpnumber]
+        print >>self.stdout, """condition bpnumber str_condition
+        print >>self.stdout, """c(ont(inue))
+        print >>self.stdout, """debug code
+                print >>self.stdout, 'Deleted breakpoint', i
+        print >>self.stdout, """disable bpnumber [bpnumber ...]
+        print >>self.stdout, """d(own)
+        print >>self.stdout, """enable bpnumber [bpnumber ...]
+            print >>self.stdout, 'End of file'
+        print >>self.stdout, "ENTERING RECURSIVE DEBUGGER"
+                    print >>self.stdout, '[EOF]'
+        print >>self.stdout, """EOF
+                print >>self.stdout, '***', err
+                print >>self.stdout, '*** Error in argument:', repr(arg)
+            print >>self.stdout, '***', exc_type_name + ':', repr(v)
+        print >>self.stdout, exc_type_name + ':', _saferepr(exc_value)
+            print >>self.stdout, '***', exc_type_name + ':', v
+            print >>self.stdout, 'Function', code.co_name
+        print >>self.stdout, """h(elp)
+        print >>self.stdout, """ignore bpnumber count
+                        print >>self.stdout, 'is not a function'
+                print >>self.stdout, 'is now unconditional.'
+                print >>self.stdout, '*** Jump failed:', e
+        print >>self.stdout, """j(ump) lineno
+        print >>self.stdout, "LEAVING RECURSIVE DEBUGGER"
+        print >>self.stdout, """l(ist) [first [,last]]
+            print >>self.stdout, 'Method', code.co_name
+            print >>self.stdout, name, '=',
+            print >>self.stdout, '*** Newest frame'
+        print >>self.stdout, """n(ext)
+                print >>self.stdout, 'No breakpoint numbered', i
+                print >>self.stdout, 'not found from sys.path'
+            print >>self.stdout, '*** Not yet returned!'
+                print >>self.stdout, "Num Type         Disp Enb   Where"
+            print >>self.stdout, '*** Oldest frame'
+                        print >>self.stdout, 'or was not found along sys.path.'
+        print >>self.stdout, """p expression
+        print >>self.stdout, """pp expression
+        print >>self.stdout, """q(uit) or exit - Quit from the debugger.
+                print >>self.stdout, reply + ' of breakpoint %d.' % bpnum
+                        print >>self.stdout, repr(arg),
+                print >>self.stdout, '*** ', repr(filename),
+            print >>self.stdout, repr(self._getval(arg))
+        print >>self.stdout, """r(eturn)
+        print >>self.stdout, '--Return--'
+            print >>self.stdout, self.curframe_locals['__return__']
+        print >>self.stdout, self.format_stack_entry(frame_lineno,
+                print >>self.stdout, "%s = %s" % (alias, self.aliases[alias])
+            print >>self.stdout, "%s = %s" % (args[0], self.aliases[args[0]])
+        print >>self.stdout, """(!) statement
+        print >>self.stdout, """s(tep)
+                    print >>self.stdout, s + '\t' + line,
+        print >>self.stdout, """tbreak  same arguments as break, but breakpoint
+            print >>self.stdout, "*** The 'jump' command requires a line number."
+                        print >>self.stdout, '*** The specified object',
+        print >>self.stdout, type(value)
+        print >>self.stdout, """unalias name
+        print >>self.stdout, """u(p)
+                print >>self.stdout, "Usage : commands [bnum]\n        ..." \
+        print >>self.stdout, """whatis arg
+        print >>self.stdout, """w(here)
+                print >>self.stdout, 'Will stop next time breakpoint',
+            print >>self.stdout, "*** You can only jump within the bottom frame"
+        print 'Sorry, can\'t find the help file "pdb.doc"',
+Prints the type of the argument."""
+            print sys.exc_info()[1]
+Print the arguments of the current function."""
+            print "The program exited via sys.exit(). Exit status: ",
+            print "The program finished and will be restarted"
+Print the value of the expression."""
+            print "\t" + " ".join(sys.argv[1:])
+            print "Uncaught exception. Entering post mortem debugging"
+        print """unt(il)
+        print "usage: pdb.py scriptfile [arg] ..."
+        """Produce a reasonable default."""
+        prompt_back = self.prompt
+                                                     prompt_prefix)
+        # Protection for derived debuggers
+                # queue up everything after marker
+            # quoted
+            raise
+        raise Restart
+            raise ValueError("A valid traceback must be passed if no "
+                rcFile.close()
+            rcFile.close()
+                rcFile = open(os.path.join(envHome, ".pdbrc"))
+            rcFile = open(".pdbrc")
+            rcLines = self.rcLines
+        # Read $HOME/.pdbrc and ./.pdbrc
+    # Replace pdb's dir with script's dir in front of module search path.
+                reply = 'no'
+                reply = raw_input('Clear all breaks? ')
+                    reply = reply + '1 crossing'
+                    reply = reply + '%d crossings' % count
+            reply = reply.strip().lower()
+                reply = 'Will ignore next '
+_repr.maxstring = 200
+        # reproduce the behavior of the standard displayhook, not printing None
+_repr = Repr()
+"restart" is an alias for "run"."""
+        """Restart program by raising an exception to be caught in the main
+Restart the debugged python program. If a string is supplied, it is
+        return
+            return
+                return
+                        return
+            return 0
+            return 1
+        return 1
+            return 1 # end of cmd list
+    return answer
+        return answer or failed
+            return cmd.Cmd.onecmd(self, line)
+            return # continue to handle other cmd def in the cmd list
+            return eval(arg, self.curframe.f_globals,
+            return f
+                return failed
+            return failed
+            return filename
+        return filename
+                return fullname
+            return line
+        return line
+        return lineno
+        Return `lineno` if it is, 0 if not (e.g. a docstring, comment, blank
+        return None
+    return Pdb().runcall(*args, **kwds)
+    return Pdb().runeval(expression, globals, locals)
+            return self.handle_command_def(line)
+        Returns True if the normal interaction function must be called,
+    # Return true to exit from the command loop
+        root, ext = os.path.splitext(filename)
+    run(statement, globals, locals)
+    run(TESTCMD)
+_saferepr = _repr.repr
+            save_displayhook = sys.displayhook
+            save_stdin = sys.stdin
+            save_stdout = sys.stdout
+see no sign that the breakpoint was reached.
+# (See pdb.doc for documentation.)
+        self.aliases = {}
+            self.aliases[args[0]] = ' '.join(args[1:])
+                self.clear_all_breaks()
+                self.cmdloop()
+            self.cmdloop()
+        self.cmdloop()
+            self.cmdqueue = []
+                self.cmdqueue.append(next)
+        self.commands = {} # associates a command list to breakpoint numbers
+        self.commands[bnum] = []
+        self.commands_bnum = bnum
+        self.commands_bnum = None # The breakpoint number for which we are
+            self.commands_defining = False
+        self.commands_defining = False # True while in the process of defining
+        self.commands_defining = True
+        self.commands_doprompt[bnum] = True
+        self.commands_doprompt = {} # for each bp num, tells if the prompt
+            self.commands_doprompt[self.commands_bnum] = False
+        self.commands_silent[bnum] = False
+        self.commands_silent = {} # for each bp num, tells if the stack trace
+            self.commands_silent[self.commands_bnum] = True
+                                         self.curframe.f_globals)
+                                self.curframe.f_globals,
+                self.curframe.f_lineno = arg
+                                self.curframe_locals)
+                            self.curframe_locals)
+                        self.curframe_locals)
+            self.curframe_locals = self.curframe.f_locals
+        self.curframe_locals = self.curframe.f_locals
+        self.curframe = None
+            self.curframe = self.stack[self.curindex][0]
+        self.curframe = self.stack[self.curindex][0]
+        self.curindex = 0
+            self.curindex = self.curindex - 1
+            self.curindex = self.curindex + 1
+            self.currentbp = 0
+               self.currentbp in self.commands:
+        # self.currentbp is set in bdb in Bdb.break_here if a breakpoint was hit
+        self.do_break(arg, 1)
+        self.execRcLines()
+            self.forget()
+        self.forget()
+        self.help_a()
+        self.help_b()
+        self.help_c()
+        self.help_cl()
+        self.help_d()
+        self.help_h()
+        self.help_j()
+        self.help_l()
+        self.help_n()
+        self.help_q()
+        self.help_r()
+        self.help_s()
+        self.help_u()
+        self.help_unt()
+        self.help_w()
+        self.interaction(frame, exc_traceback)
+            self.interaction(frame, None)
+        self.interaction(frame, None)
+            self.lastcmd = lastcmd_back
+        self.lastcmd = 'list'
+        self.lastcmd = p.lastcmd
+                    self.lineno = lineno
+            self.lineno = None
+        self.lineno = None
+        self.mainpyfile = ''
+        self.mainpyfile = self.canonic(filename)
+                    self.onecmd(line)
+                self.onecmd(line)
+                self.print_stack_entry(frame_lineno)
+                self.print_stack_entry(self.stack[self.curindex])
+            self.print_stack_entry(self.stack[self.curindex])
+        self.print_stack_entry(self.stack[self.curindex])
+        self.print_stack_trace()
+        self.prompt = '(com) '
+        self.prompt = '(Pdb) '
+            self.prompt = prompt_back
+            self.rcLines = []
+        self.rcLines = []
+                    self.rcLines.append(line)
+                self.rcLines.append(line)
+        self.run(statement)
+        self.set_continue()
+        self.set_next(self.curframe)
+        self.set_quit()
+        self.set_return(self.curframe)
+        self.set_step()
+        self.set_until(self.curframe)
+            self.setup(frame, None)
+        self.setup(frame, traceback)
+        self.stack = []
+        self.stack, self.curindex = self.get_stack(f, t)
+                self.stack[self.curindex] = self.stack[self.curindex][0], arg
+            self.use_rawinput = 0
+        self._user_requested_quit = 0
+        self._user_requested_quit = 1
+            self._wait_for_mainpyfile = 0
+        self._wait_for_mainpyfile = 0
+        self._wait_for_mainpyfile = 1
+Sets the ignore count for the given breakpoint number.  A breakpoint
+Set the next line that will be executed."""
+# Simplified interface
+Simply use the continue command, or step, or any other
+            # something went wrong
+Some useful aliases (especially when placed in the .pdbrc file) are:
+        # So we clear up the __main__ and set several special variables
+Specify a list of commands for breakpoint number bpnumber.  The
+Specifying any command resuming execution (currently continue,
+        # split into ';;' separated commands
+splitted with "shlex" and the result is used as the new sys.argv.
+                    s = repr(lineno).rjust(3)
+                        s = s + '->'
+        statement = 'execfile(%r)' % filename
+step, next, return, jump, quit and their abbreviations) terminates
+str_condition is a string specifying an expression which
+            sts = os.system('${PAGER-more} '+fullname)
+            sys.argv[:0] = argv0
+            sys.argv = shlex.split(arg)
+        sys.call_tracing(p.run, (arg, globals, locals))
+                sys.displayhook = save_displayhook
+                sys.displayhook = self.displayhook
+        # sys.exc_info() returns (type, value, traceback) if an exception is
+        sys.exit(1)
+        sys.exit(2)
+    sys.path[0] = os.path.dirname(mainpyfile)
+        sys.settrace(None)
+        sys.settrace(self.trace_dispatch)
+                sys.stdin = save_stdin
+                sys.stdin = self.stdin
+                sys.stdout = save_stdout
+                sys.stdout = self.stdout
+TESTCMD = 'import x; x.main()'
+# text using value of line_prefix string.  A newline and arrow may
+        that we ever need to stop in this function."""
+    # The argument is the remaining string on the command line
+the command list (as if that command was immediately followed by end).
+the current stack frame.
+the debugger (in python distributions 1.5.1 and before) where
+# The default of 30 truncates error messages too easily.
+The exclamation point can be omitted unless the first word
+        # The f_locals dictionary is updated from the actual frame
+The line number may be prefixed with a filename and a colon,
+    # The most recently entered frame is printed last;
+then continue.  If none of the other commands print anything, you
+The program being executed is aborted."""
+        the program to stop execution."""
+the .py suffix may be omitted."""
+    # the Python interpreter's stack trace.
+        # The script has to run in __main__ namespace (or imports from
+        """This function is called if an exception occurs,
+        """This function is called when a return trap is set here."""
+        """This function is called when we stop or break at this line."""
+        # (this gets rid of pdb's globals and cleans old variables on restarts).
+This is because any time you resume execution
+    # this is different from dbx and gdb, but consistent with
+        """This method is called when there is the remote possibility
+        # this method should be callable before starting debugging, so default
+those breakpoints.  Without argument, clear all breaks (but
+        Those commands will be executed whenever the breakpoint causes
+        """Three possibilities, tried in this order:
+                                      tmpArg)
+(to a newer frame)."""
+(to an older frame)."""
+To assign to a global variable you must always prefix the
+    # To be overridden in derived debuggers
+        # to "no globals" if there is no current frame
+To remove all commands from a breakpoint, type commands and
+to specify a breakpoint in another file (probably one that
+        to the prompt.
+to true."""
+            traceback.print_exc()
+                try:
+            try:
+        try:
+    try:
+        try: code = value.func_code
+        try: code = value.im_func.func_code
+        # Try to load readline if it exists
+            t = sys.exc_info()[2]
+        t = sys.exc_info()[2]
+            t, v = sys.exc_info()[:2]
+        # unless it's an alias command
+                    #use co_name to identify the bkpt (function names
+        # user_call for details).
+#! /usr/bin/python2.7
+usual message about stopping at a breakpoint is not printed.  This may
+            value = eval(arg, self.curframe.f_globals,
+        # When bdb sets tracing, a number of call and line events happens
+# When invoked as main program, invoke the debugger on a script
+    # which allows explicit specification of command line arguments.
+(which is an arbitrary expression or statement to be executed
+which must evaluate to true before the breakpoint is honored.
+    while 1:
+        while args[0] in self.aliases:
+            while os.path.islink(dirname):
+    while True:
+                  " will be restarted"
+With a command name as argument, print help about that command
+With a line number argument, set a break there in the current
+With a space separated list of breakpoint numbers, clear
+With no bpnumber argument, commands refers to the last
+With one argument, list 11 lines starting at that line.
+Without argument, print the list of available commands.
+Without arguments, list 11 lines around the current line
+With two arguments, list the given range;
+                x = eval(arg, {}, {})
+You can use breakpoint commands to start your program up again.

@@ -1,0 +1,414 @@
+  -a<arch>       Debian architecture we build for (implies -d).
+  -A             binary-only, only arch-indep files. }
+	$admindir = $1;
+  --admindir=<directory>
+        $admindir = shift @ARGV;
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	and subprocerr("@_");
+	    and subprocerr('mv');
+	    and subprocerr('rm -f');
+  -ap            add pause before starting signature process.
+    $arch = mustsetvar($ENV{'DEB_HOST_ARCH'}, _g('host architecture'));
+    $arch = 'source';
+  --as-root      ensure -T calls the target with root rights
+# (at your option) any later version.
+# avoid regressing various defaults in packages in the near term; we expect
+  -b             binary-only, do not build source.   } also passed to
+  -B             binary-only, no arch-indep files.   } dpkg-genchanges
+	$binarytarget = 'binary';
+	$binarytarget = 'binary-arch';
+	$binarytarget = 'binary-indep';
+	build_binaryonly && usageerr(_g("cannot combine %s and %s"), build_opt, "-S");
+    $build_flags->load_config();
+	$build_flags->strip($flag, '-Werror=format-security', undef);
+	!build_normal && usageerr(_g("cannot combine %s and %s"), $_, build_opt);
+    $build_opts->export();
+    $build_opts->set("parallel", $parallel);
+	build_sourceonly && usageerr(_g("cannot combine %s and %s"), $_, "-S");
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+        $call_target = $2;
+        $call_target_as_root = 1;
+        $call_target =~ /^(clean|binary(|-arch|-indep))$/)
+        $call_target = shift @ARGV;
+	# causes many build failures and causes a number of configure tests
+  -C<descfile>   changes are described in <descfile>.  } to dpkg-genchanges
+	$changedby = $1;
+    $changedby, $desc, $parallel);
+  --changes-option=<opt>
+                 change the administrative directory.
+    chdir($dir) or syserr("chdir $dir");
+chdir($dir) or syserr("chdir $dir");
+    chdir('..') or syserr('chdir ..');
+chdir('..') or syserr('chdir ..');
+	$checkbuilddep = 0;
+	$checkbuilddep = ($1 eq 'D');
+	@checkbuilddep_opts = ();
+	@checkbuilddep_opts = ('-B');
+    chmod(0755, "debian/rules"); # No checks of failures, non fatal
+    chomp;
+	$cleansource = 1;
+    $cleansource, $since, $maint,
+	       " --clearsign --armor --textmode  > ../$qfile.asc");
+	       " +clearsig=on -fast <../$qfile >../$qfile.asc");
+close $arch_env or subprocerr('dpkg-architecture');
+close CHANGES or subprocerr(_g('dpkg-genchanges'));
+    close $debhelper_compat_file;
+close OUT or syserr(_g('write changes file'));
+                 command to gain root privileges (default is fakeroot).
+Copyright (C) 1996 Ian Jackson.
+Copyright (C) 2000 Wichert Akkerman
+Copyright (C) 2007 Frank Lichtenheld");
+  -D             check build dependencies and conflicts.
+  -d             do not check build dependencies and conflicts.
+	$debhelper_compat = int($line);
+	@debian_rules = split /\s+/, $1;
+	# Deprecated option
+	$desc = $1;
+# dpkg-buildpackage
+    } else {
+} else {
+	} else {
+    } elsif (/^-a(.*)$/) {
+    } elsif (/^-A$/) {
+    } elsif (/^--admindir=(.*)$/) {
+    } elsif (/^--admindir$/) {
+    } elsif (/^-ap$/) {
+    } elsif (/^--as-root$/) {
+    } elsif (/^-b$/) {
+    } elsif (/^-C(.*)$/) {
+    } elsif (/^--changes-option=(.*)$/) {
+    } elsif (/^-([dD])$/) {
+    } elsif (/^-e(.*)$/) {
+    } elsif (/^-F$/) {
+    } elsif (fileomitted "\.diff\.$ext" and fileomitted "\.debian\.tar\.$ext") {
+    } elsif (fileomitted "\.orig\.tar\.$ext") {
+} elsif (find_command('pgp')) {
+    } elsif ($infiles && /^\s+(.*)$/) {
+    } elsif ($infiles && /^\S/) {
+    } elsif (/^-j(\d*)$/) {
+    } elsif (/^-k(.*)$/) {
+    } elsif (/^-m(.*)$/) {
+} elsif ($maint) {
+    } elsif (m/^-[EW]$/) {
+    } elsif (/^-nc$/) {
+    } elsif (/^-p(.*)$/) {
+    } elsif (/^-r(.*)$/) {
+    } elsif (/^-S$/) {
+    } elsif (/^-s(gpg|pgp)$/) {
+    } elsif (/^-s[iad]$/) {
+    } elsif ($signinterface eq 'pgp') {
+    } elsif (/^-(?:s[insAkurKUR]|[zZ].*|i.*|I.*)$/) {
+    } elsif (/^--source-option=(.*)$/) {
+    } elsif (/^-t(.*)$/) {
+    } elsif (/^(--target=|-T)(.+)$/) {
+    } elsif (/^(--target|-T)$/) {
+    } elsif (/^-tc$/) {
+    } elsif (/^-uc$/) {
+    } elsif (/^-us$/) {
+    } elsif (/^-v(.*)$/) {
+    } elsif (/^--version$/) {
+    } elsif (WEXITSTATUS($?)) {
+  -e<maint>      maintainer for release is <maint>.    } only passed
+	    $ENV{$1} = $2;
+	$ENV{$flag} = $build_flags->get($flag);
+       || ($ENV{HOME} && -e "$ENV{HOME}/.gnupg") )
+    $ENV{MAKEFLAGS} ||= '';
+    $ENV{MAKEFLAGS} .= " -j$parallel";
+error($error) unless $ok;
+	    error(_g("fakeroot not found, either install the fakeroot\n" .
+	    error(_g("gain-root-commmand '%s' not found"), $rootcommand[0]);
+    error(_g("unable to determine %s"), $text)
+    exit 0;
+	exit 0;
+    exit 1;
+	    exit 3;
+	$files .= " $1 ";
+               "files.")) if $noclean;
+     && find_command('gpg')) {
+  -F             normal full build (binaries and sources).
+	$forcesigninterface = $1;
+    foreach (@cmds) {
+    foreach my $flag ($build_flags->list()) {
+    getc();
+# GNU General Public License for more details.
+# handling.  See:
+  -h, --help     show this help message.
+#   https://lists.ubuntu.com/archives/ubuntu-devel/2011-November/034351.html
+if ($< == 0) {
+    if ($admindir) {
+	if (build_sourceonly) {
+if ($call_target) {
+    if ($call_target_as_root or
+if ($changedby) {
+if ($checkbuilddep) {
+if ($cleansource) {
+if ($debhelper_compat < 9) {
+if (defined($changedby)) { push @changes_opts, "-e$changedby" }
+if (defined($desc)) { push @changes_opts, "-C$desc" }
+    if (defined $line and length $line) {
+if (defined($maint)) { push @changes_opts, "-m$maint" }
+if (defined $parallel) {
+if (defined($since)) { push @changes_opts, "-v$since" }
+if ( ( ($ENV{GNUPGHOME} && -e $ENV{GNUPGHOME})
+if (fileomitted '\.deb') {
+    if (fileomitted "\.diff\.$ext" and fileomitted "\.debian\.tar\.$ext") {
+    if (fileomitted '\.dsc') {
+    if (/^Files:/i) {
+    if (!find_command($rootcommand[0])) {
+if ($forcesigninterface) {
+    if (/^(--help|-h)$/) {
+if ($noclean) {
+    if (not WIFEXITED($?)) {
+if (not -x "debian/rules") {
+if (open my $debhelper_compat_file, 'debian/compat') {
+	if ($rootcommand[0] eq 'fakeroot') {
+if ($signchanges && signfile("$pva.changes")) {
+if ($signcommand) {
+if ($signerrors) {
+    if ($signinterface eq 'gpg') {
+    if ($signinterface !~ /^(gpg|pgp)$/) {
+	if ($signsource or $signchanges) {
+    if ($signsource && signfile("$pv.dsc")) {
+if ($usepause &&
+	$include = BUILD_ALL;
+	$include = BUILD_ARCH_DEP;
+            (($include == BUILD_ARCH_DEP) ? '-B' :
+	$include = BUILD_ARCH_INDEP;
+             (($include == BUILD_ARCH_INDEP) ? '-A' :
+	$include = BUILD_BINARY;
+    $include = BUILD_BINARY if ($include & BUILD_DEFAULT);
+	$include = BUILD_SOURCE;
+              (($include == BUILD_SOURCE) ? '-S' :
+	$infiles = 0;
+	$infiles = 1;
+               internerr("build_opt called with include=$include")))));
+  -I[<pattern>]  filter out files when building tarballs. } to dpkg-source
+  -i[<regex>]    ignore diffs of files matching regex.    } only passed
+# it under the terms of the GNU General Public License as published by
+  -j[<number>]   specify jobs to run simultaneously } passed to debian/rules
+  -k<keyid>      the key to use for signing.
+later for copying conditions. There is NO warranty.
+# lesser-evil workaround for an interaction with debhelper's build flags
+	$maint = $1;
+    $maintainer = $changedby;
+    $maintainer = $maint;
+    $maintainer = mustsetvar($changelog->{maintainer}, _g('source changed by'));
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  -m<maint>      maintainer for package is <maint>.    }
+my ($admindir, $signkey, $forcesigninterface, $usepause, $noclean,
+my $arch;
+my $binarytarget = 'binary';
+    my $build_flags = Dpkg::BuildFlags->new();
+my $build_opts = Dpkg::BuildOptions->new();
+my $call_target = '';
+my $call_target_as_root = 0;
+my $changelog = changelog_parse();
+my $checkbuilddep = 1;
+my (@checkbuilddep_opts, @changes_opts, @source_opts);
+my $chg = "../$pva.changes";
+    my @cmds = split /\s*;\s*/;
+my $cwd = cwd();
+my $debhelper_compat = 1;
+my @debian_rules = ("debian/rules");
+my $dir = basename($cwd);
+my $ext = $compression_re_file_ext;
+    my ($file) = @_;
+my $include = BUILD_ALL | BUILD_DEFAULT;
+my $infiles = my $files = '';
+    my $line = <$debhelper_compat_file>;
+my $maintainer;
+my ($ok, $error) = version_check($version);
+my $pkg = mustsetvar($changelog->{source}, _g('source package'));
+my $pva = "${pkg}_${sversion}_$arch";
+my $pv = "${pkg}_$sversion";
+    my $qfile = quotemeta($file);
+my @rootcommand = ();
+my $signchanges = 1;
+my $signcommand = '';
+my $signerrors;
+my $signinterface;
+my $signsource = 1;
+my $srcmsg;
+    my $status = $?;
+(my $sversion = $version) =~ s/^\d+://;
+my $targetarch = my $targetgnusystem = '';
+    my ($var, $text) = @_;
+my $version = mustsetvar($changelog->{version}, _g('source version'));
+  -nc            do not clean source tree (implies -b).
+    # -nc without -b/-B/-A/-S/-F implies -b
+	$noclean = 1;
+open CHANGES, '-|', 'dpkg-genchanges', @changes_opts
+open my $arch_env, '-|', 'dpkg-architecture', "-a$targetarch",
+open OUT, '>', $chg or syserr(_g('write changes file'));
+Options:
+	             "or run this as root"));
+    or subprocerr('dpkg-genchanges');
+	             "package, specify a command with the -r option, " .
+	$parallel = $1 || '';
+    $parallel = $build_opts->get("parallel") if $build_opts->has("parallel");
+		 pass option <opt> to dpkg-genchanges
+		 pass option <opt> to dpkg-source
+# Preparation of environment stops here
+	printf _g("
+    printf _g("Debian %s version %s.\n"), $progname, $version;
+	printf(_g("%s: export %s from dpkg-buildflags (origin: %s): %s\n"),
+    print _g("
+    print _g("Press the return key to start signing process\n");
+    print "\n";
+    print OUT $_ or syserr(_g('write changes file'));
+print "$progname: $srcmsg\n";
+    print "$progname: $text $var\n";
+print STDERR " dpkg-genchanges @changes_opts >$chg\n";
+    print STDERR " @_\n";
+    print STDERR " signfile $file\n";
+"), $progname;
+	       $progname, $flag, $build_flags->get_origin($flag), $ENV{$flag});
+  -p<sign-command>
+	push @changes_opts, $_;
+	push @changes_opts, $1;
+	push @changes_opts, '-A';
+	push @changes_opts, '-b';
+	push @changes_opts, '-S';
+	push @checkbuilddep_opts, "--admindir=$admindir";
+    push @rootcommand, "fakeroot" unless @rootcommand;
+	push @source_opts, $1;
+	push @source_opts, $_; # passed to dpkg-source
+	       .quotemeta($signkey||$maintainer).
+	# released version of Ubuntu.
+    return (($include == BUILD_BINARY) ? '-b' :
+    return $status
+    return $var;
+  -r<gain-root-command>
+	@rootcommand = split /\s+/, $1;
+  -R<rules>      rules file to execute (default is debian/rules).
+  -sa            uploaded src always includes orig.    }
+  -sd            uploaded src is diff and .dsc only.   }
+  -sgpg          the sign-command is called like GPG.
+    $_ = shift @ARGV;
+    shift while !$_[0];
+	showversion;
+  -si (default)  src includes orig if new upstream.    }
+    $signchanges = 0;
+	$signchanges = 0;
+    ($signchanges || (!build_binaryonly && $signsource))) {
+	$signcommand = $1;
+	 $signcommand = 'gpg';
+	$signcommand = 'pgp'
+	       "$signcommand --utf8-strings --local-user "
+    $signerrors = _g("Failed to sign .changes file");
+	$signerrors = _g("Failed to sign .dsc and .changes file");
+    $signinterface = $forcesigninterface;
+    $signinterface = $signcommand;
+	$signkey = $1;
+    $signsource = 0;
+	$signsource = 0;
+	$since = $1;
+  -sn            force Debian native source format.      }
+    # source only upload
+  --source-option=<opt>
+  -spgp          the sign-command is called like PGP.
+	$srcmsg = _g('binary and diff upload (original source NOT included)');
+	$srcmsg = _g('binary only upload (no source included)');
+	$srcmsg = _g('full upload; Debian-native package (full source is included)');
+    $srcmsg = _g('full upload (original source is included)');
+	$srcmsg = _g('full upload (original source is included)');
+	$srcmsg = _g('source only, diff-only upload (original source NOT included)');
+	$srcmsg = _g('source only upload: Debian-native package');
+	$srcmsg = _g('source only upload (original source is included)');
+  -s[sAkurKUR]   see dpkg-source for explanation.        } only passed
+  -S             source only, no binary files.     }
+sub build_binaryonly() { return !($include & BUILD_SOURCE); }
+sub build_normal() { return ($include & BUILD_ALL) == BUILD_ALL; }
+sub build_opt() {
+sub build_sourceonly() { return $include == BUILD_SOURCE; }
+sub fileomitted($) { return $files !~ /$_[0]/ }
+sub mustsetvar {
+        subprocerr('dpkg-checkbuilddeps');
+sub showversion {
+sub signfile {
+sub usage {
+sub withecho {
+	/^\s*(\w+)=([\w-]*)\s*$/ && do {
+    system(@_)
+	system("(cat ../$qfile ; echo '') | ".
+    system('dpkg-checkbuilddeps', @checkbuilddep_opts);
+	system('mv', '--', "../$file.asc", "../$file")
+	system('rm', '-f', "../$file.asc")
+	system("$signcommand -u ".quotemeta($signkey||$maintainer).
+	$targetarch = $1;
+	$targetgnusystem = $1; # Order DOES matter!
+  -tc            clean source tree when finished.
+# Temporarily continue to export build flags to the environment.  This is to
+textdomain("dpkg-dev");
+# the Free Software Foundation; either version 2 of the License, or
+This is free software; see the GNU General Public License version 2 or
+# This program is distributed in the hope that it will be useful,
+# This program is free software; you can redistribute it and/or modify
+# to drop this after Ubuntu 12.04 LTS.
+	# to silently fail.  It was not exported to the environment in any
+  -t<system>     set GNU system type.           } passed to dpkg-architecture
+  -T<target>     call debian/rules <target> with the proper environment
+    "-t$targetgnusystem", '-s', '-f' or subprocerr('dpkg-architecture');
+  -uc            unsigned changes.
+unless (build_binaryonly) {
+unless (build_sourceonly) {
+unless ($call_target) {
+	unless defined($var);
+unless ($noclean) {
+unless ($signcommand) {
+    unless ($status) {
+	usageerr(_g("unknown option or argument %s"), $_);
+Usage: %s [<options> ...]
+use constant BUILD_ALL        => BUILD_BINARY | BUILD_SOURCE;
+use constant BUILD_ARCH_DEP   => 4;
+use constant BUILD_ARCH_INDEP => 8;
+use constant BUILD_BINARY     => BUILD_ARCH_DEP | BUILD_ARCH_INDEP;
+use constant BUILD_DEFAULT    => 1;
+use constant BUILD_SOURCE     => 2;
+use Cwd;
+use Dpkg;
+use Dpkg::BuildFlags;
+use Dpkg::BuildOptions;
+use Dpkg::Changelog::Parse;
+use Dpkg::Compression;
+use Dpkg::ErrorHandling;
+use Dpkg::Gettext;
+use Dpkg::Path qw(find_command);
+use Dpkg::Version;
+use File::Basename;
+	$usepause = 1;
+use POSIX;
+use strict;
+use warnings;
+#!/usr/bin/perl
+  -us            unsigned source.
+      --version  show the version.
+  -v<version>    changes since version <version>.      }
+	warning(_g("Build dependencies/conflicts unsatisfied; aborting."));
+    warning(_g("debian/rules is not executable: fixing that."));
+	warning(_g("-E and -W are deprecated, they are without effect"));
+    warning(_g("it is a bad idea to generate a source package " .
+	    warning(_g("PGP support is deprecated (see README.feature-removal-schedule)"));
+	    warning(_g("This is currently a non-fatal warning with -S, but"));
+	warning(_g("unknown sign command, assuming pgp style interface"));
+	warning(_g("(Use -d flag to override.)"));
+    warning(_g("using a gain-root-command while being root")) if (@rootcommand);
+	    warning(_g("will probably become fatal in the future."));
+    warning($signerrors);
+# We don't do this if debhelper compat level >= 9 is in use, as a
+while ($_ = <$arch_env>) {
+while (@ARGV) {
+while ($_ = <CHANGES>) {
+	# While -Werror=format-security does catch many real bugs, it also
+    withecho(@debian_rules, 'build');
+        withecho(@debian_rules, $call_target);
+withecho('dpkg-source', @source_opts, '--after-build', $dir);
+    withecho('dpkg-source', @source_opts, '-b', $dir);
+    withecho('dpkg-source', @source_opts, '--before-build', $dir);
+    withecho(@rootcommand, @debian_rules, $binarytarget);
+        withecho(@rootcommand, @debian_rules, $call_target);
+    withecho(@rootcommand, @debian_rules, 'clean');
+               "without cleaning up first, it might contain undesired " .
+# You should have received a copy of the GNU General Public License
+  -Z<compressor> compression to use for source           }
+  -z<level>      compression level of source             } to dpkg-source

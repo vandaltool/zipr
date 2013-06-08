@@ -1,0 +1,73 @@
+Assertion '%s' failed at %s:%u, function %s(). Aborting.
+bindtextdomain
+__bss_start
+Compiled with libpulse %s
+Connection failure: %s
+context_state_callback
+dcgettext
+__errno_location
+execvp(): %s
+Failure to resume: %s
+Failure to suspend: %s
+fork(): %s
+__fprintf_chk
+getopt_long
+GLIBC_2.0
+GLIBC_2.3.4
+__gmon_start__
+Got SIGINT, exiting.
+  -h, --help                            Show this help
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libdl.so.2
+/lib/ld-linux.so.2
+libm.so.6
+libpthread.so.0
+libpulsecommon-1.1.so
+libpulse.so.0
+librt.so.1
+Linked with libpulse %s
+mainloop_api
+mainloop_api = pa_mainloop_get_api(m)
+pa_context_connect
+pa_context_disconnect
+pa_context_drain
+pa_context_errno
+pa_context_get_state
+pa_context_is_local
+pa_context_new
+pa_context_new() failed.
+pa_context_set_state_callback
+pa_context_suspend_sink_by_index
+pa_context_suspend_source_by_index
+pa_context_unref
+pa_get_library_version
+pa_log_level_meta
+pa_mainloop_free
+pa_mainloop_get_api
+pa_mainloop_new
+pa_mainloop_new() failed.
+pa_mainloop_run
+pa_mainloop_run() failed.
+pa_operation_unref
+pa_path_get_filename
+pa_signal_done
+pa_signal_init
+pa_signal_init(mainloop_api) == 0
+pa_signal_new
+pa_strerror
+pasuspender %s
+pa_xfree
+pa_xstrdup
+__printf_chk
+pulseaudio
+setlocale
+%s [options] ... 
+  -s, --server=SERVER                   The name of the server to connect to
+/usr/share/locale
+utils/pasuspender.c
+      --version                         Show version
+WARNING: Child process terminated by signal %u
+WARNING: Sound server is not local, not suspending.

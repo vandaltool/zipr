@@ -1,0 +1,168 @@
+## ----------------------------------------------------------------------
+			$ADD_PACKAGE or $ADD_PACKAGE = "\t:";
+					$ADD_PACKAGE .= "\t" . add_xmlcat_cmd($package, $type, $id, $local) . "\\n";
+			$ADD_ROOT    or $ADD_ROOT    = "\t:";
+					$ADD_ROOT    .= "\t" . add_xmlcat_cmd($package, $type, $id) . "\\n";
+					$ADD_ROOT .= "\t" . add_xmlcat_cmd($package, $type, $id) . "\\n";
+			addsubstvar( $package,
+and the package catalog file, you can use the form
+			autoscript( $package, "postinst", "postinst-xmlcatalog",
+			autoscript( $package, "postrm", "postrm-xmlcatalog",
+			autoscript( $package, "prerm", "prerm-xmlcatalog",
+B<Adam Di Carlo> E<lt>aph@debian.orgE<gt>
+B<Ardo van Rangelrooij> E<lt>ardo@debian.orgE<gt>
+B<dh_installxmlcatalogs> automatically adds maintainer script snippets
+B<dh_installxmlcatalogs> is a debhelper program that installs and
+B<dh_installxmlcatalogs> [S<I<debhelper options>>] [B<-n>]
+build area.  C<dest> should start with F</usr/share/xml/>.
+B<xml-core> package will be added to C<${misc:Depends}>, so be sure to
+called between invocations of this command. Otherwise, it may cause
+catalog file should be of the form C<package;type;id;catalog>, where
+catalog file should be of the form C<root;type;id>, where the verbatim
+C<delegatePublic> statements in the applicable catalog file. Generally
+			chomp;
+C<local;source;dest>, where the verbatim C<local> indicates this is an
+		close( DH_FARRAY_IN );
+    $cmd .= ' --add';
+    $cmd .= ' --del';
+    $cmd .= " --id \\\"$id\\\"";
+	$cmd .= " --local $local";
+        $cmd .= " --package $pkg";
+    $cmd .= " --package $pkg";
+	$cmd .= " --root";
+    $cmd .= ' || true';
+    $cmd .= " --type $type";
+## Copyright (c) 2004 Ardo van Rangelrooij, Adam Di Carlo
+C<root-and-package> indicates this is an entry for an XML entity to be
+C<root-and-package;type;id;catalog>, where the verbatim
+C<root> indicates this is an entry for an XML entity to be registered
+C<root> or C<package> commands, a type of C<public> will general
+## Debian dh_installxmlcatalogs
+    $debug_update_xmlcatalog and $cmd .= ' --verbose';
+			$DEL_PACKAGE or $DEL_PACKAGE = "\t:";
+					$DEL_PACKAGE .= "\t" . del_xmlcat_cmd($package, $type, $id) . "\\n";
+			$DEL_ROOT    or $DEL_ROOT    = "\t:";
+					$DEL_ROOT    .= "\t" . del_xmlcat_cmd($package, $type, $id, 1) . "\\n";
+					$DEL_ROOT .= "\t" . del_xmlcat_cmd($package, $type, $id, 1) . "\\n";
+dh_installxmlcatalogs - install and register XML catalog files
+				die("cannot understand command '" . $line->[0] . 
+						die("error: package command with ID '$id' incorrect, must specify local catalog\n");
+						die("error: package command with ID '$id' uses non-existent catalog '$local'\n");
+						die("error: root-and-package command with ID '$id' incorrect, must specify local catalog\n");
+						die("error: root-and-package command with ID '$id' uses non-existent catalog '$local'\n");
+					doit( "install", "-d", "-m755",
+				doit("install","-d","-m755","$tmpdir/etc/xml");
+				doit( "install", "-p", "-m644", $source, $fulldest );
+Do not modify F<postinst>/F<postrm>/F<prerm> scripts.
+    } else {
+		} else {
+			} else {
+					} elsif ( ! -f "$tmpdir/$local" ) {
+			} elsif ( $line->[0] eq 'package' ) {
+			} elsif ( $line->[0] eq 'root' ) {
+			} elsif ( $line->[0] eq 'root-and-package' ) {
+entity id, and C<catalog> indicates the local XML catalog file.
+entry for a local XML catalog file, C<source> indicates where the
+			|| error( "cannot read $xmlcatlistfile: $1" );
+		error("extra command-line arguments");
+files to be installed per package as well as the XML entities in those
+		foreach my $line ( @xml_data ) {
+foreach my $package (@{$dh{DOPACKAGES}}) {
+for the registration and unregistration of the listed XML entities in
+				$fulldest =~ s|//|/|g; # beautification
+F</usr/share/doc/xml-core/>
+=head1 AUTHOR
+=head1 DESCRIPTION
+=head1 NAME
+=head1 NOTES
+=head1 OPTIONS
+=head1 SEE ALSO
+=head1 SYNOPSIS
+identifiers, and C<system> for any files on the local filesystem or
+		if ( $ADD_PACKAGE and not $ADD_ROOT ) {
+If an entry for is to be registered identically in the root catalog
+	if ($#ARGV >= 0) {
+				if ( ! -d dirname( $fulldest ) ) {
+				if ( ! $dh{ NOSCRIPTS } ) {
+			if (! -d "$tmpdir/etc/xml") {
+			if ( $line->[0] eq 'local' ) {
+    if ( $local ) {
+					if ( ! $local ) {
+		if ( not $ADD_PACKAGE and not $ADD_ROOT ) {
+    if ( $root ) {
+	if ( $xmlcatlistfile ) {
+indicates the XML entity type (public, system, uri), C<id> indicates
+				    "' in file $xmlcatlistfile\n");
+in the root XML catalog file, C<type> indicates the XML entity type
+=item B<-n>, B<--noscripts>
+L<debhelper(7)>
+L<dh_installdeb(1)> for an explanation of Debhelper maintainer script
+local XML catalog files that are to be registered in the XML catalog
+local XML catalog resides in the source tree, and C<dest> indicates
+			# Make sure /etc/xml exists (see http://bugs.debian.org/411770).
+				     "misc:Depends", "xml-core", ">= $xmlcorever" );
+multiple instances of the same text to be added to maintainer scripts.
+		my $ADD_PACKAGE = '';
+		my $ADD_ROOT	= '';
+    my $cmd = 'update-xmlcatalog';
+my $debug_update_xmlcatalog = 0;
+		my $DEL_PACKAGE = '';
+		my $DEL_ROOT	= '';
+				my $dest = $line->[2];
+				my $fulldest = "$tmpdir/$dest"; 
+					my $id	 = $line->[2];
+					my $id	  = $line->[2];
+			my @line = split( /;/ );
+					my $local = $line->[3];
+		my $packagecat	= "/etc/xml/$package.xml";
+    my ($pkg, $type, $id, $local) = @_;
+    my ($pkg, $type, $id, $root) = @_;
+				my $source = $line->[1];
+	my $tmpdir = tmpdir($package);
+					my $type = $line->[1];
+					my $type  = $line->[1];
+	my $xmlcatlistfile = pkgfile( $package, "xmlcatalogs" );
+my $xmlcorever	= "0.12";
+		my @xml_data = ();
+			next unless length;
+Note that this command is not idempotent. "dh_clean -k" should be
+		open ( DH_FARRAY_IN, $xmlcatlistfile )
+## or later for copying conditions.  There is NO warranty.
+(public, system, uri), and C<id> indicates the XML entity id.
+			push( @xml_data, [@line] );
+registered in both the root and package XML catalog files, C<type>
+registers XML catalog files.  It complies with the Debian XML/SGML
+    return $cmd;
+			s/#.*//;
+				    "s%#ADD_PACKAGE#%$ADD_PACKAGE%g; s%#ADD_ROOT#%$ADD_ROOT%g;" );
+		# sanity checking
+				    "s%#DEL_PACKAGE#%$DEL_PACKAGE%g; s%#DEL_ROOT#%$DEL_ROOT%g;" );
+snippets.
+				    "s%#PACKAGECAT#%$packagecat%g;" );
+			s/^\s+//;
+			s/\s+$//;
+sub add_xmlcat_cmd ($$$;$) {
+sub del_xmlcat_cmd ($$$;$) {
+the destination location for the local XML catalog under the package
+The entries for the XML entities to be registered in the package XML
+The entries for the XML entities to be registered in the root XML
+the external document subset, e.g., they are not used for entities or
+The file F<debian/I<package>.xmlcatalogs> lists the local XML catalog
+The local XML catalog file entries in that file should be of the form
+the verbatim C<package> indicates this is an entry for an XML entity
+the XML catalog system (unless B<-n> is used).	A dependency on the
+the XML entity id, and C<catalog> indicates the local XML catalog
+the XML entity type (public, system, uri), C<id> indicates the XML
+## This is free software; see the GNU General Public Licence version 2
+					$tmpdir . "/" . dirname( $dest ) );
+to be registered in the package XML catalog file, C<type> indicates
+URLs.  C<uri> is only used for non-local files which are not part of
+use Debian::Debhelper::Dh_Lib;
+use strict;
+use that variable in the file F<debian/control>.  See
+#!/usr/bin/perl -w
+			warning("warning: no catalogs registered\n");
+			warn("warning: elements added to package XML catalog, but not entry for root catalog\n");
+		while ( <DH_FARRAY_IN> ) {
+XML entity types are described in L<update-xmlcatalog(8)>.  Using the
+you will want to use the types C<public> for any formal public

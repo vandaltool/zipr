@@ -1,0 +1,717 @@
+          
+-        
+--------------- ------ ---------------------
+%02x-%02x%02x-%02x%02x
+%02x%02x%02x%02x%02x
+%02x:%02x:%02x:%02x:%02x:%02x
+%02X-%02X-%02X-%02X-%02X-%02X
+%02X:%02X:%02X:%02X:%02X:%02X
+%02X%02X%02X%02X%02X%02X
+%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X
+%08lX:%02X%02X%02X%02X%02X%02X
+%08X%08X%08X%08X
+100baseFX
+100baseT
+100baseTX
+%10lu %5hd     - 
+%10lu %5hd %5hd 
+%-15s %-15s %-15s %-5s %5d %-5d %6d %s
+%-15s %-15s %-15s %-5s %-6d %-2d %7d %s
+%-15s %-15s %-15s %-5s %-6d %-3d %6d %-6.6s   %-5d %-6d %-5d %-3d %-3d   %-3d %15s
+%-15s %-15s %-15s %-5s %-6d %-3d %6d %-6.6s   %-5d %-6d %-5d %-3d %d
+%-15s %-15s %-15s %-5s %-6d %-3d %6d %-6.6s   %-5d %-6d %d
+%-15s -               %-15s %-5s     - -          - -
+%-15s -               %-15s %-5s %-6d -  %7d -
+%-15s -               %-15s %-5s %-6d -  %7d -        -     -      -
+%-15s %-15s %-7s %-3d  %-11s  %02d/%02d  %-6d  %-6d
+%-15s %-6d %s
+16/4 Mbps Token Ring
+16/4 Mbps Token Ring (New)
+%-16s%-16s%-16s%-s
+%-25s %-25s %-25s
+%-30s %-26s %-4s %-3d %-1d%6d %s
+%3d      %-9s  %s
+%3ld:%02ld.%02ld 
+%-43s %-17s %-8s %-5s %-3d %-16s
+%4s%4s%4s%4s%4s%4s%4s%4s %02x %02x %02x %02x %08lx %08lx %08lx %04x %04x %04lx %8s %2s%2s%2s%2s%2s%2s
+%4s%4s%4s%4s%4s%4s%4s%4s %02x %4s%4s%4s%4s%4s%4s%4s%4s %02x %4s%4s%4s%4s%4s%4s%4s%4s %08x %08x %08x %08x %s
+%4s%4s%4s%4s%4s%4s%4s%4s %08x %02x %02x %02x %20s
+%-4s  %6ld %6ld %-23s %-23s %-11d
+%-4s  %6ld %6ld %-23s %-23s %-11s
+%-4s  %6ld %6ld %-*s %-*s %-11s
+%5d %-2d 
+*                    %-5s
+%-5s %-6ld %-11s %-10s %-13s 
+	%8[0-9A-Fa-f] %d
+%8llu %6lu %6lu %-6lu 
+%8llu %6lu %6lu %6lu 
+%-9s    %-5s  %5d
+%-9s    %-7s   
+%-9s  %-9s  %-6s  %-11s  %03d/%03d  %-6d  %-6d
+%-9s  %-9s  %-9s  %-6s  %-11s  %03d/%03d  %-6d  %-6d
+%-9s Link encap:%s  
+        -a, --all, --listening   display all sockets (default: connected)
+Active AX.25 sockets
+Active Internet connections 
+Active IPX sockets
+Active NET/ROM sockets
+ActiveOpens
+Active UNIX domain sockets 
+Active X.25 sockets
+adaptive
+Adaptive Serial Line IP
+Address can't exceed eighteen digits with sigdigits
+Address family `%s' not supported.
+address mask replies: %u
+address mask requests: %u
+address mask request: %u
+Address type not supported for stats
+AF INET (igmp)
+AF INET (raw)
+AF INET (tcp)
+AF INET (udp)
+AF: (inet) +UNIX +INET +INET6 +IPX +AX25 +NETROM +X25 +ATALK +ECONET +ROSE 
+AF_IPX missing
+AF NETROM
+  <AF>=Use '-6|-4' or '-A <af>' or '--<af>'; default: %s
+ALLMULTI 
+AMPR AX.25
+AMPR NET/ROM
+AMPR ROSE
+Appletalk DDP
+%as %as %as %as
+AttemptFails
+AX.25 not configured in this system.
+Base address:0x%x 
+ Bcast:%s 
+bindtextdomain
+BROADCAST 
+B%*s%s: %d
+Callsign too long
+cannot open /proc/net/snmp
+cannot open /proc/net/snmp6
+        -C, --cache              display routing cache instead of FIB
+CCITT X.25
+        -c, --continuous         continuous listing
+(Cisco)-HDLC
+closedir
+CLOSE_WAIT
+          collisions:%lu 
+compressed
+             compressed:%lu
+compressed:%lu 
+CONNECTED
+CONN SENT
+continuous
+__ctype_b_loc
+__ctype_toupper_loc
+CurrEstab
+%d %15s %64[0-9A-Fa-f] %d
+%d: %64[0-9A-Fa-f]:%X %64[0-9A-Fa-f]:%X %X %lX:%lX %X:%lX %lX %d %d %lu %512s
+DARPA Internet
+%d.%d.%d
+%d %d %d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %d %d %*d
+DDP (AppleTalk) not configured on this system.
+DefaultTTL
+Default TTL is %u
+DelayedACKLocked
+DelayedACKLost
+DelayedACKs
+dest_addr
+Destination
+Destination     Gateway         Device          Flags
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface    MSS   Window irtt
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+Destination          Iface
+Destination  Iface    Use
+Destination  Mnemonic  Quality  Neighbour  Iface
+Destination                    Next Hop                   Flag Met Ref Use If
+Destination               Router Net                Router Node
+destination unreachable: %u
+Dest         Source          Device  LCI  State        Vr/Vs  Send-Q  Recv-Q
+Dest       Source     Device  State        Vr/Vs    Send-Q  Recv-Q
+Detected reordering %u times using FACK
+Detected reordering %u times using reno fast retransmit
+Detected reordering %u times using SACK
+Detected reordering %u times using time stamp
+Device not found
+disabled
+DISCONNECTING
+DISC SENT
+DISC_SENT
+DMA chan:%x 
+DYNAMIC 
+echo replies: %u
+echo requests: %u
+echo request: %u
+          econet addr:%s
+        -e, --extend             display other/more information
+EmbryonicRsts
+endprotoent
+endservent
+__errno_location
+Error opening /proc/net/atalk_route
+ERROR: proc_guess_fmt(%s,... returned: %d
+ESTABLISHED
+EstabResets
+Ethernet
+          EtherTalk Phase 2 addr:%s
+        -F, --fib                display Forwarding Information Base (default)
+Fiber Distributed Data Interface
+FIN_WAIT1
+FIN_WAIT2
+Flushing `inet6' routing table not supported
+Flushing `x25' routing table not supported
+Forwarding
+Forwarding is %s
+__fprintf_chk
+Frame Relay Access Device
+Frame Relay DLCI
+Fred Baumgarten, Alan Cox, Bernd Eckenfels, Phil Blundell, Tuan Hoang and others
+freeaddrinfo
+__fxstat
+Generic EUI-64
+generic X.25
+getaddrinfo
+getaddrinfo: %s: %d
+gethostbyaddr
+gethostbyname
+getnameinfo
+getnameinfo failed
+getnetbyaddr
+getnetbyname
+getopt_long
+getpagesize
+getprotoent
+getpwuid
+getservent
+        -g, --groups             display multicast group memberships
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+group member queries: %u
+group member reductions: %u
+group member responses: %u
+__h_errno_location
+HWaddr %s  
+HW:  +ETHER +ARC +SLIP +PPP +TUNNEL +TR +AX25 +NETROM +X25 +FR +ROSE +ASH +SIT +FDDI +HIPPI +HDLC/LAPB +EUI64 
+Icmp6InDestUnreachs
+Icmp6InEchoReplies
+Icmp6InEchos
+Icmp6InErrors
+Icmp6InGroupMembQueries
+Icmp6InGroupMembReductions
+Icmp6InGroupMembResponses
+Icmp6InMsgs
+Icmp6InNeighborAdvertisements
+Icmp6InNeighborSolicits
+Icmp6InParmProblems
+Icmp6InPktTooBigs
+Icmp6InRedirects
+Icmp6InRouterAdvertisements
+Icmp6InRouterSolicits
+Icmp6InTimeExcds
+Icmp6OutDestUnreachs
+Icmp6OutEchoReplies
+Icmp6OutEchos
+Icmp6OutGroupMembQueries
+Icmp6OutGroupMembReductions
+Icmp6OutGroupMembResponses
+Icmp6OutMsgs
+Icmp6OutNeighborAdvertisements
+Icmp6OutNeighborSolicits
+Icmp6OutParmProblems
+Icmp6OutPktTooBigs
+Icmp6OutRedirects
+Icmp6OutRouterAdvertisements 
+Icmp6OutRouterSolicits
+Icmp6OutTimeExcds
+ICMP input histogram:
+ICMP output histogram:
+Iface   MTU Met   RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+        -i, --interfaces         display interface table
+InAddrMaskReps
+InAddrMasks
+InEchoReps
+          inet6 addr: %s/%d
+INET6 (IPv6) not configured in this system.
+       inet6_route [-FC] flush      NOT supported
+       inet6_route [-vF] add Target [gw Gw] [metric M] [[dev] If]
+inet_aton
+INET (IPv4) not configured in this system.
+inet_ntoa
+inet_ntop
+inet_pton
+InParmProbs
+InSrcQuenchs
+Interface       RefCnt Group
+interfaces
+Interrupt:%d 
+InTimestampReps
+InTimestamps
+Invalid address
+Invalid callsign
+_IO_putc
+_IO_stdin_used
+Ip6FragCreates
+Ip6FragFails
+Ip6FragOKs
+Ip6InAddrErrors
+Ip6InDelivers
+Ip6InDiscards
+Ip6InHdrErrors
+Ip6InMcastPkts
+Ip6InNoRoutes
+Ip6InReceives
+Ip6InTooBigErrors
+Ip6InTruncatedPkts
+Ip6InUnknownProtos
+Ip6OutDiscards
+Ip6OutForwDatagrams
+Ip6OutMcastPkts
+Ip6OutNoRoutes
+Ip6OutRequests
+Ip6ReasmFails
+Ip6ReasmOKs
+Ip6ReasmReqds
+Ip6ReasmTimeout
+IPIP Tunnel
+ip_masquerade format error
+ip_masquerade unknown type
+IP masquerading entries
+IPv4 Group Memberships
+IPv6-in-IPv4
+IPX   %6ld %6ld %-26s %-26s %-5s
+          IPX/Ethernet 802.2 addr:%s
+          IPX/Ethernet 802.3 addr:%s
+          IPX/Ethernet II addr:%s
+          IPX/Ethernet SNAP addr:%s
+IPX routing not in file %s or %s found.
+ipx socket format error in source port
+ipx soket format error in destination port
+keepalive (%2.2f/%ld/%d)
+Kernel AX.25 routing table
+Kernel Interface table
+Kernel IP routing cache
+Kernel IP routing table
+Kernel IPv6 Neighbour Cache
+Kernel IPv6 routing cache
+Kernel IPv6 routing table
+Kernel IPX routing table
+Kernel NET/ROM routing table
+Kernel X.25 routing table
+LAST_ACK
+libc.so.6
+__libc_start_main
+lib/ipx_rt.c
+/lib/ld-linux.so.2
+ListenDrops
+listening
+ListenOverflows
+  List of possible address families (which support routing):
+        -l, --listening          display listening server sockets
+Local Loopback
+LockDroppedIcmps
+longopts 1 range
+LOOPBACK 
+%Lu %lu %lu %lu %lu %Lu %lu %lu %lu %lu %lu
+%Lu %Lu %lu %lu %lu %lu %Lu %Lu %lu %lu %lu %lu %lu
+%Lu %Lu %lu %lu %lu %lu %lu %lu %Lu %Lu %lu %lu %lu %lu %lu %lu
+Malformed Ash address
+malloc() failed
+ Mask:%s
+masq_info
+masq_info.c
+MCFA:acdegphinNorstuWVv?wxl64
+Media:%s
+Memory:%lx-%lx 
+Metricom Starmode IP
+missing interface information
+        -M, --masquerade         display masqueraded connections
+Modifying `x25' routing cache not supported
+ MTU:%d  Metric:%d
+MULTICAST 
+Multiple interface
+neighbor advertisements: %u
+neighbor solicits: %u
+neighbour advertisement: %u
+Neighbour                                   HW Address        Iface    Flags Ref State
+Neighbour                                   HW Address        Iface    Flags Ref State            Stale(sec) Delete(sec)
+neighbour solicits: %u
+NET/ROM not configured in this system.
+netstat 1.42 (2001-04-15)
+netstat.c
+netstat: unsupported address family %d !
+       netstat { [-vWeenNac] -i | [-cWnNe] -M | -s }
+       netstat [-vWnNcaeol] [<Socket> ...]
+net-tools
+net-tools 1.60
++NEW_ADDRT +RTF_IRTT +RTF_REJECT +FW_MASQUERADE +I18N
+        -n, --numeric            don't resolve names
+Node address must be ten digits
+[NO FLAGS]
+[NO FLAGS] 
+(No info could be read for "-p": geteuid()=%d but you should be root.)
+[NONE SET]
+No routing for address family `%s'.
+     - no statistics available -
+(Not all processes could be identified, non-owned process info
+Not_Connected
+NOTRAILERS 
+No usable address families found.
+Novell IPX
+        -N, --symbolic           resolve hardware names
+numeric-hosts
+        --numeric-hosts          don't resolve host names
+numeric-ports
+        --numeric-ports          don't resolve port names
+numeric-users
+        --numeric-users          don't resolve user names
+off (0.00/%ld/%d)
+OfoPruned
+on (%2.2f/%ld/%d)
+on%d (%2.2f/%ld/%d)
+(only servers)
+        -o, --timers             display timers
+OutAddrMaskReps
+OutAddrMasks
+OutEchoReps
+OutErrors
+  Outfill:%d  Keepalive:%d
+out of virtual memory
+OutOfWindowIcmps
+OutParmProbs
+OutSrcQuenchs
+OutTimestampReps
+OutTimestamps
+packets too big: %u
+parameter problem: %u
+PassiveOpens
+PAWSActive
+PAWSEstab
+PAWSPassive
+ PID/Program name
+Please don't supply more than one address family.
+Please recompile `net-tools' with newer kernel source or full configuration.
+%p: %lX %lX %lX %X %X %lu %s
+POINTOPOINT 
+Point-to-Point Protocol
+        -p, --programs           display PID/Program name for sockets
+__printf_chk
+problem reading data from %s
+Problem while parsing /proc/net/netstat
+Problem while parsing /proc/net/snmp
+/proc/net
+/proc/net/appletalk
+/proc/net/atalk_route
+/proc/net/ax25
+/proc/net/ax25_route
+/proc/net/dev
+/proc/net/if_inet6
+/proc/net/igmp
+/proc/net/igmp6
+/proc/net/ip_masquerade
+/proc/net/ipv6_route
+/proc/net/ipx
+/proc/net/ipx_route
+/proc/net/ipx/route
+/proc/net/ipx/socket
+/proc/net/ndisc
+/proc/net/netstat
+/proc/net/nr
+/proc/net/nr_neigh
+/proc/net/nr_nodes
+/proc/net/raw
+/proc/net/raw6
+/proc/net/rose
+/proc/net/route
+/proc/net/rt_cache
+/proc/net/tcp
+/proc/net/tcp6
+/proc/net/udp
+/proc/net/udp6
+/proc/net/unix
+/proc/net/x25
+/proc/net/x25_routes
+/proc/%s/fd
+/proc/sys/net/ash
+/proc/sys/net/econet
+programs
+PROMISC 
+prot   expire    initseq delta prevd source               destination          ports
+prot   expire source               destination          ports
+Proto Recv-Q Send-Q Local Address              Foreign Address            State
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+Proto RefCnt Flags       Type       State         I-Node  
+PruneCalled
+ P-t-P:%s 
+Quick ack mode was activated %u times
+Ran %u times out of system memory during packet sending
+RcvPruned
+readlink
+realloc() failed
+received ICMPv6 time exceeded: %u
+RECOVERY
+redirects: %u
+redirect: %u
+RetransSegs
+route: bogus netmask %d
+route: netmask doesn't match route address
+router advertisement: %u
+router solicits: %u
+        -r, --route              display routing table
+RtoAlgorithm
+RTO algorithm is %s
+RUNNING 
+RX bytes:%llu (%lu.%lu %s)  TX bytes:%llu (%lu.%lu %s)
+RX packets:%llu errors:%lu dropped:%lu overruns:%lu frame:%lu
+SABM SENT
+SABM_SENT
+          %s addr:%s 
+%s/%*d   %-5s
+%s %d %d %d %d %*d %*d %*d %*d %*d %*d %d %d %*d
+%s %d %d %d %*d %*d/%*d %*d/%*d %*d/%*d %*d/%*d %*d/%*d %*d %*d %*d %d %d %*d
+sent ICMPv6 time exceeded: %u
+SEQPACKET
+%s: error fetching interface information: %s
+(servers and established)
+setlocale
+setprotoent
+setservent
+%s: feature `%s' not supported.
+%s: Internal Error `%s'.
+SIOCADDRT
+SIOCDELRT
+SIOCGIFCONF
+SIOGIFINDEX
+ %s %lX:%hX %lX:%hX %hX %lX %hd %hd %lu
+ %s %lX:%hX %lX:%hX %hX %lX %hd %lu
+%s: no support for `%s' on this system.
+snprintf
+__snprintf_chk
+socket:[
+  <Socket>={-t|--tcp} {-u|--udp} {-w|--raw} {-x|--unix} --ax25 --ipx --netrom
+SockMallocOOM
+Source          Destination     Gateway         Flags Metric Ref    Use Iface
+Source          Destination     Gateway         Flags Metric Ref    Use Iface    MSS   Window irtt  HH  Arp
+Source          Destination     Gateway         Flags Metric Ref    Use Iface    MSS   Window irtt  TOS HHRef HHUptod     SpecDst
+Source          Destination     Gateway         Flags   MSS Window  irtt Iface
+source quenches: %u
+source quench: %u
+__sprintf_chk
+%s (%s) 
+%s %s %lX %lX %d %d
+%s %s %s
+%s:%s:%s:%s:%s:%s:%s:%s
+        -s, --statistics         display networking statistics (like SNMP)
+__stack_chk_fail
+statistics
+__strcat_chk
+__strcpy_chk
+__strdup
+strerror
+STRIP_set_disc(%d): %s
+__strncpy_chk
+%s %*x/%*x %*x/%*x %d %d %d %*d %*d/%*d %*d/%*d %*d/%*d %*d/%*d %*d/%*d %*d %d %d %*d
+symbolic
+SyncookiesFailed
+SyncookiesRecv
+SyncookiesSent
+SYN_RECV
+SYN_SENT
+TCPAbortFailed
+TCPAbortOnClose
+TCPAbortOnData
+TCPAbortOnLinger
+TCPAbortOnMemory
+TCPAbortOnSyn
+TCPAbortOnTimeout
+TCPDirectCopyFromBacklog
+TCPDirectCopyFromPrequeue
+TCPDSACKOfoRecv
+TCPDSACKOfoSent
+TCPDSACKOldSent
+TCPDSACKRecv
+TCPDSackUndo
+TCPFACKReorder
+TCPFastRetrans
+TCPForwardRetrans
+TCPFullUndo
+TCPHPAcks
+TCPHPHits
+TCPHPHitsToUser
+TCPLossFailures
+TCPLossUndo
+TCPLostRetransmits
+TCPMemoryPressures
+TCPPartialUndo
+TCPPrequeued
+TCPPrequeueDropped
+TCPPureAcks
+TCP ran low on memory %u times
+TCPRcvCollapsed
+TCPRenoFailures
+TCPRenoRecovery
+TCPRenoRecoveryFail
+TCPRenoRecoveryFailed
+TCPRenoReorder
+TCPSackFailures
+TCPSackRecovery
+TCPSackRecoveryFail
+TCPSACKReneging
+TCPSACKReorder
+TCPSchedulerFailed
+TCPSlowStartRetrans
+TCPTimeouts
+TCPTSReorder
+timeout in transit: %u
+timestamp replies: %u
+timestamp reply: %u
+timestamp requests: %u
+timestamp request: %u
+TIME_WAIT
+timewait (%2.2f/%ld/%d)
+Too much address family arguments.
+TWKilled
+TWRecycled
+TX packets:%llu errors:%lu dropped:%lu overruns:%lu carrier:%lu
+txqueuelen:%d 
+%u acknowledgments not containing data payload received
+%u active connections openings
+%u active connections rejected because of time stamp
+%u bad SACK blocks received
+%u bad segments received.
+%u bytes directly in process context from backlog
+%u bytes directly received in process context from prequeue
+%u classic Reno fast retransmits failed
+%u congestion window recovered without slow start using DSACK
+%u congestion windows fully recovered without slow start
+%u congestion windows partially recovered using Hoe heuristic
+%u congestion windows recovered without slow start after partial ack
+%u congestion windows recovered without slow start by DSACK
+%u connection resets received
+%u connections aborted after user close in linger timeout
+%u connections aborted due to memory pressure
+%u connections aborted due to timeout
+%u connections established
+%u connections reset due to early user close
+%u connections reset due to unexpected data
+%u connections reset due to unexpected SYN
+%u delayed acks further delayed because of locked socket
+%u delayed acks sent
+Udp6InDatagrams
+Udp6InErrors
+Udp6NoPorts
+Udp6OutDatagrams
+%u dropped because of missing route
+%u DSACKs for out of order packets received
+%u DSACKs received
+%u DSACKs sent for old packets
+%u DSACKs sent for out of order packets
+%u failed connection attempts
+%u fast retransmits
+%u forwarded
+%u forward retransmits
+%u fragments created
+%u fragments dropped after timeout
+%u fragments failed
+%u fragments received ok
+%u ICMP messages failed
+%u ICMP messages received
+%u ICMP messages sent
+%u ICMP packets dropped because socket was locked
+%u ICMP packets dropped because they were out-of-window
+%u incoming multicast packets
+%u incoming packets delivered
+%u incoming packets discarded
+%u incoming packets with no route
+%u input ICMP message failed.
+%u invalid SYN cookies received
+UNIX Domain
+unkn-%d (%2.2f/%ld/%d)
+[UNKNOWN]
+UNKNOWN(%02x)
+Unknown address family `%s'.
+unknown %s
+%u other TCP timeouts
+%u outgoing multicast packets
+%u outgoing packets dropped
+%u packet headers predicted
+%u packet reassembles failed
+%u packet receive errors
+%u packets collapsed in receive queue due to low socket buffer
+%u packets directly queued to recvmsg prequeue.
+%u packets dropped from out-of-order queue because of socket buffer overrun
+%u packets dropped from prequeue
+%u packets header predicted and directly queued to user
+%u packets pruned from receive queue
+%u packets pruned from receive queue because of socket buffer overrun
+%u packets reassembled ok
+%u packets received
+%u packets rejects in established connections because of timestamp
+%u packets sent
+%u packets to unknown port received.
+%u passive connection openings
+%u passive connections rejected because of time stamp
+%u predicted acknowledgments
+%u reassemblies required
+%u reno fast retransmits failed
+%u requests sent out
+%u resets received for embryonic SYN_RECV sockets
+%u resets sent
+%u retransmits in slow start
+%u retransmits lost
+%u SACK retransmits failed
+Usage: inet6_route [-vF] del Target
+usage: netstat [-vWeenNcCF] [<Af>] -r         netstat {-V|--version|-h|--help}
+Usage: x25_route [-v] del Target[/mask] [dev] If
+%u segments received
+%u segments retransmited
+%u segments send out
+User       Dest       Source     Device  State        Vr/Vs    Send-Q  Recv-Q
+ User       Inode      
+/usr/share/locale
+%u SYN cookies received
+%u SYN cookies sent
+%u SYNs to LISTEN sockets dropped
+%u TCP data loss events
+%u TCP sockets finished time wait in fast timer
+%u TCP sockets finished time wait in slow timer
+%u timeouts after reno fast retransmit
+%u timeouts after SACK recovery
+%u timeouts in loss state
+%u times receiver scheduled too late for direct processing
+%u times recovered from packet loss by selective acknowledgements
+%u times recovered from packet loss due to fast retransmit
+%u times the listen queue of a socket overflowed
+%u times unabled to send RST due to no memory
+%u time wait sockets recycled by time stamp
+%u total packets received
+%u with invalid addresses
+%u with invalid headers
+%u with packets too big
+%u with truncated packets
+%u with unknown protocol
+VJ 6-bit Serial Line IP
+VJ Serial Line IP
+        -v, --verbose            be verbose
+Warning: cannot open %s (%s). Limited output.
+warning, got bogus igmp6 line %d.
+warning, got bogus igmp line %d.
+warning, got bogus raw line.
+warning, got bogus tcp line.
+warning, got bogus udp line.
+warning, got bogus unix line.
+warning: no inet socket available: %s
+warning: %s does not contain required field %s
+ will not be shown, you would have to be root to see it all.)
+(w/o servers)
+wrong parameters: %u
+        -W, --wide               don't truncate IP addresses
+X.25 not configured in this system.
+       x25_route [-v] add Target[/mask] [dev] If
+You cannot start PPP with this program.

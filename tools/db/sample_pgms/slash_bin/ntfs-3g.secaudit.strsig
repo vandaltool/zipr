@@ -1,0 +1,352 @@
+%08lx : %u bytes at %08lx allocated at %s line %d
+    acccnt %d
+ace %d : %s %s %4ld perms 0%03o %s
+ACL and attrib have been applied to 
+ACL has been applied to 
+** ACL rejected, its hash is not as expected
+All keys are present in all lists
+alloc table at %s
+ applied
+Assuming end of $SDS, got %d bytes
+Assuming %s descriptor
+At offset 0x%lx got %lu bytes
+Auditing $SDH
+Auditing $SDS-1
+Auditing $SDS-2
+Auditing $SII
+	audit the volume
+A volume is already open
+        backup the security parameters of files in directory
+Bad ACL description
+__bss_start
+%*cAccess allowed
+%*cAccess denied
+%*cAcc rgts 0x%lx
+%*cACE cnt  %d
+%*cACE %d at 0x%x
+%*cACL size %d
+%*cAdd file
+%*cAdd subdirectory
+%*cAnonymous logon SID
+%*cAppend data
+%*cAudit on failure
+%*cAudit on success
+%*cAuthenticated user SID
+%*cCan access security ACL
+%*cContainer inherits ACE
+%*cCreator group SID
+%*cCreator owner SID
+%*c    DACL cannot be modified by inheritable ACEs
+%*c    DACL inheritance is requested
+%*c    DACL is defaulted
+%*c    DACL present
+%*c    DACL was inherited automatically
+%*cDelete
+%*cDelete child
+%*cDon't propagate inherits ACE
+%*cExecute
+%*cflags    0x%x
+%*cGeneric all
+%*cGeneric execute
+%*cGeneric read
+%*cGeneric write
+%*c    group is defaulted
+%*cInherit only ACE
+%*cList directory
+%*cLocal admins SID
+%*cLocal guests SID
+%*cLocal service SID
+%*cLocal user-%lu SID
+%*cLocal users SID
+%*cNetwork service SID
+%*cNT System SID
+%*cNull SID
+%*cObject inherits ACE
+%*cObj specific acc rgts 0x%lx
+%*cOff DACL 0x%x
+%*cOff GSID 0x%x
+%*cOff SACL 0x%x
+%*cOff USID 0x%x
+Computed hash : 0x
+	Computed hash : 0x%08lx
+** Could not access %s
+** Could not change attributes of %s
+Could not close "%s"
+** Could not find the user mapping file
+** Could not get file attrib
+** Could not get owner of %s
+** Could not get security data of %s, partsz %d
+** Could not get the NTFS ACL, check whether file is on NTFS
+Could not open "%s"
+Could not open %s
+** Could not open $SDS-%d, size %d
+Could not open security API
+Could not open volume %s
+** Could not set the ACL of 
+** Could not set Windows attrib of 
+%*c    owner is defaulted
+%*cRead attributes
+%*cRead control
+%*cRead data
+%*cRead EA
+%*crevision %d
+%*c    SACL cannot be modified by inheritable ACEs
+%*c    SACL inheritance is requested
+%*c    SACL is defaulted
+%*c    SACL present
+%*c    SACL was inherited automatically
+%*c%sdec S-%d-
+%*c    self relative descriptor
+%*c%shex S-%d-
+%*cSID at 0x%x
+%*cSize     0x%x
+%*cSome domain SID
+%*cstandard acc rgts 0x%lx
+%*cSummary :
+%*cSynchronize
+%*cSystem audit
+%*cTraverse
+%*ctype     %d
+%*cunknown
+%*c    unknown flags 0x%x present
+%*cUnknown SID
+%*cWorld SID
+%*cWrite attributes
+%*cWrite DAC
+%*cWrite data
+%*cWrite EA
+%*cWrite owner
+__cxa_finalize
+D$,9D$Ts/
+%d ACLs have been applied
+    defcnt %d
+%d errors in $SDH
+%d errors in $SDS-%c
+%d errors in $SII
+** Descriptor fails sanity check
+Descriptor fails sanity check
+** Descriptor for %s is not valid
+** Descriptor was too long (> %d)
+D$H3|$(1
+** Different hash values : $SDS-1 0x%08lx $SDS-2 0x%08lx
+** Different lengths : $SDS-1 0x%lx $SDS-2 0x%lx
+** Different offsets : $SDS-1 0x%llx $SDS-2 0x%llx
+directory
+Directory 
+	display security descriptors within file
+	display the security parameters of a mounted file
+	display the security parameters of file
+	display the security parameters of files in directory
+%d keys not present in all lists
+# %d security keys
+%d valid and %d deleted entries in $SDS-%d
+%d valid entries in $SDH
+%d valid entries in $SII
+Entry at 0x%lx was deleted
+** Entry is truncated (expected size %ld)
+Entry size %d bytes
+** Entry was not present in $SDS
+** Entry was not present in $SDS-1
+** Entry was not present in $SDS nor in $SII
+__errno_location
+Error code %d : %s
+error in %s %d : 0x%lx not allocated
+errors were
+error was
+    Estimated type : %s
+Expected hash : 0x%08lx
+** Extra data appended to entry (expected size %ld)
+   (Failed)
+** Failed to build a Posix descriptor
+** Failed to build permissions
+** Failed to update %s
+** fill1 %d (instead of 0)
+** fill2 %d (instead of 0)
+** fill3 0x%lx (instead of 0 or 0x490049)
+firstalloc
+    firstdef %d
+    flags 0x%02x
+** flags 0x%x (instead of < 4)
+__fprintf_chk
+** freeing unallocated memory in %s line %d
+** General sanity check has failed
+getxattr
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.1.3
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+Global header
+__gmon_start__
+Group SID
+** hash  0x%08lx (computed : 0x%08lx)
+Hash	 0x%08lx (correct)
+   hash 0x%x
+** hash 0x%x (instead of 0x%x)
+Hash collision (not an error)
+** index key size %d (instead of 4)
+** index key size %d (instead of 8)
+** index size %d (instead of 40)
+** index size %d (instead of 48)
+** index size %d (instead of 56)
+ inherited
+Interpreted input description :
+Interpreted Unix mode 0%03o
+Interpreted Unix mode 0%03o (owner and group are unmapped)
+# Interpreted Unix owner %d, group %d, mode 0%03o
+Interpreted Unix owner %d, group %d, mode 0%03o
+Invalid option -%c
+_IO_getc
+_IO_putc
+_IO_stdin_used
+_Jv_RegisterClasses
+ : key 0x%x
+Key	 0x%x
+Key 0x%x : %d files, mode 0%03o
+** key 0x%x (instead of 0x%x)
+Key 0x%x not in
+ : key 0x%x out of range
+Key 0x%x used by %d %s
+Key 0x%x used by %d %s, not in
+** Keys not present in all files :
+** length 0x%lx (instead of %ld)
+   length %ld
+** length %ld (instead of %ld)
+L$"f	L$:
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libntfs-3g.so.831
+== Linux owner is different from Windows owner
+Make sure "%s" is not mounted
+mappingtype
+__memcpy_chk
+** memory corruption, alloc in %s line %d release in %s %d
+    mode : 0%03o
+New NTFS security descriptor
+New Posix ACL :
+   No discretionary access control list
+#   No discretionary access control list
+No errors were found
+**   No group SID
+ : no key
+   No SACL
+   Note: perms can be an octal mode or a Posix ACL description
+No user mapping : cannot display the Posix ACL
+ntfs_acl_owner
+ntfs_attr_size
+ntfs_build_descr
+ntfs_build_descr_posix
+ntfs_build_permissions
+ntfs_build_permissions_posix
+ntfs_context
+ntfs_do_group_mapping
+ntfs_do_user_mapping
+ntfs_find_group
+ntfs_find_user
+ntfs_free_mapping
+ntfs_get_file_attributes
+ntfs_get_file_security
+ntfs_get_group
+ntfs_get_user
+ntfs_get_usid
+ntfs_handle
+ntfs_initialize_file_security
+ntfs_leave_file_security
+ntfs_merge_descr_posix
+ntfs_merge_mode_posix
+ntfs_read_directory
+ntfs_read_mapping
+ntfs_read_sdh
+ntfs_read_sds
+ntfs_read_sii
+ntfs_same_sid
+ntfs_set_file_attributes
+ntfs_set_file_security
+ntfs_sid_size
+ntfs_sort_posix
+ntfs_valid_descr
+ntfs_valid_posix
+** NULL ACL
+   offset 0x%llx
+** offset  0x%llx (expected : 0x%llx)
+** offset 0x%llx (instead of 0x%llx)
+Offset	 0x%lx (correct)
+** offset %d (instead of 20)
+** offset %d (instead of 24)
+Owner SID
+Posix descriptor :
+Posix equivalent of old ACL :
+__printf_chk
+# Recursive ACL collection on %s#
+Recursive file check
+Restore is only possible as root
+   Retry with full path of file
+** Sanity check failed - stopping there
+"%s" closed
+secaudit 1.3.22 : NTFS security data auditing
+   secaudit -a[rv] volume
+   secaudit -b[v] volume directory
+secaudit.c
+   secaudit -h [file]
+   secaudit -r[v] volume directory
+   secaudit -r[v] volume perms directory
+   secaudit -s[ev] volume [backupfile]
+   secaudit [-v] mounted-file
+   secaudit volume perms file
+   secaudit [-v] volume file
+securdata
+** Security attribute is too long (%ld bytes) - stopping
+Security descriptor
+** Security_id 0x%x out of bounds
+Security key : 0x
+Security key : 0x%x
+Security key : 0x%x mode %03o (already displayed)
+Security key : 0x%x out of range
+Security key : none
+        set the security parameters as indicated in backup file
+	set the security parameters of files in directory to perms
+	set the security parameters of file to perms
+** size %d (instead of 20)
+%s not found
+"%s" opened
+ special case, does not require being root :
+# %s %s hash 0x%lx
+__stack_chk_fail
+__strcpy_chk
+strerror
+Summary of security key use :
+system.ntfs_acl
+system.ntfs_attrib
+    tagsset : 0x%02x
+termination
+T$"f	T$:
+** There is no $SDH in this volume
+** There is no $SDS-%d in this volume
+** There is no $SII in this volume
+** There was no valid ACL for 
+** There were no valid user or no valid group
+There were no valid user or no valid group
+This is only possible as root
+ to 0x%x
+ to group
+ to owner
+Trying next SDS-%d block at offset 0x%lx
+** Unordered hash and key 0x%x 0x%x after 0x%x 0x%x
+** Unordered key 0x%lx after 0x%lx
+User, group or other permissions missing
+** %u %s found
+** %u %s signalled
+Valid entry at 0x%lx for key 0x%lx
+Valid entry for key 0x%lx
+    version %d
+Versions of ntfs-3g and secaudit are not compatible
+          -v is for verbose, -vv for very verbose
+warnings
+warnings were
+warning was
+Windows attrib : 0x
+Windows attrib : 0x%x
+== Windows owner might change
+        with -e also set extra parameters (Windows attrib)

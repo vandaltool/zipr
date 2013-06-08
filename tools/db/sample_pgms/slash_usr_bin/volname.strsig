@@ -1,0 +1,17 @@
+bindtextdomain
+dcgettext
+/dev/cdrom
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+_IO_stdin_used
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+__printf_chk
+setlocale
+__stack_chk_fail
+usage: volname [<device-file>]
+/usr/share/locale

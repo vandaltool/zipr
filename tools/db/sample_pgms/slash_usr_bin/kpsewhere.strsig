@@ -1,0 +1,38 @@
+#!/bin/sh
+      *)     break;;
+# Bugs / limitations:
+  case $1 in
+case $# in
+#   conflicts/shadowed files whithin each texmf tree are not found.
+    done
+do shift; done
+             echo "$help" >&2
+    echo "$help" >&2
+        eval TEXMF=\$path kpsewhich $options \"\$file\"
+             exit 0;;
+    exit 1
+  Expanding kpsewhich to iterate over each texmf tree listed in $TEXMF
+export PATH
+# files.
+for file
+    for path in `kpsewhich --expand-path='$TEXMF'`
+  --help        show this help'
+help='Usage: kpsewhere [OPTION]... [FILENAME]...
+     -h|-help|--help)
+# kpsewhere is an extension to kpsewhich (as where is for which in tcsh).
+options=
+     -*)     options="${options} '${1}'";;
+# Original version by Hans Fredrik Nordhaug <hans.fredrik@nordhaug.no>
+# Public domain.
+  && { RUNNING_BSH=true; export RUNNING_BSH; exec /bin/bsh $0 ${1+"$@"}; }
+  && { RUNNING_SH5=true; export RUNNING_SH5; exec /bin/sh5 $0 ${1+"$@"}; }
+  See kpsewhich for help on options. 
+  separately.
+test -f /bin/bsh && test -z "$RUNNING_BSH" \
+test -f /bin/sh5 && test -z "$RUNNING_SH5" \
+# The intention is to provide a way to check for conflicts/shadowed
+# Thomas Esser, Hans Fredrik Nordhaug, 2003, 2004.
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xAIX; } 2>/dev/null \
+  && { UNAMES=`uname -s`; test "x$UNAMES" = xULTRIX; } 2>/dev/null \
+unset RUNNING_BSH
+unset RUNNING_SH5

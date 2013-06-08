@@ -1,0 +1,71 @@
+A line that is supposed to be an entry in the color table does not start with a quote.  The line is '%s'.  It is the %dth entry in the color table.
+alphaout
+Apparent XPM 3 file does not start with '/* XPM */'.  First line is '%s'
+__bss_start
+Cannot find data structure declaration.  Expected a line starting with 'static char', but found the line '%s'.
+can't handle XPM version %d
+C error scanning color table
+chars per pixel:  %d
+Color number %d is in raster, but not in colormap.  Line it's in: '%s'
+Could not get %d bytes of memory for image
+__ctype_b_loc
+D$<9D$@r
+D$<9D$@r'
+"%d %d %d %d",
+#define %s %d
+D error scanning color table
+E error scanning color table
+EOF or read error on input file
+error scanning hints line
+F error scanning color table
+G error scanning color table
+GLIBC_2.0
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.7
+__gmon_start__
+Input file has line that is too long (longer than %d bytes).
+_IO_stdin_used
+__isoc99_sscanf
+is the input file specificaton
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+libnetpbm.so.10
+Missing color key token in color table line '%s' before '%s'.
+missing or invalid *chars_per_pixelP
+missing or invalid format
+missing or invalid height
+missing or invalid ncolors
+missing or invalid width
+no. of colors:  %d
+No opening quotation mark in XPM input line which is supposed to be a line of raster data: '%s'
+overflow2
+pbm_writepbminit
+pbm_writepbmrow
+pm_allocrow
+pm_close
+pm_error
+pm_freerow
+pm_message
+pm_openr
+pm_openw
+pm_optParseOptions2
+ppm_init
+ppm_parsecolor
+ppm_writeppminit
+ppm_writeppmrow
+/* %s */
+__stack_chk_fail
+static char
+__strcat_chk
+__strdup
+__strncpy_chk
+T$d9T$Pw
+Too many arguments.  The only argument accepted
+warning, *chars_per_pixelP > 2 uses a lot of memory
+Width x Height:  %d x %d
+wrong number of chars per pixel in color table
+/* XPM */

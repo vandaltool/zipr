@@ -1,0 +1,83 @@
++--------------+---------+-----+-----------------+-----------------+
+|       0      |   yes   |     |                 |                 |
+|       1      |    *    |  *  |        *        |        *        |
+|       2      |   yes   |     |       yes       |                 |
+|       3      |   yes   |     |                 |       yes       |
+|       4      |   yes   | yes |                 |                 |
+|       5      |   yes   | yes |       yes       |                 |
+|       6      |   yes   | yes |                 |       yes       |
+__bss_start
+(c) 2008 Copyright Hewlett-Packard Development Company, LP
+closedir
+__ctype_b_loc
+__ctype_tolower_loc
+error no hp_model environment variable set
+/etc/hp/hplip.conf
+/etc/udev/rules.d/86-hpmud-hp_laserjet_1018.rules
+fax-type
+__fprintf_chk
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+has an optional proprietary plugin, run hp-plugin-ubuntu
+HPLIP Make URI %s
+hp_model
+hpmud_get_key_value
+hpmud_make_mdns_uri
+hpmud_make_net_uri
+hpmud_make_par_uri
+hpmud_make_usb_serial_uri
+hpmud_make_usb_uri
+hpmud_probe_devices
+invalid command parameter(s)
+_IO_getc
+io/hpmud/hp-mkuri.c 132: unable to open %s: %m
+io/hpmud/hp-mkuri.c 207: unable to open /proc: %m
+io/hpmud/hp-mkuri.c 270: failed to open libnotify: %m
+io/hpmud/hp-mkuri.c 276: failed to find notify_init: %m
+io/hpmud/hp-mkuri.c 283: failed to find notify_notification_new: %m
+io/hpmud/hp-mkuri.c 290: failed to find notify_notification_set_timeout: %m
+io/hpmud/hp-mkuri.c 297: failed to find notify_notification_show: %m
+io/hpmud/hp-mkuri.c 330: error no hp_model environment variable set
+io/hpmud/hp-mkuri.c 336: invalid parameter(s)
+io/hpmud/hp-mkuri.c 364: %s is not supported by HPLIP %s
+io/hpmud/hp-mkuri.c 377: %s requires a proprietary plugin
+io/hpmud/hp-mkuri.c 381: %s has an optional proprietary plugin
+_IO_stdin_used
+_Jv_RegisterClasses
+libc.so.6
+__libc_start_main
+libdl.so.2
+libhpmud.so.0
+/lib/ld-linux.so.2
+libnotify.so.4
+    * no support or error
+notify_init
+notify_notification_new
+notify_notification_set_timeout
+notify_notification_show
+/proc/%s/cmdline
+requires a proprietary plugin, downloading and installing the plugin ...
+| return value | printer | fax | plugin_required | plugin_optional |
+%s/data/models/models.dat
+__snprintf_chk
+__stack_chk_fail
+strcasecmp
+strncasecmp
+Support matrix:
+support-type
+__syslog_chk
+unknown argument: %s
+usage: hp-mkuri -b busnum -d devnum
+usage: hp-mkuri -c [-n (no notifier)] (check support)
+usage: hp-mkuri -i ip [-p port]
+usage: hp-mkuri -l /dev/parportx
+usage: hp-mkuri -m hostname [-p port]
+usage: hp-mkuri -o (probe)
+usage: hp-mkuri -s serialnum
+usage: hp-mkuri -z hostname
+vhocni:p:b:d:l:s:z:
+XAUTHORITY

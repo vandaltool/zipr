@@ -1,0 +1,65 @@
+# about their system
+#!/bin/sh
+  cat /etc/debian_version
+  cat /etc/redhat-release
+command_output ()
+command_output "cat /etc/issue"
+command_output "gst-inspect"
+command_output "gst-inspect fakesink"
+command_output "gst-inspect fakesrc"
+  command_output "gst-inspect-$mm"
+  command_output "gst-inspect-$mm fakesink"
+  command_output "gst-inspect-$mm fakesrc"
+  command_output "gst-inspect-$mm volume"
+command_output "gst-inspect volume"
+command_output "gst-launch fakesrc num-buffers=5 ! fakesink"
+  command_output "gst-launch-$mm fakesrc num-buffers=5 ! fakesink"
+command_output "id"
+  command_output "pkg-config gstreamer-libs-$mm --cflags" 2>/dev/null
+  command_output "pkg-config gstreamer-libs-$mm --libs" 2>/dev/null
+  command_output "pkg-config gstreamer-libs-$mm --modversion" 2>/dev/null
+  command_output "pkg-config gstreamer-$mm --cflags" 2>/dev/null
+  command_output "pkg-config gstreamer-$mm --libs" 2>/dev/null
+  command_output "pkg-config gstreamer-$mm --modversion" 2>/dev/null
+    command_output "pkg-config $module-$mm --cflags" 2>/dev/null
+    command_output "pkg-config $module-$mm --libs" 2>/dev/null
+    command_output "pkg-config $module-$mm --modversion" 2>/dev/null
+  command_output "pkg-config --version"
+command_output "uname -a"
+command_output "which gst-inspect"
+  command_output "which gst-inspect-$mm"
+    echo
+  echo "+++ $1"
+echo "Bug reports should go into Gnome's bugzilla (http://bugzilla.gnome.org)"
+  echo "+++  distribution: Debian"
+  echo "+++  distribution: Red Hat"
+echo "GStreamer feedback script."
+  echo "+   GSTREAMER INFORMATION ($mm)"
+echo "+   GSTREAMER INFORMATION (unversioned)"
+echo "+   GSTREAMER PLUG-INS INFORMATION"
+echo "++  looking for gstreamer headers in common locations"
+echo "++  looking for gstreamer libraries in common locations"
+echo "++  looking for gstreamer volume plugin in common locations"
+    echo "+   $mm"
+  echo "+   $mm"
+echo "+   PKG-CONFIG INFORMATION"
+echo "Please attach the output of this script to your bug reports."
+echo "+   SYSTEM INFORMATION"
+echo "+   USER INFORMATION"
+    find $dirs -name audio.h
+    find $dirs -name gst.h
+    find $dirs -name libgstreamer* | grep so
+    find $dirs -name libgstvolume* | grep so
+for dirs in /usr/include /usr/local/include; do
+for dirs in /usr/lib /usr/local/lib; do
+for mm in 0.6 0.7 0.8
+for mm in 0.6 0.7 0.8 0.9 0.10
+for mm in 0.9 0.10
+  for module in gstreamer gstreamer-base gstreamer-check gstreamer-controller\
+                gst-python
+                gstreamer-dataprotocol gstreamer-plugins-base gstreamer-net\
+  if test -d $dirs; then
+if test -f /etc/debian_version; then
+if test -f /etc/redhat-release; then
+# the user can run this and provide the GStreamer developers with information
+# this script provides feedback for GStreamer debugging

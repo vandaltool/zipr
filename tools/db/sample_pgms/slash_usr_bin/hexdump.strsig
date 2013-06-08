@@ -1,0 +1,69 @@
+         
+"         "
+.#-+ 0123456789
+"%07.7_ao  "
+"%07.7_Ao
+"%07.7_Ax
+"%07.7_ax " 16/1 "%03o " "\n"
+"%07.7_ax " 16/1 "%3_c " "\n"
+"%07.7_ax " 8/2 "   %04x " "\n"
+"%07.7_ax " 8/2 "%04x " "\n"
+"%07.7_ax " 8/2 "  %05u " "\n"
+"%07.7_ax " 8/2 " %06o " "\n"
+"%08.8_Ax
+"%08.8_ax  " 8/1 "%02x " "  " 8/1 "%02x " 
+16/1 "%3_u " "\n"
+"  |" 16/1 "%_p" "|\n"
+A:aBbcDdeFfHhIij:LlN:Oost:vXx
+asprintf
+__assert_fail
+bcCde:f:n:os:vx
+byte count with multiple conversion characters
+cannot skip past end of input
+__ctype_b_loc
+__ctype_get_mb_cur_max
+%c: unrecognised format character
+__errno_location
+__extension__ ({ size_t __s1_len, __s2_len; (__builtin_constant_p (pr->fmt) && __builtin_constant_p ("%3C") && (__s1_len = __builtin_strlen (pr->fmt), __s2_len = __builtin_strlen ("%3C"), (!((size_t)(const void *)((pr->fmt) + 1) - (size_t)(const void *)(pr->fmt) == 1) || __s1_len >= 4) && (!((size_t)(const void *)(("%3C") + 1) - (size_t)(const void *)("%3C") == 1) || __s2_len >= 4)) ? __builtin_strcmp (pr->fmt, "%3C") : (__builtin_constant_p (pr->fmt) && ((size_t)(const void *)((pr->fmt) + 1) - (size_t)(const void *)(pr->fmt) == 1) && (__s1_len = __builtin_strlen (pr->fmt), __s1_len < 4) ? (__builtin_constant_p ("%3C") && ((size_t)(const void *)(("%3C") + 1) - (size_t)(const void *)("%3C") == 1) ? __builtin_strcmp (pr->fmt, "%3C") : (__extension__ ({ __const unsigned char *__s2 = (__const unsigned char *) (__const char *) ("%3C"); register int __result = (((__const unsigned char *) (__const char *) (pr->fmt))[0] - __s2[0]); if (__s1_len > 0 && __result == 0) { __result = (((__const unsigned char *) (__const char *) (pr->fmt))[1] - __s2[1]); if (__s1_len > 1 && __result == 0) { __result = (((__const unsigned char *) (__const char *) (pr->fmt))[2] - __s2[2]); if (__s1_len > 2 && __result == 0) __result = (((__const unsigned char *) (__const char *) (pr->fmt))[3] - __s2[3]); } } __result; }))) : (__builtin_constant_p ("%3C") && ((size_t)(const void *)(("%3C") + 1) - (size_t)(const void *)("%3C") == 1) && (__s2_len = __builtin_strlen ("%3C"), __s2_len < 4) ? (__builtin_constant_p (pr->fmt) && ((size_t)(const void *)((pr->fmt) + 1) - (size_t)(const void *)(pr->fmt) == 1) ? __builtin_strcmp (pr->fmt, "%3C") : (__extension__ ({ __const unsigned char *__s1 = (__const unsigned char *) (__const char *) (pr->fmt); register int __result = __s1[0] - ((__const unsigned char *) (__const char *) ("%3C"))[0]; if (__s2_len > 0 && __result == 0) { __result = (__s1[1] - ((__const unsigned char *) (__const char *) ("%3C"))[1]); if (__s2_len > 1 && __result == 0) { __result = (__s1[2] - ((__const unsigned char *) (__const char *) ("%3C"))[2]); if (__s2_len > 2 && __result == 0) __result = (__s1[3] - ((__const unsigned char *) (__const char *) ("%3C"))[3]); } } __result; }))) : __builtin_strcmp (pr->fmt, "%3C")))); }) == 0
+__fprintf_chk
+freopen64
+fseeko64
+__fxstat64
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.3
+GLIBC_2.3.4
+GLIBC_2.4
+__gmon_start__
+       hd      [-bcdovx]  [-e fmt] [-f fmt_file] [-n length]
+_IO_stdin_used
+iswprint
+libc.so.6
+__libc_start_main
+/lib/ld-linux.so.2
+line too long
+%lu/%lu " %%%d.%de " "\n"
+%lu/%lu "%*s%%%s%d%c" "\n"
+          [[+]offset[.][Bb]] [file ...]
+__printf_chk
+%s: bad byte count
+%%%s: bad conversion character
+"%s": bad format
+%s: bad length value
+%s: bad skip value
+setlocale
+%s: invalid address base
+%s: invalid length
+%s: invalid size
+%s: invalid skip amount
+__snprintf_chk
+__sprintf_chk
+%%s: requires a precision or a byte count
+               [-s skip] [file ...]
+__stack_chk_fail
+unsupported floating point size %lu
+unsupported int size %lu
+usage: hexdump [-bcCdovx] [-e fmt] [-f fmt_file] [-n length]
+usage: od [-aBbcDdeFfHhIiLlOosvXx] [-A base] [-j skip] [-N length] [-t type]
+width >= 0

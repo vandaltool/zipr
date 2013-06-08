@@ -1,0 +1,773 @@
+!$&'()*+,;=:
+!$&'()*+,;=:@/
+ %.1f %%
+ 2005-2010
+%5d item
+%5d items
+access::can-trash
+activate
+active-chart
+A graphical tool to analyze disk usage.
+allocation != NULL
+anonymous
+available:
+Available
+baobab.c
+BaobabCellRendererProgress
+baobab-cell-renderer-progress.c
+baobab-cell-renderer-progress.c:74
+baobab-cell-renderer-progress.c:92
+baobab_cell_renderer_progress_get_type
+baobab_cell_renderer_progress_new
+BaobabChart
+baobab-chart.c:384
+baobab-chart.c:409
+baobab_chart_can_zoom_in
+baobab_chart_can_zoom_out
+baobab_chart_freeze_updates
+baobab_chart_get_highlighted_item
+baobab_chart_get_item_color
+baobab_chart_get_max_depth
+baobab_chart_get_model
+baobab_chart_get_pixbuf
+baobab_chart_get_root
+baobab_chart_get_type
+baobab_chart_is_frozen
+baobab_chart_move_up_root
+baobab_chart_new
+baobab_chart_realize
+baobab_chart_row_changed
+baobab_chart_row_deleted
+baobab_chart_row_has_child_toggled
+baobab_chart_row_inserted
+baobab_chart_rows_reordered
+baobab_chart_save_snapshot
+baobab_chart_set_max_depth
+baobab_chart_set_model
+baobab_chart_set_model_with_columns
+baobab_chart_set_root
+?baobab_chart_size_allocate
+baobab_chart_tango_colors
+baobab_chart_thaw_updates
+baobab_chart_zoom_in
+baobab_chart_zoom_out
+baobab_check_dir
+baobab.current_location != NULL
+baobab_fill_model
+baobab.fstotal != 0
+baobab_help_display
+BAOBAB_IS_CHART (chart)
+BAOBAB_IS_CHART (widget)
+baobab_is_excluded_location
+baobab_prefs_dialog
+baobab_quit
+BaobabRemoteConnectDialog
+baobab-remote-connect-dialog.c
+baobab_remote_connect_dialog_get_type
+baobab_remote_connect_dialog_new
+baobab_rescan_current_dir
+baobab_ringschart_clean_subforlder_tips_state
+baobab_ringschart_get_type
+baobab_ringschart_new
+baobab_ringschart_set_subfoldertips_enabled
+baobab_scan_execute
+baobab_scan_home
+baobab_scan_location
+baobab_scan_root
+baobab.selected_path
+baobab_set_busy
+baobab_set_statusbar
+baobab_size_col
+baobab_stop_scan
+?BaobabTreemap
+baobab_treemap_can_zoom_in
+baobab_treemap_can_zoom_out
+baobab_treemap_get_type
+baobab_treemap_new
+baobab_treeview_show_allocated_size
+baobab_update_filesystem
+baobab_window
+.bash_history
+bindtextdomain
+bind_textdomain_codeset
+__bss_start
+button-press-event
+cairo_arc
+cairo_arc_negative
+cairo_clip
+cairo_close_path
+cairo_create
+cairo_destroy
+cairo_fill
+cairo_fill_preserve
+cairo_image_surface_create
+cairo_image_surface_get_height
+cairo_image_surface_get_width
+cairo_line_to
+cairo_move_to
+cairo_paint
+cairo_rectangle
+cairo_restore
+cairo_save
+cairo_scale
+cairo_set_line_width
+cairo_set_source_rgb
+cairo_set_source_surface
+cairo_stroke
+cairo_surface_destroy
+cairo_surface_status
+cairo_translate
+Calculating percentage bars
+callbacks.c
+Cannot check an excluded folder!
+Cannot Connect to Server. You must enter a name for the server.
+Cannot create pixbuf image!
+Cannot scan location "%s"
+Can't load user interface file for the scan properties dialog: %s
+can_trash_file
+changed::excluded-uris
+changed::monitor-home
+Changes to your home folder will not be monitored.
+Chart model
+chart->priv->model != NULL
+Chart root node
+check_enable_home
+ck_allocated
+collapse_all
+comments
+connect_to_server
+Connect to Server
+contains hardlinks for:
+Contents
+copyright
+Could not analyze disk usage.
+Could not build statusbar
+Could not build toolbar
+Could not detect any mount point.
+Could not initialize monitoring
+Could not move file to the Trash
+Could not move "%s" to the Trash
+Could not obtain inode and device for hardlink
+Could not open folder "%s"
+couldn't get dir enum for dir %s: %s
+couldn't get info for dir %s: %s
+create_directory_treeview
+cursor-changed
+Custom Location
+__data_start
+dcgettext
+dcngettext
+Details: %s
+dialog_scan_props
+[DIRECTORY]
+dir_select
+_Domain Name:
+drag-data-received
+error in dir %s: %s
+expand_all
+Fabio Marzocca <thesaltydog@gmail.com>
+Fabio Marzocca <thesaltydog@gmail.com> 
+file:///
+filechooser_cb
+file != NULL
+file %s: line %d (%s): should not be reached
+File System Type
+first_row
+_Folder:
+FTP (with login)
+g_app_info_get_default_for_type
+g_app_info_launch_uris
+g_array_append_vals
+g_array_free
+g_array_new
+g_ascii_strcasecmp
+g_ascii_table
+g_assertion_message
+g_assertion_message_expr
+g_build_filename
+g_cclosure_marshal_VOID__BOXED
+g_clear_error
+gdk_cairo_get_clip_rectangle
+gdk_cairo_set_source_rgba
+gdk_cursor_new
+gdk_event_request_motions
+gdk_event_triggers_context_menu
+gdk_pixbuf_get_from_window
+gdk_pixbuf_save
+gdk_rectangle_intersect
+gdk_rgba_parse
+gdk_window_beep
+gdk_window_invalidate_rect
+gdk_window_move_resize
+gdk_window_new
+gdk_window_set_cursor
+gdk_window_set_user_data
+g_error_free
+g_error_matches
+g_file_enumerate_children
+g_file_enumerator_next_file
+g_file_equal
+g_file_get_basename
+g_file_get_child
+g_file_get_parent
+g_file_get_parse_name
+g_file_get_path
+g_file_get_uri
+g_file_get_uri_scheme
+g_file_has_prefix
+g_file_info_get_attribute_boolean
+g_file_info_get_attribute_uint32
+g_file_info_get_attribute_uint64
+g_file_info_get_content_type
+g_file_info_get_display_name
+g_file_info_get_file_type
+g_file_info_get_name
+g_file_info_get_size
+g_file_info_has_attribute
+g_file_monitor_cancel
+g_file_monitor_directory
+g_file_mount_enclosing_volume
+g_file_mount_enclosing_volume_finish
+g_filename_display_basename
+g_file_new_for_commandline_arg
+g_file_new_for_path
+g_file_new_for_uri
+g_file_parse_name
+g_file_query_exists
+g_file_query_info
+g_file_trash
+g_format_size
+g_get_application_name
+g_get_home_dir
+g_idle_add_full
+g_intern_static_string
+g_io_error_quark
+GLIBC_2.0
+GLIBC_2.1
+GLIBC_2.2
+GLIBC_2.4
+glibtop_close
+glibtop_get_fsusage
+glibtop_get_mountlist
+glibtop_init
+g_list_append
+g_list_free
+g_list_free_1
+g_list_prepend
+g_list_reverse
+g_malloc
+g_malloc0
+g_markup_escape_text
+g_markup_printf_escaped
+__gmon_start__
+.gnome2_private
+g_object_class_install_property
+g_object_get
+g_object_get_data
+g_object_new
+g_object_notify
+g_object_ref
+g_object_ref_sink
+g_object_set
+g_object_set_data
+g_object_unref
+g_once_init_enter
+g_once_init_leave
+g_option_context_add_group
+g_option_context_add_main_entries
+g_option_context_free
+g_option_context_new
+g_option_context_parse
+g_option_context_set_help_enabled
+g_option_context_set_ignore_unknown_options
+g_param_spec_boxed
+g_param_spec_double
+g_param_spec_int
+g_param_spec_object
+g_printerr
+g_ptr_array_add
+g_ptr_array_free
+g_ptr_array_new
+g_queue_free
+g_queue_new
+g_queue_pop_head
+g_queue_push_head
+g_return_if_fail_warning
+g_set_application_name
+g_settings_bind
+g_settings_get_boolean
+g_settings_get_string
+g_settings_get_strv
+g_settings_new
+g_settings_set_string
+g_settings_set_strv
+g_settings_sync
+g_signal_connect_data
+g_signal_emit
+g_signal_handlers_disconnect_matched
+g_signal_new
+g_signal_stop_emission_by_name
+g_slist_delete_link
+g_slist_foreach
+g_slist_free
+g_slist_prepend
+g_source_remove
+g_sprintf
+g_strconcat
+g_strdup
+g_strdup_printf
+g_strfreev
+g_str_has_suffix
+g_string_append
+g_string_assign
+g_string_free
+g_string_new
+g_string_printf
+g_strjoin
+g_timeout_add
+gtk_action_get_type
+gtk_action_set_sensitive
+gtk_box_get_type
+gtk_box_new
+gtk_box_pack_start
+gtk_box_set_child_packing
+gtk_box_set_spacing
+gtk_builder_add_from_file
+gtk_builder_connect_signals
+gtk_builder_get_object
+gtk_builder_new
+gtk_button_new_with_mnemonic
+gtk-cancel
+gtk_cell_layout_add_attribute
+gtk_cell_layout_get_type
+gtk_cell_layout_pack_start
+gtk_cell_renderer_get_alignment
+gtk_cell_renderer_get_padding
+gtk_cell_renderer_get_type
+gtk_cell_renderer_set_padding
+gtk_cell_renderer_text_new
+gtk_cell_renderer_toggle_new
+gtk_check_button_new_with_mnemonic
+gtk_combo_box_get_active
+gtk_combo_box_get_active_iter
+gtk_combo_box_get_model
+gtk_combo_box_get_type
+gtk_combo_box_new
+gtk_combo_box_set_active
+gtk_combo_box_set_active_iter
+gtk_combo_box_set_model
+gtk_combo_box_text_append_text
+gtk_combo_box_text_get_active_text
+gtk_combo_box_text_get_type
+gtk_combo_box_text_new
+gtk_container_add
+gtk_container_foreach
+gtk_container_get_type
+gtk_container_remove
+gtk_container_set_border_width
+gtk-delete
+gtk_dialog_add_action_widget
+gtk_dialog_add_button
+gtk_dialog_get_content_area
+gtk_dialog_get_type
+gtk_dialog_run
+gtk_dialog_set_default_response
+gtk_drag_dest_set
+gtk_drag_dest_unset
+gtk_drag_finish
+gtk_editable_get_chars
+gtk_editable_get_type
+gtk_entry_get_type
+gtk_entry_new
+gtk_entry_set_activates_default
+gtk_events_pending
+gtk_file_chooser_dialog_new
+gtk_file_chooser_get_filename
+gtk_file_chooser_get_show_hidden
+gtk_file_chooser_get_type
+gtk_file_chooser_get_uri
+gtk_file_chooser_set_current_folder
+gtk_file_chooser_set_current_name
+gtk_file_chooser_set_do_overwrite_confirmation
+gtk_file_chooser_set_extra_widget
+gtk_file_chooser_set_show_hidden
+gtk_frame_get_type
+gtk_frame_new
+gtk_frame_set_label_align
+gtk_frame_set_shadow_type
+gtk_get_current_event_time
+gtk_get_option_group
+gtk-go-up
+gtk_hbox_new
+gtk_image_menu_item_get_type
+gtk_image_menu_item_new_with_label
+gtk_image_menu_item_new_with_mnemonic
+gtk_image_menu_item_set_image
+gtk_image_new_from_file
+gtk_image_new_from_stock
+GTK_IS_TREE_MODEL (model)
+GTK_IS_TREE_VIEW (tv)
+gtk_label_get_type
+gtk_label_new
+gtk_label_new_with_mnemonic
+gtk_label_set_markup
+gtk_label_set_mnemonic_widget
+gtk_list_store_append
+gtk_list_store_get_type
+gtk_list_store_new
+gtk_list_store_set
+gtk_main
+gtk_main_iteration
+gtk_main_quit
+gtk_menu_attach_to_widget
+gtk_menu_get_type
+gtk_menu_new
+gtk_menu_popup
+gtk_menu_shell_append
+gtk_menu_shell_get_type
+gtk_message_dialog_format_secondary_text
+gtk_message_dialog_get_type
+gtk_message_dialog_new
+gtk_misc_get_type
+gtk_misc_set_alignment
+gtk_mount_operation_new
+gtk-open
+gtk_paned_get_type
+gtk_paned_pack2
+gtk_paned_set_position
+gtk-remove
+gtk-save
+gtk_scrolled_window_get_type
+gtk_scrolled_window_set_policy
+gtk_selection_data_get_data
+gtk_selection_data_get_length
+gtk_separator_menu_item_new
+gtk_separator_tool_item_get_type
+gtk_separator_tool_item_new
+gtk_separator_tool_item_set_draw
+gtk_settings_get_default
+gtk_show_about_dialog
+gtk_show_uri
+gtk_spinner_get_type
+gtk_spinner_new
+gtk_spinner_start
+gtk_spinner_stop
+gtk_statusbar_get_type
+gtk_statusbar_pop
+gtk_statusbar_push
+gtk_style_context_set_background
+gtk_table_attach
+gtk_table_get_type
+gtk_table_new
+gtk_table_set_col_spacings
+gtk_table_set_row_spacings
+gtk_toggle_action_get_active
+gtk_toggle_action_get_type
+gtk_toggle_action_set_active
+gtk_toggle_button_get_type
+gtk_toggle_button_set_active
+gtk_tool_item_get_toolbar_style
+gtk_tool_item_get_type
+gtk_tool_item_new
+gtk_tool_item_set_expand
+gtk_tooltip_set_markup
+gtk_tooltip_set_tip_area
+gtk-tooltip-timeout
+gtk_tree_iter_get_type
+gtk_tree_model_foreach
+gtk_tree_model_get
+gtk_tree_model_get_iter
+gtk_tree_model_get_path
+gtk_tree_model_get_type
+gtk_tree_model_iter_children
+gtk_tree_model_iter_next
+gtk_tree_model_iter_parent
+gtk_tree_path_compare
+gtk_tree_path_free
+gtk_tree_path_get_depth
+gtk_tree_path_is_ancestor
+gtk_tree_path_new_first
+gtk_tree_path_new_from_string
+gtk_tree_row_reference_free
+gtk_tree_row_reference_get_path
+gtk_tree_row_reference_new
+gtk_tree_selection_get_selected
+gtk_tree_sortable_get_sort_column_id
+gtk_tree_sortable_get_type
+gtk_tree_sortable_set_sort_column_id
+gtk_tree_store_append
+gtk_tree_store_clear
+gtk_tree_store_get_type
+gtk_tree_store_iter_is_valid
+gtk_tree_store_new
+gtk_tree_store_remove
+gtk_tree_store_set
+gtk_tree_view_append_column
+gtk_tree_view_collapse_all
+gtk_tree_view_column_new
+gtk_tree_view_column_new_with_attributes
+gtk_tree_view_column_pack_start
+gtk_tree_view_columns_autosize
+gtk_tree_view_column_set_attributes
+gtk_tree_view_column_set_cell_data_func
+gtk_tree_view_column_set_reorderable
+gtk_tree_view_column_set_resizable
+gtk_tree_view_column_set_sizing
+gtk_tree_view_column_set_sort_column_id
+gtk_tree_view_column_set_title
+gtk_tree_view_expand_all
+gtk_tree_view_expand_row
+gtk_tree_view_expand_to_path
+gtk_tree_view_get_path_at_pos
+gtk_tree_view_get_selection
+gtk_tree_view_get_type
+gtk_tree_view_row_expanded
+gtk_tree_view_set_cursor
+gtk_tree_view_set_headers_visible
+gtk_tree_view_set_model
+gtk_tree_view_set_search_equal_func
+gtk_vbox_new
+gtk_widget_add_events
+gtk_widget_create_pango_layout
+gtk_widget_destroy
+gtk_widget_destroyed
+gtk_widget_get_allocated_height
+gtk_widget_get_allocated_width
+gtk_widget_get_allocation
+gtk_widget_get_direction
+gtk_widget_get_events
+gtk_widget_get_parent
+gtk_widget_get_parent_window
+gtk_widget_get_realized
+gtk_widget_get_style
+gtk_widget_get_style_context
+gtk_widget_get_toplevel
+gtk_widget_get_type
+gtk_widget_get_visual
+gtk_widget_get_window
+gtk_widget_hide
+gtk_widget_new
+gtk_widget_queue_draw
+gtk_widget_set_allocation
+gtk_widget_set_can_default
+gtk_widget_set_has_tooltip
+gtk_widget_set_realized
+gtk_widget_set_sensitive
+gtk_widget_set_size_request
+gtk_widget_set_window
+gtk_widget_show
+gtk_widget_show_all
+gtk_window_get_screen
+gtk_window_get_type
+gtk_window_set_default_icon_name
+gtk_window_set_modal
+gtk_window_set_position
+gtk_window_set_resizable
+gtk_window_set_screen
+gtk_window_set_title
+gtk_window_set_transient_for
+g_type_check_class_cast
+g_type_check_instance_cast
+g_type_check_instance_is_a
+g_type_class_add_private
+g_type_class_peek_parent
+g_type_instance_get_private
+g_type_name
+g_type_register_static_simple
+g_uri_escape_string
+g_uri_list_extract_uris
+g_utf8_casefold
+g_value_get_double
+g_value_get_int
+g_value_get_object
+g_value_set_double
+g_value_set_int
+g_value_set_object
+g_vfs_get_default
+g_vfs_get_supported_uri_schemes
+g_volume_monitor_get
+help:%s/%s
+homedir:%s
+hpaned_main
+Igalia (rings-chart and treemap widget) <www.igalia.com>
+_Image type:
+index < G_N_ELEMENTS (methods) && index >= 0
+insert_text
+_IO_stdin_used
+is_virtual_filesystem
+item_activated
+item-activated
+_Jv_RegisterClasses
+leave-notify-event
+libcairo.so.2
+__libc_csu_fini
+__libc_csu_init
+libc.so.6
+__libc_start_main
+libgdk-3.so.0
+libgdk_pixbuf-2.0.so.0
+libgio-2.0.so.0
+libglib-2.0.so.0
+libgobject-2.0.so.0
+libgtk-3.so.0
+libgtop-2.0.so.7
+/lib/ld-linux.so.2
+libm.so.6
+libpango-1.0.so.0
+libpangocairo-1.0.so.0
+libpthread.so.0
+_Location (URI):
+logo-icon-name
+max-depth
+Maximum depth
+menuallfs
+menurescan
+menuscandir
+menuscanhome
+menu_scan_rem
+menustop
+messageyesno
+motion-notify-event
+Mount Point
+Move to parent folder
+Mo_ve to Trash
+on_about_activate
+on_chart_type_change
+on_ck_allocated_activate
+on_delete_activate
+on_helpcontents_activate
+on_menuallfs_activate
+on_menu_collapse_activate
+on_menu_expand_activate
+on_menu_rescan_activate
+on_menuscandir_activate
+on_menuscanhome_activate
+on_menu_scan_rem_activate
+on_menu_stop_activate
+on_pref_menu
+on_quit_activate
+on_tbrescan_clicked
+on_tbscanall_clicked
+on_tbscandir_clicked
+on_tbscanhome_clicked
+on_tb_scan_remote_clicked
+on_tbstop_clicked
+on_toggled
+on_tv_selection_changed
+open_file_cb
+open_file_with_application
+_Open Folder
+Optional information:
+org.gnome.baobab.preferences
+org.gnome.baobab.ui
+org.gnome.desktop.interface
+pango_cairo_show_layout
+pango_layout_get_pixel_extents
+pango_layout_set_indent
+pango_layout_set_markup
+pango_layout_set_spacing
+Paolo Borelli <pborelli@katamail.com>
+path != NULL
+path != NULL || iter != NULL
+P@BaobabRingschart
+percentage
+Please enter a name and try again.
+popupmenu_list
+_precentage
+preferenze1
+property
+Public FTP
+query-tooltip
+.recently-used
+Rescan your home folder?
+response
+response_callback
+row_changed
+row_deleted
+row-expanded
+row_has_child_toggled
+row_inserted
+rows_reordered
+Save screenshot
+Save Snapshot
+scan_folder_cb
+Scanning
+scrolledwindow1
+%s-disk-usage
+Secure WebDAV (HTTPS)
+Select Folder
+sensitive
+_Server:
+Service _type:
+set_color_according_to_perc
+Set the model of the chart
+Set the root node from the model
+set_ui_action_sens
+set_ui_widget_sens
+setup_for_type
+show_bars
+_Show hidden folders
+Show version
+%s: invalid %s id %u for "%s" of type `%s' in `%s'
+"%s" is not a valid folder
+<small><i>%s</i></small>
+<small>%s <b>%s</b> (%s %s %s %s )</small>
+<span size="small">
+%s://%s%s%s%s%s%s
+__stack_chk_fail
+standard::content-type
+standard::display-name
+standard::name,standard::display-name,standard::type,standard::size,unix::blocks,unix::nlink,unix::inode,unix::device,access::can-read
+standard::size
+standard::type
+statusbar1
+statusbar-visible
+tbrescan
+tbscanall
+tbscandir
+tbscanhome
+tb_scan_remote
+t Dejean <benoit@placenet.org>
+text/uri-list
+The content of your home folder has changed. Select rescan to update the disk usage details.
+The document does not exist.
+The folder does not exist.
+The maximum depth drawn in the chart from the root
+There is no installed viewer capable of displaying the folder.
+There was an error displaying help.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+toolbar1
+toolbar-reconfigured
+toolbar-style
+toolbar-visible
+Too many arguments. Only one directory can be specified.
+Total filesystem capacity
+Total filesystem capacity:
+Total filesystem usage
+Total Size
+translator-credits
+trash_dir_cb
+treeview1
+tree_view_props
+Unable to load the user interface file: %s
+Unable to parse option: %s
+unix::blocks
+unix::device
+unix::inode
+unix::nlink
+_User Name:
+/usr/share/baobab/baobab-main-window.ui
+/usr/share/baobab/baobab-preferences-dialog.ui
+/usr/share/baobab/pixmaps/shot.png
+/usr/share/locale
+View as Rings Chart
+View as Treemap Chart
+volume_changed
+WebDAV (HTTP)
+Windows share
+Without mount points disk usage cannot be analyzed.
+wrap-license
+.xsession-errors
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+Zoom out
