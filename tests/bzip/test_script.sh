@@ -10,7 +10,9 @@ DATA_DIR=$TEST_DIR/data
 CLEANUP_FILES="$DATA_DIR/compression_input1_test.bz2 $DATA_DIR/compression_input1_orig.bz2 $DATA_DIR/compression_input1_orig $DATA_DIR/compression_input1_test"
 
 #used for filtering program names from output.
-ORIG_NAME=bzip
+#since we might use this script for all bzip variants, list them all
+#but separate by an escaped | for the regex used by manual_test_lib
+ORIG_NAME="bzip\|bunzip\|bzip2\|bunzip2"
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
