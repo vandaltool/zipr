@@ -116,6 +116,11 @@ stock_examples/Makefile -text
 stock_examples/bzip2.stock -text
 stock_examples/xpdf.stock -text
 stock_examples/xpdfsrc.stock -text
+tests/bzip/data/compression_input1 -text
+tests/bzip/data/decompression_input1 -text
+tests/bzip/test_script.sh -text
+tests/manual_test_lib.sh -text
+tests/touch/test_script.sh -text
 tools/bed_blackbox.sh -text
 tools/bed_manual.sh -text
 tools/cover.sh -text
