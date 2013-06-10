@@ -2917,6 +2917,7 @@ tools/generate_exe.sh -text
 tools/generate_io_baseline.sh -text
 tools/generate_relocfile.sh -text
 tools/generate_string_signatures.sh -text
+tools/get_manual_test_script.sh -text
 tools/getlibs.sh -text
 tools/getsyms.sh -text
 tools/grace_utils.sh -text
