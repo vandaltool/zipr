@@ -129,7 +129,12 @@ static int getSymbolAddress(const string &symbolFilename, const string &symbol) 
 
 	//TODO: throw exception if address is not found. 
 	//for now assert the address string isn't empty
-	assert(!addressString.empty());
+	if(addressString.empty())
+	{
+		cerr<<"Cannot find symbol "<< symbol << " in " << symbolFilename << "."<<endl;
+		cerr<<"Exiting spasm early."<<endl;
+		assert(!addressString.empty());
+	}
 
 	pclose(fp);
 	delete [] address; 
