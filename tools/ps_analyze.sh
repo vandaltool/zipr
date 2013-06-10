@@ -648,23 +648,11 @@ fi
 #
 perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script $manual_test_coverage_file
 
-
-# FIXME BEN:  Please isolate these diff steps into a single script.  Pass $? if you need to.
 #
 # Do P1/Pn transform.
 #
-is_step_on manual_test
-if [ $? -eq 0 ]; then 
-	perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/p1xform_v2.sh $PN_TIMEOUT_VALUE $DO_CANARIES
-else
-	grep manual_test_import $manual_test_script
-	if [ $? -eq 0 ];
-	then
-		perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_manual.sh $PN_TIMEOUT_VALUE $DO_CANARIES
-	else
-		perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed_blackbox.sh $PN_TIMEOUT_VALUE $DO_CANARIES
-	fi
-fi
+perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $DO_CANARIES
+
 		
 perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only
 #perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
