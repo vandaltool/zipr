@@ -42,7 +42,7 @@ usage()
 
 cleanup()
 {
-	rm -f test_out test_error test_status orig_out orig_error orig_status
+	rm -f test_out test_error test_status orig_out orig_error orig_status $CLEANUP_FILES
 }
 
 report_failure()
@@ -74,8 +74,10 @@ run_test_prog_only()
 	cmd_args=$@
 
 	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
+		echo "$TEST_PROG $cmd_args >test_out 2>test_error"
 		$TEST_PROG $cmd_args >test_out 2>test_error
 	else
+		echo "timeout $TIMEOUT $TEST_PROG $cmd_args >test_out 2>test_error"
 		timeout $TIMEOUT $TEST_PROG $cmd_args >test_out 2>test_error
 	fi
 
@@ -151,8 +153,6 @@ run_basic_test()
 	if [[ ! -z "$IGNORE_RESULTS" ]]; then
 		return
 	fi
-
-	echo $@
 
 	run_bench_prog_only $@
 
