@@ -32,7 +32,7 @@ STR2NUM_ERROR str2uint (unsigned int &i, char const *s, int base)
 	char *end;
 	unsigned long  l;
 	errno = 0;
-	l = strtol(s, &end, base);
+	l = strtoul(s, &end, base);
 	if ((errno == ERANGE && l == ULONG_MAX) || l > UINT_MAX) {
 		return OVERFLOW;
 	}
