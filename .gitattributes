@@ -2923,7 +2923,9 @@ tools/getsyms.sh -text
 tools/grace_utils.sh -text
 tools/integer_replay.sh -text
 tools/intxform_detect_benign_fp.sh -text
+tools/intxform_make_detector_binary.sh -text
 tools/intxform_replay.sh -text
+tools/intxform_run.sh -text
 tools/is_so.sh -text
 tools/libc_functions.txt -text
 tools/make_prog_signature.sh -text
