@@ -2939,6 +2939,7 @@ tools/p1xform_v2.sh -text
 tools/peasoup_link -text
 tools/peasoup_link++ -text
 tools/pin/LICENSE -text
+tools/pin/Makefile -text
 tools/pin/README -text
 tools/pin/doc/html/annotated.html -text
 tools/pin/doc/html/classDEBUGGER__SHELL_1_1ICUSTOM__INSTRUMENTOR-members.html -text
