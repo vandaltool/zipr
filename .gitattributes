@@ -4690,6 +4690,7 @@ tools/pin/source/tools/ManualExamples/inscount_tls.cpp -text
 tools/pin/source/tools/ManualExamples/invocation.cpp -text
 tools/pin/source/tools/ManualExamples/isampling.cpp -text
 tools/pin/source/tools/ManualExamples/itrace.cpp -text
+tools/pin/source/tools/ManualExamples/itraceunique.cpp -text
 tools/pin/source/tools/ManualExamples/little_malloc.c -text
 tools/pin/source/tools/ManualExamples/makefile -text
 tools/pin/source/tools/ManualExamples/makefile.rules -text
