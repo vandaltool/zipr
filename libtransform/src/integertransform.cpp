@@ -1178,6 +1178,7 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 //      jno <originalFallthroughInstruction> 
 //      jnc <originalFallthroughInstruction> 
 //      nop [attach callback handler]
+//      saturate target register (if policy dictates)
 //      <originalFallthroughInstruction>
 //
 void IntegerTransform::addOverflowCheckUnknownSign(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
@@ -1212,10 +1213,14 @@ cerr << "IntegerTransform::addOverflowCheckUnknownSign(): instr: " << p_instruct
 	addJnc(jnc_i, nop_i, nextOrig_i);
 	addNop(nop_i, nextOrig_i);
 
-	// only handle exit policy for this case
 	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC) 
-		p_policy = POLICY_EXIT;
-
-	addCallbackHandler(detector, p_instruction, nop_i, nextOrig_i, p_policy);
+	{
+		Instruction_t* saturate_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+		addCallbackHandler(detector, p_instruction, nop_i, saturate_i, p_policy);
+		addMaxSaturation(saturate_i, targetReg, p_annotation, nextOrig_i);
+	}
+	else 
+	{
+		addCallbackHandler(detector, p_instruction, nop_i, nextOrig_i, p_policy);
+	}
 }
-
