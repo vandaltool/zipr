@@ -117,7 +117,7 @@ void coverage::print_coverage_for_file(file_coverage *fc, FileIR_t *fileirp, ofs
 		if(func==NULL)
 			continue;
 
-		unsigned int total_ins = 0;
+		unsigned int total_ins = func->GetInstructions().size();
 		unsigned int covered_ins = 0;
 
 		for(
@@ -158,11 +158,12 @@ void coverage::print_function_coverage_file(libIRDB::VariantID_t *vidp,std::ofst
 		FileIR_t *fileirp=new FileIR_t(*vidp,this_file);
 		assert(fileirp);
 
+		//NULL fc should only happen if the coverage file is empty. 
+		//TODO: add extra sanity checks to make sure that null only happens under these conditions. 
 		file_coverage* fc = find_file_coverage(fileirp->GetFile()->GetURL());
 
-		assert(fc != NULL);
-
-		print_coverage_for_file(fc, fileirp, out_file);
+		if(fc!=NULL)
+			print_coverage_for_file(fc, fileirp, out_file);
 
 		delete fileirp;
 	}
