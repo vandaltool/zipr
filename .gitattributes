@@ -116,9 +116,12 @@ stock_examples/Makefile -text
 stock_examples/bzip2.stock -text
 stock_examples/xpdf.stock -text
 stock_examples/xpdfsrc.stock -text
-tests/bzip/data/compression_input1 -text
-tests/bzip/data/decompression_input1 -text
-tests/bzip/test_script.sh -text
+tests/bunzip/data/compression_input1 -text
+tests/bunzip/data/decompression_input1 -text
+tests/bunzip/test_script.sh -text
+tests/bzip2/data/compression_input1 -text
+tests/bzip2/data/decompression_input1 -text
+tests/bzip2/test_script.sh -text
 tests/grep/data/data1.txt -text
 tests/grep/data/data2.txt -text
 tests/grep/data/khadafy.lines -text
@@ -128,6 +131,11 @@ tests/grep/data/pattern2 -text
 tests/grep/test_script.sh -text
 tests/manual_test_lib.sh -text
 tests/touch/test_script.sh -text
+tests/zsh/test1.sh -text
+tests/zsh/test2.sh -text
+tests/zsh/test3.sh -text
+tests/zsh/test4.sh -text
+tests/zsh/test_script.sh -text
 tools/bed.sh -text
 tools/bed_blackbox.sh -text
 tools/bed_manual.sh -text
