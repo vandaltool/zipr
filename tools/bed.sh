@@ -3,7 +3,7 @@
 # BED script to run both manual and conclic tests
 
 TOP_LEVEL=`pwd`
-ORIG_BINARY=$PEASOUP_DIR/a.ncexe
+ORIG_PROGRAM=$PEASOUP_DIR/a.ncexe
 MANUAL_TEST_SCRIPT=$TOP_LEVEL/manual_test_wrapper
 CONCOLIC=$TOP_LEVEL/concolic.files_a.stratafied_0001
 
@@ -33,7 +33,7 @@ NAME=`cat new_command_name`
 TRANSFORMED_PROGRAM="$PEASOUP_DIR/$NAME"
 
 #only do the manual tests if the manual_test_wrapper script exists
-if [ -f manual_test_wrapper ]; then
+if [ -f $MANUAL_TEST_SCRIPT ]; then
 	echo "Running manual tests: $MANUAL_TEST_SCRIPT $TRANSFORMED_PROGRAM $ORIG_PROGRAM"
 	eval $MANUAL_TEST_SCRIPT $TRANSFORMED_PROGRAM $ORIG_PROGRAM
 	status=$?
