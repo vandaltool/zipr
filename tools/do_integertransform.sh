@@ -1,15 +1,17 @@
-#!/bin/sh
+#!/bin/bash
 #
-# do_integertransform.sh <cloneId> <concolicDir> <timeout> <saturation>
+# do_integertransform.sh <cloneId> <identifiedProgram> <concolicDir> <timeout> <saturation>
 #
 # pre: we are in the top-level directory created by ps_analyze.sh
 #
 
 # input
 CLONE_ID=$1
-CONCOLIC_DIR=$2
-TIMEOUT=$3
-WARNINGS_ONLY=$4 # 0 or 1
+IDENTIFIED_PROG=$2
+CONCOLIC_DIR=$3
+TIMEOUT=$4
+WARNINGS_ONLY=$5     # 0 or 1
+BENIGN_FP_DETECT=$6  # 0 or 1
 
 # configuration variables
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system library functions
@@ -26,28 +28,19 @@ INTEGER_WARNINGS_FILE=${TOP_DIR}/integer.warnings.addresses
 
 touch $INTEGER_WARNINGS_FILE
 
-echo "INT: transforming binary: cloneid=$CLONE_ID"
+echo "INT: transforming binary: cloneid=$CLONE_ID identifiedProg=$IDENTIFIED_PROG"
 
-if [ ! -f $ANNOT_INFO ]; then
-	echo "INT: no info annotation file found -- skip integer transform"
-	return 1
+if [ "$BENIGN_FP_DETECT" = "1" ]; then
+	echo "INTXFORM: Detection of benign false positives turned on for recognized program: $IDENTIFIED_PROG"
+	if [ "$IDENTIFIED_PROG" != "" ]; then
+		echo "intxform: identifiedProg=$IDENTIFIED_PROG"
+		$PEASOUP_HOME/tools/intxform_detect_benign_fp.sh $CLONE_ID $IDENTIFIED_PROG $INTEGER_WARNINGS_FILE
+	else
+		echo "intxform: unknown program identified -- do not automatically detect benign FP for now"
+
+	fi
 fi
 
-# if C++ skip
-#file a.ncexe | grep -i static | grep -i link | grep -i execut
-#if [ $? -eq 0 ]; then
-#  nm -a a.ncexe | grep __gnu_cxx
-#  if [ $? -eq 0 ]; then
-#     echo "INT: Statically-linked C++ program detected -- skipping"
-#     exit 1
-#  fi
-#fi
-
-# Sanity check -- did Grace produce anything?
-#
-# If so, we run the integer transform on Grace-generated inputs on a cloned copy
-# Any instructions that trigger a C1/Integer detector is flagged as a warning (instead of an error)
-# This is designed to prevent false positives
 #
 # Comment out this block of code if you don't want to even attempt to detect false positives
 
@@ -88,24 +81,9 @@ fi
 cd $TOP_DIR   
 
 # Transform program but for each instruction present in the list above, use a "CONTINUE" policy to emit a warning (instead of the default CONTROLLED EXIT policy)
-echo "INT: Final integer transform"
+echo "intxform: Final integer transform"
 
-# for path manipulation routines, e.g. cwe191, use termination instead of saturation on truncation
-path_manip="realpath mkdir mkdirat rmdir rmdirat chmod chown unlink unlinkat"    # add to list of path manip functions here
-
-#for i in $path_manip
-#do
-#  nm a.ncexe | grep $i >/dev/null 2>/dev/null
-#  if [ $? -eq 0 ]; then
-#     echo "detected path manipulation function: $i"
-#     PATH_MANIP_DETECTED="--path-manip-detected"
-#  fi
-#done
-
-# --path-manip-detected will override the saturating arithmetic policy
-# but we still need to leave --saturating-arithmetic alone for now
-
-echo "warnings_only: $WARNINGS_ONLY"
+echo "intxform: warnings_only: $WARNINGS_ONLY"
 
 if [ "$WARNINGS_ONLY" != "0" ]; then
   echo "intxform: warning only mode"
@@ -113,6 +91,6 @@ if [ "$WARNINGS_ONLY" != "0" ]; then
   $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
 else
   echo "intxform: saturating arithmetic is enabled"
-  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic $PATH_MANIP_DETECTED
+  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic 
 fi
 
