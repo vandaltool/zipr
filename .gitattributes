@@ -121,6 +121,8 @@ tests/bzip/data/decompression_input1 -text
 tests/bzip/test_script.sh -text
 tests/grep/data/data1.txt -text
 tests/grep/data/data2.txt -text
+tests/grep/data/khadafy.lines -text
+tests/grep/data/khadafy.regexp -text
 tests/grep/data/pattern -text
 tests/grep/data/pattern2 -text
 tests/grep/test_script.sh -text
