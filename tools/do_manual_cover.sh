@@ -20,13 +20,17 @@ if [ -f $MANUAL_TEST_SCRIPT ]; then
 	echo "$MANUAL_COV_SCRIPT $ORIG_BIN $MANUAL_TEST_SCRIPT $AGGREGATE_COVERAGE"
 
 	eval $MANUAL_COV_SCRIPT $ORIG_BIN $MANUAL_TEST_SCRIPT $AGGREGATE_COVERAGE
-
-	
+	return $?
 fi
+
+#the remainder of this file is for Anh's old manual tests
+#which I will keep around for now, but ignore this code. 
+
+return 0
 
 ls $MANUAL_TEST_DIR/* >/dev/null 2>/dev/null
 if [ ! $? -eq 0 ]; then
-  echo "do_manual_cover.sh: error: no manual test specifications found -- exiting"
+  echo "do_manual_cover.sh: no manual test specifications found -- exiting"
   exit 1
 fi
 

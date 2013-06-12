@@ -8,7 +8,8 @@
 BENCH=$1
 TEST_SCRIPT=$2
 MANUAL_EXE_ADDRESS_OUTPUT_FILE=$3
-
+#A coverage round that takes longer than 10 minutes is assumed to be an infinite loop.
+TIMEOUT_VALUE=600
 
 PIN_BENCH=`pwd`/pin_bench
 COVERAGE_RESULTS_FILE=$PEASOUP_HOME/coverage_results/itrace.out
@@ -33,11 +34,13 @@ eval $TEST_SCRIPT -i $PIN_BENCH $BENCH
 #because I now have an ignore flag, this likely won't occur, but just in case.
 if [ $? -ne 0 ]; then
 
-	echo "WARNING: manual coverage failed. The running  manual tests reported failure with coverage instrumentation. Continuing with coverage that was collected."
+	echo "ERROR: manual coverage failed. The running  manual tests reported failure with coverage instrumentation. Ignoring coverage results."
+
+	exit 1
 fi
 
 # sanity filter, keep only well formed addresses
-cat $COVERAGE_RESULTS_FILE | sed 's/.*\(0x.*\)/\1/' >tmp
+cat $COVERAGE_RESULTS_FILE | sed 's/\(.*0x.*\)/\1/' >tmp
 mv tmp $COVERAGE_RESULTS_FILE
 
 cp $COVERAGE_RESULTS_FILE $MANUAL_EXE_ADDRESS_OUTPUT_FILE

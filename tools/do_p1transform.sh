@@ -67,15 +67,19 @@ mkdir $P1_DIR
 #  fi
 #fi
 
+touch $EXECUTED_ADDRESSES_FINAL
+
 # generate coverage info for manually-specified tests (if any)
 $PEASOUP_HOME/tools/do_manual_cover.sh
 
+if [[ ! $? -eq 0 ]]; then
+	echo "ERROR: Manual coverage failed"
+	#continue for now, but don't encorporate manual coverage data. 
+else
+# merge all execution traces if successfully run
+	cat $EXECUTED_ADDRESSES_MANUAL >> $EXECUTED_ADDRESSES_FINAL
+fi
 echo "manual cover finished"
-
-# merge all execution traces
-touch $EXECUTED_ADDRESSES_FINAL
-
-cat $EXECUTED_ADDRESSES_MANUAL >> $EXECUTED_ADDRESSES_FINAL
 
 echo "Replaying all .json files"
 input_cnt=0
