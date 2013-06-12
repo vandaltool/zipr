@@ -121,7 +121,7 @@ void PNTransformDriver::AddOnlyValidateList(std::set<std::string> &only_validate
 	}
 }
 
-void PNTransformDriver::SetCoverageMap(std::map<std::string,double> coverage_map)
+void PNTransformDriver::SetCoverageMap(std::map<std::string,map<string,double> > coverage_map)
 {
 	this->coverage_map = coverage_map;
 }
@@ -438,6 +438,8 @@ void PNTransformDriver::GenerateTransformsInit()
 }
 
 
+
+
 void PNTransformDriver::GenerateTransforms()
 {
 	if(transform_hierarchy.size() == 0)
@@ -479,7 +481,28 @@ void PNTransformDriver::GenerateTransforms()
 			orig_virp=new FileIR_t(*pidp,this_file);
 			assert(orig_virp && pidp);
 
-			GenerateTransformsHidden();
+			string url = orig_virp->GetFile()->GetURL();
+
+			map<string,double> file_coverage_map;
+
+			string key;
+			//find the appropriate coverage map for the given file
+			for(map<string, map<string, double> >::iterator it=coverage_map.begin();
+				it!=coverage_map.end(); ++it)
+			{
+				key = it->first;
+
+				if(key.empty())
+					continue;
+
+				if(url.find(key)!=string::npos)
+				{
+					file_coverage_map=it->second;
+					break;
+				}
+			}
+			
+			GenerateTransformsHidden(file_coverage_map);
 
 			if(timeExpired)
 				break;
@@ -495,7 +518,7 @@ void PNTransformDriver::GenerateTransforms()
 		orig_virp = new FileIR_t(*pidp);
 		assert(orig_virp && pidp);
 
-		GenerateTransformsHidden();
+		GenerateTransformsHidden(coverage_map["a.ncexe"]);
 		
 //		delete orig_virp;
 	}
@@ -612,7 +635,7 @@ inline bool PNTransformDriver::TargetFunctionCheck(Instruction_t* a, Instruction
 	return FunctionCheck(a->GetFunction(),b->GetFunction());
 }
 
-void PNTransformDriver::GenerateTransformsHidden()
+void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_coverage_map)
 {
 	SanitizeFunctions();
 
@@ -655,12 +678,12 @@ void PNTransformDriver::GenerateTransformsHidden()
 		double func_coverage = 0;
 
 		//see if the function is in the coverage map
-		if(coverage_map.find(func->GetName()) != coverage_map.end())
+		if(file_coverage_map.find(func->GetName()) != file_coverage_map.end())
 		{
 			//if coverage exists, if it is above or equal to the threshold
 			//do nothing, otherwise set hierachy to start at the level
 			//passed. 
-			func_coverage = coverage_map[func->GetName()];
+			func_coverage = file_coverage_map[func->GetName()];
 		}
 
 		//Function coverage must be strictly greater than the threshold

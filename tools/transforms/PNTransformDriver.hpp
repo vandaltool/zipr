@@ -33,7 +33,7 @@ protected:
     bool do_align;
 	//TODO: coverage map should not use function name as the key, since
 	//we may want to support coverage for shared objects. 
-	std::map<std::string,double> coverage_map;
+	std::map<std::string,std::map<std::string,double> > coverage_map;
 	int no_validation_level;
 	double coverage_threshold;
 	bool do_shared_object_protection;
@@ -82,7 +82,7 @@ protected:
     virtual void GenerateTransformsInit();
     virtual bool IsBlacklisted(libIRDB::Function_t *func);
     virtual unsigned int GetRandomCanary();
-	virtual void GenerateTransformsHidden();
+	virtual void GenerateTransformsHidden(std::map<std::string,double> &file_coverage_map);
 	void SanitizeFunctions();
 //    virtual bool WriteToDB();
     virtual bool WriteStackIRToDB();
@@ -104,7 +104,7 @@ public:
     virtual void AddOnlyValidateList(std::set<std::string> &only_validate_list);
     virtual void SetDoCanaries(bool do_canaries);
     virtual void SetDoAlignStack(bool align_stack);
-	virtual void SetCoverageMap(std::map<std::string,double> coverage_map);
+	virtual void SetCoverageMap(std::map<std::string,std::map<std::string,double> > coverage_map);
 	virtual void SetNoValidationLevel(unsigned int no_validation_level);
 	virtual void SetCoverageThreshold(double threshold);
 	virtual void SetProtectSharedObjects(bool do_protection);

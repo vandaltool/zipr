@@ -20,6 +20,7 @@
 #include <string>
 #include <set>
 #include <cstdlib>
+#include <sstream>
 
 using namespace std;
 using namespace libIRDB;
@@ -97,9 +98,9 @@ set<string> getFunctionList(char *p_filename)
 
 //TODO: the coverage map should not use the function name since
 //it is possible this will repeat when analyzing shared objects. 
-map<string,double> getCoverageMap(char *filename)
+map<string, map<string,double> > getCoverageMap(char *filename)
 {
-	map<string,double> coverage_map;
+	map<string, map<string,double> > coverage_map;
 
 	if(filename == NULL)
 		return coverage_map;
@@ -115,23 +116,23 @@ map<string,double> getCoverageMap(char *filename)
 
 			string line;
 			getline(coverage_file, line);
-			stringstream ss;
-			ss.str(line);
-			string func_name,tmp;
-			double coverage;
 
-			ss >>func_name;
+			stringstream ss_line;
+			ss_line.str(line);
 
-			if(func_name.compare("") == 0)
-				continue;
+			string func_id,file,func_name;
+			ss_line>>func_id;
+			istringstream iss_fid(func_id);
+			getline(iss_fid,file,'+');
+			getline(iss_fid,func_name,'+');
 
-			ss >>tmp;
+			string scoverage;
+			ss_line>>scoverage;
 
-			coverage = strtod(tmp.c_str(),NULL);
+			double coverage = strtod(scoverage.c_str(),NULL);
+			coverage_map[file][func_name]=coverage;
 
-			cout<<"func: "<<func_name<<" coverage: "<<coverage<<endl;
-
-			coverage_map[func_name] = coverage;
+			cout<<"file: "<<file<<" func: "<<func_name<<" coverage: "<<coverage<<endl;
 		}
 	
 		coverage_file.close();
@@ -284,7 +285,7 @@ int main(int argc, char **argv)
 	blackListOfFunctions = getFunctionList(blacklist_file);
 	set<std::string> onlyValidateFunctions;
 	onlyValidateFunctions = getFunctionList(only_validate);
-	map<string,double> coverage_map = getCoverageMap(coverage_file);
+	map<string, map<string,double> > coverage_map = getCoverageMap(coverage_file);
 
 	cout<<"P1threshold parsed = "<<p1threshold<<endl;
 

@@ -1,49 +1,70 @@
 #include <iostream>
-#include <map>
-#include "rewriter.h"
+#include "coverage.h"
+#include <cstdlib>
+#include <fstream>
 
 using namespace std;
+using namespace libIRDB;
+
+void usage(string prog_name)
+{
+	cerr << "usage: "<<prog_name<<" <variant_id> <coverage_file> <output_file>" << endl;
+}
 
 
 int main(int argc, char **argv)
 {
-  if (argc < 5)
-  {
-    cerr << "usage: " << argv[0] << " <elfFile> <annotationFile> <coverageFile> <outputFile>" << endl;
-    return 1;
-  }
 
-  cout << "elf file:" << argv[1] << endl;
-  cout << "MEDS annotation file:" << argv[2] << endl;
-  cout << "coverage file:" << argv[3] << endl;
-  cout << "output file:" << argv[4] << endl;
+	if(argc != 4)
+	{
+		usage(string(argv[0]));
+		return -1;
+	}
 
-  Rewriter *rewriter = new Rewriter(argv[1], argv[2]);
+	int variant_id = atoi(argv[1]);
+	string coverage_file_name = string(argv[2]);
+	string output_file_name = string(argv[3]);
 
-  map<wahoo::Function*, double> coverage = rewriter->getFunctionCoverage(argv[3]);
-  if (coverage.empty())
-  {
-    cerr << "Warning: no functions found in: " << argv[0];
-    return 1;
-  }
+	coverage prog_coverage;
 
-  FILE *fp = fopen(argv[4],"w+"); // output file
-  if (!fp) 
-  {
-    cerr << "Error opening output file: " << argv[4] << endl;
-    return 1;
-  }
+	ifstream coverage_file;
+	coverage_file.open(coverage_file_name.c_str());
 
-  for (map<wahoo::Function*,double>::iterator it = coverage.begin(); it != coverage.end(); ++it)
-  {
-    int count, total;
-    wahoo::Function *f = it->first;
-    if (!f) continue;
-    double coverage = f->getInstructionCoverage(&count, &total);
-    fprintf(fp, "%s %f %d %d\n", f->getName().c_str(), coverage, count, total);
-  }
+	if(!coverage_file.is_open())
+	{
+		cerr<<"Coverage Error: Could not open coverage file: "<<coverage_file_name<<endl;
+		return -1;
+	}
 
-  fclose(fp);
+	prog_coverage.parse_coverage_file(coverage_file);
+	coverage_file.close();
 
+	ofstream output_file;
+	output_file.open(output_file_name.c_str(),ofstream::out);
+
+	if(!output_file.is_open())
+	{
+		cerr<<"Coverage Error: Could not open output file: "<<output_file_name<<endl;
+		return -1;
+	}
+
+	pqxxDB_t pqxx_interface;
+	BaseObj_t::SetInterface(&pqxx_interface);
+	
+	VariantID_t *vidp;
+	try
+	{
+		vidp = new VariantID_t(variant_id);
+		assert(vidp->IsRegistered());
+	}
+	catch (DatabaseError_t pnide)
+	{
+		cout<<"Unexpected database error: "<<pnide<<endl;
+		return -1;	
+	}
+	
+	prog_coverage.print_function_coverage_file(vidp,output_file);
+
+	output_file.close();
 }
 
