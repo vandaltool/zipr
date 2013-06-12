@@ -2,6 +2,8 @@
 #Everyone must point to the manual test library
 TEST_LIB=$PEASOUP_HOME/tests/manual_test_lib.sh
 
+TESTPROG=$1
+
 #for bzip, I use some data files, so I set up variables pointing to that location
 TEST_DIR=$PEASOUP_HOME/tests/grep
 DATA_DIR=$TEST_DIR/data
@@ -17,7 +19,8 @@ ORIG_NAME=grep
 run_basic_test 120 --help
 run_basic_test 120 --version
 run_basic_test 120 -i -U -B 1 -A 2 brown $DATA_DIR/data1.txt
-run_basic_test 120 fox $DATA_DIR/data1.txt
+run_basic_test 120 -b fox $DATA_DIR/data1.txt
+run_basic_test 120 --mmap -i fox $DATA_DIR/data1.txt
 run_basic_test 120 --text -vn Fox $DATA_DIR/data1.txt $DATA_DIR/data2.txt
 run_basic_test 120 -iw the $DATA_DIR/data1.txt $DATA_DIR/data2.txt
 run_basic_test 120 -RTo --line-buffered the $DATA_DIR
@@ -31,11 +34,15 @@ run_basic_test 120 --binary -i -w "over" $DATA_DIR/data1.txt
 run_basic_test 120 -i --line-number ".*dog.*$" $DATA_DIR/data1.txt 
 run_basic_test 120 -i "^the.*" $DATA_DIR/data1.txt 
 run_basic_test 120 -E "^[a-z,0-9,F-Z]+" $DATA_DIR/data1.txt 
+run_basic_test 120 -w "^[a-zA-Z,0-9].*\[\].*" $DATA_DIR/data1.txt 
+run_basic_test 120 "\\body" $DATA_DIR/data1.txt 
 run_basic_test 120 -E "(T|t)he*(q|x)uick*" $DATA_DIR/data1.txt 
 run_basic_test 120 -U -w -i -c --context=3 "lazy dog" $DATA_DIR/data1.txt 
 run_basic_test 120 -f $DATA_DIR/pattern $DATA_DIR/data1.txt 
+run_basic_test 120 -f $DATA_DIR/pattern $DATA_DIR/data2.txt 
 run_basic_test 120 -i -n -f $DATA_DIR/pattern2 $DATA_DIR/data1.txt 
-run_basic_test 120 --color -ivn "^the.*" $DATA_DIR/data1.txt 
+run_basic_test 120 -i -n -f $DATA_DIR/pattern2 $DATA_DIR/data2.txt 
+run_basic_test 120 -s --color -ivn "^the.*" $DATA_DIR/data1.txt 
 run_basic_test 120 "[:alnum:]" $DATA_DIR/data1.txt 
 run_basic_test 120 "[:alpha:]" $DATA_DIR/data1.txt 
 run_basic_test 120 "[:digit:]" $DATA_DIR/data1.txt 
@@ -49,10 +56,21 @@ run_basic_test 120 -E '2{2}' $DATA_DIR/data1.txt
 run_basic_test 120 -E 'h{1}' $DATA_DIR/data1.txt 
 run_basic_test 120 -E 'co{1,2}l' $DATA_DIR/data1.txt 
 run_basic_test 120 -E 'c{3,}' $DATA_DIR/data1.txt 
-run_basic_test 120 -v -E "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" $DATA_DIR/data1.txt 
-run_basic_test 120 -E "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" $DATA_DIR/data1.txt 
+run_basic_test 120 -v "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" $DATA_DIR/data1.txt 
+run_basic_test 120 "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" $DATA_DIR/data1.txt 
 
-
+cat $DATA_DIR/data1.txt | $TESTPROG -i FOX
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+cat $DATA_DIR/data1.txt | $TESTPROG "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+cat $DATA_DIR/data1.txt | $TESTPROG -i "^the"
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
 
 #Ben, for some reason this one doesn't work even when I run the original grep against itself
 #run_basic_test 120 -E "[a-z]*" $DATA_DIR/data1.txt 
