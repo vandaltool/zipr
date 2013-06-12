@@ -660,7 +660,7 @@ if [[ "$program" != "" ]]; then
 		#I'm currently capping the validation run to 6 minutes
 		#to avoid the case where every test times out, but doesn't
 		#invalidate the test. 
-		eval timeout 360 $manual_test_script $newname.ncexe $newname.ncexe &>logs/script_validation.log
+		eval timeout 360 $manual_test_script `pwd`/$newname.ncexe `pwd`/$newname.ncexe &>logs/script_validation.log
 		
 		if [[ ! $? -eq 0 ]]; then
 			echo "Manual Script Failure: test script fails to validate original program, ignoring selected script."
