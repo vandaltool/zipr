@@ -131,8 +131,6 @@ void coverage::print_coverage_for_file(file_coverage *fc, FileIR_t *fileirp, ofs
 			if(instr==NULL || instr->GetAddress()==NULL)
 				continue;
 
-			total_ins++;
-
 			unsigned int addr = (unsigned int) instr->GetAddress()->GetVirtualOffset();
 			if(fc->coverage.find(addr)!=fc->coverage.end())
 				covered_ins++;
