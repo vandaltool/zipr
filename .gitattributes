@@ -116,9 +116,9 @@ stock_examples/Makefile -text
 stock_examples/bzip2.stock -text
 stock_examples/xpdf.stock -text
 stock_examples/xpdfsrc.stock -text
-tests/bunzip/data/compression_input1 -text
-tests/bunzip/data/decompression_input1 -text
-tests/bunzip/test_script.sh -text
+tests/bunzip2/data/compression_input1 -text
+tests/bunzip2/data/decompression_input1 -text
+tests/bunzip2/test_script.sh -text
 tests/bzip2/data/compression_input1 -text
 tests/bzip2/data/decompression_input1 -text
 tests/bzip2/test_script.sh -text
