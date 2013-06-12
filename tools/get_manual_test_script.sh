@@ -15,6 +15,9 @@ case "$PROGRAM_NAME" in
 		
 		found $TEST_DIR/bzip/test_script.sh
 		;;
+	"touch")
+		found $TEST_DIR/touch/test_script.sh
+		;;
 	* )
 		echo "get_manual_test_script.sh: no matching test script found"
 		exit 1
