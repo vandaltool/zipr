@@ -18,6 +18,9 @@ case "$PROGRAM_NAME" in
 	"touch")
 		found $TEST_DIR/touch/test_script.sh
 		;;
+	"grep")
+		found $TEST_DIR/grep/test_script.sh
+		;;
 	* )
 		echo "get_manual_test_script.sh: no matching test script found"
 		exit 1
