@@ -73,6 +73,11 @@ run_test_prog_only()
 
 	cmd_args=$@
 
+	if [[ "$TEST_PROG" == "" ]]; then
+		echo "TEST SCRIPT ERROR: TEST_PROG does not exist, reporting failure"
+		report_failure
+	fi
+
 	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
 		echo "$TEST_PROG $cmd_args >test_out 2>test_error"
 		$TEST_PROG $cmd_args >test_out 2>test_error
@@ -90,6 +95,11 @@ run_bench_prog_only()
 	shift
 
 	cmd_args=$@
+
+	if [[ "$BENCH" == "" ]]; then
+		echo "TEST SCRIPT ERROR: BENCH does not exist, reporting failure"
+		report_failure
+	fi
 
 	#ignore the results, and continue. 
 	if [[ ! -z "$IGNORE_RESULTS" ]]; then
