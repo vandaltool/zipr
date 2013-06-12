@@ -80,10 +80,10 @@ run_test_prog_only()
 
 	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
 		echo "$TEST_PROG $cmd_args >test_out 2>test_error"
-		$TEST_PROG $cmd_args >test_out 2>test_error
+		eval $TEST_PROG $cmd_args >test_out 2>test_error
 	else
 		echo "timeout $TIMEOUT $TEST_PROG $cmd_args >test_out 2>test_error"
-		timeout $TIMEOUT $TEST_PROG $cmd_args >test_out 2>test_error
+		eval timeout $TIMEOUT $TEST_PROG $cmd_args >test_out 2>test_error
 	fi
 
 	echo $? >test_status
@@ -107,9 +107,9 @@ run_bench_prog_only()
 	fi
 
 	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
-		$BENCH $cmd_args >orig_out 2>orig_error
+		eval $BENCH $cmd_args >orig_out 2>orig_error
 	else
-		timeout $TIMEOUT $BENCH $cmd_args >orig_out 2>orig_error
+		eval timeout $TIMEOUT $BENCH $cmd_args >orig_out 2>orig_error
 	fi
 
 	echo $? >orig_status
