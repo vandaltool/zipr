@@ -107,8 +107,10 @@ run_bench_prog_only()
 	fi
 
 	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
+		echo "eval $BENCH $cmd_args >orig_out 2>orig_error"
 		eval $BENCH $cmd_args >orig_out 2>orig_error
 	else
+		echo "timeout $TIMEOUT $BENCH $cmd_args >orig_out 2>orig_error"
 		eval timeout $TIMEOUT $BENCH $cmd_args >orig_out 2>orig_error
 	fi
 
