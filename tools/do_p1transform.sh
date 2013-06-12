@@ -238,14 +238,16 @@ touch $EXECUTED_ADDRESSES_CONCOLIC
 cat $EXECUTED_ADDRESSES_CONCOLIC >> $EXECUTED_ADDRESSES_FINAL
 
 # sanity filter, keep only well formed addresses
-cat $EXECUTED_ADDRESSES_FINAL | sed 's/.*\(0x.*\)/\1/' >tmp
+cat $EXECUTED_ADDRESSES_FINAL | sed 's/\(.*0x.*\)/\1/' >tmp
 mv tmp $EXECUTED_ADDRESSES_FINAL
 
 sort $EXECUTED_ADDRESSES_FINAL | uniq > tmp
 mv tmp $EXECUTED_ADDRESSES_CONCOLIC
 
+echo "$SECURITY_TRANSFORMS_HOME/tools/cover/cover $CLONE_ID $EXECUTED_ADDRESSES_FINAL $COVERAGE_FILE"
 # produce coverage file
-$PEASOUP_HOME/tools/cover.sh $ORIGINAL_BINARY $MEDS_ANNOTATION_FILE $EXECUTED_ADDRESSES_FINAL $LIBC_FILTER $COVERAGE_FILE $BLACK_LIST
+#$PEASOUP_HOME/tools/cover.sh $ORIGINAL_BINARY $MEDS_ANNOTATION_FILE $EXECUTED_ADDRESSES_FINAL $LIBC_FILTER $COVERAGE_FILE $BLACK_LIST
+$SECURITY_TRANSFORMS_HOME/tools/cover/cover $CLONE_ID $EXECUTED_ADDRESSES_FINAL $COVERAGE_FILE
 
 #just in case something went wrong, touch the coverage file. An empty coverage file is permissible, but a missing one will cause PN to crash
 

@@ -203,11 +203,11 @@ check_options()
 		esac
 	done
 
-	if [ -z $manual_test_script ]; then
-		phases_off=" $phases_off manual_test=off"
-	else
-		phases_off=" $phases_off manual_test=on"
-	fi
+#	if [ -z $manual_test_script ]; then
+#		phases_off=" $phases_off manual_test=off"
+#	else
+#		phases_off=" $phases_off manual_test=on"
+#	fi
 
 	# report errors if found
 	if [ ! -z $1 ]; then
@@ -648,10 +648,35 @@ perform_step appfw none $PEASOUP_HOME/tools/do_appfw.sh $newname.ncexe logs/find
 #
 perform_step determine_program find_strings $PEASOUP_HOME/tools/match_program.sh 
 program=$(cat logs/determine_program.log |grep "Program is a version of "|sed -e "s/Program is a version of .//" -e "s/.$//")
-if [ "$program" != "" ]; then
+if [[ "$program" != "" ]]; then
 	echo "Detected program is a version of '$program'"
+
+	$PEASOUP_HOME/tools/get_manual_test_script.sh $program
+
+	if [[ $? -eq 0 ]]; then
+		manual_test_script=`cat get_manual_test_script.log`
+
+		#check if the selected script succeeds
+		#I'm currently capping the validation run to 6 minutes
+		#to avoid the case where every test times out, but doesn't
+		#invalidate the test. 
+		eval timeout 360 $manual_test_script $newname.ncexe $newname.ncexe &>logs/script_validation.log
+		
+		if [[ ! $? -eq 0 ]]; then
+			echo "Manual Script Failure: test script fails to validate original program, ignoring selected script."
+			manual_test_script=""
+		fi
+	fi
 else
 	echo "Program not detected in signature database."
+fi
+
+#At this point we will know if manual testing should be turned off automatically
+#i.e., we will know if a manual_test_script file exists.
+if [ -z $manual_test_script ]; then
+	phases_off=" $phases_off manual_test=off"
+else
+	phases_off=" $phases_off manual_test=on"
 fi
 
 #
