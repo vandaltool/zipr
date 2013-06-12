@@ -77,6 +77,11 @@ fi
 
 run_basic_test 120 -m10 -E -f $DATA_DIR/khadafy.regexp $DATA_DIR/khadafy.lines
 
+printf 'foo\nbar\n' | $TESTPROG -z -q 'foo[[:space:]]\+bar'
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+
 #Ben, for some reason this one doesn't work even when I run the original grep against itself
 #run_basic_test 120 -E "[a-z]*" $DATA_DIR/data1.txt 
 
@@ -146,7 +151,7 @@ if test -r MMMMMMMM.MMM; then
         echo "Please remove MMMMMMMM.MMM to run check"
 else
         # should return 2 file not found
-        grep -E -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
+        $TESTPROG -E -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
         if test $? -ne 2 ; then
                 echo "Status: Wrong status code, test \#3 failed"
                 fail=1
@@ -154,7 +159,7 @@ else
         fi
 
         # should return 2 file not found
-        grep -E -s -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
+        $TESTPROG -E -s -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
         if test $? -ne 2 ; then
                 echo "Status: Wrong status code, test \#4 failed"
                 fail=1
@@ -162,14 +167,14 @@ else
         fi
 
         # should return 2 file not found
-        echo "abcd" | grep -E -s 'abc' - MMMMMMMM.MMM > /dev/null 2>&1
+        echo "abcd" | $TESTPROG -E -s 'abc' - MMMMMMMM.MMM > /dev/null 2>&1
         if test $? -ne 2 ; then
                 echo "Status: Wrong status code, test \#5 failed"
                 fail=1
 	report_failure
         fi
         # should return 0 found a match
-        echo "abcd" | grep -E -q -s 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
+        echo "abcd" | $TESTPROG -E -q -s 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
         if test $? -ne 0 ; then
                 echo "Status: Wrong status code, test \#6 failed"
                 fail=1
@@ -177,7 +182,7 @@ else
         fi
 
         # should still return 0 found a match
-        echo "abcd" | grep -E -q 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
+        echo "abcd" | $TESTPROG -E -q 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
         if test $? -ne 0 ; then
                 echo "Status: Wrong status code, test \#7 failed"
                 fail=1
