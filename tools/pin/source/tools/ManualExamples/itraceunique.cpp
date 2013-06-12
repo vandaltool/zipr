@@ -37,6 +37,8 @@
 #include <cerrno>
 #include <sstream>
 #include <cstdlib>
+#include <libgen.h>
+#include <cstring>
 
 #include "pin.H"
 
@@ -45,6 +47,7 @@ FILE * trace;
 using namespace std;
 
 set<string> instructions;
+//set<VOID*>instructions;
 
 // This function is called before every instruction is executed
 // and prints the IP
@@ -67,9 +70,10 @@ VOID printip(void  *ip)
 		ss<<IMG_Name(img)<<"+0x"<<hex<<(ADDRINT)ip-IMG_LowAddress(img);
 
 	string instruction_key = ss.str();
-	if(instructions.count(instruction_key) > 0)
-		return;
+    if(instructions.count(instruction_key) > 0)
+    	return;
 
+//	fprintf(trace, "%s+0x%x\n", IMG_Name(img).c_str(),(ADDRINT)ip-IMG_LowAddress(img)); 
 	fprintf(trace, "%s\n", instruction_key.c_str()); 
 	instructions.insert(instruction_key);
 }
@@ -77,6 +81,28 @@ VOID printip(void  *ip)
 // Pin calls this function every time a new instruction is encountered
 VOID Instruction(INS ins, VOID *v)
 {
+	PIN_LockClient();
+	IMG img = IMG_FindByAddress(INS_Address(ins));
+	PIN_UnlockClient();
+
+	if(!IMG_Valid(img))
+		return;
+	
+	string img_name=IMG_Name(img);
+	char *tmp=new char[img_name.length()+1];
+	strcpy(tmp,img_name.c_str());
+	string img_dir = string(dirname(tmp));
+	delete [] tmp;
+
+	if(img_dir.compare("/lib") == 0 ||
+	   img_dir.compare("/lib/tls/i686/cmov")==0 ||
+	   img_dir.compare("/usr/lib")==0||
+	   img_dir.compare("/lib/i686/cmov")==0||
+	   img_dir.compare("/lib/i386-linux-gnu")==0||
+	   img_dir.compare("/usr/local/lib")==0||
+	   img_dir.compare("/usr/lib/i386-linux-gnu")==0||
+	   img_dir.compare("/opt/stonesoup/dependencies")==0)
+		return;
     
 	// fprintf(trace, "0x%08x\n", INS_Address(ins)); 
     // Insert a call to printip before every instruction, and pass it the IP
