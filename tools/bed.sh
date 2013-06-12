@@ -3,7 +3,7 @@
 # BED script to run both manual and conclic tests
 
 TOP_LEVEL=`pwd`
-ORIG_PROGRAM=$PEASOUP_DIR/a.ncexe
+ORIG_PROGRAM=$TOP_LEVEL/a.ncexe
 MANUAL_TEST_SCRIPT=$TOP_LEVEL/manual_test_wrapper
 CONCOLIC=$TOP_LEVEL/concolic.files_a.stratafied_0001
 
@@ -30,7 +30,7 @@ fi
 $PEASOUP_HOME/tools/fast_spri.sh $bspri $TOP_LEVEL/a.irdb.fbspri
 
 NAME=`cat new_command_name`
-TRANSFORMED_PROGRAM="$PEASOUP_DIR/$NAME"
+TRANSFORMED_PROGRAM="$TOP_LEVEL/$NAME"
 
 #only do the manual tests if the manual_test_wrapper script exists
 if [ -f $MANUAL_TEST_SCRIPT ]; then
