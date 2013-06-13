@@ -66,158 +66,103 @@ run_basic_test 120 -z the $DATA_DIR/data1.txt
 
 pwd
 echo "TEST_PROG: $TEST_PROG"
-cat $DATA_DIR/data1.txt | $TEST_PROG -i FOX
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
-#echo "aaa"
-#cat $DATA_DIR/data1.txt | $TEST_PROG "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
-#if [ ! $? -eq 0 ]; then
-#	report_failure
-#fi
-echo "bbb"
-cat $DATA_DIR/data1.txt | $TEST_PROG -i "^the"
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
+cat $DATA_DIR/data1.txt | run_test_prog_only 120  -i FOX
+cat $DATA_DIR/data1.txt | run_bench_prog_only 120  -i FOX
+comapre_std_results
 
-echo "ccc"
+#cat $DATA_DIR/data1.txt | run_test_prog_only 120  "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
+#cat $DATA_DIR/data1.txt | run_bench_prog_only 120  "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
+#compare_std_results
+cat $DATA_DIR/data1.txt | run_test_prog_only 120 -i "^the"
+cat $DATA_DIR/data1.txt | run_bench_prog_only 120 -i "^the"
+compare_std_results
+
 run_basic_test 120 -m10 -E -f $DATA_DIR/khadafy.regexp $DATA_DIR/khadafy.lines
 
-echo "ddd"
-printf 'foo\nbar\n' | $TEST_PROG -z -q 'foo[[:space:]]\+bar'
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
-
-echo "eee"
+printf 'foo\nbar\n' | run_test_prog_only 120 -z -q 'foo[[:space:]]\+bar'
+printf 'foo\nbar\n' | run_bench_prog_only 120 -z -q 'foo[[:space:]]\+bar'
+compare_std_results
 
 #
 # From regression tests shipped with grep
 #
 # checking for a palindrome
-echo "radar" | $TEST_PROG -e '\(.\)\(.\).\2\1' > /dev/null 2>&1
-if test $? -ne 0 ; then
-        echo "Backref: palindrome, test #1 failed"
-        report_failure
-fi
+echo "radar" | run_test_prog_only 120 -e '\(.\)\(.\).\2\1' 
+echo "radar" | run_bench_prog_only 120 -e '\(.\)\(.\).\2\1'
+compare_std_results
 
-echo "fff"
 # hit hard with the `Bond' tests
 # For now, remove the `?' in the last parentheses, so that new glibc can do it.  --Stepan
-echo "civic" | $TEST_PROG -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$' > /dev/null 2>&1
-if test $? -ne 0 ; then
-        echo "Options: Bond, test #2 failed"
-        report_failure
-fi
-
-echo "ggg"
+echo "civic" | run_test_prog_only 120 -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$'
+echo "civic" | run_bench_prog_only 120 -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$'
+compare_std_results
 
 # backref are local should be error
-echo "123" | $TEST_PROG -e 'a\(.\)' -e 'b\1' > /dev/null 2>&1
-if test $? -ne 2 ; then
-        echo "Backref: Backref not local, test #3 failed"
-        report_failure
-fi
-
-echo "hhh"
+echo "123" | run_test_prog_only 120 -e 'a\(.\)' -e 'b\1'
+echo "123" | run_bench_prog_only 120 -e 'a\(.\)' -e 'b\1'
+compare_std_results
 
 # Pattern should fail
-echo "123" | $TEST_PROG -e '[' -e ']' > /dev/null 2>&1
-if test $? -ne 2 ; then
-        echo "Backref: Compiled not local, test #4 failed"
-        report_failure
-fi
+echo "123" | run_test_prog_only 120 -e '[' -e ']'
+echo "123" | run_bench_prog_only 120 -e '[' -e ']' 
+compare_std_results
 
-echo "iii"
 # checking for -E extended regex
-echo "abababccccccd" | $TEST_PROG -E -e 'c{3}' > /dev/null 2>&1
-if test $? -ne 0 ; then
-        echo "Options: Wrong status code, test \#1 failed"
-        report_failure
-fi
+echo "abababccccccd" | run_test_prog_only 120 -E -e 'c{3}'
+echo "abababccccccd" | run_bench_prog_only 120 -E -e 'c{3}'
+compare_std_results
 
-echo "jjj"
 # checking for basic regex
-echo "abababccccccd" | $TEST_PROG -G -e 'c\{3\}' > /dev/null 2>&1
-if test $? -ne 0 ; then
-        echo "Options: Wrong status code, test \#2 failed"
-        report_failure
-fi
+echo "abababccccccd" | run_test_prog_only 120 -G -e 'c\{3\}'
+echo "abababccccccd" | run_bench_prog_only 120 -G -e 'c\{3\}'
+compare_std_results
 
-echo "kkk"
 # checking for fixed string
-echo "abababccccccd" | $TEST_PROG -F -e 'c\{3\}' > /dev/null 2>&1
-if test $? -ne 1 ; then
-        echo "Options: Wrong status code, test \#3 failed"
-        report_failure
-fi
+echo "abababccccccd" | run_test_prog_only 120 -F -e 'c\{3\}'
+echo "abababccccccd" | run_bench_prog_only 120 -F -e 'c\{3\}'
+compare_std_results
 
-echo "lll"
-echo | $TEST_PROG -P '\s*$'
+echo | run_test_prog_only 120 -P '\s*$'
+echo | run_bench_prog_only 120 -P '\s*$'
+compare_std_results
 
-echo "mmm"
 # should return 1 found no match
-echo "abcd" | $TEST_PROG -E -e 'zbc' > /dev/null 2>&1
-if test $? -ne 1 ; then
-	echo "Status: Wrong status code, test \#2 failed"
-	report_failure
-fi
-echo "nnn"
+echo "abcd" | run_test_prog_only 120 -E -e 'zbc'
+echo "abcd" | run_bench_prog_only 120 -E -e 'zbc'
+compare_std_results
+
+
 # the filename MMMMMMMM.MMM should not exist hopefully
 if test -r MMMMMMMM.MMM; then
-        echo "Please remove MMMMMMMM.MMM to run check"
+    echo "Please remove MMMMMMMM.MMM to run check"
 else
-echo "ooo"
         # should return 2 file not found
-        $TEST_PROG -E -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
-        if test $? -ne 2 ; then
-                echo "Status: Wrong status code, test \#3 failed"
-                fail=1
-	report_failure
-        fi
+	run_basic_test 120 -E -e 'abc' MMMMMMMM.MMM 
+ 
+        # should return 2 file not found
+    run_basic_test 120 -E -s -e 'abc' MMMMMMMM.MMM
+ 
+	echo "ppp"
+        # should return 2 file not found
+    echo "abcd" | run_test_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
+    echo "abcd" | run_bench_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
+    comapre_std_results
 
-        # should return 2 file not found
-        $TEST_PROG -E -s -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
-        if test $? -ne 2 ; then
-                echo "Status: Wrong status code, test \#4 failed"
-                fail=1
-	report_failure
-        fi
-
-echo "ppp"
-        # should return 2 file not found
-        echo "abcd" | $TEST_PROG -E -s 'abc' - MMMMMMMM.MMM > /dev/null 2>&1
-        if test $? -ne 2 ; then
-                echo "Status: Wrong status code, test \#5 failed"
-                fail=1
-	report_failure
-        fi
-echo "qqq"
         # should return 0 found a match
-        echo "abcd" | $TEST_PROG -E -q -s 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
-        if test $? -ne 0 ; then
-                echo "Status: Wrong status code, test \#6 failed"
-                fail=1
-	report_failure
-        fi
+    echo "abcd" | run_test_prog_only 120 -E -q -s 'abc' MMMMMMMM.MMM 
+	echo "abcd" | run_bench_prog_only 120 -E -q -s 'abc' MMMMMMMM.MMM 
+	compare_std_results
 
-        # should still return 0 found a match
-        echo "abcd" | $TEST_PROG -E -q 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
-        if test $? -ne 0 ; then
-                echo "Status: Wrong status code, test \#7 failed"
-                fail=1
-	report_failure
-        fi
+
+     # should still return 0 found a match
+    echo "abcd" | run_test_prog_only 120 -E -q 'abc' MMMMMMMM.MMM -
+	echo "abcd" | run_bench_prog_only 120 -E -q 'abc' MMMMMMMM.MMM -
+	compare_std_results
+
 fi
 
-# not working/not validating, why?
-#run_basic_test 120 -E '(T|t)he.*(q|x)uick.*' $DATA_DIR/data1.txt 
-
-#Ben, for some reason this one doesn't work even when I run the original grep against itself
+run_basic_test 120 -E '(T|t)he.*(q|x)uick.*' $DATA_DIR/data1.txt 
 #run_basic_test 120 -E "[a-z]*" $DATA_DIR/data1.txt 
-
-echo "rrr - done"
 
 cleanup
 
