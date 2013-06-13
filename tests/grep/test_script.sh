@@ -68,7 +68,7 @@ pwd
 echo "TEST_PROG: $TEST_PROG"
 cat $DATA_DIR/data1.txt | run_test_prog_only 120  -i FOX
 cat $DATA_DIR/data1.txt | run_bench_prog_only 120  -i FOX
-comapre_std_results
+compare_std_results
 
 #cat $DATA_DIR/data1.txt | run_test_prog_only 120  "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
 #cat $DATA_DIR/data1.txt | run_bench_prog_only 120  "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
