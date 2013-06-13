@@ -18,7 +18,7 @@ LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system lib
 
 if [ -z $TIMEOUT ] ;
 then
-TIMEOUT=300                           # 5 mns
+TIMEOUT=1800         # 30 mns
 fi
 
 TOP_DIR=`pwd`
@@ -34,7 +34,7 @@ if [ "$BENIGN_FP_DETECT" = "1" ]; then
 	echo "INTXFORM: Detection of benign false positives turned on for recognized program: $IDENTIFIED_PROG"
 	if [ "$IDENTIFIED_PROG" != "" ]; then
 		echo "intxform: identifiedProg=$IDENTIFIED_PROG"
-		$PEASOUP_HOME/tools/intxform_detect_benign_fp.sh $CLONE_ID $IDENTIFIED_PROG $INTEGER_WARNINGS_FILE
+		timeout $TIMEOUT $PEASOUP_HOME/tools/intxform_detect_benign_fp.sh $CLONE_ID $IDENTIFIED_PROG $INTEGER_WARNINGS_FILE
 	else
 		echo "intxform: unknown program identified -- do not automatically detect benign FP for now"
 
@@ -88,9 +88,9 @@ echo "intxform: warnings_only: $WARNINGS_ONLY"
 if [ "$WARNINGS_ONLY" != "0" ]; then
   echo "intxform: warning only mode"
   $PEASOUP_HOME/tools/update_env_var.sh STRATA_MAX_WARNINGS 0
-  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
+  timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --warning
 else
   echo "intxform: saturating arithmetic is enabled"
-  $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic 
+  timeout $TIMEOUT $SECURITY_TRANSFORMS_HOME/tools/transforms/integertransformdriver.exe $CLONE_ID $LIBC_FILTER $INTEGER_WARNINGS_FILE --saturating-arithmetic 
 fi
 

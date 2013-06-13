@@ -19,8 +19,7 @@ if [ -f $datapath/diagnostics.out ]; then
 	if [ $len -gt 0 ]; then 
 
         # make output more concise
-	    sort $datapath/diagnostics.out | uniq > tmp.$$
-		cat tmp.$$ >> $datapath/diagnostics.cumul.out
+	    sort $datapath/diagnostics.out | uniq >> $datapath/diagnostics.cumul.out
 	fi
 fi
 
