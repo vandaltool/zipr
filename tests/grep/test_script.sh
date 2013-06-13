@@ -40,10 +40,8 @@ run_basic_test 120 -E "^[a-z,0-9,F-Z]+" $DATA_DIR/data1.txt
 run_basic_test 120 -w "^[a-zA-Z,0-9].*\[\].*" $DATA_DIR/data1.txt 
 run_basic_test 120 "\\body" $DATA_DIR/data1.txt 
 run_basic_test 120 -U -w -i -c --context=3 "lazy dog" $DATA_DIR/data1.txt 
-run_basic_test 120 -f $DATA_DIR/pattern $DATA_DIR/data1.txt 
-run_basic_test 120 -f $DATA_DIR/pattern $DATA_DIR/data2.txt 
-run_basic_test 120 -i -n -f $DATA_DIR/pattern2 $DATA_DIR/data1.txt 
-run_basic_test 120 -i -n -f $DATA_DIR/pattern2 $DATA_DIR/data2.txt 
+run_basic_test 120 -f $DATA_DIR/pattern $DATA_DIR/data1.txt $DATA_DIR/data2.txt
+run_basic_test 120 -i -n -f $DATA_DIR/pattern2 $DATA_DIR/data1.txt $DATA_DIR/data2.txt
 run_basic_test 120 -s --color -ivn "^the.*" $DATA_DIR/data1.txt 
 run_basic_test 120 "[:alnum:]" $DATA_DIR/data1.txt 
 run_basic_test 120 "[:alpha:]" $DATA_DIR/data1.txt 
@@ -90,7 +88,6 @@ echo "radar" | run_test_prog_only 120 -e '\(.\)\(.\).\2\1'
 echo "radar" | run_bench_prog_only 120 -e '\(.\)\(.\).\2\1'
 compare_std_results
 
-
 # backref are local should be error
 echo "123" | run_test_prog_only 120 -e 'a\(.\)' -e 'b\1'
 echo "123" | run_bench_prog_only 120 -e 'a\(.\)' -e 'b\1'
@@ -125,37 +122,12 @@ echo "abcd" | run_test_prog_only 120 -E -e 'zbc'
 echo "abcd" | run_bench_prog_only 120 -E -e 'zbc'
 compare_std_results
 
-
-# the filename MMMMMMMM.MMM should not exist hopefully
-if test -r MMMMMMMM.MMM; then
-    echo "Please remove MMMMMMMM.MMM to run check"
-else
-        # should return 2 file not found
-#	run_basic_test 120 -E -e 'abc' MMMMMMMM.MMM 
- 
-        # should return 2 file not found
-#    run_basic_test 120 -E -s -e 'abc' MMMMMMMM.MMM
- 
-#	echo "ppp"
-        # should return 2 file not found
-#    echo "abcd" | run_test_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
-#    echo "abcd" | run_bench_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
-#    compare_std_results
-
-        # should return 0 found a match
-    echo "abcd" | run_test_prog_only 120 -E -q -s 'abc' MMMMMMMM.MMM 
-	echo "abcd" | run_bench_prog_only 120 -E -q -s 'abc' MMMMMMMM.MMM 
-	compare_std_results
-
-     # should still return 0 found a match
-#    echo "abcd" | run_test_prog_only 120 -E -q 'abc' MMMMMMMM.MMM -
-#	echo "abcd" | run_bench_prog_only 120 -E -q 'abc' MMMMMMMM.MMM -
-#	compare_std_results
-
-fi
+# should return 0 found a match
+echo "abcd" | run_test_prog_only 120 -E -q -s 'abc' MMMMMMMM.MMM 
+echo "abcd" | run_bench_prog_only 120 -E -q -s 'abc' MMMMMMMM.MMM 
+compare_std_results
 
 run_basic_test 120 -E '(T|t)he.*(q|x)uick.*' $DATA_DIR/data1.txt 
-
 
 # hit hard with the `Bond' tests
 # For now, remove the `?' in the last parentheses, so that new glibc can do it.  --Stepan
