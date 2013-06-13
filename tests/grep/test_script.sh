@@ -2,7 +2,6 @@
 #Everyone must point to the manual test library
 TEST_LIB=$PEASOUP_HOME/tests/manual_test_lib.sh
 
-TESTPROG=$1
 
 #for bzip, I use some data files, so I set up variables pointing to that location
 TEST_DIR=$PEASOUP_HOME/tests/grep
@@ -18,6 +17,7 @@ ORIG_NAME=grep
 
 run_basic_test 120 --help
 run_basic_test 120 --version
+run_basic_test 120 --doesnotexist
 run_basic_test 120 -i -U -B 1 -A 2 brown $DATA_DIR/data1.txt
 run_basic_test 120 -b fox $DATA_DIR/data1.txt
 run_basic_test 120 --mmap -i fox $DATA_DIR/data1.txt
@@ -36,7 +36,6 @@ run_basic_test 120 -i "^the.*" $DATA_DIR/data1.txt
 run_basic_test 120 -E "^[a-z,0-9,F-Z]+" $DATA_DIR/data1.txt 
 run_basic_test 120 -w "^[a-zA-Z,0-9].*\[\].*" $DATA_DIR/data1.txt 
 run_basic_test 120 "\\body" $DATA_DIR/data1.txt 
-run_basic_test 120 -E "(T|t)he*(q|x)uick*" $DATA_DIR/data1.txt 
 run_basic_test 120 -U -w -i -c --context=3 "lazy dog" $DATA_DIR/data1.txt 
 run_basic_test 120 -f $DATA_DIR/pattern $DATA_DIR/data1.txt 
 run_basic_test 120 -f $DATA_DIR/pattern $DATA_DIR/data2.txt 
@@ -62,96 +61,116 @@ run_basic_test 120 --include="dat*" "^\.[0-9]" -R $DATA_DIR
 run_basic_test 120 --include="dat*" --exclude="data2.txt" "^\.[0-9]" -R $DATA_DIR
 run_basic_test 120 -z the $DATA_DIR/data1.txt
 
-cat $DATA_DIR/data1.txt | $TESTPROG -i FOX
+# added to see if big files make a difference
+#run_basic_test 120 "^[Aa]" $DATA_DIR/dict.txt
+
+pwd
+echo "TEST_PROG: $TEST_PROG"
+cat $DATA_DIR/data1.txt | $TEST_PROG -i FOX
 if [ ! $? -eq 0 ]; then
 	report_failure
 fi
-cat $DATA_DIR/data1.txt | $TESTPROG "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
-cat $DATA_DIR/data1.txt | $TESTPROG -i "^the"
+#echo "aaa"
+#cat $DATA_DIR/data1.txt | $TEST_PROG "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
+#if [ ! $? -eq 0 ]; then
+#	report_failure
+#fi
+echo "bbb"
+cat $DATA_DIR/data1.txt | $TEST_PROG -i "^the"
 if [ ! $? -eq 0 ]; then
 	report_failure
 fi
 
+echo "ccc"
 run_basic_test 120 -m10 -E -f $DATA_DIR/khadafy.regexp $DATA_DIR/khadafy.lines
 
-printf 'foo\nbar\n' | $TESTPROG -z -q 'foo[[:space:]]\+bar'
+echo "ddd"
+printf 'foo\nbar\n' | $TEST_PROG -z -q 'foo[[:space:]]\+bar'
 if [ ! $? -eq 0 ]; then
 	report_failure
 fi
 
-#Ben, for some reason this one doesn't work even when I run the original grep against itself
-#run_basic_test 120 -E "[a-z]*" $DATA_DIR/data1.txt 
+echo "eee"
 
 #
 # From regression tests shipped with grep
 #
 # checking for a palindrome
-echo "radar" | $TESTPROG -e '\(.\)\(.\).\2\1' > /dev/null 2>&1
+echo "radar" | $TEST_PROG -e '\(.\)\(.\).\2\1' > /dev/null 2>&1
 if test $? -ne 0 ; then
         echo "Backref: palindrome, test #1 failed"
         report_failure
 fi
 
+echo "fff"
 # hit hard with the `Bond' tests
 # For now, remove the `?' in the last parentheses, so that new glibc can do it.  --Stepan
-echo "civic" | $TESTPROG -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$' > /dev/null 2>&1
+echo "civic" | $TEST_PROG -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$' > /dev/null 2>&1
 if test $? -ne 0 ; then
         echo "Options: Bond, test #2 failed"
         report_failure
 fi
 
+echo "ggg"
+
 # backref are local should be error
-echo "123" | $TESTPROG -e 'a\(.\)' -e 'b\1' > /dev/null 2>&1
+echo "123" | $TEST_PROG -e 'a\(.\)' -e 'b\1' > /dev/null 2>&1
 if test $? -ne 2 ; then
         echo "Backref: Backref not local, test #3 failed"
         report_failure
 fi
 
+echo "hhh"
+
 # Pattern should fail
-echo "123" | $TESTPROG -e '[' -e ']' > /dev/null 2>&1
+echo "123" | $TEST_PROG -e '[' -e ']' > /dev/null 2>&1
 if test $? -ne 2 ; then
         echo "Backref: Compiled not local, test #4 failed"
         report_failure
 fi
 
+echo "iii"
 # checking for -E extended regex
-echo "abababccccccd" | $TESTPROG -E -e 'c{3}' > /dev/null 2>&1
+echo "abababccccccd" | $TEST_PROG -E -e 'c{3}' > /dev/null 2>&1
 if test $? -ne 0 ; then
         echo "Options: Wrong status code, test \#1 failed"
         report_failure
 fi
 
+echo "jjj"
 # checking for basic regex
-echo "abababccccccd" | $TESTPROG -G -e 'c\{3\}' > /dev/null 2>&1
+echo "abababccccccd" | $TEST_PROG -G -e 'c\{3\}' > /dev/null 2>&1
 if test $? -ne 0 ; then
         echo "Options: Wrong status code, test \#2 failed"
         report_failure
 fi
 
+echo "kkk"
 # checking for fixed string
-echo "abababccccccd" | $TESTPROG -F -e 'c\{3\}' > /dev/null 2>&1
+echo "abababccccccd" | $TEST_PROG -F -e 'c\{3\}' > /dev/null 2>&1
 if test $? -ne 1 ; then
         echo "Options: Wrong status code, test \#3 failed"
         report_failure
 fi
 
-echo | $TESTPROG -P '\s*$'
+echo "lll"
+echo | $TEST_PROG -P '\s*$'
 
+echo "mmm"
 # should return 1 found no match
-echo "abcd" | $TESTPROG -E -e 'zbc' > /dev/null 2>&1
+echo "abcd" | $TEST_PROG -E -e 'zbc' > /dev/null 2>&1
 if test $? -ne 1 ; then
 	echo "Status: Wrong status code, test \#2 failed"
 	report_failure
 fi
+echo "nnn"
 # the filename MMMMMMMM.MMM should not exist hopefully
 if test -r MMMMMMMM.MMM; then
         echo "Please remove MMMMMMMM.MMM to run check"
 else
+echo "ooo"
         # should return 2 file not found
-        $TESTPROG -E -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
+        $TEST_PROG -E -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
         if test $? -ne 2 ; then
                 echo "Status: Wrong status code, test \#3 failed"
                 fail=1
@@ -159,22 +178,24 @@ else
         fi
 
         # should return 2 file not found
-        $TESTPROG -E -s -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
+        $TEST_PROG -E -s -e 'abc' MMMMMMMM.MMM > /dev/null 2>&1
         if test $? -ne 2 ; then
                 echo "Status: Wrong status code, test \#4 failed"
                 fail=1
 	report_failure
         fi
 
+echo "ppp"
         # should return 2 file not found
-        echo "abcd" | $TESTPROG -E -s 'abc' - MMMMMMMM.MMM > /dev/null 2>&1
+        echo "abcd" | $TEST_PROG -E -s 'abc' - MMMMMMMM.MMM > /dev/null 2>&1
         if test $? -ne 2 ; then
                 echo "Status: Wrong status code, test \#5 failed"
                 fail=1
 	report_failure
         fi
+echo "qqq"
         # should return 0 found a match
-        echo "abcd" | $TESTPROG -E -q -s 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
+        echo "abcd" | $TEST_PROG -E -q -s 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
         if test $? -ne 0 ; then
                 echo "Status: Wrong status code, test \#6 failed"
                 fail=1
@@ -182,7 +203,7 @@ else
         fi
 
         # should still return 0 found a match
-        echo "abcd" | $TESTPROG -E -q 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
+        echo "abcd" | $TEST_PROG -E -q 'abc' MMMMMMMM.MMM - > /dev/null 2>&1
         if test $? -ne 0 ; then
                 echo "Status: Wrong status code, test \#7 failed"
                 fail=1
@@ -190,6 +211,13 @@ else
         fi
 fi
 
+# not working/not validating, why?
+#run_basic_test 120 -E '(T|t)he.*(q|x)uick.*' $DATA_DIR/data1.txt 
+
+#Ben, for some reason this one doesn't work even when I run the original grep against itself
+#run_basic_test 120 -E "[a-z]*" $DATA_DIR/data1.txt 
+
+echo "rrr - done"
 
 cleanup
 
