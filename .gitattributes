@@ -6094,3 +6094,6 @@ tools/test_controller.sh -text
 tools/update_env_var.sh -text
 tools/validate.sh -text
 web_server/lighttpd_conf_template -text
+web_server/www/hello_world.txt -text
+web_server/www/index.html -text
+web_server/www/index.lighttpd.html -text
