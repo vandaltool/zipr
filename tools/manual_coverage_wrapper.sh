@@ -12,18 +12,22 @@ MANUAL_EXE_ADDRESS_OUTPUT_FILE=$3
 TIMEOUT_VALUE=600
 
 PIN_BENCH=`pwd`/pin_bench
-COVERAGE_RESULTS_FILE=$PEASOUP_HOME/coverage_results/itrace.out
+COVERAGE_RESULTS_DIR=`pwd`/manual_coverage_results/
+ACCUMULATED_COVERAGE_FILE=$COVERAGE_RESULTS_DIR/manual_coverage_results.out
 COVER_SCRIPT=$SECURITY_TRANSFORMS_HOME/tools/cover/cover
 
 echo "manual coverage script"
 
-#clean exe addresses
-rm -f $COVERAGE_RESULTS_FILE
+#make the coverage results directory, it should exist before hand
+#if it does, this could skew the results of this run, so first delete
+#the directory, as precaution, then make the dir. 
+rm -rf $COVERAGE_RESULTS_DIR
+mkdir $COVERAGE_RESULTS_DIR
 
 #Assuming exe addresses are accumulated by pin in itrace.out located in
 #PIN_RESULTS
 echo "INSTALL PIN BINARY"
-echo "COVERAGE_RESULTS_FILE=$COVERAGE_RESULTS_FILE setarch i386 -RL $PIN_HOME/pin -injection child -t $PIN_HOME/source/tools/ManualExamples/obj-ia32/itraceunique.so -- $BENCH \$@" > $PIN_BENCH
+echo "COVERAGE_RESULTS_DIR=$COVERAGE_RESULTS_DIR setarch i386 -RL $PIN_HOME/pin -injection child -t $PIN_HOME/source/tools/ManualExamples/obj-ia32/itraceunique.so -- $BENCH \$@" > $PIN_BENCH
 
 chmod +x $PIN_BENCH
 
@@ -39,11 +43,20 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-# sanity filter, keep only well formed addresses
-cat $COVERAGE_RESULTS_FILE | sed 's/\(.*0x.*\)/\1/' >tmp
-mv tmp $COVERAGE_RESULTS_FILE
+itrace_files=$COVERAGE_RESULTS_DIR/itrace.*
 
-cp $COVERAGE_RESULTS_FILE $MANUAL_EXE_ADDRESS_OUTPUT_FILE
+touch $ACCUMULATED_COVERAGE_FILE
+
+for file in $itrace_files
+do
+	cat $file >>$ACCUMULATED_COVERAGE_FILE
+done
+
+# sanity filter, keep only well formed addresses
+cat $ACCUMULATED_COVERAGE_FILE | sed 's/\(.*0x.*\)/\1/' >tmp
+mv tmp $ACCUMULATED_COVERAGE_FILE
+
+cp $ACCUMULATED_COVERAGE_FILE $MANUAL_EXE_ADDRESS_OUTPUT_FILE
 
 exit 0
 

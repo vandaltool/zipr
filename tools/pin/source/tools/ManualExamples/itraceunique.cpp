@@ -39,6 +39,7 @@
 #include <cstdlib>
 #include <libgen.h>
 #include <cstring>
+#include <sys/time.h>
 
 #include "pin.H"
 
@@ -47,12 +48,15 @@ FILE * trace;
 using namespace std;
 
 set<string> instructions;
+string coverage_dir;
+
 //set<VOID*>instructions;
 
 // This function is called before every instruction is executed
 // and prints the IP
 VOID printip(void  *ip) 
 { 
+//	fprintf(trace, "%p\n", ip); 
 	PIN_LockClient();
 	IMG img = IMG_FindByAddress((ADDRINT)ip);
 	PIN_UnlockClient();
@@ -74,7 +78,7 @@ VOID printip(void  *ip)
     	return;
 
 //	fprintf(trace, "%s+0x%x\n", IMG_Name(img).c_str(),(ADDRINT)ip-IMG_LowAddress(img)); 
-	fprintf(trace, "%s\n", instruction_key.c_str()); 
+//	fprintf(trace, "%s\n", instruction_key.c_str()); 
 	instructions.insert(instruction_key);
 }
 
@@ -112,6 +116,35 @@ VOID Instruction(INS ins, VOID *v)
 // This function is called when the application exits
 VOID Fini(INT32 code, VOID *v)
 {
+	//print out trace results
+	timeval curtime;
+	gettimeofday(&curtime,NULL);
+	stringstream ss;
+	//create a unique trace file name use both the pid and curtime 
+	//in case pid is recycled. curtime might be sufficient, but I 
+	//I am really worried concurrent writes to one file. 
+	ss<<"/itrace."<<getpid()<<"."<<curtime.tv_sec<<"."<<curtime.tv_usec<<".out";
+
+	string output_file=coverage_dir+ss.str();
+
+	//if all else fails, and the name was not unique, append to 
+	//the file tha twas found. 
+	trace = fopen(output_file.c_str(), "a");
+
+	if(trace == NULL)
+	{
+		PIN_ERROR("PIN TOOL ITRACEUNIQUE ERROR: Could not open file " + output_file+" to print out itrace.");
+		exit(-1);
+	}
+
+	for(set<string>::const_iterator it=instructions.begin();
+		it!=instructions.end();
+		++it
+		)
+	{
+		fprintf(trace, "%s\n", it->c_str()); 
+	}
+
     fclose(trace);
 }
 
@@ -136,14 +169,12 @@ int main(int argc, char * argv[])
 	PIN_InitSymbols();
     if (PIN_Init(argc, argv)) return Usage();
 
-	string coverage_file = string(getenv("COVERAGE_RESULTS_FILE"));
-	if(coverage_file.empty())
+	coverage_dir = string(getenv("COVERAGE_RESULTS_DIR"));
+	if(coverage_dir.empty())
 	{
-		PIN_ERROR("Could not find COVERAGE_RESULTS_FILE environment variable.");
+		PIN_ERROR("PIN TOOL ITRACEUNIQUE ERROR: Could not find COVERAGE_RESULTS_DIR environment variable.");
 		return -1;
 	}
-
-    trace = fopen(coverage_file.c_str(), "a");
 
     // Register Instruction to be called to instrument instructions
     INS_AddInstrumentFunction(Instruction, 0);
