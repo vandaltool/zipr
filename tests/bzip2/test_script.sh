@@ -3,7 +3,7 @@
 TEST_LIB=$PEASOUP_HOME/tests/manual_test_lib.sh
 
 #for bzip, I use some data files, so I set up variables pointing to that location
-TEST_DIR=$PEASOUP_HOME/tests/bzip
+TEST_DIR=$PEASOUP_HOME/tests/bzip2
 DATA_DIR=$TEST_DIR/data
 
 #for bzip, I create some additional files I will need to have cleaned up when it is appropriate to do so. Cleanup is handled automatically by the test lib when success or failure is reported, when run_basic_test is called or if cleanup is called manually. 
