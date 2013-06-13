@@ -96,14 +96,14 @@ run_bench_prog_only()
 
 	cmd_args=$@
 
-	if [[ "$BENCH" == "" ]]; then
-		echo "TEST SCRIPT ERROR: BENCH does not exist, reporting failure"
-		report_failure
-	fi
-
 	#ignore the results, and continue. 
 	if [[ ! -z "$IGNORE_RESULTS" ]]; then
 		return
+	fi
+
+	if [[ "$BENCH" == "" ]]; then
+		echo "TEST SCRIPT ERROR: BENCH does not exist, reporting failure"
+		report_failure
 	fi
 
 	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
