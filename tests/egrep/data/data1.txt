@@ -1,0 +1,17 @@
+<html>
+<body>
+Hello
+The quick brown fox jumps over the lazy dog
+My name is Bond, James Bond
+</body>
+</html>
+.999
+128.27.42.23
+22324143
+341324 3124
+13241234148888
+cool
+col
+cccccccccccc
+91-1234567890
+hello [] 
