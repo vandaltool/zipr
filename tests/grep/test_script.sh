@@ -135,6 +135,15 @@ echo "civic" | run_test_prog_only 120 -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.
 echo "civic" | run_bench_prog_only 120 -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$'
 compare_std_results
 
+# use the - option
+run_test_prog_only 120 --context=5 'quick' - < $DATA_DIR/data1.txt
+run_bench_prog_only 120 --context=5 'quick' - < $DATA_DIR/data1.txt
+compare_std_results
+
+run_test_prog_only 120 -v --context=5 'quick' - < $DATA_DIR/data1.txt
+run_bench_prog_only 120 -v --context=5 'quick' - < $DATA_DIR/data1.txt
+compare_std_results
+
 #
 # BUG -- these don't work
 #
