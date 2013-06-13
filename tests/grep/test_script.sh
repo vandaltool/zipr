@@ -3,7 +3,7 @@
 TEST_LIB=$PEASOUP_HOME/tests/manual_test_lib.sh
 
 
-#for bzip, I use some data files, so I set up variables pointing to that location
+#for grep, I use some data files, so I set up variables pointing to that location
 TEST_DIR=$PEASOUP_HOME/tests/grep
 DATA_DIR=$TEST_DIR/data
 
@@ -14,6 +14,9 @@ ORIG_NAME=grep
 . $TEST_LIB
 
 #run_basic_test will run both the modified program and original program using the same arguments. The first argument ot run_basic_test is the timeout value (in seconds) followed by the arguments for the programs. run_basic_test also does comparisons of stdout, stderr, and the exit status, and only does comparisons and uses timeout when the -i flag is not set. See the library for more details. 
+
+pwd
+echo "TEST_PROG: $TEST_PROG"
 
 run_basic_test 120 --help
 run_basic_test 120 --version
@@ -61,11 +64,6 @@ run_basic_test 120 --include="dat*" "^\.[0-9]" -R $DATA_DIR
 run_basic_test 120 --include="dat*" --exclude="data2.txt" "^\.[0-9]" -R $DATA_DIR
 run_basic_test 120 -z the $DATA_DIR/data1.txt
 
-# added to see if big files make a difference
-#run_basic_test 120 "^[Aa]" $DATA_DIR/dict.txt
-
-pwd
-echo "TEST_PROG: $TEST_PROG"
 cat $DATA_DIR/data1.txt | run_test_prog_only 120  -i FOX
 cat $DATA_DIR/data1.txt | run_bench_prog_only 120  -i FOX
 compare_std_results
@@ -73,6 +71,7 @@ compare_std_results
 #cat $DATA_DIR/data1.txt | run_test_prog_only 120  "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
 #cat $DATA_DIR/data1.txt | run_bench_prog_only 120  "[[:digit:]]\{2\}[ -]\?[[:digit:]]\{10\}" 
 #compare_std_results
+
 cat $DATA_DIR/data1.txt | run_test_prog_only 120 -i "^the"
 cat $DATA_DIR/data1.txt | run_bench_prog_only 120 -i "^the"
 compare_std_results
@@ -91,11 +90,6 @@ echo "radar" | run_test_prog_only 120 -e '\(.\)\(.\).\2\1'
 echo "radar" | run_bench_prog_only 120 -e '\(.\)\(.\).\2\1'
 compare_std_results
 
-# hit hard with the `Bond' tests
-# For now, remove the `?' in the last parentheses, so that new glibc can do it.  --Stepan
-echo "civic" | run_test_prog_only 120 -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$'
-echo "civic" | run_bench_prog_only 120 -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$'
-compare_std_results
 
 # backref are local should be error
 echo "123" | run_test_prog_only 120 -e 'a\(.\)' -e 'b\1'
@@ -137,32 +131,43 @@ if test -r MMMMMMMM.MMM; then
     echo "Please remove MMMMMMMM.MMM to run check"
 else
         # should return 2 file not found
-	run_basic_test 120 -E -e 'abc' MMMMMMMM.MMM 
+#	run_basic_test 120 -E -e 'abc' MMMMMMMM.MMM 
  
         # should return 2 file not found
-    run_basic_test 120 -E -s -e 'abc' MMMMMMMM.MMM
+#    run_basic_test 120 -E -s -e 'abc' MMMMMMMM.MMM
  
-	echo "ppp"
+#	echo "ppp"
         # should return 2 file not found
-    echo "abcd" | run_test_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
-    echo "abcd" | run_bench_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
-    compare_std_results
+#    echo "abcd" | run_test_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
+#    echo "abcd" | run_bench_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
+#    compare_std_results
 
         # should return 0 found a match
     echo "abcd" | run_test_prog_only 120 -E -q -s 'abc' MMMMMMMM.MMM 
 	echo "abcd" | run_bench_prog_only 120 -E -q -s 'abc' MMMMMMMM.MMM 
 	compare_std_results
 
-
      # should still return 0 found a match
-    echo "abcd" | run_test_prog_only 120 -E -q 'abc' MMMMMMMM.MMM -
-	echo "abcd" | run_bench_prog_only 120 -E -q 'abc' MMMMMMMM.MMM -
-	compare_std_results
+#    echo "abcd" | run_test_prog_only 120 -E -q 'abc' MMMMMMMM.MMM -
+#	echo "abcd" | run_bench_prog_only 120 -E -q 'abc' MMMMMMMM.MMM -
+#	compare_std_results
 
 fi
 
 run_basic_test 120 -E '(T|t)he.*(q|x)uick.*' $DATA_DIR/data1.txt 
-#run_basic_test 120 -E "[a-z]*" $DATA_DIR/data1.txt 
+
+
+# hit hard with the `Bond' tests
+# For now, remove the `?' in the last parentheses, so that new glibc can do it.  --Stepan
+echo "civic" | run_test_prog_only 120 -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$'
+echo "civic" | run_bench_prog_only 120 -E -e '^(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.?)(.).?\9\8\7\6\5\4\3\2\1$'
+compare_std_results
+
+#
+# BUG -- these don't work
+#
+
+#run_basic_test 120 -E '[a-z]*' $DATA_DIR/data1.txt 
 
 cleanup
 
