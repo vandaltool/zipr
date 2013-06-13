@@ -6093,3 +6093,4 @@ tools/signatures/sqlite.sigs -text
 tools/test_controller.sh -text
 tools/update_env_var.sh -text
 tools/validate.sh -text
+web_server/lighttpd_conf_template -text
