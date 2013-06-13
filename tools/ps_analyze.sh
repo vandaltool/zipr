@@ -651,11 +651,9 @@ program=$(cat logs/determine_program.log |grep "Program is a version of "|sed -e
 if [[ "$program" != "" ]]; then
 	echo "Detected program is a version of '$program'"
 
-	$PEASOUP_HOME/tools/get_manual_test_script.sh $program
+	manual_test_script=$PEASOUP_HOME/tests/$program/test_script.sh
 
-	if [[ $? -eq 0 ]]; then
-		manual_test_script=`cat get_manual_test_script.log`
-
+	if [[ -f "$manual_test_script" ]];then
 		#check if the selected script succeeds
 		#I'm currently capping the validation run to 6 minutes
 		#to avoid the case where every test times out, but doesn't
@@ -666,6 +664,8 @@ if [[ "$program" != "" ]]; then
 			echo "Manual Script Failure: test script fails to validate original program, ignoring selected script."
 			manual_test_script=""
 		fi
+	else
+		manual_test_script=""
 	fi
 else
 	echo "Program not detected in signature database."
