@@ -146,7 +146,7 @@ else
         # should return 2 file not found
     echo "abcd" | run_test_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
     echo "abcd" | run_bench_prog_only 120 -E -s 'abc' - MMMMMMMM.MMM 
-    comapre_std_results
+    compare_std_results
 
         # should return 0 found a match
     echo "abcd" | run_test_prog_only 120 -E -q -s 'abc' MMMMMMMM.MMM 
