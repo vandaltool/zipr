@@ -665,6 +665,7 @@ if [[ "$program" != "" ]]; then
 			manual_test_script=""
 		fi
 	else
+		echo "Manual Test Script: $manual_test_script Not Found."
 		manual_test_script=""
 	fi
 else
