@@ -66,7 +66,7 @@ if [ ! $? -eq 0 ]; then
 	report_failure
 fi
 
-run_test_prog_only 45 -timeout 30 http://127.0.0.1:1235/index.html 
+run_test_prog_only 45 -timeout 30 -get http://127.0.0.1:1235/index.html 
 grep -i "peasoup" test_out
 if [ ! $? -eq 0 ]; then
 	report_failure
