@@ -6099,3 +6099,4 @@ web_server/lighttpd_conf_template -text
 web_server/www/hello_world.txt -text
 web_server/www/index.html -text
 web_server/www/index.lighttpd.html -text
+web_server/www/no_extension -text
