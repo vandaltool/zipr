@@ -18,7 +18,7 @@ LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system lib
 
 if [ -z $TIMEOUT ] ;
 then
-TIMEOUT=1800         # 30 mns
+TIMEOUT=3600         # 30 mns
 fi
 
 TOP_DIR=`pwd`

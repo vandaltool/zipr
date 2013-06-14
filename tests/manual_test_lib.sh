@@ -91,7 +91,7 @@ run_test_prog_only()
 	TIMEOUT=$1
 	shift
 
-	cmd_args=$@
+	cmd_args="$@"
 
 	if [[ "$TEST_PROG" == "" ]]; then
 		echo "TEST SCRIPT ERROR: TEST_PROG does not exist, reporting failure"
@@ -99,11 +99,11 @@ run_test_prog_only()
 	fi
 
 	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
-		echo "$TEST_PROG $cmd_args >test_out 2>test_error"
-		$TEST_PROG $cmd_args >test_out 2>test_error
+		echo "$TEST_PROG $@ >test_out 2>test_error"
+		$TEST_PROG "$@" >test_out 2>test_error
 	else
-		echo "timeout $TIMEOUT $TEST_PROG $cmd_args >test_out 2>test_error"
-		timeout $TIMEOUT $TEST_PROG $cmd_args >test_out 2>test_error
+		echo "timeout $TIMEOUT $TEST_PROG $@ >test_out 2>test_error"
+		timeout $TIMEOUT $TEST_PROG "$@" >test_out 2>test_error
 	fi
 
 	status=$?
@@ -120,7 +120,7 @@ run_bench_prog_only()
 	TIMEOUT=$1
 	shift
 
-	cmd_args=$@
+	cmd_args="$@"
 
 	#ignore the results, and continue. 
 	if [[ ! -z "$IGNORE_RESULTS" ]]; then
@@ -133,11 +133,11 @@ run_bench_prog_only()
 	fi
 
 	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
-		echo "eval $BENCH $cmd_args >orig_out 2>orig_error"
-		$BENCH $cmd_args >orig_out 2>orig_error
+		echo "eval $BENCH $@ >orig_out 2>orig_error"
+		$BENCH "$@" >orig_out 2>orig_error
 	else
-		echo "timeout $TIMEOUT $BENCH $cmd_args >orig_out 2>orig_error"
-		timeout $TIMEOUT $BENCH $cmd_args >orig_out 2>orig_error
+		echo "timeout $TIMEOUT $BENCH $@ >orig_out 2>orig_error"
+		timeout $TIMEOUT $BENCH "$@" >orig_out 2>orig_error
 	fi
 
 	status=$?
@@ -225,14 +225,14 @@ run_basic_test()
 {
 	cleanup
 
-	run_test_prog_only $@
+	run_test_prog_only "$@"
 
 	#ignore the results, and continue. 
 	if [[ ! -z "$IGNORE_RESULTS" ]]; then
 		return
 	fi
 
-	run_bench_prog_only $@
+	run_bench_prog_only "$@"
 
 	compare_std_results
 	cleanup
