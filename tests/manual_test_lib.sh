@@ -42,6 +42,7 @@ usage()
 
 cleanup()
 {
+#	echo "empty"
 	rm -f test_out test_error test_status orig_out orig_error orig_status $CLEANUP_FILES
 }
 
@@ -120,6 +121,39 @@ run_bench_prog_only()
 	
 	echo $status >orig_status
 	return $status
+}
+
+
+#diff $1 and $2, do not use the name filtering, and report
+#failure if not matching
+compare_files_no_filtering()
+{
+		#ignore the results, and continue. 
+	if [[ ! -z "$IGNORE_RESULTS" ]]; then
+		return
+	fi
+
+	diff $1 $2
+	if [ ! "$?" -eq 0 ]; then
+		echo "File Comparison Failure"
+		report_failure
+	fi 
+}
+
+#compares orig_status and test_status files
+compare_exit_status()
+{
+	#ignore the results, and continue. 
+	if [[ ! -z "$IGNORE_RESULTS" ]]; then
+		return
+	fi
+
+	diff orig_status test_status
+
+	if [ ! "$?" -eq 0 ]; then
+		echo "Exit Status Failure"
+		report_failure
+	fi 
 }
 
 #assumes that orig_status, test_status, orig_error, test_error, orig_out, and test_out
