@@ -109,7 +109,7 @@ run_test_prog_only()
 	status=$?
 	echo $status >test_status
 
-	log_name=`echo "$TEST_PROG $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
+	log_name=`echo "TEST_$TEST_PROG $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
 	log_results $log_name test_out test_error test_status 
 
 	return $status
@@ -144,7 +144,7 @@ run_bench_prog_only()
 	
 	echo $status >orig_status
 
-	log_name=`echo "$BENCH $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
+	log_name=`echo "BENCH_$BENCH $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
 	log_results $log_name orig_out orig_error orig_status 
 
 	return $status
