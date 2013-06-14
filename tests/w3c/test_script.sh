@@ -38,6 +38,13 @@ if [ ! $? -eq 0 ]; then
 	report_failure
 fi
 
+# -source
+run_test_prog_only 120 -source -single -n http://127.0.0.1:1235/index.html 
+grep -i "peasoup" test_out
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+
 # exercise all the verbose flags
 run_test_prog_only 120 -n -v abcgpstu http://127.0.0.1:1235 
 grep -i "HTanchor" test_error
@@ -51,9 +58,16 @@ if [ ! $? -eq 0 ]; then
 	report_failure
 fi
 
+# just run this one to exercise code path
+run_test_prog_only 30 -n -single -put $DATA_DIR/data.txt -dest http://127.0.0.1:1235/foobar/foobar2
+
 #cat $DATA_DIR/data1.txt | run_test_prog_only 120  -i FOX
 #cat $DATA_DIR/data1.txt | run_bench_prog_only 120  -i FOX
 #compare_std_results
+
+run_basic_test 120 -to www/source -single -n http://127.0.0.1:1235/index.html
+run_basic_test 120 -to www/mime -single -n http://127.0.0.1:1235/index.html 
+run_basic_test 120 -cl http://127.0.0.1:1235/index.html  | grep -i content
 
 cleanup
 
