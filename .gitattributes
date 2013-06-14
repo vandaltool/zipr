@@ -143,6 +143,7 @@ tests/grep/data/pattern2 -text
 tests/grep/test_script.sh -text
 tests/manual_test_lib.sh -text
 tests/touch/test_script.sh -text
+tests/w3c/data/bogus.conf -text
 tests/w3c/data/data.txt -text
 tests/w3c/test_script.sh -text
 tests/wget/test_script.sh -text

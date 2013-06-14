@@ -10,7 +10,7 @@ DATA_DIR=$TEST_DIR/data
 #used for filtering program names from output.
 ORIG_NAME=w3c
 
-CLEANUP_FILES="w3c.out w3c.1.out w3c.2.out"
+CLEANUP_FILES="w3c.out w3c.1.out w3c.2.out w3c.log"
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
@@ -22,52 +22,70 @@ echo "TEST_PROG: $TEST_PROG"
 
 # comparing stdout directly is tricky a w3c can print out %completion for the output directly on stdout or stderr (this can easily confuse a straight comparison of stdout/stderr between the test and benchmark programs)
 # to avoid this problem we specify -n (non-interactive mode)
-run_basic_test 120 -n -help 
-run_basic_test 120 -single -n -version
-run_basic_test 120 -n -z 
+run_basic_test 45 -n -help 
+run_basic_test 45 -single -n -version
+run_basic_test 45 -n -z 
 
-run_basic_test 120 -single -n http://127.0.0.1:1235/index.html
-run_basic_test 120 -single -n http://127.0.0.1:7333
+run_basic_test 45 -maxforwards 2 -single -n http://127.0.0.1:1235/index.html
+run_basic_test 45 -single -n http://127.0.0.1:7333
 
-run_basic_test 120 -head -single -n http://127.0.0.1:7333
+run_basic_test 45 -head -single -n http://127.0.0.1:7333
 
-run_test_prog_only 120 -o w3c.1.out -single -n http://127.0.0.1:1235/index.html
-run_bench_prog_only 120 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
+run_test_prog_only 45 -o w3c.1.out -single -n http://127.0.0.1:1235/index.html
+run_bench_prog_only 45 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
 diff w3c.1.out w3c.2.out
 if [ ! $? -eq 0 ]; then
 	report_failure
 fi
 
 # -source
-run_test_prog_only 120 -source -single -n http://127.0.0.1:1235/index.html 
+run_test_prog_only 45 -timeout 30 -source -single -n http://127.0.0.1:1235/index.html 
 grep -i "peasoup" test_out
 if [ ! $? -eq 0 ]; then
 	report_failure
 fi
 
 # exercise all the verbose flags
-run_test_prog_only 120 -n -v abcgpstu http://127.0.0.1:1235 
+run_test_prog_only 45 -n -vabcgpstu http://127.0.0.1:1235 
 grep -i "HTanchor" test_error
 if [ ! $? -eq 0 ]; then
 	report_failure
 fi
 
+run_test_prog_only 45 -n -vbpstu http://127.0.0.1:1235 
+grep -i "channel" test_error
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+
 # -options
-run_basic_test 120 -n -single -options http://127.0.0.1:1235 
+run_basic_test 45 -n -single -options http://127.0.0.1:1235
 if [ ! $? -eq 0 ]; then
 	report_failure
 fi
 
 # just run this one to exercise code path
-run_test_prog_only 30 -n -single -put $DATA_DIR/data.txt -dest http://127.0.0.1:1235/foobar/foobar2
+run_test_prog_only 45 -n -single -put $DATA_DIR/data.txt -dest http://127.0.0.1:1235/testing/
+run_test_prog_only 45 -n -auth user:password@realm http://127.0.0.1:1235/peasoup.auth 
+run_test_prog_only 45 -n -delete http://127.0.0.1:1235/peasoup.auth/doesnotexist.html 
+run_test_prog_only 45 -post http://127.0.0.1:1235/testing/index.html -form "RECORD=ID" "COL1=a" "COL2=b" "COL3=c" "COL4=d"
+run_test_prog_only 45 -r $DATA_DIR/bogus.conf http://127.0.0.1:1235/testing/index.html 
 
-#cat $DATA_DIR/data1.txt | run_test_prog_only 120  -i FOX
-#cat $DATA_DIR/data1.txt | run_bench_prog_only 120  -i FOX
+
+#cat $DATA_DIR/data1.txt | run_test_prog_only 45  -i FOX
+#cat $DATA_DIR/data1.txt | run_bench_prog_only 45  -i FOX
 #compare_std_results
 
-run_basic_test 120 -to www/source -single -n http://127.0.0.1:1235/index.html
-run_basic_test 120 -to www/mime -single -n http://127.0.0.1:1235/index.html 
-run_basic_test 120 -cl http://127.0.0.1:1235/index.html  | grep -i content
+run_basic_test 45 -to www/source -single -n http://127.0.0.1:1235/index.html
+run_basic_test 45 -to www/mime -single -n http://127.0.0.1:1235/index.html 
+run_basic_test 45 -cl http://127.0.0.1:1235/index.html  | grep -i content
+
+run_test_prog_only 45 -l w3c.log http://127.0.0.1:1235/index.html 
+grep -i 1235 w3c.log
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+
 
 cleanup
 
