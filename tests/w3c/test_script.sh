@@ -22,6 +22,7 @@ echo "TEST_PROG: $TEST_PROG"
 
 # comparing stdout directly is tricky a w3c can print out %completion for the output directly on stdout or stderr (this can easily confuse a straight comparison of stdout/stderr between the test and benchmark programs)
 # to avoid this problem we specify -n (non-interactive mode)
+run_basic_test 45 
 run_basic_test 45 -n -help 
 run_basic_test 45 -single -n -version
 run_basic_test 45 -n -z 
