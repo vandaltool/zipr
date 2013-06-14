@@ -67,6 +67,25 @@ report_success()
     exit 0
 }
 
+#$1 is the name of the directory to create, 
+#the remaining args are the files to store in the created directory
+log_results()
+{
+	if [[ -z "$LOG_DIR" || ! -d "$LOG_DIR" ]]; then
+		return
+	fi
+
+	log_name=$1
+	shift
+
+	mkdir $LOG_DIR/$log_name
+
+	for file in $@
+	do
+		cp $file $LOG_DIR/$log_name/.
+	done
+}
+
 run_test_prog_only()
 {
 	TIMEOUT=$1
@@ -89,6 +108,10 @@ run_test_prog_only()
 
 	status=$?
 	echo $status >test_status
+
+	log_name=`echo "$TEST_PROG $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
+	log_results $log_name test_out test_error test_status 
+
 	return $status
 }
 
@@ -120,6 +143,10 @@ run_bench_prog_only()
 	status=$?
 	
 	echo $status >orig_status
+
+	log_name=`echo "$BENCH $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
+	log_results $log_name orig_out orig_error orig_status 
+
 	return $status
 }
 
