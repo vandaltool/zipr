@@ -241,6 +241,11 @@ run_basic_test()
 filter_prog_name()
 {
 	cat $1 | sed -r -e "s|[^[:space:]]*$NAME_REGEX|$DUMMY_NAME|g" >tmp
-	cat tmp>$1
-	rm tmp
+
+	if [[ ! -z "$DELETE_FILTER" ]]; then
+		cat tmp | sed -r -e "/$DELETE_FILTER/d">$1
+	else
+		cat tmp>$1
+	fi
+#	rm tmp
 }
