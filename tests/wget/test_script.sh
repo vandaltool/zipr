@@ -93,13 +93,14 @@ compare_files_no_filtering $THROW_AWAY_DIR/index.html.1 $THROW_AWAY_DIR/index.ht
 cleanup
 
 
-#Multi test, -O, no-cache, no-cookies, ignore-length
-run_test_prog_only 45 -O $THROW_AWAY_DIR/hello.1 --no-cache --no-cookies --ignore-length http://localhost:$PORT_NUM/
-run_bench_prog_only 45 -O $THROW_AWAY_DIR/hello.2 --no-cache --no-cookies --ignore-length http://localhost:$PORT_NUM/ 
+#Multi test, -O, no-cache, no-cookies, ignore-length, -E
+run_test_prog_only 45 -O $THROW_AWAY_DIR/hello.1 -E --no-cache --no-cookies --ignore-length http://localhost:$PORT_NUM/
+run_bench_prog_only 45 -O $THROW_AWAY_DIR/hello.2 -E --no-cache --no-cookies --ignore-length http://localhost:$PORT_NUM/ 
 compare_std_results
 compare_files_no_filtering $THROW_AWAY_DIR/hello.1 $THROW_AWAY_DIR/hello.2
 cleanup
 
+#default-name test
 run_test_prog_only 45 --default-page=hello_world.txt http://localhost:$PORT_NUM/
 mv hello_world.txt $THROW_AWAY_DIR/index.html.1
 run_bench_prog_only 45 --default-page=hello_world.txt http://localhost:$PORT_NUM/ 
