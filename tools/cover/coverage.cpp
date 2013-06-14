@@ -138,10 +138,6 @@ void coverage::print_coverage_for_file(file_coverage *fc, FileIR_t *fileirp, ofs
 
 		double cov_percent = ((double)covered_ins)/((double)total_ins);
 
-		string func_name = func->GetName();
-		if(func_name.length() > 1 && func_name[0] != '.' && cov_percent >= 0.5)
-			majority_coverage++;
-
 		out_file<<fc->file<<"+"<<func->GetName()<<" "<<cov_percent<<" "<<covered_ins<<" "<<total_ins<<endl;
 
 	}
@@ -150,8 +146,6 @@ void coverage::print_coverage_for_file(file_coverage *fc, FileIR_t *fileirp, ofs
 void coverage::print_function_coverage_file(libIRDB::VariantID_t *vidp,std::ofstream &out_file)
 {
 	assert(vidp);
-
-	majority_coverage = 0;
 
 	for(set<File_t*>::iterator it=vidp->GetFiles().begin();
 		it!=vidp->GetFiles().end();
@@ -174,6 +168,4 @@ void coverage::print_function_coverage_file(libIRDB::VariantID_t *vidp,std::ofst
 
 		delete fileirp;
 	}
-
-	cout<<"Coverage Summary: Non-PLT Functions with 50% coverage or greater: "<<majority_coverage<<endl;
 }

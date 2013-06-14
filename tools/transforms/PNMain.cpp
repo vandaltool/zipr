@@ -98,9 +98,11 @@ set<string> getFunctionList(char *p_filename)
 
 //TODO: the coverage map should not use the function name since
 //it is possible this will repeat when analyzing shared objects. 
-map<string, map<string,double> > getCoverageMap(char *filename)
+map<string, map<string,double> > getCoverageMap(char *filename,double cov_threshold)
 {
 	map<string, map<string,double> > coverage_map;
+	
+	int acceptable_cov = 0;
 
 	if(filename == NULL)
 		return coverage_map;
@@ -130,10 +132,17 @@ map<string, map<string,double> > getCoverageMap(char *filename)
 			ss_line>>scoverage;
 
 			double coverage = strtod(scoverage.c_str(),NULL);
+
+			if(coverage >= cov_threshold)
+			{
+				if(func_name.length() > 0 && func_name[0] != '.')
+					acceptable_cov++;
+			}
 			coverage_map[file][func_name]=coverage;
 
 			cout<<"file: "<<file<<" func: "<<func_name<<" coverage: "<<coverage<<endl;
 		}
+		cout<<"Summary: Total non-plt functions exceeding or equal to "<<cov_threshold<<" threshold = "<<acceptable_cov<<endl;
 	
 		coverage_file.close();
 	}	 
@@ -285,7 +294,7 @@ int main(int argc, char **argv)
 	blackListOfFunctions = getFunctionList(blacklist_file);
 	set<std::string> onlyValidateFunctions;
 	onlyValidateFunctions = getFunctionList(only_validate);
-	map<string, map<string,double> > coverage_map = getCoverageMap(coverage_file);
+	map<string, map<string,double> > coverage_map = getCoverageMap(coverage_file,p1threshold);
 
 	cout<<"P1threshold parsed = "<<p1threshold<<endl;
 
