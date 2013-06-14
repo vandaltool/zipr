@@ -16,6 +16,7 @@ class coverage
 {
 private:
 	std::map<std::string,file_coverage> coverage_map;
+	int majority_coverage;
 
 	file_coverage* find_file_coverage(std::string url);
 	void print_coverage_for_file(file_coverage *fc, libIRDB::FileIR_t *fileirp, std::ofstream &out_file);
