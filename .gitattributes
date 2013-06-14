@@ -6102,3 +6102,7 @@ web_server/www/hello_world.txt -text
 web_server/www/index.html -text
 web_server/www/index.lighttpd.html -text
 web_server/www/no_extension -text
+web_server/www/peasoup.auth/index.html -text
+web_server/www/peasoup/index.html -text
+web_server/www/peasoup/peasoup.jpg -text
+web_server/www/testing/index.html -text
