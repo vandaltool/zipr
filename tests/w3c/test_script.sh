@@ -22,10 +22,31 @@ echo "TEST_PROG: $TEST_PROG"
 
 # comparing stdout directly is tricky a w3c can print out %completion for the output directly on stdout or stderr (this can easily confuse a straight comparison of stdout/stderr between the test and benchmark programs)
 # to avoid this problem we specify -n (non-interactive mode)
-run_basic_test 45 
-run_basic_test 45 -n -help 
-run_basic_test 45 -single -n -version
-run_basic_test 45 -n -z 
+#run_basic_test 45 
+#run_basic_test 45 -help 
+#run_basic_test 45 -version
+run_basic_test 45 -z 
+
+echo "aaa"
+run_test_prog_only 10
+grep -i "libwww" test_out 
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+
+echo "bbb"
+run_test_prog_only 10 -help
+grep -i "libwww" test_out 
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+
+echo "ccc"
+run_test_prog_only 10 -version
+grep -i "libwww" test_out
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
 
 run_basic_test 45 -maxforwards 2 -single -n http://127.0.0.1:1235/index.html
 run_basic_test 45 -single -n http://127.0.0.1:7333
@@ -35,6 +56,18 @@ run_basic_test 45 -head -single -n http://127.0.0.1:7333
 run_test_prog_only 45 -o w3c.1.out -single -n http://127.0.0.1:1235/index.html
 run_bench_prog_only 45 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
 diff w3c.1.out w3c.2.out
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+
+run_test_prog_only 45 -o w3c.out -timeout 30 http://127.0.0.1:1235/index.html 
+grep -i "peasoup" w3c.out
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+
+run_test_prog_only 45 -timeout 30 http://127.0.0.1:1235/index.html 
+grep -i "peasoup" test_out
 if [ ! $? -eq 0 ]; then
 	report_failure
 fi
@@ -66,7 +99,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 # just run this one to exercise code path
-run_test_prog_only 45 -n -single -put $DATA_DIR/data.txt -dest http://127.0.0.1:1235/testing/
+run_test_prog_only 45 -n -put $DATA_DIR/data.txt -dest http://127.0.0.1:1235/testing/
 run_test_prog_only 45 -n -auth user:password@realm http://127.0.0.1:1235/peasoup.auth 
 run_test_prog_only 45 -n -delete http://127.0.0.1:1235/peasoup.auth/doesnotexist.html 
 run_test_prog_only 45 -post http://127.0.0.1:1235/testing/index.html -form "RECORD=ID" "COL1=a" "COL2=b" "COL3=c" "COL4=d"
