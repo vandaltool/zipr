@@ -143,6 +143,7 @@ tests/grep/data/pattern2 -text
 tests/grep/test_script.sh -text
 tests/manual_test_lib.sh -text
 tests/touch/test_script.sh -text
+tests/w3c/test_script.sh -text
 tests/wget/test_script.sh -text
 tests/zsh/test1.sh -text
 tests/zsh/test2.sh -text
