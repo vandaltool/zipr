@@ -20,7 +20,7 @@ mkdir $LOG_DIR
 CURRENT_DIR=`pwd`
 
 PORT_NUM=1235
-DELETE_FILTER="(%|2013-)"
+DELETE_FILTER="%|2013-|hello.1|hello.2"
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
@@ -38,7 +38,6 @@ run_test_prog_only 60 127.0.0.1:$PORT_NUM/hello_world.txt
 mv $CURRENT_DIR/hello_world.txt $DATA_DIR/throw_away/hello.1
 run_bench_prog_only 60 127.0.0.1:$PORT_NUM/hello_world.txt 
 mv $CURRENT_DIR/hello_world.txt $DATA_DIR/throw_away/hello.2
-#compare_exit_status
 compare_std_results
 compare_files_no_filtering $DATA_DIR/throw_away/hello.1 $DATA_DIR/throw_away/hello.2
 cleanup
@@ -46,7 +45,7 @@ cleanup
 #-O test
 run_test_prog_only 60 -O $DATA_DIR/throw_away/hello.1 127.0.0.1:$PORT_NUM/hello_world.txt
 run_bench_prog_only 60 -O $DATA_DIR/throw_away/hello.2 127.0.0.1:$PORT_NUM/hello_world.txt 
-compare_exit_status
+compare_std_results
 compare_files_no_filtering $DATA_DIR/throw_away/hello.1 $DATA_DIR/throw_away/hello.2
 cleanup
 
