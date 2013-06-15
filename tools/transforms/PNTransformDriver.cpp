@@ -492,6 +492,11 @@ void PNTransformDriver::GenerateTransforms()
 			{
 				key = it->first;
 
+				//TODO: basename is only used as a hack
+				//because of the way the url is stored in the db.
+				//The url should be fixed to be the absolute path. 
+				key=string(basename(key.c_str()));
+
 				if(key.empty())
 					continue;
 
