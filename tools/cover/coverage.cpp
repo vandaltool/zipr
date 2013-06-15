@@ -99,8 +99,6 @@ file_coverage* coverage::find_file_coverage(string url)
 
 		key=string(basename(key.c_str()));
 
-		cout<<"new key: "<<key<<endl;
-
 		if(key.empty())
 			continue;
 
