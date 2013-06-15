@@ -93,6 +93,14 @@ file_coverage* coverage::find_file_coverage(string url)
 	{
 		string key = it->first;
 
+		//TODO: for now taking the base name, since that is how
+		//the shared objects are registered, but this might cause
+		//issues if shared objects have the same name. 
+
+		key=string(basename(key.c_str()));
+
+		cout<<"new key: "<<key<<endl;
+
 		if(key.empty())
 			continue;
 
@@ -162,9 +170,10 @@ void coverage::print_function_coverage_file(libIRDB::VariantID_t *vidp,std::ofst
 		//NULL fc should only happen if the coverage file is empty. 
 		//TODO: add extra sanity checks to make sure that null only happens under these conditions. 
 		file_coverage* fc = find_file_coverage(fileirp->GetFile()->GetURL());
-
 		if(fc!=NULL)
+		{
 			print_coverage_for_file(fc, fileirp, out_file);
+		}
 
 		delete fileirp;
 	}
