@@ -86,7 +86,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 
 			char name[20000];
 			/* found function declaration */
-			if(strcmp(scope,"GLOBAL")==0)
+			if(strcmp(scope,"GLOBAL")==0 || strcmp(scope,"LOCAL")==0)
 			{
 //   8048250     94 FUNC GLOBAL readString_xxx FUNC_UNSAFE USEFP RET    80482ad
 				/* remaining parameters are name {USEFP, NOFP}  */
