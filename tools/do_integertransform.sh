@@ -13,13 +13,17 @@ TIMEOUT=$4
 WARNINGS_ONLY=$5     # 0 or 1
 BENIGN_FP_DETECT=$6  # 0 or 1
 
+echo "intxform: cloneID=$1 identifiedProg=$2 concolicDir=$3 timeout=$4 warningsOnly=$5 benignFpDetect=$6"
+
 # configuration variables
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system library functions
 
 if [ -z $TIMEOUT ] ;
 then
-TIMEOUT=3600         # 30 mns
+TIMEOUT=5400         # 1.5hr
 fi
+
+echo "intxform: timeout=$TIMEOUT seconds"
 
 TOP_DIR=`pwd`
 INTEGER_ASPRI=a.irdb.integer.aspri
@@ -28,7 +32,7 @@ INTEGER_WARNINGS_FILE=${TOP_DIR}/integer.warnings.addresses
 
 touch $INTEGER_WARNINGS_FILE
 
-echo "INT: transforming binary: cloneid=$CLONE_ID identifiedProg=$IDENTIFIED_PROG"
+echo "intxform: transforming binary: cloneid=$CLONE_ID identifiedProg=$IDENTIFIED_PROG"
 
 if [ "$BENIGN_FP_DETECT" = "1" ]; then
 	echo "INTXFORM: Detection of benign false positives turned on for recognized program: $IDENTIFIED_PROG"
