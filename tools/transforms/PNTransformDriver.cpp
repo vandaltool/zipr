@@ -837,6 +837,8 @@ void PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 
 		//TODO shuffle validation?
 
+		layout->ResetLayout();
+
 		layout->Shuffle();
 		if(layout->IsPaddingSafe())
 		{
@@ -851,9 +853,9 @@ void PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 		Canary_Rewrite(layout,vrs[index].func);
 	}
 
+	validation_count++;
 	stringstream ss;
 	ss<<"validation"<<validation_count;
-	validation_count++;
 
 	if(Validate(orig_virp,ss.str()))
 	{

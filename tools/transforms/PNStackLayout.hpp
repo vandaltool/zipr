@@ -6,6 +6,13 @@
 #include <vector>
 #include <exception>
 
+//NOTE: padding adds a value between max and min, plus the frame size
+//I believe this was done to protect against a very large buffer 
+//overflow, but I'm not sure I have the example to demonstrate the
+//effectiveness. If I had to guess, I think the example is if the
+//attacker is trying to exceed the frame size, and the vulnerable buffer
+//is at the bottom of the stack, but moved by us to the top, the 
+//overflow might exceed our padding and corrupt other stack frames.  
 const int MIN_PADDING = 4096;
 const int MAX_PADDING = MIN_PADDING*2;
 const int RECURSIVE_MIN_PADDING = 64;
