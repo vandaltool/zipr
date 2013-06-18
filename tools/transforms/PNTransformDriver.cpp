@@ -49,6 +49,7 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
 	no_validation_level = -1;
 	coverage_threshold = -1;
 	do_shared_object_protection = false;
+	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
 
 }
 
@@ -281,7 +282,7 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 	else
 	{
 		//if(!Validate(new_virp,targ_func))
-		if(validate && !Validate(orig_virp,func))
+		if(validate && !Validate(orig_virp,func->GetName()))
 		{
 			//Experimental code
 			undo(func);
@@ -304,6 +305,14 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 			}
 
 			transformed_history[layout->GetLayoutName()].push_back(layout);
+
+			finalize_record fr;
+			fr.layout = layout;
+			fr.func = func;
+			fr.firp = orig_virp;
+			finalization_registry.push_back(fr);
+			undo(func);
+
 			success = true;
 			//TODO: message
 
@@ -338,7 +347,7 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
 		undo(func);
 		cerr<<"PNTransformDriver: Rewrite Failure: "<<layout->GetLayoutName()<<" Failed to Rewrite "<<func->GetName()<<endl;
 	}
-	else if(validate && !Validate(orig_virp, func))
+	else if(validate && !Validate(orig_virp, func->GetName()))
 	{
 		undo(func);
 		cerr<<"PNTransformDriver: Validation Failure: "<<layout->GetLayoutName()<<" Failed to Validate "<<func->GetName()<<endl;
@@ -347,6 +356,12 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
 	{
 		cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
 		transformed_history[layout->GetLayoutName()].push_back(layout);
+		finalize_record fr;
+		fr.layout = layout;
+		fr.func = func;
+		fr.firp = orig_virp;
+		finalization_registry.push_back(fr);
+		undo(func);
 		success = true;
 		//undo_list.clear();
 		//reset_undo(func->GetName());
@@ -376,6 +391,12 @@ bool PNTransformDriver::LayoutRandTransformHandler(PNStackLayout *layout, Functi
 		Sans_Canary_Rewrite(layout,func);
 		cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
 		transformed_history[layout->GetLayoutName()].push_back(layout);
+		finalize_record fr;
+		fr.layout = layout;
+		fr.func = func;
+		fr.firp = orig_virp;
+		finalization_registry.push_back(fr);
+		undo(func);
 		success = true;
 		//undo_list.clear();
 		//reset_undo(func->GetName());
@@ -488,7 +509,7 @@ void PNTransformDriver::GenerateTransforms()
 			string key;
 			//find the appropriate coverage map for the given file
 			for(map<string, map<string, double> >::iterator it=coverage_map.begin();
-				it!=coverage_map.end(); ++it)
+				it!=coverage_map.end()&&!timeExpired; ++it)
 			{
 				key = it->first;
 
@@ -508,9 +529,6 @@ void PNTransformDriver::GenerateTransforms()
 			}
 			
 			GenerateTransformsHidden(file_coverage_map);
-
-			if(timeExpired)
-				break;
 
 //			delete orig_virp;
 			cerr<<"############################File Report############################"<<endl;
@@ -533,10 +551,16 @@ void PNTransformDriver::GenerateTransforms()
 		WriteStackIRToDB();
 	}
 
+	//TODO: clean up malloced (new'ed) FileIR_t
+
+	if(timeExpired)
+		cerr<<"Time Expired: Commit Changes So Far"<<endl;
+
+	//finalize transformation, commit to database 
+	Finalize_Transformation();
+
 	cerr<<"############################Final Report############################"<<endl;
 	Print_Report();
-
-	//TODO: Get "final" summary here
 }
 
 void PNTransformDriver::SanitizeFunctions()
@@ -644,12 +668,12 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 {
 	SanitizeFunctions();
 
+	vector<validation_record> high_covered_funcs, low_covered_funcs, not_covered_funcs;
+
 	//For each function
 	//Loop through each level, find boundaries for each, sort based on
 	//the number of boundaries, attempt transform in order until successful
 	//or until all inferences have been exhausted
-
-	unsigned int report_count = 0;
 	for(
 		set<Function_t*>::const_iterator it=orig_virp->GetFunctions().begin();
 		it!=orig_virp->GetFunctions().end()&&!timeExpired;
@@ -658,7 +682,6 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 
 	{
 		Function_t *func = *it;
-		bool success = false;
 
 		//TODO: remove this at some point when I understand if this can happen or not
 		assert(func != NULL);
@@ -668,13 +691,6 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 		//Check if in blacklist
 		if(IsBlacklisted(func))
 			continue;
-
-		report_count++;
-		if(report_count %50 == 0)
-		{
-			cerr<<"#########################Intermediate Report#########################"<<endl;
-			Print_Report();
-		}
 
 		total_funcs++;
 
@@ -710,98 +726,273 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 			}
 		}
 
+
 		//Get a layout inference for each level of the hierarchy. Sort these layouts based on
 		//on the number of memory objects detected (in descending order). Then try each layout
 		//as a basis for transformation until one succeeds or all layouts in each level of the
 		//hierarchy have been exhausted. 
 
 		//TODO: need to properly handle not_transformable and functions failing all transforms. 
-		int null_inf_count = 0;
-		int starting_level = level;
-		for(;level<(int)transform_hierarchy.size()&&!success&&!timeExpired;level++)
+		vector<PNStackLayout*> layouts; 
+		for(;level<(int)transform_hierarchy.size() && layouts.size()!=0;level++)
 		{
-			vector<PNStackLayout*> layouts = GenerateInferences(func, level);
- 
-			if(layouts.size() == 0)
-			{
-				null_inf_count++;
-
-				//If the number of null inferences encountered equals the number of inferences
-				//that are possible (based on the starting level which may not be 0), then
-				//the function is not transformable. 
-				if((int)transform_hierarchy.size()-starting_level == null_inf_count)
-					not_transformable.push_back(func->GetName());
-				//TODO: is there a better way of checking this?
-				else if((int)transform_hierarchy.size()-1 == level)
-					failed.push_back(func);
-
-				continue;
-			}
-
-			sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
+			layouts = GenerateInferences(func, level);
+		}
 
 
-			//NOTE: this only_validate_list functionality may not be needed any more, consider removing
-			//TODO: for now, only validate if the only_validate_list doesn't have any contents and
-			//the level does not equal the never_validate level. I may want to allow the only validate
-			//list to be empty, in which case a pointer is better, to check for NULL.
-			bool do_validate = true;
-			if(only_validate_list.size() != 0)
-			{
-				if(only_validate_list.find(func->GetName()) == only_validate_list.end())
-				{
-					do_validate = false;
-				}
-			}
+		//If the number of null inferences encountered equals the number of inferences
+		//that are possible (based on the starting level which may not be 0), then
+		//the function is not transformable. 
+//		if((int)transform_hierarchy.size()-starting_level == null_inf_count)
+//			not_transformable.push_back(func->GetName());
+		//TODO: is there a better way of checking this?
+//		else
 
-			do_validate = do_validate && (level != no_validation_level);
-		
+		if(layouts.size() == 0)
+		{
+			not_transformable.push_back(func->GetName());
+			continue;
+		}
 
-			//Go through each layout in the level of the hierarchy in order. 
-			for(unsigned int i=0;i<layouts.size()&&!timeExpired;i++)
-			{
 
-				//TODO: I need to have the ability to make transformations optional
-				//the approach taken now is a last minute hack for TNE
+		sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
 
-				if(layouts[i]->IsCanarySafe())
-				{
+		validation_record vr;
+		vr.hierarchy_index=level;
+		vr.layout_index=0;
+		vr.layouts=layouts;
+		vr.func=func;
+
+		if(func_coverage == 0)
+			not_covered_funcs.push_back(vr);
+		else if(func_coverage <= coverage_threshold)
+			low_covered_funcs.push_back(vr);
+		else
+			high_covered_funcs.push_back(vr);
+			
+	}
+
+	Validate_Recursive(high_covered_funcs,0,high_covered_funcs.size());
+	Validate_Recursive(low_covered_funcs,0,low_covered_funcs.size());
 	
-					success = CanaryTransformHandler(layouts[i],func,do_validate);
-					if(!success && (int)transform_hierarchy.size()-1 == level && i == layouts.size()-1)
-						failed.push_back(func);
-					else if(success)
-						break;
+	Register_Finalized(not_covered_funcs,0,not_covered_funcs.size());
 
-				}
+	high_coverage_count +=high_covered_funcs.size();
+	low_coverage_count +=low_covered_funcs.size();
+	no_coverage_count +=not_covered_funcs.size();
 
-				else if(layouts[i]->IsPaddingSafe())
+
+	//TODO: print file report
+}
+
+int intermediate_report_count=0;
+void PNTransformDriver::Register_Finalized(vector<validation_record> &vrs,unsigned int start, int length)
+{
+	if(length == 0)
+		return;
+
+	cout<<"Register Finalized: Registering "<<length<<" functions"<<endl;
+
+	for(int i=0;i<length;i++)
+	{
+		unsigned int index=i+start;
+		finalize_record fr;
+		fr.layout = vrs[index].layouts[vrs[index].layout_index];
+		fr.func = vrs[index].func;
+		fr.firp = orig_virp;
+		finalization_registry.push_back(fr);
+		undo(vrs[index].func);
+
+		cout<<"registering "<<fr.func->GetName()<<" layout "<<fr.layout->GetLayoutName()<<endl;
+
+		transformed_history[fr.layout->GetLayoutName()].push_back(fr.layout);
+	}
+
+	intermediate_report_count += length;
+
+	//print out intermedaite report every if the report count exceeds or equals 100 registered funcs
+	//since the last report. 
+	if(intermediate_report_count >= 100)
+	{
+		cerr<<"############################INTERMEDIATE SUMMARY############################"<<endl;
+		Print_Report();
+		intermediate_report_count=0;
+	}
+}
+
+
+void PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsigned int start, int length)
+{
+	if(timeExpired || length <= 0 || vrs.size()==0)
+		return;
+
+	assert(start+length-1 != vrs.size());
+
+	cout<<"Validate Recursive: validating "<<length<<" funcs of "<<vrs.size()<<endl;
+
+	for(int i=0;i<length;i++)
+	{
+		unsigned int index=i+start;
+		PNStackLayout  *layout = vrs[index].layouts[vrs[index].layout_index];
+
+		//TODO shuffle validation?
+
+		layout->Shuffle();
+		if(layout->IsPaddingSafe())
+		{
+			layout->AddRandomPadding(do_align);
+		}
+		else
+		{
+			//TODO: mark as requiring shuffle validation. 
+		}
+
+		//Canary rewrite will determine if layout can be canaried.
+		Canary_Rewrite(layout,vrs[index].func);
+	}
+
+	stringstream ss;
+	ss<<"validation"<<validation_count;
+	validation_count++;
+
+	if(Validate(orig_virp,ss.str()))
+	{
+		Register_Finalized(vrs,start,length);
+	}
+	else
+	{
+		//TODO: optimize here
+		for(int i=0;i<length;i++)
+		{
+			unsigned int index = i+start;
+			undo(vrs[index].func);
+		}
+
+		if(length == 1)
+		{
+			cout<<"Validate Recursive: Found problem function: "<<vrs[start].func->GetName()<<" validating linearly"<<endl;
+			
+			//if the layout is not the last in the vector of layouts for the hierarchy, set the layout to the next layout
+			if(vrs[start].layout_index != vrs[start].layouts.size()-1)
+			{
+				vrs[start].layout_index++;
+			}
+			//otherwise, continue looping through the hierarchy until inferences are generated. 
+			else
+			{
+				vector<PNStackLayout*> layouts;
+				for(unsigned int level=vrs[start].hierarchy_index;level<(int)transform_hierarchy.size()&&layouts.size()!=0;level++)
 				{
-					success = PaddingTransformHandler(layouts[i],func,do_validate);
-					if(!success && (int)transform_hierarchy.size()-1 == level && i == layouts.size()-1)
-						failed.push_back(func);
-					else if(success)
-						break;
-
+					layouts = GenerateInferences(vrs[start].func, level);
 				}
-				//if not canary or padding safe, the layout can only be randomized
+
+				//If no layouts are found, then this function fails all validation attempts
+				if(layouts.size() == 0)
+				{
+					failed.push_back(vrs[start].func);
+					cout<<"Validate Recursive: Function: "<<vrs[start].func->GetName()<<" has no additional inferences."<<endl;
+					return;
+				}
 				else
 				{
-					success = LayoutRandTransformHandler(layouts[i],func,do_validate);
-					if(!success && (int)transform_hierarchy.size()-1 == level && i == layouts.size()-1)
-						failed.push_back(func);
-					else if(success)
-						break;
+					sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
+
+					vrs[start].layout_index=0;
+					vrs[start].layouts=layouts;
 				}
 			}
-		}	
-	}
-	
-	if(timeExpired)
-		cerr<<"Time Expired: Commit Changes"<<endl;
-	//finalize transformation, commit to database
-	orig_virp->WriteToDB();
 
+			Validate_Recursive(vrs,start,length);
+		}
+		else
+		{
+			Validate_Recursive(vrs,start,length/2);
+			Validate_Recursive(vrs,start+length/2,(length-(length/2)));
+		}
+		
+	}
+}
+
+
+
+// 			//NOTE: this only_validate_list functionality may not be needed any more, consider removing
+// 			//TODO: for now, only validate if the only_validate_list doesn't have any contents and
+// 			//the level does not equal the never_validate level. I may want to allow the only validate
+// 			//list to be empty, in which case a pointer is better, to check for NULL.
+// 			bool do_validate = true;
+// 			if(only_validate_list.size() != 0)
+// 			{
+// 				if(only_validate_list.find(func->GetName()) == only_validate_list.end())
+// 					do_validate = false;
+// 			}
+
+// 			do_validate = do_validate && (level != no_validation_level);
+		
+
+// 			//Go through each layout in the level of the hierarchy in order. 
+// 			for(unsigned int i=0;i<layouts.size()&&!timeExpired;i++)
+// 			{
+// 				//TODO: I need to have the ability to make transformations optional
+// 				if(layouts[i]->IsCanarySafe())
+// 					success = CanaryTransformHandler(layouts[i],func,do_validate);
+// 				else if(layouts[i]->IsPaddingSafe())
+// 					success = PaddingTransformHandler(layouts[i],func,do_validate);
+// 				//if not canary or padding safe, the layout can only be randomized
+// 				else
+// 					success = LayoutRandTransformHandler(layouts[i],func,do_validate);
+
+// 				if(!success && (int)transform_hierarchy.size()-1 == level && i == layouts.size()-1)
+// 						failed.push_back(func);
+// 					else if(success)
+// 						break;
+// 			}
+// 		}	
+// 	}
+// }
+
+void PNTransformDriver::Finalize_Transformation()
+{
+	cout<<"Finalizing Transformation: Committing all previously validated transformations ("<<finalization_registry.size()<<" functions)"<<endl;
+	set<FileIR_t*> firps;
+
+	for(vector<finalize_record>::iterator it = finalization_registry.begin(); it != finalization_registry.end(); it++)
+	{
+		finalize_record fr = *it;
+		Function_t *func;
+		PNStackLayout *layout;
+		FileIR_t *firp;
+
+		func = fr.func;
+		layout = fr.layout;
+		firp = fr.firp;
+
+		assert(func != NULL && layout != NULL && firp != NULL);
+		firps.insert(firp);
+		orig_virp = firp;
+
+
+		//TODO: really there is no need to retransform, but it
+		//is much easier to retransform than to retain the modified
+		//instructions previously made. 
+		if(do_canaries)
+			Canary_Rewrite(layout,func);
+		else
+			Sans_Canary_Rewrite(layout,func);
+	}
+
+	//TODO: one more validation? 
+
+	//Commit changes for each file. 
+	//TODO: is this necessary, can I do one write?
+	for(set<FileIR_t*>::iterator it=firps.begin();
+		it!=firps.end();
+		++it
+		)
+	{
+		FileIR_t *firp = *it;
+		cout<<"Writing to DB: "<<firp->GetFile()->GetURL()<<endl;
+		firp->WriteToDB();
+	}
 }
 
 void PNTransformDriver::Print_Report()
@@ -896,6 +1087,12 @@ void PNTransformDriver::Print_Report()
 	}
 
 	cerr<<"----------------------------------------------"<<endl;
+	cerr<<"Functions modified exceeding threshold: "<<high_coverage_count<<endl;
+	cerr<<"Functions modified non-zero coverage below or equal to threshold: "<<low_coverage_count<<endl;
+	cerr<<"Functions modified with no coverage: "<<no_coverage_count<<endl;
+	cerr<<"Total validations performed: "<<validation_count<<endl;
+
+	cerr<<"----------------------------------------------"<<endl;
 	cerr<<"Non-Blacklisted Functions \t"<<total_funcs<<endl;
 	cerr<<"Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
 	cerr<<"Sanitized Functions \t\t"<<sanitized_funcs<<endl;
@@ -950,7 +1147,7 @@ bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Functi
 				layout->GetLayoutName()<<" Failed to Rewrite "<<func->GetName()<<endl;
 			return false;
 		}
-		else if(!Validate(orig_virp,func))
+		else if(!Validate(orig_virp,func->GetName()))
 		{
 			undo(func);
 			cerr<<"PNTransformDriver: ShuffleValidation(): Validation Failure: attempt: "<<i+1<<" "<<
@@ -966,11 +1163,11 @@ bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Functi
 	return true;
 }
 
-bool PNTransformDriver::Validate(FileIR_t *virp, Function_t *func)
+bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 {
-	cerr<<"PNTransformDriver: Validate(): Validating function "<<func->GetName()<<endl;
+	cerr<<"PNTransformDriver: Validate(): "<<name<<endl;
 
-	string dirname = "p1.xform/" + func->GetName();
+	string dirname = "p1.xform/" + name;
 	string cmd = "mkdir -p " + dirname;
 	system(cmd.c_str());
 	
@@ -1599,7 +1796,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 //TODO: there is a memory leak, I need to write a undo_list clear to properly cleanup
 //void PNTransformDriver::undo(map<Instruction_t*, Instruction_t*> undo_list, Function_t *func)
-void PNTransformDriver::undo( Function_t *func)
+void PNTransformDriver::undo(Function_t *func)
 {
 	string func_name = func->GetName();
 

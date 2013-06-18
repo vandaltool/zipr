@@ -22,6 +22,22 @@ struct canary
     int esp_offset;
 };
 
+struct finalize_record
+{
+	Function_t *func;
+	PNStackLayout* layout;
+	FileIR_t *firp;	
+};
+
+struct validation_record
+{
+	unsigned int hierarchy_index;
+	unsigned int layout_index;
+	vector<PNStackLayout*> layouts;
+	Function_t *func;
+};
+
+
 class PNTransformDriver
 {
 protected:
@@ -52,13 +68,15 @@ protected:
     int total_funcs;
     std::vector<std::string> not_transformable;
     std::vector<libIRDB::Function_t*> failed;
+	std::vector<finalize_record> finalization_registry;
+	int high_coverage_count, low_coverage_count, no_coverage_count, validation_count;
 
     // write stack objects to IRDB
     bool write_stack_ir_to_db;
 
     //   virtual bool Rewrite(PNStackLayout *layout, libIRDB::Function_t *func);
 //    virtual bool LayoutValidation(PNStackLayout *layout);
-    virtual bool Validate(libIRDB::FileIR_t *virp, libIRDB::Function_t *func);
+    virtual bool Validate(libIRDB::FileIR_t *virp, std::string name);
     //virtual void undo(std::map<libIRDB::Instruction_t*,std::string> undo_list, libIRDB::Function_t *func);
     virtual void undo( libIRDB::Function_t *func);
     //virtual void reset_undo(std::string func);
@@ -86,6 +104,11 @@ protected:
 	void SanitizeFunctions();
 //    virtual bool WriteToDB();
     virtual bool WriteStackIRToDB();
+
+	virtual void Finalize_Transformation();
+
+	void Register_Finalized(std::vector<validation_record> &vrs,unsigned int start, int length);
+	void Validate_Recursive(std::vector<validation_record> &vrs, unsigned int start, int length);
 
 public:
     static bool timeExpired;
