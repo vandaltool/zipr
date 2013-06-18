@@ -93,7 +93,7 @@ compare_files_no_filtering $THROW_AWAY_DIR/index.html.1 $THROW_AWAY_DIR/index.ht
 cleanup
 
 
-#Multi test, -O, no-cache, no-cookies, ignore-length, -E
+#Multi test, -O, no-cache, no-cookies, ignore-length, -E,
 run_test_prog_only 45 -O $THROW_AWAY_DIR/hello.1 -E --no-cache --no-cookies --ignore-length http://localhost:$PORT_NUM/
 run_bench_prog_only 45 -O $THROW_AWAY_DIR/hello.2 -E --no-cache --no-cookies --ignore-length http://localhost:$PORT_NUM/ 
 compare_std_results
@@ -108,5 +108,13 @@ mv hello_world.txt $THROW_AWAY_DIR/index.html.2
 compare_std_results
 compare_files_no_filtering $THROW_AWAY_DIR/index.html.1 $THROW_AWAY_DIR/index.html.2
 cleanup
+
+#prefix test, -P (prefix, i.e., where the file will be stored) and no clobber test
+touch $THROW_AWAY_DIR/hello_world.txt
+run_test_prog_only 45 -P $THROW_AWAY_DIR -nc  http://localhost:$PORT_NUM/hello_world.txt
+touch $THROW_AWAY_DIR/hello_world.txt
+run_bench_prog_only 45 -P $THROW_AWAY_DIR -nc  http://localhost:$PORT_NUM/hello_world.txt
+compare_std_results
+
 
 report_success
