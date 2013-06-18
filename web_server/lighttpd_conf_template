@@ -31,3 +31,20 @@ compress.filetype           = ( "application/x-javascript", "text/css", "text/ht
 
 include_shell "/usr/share/lighttpd/create-mime.assign.pl"
 include_shell "/usr/share/lighttpd/include-conf-enabled.pl"
+
+#configurations for peasoup
+
+server.port=1235
+
+#authentication setup
+auth.require = ( "/peasoup.auth/" =>
+(
+"method" => "basic",
+"realm" => "Password protected area",
+"require" => "user=guest"
+)
+)
+
+server.modules += ( "mod_auth" )
+auth.debug = 0
+auth.backend = "plain"

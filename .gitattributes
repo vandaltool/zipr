@@ -6292,11 +6292,13 @@ tools/signatures/sqlite.sigs -text
 tools/test_controller.sh -text
 tools/update_env_var.sh -text
 tools/validate.sh -text
+web_server/.lighttpdpassword -text
 web_server/lighttpd_conf_template -text
 web_server/www/hello_world.txt -text
 web_server/www/index.html -text
 web_server/www/index.lighttpd.html -text
 web_server/www/no_extension -text
+web_server/www/peasoup.auth/hello_world.txt -text
 web_server/www/peasoup.auth/index.html -text
 web_server/www/peasoup/index.html -text
 web_server/www/peasoup/peasoup.jpg -text
