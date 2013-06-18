@@ -734,7 +734,7 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 
 		//TODO: need to properly handle not_transformable and functions failing all transforms. 
 		vector<PNStackLayout*> layouts; 
-		for(;level<(int)transform_hierarchy.size() && layouts.size()!=0;level++)
+		for(;level<(int)transform_hierarchy.size() && layouts.size()==0;level++)
 		{
 			layouts = GenerateInferences(func, level);
 		}
@@ -881,7 +881,7 @@ void PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 			else
 			{
 				vector<PNStackLayout*> layouts;
-				for(unsigned int level=vrs[start].hierarchy_index;level<(int)transform_hierarchy.size()&&layouts.size()!=0;level++)
+				for(unsigned int level=vrs[start].hierarchy_index;level<(int)transform_hierarchy.size()&&layouts.size()==0;level++)
 				{
 					layouts = GenerateInferences(vrs[start].func, level);
 				}
