@@ -31,10 +31,6 @@
 
 COMPFLAGS="-w"
 
-# export general IDA pro environment vars
-export IDAROOT=$IDAROOT61
-export IDASDK=$IDASDK61
-
 PWD=`pwd`
 TESTLOC="${PWD}"
 tmp=$$.tmp
