@@ -12,10 +12,10 @@ DATA_DIR=$TEST_DIR/data
 THROW_AWAY_DIR=$DATA_DIR/throw_away
 CLEANUP_FILES="$THROW_AWAY_DIR/* wget-log* index.html*"
 ORIG_NAME="wget"
-LOG_DIR=$TEST_DIR/log
+#LOG_DIR=$TEST_DIR/log
 
-rm -rf $LOG_DIR
-mkdir $LOG_DIR
+#rm -rf $LOG_DIR
+#mkdir $LOG_DIR
 
 CURRENT_DIR=`pwd`
 
@@ -115,6 +115,34 @@ run_test_prog_only 45 -P $THROW_AWAY_DIR -nc  http://localhost:$PORT_NUM/hello_w
 touch $THROW_AWAY_DIR/hello_world.txt
 run_bench_prog_only 45 -P $THROW_AWAY_DIR -nc  http://localhost:$PORT_NUM/hello_world.txt
 compare_std_results
+cleanup
+
+#-c test (partial file test)
+rm -f $CURRENT_DIR/hello_world.txt
+echo "Hell" >$CURRENT_DIR/hello_world.txt
+run_test_prog_only 45 -c http://localhost:$PORT_NUM/hello_world.txt
+mv $CURRENT_DIR/hello_world.txt $THROW_AWAY_DIR/hello.1
+
+rm -f $CURRENT_DIR/hello_world.txt
+echo "Hell" >$CURRENT_DIR/hello_world.txt
+run_bench_prog_only 45 -c http://localhost:$PORT_NUM/hello_world.txt
+mv $CURRENT_DIR/hello_world.txt $THROW_AWAY_DIR/hello.2
+compare_std_results
+compare_files_no_filtering $THROW_AWAY_DIR/hello.1 $THROW_AWAY_DIR/hello.2
+cleanup
+
+#-c test (non-partial file test)
+$
+echo "Hello World." >$THROW_AWAY_DIR/hello_world.txt
+run_test_prog_only 45 -P $THROW_AWAY_DIR -c http://localhost:$PORT_NUM/hello_world.txt
+run_bench_prog_only 45 -P $THROW_AWAY_DIR -c http://localhost:$PORT_NUM/hello_world.txt
+compare_std_results
+cleanup
+
+
+
+
+
 
 
 report_success
