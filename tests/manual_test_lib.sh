@@ -255,5 +255,5 @@ filter_prog_name()
 	else
 		cat tmp>$1
 	fi
-#	rm tmp
+	rm tmp
 }
