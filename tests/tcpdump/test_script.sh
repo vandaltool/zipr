@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 TEST_LIB=$PEASOUP_HOME/tests/manual_test_lib.sh
 
 #used for filtering program names from output.
@@ -12,10 +12,9 @@ TEST_DIR=$PEASOUP_HOME/tests/tcpdump
 
 
 # print help and version 
-run_basic_test 20 --help
-run_basic_test 20 --version
+run_basic_test 20 -h
 
-run_basic_test 20  -t -n -v -v -v -r $TEST_DIR/lmp.pcap 
+run_basic_test 20  -t -n -v -v -v -r $TEST_DIR/tcpd_tests/lmp.pcap 
 
 for i in x xx X XX A AA; do
         run_basic_test 20 -$i -s0 -nr $TEST_DIR/tcpd_tests/print-flags.pcap 
@@ -31,7 +30,7 @@ do
       '') continue;;
   esac
 
-  run_basic_test 20 "-n -r $TEST_DIR/tcpd_tests/$input $options"
+  run_basic_test 20 -n -r $TEST_DIR/tcpd_tests/$input $options
 
 done
 

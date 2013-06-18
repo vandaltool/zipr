@@ -75,10 +75,18 @@ log_results()
 		return
 	fi
 
+	echo logging:
+	for i in $2 $3 $4; 
+	do
+		echo $i
+		cat $i
+	done
+	
+
 	log_name=$1
 	shift
 
-	mkdir $LOG_DIR/$log_name
+	mkdir -p $LOG_DIR/$log_name
 
 	for file in $@
 	do
