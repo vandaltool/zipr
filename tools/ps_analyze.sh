@@ -687,6 +687,12 @@ fi
 perform_step manual_test none $PEASOUP_HOME/tools/do_manualtests.sh $name $stratafied_exe $manual_test_script $manual_test_coverage_file
 
 #
+# remove the parts of the aannotation file not needed at runtime
+#
+perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
+
+
+#
 # Do P1/Pn transform.
 #
 perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $DO_CANARIES
@@ -710,11 +716,6 @@ perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.ird
 # preLoaded_ILR step
 perform_step preLoaded_ILR1 fast_spri $STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe a.irdb.fbspri 
 perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfile.sh a.irdb.fbspri
-
-#
-# remove the parts of the aannotation file not needed at runtime
-#
-perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
 
 #
 # create a report for all of ps_analyze.
