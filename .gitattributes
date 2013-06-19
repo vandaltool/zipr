@@ -3148,6 +3148,7 @@ tools/getsyms.sh -text
 tools/grace_utils.sh -text
 tools/integer_replay.sh -text
 tools/intxform_detect_benign_fp.sh -text
+tools/intxform_extract_benign_errors.sh -text
 tools/intxform_make_detector_binary.sh -text
 tools/intxform_replay.sh -text
 tools/intxform_run.sh -text
