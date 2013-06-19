@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#Register to the "lop level shell" so I can kill it if 
+#a subshell is spawned and attempts to exit. 
+export TOP_PID=$$
+#exit 1 if a termination signal is given. 
+trap "exit 1" TERM
+
 IGNORE_RESULTS=
 
 while getopts “i” OPTION
@@ -57,7 +63,10 @@ report_failure()
 		return
 	fi
 
-    exit 1
+	#normally you could call exit directly but if the test script uses 
+	#a loop or something of the sort, a subshell may be spawned.
+	#exit in this case will only kill the subshell. 
+    kill -s TERM $TOP_PID
 }
 
 report_success()
