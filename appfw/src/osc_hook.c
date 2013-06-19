@@ -107,7 +107,10 @@ int oscfw_verify_args(char* const argv[])
 	{
 		if(argv[i][0]=='-')
 		{
-        		appfw_establish_taint(argv[i], taint);
+			int length = strlen(argv[i]);
+			matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
+
+			appfw_establish_taint(argv[i], taint, matched_signatures);
 			if(is_verbose)
         			appfw_display_taint("Debugging OS Command", argv[i], taint);
 
@@ -116,11 +119,14 @@ int oscfw_verify_args(char* const argv[])
 			{
                 		if(taint[j]!=APPFW_BLESSED)
 				{
-    					fprintf(stderr, "Failed argument check\n");
-    					appfw_display_taint("OS Command Injection detected", argv[i], taint);
-                        		return 0;
+					fprintf(stderr, "Failed argument check\n");
+					appfw_display_taint("OS Command Injection detected", argv[i], taint);
+					appfw_deallocate_matched_signatures(matched_signatures, length);
+					return 0;
 				}
-        		}
+			}
+
+			appfw_deallocate_matched_signatures(matched_signatures, length);
 		}
 		else 
 		{

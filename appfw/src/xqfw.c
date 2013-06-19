@@ -32,9 +32,11 @@ int xqfw_isInitialized()
 // insert function below to parse & verify taint
 int xqfw_verify(const char *p_command)
 {
+	int length = strlen(p_command);
+    matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
-	char *p_taint=malloc(strlen(p_command)+1);
-  	appfw_establish_taint(p_command, p_taint);
+	char *p_taint=malloc(length+1);
+  	appfw_establish_taint(p_command, p_taint, matched_signatures);
 	if(getenv("APPFW_VERBOSE"))
 	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
@@ -42,6 +44,8 @@ int xqfw_verify(const char *p_command)
 
 	if(getenv("APPFW_VERBOSE"))
   		appfw_display_taint("Debug XQ after parse", p_command, p_taint);
+
+	appfw_deallocate_matched_signatures(matched_signatures, length);
 
   	// return code is really a boolean
   	// return > 0 if success

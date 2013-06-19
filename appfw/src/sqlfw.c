@@ -35,14 +35,14 @@ int sqlfw_isInitialized()
   return sqlfw_initialized;
 }
 
-void sqlfw_establish_taint(const char *query, char *taint)
+void sqlfw_establish_taint(const char *query, char *taint, matched_record** matched_signatures)
 {
   char **fw_sigs = appfw_getSignatures();
 
   if (!fw_sigs || !sqlfw_isInitialized())
     return;
 
-  appfw_establish_taint(query, taint);
+  appfw_establish_taint(query, taint, matched_signatures);
 }
 
 void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
@@ -56,26 +56,32 @@ void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
 */
 int sqlfw_verify(const char *zSql, char **pzErrMsg){
 //  char *tainted = appfw_sqlite3MallocZero(strlen(zSql));
-  char *tainted = malloc(strlen(zSql));
 
-  if (!peasoupDB)
-  {
-	if (getenv("APPFW_VERBOSE"))
-		fprintf(stderr, "peasoupDB is NULL\n");
-    return 0;
+	char *tainted = malloc(strlen(zSql)+1);
+
+	if (!peasoupDB)
+	{
+		if (getenv("APPFW_VERBOSE"))
+			fprintf(stderr, "peasoupDB is NULL\n");
+		return 0;
 	}
 
-  // figure out taint markings
-  // this function is particularly-time consuming -- need to optimize
-  sqlfw_establish_taint(zSql, tainted);
+	int length = strlen(zSql);
+	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
-  int success = sqlfw_verify_taint(zSql, tainted, pzErrMsg);
-  if (!success)
-    appfw_display_taint("SQL Injection detected", zSql, tainted);
+	// figure out taint markings
+	// this function is particularly-time consuming -- need to optimize
+	sqlfw_establish_taint(zSql, tainted, matched_signatures);
 
-  free(tainted);
+	int success = sqlfw_verify_taint(zSql, tainted, matched_signatures, pzErrMsg);
+	if (!success)
+		appfw_display_taint("SQL Injection detected", zSql, tainted);
 
-  return success;
+	appfw_deallocate_matched_signatures(matched_signatures, length);
+
+	free(tainted);
+
+	return success;
 }
 
 /*
@@ -85,7 +91,7 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 ** 
 ** original code: SQLITE_PRIVATE int sqlite3_sqlite3RunParser(Parse *pParse, const char *zSql, char **pzErrMsg){
 */
-int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
+int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched_signatures, char **pzErrMsg){
   Parse *pParse;
   int nErr = 0;                   /* Number of errors encountered */
   int i;                          /* Loop counter */
@@ -150,7 +156,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
 		if (end+1 < strlen(zSql))
-          return sqlfw_verify_taint(&zSql[end+1], &p_taint[end+1], pzErrMsg);
+          return sqlfw_verify_taint(&zSql[end+1], &p_taint[end+1], matched_signatures, pzErrMsg);
         else
 		{
 		  return 1; // semicolon was the last character in the entire statement return success
@@ -160,13 +166,13 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
 	  // show token info
 	  
 	  /*
+        fprintf(stderr, "\n----------------------\n");
         fprintf(stderr, "token: [");
         for (k = beg; k <= end; ++k)
-		  fprintf(stderr,"%c", zSql[k]);
+		  fprintf(stderr,"%c (%d)", zSql[k], p_taint[k]);
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
 		*/
-	 
-
+		
         appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
         lastTokenParsed = tokenType;
@@ -241,6 +247,20 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, char **pzErrMsg){
 			{
 			  goto abort_parse;
 			}
+			else if (!appfw_is_from_same_signature(matched_signatures, beg, end))
+			{
+  				if (getenv("APPFW_VERBOSE"))
+					fprintf(stderr,"not same signature at pos [%d..%d]\n", beg, end);
+
+        		for (k = beg; k <= end; ++k)
+				{
+//					fprintf(stderr,"%c", zSql[k]);
+					p_taint[k] = APPFW_SECURITY_VIOLATION;
+				}
+//				fprintf(stderr,"%n");
+			  	goto abort_parse;
+			}
+
 	      }
 		  break;
 		}

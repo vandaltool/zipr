@@ -47,8 +47,13 @@ int appfw_ldap_isFilterOperator(char c)
 // return 0 if failure
 int appfw_ldap_verify(const char *p_filter)
 {
-	char *p_taint=malloc(strlen(p_filter)+1);
-  	appfw_establish_taint(p_filter, p_taint);
+	int length = strlen(p_filter);
+    matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
+
+	char *p_taint=malloc(length+1);
+  	appfw_establish_taint(p_filter, p_taint, matched_signatures);
+
+	appfw_deallocate_matched_signatures(matched_signatures, length);
 
 	if(getenv("APPFW_VERBOSE"))
 	  	appfw_display_taint("Debugging LDAP filter", p_filter, p_taint);
