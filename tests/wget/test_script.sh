@@ -138,10 +138,27 @@ run_bench_prog_only 45 -P $THROW_AWAY_DIR -c http://localhost:$PORT_NUM/hello_wo
 compare_std_results
 cleanup
 
+#authenticaiton test
+echo "Hello World." >$THROW_AWAY_DIR/hello_world.txt
+run_test_prog_only 45 -P $THROW_AWAY_DIR -c http://localhost:$PORT_NUM/hello_world.txt
+run_bench_prog_only 45 -P $THROW_AWAY_DIR -c http://localhost:$PORT_NUM/hello_world.txt
+compare_std_results
+cleanup
 
+#authentication test
+run_test_prog_only 45 -P $THROW_AWAY_DIR --user=guest --password=password  http://localhost:$PORT_NUM/peasoup.auth/hello_world.txt
+mv $THROW_AWAY_DIR/hello_world.txt $THROW_AWAY_DIR/hello.1
+run_bench_prog_only 45 -P $THROW_AWAY_DIR --user=guest --password=password http://localhost:$PORT_NUM/peasoup.auth/hello_world.txt
+mv $THROW_AWAY_DIR/hello_world.txt $THROW_AWAY_DIR/hello.2
+compare_std_results
+compare_files_no_filtering $THROW_AWAY_DIR/hello.1 $THROW_AWAY_DIR/hello.2
+cleanup
 
-
-
+#bad authentication test
+run_test_prog_only 20 -P $THROW_AWAY_DIR --user=guest --password=bad_password  http://localhost:$PORT_NUM/peasoup.auth/hello_world.txt
+run_bench_prog_only 20 -P $THROW_AWAY_DIR --user=guest --password=bad_password http://localhost:$PORT_NUM/peasoup.auth/hello_world.txt
+compare_std_results
+cleanup
 
 
 report_success
