@@ -32,6 +32,10 @@ $PEASOUP_HOME/tools/fast_spri.sh $bspri $TOP_LEVEL/a.irdb.fbspri
 NAME=`cat new_command_name`
 TRANSFORMED_PROGRAM="$TOP_LEVEL/$NAME"
 
+echo "Generating hashes"
+$STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe $TOP_LEVEL/a.irdb.fbspri
+$PEASOUP_HOME/tools/generate_relocfile.sh $TOP_LEVEL/a.irdb.fbspri
+
 #only do the manual tests if the manual_test_wrapper script exists
 if [ -f $MANUAL_TEST_SCRIPT ]; then
 	echo "Running manual tests: $MANUAL_TEST_SCRIPT $TRANSFORMED_PROGRAM $ORIG_PROGRAM"
@@ -44,6 +48,8 @@ if [ -f $MANUAL_TEST_SCRIPT ]; then
 		echo "Manual test script failure"
 		exit $status
 	fi
+
+	
 fi
 
 #only do concolic tests if the concolic directory was created. 
