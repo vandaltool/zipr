@@ -1,5 +1,7 @@
 #include "transform.hpp"
 
+#define OPTIMIZE_ASSEMBLY
+
 using namespace libTransform;
 using namespace MEDS_Annotation;
 
@@ -27,10 +29,9 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 }
 
 //
-//  Before:              After:
-//  <p_instrumented>     <p_newInstr>
-//                       <p_instrumented>  <-- returns
-//
+//  Before:                              After:
+//  <p_instrumented> ["mov edx,1"]       <p_newInstr> []
+//                                       <dupInstr>   ["mov edx,1"] <-- returns
 //
 Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, Instruction_t * &p_newInstr)
 {
@@ -51,6 +52,18 @@ Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, 
 	AddressID_t *saveIBTA = p_instrumented->GetIndirectBranchTargetAddress();
 	dupInstr->SetIndirectBranchTargetAddress(NULL);
 
+	//
+	//  pre: p_instrument --> "mov edx, 1"
+	//	
+	// post: p_instrument no longer in map
+	//       new --> "mov edx, 1"
+	//
+	// this function is equivalent to:
+	//      m_fileIR->UnregisterAssembly(p_instrumented);
+	//      m_fileIR->RegisterAssembly(dupInstr, newAssemblyCode);
+	//
+	m_fileIR->ChangeRegistryKey(p_instrumented, dupInstr);
+
 	// replace instrumented with new instruction
 	p_instrumented->SetDataBits(p_newInstr->GetDataBits());
 	p_instrumented->SetComment(p_newInstr->GetComment());
@@ -61,6 +74,7 @@ Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, 
 	p_instrumented->SetIndirectBranchTargetAddress(saveIBTA);
 
    	p_newInstr = p_instrumented;
+
 	return dupInstr;
 }
 
@@ -911,12 +925,16 @@ void Transform::addAddRegisters(Instruction_t *p_instr, Register::RegisterName p
 {
 	// too many combinations, just use the assembler
 	string assembly = "add " + Register::toString(p_regTgt) + ", " + Register::toString(p_regSrc);
+#ifdef OPTIMIZE_ASSEMBLY
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+#else
 	if (!p_instr->Assemble(assembly))
 	{
 		cerr << "addAddRegisters(): error in assembling instruction: " << assembly << endl;
 		assert(0);
 		return;
 	}
+#endif
 
 	p_instr->SetFallthrough(p_fallThrough);
 }
@@ -928,12 +946,16 @@ void Transform::addAddRegisterConstant(Instruction_t *p_instr, Register::Registe
 	char buf[256];
 	sprintf(buf, "add %s, %d", Register::toString(p_reg).c_str(), p_constantValue);
 	string assembly(buf);
+#ifdef OPTIMIZE_ASSEMBLY
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+#else
 	if (!p_instr->Assemble(assembly))
 	{
 		cerr << "Transform::addAddConstant(): error in assembling instruction: " << assembly << endl;
 		assert(0);
 		return;
 	}
+#endif
 
 //	cerr << "Transform::addAddConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetFallthrough(p_fallThrough);
@@ -946,12 +968,16 @@ void Transform::addMulRegisterConstant(Instruction_t *p_instr, Register::Registe
 	char buf[256];
 	sprintf(buf, "imul %s, %d", Register::toString(p_reg).c_str(), p_constantValue);
 	string assembly(buf);
+#ifdef OPTIMIZE_ASSEMBLY
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+#else
 	if (!p_instr->Assemble(assembly))
 	{
 		cerr << "Transform::addMulRegisterConstant(): error in assembling instruction: " << assembly << endl;
 		assert(0);
 		return;
 	}
+#endif
 
 //	cerr << "Transform::addMulRegisterConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetFallthrough(p_fallThrough);
@@ -963,12 +989,16 @@ void Transform::addMovRegisters(Instruction_t *p_instr, Register::RegisterName p
 {
 	// too many combinations, just use the assembler
 	string assembly = "mov " + Register::toString(p_regTgt) + ", " + Register::toString(p_regSrc);
+#ifdef OPTIMIZE_ASSEMBLY
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+#else
 	if (!p_instr->Assemble(assembly))
 	{
 		cerr << "addMovRegisters(): error in assembling instruction: " << assembly << endl;
 		assert(0);
 		return;
 	}
+#endif
 	p_instr->SetFallthrough(p_fallThrough);
 //	cerr << "addMovRegisters(): " << p_instr->getDisassembly() << endl;
 }
@@ -981,12 +1011,16 @@ void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::R
 	sprintf(buf,"mov %s, %d", Register::toString(p_regTgt).c_str(), p_constant);
 
     string assembly(buf);
+#ifdef OPTIMIZE_ASSEMBLY
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+#else
     if (!p_instr->Assemble(assembly))
     {
         cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
 		assert(0);
         return;
     }
+#endif
 
 //	cerr << "addMovRegisterSignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
@@ -1000,12 +1034,16 @@ void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register:
 	sprintf(buf,"mov %s, %u", Register::toString(p_regTgt).c_str(), p_constant);
 
     string assembly(buf);
+#ifdef OPTIMIZE_ASSEMBLY
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+#else
     if (!p_instr->Assemble(assembly))
     {
         cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
 		assert(0);
         return;
     }
+#endif
 
 //	cerr << "addMovRegisterUnsignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
@@ -1020,12 +1058,16 @@ void Transform::addAndRegister32Mask(Instruction_t *p_instr, Register::RegisterN
 
     string assembly(buf);
     cerr << "addAndRegisterMask(): assembling instruction: " << assembly << endl;
+#ifdef OPTIMIZE_ASSEMBLY
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+#else
     if (!p_instr->Assemble(assembly))
     {
         cerr << "addAndRegisterMask(): error in assembling instruction: " << assembly << endl;
 		assert(0);
         return;
     }
+#endif
 
 	p_instr->SetComment("Saturating arithmetic by masking");
 }
