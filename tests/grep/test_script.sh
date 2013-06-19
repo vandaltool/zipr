@@ -144,12 +144,6 @@ run_test_prog_only 120 -v --context=5 'quick' - < $DATA_DIR/data1.txt
 run_bench_prog_only 120 -v --context=5 'quick' - < $DATA_DIR/data1.txt
 compare_std_results
 
-#
-# BUG -- these don't work
-#
-
-#run_basic_test 120 -E '[a-z]*' $DATA_DIR/data1.txt 
-
 cleanup
 
 report_success
