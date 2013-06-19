@@ -46,8 +46,3 @@ touch $INTEGER_WARN_INSTRUCTIONS
 
 # (1) run regression tests against integer transformed binary in diagnostics mode
 timeout $REGRESSION_TEST_SCRIPT_TIMEOUT $REGRESSION_TEST_SCRIPT -i $STRATAFIED_BINARY $ORIG_BINARY  
-
-# Produce final output file containing addresses of detected benign false positive
-# (2) extract address from diagnostics  
-# (3) produce list of unique addresses where the instructions result in a benign false positive
-cat $CUMUL_DIAGNOSTICS | grep -i diagnos | grep class | grep C1 | sed 's/.*diagnosis.*PC:\(.*\)/\1/' | cut -d' ' -f1 | sort | uniq >> $INTEGER_WARN_INSTRUCTIONS

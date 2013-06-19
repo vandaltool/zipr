@@ -53,9 +53,12 @@ DETECTOR_BINARY=benignfp.detector
 $PEASOUP_HOME/tools/intxform_make_detector_binary.sh $DETECTOR_BINARY
 
 # run regression tests
-rm -f $TOP_DIR/diagnostics.cumul.out
-touch $TOP_DIR/diagnostics.cumul.out
-$PEASOUP_HOME/tools/intxform_replay.sh $REGRESSION_TESTS $TOP_DIR/$DETECTOR_BINARY $TOP_DIR/$ORIG_BINARY $TOP_DIR/$INTEGER_BSPRI $TOP_DIR/diagnostics.cumul.out $INTEGER_WARNINGS_FILE
+# cumulate all diagnostics output 
+CUMULATED_DIAGNOSTICS=$TOP_DIR/diagnostics.cumul.out
+echo "intxform(detect-benign-fp): replay and cumulate diagnostics in $CUMULATED_DIAGNOSTICS"
+rm -f $CUMULATED_DIAGNOSTICS
+touch $CUMULATED_DIAGNOSTICS
+$PEASOUP_HOME/tools/intxform_replay.sh $REGRESSION_TESTS $TOP_DIR/$DETECTOR_BINARY $TOP_DIR/$ORIG_BINARY $TOP_DIR/$INTEGER_BSPRI $CUMULATED_DIAGNOSTICS $INTEGER_WARNINGS_FILE
 
-NUM_FP_DETECTED=`wc -l $INTEGER_WARNINGS_FILE`
-echo "------------ intxform: end detection of benign false positives: $NUM_FP_DETECTED benign false positives detected -----------------"
+# extract benign errors detected from cumulated diagnostic files
+$PEASOUP_HOME/tools/intxform_extract_benign_errors.sh $CUMULATED_DIAGNOSTICS $INTEGER_WARNINGS_FILE

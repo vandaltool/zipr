@@ -13,15 +13,10 @@ TIMEOUT=$4
 WARNINGS_ONLY=$5     # 0 or 1
 BENIGN_FP_DETECT=$6  # 0 or 1
 
-echo "intxform: cloneID=$1 identifiedProg=$2 concolicDir=$3 timeout=$4 warningsOnly=$5 benignFpDetect=$6"
+echo "intxform: cloneID=$CLONE_ID identifiedProg=$IDENTIFIED_PROG concolicDir=$CONCOLIC_DIR timeout=$TIMEOUT warningsOnly=$WARNINGS_ONLY benignFpDetect=$BENIGN_FP_DETECT"
 
 # configuration variables
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt   # libc and other system library functions
-
-if [ -z $TIMEOUT ] ;
-then
-TIMEOUT=5400         # 1.5hr
-fi
 
 echo "intxform: timeout=$TIMEOUT seconds"
 
@@ -38,10 +33,9 @@ if [ "$BENIGN_FP_DETECT" = "1" ]; then
 	echo "INTXFORM: Detection of benign false positives turned on for recognized program: $IDENTIFIED_PROG"
 	if [ "$IDENTIFIED_PROG" != "" ]; then
 		echo "intxform: identifiedProg=$IDENTIFIED_PROG"
-		timeout $TIMEOUT $PEASOUP_HOME/tools/intxform_detect_benign_fp.sh $CLONE_ID $IDENTIFIED_PROG $INTEGER_WARNINGS_FILE
+		$PEASOUP_HOME/tools/intxform_detect_benign_fp.sh $CLONE_ID $IDENTIFIED_PROG $INTEGER_WARNINGS_FILE
 	else
 		echo "intxform: unknown program identified -- do not automatically detect benign FP for now"
-
 	fi
 fi
 
