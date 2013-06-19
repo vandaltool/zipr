@@ -132,7 +132,6 @@ compare_files_no_filtering $THROW_AWAY_DIR/hello.1 $THROW_AWAY_DIR/hello.2
 cleanup
 
 #-c test (non-partial file test)
-$
 echo "Hello World." >$THROW_AWAY_DIR/hello_world.txt
 run_test_prog_only 45 -P $THROW_AWAY_DIR -c http://localhost:$PORT_NUM/hello_world.txt
 run_bench_prog_only 45 -P $THROW_AWAY_DIR -c http://localhost:$PORT_NUM/hello_world.txt
