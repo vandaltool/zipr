@@ -6,8 +6,6 @@
 #include "appfw.h"
 #include "ldap.h"
 
-void xq_parse(char* to_parse, char* taint_markings);
-
 static int ldap_initialized = 0;
 
 void appfw_ldap_init()
