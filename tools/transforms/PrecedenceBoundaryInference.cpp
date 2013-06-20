@@ -166,12 +166,16 @@ PNStackLayout* PrecedenceBoundaryInference::GetPNStackLayout(libIRDB::Function_t
 			revised_playout.InsertESPOffset(inserted_ranges[i].GetOffset()+inserted_ranges[i].GetSize());
 		}
 
-		revised_playout.SetCanarySafe(false);
+//I don't know why I marked these as not canary safe, but since I validate
+//everything now, I'm removing this restriction.
+//		revised_playout.SetCanarySafe(false);
 
 		return new PNStackLayout(revised_playout);
 	}
 
-	precedence_layout.SetCanarySafe(false);
+//I don't know why I marked these as not canary safe, but since I validate
+//everything now, I'm removing this restriction.
+//	precedence_layout.SetCanarySafe(false);
 	
 	return new PNStackLayout(precedence_layout);
 }

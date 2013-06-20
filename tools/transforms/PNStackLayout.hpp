@@ -63,7 +63,6 @@ public:
 	virtual void AddDMZPadding();
 	virtual bool IsPadded() const;
 	virtual bool IsShuffled() const;
-	virtual bool CanShuffle() const;
 	//Remove any transformations, leaves the PNStackLayout as if the object had just been constructed.
 	virtual void ResetLayout();
 	virtual unsigned int GetNumberOfMemoryObjects() const;
@@ -82,6 +81,7 @@ public:
 	virtual std::vector<PNRange*> GetRanges() {return mem_objects;}
 	virtual bool IsCanarySafe() const {return stack_layout.is_canary_safe;}
 	virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
+	virtual bool IsShuffleSafe() const ;
 	virtual bool IsStaticStack()const {return stack_layout.is_static_stack;}
 	virtual bool HasFramePointer()const{return stack_layout.has_frame_pointer;}
 	//memory leak?

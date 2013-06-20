@@ -49,7 +49,6 @@ PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
 	no_validation_level = -1;
 	coverage_threshold = -1;
 	do_shared_object_protection = false;
-	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
 
 }
 
@@ -454,6 +453,8 @@ void PNTransformDriver::GenerateTransformsInit()
 	total_funcs = 0;
 	blacklist_funcs = 0;
 	sanitized_funcs = 0;
+	dynamic_frames = 0;
+	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
 	not_transformable.clear();
 	failed.clear();	   
 }
@@ -668,7 +669,7 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 {
 	SanitizeFunctions();
 
-	vector<validation_record> high_covered_funcs, low_covered_funcs, not_covered_funcs;
+	vector<validation_record> high_covered_funcs, low_covered_funcs, not_covered_funcs,shuffle_validate_funcs;
 
 	//For each function
 	//Loop through each level, find boundaries for each, sort based on
@@ -763,24 +764,51 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 		vr.layouts=layouts;
 		vr.func=func;
 
-		if(func_coverage == 0)
-			not_covered_funcs.push_back(vr);
-		else if(func_coverage <= coverage_threshold)
-			low_covered_funcs.push_back(vr);
+		//For logging purposes I want to know if the layout for with the
+		//PN stack layout is a static stack frame. Since all inferences
+		//based the same stack frame should record the same result, taking
+		//the result from the first inference is okay. 
+		if(!layouts[0]->IsStaticStack())
+			dynamic_frames++;
+
+		//Filter out shuffle validation functions
+		//You can't simply look at canary safety, since we mark some P1ed funcs
+		//as not canary safe, specifically, dynamic stack allocations.
+		//I only suspect to see one function needing shuffle validation (main).
+		if(!layouts[0]->IsCanarySafe() && func_coverage != 0 && layouts[0]->GetNumberOfMemoryObjects()>1)
+		{
+			shuffle_validate_funcs.push_back(vr);
+
+			if(func_coverage > coverage_threshold)
+				high_coverage_count++;
+			else
+				low_coverage_count++;
+		}
 		else
-			high_covered_funcs.push_back(vr);
+		{
+			layouts[0]->Shuffle();
+			layouts[0]->AddRandomPadding();
+
+			if(func_coverage == 0)
+				not_covered_funcs.push_back(vr);
+			else if(func_coverage <= coverage_threshold)
+				low_covered_funcs.push_back(vr);
+			else
+				high_covered_funcs.push_back(vr);
+		}
 			
 	}
 
 	Validate_Recursive(high_covered_funcs,0,high_covered_funcs.size());
 	Validate_Recursive(low_covered_funcs,0,low_covered_funcs.size());
-	
 	Register_Finalized(not_covered_funcs,0,not_covered_funcs.size());
+
+	//TODO: do shuffle validation last. 
+	cerr<<"Functions I will need to shuffle validate: "<<shuffle_validate_funcs.size()<<endl;
 
 	high_coverage_count +=high_covered_funcs.size();
 	low_coverage_count +=low_covered_funcs.size();
 	no_coverage_count +=not_covered_funcs.size();
-
 
 	//TODO: print file report
 }
@@ -801,18 +829,21 @@ void PNTransformDriver::Register_Finalized(vector<validation_record> &vrs,unsign
 		fr.func = vrs[index].func;
 		fr.firp = orig_virp;
 		finalization_registry.push_back(fr);
-		undo(vrs[index].func);
-
-		cout<<"registering "<<fr.func->GetName()<<" layout "<<fr.layout->GetLayoutName()<<endl;
-
+		//placing layout in the history here, although the information
+		//could change when the modification is finalized. 
 		transformed_history[fr.layout->GetLayoutName()].push_back(fr.layout);
+
+//DEBUG: turning off undo to accumulate for now. A bug in modifying zsh
+//seems to indicate this functionality (registration) is broken. 
+//		undo(vrs[index].func); //make sure this function is registered only (undo any prior mods)
+		cout<<"registering "<<fr.func->GetName()<<" layout "<<fr.layout->GetLayoutName()<<endl;
 	}
 
 	intermediate_report_count += length;
 
-	//print out intermedaite report every if the report count exceeds or equals 100 registered funcs
+	//print out intermedaite report every if the report count exceeds or equals 50 registered funcs
 	//since the last report. 
-	if(intermediate_report_count >= 100)
+	if(intermediate_report_count >= 50)
 	{
 		cerr<<"############################INTERMEDIATE SUMMARY############################"<<endl;
 		Print_Report();
@@ -820,36 +851,27 @@ void PNTransformDriver::Register_Finalized(vector<validation_record> &vrs,unsign
 	}
 }
 
-
-void PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsigned int start, int length)
+//Assumed that passed in layouts have been transformed and are ready for validation. 
+bool PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsigned int start, int length)
 {
 	if(timeExpired || length <= 0 || vrs.size()==0)
-		return;
+		return false;
 
 	assert(start+length-1 != vrs.size());
 
 	cout<<"Validate Recursive: validating "<<length<<" funcs of "<<vrs.size()<<endl;
 
+	//Rewrite all funcs
 	for(int i=0;i<length;i++)
 	{
 		unsigned int index=i+start;
 		PNStackLayout  *layout = vrs[index].layouts[vrs[index].layout_index];
 
-		//TODO shuffle validation?
-
-		layout->ResetLayout();
-
-		layout->Shuffle();
-		if(layout->IsPaddingSafe())
-		{
-			layout->AddRandomPadding(do_align);
-		}
-		else
-		{
-			//TODO: mark as requiring shuffle validation. 
-		}
+		//make sure the fucntions isn't already modified
+		undo(vrs[index].func);
 
 		//Canary rewrite will determine if layout can be canaried.
+		//finalization will remove canaries if appropriate. 
 		Canary_Rewrite(layout,vrs[index].func);
 	}
 
@@ -860,6 +882,7 @@ void PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 	if(Validate(orig_virp,ss.str()))
 	{
 		Register_Finalized(vrs,start,length);
+		return true;
 	}
 	else
 	{
@@ -893,7 +916,7 @@ void PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 				{
 					failed.push_back(vrs[start].func);
 					cout<<"Validate Recursive: Function: "<<vrs[start].func->GetName()<<" has no additional inferences."<<endl;
-					return;
+					return false;
 				}
 				else
 				{
@@ -904,12 +927,27 @@ void PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 				}
 			}
 
+			vrs[start].layouts[vrs[start].layout_index]->Shuffle();
+			vrs[start].layouts[vrs[start].layout_index]->AddRandomPadding();
+
+
 			Validate_Recursive(vrs,start,length);
+			return false;
 		}
 		else
 		{
-			Validate_Recursive(vrs,start,length/2);
-			Validate_Recursive(vrs,start+length/2,(length-(length/2)));
+			//Algorithm Idea: undo modifications half at a time, until the side of the vector of mods
+			//containing the error is found. If found, send to Validate_Recursive.
+			//Finalize all remaining. 
+
+			bool left_val, right_val;
+			left_val = Validate_Recursive(vrs,start,length/2);
+			right_val = Validate_Recursive(vrs,start+length/2,(length-(length/2)));
+
+			if(left_val && right_val)
+				cerr<<"TESTING ERROR: TESTING THE WHOLE REPORTED FAILURE, TESTING THE HALVES REPORTS SUCCESS"<<endl;
+
+			return false;
 		}
 		
 	}
@@ -970,19 +1008,67 @@ void PNTransformDriver::Finalize_Transformation()
 
 		assert(func != NULL && layout != NULL && firp != NULL);
 		firps.insert(firp);
-		orig_virp = firp;
+
+//DEBUG: This code needs to be put back, especially for removing canaries
+//if do_canaries is false, but at the moment, accumulating modifications
+//works for zsh, making it appear that delayed modification is broken. 
+
+		// orig_virp = firp;
 
 
-		//TODO: really there is no need to retransform, but it
-		//is much easier to retransform than to retain the modified
-		//instructions previously made. 
-		if(do_canaries)
-			Canary_Rewrite(layout,func);
-		else
-			Sans_Canary_Rewrite(layout,func);
+		// //TODO: really there should be no need to retransform, but it
+		// //is much easier to retransform than to retain the modified
+		// //instructions previously made. 
+		// if(do_canaries)
+		// 	Canary_Rewrite(layout,func);
+		// else
+		// 	Sans_Canary_Rewrite(layout,func);
 	}
 
 	//TODO: one more validation? 
+	cerr<<"Sanity validation check....."<<endl;
+
+	string dirname = "p1.xform/validation_final";
+	string cmd = "mkdir -p " + dirname;
+	system(cmd.c_str());
+
+	string aspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.aspri";
+	string bspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.bspri";
+
+	ofstream aspriFile;
+	aspriFile.open(aspri_filename.c_str(),ios_base::out);
+	
+	if(!aspriFile.is_open())
+	{
+		assert(false);
+	}
+
+	for(set<FileIR_t*>::iterator it=firps.begin();
+		it!=firps.end();
+		++it
+		)
+	{
+		FileIR_t *firp = *it;
+		firp->GenerateSPRI(aspriFile,false);
+	}
+
+	aspriFile.close();
+
+	char new_instr[1024];
+	//This script generates the aspri and bspri files; it also runs BED
+	sprintf(new_instr, "%s %d %s %s", BED_script.c_str(), orig_progid, aspri_filename.c_str(), bspri_filename.c_str());
+	
+	//If OK=BED(func), then commit	
+	int rt=system(new_instr);
+	int actual_exit = -1, actual_signal = -1;
+	if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
+	else actual_signal = WTERMSIG(rt);
+	int retval = actual_exit;
+
+	if(retval != 0)
+		cerr<<"Sanity validation failed!! Continuing for now"<<endl;
+	else
+		cerr<<"Sanity validation passed."<<endl;
 
 	//Commit changes for each file. 
 	//TODO: is this necessary, can I do one write?
@@ -995,6 +1081,9 @@ void PNTransformDriver::Finalize_Transformation()
 		cout<<"Writing to DB: "<<firp->GetFile()->GetURL()<<endl;
 		firp->WriteToDB();
 	}
+
+
+
 }
 
 void PNTransformDriver::Print_Report()
@@ -1089,10 +1178,12 @@ void PNTransformDriver::Print_Report()
 	}
 
 	cerr<<"----------------------------------------------"<<endl;
-	cerr<<"Functions modified exceeding threshold: "<<high_coverage_count<<endl;
-	cerr<<"Functions modified non-zero coverage below or equal to threshold: "<<low_coverage_count<<endl;
+	cerr<<"Functions validated exceeding threshold: "<<high_coverage_count<<endl;
+	cerr<<"Functions validated with non-zero coverage below or equal to threshold: "<<low_coverage_count<<endl;
 	cerr<<"Functions modified with no coverage: "<<no_coverage_count<<endl;
 	cerr<<"Total validations performed: "<<validation_count<<endl;
+	cerr<<"----------------------------------------------"<<endl;
+	cerr<<"Total dynamic stack frames: "<<dynamic_frames<<endl;
 
 	cerr<<"----------------------------------------------"<<endl;
 	cerr<<"Non-Blacklisted Functions \t"<<total_funcs<<endl;
@@ -1128,7 +1219,7 @@ vector<PNStackLayout*> PNTransformDriver::GenerateInferences(Function_t *func,in
 
 bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Function_t *func)
 {
-	if(!layout->CanShuffle())
+	if(!layout->IsShuffleSafe())
 		return true;
 
 	cerr<<"PNTransformDriver: ShuffleValidation(): "<<layout->GetLayoutName()<<endl;

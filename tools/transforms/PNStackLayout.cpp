@@ -125,7 +125,7 @@ PNStackLayout::~PNStackLayout()
 //a logical shuffling, it does not change the ordering of the mem_objects data structure.
 void PNStackLayout::Shuffle()
 {
-	if(!CanShuffle())
+	if(!IsShuffleSafe())
 		return;
 
 	//TODO: this function can be optimized to not randomize the mem_objects vector then resort
@@ -211,8 +211,23 @@ PNStackLayout PNStackLayout::GetCanaryLayout() const
 	return new_layout;
 }
 
+//Adds padding for canaries between objects, or if padding
+//exists, does nothing.
 void PNStackLayout::AddCanaryPadding()
 {
+	// if(!IsPaddingSafe())
+	// 	return;
+//TODO: I should throw an exception, but for now I will just assert false if
+//the layout is not padding safe but canary padding is requested. 
+	if(!IsPaddingSafe())
+		assert(false);
+
+
+//TODO: I need to check the padding for each variable, but for now, I will assume
+//if the layout is padded, it is padded enough for canaries
+	if(IsPadded())
+		return;
+
 	unsigned int size = 8;
 
 	sort(mem_objects.begin(),mem_objects.end(),CompareRangeDisplacedOffset);
@@ -266,6 +281,9 @@ void PNStackLayout::AddCanaryPadding()
 */
 void PNStackLayout::AddRandomPadding(bool isaligned)
 {
+	if(!IsPaddingSafe())
+		return;
+
 	this->isaligned = isaligned;
 
 	if(verbose_log)
@@ -503,7 +521,7 @@ string PNStackLayout::GetFunctionName() const
 
 //A frame can be shuffled if there are two or more variables, not including
 //the out arguments region. 
-bool PNStackLayout::CanShuffle() const
+bool PNStackLayout::IsShuffleSafe() const
 {
 	return (mem_objects.size() > 2) || (mem_objects.size() == 2 && !stack_layout.has_out_args);
 }
@@ -601,6 +619,8 @@ int PNStackLayout::GetNewOffsetEBP(int ebp_offset) const
 
 void PNStackLayout::ResetLayout()
 {
+	isPadded = false;
+	isShuffled = false;
 	for(unsigned int i=0;i<mem_objects.size();i++)
 	{
 		mem_objects[i]->Reset();
