@@ -2,7 +2,11 @@ CREATE INDEX
 CREATE TABLE 
 CREATE TABLE sqlite_master(
 CREATE TEMP TABLE sqlite_temp_master(
-INSERT INTO vacuum_db.sqlite_master   
-SELECT name, rootpage, sql FROM
-SELECT type, name, tbl_name, rootpage, sql    FROM main.sqlite_master   WHERE type='view' OR type='trigger'      OR (type='table' AND rootpage=0)
+INSERT INTO vacuum_db.sqlite_master
+SELECT name, rootpage, sql FROM 
+SELECT type, name, tbl_name, rootpage, sql
+FROM main.sqlite_master
+WHERE type='view'
+OR type='trigger'
+OR (type='table' AND rootpage=0)
 .sqlite_master ORDER BY rowid
