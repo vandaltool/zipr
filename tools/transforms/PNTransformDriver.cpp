@@ -895,7 +895,8 @@ PNStackLayout* PNTransformDriver::Get_Next_Layout(validation_record &vr)
 	else
 	{
 		vector<PNStackLayout*> layouts;
-		for(unsigned int level=vr.hierarchy_index;level<(int)transform_hierarchy.size()&&layouts.size()==0;level++)
+		unsigned int level=vr.hierarchy_index;
+		for(;level<(int)transform_hierarchy.size()&&layouts.size()==0;level++)
 		{
 			layouts = GenerateInferences(vr.func, level);
 		}
@@ -909,8 +910,10 @@ PNStackLayout* PNTransformDriver::Get_Next_Layout(validation_record &vr)
 		{
 			sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
 
+			//update info in the validation record. 
 			vr.layout_index=0;
 			vr.layouts=layouts;
+			vr.hierarchy_index=level;
 		}
 	}
 
