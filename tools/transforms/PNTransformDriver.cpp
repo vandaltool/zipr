@@ -870,6 +870,12 @@ void PNTransformDriver::ShuffleValidation(vector<validation_record> &vrs)
 			else
 				break;
 		}
+
+		if(layout == NULL)
+		{
+			failed.push_back(vrs[i].func);
+			cout<<"Shuffle Validation: Function: "<<vrs[i].func->GetName()<<" has no additional inferences."<<endl;
+		}
 	}
 
 //	return success;
