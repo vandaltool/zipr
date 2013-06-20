@@ -26,11 +26,11 @@ clean:
 	rm -rf *.o *.tmp *.exe peasoup_executable_directory* test*.peasoup messages_to_tne.log ps_tne_logfile.txt appfw.db *.sigs
 
 peasoup: all
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept.exe testintercept.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept2.exe testintercept2.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testmysql.exe testmysql.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept.exe testintercept.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept2.exe testintercept2.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testmysql.exe testmysql.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
 	
 run: all
-	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testmysql.exe.sigs ./testmysql.exe "David' or '0'='0"
-	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept.exe.sigs ./testintercept.exe "David' or '0'='0"
-	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept2.exe.sigs ./testintercept.exe "David' or '0'='0"
+	QUERY_DATA="David' or '0'='0" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testmysql.exe.sigs ./testmysql.exe 
+	QUERY_DATA="David' or '0'='0" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept.exe.sigs ./testintercept.exe 
+	QUERY_DATA="David' or '0'='0" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept2.exe.sigs ./testintercept.exe 

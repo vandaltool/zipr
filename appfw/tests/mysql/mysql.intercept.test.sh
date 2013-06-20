@@ -23,15 +23,11 @@
 # ATTRIBUTE OS=linux
 # ATTRIBUTE Compiler=gcc
 # ATTRIBUTE Arch=x86_32
-# ATTRIBUTE TestName=smartfuzz
+# ATTRIBUTE TestName=mysql
 # ATTRIBUTE BenchmarkName=TandE
 # ATTRIBUTE CompilerFlags="-w"
 
 COMPFLAGS="-w"
-
-# export general IDA pro environment vars
-export IDAROOT=$IDAROOT61
-export IDASDK=$IDASDK61
 
 PWD=`pwd`
 TESTLOC="${PWD}"
@@ -80,7 +76,7 @@ fi
 #
 
 rm -f $tmp
-./testintercept.exe.peasoup "David' or '0'='0" > $tmp 2>&1
+QUERY_DATA="David' or '0'='0"  ./testintercept.exe.peasoup > $tmp 2>&1
 grep -i "inject" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
@@ -91,7 +87,7 @@ fi
 # test interception of mysql_real_connect
 #
 rm -f $tmp
-./testintercept2.exe.peasoup "David' or '0'='0" > $tmp 2>&1
+QUERY_DATA="David' or '0'='0"  ./testintercept2.exe.peasoup > $tmp 2>&1
 grep -i "inject" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp

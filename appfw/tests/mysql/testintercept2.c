@@ -7,8 +7,9 @@ int main(int argc, char *argv[])
    MYSQL *conn = NULL;
 
    char query[2048];
+   char *query_data = getenv("QUERY_DATA");
 
-   sprintf(query,"SELECT * FROM someTable WHERE id='%s'", argv[1]);
+   sprintf(query,"SELECT * FROM someTable WHERE id='%s'", query_data);
 
    printf("query: %s\n", query);
 
