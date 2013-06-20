@@ -124,10 +124,12 @@ appfw/tests/oscommand/Makefile -text
 appfw/tests/oscommand/dotest.sh -text
 appfw/tests/oscommand/testosc.c -text
 appfw/tests/postgres/Makefile -text
+appfw/tests/postgres/postgres.test.env.sh -text
 appfw/tests/postgres/postgres.test.sh -text
 appfw/tests/postgres/setup.sql -text
 appfw/tests/postgres/teardown.sql -text
 appfw/tests/postgres/testpg1.c -text
+appfw/tests/postgres/testpg1.env.c -text
 appfw/tests/postgres/testpg2.c -text
 appfw/tests/postgres/testpg3.c -text
 appfw/tests/postgres/testpg4.c -text
