@@ -70,6 +70,8 @@ if [ ! $? -eq 0 ]; then
 	cleanup 1 "Failed to build postgres tests"
 fi
 
+psql -f ./teardown.sql 2>/dev/null # in case we have remnants from a previous testing run
+psql -f ./setup.sql
 
 #
 # testpg1.exe.env.peasoup
@@ -117,44 +119,52 @@ if [ ! $? -eq 0 ]; then
 	cleanup 6 "False negative detected: attack query for testpg1.exe.env.peasoup should have been detected"
 fi
 
-psql -f ./teardown.sql
-cleanup 0 "Successfully detected Postgres SQL Injection"
-
 #
 # testpg2.exe.env.peasoup
 #
-psql -f ./teardown.sql 2>/dev/null # in case we have remnmants from a previous testing run
-psql -f ./setup.sql
 
-# good query
-rm -f $tmp
-./testpg2.exe.env.peasoup David > $tmp 2>&1
-grep -i "David Hyde" $tmp
+# test good queries
+rm -f $tmp 2>/dev/null
+QUERY_DATA="bob" ./testpg2.exe.env.peasoup > $tmp 2>&1
+grep -i query $tmp | grep -i success
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 7 "False positive detected: query for testpg2.exe.env.peasoup should have succeeded"
 fi
 
-# attack query
 rm -f $tmp
-./testpg2.exe "David' or '0'='0" > $tmp 2>&1
-grep -i William $tmp
+QUERY_DATA="select * from xyz" ./testpg2.exe.env.peasoup > $tmp 2>&1
+grep -i query $tmp | grep -i success
 if [ ! $? -eq 0 ]; then
 	cat $tmp
-	cleanup 7 "False negative detected: attack query for testpg2.exe.env.peasoup should have failed"
+	cleanup 8 "False positive detected: query for testpg2.exe.env.peasoup should have succeeded"
 fi
 
-#
-# testpg4.exe.env.peasoup
-# test multi-statement queries
-#
+# test attack queries
 rm -f $tmp
-./testpg4.exe.env.peasoup "bob" > $tmp 2>&1
+QUERY_DATA="' or 1 = 1;--" ./testpg2.exe.env.peasoup > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
-if [ $? -eq 0 ]; then
+if [ ! $? -eq 0 ]; then
 	cat $tmp
-	cleanup 8 "False positive detected: there should be no SQL injections here"
+	cleanup 9 "False negative detected: attack query for testpg2.exe.env.peasoup should have been detected"
 fi
+
+rm -f $tmp
+QUERY_DATA="' and /* */ 1 = 1 /* */; /*--*/" ./testpg2.exe.env.peasoup > $tmp 2>&1
+grep -i "sql injection" $tmp | grep -i detected
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 10 "False negative detected: attack query for testpg2.exe.env.peasoup should have been detected"
+fi
+
+rm -f $tmp
+QUERY_DATA="%' or 1 = 1; -- select *" ./testpg2.exe.env.peasoup > $tmp 2>&1
+grep -i "sql injection" $tmp | grep -i detected
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 11 "False negative detected: attack query for testpg2.exe.env.peasoup should have been detected"
+fi
+
 
 psql -f ./teardown.sql
 cleanup 0 "Successfully detected Postgres SQL Injection"

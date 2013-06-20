@@ -3,7 +3,7 @@ APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so
 generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
 all: testpg1.exe testpg2.exe testpg3.exe testpg4.exe
-all.env: testpg1.env.exe 
+all.env: testpg1.env.exe testpg2.env.exe
 
 testpg1.o: testpg1.c
 	gcc -I/usr/include/postgresql -c testpg1.c
@@ -13,6 +13,9 @@ testpg1.env.o: testpg1.env.c
 
 testpg2.o: testpg2.c
 	gcc -I/usr/include/postgresql -c testpg2.c
+
+testpg2.env.o: testpg2.env.c
+	gcc -I/usr/include/postgresql -c testpg2.env.c
 
 testpg3.o: testpg3.c
 	gcc -I/usr/include/postgresql -c testpg3.c
@@ -27,6 +30,10 @@ testpg1.exe: testpg1.o
 testpg1.env.exe: testpg1.env.o
 	gcc testpg1.env.o -o testpg1.env.exe -lpq
 	$(generate_signatures) testpg1.env.exe
+
+testpg2.env.exe: testpg2.env.o
+	gcc testpg2.env.o -o testpg2.env.exe -lpq
+	$(generate_signatures) testpg2.env.exe
 
 testpg2.exe: testpg2.o
 	gcc testpg2.o -o testpg2.exe -lpq
@@ -51,6 +58,7 @@ peasoup: all
 	
 peasoup.env: all.env
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg1.env.exe testpg1.exe.env.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.env.exe testpg2.exe.env.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
 
 run: all
 #	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg4.exe.sigs ./testpg4.exe "bob"
