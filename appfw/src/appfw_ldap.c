@@ -48,7 +48,7 @@ int appfw_ldap_isFilterOperator(char c)
 int appfw_ldap_verify(const char *p_filter)
 {
 	int length = strlen(p_filter);
-    matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
+	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
 	char *p_taint=malloc(length+1);
   	appfw_establish_taint(p_filter, p_taint, matched_signatures);
@@ -73,6 +73,6 @@ int appfw_ldap_verify(const char *p_filter)
 		}
 	}
 
-    free(p_taint);
+	free(p_taint);
 	return 1;
 }
