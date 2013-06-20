@@ -85,6 +85,14 @@ void PNTransformDriver::AddInference(PNStackLayoutInference *inference, int leve
 void PNTransformDriver::SetDoCanaries(bool do_canaries)
 {
 	this->do_canaries = do_canaries;
+
+	//TODO: For the optimized TNE version I had to remove
+	//optional canaries. This would've been done by
+	//the finalize_transformation step, but for some reason
+	//I can't get the registration functionality to work
+	//assert false for now if the canaries are turned off
+	//to remind me to fix this. 
+	assert(do_canaries);
 }
 
 void PNTransformDriver::SetDoAlignStack(bool align_stack)
@@ -483,32 +491,58 @@ void PNTransformDriver::GenerateTransforms()
 	//now that I am protecting shared objects, it might be better to pass this variable around, or at least change the
 	//name, something to consider
 
+	//--------------------a.ncexe protection-----------------------
 
-	//Transform all files or just the main file, depending on if we are protecting
-	//shared objects.
+	//Always modify a.ncexe first. This is assumed to be what the constructor of FileIR_t will return if
+	//the variant ID is used alone as the parameter to the constructor. 
+	orig_virp = new FileIR_t(*pidp);
+	assert(orig_virp && pidp);
+
+	//Sanity check: make sure that this file is actually a.ncexe, if not assert false for now
+	string url = orig_virp->GetFile()->GetURL();
+	//TODO: basename is only used as a hack
+	//because of the way the url is stored in the db.
+	//The url should be fixed to be the absolute path. 
+	if(url.find("a.ncexe")==string::npos)
+	{
+		assert(false);
+	}
+
+	cout<<"PNTransformDriver: Protecting File: "<<url<<endl;
+	GenerateTransformsHidden(coverage_map["a.ncexe"]);
+
+
+	//-----------------------shared object protection----------------------------
+
+	//Transform any shared objects if shared object protection is on
+	//This will loop through all files stored in pidp and skip a.ncexe
 	if(do_shared_object_protection)
 	{
-		cout<<"PNTransformDriver: Protecting Shared Objects"<<endl;
+		cout<<"PNTransformDriver: Shared Object Protection ON"<<endl;
 		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
 			it!=pidp->GetFiles().end();
 			++it
 			)
 		{
-			cout<<"PNTransformDiver: Transforming File"<<endl;
-
 			File_t* this_file=*it;
 			assert(this_file);
+
+			string url = this_file->GetURL();
+			//if the file is a.ncexe skip it (it has been transformed already)
+			if(url.find("a.ncexe")!=string::npos)
+				continue;
 
 			// read the db  
 			orig_virp=new FileIR_t(*pidp,this_file);
 			assert(orig_virp && pidp);
 
-			string url = orig_virp->GetFile()->GetURL();
-
 			map<string,double> file_coverage_map;
 
 			string key;
 			//find the appropriate coverage map for the given file
+			//TODO: in theory this should be a simple map look up, but because
+			//the complete path is not currently in the DB for a shared object
+			//I have to loop through the map for now. 
 			for(map<string, map<string, double> >::iterator it=coverage_map.begin();
 				it!=coverage_map.end()&&!timeExpired; ++it)
 			{
@@ -528,23 +562,14 @@ void PNTransformDriver::GenerateTransforms()
 					break;
 				}
 			}
-			
-			GenerateTransformsHidden(file_coverage_map);
 
-//			delete orig_virp;
-			cerr<<"############################File Report############################"<<endl;
+
+			cerr<<"######PreFile Report: Accumulated results prior to processing file: "<<url<<"######"<<endl;
 			Print_Report();
+
+			cout<<"PNTransformDriver: Protecting File: "<<url<<endl;
+			GenerateTransformsHidden(file_coverage_map);
 		}
-
-	}
-	else
-	{
-		orig_virp = new FileIR_t(*pidp);
-		assert(orig_virp && pidp);
-
-		GenerateTransformsHidden(coverage_map["a.ncexe"]);
-		
-//		delete orig_virp;
 	}
 
 	if (write_stack_ir_to_db)
@@ -552,13 +577,13 @@ void PNTransformDriver::GenerateTransforms()
 		WriteStackIRToDB();
 	}
 
-	//TODO: clean up malloced (new'ed) FileIR_t
-
 	if(timeExpired)
 		cerr<<"Time Expired: Commit Changes So Far"<<endl;
 
 	//finalize transformation, commit to database 
 	Finalize_Transformation();
+
+	//TODO: clean up malloced (new'ed) FileIR_t
 
 	cerr<<"############################Final Report############################"<<endl;
 	Print_Report();
@@ -771,12 +796,11 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 		if(!layouts[0]->IsStaticStack())
 			dynamic_frames++;
 
-		//Filter out shuffle validation functions
-		//You can't simply look at canary safety, since we mark some P1ed funcs
-		//as not canary safe, specifically, dynamic stack allocations.
+		//Handle covered Shuffle Validate functions separately. 
 		//I only suspect to see one function needing shuffle validation (main).
-		if(!layouts[0]->IsCanarySafe() && func_coverage != 0 && layouts[0]->GetNumberOfMemoryObjects()>1)
+		if(layouts[0]->DoShuffleValidate() && func_coverage != 0)
 		{
+			//Note: Do not transform these functions, handled that elsewhere.
 			shuffle_validate_funcs.push_back(vr);
 
 			if(func_coverage > coverage_threshold)
@@ -805,12 +829,86 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 
 	//TODO: do shuffle validation last. 
 	cerr<<"Functions I will need to shuffle validate: "<<shuffle_validate_funcs.size()<<endl;
+	
+	ShuffleValidation(shuffle_validate_funcs);
 
 	high_coverage_count +=high_covered_funcs.size();
 	low_coverage_count +=low_covered_funcs.size();
 	no_coverage_count +=not_covered_funcs.size();
 
 	//TODO: print file report
+}
+
+//returns true if all validate vrs validate without any failures. 
+void PNTransformDriver::ShuffleValidation(vector<validation_record> &vrs)
+{
+//	bool success = true;
+	for(unsigned int i=0;i<vrs.size()&&!timeExpired;i++)
+	{
+		PNStackLayout *layout = vrs[i].layouts[vrs[i].layout_index];
+		
+		while(layout != NULL&&!timeExpired)
+		{
+			//using padding transform handler since I now 
+			//have PNStackLayout objects preven padding or shuffling
+			//if it is not appropriate. In theory I could just use
+			//one handler now, but since I know a canary should not
+			//be used here, I will explicitly use a function that
+			//does not even attempt it. 
+			if(!PaddingTransformHandler(layout,vrs[i].func,true))
+			{
+//				success = false;
+				//we will assume all subsequent layouts require shuffle validation. 
+				//if it doesn't, the padding transform handler will add
+				//padding and shuffle without shuffle validation.
+				//Really this means if we have a P1 layout, we wont
+				//shuffle it because it can't be, so padding will be
+				//added and validated once. I make the assumption a layout
+				//never can switch to suddenly being canary safe. 
+				layout = Get_Next_Layout(vrs[i]);
+			}
+			else
+				break;
+		}
+	}
+
+//	return success;
+}
+
+//Alters the passed in validation record to record the layout information, and
+//for simplicity returns the next layout object (PNStackLayout*) 
+//returns NULL if no layout is next. 
+PNStackLayout* PNTransformDriver::Get_Next_Layout(validation_record &vr)
+{
+    //if the layout is not the last in the vector of layouts for the hierarchy, set the layout to the next layout
+	if(vr.layout_index != vr.layouts.size()-1)
+	{
+		vr.layout_index++;
+	}
+	//otherwise, continue looping through the hierarchy until inferences are generated. 
+	else
+	{
+		vector<PNStackLayout*> layouts;
+		for(unsigned int level=vr.hierarchy_index;level<(int)transform_hierarchy.size()&&layouts.size()==0;level++)
+		{
+			layouts = GenerateInferences(vr.func, level);
+		}
+
+		//If no layouts are found, then this function fails all validation attempts
+		if(layouts.size() == 0)
+		{
+			return NULL;
+		}
+		else
+		{
+			sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
+
+			vr.layout_index=0;
+			vr.layouts=layouts;
+		}
+	}
+
+	return vr.layouts[vr.layout_index];
 }
 
 int intermediate_report_count=0;
@@ -896,40 +994,15 @@ bool PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 		if(length == 1)
 		{
 			cout<<"Validate Recursive: Found problem function: "<<vrs[start].func->GetName()<<" validating linearly"<<endl;
-			
-			//if the layout is not the last in the vector of layouts for the hierarchy, set the layout to the next layout
-			if(vrs[start].layout_index != vrs[start].layouts.size()-1)
-			{
-				vrs[start].layout_index++;
-			}
-			//otherwise, continue looping through the hierarchy until inferences are generated. 
-			else
-			{
-				vector<PNStackLayout*> layouts;
-				for(unsigned int level=vrs[start].hierarchy_index;level<(int)transform_hierarchy.size()&&layouts.size()==0;level++)
-				{
-					layouts = GenerateInferences(vrs[start].func, level);
-				}
 
-				//If no layouts are found, then this function fails all validation attempts
-				if(layouts.size() == 0)
-				{
-					failed.push_back(vrs[start].func);
-					cout<<"Validate Recursive: Function: "<<vrs[start].func->GetName()<<" has no additional inferences."<<endl;
-					return false;
-				}
-				else
-				{
-					sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
-
-					vrs[start].layout_index=0;
-					vrs[start].layouts=layouts;
-				}
+			if(Get_Next_Layout(vrs[start])==NULL)
+			{
+				failed.push_back(vrs[start].func);
+				cout<<"Validate Recursive: Function: "<<vrs[start].func->GetName()<<" has no additional inferences."<<endl;
 			}
 
 			vrs[start].layouts[vrs[start].layout_index]->Shuffle();
 			vrs[start].layouts[vrs[start].layout_index]->AddRandomPadding();
-
 
 			Validate_Recursive(vrs,start,length);
 			return false;
@@ -952,6 +1025,8 @@ bool PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 		
 	}
 }
+
+
 
 
 
@@ -1181,7 +1256,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Functions validated exceeding threshold: "<<high_coverage_count<<endl;
 	cerr<<"Functions validated with non-zero coverage below or equal to threshold: "<<low_coverage_count<<endl;
 	cerr<<"Functions modified with no coverage: "<<no_coverage_count<<endl;
-	cerr<<"Total validations performed: "<<validation_count<<endl;
+	cerr<<"Total recursive validations performed: "<<validation_count<<endl;
 	cerr<<"----------------------------------------------"<<endl;
 	cerr<<"Total dynamic stack frames: "<<dynamic_frames<<endl;
 
@@ -1219,7 +1294,7 @@ vector<PNStackLayout*> PNTransformDriver::GenerateInferences(Function_t *func,in
 
 bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Function_t *func)
 {
-	if(!layout->IsShuffleSafe())
+	if(!layout->DoShuffleValidate())
 		return true;
 
 	cerr<<"PNTransformDriver: ShuffleValidation(): "<<layout->GetLayoutName()<<endl;

@@ -84,6 +84,7 @@ public:
 	virtual bool IsShuffleSafe() const ;
 	virtual bool IsStaticStack()const {return stack_layout.is_static_stack;}
 	virtual bool HasFramePointer()const{return stack_layout.has_frame_pointer;}
+	virtual bool DoShuffleValidate()const {return !IsCanarySafe() && IsShuffleSafe();} 
 	//memory leak?
 	//virtual StackLayout* GetStackLayout() { return new StackLayout(stack_layout); }
 

@@ -83,6 +83,7 @@ protected:
     //virtual void reset_undo(std::string func);
     virtual std::vector<PNStackLayout*> GenerateInferences(libIRDB::Function_t *func, int level);
     virtual bool ShuffleValidation(int reps, PNStackLayout *layout,libIRDB::Function_t *func);
+	virtual void ShuffleValidation(std::vector<validation_record> &vrs);
     //virtual void GenerateTransforms2(libIRDB::FileIR_t *virp,std::vector<libIRDB::Function_t*> funcs,std::string BED_script, int progid);
     //virtual bool ValidateLayout(PNStackLayout *layout,std::string BED_script,int progid);
 //    virtual bool Canary_Rewrite(FileIR_t *virp, PNStackLayout *orig_layout,libIRDB::Function_t *func);
@@ -93,6 +94,8 @@ protected:
 	inline bool FunctionCheck(libIRDB::Function_t* a, libIRDB::Function_t* b);
 	inline bool TargetFunctionCheck(libIRDB::Instruction_t* a, libIRDB::Instruction_t* b);
 	inline bool FallthroughFunctionCheck(libIRDB::Instruction_t* a, libIRDB::Instruction_t* b);
+
+	virtual PNStackLayout* Get_Next_Layout(validation_record &vr);
 
     virtual void Print_Report();
     virtual bool CanaryTransformHandler(PNStackLayout *layout, libIRDB::Function_t *func,bool validate);
