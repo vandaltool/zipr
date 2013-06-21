@@ -108,6 +108,12 @@ appfw/src/xq_hook.cpp -text
 appfw/src/xq_parser.cpp -text
 appfw/src/xqfw.c -text
 appfw/src/xqfw.h -text
+appfw/tests/ldap/Makefile -text
+appfw/tests/ldap/ldap.intercept.test.sh -text
+appfw/tests/ldap/testldapintercept.c -text
+appfw/tests/ldap/testldapintercept2.c -text
+appfw/tests/ldap/testldapintercept3.c -text
+appfw/tests/ldap/testldapintercept4.c -text
 appfw/tests/ministry/Makefile -text
 appfw/tests/ministry/httpparse.c -text
 appfw/tests/ministry/oscommand.c -text
