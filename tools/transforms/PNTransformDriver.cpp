@@ -317,14 +317,14 @@ bool PNTransformDriver::CanaryTransformHandler(PNStackLayout *layout, Function_t
 				Sans_Canary_Rewrite(layout,func);
 			}
 
-			transformed_history[layout->GetLayoutName()].push_back(layout);
+//			transformed_history[layout->GetLayoutName()].push_back(layout);
 
-			finalize_record fr;
-			fr.layout = layout;
-			fr.func = func;
-			fr.firp = orig_virp;
-			finalization_registry.push_back(fr);
-			undo(func);
+			// finalize_record fr;
+			// fr.layout = layout;
+			// fr.func = func;
+			// fr.firp = orig_virp;
+			// finalization_registry.push_back(fr);
+			// undo(func);
 
 			success = true;
 			//TODO: message
@@ -368,13 +368,13 @@ bool PNTransformDriver::PaddingTransformHandler(PNStackLayout *layout, Function_
 	else
 	{
 		cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
-		transformed_history[layout->GetLayoutName()].push_back(layout);
-		finalize_record fr;
-		fr.layout = layout;
-		fr.func = func;
-		fr.firp = orig_virp;
-		finalization_registry.push_back(fr);
-		undo(func);
+//		transformed_history[layout->GetLayoutName()].push_back(layout);
+		// finalize_record fr;
+		// fr.layout = layout;
+		// fr.func = func;
+		// fr.firp = orig_virp;
+		// finalization_registry.push_back(fr);
+		// undo(func);
 		success = true;
 		//undo_list.clear();
 		//reset_undo(func->GetName());
@@ -403,13 +403,13 @@ bool PNTransformDriver::LayoutRandTransformHandler(PNStackLayout *layout, Functi
 		//TODO: do I need to check for success at this point?
 		Sans_Canary_Rewrite(layout,func);
 		cerr<<"PNTransformDriver: Final Transformation Success: "<<layout->ToString()<<endl;
-		transformed_history[layout->GetLayoutName()].push_back(layout);
-		finalize_record fr;
-		fr.layout = layout;
-		fr.func = func;
-		fr.firp = orig_virp;
-		finalization_registry.push_back(fr);
-		undo(func);
+//		transformed_history[layout->GetLayoutName()].push_back(layout);
+		// finalize_record fr;
+		// fr.layout = layout;
+		// fr.func = func;
+		// fr.firp = orig_virp;
+		// finalization_registry.push_back(fr);
+		// undo(func);
 		success = true;
 		//undo_list.clear();
 		//reset_undo(func->GetName());
@@ -804,6 +804,7 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 
 		//Handle covered Shuffle Validate functions separately. 
 		//I only suspect to see one function needing shuffle validation (main).
+		//Don't shuffle here. 
 		if(layouts[0]->DoShuffleValidate() && func_coverage != 0)
 		{
 			//Note: Do not transform these functions, handled that elsewhere.
@@ -816,6 +817,7 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 		}
 		else
 		{
+			//Else go ahead and transform the layout. 
 			layouts[0]->Shuffle();
 			layouts[0]->AddRandomPadding();
 
@@ -829,6 +831,9 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 			
 	}
 
+	//TODO: I have seen some functions not require any modifications. In this case we should remove them from the
+	//vector. Not sure the best way to do this yet. For now ignore, because I have only seen it happen once (function start)
+
 	//sort the validation records by the number of variables detected,
 	//to optimize validation time. 
 	sort(high_covered_funcs.begin(),high_covered_funcs.end(),CompareValidationRecordAscending);
@@ -839,6 +844,18 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 	//isn't necessary. 
 	Validate_Recursive(high_covered_funcs,0,high_covered_funcs.size());
 	Validate_Recursive(low_covered_funcs,0,low_covered_funcs.size());
+
+	//TOD: becaues I took out the register functionality to fix an apparent bug
+	//I need to make sure P1 is transformed before registering. 
+	//If you bring back register finalized to actually transform, this shouldn't
+	//cause an issue, but could be removed at that time. 
+	for(unsigned int i=0;i<not_covered_funcs.size();i++)
+	{
+		PNStackLayout* layout = not_covered_funcs[i].layouts[not_covered_funcs[i].layout_index];
+		Function_t *func = not_covered_funcs[i].func;
+		Canary_Rewrite(layout,func);
+	}
+
 	Register_Finalized(not_covered_funcs,0,not_covered_funcs.size());
 
 	//TODO: do shuffle validation last. 
@@ -882,7 +899,11 @@ void PNTransformDriver::ShuffleValidation(vector<validation_record> &vrs)
 				layout = Get_Next_Layout(vrs[i]);
 			}
 			else
+			{
+				//else transformation was success, register the validation record 
+				Register_Finalized(vrs,i,1);
 				break;
+			}
 		}
 
 		if(layout == NULL)
@@ -1114,6 +1135,8 @@ void PNTransformDriver::Finalize_Transformation()
 
 		// orig_virp = firp;
 
+		//Make sure any previous modificaitons are undone. 
+		//undo(func);
 
 		// //TODO: really there should be no need to retransform, but it
 		// //is much easier to retransform than to retain the modified
