@@ -845,18 +845,25 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 	Validate_Recursive(high_covered_funcs,0,high_covered_funcs.size());
 	Validate_Recursive(low_covered_funcs,0,low_covered_funcs.size());
 
-	//TOD: becaues I took out the register functionality to fix an apparent bug
-	//I need to make sure P1 is transformed before registering. 
-	//If you bring back register finalized to actually transform, this shouldn't
-	//cause an issue, but could be removed at that time. 
-	for(unsigned int i=0;i<not_covered_funcs.size();i++)
-	{
-		PNStackLayout* layout = not_covered_funcs[i].layouts[not_covered_funcs[i].layout_index];
-		Function_t *func = not_covered_funcs[i].func;
-		Canary_Rewrite(layout,func);
-	}
+	// //TODO: becaues I took out the register functionality to fix an apparent bug
+	// //I need to make sure P1 is transformed before registering. 
+	// //If you bring back register finalized to actually transform, this shouldn't
+	// //cause an issue, but could be removed at that time. 
+	// for(unsigned int i=0;i<not_covered_funcs.size();i++)
+	// {
+	// 	PNStackLayout* layout = not_covered_funcs[i].layouts[not_covered_funcs[i].layout_index];
+	// 	Function_t *func = not_covered_funcs[i].func;
+	// 	Canary_Rewrite(layout,func);
+	// }
 
-	Register_Finalized(not_covered_funcs,0,not_covered_funcs.size());
+	// Register_Finalized(not_covered_funcs,0,not_covered_funcs.size());
+
+
+	//In theory, functions with no coverage will not have any benefit from validation
+	//but coverage can sometimes be wrong. For example, if PIN failed, perhaps
+	//the coverage reflects functions that were executed only if the test
+	//run fails. Go ahead ond attempt binary validation on non-covered functions.
+	Validate_Recursive(not_covered_funcs,0,not_covered_funcs.size());
 
 	//TODO: do shuffle validation last. 
 	cerr<<"Functions I will need to shuffle validate: "<<shuffle_validate_funcs.size()<<endl;
