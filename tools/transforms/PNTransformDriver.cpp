@@ -28,10 +28,16 @@ bool PNTransformDriver::timeExpired = false;
 
 //Used for sorting layotus by number of memory objects in descending order
 //TODO: change name to reflect descending order
-static bool CompareBoundaryNumbers(PNStackLayout *a, PNStackLayout *b)
+static bool CompareBoundaryNumbersDescending(PNStackLayout *a, PNStackLayout *b)
 {
 	return (a->GetNumberOfMemoryObjects() > b->GetNumberOfMemoryObjects());
 }
+
+static bool CompareValidationRecordAscending(validation_record a, validation_record b)
+{
+	return (a.layouts[a.layout_index]->GetNumberOfMemoryObjects() < b.layouts[b.layout_index]->GetNumberOfMemoryObjects());
+}
+
 
 PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
 {
@@ -781,7 +787,7 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 		}
 
 
-		sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
+		sort(layouts.begin(),layouts.end(),CompareBoundaryNumbersDescending);
 
 		validation_record vr;
 		vr.hierarchy_index=level;
@@ -823,6 +829,14 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 			
 	}
 
+	//sort the validation records by the number of variables detected,
+	//to optimize validation time. 
+	sort(high_covered_funcs.begin(),high_covered_funcs.end(),CompareValidationRecordAscending);
+	sort(low_covered_funcs.begin(),low_covered_funcs.end(),CompareValidationRecordAscending);
+
+	//TODO: maybe validate those layouts with 3 or fewer variables first?
+	//the sorting approach I now do might sufficiently optimize that this
+	//isn't necessary. 
 	Validate_Recursive(high_covered_funcs,0,high_covered_funcs.size());
 	Validate_Recursive(low_covered_funcs,0,low_covered_funcs.size());
 	Register_Finalized(not_covered_funcs,0,not_covered_funcs.size());
@@ -908,7 +922,7 @@ PNStackLayout* PNTransformDriver::Get_Next_Layout(validation_record &vr)
 		}
 		else
 		{
-			sort(layouts.begin(),layouts.end(),CompareBoundaryNumbers);
+			sort(layouts.begin(),layouts.end(),CompareBoundaryNumbersDescending);
 
 			//update info in the validation record. 
 			vr.layout_index=0;
