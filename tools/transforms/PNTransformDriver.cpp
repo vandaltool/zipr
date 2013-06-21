@@ -1022,6 +1022,7 @@ bool PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 			{
 				failed.push_back(vrs[start].func);
 				cout<<"Validate Recursive: Function: "<<vrs[start].func->GetName()<<" has no additional inferences."<<endl;
+				return false;
 			}
 
 			vrs[start].layouts[vrs[start].layout_index]->Shuffle();
