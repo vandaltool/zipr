@@ -260,7 +260,7 @@ filter_prog_name()
 	cat $1 | sed -r -e "s|[^[:space:]]*$NAME_REGEX|$DUMMY_NAME|g" >tmp
 
 	if [[ ! -z "$DELETE_FILTER" ]]; then
-		cat tmp | sed -r -e "/($DELETE_FILTER)/d">$1
+		cat tmp | sed -r -e "/($DELETE_FILTER)/Id">$1
 	else
 		cat tmp>$1
 	fi

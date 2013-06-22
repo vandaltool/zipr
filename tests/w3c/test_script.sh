@@ -11,6 +11,7 @@ DATA_DIR=$TEST_DIR/data
 ORIG_NAME=w3c
 
 CLEANUP_FILES="w3c.out w3c.1.out w3c.2.out w3c.log"
+DELETE_FILTER="Date:|0x|socket|secs|seconds|maxsock|maxfds|hash value is [0-9]+|write: [0-9]+"
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
@@ -58,57 +59,61 @@ run_basic_test 45 -single -n http://127.0.0.1:7333
 
 run_basic_test 45 -head -single -n http://127.0.0.1:7333
 
-run_test_prog_only 45 -o w3c.1.out -single -n http://127.0.0.1:1235/index.html
-run_bench_prog_only 45 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
-diff w3c.1.out w3c.2.out
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
+run_basic_test 45 -o w3c.1.out -single -n http://127.0.0.1:1235/index.html
+run_basic_test 45 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
 
-run_test_prog_only 45 -o w3c.out -timeout 30 http://127.0.0.1:1235/index.html 
-grep -i "peasoup" w3c.out
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
+#run_test_prog_only 45 -o w3c.1.out -single -n http://127.0.0.1:1235/index.html
+#run_bench_prog_only 45 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
+#diff w3c.1.out w3c.2.out
+#if [ ! $? -eq 0 ]; then
+#	report_failure
+#fi
 
-run_test_prog_only 45 -timeout 30 -get http://127.0.0.1:1235/index.html 
-grep -i "peasoup" test_out
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
+run_basic_test 45 -o w3c.out -timeout 30 http://127.0.0.1:1235/index.html 
+#grep -i "peasoup" w3c.out
+#if [ ! $? -eq 0 ]; then
+#	report_failure
+#fi
+
+run_basic_test  45 -timeout 30 -get http://127.0.0.1:1235/index.html 
+#grep -i "peasoup" test_out
+#if [ ! $? -eq 0 ]; then
+#	report_failure
+#fi
 
 # -source
-run_test_prog_only 45 -timeout 30 -source -single -n http://127.0.0.1:1235/index.html 
-grep -i "peasoup" test_out
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
+run_basic_test 45 -timeout 30 -source -single -n http://127.0.0.1:1235/index.html 
+#grep -i "peasoup" test_out
+#if [ ! $? -eq 0 ]; then
+#	report_failure
+#fi
 
 # exercise all the verbose flags
-run_test_prog_only 45 -n -vabcgpstu http://127.0.0.1:1235 
-grep -i "HTanchor" test_error
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
+#run_test_prog_only 45 -n -vabcgpstu http://127.0.0.1:1235 
+#grep -i "HTanchor" test_error
+#if [ ! $? -eq 0 ]; then
+#	report_failure
+#fi
 
-run_test_prog_only 45 -n -vbpstu http://127.0.0.1:1235 
-grep -i "channel" test_error
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
+run_basic_test 45 -n -vabcgpstu http://127.0.0.1:1235 
+
+run_basic_test 45 -n -vbpstu http://127.0.0.1:1235 
+#run_test_prog_only 45 -n -vbpstu http://127.0.0.1:1235 
+#grep -i "channel" test_error
+#if [ ! $? -eq 0 ]; then
+#	report_failure
+#fi
 
 # -options
 run_basic_test 45 -n -single -options http://127.0.0.1:1235
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
+
 
 # just run this one to exercise code path
-run_test_prog_only 45 -n -put $DATA_DIR/data.txt -dest http://127.0.0.1:1235/testing/
-run_test_prog_only 45 -n -auth user:password@realm http://127.0.0.1:1235/peasoup.auth 
-run_test_prog_only 45 -n -delete http://127.0.0.1:1235/peasoup.auth/doesnotexist.html 
-run_test_prog_only 45 -post http://127.0.0.1:1235/testing/index.html -form "RECORD=ID" "COL1=a" "COL2=b" "COL3=c" "COL4=d"
-run_test_prog_only 45 -r $DATA_DIR/bogus.conf http://127.0.0.1:1235/testing/index.html 
+run_basic_test 45 -n -put $DATA_DIR/data.txt -dest http://127.0.0.1:1235/testing/
+run_basic_test 45 -n -auth user:password@realm http://127.0.0.1:1235/peasoup.auth 
+run_basic_test 45 -n -delete http://127.0.0.1:1235/peasoup.auth/doesnotexist.html 
+run_basic_test 45 -post http://127.0.0.1:1235/testing/index.html -form "RECORD=ID" "COL1=a" "COL2=b" "COL3=c" "COL4=d"
+run_basic_test 45 -r $DATA_DIR/bogus.conf http://127.0.0.1:1235/testing/index.html 
 
 
 #cat $DATA_DIR/data1.txt | run_test_prog_only 45  -i FOX
@@ -119,11 +124,13 @@ run_basic_test 45 -to www/source -single -n http://127.0.0.1:1235/index.html
 run_basic_test 45 -to www/mime -single -n http://127.0.0.1:1235/index.html 
 run_basic_test 45 -cl http://127.0.0.1:1235/index.html  | grep -i content
 
-run_test_prog_only 45 -l w3c.log http://127.0.0.1:1235/index.html 
-grep -i 1235 w3c.log
-if [ ! $? -eq 0 ]; then
-	report_failure
-fi
+run_basic_test 45  -l w3c.log http://127.0.0.1:1235/index.html 
+
+#run_test_prog_only 45 -l w3c.log http://127.0.0.1:1235/index.html 
+#grep -i 1235 w3c.log
+#if [ ! $? -eq 0 ]; then
+#	report_failure
+#fi
 
 
 cleanup
