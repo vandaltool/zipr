@@ -13,7 +13,14 @@ bspri=$3
 
 P1_DIR=p1.xform/$fname
 
+#no point in continuing if we have no tests
+if [ ! -d "$CONCOLIC" -a ! -f "$MANUAL_TEST_SCRIPT" ]; then
+	echo "No manual or concolic tests, BED returning success"
+	exit 0
+fi
+
 #generate the bspri code
+echo "Generating bspri"
 $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $TOP_LEVEL/stratafier.o.exe $TOP_LEVEL/libstrata.so.symbols
 status=$?
 if [ ! $status -eq 0 ]; then
@@ -27,6 +34,7 @@ if [ ! $status -eq 0 ]; then
 	exit 2
 fi
 
+echo "Generating fbspri"
 $PEASOUP_HOME/tools/fast_spri.sh $bspri $TOP_LEVEL/a.irdb.fbspri
 
 NAME=`cat new_command_name`
