@@ -142,6 +142,7 @@ tests/grep/data/pattern -text
 tests/grep/data/pattern2 -text
 tests/grep/test_script.sh -text
 tests/manual_test_lib.sh -text
+tests/tcpdump/gen_test.sh -text
 tests/tcpdump/tcpd_tests/.failed -text
 tests/tcpdump/tcpd_tests/.passed -text
 tests/tcpdump/tcpd_tests/02-sunrise-sunset-esp.pcap -text
