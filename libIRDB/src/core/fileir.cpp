@@ -195,6 +195,13 @@ void FileIR_t::UnregisterAssembly(Instruction_t *instr)
 	assembly_registry.erase(instr);
 }
 
+std::string FileIR_t::LookupAssembly(Instruction_t *instr)
+{
+	if (assembly_registry.find(instr) != assembly_registry.end())
+		return assembly_registry[instr];
+	else
+		return std::string();
+}
 
 std::map<db_id_t,Function_t*> FileIR_t::ReadFuncsFromDB
 	(
