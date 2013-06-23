@@ -11,7 +11,7 @@ DATA_DIR=$TEST_DIR/data
 ORIG_NAME=w3c
 
 CLEANUP_FILES="w3c.out w3c.1.out w3c.2.out w3c.log"
-DELETE_FILTER="Date:|0x|socket|secs|seconds|maxsock|maxfds|hash value is [0-9]+|write|read|event|oob|would block"
+DELETE_FILTER="Date:|0x|socket|secs|seconds|maxsock|maxfds|hash value is [0-9]+|write|read|event|oob"
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
