@@ -526,7 +526,7 @@ void PNTransformDriver::GenerateTransforms()
 	{
 		cout<<"PNTransformDriver: Shared Object Protection ON"<<endl;
 		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-			it!=pidp->GetFiles().end();
+			it!=pidp->GetFiles().end()&&!timeExpired;
 			++it
 			)
 		{
@@ -843,31 +843,26 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 	//the sorting approach I now do might sufficiently optimize that this
 	//isn't necessary. 
 	Validate_Recursive(high_covered_funcs,0,high_covered_funcs.size());
-	Validate_Recursive(low_covered_funcs,0,low_covered_funcs.size());
-
-	// //TODO: becaues I took out the register functionality to fix an apparent bug
-	// //I need to make sure P1 is transformed before registering. 
-	// //If you bring back register finalized to actually transform, this shouldn't
-	// //cause an issue, but could be removed at that time. 
-	// for(unsigned int i=0;i<not_covered_funcs.size();i++)
-	// {
-	// 	PNStackLayout* layout = not_covered_funcs[i].layouts[not_covered_funcs[i].layout_index];
-	// 	Function_t *func = not_covered_funcs[i].func;
-	// 	Canary_Rewrite(layout,func);
-	// }
-
-	// Register_Finalized(not_covered_funcs,0,not_covered_funcs.size());
 
 
 	//In theory, functions with no coverage will not have any benefit from validation
 	//but coverage can sometimes be wrong. For example, if PIN failed, perhaps
 	//the coverage reflects functions that were executed only if the test
-	//run fails. Go ahead ond attempt binary validation on non-covered functions.
-	Validate_Recursive(not_covered_funcs,0,not_covered_funcs.size());
+	//run fails. Go ahead and attempt binary validation on non-covered functions.
+	//As an optimization I will validate non-covered funcs with functions with low coverage
+	//but in case a validation failure does occur, functions with no coverage
+	//are append to the low_covered_funcs vector. Appending to the end, as opposed to
+	//using one data structure for both should optimize binary search in the 
+	//even of a validation failure, since all functions without coverage are clustered,
+	//and it is assumed functions with no coverage _SHOULD_ validate all the time. 
+	low_covered_funcs.insert(low_covered_funcs.end(),not_covered_funcs.begin(),not_covered_funcs.end());
+	Validate_Recursive(low_covered_funcs,0,low_covered_funcs.size());
 
-	//TODO: do shuffle validation last. 
-	cerr<<"Functions I will need to shuffle validate: "<<shuffle_validate_funcs.size()<<endl;
-	
+	//NOTE: if you decide to handle not_covered_funcs separately,
+	//make sure you either use Validate_Recursive, or rewrite
+	//the instructions yourself.
+
+	cerr<<"Functions to shuffle validate: "<<shuffle_validate_funcs.size()<<endl;
 	ShuffleValidation(shuffle_validate_funcs);
 
 	high_coverage_count +=high_covered_funcs.size();
@@ -977,6 +972,7 @@ void PNTransformDriver::Register_Finalized(vector<validation_record> &vrs,unsign
 		fr.layout = vrs[index].layouts[vrs[index].layout_index];
 		fr.func = vrs[index].func;
 		fr.firp = orig_virp;
+		registered_firps.insert(orig_virp);
 		finalization_registry.push_back(fr);
 		//placing layout in the history here, although the information
 		//could change when the modification is finalized. 
@@ -1120,89 +1116,89 @@ bool PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 void PNTransformDriver::Finalize_Transformation()
 {
 	cout<<"Finalizing Transformation: Committing all previously validated transformations ("<<finalization_registry.size()<<" functions)"<<endl;
-	set<FileIR_t*> firps;
+// 	set<FileIR_t*> firps;
 
-	for(vector<finalize_record>::iterator it = finalization_registry.begin(); it != finalization_registry.end(); it++)
-	{
-		finalize_record fr = *it;
-		Function_t *func;
-		PNStackLayout *layout;
-		FileIR_t *firp;
+// 	for(vector<finalize_record>::iterator it = finalization_registry.begin(); it != finalization_registry.end(); it++)
+// 	{
+// 		finalize_record fr = *it;
+// 		Function_t *func;
+// 		PNStackLayout *layout;
+// 		FileIR_t *firp;
 
-		func = fr.func;
-		layout = fr.layout;
-		firp = fr.firp;
+// 		func = fr.func;
+// 		layout = fr.layout;
+// 		firp = fr.firp;
 
-		assert(func != NULL && layout != NULL && firp != NULL);
-		firps.insert(firp);
+// 		assert(func != NULL && layout != NULL && firp != NULL);
+// 		firps.insert(firp);
 
-//DEBUG: This code needs to be put back, especially for removing canaries
-//if do_canaries is false, but at the moment, accumulating modifications
-//works for zsh, making it appear that delayed modification is broken. 
+// //DEBUG: This code needs to be put back, especially for removing canaries
+// //if do_canaries is false, but at the moment, accumulating modifications
+// //works for zsh, making it appear that delayed modification is broken. 
 
-		// orig_virp = firp;
+// 		// orig_virp = firp;
 
-		//Make sure any previous modificaitons are undone. 
-		//undo(func);
+// 		//Make sure any previous modificaitons are undone. 
+// 		//undo(func);
 
-		// //TODO: really there should be no need to retransform, but it
-		// //is much easier to retransform than to retain the modified
-		// //instructions previously made. 
-		// if(do_canaries)
-		// 	Canary_Rewrite(layout,func);
-		// else
-		// 	Sans_Canary_Rewrite(layout,func);
-	}
+// 		// //TODO: really there should be no need to retransform, but it
+// 		// //is much easier to retransform than to retain the modified
+// 		// //instructions previously made. 
+// 		// if(do_canaries)
+// 		// 	Canary_Rewrite(layout,func);
+// 		// else
+// 		// 	Sans_Canary_Rewrite(layout,func);
+// 	}
 
 	//TODO: one more validation? 
 	cerr<<"Sanity validation check....."<<endl;
 
-	string dirname = "p1.xform/validation_final";
-	string cmd = "mkdir -p " + dirname;
-	system(cmd.c_str());
+	// string dirname = "p1.xform/validation_final";
+	// string cmd = "mkdir -p " + dirname;
+	// system(cmd.c_str());
 
-	string aspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.aspri";
-	string bspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.bspri";
+	// string aspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.aspri";
+	// string bspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.bspri";
 
-	ofstream aspriFile;
-	aspriFile.open(aspri_filename.c_str(),ios_base::out);
+	// ofstream aspriFile;
+	// aspriFile.open(aspri_filename.c_str(),ios_base::out);
 	
-	if(!aspriFile.is_open())
-	{
-		assert(false);
-	}
+	// if(!aspriFile.is_open())
+	// {
+	// 	assert(false);
+	// }
 
-	for(set<FileIR_t*>::iterator it=firps.begin();
-		it!=firps.end();
-		++it
-		)
-	{
-		FileIR_t *firp = *it;
-		firp->GenerateSPRI(aspriFile,false);
-	}
+	// for(set<FileIR_t*>::iterator it=firps.begin();
+	// 	it!=firps.end();
+	// 	++it
+	// 	)
+	// {
+	// 	FileIR_t *firp = *it;
+	// 	firp->GenerateSPRI(aspriFile,false);
+	// }
 
-	aspriFile.close();
+	// aspriFile.close();
 
-	char new_instr[1024];
-	//This script generates the aspri and bspri files; it also runs BED
-	sprintf(new_instr, "%s %d %s %s", BED_script.c_str(), orig_progid, aspri_filename.c_str(), bspri_filename.c_str());
+	// char new_instr[1024];
+	// //This script generates the aspri and bspri files; it also runs BED
+	// sprintf(new_instr, "%s %d %s %s", BED_script.c_str(), orig_progid, aspri_filename.c_str(), bspri_filename.c_str());
 	
-	//If OK=BED(func), then commit	
-	int rt=system(new_instr);
-	int actual_exit = -1, actual_signal = -1;
-	if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
-	else actual_signal = WTERMSIG(rt);
-	int retval = actual_exit;
+	// //If OK=BED(func), then commit	
+	// int rt=system(new_instr);
+	// int actual_exit = -1, actual_signal = -1;
+	// if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
+	// else actual_signal = WTERMSIG(rt);
+	// int retval = actual_exit;
 
-	if(retval != 0)
-		cerr<<"Sanity validation failed!! Continuing for now"<<endl;
+	if(	!Validate(NULL,"validation_final"))
+		cerr<<"Sanity validation failed!! Continuing for now."<<endl;
 	else
 		cerr<<"Sanity validation passed."<<endl;
 
 	//Commit changes for each file. 
 	//TODO: is this necessary, can I do one write?
-	for(set<FileIR_t*>::iterator it=firps.begin();
-		it!=firps.end();
+	for(set<FileIR_t*>::iterator it=registered_firps.begin();
+		it!=registered_firps.end();
 		++it
 		)
 	{
@@ -1210,9 +1206,6 @@ void PNTransformDriver::Finalize_Transformation()
 		cout<<"Writing to DB: "<<firp->GetFile()->GetURL()<<endl;
 		firp->WriteToDB();
 	}
-
-
-
 }
 
 void PNTransformDriver::Print_Report()
@@ -1385,6 +1378,16 @@ bool PNTransformDriver::ShuffleValidation(int reps, PNStackLayout *layout,Functi
 	return true;
 }
 
+// Validate the modifications for the passed in FileIR_t*, creating
+// a directory structure for the generated spri files in a directory
+// reflecting the passed in string. 
+//
+// If the FileIR_t* is null, Validate will generate spri
+// for as FileIR_t* that have been registered in the FileIR_t*
+// registry (entries in this structure are made whenever 
+// a function has been registered for finalization). 
+// Passing NULL essentially provides a mechanism of revalidating all
+// previously modified and validated functions. 
 bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 {
 	cerr<<"PNTransformDriver: Validate(): "<<name<<endl;
@@ -1404,7 +1407,22 @@ bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 	}
 	
 	cerr<<"Pre genreate SPRI"<<endl;
-	virp->GenerateSPRI(aspriFile,false); // p1.xform/<function_name>/a.irdb.aspri
+
+	if(virp == NULL)
+	{
+		//Generate spri for previous files
+		for(set<FileIR_t*>::iterator it=registered_firps.begin();
+			it!=registered_firps.end();
+			++it
+			)
+		{
+			FileIR_t *firp = *it;
+			firp->GenerateSPRI(aspriFile,false);
+		}
+	}
+	//generate spri for the current file
+	else
+		virp->GenerateSPRI(aspriFile,false); // p1.xform/<function_name>/a.irdb.aspri
 	cerr<<"Post genreate SPRI"<<endl;
 	aspriFile.close();
 

@@ -136,7 +136,7 @@ map<string, map<string,double> > getCoverageMap(char *filename,double cov_thresh
 
 			if(func_name.length() > 0 && func_name[0] != '.')
 			{
-				if(coverage >= cov_threshold)
+				if(coverage > cov_threshold)
 				{
 					if(func_name.length() > 0 && func_name[0] != '.')
 						acceptable_cov++;
@@ -149,7 +149,7 @@ map<string, map<string,double> > getCoverageMap(char *filename,double cov_thresh
 		}
 		cout<<"Summary:"<<endl;
 		cout<<"\tTotal non-plt functions = "<<total_funcs<<endl;
-		cout<<"\tTotal non-plt functions exceeding or equal to "<<cov_threshold<<" threshold = "<<acceptable_cov<<" ("<<(double)acceptable_cov/total_funcs<<")"<<endl;
+		cout<<"\tTotal non-plt functions exceeding "<<cov_threshold<<" threshold = "<<acceptable_cov<<" ("<<(double)acceptable_cov/total_funcs<<")"<<endl;
 		coverage_file.close();
 	}	 
 	return coverage_map;

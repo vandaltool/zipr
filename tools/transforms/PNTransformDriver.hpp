@@ -70,6 +70,7 @@ protected:
     std::vector<std::string> not_transformable;
     std::vector<libIRDB::Function_t*> failed;
 	std::vector<finalize_record> finalization_registry;
+	std::set<FileIR_t*> registered_firps;
 	int high_coverage_count, low_coverage_count, no_coverage_count, validation_count;
 
     // write stack objects to IRDB
@@ -112,7 +113,8 @@ protected:
 	virtual void Finalize_Transformation();
 
 	void Register_Finalized(std::vector<validation_record> &vrs,unsigned int start, int length);
-	bool Validate_Recursive(std::vector<validation_record> &vrs, unsigned int start, int length);
+	bool Validate_Recursive(std::vector<validation_record> &vrs, unsigned int start, int length);//,bool suspect=false);
+//	bool Validate_Linear(std::vector<validation_record> &vrs, unsigned int start, int length);
 
 public:
     static bool timeExpired;
