@@ -22,7 +22,7 @@ CURRENT_DIR=`pwd`
 PORT_NUM=1235
 
 #used to detele lins matching one of the following strings (delimited by |
-DELETE_FILTER="%|[0-9]{4}-[0-9]{2}-[0-9]{2}|=[0-9]|hello.1|hello.2"
+DELETE_FILTER="%|[0-9]{4}-[0-9]{2}-[0-9]{2}|=[0-9]|hello.1|hello.2|stonesoup|gcc|lib|DUMMY|exec"
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
