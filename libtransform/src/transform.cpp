@@ -355,7 +355,6 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 
 	// popf   
 	addPopf(popf_i, p_fallThrough);
-
 }
 
 // returns true if BeaEngine says arg1 of the instruction is a register 
@@ -390,6 +389,12 @@ bool Transform::isMultiplyInstruction(Instruction_t *p_instruction)
 {
 	if (!p_instruction)
 		return false;
+
+	std::string assembly = m_fileIR->LookupAssembly(p_instruction);
+	if (assembly.length() > 0)
+	{
+		return strcasestr(assembly.c_str(), "MUL") != NULL;
+	}
 
 	DISASM disasm;
 	p_instruction->Disassemble(disasm);
@@ -783,12 +788,34 @@ void Transform::addJae(Instruction_t *p_instr, Instruction_t *p_fallThrough, Ins
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
 
+// jo - jump overflow
+void Transform::addJo(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x70;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+}
+
 // jno - jump not overflow
 void Transform::addJno(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
 	string dataBits;
 	dataBits.resize(2);
 	dataBits[0] = 0x71;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+}
+
+// jc - jump carry
+void Transform::addJc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x72;
 	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
 
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);

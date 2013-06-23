@@ -42,7 +42,9 @@ class Transform {
 
 		void addJns(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
+		void addJo(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJno(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
+		void addJc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJnc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJnz(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		void addJae(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target);
