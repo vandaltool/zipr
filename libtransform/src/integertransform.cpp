@@ -256,16 +256,19 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 
 void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	if (p_annotation.isUnknownSign())
+	if (p_annotation.isUnknownSign() && !p_annotation.isNoFlag())
 	{
+		// right now, doesn't yet handle lea
 		addOverflowCheckUnknownSign(p_instruction, p_annotation, p_policy);
 	}
-	else if (p_annotation.isOverflow() && p_annotation.isNoFlag())
+	else if (p_annotation.isNoFlag())
 	{
+		// handle lea
 		addOverflowCheckNoFlag(p_instruction, p_annotation, p_policy);
 	}
 	else if (isMultiplyInstruction(p_instruction) || p_annotation.isUnderflow() || p_annotation.isOverflow())
 	{
+		// handle signed/unsigned add/sub overflows (non lea)
 		addOverflowCheck(p_instruction, p_annotation, p_policy);
 	}
 	else
@@ -455,7 +458,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 
 void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3, int p_policy)
 {
-//	cerr << "integertransform: doit: reg+constant: register: " << Register::toString(p_reg1) << " constant: " << dec << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
+	cerr << "integertransform: doit: reg+constant: register: " << Register::toString(p_reg1) << " constant: " << dec << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
 	//
 	// Original instruction is of the form:
@@ -526,7 +529,8 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 
 void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3, int p_policy)
 {
-//	cerr << "integertransform: reg*constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
+	cerr << "integertransform: reg*constant: register: " << Register::toString(p_reg1) << " constant: " << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
+
 	//
 	// Original instruction is of the form:
 	//   lea r3, [r1*constant]          
@@ -636,19 +640,23 @@ void IntegerTransform::handleInfiniteLoop(Instruction_t *p_instruction, const ME
 //            imul, mul -- always check using jno
 //            add, sub  -- use signedness information annotation to emit either jno, jnc
 //
+// p_addressOriginalInstruction is set when we call method from lea instrumentation
 void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy, AddressID_t *p_addressOriginalInstruction)
 {
 	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
-
+	
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
-	if (targetReg == Register::UNKNOWN)
+	if (targetReg == Register::UNKNOWN) 
 	{
-		cerr << "integertransform: OVERFLOW UNKNOWN SIGN: unknown register -- skip instrumentation" << endl;
+		if (p_addressOriginalInstruction)
+			cerr << "integertransform: OVERFLOW UNKNOWN SIGN: LEA case unknown register -- skip instrumentation -- address: " << std::hex << p_instruction->GetAddress() << endl;
+		else
+			cerr << "integertransform: OVERFLOW UNKNOWN SIGN: unknown register -- skip instrumentation -- address: " <<  std::hex << p_instruction->GetAddress() <<endl;
 		return;
 	}
 
 cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
-	
+
 	string detector(INTEGER_OVERFLOW_DETECTOR);
 	string dataBits;
 
@@ -714,6 +722,9 @@ cerr << "IntegerTransform::addOverflowCheck(): instr: " << p_instruction->getDis
 
 	if (p_addressOriginalInstruction)
 	{
+		// this is the lea case -- by default, lea doesn't implement saturating 
+		// arithmetic
+		p_policy = POLICY_CONTINUE; // reset to get correct diagnostic msgs
 		addCallbackHandler(detector, p_instruction, jncond_i, nextOrig_i, p_policy, p_addressOriginalInstruction);
 	}
 	else if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
@@ -1184,6 +1195,7 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 void IntegerTransform::addOverflowCheckUnknownSign(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
+
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
 	if (targetReg == Register::UNKNOWN)
 	{
@@ -1193,8 +1205,17 @@ void IntegerTransform::addOverflowCheckUnknownSign(Instruction_t *p_instruction,
 
 cerr << "IntegerTransform::addOverflowCheckUnknownSign(): instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
 	
+	// set detector/handler
 	string detector(OVERFLOW_UNKNOWN_SIGN_DETECTOR);
-	string dataBits;
+	if (!isMultiplyInstruction(p_instruction))
+	{
+		if (p_annotation.getBitWidth() == 32)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNKNOWN_32);
+		else if (p_annotation.getBitWidth() == 16)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNKNOWN_16);
+		else if (p_annotation.getBitWidth() == 8)
+			detector = string(ADDSUB_OVERFLOW_DETECTOR_UNKNOWN_8);
+	}
 
 	// for now assume we're dealing with add/sub 32 bit
 	db_id_t fileID = p_instruction->GetAddress()->GetFileID();
@@ -1208,6 +1229,7 @@ cerr << "IntegerTransform::addOverflowCheckUnknownSign(): instr: " << p_instruct
 	Instruction_t* nextOrig_i = p_instruction->GetFallthrough();
 
 	// instrument for both jno and jnc
+	// redundant for imul, but that's ok, optimize later
 	p_instruction->SetFallthrough(jno_i); 
 	addJno(jno_i, jnc_i, nextOrig_i);
 	addJnc(jnc_i, nop_i, nextOrig_i);
@@ -1223,4 +1245,14 @@ cerr << "IntegerTransform::addOverflowCheckUnknownSign(): instr: " << p_instruct
 	{
 		addCallbackHandler(detector, p_instruction, nop_i, nextOrig_i, p_policy);
 	}
+}
+
+void IntegerTransform::logMessage(const std::string &p_method, const std::string &p_msg)
+{
+	std::cerr << p_method << ": " << p_msg << std::endl;
+}
+
+void IntegerTransform::logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation& p_annotation, const std::string &p_msg)
+{
+	logMessage(p_method, p_msg + " annotation: " + p_annotation.toString());
 }

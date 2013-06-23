@@ -54,6 +54,10 @@ class IntegerTransform : public Transform
 
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
 
+	protected:
+		void logMessage(const std::string &p_method, const std::string &p_msg);
+		void logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation&, const std::string &p_msg);
+
 	private:
 		std::set<VirtualOffset>*  m_benignFalsePositives;
 		bool                      m_policySaturatingArithmetic;
@@ -65,12 +69,19 @@ class IntegerTransform : public Transform
 // make sure these match the function names in $STRATA/src/posix/x86_linux/detector_number_handling/overflow_detector.c
 
 #define	INTEGER_OVERFLOW_DETECTOR            "integer_overflow_detector"
+
 #define	ADDSUB_OVERFLOW_DETECTOR_SIGNED_32   "addsub_overflow_detector_signed_32"
 #define	ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_32 "addsub_overflow_detector_unsigned_32"
+#define	ADDSUB_OVERFLOW_DETECTOR_UNKNOWN_32  "addsub_overflow_detector_unknown_32"
+
 #define	ADDSUB_OVERFLOW_DETECTOR_SIGNED_16   "addsub_overflow_detector_signed_16"
 #define	ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_16 "addsub_overflow_detector_unsigned_16"
+#define	ADDSUB_OVERFLOW_DETECTOR_UNKNOWN_16  "addsub_overflow_detector_unknown_16"
+
 #define	ADDSUB_OVERFLOW_DETECTOR_SIGNED_8    "addsub_overflow_detector_signed_8"
 #define	ADDSUB_OVERFLOW_DETECTOR_UNSIGNED_8  "addsub_overflow_detector_unsigned_8"
+#define	ADDSUB_OVERFLOW_DETECTOR_UNKNOWN_8   "addsub_overflow_detector_unknown_8"
+
 #define	MUL_OVERFLOW_DETECTOR_32             "mul_overflow_detector_32"
 #define	MUL_OVERFLOW_DETECTOR_16             "mul_overflow_detector_16"
 #define	MUL_OVERFLOW_DETECTOR_8              "mul_overflow_detector_8"
