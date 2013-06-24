@@ -29,7 +29,7 @@ echo "TEST_PROG: $TEST_PROG"
 run_basic_test 45 -z 
 
 echo "aaa"
-run_basic_test 10
+run_basic_test 30
 #run_test_prog_only 10
 #grep -i "libwww" test_out 
 #if [ ! $? -eq 0 ]; then
@@ -47,7 +47,7 @@ run_basic_test 10
 #fi
 
 echo "ccc"
-run_basic_test 10 -version
+run_basic_test 30 -version
 #run_test_prog_only 10 -version
 #grep -i "libwww" test_out
 #if [ ! $? -eq 0 ]; then
