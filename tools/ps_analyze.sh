@@ -15,8 +15,8 @@ errors=0
 
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
-# Setting PN timeout to 4 hours for TNE. 
-PN_TIMEOUT_VALUE=14400
+# Setting PN timeout to 6 hours for TNE. 
+PN_TIMEOUT_VALUE=21600
 
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
