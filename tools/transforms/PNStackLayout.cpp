@@ -35,6 +35,7 @@ static bool CompareRangeDisplacedOffset(PNRange *a, PNRange *b)
 
 unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 {
+
 	int max,min;
 
 	max = MAX_PADDING;
@@ -524,6 +525,17 @@ string PNStackLayout::GetFunctionName() const
 bool PNStackLayout::IsShuffleSafe() const
 {
 	return (mem_objects.size() > 2) || (mem_objects.size() == 2 && !stack_layout.has_out_args);
+}
+
+bool PNStackLayout::IsP1() const
+{
+	//for now this is actually identical (although negated) to the logic used in IsShuffleSafe()
+	//however, this might chagne in the future, so I am copying the logic
+	//from IsShuffleSafe
+	//For example, I would like to detect if an offset is inferred or actually
+	//encountered. Padding between the out args and the first variable
+	//can give the false impression of boundaries. 
+	return !((mem_objects.size() > 2) || (mem_objects.size() == 2 && !stack_layout.has_out_args));
 }
 
 

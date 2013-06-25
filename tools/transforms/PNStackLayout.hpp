@@ -13,7 +13,7 @@
 //attacker is trying to exceed the frame size, and the vulnerable buffer
 //is at the bottom of the stack, but moved by us to the top, the 
 //overflow might exceed our padding and corrupt other stack frames.  
-const int MIN_PADDING = 4096;
+const int MIN_PADDING = 1000;
 const int MAX_PADDING = MIN_PADDING*2;
 const int RECURSIVE_MIN_PADDING = 64;
 const int RECURSIVE_MAX_PADDING = RECURSIVE_MAX_PADDING*2;
@@ -82,6 +82,7 @@ public:
 	virtual bool IsCanarySafe() const {return stack_layout.is_canary_safe;}
 	virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
 	virtual bool IsShuffleSafe() const ;
+	virtual bool IsP1() const;
 	virtual bool IsStaticStack()const {return stack_layout.is_static_stack;}
 	virtual bool HasFramePointer()const{return stack_layout.has_frame_pointer;}
 	virtual bool DoShuffleValidate()const {return !IsCanarySafe() && IsShuffleSafe();} 

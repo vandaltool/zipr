@@ -865,6 +865,21 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 	cerr<<"Functions to shuffle validate: "<<shuffle_validate_funcs.size()<<endl;
 	ShuffleValidation(shuffle_validate_funcs);
 
+	if(!Validate(NULL,string(basename(orig_virp->GetFile()->GetURL().c_str()))+"_accum"))
+	{
+		cerr<<"TEST ERROR: File: "<<orig_virp->GetFile()->GetURL()<<" does not pass accumulation validation, ignoring the file for now."<<endl;
+
+		//TODO: carefully undo all finalization for this file, for now, 
+		//just remove the FileIR_t from the registered_firps 
+		registered_firps.erase(orig_virp);
+
+		return;
+	}
+	else
+	{
+		cerr<<"File Accumulation Validation Success"<<endl;
+	}
+
 	high_coverage_count +=high_covered_funcs.size();
 	low_coverage_count +=low_covered_funcs.size();
 	no_coverage_count +=not_covered_funcs.size();
@@ -1191,7 +1206,10 @@ void PNTransformDriver::Finalize_Transformation()
 	// int retval = actual_exit;
 
 	if(	!Validate(NULL,"validation_final"))
-		cerr<<"Sanity validation failed!! Continuing for now."<<endl;
+	{
+		cerr<<"TEST ERROR: Sanity validation failed!! Backing off all transformations (PN disabled for this program)."<<endl;
+		return;
+	}
 	else
 		cerr<<"Sanity validation passed."<<endl;
 
@@ -1265,7 +1283,7 @@ void PNTransformDriver::Print_Report()
 		double mem_obj_dev = 0.0;
 		for(unsigned int laynum=0;laynum<layouts.size();++laynum)
 		{
-			if(layouts[laynum]->GetNumberOfMemoryObjects()==1)
+			if(layouts[laynum]->IsP1())
 				p1reductions++;
 
 			unsigned int num_objects = layouts[laynum]->GetNumberOfMemoryObjects();
