@@ -14,9 +14,9 @@ watchdog_val=30
 errors=0
 
 # DEFAULT TIMEOUT VALUE
-INTEGER_TRANSFORM_TIMEOUT_VALUE=900
-#Setting PN timeout to 24 hours for TNE. 
-PN_TIMEOUT_VALUE=86400
+INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
+# Setting PN timeout to 4 hours for TNE. 
+PN_TIMEOUT_VALUE=14400
 
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
@@ -24,8 +24,9 @@ PN_TIMEOUT_VALUE=86400
 DO_CANARIES=on
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
-intxform_warnings_only=0    # default: integer warnings only mode is off
-intxform_detect_fp=1        # default: detect benign false positives is on
+intxform_warnings_only=0  # default: integer warnings only mode is off
+intxform_detect_fp=0      # default: detect benign false positives is off
+                          #   if on, you should also enable the determine_program step
 
 # alarm handler
 THIS_PID=$$
@@ -218,7 +219,7 @@ check_options()
 		exit -3;	
 	fi
 
-	phases_off="$phases_off isr=off"
+	phases_off="$phases_off isr=off determine_program=off"
 	
 }
 
