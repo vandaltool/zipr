@@ -49,7 +49,7 @@ usage()
 cleanup()
 {
 #	echo "empty"
-	rm -f test_out test_error test_status orig_out orig_error orig_status $CLEANUP_FILES
+	rm -rf test_out test_error test_status orig_out orig_error orig_status $CLEANUP_FILES
 }
 
 report_failure()
@@ -57,6 +57,11 @@ report_failure()
 	cleanup
     echo "TEST WRAPPER FAILED"
 		#in case of premature termination, terminate any programs still running
+    # if there is a comment, print it also
+    if [[ "$1" != "" ]]; then
+        echo "FAILURE Message:  $1"
+    fi
+
 	killall a.stratafied
 	#ignore the results, and continue. 
 	if [[ ! -z "$IGNORE_RESULTS" ]]; then
@@ -73,6 +78,12 @@ report_success()
 {
 	cleanup
     echo "TEST WRAPPER SUCCESS"
+
+    # if there is a comment, print it also
+    if [[ "$1" != "" ]]; then
+        echo "SUCCESS Message:  $1"
+    fi
+
     exit 0
 }
 
@@ -132,6 +143,72 @@ run_test_prog_only()
 	return $status
 }
 
+# this script takes 3 arguments:
+# $1 is the TIMEOUT value
+# $2 is the name of the binary to kill
+# $3 is the full path to the script which contains commands to send to the server
+# $@ is the rest of commandline for invoking the test program
+run_server_test_prog_only() 
+{
+	TIMEOUT=$1
+	shift
+
+    # binary name for making call to killallProcess
+    BIN_NAME=$1
+    shift
+
+    # script containing requests to the server
+    TEST_SCRIPT=$1
+    echo TEST_SCRIPT=$TEST_SCRIPT
+    shift
+
+	cmd_args="$@"
+
+	if [[ "$TEST_PROG" == "" ]]; then
+		report_failure "TEST SCRIPT ERROR: TEST_PROG does not exist, reporting failure"
+    else
+        echo
+        echo TEST_PROG=$TEST_PROG
+	fi
+
+    # first make sure that there are not other instances of the server running
+    echo Killing any pre-existing copies
+    killall $BIN_NAME
+    sleep 2
+
+    # start the server
+	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
+		echo "$TEST_PROG $@ >test_out 2>test_error"
+		$TEST_PROG "$@" >test_out 2>test_error
+	else
+		echo "timeout $TIMEOUT $TEST_PROG $@ >test_out 2>test_error"
+		timeout $TIMEOUT $TEST_PROG "$@" >test_out 2>test_error
+	fi
+
+    # grab the status before killing
+	status=$?
+	echo $status >test_status
+
+    # run the script containing commands that sends requests to the server
+    # this takes a single argument that indicates whether it is test or orig
+    if [[ -e "$TEST_SCRIPT" ]]; then
+        bash  $TEST_SCRIPT "test"  > throw_away/test_script_test_run_out 2> throw_away/test_script_test_run_error
+        echo $? > throw_away/test_script_test_run_status
+    else
+        report_failure "$TEST_SCRIPT is not a valid filepath to a test script"
+    fi
+
+    # kill the server
+    echo "after running test script:  Killing $TEST_PROG"
+    killall $BIN_NAME
+    sleep 2
+
+	log_name=`echo "TEST_$TEST_PROG $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
+	log_results $log_name test_out test_error test_status 
+
+	return $status
+}
+
 run_bench_prog_only()
 {
 	TIMEOUT=$1
@@ -158,8 +235,74 @@ run_bench_prog_only()
 	fi
 
 	status=$?
-	
 	echo $status >orig_status
+
+	log_name=`echo "BENCH_$BENCH $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
+	log_results $log_name orig_out orig_error orig_status 
+
+	return $status
+}
+
+# This script is a version of run_bench_prog_only, but for servers
+#   Where the server has to be started, then requests need to be sent to it
+#   separately
+# $1 is the TIMEOUT value
+# $2 is the binary name for kill process command
+# $3 is the full path to the script which contains commands to send to the server
+# $@ is the rest of commandline for invoking the test program
+run_server_bench_prog_only()
+{
+	TIMEOUT=$1
+	shift
+
+    BIN_NAME=$1
+    shift
+
+    TEST_SCRIPT=$1
+    echo TEST_SCRIPT=$TEST_SCRIPT
+    shift
+
+	cmd_args="$@"
+
+	#ignore the results, and continue. 
+	if [[ ! -z "$IGNORE_RESULTS" ]]; then
+		return
+	fi
+
+	if [[ "$BENCH" == "" ]]; then
+		report_failure "TEST SCRIPT ERROR: BENCH does not exist, reporting failure"
+	fi
+
+    # first make sure that there are not other instances of the server running
+    echo "Killing any pre-existing instances of $BIN_NAME"
+    killall $BIN_NAME
+    sleep 2
+
+	if [[ "$TIMEOUT" -le 0 ]] || [[ ! -z "$IGNORE_RESULTS" ]]; then
+		echo "eval $BENCH $@ >orig_out 2>orig_error"
+		$BENCH "$@" >orig_out 2>orig_error
+	else
+		echo "timeout $TIMEOUT $BENCH $@ >orig_out 2>orig_error"
+		timeout $TIMEOUT $BENCH "$@" >orig_out 2>orig_error
+	fi
+
+	status=$?
+	echo $status >orig_status
+
+    # run the script containing commands that sends requests to the server
+    # test takes single argument which indicates whether it is orig or test  
+    if [[ -e "$TEST_SCRIPT" ]]; then
+        bash  $TEST_SCRIPT "orig"  > throw_away/test_script_run_bench_out 2> throw_away/test_script_run_bench_error
+        echo $?  > throw_away/test_script_run_bench_status
+    else
+        report_failure "$TEST_SCRIPT is not a valid filepath to a test script"
+    fi
+
+
+    # kill the server
+    echo "Killing $BENCH after running test: $TEST_SCRIPT"
+    killall $BIN_NAME
+    sleep 2
 
 	log_name=`echo "BENCH_$BENCH $cmd_args" | sed -e 's/ /_/g' -e 's/\//#/g'`
 	log_results $log_name orig_out orig_error orig_status 
