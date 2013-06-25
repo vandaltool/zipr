@@ -25,8 +25,13 @@ DO_CANARIES=on
 CONCOLIC_DIR=concolic.files_a.stratafied_0001
 
 intxform_warnings_only=0  # default: integer warnings only mode is off
-intxform_detect_fp=0      # default: detect benign false positives is off
-                          #   if on, you should also enable the determine_program step
+intxform_detect_fp=1      # default: detect benign false positives is on
+                          #   but if determine_program is off, it's a no-op
+
+# 
+# By default, big data approach is off
+# To turn on the big data approach: set determine_program=on in check_options()
+#
 
 # alarm handler
 THIS_PID=$$
