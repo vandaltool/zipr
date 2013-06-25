@@ -70,6 +70,11 @@ python $GEN_MESSAGE_COMMAND -n $1 -t "Execute called" -m "execute script called 
 cd $4
 python $LOG_COMMAND -n $1 -t "Execute script" -m "run dir: $PWD"
 
+# check if the cmd_line ($3) ends with &, if so, need to wait for the batch 
+# process to be complete and capture the actual return code
+# options of grep that used -E, --extended-regexp and -q, --quiet, --silent
+echo $3 | grep -qE "&$"
+ck_code=$?
 
 echo "4" 1>&2
 
@@ -120,22 +125,40 @@ echo "7" 1>&2
 eval cmd="command executed: ${cmdline[@]:0}"
 python $LOG_COMMAND -n $1 -t "Execute script" -m "$cmd"
 eval ${cmdline[@]:0}
-PS_RUN_STATUS="$?"
+
+# Block of code from MITRE to handle return code of background command
+if [ $ck_code -ne 0 ]; then
+	# capture the return code
+    rtn_code=$?
+    echo "if: ck_code <> 0; rtn_code = $rtn_code"
+else
+	tc_pid=$!
+	wait $tc_pid
+	rtn_code=$?
+    echo "else: ck_code = 0; tc_pid = $tc_pid; rtn_code=$rtn_code"
+fi
+PS_RUN_STATUS="$rtn_code"
+
+# report status with the actual rtn_code
+ss_report_status $6 "<?xml version=3D1.0 encoding=3DUTF-8 ?><return_status_message><message_type>execute_status</message_type><test_case>$1</test_case><ref_id>$5</ref_id><status>success</status><status_code>$rtn_code</status_code></return_status_message>"
+
+
 python $LOG_COMMAND -n $1 -t "Execute script" -m "execution complete with status: $PS_RUN_STATUS"
 echo "Execute Complete with status $PS_RUN_STATUS"
 
-datapath=dirname `tail -n 1 $execpath|gawk '{print $2}'`
+#--- this block commented out - moved to individual peasoup scripts
+# datapath=dirname `tail -n 1 $execpath|gawk '{print $2}'`
 
-if [ -f $datapath/diagnostics.out ]; then
-	len=`cat $datapath/diagnostics.out | wc -l` 
-	if [ $len -gt 0 ]; then 
+#if [ -f $datapath/diagnostics.out ]; then
+	#len=`cat $datapath/diagnostics.out | wc -l` 
+	#if [ $len -gt 0 ]; then 
 
         # make output more concise
 #		wc -l $4/diagnostics.out
 #	    sort $4/diagnostics.out | uniq > tmp.$$
-	    cat $datapath/diagnostics.out | uniq > tmp.$$
-		mv tmp.$$ $datapath/diagnostics.out
-
+	    #cat $datapath/diagnostics.out | uniq > tmp.$$
+		#mv tmp.$$ $datapath/diagnostics.out
+#
 		#echo "--------------------------------------------------------"
 		#echo "-        PEASOUP DETECTED AND CONFINED ERRORS          -"
 		#echo "- (and possibly detected that some errors were benign) -"
@@ -144,22 +167,23 @@ if [ -f $datapath/diagnostics.out ]; then
 		#cat $4/diagnostics.out
 
 		# report detector warnings to test manager
-		while read line
-		do
-			case $line in
-			POLICY:\ controlled\ exit*)
-				$GRACE_HOME/concolic/src/util/linux/controlled_exit.py -m "$line"
-				;;
-			POLICY:\ continue\ execution*)
-				$GRACE_HOME/concolic/src/util/linux/continue_execution.py -m "$line"
-				;;
-			*)
-				$GRACE_HOME/concolic/src/util/linux/general_message.py -m "$line"
-				;;
-			esac
-		done < $datapath/diagnostics.out
-	fi
-fi
+		#while read line
+		#do
+			#case $line in
+			#POLICY:\ controlled\ exit*)
+				#$GRACE_HOME/concolic/src/util/linux/controlled_exit.py -m "$line"
+				#;;
+			#POLICY:\ continue\ execution*)
+				#$GRACE_HOME/concolic/src/util/linux/continue_execution.py -m "$line"
+				#;;
+			#*)
+				#$GRACE_HOME/concolic/src/util/linux/general_message.py -m "$line"
+				#;;
+			#esac
+		#done < $datapath/diagnostics.out
+	#fi
+#fi
+#----------------------
 
 echo "8" 1>&2
 # Send a general message that execution has finished
@@ -209,4 +233,28 @@ echo "11" 1>&2
 # rm /home/ps1/$1_observables.tar 
 #-----------------------------------------------------
 
+#CLEANUP
+# It should delete all files created by the analysis step
+# since they are already archived by that step.  This
+# prevents files from being archived twice
+
+echo "Cleaning..."
+pwd
+ls -l
+
+# Save any changed files from peasoup executable folder
+# Save off the diagnostics.out and a.ncexe.sigs files
+# There might be more than one peasoup_executables folder
+# so append the diagnostics.out files together since they
+# have the same name
+cd /opt/stonesoup/TH-workspace
+more peasoup_executable*/diagnostics.out > diagnostics.out
+more peasoup_executable*/a.ncexe.sigs.orig >> a.ncexe.sigs.orig
+mv peasoup_executable*/a.ncexe.sigs.* .
+rm -rf peasoup_executable*
+
+# Remove the programs - they are archived in analyze
+rm -rf built install
+
+# Kill any left over processes
 pkill sleep

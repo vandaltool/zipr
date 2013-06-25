@@ -34,41 +34,7 @@ env > analysis_after.env
 
 # cd to the build directory
 # cd $5
-
-# build the package, after breaking the up the "build_commands"
-# build_commands=$4
-# begin_of_command=0
-# commands_length=${#build_commands}
-# for (( i=0; i<$commands_length; i++ )); do
-  	# c=${build_commands:$i:1}
-  	# if [[ $c == ";" || $i -eq $commands_length-1 ]]; then
-  		# if [[ $i -eq $commands_length-1 ]]; then
-			 # x=${build_commands:$begin_of_command:$i-$begin_of_command+1}
-		# else
-			# x=${build_commands:$begin_of_command:$i-$begin_of_command}
-		# fi
-		# begin_of_command=$(( i + 1 ))
-		# echo "**************************************************************************************************"
-		# echo "Command is: " $x 
-		# echo "**************************************************************************************************"
-    	# eval $x
-    	# nothing before the $? is read from the eval!!!!
-    	# if [[ $? -ne 0 ]]; then 
-    	   	# cd $previous_dir
-    		# env > analysis_after.env
-    		# ss_report_status $7 "<?xml version=1.0 encoding=UTF-8 ?><return_status_message><message_type>analyze_status</message_type><test_case>$1</test_case><ref_id>$6</ref_id><status>skip</status></return_status_message>"
-    		# exit
-		# fi
-	# fi
-# done
-# echo "**************************************************************************************************"
-
-# cd $previous_dir
-# env > analysis_after.env
-# ss_report_status $7 "<?xml version=1.0 encoding=UTF-8 ?><return_status_message><message_type>analyze_status</message_type><test_case>$1</test_case><ref_id>$6</ref_id><status>success</status></return_status_message>"
-
-
-#---- CUT HERE - GRAMMATECH STUFF TO DO ACTUAL ANALYZE BELOW ----------------
+# NO BUILD FOR PEASOUP!!
 
 export TNE_TEST_CASE="$1"
 
@@ -119,6 +85,7 @@ python $GEN_MESSAGE_COMMAND -n $1 -t "Analyze called" -m "analyze script called 
 # cmdline=($2)
 # execpath=${cmdline[0]}
 
+# All script debugging stuff
 echo "arg2 = $2"
 execcmd=$2
 echo "execcmd = $execcmd"
@@ -175,7 +142,7 @@ TO_ANALYZE+=("$execcmd")
 for f in "${TO_ANALYZE[@]}"
 do
     echo "Analyzing $f..." >> ps_analyze_log.txt
-    $PEASOUP_HOME/tools/ps_analyze.sh $f $f.peasoup --step integertransform=off --timeout 7200 >> ps_analyze_log.txt 2>&1
+    $PEASOUP_HOME/tools/ps_analyze.sh $f $f.peasoup --step manual_test=off --step determine_program=off --timeout 7200 >> ps_analyze_log.txt 2>&1
     PS_ANALYZE_STATUS="$?"
     python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase done with exit status: $PS_ANALYZE_STATUS"
     if [ "$PS_ANALYZE_STATUS" != "0" ]
@@ -189,8 +156,6 @@ done
 # Send a general message that analyze is done
 python $GEN_MESSAGE_COMMAND -n $1 -t "Analyze complete" -m "analyze script finished"
 
-
-# cd $PEASOUP/TestHarness4
 if [ "$PS_ANALYZE_STATUS" == "0" ]; then
     ss_report_status $7 "<?xml version=1.0 encoding=UTF-8 ?><return_status_message><message_type>analyze_status</message_type><test_case>$1</test_case><ref_id>$7</ref_id><status>success</status></return_status_message>"
 elif [ "$PS_ANALYZE_STATUS" == "142" ]; then
@@ -199,4 +164,15 @@ else
     ss_report_status $7 "<?xml version=1.0 encoding=UTF-8 ?><return_status_message><message_type>analyze_status</message_type><test_case>$1</test_case><ref_id>$7</ref_id><status>skip</status></return_status_message>"
 fi
 
+# CLEANUP
+# It should delete temporary files only
+# Any file deleted will not be archived or available for execute
+
+# Clean the database
+${PEASOUP_HOME}/tools/db/drop_my_tables.sh
+${PEASOUP_HOME}/tools/db/pdb_setup.sh
+
+# Remove any temporary files here
+
+# Remove any left over processes
 pkill sleep
