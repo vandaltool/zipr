@@ -3133,3 +3133,6 @@ _GLOBAL__I_main
 __bss_start
 __init_array_start
 __init_array_end
+FileEvent
+HTTPEvent
+HTDoConnect
