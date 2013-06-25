@@ -17,6 +17,11 @@ datapath=$1
 origbinpath=$2
 
 #
+# make sure we have enough stack space
+#
+ulimit -s unlimited &>/dev/null
+
+#
 # grab the rest of the args in $*
 #
 shift 2;
