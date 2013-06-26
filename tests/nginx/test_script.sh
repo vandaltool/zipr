@@ -26,22 +26,22 @@ echo "BEGIN NGINX TESTING"
 
 # help
 echo "Basic test -h"
-run_basic_test 30 -h
+run_basic_test 30 -h -p $TEST_DIR/data/
 echo "Finished Basic test -h"
 
 # version
 echo "Basic test -v"
-run_basic_test 30 -v
+run_basic_test 30 -v -p $TEST_DIR/data/
 echo "Finished Basic test -h"
 
 # version and configure options
 echo "Basic test -V"
-run_basic_test 30 -V
+run_basic_test 30 -V $TEST_DIR/data/
 echo "Finished Basic test -V"
 
 # test configuration and exit
 echo "Basic test -t"
-run_basic_test 30 -t
+run_basic_test 30 -t $TEST_DIR/data/
 echo "Finished Basic test -h"
 
 # basic functionality tests
