@@ -30,7 +30,7 @@ intxform_detect_fp=1      # default: detect benign false positives is on
 
 # 
 # By default, big data approach is off
-# To turn on the big data approach: set determine_program=on in check_options()
+# To turn on the big data approach: modify check_options()
 #
 
 # alarm handler
@@ -224,8 +224,18 @@ check_options()
 		exit -3;	
 	fi
 
-	phases_off="$phases_off isr=off determine_program=off"
-	
+	# --step determine_program=(on|off) not specified on the command line
+	# default policy is off
+	# to make the default policy on, get rid of this block of code
+	echo $phases_off|egrep "determine_program" > /dev/null
+	if [ ! $? -eq 0 ];
+	then
+		# by default it's off
+		phases_off="$phases_off determine_program=off"
+	fi
+
+	# turn off isr
+	phases_off="$phases_off isr=off"
 }
 
 
