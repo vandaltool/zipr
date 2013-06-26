@@ -7,6 +7,8 @@ ORIG_NAME=zsh
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
 
+DELETE_FILTER="stonesoup|gcc|lib|DUMMY|exec|python|tcpdump"
+
 TEST_DIR=$PEASOUP_HOME/tests/tcpdump
 
 run_basic_test 20 -h
