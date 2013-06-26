@@ -109,7 +109,9 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 		++it
 		)
 */
-	while(entry != NULL)
+	//loop through fallthroughs of the entry (entry will be update on every iteration)
+	//until entry is null, or entry has left the function. 
+	while(entry != NULL && (entry->GetFunction()==func))
 	{
 		string matched;
 
