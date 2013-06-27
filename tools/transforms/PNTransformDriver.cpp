@@ -819,7 +819,7 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 		{
 			//Else go ahead and transform the layout. 
 			layouts[0]->Shuffle();
-			layouts[0]->AddRandomPadding();
+			layouts[0]->AddRandomPadding(do_align);
 
 			if(func_coverage == 0)
 				not_covered_funcs.push_back(vr);
@@ -1065,7 +1065,7 @@ bool PNTransformDriver::Validate_Recursive(vector<validation_record> &vrs, unsig
 			}
 
 			vrs[start].layouts[vrs[start].layout_index]->Shuffle();
-			vrs[start].layouts[vrs[start].layout_index]->AddRandomPadding();
+			vrs[start].layouts[vrs[start].layout_index]->AddRandomPadding(do_align);
 
 			Validate_Recursive(vrs,start,length);
 			return false;
