@@ -135,9 +135,9 @@ update_file_info $PROGRAM_NAME $URL $ARCH $MD5HASH $FILENAME $PROGRAM_ID "origin
 for i in `cat shared_libs`; do
 	echo registering $i	
 	myname=$i
-	myurl="file://pleaseEditPdbRegisterScript/$i"
-	mymd5="pleaseEditPdbRegisterScript"
 	myfn=`pwd`/shared_objects/$i
+	myurl="file://`hostname`$myfn"
+	mymd5=`md5sum $myfn | cut -f1 -d' '`
 
 	update_file_info $myname $myurl $ARCH $mymd5 $myfn $PROGRAM_ID ".so for a.ncexe, $i"
 done
