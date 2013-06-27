@@ -2,6 +2,7 @@
 #Everyone must point to the manual test library
 TEST_LIB=$PEASOUP_HOME/tests/manual_test_lib.sh
 
+LOG_DIR=foobar
 
 #for w3c, I use some data files, so I set up variables pointing to that location
 TEST_DIR=$PEASOUP_HOME/tests/w3c
@@ -11,7 +12,7 @@ DATA_DIR=$TEST_DIR/data
 ORIG_NAME=w3c
 
 CLEANUP_FILES="w3c.out w3c.1.out w3c.2.out w3c.log"
-DELETE_FILTER="Date:|0x|socket|secs|seconds|maxsock|maxfds|hash value is [0-9]+|write|read|event|oob"
+DELETE_FILTER="Date:|0x|socket|secs|seconds|maxsock|maxfds|hash value is [0-9]+|write|read|event|oob|DUMMY"
 
 #must import the library here, as it depends on some of the above variables
 . $TEST_LIB
