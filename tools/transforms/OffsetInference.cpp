@@ -588,6 +588,34 @@ else
 		}
 
 	}
+//TODO: hack for TNE 2, if we see a jmp to an esp or ebp relative address, ignore this function entirely
+//The reasion is fix calls will fix an esp/ebp relative call by adding 4 to the original address and pushing
+//before the inserted jmp. This gives the false impression that there is a boundary at this location
+//and also gives a false impression that the location should be modified using the wrong boundary, even if
+//p1 is used only. Specifically this occurred when the frame size was 0x20, and the call was to esp+0x1c
+//the fix call because a jmp esp+0x20 which was outside the frame, and PN corrected by changing the offset
+//to reflect the padding. 
+	else if(disasm.Instruction.BranchType == JmpType)
+	{
+		if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0 ||
+		   regexec(&(pn_regex.regex_esp_direct), disasm_str.c_str(), max, pmatch, 0)==0 ||
+		   regexec(&(pn_regex.regex_ebp_scaled), disasm_str.c_str(), max, pmatch, 0)==0 ||
+		   regexec(&(pn_regex.regex_ebp_direct), disasm_str.c_str(), max, pmatch, 0)==0)
+		{
+			cerr<<"OffsetInference: FindAllOffsets(): Layout contains a jmp relative to esp or ebp, ignore function for now"<<endl;
+			
+			direct[func] = NULL;
+			scaled[func] = NULL;
+			all_offsets[func] = NULL;
+			p1[func] = NULL;
+
+			//TODO: cleanup memory, since this is all so ugly at the moment, I'm inclined to leak memory than
+			//to risk a segfault deleting a pointer. 
+			return;
+		}
+		   
+		   
+	}
 	else if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		if(verbose_log)
