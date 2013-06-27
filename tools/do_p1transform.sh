@@ -36,7 +36,6 @@ BLACK_LIST=$P1_DIR/p1.filtered_out        # list of functions to blacklist
 COVERAGE_FILE=$P1_DIR/p1.coverage
 P1THRESHOLD=0.5
 
-
 PN_BINARY=$SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe
 
 echo "P1: transforming binary: cloneid=$CLONE_ID bed_script=$BED_SCRIPT timeout_value=$TIMEOUT_VALUE"
@@ -249,8 +248,7 @@ $SECURITY_TRANSFORMS_HOME/tools/cover/cover $CLONE_ID $EXECUTED_ADDRESSES_FINAL 
 
 touch $COVERAGE_FILE
 
-
-echo "timeout --signal=sigusr1 $TIMEOUT_VALUE $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER --no_p1_validate --shared_object_protection"
+echo "timeout --signal=sigusr1 $TIMEOUT_VALUE $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER  --shared_object_protection   --no_p1_validate --align_stack"
 
 # On timeout send sigusr1
-timeout --signal=sigusr1 $TIMEOUT_VALUE $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER --no_p1_validate --shared_object_protection
+timeout --signal=sigusr1 $TIMEOUT_VALUE $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT --coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD --canaries=$DO_CANARIES --blacklist=$LIBC_FILTER  --shared_object_protection   --no_p1_validate --align_stack
