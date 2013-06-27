@@ -8,6 +8,7 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+ulimit -s unlimited
 
 # default watchdog value is 30 seconds
 watchdog_val=30
