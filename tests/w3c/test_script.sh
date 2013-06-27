@@ -59,8 +59,13 @@ run_basic_test 45 -single -n http://127.0.0.1:7333
 
 run_basic_test 45 -head -single -n http://127.0.0.1:7333
 
-run_basic_test 45 -o w3c.1.out -single -n http://127.0.0.1:1235/index.html
-run_basic_test 45 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
+run_test_prog_only 45 -o w3c.1.out -single -n http://127.0.0.1:1235/index.html
+run_bench_prog_only 45 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
+diff w3c.1.out w3c.2.out
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+cleanup
 
 #run_test_prog_only 45 -o w3c.1.out -single -n http://127.0.0.1:1235/index.html
 #run_bench_prog_only 45 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
@@ -69,11 +74,14 @@ run_basic_test 45 -o w3c.2.out -single -n http://127.0.0.1:1235/index.html
 #	report_failure
 #fi
 
-run_basic_test 45 -o w3c.out -timeout 30 http://127.0.0.1:1235/index.html 
-#grep -i "peasoup" w3c.out
-#if [ ! $? -eq 0 ]; then
-#	report_failure
-#fi
+run_test_prog_only 45 -o w3c.1.out -timeout 30 http://127.0.0.1:1235/index.html 
+run_bench_prog_only 45 -o w3c.2.out -timeout 30 http://127.0.0.1:1235/index.html
+compare_std_results
+diff w3c.1.out w3c.2.out
+if [ ! $? -eq 0 ]; then
+	report_failure
+fi
+cleanup
 
 run_basic_test  45 -timeout 30 -get http://127.0.0.1:1235/index.html 
 #grep -i "peasoup" test_out
