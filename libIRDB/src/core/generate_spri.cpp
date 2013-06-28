@@ -556,7 +556,8 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 			else
 			{
 				fout << "# skipping elide because ilr is off (in this module) and "
-				        "no indirect targets"<<endl;
+				        "no indirect targets, but emitting a rule anyhow"<<endl;
+				fout << qualified_addressify(fileIRp, newinsn) <<" ->  ."  << endl;
 			}
 			
 		}
