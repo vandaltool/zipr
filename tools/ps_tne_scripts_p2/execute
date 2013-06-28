@@ -131,14 +131,15 @@ echo "7" 1>&2
 
 eval cmd="command executed: ${cmdline[@]:0}"
 python $LOG_COMMAND -n $1 -t "Execute script" -m "$cmd"
-eval ${cmdline[@]:0}
 
 # Block of code from MITRE to handle return code of background command
 if [ $ck_code -ne 0 ]; then
+        eval ${cmdline[@]:0}
 	# capture the return code
     rtn_code=$?
     echo "if: ck_code <> 0; rtn_code = $rtn_code"
 else
+        eval ${cmdline[@]:0}
 	tc_pid=$!
 	wait $tc_pid
 	rtn_code=$?
