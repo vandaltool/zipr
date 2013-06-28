@@ -2,6 +2,10 @@
 #include "integertransform.hpp"
 #include "leapattern.hpp"
 
+// 
+// For list of blacklisted functions, see: isBlacklisted()
+//
+
 //
 // MEDS has the following annotation types:
 //     - OVERFLOW (SIGNED|UNSIGNED|UNKNOWN) (32,16,8)
@@ -70,13 +74,11 @@ int IntegerTransform::execute()
 		if (getFilteredFunctions()->find(func->GetName()) != getFilteredFunctions()->end())
 			continue;
 
-/*
 		if (isBlacklisted(func))
 		{
 			cerr << "Heuristic filter: " << func->GetName() << endl;
 			continue;
 		}
-*/
 
 		logMessage(__func__, "processing fn: " + func->GetName());
 
@@ -264,7 +266,6 @@ void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const M
 {
 	if (p_annotation.isUnknownSign() && !p_annotation.isNoFlag())
 	{
-		// right now, doesn't yet handle lea
 		addOverflowCheckUnknownSign(p_instruction, p_annotation, p_policy);
 	}
 	else if (p_annotation.isNoFlag())
@@ -528,6 +529,14 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 
 void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3, int p_policy)
 {
+	if (!p_instruction)
+		return;
+
+	if (p_instruction->GetIndirectBranchTargetAddress())
+		cerr << "IBTA set: ";
+	else
+		cerr << "no IBTA: ";
+
 	cerr << __func__ << ": reg+constant: register: " << Register::toString(p_reg1) << " constant: " << dec << p_constantValue << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
 	//
@@ -1318,18 +1327,25 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 	if (!func) return false;
 
 	const char *funcName = func->GetName().c_str();
-	if (strcasestr(funcName, "hash") ||
+	if (/*strcasestr(funcName, "hash") ||
 		strcasestr(funcName, "compress") ||
 		strcasestr(funcName, "encode") ||
 		strcasestr(funcName, "decode") ||
 		strcasestr(funcName, "crypt") ||
+		*/
+		//          haystack, needle
 		strcasestr(funcName, "yyparse") ||
 		strcasestr(funcName, "yyerror") ||
 		strcasestr(funcName, "yydestruct") ||
 		strcasestr(funcName, "yyrestart") ||
 		strcasestr(funcName, "yylex") ||
 		strcasestr(funcName, "yy_") ||
-		strcasestr(funcName, "random"))
+		strcasestr(funcName, "sub_17810") ||
+		strcasestr(funcName, "process_active_connection") 
+		/*
+		strcasestr(funcName, "random")
+		*/
+		)
 	{
 		return true;
 	}
