@@ -66,6 +66,13 @@ python $LOG_COMMAND -n $1 -t "Execute parameters" -m "$message_1"
 # Send a general message that execute was called
 python $GEN_MESSAGE_COMMAND -n $1 -t "Execute called" -m "execute script called for test case i/o pair"
 
+echo "3.1" 1>&2
+# Clean up any stray SYSV semaphores
+IPCS_S=$(ipcs -s | egrep "0x[0-9a-f]+ [0-9]+" | grep $(whoami) | cut -f2 -d" ")
+for id in $IPCS_S; do
+	ipcrm -s $id;
+done
+
 # cd to run_directory
 cd $4
 python $LOG_COMMAND -n $1 -t "Execute script" -m "run dir: $PWD"
