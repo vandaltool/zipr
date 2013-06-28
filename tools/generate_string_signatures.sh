@@ -74,14 +74,14 @@ touch $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $finalSigFile
 # get strings & symbols
 if [ -z $stringLogFile ]; then
 	# get strings from ELF file
-	strings -n 2 $inputFile | sort -f | uniq -i > $tmpFile2            
+	strings -n 2 $inputFile | sort  | uniq  > $tmpFile2            
 else
     # get string from smart string extractor (used by ps_analyze.sh)
 	grep -i "found string:" $stringLogFile | sed "s/Found string: \"//" | sed "s/\" at.*$//" > $tmpFile2
 fi
 
 cat $defaultSigs >> $tmpFile2                                          # add signatures from sqlite itself
-sort -f $tmpFile2 | uniq -i > $tmpFile                                 
+sort  $tmpFile2 | uniq  > $tmpFile                                 
 
 nm -a $inputFile | grep -v " U " | grep -v " w " | sort | uniq | cut -d' ' -f3 > $tmpSymbols # get symbol names
 
@@ -166,7 +166,7 @@ done < $tmpFile
 sort -n -r $finalSigFile > $tmpFile
 
 # get rid of the length field
-cut -f2- -d' ' $tmpFile | uniq -i > $finalSigFile
+cut -f2- -d' ' $tmpFile | uniq  > $finalSigFile
 
 # et voila, output file $finalSigFile contains the final reverse sorted set of patterns
 
