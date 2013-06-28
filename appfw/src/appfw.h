@@ -18,10 +18,14 @@ extern void appfw_error(const char*);   // generic error display routine
 
 extern void appfw_taint_range(char *taint, char taintValue, int from, int len); // mark as tainted
 extern void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint);
-extern void appfw_establish_taint(const char *input, char *taint, matched_record**); // return tainted portion of input string
+extern void appfw_establish_taint(const char *input, char *taint, matched_record**, int case_sensitive); 
+	// return tainted portion of input string
 extern matched_record** appfw_allocate_matched_signatures(int size);
 extern void appfw_deallocate_matched_signatures(matched_record**, int size);
 extern int appfw_is_from_same_signature(matched_record**, int startPos, int endPos);
+
+#define TRUE 1
+#define FALSE 0
 
 #endif
 

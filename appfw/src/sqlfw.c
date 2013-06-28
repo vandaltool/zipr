@@ -42,7 +42,7 @@ void sqlfw_establish_taint(const char *query, char *taint, matched_record** matc
   if (!fw_sigs || !sqlfw_isInitialized())
     return;
 
-  appfw_establish_taint(query, taint, matched_signatures);
+  appfw_establish_taint(query, taint, matched_signatures,FALSE);
 }
 
 void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)

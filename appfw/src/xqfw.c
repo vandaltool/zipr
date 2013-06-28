@@ -36,7 +36,7 @@ int xqfw_verify(const char *p_command)
     matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
 	char *p_taint=malloc(length+1);
-  	appfw_establish_taint(p_command, p_taint, matched_signatures);
+  	appfw_establish_taint(p_command, p_taint, matched_signatures,FALSE);
 	if(getenv("APPFW_VERBOSE"))
 	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 

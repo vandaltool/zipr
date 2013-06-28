@@ -110,7 +110,7 @@ int oscfw_verify_args(char* const argv[])
 			int length = strlen(argv[i]);
 			matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
-			appfw_establish_taint(argv[i], taint, matched_signatures);
+			appfw_establish_taint(argv[i], taint, matched_signatures,TRUE);
 			if(is_verbose)
         			appfw_display_taint("Debugging OS Command", argv[i], taint);
 

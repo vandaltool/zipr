@@ -49,7 +49,7 @@ int appfw_ldap_verify(const char *p_filter)
 	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
 	char *p_taint=malloc(length+1);
-  	appfw_establish_taint(p_filter, p_taint, matched_signatures);
+  	appfw_establish_taint(p_filter, p_taint, matched_signatures,FALSE);
 
 	appfw_deallocate_matched_signatures(matched_signatures, length);
 
