@@ -30,6 +30,11 @@ class IntegerTransform : public Transform
 		void handleUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void handleSignedness(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
+		void handleFISTTruncation(Instruction_t *p_instruction);
+
+		void addFistpTruncationCheck(Instruction_t *p_instruction, int len);
+		void addFistTruncationCheck(Instruction_t *p_instruction, int len);
+
 		void handleInfiniteLoop(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 
 		void addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
