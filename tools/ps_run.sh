@@ -56,23 +56,46 @@ STRATA_EXE_FILE=$datapath/a.stratafied
 STRATA_MAX_WARNINGS=500000
 	exec -a $origbinpath $datapath/a.stratafied \"\$@\""
 
+#
+# setup signatures for appfw
+#
+BACKTICK=0
 
-#
-# setup signitures for appfw
-#
+addsigs () {
+	local sig=$1
+	# Make backticks separate strings
+	if [[ "$sig" =~ "\`" ]]; then
+		if [[ $BACKTICK == 0 ]]; then
+			BACKTICK=1
+			echo "\`" >> $datapath/a.ncexe.sigs.$$
+		fi
+		sig=$(echo $sig | tr '\`' ' ')
+	fi
+	# Split whitespace in arguments and add to sigs
+	echo "$sig" | tr ' ' '\n' | /bin/grep -v '^[ \t]*$' >> $datapath/a.ncexe.sigs.$$
+}
+
 cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs.$$
+# only trust command line inputs for files that are not setuid/setgid
 if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
 	echo $datapath/a.stratafied >> $datapath/a.ncexe.sigs.$$
 	echo $origbinpath >> $datapath/a.ncexe.sigs.$$
 	echo $PWD >> $datapath/a.ncexe.sigs.$$
-	for var in "$@"
-	do
-		# Split whitespace in arguments and add to sigs
-		echo "$var" | tr ' ' '\n' | /bin/grep -v '^[<spc><tab>]*$' >> $datapath/a.ncexe.sigs.$$
+	for var in "$@"; do
+		addsigs "$var"
+		# Add signatures from files with same owner as the executable
+		if [[ -f "$var" && $(stat -c %U "$var") == $(stat -c %U $origbinpath) ]]; then
+			strings "$var" > $datapath/argfilestrings.$$
+			while read line; do
+				for s in $line; do
+					addsigs "$s"
+				done
+			done < $datapath/argfilestrings.$$
+		fi
 	done
-
 fi
 
+unset addsigs
 
 #
 #  If STRATA_LOG is clear, no additional logging was requested, and we just always need to log to a file.
