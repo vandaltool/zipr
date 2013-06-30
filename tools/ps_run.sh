@@ -85,7 +85,8 @@ if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
 		addsigs "$var"
 		# Add signatures from files with same owner as the executable
 		if [[ -f "$var" && $(stat -c %U "$var") == $(stat -c %U $origbinpath) ]]; then
-			strings "$var" > $datapath/argfilestrings.$$
+			# limit to first 10K to avoid choking for now
+			strings "$var" | head -c 10000 | sort | uniq > $datapath/argfilestrings.$$
 			while read line; do
 				for s in $line; do
 					addsigs "$s"
