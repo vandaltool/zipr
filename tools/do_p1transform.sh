@@ -128,9 +128,11 @@ do
 	#---------------Non-Determinism Check-------------------
 
 	#replay again and check for divergence due to non-deterministic output
-    echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i"
+    # to force time-based nondeterminism, adjust clock ahead to a random time the next day
+    ADJUST_TIME=$(($RANDOM % 30000 + 86490))
+    echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --adjust-time=$ADJUST_TIME --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i"
 
-    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i || continue
+    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --adjust-time=$ADJUST_TIME --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i || continue
 
 	#create a temporary directory for the second replay values, so I can diff the directory structure.
     mkdir $BASELINE_DIR/${input}_tmp
