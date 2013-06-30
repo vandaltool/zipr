@@ -34,7 +34,7 @@ EXECUTED_ADDRESSES_FINAL=final.coverage.txt
 LIBC_FILTER=$PEASOUP_HOME/tools/libc_functions.txt
 BLACK_LIST=$P1_DIR/p1.filtered_out        # list of functions to blacklist
 COVERAGE_FILE=$P1_DIR/p1.coverage
-P1THRESHOLD=0.5
+P1THRESHOLD=0.75
 
 PN_BINARY=$SECURITY_TRANSFORMS_HOME/tools/transforms/p1transform.exe
 
