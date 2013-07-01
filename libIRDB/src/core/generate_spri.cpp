@@ -308,17 +308,19 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			{
 				// if we're jumping to an absolute address vrs a label, we will need a relocation for this jump instruction
 				if(
-			   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
+ 			   	   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr  -- should be recompiled to 32-bit
+ 			   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
 			   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
+
 				)
 				{
 					/* jumps have a 1-byte opcode */
-					emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
+ 					emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
 				}
 				else
 				{
 					/* other jcc'often use a 2-byte opcode for far jmps (which is what spri will emit) */
-					emit_relocation(fileIRp, fout,2,"32-bit",newinsn);
+ 					emit_relocation(fileIRp, fout,2,"32-bit",newinsn);
 				}
 			}
 		}
@@ -336,6 +338,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			else
 			{
 				if(
+			   	   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr 
 			   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
 			   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
 				  )
