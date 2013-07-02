@@ -22,7 +22,9 @@ extern int PQexec(),
 	my_execvp, execvp(),
 	my_execvpe, execvpe(),
 	my_execve,  execve(), 
-	my_fexecve, fexecve();
+	my_fexecve, fexecve(),
+	my_SQLExecDirect, SQLExecDirect(),
+	my_SQLPrepare, SQLPrepare();
 
 int execl(const char *path, const char *arg, ...);
 int execlp(const char *file, const char *arg, ...);
@@ -56,6 +58,8 @@ struct mapper dlsym_mapper[] =
 	{"execvpe", (void**)&my_execvpe, &execvpe},
 	{"execve", (void**)&my_execve, &execve},
 	{"fexecve", (void**)&my_fexecve, &fexecve},
+	{"SQLExecDirect", (void**)&my_SQLExecDirect, &SQLExecDirect},
+	{"SQLPrepare", (void**)&my_SQLPrepare, &SQLPrepare},
 	{NULL,NULL,NULL}
 };
 
