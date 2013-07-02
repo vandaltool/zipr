@@ -161,6 +161,8 @@ void appfw_establish_taint(const char *command, char *taint, matched_record** ma
 		for (sigId = 0; sigId < numSignatures; ++sigId)
 		{
 			int length_signature = strlen(fw_sigs[sigId]);
+			if(length_signature==1 && isalpha(fw_sigs[sigId]))
+				continue;
 			if (((case_sensitive  && strncmp    (&command[pos], fw_sigs[sigId], length_signature) == 0)) || 
 			    ((!case_sensitive && strncasecmp(&command[pos], fw_sigs[sigId], length_signature) == 0)) )
 			{
