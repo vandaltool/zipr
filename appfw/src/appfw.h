@@ -24,8 +24,12 @@ extern matched_record** appfw_allocate_matched_signatures(int size);
 extern void appfw_deallocate_matched_signatures(matched_record**, int size);
 extern int appfw_is_from_same_signature(matched_record**, int startPos, int endPos);
 
+#ifndef TRUE
 #define TRUE 1
+#endif
+#ifndef FALSE
 #define FALSE 0
+#endif
 
 #endif
 

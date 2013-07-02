@@ -12,9 +12,9 @@
 // @todo: use length to figure out taint buffer size 
 
 // intercept mysql_query
+int (*intercept_sqlQuery)(MYSQL*, const char *) = NULL;
 int mysql_query(MYSQL* p_conn, const char *p_query)
 {
-  static int (*intercept_sqlQuery)(MYSQL*, const char *) = NULL;
   if (!intercept_sqlQuery)
     intercept_sqlQuery = dlsym(RTLD_NEXT, "mysql_query");
 
@@ -36,10 +36,10 @@ int mysql_query(MYSQL* p_conn, const char *p_query)
   }
 }
 
+int (*intercept_sqlRealQuery)(MYSQL*, const char *, unsigned long) = NULL;
 // intercept mysql_real_query
 int mysql_real_query(MYSQL* p_conn, const char *p_query, unsigned long p_length)
 {
-  static int (*intercept_sqlRealQuery)(MYSQL*, const char *, unsigned long) = NULL;
   if (!intercept_sqlRealQuery)
     intercept_sqlRealQuery = dlsym(RTLD_NEXT, "mysql_real_query");
 

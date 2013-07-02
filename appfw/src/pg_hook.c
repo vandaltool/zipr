@@ -8,9 +8,10 @@
 
 #include "sqlfw.h"
 
+PGresult* (*my_pgExec)(PGconn*, const char *) = NULL;
+
 PGresult* PQexec(PGconn* p_conn, const char *p_query)
 {
-  static PGresult* (*my_pgExec)(PGconn*, const char *) = NULL;
   if (!my_pgExec)
   {
     my_pgExec = dlsym(RTLD_NEXT, "PQexec");

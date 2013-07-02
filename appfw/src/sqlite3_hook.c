@@ -7,6 +7,7 @@
 #include "sqlite3.h"
 #include "sqlfw.h"
 
+  int (*intercept_sqlite3Query)(sqlite3*, const char*, int (*)(void*,int,char**,char**), void *, char **) = NULL;
 int sqlite3_exec(
   sqlite3 *db,                               /* An open database */
   const char *sql,                           /* SQL to be evaluated */
@@ -15,7 +16,6 @@ int sqlite3_exec(
   char **errmsg                              /* Error msg written here */
 )
 {
-  static int (*intercept_sqlite3Query)(sqlite3*, const char*, int (*)(void*,int,char**,char**), void *, char **) = NULL;
   if (!intercept_sqlite3Query)
   {
     intercept_sqlite3Query = dlsym(RTLD_NEXT, "sqlite3_exec");

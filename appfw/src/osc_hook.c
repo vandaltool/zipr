@@ -16,11 +16,11 @@ extern char **environ;
 
 static int within_osc_monitor=FALSE;
 
+int (*my_system)(const char *) = NULL;
 #include "oscfw.h"
 int system(const char *p_command)
 {
   char taint[MAX_COMMAND_LENGTH];
-  static int (*my_system)(const char *) = NULL;
   if (!my_system)
     my_system = dlsym(RTLD_NEXT, "system");
 
@@ -47,10 +47,10 @@ int system(const char *p_command)
   }
 }
 
+FILE* (*my_popen)(const char *, const char*) = NULL;
 FILE* popen(const char *p_command, const char* p_type)
 {
   char taint[MAX_COMMAND_LENGTH];
-  static FILE* (*my_popen)(const char *, const char*) = NULL;
   if (!my_popen)
     my_popen = dlsym(RTLD_NEXT, "popen");
 
@@ -71,12 +71,12 @@ FILE* popen(const char *p_command, const char* p_type)
   }
 }
 
+int (*my_rcmd)(char **ahost, int inport, const char *locuser,
+                const char *remuser, const char *cmd, int *fd2p) = NULL;
 int rcmd(char **ahost, int inport, const char *locuser,
                 const char *remuser, const char *cmd, int *fd2p)
 {
   char taint[MAX_COMMAND_LENGTH];
-  static int (*my_rcmd)(char **ahost, int inport, const char *locuser,
-                const char *remuser, const char *cmd, int *fd2p) = NULL;
   if (!my_rcmd)
     my_rcmd = dlsym(RTLD_NEXT, "rcmd");
 
@@ -160,10 +160,10 @@ int oscfw_verify_args(char* const argv[])
 	return 1;
 }
 
+int (*my_execve)(const char*,char*const[], char*const[])=NULL;
 int handle_execl(const char *file, char *const argv[], char *const envp[])
 {
   	char taint[MAX_COMMAND_LENGTH];
-  	static int (*my_execve)(const char*,char*const[], char*const[])=NULL;
   	if (!my_execve)
     		my_execve = dlsym(RTLD_NEXT, "execve");
 	assert(my_execve);
@@ -187,20 +187,21 @@ int handle_execl(const char *file, char *const argv[], char *const envp[])
     		return -1; // error code for rcmd
   	}
 }
+
+int (*my_fexecve)(int,char*const [], char*const [])=NULL;
 int handle_fexec(int fd, char *const argv[], char *const envp[])
 {
   	char taint[MAX_COMMAND_LENGTH];
-  	static int (*my_fexec)(int,char*const [], char*const [])=NULL;
-  	if (!my_fexec)
-    		my_fexec = dlsym(RTLD_NEXT, "fexecve");
-  	assert(my_fexec);
+  	if (!my_fexecve)
+    		my_fexecve = dlsym(RTLD_NEXT, "fexecve");
+  	assert(my_fexecve);
 
   	oscfw_init(); // will do this automagically later
 
   	if (within_osc_monitor || oscfw_verify_args(argv))
   	{
 		within_osc_monitor=TRUE;
-        	int ret = my_fexec(fd,argv,envp);
+        	int ret = my_fexecve(fd,argv,envp);
 		within_osc_monitor=FALSE;
         	return ret;
   	}
@@ -211,10 +212,10 @@ int handle_fexec(int fd, char *const argv[], char *const envp[])
   	}
 }
 
+int (*my_execvpe)(const char*,char*const [], char*const [])=NULL;
 int handle_execp(const char *file, char *const argv[], char *const envp[])
 {
   	char taint[MAX_COMMAND_LENGTH];
-  	static int (*my_execvpe)(const char*,char*const [], char*const [])=NULL;
   	if (!my_execvpe)
     		my_execvpe = dlsym(RTLD_NEXT, "execvpe");
 	assert(my_execvpe);
@@ -255,6 +256,7 @@ va_list process_args(char* arg, va_list vlist, char*** ret)
 	return vlist;
 }
 
+int (*my_execl)(const char *path, const char *arg, ...);
 int execl(const char *path, const char *arg, ...)
 {
 	char **all_args=NULL;
@@ -267,6 +269,7 @@ int execl(const char *path, const char *arg, ...)
 	return handle_execl(path,all_args,env);
 }
 
+int (*my_execlp)(const char *file, const char *arg, ...);
 int execlp(const char *file, const char *arg, ...)
 {
 
@@ -280,6 +283,7 @@ int execlp(const char *file, const char *arg, ...)
 	return handle_execp(file,all_args,env);
 }
 
+int (*my_execle)(const char *path, const char *arg, ...);
 int execle(const char *path, const char *arg, ...)
 {
 
@@ -293,26 +297,31 @@ int execle(const char *path, const char *arg, ...)
 	return handle_execl(path,all_args,env);
 }
 
+int (*my_execv)(const char *path, char *const argv[]);
 int execv(const char *path, char *const argv[])
 {
 	return handle_execl(path,argv,environ);
 }
 
+int (*my_execvp)(const char *file, char *const argv[]);
 int execvp(const char *file, char *const argv[])
 {
 	return handle_execp(file,argv,environ);
 }
 
+int (*my_execvpe)(const char *file, char *const argv[], char *const envp[]);
 int execvpe(const char *file, char *const argv[], char *const envp[])
 {
 	return handle_execp(file,argv,envp);
 }
 
+int (*my_execve)(const char *filename, char *const argv[], char *const envp[]);
 int execve(const char *filename, char *const argv[], char *const envp[])
 {
 	return handle_execl(filename,argv,envp);
 }
 
+//int (*my_fexecve(int fd, char *const argv[], char *const envp[]));
 int fexecve(int fd, char *const argv[], char *const envp[])
 {
 	return handle_fexec(fd,argv,envp);

@@ -29,6 +29,9 @@ mysql_hook.o: mysql_hook.c
 sqlite3_hook.o: sqlite3_hook.c
 	gcc $(CFLAGS) -c sqlite3_hook.c
 
+hooker.o: hooker.c
+	gcc $(CFLAGS) -c hooker.c
+
 osc_hook.o: osc_hook.c
 	gcc $(CFLAGS) -c osc_hook.c
 
@@ -59,7 +62,7 @@ appfw_ldap.o: appfw_ldap.c
 openldap_hook.o: openldap_hook.c
 	gcc $(CFLAGS) -I/usr/include -c $< 
 
-libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o xq_hook.o xq_parser.o xqfw.o openldap_hook.o appfw_ldap.o
+libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o xq_hook.o xq_parser.o xqfw.o openldap_hook.o appfw_ldap.o hooker.o
 	g++ $(CFLAGS) -shared -fPIC -o $(LIBAPPFW_DIR)/libappfw.so $^ -ldl
 
 clean:
