@@ -100,10 +100,17 @@ do
 
     #generate baseline from the stratafied program, if only to prevent discrepencies when a program prints its own name. 
     #also I want to be as consistent as possible to avoid replayer issues. 
-    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i || continue
-
+    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt $STRATAFIED_BINARY $i
+    if [ $? -ne 0 ]; then
+		echo "Replay failed; ignoring input"
+		mv $i $i.ignore
+		continue;
+    fi
+ 
 	#the exit status file has long been a flag that replay worked, make sure it exists before continuing
     if [ ! -f exit_status ]; then
+		echo "Failed to capture subject exit code; ignoring input"
+		mv $i $i.ignore
 		continue;
     fi
 
@@ -112,6 +119,7 @@ do
     #don't consider inputs that cause the program to exit in exit codes 132-140 inclusive
     if [ "$status" -ge 132 ] && [ "$status" -le 140 ]; then
 		echo "Ignoring input, bad exit status"
+		mv $i $i.ignore
 		continue
     fi
     
@@ -132,7 +140,12 @@ do
     ADJUST_TIME=$(($RANDOM % 30000 + 86490))
     echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --adjust-time=$ADJUST_TIME --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i"
 
-    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --adjust-time=$ADJUST_TIME --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i || continue
+    timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --adjust-time=$ADJUST_TIME --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i 
+    if [ $? -ne 0 ]; then
+		echo "Replay failed; ignoring input"
+		mv $i $i.ignore
+		continue;
+    fi
 
 	#create a temporary directory for the second replay values, so I can diff the directory structure.
     mkdir $BASELINE_DIR/${input}_tmp
@@ -156,7 +169,12 @@ do
 		#BEN NOTE: It is my understanding that once run with -r, when we actual replay a peasoup'ed version we 
 		#do not need to run with -r. I.e., replay is oblivious to whether or not we used -r.
                 echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt -r $STRATAFIED_BINARY $i"
-		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt -r $STRATAFIED_BINARY $i || continue
+		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt -r $STRATAFIED_BINARY $i
+		if [ $? -ne 0 ]; then
+		    echo "Replay with syscall capture failed; ignoring input"
+		    mv $i $i.ignore
+		    continue
+		fi
 
 		#recreate a temporary directory for the second replay value, so I can diff the directory structure with baseline.
 		mkdir $BASELINE_DIR/${input}
@@ -169,7 +187,13 @@ do
 
 		#Run the replayer one more time without -r, to get a second run to compare against (-r is not necessary once it has been used once)
                 echo "timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i"
-		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i || continue
+		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt --instruction_addresses=$i.coverage $STRATAFIED_BINARY $i
+		if [ $? -ne 0 ]; then
+		    echo "Second replay with syscall capture failed; ignoring input"
+		    mv $i $i.ignore
+		    rm -rf $BASELINE_DIR/${input}
+		    continue
+		fi
 
 		#create a temporary directory for the second replay values, so I can diff the directory structure.
 		mkdir $BASELINE_DIR/${input}_tmp
@@ -208,9 +232,9 @@ rm -rf grace_replay/
 
 echo "Finished replaying .json files: Replayed $input_cnt inputs"
 
-echo "Choosing at most $INPUT_CUTOFF inputs with best coverage"
-
 if [ "$input_cnt" -ne 0 ]; then
+	echo "Choosing at most $INPUT_CUTOFF inputs with best coverage"
+
 	GREEDY_COVER=`$GRACE_HOME/concolic/scripts/set_cover.py $INPUT_CUTOFF $CONCOLIC_DIR/*.coverage`
 
 
