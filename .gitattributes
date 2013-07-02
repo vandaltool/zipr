@@ -94,6 +94,7 @@ appfw/src/appfw.c -text
 appfw/src/appfw.h -text
 appfw/src/appfw_ldap.c -text
 appfw/src/appfw_ldap.h -text
+appfw/src/hooker.c -text
 appfw/src/mysql_hook.c -text
 appfw/src/openldap_hook.c -text
 appfw/src/osc_hook.c -text
