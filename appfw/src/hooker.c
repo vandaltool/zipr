@@ -97,7 +97,7 @@ void *dlsym(void *handle, const char *symbol)
 	}
 	if(real_dlsym==NULL)
 	{
-		void* handler = dlopen("/usr/lib/libdl.so", RTLD_LAZY);
+		void* handler = dlopen("libdl.so", RTLD_LAZY);
 		assert(handler);
         	real_dlsym  = (void*)__libc_dlsym(handler, "dlsym"); /* now, this will call dlsym() library function */
 		assert(real_dlsym);
