@@ -252,6 +252,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
   				if (getenv("APPFW_VERBOSE"))
 					fprintf(stderr,"not same signature at pos [%d..%d]\n", beg, end);
 
+/* DAH from Jason 7/3
         		for (k = beg; k <= end; ++k)
 				{
 //					fprintf(stderr,"%c", zSql[k]);
@@ -259,6 +260,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 				}
 //				fprintf(stderr,"%n");
 			  	goto abort_parse;
+*/
 			}
 
 	      }
