@@ -31,7 +31,7 @@ PGresult* PQexec(PGconn* p_conn, const char *p_query)
   }
 }
 
-int (*my_SQLExecDirect)(void* stmt,char *query, int *query_len);
+int (*my_SQLExecDirect)(void* stmt,char *query, int *query_len) = NULL;
 int SQLExecDirect(void* stmt,char *query, int *query_len)
 {
   	if (!my_SQLExecDirect)
@@ -54,7 +54,7 @@ int SQLExecDirect(void* stmt,char *query, int *query_len)
   	}
 }
 
-int (*my_SQLPrepare)(void* stmt,char* query, int* query_len);
+int (*my_SQLPrepare)(void* stmt,char* query, int* query_len) = NULL;
 int SQLPrepare(void* stmt,char* query, int* query_len)
 {
   	if (!my_SQLPrepare)
