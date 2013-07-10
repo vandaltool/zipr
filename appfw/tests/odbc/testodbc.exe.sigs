@@ -1,0 +1,119 @@
+SELECT file_id,orig_file_id FROM file_info where file_id='%s' LIMIT 1;
+SELECT file_id,orig_file_id FROM file_info where file_id='
+SELECT file_id,orig_file_id FROM file_info LIMIT 1;
+SELECT type, name, tbl_name, rootpage, sql
+using normal query -- done - res = %d
+CREATE TEMP TABLE sqlite_temp_master(
+INSERT INTO vacuum_db.sqlite_master
+using normal query -- done - res =
+OR (type='table' AND rootpage=0)
+SELECT name, rootpage, sql FROM
+.sqlite_master ORDER BY rowid
+CREATE TABLE sqlite_master(
+FROM main.sqlite_master
+query error code = %d
+_Jv_RegisterClasses
+using normal query
+query error code =
+/lib/ld-linux.so.2
+WHERE type='view'
+OR type='trigger'
+__libc_start_main
+__stack_chk_fail
+PostgreSQL_Test
+SQLAllocHandle
+__gmon_start__
+SQLSetEnvAttr
+SQLFreeHandle
+SQLExecDirect
+SQLDisconnect
+query failed
+libodbc.so.1
+CREATE TABLE
+CREATE INDEX
+h3llostr4ta
+SQLConnect
+SQLBindCol
+QUERY_DATA
+' LIMIT 1;
+libc.so.6
+GLIBC_2.4
+GLIBC_2.0
+sprintf
+RES: %i
+hello 3
+hello 2
+hello 1
+fprintf
+stderr
+getenv
+fwrite
+T$t)1
+D$D$4
+;*2$"
+UWVS
+PTRh
+exit
+an7s
+[^_]
+|$X
+T$X
+T$T
+T$P
+T$L
+T$H
+T$D
+T$@
+|$T
+QVh
+L$T
+l$0
+L$,
+GNU
+D$X
+D$T
+D$D
+D$8
+D$@
+D$,
+D$<
+$%<
+zR
+u?
+t4
+T$
+t&
+t;
+qX
+L$
+=L
+ii
+hX
+hx
+hP
+hp
+hH
+hh
+h8
+h0
+h@
+h(
+h`
+e3
+D$
+%d
+BE
+%8
+|8
+%4
+%0
+;0
+%$
+%(
+%,
+[]
+,$
+t
+h
+%
+
