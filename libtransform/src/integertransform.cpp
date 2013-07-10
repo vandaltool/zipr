@@ -1738,7 +1738,11 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	if (p_annotation.getTruncationToWidth() == 16) {
 		mask = 0xFFFF0000;
 		mask2 = 0xFFFF8000;
-		if (p_annotation.isUnsigned())
+		if(p_annotation.flowsIntoCriticalSink()){
+			cerr <<"find flowsIntoCriticalSink in addTruncationCheck" <<endl;
+			detector = "forceSoupToExit";
+		}
+		else if (p_annotation.isUnsigned())
 			detector = string(TRUNCATION_DETECTOR_UNSIGNED_32_16);
 		else if (p_annotation.isSigned())
 			detector = string(TRUNCATION_DETECTOR_SIGNED_32_16);
@@ -1748,7 +1752,11 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	else if (p_annotation.getTruncationToWidth() == 8) {
 		mask = 0xFFFFFF00;
 		mask2 = 0xFFFFFF80;
-		if (p_annotation.isUnsigned())
+		if(p_annotation.flowsIntoCriticalSink()){
+			cerr <<"find flowsIntoCriticalSink in addTruncationCheck" <<endl;
+			detector = "forceSoupToExit";
+		}
+		else if (p_annotation.isUnsigned())
 			detector = string(TRUNCATION_DETECTOR_UNSIGNED_32_8);
 		else if (p_annotation.isSigned())
 			detector = string(TRUNCATION_DETECTOR_SIGNED_32_8);
