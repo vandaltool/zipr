@@ -75,12 +75,12 @@ void* dl_sym_helper(void* handle, const char* symbol, char* callback_name, void 
 		{
 			printf("Found match for %s\n", callback_name);
 		}
-                void* result = (void*)(*real_dlsym)(handle, symbol); /* now, this will call dlsym() library function */
+		void* result = (void*)(*real_dlsym)(handle, symbol); /* now, this will call dlsym() library function */
 		*callback_var=result;
-                return new_sym;
+		return new_sym;
 	}
 	if(getenv("APPFW_VERBOSE")!=0)
-		printf("No match foundfor '%s'!='%s'\n", symbol,callback_name);
+		printf("No match found for '%s'!='%s'\n", symbol,callback_name);
 	return NULL;
 }
 
@@ -102,7 +102,6 @@ void *dlsym(void *handle, const char *symbol)
         	real_dlsym  = (void*)__libc_dlsym(handler, "dlsym"); /* now, this will call dlsym() library function */
 		assert(real_dlsym);
 
-
 		/* init it all */
 		sqlfw_init();
 		oscfw_init();
@@ -110,8 +109,8 @@ void *dlsym(void *handle, const char *symbol)
 		appfw_ldap_init();
 	}
 
-        if(handle!=RTLD_NEXT && handle!=RTLD_DEFAULT)
-        {
+	if(handle!=RTLD_NEXT && handle!=RTLD_DEFAULT)
+	{
 		int i=0;
 		while(dlsym_mapper[i].callback_name!=NULL)
 		{
@@ -131,8 +130,8 @@ void *dlsym(void *handle, const char *symbol)
 		
 	}
 		
-        void* result = (void*)(*real_dlsym)(handle, symbol); /* now, this will call dlsym() library function */
-        return result;
+	void* result = (void*)(*real_dlsym)(handle, symbol); /* now, this will call dlsym() library function */
+	return result;
 }
 
 
