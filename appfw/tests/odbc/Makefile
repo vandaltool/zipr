@@ -31,11 +31,17 @@ clean:
 peasoup: all
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testodbc.exe testodbc.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
 	
+test.odbc:
+	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testodbc.exe.sigs ./testodbc.exe 
+	APPFW_VERBOSE=1 QUERY_DATA="' or 1 = 1; -- " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testodbc.exe.sigs ./testodbc.exe 
+
 test.normal:
-	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testodbc.exe.sigs ./testodbc.normal.exe 
+	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testodbc.normal.exe.sigs ./testodbc.normal.exe 
+	APPFW_VERBOSE=1 QUERY_DATA="' or 1 = 1; -- " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testodbc.normal.exe.sigs ./testodbc.normal.exe 
 
 test.dlsym:
-	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testodbc.dlsym.sigs ./testodbc.normal.exe 
+	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testodbc.dlsym.exe.sigs ./testodbc.dlsym.exe 
+	APPFW_VERBOSE=1 QUERY_DATA="' or 1 = 1; -- " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testodbc.dlsym.exe.sigs ./testodbc.dlsym.exe 
 
 run: all
 #	./testodbc.exe 
