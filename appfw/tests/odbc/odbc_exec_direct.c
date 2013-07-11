@@ -22,6 +22,7 @@ main() {
   SQLSMALLINT outstrlen;
   SQLSMALLINT columns; /* number of columns in result-set */
   int row = 0;
+  char connect_string[1024];
 
 
 
@@ -33,10 +34,9 @@ main() {
   SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);
   /* Connect to the DSN mydsn */
 
-  // peasoup-datamanager.cs.virginia.edu
-  // buildbot, h3llostr4ta
-  // 
-  ret = SQLDriverConnect(dbc, NULL, "DSN=PostgreSQL_Test;UID=an7s;PWD=h3llostr4ta", SQL_NTS,
+  sprintf(connect_string, "DSN=PostgreSQL_Test;UID=%s;PWD=h3llostr4ta", getenv("USER"));
+
+  ret = SQLDriverConnect(dbc, NULL, connect_string, SQL_NTS,
 			 outstr, sizeof(outstr), &outstrlen,
 			 SQL_DRIVER_COMPLETE);
 

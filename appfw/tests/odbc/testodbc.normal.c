@@ -24,14 +24,6 @@ int main() {
 	SQLAllocHandle( SQL_HANDLE_DBC, env, &dbc);
  
 	// DBC: Connect
-#ifdef XXX
-// skip the connect call
-	res = SQLConnect( dbc, (SQLCHAR*) "PostgreSQL_Test", SQL_NTS,
-	                       (SQLCHAR*) "an7s", SQL_NTS,
-	                       (SQLCHAR*) "h3llostr4ta", SQL_NTS);
-	printf("RES: %d \n", res);
- 
-#endif
 
  // table file_info
  //   file_id is a number

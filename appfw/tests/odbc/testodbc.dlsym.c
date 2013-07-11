@@ -27,21 +27,6 @@ int main() {
 		fprintf(stderr, "couldn't find libodbc.so: exiting");
 		exit(-1);
 	}
-
-	my_SQLExecDirect = dlsym(libodbc, "SQLExecDirect");
-	if (!my_SQLExecDirect)
-	{
-		fprintf(stderr, "couldn't resolve SQLExecDirect: exiting");
-		exit(-1);
-	}
-
-	my_SQLConnect = dlsym(libodbc, "SQLConnect");
-	if (!my_SQLConnect)
-	{
-		fprintf(stderr, "couldn't resolve SQLConnect: exiting");
-		exit(-1);
-	}
-
 	// Environment
 	// Allocation
 	SQLAllocHandle( SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);
@@ -52,9 +37,18 @@ int main() {
 	// DBC: Allocate
 	SQLAllocHandle( SQL_HANDLE_DBC, env, &dbc);
  
+
+
+	my_SQLConnect = dlsym(libodbc, "SQLConnect");
+	if (!my_SQLConnect)
+	{
+		fprintf(stderr, "couldn't resolve SQLConnect: exiting");
+		exit(-1);
+	}
+
 	// DBC: Connect
 	res = (*my_SQLConnect) ( dbc, (SQLCHAR*) "PostgreSQL_Test", SQL_NTS,
-	                              (SQLCHAR*) "an7s", SQL_NTS,
+	                              (SQLCHAR*) getenv("USER"), SQL_NTS,
 	                              (SQLCHAR*) "h3llostr4ta", SQL_NTS);
  
 	printf("RES: %d \n", res);
@@ -76,6 +70,12 @@ int main() {
 		sprintf(query,"SELECT file_id,orig_file_id FROM file_info where file_id='%s' LIMIT 1;", querydata);
 	}
 
+	my_SQLExecDirect = dlsym(libodbc, "SQLExecDirect");
+	if (!my_SQLExecDirect)
+	{
+		fprintf(stderr, "couldn't resolve SQLExecDirect: exiting");
+		exit(-1);
+	}
 	fprintf(stderr,"executing query: [%s]\n", query);
 	res=(*my_SQLExecDirect)(V_OD_hstmt, query, strlen(query));
 	fprintf(stderr,"query error code = %d\n", res);

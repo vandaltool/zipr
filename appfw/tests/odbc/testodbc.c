@@ -25,7 +25,7 @@ int main() {
  
 	// DBC: Connect
 	res = SQLConnect( dbc, (SQLCHAR*) "PostgreSQL_Test", SQL_NTS,
-	                       (SQLCHAR*) "jdh8d", SQL_NTS,
+	                       (SQLCHAR*) getenv("USER"), SQL_NTS,
 	                       (SQLCHAR*) "h3llostr4ta", SQL_NTS);
  
 	printf("RES: %d \n", res);
