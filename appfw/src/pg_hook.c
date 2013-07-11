@@ -20,19 +20,19 @@ PGresult* PQexec(PGconn* p_conn, const char *p_query)
   char *errMsg = NULL;
   if (sqlfw_verify(p_query, &errMsg))
   {
-    PGresult *ret = my_pgExec(p_conn, p_query);
+    	PGresult *ret = my_pgExec(p_conn, p_query);
 	return ret;
   }
   else
   {
 	// error policy: issue bad query on purpose so that we return what PG would have returned
-    PGresult *ret = my_pgExec(p_conn, "not a query force error");
+    	PGresult *ret = my_pgExec(p_conn, "not a query force error");
 	return ret;
   }
 }
 
-int (*my_SQLExecDirect)(void* stmt,char *query, int *query_len) = NULL;
-int SQLExecDirect(void* stmt,char *query, int *query_len)
+int (*my_SQLExecDirect)(void* stmt,char *query, int query_len) = NULL;
+int SQLExecDirect(void* stmt,char *query, int query_len)
 {
   	if (!my_SQLExecDirect)
   	{
@@ -49,13 +49,13 @@ int SQLExecDirect(void* stmt,char *query, int *query_len)
   	else
   	{
 		// error policy: issue bad query on purpose so that we return what PG would have returned
-    		int ret = my_SQLExecDirect(stmt,"not a query force error", query_len);
+    		int ret = my_SQLExecDirect(stmt,"not a query force error", -3);
 		return ret;
   	}
 }
 
-int (*my_SQLPrepare)(void* stmt,char* query, int* query_len) = NULL;
-int SQLPrepare(void* stmt,char* query, int* query_len)
+int (*my_SQLPrepare)(void* stmt,char* query, int query_len) = NULL;
+int SQLPrepare(void* stmt,char* query, int query_len)
 {
   	if (!my_SQLPrepare)
   	{
@@ -72,7 +72,7 @@ int SQLPrepare(void* stmt,char* query, int* query_len)
   	else
   	{
 		// error policy: issue bad query on purpose so that we return what PG would have returned
-    		int ret = my_SQLPrepare(stmt,"not a query force error", query_len);
+    		int ret = my_SQLPrepare(stmt,"not a query force error", -3);
 		return ret;
   	}
 }

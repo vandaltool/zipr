@@ -23,7 +23,7 @@ int main() {
  
 	// DBC: Connect
 	res = SQLConnect( dbc, (SQLCHAR*) "PostgreSQL_Test", SQL_NTS,
-	                       (SQLCHAR*) "an7s", SQL_NTS,
+	                       (SQLCHAR*) "jdh8d", SQL_NTS,
 	                       (SQLCHAR*) "h3llostr4ta", SQL_NTS);
 	/*
 	res = SQLConnect( dbc, (SQLCHAR*) "mySQL_Test", SQL_NTS,
@@ -43,6 +43,8 @@ int main() {
 	SQLBindCol(V_OD_hstmt,1,SQL_C_ULONG,&V_OD_id,sizeof(V_OD_id),&V_OD_err);
 	SQLBindCol(V_OD_hstmt,2,SQL_C_ULONG,&V_OD_id2,sizeof(V_OD_id2),&V_OD_err);
 
+
+	printf("sizeof V_OD_hstmt is %d\n", sizeof(V_OD_hstmt));
 	if (querydata)
 	{
 		char query[2048];

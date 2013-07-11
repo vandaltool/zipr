@@ -129,7 +129,6 @@ appfw/tests/mysql/testintercept2.c -text
 appfw/tests/mysql/testmysql.c -text
 appfw/tests/odbc/Makefile -text
 appfw/tests/odbc/testodbc.c -text
-appfw/tests/odbc/testodbc.exe.sigs -text
 appfw/tests/oscommand/Makefile -text
 appfw/tests/oscommand/dotest.sh -text
 appfw/tests/oscommand/testosc.c -text

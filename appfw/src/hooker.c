@@ -40,47 +40,67 @@ struct mapper
 	char* callback_name;
 	void** callback_storage;
 	void* new_sym; 
+	char* filename;
 };
 struct mapper dlsym_mapper[] = 
 {
-	{"PQexec", (void**)&my_pgExec, &PQexec},
-	{"mysql_query", (void**)&intercept_sqlQuery, &mysql_query},
-	{"mysql_real_query", (void**)&intercept_sqlRealQuery, &mysql_real_query},
-	{"sqlite3_exec", (void**)&intercept_sqlite3Query, &sqlite3_exec},
-	{"system", (void**)&my_system, &system},
-	{"popen", (void**)&my_popen, &popen},
-	{"rcmd", (void**)&my_rcmd, &rcmd},
-	{"execl", (void**)&my_execl, &execl},
-	{"execlp", (void**)&my_execlp, &execlp},
-	{"execle", (void**)&my_execle, &execle},
-	{"execv", (void**)&my_execv, &execv},
-	{"execvp", (void**)&my_execvp, &execvp},
-	{"execvpe", (void**)&my_execvpe, &execvpe},
-	{"execve", (void**)&my_execve, &execve},
-	{"fexecve", (void**)&my_fexecve, &fexecve},
-	{"SQLExecDirect", (void**)&my_SQLExecDirect, &SQLExecDirect},
-	{"SQLPrepare", (void**)&my_SQLPrepare, &SQLPrepare},
+	{"PQexec", (void**)&my_pgExec, &PQexec, NULL},
+	{"mysql_query", (void**)&intercept_sqlQuery, &mysql_query, NULL},
+	{"mysql_real_query", (void**)&intercept_sqlRealQuery, &mysql_real_query, NULL},
+	{"sqlite3_exec", (void**)&intercept_sqlite3Query, &sqlite3_exec, NULL},
+	{"system", (void**)&my_system, &system, NULL},
+	{"popen", (void**)&my_popen, &popen, NULL},
+	{"rcmd", (void**)&my_rcmd, &rcmd, NULL},
+	{"execl", (void**)&my_execl, &execl, NULL},
+	{"execlp", (void**)&my_execlp, &execlp, NULL},
+	{"execle", (void**)&my_execle, &execle, NULL},
+	{"execv", (void**)&my_execv, &execv, NULL},
+	{"execvp", (void**)&my_execvp, &execvp, NULL},
+	{"execvpe", (void**)&my_execvpe, &execvpe, NULL},
+	{"execve", (void**)&my_execve, &execve, NULL},
+	{"fexecve", (void**)&my_fexecve, &fexecve, NULL},
+	{"SQLExecDirect", (void**)&my_SQLExecDirect, &SQLExecDirect, "libodbc.so.1.0.0"},
+	{"SQLPrepare", (void**)&my_SQLPrepare, &SQLPrepare, "libodbc.so.1.0.0"},
 	{NULL,NULL,NULL}
 };
 
 
 
 
-void* dl_sym_helper(void* handle, const char* symbol, char* callback_name, void **callback_var, void* new_sym)
+void* dl_sym_helper(void* handle, const char* symbol, char* callback_name, void **callback_var, void* new_sym, 
+	char* filename)
 {
 	assert(callback_var);
+	char* handle_name=NULL;
+	/* if we have no handle name, assume we can intercept 
+	 * if we DO have a handle name, gather it.
+	 */
+	if(handle!=RTLD_NEXT && handle!=RTLD_DEFAULT && filename!=NULL)
+		/* this is a bit hackish, but headerfiles don't have the 
+		 * structure for a handle, but it seems to be at handle+4
+		 */
+		handle_name=*(char**)(handle+4);
+
+	/* If we've found the right symbol */
 	if(strcmp(symbol, callback_name)==0)
 	{
-		if(getenv("APPFW_VERBOSE")!=0)
+		/* and we're not doing symbol matching, or we've matched the symbol */
+ 		if(handle_name==NULL || strstr(handle_name,filename)!=NULL)
 		{
-			printf("Found match for %s\n", callback_name);
+			if(getenv("APPFW_VERBOSE")!=0)
+			{
+				printf("Handle filename is %s\n", handle_name);
+				printf("Found match for %s\n", callback_name);
+			}
+			/* now, this will call dlsym() library function */
+			void* result = (void*)(*real_dlsym)(handle, symbol); 
+
+			*callback_var=result;
+			return new_sym;
 		}
-		void* result = (void*)(*real_dlsym)(handle, symbol); /* now, this will call dlsym() library function */
-		*callback_var=result;
-		return new_sym;
 	}
-	if(getenv("APPFW_VERBOSE")!=0)
-		printf("No match found for '%s'!='%s'\n", symbol,callback_name);
+//	if(getenv("APPFW_VERBOSE")!=0)
+//		printf("No match found for '%s'!='%s'\n", symbol,callback_name);
 	return NULL;
 }
 
@@ -117,7 +137,8 @@ void *dlsym(void *handle, const char *symbol)
 			void* res=dl_sym_helper(handle,symbol,
 				dlsym_mapper[i].callback_name,
 				dlsym_mapper[i].callback_storage,
-				dlsym_mapper[i].new_sym
+				dlsym_mapper[i].new_sym,
+				dlsym_mapper[i].filename
 				);
 			if(res) 
 			{

@@ -170,7 +170,7 @@ int handle_execl(const char *file, char *const argv[], char *const envp[])
 
   	oscfw_init(); // will do this automagically later
 
-  	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)))
+  	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)) || getenv("DEBUG_APPFW"))
   	{
 		if(getenv("VERBOSE"))
 			fprintf(stderr, "Exec detected as OK\n");
@@ -222,7 +222,7 @@ int handle_execp(const char *file, char *const argv[], char *const envp[])
 	
   	oscfw_init(); // will do this automagically later
 
-  	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)))
+  	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)) || getenv("DEBUG_APPFW"))
   	{
 		within_osc_monitor=TRUE;
         	int ret = my_execvpe(file,argv,envp);

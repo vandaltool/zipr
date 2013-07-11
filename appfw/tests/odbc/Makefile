@@ -5,7 +5,7 @@ generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 all: testodbc.exe 
 
 testodbc.o: testodbc.c
-	gcc -I/usr/include -c testodbc.c
+	gcc -I/usr/include -c testodbc.c -g
 
 testodbc.exe: testodbc.o
 	gcc testodbc.o -o testodbc.exe -lodbc
