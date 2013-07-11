@@ -132,6 +132,8 @@ appfw/tests/odbc/odbc_exec_direct.c -text
 appfw/tests/odbc/testodbc.c -text
 appfw/tests/odbc/testodbc.dlsym.c -text
 appfw/tests/odbc/testodbc.normal.c -text
+appfw/tests/odbc/testodbc.system.c -text
+appfw/tests/odbc/testodbc.system.dlsym.c -text
 appfw/tests/oscommand/Makefile -text
 appfw/tests/oscommand/dotest.sh -text
 appfw/tests/oscommand/testosc.c -text
