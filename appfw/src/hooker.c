@@ -59,8 +59,8 @@ struct mapper dlsym_mapper[] =
 	{"execvpe", (void**)&my_execvpe, &execvpe, NULL},
 	{"execve", (void**)&my_execve, &execve, NULL},
 	{"fexecve", (void**)&my_fexecve, &fexecve, NULL},
-	{"SQLExecDirect", (void**)&my_SQLExecDirect, &SQLExecDirect, "libodbc.so.1.0.0"},
-	{"SQLPrepare", (void**)&my_SQLPrepare, &SQLPrepare, "libodbc.so.1.0.0"},
+	{"SQLExecDirect", (void**)&my_SQLExecDirect, &SQLExecDirect, "libodbc.so.1"},
+	{"SQLPrepare", (void**)&my_SQLPrepare, &SQLPrepare, "libodbc.so.1"},
 	{NULL,NULL,NULL}
 };
 
@@ -84,6 +84,7 @@ void* dl_sym_helper(void* handle, const char* symbol, char* callback_name, void 
 	/* If we've found the right symbol */
 	if(strcmp(symbol, callback_name)==0)
 	{
+		//printf("Handle filename is %s, filename=%s\n", handle_name, filename);
 		/* and we're not doing symbol matching, or we've matched the symbol */
  		if(handle_name==NULL || strstr(handle_name,filename)!=NULL)
 		{
