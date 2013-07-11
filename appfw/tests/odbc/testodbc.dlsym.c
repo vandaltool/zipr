@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <sql.h>
 #include <sqlext.h>
+#include <dlfcn.h>
  
 int main() {
 	SQLHENV env;
@@ -10,8 +11,36 @@ int main() {
 	long res;     // result of functions
 	char *querydata = getenv("QUERY_DATA");
 	char query[2048];
+
+	fprintf(stderr,"TESTING ODBC using explicit dlopen/dlsym\n");
+
+	SQLRETURN (*my_SQLExecDirect)(SQLHSTMT stmt, SQLCHAR *, SQLINTEGER) = 0L;
+	SQLRETURN (*my_SQLConnect)(SQLHDBC, SQLCHAR *, SQLINTEGER,
+	                                    SQLCHAR *, SQLINTEGER,
+										SQLCHAR *, SQLINTEGER) = 0L;
+
  
- 	fprintf(stderr,"TESTING NORMAL ODBC CONNECT + QUERY\n");
+ // /usr/lib/i386-linux-gnu/libodbc.so
+ 	void *libodbc = dlopen("/usr/lib/i386-linux-gnu/libodbc.so", RTLD_LAZY);
+	if (!libodbc)
+	{
+		fprintf(stderr, "couldn't find libodbc.so: exiting");
+		exit(-1);
+	}
+
+	my_SQLExecDirect = dlsym(libodbc, "SQLExecDirect");
+	if (!my_SQLExecDirect)
+	{
+		fprintf(stderr, "couldn't resolve SQLExecDirect: exiting");
+		exit(-1);
+	}
+
+	my_SQLConnect = dlsym(libodbc, "SQLConnect");
+	if (!my_SQLConnect)
+	{
+		fprintf(stderr, "couldn't resolve SQLConnect: exiting");
+		exit(-1);
+	}
 
 	// Environment
 	// Allocation
@@ -24,9 +53,9 @@ int main() {
 	SQLAllocHandle( SQL_HANDLE_DBC, env, &dbc);
  
 	// DBC: Connect
-	res = SQLConnect( dbc, (SQLCHAR*) "PostgreSQL_Test", SQL_NTS,
-	                       (SQLCHAR*) "jdh8d", SQL_NTS,
-	                       (SQLCHAR*) "h3llostr4ta", SQL_NTS);
+	res = (*my_SQLConnect) ( dbc, (SQLCHAR*) "PostgreSQL_Test", SQL_NTS,
+	                              (SQLCHAR*) "an7s", SQL_NTS,
+	                              (SQLCHAR*) "h3llostr4ta", SQL_NTS);
  
 	printf("RES: %d \n", res);
  
@@ -48,7 +77,7 @@ int main() {
 	}
 
 	fprintf(stderr,"executing query: [%s]\n", query);
-	res=SQLExecDirect(V_OD_hstmt, query, strlen(query));
+	res=(*my_SQLExecDirect)(V_OD_hstmt, query, strlen(query));
 	fprintf(stderr,"query error code = %d\n", res);
 
 	if ((res != SQL_SUCCESS) && (res != SQL_SUCCESS_WITH_INFO))
