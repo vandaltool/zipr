@@ -19,6 +19,7 @@ class ControlFlowGraph_t
 	/* friends */
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const ControlFlowGraph_t& cfg);
+		std::set<BasicBlock_t*>&     GetBlocks()   { return blocks; }
 };
 
 

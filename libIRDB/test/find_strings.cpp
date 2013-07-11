@@ -1,6 +1,7 @@
 
 
 #include <libIRDB-core.hpp>
+#include <libIRDB-cfg.hpp>
 #include <iostream>
 #include <stdlib.h>
 #include <cctype>
@@ -32,19 +33,27 @@ void found_string(string s, void* addr)
 {
 	char buff[s.length()+2];
 	char *old_p=buff, *p;
-	memcpy(buff,s.c_str(),s.length());
+	// use .data() instead of c_str(); can find multiple C-strings in one string
+	memcpy(buff,s.data(),s.length());
 	buff[s.length()]=0;
 
-	// look for new lines in the string
-	// if found, split it up and print out each one as it's own thing.
-	while(p=strchr(old_p,'\n'))
-	{
-		*p=0;
-		cout << "Found string: \""<<old_p<<"\" at "<<std::hex<<addr<<std::dec<<endl;
-		old_p=p+1;
-	} 
+	do {
+		// look for new lines in the string
+		// if found, split it up and print out each one as it's own thing.
+		while(p=strchr(old_p,'\n'))
+		{
+			*p=0;
+			if (*old_p != 0)
+			{
+				cout << "Found string: \""<<old_p<<"\" at "<<std::hex<<addr<<std::dec<<endl;
+				old_p=p+1;
+			}
+		} 
 
-	cout << "Found string: \""<<old_p<<"\" at "<<std::hex<<addr<<std::dec<<endl;
+		if (*old_p != 0)
+			cout << "Found string: \""<<old_p<<"\" at "<<std::hex<<addr<<std::dec<<endl;
+		old_p = p = old_p + strlen(old_p) + 1;
+	} while (p < buff + s.length());
 }
 
 void load_section(elf_info_t &ei, int i, pqxx::largeobjectaccess &loa)
@@ -110,8 +119,16 @@ void is_string_pointer(void* addr, elf_info_t &ei, pqxx::largeobjectaccess &loa)
 
 }
 
-void is_string_constant(void* addr)
+void is_string_constant(DISASM& disasm)
 {
+	void *addr;
+
+	if(disasm.Argument1.ArgType != MEMORY_TYPE || disasm.Argument2.ArgType == MEMORY_TYPE
+	   || disasm.Argument1.ArgSize < 16 || disasm.Argument1.ArgSize > 32)
+		return;
+
+	addr = (void*)disasm.Instruction.Immediat;
+
 	/* consider that this constant itself may be a string */
 	unsigned char byte1=(((unsigned int)addr)>>24)&0xff;
 	unsigned char byte2=(((unsigned int)addr)>>16)&0xff;
@@ -176,6 +193,125 @@ void free_elf_info(elf_info_t &ei)
 
 void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobjectaccess &loa)
 {
+	set<Instruction_t*> visited_insns;
+
+	// First pass; get strings from basic blocks,
+	// concatenating consecutive immediates stored to the stack
+
+	// Loop over all functions
+	for(
+		set<Function_t*>::const_iterator fit=firp->GetFunctions().begin();
+		fit!=firp->GetFunctions().end();
+		++fit
+	   )
+	{
+		ControlFlowGraph_t cfg = ControlFlowGraph_t(*fit) ;
+		// Loop over basic blocks in function
+		for(
+			set<BasicBlock_t*>::const_iterator bit=cfg.GetBlocks().begin();
+			bit!=cfg.GetBlocks().end();
+			++bit
+		   )
+		{
+			// Loop over instructions in basic block
+			vector<Instruction_t*>::const_iterator iit=(*bit)->GetInstructions().begin();
+			while(iit!=(*bit)->GetInstructions().end())
+			{
+				Instruction_t *insn=*iit;
+				DISASM disasm;
+				char *str = NULL;
+
+				int res=insn->Disassemble(disasm);
+				assert(res);
+
+				// Concatenate printable strings from consecutive store immediates to SP-relative stack addresses
+				size_t size = 0;
+				unsigned int olddisp = 0;
+				unsigned int newdisp = 0;
+
+				while(iit!=(*bit)->GetInstructions().end())
+				{
+//						cout<<"Pass 1: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
+
+					// Break if not assignment of an immediate to an esp offset
+					if (disasm.Argument1.ArgType != MEMORY_TYPE
+					    || disasm.Argument1.Memory.BaseRegister != REG4 /* esp */
+					    || disasm.Argument2.ArgType == MEMORY_TYPE
+					    || disasm.Argument1.ArgSize > 32)
+					{
+						// mark visited
+						visited_insns.insert(*iit);
+						is_string_constant(disasm);
+						break;
+					}
+					unsigned int disp = disasm.Argument1.Memory.Displacement;
+					// break if displacement moved backward
+					if (newdisp && (disp < newdisp || disp == olddisp))
+						break;
+					// mark visited
+					visited_insns.insert(*iit);
+					// check for a printable argument
+					unsigned int imm = disasm.Instruction.Immediat;
+					unsigned char byte1=(imm>>24)&0xff;
+					unsigned char byte2=(imm>>16)&0xff;
+					unsigned char byte3=(imm>>8)&0xff;
+					unsigned char byte4=imm&0xff;
+					size_t argsize = disasm.Argument1.ArgSize / 8;
+					if (((is_string_character(byte1) || byte1==0) || argsize < 4) &&
+					    ((is_string_character(byte2) || byte2==0) || argsize < 4) &&
+					    ((is_string_character(byte3) || byte3==0) || argsize < 2) &&
+					    (is_string_character(byte4) || byte4==0))
+					{
+						// printable, concatenate to built string
+						assert(str = (char *)realloc(str, size+argsize));
+						size += argsize;
+						memcpy(str + size - argsize, (char *) (&imm), argsize);
+					}
+					else
+					{
+						// not printable, check for other strings
+						is_string_constant(disasm);
+						break;
+					}
+					++iit;
+					if (iit == (*bit)->GetInstructions().end())
+						break;
+					insn = *iit;
+					// break if none
+					if (insn == NULL)
+						break;
+					olddisp = disp;
+					// calculate expected displacement
+					if (newdisp)
+						newdisp += argsize;
+					else
+						newdisp = disp + argsize;
+					res=insn->Disassemble(disasm);
+					assert(res);
+				}
+				
+				// Handle string if one was found
+				if (size > 0)
+				{
+					if (str[size-1] != 0)
+					{
+						assert(str = (char *)realloc(str, size+1));
+						str[size] = 0;
+						size++;
+					}
+					std::string s(str, size);
+					found_string(s, str);
+					free(str);
+				}
+				// advance to next if we've visited this instruction
+				if (iit != (*bit)->GetInstructions().end()
+				    && visited_insns.find(*iit) != visited_insns.end())
+					++iit;
+			}
+		}
+	}
+
+	// second pass; grab any leftover stringy bits without chunking
 	for(
 		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
 		it!=firp->GetInstructions().end(); 
@@ -183,21 +319,30 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 	   )
 	{
                 Instruction_t *insn=*it;
-                DISASM disasm;
 
+//		cout<<"Pass 2: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
+                DISASM disasm;
 		int res=insn->Disassemble(disasm);
 		assert(res);
 
-//		cout<<"Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
-		if(disasm.Argument1 .ArgType ==MEMORY_TYPE && disasm.Argument2.ArgType!=MEMORY_TYPE)
-                	is_string_constant((void*)disasm.Instruction.Immediat);
-                is_string_pointer((void*)disasm.Instruction.Immediat,ei,loa);
-                handle_argument(&disasm.Argument1,ei,loa);
-                handle_argument(&disasm.Argument2,ei,loa);
-                handle_argument(&disasm.Argument3,ei,loa);
+		// always check for string pointers
+		is_string_pointer((void*)disasm.Instruction.Immediat,ei,loa);
+		handle_argument(&disasm.Argument1,ei,loa);
+		handle_argument(&disasm.Argument2,ei,loa);
+		handle_argument(&disasm.Argument3,ei,loa);
 
-		
+		// if not in a function, check for string in immediate
+		if (visited_insns.find(insn) != visited_insns.end())
+		{
+			assert(insn->GetFunction());
+			continue;
+		}
 
+//		if (insn->GetFunction())
+//			cerr << "Warning: instruction at address ID " << insn->GetOriginalAddressID()
+//			     << " is in function " << insn->GetFunction()->GetName() << " but not in its CFG." << endl;
+
+		is_string_constant(disasm);
 	}
 }
 
