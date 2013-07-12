@@ -94,4 +94,16 @@ if [ ! $? -eq 0 ]; then
 	cleanup 3 "False negative detected: should have intercepted and stopped attack query"
 fi
 
+#
+# test interception of mysql_stmt_prepare
+#
+rm -f $tmp
+QUERY_DATA=" or 1 = 1 " ./testintercept.pstmt.exe.peasoup >$tmp 2>&1
+grep -i "inject" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 4 "False negative detected: should have intercepted and stopped attack query"
+fi
+
+
 cleanup 0 "Successfully tested mysql interception layer"
