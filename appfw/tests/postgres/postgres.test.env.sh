@@ -165,6 +165,23 @@ if [ ! $? -eq 0 ]; then
 	cleanup 11 "False negative detected: attack query for testpg2.exe.env.peasoup should have been detected"
 fi
 
+# test prepared stmt
+rm -fr $tmp
+./testpg2.pstmt.exe.peasoup >$tmp 2>&1
+grep -i "query success" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 12 "False positive detected: prepared stmt didn't work"
+fi
+
+rm -fr $tmp
+QUERY_DATA=" or 1 = 1 " ./testpg2.pstmt.exe.peasoup >$tmp 2>&1
+grep -i "sql injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 13 "False negative detected: didn't detect injection in prepared statement"
+fi
+
 
 psql -f ./teardown.sql
 cleanup 0 "Successfully detected Postgres SQL Injection"
