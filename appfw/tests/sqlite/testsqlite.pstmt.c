@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
    int rc;
    char *zErrMsg = 0;
    char *query_data = getenv("QUERY_DATA");
-	
+   
    /* Open Database */
    rc = sqlite3_open(database, &db);
    if( rc ){
@@ -47,20 +47,31 @@ int main(int argc, char *argv[])
     }
 
    /* create SQL query */
-   char query[1024];
-   char *fmtString = "SELECT * FROM users_1796 WHERE first LIKE '%s'";
-   
-   /* No more buffer overflow */
-   sprintf(query,fmtString,query_data);
+   char query[512];
+   if (query_data)
+     sprintf(query, "SELECT * FROM users_1796 WHERE first LIKE :first %s ;", query_data);
+   else
+     sprintf(query, "SELECT * FROM users_1796 WHERE first LIKE :first;");
+
    printf("%s\n", query);
 
-   /* Execute Query */
-   rc = sqlite3_exec(db, query, callback, 0, &zErrMsg);
-   if( rc!=SQLITE_OK ){
-     fprintf(stderr, "SQL error: %s\n", zErrMsg);
-     sqlite3_free(zErrMsg);
+   sqlite3_stmt *stmt;
+   if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK)
+   {
+      fprintf(stderr,"error preparing stmt\n");
+      exit(1);
    }
-	
+
+   int index = sqlite3_bind_parameter_index(stmt, ":first");
+   sqlite3_bind_text(stmt, index, "David", -1, SQLITE_STATIC);
+
+   sqlite3_step(stmt);
+
+     char *first = sqlite3_column_text(stmt, 0);
+     char *last = sqlite3_column_text(stmt, 1);
+     char *balance = sqlite3_column_text(stmt, 2);
+     printf("[%s] [%s] [%s]\n", first, last, balance);
+
    /* Release memory used to store results and close connection */
    sqlite3_close(db);
    return 0;

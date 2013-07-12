@@ -157,6 +157,7 @@ appfw/tests/sqlite/sqlite.test.sh -text
 appfw/tests/sqlite/sqlite3.h -text
 appfw/tests/sqlite/teardown.sql -text
 appfw/tests/sqlite/testsqlite.c -text
+appfw/tests/sqlite/testsqlite.pstmt.c -text
 appfw/tests/xquery/xpath_test/CWE_Example_in_c.c -text
 appfw/tests/xquery/xpath_test/Makefile -text
 appfw/tests/xquery/xpath_test/passwrd_xml.xml -text

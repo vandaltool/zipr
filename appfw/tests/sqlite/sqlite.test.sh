@@ -29,10 +29,6 @@
 
 COMPFLAGS="-w"
 
-# export general IDA pro environment vars
-export IDAROOT=$IDAROOT61
-export IDASDK=$IDASDK61
-
 PWD=`pwd`
 TESTLOC="${PWD}"
 tmp=$$.tmp
@@ -83,20 +79,43 @@ sqlite3 $dbname < ./teardown.sql 2>/dev/null   # in case we have leftover from p
 sqlite3 $dbname < ./setup.sql
 
 # good query
+echo "Testing good query"
 rm -f $tmp 2>/dev/null
-./testsqlite.exe.peasoup David > $tmp 2>&1
+QUERY_DATA=David ./testsqlite.exe.peasoup > $tmp 2>&1
 grep -i "last = Hyde" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 2 "False positive detected: query for testsqlite.exe.peasoup should have succeeded"
 fi
 
+echo "Testing attack detection"
 rm -f $tmp
-./testsqlite.exe "David' or '0'='0" > $tmp 2>&1
-grep -i William $tmp
+QUERY_DATA="David' or '0'='0" ./testsqlite.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 3 "False negative detected: attack query for testsqlite.exe.peasoup should have failed"
+fi
+
+#
+# test parameterized stmt
+#
+echo "Testing parameterized statement"
+rm -f $tmp
+./testsqlite.pstmt.exe.peasoup > $tmp 2>&1
+grep -i "Hyde" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 4 "False positive detected: query for testsqlite.exe.peasoup should have succeeded"
+fi
+
+echo "Testing attack on parameterized statement"
+rm -f $tmp
+QUERY_DATA=" or 1 = 1 -- " ./testsqlite.pstmt.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 5 "False negative detected: should have detected attack on parameterized stmt"
 fi
 
 sqlite3 $dbname < ./teardown.sql
