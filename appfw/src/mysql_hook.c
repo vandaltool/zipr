@@ -29,10 +29,7 @@ int mysql_query(MYSQL* p_conn, const char *p_query)
   else
   {
 	// error policy: issue bad query on purpose so that we return what PG would have returned
-	char errmsg[2048];
-	sprintf(errmsg, "error: security violation: %s", p_query);
-    int ret = intercept_sqlQuery(p_conn, errmsg);
-	return ret;
+	return intercept_sqlQuery(p_conn, "error: security violation");
   }
 }
 
@@ -55,8 +52,32 @@ int mysql_real_query(MYSQL* p_conn, const char *p_query, unsigned long p_length)
   {
 	// error policy: issue bad query on purpose so that we return what PG would have returned
 	char errmsg[2048];
-	sprintf(errmsg, "error: security violation: %s", p_query);
-    int ret = intercept_sqlRealQuery(p_conn, errmsg, strlen(errmsg));
-	return ret;
+	sprintf(errmsg, "error: security violation");
+	return intercept_sqlRealQuery(p_conn, errmsg, strlen(errmsg));
   }
+}
+
+// intercept mysql_stmt_prepare
+int (*intercept_sqlStmtPrepare)(MYSQL_STMT *p_stmt, const char *p_stmt_str, unsigned long p_length) = NULL;
+int mysql_stmt_prepare(MYSQL_STMT *p_stmt, const char *p_stmt_str, unsigned long p_length)
+{
+	if (!intercept_sqlStmtPrepare)
+	{
+		intercept_sqlStmtPrepare = dlsym(RTLD_NEXT, "mysql_stmt_prepare");
+		sqlfw_init();
+	}
+
+	char *errMsg = NULL;
+	if (sqlfw_verify(p_stmt_str, &errMsg))
+	{
+		int ret = intercept_sqlStmtPrepare(p_stmt, p_stmt_str, p_length);
+		return ret;
+	}
+	else
+	{
+		// error policy: issue bad query on purpose so that we return what PG would have returned
+		char tmp[2048];
+		sprintf(tmp, "error: security violation");
+		return intercept_sqlStmtPrepare(p_stmt, tmp, p_length);
+	}
 }

@@ -7,7 +7,12 @@
 #include "sqlite3.h"
 #include "sqlfw.h"
 
-  int (*intercept_sqlite3Query)(sqlite3*, const char*, int (*)(void*,int,char**,char**), void *, char **) = NULL;
+//
+// Intercept sqlite queries & prepared statements
+// NB: only handles UTF-8
+//
+
+int (*intercept_sqlite3Query)(sqlite3*, const char*, int (*)(void*,int,char**,char**), void *, char **) = NULL;
 int sqlite3_exec(
   sqlite3 *db,                               /* An open database */
   const char *sql,                           /* SQL to be evaluated */
@@ -30,8 +35,60 @@ int sqlite3_exec(
   else
   {
 	// error policy: issue bad query on purpose so that we return what sqlite3 would have returned
-	char badquery[2048];
-	sprintf(badquery, "error: security violation: %s", sql);
-    return intercept_sqlite3Query(db, badquery, NULL, NULL, errmsg);
+	return intercept_sqlite3Query(db, "security violation", NULL, NULL, errmsg);
   }
+}
+
+int (*intercept_sqlite3Prepare)(sqlite3 *, const char *, int, sqlite3_stmt **, const char **) = NULL; 
+int sqlite3_prepare(
+  sqlite3 *db,            /* Database handle */
+  const char *zSql,       /* SQL statement, UTF-8 encoded */
+  int nByte,              /* Maximum length of zSql in bytes. */
+  sqlite3_stmt **ppStmt,  /* OUT: Statement handle */
+  const char **pzTail     /* OUT: Pointer to unused portion of zSql */
+)
+{
+	if (!intercept_sqlite3Prepare)
+	{
+		intercept_sqlite3Prepare = dlsym(RTLD_NEXT, "sqlite3_prepare");
+		sqlfw_init(); 
+	}
+
+	char *errMsg = NULL;
+	if (sqlfw_verify(zSql, &errMsg))
+	{
+		return intercept_sqlite3Prepare(db, zSql, nByte, ppStmt, pzTail);
+	}
+	else
+	{
+		// error policy: issue bad query on purpose so that we return what sqlite3 would have returned
+		return intercept_sqlite3Prepare(db, "security violation", nByte, ppStmt, pzTail);
+  	}
+}
+
+int (*intercept_sqlite3PrepareV2)(sqlite3 *, const char *, int, sqlite3_stmt **, const char **) = NULL; 
+int sqlite3_prepare_v2(
+  sqlite3 *db,            /* Database handle */
+  const char *zSql,       /* SQL statement, UTF-8 encoded */
+  int nByte,              /* Maximum length of zSql in bytes. */
+  sqlite3_stmt **ppStmt,  /* OUT: Statement handle */
+  const char **pzTail     /* OUT: Pointer to unused portion of zSql */
+)
+{
+	if (!intercept_sqlite3PrepareV2)
+	{
+		intercept_sqlite3PrepareV2 = dlsym(RTLD_NEXT, "sqlite3_prepare_v2");
+		sqlfw_init(); 
+	}
+
+	char *errMsg = NULL;
+	if (sqlfw_verify(zSql, &errMsg))
+	{
+		return intercept_sqlite3PrepareV2(db, zSql, nByte, ppStmt, pzTail);
+	}
+	else
+	{
+		// error policy: issue bad query on purpose so that we return what sqlite3 would have returned
+		return intercept_sqlite3PrepareV2(db, "security violation", nByte, ppStmt, pzTail);
+  	}
 }

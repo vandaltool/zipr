@@ -8,10 +8,16 @@
 #include <assert.h>
 
 extern void **my_pgExec;
-extern int PQexec(),
+extern void **my_pgExecParams;
+extern void **my_pgPrepare;
+
+extern int PQexec(), PQexecParams(), PQprepare(),
 	intercept_sqlQuery, mysql_query(),
 	intercept_sqlRealQuery, mysql_real_query(),
+	intercept_sqlStmtPrepare, mysql_stmt_prepare(),
 	intercept_sqlite3Query, sqlite3_exec(),
+	intercept_sqlite3Prepare, sqlite3_prepare(),
+	intercept_sqlite3PrepareV2, sqlite3_prepare_v2(),
 	my_system, 
 	my_popen, 
 	my_rcmd, rcmd(),
@@ -31,8 +37,6 @@ int execlp(const char *file, const char *arg, ...);
 int execle(const char *path, const char *arg, ...);
 
 
-
-
 void* (*real_dlsym)()=NULL;
 
 struct mapper
@@ -45,9 +49,13 @@ struct mapper
 struct mapper dlsym_mapper[] = 
 {
 	{"PQexec", (void**)&my_pgExec, &PQexec, NULL},
+	{"PQexecParams", (void**)&my_pgExecParams, &PQexecParams, NULL},
+	{"PQprepare", (void**)&my_pgPrepare, &PQprepare, NULL},
 	{"mysql_query", (void**)&intercept_sqlQuery, &mysql_query, NULL},
 	{"mysql_real_query", (void**)&intercept_sqlRealQuery, &mysql_real_query, NULL},
 	{"sqlite3_exec", (void**)&intercept_sqlite3Query, &sqlite3_exec, NULL},
+	{"sqlite3_prepare", (void**)&intercept_sqlite3Prepare, &sqlite3_prepare, NULL},
+	{"sqlite3_prepare_v2", (void**)&intercept_sqlite3PrepareV2, &sqlite3_prepare_v2, NULL},
 	{"system", (void**)&my_system, &system, NULL},
 	{"popen", (void**)&my_popen, &popen, NULL},
 	{"rcmd", (void**)&my_rcmd, &rcmd, NULL},
