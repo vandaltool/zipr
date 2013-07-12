@@ -2,8 +2,8 @@ APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so
 
 generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
-all: testpg1.exe testpg2.exe testpg3.exe testpg4.exe
-all.env: testpg1.env.exe testpg2.env.exe
+all: testpg1.exe testpg2.exe testpg3.exe testpg4.exe 
+all.env: testpg1.env.exe testpg2.env.exe testpg.pstmt.exe testpg2.pstmt.exe
 
 testpg1.o: testpg1.c
 	gcc -I/usr/include/postgresql -c testpg1.c
@@ -47,10 +47,24 @@ testpg4.exe: testpg4.o
 	gcc testpg4.o -o testpg4.exe -lpq
 	$(generate_signatures) testpg4.exe
 
+testpg.pstmt.o: testpg.pstmt.c
+	gcc -I/usr/include/postgresql -c testpg.pstmt.c
+
+testpg.pstmt.exe: testpg.pstmt.o
+	gcc testpg.pstmt.o -o testpg.pstmt.exe -lpq
+	$(generate_signatures) testpg.pstmt.exe
+
+testpg2.pstmt.o: testpg2.pstmt.c
+	gcc -I/usr/include/postgresql -c testpg2.pstmt.c
+
+testpg2.pstmt.exe: testpg2.pstmt.o
+	gcc testpg2.pstmt.o -o testpg2.pstmt.exe -lpq
+	$(generate_signatures) testpg2.pstmt.exe
+
 clean:
 	rm -rf *.o *.tmp *.exe peasoup_executable_directory* test*.peasoup messages_to_tne.log ps_tne_logfile.txt testpg*.exe.sigs appfw.db 
 
-peasoup: all
+peasoup: all all.env
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg1.exe testpg1.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.exe testpg2.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg3.exe testpg3.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
@@ -59,11 +73,27 @@ peasoup: all
 peasoup.env: all.env
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg1.env.exe testpg1.exe.env.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.env.exe testpg2.exe.env.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg.pstmt.exe testpg.pstmt.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testpg2.pstmt.exe testpg2.pstmt.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+
+testpg.pstmt:
+	QUERY_DATA=1 LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg.pstmt.exe.sigs ./testpg.pstmt.exe
+	QUERY_DATA=" or 1 = 1 " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg.pstmt.exe.sigs ./testpg2.pstmt.exe
+
+testpg2.pstmt: testpg2.pstmt.exe testpg2.pstmt.exe.peasoup
+	echo "Normal operation"
+	./testpg2.pstmt.exe
+	echo "Peasoup operation"
+	./testpg2.pstmt.exe.peasoup
+	QUERY_DATA=" or 1 = 1 " ./testpg2.pstmt.exe
+	QUERY_DATA=" or 1 = 1 " ./testpg2.pstmt.exe.peasoup
 
 run: all
+	QUERY_DATA=1 LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg.pstmt.exe.sigs ./testpg.pstmt.exe
+	QUERY_DATA="' or 1=1 ; -- " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg.pstmt.exe.sigs ./testpg.pstmt.exe
 #	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg4.exe.sigs ./testpg4.exe "bob"
 #	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg3.exe.sigs ./testpg3.exe "select * from xyz;"
 #	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg3.exe.sigs ./testpg3.exe "' or 1=1; --"
 #	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg1.exe.sigs ./testpg1.exe "' or 1 = 1; --"
-	QUERY_DATA="' or 1 = 1; -- " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg1.env.exe.sigs ./testpg1.env.exe 
+#	QUERY_DATA="' or 1 = 1; -- " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg1.env.exe.sigs ./testpg1.env.exe 
 #	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testpg2.exe.sigs ./testpg2.exe "' or 1=1; --"
