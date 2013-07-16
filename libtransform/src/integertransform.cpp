@@ -813,30 +813,32 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
     /*
      pusha
      pushf
-     sub esp, 4
+     sub esp, 0x70
      fstp dword [esp]
+     fsave [esp+4]
      push_ret //call some_func
+     frstor [esp+4]
      test eax, 0
-     jz_eax_0 lable0
+     jz_eax_0 label0
      
      test eax, 1
-     jz_eax_1 lable1
+     jz_eax_1 label1
      
      label2:
-     add esp, 4
+     add esp, 0x70
      ;; negtive min
      mov [esp+0x28], 0x80000000
      
      
      label0:
      
-     add esp, 4
+     add esp, 0x70
      popf
      popa
      Fistp dword [esp+0x28]
      
      label1: ;;positive max
-     add esp, 4
+     add esp, 0x70
      popf
      popa
      mov [esp+0x28], 0x7FFFFFFF
@@ -845,9 +847,13 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
     
     Instruction_t* pusha_i = allocateNewInstruction(fileID, func);
     Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
-    Instruction_t* sub_esp_4 = allocateNewInstruction(fileID, func); //83 ec 04
+    Instruction_t* sub_esp_0x70 = allocateNewInstruction(fileID, func); //81 ec 70 00 00 00
     Instruction_t* fst_esp = allocateNewInstruction(fileID, func);//d9 14 24
+    // fsave [esp+4]
+    Instruction_t* fsave_wait = allocateNewInstruction(fileID, func);//9b
+    Instruction_t* fsave_esp_4 = allocateNewInstruction(fileID, func);//dd 74 24 04
     Instruction_t* pushretaddress = allocateNewInstruction(fileID, func);
+    Instruction_t* frstor_esp_4 = allocateNewInstruction(fileID, func);//dd 64 24 04
     
     Instruction_t* test_eax_0 = allocateNewInstruction(fileID, func);
     Instruction_t* test_eax_1 = allocateNewInstruction(fileID, func);
@@ -856,9 +862,9 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
     Instruction_t* jz_eax_1 = allocateNewInstruction(fileID, func);
     
     
-    Instruction_t* add_esp_4_label0 = allocateNewInstruction(fileID, func);
-    Instruction_t* add_esp_4_label1 = allocateNewInstruction(fileID, func);
-    Instruction_t* add_esp_4_label2 = allocateNewInstruction(fileID, func);
+    Instruction_t* add_esp_0x70_label0 = allocateNewInstruction(fileID, func); //81 c4 70 00 00 00
+    Instruction_t* add_esp_0x70_label1 = allocateNewInstruction(fileID, func);
+    Instruction_t* add_esp_0x70_label2 = allocateNewInstruction(fileID, func);
     
     Instruction_t* popf_label0 = allocateNewInstruction(fileID, func);
     Instruction_t* popa_label0 = allocateNewInstruction(fileID, func);
@@ -875,31 +881,47 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pusha_i);
 	pusha_i->SetFallthrough(pushf_i);
     
-    addPushf(pushf_i, sub_esp_4);//pushf
+    addPushf(pushf_i, sub_esp_0x70);//pushf
     
-    dataBits.resize(3);//sub esp,4
-    dataBits[0] = 0x83;
+    dataBits.resize(6);//sub esp,0x70
+    dataBits[0] = 0x81;
     dataBits[1] = 0xec;
-    dataBits[2] = 0x04;
-    sub_esp_4->SetFallthrough(fst_esp);
-    sub_esp_4->SetDataBits(dataBits);
-    sub_esp_4->SetComment(sub_esp_4->getDisassembly());
-	addInstruction(sub_esp_4, dataBits, fst_esp, NULL);
+    dataBits[2] = 0x70;
+    dataBits[3] = 0x00;
+    dataBits[4] = 0x00;
+    dataBits[5] = 0x00;
+    sub_esp_0x70->SetFallthrough(fst_esp);
+    sub_esp_0x70->SetDataBits(dataBits);
+    sub_esp_0x70->SetComment(sub_esp_0x70->getDisassembly());
+	addInstruction(sub_esp_0x70, dataBits, fst_esp, NULL);
     
     dataBits.resize(3);//fst [esp]
     dataBits[0] = 0xd9;
     dataBits[1] = 0x14;
     dataBits[2] = 0x24;
-    fst_esp->SetFallthrough(pushretaddress);
+    fst_esp->SetFallthrough(fsave_esp_4);
     fst_esp->SetDataBits(dataBits);
     fst_esp->SetComment(fst_esp->getDisassembly());
-	addInstruction(fst_esp, dataBits, pushretaddress, NULL);
-    
+        addInstruction(fst_esp, dataBits, fsave_esp_4, NULL);
+    dataBits.resize(1);//fsave [esp+4]
+    dataBits[0] = 0x9b;
+    fsave_esp_4->SetFallthrough(pushretaddress);
+    fsave_esp_4->SetDataBits(dataBits);
+    fsave_esp_4->SetComment(fsave_wait->getDisassembly());
+        addInstruction(fsave_wait, dataBits, fsave_esp_4, NULL);
+    dataBits.resize(4);
+    dataBits[0] = 0xdd;
+    dataBits[1] = 0x74;
+    dataBits[2] = 0x24;
+    dataBits[3] = 0x04;
+    fsave_esp_4->SetFallthrough(pushretaddress);
+    fsave_esp_4->SetDataBits(dataBits);
+    fsave_esp_4->SetComment(fsave_esp_4->getDisassembly());
+        addInstruction(fsave_esp_4, dataBits, pushretaddress, NULL);
     
     virtual_offset_t AfterTheCheckerReturn = getAvailableAddress();
 	nop->GetAddress()->SetVirtualOffset(AfterTheCheckerReturn);
 	nop->GetAddress()->SetFileID(BaseObj_t::NOT_IN_DATABASE);
-    
     
     dataBits.resize(5);//push return_address
     dataBits[0] = 0x68;
@@ -915,42 +937,53 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
 	dataBits[0] = 0x90;
 	nop->SetDataBits(dataBits);
 	nop->SetComment(nop->getDisassembly() + " -- with callback to floating number check") ;
-	nop->SetFallthrough(test_eax_0);
+	nop->SetFallthrough(frstor_esp_4);
 	nop->SetIndirectBranchTargetAddress(nop->GetAddress());
 	if(len==32)
         nop->SetCallback(string("FloatingRangeCheck32"));
     else
         nop->SetCallback(string("FloatingRangeCheck16"));
     
+    dataBits.resize(4);//frstor [esp+4]
+    dataBits[0] = 0xdd;
+    dataBits[1] = 0x64;
+    dataBits[2] = 0x24;
+    dataBits[3] = 0x04;
+    frstor_esp_4->SetDataBits(dataBits);
+    frstor_esp_4->SetFallthrough(test_eax_0);
+    frstor_esp_4->SetComment(frstor_esp_4->getDisassembly());
     dataBits.resize(2);//test eax, eax
     dataBits[0] = 0x85;
     dataBits[1] = 0xC0;
     test_eax_0->SetDataBits(dataBits);
     test_eax_0->SetFallthrough(jz_eax_0);
     addInstruction(test_eax_0, dataBits, jz_eax_0, NULL);
-    addJz(jz_eax_0, test_eax_1, add_esp_4_label0);
+    addJz(jz_eax_0, test_eax_1, add_esp_0x70_label0);
     
     
-    //lable 0:
-    Instruction_t* jmpOrignalInst = allocateNewInstruction(fileID, func);
+    //label 0:
+    Instruction_t* jmpOriginalInst = allocateNewInstruction(fileID, func);
     
-    dataBits.resize(3);//add esp,4
-    dataBits[0] = 0x83;
+    dataBits.resize(6);//add esp,0x70
+    dataBits[0] = 0x81;
     dataBits[1] = 0xc4;
-    dataBits[2] = 0x04;
-    add_esp_4_label0->SetFallthrough(popf_label0);
-    add_esp_4_label0->SetDataBits(dataBits);
-    add_esp_4_label0->SetComment(add_esp_4_label0->getDisassembly());
-	addInstruction(add_esp_4_label0, dataBits, popf_label0, NULL);
+    dataBits[2] = 0x70;
+    dataBits[3] = 0x00;
+    dataBits[4] = 0x00;
+    dataBits[5] = 0x00;
+    add_esp_0x70_label0->SetFallthrough(popf_label0);
+    add_esp_0x70_label0->SetDataBits(dataBits);
+    add_esp_0x70_label0->SetComment(add_esp_0x70_label0->getDisassembly());
+	addInstruction(add_esp_0x70_label0, dataBits, popf_label0, NULL);
     
     addPopf(popf_label0, popa_label0);
-    addPopa(popa_label0, jmpOrignalInst);
+    addPopa(popa_label0, jmpOriginalInst);
     
 	
 	dataBits.resize(2);
 	dataBits[0] = 0xeb;
-	jmpOrignalInst->SetComment("Jump to original Inst");
-	addInstruction(jmpOrignalInst,dataBits,NULL, originalInstrumentInstr);
+	jmpOriginalInst->SetComment("Jump to original Inst");
+	addInstruction(jmpOriginalInst,dataBits,NULL, originalInstrumentInstr);
     
     //label 1:
     
@@ -964,23 +997,26 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
     test_eax_1->SetComment(test_eax_1->getDisassembly()) ;
     test_eax_1->SetFallthrough(jz_eax_1);
     addInstruction(test_eax_1, dataBits, jz_eax_1, NULL);
-    addJz(jz_eax_1,  add_esp_4_label1, add_esp_4_label2);
+    addJz(jz_eax_1,  add_esp_0x70_label1, add_esp_0x70_label2);
     
     
-    dataBits.resize(3);//add esp,4
-    dataBits[0] = 0x83;
+    dataBits.resize(6);//add esp,0x70
+    dataBits[0] = 0x81;
     dataBits[1] = 0xc4;
-    dataBits[2] = 0x04;
-    add_esp_4_label1->SetFallthrough(popf_label1);
-    add_esp_4_label1->SetDataBits(dataBits);
-    add_esp_4_label1->SetComment(add_esp_4_label1->getDisassembly());
-	addInstruction(add_esp_4_label1, dataBits, popf_label1, NULL);
+    dataBits[2] = 0x70;
+    dataBits[3] = 0x00;
+    dataBits[4] = 0x00;
+    dataBits[5] = 0x00;
+    add_esp_0x70_label1->SetFallthrough(popf_label1);
+    add_esp_0x70_label1->SetDataBits(dataBits);
+    add_esp_0x70_label1->SetComment(add_esp_0x70_label1->getDisassembly());
+	addInstruction(add_esp_0x70_label1, dataBits, popf_label1, NULL);
     addPopf(popf_label1, popa_label1);
     
     if(len==32){
 		Instruction_t* mov0x7FFFFFFF = allocateNewInstruction(fileID, func);
 		Instruction_t* fstpST0 =allocateNewInstruction(fileID, func);
-		Instruction_t* jmpOrignalInstNext = allocateNewInstruction(fileID, func);
+		Instruction_t* jmpOriginalInstNext = allocateNewInstruction(fileID, func);
         
         addPopa(popa_label1, mov0x7FFFFFFF);
         string instrStr= originalInstrumentInstr->getDisassembly();
@@ -994,17 +1030,17 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
     	dataBits[0] = 0xDD;
     	dataBits[1] = 0xD8;
 		fstpST0->SetDataBits(dataBits);
-		fstpST0->SetFallthrough(jmpOrignalInstNext);
-		addInstruction(fstpST0, dataBits, jmpOrignalInstNext, NULL);
+		fstpST0->SetFallthrough(jmpOriginalInstNext);
+		addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
         
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOrignalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     else{
     	Instruction_t* mov0x7FFF = allocateNewInstruction(fileID, func);
     	Instruction_t* fstpST0 =allocateNewInstruction(fileID, func);
-		Instruction_t* jmpOrignalInstNext = allocateNewInstruction(fileID, func);
+		Instruction_t* jmpOriginalInstNext = allocateNewInstruction(fileID, func);
         
         addPopa(popa_label1, mov0x7FFF);
         string instrStr= originalInstrumentInstr->getDisassembly();
@@ -1020,28 +1056,31 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
     	dataBits[1] = 0xD8;
         
 		fstpST0->SetDataBits(dataBits);
-		fstpST0->SetFallthrough(jmpOrignalInstNext);
-		addInstruction(fstpST0, dataBits, jmpOrignalInstNext, NULL);
+		fstpST0->SetFallthrough(jmpOriginalInstNext);
+		addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
 		
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOrignalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     
-    dataBits.resize(3);//add esp,4
-    dataBits[0] = 0x83;
+    dataBits.resize(6);//add esp,0x70
+    dataBits[0] = 0x81;
     dataBits[1] = 0xc4;
-    dataBits[2] = 0x04;
-    add_esp_4_label2->SetFallthrough(popf_label2);
-    add_esp_4_label2->SetDataBits(dataBits);
-    add_esp_4_label2->SetComment(add_esp_4_label2->getDisassembly());
-    addInstruction(add_esp_4_label2, dataBits, popf_label2, NULL);
+    dataBits[2] = 0x70;
+    dataBits[3] = 0x00;
+    dataBits[4] = 0x00;
+    dataBits[5] = 0x00;
+    add_esp_0x70_label2->SetFallthrough(popf_label2);
+    add_esp_0x70_label2->SetDataBits(dataBits);
+    add_esp_0x70_label2->SetComment(add_esp_0x70_label2->getDisassembly());
+    addInstruction(add_esp_0x70_label2, dataBits, popf_label2, NULL);
     
     addPopf(popf_label2, popa_label2);
 	if(len==32){
 		Instruction_t* mov0x80000000 = allocateNewInstruction(fileID, func);
 		Instruction_t* fstpST0 =allocateNewInstruction(fileID, func);
-		Instruction_t* jmpOrignalInstNext = allocateNewInstruction(fileID, func);
+		Instruction_t* jmpOriginalInstNext = allocateNewInstruction(fileID, func);
         
         addPopa(popa_label2, mov0x80000000);
         string instrStr= originalInstrumentInstr->getDisassembly();
@@ -1055,16 +1094,16 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
     	dataBits[0] = 0xDD;
     	dataBits[1] = 0xD8;
         
-		addInstruction(fstpST0, dataBits, jmpOrignalInstNext, NULL);
+		addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
         
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOrignalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     else{
     	Instruction_t* mov0x8000 = allocateNewInstruction(fileID, func);
     	Instruction_t* fstpST0 =allocateNewInstruction(fileID, func);
-		Instruction_t* jmpOrignalInstNext = allocateNewInstruction(fileID, func);
+		Instruction_t* jmpOriginalInstNext = allocateNewInstruction(fileID, func);
         
         addPopa(popa_label2, mov0x8000);
         string instrStr= originalInstrumentInstr->getDisassembly();
@@ -1078,10 +1117,10 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
     	dataBits[0] = 0xDD;
     	dataBits[1] = 0xD8;
         
-		addInstruction(fstpST0, dataBits, jmpOrignalInstNext, NULL);
+		addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOrignalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     
 	return;
@@ -1102,10 +1141,10 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
      fstp dword [esp]
      push_ret //call some_func
      test eax, 0
-     jz_eax_0 lable0
+     jz_eax_0 label0
      
      test eax, 1
-     jz_eax_1 lable1
+     jz_eax_1 label1
      
      label2:
      add esp, 4
@@ -1130,9 +1169,13 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
     
     Instruction_t* pusha_i = allocateNewInstruction(fileID, func);
     Instruction_t* pushf_i = allocateNewInstruction(fileID, func);
-    Instruction_t* sub_esp_4 = allocateNewInstruction(fileID, func); //83 ec 04
+    Instruction_t* sub_esp_0x70 = allocateNewInstruction(fileID, func); //81 ec 70 00 00 00
     Instruction_t* fst_esp = allocateNewInstruction(fileID, func);//d9 14 24
+    // fsave [esp+4]
+    Instruction_t* fsave_wait = allocateNewInstruction(fileID, func);//9b
+    Instruction_t* fsave_esp_4 = allocateNewInstruction(fileID, func);//dd 74 24 04
     Instruction_t* pushretaddress = allocateNewInstruction(fileID, func);
+    Instruction_t* frstor_esp_4 = allocateNewInstruction(fileID, func);//67 dd 64 24 04
     
     Instruction_t* test_eax_0 = allocateNewInstruction(fileID, func);
     Instruction_t* test_eax_1 = allocateNewInstruction(fileID, func);
@@ -1141,9 +1184,9 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
     Instruction_t* jz_eax_1 = allocateNewInstruction(fileID, func);
     
     
-    Instruction_t* add_esp_4_label0 = allocateNewInstruction(fileID, func);
-    Instruction_t* add_esp_4_label1 = allocateNewInstruction(fileID, func);
-    Instruction_t* add_esp_4_label2 = allocateNewInstruction(fileID, func);
+    Instruction_t* add_esp_0x70_label0 = allocateNewInstruction(fileID, func);
+    Instruction_t* add_esp_0x70_label1 = allocateNewInstruction(fileID, func);
+    Instruction_t* add_esp_0x70_label2 = allocateNewInstruction(fileID, func);
     
     Instruction_t* popf_label0 = allocateNewInstruction(fileID, func);
     Instruction_t* popa_label0 = allocateNewInstruction(fileID, func);
@@ -1160,31 +1203,47 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
 	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, pusha_i);
 	pusha_i->SetFallthrough(pushf_i);
     
-    addPushf(pushf_i, sub_esp_4);//pushf
+    addPushf(pushf_i, sub_esp_0x70);//pushf
     
-    dataBits.resize(3);//sub esp,4
-    dataBits[0] = 0x83;
+    dataBits.resize(6);//sub esp,0x70
+    dataBits[0] = 0x81;
     dataBits[1] = 0xec;
-    dataBits[2] = 0x04;
-    sub_esp_4->SetFallthrough(fst_esp);
-    sub_esp_4->SetDataBits(dataBits);
-    sub_esp_4->SetComment(sub_esp_4->getDisassembly());
-	addInstruction(sub_esp_4, dataBits, fst_esp, NULL);
+    dataBits[2] = 0x70;
+    dataBits[3] = 0x00;
+    dataBits[4] = 0x00;
+    dataBits[5] = 0x00;
+    sub_esp_0x70->SetFallthrough(fst_esp);
+    sub_esp_0x70->SetDataBits(dataBits);
+    sub_esp_0x70->SetComment(sub_esp_0x70->getDisassembly());
+	addInstruction(sub_esp_0x70, dataBits, fst_esp, NULL);
     
     dataBits.resize(3);//fst [esp]
     dataBits[0] = 0xd9;
     dataBits[1] = 0x14;
     dataBits[2] = 0x24;
-    fst_esp->SetFallthrough(pushretaddress);
+    fst_esp->SetFallthrough(fsave_esp_4);
     fst_esp->SetDataBits(dataBits);
     fst_esp->SetComment(fst_esp->getDisassembly());
-	addInstruction(fst_esp, dataBits, pushretaddress, NULL);
-    
+        addInstruction(fst_esp, dataBits, fsave_esp_4, NULL);
+    dataBits.resize(1);//fsave [esp+4]
+    dataBits[0] = 0x9b;
+    fsave_esp_4->SetFallthrough(pushretaddress);
+    fsave_esp_4->SetDataBits(dataBits);
+    fsave_esp_4->SetComment(fsave_wait->getDisassembly());
+        addInstruction(fsave_wait, dataBits, fsave_esp_4, NULL);
+    dataBits.resize(4);
+    dataBits[0] = 0xdd;
+    dataBits[1] = 0x74;
+    dataBits[2] = 0x24;
+    dataBits[3] = 0x04;
+    fsave_esp_4->SetFallthrough(pushretaddress);
+    fsave_esp_4->SetDataBits(dataBits);
+    fsave_esp_4->SetComment(fsave_esp_4->getDisassembly());
+        addInstruction(fsave_esp_4, dataBits, pushretaddress, NULL);
     
     virtual_offset_t AfterTheCheckerReturn = getAvailableAddress();
 	nop->GetAddress()->SetVirtualOffset(AfterTheCheckerReturn);
 	nop->GetAddress()->SetFileID(BaseObj_t::NOT_IN_DATABASE);
-    
     
     dataBits.resize(5);//push return_address
     dataBits[0] = 0x68;
@@ -1200,42 +1259,53 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
 	dataBits[0] = 0x90;
 	nop->SetDataBits(dataBits);
 	nop->SetComment(nop->getDisassembly() + " -- with callback to floating number check") ;
-	nop->SetFallthrough(test_eax_0);
+	nop->SetFallthrough(frstor_esp_4);
 	nop->SetIndirectBranchTargetAddress(nop->GetAddress());
 	if(len==32)
         nop->SetCallback(string("FloatingRangeCheck32"));
     else
         nop->SetCallback(string("FloatingRangeCheck16"));
     
+    dataBits.resize(4);//frstor [esp+4]
+    dataBits[0] = 0xdd;
+    dataBits[1] = 0x64;
+    dataBits[2] = 0x24;
+    dataBits[3] = 0x04;
+    frstor_esp_4->SetDataBits(dataBits);
+    frstor_esp_4->SetFallthrough(test_eax_0);
+    frstor_esp_4->SetComment(frstor_esp_4->getDisassembly());
     dataBits.resize(2);//test eax, eax
     dataBits[0] = 0x85;
     dataBits[1] = 0xC0;
     test_eax_0->SetDataBits(dataBits);
     test_eax_0->SetFallthrough(jz_eax_0);
     addInstruction(test_eax_0, dataBits, jz_eax_0, NULL);
-    addJz(jz_eax_0, test_eax_1, add_esp_4_label0);
+    addJz(jz_eax_0, test_eax_1, add_esp_0x70_label0);
     
     
-    //lable 0:
-    Instruction_t* jmpOrignalInst = allocateNewInstruction(fileID, func);
+    //label 0:
+    Instruction_t* jmpOriginalInst = allocateNewInstruction(fileID, func);
     
-    dataBits.resize(3);//add esp,4
-    dataBits[0] = 0x83;
+    dataBits.resize(6);//add esp,0x70
+    dataBits[0] = 0x81;
     dataBits[1] = 0xc4;
-    dataBits[2] = 0x04;
-    add_esp_4_label0->SetFallthrough(popf_label0);
-    add_esp_4_label0->SetDataBits(dataBits);
-    add_esp_4_label0->SetComment(add_esp_4_label0->getDisassembly());
-	addInstruction(add_esp_4_label0, dataBits, popf_label0, NULL);
+    dataBits[2] = 0x70;
+    dataBits[3] = 0x00;
+    dataBits[4] = 0x00;
+    dataBits[5] = 0x00;
+    add_esp_0x70_label0->SetFallthrough(popf_label0);
+    add_esp_0x70_label0->SetDataBits(dataBits);
+    add_esp_0x70_label0->SetComment(add_esp_0x70_label0->getDisassembly());
+	addInstruction(add_esp_0x70_label0, dataBits, popf_label0, NULL);
     
     addPopf(popf_label0, popa_label0);
-    addPopa(popa_label0, jmpOrignalInst);
+    addPopa(popa_label0, jmpOriginalInst);
     
 	
 	dataBits.resize(2);
 	dataBits[0] = 0xeb;
-	jmpOrignalInst->SetComment("Jump to original Inst");
-	addInstruction(jmpOrignalInst,dataBits,NULL, originalInstrumentInstr);
+	jmpOriginalInst->SetComment("Jump to original Inst");
+	addInstruction(jmpOriginalInst,dataBits,NULL, originalInstrumentInstr);
     
     //label 1:
     
@@ -1249,47 +1319,50 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
     test_eax_1->SetComment(test_eax_1->getDisassembly()) ;
     test_eax_1->SetFallthrough(jz_eax_1);
     addInstruction(test_eax_1, dataBits, jz_eax_1, NULL);
-    addJz(jz_eax_1,  add_esp_4_label1, add_esp_4_label2);
+    addJz(jz_eax_1,  add_esp_0x70_label1, add_esp_0x70_label2);
     
     
-    dataBits.resize(3);//add esp,4
-    dataBits[0] = 0x83;
+    dataBits.resize(6);//add esp,0x70
+    dataBits[0] = 0x81;
     dataBits[1] = 0xc4;
-    dataBits[2] = 0x04;
-    add_esp_4_label1->SetFallthrough(popf_label1);
-    add_esp_4_label1->SetDataBits(dataBits);
-    add_esp_4_label1->SetComment(add_esp_4_label1->getDisassembly());
-	addInstruction(add_esp_4_label1, dataBits, popf_label1, NULL);
+    dataBits[2] = 0x70;
+    dataBits[3] = 0x00;
+    dataBits[4] = 0x00;
+    dataBits[5] = 0x00;
+    add_esp_0x70_label1->SetFallthrough(popf_label1);
+    add_esp_0x70_label1->SetDataBits(dataBits);
+    add_esp_0x70_label1->SetComment(add_esp_0x70_label1->getDisassembly());
+	addInstruction(add_esp_0x70_label1, dataBits, popf_label1, NULL);
     addPopf(popf_label1, popa_label1);
     
     if(len==32){
 		Instruction_t* mov0x7FFFFFFF = allocateNewInstruction(fileID, func);
 		//Instruction_t* fstpST0 =allocateNewInstruction(fileID, func);
-		Instruction_t* jmpOrignalInstNext = allocateNewInstruction(fileID, func);
+		Instruction_t* jmpOriginalInstNext = allocateNewInstruction(fileID, func);
         
         addPopa(popa_label1, mov0x7FFFFFFF);
         string instrStr= originalInstrumentInstr->getDisassembly();
         string addExpr = instrStr.substr(instrStr.find(" ")+1);
         mov0x7FFFFFFF->Assemble("mov "+ addExpr + ", 0x7FFFFFFF");
         mov0x7FFFFFFF->SetComment(mov0x7FFFFFFF->getDisassembly());
-		addInstruction(mov0x7FFFFFFF, mov0x7FFFFFFF->GetDataBits(), jmpOrignalInstNext, NULL);
+		addInstruction(mov0x7FFFFFFF, mov0x7FFFFFFF->GetDataBits(), jmpOriginalInstNext, NULL);
 		popa_label1->SetComment("just before " + mov0x7FFFFFFF->getDisassembly());
 		
 		//dataBits.resize(2);//fstp st(0)
     	//dataBits[0] = 0xDD;
     	//dataBits[1] = 0xD8;
 		//fstpST0->SetDataBits(dataBits);
-		//fstpST0->SetFallthrough(jmpOrignalInstNext);
-		//addInstruction(fstpST0, dataBits, jmpOrignalInstNext, NULL);
+		//fstpST0->SetFallthrough(jmpOriginalInstNext);
+		//addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
         
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOrignalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     else{
     	Instruction_t* mov0x7FFF = allocateNewInstruction(fileID, func);
     	//Instruction_t* fstpST0 =allocateNewInstruction(fileID, func);
-		Instruction_t* jmpOrignalInstNext = allocateNewInstruction(fileID, func);
+		Instruction_t* jmpOriginalInstNext = allocateNewInstruction(fileID, func);
         
         addPopa(popa_label1, mov0x7FFF);
         string instrStr= originalInstrumentInstr->getDisassembly();
@@ -1298,35 +1371,38 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
         mov0x7FFF->SetComment(mov0x7FFF->getDisassembly());
         
 		//mov0x7FFF->SetFallthrough(fstpST0);
-		addInstruction(mov0x7FFF, mov0x7FFF->GetDataBits(), jmpOrignalInstNext, NULL);
+		addInstruction(mov0x7FFF, mov0x7FFF->GetDataBits(), jmpOriginalInstNext, NULL);
         
 		//dataBits.resize(2);//fstp st(0)
     	//dataBits[0] = 0xDD;
     	//dataBits[1] = 0xD8;
         
 		//fstpST0->SetDataBits(dataBits);
-		//fstpST0->SetFallthrough(jmpOrignalInstNext);
-		//addInstruction(fstpST0, dataBits, jmpOrignalInstNext, NULL);
+		//fstpST0->SetFallthrough(jmpOriginalInstNext);
+		//addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
 		
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOrignalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     
-    dataBits.resize(3);//add esp,4
-    dataBits[0] = 0x83;
+    dataBits.resize(6);//add esp,0x70
+    dataBits[0] = 0x81;
     dataBits[1] = 0xc4;
-    dataBits[2] = 0x04;
-    add_esp_4_label2->SetFallthrough(popf_label2);
-    add_esp_4_label2->SetDataBits(dataBits);
-    add_esp_4_label2->SetComment(add_esp_4_label2->getDisassembly());
-    addInstruction(add_esp_4_label2, dataBits, popf_label2, NULL);
+    dataBits[2] = 0x70;
+    dataBits[3] = 0x00;
+    dataBits[4] = 0x00;
+    dataBits[5] = 0x00;
+    add_esp_0x70_label2->SetFallthrough(popf_label2);
+    add_esp_0x70_label2->SetDataBits(dataBits);
+    add_esp_0x70_label2->SetComment(add_esp_0x70_label2->getDisassembly());
+    addInstruction(add_esp_0x70_label2, dataBits, popf_label2, NULL);
     
     addPopf(popf_label2, popa_label2);
 	if(len==32){
 		Instruction_t* mov0x80000000 = allocateNewInstruction(fileID, func);
 		//Instruction_t* fstpST0 =allocateNewInstruction(fileID, func);
-		Instruction_t* jmpOrignalInstNext = allocateNewInstruction(fileID, func);
+		Instruction_t* jmpOriginalInstNext = allocateNewInstruction(fileID, func);
         
         addPopa(popa_label2, mov0x80000000);
         string instrStr= originalInstrumentInstr->getDisassembly();
@@ -1334,22 +1410,22 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
         mov0x80000000->Assemble("mov "+ addExpr + ", 0x80000001");
         mov0x80000000->SetComment(mov0x80000000->getDisassembly());
        	//mov0x80000000->SetFallthrough(fstpST0);
-		addInstruction(mov0x80000000, mov0x80000000->GetDataBits(), jmpOrignalInstNext, NULL);
+		addInstruction(mov0x80000000, mov0x80000000->GetDataBits(), jmpOriginalInstNext, NULL);
 		
 		//dataBits.resize(2);//fstp st(0)
     	//dataBits[0] = 0xDD;
     	//dataBits[1] = 0xD8;
         
-		//addInstruction(fstpST0, dataBits, jmpOrignalInstNext, NULL);
+		//addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
         
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOrignalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     else{
     	Instruction_t* mov0x8000 = allocateNewInstruction(fileID, func);
     	Instruction_t* fstpST0 =allocateNewInstruction(fileID, func);
-		Instruction_t* jmpOrignalInstNext = allocateNewInstruction(fileID, func);
+		Instruction_t* jmpOriginalInstNext = allocateNewInstruction(fileID, func);
         
         addPopa(popa_label2, mov0x8000);
         string instrStr= originalInstrumentInstr->getDisassembly();
@@ -1357,16 +1433,16 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
         mov0x8000->Assemble("mov "+ addExpr + ", 0x8001");
         mov0x8000->SetComment(mov0x8000->getDisassembly());
         
-		addInstruction(mov0x8000, mov0x8000->GetDataBits(), jmpOrignalInstNext, NULL);
+		addInstruction(mov0x8000, mov0x8000->GetDataBits(), jmpOriginalInstNext, NULL);
         
 		//dataBits.resize(2);//fstp st(0)
     	//dataBits[0] = 0xDD;
     	//dataBits[1] = 0xD8;
         
-		//addInstruction(fstpST0, dataBits, jmpOrignalInstNext, NULL);
+		//addInstruction(fstpST0, dataBits, jmpOriginalInstNext, NULL);
 		dataBits.resize(2);
 		dataBits[0] = 0xeb;
-		addInstruction(jmpOrignalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
+		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     
 	return;
