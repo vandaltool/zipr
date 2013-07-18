@@ -9,7 +9,7 @@ safe_dir_list="/lib /lib/tls/i686/cmov /usr/lib /lib/i686/cmov /lib/i386-linux-g
 
 # Add all library directories under /opt/stonesoup/dependencies if present
 if [ -d "/opt/stonesoup/dependencies" ]; then
-	stonesoup_dir_list=$( ( for d in `find /opt/stonesoup/dependencies -name 'lib*.so'`; do dirname $d; done ) | sort | uniq | tr "\\n" " " )
+	stonesoup_dir_list=$( ( for d in `find /opt/stonesoup/dependencies -name 'lib*.so'`; do dirname $(realpath $d); done ) | sort | uniq | tr "\\n" " " )
 	safe_dir_list="$safe_dir_list $stonesoup_dir_list"
 fi
 
