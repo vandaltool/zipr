@@ -2279,7 +2279,7 @@ void IntegerTransform::logStats()
 	std::cerr << "# ATTRIBUTE num_benign=" << m_numBenign << std::endl;
 	std::cerr << "# ATTRIBUTE num_overflows_instrumented=" << m_numOverflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_overflows_skipped=" << m_numOverflowsSkipped << std::endl;
-	std::cerr << "# ATTRIBUTE num_underflows_instrumented=" << m_numOverflows << std::endl;
+	std::cerr << "# ATTRIBUTE num_underflows_instrumented=" << m_numUnderflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_underflows_skipped=" << m_numUnderflowsSkipped << std::endl;
 	std::cerr << "# ATTRIBUTE num_truncations_instrumented=" << m_numTruncations << std::endl;
 	std::cerr << "# ATTRIBUTE num_truncations_skipped=" << m_numTruncationsSkipped << std::endl;
