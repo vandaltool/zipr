@@ -28,8 +28,7 @@
 // Instrumentation:
 //      - TRUNCATION (16->8)   no test cases available
 //      - LEA                  only reg32+reg32 case implemented
-//
-// 20130409 Anh  fixed lea reg+reg bug (we were assuming that annotation matched instruction exactly)
+// // 20130409 Anh  fixed lea reg+reg bug (we were assuming that annotation matched instruction exactly)
 // 20130410 Anh  implemented shared library support -- added outer loop to iterate over all files in the driver program
 // 20130411 Anh  skip instrumentation where there's no fallthrough for an instruction
 //
@@ -43,6 +42,20 @@ IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_fileIR,
 	m_pathManipulationDetected = false;
 
 	m_annotations = p_annotations;              
+
+	m_numAnnotations = 0;
+	m_numIdioms = 0;
+	m_numBlacklisted = 0;
+	m_numBenign = 0;
+	m_numOverflows = 0;
+	m_numUnderflows = 0;
+	m_numTruncations = 0;
+	m_numSignedness = 0;
+	m_numFP = 0;
+	m_numOverflowsSkipped = 0;
+	m_numUnderflowsSkipped = 0;
+	m_numTruncationsSkipped = 0;
+	m_numSignednessSkipped = 0;
 }
 
 // iterate through all functions
@@ -72,11 +85,14 @@ int IntegerTransform::execute()
 		Function_t* func=*itf;
 
 		if (getFilteredFunctions()->find(func->GetName()) != getFilteredFunctions()->end())
+		{
 			continue;
+		}
 
 		if (isBlacklisted(func))
 		{
 			cerr << "Heuristic filter: " << func->GetName() << endl;
+			m_numBlacklisted++;
 			continue;
 		}
 
@@ -123,6 +139,7 @@ int IntegerTransform::execute()
 				if (m_benignFalsePositives && m_benignFalsePositives->count(vo))
 				{
 					// potential benign false positives
+					m_numBenign++;
 					policy = POLICY_CONTINUE;
 				}
 
@@ -132,10 +149,12 @@ int IntegerTransform::execute()
 					continue;
 
 				logMessage(__func__, annotation, "-- instruction: " + insn->getDisassembly());
+				m_numAnnotations++;
 
 				if (annotation.isIdiom())
 				{
 					logMessage(__func__, "skip IDIOM");
+					m_numIdioms++;
 					continue;
 				}
 
@@ -216,6 +235,7 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 		)
 	{
 		logMessage(__func__, "unexpected bit width and register combination: skipping");
+		m_numSignednessSkipped++;
 	  return;
 	}
 
@@ -264,6 +284,8 @@ void IntegerTransform::addSignednessCheck(Instruction_t *p_instruction, const ME
 		addCallbackHandler(detector, originalInstrumentInstr, nop_i, popf_i, p_policy, p_instruction->GetAddress());
 	}
 	addPopf(popf_i, originalInstrumentInstr);
+
+	m_numSignedness++;
 }
 
 void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
@@ -284,6 +306,7 @@ void IntegerTransform::handleOverflowCheck(Instruction_t *p_instruction, const M
 	}
 	else
 	{
+		m_numOverflowsSkipped++;
 		logMessage(__func__, "OVERFLOW type not yet handled");
 	}
 }
@@ -296,6 +319,7 @@ void IntegerTransform::handleUnderflowCheck(Instruction_t *p_instruction, const 
 	}
 	else
 	{
+		m_numUnderflowsSkipped++;
 		logMessage(__func__, "UNDERFLOW type not yet handled");
 	}
 }
@@ -328,6 +352,7 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 	if (!leaPattern.isValid())
 	{
 		logMessage(__func__, "invalid or unhandled lea pattern - skipping: ");
+		m_numOverflowsSkipped++;
 		return;
 	}
 	
@@ -336,6 +361,7 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		leaPattern.getRegister1() == Register::EBP)
 	{
 		logMessage(__func__, "destination register is unknown, esp or ebp -- skipping: ");
+		m_numOverflowsSkipped++;
 		return;
 	}
 	
@@ -348,11 +374,13 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		if (reg1 == Register::UNKNOWN || reg2 == Register::UNKNOWN || target == Register::UNKNOWN)
 		{
 			logMessage(__func__, "lea reg+reg pattern: error retrieving register: reg1: " + Register::toString(reg1) + " reg2: " + Register::toString(reg2) + " target: " + Register::toString(target));
+			m_numOverflowsSkipped++;
 			return;
 		}
 		else if (reg2 == Register::ESP) 
 		{
 			logMessage(__func__, "source register is esp -- skipping: ");
+			m_numOverflowsSkipped++;
 			return;
 		}
 		else
@@ -369,11 +397,13 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		if (p_annotation.isUnsigned() && value < 0)
 		{
 			logMessage(__func__, "lea reg+neg constant pattern: skip this annotation type (prone to false positives)");
+			m_numOverflowsSkipped++;
 			return;
 		}
 		else if (reg1 == Register::UNKNOWN || target == Register::UNKNOWN)
 		{
 			logMessage(__func__, "lea reg+constant pattern: error retrieving register: reg1: " + Register::toString(reg1) + " target: " + Register::toString(target));
+			m_numOverflowsSkipped++;
 			return;
 		}
 		else
@@ -390,16 +420,19 @@ void IntegerTransform::addOverflowCheckNoFlag(Instruction_t *p_instruction, cons
 		if (reg1 == Register::UNKNOWN || target == Register::UNKNOWN)
 		{
 			logMessage(__func__, "lea reg*constant pattern: error retrieving register: reg1: " + Register::toString(reg1) + " target: " + Register::toString(target));
+			m_numOverflowsSkipped++;
 			return;
 		}
 		else
 		{
+			m_numOverflowsSkipped++;
 			addOverflowCheckNoFlag_RegTimesConstant(p_instruction, p_annotation, reg1, value, target, p_policy);
 		}
 	}
 	else
 	{
 		logMessage(__func__, "pattern not yet handled");
+		m_numOverflowsSkipped++;
 		return;
 	}
 }
@@ -529,6 +562,8 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instru
 	{
 		addOverflowCheckForLea(addRR_i, addRR_annot, p_policy, originalAddress);
 	}
+
+	m_numOverflows++;
 }
 
 void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3, int p_policy)
@@ -672,6 +707,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_i
 	{
 		addOverflowCheckForLea(addR3Constant_i, addR3Constant_annot, p_policy, originalAddress);
 	}
+	m_numOverflows++;
 }
 
 void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constantValue, const Register::RegisterName& p_reg3, int p_policy)
@@ -772,6 +808,7 @@ void IntegerTransform::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_
 		// fallthrough was set previously to popf_i
 		addOverflowCheckForLea(mulR3Constant_i, mulR3Constant_annot, p_policy, originalAddress);
 	}
+	m_numOverflows++;
 }
 
 
@@ -1123,6 +1160,7 @@ void IntegerTransform::addFistpTruncationCheck(Instruction_t *p_instruction, int
 		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     
+	m_numFP++;
 	return;
 }
 
@@ -1445,6 +1483,7 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
 		addInstruction(jmpOriginalInstNext,dataBits,NULL, originalInstrumentInstr->GetFallthrough());
     }
     
+	m_numFP++;
 	return;
 
     
@@ -1513,6 +1552,10 @@ void IntegerTransform::addOverflowCheck(Instruction_t *p_instruction, const MEDS
 	if (targetReg == Register::UNKNOWN) 
 	{
 		logMessage(__func__, "OVERFLOW UNKNOWN SIGN: unknown register -- skip instrumentation");
+		if (p_annotation.isUnderflow())
+			m_numUnderflowsSkipped++;
+		else
+			m_numOverflowsSkipped++;
 		return;
 	}
 
@@ -1613,6 +1656,11 @@ cerr << __func__ <<  ": instr: " << p_instruction->getDisassembly() << " address
 
 	getFileIR()->GetAddresses().insert(jncond_a);
 	getFileIR()->GetInstructions().insert(jncond_i);
+
+	if (p_annotation.isUnderflow())
+		m_numUnderflows++;
+	else
+		m_numOverflows++;
 }
 
 //
@@ -1638,6 +1686,7 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 	if (targetReg == Register::UNKNOWN)
 	{
 		cerr << "IntegerTransform::addUnderflowCheck(): instr: " << p_instruction->getDisassembly() << " address: " << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << "-- SKIP b/c no target registers" << endl;
+		m_numUnderflowsSkipped++;
 		return;
 	}
 	
@@ -1724,6 +1773,8 @@ void IntegerTransform::addUnderflowCheck(Instruction_t *p_instruction, const MED
 
 	getFileIR()->GetAddresses().insert(jncond_a);
 	getFileIR()->GetInstructions().insert(jncond_i);
+
+	m_numUnderflows++;
 }
 
 
@@ -1908,6 +1959,7 @@ void IntegerTransform::addTruncationCheck(Instruction_t *p_instruction, const ME
 	} // end of SIGNED and UNKNOWNSIGN case
 	addPopf(popf_i, originalInstrumentInstr); // common to all cases
 
+	m_numTruncations++;
 	//    cerr << "addTruncationCheck(): --- END ---" << endl;
 }
 
@@ -2057,6 +2109,7 @@ void IntegerTransform::addOverflowCheckUnknownSign(Instruction_t *p_instruction,
 	if (targetReg == Register::UNKNOWN)
 	{
 		cerr << "integertransform: OVERFLOW UNKNOWN SIGN: unknown register -- skip instrumentation" << endl;
+		m_numOverflowsSkipped++;
 		return;
 	}
 
@@ -2102,6 +2155,8 @@ cerr << __func__ << ": instr: " << p_instruction->getDisassembly() << " address:
 	{
 		addCallbackHandler(detector, p_instruction, nop_i, nextOrig_i, p_policy);
 	}
+
+	m_numOverflows++;
 }
 
 //
@@ -2211,4 +2266,23 @@ void IntegerTransform::logMessage(const std::string &p_method, const std::string
 void IntegerTransform::logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation& p_annotation, const std::string &p_msg)
 {
 	logMessage(p_method, p_msg + " annotation: " + p_annotation.toString());
+}
+
+void IntegerTransform::logStats()
+{
+	std::string fileURL = getFileIR()->GetFile()->GetURL();	
+
+	std::cerr << "# ATTRIBUTE file_name=" << fileURL << std::endl;
+	std::cerr << "# ATTRIBUTE num_annotations_processed=" << dec << m_numAnnotations << std::endl;
+	std::cerr << "# ATTRIBUTE num_idioms=" << m_numIdioms << std::endl;
+	std::cerr << "# ATTRIBUTE num_blacklisted=" << m_numBlacklisted << std::endl;
+	std::cerr << "# ATTRIBUTE num_benign=" << m_numBenign << std::endl;
+	std::cerr << "# ATTRIBUTE num_overflows_instrumented=" << m_numOverflows << std::endl;
+	std::cerr << "# ATTRIBUTE num_overflows_skipped=" << m_numOverflowsSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE num_underflows_instrumented=" << m_numOverflows << std::endl;
+	std::cerr << "# ATTRIBUTE num_underflows_skipped=" << m_numUnderflowsSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE num_truncations_instrumented=" << m_numTruncations << std::endl;
+	std::cerr << "# ATTRIBUTE num_truncations_skipped=" << m_numTruncationsSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE num_signedness_instrumented=" << m_numSignedness << std::endl;
+	std::cerr << "# ATTRIBUTE num_signedness_skipped=" << m_numSignednessSkipped << std::endl;
 }

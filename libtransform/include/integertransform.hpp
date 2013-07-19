@@ -24,6 +24,7 @@ class IntegerTransform : public Transform
 		bool isPathManipulationDetected() { return m_pathManipulationDetected; }
 		void setWarningsOnly(bool p_warn) { m_policyWarningsOnly = p_warn; }
 		bool isWarningsOnly() { return m_policyWarningsOnly; }
+		void logStats();
 	
 	private:
 		void handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
@@ -70,6 +71,19 @@ class IntegerTransform : public Transform
 		bool                      m_policyWarningsOnly;
 		bool                      m_pathManipulationDetected;
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *m_annotations;
+		unsigned m_numAnnotations; 
+		unsigned m_numIdioms; 
+		unsigned m_numBlacklisted; 
+		unsigned m_numBenign; 
+		unsigned m_numOverflows; 
+		unsigned m_numUnderflows; 
+		unsigned m_numTruncations; 
+		unsigned m_numSignedness; 
+		unsigned m_numOverflowsSkipped; 
+		unsigned m_numUnderflowsSkipped; 
+		unsigned m_numTruncationsSkipped; 
+		unsigned m_numSignednessSkipped; 
+		unsigned m_numFP; 
 };
 
 // make sure these match the function names in $STRATA/src/posix/x86_linux/detector_number_handling/overflow_detector.c
