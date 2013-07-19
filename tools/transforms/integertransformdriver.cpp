@@ -158,6 +158,7 @@ main(int argc, char **argv)
 			{
 				one_success = true;
 				firp->WriteToDB();
+				integerTransform.logStats();
 				delete firp;
 			}
 		}
