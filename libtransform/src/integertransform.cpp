@@ -1485,8 +1485,6 @@ void IntegerTransform::addFistTruncationCheck(Instruction_t *p_instruction, int 
     
 	m_numFP++;
 	return;
-
-    
 }
 
 void IntegerTransform::handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
@@ -2285,4 +2283,5 @@ void IntegerTransform::logStats()
 	std::cerr << "# ATTRIBUTE num_truncations_skipped=" << m_numTruncationsSkipped << std::endl;
 	std::cerr << "# ATTRIBUTE num_signedness_instrumented=" << m_numSignedness << std::endl;
 	std::cerr << "# ATTRIBUTE num_signedness_skipped=" << m_numSignednessSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE num_floating_point=" << m_numFP << std::endl;
 }
