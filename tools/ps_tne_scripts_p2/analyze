@@ -121,17 +121,19 @@ python $LOG_COMMAND -n $1 -t "Analyze script" -m "$message_2"
 python $LOG_COMMAND -n $1 -t "Analyze script" -m "Analysis phase beginning"
 
 # Get a list of pathnames of everything $execcmd execs during initialization
-EXEC_FILES=( $( $GRACE_HOME/concolic/bin/pgrp-timeout 10 strace -s10240 -f -e trace=execve $execcmd 2>&1 >/dev/null | grep -Po '(?<=execve\(")([^"]+(?="))' | sort | uniq ) )
+EXEC_FILES=( $( $GRACE_HOME/concolic/bin/pgrp-timeout 10 strace -s10240 -f -e trace=execve $execcmd 2>&1 >/dev/null | /bin/grep " = 0$" | /bin/grep -Po '(?<=execve\(")([^"]+(?="))' | sort | uniq ) )
 TO_ANALYZE=()
 
 # filter out anything that matches execcmd, 
 execcmd_base=`basename $execcmd`
 for f in "${EXEC_FILES[@]}"
 do
-    if [[ `basename $f` != $execcmd_base ]] && [[ $f != /bin/* ]] && [[ $f != /usr/bin/* ]] && [[ $f != /sbin/* ]] && [[ $f != /usr/sbin/* ]] ;
-    then
-        python $LOG_COMMAND -n $1 -t "Analyze script" -m "Queueing subprogram for analysis: $f"
-	TO_ANALYZE+=("$f")
+    if [[ -x $f ]] && [[ `basename $f` != $execcmd_base ]] && [[ $f != /bin/* ]] && [[ $f != /usr/bin/* ]] && [[ $f != /sbin/* ]] && [[ $f != /usr/sbin/* ]]; then
+        file $f | /bin/grep "ELF 32"
+        if [[ $? = 0 ]]; then
+            python $LOG_COMMAND -n $1 -t "Analyze script" -m "Queueing subprogram for analysis: $f"
+            TO_ANALYZE+=("$f")
+        fi
     else
         python $LOG_COMMAND -n $1 -t "Analyze script" -m "Skipping subprogram: $f"
     fi
