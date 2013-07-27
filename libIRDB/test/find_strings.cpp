@@ -27,6 +27,7 @@ typedef struct elf_info {
        	Elf32_Word secsize;
        	Elf32_Shdr *sechdrs;
 	char **sec_data;
+	Elf32_Addr got;
 } elf_info_t;
 
 void found_string(string s, void* addr)
@@ -56,9 +57,9 @@ void found_string(string s, void* addr)
 	} while (p < buff + s.length());
 }
 
-void load_section(elf_info_t &ei, int i, pqxx::largeobjectaccess &loa)
+void load_section(elf_info_t &ei, int i, pqxx::largeobjectaccess &loa, bool alloc)
 {
-	if( (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
+	if( alloc && (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
 	{
 		cerr<<"Cannot load non-alloc section\n";
 		assert(0);
@@ -111,7 +112,7 @@ void is_string_pointer(void* addr, elf_info_t &ei, pqxx::largeobjectaccess &loa)
 		if(ei.sechdrs[i].sh_addr <= intaddr && intaddr <= (ei.sechdrs[i].sh_addr+ei.sechdrs[i].sh_size))
 		{
 			/* we found a pointer into a loadable segment */
-			load_section(ei,i,loa);
+			load_section(ei,i,loa,true);
 //			cout<<"Checking address "<<std::hex<<addr<<endl;
 			check_for_string(ei.sec_data[i]+((int)addr-ei.sechdrs[i].sh_addr),addr);
 		}
@@ -159,7 +160,12 @@ void is_string_constant(DISASM& disasm)
 void handle_argument(ARGTYPE *arg, elf_info_t &ei, pqxx::largeobjectaccess &loa)
 {
         if( arg->ArgType == MEMORY_TYPE )
-                is_string_pointer((void*)arg->Memory.Displacement,ei,loa);
+	{
+		if ( !ei.got )
+			is_string_pointer((void*)arg->Memory.Displacement,ei,loa);
+		if ( ei.got && arg->Memory.BaseRegister == REG3 /* ebp */ )
+			is_string_pointer((void*)(arg->Memory.Displacement + ei.got),ei,loa);
+	}
 }
 
 
@@ -171,6 +177,7 @@ void read_elf_info(elf_info_t &ei, FileIR_t* firp, pqxx::largeobjectaccess &loa)
         loa.cread((char*)&ei.elfhdr, sizeof(Elf32_Ehdr)* 1);
         ei.sec_hdr_off = ei.elfhdr.e_shoff;
         ei.secnum = ei.elfhdr.e_shnum;
+        assert(ei.secnum>0);
         ei.strndx = ei.elfhdr.e_shstrndx;
 
         /* Read Section headers */
@@ -180,6 +187,32 @@ void read_elf_info(elf_info_t &ei, FileIR_t* firp, pqxx::largeobjectaccess &loa)
         loa.cread((char*)ei.sechdrs, sizeof(Elf32_Shdr)* ei.secnum);
 
 	ei.sec_data=(char**)calloc(ei.secnum,sizeof(void*));
+
+	ei.got = 0;
+	/* Get .got or .got.plt address, if any */
+	if (ei.strndx != SHN_UNDEF)
+	{
+		int shstr_sec;
+		if (ei.strndx < SHN_LORESERVE)
+			shstr_sec = ei.strndx;
+		else
+			shstr_sec = ei.sechdrs[0].sh_link;
+		assert(shstr_sec < ei.secnum);
+		load_section(ei,shstr_sec,loa,false);
+		Elf32_Shdr *shstr_sec_hdr = ei.sechdrs + shstr_sec;
+		for (int i=0;i<ei.secnum;i++)
+		{
+			assert(ei.sechdrs[i].sh_name < shstr_sec_hdr->sh_size);
+			if (!strcmp(ei.sec_data[shstr_sec]+ei.sechdrs[i].sh_name, ".got.plt"))
+			{
+				// Prefer .got.plt to .got
+				ei.got = ei.sechdrs[i].sh_addr;
+				break;
+			}
+			if (!strcmp(ei.sec_data[shstr_sec]+ei.sechdrs[i].sh_name, ".got"))
+				ei.got = ei.sechdrs[i].sh_addr;
+		}
+	}
 }
 
 void free_elf_info(elf_info_t &ei)
@@ -354,10 +387,10 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei, pqxx::largeobjectacces
 		if( (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
 			continue;
 
-		load_section(ei,i,loa);
+		load_section(ei,i,loa,true);
         	for(int j=0;j<=ei.sechdrs[i].sh_size-sizeof(void*);j++)
         	{
-                	void* p=(void*)ei.sec_data[i][j];
+                	void* p=*((void**)(ei.sec_data[i]+j));
                 	is_string_pointer(p,ei,loa);
         	}
 
