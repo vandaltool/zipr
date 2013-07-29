@@ -14,7 +14,7 @@
 
 extern char **environ;
 
-static int within_osc_monitor=FALSE;
+int within_osc_monitor=FALSE;
 
 int (*my_system)(const char *) = NULL;
 #include "oscfw.h"

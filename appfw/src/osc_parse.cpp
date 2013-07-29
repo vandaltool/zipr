@@ -22,7 +22,7 @@ static __thread char *tainted_data=NULL;
 static int check_taint(int s, int e)
 {
 	if(getenv("APPFW_VERBOSE"))
-		cout<<"Checking taint from "<<s<<" to "<<e<<""<<endl;
+		cerr<<"Checking taint from "<<s<<" to "<<e<<""<<endl;
 
 	for(int i=s;i<e;i++)
 	{
@@ -47,14 +47,14 @@ static void discard_comment(istream &fin, int start)
 	}
 	check_taint(position,position+1);
 	if(getenv("APPFW_VERBOSE"))
-		cout<<"Found comment at "<<position<<": "<<s;
+		cerr<<"Found comment at "<<position<<": "<<s;
 }
 
 static void start_command()
 {
 	starting_command=true;
 	if(getenv("APPFW_VERBOSE"))
-		cout<<"Starting new command"<<endl;
+		cerr<<"Starting new command"<<endl;
 }
 
 
@@ -74,12 +74,12 @@ static void get_string_literal(istream &fin, char c, int start)
 	}
 	while (!fin.eof());
 	if(getenv("APPFW_VERBOSE"))
-		cout<<"Found string literal "<<s<<" at "<<position<<endl;
+		cerr<<"Found string literal "<<s<<" at "<<position<<endl;
 
 	if(c=='`')
 	{
 		if(getenv("APPFW_VERBOSE"))
-			cout<<"Pushing literal to parse later\n";
+			cerr<<"Pushing literal to parse later\n";
 		(*sub_commands).push_back(pair<string,int>(s.substr(1,s.length()-2),position));
 	}
 
@@ -97,8 +97,8 @@ static void get_variable(istream &fin, int start)
 		check_taint(position,position+2);
 		if(getenv("APPFW_VERBOSE"))
 		{
-			cout<<"Found special variable at "<<position<<": $"<<d;
-			fprintf(stdout, " or in hex: %x\n", d);
+			cerr<<"Found special variable at "<<position<<": $"<<d;
+			fprintf(stderr, " or in hex: %x\n", d);
 		}
 		return;
 	}
@@ -119,12 +119,12 @@ static void get_variable(istream &fin, int start)
 				break;
 		} while(!fin.eof());
 		if(getenv("APPFW_VERBOSE"))
-			cout<<"Found paren'd variable at "<<position<<": '"<<s<<"'"<<endl;
+			cerr<<"Found paren'd variable at "<<position<<": '"<<s<<"'"<<endl;
 		check_taint(position,position+s.length());
 		if(end_paren==')')
 		{
 			if(getenv("APPFW_VERBOSE"))
-				cout<<"Pushing string "<<s<<" as subcommand"<<endl;
+				cerr<<"Pushing string "<<s<<" as subcommand"<<endl;
 			(*sub_commands).push_back(pair<string,int>(s.substr(2,s.length()-3),position+2));
 		}
 		return;
@@ -144,7 +144,7 @@ static void get_variable(istream &fin, int start)
 		s+=d;
 	} while (!fin.eof());
 	if(getenv("APPFW_VERBOSE"))
-		cout<<"Found normal variable at "<<position<<": '"<<s<<"'"<<endl;
+		cerr<<"Found normal variable at "<<position<<": '"<<s<<"'"<<endl;
 	check_taint(position,position+s.length());
 
 }
@@ -215,26 +215,26 @@ static void get_word(istream &fin, char c, int start)
 	{
 		check_taint(position,s.length()+position);
 		if(getenv("APPFW_VERBOSE"))
-			cout<<"Found assignment word at "<<position<<": "<<s<<endl;
+			cerr<<"Found assignment word at "<<position<<": "<<s<<endl;
 	}
 	else if (is_keyword(s))
 	{
 		check_taint(position,s.length()+position);
 		if(getenv("APPFW_VERBOSE"))
-			cout<<"Found key word at "<<position<<": "<<s<<endl;
+			cerr<<"Found key word at "<<position<<": "<<s<<endl;
 	}
 	else if (is_command_word(s))
 	{
 		check_taint(position,s.length()+position);
 		if(getenv("APPFW_VERBOSE"))
-			cout<<"Found command word at "<<position<<": "<<s<<endl;
+			cerr<<"Found command word at "<<position<<": "<<s<<endl;
 	}
 	else
 	{
 		if(s[0]=='-')
 			check_taint(position,position+s.length());
 		if(getenv("APPFW_VERBOSE"))
-			cout<<"Found option word at "<<position<<": "<<s<<endl;
+			cerr<<"Found option word at "<<position<<": "<<s<<endl;
 	}
 
 	if(is_start_command_word(s))
@@ -281,7 +281,7 @@ static void parse(istream &fin, int start)
 					int position=((int)fin.tellg())-1+start;
 					check_taint(position,position+1);
 					if(getenv("APPFW_VERBOSE"))
-						cout<<"Found special token separator at "<<position<<": "<<oldc<<endl;
+						cerr<<"Found special token separator at "<<position<<": "<<oldc<<endl;
 					start_command();
 				}
 				fin.unget();
@@ -311,7 +311,7 @@ static void parse(istream &fin, int start)
 				else if (isspace(c))
 				{
 					// no taint check needed for spaces 
-					// cout<<"Whitespace"<<endl;
+					// cerr<<"Whitespace"<<endl;
 					continue; /* spaces change nothing */
 				}
 				else
@@ -320,8 +320,8 @@ static void parse(istream &fin, int start)
 					check_taint(position,position+1);
 					if(getenv("APPFW_VERBOSE"))
 					{
-						cout <<"Found special character: "<<c;
-						fprintf(stdout, " or in hex: %x\n", c);
+						cerr <<"Found special character: "<<c;
+						fprintf(stderr, " or in hex: %x\n", c);
 					}
 				}
 				
@@ -347,7 +347,7 @@ void osc_parse(char* to_parse, char* taint_markings)
 	sin<<to_parse;
 
 	if(getenv("APPFW_VERBOSE"))
-		cout<<"Parsing "<<to_parse<<" length="<<strlen(to_parse)<<endl;
+		cerr<<"Parsing "<<to_parse<<" length="<<strlen(to_parse)<<endl;
 	parse(sin,0);
 
 	while(!(*sub_commands).empty())
@@ -358,10 +358,10 @@ void osc_parse(char* to_parse, char* taint_markings)
 		stringstream ss(stringstream::in|stringstream::out);
 		ss<<s<<endl;
 		if(getenv("APPFW_VERBOSE"))
-			cout<<"Parsing sub-command " << s <<endl;
+			cerr<<"Parsing sub-command " << s <<endl;
 		parse(ss,pos);
 		if(getenv("APPFW_VERBOSE"))
-			cout<<"Done with " << s <<endl<<endl;
+			cerr<<"Done with " << s <<endl<<endl;
 	}
 
 

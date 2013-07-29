@@ -25,10 +25,48 @@ static void reset_sig_file_env_var()
 		if(getenv("APPFW_ENV_VERBOSE"))
 			fprintf(stderr,"environ[i]=%s\n",environ[i]);
 		/* check that the environ has the key followed by an equal */
-		if(strncmp(sigFileEnv,environ[i],strlen(sigFileEnv))==0 && 
-			environ[i][strlen(sigFileEnv)]=='=')
+		if(strncmp(environ[i],"LD_PRELOAD=",strlen("LD_PRELOAD="))==0)
 		{
-			environ[i][0]='B';
+			if(getenv("APPFW_VERBOSE"))
+				fprintf(stderr,"Found ld_preload=\n");
+			char* start=strstr(environ[i],"libappfw.so");
+			if(start)
+			{
+				/* example1: 	s=start, e=end (at memmove)
+				 * LD_PRELOAD=/home/stuff/libappfw.so 
+				 *            s                      e
+				 * example 2:
+				 * LD_PRELOAD=/foo/bar/libc.so /home/stuff/libappfw.so 
+				 *                             s                      e
+				 * example 3:
+				 * LD_PRELOAD=/home/stuff/libappfw.so /lib/libc.so 
+				 *            s                       e
+				 * 
+				 * example 4:
+				 * LD_PRELOAD=/lib/other/libo.so /home/stuff/libappfw.so /lib/libc.so 
+				 *             			 s                       e
+				 */
+				  
+				char* end=start+strlen("libappfw.so");
+				// back up until we find an equal, space, or colon signifying the start of the libappfw.so filename 
+				while( *start!='=' && *start!=' ' && *start!=':' )
+					start--;
+				// save the equal, space or colon
+				start++;
+
+				// don't skip a null terminator.
+				if(*end!='\0') 
+					end++;	// if there's a space or colon, skip it
+
+				memmove(start, end, strlen(end)+1); 	// make sure you memmove the null terminator too.
+				
+				// log results
+				if(getenv("APPFW_VERBOSE"))
+				{
+					fprintf(stderr,"Removing ld_preload for sub libraries: %s\n", environ[i]);
+				}
+			}
+
 		}
 	}
 }
@@ -36,10 +74,34 @@ static void reset_sig_file_env_var()
 void appfw_init_ctor() __attribute__(( constructor ));
 void appfw_init_ctor()
 {
+	if(getenv("APPFW_VERBOSE"))
+	{
+		fprintf(stderr, "Proc %d: library constructor initialization started\n", getpid());
+	}
+
 	appfw_init();
 
 	if(getenv("APPFW_VERBOSE"))
-		appfw_error("library constructor initialized");
+	{
+		FILE* f=fopen("/proc/self/cmdline", "r");
+		if(f)
+		{
+			char c;
+			fprintf(stderr, "Proc %d: Command is: ", getpid());
+			while(!feof(f))
+			{
+				fscanf(f,"%c", &c);
+				fprintf(stderr, "%c", c);
+			}
+			fclose(f);
+			fprintf(stderr, "\n");
+		}
+		else
+		{
+			fprintf(stderr, "Prod %d: Unable to print command line\n", getpid());
+		}	
+		fprintf(stderr, "Proc %d: library constructor initialization finished\n", getpid());
+	}
 }
 
 // read in signature file
@@ -58,7 +120,7 @@ void appfw_init()
 	if (!signatureFile)
 	{
 		if(verbose)
-			appfw_error("no signature file found");
+			fprintf(stderr, "no signature file found from proc %d\n", getpid());
 		return;
 	}
 
@@ -90,12 +152,12 @@ void appfw_init()
 		fclose(sigF);
 		appfw_initialized = 1;
 		if(verbose)
-			appfw_error("appfw init finished\n");
+			fprintf(stderr, "Proc %d: appfw init finished, nsigs=%d\n", getpid(),numSigs);
 	}
 	else
 	{
 		if(verbose)
-			appfw_error("could not open signature file");
+			fprintf(stderr,"(proc: %d): Could not open signature file: %s\n", getpid(), signatureFile);
 		appfw_initialized = 0;
 	}
 
@@ -153,6 +215,8 @@ void appfw_establish_taint(const char *command, char *taint, matched_record** ma
 
 	if (!fw_sigs)
 	{
+		if(getenv("APPFW_VERBOSE"))
+			fprintf(stderr,"No appfw signatures loaded.  Blessing entire range. proc:%d \n", getpid());
 		appfw_taint_range(taint, APPFW_BLESSED, 0, commandLength);
 		return;
 	}
@@ -190,18 +254,18 @@ void appfw_establish_taint(const char *command, char *taint, matched_record** ma
 void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
 {
 		int i;
-		fprintf(stderr,"%s: %s\n", p_msg, p_query);
-		fprintf(stderr,"%s: ", p_msg);
+		fprintf(stderr,"proc %d: %s: %s\n", getpid(), p_msg, p_query);
+		fprintf(stderr,"proc %d: %s: ", getpid(), p_msg);
 		for (i = 0; i < strlen(p_query); ++i)
 		{
 				if (p_taint[i] == APPFW_BLESSED)
-						fprintf(stderr,"o");
+						fprintf(stderr,"b");
 				else if (p_taint[i] == APPFW_SECURITY_VIOLATION)
 						fprintf(stderr,"v");
 				else if (p_taint[i] == APPFW_BLESSED_KEYWORD)
 						fprintf(stderr,"k");
 				else // APPFW_TAINTED
-						fprintf(stderr,"d");
+						fprintf(stderr,"t");
 		}
 		fprintf(stderr,"\n");
 		fflush(stderr);

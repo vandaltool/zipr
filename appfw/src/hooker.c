@@ -98,8 +98,8 @@ void* dl_sym_helper(void* handle, const char* symbol, char* callback_name, void 
 		{
 			if(getenv("APPFW_VERBOSE")!=0)
 			{
-				printf("Handle filename is %s\n", handle_name);
-				printf("Found match for %s\n", callback_name);
+				fprintf(stderr,"Handle filename is %s\n", handle_name);
+				fprintf(stderr,"Found match for %s\n", callback_name);
 			}
 			/* now, this will call dlsym() library function */
 			void* result = (void*)(*real_dlsym)(handle, symbol); 
@@ -122,7 +122,7 @@ void *dlsym(void *handle, const char *symbol)
 {
 	if(getenv("APPFW_VERBOSE")!=0)
 	{
-        	printf("Ha Ha...dlsym() Hooked with handle=%p, symbol=%s\n", (void*)handle,symbol);
+        	fprintf(stderr,"Ha Ha...dlsym() Hooked with handle=%p, symbol=%s\n", (void*)handle,symbol);
 	}
 	if(real_dlsym==NULL)
 	{
@@ -152,7 +152,7 @@ void *dlsym(void *handle, const char *symbol)
 			if(res) 
 			{
 				if(getenv("APPFW_VERBOSE")!=0)
-					printf("Found match in hooker: old=%p new=%p", *dlsym_mapper[i].callback_storage, res);
+					fprintf(stderr,"Found match in hooker: old=%p new=%p", *dlsym_mapper[i].callback_storage, res);
 				return res;
 			}
 			i++;

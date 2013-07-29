@@ -41,7 +41,7 @@ int oscfw_isInitialized()
 int oscfw_verify(const char *p_command, char *p_taint)
 {
 	int length = strlen(p_command);
-    matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
+    	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
   	appfw_establish_taint(p_command, p_taint, matched_signatures,TRUE);
 	if(getenv("APPFW_VERBOSE"))
