@@ -33,23 +33,33 @@ static void reset_sig_file_env_var()
 	}
 }
 
+void appfw_init_ctor() __attribute__(( constructor ));
+void appfw_init_ctor()
+{
+	appfw_init();
+
+	if(getenv("APPFW_VERBOSE"))
+		appfw_error("library constructor initialized");
+}
+
 // read in signature file
 // environment variable specifies signature file location
 void appfw_init()
 {
+	if (appfw_isInitialized()) return;
+
 	int i;
 	int verbose=0;
 	if(getenv("APPFW_VERBOSE"))
 		verbose=1;
 	int numSigs = 0;
 
-	if (appfw_isInitialized()) return;
-
 	char *signatureFile = getenv(sigFileEnv);
 	if (!signatureFile)
 	{
 		if(verbose)
 			appfw_error("no signature file found");
+		return;
 	}
 
 	reset_sig_file_env_var();
@@ -79,16 +89,16 @@ void appfw_init()
 		fw_numPatterns = numSigs;
 		fclose(sigF);
 		appfw_initialized = 1;
-		if(getenv("APPFW_VERBOSE"))
-			fprintf(stderr, "appfw init finished\n");
-
+		if(verbose)
+			appfw_error("appfw init finished\n");
 	}
 	else
 	{
-		if(getenv("APPFW_VERBOSE"))
+		if(verbose)
 			appfw_error("could not open signature file");
-			appfw_initialized = 0;
+		appfw_initialized = 0;
 	}
+
 	fflush(stderr);
 }
 
@@ -100,7 +110,7 @@ int appfw_isInitialized()
 // returns # of signature patterns
 int appfw_getNumSignatures()
 {
-		return fw_numPatterns;
+	return fw_numPatterns;
 }
 
 // returns signature patterns
