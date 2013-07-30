@@ -126,6 +126,13 @@ int oscfw_verify_args(char* const argv[])
 				}
 			}
 
+                        if (!appfw_is_from_same_signature(matched_signatures, 0, length-1))
+			{
+				appfw_taint_range(taint, APPFW_SECURITY_VIOLATION, 0, length);
+				appfw_display_taint("OS Command Injection detected (options): ", argv[i], taint);
+				return 0;
+			}
+
 			appfw_deallocate_matched_signatures(matched_signatures, length);
 		}
 		else 
