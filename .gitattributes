@@ -138,6 +138,8 @@ appfw/tests/odbc/testodbc.system.dlsym.c -text
 appfw/tests/oscommand/Makefile -text
 appfw/tests/oscommand/dotest.sh -text
 appfw/tests/oscommand/testosc.c -text
+appfw/tests/oscommand/testosc_samesig.c -text
+appfw/tests/oscommand/testosc_semi.c -text
 appfw/tests/postgres/Makefile -text
 appfw/tests/postgres/postgres.test.env.sh -text
 appfw/tests/postgres/postgres.test.sh -text
