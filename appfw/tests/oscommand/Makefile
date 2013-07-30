@@ -1,7 +1,7 @@
 APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so
 generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
-all: testosc.exe testosc_semi.exe testosc_samesig.exe
+all: testosc.exe testosc_semi.exe testosc_samesig.exe testosc_exec_args.exe
 
 testosc.o: testosc.c
 	gcc -g -c testosc.c
@@ -23,6 +23,13 @@ testosc_samesig.o: testosc_samesig.c
 testosc_samesig.exe: testosc_samesig.o 
 	gcc testosc_samesig.o -o testosc_samesig.exe 
 	$(generate_signatures) testosc_samesig.exe
+
+testosc_exec_args.o: testosc_exec_args.c
+	gcc -g -c testosc_exec_args.c
+
+testosc_exec_args.exe: testosc_exec_args.o 
+	gcc testosc_exec_args.o -o testosc_exec_args.exe 
+	$(generate_signatures) testosc_exec_args.exe
 
 clean:
 	rm -rf *.o *.tmp *.exe peasoup_executable_directory* test*.peasoup messages_to_tne.log ps_tne_logfile.txt testosc*.exe.sigs appfw.db
@@ -46,3 +53,6 @@ test_semi: testosc_semi.exe
 
 test_samesig: testosc_samesig.exe
 	APPFW_VERBOSE=1 DATA="-foobar" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_samesig.exe.sigs ./testosc_samesig.exe 
+
+test_exec_args: testosc_exec_args.exe
+	VERY_VERBOSE=1 VERBOSE=1 APPFW_VERBOSE=1 DATA="-ltar" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_exec_args.exe.sigs ./testosc_exec_args.exe 
