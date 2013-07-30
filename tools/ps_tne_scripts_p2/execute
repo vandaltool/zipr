@@ -68,7 +68,7 @@ python $GEN_MESSAGE_COMMAND -n $1 -t "Execute called" -m "execute script called 
 
 echo "3.1" 1>&2
 # Clean up any stray SYSV semaphores
-IPCS_S=$(ipcs -s | egrep "0x[0-9a-f]+ [0-9]+" | grep $(whoami) | cut -f2 -d" ")
+IPCS_S=$(ipcs -s | /bin/egrep "0x[0-9a-f]+ [0-9]+" | /bin/grep $(whoami) | cut -f2 -d" ")
 for id in $IPCS_S; do
 	ipcrm -s $id;
 done
@@ -80,7 +80,7 @@ python $LOG_COMMAND -n $1 -t "Execute script" -m "run dir: $PWD"
 # check if the cmd_line ($3) ends with &, if so, need to wait for the batch 
 # process to be complete and capture the actual return code
 # options of grep that used -E, --extended-regexp and -q, --quiet, --silent
-echo $3 | grep -qE "&$"
+echo $3 | /bin/grep -qE "&$"
 ck_code=$?
 
 echo "4" 1>&2
