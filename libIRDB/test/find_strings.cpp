@@ -261,14 +261,16 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 				size_t size = 0;
 				unsigned int olddisp = 0;
 				unsigned int newdisp = 0;
-
+				unsigned int basereg = 0;
 				while(iit!=(*bit)->GetInstructions().end())
 				{
 //						cout<<"Pass 1: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
 
 					// Break if not assignment of an immediate to an esp offset
 					if (disasm.Argument1.ArgType != MEMORY_TYPE
-					    || disasm.Argument1.Memory.BaseRegister != REG4 /* esp */
+					    || (disasm.Argument1.Memory.BaseRegister != REG4 /* esp */
+					        && disasm.Argument1.Memory.BaseRegister != REG0 /* eax */)
+					    || (basereg && disasm.Argument1.Memory.BaseRegister != basereg)
 					    || disasm.Argument2.ArgType == MEMORY_TYPE
 					    || disasm.Argument1.ArgSize > 32)
 					{
@@ -277,6 +279,7 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 						is_string_constant(disasm);
 						break;
 					}
+					basereg = disasm.Argument1.Memory.BaseRegister;
 					unsigned int disp = disasm.Argument1.Memory.Displacement;
 					// break if displacement moved backward
 					if (newdisp && (disp < newdisp || disp == olddisp))
@@ -324,7 +327,7 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 				}
 				
 				// Handle string if one was found
-				if (size > 0)
+				if (size > 1) // only find 2+ character strings this way.
 				{
 					if (str[size-1] != 0)
 					{
