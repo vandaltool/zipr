@@ -20,6 +20,9 @@ void sqlfw_init()
 {
   if (sqlfw_isInitialized()) return;
 
+ 
+	if (getenv("APPFW_VERBOSE"))
+		fprintf(stderr, "appfw::sqlfw_init(): called\n");
   appfw_init();
 
   if (appfw_isInitialized() && getenv(dbPathEnv))

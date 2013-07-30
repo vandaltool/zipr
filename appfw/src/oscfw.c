@@ -15,7 +15,7 @@
 #include <ctype.h>
 #include <string.h>
 
-void osc_parse(char* to_parse, char* taint_markings);
+void osc_parse(char* to_parse, char* taint_markings,matched_record** matched_signatures);
 
 
 static int oscfw_initialized = 0;
@@ -47,7 +47,7 @@ int oscfw_verify(const char *p_command, char *p_taint)
 	if(getenv("APPFW_VERBOSE"))
 	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
-	osc_parse((char*)p_command, (char*)p_taint);
+	osc_parse((char*)p_command, (char*)p_taint, matched_signatures);
 
 	if(getenv("APPFW_VERBOSE"))
   		appfw_display_taint("Debug OSC after parse", p_command, p_taint);

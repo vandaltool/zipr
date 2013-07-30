@@ -11,13 +11,24 @@
 #include <assert.h>
 
 
+extern "C" {
 #include "appfw.h"
+}
 
 using namespace std;
 
 static __thread bool starting_command=false;
 static __thread list<pair<string,int> > *sub_commands=NULL;
 static __thread char *tainted_data=NULL;
+
+static void mark_violation(int marking, int s, int e)
+{
+	if(getenv("APPFW_VERBOSE"))
+		cerr<<"Marking as type "<<marking<<" ["<<s<<".."<<e<<")"<<endl;
+
+	for(int i=s;i<e;i++)
+		tainted_data[i]=APPFW_SECURITY_VIOLATION;
+}
 
 static int check_taint(int s, int e)
 {
@@ -193,7 +204,7 @@ static inline bool is_command_word(string s)
 	return starting_command;
 }
 
-static void get_word(istream &fin, char c, int start)
+static void get_word(istream &fin, char c, int start, int semicolon_pos, matched_record** matched_signatures)
 {
 	string s; 
 	char d;
@@ -226,15 +237,32 @@ static void get_word(istream &fin, char c, int start)
 	else if (is_command_word(s))
 	{
 		check_taint(position,s.length()+position);
+
+		// additional policy: make sure ; <command> comes from one signature
+		if (semicolon_pos >= 0)
+		{
+			//  check [semicolon_pos..position+s.length()-1]
+			if (!appfw_is_from_same_signature(matched_signatures, semicolon_pos, s.length() + position -1))
+				mark_violation(APPFW_SECURITY_VIOLATION, semicolon_pos, s.length() + position);
+		}
+
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Found command word at "<<position<<": "<<s<<endl;
 	}
 	else
 	{
 		if(s[0]=='-')
+		{
+			// -foobar, --foobar have to come from same signature	
 			check_taint(position,position+s.length());
+			if (!appfw_is_from_same_signature(matched_signatures, position, position+s.length()-1))
+				mark_violation(APPFW_SECURITY_VIOLATION, position, position+s.length());
+		}
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Found option word at "<<position<<": "<<s<<endl;
+
+		if ((s.substr(0, strlen("-exec")) == "-exec") || (s.substr(0, strlen("--exec")) == "--exec"))
+			start_command();
 	}
 
 	if(is_start_command_word(s))
@@ -242,8 +270,9 @@ static void get_word(istream &fin, char c, int start)
 
 }
 
-static void parse(istream &fin, int start)
+static void parse(istream &fin, int start, matched_record** matched_signatures)
 {
+	int semicolon_pos = -1; // keep track of last semicolon seen
 
 	start_command();
 	while(!fin.eof())
@@ -263,6 +292,7 @@ static void parse(istream &fin, int start)
 				int position=((int)fin.tellg())-1+start;
 				check_taint(position,position+1);
 				start_command();
+				semicolon_pos = position;
 				continue;
 			}
 			case '\n':
@@ -285,6 +315,7 @@ static void parse(istream &fin, int start)
 					start_command();
 				}
 				fin.unget();
+				semicolon_pos = -1;
 				continue;
 			}
 			case '$':
@@ -296,6 +327,7 @@ static void parse(istream &fin, int start)
 			case '"': 
 				// taint checked in called func
 				get_string_literal(fin,c,start);
+				semicolon_pos = -1;
 				break;
 
 			case EOF:
@@ -306,7 +338,8 @@ static void parse(istream &fin, int start)
 				if (can_start_word(c))	
 				{
 					// taint checked in called func
-					get_word(fin,c,start);
+					get_word(fin,c,start,semicolon_pos,matched_signatures);
+					semicolon_pos = -1;
 				}
 				else if (isspace(c))
 				{
@@ -323,6 +356,7 @@ static void parse(istream &fin, int start)
 						cerr <<"Found special character: "<<c;
 						fprintf(stderr, " or in hex: %x\n", c);
 					}
+					semicolon_pos = -1;
 				}
 				
 			}
@@ -335,7 +369,7 @@ static void parse(istream &fin, int start)
 
 
 extern "C" 
-void osc_parse(char* to_parse, char* taint_markings)
+void osc_parse(char* to_parse, char* taint_markings, matched_record** matched_signatures)
 {
 	list<pair<string,int> > my_sub_commands;
 	sub_commands=&my_sub_commands;
@@ -348,7 +382,7 @@ void osc_parse(char* to_parse, char* taint_markings)
 
 	if(getenv("APPFW_VERBOSE"))
 		cerr<<"Parsing "<<to_parse<<" length="<<strlen(to_parse)<<endl;
-	parse(sin,0);
+	parse(sin,0,matched_signatures);
 
 	while(!(*sub_commands).empty())
 	{
@@ -359,7 +393,7 @@ void osc_parse(char* to_parse, char* taint_markings)
 		ss<<s<<endl;
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Parsing sub-command " << s <<endl;
-		parse(ss,pos);
+		parse(ss,pos,matched_signatures);
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Done with " << s <<endl<<endl;
 	}
