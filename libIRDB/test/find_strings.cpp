@@ -386,12 +386,27 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei, pqxx::largeobjectacces
 {
 	for(int i=0;i<ei.secnum;i++)
 	{
-		/* only check loadable sections */
-		if( (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
+		/* only check nonexecutable, loadable sections */
+		if( (ei.sechdrs[i].sh_flags & SHF_EXECINSTR)
+		    || (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
 			continue;
 
+		int step;
+		/* step over relocation info */
+		switch( ei.sechdrs[i].sh_type )
+		{
+		case SHT_REL:
+			step = sizeof(Elf32_Rel);
+			break;
+		case SHT_RELA:
+			step = sizeof(Elf32_Rela);
+			break;
+		default:
+			step = 1;
+		}
+
 		load_section(ei,i,loa,true);
-        	for(int j=0;j<=ei.sechdrs[i].sh_size-sizeof(void*);j++)
+        	for(int j=0;j<=ei.sechdrs[i].sh_size-sizeof(void*);j+=step)
         	{
                 	void* p=*((void**)(ei.sec_data[i]+j));
                 	is_string_pointer(p,ei,loa);
