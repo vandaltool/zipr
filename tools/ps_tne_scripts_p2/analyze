@@ -28,6 +28,7 @@ previous_dir=`pwd`
 #DAH
 cd /home/tm/peasoup
 source ./set_env_vars
+export PATH=/usr/bin:/bin:$PATH
 cd $previous_dir
 
 env > analysis_after.env
