@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <dlfcn.h>
+#include <assert.h>
 
 #include <mysql.h>
 
@@ -17,6 +18,7 @@ int mysql_query(MYSQL* p_conn, const char *p_query)
 {
   if (!intercept_sqlQuery)
     intercept_sqlQuery = dlsym(RTLD_NEXT, "mysql_query");
+  assert(intercept_sqlQuery);
 
   sqlfw_init(); // will do this automagically later 
 
@@ -28,7 +30,7 @@ int mysql_query(MYSQL* p_conn, const char *p_query)
   }
   else
   {
-	// error policy: issue bad query on purpose so that we return what PG would have returned
+	// error policy: issue bad query on purpose so that we return what mysql would have returned
 	return intercept_sqlQuery(p_conn, "error: security violation");
   }
 }
@@ -39,6 +41,7 @@ int mysql_real_query(MYSQL* p_conn, const char *p_query, unsigned long p_length)
 {
   if (!intercept_sqlRealQuery)
     intercept_sqlRealQuery = dlsym(RTLD_NEXT, "mysql_real_query");
+  assert(intercept_sqlRealQuery);
 
   sqlfw_init(); // will do this automagically later 
 
@@ -50,7 +53,7 @@ int mysql_real_query(MYSQL* p_conn, const char *p_query, unsigned long p_length)
   }
   else
   {
-	// error policy: issue bad query on purpose so that we return what PG would have returned
+	// error policy: issue bad query on purpose so that we return what mysql would have returned
 	char errmsg[2048];
 	sprintf(errmsg, "error: security violation");
 	return intercept_sqlRealQuery(p_conn, errmsg, strlen(errmsg));
@@ -64,6 +67,7 @@ int mysql_stmt_prepare(MYSQL_STMT *p_stmt, const char *p_stmt_str, unsigned long
 	if (!intercept_sqlStmtPrepare)
 	{
 		intercept_sqlStmtPrepare = dlsym(RTLD_NEXT, "mysql_stmt_prepare");
+                assert(intercept_sqlStmtPrepare);
 		sqlfw_init();
 	}
 
@@ -75,7 +79,7 @@ int mysql_stmt_prepare(MYSQL_STMT *p_stmt, const char *p_stmt_str, unsigned long
 	}
 	else
 	{
-		// error policy: issue bad query on purpose so that we return what PG would have returned
+		// error policy: issue bad query on purpose so that we return what mysql would have returned
 		char tmp[2048];
 		sprintf(tmp, "error: security violation");
 		return intercept_sqlStmtPrepare(p_stmt, tmp, p_length);
