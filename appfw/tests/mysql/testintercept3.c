@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
    char *query_data = getenv("QUERY_DATA");
 
 
-   sprintf(query,"SELECT * FROM someTable WHERE id='%s'", query_data);
+   sprintf(query,"SELECT * FROM someTable WHERE myId=%s", query_data);
 
    printf("query: %s\n", query);
 
