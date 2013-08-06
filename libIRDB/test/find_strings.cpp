@@ -161,9 +161,9 @@ void handle_argument(ARGTYPE *arg, elf_info_t &ei, pqxx::largeobjectaccess &loa)
 {
         if( arg->ArgType == MEMORY_TYPE )
 	{
-		if ( !ei.got )
+		if ( ei.elfhdr.e_type == ET_EXEC )
 			is_string_pointer((void*)arg->Memory.Displacement,ei,loa);
-		if ( ei.got && arg->Memory.BaseRegister == REG3 /* ebx */ )
+		if ( ei.elfhdr.e_type == ET_DYN && arg->Memory.BaseRegister == REG3 /* ebx */ )
 			is_string_pointer((void*)(arg->Memory.Displacement + ei.got),ei,loa);
 	}
 }
@@ -361,8 +361,10 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 		int res=insn->Disassemble(disasm);
 		assert(res);
 
-		// always check for string pointers
-		is_string_pointer((void*)disasm.Instruction.Immediat,ei,loa);
+		// check for immediate string pointers in non-PIC code
+		if ( ei.elfhdr.e_type == ET_EXEC )
+			is_string_pointer((void*)disasm.Instruction.Immediat,ei,loa);
+		// always check for string pointers in memory argument displacements
 		handle_argument(&disasm.Argument1,ei,loa);
 		handle_argument(&disasm.Argument2,ei,loa);
 		handle_argument(&disasm.Argument3,ei,loa);
