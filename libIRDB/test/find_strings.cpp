@@ -386,11 +386,15 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei, pqxx::largeobjectacces
 {
 	for(int i=0;i<ei.secnum;i++)
 	{
-		/* only check nonexecutable, loadable sections */
+		/* skip executable, hash, string table, and nonloadable sections */
 		if( (ei.sechdrs[i].sh_flags & SHF_EXECINSTR)
+		    || ei.sechdrs[i].sh_type == SHT_HASH
+		    || ei.sechdrs[i].sh_type == SHT_GNU_HASH
+		    || ei.sechdrs[i].sh_type == SHT_STRTAB
 		    || (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
 			continue;
 
+		int offset = 0;
 		int step;
 		/* step over relocation info */
 		switch( ei.sechdrs[i].sh_type )
@@ -401,12 +405,17 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei, pqxx::largeobjectacces
 		case SHT_RELA:
 			step = sizeof(Elf32_Rela);
 			break;
+		case SHT_SYMTAB:
+		case SHT_DYNSYM:
+			offset = sizeof(Elf32_Word);
+			step = sizeof(Elf32_Sym);
+			break;
 		default:
 			step = 1;
 		}
 
 		load_section(ei,i,loa,true);
-        	for(int j=0;j<=ei.sechdrs[i].sh_size-sizeof(void*);j+=step)
+        	for(int j=offset;j<=ei.sechdrs[i].sh_size-sizeof(void*);j+=step)
         	{
                 	void* p=*((void**)(ei.sec_data[i]+j));
                 	is_string_pointer(p,ei,loa);
