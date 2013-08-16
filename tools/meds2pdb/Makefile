@@ -26,8 +26,8 @@ LIBS=-L../../lib -L../../xform -lxform -lELFIO -L ../../beaengine/lib/Linux.gnu.
 	$(CC) $(CFLAGS) $(INCLUDE) -c $<
 
 
-all: meds2pdb 
-	echo build complete
+all: meds2pdb  ../../xform/libxform.a  ../../lib/libELFIO.a  ../../beaengine/lib/Linux.gnu.Debug/libBeaEngine_s_d.a
+	echo meds2pdb build complete
 
 clean:
 	rm -f *.o core meds2pdb

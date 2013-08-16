@@ -237,6 +237,7 @@ libIRDB/include/core/variantid.hpp -text
 libIRDB/include/libIRDB-cfg.hpp -text
 libIRDB/include/libIRDB-core.hpp -text
 libIRDB/include/utils.hpp -text
+libIRDB/install_libs.sh -text
 libIRDB/src/Makefile -text
 libIRDB/src/cfg/BasicBlock.cpp -text
 libIRDB/src/cfg/CFG.cpp -text

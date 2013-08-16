@@ -237,7 +237,7 @@ int handle_execp(const char *file, char *const argv[], char *const envp[])
   	}
 }
 
-va_list process_args(char* arg, va_list vlist, char*** ret)
+void process_args(char* arg, va_list *vlist, char*** ret)
 {
 	*ret=malloc(0);
 	int index;
@@ -248,12 +248,12 @@ va_list process_args(char* arg, va_list vlist, char*** ret)
 		(*ret)[index++]=arg;
 		/* test for exit if arg is 0. */
 		if(arg==NULL)	
-			return vlist;
-		arg=(char*)va_arg(vlist,void*);
+			return;
+		arg=(char*)va_arg(*vlist,void*);
 
 	} while(1);
 
-	return vlist;
+	return;
 }
 
 int (*my_execl)(const char *path, const char *arg, ...);
@@ -263,7 +263,7 @@ int execl(const char *path, const char *arg, ...)
 	char **env=NULL;
 	va_list vlist;
 	va_start(vlist, arg);
-	vlist=process_args((char*)arg,vlist,&all_args);
+	process_args((char*)arg,&vlist,&all_args);
 	env=environ;
 
 	return handle_execl(path,all_args,env);
@@ -277,7 +277,7 @@ int execlp(const char *file, const char *arg, ...)
 	char **env;
 	va_list vlist;
 	va_start(vlist, arg);
-	vlist=process_args((char*)arg,vlist,&all_args);
+	process_args((char*)arg,&vlist,&all_args);
 	env=environ;
 
 	return handle_execp(file,all_args,env);
@@ -291,7 +291,7 @@ int execle(const char *path, const char *arg, ...)
 	char **env;
 	va_list vlist;
 	va_start(vlist, arg);
-	vlist=process_args((char*)arg,vlist,&all_args);
+	process_args((char*)arg,&vlist,&all_args);
 	env=va_arg(vlist,void*);
 
 	return handle_execl(path,all_args,env);

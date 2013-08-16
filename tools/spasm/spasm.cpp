@@ -555,7 +555,7 @@ static bool getNextBin(bin_instruction_t &bin)
 	if(bin_index >= bin_fsize)
 		return false;
 
-	disasm.EIP = (int) &memblock[bin_index];
+	disasm.EIP = (long long int) &memblock[bin_index];
 	int instr_len = Disasm(&disasm);
 
 	bin.size = (unsigned int) instr_len;

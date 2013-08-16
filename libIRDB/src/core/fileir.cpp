@@ -165,7 +165,7 @@ void FileIR_t::AssembleRegistry()
 		assert(reg_val != assembly_registry.end());
 		Instruction_t *instr = reg_val->first;
 
-		disasm.EIP = (int) &binary_stream[index];
+		disasm.EIP =  (UIntPtr)&binary_stream[index];
 		int instr_len = Disasm(&disasm);
 		string rawBits;
 		rawBits.resize(instr_len);

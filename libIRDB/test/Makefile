@@ -7,10 +7,10 @@ PROGS=print_variant.exe list_programs.exe create_variant.exe create_variantir.ex
 
 all: $(PROGS)
 
-$(PROGS): ../lib/libIRDB-core.a ../lib/libIRDB-cfg.a 
+$(PROGS): ../lib/libIRDB-core.a ../lib/libIRDB-cfg.a  ../../lib/libELFIO.a ../../beaengine/lib/Linux.gnu.Debug/libBeaEngine_s_d.a
 
-read_ehframe.exe: unwind-pe.h
-	g++ -g read_ehframe.cpp -DTEST -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@
+read_ehframe.exe: unwind-pe.h 
+	g++ -fpermissive -g read_ehframe.cpp -DTEST -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@
 
 fill_in_indtargs.exe: read_ehframe.o fill_in_indtargs.o check_thunks.o
 	g++ -g fill_in_indtargs.o read_ehframe.o check_thunks.o -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@
@@ -21,6 +21,9 @@ fill_in_indtargs.exe: read_ehframe.o fill_in_indtargs.o check_thunks.o
 
 .cpp.o:  $< 
 	g++ -g $< -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@ -c
+
+read_ehframe.o: read_ehframe.cpp
+	g++ -fpermissive -g $^ -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@ -c
 
 clean:
 	rm -f $(PROGS) *.o

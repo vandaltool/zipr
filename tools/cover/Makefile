@@ -28,7 +28,7 @@ OBJS=coverage.o
 
 
 all: cover 
-	echo build complete
+	echo cover build complete
 
 clean:
 	rm -f *.o core cover
