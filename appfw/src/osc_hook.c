@@ -172,7 +172,7 @@ int handle_execl(const char *file, char *const argv[], char *const envp[])
 
   	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)) || getenv("DEBUG_APPFW"))
   	{
-		if(getenv("VERBOSE"))
+		if(getenv("APPFW_VERBOSE"))
 			fprintf(stderr, "Exec detected as OK\n");
 		within_osc_monitor=TRUE;
         	int ret = my_execve(file,argv,envp);
@@ -240,12 +240,14 @@ int handle_execp(const char *file, char *const argv[], char *const envp[])
 void process_args(char* arg, va_list *vlist, char*** ret)
 {
 	*ret=malloc(0);
-	int index;
+	int index=0;
 
+//fprintf(stderr, "In proc_args, arg=%s\n", arg);
 	do
 	{
 		*ret=realloc(*ret,(index+1)*sizeof(void*));
 		(*ret)[index++]=arg;
+//fprintf(stderr, "In proc_args, *ret[0]=%s, arg=%s\n", (*ret)[0], arg);
 		/* test for exit if arg is 0. */
 		if(arg==NULL)	
 			return;
@@ -265,6 +267,7 @@ int execl(const char *path, const char *arg, ...)
 	va_start(vlist, arg);
 	process_args((char*)arg,&vlist,&all_args);
 	env=environ;
+//		fprintf(stderr, "args[0]=%s\n", all_args[0]);
 
 	return handle_execl(path,all_args,env);
 }
@@ -279,6 +282,7 @@ int execlp(const char *file, const char *arg, ...)
 	va_start(vlist, arg);
 	process_args((char*)arg,&vlist,&all_args);
 	env=environ;
+// 		fprintf(stderr, "args[0]=%s\n", all_args[0]);
 
 	return handle_execp(file,all_args,env);
 }
@@ -294,6 +298,8 @@ int execle(const char *path, const char *arg, ...)
 	process_args((char*)arg,&vlist,&all_args);
 	env=va_arg(vlist,void*);
 
+//	if(getenv("APPFW_VERBOSE"))
+// 		fprintf(stderr, "args[0]=%s, arg=%s\n", all_args[0], arg);
 	return handle_execl(path,all_args,env);
 }
 

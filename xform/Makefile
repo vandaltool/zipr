@@ -33,6 +33,7 @@ all: $(LIB)
 
 $(LIB): $(OBJS)
 	ar -r $(LIB) $(OBJS) 
+	cp $(LIB) ../lib/
 
 clean:
 	rm -f *.o core *.a
