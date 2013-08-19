@@ -256,7 +256,7 @@ ls -l
 # so append the diagnostics.out files together since they
 # have the same name
 cd /opt/stonesoup/TH-workspace
-more peasoup_executable*/diagnostics.out > diagnostics.out
+mv peasoup_executable*/diagnostics.out* .
 more peasoup_executable*/a.ncexe.sigs.orig >> a.ncexe.sigs.orig
 mv peasoup_executable*/a.ncexe.sigs.* .
 rm -rf peasoup_executable*
