@@ -70,7 +70,7 @@ void appfw_init()
 				fw_sigs[numSigs][strlen(buf)-1] = '\0';
 
 				if(verbose && getenv("VERY_VERBOSE"))
-					fprintf(stderr,"read sig[%d]: %s (%d)\n", numSigs, fw_sigs[numSigs], strlen(fw_sigs[numSigs]));
+					fprintf(stderr,"read sig[%d]: %s (%d)\n", numSigs, fw_sigs[numSigs], (int)strlen(fw_sigs[numSigs]));
 
 				numSigs++;
 			}
@@ -138,8 +138,8 @@ void appfw_establish_taint(const char *command, char *taint, matched_record** ma
 	char **fw_sigs = appfw_getSignatures();
 	int commandLength = strlen(command);
 	taint[commandLength] = '\0';
-	int verbose=(int)getenv("APPFW_VERBOSE");
-	verbose+=(int)getenv("VERY_VERBOSE");
+	int verbose=getenv("APPFW_VERBOSE")!=NULL;
+	verbose+=getenv("VERY_VERBOSE")!=NULL;
 
 	if (!fw_sigs)
 	{
