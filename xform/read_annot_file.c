@@ -67,7 +67,10 @@ void read_annot_file(char fn[])
 	fin=fopen(fn, "r");
 
 	if(!fin)
+	{
 		fprintf(stderr,"Cannot open strata annotation file %s\n", fn);
+		return;
+	}
 
 
 

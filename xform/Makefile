@@ -28,11 +28,12 @@ OBJS= instruction_descriptor.o function_descriptor.o elfreader.o null_transform.
 	$(CC) $(CFLAGS) $(INCLUDE) -c $<
 
 
-all: $(OBJS) medsannot 
-	echo build complete
+all: $(LIB) 
+	echo $(LIB) build complete
 
-medsannot:
+$(LIB): $(OBJS)
 	ar -r $(LIB) $(OBJS) 
+	cp $(LIB) ../lib/
 
 clean:
 	rm -f *.o core *.a

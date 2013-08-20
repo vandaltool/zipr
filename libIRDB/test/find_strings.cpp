@@ -101,7 +101,7 @@ void check_for_string(char* p, void* addr)
 
 void is_string_pointer(void* addr, elf_info_t &ei, pqxx::largeobjectaccess &loa)
 {
-	int intaddr=(int)(addr);
+	long long int intaddr=(long long int)(addr);
 
 	for(int i=0;i<ei.secnum;i++)
 	{
@@ -114,7 +114,7 @@ void is_string_pointer(void* addr, elf_info_t &ei, pqxx::largeobjectaccess &loa)
 			/* we found a pointer into a loadable segment */
 			load_section(ei,i,loa,true);
 //			cout<<"Checking address "<<std::hex<<addr<<endl;
-			check_for_string(ei.sec_data[i]+((int)addr-ei.sechdrs[i].sh_addr),addr);
+			check_for_string(ei.sec_data[i]+((long long int)addr-ei.sechdrs[i].sh_addr),addr);
 		}
 	}
 
@@ -131,10 +131,10 @@ void is_string_constant(DISASM& disasm)
 	addr = (void*)disasm.Instruction.Immediat;
 
 	/* consider that this constant itself may be a string */
-	unsigned char byte1=(((unsigned int)addr)>>24)&0xff;
-	unsigned char byte2=(((unsigned int)addr)>>16)&0xff;
-	unsigned char byte3=(((unsigned int)addr)>>8)&0xff;
-	unsigned char byte4=(unsigned int)addr&0xff;
+	unsigned char byte1=(((long long unsigned int)addr)>>24)&0xff;
+	unsigned char byte2=(((long long unsigned int)addr)>>16)&0xff;
+	unsigned char byte3=(((long long unsigned int)addr)>>8)&0xff;
+	unsigned char byte4=(long long unsigned int)addr&0xff;
 	
 	if(  
 		(is_string_character(byte1) || byte1==0) &&

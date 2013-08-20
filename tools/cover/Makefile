@@ -18,7 +18,7 @@
 CC=g++
 CFLAGS= -g
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/
-LIBS=-L../../lib -L../../xform -lxform -lELFIO  -L../../libIRDB/lib/ -lIRDB-core -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx 
+LIBS=-L../../lib -L../../xform -lxform -lIRDB-core -lBeaEngine_s_d -lpqxx 
 OBJS=coverage.o
 
 .SUFFIXES: .o .c .cpp
@@ -28,11 +28,11 @@ OBJS=coverage.o
 
 
 all: cover 
-	echo build complete
+	echo cover build complete
 
 clean:
 	rm -f *.o core cover
 
-cover: $(OBJS) cover.cpp
+cover: $(OBJS) cover.cpp ../../lib/*
 	$(CC) $(CFLAGS) -o cover $(INCLUDE) cover.cpp $(OBJS) $(LIBS)
 

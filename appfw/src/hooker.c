@@ -153,16 +153,22 @@ extern void appfw_ldap_init();
 
 void *dlsym(void *handle, const char *symbol)
 {
-	if(getenv("APPFW_VERBOSE")!=0)
-	{
-        	fprintf(stderr,"Ha Ha...dlsym() Hooked with handle=%p, symbol=%s\n", (void*)handle,symbol);
-	}
+	char *verbose= getenv("APPFW_VERBOSE");
+	 if(verbose !=0)
+        	fprintf(stderr, "Ha Ha...dlsym() Hooked with handle=%p, symbol=%s\n", (void*)handle,symbol);
+
 	if(real_dlsym==NULL)
 	{
+		if(verbose !=0)
+        		fprintf(stderr, "Initing dlsym handle\n");
 		void* handler = dlopen("libdl.so", RTLD_LAZY);
 		assert(handler);
+		extern void* __libc_dlsym(void*, const char*);
         	real_dlsym  = (void*)__libc_dlsym(handler, "dlsym"); /* now, this will call dlsym() library function */
 		assert(real_dlsym);
+
+		if(verbose !=0)
+        		fprintf(stderr, "Finished initing dlsym handle\n");
 
 		/* init it all */
 		sqlfw_init();

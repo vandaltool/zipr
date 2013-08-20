@@ -6,26 +6,35 @@ using namespace std;
 
 ElfReader::ElfReader(char *p_elfFile)
 {
-    ELFIO::GetInstance()->CreateELFI( &m_reader );
+    m_reader=new elfio;
+//    ELFIO::GetInstance()->CreateELFI( &m_reader );
 
     // Initialize it
-    ELFIO_Err err = m_reader->Load( p_elfFile );
-    if ( ERR_ELFIO_NO_ERROR != err ) {
+    bool ok = m_reader->load( p_elfFile );
+    if ( ! ok ) {
         std::cerr << "Can't open file" << std::endl;
+	exit(-1);
     }
+
+
+    if(m_reader->get_class() == ELFCLASS32)
+	std::cout << "Input file is ELF32" << std::endl;
+    else
+	std::cout << "Input file is ELF64" << std::endl;
+
 
     // List all sections of the file
     int i;
-    int nSecNo = m_reader->GetSectionsNum();
+    Elf_Half nSecNo = m_reader->sections.size();
     for ( i = 0; i < nSecNo; ++i ) 
     {    // For all sections
-        const IELFISection* pSec = m_reader->GetSection( i );
-        m_sections.push_back(pSec);
-#if 0
-        std::cout << "Sec. name: " << pSec->GetName() 
-                  << " Sec. offset: " << pSec->GetOffset() 
-                  << " Sec. size: " << pSec->GetSize() << std::endl;
-#endif
+	section* psec = m_reader->sections[i];
+	m_sections.push_back(psec);
+        std::cout << "  [" << i << "] "
+                  << psec->get_name()
+                  << "\t"
+                  << psec->get_size()
+                  << std::endl;
 
     }
     std::cout << std::endl;
@@ -33,12 +42,7 @@ ElfReader::ElfReader(char *p_elfFile)
 
 ElfReader::~ElfReader()
 {
-  for ( int i = 0; i < m_reader->GetSectionsNum(); ++i ) 
-  {
-    m_sections[i]->Release();
-  }
-
-  m_reader->Release();
+  delete m_reader;
 }
 
 /*
@@ -46,30 +50,30 @@ ElfReader::~ElfReader()
 */
 string ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes)
 {
-  for ( int i = 0; i < m_reader->GetSectionsNum(); ++i ) 
+  for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
-    const IELFISection* pSec = m_reader->GetSection( i );
+    section* pSec = m_reader->sections[i];
 
 /*
-    cerr << "Sec. name: " << pSec->GetName() 
-         << " Sec. address: " << pSec->GetAddress() 
+    cerr << "Sec. name: " << pSec->get_name() 
+         << " Sec. address: " << pSec->get_address() 
          << " Sec. offset: " << pSec->GetOffset() 
-         << " Sec. size: " << pSec->GetSize() << std::endl;
+         << " Sec. size: " << pSec->get_size() << std::endl;
 */
 
-    if (pSec->GetAddress() + pSec->GetSize() < 1) continue;
-    if (p_pc >= pSec->GetAddress() && p_pc <= (pSec->GetAddress() + pSec->GetSize() - 1))
+    if (pSec->get_address() + pSec->get_size() < 1) continue;
+    if (p_pc >= pSec->get_address() && p_pc <= (pSec->get_address() + pSec->get_size() - 1))
     {
       // found the section, now read off the data
-      long offset = p_pc - pSec->GetAddress();
-//      cerr << "ElfReader::read(): pc 0x" << hex << p_pc << " is in section#" << i << ": " << pSec->GetName() << " at offset: " << offset << endl;
+      long offset = p_pc - pSec->get_address();
+//      cerr << "ElfReader::read(): pc 0x" << hex << p_pc << " is in section#" << i << ": " << pSec->get_name() << " at offset: " << offset << endl;
       for (int j = 0; j < p_numBytes; ++j)
       {
-        unsigned char c = pSec->GetData()[j + offset];
+        unsigned char c = pSec->get_data()[j + offset];
       }
 
       cerr << endl;
-      return string(pSec->GetData() + offset, p_numBytes);
+      return string(pSec->get_data() + offset, p_numBytes);
     }
   }
 
@@ -83,16 +87,16 @@ string ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes)
 */
 bool ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf)
 {
-  for ( int i = 0; i < m_reader->GetSectionsNum(); ++i ) 
+  for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
-    const IELFISection* pSec = m_reader->GetSection( i );
+    section* pSec = m_reader->sections[ i ];
 
-    if (pSec->GetAddress() + pSec->GetSize() < 1) continue;
-    if (p_pc >= pSec->GetAddress() && p_pc <= (pSec->GetAddress() + pSec->GetSize() - 1))
+    if (pSec->get_address() + pSec->get_size() < 1) continue;
+    if (p_pc >= pSec->get_address() && p_pc <= (pSec->get_address() + pSec->get_size() - 1))
     {
       // found the section, now read off the data
-      long offset = p_pc - pSec->GetAddress();
-      memcpy(p_buf, pSec->GetData() + offset, p_numBytes);
+      long offset = p_pc - pSec->get_address();
+      memcpy(p_buf, pSec->get_data() + offset, p_numBytes);
       return true;
     }
   }
@@ -104,16 +108,16 @@ bool ElfReader::read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf)
 */
 char* ElfReader::getInstructionBuffer(app_iaddr_t p_pc)
 {
-  for ( int i = 0; i < m_reader->GetSectionsNum(); ++i ) 
+  for ( int i = 0; i < m_reader->sections.size(); ++i ) 
   {    
-    const IELFISection* pSec = m_reader->GetSection( i );
+    const section* pSec = m_reader->sections[ i ];
 
-    if (pSec->GetAddress() + pSec->GetSize() < 1) continue;
-    if (p_pc >= pSec->GetAddress() && p_pc <= (pSec->GetAddress() + pSec->GetSize() - 1))
+    if (pSec->get_address() + pSec->get_size() < 1) continue;
+    if (p_pc >= pSec->get_address() && p_pc <= (pSec->get_address() + pSec->get_size() - 1))
     {
       // found the section, now read off the data
-      long offset = p_pc - pSec->GetAddress();
-      return (char*) (pSec->GetData() + offset);
+      long offset = p_pc - pSec->get_address();
+      return (char*) (pSec->get_data() + offset);
     }
   }
   return NULL;

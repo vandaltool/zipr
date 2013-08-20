@@ -55,11 +55,14 @@ void Rewriter::readAnnotationFile(char p_filename[])
 	fin=fopen(p_filename, "r");
 
 	if(!fin)
+	{
 		fprintf(stderr,"Cannot open strata annotation file %s\n", p_filename);
+		goto after_loop;
+	}
 
 	do 
 	{
-		fscanf(fin, "%x %d\n", &addr, &size_type_u);
+		fscanf(fin, "%p %d\n", (void**)&addr, &size_type_u.size);
 
 		if(feof(fin))		// deal with blank lines at the EOF
 			break;
@@ -123,35 +126,35 @@ void Rewriter::readAnnotationFile(char p_filename[])
 				int reg=0;
 				for( ; reg<8;reg++)
 				{
-					fscanf(fin, "%d %d %d", &reg_num, &reg_offset, &reg_type);
-					assert(reg_num==reg);
+				fscanf(fin, "%d %d %d", &reg_num, &reg_offset, &reg_type);
+				assert(reg_num==reg);
 					frame_restore_hash_add_reg_restore(addr,reg_num,reg_offset,reg_type);
-				}
-				fscanf(fin, "%s", zz);
-				assert(strcmp("ZZ", zz)==0);
 			}
-			else if(strcmp(scope,"MMSAFENESS")==0)
-			{
-				char safeness[1000];
-				fscanf(fin, "%s", &safeness);
-				if(strcmp(safeness, "SAFE") == 0)
- 				{
+			fscanf(fin, "%s", zz);
+			assert(strcmp("ZZ", zz)==0);
+		}
+		else if(strcmp(scope,"MMSAFENESS")==0)
+		{
+			char safeness[1000];
+			fscanf(fin, "%s", safeness);
+			if(strcmp(safeness, "SAFE") == 0)
+ 			{
 //
 // 20110315 Anh
 // bug in MEDS re. FUNCTION SAFENESS, the annotation file sometimes mark a function as
 // SAFE when in fact it isn't
 //					m_functions[addr]->setSafe();
-					frame_restore_hash_set_safe_bit(addr,TRUE);
-				}
-				else if(strcmp(safeness, "SPECSAFE") == 0)
-				{
-//					m_functions[addr]->setSafe();
-					frame_restore_hash_set_safe_bit(addr,TRUE);
-				}
-				else if(strcmp(safeness, "UNSAFE") == 0)
-					frame_restore_hash_set_safe_bit(addr,FALSE);
-				else
-					fprintf(stderr,"Do not understand safeness terminology '%s' at line %d\n", safeness, line);
+				frame_restore_hash_set_safe_bit(addr,TRUE);
+			}
+			else if(strcmp(safeness, "SPECSAFE") == 0)
+			{
+//				m_functions[addr]->setSafe();
+				frame_restore_hash_set_safe_bit(addr,TRUE);
+			}
+			else if(strcmp(safeness, "UNSAFE") == 0)
+				frame_restore_hash_set_safe_bit(addr,FALSE);
+			else
+				fprintf(stderr,"Do not understand safeness terminology '%s' at line %d\n", safeness, line);
 			}
 			else
 				fprintf(stderr,"Do not understand type terminology '%s' at line %d\n", type, line);
@@ -261,7 +264,7 @@ void Rewriter::readAnnotationFile(char p_filename[])
 			else if (strcmp(scope, "BELONGTO") == 0)
 			{
 				app_iaddr_t func_addr;
-				fscanf(fin, "%x", &func_addr);
+				fscanf(fin, "%p", (void**)&func_addr);
                     		instrmap_hash_key_t* key = (instrmap_hash_key_t*)spri_allocate_type(sizeof(instrmap_hash_key_t));
                     		instrmap_hash_value_t* val = (instrmap_hash_value_t*)spri_allocate_type(sizeof(instrmap_hash_value_t));
                     		key->pc = addr;
@@ -445,7 +448,7 @@ MEDS doesn't mark this as a stack reference
 			else if(strcmp(scope,"GLOBAL")==0)
 			{
 				/* remaining params id, addr, parent/child, name */
-				fscanf(fin, "%d%x%s%s", &id, &addr, parent_child);
+				fscanf(fin, "%d%p%s", &id, (void**)&addr, parent_child);
 
 				if(strcmp(parent_child, "PARENT")==0)
 				{
@@ -463,7 +466,7 @@ MEDS doesn't mark this as a stack reference
 				int esp_offset;
 
 				/* remaining params id, addr, parent/child, name */
-				fscanf(fin, "%d%s%s%d%s", &id, &esp, &plus, &esp_offset, parent_child);
+				fscanf(fin, "%d%s%s%d%s", &id, esp, plus, &esp_offset, parent_child);
 
 				assert(strcmp(esp, "esp")==0 && strcmp(plus,"+")==0);
 
@@ -541,6 +544,8 @@ any esp access outside this region (esp + K) >= (esp + size) can be xformed
 	} while(!feof(fin));
 	fclose(fin);
 
+after_loop:
+
   // for each instruction in a function, dissassemble and stash away assembly string
 	dissassemble();
 }
@@ -592,7 +597,12 @@ void Rewriter::dissassemble()
       		memset(&disasm, 0, sizeof(DISASM));
 
       		disasm.Options = NasmSyntax + PrefixedNumeral;
-      		disasm.Archi = 32;
+
+		if(getElfReader()->isElf64())
+      			disasm.Archi = 64;
+		else
+      			disasm.Archi = 32;
+
       		disasm.EIP = (UIntPtr) getElfReader()->getInstructionBuffer(instr->getAddress());
       		disasm.VirtualAddr = instr->getAddress();
 
@@ -622,11 +632,11 @@ void Rewriter::addSimpleRewriteRule(wahoo::Function* p_func, char *p_origInstr, 
 
   sprintf(buf,"# orig(%d): %s\n", p_origSize, p_origInstr);
   strcpy(aspri, buf);
-  sprintf(buf,"0x%08x -> .\n", p_origAddress);
+  sprintf(buf,"0x%8p -> .\n", (void*)p_origAddress);
   strcat(aspri, buf);
   sprintf(buf,". ** %s\n", p_newInstr);
   strcat(aspri, buf);
-  sprintf(buf,". -> 0x%08x\n", p_origAddress + p_origSize);
+  sprintf(buf,". -> 0x%8p\n", (void*)(p_origAddress + p_origSize));
   strcat(aspri, buf);
 
   fprintf(stderr, "WOULD EMIT RULE: %s\n", aspri);

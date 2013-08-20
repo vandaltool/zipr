@@ -73,7 +73,7 @@ constant_hash_value_t * get_constant_ref(app_iaddr_t pc, int the_const, constant
 }
 
 
-char* constant_hash_type_to_string(constant_hash_type_t type)
+const char* constant_hash_type_to_string(constant_hash_type_t type)
 {
 	switch(type)
 	{

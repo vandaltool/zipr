@@ -87,7 +87,7 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
       query += "(";
       query += txn.quote(address_id) + ",";
       query += txn.quote(fileID) + ",";
-      sprintf(buf,"%d", addr);
+      sprintf(buf,"%lld", (long long)addr);
       query += txn.quote(string(buf));
       query += ")";
 

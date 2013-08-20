@@ -1,1 +1,0 @@
-SUBDIRS = ELFIO Examples doc

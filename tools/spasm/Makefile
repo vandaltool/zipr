@@ -26,10 +26,10 @@ LIBS=-L../../xform -lxform -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_
 	$(CC) $(CFLAGS) $(INCLUDE) -c $<
 
 all: spasm
-	echo build complete
+	echo spasm build complete
 
 clean:
 	rm -f *.o core spasm *.map *.bspri *.asm *.bin
 
-spasm: $(OBJS) spasm.cpp Makefile spasm.h spasm_main.cpp ben_lib.cpp ben_lib.h
+spasm: $(OBJS) spasm.cpp Makefile spasm.h spasm_main.cpp ben_lib.cpp ben_lib.h ../../xform/libxform.a ../../beaengine/lib/Linux.gnu.Debug/libBeaEngine_s_d.a
 	$(CC) -o spasm $(INCLUDE) $(CFLAGS) spasm_main.cpp  spasm.cpp ben_lib.cpp $(OBJS) $(LIBS)

@@ -189,7 +189,7 @@ void register_frame_info(void *begin, struct object *ob)
 
 struct dwarf_cie * get_cie (struct dwarf_fde *f)
 {
-  	return (struct dwarf_cie*)((int)&f->CIE_delta - (int)f->CIE_delta);
+  	return (struct dwarf_cie*)((long long)&f->CIE_delta - (long long)f->CIE_delta);
 }
 
 fde * next_fde (fde *f)

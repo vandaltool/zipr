@@ -13,3 +13,4 @@ clean:
 .cpp.o:
 	g++ -g -c -I. -I../include $<
 	ar rc $(LIB) $@
+	cp $(LIB) ../../lib

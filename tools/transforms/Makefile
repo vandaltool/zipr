@@ -20,24 +20,29 @@ PROGS=p1transform.exe nulltransform.exe integertransformdriver.exe
 CC=g++
 CFLAGS= -g -O3 -Wall
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../../libtransform/include/
-LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB-core -lIRDB-cfg -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx  -L../../libMEDSannotation/lib -lMEDSannotation -L../../libtransform/lib -ltransform
+LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform
+
 OBJS=transformutils.o
+
+all_objs=PNTransformDriver.o PNStackLayout.o PNRange.o Range.o OffsetInference.o DirectOffsetInference.o ScaledOffsetInference.o P1Inference.o PNRegularExpressions.o PNMain.o StackLayout.o Rewrite_Utility.o General_Utility.o AnnotationBoundaryGenerator.o PrecedenceBoundaryInference.o PNIrdbManager.o
+
+
 
 .SUFFIXES: .o .c .exe .cpp
 
-all: pntransform $(OBJS) $(PROGS)
-	echo build complete
+all: pntransform.exe $(OBJS) $(PROGS)
+	echo pntransform build complete
 
-.o: $<
-	$(CC) -g -c $@
+.cpp.o: PNStackLayoutInference.hpp 
+	$(CC) $(INCLUDE) $(CFLAGS)  -g -c $< 
 
-.cpp.exe:  $<
+.cpp.exe:  
 	$(CC) -g $< $(INCLUDE) $(LIBS) $(OBJS) -o $@
 
 clean:
 	rm -f *.o core $(PROGS)
 
 
-pntransform: PNTransformDriver.cpp PNStackLayoutInference.hpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp PNMain.cpp StackLayout.cpp Rewrite_Utility.cpp General_Utility.cpp AnnotationBoundaryGenerator.cpp PrecedenceBoundaryInference.cpp PNIrdbManager.cpp
-	$(CC) $(CFLAGS) PNMain.cpp PNTransformDriver.cpp PNStackLayout.cpp PNRange.cpp Range.cpp OffsetInference.cpp DirectOffsetInference.cpp ScaledOffsetInference.cpp P1Inference.cpp PNRegularExpressions.cpp StackLayout.cpp Rewrite_Utility.cpp General_Utility.cpp  AnnotationBoundaryGenerator.cpp PrecedenceBoundaryInference.cpp PNIrdbManager.cpp $(INCLUDE) $(LIBS) -o pntransform.exe
+pntransform.exe:  $(all_objs) ../../lib/*.a 
+	$(CC) $(CFLAGS) $(all_objs) $(INCLUDE) $(LIBS) -o pntransform.exe
 	cp pntransform.exe p1transform.exe

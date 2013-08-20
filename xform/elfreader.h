@@ -3,9 +3,11 @@
 
 #include <vector>
 #include "config.h"
-#include "ELFIO.h"
+#include "elfio/elfio.hpp"
+#include <assert.h>
 
 using namespace std;
+using namespace ELFIO;
 
 class ElfReader 
 {
@@ -17,9 +19,16 @@ class ElfReader
     bool read(app_iaddr_t p_pc, unsigned p_numBytes, char* p_buf);
     char* getInstructionBuffer(app_iaddr_t p_pc);
 
+    bool isElf64() { assert(m_reader); return m_reader->get_class()==ELFCLASS64; }
+
+
+
+
+
   private:
-    IELFI*                       m_reader;
-    vector < const IELFISection * >    m_sections;
+    elfio*                       m_reader;
+    vector < const section* >    m_sections;
+
 };
 
 #endif

@@ -33,6 +33,7 @@
 #include <string.h>
 #include "gen_hash.h"
 #include "spri_alloc.h"
+#include <stdint.h>
 
 #define INITIAL_CAPACITY 128
 
@@ -188,7 +189,7 @@ struct entry* Hashtable_get_next(Hashtable_iterator &iterator)
     }
     else if (iterator.ht->count <= 0)
     {
-      fprintf(stderr,"Hashtable_get_next: the hashtable count is <= 0   0x%x\n", iterator.ht);
+      fprintf(stderr,"Hashtable_get_next: the hashtable count is <= 0   0x%p\n", (void*)iterator.ht);
       return NULL;
     }
 

@@ -29,7 +29,7 @@ void NullTransform::rewrite()
     wahoo::Function* f = it->second;
     if (!f)
     {
-      fprintf(stderr,"nulltransform: warning: NULL function data structure at pc: 0x%08x\n", addr);
+      fprintf(stderr,"nulltransform: warning: NULL function data structure at pc: 0x%8p\n", (void*)addr);
       continue;
     }
 
@@ -41,16 +41,16 @@ void NullTransform::rewrite()
       fprintf(getAsmSpri(), "# orig: %s\n", buf);
       if (strstr(buf,"leave"))
       {
-        fprintf(getAsmSpri(), "0x%08x -> .\n", instr->getAddress());
+        fprintf(getAsmSpri(), "0x%8p -> .\n", (void*)instr->getAddress());
         fprintf(getAsmSpri(), ". ** leave\n");
-        fprintf(getAsmSpri(), ". -> 0x%08x\n", instr->getAddress() + instr->getSize());
+        fprintf(getAsmSpri(), ". -> 0x%8p\n", (void*)(instr->getAddress() + instr->getSize()));
       }
       else if (strstr(buf,"ret"))
       {
-        fprintf(getAsmSpri(), "0x%08x -> .\n", instr->getAddress());
+        fprintf(getAsmSpri(), "0x%8p -> .\n", (void*)instr->getAddress());
         fprintf(getAsmSpri(), ". ** nop\n");
         fprintf(getAsmSpri(), ". ** ret\n");
-        fprintf(getAsmSpri(), ". -> 0x%08x\n", instr->getAddress() + instr->getSize());
+        fprintf(getAsmSpri(), ". -> 0x%8p\n", (void*)(instr->getAddress() + instr->getSize()));
       }
       else if (instr->isAllocSite())
       {
@@ -59,27 +59,27 @@ void NullTransform::rewrite()
         fprintf(getAsmSpri(), "# alloc site: stack frame size: %u\n", allocSize);
         if (strstr(buf,"sub esp"))
         {
-          fprintf(getAsmSpri(), "0x%08x -> .\n", instr->getAddress());
+          fprintf(getAsmSpri(), "0x%8p -> .\n", (void*)instr->getAddress());
           fprintf(getAsmSpri(), ". ** nop\n");
           fprintf(getAsmSpri(), ". ** sub esp, 0x%x\n", allocSize + 283);
           fprintf(getAsmSpri(), ". ** add esp, 0x%x\n", 283);
-          fprintf(getAsmSpri(), ". -> 0x%08x\n", instr->getAddress() + instr->getSize());
+          fprintf(getAsmSpri(), ". -> 0x%8p\n", (void*)(instr->getAddress() + instr->getSize()));
         }
       }
       else if (strstr(buf,"push ebp"))
       {
-        fprintf(getAsmSpri(), "0x%08x -> .\n", instr->getAddress());
+        fprintf(getAsmSpri(), "0x%8p -> .\n", (void*)(instr->getAddress()));
         fprintf(getAsmSpri(), ". ** push ebp\n");
         fprintf(getAsmSpri(), ". ** nop\n");
         fprintf(getAsmSpri(), ". ** add ebp, 1\n");
         fprintf(getAsmSpri(), ". ** sub ebp, 1\n");
         fprintf(getAsmSpri(), ". ** push ebp\n");
         fprintf(getAsmSpri(), ". ** pop ebp\n");
-        fprintf(getAsmSpri(), ". -> 0x%08x\n", instr->getAddress() + instr->getSize());
+        fprintf(getAsmSpri(), ". -> 0x%8p\n", (void*)(instr->getAddress() + instr->getSize()));
       }
       else if (strstr(buf,"pop ebp"))
       {
-        fprintf(getAsmSpri(), "0x%08x -> .\n", instr->getAddress());
+        fprintf(getAsmSpri(), "0x%8p -> .\n", (void*)instr->getAddress());
         fprintf(getAsmSpri(), ". ** push ebp\n");
         fprintf(getAsmSpri(), ". ** pop ebp\n");
         fprintf(getAsmSpri(), ". ** nop\n");
@@ -87,7 +87,7 @@ void NullTransform::rewrite()
         fprintf(getAsmSpri(), ". ** sub ebp, 1\n");
         fprintf(getAsmSpri(), ". ** pop ebp\n");
         fprintf(getAsmSpri(), ". ** nop\n");
-        fprintf(getAsmSpri(), ". -> 0x%08x\n", instr->getAddress() + instr->getSize());
+        fprintf(getAsmSpri(), ". -> 0x%8p\n", (void*)(instr->getAddress() + instr->getSize()));
       }
     }
   }

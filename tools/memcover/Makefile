@@ -25,8 +25,8 @@ OBJS=transformutils.o
 
 .SUFFIXES: .o .c .exe .cpp
 
-all: pntransform $(OBJS) $(PROGS)
-	echo build complete
+all: memcover $(OBJS) $(PROGS)
+	echo memcover build complete
 
 .o: $<
 	$(CC) -g -c $@

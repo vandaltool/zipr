@@ -2,9 +2,9 @@ LIBAPPFW_DIR=../lib
 
 #CFLAGS=-g -DSHOW_TAINT_MARKINGS 
 #CFLAGS=-DSHOW_TAINT_MARKINGS -O
-CFLAGS=-O
+CFLAGS=-O -fPIC
 
-all: libappfw 
+all: libappfw.so
 
 ./sqlite-autoconf-3071300/sqlite3.c ./sqlite-autoconf-3071300/sqlite3.h sqlite3.h:
 	tar -zxvf ../../third_party/sqlite-autoconf-3071300.tar.gz --no-anchored --wildcards 'sqlite3.[ch]'
@@ -62,8 +62,9 @@ appfw_ldap.o: appfw_ldap.c
 openldap_hook.o: openldap_hook.c
 	gcc $(CFLAGS) -I/usr/include -c $< 
 
-libappfw: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o xq_hook.o xq_parser.o xqfw.o openldap_hook.o appfw_ldap.o hooker.o
-	g++ $(CFLAGS) -shared -fPIC -o $(LIBAPPFW_DIR)/libappfw.so $^ -ldl
+libappfw.so: appfw_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o xq_hook.o xq_parser.o xqfw.o openldap_hook.o appfw_ldap.o hooker.o
+	g++ $(CFLAGS) -shared -fPIC -o libappfw.so $^ -ldl
+	cp libappfw.so $(LIBAPPFW_DIR)/libappfw.so 
 
 clean:
 	rm -fr *.o *.tmp *.so appfw_sqlite3.c appfw_sqlite3.h sqlite3.h sqlite-autoconf-3071300  xqil_major xqil_minor

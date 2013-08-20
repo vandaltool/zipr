@@ -35,8 +35,14 @@
 #define MAX_OPCODE_LENGTH 15
 #define MAX_PREFIX_LENGTH 4
 
+
+#if __WORDSIZE==64
+typedef unsigned long long fcache_iaddr_t;
+typedef unsigned long long app_iaddr_t;
+#else
 typedef unsigned fcache_iaddr_t;
 typedef unsigned app_iaddr_t;
+#endif
 
 typedef unsigned char uchar;
 
@@ -47,6 +53,7 @@ typedef long long          s_int64_t;
 typedef unsigned long long s_uint64_t;
 typedef s_uint64_t 	   counter_t;
 
+#if 0
 typedef struct {
 	unsigned char opcode[MAX_OPCODE_LENGTH];
 	unsigned char prefix[MAX_PREFIX_LENGTH];
@@ -58,10 +65,10 @@ typedef struct {
 } insn_t;
 
 #define TARG_IADDR_ALIGN(addr) (addr)
-
 #define T_ARCH "x86"
 
 #define TARG_THROW_AWAY_DEFAULT 0
+#endif
 
 #ifndef NULL
 #define NULL 0
