@@ -14,11 +14,6 @@
 #include "ben_lib.h"
 #include "beaengine/BeaEngine.h"
 
-#ifdef SPASM64
-#define NASM_BIT_WIDTH "BITS 64"
-#else
-#define NASM_BIT_WIDTH "BITS 32"
-#endif
 
 using namespace std;
 
@@ -352,7 +347,14 @@ static void assemble(const string &assemblyFile)
 		throw SpasmException("ERROR: Could not create a prelim assembly file for writing");					
 	}
 	 
-	asmFile<<NASM_BIT_WIDTH<<endl;
+
+	const char *nasm_bit_width=NULL;
+	if(sizeof(void*)==8)
+		nasm_bit_width="BITS 64";
+	else
+		nasm_bit_width="BITS 32";
+
+	asmFile<<nasm_bit_width<<endl;
 	asmFile<<"ORG 0x"<<hex<<vpc<<endl;
 	asmFile<<"[map symbols "<<assemblyFile<<".map]"<<endl;
 
@@ -550,11 +552,11 @@ static bool getNextBin(bin_instruction_t &bin)
 	memset(&disasm, 0, sizeof(DISASM));
 
 	disasm.Options = NasmSyntax +  PrefixedNumeral;
-#ifdef SPASM64
-	disasm.Archi = 64;
-#else
-	disasm.Archi = 32;
-#endif
+
+	if(sizeof(void*)==8)
+		disasm.Archi = 64;
+	else
+		disasm.Archi = 32;
 
 	if(bin_index >= bin_fsize)
 		return false;

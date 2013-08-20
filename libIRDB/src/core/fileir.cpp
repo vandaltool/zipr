@@ -115,7 +115,10 @@ void FileIR_t::AssembleRegistry()
 	if(!asmFile.is_open())
 		assert(false);
 
-	asmFile<<"BITS 32"<<endl; //TODO: probably should use a defined val
+	if(sizeof(void*)==8)
+		asmFile<<"BITS 64"<<endl; //TODO: probably should use a defined val
+	else
+		asmFile<<"BITS 32"<<endl; //TODO: probably should use a defined val
 
 	for(registry_type::iterator it = assembly_registry.begin();
 		it != assembly_registry.end();
@@ -136,8 +139,13 @@ void FileIR_t::AssembleRegistry()
 
 	assert(actual_exit == 0);
 	
+	
 	DISASM disasm;
 	memset(&disasm, 0, sizeof(DISASM));
+	if(sizeof(void*)==8)
+		disasm.Archi=64;
+	else
+		disasm.Archi=32;
 
 	ifstream binreader;
 	unsigned int filesize;

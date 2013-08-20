@@ -277,7 +277,7 @@ void add_new_instructions(FileIR_t *firp)
                 		memset(&disasm, 0, sizeof(DISASM));
 
                 		disasm.Options = NasmSyntax + PrefixedNumeral;
-                		disasm.Archi = 32;
+                		disasm.Archi = sizeof(void*)*8;	// 32 or 64
                 		disasm.EIP = (UIntPtr) &data[offset_into_section];
                 		disasm.VirtualAddr = missed_address;
                 		int instr_len = Disasm(&disasm);

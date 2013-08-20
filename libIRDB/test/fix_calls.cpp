@@ -354,15 +354,16 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 
 	/* disassemble */
         DISASM disasm;
+#if 0
         memset(&disasm, 0, sizeof(DISASM));
 
         disasm.Options = NasmSyntax + PrefixedNumeral;
         disasm.Archi = 32;
         disasm.EIP = (UIntPtr)insn->GetDataBits().c_str();
         disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
-
+#endif
         /* Disassemble the instruction */
-        int instr_len = Disasm(&disasm);
+        int instr_len = insn->Disassemble(disasm);
 
 
 	/* if this instruction is an inserted call instruction than we don't need to 
@@ -461,14 +462,15 @@ bool is_call(Instruction_t* insn)
 
         DISASM disasm;
         memset(&disasm, 0, sizeof(DISASM));
-
+#if 0
         disasm.Options = NasmSyntax + PrefixedNumeral;
         disasm.Archi = 32;
         disasm.EIP = (UIntPtr)insn->GetDataBits().c_str();
         disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
+#endif
 
         /* Disassemble the instruction */
-        int instr_len = Disasm(&disasm);
+        int instr_len = insn->Disassemble(disasm);
 	
 
 	return (disasm.Instruction.BranchType==CallType);

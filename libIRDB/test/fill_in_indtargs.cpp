@@ -61,13 +61,15 @@ void process_ranges(FileIR_t* firp)
 	{
                 Instruction_t *insn=*it;
                 DISASM disasm;
+#if 0
                 memset(&disasm, 0, sizeof(DISASM));
 
                 disasm.Options = NasmSyntax + PrefixedNumeral;
                 disasm.Archi = 32;
                 disasm.EIP = (UIntPtr) insn->GetDataBits().c_str();
                 disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
-                int instr_len = Disasm(&disasm);
+#endif
+                int instr_len = insn->Disassemble(disasm);
 
                 assert(instr_len==insn->GetDataBits().size());
 
@@ -141,12 +143,13 @@ void get_instruction_targets(FileIR_t *firp)
                 Instruction_t *insn=*it;
                 DISASM disasm;
                 memset(&disasm, 0, sizeof(DISASM));
-
+#if 0
                 disasm.Options = NasmSyntax + PrefixedNumeral;
                 disasm.Archi = 32;
                 disasm.EIP = (UIntPtr) insn->GetDataBits().c_str();
                 disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
-                int instr_len = Disasm(&disasm);
+#endif
+                int instr_len = insn->Disassemble(disasm);
 
                 assert(instr_len==insn->GetDataBits().size());
 

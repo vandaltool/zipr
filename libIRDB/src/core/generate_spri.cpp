@@ -205,15 +205,17 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 
 	// disassemble using BeaEngine
 	DISASM disasm;
+#if 0
 	memset(&disasm, 0, sizeof(DISASM));
 
 	disasm.Options = NasmSyntax + PrefixedNumeral; //  + ShowSegmentRegs;
 	disasm.Archi = 32;
 	disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
 	disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
+#endif
 
 	/* Disassemble the instruction */
-	int instr_len = Disasm(&disasm);
+	int instr_len = newinsn->Disassemble(disasm);
 
 
 	/* if this instruction has a prefix, re-disassemble it showing the segment regs */
@@ -230,7 +232,10 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		memset(&disasm, 0, sizeof(DISASM));
 
 		disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
-		disasm.Archi = 32;
+		if(sizeof(void*)==8)
+			disasm.Archi = 64;
+		else
+			disasm.Archi = 32;
 		disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
 		disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
 
@@ -585,7 +590,10 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 	{
 		DISASM disasm;
 		disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
-		disasm.Archi = 32;
+		if(sizeof(void*)==8)
+			disasm.Archi = 64;
+		else
+			disasm.Archi = 32;
 		disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
 		disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
 

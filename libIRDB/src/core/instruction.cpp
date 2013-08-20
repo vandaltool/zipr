@@ -48,24 +48,26 @@ Instruction_t::Instruction_t(db_id_t id,
 
 int Instruction_t::Disassemble(DISASM &disasm){
  
-  memset(&disasm, 0, sizeof(DISASM));
+  	memset(&disasm, 0, sizeof(DISASM));
   
-  disasm.Options = NasmSyntax + PrefixedNumeral;
-  disasm.Archi = 32;
-  disasm.EIP = (UIntPtr) GetDataBits().c_str();
-  disasm.VirtualAddr = GetAddress()->GetVirtualOffset();
-  int instr_len = Disasm(&disasm);
-  
-  //SetDataBits(disasm.EIP);
-
-  return instr_len;  
+  	disasm.Options = NasmSyntax + PrefixedNumeral;
+	if(sizeof(void*)==8)
+  		disasm.Archi = 64;
+	else
+  		disasm.Archi = 32;
+		
+  	disasm.EIP = (UIntPtr) GetDataBits().c_str();
+  	disasm.VirtualAddr = GetAddress()->GetVirtualOffset();
+  	int instr_len = Disasm(&disasm);
+ 	 
+  	return instr_len;  
 }
 
 std::string Instruction_t::getDisassembly()
 {
-  DISASM disasm;
-  Disassemble(disasm);
-  return std::string(disasm.CompleteInstr);
+  	DISASM disasm;
+  	Disassemble(disasm);
+  	return std::string(disasm.CompleteInstr);
 }
 
 // 
