@@ -2,5 +2,5 @@ all:
 	cd src; make all
 
 clean:
-	-rm lib/*.so
+	-rm -f lib/*.so
 	cd src; make clean

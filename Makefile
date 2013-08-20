@@ -14,7 +14,7 @@ clean: elfio_clean
 	cd libtransform; make clean
 	cd tools; make clean
 	cd appfw; make clean
-	rm lib/*
+	rm -f lib/*
 
 bea:	
 	cd beaengine; cmake .; make all
@@ -32,3 +32,4 @@ elfio: 	third_party/elfio-2.2.tar.gz
 
 elfio_clean:
 	rm -Rf third_party/ELFIO
+	rm -Rf include/elfio

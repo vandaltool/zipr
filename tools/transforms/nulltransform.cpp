@@ -15,7 +15,7 @@ int main(int argc, char **argv)
   NullTransform *nullTransform;
 
   if (argc == 3)
-    nullTransform = new NullTransform(argv[1], argv[2], "spri.out");
+    nullTransform = new NullTransform(argv[1], argv[2], (char*)"spri.out");
   else
     nullTransform = new NullTransform(argv[1], argv[2], argv[3]);
 

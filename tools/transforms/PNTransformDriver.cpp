@@ -948,7 +948,7 @@ PNStackLayout* PNTransformDriver::Get_Next_Layout(validation_record &vr)
 	{
 		vector<PNStackLayout*> layouts;
 		unsigned int level=vr.hierarchy_index;
-		for(;level<(int)transform_hierarchy.size()&&layouts.size()==0;level++)
+		for(;level<(unsigned int)transform_hierarchy.size()&&layouts.size()==0;level++)
 		{
 			layouts = GenerateInferences(vr.func, level);
 		}
@@ -1412,7 +1412,8 @@ bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 
 	string dirname = "p1.xform/" + name;
 	string cmd = "mkdir -p " + dirname;
-	system(cmd.c_str());
+	int res=system(cmd.c_str());
+	assert(res!=-1);
 	
 	string aspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.aspri";
 	string bspri_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.bspri";
@@ -1450,9 +1451,10 @@ bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 	
 	//If OK=BED(func), then commit	
 	int rt=system(new_instr);
-	int actual_exit = -1, actual_signal = -1;
+	int actual_exit = -1;
+//	int actual_signal = -1;
 	if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
-	else actual_signal = WTERMSIG(rt);
+//	else actual_signal = WTERMSIG(rt);
 	int retval = actual_exit;
 
 	//TODO: I have set exit code status 3 to indicate spasm failure
