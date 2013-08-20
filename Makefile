@@ -26,7 +26,9 @@ ELFIO_DIR=third_party/ELFIO/elfio-2.2
 
 elfio: 	third_party/elfio-2.2.tar.gz
 	if [ ! -d $(ELFIO_DIR) ]; then mkdir -p third_party/ELFIO; cd third_party/ELFIO; tar xpzvf ../elfio-2.2.tar.gz; fi
-	cd $(ELFIO_DIR); if [ ! -f Makefile ]; then ./configure --prefix=${SECURITY_TRANSFORMS_HOME};  fi; make all 
+	cd $(ELFIO_DIR); if [ ! -f Makefile ]; then ./configure --prefix=${SECURITY_TRANSFORMS_HOME};  fi; 
+	cd $(ELFIO_DIR); make all 
+	cd $(ELFIO_DIR); make install 
 
 elfio_clean:
 	rm -Rf third_party/ELFIO
