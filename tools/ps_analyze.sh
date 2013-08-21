@@ -665,7 +665,12 @@ perform_step appfw none $PEASOUP_HOME/tools/do_appfw.sh $newname.ncexe logs/find
 # check signatures to determine if we know which program this is.
 #
 perform_step determine_program find_strings $PEASOUP_HOME/tools/match_program.sh 
-program=$(cat logs/determine_program.log |grep "Program is a version of "|sed -e "s/Program is a version of .//" -e "s/.$//")
+
+# If we ran determine program and got a log, then see if we were successful.
+if [ -f logs/determine_program.log ]; then
+	program=$(cat logs/determine_program.log |grep "Program is a version of "|sed -e "s/Program is a version of .//" -e "s/.$//")
+fi
+
 if [[ "$program" != "" ]]; then
 	echo "Detected program is a version of '$program'"
 
