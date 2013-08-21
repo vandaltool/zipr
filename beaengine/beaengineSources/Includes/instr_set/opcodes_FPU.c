@@ -1520,6 +1520,9 @@ void __bea_callspec__ DE_(PDISASM pMyDisasm)
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcompp ");
                 #endif
             }
+            else {
+                FailDecode(pMyDisasm);
+            }
 
 
         }

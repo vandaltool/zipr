@@ -618,7 +618,9 @@ void Rewriter::dissassemble()
 		{
 			/* bogus intruction, remove it */
 			m_instructions[instr->getAddress()]=NULL;
-			delete instr;
+
+			if(instr)
+				delete instr;
 		}
     	}
 }

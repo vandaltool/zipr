@@ -35,6 +35,7 @@ int get_file_id(char *progName, char *md5hash)
 {
   connection conn;
   work txn(conn);
+  txn.exec("SET client_encoding='LATIN1';");
 
   string query = "SELECT file_id FROM file_info WHERE hash=";
   query += txn.quote(string(md5hash));
@@ -59,6 +60,7 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
   cerr << "Inserting instructions in the DB"<<endl;
   connection conn;
   work txn(conn);
+  txn.exec("SET client_encoding='LATIN1';");
   // for each instruction:
   //    (1) get address, insert into address table
   //    (2) populate instruction table
@@ -148,6 +150,7 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
 {
   connection conn;
   work txn(conn);
+  txn.exec("SET client_encoding='LATIN1';");
 
   // bulk insert of function information into the DB
   const int STRIDE = 25;
@@ -192,6 +195,7 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
 {
   connection conn;
   work txn(conn);
+  txn.exec("SET client_encoding='LATIN1';");
 
   // bulk insert of function information into the DB
   int count = 0;

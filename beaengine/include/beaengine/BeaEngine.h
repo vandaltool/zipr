@@ -1,5 +1,8 @@
 #ifndef _BEA_ENGINE_
 #define _BEA_ENGINE_
+#if  defined(__cplusplus) && defined(__BORLANDC__)
+namespace BeaEngine {
+#endif
 
 #include <beaengine/macros.h>
 #include <beaengine/export.h>
@@ -46,6 +49,7 @@ typedef struct {
    UInt8 BranchTaken;
    UInt8 BranchNotTaken;
    REX_Struct REX;
+   char alignment[2];
 } PREFIXINFO  ;
 #pragma pack()
 
@@ -91,7 +95,7 @@ typedef struct  {
 
 #pragma pack(1)
 typedef struct  {
-   char ArgMnemonic[32];
+   char ArgMnemonic[64];
    Int32 ArgType;
    Int32 ArgSize;
    Int32 ArgPosition;
@@ -256,18 +260,18 @@ enum EFLAGS_STATES
 enum BRANCH_TYPE
 {
   JO = 1,
-  JC,
-  JE,
-  JA,
-  JS,
-  JP,
-  JL,
-  JG,
-  JB,
-  JECXZ,
-  JmpType,
-  CallType,
-  RetType,
+  JC = 2,
+  JE = 3,
+  JA = 4,
+  JS = 5,
+  JP = 6,
+  JL = 7,
+  JG = 8,
+  JB = 2,       /* JC == JB */
+  JECXZ = 10,
+  JmpType = 11,
+  CallType = 12,
+  RetType = 13,
   JNO = -1,
   JNC = -2,
   JNE = -3,
@@ -276,7 +280,7 @@ enum BRANCH_TYPE
   JNP = -6,
   JNL = -7,
   JNG = -8,
-  JNB = -9
+  JNB = -2      /* JNC == JNB */
 };
 
 enum ARGUMENTS_TYPE
@@ -351,4 +355,8 @@ extern "C"
 BEA_API int __bea_callspec__ Disasm (LPDISASM pDisAsm);
 BEA_API const__ char* __bea_callspec__ BeaEngineVersion (void);
 BEA_API const__ char* __bea_callspec__ BeaEngineRevision (void);
+#if  defined(__cplusplus) && defined(__BORLANDC__)
+};
+using namespace BeaEngine;
+#endif
 #endif
