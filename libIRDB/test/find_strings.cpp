@@ -239,6 +239,8 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 		++fit
 	   )
 	{
+		if(!(*fit)->GetEntryPoint())
+			continue;
 		ControlFlowGraph_t cfg = ControlFlowGraph_t(*fit) ;
 		// Loop over basic blocks in function
 		for(

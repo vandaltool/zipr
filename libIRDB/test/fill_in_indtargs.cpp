@@ -267,6 +267,8 @@ void add_num_handle_fn_watches(FileIR_t * firp)
     {
         Function_t *func=*it;
         char *funcname=(char *)func->GetName().c_str();
+	if(!func->GetEntryPoint())
+		continue;
         virtual_offset_t the_offset=func->GetEntryPoint()->GetAddress()->GetVirtualOffset();
 
         /* macro to facilitate the checking */
