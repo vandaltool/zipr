@@ -1,8 +1,8 @@
 
 all:
 	cd src;make
-	cd test;make 
 	./install_libs.sh
+	cd test;make 
 
 clean:
 	cd src;make clean
