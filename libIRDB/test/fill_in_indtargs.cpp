@@ -142,31 +142,12 @@ void get_instruction_targets(FileIR_t *firp)
         {
                 Instruction_t *insn=*it;
                 DISASM disasm;
-                memset(&disasm, 0, sizeof(DISASM));
-#if 0
-                disasm.Options = NasmSyntax + PrefixedNumeral;
-                disasm.Archi = 32;
-                disasm.EIP = (UIntPtr) insn->GetDataBits().c_str();
-                disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
-#endif
                 int instr_len = insn->Disassemble(disasm);
 
                 assert(instr_len==insn->GetDataBits().size());
 
 
 
-/* we are moving the marking of callsite indirects into fix calls
- * which has a better notion of whether the callsite indicates an 
- * indirect branch target at the next instruction 
- */
-#if 0
-		/* calls indicate an indirect target, pc+sizeof(instruction) */
-		if(disasm.Instruction.BranchType==CallType)
-		{
-			possible_target(disasm.VirtualAddr+instr_len);
-		}
-		else 
-#endif
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.Instruction.BranchType)
 			continue;
@@ -177,9 +158,6 @@ void get_instruction_targets(FileIR_t *firp)
 		handle_argument(&disasm.Argument1);
 		handle_argument(&disasm.Argument2);
 		handle_argument(&disasm.Argument3);
-
-
-
 	}
 
 }

@@ -244,7 +244,7 @@ char MasmPrefixes[8][16] = {
 char NasmPrefixes[8][8] = {
     "byte ",      /* GV.MemDecoration == 1 */
     "word ",      /* GV.MemDecoration == 2 */
-    " ",     /* GV.MemDecoration == 3 */
+    "dword ",     /* GV.MemDecoration == 3 */
     "qword ",     /* GV.MemDecoration == 4 */
     " ",          /* GV.MemDecoration == 5 (multibytes) */
     "tword ",     /* GV.MemDecoration == 6 */
