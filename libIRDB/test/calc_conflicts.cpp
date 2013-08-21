@@ -9,6 +9,7 @@
 #include <elf.h>
 #include <sys/mman.h>
 #include <ctype.h>
+#include "targ-config.h"
 
 
 #include "beaengine/BeaEngine.h"
@@ -80,25 +81,25 @@ void get_total(char* filename)
 	assert(loa && "Cannot open input file");
 		
 
-       	Elf32_Off sec_hdr_off, sec_off;
-       	Elf32_Half secnum, strndx, secndx;
-       	Elf32_Word secsize;
+       	IRDB_Elf_Off sec_hdr_off, sec_off;
+       	IRDB_Elf_Half secnum, strndx, secndx;
+       	IRDB_Elf_Word secsize;
 	
 
        	/* allcoate memory  */
-       	Elf32_Ehdr elfhdr;
+       	IRDB_Elf_Ehdr elfhdr;
 
        	/* Read ELF header */
-       	fread((char*)&elfhdr, sizeof(Elf32_Ehdr), 1, loa);
+       	fread((char*)&elfhdr, sizeof(IRDB_Elf_Ehdr), 1, loa);
 
        	sec_hdr_off = elfhdr.e_shoff;
        	secnum = elfhdr.e_shnum;
        	strndx = elfhdr.e_shstrndx;
 
        	/* Read Section headers */
-       	Elf32_Shdr *sechdrs=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*secnum);
+       	IRDB_Elf_Shdr *sechdrs=(IRDB_Elf_Shdr*)malloc(sizeof(IRDB_Elf_Shdr)*secnum);
        	fseek(loa,sec_hdr_off, std::ios_base::beg);
-       	fread((char*)sechdrs, sizeof(Elf32_Shdr), secnum, loa);
+       	fread((char*)sechdrs, sizeof(IRDB_Elf_Shdr), secnum, loa);
 
 
 	

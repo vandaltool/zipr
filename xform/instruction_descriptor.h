@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "config.h"
+#include "targ-config.h"
 
 using namespace std;
 

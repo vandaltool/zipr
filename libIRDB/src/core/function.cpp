@@ -25,7 +25,10 @@ void Function_t::WriteToDB()
 string Function_t::WriteToDB(File_t *fid, db_id_t newid)
 {
 	assert(fid);
-	assert(entry_point);
+
+	int entryid=NOT_IN_DATABASE;
+	if(entry_point)
+		entryid=entry_point->GetBaseID();
 
 	if(GetBaseID()==NOT_IN_DATABASE)
 		SetBaseID(newid);
@@ -34,7 +37,7 @@ string Function_t::WriteToDB(File_t *fid, db_id_t newid)
 		string(" (function_id, entry_point_id, name, stack_frame_size, out_args_region_size, use_frame_pointer, doip_id) ")+
 		string(" VALUES (") + 
 		string("'") + to_string(GetBaseID()) 		  + string("', ") + 
-		string("'") + to_string(entry_point->GetBaseID()) + string("', ") + 
+		string("'") + to_string(entryid) 		  + string("', ") + 
 		string("'") + name 				  + string("', ") + 
 		string("'") + to_string(stack_frame_size) 	  + string("', ") + 
 	        string("'") + to_string(out_args_region_size) 	  + string("', ") + 

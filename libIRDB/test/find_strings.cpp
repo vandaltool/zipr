@@ -7,6 +7,7 @@
 #include <cctype>
 #include <elf.h>
 #include <assert.h>
+#include "targ-config.h"
 
 using namespace libIRDB;
 using namespace std;
@@ -21,13 +22,13 @@ bool is_string_character(char c)
 
 /* the stuff we need for reading an elf file */
 typedef struct elf_info {
-       	Elf32_Off sec_hdr_off, sec_off;
-       	Elf32_Half secnum, strndx;
-       	Elf32_Ehdr elfhdr;
-       	Elf32_Word secsize;
-       	Elf32_Shdr *sechdrs;
+       	IRDB_Elf_Off sec_hdr_off, sec_off;
+       	IRDB_Elf_Half secnum, strndx;
+       	IRDB_Elf_Ehdr elfhdr;
+       	IRDB_Elf_Word secsize;
+       	IRDB_Elf_Shdr *sechdrs;
 	char **sec_data;
-	Elf32_Addr got;
+	IRDB_Elf_Addr got;
 } elf_info_t;
 
 void found_string(string s, void* addr)
@@ -174,17 +175,17 @@ void read_elf_info(elf_info_t &ei, FileIR_t* firp, pqxx::largeobjectaccess &loa)
 
 
         /* Read ELF header */
-        loa.cread((char*)&ei.elfhdr, sizeof(Elf32_Ehdr)* 1);
+        loa.cread((char*)&ei.elfhdr, sizeof(IRDB_Elf_Ehdr)* 1);
         ei.sec_hdr_off = ei.elfhdr.e_shoff;
         ei.secnum = ei.elfhdr.e_shnum;
         assert(ei.secnum>0);
         ei.strndx = ei.elfhdr.e_shstrndx;
 
         /* Read Section headers */
-        ei.sechdrs=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*ei.secnum);
+        ei.sechdrs=(IRDB_Elf_Shdr*)malloc(sizeof(IRDB_Elf_Shdr)*ei.secnum);
 	assert(ei.sechdrs!=NULL);
         loa.seek(ei.sec_hdr_off, std::ios_base::beg);
-        loa.cread((char*)ei.sechdrs, sizeof(Elf32_Shdr)* ei.secnum);
+        loa.cread((char*)ei.sechdrs, sizeof(IRDB_Elf_Shdr)* ei.secnum);
 
 	ei.sec_data=(char**)calloc(ei.secnum,sizeof(void*));
 
@@ -199,7 +200,7 @@ void read_elf_info(elf_info_t &ei, FileIR_t* firp, pqxx::largeobjectaccess &loa)
 			shstr_sec = ei.sechdrs[0].sh_link;
 		assert(shstr_sec < ei.secnum);
 		load_section(ei,shstr_sec,loa,false);
-		Elf32_Shdr *shstr_sec_hdr = ei.sechdrs + shstr_sec;
+		IRDB_Elf_Shdr *shstr_sec_hdr = ei.sechdrs + shstr_sec;
 		for (int i=0;i<ei.secnum;i++)
 		{
 			assert(ei.sechdrs[i].sh_name < shstr_sec_hdr->sh_size);
@@ -402,15 +403,15 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei, pqxx::largeobjectacces
 		switch( ei.sechdrs[i].sh_type )
 		{
 		case SHT_REL:
-			step = sizeof(Elf32_Rel);
+			step = sizeof(IRDB_Elf_Rel);
 			break;
 		case SHT_RELA:
-			step = sizeof(Elf32_Rela);
+			step = sizeof(IRDB_Elf_Rela);
 			break;
 		case SHT_SYMTAB:
 		case SHT_DYNSYM:
-			offset = sizeof(Elf32_Word);
-			step = sizeof(Elf32_Sym);
+			offset = sizeof(IRDB_Elf_Word);
+			step = sizeof(IRDB_Elf_Sym);
 			break;
 		default:
 			step = 1;

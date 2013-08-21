@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-#include "config.h"
+#include "targ-config.h"
 #include "instruction_descriptor.h"
 
 //class wahoo::Instruction;

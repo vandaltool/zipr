@@ -5,8 +5,8 @@
 
 #include "beaengine/BeaEngine.h"
 
-#include "all.h"
 #include "rewriter.h"
+#include "all.h"
 
 using namespace std;
 

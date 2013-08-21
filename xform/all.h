@@ -32,7 +32,7 @@
 #include "strata_defines.h"
 
 /* x86_32-specific headers */
-#include "config.h"
+#include "targ-config.h"
 #include "instrument.h"
 
 #include "spri_alloc.h"

@@ -2,8 +2,8 @@
 #define _elfreader_H_
 
 #include <vector>
-#include "config.h"
 #include "elfio/elfio.hpp"
+#include "targ-config.h"
 #include <assert.h>
 
 using namespace std;

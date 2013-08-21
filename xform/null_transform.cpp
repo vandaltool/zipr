@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "stackref_hash.h"
 #include "null_transform.h"
+#include "stackref_hash.h"
 
 using namespace wahoo;
 

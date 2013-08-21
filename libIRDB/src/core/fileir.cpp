@@ -21,7 +21,7 @@ static void UpdateEntryPoints(std::map<db_id_t,Instruction_t*> 	&insnMap)
 		Function_t* func=(*it).first;
 		db_id_t func_entry_id=(*it).second;
 
-		assert(insnMap[func_entry_id]);
+		assert(func_entry_id==-1 || insnMap[func_entry_id]);
 		func->SetEntryPoint(insnMap[func_entry_id]);
 //		cout<<"Function named "<<func->GetName()<< " getting entry point set to "<<insnMap[func_entry_id]->GetComment()<<"."<<endl;
 	}

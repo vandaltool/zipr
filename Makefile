@@ -1,4 +1,4 @@
-all:	elfio bea
+all:	include/targ-config.h elfio bea 
 	cd libIRDB; make all
 	cd xform; make all
 	cd libMEDSannotation; make all
@@ -15,6 +15,7 @@ clean: elfio_clean
 	cd tools; make clean
 	cd appfw; make clean
 	rm -f lib/*
+	rm -f include/config.h
 
 bea:	
 	cd beaengine; cmake .; make all
@@ -33,3 +34,9 @@ elfio: 	third_party/elfio-2.2.tar.gz
 elfio_clean:
 	rm -Rf third_party/ELFIO
 	rm -Rf include/elfio
+
+include/targ-config.h: .PHONY
+	if [ ! -f $@ -o include/`uname -p`/config.h -nt $@ ]; then cp include/`uname -p`/config.h $@; fi
+
+.PHONY:
+	

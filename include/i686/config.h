@@ -32,17 +32,15 @@
 #ifndef __CONFIG_H_
 #define __CONFIG_H_
 
+#include <stdint.h>
+#include <inttypes.h>
+
+
 #define MAX_OPCODE_LENGTH 15
 #define MAX_PREFIX_LENGTH 4
 
 
-#if __WORDSIZE==64
-typedef unsigned long long fcache_iaddr_t;
-typedef unsigned long long app_iaddr_t;
-#else
-typedef unsigned fcache_iaddr_t;
-typedef unsigned app_iaddr_t;
-#endif
+typedef uintptr_t app_iaddr_t;
 
 typedef unsigned char uchar;
 
@@ -53,25 +51,23 @@ typedef long long          s_int64_t;
 typedef unsigned long long s_uint64_t;
 typedef s_uint64_t 	   counter_t;
 
-#if 0
-typedef struct {
-	unsigned char opcode[MAX_OPCODE_LENGTH];
-	unsigned char prefix[MAX_PREFIX_LENGTH];
-	/* This is the length entire insn */
-	unsigned int length;
-	/* This is the legth of just the opcode */
-	unsigned int opcode_length;
-	unsigned int operand_override;
-} insn_t;
+#define T_ARCH "i686"
 
-#define TARG_IADDR_ALIGN(addr) (addr)
-#define T_ARCH "x86"
-
-#define TARG_THROW_AWAY_DEFAULT 0
-#endif
 
 #ifndef NULL
 #define NULL 0
 #endif
+
+typedef Elf32_Ehdr  IRDB_Elf_Ehdr;
+typedef Elf32_Shdr  IRDB_Elf_Shdr;
+typedef Elf32_Off   IRDB_Elf_Off;
+typedef Elf32_Half  IRDB_Elf_Half;
+typedef Elf32_Word  IRDB_Elf_Word;
+typedef Elf32_Addr  IRDB_Elf_Addr;
+typedef Elf32_Sym  IRDB_Elf_Sym;
+typedef Elf32_Rel  IRDB_Elf_Rel;
+typedef Elf32_Rela  IRDB_Elf_Rela;
+#define IRDB_ELF_ST_TYPE ELF32_ST_TYPE
+
 
 #endif

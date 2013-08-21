@@ -9,6 +9,7 @@
 #include <elf.h>
 #include <sys/mman.h>
 #include <ctype.h>
+#include "targ-config.h"
 
 
 #include "beaengine/BeaEngine.h"
@@ -162,7 +163,7 @@ void get_instruction_targets(FileIR_t *firp)
 
 }
 
-void get_executable_bounds(Elf32_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *firp)
+void get_executable_bounds(IRDB_Elf_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *firp)
 {
 	int flags = shdr->sh_flags;
 
@@ -182,7 +183,7 @@ void get_executable_bounds(Elf32_Shdr *shdr, pqxx::largeobjectaccess &loa, FileI
 
 }
 
-void infer_targets(Elf32_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *firp)
+void infer_targets(IRDB_Elf_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *firp)
 {
 	int flags = shdr->sh_flags;
 
@@ -313,27 +314,27 @@ void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
 	ranges.clear();
 	targets.clear();
 
-        Elf32_Off sec_hdr_off, sec_off;
-        Elf32_Half secnum, strndx, secndx;
-        Elf32_Word secsize;
+        IRDB_Elf_Off sec_hdr_off, sec_off;
+        IRDB_Elf_Half secnum, strndx, secndx;
+        IRDB_Elf_Word secsize;
 
 	int elfoid=firp->GetFile()->GetELFOID();
 	pqxx::largeobjectaccess loa(pqxx_interface.GetTransaction(), elfoid, PGSTD::ios::in);
 
 	/* allcoate memory  */
-        Elf32_Ehdr elfhdr;
+        IRDB_Elf_Ehdr elfhdr;
 
         /* Read ELF header */
-        //int res=fread(&elfhdr, sizeof(Elf32_Ehdr), 1, fp);
-        loa.cread((char*)&elfhdr, sizeof(Elf32_Ehdr)* 1);
+        //int res=fread(&elfhdr, sizeof(IRDB_Elf_Ehdr), 1, fp);
+        loa.cread((char*)&elfhdr, sizeof(IRDB_Elf_Ehdr)* 1);
         sec_hdr_off = elfhdr.e_shoff;
         secnum = elfhdr.e_shnum;
         strndx = elfhdr.e_shstrndx;
 
         /* Read Section headers */
-        Elf32_Shdr *sechdrs=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*secnum);
+        IRDB_Elf_Shdr *sechdrs=(IRDB_Elf_Shdr*)malloc(sizeof(IRDB_Elf_Shdr)*secnum);
         loa.seek(sec_hdr_off, std::ios_base::beg);
-        loa.cread((char*)sechdrs, sizeof(Elf32_Shdr)* secnum);
+        loa.cread((char*)sechdrs, sizeof(IRDB_Elf_Shdr)* secnum);
 
 	/* look through each section and record bounds */
         for (secndx=1; secndx<secnum; secndx++)

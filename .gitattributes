@@ -140,6 +140,8 @@ beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/prog
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/progress.marks -text
 /build.sh -text
 /distclean.sh -text
+include/i686/config.h -text
+include/x86_64/config.h -text
 libIRDB/Makefile -text
 libIRDB/include/cfg/BasicBlock.hpp -text
 libIRDB/include/cfg/CFG.hpp -text
@@ -364,7 +366,6 @@ xform/all.h -text
 xform/aspri.h -text
 xform/bitvector.c -text
 xform/bitvector.h -text
-xform/config.h -text
 xform/constant_hash.c -text
 xform/constant_hash.h -text
 xform/elfreader.cpp -text

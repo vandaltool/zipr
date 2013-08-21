@@ -9,6 +9,7 @@
 #include <elf.h>
 #include <sys/mman.h>
 #include <ctype.h>
+#include <targ-config.h>
 
 
 #include "beaengine/BeaEngine.h"
@@ -218,28 +219,28 @@ void add_new_instructions(FileIR_t *firp)
 		int elfoid=filep->GetELFOID();
 
 
-        	Elf32_Off sec_hdr_off, sec_off;
-        	Elf32_Half secnum, strndx, secndx;
-        	Elf32_Word secsize;
+        	IRDB_Elf_Off sec_hdr_off, sec_off;
+        	IRDB_Elf_Half secnum, strndx, secndx;
+        	IRDB_Elf_Word secsize;
 	
 		pqxx::largeobjectaccess loa(pqxx_interface.GetTransaction(), elfoid, PGSTD::ios::in);
 		
 
         	/* allcoate memory  */
-        	Elf32_Ehdr elfhdr;
+        	IRDB_Elf_Ehdr elfhdr;
 
         	/* Read ELF header */
-        	loa.cread((char*)&elfhdr, sizeof(Elf32_Ehdr)* 1);
+        	loa.cread((char*)&elfhdr, sizeof(IRDB_Elf_Ehdr)* 1);
 
         	sec_hdr_off = elfhdr.e_shoff;
         	secnum = elfhdr.e_shnum;
         	strndx = elfhdr.e_shstrndx;
 
         	/* Read Section headers */
-        	Elf32_Shdr *sechdrs=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*secnum);
+        	IRDB_Elf_Shdr *sechdrs=(IRDB_Elf_Shdr*)malloc(sizeof(IRDB_Elf_Shdr)*secnum);
 		assert(sechdrs);
         	loa.seek(sec_hdr_off, std::ios_base::beg);
-        	loa.cread((char*)sechdrs, sizeof(Elf32_Shdr)* secnum);
+        	loa.cread((char*)sechdrs, sizeof(IRDB_Elf_Shdr)* secnum);
 
 		bool found=false;
 	
@@ -372,11 +373,14 @@ void fill_in_cfg(FileIR_t *firp)
       			DISASM disasm;
       			memset(&disasm, 0, sizeof(DISASM));
 	
+#if 0
       			disasm.Options = NasmSyntax + PrefixedNumeral;
       			disasm.Archi = 32;
       			disasm.EIP = (UIntPtr) insn->GetDataBits().c_str();
       			disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
       			int instr_len = Disasm(&disasm);
+#endif
+      			int instr_len = insn->Disassemble(disasm);
 	
 			assert(instr_len==insn->GetDataBits().size());
 	

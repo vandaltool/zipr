@@ -209,7 +209,12 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
       	int function_id = f->getFunctionID();
       	int outArgsRegionSize = f->getOutArgsRegionSize();
       	bool useFP = f->getUseFramePointer();
-	int insnid=address_to_instructionid_map[functionAddress];
+	int insnid=-1; 	// NOT_IN_DATABASE
+	if(functionAddress!=0)	
+	{
+		assert(address_to_instructionid_map.find(functionAddress)!=address_to_instructionid_map.end());
+		insnid=address_to_instructionid_map[functionAddress];
+	}
 
     	query += "update " + functionTable;
 	query += " set entry_point_id = " + txn.quote(my_to_string(insnid));

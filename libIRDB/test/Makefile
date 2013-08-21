@@ -20,10 +20,10 @@ fill_in_indtargs.exe: read_ehframe.o fill_in_indtargs.o check_thunks.o
 	g++ -g $< -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@
 
 .cpp.o:  $< 
-	g++ -g $< -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@ -c
+	g++ -g $< -I../include/ -I../../beaengine/include -I../../include -L../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@ -c
 
 read_ehframe.o: read_ehframe.cpp
-	g++ -w -fpermissive -g $^ -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@ -c
+	g++ -w -fpermissive -g $^ -I../../include -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@ -c
 
 clean:
 	rm -f $(PROGS) *.o
