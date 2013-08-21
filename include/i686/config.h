@@ -58,6 +58,8 @@ typedef s_uint64_t 	   counter_t;
 #define NULL 0
 #endif
 
+#include <elf.h>
+
 typedef Elf32_Ehdr  IRDB_Elf_Ehdr;
 typedef Elf32_Shdr  IRDB_Elf_Shdr;
 typedef Elf32_Off   IRDB_Elf_Off;
