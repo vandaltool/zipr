@@ -36,7 +36,7 @@ elfio_clean:
 	rm -Rf include/elfio
 
 include/targ-config.h: .PHONY
-	if [ ! -f $@ -o include/`uname -p`/config.h -nt $@ ]; then cp include/`uname -p`/config.h $@; fi
+	if [ ! -f $@ -o include/`uname -m`/config.h -nt $@ ]; then cp include/`uname -m`/config.h $@; fi
 
 .PHONY:
 	
