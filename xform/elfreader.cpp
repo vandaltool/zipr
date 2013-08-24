@@ -25,7 +25,7 @@ ElfReader::ElfReader(char *p_elfFile)
 
     // List all sections of the file
     int i;
-    Elf_Half nSecNo = m_reader->sections.size();
+    ELFIO::Elf_Half nSecNo = m_reader->sections.size();
     for ( i = 0; i < nSecNo; ++i ) 
     {    // For all sections
 	section* psec = m_reader->sections[i];

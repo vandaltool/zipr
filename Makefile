@@ -1,4 +1,4 @@
-all:	include/targ-config.h elfio bea 
+all:	lib include/targ-config.h elfio bea 
 	cd libIRDB; make all
 	cd xform; make all
 	cd libMEDSannotation; make all
@@ -39,4 +39,7 @@ include/targ-config.h: .PHONY
 	if [ ! -f $@ -o include/`uname -m`/config.h -nt $@ ]; then cp include/`uname -m`/config.h $@; fi
 
 .PHONY:
+
+lib: 
+	mkdir lib
 	
