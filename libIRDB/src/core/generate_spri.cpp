@@ -405,6 +405,8 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 			}
 			else if( disasm.Instruction.Opcode==0xfbf || disasm.Instruction.Opcode==0xfb7 ) 
 			{
+#if 0
+/* this seems to be fixed in beaEngine -r175 */
 				char* comma=strstr(disasm.CompleteInstr, ",");
 				assert(comma);
 				if(strstr(&comma[2], "word [") == NULL)  // if it's not a memory operation 
@@ -412,6 +414,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 					assert(comma[2]=='e');
 					comma[2]=' ';
 				}
+#endif
 			}
 			else
 				assert(0); // wtf?
