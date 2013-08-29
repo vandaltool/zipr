@@ -12,8 +12,6 @@
 #include <assert.h>
 
 #include "ben_lib.h"
-#include "beaengine/BeaEngine.h"
-
 
 using namespace std;
 
@@ -75,8 +73,12 @@ static unsigned int bin_fsize=0;
 static unsigned char *memblock = NULL;
 static unsigned int assem_cnt =0;
 
+static const string size_label_start = "__SPASM_SIZE_LABEL_START";
+static const string size_label_end = "__SPASM_SIZE_LABEL_END";
+
+
 static void initBin(const string &binFile);
-static bool getNextBin(bin_instruction_t &bin);
+static bool getNextBin(bin_instruction_t &bin,unsigned int instr_count);
 
 static void printSPRI(const string &symbolFilename, const string &outFile);
 
@@ -260,7 +262,7 @@ static bool getNextSpasmLine(spasmline_t &spasmline)
 		return getNextSpasmLine(spasmline);
 
 	//comment only line check
-	if(regexec(&coPattern, line.c_str(), 0, NULL, 0)==0)
+   if(regexec(&coPattern, line.c_str(), 0, NULL, 0)==0)
 	{
 		spasmline.commentOnly = true;
 		//The comment is the entire line
@@ -428,7 +430,22 @@ static void assemble(const string &assemblyFile)
 
 		assemblyLine += lineRH;
 
+		stringstream ss;
+
+		ss<<size_label_start<<assem_cnt;
+		string start_lbl = ss.str();
+		ss.str("");
+		ss<<size_label_end<<assem_cnt;
+		string end_lbl = ss.str();
+		ss.str("");
+		
+		symMap[start_lbl]="";
+		symMap[end_lbl]="";
+
+		asmFile<<start_lbl<<":"<<endl;
 		asmFile<<assemblyLine<<endl;
+		asmFile<<end_lbl<<":"<<endl;
+
 		assem_cnt++;
 	}
 
@@ -546,25 +563,26 @@ static bool hasNextBin()
 	return bin_index < bin_fsize;
 }
 
-static bool getNextBin(bin_instruction_t &bin)
+static bool getNextBin(bin_instruction_t &bin,unsigned int instr_count)
 {
-	DISASM disasm;
-	memset(&disasm, 0, sizeof(DISASM));
-
-	disasm.Options = NasmSyntax +  PrefixedNumeral;
-
-	if(sizeof(void*)==8)
-		disasm.Archi = 64;
-	else
-		disasm.Archi = 32;
-
-	if(bin_index >= bin_fsize)
+	if(!hasNextBin())
 		return false;
 
-	disasm.EIP = (long long int) &memblock[bin_index];
-	int instr_len = Disasm(&disasm);
+	stringstream ss;
 
-	bin.size = (unsigned int) instr_len;
+	ss<<size_label_start<<instr_count;
+	assert(symMap.find(ss.str()) != symMap.end());
+
+	string start_addr = symMap[ss.str()];
+
+	ss.str("");
+
+	ss<<size_label_end<<instr_count;
+	assert(symMap.find(ss.str()) != symMap.end());
+
+	string end_addr = symMap[ss.str()];
+
+	bin.size = strtoul(end_addr.c_str(),NULL,16) - strtoul(start_addr.c_str(),NULL,16);
 
 	char tempstr[50];
 	sprintf(tempstr, "%x",bin.size);
@@ -715,8 +733,9 @@ static void printSPRI(const string &symbolFilename, const string &outFileName)
 		//to generate the spri for its corresponding spri line. 
 
 		bin_instruction_t binLine;
+		
+		assert(getNextBin(binLine,pop_bin_cnt));
 		pop_bin_cnt++;
-		assert(getNextBin(binLine));
 
 		// handle callback handlers
 		if (op.compare("()") == 0)
