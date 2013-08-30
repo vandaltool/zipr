@@ -162,9 +162,11 @@ void handle_argument(ARGTYPE *arg, elf_info_t &ei, pqxx::largeobjectaccess &loa)
 {
         if( arg->ArgType == MEMORY_TYPE )
 	{
+		/* Only check without GOT offset if type is executable */
 		if ( ei.elfhdr.e_type == ET_EXEC )
 			is_string_pointer((void*)arg->Memory.Displacement,ei,loa);
-		if ( ei.elfhdr.e_type == ET_DYN && arg->Memory.BaseRegister == REG3 /* ebx */ )
+		/* Check with GOT offset if present */
+		if ( ei.got && arg->Memory.BaseRegister == REG3 /* ebx */ )
 			is_string_pointer((void*)(arg->Memory.Displacement + ei.got),ei,loa);
 	}
 }
