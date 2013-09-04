@@ -76,6 +76,8 @@ typedef struct {
    Int32 IndexRegister;
    Int32 Scale;
    Int64 Displacement;
+   UIntPtr DisplacementAddr;
+   Int32  DisplacementSize;
 } MEMORYTYPE ;
 #pragma pack()
 

@@ -306,9 +306,9 @@ void __bea_callspec__ EvIb(PDISASM pMyDisasm, int signed_byte)
 		if (GV.OperandSize == 32) {
 			#ifndef BEA_LIGHT_DISASSEMBLY
 			if(signed_byte)
-				MyNumber = *((Int8*)(UIntPtr) (GV.EIP_-1));
+				MyNumber = (Int8)*((Int8*)(UIntPtr) (GV.EIP_-1));
 			else
-				MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
+				MyNumber = (Int8)*((UInt8*)(UIntPtr) (GV.EIP_-1));
 			if (MyNumber > 0) {
 				if(signed_byte)
                 			(void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.8X",(Int64)*((Int8*)(UIntPtr) (GV.EIP_-1)));
@@ -323,9 +323,9 @@ void __bea_callspec__ EvIb(PDISASM pMyDisasm, int signed_byte)
 		else {
 			#ifndef BEA_LIGHT_DISASSEMBLY
 			if(signed_byte)
-				MyNumber = *((Int8*)(UIntPtr) (GV.EIP_-1));
+				MyNumber = (Int8)*((Int8*)(UIntPtr) (GV.EIP_-1));
 			else
-				MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
+				MyNumber = (Int8)*((UInt8*)(UIntPtr) (GV.EIP_-1));
 			if (MyNumber > 0) {
 				if(signed_byte)
                 			(void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.8X",(Int64)*((Int8*)(UIntPtr) (GV.EIP_-1)));
@@ -597,12 +597,13 @@ void __bea_callspec__ FillFlags(PDISASM pMyDisasm, int index)
 void __bea_callspec__ CalculateRelativeAddress(UInt64 * pMyAddress, Int64 MyNumber, PDISASM pMyDisasm)
 {
     GV.RelativeAddress = 1;
-    if (GV.EIP_VA != 0) {
+/*  if (GV.EIP_VA != 0) { */
         *pMyAddress = (UInt64) (GV.EIP_VA+(UInt64) MyNumber);
-    }
+/*  }
     else {
-        *pMyAddress = (UInt64) (GV.EIP_REAL+(UInt64) MyNumber);
+      *pMyAddress = (UInt64) (GV.EIP_REAL+(UInt64) MyNumber);
     }
+*/
 }
 
 /* ====================================================================

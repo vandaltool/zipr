@@ -551,6 +551,105 @@ void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 	}
 }
 
+bool arg_has_relative(const ARGTYPE &arg)
+{
+	/* if it's relative memory, watch out! */
+	if(arg.ArgType&MEMORY_TYPE)
+		if(arg.ArgType&RELATIVE_)
+			return true;
+	
+	return false;
+}
+
+
+//
+//  fix_other_pcrel - add relocations to other instructions that have pcrel bits
+//
+void fix_other_pcrel(FileIR_t* firp)
+{
+
+
+	long long fixed_calls=0, not_fixed_calls=0, not_calls=0;
+
+	for(
+		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end(); 
+		++it
+	   )
+	{
+
+		Instruction_t* insn=*it;
+		DISASM disasm;
+		insn->Disassemble(disasm);
+		int is_rel= arg_has_relative(disasm.Argument1) || arg_has_relative(disasm.Argument2) || arg_has_relative(disasm.Argument3);
+
+		if(is_rel)
+		{
+			ARGTYPE* the_arg=NULL;
+			if(arg_has_relative(disasm.Argument1))
+				the_arg=&disasm.Argument1;
+			if(arg_has_relative(disasm.Argument2))
+				the_arg=&disasm.Argument2;
+			if(arg_has_relative(disasm.Argument3))
+				the_arg=&disasm.Argument3;
+
+			assert(the_arg);
+
+			int offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
+			assert(offset>=0 && offset <=15);
+			int size=the_arg->Memory.DisplacementSize;
+			assert(size==1 || size==2 || size==4 || size==8);
+
+
+			cout<<"Found insn with pcrel memory operand: "<<disasm.CompleteInstr
+			    <<" Displacement="<<std::hex<<the_arg->Memory.Displacement<<std::dec
+			    <<" size="<<the_arg->Memory.DisplacementSize<<" Offset="<<offset;
+
+			/* convert [rip_pc+displacement] into [rip_0+displacement] where rip_pc is the actual PC of the insn, 
+			 * and rip_0 is means that the PC=0. AKA, we are relocating this instruction to PC=0. 
+			 */
+
+			/* get the data */
+			string data=insn->GetDataBits();
+			char cstr[20]; 
+			memcpy(cstr,data.c_str(), data.length());
+			void *offsetptr=&cstr[offset];
+
+			UIntPtr disp=the_arg->Memory.Displacement;
+			UIntPtr oldpc=insn->GetAddress()->GetVirtualOffset();
+			UIntPtr newdisp=disp+oldpc;
+
+			assert(offset+size<=data.length());
+			
+			switch(size)
+			{
+				case 4:
+					assert( (UIntPtr)(int)newdisp == (UIntPtr)newdisp);
+					*(int*)offsetptr=newdisp;
+					break;
+				case 1:
+				case 2:
+				case 8:
+				default:
+					assert(("Cannot handle offset of given size", 0));
+			}
+
+			/* put the data back into the insn */
+			data.replace(0, data.length(), cstr, data.length());
+			insn->SetDataBits(data);
+			insn->GetAddress()->SetVirtualOffset(0);	// going to end up in the SPRI file anyhow after changing the data bits 
+			
+			Relocation_t *reloc=new Relocation_t;
+			reloc->SetOffset(0);
+			reloc->SetType("pcrel");
+			insn->GetRelocations().insert(reloc);
+			firp->GetRelocations().insert(reloc);
+
+			insn->Disassemble(disasm);
+			cout<<" Coverted to: "<<disasm.CompleteInstr<<endl;
+		}
+	}
+}
 
 //
 // main rountine; convert calls into push/jump statements 
@@ -606,6 +705,7 @@ main(int argc, char* argv[])
 			assert(firp && pidp);
 	
 			fix_all_calls(firp,true,fix_all);
+			fix_other_pcrel(firp);
 			firp->WriteToDB();
 			cout<<"Done!"<<endl;
 			delete firp;
@@ -627,3 +727,5 @@ main(int argc, char* argv[])
 
 	delete pidp;
 }
+
+

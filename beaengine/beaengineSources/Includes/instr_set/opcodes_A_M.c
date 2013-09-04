@@ -407,9 +407,18 @@ void __bea_callspec__ and_eAX_Iv(PDISASM pMyDisasm)
     FillFlags(pMyDisasm,6);
 }
 
+
+static unsigned int intlog2 (unsigned int val) {
+    unsigned int ret = (unsigned)-1;
+    while (val != 0) {
+        val >>= 1;
+        ret++;
+    }
+    return ret;
+}
 /* =======================================
  *
- * ======================================= */
+ inintt* ======================================= */
 void __bea_callspec__ arpl_(PDISASM pMyDisasm)
 {
 
@@ -420,6 +429,22 @@ void __bea_callspec__ arpl_(PDISASM pMyDisasm)
         #endif
         GvEv(pMyDisasm);
         FillFlags(pMyDisasm,69);
+	(*pMyDisasm).Argument2.ArgSize=32;
+
+#define LOWORD(a) ((a)&0xFFFF)
+
+	/* covert to rax to eax, etc. */
+	if ( (*pMyDisasm).Argument2.ArgType & REGISTER_TYPE)
+	{
+		unsigned int reg_num=LOWORD((*pMyDisasm).Argument2.ArgType);
+		if(!reg_num)
+			FailDecode(pMyDisasm);
+		reg_num=intlog2(reg_num);
+		strcpy((*pMyDisasm).Argument2.ArgMnemonic,Registers32Bits[reg_num]);
+	}
+	/* convert qword decoration to dword decoration */
+	if(GV.MemDecoration==Arg2qword)
+		GV.MemDecoration=Arg2dword;
     }
     else {
         (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;

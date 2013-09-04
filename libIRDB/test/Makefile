@@ -7,7 +7,7 @@ PROGS=print_variant.exe list_programs.exe create_variant.exe create_variantir.ex
 
 all: $(PROGS)
 
-$(PROGS): ../lib/libIRDB-core.a ../lib/libIRDB-cfg.a  ../../lib/libBeaEngine_s_d.a
+$(PROGS): ../../lib/*
 
 #read_ehframe.exe: unwind-pe.h 
 #	g++ -w -fpermissive -g read_ehframe.cpp -DTEST -I../include/ -I../../beaengine/include -L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -o $@

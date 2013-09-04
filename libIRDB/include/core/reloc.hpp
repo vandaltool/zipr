@@ -27,6 +27,6 @@ class Relocation_t : public BaseObj_t
 
     private:
 	int offset;		// how far into the instruction the relocation should be applied.
-	std::string type;	// a string that describes the relocation type.  for now "32-bit" 
-				// is the only allowable string
+	std::string type;	// a string that describes the relocation type.  
+				// possible values:  32-bit, pcrel
 };
