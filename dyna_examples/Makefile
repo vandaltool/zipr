@@ -83,7 +83,7 @@ all: env_check  ${exes}
 chopzero:
 	@ if [ ! -f chopzero ]; then gcc chopzero.c -o chopzero -O3 ; fi
 
-$(exes): ${STRATA}/lib/x86_linux/libstrata.a
+$(exes): ${STRATA}/lib/libstrata.a
 
 
 
