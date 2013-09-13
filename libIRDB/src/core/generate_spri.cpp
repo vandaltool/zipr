@@ -49,10 +49,32 @@ static string addressify(Instruction_t* insn);
 //
 // determine if this branch has a short offset that can't be represented as a long branch
 //
-static int needs_short_branch_rewrite(const DISASM &disasm)
+static bool needs_short_branch_rewrite(Instruction_t* newinsn, const DISASM &disasm)
 {
-	return   strstr(disasm.Instruction.Mnemonic, "jecxz" ) || strstr(disasm.Instruction.Mnemonic, "loop" ) || 
-		 strstr(disasm.Instruction.Mnemonic, "loopne") || strstr(disasm.Instruction.Mnemonic, "loope") ;
+	if   (strstr(disasm.Instruction.Mnemonic, "jecxz" ) || strstr(disasm.Instruction.Mnemonic, "loop" ) || 
+		 strstr(disasm.Instruction.Mnemonic, "loopne") || strstr(disasm.Instruction.Mnemonic, "loope") )
+		return true;
+
+	/* 64-bit has more needs than this */
+	if(sizeof(void*)!=8)
+		return false;
+
+	if(disasm.Instruction.BranchType==0)		/* non-branches, jumps, calls and returns don't need this rewrite */
+		return false;
+	if(disasm.Instruction.BranchType==JmpType)
+		return false;
+	if(disasm.Instruction.BranchType==CallType)
+		return false;
+	if(disasm.Instruction.BranchType==RetType)
+		return false;
+
+	/* all other branches (on x86-64) need further checking */
+	if(!newinsn->GetTarget())	/* no specified target, no need to modify it */
+		return false;
+	string new_target=labelfy(newinsn->GetTarget());
+	if (new_target.c_str()[0]=='0')	/* if we're jumping back to the base instruction */
+		return true;
+	return false;
 }
 
 
@@ -181,6 +203,14 @@ static string get_short_branch_label(Instruction_t *newinsn)
 		return "sj_" + labelfy(newinsn);
 }
 
+static string get_data_label(Instruction_t *newinsn)
+{
+	if (!newinsn)
+		return string("");
+	else
+		return "da_" + labelfy(newinsn);
+}
+
 static string getPostCallbackLabel(Instruction_t *newinsn)
 {
 	if (!newinsn)
@@ -194,6 +224,122 @@ static void emit_relocation(FileIR_t* fileIRp, ostream& fout, int offset, string
 {
 	fout<<"\t"<<labelfy(insn)<<" rl " << offset << " "<< type <<  " " << URLToFile(fileIRp->GetFile()->GetURL()) <<endl;
 }
+
+
+void covert_jump_for_64bit(Instruction_t* newinsn, string &final, string new_target)
+{
+	/* skip for x86-32 */
+	if(sizeof(void*)==4)
+		return;
+
+	/* skip for labeled addresses */
+	if (new_target.c_str()[0]!='0')
+		return;
+
+	string datalabel=get_data_label(newinsn);
+
+	/* convert a "call <addr>" into "call qword [rel data_label] \n  data_label ** dq <addr>" */
+	int start=final.find(new_target,0);
+
+	final=final.substr(0,start)+" qword [ rel " +datalabel + "]\n\t"+ datalabel + " ** dq "+final.substr(start);
+
+	return;
+}
+
+void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* newinsn, Instruction_t *old_insn, string & original_target)
+{
+
+        string label=labelfy(newinsn);
+        string complete_instr=string(disasm.CompleteInstr);
+        string address_string=string(disasm.Argument1.ArgMnemonic);
+
+
+	/* if we have a target instruction in the database */
+	if(newinsn->GetTarget() || needs_short_branch_rewrite(newinsn,disasm))
+	{
+		/* change the target to be symbolic */
+
+		/* first get the new target */
+		string new_target;
+		if(newinsn->GetTarget())
+			new_target=labelfy(newinsn->GetTarget());
+		/* if this is a short branch, write this branch to jump to the next insn */
+		if(needs_short_branch_rewrite(newinsn,disasm))
+		{
+			new_target=get_short_branch_label(newinsn);
+
+			/* also get the real target if it's a short branch */
+			if(newinsn->GetTarget())
+				original_target=labelfy(newinsn->GetTarget());
+			else
+				original_target=address_string;
+		}
+
+		/* find the location in the disassembled string of the old target */
+		int start=complete_instr.find(address_string,0);
+
+		/* and build up a new string that has the label of the target instead of the address */
+		string final=complete_instr.substr(0,start) + new_target + complete_instr.substr(start+address_string.length());
+
+	
+		/* sanity, no segment registers for absolute mode */
+		assert(disasm.Argument1.SegmentReg==0);
+
+		covert_jump_for_64bit(newinsn,final, new_target);
+
+		fout<<final<<endl;
+
+		if (new_target.c_str()[0]=='0')
+		{
+			// if we're jumping to an absolute address vrs a label, we will need a relocation for this jump instruction
+			if(
+ 		   	   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr  -- should be recompiled to 32-bit
+ 		   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
+		   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
+
+			)
+			{
+				/* jumps have a 1-byte opcode */
+ 				emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
+			}
+			else
+			{
+				/* other jcc'often use a 2-byte opcode for far jmps (which is what spri will emit) */
+ 				emit_relocation(fileIRp, fout,2,"32-bit",newinsn);
+			}
+		}
+	}
+	else 	/* this instruction has a target, but it's not in the DB */
+	{
+		/* so we'll just emit the instruction and let it go back to the application text. */	
+		fout<<complete_instr<<endl;
+// needs relocation info.
+		if(complete_instr.compare("call 0x00000000")==0 ||
+		   complete_instr.compare("jmp 0x00000000")==0
+ 		  )
+		{
+			// just ignore these bogus instructions.
+		}
+		else
+		{
+			if(
+		   	   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr 
+		   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
+		   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
+			  )
+			{
+				emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
+			}
+			else
+			{
+				// assert this is the "main" file and no relocation is necessary.
+				assert(strstr(fileIRp->GetFile()->GetURL().c_str(),"a.ncexe")!=0);
+			}
+		}
+	}
+}
+
+
 
 //
 // emit this instruction as spri code.
@@ -275,88 +421,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
                 (disasm.Argument1.ArgType & CONSTANT_TYPE)!=0          // and has a constant argument type 1
           )
 	{
-
-		/* if we have a target instruction in the database */
-		if(newinsn->GetTarget() || needs_short_branch_rewrite(disasm))
-		{
-			/* change the target to be symbolic */
-	
-			/* first get the new target */
-			string new_target;
-			if(newinsn->GetTarget())
-				new_target=labelfy(newinsn->GetTarget());
-			/* if this is a short branch, write this branch to jump to the next insn */
-			if(needs_short_branch_rewrite(disasm))
-			{
-				new_target=get_short_branch_label(newinsn);
-
-				/* also get the real target if it's a short branch */
-				if(newinsn->GetTarget())
-					original_target=labelfy(newinsn->GetTarget());
-				else
-					original_target=address_string;
-			}
-
-			/* find the location in the disassembled string of the old target */
-			int start=complete_instr.find(address_string,0);
-
-			/* and build up a new string that has the label of the target instead of the address */
-			string final=complete_instr.substr(0,start) + new_target + complete_instr.substr(start+address_string.length());
-
-	
-			/* sanity, no segment registers for absolute mode */
-			assert(disasm.Argument1.SegmentReg==0);
-
-			fout<<final<<endl;
-
-			if (new_target.c_str()[0]=='0')
-			{
-				// if we're jumping to an absolute address vrs a label, we will need a relocation for this jump instruction
-				if(
- 			   	   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr  -- should be recompiled to 32-bit
- 			   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
-			   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
-
-				)
-				{
-					/* jumps have a 1-byte opcode */
- 					emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
-				}
-				else
-				{
-					/* other jcc'often use a 2-byte opcode for far jmps (which is what spri will emit) */
- 					emit_relocation(fileIRp, fout,2,"32-bit",newinsn);
-				}
-			}
-		}
-		else 	/* this instruction has a target, but it's not in the DB */
-		{
-			/* so we'll just emit the instruction and let it go back to the application text. */	
-			fout<<complete_instr<<endl;
-// needs relocation info.
-			if(complete_instr.compare("call 0x00000000")==0 ||
-			   complete_instr.compare("jmp 0x00000000")==0
- 			  )
-			{
-				// just ignore these bogus instructions.
-			}
-			else
-			{
-				if(
-			   	   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr 
-			   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
-			   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr
-				  )
-				{
-					emit_relocation(fileIRp, fout,1,"32-bit",newinsn);
-				}
-				else
-				{
-					// assert this is the "main" file and no relocation is necessary.
-					assert(strstr(fileIRp->GetFile()->GetURL().c_str(),"a.ncexe")!=0);
-				}
-			}
-		}
+		emit_jump(fileIRp, fout, disasm,newinsn,old_insn, original_target);
 	}
 	else
 	{

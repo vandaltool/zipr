@@ -2,6 +2,7 @@
 #include <vector>
 #include <regex.h>
 #include <iostream>
+#include <ios>
 #include <sstream>
 #include <fstream>
 #include <map>
@@ -10,6 +11,8 @@
 #include <climits>
 #include <cstring>
 #include <assert.h>
+#include <stdint.h>
+#include <algorithm>
 
 #include "ben_lib.h"
 
@@ -51,11 +54,11 @@ typedef struct bin_instruction {
 		
 
 
-static unsigned int const ORG_PC = 0xff000000;
+static uintptr_t const ORG_PC = 0xff000000;
 //padding is added to the ORG_PC for the first vpc
 //the padding amount is [0-PC_PADDING_MAX), i.e., not inclusive of PC_PADDING_MAX
 static unsigned int const PC_PADDING_MAX = 8001;
-static unsigned int vpc = ORG_PC; 
+static uintptr_t vpc = ORG_PC; 
 static map<string,string> symMap; 
 static map<string,string> callbackMap; 
 
@@ -90,7 +93,7 @@ static void resolveSymbols(const string &mapFile);
 //static vector<bin_instruction_t> parseBin(const string &binFile);
 //static vector<string> getSPRI(const vector<bin_instruction_t> &bin, const vector<spasmline_t> &spasmlines, const string &symbolFilename);
 //static void printVector(const string &outputFile, const vector<string> &lines);
-static int getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception);
+static uintptr_t getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception);
 
 //
 // @todo: need to cache results
@@ -106,13 +109,13 @@ static string getCallbackAddress(const string &symbolFilename, const string &sym
 }
 
 
-static int getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception)
+static uintptr_t getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception)
 {
 	string symbolFullName = symbolFilename + "+" + symbol;
 	map<string,string>::iterator callbackMapIterator;
 	if(callbackMap.find(symbolFullName) != callbackMap.end())
 	{
-		return strtol(callbackMap[symbolFullName].c_str(),NULL,16);
+		return (uintptr_t)strtoull(callbackMap[symbolFullName].c_str(),NULL,16);
 	}
 
 // nm -a stratafier.o.exe | egrep " integer_overflow_detector$" | cut -f1 -d' '
@@ -138,7 +141,7 @@ static int getSymbolAddress(const string &symbolFilename, const string &symbol) 
 
 	callbackMap[symbolFullName] = addressString;
 
-	return strtol(addressString.c_str(),NULL,16);
+	return (uintptr_t) strtoull(addressString.c_str(),NULL,16);
 }
 
 bool fexists(const string &filename)
@@ -156,9 +159,16 @@ void a2bspri(const vector<string> &input,const string &outFilename, const string
 
 	srand(time(0));
 
-	vpc += rand()%PC_PADDING_MAX;
+	/* make start at 0xff00000000000000 for x86-64 */
+	if(sizeof(void*)==8)
+	{
+		vpc<<=32;
+		vpc += rand();
+	}
+	else
+		vpc += rand()%PC_PADDING_MAX;
 
-	cout<<"VPC init loc: "<<hex<<vpc<<endl;
+	cout<<"VPC init loc: "<<hex<<nouppercase<<vpc<<endl;
 
 	for(unsigned int i=0;i<input.size();i++)
 	{
@@ -357,7 +367,7 @@ static void assemble(const string &assemblyFile)
 		nasm_bit_width="BITS 32";
 
 	asmFile<<nasm_bit_width<<endl;
-	asmFile<<"ORG 0x"<<hex<<vpc<<endl;
+	asmFile<<"ORG 0x"<<hex<<nouppercase<<vpc<<endl;
 	asmFile<<"[map symbols "<<assemblyFile<<".map]"<<endl;
 
 	spasmline_t sline;
@@ -506,23 +516,26 @@ static void resolveSymbols(const string &mapFile)
 		//and the third is the symbol.
 		char *endptr;
 		char *tok_c_str = const_cast<char*>(tokens[0].c_str());
-		long long addrval;
-		addrval = strtoll(tok_c_str,&endptr,16); 
+		uintptr_t addrval;
+		addrval = (uintptr_t)strtoull(tok_c_str,&endptr,16); 
 
-		if((errno == ERANGE && (addrval == LLONG_MAX || addrval == LLONG_MIN))
-		   || ((errno != 0 && addrval == 0) || endptr == tok_c_str))
+		if((errno == ERANGE && (addrval == (uintptr_t)ULLONG_MAX || addrval == (uintptr_t)0))
+		   || ((errno != 0 && addrval == (uintptr_t)0) || endptr == tok_c_str))
 		{
 			continue;
 		}
 
 		tok_c_str = const_cast<char*>(tokens[1].c_str());
-		addrval = strtoll(tok_c_str,&endptr,16); 
+		addrval = (uintptr_t)strtoull(tok_c_str,&endptr,16); 
 
-		if((errno == ERANGE && (addrval == LLONG_MAX || addrval == LLONG_MIN))
-		   || ((errno != 0 && addrval == 0) || endptr == tok_c_str))
+		if((errno == ERANGE && (addrval == (uintptr_t)ULLONG_MAX || addrval == (uintptr_t)0))
+		   || ((errno != 0 && addrval == (uintptr_t)0) || endptr == tok_c_str))
 		{
 			continue;
 		}
+
+		// convert tokens[1] to lower case 
+		transform(tokens[1].begin(), tokens[1].end(),tokens[1].begin(), ::tolower );
 
 		if(symMap.find(tokens[2]) != symMap.end())
 		{
