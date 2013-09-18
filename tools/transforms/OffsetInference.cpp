@@ -206,8 +206,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 					
 					if(next_disasm.Instruction.BranchType == JmpType)
 					{
-						//TODO: check if jmp is out of the function?
-
+						
 						if(verbose_log)
 							cerr<<"OffsetInference: SetupLayout(): Found push matching fix calls pattern, ignoring the push (i.e., not recording the bytes pushed)."<<endl;
 
@@ -217,6 +216,11 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 						int target_addr_offset;
 						assert(str2int(target_addr_offset, matched.c_str())==SUCCESS);
 
+						//TODO: it is better to make a map of ind branch targets, but this efficient enough for now. 
+						
+						//Setting entry to null is a primitive way of checking if the target is in the same function
+						//if it isn't, entry will be NULL at the end of the loop.
+						entry=NULL;
 						for(
 							set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
 							it!=func->GetInstructions().end();
@@ -239,7 +243,6 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 							}
 						}
 
-						assert(entry != NULL);
 						continue;
 					}
 				}

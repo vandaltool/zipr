@@ -696,6 +696,9 @@ inline bool PNTransformDriver::TargetFunctionCheck(Instruction_t* a, Instruction
 	return FunctionCheck(a->GetFunction(),b->GetFunction());
 }
 
+//Speculation note:
+//Hypothesis generation assessment and refinement prior to modification.
+//hypothesis assessment and refinement after modification is performed by the recursive validation subroutine. 
 void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_coverage_map)
 {
 	SanitizeFunctions();
