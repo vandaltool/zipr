@@ -226,15 +226,16 @@ static void emit_relocation(FileIR_t* fileIRp, ostream& fout, int offset, string
 }
 
 
-void covert_jump_for_64bit(Instruction_t* newinsn, string &final, string new_target)
+/* return true if converted */
+bool covert_jump_for_64bit(Instruction_t* newinsn, string &final, string new_target)
 {
 	/* skip for x86-32 */
 	if(sizeof(void*)==4)
-		return;
+		return false;
 
 	/* skip for labeled addresses */
 	if (new_target.c_str()[0]!='0')
-		return;
+		return false;
 
 	string datalabel=get_data_label(newinsn);
 
@@ -243,7 +244,7 @@ void covert_jump_for_64bit(Instruction_t* newinsn, string &final, string new_tar
 
 	final=final.substr(0,start)+" qword [ rel " +datalabel + "]\n\t"+ datalabel + " ** dq "+final.substr(start);
 
-	return;
+	return true;
 }
 
 void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* newinsn, Instruction_t *old_insn, string & original_target)
@@ -252,6 +253,7 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
         string label=labelfy(newinsn);
         string complete_instr=string(disasm.CompleteInstr);
         string address_string=string(disasm.Argument1.ArgMnemonic);
+	bool converted=false;
 
 
 	/* if we have a target instruction in the database */
@@ -285,14 +287,20 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 		/* sanity, no segment registers for absolute mode */
 		assert(disasm.Argument1.SegmentReg==0);
 
-		covert_jump_for_64bit(newinsn,final, new_target);
+		converted=covert_jump_for_64bit(newinsn,final, new_target);
 
 		fout<<final<<endl;
 
 		if (new_target.c_str()[0]=='0')
 		{
+			// if we converted to an indirect jump, do a 64-bit reloc 
+			if(converted)
+			{
+				/* jumps have a 1-byte opcode */
+ 				emit_relocation(fileIRp, fout,6,"64-bit",newinsn);
+			}
 			// if we're jumping to an absolute address vrs a label, we will need a relocation for this jump instruction
-			if(
+			else if(
  		   	   disasm.Instruction.Opcode==0xeb || 	 // jmp with 8-bit addr  -- should be recompiled to 32-bit
  		   	   disasm.Instruction.Opcode==0xe8 || 	 // jmp with 32-bit addr 
 		   	   disasm.Instruction.Opcode==0xe9 	 // call with 32-bit addr

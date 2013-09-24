@@ -24,6 +24,8 @@ long long found_pattern=0;
 pqxxDB_t pqxx_interface;
 
 
+void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr offset);
+
 
 bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 {
@@ -354,14 +356,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 
 	/* disassemble */
         DISASM disasm;
-#if 0
-        memset(&disasm, 0, sizeof(DISASM));
 
-        disasm.Options = NasmSyntax + PrefixedNumeral;
-        disasm.Archi = 32;
-        disasm.EIP = (UIntPtr)insn->GetDataBits().c_str();
-        disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
-#endif
         /* Disassemble the instruction */
         int instr_len = insn->Disassemble(disasm);
 
@@ -378,6 +373,11 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	if( (insn->GetDataBits()[0]!=(char)0xff) && (insn->GetDataBits()[0]!=(char)0xe8) && (insn->GetDataBits()[0]!=(char)0x9a) )
 		return;
 
+	if(getenv("VERBOSE_FIX_CALLS"))
+	{
+		cout<<"Doing a fix_call on "<<std::hex<<insn->GetAddress()->GetVirtualOffset()<< " which is "<<disasm.CompleteInstr<<endl;
+	}
+
 
 	virtual_offset_t next_addr=insn->GetAddress()->GetVirtualOffset() + insn->GetDataBits().length();
 
@@ -385,7 +385,6 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	Instruction_t *callinsn=new Instruction_t();
 	AddressID_t *calladdr=new AddressID_t;
        	calladdr->SetFileID(insn->GetAddress()->GetFileID());
-	insn->SetAddress(calladdr);
 
 	/* set the fields in the new instruction */
 	callinsn->SetAddress(calladdr);
@@ -403,17 +402,19 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	/* set the new instruction's data bits to be a jmp instead of a call */
 	string newbits=insn->GetDataBits();
 
-	newbits=convert_to_jump(newbits,4);
+	newbits=convert_to_jump(newbits,sizeof(void*));		/* add 4 (8) if it's an esp(rsp) indirect branch for x86-32 (-64) */ 
 
 	callinsn->SetDataBits(newbits);
 	/* the jump instruction should NOT be indirectly reachable.  We should
 	 * land at the push
 	 */
-	newindirtarg->SetIndirectBranchTargetAddress(NULL);
+	fix_other_pcrel(firp, callinsn, insn->GetAddress()->GetVirtualOffset());
+	callinsn->SetIndirectBranchTargetAddress(NULL);
 
 	/* add the new insn and new address into the list of valid calls and addresses */
 	firp->GetAddresses().insert(calladdr);
 	firp->GetInstructions().insert(callinsn);
+
 
 	/* Convert the old call instruction into a push return_address instruction */
 	insn->SetFallthrough(callinsn);
@@ -430,8 +431,16 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 
 	/* create a relocation for this instruction */
 	Relocation_t* reloc=new Relocation_t;
-	reloc->SetOffset(1);
-	reloc->SetType("32-bit");
+	if(sizeof(void*)==4)
+	{
+		reloc->SetOffset(1);
+		reloc->SetType("32-bit");
+	}
+	else
+	{
+		reloc->SetOffset(0);
+		reloc->SetType("push64");
+	}
 	insn->GetRelocations().insert(reloc);
 	firp->GetRelocations().insert(reloc);
 
@@ -565,11 +574,89 @@ bool arg_has_relative(const ARGTYPE &arg)
 //
 //  fix_other_pcrel - add relocations to other instructions that have pcrel bits
 //
+void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
+{
+	DISASM disasm;
+	insn->Disassemble(disasm);
+	int is_rel= arg_has_relative(disasm.Argument1) || arg_has_relative(disasm.Argument2) || arg_has_relative(disasm.Argument3);
+
+	/* if this has already been fixed, we can skip it */
+	if(virt_offset==0 || virt_offset==-1)
+		return;
+
+	if(is_rel)
+	{
+		ARGTYPE* the_arg=NULL;
+		if(arg_has_relative(disasm.Argument1))
+			the_arg=&disasm.Argument1;
+		if(arg_has_relative(disasm.Argument2))
+			the_arg=&disasm.Argument2;
+		if(arg_has_relative(disasm.Argument3))
+			the_arg=&disasm.Argument3;
+
+		assert(the_arg);
+
+		int offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
+		assert(offset>=0 && offset <=15);
+		int size=the_arg->Memory.DisplacementSize;
+		assert(size==1 || size==2 || size==4 || size==8);
+
+		if(getenv("VERBOSE_FIX_CALLS"))
+		{
+			cout<<"Found insn with pcrel memory operand: "<<disasm.CompleteInstr
+		    	    <<" Displacement="<<std::hex<<the_arg->Memory.Displacement<<std::dec
+		    	    <<" size="<<the_arg->Memory.DisplacementSize<<" Offset="<<offset;
+		}
+
+		/* convert [rip_pc+displacement] addresssing mode into [rip_0+displacement] where rip_pc is the actual PC of the insn, 
+		 * and rip_0 is means that the PC=0. AKA, we are relocating this instruction to PC=0. Later we add a relocation to undo this transform at runtime 
+		 * when we know the actual address.
+		 */
+
+		/* get the data */
+		string data=insn->GetDataBits();
+		char cstr[20]; 
+		memcpy(cstr,data.c_str(), data.length());
+		void *offsetptr=&cstr[offset];
+
+		UIntPtr disp=the_arg->Memory.Displacement;
+		UIntPtr oldpc=virt_offset;
+		UIntPtr newdisp=disp+oldpc;
+
+		assert(offset+size<=data.length());
+		
+		switch(size)
+		{
+			case 4:
+				assert( (UIntPtr)(int)newdisp == (UIntPtr)newdisp);
+				*(int*)offsetptr=newdisp;
+				break;
+			case 1:
+			case 2:
+			case 8:
+			default:
+				assert(("Cannot handle offset of given size", 0));
+		}
+
+		/* put the data back into the insn */
+		data.replace(0, data.length(), cstr, data.length());
+		insn->SetDataBits(data);
+		insn->GetAddress()->SetVirtualOffset(0);	// going to end up in the SPRI file anyhow after changing the data bits 
+			
+		Relocation_t *reloc=new Relocation_t;
+		reloc->SetOffset(0);
+		reloc->SetType("pcrel");
+		insn->GetRelocations().insert(reloc);
+		firp->GetRelocations().insert(reloc);
+
+		insn->Disassemble(disasm);
+		if(getenv("VERBOSE_FIX_CALLS"))
+			cout<<" Coverted to: "<<disasm.CompleteInstr<<endl;
+	}
+}
+
 void fix_other_pcrel(FileIR_t* firp)
 {
-
-
-	long long fixed_calls=0, not_fixed_calls=0, not_calls=0;
 
 	for(
 		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
@@ -577,77 +664,8 @@ void fix_other_pcrel(FileIR_t* firp)
 		++it
 	   )
 	{
-
 		Instruction_t* insn=*it;
-		DISASM disasm;
-		insn->Disassemble(disasm);
-		int is_rel= arg_has_relative(disasm.Argument1) || arg_has_relative(disasm.Argument2) || arg_has_relative(disasm.Argument3);
-
-		if(is_rel)
-		{
-			ARGTYPE* the_arg=NULL;
-			if(arg_has_relative(disasm.Argument1))
-				the_arg=&disasm.Argument1;
-			if(arg_has_relative(disasm.Argument2))
-				the_arg=&disasm.Argument2;
-			if(arg_has_relative(disasm.Argument3))
-				the_arg=&disasm.Argument3;
-
-			assert(the_arg);
-
-			int offset=the_arg->Memory.DisplacementAddr-disasm.EIP;
-			assert(offset>=0 && offset <=15);
-			int size=the_arg->Memory.DisplacementSize;
-			assert(size==1 || size==2 || size==4 || size==8);
-
-
-			cout<<"Found insn with pcrel memory operand: "<<disasm.CompleteInstr
-			    <<" Displacement="<<std::hex<<the_arg->Memory.Displacement<<std::dec
-			    <<" size="<<the_arg->Memory.DisplacementSize<<" Offset="<<offset;
-
-			/* convert [rip_pc+displacement] into [rip_0+displacement] where rip_pc is the actual PC of the insn, 
-			 * and rip_0 is means that the PC=0. AKA, we are relocating this instruction to PC=0. 
-			 */
-
-			/* get the data */
-			string data=insn->GetDataBits();
-			char cstr[20]; 
-			memcpy(cstr,data.c_str(), data.length());
-			void *offsetptr=&cstr[offset];
-
-			UIntPtr disp=the_arg->Memory.Displacement;
-			UIntPtr oldpc=insn->GetAddress()->GetVirtualOffset();
-			UIntPtr newdisp=disp+oldpc;
-
-			assert(offset+size<=data.length());
-			
-			switch(size)
-			{
-				case 4:
-					assert( (UIntPtr)(int)newdisp == (UIntPtr)newdisp);
-					*(int*)offsetptr=newdisp;
-					break;
-				case 1:
-				case 2:
-				case 8:
-				default:
-					assert(("Cannot handle offset of given size", 0));
-			}
-
-			/* put the data back into the insn */
-			data.replace(0, data.length(), cstr, data.length());
-			insn->SetDataBits(data);
-			insn->GetAddress()->SetVirtualOffset(0);	// going to end up in the SPRI file anyhow after changing the data bits 
-			
-			Relocation_t *reloc=new Relocation_t;
-			reloc->SetOffset(0);
-			reloc->SetType("pcrel");
-			insn->GetRelocations().insert(reloc);
-			firp->GetRelocations().insert(reloc);
-
-			insn->Disassemble(disasm);
-			cout<<" Coverted to: "<<disasm.CompleteInstr<<endl;
-		}
+		fix_other_pcrel(firp,insn, insn->GetAddress()->GetVirtualOffset());
 	}
 }
 
