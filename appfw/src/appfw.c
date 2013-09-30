@@ -1,14 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #include "appfw.h"
 
-#define MAX_NUM_SIGNATURES 40000
 #define MAX_SIGNATURE_SIZE 1024
 
 static const char *sigFileEnv = "APPFW_SIGNATURE_FILE";
 static int fw_numPatterns = 0;
+static unsigned int fw_size = 512;
 static char **fw_sigs = NULL;
 static int appfw_initialized = 0;
 
@@ -131,13 +132,23 @@ void appfw_init()
 	{
 		char buf[MAX_SIGNATURE_SIZE];
 
-		fw_sigs = malloc(sizeof(char*) * MAX_NUM_SIGNATURES);
+		fw_sigs = malloc(sizeof(char*) * fw_size);
+		assert( fw_sigs != NULL );
 
 		while (fgets(buf, MAX_SIGNATURE_SIZE, sigF) != NULL)
 		{
 			if (strlen(buf) > 1) // don't want "\n" by itself
 			{
-				fw_sigs[numSigs] = (char *) malloc(strlen(buf) + 128);
+				if (numSigs == fw_size)
+				{
+					char **new_p;
+					fw_size *= 2;
+					new_p = realloc(fw_sigs, sizeof(char*) * fw_size);
+					assert( new_p != NULL );
+					fw_sigs = new_p;
+				}
+				fw_sigs[numSigs] = (char *) malloc(strlen(buf) + 1);
+				assert( fw_sigs[numSigs] != NULL );
 				strncpy(fw_sigs[numSigs], buf, strlen(buf));
 				fw_sigs[numSigs][strlen(buf)-1] = '\0';
 
