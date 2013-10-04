@@ -100,9 +100,9 @@ static void update_label_offset(FileIR_t *firp)
 	{
 		Instruction_t *insn=*it;
 		if(insn->GetBaseID()>max)
-			max=insn->GetBaseID()+100;
+			max=insn->GetBaseID();
 	}
-	label_offset+=max;
+	label_offset+=max+1;
 }
 
 static int IDToSPRIID(int id)

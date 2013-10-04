@@ -208,10 +208,14 @@ void infer_targets(IRDB_Elf_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *
 	//int res=fread(data, shdr->sh_size, 1, fp);
 	loa.cread((char*)data, shdr->sh_size* 1);
 
-	for(int i=0;i<=shdr->sh_size-sizeof(void*);i++)
+	for(int i=0;i<=shdr->sh_size;i++)
 	{
-		int p=*(int*)&data[i];
-		possible_target(p);
+		/* careful not to overflow the segment */
+		if(i+sizeof(void*)<=shdr->sh_size)
+		{
+			int p=*(int*)&data[i];
+			possible_target(p);
+		}
 	}
 
 }
