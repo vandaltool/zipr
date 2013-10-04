@@ -8,7 +8,11 @@ peasoup_binary=$name.sh
 
 echo "#!/bin/sh" >> $peasoup_binary
 echo "" >> $peasoup_binary
-echo "setsid $current_dir/ps_run.sh $current_dir \"\$0\" \"\$@\"" >> $peasoup_binary
+
+#  setsid made the login() program work, but makes other things more difficult.
+# echo "setsid $current_dir/ps_run.sh $current_dir \"\$0\" \"\$@\"" >> $peasoup_binary
+#
+echo "$current_dir/ps_run.sh $current_dir \"\$0\" \"\$@\"" >> $peasoup_binary
 echo "SAVE_EXIT_CODE=\$?" >> $peasoup_binary
 echo "datapath=$current_dir" >> $peasoup_binary
 

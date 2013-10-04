@@ -41,6 +41,7 @@ int main (int argc, char **argv)
 	if (argc != 2) 
 	{ 
 		fprintf(stderr, "usage: %s N\n", argv[0]); exit(1); 
+		exit(1);
 	} 
 	N = strtol(argv[1], (char **)NULL, 10); /* a bit of error checking, LONG_XXX should be there in limits.h */ 
 

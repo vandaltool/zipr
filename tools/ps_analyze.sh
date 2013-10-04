@@ -658,6 +658,7 @@ fi
 
 # do the basic tranforms we're performing for peasoup 
 perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
+#gdb --args $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
 
 
 # look for strings in the binary 
