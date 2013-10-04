@@ -41,35 +41,39 @@ int oscfw_isInitialized()
 int oscfw_verify(const char *p_command, char *p_taint)
 {
 	int length = strlen(p_command);
-    	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
+//    	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
-  	appfw_establish_taint(p_command, p_taint, matched_signatures,TRUE);
-	if(getenv("APPFW_VERBOSE"))
-	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
+  	appfw_empty_taint(p_command, p_taint, NULL,TRUE);
+//	if(getenv("APPFW_VERBOSE"))
+//	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
-	osc_parse((char*)p_command, (char*)p_taint, matched_signatures);
+	osc_parse((char*)p_command, (char*)p_taint, NULL);
 
 	if(getenv("APPFW_VERBOSE"))
   		appfw_display_taint("Debug OSC after parse", p_command, p_taint);
 
-	appfw_deallocate_matched_signatures(matched_signatures, length);
+  	int OK=appfw_establish_taint_fast(p_command, p_taint, TRUE);
+
+//	appfw_deallocate_matched_signatures(matched_signatures, length);
 
   	// return code is really a boolean
   	// return > 0 if success
   	// return 0 if failure
-	int i;
-	for(i=0;i<strlen(p_command);i++)
-	{
-		if(getenv("APPFW_PRINTCOMMAND_VERBOSE"))
-			fprintf(stderr, "Verifyig p_command[%d]=%d\n", i, p_command[i]);
-		if(p_taint[i]==APPFW_SECURITY_VIOLATION)
-		{
-			if(getenv("APPFW_VERBOSE"))
-				fprintf(stderr,"verify NOT okayK\n");
-			return 0;
-		}
-	}
-	if(getenv("APPFW_VERBOSE"))
+//	int i;
+//	for(i=0;i<strlen(p_command);i++)
+//	{
+//		if(getenv("APPFW_PRINTCOMMAND_VERBOSE"))
+//			fprintf(stderr, "Verifyig p_command[%d]=%d\n", i, p_command[i]);
+//		if(p_taint[i]==APPFW_SECURITY_VIOLATION)
+//		{
+//			if(getenv("APPFW_VERBOSE"))
+//				fprintf(stderr,"verify NOT okayK\n");
+//			return 0;
+//		}
+//	}
+	if(!OK && getenv("APPFW_VERBOSE"))
+		fprintf(stderr,"verify NOT okayK\n");
+	if(OK && getenv("APPFW_VERBOSE"))
 		fprintf(stderr,"verify OK\n");
-	return 1;
+	return OK;
 }

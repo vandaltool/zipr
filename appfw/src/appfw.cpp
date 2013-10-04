@@ -1,9 +1,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include <assert.h>
+#include <ctype.h>
+#include <list>
 
+
+extern "C" 
+{
 #include "appfw.h"
+}
+
+using namespace std;
 
 #define MAX_SIGNATURE_SIZE 1024
 
@@ -91,7 +101,8 @@ void appfw_init_ctor()
 			fprintf(stderr, "Proc %d: Command is: ", getpid());
 			while(!feof(f))
 			{
-				fscanf(f,"%c", &c);
+				int res=fscanf(f,"%c", &c);
+				assert(res);
 				fprintf(stderr, "%c", c);
 			}
 			fclose(f);
@@ -107,7 +118,7 @@ void appfw_init_ctor()
 
 // read in signature file
 // environment variable specifies signature file location
-void appfw_init()
+extern "C" void appfw_init()
 {
 	if (appfw_isInitialized()) return;
 
@@ -132,7 +143,7 @@ void appfw_init()
 	{
 		char buf[MAX_SIGNATURE_SIZE];
 
-		fw_sigs = malloc(sizeof(char*) * fw_size);
+		fw_sigs = (char**)malloc(sizeof(char*) * fw_size);
 		assert( fw_sigs != NULL );
 
 		while (fgets(buf, MAX_SIGNATURE_SIZE, sigF) != NULL)
@@ -143,7 +154,7 @@ void appfw_init()
 				{
 					char **new_p;
 					fw_size *= 2;
-					new_p = realloc(fw_sigs, sizeof(char*) * fw_size);
+					new_p = (char**)realloc(fw_sigs, sizeof(char*) * fw_size);
 					assert( new_p != NULL );
 					fw_sigs = new_p;
 				}
@@ -175,7 +186,7 @@ void appfw_init()
 	fflush(stderr);
 }
 
-int appfw_isInitialized()
+extern "C" int appfw_isInitialized()
 {
 	return appfw_initialized;
 }
@@ -211,6 +222,13 @@ void appfw_display_signatures(char **fw_sigs, int numSigs)
 	{
 		fprintf(stderr,"sig[%d]: [%s]\n", i, fw_sigs[i]);
 	}
+}
+
+extern "C" void appfw_empty_taint(const char *command, char *taint, matched_record** matched_signatures, int case_sensitive)
+{
+	int commandLength = strlen(command);
+	// set taint markings to 'tainted' by default
+	appfw_taint_range(taint, APPFW_TAINTED, 0, commandLength);
 }
 
 // buffers must be big enough
@@ -262,7 +280,7 @@ void appfw_establish_taint(const char *command, char *taint, matched_record** ma
 }
 
 // enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_BLESSED_KEYWORD };
-void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
+extern "C" void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
 {
 		int i;
 		fprintf(stderr,"proc %d: %s: %s\n", getpid(), p_msg, p_query);
@@ -364,7 +382,7 @@ signature_not_found:
 
 matched_record** appfw_allocate_matched_signatures(int length)
 {
-	return calloc(length, sizeof(matched_record*)); 
+	return (matched_record**)calloc(length, sizeof(matched_record*)); 
 }
 
 void appfw_deallocate_matched_signatures(matched_record** matched_signatures, int length)
@@ -391,4 +409,120 @@ void delete_matched_record(matched_record *r)
 		
 		free(r);
 	}
+}
+
+int count_violations(char* taint,int len)
+{
+	int count=0;
+	for(int i=0;i<len;i++)
+	{
+		if(*taint==APPFW_SECURITY_VIOLATION)
+			count++;
+		++taint;
+	}	
+	return count;
+}
+
+int fix_violations(char* taint, int value, int start, int len)
+{
+	int count=0;
+	for(int i=start;i<start+len;i++)
+	{
+		if(taint[i]==APPFW_SECURITY_VIOLATION)
+		{
+			count++;
+			taint[i]=value;
+		}	
+	}
+	return count;
+}
+
+/*
+ * appfw_establish_taint_fast - quickly establish taint markings to verify the command is OK
+ * return TRUE if command is OK.
+ */
+extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int case_sensitive)
+{
+
+	static list<char*> *sorted_sigs=NULL; 
+	static char **fw_sigs = appfw_getSignatures();
+
+	int j, pos, sigId;
+	int patternFound;
+	int commandLength = strlen(command);
+	taint[commandLength] = '\0';
+	int verbose=getenv("APPFW_VERBOSE")!=NULL;
+	verbose+=getenv("VERY_VERBOSE")!=NULL;
+
+	if (!fw_sigs)
+	{
+		if(verbose)
+			fprintf(stderr,"No appfw signatures loaded.  Blessing entire range. proc:%d \n", getpid());
+		appfw_taint_range(taint, APPFW_BLESSED, 0, commandLength);
+		return TRUE;
+	}
+	int numSignatures = appfw_getNumSignatures();  
+	if(!sorted_sigs)
+	{
+		sorted_sigs=new list<char*>;
+		assert(sorted_sigs);
+
+		for (int sigId = 0; sigId < numSignatures; ++sigId)
+		{
+			sorted_sigs->push_back(fw_sigs[sigId]);
+		}
+		
+	}
+
+	int violations=count_violations(taint, commandLength);
+	if(verbose)
+		fprintf(stderr,"Found %d violations\n", violations);
+
+	list<char*>::iterator next;
+
+	/* iterate the list */
+	for(list<char*>::iterator it=sorted_sigs->begin(); it!=sorted_sigs->end();  it=next)
+	{
+		char* sig=*it;
+		if(verbose)
+			fprintf(stderr,"Considering sig %s\n", sig);
+		next=it;
+		++next;	
+		int length_signature = strlen(sig);
+		pos = 0;
+		if(length_signature==1 && isalpha(*sig))
+			continue;
+		while (pos < commandLength)
+		{
+			if (((case_sensitive  && strncmp    (&command[pos], sig, length_signature) == 0)) || 
+			    ((!case_sensitive && strncasecmp(&command[pos], sig, length_signature) == 0)) )
+			{
+
+				/* fix any violations we found with the match */
+				int fixed_violations=fix_violations(taint, APPFW_BLESSED, pos, length_signature);
+		
+				if(fixed_violations)
+				{
+					if(verbose)
+						fprintf(stderr,"fixed %d violations at %d\n", fixed_violations,pos);
+					/* move to front */
+					sorted_sigs->erase(it);
+					sorted_sigs->push_front(sig);
+					violations-=fixed_violations;
+					if(violations<=0)
+					{
+						if(verbose)
+							fprintf(stderr,"fixed ALL violations at %d\n", fixed_violations,pos);
+						return TRUE;
+					}
+				}
+
+
+			}
+			pos++;
+		}
+	}
+	if(verbose)
+		fprintf(stderr,"failed to fix all violations, %d remain\n", violations);
+	return FALSE;
 }

@@ -56,3 +56,31 @@ test_samesig: testosc_samesig.exe
 
 test_exec_args: testosc_exec_args.exe
 	VERY_VERBOSE=1 VERBOSE=1 APPFW_VERBOSE=1 DATA="-ltar" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_exec_args.exe.sigs ./testosc_exec_args.exe 
+
+
+speed_test:
+	gcc speed_test.c  -O3 -o speed_test.exe
+	$(generate_signatures) speed_test.exe
+	mv speed_test.exe.sigs speed_test.sigs
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  > speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	cat speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs speed_test.sigs  >> speed_test.sigs2
+	time env ./speed_test.exe 5000 hello
+	time env LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=speed_test.sigs2 ./speed_test.exe 5000 hello

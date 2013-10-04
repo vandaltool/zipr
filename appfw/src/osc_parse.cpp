@@ -242,8 +242,8 @@ static void get_word(istream &fin, char c, int start, int semicolon_pos, matched
 		if (semicolon_pos >= 0)
 		{
 			//  check [semicolon_pos..position+s.length()-1]
-			if (!appfw_is_from_same_signature(matched_signatures, semicolon_pos, s.length() + position -1))
-				mark_violation(APPFW_SECURITY_VIOLATION, semicolon_pos, s.length() + position);
+//			if (!appfw_is_from_same_signature(matched_signatures, semicolon_pos, s.length() + position -1))
+//				mark_violation(APPFW_SECURITY_VIOLATION, semicolon_pos, s.length() + position);
 		}
 
 		if(getenv("APPFW_VERBOSE"))
@@ -255,8 +255,8 @@ static void get_word(istream &fin, char c, int start, int semicolon_pos, matched
 		{
 			// -foobar, --foobar have to come from same signature	
 			check_taint(position,position+s.length());
-			if (!appfw_is_from_same_signature(matched_signatures, position, position+s.length()-1))
-				mark_violation(APPFW_SECURITY_VIOLATION, position, position+s.length());
+//			if (!appfw_is_from_same_signature(matched_signatures, position, position+s.length()-1))
+//				mark_violation(APPFW_SECURITY_VIOLATION, position, position+s.length());
 		}
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Found option word at "<<position<<": "<<s<<endl;

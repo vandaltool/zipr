@@ -17,8 +17,8 @@ appfw_sqlite3.o: sqlfw.c ./sqlite-autoconf-3071300/sqlite3.c ./sqlite-autoconf-3
 	gcc $(CFLAGS) -fPIC -DSQLITE_OS_UNIX=1 -DSQLITE_THREADSAFE=0 -DSQLITE_DEBUG=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_4_BYTE_ALIGNED_MALLOC -c tmp.c -o appfw_sqlite3.o
 	rm tmp.c
 
-appfw.o: appfw.c
-	gcc $(CFLAGS) -c appfw.c
+appfw.o: appfw.cpp
+	g++ $(CFLAGS) -c appfw.cpp
 
 pg_hook.o: pg_hook.c
 	gcc $(CFLAGS) -I/usr/include/postgresql -c pg_hook.c
