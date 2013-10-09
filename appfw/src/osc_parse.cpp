@@ -18,6 +18,8 @@ extern "C" {
 using namespace std;
 
 static __thread bool starting_command=false;
+static __thread bool last_starting_command=false;
+static __thread string *command=NULL;
 static __thread list<pair<string,int> > *sub_commands=NULL;
 static __thread char *tainted_data=NULL;
 
@@ -64,6 +66,9 @@ static void discard_comment(istream &fin, int start)
 static void start_command()
 {
 	starting_command=true;
+	if(command != NULL)
+		delete command;
+	command=NULL;
 	if(getenv("APPFW_VERBOSE"))
 		cerr<<"Starting new command"<<endl;
 }
@@ -72,7 +77,7 @@ static void start_command()
 static void get_string_literal(istream &fin, char c, int start)
 {
 	string s;
-	int position=((int)fin.tellg())-1+start;
+	int position=((int)fin.tellg())-1;
 	s+=c;
 	do
 	{
@@ -87,11 +92,11 @@ static void get_string_literal(istream &fin, char c, int start)
 	if(getenv("APPFW_VERBOSE"))
 		cerr<<"Found string literal "<<s<<" at "<<position<<endl;
 
-	if(c=='`')
+	if(c=='`' || last_starting_command)
 	{
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Pushing literal to parse later\n";
-		(*sub_commands).push_back(pair<string,int>(s.substr(1,s.length()-2),position));
+		(*sub_commands).push_back(pair<string,int>(s.substr(1,s.length()-2),position+1));
 	}
 
 }
@@ -222,6 +227,9 @@ static void get_word(istream &fin, char c, int start, int semicolon_pos, matched
 	}
 	while (!fin.eof());
 
+	if(command==NULL)
+		command = new string(s);
+
 	if(d=='=')
 	{
 		check_taint(position,s.length()+position);
@@ -260,6 +268,10 @@ static void get_word(istream &fin, char c, int start, int semicolon_pos, matched
 		}
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Found option word at "<<position<<": "<<s<<endl;
+
+		assert(command);
+		if ((*command == "/bin/sh" || command->find("bash", 0) != string::npos) && s == "-c")
+			start_command();
 
 		if ((s.substr(0, strlen("-exec")) == "-exec") || (s.substr(0, strlen("--exec")) == "--exec"))
 			start_command();
@@ -363,6 +375,7 @@ static void parse(istream &fin, int start, matched_record** matched_signatures)
 			break;
 					
 		}
+		last_starting_command=starting_command;
 		starting_command=false;
 	}
 }
