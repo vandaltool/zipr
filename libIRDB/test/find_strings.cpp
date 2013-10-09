@@ -271,9 +271,10 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 				{
 //						cout<<"Pass 1: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
 
-					// Break if not assignment of an immediate to an esp offset
+					// Break if not assignment of an immediate to an esp/ebp/eax offset
 					if (disasm.Argument1.ArgType != MEMORY_TYPE
 					    || (disasm.Argument1.Memory.BaseRegister != REG4 /* esp */
+					        && disasm.Argument1.Memory.BaseRegister != REG5 /* ebp */
 					        && disasm.Argument1.Memory.BaseRegister != REG0 /* eax */)
 					    || (basereg && disasm.Argument1.Memory.BaseRegister != basereg)
 					    || disasm.Argument2.ArgType == MEMORY_TYPE
