@@ -64,6 +64,7 @@ tmpFile2=$1.$$.2.tmp
 tmpFile3=$1.$$.3.tmp
 tmpFile4=$1.$$.4.tmp
 tmpFile5=$1.$$.5.tmp
+tmpFile6=$1.$$.6.tmp
 tmpSymbols=$1.$$.sym.tmp
 
 # setup/cleanup
@@ -83,7 +84,7 @@ fi
 cat $defaultSigs >> $tmpFile2                                          # add signatures from sqlite itself
 sort  $tmpFile2 | uniq  > $tmpFile                                 
 
-nm -a $inputFile | grep -v " U " | grep -v " w " | sort | uniq | cut -d' ' -f3 > $tmpSymbols # get symbol names
+nm -a $inputFile | grep -v " U " | grep -v " w " | cut -d' ' -f3 | sort | uniq > $tmpSymbols # get symbol names
 
 #
 # break up strings with potential format specifiers
@@ -140,37 +141,17 @@ cat $tmpFile5 >> $tmpFile2
 ## too small in length
 ##
 
-# get rid of duplicate entries
-sort $tmpFile2 | uniq >> $tmpFile
+# get rid of leading/trailing whitespace and duplicate entries
+cat $tmpFile $tmpFile2 | sed 's/^[ \t]*//;s/[ \t]*$//' | sort | uniq > $tmpFile6
 
 #
-# iterate through each line, prepend the length 
-# we'll then use the length to reverse sort
-# as the final output file must be in reverse order (sorted by length)
+# Sort fragments not in symbols file by reverse length
 #
-while read signature;
-do
-#  echo "${signature}" > $tmpFile2
-#  length=$(wc -c $tmpFile2 | cut -f1 -d' ')
-#  echo "TEST: [${signature}]: cmd: [grep -F -x \"$signature\" $tmpSymbols]"
-  grep -F -x -e "${signature}" $tmpSymbols >/dev/null 2>/dev/null
-  if [ ! $? -eq 0 ];
-  then
-    echo "${#signature} ${signature}" >> $finalSigFile    # metacharacters can confuse ${#signature}, length will be wrong?
-#    echo "$length ${signature}" >> $finalSigFile    # metacharacters can confuse ${#signature}, length will be wrong?
-  fi
-
-done < $tmpFile
-
-# perform reverse numeric sort
-sort -n -r $finalSigFile > $tmpFile
-
-# get rid of the length field
-cut -f2- -d' ' $tmpFile | uniq  > $finalSigFile
+comm -2 -3 $tmpFile6 $tmpSymbols | awk '{print length, $0}' | sort -nr | cut -d ' ' -f 2- > $finalSigFile
 
 # et voila, output file $finalSigFile contains the final reverse sorted set of patterns
 
 # now cleanup
-rm $tmpFile $tmpFile1 $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $tmpSymbols
+rm $tmpFile $tmpFile1 $tmpFile2 $tmpFile3 $tmpFile4 $tmpFile5 $tmpFile6 $tmpSymbols
 
 exit 0
