@@ -394,12 +394,13 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei, pqxx::largeobjectacces
 {
 	for(int i=0;i<ei.secnum;i++)
 	{
-		/* skip executable, hash, string table, and nonloadable sections */
+		/* skip executable, hash, string table, nonloadable, and tiny sections */
 		if( (ei.sechdrs[i].sh_flags & SHF_EXECINSTR)
 		    || ei.sechdrs[i].sh_type == SHT_HASH
 		    || ei.sechdrs[i].sh_type == SHT_GNU_HASH
 		    || ei.sechdrs[i].sh_type == SHT_STRTAB
-		    || (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
+		    || (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC
+		    || ei.sechdrs[i].sh_size < sizeof(void*))
 			continue;
 
 		int offset = 0;
