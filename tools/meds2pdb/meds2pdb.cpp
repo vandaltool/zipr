@@ -15,6 +15,7 @@ string functionTable;
 string addressTable;
 string instructionTable;
 
+static const int STRIDE = 50;
 
 template <class T>
 inline std::string my_to_string (const T& t)
@@ -67,25 +68,28 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
 
   int count = 0;
 
+  for (int i = 0; i < instructions.size(); i += STRIDE )
+  {
+    char buf[128];
+
     string query = "INSERT INTO " + addressTable;
     query += " (address_id, file_id, vaddress_offset) VALUES ";
 
     string query2 = "INSERT INTO " + instructionTable;
     query2 += " (instruction_id,address_id, parent_function_id, orig_address_id, data, comment) VALUES ";
 
-  for (int i = 0; i < instructions.size(); i ++ )
-  {
-    char buf[128];
-
-      wahoo::Instruction *instruction = instructions[i];
+    for (int j = i; j < i + STRIDE; ++j)
+    {
+      if (j >= instructions.size()) break;
+      wahoo::Instruction *instruction = instructions[j];
       app_iaddr_t   addr = instruction->getAddress();
 
-      address_to_instructionid_map[addr]=i;
+      address_to_instructionid_map[addr]=j;
 
       int address_id = next_address_id++;
 
       // insert into address table
-	  if (i > 0) query += ",";
+      if (j != i) query += ",";
       query += "(";
       query += txn.quote(address_id) + ",";
       query += txn.quote(fileID) + ",";
@@ -102,10 +106,10 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
       int orig_address_id = address_id;
       string asmData = instruction->getAsm();
 
-	  if (i > 0) query2 += ",";
+      if (j != i ) query2 += ",";
       query2 += "(";
-      query2 += txn.quote(my_to_string(i)) + ",";
-      query2 += txn.quote(address_id) + ","; // i is the address id
+      query2 += txn.quote(my_to_string(j)) + ",";
+      query2 += txn.quote(address_id) + ","; // j is the address id
       query2 += txn.quote(parent_function_id) + ","; 
       query2 += txn.quote(orig_address_id) + ","; 
 
@@ -134,11 +138,11 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
 
 //   cerr << "Query: " << query << endl; 
 //   cerr << "Query2: " << query2 << endl; 
-
-  }
+    }
 
     txn.exec(query);
     txn.exec(query2); 
+  }
 
   cerr << "Committing all instructions - this may take a while"<<endl;
   txn.commit();
@@ -153,7 +157,6 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
   txn.exec("SET client_encoding='LATIN1';");
 
   // bulk insert of function information into the DB
-  const int STRIDE = 25;
   int count = 0;
   for (int i = 0; i < functions.size(); i += STRIDE)
   {  
@@ -200,9 +203,12 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
   // bulk insert of function information into the DB
   int count = 0;
   string query;
-  for (int i = 0; i < functions.size(); i++ )
+  for (int i = 0; i < functions.size(); i += STRIDE )
   {  
-      	wahoo::Function *f = functions[i];
+    for (int j = i; j < i + STRIDE; ++j)
+    {
+        if (j >= functions.size()) break;
+      	wahoo::Function *f = functions[j];
       	string functionName = f->getName();
       	app_iaddr_t functionAddress = f->getAddress();
       	int functionSize = f->getSize();
@@ -221,10 +227,10 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
     	query += " where function_id = " + txn.quote(my_to_string(function_id));
 	query += ";";
 
-
+    }
+    txn.exec(query);
   }
 
-  txn.exec(query);
   txn.commit(); // must commit o/w everything will be rolled back
 }
 
