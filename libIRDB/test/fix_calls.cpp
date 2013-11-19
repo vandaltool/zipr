@@ -117,6 +117,7 @@ bool call_needs_fix(Instruction_t* insn)
 	/* check the entry block for thunks, etc. */
 	bool found;
 	bool ret=check_entry(found,cfg);
+	delete cfg;
 	if(found)
 	{
 		if(ret)
