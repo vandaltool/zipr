@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <list>
+#include <sys/time.h>
 
 
 extern "C" 
@@ -480,9 +481,17 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 
 	list<char*>::iterator next;
 
+	int list_depth=0;
+
+	struct timeval blah;
+	gettimeofday(&blah,NULL);
+	fprintf(stdout, "start: %d:%d ", blah.tv_sec, blah.tv_usec);
+	
 	/* iterate the list */
 	for(list<char*>::iterator it=sorted_sigs->begin(); it!=sorted_sigs->end();  it=next)
 	{
+		list_depth++;
+		
 		char* sig=*it;
 		if(verbose)
 			fprintf(stderr,"Considering sig %s\n", sig);
@@ -504,15 +513,28 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 				if(fixed_violations)
 				{
 					if(verbose)
+					{
 						fprintf(stderr,"fixed %d violations at %d\n", fixed_violations,pos);
+						fflush(stderr);
+					}
 					/* move to front */
-					sorted_sigs->erase(it);
-					sorted_sigs->push_front(sig);
+					if(it!=sorted_sigs->begin())
+					{
+						fprintf(stderr,"moving to front\n");
+						sorted_sigs->erase(it);
+						sorted_sigs->push_front(sig);
+					}
+
 					violations-=fixed_violations;
 					if(violations<=0)
 					{
 						if(verbose)
-							fprintf(stderr,"fixed ALL violations at %d\n", fixed_violations,pos);
+						{
+							fprintf(stderr,"fixed ALL violations, list size=%d, iterated to %d\n", sorted_sigs->size(), list_depth);
+							fflush(stderr);
+						}
+						gettimeofday(&blah,NULL);
+						fprintf(stdout, "end: %d:%d ", blah.tv_sec, blah.tv_usec);
 						return TRUE;
 					}
 				}

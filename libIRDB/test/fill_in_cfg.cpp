@@ -6,10 +6,13 @@
 #include <string.h>
 #include <map>
 #include <assert.h>
-#include <elf.h>
 #include <sys/mman.h>
 #include <ctype.h>
-#include <targ-config.h>
+
+#include "elfio/elfio.hpp"
+#include "elfio/elfio_dump.hpp"
+
+#include "targ-config.h"
 
 
 #include "beaengine/BeaEngine.h"
@@ -20,6 +23,7 @@ int bad_fallthrough_count=0;
 
 using namespace libIRDB;
 using namespace std;
+using namespace ELFIO;
 
 set< pair<db_id_t,int> > missed_instructions;
 int failed_target_count=0;
@@ -218,36 +222,33 @@ void add_new_instructions(FileIR_t *firp)
 		/* get the OID of the file */
 		int elfoid=filep->GetELFOID();
 
+		pqxx::largeobject lo(elfoid);
+                lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
 
-        	IRDB_Elf_Off sec_hdr_off, sec_off;
-        	IRDB_Elf_Half secnum, strndx, secndx;
-        	IRDB_Elf_Word secsize;
+                ELFIO::elfio    elfiop;
+		elfiop.load("readeh_tmp_file.exe");
+
+		ELFIO::dump::header(cout,elfiop);
+		ELFIO::dump::section_headers(cout,elfiop);
+
+
+
+        	Elf64_Off sec_hdr_off, sec_off;
+        	Elf_Half secnum, strndx, secndx;
+        	Elf_Word secsize;
 	
-		pqxx::largeobjectaccess loa(pqxx_interface.GetTransaction(), elfoid, PGSTD::ios::in);
 		
 
-        	/* allcoate memory  */
-        	IRDB_Elf_Ehdr elfhdr;
-
-        	/* Read ELF header */
-        	loa.cread((char*)&elfhdr, sizeof(IRDB_Elf_Ehdr)* 1);
-
-        	sec_hdr_off = elfhdr.e_shoff;
-        	secnum = elfhdr.e_shnum;
-        	strndx = elfhdr.e_shstrndx;
-
-        	/* Read Section headers */
-        	IRDB_Elf_Shdr *sechdrs=(IRDB_Elf_Shdr*)malloc(sizeof(IRDB_Elf_Shdr)*secnum);
-		assert(sechdrs);
-        	loa.seek(sec_hdr_off, std::ios_base::beg);
-        	loa.cread((char*)sechdrs, sizeof(IRDB_Elf_Shdr)* secnum);
+        	sec_hdr_off = elfiop.get_sections_offset();
+        	secnum = elfiop.sections.size(); 
+        	strndx = elfiop.get_section_name_str_index();
 
 		bool found=false;
 	
         	/* look through each section and find the missing target*/
         	for (secndx=1; secndx<secnum; secndx++)
 		{
-        		int flags = sechdrs[secndx].sh_flags;
+        		int flags = elfiop.sections[secndx]->get_flags();
 
         		/* not a loaded section */
         		if( (flags & SHF_ALLOC) != SHF_ALLOC)
@@ -257,21 +258,15 @@ void add_new_instructions(FileIR_t *firp)
         		if( (flags & SHF_EXECINSTR) != SHF_EXECINSTR)
                 		continue;
 		
-        		int first=sechdrs[secndx].sh_addr;
-        		int second=sechdrs[secndx].sh_addr+sechdrs[secndx].sh_size;
+        		Elf64_Addr first=elfiop.sections[secndx]->get_address();
+        		Elf64_Addr second=elfiop.sections[secndx]->get_address()+elfiop.sections[secndx]->get_size();
 
 			/* is the missed instruction in this section */
 			if(first<=missed_address && missed_address<=second)
 			{
-			        char* data=(char*)malloc(sechdrs[secndx].sh_size+16);	 /* +16 to account for a bogus-y instruction that wraps past the end of the section */
-				assert(data);
-				memset(data,0, sechdrs[secndx].sh_size+16);		 /* bogus bits are always 0 */
-
-				/* grab the data from the ELF file for this section */
-        			loa.seek(sechdrs[secndx].sh_offset, std::ios_base::beg);
-        			loa.read(data, sechdrs[secndx].sh_size * 1);
-
-				int offset_into_section=missed_address-sechdrs[secndx].sh_addr;
+				const char* data=elfiop.sections[secndx]->get_data();
+				// second=data?
+				int offset_into_section=missed_address-elfiop.sections[secndx]->get_address();
 	
 				/* disassemble the instruction */
 				DISASM disasm;
@@ -291,7 +286,6 @@ void add_new_instructions(FileIR_t *firp)
 				/* if we found the instruction, but can't disassemble it, then we skip out for now */
 				if(instr_len==OUT_OF_RANGE || instr_len==UNKNOWN_OPCODE)
 				{
-					free(data);
 					break;
 				}
 
@@ -330,7 +324,6 @@ void add_new_instructions(FileIR_t *firp)
 
 				cout<<"Found new instruction, "<<newinsn->GetComment()<<", at "<<std::hex<<newinsn->GetAddress()->GetVirtualOffset()<<" in file "<<"<no name yet>"<<"."<<endl; 
 				found_instructions++;
-				free(data);
 			}
 		
 		}
@@ -340,8 +333,7 @@ void add_new_instructions(FileIR_t *firp)
 	
 			cout<<"Cannot find address "<<std::hex<<missed_address<<" in file "<<"<no name yet>"<<"."<<endl; 
 		} 
-		free(sechdrs);
-	}
+	}	
 	cout<<"Found a total of "<<std::dec<<found_instructions<<" new instructions."<<endl;
 
 }

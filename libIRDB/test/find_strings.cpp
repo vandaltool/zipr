@@ -5,13 +5,19 @@
 #include <iostream>
 #include <stdlib.h>
 #include <cctype>
-#include <elf.h>
 #include <assert.h>
+
+#include "elfio/elfio.hpp"
+#include "elfio/elfio_dump.hpp"
+
 #include "targ-config.h"
+
 
 using namespace libIRDB;
 using namespace std;
+using namespace ELFIO;
 
+#define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
 
 bool is_string_character(char c)
 {
@@ -22,13 +28,12 @@ bool is_string_character(char c)
 
 /* the stuff we need for reading an elf file */
 typedef struct elf_info {
-       	IRDB_Elf_Off sec_hdr_off, sec_off;
-       	IRDB_Elf_Half secnum, strndx;
-       	IRDB_Elf_Ehdr elfhdr;
-       	IRDB_Elf_Word secsize;
-       	IRDB_Elf_Shdr *sechdrs;
-	char **sec_data;
-	IRDB_Elf_Addr got;
+       	Elf64_Off sec_hdr_off, sec_off;
+       	Elf_Half secnum, strndx;
+       	Elf_Word secsize;
+	char const **sec_data;
+	Elf64_Addr got;
+	elfio *elfiop;
 } elf_info_t;
 
 void found_string(string s, void* addr)
@@ -58,9 +63,9 @@ void found_string(string s, void* addr)
 	} while (p < buff + s.length());
 }
 
-void load_section(elf_info_t &ei, int i, pqxx::largeobjectaccess &loa, bool alloc)
+void load_section(elf_info_t &ei, int i, bool alloc)
 {
-	if( alloc && (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
+	if( alloc && (ei.elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
 	{
 		cerr<<"Cannot load non-alloc section\n";
 		assert(0);
@@ -68,22 +73,16 @@ void load_section(elf_info_t &ei, int i, pqxx::largeobjectaccess &loa, bool allo
 
 	if(ei.sec_data[i]==NULL)
 	{
-		ei.sec_data[i]=(char*)calloc(ei.sechdrs[i].sh_size,1);
-		if(ei.sechdrs[i].sh_type==SHT_NOBITS)
+		ei.sec_data[i]=ei.elfiop->sections[i]->get_data(); 
+		if(ei.elfiop->sections[i]->get_type()==SHT_NOBITS)
 		{
 			/* no need to read anything for NOBITS sections */
-		}
-		else
-		{
-//			cout<<"Loading section "<<std::dec<<i<<" vaddr: "<<std::hex<<ei.sechdrs[i].sh_addr<< "  size: "
-//				<<std::dec<<ei.sechdrs[i].sh_size<< endl;
-        		loa.seek(ei.sechdrs[i].sh_offset, std::ios_base::beg);
-        		loa.cread((char*)ei.sec_data[i], ei.sechdrs[i].sh_size);
+			ei.sec_data[i]=(char*)calloc(ei.elfiop->sections[i]->get_size(),1);
 		}
 	}
 }
 
-void check_for_string(char* p, void* addr)
+void check_for_string(const char* p, void* addr)
 {
 	assert(p);
 	if(!is_string_character(*p))
@@ -100,22 +99,23 @@ void check_for_string(char* p, void* addr)
 	found_string(s, addr);
 }
 
-void is_string_pointer(void* addr, elf_info_t &ei, pqxx::largeobjectaccess &loa)
+void is_string_pointer(void* addr, elf_info_t &ei)
 {
 	long long int intaddr=(long long int)(addr);
 
 	for(int i=0;i<ei.secnum;i++)
 	{
 		/* only look at loaded sections */
-		if( (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC)
+		if( (ei.elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
 			continue;
 
-		if(ei.sechdrs[i].sh_addr <= intaddr && intaddr <= (ei.sechdrs[i].sh_addr+ei.sechdrs[i].sh_size))
+		if(ei.elfiop->sections[i]->get_address() <= intaddr 
+			&& intaddr <= (ei.elfiop->sections[i]->get_address()+ei.elfiop->sections[i]->get_size()))
 		{
 			/* we found a pointer into a loadable segment */
-			load_section(ei,i,loa,true);
+			load_section(ei,i,true);
 //			cout<<"Checking address "<<std::hex<<addr<<endl;
-			check_for_string(ei.sec_data[i]+((long long int)addr-ei.sechdrs[i].sh_addr),addr);
+			check_for_string(ei.sec_data[i]+((long long int)addr-ei.elfiop->sections[i]->get_address()),addr);
 		}
 	}
 
@@ -158,38 +158,31 @@ void is_string_constant(DISASM& disasm)
 
 } 
 
-void handle_argument(ARGTYPE *arg, elf_info_t &ei, pqxx::largeobjectaccess &loa)
+void handle_argument(ARGTYPE *arg, elf_info_t &ei)
 {
         if( arg->ArgType == MEMORY_TYPE )
 	{
 		/* Only check without GOT offset if type is executable */
-		if ( ei.elfhdr.e_type == ET_EXEC )
-			is_string_pointer((void*)arg->Memory.Displacement,ei,loa);
+		if ( ei.elfiop->get_type() == ET_EXEC )
+			is_string_pointer((void*)arg->Memory.Displacement,ei);
 		/* Check with GOT offset if present */
 		if ( ei.got && arg->Memory.BaseRegister == REG3 /* ebx */ )
-			is_string_pointer((void*)(arg->Memory.Displacement + ei.got),ei,loa);
+			is_string_pointer((void*)(arg->Memory.Displacement + ei.got),ei);
 	}
 }
 
 
-void read_elf_info(elf_info_t &ei, FileIR_t* firp, pqxx::largeobjectaccess &loa)
+void read_elf_info(elf_info_t &ei, FileIR_t* firp)
 {
 
 
         /* Read ELF header */
-        loa.cread((char*)&ei.elfhdr, sizeof(IRDB_Elf_Ehdr)* 1);
-        ei.sec_hdr_off = ei.elfhdr.e_shoff;
-        ei.secnum = ei.elfhdr.e_shnum;
+        ei.sec_hdr_off = ei.elfiop->get_sections_offset();
+        ei.secnum = ei.elfiop->sections.size();
         assert(ei.secnum>0);
-        ei.strndx = ei.elfhdr.e_shstrndx;
+        ei.strndx = ei.elfiop->get_section_name_str_index();
 
-        /* Read Section headers */
-        ei.sechdrs=(IRDB_Elf_Shdr*)malloc(sizeof(IRDB_Elf_Shdr)*ei.secnum);
-	assert(ei.sechdrs!=NULL);
-        loa.seek(ei.sec_hdr_off, std::ios_base::beg);
-        loa.cread((char*)ei.sechdrs, sizeof(IRDB_Elf_Shdr)* ei.secnum);
-
-	ei.sec_data=(char**)calloc(ei.secnum,sizeof(void*));
+	ei.sec_data=(char const**)calloc(ei.secnum,sizeof(void*));
 
 	ei.got = 0;
 	/* Get .got or .got.plt address, if any */
@@ -199,21 +192,22 @@ void read_elf_info(elf_info_t &ei, FileIR_t* firp, pqxx::largeobjectaccess &loa)
 		if (ei.strndx < SHN_LORESERVE)
 			shstr_sec = ei.strndx;
 		else
-			shstr_sec = ei.sechdrs[0].sh_link;
+			shstr_sec = ei.elfiop->sections[0]->get_link();
 		assert(shstr_sec < ei.secnum);
-		load_section(ei,shstr_sec,loa,false);
-		IRDB_Elf_Shdr *shstr_sec_hdr = ei.sechdrs + shstr_sec;
+		load_section(ei,shstr_sec,false);
+//		IRDB_Elf_Shdr *shstr_sec_hdr = ei.sechdrs + shstr_sec;
 		for (int i=0;i<ei.secnum;i++)
 		{
-			assert(ei.sechdrs[i].sh_name < shstr_sec_hdr->sh_size);
-			if (!strcmp(ei.sec_data[shstr_sec]+ei.sechdrs[i].sh_name, ".got.plt"))
+// name works oddly here.  we can just get the name safely using elfio
+//			assert(ei.sechdrs[i].sh_name < shstr_sec_hdr->sh_size);
+			if (ei.elfiop->sections[i]->get_name()==".got.plt") // !strcmp(ei.sec_data[shstr_sec]+ei.sechdrs[i].sh_name, ".got.plt"))
 			{
 				// Prefer .got.plt to .got
-				ei.got = ei.sechdrs[i].sh_addr;
+				ei.got = ei.elfiop->sections[i]->get_address();
 				break;
 			}
-			if (!strcmp(ei.sec_data[shstr_sec]+ei.sechdrs[i].sh_name, ".got"))
-				ei.got = ei.sechdrs[i].sh_addr;
+			if (ei.elfiop->sections[i]->get_name()==".got") // if (!strcmp(ei.sec_data[shstr_sec]+ei.sechdrs[i].sh_name, ".got"))
+				ei.got = ei.elfiop->sections[i]->get_address();
 		}
 	}
 }
@@ -221,13 +215,10 @@ void read_elf_info(elf_info_t &ei, FileIR_t* firp, pqxx::largeobjectaccess &loa)
 void free_elf_info(elf_info_t &ei)
 {
 	#define FREE_IF_NOT_NULL(a) { if(a) { free(a); a=NULL; } }
-	FREE_IF_NOT_NULL(ei.sechdrs);
-	for(int i=0;i<ei.secnum;i++)	
-		FREE_IF_NOT_NULL(ei.sec_data[i]);
 	FREE_IF_NOT_NULL(ei.sec_data);
 }
 
-void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobjectaccess &loa)
+void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 {
 	set<Instruction_t*> visited_insns;
 
@@ -368,12 +359,12 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 		assert(res);
 
 		// check for immediate string pointers in non-PIC code
-		if ( ei.elfhdr.e_type == ET_EXEC )
-			is_string_pointer((void*)disasm.Instruction.Immediat,ei,loa);
+		if ( ei.elfiop->get_type() == ET_EXEC )
+			is_string_pointer((void*)disasm.Instruction.Immediat,ei);
 		// always check for string pointers in memory argument displacements
-		handle_argument(&disasm.Argument1,ei,loa);
-		handle_argument(&disasm.Argument2,ei,loa);
-		handle_argument(&disasm.Argument3,ei,loa);
+		handle_argument(&disasm.Argument1,ei);
+		handle_argument(&disasm.Argument2,ei);
+		handle_argument(&disasm.Argument3,ei);
 
 		// if not in a function, check for string in immediate
 		if (visited_insns.find(insn) != visited_insns.end())
@@ -390,44 +381,63 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei, pqxx::largeobj
 	}
 }
 
-void find_strings_in_data(FileIR_t* firp, elf_info_t& ei, pqxx::largeobjectaccess &loa)
+
+void find_strings_in_data(FileIR_t* firp, elf_info_t& ei)
 {
 	for(int i=0;i<ei.secnum;i++)
 	{
 		/* skip executable, hash, string table, nonloadable, and tiny sections */
-		if( (ei.sechdrs[i].sh_flags & SHF_EXECINSTR)
-		    || ei.sechdrs[i].sh_type == SHT_HASH
-		    || ei.sechdrs[i].sh_type == SHT_GNU_HASH
-		    || ei.sechdrs[i].sh_type == SHT_STRTAB
-		    || (ei.sechdrs[i].sh_flags & SHF_ALLOC) != SHF_ALLOC
-		    || ei.sechdrs[i].sh_size < sizeof(void*))
+		if( (ei.elfiop->sections[i]->get_flags() & SHF_EXECINSTR)
+		    || ei.elfiop->sections[i]->get_type() == SHT_HASH
+		    || ei.elfiop->sections[i]->get_type() == SHT_GNU_HASH
+		    || ei.elfiop->sections[i]->get_type() == SHT_STRTAB
+		    || (ei.elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC
+		    || ei.elfiop->sections[i]->get_size() < arch_ptr_bytes())
 			continue;
 
 		int offset = 0;
 		int step;
 		/* step over relocation info */
-		switch( ei.sechdrs[i].sh_type )
+		switch( ei.elfiop->sections[i]->get_type() )
 		{
 		case SHT_REL:
-			step = sizeof(IRDB_Elf_Rel);
+			if(arch_ptr_bytes()==4)
+				step = sizeof(::Elf32_Rel);
+			else
+				step = sizeof(::Elf64_Rel);
 			break;
 		case SHT_RELA:
-			step = sizeof(IRDB_Elf_Rela);
+			if(arch_ptr_bytes()==4)
+				step = sizeof(::Elf32_Rela);
+			else
+				step = sizeof(::Elf64_Rela);
 			break;
 		case SHT_SYMTAB:
 		case SHT_DYNSYM:
-			offset = sizeof(IRDB_Elf_Word);
-			step = sizeof(IRDB_Elf_Sym);
+			if(arch_ptr_bytes()==4)
+			{
+				offset = sizeof(::Elf32_Word);
+				step = sizeof(::Elf32_Sym);
+			}
+			else
+			{
+				offset = sizeof(::Elf64_Word);
+				step = sizeof(::Elf64_Sym);
+			}
 			break;
 		default:
 			step = 1;
 		}
 
-		load_section(ei,i,loa,true);
-        	for(int j=offset;j<=ei.sechdrs[i].sh_size-sizeof(void*);j+=step)
+		load_section(ei,i,true);
+        	for(int j=offset;j+arch_ptr_bytes()<=ei.elfiop->sections[i]->get_size();j+=step)
         	{
-                	void* p=*((void**)(ei.sec_data[i]+j));
-                	is_string_pointer(p,ei,loa);
+			void* p;
+			if(arch_ptr_bytes()==4)
+                		p=(void*)*((int*)(ei.sec_data[i]+j));
+			else
+                		p=*((void**)(ei.sec_data[i]+j));
+                	is_string_pointer(p,ei);
         	}
 
 		
@@ -445,14 +455,23 @@ void find_strings(VariantID_t *pidp, FileIR_t* firp)
 	/* get a handle to the binary file */
         int elfoid=firp->GetFile()->GetELFOID();
 	pqxxDB_t* pqxx_interface=dynamic_cast<pqxxDB_t*>(BaseObj_t::GetInterface());
-        pqxx::largeobjectaccess loa(pqxx_interface->GetTransaction(), elfoid, PGSTD::ios::in);
+
+	pqxx::largeobject lo(elfoid);
+	lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
+	ELFIO::elfio    elfiop;
+	elfiop.load("readeh_tmp_file.exe");
+	ELFIO::dump::header(cout,elfiop);
+	ELFIO::dump::section_headers(cout,elfiop);
+
+
 
 
 	elf_info_t ei;
-	read_elf_info(ei,firp,loa);
+	ei.elfiop=&elfiop;
+	read_elf_info(ei,firp);
 
-	find_strings_in_instructions(firp, ei, loa);
-	find_strings_in_data(firp, ei, loa);
+	find_strings_in_instructions(firp, ei);
+	find_strings_in_data(firp, ei);
 
 	free_elf_info(ei);
 

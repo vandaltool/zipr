@@ -11,11 +11,15 @@
 #include <elf.h>
 #include "targ-config.h"
 
-
-
+#include "elfio/elfio.hpp"
+#include "elfio/elfio_dump.hpp"
 
 using namespace libIRDB;
 using namespace std;
+
+
+
+
 
 
 void* eh_frame_addr;
@@ -660,11 +664,11 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
   	return;
 }
 
-void read_ehframe(FileIR_t* virp, pqxxDB_t& pqxx_interface)
+void read_ehframe(FileIR_t* virp, ELFIO::elfio* elfiop)
 {
-
 	/* get first instruction */
 	Instruction_t* insn=*(virp->GetInstructions().begin());
+	assert(insn);
 
 	/* get its file ID */
 	db_id_t fileid=insn->GetAddress()->GetFileID();
@@ -676,41 +680,18 @@ void read_ehframe(FileIR_t* virp, pqxxDB_t& pqxx_interface)
 	/* get the OID of the file */
 	int elfoid=filep->GetELFOID();
 
-	/* parse out the elf headers, and strtab */
-	IRDB_Elf_Ehdr elfhdr;
-	IRDB_Elf_Off sec_hdr_off, sec_off;
-	IRDB_Elf_Half secnum, strndx, secndx;
-	IRDB_Elf_Word secsize;
-
-	pqxx::largeobjectaccess loa(pqxx_interface.GetTransaction(), elfoid, PGSTD::ios::in);
-
-
-	/* Read ELF header */
-	loa.cread((char*)&elfhdr, sizeof(IRDB_Elf_Ehdr)* 1);
-
-	sec_hdr_off = elfhdr.e_shoff;
-	secnum = elfhdr.e_shnum;
-	strndx = elfhdr.e_shstrndx;
-
-	/* Read Section headers */
-	IRDB_Elf_Shdr *sechdrs=(IRDB_Elf_Shdr*)malloc(sizeof(IRDB_Elf_Shdr)*secnum);
-	loa.seek(sec_hdr_off, std::ios_base::beg);
-	loa.cread((char*)sechdrs, sizeof(IRDB_Elf_Shdr)* secnum);
-
-
-       	/* Read Section String Table */
-       	sec_off = sechdrs[strndx].sh_offset;
-       	secsize = sechdrs[strndx].sh_size;
-       	loa.seek(sec_off, std::ios_base::beg);
-       	char* strtab = (char *)malloc(secsize);
-       	loa.cread(strtab, 1 * secsize);
+	int secndx=0;
+	int secnum=elfiop->sections.size(); 
+	ELFIO::Elf_Half strndx = elfiop->get_section_name_str_index();
+	const char* strtab=elfiop->sections[strndx]->get_data();
 
        	/* Locate desired section */
        	bool found=false;
 	int eh_frame_index;
        	for (secndx=1; secndx<secnum; secndx++)
        	{
-               	char *p=&strtab[ sechdrs[secndx].sh_name];
+		// cout<<"sechdrs["<<i<<"] name index="<<sechdrs[secndx].sh_name<<endl;
+               	const char *p=elfiop->sections[secndx]->get_name().c_str(); 
                	if (strcmp(".eh_frame",p)==0)
                	{
                        	found = true;
@@ -726,23 +707,23 @@ void read_ehframe(FileIR_t* virp, pqxxDB_t& pqxx_interface)
 	}
 	cout<<"Found .eh_frame is section "<<std::dec<<eh_frame_index<<endl;
 
-	char *p=&strtab[ sechdrs[secndx+1].sh_name];
+// 	char *p=&strtab[ sechdrs[secndx+1].sh_name];
+	const char *p=elfiop->sections[secndx+1]->get_name().c_str(); 
         if (strcmp(".gcc_except_table",p)!=0)
 	{
 		cout<<"Did not find .gcc_except_table immediately after .eh_frame\n";
 		return;
 	}
 
-	eh_frame_addr=(void*)sechdrs[eh_frame_index].sh_addr;
-	int total_size= ((int)sechdrs[eh_frame_index+1].sh_addr+(int)sechdrs[eh_frame_index+1].sh_size) - (int)eh_frame_addr;
+	eh_frame_addr=(void*)elfiop->sections[eh_frame_index]->get_address();
+	int total_size= 
+		(elfiop->sections[eh_frame_index+1]->get_address()+
+		 elfiop->sections[eh_frame_index+1]->get_size()   ) - (int)eh_frame_addr;
 	
-	/* read the frame data */
-	eh_frame_data=(char*)malloc(total_size);
-       	loa.seek((int)sechdrs[eh_frame_index].sh_offset, std::ios_base::beg);
-       	loa.cread(eh_frame_data, total_size);
+	eh_frame_data=elfiop->sections[eh_frame_index]->get_data();
 
-	int offset;
-	eh_offset=offset=(int)eh_frame_addr-(int)eh_frame_data;
+	uintptr_t offset;
+	eh_offset=offset=(uintptr_t)eh_frame_addr-(uintptr_t)eh_frame_data;
 
 
 	struct object ob;
@@ -752,9 +733,6 @@ void read_ehframe(FileIR_t* virp, pqxxDB_t& pqxx_interface)
 	linear_search_fdes (&ob,ob.u.single,offset); 
 
 	/* clean up memory */
-	free(sechdrs);
-	free(strtab);
-	free(eh_frame_data);
 
 }
 

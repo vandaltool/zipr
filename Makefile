@@ -30,6 +30,7 @@ elfio: 	third_party/elfio-2.2.tar.gz
 	cd $(ELFIO_DIR); if [ ! -f Makefile ]; then ./configure --prefix=${SECURITY_TRANSFORMS_HOME};  fi; 
 	cd $(ELFIO_DIR); make all 
 	cd $(ELFIO_DIR); make install 
+	#cd include/;  patch -p0 < ../third_party/elfio.patch
 
 elfio_clean:
 	rm -Rf third_party/ELFIO

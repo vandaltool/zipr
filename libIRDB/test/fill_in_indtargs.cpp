@@ -6,13 +6,20 @@
 #include <string.h>
 #include <map>
 #include <assert.h>
-#include <elf.h>
 #include <sys/mman.h>
+// #include <elf.h>
 #include <ctype.h>
+
+
+#include "elfio/elfio.hpp"
+#include "elfio/elfio_dump.hpp"
+
 #include "targ-config.h"
 
-
 #include "beaengine/BeaEngine.h"
+
+
+#define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
 
 int odd_target_count=0;
 int bad_target_count=0;
@@ -20,6 +27,7 @@ int bad_fallthrough_count=0;
 
 using namespace libIRDB;
 using namespace std;
+using namespace ELFIO;
 
 void possible_target(int p);
 
@@ -173,9 +181,9 @@ void get_instruction_targets(FileIR_t *firp)
 
 }
 
-void get_executable_bounds(IRDB_Elf_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *firp)
+void get_executable_bounds(FileIR_t *firp, const section* shdr)
 {
-	int flags = shdr->sh_flags;
+	int flags = shdr->get_flags();
 
 	/* not a loaded section */
 	if( (flags & SHF_ALLOC) != SHF_ALLOC)
@@ -185,17 +193,17 @@ void get_executable_bounds(IRDB_Elf_Shdr *shdr, pqxx::largeobjectaccess &loa, Fi
 	if( (flags & SHF_EXECINSTR) != SHF_EXECINSTR)
 		return;
 
-	int first=shdr->sh_addr;
-	int second=shdr->sh_addr+shdr->sh_size;
+	int first=shdr->get_address();
+	int second=shdr->get_address()+shdr->get_size();
 
 	bounds.insert(pair<int,int>(first,second));
 
 
 }
 
-void infer_targets(IRDB_Elf_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *firp)
+void infer_targets(FileIR_t *firp, section* shdr)
 {
-	int flags = shdr->sh_flags;
+	int flags = shdr->get_flags();
 
 	if( (flags & SHF_ALLOC) != SHF_ALLOC)
 		/* not a loaded section */
@@ -206,26 +214,16 @@ void infer_targets(IRDB_Elf_Shdr *shdr, pqxx::largeobjectaccess &loa, FileIR_t *
 		return;
 
 	/* if the type is NOBITS, then there's no actual data to look through */
-	if(shdr->sh_type==SHT_NOBITS)
+	if(shdr->get_type()==SHT_NOBITS)
 		return;
 
-	char* data=(char*)malloc(shdr->sh_size);
+	const char* data=shdr->get_data() ; // C(char*)malloc(shdr->sh_size);
 
-	//fseek(fp,shdr->sh_offset, SEEK_SET);
-        loa.seek(shdr->sh_offset, std::ios_base::beg);
-
-
-	//int res=fread(data, shdr->sh_size, 1, fp);
-	loa.cread((char*)data, shdr->sh_size* 1);
-
-	for(int i=0;i<=shdr->sh_size;i++)
+	assert(arch_ptr_bytes()==4 || arch_ptr_bytes()==8);
+	for(int i=0;i+arch_ptr_bytes()<=shdr->get_size();i++)
 	{
-		/* careful not to overflow the segment */
-		if(i+sizeof(void*)<=shdr->sh_size)
-		{
-			int p=*(int*)&data[i];
-			possible_target(p);
-		}
+		int p=*(int*)&data[i];
+		possible_target(p);
 	}
 
 }
@@ -323,42 +321,29 @@ void add_num_handle_fn_watches(FileIR_t * firp)
 
 }
 
-void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
+void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 {
 	// reset global vars
 	bounds.clear();
 	ranges.clear();
 	targets.clear();
 
-        IRDB_Elf_Off sec_hdr_off, sec_off;
-        IRDB_Elf_Half secnum, strndx, secndx;
-        IRDB_Elf_Word secsize;
-
-	int elfoid=firp->GetFile()->GetELFOID();
-	pqxx::largeobjectaccess loa(pqxx_interface.GetTransaction(), elfoid, PGSTD::ios::in);
-
-	/* allcoate memory  */
-        IRDB_Elf_Ehdr elfhdr;
+        Elf64_Off sec_hdr_off, sec_off;
+        Elf_Half secnum, strndx, secndx;
+        Elf_Word secsize;
 
         /* Read ELF header */
-        //int res=fread(&elfhdr, sizeof(IRDB_Elf_Ehdr), 1, fp);
-        loa.cread((char*)&elfhdr, sizeof(IRDB_Elf_Ehdr)* 1);
-        sec_hdr_off = elfhdr.e_shoff;
-        secnum = elfhdr.e_shnum;
-        strndx = elfhdr.e_shstrndx;
-
-        /* Read Section headers */
-        IRDB_Elf_Shdr *sechdrs=(IRDB_Elf_Shdr*)malloc(sizeof(IRDB_Elf_Shdr)*secnum);
-        loa.seek(sec_hdr_off, std::ios_base::beg);
-        loa.cread((char*)sechdrs, sizeof(IRDB_Elf_Shdr)* secnum);
+        sec_hdr_off = elfiop->get_sections_offset();
+        secnum = elfiop->sections.size();
+        strndx = elfiop->get_section_name_str_index();
 
 	/* look through each section and record bounds */
         for (secndx=1; secndx<secnum; secndx++)
-		get_executable_bounds(&sechdrs[secndx], loa, firp);
+		get_executable_bounds(firp, elfiop->sections[secndx]);
 
 	/* look through each section and look for target possibilities */
         for (secndx=1; secndx<secnum; secndx++)
-		infer_targets(&sechdrs[secndx], loa, firp);
+		infer_targets(firp, elfiop->sections[secndx]);
 
 	
 	cout<<"========================================="<<endl;
@@ -370,7 +355,7 @@ void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
 	get_instruction_targets(firp);
 
 	/* mark the entry point as a target */
-	possible_target(elfhdr.e_entry);
+	possible_target(elfiop->get_entry()); 
 
 
 	cout<<"========================================="<<endl;
@@ -379,8 +364,8 @@ void fill_in_indtargs(FileIR_t* firp, pqxxDB_t &pqxx_interface)
 	cout<<"========================================="<<endl;
 
 	/* Read the exception handler frame so that those indirect branches are accounted for */
-	void read_ehframe(FileIR_t* firp, pqxxDB_t& pqxx_interface);
-        read_ehframe(firp, pqxx_interface);
+	void read_ehframe(FileIR_t* firp, elfio* );
+        read_ehframe(firp, elfiop);
 
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction+eh_header sections are: " << endl;
@@ -466,8 +451,19 @@ main(int argc, char* argv[])
 			// read the db  
 			firp=new FileIR_t(*pidp, this_file);
 
+			int elfoid=firp->GetFile()->GetELFOID();
+		        pqxx::largeobject lo(elfoid);
+        		lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
+
+        		ELFIO::elfio*    elfiop=new ELFIO::elfio;
+        		elfiop->load("readeh_tmp_file.exe");
+		
+        		ELFIO::dump::header(cout,*elfiop);
+        		ELFIO::dump::section_headers(cout,*elfiop);
+
+
 			// find all indirect branch targets
-			fill_in_indtargs(firp, pqxx_interface);
+			fill_in_indtargs(firp, elfiop);
 	
 			// write the DB back and commit our changes 
 

@@ -20,14 +20,15 @@ int (*my_system)(const char *) = NULL;
 #include "oscfw.h"
 int system(const char *p_command)
 {
+  if(getenv("APPFW_VERBOSE"))
+	fprintf(stderr, "In system\n");
+
   char taint[MAX_COMMAND_LENGTH];
   if (!my_system)
     my_system = dlsym(RTLD_NEXT, "system");
 
   oscfw_init(); // will do this automagically later 
 
-  if(getenv("APPFW_VERBOSE"))
-	fprintf(stderr, "In system\n");
 
   if (within_osc_monitor || oscfw_verify(p_command, taint))
   {
