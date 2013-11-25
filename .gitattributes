@@ -146,6 +146,7 @@ libIRDB/Makefile -text
 libIRDB/include/cfg/BasicBlock.hpp -text
 libIRDB/include/cfg/CFG.hpp -text
 libIRDB/include/core/address.hpp -text
+libIRDB/include/core/archdesc.hpp -text
 libIRDB/include/core/baseobj.hpp -text
 libIRDB/include/core/basetypes.hpp -text
 libIRDB/include/core/dbinterface.hpp -text
