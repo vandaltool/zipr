@@ -5814,11 +5814,26 @@ void __bea_callspec__ mov_AHIb(PDISASM pMyDisasm)
        (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[4]);
-    #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
-    (*pMyDisasm).Argument1.ArgPosition = HighPosition;
+
+        /* fix for 64-bit with a rex prefix */
+        if ((*pMyDisasm).Archi == 64 && GV.REX.state)
+        {
+                /* we need to decode differently  on x86-64, as ah-dh cannot be encoded.  instead spl, bpl, ril, dil, etc. are used */
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[4]);
+                #endif
+                (*pMyDisasm).Argument1.ArgPosition = LowPosition;
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG4;
+        }
+        else
+        {
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[4]);
+                #endif
+                (*pMyDisasm).Argument1.ArgPosition = HighPosition;
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+        }
+
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument2.ArgSize = 8;
@@ -5842,11 +5857,26 @@ void __bea_callspec__ mov_CHIb(PDISASM pMyDisasm)
        (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[5]);
-    #endif
-    (*pMyDisasm).Argument1.ArgPosition = HighPosition;
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG1;
+
+        /* fix for 64-bit with a rex prefix */
+        if ((*pMyDisasm).Archi == 64 && GV.REX.state)
+        {
+                /* we need to decode differently  on x86-64, as ah-dh cannot be encoded.  instead spl, bpl, ril, dil, etc. are used */
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[5]);
+                #endif
+                (*pMyDisasm).Argument1.ArgPosition = LowPosition;
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG5;
+        }
+        else
+        {
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[5]);
+                #endif
+                (*pMyDisasm).Argument1.ArgPosition = HighPosition;
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG1;
+	}
+
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument2.ArgSize = 8;
@@ -5870,15 +5900,31 @@ void __bea_callspec__ mov_DHIb(PDISASM pMyDisasm)
        (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[6]);
-    #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG2;
-    (*pMyDisasm).Argument1.ArgPosition = HighPosition;
-    (*pMyDisasm).Argument1.ArgSize = 8;
-    (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
-    (*pMyDisasm).Argument2.ArgSize = 8;
-    GV.EIP_ += 2;
+
+
+	/* fix for 64-bit with a rex prefix */
+    	if ((*pMyDisasm).Archi == 64 && GV.REX.state) 
+	{
+		/* we need to decode differently  on x86-64, as ah-dh cannot be encoded.  instead spl, bpl, ril, dil, etc. are used */
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       		(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[6]);
+    		#endif
+    		(*pMyDisasm).Argument1.ArgPosition = LowPosition;
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG6;
+	}
+	else
+	{
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       		(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[6]);
+    		#endif
+    		(*pMyDisasm).Argument1.ArgPosition = HighPosition;
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG2;
+	}
+    
+	(*pMyDisasm).Argument1.ArgSize = 8;
+    	(*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
+    	(*pMyDisasm).Argument2.ArgSize = 8;
+    	GV.EIP_ += 2;
 }
 
 /* =======================================
@@ -5898,11 +5944,26 @@ void __bea_callspec__ mov_BHIb(PDISASM pMyDisasm)
        (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[7]);
-    #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG3;
-	(*pMyDisasm).Argument1.ArgPosition = HighPosition;
+
+        /* fix for 64-bit with a rex prefix */
+        if ((*pMyDisasm).Archi == 64 && GV.REX.state)
+        {
+                /* we need to decode differently  on x86-64, as ah-dh cannot be encoded.  instead spl, bpl, ril, dil, etc. are used */
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[7]);
+                #endif
+                (*pMyDisasm).Argument1.ArgPosition = LowPosition;
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG7;
+        }
+        else
+        {
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[7]);
+                #endif
+                (*pMyDisasm).Argument1.ArgPosition = HighPosition;
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG3;
+        }
+
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument2.ArgSize = 8;
