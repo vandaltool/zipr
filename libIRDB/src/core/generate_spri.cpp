@@ -386,10 +386,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		memset(&disasm, 0, sizeof(DISASM));
 
 		disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
-		if(sizeof(void*)==8)
-			disasm.Archi = 64;
-		else
-			disasm.Archi = 32;
+		disasm.Archi = fileIRp->GetArchitectureBitWidth();
 		disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
 		disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
 
@@ -666,10 +663,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 	{
 		DISASM disasm;
 		disasm.Options = NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
-		if(sizeof(void*)==8)
-			disasm.Archi = 64;
-		else
-			disasm.Archi = 32;
+		disasm.Archi = fileIRp->GetArchitectureBitWidth();
 		disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
 		disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
 

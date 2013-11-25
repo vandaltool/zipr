@@ -278,7 +278,7 @@ void add_new_instructions(FileIR_t *firp)
                 		memset(&disasm, 0, sizeof(DISASM));
 
                 		disasm.Options = NasmSyntax + PrefixedNumeral;
-                		disasm.Archi = sizeof(void*)*8;	// 32 or 64
+                		disasm.Archi = firp->GetArchitectureBitWidth();
                 		disasm.EIP = (UIntPtr) &data[offset_into_section];
                 		disasm.VirtualAddr = missed_address;
                 		int instr_len = Disasm(&disasm);
@@ -373,13 +373,6 @@ void fill_in_cfg(FileIR_t *firp)
       			DISASM disasm;
       			memset(&disasm, 0, sizeof(DISASM));
 	
-#if 0
-      			disasm.Options = NasmSyntax + PrefixedNumeral;
-      			disasm.Archi = 32;
-      			disasm.EIP = (UIntPtr) insn->GetDataBits().c_str();
-      			disasm.VirtualAddr = insn->GetAddress()->GetVirtualOffset();
-      			int instr_len = Disasm(&disasm);
-#endif
       			int instr_len = insn->Disassemble(disasm);
 	
 			assert(instr_len==insn->GetDataBits().size());

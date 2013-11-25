@@ -100,10 +100,20 @@ void possible_target(int p)
 	}
 }
 
-void handle_argument(ARGTYPE *arg)
+void handle_argument(ARGTYPE *arg, Instruction_t* insn)
 {
-	if( arg->ArgType == MEMORY_TYPE ) 
-		possible_target(arg->Memory.Displacement);
+	if( (arg->ArgType&MEMORY_TYPE) == MEMORY_TYPE ) 
+	{
+		if((arg->ArgType&RELATIVE_)==RELATIVE_)
+		{
+			assert(insn);
+			assert(insn->GetAddress());
+			possible_target(arg->Memory.Displacement+insn->GetAddress()->GetVirtualOffset()+
+				insn->GetDataBits().length());
+		}
+		else
+			possible_target(arg->Memory.Displacement);
+	}
 }
 
 void mark_targets(FileIR_t *firp)
@@ -156,9 +166,9 @@ void get_instruction_targets(FileIR_t *firp)
 		/* otherwise, any immediate is a possible branch target */
 		possible_target(disasm.Instruction.Immediat);
 
-		handle_argument(&disasm.Argument1);
-		handle_argument(&disasm.Argument2);
-		handle_argument(&disasm.Argument3);
+		handle_argument(&disasm.Argument1, insn);
+		handle_argument(&disasm.Argument2, insn);
+		handle_argument(&disasm.Argument3, insn);
 	}
 
 }

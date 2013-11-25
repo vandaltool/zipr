@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <map>
 #include <fstream>
+#include <elf.h>
 using namespace libIRDB;
 using namespace std;
 
@@ -40,7 +41,10 @@ FileIR_t::FileIR_t(const VariantID_t &newprogid, File_t* fid) : BaseObj_t(NULL)
 		fileptr=fid;
 
 	if(progid.IsRegistered())
+	{
 		ReadFromDB();
+		SetArchitecture();
+	}
 
 }
 
@@ -142,10 +146,7 @@ void FileIR_t::AssembleRegistry()
 	
 	DISASM disasm;
 	memset(&disasm, 0, sizeof(DISASM));
-	if(sizeof(void*)==8)
-		disasm.Archi=64;
-	else
-		disasm.Archi=32;
+	disasm.Archi=GetArchitectureBitWidth();
 
 	ifstream binreader;
 	unsigned int filesize;
@@ -528,3 +529,51 @@ std::string Relocation_t::WriteToDB(File_t* fid, Instruction_t* myinsn)
                 string("'") + to_string(GetDoipID())          + string("') ; ") ;
 	return q;	
 }
+
+int FileIR_t::GetArchitectureBitWidth()
+{
+	return archdesc->GetBitWidth();
+}
+
+void FileIR_t::SetArchitecture()
+{
+
+	/* the first 16 bytes of an ELF file define the magic number and ELF Class. */
+    	unsigned char e_ident[16];
+
+	DBinterface_t* myinter=BaseObj_t::GetInterface();
+	pqxxDB_t *mypqxxintr=dynamic_cast<pqxxDB_t*>(myinter);
+
+	int elfoid=GetFile()->GetELFOID();
+        pqxx::largeobjectaccess loa(mypqxxintr->GetTransaction(), elfoid, PGSTD::ios::in);
+
+
+        loa.cread((char*)&e_ident, sizeof(e_ident));
+
+	if((e_ident[EI_MAG0]!=ELFMAG0) || 
+	   (e_ident[EI_MAG1]!=ELFMAG1) || 
+	   (e_ident[EI_MAG2]!=ELFMAG2) || 
+	   (e_ident[EI_MAG3]!=ELFMAG3))
+	{
+		cerr << "ELF magic number wrong:  is this an ELF file? " <<endl;
+		exit(-1);
+	}
+
+	archdesc=new ArchitectureDescription_t;
+
+	switch(e_ident[4])
+	{
+		case ELFCLASS32:
+			archdesc->SetBitWidth(32);
+			break;
+		case ELFCLASS64:
+			archdesc->SetBitWidth(64);
+			break;
+		case ELFCLASSNONE:
+		default:
+			cerr << "Unknown ELF class " <<endl;
+			exit(-1);
+	}
+}
+
+ArchitectureDescription_t* FileIR_t::archdesc=NULL;

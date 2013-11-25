@@ -51,11 +51,7 @@ int Instruction_t::Disassemble(DISASM &disasm){
   	memset(&disasm, 0, sizeof(DISASM));
   
   	disasm.Options = NasmSyntax + PrefixedNumeral;
-	if(sizeof(void*)==8)
-  		disasm.Archi = 64;
-	else
-  		disasm.Archi = 32;
-		
+	disasm.Archi = FileIR_t::GetArchitectureBitWidth();
   	disasm.EIP = (UIntPtr) GetDataBits().c_str();
   	disasm.VirtualAddr = GetAddress()->GetVirtualOffset();
   	int instr_len = Disasm(&disasm);
