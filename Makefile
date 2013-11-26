@@ -4,7 +4,7 @@ all:	lib include/targ-config.h elfio bea
 	cd libMEDSannotation; make all
 	cd libtransform; make all
 	cd tools; make all
-	cd appfw; make all
+	cd appfw; if [ ! -f Makefile ]; then ./configure ; fi ; make all
 
 clean: elfio_clean
 	cd beaengine; cmake .; make clean

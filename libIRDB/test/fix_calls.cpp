@@ -432,7 +432,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 
 	/* create a relocation for this instruction */
 	Relocation_t* reloc=new Relocation_t;
-	if(sizeof(void*)==4)
+	if(firp->GetArchitectureBitWidth()==32)
 	{
 		reloc->SetOffset(1);
 		reloc->SetType("32-bit");

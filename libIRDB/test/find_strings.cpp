@@ -434,7 +434,7 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei)
         	{
 			void* p;
 			if(arch_ptr_bytes()==4)
-                		p=(void*)*((int*)(ei.sec_data[i]+j));
+                		p=(void*)(uintptr_t)*((int*)(ei.sec_data[i]+j));
 			else
                 		p=*((void**)(ei.sec_data[i]+j));
                 	is_string_pointer(p,ei);

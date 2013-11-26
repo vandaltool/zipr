@@ -200,6 +200,8 @@ File_t* find_file(FileIR_t* firp, db_id_t fileid)
 
 }
 
+ELFIO::elfio    elfiop;
+
 void add_new_instructions(FileIR_t *firp)
 {
 	int found_instructions=0;
@@ -218,18 +220,6 @@ void add_new_instructions(FileIR_t *firp)
 		/* figure out which file we're looking at */
 		File_t* filep=find_file(firp,missed_fileid);
 		assert(filep);
-
-		/* get the OID of the file */
-		int elfoid=filep->GetELFOID();
-
-		pqxx::largeobject lo(elfoid);
-                lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
-
-                ELFIO::elfio    elfiop;
-		elfiop.load("readeh_tmp_file.exe");
-
-		ELFIO::dump::header(cout,elfiop);
-		ELFIO::dump::section_headers(cout,elfiop);
 
 
 
@@ -452,11 +442,22 @@ main(int argc, char* argv[])
 		{
 			File_t* this_file=*it;
 			assert(this_file);
-
 			cout<<"Filling in cfg for "<<this_file->GetURL()<<endl;
+
 
 			// read the db  
 			firp=new FileIR_t(*pidp, this_file);
+
+			/* get the OID of the file */
+			int elfoid=this_file->GetELFOID();
+
+			pqxx::largeobject lo(elfoid);
+                	lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
+
+			elfiop.load("readeh_tmp_file.exe");
+			ELFIO::dump::header(cout,elfiop);
+			ELFIO::dump::section_headers(cout,elfiop);
+
 			fill_in_cfg(firp);
 
 			// write the DB back and commit our changes 

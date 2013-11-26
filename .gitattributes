@@ -3,8 +3,11 @@
 /README -text
 /README.p1 -text
 appfw/Makefile -text
+appfw/Makefile.in -text
 appfw/TODO -text
-appfw/src/Makefile -text
+appfw/configure -text
+appfw/configure.in -text
+appfw/src/Makefile.in -text
 appfw/src/appfw.cpp -text
 appfw/src/appfw.h -text
 appfw/src/appfw_ldap.c -text

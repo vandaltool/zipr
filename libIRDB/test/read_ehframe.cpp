@@ -31,7 +31,7 @@ typedef unsigned int  uaddr;
 typedef          int  saddr;
 typedef unsigned char ubyte;
 typedef struct dwarf_fde fde;
-typedef unsigned _Unwind_Ptr;
+typedef uintptr_t _Unwind_Ptr;
 
 union unaligned
 {

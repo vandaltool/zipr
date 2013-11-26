@@ -7,7 +7,8 @@
 #include <vector>
 
 //void a2bspri(const std::string &input, const std::string &output, const std::string &elfFile) throw(std::exception);
-void a2bspri(const std::vector<std::string> &input,const std::string &outFilename, const std::string &symbolFilename) throw(std::exception);
+void a2bspri(const std::vector<std::string> &input,const std::string &outFilename, 
+	const std::string &exeFilename, const std::string &symbolFilename) throw(std::exception);
 
 class SpasmException: public std::exception
 {

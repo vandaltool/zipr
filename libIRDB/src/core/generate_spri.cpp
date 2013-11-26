@@ -56,7 +56,7 @@ static bool needs_short_branch_rewrite(Instruction_t* newinsn, const DISASM &dis
 		return true;
 
 	/* 64-bit has more needs than this */
-	if(sizeof(void*)!=8)
+	if(disasm.Archi==32)
 		return false;
 
 	if(disasm.Instruction.BranchType==0)		/* non-branches, jumps, calls and returns don't need this rewrite */
@@ -227,12 +227,8 @@ static void emit_relocation(FileIR_t* fileIRp, ostream& fout, int offset, string
 
 
 /* return true if converted */
-bool covert_jump_for_64bit(Instruction_t* newinsn, string &final, string new_target)
+bool convert_jump_for_64bit(Instruction_t* newinsn, string &final, string new_target)
 {
-	/* skip for x86-32 */
-	if(sizeof(void*)==4)
-		return false;
-
 	/* skip for labeled addresses */
 	if (new_target.c_str()[0]!='0')
 		return false;
@@ -287,7 +283,8 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 		/* sanity, no segment registers for absolute mode */
 		assert(disasm.Argument1.SegmentReg==0);
 
-		converted=covert_jump_for_64bit(newinsn,final, new_target);
+		if(disasm.Archi==64)
+			converted=convert_jump_for_64bit(newinsn,final, new_target);
 
 		fout<<final<<endl;
 
@@ -359,14 +356,6 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 
 	// disassemble using BeaEngine
 	DISASM disasm;
-#if 0
-	memset(&disasm, 0, sizeof(DISASM));
-
-	disasm.Options = NasmSyntax + PrefixedNumeral; //  + ShowSegmentRegs;
-	disasm.Archi = 32;
-	disasm.EIP = (UIntPtr)newinsn->GetDataBits().c_str();
-	disasm.VirtualAddr = old_insn ? old_insn->GetAddress()->GetVirtualOffset() : 0;
-#endif
 
 	/* Disassemble the instruction */
 	int instr_len = newinsn->Disassemble(disasm);

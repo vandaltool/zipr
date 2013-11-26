@@ -14,6 +14,8 @@
 #include <stdint.h>
 #include <algorithm>
 
+#include "elfio/elfio.hpp"
+
 #include "ben_lib.h"
 
 using namespace std;
@@ -69,7 +71,7 @@ static void initSpasmLines(const string &inputFile);
 static bool getNextSpasmLine(spasmline_t &spasm_line);
 static void resetSpasmLines();
 
-static void assemble(const string &assemblyFile);
+static void assemble(const string &assemblyFile, int bits);
 
 static unsigned int bin_index =0;
 static unsigned int bin_fsize=0;
@@ -152,21 +154,29 @@ bool fexists(const string &filename)
 
 
 //void a2bspri(const string &input, const string &output, const string &symbolFilename) throw(exception)
-void a2bspri(const vector<string> &input,const string &outFilename, const string &symbolFilename) throw(exception)
+void a2bspri(const vector<string> &input,const string &outFilename, const string &exeFilename,
+	const string &symbolFilename) throw(exception)
 {
 
 	assert(fexists(symbolFilename));
-
+	assert(fexists(exeFilename));
+	ELFIO::elfio elfiop;
+	elfiop.load(exeFilename);
+	int bits=0;
 	srand(time(0));
 
 	/* make start at 0xff00000000000000 for x86-64 */
-	if(sizeof(void*)==8)
+	if(elfiop.get_class()==ELFCLASS64) 
 	{
+		bits=64;
 		vpc<<=32;
 		vpc += rand();
 	}
 	else
+	{
+		bits=32;
 		vpc += rand()%PC_PADDING_MAX;
+	}
 
 	cout<<"VPC init loc: "<<hex<<nouppercase<<vpc<<endl;
 
@@ -176,7 +186,7 @@ void a2bspri(const vector<string> &input,const string &outFilename, const string
 	
 		initSpasmLines(input[i]);
 
-		assemble(string(input[i]+".asm"));
+		assemble(string(input[i]+".asm"), bits);
 
 		initBin(string(input[i]+".asm.bin"));
 	
@@ -339,7 +349,7 @@ static bool getNextSpasmLine(spasmline_t &spasmline)
 //
 //[in]	assemblyFile	the file that will hold nasm assembly
 //static void assemble(const vector<string> &assembly, const string &assemblyFile)
-static void assemble(const string &assemblyFile)
+static void assemble(const string &assemblyFile, int bits)
 {
 	assem_cnt = 0;
 
@@ -361,7 +371,7 @@ static void assemble(const string &assemblyFile)
 	 
 
 	const char *nasm_bit_width=NULL;
-	if(sizeof(void*)==8)
+	if(bits==64)
 		nasm_bit_width="BITS 64";
 	else
 		nasm_bit_width="BITS 32";
