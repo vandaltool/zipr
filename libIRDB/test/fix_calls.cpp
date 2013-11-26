@@ -403,7 +403,8 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	/* set the new instruction's data bits to be a jmp instead of a call */
 	string newbits=insn->GetDataBits();
 
-	newbits=convert_to_jump(newbits,sizeof(void*));		/* add 4 (8) if it's an esp(rsp) indirect branch for x86-32 (-64) */ 
+	/* add 4 (8) if it's an esp(rsp) indirect branch for x86-32 (-64) */ 
+	newbits=convert_to_jump(newbits,firp->GetArchitectureBitWidth()/8);		
 
 	callinsn->SetDataBits(newbits);
 	/* the jump instruction should NOT be indirectly reachable.  We should
@@ -439,6 +440,7 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	}
 	else
 	{
+		assert(firp->GetArchitectureBitWidth()==64);
 		reloc->SetOffset(0);
 		reloc->SetType("push64");
 	}
