@@ -8,11 +8,10 @@
 #include "beaengine/BeaEngine.h"
 #include <assert.h>
 #include <string.h>
-#include <elf.h>
-#include "targ-config.h"
 
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
+#include "targ-config.h"
 
 using namespace libIRDB;
 using namespace std;
@@ -444,7 +443,7 @@ classify_object_over_fdes (struct object *ob, fde *this_fde)
 void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 {
   	// Search the call-site table for the action associated with this IP.
-  	while (((int)p+(int)eh_offset) < (int)info->action_table)
+  	while (((uintptr_t)p+(uintptr_t)eh_offset) < (uintptr_t)info->action_table)
     	{
       		_Unwind_Ptr cs_start, cs_len, cs_lp;
       		_uleb128_t cs_action;
@@ -510,7 +509,7 @@ which is set here:
                                     f->pc_begin, (_Unwind_Ptr*)&func);
 
 	info->Start=func;
-	cout<<"info->Start set to "<<std::hex << (int)info->Start << endl;
+	cout<<"info->Start set to "<<std::hex << (uintptr_t)info->Start << endl;
 
 
   	// Find @LPStart, the base to which landing pad offsets are relative.
@@ -531,17 +530,17 @@ which is set here:
   	else
     		info->TType = 0;
 
-	cout<<"ttype : "<<std::hex<<((int)(info->TType))<<endl;
+	cout<<"ttype : "<<std::hex<<((uintptr_t)(info->TType))<<endl;
 
   	// The encoding and length of the call-site table; the action table
   	// immediately follows.
   	info->call_site_encoding = *p++;
 
-	cout<<"Call site encoding   " << std::hex << (int)info->call_site_encoding << endl;
+	cout<<"Call site encoding   " << std::hex << (uintptr_t)info->call_site_encoding << endl;
 
   	p = read_uleb128 (p, &tmp);
   	info->action_table = p + tmp + eh_offset;
-	cout<<"Action table: "<<std::hex<<(int)info->action_table<<endl;
+	cout<<"Action table: "<<std::hex<<(uintptr_t)info->action_table<<endl;
 
   	return p;
 }
@@ -594,7 +593,7 @@ void linear_search_fdes (struct object *ob, fde *this_fde, int offset)
 			cout<<"lsda at "<<std::hex << lsda <<endl;
 			lsda_header_info info;
 			cout.flush();
-			unsigned char* lsda_p=parse_lsda_header ((unsigned char*)((int)eh_frame_data+(int)lsda-(int)eh_frame_addr), &info, ob, this_fde);
+			unsigned char* lsda_p=parse_lsda_header ((unsigned char*)((uintptr_t)eh_frame_data+(uintptr_t)lsda-(uintptr_t)eh_frame_addr), &info, ob, this_fde);
 			print_lsda_handlers(&info, lsda_p); 
 			cout.flush();
     		}
@@ -718,7 +717,7 @@ void read_ehframe(FileIR_t* virp, ELFIO::elfio* elfiop)
 	eh_frame_addr=(void*)elfiop->sections[eh_frame_index]->get_address();
 	int total_size= 
 		(elfiop->sections[eh_frame_index+1]->get_address()+
-		 elfiop->sections[eh_frame_index+1]->get_size()   ) - (int)eh_frame_addr;
+		 elfiop->sections[eh_frame_index+1]->get_size()   ) - (uintptr_t)eh_frame_addr;
 	
 
 	// collect eh_frame and gcc_except_table into one memory region

@@ -24,8 +24,9 @@ fill_in_indtargs.exe: read_ehframe.o fill_in_indtargs.o check_thunks.o
 .cpp.o:  $< 
 	g++ $< $(INCLUDES) $(LIBS) $(OPT) -o $@ -c
 
-read_ehframe.o: read_ehframe.cpp
-	g++ -w -fpermissive $(INCLUDES) $(LIBS)  $(OPT) $^ -o $@ -c
+# shouldn't be needed anymore
+#read_ehframe.o: read_ehframe.cpp
+#	g++ -w -fpermissive $(INCLUDES) $(LIBS)  $(OPT) $^ -o $@ -c
 
 clean:
 	rm -f $(PROGS) *.o
