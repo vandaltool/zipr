@@ -60,7 +60,7 @@ fi
     # generate aspri, and assemble it to bspri
 #	echo "INT: Generate temporary aspri --> bspri for integer transform"
 #	$SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $tempcloneid $INTEGER_ASPRI 
-#	$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $INTEGER_ASPRI $INTEGER_BSPRI stratafier.o.exe
+#	$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $INTEGER_ASPRI $INTEGER_BSPRI a.ncexe stratafier.o.exe
 
 #	if [ $? -eq 0 ]; then
 		# produce list of instruction addresses that trigger an integer detector

@@ -21,7 +21,7 @@ fi
 
 #generate the bspri code
 echo "Generating bspri"
-$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $TOP_LEVEL/stratafier.o.exe $TOP_LEVEL/libstrata.so.symbols
+$SECURITY_TRANSFORMS_HOME/tools/spasm/spasm $aspri $bspri $TOP_LEVEL/a.ncexe $TOP_LEVEL/stratafier.o.exe $TOP_LEVEL/libstrata.so.symbols
 status=$?
 if [ ! $status -eq 0 ]; then
   echo "BED: spasm error -- spasm exited with non-zero status ($status)"

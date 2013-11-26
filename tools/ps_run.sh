@@ -30,13 +30,15 @@ shift 2;
 # Run the program with the proper env. vars set., and the arguments to the program specified
 #
 
-
+DO_APPFW=0
+if [ $DO_APPFW = 1 ]; then 
+	APPFW_DB=$datapath/appfw.db
+	APPFW_SIGNATURE_FILE=$datapath/a.ncexe.sigs.$$
+	LD_PRELOAD=$datapath/libappfw.so
+fi
 
 command="
-LD_PRELOAD=$datapath/libappfw.so
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$datapath
-APPFW_DB=$datapath/appfw.db
-APPFW_SIGNATURE_FILE=$datapath/a.ncexe.sigs.$$
 STRATA_WATCHDOG=0
 STRATA_NUM_HANDLE=0
 STRATA_DOUBLE_FREE=0

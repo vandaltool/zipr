@@ -29,6 +29,9 @@ intxform_warnings_only=0  # default: integer warnings only mode is off
 intxform_detect_fp=1      # default: detect benign false positives is on
                           #   but if determine_program is off, it's a no-op
 
+
+
+
 # 
 # By default, big data approach is off
 # To turn on the big data approach: modify check_options()
@@ -537,6 +540,17 @@ mkdir $newdir
 # store the original executable as a.ncexe
 cp $orig_exe $newdir/$newname.ncexe
 
+file $orig_exe|grep 32-bit >/dev/null 2>&1 
+if [ $? = 0 ]; then 
+	if [ `uname -p` = 'x86_64' ]; then
+		STRATA_HOME=$STRATA_HOME32
+		STRATA=$STRATA32
+	fi
+	arch_bits=32
+else
+	arch_bits=64
+fi
+
 #
 # setup libstrata.so.  We'll setup two versions, one with symbols so we can debug, and a stripped, faster-loading version.
 # by default, use the faster version.  copy in the .symbosl version for debugging
@@ -667,7 +681,7 @@ perform_step find_strings none $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strin
 #
 # analyze binary for string signatures
 #
-perform_step appfw none $PEASOUP_HOME/tools/do_appfw.sh $newname.ncexe logs/find_strings.log
+perform_step appfw none $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log
 
 #
 # check signatures to determine if we know which program this is.
@@ -746,7 +760,7 @@ fi
 
 # generate aspri, and assemble it to bspri
 perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
-perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri stratafier.o.exe libstrata.so.symbols
+perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri a.ncexe stratafier.o.exe libstrata.so.symbols 
 perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 
 # preLoaded_ILR step
