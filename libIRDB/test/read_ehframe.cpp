@@ -720,7 +720,14 @@ void read_ehframe(FileIR_t* virp, ELFIO::elfio* elfiop)
 		(elfiop->sections[eh_frame_index+1]->get_address()+
 		 elfiop->sections[eh_frame_index+1]->get_size()   ) - (int)eh_frame_addr;
 	
-	eh_frame_data=elfiop->sections[eh_frame_index]->get_data();
+
+	// collect eh_frame and gcc_except_table into one memory region
+        eh_frame_data=(char*)malloc(total_size);
+	memcpy(eh_frame_data,elfiop->sections[eh_frame_index]->get_data(),
+		elfiop->sections[eh_frame_index]->get_size());
+	memcpy(eh_frame_data+elfiop->sections[eh_frame_index]->get_size(),
+		elfiop->sections[eh_frame_index+1]->get_data(),
+		elfiop->sections[eh_frame_index+1]->get_size());
 
 	uintptr_t offset;
 	eh_offset=offset=(uintptr_t)eh_frame_addr-(uintptr_t)eh_frame_data;
