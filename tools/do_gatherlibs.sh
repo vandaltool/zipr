@@ -1,4 +1,4 @@
-#!/bin/sh  -x
+#!/bin/sh  
 
 #
 # note:  no trailing slashes, as the comparison will fail.
@@ -29,12 +29,23 @@ mkdir shared_objects
 rm -f shared_libs
 touch shared_libs
 
-for i in `$PEASOUP_HOME/tools/getlibs.sh a.ncexe`
+libs=`$PEASOUP_HOME/tools/getlibs.sh a.ncexe`
+
+if [ $? -ne 0 ]; then
+	echo Failed to gather all libraries.  
+	exit 1
+fi
+
+for i in  $libs
 do
 	is_safe $i 
 	if [ $? = 0 ]; then
 		echo Copying $i.
 		echo `basename $i` >> shared_libs
+		if [ ! -f $i ]; then
+			echo Missing library fille $i
+			exit 255
+		fi
 		cp $i shared_objects
 	else
 		echo "Skipping $i as it is detected as safe."
