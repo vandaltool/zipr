@@ -18,7 +18,7 @@ SUFFIX: .o32 .o64 .so32 .so64
 
 all: xqil_major xqil_minor 
 	make libappfw.so32
-	make libappfw.so64
+	if [ `uname -p` = 'x86_64' ]; then make libappfw.so64; fi
 
 
 appfw_sqlite3.c ./sqlite-autoconf-3071300/sqlite3.c ./sqlite-autoconf-3071300/sqlite3.h sqlite3.h:
