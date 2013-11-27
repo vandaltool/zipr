@@ -2,7 +2,6 @@
 /Makefile -text
 /README -text
 /README.p1 -text
-appfw/Makefile -text
 appfw/Makefile.in -text
 appfw/TODO -text
 appfw/configure -text

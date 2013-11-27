@@ -1,6 +1,0 @@
-all:
-	cd src; make all
-
-clean:
-	-rm -f lib/*.so lib/*.o lib/*.o64 lib/*.o32
-	cd src; make clean
