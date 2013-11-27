@@ -223,9 +223,9 @@ void add_new_instructions(FileIR_t *firp)
 
 
 
-        	Elf64_Off sec_hdr_off, sec_off;
-        	Elf_Half secnum, strndx, secndx;
-        	Elf_Word secsize;
+        	::Elf64_Off sec_hdr_off, sec_off;
+        	::Elf_Half secnum, strndx, secndx;
+        	::Elf_Word secsize;
 	
 		
 
