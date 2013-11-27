@@ -28,11 +28,11 @@ bool is_string_character(char c)
 
 /* the stuff we need for reading an elf file */
 typedef struct elf_info {
-       	Elf64_Off sec_hdr_off, sec_off;
-       	Elf_Half secnum, strndx;
-       	Elf_Word secsize;
+       	::Elf64_Off sec_hdr_off, sec_off;
+       	::Elf_Half secnum, strndx;
+       	::Elf_Word secsize;
 	char const **sec_data;
-	Elf64_Addr got;
+	::Elf64_Addr got;
 	elfio *elfiop;
 } elf_info_t;
 

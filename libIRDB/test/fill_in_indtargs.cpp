@@ -328,9 +328,9 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	ranges.clear();
 	targets.clear();
 
-        Elf64_Off sec_hdr_off, sec_off;
-        Elf_Half secnum, strndx, secndx;
-        Elf_Word secsize;
+        ::Elf64_Off sec_hdr_off, sec_off;
+        ::Elf_Half secnum, strndx, secndx;
+        ::Elf_Word secsize;
 
         /* Read ELF header */
         sec_hdr_off = elfiop->get_sections_offset();

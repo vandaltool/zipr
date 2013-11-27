@@ -248,8 +248,8 @@ void add_new_instructions(FileIR_t *firp)
         		if( (flags & SHF_EXECINSTR) != SHF_EXECINSTR)
                 		continue;
 		
-        		Elf64_Addr first=elfiop.sections[secndx]->get_address();
-        		Elf64_Addr second=elfiop.sections[secndx]->get_address()+elfiop.sections[secndx]->get_size();
+        		::Elf64_Addr first=elfiop.sections[secndx]->get_address();
+        		::Elf64_Addr second=elfiop.sections[secndx]->get_address()+elfiop.sections[secndx]->get_size();
 
 			/* is the missed instruction in this section */
 			if(first<=missed_address && missed_address<=second)
