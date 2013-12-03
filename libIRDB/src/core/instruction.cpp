@@ -2,6 +2,8 @@
 #include <utils.hpp>
 #include <stdlib.h> 
 #include <fstream>
+#include <sstream>
+#include <iomanip>
 
 
 using namespace libIRDB;
@@ -162,14 +164,18 @@ string Instruction_t::WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader)
 	else
 		q = ",";
 
+	ostringstream hex_data;
+	hex_data << setfill('0') << hex;;
+	for (size_t i = 0; i < data.length(); ++i)
+		hex_data << setw(2) << (int)(data[i]&0xff);
+	
 	q += string("('") + to_string(GetBaseID())            	+ string("', ") +
                 string("'") + to_string(my_address->GetBaseID())   	+ string("', ") +
                 string("'") + to_string(func_id)            		+ string("', ") +
                 string("'") + to_string(orig_address_id)         	+ string("', ") +
                 string("'") + to_string(ft_id)         			+ string("', ") +
                 string("'") + to_string(targ_id)         		+ string("', ") +
-                string("E'") + pqxx::escape_binary(data) + "'::bytea"   + string(" , ") + // no ticks for this field
-											  // also need to append ::bytea
+                string("decode('") + hex_data.str()                     + string("', 'hex'), ") +
                 string("'") + callback                              	+ string("', ") +
                 string("'") + comment                              	+ string("', ") +
                 string("'") + to_string(indirect_bt_id)                 + string("', ") +
