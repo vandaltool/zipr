@@ -12,6 +12,6 @@ cp $program.sigs $program.sigs.orig
 
 # copy application firewall library 
 # for now, it's only SQL
-cp $SECURITY_TRANSFORMS_HOME/appfw/lib/libappfw.so$(bits) libappfw.so
+cp $SECURITY_TRANSFORMS_HOME/appfw/lib/libappfw.so${bits} libappfw.so
 
 $PEASOUP_HOME/tools/update_env_var.sh DO_APPFW 1
