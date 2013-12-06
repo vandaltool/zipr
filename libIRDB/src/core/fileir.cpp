@@ -460,6 +460,36 @@ void FileIR_t::WriteToDB()
 	q=string("");
 	for(std::set<Instruction_t*>::const_iterator i=insns.begin(); i!=insns.end(); ++i)
 	{	
+		Instruction_t const * const insnp=*i;
+		DISASM disasm;
+		insnp->Disassemble(disasm);
+
+		// we have a few new requirements for instructions that doesn't correspond to original program insns.
+		if(insnp->GetOriginalAddressID() == NOT_IN_DATABASE)
+		{
+
+			if(insnp->GetFallthrough()==NULL && 
+				disasm.Instruction.BranchType!=RetType && disasm.Instruction.BranchType!=JmpType )
+			{
+				// instructions that fall through are required to either specify a fallthrough that's
+				// in the IRDB, or have an associated "old" instruction.  
+				// without these bits of information, the new instruction can't possibly execute correctly.
+				// and we won't have the information necessary to emit spri.
+				assert(0);
+				abort();
+			}
+			if(insnp->GetTarget()==NULL && disasm.Instruction.BranchType!=0 && 
+				disasm.Instruction.BranchType!=RetType )
+			{
+				// instructions that jump are required to either specify a target that's
+				// in the IRDB, or have an associated "old" instruction.  
+				// without these bits of information, the new instruction can't possibly execute correctly.
+				// and we won't have the information necessary to emit spri.
+				assert(0);
+				abort();
+			}
+		}
+
 		q+=(*i)->WriteToDB(fileptr,j,withHeader);
 		withHeader = false;
 		if(q.size()>1024*1024)

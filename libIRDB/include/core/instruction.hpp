@@ -38,7 +38,7 @@ class Instruction_t : public BaseObj_t
 
 	void WriteToDB() { assert(0); }
         std::string WriteToDB(File_t *fid, db_id_t newid, bool p_withHeader);
-        int Disassemble(DISASM &d); 
+        int Disassemble(DISASM &d) const; 
 	std::string getDisassembly();
         bool Assemble(std::string assembly);
 

@@ -48,7 +48,8 @@ Instruction_t::Instruction_t(db_id_t id,
 	target=NULL;
 }
 
-int Instruction_t::Disassemble(DISASM &disasm){
+int Instruction_t::Disassemble(DISASM &disasm) const
+{
  
   	memset(&disasm, 0, sizeof(DISASM));
   
