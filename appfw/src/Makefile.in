@@ -14,7 +14,7 @@ OBJS32=$(subst .o,.o32, $(OBJS))
 OBJS64=$(subst .o,.o64, $(OBJS))
 
 
-SUFFIX: .o32 .o64 .so32 .so64
+.SUFFIXES: .o32 .o64 .so32 .so64
 
 all: xqil_major xqil_minor 
 	make libappfw.so32
