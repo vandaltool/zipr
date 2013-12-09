@@ -482,10 +482,12 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 	list<char*>::iterator next;
 
 	int list_depth=0;
-
 	struct timeval blah;
-	gettimeofday(&blah,NULL);
-	fprintf(stdout, "start: %d:%d ", blah.tv_sec, blah.tv_usec);
+	if(verbose)
+	{
+		gettimeofday(&blah,NULL);
+		fprintf(stdout, "start: %d:%d ", blah.tv_sec, blah.tv_usec);
+	}
 	
 	/* iterate the list */
 	for(list<char*>::iterator it=sorted_sigs->begin(); it!=sorted_sigs->end();  it=next)
@@ -520,7 +522,8 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 					/* move to front */
 					if(it!=sorted_sigs->begin())
 					{
-						fprintf(stderr,"moving to front\n");
+						if(verbose)
+							fprintf(stderr,"moving to front\n");
 						sorted_sigs->erase(it);
 						sorted_sigs->push_front(sig);
 					}
@@ -532,9 +535,9 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 						{
 							fprintf(stderr,"fixed ALL violations, list size=%d, iterated to %d\n", sorted_sigs->size(), list_depth);
 							fflush(stderr);
+							gettimeofday(&blah,NULL);
+							fprintf(stdout, "end: %d:%d ", blah.tv_sec, blah.tv_usec);
 						}
-						gettimeofday(&blah,NULL);
-						fprintf(stdout, "end: %d:%d ", blah.tv_sec, blah.tv_usec);
 						return TRUE;
 					}
 				}
@@ -545,6 +548,8 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 		}
 	}
 	if(verbose)
+	{
 		fprintf(stderr,"failed to fix all violations, %d remain\n", violations);
+	}
 	return FALSE;
 }
