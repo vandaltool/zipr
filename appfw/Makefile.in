@@ -2,5 +2,5 @@ all:
 	cd src; make all
 
 clean:
-	-rm -f lib/*.so lib/*.o lib/*.o64 lib/*.o32
+	-rm -f lib/*.so lib/*.o lib/*.o64 lib/*.o32 lib/*.so32 lib/*.so64
 	cd src; make clean
