@@ -5,8 +5,6 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step concolic=off 		\
 	--step p1transform=off 		\
 	--step integertransform=off 	\
-	--step preLoaded_ILR1=off 	\
-	--step preLoaded_ILR2=off 	\
 	--step fast_annot=off 		\
 	--step ibtc=off 		\
 	--step sieve=off 		\
@@ -15,5 +13,10 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	\
 	--step watchdog=off 		\
 	--step signconv_func_monitor=off\
 	--step rekey=off	 	\
+
+
+
+#	--step preLoaded_ILR1=off 	\
+#	--step preLoaded_ILR2=off 	\
 
 

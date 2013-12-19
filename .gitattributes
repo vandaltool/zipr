@@ -118,7 +118,14 @@ stock_examples/xpdf.stock -text
 stock_examples/xpdfsrc.stock -text
 stock_examples64/Makefile -text
 stock_examples64/bzip2.stock -text
+stock_examples64/gedit.stock -text
+stock_examples64/grep.stock -text
+stock_examples64/less.stock -text
+stock_examples64/synaptic.stock -text
+stock_examples64/vita.pdf -text
 stock_examples64/xcalc.stock -text
+stock_examples64/xedit.stock -text
+stock_examples64/xeyes.stock -text
 tests/bunzip2 -text
 tests/bzip2/data/compression_input1 -text
 tests/bzip2/data/decompression_input1 -text
