@@ -76,7 +76,7 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
     query += " (address_id, file_id, vaddress_offset) VALUES ";
 
     string query2 = "INSERT INTO " + instructionTable;
-    query2 += " (instruction_id,address_id, parent_function_id, orig_address_id, data, comment) VALUES ";
+    query2 += " (instruction_id,address_id, ind_target_address_id, parent_function_id, orig_address_id, data, comment) VALUES ";
 
     for (int j = i; j < i + STRIDE; ++j)
     {
@@ -84,9 +84,12 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
       wahoo::Instruction *instruction = instructions[j];
       app_iaddr_t   addr = instruction->getAddress();
 
+      int ind_target_address=instruction->getIBTAddress();
+
       address_to_instructionid_map[addr]=j;
 
       int address_id = next_address_id++;
+
 
       // insert into address table
       if (j != i) query += ",";
@@ -97,6 +100,19 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
       query += txn.quote(string(buf));
       query += ")";
 
+      if(ind_target_address!=0)
+      {
+        query += ",";
+	ind_target_address= next_address_id++;
+        query += "(";
+        query += txn.quote(ind_target_address) + ",";
+        query += txn.quote(fileID) + ",";
+        sprintf(buf,"%lld", (long long)addr);
+        query += txn.quote(string(buf));
+        query += ")";
+      }
+      else 
+	ind_target_address=-1;
 
       int parent_function_id = -1;
       if (instruction->getFunction())
@@ -109,7 +125,8 @@ void insert_instructions(int fileID, vector<wahoo::Instruction*> instructions, v
       if (j != i ) query2 += ",";
       query2 += "(";
       query2 += txn.quote(my_to_string(j)) + ",";
-      query2 += txn.quote(address_id) + ","; // j is the address id
+      query2 += txn.quote(address_id) + ","; // the address id
+      query2 += txn.quote(ind_target_address) + ","; // the IBT address id
       query2 += txn.quote(parent_function_id) + ","; 
       query2 += txn.quote(orig_address_id) + ","; 
 
@@ -238,9 +255,9 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
 
 int main(int argc, char **argv)
 {
-  	if (argc != 7)
+  	if (argc != 8)
   	{
-    		cerr << "usage: " << argv[0] << " <annotations file> <file id> <func tab name> <insn tab name> <addr tab name> <elf file>" << endl;
+    		cerr << "usage: " << argv[0] << " <annotations file> <file id> <func tab name> <insn tab name> <addr tab name> <elf file> <STARSxref file>" << endl;
     		return 1;
   	}
 
@@ -250,6 +267,7 @@ int main(int argc, char **argv)
   	char *myInstructionTable=argv[4];
   	char *myAddressTable=argv[5];
   	char *elfFile=argv[6];
+  	char *starsXrefFile=argv[7];
 
 	cout<<"Annotation file: "<< annotFile<<endl;
 	cout<<"File ID: "<< fid<<endl;
@@ -263,7 +281,7 @@ int main(int argc, char **argv)
 	instructionTable=myInstructionTable;
 
 
-  	Rewriter *rewriter = new Rewriter(elfFile, annotFile);
+  	Rewriter *rewriter = new Rewriter(elfFile, annotFile, starsXrefFile);
 
   	int fileID = atoi(fid);
 	if(fileID<=0)

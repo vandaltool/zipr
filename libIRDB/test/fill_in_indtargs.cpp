@@ -145,9 +145,6 @@ void mark_targets(FileIR_t *firp)
 			insn->SetIndirectBranchTargetAddress(newaddr);
 			firp->GetAddresses().insert(newaddr);
 		}
-		else
-			insn->SetIndirectBranchTargetAddress(NULL);
-		
 	}
 
 }
@@ -323,6 +320,19 @@ void add_num_handle_fn_watches(FileIR_t * firp)
 
 void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 {
+	if(getenv("VERBOSE")!=0)
+        	for(
+                	set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                	it!=firp->GetInstructions().end();
+                	++it
+           	)
+		{
+			Instruction_t* insn=*it;
+			if(insn->GetIndirectBranchTargetAddress())
+				cout<<"Insn at "<<insn->GetAddress()->GetVirtualOffset()<<" already has ibt "<<
+					insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
+			
+		}
 	// reset global vars
 	bounds.clear();
 	ranges.clear();

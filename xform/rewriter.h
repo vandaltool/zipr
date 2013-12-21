@@ -7,7 +7,7 @@ using namespace std;
 class Rewriter
 {
   public:
-    Rewriter(char *p_elf, char *p_annotationFile);
+    Rewriter(char *p_elf, char *p_annotationFile, char* xrefFile=NULL);
     ~Rewriter();
 
     virtual vector<wahoo::Function*> getAllFunctions();
@@ -20,6 +20,7 @@ class Rewriter
 
   protected:
     void readAnnotationFile(char []);
+    void readXrefsFile(char []);
     void readElfFile(char []);
     ElfReader *getElfReader() { return m_elfReader; }
     FILE* getAsmSpri() { return m_spri; };

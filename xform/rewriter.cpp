@@ -10,13 +10,14 @@
 
 using namespace std;
 
-Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath)
+Rewriter::Rewriter(char *p_elfPath, char *p_annotationFilePath, char* p_xrefFilePath)
 {
   m_elfReader = new ElfReader(p_elfPath);
 
   // parse file and build up all the data structures
   readAnnotationFile(p_annotationFilePath);
   readElfFile(p_elfPath);
+  readXrefsFile(p_xrefFilePath);
 }
 
 Rewriter::~Rewriter()
@@ -548,6 +549,78 @@ after_loop:
 
   // for each instruction in a function, dissassemble and stash away assembly string
 	dissassemble();
+}
+
+void Rewriter::readXrefsFile(char p_filename[])
+{
+	vector<wahoo::Instruction*> instructions=getAllInstructions(); 
+	map<app_iaddr_t,wahoo::Instruction*> addr_to_insn_map;
+    	for (int j = 0; j < instructions.size(); ++j)
+    	{
+      		wahoo::Instruction *instr = instructions[j];
+		assert(instr);
+		addr_to_insn_map[instr->getAddress()]=instr;
+	}
+
+
+        FILE* fin=fopen(p_filename, "r");
+
+        if(!fin)
+        {
+                fprintf(stderr,"Cannot open xref enotation file %s\n", p_filename);
+                return;
+        }
+
+	int line=0;
+
+	app_iaddr_t addr = 0;
+	union { int size, type;} size_type_u;
+	char type[200];
+	char scope[200];
+	char ibt[200];
+	char fromib[200];
+	char dest[200];
+	do
+	{
+
+
+                fscanf(fin, "%p %d\n", (void**)&addr, &size_type_u.size);
+
+                if(feof(fin))           // deal with blank lines at the EOF
+                        break;
+		fscanf(fin, "%s%s", type,scope);
+
+		assert(strcmp(type,"INSTR")==0);
+		assert(strcmp(scope,"XREF")==0);
+		fscanf(fin, "%s%s%s", ibt,fromib,dest);
+		assert(strcmp(ibt,"IBT")==0);
+		assert(strcmp(fromib,"FROMIB")==0);
+	
+		
+      		wahoo::Instruction *instr = addr_to_insn_map[addr];
+		if(instr)
+		{
+			// cout<<"Setting IBT for addr "<<std::hex<<addr<<std::dec<<endl;
+			instr->setIBTAddress(addr);
+		}
+		else
+		{
+			cerr<<"Warning, instruction at "<<std::hex<<addr<<std::dec<<" not in db?"<<endl;
+		}
+		
+		char remainder[2000];
+		fgets(remainder, sizeof(remainder), fin);
+		line++;
+	
+
+	} while(!feof(fin));
+	fclose(fin);
+
+
+
+
+
+
 }
 
 /*
