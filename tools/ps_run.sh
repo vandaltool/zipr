@@ -31,7 +31,7 @@ shift 2;
 #
 
 DO_APPFW=0
-if [ $DO_APPFW = 1 ]; then 
+if [ "$DO_APPFW" = "1" ]; then 
 	APPFW_DB=$datapath/appfw.db
 	APPFW_SIGNATURE_FILE=$datapath/a.ncexe.sigs.$$
 	LD_PRELOAD=$datapath/libappfw.so
@@ -60,6 +60,7 @@ STRATA_EXE_FILE=$datapath/a.stratafied
 STRATA_MAX_WARNINGS=500000
 	exec -a $origbinpath $datapath/a.stratafied \"\$@\""
 
+if [ "$DO_APPFW" = "1" ]; then
 #
 # setup signatures for appfw
 #
@@ -101,6 +102,7 @@ if [ ! -g a.ncexe -a ! -u a.ncexe ]; then
 fi
 
 unset addsigs
+fi
 
 #
 #  If STRATA_LOG is clear, no additional logging was requested, and we just always need to log to a file.
