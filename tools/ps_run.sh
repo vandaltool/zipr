@@ -37,6 +37,11 @@ if [ "$DO_APPFW" = "1" ]; then
 	LD_PRELOAD=$datapath/libappfw.so
 fi
 
+DO_TWITCHER=0
+if [ "DO_TWITCHER" = "1" ]; then
+	LD_PRELOAD=$LD_PRELOAD:$BOOST_HOME/lib/libboost_system.so:$BOOST_HOME/lib/libboost_thread.so:$datapath/libtwitcher_malloc.so
+fi
+
 command="
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$datapath
 STRATA_WATCHDOG=0
