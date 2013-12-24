@@ -16,6 +16,7 @@ errors=0
 
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
+TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
 # Setting PN timeout to 6 hours for TNE. 
 PN_TIMEOUT_VALUE=21600
 
@@ -240,6 +241,12 @@ check_options()
 
 	# turn off isr
 	phases_off="$phases_off isr=off"
+
+	# turn off heaprand and double_free if twitcher is on for now
+	is_step_on twitchertransform
+	if [[ $? = 1 && "$TWITCHER_HOME" != "" ]]; then
+		phases_off="$phases_off heaprand=off double_free=off"
+	fi
 }
 
 
@@ -751,6 +758,12 @@ fi
 perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp
 #perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
 
+#
+# Do Twitcher transform step if twitcher is present
+#
+if [[ "$TWITCHER_HOME" != "" && -d "$TWITCHER_HOME" ]]; then
+	perform_step twitchertransform none $TWITCHER_HOME/twitcher-transform/do_twitchertransform.sh $cloneid $program $CONCOLIC_DIR $TWITCHER_TRANSFORM_TIMEOUT_VALUE
+fi
 
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR
