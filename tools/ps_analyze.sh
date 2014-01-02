@@ -599,7 +599,7 @@ perform_step detect_server  pc_confine  $PEASOUP_HOME/tools/update_env_var.sh ST
 perform_step ibtc  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_IBTC 0
 perform_step rekey  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_REKEY_AFTER 5000
 perform_step sieve  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_SIEVE 1
-perform_step return_cache  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_RETURN_CACHE 1
+perform_step return_cache  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_RC 1
 perform_step partial_inlining  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PARTIAL_INLINING 0
 perform_step double_free heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
 perform_step pc_confine  none $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
