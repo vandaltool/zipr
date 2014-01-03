@@ -83,43 +83,80 @@ void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p
 	string dataBits;
 	dataBits.resize(1);
 
-	if (p_reg == Register::EAX)
+	if (p_reg == Register::EAX || p_reg == Register::RAX)
 	{
 		dataBits[0] = 0x50; 
 	} 
-	else if (p_reg == Register::EBX)
+	else if (p_reg == Register::EBX || p_reg == Register::RBX)
 	{
 		dataBits[0] = 0x53; 
 	} 
-	else if (p_reg == Register::ECX)
+	else if (p_reg == Register::ECX || p_reg == Register::RCX)
 	{
 		dataBits[0] = 0x51; 
 	}
-	else if (p_reg == Register::EDX)
+	else if (p_reg == Register::EDX || p_reg == Register::RDX)
 	{
 		dataBits[0] = 0x52; 
 	}
-	else if (p_reg == Register::ESI)
+	else if (p_reg == Register::ESI || p_reg == Register::RSI)
 	{
 		dataBits[0] = 0x56; 
 	}
-	else if (p_reg == Register::EDI)
+	else if (p_reg == Register::EDI || p_reg == Register::RDI)
 	{
 		dataBits[0] = 0x57; 
 	}
-	else if (p_reg == Register::EBP)
+	else if (p_reg == Register::EBP || p_reg == Register::RBP)
 	{
 		dataBits[0] = 0x55; 
 	}
-	else if (p_reg == Register::ESP)
+	else if (p_reg == Register::ESP || p_reg == Register::RSP)
 	{
 		dataBits[0] = 0x54; 
 	}
 	else
 	{
-		cerr << "Transform::addPushRegister: unhandled register: " << p_reg << endl;
-		assert(0);
-		return;
+		dataBits.resize(2);
+		dataBits[0] = 0x41;
+		if (p_reg == Register::R8)
+		{
+			dataBits[1] = 0x50;
+		} 
+		else if (p_reg == Register::R9)
+		{
+			dataBits[1] = 0x51;
+		} 
+		else if (p_reg == Register::R10)
+		{
+			dataBits[1] = 0x52;
+		} 
+		else if (p_reg == Register::R11)
+		{
+			dataBits[1] = 0x53;
+		} 
+		else if (p_reg == Register::R12)
+		{
+			dataBits[1] = 0x54;
+		} 
+		else if (p_reg == Register::R13)
+		{
+			dataBits[1] = 0x55;
+		} 
+		else if (p_reg == Register::R14)
+		{
+			dataBits[1] = 0x56;
+		} 
+		else if (p_reg == Register::R15)
+		{
+			dataBits[1] = 0x57;
+		}
+		else
+		{
+			cerr << "Transform::addPushRegister: unhandled register: " << p_reg << endl;
+			assert(0);
+			return;
+		}
 	}
 
 	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
@@ -130,43 +167,80 @@ void Transform::addPopRegister(Instruction_t *p_instr, Register::RegisterName p_
 	string dataBits;
 	dataBits.resize(1);
 
-	if (p_reg == Register::EAX)
+	if (p_reg == Register::EAX || p_reg == Register::RAX)
 	{
 		dataBits[0] = 0x58; 
 	} 
-	else if (p_reg == Register::EBX)
+	else if (p_reg == Register::EBX || p_reg == Register::RBX)
 	{
 		dataBits[0] = 0x5b; 
 	} 
-	else if (p_reg == Register::ECX)
+	else if (p_reg == Register::ECX || p_reg == Register::RCX)
 	{
 		dataBits[0] = 0x59; 
 	}
-	else if (p_reg == Register::EDX)
+	else if (p_reg == Register::EDX || p_reg == Register::RDX)
 	{
 		dataBits[0] = 0x5a; 
 	}
-	else if (p_reg == Register::ESI)
+	else if (p_reg == Register::ESI || p_reg == Register::RSI)
 	{
 		dataBits[0] = 0x5e; 
 	}
-	else if (p_reg == Register::EDI)
+	else if (p_reg == Register::EDI || p_reg == Register::RDI)
 	{
 		dataBits[0] = 0x5f; 
 	}
-	else if (p_reg == Register::EBP)
+	else if (p_reg == Register::EBP || p_reg == Register::RBP)
 	{
 		dataBits[0] = 0x5d; 
 	}
-	else if (p_reg == Register::ESP)
+	else if (p_reg == Register::ESP || p_reg == Register::RSP)
 	{
 		dataBits[0] = 0x5c; 
 	}
 	else
 	{
-		cerr << "Transform::addPopRegister: unhandled register";
-		assert(0);
-		return;
+		dataBits.resize(2);
+		dataBits[0] = 0x41;
+		if (p_reg == Register::R8)
+		{
+			dataBits[1] = 0x58;
+		} 
+		else if (p_reg == Register::R9)
+		{
+			dataBits[1] = 0x59;
+		} 
+		else if (p_reg == Register::R10)
+		{
+			dataBits[1] = 0x5a;
+		} 
+		else if (p_reg == Register::R11)
+		{
+			dataBits[1] = 0x5b;
+		} 
+		else if (p_reg == Register::R12)
+		{
+			dataBits[1] = 0x5c;
+		} 
+		else if (p_reg == Register::R13)
+		{
+			dataBits[1] = 0x5d;
+		} 
+		else if (p_reg == Register::R14)
+		{
+			dataBits[1] = 0x5e;
+		} 
+		else if (p_reg == Register::R15)
+		{
+			dataBits[1] = 0x5f;
+		}
+		else
+		{
+			cerr << "Transform::addPopRegister: unhandled register";
+			assert(0);
+			return;
+		}
 	}
 
 	addInstruction(p_instr, dataBits, p_fallThrough, NULL);
