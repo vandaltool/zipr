@@ -479,9 +479,12 @@ void FileIR_t::WriteToDB()
 				abort();
 			}
 			if(insnp->GetTarget()==NULL && disasm.Instruction.BranchType!=0 && 
-				disasm.Instruction.BranchType!=RetType )
+				disasm.Instruction.BranchType!=RetType &&
+				// not an indirect branch
+				((disasm.Instruction.BranchType!=JmpType && disasm.Instruction.BranchType!=CallType) ||
+				 disasm.Argument1.ArgType&CONSTANT_TYPE))
 			{
-				// instructions that jump are required to either specify a target that's
+				// direct branches are required to either specify a target that's
 				// in the IRDB, or have an associated "old" instruction.  
 				// without these bits of information, the new instruction can't possibly execute correctly.
 				// and we won't have the information necessary to emit spri.
