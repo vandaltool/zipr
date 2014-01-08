@@ -5,6 +5,7 @@ using namespace libIRDB;
 map<Function_t*, set<Instruction_t*> > inserted_instr; //used to undo inserted instructions
 map<Function_t*, set<AddressID_t*> > inserted_addr; //used to undo inserted addresses
 
+
 void setExitCode(FileIR_t* virp, Instruction_t* exit_code);
 
 //For all insertBefore functions:
@@ -15,6 +16,16 @@ void setExitCode(FileIR_t* virp, Instruction_t* exit_code);
 Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string assembly, Instruction_t *target)
 {
 	Instruction_t* next = copyInstruction(virp,first);
+
+	//In case the fallthrough is null, generate spri has to have a 
+	//place to jump, which is determined by the original address.
+	//This code is not placed in copyInstruction since this is only needed
+	//when inserting before
+	next->SetOriginalAddressID(first->GetOriginalAddressID());
+	//"Null" out the original address (it should be as if the instruction was not in the database).
+	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
+
+
 	virp->ChangeRegistryKey(first,next);
 	setInstructionAssembly(virp,first,assembly,next,target);
 
@@ -34,6 +45,15 @@ Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string
 Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string dataBits, Instruction_t *target)
 {
 	Instruction_t* next = copyInstruction(virp,first);
+
+	//In case the fallthrough is null, generate spri has to have a 
+	//place to jump, which is determined by the original address.
+	//This code is not placed in copyInstruction since this is only needed
+	//when inserting before
+	next->SetOriginalAddressID(first->GetOriginalAddressID());
+	//"Null" out the original address (it should be as if the instruction was not in the database).
+	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
+
 	setInstructionDataBits(virp,first,dataBits,next,target);
 
 	return next;	
@@ -81,15 +101,7 @@ Instruction_t* copyInstruction(FileIR_t* virp, Instruction_t* instr)
 {
 	Instruction_t* cpy = allocateNewInstruction(virp,instr);
 
-	cpy->SetDataBits(instr->GetDataBits());
-	cpy->SetComment(instr->GetComment());
-	cpy->SetCallback(instr->GetCallback());
-	cpy->SetFallthrough(instr->GetFallthrough());
-	cpy->SetTarget(instr->GetTarget());
-
-	//In case the fallthrough is null, generate spri has to have a 
-	//place to jump, which is determined by the original address. 
-//	cpy->SetOriginalAddressID(instr->GetOriginalAddressID());
+	copyInstruction(instr,cpy);
 
 	return cpy;
 }
@@ -238,10 +250,19 @@ Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsi
 
 	ss<<"0x"<<hex<<esp_offset<<"], 0x"<<hex<<canary_val;
 
-	Instruction_t* cpy = copyInstruction(virp,first);
-	setInstructionAssembly(virp,first,ss.str(),cpy,NULL);
+	//Insert the cmp before 
+	Instruction_t* next = insertAssemblyBefore(virp,first,ss.str());
+	//Then insert the jmp after the compare. 
+	//The fallthrough of the inserted jmp will be a copy of the original
+	//instruction, still pointed to by "first".
 	insertDataBitsAfter(virp,first,getJnzDataBits(),fail_code);
 	first->SetComment("Canary Check: "+first->GetComment());
 
-	return cpy;
+	return next;
+
+	// Instruction_t* cpy = copyInstruction(virp,first);
+	// setInstructionAssembly(virp,first,ss.str(),cpy,NULL);
+	// insertDataBitsAfter(virp,first,getJnzDataBits(),fail_code);
+	// first->SetComment("Canary Check: "+first->GetComment());
+	// return cpy;
 }
