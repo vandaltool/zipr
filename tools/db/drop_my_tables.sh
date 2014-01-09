@@ -17,11 +17,24 @@ grace_inpttables=`psql -t -q -c "select tablename from pg_tables where tablename
 grace_covgtables=`psql -t -q -c "select tablename from pg_tables where tablename like '%_coverage';"`
 othertables="variant_dependency variant_info file_info doip"
 
+droptabs=""
+dropcnt=0
+
 for  i in $insntables $addrtables $functables $relocstables $grace_inpttables $grace_covgtables $othertables
 do
-	echo --------------------------------------------------------------------------
-	echo -n Dropping table $i..." "
-	psql -t -q -c "drop table $i cascade;"
-	echo Done.
-	echo --------------------------------------------------------------------------
+
+	echo Dropping table $i..." "
+	droptabs="$droptabs drop table $i cascade;"
+	dropcnt=$(expr $dropcnt + 1)
+	if [ $dropcnt -gt 1000 ]; then
+		echo --------------------------------------------------------------------------
+		echo issuing command
+		psql -t -q -c "$droptabs"
+		echo Done.
+		echo --------------------------------------------------------------------------
+		dropcnt=0
+		droptabs=""
+	fi
 done
+echo dropping bonus tabs
+psql -t -q -c "$droptabs"
