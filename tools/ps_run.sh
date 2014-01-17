@@ -30,20 +30,25 @@ shift 2;
 # Run the program with the proper env. vars set., and the arguments to the program specified
 #
 
+command=""
+APP_LD_PRELOAD="$LD_PRELOAD"
+
 DO_APPFW=0
 if [ "$DO_APPFW" = "1" ]; then 
-	APPFW_DB=$datapath/appfw.db
-	APPFW_SIGNATURE_FILE=$datapath/a.ncexe.sigs.$$
-	LD_PRELOAD=$datapath/libappfw.so
+	command="$command 
+		APPFW_DB=$datapath/appfw.db
+		APPFW_SIGNATURE_FILE=$datapath/a.ncexe.sigs.$$
+	"
+	APP_LD_PRELOAD="$datapath/libappfw.so $APP_LD_PRELOAD"
 fi
 
 DO_TWITCHER=0
 if [ "$DO_TWITCHER" = "1" ]; then
-	LD_PRELOAD=$LD_PRELOAD:$BOOST_HOME/lib/libboost_system.so:$BOOST_HOME/lib/libboost_thread.so:$datapath/libtwitcher_malloc.so
+	LD_PRELOAD=$BOOST_HOME/lib/libboost_system.so:$BOOST_HOME/lib/libboost_thread.so:$datapath/libtwitcher_malloc.so:$APP_LD_PRELOAD
 fi
 
-command="
-LD_PRELOAD=$LD_PRELOAD
+command="$command
+LD_PRELOAD=$APP_LD_PRELOAD
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$datapath
 STRATA_WATCHDOG=0
 STRATA_NUM_HANDLE=0
