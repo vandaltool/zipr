@@ -3200,6 +3200,7 @@ tools/manual_cover.sh -text
 tools/manual_coverage_wrapper.sh -text
 tools/manual_test_import.sh -text
 tools/match_program.sh -text
+tools/my_timeout.sh -text
 tools/p1xform.filter.deprecated.sh -text
 tools/p1xform.pbed.deprecated.sh -text
 tools/p1xform_v2.sh -text
