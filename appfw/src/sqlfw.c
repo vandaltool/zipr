@@ -11,6 +11,7 @@
 #include "sqlfw.h"
 
 static const char *dbPathEnv = "APPFW_DB";
+static const char *DEFAULT_APPFW_FILE = "appfw.db";
 static appfw_sqlite3 *peasoupDB = NULL;
 static int sqlfw_initialized = 0;
 
@@ -18,18 +19,26 @@ static int sqlfw_initialized = 0;
 // environment variable specifies signature file location
 void sqlfw_init()
 {
-  if (sqlfw_isInitialized()) return;
+	if (sqlfw_isInitialized()) return;
 
  
 	if (getenv("APPFW_VERBOSE"))
 		fprintf(stderr, "appfw::sqlfw_init(): called\n");
-  appfw_init();
+	appfw_init();
 
-  if (appfw_isInitialized() && getenv(dbPathEnv))
-  {
-    if (appfw_sqlite3_open(getenv(dbPathEnv), &peasoupDB) == SQLITE_OK)
-      sqlfw_initialized = 1;
-  }
+	if (appfw_isInitialized())
+	{
+		if (getenv(dbPathEnv))
+		{
+			if (appfw_sqlite3_open(getenv(dbPathEnv), &peasoupDB) == SQLITE_OK)
+				sqlfw_initialized = 1;
+		}	
+		else
+		{
+			if (appfw_sqlite3_open(DEFAULT_APPFW_FILE, &peasoupDB) == SQLITE_OK)
+				sqlfw_initialized = 1;
+		}
+	}
 }
 
 // returns whether initialized

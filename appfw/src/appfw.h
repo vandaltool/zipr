@@ -11,6 +11,7 @@ typedef struct matched_record {
 } matched_record;
 
 void appfw_init();               // load/initialize signature patterns off signature file (specified via env. variable)  
+void appfw_init_from_file(const char *p_file);
 int appfw_isInitialized();
 int appfw_getNumSignatures();    // returns number of signature patterns
 char **appfw_getSignatures();    // returns array containing signature patterns

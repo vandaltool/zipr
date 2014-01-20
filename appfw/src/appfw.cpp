@@ -117,6 +117,58 @@ void appfw_init_ctor()
 	}
 }
 
+extern "C" int _read_signatures_from_file(const char *p_file)
+{
+	int numSigs = 0;
+	int verbose=0;
+	if(getenv("APPFW_VERBOSE"))
+		verbose=1;
+
+	FILE *sigF = fopen(p_file, "r");
+	if (sigF)
+	{
+		char buf[MAX_SIGNATURE_SIZE];
+
+		fw_sigs = (char**)malloc(sizeof(char*) * fw_size);
+		assert( fw_sigs != NULL );
+
+		while (fgets(buf, MAX_SIGNATURE_SIZE, sigF) != NULL)
+		{
+			if (strlen(buf) > 1) // don't want "\n" by itself
+			{
+				if (numSigs == fw_size)
+				{
+					char **new_p;
+					fw_size *= 2;
+					new_p = (char**)realloc(fw_sigs, sizeof(char*) * fw_size);
+					assert( new_p != NULL );
+					fw_sigs = new_p;
+				}
+				fw_sigs[numSigs] = (char *) malloc(strlen(buf) + 1);
+				assert( fw_sigs[numSigs] != NULL );
+				strncpy(fw_sigs[numSigs], buf, strlen(buf));
+				fw_sigs[numSigs][strlen(buf)-1] = '\0';
+
+				if(verbose && getenv("VERY_VERBOSE"))
+					fprintf(stderr,"read sig[%d]: %s (%d)\n", numSigs, fw_sigs[numSigs], (int)strlen(fw_sigs[numSigs]));
+
+				numSigs++;
+			}
+		}
+
+		fw_numPatterns = numSigs;
+		fclose(sigF);
+		if(verbose)
+			fprintf(stderr, "Proc %d: appfw init finished, nsigs=%d\n", getpid(),numSigs);
+	}
+	else
+	{
+		fprintf(stderr, "no signature file found from proc %d\n", getpid());
+	}
+
+	return numSigs;
+}
+
 // read in signature file
 // environment variable specifies signature file location
 extern "C" void appfw_init()
@@ -186,6 +238,17 @@ extern "C" void appfw_init()
 
 	fflush(stderr);
 }
+
+extern "C" void appfw_init_from_file(const char *p_file)
+{
+	if (appfw_isInitialized()) return;
+
+	reset_sig_file_env_var();
+
+	if (_read_signatures_from_file(p_file) > 0)
+		appfw_initialized = 1;
+}
+
 
 extern "C" int appfw_isInitialized()
 {
