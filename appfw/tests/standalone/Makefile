@@ -3,7 +3,7 @@ APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so64
 all: sqlattackdetect.exe 
 
 sqlattackdetect.o: sqlattackdetect.c
-	gcc -c sqlattackdetect.c
+	gcc -c -I../../src sqlattackdetect.c
 
 sqlattackdetect.exe: sqlattackdetect.o
 	gcc sqlattackdetect.o -o sqlattackdetect.exe $(APPFW_LIB)

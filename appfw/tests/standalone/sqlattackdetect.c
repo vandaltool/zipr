@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include "appfw.h"
+#include "sqlfw.h"
 
 const int EXIT_CODE_ATTACK_DETECTED = 0;
 const int EXIT_CODE_NO_ATTACK = 1;
