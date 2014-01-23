@@ -298,7 +298,7 @@ stop_if_error()
 			return 1;
 		;;
 		# DB operations are necessary 
-		pdb_register|clone|fix_calls|fill_in_indtargs|spasm,fast_spri,generate_spri|spasm)
+		pdb_register|clone|fix_calls|fill_in_indtargs|spasm|fast_spri|generate_spri|spasm|stratafy_with_pc_confine)
 			return 2;
 		;;
 		gather_libraries)

@@ -16,7 +16,7 @@ all: env_check  ${protected_exes}
 
 
 .stock.protected: .PHONY
-	${PEASOUP_HOME}/tools/ps_analyze64.sh $< $@   --step ilr=off
+	${PEASOUP_HOME}/tools/ps_analyze64.sh $< $@   
 
 $(protected_exes): ${STRATA}/lib/x86_64_linux/libstrata.a .PHONY
 
