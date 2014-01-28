@@ -28,11 +28,13 @@ OBJS= instruction_descriptor.o function_descriptor.o elfreader.o null_transform.
 	$(CC) $(CFLAGS) $(INCLUDE) -c $<
 
 
-all: $(LIB) 
+all: ../lib/$(LIB)
 	echo $(LIB) build complete
 
 $(LIB): $(OBJS)
 	ar -r $(LIB) $(OBJS) 
+
+../lib/$(LIB): $(LIB)
 	cp $(LIB) ../lib/
 
 clean:
