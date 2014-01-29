@@ -149,6 +149,10 @@ cat $tmpFile $tmpFile2 | sed 's/^[ \t]*//;s/[ \t]*$//' | sort | uniq > $tmpFile6
 #
 comm -2 -3 $tmpFile6 $tmpSymbols | awk '{print length, $0}' | sort -nr | cut -d ' ' -f 2- > $finalSigFile
 
+for i in `echo $PATH|sed "s/:/ /g"`; do
+	echo $i >> $finalSigFile	
+done
+
 # et voila, output file $finalSigFile contains the final reverse sorted set of patterns
 
 # now cleanup
