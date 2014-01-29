@@ -27,7 +27,7 @@ class Instruction {
     void markVarStackRef();
 
     app_iaddr_t     getAddress() { return m_address; }
-    app_iaddr_t     getIBTAddress() { return m_address; }
+    app_iaddr_t     getIBTAddress() { return m_ibt_address; }
     int             getSize() { return m_size; }
     Function*       getFunction() { return m_function; }
     string          getAsm() { return m_asm; }
@@ -35,7 +35,7 @@ class Instruction {
     void            setData(void *dataPtr, int len);
     unsigned char*  getData() { return m_data; }
     void            setData(void *data) { m_data = (unsigned char*) data; }
-    void     	    setIBTAddress(app_iaddr_t v) { m_address=v; }
+    void     	    setIBTAddress(app_iaddr_t v) { m_ibt_address=v; }
 
     bool isStackRef() { return m_stackRef; }
     bool isVarStackRef() { return m_varStackRef; }
