@@ -177,13 +177,14 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
       default: {
 	  // show token info
 	  
-	  /*
+	  
+/*
         fprintf(stderr, "\n----------------------\n");
         fprintf(stderr, "token: [");
         for (k = beg; k <= end; ++k)
 		  fprintf(stderr,"%c (%d)", zSql[k], p_taint[k]);
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
-		*/
+*/
 		
         appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
@@ -244,6 +245,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 		  case TK_GROUP:
 		  case TK_JOIN:
 		  case TK_USING:
+//		  case TK_ID: /* might be too aggressive */
 		  {
 		    int taint_detected = 0;
 		    for (j = beg; j <= end; ++j)
@@ -275,7 +277,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 
 	      }
 		  break;
-		}
+	}
         break;
       }
     }
@@ -290,6 +292,15 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
         p_taint[end+2] = APPFW_SECURITY_VIOLATION;
 		goto abort_parse;
 	  }
+
+	  if (zSql[end+1] == '/' && zSql[end+2] == '*' &&
+	     (p_taint[end+1] == APPFW_TAINTED || p_taint[end+2] == APPFW_TAINTED))
+	  {
+        p_taint[end+1] = APPFW_SECURITY_VIOLATION;
+        p_taint[end+2] = APPFW_SECURITY_VIOLATION;
+		goto abort_parse;
+	  }
+        
 	}
   } // end while
 
