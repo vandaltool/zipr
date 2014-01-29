@@ -97,13 +97,11 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 }
 
 /*
-**
-**
+** Returns true if the identifier is deemed critical
+** This list is not exhaustive
 */
 int is_critical_identifier(const char *identifier, int len)
 {
-	int i;
-
 	if (strncasecmp("CHAR", identifier, len) == 0 ||
 	    strncasecmp("MD5", identifier, len) == 0 ||
 	    strncasecmp("USER", identifier, len) == 0 ||
@@ -158,7 +156,6 @@ int is_critical_identifier(const char *identifier, int len)
 	    strncasecmp("BIT_COUNT", identifier, len) == 0 ||
 	    strncasecmp("BENCHMARK", identifier, len) == 0)
 	{
-//		fprintf(stderr,"Critical identifier found: [%d] %c%c\n", len, identifier[0], identifier[1]);
 		return 1;
 	}
 	else
