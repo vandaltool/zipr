@@ -97,6 +97,75 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 }
 
 /*
+**
+**
+*/
+int is_critical_identifier(const char *identifier, int len)
+{
+	int i;
+
+	if (strncasecmp("CHAR", identifier, len) == 0 ||
+	    strncasecmp("MD5", identifier, len) == 0 ||
+	    strncasecmp("USER", identifier, len) == 0 ||
+	    strncasecmp("COLLATION", identifier, len) == 0 ||
+	    strncasecmp("UNHEX", identifier, len) == 0 ||
+	    strncasecmp("ASCII", identifier, len) == 0 ||
+	    strncasecmp("ORD", identifier, len) == 0 ||
+	    strncasecmp("DAYNAME", identifier, len) == 0 ||
+	    strncasecmp("MONTHNAME", identifier, len) == 0 ||
+	    strncasecmp("AES_ENCRYPT", identifier, len) == 0 ||
+	    strncasecmp("DES_ENCRYPT", identifier, len) == 0 ||
+	    strncasecmp("CEIL", identifier, len) == 0 ||
+	    strncasecmp("FLOOR", identifier, len) == 0 ||
+	    strncasecmp("PI", identifier, len) == 0 ||
+	    strncasecmp("POW", identifier, len) == 0 ||
+	    strncasecmp("VERSION", identifier, len) == 0 ||
+	    strncasecmp("CONCAT", identifier, len) == 0 ||
+	    strncasecmp("NOW", identifier, len) == 0 ||
+	    strncasecmp("DAY", identifier, len) == 0 ||
+	    strncasecmp("WEEK", identifier, len) == 0 ||
+	    strncasecmp("MONTH", identifier, len) == 0 ||
+	    strncasecmp("YEAR", identifier, len) == 0 ||
+	    strncasecmp("QUARTER", identifier, len) == 0 ||
+	    strncasecmp("CRC32", identifier, len) == 0 ||
+	    strncasecmp("SUBSTR", identifier, len) == 0 ||
+	    strncasecmp("SUBSTRING", identifier, len) == 0 ||
+	    strncasecmp("MID", identifier, len) == 0 ||
+	    strncasecmp("LPAD", identifier, len) == 0 ||
+	    strncasecmp("RPAD", identifier, len) == 0 ||
+	    strncasecmp("LEFT", identifier, len) == 0 ||
+	    strncasecmp("REVERSE", identifier, len) == 0 ||
+	    strncasecmp("SPACE", identifier, len) == 0 ||
+	    strncasecmp("TRIM", identifier, len) == 0 ||
+	    strncasecmp("LOCATE", identifier, len) == 0 ||
+	    strncasecmp("POSITION", identifier, len) == 0 ||
+	    strncasecmp("FIND_IN_SET", identifier, len) == 0 ||
+	    strncasecmp("STRCMP", identifier, len) == 0 ||
+	    strncasecmp("MOD", identifier, len) == 0 ||
+	    strncasecmp("FIELD", identifier, len) == 0 ||
+	    strncasecmp("UCASE", identifier, len) == 0 ||
+	    strncasecmp("LCASE", identifier, len) == 0 ||
+	    strncasecmp("LOWER", identifier, len) == 0 ||
+	    strncasecmp("UPPER", identifier, len) == 0 ||
+	    strncasecmp("SHA", identifier, len) == 0 ||
+	    strncasecmp("MIN", identifier, len) == 0 ||
+	    strncasecmp("MAX", identifier, len) == 0 ||
+	    strncasecmp("LOAD_FILE", identifier, len) == 0 ||
+	    strncasecmp("LENGTH", identifier, len) == 0 ||
+	    strncasecmp("BIT_LENGTH", identifier, len) == 0 ||
+	    strncasecmp("CHAR_LENGTH", identifier, len) == 0 ||
+	    strncasecmp("OCTET_LENGTH", identifier, len) == 0 ||
+	    strncasecmp("BIT_COUNT", identifier, len) == 0 ||
+	    strncasecmp("BENCHMARK", identifier, len) == 0)
+	{
+//		fprintf(stderr,"Critical identifier found: [%d] %c%c\n", len, identifier[0], identifier[1]);
+		return 1;
+	}
+	else
+		return 0;
+}
+
+/*
 ** Run the original sqlite parser on the given SQL string.  
 ** Look for tainted SQL tokens/keywords
 ** Sets the taint array
@@ -177,7 +246,6 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
       default: {
 	  // show token info
 	  
-	  
 /*
         fprintf(stderr, "\n----------------------\n");
         fprintf(stderr, "token: [");
@@ -215,6 +283,12 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
         switch (tokenType) {
 		// so here we would need to add all the token types that should not be p_taint
 		// this would be any SQL keywords
+		  case TK_ID: 
+			if (!is_critical_identifier(&zSql[beg], end - beg + 1))
+			{
+				break;
+			}
+			// if it's one of the identifier we care about, then fallthrough
 		  case TK_OR:
 		  case TK_AND:
 		  case TK_FROM:
@@ -245,7 +319,6 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 		  case TK_GROUP:
 		  case TK_JOIN:
 		  case TK_USING:
-//		  case TK_ID: /* might be too aggressive */
 		  {
 		    int taint_detected = 0;
 		    for (j = beg; j <= end; ++j)
@@ -282,6 +355,15 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
       }
     }
 
+	if (end + 1 < strlen(zSql))
+	{
+	  if (zSql[end+1] == '#' && (p_taint[end+1] == APPFW_TAINTED))
+	  {
+	        p_taint[end+1] = APPFW_SECURITY_VIOLATION;
+		goto abort_parse;
+	  }
+	}
+
 	if (end + 2 < strlen(zSql))
 	{
 	  // detect p_taint comments (assume it's --), this may not be true for various SQL variants
@@ -293,7 +375,8 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 		goto abort_parse;
 	  }
 
-	  if (zSql[end+1] == '/' && zSql[end+2] == '*' &&
+	  if (((zSql[end+1] == '/' && zSql[end+2] == '*') ||
+	       (zSql[end+1] == '*' && zSql[end+2] == '/')) &&
 	     (p_taint[end+1] == APPFW_TAINTED || p_taint[end+2] == APPFW_TAINTED))
 	  {
         p_taint[end+1] = APPFW_SECURITY_VIOLATION;
