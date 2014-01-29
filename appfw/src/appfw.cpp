@@ -516,7 +516,8 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 	int commandLength = strlen(command);
 	taint[commandLength] = '\0';
 	int verbose=getenv("APPFW_VERBOSE")!=NULL;
-	verbose+=getenv("VERY_VERBOSE")!=NULL;
+	int very_verbose=getenv("VERY_VERBOSE")!=NULL;
+	verbose+=very_verbose;
 
 	if (!fw_sigs)
 	{
@@ -558,7 +559,7 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 		list_depth++;
 		
 		char* sig=*it;
-		if(verbose)
+		if(very_verbose)
 			fprintf(stderr,"Considering sig %s\n", sig);
 		next=it;
 		++next;	
@@ -589,6 +590,8 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 							fprintf(stderr,"moving to front\n");
 						sorted_sigs->erase(it);
 						sorted_sigs->push_front(sig);
+						if(verbose)
+							fprintf(stderr,"done moving to front\n");
 					}
 
 					violations-=fixed_violations;

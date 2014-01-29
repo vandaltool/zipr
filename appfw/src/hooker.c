@@ -153,7 +153,7 @@ extern void appfw_ldap_init();
 
 void *dlsym(void *handle, const char *symbol)
 {
-	char *verbose= getenv("APPFW_VERBOSE");
+	char *verbose= getenv("APPFW_VERY_VERBOSE");
 	 if(verbose !=0)
         	fprintf(stderr, "Ha Ha...dlsym() Hooked with handle=%p, symbol=%s\n", (void*)handle,symbol);
 

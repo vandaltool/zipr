@@ -21,7 +21,7 @@ static __thread char *tainted_data=NULL;
 
 void check_taint(int position)
 {
-	if(getenv("APPFW_VERBOSE"))
+	if(getenv("APPFW_VERY_VERBOSE"))
 		cout<<"Checking taint at "<<std::dec<<position<<endl;	
 
 	int i=position-1;	 /* 0 indexed */
@@ -42,7 +42,7 @@ void check_quote(istream &fin, int &start,  char quote_char)
 	{
 		char c=fin.get();
 		start++;
-		if(getenv("APPFW_VERBOSE"))
+		if(getenv("APPFW_VERY_VERBOSE"))
 			cout<<"Char is "<<c<<endl;
 		if(c==quote_char)		
 		{
@@ -50,11 +50,11 @@ void check_quote(istream &fin, int &start,  char quote_char)
 			{
 				c=fin.get();
 				start++;
-				if(getenv("APPFW_VERBOSE"))
+				if(getenv("APPFW_VERY_VERBOSE"))
 					cout<<"Char is "<<c<<endl;
 				continue;
 			}
-			if(getenv("APPFW_VERBOSE"))
+			if(getenv("APPFW_VERY_VERBOSE"))
 				cout << "Found end quote at " << start<<endl;
 			check_taint(start);
 			return;
@@ -76,7 +76,7 @@ void check_for_comment(istream &fin, int &start)
 	/* get the 2nd character of the quote */
 	char c=fin.get();
 	start++;
-	if(getenv("APPFW_VERBOSE"))
+	if(getenv("APPFW_VERY_VERBOSE"))
 		cout<<"Char is "<<c<<endl;
 	assert(c==':');
 	check_taint(start);
@@ -86,7 +86,7 @@ void check_for_comment(istream &fin, int &start)
 	{
 		c=fin.get();
 		start++;
-		if(getenv("APPFW_VERBOSE"))
+		if(getenv("APPFW_VERY_VERBOSE"))
 			cout<<"Char is "<<c<<endl;
 		check_taint(start);
 		switch(c)
@@ -97,7 +97,7 @@ void check_for_comment(istream &fin, int &start)
 				{
 					fin.get();
 					start++;
-					if(getenv("APPFW_VERBOSE"))
+					if(getenv("APPFW_VERY_VERBOSE"))
 						cout<<"Char is "<<c<<endl;
 					depth++;
 					check_taint(start);
@@ -110,7 +110,7 @@ void check_for_comment(istream &fin, int &start)
 				{
 					fin.get();
 					start++;
-					if(getenv("APPFW_VERBOSE"))
+					if(getenv("APPFW_VERY_VERBOSE"))
 						cout<<"Char is "<<c<<endl;
 					depth--;
 					check_taint(start);
@@ -135,7 +135,7 @@ void parse(istream &fin)
         {
                 char c=fin.get();
 		start++;
-		if(getenv("APPFW_VERBOSE"))
+		if(getenv("APPFW_VERY_VERBOSE"))
 			cout<<"Char is "<<c<<endl;
 
 		switch(c)
