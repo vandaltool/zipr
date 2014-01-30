@@ -255,7 +255,8 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
       }
       case TK_ILLEGAL: {
       	abortType=1;
-        goto abort_parse;
+	continue;
+//        goto abort_parse;
       }
       case TK_SEMI: {
         pParse->zTail = &zSql[beg];
@@ -438,7 +439,9 @@ abort_parse:
 			fprintf(stderr,"%c", zSql[k]);
 		fprintf(stderr,"\n");
 	}
+
   appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
+
   return 0;
 }
 
