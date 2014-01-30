@@ -364,6 +364,7 @@ abort_parse:
 	{
 		fprintf(stderr,"abort_parse: %s\n", pParse->zErrMsg);
 		fprintf(stderr,"abort_parse: %s\n", appfw_sqlite3ErrStr(pParse->rc));
+		fprintf(stderr,"abort_parse: [%d]..[%d]\n", beg, end);
 		}
   appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
   return 0;
