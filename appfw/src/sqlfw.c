@@ -98,9 +98,9 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 
 /* Add all the functions you care about here */
 static char *CRITICAL_FUNCTIONS[] = {
-	"ANALYSE", 
+	"ANALYSE", "EXEC",
 	"AES_ENCRYPT", "DES_ENCRYPT", "CRC32", "SHA", 
-	"CHAR", "MD5", "USER", "COLLATION", "UNHEX", "ASCII", "ORD", 
+	"CHAR", "MD5", "USER", "USER_NAME", "COLLATION", "UNHEX", "ASCII", "ORD", 
 	"SUBSTR", "SUBSTRING", "SUBSTRING_INDEX", "STRCMP", 
 	"MOD", "FIELD", "UCASE", "LCASE", "LOWER", "UPPER",
 	"MID", "LPAD", "RPAD", "LEFT", "RIGHT", "REVERSE", "SPACE", 
