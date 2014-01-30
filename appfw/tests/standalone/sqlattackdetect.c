@@ -26,9 +26,10 @@ int main(int argc, char **argv)
 	fseek(input_file, 0, SEEK_END);
 	input_file_size = ftell(input_file);
 	rewind(input_file);
-	file_contents = malloc(input_file_size * (sizeof(char)));
+	file_contents = malloc((input_file_size+1) * (sizeof(char)));
 	fread(file_contents, sizeof(char), input_file_size, input_file);
 	fclose(input_file);
+	file_contents[input_file_size]=0;
 	if (sqlfw_verify(file_contents, &errorMessage))
 	{
 		fprintf(stderr, "no attack detected\n");

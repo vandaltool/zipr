@@ -255,8 +255,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
       }
       case TK_ILLEGAL: {
       	abortType=1;
-	continue;
-//        goto abort_parse;
+      	goto abort_parse;
       }
       case TK_SEMI: {
         pParse->zTail = &zSql[beg];
