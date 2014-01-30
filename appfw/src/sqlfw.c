@@ -362,10 +362,15 @@ fprintf(stderr,"ILLEGAL TOKEN DETECTED\n");
 abort_parse:
 	if (getenv("APPFW_VERBOSE"))
 	{
+/*
 		fprintf(stderr,"abort_parse: %s\n", pParse->zErrMsg);
 		fprintf(stderr,"abort_parse: %s\n", appfw_sqlite3ErrStr(pParse->rc));
-		fprintf(stderr,"abort_parse: [%d]..[%d]\n", beg, end);
-		}
+*/
+		fprintf(stderr,"abort_parse: [%d]..[%d]: ", beg, end);
+		for (k = beg; k <= end; ++k)
+			fprintf(stderr,"%c", zSql[k]);
+		fprintf(stderr,"\n");
+	}
   appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
   return 0;
 }
