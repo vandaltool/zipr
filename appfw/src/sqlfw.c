@@ -330,6 +330,7 @@ fprintf(stderr,"is a critical identifier\n");
       }
     }
 
+	// handle comments
 	if (end + 1 < strlen(zSql))
 	{
 	  if (zSql[end+1] == '#' && (p_taint[end+1] == APPFW_TAINTED))
@@ -341,24 +342,17 @@ fprintf(stderr,"is a critical identifier\n");
 
 	if (end + 2 < strlen(zSql))
 	{
-	  // detect p_taint comments (assume it's --), this may not be true for various SQL variants
-	  if (zSql[end+1] == '-' && zSql[end+2] == '-' &&
-	     (p_taint[end+1] == APPFW_TAINTED || p_taint[end+2] == APPFW_TAINTED))
-	  {
-        p_taint[end+1] = APPFW_SECURITY_VIOLATION;
-        p_taint[end+2] = APPFW_SECURITY_VIOLATION;
-		goto abort_parse;
-	  }
-
-	  if (((zSql[end+1] == '/' && zSql[end+2] == '*') ||
-	       (zSql[end+1] == '*' && zSql[end+2] == '/')) &&
-	     (p_taint[end+1] == APPFW_TAINTED || p_taint[end+2] == APPFW_TAINTED))
-	  {
-        p_taint[end+1] = APPFW_SECURITY_VIOLATION;
-        p_taint[end+2] = APPFW_SECURITY_VIOLATION;
-		goto abort_parse;
-	  }
-        
+		if ((zSql[end+1] == '-' && zSql[end+2] == '-') ||
+		    (zSql[end+1] == '/' && zSql[end+2] == '*') ||
+	            (zSql[end+1] == '*' && zSql[end+2] == '/'))
+	  	{
+			if ((p_taint[end+1] == APPFW_TAINTED || p_taint[end+2] == APPFW_TAINTED) || !appfw_is_from_same_signature(matched_signatures, end+1, end+2))
+			{
+				p_taint[end+1] = APPFW_SECURITY_VIOLATION;
+				p_taint[end+2] = APPFW_SECURITY_VIOLATION;
+				goto abort_parse;
+			}
+		}
 	}
   } // end while
 
