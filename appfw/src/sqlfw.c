@@ -96,70 +96,35 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 	return success;
 }
 
+/* Add all the functions you care about here */
+static char *CRITICAL_FUNCTIONS = {
+	"CHAR", "MD5", "USER", "COLLATION", "UNHEX", "ASCII", "ORD", "DAYNAME", "MONTHNAME",
+	"AES_ENCRYPT", "DES_ENCRYPT", "CEIL", "FLOOR", "PI", "POW", "VERSION", "CONCAT",
+	"NOW", "DAY", "WEEK", "MONTH", "YEAR", "QUARTER", "CRC32", "SUBSTR", "SUBSTRING", 
+	"MID", "LPAD", "RPAD", "LEFT", "REVERSE", "SPACE", "TRIM", "LOCATE", "POSITION",
+	"FIND_IN_SET", "STRCMP", "MOD", "FIELD", "UCASE", "LCASE", "LOWER", "UPPER",
+	"SHA", "MIN", "MAX", "LOAD_FILE", "LENGTH", "BIT_LENGTH", "CHAR_LENGTH", 
+	"OCTET_LENGTH", "BIT_COUNT", "BENCHMARK", NULL
+};
+
 /*
 ** Returns true if the identifier is deemed critical
-** This list is not exhaustive
 */
 int is_critical_identifier(const char *identifier, int len)
 {
-	if (strncasecmp("CHAR", identifier, len) == 0 ||
-	    strncasecmp("MD5", identifier, len) == 0 ||
-	    strncasecmp("USER", identifier, len) == 0 ||
-	    strncasecmp("COLLATION", identifier, len) == 0 ||
-	    strncasecmp("UNHEX", identifier, len) == 0 ||
-	    strncasecmp("ASCII", identifier, len) == 0 ||
-	    strncasecmp("ORD", identifier, len) == 0 ||
-	    strncasecmp("DAYNAME", identifier, len) == 0 ||
-	    strncasecmp("MONTHNAME", identifier, len) == 0 ||
-	    strncasecmp("AES_ENCRYPT", identifier, len) == 0 ||
-	    strncasecmp("DES_ENCRYPT", identifier, len) == 0 ||
-	    strncasecmp("CEIL", identifier, len) == 0 ||
-	    strncasecmp("FLOOR", identifier, len) == 0 ||
-	    strncasecmp("PI", identifier, len) == 0 ||
-	    strncasecmp("POW", identifier, len) == 0 ||
-	    strncasecmp("VERSION", identifier, len) == 0 ||
-	    strncasecmp("CONCAT", identifier, len) == 0 ||
-	    strncasecmp("NOW", identifier, len) == 0 ||
-	    strncasecmp("DAY", identifier, len) == 0 ||
-	    strncasecmp("WEEK", identifier, len) == 0 ||
-	    strncasecmp("MONTH", identifier, len) == 0 ||
-	    strncasecmp("YEAR", identifier, len) == 0 ||
-	    strncasecmp("QUARTER", identifier, len) == 0 ||
-	    strncasecmp("CRC32", identifier, len) == 0 ||
-	    strncasecmp("SUBSTR", identifier, len) == 0 ||
-	    strncasecmp("SUBSTRING", identifier, len) == 0 ||
-	    strncasecmp("MID", identifier, len) == 0 ||
-	    strncasecmp("LPAD", identifier, len) == 0 ||
-	    strncasecmp("RPAD", identifier, len) == 0 ||
-	    strncasecmp("LEFT", identifier, len) == 0 ||
-	    strncasecmp("REVERSE", identifier, len) == 0 ||
-	    strncasecmp("SPACE", identifier, len) == 0 ||
-	    strncasecmp("TRIM", identifier, len) == 0 ||
-	    strncasecmp("LOCATE", identifier, len) == 0 ||
-	    strncasecmp("POSITION", identifier, len) == 0 ||
-	    strncasecmp("FIND_IN_SET", identifier, len) == 0 ||
-	    strncasecmp("STRCMP", identifier, len) == 0 ||
-	    strncasecmp("MOD", identifier, len) == 0 ||
-	    strncasecmp("FIELD", identifier, len) == 0 ||
-	    strncasecmp("UCASE", identifier, len) == 0 ||
-	    strncasecmp("LCASE", identifier, len) == 0 ||
-	    strncasecmp("LOWER", identifier, len) == 0 ||
-	    strncasecmp("UPPER", identifier, len) == 0 ||
-	    strncasecmp("SHA", identifier, len) == 0 ||
-	    strncasecmp("MIN", identifier, len) == 0 ||
-	    strncasecmp("MAX", identifier, len) == 0 ||
-	    strncasecmp("LOAD_FILE", identifier, len) == 0 ||
-	    strncasecmp("LENGTH", identifier, len) == 0 ||
-	    strncasecmp("BIT_LENGTH", identifier, len) == 0 ||
-	    strncasecmp("CHAR_LENGTH", identifier, len) == 0 ||
-	    strncasecmp("OCTET_LENGTH", identifier, len) == 0 ||
-	    strncasecmp("BIT_COUNT", identifier, len) == 0 ||
-	    strncasecmp("BENCHMARK", identifier, len) == 0)
+	int i = 0;
+	char *fn;
+
+	while (fn = (char*) CRITICAL_FUNCTIONS[i++])
 	{
-		return 1;
+		if (len != strlen(fn))
+			continue;
+
+		if (strncasecmp(fn, identifier, len) == 0)
+			return 1;
 	}
-	else
-		return 0;
+
+	return 0;
 }
 
 /*
@@ -243,13 +208,13 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
       default: {
 	  // show token info
 	  
-/*
+
         fprintf(stderr, "\n----------------------\n");
         fprintf(stderr, "token: [");
         for (k = beg; k <= end; ++k)
 		  fprintf(stderr,"%c (%d)", zSql[k], p_taint[k]);
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
-*/
+
 		
         appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
@@ -283,8 +248,10 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 		  case TK_ID: 
 			if (!is_critical_identifier(&zSql[beg], end - beg + 1))
 			{
+fprintf(stderr,"not a critical identifier\n");
 				break;
 			}
+fprintf(stderr,"is a critical identifier\n");
 			// if it's one of the identifier we care about, then fallthrough
 		  case TK_OR:
 		  case TK_AND:
