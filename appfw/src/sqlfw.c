@@ -98,18 +98,20 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 
 /* Add all the functions you care about here */
 static char *CRITICAL_FUNCTIONS[] = {
+	"ANALYSE", 
 	"AES_ENCRYPT", "DES_ENCRYPT", "CRC32", "SHA", 
 	"CHAR", "MD5", "USER", "COLLATION", "UNHEX", "ASCII", "ORD", 
 	"SUBSTR", "SUBSTRING", "SUBSTRING_INDEX", "STRCMP", 
 	"MOD", "FIELD", "UCASE", "LCASE", "LOWER", "UPPER",
-	"MID", "LPAD", "RPAD", "LEFT", "REVERSE", "SPACE", "TRIM", "LOCATE", "POSITION",
+	"MID", "LPAD", "RPAD", "LEFT", "RIGHT", "REVERSE", "SPACE", 
+	"TRIM", "LOCATE", "POSITION",
 	"CEIL", "FLOOR", "ROUND", "PI", "POW", "MIN", "MAX", "INSTR", 
-	"VERSION", "CONCAT",
+	"VERSION", "CONCAT", "GROUP_CONCAT",
 	"FIND_IN_SET", 
 	"LOAD_FILE", 
 	"LENGTH", "BIT_LENGTH", "CHAR_LENGTH", "OCTET_LENGTH", "BIT_COUNT", 
 	"BENCHMARK", "CONVERT",
-	"FROM_DAYS", "DAYNAME", "MONTHNAME",
+	"FROM_DAYS", "FROM_UNIXTIME", "DAYNAME", "MONTHNAME",
 	"NOW", "MINUTE", "HOUR", "DAY", "WEEK", "MONTH", "QUARTER", "YEAR",
 	NULL
 };
