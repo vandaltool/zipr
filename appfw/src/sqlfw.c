@@ -322,10 +322,8 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 		  	temp_identifier[end - beg + 1]=0;
 			if (!is_critical_identifier(temp_identifier))
 			{
-				fprintf(stderr,"%s not a critical identifier\n",temp_identifier);
 				break;
 			}
-		  fprintf(stderr,"%s is a critical identifier\n",temp_identifier);
 			// if it's one of the identifier we care about, then fallthrough
 		  case TK_OR:
 		  case TK_AND:
