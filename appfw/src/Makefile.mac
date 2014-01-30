@@ -1,0 +1,63 @@
+LIBAPPFW_DIR=../lib
+
+OPTIMIZE=-O3
+
+INC=-I/usr/include/postgresql -I/usr/include/mysql -I/usr/include/libxml2 -I/usr/local/include/mysql
+XQDEF=-DXQILLA_MAJOR_VER=2 -DXQILLA_MINOR_VER=3
+SQLDEF=-DSQLITE_OS_UNIX=1 -DSQLITE_THREADSAFE=0 -DSQLITE_DEBUG=0 -DSQLITE_OMIT_LOAD_EXTENSION -DSQLITE_4_BYTE_ALIGNED_MALLOC 
+CFLAGS=$(OPTIMIZE) $(INC) $(SQLDEF) $(XQDEF) -DSHOW_TAINT_MARKINGS  -fPIC
+CPPFLAGS=$(CFLAGS) 
+
+OBJS=combined_sqlite3.o pg_hook.o mysql_hook.o appfw.o sqlite3_hook.o oscfw.o osc_hook.o osc_parse.o xq_hook.o xq_parser.o xqfw.o openldap_hook.o appfw_ldap.o hooker.o
+
+OBJS32=$(subst .o,.o32, $(OBJS))
+OBJS64=$(subst .o,.o64, $(OBJS))
+
+
+.SUFFIXES: .o32 .o64 .so32 .so64
+
+all: xqil_major xqil_minor 
+	make libappfw.dylib
+	if [ `uname -p` = 'x86_64' ]; then  make libappfw.so64; fi
+
+appfw_sqlite3.c ./sqlite-autoconf-3071300/sqlite3.c ./sqlite-autoconf-3071300/sqlite3.h sqlite3.h:
+	gtar -zxvf ../../third_party/sqlite-autoconf-3071300.tar.gz --no-anchored --wildcards 'sqlite3.[ch]'
+	cat ./sqlite-autoconf-3071300/sqlite3.c | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.c
+	cat ./sqlite-autoconf-3071300/sqlite3.h | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.h
+	cp ./sqlite-autoconf-3071300/sqlite3.h .
+
+combined_sqlite3.c: appfw_sqlite3.c sqlfw.c 
+	cat $^ > $@
+
+xqil_major:
+	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_//" -e "s/\..*//" > xqil_major
+
+xqil_minor:
+	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_..//" -e "s/\..*//" > xqil_minor
+
+%.o32: %.c
+	$(CC) -m32 -c $(CFLAGS) -c $< -o $@
+
+%.o32: %.cpp
+	$(CXX) -m32 -c $(CPPFLAGS) -c $< -o $@
+
+%.o64: %.c
+	$(CC) -m64 -c $(CFLAGS) -c $< -o $@
+
+%.o64: %.cpp
+	$(CXX) -m64 -c $(CPPFLAGS) -c $< -o $@	
+
+libappfw.dylib:  $(OBJS32)
+	#$(CXX) -m32 $(CFLAGS) -shared -fPIC $^ -ldl -o $@
+	$(CXX) -m32 $(CFLAGS) -dynamiclib -undefined suppress -flat_namespace $^ -o $@
+	cp $@ $(LIBAPPFW_DIR)/
+
+
+libappfw.so64:  $(OBJS64)
+	#$(CXX) -m64 $(CFLAGS) -shared -fPIC $^ -ldl -o $@
+	#cp $@ $(LIBAPPFW_DIR)/
+	$(CXX) $(CFLAGS) -dynamiclib -undefined suppress -flat_namespace -o $@
+	cp $@ $(LIBAPPFW_DIR)/
+
+clean:
+	rm -fr *.o *.o32 *.o64 *.tmp *.so32 *.so64 *.so appfw_sqlite3.c appfw_sqlite3.h sqlite3.h sqlite-autoconf-3071300  xqil_major xqil_minor
