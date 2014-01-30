@@ -97,14 +97,21 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 }
 
 /* Add all the functions you care about here */
-static char *CRITICAL_FUNCTIONS = {
-	"CHAR", "MD5", "USER", "COLLATION", "UNHEX", "ASCII", "ORD", "DAYNAME", "MONTHNAME",
-	"AES_ENCRYPT", "DES_ENCRYPT", "CEIL", "FLOOR", "PI", "POW", "VERSION", "CONCAT",
-	"NOW", "DAY", "WEEK", "MONTH", "YEAR", "QUARTER", "CRC32", "SUBSTR", "SUBSTRING", 
+static char *CRITICAL_FUNCTIONS[] = {
+	"AES_ENCRYPT", "DES_ENCRYPT", "CRC32", "SHA", 
+	"CHAR", "MD5", "USER", "COLLATION", "UNHEX", "ASCII", "ORD", 
+	"SUBSTR", "SUBSTRING", "SUBSTRING_INDEX", "STRCMP", 
+	"MOD", "FIELD", "UCASE", "LCASE", "LOWER", "UPPER",
 	"MID", "LPAD", "RPAD", "LEFT", "REVERSE", "SPACE", "TRIM", "LOCATE", "POSITION",
-	"FIND_IN_SET", "STRCMP", "MOD", "FIELD", "UCASE", "LCASE", "LOWER", "UPPER",
-	"SHA", "MIN", "MAX", "LOAD_FILE", "LENGTH", "BIT_LENGTH", "CHAR_LENGTH", 
-	"OCTET_LENGTH", "BIT_COUNT", "BENCHMARK", NULL
+	"CEIL", "FLOOR", "ROUND", "PI", "POW", "MIN", "MAX", "INSTR", 
+	"VERSION", "CONCAT",
+	"FIND_IN_SET", 
+	"LOAD_FILE", 
+	"LENGTH", "BIT_LENGTH", "CHAR_LENGTH", "OCTET_LENGTH", "BIT_COUNT", 
+	"BENCHMARK", "CONVERT",
+	"FROM_DAYS", "DAYNAME", "MONTHNAME",
+	"NOW", "MINUTE", "HOUR", "DAY", "WEEK", "MONTH", "QUARTER", "YEAR",
+	NULL
 };
 
 /*
@@ -115,6 +122,7 @@ int is_critical_identifier(const char *identifier, int len)
 	int i = 0;
 	char *fn;
 
+	/* could have a faster matching algo, but it doesn't matter for now */
 	while (fn = (char*) CRITICAL_FUNCTIONS[i++])
 	{
 		if (len != strlen(fn))
