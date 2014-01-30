@@ -196,6 +196,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
         break;
       }
       case TK_ILLEGAL: {
+fprintf(stderr,"ILLEGAL TOKEN DETECTED\n");
         goto abort_parse;
       }
       case TK_SEMI: {
@@ -259,10 +260,8 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 		  case TK_ID: 
 			if (!is_critical_identifier(&zSql[beg], end - beg + 1))
 			{
-fprintf(stderr,"not a critical identifier\n");
 				break;
 			}
-fprintf(stderr,"is a critical identifier\n");
 			// if it's one of the identifier we care about, then fallthrough
 		  case TK_OR:
 		  case TK_AND:
