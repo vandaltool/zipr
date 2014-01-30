@@ -219,12 +219,13 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 	  // show token info
 	  
 
+/*
         fprintf(stderr, "\n----------------------\n");
         fprintf(stderr, "token: [");
         for (k = beg; k <= end; ++k)
 		  fprintf(stderr,"%c (%d)", zSql[k], p_taint[k]);
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
-
+*/
 		
         appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
