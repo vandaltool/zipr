@@ -29,13 +29,18 @@ using namespace libIRDB;
 using namespace std;
 using namespace ELFIO;
 
-void possible_target(int p);
+bool possible_target(int p);
 
 set< pair <int,int>  > bounds;
 set<int> targets;
 
 set< pair< int, int> > ranges;
 
+// a way to map an instruction to it's set of predecessors. 
+map< Instruction_t* , set<Instruction_t*> > preds;
+
+
+void check_for_PIC_switch_table(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 
 void range(int start, int end)
 { 	
@@ -91,7 +96,7 @@ void process_ranges(FileIR_t* firp)
 	}
 }
 
-void possible_target(int p)
+bool possible_target(int p)
 {
 	for(
 		set< pair <int,int>  >::iterator it=bounds.begin();
@@ -102,10 +107,30 @@ void possible_target(int p)
 		pair<int,int> bound=*it;
 		int start=bound.first;
 		int end=bound.second;
-		if(start<=p && p<=end)
-			targets.insert(p);
+                if(start<=p && p<=end)                                          
+		{
+                        targets.insert(p);
+			return true;
+		}
+        }
+	return false;
 
+}
+
+ELFIO::section*  find_section(int addr, ELFIO::elfio *elfiop)
+{
+         for ( int i = 0; i < elfiop->sections.size(); ++i )
+         {   
+                 ELFIO::section* pSec = elfiop->sections[i];
+                 assert(pSec);
+                 if(pSec->get_address() > addr)
+                         continue;
+                 if(addr > pSec->get_address()+pSec->get_size())
+                         continue;
+
+                 return pSec;
 	}
+	return NULL;
 }
 
 void handle_argument(ARGTYPE *arg, Instruction_t* insn)
@@ -148,7 +173,7 @@ void mark_targets(FileIR_t *firp)
 	}
 
 }
-void get_instruction_targets(FileIR_t *firp)
+void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop)
 {
         for(
                 set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
@@ -162,7 +187,7 @@ void get_instruction_targets(FileIR_t *firp)
 
                 assert(instr_len==insn->GetDataBits().size());
 
-
+		check_for_PIC_switch_table(insn,disasm, elfiop);
 
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.Instruction.BranchType)
@@ -318,6 +343,162 @@ void add_num_handle_fn_watches(FileIR_t * firp)
 
 }
 
+bool backup_until(const char* insn_type, Instruction_t *& prev, Instruction_t* orig)
+{
+	DISASM disasm;
+	prev=orig;
+
+	while(preds[prev].size()==1)
+	{
+        	// get the only item in the list.
+		prev=*(preds[prev].begin());
+
+        	// get I7's disassembly
+        	prev->Disassemble(disasm);
+
+        	// check it's the requested type
+        	if(strstr(disasm.Instruction.Mnemonic, insn_type)!=NULL)
+                	return true;
+
+		// otherwise, try backing up again.
+
+	}
+	return false;
+}
+
+/* check if this instruction is an indirect jump via a register,
+ * if so, see if we can trace back a few instructions to find a
+ * the start of the table.
+ */
+void check_for_PIC_switch_table(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
+{
+
+        /* here's the pattern we're looking for */
+#if 0
+I1:   0x000000000044425a <+218>:        cmp    DWORD PTR [rax+0x8],0xd   // bounds checking code, 0xd cases.
+I2:   0x000000000044425e <+222>:        jbe    0x444320 <_gedit_tab_get_icon+416>
+
+<snip>
+I3:   0x0000000000444264 <+228>:        mov    rdi,rbp // default case, also jumped to via indirect branch below
+<snip>
+I4:   0x0000000000444320 <+416>:        mov    edx,DWORD PTR [rax+0x8]
+I5:   0x0000000000444323 <+419>:        lea    rax,[rip+0x3e1b6]        # 0x4824e0
+I6:   0x000000000044432a <+426>:        movsxd rdx,DWORD PTR [rax+rdx*4]
+I7:   0x000000000044432e <+430>:        add    rax,rdx
+I8:   0x0000000000444331 <+433>:        jmp    rax      // relatively standard switch dispatch code
+
+
+D1:   0x4824e0: .long 0x4824e0-L1       // L1-LN are labels in the code where case statements start.
+D2:   0x4824e0: .long 0x4824e0-L2
+..
+DN:   0x4824e0: .long 0x4824e0-LN
+#endif
+
+
+        // for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
+        // jump table.  We'll figure out N by trying targets until they fail to produce something valid.
+
+        Instruction_t* I8=insn;
+        Instruction_t* I7=NULL;
+        Instruction_t* I6=NULL;
+        Instruction_t* I5=NULL;
+        // check if I8 is a jump
+        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+                return;
+
+	// return if it's a jump to a constant address, these are common
+        if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+		return;
+	// return if it's a jump to a memory address
+        if(disasm.Argument1.ArgType&MEMORY_TYPE)
+		return;
+
+	// has to be a jump to a register now
+
+	// backup and find the instruction that's an add before I8 
+	if(!backup_until("add", I7, I8))
+		return;
+
+	// backup and find the instruction that's an movsxd before I7
+	if(!backup_until("movsxd", I6, I7))
+		return;
+
+	// backup and find the instruction that's an lea before I6
+	if(!backup_until("lea", I5, I6))
+		return;
+
+	I5->Disassemble(disasm);
+
+        if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+                return;
+        if(!(disasm.Argument2.ArgType&RELATIVE_))
+                return;
+
+        // note that we'd normally have to add the displacement to the
+        // instruction address (and include the instruction's size, etc.
+        // but, fix_calls has already removed this oddity so we can relocate
+        // the instruction.
+        int D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
+
+        // find the section with the data table
+        ELFIO::section *pSec=find_section(D1,elfiop);
+
+        // sanity check there's a section
+        if(!pSec)
+                return;
+
+        const char* secdata=pSec->get_data();
+
+	// if the section has no data, abort 
+	if(!secdata)
+		return;
+
+        int offset=D1-pSec->get_address();
+        int entry=0;
+        do
+        {
+                // check that we can still grab a word from this section
+                if(offset+sizeof(int) > pSec->get_size())
+                        break;
+
+                const int *table_entry_ptr=(const int*)&(secdata[offset]);
+                int table_entry=*table_entry_ptr;
+
+                if(!possible_target(D1+table_entry))
+                        break;
+
+                cout<<"Found possible table entry, at: "<< std::hex << I8->GetAddress()->GetVirtualOffset()
+		    << " insn: " << disasm.CompleteInstr<< " d1: "
+                    << D1 << " table_entry:" << table_entry 
+		    << " target: "<< D1+table_entry << std::dec << endl;
+
+                offset+=sizeof(int);
+                entry++;
+
+        } while (1);
+
+}
+
+void calc_preds(FileIR_t* firp)
+{
+        preds.clear();
+        for(
+                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
+                ++it
+           )
+        {
+                Instruction_t* insn=*it;
+                if(insn->GetTarget());
+                        preds[insn->GetTarget()].insert(insn);
+                if(insn->GetFallthrough());
+                        preds[insn->GetFallthrough()].insert(insn);
+        }
+
+
+}
+
+
 void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 {
 	if(getenv("VERBOSE")!=0)
@@ -337,6 +518,8 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	bounds.clear();
 	ranges.clear();
 	targets.clear();
+
+	calc_preds(firp);
 
         ::Elf64_Off sec_hdr_off, sec_off;
         ::Elf_Half secnum, strndx, secndx;
@@ -362,7 +545,7 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	cout<<"========================================="<<endl;
 
 	/* look through the instructions in the program for targets */
-	get_instruction_targets(firp);
+	get_instruction_targets(firp, elfiop);
 
 	/* mark the entry point as a target */
 	possible_target(elfiop->get_entry()); 

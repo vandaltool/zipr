@@ -467,7 +467,7 @@ void print_lsda_handlers(lsda_header_info* info, unsigned char* p)
 		     		<<"cs_action: "<< cs_action << endl;
 
 #ifndef TEST
-			void possible_target(int p);
+			bool possible_target(int p);
 
 			/* the landing pad is a possible target if an exception is thrown */ 
 			possible_target(cs_lp+info->Start);

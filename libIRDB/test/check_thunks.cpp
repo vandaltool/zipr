@@ -28,7 +28,7 @@ using namespace std;
 void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string reg, string offset)
 {
 
-	void possible_target(int p);
+	bool possible_target(int p);
 
 
 	int thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
@@ -104,7 +104,7 @@ void check_func_for_thunk_offsets(Function_t *func, Instruction_t* thunk_insn,
 	string reg, string offset)
 {
 
-	void possible_target(int p);
+	bool possible_target(int p);
 
 
 	int thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
