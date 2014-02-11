@@ -55,7 +55,7 @@ protected:
 	bool do_shared_object_protection;
   
     std::vector< std::vector<PNStackLayoutInference*> > transform_hierarchy;
-    PNRegularExpressions pn_regex;
+    PNRegularExpressions *pn_regex;
     std::set<std::string> blacklist;
 	std::set<libIRDB::Function_t*> sanitized;
     std::set<std::string> only_validate_list;

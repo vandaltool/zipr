@@ -11,6 +11,7 @@ public:
 	regex_t regex_save_fp;
 	regex_t regex_ret;
 	regex_t regex_esp_scaled;
+	regex_t regex_esp_scaled_nodisp;
 	regex_t regex_ebp_scaled;
 	regex_t regex_esp_direct;
 	regex_t regex_ebp_direct;

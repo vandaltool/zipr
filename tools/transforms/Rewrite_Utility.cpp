@@ -204,41 +204,52 @@ string getJnzDataBits()
 
 Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy)
 {
-	Instruction_t *handler_code = allocateNewInstruction(virp,fallthrough);
-/*
-  setInstructionAssembly(virp,exit_code,"mov eax, 1",exit_code,NULL);
-  Instruction_t* mov_ebx = insertAssemblyAfter(virp,exit_code,"mov ebx, 666");
-  insertAssemblyAfter(virp,mov_ebx,"int 0x80");
-*/
-	setInstructionAssembly(virp,handler_code,"pusha",NULL,NULL);
-	Instruction_t* pushf = insertAssemblyAfter(virp,handler_code,"pushf",NULL);
-	stringstream ss;
-	ss<<"push dword 0x";
-	ss<<hex<<policy;
-	Instruction_t *policy_push = insertAssemblyAfter(virp,pushf,ss.str(),NULL);
-	ss.str("");
-	ss<<"push dword 0x";
-	ss<<hex<<fallthrough->GetAddress()->GetVirtualOffset();
-	Instruction_t *addr_push = insertAssemblyAfter(virp,policy_push,ss.str(),NULL);
-	//I am not planning on returning, but pass the address at which the overflow was detected.
-	Instruction_t *ret_push = insertAssemblyAfter(virp,addr_push,ss.str(),NULL);
-	Instruction_t *callback = insertAssemblyAfter(virp,ret_push,"nop",NULL);
-
-	callback->SetCallback("buffer_overflow_detector");
+	Instruction_t *handler_code ;
+	if(virp->GetArchitectureBitWidth()==32)
+	{
+		handler_code = allocateNewInstruction(virp,fallthrough);
+		setInstructionAssembly(virp,handler_code,"pusha",NULL,NULL);
+		Instruction_t* pushf = insertAssemblyAfter(virp,handler_code,"pushf",NULL);
+		stringstream ss;
+		ss<<"push dword 0x";
+		ss<<hex<<policy;
+		Instruction_t *policy_push = insertAssemblyAfter(virp,pushf,ss.str(),NULL);
+		ss.str("");
+		ss<<"push dword 0x";
+		ss<<hex<<fallthrough->GetAddress()->GetVirtualOffset();
+		Instruction_t *addr_push = insertAssemblyAfter(virp,policy_push,ss.str(),NULL);
+		//I am not planning on returning, but pass the address at which the overflow was detected.
+		Instruction_t *ret_push = insertAssemblyAfter(virp,addr_push,ss.str(),NULL);
+		Instruction_t *callback = insertAssemblyAfter(virp,ret_push,"nop",NULL);
 	
-
-	Instruction_t *popf = insertAssemblyAfter(virp,callback,"popf",NULL);
-	Instruction_t *popa = insertAssemblyAfter(virp,popf,"popa",NULL);
-	popa->SetFallthrough(fallthrough);
+		callback->SetCallback("buffer_overflow_detector");
+		
 	
+		Instruction_t *popf = insertAssemblyAfter(virp,callback,"popf",NULL);
+		Instruction_t *popa = insertAssemblyAfter(virp,popf,"popa",NULL);
+		popa->SetFallthrough(fallthrough);
+		
+	}
+	else
+	{
+		assert(virp->GetArchitectureBitWidth()==64);
+		handler_code= allocateNewInstruction(virp,fallthrough);
+		setInstructionAssembly(virp,handler_code,"hlt",NULL,NULL);
+		handler_code->SetComment("hlt ; Make this into a callback: jdh@getHandlerCode");
+		handler_code->SetFallthrough(fallthrough);
+	}
+
 	return handler_code;
 }
 
 Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsigned int canary_val, int esp_offset, Instruction_t *fail_code)
 {
 	stringstream ss;
+	const char *sp_reg="esp";
+	if(virp->GetArchitectureBitWidth()==64)
+		sp_reg="rsp";
 
-	ss<<"cmp dword [esp";
+	ss<<"cmp dword ["<<sp_reg;
 
 	if(esp_offset <0)
 	{
@@ -260,9 +271,4 @@ Instruction_t* insertCanaryCheckBefore(FileIR_t* virp,Instruction_t *first, unsi
 
 	return next;
 
-	// Instruction_t* cpy = copyInstruction(virp,first);
-	// setInstructionAssembly(virp,first,ss.str(),cpy,NULL);
-	// insertDataBitsAfter(virp,first,getJnzDataBits(),fail_code);
-	// first->SetComment("Canary Check: "+first->GetComment());
-	// return cpy;
 }

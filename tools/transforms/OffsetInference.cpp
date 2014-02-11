@@ -12,6 +12,8 @@
 using namespace std;
 using namespace libIRDB;
 
+extern int get_saved_reg_size();
+
 //TODO: Use cfg entry point only, then use func instructions,
 
 //TODO: matching reg expressions use max match constant
@@ -92,6 +94,9 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 
 	Instruction_t *entry = func->GetEntryPoint();
 
+	if(pn_regex==NULL)
+		pn_regex=new PNRegularExpressions;
+
 	//	 bool has_frame_pointer = false;
 
 	int max = PNRegularExpressions::MAX_MATCHES;
@@ -128,7 +133,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 	
 		//TODO: find push ebp, then count pushes to sub esp, stack alloc size and pushed size are fed to layout objects
 		//TODO: for now I assume all pushes are 32 bits, is this a correct assumption?
-		if(regexec(&(pn_regex.regex_push_ebp), disasm_str.c_str(), max, pmatch, 0)==0)
+		if(regexec(&(pn_regex->regex_push_ebp), disasm_str.c_str(), max, pmatch, 0)==0)
 		{
 			if(verbose_log)
 				cerr << "OffsetInference: SetupLayout(): Push EBP Found"<<endl;
@@ -158,11 +163,11 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 //		saved_regs_size = 0;
 //		}
 		}
-		else if(regexec(&(pn_regex.regex_save_fp), disasm_str.c_str(), max, pmatch, 0)==0)
+		else if(regexec(&(pn_regex->regex_save_fp), disasm_str.c_str(), max, pmatch, 0)==0)
 		{
 			save_frame_pointer = true;
 		}
-		else if(regexec(&(pn_regex.regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
+		else if(regexec(&(pn_regex->regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
 		{
 			if(verbose_log)
 				cerr<<"OffsetInference: SetupLayout(): Push (anything) Found"<<endl;
@@ -250,9 +255,9 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 			//else the push value is registered
 
 			//TODO: assuming 4 bytes here for saved regs
-			saved_regs_size += 4;
+			saved_regs_size += get_saved_reg_size();
 		}
-		else if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
+		else if(regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
 		{
 			if(verbose_log)
 				cerr << "OffsetInference: FindAllOffsets(): Found Stack Alloc"<<endl;
@@ -307,7 +312,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 				//this changes any ebp relative offset calculations to remove 4 bytes. 
 				//Confusing, I know. 
 				if(push_frame_pointer&&!save_frame_pointer)
-					saved_regs_size +=4;
+					saved_regs_size +=get_saved_reg_size();
 
 				//There is now enough information to create the PNStackLayout objects
 				return new StackLayout("All Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,(push_frame_pointer&&save_frame_pointer),out_args_size);
@@ -435,7 +440,7 @@ assert(instructions.size() != 0);
 /*	
 //TODO: find push ebp, then count pushes to sub esp, stack alloc size and pushed size are fed to layout objects
 //TODO: for now I assume all pushes are 32 bits, is this a correct assumption?
-if(regexec(&(pn_regex.regex_push_ebp), disasm_str.c_str(), max, pmatch, 0)==0)
+if(regexec(&(pn_regex->regex_push_ebp), disasm_str.c_str(), max, pmatch, 0)==0)
 {
 cerr << "OffsetInference: FindAllOffsets(): Push EBP Found"<<endl;
 
@@ -450,7 +455,7 @@ else
 saved_regs_size = 0;
 }
 }
-else if(regexec(&(pn_regex.regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
+else if(regexec(&(pn_regex->regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
 {
 cerr<<"OffsetInference: FindAllOffsets(): Push (anything) Found"<<endl;
 
@@ -463,10 +468,10 @@ continue;
 else
 {
 //TODO: assuming 4 bytes here for saved regs
-saved_regs_size += 4;
+saved_regs_size += get_saved_reg_size();
 }
 }
-else if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
+else if(regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
 {
 cerr << "OffsetInference: FindAllOffsets(): Found Stack Alloc"<<endl;
 
@@ -499,16 +504,16 @@ pn_p1_offsets = new PNStackLayout("P1 Layout",func->GetName(),stack_frame_size,s
 }
 else 
 */
-	if(regexec(&(pn_regex.regex_stack_dealloc_implicit), disasm_str.c_str(), max, pmatch, 0)==0)
+	if(regexec(&(pn_regex->regex_stack_dealloc_implicit), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		dealloc_flag = true;
 		//TODO: there needs to be a check of lea esp, [ebp-<const>] to make sure const is not in the current stack frame. 
 	}
-	else if(regexec(&(pn_regex.regex_ret), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_ret), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		++ret_cnt;
 	}
-	else if(regexec(&(pn_regex.regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		//TODO: decide how to better handle this option.
 		//Right now I am going to enforce in PNTransformDriver that
@@ -522,7 +527,7 @@ else
 		pn_all_offsets->SetCanarySafe(false);
 		pn_p1_offsets->SetCanarySafe(false);
 	}
-	else if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		//check if the stack allocation uses an integral offset. 
 
@@ -600,10 +605,10 @@ else
 //to reflect the padding. 
 	else if(disasm.Instruction.BranchType == JmpType)
 	{
-		if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0 ||
-		   regexec(&(pn_regex.regex_esp_direct), disasm_str.c_str(), max, pmatch, 0)==0 ||
-		   regexec(&(pn_regex.regex_ebp_scaled), disasm_str.c_str(), max, pmatch, 0)==0 ||
-		   regexec(&(pn_regex.regex_ebp_direct), disasm_str.c_str(), max, pmatch, 0)==0)
+		if(regexec(&(pn_regex->regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0 ||
+		   regexec(&(pn_regex->regex_esp_direct), disasm_str.c_str(), max, pmatch, 0)==0 ||
+		   regexec(&(pn_regex->regex_ebp_scaled), disasm_str.c_str(), max, pmatch, 0)==0 ||
+		   regexec(&(pn_regex->regex_ebp_direct), disasm_str.c_str(), max, pmatch, 0)==0)
 		{
 			cerr<<"OffsetInference: FindAllOffsets(): Layout contains a jmp relative to esp or ebp, ignore function for now"<<endl;
 			
@@ -619,7 +624,7 @@ else
 		   
 		   
 	}
-	else if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_esp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr<<"OffsetInference: FindAllOffsets(): Found ESP Scaled Instruction"<<endl;
@@ -651,7 +656,7 @@ else
 				cerr<<"OffsetInference: FindAllOffsets(): ESP Offset = "<<offset<<endl;
 		}
 	}
-	else if(regexec(&(pn_regex.regex_esp_direct), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_esp_direct), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr<<"OffsetInference: FindAllOffsets: Found ESP Direct Instruction"<<endl;
@@ -684,7 +689,7 @@ else
 				cerr<<"OffsetInference: FindAllOffsets(): ESP Offset = "<<offset<<endl;
 		}
 	}
-	else if(regexec(&(pn_regex.regex_ebp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_ebp_scaled), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr<<"OffsetInference: FindAllOffsets(): Found EBP Scaled Instruction"<<endl;
@@ -726,7 +731,7 @@ else
 			}
 		}
 	}
-	else if(regexec(&(pn_regex.regex_ebp_direct), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_ebp_direct), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr<<"OffsetInference: FindAllOffsets(): Found EBP Direct Instruction"<<endl;
@@ -770,7 +775,7 @@ else
 			}			
 		}
 	}
-	else if(regexec(&(pn_regex.regex_stack_dealloc), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_stack_dealloc), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		//if we find a dealloc, set a flag indicating as such
 		dealloc_flag = true;
@@ -809,7 +814,7 @@ else
 		//TODO: this is a hack for cases when ebp is used as an index,
 		//in these cases, only attempt P1 for now, but in the future
 		//dynamic checks can be used to dermine what object is referred to. 
-	else if(regexec(&(pn_regex.regex_scaled_ebp_index), disasm_str.c_str(), 5, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_scaled_ebp_index), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		PN_safe = false;
 		if(verbose_log)
@@ -817,7 +822,7 @@ else
 		//TODO: at this point I could probably break the loop, 
 	}
 		//TODO: a hack for TNE to check for direct recursion to dial down padding
-	else if(regexec(&(pn_regex.regex_call), disasm_str.c_str(), 5, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_call), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		if(instr->GetTarget() != NULL && instr->GetTarget()->GetAddress() != NULL)
 		{

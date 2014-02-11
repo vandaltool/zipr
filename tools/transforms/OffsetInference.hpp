@@ -14,7 +14,7 @@ protected:
 	std::map<libIRDB::Function_t*,PNStackLayout*> all_offsets;
 	std::map<libIRDB::Function_t*,PNStackLayout*> p1;
 
-	PNRegularExpressions pn_regex;
+	PNRegularExpressions *pn_regex;
 
 	virtual void FindAllOffsets(libIRDB::Function_t *func);
 	virtual PNStackLayout* GetLayout(std::map<libIRDB::Function_t*,PNStackLayout*> &mymap, libIRDB::Function_t *func);

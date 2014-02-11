@@ -30,13 +30,13 @@ all_objs=PNTransformDriver.o PNStackLayout.o PNRange.o Range.o OffsetInference.o
 
 .SUFFIXES: .o .c .exe .cpp
 
-all: pntransform.exe $(OBJS) $(PROGS)
+all: p1transform.exe pntransform.exe $(OBJS) $(PROGS)
 	echo pntransform build complete
 
-.cpp.o: PNStackLayoutInference.hpp 
+.cpp.o: PNStackLayoutInference.hpp  *.hpp
 	$(CC) $(INCLUDE) $(CFLAGS)  -g -c $< 
 
-.cpp.exe:  
+.cpp.exe:   
 	$(CC) -g $< $(INCLUDE) $(LIBS) $(OBJS) -o $@
 
 clean:
@@ -45,4 +45,7 @@ clean:
 
 pntransform.exe:  $(all_objs) ../../lib/*.a 
 	$(CC) $(CFLAGS) $(all_objs) $(INCLUDE) $(LIBS) -o pntransform.exe
+
+
+p1transform.exe:  pntransform.exe
 	cp pntransform.exe p1transform.exe

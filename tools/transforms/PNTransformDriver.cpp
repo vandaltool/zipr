@@ -19,6 +19,12 @@ extern map<Function_t*, set<AddressID_t*> > inserted_addr;
 void sigusr1Handler(int signum);
 bool PNTransformDriver::timeExpired = false;
 
+
+int get_saved_reg_size()
+{
+	return FileIR_t::GetArchitectureBitWidth()/(sizeof(char)*8);
+}
+
 //TODO: Error message functions?
 
 //TODO: use of pointers?
@@ -39,7 +45,8 @@ static bool CompareValidationRecordAscending(validation_record a, validation_rec
 }
 
 
-PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script)
+PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script) : 
+	pn_regex(NULL)
 {
 	//TODO: throw exception?
 	assert(pidp != NULL);
@@ -503,6 +510,10 @@ void PNTransformDriver::GenerateTransforms()
 	//the variant ID is used alone as the parameter to the constructor. 
 	orig_virp = new FileIR_t(*pidp);
 	assert(orig_virp && pidp);
+
+	// now that we've loaded the FileIR, we can init the reg expressions needed for this object.
+	pn_regex=new PNRegularExpressions;
+
 
 	//Sanity check: make sure that this file is actually a.ncexe, if not assert false for now
 	string url = orig_virp->GetFile()->GetURL();
@@ -1487,6 +1498,12 @@ unsigned int PNTransformDriver::GetRandomCanary()
 
 bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *func)
 {
+	string esp_reg;
+	if(FileIR_t::GetArchitectureBitWidth()==32)
+		esp_reg="esp";
+	else
+		esp_reg="rsp";
+
 	//TODO: hack for TNE, assuming all virp is orig_virp now. 
 	FileIR_t *virp = orig_virp;
 
@@ -1513,7 +1530,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		c.ret_offset = (layout->GetAlteredAllocSize()+layout->GetSavedRegsSize());
 		//if frame pointer is used, add 4 bytes to get to the return address
 		if(layout->HasFramePointer())
-			c.ret_offset += 4;
+			c.ret_offset += get_saved_reg_size(); 	
 
 		//Now with the total size, subtract off the esp offset to the canary
 		c.ret_offset = c.ret_offset - c.esp_offset;
@@ -1551,8 +1568,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 			cerr<<"PNTransformDriver: Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
 
 		//TODO: is the stack_alloc flag necessary anymore? 
-		//if(!stack_alloc && regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
-		if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+		//if(!stack_alloc && regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+		if(regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 		{
 			if(verbose_log)
 				cerr << "PNTransformDriver: Canary Rewrite: Transforming Stack Alloc"<<endl;
@@ -1587,7 +1604,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 			stringstream ss;
 			ss << hex << layout->GetAlteredAllocSize();
 		
-			disasm_str = "sub esp, 0x"+ss.str();
+			disasm_str = "sub " + esp_reg +", 0x"+ss.str();
 
 			if(verbose_log)
 				cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;		
@@ -1605,7 +1622,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 			for(unsigned int i=0;i<canaries.size();i++)
 			{
 				ss.str("");
-				ss<<"mov dword [esp+0x"<<hex<<canaries[i].esp_offset<<"], 0x"<<hex<<canaries[i].canary_val;
+				ss<<"mov dword ["<<esp_reg<<"+0x"<<hex<<canaries[i].esp_offset<<"], 0x"<<hex<<canaries[i].canary_val;
 				instr = insertAssemblyAfter(virp,instr,ss.str());
 				if(i==0)
 					instr->SetComment("Canary Setup Entry: "+ss.str());
@@ -1613,7 +1630,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 					instr->SetComment("Canary Setup: "+ss.str());
 			}
 		}
-		else if(regexec(&(pn_regex.regex_ret), disasm_str.c_str(),5,pmatch,0)==0)
+		else if(regexec(&(pn_regex->regex_ret), disasm_str.c_str(),5,pmatch,0)==0)
 		{
 			if(verbose_log)
 				cerr<<"PNTransformDriver: Canary Rewrite: inserting ret canary check"<<endl;
@@ -1640,7 +1657,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		}
 		//if the stack is not believed to be static, I can't check the canary using esp.
 		//for now don't do a canary check on calls in these situations. 
-		else if(layout->IsStaticStack() && regexec(&(pn_regex.regex_call), disasm_str.c_str(),5,pmatch,0)==0)
+		else if(layout->IsStaticStack() && regexec(&(pn_regex->regex_call), disasm_str.c_str(),5,pmatch,0)==0)
 		{
 		
 			if(verbose_log)
@@ -1704,6 +1721,10 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 {
 	FileIR_t* virp = orig_virp;
 
+	string esp_reg="esp";
+	if(FileIR_t::GetArchitectureBitWidth()==64)
+		esp_reg="rsp";
+
 	int max = PNRegularExpressions::MAX_MATCHES;
 	regmatch_t pmatch[max];
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
@@ -1716,7 +1737,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	disasm_str = disasm.CompleteInstr;
 	
 	//the disassmebly of lea has extra tokens not accepted by nasm, remove those tokens
-	if(regexec(&(pn_regex.regex_lea_hack), disasm_str.c_str(), max, pmatch, 0)==0)
+	if(regexec(&(pn_regex->regex_lea_hack), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr<<"PNTransformDriver: Transforming LEA Instruction"<<endl;
@@ -1738,7 +1759,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	}
 		
 
-	if(regexec(&(pn_regex.regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+	if(regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr << "PNTransformDriver: Transforming Stack Alloc"<<endl;
@@ -1787,7 +1808,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		stringstream ss;
 		ss << hex << layout->GetAlteredAllocSize();
 		
-		disasm_str = "sub esp, 0x"+ss.str();
+		disasm_str = "sub "+esp_reg+", 0x"+ss.str();
 
 		if(verbose_log)
 			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;		
@@ -1804,7 +1825,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 		//stack_alloc = true;
 	} 
-	else if(regexec(&(pn_regex.regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
 /*
   cerr<<"PNTransformDriver: Transforming AND ESP instruction"<<endl;
@@ -1818,7 +1839,56 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
   return false;
 */
 	}
-	else if(regexec(&(pn_regex.regex_esp_only), disasm_str.c_str(), max, pmatch, 0)==0) 
+	else if(regexec(&(pn_regex->regex_esp_scaled_nodisp), disasm_str.c_str(), max, pmatch, 0)==0) 
+	{
+		if(verbose_log)
+			cerr<<"PNTransformDriver: Transforming ESP +scale w/o displacement Instruction ([esp+reg*scale])"<<endl;
+
+		PNRange *closest = layout->GetClosestRangeESP(0);
+
+		if(closest == NULL)
+		{
+			//There should always be a closet range to esp+0
+			assert(false);
+		}
+
+		int new_offset = closest->GetDisplacement();
+
+		assert(new_offset >= 0);
+
+		if(new_offset == 0)
+		{
+			if(verbose_log)
+				cerr<<"PNTransformDriver: Displacement of [esp+reg*scale] is Zero, Ignoring Transformation"<<endl;
+			
+			return true;
+		}
+
+		stringstream ss;
+		ss<<hex<<new_offset;
+
+		matched=((string)"+ 0x")+ss.str()+"]";
+
+		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;	
+		assert(mlen==1);
+
+		disasm_str.replace(pmatch[1].rm_so,mlen,matched);
+		
+		if(verbose_log)
+			cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+		//undo_list[instr] = instr->GetDataBits();
+		//undo_list[instr] = copyInstruction(instr);
+		undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
+
+		virp->RegisterAssembly(instr,disasm_str);
+
+/*
+  if(!instr->Assemble(disasm_str.c_str()))
+  return false;		
+*/
+		
+	}
+	else if(regexec(&(pn_regex->regex_esp_only), disasm_str.c_str(), max, pmatch, 0)==0) 
 	{
 		if(verbose_log)
 			cerr<<"PNTransformDriver: Transforming ESP Only Instruction ([esp])"<<endl;
@@ -1846,7 +1916,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		stringstream ss;
 		ss<<hex<<new_offset;
 
-		matched = "esp+0x"+ss.str();
+		matched = esp_reg+"+0x"+ss.str();
 		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;	
 		disasm_str.replace(pmatch[1].rm_so,mlen,matched);
 		
@@ -1865,8 +1935,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		
 	}
 //TODO: the regular expression order does matter, scaled must come first, change the regex so this doesn't matter  
-	else if(regexec(&(pn_regex.regex_esp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
-			regexec(&(pn_regex.regex_esp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_esp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
+			regexec(&(pn_regex->regex_esp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr<<"PNTransformDriver: Transforming ESP Relative Instruction"<<endl;
@@ -1905,8 +1975,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//TODO: the regular expression order does matter, scaled must come first, change the regex so this doesn't matter
 	//for lea esp, [ebp-<const>] it is assumed the <const> will not be in the stack frame, so it should be ignored.
 	//this should be validated prior to rewrite (i.e., this is a TODO, it hasn't been done yet).
-	else if(regexec(&(pn_regex.regex_ebp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
-			regexec(&(pn_regex.regex_ebp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_ebp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
+			regexec(&(pn_regex->regex_ebp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr<<"PNTransformDriver: Transforming EBP Relative Instruction"<<endl;
@@ -1959,7 +2029,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	//which offset to use. e.g., [ecx+ebp*1-0x21], at run time evaluate ecx+0x21,
 	//and determine which reange it falls into, and jump to an instruction which
 	//uses the correct offset. 
-	else if(regexec(&(pn_regex.regex_scaled_ebp_index), disasm_str.c_str(), 5, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_scaled_ebp_index), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr<<"PNTransformDriver: Transforming Scaled EBP Indexed Instruction"<<endl;
@@ -2003,7 +2073,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
   return false;
 */
 	}
-	else if(regexec(&(pn_regex.regex_stack_dealloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+	else if(regexec(&(pn_regex->regex_stack_dealloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr<<"PNTransformDriver: Transforming Stack Dealloc Instruction"<<endl;
@@ -2032,7 +2102,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		stringstream ss;
 		ss << hex <<layout->GetAlteredAllocSize();
 
-		disasm_str = "add esp, 0x"+ss.str();
+		disasm_str = "add "+esp_reg+", 0x"+ss.str();
 		
 		//undo_list[instr] = instr->GetDataBits();
 		//undo_list[instr] = copyInstruction(instr);
@@ -2050,7 +2120,13 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	else
 	{
 		if(verbose_log)
-			cerr<<"PNTransformDriver: No Pattern Match"<<endl;
+		{
+			cerr<<"PNTransformDriver: No Pattern Match";
+			if(strstr(disasm_str.c_str(), "rsp")!=NULL || 
+		  	   strstr(disasm_str.c_str(), "esp")!=NULL)
+				cerr<<"BUT CAUTION *******************  esp/rsp found in instruction.";
+			cerr<<endl;
+		}
 	}
 	return true;
 }

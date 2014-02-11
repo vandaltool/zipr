@@ -220,14 +220,21 @@ static string getPostCallbackLabel(Instruction_t *newinsn)
 }
 
 
+static string get_relocation_string(FileIR_t* fileIRp, ostream& fout, int offset, string type, Instruction_t* insn) 
+{
+	stringstream ss;
+	ss<<labelfy(insn)<<" rl " << offset << " " << type <<  " " << URLToFile(fileIRp->GetFile()->GetURL()) << endl;
+	return ss.str();
+}
+
 static void emit_relocation(FileIR_t* fileIRp, ostream& fout, int offset, string type, Instruction_t* insn) 
 {
-	fout<<"\t"<<labelfy(insn)<<" rl " << offset << " "<< type <<  " " << URLToFile(fileIRp->GetFile()->GetURL()) <<endl;
+	fout<<"\t"<<get_relocation_string(fileIRp,fout,offset,type,insn);
 }
 
 
 /* return true if converted */
-bool convert_jump_for_64bit(Instruction_t* newinsn, string &final, string new_target)
+bool convert_jump_for_64bit(Instruction_t* newinsn, string &final, string &emit_later, string new_target)
 {
 	/* skip for labeled addresses */
 	if (new_target.c_str()[0]!='0')
@@ -238,12 +245,15 @@ bool convert_jump_for_64bit(Instruction_t* newinsn, string &final, string new_ta
 	/* convert a "call <addr>" into "call qword [rel data_label] \n  data_label ** dq <addr>" */
 	int start=final.find(new_target,0);
 
-	final=final.substr(0,start)+" qword [ rel " +datalabel + "]\n\t"+ datalabel + " ** dq "+final.substr(start);
+	string new_string=final.substr(0,start)+" qword [ rel " +datalabel + "]\n";
+	emit_later="\t"+ datalabel + " ** dq "+final.substr(start) + "\n";
+
+	final=new_string;
 
 	return true;
 }
 
-void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* newinsn, Instruction_t *old_insn, string & original_target)
+void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* newinsn, Instruction_t *old_insn, string & original_target, string &emit_later)
 {
 
         string label=labelfy(newinsn);
@@ -284,7 +294,7 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 		assert(disasm.Argument1.SegmentReg==0);
 
 		if(disasm.Archi==64)
-			converted=convert_jump_for_64bit(newinsn,final, new_target);
+			converted=convert_jump_for_64bit(newinsn,final, emit_later,new_target);
 
 		fout<<final<<endl;
 
@@ -294,7 +304,8 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 			if(converted)
 			{
 				/* jumps have a 1-byte opcode */
- 				emit_relocation(fileIRp, fout,6,"64-bit",newinsn);
+ 				string reloc=get_relocation_string(fileIRp, fout,0,"64-bit",newinsn);
+				emit_later=emit_later+"da_"+reloc;
 			}
 			// if we're jumping to an absolute address vrs a label, we will need a relocation for this jump instruction
 			else if(
@@ -349,7 +360,7 @@ void emit_jump(FileIR_t* fileIRp, ostream& fout, DISASM& disasm, Instruction_t* 
 //
 // emit this instruction as spri code.
 //
-static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, ostream& fout)
+static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, ostream& fout, string &emit_later)
 {
 	string original_target;
 	Instruction_t* old_insn=insnMap[newinsn];
@@ -415,7 +426,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
                 (disasm.Argument1.ArgType & CONSTANT_TYPE)!=0          // and has a constant argument type 1
           )
 	{
-		emit_jump(fileIRp, fout, disasm,newinsn,old_insn, original_target);
+		emit_jump(fileIRp, fout, disasm,newinsn,old_insn, original_target, emit_later);
 	}
 	else
 	{
@@ -493,6 +504,7 @@ static string emit_spri_instruction(FileIR_t* fileIRp, Instruction_t *newinsn, o
 		Relocation_t* this_reloc=*it;
 		emit_relocation(fileIRp, fout, this_reloc->GetOffset(),this_reloc->GetType(), newinsn);
 	}
+
 	return original_target;
 
 }
@@ -561,7 +573,7 @@ static bool needs_spri_rule(Instruction_t* newinsn,Instruction_t* oldinsn)
 //
 static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& fout, bool with_ilr)
 {
-
+	string emit_later;
 
 	Instruction_t* old_insn=insnMap[newinsn];
 
@@ -640,7 +652,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 		
 	}
 
-	string original_target=emit_spri_instruction(fileIRp, newinsn, fout);
+	string original_target=emit_spri_instruction(fileIRp, newinsn, fout, emit_later);
 
 
 	/* if there's a fallthrough instruction, jump to it. */
@@ -679,6 +691,7 @@ static void emit_spri_rule(FileIR_t* fileIRp, Instruction_t* newinsn, ostream& f
 			original_target=qualify(fileIRp)+original_target;
 		fout << "\t" << get_short_branch_label(newinsn) << "\t -> \t " << original_target << endl;
 	}
+	fout<<emit_later<<endl;
 
 }
 

@@ -119,10 +119,7 @@ void FileIR_t::AssembleRegistry()
 	if(!asmFile.is_open())
 		assert(false);
 
-	if(sizeof(void*)==8)
-		asmFile<<"BITS 64"<<endl; //TODO: probably should use a defined val
-	else
-		asmFile<<"BITS 32"<<endl; //TODO: probably should use a defined val
+	asmFile<<"BITS "<<std::dec<<GetArchitectureBitWidth()<<endl; 
 
 	for(registry_type::iterator it = assembly_registry.begin();
 		it != assembly_registry.end();
@@ -138,8 +135,11 @@ void FileIR_t::AssembleRegistry()
 
 	actual_exit = -1;
 	actual_signal = -1;
-    if (WIFEXITED(rt)) actual_exit = WEXITSTATUS(rt);
-    else actual_signal = WTERMSIG(rt);
+
+    	if (WIFEXITED(rt)) 
+		actual_exit = WEXITSTATUS(rt);
+    	else 
+		actual_signal = WTERMSIG(rt);
 
 	assert(actual_exit == 0);
 	
