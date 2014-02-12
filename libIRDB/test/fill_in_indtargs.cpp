@@ -29,7 +29,7 @@ using namespace libIRDB;
 using namespace std;
 using namespace ELFIO;
 
-bool possible_target(int p);
+bool possible_target(int p, uintptr_t addr=0);
 
 set< pair <int,int>  > bounds;
 set<int> targets;
@@ -96,7 +96,7 @@ void process_ranges(FileIR_t* firp)
 	}
 }
 
-bool possible_target(int p)
+bool possible_target(int p, uintptr_t addr)
 {
 	for(
 		set< pair <int,int>  >::iterator it=bounds.begin();
@@ -107,9 +107,13 @@ bool possible_target(int p)
 		pair<int,int> bound=*it;
 		int start=bound.first;
 		int end=bound.second;
-                if(start<=p && p<=end)                                          
+		if(start<=p && p<=end)
 		{
-                        targets.insert(p);
+			if(addr!=0 && getenv("IB_VERBOSE")!=NULL)
+			{
+				cout<<"Found address 0x"<<std::hex<<p<<" at 0x"<<addr<<std::dec<<endl;
+			}
+			targets.insert(p);
 			return true;
 		}
         }
@@ -244,8 +248,11 @@ void infer_targets(FileIR_t *firp, section* shdr)
 	assert(arch_ptr_bytes()==4 || arch_ptr_bytes()==8);
 	for(int i=0;i+arch_ptr_bytes()<=shdr->get_size();i++)
 	{
+		// even on 64-bit, pointers might be stored as 32-bit, as a 
+		// elf object has the 32-bit limitations.
+		// there's no real reason to look for 64-bit pointers 
 		int p=*(int*)&data[i];
-		possible_target(p);
+		possible_target(p, i+shdr->get_address());
 	}
 
 }
@@ -542,6 +549,7 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	cout<<"========================================="<<endl;
 	cout<<"Targets from data sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass1="<<std::dec<<targets.size()<<endl;
+	print_targets();
 	cout<<"========================================="<<endl;
 
 	/* look through the instructions in the program for targets */
@@ -554,6 +562,7 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass2="<<std::dec<<targets.size()<<endl;
+	print_targets();
 	cout<<"========================================="<<endl;
 
 	/* Read the exception handler frame so that those indirect branches are accounted for */
@@ -563,6 +572,7 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	cout<<"========================================="<<endl;
 	cout<<"All targets from data+instruction+eh_header sections are: " << endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass3="<<std::dec<<targets.size()<<endl;
+	print_targets();
 	cout<<"========================================="<<endl;
 
 
