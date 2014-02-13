@@ -11,19 +11,20 @@ int main(int argc, char **argv)
 	char *filename = NULL;
 	char *errorMessage = NULL;
 	char *query_structure;
+	int i;
 
 	if (argc < 3)
 	{
-		fprintf(stderr, "usage: %s <signatureFile> <queryFile>\n", argv[0]);
+		fprintf(stderr, "usage: %s <iter> <signatureFile> <queryFile>\n", argv[0]);
 		return EXIT_CODE_USAGE;
 	}
 
 	// initialize signatures from file
-	appfw_init_from_file(argv[1]);
+	appfw_init_from_file(argv[2]);
 	sqlfw_init();
 	char *file_contents;
 	long input_file_size;
-	FILE *input_file = fopen(argv[2], "rb");
+	FILE *input_file = fopen(argv[3], "rb");
 	fseek(input_file, 0, SEEK_END);
 	input_file_size = ftell(input_file);
 	rewind(input_file);
@@ -39,17 +40,15 @@ int main(int argc, char **argv)
 	// Basically only pay attention to the characters marked 'c'
 	appfw_display_taint("query structure", file_contents, query_structure);
 
-	if (sqlfw_verify_fast(file_contents))
+	int attack_detected = 0;
+	for (i = 0; i < atoi(argv[1]); ++i)
 	{
-		fprintf(stderr, "no attack detected\n");
-		return EXIT_CODE_NO_ATTACK;
-	}
-	else
-	{
-		fprintf(stderr, "attack detected: %s\n", file_contents);
-		return EXIT_CODE_ATTACK_DETECTED;
+		if (sqlfw_verify_fast(file_contents))
+		{
+			attack_detected = 1;
+		}
 	}
 
 	free(query_structure);
-
+	return attack_detected;
 }
