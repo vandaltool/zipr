@@ -279,6 +279,11 @@ void appfw_taint_range(char *taint, char taintValue, int from, int len)
 	memset(&taint[from], taintValue, len);
 }
 
+void appfw_taint_range_by_pos(char *taint, char taintValue, int beg, int end)
+{
+	memset(&taint[beg], taintValue, end-beg+1);
+}
+
 void appfw_display_signatures(char **fw_sigs, int numSigs)
 {
 	int i;

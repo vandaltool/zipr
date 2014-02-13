@@ -442,13 +442,38 @@ abort_parse:
   return 0;
 }
 
+// end of line or \0
+int look_for_eol(const char *p_str, int p_pos)
+{
+	int i = 0;
+
+	for (i = p_pos; i < strlen(p_str); ++i)
+		if (p_str[i] == '\n')
+			return i;
+
+	return i;
+}
+
+// end of comment or \0 */
+int look_for_eoc(const char *p_str, int p_pos)
+{
+	int i = 0;
+
+	for (i = p_pos; i < strlen(p_str)-1; ++i)
+		if (p_str[i] == '*' && p_str[i+1] == '/')
+			return i+1;
+
+	return i+1;
+}
+
+
 /*
 ** Run the original sqlite parser on the given SQL string.  
 ** Identify critical tokens in query
 ** 
 ** original code: SQLITE_PRIVATE int sqlite3_sqlite3RunParser(Parse *pParse, const char *zSql, char **pzErrMsg){
 */
-void sqlfw_get_structure(const char *zSql, char *p_taint){
+void sqlfw_get_structure(const char *zSql, char *p_annot){
   Parse *pParse;
   int nErr = 0;                   /* Number of errors encountered */
   int i;                          /* Loop counter */
@@ -458,14 +483,17 @@ void sqlfw_get_structure(const char *zSql, char *p_taint){
   int mxSqlLen = MAX_QUERY_LENGTH;            /* Max length of an SQL string */
   int j, k;
   int beg, end;
+  int pos;
   int token_length = 0;
+  int comment_1_started = 0;
+  int comment_2_started = 0;
   // terminate recursion if needed
   if (strlen(zSql) <= 0)
     return;
 
 
 	// intialized to tainted by default
-	appfw_taint_range(p_taint, APPFW_UNKNOWN, 0, strlen(zSql)-1);
+	appfw_taint_range(p_annot, APPFW_UNKNOWN, 0, strlen(zSql)-1);
 
   // need to reclaim this space later
   pParse = appfw_sqlite3MallocZero(sizeof(*pParse));
@@ -504,12 +532,12 @@ void sqlfw_get_structure(const char *zSql, char *p_taint){
       }
       case TK_SEMI: {
         pParse->zTail = &zSql[beg];
-		appfw_taint_range(p_taint, APPFW_CRITICAL_TOKEN, beg, 1);
+		appfw_taint_range(p_annot, APPFW_CRITICAL_TOKEN, beg, 1);
 
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
 		if (end+1 < strlen(zSql))
-          return sqlfw_get_structure(&zSql[end+1], &p_taint[end+1]);
+          return sqlfw_get_structure(&zSql[end+1], &p_annot[end+1]);
         else
 		{
 		  return; // semicolon was the last character in the entire statement return 
@@ -518,11 +546,12 @@ void sqlfw_get_structure(const char *zSql, char *p_taint){
       default: {
 	  // show token info
 	  
+
 /*
         fprintf(stderr, "\n----------------------\n");
         fprintf(stderr, "token: [");
         for (k = beg; k <= end; ++k)
-		  fprintf(stderr,"%c (%d)", zSql[k], p_taint[k]);
+		  fprintf(stderr,"%c (%d)", zSql[k], p_annot[k]);
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
 */
 		
@@ -536,7 +565,7 @@ void sqlfw_get_structure(const char *zSql, char *p_taint){
 
 		char temp_identifier[4096];	
         switch (tokenType) {
-		// so here we would need to add all the token types that should not be p_taint
+		// so here we would need to add all the token types that should not be p_annot
 		// this would be any SQL keywords
 		  case TK_ID: 
 		  	strncpy(temp_identifier,&zSql[beg],end - beg + 1);
@@ -577,7 +606,7 @@ void sqlfw_get_structure(const char *zSql, char *p_taint){
 		  case TK_JOIN:
 		  case TK_USING:
 		  {
-			appfw_taint_range(p_taint, APPFW_CRITICAL_TOKEN, beg, token_length);
+			appfw_taint_range(p_annot, APPFW_CRITICAL_TOKEN, beg, token_length);
 	      }
 		  break;
 	}
@@ -590,7 +619,11 @@ void sqlfw_get_structure(const char *zSql, char *p_taint){
 	{
 	  if (zSql[end+1] == '#')
 	  {
-		appfw_taint_range(p_taint, APPFW_CRITICAL_TOKEN, end+1, 1);
+		pos = look_for_eol(zSql, end+1);
+		if (pos >= 0)
+			appfw_taint_range_by_pos(p_annot, APPFW_CRITICAL_TOKEN, end+1, pos);
+		else
+			appfw_taint_range(p_annot, APPFW_CRITICAL_TOKEN, end+1, 1);
 	  }
 	}
 
@@ -600,12 +633,21 @@ void sqlfw_get_structure(const char *zSql, char *p_taint){
 		    (zSql[end+1] == '/' && zSql[end+2] == '*') ||
 	            (zSql[end+1] == '*' && zSql[end+2] == '/'))
 	  	{
-			appfw_taint_range(p_taint, APPFW_CRITICAL_TOKEN, end+1, 2);
+			if (zSql[end+1] == '-')
+			{
+				pos = look_for_eol(zSql, end+2);
+				appfw_taint_range_by_pos(p_annot, APPFW_CRITICAL_TOKEN, end+1, pos);
+			}
+			else
+			{
+				pos = look_for_eoc(zSql, end+2);
+				appfw_taint_range_by_pos(p_annot, APPFW_CRITICAL_TOKEN, end+1, pos);
+			}
 		}
 	}
   } // end while
 
-  p_taint[strlen(zSql)-1] = '\0';
+  p_annot[strlen(zSql)-1] = '\0';
 
   appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
 }
