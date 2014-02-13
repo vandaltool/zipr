@@ -10,6 +10,7 @@ int main(int argc, char **argv)
 {
 	char *filename = NULL;
 	char *errorMessage = NULL;
+	char *query_structure;
 
 	if (argc < 3)
 	{
@@ -30,6 +31,14 @@ int main(int argc, char **argv)
 	fread(file_contents, sizeof(char), input_file_size, input_file);
 	fclose(input_file);
 	file_contents[input_file_size]=0;
+
+	// get query structure
+	query_structure = malloc((input_file_size+1) * (sizeof(char)));
+	sqlfw_get_structure(file_contents, query_structure);
+	// Abbas, you can do whatever you want with the query structure here
+	// Basically only pay attention to the characters marked 'c'
+	appfw_display_taint("query structure", file_contents, query_structure);
+
 	if (sqlfw_verify(file_contents, &errorMessage))
 	{
 		fprintf(stderr, "no attack detected\n");
@@ -40,4 +49,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "attack detected: %s\n", file_contents);
 		return EXIT_CODE_ATTACK_DETECTED;
 	}
+
+	free(query_structure);
+
 }
