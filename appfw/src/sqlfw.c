@@ -269,7 +269,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
 		if (end+1 < strlen(zSql))
-          return sqlfw_verify_taint(&zSql[end+1], &p_taint[end+1], matched_signatures, pzErrMsg);
+          		sqlfw_verify_taint(&zSql[end+1], &p_taint[end+1], matched_signatures, pzErrMsg);
         else
 		{
 		  return 1; // semicolon was the last character in the entire statement return success
@@ -442,3 +442,170 @@ abort_parse:
   return 0;
 }
 
+/*
+** Run the original sqlite parser on the given SQL string.  
+** Identify critical tokens in query
+** 
+** original code: SQLITE_PRIVATE int sqlite3_sqlite3RunParser(Parse *pParse, const char *zSql, char **pzErrMsg){
+*/
+void sqlfw_get_structure(const char *zSql, char *p_taint){
+  Parse *pParse;
+  int nErr = 0;                   /* Number of errors encountered */
+  int i;                          /* Loop counter */
+  void *pEngine;                  /* The LEMON-generated LALR(1) parser */
+  int tokenType;                  /* type of the next token */
+  int lastTokenParsed = -1;       /* type of the previous token */
+  int mxSqlLen = MAX_QUERY_LENGTH;            /* Max length of an SQL string */
+  int j, k;
+  int beg, end;
+  int token_length = 0;
+  // terminate recursion if needed
+  if (strlen(zSql) <= 0)
+    return;
+
+
+	// intialized to tainted by default
+	appfw_taint_range(p_taint, APPFW_UNKNOWN, 0, strlen(zSql)-1);
+
+  // need to reclaim this space later
+  pParse = appfw_sqlite3MallocZero(sizeof(*pParse));
+
+  pParse->db = peasoupDB;
+
+  pParse->rc = SQLITE_OK;
+  pParse->zTail = zSql;
+  i = 0;
+  pEngine = appfw_sqlite3ParserAlloc((void*(*)(size_t))appfw_sqlite3Malloc);
+  if( pEngine==0 ){
+    fprintf(stderr,"Failed to allocated space for pEngine\n");
+    return;
+  }
+
+  while( zSql[i]!=0 ) {
+	pParse->sLastToken.z = &zSql[i];
+	pParse->sLastToken.n = appfw_sqlite3GetToken((unsigned char*)&zSql[i],&tokenType);
+
+	token_length = pParse->sLastToken.n;
+	beg = i;
+	i += token_length;
+	end = i-1;
+
+    if( i>mxSqlLen ){
+      pParse->rc = SQLITE_TOOBIG;
+      break;
+    }
+
+    switch( tokenType ){
+      case TK_SPACE: {
+        break;
+      }
+      case TK_ILLEGAL: {
+	continue;
+      }
+      case TK_SEMI: {
+        pParse->zTail = &zSql[beg];
+		appfw_taint_range(p_taint, APPFW_CRITICAL_TOKEN, beg, 1);
+
+ 		// here we have a SQL terminator; we need to parse the next statement
+		// so we recursively call ourself
+		if (end+1 < strlen(zSql))
+          return sqlfw_get_structure(&zSql[end+1], &p_taint[end+1]);
+        else
+		{
+		  return; // semicolon was the last character in the entire statement return 
+		}
+      }
+      default: {
+	  // show token info
+	  
+/*
+        fprintf(stderr, "\n----------------------\n");
+        fprintf(stderr, "token: [");
+        for (k = beg; k <= end; ++k)
+		  fprintf(stderr,"%c (%d)", zSql[k], p_taint[k]);
+		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
+*/
+		
+        appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
+
+        lastTokenParsed = tokenType;
+        if( pParse->rc!=SQLITE_OK ){
+		  continue;
+
+        }
+
+		char temp_identifier[4096];	
+        switch (tokenType) {
+		// so here we would need to add all the token types that should not be p_taint
+		// this would be any SQL keywords
+		  case TK_ID: 
+		  	strncpy(temp_identifier,&zSql[beg],end - beg + 1);
+		  	temp_identifier[end - beg + 1]=0;
+			if (!is_critical_identifier(temp_identifier))
+			{
+				break;
+			}
+			// if it's one of the identifier we care about, then fallthrough
+		  case TK_OR:
+		  case TK_AND:
+		  case TK_FROM:
+		  case TK_LIKE_KW:
+		  case TK_TABLE:
+		  case TK_DROP:
+		  case TK_INSERT:
+		  case TK_REPLACE:
+		  case TK_LP:
+		  case TK_RP:
+		  case TK_INTO:
+		  case TK_EQ:
+		  case TK_UPDATE:
+		  case TK_IF:
+		  case TK_SELECT:
+		  case TK_CONCAT:
+		  case TK_UNION:
+		  case TK_ALL:
+		  case TK_HAVING:
+		  case TK_ORDER:
+		  case TK_WHERE:
+		  case TK_LIMIT:
+		  case TK_NOT:
+		  case TK_EXISTS:
+		  case TK_DELETE:
+		  case TK_NULL:
+		  case TK_PLUS:
+		  case TK_GROUP:
+		  case TK_JOIN:
+		  case TK_USING:
+		  {
+			appfw_taint_range(p_taint, APPFW_CRITICAL_TOKEN, beg, token_length);
+	      }
+		  break;
+	}
+        break;
+      }
+    }
+
+	// handle comments
+	if (end + 1 < strlen(zSql))
+	{
+	  if (zSql[end+1] == '#')
+	  {
+		appfw_taint_range(p_taint, APPFW_CRITICAL_TOKEN, end+1, 1);
+	  }
+	}
+
+	if (end + 2 < strlen(zSql))
+	{
+		if ((zSql[end+1] == '-' && zSql[end+2] == '-') ||
+		    (zSql[end+1] == '/' && zSql[end+2] == '*') ||
+	            (zSql[end+1] == '*' && zSql[end+2] == '/'))
+	  	{
+			appfw_taint_range(p_taint, APPFW_CRITICAL_TOKEN, end+1, 2);
+		}
+	}
+  } // end while
+
+  p_taint[strlen(zSql)-1] = '\0';
+
+  appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
+}

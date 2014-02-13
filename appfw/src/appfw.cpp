@@ -357,6 +357,10 @@ extern "C" void appfw_display_taint(const char *p_msg, const char *p_query, cons
 						fprintf(stderr,"v");
 				else if (p_taint[i] == APPFW_BLESSED_KEYWORD)
 						fprintf(stderr,"k");
+				else if (p_taint[i] == APPFW_CRITICAL_TOKEN)
+						fprintf(stderr,"c");
+				else if (p_taint[i] == APPFW_UNKNOWN)
+						fprintf(stderr,"-");
 				else // APPFW_TAINTED
 						fprintf(stderr,"t");
 		}
