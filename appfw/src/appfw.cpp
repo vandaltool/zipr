@@ -360,6 +360,8 @@ extern "C" void appfw_display_taint(const char *p_msg, const char *p_query, cons
 						fprintf(stderr,"b");
 				else if (p_taint[i] == APPFW_SECURITY_VIOLATION)
 						fprintf(stderr,"v");
+				else if (p_taint[i] == APPFW_SECURITY_VIOLATION2)
+						fprintf(stderr,"w");
 				else if (p_taint[i] == APPFW_BLESSED_KEYWORD)
 						fprintf(stderr,"k");
 				else if (p_taint[i] == APPFW_CRITICAL_TOKEN)
@@ -484,12 +486,18 @@ void delete_matched_record(matched_record *r)
 	}
 }
 
+int is_security_violation(char c)
+{
+  return (c==APPFW_SECURITY_VIOLATION || 
+          c==APPFW_SECURITY_VIOLATION2);
+}
+
 int count_violations(char* taint,int len)
 {
 	int count=0;
 	for(int i=0;i<len;i++)
 	{
-		if(*taint==APPFW_SECURITY_VIOLATION)
+		if(is_security_violation(*taint))
 			count++;
 		++taint;
 	}	
@@ -501,7 +509,63 @@ int fix_violations(char* taint, int value, int start, int len)
 	int count=0;
 	for(int i=start;i<start+len;i++)
 	{
-		if(taint[i]==APPFW_SECURITY_VIOLATION)
+		if(is_security_violation(taint[i]))
+		{
+			count++;
+			taint[i]=value;
+		}	
+	}
+	return count;
+}
+
+//   SELECT * FROM users WHERE userid=3
+//   vvvvvv---wwww-------vvvvv-------w-
+//          7     
+//   
+//   sig:   * FROM users WH
+//   sig:   * FROM users WHERE
+//            bbbb
+// 
+int fix_violations_sfop(char *taint, int value, int start, const char *sig)
+{
+	int count=0;
+	int siglen = strlen(sig);
+	int lastpos = start + siglen - 1;
+	int i;
+	char v;
+
+	if (!is_security_violation(taint[lastpos]))
+	{
+		// last character covered by fragment is not a keyword/security violation
+		// therefore we know we don't have any partial matches
+		return fix_violations(taint, value, start, siglen);
+	}
+	else if (taint[lastpos] != taint[lastpos+1])
+	{
+		// last character covered by fragment is a security violation
+		// if next character is a different critical keyword, or
+		//    not event a critical keyword, then we do don't have any partial
+		//    matches
+		return fix_violations(taint, value, start, siglen);
+	} 
+
+	// we know we have a partial match
+	// find the starting position of the partial match
+	int start_last_keyword = start;
+	for (i = lastpos, v = taint[lastpos]; i >= 0; i--)
+	{
+		if (taint[i] != v)
+		{
+			start_last_keyword = i+1;
+			break;
+		}
+	}
+
+	// only bless those critical tokens that are fully
+	// contained in the signature
+	for(i=start;i<start_last_keyword;i++)
+	{
+		if(is_security_violation(taint[i]))
 		{
 			count++;
 			taint[i]=value;
@@ -609,6 +673,147 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 						if(verbose)
 						{
 							fprintf(stderr,"fixed ALL violations, list size=%d, iterated to %d\n", sorted_sigs->size(), list_depth);
+							fflush(stderr);
+							gettimeofday(&blah,NULL);
+							fprintf(stdout, "end: %d:%d ", blah.tv_sec, blah.tv_usec);
+						}
+						return TRUE;
+					}
+				}
+
+
+			}
+			pos++;
+		}
+	}
+	if(verbose)
+	{
+		fprintf(stderr,"failed to fix all violations, %d remain\n", violations);
+	}
+	return FALSE;
+}
+
+/*
+ * appfw_establish_taint_fast - quickly establish taint markings to verify the command is OK
+ * taint array should have all critical tokens identified
+ * need to known boundaries of each critical token to implement same-fragment-origin
+ * policy
+ *
+ * We use 'v' and 'w' to denote critical tokens
+ * SELECT * from users WHERE userid = 'john';# hello
+ * vvvvvv---wwww-------vvvvv--------w-------vwwwwwww
+ *
+ * Algo:
+ *   Iterate over taint markings
+ *      grab next critical token (consisting of all 'v' or 'c')
+ *      Iterate over signatures 
+ *         when found, move-to-front
+ *         bless the token
+ *   
+ * Algo 2:
+ *   Iterate over all signatures
+ *      Do we match the query?
+ *      Are all keywords in the matched portion of the query completely covered?
+ *          Yes: bless it! move signature fragment to front
+ *           No: next signature
+ *
+ * return TRUE if command is OK.
+ */
+extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int case_sensitive)
+{
+
+	static list<char*> *mru_sigs=NULL; 
+	static char **fw_sigs = appfw_getSignatures();
+
+	int j, pos, sigId;
+	int patternFound;
+	int commandLength = strlen(command);
+	taint[commandLength] = '\0';
+	int verbose=getenv("APPFW_VERBOSE")!=NULL;
+	int very_verbose=getenv("VERY_VERBOSE")!=NULL;
+	verbose+=very_verbose;
+
+	if (!fw_sigs)
+	{
+		if(verbose)
+			fprintf(stderr,"No appfw signatures loaded.  Blessing entire range. proc:%d \n", getpid());
+		appfw_taint_range(taint, APPFW_BLESSED, 0, commandLength);
+		return TRUE;
+	}
+	int numSignatures = appfw_getNumSignatures();  
+	if(!mru_sigs)
+	{
+		mru_sigs=new list<char*>;
+		assert(mru_sigs);
+
+		for (int sigId = 0; sigId < numSignatures; ++sigId)
+		{
+			mru_sigs->push_back(fw_sigs[sigId]);
+		}
+		
+	}
+
+	int violations=count_violations(taint, commandLength);
+	if(verbose)
+		fprintf(stderr,"Found %d violations\n", violations);
+
+	list<char*>::iterator next;
+
+	int list_depth=0;
+	struct timeval blah;
+	if(verbose)
+	{
+		gettimeofday(&blah,NULL);
+		fprintf(stdout, "start: %d:%d ", blah.tv_sec, blah.tv_usec);
+	}
+	
+	/* iterate the list */
+	for(list<char*>::iterator it=mru_sigs->begin(); it!=mru_sigs->end();  it=next)
+	{
+		list_depth++;
+		
+		char* sig=*it;
+		if(very_verbose)
+			fprintf(stderr,"Considering sig %s\n", sig);
+		next=it;
+		++next;	
+		int length_signature = strlen(sig);
+		pos = 0;
+		if(length_signature==1 && isalpha(*sig))
+			continue;
+		while (pos < commandLength)
+		{
+			if (((case_sensitive  && strncmp    (&command[pos], sig, length_signature) == 0)) || 
+			    ((!case_sensitive && strncasecmp(&command[pos], sig, length_signature) == 0)) )
+			{
+
+				/* fix any violations we found with the match */
+				int fixed_violations=fix_violations_sfop(taint, APPFW_BLESSED, pos, sig);
+		
+				if(fixed_violations)
+				{
+					if(verbose)
+					{
+						fprintf(stderr,"fixed %d violations at %d\n", fixed_violations,pos);
+						fflush(stderr);
+					}
+					/* move to front */
+					if(it!=mru_sigs->begin())
+					{
+						if(verbose)
+							fprintf(stderr,"moving to front\n");
+						mru_sigs->erase(it);
+						mru_sigs->push_front(sig);
+						if(verbose)
+							fprintf(stderr,"done moving to front\n");
+					}
+
+					violations-=fixed_violations;
+					if(violations<=0)
+					{
+						if(verbose)
+						{
+							fprintf(stderr,"fixed ALL violations, list size=%d, iterated to %d\n", mru_sigs->size(), list_depth);
 							fflush(stderr);
 							gettimeofday(&blah,NULL);
 							fprintf(stdout, "end: %d:%d ", blah.tv_sec, blah.tv_usec);

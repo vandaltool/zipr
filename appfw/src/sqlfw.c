@@ -64,16 +64,43 @@ void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
 
 /*
 ** Run the original sqlite parser on the given SQL string.  
+** Extract out critical tokens
+** Look for tainted critical tokens
+*/
+int sqlfw_verify_fast(const char *zSql) 
+{
+	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
+	char *tainted = malloc(strlen(zSql)+1);
+	if (!peasoupDB)
+	{
+		if (verbose)
+			fprintf(stderr, "peasoupDB is NULL\n");
+		return 0;
+	}
+
+	// get all the critical keywords
+	sqlfw_get_structure(zSql, tainted);
+	int success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
+	if (!success && verbose)
+		sqlfw_display_taint("debug", zSql, tainted);
+	free(tainted);
+	return success;
+}
+
+/*
+** Run the original sqlite parser on the given SQL string.  
 ** Look for tainted SQL tokens/keywords
 */
-int sqlfw_verify(const char *zSql, char **pzErrMsg){
+int sqlfw_verify(const char *zSql, char **pzErrMsg)
+{
 //  char *tainted = appfw_sqlite3MallocZero(strlen(zSql));
 
+	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
 	char *tainted = malloc(strlen(zSql)+1);
 
 	if (!peasoupDB)
 	{
-		if (getenv("APPFW_VERBOSE"))
+		if (verbose)
 			fprintf(stderr, "peasoupDB is NULL\n");
 		return 0;
 	}
@@ -86,7 +113,8 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg){
 	sqlfw_establish_taint(zSql, tainted, matched_signatures);
 
 	int success = sqlfw_verify_taint(zSql, tainted, matched_signatures, pzErrMsg);
-	if (!success)
+	
+	if (!success && verbose)
 		appfw_display_taint("SQL Injection detected", zSql, tainted);
 
 	appfw_deallocate_matched_signatures(matched_signatures, length);
@@ -466,6 +494,13 @@ int look_for_eoc(const char *p_str, int p_pos)
 	return i+1;
 }
 
+char get_violation_marking(char p_current_marking)
+{
+	if (p_current_marking == APPFW_SECURITY_VIOLATION)
+		return APPFW_SECURITY_VIOLATION2;
+	else
+		return APPFW_SECURITY_VIOLATION;
+}
 
 /*
 ** Run the original sqlite parser on the given SQL string.  
@@ -487,12 +522,15 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
   int token_length = 0;
   int comment_1_started = 0;
   int comment_2_started = 0;
+
+  char mark_violation = APPFW_SECURITY_VIOLATION;
+
   // terminate recursion if needed
   if (strlen(zSql) <= 0)
     return;
 
 
-	// intialized to tainted by default
+	// initialized to tainted by default
 	appfw_taint_range(p_annot, APPFW_UNKNOWN, 0, strlen(zSql)-1);
 
   // need to reclaim this space later
@@ -509,7 +547,9 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
     return;
   }
 
+
   while( zSql[i]!=0 ) {
+
 	pParse->sLastToken.z = &zSql[i];
 	pParse->sLastToken.n = appfw_sqlite3GetToken((unsigned char*)&zSql[i],&tokenType);
 
@@ -532,7 +572,9 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
       }
       case TK_SEMI: {
         pParse->zTail = &zSql[beg];
-		appfw_taint_range(p_annot, APPFW_CRITICAL_TOKEN, beg, 1);
+		appfw_taint_range(p_annot, mark_violation, beg, 1);
+		mark_violation = get_violation_marking(mark_violation);
+
 
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
@@ -546,7 +588,6 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
       default: {
 	  // show token info
 	  
-
 /*
         fprintf(stderr, "\n----------------------\n");
         fprintf(stderr, "token: [");
@@ -633,7 +674,8 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
 		  case TK_COLUMN:
 		  case TK_JOIN_KW:
 		  {
-			appfw_taint_range(p_annot, APPFW_CRITICAL_TOKEN, beg, token_length);
+			appfw_taint_range(p_annot, mark_violation, beg, token_length);
+			mark_violation = get_violation_marking(mark_violation);
 	      }
 		  break;
 	}
@@ -648,9 +690,10 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
 	  {
 		pos = look_for_eol(zSql, end+1);
 		if (pos >= 0)
-			appfw_taint_range_by_pos(p_annot, APPFW_CRITICAL_TOKEN, end+1, pos);
+			appfw_taint_range_by_pos(p_annot, mark_violation, end+1, pos);
 		else
-			appfw_taint_range(p_annot, APPFW_CRITICAL_TOKEN, end+1, 1);
+			appfw_taint_range(p_annot, mark_violation, end+1, 1);
+		mark_violation = get_violation_marking(mark_violation);
 	  }
 	}
 
@@ -663,13 +706,14 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
 			if (zSql[end+1] == '-')
 			{
 				pos = look_for_eol(zSql, end+2);
-				appfw_taint_range_by_pos(p_annot, APPFW_CRITICAL_TOKEN, end+1, pos);
+				appfw_taint_range_by_pos(p_annot, mark_violation, end+1, pos);
 			}
 			else
 			{
 				pos = look_for_eoc(zSql, end+2);
-				appfw_taint_range_by_pos(p_annot, APPFW_CRITICAL_TOKEN, end+1, pos);
+				appfw_taint_range_by_pos(p_annot, mark_violation, end+1, pos);
 			}
+			mark_violation = get_violation_marking(mark_violation);
 		}
 	}
   } // end while

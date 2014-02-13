@@ -3,7 +3,7 @@
 
 #define MAX_COMMAND_LENGTH 65536
 
-enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_BLESSED_KEYWORD, APPFW_UNKNOWN, APPFW_CRITICAL_TOKEN };
+enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_SECURITY_VIOLATION2, APPFW_BLESSED_KEYWORD, APPFW_UNKNOWN, APPFW_CRITICAL_TOKEN };
 
 typedef struct matched_record {
 	int                    signatureId;
@@ -22,6 +22,7 @@ void appfw_taint_range_by_pos(char *taint, char taintValue, int beg, int end); /
 void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint);
 extern void appfw_establish_taint(const char *input, char *taint, matched_record**, int case_sensitive); 
 int appfw_establish_taint_fast(const char *input, char *taint, int case_sensitive); 
+int appfw_establish_taint_fast2(const char *input, char *taint, int case_sensitive); 
 void appfw_empty_taint(const char *command, char *taint, matched_record** matched_signatures, int case_sensitive);
 
 
