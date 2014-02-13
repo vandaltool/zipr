@@ -575,18 +575,34 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
 				break;
 			}
 			// if it's one of the identifier we care about, then fallthrough
+
+		// list is not exhaustive, need to track all relevant ones
+
+		  case TK_EXPLAIN:
+		  case TK_ANALYZE:
 		  case TK_OR:
 		  case TK_AND:
+		  case TK_IS:
+		  case TK_BETWEEN:
+		  case TK_IN:
+		  case TK_ISNULL:
+		  case TK_NOTNULL:
+                  case TK_NE:
+                  case TK_EQ:
+                  case TK_GT:
+                  case TK_LE:
+                  case TK_LT:
+                  case TK_GE:
 		  case TK_FROM:
 		  case TK_LIKE_KW:
 		  case TK_TABLE:
+		  case TK_ALTER:
 		  case TK_DROP:
 		  case TK_INSERT:
 		  case TK_REPLACE:
 		  case TK_LP:
 		  case TK_RP:
 		  case TK_INTO:
-		  case TK_EQ:
 		  case TK_UPDATE:
 		  case TK_IF:
 		  case TK_SELECT:
@@ -605,6 +621,17 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
 		  case TK_GROUP:
 		  case TK_JOIN:
 		  case TK_USING:
+		  case TK_SET:
+		  case TK_ASC:
+		  case TK_DESC:
+		  case TK_CASE:
+		  case TK_WHEN:
+		  case TK_THEN:
+		  case TK_ELSE:
+		  case TK_INDEX:
+		  case TK_ROW:
+		  case TK_COLUMN:
+		  case TK_JOIN_KW:
 		  {
 			appfw_taint_range(p_annot, APPFW_CRITICAL_TOKEN, beg, token_length);
 	      }
