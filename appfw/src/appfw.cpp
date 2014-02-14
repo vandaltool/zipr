@@ -630,7 +630,8 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 		{
 			count++;
 			taint[i]=value;
-			fprintf(stderr,"blessing %d\n", i);
+			if (veryverbose)
+				fprintf(stderr,"blessing %d\n", i);
 		}	
 	}
 
