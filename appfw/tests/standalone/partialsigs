@@ -5,7 +5,6 @@ FR
 OM
 OM u
 * FRO
-;
 EL
 E
 L
@@ -29,7 +28,6 @@ F
 R
 OM
  F
-FROM user
+FROM/* */user
 s
  FR*M
-t * from
