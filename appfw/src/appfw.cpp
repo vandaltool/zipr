@@ -486,10 +486,9 @@ void delete_matched_record(matched_record *r)
 	}
 }
 
-int is_security_violation(char c)
+inline int is_security_violation(char c)
 {
-  return (c==APPFW_SECURITY_VIOLATION || 
-          c==APPFW_SECURITY_VIOLATION2);
+  return (c==APPFW_SECURITY_VIOLATION || c==APPFW_SECURITY_VIOLATION2);
 }
 
 int count_violations(char* taint,int len)
@@ -533,6 +532,7 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 	char v;
 	int beg, end;
 
+#ifdef BOGUS
 	if (!is_security_violation(taint[lastpos]) &&
 	    !is_security_violation(taint[start]))
 	{
@@ -545,13 +545,16 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 	else if (taint[lastpos] != taint[lastpos+1] &&
 	         beforefirstpos >= 0 && taint[start] != taint[beforefirstpos])
 	{
-		// first or last character covered by fragment is a security violation
+		// first and last character covered by fragment is a security violation
 		// if prev/next character is a different critical keyword, or
 		//    not event a critical keyword, then we do don't have any partial
 		//    matches
 		return fix_violations(taint, value, start, siglen);
 	} 
-	else if (is_security_violation(taint[lastpos+1]) &&
+	else
+#endif
+
+	 if (is_security_violation(taint[lastpos+1]) &&
 	         beforefirstpos >= 0 && is_security_violation(taint[beforefirstpos]))
 	{
 		// security violation both before and after
@@ -561,11 +564,13 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 	}
 
 	end = lastpos;
-	if (taint[lastpos] == taint[lastpos+1])
+	if (is_security_violation(taint[lastpos]) &&
+	    is_security_violation(taint[lastpos+1]) &&
+	    taint[lastpos] == taint[lastpos+1]) 
 	{
 		// partial match on last critical token
-		end = start - 1;
-		for (i = lastpos, v = taint[lastpos]; i >= 0; i--)
+		end = start - 1; 
+		for (i = lastpos, v = taint[lastpos]; i >= start; i--)
 		{
 			if (taint[i] != v)
 			{
@@ -575,9 +580,21 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 		}
 	}
 
+// sig[';] orig[64..65] effective[66..65]
+// SELECT * from us/**/ers where userid='adfadssssssssssssssssssss';
+//                                                                -v
+// sig[';] orig[39..40] effective[41..40]
+//  SELECT * from us/**/ers where userid='';
+// 01234567890123456789012345678901234567890
+// partial match at beginning bfs[38] start[39] [5..5]
+
 	beg = start;
-	if (beforefirstpos >= 0 && taint[start] == taint[beforefirstpos])
+	if (beforefirstpos >= 0 && 
+	     is_security_violation(taint[start]) &&
+	     is_security_violation(taint[beforefirstpos]) &&
+	     taint[start] == taint[beforefirstpos])
 	{
+fprintf(stderr,"partial match at beginning bfs[%d] start[%d] [%d..%d]\n", beforefirstpos, start, taint[beforefirstpos], taint[start]);
 		// partial match on first critical token
 		beg = end + 1; // set past the end on purpose
 		for (i = start+1, v = taint[start]; i <= lastpos; ++i)
