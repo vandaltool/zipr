@@ -86,6 +86,10 @@ appfw/tests/sqlite/testsqlite.pstmt.fp.c -text
 appfw/tests/standalone/Makefile -text
 appfw/tests/standalone/goodquery -text
 appfw/tests/standalone/goodsigs -text
+appfw/tests/standalone/partialquery -text
+appfw/tests/standalone/partialsigs -text
+appfw/tests/standalone/query -text
+appfw/tests/standalone/sigs -text
 appfw/tests/standalone/sigs2 -text
 appfw/tests/standalone/sqlattackdetect.c -text
 appfw/tests/standalone/testfastdetect.c -text
