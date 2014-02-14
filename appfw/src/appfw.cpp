@@ -518,52 +518,84 @@ int fix_violations(char* taint, int value, int start, int len)
 	return count;
 }
 
-//   SELECT * FROM users WHERE userid=3
-//   vvvvvv---wwww-------vvvvv-------w-
-//          7     
-//   
-//   sig:   * FROM users WH
-//   sig:   * FROM users WHERE
-//            bbbb
-// 
+//
+// mark critical tokens as blessed if wholly contained in the signature
+// (implement same-fragment-origin-policy)
+//
 int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 {
+	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
 	int count=0;
 	int siglen = strlen(sig);
 	int lastpos = start + siglen - 1;
+ 	int beforefirstpos = start - 1;
 	int i;
 	char v;
+	int beg, end;
 
-	if (!is_security_violation(taint[lastpos]))
+	if (!is_security_violation(taint[lastpos]) &&
+	    !is_security_violation(taint[start]))
 	{
-		// last character covered by fragment is not a keyword/security violation
+		// first & last character covered by fragment is not a 
+		// keyword/security violation
 		// therefore we know we don't have any partial matches
+		// use the old code to mark critical tokens as blessed
 		return fix_violations(taint, value, start, siglen);
 	}
-	else if (taint[lastpos] != taint[lastpos+1])
+	else if (taint[lastpos] != taint[lastpos+1] &&
+	         beforefirstpos >= 0 && taint[start] != taint[beforefirstpos])
 	{
-		// last character covered by fragment is a security violation
-		// if next character is a different critical keyword, or
+		// first or last character covered by fragment is a security violation
+		// if prev/next character is a different critical keyword, or
 		//    not event a critical keyword, then we do don't have any partial
 		//    matches
 		return fix_violations(taint, value, start, siglen);
 	} 
-
-	// we know we have a partial match
-	// find the starting position of the partial match
-	int start_last_keyword = start;
-	for (i = lastpos, v = taint[lastpos]; i >= 0; i--)
+	else if (is_security_violation(taint[lastpos+1]) &&
+	         beforefirstpos >= 0 && is_security_violation(taint[beforefirstpos]))
 	{
-		if (taint[i] != v)
+		// security violation both before and after
+		// e.g.: query:   SELECT * FROM
+		//         sig:    ELE
+		return 0;
+	}
+
+	end = lastpos;
+	if (taint[lastpos] == taint[lastpos+1])
+	{
+		// partial match on last critical token
+		end = start - 1;
+		for (i = lastpos, v = taint[lastpos]; i >= 0; i--)
 		{
-			start_last_keyword = i+1;
-			break;
+			if (taint[i] != v)
+			{
+				end = i + 1;
+				break;
+			}
+		}
+	}
+
+	beg = start;
+	if (beforefirstpos >= 0 && taint[start] == taint[beforefirstpos])
+	{
+		// partial match on first critical token
+		beg = end + 1; // set past the end on purpose
+		for (i = start+1, v = taint[start]; i <= lastpos; ++i)
+		{
+			if (taint[i] != v)
+			{
+				beg = i + 1;
+				break;
+			}
 		}
 	}
 
 	// only bless those critical tokens that are fully
 	// contained in the signature
-	for(i=start;i<start_last_keyword;i++)
+	if (verbose)
+		fprintf(stderr,"sig[%s] orig[%d..%d] effective[%d..%d]\n", sig, start, lastpos, beg, end);
+
+	for(i=beg;i<=end;i++)
 	{
 		if(is_security_violation(taint[i]))
 		{
@@ -571,6 +603,7 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 			taint[i]=value;
 		}	
 	}
+
 	return count;
 }
 
@@ -779,8 +812,10 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 		++next;	
 		int length_signature = strlen(sig);
 		pos = 0;
+/*
 		if(length_signature==1 && isalpha(*sig))
 			continue;
+*/
 		while (pos < commandLength)
 		{
 			if (((case_sensitive  && strncmp    (&command[pos], sig, length_signature) == 0)) || 
@@ -794,7 +829,7 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 				{
 					if(verbose)
 					{
-						fprintf(stderr,"fixed %d violations at %d\n", fixed_violations,pos);
+						fprintf(stderr,"fixed %d violations at %d sig[%s]\n", fixed_violations,pos,sig);
 						fflush(stderr);
 					}
 					/* move to front */
