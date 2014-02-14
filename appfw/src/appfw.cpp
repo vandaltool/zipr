@@ -524,6 +524,7 @@ int fix_violations(char* taint, int value, int start, int len)
 int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 {
 	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
+	int veryverbose = getenv("VERY_VERBOSE") ? TRUE : FALSE;
 	int count=0;
 	int siglen = strlen(sig);
 	int lastpos = start + siglen - 1;
@@ -563,6 +564,17 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 		return 0;
 	}
 
+// 012345678901234567890
+// SELECT * FROM users where userid = 'sdfadfadfafd';
+// vvvvvv---wwww-------vvvvv--------w---------------vb
+//        * FRO
+//           ROM users
+// fixed 1 violations at 7 sig[* FRO]
+// Considering sig * FRO
+//sig[* FRO] orig[7..11] effective[7..9]
+//blessing 9
+//fixed 1 violations at 7 sig[* FRO]
+
 	end = lastpos;
 	if (is_security_violation(taint[lastpos]) &&
 	    is_security_violation(taint[lastpos+1]) &&
@@ -574,7 +586,7 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 		{
 			if (taint[i] != v)
 			{
-				end = i + 1;
+				end = i;
 				break;
 			}
 		}
@@ -588,13 +600,13 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 // 01234567890123456789012345678901234567890
 // partial match at beginning bfs[38] start[39] [5..5]
 
+
 	beg = start;
 	if (beforefirstpos >= 0 && 
 	     is_security_violation(taint[start]) &&
 	     is_security_violation(taint[beforefirstpos]) &&
 	     taint[start] == taint[beforefirstpos])
 	{
-fprintf(stderr,"partial match at beginning bfs[%d] start[%d] [%d..%d]\n", beforefirstpos, start, taint[beforefirstpos], taint[start]);
 		// partial match on first critical token
 		beg = end + 1; // set past the end on purpose
 		for (i = start+1, v = taint[start]; i <= lastpos; ++i)
@@ -609,7 +621,7 @@ fprintf(stderr,"partial match at beginning bfs[%d] start[%d] [%d..%d]\n", before
 
 	// only bless those critical tokens that are fully
 	// contained in the signature
-	if (verbose)
+	if (veryverbose)
 		fprintf(stderr,"sig[%s] orig[%d..%d] effective[%d..%d]\n", sig, start, lastpos, beg, end);
 
 	for(i=beg;i<=end;i++)
@@ -618,6 +630,7 @@ fprintf(stderr,"partial match at beginning bfs[%d] start[%d] [%d..%d]\n", before
 		{
 			count++;
 			taint[i]=value;
+			fprintf(stderr,"blessing %d\n", i);
 		}	
 	}
 
