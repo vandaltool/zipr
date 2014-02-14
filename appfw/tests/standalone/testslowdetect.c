@@ -44,11 +44,16 @@ int main(int argc, char **argv)
 	int attack_detected = 0;
 	for (i = 0; i < atoi(argv[1]); ++i)
 	{
-		if (sqlfw_verify(file_contents, &errorMessage))
+		if (!sqlfw_verify(file_contents, &errorMessage))
 		{
 			attack_detected = 1;
 		}
 	}
+
+	if (attack_detected)
+		fprintf(stderr,"attack detected\n");
+	else
+		fprintf(stderr,"no attack detected\n");
 
 	free(query_structure);
 	return attack_detected;
