@@ -869,7 +869,7 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 						if(verbose)
 							fprintf(stderr,"moving to front\n");
 						// next = mru_sigs->erase(it);
-						mru_sigs->erase(it);
+						it = mru_sigs->erase(it);
 						if(verbose)
 							fprintf(stderr,"past erase");
 						mru_sigs->push_front(sig);
