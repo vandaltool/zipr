@@ -17,6 +17,8 @@ int appfw_getNumSignatures();    // returns number of signature patterns
 char **appfw_getSignatures();    // returns array containing signature patterns
 void appfw_error(const char*);   // generic error display routine
 
+void appfw_dump_signatures(FILE *);
+
 void appfw_taint_range(char *taint, char taintValue, int from, int len); // mark as tainted
 void appfw_taint_range_by_pos(char *taint, char taintValue, int beg, int end); // mark as tainted
 void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint);

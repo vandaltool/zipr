@@ -787,10 +787,30 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
  *
  * return TRUE if command is OK.
  */
+static list<char*> *mru_sigs=NULL;  // sorted signatures (most-recently used)
+
+extern "C" void appfw_dump_signatures(FILE *fp)
+{
+	if (mru_sigs)
+	{
+		for(list<char*>::iterator it=mru_sigs->begin(); it!=mru_sigs->end();  it++)
+		{
+			char *sig = *it;
+			fprintf(fp,"%s\n", sig);
+		}
+	}
+	else
+	{
+		static char **fw_sigs = appfw_getSignatures();
+		for (int sigId = 0; sigId < appfw_getNumSignatures(); ++sigId)
+		{
+			fprintf(fp,"%s\n", fw_sigs[sigId]);
+		}
+	}
+}
+
 extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int case_sensitive)
 {
-
-	static list<char*> *mru_sigs=NULL; 
 	static char **fw_sigs = appfw_getSignatures();
 
 	int j, pos, sigId;

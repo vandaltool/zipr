@@ -39,17 +39,23 @@ int main(int argc, char **argv)
 	// Basically only pay attention to the characters marked 'c'
 	appfw_display_taint("query structure", file_contents, query_structure);
 
+	int exit_code;
 	if (sqlfw_verify_fast(file_contents))
 	{
 		fprintf(stderr, "no attack detected\n");
-		return EXIT_CODE_NO_ATTACK;
+		exit_code = EXIT_CODE_NO_ATTACK;
 	}
 	else
 	{
 		fprintf(stderr, "attack detected: %s\n", file_contents);
-		return EXIT_CODE_ATTACK_DETECTED;
+		exit_code = EXIT_CODE_ATTACK_DETECTED;
 	}
+
+	FILE *fp = fopen("newsigs.txt", "w+");
+	appfw_dump_signatures(fp);
+	fclose(fp);
 
 	free(query_structure);
 
+	return exit_code;
 }
