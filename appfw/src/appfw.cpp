@@ -704,6 +704,8 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 		pos = 0;
 		if(length_signature==1 && isalpha(*sig))
 			continue;
+
+		bool alreadymoved = false;
 		while (pos < commandLength)
 		{
 			if (((case_sensitive  && strncmp    (&command[pos], sig, length_signature) == 0)) || 
@@ -721,14 +723,16 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 						fflush(stderr);
 					}
 					/* move to front */
-					if(it!=sorted_sigs->begin())
+					if(!alreadymoved && it!=sorted_sigs->begin())
 					{
 						if(verbose)
 							fprintf(stderr,"moving to front\n");
-						sorted_sigs->erase(it);
+						it = sorted_sigs->erase(it);
 						sorted_sigs->push_front(sig);
 						if(verbose)
 							fprintf(stderr,"done moving to front\n");
+
+						alreadymoved = true;
 					}
 
 					violations-=fixed_violations;
