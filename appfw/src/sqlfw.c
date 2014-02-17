@@ -78,18 +78,12 @@ int sqlfw_verify_fast(const char *zSql)
 	}
 
 	// get all the critical keywords
-    if (verbose) fprintf(stderr, "getting structure\n");
 	sqlfw_get_structure(zSql, tainted);
-    if (verbose) fprintf(stderr, "done getting structure\n");
-    if (verbose) fprintf(stderr, "fast establish taint structure\n");
 	int success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
-    if (verbose) fprintf(stderr, "done fast establish taint structure\n");
 	if (!success && verbose)
 		sqlfw_display_taint("debug", zSql, tainted);
 
-    if (verbose) fprintf(stderr, "release memory\n");
 	free(tainted);
-    if (verbose) fprintf(stderr, "done release memory\n");
 	return success;
 }
 

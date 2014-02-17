@@ -867,15 +867,8 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 					/* move to front */
 					if(!alreadymoved && it!=mru_sigs->begin())
 					{
-						if(verbose)
-							fprintf(stderr,"moving to front\n");
-						// next = mru_sigs->erase(it);
 						it = mru_sigs->erase(it);
-						if(verbose)
-							fprintf(stderr,"past erase");
 						mru_sigs->push_front(sig);
-						if(verbose)
-							fprintf(stderr,"done moving to front\n");
 						alreadymoved = true;
 					}
 
