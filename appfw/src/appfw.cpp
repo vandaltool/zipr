@@ -843,10 +843,10 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 		++next;	
 		int length_signature = strlen(sig);
 		pos = 0;
-/*
+
 		if(length_signature==1 && isalpha(*sig))
 			continue;
-*/
+
 		while (pos < commandLength)
 		{
 			if (((case_sensitive  && strncmp    (&command[pos], sig, length_signature) == 0)) || 
@@ -868,7 +868,7 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 					{
 						if(verbose)
 							fprintf(stderr,"moving to front\n");
-						mru_sigs->erase(it);
+						next = mru_sigs->erase(it);
 						mru_sigs->push_front(sig);
 						if(verbose)
 							fprintf(stderr,"done moving to front\n");
