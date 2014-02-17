@@ -65,7 +65,6 @@ void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
 /*
 ** Run the original sqlite parser on the given SQL string.  
 ** Extract out critical tokens
-** Look for tainted critical tokens
 */
 int sqlfw_verify_fast(const char *zSql) 
 {
@@ -79,11 +78,18 @@ int sqlfw_verify_fast(const char *zSql)
 	}
 
 	// get all the critical keywords
+    if (verbose) fprintf(stderr, "getting structure\n");
 	sqlfw_get_structure(zSql, tainted);
+    if (verbose) fprintf(stderr, "done getting structure\n");
+    if (verbose) fprintf(stderr, "fast establish taint structure\n");
 	int success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
+    if (verbose) fprintf(stderr, "done fast establish taint structure\n");
 	if (!success && verbose)
 		sqlfw_display_taint("debug", zSql, tainted);
+
+    if (verbose) fprintf(stderr, "release memory\n");
 	free(tainted);
+    if (verbose) fprintf(stderr, "done release memory\n");
 	return success;
 }
 
@@ -468,7 +474,7 @@ abort_parse:
   appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
 
   return 0;
-}
+} // end sqlfw_verify_taint()
 
 // end of line or \0
 int look_for_eol(const char *p_str, int p_pos)
@@ -528,7 +534,6 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
   // terminate recursion if needed
   if (strlen(zSql) <= 0)
     return;
-
 
 	// initialized to tainted by default
 	appfw_taint_range(p_annot, APPFW_UNKNOWN, 0, strlen(zSql)-1);
@@ -721,4 +726,5 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
   p_annot[strlen(zSql)-1] = '\0';
 
   appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
+
 }
