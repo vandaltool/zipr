@@ -41,8 +41,12 @@ int main(int argc, char **argv)
 	appfw_display_taint("query structure", file_contents, query_structure);
 
 	int attack_detected = 0;
-	for (i = 0; i < atoi(argv[1]); ++i)
+	int count = atoi(argv[1]);
+	int modval = count / 10;
+	
+	for (i = 0; i < count; ++i)
 	{
+		if (i % modval == 0) fprintf(stderr," running iteration #%d (%d)\n", i, modval);
 		if (!sqlfw_verify_fast(file_contents))
 		{
 			attack_detected = 1;
