@@ -18,7 +18,7 @@
 PROGS=p1transform.exe nulltransform.exe integertransformdriver.exe
 
 CC=g++
-CFLAGS= -g -O3 -Wall
+CFLAGS= -g -Wall
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../../libtransform/include/
 LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform
 

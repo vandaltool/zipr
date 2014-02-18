@@ -13,8 +13,9 @@ static set<Instruction_t*> FindBlockStarts(Function_t* func)
 
 	set<Instruction_t*> targets;
 
-	/* the entry point of the function is a target instruction for this CFG */
-	targets.insert(func->GetEntryPoint());
+	if(func->GetEntryPoint())
+		/* the entry point of the function is a target instruction for this CFG */
+		targets.insert(func->GetEntryPoint());
 
 	/* for each instruction, decide if it's a block start based on whether or not 
 	 * it can be indirectly branched to.  Also mark direct targets as block starts.

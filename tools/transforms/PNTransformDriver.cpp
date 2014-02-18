@@ -8,6 +8,7 @@
 #include "PNIrdbManager.hpp"
 #include <cmath>
 #include "globals.h"
+#include <libIRDB-cfg.hpp>
 
 using namespace std;
 using namespace libIRDB;
@@ -716,6 +717,8 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 
 	vector<validation_record> high_covered_funcs, low_covered_funcs, not_covered_funcs,shuffle_validate_funcs;
 
+	int funcs_attempted=-1;
+
 	//For each function
 	//Loop through each level, find boundaries for each, sort based on
 	//the number of boundaries, attempt transform in order until successful
@@ -729,6 +732,21 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 	{
 		Function_t *func = *it;
 
+		funcs_attempted++;
+		if(getenv("PN_ONLYTRANSFORM") && funcs_attempted!=atoi(getenv("PN_ONLYTRANSFORM")))
+		{
+			cout<<"Skipping function "<<dec<<funcs_attempted<<", named: "<<func->GetName()<<endl;
+			continue;
+		}
+		if(getenv("PN_NUMFUNCSTOTRY") && funcs_attempted>=atoi(getenv("PN_NUMFUNCSTOTRY")))
+		{
+			cerr<<dec<<"Aborting transforms after func number "<<funcs_attempted<<", which is: "<<
+				func->GetName()<<endl;
+			break;
+		}
+		
+		
+
 		//TODO: remove this at some point when I understand if this can happen or not
 		assert(func != NULL);
 
@@ -736,7 +754,9 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 
 		//Check if in blacklist
 		if(IsBlacklisted(func))
+		{
 			continue;
+		}
 
 		total_funcs++;
 
@@ -842,7 +862,7 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 			else
 				high_covered_funcs.push_back(vr);
 		}
-			
+
 	}
 
 	//TODO: I have seen some functions not require any modifications. In this case we should remove them from the
@@ -1242,7 +1262,7 @@ void PNTransformDriver::Finalize_Transformation()
 
 void PNTransformDriver::Print_Report()
 {
-	cerr<<endl;
+	cerr<<dec<<endl;
 	cerr<<"############################SUMMARY############################"<<endl;
 
 	cerr<<"Functions Transformed"<<endl;
@@ -1498,6 +1518,8 @@ unsigned int PNTransformDriver::GetRandomCanary()
 
 bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *func)
 {
+	ControlFlowGraph_t cfg(func);
+	
 	string esp_reg;
 	if(FileIR_t::GetArchitectureBitWidth()==32)
 		esp_reg="esp";
@@ -1592,7 +1614,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 
 					//TODO: hack for TNE, assuming that isntruction_rewrite
 					//will add padding to dynamic arrays. 
-					Instruction_Rewrite(layout,instr);
+					Instruction_Rewrite(layout,instr,&cfg);
 					continue;			
 				}
 			}
@@ -1681,7 +1703,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		//TODO: message if not static stack?
 		else
 		{
-			if(!Instruction_Rewrite(layout,instr))
+			if(!Instruction_Rewrite(layout,instr, &cfg))
 				return false;
 		}
 	}
@@ -1694,6 +1716,8 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 	//TODO: add return value
 	if(verbose_log)
 		cerr<<"PNTransformDriver: Sans Canary Rewrite for Function = "<<func->GetName()<<endl;
+
+	ControlFlowGraph_t cfg(func);
 
 	for(
 		set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
@@ -1710,14 +1734,110 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 		if(verbose_log)
 			cerr<<"PNTransformDriver: Sans_Canary_Rewrite: Looking at instruction "<<disasm_str<<endl;
 
-		if(!Instruction_Rewrite(layout,instr))
+		if(!Instruction_Rewrite(layout,instr,&cfg))
 			return false;
 	}
 
 	return true;
 }
 
-inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instruction_t *instr)
+
+
+Instruction_t* GetNextInstruction(Instruction_t *prev, Instruction_t* insn, Function_t* func)
+{
+	Instruction_t* ft=insn->GetFallthrough();
+	Instruction_t* targ=insn->GetTarget();
+	
+	/* if there's a fallthrough, but no targ, and the fallthrough is in the function */
+	if(ft &&  !targ && func->GetInstructions().find(ft)!=func->GetInstructions().end())
+		return ft;
+
+	/* if there's a target, but no fallthrough, and the target is in the function */
+	if(!ft && targ && func->GetInstructions().find(targ)!=func->GetInstructions().end())
+		return targ;
+
+	return NULL;
+}
+
+//
+// PNTransformDriver::prologue_offset_to_actual_offset - 
+// 	Look in the CFG to see if instr  is in the prologue before the stack allocation instruction.  
+//	If so, attempt to adjust offset so that it is relative to the offset after the stack has 
+//	been allocated.  Return adjusted offset if succesfful, else unadjusted offset.
+//
+int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg, Instruction_t *instr,int offset)
+{
+	Function_t* func=cfg->GetFunction();
+	assert(func);
+	BasicBlock_t* entry_block=cfg->GetEntry();
+	if(!entry_block)
+		return offset;
+
+	/* find the instruction in the vector */
+	set<Instruction_t*>::iterator it= func->GetInstructions().find(instr);
+
+	/* if the instruction isn't in the entry block, give up now */
+	if( it == func->GetInstructions().end())
+		return offset;
+
+	
+	Instruction_t* insn=*it, *prev=NULL;
+
+	for(;insn!=NULL; insn=GetNextInstruction(prev,insn, func))
+	{
+		assert(insn);
+		DISASM d;
+		insn->Disassemble(d);
+		string disasm_str=d.CompleteInstr;
+		
+		if(strstr(d.CompleteInstr, "push")!=NULL)
+			return offset;
+	
+		int max = PNRegularExpressions::MAX_MATCHES;
+		regmatch_t pmatch[max];
+
+		/* check for a stack alloc */
+                if(regexec(&(pn_regex->regex_stack_alloc), d.CompleteInstr, 5, pmatch, 0)==0)
+		{
+
+                        if (pmatch[1].rm_so >= 0 && pmatch[1].rm_eo >= 0)
+                        {
+				string matched="";
+                                int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+                                matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+                                //extract K
+                                unsigned int ssize;
+                                if(str2uint(ssize, matched.c_str()) != SUCCESS)
+                                {
+					return offset;
+                                }
+				// found! 
+				// mov ... [rsp+offset] ...
+				// sub rsp, ssize
+				// note: offset is negative
+			
+				// sanity check that the allocation iss bigger than the neg offset
+				assert((int)ssize==(unsigned)ssize);
+				if(-offset>(int)ssize)
+					return offset;
+
+				// success
+				return offset+ssize;
+
+                        }
+			return offset;
+
+		}
+		// else, check next instruction 
+
+		
+	}
+
+	return offset;
+
+}
+
+inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instruction_t *instr, ControlFlowGraph_t* cfg)
 {
 	FileIR_t* virp = orig_virp;
 
@@ -1827,6 +1947,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	} 
 	else if(regexec(&(pn_regex->regex_and_esp), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
+		if(verbose_log)
+			cerr << "PNTransformDriver: and_esp pattern matched, ignoring"<<endl;
 /*
   cerr<<"PNTransformDriver: Transforming AND ESP instruction"<<endl;
 
@@ -1934,6 +2056,55 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 */
 		
 	}
+#if 1
+	else if(regexec(&(pn_regex->regex_esp_direct_negoffset), disasm_str.c_str(), 5, pmatch, 0)==0)
+	{
+
+		if(verbose_log)
+		{
+			cerr<<"PNTransformDriver: Transforming ESP-k Relative Instruction"<<endl;
+		}
+
+		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+		matched = disasm_str.substr(pmatch[1].rm_so,mlen);
+
+		// extract displacement 
+		int offset = strtol(matched.c_str(),NULL,0);
+
+		//TODO: I don't think this can happen but just in case
+		assert(offset > 0);
+
+		int revised_offset=prologue_offset_to_actual_offset(cfg,instr,-offset);
+
+		if(revised_offset<0)
+		{	
+			if(verbose_log)
+				cerr<<"PNTransformDriver: ignoring, not in prologue "<<endl;
+			
+		}
+		else
+		{
+			int new_location = layout->GetNewOffsetESP(revised_offset);
+			int new_offset = new_location-layout->GetAlteredAllocSize();
+
+			// sanity 
+			assert(new_offset<0);
+			
+			stringstream ss;
+			ss<<hex<<(- new_offset); 	// neg sign already in string
+	
+			matched = "0x"+ss.str();
+			
+			disasm_str.replace(pmatch[1].rm_so,mlen,matched);
+			
+			if(verbose_log)
+				cerr<<"PNTransformDriver: New Instruction = "<<disasm_str<<endl;
+			undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
+	
+			virp->RegisterAssembly(instr,disasm_str);
+		}
+	}
+#endif
 //TODO: the regular expression order does matter, scaled must come first, change the regex so this doesn't matter  
 	else if(regexec(&(pn_regex->regex_esp_scaled), disasm_str.c_str(), 5, pmatch, 0)==0 ||
 			regexec(&(pn_regex->regex_esp_direct), disasm_str.c_str(), 5, pmatch, 0)==0)

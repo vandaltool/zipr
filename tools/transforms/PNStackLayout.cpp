@@ -6,6 +6,7 @@
 #include <sstream>
 #include <ctime>
 #include "globals.h"
+#include <libIRDB-core.hpp>
 
 //TODO: debug use only
 #include <iostream>
@@ -67,7 +68,7 @@ unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 	//for example, if 3 bytes over alignment, and the alignment stride is 8, then add 8 - 3, or 5 bytes. 
 	pad += (ALIGNMENT_BYTE_SIZE - (stack_layout.frame_alloc_size % ALIGNMENT_BYTE_SIZE));
 	pad += stack_layout.frame_alloc_size; 
-		
+
 	return pad;
 }
 
@@ -82,6 +83,7 @@ unsigned int PNStackLayout::GetRandomPadding(unsigned int obj_size)
 
 PNStackLayout::PNStackLayout(StackLayout stack_layout) : stack_layout(stack_layout)
 {
+	ALIGNMENT_BYTE_SIZE=libIRDB::FileIR_t::GetArchitectureBitWidth()/sizeof(int);
 	//PNTransformDriver sets up the seed, I need a better way of handling this
 	//but for now assume it has been properly seeded. 
 	//srand(time(NULL));
@@ -100,6 +102,7 @@ PNStackLayout::PNStackLayout(StackLayout stack_layout) : stack_layout(stack_layo
 
 PNStackLayout::PNStackLayout(const PNStackLayout &stack_layout): stack_layout(stack_layout.stack_layout)
 {
+	ALIGNMENT_BYTE_SIZE=libIRDB::FileIR_t::GetArchitectureBitWidth()/sizeof(int);
 	pn_layout_name = stack_layout.pn_layout_name;
 	isPadded = stack_layout.isPadded;
 	isShuffled = stack_layout.isShuffled;
@@ -267,6 +270,16 @@ void PNStackLayout::AddCanaryPadding()
 	}	 
 }
 
+
+/* 
+ * roundUp - round number up to the nearest multiple .  multiple must be power of 2.
+ */
+int roundUp(int numToRound, int multiple) 
+{
+	assert((multiple & (multiple-1))==0);
+   	return (numToRound + multiple - 1) & ~(multiple - 1);
+}
+
 /*
   Add padding between variables in the stack frame. If there are no out args, 
   padding is added below the lowest variable, but only if the stack frame
@@ -321,8 +334,22 @@ void PNStackLayout::AddRandomPadding(bool isaligned)
 		total_padding += curpad;
 		mem_objects[i]->SetPaddingSize(curpad+mem_objects[i]->GetPaddingSize());
 	}
+
 	
 	sort(mem_objects.begin(),mem_objects.end(),CompareRangeBaseOffset);
+
+	int last=mem_objects.size()-1;
+	int last_pad=mem_objects[last]->GetPaddingSize();
+	if(verbose_log)
+	{
+		cerr<<"Last object size=0x"<<hex<<last_pad<<endl;
+		cerr<<"altered_aloc_size=0x"<<hex<<altered_alloc_size<<endl;
+		cerr<<"total_padding=0x"<<hex<<total_padding<<endl;
+	}
+	
+	int new_total_padding_size=roundUp(total_padding,ALIGNMENT_BYTE_SIZE);
+	mem_objects[last]->SetPaddingSize(mem_objects[last]->GetPaddingSize()+new_total_padding_size-total_padding);
+	total_padding=new_total_padding_size;
 
 	//the altered frame size is the size of the old altered frame size plus the additional
 	//padding added.

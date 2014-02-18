@@ -9,9 +9,9 @@
 using namespace std;
 
 #define FIRN(s) fill_in_reg_name((s))
-#define HEXNUM "[[:blank:]]*0x[0123456789abcdefABCDEFxX]+[[:blank:]]*"
+#define HEXNUM "[0][xX][0123456789abcdefABCDEF]+"
 #define REGSTRING "[[:blank:]]*[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]+[[:blank:]]*"
-#define OPTSCALE "[[:blank:]]*[*][[:blank:]]*[1248][[:blank:]]*|[[:blank:]]*"
+#define SCALE "[[:blank:]]*[*][[:blank:]]*[1248][[:blank:]]*"
 
 static char* fill_in_reg_name(const char *instring)
 {
@@ -75,7 +75,7 @@ PNRegularExpressions::PNRegularExpressions()
 		fprintf(stderr,"Error: regular expression for esp scaled addresses failed\n");
 		exit(1);
 	}
-	if((errcode=regcomp(&regex_esp_scaled_nodisp, FIRN(".*\\[%sp[+]"REGSTRING OPTSCALE"(\\]).*"),REG_EXTENDED | REG_ICASE)) !=0)
+	if((errcode=regcomp(&regex_esp_scaled_nodisp, FIRN(".*\\[%sp[+]"REGSTRING SCALE"(\\]).*"),REG_EXTENDED | REG_ICASE)) !=0)
 	{
 		char buf[1000];
 		regerror(errcode,&regex_esp_scaled_nodisp,buf,sizeof(buf));
@@ -89,7 +89,7 @@ PNRegularExpressions::PNRegularExpressions()
 		exit(1);
 	}
 
-	if((errcode=regcomp(&regex_esp_direct,FIRN(".*\\[%sp[+](.+)"HEXNUM"*\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
+	if((errcode=regcomp(&regex_esp_direct,          FIRN(".*\\[%sp[+]("HEXNUM")\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
 	{
 		char buf[1000];
 		regerror(errcode,&regex_esp_direct,buf,sizeof(buf));
@@ -97,8 +97,16 @@ PNRegularExpressions::PNRegularExpressions()
 		exit(1);	
 	}
 
+	if((errcode=regcomp(&regex_esp_direct_negoffset,FIRN(".*\\[%sp[-]("HEXNUM")\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
+	{
+		char buf[1000];
+		regerror(errcode,&regex_esp_direct_negoffset,buf,sizeof(buf));
+		fprintf(stderr,"Error: regular expression for esp direct addresses failed, code: %s\n",buf);
+		exit(1);	
+	}
 
-	if(regcomp(&regex_ebp_direct,FIRN(".*\\[%bp[-]"HEXNUM"(.+)\\].*"),REG_EXTENDED | REG_ICASE) !=0)
+
+	if(regcomp(&regex_ebp_direct,FIRN(".*\\[%bp[-]("HEXNUM")\\].*"),REG_EXTENDED | REG_ICASE) !=0)
 	{
 		fprintf(stderr,"Error: regular expression for esp direct addresses failed\n");
 		exit(1);	

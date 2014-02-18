@@ -163,7 +163,10 @@ void a2bspri(const vector<string> &input,const string &outFilename, const string
 	ELFIO::elfio elfiop;
 	elfiop.load(exeFilename);
 	int bits=0;
-	srand(time(0));
+	if(getenv("SPASM_SEED"))
+		srand(atoi(getenv("SPASM_SEED")));
+	else	
+		srand(time(0));
 
 	/* make start at 0xff00000000000000 for x86-64 */
 	if(elfiop.get_class()==ELFCLASS64) 

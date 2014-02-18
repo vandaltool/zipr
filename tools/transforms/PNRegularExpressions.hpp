@@ -14,6 +14,7 @@ public:
 	regex_t regex_esp_scaled_nodisp;
 	regex_t regex_ebp_scaled;
 	regex_t regex_esp_direct;
+	regex_t regex_esp_direct_negoffset;
 	regex_t regex_ebp_direct;
 	regex_t regex_stack_alloc;
 	regex_t regex_stack_dealloc;

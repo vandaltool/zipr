@@ -8,6 +8,7 @@
 #include "PNRegularExpressions.hpp"
 #include <csignal>
 #include "Rewrite_Utility.hpp"
+#include <libIRDB-cfg.hpp>
 
 //TODO: I should use the types defined by beaengine
 //#define RetType 13
@@ -91,7 +92,7 @@ protected:
     //altered for TNE hack for dyn array padding, assuming all virp is orig_virp
     virtual bool Canary_Rewrite( PNStackLayout *orig_layout,libIRDB::Function_t *func);
     virtual bool Sans_Canary_Rewrite(PNStackLayout *orig_layout, libIRDB::Function_t *func);
-    inline bool Instruction_Rewrite(PNStackLayout *layout, libIRDB::Instruction_t *instr);
+    inline bool Instruction_Rewrite(PNStackLayout *layout, libIRDB::Instruction_t *instr, ControlFlowGraph_t* cfg);
 	inline bool FunctionCheck(libIRDB::Function_t* a, libIRDB::Function_t* b);
 	inline bool TargetFunctionCheck(libIRDB::Instruction_t* a, libIRDB::Instruction_t* b);
 	inline bool FallthroughFunctionCheck(libIRDB::Instruction_t* a, libIRDB::Instruction_t* b);
@@ -115,6 +116,10 @@ protected:
 	void Register_Finalized(std::vector<validation_record> &vrs,unsigned int start, int length);
 	bool Validate_Recursive(std::vector<validation_record> &vrs, unsigned int start, int length);//,bool suspect=false);
 //	bool Validate_Linear(std::vector<validation_record> &vrs, unsigned int start, int length);
+
+	// see .cpp
+	int prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg, Instruction_t *instr,int offset);
+
 
 public:
     static bool timeExpired;
