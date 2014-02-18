@@ -333,7 +333,10 @@ perform_step()
 	starttime=`date --iso-8601=seconds`
 
 	# If verbose is on, tee to a file 
-	if [ ! -z "$VERBOSE" ]; then
+	if [ ! -z "$DEBUG_STEPS" ]; then
+		$command 
+		command_exit=$?
+	elif [ ! -z "$VERBOSE" ]; then
 		$command 2>&1 | tee $logfile
 		command_exit=${PIPESTATUS[0]} # this funkiness gets the exit code of $command, not tee
 	else
