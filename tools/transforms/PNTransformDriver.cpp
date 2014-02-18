@@ -20,6 +20,8 @@ extern map<Function_t*, set<AddressID_t*> > inserted_addr;
 void sigusr1Handler(int signum);
 bool PNTransformDriver::timeExpired = false;
 
+static Instruction_t* GetNextInstruction(Instruction_t *prev, Instruction_t* insn, Function_t* func);
+
 
 int get_saved_reg_size()
 {
@@ -475,6 +477,7 @@ void PNTransformDriver::GenerateTransformsInit()
 	total_funcs = 0;
 	blacklist_funcs = 0;
 	sanitized_funcs = 0;
+	push_pop_sanitized_funcs = 0;
 	dynamic_frames = 0;
 	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
 	not_transformable.clear();
@@ -607,9 +610,150 @@ void PNTransformDriver::GenerateTransforms()
 	Print_Report();
 }
 
+// count_prologue_pushes -
+// start at the entry point of a function, and count all push instructions
+static int count_prologue_pushes(Function_t *func)
+{
+	int count=0;
+	Instruction_t* insn=NULL, *prev=NULL;
+
+	// note: GetNextInstruction will return NULL if it tries to leave the function
+	// or encounters conditional control flow (it will follow past unconditional control flow
+	// it also stops at indirect branches (which may leave the function, or may generating 
+	// multiple successors)
+	for(insn=func->GetEntryPoint(); insn!=NULL; insn=GetNextInstruction(prev,insn, func))
+	{
+		DISASM d;
+		insn->Disassemble(d);
+		if(strstr(d.CompleteInstr,"push"))
+		{
+			if( 	(d.Argument2.ArgType&CONSTANT_TYPE)==CONSTANT_TYPE   //&& 
+//				insn->GetFallthrough()!=NULL &&
+//				insn->GetFallthrough()->GetTarget()!=NULL && 
+//				func->GetInstructions().find(insn->GetFallthrough()->GetTarget())!=func->GetInstructions().end()
+			  )
+			{
+				// push imm followed by a jump outside the function. 
+				// this is a call, don't count it as a push.
+			}
+			else
+				count++;
+		}
+
+		prev=insn;
+	}
+	return count;
+}
+Instruction_t* find_exit_insn(Instruction_t *insn, Function_t *func)
+{
+	Instruction_t *prev=NULL;
+	for(; insn!=NULL; insn=GetNextInstruction(prev,insn, func))
+	{
+		prev=insn;
+	}
+
+	if(prev->GetFallthrough()!=NULL && prev->GetTarget()!=NULL)
+		return NULL; // cond branch 
+	if(prev->GetFallthrough()==NULL && prev->GetTarget()==NULL)
+	{
+		DISASM d;
+		prev->Disassemble(d);
+		if(strstr(d.CompleteInstr,"ret")!=NULL) // return ret.
+			return prev;
+		return NULL; // indirect branch 
+	}
+
+	// it must have either a fallthrough or target, but not both.
+	// so it must leave the function.
+
+	return prev;
+
+}
+
+// check_for_push_pop_coherence -
+// we are trying to check whether the function's prologue uses 
+// the same number of push as each exit to the function does.
+// odd things happen if we can't match pushes and pops.
+// but, we are actively trying to ignore pushes/pops related to calling another function.
+// return true if push/pop coherence is OK.
+// false otherwise.
+bool	check_for_push_pop_coherence(Function_t *func)
+{
+
+	// count pushes in the prologue
+	int prologue_pushes=count_prologue_pushes(func);
+
+cerr<<"Found "<<prologue_pushes<<" pushes in "<<func->GetName()<<endl;
+
+	// keep a map that keeps the count of pops for each function exit.
+	map<Instruction_t*, int> pop_count_per_exit;
+
+	// now, look for pops, and fill in that map.
+	for(
+		set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
+		it!=func->GetInstructions().end();
+		++it
+	   )
+	{
+		Instruction_t* insn=*it;
+		DISASM d;
+		insn->Disassemble(d);
+		if(strstr(d.CompleteInstr,"pop")!=NULL || strstr(d.CompleteInstr,"leave")!=NULL)
+		{
+			Instruction_t *exit_insn=find_exit_insn(insn,func);
+
+			if(exit_insn)
+			{
+				DISASM d2;
+				exit_insn->Disassemble(d2);
+cerr<<"Found exit insn ("<< d2.CompleteInstr << ") for pop ("<< d.CompleteInstr << ")"<<endl;
+				map<Instruction_t*, int>::iterator mit;
+				mit=pop_count_per_exit.find(exit_insn);
+				if(mit == pop_count_per_exit.end())		// not found
+					pop_count_per_exit[exit_insn]=0;	// init
+
+				pop_count_per_exit[exit_insn]++;
+			}
+			else
+			{
+cerr<<"Could not find exit insn for pop ("<< d.CompleteInstr << ")"<<endl;
+			}
+		}
+	}
+
+	// now, look at each exit with pops, and verify the count matches the push count.
+	// we always allow an exit point from the function to have 0 pops, as things like
+	// calls to non-return functions (e.g., exit, abort, assert_fail) don't clean up the
+	// stack first.  Also handy as this allows "fixed" calls to be ignored.
+	// but, since exits with 0 pops aren't in the map, we don't need an explicit check for them.
+	for(
+		map<Instruction_t*,int>::const_iterator it=pop_count_per_exit.begin();
+		it!=pop_count_per_exit.end();
+		++it
+	   )
+	{
+		pair<Instruction_t*,int> map_pair=*it;
+		Instruction_t* insn=map_pair.first;
+		assert(insn);
+		DISASM d;
+		insn->Disassemble(d);
+
+cerr<<"Found "<<map_pair.second<<" pops in exit: \""<< d.CompleteInstr <<"\" func:"<<func->GetName()<<endl;
+
+		// do the check
+		if(prologue_pushes != map_pair.second)
+		{
+			cerr<<"Sanitizing function "<<func->GetName()<<" because pushes don't match pops for an exit"<<endl;
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void PNTransformDriver::SanitizeFunctions()
 {
-	//TODO: for now, the santized list is only created for an individual IR file
+	//TODO: for now, the sanitized list is only created for an individual IR file
 	sanitized.clear();
 
 	for(
@@ -618,7 +762,10 @@ void PNTransformDriver::SanitizeFunctions()
 		++func_it
 		)
 	{
+
+		
 		Function_t *func = *func_it;
+		assert(func);
 
 		if(func == NULL)
 			continue;
@@ -655,6 +802,19 @@ void PNTransformDriver::SanitizeFunctions()
 			
 			}
 		}
+
+		// if it's not already sanitized
+		if(sanitized.find(func)==sanitized.end())
+		{
+			// check for push/pop coherence.
+			if(!check_for_push_pop_coherence(func))
+			{
+				push_pop_sanitized_funcs++;	
+				sanitized.insert(func);
+				continue;
+			}
+		}
+
 	}
 	//TODO: print sanitized list. 
 
@@ -1363,6 +1523,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Non-Blacklisted Functions \t"<<total_funcs<<endl;
 	cerr<<"Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
 	cerr<<"Sanitized Functions \t\t"<<sanitized_funcs<<endl;
+	cerr<<"Push/Pop Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
 	cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
 }
@@ -1743,7 +1904,7 @@ bool PNTransformDriver::Sans_Canary_Rewrite(PNStackLayout *layout, Function_t *f
 
 
 
-Instruction_t* GetNextInstruction(Instruction_t *prev, Instruction_t* insn, Function_t* func)
+static Instruction_t* GetNextInstruction(Instruction_t *prev, Instruction_t* insn, Function_t* func)
 {
 	Instruction_t* ft=insn->GetFallthrough();
 	Instruction_t* targ=insn->GetTarget();

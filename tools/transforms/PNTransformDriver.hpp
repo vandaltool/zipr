@@ -66,6 +66,7 @@ protected:
     std::map< std::string,std::vector<PNStackLayout*> > transformed_history;
     int blacklist_funcs;
 	int sanitized_funcs;
+	int push_pop_sanitized_funcs;
     int total_funcs;
 	int dynamic_frames;
     std::vector<std::string> not_transformable;
@@ -148,3 +149,4 @@ public:
 };
 
 #endif
+
