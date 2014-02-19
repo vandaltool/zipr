@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 		// free(query_structure);
 		//we have the query in 'query' now
 		int result;
-		if ((result = sqlfw_verify_s(query, query_structure)) == S3_SQL_SAFE)
+		if (sqlfw_is_safe(result = sqlfw_verify_s(query, query_structure)))
 		{
 			printf("Safe");
 			// fprintf(stderr, "no attack detected\n");
@@ -47,13 +47,10 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			if (result & S3_SQL_PARSE_ERROR)
+			if (sqlfw_is_parse_error(result))
 				printf("S3: Parse Error\n");
 
-			if (result & S3_SQL_ERROR)
-				printf("S3: Generic Error\n");
-
-			if (result & S3_SQL_ATTACK_DETECTED)
+			if (sqlfw_is_attack(result))
 				printf("S3: Attack Detected\n");
 
 			// fprintf(stderr, "attack detected: %s\n", argv[2]);
