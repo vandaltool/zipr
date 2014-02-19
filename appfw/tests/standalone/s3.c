@@ -36,13 +36,11 @@ int main(int argc, char **argv)
 			strcat(query,buffer);
 		}
 		char * query_structure = malloc(strlen(query)+1 * (sizeof(char)));
-		sqlfw_get_structure(query, query_structure);
-		appfw_display_taint("STRUCT", query, query_structure);
 		// free(query_structure);
 		//we have the query in 'query' now
 for (i = 0; i < 100; ++i)
 {
-		if (sqlfw_verify_fast(query))
+		if (sqlfw_verify_s(query, query_structure))
 		{
 			printf("Safe");
 			// fprintf(stderr, "no attack detected\n");
@@ -54,7 +52,9 @@ for (i = 0; i < 100; ++i)
 			// fprintf(stderr, "attack detected: %s\n", argv[2]);
 			// return EXIT_CODE_ATTACK_DETECTED;
 		}
+		appfw_display_taint("STRUCT", query, query_structure);
 }
+		free(query_structure);
 
 		printf("\n$$\n");	
 		fflush(stdout);

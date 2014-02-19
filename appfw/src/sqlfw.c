@@ -62,6 +62,37 @@ void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
   appfw_display_taint(p_msg, p_query, p_taint);
 }
 
+
+/*
+** Run the original sqlite parser on the given SQL string.  
+** Extract out critical tokens
+** Return structure of query in p_structure (memory must have been previously allocated)
+*/
+int sqlfw_verify_s(const char *zSql, char *p_structure) 
+{
+	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
+	char *markings = malloc(strlen(zSql)+1);
+	if (!peasoupDB)
+	{
+		if (verbose)
+			fprintf(stderr, "peasoupDB is NULL\n");
+		return 0;
+	}
+
+	// get all the critical keywords
+	int parse_success = sqlfw_get_structure(zSql, markings);
+	strcpy(p_structure, markings); 
+
+	// are all the critical keywords blessed?
+	int s3_success = appfw_establish_taint_fast2(zSql, markings, FALSE);
+
+	if (verbose && (!s3_success || !parse_success))
+		sqlfw_display_taint("debug", zSql, markings);
+
+	free(markings);
+	return parse_success && s3_success;
+}
+
 /*
 ** Run the original sqlite parser on the given SQL string.  
 ** Extract out critical tokens
@@ -341,7 +372,7 @@ int sqlfw_verify_taint(const char *zSql, char *p_taint, matched_record** matched
 //   -- is p_taint
 //   = is p_taint
                    
-		char temp_identifier[4096];	
+			char temp_identifier[4096];	
         switch (tokenType) {
 		// so here we would need to add all the token types that should not be p_taint
 		// this would be any SQL keywords
@@ -508,7 +539,8 @@ char get_violation_marking(char p_current_marking)
 ** 
 ** original code: SQLITE_PRIVATE int sqlite3_sqlite3RunParser(Parse *pParse, const char *zSql, char **pzErrMsg){
 */
-void sqlfw_get_structure(const char *zSql, char *p_annot){
+int sqlfw_get_structure(const char *zSql, char *p_annot)
+{
   Parse *pParse;
   int nErr = 0;                   /* Number of errors encountered */
   int i;                          /* Loop counter */
@@ -522,12 +554,13 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
   int token_length = 0;
   int comment_1_started = 0;
   int comment_2_started = 0;
+  int success = 1;
 
   char mark_violation = APPFW_SECURITY_VIOLATION;
 
   // terminate recursion if needed
   if (strlen(zSql) <= 0)
-    return;
+    return 0;
 
 	// initialized to tainted by default
 	appfw_taint_range(p_annot, APPFW_UNKNOWN, 0, strlen(zSql)-1);
@@ -543,7 +576,7 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
   pEngine = appfw_sqlite3ParserAlloc((void*(*)(size_t))appfw_sqlite3Malloc);
   if( pEngine==0 ){
     fprintf(stderr,"Failed to allocated space for pEngine\n");
-    return;
+    return 0;
   }
 
 
@@ -567,13 +600,13 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
         break;
       }
       case TK_ILLEGAL: {
+        success = 0;
 	continue;
       }
       case TK_SEMI: {
         pParse->zTail = &zSql[beg];
 		appfw_taint_range(p_annot, mark_violation, beg, 1);
 		mark_violation = get_violation_marking(mark_violation);
-
 
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
@@ -599,8 +632,8 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
 
         lastTokenParsed = tokenType;
         if( pParse->rc!=SQLITE_OK ){
+		success = 0;
 		  continue;
-
         }
 
 		char temp_identifier[4096];	
@@ -721,4 +754,5 @@ void sqlfw_get_structure(const char *zSql, char *p_annot){
 
   appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
 
+  return success;
 }
