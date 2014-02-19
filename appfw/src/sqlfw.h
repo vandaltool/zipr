@@ -18,6 +18,6 @@ extern int sqlfw_get_structure(const char *zSql, char *p_taint);
 extern int sqlfw_is_safe(int);
 extern int sqlfw_is_error(int);
 extern int sqlfw_is_parse_error(int);
-extern int sqlfw_is_attack_detected(int);
+extern int sqlfw_is_attack(int);
 
 #endif
