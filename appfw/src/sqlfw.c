@@ -767,3 +767,24 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 
   return result_flag;
 }
+
+inline int sqlfw_is_safe(int result_flag)
+{
+	return result_flag == S3_SQL_SAFE;
+}
+
+inline int sqlfw_is_error(int result_flag)
+{
+	return !sqlfw_is_safe(result_flag);
+}
+
+inline int sqlfw_is_attack(int result_flag)
+{
+	return result_flag & S3_SQL_ATTACK_DETECTED;
+}
+
+inline int sqlfw_is_parse_error(int result_flag)
+{
+	return result_flag & S3_SQL_PARSE_ERROR;
+}
+
