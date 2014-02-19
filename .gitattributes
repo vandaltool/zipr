@@ -200,6 +200,7 @@ libIRDB/src/core/variantid.cpp -text
 libIRDB/test/Makefile -text
 libIRDB/test/calc_conflicts.cpp -text
 libIRDB/test/check_thunks.cpp -text
+libIRDB/test/check_thunks.hpp -text
 libIRDB/test/clone.cpp -text
 libIRDB/test/create_variant.cpp -text
 libIRDB/test/create_variantir.cpp -text

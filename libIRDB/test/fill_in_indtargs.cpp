@@ -10,13 +10,11 @@
 // #include <elf.h>
 #include <ctype.h>
 
-
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-
 #include "targ-config.h"
-
 #include "beaengine/BeaEngine.h"
+#include "check_thunks.hpp"
 
 
 #define arch_ptr_bytes() (firp->GetArchitectureBitWidth()/8)
@@ -30,6 +28,7 @@ using namespace std;
 using namespace ELFIO;
 
 bool possible_target(int p, uintptr_t addr=0);
+bool is_possible_target(int p, uintptr_t addr);
 
 set< pair <int,int>  > bounds;
 set<int> targets;
@@ -40,7 +39,8 @@ set< pair< int, int> > ranges;
 map< Instruction_t* , set<Instruction_t*> > preds;
 
 
-void check_for_PIC_switch_table(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
+void check_for_PIC_switch_table32(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
+void check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 
 void range(int start, int end)
 { 	
@@ -98,6 +98,20 @@ void process_ranges(FileIR_t* firp)
 
 bool possible_target(int p, uintptr_t addr)
 {
+	if(is_possible_target(p,addr))
+	{
+		if(addr!=0 && getenv("IB_VERBOSE")!=NULL)
+		{
+			cout<<"Found address 0x"<<std::hex<<p<<" at 0x"<<addr<<std::dec<<endl;
+		}
+		targets.insert(p);
+		return true;
+	}
+	return false;
+}
+
+bool is_possible_target(int p, uintptr_t addr)
+{
 	for(
 		set< pair <int,int>  >::iterator it=bounds.begin();
 		it!=bounds.end();
@@ -109,11 +123,6 @@ bool possible_target(int p, uintptr_t addr)
 		int end=bound.second;
 		if(start<=p && p<=end)
 		{
-			if(addr!=0 && getenv("IB_VERBOSE")!=NULL)
-			{
-				cout<<"Found address 0x"<<std::hex<<p<<" at 0x"<<addr<<std::dec<<endl;
-			}
-			targets.insert(p);
 			return true;
 		}
         }
@@ -177,8 +186,9 @@ void mark_targets(FileIR_t *firp)
 	}
 
 }
-void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop)
+void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int>& thunk_bases)
 {
+
         for(
                 set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
                 it!=firp->GetInstructions().end();
@@ -191,7 +201,8 @@ void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop)
 
                 assert(instr_len==insn->GetDataBits().size());
 
-		check_for_PIC_switch_table(insn,disasm, elfiop);
+		check_for_PIC_switch_table32(insn,disasm, elfiop, thunk_bases);
+		check_for_PIC_switch_table64(insn,disasm, elfiop);
 
 		/* other branches can't indicate an indirect branch target */
 		if(disasm.Instruction.BranchType)
@@ -373,11 +384,135 @@ bool backup_until(const char* insn_type, Instruction_t *& prev, Instruction_t* o
 	return false;
 }
 
+
+/*
+ * check_for_PIC_switch_table32 - look for switch tables in PIC code for 32-bit code.
+ */
+void check_for_PIC_switch_table32(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int> &thunk_bases)
+{
+#if 0
+
+/* here's typical code */
+
+I1: 080a9037 <gedit_floating_slider_get_type+0x607> call   0806938e <_gedit_app_ready+0x8e>  	// ebx=080a903c
+I2: 080a903c <gedit_floating_slider_get_type+0x60c> add    $0x45fb8,%ebx			// ebx=<module_start>
+...
+I3: 080a90f8 <gedit_floating_slider_get_type+0x6c8> mov    -0x1ac14(%ebx,%esi,4),%eax		// table_start=<module_start-0x1ac14
+												// table_offset=eax=table_start[esi]
+I4: 080a90ff <gedit_floating_slider_get_type+0x6cf> add    %ebx,%eax				// switch_case=eax=<module_start>+table_offset
+I5: 080a9101 <gedit_floating_slider_get_type+0x6d1> jmp    *%eax				// jump switch_case
+...
+I6: 0806938e <_gedit_app_ready+0x8e> mov    (%esp),%ebx
+I7: 08069391 <_gedit_app_ready+0x91> ret
+
+
+/* However, since the thunk and the switch table can be (and sometimes are) very control-flow distinct, 
+ * we just collect all the places where a module can start by examining all the thunk/add pairs.
+ * After that, we look for all jumps that match the I3-I5 pattern, and consider the offset against each
+ * module start.  If we find that there are possible targets at <module_start>+table_offset, we record them.
+ */
+
+#endif
+
+        Instruction_t* I5=insn;
+        Instruction_t* I4=NULL;
+        Instruction_t* I3=NULL;
+        // check if I5 is a jump
+        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+		return;
+
+	// return if it's a jump to a constant address, these are common
+        if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+		return;
+
+	// return if it's a jump to a memory address
+        if(disasm.Argument1.ArgType&MEMORY_TYPE)
+		return;
+
+	// has to be a jump to a register now
+
+	// backup and find the instruction that's an add before I8 
+	if(!backup_until("add", I4, I5))
+		return;
+
+	// backup and find the instruction that's an movsxd before I7
+	if(!backup_until("mov", I3, I4))
+		return;
+
+	// grab the offset out of the lea.
+	DISASM d2;
+	I3->Disassemble(d2);
+
+	// get the offset from the thunk
+	int table_offset=d2.Argument2.Memory.Displacement;
+	if(table_offset==0)
+		return;
+
+cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<endl;
+		
+	/* iterate over all thunk_bases/module_starts */
+	for(set<int>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
+	{
+		int thunk_base=*it;
+		int table_base=*it+table_offset;
+
+		// find the section with the data table
+        	ELFIO::section *pSec=find_section(table_base,elfiop);
+		if(!pSec)
+			continue;
+
+		// if the section has no data, abort 
+        	const char* secdata=pSec->get_data();
+		if(!secdata)
+			continue;
+
+		// get the base offset into the section
+        	int offset=table_base-pSec->get_address();
+		int i;
+		for(i=0;i<3;i++)
+		{
+                	if(offset+i*4+sizeof(int) > pSec->get_size())
+                        	break;
+
+                	const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
+                	int table_entry=*table_entry_ptr;
+
+			if(!is_possible_target(thunk_base+table_entry,table_base+i*4))
+				break;	
+		}
+		/* did we finish the loop or break out? */
+		if(i==3)
+		{
+			cout<<"Found switch table (thunk-relative) at "<<hex<<table_base+table_offset<<endl;
+			// finished the loop.
+			for(i=0;true;i++)
+			{
+                		if(offset+i*4+sizeof(int) > pSec->get_size())
+                        		break;
+	
+                		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
+                		int table_entry=*table_entry_ptr;
+	
+				cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<thunk_base+table_entry<<endl;
+				if(!possible_target(thunk_base+table_entry,table_base+i*4))
+					break;
+			}
+		}
+		else
+			cout<<"Found that  "<<hex<<table_base+table_offset<<endl;
+
+		// now, try next thunk base 
+	}
+
+
+}
+
+
 /* check if this instruction is an indirect jump via a register,
  * if so, see if we can trace back a few instructions to find a
  * the start of the table.
  */
-void check_for_PIC_switch_table(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
+void check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop)
 {
 
         /* here's the pattern we're looking for */
@@ -521,6 +656,11 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 					insn->GetIndirectBranchTargetAddress()->GetVirtualOffset()<<endl;
 			
 		}
+
+	set<int> thunk_bases;
+	find_all_module_starts(firp,thunk_bases);
+
+
 	// reset global vars
 	bounds.clear();
 	ranges.clear();
@@ -553,7 +693,7 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	cout<<"========================================="<<endl;
 
 	/* look through the instructions in the program for targets */
-	get_instruction_targets(firp, elfiop);
+	get_instruction_targets(firp, elfiop, thunk_bases);
 
 	/* mark the entry point as a target */
 	possible_target(elfiop->get_entry()); 
@@ -584,13 +724,14 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	print_targets();
 	cout<<"========================================="<<endl;
 
+#if 1
 	/* now process the ranges that have exception handling */
-	void check_for_thunks(FileIR_t* firp);
-	check_for_thunks(firp);
+	check_for_thunks(firp, thunk_bases);
 	cout<<"========================================="<<endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass5="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
+#endif
 
 
 

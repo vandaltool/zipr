@@ -13,7 +13,7 @@
 #include <string.h>
 #include <elf.h>
 
-
+#include "check_thunks.hpp"
 
 
 using namespace libIRDB;
@@ -25,21 +25,10 @@ using namespace std;
 /*
  * check_for_thunk_offsets - check non-function thunks for extra offsets 
  */
-void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string reg, string offset)
+void check_for_thunk_offsets(FileIR_t* firp, int thunk_base)
 {
 
-	bool possible_target(int p, uintptr_t at=0);
 
-
-	int thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
-		strtol(offset.c_str(),NULL,16);
-	int thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
-	int thunk_call_offset=strtol(offset.c_str(),NULL,16);
-
-
-	/* don't check inserted thunk addresses */
-	if(thunk_insn->GetAddress()->GetVirtualOffset()==0)
-		return;
 
 	for(
 		set<Instruction_t*>::iterator it=firp->GetInstructions().begin();
@@ -66,9 +55,6 @@ void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string r
 			if(0<addoff && addoff<100)
 				continue;
 
-			/* record that there's a possible target here */
-// 			cout <<"Possible thunk target (add): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
-//			     <<" addoff: " << addoff << " total: "<< (thunk_base+addoff)<<endl;
 			possible_target(thunk_base+addoff);
 		}
 		else if(string(d.Instruction.Mnemonic)==string("lea "))
@@ -86,14 +72,28 @@ void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string r
 				continue;
 			
 			/* record that there's a possible target here */
-// 			cout <<"Possible thunk target (lea): call:"<<thunk_call_addr<<" offset:"<<thunk_call_offset
-// 			     <<" leaoff: " << leaoff << " total: "<< (thunk_base+leaoff)<<endl;
 			possible_target(thunk_base+leaoff);
 			
 		}
 			
 	}
 }
+
+void check_for_thunk_offsets(FileIR_t* firp, Instruction_t *thunk_insn, string reg, string offset)
+{
+
+	int thunk_base=thunk_insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+
+		strtol(offset.c_str(),NULL,16);
+	int thunk_call_addr=thunk_insn->GetAddress()->GetVirtualOffset();
+	int thunk_call_offset=strtol(offset.c_str(),NULL,16);
+
+	/* don't check inserted thunk addresses */
+	if(thunk_insn->GetAddress()->GetVirtualOffset()==0)
+		return;
+
+	check_for_thunk_offsets(firp,thunk_base);
+}
+
 
 
 /*
@@ -313,10 +313,6 @@ void check_non_funcs_for_thunks(FileIR_t *firp)
 		Instruction_t* insn=*it;
 
 		/* these instructions/thunks are checked with the functions */
-#if 0
-		if(insn->GetFunction())
-			continue;
-#endif
 
 		/* check if we might be calling a thunk */
 		if(insn->GetFallthrough() && insn->GetTarget())
@@ -351,8 +347,16 @@ void check_non_funcs_for_thunks(FileIR_t *firp)
  *  If L1+k1+k2 is found, and points at a code address (outside this function?), mark it as an indirect branch target.
  * 
  */
-void check_for_thunks(FileIR_t* firp)
+void check_for_thunks(FileIR_t* firp, const std::set<int>&  thunk_bases)
 {
+	/* thunk bases is the module start's found for this firp */
+
+	for(set<int>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
+	{
+		int offset=*it;
+		check_for_thunk_offsets(firp,offset);
+	}
+#if 0
 	for(
 		set<Function_t*>::iterator it=firp->GetFunctions().begin();
 		it!=firp->GetFunctions().end();
@@ -370,5 +374,37 @@ void check_for_thunks(FileIR_t* firp)
 	}
 
 	check_non_funcs_for_thunks(firp);
+#endif
 }
 
+void find_all_module_starts(FileIR_t* firp, set<int> &thunk_bases)
+{
+	thunk_bases.clear();
+
+	// for each insn in the func 
+	for(
+		set<Instruction_t*>::iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end();
+		++it
+	   )
+	{
+		// if it has a targ and fallthrough (quick test) it might be a call 
+		Instruction_t* insn=*it;
+
+		/* check if we might be calling a thunk */
+		if(insn->GetFallthrough() && insn->GetTarget())
+		{
+			// check for a call, followed by an add of reg (note the output params of reg and offset)
+			string reg,offset;
+			if(is_thunk_call(insn,reg) && 
+				is_thunk_add(insn->GetFallthrough(),reg,offset))
+			{
+				int thunk_base=insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+ 
+					strtol(offset.c_str(),NULL,16);
+				if(thunk_bases.find(thunk_base)==thunk_bases.end())
+					cout<<"Found new thunk at "<<insn->GetAddress()->GetVirtualOffset()<<" with base: "<<hex<<thunk_base<<endl;
+				thunk_bases.insert(thunk_base);
+			}
+		}
+	}
+}
