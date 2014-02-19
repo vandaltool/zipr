@@ -38,9 +38,8 @@ int main(int argc, char **argv)
 		char * query_structure = malloc(strlen(query)+1 * (sizeof(char)));
 		// free(query_structure);
 		//we have the query in 'query' now
-for (i = 0; i < 100; ++i)
-{
-		if (sqlfw_verify_s(query, query_structure))
+		int result;
+		if ((result = sqlfw_verify_s(query, query_structure)) == S3_SQL_SAFE)
 		{
 			printf("Safe");
 			// fprintf(stderr, "no attack detected\n");
@@ -48,12 +47,19 @@ for (i = 0; i < 100; ++i)
 		}
 		else
 		{
-			printf("Attack Detected");
+			if (result & S3_SQL_PARSE_ERROR)
+				printf("S3: Parse Error\n");
+
+			if (result & S3_SQL_ERROR)
+				printf("S3: Generic Error\n");
+
+			if (result & S3_SQL_ATTACK_DETECTED)
+				printf("S3: Attack Detected\n");
+
 			// fprintf(stderr, "attack detected: %s\n", argv[2]);
 			// return EXIT_CODE_ATTACK_DETECTED;
 		}
 		appfw_display_taint("STRUCT", query, query_structure);
-}
 		free(query_structure);
 
 		printf("\n$$\n");	

@@ -72,25 +72,29 @@ int sqlfw_verify_s(const char *zSql, char *p_structure)
 {
 	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
 	char *markings = malloc(strlen(zSql)+1);
+
 	if (!peasoupDB)
 	{
 		if (verbose)
 			fprintf(stderr, "peasoupDB is NULL\n");
-		return 0;
+		return S3_SQL_ERROR;
 	}
 
 	// get all the critical keywords
-	int parse_success = sqlfw_get_structure(zSql, markings);
+	int result_flag = sqlfw_get_structure(zSql, markings);
 	strcpy(p_structure, markings); 
 
 	// are all the critical keywords blessed?
-	int s3_success = appfw_establish_taint_fast2(zSql, markings, FALSE);
+	if (!appfw_establish_taint_fast2(zSql, markings, FALSE))
+		result_flag |= S3_SQL_ATTACK_DETECTED;
 
-	if (verbose && (!s3_success || !parse_success))
+	if (verbose && ((result_flag | S3_SQL_ATTACK_DETECTED) ||
+	                (result_flag | S3_SQL_PARSE_ERROR) ||
+	                (result_flag | S3_SQL_ERROR)))
 		sqlfw_display_taint("debug", zSql, markings);
 
 	free(markings);
-	return parse_success && s3_success;
+	return result_flag;
 }
 
 /*
@@ -554,14 +558,14 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
   int token_length = 0;
   int comment_1_started = 0;
   int comment_2_started = 0;
-  int success = 1;
+  int result_flag = S3_SQL_SAFE;
   int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
 
   char mark_violation = APPFW_SECURITY_VIOLATION;
 
   // terminate recursion if needed
   if (strlen(zSql) <= 0)
-    return 0;
+    return result_flag;
 
 	// initialized to tainted by default
 	appfw_taint_range(p_annot, APPFW_UNKNOWN, 0, strlen(zSql)-1);
@@ -577,7 +581,7 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
   pEngine = appfw_sqlite3ParserAlloc((void*(*)(size_t))appfw_sqlite3Malloc);
   if( pEngine==0 ){
     fprintf(stderr,"Failed to allocated space for pEngine\n");
-    return 0;
+    return S3_SQL_PARSE_ERROR;
   }
 
 
@@ -601,7 +605,7 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
         break;
       }
       case TK_ILLEGAL: {
-        success = 0;
+        result_flag |= S3_SQL_PARSE_ERROR;
 	if (verbose)
 	{
 		fprintf(stderr, "Detected illegal token at pos [%d..%d]\n", beg, end);
@@ -618,10 +622,10 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
 		if (end+1 < strlen(zSql))
-          return sqlfw_get_structure(&zSql[end+1], &p_annot[end+1]);
+          return result_flag | sqlfw_get_structure(&zSql[end+1], &p_annot[end+1]);
         else
 		{
-		  return; // semicolon was the last character in the entire statement return 
+		  return result_flag; // semicolon was the last character in the entire statement return 
 		}
       }
       default: {
@@ -639,7 +643,7 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 
         lastTokenParsed = tokenType;
         if( pParse->rc!=SQLITE_OK ){
-		success = 0;
+                  result_flag |= S3_SQL_PARSE_ERROR;
 		  continue;
         }
 
@@ -761,5 +765,5 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 
   appfw_sqlite3ParserFree(pEngine, appfw_sqlite3_free);
 
-  return success;
+  return result_flag;
 }
