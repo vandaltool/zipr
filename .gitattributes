@@ -84,6 +84,7 @@ appfw/tests/sqlite/testsqlite.c -text
 appfw/tests/sqlite/testsqlite.pstmt.c -text
 appfw/tests/sqlite/testsqlite.pstmt.fp.c -text
 appfw/tests/standalone/Makefile -text
+appfw/tests/standalone/fn.query.txt -text
 appfw/tests/standalone/goodquery -text
 appfw/tests/standalone/goodsigs -text
 appfw/tests/standalone/partialquery -text
