@@ -89,6 +89,7 @@ appfw/tests/standalone/goodsigs -text
 appfw/tests/standalone/partialquery -text
 appfw/tests/standalone/partialsigs -text
 appfw/tests/standalone/query -text
+appfw/tests/standalone/s3.c -text
 appfw/tests/standalone/sigs -text
 appfw/tests/standalone/sigs2 -text
 appfw/tests/standalone/sqlattackdetect.c -text
