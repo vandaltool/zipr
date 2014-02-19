@@ -555,6 +555,7 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
   int comment_1_started = 0;
   int comment_2_started = 0;
   int success = 1;
+  int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
 
   char mark_violation = APPFW_SECURITY_VIOLATION;
 
@@ -601,6 +602,12 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
       }
       case TK_ILLEGAL: {
         success = 0;
+	if (verbose)
+	{
+		fprintf(stderr, "Detected illegal token at pos [%d..%d]\n", beg, end);
+		for (i = beg; i <= end; ++i) fprintf(stderr,"%c",zSql[i]);
+		fprintf(stderr, "\n");
+	}
 	continue;
       }
       case TK_SEMI: {
