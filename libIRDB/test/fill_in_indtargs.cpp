@@ -27,7 +27,7 @@ using namespace libIRDB;
 using namespace std;
 using namespace ELFIO;
 
-bool possible_target(int p, uintptr_t addr=0);
+// bool possible_target(int p, uintptr_t addr=0);
 bool is_possible_target(int p, uintptr_t addr);
 
 set< pair <int,int>  > bounds;
