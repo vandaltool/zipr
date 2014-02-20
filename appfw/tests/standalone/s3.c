@@ -10,16 +10,28 @@ const int EXIT_CODE_USAGE = 2;
 int main(int argc, char **argv)
 {
 	int i = 0;
-	if (argc < 2)
+	if (argc < 3)
 	{
-		fprintf(stderr, "usage: %s <signatureFile>\n", argv[0]);
+		fprintf(stderr, "usage: %s #iter <signatureFile>\n", argv[0]);
 		return EXIT_CODE_USAGE;
 	}
 
 	// initialize signatures from file
-	appfw_init_from_file(argv[1]);
+	int iter = atoi(argv[1]);
+
+struct timeval t1, t2;
+struct timeval tt1, tt2;
+
+	gettimeofday(&t1, NULL);
+
+	appfw_init_from_file(argv[2]);
 	sqlfw_init();
 
+	gettimeofday(&t2, NULL);
+
+	fprintf(stderr, "init: elapsed(msec): %f\n", ((t2.tv_sec - t1.tv_sec) * 1000000.0 + (t2.tv_usec - t1.tv_usec)) / 1000.0 );
+
+	gettimeofday(&t1, NULL);
 	while (!feof(stdin))
 	{
 
@@ -35,11 +47,13 @@ int main(int argc, char **argv)
 				break;
 			strcat(query,buffer);
 		}
-		char * query_structure = malloc(strlen(query)+1 * (sizeof(char)));
 		// free(query_structure);
 		//we have the query in 'query' now
-		int result;
-		if (sqlfw_is_safe(result = sqlfw_verify_s(query, query_structure)))
+		for (i = 0; i < iter; ++i)
+		{
+		char * query_structure = malloc(strlen(query)+1 * (sizeof(char)));
+		int result= sqlfw_verify_s(query, query_structure);
+		if (sqlfw_is_safe(result))
 		{
 			printf("Safe");
 			// fprintf(stderr, "no attack detected\n");
@@ -56,11 +70,16 @@ int main(int argc, char **argv)
 			// fprintf(stderr, "attack detected: %s\n", argv[2]);
 			// return EXIT_CODE_ATTACK_DETECTED;
 		}
-		appfw_display_taint("STRUCT", query, query_structure);
+//		appfw_display_taint("STRUCT", query, query_structure);
 		free(query_structure);
+//gettimeofday(&tt2, NULL);
+		}
 
 		printf("\n$$\n");	
 		fflush(stdout);
 	}
+	gettimeofday(&t2, NULL);
+
+	fprintf(stderr, "total: elapsed(msec): %f\n", ((t2.tv_sec - t1.tv_sec) * 1000000.0 + (t2.tv_usec - t1.tv_usec)) / 1000.0 / iter);
 	return 0;
 }
