@@ -138,7 +138,7 @@ ELFIO::section*  find_section(int addr, ELFIO::elfio *elfiop)
                  assert(pSec);
                  if(pSec->get_address() > addr)
                          continue;
-                 if(addr > pSec->get_address()+pSec->get_size())
+                 if(addr >= pSec->get_address()+pSec->get_size())
                          continue;
 
                  return pSec;
@@ -483,7 +483,8 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 		/* did we finish the loop or break out? */
 		if(i==3)
 		{
-			cout<<"Found switch table (thunk-relative) at "<<hex<<table_base+table_offset<<endl;
+			if(getenv("VERBOSE")!=0)
+				cout<<"Found switch table (thunk-relative) at "<<hex<<table_base+table_offset<<endl;
 			// finished the loop.
 			for(i=0;true;i++)
 			{
@@ -493,13 +494,17 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
                 		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
                 		int table_entry=*table_entry_ptr;
 	
-				cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<thunk_base+table_entry<<endl;
+				if(getenv("VERBOSE")!=0)
+					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<thunk_base+table_entry<<endl;
 				if(!possible_target(thunk_base+table_entry,table_base+i*4))
 					break;
 			}
 		}
 		else
-			cout<<"Found that  "<<hex<<table_base+table_offset<<endl;
+		{
+			if(getenv("VERBOSE")!=0)
+				cout<<"Found that  "<<hex<<table_base+table_offset<<endl;
+		}
 
 		// now, try next thunk base 
 	}

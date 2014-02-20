@@ -48,8 +48,8 @@ static bool CompareValidationRecordAscending(validation_record a, validation_rec
 }
 
 
-PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script) : 
-	pn_regex(NULL)
+PNTransformDriver::PNTransformDriver(VariantID_t *pidp,string BED_script, pqxxDB_t *pqxx_if) : 
+	pn_regex(NULL), pqxx_interface(pqxx_if)
 {
 	//TODO: throw exception?
 	assert(pidp != NULL);
@@ -485,6 +485,24 @@ void PNTransformDriver::GenerateTransformsInit()
 }
 
 
+void PNTransformDriver::InitNewFileIR(File_t* this_file)
+{
+	//Always modify a.ncexe first. This is assumed to be what the constructor of FileIR_t will return if
+	//the variant ID is used alone as the parameter to the constructor. 
+	orig_virp = new FileIR_t(*pidp, this_file);
+	assert(orig_virp && pidp);
+
+	int elfoid=orig_virp->GetFile()->GetELFOID();
+	pqxx::largeobject lo(elfoid);
+	lo.to_file(pqxx_interface->GetTransaction(),"readeh_tmp_file.exe");
+
+	elfiop=new ELFIO::elfio;
+	elfiop->load("readeh_tmp_file.exe");
+	
+	ELFIO::dump::header(cout,*elfiop);
+	ELFIO::dump::section_headers(cout,*elfiop);
+}
+
 
 
 void PNTransformDriver::GenerateTransforms()
@@ -509,11 +527,8 @@ void PNTransformDriver::GenerateTransforms()
 	//name, something to consider
 
 	//--------------------a.ncexe protection-----------------------
+	InitNewFileIR(NULL);
 
-	//Always modify a.ncexe first. This is assumed to be what the constructor of FileIR_t will return if
-	//the variant ID is used alone as the parameter to the constructor. 
-	orig_virp = new FileIR_t(*pidp);
-	assert(orig_virp && pidp);
 
 	// now that we've loaded the FileIR, we can init the reg expressions needed for this object.
 	pn_regex=new PNRegularExpressions;
@@ -554,8 +569,21 @@ void PNTransformDriver::GenerateTransforms()
 				continue;
 
 			// read the db  
-			orig_virp=new FileIR_t(*pidp,this_file);
-			assert(orig_virp && pidp);
+			InitNewFileIR(this_file);
+#if 0
+orig_virp=new FileIR_t(*pidp,this_file);
+assert(orig_virp && pidp);
+int elfoid=firp->GetFile()->GetELFOID();
+pqxx::largeobject lo(elfoid);
+lo.to_file(pqxx_interface.GetTransaction(),"readeh_tmp_file.exe");
+
+ELFIO::elfio*    elfiop=new ELFIO::elfio;
+elfiop->load("readeh_tmp_file.exe");
+
+ELFIO::dump::header(cout,*elfiop);
+ELFIO::dump::section_headers(cout,*elfiop);
+#endif
+
 
 			map<string,double> file_coverage_map;
 
@@ -683,7 +711,7 @@ bool	check_for_push_pop_coherence(Function_t *func)
 	// count pushes in the prologue
 	int prologue_pushes=count_prologue_pushes(func);
 
-cerr<<"Found "<<prologue_pushes<<" pushes in "<<func->GetName()<<endl;
+//cerr<<"Found "<<prologue_pushes<<" pushes in "<<func->GetName()<<endl;
 
 	// keep a map that keeps the count of pops for each function exit.
 	map<Instruction_t*, int> pop_count_per_exit;
@@ -706,7 +734,7 @@ cerr<<"Found "<<prologue_pushes<<" pushes in "<<func->GetName()<<endl;
 			{
 				DISASM d2;
 				exit_insn->Disassemble(d2);
-cerr<<"Found exit insn ("<< d2.CompleteInstr << ") for pop ("<< d.CompleteInstr << ")"<<endl;
+//cerr<<"Found exit insn ("<< d2.CompleteInstr << ") for pop ("<< d.CompleteInstr << ")"<<endl;
 				map<Instruction_t*, int>::iterator mit;
 				mit=pop_count_per_exit.find(exit_insn);
 				if(mit == pop_count_per_exit.end())		// not found
@@ -716,7 +744,7 @@ cerr<<"Found exit insn ("<< d2.CompleteInstr << ") for pop ("<< d.CompleteInstr 
 			}
 			else
 			{
-cerr<<"Could not find exit insn for pop ("<< d.CompleteInstr << ")"<<endl;
+//cerr<<"Could not find exit insn for pop ("<< d.CompleteInstr << ")"<<endl;
 			}
 		}
 	}
@@ -738,7 +766,7 @@ cerr<<"Could not find exit insn for pop ("<< d.CompleteInstr << ")"<<endl;
 		DISASM d;
 		insn->Disassemble(d);
 
-cerr<<"Found "<<map_pair.second<<" pops in exit: \""<< d.CompleteInstr <<"\" func:"<<func->GetName()<<endl;
+//cerr<<"Found "<<map_pair.second<<" pops in exit: \""<< d.CompleteInstr <<"\" func:"<<func->GetName()<<endl;
 
 		// do the check
 		if(prologue_pushes != map_pair.second)
@@ -749,6 +777,103 @@ cerr<<"Found "<<map_pair.second<<" pops in exit: \""<< d.CompleteInstr <<"\" fun
 	}
 
 	return true;
+}
+
+
+static ELFIO::section*  find_section(unsigned int addr, ELFIO::elfio *elfiop)
+{
+         for ( int i = 0; i < elfiop->sections.size(); ++i )
+         {
+                 ELFIO::section* pSec = elfiop->sections[i];
+                 assert(pSec);
+                 if(pSec->get_address() > addr)
+                         continue;
+                 if(addr >= pSec->get_address()+pSec->get_size())
+                         continue;
+
+                 return pSec;
+        }
+        return NULL;
+}
+
+bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
+{
+	/* quick check to skip most instructions */
+	if(insn->GetTarget() || insn->GetFallthrough())
+		return true;
+
+	DISASM d;
+	insn->Disassemble(d);
+
+	/* only look at jumps */
+	int branch_type = d.Instruction.BranchType;
+	if(branch_type!=JmpType)
+		return true;
+
+	/* make sure this is an indirect branch */
+	if((d.Argument1.ArgType&MEMORY_TYPE)==0)
+		return true;
+
+	if(d.Argument1.Memory.Scale<4)
+		return true;
+
+	int displacement=d.Argument1.Memory.Displacement;
+
+	ELFIO::section* pSec=find_section(displacement,elfiop);
+
+	if(!pSec)
+		return true;	
+
+	const char *secdata=pSec->get_data();
+
+	int offset=displacement-pSec->get_address();
+
+	set<int> jump_tab_entries;
+	for(int i=0;i<5;i++)
+	{
+		if(offset+i*4+sizeof(int) > pSec->get_size())
+			break;
+
+		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
+		int table_entry=*table_entry_ptr;
+
+		if(table_entry!=0)
+		{
+//			cout << "found possible table entry "<<hex<<table_entry<<" from func "<<insn->GetFunction()->GetName()<<endl;
+			jump_tab_entries.insert(table_entry);
+		}
+
+	}
+
+	for(
+		set<Instruction_t*>::const_iterator it=orig_virp->GetInstructions().begin();
+		it!=orig_virp->GetInstructions().end();
+		++it
+	   )
+	{
+		Instruction_t* ftinsn=*it;;
+		AddressID_t* addr=ftinsn->GetAddress();
+		int voff=addr->GetVirtualOffset();
+	
+		// check to see if this instruction is in my table 
+		if(jump_tab_entries.find(voff)!=jump_tab_entries.end())
+		{
+			// it is!
+	
+			// now, check to see if the instruction is in my function 
+			if(insn->GetFunction()!=ftinsn->GetFunction())
+			{
+				cout<<"Sanitizing function "<< insn->GetFunction()->GetName()<< "due to jump-table to diff-func detected."<<endl;
+				return false;
+			}
+			else
+			{
+				// cout<<"Verified that the instruction is in my function, yay!"<<endl;
+			}
+		}
+	}
+	return true;
+
 }
 
 void PNTransformDriver::SanitizeFunctions()
@@ -790,6 +915,8 @@ void PNTransformDriver::SanitizeFunctions()
 				continue;
 */
 
+			// check if there is a fallthrough from this function 	
+			// into another function.  if so, sanitize both.
 			if(FallthroughFunctionCheck(instr,instr->GetFallthrough()))
 			{
 				//check if instruciton is a call, unconditional jump, or ret
@@ -797,9 +924,23 @@ void PNTransformDriver::SanitizeFunctions()
 				//if not, filter the functions
 				int branch_type = disasm.Instruction.BranchType;
 				if(branch_type!=RetType && branch_type!=JmpType && branch_type!=CallType)
+					// check if instr->GetTarget() (for cond branches) 
+					// exits the function.  If so, sanitize both funcs.
 					TargetFunctionCheck(instr,instr->GetTarget());
 
 			
+			}
+
+			// if it's not already sanitized
+			if(sanitized.find(func)==sanitized.end())
+			{
+				// check for push/pop coherence.
+				if(!check_jump_tables(instr))
+				{
+					jump_table_sanitized++;
+					sanitized.insert(func);
+					continue;
+				}
 			}
 		}
 
@@ -1524,6 +1665,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
 	cerr<<"Sanitized Functions \t\t"<<sanitized_funcs<<endl;
 	cerr<<"Push/Pop Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
+	cerr<<"Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
 	cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
 }

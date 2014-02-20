@@ -306,7 +306,7 @@ int main(int argc, char **argv)
 
 	try 
 	{
-		PNTransformDriver transform_driver(pidp,BED_script);
+		PNTransformDriver transform_driver(pidp,BED_script, &pqxx_interface);
 
 		OffsetInference *offset_inference = new OffsetInference();
 
