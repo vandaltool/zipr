@@ -97,6 +97,7 @@ appfw/tests/standalone/sqlattackdetect.c -text
 appfw/tests/standalone/testfastdetect.c -text
 appfw/tests/standalone/testslowdetect.c -text
 appfw/tests/standalone/wp.all.fragments.txt -text
+appfw/tests/standalone/wp.all.uniq.sorted.fragments -text
 appfw/tests/standalone/wp.fragments.txt -text
 appfw/tests/standalone/wp.query.txt -text
 appfw/tests/xquery/xpath_test/CWE_Example_in_c.c -text
