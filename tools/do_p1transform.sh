@@ -144,6 +144,7 @@ do
     if [ $? -ne 0 ]; then
 		echo "Replay failed; ignoring input"
 		mv $i $i.ignore
+		rm -Rf $BASELINE_DIR/$input/
 		continue;
     fi
 
@@ -172,6 +173,7 @@ do
 		timeout $REPLAYER_TIMEOUT "$GRACE_HOME/concolic/bin/replayer" --timeout=$REPLAYER_TIMEOUT --symbols=$TOP_LEVEL/a.sym --stdout=stdout.$input --stderr=stderr.$input --logfile=exit_status --engine=sdt -r $STRATAFIED_BINARY $i
 		if [ $? -ne 0 ]; then
 		    echo "Replay with syscall capture failed; ignoring input"
+                    rm -Rf $BASELINE_DIR/$input/
 		    mv $i $i.ignore
 		    continue
 		fi
