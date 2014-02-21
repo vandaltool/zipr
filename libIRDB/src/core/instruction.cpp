@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iomanip>
 
+#undef EIP
 
 using namespace libIRDB;
 using namespace std;

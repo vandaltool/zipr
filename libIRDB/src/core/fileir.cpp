@@ -10,6 +10,8 @@ using namespace std;
 
 static map<Function_t*,db_id_t> entry_points;
 
+#undef EIP
+
 
 static void UpdateEntryPoints(std::map<db_id_t,Instruction_t*> 	&insnMap)
 {

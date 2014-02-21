@@ -1,7 +1,7 @@
 
 
 INCLUDES= -I ../../include -I../include/ -I../../beaengine/include 
-LIBS=-L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d 
+LIBS=-L ../../lib/ -lIRDB-core -lIRDB-cfg -L /opt/csw/lib/ -lpqxx -lBeaEngine_s_d  
 OPT=-g
 .SUFFIXES: .exe .cpp 
 

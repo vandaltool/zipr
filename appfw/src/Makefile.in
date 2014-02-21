@@ -22,7 +22,7 @@ all: xqil_major xqil_minor
 
 
 appfw_sqlite3.c ./sqlite-autoconf-3071300/sqlite3.c ./sqlite-autoconf-3071300/sqlite3.h sqlite3.h:
-	tar -zxvf ../../third_party/sqlite-autoconf-3071300.tar.gz --no-anchored --wildcards 'sqlite3.[ch]'
+	gtar -zxvf ../../third_party/sqlite-autoconf-3071300.tar.gz --no-anchored --wildcards 'sqlite3.[ch]'
 	cat ./sqlite-autoconf-3071300/sqlite3.c | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.c
 	cat ./sqlite-autoconf-3071300/sqlite3.h | sed "s/sqlite3/appfw_sqlite3/g" > appfw_sqlite3.h
 	cp ./sqlite-autoconf-3071300/sqlite3.h .
@@ -31,10 +31,12 @@ combined_sqlite3.c: appfw_sqlite3.c sqlfw.c
 	cat $^ > $@
 
 xqil_major:
-	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_//" -e "s/\..*//" > xqil_major
+	#apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_//" -e "s/\..*//" > xqil_major
+	echo 2 > xquil_major
 
 xqil_minor:
-	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_..//" -e "s/\..*//" > xqil_minor
+	#apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_..//" -e "s/\..*//" > xqil_minor
+	echo 9 > xquil_major
 
 %.o32: %.c
 	$(CC) -m32 -c $(CFLAGS) -c $< -o $@
