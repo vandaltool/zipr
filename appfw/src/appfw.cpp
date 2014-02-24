@@ -821,6 +821,13 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 	int very_verbose=getenv("VERY_VERBOSE")!=NULL;
 	verbose+=very_verbose;
 
+	struct timeval blah, blah2;
+	if(verbose)
+	{
+		gettimeofday(&blah,NULL);
+		fprintf(stdout, "sqlfw: match: start: %d:%d ", blah.tv_sec, blah.tv_usec);
+	}
+
 	if (!fw_sigs)
 	{
 		if(verbose)
@@ -829,8 +836,10 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 		return TRUE;
 	}
 	int numSignatures = appfw_getNumSignatures();  
+
 	if(!mru_sigs)
 	{
+//		gettimeofday(&blah,NULL);
 		mru_sigs=new list<char*>;
 		assert(mru_sigs);
 
@@ -838,7 +847,11 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 		{
 			mru_sigs->push_back(fw_sigs[sigId]);
 		}
-		
+
+//		gettimeofday(&blah2,NULL);
+//		fprintf(stderr, "sqlfw: caching sigs: %f\n",
+//			((blah2.tv_sec - blah.tv_sec) * 1000000.0 + (blah2.tv_usec - blah.tv_usec)) / 1000.0);
+			
 	}
 
 	int violations=count_violations(taint, commandLength);
@@ -848,12 +861,6 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 	list<char*>::iterator next;
 
 	int list_depth=0;
-	struct timeval blah;
-	if(verbose)
-	{
-		gettimeofday(&blah,NULL);
-		fprintf(stdout, "start: %d:%d ", blah.tv_sec, blah.tv_usec);
-	}
 	
 	/* iterate the list */
 	for(list<char*>::iterator it=mru_sigs->begin(); it!=mru_sigs->end();  it=next)
@@ -904,7 +911,7 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 							fprintf(stderr,"fixed ALL violations, list size=%d, iterated to %d\n", mru_sigs->size(), list_depth);
 							fflush(stderr);
 							gettimeofday(&blah,NULL);
-							fprintf(stdout, "end: %d:%d ", blah.tv_sec, blah.tv_usec);
+							fprintf(stdout, "end: %d:%d \n", blah.tv_sec, blah.tv_usec);
 						}
 						return TRUE;
 					}

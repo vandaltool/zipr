@@ -9,6 +9,7 @@
 
 #include "appfw.h"
 #include "sqlfw.h"
+#include "sql_structure.h"
 
 static const char *dbPathEnv = "APPFW_DB";
 static const char *DEFAULT_APPFW_FILE = "appfw.db";
@@ -66,12 +67,14 @@ void sqlfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
 /*
 ** Run the original sqlite parser on the given SQL string.  
 ** Extract out critical tokens
-** Return structure of query in p_structure (memory must have been previously allocated)
+** Return structure of query in p_critical (memory must have been previously allocated)
 */
-int sqlfw_verify_s(const char *zSql, char *p_structure) 
+int sqlfw_verify_s(const char *zSql, char *p_critical) 
 {
 	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
-	char *markings = malloc(strlen(zSql)+1);
+
+	struct timeval blah,  blah2, blah3;
+	double elapsed1, elapsed2;
 
 	if (!peasoupDB)
 	{
@@ -80,13 +83,59 @@ int sqlfw_verify_s(const char *zSql, char *p_structure)
 		return S3_SQL_ERROR;
 	}
 
+	if(verbose)
+	{
+		gettimeofday(&blah,NULL);
+		fprintf(stdout, "\nsqlfw: start: %d:%d\n", blah.tv_sec, blah.tv_usec);
+	}
+
+	int len = strlen(zSql)+1;
+	char *markings = malloc(len);
+	char *structure = malloc(len);
+
+	bzero(structure, len);
+
 	// get all the critical keywords
-	int result_flag = sqlfw_get_structure(zSql, markings);
-	strcpy(p_structure, markings); 
+	int result_flag = sqlfw_get_structure(zSql, markings, structure);
+	strcpy(p_critical, markings); 
+
+	if(verbose)
+	{
+		gettimeofday(&blah2,NULL);
+		elapsed1 = (blah2.tv_sec * 1000000.0 + blah2.tv_usec - (blah.tv_sec * 1000000.0 + blah.tv_usec)) / 1000.0;
+		fprintf(stdout, "\nsqlfw: past parse: %d:%d\n", blah2.tv_sec, blah2.tv_usec);
+	}
+
+	// was this query structure deemed safe before?
+	if (sqlfw_is_safe(result_flag) && findQueryStructure(structure))
+	{
+		free(structure);
+		return S3_SQL_SAFE;
+	}
+
+	if (verbose)
+		fprintf(stdout, "query structure: %s\n", structure);
 
 	// are all the critical keywords blessed?
 	if (!appfw_establish_taint_fast2(zSql, markings, FALSE))
 		result_flag |= S3_SQL_ATTACK_DETECTED;
+	else
+	{
+		// cache up the query structure as it is safe
+		if (sqlfw_is_safe(result_flag))
+		{
+			addQueryStructure(structure);
+		}
+	}
+
+	if(verbose)
+	{
+		gettimeofday(&blah3,NULL);
+		elapsed2 = (blah3.tv_sec * 1000000.0 + blah3.tv_usec - (blah2.tv_sec * 1000000.0 + blah2.tv_usec)) / 1000.0;
+		fprintf(stdout, "\nsqlfw: past match: %d:%d\n", blah3.tv_sec, blah3.tv_usec);
+		elapsed2 = ((blah3.tv_sec - blah2.tv_sec) * 1000000.0 + (blah3.tv_usec - blah2.tv_usec) ) / 1000.0;
+	}
+
 
 	if (verbose && ((result_flag | S3_SQL_ATTACK_DETECTED) ||
 	                (result_flag | S3_SQL_PARSE_ERROR) ||
@@ -94,6 +143,21 @@ int sqlfw_verify_s(const char *zSql, char *p_structure)
 		sqlfw_display_taint("debug", zSql, markings);
 
 	free(markings);
+
+	if(verbose)
+	{
+		gettimeofday(&blah3,NULL);
+		elapsed2 = (blah3.tv_sec * 1000000.0 + blah3.tv_usec - (blah2.tv_sec * 1000000.0 + blah2.tv_usec)) / 1000.0;
+		elapsed2 = ((blah3.tv_sec - blah2.tv_sec) * 1000000.0 + (blah3.tv_usec - blah2.tv_usec) ) / 1000.0;
+	}
+
+	if(verbose)
+	{
+		fprintf(stdout, "\tsqlfw[parse]: elapsed(msec): %f\n", elapsed1);
+		fprintf(stdout, "\tsqlfw[match]: elapsed(msec): %f\n\n", elapsed2);
+		fprintf(stdout, "sqlfw: end: %d:%d\n", blah3.tv_sec, blah3.tv_usec);
+	}
+
 	return result_flag;
 }
 
@@ -104,7 +168,10 @@ int sqlfw_verify_s(const char *zSql, char *p_structure)
 int sqlfw_verify_fast(const char *zSql) 
 {
 	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
-	char *tainted = malloc(strlen(zSql)+1);
+	int len = strlen(zSql)+1;
+	char *tainted = malloc(len);
+	char *structure = malloc(len);
+	bzero(structure, len);
 	if (!peasoupDB)
 	{
 		if (verbose)
@@ -113,7 +180,7 @@ int sqlfw_verify_fast(const char *zSql)
 	}
 
 	// get all the critical keywords
-	sqlfw_get_structure(zSql, tainted);
+	sqlfw_get_structure(zSql, tainted, structure);
 	int success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
 	if (!success && verbose)
 		sqlfw_display_taint("debug", zSql, tainted);
@@ -543,7 +610,7 @@ char get_violation_marking(char p_current_marking)
 ** 
 ** original code: SQLITE_PRIVATE int sqlite3_sqlite3RunParser(Parse *pParse, const char *zSql, char **pzErrMsg){
 */
-int sqlfw_get_structure(const char *zSql, char *p_annot)
+int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
 {
   Parse *pParse;
   int nErr = 0;                   /* Number of errors encountered */
@@ -561,7 +628,9 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
   int result_flag = S3_SQL_SAFE;
   int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
 
-  char mark_violation = APPFW_SECURITY_VIOLATION;
+  // by default mark critial tokens as security violations
+  // in a subsequent stage, we will attempt to bless them via dna shotgun sequencing
+  char mark_critical_token = APPFW_SECURITY_VIOLATION;
 
   // terminate recursion if needed
   if (strlen(zSql) <= 0)
@@ -570,7 +639,7 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 	// initialized to tainted by default
 	appfw_taint_range(p_annot, APPFW_UNKNOWN, 0, strlen(zSql)-1);
 
-  // need to reclaim this space later
+  // @todo: need to reclaim this space later
   pParse = appfw_sqlite3MallocZero(sizeof(*pParse));
 
   pParse->db = peasoupDB;
@@ -586,7 +655,6 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 
 
   while( zSql[i]!=0 ) {
-
 	pParse->sLastToken.z = &zSql[i];
 	pParse->sLastToken.n = appfw_sqlite3GetToken((unsigned char*)&zSql[i],&tokenType);
 
@@ -616,13 +684,14 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
       }
       case TK_SEMI: {
         pParse->zTail = &zSql[beg];
-		appfw_taint_range(p_annot, mark_violation, beg, 1);
-		mark_violation = get_violation_marking(mark_violation);
+		appfw_taint_range(p_annot, mark_critical_token, beg, 1);
+		mark_critical_token = get_violation_marking(mark_critical_token);
+		strcat(p_structure, "; ");
 
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
 		if (end+1 < strlen(zSql))
-          return result_flag | sqlfw_get_structure(&zSql[end+1], &p_annot[end+1]);
+          return result_flag | sqlfw_get_structure(&zSql[end+1], &p_annot[end+1], p_structure);
         else
 		{
 		  return result_flag; // semicolon was the last character in the entire statement return 
@@ -638,6 +707,7 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 		  fprintf(stderr,"%c (%d)", zSql[k], p_annot[k]);
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
 */
+
 		
         appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
@@ -654,8 +724,16 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 		  case TK_ID: 
 		  	strncpy(temp_identifier,&zSql[beg],end - beg + 1);
 		  	temp_identifier[end - beg + 1]=0;
+
 			if (!is_critical_identifier(temp_identifier))
 			{
+				if (zSql[beg] != '\'')
+				{
+					strcat(p_structure, temp_identifier);
+					strcat(p_structure, " ");
+				}
+				else
+					strcat(p_structure, "d ");
 				break;
 			}
 			// if it's one of the identifier we care about, then fallthrough
@@ -717,8 +795,11 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 		  case TK_COLUMN:
 		  case TK_JOIN_KW:
 		  {
-			appfw_taint_range(p_annot, mark_violation, beg, token_length);
-			mark_violation = get_violation_marking(mark_violation);
+			appfw_taint_range(p_annot, mark_critical_token, beg, token_length);
+			mark_critical_token = get_violation_marking(mark_critical_token);
+
+			strncat(p_structure, &zSql[beg], token_length);
+			strcat(p_structure, " ");
 	      }
 		  break;
 	}
@@ -733,10 +814,11 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 	  {
 		pos = look_for_eol(zSql, end+1);
 		if (pos >= 0)
-			appfw_taint_range_by_pos(p_annot, mark_violation, end+1, pos);
+			appfw_taint_range_by_pos(p_annot, mark_critical_token, end+1, pos);
 		else
-			appfw_taint_range(p_annot, mark_violation, end+1, 1);
-		mark_violation = get_violation_marking(mark_violation);
+			appfw_taint_range(p_annot, mark_critical_token, end+1, 1);
+		mark_critical_token = get_violation_marking(mark_critical_token);
+		strcat(p_structure, "#");
 	  }
 	}
 
@@ -749,14 +831,16 @@ int sqlfw_get_structure(const char *zSql, char *p_annot)
 			if (zSql[end+1] == '-')
 			{
 				pos = look_for_eol(zSql, end+2);
-				appfw_taint_range_by_pos(p_annot, mark_violation, end+1, pos);
+				appfw_taint_range_by_pos(p_annot, mark_critical_token, end+1, pos);
+				strncat(p_structure, "-- ", 2);
 			}
 			else
 			{
 				pos = look_for_eoc(zSql, end+2);
-				appfw_taint_range_by_pos(p_annot, mark_violation, end+1, pos);
+				appfw_taint_range_by_pos(p_annot, mark_critical_token, end+1, pos);
 			}
-			mark_violation = get_violation_marking(mark_violation);
+			mark_critical_token = get_violation_marking(mark_critical_token);
+			strncat(p_structure, &zSql[end+1], pos-end+1);
 		}
 	}
   } // end while
@@ -787,4 +871,3 @@ int sqlfw_is_parse_error(int result_flag)
 {
 	return result_flag & S3_SQL_PARSE_ERROR;
 }
-
