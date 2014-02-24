@@ -20,6 +20,8 @@ appfw/src/osc_parse.cpp -text
 appfw/src/oscfw.c -text
 appfw/src/oscfw.h -text
 appfw/src/pg_hook.c -text
+appfw/src/sql_structure.cpp -text
+appfw/src/sql_structure.h -text
 appfw/src/sqlfw.c -text
 appfw/src/sqlfw.h -text
 appfw/src/sqlite3_hook.c -text
