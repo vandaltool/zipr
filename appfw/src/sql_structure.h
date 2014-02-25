@@ -9,6 +9,8 @@
 #define FALSE 0
 #endif
 
+void initQueryStructureCache(const char *p_filename);
+void saveQueryStructureCache(const char *p_filename);
 void addQueryStructure(char *p_queryStructure);
 int findQueryStructure(char *p_queryStructure);
 

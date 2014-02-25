@@ -700,6 +700,7 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
       default: {
 	  // show token info
 	  
+
 /*
         fprintf(stderr, "\n----------------------\n");
         fprintf(stderr, "token: [");
@@ -707,7 +708,6 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
 		  fprintf(stderr,"%c (%d)", zSql[k], p_annot[k]);
 		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
 */
-
 		
         appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
@@ -721,19 +721,20 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
         switch (tokenType) {
 		// so here we would need to add all the token types that should not be p_annot
 		// this would be any SQL keywords
+	
+		
+		  case TK_STRING: 
+			strcat(p_structure, "d ");
+			break;
+			
 		  case TK_ID: 
 		  	strncpy(temp_identifier,&zSql[beg],end - beg + 1);
 		  	temp_identifier[end - beg + 1]=0;
 
 			if (!is_critical_identifier(temp_identifier))
 			{
-				if (zSql[beg] != '\'')
-				{
-					strcat(p_structure, temp_identifier);
-					strcat(p_structure, " ");
-				}
-				else
-					strcat(p_structure, "d ");
+				strcat(p_structure, temp_identifier);
+				strcat(p_structure, " ");
 				break;
 			}
 			// if it's one of the identifier we care about, then fallthrough
@@ -870,4 +871,15 @@ int sqlfw_is_attack(int result_flag)
 int sqlfw_is_parse_error(int result_flag)
 {
 	return result_flag & S3_SQL_PARSE_ERROR;
+}
+
+void sqlfw_init_from_file(const char *p_file)
+{
+	sqlfw_init();
+	initQueryStructureCache(p_file);
+}
+
+void sqlfw_save_query_structure_cache(const char *p_file)
+{
+	saveQueryStructureCache(p_file);
 }

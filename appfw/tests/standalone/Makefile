@@ -1,6 +1,7 @@
 APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so64
 
-all: sqlattackdetect.exe testfastdetect.exe testslowdetect.exe s3.exe
+#all: sqlattackdetect.exe testfastdetect.exe testslowdetect.exe s3.exe
+all: s3.exe
 
 sqlattackdetect.o: sqlattackdetect.c
 	gcc -c -I../../src sqlattackdetect.c
