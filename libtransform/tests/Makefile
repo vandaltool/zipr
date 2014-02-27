@@ -8,7 +8,7 @@ LD=DO_NOT_USE
 #exes=dumbledore_cmd.exe test1.exe
 #exes=overflow1.exe #overflow2.exe
 #exes=dumbledore_cmd.exe
-exes=integerbug.exe
+exes=unsigned_mul.exe signed_add.exe
 
 
 all: env_check  ${exes}
@@ -20,7 +20,7 @@ all: env_check  ${exes}
 #	gcc -g $< -o $@ 
 	gcc $< -o $@ 
 #	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup 
-	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off
+	${PEASOUP_HOME}/tools/ps_analyze64.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off
 
 .c.o:
 #	gcc -O2 -c $< 

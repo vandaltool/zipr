@@ -1,6 +1,6 @@
 LIB=../lib/libtransform.a
 
-OBJS=transform.o integertransform.o leapattern.o
+OBJS=transform.o integertransform.o leapattern.o integertransform64.o
 
 all: $(OBJS)
 

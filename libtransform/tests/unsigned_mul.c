@@ -15,4 +15,6 @@ int main(int argc, char **argv)
 
   d = a * b;
   printf("%u\n", d);
+
+  return 0;
 }

@@ -5,6 +5,7 @@
 
 #include "MEDS_AnnotationParser.hpp"
 #include "transformutils.h"
+#include "integertransform64.hpp"
 #include "integertransform.hpp"
 
 // current convention
@@ -106,7 +107,7 @@ main(int argc, char **argv)
 	assert(pidp->IsRegistered()==true);
 
 	bool one_success = false;
-    for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+	for(set<File_t*>::iterator it=pidp->GetFiles().begin();
 	    it!=pidp->GetFiles().end();
 		++it)
 	{
@@ -148,18 +149,38 @@ main(int argc, char **argv)
 			std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotationParser.getAnnotations();
 
 			// do the transformation
-			libTransform::IntegerTransform integerTransform(pidp, firp, &annotations, &filteredFunctions, &warnings);
-			integerTransform.setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
-			integerTransform.setPathManipulationDetected(isPathManipDetected(argc, argv));
-			integerTransform.setWarningsOnly(isWarningsOnly(argc, argv));
 
-			int exitcode = integerTransform.execute();
-			if (exitcode == 0)
+			if(firp->GetArchitectureBitWidth()==64)
 			{
-				one_success = true;
-				firp->WriteToDB();
-				integerTransform.logStats();
-				delete firp;
+				libTransform::IntegerTransform64 integerTransform64(pidp, firp, &annotations, &filteredFunctions, &warnings);
+				integerTransform64.setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
+				integerTransform64.setPathManipulationDetected(isPathManipDetected(argc, argv));
+				integerTransform64.setWarningsOnly(isWarningsOnly(argc, argv));
+
+				int exitcode = integerTransform64.execute();
+				if (exitcode == 0)
+				{
+					one_success = true;
+					firp->WriteToDB();
+					integerTransform64.logStats();
+					delete firp;
+				}
+			}
+			else if(firp->GetArchitectureBitWidth()==32)
+			{
+				libTransform::IntegerTransform integerTransform(pidp, firp, &annotations, &filteredFunctions, &warnings);
+				integerTransform.setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
+				integerTransform.setPathManipulationDetected(isPathManipDetected(argc, argv));
+				integerTransform.setWarningsOnly(isWarningsOnly(argc, argv));
+
+				int exitcode = integerTransform.execute();
+				if (exitcode == 0)
+				{
+					one_success = true;
+					firp->WriteToDB();
+					integerTransform.logStats();
+					delete firp;
+				}
 			}
 		}
 		catch (DatabaseError_t pnide)

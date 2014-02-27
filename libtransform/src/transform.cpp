@@ -872,35 +872,12 @@ void Transform::addJo(Instruction_t *p_instr, Instruction_t *p_fallThrough, Inst
 
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
 }
-
-// jno - jump not overflow
-void Transform::addJno(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
-{
-	string dataBits;
-	dataBits.resize(2);
-	dataBits[0] = 0x71;
-	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
-
-	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
-}
-
 // jc - jump carry
 void Transform::addJc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
 	string dataBits;
 	dataBits.resize(2);
 	dataBits[0] = 0x72;
-	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
-
-	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
-}
-
-// jnc - jump not carry
-void Transform::addJnc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
-{
-	string dataBits;
-	dataBits.resize(2);
-	dataBits[0] = 0x73;
 	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
 
 	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
@@ -1173,3 +1150,48 @@ void Transform::addAndRegister32Mask(Instruction_t *p_instr, Register::RegisterN
 	p_instr->SetComment("Saturating arithmetic by masking");
 }
 
+// known to be used on x86-64
+
+// hlt
+void Transform::addHlt(Instruction_t *p_instr, Instruction_t *p_fallThrough)
+{
+	string assembly("hlt");
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+	p_instr->SetFallthrough(p_fallThrough);
+}
+
+
+// jno - jump not overflow
+void Transform::addJno(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+#ifdef OLD_WAY
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x71;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+#endif
+
+	string assembly("jno 0x22");
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+	p_instr->SetFallthrough(p_fallThrough);
+	p_instr->SetTarget(p_target);
+}
+
+// jnc - jump not carry
+void Transform::addJnc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
+{
+#ifdef OLD_WAY
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0x73;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
+#endif
+	string assembly("jnc 0x22");
+	m_fileIR->RegisterAssembly(p_instr, assembly);
+	p_instr->SetFallthrough(p_fallThrough);
+	p_instr->SetTarget(p_target);
+}
