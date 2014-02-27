@@ -5815,15 +5815,27 @@ void __bea_callspec__ mov_AHIb(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
 
+	int regnum=4;
+	int reg_bit_vec=REG4;
+	int reg_bit_vec_rex=REG12;
+        if ((*pMyDisasm).Archi == 64 && GV.REX.state)
+	{
+		if(GV.REX.B_)
+		{
+			regnum+=8;
+			reg_bit_vec=reg_bit_vec_rex;
+		}
+	}
+
         /* fix for 64-bit with a rex prefix */
         if ((*pMyDisasm).Archi == 64 && GV.REX.state)
         {
                 /* we need to decode differently  on x86-64, as ah-dh cannot be encoded.  instead spl, bpl, ril, dil, etc. are used */
                 #ifndef BEA_LIGHT_DISASSEMBLY
-                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[4]);
+                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[regnum]);
                 #endif
                 (*pMyDisasm).Argument1.ArgPosition = LowPosition;
-                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG4;
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+reg_bit_vec;
         }
         else
         {
@@ -5858,15 +5870,27 @@ void __bea_callspec__ mov_CHIb(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
 
+	int regnum=5;
+	int reg_bit_vec=REG5;
+	int reg_bit_vec_rex=REG13;
+        if ((*pMyDisasm).Archi == 64 && GV.REX.state)	 /* has REX bit */
+	{
+		if(GV.REX.B_)	/* and B bit is set */
+		{
+			regnum+=8;
+			reg_bit_vec=reg_bit_vec_rex;
+		}
+	}
+
         /* fix for 64-bit with a rex prefix */
         if ((*pMyDisasm).Archi == 64 && GV.REX.state)
         {
                 /* we need to decode differently  on x86-64, as ah-dh cannot be encoded.  instead spl, bpl, ril, dil, etc. are used */
                 #ifndef BEA_LIGHT_DISASSEMBLY
-                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[5]);
+                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[regnum]);
                 #endif
                 (*pMyDisasm).Argument1.ArgPosition = LowPosition;
-    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG5;
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+reg_bit_vec;
         }
         else
         {
@@ -5902,15 +5926,27 @@ void __bea_callspec__ mov_DHIb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Immediat = MyNumber;
 
 
+	int regnum=6;
+	int reg_bit_vec=REG6;
+	int reg_bit_vec_rex=REG14;
+        if ((*pMyDisasm).Archi == 64 && GV.REX.state)	 /* has REX bit */
+	{
+		if(GV.REX.B_)	/* and B bit is set */
+		{
+			regnum+=8;
+			reg_bit_vec=reg_bit_vec_rex;
+		}
+	}
+
 	/* fix for 64-bit with a rex prefix */
     	if ((*pMyDisasm).Archi == 64 && GV.REX.state) 
 	{
 		/* we need to decode differently  on x86-64, as ah-dh cannot be encoded.  instead spl, bpl, ril, dil, etc. are used */
     		#ifndef BEA_LIGHT_DISASSEMBLY
-       		(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[6]);
+       		(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[regnum]);
     		#endif
     		(*pMyDisasm).Argument1.ArgPosition = LowPosition;
-    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG6;
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+reg_bit_vec;
 	}
 	else
 	{
@@ -5945,15 +5981,27 @@ void __bea_callspec__ mov_BHIb(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
 
+	int regnum=7;
+	int reg_bit_vec=REG7;
+	int reg_bit_vec_rex=REG15;
+        if ((*pMyDisasm).Archi == 64 && GV.REX.state)	 /* has REX bit */
+	{
+		if(GV.REX.B_)	/* and B bit is set */
+		{
+			regnum+=8;
+			reg_bit_vec=reg_bit_vec_rex;
+		}
+	}
+
         /* fix for 64-bit with a rex prefix */
         if ((*pMyDisasm).Archi == 64 && GV.REX.state)
         {
                 /* we need to decode differently  on x86-64, as ah-dh cannot be encoded.  instead spl, bpl, ril, dil, etc. are used */
                 #ifndef BEA_LIGHT_DISASSEMBLY
-                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[7]);
+                (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[regnum]);
                 #endif
                 (*pMyDisasm).Argument1.ArgPosition = LowPosition;
-                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG7;
+                (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+reg_bit_vec;
         }
         else
         {
