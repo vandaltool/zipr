@@ -5,8 +5,9 @@
 
 #include "MEDS_AnnotationParser.hpp"
 #include "transformutils.h"
-#include "integertransform64.hpp"
 #include "integertransform.hpp"
+#include "integertransform32.hpp"
+#include "integertransform64.hpp"
 
 // current convention
 #define BINARY_NAME "a.ncexe"
@@ -14,6 +15,7 @@
 #define SHARED_OBJECTS_DIR "shared_objects"
 
 using namespace std;
+using namespace libTransform;
 
 void usage()
 {
@@ -150,37 +152,27 @@ main(int argc, char **argv)
 
 			// do the transformation
 
+			libTransform::IntegerTransform *intxform = NULL;
 			if(firp->GetArchitectureBitWidth()==64)
 			{
-				libTransform::IntegerTransform64 integerTransform64(pidp, firp, &annotations, &filteredFunctions, &warnings);
-				integerTransform64.setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
-				integerTransform64.setPathManipulationDetected(isPathManipDetected(argc, argv));
-				integerTransform64.setWarningsOnly(isWarningsOnly(argc, argv));
-
-				int exitcode = integerTransform64.execute();
-				if (exitcode == 0)
-				{
-					one_success = true;
-					firp->WriteToDB();
-					integerTransform64.logStats();
-					delete firp;
-				}
+				intxform = new IntegerTransform64(pidp, firp, &annotations, &filteredFunctions, &warnings);
 			}
-			else if(firp->GetArchitectureBitWidth()==32)
+			else
 			{
-				libTransform::IntegerTransform integerTransform(pidp, firp, &annotations, &filteredFunctions, &warnings);
-				integerTransform.setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
-				integerTransform.setPathManipulationDetected(isPathManipDetected(argc, argv));
-				integerTransform.setWarningsOnly(isWarningsOnly(argc, argv));
+				intxform = new IntegerTransform32(pidp, firp, &annotations, &filteredFunctions, &warnings);
+			}
 
-				int exitcode = integerTransform.execute();
-				if (exitcode == 0)
-				{
-					one_success = true;
-					firp->WriteToDB();
-					integerTransform.logStats();
-					delete firp;
-				}
+			intxform->setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
+			intxform->setPathManipulationDetected(isPathManipDetected(argc, argv));
+			intxform->setWarningsOnly(isWarningsOnly(argc, argv));
+
+			int exitcode = intxform->execute();
+			if (exitcode == 0)
+			{
+				one_success = true;
+				firp->WriteToDB();
+				intxform->logStats();
+				delete firp;
 			}
 		}
 		catch (DatabaseError_t pnide)

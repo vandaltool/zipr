@@ -1,30 +1,17 @@
 #include <assert.h>
-
 #include "integertransform64.hpp"
 
 using namespace libTransform;
 
-IntegerTransform64::IntegerTransform64(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions) 
-{
-	m_benignFalsePositives = p_benignFalsePositives;
-	m_policySaturatingArithmetic = false;
-	m_policyWarningsOnly = false;
-	m_pathManipulationDetected = false;
-	m_annotations = p_annotations;              
+/**
+*     64 bit implementation status of the integer transform
+*
+*     20140228 64-bit overflows on multiply, signed/unsigned add/sub, halt policy
+*
+**/
 
-	m_numAnnotations = 0;
-	m_numIdioms = 0;
-	m_numBlacklisted = 0;
-	m_numBenign = 0;
-	m_numOverflows = 0;
-	m_numUnderflows = 0;
-	m_numTruncations = 0;
-	m_numSignedness = 0;
-	m_numFP = 0;
-	m_numOverflowsSkipped = 0;
-	m_numUnderflowsSkipped = 0;
-	m_numTruncationsSkipped = 0;
-	m_numSignednessSkipped = 0;
+IntegerTransform64::IntegerTransform64(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : IntegerTransform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions, p_benignFalsePositives)
+{
 }
 
 // iterate through all functions
@@ -122,10 +109,10 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 }
 
 //
-//		mul a, b                 ; <instruction to instrument>
-//		jno <OrigNext>
-//      	halt
-// OrigNext:	<nextInstruction>
+//	        mul a, b                 ; <instruction to instrument>
+//              jno <OrigNext>           ; if no overflows, jump to original fallthrough instruction
+//              hlt                      ; policy = halt 
+// OrigNext:    <nextInstruction>        ; original fallthrugh
 //
 void IntegerTransform64::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
@@ -157,54 +144,3 @@ void IntegerTransform64::addOverflowCheck(Instruction_t *p_instruction, const ME
 	else
 		m_numOverflows++;
 }
-
-// @todo: move to base class
-void IntegerTransform64::logMessage(const std::string &p_method, const std::string &p_msg)
-{
-	std::cerr << p_method << ": " << p_msg << std::endl;
-}
-
-// @todo: move to base class
-void IntegerTransform64::logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation& p_annotation, const std::string &p_msg)
-{
-	logMessage(p_method, p_msg + " annotation: " + p_annotation.toString());
-}
-
-void IntegerTransform64::logStats()
-{
-	std::string fileURL = getFileIR()->GetFile()->GetURL();	
-
-	std::cerr << "# ATTRIBUTE file_name=" << fileURL << std::endl;
-	std::cerr << "# ATTRIBUTE num_annotations_processed=" << dec << m_numAnnotations << std::endl;
-	std::cerr << "# ATTRIBUTE num_idioms=" << m_numIdioms << std::endl;
-	std::cerr << "# ATTRIBUTE num_blacklisted=" << m_numBlacklisted << std::endl;
-	std::cerr << "# ATTRIBUTE num_benign=" << m_numBenign << std::endl;
-	std::cerr << "# ATTRIBUTE num_overflows_instrumented=" << m_numOverflows << std::endl;
-	std::cerr << "# ATTRIBUTE num_overflows_skipped=" << m_numOverflowsSkipped << std::endl;
-	std::cerr << "# ATTRIBUTE num_underflows_instrumented=" << m_numUnderflows << std::endl;
-	std::cerr << "# ATTRIBUTE num_underflows_skipped=" << m_numUnderflowsSkipped << std::endl;
-	std::cerr << "# ATTRIBUTE num_truncations_instrumented=" << m_numTruncations << std::endl;
-	std::cerr << "# ATTRIBUTE num_truncations_skipped=" << m_numTruncationsSkipped << std::endl;
-	std::cerr << "# ATTRIBUTE num_signedness_instrumented=" << m_numSignedness << std::endl;
-	std::cerr << "# ATTRIBUTE num_signedness_skipped=" << m_numSignednessSkipped << std::endl;
-	std::cerr << "# ATTRIBUTE num_floating_point=" << m_numFP << std::endl;
-}
-
-// functions known to be problematic b/c of bitwise manipulation
-bool IntegerTransform64::isBlacklisted(Function_t *func)
-{
-	if (!func) return false;
-	const char *funcName = func->GetName().c_str();
-	return (strcasestr(funcName, "hash") ||
-		strcasestr(funcName, "compress") ||
-		strcasestr(funcName, "encode") ||
-		strcasestr(funcName, "decode") ||
-		strcasestr(funcName, "crypt") ||
-		strcasestr(funcName, "yyparse") ||
-		strcasestr(funcName, "yyerror") ||
-		strcasestr(funcName, "yydestruct") ||
-		strcasestr(funcName, "yyrestart") ||
-		strcasestr(funcName, "yylex") ||
-		strcasestr(funcName, "yy_"));
-}
-
