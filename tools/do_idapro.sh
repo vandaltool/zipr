@@ -28,7 +28,13 @@ analyze_file()
 	#
 	if [ $lines -lt 10 ]; then
 		echo Failed to produce a valid annotations file for $file.
-		exit -1 
+		exit 1 
+	fi
+	# better test
+	grep "ANALYSISCOMPLETED" $file.infoannot > /dev/null 2>&1
+	if [ $? != 0 ]; then
+		echo MEDS Failed to produce successful exit code for $file.
+		exit 2 
 	fi
 
 }
