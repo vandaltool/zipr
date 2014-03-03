@@ -417,16 +417,25 @@ static unsigned int intlog2 (unsigned int val) {
     return ret;
 }
 /* =======================================
- *
- inintt* ======================================= */
+ * 63h, arpl or movsxd or mov.
+ * ======================================= */
 void __bea_callspec__ arpl_(PDISASM pMyDisasm)
 {
 
     if (GV.Architecture == 64) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movsxd ");
-        #endif
+        if (GV.REX.W_ == 1) {
+        	#ifndef BEA_LIGHT_DISASSEMBLY
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movsxd ");
+        	#endif
+	}
+	else
+	{
+		/* in 64-bit mode, 0x63 without REX.W_ is a standard mov */
+        	#ifndef BEA_LIGHT_DISASSEMBLY
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mov ");
+        	#endif
+	}
         GvEv(pMyDisasm);
         FillFlags(pMyDisasm,69);
 	(*pMyDisasm).Argument2.ArgSize=32;
@@ -5231,6 +5240,7 @@ void __bea_callspec__ lss_Mp(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "lss ");
     #endif
     GvEv(pMyDisasm);
+    GV.MemDecoration = Arg2fword;
 }
 
 /* =======================================
@@ -5243,6 +5253,7 @@ void __bea_callspec__ lfs_Mp(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "lfs ");
     #endif
     GvEv(pMyDisasm);
+    GV.MemDecoration = Arg2fword;
 }
 
 /* =======================================
@@ -5255,6 +5266,7 @@ void __bea_callspec__ lgs_Mp(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "lgs ");
     #endif
     GvEv(pMyDisasm);
+    GV.MemDecoration = Arg2fword;
 }
 
 /* =======================================

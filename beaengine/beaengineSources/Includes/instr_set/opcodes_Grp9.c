@@ -51,22 +51,32 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
         }
     }
     else if (GV.REGOPCODE == 6) {
-        (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
         if (GV.OperandSize == 16) {
+            (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "vmclear ");
             #endif
         }
         else if (GV.PrefRepe == 1) {
+            (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "vmxon ");
             #endif
         }
-        else {
+        else if(GV.MOD_ == 3 )
+	{
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rdrand ");
+            #endif
+	}
+	else
+	{
+            (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "vmptrld ");
             #endif
         }
+	
         GV.EIP_ += GV.DECALAGE_EIP+2;
 
     }

@@ -2844,18 +2844,18 @@ void __bea_callspec__ pinsrd_(PDISASM pMyDisasm)
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrq ");
             #endif
-            GV.MemDecoration = Arg1qword;
+            GV.MemDecoration = Arg2qword;
         }
         else {
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrd ");
             #endif
-            GV.MemDecoration = Arg1dword;
+            GV.MemDecoration = Arg2dword;
         }
         GV.ImmediatSize = 8;
-        MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
+        MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.SSE_ = 1;
-        Reg_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
+        Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
         GV.SSE_ = 0;
         GV.EIP_ += GV.DECALAGE_EIP+3;
         if (!Security(0, pMyDisasm)) return;

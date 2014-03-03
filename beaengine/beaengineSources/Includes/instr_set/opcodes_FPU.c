@@ -340,6 +340,9 @@ void __bea_callspec__ D9_(PDISASM pMyDisasm)
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fnop ");
                 #endif
             }
+#if 0
+/* cannot find these insns */
+
             else if (((MyMODRM & 0xf) >=0x8) && ((MyMODRM & 0xf) <=0xf)) {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+DATA_TRANSFER;
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -351,6 +354,7 @@ void __bea_callspec__ D9_(PDISASM pMyDisasm)
                 (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+FPU_REG+REGS[(MyMODRM & 0xf)%8];
                 (*pMyDisasm).Argument1.ArgSize = 80;
             }
+#endif
             else {
                 FailDecode(pMyDisasm);
             }
@@ -1122,6 +1126,9 @@ void __bea_callspec__ DC_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.ArgSize = 80;
         }
         else if ((MyMODRM & 0xf0) == 0xd0) {
+            FailDecode(pMyDisasm);
+#if 0
+/* cannot find in manual */
             if (((MyMODRM & 0xf) >=0) && ((MyMODRM & 0xf) <=7)) {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+COMPARISON_INSTRUCTION;
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1141,6 +1148,7 @@ void __bea_callspec__ DC_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+FPU_REG+REGS[(MyMODRM & 0xf)%8];
             (*pMyDisasm).Argument1.ArgSize = 80;
 
+#endif
         }
         else if ((MyMODRM & 0xf0) == 0xe0) {
             if (((MyMODRM & 0xf) >=0) && ((MyMODRM & 0xf) <=7)) {
@@ -1709,6 +1717,9 @@ void __bea_callspec__ DF_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.ArgSize = 80;
         }
         else if ((MyMODRM & 0xf0) == 0xd0) {
+            FailDecode(pMyDisasm);
+#if 0 
+/* i can't find this instructino in any official manual.  maybe existed on pentium II's? */
             if (((MyMODRM & 0xf) >=0) && ((MyMODRM & 0xf) <=7)) {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+DATA_TRANSFER;
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1728,6 +1739,7 @@ void __bea_callspec__ DF_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+FPU_REG+REGS[(MyMODRM & 0xf)%8];
             (*pMyDisasm).Argument1.ArgSize = 80;
 
+#endif
         }
         else if ((MyMODRM & 0xf0) == 0xe0) {
             if (MyMODRM == 0xe0) {

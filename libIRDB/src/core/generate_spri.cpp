@@ -51,8 +51,11 @@ static string addressify(Instruction_t* insn);
 //
 static bool needs_short_branch_rewrite(Instruction_t* newinsn, const DISASM &disasm)
 {
-	if   (strstr(disasm.Instruction.Mnemonic, "jecxz" ) || strstr(disasm.Instruction.Mnemonic, "loop" ) || 
-		 strstr(disasm.Instruction.Mnemonic, "loopne") || strstr(disasm.Instruction.Mnemonic, "loope") )
+	if   (	   strstr(disasm.Instruction.Mnemonic, "jecxz" ) 
+		|| strstr(disasm.Instruction.Mnemonic, "jrcxz" ) 
+		|| strstr(disasm.Instruction.Mnemonic, "loop"  ) 
+		|| strstr(disasm.Instruction.Mnemonic, "loopne") 
+		|| strstr(disasm.Instruction.Mnemonic, "loope" ) )
 		return true;
 
 	/* 64-bit has more needs than this */
