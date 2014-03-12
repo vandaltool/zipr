@@ -261,7 +261,8 @@ touch $EXECUTED_ADDRESSES_CONCOLIC
 cat $EXECUTED_ADDRESSES_CONCOLIC >> $EXECUTED_ADDRESSES_FINAL
 
 # sanity filter, keep only well formed addresses
-cat $EXECUTED_ADDRESSES_FINAL | sed 's/\(.*0x.*\)/\1/' >tmp
+# also change a.stratafied to a.ncexe, which is the name for the main executable in IRDB
+cat $EXECUTED_ADDRESSES_FINAL | sed -e 's/\(.*0x.*\)/\1/' -e 's/^a\.stratafied+/a.ncexe+/' >tmp
 mv tmp $EXECUTED_ADDRESSES_FINAL
 
 sort $EXECUTED_ADDRESSES_FINAL | uniq > tmp
