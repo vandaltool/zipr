@@ -826,6 +826,9 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 
 	const char *secdata=pSec->get_data();
 
+	if(!secdata)
+		return true;
+
 	int offset=displacement-pSec->get_address();
 
 	set<int> jump_tab_entries;
