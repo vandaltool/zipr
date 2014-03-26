@@ -315,8 +315,15 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 					saved_regs_size +=get_saved_reg_size();
 
 				//There is now enough information to create the PNStackLayout objects
-				if(stack_frame_size<out_args_size)  // what?
+				if((unsigned)stack_frame_size<(unsigned)out_args_size)  // what?
+				{
+					cerr<<"****************************************************************"<<endl;
+					cerr<<"****************************************************************"<<endl;
+					cerr<<"**Insanity coming from STARS, out_args_size > stack_frame_size**"<<endl;
+					cerr<<"****************************************************************"<<endl;
+					cerr<<"****************************************************************"<<endl;
 					return NULL;
+				}
 				return new StackLayout("All Offset Layout",func->GetName(),stack_frame_size,saved_regs_size,(push_frame_pointer&&save_frame_pointer),out_args_size);
 		
 			}

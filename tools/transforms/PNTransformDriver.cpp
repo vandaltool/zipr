@@ -102,6 +102,7 @@ void PNTransformDriver::SetDoCanaries(bool do_canaries)
 {
 	this->do_canaries = do_canaries;
 
+#if 0
 	//TODO: For the optimized TNE version I had to remove
 	//optional canaries. This would've been done by
 	//the finalize_transformation step, but for some reason
@@ -109,6 +110,20 @@ void PNTransformDriver::SetDoCanaries(bool do_canaries)
 	//assert false for now if the canaries are turned off
 	//to remind me to fix this. 
 	assert(do_canaries);
+#endif
+	if(!do_canaries)
+	{
+		cerr<<"************************************************************"<<endl;
+		cerr<<"************************************************************"<<endl;
+		cerr<<"** not doing canaries is not entirely supported.          **"<<endl;
+		cerr<<"** This flag turns says that error amplification with     **"<<endl;
+		cerr<<"** caranries is turnedoff , instead of just turning off   **"<<endl;
+		cerr<<"** in the final layout.                                   **"<<endl;
+		cerr<<"** TODO: this could be \"easily\" fixed by Ben, but no one**"<<endl;
+		cerr<<"** knows how and he is too busy.                          **"<<endl;
+		cerr<<"************************************************************"<<endl;
+		cerr<<"************************************************************"<<endl;
+	}
 }
 
 void PNTransformDriver::SetDoAlignStack(bool align_stack)
@@ -478,6 +493,7 @@ void PNTransformDriver::GenerateTransformsInit()
 	blacklist_funcs = 0;
 	sanitized_funcs = 0;
 	push_pop_sanitized_funcs = 0;
+	jump_table_sanitized = 0;
 	dynamic_frames = 0;
 	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
 	not_transformable.clear();

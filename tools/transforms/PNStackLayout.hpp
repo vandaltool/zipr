@@ -18,6 +18,7 @@ const int MAX_PADDING = MIN_PADDING*2;
 const int RECURSIVE_MIN_PADDING = 64;
 const int RECURSIVE_MAX_PADDING = RECURSIVE_MAX_PADDING*2;
 
+
 class PNStackLayout
 {
 protected:
@@ -79,7 +80,11 @@ public:
 	virtual int GetNewOffsetEBP(int ebp_offset) const;
 	virtual PNStackLayout GetCanaryLayout() const;
 	virtual std::vector<PNRange*> GetRanges() {return mem_objects;}
-	virtual bool IsCanarySafe() const {return stack_layout.is_canary_safe;}
+	virtual bool IsCanarySafe() const 
+	{
+		extern bool do_canaries;
+		return stack_layout.is_canary_safe && do_canaries;
+	}
 	virtual bool IsPaddingSafe()const {return stack_layout.is_padding_safe;}
 	virtual bool IsShuffleSafe() const ;
 	virtual bool IsP1() const;

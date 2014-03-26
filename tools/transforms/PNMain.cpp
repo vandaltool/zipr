@@ -161,6 +161,9 @@ void usage()
 	exit(-1);
 }
 
+// jdh -- moved this so it could be used in PNStackLayout.hpp.  Better to pass in the flag.
+bool do_canaries=true;
+
 int main(int argc, char **argv)
 {
 
@@ -180,7 +183,6 @@ int main(int argc, char **argv)
 	char *coverage_file=NULL;
 	char *only_validate=NULL;
 	bool validate_p1=true;
-	bool do_canaries=true;
 	bool align_stack=false;
 	bool shared_object_protection=false;
 	double p1threshold=0.0;
