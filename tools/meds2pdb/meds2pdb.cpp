@@ -187,7 +187,7 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
       wahoo::Function *f = functions[j];
       string functionName = f->getName();
       app_iaddr_t functionAddress = f->getAddress();
-      int functionSize = f->getSize();
+      int functionFrameSize =  0; // FIXME -- this isn't right.
 
       int function_id = j;
       f->setFunctionID(function_id);
@@ -199,7 +199,7 @@ void insert_functions(int fileID, const vector<wahoo::Function*> &functions  )
       query += "(";
       query += txn.quote(function_id) + ",";
       query += txn.quote(functionName) + ",";
-      query += txn.quote(functionSize) + ",";
+      query += txn.quote(functionFrameSize) + ",";
       query += txn.quote(outArgsRegionSize) + ",";
       query += txn.quote(useFP) + ")";
 

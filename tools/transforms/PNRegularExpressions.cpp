@@ -75,6 +75,13 @@ PNRegularExpressions::PNRegularExpressions()
 		fprintf(stderr,"Error: regular expression for esp scaled addresses failed\n");
 		exit(1);
 	}
+	if((errcode=regcomp(&regex_lea_rsp, FIRN(".*lea.*\\[.*%sp.*("HEXNUM").*\\].*"),REG_EXTENDED | REG_ICASE)) !=0)
+	{
+		char buf[1000];
+		regerror(errcode,&regex_lea_rsp,buf,sizeof(buf));
+		fprintf(stderr,"Error: regular expression for regex_lea_rsp failed, code: %s\n", buf);
+		exit(1);
+	}
 	if((errcode=regcomp(&regex_esp_scaled_nodisp, FIRN(".*\\[%sp[+]"REGSTRING SCALE"(\\]).*"),REG_EXTENDED | REG_ICASE)) !=0)
 	{
 		char buf[1000];

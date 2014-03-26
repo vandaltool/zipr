@@ -20,6 +20,7 @@ public:
 	regex_t regex_stack_dealloc;
 	regex_t regex_stack_dealloc_implicit;
 	regex_t regex_lea_hack;
+	regex_t regex_lea_rsp;
 	regex_t regex_esp_only;
 	regex_t regex_push_ebp;
 	regex_t regex_push_anything;

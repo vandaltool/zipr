@@ -1028,6 +1028,11 @@ inline bool PNTransformDriver::TargetFunctionCheck(Instruction_t* a, Instruction
 	return FunctionCheck(a->GetFunction(),b->GetFunction());
 }
 
+
+template <class T> struct func_less : binary_function <T,T,bool> {
+  bool operator() (const T& x, const T& y) const {return  x->GetName()  <   y->GetName()  ;}
+};
+
 //Speculation note:
 //Hypothesis generation assessment and refinement prior to modification.
 //hypothesis assessment and refinement after modification is performed by the recursive validation subroutine. 
@@ -1037,27 +1042,33 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 
 	vector<validation_record> high_covered_funcs, low_covered_funcs, not_covered_funcs,shuffle_validate_funcs;
 
-	int funcs_attempted=-1;
+	static int funcs_attempted=-1;
+
+	set<Function_t*, func_less<Function_t*> > sorted_funcs;
+	for(
+		set<Function_t*>::const_iterator it=orig_virp->GetFunctions().begin();
+		it!=orig_virp->GetFunctions().end();
+		++it
+		)
+	{
+			Function_t* func=*it;
+			sorted_funcs.insert(func);
+	}
 
 	//For each function
 	//Loop through each level, find boundaries for each, sort based on
 	//the number of boundaries, attempt transform in order until successful
 	//or until all inferences have been exhausted
 	for(
-		set<Function_t*>::const_iterator it=orig_virp->GetFunctions().begin();
-		it!=orig_virp->GetFunctions().end()&&!timeExpired;
+		set<Function_t*, func_less<Function_t*> >::const_iterator it=sorted_funcs.begin();
+		it!=sorted_funcs.end()&&!timeExpired;
 		++it
 		)
 
 	{
 		Function_t *func = *it;
 
-		funcs_attempted++;
-		if(getenv("PN_ONLYTRANSFORM") && funcs_attempted!=atoi(getenv("PN_ONLYTRANSFORM")))
-		{
-			cout<<"Skipping function "<<dec<<funcs_attempted<<", named: "<<func->GetName()<<endl;
-			continue;
-		}
+		/* skip before the increment, so we don't emit the message more than once */
 		if(getenv("PN_NUMFUNCSTOTRY") && funcs_attempted>=atoi(getenv("PN_NUMFUNCSTOTRY")))
 		{
 			cerr<<dec<<"Aborting transforms after func number "<<funcs_attempted<<", which is: "<<
@@ -1065,6 +1076,12 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 			break;
 		}
 		
+		funcs_attempted++;
+		if(getenv("PN_ONLYTRANSFORM") && funcs_attempted!=atoi(getenv("PN_ONLYTRANSFORM")))
+		{
+			cout<<"Skipping function "<<dec<<funcs_attempted<<", named: "<<func->GetName()<<endl;
+			continue;
+		}
 		
 
 		//TODO: remove this at some point when I understand if this can happen or not
@@ -1818,6 +1835,17 @@ bool PNTransformDriver::Validate(FileIR_t *virp, string name)
 	assert(retval != 3);
 
 	//TODO: was I supposed to do something with actual_signal?
+
+	string asm_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.?spri.asm";
+	string bin_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.?spri.asm.bin";
+	string map_filename = string(get_current_dir_name()) + "/" + dirname + "/a.irdb.?spri.asm.map";
+	string rm_command="rm -f ";
+	rm_command+=bspri_filename + " ";
+	rm_command+=asm_filename   + " ";
+	rm_command+=bin_filename   + " ";
+	rm_command+=map_filename   + " ";
+
+	system(rm_command.c_str()); // don't bother with an error check.
 	
 	return (retval == 0);
 }
@@ -1847,6 +1875,10 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 		esp_reg="esp";
 	else
 		esp_reg="rsp";
+
+	if(verbose_log)
+		cout<<"PNTransformDriver: CanaryRewrite: Rewriting function named "<<func->GetName()<<endl;
+
 
 	//TODO: hack for TNE, assuming all virp is orig_virp now. 
 	FileIR_t *virp = orig_virp;
@@ -1892,6 +1924,8 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	int max = PNRegularExpressions::MAX_MATCHES;
 	regmatch_t pmatch[max];
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
+
+
 
 	for(
 		set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
@@ -2406,8 +2440,14 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		}
 		else
 		{
+			if(verbose_log)
+				cerr<<"PNTransformDriver: ESP-k revised_offset is "<<std::hex<<revised_offset<<endl;
 			int new_location = layout->GetNewOffsetESP(revised_offset);
+			if(verbose_log)
+				cerr<<"PNTransformDriver: ESP-k new_location is "<<std::hex<<new_location<<endl;
 			int new_offset = new_location-layout->GetAlteredAllocSize();
+			if(verbose_log)
+				cerr<<"PNTransformDriver: ESP-k new_offset is "<<std::hex<<new_offset<<endl;
 
 			// sanity 
 			assert(new_offset<0);

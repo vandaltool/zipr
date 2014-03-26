@@ -768,6 +768,7 @@ static void generate_insn_to_insn_maps(FileIR_t *fileIRp, FileIR_t *orig_fileIRp
 //
 void FileIR_t::GenerateSPRI(ostream &fout, bool with_ilr)
 {
+	label_offset=0;
 	VariantID_t orig_varidp(progid.GetOriginalVariantID());
 	assert(orig_varidp.IsRegistered()==true);
 
@@ -852,6 +853,8 @@ static void generate_unmoved_insn_targets_set(FileIR_t* fileIRp)
 
 void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout, bool with_ilr)
 {
+	label_offset=0;
+
 	//Resolve (assemble) any instructions in the registry.
 	AssembleRegistry();
 

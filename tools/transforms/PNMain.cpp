@@ -215,7 +215,9 @@ int main(int argc, char **argv)
 		case PN_THRESHOLD_OPTION:
 		{
 			p1threshold = strtod(optarg,NULL);
-			if(p1threshold <0 || p1threshold >1)
+			// valid values are -1, and 0-1, inclusive.
+			// -1 means disabled.
+			if(p1threshold != -1 && (p1threshold <0 || p1threshold >1))
 			{
 				//TODO: print a message call usage
 				usage();
