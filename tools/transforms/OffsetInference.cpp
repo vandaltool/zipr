@@ -537,7 +537,7 @@ else
 			}
 			unsigned uoffset=(unsigned)offset;
 			/* if this lea is pointing to saved regs -- huh? */
-			if(uoffset>=stack_frame_size+out_args_size && uoffset<saved_regs_size+stack_frame_size+out_args_size)
+			if(uoffset>=stack_frame_size && uoffset<saved_regs_size+stack_frame_size)
 			{
 				if(verbose_log)
 					cerr<<"OffsetInference: lea_rsp found in saved regs area"<<endl;

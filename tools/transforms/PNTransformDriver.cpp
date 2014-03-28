@@ -1076,10 +1076,10 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 			break;
 		}
 		
-		funcs_attempted++;
 		if(getenv("PN_ONLYTRANSFORM") && funcs_attempted!=atoi(getenv("PN_ONLYTRANSFORM")))
 		{
 			cout<<"Skipping function "<<dec<<funcs_attempted<<", named: "<<func->GetName()<<endl;
+			funcs_attempted++;
 			continue;
 		}
 		
@@ -1087,7 +1087,8 @@ void PNTransformDriver::GenerateTransformsHidden(map<string,double> &file_covera
 		//TODO: remove this at some point when I understand if this can happen or not
 		assert(func != NULL);
 
-		cerr<<"PNTransformDriver: Function: "<<orig_virp->GetFile()->GetURL()<<" "<<func->GetName()<<endl;
+		cerr<<"PNTransformDriver: Function #"<<std::dec<<funcs_attempted<<": "<<orig_virp->GetFile()->GetURL()<<" "<<func->GetName()<<endl;
+		funcs_attempted++;
 
 		//Check if in blacklist
 		if(IsBlacklisted(func))
