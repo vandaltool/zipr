@@ -92,7 +92,7 @@ static string qualified_labelfy(FileIR_t* fileIRp, Instruction_t* insn)
 	return labelfy(insn);
 }
 
-static int label_offset=0;
+static long long int label_offset=0;
 
 static void update_label_offset(FileIR_t *firp)
 {
@@ -108,7 +108,7 @@ static void update_label_offset(FileIR_t *firp)
 	label_offset+=max+1;
 }
 
-static int IDToSPRIID(int id)
+static long long int IDToSPRIID(int id)
 {
 	return id+label_offset;
 }
@@ -768,7 +768,6 @@ static void generate_insn_to_insn_maps(FileIR_t *fileIRp, FileIR_t *orig_fileIRp
 //
 void FileIR_t::GenerateSPRI(ostream &fout, bool with_ilr)
 {
-	label_offset=0;
 	VariantID_t orig_varidp(progid.GetOriginalVariantID());
 	assert(orig_varidp.IsRegistered()==true);
 
@@ -853,8 +852,6 @@ static void generate_unmoved_insn_targets_set(FileIR_t* fileIRp)
 
 void FileIR_t::GenerateSPRI(FileIR_t *orig_fileIRp, ostream &fout, bool with_ilr)
 {
-	label_offset=0;
-
 	//Resolve (assemble) any instructions in the registry.
 	AssembleRegistry();
 
