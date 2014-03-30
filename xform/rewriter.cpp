@@ -689,6 +689,8 @@ void Rewriter::dissassemble()
 		}
 		else
 		{
+			cerr<<"BeaEngine has decided that instrution at "<<hex
+				<<instr->getAddress()<<dec<<" is bogus."<<endl;
 			/* bogus intruction, remove it */
 			m_instructions[instr->getAddress()]=NULL;
 

@@ -48,6 +48,7 @@
 #include "Includes/instr_set/opcodes_SSE.c"
 #include "Includes/instr_set/opcodes_AES.c"
 #include "Includes/instr_set/opcodes_CLMUL.c"
+#include "Includes/instr_set/opcodes_VEX.c"
 #include "Includes/instr_set/opcodes_prefixes.c"
 #include "Includes/Routines_ModRM.c"
 #include "Includes/Routines_Disasm.c"

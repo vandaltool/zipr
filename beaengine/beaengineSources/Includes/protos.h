@@ -90,6 +90,7 @@ void __bea_callspec__ FillFlags(PDISASM, int);
 void __bea_callspec__ FillSegmentsRegisters (PDISASM);
 void __bea_callspec__ FixArgSizeForMemoryOperand (PDISASM);
 void __bea_callspec__ FixREXPrefixes (PDISASM);
+void __bea_callspec__ FixVEXPrefixes (PDISASM);
 
 /* ====================================== opcodes_prefix */
 void __bea_callspec__ PrefLock(PDISASM);
@@ -703,3 +704,16 @@ void __bea_callspec__ aeskeygen(PDISASM);
 
 /* ====================================== opcodes_CLMUL */
 void __bea_callspec__ pclmulqdq_(PDISASM);
+
+/* ====================================== opcodes_VEX */
+/* prefixes */
+void __bea_callspec__ HandleVex2(PDISASM);
+void __bea_callspec__ HandleVex3(PDISASM);
+
+/* useful helpers */
+void V_reg(ARGTYPE* arg, PDISASM pMyDisasm);
+
+/* actual opcodes */
+void vblendvpd /*VxHxWxLx */ (PDISASM pMyDisasm);
+
+

@@ -108,6 +108,9 @@ appfw/tests/xquery/xpath_test/passwrd_xml.xml -text
 appfw/tests/xquery/xquery_test/Makefile -text
 appfw/tests/xquery/xquery_test/XQuery_Injection.cpp -text
 appfw/tests/xquery/xquery_test/passwrd_xml.xml -text
+bea_tests/Makefile -text
+bea_tests/avx.s -text
+bea_tests/dbea.c -text
 beaengine/CMakeFiles/CMakeCCompiler.cmake -text
 beaengine/CMakeFiles/CMakeCXXCompiler.cmake -text
 beaengine/CMakeFiles/CMakeDetermineCompilerABI_C.bin -text

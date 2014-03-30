@@ -4872,9 +4872,9 @@ void __bea_callspec__ lds_GvM(PDISASM pMyDisasm)
 {
     /* if MOD == 11b, invalid instruction */
     /* or VEX Prefix - implemented in next release (AVX) */
-
+    /* VEX Prefix added by jdh */
     if (GV.Architecture == 64) {
-        FailDecode(pMyDisasm);
+        HandleVex2(pMyDisasm);
     }
     else {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SEGMENT_REGISTER;
@@ -4921,7 +4921,6 @@ void __bea_callspec__ lea_GvM(PDISASM pMyDisasm)
 {
 
     /* if MOD == 11b, invalid instruction */
-    /* or VEX Prefix - implemented in next release (AVX) */
 
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+MISCELLANEOUS_INSTRUCTION;
     #ifndef BEA_LIGHT_DISASSEMBLY
@@ -4951,13 +4950,15 @@ void __bea_callspec__ lea_GvM(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *	0x c4
  * ======================================= */
 void __bea_callspec__ les_GvM(PDISASM pMyDisasm)
 {
 
+    /* VEX Prefix - implemented in next release (AVX) */
+    /* VEX prefix added by jdh */
     if (GV.Architecture == 64) {
-        FailDecode(pMyDisasm);
+        HandleVex3(pMyDisasm);
     }
     else {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SEGMENT_REGISTER;
@@ -5814,6 +5815,9 @@ void __bea_callspec__ mov_BLIb(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ mov_AHIb(PDISASM pMyDisasm)
 {
+	int regnum=4;
+	int reg_bit_vec=REG4;
+	int reg_bit_vec_rex=REG12;
     long MyNumber;
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
@@ -5827,9 +5831,6 @@ void __bea_callspec__ mov_AHIb(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
 
-	int regnum=4;
-	int reg_bit_vec=REG4;
-	int reg_bit_vec_rex=REG12;
         if ((*pMyDisasm).Archi == 64 && GV.REX.state)
 	{
 		if(GV.REX.B_)
@@ -5869,6 +5870,9 @@ void __bea_callspec__ mov_AHIb(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ mov_CHIb(PDISASM pMyDisasm)
 {
+	int regnum=5;
+	int reg_bit_vec=REG5;
+	int reg_bit_vec_rex=REG13;
     long MyNumber;
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
@@ -5882,9 +5886,6 @@ void __bea_callspec__ mov_CHIb(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
 
-	int regnum=5;
-	int reg_bit_vec=REG5;
-	int reg_bit_vec_rex=REG13;
         if ((*pMyDisasm).Archi == 64 && GV.REX.state)	 /* has REX bit */
 	{
 		if(GV.REX.B_)	/* and B bit is set */
@@ -5924,6 +5925,9 @@ void __bea_callspec__ mov_CHIb(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ mov_DHIb(PDISASM pMyDisasm)
 {
+	int regnum=6;
+	int reg_bit_vec=REG6;
+	int reg_bit_vec_rex=REG14;
     long MyNumber;
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
@@ -5938,9 +5942,6 @@ void __bea_callspec__ mov_DHIb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Immediat = MyNumber;
 
 
-	int regnum=6;
-	int reg_bit_vec=REG6;
-	int reg_bit_vec_rex=REG14;
         if ((*pMyDisasm).Archi == 64 && GV.REX.state)	 /* has REX bit */
 	{
 		if(GV.REX.B_)	/* and B bit is set */
@@ -5980,6 +5981,9 @@ void __bea_callspec__ mov_DHIb(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ mov_BHIb(PDISASM pMyDisasm)
 {
+	int regnum=7;
+	int reg_bit_vec=REG7;
+	int reg_bit_vec_rex=REG15;
     long MyNumber;
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
@@ -5993,9 +5997,6 @@ void __bea_callspec__ mov_BHIb(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
 
-	int regnum=7;
-	int reg_bit_vec=REG7;
-	int reg_bit_vec_rex=REG15;
         if ((*pMyDisasm).Archi == 64 && GV.REX.state)	 /* has REX bit */
 	{
 		if(GV.REX.B_)	/* and B bit is set */
