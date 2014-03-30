@@ -149,6 +149,7 @@ beaengine/beaengineSources/Includes/instr_set/opcodes_Grp9.c -text
 beaengine/beaengineSources/Includes/instr_set/opcodes_MMX.c -text
 beaengine/beaengineSources/Includes/instr_set/opcodes_N_Z.c -text
 beaengine/beaengineSources/Includes/instr_set/opcodes_SSE.c -text
+beaengine/beaengineSources/Includes/instr_set/opcodes_VEX.c -text
 beaengine/beaengineSources/Includes/instr_set/opcodes_prefixes.c -text
 beaengine/beaengineSources/Includes/internal_datas.h -text
 beaengine/beaengineSources/Includes/protos.h -text
