@@ -48,7 +48,27 @@ while (!Error){
         Error = 1;
     }
     else {
+	int i;
+	printf("%08X    ", (int)(MyDisasm.EIP-(UInt64)buf));
+	for(i=0;i<8;i++)
+	{
+		if(i>=len)
+			printf("  ");
+		else
+			printf("%02X", ((UInt8*)MyDisasm.EIP)[i]);
+	}
+	printf("  ");
         (void) puts(MyDisasm.CompleteInstr);
+
+	if(i<len)
+	{
+		printf("            ");
+		for(;i<len;i++)
+			printf("%02X", ((UInt8*)MyDisasm.EIP)[i]);
+		printf("\n");
+	}
+
+
         MyDisasm.EIP = MyDisasm.EIP + (UIntPtr)len;
         if (MyDisasm.EIP >= EndCodeSection) {
             (void) printf("; End of buffer reached ! \n");

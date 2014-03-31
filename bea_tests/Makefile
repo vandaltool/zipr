@@ -4,39 +4,61 @@ INCLUDES= -I ../include -I../beaengine/include
 LIBS= -L ../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d
 OPT=-g
 
-.SUFFIXES: .exe .c .o
+.SUFFIXES: .exe .c .o .bin .s .dis .beadis .o .nasm .diff
+.PRECIOUS: %.exe %.o %.bin %.s %.dis %.beadis %.o %.nasm %.diff
 
-.c.exe:  
-	gcc $(INCLUDES)  $(OPT) $^ $(LIBS) -o $@
+diffs=3dnow.diff insns_mm.diff insns_nomm_no3dnow.diff insns.diff avx1.diff avx2.diff
+BIN=dbea.exe
 
-all: bea dbea.exe avx1.bin avx2.bin
+all: dbea.exe  $(diffs)
 
-dbea.exe: dbea.c ../beaengine/lib/Linux.gnu.Debug/libBeaEngine_s_d.a
+
+$(BIN): dbea.c bea
 	gcc $(INCLUDES)  $(OPT) $< $(LIBS) -o $@
 
-avx1.bin: avx.s
-	nasm -O0 -fbin -oavx1.bin avx.s
 
-avx2.bin: avx.s
-	nasm -Ox -fbin -oavx2.bin avx.s
 
-avx1.dis avx2.dis: 	avx1.bin avx2.bin
-	ndisasm -b64 avx1.bin  > avx1.dis
-	ndisasm -b64 avx2.bin  > avx2.dis
+%.bin: %.nasm 
+	nasm -O0 -fbin -o$@ $<
 
-test: bea dbea.exe avx1.bin avx2.bin avx1.dis avx2.dis
-	./dbea.exe<avx1.bin > avx1.beadis
-	./dbea.exe<avx2.bin > avx2.beadis
-	sdiff avx1.dis avx1.beadis|less
+%.dis: %.bin 
+	ndisasm -b64 $<  > $@
+
+
+%.o: %.s
+	gcc -c $< -o $@
+
+%.bin: %.o
+	objcopy -O binary $< $@ 
+
+%.beadis: %.bin dbea.exe
+	./dbea.exe < $< > $@
+
+%.diff: %.dis %.beadis
+	sdiff -w 134 -W $^  > $@  || true
+
+test: $(diffs)
 	
-test2: bea dbea.exe avx1.bin avx2.bin avx1.dis avx2.dis
-	./dbea.exe<avx1.bin > avx1.beadis
-	./dbea.exe<avx2.bin > avx2.beadis
-	sdiff avx2.dis avx1.beadis|less
+	
 	
 
 bea:
 	cd ..; make bea
 
 clean:
-	rm -f *.bin *.dis *.beadis dbea.exe
+	rm -f *.bin *.dis *.beadis dbea.exe *.o 3dnow.s insns_mm.s insns_nomm_no3dnow.s *.diff
+
+
+#
+# note: insns.s was manually extracted from ffmpeg's disassembly.
+#
+# this is how these were made.
+#
+3dnow.s:
+	cat insns.s |grep pavgusb> $@
+
+insns_mm.s:
+	cat insns.s |grep -v pavgusb |grep mm > $@
+
+insns_nomm_no3dnow.s:
+	cat insns.s |grep -v pavgusb |grep -v mm > $@
