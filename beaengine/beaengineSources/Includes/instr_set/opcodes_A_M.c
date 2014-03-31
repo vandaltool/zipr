@@ -4926,19 +4926,13 @@ void __bea_callspec__ lea_GvM(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "lea ");
     #endif
+    GV.MemDecoration = Arg2fword;
     if (GV.OperandSize >= 32) {
-        if (GV.OperandSize == 64) {
-            GV.MemDecoration = Arg2qword;
-        }
-        else {
-            GV.MemDecoration = Arg2dword;
-        }
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
         GV.EIP_+= GV.DECALAGE_EIP+2;
     }
     else {
-        GV.MemDecoration = Arg2word;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
         GV.EIP_+= GV.DECALAGE_EIP+2;
