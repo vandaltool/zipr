@@ -43,13 +43,16 @@ vpextrb rax,xmm1,0x33
 db 0x66, 0x0f, 0xc5, 0xc1, 0x33
 vpextrw rax,xmm1,0x33
 
+pextrq rax,xmm1,0x33
+pextrb eax,xmm1,0x33
+pextrw eax,xmm1,0x33
+pextrd eax,xmm1,0x33
 
 vpextrd rax,xmm1,0x33
 vpextrq rax,xmm1,0x33
 vpextrb eax,xmm1,0x33
 vpextrw eax,xmm1,0x33
 vpextrd eax,xmm1,0x33
-; vpextrq eax,xmm1,0x33
 
 vcvtpd2ps xmm0,xmm1
 vcvtpd2ps xmm0,oword [rsi]

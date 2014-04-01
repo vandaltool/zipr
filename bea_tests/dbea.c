@@ -31,7 +31,7 @@ MyDisasm.Options = NasmSyntax + PrefixedNumeral;
 MyDisasm.Archi = 64;
 MyDisasm.VirtualAddr = 0;
 
-/* printf("bits 64\n"); */
+ printf("0 0 bits 64\n"); 
  
 /* ============================= Loop for Disasm */
 while (!Error){
@@ -49,20 +49,23 @@ while (!Error){
     }
     else {
 	int i;
-	printf("%08X    ", (int)(MyDisasm.EIP-(UInt64)buf));
-	for(i=0;i<8;i++)
+	if(argc>2)
 	{
-		if(i>=len)
-			printf("  ");
-		else
-			printf("%02X", ((UInt8*)MyDisasm.EIP)[i]);
+		printf("%08X    ", (int)(MyDisasm.EIP-(UInt64)buf));
+		for(i=0;i<8;i++)
+		{
+			if(i>=len)
+				printf("  ");
+			else
+				printf("%02X", ((UInt8*)MyDisasm.EIP)[i]);
+		}
 	}
 	printf("  ");
         (void) puts(MyDisasm.CompleteInstr);
 
-	if(i<len)
+	if(i<len && argc>2)
 	{
-		printf("            ");
+		printf("           -");
 		for(;i<len;i++)
 			printf("%02X", ((UInt8*)MyDisasm.EIP)[i]);
 		printf("\n");
@@ -71,7 +74,7 @@ while (!Error){
 
         MyDisasm.EIP = MyDisasm.EIP + (UIntPtr)len;
         if (MyDisasm.EIP >= EndCodeSection) {
-            (void) printf("; End of buffer reached ! \n");
+            (void) printf("0 0 ; End of buffer reached ! \n");
             Error = 1;
         }
     }

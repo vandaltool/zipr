@@ -4,8 +4,9 @@ INCLUDES= -I ../include -I../beaengine/include
 LIBS= -L ../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d
 OPT=-g
 
-.SUFFIXES: .exe .c .o .bin .s .dis .beadis .o .nasm .diff
-.PRECIOUS: %.exe %.o %.bin %.s %.dis %.beadis %.o %.nasm %.diff
+width=130
+
+.SUFFIXES: .exe .c .o .bin .s .dis .beadis .o .nasm .diff .rebin .redis .rediff .cmp .recmp .cmpdebug .recmpdebug .trimdis 
 
 diffs=3dnow.diff insns_mm.diff insns_nomm_no3dnow.diff insns.diff avx1.diff avx2.diff
 BIN=dbea.exe
@@ -22,7 +23,7 @@ $(BIN): dbea.c bea
 	nasm -O0 -fbin -o$@ $<
 
 %.dis: %.bin 
-	ndisasm -b64 $<  > $@
+	${HOME}/nasm*/bin/ndisasm -b64 $<  > $@
 
 
 %.o: %.s
@@ -32,12 +33,54 @@ $(BIN): dbea.c bea
 	objcopy -O binary $< $@ 
 
 %.beadis: %.bin dbea.exe
-	./dbea.exe < $< > $@
+	./dbea.exe < $< -pretty -pretty > $@
 
-%.diff: %.dis %.beadis
-	sdiff -w 134 -W $^  > $@  || true
+%.rebin: %.dis
+	echo "bits 64" > tmp
+	cat $< |sed "s/  */ /g"|cut -d" " -f3- >> tmp; done
+	nasm -O0 -fbin -o$@ tmp
+%.redis: %.rebin 
+	${HOME}/nasm*/bin/ndisasm -b64 $<  > $@
 
-test: $(diffs)
+%.trimredis: %.redis
+	cat $^ |sed -e "s/  */	/g" -e "s/byte +0x33/0x33/" | cut -d"	" -f2- > $@
+
+
+%.rebeabin: %.beadis
+	cat $< |sed "s/  */ /g"|cut -d" " -f3- > tmp; done
+	nasm -O1 -fbin -o$@ tmp
+
+%.rebeadis: %.rebeabin 
+	${HOME}/nasm*/bin/ndisasm -b64 $<  > $@
+
+%.trimrebeadis: %.rebeadis
+	cat $^ |sed -e "s/  */	/g" -e "s/byte +0x33/0x33/" |cut -d"	" -f2- > $@
+
+%.trimbeadis: %.beadis
+	cat $^ |sed -e "s/  */	/g" -e "s/byte +0x33/0x33/" |cut -d"	" -f2- > $@
+
+%.trimdis: %.dis
+	cat $^ |sed "s/  */	/g"|cut -d"	" -f2- > $@
+
+
+%.recmp: %.rebeabin %.rebin 
+	cmp  $^  > $@  || true
+
+%.recmpdebug: %.trimredis %.trimrebeadis
+	echo $^ > $@
+	sdiff -w ${width} -W $^  >> $@  || true
+
+%.cmpdebug: %.trimdis %.trimbeadis
+	echo $^ > $@
+	sdiff -w ${width} -W $^  >> $@  || true
+
+%.rediff: %.recmp %.recmpdebug
+	cat $^ > $@
+
+%.diff: %.cmpdebug
+	cat $^ > $@
+
+test: avx1.diff avx1.rediff
 	
 	
 	
@@ -46,7 +89,7 @@ bea:
 	cd ..; make bea
 
 clean:
-	rm -f *.bin *.dis *.beadis dbea.exe *.o 3dnow.s insns_mm.s insns_nomm_no3dnow.s *.diff
+	rm -f *.bin *.dis *.beadis dbea.exe *.o 3dnow.s insns_mm.s insns_nomm_no3dnow.s *.diff *.trim*  *.cmp* *.recmp*
 
 
 #
