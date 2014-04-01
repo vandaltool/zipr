@@ -56,7 +56,21 @@ int IntegerTransform64::execute()
 
 			if (insn && insn->GetAddress())
 			{
-				int policy = POLICY_EXIT; //  default for now is exit -- no callback handlers yet
+				int policy = POLICY_DEFAULT; //  default for now is exit -- no callback handlers yet
+
+                                if (isSaturatingArithmetic())
+                                {
+                                        // saturating arithmetic is enabled
+                                        // only use if instruction is not a potential false positive
+                                        policy = POLICY_CONTINUE_SATURATING_ARITHMETIC;
+                                }
+
+                                // takes precedence over saturation if conflict
+                                if (isWarningsOnly())
+                                {
+                                        policy = POLICY_CONTINUE;
+                                }
+
 				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
 				if (irdb_vo == 0) continue;
 
@@ -84,8 +98,11 @@ int IntegerTransform64::execute()
 
 				if (annotation.isOverflow())
 				{
-					// nb: safe with respect to esp (except for lea)
 					handleOverflowCheck(insn, annotation, policy);
+				}
+				else if (annotation.isUnderflow())
+				{
+					handleUnderflowCheck(insn, annotation, policy);
 				}
 			}
 		} // end iterate over all instructions in a function
@@ -99,7 +116,7 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 	if (isMultiplyInstruction(p_instruction) || (p_annotation.isOverflow() && !p_annotation.isUnknownSign()))
 	{
 		// handle signed/unsigned add/sub overflows (non lea)
-		addOverflowCheck(p_instruction, p_annotation, p_policy);
+		addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
 	}
 	else
 	{
@@ -108,39 +125,87 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 	}
 }
 
+void IntegerTransform64::handleUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+{
+        if (p_annotation.isUnderflow())
+        {
+                addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
+        }
+        else
+        {
+                m_numUnderflowsSkipped++;
+                logMessage(__func__, "UNDERFLOW type not yet handled");
+        }
+}
+
+
 //
+// Halting Policy
 //	        mul a, b                 ; <instruction to instrument>
 //              jno <OrigNext>           ; if no overflows, jump to original fallthrough instruction
 //              hlt                      ; policy = halt 
 // OrigNext:    <nextInstruction>        ; original fallthrugh
 //
-void IntegerTransform64::addOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+// Saturation Policy
+//	        mul a, b                 ; <instruction to instrument>
+//              jno <OrigNext>           ; if no overflows, jump to original fallthrough instruction
+//              movq a, MIN/MAX          ; policy = min-saturate (underflow) / max-saturate (overflow)
+// OrigNext:    <nextInstruction>        ; original fallthrugh
+//
+void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	Instruction_t* jncond_i = NULL;
-	Instruction_t* hlt_i = NULL;
+	Instruction_t* policy_i = NULL;
 
 	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
 
-	cerr << __func__ <<  ": instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+	Register::RegisterName targetReg = getTargetRegister(p_instruction);
+        if (targetReg == Register::UNKNOWN)
+        {
+                logMessage(__func__, p_annotation, "unknown target register");
+		return;
+	}
+
+//	cerr << __func__ <<  ": instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
+
+        logMessage(__func__, p_annotation, "debug");
 
 	jncond_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
-	hlt_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	policy_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
 
 	Instruction_t* next_i = p_instruction->GetFallthrough();
 	p_instruction->SetFallthrough(jncond_i); 
 
 	if (p_annotation.isUnsigned())
 	{
-		addJnc(jncond_i, hlt_i, next_i);
+		addJnc(jncond_i, policy_i, next_i);
 	}
 	else
 	{
-		addJno(jncond_i, hlt_i, next_i);
+		addJno(jncond_i, policy_i, next_i);
 	}
-	addHlt(hlt_i, next_i);
+
+        if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+	{
+		if (p_annotation.isUnderflow())
+		{
+                	addMinSaturation(policy_i, targetReg, p_annotation, next_i);
+		}
+		else
+		{
+                	addMaxSaturation(policy_i, targetReg, p_annotation, next_i);
+		}
+	}
+	else
+	{
+		// would need to min-saturate for underflow
+		//               max-saturate for overflow
+		addHlt(policy_i, next_i);
+	}
 
 	if (p_annotation.isUnderflow())
 		m_numUnderflows++;
 	else
 		m_numOverflows++;
 }
+

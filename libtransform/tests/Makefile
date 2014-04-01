@@ -6,9 +6,13 @@ LD=DO_NOT_USE
 .SUFFIXES: .o .c .cpp .exe
 
 #exes=dumbledore_cmd.exe test1.exe
-#exes=overflow1.exe #overflow2.exe
+#exes=overflow1.exe
 #exes=dumbledore_cmd.exe
-exes=unsigned_mul.exe signed_add.exe
+#exes=unsigned_mul.exe 
+#exes=signed_add.exe
+#exes=simpletest.exe
+#exes=dummy.exe
+exes=signed_mul.exe
 
 
 all: env_check  ${exes}
@@ -17,14 +21,14 @@ all: env_check  ${exes}
 
 .o.exe:
 #	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
-#	gcc -g $< -o $@ 
-	gcc $< -o $@ 
+	gcc -g $< -o $@ 
+#	gcc -m32 $< -o $@ 
 #	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup 
-	${PEASOUP_HOME}/tools/ps_analyze64.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off
+	${PEASOUP_HOME}/tools/ps_analyze64.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off 
 
 .c.o:
-#	gcc -O2 -c $< 
-	gcc -c $< 
+	gcc -O2 -c $< 
+#	gcc -c -m32 $< 
 #	${PEASOUP_HOME}/tools/ps_comp.sh $< 
 
 .cpp.o:
@@ -58,6 +62,7 @@ clean:
 	rm -Rf peasoup_executable_directory.*
 	rm -f strata.log.*
 	rm -f *.sym
+	rm *.peasoup
 	${PEASOUP_HOME}/tools/db/drop_my_tables.sh
 	${PEASOUP_HOME}/tools/db/pdb_setup.sh
 

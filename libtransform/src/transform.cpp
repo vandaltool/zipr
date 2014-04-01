@@ -1081,49 +1081,30 @@ void Transform::addMovRegisters(Instruction_t *p_instr, Register::RegisterName p
 //	cerr << "addMovRegisters(): " << p_instr->getDisassembly() << endl;
 }
 
-void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constant, Instruction_t *p_fallThrough)
+void Transform::addMovRegisterSignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, long int p_constant, Instruction_t *p_fallThrough)
 {
-    p_instr->SetFallthrough(p_fallThrough);
+	p_instr->SetFallthrough(p_fallThrough);
 
 	char buf[128];
-	sprintf(buf,"mov %s, %d", Register::toString(p_regTgt).c_str(), p_constant);
 
-    string assembly(buf);
-#ifdef OPTIMIZE_ASSEMBLY
+	sprintf(buf,"mov %s, %ld", Register::toString(p_regTgt).c_str(), p_constant);
+
+	string assembly(buf);
 	m_fileIR->RegisterAssembly(p_instr, assembly);
-#else
-    if (!p_instr->Assemble(assembly))
-    {
-        cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
-		assert(0);
-        return;
-    }
-#endif
 
-//	cerr << "addMovRegisterSignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
 }
 
-void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned int p_constant, Instruction_t *p_fallThrough)
+void Transform::addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned long int p_constant, Instruction_t *p_fallThrough)
 {
-    p_instr->SetFallthrough(p_fallThrough);
+	p_instr->SetFallthrough(p_fallThrough);
 
 	char buf[128];
-	sprintf(buf,"mov %s, %u", Register::toString(p_regTgt).c_str(), p_constant);
+	sprintf(buf,"mov %s, %lu", Register::toString(p_regTgt).c_str(), p_constant);
 
-    string assembly(buf);
-#ifdef OPTIMIZE_ASSEMBLY
+	string assembly(buf);
 	m_fileIR->RegisterAssembly(p_instr, assembly);
-#else
-    if (!p_instr->Assemble(assembly))
-    {
-        cerr << "addMovRegisterSignedConstant(): error in assembling instruction: " << assembly << endl;
-		assert(0);
-        return;
-    }
-#endif
 
-//	cerr << "addMovRegisterUnsignedConstant(): " << p_instr->getDisassembly() << endl;
 	p_instr->SetComment("Saturating arithmetic");
 }
 
@@ -1182,16 +1163,97 @@ void Transform::addJno(Instruction_t *p_instr, Instruction_t *p_fallThrough, Ins
 // jnc - jump not carry
 void Transform::addJnc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Instruction_t *p_target)
 {
-#ifdef OLD_WAY
-	string dataBits;
-	dataBits.resize(2);
-	dataBits[0] = 0x73;
-	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
-
-	addInstruction(p_instr, dataBits, p_fallThrough, p_target);
-#endif
 	string assembly("jnc 0x22");
 	m_fileIR->RegisterAssembly(p_instr, assembly);
 	p_instr->SetFallthrough(p_fallThrough);
 	p_instr->SetTarget(p_target);
 }
+
+void Transform::addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
+{
+	assert(getFileIR() && p_instruction);
+
+	p_instruction->SetFallthrough(p_fallthrough);
+
+	if (p_annotation.isUnsigned())
+	{
+		// use MAX_UNSIGNED for the bit width
+		switch (Register::getBitWidth(p_reg))
+		{
+			case 64:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFFFFFFFFFFFFFFFF, p_fallthrough);
+				break;
+			case 32:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFFFFFFFF, p_fallthrough);
+				break;
+			case 16:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFFFF, p_fallthrough);
+				break;
+			case 8:
+				addMovRegisterUnsignedConstant(p_instruction, p_reg, 0xFF, p_fallthrough);
+				break;
+			default:
+				cerr << "Transform::addMaxSaturation(): invalid bit width: " << p_annotation.getBitWidth() << endl;
+				break;
+		}
+	}
+	else
+	{
+		// treat unknown and signed the same way for overflows
+		// use MAX_SIGNED for the bit width
+		switch (Register::getBitWidth(p_reg))
+		{
+			case 64:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7FFFFFFFFFFFFFFF, p_fallthrough);
+				break;
+			case 32:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7FFFFFFF, p_fallthrough);
+				break;
+			case 16:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7FFF, p_fallthrough);
+				break;
+			case 8:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x7F, p_fallthrough);
+				break;
+			default:
+				cerr << "Transform::addMaxSaturation(): invalid bit width: " << p_annotation.getBitWidth() << endl;
+				break;
+		}
+	}
+}
+void Transform::addMinSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
+{
+	assert(getFileIR() && p_instruction);
+
+	p_instruction->SetFallthrough(p_fallthrough);
+
+	if (p_annotation.isUnsigned())
+	{
+		// use MIN_UNSIGNED
+		addMovRegisterUnsignedConstant(p_instruction, p_reg, 0, p_fallthrough);
+	}
+	else
+	{
+		// treat unknown and signed the same way for overflows
+		// use MIN_SIGNED for the bit width
+		switch (Register::getBitWidth(p_reg))
+		{
+			case 64:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x8000000000000000, p_fallthrough);
+				break;
+			case 32:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x80000000, p_fallthrough);
+				break;
+			case 16:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x8000, p_fallthrough);
+				break;
+			case 8:
+				addMovRegisterSignedConstant(p_instruction, p_reg, 0x80, p_fallthrough);
+				break;
+			default:
+				cerr << "Transform::addMinSaturation(): invalid bit width: " << p_annotation.getBitWidth() << endl;
+				break;
+		}
+	}
+}
+
