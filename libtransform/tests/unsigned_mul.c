@@ -1,20 +1,20 @@
+#include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char **argv)
 {
-  unsigned a = 0;
-  unsigned b = 0; 
-  unsigned d;
+  unsigned long a = 0;
+  unsigned long b = 0; 
+  unsigned long d;
+
   if (argc >= 2)
-	  a = (unsigned) atoi(argv[1]);
+	  a = (unsigned long) strtoul(argv[1], NULL, 10);
 
   if (argc >= 3)
-	  b = (unsigned) atoi(argv[2]);
-
-  if (d > 0 && a > 20000 && b > 20000)
-  	printf("hello\n");
+	  b = (unsigned long) strtoul(argv[2], NULL, 10);
 
   d = a * b;
-  printf("%u\n", d);
+  printf("%lu * %lu = %lu\n", a, b, d);
 
   return 0;
 }
