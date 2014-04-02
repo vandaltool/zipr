@@ -36,7 +36,7 @@ MyDisasm.VirtualAddr = 0;
 /* ============================= Loop for Disasm */
 while (!Error){
     /* ============================= Fix SecurityBlock */
-    MyDisasm.SecurityBlock = (UIntPtr)EndCodeSection - (UIntPtr)MyDisasm.EIP;
+    MyDisasm.SecurityBlock = (UIntPtr)EndCodeSection - (UIntPtr)MyDisasm.EIP+1;
  
     len = Disasm(&MyDisasm);
     if (len == OUT_OF_BLOCK) {

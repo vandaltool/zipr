@@ -4,14 +4,20 @@ INCLUDES= -I ../include -I../beaengine/include
 LIBS= -L ../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d
 OPT=-g
 
-width=130
+width=180
+
+
+finals= 3dnow.rebeabin insns_mm.rebeabin insns_nomm_no3dnow.rebeabin insns_avx.rebeabin avx1.rebeabin avx2.rebeabin \
+3dnow.diff insns_mm.diff insns_nomm_no3dnow.diff insns_avx.diff avx1.diff avx2.diff \
+3dnow.halfdiff insns_mm.halfdiff insns_nomm_no3dnow.halfdiff insns_avx.halfdiff avx1.halfdiff avx2.halfdiff \
 
 .SUFFIXES: .exe .c .o .bin .s .dis .beadis .o .nasm .diff .rebin .redis .rediff .cmp .recmp .cmpdebug .recmpdebug .trimdis 
+.PRECIOUS: %.exe %.c %.o %.bin %.s %.dis %.beadis %.o %.nasm %.diff %.rebin %.redis %.rediff %.cmp %.recmp %.cmpdebug %.recmpdebug %.trimdis 
 
 diffs=3dnow.diff insns_mm.diff insns_nomm_no3dnow.diff insns.diff avx1.diff avx2.diff
 BIN=dbea.exe
 
-all: dbea.exe  $(diffs)
+all: dbea.exe  $(finals) 
 
 
 $(BIN): dbea.c bea
@@ -39,28 +45,32 @@ $(BIN): dbea.c bea
 	echo "bits 64" > tmp
 	cat $< |sed "s/  */ /g"|cut -d" " -f3- >> tmp; done
 	nasm -O0 -fbin -o$@ tmp
+
 %.redis: %.rebin 
 	${HOME}/nasm*/bin/ndisasm -b64 $<  > $@
 
 %.trimredis: %.redis
-	cat $^ |sed -e "s/  */	/g" -e "s/byte +0x33/0x33/" | cut -d"	" -f2- > $@
+	cat $^ |sed -e "s/  */	/g"  | cut -d"	" -f2- > $@
 
 
 %.rebeabin: %.beadis
 	cat $< |sed "s/  */ /g"|cut -d" " -f3- > tmp; done
-	nasm -O1 -fbin -o$@ tmp
+	nasm -w-all -O1 -fbin -o$@ tmp
 
 %.rebeadis: %.rebeabin 
 	${HOME}/nasm*/bin/ndisasm -b64 $<  > $@
 
 %.trimrebeadis: %.rebeadis
-	cat $^ |sed -e "s/  */	/g" -e "s/byte +0x33/0x33/" |cut -d"	" -f2- > $@
+	#cat $^ |sed -e "s/  */	/g" -e "s/byte	0x33/0x33/" |cut -d"	" -f2- > $@
+	cat $^ |sed -e  "s/  */	/g" |cut -d"	" -f2- > $@
 
 %.trimbeadis: %.beadis
-	cat $^ |sed -e "s/  */	/g" -e "s/byte +0x33/0x33/" |cut -d"	" -f2- > $@
+	cat $^ |sed -e  "s/  */	/g" |cut -d"	" -f2- > $@
+	#cat $^ |sed -e "s/  */	/g" -e "s/byte	0x/0x/" -e "s/.word//" -e "s/yword//" |cut -d"	" -f2- > $@
 
 %.trimdis: %.dis
-	cat $^ |sed "s/  */	/g"|cut -d"	" -f2- > $@
+	#cat $^ |sed -e "s/  */	/g" -e "s/byte	0x/0x/" -e "s/.word//" -e "s/yword//" |cut -d"	" -f2- > $@
+	cat $^ |sed -e  "s/  */	/g" |cut -d"	" -f2- > $@
 
 
 %.recmp: %.rebeabin %.rebin 
@@ -80,6 +90,10 @@ $(BIN): dbea.c bea
 %.diff: %.cmpdebug
 	cat $^ > $@
 
+%.halfdiff: %.trimdis %.trimrebeadis
+	echo $^ > $@
+	sdiff -w ${width} $^ >> $@ || true
+
 test: avx1.diff avx1.rediff
 	
 	
@@ -89,7 +103,7 @@ bea:
 	cd ..; make bea
 
 clean:
-	rm -f *.bin *.dis *.beadis dbea.exe *.o 3dnow.s insns_mm.s insns_nomm_no3dnow.s *.diff *.trim*  *.cmp* *.recmp*
+	rm -f *.bin *.dis *.beadis dbea.exe *.o 3dnow.s insns_mm.s insns_nomm_no3dnow.s *.diff *.trim*  *.cmp* *.recmp* *.rebin *.rediff *.redis tmp *.rebeadis *.halfdiff *.trimrebeadis *.rebeadis *.rebeabin
 
 
 #
@@ -105,3 +119,6 @@ insns_mm.s:
 
 insns_nomm_no3dnow.s:
 	cat insns.s |grep -v pavgusb |grep -v mm > $@
+
+insns_avx.s: insns_mm.s
+	cat $< |grep ^v  > $@

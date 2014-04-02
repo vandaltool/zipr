@@ -113,6 +113,7 @@ bea_tests/avx1.nasm -text
 bea_tests/avx2.nasm -text
 bea_tests/dbea.c -text
 bea_tests/insns.s -text
+bea_tests/insns_avx.s -text
 beaengine/CMakeFiles/CMakeCCompiler.cmake -text
 beaengine/CMakeFiles/CMakeCXXCompiler.cmake -text
 beaengine/CMakeFiles/CMakeDetermineCompilerABI_C.bin -text
