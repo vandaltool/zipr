@@ -123,9 +123,17 @@ static void finish_vex(PDISASM pMyDisasm)
 	switch(GV.VEX.implicit_prefixes)
 	{ 
 		case 0:
+			break;
 		case 1:  /* 0x66 */
+			(*pMyDisasm).Prefix.OperandSize = InUsePrefix; 
+			break;
 		case 2:  /* 0xf3 */
+			(*pMyDisasm).Prefix.RepPrefix= InUsePrefix; 
+			GV.PrefRepe= 1; /* why are these diff?  not sure, but seems to be how it should be */
+			break;
 		case 3:  /* 0xf2 */
+			(*pMyDisasm).Prefix.RepnePrefix= InUsePrefix; 
+			GV.PrefRepne = 1; /* why are these diff?  not sure, but seems to be how it should be */
 			break;
 		default:
 			FailDecode(pMyDisasm);
@@ -162,7 +170,7 @@ void __bea_callspec__ HandleVex3(PDISASM pMyDisasm)
 	GV.REX.R_=!GV.VEX.notR;
 	GV.VEX.notX=(byte1>>6)&1;	/* bit 7 */
 	GV.REX.X_=!GV.VEX.notX;
-	GV.VEX.notB=(byte1>>6)&1;	/* bit 6 */
+	GV.VEX.notB=(byte1>>5)&1;	/* bit 6 */
 	GV.REX.B_=!GV.VEX.notB;
 	GV.VEX.opcode_escape=byte1&0x1f; /* bits 5-0 */
 
@@ -231,6 +239,10 @@ void __bea_callspec__ HandleVex2(PDISASM pMyDisasm)
 	/* fill in fields from byte1. */
 	GV.VEX.notR=(byte1>>7)&1;	/* bit 7 */
 	GV.REX.R_=!GV.VEX.notR;
+	GV.VEX.notX=1;			/* not set, so they should default to 1, not 0 */
+	GV.REX.X_=!GV.VEX.notX;
+	GV.VEX.notB=1;
+	GV.REX.B_=!GV.VEX.notB;
 
 	GV.VEX.notV=(byte1>>3)&0xf;	/* bits 6-3 */
 	GV.VEX.length=(byte1>>2)&01;	/* bit 2 */
@@ -260,24 +272,42 @@ void V_reg(ARGTYPE* arg, PDISASM pMyDisasm)
 	arg->ArgSize=GV.OperandSize;
 	arg->ArgType=REGISTER_TYPE+REGS[reg];
 
-	switch(GV.OperandSize)
+	if(GV.OperandSize==128 || GV.SSE_)
 	{
-		case 128:
     			#ifndef BEA_LIGHT_DISASSEMBLY
        				(void) strcpy((char*) arg->ArgMnemonic, RegistersSSE[reg]);
     			#endif
 			arg->ArgType+=SSE_REG;
-			break;
-		case 256:
+	}
+	else if(GV.OperandSize==256 || GV.AVX_)
+	{
     			#ifndef BEA_LIGHT_DISASSEMBLY
        				(void) strcpy((char*) arg->ArgMnemonic, RegistersAVX[reg]);
     			#endif
 			arg->ArgType+=AVX_REG;
-			break;
-		default:
-			FailDecode(pMyDisasm);
-			break;
 	}
+	else
+	{
+			FailDecode(pMyDisasm);
+	}
+}
+
+void L_imm(ARGTYPE* arg, PDISASM pMyDisasm)
+{
+	
+	UInt8 imm8;
+
+    	if (!Security(1, pMyDisasm)) return;
+	imm8=*(UInt8*)GV.EIP_;
+
+	arg->ArgSize=8;
+	arg->ArgType=CONSTANT_TYPE+ABSOLUTE_;
+
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) CopyFormattedNumber(pMyDisasm, (char*) arg->ArgMnemonic, "%x",(Int64) imm8);
+        #endif
+
+	GV.EIP_++;
 }
 
 /* L_reg -- process an 8-byte immediate into a register for Arg */
@@ -390,3 +420,184 @@ void vblendvpd /*VxHxWxLx */ (PDISASM pMyDisasm)
 	}
 }
 
+
+/* not really VEX instructions, but handle all 3dnow instructions. */
+void three_dnow_ (PDISASM pMyDisasm)
+{
+	UInt8 suffix;
+
+	GV.MMX_=1;
+	GV.MemDecoration=Arg2fword;
+    	MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
+    	Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    	GV.EIP_ += GV.DECALAGE_EIP+2;
+	GV.MMX_=0;
+
+
+	suffix=*(UInt8*)GV.EIP_;	
+	GV.EIP_++;
+
+#ifndef BEA_LIGHT_DISASSEMBLY
+	switch(suffix)
+	{
+		case 0xbf:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgusb "); break;
+		case 0x9e:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfadd "); break;
+		case 0x9a:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfsub "); break;
+		case 0xaa:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfsubr "); break;
+		case 0xae:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfacc "); break;
+		case 0x90:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfcmpge "); break;
+		case 0xa0:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfcmpgt "); break;
+		case 0xb0:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfcmpeq "); break;
+		case 0x94:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfmin "); break;
+		case 0xa4:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfmax "); break;
+		case 0x0d:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pi2fd "); break;
+		case 0x1d:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pf2id "); break;
+		case 0x96:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfrcp "); break;
+		case 0x97:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfrsqrt "); break;
+		case 0xb4:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfmul "); break;
+		case 0xa6:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfrcpit1 "); break;
+		case 0xa7:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfrsqit1 "); break;
+		case 0xb6:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfrcqit2 "); break;
+		case 0xb7:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhrwa "); break;
+		case 0xbb:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pswapd "); break;
+	}
+#endif
+
+
+}
+
+void helperf128 (PDISASM pMyDisasm, const char* mnemonic, int third_reg_avx)
+{
+	if(GV.VEX.has_vex && GV.VEX.length==1 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==0)
+	{
+        	(*pMyDisasm).Instruction.Category = AVX_INSTRUCTION+PACKED_BLENDING_INSTRUCTION;
+        	#ifndef BEA_LIGHT_DISASSEMBLY
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, mnemonic);
+        	#endif
+
+		GV.MemDecoration=Arg3fword;
+		GV.AVX_=third_reg_avx;
+		GV.SSE_=!third_reg_avx;
+    		MOD_RM(&(*pMyDisasm).Argument3, pMyDisasm);
+		GV.AVX_=0;
+		GV.SSE_=0;
+		GV.AVX_=1;
+		V_reg( &(*pMyDisasm).Argument2, pMyDisasm);
+    		Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+		GV.AVX_=0;
+    		GV.EIP_ += GV.DECALAGE_EIP+2;
+		GV.third_arg=1;
+		GV.forth_arg=1;
+		L_imm(&(*pMyDisasm).Argument4,pMyDisasm);
+	}
+	else
+		FailDecode(pMyDisasm);
+}
+
+
+
+/* vbroadcastss -- shortened for table formatting reasons */
+void vbrdcstss  (PDISASM pMyDisasm)
+{
+	int origOpSize=0;
+
+        (*pMyDisasm).Instruction.Category = AVX_INSTRUCTION+PACKED_BLENDING_INSTRUCTION;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "vbroadcastss ");
+        #endif
+
+        if(!GV.VEX.has_vex)
+		FailDecode(pMyDisasm);
+
+	origOpSize=GV.OperandSize;
+	GV.OperandSize=128+GV.VEX.length*128;
+
+	GV.AVX_=GV.VEX.length;
+	GV.SSE_=!GV.VEX.length;
+
+	GV.MemDecoration=Arg2dword;
+    	MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
+    	Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    	GV.EIP_ += GV.DECALAGE_EIP+2;
+
+	GV.AVX_=0;
+	GV.SSE_=0;
+	GV.OperandSize=origOpSize;
+}
+
+/* vbroadcastsd -- shortened for table formatting reasons */
+void vbrdcstsd  (PDISASM pMyDisasm)
+{
+assert(pMyDisasm);
+assert(0);
+}
+
+/* 0f 3a 19 */
+void vextraf128 (PDISASM pMyDisasm)
+{
+	if(GV.VEX.has_vex && GV.VEX.length==1 && GV.VEX.implicit_prefixes==1 && GV.VEX.W==0)
+	{
+        	(*pMyDisasm).Instruction.Category = AVX_INSTRUCTION+PACKED_BLENDING_INSTRUCTION;
+        	#ifndef BEA_LIGHT_DISASSEMBLY
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "vextractf128 ");
+        	#endif
+		GV.MemDecoration=Arg1fword;
+		GV.SSE_=1;
+    		MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
+		GV.SSE_=0;
+		GV.AVX_=1;
+    		Reg_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
+		GV.AVX_=0;
+    		GV.EIP_ += GV.DECALAGE_EIP+2;
+		GV.third_arg=1;
+		L_imm(&(*pMyDisasm).Argument3,pMyDisasm);
+	}
+	else
+		FailDecode(pMyDisasm);
+}
+
+
+/* 0f 3a 18 */
+void vinsrtf128 (PDISASM pMyDisasm)
+{
+		helperf128(pMyDisasm, "vinsertf128 ", 0);
+}
+
+/* 0f 3a 06 */
+void vperm2f128 (PDISASM pMyDisasm)
+{
+	helperf128(pMyDisasm, "vperm2f128 ", 1);
+}
+
+/* 0f 38 0c */
+void vpermilps1 (PDISASM pMyDisasm)
+{
+	if(GV.VEX.has_vex && GV.VEX.length==1 && GV.VEX.implicit_prefixes==1 /* 66 */ && GV.VEX.W==0)
+	{
+
+        	(*pMyDisasm).Instruction.Category = AVX_INSTRUCTION+PACKED_BLENDING_INSTRUCTION;
+        	#ifndef BEA_LIGHT_DISASSEMBLY
+           	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "vpermilps ");
+        	#endif
+
+		GV.MemDecoration=Arg3fword;
+		GV.AVX_=GV.VEX.length;
+		GV.SSE_=!GV.VEX.length;
+    		MOD_RM(&(*pMyDisasm).Argument3, pMyDisasm);
+		V_reg( &(*pMyDisasm).Argument2, pMyDisasm);
+    		Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    		GV.EIP_ += GV.DECALAGE_EIP+2;
+		GV.third_arg=1;
+		GV.AVX_=0;
+		GV.SSE_=0;
+	}
+	else
+		FailDecode(pMyDisasm);
+}
+
+/* 0f 3a 04 */
+void vpermilps2 (PDISASM pMyDisasm)
+{
+	assert(pMyDisasm); /* avoids warning */
+	assert(0);
+}

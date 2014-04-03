@@ -51,22 +51,23 @@ void (__bea_callspec__ * opcode_map1[])(PDISASM) = {
 /*														                            */
 /* ===============================================================================  */
 void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
-    G6_       , G7_       , lar_GvEw  , lsl_GvEw  , FailDecode, syscall_  , clts_     , sysret_   , invd_     , wbinvd_   , FailDecode, ud2_      , FailDecode, nop_Ev    , femms_    , FailDecode,
-    movups_VW , movups_WV , movlps_VM , movlps_MV , unpcklps_ , unpckhps_ , movhps_VM , movhps_MV , G16_      , hint_nop  , hint_nop  , hint_nop  , hint_nop  , hint_nop  , hint_nop  , nop_Ev    ,
-    mov_RdCd  , mov_RdDd  , mov_CdRd  , mov_DdRd  , FailDecode, FailDecode, FailDecode, FailDecode, movaps_VW , movaps_WV , cvtpi2ps_ , movntps_  , cvttps2pi_, cvtps2pi_ , ucomiss_VW, comiss_VW ,
-    wrmsr_    , rdtsc_    , rdmsr_    , rdpmc_    , sysenter_ , sysexit_  , FailDecode, FailDecode,Esc_tableA4, FailDecode,Esc_tableA5, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    cmovo_    , cmovno_   , cmovb_    , cmovnb_   , cmove_    , cmovne_   , cmovbe_   , cmovnbe_  , cmovs_    , cmovns_   , cmovp_    , cmovnp_   , cmovl_    , cmovnl_   , cmovle_   , cmovnle_  ,
-    movmskps_ , sqrtps_VW , rsqrtps_  , rcpps_    , andps_VW  , andnps_VW , orps_VW   , xorps_VW  , addps_VW  , mulps_VW  , cvtps2pd_ , cvtdq2ps_ , subps_VW  , minps_VW  , divps_VW  , maxps_VW  ,
-    punpcklbw_, punpcklwd_, punpckldq_, packsswb_ , pcmpgtb_  , pcmpgtw_  , pcmpgtd_  , packuswb_ , punpckhbw_, punpckhwd_, punpckhdq_, packssdw_ ,punpcklqdq_,punpckhqdq_, movd_PE   , movq_PQ   ,
-    pshufw_   , G12_      , G13_      , G14_      , pcmpeqb_  , pcmpeqw_  , pcmpeqd_  , emms_     , vmread_   , vmwrite_  , FailDecode, FailDecode, haddpd_VW , hsubpd_VW , movd_EP   , movq_QP   ,
-    jo_near   , jno_near  , jc_near   , jnc_near  , je_near   , jne_near  , jbe_near  , ja_near   , js_near   , jns_near  , jp_near   , jnp_near  , jl_near   , jnl_near  , jle_near  , jnle_near ,
-    seto_     , setno_    , setb_     , setnb_    , sete_     , setne_    , setbe_    , setnbe_   , sets_     , setns_    , setp_     , setnp_    , setnge_   , setge_    , setle_    , setnle_   ,
-    push_fs   , pop_fs    , cpuid_    , bt_EvGv   ,shld_EvGvIb,shld_EvGvCL, FailDecode, FailDecode, push_gs   , pop_gs    , rsm_      , bts_EvGv  ,shrd_EvGvIb,shrd_EvGvCL, G15_      , imul_GvEv ,
-    cmpx_EbGb , cmpx_EvGv , lss_Mp    , btr_EvGv  , lfs_Mp    , lgs_Mp    , movzx_GvEb, movzx_GvEw, popcnt_   , ud2_      , G8_EvIb   , btc_EvGv  , bsf_GvEv  , bsr_GvEv  , movsx_GvEb, movsx_GvEw,
-    xadd_EbGb , xadd_EvGv , cmpps_VW  , movnti_   , pinsrw_   , pextrw_   , shufps_   , G9_       , bswap_eax , bswap_ecx , bswap_edx , bswap_ebx , bswap_esp , bswap_ebp , bswap_esi , bswap_edi ,
-    addsubpd_ , psrlw_    , psrld_    , psrlq_    , paddq_    , pmullw_   , movq_WV   , pmovmskb_ , psubusb_  , psubusw_  , pminub_   , pand_     , paddusb_  , paddusw_  , pmaxub_   , pandn_    ,
-    pavgb_    , psraw_    , psrad_    , pavgw_    , pmulhuw_  , pmulhw_   , cvtpd2dq_ , movntq_   , psubsb_   , psubsw_   , pminsw_   , por_      , paddsb_   , paddsw_   , pmaxsw_   , pxor_     ,
-    lddqu_    , psllw_    , pslld_    , psllq_    , pmuludq_  , pmaddwd_  , psadbw_   , maskmovq_ , psubb_    , psubw_    , psubd_    , psubq_    , paddb_    , paddw_    , paddd_    , FailDecode,
+/*   0           1  	     2	         3           4           5           6           7           8           9           a           b           c           d           e           f */
+/*0*/G6_       , G7_       , lar_GvEw  , lsl_GvEw  , FailDecode, syscall_  , clts_     , sysret_   , invd_     , wbinvd_   , FailDecode, ud2_      , FailDecode, nop_Ev    , femms_    , three_dnow_,
+/*1*/movups_VW , movups_WV , movlps_VM , movlps_MV , unpcklps_ , unpckhps_ , movhps_VM , movhps_MV , G16_      , hint_nop  , hint_nop  , hint_nop  , hint_nop  , hint_nop  , hint_nop  , nop_Ev    ,
+/*2*/mov_RdCd  , mov_RdDd  , mov_CdRd  , mov_DdRd  , FailDecode, FailDecode, FailDecode, FailDecode, movaps_VW , movaps_WV , cvtpi2ps_ , movntps_  , cvttps2pi_, cvtps2pi_ , ucomiss_VW, comiss_VW ,
+/*3*/wrmsr_    , rdtsc_    , rdmsr_    , rdpmc_    , sysenter_ , sysexit_  , FailDecode, FailDecode,Esc_tableA4, FailDecode,Esc_tableA5, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*4*/cmovo_    , cmovno_   , cmovb_    , cmovnb_   , cmove_    , cmovne_   , cmovbe_   , cmovnbe_  , cmovs_    , cmovns_   , cmovp_    , cmovnp_   , cmovl_    , cmovnl_   , cmovle_   , cmovnle_  ,
+/*5*/movmskps_ , sqrtps_VW , rsqrtps_  , rcpps_    , andps_VW  , andnps_VW , orps_VW   , xorps_VW  , addps_VW  , mulps_VW  , cvtps2pd_ , cvtdq2ps_ , subps_VW  , minps_VW  , divps_VW  , maxps_VW  ,
+/*6*/punpcklbw_, punpcklwd_, punpckldq_, packsswb_ , pcmpgtb_  , pcmpgtw_  , pcmpgtd_  , packuswb_ , punpckhbw_, punpckhwd_, punpckhdq_, packssdw_ ,punpcklqdq_,punpckhqdq_, movd_PE   , movq_PQ   ,
+/*7*/pshufw_   , G12_      , G13_      , G14_      , pcmpeqb_  , pcmpeqw_  , pcmpeqd_  , emms_     , vmread_   , vmwrite_  , FailDecode, FailDecode, haddpd_VW , hsubpd_VW , movd_EP   , movq_QP   ,
+/*8*/jo_near   , jno_near  , jc_near   , jnc_near  , je_near   , jne_near  , jbe_near  , ja_near   , js_near   , jns_near  , jp_near   , jnp_near  , jl_near   , jnl_near  , jle_near  , jnle_near ,
+/*9*/seto_     , setno_    , setb_     , setnb_    , sete_     , setne_    , setbe_    , setnbe_   , sets_     , setns_    , setp_     , setnp_    , setnge_   , setge_    , setle_    , setnle_   ,
+/*a*/push_fs   , pop_fs    , cpuid_    , bt_EvGv   ,shld_EvGvIb,shld_EvGvCL, FailDecode, FailDecode, push_gs   , pop_gs    , rsm_      , bts_EvGv  ,shrd_EvGvIb,shrd_EvGvCL, G15_      , imul_GvEv ,
+/*b*/cmpx_EbGb , cmpx_EvGv , lss_Mp    , btr_EvGv  , lfs_Mp    , lgs_Mp    , movzx_GvEb, movzx_GvEw, popcnt_   , ud2_      , G8_EvIb   , btc_EvGv  , bsf_GvEv  , bsr_GvEv  , movsx_GvEb, movsx_GvEw,
+/*c*/xadd_EbGb , xadd_EvGv , cmpps_VW  , movnti_   , pinsrw_   , pextrw_   , shufps_   , G9_       , bswap_eax , bswap_ecx , bswap_edx , bswap_ebx , bswap_esp , bswap_ebp , bswap_esi , bswap_edi ,
+/*d*/addsubpd_ , psrlw_    , psrld_    , psrlq_    , paddq_    , pmullw_   , movq_WV   , pmovmskb_ , psubusb_  , psubusw_  , pminub_   , pand_     , paddusb_  , paddusw_  , pmaxub_   , pandn_    ,
+/*e*/pavgb_    , psraw_    , psrad_    , pavgw_    , pmulhuw_  , pmulhw_   , cvtpd2dq_ , movntq_   , psubsb_   , psubsw_   , pminsw_   , por_      , paddsb_   , paddsw_   , pmaxsw_   , pxor_     ,
+/*f*/lddqu_    , psllw_    , pslld_    , psllq_    , pmuludq_  , pmaddwd_  , psadbw_   , maskmovq_ , psubb_    , psubw_    , psubd_    , psubq_    , paddb_    , paddw_    , paddd_    , FailDecode,
  };
 
 /* ===============================================================================  */
@@ -77,22 +78,23 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
 /*														                            */
 /* ===============================================================================  */
  void (__bea_callspec__ *opcode_map3[])(PDISASM) = {
-    pshufb_   , phaddw_   , phaddd_   , phaddsw_  , pmaddubsw_, phsubw_   , phsubd_   , phsubsw_  , psignb_   , psignw_   , psignd_   , pmulhrsw_ , FailDecode, FailDecode, FailDecode, FailDecode,
-    pblendvb_ , FailDecode, FailDecode, FailDecode, blendvps_ , blendvpd_ , FailDecode, ptest_    , FailDecode, FailDecode, FailDecode, FailDecode, pabsb_    , pabsw_    , pabsd_    , FailDecode,
-    pmovsxbw_ , pmovsxbd_ , pmovsxbq_ , pmovsxwd_ , pmovsxwq_ , pmovsxdq_ , FailDecode, FailDecode, pmuldq_   , pcmpeqq_  , movntdqa_ , packusdw_ , FailDecode, FailDecode, FailDecode, FailDecode,
-    pmovzxbw_ , pmovzxbd_ , pmovzxbq_ , pmovzxwd_ , pmovzxwq_ , pmovzxdq_ , FailDecode, pcmpgtq_  , pminsb_   , pminsd_   , pminuw_   , pminud_   , pmaxsb_   , pmaxsd_   , pmaxuw_   , pmaxud_   ,
-    pmulld_   ,phminposuw_, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, aesimc    , aesenc    , aesenclast, aesdec    , aesdeclast,
-    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
-    crc32_GvEb, crc32_GvEv, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*   0           1  	     2	         3           4           5           6           7           8           9           a           b           c           d           e           f */
+/*0*/pshufb_   , phaddw_   , phaddd_   , phaddsw_  , pmaddubsw_, phsubw_   , phsubd_   , phsubsw_  , psignb_   , psignw_   , psignd_   , pmulhrsw_ , vpermilps1, FailDecode, FailDecode, FailDecode,
+/*1*/pblendvb_ , FailDecode, FailDecode, FailDecode, blendvps_ , blendvpd_ , FailDecode, ptest_    , vbrdcstss , vbrdcstsd , FailDecode, FailDecode, pabsb_    , pabsw_    , pabsd_    , FailDecode,
+/*2*/pmovsxbw_ , pmovsxbd_ , pmovsxbq_ , pmovsxwd_ , pmovsxwq_ , pmovsxdq_ , FailDecode, FailDecode, pmuldq_   , pcmpeqq_  , movntdqa_ , packusdw_ , FailDecode, FailDecode, FailDecode, FailDecode,
+/*3*/pmovzxbw_ , pmovzxbd_ , pmovzxbq_ , pmovzxwd_ , pmovzxwq_ , pmovzxdq_ , FailDecode, pcmpgtq_  , pminsb_   , pminsd_   , pminuw_   , pminud_   , pmaxsb_   , pmaxsd_   , pmaxuw_   , pmaxud_   ,
+/*4*/pmulld_   ,phminposuw_, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*5*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*6*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*7*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*8*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*9*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*a*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*b*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*c*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*d*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, aesimc    , aesenc    , aesenclast, aesdec    , aesdeclast,
+/*e*/FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*e*/crc32_GvEb, crc32_GvEv, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
  };
 
 /* ===============================================================================  */
@@ -104,8 +106,8 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
 /* ===============================================================================  */
  void (__bea_callspec__ *opcode_map4[])(PDISASM) = {
 /*       0           1  	 2	     3           4           5           6           7           8           9           a           b           c           d           e           f */
-/*0*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, roundps_  , roundpd_  , roundss_  , roundsd_  , blendps_  , blendpd_  , pblendw_  , palignr_  ,
-/*1*/    FailDecode, FailDecode, FailDecode, FailDecode, pextrb_   , pextrw2_  , pextrd_   , extractps_, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
+/*0*/    FailDecode, FailDecode, FailDecode, FailDecode, vpermilps2, FailDecode, vperm2f128, FailDecode, roundps_  , roundpd_  , roundss_  , roundsd_  , blendps_  , blendpd_  , pblendw_  , palignr_  ,
+/*1*/    FailDecode, FailDecode, FailDecode, FailDecode, pextrb_   , pextrw2_  , pextrd_   , extractps_, vinsrtf128, vextraf128, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
 /*2*/    pinsrb_   , insertps_ , pinsrd_   , FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
 /*3*/    FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
 /*4*/    dpps_     , dppd_     , mpsadbw_  , FailDecode, pclmulqdq_, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, vblendvpd, FailDecode, FailDecode, FailDecode, FailDecode,

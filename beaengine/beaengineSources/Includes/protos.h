@@ -75,6 +75,10 @@ void __bea_callspec__ Ev(PDISASM);
 void __bea_callspec__ GvEv(PDISASM);
 void __bea_callspec__ GvEb(PDISASM);
 void __bea_callspec__ GxEx(PDISASM);
+void __bea_callspec__ VxGxEx(PDISASM pMyDisasm);
+void __bea_callspec__ Vx_opt_GxEx(PDISASM pMyDisasm);
+void __bea_callspec__ Vx_opt_GxEx_vexlen(PDISASM pMyDisasm);
+void __bea_callspec__ Vx_opt_GxEx_vexlen_imm(PDISASM pMyDisasm);
 void __bea_callspec__ GvEw(PDISASM);
 void __bea_callspec__ GbEb(PDISASM);
 void __bea_callspec__ ALIb(PDISASM);
@@ -712,8 +716,22 @@ void __bea_callspec__ HandleVex3(PDISASM);
 
 /* useful helpers */
 void V_reg(ARGTYPE* arg, PDISASM pMyDisasm);
+void L_imm(ARGTYPE* arg, PDISASM pMyDisasm);
 
 /* actual opcodes */
 void vblendvpd /*VxHxWxLx */ (PDISASM pMyDisasm);
+void three_dnow_ (PDISASM pMyDisasm);
+
+void vbrdcstss  (PDISASM pMyDisasm);
+void vbrdcstsd  (PDISASM pMyDisasm);
+void vextraf128 (PDISASM pMyDisasm);
+void vinsrtf128 (PDISASM pMyDisasm);
+void vperm2f128 (PDISASM pMyDisasm);
+void vpermilps1 (PDISASM pMyDisasm);
+void vpermilps2 (PDISASM pMyDisasm);
+
+
+
+
 
 

@@ -467,6 +467,62 @@ void __bea_callspec__ GxEx(PDISASM pMyDisasm)
 /* ====================================================================
  *
  * ==================================================================== */
+void __bea_callspec__ VxGxEx(PDISASM pMyDisasm)
+{
+    int origOperandSize=GV.OperandSize;
+    GV.OperandSize=128+128*GV.AVX_;
+    V_reg(&(*pMyDisasm).Argument2, pMyDisasm);
+    GV.OperandSize=origOperandSize;
+    MOD_RM(&(*pMyDisasm).Argument3, pMyDisasm);
+    GV.third_arg=1;
+    Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    GV.EIP_ += GV.DECALAGE_EIP+2;
+}
+
+
+void __bea_callspec__ Vx_opt_GxEx_vexlen(PDISASM pMyDisasm)
+{
+        GV.AVX_ = GV.VEX.length;
+        GV.SSE_ = !GV.VEX.length;
+        Vx_opt_GxEx(pMyDisasm);
+        GV.AVX_ = 0;
+        GV.SSE_ = 0;
+}
+
+void __bea_callspec__ Vx_opt_GxEx_vexlen_imm(PDISASM pMyDisasm)
+{
+	Vx_opt_GxEx_vexlen(pMyDisasm);
+	if(GV.VEX.has_vex)
+	{
+		L_imm(&pMyDisasm->Argument4,pMyDisasm);
+		GV.forth_arg=1;
+		
+	}
+	else
+	{
+		GV.third_arg=1;
+		L_imm(&pMyDisasm->Argument3,pMyDisasm);
+	}
+	
+}
+
+
+void __bea_callspec__ Vx_opt_GxEx(PDISASM pMyDisasm)
+{
+        if(GV.VEX.has_vex)
+        {
+                GV.MemDecoration+=100;
+                VxGxEx(pMyDisasm);
+		GV.third_arg=1;
+        }
+        else
+                GxEx(pMyDisasm);
+}
+
+
+/* ====================================================================
+ *
+ * ==================================================================== */
 void __bea_callspec__ GvEw(PDISASM pMyDisasm)
 {
     GV.MemDecoration = Arg2word;
@@ -933,9 +989,11 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
 	{
         	(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, ", ");
         	i += 2;
-		if ((GV.MemDecoration >200) && (GV.MemDecoration < 399)) 
+		if ((GV.MemDecoration >200) && (GV.MemDecoration < 299)) 
     		{
         		GV.MemDecoration -= 200;
+	    		(void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
+            		i = strlen((char*) &(*pMyDisasm).CompleteInstr);
 	   		if (GV.SYNTAX_ == NasmSyntax) 
 			{
             			i = strlen((char*) &(*pMyDisasm).CompleteInstr);

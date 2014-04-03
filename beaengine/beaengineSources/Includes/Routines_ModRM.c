@@ -446,13 +446,13 @@ void __bea_callspec__ Addr_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             CalculateRelativeAddress(&MyAddress, (Int64)MyNumber, pMyDisasm);
             (*pMyDisasm).Instruction.AddrValue = MyAddress;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.16llX", (Int64)MyAddress);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.16llx", (Int64)MyAddress);
             #endif
             (*pMyArgument).ArgType |= RELATIVE_;
         }
         else {
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X", (Int64)MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x", (Int64)MyNumber);
             #endif
         }
     }
@@ -515,7 +515,7 @@ void __bea_callspec__ Addr_ESI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
         (*pMyArgument).Memory.DisplacementSize = 2;
         if (!Security(2, pMyDisasm)) return;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.4X", (Int64)MyNumber);
+           (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x", (Int64)MyNumber);
         #endif
     }
     #ifndef BEA_LIGHT_DISASSEMBLY
@@ -603,13 +603,13 @@ void __bea_callspec__ Addr_EAX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -671,7 +671,7 @@ void __bea_callspec__ Addr_EAX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -680,7 +680,7 @@ void __bea_callspec__ Addr_EAX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -705,13 +705,13 @@ void __bea_callspec__ Addr_ECX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -773,7 +773,7 @@ void __bea_callspec__ Addr_ECX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -782,7 +782,7 @@ void __bea_callspec__ Addr_ECX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -807,13 +807,13 @@ void __bea_callspec__ Addr_EDX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -874,7 +874,7 @@ void __bea_callspec__ Addr_EDX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -883,7 +883,7 @@ void __bea_callspec__ Addr_EDX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -908,13 +908,13 @@ void __bea_callspec__ Addr_EBX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -975,7 +975,7 @@ void __bea_callspec__ Addr_EBX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -984,7 +984,7 @@ void __bea_callspec__ Addr_EBX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1017,13 +1017,13 @@ void __bea_callspec__ Addr_SIB_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         /*#ifndef BEA_LIGHT_DISASSEMBLY
@@ -1062,7 +1062,7 @@ void __bea_callspec__ Addr_SIB_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1071,7 +1071,7 @@ void __bea_callspec__ Addr_SIB_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1097,13 +1097,13 @@ void __bea_callspec__ Addr_EBP_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1163,7 +1163,7 @@ void __bea_callspec__ Addr_EBP_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1172,7 +1172,7 @@ void __bea_callspec__ Addr_EBP_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1197,13 +1197,13 @@ void __bea_callspec__ Addr_ESI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1263,7 +1263,7 @@ void __bea_callspec__ Addr_ESI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1272,7 +1272,7 @@ void __bea_callspec__ Addr_ESI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1297,13 +1297,13 @@ void __bea_callspec__ Addr_EDI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1363,7 +1363,7 @@ void __bea_callspec__ Addr_EDI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1372,7 +1372,7 @@ void __bea_callspec__ Addr_EDI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1404,13 +1404,13 @@ void __bea_callspec__ Addr_EAX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i ++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j = i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1470,7 +1470,7 @@ void __bea_callspec__ Addr_EAX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1479,7 +1479,7 @@ void __bea_callspec__ Addr_EAX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1511,13 +1511,13 @@ void __bea_callspec__ Addr_ECX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i ++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j = i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1578,7 +1578,7 @@ void __bea_callspec__ Addr_ECX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1587,7 +1587,7 @@ void __bea_callspec__ Addr_ECX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1618,13 +1618,13 @@ void __bea_callspec__ Addr_EDX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i ++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j = i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1685,7 +1685,7 @@ void __bea_callspec__ Addr_EDX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1694,7 +1694,7 @@ void __bea_callspec__ Addr_EDX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1725,13 +1725,13 @@ void __bea_callspec__ Addr_EBX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i ++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j = i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1792,7 +1792,7 @@ void __bea_callspec__ Addr_EBX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1801,7 +1801,7 @@ void __bea_callspec__ Addr_EBX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1835,13 +1835,13 @@ void __bea_callspec__ Addr_SIB_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i ++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j = i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         /*#ifndef BEA_LIGHT_DISASSEMBLY
@@ -1879,7 +1879,7 @@ void __bea_callspec__ Addr_SIB_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1888,7 +1888,7 @@ void __bea_callspec__ Addr_SIB_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -1920,13 +1920,13 @@ void __bea_callspec__ Addr_EBP_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i ++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j = i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -1986,7 +1986,7 @@ void __bea_callspec__ Addr_EBP_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -1995,7 +1995,7 @@ void __bea_callspec__ Addr_EBP_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -2026,13 +2026,13 @@ void __bea_callspec__ Addr_ESI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i ++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j = i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -2092,7 +2092,7 @@ void __bea_callspec__ Addr_ESI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -2101,7 +2101,7 @@ void __bea_callspec__ Addr_ESI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -2132,13 +2132,13 @@ void __bea_callspec__ Addr_EDI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             i ++;
             j=i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
             j = i;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) MyNumber);
             #endif
         }
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -2198,7 +2198,7 @@ void __bea_callspec__ Addr_EDI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) ~MyNumber+1);
             #endif
         }
         else {
@@ -2207,7 +2207,7 @@ void __bea_callspec__ Addr_EDI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             #endif
             i++;
             #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
+               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%x",(Int64) MyNumber);
             #endif
         }
     }
@@ -3255,12 +3255,13 @@ size_t __bea_callspec__ SIB_0(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
 
     /* ========================= Interpret Base */
     size_t j;
-    if ((GV.BASE_  == 5) && (GV.MOD_ == 0)) {
+    if ((GV.BASE_  == 5) && (GV.MOD_ == 0) && (GV.REX.B_==0))
+    {
         GV.DECALAGE_EIP += 4;
         if (!Security(7, pMyDisasm)) return i;
         j = i;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
+           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
         #endif
         (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+3));
         (*pMyArgument).Memory.DisplacementAddr = GV.EIP_+3;
@@ -3311,7 +3312,7 @@ size_t __bea_callspec__ SIB_0(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
     /* ======================== Interpret Index */
 
 
-    if (GV.INDEX_  != 4 || GV.REX.X_) {
+    if (GV.INDEX_  != 4 || GV.REX.X_ || (GV.VEX.has_vex && !GV.VEX.notX)) {
         if (GV.SYNTAX_ == ATSyntax) {
             if (GV.BASE_  == 5) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -3389,7 +3390,7 @@ size_t __bea_callspec__ SIB_1(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
         if (!Security(7, pMyDisasm)) return i;
         j = i;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
+           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
         #endif
         (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+3));
         (*pMyArgument).Memory.DisplacementAddr = GV.EIP_+3;
@@ -3438,7 +3439,7 @@ size_t __bea_callspec__ SIB_1(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
     }
     /* ======================== Interpret Index */
 
-    if (GV.INDEX_  != 4 || GV.REX.X_) {
+    if (GV.INDEX_  != 4 || GV.REX.X_ || (GV.VEX.has_vex && !GV.VEX.notX)) {
         if (GV.SYNTAX_ == ATSyntax) {
             if (GV.BASE_  == 5) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -3531,7 +3532,7 @@ size_t __bea_callspec__ SIB_2(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
         if (!Security(7, pMyDisasm)) return i;
         j = i;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
+           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
         #endif
         (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+3));
         (*pMyArgument).Memory.DisplacementAddr = GV.EIP_+3;
@@ -3580,7 +3581,7 @@ size_t __bea_callspec__ SIB_2(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
     }
     /* ======================== Interpret Index */
 
-    if (GV.INDEX_  != 4) {
+    if (GV.INDEX_  != 4 || GV.REX.X_ || (GV.VEX.has_vex && !GV.VEX.notX)) {
         if (GV.SYNTAX_ == ATSyntax) {
             if (GV.BASE_  == 5) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -3672,7 +3673,7 @@ size_t __bea_callspec__ SIB_3(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
         if (!Security(7, pMyDisasm)) return i;
         j = i;
         #ifndef BEA_LIGHT_DISASSEMBLY
-           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
+           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%x",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
         #endif
         (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+3));
         (*pMyArgument).Memory.DisplacementAddr = GV.EIP_+3;
@@ -3721,7 +3722,7 @@ size_t __bea_callspec__ SIB_3(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
     }
     /* ======================== Interpret Index */
 
-    if (GV.INDEX_  != 4 || GV.REX.X_) {
+    if (GV.INDEX_  != 4 || GV.REX.X_ || (GV.VEX.has_vex && !GV.VEX.notX)) {
         if (GV.SYNTAX_ == ATSyntax) {
             if (GV.BASE_  == 5) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
