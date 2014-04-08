@@ -91,7 +91,7 @@ bool Instruction_t::Assemble(string assembly)
      return false;
    }
 
-   asmFile<<NASM_BIT_WIDTH<<endl; // define to be 32
+   asmFile<<"BITS "<<std::dec<<FileIR_t::GetArchitectureBitWidth()<<endl; 
 
    asmFile<<assembly<<endl;
    asmFile.close();

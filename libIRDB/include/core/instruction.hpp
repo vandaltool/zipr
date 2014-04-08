@@ -3,8 +3,6 @@ class Function_t; // forward decls.
 #define MAX_INSN_SIZE 32	// x86 really declares this as 16, but we'll allow 
 				// for bigger instructions, maybe from other machines?
 
-#define NASM_BIT_WIDTH "BITS 32"
-
 // The basic instruction of a variant.
 class Instruction_t : public BaseObj_t
 {
