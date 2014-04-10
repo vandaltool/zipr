@@ -494,6 +494,7 @@ void PNTransformDriver::GenerateTransformsInit()
 	sanitized_funcs = 0;
 	push_pop_sanitized_funcs = 0;
 	jump_table_sanitized = 0;
+	pic_jump_table_sanitized = 0;
 	dynamic_frames = 0;
 	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
 	not_transformable.clear();
@@ -517,9 +518,16 @@ void PNTransformDriver::InitNewFileIR(File_t* this_file)
 	
 	ELFIO::dump::header(cout,*elfiop);
 	ELFIO::dump::section_headers(cout,*elfiop);
+
+	//Calc preds is used for sanity checks.
+	//I believe it determines the predecessors of instructions
+	calc_preds();
 }
 
 
+template <class T> struct file_less : binary_function <T,T,bool> {
+  bool operator() (const T& x, const T& y) const {return  x->GetURL()  <   y->GetURL()  ;}
+};
 
 void PNTransformDriver::GenerateTransforms()
 {
@@ -571,8 +579,20 @@ void PNTransformDriver::GenerateTransforms()
 	if(do_shared_object_protection)
 	{
 		cout<<"PNTransformDriver: Shared Object Protection ON"<<endl;
+		set<File_t*,file_less<File_t*> > sorted_files;
+
 		for(set<File_t*>::iterator it=pidp->GetFiles().begin();
-			it!=pidp->GetFiles().end()&&!timeExpired;
+			it!=pidp->GetFiles().end();
+			++it
+			)
+		{
+			File_t* this_file=*it;
+			sorted_files.insert(this_file);
+		}
+
+
+		for(set<File_t*,file_less<File_t*> >::iterator it=sorted_files.begin();
+			it!=sorted_files.end()&&!timeExpired;
 			++it
 			)
 		{
@@ -812,6 +832,11 @@ static ELFIO::section*  find_section(unsigned int addr, ELFIO::elfio *elfiop)
         return NULL;
 }
 
+/* 
+ * PNTransformDriver::check_jump_tables - 
+ *
+ * 	look for jmp [reg*8+table_base]
+ */
 bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 {
 	/* quick check to skip most instructions */
@@ -863,7 +888,13 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 		}
 
 	}
+	
+	return check_jump_table_entries(jump_tab_entries,insn->GetFunction());
+	
+}
 
+bool PNTransformDriver::check_jump_table_entries(set<int> jump_tab_entries,Function_t* func)
+{
 	for(
 		set<Instruction_t*>::const_iterator it=orig_virp->GetInstructions().begin();
 		it!=orig_virp->GetInstructions().end();
@@ -880,9 +911,9 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 			// it is!
 	
 			// now, check to see if the instruction is in my function 
-			if(insn->GetFunction()!=ftinsn->GetFunction())
+			if(func !=ftinsn->GetFunction())
 			{
-				cout<<"Sanitizing function "<< insn->GetFunction()->GetName()<< "due to jump-table to diff-func detected."<<endl;
+				cout<<"Sanitizing function "<< func->GetName()<< "due to jump-table to diff-func detected."<<endl;
 				return false;
 			}
 			else
@@ -893,6 +924,157 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 	}
 	return true;
 
+}
+
+bool PNTransformDriver::backup_until(const char* insn_type, Instruction_t *& prev, Instruction_t* orig)
+{
+	DISASM disasm;
+	prev=orig;
+	while(preds[prev].size()==1)
+	{
+        	// get the only item in the list.
+		prev=*(preds[prev].begin());
+
+        	// get I7's disassembly
+        	prev->Disassemble(disasm);
+
+        	// check it's the requested type
+        	if(strstr(disasm.Instruction.Mnemonic, insn_type)!=NULL)
+                	return true;
+
+		// otherwise, try backing up again.
+
+	}
+	return false;
+}
+
+  void  PNTransformDriver::calc_preds()
+{
+  preds.clear();
+        for(
+                set<Instruction_t*>::const_iterator it=orig_virp->GetInstructions().begin();
+                it!=orig_virp->GetInstructions().end();
+                ++it
+           )
+        {
+                Instruction_t* insn=*it;
+                if(insn->GetTarget());
+                        preds[insn->GetTarget()].insert(insn);
+                if(insn->GetFallthrough());
+                        preds[insn->GetFallthrough()].insert(insn);
+        }
+}
+
+
+
+
+/* check if this instruction is an indirect jump via a register,
+ * if so, see if the jump location is in the same function. Return false if not in the same function. 
+ */
+bool PNTransformDriver::check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm)
+{
+
+        /* here's the pattern we're looking for */
+#if 0
+I1:   0x000000000044425a <+218>:        cmp    DWORD PTR [rax+0x8],0xd   // bounds checking code, 0xd cases.
+I2:   0x000000000044425e <+222>:        jbe    0x444320 <_gedit_tab_get_icon+416>
+
+<snip>
+I3:   0x0000000000444264 <+228>:        mov    rdi,rbp // default case, also jumped to via indirect branch below
+<snip>
+I4:   0x0000000000444320 <+416>:        mov    edx,DWORD PTR [rax+0x8]
+I5:   0x0000000000444323 <+419>:        lea    rax,[rip+0x3e1b6]        # 0x4824e0
+I6:   0x000000000044432a <+426>:        movsxd rdx,DWORD PTR [rax+rdx*4]
+I7:   0x000000000044432e <+430>:        add    rax,rdx
+I8:   0x0000000000444331 <+433>:        jmp    rax      // relatively standard switch dispatch code
+
+
+D1:   0x4824e0: .long 0x4824e0-L1       // L1-LN are labels in the code where case statements start.
+D2:   0x4824e0: .long 0x4824e0-L2
+..
+DN:   0x4824e0: .long 0x4824e0-LN
+#endif
+
+
+        // for now, only trying to find I4-I8.  ideally finding I1 would let us know the size of the
+        // jump table.  We'll figure out N by trying targets until they fail to produce something valid.
+
+        Instruction_t* I8=insn;
+        Instruction_t* I7=NULL;
+        Instruction_t* I6=NULL;
+        Instruction_t* I5=NULL;
+        // check if I8 is a jump
+        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+                return true;
+
+	// return if it's a jump to a constant address, these are common
+        if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+		return true;
+	// return if it's a jump to a memory address
+        if(disasm.Argument1.ArgType&MEMORY_TYPE)
+		return true;
+
+	// has to be a jump to a register now
+
+	// backup and find the instruction that's an add before I8 
+	if(!backup_until("add", I7, I8))
+		return true;
+
+	// backup and find the instruction that's an movsxd before I7
+	if(!backup_until("movsxd", I6, I7))
+		return true;
+
+	// backup and find the instruction that's an lea before I6
+	if(!backup_until("lea", I5, I6))
+		return true;
+
+	I5->Disassemble(disasm);
+
+        if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+                return true;
+        if(!(disasm.Argument2.ArgType&RELATIVE_))
+                return true;
+
+        // note that we'd normally have to add the displacement to the
+        // instruction address (and include the instruction's size, etc.
+        // but, fix_calls has already removed this oddity so we can relocate
+        // the instruction.
+        int D1=strtol(disasm.Argument2.ArgMnemonic, NULL, 16);
+
+        // find the section with the data table
+        ELFIO::section *pSec=find_section(D1,elfiop);
+
+        // sanity check there's a section
+        if(!pSec)
+                return true;
+
+        const char* secdata=pSec->get_data();
+
+	// if the section has no data, abort 
+	if(!secdata)
+		return true;
+
+	set<int> table_entries;
+        int offset=D1-pSec->get_address();
+        int entry=0;
+        for(int i=0;i<5;i++)
+        {
+                // check that we can still grab a word from this section
+                if(offset+sizeof(int) > pSec->get_size())
+                        break;
+
+                const int *table_entry_ptr=(const int*)&(secdata[offset]);
+                int table_entry=*table_entry_ptr;
+
+		//put in set -> d1+table_entry
+		table_entries.insert(D1+table_entry);
+
+                offset+=sizeof(int);
+                entry++;
+
+        } 
+
+	return check_jump_table_entries(table_entries,insn->GetFunction());
 }
 
 void PNTransformDriver::SanitizeFunctions()
@@ -960,6 +1142,17 @@ void PNTransformDriver::SanitizeFunctions()
 					sanitized.insert(func);
 					continue;
 				}
+			}
+
+			// if it's not already sanitized
+			if(sanitized.find(func)==sanitized.end())
+			{
+			  if(!check_for_PIC_switch_table64(instr,disasm))
+			    {
+			      pic_jump_table_sanitized++;
+			      sanitized.insert(func);
+			      continue;
+			    }    
 			}
 		}
 
@@ -1032,6 +1225,7 @@ inline bool PNTransformDriver::TargetFunctionCheck(Instruction_t* a, Instruction
 template <class T> struct func_less : binary_function <T,T,bool> {
   bool operator() (const T& x, const T& y) const {return  x->GetName()  <   y->GetName()  ;}
 };
+//Speculation note:
 
 //Speculation note:
 //Hypothesis generation assessment and refinement prior to modification.
@@ -1703,6 +1897,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Sanitized Functions \t\t"<<sanitized_funcs<<endl;
 	cerr<<"Push/Pop Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
 	cerr<<"Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
+	cerr<<"PIC Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;
 	cerr<<"Transformed \t\t\t"<<total_transformed<<endl;
 }
