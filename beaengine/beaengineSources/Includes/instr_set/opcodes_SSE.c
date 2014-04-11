@@ -2800,6 +2800,7 @@ void __bea_callspec__ pextrw_(PDISASM pMyDisasm)
 
     }
     else {
+	if(GV.VEX.has_vex) FailDecode(pMyDisasm);
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrw ");
@@ -4030,7 +4031,7 @@ void __bea_callspec__ psadbw_(PDISASM pMyDisasm)
     if ((*pMyDisasm).Prefix.OperandSize == InUsePrefix) {
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
-        GV.MemDecoration = Arg2dqword;
+        GV.MemDecoration = Arg2fword;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psadbw ");
         #endif
@@ -4039,7 +4040,7 @@ void __bea_callspec__ psadbw_(PDISASM pMyDisasm)
         GV.SSE_ = 0;
     }
     else {
-        GV.MemDecoration = Arg2qword;
+        GV.MemDecoration = Arg2fword;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psadbw ");
         #endif

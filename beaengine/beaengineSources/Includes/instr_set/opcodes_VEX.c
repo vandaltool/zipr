@@ -151,7 +151,10 @@ Byte 2 	W 	v̅3 	v̅2 	v̅1 	v̅0 	L 	p1 	p0
  * ==================================================================== */
 void __bea_callspec__ HandleVex3(PDISASM pMyDisasm)
 {
+
 	UInt8 byte1=0, byte2=0;
+	if(GV.REX.state) FailDecode(pMyDisasm);
+
 	assert(pMyDisasm);
     	if (!Security(4, pMyDisasm)) return;
 
@@ -226,6 +229,7 @@ void __bea_callspec__ HandleVex2(PDISASM pMyDisasm)
 	UInt8 byte1=0;
 	assert(pMyDisasm);
     	if (!Security(3, pMyDisasm)) return;
+	if(GV.REX.state) FailDecode(pMyDisasm);
 
 	GV.VEX.has_vex=1; /* TRUE */
 	GV.VEX.has_vex2=1;
@@ -437,7 +441,6 @@ void three_dnow_ (PDISASM pMyDisasm)
 	suffix=*(UInt8*)GV.EIP_;	
 	GV.EIP_++;
 
-#ifndef BEA_LIGHT_DISASSEMBLY
 	switch(suffix)
 	{
 		case 0xbf:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgusb "); break;
@@ -460,8 +463,8 @@ void three_dnow_ (PDISASM pMyDisasm)
 		case 0xb6:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pfrcqit2 "); break;
 		case 0xb7:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhrwa "); break;
 		case 0xbb:	(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pswapd "); break;
+		default:	FailDecode(pMyDisasm); break;
 	}
-#endif
 
 
 }

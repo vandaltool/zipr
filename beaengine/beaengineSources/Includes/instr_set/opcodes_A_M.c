@@ -496,6 +496,7 @@ void __bea_callspec__ bound_(PDISASM pMyDisasm)
 void __bea_callspec__ bswap_eax(PDISASM pMyDisasm)
 {
 
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bswap ");
@@ -557,6 +558,7 @@ void __bea_callspec__ bswap_eax(PDISASM pMyDisasm)
 void __bea_callspec__ bswap_ecx(PDISASM pMyDisasm)
 {
 
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bswap ");
@@ -618,6 +620,7 @@ void __bea_callspec__ bswap_ecx(PDISASM pMyDisasm)
 void __bea_callspec__ bswap_edx(PDISASM pMyDisasm)
 {
 
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bswap ");
@@ -679,6 +682,7 @@ void __bea_callspec__ bswap_edx(PDISASM pMyDisasm)
 void __bea_callspec__ bswap_ebx(PDISASM pMyDisasm)
 {
 
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bswap ");
@@ -739,6 +743,7 @@ void __bea_callspec__ bswap_ebx(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ bswap_esp(PDISASM pMyDisasm)
 {
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
 
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
@@ -801,6 +806,7 @@ void __bea_callspec__ bswap_esp(PDISASM pMyDisasm)
 void __bea_callspec__ bswap_ebp(PDISASM pMyDisasm)
 {
 
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bswap ");
@@ -862,6 +868,7 @@ void __bea_callspec__ bswap_ebp(PDISASM pMyDisasm)
 void __bea_callspec__ bswap_esi(PDISASM pMyDisasm)
 {
 
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bswap ");
@@ -923,6 +930,7 @@ void __bea_callspec__ bswap_esi(PDISASM pMyDisasm)
 void __bea_callspec__ bswap_edi(PDISASM pMyDisasm)
 {
 
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bswap ");
@@ -1322,11 +1330,14 @@ void __bea_callspec__ cmovb_(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ cmovnb_(PDISASM pMyDisasm)
 {
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
+
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnb ");
     #endif
     GvEv(pMyDisasm);
+    GV.MemDecoration = Arg2fword;
     FillFlags(pMyDisasm, 19);
 }
 
@@ -1335,6 +1346,7 @@ void __bea_callspec__ cmovnb_(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ cmove_(PDISASM pMyDisasm)
 {
+	if(GV.VEX.has_vex)	FailDecode(pMyDisasm);
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmove ");
@@ -1846,6 +1858,7 @@ void __bea_callspec__ das_(PDISASM pMyDisasm)
 void __bea_callspec__ dec_eax(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 0;
@@ -1894,6 +1907,7 @@ void __bea_callspec__ dec_eax(PDISASM pMyDisasm)
 void __bea_callspec__ dec_ecx(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 0;
@@ -1942,6 +1956,7 @@ void __bea_callspec__ dec_ecx(PDISASM pMyDisasm)
 void __bea_callspec__ dec_edx(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 0;
@@ -1990,6 +2005,7 @@ void __bea_callspec__ dec_edx(PDISASM pMyDisasm)
 void __bea_callspec__ dec_ebx(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 0;
@@ -2038,6 +2054,7 @@ void __bea_callspec__ dec_ebx(PDISASM pMyDisasm)
 void __bea_callspec__ dec_esp(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 1;
@@ -2086,6 +2103,7 @@ void __bea_callspec__ dec_esp(PDISASM pMyDisasm)
 void __bea_callspec__ dec_ebp(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 1;
@@ -2134,6 +2152,7 @@ void __bea_callspec__ dec_ebp(PDISASM pMyDisasm)
 void __bea_callspec__ dec_esi(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 1;
@@ -2182,6 +2201,7 @@ void __bea_callspec__ dec_esi(PDISASM pMyDisasm)
 void __bea_callspec__ dec_edi(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 1;
@@ -2288,6 +2308,7 @@ void __bea_callspec__ invd_(PDISASM pMyDisasm)
 void __bea_callspec__ inc_eax(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 0;
         GV.REX.R_ = 0;
@@ -2335,6 +2356,7 @@ void __bea_callspec__ inc_eax(PDISASM pMyDisasm)
 void __bea_callspec__ inc_ecx(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 0;
         GV.REX.R_ = 0;
@@ -2382,6 +2404,7 @@ void __bea_callspec__ inc_ecx(PDISASM pMyDisasm)
 void __bea_callspec__ inc_edx(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 0;
         GV.REX.R_ = 0;
@@ -2429,6 +2452,7 @@ void __bea_callspec__ inc_edx(PDISASM pMyDisasm)
 void __bea_callspec__ inc_ebx(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 0;
         GV.REX.R_ = 0;
@@ -2476,6 +2500,7 @@ void __bea_callspec__ inc_ebx(PDISASM pMyDisasm)
 void __bea_callspec__ inc_esp(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 0;
         GV.REX.R_ = 1;
@@ -2523,6 +2548,7 @@ void __bea_callspec__ inc_esp(PDISASM pMyDisasm)
 void __bea_callspec__ inc_ebp(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 0;
         GV.REX.R_ = 1;
@@ -2570,6 +2596,7 @@ void __bea_callspec__ inc_ebp(PDISASM pMyDisasm)
 void __bea_callspec__ inc_esi(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 0;
         GV.REX.R_ = 1;
@@ -2617,6 +2644,7 @@ void __bea_callspec__ inc_esi(PDISASM pMyDisasm)
 void __bea_callspec__ inc_edi(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
+	if(GV.VEX.has_vex) {FailDecode(pMyDisasm);return;}
         if (!Security(0, pMyDisasm)) return;
         GV.REX.W_ = 0;
         GV.REX.R_ = 1;

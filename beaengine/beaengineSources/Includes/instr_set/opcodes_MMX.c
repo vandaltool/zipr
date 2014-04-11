@@ -733,6 +733,7 @@ void __bea_callspec__ pand_(PDISASM pMyDisasm)
         GV.AVX_ = 0;
     }
     else {
+	if(GV.VEX.has_vex) FailDecode(pMyDisasm);
         GV.MemDecoration = Arg2qword;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pand ");

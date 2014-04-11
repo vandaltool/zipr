@@ -25,22 +25,23 @@
 /* ===============================================================================  */
 
 void (__bea_callspec__ * opcode_map1[])(PDISASM) = {
-    add_EbGb  , add_EvGv  , add_GbEb  , add_GvEv  , add_ALIb  , add_eAX_Iv, push_es   , pop_es    , or_EbGb   , or_EvGv   , or_GbEb   , or_GvEv   , or_ALIb   , or_eAX_Iv , push_cs   , Esc_2byte ,
-    adc_EbGb  , adc_EvGv  , adc_GbEb  , adc_GvEv  , adc_ALIb  , adc_eAX_Iv, push_ss   , pop_ss    , sbb_EbGb  , sbb_EvGv  , sbb_GbEb  , sbb_GvEv  , sbb_ALIb  , sbb_eAX_Iv, push_ds   , pop_ds    ,
-    and_EbGb  , and_EvGv  , and_GbEb  , and_GvEv  , and_ALIb  , and_eAX_Iv, PrefSEGES , daa_      , sub_EbGb  , sub_EvGv  , sub_GbEb  , sub_GvEv  , sub_ALIb  , sub_eAX_Iv, PrefSEGCS , das_      ,
-    xor_EbGb  , xor_EvGv  , xor_GbEb  , xor_GvEv  , xor_ALIb  , xor_eAX_Iv, PrefSEGSS , aaa_      , cmp_EbGb  , cmp_EvGv  , cmp_GbEb  , cmp_GvEv  , cmp_ALIb  , cmp_eAX_Iv, PrefSEGDS , aas_      ,
-    inc_eax   , inc_ecx   , inc_edx   , inc_ebx   , inc_esp   , inc_ebp   , inc_esi   , inc_edi   , dec_eax   , dec_ecx   , dec_edx   , dec_ebx   , dec_esp   , dec_ebp   , dec_esi   , dec_edi   ,
-    push_eax  , push_ecx  , push_edx  , push_ebx  , push_esp  , push_ebp  , push_esi  , push_edi  , pop_eax   , pop_ecx   , pop_edx   , pop_ebx   , pop_esp   , pop_ebp   , pop_esi   , pop_edi   ,
-    pushad_   , popad_    , bound_    , arpl_     , PrefSEGFS , PrefSEGGS , PrefOpSize, PrefAdSize, push_Iv   ,imul_GvEvIv, push_Ib   ,imul_GvEvIb, insb_     , ins_      , outsb_    , outsw_    ,
-    jo_       , jno_      , jc_       , jnc_      , je_       , jne_      , jbe_      , jnbe_     , js_       , jns_      , jp_       , jnp_      , jl_       , jnl_      , jle_      , jnle_     ,
-    G1_EbIb   , G1_EvIv   , G1_EbIb2  , G1_EvIb   , test_EbGb , test_EvGv , xchg_EbGb , xchg_EvGv , mov_EbGb  , mov_EvGv  , mov_GbEb  , mov_GvEv  , mov_EwSreg, lea_GvM   , mov_SregEw, pop_Ev    ,
-    nop_      , xchg_ecx  , xchg_edx  , xchg_ebx  , xchg_esp  , xchg_ebp  , xchg_esi  , xchg_edi  , cwde_     , cdq_      , callf_    , wait_     , pushfd_   , popfd_    , sahf_     , lahf_     ,
-    mov_ALOb  , mov_eAXOv , mov_ObAL  , mov_OveAX , movs_     , movsw_    , cmpsb_    , cmps_     , test_ALIb ,test_eAX_Iv, stos_     , stosw_    , lodsb_    , lodsw_    , scasb_    , scas_     ,
-    mov_ALIb  , mov_CLIb  , mov_DLIb  , mov_BLIb  , mov_AHIb  , mov_CHIb  , mov_DHIb  , mov_BHIb  , mov_EAX   , mov_ECX   , mov_EDX   , mov_EBX   , mov_ESP   , mov_EBP   , mov_ESI   , mov_EDI   ,
-    G2_EbIb   , G2_EvIb   , retn_     , ret_      , les_GvM   , lds_GvM   , mov_EbIb  , mov_EvIv  , enter_    , leave_    , retf_Iw   , retf_     , int3_     , int_      , into_     , iret_     ,
-    G2_Eb1    , G2_Ev1    , G2_EbCL   , G2_EvCL   , aam_      , aad_      , salc_     , xlat_     , D8_       , D9_       , DA_       , DB_       , DC_       , DD_       , DE_       , DF_       ,
-    loopne_   , loope_    , loop_     , jecxz_    , in_ALIb   , in_eAX_Ib , out_IbAL  , out_Ib_eAX, call_     , jmp_near  , jmp_far   , jmp_short , in_ALDX   , in_eAX    , out_DXAL  , out_DXeAX ,
-    PrefLock  , int1_     , PrefREPNE , PrefREPE  , hlt_      , cmc_      , G3_Eb     , G3_Ev     , clc_      , stc_      , cli_      , sti_      , cld_      , std_      , G4_Eb     , G5_Ev     ,
+/*   0           1  	     2	         3           4           5           6           7           8           9           a           b           c           d           e           f */
+/*0*/add_EbGb  , add_EvGv  , add_GbEb  , add_GvEv  , add_ALIb  , add_eAX_Iv, push_es   , pop_es    , or_EbGb   , or_EvGv   , or_GbEb   , or_GvEv   , or_ALIb   , or_eAX_Iv , push_cs   , Esc_2byte ,
+/*1*/adc_EbGb  , adc_EvGv  , adc_GbEb  , adc_GvEv  , adc_ALIb  , adc_eAX_Iv, push_ss   , pop_ss    , sbb_EbGb  , sbb_EvGv  , sbb_GbEb  , sbb_GvEv  , sbb_ALIb  , sbb_eAX_Iv, push_ds   , pop_ds    ,
+/*2*/and_EbGb  , and_EvGv  , and_GbEb  , and_GvEv  , and_ALIb  , and_eAX_Iv, PrefSEGES , daa_      , sub_EbGb  , sub_EvGv  , sub_GbEb  , sub_GvEv  , sub_ALIb  , sub_eAX_Iv, PrefSEGCS , das_      ,
+/*3*/xor_EbGb  , xor_EvGv  , xor_GbEb  , xor_GvEv  , xor_ALIb  , xor_eAX_Iv, PrefSEGSS , aaa_      , cmp_EbGb  , cmp_EvGv  , cmp_GbEb  , cmp_GvEv  , cmp_ALIb  , cmp_eAX_Iv, PrefSEGDS , aas_      ,
+/*4*/inc_eax   , inc_ecx   , inc_edx   , inc_ebx   , inc_esp   , inc_ebp   , inc_esi   , inc_edi   , dec_eax   , dec_ecx   , dec_edx   , dec_ebx   , dec_esp   , dec_ebp   , dec_esi   , dec_edi   ,
+/*5*/push_eax  , push_ecx  , push_edx  , push_ebx  , push_esp  , push_ebp  , push_esi  , push_edi  , pop_eax   , pop_ecx   , pop_edx   , pop_ebx   , pop_esp   , pop_ebp   , pop_esi   , pop_edi   ,
+/*6*/pushad_   , popad_    , bound_    , arpl_     , PrefSEGFS , PrefSEGGS , PrefOpSize, PrefAdSize, push_Iv   ,imul_GvEvIv, push_Ib   ,imul_GvEvIb, insb_     , ins_      , outsb_    , outsw_    ,
+/*7*/jo_       , jno_      , jc_       , jnc_      , je_       , jne_      , jbe_      , jnbe_     , js_       , jns_      , jp_       , jnp_      , jl_       , jnl_      , jle_      , jnle_     ,
+/*8*/G1_EbIb   , G1_EvIv   , G1_EbIb2  , G1_EvIb   , test_EbGb , test_EvGv , xchg_EbGb , xchg_EvGv , mov_EbGb  , mov_EvGv  , mov_GbEb  , mov_GvEv  , mov_EwSreg, lea_GvM   , mov_SregEw, pop_Ev    ,
+/*9*/nop_      , xchg_ecx  , xchg_edx  , xchg_ebx  , xchg_esp  , xchg_ebp  , xchg_esi  , xchg_edi  , cwde_     , cdq_      , callf_    , wait_     , pushfd_   , popfd_    , sahf_     , lahf_     ,
+/*a*/mov_ALOb  , mov_eAXOv , mov_ObAL  , mov_OveAX , movs_     , movsw_    , cmpsb_    , cmps_     , test_ALIb ,test_eAX_Iv, stos_     , stosw_    , lodsb_    , lodsw_    , scasb_    , scas_     ,
+/*b*/mov_ALIb  , mov_CLIb  , mov_DLIb  , mov_BLIb  , mov_AHIb  , mov_CHIb  , mov_DHIb  , mov_BHIb  , mov_EAX   , mov_ECX   , mov_EDX   , mov_EBX   , mov_ESP   , mov_EBP   , mov_ESI   , mov_EDI   ,
+/*c*/G2_EbIb   , G2_EvIb   , retn_     , ret_      , les_GvM   , lds_GvM   , mov_EbIb  , mov_EvIv  , enter_    , leave_    , retf_Iw   , retf_     , int3_     , int_      , into_     , iret_     ,
+/*d*/G2_Eb1    , G2_Ev1    , G2_EbCL   , G2_EvCL   , aam_      , aad_      , salc_     , xlat_     , D8_       , D9_       , DA_       , DB_       , DC_       , DD_       , DE_       , DF_       ,
+/*e*/loopne_   , loope_    , loop_     , jecxz_    , in_ALIb   , in_eAX_Ib , out_IbAL  , out_Ib_eAX, call_     , jmp_near  , jmp_far   , jmp_short , in_ALDX   , in_eAX    , out_DXAL  , out_DXeAX ,
+/*f*/PrefLock  , int1_     , PrefREPNE , PrefREPE  , hlt_      , cmc_      , G3_Eb     , G3_Ev     , clc_      , stc_      , cli_      , sti_      , cld_      , std_      , G4_Eb     , G5_Ev     ,
  };
 
 /* ===============================================================================  */
