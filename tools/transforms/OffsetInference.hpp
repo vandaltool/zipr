@@ -9,6 +9,7 @@
 class OffsetInference : public PNStackLayoutInference
 {
 protected:
+	std::map<libIRDB::Instruction_t*, bool> in_prologue;
 	std::map<libIRDB::Function_t*,PNStackLayout*> direct;
 	std::map<libIRDB::Function_t*,PNStackLayout*> scaled;
 	std::map<libIRDB::Function_t*,PNStackLayout*> all_offsets;

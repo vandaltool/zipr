@@ -118,6 +118,8 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 	//until entry is null, or entry has left the function. 
 	while(entry != NULL && (entry->GetFunction()==func))
 	{
+
+		in_prologue[entry]=true;
 		string matched;
 
 		//Instruction_t* instr=*it;
@@ -514,6 +516,21 @@ pn_p1_offsets = new PNStackLayout("P1 Layout",func->GetName(),stack_frame_size,s
 }
 else 
 */
+
+	if(regexec(&(pn_regex->regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
+	{
+		if(!in_prologue[instr])
+		{
+			cerr<<"Found push instruction not in prologue, marking as not canary safe\n";
+			pn_direct_offsets->SetCanarySafe(false);
+			pn_scaled_offsets->SetCanarySafe(false);
+			pn_all_offsets->SetCanarySafe(false);
+			pn_p1_offsets->SetCanarySafe(false);
+			
+		}
+	}
+
+
 	/* check for an lea with an rsp in it -- needs to be done before other regex's */
 	if(regexec(&(pn_regex->regex_lea_rsp), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{

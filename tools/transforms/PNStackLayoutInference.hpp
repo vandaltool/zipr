@@ -6,6 +6,7 @@
 #include "StackLayout.hpp"
 #include "PNStackLayout.hpp"
 #include <string>
+#include <map>
 
 class PNStackLayoutInference
 {
