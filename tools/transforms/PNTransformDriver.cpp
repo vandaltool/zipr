@@ -873,7 +873,7 @@ bool PNTransformDriver::check_jump_tables(Instruction_t* insn)
 	int offset=displacement-pSec->get_address();
 
 	set<int> jump_tab_entries;
-	for(int i=0;i<5;i++)
+	for(int i=0;jump_tab_entries.size()<5;i++)
 	{
 		if(offset+i*4+sizeof(int) > pSec->get_size())
 			break;
@@ -1057,7 +1057,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
 	set<int> table_entries;
         int offset=D1-pSec->get_address();
         int entry=0;
-        for(int i=0;i<5;i++)
+        for(int i=0;table_entries.size()<5;i++)
         {
                 // check that we can still grab a word from this section
                 if(offset+sizeof(int) > pSec->get_size())
