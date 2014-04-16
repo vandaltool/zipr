@@ -1295,6 +1295,7 @@ void __bea_callspec__ cmovo_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovo ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1308,6 +1309,7 @@ void __bea_callspec__ cmovno_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovno ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1321,6 +1323,7 @@ void __bea_callspec__ cmovb_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovb ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1336,8 +1339,8 @@ void __bea_callspec__ cmovnb_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnb ");
     #endif
-    GvEv(pMyDisasm);
     GV.MemDecoration = Arg2fword;
+    GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
 
@@ -1351,6 +1354,7 @@ void __bea_callspec__ cmove_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmove ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1364,6 +1368,7 @@ void __bea_callspec__ cmovne_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovne ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1377,6 +1382,7 @@ void __bea_callspec__ cmovbe_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovbe ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1390,6 +1396,7 @@ void __bea_callspec__ cmovnbe_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnbe ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1403,6 +1410,7 @@ void __bea_callspec__ cmovs_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovs ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1416,6 +1424,7 @@ void __bea_callspec__ cmovns_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovns ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1429,6 +1438,7 @@ void __bea_callspec__ cmovp_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovp ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1442,6 +1452,7 @@ void __bea_callspec__ cmovnp_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnp ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1455,6 +1466,7 @@ void __bea_callspec__ cmovl_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovl ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1468,6 +1480,7 @@ void __bea_callspec__ cmovnl_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnl ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1481,6 +1494,7 @@ void __bea_callspec__ cmovle_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovle ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
@@ -1494,6 +1508,7 @@ void __bea_callspec__ cmovnle_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnle ");
     #endif
+    GV.MemDecoration = Arg2fword;
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, 19);
 }
