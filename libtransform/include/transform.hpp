@@ -23,8 +23,11 @@ class Transform {
 		Transform(VariantID_t *, FileIR_t *, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions);
 
 	protected:
+		void setAssembly(Instruction_t *p_instr, string p_asm);
+		Instruction_t* addNewAssembly(Instruction_t *p_instr, string p_asm);
+		Instruction_t* addCallbackHandler64(Instruction_t *p_orig, string p_callbackHandler, int p_numArgs);
 		void addInstruction(Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target);
-	    Instruction_t* carefullyInsertBefore(Instruction_t* &p_target, Instruction_t* &p_new);
+		Instruction_t* carefullyInsertBefore(Instruction_t* &p_target, Instruction_t* &p_new);
 
 		void addPushRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addPopRegister(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);

@@ -8,6 +8,10 @@ using namespace libTransform;
 *
 *     20140228 64-bit overflows on multiply, signed/unsigned add/sub, halt policy
 *
+*     @todo:
+*           - handle LEA instructions
+*           - callback handler for diagnostics
+*
 **/
 
 IntegerTransform64::IntegerTransform64(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : IntegerTransform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions, p_benignFalsePositives)
@@ -113,7 +117,7 @@ int IntegerTransform64::execute()
 
 void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	if (isMultiplyInstruction(p_instruction) || (p_annotation.isOverflow() && !p_annotation.isUnknownSign()))
+	if (isMultiplyInstruction(p_instruction) || (p_annotation.isOverflow() && !p_annotation.isUnknownSign()) && p_annotation.isNoFlag())
 	{
 		// handle signed/unsigned add/sub overflows (non lea)
 		addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
@@ -127,7 +131,7 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 
 void IntegerTransform64::handleUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-        if (p_annotation.isUnderflow())
+        if (p_annotation.isUnderflow() && p_annotation.isNoFlag())
         {
                 addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
         }
@@ -149,7 +153,7 @@ void IntegerTransform64::handleUnderflowCheck(Instruction_t *p_instruction, cons
 // Saturation Policy
 //	        mul a, b                 ; <instruction to instrument>
 //              jno <OrigNext>           ; if no overflows, jump to original fallthrough instruction
-//              movq a, MIN/MAX          ; policy = min-saturate (underflow) / max-saturate (overflow)
+//              mov a, MIN/MAX           ; policy = min-saturate (underflow) / max-saturate (overflow)
 // OrigNext:    <nextInstruction>        ; original fallthrugh
 //
 void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
@@ -166,8 +170,6 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 		return;
 	}
 
-//	cerr << __func__ <<  ": instr: " << p_instruction->getDisassembly() << " address: " << std::hex << p_instruction->GetAddress() << " annotation: " << p_annotation.toString() << " policy: " << p_policy << endl;
-
         logMessage(__func__, p_annotation, "debug");
 
 	jncond_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
@@ -180,8 +182,12 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	{
 		addJnc(jncond_i, policy_i, next_i);
 	}
-	else
+	else if (p_annotation.isSigned())
 	{
+		addJno(jncond_i, policy_i, next_i);
+	}
+	else
+	{ 	// unknown sign
 		addJno(jncond_i, policy_i, next_i);
 	}
 
@@ -195,11 +201,11 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 		{
                 	addMaxSaturation(policy_i, targetReg, p_annotation, next_i);
 		}
+
+		// add callback handler here for diagnostics
 	}
 	else
 	{
-		// would need to min-saturate for underflow
-		//               max-saturate for overflow
 		addHlt(policy_i, next_i);
 	}
 
@@ -208,4 +214,3 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	else
 		m_numOverflows++;
 }
-
