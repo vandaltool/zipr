@@ -539,6 +539,10 @@ void __bea_callspec__ GvEw(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ ALIb(PDISASM pMyDisasm)
 {
+	int reg_offset=8;
+	if(GV.REX.B_)
+		reg_offset=8;
+	
     long MyNumber;
     if (!Security(2, pMyDisasm)) return;
     GV.ImmediatSize = 8;
@@ -548,9 +552,12 @@ void __bea_callspec__ ALIb(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
     #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[0]);
+       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8Bits[0+reg_offset]);
     #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+	if(GV.REX.B_)
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+	else
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG8;
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument2.ArgSize = 8;
@@ -563,7 +570,10 @@ void __bea_callspec__ ALIb(PDISASM pMyDisasm)
 void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
 {
     UInt32 MyNumber;
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+	if(GV.REX.B_)
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+	else
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     if (GV.OperandSize == 64) {
         if (!Security(5, pMyDisasm)) return;
