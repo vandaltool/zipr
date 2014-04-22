@@ -432,7 +432,7 @@ void Transform::addCallbackHandler(string p_detector, Instruction_t *p_instrumen
 }
 
 // returns true if BeaEngine says arg1 of the instruction is a register 
-bool Transform::hasTargetRegister(Instruction_t *p_instruction)
+bool Transform::hasTargetRegister(Instruction_t *p_instruction, int p_argNo)
 {
 	if (!p_instruction)
 		return false;
@@ -440,17 +440,29 @@ bool Transform::hasTargetRegister(Instruction_t *p_instruction)
 	DISASM disasm;
 	p_instruction->Disassemble(disasm);
 	
-	return disasm.Argument1.ArgType & 0xFFFF0000 & REGISTER_TYPE;
+	if (p_argNo == 1)
+		return disasm.Argument1.ArgType & 0xFFFF0000 & REGISTER_TYPE;
+	else if (p_argNo == 2)
+		return disasm.Argument2.ArgType & 0xFFFF0000 & REGISTER_TYPE;
+	else if (p_argNo == 3)
+		return disasm.Argument3.ArgType & 0xFFFF0000 & REGISTER_TYPE;
+	else
+		return false;
 }
 
-Register::RegisterName Transform::getTargetRegister(Instruction_t *p_instruction)
+Register::RegisterName Transform::getTargetRegister(Instruction_t *p_instruction, int p_argNo)
 {
-	if (hasTargetRegister(p_instruction))
+	if (hasTargetRegister(p_instruction, p_argNo))
 	{
 		DISASM disasm;
 		p_instruction->Disassemble(disasm);
 
-		return Register::getRegister(disasm.Argument1.ArgMnemonic);
+		if (p_argNo == 1)
+			return Register::getRegister(disasm.Argument1.ArgMnemonic);
+		else if (p_argNo == 2)
+			return Register::getRegister(disasm.Argument2.ArgMnemonic);
+		else if (p_argNo == 3)
+			return Register::getRegister(disasm.Argument3.ArgMnemonic);
 	}
 	else
 		return Register::UNKNOWN;

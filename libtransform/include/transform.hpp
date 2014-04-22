@@ -71,7 +71,7 @@ class Transform {
 
 		bool isMultiplyInstruction(libIRDB::Instruction_t*);
 		bool isAddSubNonEspInstruction(libIRDB::Instruction_t*);
-		Register::RegisterName getTargetRegister(libIRDB::Instruction_t*);
+		Register::RegisterName getTargetRegister(libIRDB::Instruction_t*, int argNo = 1);
 
 		void addMinSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
 		void addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
@@ -85,7 +85,7 @@ class Transform {
 		void addTestRegister32(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);
 		void addTestRegisterMask32(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
 		void addCmpRegisterMask32(Instruction_t *p_instr, Register::RegisterName, unsigned p_mask, Instruction_t *p_fallThrough);
-		bool hasTargetRegister(libIRDB::Instruction_t*);
+		bool hasTargetRegister(libIRDB::Instruction_t*, int argNo = 1);
 
 		VariantID_t 		*m_variantID;
 		FileIR_t           	*m_fileIR;

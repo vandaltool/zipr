@@ -130,7 +130,7 @@ int IntegerTransform64::execute()
 
 void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	if (isMultiplyInstruction(p_instruction) || (p_annotation.isOverflow() && !p_annotation.isUnknownSign()) && p_annotation.isNoFlag())
+	if (isMultiplyInstruction(p_instruction) || (p_annotation.isOverflow() && !p_annotation.isUnknownSign()) && !p_annotation.isNoFlag())
 	{
 		// handle signed/unsigned add/sub overflows (non lea)
 		addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
@@ -156,12 +156,6 @@ void IntegerTransform64::handleUnderflowCheck(Instruction_t *p_instruction, cons
 }
 
 
-//
-// Halting Policy
-//	        mul a, b                 ; <instruction to instrument>
-//              jno <OrigNext>           ; if no overflows, jump to original fallthrough instruction
-//              hlt                      ; policy = halt 
-// OrigNext:    <nextInstruction>        ; original fallthrugh
 //
 // Saturation Policy
 //	        mul a, b                 ; <instruction to instrument>
@@ -200,23 +194,37 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	{
 		addJno(jncond_i, policy_i, next_i); 
 	}
-	if (p_annotation.isUnsigned())
+	else if (p_annotation.isUnsigned())
 	{
 		addJnc(jncond_i, policy_i, next_i);
 	}
 	else
 	{ 	// unknown sign
 		Instruction_t* jnc_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
-		addJno(jncond_i, policy_i, jnc_i); 
-		addJnc(jnc_i, policy_i, next_i); 
+		addJnc(jnc_i, policy_i, jncond_i); 
+		addJno(jncond_i, policy_i, next_i); 
 	}
 
         if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
-		if (p_annotation.isUnderflow())
-                	addMinSaturation(policy_i, targetReg, p_annotation, lea_i); 
+/*
+		if (isMultiplyInstruction(p_instruction) && 
+			p_annotation.getBitWidth() == 64 &&
+			p_annotation.isSigned())
+		{
+			saturateSignedMultiplyOverflow(p_instruction, policy_i, lea_i);
+		}
 		else
-                	addMaxSaturation(policy_i, targetReg, p_annotation, lea_i);
+*/
+		// @todo:
+		//    saturating signed multiply overflow should take into account
+		//    the signs of the operand. If multiplying negative by positive #,
+		//    then we want to sature to MIN_SIGNED_INT
+		
+		if (p_annotation.isUnderflow())
+               		addMinSaturation(policy_i, targetReg, p_annotation, lea_i); 
+		else
+       	         	addMaxSaturation(policy_i, targetReg, p_annotation, lea_i);
 	}
 
 	setAssembly(lea_i, "lea rsp, [rsp-128]");  // red zone 
@@ -250,3 +258,47 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	else
 		m_numOverflows++;
 }
+
+#ifdef XXX
+// pre: p_instruction is already allocated
+// need to get all registers for the original instruction
+void IntegerTransform64::saturateSignedMultiplyOverflow(Instruction_t *p_orig, Instruction_t *p_instruction, Instruction_t* p_fallthrough)
+{
+	std::set<Register::RegisterName> used;
+	Register::RegisterName targetReg = getTargetRegister(p_orig);
+	used.insert(targetReg);
+	used.insert(getTargetRegister(p_orig,2));
+	used.insert(getTargetRegister(p_orig,3));
+	used.insert(Register::RDX);
+
+	Register::RegisterName freeReg = Register::getFreeRegister64(used);
+
+	string targetR = Register::toString(targetReg);
+	string freeR = Register::toString(freeReg);
+
+        logMessage(__func__, "targetReg: " + targetR + " freeReg: " + freeR);
+
+	Instruction_t *instr;
+
+// wrong instruction code sequence -- ignore
+
+	setAssembly(p_instruction, "push rdx");
+	instr = addNewAssembly(p_instruction, "push " + freeR);
+/*
+	instr = addNewAssembly(p_instruction, "push " + freeR);
+	p_instruction->SetFallthrough(instr);
+*/
+	instr = addNewAssembly(instr, "pushf");
+//	instr = addNewAssembly(instr, string("mov rdx, 0x7FFFFFFFFFFFFFFF");
+//	instr = addNewAssembly(instr, "shr " + targetR + ", 63");
+	instr = addNewAssembly(instr, "shr rdx, 63");
+//	instr = addNewAssembly(instr, "add " + targetR + "," + freeR);
+	instr = addNewAssembly(instr, "mov " + freeR + ", 0x7FFFFFFFFFFFFFFF");
+	instr = addNewAssembly(instr, "add " + freeR + ", rdx");
+	instr = addNewAssembly(instr, "mov " + targetR + ", " + freeR);
+	instr = addNewAssembly(instr, "popf");
+	instr = addNewAssembly(instr, "pop " + freeR);
+	instr = addNewAssembly(instr, "pop rdx");
+	instr->SetFallthrough(p_fallthrough);
+}
+#endif
