@@ -2,6 +2,7 @@
 #define _MEDS_REGISTER_H
 
 #include <string>
+#include <set>
 
 namespace MEDS_Annotation 
 {
@@ -17,6 +18,7 @@ public:
   static bool is8bit(RegisterName);
   static int getBitWidth(RegisterName);
   static std::string toString(RegisterName);
+  static Register::RegisterName getFreeRegister64(std::set<Register::RegisterName> p_used);
 };
 
 }

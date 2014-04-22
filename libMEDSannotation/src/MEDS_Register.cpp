@@ -351,3 +351,36 @@ int Register::getBitWidth(Register::RegisterName p_reg)
 			break;
 	}
 }
+
+Register::RegisterName Register::getFreeRegister64(std::set<Register::RegisterName> p_taken)
+{
+	if (p_taken.count(RAX) == 0)
+		return RAX;
+	if (p_taken.count(RBX) == 0)
+		return RBX;
+	if (p_taken.count(RCX) == 0)
+		return RCX;
+	if (p_taken.count(RDX) == 0)
+		return RDX;
+	if (p_taken.count(RDI) == 0)
+		return RDI;
+	if (p_taken.count(RSI) == 0)
+		return RSI;
+	if (p_taken.count(R8) == 0)
+		return R8;
+	if (p_taken.count(R9) == 0)
+		return R9;
+	if (p_taken.count(R10) == 0)
+		return R10;
+	if (p_taken.count(R11) == 0)
+		return R11;
+	if (p_taken.count(R12) == 0)
+		return R12;
+	if (p_taken.count(R13) == 0)
+		return R13;
+	if (p_taken.count(R14) == 0)
+		return R14;
+	if (p_taken.count(R15) == 0)
+		return R15;
+	return UNKNOWN;
+}
