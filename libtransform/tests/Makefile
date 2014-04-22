@@ -12,8 +12,9 @@ LD=DO_NOT_USE
 #exes=signed_add.exe
 #exes=simpletest.exe
 #exes=dummy.exe
-exes=unsigned_mul.exe signed_add.exe signed_mul.exe 
+#exes=unsigned_mul.exe signed_add.exe signed_mul.64.exe signed_mul.32.exe
 
+exes=signed_mul.32.exe
 
 all: env_check  ${exes}
 

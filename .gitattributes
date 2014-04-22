@@ -326,7 +326,8 @@ libtransform/tests/mitre/TC_C_196_v459/testData/reallyLongFilereallyLongFilereal
 libtransform/tests/mul.c -text
 libtransform/tests/sample_meds_int.annot -text
 libtransform/tests/signed_add.c -text
-libtransform/tests/signed_mul.c -text
+libtransform/tests/signed_mul.32.c -text
+libtransform/tests/signed_mul.64.c -text
 libtransform/tests/simpletest.c -text
 libtransform/tests/unsigned_add.c -text
 libtransform/tests/unsigned_mul.c -text
