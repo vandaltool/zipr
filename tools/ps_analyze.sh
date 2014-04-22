@@ -599,11 +599,11 @@ perform_step create_binary_script 	mandatory $PEASOUP_HOME/tools/do_makepeasoupb
 perform_step heaprand 	 		pc_confine,double_free $PEASOUP_HOME/tools/update_env_var.sh STRATA_HEAPRAND 1
 perform_step controlled_exit none 		 	 $PEASOUP_HOME/tools/update_env_var.sh STRATA_CONTROLLED_EXIT 1
 perform_step detect_server  pc_confine  $PEASOUP_HOME/tools/update_env_var.sh STRATA_DETECT_SERVERS 1
-perform_step ibtc  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_IBTC 0
+#perform_step ibtc  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_IBTC 0
+#perform_step sieve  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_SIEVE 1
+#perform_step return_cache  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_RC 1
+#perform_step partial_inlining  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PARTIAL_INLINING 0
 perform_step rekey  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_REKEY_AFTER 5000
-perform_step sieve  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_SIEVE 1
-perform_step return_cache  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_RC 1
-perform_step partial_inlining  none  $PEASOUP_HOME/tools/update_env_var.sh STRATA_PARTIAL_INLINING 0
 perform_step double_free heaprand $PEASOUP_HOME/tools/update_env_var.sh STRATA_DOUBLE_FREE 1
 perform_step pc_confine  none $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE 1
 perform_step isr 	 pc_confine $PEASOUP_HOME/tools/update_env_var.sh STRATA_PC_CONFINE_XOR 1

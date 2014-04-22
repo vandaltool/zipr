@@ -29,7 +29,7 @@ do
 	if [ $dropcnt -gt 1000 ]; then
 		echo --------------------------------------------------------------------------
 		echo issuing command
-		psql -t -q -c "$droptabs"
+		psql -t -q -c "$droptabs" || true
 		echo Done.
 		echo --------------------------------------------------------------------------
 		dropcnt=0
@@ -37,4 +37,4 @@ do
 	fi
 done
 echo dropping bonus tabs
-psql -t -q -c "$droptabs"
+psql -t -q -c "$droptabs" || true

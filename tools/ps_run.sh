@@ -47,6 +47,14 @@ if [ "$DO_TWITCHER" = "1" ]; then
 	APP_LD_PRELOAD=$BOOST_HOME/lib/libboost_system.so:$BOOST_HOME/lib/libboost_thread.so:$datapath/libtwitcher_malloc.so:$APP_LD_PRELOAD
 fi
 
+
+# these are now defaulted nicely by strata for x86-32 and x86-64.
+#STRATA_IBTC=1					 
+#STRATA_IBTC_SHARED=1
+#STRATA_SIEVE=0					
+#STRATA_RC=0					
+#STRATA_PARTIAL_INLINING=1			
+
 command="$command
 LD_PRELOAD=$APP_LD_PRELOAD
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$datapath
@@ -62,11 +70,6 @@ STRATA_REKEY_AFTER=0
 STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024		
 STRATA_ANNOT_FILE=$datapath/a.ncexe.annot 
 STRATA_IS_SO=0
-STRATA_IBTC=1					
-STRATA_IBTC_SHARED=1
-STRATA_SIEVE=0					
-STRATA_RC=0					
-STRATA_PARTIAL_INLINING=1			
 STRATA_EXE_FILE=$datapath/a.stratafied
 STRATA_MAX_WARNINGS=500000
 	exec -a $origbinpath $datapath/a.stratafied \"\$@\""
