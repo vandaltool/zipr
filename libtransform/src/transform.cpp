@@ -78,6 +78,14 @@ Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, 
 	return dupInstr;
 }
 
+void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
+{
+	string dataBits;
+	dataBits.resize(1);
+	dataBits[0] = 0x9c;
+	addInstruction(p_pushf_i, dataBits, p_fallThrough, NULL);
+}
+
 void Transform::addPushRegister(Instruction_t *p_instr, Register::RegisterName p_reg, Instruction_t *p_fallThrough)
 {
 	string dataBits;
@@ -282,7 +290,7 @@ void Transform::addNop(Instruction_t *p_nop_i, Instruction_t *p_fallThrough)
 Instruction_t* Transform::allocateNewInstruction(db_id_t p_fileID, Function_t* p_func)
 {
 	Instruction_t *instr = new Instruction_t();
-	AddressID_t *a =new AddressID_t();
+	AddressID_t *a = new AddressID_t();
 
 	a->SetFileID(p_fileID);
 
@@ -1242,14 +1250,6 @@ void Transform::addMinSaturation(Instruction_t *p_instruction, Register::Registe
 	}
 }
 
-void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
-{
-	string dataBits;
-	dataBits.resize(1);
-	dataBits[0] = 0x9c;
-	addInstruction(p_pushf_i, dataBits, p_fallThrough, NULL);
-}
-
 void Transform::setAssembly(Instruction_t *p_instr, string p_asm)
 {
 	m_fileIR->RegisterAssembly(p_instr, p_asm);
@@ -1257,125 +1257,149 @@ void Transform::setAssembly(Instruction_t *p_instr, string p_asm)
 
 //
 // Allocate and add new instruction given its assembly form
+// If <p_instr> not NULL, then set fallthrough appropriately
+//
 // Returns the newly added instruction
 //
+// <p_instr> defined:
 // <p_instr>            <p_instr>
-// <fallthrough>  ==>   <p_asm>
+// <fallthrough>  ==>   <newinstr>(<p_asm>)
 //                      <fallthrough>
+//
+// <p_instr> is NULL:
+//                ==>   <newinstr>(<p_asm>)
 //
 Instruction_t* Transform::addNewAssembly(Instruction_t *p_instr, string p_asm)
 {
-	Instruction_t* newinstr = allocateNewInstruction(p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
+	Instruction_t* newinstr;
+	if (p_instr)
+		newinstr = allocateNewInstruction(p_instr->GetAddress()->GetFileID(), p_instr->GetFunction());
+	else
+		newinstr = allocateNewInstruction(BaseObj_t::NOT_IN_DATABASE, NULL);
+
 	m_fileIR->RegisterAssembly(newinstr, p_asm);
-	newinstr->SetFallthrough(p_instr->GetFallthrough());
-	p_instr->SetFallthrough(newinstr);
+
+	if (p_instr)
+	{
+		newinstr->SetFallthrough(p_instr->GetFallthrough());
+		p_instr->SetFallthrough(newinstr);
+	}
+
 	return newinstr;
 }
 
+// register instruction in IRDB
+// 20140421
+Instruction_t* Transform::addNewAssembly(string p_asm)
+{
+	return addNewAssembly(NULL, p_asm);
+}
 
 // x86-64
-// add callback handler sequence to <p_orig>
-// 20140416
-Instruction_t* Transform::addCallbackHandler64(Instruction_t *p_orig, string p_callbackHandler, int p_numArgs)
+// 20140421
+void Transform::addCallbackHandler64(Instruction_t *p_orig, string p_callbackHandler, int p_numArgs)
 {
-	Instruction_t *instr;
-	char tmpbuf[1024];
-
-	// save flags and registers
-	instr = addNewAssembly(p_orig, "pushf");
-	instr = addNewAssembly(instr,  "push rax");
-	instr = addNewAssembly(instr,  "push rbx");
-	instr = addNewAssembly(instr,  "push rcx");
-	instr = addNewAssembly(instr,  "push rdx");
-	instr = addNewAssembly(instr,  "push rsi");
-	instr = addNewAssembly(instr,  "push rdi");
-	instr = addNewAssembly(instr,  "push rbp");
-	instr = addNewAssembly(instr,  "push rsp");
-	instr = addNewAssembly(instr,  "push r8");
-	instr = addNewAssembly(instr,  "push r9");
-	instr = addNewAssembly(instr,  "push r10");
-	instr = addNewAssembly(instr,  "push r11");
-	instr = addNewAssembly(instr,  "push r12");
-	instr = addNewAssembly(instr,  "push r13");
-	instr = addNewAssembly(instr,  "push r14");
-	instr = addNewAssembly(instr,  "push r15");
-
-	// handle the arguments (if any)
-	//    rdi, rsi, rdx, rcx, r8, r9
-	for (int i = p_numArgs, paramCount = 1; i >= 1; --i, paramCount++)
+	// nb: if first time, register and cache callback handler sequence
+	if (m_handlerMap.count(p_callbackHandler) == 0)
 	{
-		//            pushf    16 regs       param 	
-		//            -----    --------      -----
-		int offset =    8    + (16 * 8)   +  (i*8);
-		string paramReg;
-		switch(paramCount) 
-		{
-			case 1:
-				paramReg = "rdi";
-				break;
-			case 2:
-				paramReg = "rsi";
-				break;
-			case 3:
-				paramReg = "rdx";
-				break;
-			case 4:
-				paramReg = "rcx";
-				break;
-			case 5:
-				paramReg = "r8";
-				break;
-			case 6:
-				paramReg = "r9";
-				break;
-			default:
-				assert(0); // only handle up to 6 args
-				break;
-		}
-
-		// e.g.: mov rdi, [rsp+offset]
-		sprintf(tmpbuf, "[rsp+%d]", offset);
-
-		instr = addNewAssembly(instr, "mov " + paramReg + ", " + tmpbuf);
+		m_handlerMap[p_callbackHandler] = registerCallbackHandler64(p_callbackHandler, p_numArgs);
 	}
 
+	if (p_orig)
+		p_orig->SetTarget(m_handlerMap[p_callbackHandler]);
+}
+
+// x86-64
+// register callback handler sequence 
+// 20140416
+Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, int p_numArgs)
+{
+	Instruction_t *instr;
+	Instruction_t *first;
+	char tmpbuf[1024];
+
+	// save flags and 16 registers (136 bytes)
+	// call pushes 8 bytes
+	// Total: 8 * 18 = 144
+	first = instr = addNewAssembly("push rsp");
+	instr = addNewAssembly(instr, "push rbp");
+	instr = addNewAssembly(instr, "push rdi");
+	instr = addNewAssembly(instr, "push rsi");
+	instr = addNewAssembly(instr, "push rdx");
+	instr = addNewAssembly(instr, "push rcx");
+	instr = addNewAssembly(instr, "push rbx");
+	instr = addNewAssembly(instr, "push rax");
+	instr = addNewAssembly(instr, "push r8");
+	instr = addNewAssembly(instr, "push r9");
+	instr = addNewAssembly(instr, "push r10");
+	instr = addNewAssembly(instr, "push r11");
+	instr = addNewAssembly(instr, "push r12");
+	instr = addNewAssembly(instr, "push r13");
+	instr = addNewAssembly(instr, "push r14");
+	instr = addNewAssembly(instr, "push r15");
+	instr = addNewAssembly(instr, "pushf");
+
+	instr = addNewAssembly(instr, "mov rdi, rsp");
+
+	// handle the arguments (if any): rdi, rsi, rdx, rcx, r8, r9
+	// first arg starts at byte +144
+	if (p_numArgs >= 1)
+		instr = addNewAssembly(instr,  "mov rsi, [rsp+144]");
+	if (p_numArgs >= 2)
+		instr = addNewAssembly(instr,  "mov rdx, [rsp+152]");
+	if (p_numArgs >= 3)
+		instr = addNewAssembly(instr,  "mov rcx, [rsp+160]");
+	if (p_numArgs >= 4)
+		instr = addNewAssembly(instr,  "mov r8, [rsp+168]");
+	if (p_numArgs > 4)
+		assert(0); // only handle up to 5 args
+
 	// pin the instruction that follows the callback handler
-	Instruction_t* postCallback = allocateNewInstruction(p_orig->GetAddress()->GetFileID(), p_orig->GetFunction());
+	Instruction_t* postCallback = allocateNewInstruction();
 	virtual_offset_t postCallbackReturn = getAvailableAddress();
 	postCallback->GetAddress()->SetVirtualOffset(postCallbackReturn);
 
 	// push the address to return to once the callback handler is invoked
-	sprintf(tmpbuf,"push 0x%x", postCallbackReturn);
+	sprintf(tmpbuf,"mov rax, 0x%x", postCallbackReturn);
 	instr = addNewAssembly(instr, tmpbuf);
+
+	instr = addNewAssembly(instr, "push rax");
 
 	// use a nop instruction for the actual callback
 	instr = addNewAssembly(instr, "nop");
-	instr->SetComment(" -- callback to " + p_callbackHandler + " orig: " + p_orig->GetComment()) ;
+	instr->SetComment(" -- callback: " + p_callbackHandler);
 	instr->SetCallback(p_callbackHandler); 
 	instr->SetFallthrough(postCallback); 
 
+	// need to make sure the post callback address is pinned
+	// (so that ILR and other transforms do not relocate it)
+	AddressID_t *indTarg =new AddressID_t();
+	m_fileIR->GetAddresses().insert(indTarg);
+	indTarg->SetVirtualOffset(postCallback->GetAddress()->GetVirtualOffset());
+	indTarg->SetFileID(BaseObj_t::NOT_IN_DATABASE); // SPRI global namespace
+	postCallback->SetIndirectBranchTargetAddress(indTarg);
+
 	// restore registers
-	setAssembly(postCallback, "pop r15");           
-	instr = addNewAssembly(postCallback, "pop r14");
+	setAssembly(postCallback, "popf");           
+	instr = addNewAssembly(postCallback, "pop r15");
+	instr = addNewAssembly(instr, "pop r14");
 	instr = addNewAssembly(instr, "pop r13");
 	instr = addNewAssembly(instr, "pop r12");
 	instr = addNewAssembly(instr, "pop r11");
 	instr = addNewAssembly(instr, "pop r10");
 	instr = addNewAssembly(instr, "pop r9");
 	instr = addNewAssembly(instr, "pop r8");
-	instr = addNewAssembly(instr, "pop rsp");
-	instr = addNewAssembly(instr, "pop rbp");
-	instr = addNewAssembly(instr, "pop rdi");
-	instr = addNewAssembly(instr, "pop rsi");
-	instr = addNewAssembly(instr, "pop rdx");
-	instr = addNewAssembly(instr, "pop rcx");
-	instr = addNewAssembly(instr, "pop rbx");
 	instr = addNewAssembly(instr, "pop rax");
+	instr = addNewAssembly(instr, "pop rbx");
+	instr = addNewAssembly(instr, "pop rcx");
+	instr = addNewAssembly(instr, "pop rdx");
+	instr = addNewAssembly(instr, "pop rsi");
+	instr = addNewAssembly(instr, "pop rdi");
+	instr = addNewAssembly(instr, "pop rbp");
+	instr = addNewAssembly(instr, "lea rsp, [rsp+8]");
 
-	// restore flags
-	instr = addNewAssembly(instr, "popf");
 	instr = addNewAssembly(instr, "ret");
 
-	return instr;
+	// return first instruction in the callback handler chain
+	return first;
 }
-

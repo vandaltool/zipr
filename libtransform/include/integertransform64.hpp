@@ -25,4 +25,7 @@ class IntegerTransform64 : public IntegerTransform
 
 } // end namespace
 
+#define OVERFLOW_DETECTOR_64             "overflow_detector_64"
+#define UNDERFLOW_DETECTOR_64            "underflow_detector_64"
+
 #endif

@@ -5,12 +5,25 @@ using namespace libTransform;
 
 /**
 *     64 bit implementation status of the integer transform
+*     20140228 64-bit overflows on multiply, signed/unsigned add/sub
+*     20140422 callback handlers added
 *
-*     20140228 64-bit overflows on multiply, signed/unsigned add/sub, halt policy
-*
+*      64-bit        signed     unsigned   unknown
+*      --------      ------     --------   -------
+*      add, sub       of          c         of,c
+*        mul          of          of        of
+*        lea         @todo      @todo       @todo
+*             
+*      32-bit        signed     unsigned   unknown
+*      --------      ------     --------   -------
+*      add, sub      @todo      @todo       @todo
+*        mul         @todo      @todo       @todo
+*        lea         @todo      @todo       @todo
+
 *     @todo:
+*           - test unknown
+*           - test warnings only mode
 *           - handle LEA instructions
-*           - callback handler for diagnostics
 *
 **/
 
@@ -154,15 +167,14 @@ void IntegerTransform64::handleUnderflowCheck(Instruction_t *p_instruction, cons
 //	        mul a, b                 ; <instruction to instrument>
 //              jno <OrigNext>           ; if no overflows, jump to original fallthrough instruction
 //              mov a, MIN/MAX           ; policy = min-saturate (underflow) / max-saturate (overflow)
+//              of64/uf64 handler        ; call the callback handler (handle diagnostics)
 // OrigNext:    <nextInstruction>        ; original fallthrugh
 //
 void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-	Instruction_t* jncond_i = NULL;
-	Instruction_t* policy_i = NULL;
+	char tmpbuf[1024];
 
 	assert(getFileIR() && p_instruction && p_instruction->GetFallthrough());
-
 	Register::RegisterName targetReg = getTargetRegister(p_instruction);
         if (targetReg == Register::UNKNOWN)
         {
@@ -172,42 +184,66 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 
         logMessage(__func__, p_annotation, "debug");
 
-	jncond_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
-	policy_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	Instruction_t* jncond_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	Instruction_t* lea_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	Instruction_t* policy_i;
 
 	Instruction_t* next_i = p_instruction->GetFallthrough();
 	p_instruction->SetFallthrough(jncond_i); 
 
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+		policy_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	else
+		policy_i = lea_i;
+
+	if (p_annotation.isSigned() || isMultiplyInstruction(p_instruction))
+	{
+		addJno(jncond_i, policy_i, next_i); 
+	}
 	if (p_annotation.isUnsigned())
 	{
 		addJnc(jncond_i, policy_i, next_i);
 	}
-	else if (p_annotation.isSigned())
-	{
-		addJno(jncond_i, policy_i, next_i);
-	}
 	else
 	{ 	// unknown sign
-		addJno(jncond_i, policy_i, next_i);
+		Instruction_t* jnc_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+		addJno(jncond_i, policy_i, jnc_i); 
+		addJnc(jnc_i, policy_i, next_i); 
 	}
 
         if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
 	{
 		if (p_annotation.isUnderflow())
-		{
-                	addMinSaturation(policy_i, targetReg, p_annotation, next_i);
-		}
+                	addMinSaturation(policy_i, targetReg, p_annotation, lea_i); 
 		else
-		{
-                	addMaxSaturation(policy_i, targetReg, p_annotation, next_i);
-		}
+                	addMaxSaturation(policy_i, targetReg, p_annotation, lea_i);
+	}
 
-		// add callback handler here for diagnostics
-	}
+	setAssembly(lea_i, "lea rsp, [rsp-128]");  // red zone 
+
+	// add callback handler here for diagnostics
+	// pass in PC of instrumented instruction
+	// pass in p_policy 
+	sprintf(tmpbuf,"push 0x%08x", p_policy);  
+	Instruction_t* instr = addNewAssembly(lea_i, tmpbuf);
+	sprintf(tmpbuf,"push 0x%08x", p_instruction->GetAddress()->GetVirtualOffset()); 
+	instr = addNewAssembly(instr, tmpbuf);
+
+	Instruction_t* call = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
+	instr->SetFallthrough(call);
+//	setAssembly(call, "db 0xe8, 00, 00, 00, 00"); 
+	setAssembly(call, "call 0"); 
+		
+	if (p_annotation.isOverflow())
+		addCallbackHandler64(call, OVERFLOW_DETECTOR_64, 2); // 2 args for now
 	else
-	{
-		addHlt(policy_i, next_i);
-	}
+		addCallbackHandler64(call, UNDERFLOW_DETECTOR_64, 2); // 2 args for now
+
+	assert(call->GetTarget());
+
+	instr = addNewAssembly(call, "lea rsp, [rsp+128+16]");  
+	call->SetFallthrough(instr);
+	instr->SetFallthrough(next_i);
 
 	if (p_annotation.isUnderflow())
 		m_numUnderflows++;

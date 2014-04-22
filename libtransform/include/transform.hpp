@@ -24,8 +24,10 @@ class Transform {
 
 	protected:
 		void setAssembly(Instruction_t *p_instr, string p_asm);
+		Instruction_t* addNewAssembly(string p_asm);
 		Instruction_t* addNewAssembly(Instruction_t *p_instr, string p_asm);
-		Instruction_t* addCallbackHandler64(Instruction_t *p_orig, string p_callbackHandler, int p_numArgs);
+		Instruction_t* registerCallbackHandler64(string p_callbackHandler, int p_numArgs);
+		void addCallbackHandler64(Instruction_t *p_instr, string p_callbackHandler, int p_numArgs);
 		void addInstruction(Instruction_t *p_instr, string p_dataBits, Instruction_t *p_fallThrough, Instruction_t *p_target);
 		Instruction_t* carefullyInsertBefore(Instruction_t* &p_target, Instruction_t* &p_new);
 
@@ -59,7 +61,7 @@ class Transform {
 		void addMulRegisterConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, int p_constantValue, Instruction_t *p_fallThrough);
 		void addMovRegisters(Instruction_t *p_instr, Register::RegisterName p_regTgt, Register::RegisterName p_regSrc, Instruction_t *p_fallThrough);
 
-		Instruction_t* allocateNewInstruction(db_id_t p_fileID, Function_t* p_func);
+		Instruction_t* allocateNewInstruction(db_id_t p_fileID=BaseObj_t::NOT_IN_DATABASE, Function_t* p_func=NULL);
 
 		virtual_offset_t getAvailableAddress();
 
@@ -88,6 +90,7 @@ class Transform {
 		VariantID_t 		*m_variantID;
 		FileIR_t           	*m_fileIR;
 		set<std::string>	*m_filteredFunctions;
+		std::map<std::string, Instruction_t*> m_handlerMap;
 };
 
 // make sure these match values in detector_handlers.h in the strata library
