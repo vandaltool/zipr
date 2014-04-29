@@ -331,6 +331,7 @@ libtransform/tests/signed_mul.64.c -text
 libtransform/tests/simpletest.c -text
 libtransform/tests/test.signed_mul.32.sh -text
 libtransform/tests/test.signed_mul.64.sh -text
+libtransform/tests/test.unsigned_mul.64.sh -text
 libtransform/tests/unsigned_add.c -text
 libtransform/tests/unsigned_mul.64.c -text
 third_party/README -text
