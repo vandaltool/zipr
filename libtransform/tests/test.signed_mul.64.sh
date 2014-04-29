@@ -63,7 +63,7 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME
 
 # path to source
 cd $TESTLOC
-make clean signed_mul.64.exe
+make signed_mul.64.exe
 
 if [ ! $? -eq 0 ]; then
 	cleanup 1 "Failed to build"

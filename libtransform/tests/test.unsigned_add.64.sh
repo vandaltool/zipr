@@ -49,7 +49,7 @@ cleanup()
 
 	cd $TESTLOC
 	rm -f $tmp1 $tmp2 2>/dev/null
-	rm -fr peasoup*signed*mul*64*
+	rm -fr peasoup*unsigned*add*64*
 	cd -
 
 	exit $exit_code
@@ -63,7 +63,7 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME
 
 # path to source
 cd $TESTLOC
-make clean unsigned_add.64.exe
+make unsigned_add.64.exe
 
 if [ ! $? -eq 0 ]; then
 	cleanup 1 "Failed to build"
