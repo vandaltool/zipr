@@ -333,9 +333,11 @@ libtransform/tests/test.signed_add.64.sh -text
 libtransform/tests/test.signed_mul.32.sh -text
 libtransform/tests/test.signed_mul.64.sh -text
 libtransform/tests/test.unsigned_add.64.sh -text
+libtransform/tests/test.unsigned_mul.32.sh -text
 libtransform/tests/test.unsigned_mul.64.sh -text
 libtransform/tests/unsigned_add.64.c -text
 libtransform/tests/unsigned_add.c -text
+libtransform/tests/unsigned_mul.32.c -text
 libtransform/tests/unsigned_mul.64.c -text
 third_party/README -text
 third_party/beaengine166.tar.gz -text
