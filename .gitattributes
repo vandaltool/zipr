@@ -330,7 +330,7 @@ libtransform/tests/signed_mul.32.c -text
 libtransform/tests/signed_mul.64.c -text
 libtransform/tests/simpletest.c -text
 libtransform/tests/unsigned_add.c -text
-libtransform/tests/unsigned_mul.c -text
+libtransform/tests/unsigned_mul.64.c -text
 third_party/README -text
 third_party/beaengine166.tar.gz -text
 third_party/beaengine175.tar.gz -text

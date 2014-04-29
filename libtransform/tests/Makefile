@@ -8,13 +8,13 @@ LD=DO_NOT_USE
 #exes=dumbledore_cmd.exe test1.exe
 #exes=overflow1.exe
 #exes=dumbledore_cmd.exe
-#exes=unsigned_mul.exe 
+#exes=unsigned_mul.64.exe 
 #exes=signed_add.exe
 #exes=simpletest.exe
 #exes=dummy.exe
-#exes=unsigned_mul.exe signed_add.exe signed_mul.64.exe signed_mul.32.exe
+#exes=unsigned_mul.64.exe signed_add.exe signed_mul.64.exe signed_mul.32.exe
 
-exes=signed_mul.32.exe
+exes=signed_add.exe signed_mul.64.exe unsigned_mul.64.exe signed_mul.32.exe
 
 all: env_check  ${exes}
 

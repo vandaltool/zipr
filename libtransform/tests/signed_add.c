@@ -10,9 +10,9 @@ int main(int argc, char **argv)
   
   printf("a = %ld; b = %ld\n", a, b);
 
-  result = 1 + a + b;
+  result = a + b;
 
-  printf("1 + a=%ld + b=%ld = %ld\n", a, b, result);
+  printf("a=%ld + b=%ld = %ld\n", a, b, result);
 
   return 0;
 }
