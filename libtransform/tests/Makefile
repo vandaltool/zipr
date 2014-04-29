@@ -14,7 +14,7 @@ LD=DO_NOT_USE
 #exes=dummy.exe
 #exes=unsigned_mul.64.exe signed_add.exe signed_mul.64.exe signed_mul.32.exe
 
-exes=signed_add.exe signed_mul.64.exe unsigned_mul.64.exe signed_mul.32.exe
+exes=signed_add.64.exe signed_mul.64.exe unsigned_mul.64.exe signed_mul.32.exe
 
 all: env_check  ${exes}
 
@@ -24,7 +24,6 @@ all: env_check  ${exes}
 #	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
 	gcc -g $< -o $@ 
 #	gcc -m32 $< -o $@ 
-#	${PEASOUP_HOME}/tools/ps_analyze.sh  $@ $@.peasoup 
 	${PEASOUP_HOME}/tools/ps_analyze64.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off 
 
 .c.o:
