@@ -174,6 +174,7 @@ void FileIR_t::AssembleRegistry()
 		assert(reg_val != assembly_registry.end());
 		Instruction_t *instr = reg_val->first;
 
+
 		disasm.EIP =  (UIntPtr)&binary_stream[index];
 		int instr_len = Disasm(&disasm);
 		string rawBits;
@@ -184,6 +185,7 @@ void FileIR_t::AssembleRegistry()
 		}
 
 		instr->SetDataBits(rawBits);
+//		cerr << "doing instruction:" << ((Instruction_t*)instr)->getDisassembly() << " comment: " << ((Instruction_t*)instr)->GetComment() << endl;
 		reg_val++;
 	}
 
@@ -475,6 +477,7 @@ void FileIR_t::WriteToDB()
 				// in the IRDB, or have an associated "old" instruction.  
 				// without these bits of information, the new instruction can't possibly execute correctly.
 				// and we won't have the information necessary to emit spri.
+				cerr << "NULL fallthrough: offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
 				assert(0);
 				abort();
 			}
@@ -488,6 +491,7 @@ void FileIR_t::WriteToDB()
 				// in the IRDB, or have an associated "old" instruction.  
 				// without these bits of information, the new instruction can't possibly execute correctly.
 				// and we won't have the information necessary to emit spri.
+				cerr << "offending instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
 				assert(0);
 				abort();
 			}
