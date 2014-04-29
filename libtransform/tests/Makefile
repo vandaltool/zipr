@@ -63,7 +63,7 @@ clean:
 	rm -Rf peasoup_executable_directory.*
 	rm -f strata.log.*
 	rm -f *.sym
-	rm *.peasoup
+	rm -f *.peasoup
 	${PEASOUP_HOME}/tools/db/drop_my_tables.sh
 	${PEASOUP_HOME}/tools/db/pdb_setup.sh
 

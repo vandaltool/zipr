@@ -23,7 +23,7 @@
 # ATTRIBUTE OS=linux
 # ATTRIBUTE Compiler=gcc
 # ATTRIBUTE Arch=x86_64
-# ATTRIBUTE TestName=signed_mul.32
+# ATTRIBUTE TestName=signed_mul.64
 # ATTRIBUTE CompilerFlags="-w"
 
 COMPFLAGS="-w"
@@ -49,7 +49,7 @@ cleanup()
 
 	cd $TESTLOC
 	rm -f $tmp1 $tmp2 2>/dev/null
-	rm -fr peasoup*signed_mul*32*
+	rm -fr peasoup*signed*mul*64*
 	cd -
 
 	exit $exit_code
@@ -63,43 +63,44 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME
 
 # path to source
 cd $TESTLOC
-make signed_mul.32.exe
+make clean signed_mul.64.exe
 
 if [ ! $? -eq 0 ]; then
 	cleanup 1 "Failed to build"
 fi
 
 # test normal results
-./signed_mul.32.exe 2 4 > $tmp1
-./signed_mul.32.exe.peasoup 2 4 > $tmp2
+./signed_mul.64.exe 2 4 > $tmp1
+./signed_mul.64.exe.peasoup 2 4 > $tmp2
 diff $tmp1 $tmp2
 if [ ! $? -eq 0 ]; then
 	cat $tmp1 $tmp2
 	cleanup 2 "multiply failed: 2 * 4"
 fi
 
-./signed_mul.32.exe -2 4 > $tmp1
-./signed_mul.32.exe.peasoup -2 4 > $tmp2
+./signed_mul.64.exe -2 4 > $tmp1
+./signed_mul.64.exe.peasoup -2 4 > $tmp2
 diff $tmp1 $tmp2
 if [ ! $? -eq 0 ]; then
 	cat $tmp1 $tmp2
 	cleanup 3 "multiply failed: -2 * 4"
 fi
 
-./signed_mul.32.exe -2 -4 > $tmp1
-./signed_mul.32.exe.peasoup -2 -4 > $tmp2
+./signed_mul.64.exe -2 -4 > $tmp1
+./signed_mul.64.exe.peasoup -2 -4 > $tmp2
 diff $tmp1 $tmp2
 if [ ! $? -eq 0 ]; then
 	cat $tmp1 $tmp2
 	cleanup 4 "multiply failed: -2 * -4"
 fi
 
-./signed_mul.32.exe.peasoup 2000000 4000000 > $tmp1
-grep "2147483647" $tmp1
+./signed_mul.64.exe.peasoup 80000000000 80000000000 > $tmp1
+grep "9223372036854775807" $tmp1
+
 if [ ! $? -eq 0 ]; then
 	cat $tmp1
-	cleanup 5 "saturation failed: 2000000 4000000"
+	cleanup 5 "saturation failed: 80000000000 80000000000"
 fi
 
 
-cleanup 0 "signed_mul.32 test success"
+cleanup 0 "signed_mul.64 test success"
