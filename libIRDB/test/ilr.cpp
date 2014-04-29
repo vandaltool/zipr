@@ -51,7 +51,8 @@ void do_ilr(VariantID_t *pidp, FileIR_t* firp)
 		{
 			DISASM d;
 			insn->Disassemble(d);
-			cout<<"Aborting after insn #"<<std::dec<<ilrd_instructions<<": "<<d.CompleteInstr<<endl; 
+			cout<<"Aborting after insn #"<<std::dec<<ilrd_instructions<<": "<<d.CompleteInstr << " at "
+				<<std::hex<<insn->GetAddress()->GetVirtualOffset()<<std::dec<<endl; 
 		}
                 if(getenv("ILR_NUMINSNSTOTRANSFORM") && ilrd_instructions>=atoi(getenv("ILR_NUMINSNSTOTRANSFORM")))
 		{

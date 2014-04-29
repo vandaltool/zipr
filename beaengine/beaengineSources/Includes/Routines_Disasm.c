@@ -539,7 +539,7 @@ void __bea_callspec__ GvEw(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ ALIb(PDISASM pMyDisasm)
 {
-	int reg_offset=8;
+	int reg_offset=0;
 	if(GV.REX.B_)
 		reg_offset=8;
 	
