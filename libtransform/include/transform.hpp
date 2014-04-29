@@ -72,12 +72,16 @@ class Transform {
 		bool isMultiplyInstruction(libIRDB::Instruction_t*);
 		bool isAddSubNonEspInstruction(libIRDB::Instruction_t*);
 		Register::RegisterName getTargetRegister(libIRDB::Instruction_t*, int argNo = 1);
-
+		Instruction_t* addNewMaxSaturation(Instruction_t *p_prev, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation p_annotation);
 		void addMinSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
 		void addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough);
 		void addMovRegisterUnsignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned long p_constant, Instruction_t *p_fallThrough);
 		void addMovRegisterSignedConstant(Instruction_t *p_instr, Register::RegisterName p_regTgt, long int p_constant, Instruction_t *p_fallThrough);
 		void addAndRegister32Mask(Instruction_t *p_instr, Register::RegisterName p_regTgt, unsigned int p_mask, Instruction_t *p_fallThrough);
+
+	protected:
+		void logMessage(const std::string &p_method, const std::string &p_msg);
+		void logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation&, const std::string &p_msg);
 
 	private:
 		void addTestRegister8(Instruction_t *p_instr, Register::RegisterName, Instruction_t *p_fallThrough);

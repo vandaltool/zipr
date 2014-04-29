@@ -64,8 +64,11 @@ Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, 
 	//
 	m_fileIR->ChangeRegistryKey(p_instrumented, dupInstr);
 
-	// replace instrumented with new instruction
-	p_instrumented->SetDataBits(p_newInstr->GetDataBits());
+	if (p_newInstr->GetDataBits().size() == 0)
+		m_fileIR->RegisterAssembly(p_instrumented, m_fileIR->LookupAssembly(p_newInstr));
+	else
+		p_instrumented->SetDataBits(p_newInstr->GetDataBits()); 
+
 	p_instrumented->SetComment(p_newInstr->GetComment());
 	p_instrumented->SetCallback(p_newInstr->GetCallback());
 	p_instrumented->SetFallthrough(dupInstr);
@@ -1173,6 +1176,15 @@ void Transform::addJnc(Instruction_t *p_instr, Instruction_t *p_fallThrough, Ins
 	p_instr->SetTarget(p_target);
 }
 
+Instruction_t* Transform::addNewMaxSaturation(Instruction_t *p_prev, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation p_annotation)
+{
+	Instruction_t *mov = allocateNewInstruction(p_prev->GetAddress()->GetFileID(), p_prev->GetFunction());
+	if (p_prev)
+		p_prev->SetFallthrough(mov);
+	addMaxSaturation(mov, p_reg, p_annotation, NULL);
+	return mov;
+}
+
 void Transform::addMaxSaturation(Instruction_t *p_instruction, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation& p_annotation, Instruction_t *p_fallthrough)
 {
 	assert(getFileIR() && p_instruction);
@@ -1351,10 +1363,10 @@ Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, in
 	instr = addNewAssembly(instr, "push r15");
 	instr = addNewAssembly(instr, "pushf");
 
-	instr = addNewAssembly(instr, "mov rdi, rsp");
-
 	// handle the arguments (if any): rdi, rsi, rdx, rcx, r8, r9
 	// first arg starts at byte +144
+	instr = addNewAssembly(instr, "mov rdi, rsp");
+
 	if (p_numArgs >= 1)
 		instr = addNewAssembly(instr,  "mov rsi, [rsp+144]");
 	if (p_numArgs >= 2)
@@ -1385,7 +1397,7 @@ Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, in
 
 	// need to make sure the post callback address is pinned
 	// (so that ILR and other transforms do not relocate it)
-	AddressID_t *indTarg =new AddressID_t();
+	AddressID_t *indTarg = new AddressID_t();
 	m_fileIR->GetAddresses().insert(indTarg);
 	indTarg->SetVirtualOffset(postCallback->GetAddress()->GetVirtualOffset());
 	indTarg->SetFileID(BaseObj_t::NOT_IN_DATABASE); // SPRI global namespace
@@ -1415,3 +1427,14 @@ Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, in
 	// return first instruction in the callback handler chain
 	return first;
 }
+
+void Transform::logMessage(const std::string &p_method, const std::string &p_msg)
+{
+	std::cerr << p_method << ": " << p_msg << std::endl;
+}
+
+void Transform::logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation& p_annotation, const std::string &p_msg)
+{
+	logMessage(p_method, p_msg + " annotation: " + p_annotation.toString());
+}
+

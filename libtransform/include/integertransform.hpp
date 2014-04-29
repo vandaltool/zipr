@@ -28,8 +28,11 @@ class IntegerTransform : public Transform
 	
 	protected:
 		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
+
+/*
 		void logMessage(const std::string &p_method, const std::string &p_msg);
 		void logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation&, const std::string &p_msg);
+*/
 
 		std::set<VirtualOffset>*  m_benignFalsePositives;
 		bool                      m_policySaturatingArithmetic;

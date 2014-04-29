@@ -1,4 +1,5 @@
 #include <assert.h>
+#include "leapattern.hpp"
 #include "integertransform64.hpp"
 
 using namespace libTransform;
@@ -135,6 +136,11 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 		// handle signed/unsigned add/sub overflows (non lea)
 		addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
 	}
+	else if (p_annotation.isNoFlag())
+	{
+		// handle lea
+		addOverflowCheckNoFlag(p_instruction, p_annotation, p_policy);
+	}
 	else
 	{
 		m_numOverflowsSkipped++;
@@ -230,8 +236,8 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	setAssembly(lea_i, "lea rsp, [rsp-128]");  // red zone 
 
 	// add callback handler here for diagnostics
-	// pass in PC of instrumented instruction
-	// pass in p_policy 
+	//    pass in PC of instrumented instruction
+	//    pass in p_policy 
 	sprintf(tmpbuf,"push 0x%08x", p_policy);  
 	Instruction_t* instr = addNewAssembly(lea_i, tmpbuf);
 	sprintf(tmpbuf,"push 0x%08x", p_instruction->GetAddress()->GetVirtualOffset()); 
@@ -302,3 +308,208 @@ void IntegerTransform64::saturateSignedMultiplyOverflow(Instruction_t *p_orig, I
 	instr->SetFallthrough(p_fallthrough);
 }
 #endif
+
+void IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+{
+	LEAPattern leaPattern(p_annotation);
+
+	if (!leaPattern.isValid())
+	{
+		logMessage(__func__, "invalid or unhandled lea pattern - skipping: ");
+		m_numOverflowsSkipped++;
+		return;
+	}
+
+	if (leaPattern.getRegister1() == Register::UNKNOWN ||
+		leaPattern.getRegister1() == Register::RSP || 
+		leaPattern.getRegister1() == Register::RBP)
+	{
+		logMessage(__func__, "destination register is unknown, esp or ebp -- skipping: ");
+		m_numOverflowsSkipped++;
+		return;
+	}
+	
+	if (leaPattern.isRegisterPlusRegister())
+	{
+		Register::RegisterName reg1 = leaPattern.getRegister1();
+		Register::RegisterName reg2 = leaPattern.getRegister2();
+		Register::RegisterName target = getTargetRegister(p_instruction);
+
+		if (reg1 == Register::UNKNOWN || reg2 == Register::UNKNOWN || target == Register::UNKNOWN)
+		{
+			logMessage(__func__, "lea reg+reg pattern: error retrieving register: reg1: " + Register::toString(reg1) + " reg2: " + Register::toString(reg2) + " target: " + Register::toString(target));
+			m_numOverflowsSkipped++;
+			return;
+		}
+		else if (reg2 == Register::RSP || target == Register::RSP) 
+		{
+			logMessage(__func__, "source or target register is rsp -- skipping: ");
+			m_numOverflowsSkipped++;
+			return;
+		}
+		else
+		{
+			addOverflowCheckNoFlag_RegPlusReg(p_instruction, p_annotation, reg1, reg2, target, p_policy);
+		}
+		return;
+	}
+
+	logMessage(__func__, "not yet handling lea -- placeholder");
+}
+
+//
+// p_orig          original instruction being instrumented
+// p_fallthrough   fallthrough once we're done with the callback handlers/detectors
+// p_detector      callback handler function to call
+// p_policy        instrumentation policy (e.g.: terminate, saturate, ...)
+//
+Instruction_t* IntegerTransform64::addCallbackHandlerSequence(Instruction_t *p_orig, Instruction_t *p_fallthrough, std::string p_detector, int p_policy)
+{
+	char tmpbuf[1024];
+	Instruction_t* lea = addNewAssembly("lea rsp, [rsp-128]");  // red zone 
+
+	// pass in PC of instrumented instruction
+	// pass in p_policy 
+	sprintf(tmpbuf,"push 0x%08x", p_policy);  
+	Instruction_t* instr = addNewAssembly(lea, tmpbuf);
+	sprintf(tmpbuf,"push 0x%08x", p_orig->GetAddress()->GetVirtualOffset()); 
+	instr = addNewAssembly(instr, tmpbuf);
+
+	Instruction_t* call = allocateNewInstruction(p_orig->GetAddress()->GetFileID(), p_orig->GetFunction());
+	instr->SetFallthrough(call);
+	setAssembly(call, "call 0"); 
+		
+	addCallbackHandler64(call, p_detector, 2); // 2 args for now
+
+	assert(call->GetTarget());
+
+	instr = addNewAssembly(call, "lea rsp, [rsp+128+16]");  
+	call->SetFallthrough(instr);
+	instr->SetFallthrough(p_fallthrough);
+
+	return lea;
+}
+
+// Example annotation to handle
+// 804852e      3 INSTR CHECK OVERFLOW NOFLAGSIGNED 32 EDX+EAX ZZ lea     eax, [edx+eax] Reg1: EDX Reg2: EAX
+// Need to handle both 32-bit and 64-bit versions
+//
+// Original:
+//   lea r3, [r1+r2]
+//   <originalNext>
+//
+// Instrumentation:
+//   push r1                ;   save r1
+//   pushf                  ;   save flags
+//   add r1, r2             ;   r1 = r1 + r2
+//        <overflowcheck>   ;   check for overflow 
+//          (jno|jnc <restore>)   ; SIGNED|UNSIGNED
+//            fallthrough--><policy>
+//          (jno&jnc <restore>)   ; UNKNOWNSIGN check both flags  
+//            fallthrough--><policy>
+//
+// <restore>
+//         popf                   ; restore flags
+//         pop r1                 ; restore register
+//
+// <orig>: lea r3, [r1+r2]        ; original instruction        
+//         <originalNext>         ; original next instruction
+//
+// <policy>                  
+//         () callback handler 
+//         popf                   ; restore flags
+//         pop r1                 ; restore register
+//            fallthrough-->originalNext (if no saturation)
+//         saturateMax(r3)        ; optional saturation
+//            fallthrough-->originalNext
+//
+void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const Register::RegisterName& p_reg2, const Register::RegisterName& p_reg3, int p_policy)
+{
+	assert(p_instruction && p_instruction->GetFallthrough());
+
+	cerr << __func__ << ": r3 <-- r1+r2: r1: " << Register::toString(p_reg1) << " r2: " << Register::toString(p_reg2) << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
+
+	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+	Instruction_t *instr, *first, *saturation_policy;
+	Instruction_t *restore = addNewAssembly("popf");
+
+	// <policy>                  
+	//         nop                    ;
+	//         () callback handler    ;
+	//         popf                   ; restore flags
+	//         pop r1                 ; restore register
+	//            fallthrough-->originalNext (if no saturation)
+	//         saturateMax(r3)        ; optional saturation
+	//            fallthrough-->originalNext
+	//
+	// assume 64 bit for now
+	//
+	saturation_policy = addNewAssembly("nop");
+	saturation_policy->SetComment("lea overflow instrumentation(reg+reg): policy code sequence");
+	Instruction_t *popf = addNewAssembly("popf");
+	Instruction_t *callback = addCallbackHandlerSequence(p_instruction, popf, OVERFLOW_DETECTOR_64, p_policy);
+	saturation_policy->SetFallthrough(callback);
+	instr = addNewAssembly(popf, "pop " + Register::toString(p_reg1));
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC) // why do we need this?
+	{
+		instr = addNewMaxSaturation(instr, p_reg3, p_annotation);
+	}
+
+	instr->SetFallthrough(origFallthrough);
+
+	// Original code sequence:
+	//   lea r3, [r1+r2]
+	//   <originalNext>
+	//
+	// Instrumentation:
+	//   push r1                ;   save r1
+	//   pushf                  ;   save flags
+	//   add r1, r2             ;   r1 = r1 + r2
+	//        <overflowcheck>   ;   check for overflow 
+	//          (jno|jnc <restore>)   ; SIGNED|UNSIGNED
+	//            fallthrough--><policy>
+	//          (jno&jnc <restore>)   ; UNKNOWNSIGN check both flags  
+	//            fallthrough--><policy>
+	//
+	first = addNewAssembly("push " + Register::toString(p_reg1)); 
+	first->SetComment("lea overflow instrumentation(reg+reg): start");
+	instr = addNewAssembly(first, "pushf");
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, first);
+
+	// make sure we set the fallthrough post careful insertion
+	first->SetFallthrough(instr);
+
+	instr = addNewAssembly(instr, "add " + Register::toString(p_reg1) + "," + Register::toString(p_reg2));
+	if (p_annotation.isSigned())
+	{
+		instr = addNewAssembly(instr, "jno 0x22");
+		instr->SetFallthrough(saturation_policy);
+		instr->SetTarget(restore);
+	}
+	else if (p_annotation.isUnsigned())
+	{
+		instr = addNewAssembly(instr, "jnc 0x22");
+		instr->SetFallthrough(saturation_policy);
+		instr->SetTarget(restore);
+	}
+	else
+	{
+		Instruction_t *instr2 = addNewAssembly(instr, "jno 0x22");
+		instr = addNewAssembly(instr2, "jnc 0x22");
+		instr->SetFallthrough(saturation_policy);
+		instr->SetTarget(restore);
+	}
+
+	// <restore>
+	//         popf                   ; restore flags
+	//         pop r1                 ; restore register
+	//
+	// <orig>: lea r3, [r1+r2]        ; original instruction        
+	//         <originalNext>         ; original next instruction
+	//
+	restore->SetComment("lea overflow instrumentation(reg+reg): restore");
+	instr = addNewAssembly(restore, "pop " + Register::toString(p_reg1));
+
+	instr->SetFallthrough(originalInstrumentInstr);
+	m_numOverflows++;
+}

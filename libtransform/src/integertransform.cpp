@@ -50,6 +50,7 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 		strcasestr(funcName, "yy_"));
 }
 
+#ifdef xxx
 void IntegerTransform::logMessage(const std::string &p_method, const std::string &p_msg)
 {
 	std::cerr << p_method << ": " << p_msg << std::endl;
@@ -59,6 +60,7 @@ void IntegerTransform::logMessage(const std::string &p_method, const MEDS_Instru
 {
 	logMessage(p_method, p_msg + " annotation: " + p_annotation.toString());
 }
+#endif
 
 void IntegerTransform::logStats()
 {
