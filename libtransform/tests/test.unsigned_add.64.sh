@@ -23,7 +23,7 @@
 # ATTRIBUTE OS=linux
 # ATTRIBUTE Compiler=gcc
 # ATTRIBUTE Arch=x86_64
-# ATTRIBUTE TestName=signed_add.64
+# ATTRIBUTE TestName=unsigned_add.64
 # ATTRIBUTE CompilerFlags="-w"
 
 COMPFLAGS="-w"
@@ -63,50 +63,27 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME
 
 # path to source
 cd $TESTLOC
-make clean signed_add.64.exe
+make clean unsigned_add.64.exe
 
 if [ ! $? -eq 0 ]; then
 	cleanup 1 "Failed to build"
 fi
 
 # test normal results
-./signed_add.64.exe 2 4 > $tmp1
-./signed_add.64.exe.peasoup 2 4 > $tmp2
+./unsigned_add.64.exe 2 4 > $tmp1
+./unsigned_add.64.exe.peasoup 2 4 > $tmp2
 diff $tmp1 $tmp2
 if [ ! $? -eq 0 ]; then
 	cat $tmp1 $tmp2
 	cleanup 2 "failed: 2 + 4"
 fi
 
-./signed_add.64.exe -2 4 > $tmp1
-./signed_add.64.exe.peasoup -2 4 > $tmp2
-diff $tmp1 $tmp2
-if [ ! $? -eq 0 ]; then
-	cat $tmp1 $tmp2
-	cleanup 3 "failed: -2 + 4"
-fi
-
-./signed_add.64.exe -2 -4 > $tmp1
-./signed_add.64.exe.peasoup -2 -4 > $tmp2
-diff $tmp1 $tmp2
-if [ ! $? -eq 0 ]; then
-	cat $tmp1 $tmp2
-	cleanup 4 "failed: -2 + -4"
-fi
-
-./signed_add.64.exe.peasoup 9223372036854775807 -1 > $tmp1
-grep "9223372036854775806" $tmp1
+./unsigned_add.64.exe.peasoup 18446744073709551612 25 > $tmp1
+grep "18446744073709551615" $tmp1
 if [ ! $? -eq 0 ]; then
 	cat $tmp1
-	cleanup 5 "failed: 9223372036854775807 -1"
-fi
-
-./signed_add.64.exe.peasoup 9223372036854775806 25 > $tmp1
-grep "9223372036854775807" $tmp1
-if [ ! $? -eq 0 ]; then
-	cat $tmp1
-	cleanup 5 "failed to saturate: 9223372036854775806+25"
+	cleanup 3 "failed to saturate: 18446744073709551612+25"
 fi
 
 
-cleanup 0 "signed_add.64 test success"
+cleanup 0 "unsigned_add.64 test success"
