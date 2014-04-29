@@ -1,0 +1,11 @@
+TMP=tmp.$$
+
+make clean
+
+for i in `ls test*.sh`
+do
+  $TEST_HARNESS_HOME/run_one_test.sh $i >$TMP 2>&1
+  grep TestResult $TMP
+done
+
+rm $TMP
