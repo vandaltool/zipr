@@ -28,12 +28,18 @@
 
 COMPFLAGS="-w"
 
+export IDAROOT=$IDAROOT65
+export IDASDK=$IDASDK65
+
 PWD=`pwd`
 TESTLOC="${PWD}"
 tmp1=$$.tmp.1
 tmp2=$$.tmp.2
 
 outfile=$1
+
+export IDAROOT=$IDAROOT65
+export IDASDK=$IDASDK65
 
 cleanup()
 {
