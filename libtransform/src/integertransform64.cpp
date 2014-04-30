@@ -12,13 +12,13 @@ using namespace libTransform;
 *      64-bit        signed     unsigned   unknown
 *      --------      ------     --------   -------
 *      add, sub       of          c         of,c
-*        mul          of          of        of
+*        mul          of          of         of
 *        lea         @todo      @todo       @todo
 *             
 *      32-bit        signed     unsigned   unknown
 *      --------      ------     --------   -------
 *      add, sub      @todo      @todo       @todo
-*        mul         @todo      @todo       @todo
+*        mul          of          of         of
 *        lea         @todo      @todo       @todo
 
 *     @todo:

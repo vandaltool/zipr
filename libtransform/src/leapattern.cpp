@@ -10,6 +10,16 @@
 using namespace std;
 using namespace libTransform;
 
+//
+// Supported patterns:
+//     reg+reg
+//     reg+k
+//     reg*reg
+//     reg*k
+//
+// Not (yet) supported:
+//     reg+reg+k
+//
 LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 {
 	m_isValid = false;
