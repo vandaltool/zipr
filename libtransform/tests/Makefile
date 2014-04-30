@@ -57,7 +57,7 @@ env_check:
 
 clean:
 	rm -f *.o *.syms *.map 
-	rm -f *.exe *.dis *.data *.idb *.log *.ncexe *.readelf temp.* *.temp *.stratafied *.asm *.SMPobjdump *.id0 *.id1 *.til *.nam
+	rm -f *.exe *.exe.peasoup *.dis *.data *.idb *.log *.ncexe *.readelf temp.* *.temp *.stratafied *.asm *.SMPobjdump *.id0 *.id1 *.til *.nam
 	rm -Rf concolic.files_*
 	rm -Rf peasoup_executable_directory.*
 	rm -f strata.log.*

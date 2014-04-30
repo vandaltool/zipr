@@ -53,6 +53,7 @@ cleanup()
 	cd $TESTLOC
 	rm -f $tmp1 $tmp2 2>/dev/null
 	rm -fr peasoup*unsigned_mul*32*
+	rm -fr unsigned_mul*32*.exe*
 	cd -
 
 	exit $exit_code
