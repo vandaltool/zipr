@@ -148,7 +148,7 @@ main(int argc, char **argv)
 			// we need to display file IDs along with the PC to distinguish between various libs
 			std::set<VirtualOffset> warnings = getInstructionWarnings(integerWarnings); // keep track of instructions that should be instrumented as warnings (upon detection, print diagnostic & continue)
 
-			std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotationParser.getAnnotations();
+			std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotationParser.getAnnotations();
 
 			// do the transformation
 
