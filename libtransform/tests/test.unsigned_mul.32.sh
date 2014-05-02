@@ -17,6 +17,7 @@
 # ATTRIBUTE ModDep=stratafier
 # ATTRIBUTE ModDep=idapro65
 # ATTRIBUTE ModDep=idapro65_sdk
+# ATTRIBUTE ModDep=peasoup_examples
 # ATTRIBUTE TestsWhat=lang_C
 # ATTRIBUTE TestsWhat=strata
 # ATTRIBUTE TestsWhat=IntegerOverflow
