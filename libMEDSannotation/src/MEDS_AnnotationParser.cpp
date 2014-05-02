@@ -20,7 +20,9 @@ MEDS_AnnotationParser::MEDS_AnnotationParser(istream &p_inputStream)
 		if (annot.isValid())
 		{
 			VirtualOffset vo = annot.getVirtualOffset();
-			m_annotations[vo] = annot;
+//			m_annotations[vo] = annot;
+//			m_annotations.insert(vo, annot);
+			m_annotations.insert(std::pair<VirtualOffset, MEDS_InstructionCheckAnnotation>(vo, annot));
 		}
 	}
 }
