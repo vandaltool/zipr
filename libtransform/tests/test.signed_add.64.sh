@@ -19,6 +19,7 @@
 # ATTRIBUTE ModDep=idapro65_sdk
 # ATTRIBUTE ModDep=peasoup_examples
 # ATTRIBUTE ModDep=security_transforms
+# ATTRIBUTE ModDep=SMPStaticAnalyzer
 # ATTRIBUTE TestsWhat=lang_C
 # ATTRIBUTE TestsWhat=strata
 # ATTRIBUTE TestsWhat=IntegerOverflow
