@@ -20,7 +20,7 @@ namespace libTransform
 class Transform {
 
 	public:
-		Transform(VariantID_t *, FileIR_t *, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions);
+		Transform(VariantID_t *, FileIR_t *, set<std::string> *p_filteredFunctions);
 
 	protected:
 		void setAssembly(Instruction_t *p_instr, string p_asm);

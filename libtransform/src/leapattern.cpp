@@ -53,13 +53,13 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 	if(regexec(&m_regex_reg_plus_reg, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
 	{
 		// pattern is of the form reg+reg, e.g.:   EDX+EAX
-		countMatch++;
 		m_isRegPlusReg = true;
 		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
 		m_reg2 = Register::getRegister(p_annotation.getTarget().substr(4,3));
 
 		if (m_reg1 != Register::UNKNOWN && m_reg2 != Register::UNKNOWN)
 		{
+			countMatch++;
 			m_isValid = true;
 			cerr << "leapattern: reg+reg:" << Register::toString(m_reg1) << " " << Register::toString(m_reg2) << endl;  
 		}
@@ -69,13 +69,13 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 	{
 		// pattern is of the form reg*reg, e.g.:   EDX*EAX
 		// nb: is this even a valid pattern -- not used 
-		countMatch++;
 		m_isRegPlusReg = true;
 		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
 		m_reg2 = Register::getRegister(p_annotation.getTarget().substr(4,3));
 
 		if (m_reg1 != Register::UNKNOWN && m_reg2 != Register::UNKNOWN)
 		{
+			countMatch++;
 			m_isValid = true;
 			cerr << "leapattern: reg*reg:" << Register::toString(m_reg1) << " " << Register::toString(m_reg2) << endl;  
 		}
@@ -89,7 +89,6 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 		// pattern is of the form: reg+constant, e.g.: EDX+16
 		// pattern is of the form: reg+-constant, e.g.: EAX+-16
 		// note that constant value of annotation is in decimal (not hex)
-		countMatch++;
 		m_isRegPlusConstant = true;
 		m_reg1 = Register::getRegister(p_annotation.getTarget().substr(0,3));
 
@@ -97,6 +96,7 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 		if (constantSS >> m_constant)
 		{
 			m_isValid = true;
+		countMatch++;
 			cerr << "leapattern: reg+-constant: stream: " << p_annotation.getTarget().substr(4) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
 		}
 
@@ -104,7 +104,6 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 	
 	if(regexec(&m_regex_reg_times_constant, p_annotation.getTarget().c_str(), max, pmatch, 0)==0)
 	{
-		countMatch++;
 		// pattern is of the form: reg*constant, e.g.: EDX*4
 		// note that constant value of annotation is in decimal (not hex)
 		m_isRegTimesConstant = true;
@@ -112,6 +111,7 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 		stringstream constantSS(p_annotation.getTarget().substr(4));
 		if (constantSS >> m_constant)
 		{
+		countMatch++;
 		cerr << "leapattern: reg*constant: stream: " << p_annotation.getTarget().substr(4) << " constant: " << dec << m_constant << " annotation: " << p_annotation.toString() << endl;
 			m_isValid = true;
 		}
@@ -119,7 +119,7 @@ LEAPattern::LEAPattern(const MEDS_InstructionCheckAnnotation& p_annotation)
 
 	if (countMatch == 0 || countMatch > 1)
 	{
-		cerr << "leapattern: fail sanity check -- there are more than 1 pattern that match" << endl;
+		cerr << "leapattern: matching patterns = " << countMatch << " : " << p_annotation.toString() << endl;
 		m_isValid = false;
 	}
 }

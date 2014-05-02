@@ -8,7 +8,7 @@
 
 using namespace libTransform;
 
-IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions) 
+IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_fileIR, p_filteredFunctions) 
 {
 	m_benignFalsePositives = p_benignFalsePositives;
 	m_policySaturatingArithmetic = false;
@@ -49,18 +49,6 @@ bool IntegerTransform::isBlacklisted(Function_t *func)
 		strcasestr(funcName, "yylex") ||
 		strcasestr(funcName, "yy_"));
 }
-
-#ifdef xxx
-void IntegerTransform::logMessage(const std::string &p_method, const std::string &p_msg)
-{
-	std::cerr << p_method << ": " << p_msg << std::endl;
-}
-
-void IntegerTransform::logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation& p_annotation, const std::string &p_msg)
-{
-	logMessage(p_method, p_msg + " annotation: " + p_annotation.toString());
-}
-#endif
 
 void IntegerTransform::logStats()
 {

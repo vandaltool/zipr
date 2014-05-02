@@ -14,7 +14,7 @@ using namespace libIRDB;
 class IntegerTransform : public Transform
 {
 	public:
-		IntegerTransform(VariantID_t *, FileIR_t*, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
+		IntegerTransform(VariantID_t *, FileIR_t*, std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
 		virtual int execute() = 0;
 
 		void setSaturatingArithmetic(bool p_satArithmetic) { m_policySaturatingArithmetic = p_satArithmetic; }
@@ -27,7 +27,7 @@ class IntegerTransform : public Transform
 		bool isBlacklisted(Function_t *func);
 	
 	protected:
-		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
+		std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
 
 /*
 		void logMessage(const std::string &p_method, const std::string &p_msg);
@@ -38,7 +38,7 @@ class IntegerTransform : public Transform
 		bool                      m_policySaturatingArithmetic;
 		bool                      m_policyWarningsOnly;
 		bool                      m_pathManipulationDetected;
-		std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *m_annotations;
+		std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *m_annotations;
 
 		unsigned m_numAnnotations; 
 		unsigned m_numIdioms; 

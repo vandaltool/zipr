@@ -34,7 +34,7 @@
 //
 using namespace libTransform;
 
-IntegerTransform32::IntegerTransform32(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : IntegerTransform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions, p_benignFalsePositives)
+IntegerTransform32::IntegerTransform32(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : IntegerTransform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions, p_benignFalsePositives)
 {
 }
 
@@ -124,7 +124,26 @@ int IntegerTransform32::execute()
 				}
 
 
+/*
 				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
+				if (!annotation.isValid()) 
+					continue;
+*/
+                                if (getAnnotations()->count(vo) == 0)
+                                        continue;
+
+                                std::pair<std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator,std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator> ret;
+                                ret = getAnnotations()->equal_range(vo);
+                                MEDS_InstructionCheckAnnotation annotation;
+                                for (std::multimap<VirtualOffset,MEDS_InstructionCheckAnnotation>::iterator it = ret.first; it != ret.second; ++it)
+                                {
+                                        annotation = it->second;
+                                        if (!annotation.isValid())
+                                                continue;
+                                        else
+                                                break; // let's just handle one annotation for now and see how it goes
+                                }
+
 				if (!annotation.isValid()) 
 					continue;
 

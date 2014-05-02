@@ -29,7 +29,7 @@ using namespace libTransform;
 *
 **/
 
-IntegerTransform64::IntegerTransform64(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : IntegerTransform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions, p_benignFalsePositives)
+IntegerTransform64::IntegerTransform64(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : IntegerTransform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions, p_benignFalsePositives)
 {
 }
 
@@ -95,9 +95,19 @@ int IntegerTransform64::execute()
 
 				VirtualOffset vo(irdb_vo);
 
-				MEDS_InstructionCheckAnnotation annotation = (*getAnnotations())[vo];
-				if (!annotation.isValid()) 
+				if (getAnnotations()->count(vo) == 0)
 					continue;
+				std::pair<std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator,std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator> ret;
+				ret = getAnnotations()->equal_range(vo);
+				MEDS_InstructionCheckAnnotation annotation; 
+				for (std::multimap<VirtualOffset,MEDS_InstructionCheckAnnotation>::iterator it = ret.first; it != ret.second; ++it)
+				{
+					annotation = it->second;
+					if (!annotation.isValid()) 
+						continue;
+					else
+						break; // let's just handle one annotation for now and see how it goes
+				}
 
 				logMessage(__func__, annotation, "-- instruction: " + insn->getDisassembly());
 				m_numAnnotations++;
@@ -151,7 +161,7 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 
 void IntegerTransform64::handleUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-        if (p_annotation.isUnderflow() && p_annotation.isNoFlag())
+        if (p_annotation.isUnderflow() && !p_annotation.isNoFlag())
         {
                 addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
         }
@@ -350,13 +360,13 @@ void IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 		}
 		else if (p_annotation.getBitWidth() != 64)
 		{
-			logMessage(__func__, "we only handle 64 bit LEAs for now");
+			logMessage(__func__, "we only handle 64 bit LEAs for now:" + p_annotation.toString());
 			m_numOverflowsSkipped++;
 			return;
 		}
 		else if (Register::getBitWidth(target) != 64)
 		{
-			logMessage(__func__, "we only handle 64 bit registers in LEAs for now");
+			logMessage(__func__, "we only handle 64 bit registers in LEAs for now: " + p_annotation.toString());
 			m_numOverflowsSkipped++;
 			return;
 		}
@@ -389,13 +399,13 @@ void IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 		}
 		else if (p_annotation.getBitWidth() != 64)
 		{
-			logMessage(__func__, "we only handle 64 bit LEAs for now");
+			logMessage(__func__, "we only handle 64 bit LEAs for now:" + p_annotation.toString());
 			m_numOverflowsSkipped++;
 			return;
 		}
 		else if (Register::getBitWidth(target) != 64)
 		{
-			logMessage(__func__, "we only handle 64 bit registers in LEAs for now");
+			logMessage(__func__, "we only handle 64 bit registers in LEAs for now: " + p_annotation.toString());
 			m_numOverflowsSkipped++;
 			return;
 		}

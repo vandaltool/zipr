@@ -8,7 +8,7 @@ using namespace MEDS_Annotation;
 // 20130415 Anh added support for additional registers for various utility functions
 // 20130415 Anh added assert() statements for unhandled registers
 
-Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions)
+Transform::Transform(VariantID_t *p_variantID, FileIR_t *p_fileIR, set<std::string> *p_filteredFunctions)
 {
 	m_variantID = p_variantID;                  // Current variant ID
 	m_fileIR = p_fileIR;                  		// File IR (off the database) for variant

@@ -12,7 +12,7 @@ using namespace libIRDB;
 class IntegerTransform64 : public IntegerTransform
 {
 	public:
-		IntegerTransform64(VariantID_t *, FileIR_t*, std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
+		IntegerTransform64(VariantID_t *, FileIR_t*, std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
 
 		int execute();
 
