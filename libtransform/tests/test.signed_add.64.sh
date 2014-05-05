@@ -75,6 +75,7 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME
 
 # path to source
 cd $TESTLOC
+rm signed_add.64.exe
 make signed_add.64.exe
 
 if [ ! $? -eq 0 ]; then

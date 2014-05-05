@@ -70,6 +70,7 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME
 
 # path to source
 cd $TESTLOC
+rm unsigned_mul.32.exe
 make unsigned_mul.32.exe
 
 if [ ! $? -eq 0 ]; then

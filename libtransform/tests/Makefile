@@ -20,7 +20,7 @@ all: env_check  ${exes}
 
 .PHONY: env_check 
 
-.o.exe:
+.o.exe: 
 #	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
 	gcc -g $< -o $@ 
 #	gcc -m32 $< -o $@ 
