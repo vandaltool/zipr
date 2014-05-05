@@ -53,11 +53,11 @@ cleanup()
 		report_test_failure $outfile "Intermediate step failed, exit code is $exit_code, msg='$msg'"
 	fi
 
-	cd $TESTLOC
-	rm -f $tmp1 $tmp2 2>/dev/null
-	rm -fr peasoup*signed*mul*64*
-	rm -fr signed*mul*64*.exe*
-	cd -
+#	cd $TESTLOC
+#	rm -f $tmp1 $tmp2 2>/dev/null
+#	rm -fr peasoup*signed*mul*64*
+#	rm -fr signed*mul*64*.exe*
+#	cd -
 
 	exit $exit_code
 }
