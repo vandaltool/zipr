@@ -14,7 +14,7 @@ vector<Range> AnnotationBoundaryGenerator::GetBoundaries(libIRDB::Function_t *fu
 {
 	vector<Range> ranges;
 	
-	std::map<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotParser->getAnnotations();
+	std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotParser->getAnnotations();
 
 	for(
 		set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
@@ -29,36 +29,42 @@ vector<Range> AnnotationBoundaryGenerator::GetBoundaries(libIRDB::Function_t *fu
 
 		VirtualOffset vo(irdb_vo);
 
-		MEDS_InstructionCheckAnnotation annotation = annotations[vo];
-	
-		if (annotation.isValid() && annotation.isMemset())
+//		MEDS_InstructionCheckAnnotation annotation = annotations[vo];
+		std::pair<std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator,std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator> ret;
+		ret = annotations.equal_range(vo);
+		MEDS_InstructionCheckAnnotation annotation;
+		for (std::multimap<VirtualOffset,MEDS_InstructionCheckAnnotation>::iterator it = ret.first; it != ret.second; ++it)
 		{
-			//cerr<<"Memset annot found"<<endl;
-
-			int objectSize = annotation.getObjectSize();
-			int offset = annotation.getStackOffset();
-
-			Range cur;
-			cur.SetOffset(offset);
-			cur.SetSize(objectSize);
-
-			if (annotation.isEbpOffset()) 
+			annotation = it->second;
+			if (annotation.isValid() && annotation.isMemset())
 			{
-				if(offset < 0)
+				//cerr<<"Memset annot found"<<endl;
+	
+				int objectSize = annotation.getObjectSize();
+				int offset = annotation.getStackOffset();
+
+				Range cur;
+				cur.SetOffset(offset);
+				cur.SetSize(objectSize);
+	
+				if (annotation.isEbpOffset()) 
 				{
-					ranges.push_back(cur);
-				}
-		
-			} else if (annotation.isEspOffset()) 
-			{
-				if(offset >= 0)
+					if(offset < 0)
+					{
+						ranges.push_back(cur);
+					}
+			
+				} else if (annotation.isEspOffset()) 
 				{
-					ranges.push_back(cur);
+					if(offset >= 0)
+					{
+						ranges.push_back(cur);
+					}
+				} else 
+				{
+					// something went wrong
+					assert(0);
 				}
-			} else 
-			{
-				// something went wrong
-				assert(0);
 			}
 		}
 	}
