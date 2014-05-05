@@ -79,6 +79,7 @@ rm signed_add.64.exe
 make signed_add.64.exe
 
 if [ ! $? -eq 0 ]; then
+	env
 	cleanup 1 "Failed to build"
 fi
 
