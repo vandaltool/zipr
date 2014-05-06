@@ -494,6 +494,7 @@ void PNTransformDriver::GenerateTransformsInit()
 	sanitized_funcs = 0;
 	push_pop_sanitized_funcs = 0;
 	jump_table_sanitized = 0;
+	bad_variadic_func_sanitized = 0;
 	pic_jump_table_sanitized = 0;
 	dynamic_frames = 0;
 	high_coverage_count = low_coverage_count = no_coverage_count = validation_count = 0;
@@ -815,6 +816,76 @@ bool	check_for_push_pop_coherence(Function_t *func)
 	return true;
 }
 
+/*
+ * check_for_bad_variadic_funcs  -- Look for functions of this form:
+   0x0000000000418108 <+0>:	push   rbp
+   0x0000000000418109 <+1>:	mov    rbp,rsp
+   0x000000000041810c <+4>:	sub    rsp,0x100
+   0x0000000000418113 <+11>:	mov    DWORD PTR [rbp-0xd4],edi
+   0x0000000000418119 <+17>:	mov    QWORD PTR [rbp-0xe0],rsi
+   0x0000000000418120 <+24>:	mov    QWORD PTR [rbp-0x98],rcx
+   0x0000000000418127 <+31>:	mov    QWORD PTR [rbp-0x90],r8
+   0x000000000041812e <+38>:	mov    QWORD PTR [rbp-0x88],r9
+   0x0000000000418135 <+45>:	movzx  eax,al
+   0x0000000000418138 <+48>:	mov    QWORD PTR [rbp-0xf8],rax
+   0x000000000041813f <+55>:	mov    rcx,QWORD PTR [rbp-0xf8]
+   0x0000000000418146 <+62>:	lea    rax,[rcx*4+0x0]
+   0x000000000041814e <+70>:	mov    QWORD PTR [rbp-0xf8],0x41818d
+   0x0000000000418159 <+81>:	sub    QWORD PTR [rbp-0xf8],rax
+   0x0000000000418160 <+88>:	lea    rax,[rbp-0x1]
+   0x0000000000418164 <+92>:	mov    rcx,QWORD PTR [rbp-0xf8]
+   0x000000000041816b <+99>:	jmp    rcx
+	<leaves function>
+
+This is a common IDApro failure, as the computed jump is strange for IDA.
+
+We check for this case by looking for the movzx before EAX is/used otherwise .
+
+Return value:  true if function is OK to transform, false if we find the pattern.
+
+*/
+bool	check_for_bad_variadic_funcs(Function_t *func, const ControlFlowGraph_t* cfg)
+{
+	BasicBlock_t *b=cfg->GetEntry();
+
+
+	/* sanity check that there's an entry block */
+	if(!b)
+		return true;
+
+	/* sanity check for ending in an indirect branch */
+	if(!b->EndsInIndirectBranch())
+		return true;
+
+	const std::vector<Instruction_t*>& insns=b->GetInstructions();
+
+	for(vector<Instruction_t*>::const_iterator it=insns.begin(); it!=insns.end(); ++it)
+	{
+		Instruction_t* insn=*it;
+		DISASM d;
+		insn->Disassemble(d);
+
+		/* found the suspicious move insn first */
+		if(strcmp(d.CompleteInstr,"movzx eax, al")==0)
+			return false;
+
+
+		/* else, check for a use or def of rax in any of it's forms */
+		if(strstr(d.CompleteInstr,"eax")!=0)
+			return true;
+		if(strstr(d.CompleteInstr,"rax")!=0)
+			return true;
+		if(strstr(d.CompleteInstr,"ax")!=0)
+			return true;
+		if(strstr(d.CompleteInstr,"ah")!=0)
+			return true;
+		if(strstr(d.CompleteInstr,"al")!=0)
+			return true;
+	}
+
+	return true;
+}
+
 
 static ELFIO::section*  find_section(unsigned int addr, ELFIO::elfio *elfiop)
 {
@@ -1079,6 +1150,7 @@ DN:   0x4824e0: .long 0x4824e0-LN
 
 void PNTransformDriver::SanitizeFunctions()
 {
+
 	//TODO: for now, the sanitized list is only created for an individual IR file
 	sanitized.clear();
 
@@ -1088,9 +1160,8 @@ void PNTransformDriver::SanitizeFunctions()
 		++func_it
 		)
 	{
-
-		
 		Function_t *func = *func_it;
+		ControlFlowGraph_t cfg(func);
 		assert(func);
 
 		if(func == NULL)
@@ -1163,6 +1234,17 @@ void PNTransformDriver::SanitizeFunctions()
 			if(!check_for_push_pop_coherence(func))
 			{
 				push_pop_sanitized_funcs++;	
+				sanitized.insert(func);
+				continue;
+			}
+		}
+		// if it's not already sanitized
+		if(sanitized.find(func)==sanitized.end())
+		{
+			// check for push/pop coherence.
+			if(!check_for_bad_variadic_funcs(func,&cfg))
+			{
+				bad_variadic_func_sanitized++;
 				sanitized.insert(func);
 				continue;
 			}
@@ -1896,6 +1978,7 @@ void PNTransformDriver::Print_Report()
 	cerr<<"Blacklisted Functions \t\t"<<blacklist_funcs<<endl;
 	cerr<<"Sanitized Functions \t\t"<<sanitized_funcs<<endl;
 	cerr<<"Push/Pop Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
+	cerr<<"Bad Variadic Sanitized Functions \t\t"<<push_pop_sanitized_funcs<<endl;
 	cerr<<"Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"PIC Jump table Sanitized Functions \t\t"<<jump_table_sanitized<<endl;
 	cerr<<"Transformable Functions \t"<<(total_funcs-not_transformable.size())<<endl;

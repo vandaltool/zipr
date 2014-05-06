@@ -17,6 +17,9 @@ finals= 3dnow.rebeabin insns_mm.rebeabin insns_nomm_no3dnow.rebeabin insns_avx.r
 diffs=3dnow.diff insns_mm.diff insns_nomm_no3dnow.diff insns.diff avx1.diff avx2.diff
 BIN=dbea.exe
 
+#NDISASM=${HOME}/nasm*/bin/ndisasm 
+NDISASM=ndisasm
+
 all: dbea.exe  $(finals) 
 
 
@@ -29,7 +32,7 @@ $(BIN): dbea.c bea
 	nasm -O0 -fbin -o$@ $<
 
 %.dis: %.bin 
-	${HOME}/nasm*/bin/ndisasm -b64 $<  > $@
+	${NDISASM} -b64 $<  > $@
 
 
 %.o: %.s
@@ -47,7 +50,7 @@ $(BIN): dbea.c bea
 	nasm -O0 -fbin -o$@ tmp
 
 %.redis: %.rebin 
-	${HOME}/nasm*/bin/ndisasm -b64 $<  > $@
+	${NDISASM} -b64 $<  > $@
 
 %.trimredis: %.redis
 	cat $^ |sed -e "s/  */	/g"  | cut -d"	" -f2- > $@
@@ -58,7 +61,7 @@ $(BIN): dbea.c bea
 	nasm -w-all -O1 -fbin -o$@ tmp
 
 %.rebeadis: %.rebeabin 
-	${HOME}/nasm*/bin/ndisasm -b64 $<  > $@
+	${NDISASM} -b64 $<  > $@
 
 %.trimrebeadis: %.rebeadis
 	#cat $^ |sed -e "s/  */	/g" -e "s/byte	0x33/0x33/" |cut -d"	" -f2- > $@

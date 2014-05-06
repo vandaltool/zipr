@@ -1,5 +1,6 @@
 
 #include <map>
+#include <libIRDB-core.hpp>
 #include <libIRDB-cfg.hpp>
 #include <utils.hpp>
 
@@ -88,5 +89,69 @@ std::ostream& libIRDB::operator<<(std::ostream& os, const BasicBlock_t& block)
 	os<<endl;
 
 	return os;
+}
+
+
+bool BasicBlock_t::EndsInBranch() 
+{
+	DISASM d;
+	Instruction_t *branch=instructions[instructions.size()-1];	
+
+	assert(branch);
+
+	branch->Disassemble(d);
+
+	if(d.Instruction.BranchType!=0)
+		return true;
+	return false;
+
+	
+}
+bool BasicBlock_t::EndsInIndirectBranch() 
+{
+	DISASM d;
+	Instruction_t *branch=instructions[instructions.size()-1];	
+
+	assert(branch);
+
+	branch->Disassemble(d);
+
+	if(d.Instruction.BranchType==RetType)
+		return true;
+	if(d.Instruction.BranchType==JmpType || d.Instruction.BranchType==CallType)
+	{
+		if((d.Argument1.ArgType&CONSTANT_TYPE)==0)
+			/* not a constant type */
+			return true;
+		return false;
+		
+	}
+
+	return false;
+
+	
+}
+bool BasicBlock_t::EndsInConditionalBranch() 
+{
+	if(!EndsInBranch())
+		return false;
+	DISASM d;
+	Instruction_t *branch=instructions[instructions.size()-1];	
+	assert(branch);
+
+	if(d.Instruction.BranchType==RetType || d.Instruction.BranchType==JmpType || d.Instruction.BranchType==CallType)
+		return false;
+
+	return true;
+
+}
+Instruction_t* BasicBlock_t::GetBranchInstruction()
+
+{
+	if(!EndsInBranch())
+		return NULL;
+
+	Instruction_t *branch=instructions[instructions.size()-1];	
+	return branch;
 }
 
