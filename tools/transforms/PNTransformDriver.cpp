@@ -2514,7 +2514,28 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	}
 		
 
-	if(regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
+	if(regexec(&(pn_regex->regex_add_rbp), disasm_str.c_str(), 5, pmatch, 0)==0)
+	{
+		if(verbose_log)
+			cerr << "PNTransformDriver: found add rbp insn: "<<disasm_str<<endl;
+		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
+		string dstreg=disasm_str.substr(pmatch[1].rm_so,mlen);
+
+		int new_offset = layout->GetNewOffsetEBP(8); /* make sure we get something from within the stack frame */
+		new_offset+=8;	/* re-adjust for the -8 above */
+
+		stringstream lea_string;
+		lea_string<<"lea "<<dstreg<<", [rbp+"<<dstreg<<" - 0x"<<std::hex<<new_offset<<"]"; 
+
+
+		if(verbose_log)
+			cerr << "PNTransformDriver: Convrting to "<<lea_string.str()<<endl;
+
+		undo_list[instr->GetFunction()][instr] = copyInstruction(instr);
+		virp->RegisterAssembly(instr,lea_string.str());
+		
+	}
+	else if(regexec(&(pn_regex->regex_stack_alloc), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr << "PNTransformDriver: Transforming Stack Alloc"<<endl;

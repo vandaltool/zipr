@@ -27,6 +27,7 @@ public:
 	regex_t regex_and_esp;
 	regex_t regex_scaled_ebp_index;
 	regex_t regex_call;
+	regex_t regex_add_rbp;
 
 	static const int MAX_MATCHES = 10;
 };

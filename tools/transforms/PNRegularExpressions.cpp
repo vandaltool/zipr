@@ -176,4 +176,14 @@ PNRegularExpressions::PNRegularExpressions()
 	}
 
 
+        if((errcode=regcomp(&regex_add_rbp,FIRN("add ("REGSTRING"), *%bp *"),REG_EXTENDED | REG_ICASE)) !=0)
+        {
+                char buf[1000];
+                regerror(errcode,&regex_add_rbp,buf,sizeof(buf));
+                fprintf(stderr,"Error: regular expression for regex_add_rbp failed, code: %s\n",buf);
+                exit(1);
+        }
+
+
+
 }
