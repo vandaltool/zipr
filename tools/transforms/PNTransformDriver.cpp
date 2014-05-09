@@ -2514,7 +2514,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 	}
 		
 
-	if(regexec(&(pn_regex->regex_add_rbp), disasm_str.c_str(), 5, pmatch, 0)==0)
+	if(instr->GetFunction() && instr->GetFunction()->GetUseFramePointer() && regexec(&(pn_regex->regex_add_rbp), disasm_str.c_str(), 5, pmatch, 0)==0)
 	{
 		if(verbose_log)
 			cerr << "PNTransformDriver: found add rbp insn: "<<disasm_str<<endl;
