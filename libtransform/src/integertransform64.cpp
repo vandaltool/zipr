@@ -192,6 +192,11 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
                 logMessage(__func__, p_annotation, "unknown target register");
 		return;
 	}
+	else if (targetReg == Register::RSP || targetReg == Register::RBP)
+	{
+                logMessage(__func__, p_annotation, "target register is RSP or RBP: skip");
+		return;
+	}
 
         logMessage(__func__, p_annotation, "debug");
 
