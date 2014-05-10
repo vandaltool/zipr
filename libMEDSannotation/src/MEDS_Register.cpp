@@ -251,6 +251,10 @@ std::string Register::toString(Register::RegisterName p_reg)
 	else if (p_reg == BL) return std::string("BL");
 	else if (p_reg == CL) return std::string("CL");
 	else if (p_reg == DL) return std::string("DL");
+	else if (p_reg == SIL) return std::string("SIL");
+	else if (p_reg == DIL) return std::string("DIL");
+	else if (p_reg == BPL) return std::string("BPL");
+	else if (p_reg == SPL) return std::string("SPL");
 	else if (p_reg == R8B) return std::string("R8B");
 	else if (p_reg == R9B) return std::string("R9B");
 	else if (p_reg == R10B) return std::string("R10B");
