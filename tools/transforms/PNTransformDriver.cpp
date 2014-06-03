@@ -2521,8 +2521,8 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 		int mlen = pmatch[1].rm_eo - pmatch[1].rm_so;
 		string dstreg=disasm_str.substr(pmatch[1].rm_so,mlen);
 
-		int new_offset = layout->GetNewOffsetEBP(8); /* make sure we get something from within the stack frame */
-		new_offset+=8;	/* re-adjust for the -8 above */
+		int new_offset = layout->GetNewOffsetEBP(1); /* make sure we get something from within the stack frame */
+		new_offset-=1;	/* re-adjust for the -8 above */
 
 		stringstream lea_string;
 		lea_string<<"lea "<<dstreg<<", [rbp+"<<dstreg<<" - 0x"<<std::hex<<new_offset<<"]"; 
