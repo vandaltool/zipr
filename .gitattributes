@@ -1,1 +1,10 @@
 * text=auto !eol
+/build-all.sh -text
+/clean-all.sh -text
+/get-peasoup-packages.sh -text
+/irdb_vars -text
+/jdh8d_set_env_vars -text
+/postgres_setup.sh -text
+/set_env_vars -text
+/start_dev.sh -text
+/svn.externals.uva_dev -text
