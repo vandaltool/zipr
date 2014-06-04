@@ -1,9 +1,0 @@
-
-. set_env_vars
-
-export STRATA_IBTC=1
-export STRATA_IBTC_SHARED=1
-export STRATA_IBTC_SIZE=$(expr 128 \* 1024)
-export STRATA_FCACHE_SIZE=$(expr 64 \* 1024 \* 1024)
-export PEASOUP=$PEASOUP_UMBRELLA_DIR
-
