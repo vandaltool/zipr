@@ -12,19 +12,22 @@
 #   may include result, user, host platform, build platform
 
 # Fixed attributes
+
 # ATTRIBUTE ModDep=strata
 # ATTRIBUTE ModDep=diablo_toolchain
 # ATTRIBUTE ModDep=stratafier
-# ATTRIBUTE ModDep=idapro61
-# ATTRIBUTE ModDep=idapro61_sdk
+# ATTRIBUTE ModDep=idapro65
+# ATTRIBUTE ModDep=idapro65_sdk
+# ATTRIBUTE ModDep=peasoup_examples
+# ATTRIBUTE ModDep=security_transforms
+# ATTRIBUTE ModDep=SMPStaticAnalyzer
 # ATTRIBUTE TestsWhat=lang_C
 # ATTRIBUTE TestsWhat=strata
 # ATTRIBUTE TestsWhat=commandinjection
 # ATTRIBUTE OS=linux
 # ATTRIBUTE Compiler=gcc
-# ATTRIBUTE Arch=x86_32
-# ATTRIBUTE TestName=smartfuzz
-# ATTRIBUTE BenchmarkName=TandE
+# ATTRIBUTE Arch=x86_64
+# ATTRIBUTE TestName=sqlite
 # ATTRIBUTE CompilerFlags="-w"
 
 COMPFLAGS="-w"
@@ -55,6 +58,14 @@ cleanup()
 # 	rm -f $tmp
 	exit $exit_code
 }
+
+if [ ! -z $IDAROOT65 ]; then
+  export IDAROOT=$IDAROOT65
+fi
+
+if [ ! -z $IDASDK65 ]; then
+  export IDASDK=$IDASDK65
+fi
 
 # suck in utils
 . ${TEST_HARNESS_HOME}/test_utils.sh || cleanup 1 "Cannot source utils file"

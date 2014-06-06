@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
    sqlite3_step(stmt3);
 
    /* Release memory used to store results and close connection */
-//   sqlite3_close(db);
+   sqlite3_close(db);
    return 0;
 }
 
