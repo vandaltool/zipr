@@ -78,6 +78,7 @@ appfw/tests/postgres/testpg2.pstmt.c -text
 appfw/tests/postgres/testpg3.c -text
 appfw/tests/postgres/testpg4.c -text
 appfw/tests/sqlite/Makefile -text
+appfw/tests/sqlite/runtest.sh -text
 appfw/tests/sqlite/setup.sql -text
 appfw/tests/sqlite/sqlite.test.sh -text
 appfw/tests/sqlite/sqlite3.h -text

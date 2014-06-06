@@ -69,6 +69,7 @@ if [ ! $? -eq 0 ]; then
 	cleanup 1 "Failed to build sqlite tests"
 fi
 
+export APPFW_VERBOSE=1
 
 #
 # testpg2.exe.peasoup

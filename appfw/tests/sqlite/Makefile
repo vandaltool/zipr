@@ -1,4 +1,4 @@
-APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so
+APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so64
 
 generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
@@ -35,3 +35,6 @@ peasoup: all
 run: all
 	APPFW_VERBOSE=1 QUERY_DATA="bob" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testsqlite.pstmt.fp.exe.sigs ./testsqlite.pstmt.fp.exe 
 #	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testsqlite.exe.sigs ./testsqlite.exe "David' or '0'='0"
+
+runorig: all
+	QUERY_DATA="bob"  ./testsqlite.pstmt.fp.exe 
