@@ -39,12 +39,17 @@ if [ "$DO_APPFW" = "1" ]; then
 		APPFW_DB=$datapath/appfw.db
 		APPFW_SIGNATURE_FILE=$datapath/a.ncexe.sigs.$$
 	"
-	APP_LD_PRELOAD="$datapath/libappfw.so $APP_LD_PRELOAD"
+	APP_LD_PRELOAD="$datapath/libappfw.so:$APP_LD_PRELOAD"
 fi
 
 DO_TWITCHER=0
 if [ "$DO_TWITCHER" = "1" ]; then
 	APP_LD_PRELOAD=$BOOST_HOME/lib/libboost_system.so:$BOOST_HOME/lib/libboost_thread.so:$datapath/libtwitcher_malloc.so:$APP_LD_PRELOAD
+fi
+
+DO_TOCTOU=0
+if [ "$DO_TOCTOU" = "1" ]; then
+	APP_LD_PRELOAD="$datapath/libtoctou_tool.so:$APP_LD_PRELOAD"
 fi
 
 

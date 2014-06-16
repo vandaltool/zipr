@@ -783,6 +783,14 @@ perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.ird
 perform_step preLoaded_ILR1 fast_spri $STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe a.irdb.fbspri 
 perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfile.sh a.irdb.fbspri
 
+# copy TOCTOU tool here if it exists
+is_step_on toctou
+if [[ $? -eq 1 && -e $GRACE_HOME/ps_concurrency/toctou_tool/libtoctou_tool.so ]];
+then
+    cp $GRACE_HOME/ps_concurrency/toctou_tool/libtoctou_tool.so libtoctou_tool.so
+    $PEASOUP_HOME/tools/update_env_var.sh DO_TOCTOU 1
+fi
+
 #
 # create a report for all of ps_analyze.
 #
