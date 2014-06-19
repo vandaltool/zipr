@@ -16,6 +16,8 @@ LD=DO_NOT_USE
 
 exes=signed_add.64.exe signed_mul.64.exe unsigned_mul.64.exe signed_mul.32.exe
 
+exes=trunc.64.32.unknown.exe
+
 all: env_check  ${exes}
 
 .PHONY: env_check 

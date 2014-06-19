@@ -8,8 +8,5 @@ int main(int argc, char **argv)
   unsigned long long i = (unsigned long long) strtoull(argv[1], NULL, 10);
 
   s = i;
-  if (s > 256)
-    printf("too big\n");
-  else
-    printf("just right: s = %d, i = %ld\n", s, i);
+  printf("just right: s = %d, i = %lld\n", s, i);
 }
