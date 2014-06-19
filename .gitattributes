@@ -337,6 +337,11 @@ libtransform/tests/test.unsigned_add.64.sh -text
 libtransform/tests/test.unsigned_mul.32.sh -text
 libtransform/tests/test.unsigned_mul.64.sh -text
 libtransform/tests/testall -text
+libtransform/tests/trunc.32.16.c -text
+libtransform/tests/trunc.32.8.c -text
+libtransform/tests/trunc.64.16.c -text
+libtransform/tests/trunc.64.32.c -text
+libtransform/tests/trunc.64.8.c -text
 libtransform/tests/unsigned_add.64.c -text
 libtransform/tests/unsigned_add.c -text
 libtransform/tests/unsigned_mul.32.c -text
