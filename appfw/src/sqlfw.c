@@ -165,7 +165,8 @@ int sqlfw_verify_s(const char *zSql, char *p_critical)
 ** Run the original sqlite parser on the given SQL string.  
 ** Extract out critical tokens
 */
-int sqlfw_verify_fast(const char *zSql) 
+//int sqlfw_verify(const char *zSql, char **pzErrMsg)
+int sqlfw_verify(const char *zSql, char **errMsg) 
 {
 	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
 	int len = strlen(zSql)+1;
@@ -183,12 +184,14 @@ int sqlfw_verify_fast(const char *zSql)
 	sqlfw_get_structure(zSql, tainted, structure);
 	int success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
 	if (!success && verbose)
-		sqlfw_display_taint("debug", zSql, tainted);
+		appfw_display_taint("SQL Injection detected", zSql, tainted);
+//		sqlfw_display_taint("debug", zSql, tainted);
 
 	free(tainted);
 	return success;
 }
 
+#ifdef OLDWAY
 /*
 ** Run the original sqlite parser on the given SQL string.  
 ** Look for tainted SQL tokens/keywords
@@ -225,6 +228,7 @@ int sqlfw_verify(const char *zSql, char **pzErrMsg)
 
 	return success;
 }
+#endif
 
 /* Add all the functions you care about here */
 //http://dev.mysql.com/doc/refman/5.0/en/information-functions.html

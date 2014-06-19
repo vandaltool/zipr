@@ -14,8 +14,8 @@ extern void sqlfw_init();
 extern void sqlfw_init_from_file(const char *p_file);
 extern void sqlfw_save_query_structure_cache(const char *p_file);
 extern int sqlfw_isInitialized();
-extern int sqlfw_verify(const char *zSql, char **pzErrMsg);
-extern int sqlfw_verify_fast(const char *zSql);
+// extern int sqlfw_verify(const char *zSql, char **pzErrMsg);
+extern int sqlfw_verify(const char *zSql, char **);
 extern int sqlfw_verify_s(const char *zSql, char *p_annot);
 extern int sqlfw_get_structure(const char *zSql, char *p_taint, char *p_structure);
 
