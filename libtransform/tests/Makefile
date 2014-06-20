@@ -15,8 +15,8 @@ LD=DO_NOT_USE
 #exes=unsigned_mul.64.exe signed_add.exe signed_mul.64.exe signed_mul.32.exe
 
 exes=signed_add.64.exe signed_mul.64.exe unsigned_mul.64.exe signed_mul.32.exe
-
-exes=trunc.64.32.unknown.exe
+exes=trunc.64.32.signed.exe trunc.64.32.unsigned.exe trunc.64.16.signed.exe trunc.64.16.unsigned.exe trunc.64.8.signed.exe trunc.64.8.unsigned.exe
+exes=trunc.32.16.signed.exe trunc.32.16.unsigned.exe
 
 all: env_check  ${exes}
 

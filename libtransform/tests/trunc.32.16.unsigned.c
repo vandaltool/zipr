@@ -3,9 +3,9 @@
 int main(int argc, char **argv)
 {
   unsigned short s;
-  unsigned long i;
+  int i;
 
-  i = (unsigned long) strtoul(argv[1], NULL, 10);
+  i = atoi(argv[1]);
   s = i;
   if (s > 256)
     printf("too big\n");
