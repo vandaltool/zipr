@@ -4,6 +4,7 @@ TMP=tmp.$$
 
 for i in `ls test*.sh`
 do
+  echo "Running $i"
   $TEST_HARNESS_HOME/run_one_test.sh $i >$TMP 2>&1
   grep TestResult $TMP
 done
