@@ -492,6 +492,28 @@ bool Transform::isMultiplyInstruction(Instruction_t *p_instruction)
 	return strcasestr(disasm.Instruction.Mnemonic, "MUL ") != NULL;
 }
 
+
+//
+// Returns true iff instruction is a MOV (according to BeaEngine)
+//
+bool Transform::isMovInstruction(Instruction_t *p_instruction)
+{
+	if (!p_instruction)
+		return false;
+
+	std::string assembly = m_fileIR->LookupAssembly(p_instruction);
+	if (assembly.length() > 0)
+	{
+		return strcasestr(assembly.c_str(), "MOV") != NULL;
+	}
+
+	DISASM disasm;
+	p_instruction->Disassemble(disasm);
+
+	// nb: beaengine adds space at the end of the mnemonic string
+	return strcasestr(disasm.Instruction.Mnemonic, "MOV ") != NULL;
+}
+
 //
 // Returns true iff instruction is ADD or SUB (according to BeaEngine)
 //

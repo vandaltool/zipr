@@ -14,6 +14,8 @@ using namespace std;
 using namespace libIRDB;
 using namespace MEDS_Annotation;
 
+#define MAX_ASSEMBLY_SIZE 2048
+
 namespace libTransform
 {
 
@@ -70,6 +72,7 @@ class Transform {
 		set<std::string>* getFilteredFunctions() { return m_filteredFunctions; }
 
 		bool isMultiplyInstruction(libIRDB::Instruction_t*);
+		bool isMovInstruction(libIRDB::Instruction_t*);
 		bool isAddSubNonEspInstruction(libIRDB::Instruction_t*);
 		Register::RegisterName getTargetRegister(libIRDB::Instruction_t*, int argNo = 1);
 		Instruction_t* addNewMaxSaturation(Instruction_t *p_prev, Register::RegisterName p_reg, const MEDS_InstructionCheckAnnotation p_annotation);
