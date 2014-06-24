@@ -257,6 +257,7 @@ libtransform/tests/austin/branch.c -text
 libtransform/tests/austin/malloc.c -text
 libtransform/tests/austin/memcpy.c -text
 libtransform/tests/austin/memset.c -text
+libtransform/tests/bin/ls_O3.exe -text
 libtransform/tests/c++/prog.c -text
 libtransform/tests/clark1.c -text
 libtransform/tests/false_positives/cat.err -text
