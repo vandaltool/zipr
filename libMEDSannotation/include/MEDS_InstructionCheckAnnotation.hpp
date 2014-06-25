@@ -83,12 +83,14 @@ class MEDS_InstructionCheckAnnotation
 
 		// get register
 		MEDS_Annotation::Register::RegisterName getRegister() const { return m_register; }
+		MEDS_Annotation::Register::RegisterName getRegister2() const { return m_register2; }
 
 
 		// virtual offset
 		VirtualOffset getVirtualOffset() const;
 
 		const string getTarget() const { return m_target; }
+		const string getTarget2() const { return m_target2; }
 
 		const string& toString() const { return m_rawInputLine; }
 
@@ -125,7 +127,9 @@ class MEDS_InstructionCheckAnnotation
 		bool           m_flowsIntoCriticalSink;
 		bool           m_isIdiom;
 		MEDS_Annotation::Register::RegisterName       m_register;
+		MEDS_Annotation::Register::RegisterName       m_register2;
 		string         m_target;
+		string         m_target2;
 };
 
 }

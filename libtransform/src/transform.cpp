@@ -489,7 +489,7 @@ bool Transform::isMultiplyInstruction(Instruction_t *p_instruction)
 	p_instruction->Disassemble(disasm);
 
 	// beaengine adds space at the end of the mnemonic string
-	return strcasestr(disasm.Instruction.Mnemonic, "MUL ") != NULL;
+	return strcasestr(disasm.Instruction.Mnemonic, "MUL") != NULL;
 }
 
 
@@ -511,7 +511,7 @@ bool Transform::isMovInstruction(Instruction_t *p_instruction)
 	p_instruction->Disassemble(disasm);
 
 	// nb: beaengine adds space at the end of the mnemonic string
-	return strcasestr(disasm.Instruction.Mnemonic, "MOV ") != NULL;
+	return strcasestr(disasm.Instruction.Mnemonic, "MOV") != NULL;
 }
 
 //
@@ -1460,3 +1460,10 @@ void Transform::logMessage(const std::string &p_method, const MEDS_InstructionCh
 	logMessage(p_method, p_msg + " annotation: " + p_annotation.toString());
 }
 
+void libTransform::convertToLowercase(string &str)
+{
+	for (int i = 0; i < str.length(); ++i)
+	{
+		str[i] = tolower(str[i]);
+	}
+}

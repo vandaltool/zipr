@@ -108,6 +108,9 @@ class Transform {
 
 #define DEBUG_CALLBACK_HANDLER "debug_handler"
 
+// utility function
+void convertToLowercase(string&);
+
 }
 
 #endif
