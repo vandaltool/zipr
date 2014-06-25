@@ -19,7 +19,7 @@ using namespace libTransform;
 
 void usage()
 {
-	cerr << "Usage: integertransformdriver.exe <variant_id> <filtered_functions> <integer.warning.addresses> [--saturating-arithmetic] [--path-manip-detected]"<<endl;
+	cerr << "Usage: integertransformdriver.exe <variant_id> <filtered_functions> <integer.warning.addresses> [--saturating-arithmetic] [--path-manip-detected] [--instrument-idioms]"<<endl;
 }
 
 std::set<VirtualOffset> getInstructionWarnings(char *warningFilePath)
@@ -79,6 +79,17 @@ bool isPathManipDetected(int argc, char **argv)
 	for (int i = 0; i < argc; ++i)
 	{
 		if (strncasecmp(argv[i], "--path-manip", strlen("--path-manip")) == 0)
+			return true;
+	}
+
+	return false;
+}
+
+bool isInstrumentIdioms(int argc, char **argv)
+{
+	for (int i = 0; i < argc; ++i)
+	{
+		if (strncasecmp(argv[i], "--instrument-idioms", strlen("--instrument-idioms")) == 0)
 			return true;
 	}
 
@@ -165,6 +176,7 @@ main(int argc, char **argv)
 			intxform->setSaturatingArithmetic(isSaturatingArithmeticOn(argc, argv));
 			intxform->setPathManipulationDetected(isPathManipDetected(argc, argv));
 			intxform->setWarningsOnly(isWarningsOnly(argc, argv));
+			intxform->setInstrumentIdioms(isInstrumentIdioms(argc, argv));
 
 			int exitcode = intxform->execute();
 			if (exitcode == 0)

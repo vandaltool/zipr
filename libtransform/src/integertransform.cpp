@@ -14,6 +14,7 @@ IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_fileIR,
 	m_policySaturatingArithmetic = false;
 	m_policyWarningsOnly = false;
 	m_pathManipulationDetected = false;
+	m_instrumentIdioms = false;
 
 	m_annotations = p_annotations;              
 

@@ -42,6 +42,8 @@ int IntegerTransform64::execute()
 {
 	if (isWarningsOnly())
 		logMessage(__func__, "warnings only mode");
+	if (isInstrumentIdioms())
+		logMessage(__func__, "override annotations -- instrument IDIOMS");
 
 	for(
 	  set<Function_t*>::const_iterator itf=getFileIR()->GetFunctions().begin();
@@ -112,15 +114,12 @@ int IntegerTransform64::execute()
 				logMessage(__func__, annotation, "-- instruction: " + insn->getDisassembly());
 				m_numAnnotations++;
 
-/*
-@todo: make this a flag
-				if (annotation.isIdiom())
+				if (annotation.isIdiom() && !isInstrumentIdioms())
 				{
 					logMessage(__func__, "skip IDIOM");
 					m_numIdioms++;
 					continue;
 				}
-*/
 
 				if (!insn->GetFallthrough())
 				{
@@ -1036,16 +1035,11 @@ void IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 		mask = 0xFFFF0000;
 		mask2 = 0xFFFF8000;
 
-/*
-	@todo
 		if(p_annotation.flowsIntoCriticalSink())
 		{
-			cerr <<"find flowsIntoCriticalSink in addTruncationCheck" <<endl;
-			detector = "forceSoupToExit";
+			detector = TRUNCATION64_FORCE_EXIT;
 		}
-        else 
-*/
-		if (p_annotation.isUnsigned())
+		else if (p_annotation.isUnsigned())
 		{
 			saturationValue = "0xFFFF";
 			detector = string(TRUNCATION64_DETECTOR_UNSIGNED_32_16);
@@ -1065,14 +1059,11 @@ void IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 	{
 		mask = 0xFFFFFF00;
 		mask2 = 0xFFFFFF80;
-/*
-	@todo
-                if(p_annotation.flowsIntoCriticalSink()){
-                        cerr <<"find flowsIntoCriticalSink in addTruncationCheck" <<endl;
-                        detector = "forceSoupToExit";
-                }
-                else */
-		if (p_annotation.isUnsigned())
+		if(p_annotation.flowsIntoCriticalSink())
+		{
+			detector = TRUNCATION64_FORCE_EXIT;
+		}
+		else if (p_annotation.isUnsigned())
 		{
 			saturationValue = "0xFF";
 			detector = string(TRUNCATION64_DETECTOR_UNSIGNED_32_8);

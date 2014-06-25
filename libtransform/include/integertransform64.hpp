@@ -49,4 +49,6 @@ class IntegerTransform64 : public IntegerTransform
 #define	TRUNCATION64_DETECTOR_SIGNED_32_8         "truncation_detector_32_8"
 #define	TRUNCATION64_DETECTOR_UNKNOWN_32_8        "truncation_detector_32_8"
 
+#define	TRUNCATION64_FORCE_EXIT                   "truncation_force_exit"
+
 #endif

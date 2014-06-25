@@ -23,6 +23,8 @@ class IntegerTransform : public Transform
 		bool isPathManipulationDetected() { return m_pathManipulationDetected; }
 		void setWarningsOnly(bool p_warn) { m_policyWarningsOnly = p_warn; }
 		bool isWarningsOnly() { return m_policyWarningsOnly; }
+		void setInstrumentIdioms(bool p_idioms) { m_instrumentIdioms = p_idioms; }
+		bool isInstrumentIdioms() { return m_instrumentIdioms; }
 		void logStats();
 		bool isBlacklisted(Function_t *func);
 	
@@ -33,6 +35,7 @@ class IntegerTransform : public Transform
 		bool                      m_policySaturatingArithmetic;
 		bool                      m_policyWarningsOnly;
 		bool                      m_pathManipulationDetected;
+		bool                      m_instrumentIdioms;
 		std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *m_annotations;
 
 		unsigned m_numAnnotations; 
