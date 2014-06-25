@@ -29,8 +29,7 @@ CONCOLIC_DIR=concolic.files_a.stratafied_0001
 intxform_warnings_only=0  # default: integer warnings only mode is off
 intxform_detect_fp=1      # default: detect benign false positives is on
                           #   but if determine_program is off, it's a no-op
-
-
+intxform_instrument_idioms=0  # default: do not instrument instructions marked as IDIOM by STARS
 
 
 # 
@@ -154,7 +153,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -199,6 +198,11 @@ check_options()
 		--integer_detect_fp)
 			echo "integer transform: benign false positive detection enabled"
 			intxform_detect_fp=1
+			shift 
+			;;
+		--integer_instrument_idioms)
+			echo "integer transform: instrument idioms"
+			intxform_instrument_idioms=1
 			shift 
 			;;
 		-t|--timeout) 
@@ -758,7 +762,7 @@ perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $ne
 if [ -z "$program" ]; then
    program="unknown"
 fi
-perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp
+perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
 #perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
 
 #
