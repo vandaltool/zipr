@@ -26,7 +26,7 @@
 # ATTRIBUTE OS=linux
 # ATTRIBUTE Compiler=gcc
 # ATTRIBUTE Arch=x86_64
-# ATTRIBUTE TestName=trunc.32.16.signed
+# ATTRIBUTE TestName=trunc.32.16.unsigned
 # ATTRIBUTE CompilerFlags="-w"
 
 COMPFLAGS="-w"
@@ -43,7 +43,7 @@ PWD=`pwd`
 TESTLOC="${PWD}"
 tmp1=$$.tmp.1
 tmp2=$$.tmp.2
-BINARY=trunc.32.16.signed.exe
+BINARY=trunc.32.16.unsigned.exe
 BINARY_PEASOUP=$BINARY.peasoup
 
 outfile=$1
@@ -92,15 +92,9 @@ if [ ! $? -eq 0 ]; then
 	cleanup 2 "false positive detected"
 fi
 
-grep "too big" $tmp2
-if [ ! $? -eq 0 ]; then
-	cat $tmp1
-	cleanup 3 "false positive detected"
-fi
-
 # make sure results differ
-./$BINARY 65535 > $tmp1
-./$BINARY_PEASOUP 65535 > $tmp2
+./$BINARY 1000000 > $tmp1
+./$BINARY_PEASOUP 1000000 > $tmp2
 diff $tmp1 $tmp2
 if [ $? -eq 0 ]; then
 	cat $tmp1 $tmp2
@@ -108,8 +102,9 @@ if [ $? -eq 0 ]; then
 fi
 
 # check saturation value
-grep "= 32767"  $tmp2
+grep "= 65535"  $tmp2
 if [ ! $? -eq 0 ]; then
+	cat $tmp2
 	cleanup 9 "failed to saturate properly"
 fi
 

@@ -26,7 +26,7 @@
 # ATTRIBUTE OS=linux
 # ATTRIBUTE Compiler=gcc
 # ATTRIBUTE Arch=x86_64
-# ATTRIBUTE TestName=unsigned_mul.64
+# ATTRIBUTE TestName=trunc.32.8.signed
 # ATTRIBUTE CompilerFlags="-w"
 
 COMPFLAGS="-w"
