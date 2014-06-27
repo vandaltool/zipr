@@ -144,7 +144,7 @@ fi
 # Set SPRI file to use (should be generated from the IRDB).
 #
 # check for faster versions of the spri file first
-if [ -f $datapath/a.irdb.fbspri  -o $datapath/a.irdb.fbspri.reloc ]; then
+if [ -f $datapath/a.irdb.fbspri  -o -f $datapath/a.irdb.fbspri.reloc ]; then
 	command="STRATA_SPRI_FILE=$datapath/a.irdb.fbspri $command"
 # default to the slow one
 elif [ -f $datapath/a.irdb.bspri ]; then
