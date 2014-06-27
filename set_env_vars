@@ -35,4 +35,3 @@ export SCONSFLAGS="exceptions=1 x86=1 tool=1 hprof=0 cpuprof=0 lm_required=false
 # adjust to your SVN username
 #export SVN_USERNAME=$USER
 
-source ./set_testing_env_vars
