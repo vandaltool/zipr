@@ -187,7 +187,19 @@ void IntegerTransform64::handleTruncation(Instruction_t *p_instruction, const ME
 		return;
 	}
 
-	if (p_annotation.getTruncationFromWidth() == 32)
+	if (p_annotation.getTruncationFromWidth() == 64)
+	{
+		if (p_annotation.getTruncationToWidth() == 32 || p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8)
+		{
+			addTruncationCheck64(p_instruction, p_annotation, p_policy);
+		}
+		else
+		{
+			m_numTruncationsSkipped++;
+			logMessage(__func__, "Truncation type not yet handled (64)");
+		}
+	}
+	else if (p_annotation.getTruncationFromWidth() == 32)
 	{
 		if (p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8)
 		{
@@ -196,7 +208,7 @@ void IntegerTransform64::handleTruncation(Instruction_t *p_instruction, const ME
 		else
 		{
 			m_numTruncationsSkipped++;
-			logMessage(__func__, "Truncation type not yet handled (1)");
+			logMessage(__func__, "Truncation type not yet handled (32)");
 		}
 	}
 	else
@@ -1028,7 +1040,7 @@ void IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 	unsigned mask = 0, mask2 = 0;
     string saturationValue = "0x0";
 
-	p_instruction->SetComment("monitor for truncation");
+	p_instruction->SetComment("monitor for truncation32");
 
 	if (p_annotation.getTruncationToWidth() == 16) 
 	{
@@ -1177,7 +1189,7 @@ void IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 		instr->SetTarget(restore);
 		
 		std::ostringstream s;
-		s << "cmp " << Register::toString(p_annotation.getRegister()) << "," << mask2;
+		s << "cmp " << Register::toString(p_annotation.getRegister()) << ", 0x" << hex << mask2 << dec;
 		instr = addNewAssembly(instr, s.str());
 
 		instr = addNewAssembly(instr, "jae 0x22"); 
@@ -1233,3 +1245,310 @@ string IntegerTransform64::buildSaturationAssembly(Instruction_t *p_instruction,
 		i.replace(i.find(p_pattern), p_pattern.size(), p_value);
 	return i;
 }
+
+//
+// STARS has extensive discussion of the logic behind truncation and
+//  signedness annotations in module SMPInstr.cpp, method EmitIntegerErrorAnnotation().
+//  The possible combinations are categorized in terms of the instrumentation
+//  needed at run time:
+//  CHECK TRUNCATION UNSIGNED:    discarded bits must be all zeroes.
+//  CHECK TRUNCATION SIGNED:      discarded bits must be sign-extension of stored bits.
+//  CHECK TRUNCATION UNKNOWNSIGN: discarded bits must be all zeroes, OR must
+//                                  be the sign-extension of the stored bits.
+// All truncation annotations are emitted on stores (mov opcodes in x86).
+// Other possibilities might be handled in the future.
+//
+
+void IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+{
+	assert(p_instruction && p_instruction->GetFallthrough() &&
+		p_annotation.getTruncationFromWidth() == 64 && 
+		(p_annotation.getTruncationToWidth() == 32 || p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8) &&
+		isMovInstruction(p_instruction));
+
+	std::set<Register::RegisterName> takenRegs;
+	takenRegs.insert(p_annotation.getRegister()); 
+	takenRegs.insert(p_annotation.getRegister2());
+	takenRegs.insert(Register::RSP); // don't mess with the stack pointer
+	takenRegs.insert(Register::RBP); // don't mess with the frame pointer
+	Register::RegisterName borrowReg = Register::getFreeRegister64(takenRegs);
+
+	if (borrowReg == Register::UNKNOWN)
+	{
+		logMessage(__func__, "Could not borrow a 64-bit register");
+		m_numTruncationsSkipped++;
+		return;
+	}
+
+	// Main difference between TRUNCATION annotation for 64 bits vs. 32 bits
+	// is that we need to use a register as IA X86-64 doesn't support 64 bit constants
+	// for most instructions
+
+	// Complicated case:
+	// 80484ed 3 INSTR CHECK TRUNCATION UNKNOWNSIGN 32 EAX 8 AL ZZ mov     [ebp+var_4], al
+	//  example: for unknownsign truncation - 8 bit on AL
+	//          it's ok if 24 upper bits are sign-extension or all 0's
+	//          Re-phrased: upper 24 are 0s, upper 25 are 0s, upper 25 are 1s
+	//           are all OK in the UNKNOWNSIGN case
+	//          Note that upper 24 are 0's means no need to check for the
+	//           case where the upper 25 are 0's; already OK.
+	//
+	//             <save reg>
+	//             <save flags>
+	//             mov <reg>, 0xFFFFFFFFFFFFFF00  ; // need to grab register 
+	//             test eax, <reg>        ; (for 8 bit) 
+	//             jz <continue>          ; upper 56 bits are 0's 
+	//
+	//             cmp eax, 0xFFFFFFFFFFFFFF80    ; (for 8 bit) 
+	//             jae continue           ; upper 57 bits are 1's
+	//             (invoke truncation handler)
+	//             nop ; truncation handler returns here
+	//      SAT:   saturating-arithmetic  ; optional
+	//
+	// continue:   <restore flags>
+	//             <restore reg>
+	//             mov [ebp+var_4], al    ; <originalInstruction>
+	//
+
+	// Unsigned case:
+	// 80484ed 3 INSTR CHECK TRUNCATION UNSIGNED 64 RAX 32 EAX ZZ mov     [ebp+var_4], al
+	//
+	//             <save reg>
+	//             <save flags>
+	//             mov <reg>, 0xFFFFFFFFFFFFFF00  ; // need to grab register 
+	//             test eax, <reg>; (for 64->32 bit) 
+	//             jz <continue>          ; upper 32 bits are 0's 
+	//
+	//             (invoke truncation handler)
+	//             nop ; truncation handler returns here
+	//      SAT:   saturating-arithmetic  ; optional
+	//
+	// continue:   <restore flags>
+	//             <restore reg>
+	//             mov [ebp+var_4], al    ; <originalInstruction>
+	//
+
+	string detector;
+	long long unsigned mask = 0, mask2 = 0;
+	string saturationValue = "0x0";
+
+	p_instruction->SetComment("monitor for truncation64");
+
+	if (p_annotation.getTruncationToWidth() == 32) 
+	{
+		mask  = 0xFFFFFFFF00000000;
+		mask2 = 0xFFFFFFFF00008000;
+
+		if(p_annotation.flowsIntoCriticalSink())
+		{
+			detector = TRUNCATION64_FORCE_EXIT;
+		}
+		else if (p_annotation.isUnsigned())
+		{
+			saturationValue = "0xFFFFFFFFFFFF";
+			detector = string(TRUNCATION64_DETECTOR_UNSIGNED_64_32);
+		}
+		else if (p_annotation.isSigned())
+		{
+			saturationValue = "0x7FFFFFFFFFFF";
+			detector = string(TRUNCATION64_DETECTOR_SIGNED_64_32);
+		}
+		else
+		{
+			saturationValue = "0x7FFFFFFFFFFF";
+			detector = string(TRUNCATION64_DETECTOR_UNKNOWN_64_32);
+		}
+	}
+	else if (p_annotation.getTruncationToWidth() == 16) 
+	{
+		mask  = 0xFFFFFFFFFFFF0000;
+		mask2 = 0xFFFFFFFFFFFF8000;
+
+		if(p_annotation.flowsIntoCriticalSink())
+		{
+			detector = TRUNCATION64_FORCE_EXIT;
+		}
+		else if (p_annotation.isUnsigned())
+		{
+			saturationValue = "0xFFFF";
+			detector = string(TRUNCATION64_DETECTOR_UNSIGNED_64_16);
+		}
+		else if (p_annotation.isSigned())
+		{
+			saturationValue = "0x7FFF";
+			detector = string(TRUNCATION64_DETECTOR_SIGNED_64_16);
+		}
+		else
+		{
+			saturationValue = "0x7FFF";
+			detector = string(TRUNCATION64_DETECTOR_UNKNOWN_64_16);
+		}
+	}
+	else if (p_annotation.getTruncationToWidth() == 8) 
+	{
+		mask  = 0xFFFFFFFFFFFFFF00;
+		mask2 = 0xFFFFFFFFFFFFFF80;
+		if(p_annotation.flowsIntoCriticalSink())
+		{
+			detector = TRUNCATION64_FORCE_EXIT;
+		}
+		else if (p_annotation.isUnsigned())
+		{
+			saturationValue = "0xFF";
+			detector = string(TRUNCATION64_DETECTOR_UNSIGNED_64_8);
+		}
+		else if (p_annotation.isSigned())
+		{
+			saturationValue = "0x7F";
+			detector = string(TRUNCATION64_DETECTOR_SIGNED_64_8);
+		}
+		else
+		{
+			saturationValue = "0x7F";
+			detector = string(TRUNCATION64_DETECTOR_UNKNOWN_64_8);
+		}
+	}
+
+	//             <save reg>
+	//             <save flags>
+	//             mov <reg>, 0xFFFFFFFFFFFFFF00  ; // need to grab register 
+	//             test eax, <reg>        ; (for 8 bit) 
+	//             jz <continue>          ; upper 24 bits are 0's 
+	//
+	//             (invoke truncation handler)
+	//             nop ; truncation handler returns here
+	//      SAT:   mov [ebp+var_4], <saturate> ; optional
+	//             jmp origFT
+	//
+	// continue:   <restore flags>
+	//             <restore reg>
+	//             mov [ebp+var_4], al    ; <originalInstruction>
+	// origFT:     <originalFallThroughInstruction>
+	//
+
+	char buf[MAX_ASSEMBLY_SIZE];
+	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+	Instruction_t *instr, *save, *test, *pushf;
+	Instruction_t *restore = addNewAssembly("popf");
+	restore->SetComment("trunc: restore flags");
+	Instruction_t *restoreReg = addNewAssembly("pop " + Register::toString(borrowReg));
+
+	save = addNewAssembly("push " + Register::toString(borrowReg));
+	save->SetComment("start truncation sequence");
+
+	pushf = addNewAssembly(save, "pushf");
+
+	if (p_annotation.isSigned())
+		sprintf(buf, "mov %s, 0x%16llx", Register::toString(borrowReg).c_str(), mask2);
+	else
+		sprintf(buf, "mov %s, 0x%16llx", Register::toString(borrowReg).c_str(), mask);
+
+	instr = addNewAssembly(pushf, buf);
+
+	sprintf(buf, "test %s, %s", Register::toString(p_annotation.getRegister()).c_str(), Register::toString(borrowReg).c_str());
+
+	test = addNewAssembly(instr, buf);
+
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, save);
+
+	save->SetFallthrough(pushf);
+
+	restore->SetFallthrough(restoreReg);
+	restoreReg->SetFallthrough(originalInstrumentInstr);
+
+	if (p_annotation.isUnsigned())
+	{
+		logMessage(__func__, "unsigned annotation");
+		Instruction_t *nop = addNewAssembly("nop");
+
+		instr = addNewAssembly(test, "jz 0x22"); // bogus jump target for now
+		instr->SetTarget(restore);
+		instr->SetFallthrough(nop);
+	
+		Instruction_t *callback; 
+
+		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+		{
+			string saturationInstruction = "mov " + p_annotation.getTarget2() + ", " + saturationValue;
+			Instruction_t *saturation = addNewAssembly(saturationInstruction);
+			saturation->SetComment("trunc/unsigned/saturate");
+			
+			callback = addCallbackHandlerSequence(p_instruction, saturation, detector, p_policy);
+			nop->SetFallthrough(callback);
+			saturation->SetFallthrough(restore);
+		}
+		else
+		{
+			callback = addCallbackHandlerSequence(p_instruction, restore, detector, p_policy);
+			nop->SetFallthrough(callback);
+		}
+	}
+	else
+	{
+		// Signed and unknown signed cases are almost identical:
+		// 80484ed 3 INSTR CHECK TRUNCATION SIGNED 32 EAX 8 AL ZZ mov     [ebp+var_4], al
+		// 80484ed 3 INSTR CHECK TRUNCATION UNKNOWNSIGN 32 EAX 8 AL ZZ mov     [ebp+var_4], al
+		//  example: for signed truncation - 8 bit on AL
+		//          it's ok if 25 upper bits are all 1's or all 0's
+		//  example: for unknownsign truncation - 8 bit on AL
+		//          it's ok if 25 upper bits are all 1's or 24 upper bits all 0's
+		//
+		//             <save reg>
+		//             <save flags>
+		//             mov <reg>, 0xFFFFFFFFFFFFFF80   
+		//             test eax, <reg> ; (for 8 bit) 0xFFFFFFFFFFFFFF00 for UNKNOWN
+		//             jz <continue>          ; upper 57 bits are 0's 
+		//
+		//             cmp eax,  0xFFFFFFFFFFFFFF80    ;(for 8 bit) 
+		//             jae continue           ; upper 57 bits are 1's
+		//             (invoke truncation handler) 
+		//             nop ; truncation handler callback here
+		//      SAT:   saturating-arithmetic  ; optional
+		//
+		// continue:   <restore flags>
+		//             <restore reg>
+		//             mov [ebp+var_4], al    ; <originalInstruction>
+		//
+		logMessage(__func__, "signed/unknown annotation");
+		Instruction_t *nop = addNewAssembly("nop");
+
+		instr = addNewAssembly(test, "jz 0x22"); // bogus jump target for now
+		instr->SetTarget(restore);
+		
+		std::ostringstream s;
+		s << "mov " << Register::toString(borrowReg) << ", 0x" << hex << mask2 << dec;
+		instr = addNewAssembly(instr, s.str());
+
+		std::ostringstream s2;
+		s2 << "cmp " << Register::toString(p_annotation.getRegister()) << "," << Register::toString(borrowReg);
+		instr = addNewAssembly(instr, s2.str());
+
+		instr = addNewAssembly(instr, "jae 0x22"); 
+		instr->SetTarget(restore);
+		instr->SetFallthrough(nop);
+
+		Instruction_t *callback; 
+
+		if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+		{
+			string saturationInstruction = "mov " + p_annotation.getTarget2() + ", " + saturationValue;
+			Instruction_t *saturation = addNewAssembly(saturationInstruction);
+			if (p_annotation.isSigned())
+				saturation->SetComment("trunc/signed/saturate");
+			else
+				saturation->SetComment("trunc/unknown/saturate");
+			
+			callback = addCallbackHandlerSequence(p_instruction, saturation, detector, p_policy);
+			nop->SetFallthrough(callback);
+			saturation->SetFallthrough(restore);
+		}
+		else
+		{
+			callback = addCallbackHandlerSequence(p_instruction, restore, detector, p_policy);
+			nop->SetFallthrough(callback);
+		}
+	}
+
+	m_numTruncations++;
+}
+
