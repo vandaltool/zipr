@@ -1,6 +1,6 @@
 TMP=tmp.$$
 
-#make clean
+make clean
 
 for i in `ls test*.sh`
 do
