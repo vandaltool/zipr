@@ -31,8 +31,13 @@
 
 COMPFLAGS="-w"
 
-export IDAROOT=$IDAROOT65
-export IDASDK=$IDASDK65
+if [ -z $IDAROOT ]; then
+  export IDAROOT=$IDAROOT65
+fi
+
+if [ -z $IDASDK ]; then
+  export IDASDK=$IDASDK65
+fi
 
 PWD=`pwd`
 TESTLOC="${PWD}"
@@ -79,48 +84,28 @@ if [ ! $? -eq 0 ]; then
 fi
 
 # test normal results
-./$BINARY 500 > $tmp1
-./$BINARY_PEASOUP 500 > $tmp2
+./$BINARY 258 > $tmp1
+./$BINARY_PEASOUP 258 > $tmp2
 diff $tmp1 $tmp2
 if [ ! $? -eq 0 ]; then
 	cat $tmp1 $tmp2
 	cleanup 2 "false positive detected"
 fi
 
-grep "too big" $tmp1
-if [ ! $? -eq 0 ]; then
-	cat $tmp1
-	cleanup 3 "false positive detected"
-fi
-
-# test normal results
-./$BINARY 100 > $tmp1
-./$BINARY_PEASOUP 100 > $tmp2
-diff $tmp1 $tmp2
-if [ ! $? -eq 0 ]; then
-	cat $tmp1 $tmp2
-	cleanup 4 "false positive detected"
-fi
-
-grep "just right" $tmp1
-if [ ! $? -eq 0 ]; then
-	cat $tmp1
-	cleanup 5 "false positive detected"
-fi
-
 # make sure results differ
-./$BINARY 10000000 > $tmp1
-./$BINARY_PEASOUP 10000000 > $tmp2
+./$BINARY 888888888888 > $tmp1
+./$BINARY_PEASOUP 888888888888 > $tmp2
 diff $tmp1 $tmp2
 if [ $? -eq 0 ]; then
 	cat $tmp1 $tmp2
 	cleanup 8 "failed to detect/saturate truncation"
 fi
 
-#
-#
-# need test to make sure we saturate correctly
-#
-#
+# check saturation value
+grep "= 2147483647"  $tmp2
+if [ ! $? -eq 0 ]; then
+	cat $tmp2
+	cleanup 9 "failed to saturate properly"
+fi
 
 cleanup 0 "$BINARY test success"

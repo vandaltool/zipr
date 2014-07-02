@@ -30,6 +30,7 @@ class IntegerTransform64 : public IntegerTransform
 		void addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constant, const Register::RegisterName& p_reg3, int p_policy);
 		void addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constant, const Register::RegisterName& p_reg3, int p_policy);
 		void addTruncationCheck32(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
+		void addTruncationCheck64(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 
 		string buildSaturationAssembly(Instruction_t *p_instruction, string p_pattern, string p_value);
 };
@@ -41,6 +42,18 @@ class IntegerTransform64 : public IntegerTransform
 #define UNDERFLOW64_DETECTOR           "underflow_detector_64"
 
 // make all TRUNCATION use same handler for now
+#define	TRUNCATION64_DETECTOR_UNSIGNED_64_32      "truncation_detector_64_32"
+#define	TRUNCATION64_DETECTOR_SIGNED_64_32        "truncation_detector_64_32"
+#define	TRUNCATION64_DETECTOR_UNKNOWN_64_32       "truncation_detector_64_32"
+
+#define	TRUNCATION64_DETECTOR_UNSIGNED_64_16      "truncation_detector_64_16"
+#define	TRUNCATION64_DETECTOR_SIGNED_64_16        "truncation_detector_64_16"
+#define	TRUNCATION64_DETECTOR_UNKNOWN_64_16       "truncation_detector_64_16"
+
+#define	TRUNCATION64_DETECTOR_UNSIGNED_64_8       "truncation_detector_64_8"
+#define	TRUNCATION64_DETECTOR_SIGNED_64_8         "truncation_detector_64_8"
+#define	TRUNCATION64_DETECTOR_UNKNOWN_64_8        "truncation_detector_64_8"
+
 #define	TRUNCATION64_DETECTOR_UNSIGNED_32_16      "truncation_detector_32_16"
 #define	TRUNCATION64_DETECTOR_SIGNED_32_16        "truncation_detector_32_16"
 #define	TRUNCATION64_DETECTOR_UNKNOWN_32_16       "truncation_detector_32_16"

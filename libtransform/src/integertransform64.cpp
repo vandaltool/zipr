@@ -1337,7 +1337,7 @@ void IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 	if (p_annotation.getTruncationToWidth() == 32) 
 	{
 		mask  = 0xFFFFFFFF00000000;
-		mask2 = 0xFFFFFFFF00008000;
+		mask2 = 0xFFFFFFFF80000000;
 
 		if(p_annotation.flowsIntoCriticalSink())
 		{
@@ -1345,17 +1345,17 @@ void IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 		}
 		else if (p_annotation.isUnsigned())
 		{
-			saturationValue = "0xFFFFFFFFFFFF";
+			saturationValue = "0xFFFFFFFF";
 			detector = string(TRUNCATION64_DETECTOR_UNSIGNED_64_32);
 		}
 		else if (p_annotation.isSigned())
 		{
-			saturationValue = "0x7FFFFFFFFFFF";
+			saturationValue = "0x7FFFFFFF";
 			detector = string(TRUNCATION64_DETECTOR_SIGNED_64_32);
 		}
 		else
 		{
-			saturationValue = "0x7FFFFFFFFFFF";
+			saturationValue = "0x7FFFFFFF";
 			detector = string(TRUNCATION64_DETECTOR_UNKNOWN_64_32);
 		}
 	}
