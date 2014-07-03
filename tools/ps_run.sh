@@ -48,7 +48,7 @@ if [ "$DO_TWITCHER" = "1" ]; then
 fi
 
 command="$command
-LD_PRELOAD=$APP_LD_PRELOAD
+LD_PRELOAD=$datapath/libstrata.so:$APP_LD_PRELOAD
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$datapath
 STRATA_WATCHDOG=0
 STRATA_NUM_HANDLE=0
@@ -67,9 +67,9 @@ STRATA_IBTC_SHARED=1
 STRATA_SIEVE=0					
 STRATA_RC=0					
 STRATA_PARTIAL_INLINING=1			
-STRATA_EXE_FILE=$datapath/a.stratafied
+STRATA_EXE_FILE=$datapath/a.ncexe
 STRATA_MAX_WARNINGS=500000
-	exec -a $origbinpath $datapath/a.stratafied \"\$@\""
+	exec -a $origbinpath $datapath/a.ncexe \"\$@\""
 
 if [ "$DO_APPFW" = "1" ]; then
 #
@@ -77,19 +77,19 @@ if [ "$DO_APPFW" = "1" ]; then
 #
 BACKTICK=0
 
-addsigs () {
-	local sig=$1
-	# Make backticks separate strings
-	if [[ "$sig" =~ "\`" ]]; then
-		if [[ $BACKTICK == 0 ]]; then
-			BACKTICK=1
-			echo "\`" >> $datapath/a.ncexe.sigs.$$
-		fi
-		sig=$(echo $sig | tr '\`' ' ')
-	fi
-	# Split whitespace in arguments and add to sigs
-	echo "$sig" | tr ' ' '\n' | /bin/grep -v '^[ \t]*$' >> $datapath/a.ncexe.sigs.$$
-}
+#addsigs () {
+#	local sig=$1
+#	# Make backticks separate strings
+#	if [[ "$sig" =~ "\`" ]]; then
+#		if [[ $BACKTICK == 0 ]]; then
+#			BACKTICK=1
+#			echo "\`" >> $datapath/a.ncexe.sigs.$$
+#		fi
+#		sig=$(echo $sig | tr '\`' ' ')
+#	fi
+#	# Split whitespace in arguments and add to sigs
+#	echo "$sig" | tr ' ' '\n' | /bin/grep -v '^[ \t]*$' >> $datapath/a.ncexe.sigs.$$
+#}
 
 cp $datapath/a.ncexe.sigs.orig $datapath/a.ncexe.sigs.$$
 # only trust command line inputs for files that are not setuid/setgid
@@ -136,7 +136,7 @@ fi
 # Set SPRI file to use (should be generated from the IRDB).
 #
 # check for faster versions of the spri file first
-if [ -f $datapath/a.irdb.fbspri  -o $datapath/a.irdb.fbspri.reloc ]; then
+if [ -f $datapath/a.irdb.fbspri  -o -f $datapath/a.irdb.fbspri.reloc ]; then
 	command="STRATA_SPRI_FILE=$datapath/a.irdb.fbspri $command"
 # default to the slow one
 elif [ -f $datapath/a.irdb.bspri ]; then

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash   
 #
 # ps_analyze.sh - analyze a program and transform it for peasoupification to prevent exploit.
 #
@@ -154,7 +154,10 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt s:t:w: "$@"`
+
+# solaris does not support long option names
+# --long step-option: --long integer_warnings_only --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: 
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -236,7 +239,7 @@ check_options()
 	if [ ! $? -eq 0 ];
 	then
 		# by default it's off
-		phases_off="$phases_off determine_program=off"
+		phases_off="$phases_off determine_program=off add_confinement_section=off"
 	fi
 
 	# turn off isr
@@ -330,7 +333,7 @@ perform_step()
 	logfile=logs/$step.log
 
 	echo -n Performing step "$step" [dependencies=$mandatory] ...
-	starttime=`date --iso-8601=seconds`
+	starttime=`gdate --iso-8601=seconds`
 
 	# If verbose is on, tee to a file 
 	if [ ! -z "$DEBUG_STEPS" ]; then
@@ -345,7 +348,7 @@ perform_step()
 	fi
 	
 	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
+	echo "# ATTRIBUTE end_time=`gdate --iso-8601=seconds`" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_command=$command " >> $logfile
@@ -383,7 +386,7 @@ report_logs()
 	logfile=logs/ps_analyze.log
 
 	echo "# ATTRIBUTE start_time=$ps_starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
+	echo "# ATTRIBUTE end_time=`gdate --iso-8601=seconds`" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=all_peasoup" >> $logfile
 
 	for i in $all_logs
@@ -488,7 +491,7 @@ error_threshold=0
 #
 # record when we started processing:
 #
-ps_starttime=`date --iso-8601=seconds`
+ps_starttime=`gdate --iso-8601=seconds`
 
 
 #
@@ -567,7 +570,7 @@ fi
 #
 cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
 cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
-strip $newdir/libstrata.so.nosymbols
+gstrip $newdir/libstrata.so.nosymbols
 cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
 
 
@@ -590,6 +593,8 @@ mkdir logs
 # create a stratafied binary that does pc confinement.
 #
 perform_step stratafy_with_pc_confine mandatory sh $STRATA_HOME/tools/pc_confinement/stratafy_with_pc_confine.sh $newname.ncexe $newname.stratafied 
+cp a.ncexe a.ncexe.orig
+perform_step add_confinement_section mandatory $STRATA_HOME/tools/pc_confinement/add_confinement_section.sh a.ncexe.orig a.ncexe
 
 #
 # Let's output the modified binary
@@ -654,15 +659,18 @@ perform_step concolic none $PEASOUP_HOME/tools/do_concolic.sh a -z $PEASOUP_UMBR
 #	
 DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
 DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
-MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
+MD5HASH=`gmd5sum $newname.ncexe | cut -f1 -d' '`
 
 #
 # register the program
 #
 perform_step pdb_register mandatory "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_PROGRAM_NAME `pwd`" registered.id
-varid=`cat registered.id`
-if [ ! $varid -gt 0 ]; then
-	fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
+is_step_on pdb_register
+if [ $? = 1 ]; then
+	varid=`cat registered.id`
+	if [ ! $varid -gt 0 ]; then
+		fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
+	fi
 fi
 
 # build basic IR
@@ -671,13 +679,15 @@ perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/f
 
 # finally create a clone so we can do some transforms 
 perform_step clone mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/clone.exe $varid clone.id
-cloneid=`cat clone.id`
-
-#	
-# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
-#
-if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
-	fail_gracefully "Failed to create variant.  Is postgres running properly?"
+is_step_on clone
+if [ $? = 1 ]; then
+	cloneid=`cat clone.id`
+	#	
+	# we could skip this check and simplify ps_analyze if we say that cloning is necessary in is_step_error
+	#
+	if [ -z "$cloneid" -o  ! "$cloneid" -gt 0 ]; then
+		fail_gracefully "Failed to create variant.  Is postgres running properly?"
+	fi
 fi
 
 # do the basic tranforms we're performing for peasoup 
