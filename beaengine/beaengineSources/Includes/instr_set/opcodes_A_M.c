@@ -5783,10 +5783,22 @@ void __bea_callspec__ mov_CLIb(PDISASM pMyDisasm)
        (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[1]);
-    #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG1;
+
+        if(GV.REX.B_)
+	{
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       			(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[9]);
+    		#endif
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG9;
+	}
+	else
+	{
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       			(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[1]);
+    		#endif
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG1;
+	}
+
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument2.ArgSize = 8;
@@ -5810,10 +5822,21 @@ void __bea_callspec__ mov_DLIb(PDISASM pMyDisasm)
        (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[2]);
-    #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG2;
+
+        if(GV.REX.B_)
+	{
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       			(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[2+8]);
+    		#endif
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG10;
+	}
+	else
+	{
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       			(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[2]);
+    		#endif
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG2;
+	}
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument2.ArgSize = 8;
@@ -5837,10 +5860,20 @@ void __bea_callspec__ mov_BLIb(PDISASM pMyDisasm)
        (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
     #endif
     (*pMyDisasm).Instruction.Immediat = MyNumber;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[3]);
-    #endif
-    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG3;
+        if(GV.REX.B_)
+	{
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       			(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[3+8]);
+    		#endif
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG11;
+	}
+	else
+	{
+    		#ifndef BEA_LIGHT_DISASSEMBLY
+       			(void) strcpy((char*) &(*pMyDisasm).Argument1.ArgMnemonic, Registers8BitsLegacy[3]);
+    		#endif
+    		(*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG3;
+	}
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument2.ArgSize = 8;
