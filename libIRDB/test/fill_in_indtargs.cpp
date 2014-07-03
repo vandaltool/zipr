@@ -100,9 +100,12 @@ bool possible_target(int p, uintptr_t addr)
 {
 	if(is_possible_target(p,addr))
 	{
-		if(addr!=0 && getenv("IB_VERBOSE")!=NULL)
+		if(getenv("IB_VERBOSE")!=NULL)
 		{
-			cout<<"Found address 0x"<<std::hex<<p<<" at 0x"<<addr<<std::dec<<endl;
+			if(addr!=0)
+				cout<<"Found IB target address 0x"<<std::hex<<p<<" at 0x"<<addr<<std::dec<<endl;
+			else
+				cout<<"Found IB target address 0x"<<std::hex<<p<<" from unknown location"<<endl;
 		}
 		targets.insert(p);
 		return true;
@@ -483,7 +486,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 		/* did we finish the loop or break out? */
 		if(i==3)
 		{
-			if(getenv("VERBOSE")!=0)
+			if(getenv("IB_VERBOSE")!=0)
 				cout<<"Found switch table (thunk-relative) at "<<hex<<table_base+table_offset<<endl;
 			// finished the loop.
 			for(i=0;true;i++)
@@ -494,7 +497,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
                 		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
                 		int table_entry=*table_entry_ptr;
 	
-				if(getenv("VERBOSE")!=0)
+				if(getenv("IB_VERBOSE")!=0)
 					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<thunk_base+table_entry<<endl;
 				if(!possible_target(thunk_base+table_entry,table_base+i*4))
 					break;
@@ -502,7 +505,7 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 		}
 		else
 		{
-			if(getenv("VERBOSE")!=0)
+			if(getenv("IB_VERBOSE")!=0)
 				cout<<"Found that  "<<hex<<table_base+table_offset<<endl;
 		}
 
@@ -648,7 +651,7 @@ void calc_preds(FileIR_t* firp)
 
 void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 {
-	if(getenv("VERBOSE")!=0)
+	if(getenv("IB_VERBOSE")!=0)
         	for(
                 	set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
                 	it!=firp->GetInstructions().end();
@@ -796,6 +799,8 @@ main(int argc, char* argv[])
                 {
                         File_t* this_file=*it;
                         assert(this_file);
+
+			cout<<"Analyzing file "<<this_file->GetURL()<<endl;
 
 			// read the db  
 			firp=new FileIR_t(*pidp, this_file);
