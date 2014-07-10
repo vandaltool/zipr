@@ -3,7 +3,6 @@
 
 int main (int argc, char **argv) 
 {
-	char path[256];
 	char *foobar = NULL;
 	int i;
 

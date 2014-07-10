@@ -21,6 +21,8 @@ exes=trunc.32.16.signed.exe
 exes=trunc.64.32.signed.exe
 exes=trunc.64.16.unknown.exe
 exes=trunc.64.8.unknown.exe
+exes=trunc.16.8.unsigned.exe
+exes=signedness.64.unsigned.exe
 
 all: env_check  ${exes}
 
