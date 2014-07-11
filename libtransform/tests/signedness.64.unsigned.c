@@ -7,10 +7,14 @@ int main (int argc, char **argv)
 	int i;
 
 	i = atoi(argv[1]);
-	foobar = malloc(i); 
+
+	foobar = malloc(i);
+
+	printf("i = %d\n", i);
+
 	strncpy(foobar, "yeah whatever", i);
 
-	printf("%s\n", foobar);
+	printf("%d: %s\n", i, foobar);
 
 	return 0;
 }
