@@ -1611,36 +1611,6 @@ bool IntegerTransform64::addSignednessCheck(Instruction_t *p_instruction, const 
 		// what value should we saturate with for 64 and 32 bits?
 		Instruction_t *saturation = addNewMaxSaturation(nop, p_annotation.getRegister(), p_annotation);
 
-/*
-
-		std::ostringstream s2;
-		if (p_annotation.isUnsigned())
-		{
-			if (p_annotation.getBitWidth() == 64)
-				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFFFFFFFF";
-			else if (p_annotation.getBitWidth() == 32)
-				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFFFFFF";
-			else if (p_annotation.getBitWidth() == 16)
-				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFF";
-			else
-				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFF";
-		}
-		else
-		{
-			if (p_annotation.getBitWidth() == 64)
-				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFFF";
-			else if (p_annotation.getBitWidth() == 32)
-				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFFF";
-			else if (p_annotation.getBitWidth() == 16)
-				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0x7FFF";
-			else
-				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0x7F";
-		}
-		Instruction_t *saturation = addNewAssembly(s2.str());
-*/
-
-
-
 		if (p_annotation.isSigned())
 			saturation->SetComment("signedness/signed/saturate");
 		else
@@ -1656,6 +1626,5 @@ bool IntegerTransform64::addSignednessCheck(Instruction_t *p_instruction, const 
 		nop->SetFallthrough(callback);
 	}
 	
-	m_numSignedness++;
 	return true;
 }
