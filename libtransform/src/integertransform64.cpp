@@ -139,6 +139,10 @@ int IntegerTransform64::execute()
 				{
 					handleTruncation(insn, annotation, policy);
 				}
+				else if (annotation.isSignedness())
+				{
+					handleSignedness(insn, annotation, policy);
+				}
 			}
 		} // end iterate over all instructions in a function
 	} // end iterate over all functions
@@ -218,6 +222,18 @@ void IntegerTransform64::handleTruncation(Instruction_t *p_instruction, const ME
 	}
 }
 
+void IntegerTransform64::handleSignedness(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+{
+	if (addSignednessCheck(p_instruction, p_annotation, p_policy))
+	{
+                m_numSignedness++;
+	}
+	else
+	{
+                logMessage(__func__, "SIGNEDESS: error: skip instrumentation");
+                m_numSignednessSkipped++;
+	}
+}
 
 //
 // Saturation Policy
@@ -1038,7 +1054,7 @@ void IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 
 	string detector;
 	unsigned mask = 0, mask2 = 0;
-    string saturationValue = "0x0";
+	string saturationValue = "0x0";
 
 	p_instruction->SetComment("monitor for truncation32");
 
@@ -1552,3 +1568,94 @@ void IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 	m_numTruncations++;
 }
 
+// 8048576 5 INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov     [esp+28h], ax
+//             <save flags>
+//             TEST ax, ax
+//             jns L1
+//             invoke callback handler
+// (optional)  mov ax, MAX_16     ; saturating arithmetic (Max for bit width/sign/unsigned) 
+//  
+//       L1:   <restore flags>
+//             mov [esp+28h], ax
+//
+bool IntegerTransform64::addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+{
+	if (p_annotation.getRegister() == Register::UNKNOWN)
+		return false;
+
+	string detector = p_annotation.isSigned() ? SIGNEDNESS64_DETECTOR_SIGNED : SIGNEDNESS64_DETECTOR_UNSIGNED;
+	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
+
+	Instruction_t *save = addNewAssembly("pushf");
+
+	// TEST <reg>, <reg>
+	std::ostringstream s;
+	s << "test " << Register::toString(p_annotation.getRegister()) << "," << Register::toString(p_annotation.getRegister());
+	Instruction_t *test = addNewAssembly(save, s.str());
+
+	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, save);
+	save->SetFallthrough(test);
+	originalInstrumentInstr->SetFallthrough(origFallthrough);
+
+	Instruction_t *jns = addNewAssembly(test, "jns 0x22");
+	Instruction_t *nop = addNewAssembly(jns, "nop");
+	Instruction_t *restore = addNewAssembly("popf");
+	restore->SetFallthrough(originalInstrumentInstr);
+
+	jns->SetTarget(restore);
+
+	Instruction_t *callback = NULL; 
+
+	if (p_policy == POLICY_CONTINUE_SATURATING_ARITHMETIC)
+	{
+		// what value should we saturate with for 64 and 32 bits?
+		Instruction_t *saturation = addNewMaxSaturation(nop, p_annotation.getRegister(), p_annotation);
+
+/*
+
+		std::ostringstream s2;
+		if (p_annotation.isUnsigned())
+		{
+			if (p_annotation.getBitWidth() == 64)
+				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFFFFFFFF";
+			else if (p_annotation.getBitWidth() == 32)
+				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFFFFFF";
+			else if (p_annotation.getBitWidth() == 16)
+				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFF";
+			else
+				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFF";
+		}
+		else
+		{
+			if (p_annotation.getBitWidth() == 64)
+				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFFF";
+			else if (p_annotation.getBitWidth() == 32)
+				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0xFFFFF";
+			else if (p_annotation.getBitWidth() == 16)
+				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0x7FFF";
+			else
+				s2 << "mov " << Register::toString(p_annotation.getRegister()) << ", 0x7F";
+		}
+		Instruction_t *saturation = addNewAssembly(s2.str());
+*/
+
+
+
+		if (p_annotation.isSigned())
+			saturation->SetComment("signedness/signed/saturate");
+		else
+			saturation->SetComment("signedness/unsigned/saturate");
+			
+		callback = addCallbackHandlerSequence(p_instruction, saturation, detector, p_policy);
+		nop->SetFallthrough(callback);
+		saturation->SetFallthrough(restore);
+	}
+	else
+	{
+		callback = addCallbackHandlerSequence(p_instruction, restore, detector, p_policy);
+		nop->SetFallthrough(callback);
+	}
+	
+	m_numSignedness++;
+	return true;
+}
