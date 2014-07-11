@@ -4,16 +4,25 @@
 int main (int argc, char **argv) 
 {
 	char *foobar = NULL;
-	int i;
+	int i, j;
 
 	i = atoi(argv[1]);
 
-	foobar = malloc(i);
+	printf("i = %d\n", i);
+
+	foobar = malloc(i); // sign/unsigned error here
+
+	if (!foobar)
+	{
+		printf("malloc failed\n");
+		return 1;
+	}
 
 	printf("i = %d\n", i);
 
-	strncpy(foobar, "yeah whatever", i);
-
+	// need the strncpy to induce SIGNEDNESS annotation
+	bzero(foobar, i);
+	strncpy(foobar, "yeah whatever", i-1);
 	printf("%d: %s\n", i, foobar);
 
 	return 0;
