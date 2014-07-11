@@ -21,6 +21,7 @@ class IntegerTransform64 : public IntegerTransform
 		void handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void handleUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
+		void handleSignedness(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void addOverflowUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 
 		void saturateSignedMultiplyOverflow(Instruction_t *p_orig, Instruction_t *p_instruction, Instruction_t* p_fallthrough);
@@ -31,6 +32,7 @@ class IntegerTransform64 : public IntegerTransform
 		void addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, const Register::RegisterName& p_reg1, const int p_constant, const Register::RegisterName& p_reg3, int p_policy);
 		void addTruncationCheck32(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 		void addTruncationCheck64(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
+		bool addSignednessCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy);
 
 		string buildSaturationAssembly(Instruction_t *p_instruction, string p_pattern, string p_value);
 };
@@ -41,7 +43,6 @@ class IntegerTransform64 : public IntegerTransform
 #define OVERFLOW64_DETECTOR            "overflow_detector_64"
 #define UNDERFLOW64_DETECTOR           "underflow_detector_64"
 
-// make all TRUNCATION use same handler for now
 #define	TRUNCATION64_DETECTOR_UNSIGNED_64_32      "truncation_detector_64_32"
 #define	TRUNCATION64_DETECTOR_SIGNED_64_32        "truncation_detector_64_32"
 #define	TRUNCATION64_DETECTOR_UNKNOWN_64_32       "truncation_detector_64_32"
@@ -63,5 +64,8 @@ class IntegerTransform64 : public IntegerTransform
 #define	TRUNCATION64_DETECTOR_UNKNOWN_32_8        "truncation_detector_32_8"
 
 #define	TRUNCATION64_FORCE_EXIT                   "truncation_force_exit"
+
+#define SIGNEDNESS64_DETECTOR_SIGNED              "signedness_detector_signed"
+#define SIGNEDNESS64_DETECTOR_UNSIGNED            "signedness_detector_unsigned"
 
 #endif
