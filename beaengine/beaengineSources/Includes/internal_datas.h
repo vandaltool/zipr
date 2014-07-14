@@ -477,7 +477,7 @@ char Registers16Bits[16][8] = {
 /* =====================================================
  * 8 bits registers
  * ===================================================== */
-char Registers8BitsLegacy[8][4] = {
+char Registers8BitsLegacy[16][5] = {
     "al",
     "cl",
     "dl",
@@ -486,6 +486,14 @@ char Registers8BitsLegacy[8][4] = {
     "ch",
     "dh",
     "bh",
+    "r8b",
+    "r9b",
+    "r10b",
+    "r11b",
+    "r12b",
+    "r13b",
+    "r14b",
+    "r15b",
 };
 
 Int32 REGS8BITS[] = {
