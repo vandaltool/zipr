@@ -22,20 +22,22 @@ IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_fileIR,
 	m_numIdioms = 0;
 	m_numBlacklisted = 0;
 	m_numBenign = 0;
-	m_numOverflows = 0;
-	m_numUnderflows = 0;
-	m_numTruncations = 0;
-	m_numSignedness = 0;
 	m_numFP = 0;
-	m_numOverflowsSkipped = 0;
-	m_numUnderflowsSkipped = 0;
-	m_numTruncationsSkipped = 0;
-	m_numSignednessSkipped = 0;
 
 	m_numTotalOverflows = 0;
 	m_numTotalUnderflows = 0;
 	m_numTotalTruncations = 0;
 	m_numTotalSignedness = 0;
+
+	m_numOverflows = 0;
+	m_numUnderflows = 0;
+	m_numTruncations = 0;
+	m_numSignedness = 0;
+
+	m_numOverflowsSkipped = 0;
+	m_numUnderflowsSkipped = 0;
+	m_numTruncationsSkipped = 0;
+	m_numSignednessSkipped = 0;
 }
 
 bool IntegerTransform::isBlacklisted(Function_t *func)
@@ -65,13 +67,22 @@ void IntegerTransform::logStats()
 	std::cerr << "# ATTRIBUTE num_idioms=" << m_numIdioms << std::endl;
 	std::cerr << "# ATTRIBUTE num_blacklisted=" << m_numBlacklisted << std::endl;
 	std::cerr << "# ATTRIBUTE num_benign=" << m_numBenign << std::endl;
+
+	std::cerr << "# ATTRIBUTE num_total_overflows=" << m_numTotalOverflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_overflows_instrumented=" << m_numOverflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_overflows_skipped=" << m_numOverflowsSkipped << std::endl;
+
+	std::cerr << "# ATTRIBUTE num_total_underflows=" << m_numTotalUnderflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_underflows_instrumented=" << m_numUnderflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_underflows_skipped=" << m_numUnderflowsSkipped << std::endl;
+
+	std::cerr << "# ATTRIBUTE num_total_truncations=" << m_numTotalTruncations << std::endl;
 	std::cerr << "# ATTRIBUTE num_truncations_instrumented=" << m_numTruncations << std::endl;
 	std::cerr << "# ATTRIBUTE num_truncations_skipped=" << m_numTruncationsSkipped << std::endl;
+
+	std::cerr << "# ATTRIBUTE num_total_signedness=" << m_numTotalSignedness << std::endl;
 	std::cerr << "# ATTRIBUTE num_signedness_instrumented=" << m_numSignedness << std::endl;
 	std::cerr << "# ATTRIBUTE num_signedness_skipped=" << m_numSignednessSkipped << std::endl;
+
 	std::cerr << "# ATTRIBUTE num_floating_point=" << m_numFP << std::endl;
 }

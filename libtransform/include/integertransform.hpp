@@ -42,14 +42,23 @@ class IntegerTransform : public Transform
 		unsigned m_numIdioms; 
 		unsigned m_numBlacklisted; 
 		unsigned m_numBenign; 
+
+		unsigned m_numTotalOverflows; 
 		unsigned m_numOverflows; 
-		unsigned m_numUnderflows; 
-		unsigned m_numTruncations; 
-		unsigned m_numSignedness; 
 		unsigned m_numOverflowsSkipped; 
+
+		unsigned m_numTotalUnderflows; 
+		unsigned m_numUnderflows; 
 		unsigned m_numUnderflowsSkipped; 
+
+		unsigned m_numTotalTruncations; 
+		unsigned m_numTruncations; 
 		unsigned m_numTruncationsSkipped; 
+
+		unsigned m_numTotalSignedness; 
+		unsigned m_numSignedness; 
 		unsigned m_numSignednessSkipped; 
+
 		unsigned m_numFP; 
 };
 
