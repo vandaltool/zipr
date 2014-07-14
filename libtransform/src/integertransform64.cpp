@@ -79,18 +79,18 @@ int IntegerTransform64::execute()
 			{
 				int policy = POLICY_DEFAULT; //  default for now is exit -- no callback handlers yet
 
-                                if (isSaturatingArithmetic())
-                                {
-                                        // saturating arithmetic is enabled
-                                        // only use if instruction is not a potential false positive
-                                        policy = POLICY_CONTINUE_SATURATING_ARITHMETIC;
-                                }
+				if (isSaturatingArithmetic())
+				{
+					// saturating arithmetic is enabled
+					// only use if instruction is not a potential false positive
+					policy = POLICY_CONTINUE_SATURATING_ARITHMETIC;
+				}
 
-                                // takes precedence over saturation if conflict
-                                if (isWarningsOnly())
-                                {
-                                        policy = POLICY_CONTINUE;
-                                }
+				// takes precedence over saturation if conflict
+				if (isWarningsOnly())
+				{
+					policy = POLICY_CONTINUE;
+				}
 
 				virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
 				if (irdb_vo == 0) continue;
@@ -129,18 +129,22 @@ int IntegerTransform64::execute()
 
 				if (annotation.isOverflow())
 				{
+					m_numTotalOverflows = 0;
 					handleOverflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isUnderflow())
 				{
+					m_numTotalUnderflows = 0;
 					handleUnderflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isTruncation())
 				{
+					m_numTotalTruncations = 0;
 					handleTruncation(insn, annotation, policy);
 				}
 				else if (annotation.isSignedness())
 				{
+					m_numTotalSignedness = 0;
 					handleSignedness(insn, annotation, policy);
 				}
 			}
@@ -152,15 +156,25 @@ int IntegerTransform64::execute()
 
 void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
+	bool result = false;
+
 	if (isMultiplyInstruction(p_instruction) || (p_annotation.isOverflow() && !p_annotation.isUnknownSign()) && !p_annotation.isNoFlag())
 	{
 		// handle signed/unsigned add/sub overflows (non lea)
-		addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
+		result = addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
 	}
 	else if (p_annotation.isNoFlag())
 	{
 		// handle lea
-		addOverflowCheckNoFlag(p_instruction, p_annotation, p_policy);
+		if ((p_annotation.getBitWidth() == 64 || p_annotation.getBitWidth() == 32))
+		{
+			result = addOverflowCheckNoFlag(p_instruction, p_annotation, p_policy);
+		}
+	}
+
+	if (result)
+	{
+		m_numOverflows++;
 	}
 	else
 	{
@@ -171,23 +185,29 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 
 void IntegerTransform64::handleUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
-        if (p_annotation.isUnderflow() && !p_annotation.isNoFlag())
-        {
-                addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
-        }
-        else
-        {
-                m_numUnderflowsSkipped++;
-                logMessage(__func__, "UNDERFLOW type not yet handled");
-        }
+	bool success = false;
+
+	if (p_annotation.isUnderflow() && !p_annotation.isNoFlag())
+		success = addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
+
+	if (success)
+	{
+		m_numUnderflows++;
+	}
+	else
+	{
+		m_numUnderflowsSkipped++;
+		logMessage(__func__, "UNDERFLOW type not yet handled");
+	}
 }
 
 void IntegerTransform64::handleTruncation(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
+	bool success = false;
+
 	if (!isMovInstruction(p_instruction))
 	{
 		logMessage(__func__, "We only instrument MOV instructions for TRUNCATION annotations");
-		m_numTruncationsSkipped++;
 		return;
 	}
 
@@ -195,11 +215,10 @@ void IntegerTransform64::handleTruncation(Instruction_t *p_instruction, const ME
 	{
 		if (p_annotation.getTruncationToWidth() == 32 || p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8)
 		{
-			addTruncationCheck64(p_instruction, p_annotation, p_policy);
+			success = addTruncationCheck64(p_instruction, p_annotation, p_policy);
 		}
 		else
 		{
-			m_numTruncationsSkipped++;
 			logMessage(__func__, "Truncation type not yet handled (64)");
 		}
 	}
@@ -207,14 +226,16 @@ void IntegerTransform64::handleTruncation(Instruction_t *p_instruction, const ME
 	{
 		if (p_annotation.getTruncationToWidth() == 16 || p_annotation.getTruncationToWidth() == 8)
 		{
-			addTruncationCheck32(p_instruction, p_annotation, p_policy);
+			success = addTruncationCheck32(p_instruction, p_annotation, p_policy);
 		}
 		else
 		{
-			m_numTruncationsSkipped++;
 			logMessage(__func__, "Truncation type not yet handled (32)");
 		}
 	}
+
+	if (success)
+		m_numTruncations++;
 	else
 	{
 		m_numTruncationsSkipped++;
@@ -235,6 +256,7 @@ void IntegerTransform64::handleSignedness(Instruction_t *p_instruction, const ME
 	}
 }
 
+
 //
 // Saturation Policy
 //	        mul a, b                 ; <instruction to instrument>
@@ -243,7 +265,7 @@ void IntegerTransform64::handleSignedness(Instruction_t *p_instruction, const ME
 //              of64/uf64 handler        ; call the callback handler (handle diagnostics)
 // OrigNext:    <nextInstruction>        ; original fallthrugh
 //
-void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	char tmpbuf[1024];
 
@@ -252,15 +274,13 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	if (targetReg == Register::UNKNOWN)
 	{
 		logMessage(__func__, p_annotation, "unknown target register");
-		return;
+		return false;
 	}
 	else if (targetReg == Register::RSP || targetReg == Register::RBP)
 	{
 		logMessage(__func__, p_annotation, "target register is RSP or RBP: skip");
-		return;
+		return false;
 	}
-
-	logMessage(__func__, p_annotation, "debug");
 
 	Instruction_t* jncond_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
 	Instruction_t* lea_i = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
@@ -323,7 +343,6 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 
 	Instruction_t* call = allocateNewInstruction(p_instruction->GetAddress()->GetFileID(), p_instruction->GetFunction());
 	instr->SetFallthrough(call);
-//	setAssembly(call, "db 0xe8, 00, 00, 00, 00"); 
 	setAssembly(call, "call 0"); 
 		
 	if (p_annotation.isOverflow())
@@ -337,10 +356,7 @@ void IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 	call->SetFallthrough(instr);
 	instr->SetFallthrough(next_i);
 
-	if (p_annotation.isUnderflow())
-		m_numUnderflows++;
-	else
-		m_numOverflows++;
+	return true;
 }
 
 #ifdef XXX
@@ -387,24 +403,22 @@ void IntegerTransform64::saturateSignedMultiplyOverflow(Instruction_t *p_orig, I
 }
 #endif
 
-void IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+bool IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	LEAPattern leaPattern(p_annotation);
 
 	if (!leaPattern.isValid())
 	{
 		logMessage(__func__, "invalid or unhandled lea pattern - skipping: ");
-		m_numOverflowsSkipped++;
-		return;
+		return false;
 	}
 
 	if (leaPattern.getRegister1() == Register::UNKNOWN ||
-		leaPattern.getRegister1() == Register::RSP || 
-		leaPattern.getRegister1() == Register::RBP)
+		leaPattern.getRegister1() == Register::RSP || leaPattern.getRegister1() == Register::RBP ||
+		leaPattern.getRegister1() == Register::ESP || leaPattern.getRegister1() == Register::EBP)
 	{
 		logMessage(__func__, "destination register is unknown, esp or ebp -- skipping: ");
-		m_numOverflowsSkipped++;
-		return;
+		return false;
 	}
 	
 	if (leaPattern.isRegisterPlusRegister() || leaPattern.isRegisterTimesRegister())
@@ -416,26 +430,13 @@ void IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 		if (reg1 == Register::UNKNOWN || reg2 == Register::UNKNOWN || target == Register::UNKNOWN)
 		{
 			logMessage(__func__, "lea reg reg pattern: error retrieving register: reg1: " + Register::toString(reg1) + " reg2: " + Register::toString(reg2) + " target: " + Register::toString(target));
-			m_numOverflowsSkipped++;
-			return;
+			return false;
 		}
-		else if (reg2 == Register::RSP || target == Register::RSP) 
+		else if (reg2 == Register::RSP || target == Register::RSP ||
+	           reg2 == Register::ESP || target == Register::ESP) 
 		{
-			logMessage(__func__, "source or target register is rsp -- skipping: ");
-			m_numOverflowsSkipped++;
-			return;
-		}
-		else if (p_annotation.getBitWidth() != 64)
-		{
-			logMessage(__func__, "we only handle 64 bit LEAs for now:" + p_annotation.toString());
-			m_numOverflowsSkipped++;
-			return;
-		}
-		else if (Register::getBitWidth(target) != 64)
-		{
-			logMessage(__func__, "we only handle 64 bit registers in LEAs for now: " + p_annotation.toString());
-			m_numOverflowsSkipped++;
-			return;
+			logMessage(__func__, "source or target register is esp/rsp -- skipping: ");
+			return false;
 		}
 		else
 		{
@@ -444,7 +445,7 @@ void IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 			else if (leaPattern.isRegisterTimesRegister())
 				addOverflowCheckNoFlag_RegTimesReg(p_instruction, p_annotation, reg1, reg2, target, p_policy);
 		}
-		return;
+		return true;
 	}
 	else if (leaPattern.isRegisterPlusConstant() || leaPattern.isRegisterTimesConstant())
 	{
@@ -455,26 +456,12 @@ void IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 		if (reg1 == Register::UNKNOWN || target == Register::UNKNOWN)
 		{
 			logMessage(__func__, "lea reg reg pattern: error retrieving register: reg1: " + Register::toString(reg1) + " target: " + Register::toString(target));
-			m_numOverflowsSkipped++;
-			return;
+			return false;
 		}
-		else if (target == Register::RSP) 
+		else if (target == Register::RSP || target == Register::ESP) 
 		{
 			logMessage(__func__, "target register is rsp -- skipping: ");
-			m_numOverflowsSkipped++;
-			return;
-		}
-		else if (p_annotation.getBitWidth() != 64)
-		{
-			logMessage(__func__, "we only handle 64 bit LEAs for now:" + p_annotation.toString());
-			m_numOverflowsSkipped++;
-			return;
-		}
-		else if (Register::getBitWidth(target) != 64)
-		{
-			logMessage(__func__, "we only handle 64 bit registers in LEAs for now: " + p_annotation.toString());
-			m_numOverflowsSkipped++;
-			return;
+			return false;
 		}
 		else
 		{
@@ -483,11 +470,11 @@ void IntegerTransform64::addOverflowCheckNoFlag(Instruction_t *p_instruction, co
 			else if (leaPattern.isRegisterTimesConstant())
 				addOverflowCheckNoFlag_RegTimesConstant(p_instruction, p_annotation, reg1, k, target, p_policy);
 		}
-		return;
+		return true;
 	}
 
-	m_numOverflowsSkipped++;
 	logMessage(__func__, "not yet handling lea -- placeholder");
+  return false;
 }
 
 //
@@ -649,7 +636,6 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusReg(Instruction_t *p_inst
 	instr = addNewAssembly(restore, "pop " + Register::toString(p_reg1));
 
 	instr->SetFallthrough(originalInstrumentInstr);
-	m_numOverflows++;
 }
 
 // Example annotation to handle
@@ -755,7 +741,6 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_ins
 	instr = addNewAssembly(restore, "pop " + Register::toString(p_reg1));
 
 	instr->SetFallthrough(originalInstrumentInstr);
-	m_numOverflows++;
 }
 
 // Example annotation to handle
@@ -882,7 +867,6 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 	instr = addNewAssembly(restore, "pop " + Register::toString(p_reg1));
 
 	instr->SetFallthrough(originalInstrumentInstr);
-	m_numOverflows++;
 }
 
 
@@ -989,7 +973,6 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 	instr = addNewAssembly(restore, "pop " + Register::toString(p_reg1));
 
 	instr->SetFallthrough(originalInstrumentInstr);
-	m_numOverflows++;
 }
 
 //
@@ -1005,7 +988,7 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesConstant(Instruction_t *
 // Other possibilities might be handled in the future.
 //
 
-void IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	assert(p_instruction && p_instruction->GetFallthrough() &&
 		p_annotation.getTruncationFromWidth() == 32 && 
@@ -1234,7 +1217,7 @@ void IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 		}
 	}
 
-	m_numTruncations++;
+	return true;
 }
 
 //    we want:  32->16  movzx edx, ax -->  movzx edx, 0xFFFF
@@ -1275,7 +1258,7 @@ string IntegerTransform64::buildSaturationAssembly(Instruction_t *p_instruction,
 // Other possibilities might be handled in the future.
 //
 
-void IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
+bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, const MEDS_InstructionCheckAnnotation& p_annotation, int p_policy)
 {
 	assert(p_instruction && p_instruction->GetFallthrough() &&
 		p_annotation.getTruncationFromWidth() == 64 && 
@@ -1292,8 +1275,7 @@ void IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 	if (borrowReg == Register::UNKNOWN)
 	{
 		logMessage(__func__, "Could not borrow a 64-bit register");
-		m_numTruncationsSkipped++;
-		return;
+		return false;
 	}
 
 	// Main difference between TRUNCATION annotation for 64 bits vs. 32 bits
@@ -1565,7 +1547,7 @@ void IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 		}
 	}
 
-	m_numTruncations++;
+	return true;
 }
 
 // 8048576 5 INSTR CHECK SIGNEDNESS SIGNED 16 AX ZZ mov     [esp+28h], ax

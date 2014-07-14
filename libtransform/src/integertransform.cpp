@@ -31,6 +31,11 @@ IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_fileIR,
 	m_numUnderflowsSkipped = 0;
 	m_numTruncationsSkipped = 0;
 	m_numSignednessSkipped = 0;
+
+	m_numTotalOverflows = 0;
+	m_numTotalUnderflows = 0;
+	m_numTotalTruncations = 0;
+	m_numTotalSignedness = 0;
 }
 
 bool IntegerTransform::isBlacklisted(Function_t *func)
