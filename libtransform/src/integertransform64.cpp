@@ -129,22 +129,22 @@ int IntegerTransform64::execute()
 
 				if (annotation.isOverflow())
 				{
-					m_numTotalOverflows = 0;
+					m_numTotalOverflows++;
 					handleOverflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isUnderflow())
 				{
-					m_numTotalUnderflows = 0;
+					m_numTotalUnderflows++;
 					handleUnderflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isTruncation())
 				{
-					m_numTotalTruncations = 0;
+					m_numTotalTruncations++;
 					handleTruncation(insn, annotation, policy);
 				}
 				else if (annotation.isSignedness())
 				{
-					m_numTotalSignedness = 0;
+					m_numTotalSignedness++;
 					handleSignedness(insn, annotation, policy);
 				}
 			}
@@ -158,7 +158,7 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 {
 	bool result = false;
 
-	if (isMultiplyInstruction(p_instruction) || (p_annotation.isOverflow() && !p_annotation.isUnknownSign()) && !p_annotation.isNoFlag())
+	if (isMultiplyInstruction(p_instruction) || (p_annotation.isOverflow() && !p_annotation.isNoFlag()))
 	{
 		// handle signed/unsigned add/sub overflows (non lea)
 		result = addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
@@ -276,9 +276,10 @@ bool IntegerTransform64::addOverflowUnderflowCheck(Instruction_t *p_instruction,
 		logMessage(__func__, p_annotation, "unknown target register");
 		return false;
 	}
-	else if (targetReg == Register::RSP || targetReg == Register::RBP)
+	else if (targetReg == Register::RSP || targetReg == Register::RBP ||
+		targetReg == Register::ESP || targetReg == Register::EBP)
 	{
-		logMessage(__func__, p_annotation, "target register is RSP or RBP: skip");
+		logMessage(__func__, p_annotation, "target register is ESP/RSP or EBP/RBP: skip");
 		return false;
 	}
 

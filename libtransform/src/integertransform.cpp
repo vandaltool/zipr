@@ -71,18 +71,22 @@ void IntegerTransform::logStats()
 	std::cerr << "# ATTRIBUTE num_total_overflows=" << m_numTotalOverflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_overflows_instrumented=" << m_numOverflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_overflows_skipped=" << m_numOverflowsSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE overflows_coverage=" << (double)m_numOverflows/(double)m_numTotalOverflows << std::endl;
 
 	std::cerr << "# ATTRIBUTE num_total_underflows=" << m_numTotalUnderflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_underflows_instrumented=" << m_numUnderflows << std::endl;
 	std::cerr << "# ATTRIBUTE num_underflows_skipped=" << m_numUnderflowsSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE underflows_coverage=" << (double)m_numUnderflows/(double)m_numTotalUnderflows << std::endl;
 
 	std::cerr << "# ATTRIBUTE num_total_truncations=" << m_numTotalTruncations << std::endl;
 	std::cerr << "# ATTRIBUTE num_truncations_instrumented=" << m_numTruncations << std::endl;
 	std::cerr << "# ATTRIBUTE num_truncations_skipped=" << m_numTruncationsSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE truncation_coverage=" << (double)m_numTruncations/(double)m_numTotalTruncations << std::endl;
 
 	std::cerr << "# ATTRIBUTE num_total_signedness=" << m_numTotalSignedness << std::endl;
 	std::cerr << "# ATTRIBUTE num_signedness_instrumented=" << m_numSignedness << std::endl;
 	std::cerr << "# ATTRIBUTE num_signedness_skipped=" << m_numSignednessSkipped << std::endl;
+	std::cerr << "# ATTRIBUTE signedness_coverage=" << (double)m_numSignedness/(double)m_numTotalSignedness << std::endl;
 
 	std::cerr << "# ATTRIBUTE num_floating_point=" << m_numFP << std::endl;
 }
