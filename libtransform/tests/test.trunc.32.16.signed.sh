@@ -26,7 +26,7 @@
 # ATTRIBUTE OS=linux
 # ATTRIBUTE Compiler=gcc
 # ATTRIBUTE Arch=x86_64
-# ATTRIBUTE TestName=unsigned_mul.32
+# ATTRIBUTE TestName=trunc.32.16.signed
 # ATTRIBUTE CompilerFlags="-w"
 
 COMPFLAGS="-w"
@@ -43,6 +43,8 @@ PWD=`pwd`
 TESTLOC="${PWD}"
 tmp1=$$.tmp.1
 tmp2=$$.tmp.2
+BINARY=trunc.32.16.signed.exe
+BINARY_PEASOUP=$BINARY.peasoup
 
 outfile=$1
 
@@ -60,8 +62,7 @@ cleanup()
 
 	cd $TESTLOC
 	rm -f $tmp1 $tmp2 2>/dev/null
-	rm -fr peasoup*unsigned_mul*32*
-	rm -fr unsigned_mul*32*.exe*
+	rm -fr peasoup*$BINARY*.*
 	cd -
 
 	exit $exit_code
@@ -75,28 +76,41 @@ assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME
 
 # path to source
 cd $TESTLOC
-rm unsigned_mul.32.exe
-make unsigned_mul.32.exe
+rm $BINARY
+make $BINARY
 
 if [ ! $? -eq 0 ]; then
 	cleanup 1 "Failed to build"
 fi
 
 # test normal results
-./unsigned_mul.32.exe 2 4 > $tmp1
-./unsigned_mul.32.exe.peasoup 2 4 > $tmp2
+./$BINARY 258 > $tmp1
+./$BINARY_PEASOUP 258 > $tmp2
 diff $tmp1 $tmp2
 if [ ! $? -eq 0 ]; then
 	cat $tmp1 $tmp2
-	cleanup 2 "multiply failed: 2 * 4"
+	cleanup 2 "false positive detected"
 fi
 
-./unsigned_mul.32.exe.peasoup 2000000 4000000 > $tmp1
-grep "4294967295" $tmp1
+grep "too big" $tmp2
 if [ ! $? -eq 0 ]; then
 	cat $tmp1
-	cleanup 5 "saturation failed: 2000000 4000000"
+	cleanup 3 "false positive detected"
 fi
 
+# make sure results differ
+./$BINARY 65535 > $tmp1
+./$BINARY_PEASOUP 65535 > $tmp2
+diff $tmp1 $tmp2
+if [ $? -eq 0 ]; then
+	cat $tmp1 $tmp2
+	cleanup 8 "failed to detect/saturate truncation"
+fi
 
-cleanup 0 "unsigned_mul.32 test success"
+# check saturation value
+grep "= 32767"  $tmp2
+if [ ! $? -eq 0 ]; then
+	cleanup 9 "failed to saturate properly"
+fi
+
+cleanup 0 "$BINARY test success"

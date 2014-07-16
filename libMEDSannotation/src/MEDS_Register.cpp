@@ -356,35 +356,40 @@ int Register::getBitWidth(Register::RegisterName p_reg)
 	}
 }
 
+// favor registers R10..R15
 Register::RegisterName Register::getFreeRegister64(std::set<Register::RegisterName> p_taken)
 {
-	if (p_taken.count(RAX) == 0)
-		return RAX;
-	if (p_taken.count(RBX) == 0)
-		return RBX;
-	if (p_taken.count(RCX) == 0)
-		return RCX;
-	if (p_taken.count(RDX) == 0)
-		return RDX;
-	if (p_taken.count(RDI) == 0)
-		return RDI;
-	if (p_taken.count(RSI) == 0)
-		return RSI;
-	if (p_taken.count(R8) == 0)
-		return R8;
-	if (p_taken.count(R9) == 0)
-		return R9;
-	if (p_taken.count(R10) == 0)
+	if (p_taken.count(R10) == 0 && p_taken.count(R10D) == 0 && p_taken.count(R10W) == 0 && p_taken.count(R10B) == 0 )
 		return R10;
-	if (p_taken.count(R11) == 0)
+	if (p_taken.count(R11) == 0 && p_taken.count(R11D) == 0 && p_taken.count(R11W) == 0 && p_taken.count(R11B) == 0 )
 		return R11;
-	if (p_taken.count(R12) == 0)
+	if (p_taken.count(R12) == 0 && p_taken.count(R12D) == 0 && p_taken.count(R12W) == 0 && p_taken.count(R12B) == 0 )
 		return R12;
-	if (p_taken.count(R13) == 0)
+	if (p_taken.count(R13) == 0 && p_taken.count(R13D) == 0 && p_taken.count(R13W) == 0 && p_taken.count(R13B) == 0 )
 		return R13;
-	if (p_taken.count(R14) == 0)
+	if (p_taken.count(R14) == 0 && p_taken.count(R14D) == 0 && p_taken.count(R14W) == 0 && p_taken.count(R14B) == 0 )
 		return R14;
-	if (p_taken.count(R15) == 0)
+	if (p_taken.count(R15) == 0 && p_taken.count(R15D) == 0 && p_taken.count(R15W) == 0 && p_taken.count(R15B) == 0 )
 		return R15;
+	if (p_taken.count(RAX) == 0 && p_taken.count(EAX) == 0  && p_taken.count(AX) == 0   && p_taken.count(AL) == 0 )
+		return RAX;
+	if (p_taken.count(RBX) == 0 && p_taken.count(EBX) == 0  && p_taken.count(BX) == 0   && p_taken.count(BL) == 0 )
+		return RBX;
+	if (p_taken.count(RCX) == 0 && p_taken.count(ECX) == 0  && p_taken.count(CX) == 0   && p_taken.count(CL) == 0 )
+		return RCX;
+	if (p_taken.count(RDX) == 0 && p_taken.count(EDX) == 0  && p_taken.count(DX) == 0   && p_taken.count(DL) == 0 )
+		return RDX;
+	if (p_taken.count(RSI) == 0 && p_taken.count(ESI) == 0  && p_taken.count(SI) == 0   && p_taken.count(SIL) == 0 )
+		return RSI;
+	if (p_taken.count(RDI) == 0 && p_taken.count(EDI) == 0  && p_taken.count(DI) == 0   && p_taken.count(DIL) == 0 )
+		return RDI;
+	if (p_taken.count(R8) == 0  && p_taken.count(R8D) == 0  && p_taken.count(R8W) == 0  && p_taken.count(R8B) == 0 )
+		return R8;
+	if (p_taken.count(R9) == 0  && p_taken.count(R9D) == 0  && p_taken.count(R9W) == 0  && p_taken.count(R9B) == 0 )
+		return R9;
+	if (p_taken.count(RSP) == 0 && p_taken.count(ESP) == 0  && p_taken.count(SP) == 0   && p_taken.count(SPL) == 0 )
+		return RSP;
+	if (p_taken.count(RBP) == 0 && p_taken.count(EBP) == 0  && p_taken.count(BP) == 0   && p_taken.count(BPL) == 0 )
+		return RBP;
 	return UNKNOWN;
 }

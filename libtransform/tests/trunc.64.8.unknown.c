@@ -4,9 +4,9 @@
 
 int main(int argc, char **argv)
 {
-  char c;
+  char t;
   unsigned long long i = (unsigned long long) strtoull(argv[1], NULL, 10);
 
-  c = i;
-  printf("just right: c = %d, i = %lld\n", c, i);
+  t = i;
+  printf("just right: trunc = %d, i = %lld\n", t, i);
 }

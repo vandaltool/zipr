@@ -166,19 +166,23 @@ int IntegerTransform32::execute()
 				if (annotation.isOverflow())
 				{
 					// nb: safe with respect to esp (except for lea)
+					m_numTotalOverflows++;
 					handleOverflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isUnderflow() && !annotation.isNoFlag())
 				{
+					m_numTotalUnderflows++;
 					// nb: safe with respect to esp
 					handleUnderflowCheck(insn, annotation, policy);
 				}
 				else if (annotation.isTruncation())
 				{
+					m_numTotalTruncations++;
 					handleTruncation(insn, annotation, policy);
 				}
 				else if (annotation.isSignedness())
 				{
+					m_numTotalSignedness++;
 					if (annotation.isUnknownSign())
 					{
 						logMessage(__func__, "annotation has unknown sign: skipping");

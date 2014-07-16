@@ -467,6 +467,8 @@ void FileIR_t::WriteToDB()
 		insnp->Disassemble(disasm);
 
 		// we have a few new requirements for instructions that doesn't correspond to original program insns.
+//		cerr << "handling instruction:" << ((Instruction_t*)insnp)->getDisassembly() << " comment: " << ((Instruction_t*)insnp)->GetComment() << endl;
+
 		if(insnp->GetOriginalAddressID() == NOT_IN_DATABASE)
 		{
 

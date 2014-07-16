@@ -31,8 +31,13 @@
 
 COMPFLAGS="-w"
 
-export IDAROOT=$IDAROOT65
-export IDASDK=$IDASDK65
+if [ -z $IDAROOT ]; then
+  export IDAROOT=$IDAROOT65
+fi
+
+if [ -z $IDASDK ]; then
+  export IDASDK=$IDASDK65
+fi
 
 PWD=`pwd`
 TESTLOC="${PWD}"

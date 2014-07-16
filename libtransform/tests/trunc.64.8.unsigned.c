@@ -4,12 +4,12 @@
 
 int main(int argc, char **argv)
 {
-  unsigned char c;
+  unsigned char t;
   unsigned long long i = (unsigned long long) strtoull(argv[1], NULL, 10);
 
-  c = i;
-  if (c > 128)
-    printf("too big\n");
+  t = i;
+  if (t > 128)
+    printf("too big: trunc = %u\n", t);
   else
-    printf("just right: c = %u, i = %lld\n", c, i);
+    printf("just right: trunc = %u, i = %lld\n", t, i);
 }

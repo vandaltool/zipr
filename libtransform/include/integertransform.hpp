@@ -23,35 +23,42 @@ class IntegerTransform : public Transform
 		bool isPathManipulationDetected() { return m_pathManipulationDetected; }
 		void setWarningsOnly(bool p_warn) { m_policyWarningsOnly = p_warn; }
 		bool isWarningsOnly() { return m_policyWarningsOnly; }
+		void setInstrumentIdioms(bool p_idioms) { m_instrumentIdioms = p_idioms; }
+		bool isInstrumentIdioms() { return m_instrumentIdioms; }
 		void logStats();
 		bool isBlacklisted(Function_t *func);
 	
 	protected:
 		std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>* getAnnotations() { return m_annotations; }
 
-/*
-		void logMessage(const std::string &p_method, const std::string &p_msg);
-		void logMessage(const std::string &p_method, const MEDS_InstructionCheckAnnotation&, const std::string &p_msg);
-*/
-
 		std::set<VirtualOffset>*  m_benignFalsePositives;
 		bool                      m_policySaturatingArithmetic;
 		bool                      m_policyWarningsOnly;
 		bool                      m_pathManipulationDetected;
+		bool                      m_instrumentIdioms;
 		std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *m_annotations;
 
 		unsigned m_numAnnotations; 
 		unsigned m_numIdioms; 
 		unsigned m_numBlacklisted; 
 		unsigned m_numBenign; 
+
+		unsigned m_numTotalOverflows; 
 		unsigned m_numOverflows; 
-		unsigned m_numUnderflows; 
-		unsigned m_numTruncations; 
-		unsigned m_numSignedness; 
 		unsigned m_numOverflowsSkipped; 
+
+		unsigned m_numTotalUnderflows; 
+		unsigned m_numUnderflows; 
 		unsigned m_numUnderflowsSkipped; 
+
+		unsigned m_numTotalTruncations; 
+		unsigned m_numTruncations; 
 		unsigned m_numTruncationsSkipped; 
+
+		unsigned m_numTotalSignedness; 
+		unsigned m_numSignedness; 
 		unsigned m_numSignednessSkipped; 
+
 		unsigned m_numFP; 
 };
 

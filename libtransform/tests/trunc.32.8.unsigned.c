@@ -8,7 +8,7 @@ int main(int argc, char **argv)
   i = atoi(argv[1]);
   c = i;
   if (c > 128)
-    printf("too big\n");
-  else
-    printf("just right: c = %d\n", c);
+    printf("whatever\n");
+
+  printf("c = %d\n", c);
 }
