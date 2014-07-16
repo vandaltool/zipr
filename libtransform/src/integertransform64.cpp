@@ -251,7 +251,7 @@ void IntegerTransform64::handleSignedness(Instruction_t *p_instruction, const ME
 	}
 	else
 	{
-                logMessage(__func__, "SIGNEDESS: error: skip instrumentation");
+                logMessage(__func__, "SIGNEDNESS: error: skip instrumentation");
                 m_numSignednessSkipped++;
 	}
 }
