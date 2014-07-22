@@ -1,8 +1,8 @@
-diablo_toolchain     http://peasoup.cs.virginia.edu/repos/diablo_toolchain/trunk/
-idapro65             http://peasoup.cs.virginia.edu/repos/idapro65/trunk/
-idapro65_sdk         http://peasoup.cs.virginia.edu/repos/idapro65_sdk/trunk/
-strata               http://peasoup.cs.virginia.edu/repos/strata/trunk/
-peasoup_examples     http://peasoup.cs.virginia.edu/repos/peasoup_examples/trunk/
-security_transforms  http://peasoup.cs.virginia.edu/repos/security_transforms/trunk/
-SMPStaticAnalyzer    http://peasoup.cs.virginia.edu/repos/SMPStaticAnalyzer/trunk/
-stratafier           http://peasoup.cs.virginia.edu/repos/stratafier/trunk/
+diablo_toolchain     http://svn.zephyr-software.com/repos/diablo_toolchain/trunk/
+idapro65             http://svn.zephyr-software.com/repos/idapro65/trunk/
+idapro65_sdk         http://svn.zephyr-software.com/repos/idapro65_sdk/trunk/
+strata               http://svn.zephyr-software.com/repos/strata/trunk/
+peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/trunk/
+security_transforms  http://svn.zephyr-software.com/repos/security_transforms/trunk/
+SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/trunk/
+stratafier           http://svn.zephyr-software.com/repos/stratafier/trunk/
