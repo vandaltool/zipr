@@ -4,6 +4,8 @@
 /get-peasoup-packages.sh -text
 /irdb_vars -text
 /postgres_setup.sh -text
+/set_command_envs -text
 /set_env_vars -text
 /start_dev.sh -text
+/svn.externals.cgc_dev -text
 /svn.externals.uva_dev -text

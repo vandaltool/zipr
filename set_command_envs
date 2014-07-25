@@ -1,0 +1,5 @@
+
+cgc_tools_path=/usr/bin/i386-linux-cgc
+
+export PS_OBJCOPY=$cgc_tools_path-objcopy
+export PS_READELF=$cgc_tools_path-readcgc
