@@ -20,6 +20,11 @@ TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
 # Setting PN timeout to 6 hours for TNE. 
 PN_TIMEOUT_VALUE=21600
 
+# 
+# set default values for 
+#
+initial_off_phases="isr ret_shadow_stack determine_program"
+
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
 #on for on and off for off
@@ -233,18 +238,19 @@ check_options()
 		exit -3;	
 	fi
 
-	# --step determine_program=(on|off) not specified on the command line
-	# default policy is off
-	# to make the default policy on, get rid of this block of code
-	echo $phases_off|egrep "determine_program" > /dev/null
-	if [ ! $? -eq 0 ];
-	then
-		# by default it's off
-		phases_off="$phases_off determine_program=off"
-	fi
+	for phase in $initial_off_phases
+	do
 
-	# turn off isr
-	phases_off="$phases_off isr=off"
+		# --step $phase=(on|off) not specified on the command line
+		# default policy is off
+		# to make the default policy on, get rid of this block of code
+		echo $phases_off|egrep "$phase=" > /dev/null
+		if [ ! $? -eq 0 ];
+		then
+			# by default it's off
+			phases_off="$phases_off $phase=off"
+		fi
+	done
 
 	# turn off heaprand and double_free if twitcher is on for now
 	is_step_on twitchertransform
@@ -753,7 +759,7 @@ perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
 #
 # Do P1/Pn transform.
 #
-perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $DO_CANARIES
+perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $DO_CANARIES
 
 		
 #
@@ -762,8 +768,17 @@ perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $ne
 if [ -z "$program" ]; then
    program="unknown"
 fi
-perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
+perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
+
+#
+# perform_calc -- get some stats about the DB
+#
 #perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
+
+#
+# perform step to instrument pgm with return shadow stack
+#
+perform_step ret_shadow_stack meds_static,clone $PEASOUP_HOME/tools/do_rss.sh $cloneid 
 
 #
 # Do Twitcher transform step if twitcher is present
