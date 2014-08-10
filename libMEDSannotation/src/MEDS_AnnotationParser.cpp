@@ -1,5 +1,8 @@
 #include <string>
+
 #include "MEDS_AnnotationParser.hpp"
+#include "MEDS_InstructionCheckAnnotation.hpp"
+#include "MEDS_SafeFuncAnnotation.hpp"
 
 // @todo: multiple annotation per instruction
 
@@ -12,18 +15,24 @@ MEDS_AnnotationParser::MEDS_AnnotationParser(istream &p_inputStream)
 
 	while (!p_inputStream.eof())
 	{
-	    getline(p_inputStream, line);
+	    	getline(p_inputStream, line);
 		if (line.empty()) continue;
 
-		MEDS_InstructionCheckAnnotation annot(line);
 
-		if (annot.isValid())
-		{
-			VirtualOffset vo = annot.getVirtualOffset();
-//			m_annotations[vo] = annot;
-//			m_annotations.insert(vo, annot);
-			m_annotations.insert(std::pair<VirtualOffset, MEDS_InstructionCheckAnnotation>(vo, annot));
+#define 	ADD_AND_CONTINUE_IF_VALID(type) \
+		{ \
+			type annot(line); \
+			if (annot.isValid()) \
+			{ \
+				VirtualOffset vo = annot.getVirtualOffset(); \
+				m_annotations.insert(std::pair<VirtualOffset, MEDS_AnnotationBase>(vo, annot)); \
+				continue; \
+			} \
 		}
+
+		ADD_AND_CONTINUE_IF_VALID(MEDS_InstructionCheckAnnotation);
+		ADD_AND_CONTINUE_IF_VALID(MEDS_SafeFuncAnnotation);
+		
 	}
 }
 

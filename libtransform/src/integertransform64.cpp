@@ -29,7 +29,7 @@ using namespace libTransform;
 *
 **/
 
-IntegerTransform64::IntegerTransform64(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : IntegerTransform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions, p_benignFalsePositives)
+IntegerTransform64::IntegerTransform64(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::multimap<VirtualOffset, MEDS_AnnotationBase> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : IntegerTransform(p_variantID, p_fileIR, p_annotations, p_filteredFunctions, p_benignFalsePositives)
 {
 }
 
@@ -99,12 +99,17 @@ int IntegerTransform64::execute()
 
 				if (getAnnotations()->count(vo) == 0)
 					continue;
-				std::pair<std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator,std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator> ret;
+				std::pair<std::multimap<VirtualOffset, MEDS_AnnotationBase>::iterator,std::multimap<VirtualOffset, MEDS_AnnotationBase>::iterator> ret;
 				ret = getAnnotations()->equal_range(vo);
 				MEDS_InstructionCheckAnnotation annotation; 
-				for (std::multimap<VirtualOffset,MEDS_InstructionCheckAnnotation>::iterator it = ret.first; it != ret.second; ++it)
+				MEDS_InstructionCheckAnnotation* p_annotation; 
+				for (std::multimap<VirtualOffset,MEDS_AnnotationBase>::iterator it = ret.first; it != ret.second; ++it)
 				{
-					annotation = it->second;
+					MEDS_AnnotationBase *base_type=&(it->second);
+					p_annotation = dynamic_cast<MEDS_InstructionCheckAnnotation*>(base_type);
+					if( p_annotation == NULL)
+						continue;
+					annotation = *p_annotation;
 					if (!annotation.isValid()) 
 						continue;
 					else

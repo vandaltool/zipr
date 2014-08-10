@@ -210,10 +210,6 @@ void MEDS_InstructionCheckAnnotation::parse()
 		}
 	}
 
-	m_isValid = true;
+	setValid(); // m_isValid = true;
 }
 
-VirtualOffset MEDS_InstructionCheckAnnotation::getVirtualOffset() const
-{
-	return m_virtualOffset;
-}

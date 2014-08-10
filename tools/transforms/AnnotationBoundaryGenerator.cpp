@@ -14,7 +14,8 @@ vector<Range> AnnotationBoundaryGenerator::GetBoundaries(libIRDB::Function_t *fu
 {
 	vector<Range> ranges;
 	
-	std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotParser->getAnnotations();
+//	std::multimap<VirtualOffset, MEDS_AnnotationBase> 
+	MEDS_Annotations_t annotations = annotParser->getAnnotations();
 
 	for(
 		set<Instruction_t*>::const_iterator it=func->GetInstructions().begin();
@@ -29,13 +30,17 @@ vector<Range> AnnotationBoundaryGenerator::GetBoundaries(libIRDB::Function_t *fu
 
 		VirtualOffset vo(irdb_vo);
 
-//		MEDS_InstructionCheckAnnotation annotation = annotations[vo];
-		std::pair<std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator,std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation>::iterator> ret;
+		//std::pair<std::multimap<VirtualOffset, MEDS_AnnotationBase>::iterator,std::multimap<VirtualOffset, MEDS_AnnotationBase>::iterator> ret;
+		std::pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret;
 		ret = annotations.equal_range(vo);
 		MEDS_InstructionCheckAnnotation annotation;
-		for (std::multimap<VirtualOffset,MEDS_InstructionCheckAnnotation>::iterator it = ret.first; it != ret.second; ++it)
+		MEDS_InstructionCheckAnnotation* p_annotation;
+		for (MEDS_Annotations_t::iterator it = ret.first; it != ret.second; ++it)
 		{
-			annotation = it->second;
+			p_annotation=dynamic_cast<MEDS_InstructionCheckAnnotation*>(&it->second);
+			if(p_annotation==NULL)
+				continue;
+			annotation = *p_annotation;
 			if (annotation.isValid() && annotation.isMemset())
 			{
 				//cerr<<"Memset annot found"<<endl;

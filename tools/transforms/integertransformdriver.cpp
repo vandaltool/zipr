@@ -96,7 +96,7 @@ bool isInstrumentIdioms(int argc, char **argv)
 	return false;
 }
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	if(argc < 4)
 	{
@@ -110,7 +110,6 @@ main(int argc, char **argv)
 	char *integerWarnings = argv[3];
 
 	VariantID_t *pidp=NULL;
-	FileIR_t *virp=NULL;
 
 	/* setup the interface to the sql server */
 	pqxxDB_t pqxx_interface;
@@ -159,7 +158,7 @@ main(int argc, char **argv)
 			// we need to display file IDs along with the PC to distinguish between various libs
 			std::set<VirtualOffset> warnings = getInstructionWarnings(integerWarnings); // keep track of instructions that should be instrumented as warnings (upon detection, print diagnostic & continue)
 
-			std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> annotations = annotationParser.getAnnotations();
+			MEDS_Annotations_t annotations = annotationParser.getAnnotations();
 
 			// do the transformation
 

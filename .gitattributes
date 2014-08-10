@@ -230,13 +230,16 @@ libIRDB/test/unfix_calls.cpp -text
 libIRDB/test/unwind-pe.h -text
 libMEDSannotation/Makefile -text
 libMEDSannotation/include/MEDS.hpp -text
+libMEDSannotation/include/MEDS_AnnotationBase.hpp -text
 libMEDSannotation/include/MEDS_AnnotationParser.hpp -text
 libMEDSannotation/include/MEDS_InstructionCheckAnnotation.hpp -text
 libMEDSannotation/include/MEDS_Register.hpp -text
+libMEDSannotation/include/MEDS_SafeFuncAnnotation.hpp -text
 libMEDSannotation/include/VirtualOffset.hpp -text
 libMEDSannotation/src/MEDS_AnnotationParser.cpp -text
 libMEDSannotation/src/MEDS_InstructionCheckAnnotation.cpp -text
 libMEDSannotation/src/MEDS_Register.cpp -text
+libMEDSannotation/src/MEDS_SafeFuncAnnotation.cpp -text
 libMEDSannotation/src/Makefile -text
 libMEDSannotation/src/VirtualOffset.cpp -text
 libtransform/Makefile -text
@@ -386,6 +389,10 @@ tools/memcover/General_Utility.cpp -text
 tools/memcover/General_Utility.hpp -text
 tools/memcover/Makefile -text
 tools/memcover/memcover.cpp -text
+tools/ret_shadow_stack/Makefile -text
+tools/ret_shadow_stack/rss_driver.cpp -text
+tools/ret_shadow_stack/rss_instrument.cpp -text
+tools/ret_shadow_stack/rss_instrument.hpp -text
 tools/spasm/Makefile -text
 tools/spasm/ben_lib.cpp -text
 tools/spasm/ben_lib.h -text

@@ -12,7 +12,7 @@ using namespace libIRDB;
 class IntegerTransform32 : public IntegerTransform
 {
 	public:
-		IntegerTransform32(VariantID_t *, FileIR_t*, std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
+		IntegerTransform32(VariantID_t *, FileIR_t*, std::multimap<VirtualOffset, MEDS_AnnotationBase> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_warnings); 
 
 		int execute();
 

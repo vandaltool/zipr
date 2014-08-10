@@ -2,6 +2,8 @@
 #define __ANNOTBOUNDGEN
 #include "PrecedenceBoundaryGenerator.hpp"
 #include "MEDS_AnnotationParser.hpp"
+#include "MEDS_AnnotationBase.hpp"
+#include "MEDS_InstructionCheckAnnotation.hpp"
 #include "VirtualOffset.hpp"
 
 #include <fstream>

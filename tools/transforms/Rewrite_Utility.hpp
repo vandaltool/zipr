@@ -41,6 +41,7 @@ void setInstructionAssembly(FileIR_t* virp,Instruction_t *p_instr, string p_asse
 string getJnsDataBits();
 string getJzDataBits();
 string getJnzDataBits();
+string getJecxzDataBits();
 Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy );
 
 //The esp offset is allowed to be negative, and is handled properly.

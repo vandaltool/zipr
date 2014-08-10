@@ -2,6 +2,7 @@
 #define _VIRTUAL_OFFSET_H_
 
 #include <string>
+#include <sstream>
 
 typedef unsigned ApplicationAddress;
 
@@ -21,6 +22,8 @@ class VirtualOffset
 		bool operator < (const VirtualOffset &p_other) const;
 		bool operator == (const VirtualOffset &p_other) const;
 		VirtualOffset& operator = (const VirtualOffset &p_other);
+
+		const std::string to_string() const { std::ostringstream oss; oss<<getLibraryName() << "+0x"<<std::hex<<getOffset(); return oss.str(); }
 
 	private:
 		ApplicationAddress   m_offset;

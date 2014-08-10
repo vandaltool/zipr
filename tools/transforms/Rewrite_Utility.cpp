@@ -202,6 +202,17 @@ string getJnzDataBits()
 	return dataBits;	
 }
 
+// jecxz - jump ecx zero
+string getJecxzDataBits()
+{
+	string dataBits;
+	dataBits.resize(2);
+	dataBits[0] = 0xe3;
+	dataBits[1] = 0x00; // value doesn't matter -- we will fill it in later
+
+	return dataBits;	
+}
+
 Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitigation_policy policy)
 {
 	Instruction_t *handler_code ;

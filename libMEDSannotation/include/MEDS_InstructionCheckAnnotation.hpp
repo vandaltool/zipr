@@ -4,6 +4,7 @@
 #include <string>
 #include "VirtualOffset.hpp"
 #include "MEDS_Register.hpp"
+#include "MEDS_AnnotationBase.hpp"
 
 
 namespace MEDS_Annotation 
@@ -32,15 +33,12 @@ using namespace MEDS_Annotation;
 //
 // Class to handle one MEDS (integer vulnerability) annotation
 //
-class MEDS_InstructionCheckAnnotation
+class MEDS_InstructionCheckAnnotation : public MEDS_AnnotationBase
 {
 	public:
 		MEDS_InstructionCheckAnnotation();
 		MEDS_InstructionCheckAnnotation(const string &p_rawLine);
-
-		// valid annotation?
-		bool isValid() const { return m_isValid; }
-		void setValid() { m_isValid = true; }
+		virtual ~MEDS_InstructionCheckAnnotation(){}
 
 		// integer vulnerability types
 		bool isOverflow() const { return m_isOverflow; }
@@ -85,10 +83,6 @@ class MEDS_InstructionCheckAnnotation
 		MEDS_Annotation::Register::RegisterName getRegister() const { return m_register; }
 		MEDS_Annotation::Register::RegisterName getRegister2() const { return m_register2; }
 
-
-		// virtual offset
-		VirtualOffset getVirtualOffset() const;
-
 		const string getTarget() const { return m_target; }
 		const string getTarget2() const { return m_target2; }
 
@@ -122,7 +116,6 @@ class MEDS_InstructionCheckAnnotation
 		bool           m_isEbpOffset;
 		int            m_stackOffset;
 		int            m_objectSize;
-		VirtualOffset  m_virtualOffset;
 		bool           m_isValid;
 		bool           m_flowsIntoCriticalSink;
 		bool           m_isIdiom;

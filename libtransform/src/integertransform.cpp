@@ -8,7 +8,7 @@
 
 using namespace libTransform;
 
-IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::multimap<VirtualOffset, MEDS_InstructionCheckAnnotation> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_fileIR, p_filteredFunctions) 
+IntegerTransform::IntegerTransform(VariantID_t *p_variantID, FileIR_t *p_fileIR, std::multimap<VirtualOffset, MEDS_AnnotationBase> *p_annotations, set<std::string> *p_filteredFunctions, set<VirtualOffset> *p_benignFalsePositives) : Transform(p_variantID, p_fileIR, p_filteredFunctions) 
 {
 	m_benignFalsePositives = p_benignFalsePositives;
 	m_policySaturatingArithmetic = false;
