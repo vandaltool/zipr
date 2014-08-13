@@ -1,5 +1,6 @@
 * text=auto !eol
 /build-all.sh -text
+/cgc_setup.sh -text
 /clean-all.sh -text
 /get-peasoup-packages.sh -text
 /irdb_vars -text
