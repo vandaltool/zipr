@@ -24,7 +24,7 @@ fi
 #Get IDAPRO to work with no errors
 export TVHEADLESS=1
 
-source ./irdb_vars
+source $PEASOUP_UMBRELLA_DIR/irdb_vars
 
 export GRACE_HOME=$PEASOUP_UMBRELLA_DIR/grace
 export YICES_HOME=$GRACE_HOME/third-party/yices-sdk/1.0.34/linux32/bin
@@ -33,6 +33,6 @@ export SCONSFLAGS="exceptions=1 x86=1 tool=1 hprof=0 cpuprof=0 lm_required=false
 
 #moving this to setenv vars, as it's not global and breaks our peasoup installation
 # adjust to your SVN username
-#export SVN_USERNAME=$USER
+#export SVN_USERNAME=$USER 
 
-. ./set_command_envs
+. $PEASOUP_UMBRELLA_DIR/set_command_envs

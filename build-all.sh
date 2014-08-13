@@ -30,7 +30,8 @@ if [ `uname -m` = 'x86_64' ]; then
 		cp -R $STRATA $STRATA32
 	fi
 	cd $STRATA_HOME32
-	STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build -host=i386-linux
+	# mc2zk changed this line to ./build_cgc from ./build for cgc_dev
+	STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build_cgc -host=i386-linux
 
 	# build x86-64 strata
 	cd $STRATA_HOME
