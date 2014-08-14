@@ -41,40 +41,27 @@ int oscfw_isInitialized()
 int oscfw_verify_fast(const char *p_command, char *p_taint)
 {
 	int length = strlen(p_command);
-//    	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
-  	appfw_empty_taint(p_command, p_taint, NULL,TRUE);
+  	appfw_empty_taint(p_command, p_taint, NULL, TRUE);
+
 //	if(getenv("APPFW_VERBOSE"))
 //	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
 	osc_parse((char*)p_command, (char*)p_taint, NULL);
+	// post: taint markings will be 'security violation' wherever there's a 
+	//       critical keyword
 
 	if(getenv("APPFW_VERBOSE"))
   		appfw_display_taint("Debug OSC after parse", p_command, p_taint);
 
   	int OK=appfw_establish_taint_fast(p_command, p_taint, TRUE);
 
-//	appfw_deallocate_matched_signatures(matched_signatures, length);
+	if(getenv("APPFW_VERBOSE"))
+		if (OK)
+			fprintf(stderr,"verify OK\n");
+		else
+			fprintf(stderr,"verify NOT okay\n");
 
-  	// return code is really a boolean
-  	// return > 0 if success
-  	// return 0 if failure
-//	int i;
-//	for(i=0;i<strlen(p_command);i++)
-//	{
-//		if(getenv("APPFW_PRINTCOMMAND_VERBOSE"))
-//			fprintf(stderr, "Verifyig p_command[%d]=%d\n", i, p_command[i]);
-//		if(p_taint[i]==APPFW_SECURITY_VIOLATION)
-//		{
-//			if(getenv("APPFW_VERBOSE"))
-//				fprintf(stderr,"verify NOT okayK\n");
-//			return 0;
-//		}
-//	}
-	if(!OK && getenv("APPFW_VERBOSE"))
-		fprintf(stderr,"verify NOT okayK\n");
-	if(OK && getenv("APPFW_VERBOSE"))
-		fprintf(stderr,"verify OK\n");
 	return OK;
 }
 
@@ -88,12 +75,12 @@ int oscfw_verify_slow(const char *p_command, char *p_taint)
 	if(getenv("APPFW_VERBOSE"))
 	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
-
+	// pre: taint markings = tainted or blessed
 	osc_parse((char*)p_command, (char*)p_taint, NULL);
+	// post: if any critical keywords are tainted, then taint markings = security violation
 
 	if(getenv("APPFW_VERBOSE"))
   		appfw_display_taint("Debug OSC after parse", p_command, p_taint);
-
 
 	appfw_deallocate_matched_signatures(matched_signatures, length);
 
@@ -102,20 +89,56 @@ int oscfw_verify_slow(const char *p_command, char *p_taint)
   	// return 0 if failure
 	int i;
 	int OK=TRUE;
+
+	// first keyword is marked as BLESSED_KEYWORD or SECURITY_VIOLATION:
+	//             cat README
+	//         ttttkkkttttttt
+	//         ttttvvvttttttt
+
+	int first_keyword = 1;
+	int first_keyword_seen = 1;
 	for(i=0;i<strlen(p_command);i++)
 	{
 		if(getenv("APPFW_PRINTCOMMAND_VERBOSE"))
-			fprintf(stderr, "Verifyig p_command[%d]=%d\n", i, p_command[i]);
-		if(p_taint[i]==APPFW_SECURITY_VIOLATION)
+			fprintf(stderr, "Verifying p_command[%d]=%d\n", i, p_command[i]);
+
+		if (p_taint[i] == APPFW_BLESSED_KEYWORD ||
+		    p_taint[i] == APPFW_SECURITY_VIOLATION ||
+		    p_taint[i] == APPFW_SECURITY_VIOLATION2)
 		{
+			first_keyword_seen = 1;
+		}
+
+		if (first_keyword_seen &&
+			(p_taint[i] != APPFW_BLESSED_KEYWORD ||
+			 p_taint[i] != APPFW_SECURITY_VIOLATION ||
+			 p_taint[i] != APPFW_SECURITY_VIOLATION2))
+		{
+			first_keyword = 0;
+		}
+		
+		// factor this out
+                //     echo foobar; ls -lt
+		//     kkkktttttttvtvvtbbb
+		if(p_taint[i]==APPFW_SECURITY_VIOLATION || p_taint[i]==APPFW_SECURITY_VIOLATION2)
+		{
+			// 20140815 new policy: if the command starts as a security violation,
+			//          assume a false positivte, and treat command as safe
+			if (first_keyword)
+				return TRUE;
+
 			OK=FALSE;
 			break;
 		}
 	}
-	if(!OK && getenv("APPFW_VERBOSE"))
-		fprintf(stderr,"verify NOT okayK\n");
-	if(OK && getenv("APPFW_VERBOSE"))
-		fprintf(stderr,"verify OK\n");
+
+	if(getenv("APPFW_VERBOSE"))
+	{
+		if(OK)
+			fprintf(stderr,"verify OK\n");
+		else
+			fprintf(stderr,"verify NOT okay\n");
+	}
 	return OK;
 }
 

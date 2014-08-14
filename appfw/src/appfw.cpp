@@ -673,7 +673,6 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
 		{
 			sorted_sigs->push_back(fw_sigs[sigId]);
 		}
-		
 	}
 
 	int violations=count_violations(taint, commandLength);

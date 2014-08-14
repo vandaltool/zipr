@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 char *foobar="ls";
 char *foobar3="%s;%s";

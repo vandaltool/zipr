@@ -250,6 +250,7 @@ static void get_word(istream &fin, char c, int start, int semicolon_pos, matched
 		if (semicolon_pos >= 0)
 		{
 			//  check [semicolon_pos..position+s.length()-1]
+			// 20140813 put back this policy
 //			if (!appfw_is_from_same_signature(matched_signatures, semicolon_pos, s.length() + position -1))
 //				mark_violation(APPFW_SECURITY_VIOLATION, semicolon_pos, s.length() + position);
 		}
@@ -394,8 +395,18 @@ void osc_parse(char* to_parse, char* taint_markings, matched_record** matched_si
 	sin<<to_parse;
 
 	if(getenv("APPFW_VERBOSE"))
+	{
 		cerr<<"Parsing "<<to_parse<<" length="<<strlen(to_parse)<<endl;
+		appfw_display_taint("osc-pre ", to_parse, taint_markings);
+		cout << flush;
+  	}
+
 	parse(sin,0,matched_signatures);
+
+	if(getenv("APPFW_VERBOSE"))
+	{
+		appfw_display_taint("osc-post", to_parse, taint_markings);
+	}
 
 	while(!(*sub_commands).empty())
 	{
@@ -410,6 +421,4 @@ void osc_parse(char* to_parse, char* taint_markings, matched_record** matched_si
 		if(getenv("APPFW_VERBOSE"))
 			cerr<<"Done with " << s <<endl<<endl;
 	}
-
-
 }
