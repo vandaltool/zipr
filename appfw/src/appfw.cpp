@@ -824,7 +824,7 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 	if(verbose)
 	{
 		gettimeofday(&blah,NULL);
-		fprintf(stdout, "sqlfw: match: start: %d:%d ", blah.tv_sec, blah.tv_usec);
+		fprintf(stdout, "appfw: match: start: %d:%d ", blah.tv_sec, blah.tv_usec);
 	}
 
 	if (!fw_sigs)

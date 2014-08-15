@@ -54,7 +54,8 @@ int oscfw_verify_fast(const char *p_command, char *p_taint)
 	if(getenv("APPFW_VERBOSE"))
   		appfw_display_taint("Debug OSC after parse", p_command, p_taint);
 
-  	int OK=appfw_establish_taint_fast(p_command, p_taint, TRUE);
+//  	int OK=appfw_establish_taint_fast(p_command, p_taint, TRUE);
+  	int OK=appfw_establish_taint_fast2(p_command, p_taint, TRUE);
 
 	if(getenv("APPFW_VERBOSE"))
 		if (OK)
@@ -145,5 +146,6 @@ int oscfw_verify_slow(const char *p_command, char *p_taint)
 // insert function below to parse & verify taint
 int oscfw_verify(const char *p_command, char *p_taint)
 {
-	return oscfw_verify_slow(p_command, p_taint);
+//	return oscfw_verify_slow(p_command, p_taint);
+	return oscfw_verify_fast(p_command, p_taint);
 }
