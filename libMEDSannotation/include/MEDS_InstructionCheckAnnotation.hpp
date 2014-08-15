@@ -86,7 +86,7 @@ class MEDS_InstructionCheckAnnotation : public MEDS_AnnotationBase
 		const string getTarget() const { return m_target; }
 		const string getTarget2() const { return m_target2; }
 
-		const string& toString() const { return m_rawInputLine; }
+		const string toString() const { return m_rawInputLine; }
 
 		// data flow
 		// @todo: expand the set, allow getter functions to retrieve name of sink

@@ -166,7 +166,6 @@ beaengine/include/beaengine/export.h -text
 beaengine/include/beaengine/macros.h -text
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/cmake_clean.cmake -text
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/cmake_clean_target.cmake -text
-beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/depend.make -text
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/link.txt -text
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/progress.make -text
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/progress.marks -text
@@ -235,11 +234,13 @@ libMEDSannotation/include/MEDS.hpp -text
 libMEDSannotation/include/MEDS_AnnotationBase.hpp -text
 libMEDSannotation/include/MEDS_AnnotationParser.hpp -text
 libMEDSannotation/include/MEDS_InstructionCheckAnnotation.hpp -text
+libMEDSannotation/include/MEDS_ProblemFuncAnnotation.hpp -text
 libMEDSannotation/include/MEDS_Register.hpp -text
 libMEDSannotation/include/MEDS_SafeFuncAnnotation.hpp -text
 libMEDSannotation/include/VirtualOffset.hpp -text
 libMEDSannotation/src/MEDS_AnnotationParser.cpp -text
 libMEDSannotation/src/MEDS_InstructionCheckAnnotation.cpp -text
+libMEDSannotation/src/MEDS_ProblemFuncAnnotation.cpp -text
 libMEDSannotation/src/MEDS_Register.cpp -text
 libMEDSannotation/src/MEDS_SafeFuncAnnotation.cpp -text
 libMEDSannotation/src/Makefile -text

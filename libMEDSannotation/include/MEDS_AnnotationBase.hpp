@@ -19,7 +19,7 @@ class MEDS_AnnotationBase
 		virtual ~MEDS_AnnotationBase()  { }
 
 		/* i'd rather make this a pure virtual func, but can't figure out why it won't compile */
-		virtual const std::string& toString() const { assert(0); }
+		virtual const std::string toString() const { assert(0); }
 
                 // valid annotation?
                 virtual bool isValid() const { return m_isValid; }

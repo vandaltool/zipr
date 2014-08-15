@@ -57,6 +57,7 @@ int main(int argc, char **argv)
 
                 try
                 {
+                        MEDS_AnnotationParser annotationParser;
                         string annotationFilename;
                         // need to map filename to integer annotation file produced by STARS
                         // this should be retrieved from the IRDB but for now, we use files to store annotations
@@ -64,23 +65,14 @@ int main(int argc, char **argv)
                         //      a.ncexe.infoannot
                         //      shared_objects/<shared-lib-filename>.infoannot
                         if (strcmp(fileBasename, BINARY_NAME) == 0)
-                                annotationFilename = string(BINARY_NAME) + string(".annot");
+                                annotationFilename = string(BINARY_NAME);
                         else
-                                annotationFilename = string(SHARED_OBJECTS_DIR) + "/" + fileBasename + ".annot";
+                                annotationFilename = string(SHARED_OBJECTS_DIR) + "/" + fileBasename ;
 
                         cerr << "annotation file: " << annotationFilename << endl;
+			annotationParser.parseFile(annotationFilename+".annot");
+			annotationParser.parseFile(annotationFilename+".infoannot");
 
-                        // parse MEDS integer annotations
-                        ifstream annotationFile(annotationFilename.c_str(), ifstream::in);
-                        if (!annotationFile.is_open())
-                        {
-                                cerr << "annotation file not found: " << annotationFilename.c_str() << endl;
-                                continue;
-                        }
-
-                        MEDS_AnnotationParser annotationParser(annotationFile);
-
-//                        std::multimap<VirtualOffset, MEDS_AnnotationBase> annotations = annotationParser.getAnnotations();
 
 			RSS_Instrument rssi(firp, &annotationParser);
 

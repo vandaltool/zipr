@@ -37,7 +37,7 @@ vector<Range> AnnotationBoundaryGenerator::GetBoundaries(libIRDB::Function_t *fu
 		MEDS_InstructionCheckAnnotation* p_annotation;
 		for (MEDS_Annotations_t::iterator it = ret.first; it != ret.second; ++it)
 		{
-			p_annotation=dynamic_cast<MEDS_InstructionCheckAnnotation*>(&it->second);
+			p_annotation=dynamic_cast<MEDS_InstructionCheckAnnotation*>(it->second);
 			if(p_annotation==NULL)
 				continue;
 			annotation = *p_annotation;

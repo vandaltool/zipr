@@ -26,7 +26,7 @@ class MEDS_SafeFuncAnnotation : public MEDS_AnnotationBase
 		MEDS_SafeFuncAnnotation(const string &p_rawLine);
 		virtual ~MEDS_SafeFuncAnnotation(){}
 
-		virtual const string& toString() const { return m_rawInputLine; }
+		virtual const string toString() const { return "safe func: "+m_rawInputLine; }
 
 		virtual void markSafe() { m_safe_func = true; setValid(); }
 		virtual void markUnsafe() { m_safe_func = false; setValid(); }
