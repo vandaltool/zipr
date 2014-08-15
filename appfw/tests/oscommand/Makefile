@@ -1,50 +1,29 @@
 APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so64
 generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
-all: testosc.exe testosc_semi.exe testosc_samesig.exe testosc_exec_args.exe testosc_fp.exe
+.SUFFIXES: .o .c .cpp .exe .peasoup
 
-testosc.o: testosc.c
-	gcc -g -c testosc.c
+all: testosc.exe testosc_semi.exe testosc_samesig.exe testosc_exec_args.exe testosc_fp.exe testosc_normal.exe
 
-testosc.exe: testosc.o 
-	gcc testosc.o -o testosc.exe 
-	$(generate_signatures) testosc.exe
+allpeasoup: testosc.peasoup testosc_semi.peasoup testosc_samesig.peasoup testosc_exec_args.peasoup testosc_fp.peasoup test_normal.peasoup
 
-testosc_fp.o: testosc_fp.c
-	gcc -g -c testosc_fp.c
+.exe.peasoup:
+	$(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step heaprand=off --step double_free=off --step stats=on --step isr=on
+	
+.o.exe:
+	gcc -g $< -o $@
+	$(generate_signatures) $@
 
-testosc_fp.exe: testosc_fp.o 
-	gcc testosc_fp.o -o testosc_fp.exe 
-	$(generate_signatures) testosc_fp.exe
-
-testosc_semi.o: testosc_semi.c
-	gcc -g -c testosc_semi.c
-
-testosc_semi.exe: testosc_semi.o 
-	gcc testosc_semi.o -o testosc_semi.exe 
-	$(generate_signatures) testosc_semi.exe
-
-testosc_samesig.o: testosc_samesig.c
-	gcc -g -c testosc_samesig.c
-
-testosc_samesig.exe: testosc_samesig.o 
-	gcc testosc_samesig.o -o testosc_samesig.exe 
-	$(generate_signatures) testosc_samesig.exe
-
-testosc_exec_args.o: testosc_exec_args.c
-	gcc -g -c testosc_exec_args.c
-
-testosc_exec_args.exe: testosc_exec_args.o 
-	gcc testosc_exec_args.o -o testosc_exec_args.exe 
-	$(generate_signatures) testosc_exec_args.exe
-
+.c.o:
+	gcc -g -c $<
+	
 clean:
 	rm -rf *.o *.tmp *.exe peasoup_executable_directory* test*.peasoup messages_to_tne.log ps_tne_logfile.txt testosc*.exe.sigs appfw.db
 
 peasoup: all
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testosc.exe testosc.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testosc_semi.exe testosc_semi.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testosc_samesig.exe testosc_samesig.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testosc.exe testosc.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testosc_semi.exe testosc_semi.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testosc_samesig.exe testosc_samesig.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off
 	
 run: all
 	LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc.exe.sigs ./testosc.exe 1 "-l; cat /etc/passwd"
@@ -65,8 +44,15 @@ test_samesig: testosc_samesig.exe
 test_exec_args: testosc_exec_args.exe
 	VERY_VERBOSE=1 VERBOSE=1 APPFW_VERBOSE=1 DATA="-ltar" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_exec_args.exe.sigs ./testosc_exec_args.exe 
 
+# this should fail
 test_fp: testosc_fp.exe
-	VERY_VERBOSE=1 VERBOSE=1 APPFW_VERBOSE=1 DATA="  ls  -ltar" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_fp.exe.sigs ./testosc_fp.exe 
+	APPFW_VERBOSE=1 DATA="  cat Makefile " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_fp.exe.sigs ./testosc_fp.exe 
+
+test_normal_good: testosc_normal.exe
+	APPFW_VERBOSE=1 DATA="  ls -lt " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
+
+test_normal_inject: testosc_normal.exe
+	APPFW_VERBOSE=1 DATA="  cat Makefile " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
 
 speed_test:
 	gcc speed_test.c  -O3 -o speed_test.exe

@@ -62,6 +62,8 @@ appfw/tests/oscommand/Makefile -text
 appfw/tests/oscommand/dotest.sh -text
 appfw/tests/oscommand/testosc.c -text
 appfw/tests/oscommand/testosc_exec_args.c -text
+appfw/tests/oscommand/testosc_fp.c -text
+appfw/tests/oscommand/testosc_normal.c -text
 appfw/tests/oscommand/testosc_samesig.c -text
 appfw/tests/oscommand/testosc_semi.c -text
 appfw/tests/postgres/Makefile -text
