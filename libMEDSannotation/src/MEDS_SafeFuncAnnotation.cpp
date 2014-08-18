@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
+#include <string.h>
 
 #include "MEDS_Register.hpp"
 #include "MEDS_SafeFuncAnnotation.hpp"
@@ -23,7 +24,7 @@ MEDS_SafeFuncAnnotation::MEDS_SafeFuncAnnotation(const string &p_rawLine)
 
 void MEDS_SafeFuncAnnotation::init()
 {
-	MEDS_AnnotationBase::init();
+	MEDS_FuncAnnotation::init();
 }
 
 
@@ -53,6 +54,22 @@ void MEDS_SafeFuncAnnotation::parse()
         // get offset
         VirtualOffset vo(m_rawInputLine);
         m_virtualOffset = vo;
+
+        size_t func_name_start_pos=0, pos=0;
+        if ((pos=m_rawInputLine.find("FUNC GLOBAL"))!=string::npos)
+		func_name_start_pos=pos+strlen("FUNC GLOBAL ");
+        else if ((pos=m_rawInputLine.find("FUNC LOCAL"))!=string::npos)
+		func_name_start_pos=pos+strlen("FUNC LOCAL ");
+
+        size_t func_end_pos=m_rawInputLine.find(" ", func_name_start_pos);
+        assert(func_end_pos!=string::npos);
+        string func_name=m_rawInputLine.substr(func_name_start_pos, func_end_pos-func_name_start_pos);
+
+	cout<<"Found safe func name='"<<func_name<<"'"<<endl;
+
+        // get offset
+        setFuncName(func_name);
+
 
         if (m_rawInputLine.find(" FUNC_SAFE ")!=string::npos)
 	{

@@ -681,7 +681,10 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 		/* put the data back into the insn */
 		data.replace(0, data.length(), cstr, data.length());
 		insn->SetDataBits(data);
-		insn->GetAddress()->SetVirtualOffset(0);	// going to end up in the SPRI file anyhow after changing the data bits 
+
+		// going to end up in the SPRI file anyhow after changing the data bits 
+		// and it's important to set the VO to 0, so that the pcrel-ness is calculated correctly.
+		insn->GetAddress()->SetVirtualOffset(0);	
 			
 		Relocation_t *reloc=new Relocation_t;
 		reloc->SetOffset(0);

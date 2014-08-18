@@ -340,24 +340,15 @@ static bool is_safe_func(Function_t* func, MEDS_AnnotationParser* meds_ap)
 	if(!func->GetEntryPoint())
 		return false;
 
-	/* grab vo from IRDB */
-	virtual_offset_t irdb_vo = func->GetEntryPoint()->GetAddress()->GetVirtualOffset();
-
-	/* no original address for this function?  already instrumented and getting data from MEDS is a bad idea? */
-	if (irdb_vo == 0) 
-		return false;
-
-	VirtualOffset vo(irdb_vo);
-
-	std::pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret;
+	std::pair<MEDS_FuncAnnotations_t::iterator,MEDS_FuncAnnotations_t::iterator> ret;
 
 	/* find it in the annotations */
-	ret = meds_ap->getAnnotations().equal_range(vo);
+	ret = meds_ap->getFuncAnnotations().equal_range(func->GetName());
 	MEDS_SafeFuncAnnotation annotation;
 	MEDS_SafeFuncAnnotation* p_annotation;
 
 	/* for each annotation for this instruction */
-	for (MEDS_Annotations_t::iterator it = ret.first; it != ret.second; ++it)
+	for (MEDS_FuncAnnotations_t::iterator it = ret.first; it != ret.second; ++it)
 	{
 			/* is this annotation a funcSafe annotation? */
                         p_annotation=dynamic_cast<MEDS_SafeFuncAnnotation*>(it->second);
@@ -385,24 +376,16 @@ static bool is_problem_func(Function_t* func, MEDS_AnnotationParser* meds_ap)
 	if(!func->GetEntryPoint())
 		return false;
 
-	/* grab vo from IRDB */
-	virtual_offset_t irdb_vo = func->GetEntryPoint()->GetAddress()->GetVirtualOffset();
 
-	/* no original address for this function?  already instrumented and getting data from MEDS is a bad idea? */
-	if (irdb_vo == 0) 
-		return false;
-
-	VirtualOffset vo(irdb_vo);
-
-	std::pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret;
+	std::pair<MEDS_FuncAnnotations_t::iterator,MEDS_FuncAnnotations_t::iterator> ret;
 
 	/* find it in the annotations */
-	ret = meds_ap->getAnnotations().equal_range(vo);
+	ret = meds_ap->getFuncAnnotations().equal_range(func->GetName());
 	MEDS_ProblemFuncAnnotation annotation;
 	MEDS_ProblemFuncAnnotation* p_annotation;
 
 	/* for each annotation for this instruction */
-	for (MEDS_Annotations_t::iterator it = ret.first; it != ret.second; ++it)
+	for (MEDS_FuncAnnotations_t::iterator it = ret.first; it != ret.second; ++it)
 	{
 			/* is this annotation a funcSafe annotation? */
                         p_annotation=dynamic_cast<MEDS_ProblemFuncAnnotation*>(it->second);
@@ -423,20 +406,25 @@ static bool is_problem_func(Function_t* func, MEDS_AnnotationParser* meds_ap)
 		
 }
 
+static int safe_funcs=0,problem_funcs=0, instr_funcs=0;
+
 static bool needs_rss_instrumentation(Function_t* func, MEDS_AnnotationParser* meds_ap)
 {
 	if(is_safe_func(func,meds_ap))
 	{
+		safe_funcs++;
 		return false; // safe functions need no instrumentation
 	}
 
 	if(is_problem_func(func,meds_ap))
 	{
+		problem_funcs++;
 		return false; // problem funcs can't have instrumentation
 	}
 
 
 	/* otherwise, we need to instrument */
+	instr_funcs++;
 	return true;
 
 }
@@ -466,6 +454,10 @@ bool RSS_Instrument::execute()
 		}
 		
 	}
+
+	cout << "# ATTRIBUTE safe_funcs=" <<std::dec<<safe_funcs<<endl;
+	cout << "# ATTRIBUTE problem_funcs=" <<problem_funcs<<endl;
+	cout << "# ATTRIBUTE instr_funcs=" <<instr_funcs<<endl;
 
 	/* return an exit code */
 	if(success)

@@ -1,5 +1,5 @@
 #include <stdlib.h>
-
+#include <string.h>
 #include <iostream>
 #include <cstdio>
 #include <string>
@@ -23,7 +23,7 @@ MEDS_ProblemFuncAnnotation::MEDS_ProblemFuncAnnotation(const string &p_rawLine)
 
 void MEDS_ProblemFuncAnnotation::init()
 {
-	MEDS_AnnotationBase::init();
+	MEDS_FuncAnnotation::init();
 }
 
 
@@ -42,27 +42,33 @@ void MEDS_ProblemFuncAnnotation::parse()
 	if (m_rawInputLine.find("FUNC ")==string::npos)
                 return;
 
-        if (m_rawInputLine.find("FUNC PROBLEM")==string::npos )
+        size_t pos=m_rawInputLine.find("FUNC PROBLEM");
+        if ( pos==string::npos )
 	{
 		/* FUNC line that's not local or global?  I'm confused. */
 		/* could be a FUNC GLOBAL, etc. line */
 		return;
 	}
 
+	size_t func_name_start_pos=pos+strlen("FUNC PROBLEM ");
+	size_t func_end_pos=m_rawInputLine.find(" ", func_name_start_pos);
+	assert(func_end_pos!=string::npos);
+	string func_name=m_rawInputLine.substr(func_name_start_pos, func_end_pos-func_name_start_pos);
+
         // get offset
-        VirtualOffset vo(m_rawInputLine);
-        m_virtualOffset = vo;
+	setFuncName(func_name);
+	cout<<"Found problem func name='"<<func_name<<"'"<<endl;
 
         if (m_rawInputLine.find("JUMPUNRESOLVED")!=string::npos)
 	{
 		if(getenv("VERBOSE"))
-			cout<<"Found JUMPUNRESOLVED problem annotation for "<<vo.to_string()<<endl;
+			cout<<"Found JUMPUNRESOLVED problem annotation for "<<getFuncName() << endl;
 		markJumpUnresolved();	 
 	}
         else if (m_rawInputLine.find("CALLUNRESOLVED")!=string::npos)
 	{
 		if(getenv("VERBOSE"))
-			cout<<"Found CALLUNRESOLVED annotation for "<<vo.to_string()<<endl;
+			cout<<"Found CALLUNRESOLVED annotation for "<<getFuncName() << endl;
 		markCallUnresolved();	 
 	}
 

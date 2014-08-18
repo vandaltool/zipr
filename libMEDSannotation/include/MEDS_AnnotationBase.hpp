@@ -30,8 +30,7 @@ class MEDS_AnnotationBase
 
 		virtual void init() { m_isValid=false; }
 
-
-
+                virtual bool isFuncAnnotation() const { return false; } // false by default 
 
 	protected:
 

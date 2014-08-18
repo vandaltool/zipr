@@ -41,8 +41,18 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 			type * annot=new type(line); \
 			if (annot->isValid()) \
 			{ \
-				VirtualOffset vo = annot->getVirtualOffset(); \
-				m_annotations.insert(MEDS_Annotations_Pair_t(vo, annot)); \
+				if(annot->isFuncAnnotation()) \
+				{ \
+					MEDS_FuncAnnotation* fannot=dynamic_cast<MEDS_FuncAnnotation*>(annot); \
+					assert(fannot); \
+					string nam=fannot->getFuncName(); \
+					m_func_annotations.insert(MEDS_Annotations_FuncPair_t(nam, annot)); \
+				} \
+				else \
+				{ \
+					VirtualOffset vo = annot->getVirtualOffset(); \
+					m_annotations.insert(MEDS_Annotations_Pair_t(vo, annot)); \
+				} \
 				continue; \
 			} \
 			else \

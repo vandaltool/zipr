@@ -4,7 +4,7 @@
 #include <string>
 #include "VirtualOffset.hpp"
 #include "MEDS_Register.hpp"
-#include "MEDS_AnnotationBase.hpp"
+#include "MEDS_FuncAnnotation.hpp"
 
 
 namespace MEDS_Annotation 
@@ -19,7 +19,7 @@ using namespace MEDS_Annotation;
 //
 // Class to handle one MEDS (integer vulnerability) annotation
 //
-class MEDS_ProblemFuncAnnotation : public MEDS_AnnotationBase
+class MEDS_ProblemFuncAnnotation : public MEDS_FuncAnnotation
 {
 	public:
 		MEDS_ProblemFuncAnnotation() {};

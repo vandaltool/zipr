@@ -233,6 +233,7 @@ libMEDSannotation/Makefile -text
 libMEDSannotation/include/MEDS.hpp -text
 libMEDSannotation/include/MEDS_AnnotationBase.hpp -text
 libMEDSannotation/include/MEDS_AnnotationParser.hpp -text
+libMEDSannotation/include/MEDS_FuncAnnotation.hpp -text
 libMEDSannotation/include/MEDS_InstructionCheckAnnotation.hpp -text
 libMEDSannotation/include/MEDS_ProblemFuncAnnotation.hpp -text
 libMEDSannotation/include/MEDS_Register.hpp -text
