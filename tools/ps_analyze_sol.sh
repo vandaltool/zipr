@@ -2,12 +2,7 @@
 
 $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s stratafy_with_pc_confine=off 	\
-	-s heaprand=off 			\
-	-s controlled_exit=off 		\
 	-s detect_server=off 		\
-	-s rekey=off 			\
-	-s double_free=off 			\
-	-s isr=off 				\
 	-s watchdog=off 			\
 	-s is_so=off 			\
 	-s signconv_func_monitor=off 	\
@@ -34,6 +29,12 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s preLoaded_ILR1=off 		\
 	-s preLoaded_ILR2=off 		\
 	\
+	-s controlled_exit=off 		\
+	\
+	-s rekey=on 			\
 	-s add_confinement_section=on 	\
 	-s pc_confine=on 		 \
 	-s create_binary_script=on 	\
+	-s isr=on 				\
+	-s heaprand=on 			\
+	-s double_free=on 			\
