@@ -6,4 +6,5 @@
 /postgres_setup.sh -text
 /set_env_vars -text
 /start_dev.sh -text
+/svn.externals.solaris_dev -text
 /svn.externals.uva_dev -text

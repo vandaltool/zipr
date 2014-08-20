@@ -11,8 +11,9 @@ if [ "$PEASOUP_UMBRELLA_DIR" != "$FULL_BUILD_LOC" ]; then
 fi
 
 # stratafier
-cd $PEASOUP_UMBRELLA_DIR/stratafier
-make
+# not on solaris
+#cd $PEASOUP_UMBRELLA_DIR/stratafier
+#make
 
 # strata
 if [ ! "$STRATA_HOME" ]; then 
@@ -30,7 +31,7 @@ if [ `uname -m` = 'x86_64' ]; then
 		cp -R $STRATA $STRATA32
 	fi
 	cd $STRATA_HOME32
-	STRATA_HOME=$STRATA_HOME32 STRATA=$STRATA_HOME32 ./build -host=i386-linux
+	STRATA_HOME=$STRATA STRATA=$STRATA ./build -host=i386-linux
 
 	# build x86-64 strata
 	cd $STRATA_HOME
@@ -38,17 +39,20 @@ if [ `uname -m` = 'x86_64' ]; then
 
 else
 	cd $STRATA_HOME
-	./build
+	#./build
+	./configure
+	make
 fi
 
 # smp-static-analyzer
-if [ ! "$SMPSA_HOME" ]; then
-    echo "SMPSA_HOME not set."; 
-    exit 1; 
-fi
-cd $SMPSA_HOME
-./configure
-make
+#not on solaris
+#if [ ! "$SMPSA_HOME" ]; then
+    #echo "SMPSA_HOME not set."; 
+    #exit 1; 
+#fi
+#cd $SMPSA_HOME
+#./configure
+#make
 
 # security-transforms
 if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then 
@@ -56,8 +60,15 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
-./build.sh
+./build.sh || exit 1
 
 cd $PEASOUP_HOME
 make
+
+# grace
+#not on solaris
+#if [ ! "$GRACE_HOME" ]; then echo "GRACE_HOME not set."; exit 1; fi
+#cd $GRACE_HOME
+#concolic/build $SCONSFLAGS
+
 
