@@ -9,7 +9,6 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s gather_libraries=off 		\
 	-s meds_static=off 			\
 	-s concolic=off 			\
-	-s pdb_register=off 		\
 	-s fill_in_cfg=off 			\
 	-s fill_in_indtargs=off 		\
 	-s clone=off 			\
@@ -38,3 +37,5 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s isr=on 				\
 	-s heaprand=on 			\
 	-s double_free=on 			\
+	\
+	-s pdb_register=on 		\

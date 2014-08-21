@@ -8,6 +8,11 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+realpath() {
+  \cd "$1"
+  /bin/pwd
+}
+
 ulimit -s unlimited
 
 # default watchdog value is 30 seconds

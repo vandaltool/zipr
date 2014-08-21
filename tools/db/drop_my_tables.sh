@@ -25,7 +25,7 @@ do
 
 	echo Dropping table $i..." "
 	droptabs="$droptabs drop table $i cascade;"
-	dropcnt=$(expr $dropcnt + 1)
+	dropcnt=`expr $dropcnt + 1`
 	if [ $dropcnt -gt 1000 ]; then
 		echo --------------------------------------------------------------------------
 		echo issuing command

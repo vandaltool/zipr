@@ -1,4 +1,4 @@
-#!/bin/sh   -x
+#!/bin/bash   -x
 
 #
 # pdb_register <peasoup_program_name> <peasoup_program_directory> 
@@ -51,7 +51,7 @@ if [ ! -f $FILENAME ]; then
   log_error "Could not find ELF file at: $FILENAME"
 fi
 
-MD5HASH=`md5sum $FILENAME | cut -f1 -d' '`
+MD5HASH=`digest -a md5 $FILENAME`
 
 #============================================
 # Update variant_info table
