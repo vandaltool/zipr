@@ -54,6 +54,9 @@ test_normal_good: testosc_normal.exe
 test_normal_inject: testosc_normal.exe
 	APPFW_VERBOSE=1 DATA="  cat Makefile " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
 
+test_normal_inject_flags: testosc_normal.exe
+	APPFW_VERBOSE=1 DATA="  ls -lta " LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
+
 speed_test:
 	gcc speed_test.c  -O3 -o speed_test.exe
 	$(generate_signatures) speed_test.exe
