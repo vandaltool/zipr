@@ -1,4 +1,4 @@
-APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so
+APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so64
 generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
 all: testmysql.exe testintercept.exe testintercept2.exe testintercept3.exe testintercept4.exe testintercept.pstmt.exe
@@ -60,7 +60,7 @@ run: all
 #	QUERY_DATA="David' or '0'='0" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept2.exe.sigs ./testintercept.exe 
 
 # Injections detected (Thanks to Billy for all these examples):
-#	APPFW_VERBOSE=1 QUERY_DATA="a'='a" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept2.exe.sigs ./testintercept2.exe 
+	APPFW_VERBOSE=1 QUERY_DATA="a'='a" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept2.exe.sigs ./testintercept2.exe 
 #	APPFW_VERBOSE=1 QUERY_DATA="1<2" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept3.exe.sigs ./testintercept3.exe  (fixed)
 #	APPFW_VERBOSE=1 QUERY_DATA="1!=1" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept3.exe.sigs ./testintercept3.exe 
 #	APPFW_VERBOSE=1 QUERY_DATA="'<~'" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testintercept2.exe.sigs ./testintercept2.exe 
