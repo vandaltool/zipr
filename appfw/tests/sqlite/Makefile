@@ -29,8 +29,9 @@ clean:
 	rm -rf *.o *.tmp *.exe peasoup_executable_directory* test*.peasoup messages_to_tne.log ps_tne_logfile.txt testpg*.exe.sigs appfw.db *.sigs
 
 peasoup: all
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testsqlite.exe testsqlite.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off
-	$(PEASOUP_HOME)/tools/ps_analyze.sh testsqlite.pstmt.exe testsqlite.pstmt.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testsqlite.exe testsqlite.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testsqlite.pstmt.exe testsqlite.pstmt.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off
+
 	
 run: all
 	APPFW_VERBOSE=1 QUERY_DATA="bob" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testsqlite.pstmt.fp.exe.sigs ./testsqlite.pstmt.fp.exe 
