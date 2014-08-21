@@ -6,14 +6,8 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s watchdog=off 			\
 	-s is_so=off 			\
 	-s signconv_func_monitor=off 	\
-	-s gather_libraries=off 		\
 	-s meds_static=off 			\
 	-s concolic=off 			\
-	-s fill_in_cfg=off 			\
-	-s fill_in_indtargs=off 		\
-	-s clone=off 			\
-	-s fix_calls=off 			\
-	-s find_strings=off 		\
 	-s appfw=off 			\
 	-s determine_program=off 		\
 	-s manual_test=off 			\
@@ -21,9 +15,6 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s p1transform=off 			\
 	-s integertransform=off 		\
 	-s twitchertransform=off 		\
-	-s ilr=off 				\
-	-s generate_spri=off 		\
-	-s spasm=off 			\
 	-s fast_spri=off 			\
 	-s preLoaded_ILR1=off 		\
 	-s preLoaded_ILR2=off 		\
@@ -39,3 +30,12 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s double_free=on 			\
 	\
 	-s pdb_register=on 		\
+	-s clone=on 			\
+	-s fix_calls=on 			\
+	-s fill_in_cfg=on 			\
+	-s fill_in_indtargs=on 		\
+	-s generate_spri=on 		\
+	-s spasm=off 			\
+	-s find_strings=on 		\
+	-s ilr=on 				\
+	-s gather_libraries=on 		\
