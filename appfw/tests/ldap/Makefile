@@ -1,4 +1,4 @@
-APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so
+APPFW_LIB=$(SECURITY_TRANSFORMS_HOME)/appfw/lib/libappfw.so64
 generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
 all: testldapintercept.exe testldapintercept2.exe testldapintercept3.exe testldapintercept4.exe
@@ -36,6 +36,10 @@ clean:
 
 peasoup: all
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testldapintercept.exe testldapintercept.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testldapintercept.exe testldapintercept2.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testldapintercept.exe testldapintercept3.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testldapintercept.exe testldapintercept4.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off
 	
-run: all
-	APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testldapintercept.exe.sigs ./testldapintercept.exe; APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testldapintercept.exe.sigs ./testldapintercept2.exe; APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testldapintercept.exe.sigs ./testldapintercept3.exe; APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testldapintercept.exe.sigs ./testldapintercept4.exe 
+run: 
+	APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testldapintercept.exe.sigs ./testldapintercept.exe; 
+#APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testldapintercept.exe.sigs ./testldapintercept2.exe; APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testldapintercept.exe.sigs ./testldapintercept3.exe; APPFW_VERBOSE=1 LDAP_DATA="hacker)(|(objectclass=*)" LD_PRELOAD=$(APPFW_LIB) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testldapintercept.exe.sigs ./testldapintercept4.exe 
