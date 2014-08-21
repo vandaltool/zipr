@@ -5,6 +5,9 @@
 #include <map>
 #include <fstream>
 #include <elf.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+
 using namespace libIRDB;
 using namespace std;
 
@@ -506,8 +509,8 @@ void FileIR_t::WriteToDB()
 		}
 
 		string r="";
-		std::set<Relocation_t*> relocs = (*i)->GetRelocations();
-		for(set<Relocation_t*>::iterator it=relocs.begin(); it!=relocs.end(); ++it)
+		std::set<Relocation_t*> irelocs = (*i)->GetRelocations();
+		for(set<Relocation_t*>::iterator it=irelocs.begin(); it!=irelocs.end(); ++it)
 		{
 			Relocation_t* reloc=*it;
 			r+=reloc->WriteToDB(fileptr,*i);

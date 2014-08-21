@@ -17,10 +17,10 @@
 
 PROGS=p1transform.exe nulltransform.exe integertransformdriver.exe
 
-CC=g++
-CFLAGS= -g -Wall
+CFLAGS= -g 
+# -Wall
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../../libtransform/include/
-LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform
+LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lBeaEngine_s_d -L /opt/csw/lib/ -lpqxx  -lMEDSannotation -ltransform
 
 OBJS=transformutils.o
 
@@ -36,17 +36,17 @@ all: p1transform.exe pntransform.exe $(OBJS) $(PROGS)
 $(all_objs): *hpp
 
 .cpp.o: PNStackLayoutInference.hpp  *.hpp
-	$(CC) $(INCLUDE) $(CFLAGS)  -g -c $< 
+	$(CXX) $(INCLUDE) $(CFLAGS)  -g -c $< 
 
 .cpp.exe:   
-	$(CC) -g $< $(INCLUDE) $(LIBS) $(OBJS) -o $@
+	$(CXX) -g $< $(INCLUDE) $(LIBS) $(OBJS) -o $@
 
 clean:
 	rm -f *.o core $(PROGS)
 
 
 pntransform.exe:  $(all_objs) ../../lib/*.a 
-	$(CC) $(CFLAGS) $(all_objs) $(INCLUDE) $(LIBS) -o pntransform.exe
+	$(CXX) $(CFLAGS) $(all_objs) $(INCLUDE) $(LIBS) -o pntransform.exe
 
 
 p1transform.exe:  pntransform.exe

@@ -15,7 +15,6 @@
 #
 
 
-CC=g++
 CFLAGS= -g
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/
 LIBS=-L../../lib -L../../xform -lxform -lIRDB-core -lBeaEngine_s_d -lpqxx 
@@ -24,7 +23,7 @@ OBJS=coverage.o
 .SUFFIXES: .o .c .cpp
 
 .cpp.o .c.o:
-	$(CC) $(CFLAGS) $(INCLUDE) -c $<
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $<
 
 
 all: cover 
@@ -34,5 +33,5 @@ clean:
 	rm -f *.o core cover
 
 cover: $(OBJS) cover.cpp ../../lib/*
-	$(CC) $(CFLAGS) -o cover $(INCLUDE) cover.cpp $(OBJS) $(LIBS)
+	$(CXX) $(CFLAGS) -o cover $(INCLUDE) cover.cpp $(OBJS) $(LIBS)
 

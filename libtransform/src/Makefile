@@ -10,6 +10,6 @@ clean:
 	rm -f $(OBJS)
 
 .cpp.o:
-	g++ -g -c -I. -I../include -I../../libIRDB/include -I../../libMEDSannotation/include -I../../beaengine/include $<
+	$(CXX) -g -c -I. -I../include -I../../libIRDB/include -I../../libMEDSannotation/include -I../../beaengine/include $<
 	ar rc $(LIB) $@
 	cp $(LIB) ../../lib/

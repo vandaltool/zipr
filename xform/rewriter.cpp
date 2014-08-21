@@ -3,10 +3,18 @@
 #include <set>
 #include <stdlib.h>
 
+
+
 #include "beaengine/BeaEngine.h"
 
-#include "rewriter.h"
 #include "all.h"
+#include "targ-config.h"
+#include "elfio/elfio.hpp"
+#include "elfio/elfio_dump.hpp"
+
+
+#include "rewriter.h"
+
 
 using namespace std;
 
@@ -629,7 +637,7 @@ void Rewriter::readXrefsFile(char p_filename[])
 void Rewriter::readElfFile(char p_filename[])
 {
 	char buf[1000];
-	sprintf(buf, "objdump -d --prefix-addresses %s | grep \"^[0-9]\"", p_filename);
+	sprintf(buf, "gobjdump -d --prefix-addresses %s | grep \"^[0-9]\"", p_filename);
 	FILE* pin=popen(buf, "r");
 	int addr;
 

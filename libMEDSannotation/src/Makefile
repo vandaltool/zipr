@@ -11,6 +11,6 @@ clean:
 	rm -f $(OBJS)
 
 .cpp.o:
-	g++ -g -c -I. -I../include $<
+	$(CXX) -g -c -I. -I../include $<
 	ar rc $(LIB) $@
 	cp $(LIB) ../../lib

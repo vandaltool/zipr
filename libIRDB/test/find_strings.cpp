@@ -6,11 +6,13 @@
 #include <stdlib.h>
 #include <cctype>
 #include <assert.h>
+#include <stdlib.h>
 
+
+#include "targ-config.h"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 
-#include "targ-config.h"
 
 
 using namespace libIRDB;
@@ -38,7 +40,7 @@ typedef struct elf_info {
 
 void found_string(string s, void* addr)
 {
-	char buff[s.length()+2];
+	char *buff=(char*)malloc(s.length()+2);
 	char *old_p=buff, *p;
 	// use .data() instead of c_str(); can find multiple C-strings in one string
 	memcpy(buff,s.data(),s.length());
@@ -402,27 +404,27 @@ void find_strings_in_data(FileIR_t* firp, elf_info_t& ei)
 		{
 		case SHT_REL:
 			if(arch_ptr_bytes()==4)
-				step = sizeof(::Elf32_Rel);
+				step = sizeof(std::Elf32_Rel);
 			else
-				step = sizeof(::Elf64_Rel);
+				step = sizeof(std::Elf64_Rel);
 			break;
 		case SHT_RELA:
 			if(arch_ptr_bytes()==4)
-				step = sizeof(::Elf32_Rela);
+				step = sizeof(std::Elf32_Rela);
 			else
-				step = sizeof(::Elf64_Rela);
+				step = sizeof(std::Elf64_Rela);
 			break;
 		case SHT_SYMTAB:
 		case SHT_DYNSYM:
 			if(arch_ptr_bytes()==4)
 			{
 				offset = sizeof(::Elf32_Word);
-				step = sizeof(::Elf32_Sym);
+				step = sizeof(std::Elf32_Sym);
 			}
 			else
 			{
 				offset = sizeof(::Elf64_Word);
-				step = sizeof(::Elf64_Sym);
+				step = sizeof(std::Elf64_Sym);
 			}
 			break;
 		default:

@@ -17,8 +17,8 @@
 
 PROGS=memcover.exe
 
-CC=g++
-CFLAGS= -g -O3 -Wall
+CFLAGS= -g 
+# -O3 -Wall
 INCLUDE=-I. -I../../include -I../../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../../libtransform/include/
 LIBS=-L../../lib -L../../xform -lxform -lELFIO -L../../libIRDB/lib/ -lIRDB-core -lIRDB-cfg -L../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d -lpqxx  -L../../libMEDSannotation/lib -lMEDSannotation -L../../libtransform/lib -ltransform
 OBJS=transformutils.o
@@ -29,14 +29,14 @@ all: memcover $(OBJS) $(PROGS)
 	echo memcover build complete
 
 .o: $<
-	$(CC) -g -c $@
+	$(CXX) -g -c $@
 
 .cpp.exe:  $<
-	$(CC) -g $< $(INCLUDE) $(LIBS) $(OBJS) -o $@
+	$(CXX) -g $< $(INCLUDE) $(LIBS) $(OBJS) -o $@
 
 clean:
 	rm -f *.o core $(PROGS)
 
 
 memcover: 
-	$(CC) $(CFLAGS) memcover.cpp General_Utility.cpp Rewrite_Utility.cpp $(INCLUDE) $(LIBS) -o memcover.exe
+	$(CXX) $(CFLAGS) memcover.cpp General_Utility.cpp Rewrite_Utility.cpp $(INCLUDE) $(LIBS) -o memcover.exe

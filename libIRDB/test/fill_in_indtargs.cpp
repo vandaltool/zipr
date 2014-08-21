@@ -10,9 +10,9 @@
 // #include <elf.h>
 #include <ctype.h>
 
+#include "targ-config.h"
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
-#include "targ-config.h"
 #include "beaengine/BeaEngine.h"
 #include "check_thunks.hpp"
 

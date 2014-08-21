@@ -5,6 +5,8 @@
 #include <limits.h>
 #include <string>
 #include <fstream>
+#include <libgen.h>
+
 
 using namespace std;
 using namespace libIRDB;
@@ -20,7 +22,7 @@ void trim(string& str)
   else str.erase(str.begin(), str.end());
 }
 
-enum STR2NUM_ERROR { SUCCESS, OVERFLOW, UNDERFLOW, INCONVERTIBLE };
+enum STR2NUM_ERROR { STR2_SUCCESS, STR2_OVERFLOW, STR2_UNDERFLOW, STR2_INCONVERTIBLE };
 
 //TODO: what if the string represents a negative number? Currently
 //the number will be translated into an unsigned int. I could make this
@@ -32,14 +34,14 @@ STR2NUM_ERROR str2uint (unsigned int &i, char const *s, int base=0)
 	errno = 0;
 	l = strtoul(s, &end, base);
 	if ((errno == ERANGE && l == ULONG_MAX) || l > UINT_MAX) {
-		return OVERFLOW;
+		return STR2_OVERFLOW;
 	}
 	if (*s == '\0' || *end != '\0') {
-		return INCONVERTIBLE;
+		return STR2_INCONVERTIBLE;
 	}
 	i = l;
 
-	return SUCCESS;
+	return STR2_SUCCESS;
 }
 
 
@@ -80,7 +82,7 @@ void coverage::parse_coverage_file(ifstream &coverage_file)
 
 		
 		unsigned int uint_addr;
-		assert(str2uint(uint_addr,addr.c_str())==SUCCESS);
+		assert(str2uint(uint_addr,addr.c_str())==STR2_SUCCESS);
 
 		coverage_map[file].coverage[uint_addr]=uint_addr;
 	}
@@ -97,7 +99,7 @@ file_coverage* coverage::find_file_coverage(string url)
 		//the shared objects are registered, but this might cause
 		//issues if shared objects have the same name. 
 
-		key=string(basename(key.c_str()));
+		key=string(basename((char*)key.c_str()));
 
 		if(key.empty())
 			continue;

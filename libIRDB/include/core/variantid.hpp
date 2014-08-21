@@ -1,6 +1,10 @@
 
 #define CURRENT_SCHEMA 2
 
+class VariantID_t;
+
+std::ostream& operator<<(std::ostream& out, const libIRDB::VariantID_t& pid);
+
 class VariantID_t : public BaseObj_t
 {
     public:
@@ -52,4 +56,3 @@ class VariantID_t : public BaseObj_t
 
 };
 
-std::ostream& operator<<(std::ostream& out, const VariantID_t& pid);
