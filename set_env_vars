@@ -18,8 +18,10 @@ export STRATA_HOME32=$STRATA32
 export SECURITY_TRANSFORMS_HOME=$PEASOUP_UMBRELLA_DIR/security_transforms
 if [[ ! "$LD_LIBRARY_PATH" =~ (^|:)"$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib"(:|$) ]]
 then
-    export LD_LIBRARY_PATH=$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib:$LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib:$LD_LIBRARY_PATH
 fi
+
+export LD_LIBRARY_PATH=/opt/csw/lib/:$LD_LIBRARY_PATH
 
 #Get IDAPRO to work with no errors
 export TVHEADLESS=1
@@ -35,3 +37,5 @@ export SCONSFLAGS="exceptions=1 x86=1 tool=1 hprof=0 cpuprof=0 lm_required=false
 # adjust to your SVN username
 #export SVN_USERNAME=$USER
 
+
+alias md5sum="digest -a md5"
