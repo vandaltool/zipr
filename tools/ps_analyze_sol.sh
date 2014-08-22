@@ -4,20 +4,16 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s stratafy_with_pc_confine=off 	\
 	-s detect_server=off 		\
 	-s watchdog=off 			\
-	-s is_so=off 			\
 	-s signconv_func_monitor=off 	\
 	-s meds_static=off 			\
+	-s fast_annot=off 			\
 	-s concolic=off 			\
 	-s appfw=off 			\
 	-s determine_program=off 		\
 	-s manual_test=off 			\
-	-s fast_annot=off 			\
 	-s p1transform=off 			\
 	-s integertransform=off 		\
 	-s twitchertransform=off 		\
-	-s fast_spri=off 			\
-	-s preLoaded_ILR1=off 		\
-	-s preLoaded_ILR2=off 		\
 	\
 	-s controlled_exit=off 		\
 	\
@@ -35,7 +31,11 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s fill_in_cfg=on 			\
 	-s fill_in_indtargs=on 		\
 	-s generate_spri=on 		\
-	-s spasm=off 			\
+	-s spasm=on 			\
 	-s find_strings=on 		\
 	-s ilr=on 				\
 	-s gather_libraries=on 		\
+	-s fast_spri=on 			\
+	-s preLoaded_ILR1=on 		\
+	-s preLoaded_ILR2=on 		\
+	-s is_so=on 			\

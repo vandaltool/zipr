@@ -1,4 +1,4 @@
 #!/bin/sh 
 
-grep -i -e " rl " -e " () " $1 > $1.reloc 
+ggrep -i -e " rl " -e " () " $1 > $1.reloc 
 
