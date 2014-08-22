@@ -50,11 +50,11 @@ xqil_minor:
 
 libappfw.so32:  $(OBJS32)
 	$(CXX) -m32 $(CFLAGS) -shared -fPIC $^ -ldl -o $@
-	cp $@ $(LIBAPPFW_DIR)/
+	cp $@ $(LIBAPPFW_DIR)/32/libappfw.so
 
 libappfw.so64:  $(OBJS64)
 	$(CXX) -m64 $(CFLAGS) -shared -fPIC $^ -ldl -o $@
-	cp $@ $(LIBAPPFW_DIR)/
+	cp $@ $(LIBAPPFW_DIR)/64/libappfw.so
 
 clean:
 	rm -fr *.o *.o32 *.o64 *.tmp *.so32 *.so64 *.so appfw_sqlite3.c appfw_sqlite3.h sqlite3.h sqlite-autoconf-3071300  xqil_major xqil_minor
