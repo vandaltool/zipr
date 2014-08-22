@@ -14,6 +14,9 @@ ulimit -s unlimited
 watchdog_val=30
 errors=0
 
+# record statistics in database?
+record_stats=0
+
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
 TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
@@ -23,7 +26,7 @@ PN_TIMEOUT_VALUE=21600
 # 
 # set default values for 
 #
-initial_off_phases="isr ret_shadow_stack determine_program"
+initial_off_phases="isr ret_shadow_stack determine_program stats"
 
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
@@ -36,6 +39,9 @@ intxform_detect_fp=1      # default: detect benign false positives is on
                           #   but if determine_program is off, it's a no-op
 intxform_instrument_idioms=0  # default: do not instrument instructions marked as IDIOM by STARS
 
+# JOBID
+
+JOBID="$(basename $1)-$$"
 
 # 
 # By default, big data approach is off
@@ -158,7 +164,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long id: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -214,6 +220,10 @@ check_options()
 			set_timer $2 & TIMER_PID=$!
 			shift 2 
 			;;
+		--id) 
+			JOBID=$2
+			shift 2 
+			;;
 		--) 	shift 
 			break 
 			;;
@@ -256,6 +266,14 @@ check_options()
 	is_step_on twitchertransform
 	if [[ $? = 1 && "$TWITCHER_HOME" != "" ]]; then
 		phases_off="$phases_off heaprand=off double_free=off"
+	fi
+
+	#
+	# turn on/off recording of statistics
+	#
+	is_step_on stats
+	if [[ $? = 1 ]]; then
+		record_stats=1
 	fi
 }
 
@@ -342,6 +360,10 @@ perform_step()
 	echo -n Performing step "$step" [dependencies=$mandatory] ...
 	starttime=`date --iso-8601=seconds`
 
+	if [ $record_stats -eq 1 ]; then
+		$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" started "$starttime" inprogress
+	fi
+
 	# If verbose is on, tee to a file 
 	if [ ! -z "$DEBUG_STEPS" ]; then
 		$command 
@@ -353,13 +375,26 @@ perform_step()
 		$command > $logfile 2>&1 
 		command_exit=$?
 	fi
+
+	endtime=`date --iso-8601=seconds`
 	
 	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
+	echo "# ATTRIBUTE end_time=$endtime" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_command=$command " >> $logfile
 	echo "# ATTRIBUTE peasoup_step_exitcode=$command_exit" >> $logfile
+
+	# report job status
+	if [ $command_exit -eq 0 ]; then
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" success $logfile
+		fi
+	else
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" error $logfile
+		fi
+	fi
 
 	is_step_error $step $command_exit
 	if [ $? -ne 0 ]; then
@@ -393,7 +428,7 @@ report_logs()
 	logfile=logs/ps_analyze.log
 
 	echo "# ATTRIBUTE start_time=$ps_starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
+	echo "# ATTRIBUTE end_time=$ps_endtime" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=all_peasoup" >> $logfile
 
 	for i in $all_logs
@@ -666,6 +701,8 @@ DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
 DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
 MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 
+INSTALLER=`pwd`
+
 #
 # register the program
 #
@@ -673,6 +710,16 @@ perform_step pdb_register mandatory "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_
 varid=`cat registered.id`
 if [ ! $varid -gt 0 ]; then
 	fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
+fi
+
+if [ $record_stats -eq 1 ]; then
+	$PEASOUP_HOME/tools/db/job_spec_register.sh "$JOBID" "$DB_PROGRAM_NAME" "$varid" 'submitted' "$ps_starttime"
+fi
+
+sleep 30
+
+if [ $record_stats -eq 1 ]; then
+	$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'pending' "$ps_starttime"
 fi
 
 # build basic IR
@@ -813,7 +860,9 @@ fi
 #
 # create a report for all of ps_analyze.
 #
+ps_endtime=`date --iso-8601=seconds`
 report_logs
+
 
 # go back to original directory
 cd - > /dev/null 2>&1
@@ -833,8 +882,19 @@ if [ -f $stratafied_exe ]; then
 		echo "*****************************"
 		echo "*Warning: Some steps failed!*"
 		echo "*****************************"
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" "$INSTALLER"
+		fi
+	else
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime" "$INSTALLER"
+		fi
 	fi
+
 	exit 0;
 else
+	if [ $record_stats -eq 1 ]; then
+		$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'error' "$ps_endtime"
+	fi
 	exit 255;
 fi
