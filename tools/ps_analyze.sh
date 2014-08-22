@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 #
 # ps_analyze.sh - analyze a program and transform it for peasoupification to prevent exploit.
 #
@@ -283,7 +283,7 @@ check_options()
 #
 is_step_on()
 {
-	step=$1
+	local step=$1
 
 	echo $phases_off|egrep "$step=off" > /dev/null
 	if [ $? -eq 0 ] ; then
@@ -339,6 +339,29 @@ stop_if_error()
 }
 
 #
+# Check dependencies
+#
+check_dependencies()
+{
+	# format is:  step1,step2,step3
+	local dependency_list=$1
+
+	# extract each step, make sure step is turned on
+	local steps=$(echo $dependency_list | tr "," "\n")
+	for s in $steps
+	do
+		if [[ "$s" != "none" && "$s" != "mandatory" ]]; then
+			is_step_on $s
+			if [ $? -eq 0 ]; then
+				return 0
+			fi
+		fi
+	done
+
+	return 1
+}
+
+#
 # Detect if this step of the computation is on, and execute it.
 #
 perform_step()
@@ -349,20 +372,33 @@ perform_step()
 	shift
 	command="$*"
 
+	logfile=logs/$step.log
+
 	is_step_on $step
 	if [ $? -eq 0 ]; then 
 		echo Skipping step $step. [dependencies=$mandatory]
 		return 0
 	fi
 
-	logfile=logs/$step.log
-
-	echo -n Performing step "$step" [dependencies=$mandatory] ...
 	starttime=`date --iso-8601=seconds`
 
+	# optionally record stats
 	if [ $record_stats -eq 1 ]; then
 		$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" started "$starttime" inprogress
 	fi
+
+	if [[ "$mandatory" != "none" && "$mandatory" != "mandatory" ]]; then
+		check_dependencies $mandatory
+		if [ $? -eq 0 ]; then 
+			echo Skipping step $step because of failed dependencies. [dependencies=$mandatory]
+			if [ $record_stats -eq 1 ]; then
+				$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$starttime" error
+			fi
+			return 0
+		fi
+	fi
+
+	echo -n Performing step "$step" [dependencies=$mandatory] ...
 
 	# If verbose is on, tee to a file 
 	if [ ! -z "$DEBUG_STEPS" ]; then
