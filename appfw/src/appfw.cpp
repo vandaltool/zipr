@@ -24,10 +24,6 @@ static unsigned int fw_size = 512;
 static char **fw_sigs = NULL;
 static int appfw_initialized = 0;
 
-static void delete_matched_records(int pos);
-static void delete_matched_record(matched_record *r);
-static void record_matched_signature(matched_record** matched_signatures, int startPos, int endPos, int signatureId);
-
 static void reset_sig_file_env_var()
 {
 	extern char **environ;
@@ -293,15 +289,18 @@ void appfw_display_signatures(char **fw_sigs, int numSigs)
 	}
 }
 
-extern "C" void appfw_empty_taint(const char *command, char *taint, matched_record** matched_signatures, int case_sensitive)
+extern "C" void appfw_empty_taint(const char *command, char *taint)
 {
 	int commandLength = strlen(command);
 	// set taint markings to 'tainted' by default
 	appfw_taint_range(taint, APPFW_TAINTED, 0, commandLength);
 }
 
-// buffers must be big enough
-void appfw_establish_taint(const char *command, char *taint, matched_record** matched_signatures, int case_sensitive)
+//
+// determine which parts of the command are blessed
+// warning: buffers must be big enough
+//
+void appfw_establish_blessed(const char *command, char *taint, int case_sensitive)
 {
 	int j, pos, sigId;
 	int patternFound;
@@ -339,16 +338,13 @@ void appfw_establish_taint(const char *command, char *taint, matched_record** ma
 			    ((!case_sensitive && strncasecmp(&command[pos], fw_sigs[sigId], length_signature) == 0)) )
 			{
 				appfw_taint_range(taint, APPFW_BLESSED, pos, length_signature);
-
-				// need to record which signature fragments matched at position pos
-				record_matched_signature(matched_signatures, pos, pos+length_signature-1, sigId); 
 			}
 		}
 		pos++;
 	}
 }
 
-// enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_BLESSED_KEYWORD };
+// enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_SECURITY_VIOLATION2, APPFW_BLESSED_KEYWORD };
 extern "C" void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
 {
 		int i;
@@ -373,117 +369,6 @@ extern "C" void appfw_display_taint(const char *p_msg, const char *p_query, cons
 		}
 		fprintf(stderr,"\n");
 		fflush(stderr);
-}
-
-// record which signature fragment matched at position <pos>
-void record_matched_signature(matched_record** matched_signatures, int startPos, int endPos, int signatureId)
-{
-	int pos;
-
-	for (pos = startPos; pos <= endPos; ++pos)
-	{
-		matched_record *matched = (matched_record*) malloc(sizeof(matched_record));
-		matched->signatureId = signatureId;
-		matched->next = NULL;
-
-		// insert into head of linked list
-		matched_record *tmp = matched_signatures[pos];
-		matched_signatures[pos] = matched;
-		matched->next = tmp;
-	}
-}
-
-static int look_for_signature(matched_record** matched_signatures, int sigId, int pos)
-{
-	matched_record *r = matched_signatures[pos];
-
-	while (r)
-	{
-		if (r->signatureId == sigId)
-		{
-			return 1;
-		}
-		r = r->next; 
-	}
-
-	return 0;
-}
-
-//
-// pre: [startPos..endPos] is vetted
-//
-int appfw_is_from_same_signature(matched_record** matched_signatures, int startPos, int endPos)
-{
-	char **fw_sigs = appfw_getSignatures();
-	int tokenLength = endPos-startPos+1;
-
-	matched_record *tmp = matched_signatures[startPos];
-	while (tmp)
-	{
-		int sigId = tmp->signatureId;
-		int pos;
-		int found = 1;
-
-		for (pos = startPos + 1; pos <= endPos; ++pos)
-		{
-			if (look_for_signature(matched_signatures, sigId, pos))
-				found++;
-			else
-				goto signature_not_found;
-		}
-
-		if (found == tokenLength)
-		{
-		/*
-			// not an issue right now b/c sqlite3 parser strips out comments
-			// so we don't get to examine -- to see whether it's vetted
-
-			// handle the case where the signature is '-'
-			// and so we would end up matchng '--' (comment in sql)
-			fprintf(stderr,"sigId[%d] length[%d] tokenLength[%d]\n", sigId, strlen(fw_sigs[sigId]), tokenLength);
-			if (strlen(fw_sigs[sigId]) == 1 && tokenLength > 1)
-				goto signature_not_found;
-		*/
-
-			return 1;
-		}
-
-signature_not_found:
-		tmp = tmp->next; // try the next signature id
-	}
-
-	return 0;
-}
-
-matched_record** appfw_allocate_matched_signatures(int length)
-{
-	return (matched_record**)calloc(length, sizeof(matched_record*)); 
-}
-
-void appfw_deallocate_matched_signatures(matched_record** matched_signatures, int length)
-{
-	int pos;
-	for (pos = 0; pos < length; ++pos)
-	{
-		delete_matched_record(matched_signatures[pos]);
-		matched_signatures[pos] = NULL;
-	}
-}
-
-// recursively delete
-void delete_matched_record(matched_record *r)
-{
-	if (r == NULL)
-	{
-		return;
-	}
-	else
-	{
-		delete_matched_record(r->next);
-		r->next = NULL;
-		
-		free(r);
-	}
 }
 
 inline int is_security_violation(char c)
@@ -532,28 +417,6 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 	int i;
 	char v;
 	int beg, end;
-
-#ifdef BOGUS
-	if (!is_security_violation(taint[lastpos]) &&
-	    !is_security_violation(taint[start]))
-	{
-		// first & last character covered by fragment is not a 
-		// keyword/security violation
-		// therefore we know we don't have any partial matches
-		// use the old code to mark critical tokens as blessed
-		return fix_violations(taint, value, start, siglen);
-	}
-	else if (taint[lastpos] != taint[lastpos+1] &&
-	         beforefirstpos >= 0 && taint[start] != taint[beforefirstpos])
-	{
-		// first and last character covered by fragment is a security violation
-		// if prev/next character is a different critical keyword, or
-		//    not event a critical keyword, then we do don't have any partial
-		//    matches
-		return fix_violations(taint, value, start, siglen);
-	} 
-	else
-#endif
 
 	 if (is_security_violation(taint[lastpos+1]) &&
 	         beforefirstpos >= 0 && is_security_violation(taint[beforefirstpos]))
@@ -638,130 +501,31 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 	return count;
 }
 
-/*
- * appfw_establish_taint_fast - quickly establish taint markings to verify the command is OK
- * return TRUE if command is OK.
- */
-extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int case_sensitive)
+static list<char*> *mru_sigs=NULL;  // sorted signatures (most-recently used)
+
+extern "C" void appfw_dump_signatures(FILE *fp)
 {
-
-	static list<char*> *sorted_sigs=NULL; 
-	static char **fw_sigs = appfw_getSignatures();
-
-	int j, pos, sigId;
-	int patternFound;
-	int commandLength = strlen(command);
-	taint[commandLength] = '\0';
-	int verbose=getenv("APPFW_VERBOSE")!=NULL;
-	int very_verbose=getenv("VERY_VERBOSE")!=NULL;
-	verbose+=very_verbose;
-
-	if (!fw_sigs)
+	if (mru_sigs)
 	{
-		if(verbose)
-			fprintf(stderr,"No appfw signatures loaded.  Blessing entire range. proc:%d \n", getpid());
-		appfw_taint_range(taint, APPFW_BLESSED, 0, commandLength);
-		return TRUE;
-	}
-	int numSignatures = appfw_getNumSignatures();  
-	if(!sorted_sigs)
-	{
-		sorted_sigs=new list<char*>;
-		assert(sorted_sigs);
-
-		for (int sigId = 0; sigId < numSignatures; ++sigId)
+		for(list<char*>::iterator it=mru_sigs->begin(); it!=mru_sigs->end();  it++)
 		{
-			sorted_sigs->push_back(fw_sigs[sigId]);
+			char *sig = *it;
+			fprintf(fp,"%s\n", sig);
 		}
 	}
-
-	int violations=count_violations(taint, commandLength);
-	if(verbose)
-		fprintf(stderr,"Found %d violations\n", violations);
-
-	list<char*>::iterator next;
-
-	int list_depth=0;
-	struct timeval blah;
-	if(verbose)
+	else
 	{
-		gettimeofday(&blah,NULL);
-		fprintf(stdout, "start: %d:%d ", blah.tv_sec, blah.tv_usec);
-	}
-	
-	/* iterate the list */
-	for(list<char*>::iterator it=sorted_sigs->begin(); it!=sorted_sigs->end();  it=next)
-	{
-		list_depth++;
-		
-		char* sig=*it;
-		if(very_verbose)
-			fprintf(stderr,"Considering sig %s\n", sig);
-		next=it;
-		++next;	
-		int length_signature = strlen(sig);
-		pos = 0;
-		if(length_signature==1 && isalpha(*sig))
-			continue;
-
-		bool alreadymoved = false;
-		while (pos < commandLength)
+		static char **fw_sigs = appfw_getSignatures();
+		for (int sigId = 0; sigId < appfw_getNumSignatures(); ++sigId)
 		{
-			if (((case_sensitive  && strncmp    (&command[pos], sig, length_signature) == 0)) || 
-			    ((!case_sensitive && strncasecmp(&command[pos], sig, length_signature) == 0)) )
-			{
-
-				/* fix any violations we found with the match */
-				int fixed_violations=fix_violations(taint, APPFW_BLESSED, pos, length_signature);
-		
-				if(fixed_violations)
-				{
-					if(verbose)
-					{
-						fprintf(stderr,"fixed %d violations at %d\n", fixed_violations,pos);
-						fflush(stderr);
-					}
-					/* move to front */
-					if(!alreadymoved && it!=sorted_sigs->begin())
-					{
-						if(verbose)
-							fprintf(stderr,"moving to front\n");
-						it = sorted_sigs->erase(it);
-						sorted_sigs->push_front(sig);
-						if(verbose)
-							fprintf(stderr,"done moving to front\n");
-
-						alreadymoved = true;
-					}
-
-					violations-=fixed_violations;
-					if(violations<=0)
-					{
-						if(verbose)
-						{
-							fprintf(stderr,"fixed ALL violations, list size=%d, iterated to %d\n", sorted_sigs->size(), list_depth);
-							fflush(stderr);
-							gettimeofday(&blah,NULL);
-							fprintf(stdout, "end: %d:%d ", blah.tv_sec, blah.tv_usec);
-						}
-						return TRUE;
-					}
-				}
-
-
-			}
-			pos++;
+			fprintf(fp,"%s\n", fw_sigs[sigId]);
 		}
 	}
-	if(verbose)
-	{
-		fprintf(stderr,"failed to fix all violations, %d remain\n", violations);
-	}
-	return FALSE;
 }
 
+
 /*
- * appfw_establish_taint_fast - quickly establish taint markings to verify the command is OK
+ * appfw_establish_taint_fast2 - quickly establish taint markings to verify the command is OK
  * taint array should have all critical tokens identified
  * need to known boundaries of each critical token to implement same-fragment-origin
  * policy
@@ -786,28 +550,6 @@ extern "C" int appfw_establish_taint_fast(const char *command, char *taint, int 
  *
  * return TRUE if command is OK.
  */
-static list<char*> *mru_sigs=NULL;  // sorted signatures (most-recently used)
-
-extern "C" void appfw_dump_signatures(FILE *fp)
-{
-	if (mru_sigs)
-	{
-		for(list<char*>::iterator it=mru_sigs->begin(); it!=mru_sigs->end();  it++)
-		{
-			char *sig = *it;
-			fprintf(fp,"%s\n", sig);
-		}
-	}
-	else
-	{
-		static char **fw_sigs = appfw_getSignatures();
-		for (int sigId = 0; sigId < appfw_getNumSignatures(); ++sigId)
-		{
-			fprintf(fp,"%s\n", fw_sigs[sigId]);
-		}
-	}
-}
-
 extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int case_sensitive)
 {
 	static char **fw_sigs = appfw_getSignatures();

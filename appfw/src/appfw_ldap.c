@@ -46,12 +46,9 @@ int appfw_ldap_isFilterOperator(char c)
 int appfw_ldap_verify(const char *p_filter)
 {
 	int length = strlen(p_filter);
-	matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
 	char *p_taint=malloc(length+1);
-  	appfw_establish_taint(p_filter, p_taint, matched_signatures,FALSE);
-
-	appfw_deallocate_matched_signatures(matched_signatures, length);
+  	appfw_establish_blessed(p_filter, p_taint, FALSE);
 
 	if(getenv("APPFW_VERBOSE"))
 	  	appfw_display_taint("Debugging LDAP filter", p_filter, p_taint);
@@ -66,7 +63,7 @@ int appfw_ldap_verify(const char *p_filter)
 			if(getenv("APPFW_VERBOSE"))
 	  			appfw_display_taint("Security violation detected", p_filter, p_taint);
 
-    		free(p_taint);
+	    		free(p_taint);
 			return 0;
 		}
 	}

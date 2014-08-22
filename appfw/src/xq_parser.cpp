@@ -171,9 +171,6 @@ void parse(istream &fin)
 	}
 }
 
-
-
-
 extern "C"
 void xq_parse(char* to_parse, char* taint_markings)
 {

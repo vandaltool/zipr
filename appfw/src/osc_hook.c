@@ -99,42 +99,41 @@ int rcmd(char **ahost, int inport, const char *locuser,
 }
 
 
+// used for execl for example
+// goal: verify all flag options come from the same signature
 int oscfw_verify_args(char* const argv[])
 {
 	int is_verbose=getenv("APPFW_VERBOSE")!=0;
   	char taint[MAX_COMMAND_LENGTH];
+  	char cmd[MAX_COMMAND_LENGTH];
 	int i=0;
 	while(argv[i]!=NULL)
 	{
 		if(argv[i][0]=='-')
 		{
+			// e.g., we need to verify that: -lta originates from a single fragment
+			// 
+			// create a fake command consisting of just the flag
+			// mark all characters as security violations
+			// run it through appfw_establish_taint2
+			// and look at return value
+			//
+			//	cmd: -lta
+			//    taint: vvvv
+			//
+			// after appfw_establish_taint2, taint markings should be:
+			//    taint: bbbb
+	
 			int length = strlen(argv[i]);
-			matched_record** matched_signatures = appfw_allocate_matched_signatures(length);
 
-			appfw_establish_taint(argv[i], taint, matched_signatures,TRUE);
-			if(is_verbose)
-        			appfw_display_taint("Debugging OS Command", argv[i], taint);
+			strcpy(cmd, argv[i]);
+			appfw_taint_range(taint, APPFW_SECURITY_VIOLATION, 0, length);
+			int success = appfw_establish_taint_fast2(cmd, taint, FALSE);
 
-			int j;
-			for(j=0;j<strlen(argv[i]);j++)
-			{
-                		if(taint[j]!=APPFW_BLESSED)
-				{
-					fprintf(stderr, "Failed argument check\n");
-					appfw_display_taint("OS Command Injection detected", argv[i], taint);
-					appfw_deallocate_matched_signatures(matched_signatures, length);
-					return 0;
-				}
-			}
-
-                        if (!appfw_is_from_same_signature(matched_signatures, 0, length-1))
-			{
-				appfw_taint_range(taint, APPFW_SECURITY_VIOLATION, 0, length);
+			if (!success)
 				appfw_display_taint("OS Command Injection detected (options): ", argv[i], taint);
-				return 0;
-			}
 
-			appfw_deallocate_matched_signatures(matched_signatures, length);
+			return success;
 		}
 		else 
 		{
