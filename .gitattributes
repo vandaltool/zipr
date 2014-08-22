@@ -85,6 +85,7 @@ appfw/tests/sqlite/setup.sql -text
 appfw/tests/sqlite/sqlite.test.sh -text
 appfw/tests/sqlite/sqlite3.h -text
 appfw/tests/sqlite/teardown.sql -text
+appfw/tests/sqlite/testsqlite.basic.c -text
 appfw/tests/sqlite/testsqlite.c -text
 appfw/tests/sqlite/testsqlite.pstmt.c -text
 appfw/tests/sqlite/testsqlite.pstmt.fp.c -text
