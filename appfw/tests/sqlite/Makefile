@@ -5,7 +5,6 @@ peasoup: testsqlite.basic.peasoup testsqlite.peasoup testsqlite.pstmt.peasoup te
 lightpeasoup: testsqlite.basic.lightpeasoup testsqlite.lightpeasoup testsqlite.pstmt.lightpeasoup testsqlite.pstmt.fp.lightpeasoup
 
 .exe.lightpeasoup:
-#	$(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step heaprand=off --step double_free=off --step isr=off
 	$(PEASOUP_HOME)/tools/ps_analyze.sh $< $@ --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step isr=off
 
 .exe.peasoup:
