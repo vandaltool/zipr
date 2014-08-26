@@ -388,6 +388,7 @@ tests/zsh/tests/test3.sh -text
 tests/zsh/tests/test4.sh -text
 tests/zsh/tests/test5.sh -text
 tests/zsh/tests/test6.sh -text
+tools/add_ifunc_attr.sh -text
 tools/bed.sh -text
 tools/bed_blackbox.sh -text
 tools/bed_manual.sh -text
