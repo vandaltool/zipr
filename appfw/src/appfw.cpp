@@ -371,9 +371,16 @@ extern "C" void appfw_display_taint(const char *p_msg, const char *p_query, cons
 		fflush(stderr);
 }
 
-inline int is_security_violation(char c)
+extern "C" 
+int is_security_violation(char c)
 {
   return (c==APPFW_SECURITY_VIOLATION || c==APPFW_SECURITY_VIOLATION2);
+}
+
+extern "C" 
+int is_blessed(char c)
+{
+  return (c==APPFW_BLESSED || c==APPFW_BLESSED_KEYWORD);
 }
 
 int count_violations(char* taint,int len)

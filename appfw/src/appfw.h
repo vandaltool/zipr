@@ -23,6 +23,9 @@ extern void appfw_establish_blessed(const char *input, char *taint, int case_sen
 int appfw_establish_taint_fast2(const char *input, char *taint, int case_sensitive); 
 void appfw_empty_taint(const char *command, char *taint);
 
+int is_security_violation(char c);
+int is_blessed(char c);
+
 #ifndef TRUE
 #define TRUE 1
 #endif

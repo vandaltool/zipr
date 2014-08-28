@@ -40,21 +40,34 @@ int oscfw_isInitialized()
 
 int oscfw_verify_fast(const char *p_command, char *p_taint)
 {
+	int i;
 	int length = strlen(p_command);
 
   	appfw_empty_taint(p_command, p_taint);
 
-//	if(getenv("APPFW_VERBOSE"))
-//	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
+	if(getenv("APPFW_VERBOSE"))
+	  	appfw_display_taint("Debugging OS Command", p_command, p_taint);
 
 	osc_parse((char*)p_command, (char*)p_taint);
 	// post: taint markings will be 'security violation' wherever there's a 
 	//       critical keyword
 
-	if(getenv("APPFW_VERBOSE"))
-  		appfw_display_taint("Debug OSC after parse", p_command, p_taint);
 
-  	int OK=appfw_establish_taint_fast2(p_command, p_taint, TRUE);
+  	int OK = appfw_establish_taint_fast2(p_command, p_taint, TRUE);
+
+	// heuristic -- if first critical token is tainted (a security violation)
+	//              then allow the command through
+	for (i = 0; i < length; ++i)
+	{
+		if (is_blessed(p_taint[i]))
+			break;
+
+		if (is_security_violation(p_taint[i]) )
+		{
+			OK = 1;
+			break;
+		}
+	}
 
 	if(getenv("APPFW_VERBOSE"))
 		if (OK)

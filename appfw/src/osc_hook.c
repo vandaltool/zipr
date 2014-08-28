@@ -107,6 +107,17 @@ int oscfw_verify_args(char* const argv[])
   	char taint[MAX_COMMAND_LENGTH];
   	char cmd[MAX_COMMAND_LENGTH];
 	int i=0;
+
+#ifdef DEBUG
+	while(argv[i]!=NULL)
+	{
+		fprintf(stderr, "arg: %s\n", argv[i]);
+
+		i++;
+	}
+
+	i = 0;
+#endif
 	while(argv[i]!=NULL)
 	{
 		if(argv[i][0]=='-')
@@ -171,13 +182,15 @@ int (*my_execve)(const char*,char*const[], char*const[])=NULL;
 int handle_execl(const char *file, char *const argv[], char *const envp[])
 {
   	char taint[MAX_COMMAND_LENGTH];
+	int cmd_verify, args_verify;
+
   	if (!my_execve)
     		my_execve = dlsym(RTLD_NEXT, "execve");
 	assert(my_execve);
 
   	oscfw_init(); // will do this automagically later
 
-  	if (within_osc_monitor || (oscfw_verify(file, taint) && oscfw_verify_args(argv)) || getenv("DEBUG_APPFW"))
+  	if (within_osc_monitor || ((cmd_verify = oscfw_verify(file, taint)) && (args_verify = oscfw_verify_args(argv))) || getenv("DEBUG_APPFW"))
   	{
 		if(getenv("APPFW_VERBOSE"))
 			fprintf(stderr, "Exec detected as OK\n");
@@ -188,8 +201,10 @@ int handle_execl(const char *file, char *const argv[], char *const envp[])
   	}
   	else
   	{
-
-    		fprintf(stderr, "Failed argument check for handle_execl\n");
+		if (!cmd_verify)
+	    		fprintf(stderr, "Failed argument check for handle_execl: command verification failed\n");
+		if (!args_verify)
+	    		fprintf(stderr, "Failed argument check for handle_execl: argument verification failed\n");
     		appfw_display_taint("OS Command Injection detected", file, taint);
     		return -1; // error code for rcmd
   	}

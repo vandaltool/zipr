@@ -6,7 +6,9 @@ char *b = "-lt";
 
 /* 
    Pass in: ls -lt           test should exit normally
-   Pass in: cat Makefile     OS Command Injection should be detected
+
+   Pass in: cat README       test should exit normally (first critical token is tained --> allow anyhow)
+                                         we treat this as a benign injectio                                
 */
 int main(int argc, char **argv)
 {
