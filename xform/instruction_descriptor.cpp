@@ -5,6 +5,7 @@
 wahoo::Instruction::Instruction()
 {
   m_address = 0;
+  m_ibt_address = 0;
   m_size = -1;
   m_function = NULL;
   m_asm = "";
@@ -21,6 +22,7 @@ wahoo::Instruction::Instruction()
 wahoo::Instruction::Instruction(app_iaddr_t p_address, int p_size, Function* p_func)
 {
   m_address = p_address;
+  m_ibt_address = 0;
   m_size = p_size;
   m_function = p_func;
   m_isVisited = false;
