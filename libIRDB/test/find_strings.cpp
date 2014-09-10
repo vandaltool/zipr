@@ -137,6 +137,17 @@ void is_string_constant(DISASM& disasm)
 	unsigned char byte3=(((long long unsigned int)addr)>>8)&0xff;
 	unsigned char byte4=(long long unsigned int)addr&0xff;
 	
+        /*  
+               mov reg, 0x6161 
+                       addr       = 0x00006161
+                       addr >> 24 = 0          byte1
+                       addr >> 16 = 0          byte2
+                       addr >> 8 = 61          byte3
+                       addr >> 0 = 61          byte4
+               mov reg, 0x61616161 
+
+               mov reg, 0x0000000061616161 
+        */
 	if(  
 		(is_string_character(byte1) || byte1==0) &&
 		(is_string_character(byte2) || byte2==0) &&
@@ -260,8 +271,6 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 				unsigned int basereg = 0;
 				while(iit!=(*bit)->GetInstructions().end())
 				{
-//						cout<<"Pass 1: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
-
 					// Break if not assignment of an immediate to an esp/ebp/eax offset
 					if (disasm.Argument1.ArgType != MEMORY_TYPE
 					    || (disasm.Argument1.Memory.BaseRegister != REG4 /* esp */
@@ -269,7 +278,9 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 					        && disasm.Argument1.Memory.BaseRegister != REG0 /* eax */)
 					    || (basereg && disasm.Argument1.Memory.BaseRegister != basereg)
 					    || disasm.Argument2.ArgType == MEMORY_TYPE
-					    || disasm.Argument1.ArgSize > 32)
+//old					    || disasm.Argument1.ArgSize > 32)
+
+					    || ((disasm.Instruction.Category & 0XFFFF0000) != GENERAL_PURPOSE_INSTRUCTION)) 
 					{
 						// mark visited
 						visited_insns.insert(*iit);
@@ -281,6 +292,7 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 					// break if displacement moved backward
 					if (newdisp && (disp < newdisp || disp == olddisp))
 						break;
+
 					// mark visited
 					visited_insns.insert(*iit);
 					// check for a printable argument
@@ -290,6 +302,7 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 					unsigned char byte3=(imm>>8)&0xff;
 					unsigned char byte4=imm&0xff;
 					size_t argsize = disasm.Argument1.ArgSize / 8;
+
 					if (((is_string_character(byte1) || byte1==0) || argsize < 4) &&
 					    ((is_string_character(byte2) || byte2==0) || argsize < 4) &&
 					    ((is_string_character(byte3) || byte3==0) || argsize < 2) &&
@@ -309,10 +322,12 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 					++iit;
 					if (iit == (*bit)->GetInstructions().end())
 						break;
+
 					insn = *iit;
 					// break if none
 					if (insn == NULL)
 						break;
+
 					olddisp = disp;
 					// calculate expected displacement
 					if (newdisp)
