@@ -12,7 +12,9 @@ Register::RegisterName Register::getRegister(char *p_reg)
 
 Register::RegisterName Register::getRegister(std::string p_reg)
 {
-	if (strcasecmp(p_reg.c_str(), "RAX") == 0)
+	if (strcasecmp(p_reg.c_str(), "EFLAGS") ==0)
+		return EFLAGS;
+	else if (strcasecmp(p_reg.c_str(), "RAX") == 0)
 		return RAX;
 	else if (strcasecmp(p_reg.c_str(), "RBX") == 0)
 		return RBX;
@@ -191,6 +193,8 @@ bool Register::is64bit(Register::RegisterName p_reg)
 std::string Register::toString(Register::RegisterName p_reg)
 {
 	if (p_reg == UNKNOWN) return std::string("UNKNOWN");
+
+	else if (p_reg == EFLAGS) return std::string("EFLAGS");
 
 	else if (p_reg == RAX) return std::string("RAX");
 	else if (p_reg == RBX) return std::string("RBX");
