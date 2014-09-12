@@ -105,6 +105,7 @@ void is_string_pointer(void* addr, elf_info_t &ei)
 
 	for(int i=0;i<ei.secnum;i++)
 	{
+cout << "is_string_pointer(): address: " << std::hex << intaddr << std::dec << "looking at section number: " << i << endl;
 		/* only look at loaded sections */
 		if( (ei.elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
 			continue;
@@ -114,7 +115,8 @@ void is_string_pointer(void* addr, elf_info_t &ei)
 		{
 			/* we found a pointer into a loadable segment */
 			load_section(ei,i,true);
-//			cout<<"Checking address "<<std::hex<<addr<<endl;
+
+			cout<<"Checking address "<<std::hex<<addr<<endl;
 			check_for_string(ei.sec_data[i]+((long long int)addr-ei.elfiop->sections[i]->get_address()),addr);
 		}
 	}
@@ -126,7 +128,7 @@ void is_string_constant(DISASM& disasm)
 	void *addr;
 
 	if(disasm.Argument1.ArgType != MEMORY_TYPE || disasm.Argument2.ArgType == MEMORY_TYPE
-	   || disasm.Argument1.ArgSize < 16 || disasm.Argument1.ArgSize > 32)
+	   || disasm.Argument1.ArgSize != FileIR_t::GetArchitectureBitWidth() )
 		return;
 
 	addr = (void*)disasm.Instruction.Immediat;
@@ -148,6 +150,7 @@ void is_string_constant(DISASM& disasm)
 
                mov reg, 0x0000000061616161 
         */
+// cout << "address: " << std::hex << addr << std::dec << byte1 << " " << byte2 << " " << byte3 << " " << byte4 << endl;
 	if(  
 		(is_string_character(byte1) || byte1==0) &&
 		(is_string_character(byte2) || byte2==0) &&
@@ -169,13 +172,16 @@ void is_string_constant(DISASM& disasm)
 
 } 
 
-void handle_argument(ARGTYPE *arg, elf_info_t &ei)
+void handle_argument(ARGTYPE *arg, elf_info_t &ei, Instruction_t *insn)
 {
-        if( arg->ArgType == MEMORY_TYPE )
+        if( (arg->ArgType & MEMORY_TYPE) == MEMORY_TYPE )
 	{
 		/* Only check without GOT offset if type is executable */
-		if ( ei.elfiop->get_type() == ET_EXEC )
+       		if( ((arg->ArgType & ABSOLUTE_) == ABSOLUTE_)  && ei.elfiop->get_type() == ET_EXEC )
 			is_string_pointer((void*)arg->Memory.Displacement,ei);
+		else
+			is_string_pointer((void*)(arg->Memory.Displacement + insn->GetDataBits().size()), ei);
+
 		/* Check with GOT offset if present */
 		if ( ei.got && arg->Memory.BaseRegister == REG3 /* ebx */ )
 			is_string_pointer((void*)(arg->Memory.Displacement + ei.got),ei);
@@ -271,6 +277,8 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 				unsigned int basereg = 0;
 				while(iit!=(*bit)->GetInstructions().end())
 				{
+//					cout<<"Pass 1: Checking insn: "<<disasm.CompleteInstr<<" id: "<<(*iit)->GetBaseID()<<" category: " << (int) (disasm.Instruction.Category & 0xFFFF0000) << " ibta: " << (*iit)->GetIndirectBranchTargetAddress() << endl;
+
 					// Break if not assignment of an immediate to an esp/ebp/eax offset
 					if (disasm.Argument1.ArgType != MEMORY_TYPE
 					    || (disasm.Argument1.Memory.BaseRegister != REG4 /* esp */
@@ -292,7 +300,6 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 					// break if displacement moved backward
 					if (newdisp && (disp < newdisp || disp == olddisp))
 						break;
-
 					// mark visited
 					visited_insns.insert(*iit);
 					// check for a printable argument
@@ -321,13 +328,13 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 					}
 					++iit;
 					if (iit == (*bit)->GetInstructions().end())
+					{
 						break;
-
+					}
 					insn = *iit;
 					// break if none
 					if (insn == NULL)
 						break;
-
 					olddisp = disp;
 					// calculate expected displacement
 					if (newdisp)
@@ -368,18 +375,19 @@ void find_strings_in_instructions(FileIR_t* firp, elf_info_t& ei)
 	{
                 Instruction_t *insn=*it;
 
-//		cout<<"Pass 2: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
                 DISASM disasm;
 		int res=insn->Disassemble(disasm);
 		assert(res);
+//	cout<<"Pass 2: Checking insn: "<<disasm.CompleteInstr<<" id: "<<insn->GetBaseID()<<endl;
 
 		// check for immediate string pointers in non-PIC code
 		if ( ei.elfiop->get_type() == ET_EXEC )
 			is_string_pointer((void*)disasm.Instruction.Immediat,ei);
 		// always check for string pointers in memory argument displacements
-		handle_argument(&disasm.Argument1,ei);
-		handle_argument(&disasm.Argument2,ei);
-		handle_argument(&disasm.Argument3,ei);
+
+		handle_argument(&disasm.Argument1,ei, insn);
+		handle_argument(&disasm.Argument2,ei, insn);
+		handle_argument(&disasm.Argument3,ei, insn);
 
 		// if not in a function, check for string in immediate
 		if (visited_insns.find(insn) != visited_insns.end())
