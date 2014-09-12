@@ -44,7 +44,7 @@ fi
 
 DO_TWITCHER=0
 if [ "$DO_TWITCHER" = "1" ]; then
-	APP_LD_PRELOAD=$BOOST_HOME/lib/libboost_system.so:$BOOST_HOME/lib/libboost_thread.so:$datapath/libtwitcher_malloc.so:$APP_LD_PRELOAD
+	APP_LD_PRELOAD=$datapath/libtwitcher.so:$APP_LD_PRELOAD
 fi
 
 DO_TOCTOU=0
