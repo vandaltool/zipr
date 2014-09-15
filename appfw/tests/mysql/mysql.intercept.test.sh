@@ -76,8 +76,8 @@ fi
 #
 
 rm -f $tmp
-QUERY_DATA="David' or '0'='0"  ./testintercept.exe.peasoup > $tmp 2>&1
-grep -i "inject" $tmp
+APPFW_VERBOSE=1 QUERY_DATA="David' or '0'='0"  ./testintercept.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 2 "False negative detected: should have intercepted and stopped attack query"
@@ -87,8 +87,8 @@ fi
 # test interception of mysql_real_connect
 #
 rm -f $tmp
-QUERY_DATA="David' or '0'='0"  ./testintercept2.exe.peasoup > $tmp 2>&1
-grep -i "inject" $tmp
+APPFW_VERBOSE=1 QUERY_DATA="David' or '0'='0"  ./testintercept2.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 3 "False negative detected: should have intercepted and stopped attack query"
@@ -98,8 +98,8 @@ fi
 # test interception of mysql_stmt_prepare
 #
 rm -f $tmp
-QUERY_DATA=" or 1 = 1 " ./testintercept.pstmt.exe.peasoup >$tmp 2>&1
-grep -i "inject" $tmp
+APPFW_VERBOSE=1 QUERY_DATA=" or 1 = 1 " ./testintercept.pstmt.exe.peasoup >$tmp 2>&1
+grep -i "injection" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 4 "False negative detected: should have intercepted and stopped attack query"
