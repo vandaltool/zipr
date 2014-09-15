@@ -784,7 +784,7 @@ perform_step find_strings none $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strin
 #
 # analyze binary for string signatures
 #
-perform_step appfw none $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log
+perform_step appfw find_strings $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log
 
 #
 # check signatures to determine if we know which program this is.
