@@ -5,13 +5,10 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s detect_server=off 		\
 	-s watchdog=off 			\
 	-s signconv_func_monitor=off 	\
-	-s meds_static=off 			\
-	-s fast_annot=off 			\
 	-s concolic=off 			\
 	-s appfw=off 			\
 	-s determine_program=off 		\
 	-s manual_test=off 			\
-	-s p1transform=off 			\
 	-s integertransform=off 		\
 	-s twitchertransform=off 		\
 	\
@@ -39,3 +36,6 @@ $PEASOUP_HOME/tools/ps_analyze.sh $* 	   	\
 	-s preLoaded_ILR1=on 		\
 	-s preLoaded_ILR2=on 		\
 	-s is_so=on 			\
+	-s meds_static=on 			\
+	-s fast_annot=on 			\
+	-s p1transform=on 			\
