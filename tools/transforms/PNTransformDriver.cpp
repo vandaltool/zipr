@@ -1892,7 +1892,7 @@ bool PNTransformDriver::Canary_Rewrite(PNStackLayout *orig_layout, Function_t *f
 	
 	//bool stack_alloc = false;
 	int max = PNRegularExpressions::MAX_MATCHES;
-	regmatch_t *pmatch=(regmatch_t*)malloc(max*sizeof(regmatch_t));
+	regmatch_t *pmatch=new regmatch_t[max]; 
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
 
 	for(
@@ -2119,7 +2119,7 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
 	
 		int max = PNRegularExpressions::MAX_MATCHES;
 		//regmatch_t pmatch[max];
-		regmatch_t *pmatch=(regmatch_t*)malloc(max*sizeof(regmatch_t));
+		regmatch_t *pmatch=new regmatch_t[max]; // (max*sizeof(regmatch_t));
 
 		/* check for a stack alloc */
                 if(regexec(&(pn_regex->regex_stack_alloc), d.CompleteInstr, 5, pmatch, 0)==0)
@@ -2172,7 +2172,7 @@ inline bool PNTransformDriver::Instruction_Rewrite(PNStackLayout *layout, Instru
 
 	int max = PNRegularExpressions::MAX_MATCHES;
 	//regmatch_t pmatch[max];
-	regmatch_t *pmatch=(regmatch_t*)malloc(max*sizeof(regmatch_t));
+	regmatch_t *pmatch=new regmatch_t[max]; // (regmatch_t*)malloc(max*sizeof(regmatch_t));
 	memset(pmatch, 0,sizeof(regmatch_t) * max);
 
 	string matched="";

@@ -191,7 +191,7 @@ bool is_thunk_load(Instruction_t* insn, string &reg)
 }
 
 /*
- * is_ret - return trun if insn is a return 
+ * is_ret - return true if insn is a return 
  */
 bool is_ret(Instruction_t* insn)
 {
@@ -203,6 +203,22 @@ bool is_ret(Instruction_t* insn)
 	
 	return true;
 }
+
+/*
+ * is_pop - return true if insn is a return
+ */
+bool is_pop(Instruction_t* insn, string &reg)
+{
+        DISASM d;
+        insn->Disassemble(d);
+
+        if(string(d.Instruction.Mnemonic)!=string("pop "))
+                return false;
+
+	reg=string(d.Argument1.ArgMnemonic);
+        return true;
+}
+
 
 
 /* 
@@ -233,6 +249,31 @@ bool is_thunk_call(Instruction_t* insn, string &reg)
 	/* target's FT is a return insn */
 	if(!is_ret(insn->GetTarget()->GetFallthrough()))
 		return false;
+
+	return true;
+}
+
+bool is_thunk_call_type2(Instruction_t* insn, string &reg, Instruction_t** newinsn)
+{
+	DISASM d;
+	insn->Disassemble(d);
+
+	/* not a call */
+	if(d.Instruction.BranchType!=CallType)
+		return false;
+
+	/* no target in IRDB */
+	if(insn->GetTarget()==NULL)
+		return false;
+
+	if(insn->GetTarget() != insn->GetFallthrough())
+		return false;
+
+	/* target's FT is a return insn */
+	if(!is_pop(insn->GetTarget(), reg))
+		return false;
+
+	*newinsn=insn->GetTarget()->GetFallthrough();
 
 	return true;
 }
@@ -351,35 +392,20 @@ void check_for_thunks(FileIR_t* firp, const std::set<int>&  thunk_bases)
 {
 	/* thunk bases is the module start's found for this firp */
 
+	cout<<"Starting check for thunks"<<endl;
+
 	for(set<int>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
 	{
 		int offset=*it;
 		check_for_thunk_offsets(firp,offset);
 	}
-#if 0
-	for(
-		set<Function_t*>::iterator it=firp->GetFunctions().begin();
-		it!=firp->GetFunctions().end();
-		++it
-	   )
-	{
-		Function_t* func=*it;
-
-		if(getenv("THUNK_VERBOSE"))
-		{
-			cout<<"Checking for thunks in "<<func->GetName()<<endl;
-		}
-		check_func_for_thunk_calls(func);
-
-	}
-
-	check_non_funcs_for_thunks(firp);
-#endif
 }
 
 void find_all_module_starts(FileIR_t* firp, set<int> &thunk_bases)
 {
 	thunk_bases.clear();
+
+	cout<<"Finding thunk bases"<<endl;
 
 	// for each insn in the func 
 	for(
@@ -404,6 +430,18 @@ void find_all_module_starts(FileIR_t* firp, set<int> &thunk_bases)
 				if(thunk_bases.find(thunk_base)==thunk_bases.end())
 					cout<<"Found new thunk at "<<insn->GetAddress()->GetVirtualOffset()<<" with base: "<<hex<<thunk_base<<endl;
 				thunk_bases.insert(thunk_base);
+			}
+			Instruction_t* newinsn=NULL;
+			if(is_thunk_call_type2(insn,reg,&newinsn))
+			{
+				if(newinsn && is_thunk_add(newinsn,reg,offset))
+				{
+					int thunk_base=insn->GetFallthrough()->GetAddress()->GetVirtualOffset()+ 
+						strtol(offset.c_str(),NULL,16);
+					if(thunk_bases.find(thunk_base)==thunk_bases.end())
+						cout<<"Found new thunk at "<<insn->GetAddress()->GetVirtualOffset()<<" with base: "<<hex<<thunk_base<<endl;
+					thunk_bases.insert(thunk_base);
+				}
 			}
 		}
 	}

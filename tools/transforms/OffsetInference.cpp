@@ -100,7 +100,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 	//	 bool has_frame_pointer = false;
 
 	int max = PNRegularExpressions::MAX_MATCHES;
-	regmatch_t *pmatch=(regmatch_t*)malloc(max*sizeof(pmatch));
+	regmatch_t *pmatch=new regmatch_t[max];
 	memset(pmatch, 0,sizeof(regmatch_t) * max);	 
 
 	assert(out_args_size >=0);
@@ -114,6 +114,7 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 		++it
 		)
 */
+	string disasm_str;
 	//loop through fallthroughs of the entry (entry will be update on every iteration)
 	//until entry is null, or entry has left the function. 
 	while(entry != NULL && (entry->GetFunction()==func))
@@ -122,7 +123,6 @@ StackLayout* OffsetInference::SetupLayout(Function_t *func)
 
 		//Instruction_t* instr=*it;
 		Instruction_t* instr = entry;
-		string disasm_str;
 
 		DISASM disasm;
 		instr->Disassemble(disasm);
@@ -338,7 +338,8 @@ void OffsetInference::FindAllOffsets(Function_t *func)
 
 	int max = PNRegularExpressions::MAX_MATCHES;
 	//regmatch_t pmatch[max];
-	regmatch_t *pmatch=(regmatch_t*)malloc(max*sizeof(pmatch));
+	regmatch_t *pmatch=new regmatch_t[max];
+	assert(pmatch);
 	memset(pmatch, 0,sizeof(regmatch_t) * max);	 
 	unsigned int stack_frame_size = 0;
 	unsigned int saved_regs_size = 0;

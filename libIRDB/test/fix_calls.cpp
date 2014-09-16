@@ -291,8 +291,20 @@ string adjust_esp_offset(string newbits, int offset)
  * convert_to_jump - assume newbits is a call insn, convert newbits to a jump, and return it.
  * Also: if newbits is a call [esp+k], add "offset" to k.
  */ 
-static string convert_to_jump(string newbits, int offset)
+static void convert_to_jump(Instruction_t* insn, int offset)
 {
+	string newbits=insn->GetDataBits();
+	DISASM d;
+	insn->Disassemble(d);
+	/* this case is odd, handle it specially (and more easy to understand */
+	if(strcmp(d.CompleteInstr, "call qword [rsp]")==0)
+	{
+		char buf[100];
+		sprintf(buf,"jmp qword [rsp+%d]", offset);
+		insn->Assemble(buf);
+		return;
+	}
+
 	// on the opcode.  assume no prefix here 	
 	switch((unsigned char)newbits[0])
 	{
@@ -346,10 +358,16 @@ static string convert_to_jump(string newbits, int offset)
 		default:
 			assert(0);
 	}
-	return newbits;
+
+	/* set the instruction's bits */
+	insn->SetDataBits(newbits);
+	return;
 }
 
 
+/* 
+ * fix_call - convert call to push/jump.
+ */
 void fix_call(Instruction_t* insn, FileIR_t *firp)
 {
 	/* record the possibly new indirect branch target if this call gets fixed */
@@ -401,12 +419,12 @@ void fix_call(Instruction_t* insn, FileIR_t *firp)
 	insn->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
 
 	/* set the new instruction's data bits to be a jmp instead of a call */
-	string newbits=insn->GetDataBits();
+	string newbits="";
 
 	/* add 4 (8) if it's an esp(rsp) indirect branch for x86-32 (-64) */ 
-	newbits=convert_to_jump(newbits,firp->GetArchitectureBitWidth()/8);		
+	callinsn->SetDataBits(insn->GetDataBits());
+	convert_to_jump(callinsn,firp->GetArchitectureBitWidth()/8);		
 
-	callinsn->SetDataBits(newbits);
 	/* the jump instruction should NOT be indirectly reachable.  We should
 	 * land at the push
 	 */
@@ -511,6 +529,11 @@ File_t* find_file(FileIR_t* firp, db_id_t fileid)
 }
 
 
+template <class T> struct insn_less : binary_function <T,T,bool> {
+  bool operator() (const T& x, const T& y) const {
+        return  x->GetBaseID()  <   y->GetBaseID()  ;}
+};
+
 
 //
 // fix_all_calls - convert calls to push/jump pairs in the IR.  if fix_all is true, all calls are converted, 
@@ -519,21 +542,35 @@ File_t* find_file(FileIR_t* firp, db_id_t fileid)
 void fix_all_calls(FileIR_t* firp, bool print_stats, bool fix_all)
 {
 
+        set<Instruction_t*,insn_less<Instruction_t*> > sorted_insns;
+
+        for(
+                set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+                it!=firp->GetInstructions().end();
+                ++it
+           )
+        {
+                Instruction_t* insn=*it;
+                sorted_insns.insert(insn);
+        }
 
 	long long fixed_calls=0, not_fixed_calls=0, not_calls=0;
 
 	for(
-		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
-		it!=firp->GetInstructions().end(); 
+		set<Instruction_t*,insn_less<Instruction_t*> >::const_iterator it=sorted_insns.begin();
+		it!=sorted_insns.end(); 
 		++it
 	   )
 	{
 
 		Instruction_t* insn=*it;
+		if(getenv("STOP_FIX_CALLS_AT") && fixed_calls>=atoi(getenv("STOP_FIX_CALLS_AT")))
+			break;
 
 		if(is_call(insn)) 
 		{
-			if(fix_all || call_needs_fix(insn))
+			if(fix_all || call_needs_fix(insn) || 
+				(getenv("FIX_CALL_LIMIT") && not_fixed_calls>=atoi(getenv("FIX_CALL_LIMIT"))))
 			{
 				fixed_calls++;
 				fix_call(insn, firp);
@@ -644,7 +681,10 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 		/* put the data back into the insn */
 		data.replace(0, data.length(), cstr, data.length());
 		insn->SetDataBits(data);
-		insn->GetAddress()->SetVirtualOffset(0);	// going to end up in the SPRI file anyhow after changing the data bits 
+
+		// going to end up in the SPRI file anyhow after changing the data bits 
+		// and it's important to set the VO to 0, so that the pcrel-ness is calculated correctly.
+		insn->GetAddress()->SetVirtualOffset(0);	
 			
 		Relocation_t *reloc=new Relocation_t;
 		reloc->SetOffset(0);
@@ -696,6 +736,8 @@ main(int argc, char* argv[])
 		else
 			fix_all=true;
 	}
+	if(getenv("FIX_CALLS_FIX_ALL_CALLS"))
+		fix_all=true;
 
 	VariantID_t *pidp=NULL;
 	FileIR_t *firp=NULL;

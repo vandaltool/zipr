@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export CC="cc -I/opt/csw/include -L /opt/csw/lib/"
-export CXX="CC -I/opt/csw/include -L /opt/csw/lib/"
+export CC="cc -I/opt/csw/include -L /opt/csw/lib/ -g"
+export CXX="CC -I/opt/csw/include -L /opt/csw/lib/ -g"
 
 #sanity check
 if [ $SECURITY_TRANSFORMS_HOME"X" = "X" ]; then

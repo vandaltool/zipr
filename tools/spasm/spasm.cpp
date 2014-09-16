@@ -121,7 +121,7 @@ static uintptr_t getSymbolAddress(const string &symbolFilename, const string &sy
 	}
 
 // nm -a stratafier.o.exe | egrep " integer_overflow_detector$" | cut -f1 -d' '
-	string command = "nm -a " + symbolFilename + " | egrep \" " + symbol + "$\" | cut -f1 -d' '";
+	string command = "gnm -a " + symbolFilename + " | egrep \" " + symbol + "$\" | cut -f1 -d' '";
 	char* address = new char[128];
 
 	FILE *fp = popen(command.c_str(), "r");

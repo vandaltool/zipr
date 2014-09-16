@@ -40,6 +40,8 @@ map< Instruction_t* , set<Instruction_t*> > preds;
 
 
 void check_for_PIC_switch_table32(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
+void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
+void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
 void check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
 
 void range(int start, int end)
@@ -202,6 +204,8 @@ void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int
                 assert(instr_len==insn->GetDataBits().size());
 
 		check_for_PIC_switch_table32(insn,disasm, elfiop, thunk_bases);
+		check_for_PIC_switch_table32_type2(insn,disasm, elfiop, thunk_bases);
+		check_for_PIC_switch_table32_type3(insn,disasm, elfiop, thunk_bases);
 		check_for_PIC_switch_table64(insn,disasm, elfiop);
 
 		/* other branches can't indicate an indirect branch target */
@@ -512,6 +516,204 @@ cout<<hex<<"Found switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< "
 
 }
 
+void check_for_PIC_switch_table32_type2(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int> &thunk_bases)
+{
+#if 0
+
+/* here's typical code */
+I1:   0x8098ffc <text_handler+33>: cmp    eax,0x8
+I2:   0x8098fff <text_handler+36>: ja     0x8099067 <text_handler+140>
+I3:   0x8099001 <text_handler+38>: lea    ecx,[ebx-0x21620]
+I4:   0x8099007 <text_handler+44>: add    ecx,DWORD PTR [ebx+eax*4-0x21620]
+I5:   0x809900e <text_handler+51>: jmp    ecx
+#endif
+
+        Instruction_t* I5=insn;
+        Instruction_t* I4=NULL;
+        Instruction_t* I3=NULL;
+        // check if I5 is a jump
+        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+		return;
+
+	// return if it's a jump to a constant address, these are common
+        if(disasm.Argument1.ArgType&CONSTANT_TYPE)
+		return;
+
+	// return if it's a jump to a memory address
+        if(disasm.Argument1.ArgType&MEMORY_TYPE)
+		return;
+
+	// has to be a jump to a register now
+
+	// backup and find the instruction that's an add before I8 
+	if(!backup_until("add", I4, I5))
+		return;
+
+	// backup and find the instruction that's an movsxd before I7
+	if(!backup_until("lea", I3, I4))
+		return;
+
+	// grab the offset out of the lea.
+	DISASM d2;
+	I3->Disassemble(d2);
+
+	// get the offset from the thunk
+	int table_offset=d2.Argument2.Memory.Displacement;
+	if(table_offset==0)
+		return;
+
+cout<<hex<<"Found (type2) switch dispatch at "<<I3->GetAddress()->GetVirtualOffset()<< " with table_offset="<<table_offset<<endl;
+		
+	/* iterate over all thunk_bases/module_starts */
+	for(set<int>::iterator it=thunk_bases.begin(); it!=thunk_bases.end(); ++it)
+	{
+		int thunk_base=*it;
+		int table_base=*it+table_offset;
+
+		// find the section with the data table
+        	ELFIO::section *pSec=find_section(table_base,elfiop);
+		if(!pSec)
+			continue;
+
+		// if the section has no data, abort 
+        	const char* secdata=pSec->get_data();
+		if(!secdata)
+			continue;
+
+		// get the base offset into the section
+        	int offset=table_base-pSec->get_address();
+		int i;
+		for(i=0;i<3;i++)
+		{
+                	if(offset+i*4+sizeof(int) > pSec->get_size())
+                        	break;
+
+                	const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
+                	int table_entry=*table_entry_ptr;
+
+cout<<"Checking target base:" << std::hex << table_base+table_entry << ", " << table_base+i*4<<endl;
+			if(!is_possible_target(table_base+table_entry,table_base+i*4))
+				break;	
+		}
+		/* did we finish the loop or break out? */
+		if(i==3)
+		{
+			if(getenv("VERBOSE")!=0)
+				cout<<"Found switch table (thunk-relative) at "<<hex<<table_base+table_offset<<endl;
+			// finished the loop.
+			for(i=0;true;i++)
+			{
+                		if(offset+i*4+sizeof(int) > pSec->get_size())
+                        		break;
+	
+                		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
+                		int table_entry=*table_entry_ptr;
+	
+				if(getenv("VERBOSE")!=0)
+					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_base+table_entry<<endl;
+				if(!possible_target(table_base+table_entry,table_base+i*4))
+					break;
+			}
+		}
+		else
+		{
+			if(getenv("VERBOSE")!=0)
+				cout<<"Found that  "<<hex<<table_base+table_offset<<endl;
+		}
+
+		// now, try next thunk base 
+	}
+
+
+}
+
+void check_for_PIC_switch_table32_type3(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int> &thunk_bases)
+{
+#if 0
+
+/* here's typical code */
+	   0x809900e <text_handler+51>: jmp    [eax*4 + 0x8088208]
+#endif
+
+        Instruction_t* I5=insn;
+        // check if I5 is a jump
+        if(strstr(disasm.Instruction.Mnemonic, "jmp")==NULL)
+		return;
+
+	// return if it's not a jump to a memory address
+        if(!(disasm.Argument1.ArgType&MEMORY_TYPE))
+		return;
+
+	/* return if there's no displacement */
+        if(disasm.Argument1.Memory.Displacement==0)
+		return;
+
+	// grab the table base out of the jmp.
+	int table_base=disasm.Argument1.Memory.Displacement;
+	if(table_base==0)
+		return;
+
+cout<<hex<<"Found (type3) switch dispatch at "<<I5->GetAddress()->GetVirtualOffset()<< " with table_base="<<table_base<<endl;
+		
+	{
+		// find the section with the data table
+        	ELFIO::section *pSec=find_section(table_base,elfiop);
+		if(!pSec)
+			return;
+
+		// if the section has no data, abort 
+        	const char* secdata=pSec->get_data();
+		if(!secdata)
+			return;
+
+		// get the base offset into the section
+        	int offset=table_base-pSec->get_address();
+		int i;
+		for(i=0;i<3;i++)
+		{
+                	if(offset+i*4+sizeof(int) > pSec->get_size())
+                        	return;
+
+                	const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
+                	int table_entry=*table_entry_ptr;
+
+cout<<"Checking target base:" << std::hex << table_entry << ", " << table_base+i*4<<endl;
+			if(!is_possible_target(table_entry,table_base+i*4))
+				return;	
+		}
+		/* did we finish the loop or break out? */
+		if(i==3)
+		{
+			if(getenv("VERBOSE")!=0)
+				cout<<"Found switch table (thunk-relative) at "<<hex<<table_base<<endl;
+			// finished the loop.
+			for(i=0;true;i++)
+			{
+                		if(offset+i*4+sizeof(int) > pSec->get_size())
+                        		return;
+	
+                		const int *table_entry_ptr=(const int*)&(secdata[offset+i*4]);
+                		int table_entry=*table_entry_ptr;
+	
+				if(getenv("VERBOSE")!=0)
+					cout<<"Found switch table (thunk-relative) entry["<<dec<<i<<"], "<<hex<<table_entry<<endl;
+				if(!possible_target(table_entry,table_base+i*4))
+					return;
+			}
+		}
+		else
+		{
+			if(getenv("VERBOSE")!=0)
+				cout<<"Found that  "<<hex<<table_base<<endl;
+		}
+
+		// now, try next thunk base 
+	}
+
+
+}
+
+
 
 /* check if this instruction is an indirect jump via a register,
  * if so, see if we can trace back a few instructions to find a
@@ -729,19 +931,12 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	print_targets();
 	cout<<"========================================="<<endl;
 
-#if 1
 	/* now process the ranges that have exception handling */
 	check_for_thunks(firp, thunk_bases);
 	cout<<"========================================="<<endl;
 	cout<<"# ATTRIBUTE total_indirect_targets_pass5="<<std::dec<<targets.size()<<endl;
 	print_targets();
 	cout<<"========================================="<<endl;
-#endif
-
-
-
-
-
 
     	/* Add functions containing unsigned int params to the list */
     	add_num_handle_fn_watches(firp);
