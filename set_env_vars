@@ -21,7 +21,7 @@ then
 	export LD_LIBRARY_PATH=$PEASOUP_UMBRELLA_DIR/lib:$PEASOUP_UMBRELLA_DIR/grace/concolic/bin:$STRATA/lib:$LD_LIBRARY_PATH
 fi
 
-export LD_LIBRARY_PATH=/opt/csw/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH:/opt/csw/lib/
 
 #Get IDAPRO to work with no errors
 export TVHEADLESS=1
@@ -38,4 +38,16 @@ export SCONSFLAGS="exceptions=1 x86=1 tool=1 hprof=0 cpuprof=0 lm_required=false
 #export SVN_USERNAME=$USER
 
 
-alias md5sum="digest -a md5"
+
+# programs called diff things on solaris.
+alias md5sum=gmd5sum
+alias fgrep=gfgrep
+alias grep=ggrep
+alias egrep=gegrep
+alias nm=gnm
+
+
+# for solaris to use external pg databases and ida pro servers.
+export PGHOST=peasoup-datamanager.cs.virginia.edu
+export IDA_PRO_SERVER_HOST=192.168.184.131
+export SMPSA_HOME=$PEASOUP_UMBRELLA_DIR/scripts/IdaProServer
