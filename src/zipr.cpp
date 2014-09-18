@@ -566,11 +566,18 @@ void Zipr_t::PlopTheUnpinnedInstructions()
 	}
 }
 
-void Zipr_t::ApplyPatches(Instruction_t* insn, RangeAddress_t addr)
+void Zipr_t::ApplyPatches(Instruction_t* to_insn)
 {
-	// find any patches for instruction insn, and apply them such that they go to addr.
 
-	UnresolvedUnpinned_t uu(insn);
+	// insn has been pinned to addr.
+	RangeAddress_t to_addr=final_insn_locations[to_insn];
+	assert(to_addr!=0);
+
+
+	// find any patches that require the actual address for instruction insn, 
+	// and apply them such that they go to addr.
+
+	UnresolvedUnpinned_t uu(to_insn);
 
 	pair<
 		multimap<UnresolvedUnpinned_t,Patch_t>::iterator,
@@ -582,43 +589,52 @@ void Zipr_t::ApplyPatches(Instruction_t* insn, RangeAddress_t addr)
 		++mit
 	   )
 	{
-		DISASM d;
-		insn->Disassemble(d);
-		printf("Found (but not yet applying) a patch for %s at %p to %p\n", 
-			d.CompleteInstr, (void*)final_insn_locations[insn], (void*)addr); 
+		UnresolvedUnpinned_t uu=mit->first;
+		assert(uu.GetInstruction()==to_insn);
+
+		Patch_t p=mit->second;
+		RangeAddress_t from_addr=p.GetAddress();
+
+		printf("Found  a patch for  %p -> %p\n", 
+			(void*)from_addr, (void*)to_addr);
 		// Patch instruction
 		//
-		// ApplyPatch( ... );
+		ApplyPatch(from_addr, to_addr);
 	}
 
 	// removing resolved patches
 	patch_list.erase(p.first, p.second);
 }
 
-void Zipr_t::PatchInstruction(RangeAddress_t addr, Instruction_t* insn)
+void Zipr_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_insn)
 {
+
+	// addr needs to go to insn, but insn has not yet been been pinned.
+
+
 	// patch the instruction at address  addr to go to insn.  if insn does not yet have a concrete address,
 	// register that it's patch needs to be applied later. 
 
-	UnresolvedUnpinned_t uu(insn);
-	Patch_t	thepatch(addr,UncondJump_rel32);
-	DISASM d;
-	insn->Disassemble(d);
+	UnresolvedUnpinned_t uu(to_insn);
+	Patch_t	thepatch(from_addr,UncondJump_rel32);
 
-	std::map<Instruction_t*,RangeAddress_t>::iterator it=final_insn_locations.find(insn);
+	std::map<Instruction_t*,RangeAddress_t>::iterator it=final_insn_locations.find(to_insn);
 	if(it==final_insn_locations.end())
 	{
-		printf("Instruction %s cannot be patch yet, as target is unknown.\n", d.CompleteInstr);
+		printf("Instruction cannot be patch yet, as target is unknown.\n");
 
 		patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
 	}
 	else
 	{
-		printf("Found (and should be, but not yet applying) a patch for %s to %p\n", d.CompleteInstr, (void*)addr); 
+		RangeAddress_t to_addr=final_insn_locations[to_insn];
+		assert(to_addr!=0);
+		printf("Found a patch for %p -> %p\n", (void*)from_addr, (void*)to_addr); 
 		// Apply Patch
-		// ApplyPatch(uu,thepatch);
+		ApplyPatch(from_addr, to_addr);
 	}
 }
+
 
 RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 {
@@ -637,7 +653,7 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 	{
 		PlopBytes(addr,insn->GetDataBits().c_str(), insn->GetDataBits().length());
 		ret+=insn->GetDataBits().length();
-		ApplyPatches(insn,addr);
+		ApplyPatches(insn);
 	}
 
 	return ret;
@@ -725,3 +741,57 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 			assert(0);
 	}
 }
+
+
+void Zipr_t::RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos)
+{
+	int new_offset=to_addr-from_addr-insn_length;
+
+	byte_map[from_addr+offset_pos+0]=(new_offset>>0)&0xff;
+	byte_map[from_addr+offset_pos+1]=(new_offset>>8)&0xff;
+	byte_map[from_addr+offset_pos+2]=(new_offset>>16)&0xff;
+	byte_map[from_addr+offset_pos+3]=(new_offset>>24)&0xff;
+}
+
+void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
+{
+	char insn_first_byte=byte_map[from_addr];
+	char insn_second_byte=byte_map[from_addr+1];
+
+	switch(insn_first_byte)
+	{
+		case (char)0xF: // two byte escape
+		{
+			assert( insn_second_byte==0x80 ||	// should be a JCC 
+				insn_second_byte==0x81 ||
+				insn_second_byte==0x82 ||
+				insn_second_byte==0x83 ||
+				insn_second_byte==0x84 ||
+				insn_second_byte==0x85 ||
+				insn_second_byte==0x86 ||
+				insn_second_byte==0x87 ||
+				insn_second_byte==0x88 ||
+				insn_second_byte==0x89 ||
+				insn_second_byte==0x8a ||
+				insn_second_byte==0x8b ||
+				insn_second_byte==0x8c ||
+				insn_second_byte==0x8d ||
+				insn_second_byte==0x8e ||
+				insn_second_byte==0x8f );
+
+			RewritePCRelOffset(from_addr,to_addr,6,2);
+			break;
+		}
+
+		case (char)0xe8:	// call
+		case (char)0xe9:	// jmp
+		{
+			RewritePCRelOffset(from_addr,to_addr,5,1);
+			break;
+		}
+
+		default:
+			assert(0);
+	}
+}
+

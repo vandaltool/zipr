@@ -47,8 +47,12 @@ class Zipr_t
 
 		// patching
 		void PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr);
-		void ApplyPatches(libIRDB::Instruction_t* insn, RangeAddress_t addr);
+		void ApplyPatches(libIRDB::Instruction_t* insn);
 		void PatchInstruction(RangeAddress_t addr, libIRDB::Instruction_t* insn);
+		void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
+		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
+
+
 
 
 
