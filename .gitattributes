@@ -1,4 +1,6 @@
 * text=auto !eol
+include/range.h -text
+include/unresolved.h -text
 include/zipr.h -text
 include/zipr_all.h -text
 include/zipr_options.h -text
