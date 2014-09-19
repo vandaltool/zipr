@@ -9,7 +9,7 @@ HDRS=*.h ../include/*.h
 EXE=zipr.exe
 
 CXX=g++
-CXXFLAGS=$(INC) -g
+CXXFLAGS=$(INC) -g 
 LDFLAGS=-L$(SECURITY_TRANSFORMS_HOME)/lib
 LIBS=-lpqxx -lpq -lIRDB-core -lBeaEngine_s_d
 

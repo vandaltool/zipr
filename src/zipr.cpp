@@ -44,15 +44,18 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	// now that pinning is done, start emitting unpinnned instructions, and patching where needed.
 	PlopTheUnpinnedInstructions();
 
-	// resolve unpinned, otherwise unresolved instructions
-	// truncate final range.
 	// write binary file to disk 
+	OutputBinaryFile(name);
+
+	// print relevant information
+	PrintStats();
 }
 
 void Zipr_t::FindFreeRanges(const std::string &name)
 {
 	/* use ELFIO to load the sections */
-	ELFIO::elfio*    elfiop=new ELFIO::elfio;
+	elfiop=new ELFIO::elfio;
+
 	assert(elfiop);
 	elfiop->load(name);
 //	ELFIO::dump::header(cout,*elfiop);
@@ -230,6 +233,7 @@ void Zipr_t::ReservePinnedInstructions()
 			{
 				byte_map[addr+i]=upinsn->GetDataBits()[i];
 				SplitFreeRange(addr+i);
+				total_other_space++;
 			}
 			continue;
 		}
@@ -272,11 +276,16 @@ void Zipr_t::ExpandPinnedInstructions()
 			PlopJump(addr);
 			five_byte_pins[up]=addr;
 			two_byte_pins.erase(it++);
+			total_5byte_pins++;
+			total_trampolines++;
 		}
 		else
 		{
                 	++it;
 			printf("Found %p can NOT be updated to 5-byte jmp\n", (void*)addr);
+			total_2byte_pins++;
+			total_trampolines++;
+			total_tramp_space+=2;
 		}
 	}
 
@@ -366,36 +375,27 @@ void Zipr_t::OptimizePinnedInstructions()
 		Patch_t	thepatch(addr,UncondJump_rel32);
 
 		patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
+		PlopJump(addr);
 
-		printf("Converting 5-byte pinned jump to patch for %p-%p\n", (void*)addr,(void*)(addr+4));
+		DISASM d;
+		uu.GetInstruction()->Disassemble(d);
+
+		bool can_optimize=false; // fixme
+		if(can_optimize)
+		{
+			//fixme
+		}
+		else
+		{
+			printf("Converting 5-byte pinned jump at %p-%p to patch to %d:%s\n", 
+				(void*)addr,(void*)(addr+4), uu.GetInstruction()->GetBaseID(), d.CompleteInstr);
+			total_tramp_space+=5;
+		}
 
 		// remove and move to next pin
 		five_byte_pins.erase(it++);
 	}
 		
-#if 0
-// some useful bits about how we might do real optimization for pinned instructions.
-		printf("Found %p can be updated to use better than 2-byte jmp\n", (void*)addr);
-	
-		list<Range_t>::iterator it=FindFreeRange(addr+2);
-		assert(it!=free_ranges.end());
-		Range_t r=*it;
-		RangeAddress_t fr_end=r->GetEnd();
-		RangeAddress_t cur_addr=addr;
-		Instruction_t* cur_insn=up->GetInstruction();
-
-		/* while we still have an instruction, and we can fit that instruction,
-		 * plus a jump into the current free section, plop down instructions sequentially.
-		 */
-		while(cur_insn && fr_end>(cur_addr+cur_insn->GetDataBits().length()+5))
-		{
-			cur_addr+=PlopInstruction(cur_insn,addr);
-			cur_insn=cur_insn->GetFallthrough();
-		}
-
-		if(cur_insn)
-			PlopJump(addr, cur_insn);
-#endif
 }
 
 
@@ -499,24 +499,28 @@ static int DetermineWorseCaseInsnSize(Instruction_t* insn)
 
 		default:
 		{
-			required_size=insn->GetDataBits().size()+5;
+			required_size=insn->GetDataBits().size();
 			break;
 		}
 	}
-	return required_size;
+	
+	// add an extra 5 for a "trampoline" in case we have to end this fragment early
+	return required_size+5;
 }
 
 void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p)
 {
 	int req_size=DetermineWorseCaseInsnSize(uu.GetInstruction());
 	Range_t r=GetFreeRange(req_size);
-
-
-
+	int insn_count=0;
+	const char* truncated="not truncated.";
 
 	RangeAddress_t fr_end=r.GetEnd();
+	RangeAddress_t fr_start=r.GetStart();
 	RangeAddress_t cur_addr=r.GetStart();
 	Instruction_t* cur_insn=uu.GetInstruction();
+
+	printf("Starting dollop with free range %p-%p\n", (void*)cur_addr, (void*)fr_end);
 
 
 
@@ -528,11 +532,13 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 		// some useful bits about how we might do real optimization for pinned instructions.
 		DISASM d;
 		cur_insn->Disassemble(d);
-		printf("Emitting %s at %p\n", d.CompleteInstr, (void*)cur_addr);
+		int id=cur_insn->GetBaseID();
+		printf("Emitting %d:%s at %p\n", id, d.CompleteInstr, (void*)cur_addr);
 
 
 		cur_addr=PlopInstruction(cur_insn,cur_addr);
 		cur_insn=cur_insn->GetFallthrough();
+		insn_count++;
 	}
 	if(cur_insn)
 	{
@@ -542,7 +548,18 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
                 Patch_t thepatch(cur_addr,UncondJump_rel32);
                 patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
 		PlopJump(cur_addr);
+		truncated="truncated due to lack of space.";
+		total_tramp_space+=5;
+		truncated_dollops++;
+		total_trampolines++;
 	}
+
+	total_dollops++;
+	total_dollop_instructions+=insn_count;
+	total_dollop_space+=(cur_addr-fr_start);
+
+	printf("Ending dollop.  size=%d, %s.  space_remaining=%lld, req'd=%d\n", insn_count, truncated,
+		(long long)(fr_end-cur_addr), cur_insn ? DetermineWorseCaseInsnSize(cur_insn) : -1 );
 }
 
 void Zipr_t::PlopTheUnpinnedInstructions()
@@ -555,11 +572,19 @@ void Zipr_t::PlopTheUnpinnedInstructions()
 		UnresolvedUnpinned_t uu=(*patch_list.begin()).first;
 		Patch_t p=(*patch_list.begin()).second;
 
-		// and erase it.
-		patch_list.erase(patch_list.begin());
+		DISASM d;
+		uu.GetInstruction()->Disassemble(d);
+		int id=uu.GetInstruction()->GetBaseID();
+		RangeAddress_t at=p.GetAddress();
+		
+		printf("Processing patch from %d:%s@%p\n",id,d.CompleteInstr,(void*)at);
 
 		// process the instruction.	
-		ProcessUnpinnedInstruction(uu,p);
+		ProcessUnpinnedInstruction(uu,p); // plopping an instruction results in erasing any patches for it.
+
+		// so erasing it is not necessary
+		// patch_list.erase(patch_list.begin());
+
 
 		
 
@@ -592,11 +617,15 @@ void Zipr_t::ApplyPatches(Instruction_t* to_insn)
 		UnresolvedUnpinned_t uu=mit->first;
 		assert(uu.GetInstruction()==to_insn);
 
+		DISASM d;
+		uu.GetInstruction()->Disassemble(d);
+		int id=uu.GetInstruction()->GetBaseID();
+
 		Patch_t p=mit->second;
 		RangeAddress_t from_addr=p.GetAddress();
 
-		printf("Found  a patch for  %p -> %p\n", 
-			(void*)from_addr, (void*)to_addr);
+		printf("Found  a patch for  %p -> %p (%d:%s)\n", 
+			(void*)from_addr, (void*)to_addr, id,d.CompleteInstr);
 		// Patch instruction
 		//
 		ApplyPatch(from_addr, to_addr);
@@ -653,8 +682,10 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 	{
 		PlopBytes(addr,insn->GetDataBits().c_str(), insn->GetDataBits().length());
 		ret+=insn->GetDataBits().length();
-		ApplyPatches(insn);
 	}
+
+	// now that the insn is put down, adjust any patches that go here 
+	ApplyPatches(insn);
 
 	return ret;
 }
@@ -666,8 +697,8 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 	if(insn->GetDataBits().length() >2) 
 	{
 		PlopBytes(ret,insn->GetDataBits().c_str(), insn->GetDataBits().length());
-		ret+=insn->GetDataBits().length();
 		PatchInstruction(ret, insn->GetTarget());	
+		ret+=insn->GetDataBits().length();
 		return ret;
 	}
 
@@ -762,22 +793,22 @@ void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 	{
 		case (char)0xF: // two byte escape
 		{
-			assert( insn_second_byte==0x80 ||	// should be a JCC 
-				insn_second_byte==0x81 ||
-				insn_second_byte==0x82 ||
-				insn_second_byte==0x83 ||
-				insn_second_byte==0x84 ||
-				insn_second_byte==0x85 ||
-				insn_second_byte==0x86 ||
-				insn_second_byte==0x87 ||
-				insn_second_byte==0x88 ||
-				insn_second_byte==0x89 ||
-				insn_second_byte==0x8a ||
-				insn_second_byte==0x8b ||
-				insn_second_byte==0x8c ||
-				insn_second_byte==0x8d ||
-				insn_second_byte==0x8e ||
-				insn_second_byte==0x8f );
+			assert( insn_second_byte==(char)0x80 ||	// should be a JCC 
+				insn_second_byte==(char)0x81 ||
+				insn_second_byte==(char)0x82 ||
+				insn_second_byte==(char)0x83 ||
+				insn_second_byte==(char)0x84 ||
+				insn_second_byte==(char)0x85 ||
+				insn_second_byte==(char)0x86 ||
+				insn_second_byte==(char)0x87 ||
+				insn_second_byte==(char)0x88 ||
+				insn_second_byte==(char)0x89 ||
+				insn_second_byte==(char)0x8a ||
+				insn_second_byte==(char)0x8b ||
+				insn_second_byte==(char)0x8c ||
+				insn_second_byte==(char)0x8d ||
+				insn_second_byte==(char)0x8e ||
+				insn_second_byte==(char)0x8f );
 
 			RewritePCRelOffset(from_addr,to_addr,6,2);
 			break;
@@ -793,5 +824,73 @@ void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 		default:
 			assert(0);
 	}
+}
+
+
+void Zipr_t::FillSection(section* sec, FILE* fexe)
+{
+	RangeAddress_t start=sec->get_address();
+	RangeAddress_t end=sec->get_size()+start;
+
+
+
+	for(RangeAddress_t i=start;i<end;i++)
+	{
+		if(!IsByteFree(i))
+		{
+			// get byte and write it into exe.
+			char  b=byte_map[i];
+			int file_off=sec->get_offset()+i-start;
+			fseek(fexe, file_off, SEEK_SET);
+			fwrite(&b,1,1,fexe);
+			printf("Writing byte %#2x at %p, fileoffset=%d\n", ((unsigned)b)&0xff, (void*)i, file_off);
+		}
+	}
+}
+
+void Zipr_t::OutputBinaryFile(const string &name)
+{
+	assert(elfiop);
+//	elfiop->load(name);
+	ELFIO::dump::section_headers(cout,*elfiop);
+
+	printf("Opening %s\n", name.c_str());
+	FILE* fexe=fopen(name.c_str(),"r+");
+	assert(fexe);
+
+        // For all sections
+        Elf_Half n = elfiop->sections.size();
+        for ( Elf_Half i = 0; i < n; ++i )
+        {
+                section* sec = elfiop->sections[i];
+                assert(sec);
+
+                if( (sec->get_flags() & SHF_ALLOC) == 0 )
+                        continue;
+                if( (sec->get_flags() & SHF_EXECINSTR) == 0)
+                        continue;
+
+		FillSection(sec, fexe);
+        }
+	fclose(fexe);
+}
+
+
+void Zipr_t::PrintStats()
+{
+	cout<<"Total dollops: "<<std::dec << total_dollops <<endl;
+	cout<<"Total dollop size: "<<std::dec << total_dollop_space <<endl;
+	cout<<"Total dollop instructions: "<<std::dec << total_dollop_instructions <<endl;
+	cout<<"Truncated dollops: "<<std::dec << truncated_dollops <<endl;
+	cout<<"Ave dollop size: "<<std::dec << (double)total_dollop_space/(double)total_dollops <<endl;
+	cout<<"Ave dollop instructions: "<<std::dec << (double)total_dollop_instructions/(double)total_dollops <<endl;
+	cout<<"Truncated dollop fraction: "<<std::dec << (double)truncated_dollops/(double)total_dollops <<endl;
+
+	cout<<"Total trampolines: "<<std::dec << total_trampolines <<endl;
+	cout<<"Total 2-byte pin trampolines: "<<std::dec << total_2byte_pins <<endl;
+	cout<<"Total 5-byte pin trampolines: "<<std::dec << total_5byte_pins <<endl;
+	cout<<"Total trampoline space pins: "<<std::dec << total_tramp_space <<endl;
+
+	cout<<"Other space: "<<total_other_space<<endl;
 }
 

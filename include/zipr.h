@@ -6,7 +6,18 @@ class Zipr_t
 {
 	public:
 		Zipr_t(libIRDB::FileIR_t* p_firp, const Options_t &p_opts)
-			: m_firp(p_firp), m_opts(p_opts) { };
+			: m_firp(p_firp), m_opts(p_opts) 
+		{ 
+                	total_dollops=0;
+                	total_dollop_space=0;
+                	total_dollop_instructions=0;
+                	total_trampolines=0;
+                	total_2byte_pins=0;
+                	total_5byte_pins=0;
+                	total_tramp_space=0;
+                	total_other_space=0;
+			truncated_dollops=0;
+		};
 
 		void CreateBinaryFile(const std::string &name);
 
@@ -25,6 +36,8 @@ class Zipr_t
 		void Fix2BytePinnedInstructions();
 		void OptimizePinnedInstructions();
 		void PlopTheUnpinnedInstructions();
+		void PrintStats();
+
 
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
@@ -53,7 +66,9 @@ class Zipr_t
 		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
 
 
-
+		// outputing new .exe
+		void FillSection(ELFIO::section* sec, FILE* fexe);
+		void OutputBinaryFile(const std::string &name);
 
 
 		// helpers.
@@ -76,6 +91,18 @@ class Zipr_t
 
 		std::map<libIRDB::Instruction_t*,RangeAddress_t> final_insn_locations; 
 
+
+		ELFIO::elfio*    elfiop;
+
+		int total_dollops;
+		int total_dollop_space;
+		int total_dollop_instructions;
+		int total_trampolines;
+		int total_2byte_pins;
+		int total_5byte_pins;
+		int total_tramp_space;
+		int total_other_space;
+		int truncated_dollops;
 
 };
 
