@@ -1,5 +1,5 @@
 
-INC=-I../include -I$(SECURITY_TRANSFORMS_HOME)/include -I$(SECURITY_TRANSFORMS_HOME)/libIRDB/include  -I$(SECURITY_TRANSFORMS_HOME)/beaengine/include
+INC=-I../include -I../third_party/ELFIO/elfio-2.2 -I$(SECURITY_TRANSFORMS_HOME)/include -I$(SECURITY_TRANSFORMS_HOME)/libIRDB/include  -I$(SECURITY_TRANSFORMS_HOME)/beaengine/include
 
 
 
