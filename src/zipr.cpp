@@ -62,6 +62,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 	ELFIO::dump::section_headers(cout,*elfiop);
 
 	RangeAddress_t last_end=0;
+	RangeAddress_t max_addr=0;
 
 	// For all sections
 	Elf_Half n = elfiop->sections.size();
@@ -73,14 +74,22 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 		RangeAddress_t start=sec->get_address();
 		RangeAddress_t end=sec->get_size()+start-1;
 
+		printf("max_addr is %p, end is %p\n", (void*)max_addr, (void*)end);
+		if(start && end>max_addr)
+		{
+			printf("new max_addr is %p\n", (void*)max_addr);
+			max_addr=end;
+		}
+
 		if( (sec->get_flags() & SHF_ALLOC) ==0 )
 			continue;
 
-		assert(start>last_end);
-		last_end=end;
 
 		if((sec->get_flags() & SHF_EXECINSTR))
 		{
+			assert(start>last_end);
+			last_end=end;
+
 			printf("Adding free range 0x%p to 0x%p\n", (void*)start,(void*)end);
 			free_ranges.push_back(Range_t(start,end));
 		}
@@ -91,7 +100,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 
 	// now that we've looked at the sections, add a (mysterious) extra section in case we need to overflow 
 	// the sections existing in the ELF.
-	RangeAddress_t new_free_page=PAGE_ROUND_UP(last_end);
+	RangeAddress_t new_free_page=PAGE_ROUND_UP(max_addr);
 	free_ranges.push_back( Range_t(new_free_page,(RangeAddress_t)-1));
 	printf("Adding (mysterious) free range 0x%p to EOF\n", (void*)new_free_page);
 }
@@ -703,8 +712,10 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 	}
 
 	// call, jmp, jcc of length 2.
-	switch(insn->GetDataBits()[0])
+	char b=insn->GetDataBits()[0];
+	switch(b)
 	{
+		case (char)0x71:
 		case (char)0x72:
 		case (char)0x73:
 		case (char)0x74:
