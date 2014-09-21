@@ -7,6 +7,8 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <ctype.h>
+#include <iostream>   // std::cout
+#include <string>     // std::string, std::to_string
 
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
@@ -103,6 +105,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 	RangeAddress_t new_free_page=PAGE_ROUND_UP(max_addr);
 	free_ranges.push_back( Range_t(new_free_page,(RangeAddress_t)-1));
 	printf("Adding (mysterious) free range 0x%p to EOF\n", (void*)new_free_page);
+	start_of_new_space=new_free_page;
 }
 
 void Zipr_t::AddPinnedInstructions()
@@ -223,9 +226,9 @@ void Zipr_t::ReservePinnedInstructions()
 		UnresolvedPinned_t up=*it;
 
 		Instruction_t* upinsn=up.GetInstruction();
-		RangeAddress_t addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+		RangeAddress_t addr=(unsigned)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
 
-		if(upinsn->GetAddress()->GetFileID()==BaseObj_t::NOT_IN_DATABASE)
+		if(upinsn->GetIndirectBranchTargetAddress()->GetFileID()==BaseObj_t::NOT_IN_DATABASE)
 			continue;
 
 		/* sometimes, we need can't just put down a 2-byte jump into the old slot
@@ -845,6 +848,7 @@ void Zipr_t::FillSection(section* sec, FILE* fexe)
 
 
 
+	printf("Dumping addrs %p-%p\n", (void*)start, (void*)end);
 	for(RangeAddress_t i=start;i<end;i++)
 	{
 		if(!IsByteFree(i))
@@ -854,7 +858,11 @@ void Zipr_t::FillSection(section* sec, FILE* fexe)
 			int file_off=sec->get_offset()+i-start;
 			fseek(fexe, file_off, SEEK_SET);
 			fwrite(&b,1,1,fexe);
-			printf("Writing byte %#2x at %p, fileoffset=%d\n", ((unsigned)b)&0xff, (void*)i, file_off);
+			if(i-start<200)// keep verbose output short enough.
+			{
+				printf("Writing byte %#2x at %p, fileoffset=%d\n", 
+					((unsigned)b)&0xff, (void*)i, file_off);
+			}
 		}
 	}
 }
@@ -884,6 +892,38 @@ void Zipr_t::OutputBinaryFile(const string &name)
 		FillSection(sec, fexe);
         }
 	fclose(fexe);
+
+	string tmpname=string("to_insert")+name;
+	printf("Opening %s\n", tmpname.c_str());
+	FILE* to_insert=fopen(tmpname.c_str(),"w");
+
+	if(!to_insert)
+		perror( "void Zipr_t::OutputBinaryFile(const string &name)");
+
+	// first byte of this range is the last used byte.
+	list<Range_t>::iterator it=FindFreeRange((RangeAddress_t) -1);
+	assert(it!=free_ranges.end());
+
+	RangeAddress_t end_of_new_space=it->GetStart();
+
+	printf("Dumping addrs %p-%p\n", (void*)start_of_new_space, (void*)end_of_new_space);
+	for(RangeAddress_t i=start_of_new_space;i<end_of_new_space;i++)
+	{
+		char b=0;
+		if(!IsByteFree(i))
+		{
+			b=byte_map[i];
+		}
+
+	
+		if(i-start_of_new_space<200)// keep verbose output short enough.
+			printf("Writing byte %#2x at %p, fileoffset=%lld\n", ((unsigned)b)&0xff, 
+				(void*)i, (long long)(i-start_of_new_space));
+		fwrite(&b,1,1,to_insert);
+	}
+	fclose(to_insert);
+
+	InsertNewSegmentIntoExe(name,tmpname,start_of_new_space);
 }
 
 
@@ -905,3 +945,40 @@ void Zipr_t::PrintStats()
 	cout<<"Other space: "<<total_other_space<<endl;
 }
 
+template < typename T > std::string to_string( const T& n )
+{
+	std::ostringstream stm ;
+	stm << n ;
+	return stm.str() ;
+}
+
+
+void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, RangeAddress_t sec_start)
+{
+
+// from stratafy.pl
+//       #system("objcopy  --add-section .strata=strata.linked.data.$$ --change-section-address .strata=$maxaddr --set-section-flags .strata=alloc --set-start $textoffset $exe_copy $newfile") == 0 or die ("command failed $? \n") ;
+
+//        system("$stratafier/add_strata_segment $newfile $exe_copy ") == 0 or die (" command failed : $? \n");
+
+	string  cmd=
+		string("objcopy  --add-section .strata=")+bin_to_add+ 
+		string(" --change-section-address .strata=")+to_string(sec_start)+
+		string(" --set-section-flags .strata=alloc,code ")+ 
+		// --set-start $textoffset // set-start not needed, as we aren't changing the entry point.
+		rewritten_file;  // editing file in place, no $newfile needed. 
+
+	printf("Attempting: %s\n", cmd.c_str());
+	if(-1 == system(cmd.c_str()))
+	{
+		perror(__FUNCTION__);
+	}
+
+	cmd="$STRATAFIER/add_strata_segment "+rewritten_file+ " " + rewritten_file +".addseg";
+	printf("Attempting: %s\n", cmd.c_str());
+	if(-1 == system(cmd.c_str()))
+	{
+		perror(__FUNCTION__);
+	}
+
+}

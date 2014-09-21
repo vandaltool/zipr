@@ -73,6 +73,7 @@ class Zipr_t
 
 		// helpers.
 		void ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p);
+		void InsertNewSegmentIntoExe(std::string old_file, std::string new_file, RangeAddress_t sec_start);
 
 
 	private:
@@ -86,14 +87,18 @@ class Zipr_t
 		// map of where bytes will actually go.
 		std::map<RangeAddress_t,char> byte_map;
 
+		// structures to pinned things.
 		std::set<UnresolvedPinned_t> two_byte_pins; 
 		std::map<UnresolvedPinned_t,RangeAddress_t> five_byte_pins; 
 
+		// final mapping of instruction to address.
 		std::map<libIRDB::Instruction_t*,RangeAddress_t> final_insn_locations; 
 
 
+		// way to read elf headers, etc.
 		ELFIO::elfio*    elfiop;
 
+		// stats
 		int total_dollops;
 		int total_dollop_space;
 		int total_dollop_instructions;
@@ -103,6 +108,10 @@ class Zipr_t
 		int total_tramp_space;
 		int total_other_space;
 		int truncated_dollops;
+
+		// records where we will insert extra bytes into the program.
+		RangeAddress_t start_of_new_space;
+
 
 };
 
