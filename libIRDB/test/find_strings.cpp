@@ -105,7 +105,7 @@ void is_string_pointer(void* addr, elf_info_t &ei)
 
 	for(int i=0;i<ei.secnum;i++)
 	{
-cout << "is_string_pointer(): address: " << std::hex << intaddr << std::dec << "looking at section number: " << i << endl;
+//cout << "is_string_pointer(): address: " << std::hex << intaddr << std::dec << "looking at section number: " << i << endl;
 		/* only look at loaded sections */
 		if( (ei.elfiop->sections[i]->get_flags() & SHF_ALLOC) != SHF_ALLOC)
 			continue;
@@ -116,7 +116,6 @@ cout << "is_string_pointer(): address: " << std::hex << intaddr << std::dec << "
 			/* we found a pointer into a loadable segment */
 			load_section(ei,i,true);
 
-			cout<<"Checking address "<<std::hex<<addr<<endl;
 			check_for_string(ei.sec_data[i]+((long long int)addr-ei.elfiop->sections[i]->get_address()),addr);
 		}
 	}
