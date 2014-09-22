@@ -6,10 +6,9 @@
  * and the inclusion of the above copyright notice. This software or
  * any other copies thereof may not be provided or otherwise made
  * available to any other person without the express written consent
- * of an authorized representative of GrammaTech, Inc. Title to,
+ * of an authorized representative of Zephyr Software LLC.  Title to,
  * ownership of, and all rights in the software is retained by
- * GrammaTech, Inc.
- *
+ * Zephyr Software LCC.
  *
  * Zephyr Software LLC. Proprietary Information
  *
