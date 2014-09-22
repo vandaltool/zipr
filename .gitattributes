@@ -6,7 +6,6 @@ include/zipr.h -text
 include/zipr_all.h -text
 include/zipr_options.h -text
 src/Makefile -text
-src/header.h -text
 src/main.cpp -text
 src/zipr.cpp -text
 third_party/ELFIO/elfio-2.2/AUTHORS -text
