@@ -363,6 +363,8 @@ void Zipr_t::Fix2BytePinnedInstructions()
 			{
 				printf("Found location for 2-byte->5-byte conversion (%p-%p)->(%p-%p)\n", 
 					(void*)addr,(void*)(addr+1), (void*)(addr+i),(void*)(addr+i+5)); 
+
+				PatchJump(addr, addr-i);
 				five_byte_pins[up]=addr+i;
 				PlopJump(addr+i);
 				break;
