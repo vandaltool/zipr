@@ -498,6 +498,7 @@ static int DetermineWorseCaseInsnSize(Instruction_t* insn)
 
 	switch(insn->GetDataBits()[0])
 	{
+		case (char)0x71:
 		case (char)0x72:
 		case (char)0x73:
 		case (char)0x74:
@@ -577,10 +578,9 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 		DISASM d;
 		cur_insn->Disassemble(d);
 		int id=cur_insn->GetBaseID();
-		printf("Emitting %d:%s at %p\n", id, d.CompleteInstr, (void*)cur_addr);
-
-
+		printf("Emitting %d:%s at %p until ", id, d.CompleteInstr, (void*)cur_addr);
 		cur_addr=PlopInstruction(cur_insn,cur_addr);
+		printf("%p\n", (void*)cur_addr);
 		cur_insn=cur_insn->GetFallthrough();
 		insn_count++;
 	}
