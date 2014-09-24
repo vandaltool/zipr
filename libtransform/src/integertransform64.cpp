@@ -750,7 +750,7 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegTimesReg(Instruction_t *p_ins
 }
 
 // Example annotation to handle
-// 804852e      3 INSTR CHECK OVERFLOW NOFLAGSIGNED 32 EDX+EAX ZZ lea     eax, [edx+eax] Reg1: EDX Reg2: EAX
+// 804852e      3 INSTR CHECK OVERFLOW NOFLAGSIGNED 32 EDX+EAX ZZ lea     eax, [edx+k] Reg1: EDX Reg3: EAX
 // Need to handle both 32-bit and 64-bit versions
 //
 // Original:
@@ -788,6 +788,12 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 
 	cerr << __func__ << ": r3 <-- r1+k: r1: " << Register::toString(p_reg1) << " k: " << p_constant << " target register: " << Register::toString(p_reg3) << "  annotation: " << p_annotation.toString() << endl;
 
+	if (p_annotation.isUnsigned() && (p_constant < 0)) {
+	  logMessage(__func__, "lea reg+neg constant pattern: skip this annotation type (prone to false positives)");
+	  m_numOverflowsSkipped++;
+	  return;
+	}
+
 	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
 	Instruction_t *instr, *first, *saturation_policy;
 	Instruction_t *restore = addNewAssembly("popf");
@@ -817,13 +823,14 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 	instr->SetFallthrough(origFallthrough);
 
 	// Original code sequence:
-	//   lea r3, [r1+r2]
+	//   lea r3, [r1+k]
 	//   <originalNext>
 	//
 	// Instrumentation:
 	//   push r1                ;   save r1
 	//   pushf                  ;   save flags
 	//   add r1, k              ;   r1 = r1 + k
+	// (or sub r1,-k            ;   r1 = r1 - (-k) for k < 0)
 	//        <overflowcheck>   ;   check for overflow 
 	//          (jno|jnc <restore>)   ; SIGNED|UNSIGNED
 	//            fallthrough--><policy>
@@ -839,7 +846,14 @@ void IntegerTransform64::addOverflowCheckNoFlag_RegPlusConstant(Instruction_t *p
 	first->SetFallthrough(instr);
 
 	std::ostringstream s;
-	s << "add " << Register::toString(p_reg1) << "," << p_constant;
+	if (p_constant >= 0) {
+	  s << "add " << Register::toString(p_reg1) << "," << p_constant;
+	}
+	else {
+	  // NOTE: We are short-circuiting this case currently; see top of
+	  //  this function. Should never get here.
+	  s << "sub " << Register::toString(p_reg1) << "," << (-p_constant);
+	}
 	instr = addNewAssembly(instr, s.str());
 	if (p_annotation.isSigned())
 	{
