@@ -31,12 +31,14 @@
 #ifndef zipr_h
 #define zipr_h
 
+class Options_t;
+class Stats_t;
 
 class Zipr_t
 {
 	public:
-		Zipr_t(libIRDB::FileIR_t* p_firp, const Options_t &p_opts)
-			: m_firp(p_firp), m_opts(p_opts) 
+		Zipr_t(libIRDB::FileIR_t* p_firp, Options_t &p_opts)
+			: m_firp(p_firp), m_opts(p_opts)
 		{ 
                 	total_dollops=0;
                 	total_dollop_space=0;
@@ -55,7 +57,8 @@ class Zipr_t
 
 		// data for the stuff we're rewriting.
 		libIRDB::FileIR_t* m_firp;
-		const Options_t& m_opts;
+		Options_t& m_opts;
+		Stats_t *m_stats;
 
 		// phases of rewriting.
 		void FindFreeRanges(const std::string &name);

@@ -54,6 +54,7 @@ using namespace ELFIO;
 
 void Zipr_t::CreateBinaryFile(const std::string &name)
 {
+	m_stats = new Stats_t();
 
 	// create ranges, including extra range that's def. big enough.
 	FindFreeRanges(name);

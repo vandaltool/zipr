@@ -45,10 +45,12 @@
 namespace zipr
 {
 
-#include <zipr_options.h>
 #include <range.h>
 #include <unresolved.h>
 #include <zipr.h>
+#include <zipr_optimizations.h>
+#include <zipr_options.h>
+#include <zipr_stats.h>
 
 };
 

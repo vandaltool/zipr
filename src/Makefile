@@ -3,7 +3,7 @@ INC=-I../include -I../third_party/ELFIO/elfio-2.2 -I$(SECURITY_TRANSFORMS_HOME)/
 
 
 
-SRCS=main.cpp zipr.cpp
+SRCS=zipr.cpp zipr_options.cpp main.cpp
 OBJS=$(subst .cpp,.o, $(SRCS))
 HDRS=../include/*.h 
 EXE=zipr.exe
