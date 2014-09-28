@@ -752,7 +752,6 @@ if [ $record_stats -eq 1 ]; then
 	$PEASOUP_HOME/tools/db/job_spec_register.sh "$JOBID" "$DB_PROGRAM_NAME" "$varid" 'submitted' "$ps_starttime"
 fi
 
-sleep 30
 
 if [ $record_stats -eq 1 ]; then
 	$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'pending' "$ps_starttime"
