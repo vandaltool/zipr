@@ -12,7 +12,7 @@ class Stats_t
 		};
 		int Hits[Optimizations_t::NumberOfOptimizations];
 		int Misses[Optimizations_t::NumberOfOptimizations];
-		void Hit(Optimizations_t::Optimization opt) { Hits[opt]++; };
-		void Missed(Optimizations_t::Optimization opt) { Misses[opt]++; };
+		void Hit(Optimizations_t::OptimizationName_t opt) { Hits[opt]++; };
+		void Missed(Optimizations_t::OptimizationName_t opt) { Misses[opt]++; };
 };
 #endif

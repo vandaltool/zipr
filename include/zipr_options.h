@@ -47,12 +47,12 @@ class Options_t
 		std::string GetOutputFileName(libIRDB::File_t* p_file) { return m_outname; }
 		int GetVariantID() { return m_var_id; }
 		
-		void EnableOptimization(Optimizations_t::Optimization opt) 
+		void EnableOptimization(Optimizations_t::OptimizationName_t opt) 
 		{ 
 			EnabledOptimizations[opt] = 1; 
 		};
 
-		bool IsEnabledOptimization(Optimizations_t::Optimization opt) 
+		bool IsEnabledOptimization(Optimizations_t::OptimizationName_t opt) 
 		{ 
 			return EnabledOptimizations[opt] == 1; 
 		};
