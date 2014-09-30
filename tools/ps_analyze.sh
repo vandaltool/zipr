@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 #
 # ps_analyze.sh - analyze a program and transform it for peasoupification to prevent exploit.
 #
@@ -14,11 +14,19 @@ ulimit -s unlimited
 watchdog_val=30
 errors=0
 
+# record statistics in database?
+record_stats=0
+
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
 TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
 # Setting PN timeout to 6 hours for TNE. 
 PN_TIMEOUT_VALUE=21600
+
+# 
+# set default values for 
+#
+initial_off_phases="isr ret_shadow_stack determine_program stats spawner"
 
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
@@ -31,6 +39,9 @@ intxform_detect_fp=1      # default: detect benign false positives is on
                           #   but if determine_program is off, it's a no-op
 intxform_instrument_idioms=0  # default: do not instrument instructions marked as IDIOM by STARS
 
+# JOBID
+
+JOBID="$(basename $1)-$$"
 
 # 
 # By default, big data approach is off
@@ -153,7 +164,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long id: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -209,6 +220,10 @@ check_options()
 			set_timer $2 & TIMER_PID=$!
 			shift 2 
 			;;
+		--id) 
+			JOBID=$2
+			shift 2 
+			;;
 		--) 	shift 
 			break 
 			;;
@@ -233,23 +248,32 @@ check_options()
 		exit -3;	
 	fi
 
-	# --step determine_program=(on|off) not specified on the command line
-	# default policy is off
-	# to make the default policy on, get rid of this block of code
-	echo $phases_off|egrep "determine_program" > /dev/null
-	if [ ! $? -eq 0 ];
-	then
-		# by default it's off
-		phases_off="$phases_off determine_program=off"
-	fi
+	for phase in $initial_off_phases
+	do
 
-	# turn off isr
-	phases_off="$phases_off isr=off"
+		# --step $phase=(on|off) not specified on the command line
+		# default policy is off
+		# to make the default policy on, get rid of this block of code
+		echo $phases_off|egrep "$phase=" > /dev/null
+		if [ ! $? -eq 0 ];
+		then
+			# by default it's off
+			phases_off="$phases_off $phase=off"
+		fi
+	done
 
 	# turn off heaprand and double_free if twitcher is on for now
 	is_step_on twitchertransform
 	if [[ $? = 1 && "$TWITCHER_HOME" != "" ]]; then
 		phases_off="$phases_off heaprand=off double_free=off"
+	fi
+
+	#
+	# turn on/off recording of statistics
+	#
+	is_step_on stats
+	if [[ $? = 1 ]]; then
+		record_stats=1
 	fi
 }
 
@@ -259,7 +283,7 @@ check_options()
 #
 is_step_on()
 {
-	step=$1
+	local step=$1
 
 	echo $phases_off|egrep "$step=off" > /dev/null
 	if [ $? -eq 0 ] ; then
@@ -315,6 +339,29 @@ stop_if_error()
 }
 
 #
+# Check dependencies
+#
+check_dependencies()
+{
+	# format is:  step1,step2,step3
+	local dependency_list=$1
+
+	# extract each step, make sure step is turned on
+	local steps=$(echo $dependency_list | tr "," "\n")
+	for s in $steps
+	do
+		if [[ "$s" != "none" && "$s" != "mandatory" ]]; then
+			is_step_on $s
+			if [ $? -eq 0 ]; then
+				return 0
+			fi
+		fi
+	done
+
+	return 1
+}
+
+#
 # Detect if this step of the computation is on, and execute it.
 #
 perform_step()
@@ -325,16 +372,33 @@ perform_step()
 	shift
 	command="$*"
 
+	logfile=logs/$step.log
+
 	is_step_on $step
 	if [ $? -eq 0 ]; then 
 		echo Skipping step $step. [dependencies=$mandatory]
 		return 0
 	fi
 
-	logfile=logs/$step.log
+	starttime=`date --iso-8601=seconds`
+
+	# optionally record stats
+	if [ $record_stats -eq 1 ]; then
+		$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" started "$starttime" inprogress
+	fi
+
+	if [[ "$mandatory" != "none" && "$mandatory" != "mandatory" ]]; then
+		check_dependencies $mandatory
+		if [ $? -eq 0 ]; then 
+			echo Skipping step $step because of failed dependencies. [dependencies=$mandatory]
+			if [ $record_stats -eq 1 ]; then
+				$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$starttime" error
+			fi
+			return 0
+		fi
+	fi
 
 	echo -n Performing step "$step" [dependencies=$mandatory] ...
-	starttime=`date --iso-8601=seconds`
 
 	# If verbose is on, tee to a file 
 	if [ ! -z "$DEBUG_STEPS" ]; then
@@ -347,13 +411,26 @@ perform_step()
 		$command > $logfile 2>&1 
 		command_exit=$?
 	fi
+
+	endtime=`date --iso-8601=seconds`
 	
 	echo "# ATTRIBUTE start_time=$starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
+	echo "# ATTRIBUTE end_time=$endtime" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=$step" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_number=$stepnum" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_command=$command " >> $logfile
 	echo "# ATTRIBUTE peasoup_step_exitcode=$command_exit" >> $logfile
+
+	# report job status
+	if [ $command_exit -eq 0 ]; then
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" success $logfile
+		fi
+	else
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$endtime" error $logfile
+		fi
+	fi
 
 	is_step_error $step $command_exit
 	if [ $? -ne 0 ]; then
@@ -387,7 +464,7 @@ report_logs()
 	logfile=logs/ps_analyze.log
 
 	echo "# ATTRIBUTE start_time=$ps_starttime" >> $logfile
-	echo "# ATTRIBUTE end_time=`date --iso-8601=seconds`" >> $logfile
+	echo "# ATTRIBUTE end_time=$ps_endtime" >> $logfile
 	echo "# ATTRIBUTE peasoup_step_name=all_peasoup" >> $logfile
 
 	for i in $all_logs
@@ -569,10 +646,12 @@ fi
 # setup libstrata.so.  We'll setup two versions, one with symbols so we can debug, and a stripped, faster-loading version.
 # by default, use the faster version.  copy in the .symbosl version for debugging
 #
-cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
-cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
-strip $newdir/libstrata.so.nosymbols
-cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
+if [ -f $STRATA_HOME/lib/libstrata.so ]; then
+	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
+	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
+	strip $newdir/libstrata.so.nosymbols
+	cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
+fi
 
 
 adjust_lib_path 
@@ -660,6 +739,8 @@ DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
 DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
 MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
 
+INSTALLER=`pwd`
+
 #
 # register the program
 #
@@ -667,6 +748,15 @@ perform_step pdb_register mandatory "$PEASOUP_HOME/tools/db/pdb_register.sh $DB_
 varid=`cat registered.id`
 if [ ! $varid -gt 0 ]; then
 	fail_gracefully "Failed to write Variant into database. Exiting early.  Is postgres running?  Can $PGUSER access the db?"
+fi
+
+if [ $record_stats -eq 1 ]; then
+	$PEASOUP_HOME/tools/db/job_spec_register.sh "$JOBID" "$DB_PROGRAM_NAME" "$varid" 'submitted' "$ps_starttime"
+fi
+
+
+if [ $record_stats -eq 1 ]; then
+	$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'pending' "$ps_starttime"
 fi
 
 # build basic IR
@@ -695,7 +785,7 @@ perform_step find_strings none $SECURITY_TRANSFORMS_HOME/libIRDB/test/find_strin
 #
 # analyze binary for string signatures
 #
-perform_step appfw none $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log
+perform_step appfw find_strings $PEASOUP_HOME/tools/do_appfw.sh $arch_bits $newname.ncexe logs/find_strings.log
 
 #
 # check signatures to determine if we know which program this is.
@@ -753,7 +843,7 @@ perform_step fast_annot preLoaded_ILR2 $PEASOUP_HOME/tools/fast_annot.sh
 #
 # Do P1/Pn transform.
 #
-perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $DO_CANARIES
+perform_step p1transform meds_static,clone $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $newname.ncexe $newname.ncexe.annot $PEASOUP_HOME/tools/bed.sh $PN_TIMEOUT_VALUE $DO_CANARIES
 
 		
 #
@@ -762,8 +852,17 @@ perform_step p1transform none $PEASOUP_HOME/tools/do_p1transform.sh $cloneid $ne
 if [ -z "$program" ]; then
    program="unknown"
 fi
-perform_step integertransform none $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
+perform_step integertransform meds_static,clone $PEASOUP_HOME/tools/do_integertransform.sh $cloneid $program $CONCOLIC_DIR $INTEGER_TRANSFORM_TIMEOUT_VALUE $intxform_warnings_only $intxform_detect_fp $intxform_instrument_idioms
+
+#
+# perform_calc -- get some stats about the DB
+#
 #perform_step calc_conflicts none $SECURITY_TRANSFORMS_HOME/libIRDB/test/calc_conflicts.exe $cloneid a.ncexe
+
+#
+# perform step to instrument pgm with return shadow stack
+#
+perform_step ret_shadow_stack meds_static,clone $PEASOUP_HOME/tools/do_rss.sh $cloneid 
 
 #
 # Do Twitcher transform step if twitcher is present
@@ -787,6 +886,11 @@ perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.ird
 perform_step preLoaded_ILR1 fast_spri $STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe a.irdb.fbspri 
 perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfile.sh a.irdb.fbspri
 
+
+# put a front end in front of a.stratafied which opens file 990 for strata to read.
+perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh 
+
+
 # copy TOCTOU tool here if it exists
 is_step_on toctou
 if [[ $? -eq 1 && -e $GRACE_HOME/ps_concurrency/toctou_tool/libtoctou_tool.so ]];
@@ -798,7 +902,9 @@ fi
 #
 # create a report for all of ps_analyze.
 #
+ps_endtime=`date --iso-8601=seconds`
 report_logs
+
 
 # go back to original directory
 cd - > /dev/null 2>&1
@@ -818,8 +924,19 @@ if [ -f $stratafied_exe ]; then
 		echo "*****************************"
 		echo "*Warning: Some steps failed!*"
 		echo "*****************************"
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" "$INSTALLER"
+		fi
+	else
+		if [ $record_stats -eq 1 ]; then
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime" "$INSTALLER"
+		fi
 	fi
+
 	exit 0;
 else
+	if [ $record_stats -eq 1 ]; then
+		$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'error' "$ps_endtime"
+	fi
 	exit 255;
 fi
