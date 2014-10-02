@@ -95,9 +95,8 @@ if [ ! $? -eq 0 ]; then
 fi
 
 # test attack queries
-rm -f $tmp
 APPFW_VERBOSE=1 QUERY_DATA="' or 1 = 1;--" ./testpg1.exe.env.peasoup > $tmp 2>&1
-grep -i "sql injection" $tmp | grep -i detected
+grep -i "tautology" $tmp 
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 4 "False negative detected: attack query for testpg1.exe.env.peasoup should have been detected"
@@ -105,7 +104,7 @@ fi
 
 rm -f $tmp
 APPFW_VERBOSE=1 QUERY_DATA="' and /* */ 1 = 1 /* */; /*--*/" ./testpg1.exe.env.peasoup > $tmp 2>&1
-grep -i "sql injection" $tmp | grep -i detected
+grep -i "sql injection" $tmp 
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 5 "False negative detected: attack query for testpg1.exe.env.peasoup should have been detected"
@@ -113,7 +112,7 @@ fi
 
 rm -f $tmp
 APPFW_VERBOSE=1 QUERY_DATA="%' or 1 = 1; -- select *" ./testpg1.exe.env.peasoup > $tmp 2>&1
-grep -i "sql injection" $tmp | grep -i detected
+grep -i "sql injection" $tmp 
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 6 "False negative detected: attack query for testpg1.exe.env.peasoup should have been detected"
@@ -125,16 +124,16 @@ fi
 
 # test good queries
 rm -f $tmp 2>/dev/null
-QUERY_DATA="bob" ./testpg2.exe.env.peasoup > $tmp 2>&1
-grep -i query $tmp | grep -i success
+APPFW_VERBOSE=1 QUERY_DATA="bob" ./testpg2.exe.env.peasoup > $tmp 2>&1
+grep -i --binary-files=text query $tmp | grep -i success
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 7 "False positive detected: query for testpg2.exe.env.peasoup should have succeeded"
 fi
 
 rm -f $tmp
-QUERY_DATA="select * from xyz" ./testpg2.exe.env.peasoup > $tmp 2>&1
-grep -i query $tmp | grep -i success
+APPFW_VERBOSE=1 QUERY_DATA="select * from xyz" ./testpg2.exe.env.peasoup > $tmp 2>&1
+grep -i --binary-files=text query $tmp | grep -i success
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 8 "False positive detected: query for testpg2.exe.env.peasoup should have succeeded"
@@ -143,7 +142,7 @@ fi
 # test attack queries
 rm -f $tmp
 APPFW_VERBOSE=1 QUERY_DATA="' or 1 = 1;--" ./testpg2.exe.env.peasoup > $tmp 2>&1
-grep -i "sql injection" $tmp | grep -i detected
+grep -i "sql injection" $tmp 
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 9 "False negative detected: attack query for testpg2.exe.env.peasoup should have been detected"
@@ -151,7 +150,7 @@ fi
 
 rm -f $tmp
 APPFW_VERBOSE=1 QUERY_DATA="' and /* */ 1 = 1 /* */; /*--*/" ./testpg2.exe.env.peasoup > $tmp 2>&1
-grep -i "sql injection" $tmp | grep -i detected
+grep -i "sql injection" $tmp 
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 10 "False negative detected: attack query for testpg2.exe.env.peasoup should have been detected"
@@ -159,7 +158,7 @@ fi
 
 rm -f $tmp
 APPFW_VERBOSE=1 QUERY_DATA="%' or 1 = 1; -- select *" ./testpg2.exe.env.peasoup > $tmp 2>&1
-grep -i "sql injection" $tmp | grep -i detected
+grep -i "sql injection" $tmp 
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 11 "False negative detected: attack query for testpg2.exe.env.peasoup should have been detected"

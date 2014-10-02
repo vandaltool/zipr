@@ -56,9 +56,20 @@ int main(int argc, char *argv[])
 		return 0;		
 	}
 	sprintf(query,fmtString,argv[1]);
-        result = PQexec(conn, query);
-        printf("%s\n", query);
-	
+    result = PQexec(conn, query);
+	if (PQresultStatus(result) == PGRES_TUPLES_OK)
+	{
+		fprintf(stderr, "-------------------------------------------\n");
+		fprintf(stderr, "\tQuery success: %s\n", query);
+		fprintf(stderr, "-------------------------------------------\n");
+	}
+	else
+	{
+		fprintf(stderr, "-------------------------------------------\n");
+		fprintf(stderr, "\tQuery failed: %s\n", query);
+		fprintf(stderr, "-------------------------------------------\n");
+	}			
+																		    }
 	/* output fields 1 and 2 of each row */
         int i;
         for (i = 0; i < PQntuples(result); ++i)
