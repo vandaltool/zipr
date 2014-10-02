@@ -416,7 +416,7 @@ int fix_violations(char* taint, int value, int start, int len)
 int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 {
 	int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
-	int veryverbose = getenv("VERY_VERBOSE") ? TRUE : FALSE;
+	int veryverbose = getenv("APPFW_VERY_VERBOSE") ? TRUE : FALSE;
 	int count=0;
 	int siglen = strlen(sig);
 	int lastpos = start + siglen - 1;
@@ -425,8 +425,8 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 	char v;
 	int beg, end;
 
-	 if (is_security_violation(taint[lastpos+1]) &&
-	         beforefirstpos >= 0 && is_security_violation(taint[beforefirstpos]))
+	if (is_security_violation(taint[lastpos+1]) &&
+		beforefirstpos >= 0 && is_security_violation(taint[beforefirstpos]))
 	{
 		// security violation both before and after
 		// e.g.: query:   SELECT * FROM
@@ -469,7 +469,6 @@ int fix_violations_sfop(char *taint, int value, int start, const char *sig)
 //  SELECT * from us/**/ers where userid='';
 // 01234567890123456789012345678901234567890
 // partial match at beginning bfs[38] start[39] [5..5]
-
 
 	beg = start;
 	if (beforefirstpos >= 0 && 
@@ -604,7 +603,10 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 
 	int violations=count_violations(taint, commandLength);
 	if(verbose)
-		fprintf(stderr,"Found %d violations\n", violations);
+	{
+		fprintf(stderr,"Found %d violations.\n", violations);
+        appfw_display_taint("", command, taint);
+	}
 
 	list<char*>::iterator next;
 

@@ -536,7 +536,12 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure, int 
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
 		if (end+1 < strlen(zSql))
-          return result_flag | sqlfw_get_structure(&zSql[end+1], &p_annot[end+1], p_structure, is_tautology);
+		{
+          if (*is_tautology) // tautology detected -- just return
+	        return result_flag;
+	      else
+            return result_flag | sqlfw_get_structure(&zSql[end+1], &p_annot[end+1], p_structure, is_tautology);
+		}
         else
 		{
 		  return result_flag; // semicolon was the last character in the entire statement return 
@@ -701,8 +706,8 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure, int 
 	  if (zSql[end+1] == '#')
 	  {
 		pos = look_for_eol(zSql, end+1);
-		if (pos >= 0)
-			appfw_taint_range_by_pos(p_annot, mark_critical_token, end+1, pos);
+		if (pos >= 1)
+			appfw_taint_range_by_pos(p_annot, mark_critical_token, end+1, pos-1);
 		else
 			appfw_taint_range(p_annot, mark_critical_token, end+1, 1);
 		mark_critical_token = get_violation_marking(mark_critical_token);
@@ -719,7 +724,7 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure, int 
 			if (zSql[end+1] == '-')
 			{
 				pos = look_for_eol(zSql, end+2);
-				appfw_taint_range_by_pos(p_annot, mark_critical_token, end+1, pos);
+				appfw_taint_range_by_pos(p_annot, mark_critical_token, end+1, pos-1);
 				strncat(p_structure, "-- ", 2);
 			}
 			else
