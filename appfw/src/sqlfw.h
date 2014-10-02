@@ -17,7 +17,7 @@ extern int sqlfw_isInitialized();
 // extern int sqlfw_verify(const char *zSql, char **pzErrMsg);
 extern int sqlfw_verify(const char *zSql, char **);
 extern int sqlfw_verify_s(const char *zSql, char *p_annot);
-extern int sqlfw_get_structure(const char *zSql, char *p_taint, char *p_structure);
+extern int sqlfw_get_structure(const char *zSql, char *p_taint, char *p_structure, int *is_tautology);
 
 extern int sqlfw_is_safe(int);
 extern int sqlfw_is_error(int);

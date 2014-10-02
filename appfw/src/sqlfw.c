@@ -86,7 +86,8 @@ int sqlfw_verify_s(const char *zSql, char *p_critical)
 	bzero(structure, len);
 
 	// get all the critical keywords
-	int result_flag = sqlfw_get_structure(zSql, markings, structure);
+	int is_tautology = 0;
+	int result_flag = sqlfw_get_structure(zSql, markings, structure, &is_tautology);
 	strcpy(p_critical, markings); 
 
 	if(verbose)
@@ -169,13 +170,28 @@ int sqlfw_verify(const char *zSql, char **errMsg)
 		return 0;
 	}
 
-	// get all the critical keywords
-	sqlfw_get_structure(zSql, tainted, structure);
-	int success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
-	if (!success && verbose)
-		appfw_display_taint("SQL Injection detected", zSql, tainted);
+	int is_tautology = 0;
+	int success = 1;
+
+	// get all the critical keywords / detect tautologies
+	sqlfw_get_structure(zSql, tainted, structure, &is_tautology);
+    if (is_tautology && verbose)
+    {
+		appfw_display_taint("SQL Injection detected (tautology)", zSql, tainted);
+		success = 0;
+	}
+
+	if (!is_tautology)
+	{
+		success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
+
+		if (!success && verbose)
+			appfw_display_taint("SQL Injection detected", zSql, tainted);
+	}
 
 	free(tainted);
+	free(structure);
+
 	return success;
 }
 
@@ -195,6 +211,7 @@ static char *CRITICAL_FUNCTIONS[] = {
 	"COLLATION", 
 	"CONCAT", 
 	"CONVERT",
+	"COS",
 	"CRC32", 
 	"CURRENT_USER", 
 	"DATABASE", 
@@ -232,6 +249,7 @@ static char *CRITICAL_FUNCTIONS[] = {
 	"POSITION",
 	"POW", 
 	"QUARTER", 
+	"RAND", 
 	"REVERSE", 
 	"RIGHT", 
 	"ROUND", 
@@ -239,6 +257,7 @@ static char *CRITICAL_FUNCTIONS[] = {
 	"SCHEMA", 
 	"SESSION_USER", 
 	"SHA", 
+	"SIN", 
 	"SPACE", 
 	"STRCMP", 
 	"SUBSTR", 
@@ -310,13 +329,125 @@ char get_violation_marking(char p_current_marking)
 		return APPFW_SECURITY_VIOLATION;
 }
 
+#define TT_NUM_TOKENS 4
+#define MAX_TOKEN_SIZE 256
+struct tt_sql_tokens {
+  int type;
+  char data[MAX_TOKEN_SIZE];
+};
+
+void tt_clear(struct tt_sql_tokens *tokens, int tt_num_tokens)
+{
+	memset(tokens, 0, sizeof(struct tt_sql_tokens) * tt_num_tokens);
+}
+
+void tt_save_token(struct tt_sql_tokens *tokens, int *tt_num_tokens, int tokenType, const char *zSql, int beg, int end)
+{
+	int tokenid = *tt_num_tokens;
+	if (tokenid >= TT_NUM_TOKENS)
+	{
+		fprintf(stderr, "tt_save_token(): fatal error in tautology detector\n");
+		return;
+	}
+
+	tokens[tokenid].type = tokenType;
+	int len = end - beg + 1;
+	strncpy(tokens[tokenid].data, &zSql[beg], len);
+	tokens[tokenid].data[len] = 0;
+
+	*tt_num_tokens = tokenid + 1;
+}
+
+// detect tautology
+//     OR <string> <OP> <string>
+//     OR <numeric> <OP> <numeric>
+// e.g.:
+//     OR 1 = 1
+//     OR 1.23 >= 1.2
+//     OR 'a' = 'a'
+//     OR 'a' < 'b'
+//     
+int tt_detect(struct tt_sql_tokens *tokens, int tt_num_tokens)
+{
+	if (tt_num_tokens != 4 || 
+			tokens[0].type != TK_OR ||
+			(tokens[2].type != TK_EQ &&
+			tokens[2].type != TK_NE &&
+			tokens[2].type != TK_GT &&
+			tokens[2].type != TK_LT &&
+			tokens[2].type != TK_GE &&
+			tokens[2].type != TK_LE))
+		return 0;
+
+	double val1, val3;
+	if (tokens[1].type != TK_STRING)
+	{
+		if ((tokens[1].type != TK_INTEGER && tokens[1].type != TK_FLOAT) ||
+			(tokens[3].type != TK_INTEGER && tokens[3].type != TK_FLOAT))
+			return 0;
+		if (sscanf(tokens[1].data, "%lf", &val1) != 1)
+			return 0;
+		if (sscanf(tokens[3].data, "%lf", &val3) != 1)
+			return 0;
+	}
+
+	if (tokens[2].type == TK_EQ)
+	{
+		if (tokens[1].type == TK_STRING)
+			return strcmp(tokens[1].data, tokens[3].data) == 0;
+		else
+			return val1 == val3;
+	}
+	else if (tokens[2].type == TK_NE)
+	{
+		if (tokens[1].type == TK_STRING)
+			return strcmp(tokens[1].data, tokens[3].data) != 0;
+		else
+			return val1 != val3;
+	}
+	else if (tokens[2].type == TK_GT)
+	{
+		if (tokens[1].type == TK_STRING)
+			return strcmp(tokens[1].data, tokens[3].data) > 0;
+		else
+			return val1 > val3;
+	}
+	else if (tokens[2].type == TK_LT)
+	{
+		if (tokens[1].type == TK_STRING)
+			return strcmp(tokens[1].data, tokens[3].data) < 0;
+		else
+			return val1 < val3;
+	}
+	else if (tokens[2].type == TK_GE)
+	{
+		if (tokens[1].type == TK_STRING)
+			return strcmp(tokens[1].data, tokens[3].data) > 0 || 
+				strcmp(tokens[1].data, tokens[3].data) == 0;
+		else
+			return val1 >= val3;
+	}
+	else if (tokens[2].type == TK_LE)
+	{
+		if (tokens[1].type == TK_STRING)
+			return strcmp(tokens[1].data, tokens[3].data) < 0 || 
+				strcmp(tokens[1].data, tokens[3].data) == 0;
+		else
+			return val1 <= val3;
+	}
+
+	return 0; // by default, return false
+}
+
 /*
 ** Run the original sqlite parser on the given SQL string.  
-** Identify critical tokens in query
+** out:
+**    Identify critical tokens in query
+**    Simple tautology detector for OR clause
 ** 
 ** original code: SQLITE_PRIVATE int sqlite3_sqlite3RunParser(Parse *pParse, const char *zSql, char **pzErrMsg){
 */
-int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
+int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure, int *is_tautology)
 {
   Parse *pParse;
   int nErr = 0;                   /* Number of errors encountered */
@@ -333,6 +464,15 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
   int comment_2_started = 0;
   int result_flag = S3_SQL_SAFE;
   int verbose = getenv("APPFW_VERBOSE") ? TRUE : FALSE;
+  int very_verbose = getenv("APPFW_VERY_VERBOSE") ? TRUE : FALSE;
+
+  // for tautology detection
+  struct tt_sql_tokens tt_tokens[TT_NUM_TOKENS];
+  int tt_num_tokens = 0;
+  int tt_do_save_tokens = 0;
+  *is_tautology = 0; 
+
+  tt_clear(tt_tokens, TT_NUM_TOKENS);
 
   // by default mark critial tokens as security violations
   // in a subsequent stage, we will attempt to bless them via dna shotgun sequencing
@@ -358,7 +498,6 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
     fprintf(stderr,"Failed to allocated space for pEngine\n");
     return S3_SQL_PARSE_ERROR;
   }
-
 
   while( zSql[i]!=0 ) {
 	pParse->sLastToken.z = &zSql[i];
@@ -397,7 +536,7 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
  		// here we have a SQL terminator; we need to parse the next statement
 		// so we recursively call ourself
 		if (end+1 < strlen(zSql))
-          return result_flag | sqlfw_get_structure(&zSql[end+1], &p_annot[end+1], p_structure);
+          return result_flag | sqlfw_get_structure(&zSql[end+1], &p_annot[end+1], p_structure, is_tautology);
         else
 		{
 		  return result_flag; // semicolon was the last character in the entire statement return 
@@ -407,13 +546,13 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
 	  // show token info
 	  
 
-/*
-        fprintf(stderr, "\n----------------------\n");
-        fprintf(stderr, "token: [");
-        for (k = beg; k <= end; ++k)
-		  fprintf(stderr,"%c (%d)", zSql[k], p_annot[k]);
-		fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
-*/
+		if (very_verbose) {
+        	fprintf(stderr, "\n----------------------\n");
+	        fprintf(stderr, "token: [");
+			for (k = beg; k <= end; ++k)
+				fprintf(stderr,"%c (%d)", zSql[k], p_annot[k]);
+			fprintf(stderr, "] type: %d  [%d..%d]\n", tokenType, beg, end);
+		}
 		
         appfw_sqlite3Parser(pEngine, tokenType, pParse->sLastToken, pParse);
 
@@ -423,12 +562,55 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
 		  continue;
         }
 
+    if (tokenType == TK_OR && tt_num_tokens == 0 && (*is_tautology == 0)) 
+	  tt_do_save_tokens = 1;
+
+	if (tt_do_save_tokens)
+	{
+	  switch(tt_num_tokens) {
+        case 0: // this must be the OR
+	      tt_save_token(tt_tokens, &tt_num_tokens, tokenType, zSql, beg, end);
+		  break;
+        case 1: // this must be a string, an integer or a float
+		  if (tokenType == TK_STRING || tokenType == TK_INTEGER || tokenType == TK_FLOAT)
+		  {
+  	        tt_save_token(tt_tokens, &tt_num_tokens, tokenType, zSql, beg, end);
+		  }
+		  else
+		  {
+		    tt_clear(tt_tokens, TT_NUM_TOKENS);
+			tt_do_save_tokens = 0;
+		  }
+		  break;
+        case 2: // this must be an operator:   =, >, <, >=, <=
+		  if (tokenType == TK_EQ || tokenType == TK_NE || tokenType == TK_GT || tokenType == TK_LT || tokenType == TK_GE || tokenType == TK_LE)
+		  {
+  	        tt_save_token(tt_tokens, &tt_num_tokens, tokenType, zSql, beg, end);
+		  }
+		  else
+		  {
+		    tt_clear(tt_tokens, TT_NUM_TOKENS);
+			tt_do_save_tokens = 0;
+		  }
+		  break;
+        case 3: // this must be a string, an integer or a float
+		  if (tokenType == TK_STRING || tokenType == TK_INTEGER || tokenType == TK_FLOAT)
+		  {
+	        tt_save_token(tt_tokens, &tt_num_tokens, tokenType, zSql, beg, end);
+		    *is_tautology = tt_detect(tt_tokens, tt_num_tokens); // detect tautology here
+		  }
+		  tt_clear(tt_tokens, TT_NUM_TOKENS);
+		  tt_do_save_tokens = 0;
+		  break;
+	  }
+	}
+
+
 		char temp_identifier[4096];	
         switch (tokenType) {
 		// so here we would need to add all the token types that should not be p_annot
 		// this would be any SQL keywords
 	
-		
 		  case TK_STRING: 
 			strcat(p_structure, "d ");
 			break;
@@ -446,16 +628,15 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
 			// if it's one of the identifier we care about, then fallthrough
 
 		// list is not exhaustive, need to track all relevant ones
-
 		  case TK_EXPLAIN:
 		  case TK_ANALYZE:
-		  case TK_OR:
 		  case TK_AND:
 		  case TK_IS:
 		  case TK_BETWEEN:
 		  case TK_IN:
 		  case TK_ISNULL:
 		  case TK_NOTNULL:
+		  case TK_OR:
                   case TK_NE:
                   case TK_EQ:
                   case TK_GT:
@@ -509,10 +690,10 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure)
 			strcat(p_structure, " ");
 	      }
 		  break;
-	}
+	} // end switch (tokenType) for critical identifiers
         break;
       }
-    }
+    } // end switch (tokenType)
 
 	// handle comments
 	if (end + 1 < strlen(zSql))
@@ -589,3 +770,5 @@ void sqlfw_save_query_structure_cache(const char *p_file)
 {
 	saveQueryStructureCache(p_file);
 }
+
+
