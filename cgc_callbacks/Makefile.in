@@ -1,0 +1,13 @@
+
+
+CC=@CC@
+CFLAGS=@CFLAGS@
+
+dirs=@DIRS@ lib
+
+all:
+	for i in ${dirs};  do cd $$i; make; cd ..; done
+	
+clean:
+	for i in ${dirs};  do cd $$i; make clean; cd ..; done
+
