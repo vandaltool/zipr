@@ -65,6 +65,7 @@ class Zipr_t
 		void AddPinnedInstructions();
 		void ResolvePinnedInstructions();
 		void ReservePinnedInstructions();
+		void PreReserve2ByteJumpTargets();
 		void ExpandPinnedInstructions();
 		void Fix2BytePinnedInstructions();
 		void OptimizePinnedInstructions();
@@ -74,6 +75,7 @@ class Zipr_t
 
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
+		void MergeFreeRange(RangeAddress_t addr);
 		std::list<Range_t>::iterator FindFreeRange(RangeAddress_t addr);
 		Range_t GetFreeRange(int size);
 
@@ -107,6 +109,8 @@ class Zipr_t
 		// helpers.
 		void ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p);
 		void InsertNewSegmentIntoExe(std::string old_file, std::string new_file, RangeAddress_t sec_start);
+		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
+		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
 
 
 	private:

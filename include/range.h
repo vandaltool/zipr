@@ -38,9 +38,19 @@ class Range_t
 {
 	public:
 		Range_t(RangeAddress_t p_s, RangeAddress_t p_e) : m_start(p_s), m_end(p_e) { }
+		Range_t() : m_start(0), m_end(0) { }
 
 		RangeAddress_t GetStart() { return m_start; }
 		RangeAddress_t GetEnd() { return m_end; }
+
+		bool Is2ByteRange()
+		{
+			return (m_end - m_start) == 2;
+		};
+		bool Is5ByteRange()
+		{
+			return (m_end - m_start) == 5;
+		};
 
 	protected:
 
