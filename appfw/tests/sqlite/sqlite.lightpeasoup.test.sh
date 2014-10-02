@@ -73,33 +73,40 @@ fi
 assert_test_args $*
 assert_test_env $outfile STRATAFIER STRATA TOOLCHAIN IDAROOT IDASDK PEASOUP_HOME SECURITY_TRANSFORMS_HOME
 
+# path to source
 cd $TESTLOC
-
-# let's do it all over again 
-# but this time with the full Peasoup suite of protection
-make clean peasoup
+make clean lightpeasoup
 if [ ! $? -eq 0 ]; then
-	cleanup 6 "Failed to build sqlite Peasoup tests"
+	cleanup 1 "Failed to build sqlite Peasoup light tests"
 fi
+
+export APPFW_VERBOSE=1
+
+#
+# testpg2.peasoup
+#
+dbname=testdata
+
+sqlite3 $dbname < ./teardown.sql 2>/dev/null   # in case we have leftover from previous run
 sqlite3 $dbname < ./setup.sql
 
 # good query
 echo "Testing good query"
 rm -f $tmp 2>/dev/null
-QUERY_DATA=David ./testsqlite.peasoup > $tmp 2>&1
+QUERY_DATA=David ./testsqlite.lightpeasoup > $tmp 2>&1
 grep -i "last = Hyde" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
-	cleanup 7 "False positive detected: query for testsqlite.peasoup should have succeeded"
+	cleanup 2 "False positive detected: query for testsqlite.peasoup should have succeeded"
 fi
 
 echo "Testing attack detection"
 rm -f $tmp
-QUERY_DATA="David' or '0'='0" ./testsqlite.peasoup > $tmp 2>&1
+QUERY_DATA="David' or '0'='0" ./testsqlite.lightpeasoup > $tmp 2>&1
 grep -i "injection" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
-	cleanup 8 "False negative detected: attack query for testsqlite.peasoup should have failed"
+	cleanup 3 "False negative detected: attack query for testsqlite.lightpeasoup should have failed"
 fi
 
 #
@@ -107,20 +114,22 @@ fi
 #
 echo "Testing parameterized statement"
 rm -f $tmp
-./testsqlite.pstmt.peasoup > $tmp 2>&1
+./testsqlite.pstmt.lightpeasoup > $tmp 2>&1
 grep -i "Hyde" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
-	cleanup 9 "False positive detected: query for testsqlite.peasoup should have succeeded"
+	cleanup 4 "False positive detected: query for testsqlite.lightpeasoup should have succeeded"
 fi
 
 echo "Testing attack on parameterized statement"
 rm -f $tmp
-QUERY_DATA=" or 1 = 1 -- " ./testsqlite.pstmt.peasoup > $tmp 2>&1
+QUERY_DATA=" or 1 = 1 -- " ./testsqlite.pstmt.lightpeasoup > $tmp 2>&1
 grep -i "injection" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
-	cleanup 10 "False negative detected: should have detected attack on parameterized stmt"
+	cleanup 5 "False negative detected: should have detected attack on parameterized stmt"
 fi
 
-cleanup 0 "Successfully detected sqlite SQL Injection on Full peasoup"
+sqlite3 $dbname < ./teardown.sql
+
+cleanup 0 "Successfully detected sqlite SQL Injection using a light version of Peasoup"
