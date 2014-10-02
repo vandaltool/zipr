@@ -51,6 +51,7 @@ appfw/tests/mysql/testintercept2.c -text
 appfw/tests/mysql/testintercept3.c -text
 appfw/tests/mysql/testintercept4.c -text
 appfw/tests/mysql/testmysql.c -text
+appfw/tests/mysql/testtautology.c -text
 appfw/tests/odbc/Makefile -text
 appfw/tests/odbc/odbc_exec_direct.c -text
 appfw/tests/odbc/testodbc.c -text

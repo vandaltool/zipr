@@ -105,5 +105,70 @@ if [ ! $? -eq 0 ]; then
 	cleanup 4 "False negative detected: should have intercepted and stopped attack query"
 fi
 
+#
+# test tautologies
+#
+APPFW_VERBOSE=1 QUERY_DATA="David' or '0'='0"  ./testtautology.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 5 "False negative detected: should have detected tautology"
+fi
+
+APPFW_VERBOSE=1 QUERY_DATA="David' or '0'>='0"  ./testtautology.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 6 "False negative detected: should have detected tautology"
+fi
+
+APPFW_VERBOSE=1 QUERY_DATA="David' or '0'<='0"  ./testtautology.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 7 "False negative detected: should have detected tautology"
+fi
+
+APPFW_VERBOSE=1 QUERY_DATA="David' or 0=0 "  ./testtautology.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 8 "False negative detected: should have detected tautology"
+fi
+
+APPFW_VERBOSE=1 QUERY_DATA="David' or 1>=0 "  ./testtautology.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 9 "False negative detected: should have detected tautology"
+fi
+
+APPFW_VERBOSE=1 QUERY_DATA="David' or 23<=24 "  ./testtautology.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 10 "False negative detected: should have detected tautology"
+fi
+
+APPFW_VERBOSE=1 QUERY_DATA="David' or 0.5=0.5 "  ./testtautology.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 11 "False negative detected: should have detected tautology"
+fi
+
+APPFW_VERBOSE=1 QUERY_DATA="David' or 1.25>=1 "  ./testtautology.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 12 "False negative detected: should have detected tautology"
+fi
+
+APPFW_VERBOSE=1 QUERY_DATA="David' or 23<=24.05 "  ./testtautology.exe.peasoup > $tmp 2>&1
+grep -i "injection" $tmp
+if [ ! $? -eq 0 ]; then
+	cat $tmp
+	cleanup 13 "False negative detected: should have detected tautology"
+fi
 
 cleanup 0 "Successfully tested mysql interception layer"
