@@ -53,6 +53,12 @@ int main(int argc, char* argv[])
         VariantID_t *pidp=NULL;
         FileIR_t * firp=NULL;
 
+	if ((!options->GetVariantID()))
+	{
+		Options_t::print_usage(argc, argv);
+		return 1;
+	}
+
         try
         {
                 /* setup the interface to the sql server */

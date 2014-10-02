@@ -4,10 +4,13 @@ include/range.h -text
 include/unresolved.h -text
 include/zipr.h -text
 include/zipr_all.h -text
+include/zipr_optimizations.h -text
 include/zipr_options.h -text
+include/zipr_stats.h -text
 src/Makefile -text
 src/main.cpp -text
 src/zipr.cpp -text
+src/zipr_options.cpp -text
 third_party/ELFIO/elfio-2.2/AUTHORS -text
 third_party/ELFIO/elfio-2.2/COPYING -text
 third_party/ELFIO/elfio-2.2/ChangeLog -text

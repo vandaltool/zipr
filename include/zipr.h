@@ -31,12 +31,14 @@
 #ifndef zipr_h
 #define zipr_h
 
+class Options_t;
+class Stats_t;
 
 class Zipr_t
 {
 	public:
-		Zipr_t(libIRDB::FileIR_t* p_firp, const Options_t &p_opts)
-			: m_firp(p_firp), m_opts(p_opts) 
+		Zipr_t(libIRDB::FileIR_t* p_firp, Options_t &p_opts)
+			: m_firp(p_firp), m_opts(p_opts)
 		{ 
                 	total_dollops=0;
                 	total_dollop_space=0;
@@ -55,13 +57,15 @@ class Zipr_t
 
 		// data for the stuff we're rewriting.
 		libIRDB::FileIR_t* m_firp;
-		const Options_t& m_opts;
+		Options_t& m_opts;
+		Stats_t *m_stats;
 
 		// phases of rewriting.
 		void FindFreeRanges(const std::string &name);
 		void AddPinnedInstructions();
 		void ResolvePinnedInstructions();
 		void ReservePinnedInstructions();
+		void PreReserve2ByteJumpTargets();
 		void ExpandPinnedInstructions();
 		void Fix2BytePinnedInstructions();
 		void OptimizePinnedInstructions();
@@ -71,6 +75,7 @@ class Zipr_t
 
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
+		void MergeFreeRange(RangeAddress_t addr);
 		std::list<Range_t>::iterator FindFreeRange(RangeAddress_t addr);
 		Range_t GetFreeRange(int size);
 
@@ -104,6 +109,8 @@ class Zipr_t
 		// helpers.
 		void ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p);
 		void InsertNewSegmentIntoExe(std::string old_file, std::string new_file, RangeAddress_t sec_start);
+		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
+		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
 
 
 	private:

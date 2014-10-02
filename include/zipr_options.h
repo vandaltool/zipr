@@ -31,28 +31,36 @@
 #ifndef zipr_options_h
 #define zipr_options_h
 
+#include <zipr_all.h>
 #include <string>
-// #include <libIRDB-core.hpp>
+#include <unistd.h>
+#include <libIRDB-core.hpp>
 
 class Options_t 
 {
 	public:
-		Options_t() : m_outname("b.out") { };
+		Options_t() : m_outname("b.out") { }
 
-		static Options_t* parse_args(int p_argc, char* p_argv[]) 
-		{ 
-			Options_t *opt=new Options_t;
-			assert(opt);
-			opt->m_var_id=::atoi(p_argv[1]); 
-			return opt;
-		};
-		
+		static Options_t* parse_args(int p_argc, char* p_argv[]);
+		static void print_usage(int p_argc, char *p_argv[]);
+
 		std::string GetOutputFileName(libIRDB::File_t* p_file) { return m_outname; }
 		int GetVariantID() { return m_var_id; }
+		
+		void EnableOptimization(Optimizations_t::OptimizationName_t opt) 
+		{ 
+			EnabledOptimizations[opt] = 1; 
+		};
+
+		bool IsEnabledOptimization(Optimizations_t::OptimizationName_t opt) 
+		{ 
+			return EnabledOptimizations[opt] == 1; 
+		};
 
 	private:
 		std::string m_outname;
 		int m_var_id;
+		int EnabledOptimizations[Optimizations_t::NumberOfOptimizations];
 };
 
 #endif

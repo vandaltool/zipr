@@ -71,10 +71,45 @@ inline bool operator< (const UnresolvedUnpinned_t& lhs, const UnresolvedUnpinned
 class UnresolvedPinned_t : public UnresolvedInfo_t
 {
 	public:
-		UnresolvedPinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from) {}
+		UnresolvedPinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from), m_range(0,0), m_updated_address(0) {}
+		UnresolvedPinned_t(libIRDB::Instruction_t* p_from, Range_t range) : from_instruction(p_from), m_range(range) {}
 		libIRDB::Instruction_t* GetInstruction() const { return from_instruction; }
+
+		/*
+		 * Use the range to store the place where 
+		 * reserved space is held for this
+		 * instruction.
+		 */
+		Range_t GetRange() const { return m_range; };
+		void SetRange(Range_t range) { m_range = range; };
+		bool HasRange()
+		{
+			return m_range.GetStart() != 0 || m_range.GetEnd() != 0;
+		};
+
+		/*
+		 * Store an address with the UnresolvedPinned
+		 * in case this instruction needs to float
+		 * through the program based on a chain
+		 * of two-byte calls.
+		 */
+		bool HasUpdatedAddress()
+		{
+			return m_updated_address != 0;
+		};
+		void SetUpdatedAddress(RangeAddress_t address)
+		{
+			m_updated_address = address;
+		};
+		RangeAddress_t GetUpdatedAddress()
+		{
+			return m_updated_address;
+		};
+
 	private:
 		libIRDB::Instruction_t* from_instruction;
+		Range_t m_range;
+		RangeAddress_t m_updated_address;
 
 	friend bool operator< (const UnresolvedPinned_t& lhs, const UnresolvedPinned_t& rhs);
 		

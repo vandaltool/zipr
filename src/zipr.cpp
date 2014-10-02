@@ -54,6 +54,7 @@ using namespace ELFIO;
 
 void Zipr_t::CreateBinaryFile(const std::string &name)
 {
+	m_stats = new Stats_t();
 
 	// create ranges, including extra range that's def. big enough.
 	FindFreeRanges(name);
@@ -64,11 +65,30 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	// reserve space for pins
 	ReservePinnedInstructions();
 
+	PreReserve2ByteJumpTargets();
+
 	// expand 2-byte pins into 4-byte pins
 	ExpandPinnedInstructions();
 
-	// Allocate space near 2-byte pins for a 5-byte pin
-	Fix2BytePinnedInstructions();
+	while (!two_byte_pins.empty()) 
+	{
+		/*
+		 * Put down the five byte targets
+		 * for two byte jumps, if any exist.
+		 */
+		printf("Going to Fix2BytePinnedInstructions.\n");
+		Fix2BytePinnedInstructions();
+
+		/*
+		 * If there are still two byte pins, 
+		 * try the dance again.
+		 */
+		if (!two_byte_pins.empty())
+		{
+			printf("Going to Re PreReserve2ByteJumpTargets.\n");
+			PreReserve2ByteJumpTargets();
+		}
+	}
 
 	// Convert all 5-byte pins into full fragments
 	OptimizePinnedInstructions();
@@ -96,15 +116,54 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 	RangeAddress_t last_end=0;
 	RangeAddress_t max_addr=0;
 
-	// For all sections
+	std::map<RangeAddress_t, int> ordered_sections;
+
+	/*
+	 * Make an ordered list of the sections
+	 * by their starting address.
+	 */
 	Elf_Half n = elfiop->sections.size();
 	for ( Elf_Half i = 0; i < n; ++i ) 
 	{ 
 		section* sec = elfiop->sections[i];
 		assert(sec);
+		ordered_sections.insert(std::pair<RangeAddress_t,int>(sec->get_address(), i));
+	}
+
+	std::map<RangeAddress_t, int>::iterator it = ordered_sections.begin();
+	for (;it!=ordered_sections.end();) 
+	{ 
+		section* sec = elfiop->sections[it->second];
+		assert(sec);
 
 		RangeAddress_t start=sec->get_address();
 		RangeAddress_t end=sec->get_size()+start-1;
+
+		printf("Section %s:\n", sec->get_name().c_str());
+
+		++it;
+		if (false)
+		//if ((++it) != ordered_sections.end())
+		{
+			/*
+			 * TODO: This works. However, the updated
+			 * section size is not properly handled
+			 * in OutputBinaryFile. So, it is disabled
+			 * until that is handled.
+			 */
+			section *next_section = elfiop->sections[it->second];
+
+			printf("Using %s as the next section (%p).\n", 
+				next_section->get_name().c_str(), 
+				(void*)next_section->get_address());
+			printf("Modifying the section end. Was %p.", (void*)end);
+
+			end = next_section->get_address() - 1;
+			sec->set_size(end - start);
+			
+			printf(". Is %p.\n", (void*)end);
+
+		}
 
 		printf("max_addr is %p, end is %p\n", (void*)max_addr, (void*)end);
 		if(start && end>max_addr)
@@ -185,6 +244,100 @@ list<Range_t>::iterator Zipr_t::FindFreeRange(RangeAddress_t addr)
 	return free_ranges.end();
 }
 
+void Zipr_t::MergeFreeRange(RangeAddress_t addr)
+{
+	/*
+	 * Make a new range of one byte.
+	 * 
+	 * Then, look to see whether or not it
+	 * can be merged with another range. 
+	 *
+	 * If not, add it as a one byte range.
+	 */
+
+	Range_t nr(addr, addr);
+	bool merged = false;
+	list<Range_t>::iterator it=free_ranges.begin();
+	for(;it!=free_ranges.end();++it)
+	{
+		Range_t r=*it;
+		if ((addr+1) == r.GetStart()) {
+			/*
+			 * Make the beginning of this range
+			 * one byte smaller!
+			 */
+			Range_t nnr(addr, r.GetEnd());
+			printf("Expanded range:\n");
+			printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
+			printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
+			free_ranges.insert(it, nnr);
+			free_ranges.erase(it);
+			nr = nnr;
+			merged = true;
+			break;
+		} else if ((addr-1) == r.GetEnd()) {
+			/*
+			 * Make the end of this range one byte
+			 * bigger
+			 */
+			Range_t nnr(r.GetStart(), addr);
+			printf("Expanded range:\n");
+			printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
+			printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
+			free_ranges.insert(it, nnr);
+			free_ranges.erase(it);
+			nr = nnr;
+			merged = true;
+			break;
+		}
+	}
+
+	if (!merged)
+		free_ranges.insert(it, nr);
+
+	/*
+	 * Correctness: 
+	 * Take a pass through and see if there are
+	 * free ranges that can now be merged. This
+	 * is important because it's possible that
+	 * we added the byte to the end of a range
+	 * where it could also have gone at the
+	 * beginning of another.
+	 */
+	for(it=free_ranges.begin();it!=free_ranges.end();++it)
+	{
+		Range_t r = *it;
+		if ((
+				/*
+				 * <--r-->
+				 *    <--nr-->
+				 */
+				(r.GetEnd() >= nr.GetStart() &&
+				r.GetEnd() <= nr.GetEnd()) ||
+				/*
+				 *     <--r-->
+				 * <--nr-->
+				 */
+				(r.GetStart() <= nr.GetEnd() &&
+				r.GetEnd() >= nr.GetEnd())
+				) &&
+				(r.GetStart() != nr.GetStart() ||
+				r.GetEnd() != nr.GetEnd()))
+		{
+			/*
+			 * merge.
+			 */
+			Range_t merged_range(std::min(r.GetStart(), nr.GetStart()), std::max(r.GetEnd(), nr.GetEnd()));
+			printf("Merged two ranges:\n");
+			printf("1: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
+			printf("2: %p to %p\n", (void*)nr.GetStart(), (void*)nr.GetEnd());
+			free_ranges.insert(it, merged_range);
+			free_ranges.erase(it);
+			return;
+		}
+	}
+}
+
 void Zipr_t::SplitFreeRange(RangeAddress_t addr)
 {
 	list<Range_t>::iterator it=FindFreeRange(addr);
@@ -215,11 +368,36 @@ void Zipr_t::SplitFreeRange(RangeAddress_t addr)
 	}
 }
 
+Instruction_t *Zipr_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
+{
+	for(
+		set<Instruction_t*>::const_iterator it=m_firp->GetInstructions().begin();
+		it!=m_firp->GetInstructions().end();
+		++it
+	)
+	{
+		RangeAddress_t ibta_addr;
+		Instruction_t* insn=*it;
+		assert(insn);
 
-static bool should_pin_immediately(Instruction_t *upinsn)
+		if(!insn->GetIndirectBranchTargetAddress()) {
+			continue;
+		}
+		ibta_addr=(unsigned)insn->
+			GetIndirectBranchTargetAddress()->
+			GetVirtualOffset();
+
+		if (addr == ibta_addr)
+			return insn;
+	}
+	return NULL;
+}
+
+bool Zipr_t::ShouldPinImmediately(Instruction_t *upinsn)
 {
 	DISASM d;
 	upinsn->Disassemble(d);
+	Instruction_t *pin_at_next_byte = NULL;
 
 	if(d.Instruction.BranchType==RetType)
 		return true;
@@ -237,7 +415,122 @@ static bool should_pin_immediately(Instruction_t *upinsn)
 			return true;
 	}
 
+	/*
+	 * lock cmpxchange op1 op2 [pinned at x]
+	 * x    x+1        x+2 x+3
+	 * 
+	 * pin at x and pin at x+1
+	 *
+	 * x should become nop, put down immediately
+	 * x+1 should become the entire lock command.
+	 */
+	if ((pin_at_next_byte = 
+		FindPinnedInsnAtAddr(upinsn_ibta->GetVirtualOffset() + 1)) != NULL)
+	{
+		printf("Using pin_at_next_byte special case.\n");
+		/*
+		 * Because upinsn is longer than 
+		 * 1 byte, we must be somehow
+		 * pinned into ourselves. Fix!
+		 */
+
+		/*
+		 * Make pin_at_next_byte look like upinsn.
+		 */
+		pin_at_next_byte->SetDataBits(upinsn->GetDataBits());
+		pin_at_next_byte->SetComment(upinsn->GetComment());
+		pin_at_next_byte->SetCallback(upinsn->GetCallback());
+		pin_at_next_byte->SetFallthrough(upinsn->GetFallthrough());
+		pin_at_next_byte->SetTarget(upinsn->GetTarget());
+		/*
+		 * Convert upins to nop.
+		 */
+		string dataBits = upinsn->GetDataBits();
+		dataBits.resize(1);
+		dataBits[0] = 0x90;
+		upinsn->SetDataBits(dataBits);
+
+		return true;
+	}
 	return false;
+}
+
+void Zipr_t::PreReserve2ByteJumpTargets()
+{
+	for(set<UnresolvedPinned_t>::const_iterator it=two_byte_pins.begin();
+		it!=two_byte_pins.end();
+		)
+	{
+		UnresolvedPinned_t up=*it;
+		bool found_close_target = false;
+		Instruction_t* upinsn=up.GetInstruction();
+
+		RangeAddress_t addr;
+		
+		if (up.HasUpdatedAddress())
+		{
+			addr = up.GetUpdatedAddress();
+		}
+		else
+		{
+			addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+		}
+
+		/*
+		 * Check for near branch instructions
+		 * by starting far away!
+		 * Note: two byte jump range is 127 bytes, 
+		 * but that's from the pc after it's been 
+		 * inc, etc. complicated goo. 120 is a 
+		 * safe estimate of range.
+		 */
+		for(int size=5;size>0;size-=3) 
+		{
+			printf("Looking for %d-byte jump targets to pre-reserve.\n", size);
+			for(int i=120;i>=-120;i--)
+			{
+				if(AreBytesFree(addr+i,size))
+				{
+					printf("Found location for 2-byte->%d-byte conversion "
+						"(%p-%p)->(%p-%p) (orig: %p)\n", 
+						size,
+						(void*)addr,
+						(void*)(addr+1),
+						(void*)(addr+i),
+						(void*)(addr+i+size),
+						(void*)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+
+					up.SetRange(Range_t(addr+i, addr+i+size));
+					for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+					{
+						SplitFreeRange(j);
+					}
+					found_close_target = true;
+					break;
+				}
+			}
+			if (found_close_target)
+				break;
+		}
+
+		if (!found_close_target)
+		{
+			printf("FATAL: No location for near jump reserved.\n");
+			assert(false);
+			++it;
+		}
+		else
+		{
+			UnresolvedPinned_t new_up = UnresolvedPinned_t(up.GetInstruction(), up.GetRange());
+			if (up.HasUpdatedAddress())
+			{
+				new_up.SetUpdatedAddress(up.GetUpdatedAddress());
+			}
+			two_byte_pins.erase(it++);
+			two_byte_pins.insert(new_up);
+				
+		}
+	}
 }
 
 void Zipr_t::ReservePinnedInstructions()
@@ -267,7 +560,7 @@ void Zipr_t::ReservePinnedInstructions()
 		 * so, we attempt to pin any 1-byte instructions with no fallthrough (returns are most common) immediately.
 		 * we also attempt to pin any 1-byte insn that falls through to the next pinned address (nops are common).
 		 */
-		if(should_pin_immediately(upinsn))
+		if(ShouldPinImmediately(upinsn))
 		{
 			printf("Final pinning %p-%p.  fid=%d\n", (void*)addr, (void*)(addr+upinsn->GetDataBits().size()-1),
 				upinsn->GetAddress()->GetFileID());
@@ -281,9 +574,13 @@ void Zipr_t::ReservePinnedInstructions()
 		}
 
 		char bytes[]={0xeb,0}; // jmp rel8
-		printf("Two-byte Pinning %p-%p.  fid=%d\n", (void*)addr, (void*)(addr+sizeof(bytes)-1),
-				upinsn->GetAddress()->GetFileID());
-	
+
+		printf("Two-byte Pinning %p-%p.  fid=%d\n", 
+			(void*)addr, 
+			(void*)(addr+sizeof(bytes)-1),
+			upinsn->GetAddress()->GetFileID());
+		printf("%s\n", upinsn->GetComment().c_str());
+
 		two_byte_pins.insert(up);
 		for(int i=0;i<sizeof(bytes);i++)
 		{
@@ -292,23 +589,20 @@ void Zipr_t::ReservePinnedInstructions()
 			SplitFreeRange(addr+i);
 		}
 	}
-
 }
-
 
 void Zipr_t::ExpandPinnedInstructions()
 {
 	/* now, all insns have 2-byte pins.  See which ones we can make 5-byte pins */
 	
-        for(   
-		set<UnresolvedPinned_t>::const_iterator it=two_byte_pins.begin();
-                it!=two_byte_pins.end();
-           )
+	for(
+		set<UnresolvedPinned_t>::iterator it=two_byte_pins.begin();
+		it!=two_byte_pins.end();
+		)
 	{
 		UnresolvedPinned_t up=*it;
 		Instruction_t* upinsn=up.GetInstruction();
 		RangeAddress_t addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
-
 
 		char bytes[]={0xe9,0,0,0,0}; // jmp rel8
 		bool can_update=AreBytesFree(addr+2,sizeof(bytes)-2);
@@ -316,6 +610,16 @@ void Zipr_t::ExpandPinnedInstructions()
 		{
 			printf("Found %p can be updated to 5-byte jmp\n", (void*)addr);
 			PlopJump(addr);
+
+			/*
+			 * Unreserve those bytes that we reserved before!
+			 */
+			for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+			{
+				MergeFreeRange(j);
+			}
+			up.SetRange(Range_t(0,0));
+
 			five_byte_pins[up]=addr;
 			two_byte_pins.erase(it++);
 			total_5byte_pins++;
@@ -323,7 +627,7 @@ void Zipr_t::ExpandPinnedInstructions()
 		}
 		else
 		{
-                	++it;
+			++it;
 			printf("Found %p can NOT be updated to 5-byte jmp\n", (void*)addr);
 			total_2byte_pins++;
 			total_trampolines++;
@@ -337,46 +641,92 @@ void Zipr_t::ExpandPinnedInstructions()
 
 void Zipr_t::Fix2BytePinnedInstructions()
 {
-        for(   
+	for(
 		set<UnresolvedPinned_t>::const_iterator it=two_byte_pins.begin();
-                it!=two_byte_pins.end();
-           )
+		it!=two_byte_pins.end();
+		)
 	{
 		UnresolvedPinned_t up=*it;
 		Instruction_t* upinsn=up.GetInstruction();
-		RangeAddress_t addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
-
-		// check for near branch instructions
-		for(int i=0;i<120;i++)	// two byte jump range is 127 bytes, but that's from the pc after it's been inc, etc. complicated goo.  120 is a safe estimate of range.
+		RangeAddress_t addr;
+		
+		if (up.HasUpdatedAddress())
 		{
-			if(AreBytesFree(addr-i,5))
-			{
-				printf("Found location for 2-byte->5-byte conversion (%p-%p)->(%p-%p)\n", 
-					(void*)addr,(void*)(addr+1), (void*)(addr-i),(void*)(addr-i+4)); 
+			addr = up.GetUpdatedAddress();
+		}
+		else
+		{
+			addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
+		}
 
-				five_byte_pins[up]=addr-i;
-				PlopJump(addr-i);
-				PatchJump(addr, addr-i);
-				break;
-			}
-			else if(AreBytesFree(addr+i,5))
+		if (up.HasRange())
+		{
+			/*
+			 * Always clear out the previously reserved space.
+			 */
+			for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
 			{
-				printf("Found location for 2-byte->5-byte conversion (%p-%p)->(%p-%p)\n", 
-					(void*)addr,(void*)(addr+1), (void*)(addr+i),(void*)(addr+i+5)); 
+				MergeFreeRange(j);
+			}
 
-				five_byte_pins[up]=addr+i;
-				PlopJump(addr+i);
-				PatchJump(addr, addr+i);
-				break;
-			}
-			else
+			if (up.GetRange().Is5ByteRange()) 
 			{
-//				printf("Not free at %p or %p\n", (void*)(addr-i),(void*)(addr+i));
+				printf("Using previously reserved spot of 2-byte->5-byte conversion "
+					"(%p-%p)->(%p-%p) (orig: %p)\n", 
+					(void*)addr,
+					(void*)(addr+1),
+					(void*)(up.GetRange().GetStart()),
+					(void*)(up.GetRange().GetEnd()),
+					(void*)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+
+				five_byte_pins[up] = up.GetRange().GetStart();
+				PlopJump(up.GetRange().GetStart());
+				PatchJump(addr, up.GetRange().GetStart());
+
+				two_byte_pins.erase(it++);
+			}
+			else if (up.HasRange() && up.GetRange().Is2ByteRange()) 
+			{
+				/*
+				 * Add jump to the reserved space.
+				 * Make an updated up that has a new
+				 * "addr" so that addr is handled 
+				 * correctly the next time through.
+				 *
+				 * Ie tell two_byte_pins list that
+				 * the instruction is now at the jump
+				 * target location.
+				 */
+				UnresolvedPinned_t new_up = 
+					UnresolvedPinned_t(up.GetInstruction());
+				new_up.SetUpdatedAddress(up.GetRange().GetStart());
+
+				char bytes[]={0xeb,0}; // jmp rel8
+				for(int i=0;i<sizeof(bytes);i++)
+				{
+					assert(byte_map.find(up.GetRange().GetStart()+i) == byte_map.end() );
+					byte_map[up.GetRange().GetStart()+i]=bytes[i];
+					SplitFreeRange(up.GetRange().GetStart()+i);
+					assert(!IsByteFree(up.GetRange().GetStart()+i));
+				}
+
+				printf("Patching 2 byte to 2 byte: %p to %p (orig: %p)\n", 
+					(void*)addr,
+					(void*)up.GetRange().GetStart(),
+					(void*)upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset());
+
+				PatchJump(addr, up.GetRange().GetStart());
+				two_byte_pins.erase(it++);
+				two_byte_pins.insert(new_up);
 			}
 		}
-		two_byte_pins.erase(it++);
+		else
+		{
+			printf("FATAL: Two byte pin without reserved range: %p\n", (void*)addr);
+			assert(false);
+			it++;
+		}
 	}
-
 }
 
 
@@ -578,19 +928,41 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 		DISASM d;
 		cur_insn->Disassemble(d);
 		int id=cur_insn->GetBaseID();
-		printf("Emitting %d:%s at %p until ", id, d.CompleteInstr, (void*)cur_addr);
-		cur_addr=PlopInstruction(cur_insn,cur_addr);
-		printf("%p\n", (void*)cur_addr);
-		cur_insn=cur_insn->GetFallthrough();
-		insn_count++;
+		RangeAddress_t to_addr;
+		/*
+		 * Check to see if id is already plopped somewhere.
+		 * If so, emit a jump to it and break.
+		 * TODO: Test and enable.
+		 */
+		if (false)
+		//if ((to_addr=final_insn_locations[to_insn]) != 0)
+		{
+			printf("Fallthrough loop detected. "
+				"Emitting jump from %p to %p.\n",
+				(void*)cur_addr,
+				(void*)to_addr);
+			PlopJump(cur_addr);
+			PatchJump(cur_addr, to_addr);
+			cur_insn = NULL;
+			cur_addr+=5;
+			break;
+		}
+		else
+		{
+			printf("Emitting %d:%s at %p until ", id, d.CompleteInstr, (void*)cur_addr);
+			cur_addr=PlopInstruction(cur_insn,cur_addr);
+			printf("%p\n", (void*)cur_addr);
+			cur_insn=cur_insn->GetFallthrough();
+			insn_count++;
+		}
 	}
 	if(cur_insn)
 	{
 		// Mark this insn as needing a patch since we couldn't completely empty 
 		// the 'fragment' we are translating into the elf section.
-                UnresolvedUnpinned_t uu(cur_insn);
-                Patch_t thepatch(cur_addr,UncondJump_rel32);
-                patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
+		UnresolvedUnpinned_t uu(cur_insn);
+		Patch_t thepatch(cur_addr,UncondJump_rel32);
+		patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
 		PlopJump(cur_addr);
 		truncated="truncated due to lack of space.";
 		total_tramp_space+=5;
@@ -946,8 +1318,6 @@ void Zipr_t::OutputBinaryFile(const string &name)
 		{
 			b=byte_map[i];
 		}
-
-	
 		if(i-start_of_new_space<200)// keep verbose output short enough.
 			printf("Writing byte %#2x at %p, fileoffset=%lld\n", ((unsigned)b)&0xff, 
 				(void*)i, (long long)(i-start_of_new_space));
