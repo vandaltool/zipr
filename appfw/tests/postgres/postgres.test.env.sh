@@ -96,7 +96,7 @@ fi
 
 # test attack queries
 rm -f $tmp
-QUERY_DATA="' or 1 = 1;--" ./testpg1.exe.env.peasoup > $tmp 2>&1
+APPFW_VERBOSE=1 QUERY_DATA="' or 1 = 1;--" ./testpg1.exe.env.peasoup > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
 	cat $tmp
@@ -104,7 +104,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 rm -f $tmp
-QUERY_DATA="' and /* */ 1 = 1 /* */; /*--*/" ./testpg1.exe.env.peasoup > $tmp 2>&1
+APPFW_VERBOSE=1 QUERY_DATA="' and /* */ 1 = 1 /* */; /*--*/" ./testpg1.exe.env.peasoup > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
 	cat $tmp
@@ -112,7 +112,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 rm -f $tmp
-QUERY_DATA="%' or 1 = 1; -- select *" ./testpg1.exe.env.peasoup > $tmp 2>&1
+APPFW_VERBOSE=1 QUERY_DATA="%' or 1 = 1; -- select *" ./testpg1.exe.env.peasoup > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
 	cat $tmp
@@ -142,7 +142,7 @@ fi
 
 # test attack queries
 rm -f $tmp
-QUERY_DATA="' or 1 = 1;--" ./testpg2.exe.env.peasoup > $tmp 2>&1
+APPFW_VERBOSE=1 QUERY_DATA="' or 1 = 1;--" ./testpg2.exe.env.peasoup > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
 	cat $tmp
@@ -150,7 +150,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 rm -f $tmp
-QUERY_DATA="' and /* */ 1 = 1 /* */; /*--*/" ./testpg2.exe.env.peasoup > $tmp 2>&1
+APPFW_VERBOSE=1 QUERY_DATA="' and /* */ 1 = 1 /* */; /*--*/" ./testpg2.exe.env.peasoup > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
 	cat $tmp
@@ -158,7 +158,7 @@ if [ ! $? -eq 0 ]; then
 fi
 
 rm -f $tmp
-QUERY_DATA="%' or 1 = 1; -- select *" ./testpg2.exe.env.peasoup > $tmp 2>&1
+APPFW_VERBOSE=1 QUERY_DATA="%' or 1 = 1; -- select *" ./testpg2.exe.env.peasoup > $tmp 2>&1
 grep -i "sql injection" $tmp | grep -i detected
 if [ ! $? -eq 0 ]; then
 	cat $tmp
@@ -175,13 +175,12 @@ if [ ! $? -eq 0 ]; then
 fi
 
 rm -fr $tmp
-QUERY_DATA=" or 1 = 1 " ./testpg2.pstmt.exe.peasoup >$tmp 2>&1
+APPFW_VERBOSE=1 QUERY_DATA=" or 1 = 1 " ./testpg2.pstmt.exe.peasoup >$tmp 2>&1
 grep -i "sql injection" $tmp
 if [ ! $? -eq 0 ]; then
 	cat $tmp
 	cleanup 13 "False negative detected: didn't detect injection in prepared statement"
 fi
-
 
 psql -f ./teardown.sql
 cleanup 0 "Successfully detected Postgres SQL Injection"
