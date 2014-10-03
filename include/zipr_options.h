@@ -39,13 +39,15 @@
 class Options_t 
 {
 	public:
-		Options_t() : m_outname("b.out") { }
+		Options_t() : m_outname("b.out") { verbose=false; m_var_id=-1; }
 
 		static Options_t* parse_args(int p_argc, char* p_argv[]);
 		static void print_usage(int p_argc, char *p_argv[]);
 
 		std::string GetOutputFileName(libIRDB::File_t* p_file) { return m_outname; }
+		std::string GetCallbackFileName() { return m_callbackname; }
 		int GetVariantID() { return m_var_id; }
+		int GetVerbose() { return verbose; }
 		
 		void EnableOptimization(Optimizations_t::OptimizationName_t opt) 
 		{ 
@@ -59,6 +61,8 @@ class Options_t
 
 	private:
 		std::string m_outname;
+		std::string m_callbackname;
+		bool verbose;
 		int m_var_id;
 		int EnabledOptimizations[Optimizations_t::NumberOfOptimizations];
 };

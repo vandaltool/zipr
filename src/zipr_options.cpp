@@ -18,18 +18,22 @@ void Options_t::print_usage(int p_argc, char *p_argv[])
 
 Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 {
+	Options_t *opt=new Options_t;
+	opt->verbose=true;
 	extern char *optarg;
 	extern int optind, opterr, optopt;
 	int option = 0;
-	char options[] = "o:v:z:";
+	char options[] = "!qz:o:v:c:";
 	struct option long_options[] = {
-		{"output", 1, 0, 'o'},
-		{"variant", 1, 0, 'v'},
-		{"optimize", 0, 0, 'z'},
-		{0, 0, 0, 0},
+		{"verbose",   no_argument,       NULL, '!'}, 
+		{"quiet",     no_argument,       NULL, 'q'}, 
+		{"optimize",  required_argument, NULL, 'z'},
+		{"output",    required_argument, NULL, 'o'},
+		{"variant",   required_argument, NULL, 'v'},
+		{"callbacks", required_argument, NULL, 'c'},
+		{NULL, no_argument, NULL, '\0'},	 // end-of-array marker
 	};
 
-	Options_t *opt=new Options_t;
 	assert(opt);
 
 	while ((option = getopt_long(
@@ -39,7 +43,18 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 		long_options, 
 		NULL)) != -1)
 	{
-		switch (option) {
+		switch (option) 	
+		{
+			case '!':
+			{
+				opt->verbose = true;
+				break;
+			}
+			case 'q':
+			{
+				opt->verbose = false;
+				break;
+			}
 			case 'z':
 			{
 				if (!strcmp("plopnotjump", ::optarg))
@@ -58,6 +73,11 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 				opt->m_outname = std::string(::optarg);
 				break;
 			}
+			case 'c':
+			{
+				opt->m_callbackname = std::string(::optarg);
+				break;
+			}
 			case 'v':
 			{
 				char *valid = NULL;
@@ -69,6 +89,11 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 					break;
 				}
 				printf("Error: Invalid variant id (%s).\n", ::optarg);
+				break;
+			}
+			case '?':
+			{
+				// getopt_long printed message
 				break;
 			}
 			default:

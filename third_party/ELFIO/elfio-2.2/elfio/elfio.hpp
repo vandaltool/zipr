@@ -109,10 +109,25 @@ class elfio
 
         // Is it ELF file?
         if ( stream.gcount() != sizeof( e_ident ) ||
-             e_ident[EI_MAG0] != ELFMAG0    ||
-             e_ident[EI_MAG1] != ELFMAG1    ||
-             e_ident[EI_MAG2] != ELFMAG2    ||
-             e_ident[EI_MAG3] != ELFMAG3 ) {
+
+		!(
+		  (
+             		e_ident[EI_MAG0] == ELFMAG0    &&
+             		e_ident[EI_MAG1] == ELFMAG1    &&
+             		e_ident[EI_MAG2] == ELFMAG2    &&
+             		e_ident[EI_MAG3] == ELFMAG3 
+		  )
+		  ||
+		  (
+             		e_ident[EI_MAG0] == ELFMAG0    &&
+             		e_ident[EI_MAG1] == 'C'    &&
+             		e_ident[EI_MAG2] == 'G'    &&
+             		e_ident[EI_MAG3] == 'C' 
+	
+		 ) 
+		)
+	  )
+	{
             return false;
         }
 

@@ -109,6 +109,8 @@ class Zipr_t
 		// helpers.
 		void ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p);
 		void InsertNewSegmentIntoExe(std::string old_file, std::string new_file, RangeAddress_t sec_start);
+		void AddCallbacksTONewSegment(const std::string& tmpname, RangeAddress_t end_of_new_space);
+
 		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
 		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
 
