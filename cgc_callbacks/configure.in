@@ -37,9 +37,9 @@ enable_dir()
 LIB=$PEASOUP_HOME/cgc_callbacks/lib/callbacks.a
 AR=ar
 CC=gcc
-CFLAGS="$OPTIMIZE -nostdinc -I$PEASOUP_HOME/cgc_callbacks/libc/include -fconserve-space"
+CFLAGS="$OPTIMIZE -nostdinc -fPIC -I$PEASOUP_HOME/cgc_callbacks/libc/include "
 LD=gcc
-LDFLAGS="-r -nostdlib -fconserve-space"
+LDFLAGS="-r -nostdlib -fPIC"
 AS=nasm
 ASFLAGS="-felf"
 

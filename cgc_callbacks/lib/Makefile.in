@@ -11,6 +11,8 @@ LDFLAGS=@LDFLAGS@
 
 OBJS=crt.o
 
+relocatable_obj=callbacks.exe.o
+
 
 .SUFFIXES: .o .s .c
 
@@ -20,11 +22,11 @@ OBJS=crt.o
 .s.o:
 	$(AS) $(ASFLAGS) $<
 
-all: $(OBJS) callbacks.exe
+all: $(OBJS) $(relocatable_obj)
 
-callbacks.exe.o: $(OBJS) $(LIB)
+$(relocatable_obj): $(OBJS) $(LIB)
 	$(LD) -Wl,--whole-archive $(LDFLAGS) $(OBJS) $(LIB) -o $@
-	$(LD) -Wl,--whole-archive callbacks.exe.o -nostdlib -o callbacks.exe
+	$(LD) -Bstatic -static -Wl,--whole-archive callbacks.exe.o -nostdlib -o callbacks.exe -shared
 
 clean:
 	rm -f *.o *.a callbacks.exe.o callbacks.exe
