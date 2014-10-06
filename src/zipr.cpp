@@ -1409,7 +1409,7 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 //        system("$stratafier/add_strata_segment $newfile $exe_copy ") == 0 or die (" command failed : $? \n");
 
 	string  cmd=
-		string("/usr/bin/i386-linux-cgc-objcopy --add-section .strata=")+bin_to_add+ 
+		m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+ 
 		string(" --change-section-address .strata=")+to_string(sec_start)+
 		string(" --set-section-flags .strata=alloc,code ")+ 
 		// --set-start $textoffset // set-start not needed, as we aren't changing the entry point.

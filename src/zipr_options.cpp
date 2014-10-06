@@ -14,6 +14,8 @@ void Options_t::print_usage(int p_argc, char *p_argv[])
 		"Output file name. Optional. Default: b.out.\n");
 	printf("\t-z optimization\t--optimize optimization: "
 		"Enable an optimization. Repeatable. Optional. \n");
+	printf("\t-j path\t\t--objcopy path: "
+		"Set the path of objcopy to use. Optional. \n");
 }
 
 Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
@@ -31,6 +33,7 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 		{"output",    required_argument, NULL, 'o'},
 		{"variant",   required_argument, NULL, 'v'},
 		{"callbacks", required_argument, NULL, 'c'},
+		{"objcopy",   required_argument, NULL, 'j'},
 		{NULL, no_argument, NULL, '\0'},	 // end-of-array marker
 	};
 
@@ -67,6 +70,10 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 					printf("Warning: Unrecognized optimization: %s\n", ::optarg);
 				}
 				break;
+			}
+			case 'j':
+			{
+				opt->m_objcopy_path = std::string(::optarg);
 			}
 			case 'o':
 			{

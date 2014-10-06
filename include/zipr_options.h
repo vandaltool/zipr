@@ -39,7 +39,13 @@
 class Options_t 
 {
 	public:
-		Options_t() : m_outname("b.out") { verbose=false; m_var_id=-1; }
+		Options_t() : 
+			m_outname("b.out"), 
+			m_objcopy_path("/usr/bin/objcopy")
+		{
+			verbose=false; 
+			m_var_id=-1;
+		}
 
 		static Options_t* parse_args(int p_argc, char* p_argv[]);
 		static void print_usage(int p_argc, char *p_argv[]);
@@ -48,6 +54,7 @@ class Options_t
 		std::string GetCallbackFileName() { return m_callbackname; }
 		int GetVariantID() { return m_var_id; }
 		int GetVerbose() { return verbose; }
+		std::string GetObjcopyPath() { return m_objcopy_path; };
 		
 		void EnableOptimization(Optimizations_t::OptimizationName_t opt) 
 		{ 
@@ -62,6 +69,7 @@ class Options_t
 	private:
 		std::string m_outname;
 		std::string m_callbackname;
+		std::string m_objcopy_path;
 		bool verbose;
 		int m_var_id;
 		int EnabledOptimizations[Optimizations_t::NumberOfOptimizations];
