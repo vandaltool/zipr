@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
         VariantID_t *pidp=NULL;
         FileIR_t * firp=NULL;
 
-	if ((!options->GetVariantID()))
+	if (options->GetVariantID() == -1)
 	{
 		Options_t::print_usage(argc, argv);
 		return 1;
