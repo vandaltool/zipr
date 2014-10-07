@@ -1,3 +1,4 @@
+%ifdef CGC
 section .text
 
 
@@ -112,3 +113,24 @@ cgc_random:
 	pop    ebx
 	ret    
 
+%else
+
+global syscall
+syscall:
+	push   edi
+	push   esi
+	push   ebx
+	mov    edi, [esp+0x24]
+	mov    esi, [esp+0x20]
+	mov    edx, [esp+0x1c]
+	mov    ecx, [esp+0x18]
+	mov    ebx, [esp+0x14]
+	mov    eax, [esp+0x10]
+	int    0x80
+	pop    ebx
+	pop    esi
+	pop    edi
+	ret    
+
+
+%endif

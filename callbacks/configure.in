@@ -4,8 +4,9 @@ AC_INIT(myconfig, version-0.1)
 AC_PROG_CC
 
 AC_ARG_ENABLE([debugging],              [  --enable-debugging                enable -g when compiling])
-#AC_ARG_ENABLE([example],              [  --enable-debugging                enable -g when compiling])
-#AC_ARG_ENABLE([libc],              [  --enable-libc                enable $1 for building ])
+AC_ARG_ENABLE([cgc],              	[  --enable-cgc                enable -DCGC when compiling for CGC binaries])
+#AC_ARG_ENABLE([example],              	[  --enable-debugging                enable -g when compiling])
+#AC_ARG_ENABLE([libc],              	[  --enable-libc                enable $1 for building ])
 
 OPTIMIZE="-O3"
 if test "$enable_debugging" = yes; then
@@ -34,15 +35,21 @@ enable_dir()
 	fi
 }
 
-LIB=$PEASOUP_HOME/cgc_callbacks/lib/callbacks.a
+LIB=$ZIPR_HOME/callbacks/lib/callbacks.a
 AR=ar
 CC=gcc
-CFLAGS="$OPTIMIZE -nostdinc -fPIC -I$PEASOUP_HOME/cgc_callbacks/libc/include "
+CFLAGS="$OPTIMIZE -nostdinc -fPIC -I$ZIPR_HOME/callbacks/libc/include  -fno-stack-protector"
 LD=gcc
 LDFLAGS="-r -nostdlib -fPIC"
 AS=nasm
 ASFLAGS="-felf"
 
+
+if test "$enable_cgc" = yes; then
+	echo Enabling CGC build.
+	CFLAGS="$CFLAGS -DCGC"
+	ASFLAGS="$ASFLAGS -DCGC"
+fi
 
 # output lib's makefile, which is always needed.
 AC_OUTPUT(lib/Makefile)
