@@ -96,6 +96,10 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	// now that pinning is done, start emitting unpinnned instructions, and patching where needed.
 	PlopTheUnpinnedInstructions();
 
+	// now that all instructions are put down, we can figure out where the callbacks for this file wil go.
+	// go ahead and update any callback sites with the new locations 
+	UpdateCallbacks();
+
 	// write binary file to disk 
 	OutputBinaryFile(name);
 
@@ -843,6 +847,12 @@ void Zipr_t::PlopJump(RangeAddress_t addr)
 }
 
 
+void Zipr_t::CallToNop(RangeAddress_t at_addr)
+{
+	char bytes[]={0x90,0x90,0x90,0x90,0x90}; // nop;nop;nop;nop;nop
+	PlopBytes(at_addr,bytes,sizeof(bytes));
+}
+
 void Zipr_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
 	uintptr_t off=to_addr-at_addr-5;
@@ -1554,8 +1564,7 @@ static RangeAddress_t getSymbolAddress(const string &symbolFilename, const strin
         if(addressString.empty())
         {
                 cerr<<"Cannot find symbol "<< symbol << " in " << symbolFilename << "."<<endl;
-                cerr<<"Exiting zipr early."<<endl;
-                assert(!addressString.empty());
+		addressString="0x0";
         }
 
         pclose(fp);
@@ -1571,8 +1580,11 @@ RangeAddress_t Zipr_t::FindCallbackAddress(RangeAddress_t end_of_new_space, Rang
 
 		RangeAddress_t addr=getSymbolAddress(m_opts.GetCallbackFileName(),callback);
 
-		/* adjust by start of new location, - beginning of old location */
-		addr=addr+end_of_new_space-start_addr;
+		if(addr!=0)
+		{
+			/* adjust by start of new location, - beginning of old location */
+			addr=addr+end_of_new_space-start_addr;
+		}
 		callback_addrs[callback]=addr;
 	}
 	return callback_addrs[callback];
@@ -1596,6 +1608,9 @@ void Zipr_t::UpdateCallbacks()
 		Instruction_t *insn=it->first;
 		RangeAddress_t at=it->second;
 		RangeAddress_t to=FindCallbackAddress(end_of_new_space,start_addr,insn->GetCallback());
-		PatchCall(at,to);
+		if(to)
+			PatchCall(at,to);
+		else
+			CallToNop(at);
 	}
 }

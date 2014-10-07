@@ -105,6 +105,8 @@ class Zipr_t
 		void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
 		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
 		void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr);
+		void CallToNop(RangeAddress_t at_addr);
+
 
 
 		// outputing new .exe

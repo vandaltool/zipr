@@ -26,7 +26,7 @@ all: $(OBJS) $(relocatable_obj)
 
 $(relocatable_obj): $(OBJS) $(LIB)
 	$(LD) -Wl,--whole-archive $(LDFLAGS) $(OBJS) $(LIB) -o $@
-	$(LD) -Bstatic -static -Wl,--whole-archive callbacks.exe.o -nostdlib -o callbacks.exe -shared
+	$(LD) -Bstatic -static -Wl,--whole-archive callbacks.exe.o -nostdlib -o callbacks.exe 
 
 clean:
 	rm -f *.o *.a callbacks.exe.o callbacks.exe

@@ -16,6 +16,8 @@ void Options_t::print_usage(int p_argc, char *p_argv[])
 		"Enable an optimization. Repeatable. Optional. \n");
 	printf("\t-j path\t\t--objcopy path: "
 		"Set the path of objcopy to use. Optional. \n");
+	printf("\t-c callback.exe\t\t--path to callbacks file: "
+		"Set the path of the file which contains any required callacks.  Missing callbacks elided. \n");
 }
 
 Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
