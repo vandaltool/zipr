@@ -175,16 +175,15 @@ int sqlfw_verify(const char *zSql, char **errMsg)
 
 	// get all the critical keywords / detect tautologies
 	sqlfw_get_structure(zSql, tainted, structure, &is_tautology);
-    if (is_tautology && verbose)
+    if (is_tautology) 
     {
-		appfw_display_taint("SQL Injection detected (tautology)", zSql, tainted);
 		success = 0;
+		if (verbose)
+			appfw_display_taint("SQL Injection detected (tautology)", zSql, tainted);
 	}
-
-	if (!is_tautology)
+	else
 	{
 		success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
-
 		if (!success && verbose)
 			appfw_display_taint("SQL Injection detected", zSql, tainted);
 	}
