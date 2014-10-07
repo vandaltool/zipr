@@ -31,6 +31,8 @@
 #ifndef zipr_h
 #define zipr_h
 
+#include <utility>
+
 class Options_t;
 class Stats_t;
 
@@ -70,6 +72,7 @@ class Zipr_t
 		void Fix2BytePinnedInstructions();
 		void OptimizePinnedInstructions();
 		void PlopTheUnpinnedInstructions();
+		void UpdateCallbacks();
 		void PrintStats();
 
 
@@ -91,6 +94,8 @@ class Zipr_t
 		// emiting instructions
 		RangeAddress_t PlopInstruction(libIRDB::Instruction_t* insn,RangeAddress_t addr);
 		RangeAddress_t PlopWithTarget(libIRDB::Instruction_t* insn, RangeAddress_t at);
+		RangeAddress_t PlopWithCallback(libIRDB::Instruction_t* insn, RangeAddress_t at);
+
 
 
 		// patching
@@ -99,6 +104,7 @@ class Zipr_t
 		void PatchInstruction(RangeAddress_t addr, libIRDB::Instruction_t* insn);
 		void RewritePCRelOffset(RangeAddress_t from_addr,RangeAddress_t to_addr, int insn_length, int offset_pos);
 		void ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr);
+		void PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr);
 
 
 		// outputing new .exe
@@ -110,7 +116,7 @@ class Zipr_t
 		void ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p);
 		void InsertNewSegmentIntoExe(std::string old_file, std::string new_file, RangeAddress_t sec_start);
 		void AddCallbacksTONewSegment(const std::string& tmpname, RangeAddress_t end_of_new_space);
-
+		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
 		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
 		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
 
@@ -133,6 +139,10 @@ class Zipr_t
 		// final mapping of instruction to address.
 		std::map<libIRDB::Instruction_t*,RangeAddress_t> final_insn_locations; 
 
+		// unpatched callbacks
+		std::set<std::pair<libIRDB::Instruction_t*,RangeAddress_t> > unpatched_callbacks; 
+
+		std::map<std::string,RangeAddress_t> callback_addrs;
 
 		// way to read elf headers, etc.
 		ELFIO::elfio*    elfiop;
@@ -150,6 +160,7 @@ class Zipr_t
 
 		// records where we will insert extra bytes into the program.
 		RangeAddress_t start_of_new_space;
+
 
 
 };

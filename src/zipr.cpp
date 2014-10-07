@@ -843,6 +843,35 @@ void Zipr_t::PlopJump(RangeAddress_t addr)
 }
 
 
+void Zipr_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
+{
+	uintptr_t off=to_addr-at_addr-5;
+
+	assert(!IsByteFree(at_addr));
+	
+	switch(byte_map[at_addr])
+	{
+		case (char)0xe8:	/* 5byte call */
+		{
+			assert(off==(uintptr_t)off);
+			assert(!AreBytesFree(at_addr+1,4));
+
+			byte_map[at_addr+1]=(char)(off>> 0)&0xff;
+			byte_map[at_addr+2]=(char)(off>> 8)&0xff;
+			byte_map[at_addr+3]=(char)(off>>16)&0xff;
+			byte_map[at_addr+4]=(char)(off>>24)&0xff;
+
+		}
+		case (char)0xeb:	/* 2byte jump */
+		{
+			assert(off==(uintptr_t)(char)off);
+
+			assert(!IsByteFree(at_addr+1));
+			byte_map[at_addr+1]=(char)off;
+		}
+	}
+}
+
 void Zipr_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
 	uintptr_t off=to_addr-at_addr-2;
@@ -1127,6 +1156,10 @@ RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 	if(insn->GetTarget())
 	{
 		ret=PlopWithTarget(insn,addr);
+	}
+	else if(insn->GetCallback()!="")
+	{
+		ret=PlopWithCallback(insn,addr);
 	}
 	else
 	{
@@ -1437,10 +1470,21 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 
 }
 
+
+/*
+FIXME
+*/
+static RangeAddress_t GetCallbackStartAddr()
+{
+	// add option later, or write code to fix this
+	const RangeAddress_t callback_start_addr=0x8048000;
+	return callback_start_addr;
+}
+
+
 void Zipr_t::AddCallbacksTONewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
 {
-// add option later
-const RangeAddress_t callback_start_addr=0x8048000;
+	const RangeAddress_t callback_start_addr=GetCallbackStartAddr();
 
 	if(m_opts.GetCallbackFileName() == "" )
 		return;
@@ -1468,5 +1512,90 @@ const RangeAddress_t callback_start_addr=0x8048000;
 	if(-1 == system(cmd.c_str()))
 	{
 		perror(__FUNCTION__);
+	}
+}
+
+RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
+{
+	// emit call <callback>
+	{
+	char bytes[]={0xe8,0,0,0,0}; // call rel32
+	PlopBytes(at, bytes, sizeof(bytes)); 
+	unpatched_callbacks.insert(pair<Instruction_t*,RangeAddress_t>(insn,at));
+	at+=sizeof(bytes);
+	}
+
+	// pop bogus ret addr
+	{
+	char bytes[]={0x8d,0x64 ,0x24, 0xfc}; // lea esp, [esp-4]
+	PlopBytes(at, bytes, sizeof(bytes)); 
+	at+=sizeof(bytes);
+	}
+	
+}
+
+
+// horrible code, rewrite in C++ please!
+static RangeAddress_t getSymbolAddress(const string &symbolFilename, const string &symbol) throw(exception)
+{
+        string symbolFullName = symbolFilename + "+" + symbol;
+
+// nm -a stratafier.o.exe | egrep " integer_overflow_detector$" | cut -f1 -d' '
+        string command = "nm -a " + symbolFilename + " | egrep \" " + symbol + "$\" | cut -f1 -d' '";
+        char address[1024];
+
+        FILE *fp = popen(command.c_str(), "r");
+
+        fscanf(fp,"%s", address);
+        string addressString = string(address);
+
+        //TODO: throw exception if address is not found.
+        //for now assert the address string isn't empty
+        if(addressString.empty())
+        {
+                cerr<<"Cannot find symbol "<< symbol << " in " << symbolFilename << "."<<endl;
+                cerr<<"Exiting zipr early."<<endl;
+                assert(!addressString.empty());
+        }
+
+        pclose(fp);
+
+        return (uintptr_t) strtoull(addressString.c_str(),NULL,16);
+}
+
+
+RangeAddress_t Zipr_t::FindCallbackAddress(RangeAddress_t end_of_new_space, RangeAddress_t start_addr, const string &callback)
+{
+	if(callback_addrs.find(callback)==callback_addrs.end())
+	{
+
+		RangeAddress_t addr=getSymbolAddress(m_opts.GetCallbackFileName(),callback);
+
+		/* adjust by start of new location, - beginning of old location */
+		addr=addr+end_of_new_space-start_addr;
+		callback_addrs[callback]=addr;
+	}
+	return callback_addrs[callback];
+
+}
+
+void Zipr_t::UpdateCallbacks()
+{
+        // first byte of this range is the last used byte.
+        list<Range_t>::iterator it=FindFreeRange((RangeAddress_t) -1);
+        assert(it!=free_ranges.end());
+
+        RangeAddress_t end_of_new_space=it->GetStart();
+	RangeAddress_t start_addr=GetCallbackStartAddr();
+
+	for( std::set<std::pair<libIRDB::Instruction_t*,RangeAddress_t> >::iterator it=unpatched_callbacks.begin();
+		it!=unpatched_callbacks.end();
+		++it
+	   )
+	{
+		Instruction_t *insn=it->first;
+		RangeAddress_t at=it->second;
+		RangeAddress_t to=FindCallbackAddress(end_of_new_space,start_addr,insn->GetCallback());
+		PatchCall(at,to);
 	}
 }
