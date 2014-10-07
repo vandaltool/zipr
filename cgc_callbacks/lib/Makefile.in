@@ -1,0 +1,34 @@
+
+
+CC=@CC@
+CFLAGS=@CFLAGS@
+LIB=@LIB@
+AR=@AR@
+AS=@AS@
+ASFLAGS=@ASFLAGS@
+LD=@LD@
+LDFLAGS=@LDFLAGS@
+
+OBJS=crt.o
+
+relocatable_obj=callbacks.exe.o
+
+
+.SUFFIXES: .o .s .c
+
+.c.o:
+	$(CC) $(CFLAGS) $(INCLUDE) -D__$(ARCH) -c $<
+
+.s.o:
+	$(AS) $(ASFLAGS) $<
+
+all: $(OBJS) $(relocatable_obj)
+
+$(relocatable_obj): $(OBJS) $(LIB)
+	$(LD) -Wl,--whole-archive $(LDFLAGS) $(OBJS) $(LIB) -o $@
+	$(LD) -Bstatic -static -Wl,--whole-archive callbacks.exe.o -nostdlib -o callbacks.exe -shared
+
+clean:
+	rm -f *.o *.a callbacks.exe.o callbacks.exe
+	
+

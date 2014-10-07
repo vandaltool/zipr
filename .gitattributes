@@ -1,5 +1,22 @@
 * text=auto !eol
 /Makefile -text
+cgc_callbacks/Makefile.in -text
+cgc_callbacks/configure -text
+cgc_callbacks/configure.in -text
+cgc_callbacks/example/Makefile.in -text
+cgc_callbacks/example/callback.c -text
+cgc_callbacks/lib/Makefile.in -text
+cgc_callbacks/lib/crt.s -text
+cgc_callbacks/libc/Makefile.in -text
+cgc_callbacks/libc/include/cgc.h -text
+cgc_callbacks/libc/include/malloc.h -text
+cgc_callbacks/libc/include/stdint.h -text
+cgc_callbacks/libc/include/stdlib.h -text
+cgc_callbacks/libc/include/unistd.h -text
+cgc_callbacks/libc/src/Makefile.in -text
+cgc_callbacks/libc/src/cgc.s -text
+cgc_callbacks/libc/src/malloc.c -text
+cgc_callbacks/libc/src/unistd.c -text
 include/range.h -text
 include/unresolved.h -text
 include/zipr.h -text
