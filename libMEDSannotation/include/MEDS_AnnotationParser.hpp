@@ -23,8 +23,8 @@ class MEDS_AnnotationParser
 		MEDS_AnnotationParser(std::istream &); 	/* pass opened file */
 		void parseFile(std::istream &);
 		void parseFile(const std::string &);	 /* pass filename */
-		MEDS_Annotations_t         getAnnotations() { return m_annotations; }
-		MEDS_FuncAnnotations_t getFuncAnnotations() { return m_func_annotations; }
+		MEDS_Annotations_t &         getAnnotations() { return m_annotations; }
+		MEDS_FuncAnnotations_t & getFuncAnnotations() { return m_func_annotations; }
 
 	private:
 		MEDS_Annotations_t m_annotations;

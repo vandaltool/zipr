@@ -1,6 +1,7 @@
 
 #include "rss_instrument.hpp"
 #include "MEDS_SafeFuncAnnotation.hpp"
+#include "FuncExitAnnotation.hpp"
 #include "MEDS_ProblemFuncAnnotation.hpp"
 #include "Rewrite_Utility.hpp"
 #include <stdlib.h>
@@ -279,7 +280,24 @@ static 	bool add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [fs:0x12345678] "); create_tls_reloc(firp,tmp);
 	tmp=insertAssemblyAfter(firp,tmp,"lea rcx, [rcx-8]");
 	tmp=insertAssemblyAfter(firp,tmp,"mov [fs:0x12345678], rcx "); create_tls_reloc(firp,tmp);
+
+	/* if tss_print_stack is on, we want to zero the old location just for easy printing. */
+	/* doing so requires an extra register */
+	if(getenv("tss_print_stack")!=NULL)
+	{
+		tmp=insertAssemblyAfter(firp,tmp,"push rax");
+		tmp=insertAssemblyAfter(firp,tmp,"mov rax, rcx");
+	}
+
+	// load the old value 
 	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [rcx]");
+
+	/* if tss_print_stack is on, we want to zero the old location just for easy printing. */
+	if(getenv("tss_print_stack")!=NULL)
+	{
+		tmp=insertAssemblyAfter(firp,tmp,"mov dword [rax], 0");
+		tmp=insertAssemblyAfter(firp,tmp,"pop rax");
+	}
 	tmp=insertAssemblyAfter(firp,tmp,"sub rcx, [rsp+16]");
 	jmp_insn=tmp=insertDataBitsAfter(firp,tmp,getJecxzDataBits()); // jecxz L1
 	tmp=insertAssemblyAfter(firp,tmp,"hlt");
@@ -298,16 +316,46 @@ static 	bool add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 	return true;
 }
 
-static bool is_exit_instruction(Instruction_t *insn)
+static bool is_exit_instruction(Instruction_t *insn, MEDS_AnnotationParser *meds_ap)
 {
 	DISASM d;
 	insn->Disassemble(d);
 	if(strstr(d.CompleteInstr,"ret")!=0)
 		return true;
+
+        assert(meds_ap);
+        std::pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret;
+
+	virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
+	VirtualOffset vo(irdb_vo);
+
+        /* find it in the annotations */
+        ret = meds_ap->getAnnotations().equal_range(vo);
+        MEDS_FuncExitAnnotation annotation;
+        MEDS_FuncExitAnnotation* p_annotation;
+
+        /* for each annotation for this instruction */
+        for (MEDS_Annotations_t::iterator it = ret.first; it != ret.second; ++it)
+        {
+		/* is this annotation a funcSafe annotation? */
+		p_annotation=dynamic_cast<MEDS_FuncExitAnnotation*>(it->second);
+		if(p_annotation==NULL)
+			continue;
+
+		annotation = *p_annotation;
+
+		/* bad annotation? */
+		if(!annotation.isValid())
+			continue;
+		
+		return true;
+        }
+
+        /* couldn't find this insn as a function exit. */
 	return false;	
 }
 
-static bool add_rss_instrumentation(FileIR_t* firp, Function_t* func)
+static bool add_rss_instrumentation(FileIR_t* firp, Function_t* func, MEDS_AnnotationParser *meds_ap)
 {
 	bool success=true;
 	if(func->GetEntryPoint()==NULL)
@@ -315,8 +363,6 @@ static bool add_rss_instrumentation(FileIR_t* firp, Function_t* func)
 
 	if(getenv("RSS_VERBOSE")!=NULL)
 		cout<<"Transforming function "<<func->GetName()<<endl;
-
-	success&=add_rss_push(firp, func->GetEntryPoint());
 
 
 	for(
@@ -326,9 +372,12 @@ static bool add_rss_instrumentation(FileIR_t* firp, Function_t* func)
 	   )
 	{
 		Instruction_t* insn=*it;
-		if(is_exit_instruction(insn))
+		if(is_exit_instruction(insn, meds_ap))
 			success&=add_rss_pop(firp, insn);
 	}
+
+	/* need to do this second, as the function entry may actually change due to popping that may happen */
+	success&=add_rss_push(firp, func->GetEntryPoint());
 
 	return success;
 }
@@ -446,7 +495,7 @@ bool RSS_Instrument::execute()
 			if(func->GetEntryPoint())
 				cout<<"( "<<std::hex<<func->GetEntryPoint()->GetAddress()->GetVirtualOffset()<<")";
 			cout<<endl;
-			success|=add_rss_instrumentation(firp,func);
+			success|=add_rss_instrumentation(firp,func, meds_ap);
 		}
 		else
 		{

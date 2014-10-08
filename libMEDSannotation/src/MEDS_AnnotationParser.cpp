@@ -3,8 +3,10 @@
 
 #include "MEDS_AnnotationParser.hpp"
 #include "MEDS_InstructionCheckAnnotation.hpp"
+#include "FuncExitAnnotation.hpp"
 #include "MEDS_SafeFuncAnnotation.hpp"
 #include "MEDS_ProblemFuncAnnotation.hpp"
+#include "MEDS_FRSafeAnnotation.hpp"
 
 // @todo: multiple annotation per instruction
 
@@ -62,6 +64,8 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 		ADD_AND_CONTINUE_IF_VALID(MEDS_InstructionCheckAnnotation);
 		ADD_AND_CONTINUE_IF_VALID(MEDS_SafeFuncAnnotation);
 		ADD_AND_CONTINUE_IF_VALID(MEDS_ProblemFuncAnnotation);
+		ADD_AND_CONTINUE_IF_VALID(MEDS_FRSafeAnnotation);
+		ADD_AND_CONTINUE_IF_VALID(MEDS_FuncExitAnnotation);
 
 //				cout<<"Found annotation: "<<annot->toString()<<endl;\
 		

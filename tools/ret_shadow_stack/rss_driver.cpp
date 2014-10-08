@@ -72,6 +72,7 @@ int main(int argc, char **argv)
                         cerr << "annotation file: " << annotationFilename << endl;
 			annotationParser.parseFile(annotationFilename+".annot");
 			annotationParser.parseFile(annotationFilename+".infoannot");
+			annotationParser.parseFile(annotationFilename+".STARScallreturn");
 
 
 			RSS_Instrument rssi(firp, &annotationParser);

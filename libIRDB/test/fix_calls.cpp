@@ -58,6 +58,16 @@ bool check_entry(bool &found, ControlFlowGraph_t* cfg)
 
 bool call_needs_fix(Instruction_t* insn)
 {
+
+	for(set<Relocation_t*>::iterator it=insn->GetRelocations().begin();
+		it!=insn->GetRelocations().end();
+		++it
+	   )
+	{
+		Relocation_t* reloc=*it;
+		if(string("safefr") == reloc->GetType())
+			return false;
+	}
 	Instruction_t *target=insn->GetTarget();
 	Instruction_t *fallthru=insn->GetFallthrough();
 	DISASM disasm;
@@ -698,6 +708,29 @@ void fix_other_pcrel(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
 	}
 }
 
+void fix_safefr(FileIR_t* firp, Instruction_t *insn, UIntPtr virt_offset)
+{
+	/* if this has already been fixed, we can skip it */
+	if(virt_offset==0 || virt_offset==-1)
+		return;
+
+	for(set<Relocation_t*>::iterator it=insn->GetRelocations().begin();
+		it!=insn->GetRelocations().end();
+		++it)
+	{
+		Relocation_t* reloc=*it;
+		assert(reloc);
+		if(string("safefr") == reloc->GetType())
+		{
+			AddressID_t* addr	=new AddressID_t;
+			addr->SetFileID(insn->GetAddress()->GetFileID());
+			firp->GetAddresses().insert(addr);
+			insn->SetAddress(addr);
+		}
+	}
+}
+
+
 void fix_other_pcrel(FileIR_t* firp)
 {
 
@@ -709,6 +742,7 @@ void fix_other_pcrel(FileIR_t* firp)
 	{
 		Instruction_t* insn=*it;
 		fix_other_pcrel(firp,insn, insn->GetAddress()->GetVirtualOffset());
+		fix_safefr(firp,insn, insn->GetAddress()->GetVirtualOffset());
 	}
 }
 
