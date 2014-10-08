@@ -61,3 +61,5 @@ cd $SECURITY_TRANSFORMS_HOME
 cd $PEASOUP_HOME
 make
 
+cd $ZIPR_HOME
+make

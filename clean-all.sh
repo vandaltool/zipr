@@ -42,3 +42,6 @@ fi
 cd $SECURITY_TRANSFORMS_HOME
 make clean
 
+cd $ZIPR_HOME
+make clean
+
