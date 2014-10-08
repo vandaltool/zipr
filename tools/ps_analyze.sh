@@ -8,6 +8,22 @@
 #     peasoup_analyze.sh <original_binary> <new_binary> <options>
 #
 
+
+##################################################################################
+# set default values for 
+##################################################################################
+
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr"
+
+
+##################################################################################
+
+
+
+
+
+
+
 ulimit -s unlimited
 
 # default watchdog value is 30 seconds
@@ -26,7 +42,7 @@ PN_TIMEOUT_VALUE=21600
 # 
 # set default values for 
 #
-initial_off_phases="isr ret_shadow_stack determine_program stats spawner"
+initial_off_phases="isr ret_shadow_stack determine_program stats spawner fill_in_safefr"
 
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
@@ -761,6 +777,7 @@ fi
 
 # build basic IR
 perform_step fill_in_cfg mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_cfg.exe $varid	
+perform_step fill_in_safefr mandatory $SECURITY_TRANSFORMS_HOME/tools/safefr/fill_in_safefr.exe $varid 
 perform_step fill_in_indtargs mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fill_in_indtargs.exe $varid 
 
 # finally create a clone so we can do some transforms 
@@ -777,6 +794,7 @@ fi
 # do the basic tranforms we're performing for peasoup 
 perform_step fix_calls mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
 #gdb --args $SECURITY_TRANSFORMS_HOME/libIRDB/test/fix_calls.exe $cloneid	
+
 
 
 # look for strings in the binary 
@@ -890,6 +908,8 @@ perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfil
 # put a front end in front of a.stratafied which opens file 990 for strata to read.
 perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh 
 
+# zipr
+perform_step zipr clone,fill_in_indtargs,fill_in_cfg,meds2pdb $ZIPR_HOME/src/zipr.exe -v $cloneid -c $ZIPR_HOME/callbacks/lib/callbacks.exe -j $PS_OBJCOPY
 
 # copy TOCTOU tool here if it exists
 is_step_on toctou

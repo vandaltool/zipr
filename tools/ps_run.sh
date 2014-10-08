@@ -44,6 +44,11 @@ fi
 
 DO_TWITCHER=0
 if [ "$DO_TWITCHER" = "1" ]; then
+	if [ -z $TWITCHER_LOG ]; then
+		TWITCHER_LOG=$datapath/twitcher.log
+	fi
+	command="$command TWITCHER_LOG=$TWITCHER_LOG
+	"
 	APP_LD_PRELOAD=$datapath/libtwitcher.so:$APP_LD_PRELOAD
 fi
 
