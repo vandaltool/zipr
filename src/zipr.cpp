@@ -870,15 +870,11 @@ void Zipr_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 			byte_map[at_addr+2]=(char)(off>> 8)&0xff;
 			byte_map[at_addr+3]=(char)(off>>16)&0xff;
 			byte_map[at_addr+4]=(char)(off>>24)&0xff;
-
+			break;
 		}
-		case (char)0xeb:	/* 2byte jump */
-		{
-			assert(off==(uintptr_t)(char)off);
+		default:
+			assert(0);
 
-			assert(!IsByteFree(at_addr+1));
-			byte_map[at_addr+1]=(char)off;
-		}
 	}
 }
 
@@ -1537,7 +1533,7 @@ RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 
 	// pop bogus ret addr
 	{
-	char bytes[]={0x8d,0x64 ,0x24, 0xfc}; // lea esp, [esp-4]
+	char bytes[]={0x8d,0x64 ,0x24, 0x08}; // lea esp, [esp+4]
 	PlopBytes(at, bytes, sizeof(bytes)); 
 	at+=sizeof(bytes);
 	}
