@@ -24,7 +24,7 @@ Instruction_t* insertAssemblyBefore(FileIR_t* virp, Instruction_t* first, string
 	next->SetOriginalAddressID(first->GetOriginalAddressID());
 	//"Null" out the original address (it should be as if the instruction was not in the database).
 	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
-
+	first->GetRelocations().clear();
 
 	virp->ChangeRegistryKey(first,next);
 	setInstructionAssembly(virp,first,assembly,next,target);
@@ -53,6 +53,7 @@ Instruction_t* insertDataBitsBefore(FileIR_t* virp, Instruction_t* first, string
 	next->SetOriginalAddressID(first->GetOriginalAddressID());
 	//"Null" out the original address (it should be as if the instruction was not in the database).
 	first->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
+	first->GetRelocations().clear();
 
 	setInstructionDataBits(virp,first,dataBits,next,target);
 
@@ -113,6 +114,7 @@ void copyInstruction(Instruction_t* src, Instruction_t* dest)
 	dest->SetCallback(src->GetCallback());
 	dest->SetFallthrough(src->GetFallthrough());
 	dest->SetTarget(src->GetTarget());
+	dest->GetRelocations()=src->GetRelocations();
 }
 
 Instruction_t* allocateNewInstruction(FileIR_t* virp, db_id_t p_fileID,Function_t* func)

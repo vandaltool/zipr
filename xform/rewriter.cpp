@@ -599,7 +599,7 @@ void Rewriter::readXrefsFile(char p_filename[])
 		assert(strcmp(scope,"XREF")==0);
 		fscanf(fin, "%s%s%s", ibt,fromib,dest);
 		assert(strcmp(ibt,"IBT")==0);
-		assert(strcmp(fromib,"FROMIB")==0);
+		assert(strcmp(fromib,"FROMIB")==0 || strcmp(fromib,"FROMDATA")==0);
 	
 		
       		wahoo::Instruction *instr = addr_to_insn_map[addr];
