@@ -57,6 +57,16 @@ if [ "$DO_TOCTOU" = "1" ]; then
 	APP_LD_PRELOAD="$datapath/libtoctou_tool.so:$APP_LD_PRELOAD"
 fi
 
+DO_DEADLOCK=0
+if [ "$DO_DEADLOCK" = "1" ]; then
+	if [ -z $DEADLOCK_LOG ]; then
+		DEADLOCK_LOG=$datapath/deadlock.log
+	fi
+	command="$command DEADLOCK_LOG=$DEADLOCK_LOG
+	"
+	APP_LD_PRELOAD="$datapath/libdeadlock_tool.so:$APP_LD_PRELOAD"
+fi
+
 
 # these are now defaulted nicely by strata for x86-32 and x86-64.
 #STRATA_IBTC=1					 
