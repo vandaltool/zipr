@@ -10,6 +10,9 @@
 #include "globals.h"
 #include <libIRDB-cfg.hpp>
 
+
+#define MAX_JUMPS_TO_FOLLOW 100000
+
 using namespace std;
 using namespace libIRDB;
 
@@ -686,7 +689,8 @@ static int count_prologue_pushes(Function_t *func)
 	// or encounters conditional control flow (it will follow past unconditional control flow
 	// it also stops at indirect branches (which may leave the function, or may generating 
 	// multiple successors)
-	for(insn=func->GetEntryPoint(); insn!=NULL; insn=GetNextInstruction(prev,insn, func))
+	int i;
+	for(i=0,insn=func->GetEntryPoint(); insn!=NULL && i<MAX_JUMPS_TO_FOLLOW; ++i,insn=GetNextInstruction(prev,insn, func))
 	{
 		DISASM d;
 		insn->Disassemble(d);
@@ -712,7 +716,7 @@ static int count_prologue_pushes(Function_t *func)
 Instruction_t* find_exit_insn(Instruction_t *insn, Function_t *func)
 {
 	Instruction_t *prev=NULL;
-	for(; insn!=NULL; insn=GetNextInstruction(prev,insn, func))
+	for(int i=0; insn!=NULL && i<MAX_JUMPS_TO_FOLLOW; ++i, insn=GetNextInstruction(prev,insn, func))
 	{
 		prev=insn;
 	}
@@ -2417,8 +2421,7 @@ int PNTransformDriver::prologue_offset_to_actual_offset(ControlFlowGraph_t* cfg,
 
 	
 	Instruction_t* insn=*it, *prev=NULL;
-
-	for(;insn!=NULL; insn=GetNextInstruction(prev,insn, func))
+	for(int i=0;insn!=NULL && i<MAX_JUMPS_TO_FOLLOW; ++i, insn=GetNextInstruction(prev,insn, func))
 	{
 		assert(insn);
 		DISASM d;
