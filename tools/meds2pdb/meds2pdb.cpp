@@ -222,6 +222,7 @@ void update_functions(int fileID, const vector<wahoo::Function*> &functions  )
   string query;
   for (int i = 0; i < functions.size(); i += STRIDE )
   {  
+    query="";
     for (int j = i; j < i + STRIDE; ++j)
     {
         if (j >= functions.size()) break;
