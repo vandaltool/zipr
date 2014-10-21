@@ -1,4 +1,5 @@
 #include "transform.hpp"
+#include "Rewrite_Utility.hpp"
 
 #define OPTIMIZE_ASSEMBLY
 
@@ -28,6 +29,8 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 	m_fileIR->GetInstructions().insert(p_instr);
 }
 
+#define BENSWAY
+
 //
 //  Before:                              After:
 //  <p_instrumented> ["mov edx,1"]       <p_newInstr> []
@@ -35,19 +38,34 @@ void Transform::addInstruction(Instruction_t *p_instr, string p_dataBits, Instru
 //
 Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, Instruction_t * &p_newInstr)
 {
+
+//For all insertBefore functions:
+//The "first" instruction will have its contents replaced and a duplicate of "first" will be in the follow of first. 
+//This duplicate is returned since the user already has a pointer to first.
+//To insert before an instruction is the same as modifying the original instruction, and inserting after it
+//a copy of the original instruction 
+
+#ifdef BENSWAY
+	Instruction_t* i2 = IRDBUtility::insertAssemblyBefore(m_fileIR, p_instrumented, m_fileIR->LookupAssembly(p_newInstr), p_newInstr->GetTarget());
+cerr << "carefullyInsertBefore (Ben's Way): @: 0x" << std::hex << p_instrumented->GetAddress() << std::dec << " old instruction: " << p_instrumented->getDisassembly() << " new instruction: " << m_fileIR->LookupAssembly(p_newInstr) << endl;
+	return i2;
+#else
 	db_id_t fileID = p_instrumented->GetAddress()->GetFileID();
 	Function_t* func = p_instrumented->GetFunction();
 
 	assert(p_instrumented && p_newInstr && p_instrumented->GetAddress());
 
+// why is old instrunction blank?
+cerr << "(1) carefullyInsertBefore: @: 0x" << std::hex << p_instrumented->GetAddress() << std::dec << " old instruction: " << p_instrumented->getDisassembly() << " new instruction: " << m_fileIR->LookupAssembly(p_newInstr) << endl;
+
 	// duplicate old instrumented instruction
-	Instruction_t* dupInstr = allocateNewInstruction(p_instrumented->GetAddress()->GetFileID(), p_instrumented->GetFunction());
+	Instruction_t* dupInstr = allocateNewInstruction(fileID, func);
+
 	dupInstr->SetDataBits(p_instrumented->GetDataBits());
 	dupInstr->SetComment(p_instrumented->GetComment());
 	dupInstr->SetCallback(p_instrumented->GetCallback());
 	dupInstr->SetFallthrough(p_instrumented->GetFallthrough());
 	dupInstr->SetTarget(p_instrumented->GetTarget());
-
 	dupInstr->SetOriginalAddressID(p_instrumented->GetOriginalAddressID());
 	AddressID_t *saveIBTA = p_instrumented->GetIndirectBranchTargetAddress();
 	dupInstr->SetIndirectBranchTargetAddress(NULL);
@@ -75,10 +93,13 @@ Instruction_t* Transform::carefullyInsertBefore(Instruction_t* &p_instrumented, 
 
 	p_instrumented->SetOriginalAddressID(BaseObj_t::NOT_IN_DATABASE);
 	p_instrumented->SetIndirectBranchTargetAddress(saveIBTA);
+	p_instrumented->GetRelocations().clear();
 
    	p_newInstr = p_instrumented;
 
+cerr << "(2) carefullyInsertBefore: @: 0x" << std::hex << p_instrumented->GetAddress() << std::dec << " old instruction: " << dupInstr->getDisassembly() << " new instruction: " << m_fileIR->LookupAssembly(p_newInstr) << endl;
 	return dupInstr;
+#endif
 }
 
 void Transform::addPushf(Instruction_t *p_pushf_i, Instruction_t *p_fallThrough)
@@ -1357,6 +1378,9 @@ void Transform::addCallbackHandler64(Instruction_t *p_orig, string p_callbackHan
 
 // x86-64
 // register callback handler sequence 
+// nb: strata semantics is that it does not save flags, so we don't bother
+//     saving/restoring flags either in the callback handler
+//     saving/restoring flags must be done outside of this routine
 // 20140416
 Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, int p_numArgs)
 {
@@ -1383,20 +1407,20 @@ Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, in
 	instr = addNewAssembly(instr, "push r13");
 	instr = addNewAssembly(instr, "push r14");
 	instr = addNewAssembly(instr, "push r15");
-	instr = addNewAssembly(instr, "pushf");
 
 	// handle the arguments (if any): rdi, rsi, rdx, rcx, r8, r9
 	// first arg starts at byte +144
+	// now at +136??? b/c we took out the push
 	instr = addNewAssembly(instr, "mov rdi, rsp");
 
 	if (p_numArgs >= 1)
-		instr = addNewAssembly(instr,  "mov rsi, [rsp+144]");
+		instr = addNewAssembly(instr,  "mov rsi, [rsp+136]");
 	if (p_numArgs >= 2)
-		instr = addNewAssembly(instr,  "mov rdx, [rsp+152]");
+		instr = addNewAssembly(instr,  "mov rdx, [rsp+144]");
 	if (p_numArgs >= 3)
-		instr = addNewAssembly(instr,  "mov rcx, [rsp+160]");
+		instr = addNewAssembly(instr,  "mov rcx, [rsp+152]");
 	if (p_numArgs >= 4)
-		instr = addNewAssembly(instr,  "mov r8, [rsp+168]");
+		instr = addNewAssembly(instr,  "mov r8, [rsp+160]");
 	if (p_numArgs > 4)
 		assert(0); // only handle up to 5 args
 
@@ -1426,9 +1450,8 @@ Instruction_t* Transform::registerCallbackHandler64(string p_callbackHandler, in
 	postCallback->SetIndirectBranchTargetAddress(indTarg);
 
 	// restore registers
-	setAssembly(postCallback, "popf");           
-	instr = addNewAssembly(postCallback, "pop r15");
-	instr = addNewAssembly(instr, "pop r14");
+	setAssembly(postCallback, "pop r15");           
+	instr = addNewAssembly(postCallback, "pop r14");
 	instr = addNewAssembly(instr, "pop r13");
 	instr = addNewAssembly(instr, "pop r12");
 	instr = addNewAssembly(instr, "pop r11");

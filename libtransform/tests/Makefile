@@ -19,10 +19,11 @@ exes=trunc.64.32.signed.exe trunc.64.32.unsigned.exe trunc.64.16.signed.exe trun
 exes=trunc.32.16.signed.exe trunc.32.16.unsigned.exe
 exes=trunc.32.16.signed.exe 
 exes=trunc.64.32.signed.exe
-exes=trunc.64.16.unknown.exe
-exes=trunc.64.8.unknown.exe
+#exes=trunc.64.16.unknown.exe
+#exes=trunc.64.8.unknown.exe
 #exes=trunc.16.8.unsigned.exe
 #exes=signedness.32.exe
+exes=unsigned_mul.32.exe
 
 all: env_check  ${exes}
 
@@ -32,7 +33,7 @@ all: env_check  ${exes}
 #	${PEASOUP_HOME}/tools/ps_link.sh $< -o $@ 
 	gcc -g $< -o $@ 
 #	gcc -m32 $< -o $@ 
-	${PEASOUP_HOME}/tools/ps_analyze64.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off --integer_instrument_idioms
+	${PEASOUP_HOME}/tools/ps_analyze64.sh  $@ $@.peasoup --step ilr=off --step concolic=off --step p1transform=off --step isr=off --integer_instrument_idioms --step twitchertransform=off # --integer_warnings_only
 
 .c.o:
 	gcc -O2 -c $< 
