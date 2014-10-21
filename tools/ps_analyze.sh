@@ -901,27 +901,14 @@ perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfil
 perform_step zipr clone,fill_in_indtargs,fill_in_cfg,meds2pdb $ZIPR_HOME/bin/zipr.exe $cloneid
 
 # copy TOCTOU tool here if it exists
-is_step_on toctou
-if [[ $? -eq 1 && -e $GRACE_HOME/ps_concurrency/toctou_tool/libtoctou_tool.so ]];
-then
-	echo Performing step toctou ...
-    cp $GRACE_HOME/ps_concurrency/toctou_tool/libtoctou_tool.so libtoctou_tool.so
-    $PEASOUP_HOME/tools/update_env_var.sh DO_TOCTOU 1
-else
-    echo Skipping step toctou.
+if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then
+	perform_step toctou none $CONCURRENCY_HOME/do_toctou.sh
 fi
 
 # copy deadlock tool here if it exists
-is_step_on deadlock
-if [[ $? -eq 1 && -e $GRACE_HOME/ps_concurrency/deadlock/libdeadlock_tool.so ]];
-then
-	echo Performing step deadlock ...
-    cp $GRACE_HOME/ps_concurrency/deadlock/libdeadlock_tool.so libdeadlock_tool.so
-    $PEASOUP_HOME/tools/update_env_var.sh DO_DEADLOCK 1
-else
-    echo Skipping step deadlock
+if [[ "$CONCURRENCY_HOME/deadlock" != "" && -d "$CONCURRENCY_HOME/deadlock" ]]; then
+	perform_step deadlock none $CONCURRENCY_HOME/do_deadlock.sh
 fi
-
 
 #
 # create a report for all of ps_analyze.
