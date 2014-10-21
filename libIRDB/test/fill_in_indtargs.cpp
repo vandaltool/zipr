@@ -22,6 +22,7 @@
 int odd_target_count=0;
 int bad_target_count=0;
 int bad_fallthrough_count=0;
+int lea_jmp_target_count=0;
 
 using namespace libIRDB;
 using namespace std;
@@ -32,6 +33,7 @@ bool is_possible_target(int p, uintptr_t addr);
 
 set< pair <int,int>  > bounds;
 set<int> targets;
+set<virtual_offset_t> instruction_addresses;
 
 set< pair< int, int> > ranges;
 
@@ -41,6 +43,33 @@ map< Instruction_t* , set<Instruction_t*> > preds;
 
 void check_for_PIC_switch_table32(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop, const set<int>& thunk_bases);
 void check_for_PIC_switch_table64(Instruction_t* insn, DISASM disasm, ELFIO::elfio* elfiop);
+
+void record_instruction_addresses(VariantID_t *pidp) {
+	instruction_addresses.clear();
+
+	for(set<File_t*>::iterator it=pidp->GetFiles().begin();
+		it!=pidp->GetFiles().end();
+		++it
+	)
+	{
+		File_t* file=*it;
+		assert(file);
+		FileIR_t *firp=new FileIR_t(*pidp, file);
+		for(
+			set<Instruction_t*>::const_iterator iit=firp->GetInstructions().begin();
+			iit!=firp->GetInstructions().end();
+			++iit
+			)
+		{
+			Instruction_t *insn=*iit;
+			instruction_addresses.insert(insn->GetAddress()->GetVirtualOffset());
+		}
+	}
+}
+
+bool is_instruction_address(virtual_offset_t addr) {
+	return instruction_addresses.find(addr) != instruction_addresses.end();
+}
 
 void range(int start, int end)
 { 	
@@ -189,6 +218,141 @@ void mark_targets(FileIR_t *firp)
 	}
 
 }
+
+void get_lea_instruction_targets(FileIR_t *firp)
+{
+	for(
+		set<Instruction_t*>::const_iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end();
+		++it
+	)
+	{
+		Instruction_t *insn=*it;
+		Instruction_t *next_insn;
+		DISASM insn_disasm;
+		DISASM next_insn_disasm;
+		int insn_instr_len = -1;
+		int next_insn_instr_len = -1;
+
+		insn_instr_len = insn->Disassemble(insn_disasm);
+		assert(insn_instr_len==insn->GetDataBits().size());
+
+		/*
+		 * Confirm that there is a 'next' instruction
+		 */
+		if (!(next_insn = insn->GetFallthrough()))
+			continue;
+
+		/*
+		 * We know insn is followed by another instruction.
+		 */
+		next_insn_instr_len = next_insn->Disassemble(next_insn_disasm);
+
+		/*
+		 * Check if insn is an lea and next_insn is a jump
+		 */
+		if (!strcmp(insn_disasm.Instruction.Mnemonic,"lea ") && 
+			!strcmp(next_insn_disasm.Instruction.Mnemonic,"jmp "))
+		{
+			/*
+			 * Only consider the case where the lea instruction
+			 * stores its result in the same register used
+			 * by the indirect jump.
+			 */
+			if (strcmp(insn_disasm.Argument1.ArgMnemonic,
+				next_insn_disasm.Argument1.ArgMnemonic))
+				continue;
+			
+			/*
+			 * From the base, the calculation will be a multiple i
+			 * of some value v that indexes an instruction. At
+			 * some multiple of that v, there won't
+			 * be an instruction. I.e., base + i*v will point
+			 * to a place that is in the middle of an instruction.
+			 * So we want to stop there!
+			 *
+			 * Note: Only in the case when the base and index register
+			 * match will this work (or the base register is zero).
+			 * In any other case we have insufficient information
+			 * to mark targets because the offset depends
+			 * on a register value and not an arbitrary multiple
+			 * of some constant. This is an assertion so that we can
+			 * properly notice cases that don't match!
+			 */
+			if ((insn_disasm.Argument2.ArgType&MEMORY_TYPE) == MEMORY_TYPE)
+			{
+
+				int multiple = insn_disasm.Argument2.Memory.Scale;
+
+				if (insn_disasm.Argument2.Memory.BaseRegister != 
+					insn_disasm.Argument2.Memory.IndexRegister)
+				{
+					/*
+					 * Since they are not equal, we assert that 
+					 * the base register is 0. However, there may 
+					 * be places where this assertion does not 
+					 * hold that we are still able to handle. 
+					 * For example,
+					 *
+					 * <realloc+0x2f78> call   000189ad <realloc+0x2f7d>
+					 * <realloc+0x2f7d> pop    %edx
+					 * -----
+					 * We know the value of edx from the "thunk"
+					 * -----
+					 * <realloc+0x2f7e> lea    0xb(%edx,%ecx,8),%ecx
+					 * <realloc+0x2f82> jmp    *%ecx
+					 * -----
+					 * We know where the jmp is going because we know
+					 * each of base, offset, index and scale:
+					 * -----
+					 * <realloc+0x2f84> lea    0x0(%esi,%eiz,1),%esi
+					 * Here?
+					 * <realloc+0x2f88> or     (%esi),%al
+					 * <realloc+0x2f8a> je     00018a17 <realloc+0x2fe7>
+					 * <realloc+0x2f8c> stos   %al,%es:(%edi)
+					 * <realloc+0x2f8d> xor    %eax,%eax
+					 * <realloc+0x2f8f> inc    %esi
+					 * Here?
+					 * <realloc+0x2f90> or     (%esi),%al
+					 * <realloc+0x2f92> je     00018a17 <realloc+0x2fe7>
+					 * <realloc+0x2f94> stos   %al,%es:(%edi)
+					 * <realloc+0x2f95> xor    %eax,%eax
+					 * <realloc+0x2f97> inc    %esi
+					 * 
+					 * If this assert failure bothers you, implement code
+					 * to handle this case.
+					 */
+					assert(insn_disasm.Argument2.Memory.BaseRegister == 0);
+				}
+				else
+				{
+					/*
+					 * Scale*offset + offset = (Scale+1)*offset
+					 */
+					multiple+=1;
+				}
+
+				/*
+				 * Start the loop by assuming that we actually jump
+				 * somewhere. In other words, the calculated offset
+				 * is not zero.
+				 */
+				int i = insn_disasm.Argument2.Memory.Displacement + multiple;
+				for (;;i+=multiple)
+				{
+					if (is_instruction_address(i)) {
+						printf("Setting %p as possible target.\n", (void*)i);
+						lea_jmp_target_count++;
+						possible_target(i);
+					}
+					else
+						break;
+				}
+			}
+		}
+	}
+}
+
 void get_instruction_targets(FileIR_t *firp, ELFIO::elfio* elfiop, const set<int>& thunk_bases)
 {
 
@@ -754,6 +918,11 @@ void fill_in_indtargs(FileIR_t* firp, elfio* elfiop)
 	print_targets();
 	cout<<"========================================="<<endl;
 
+	/* Mark indirect targets calculated using lea. */
+	get_lea_instruction_targets(firp);
+	cout<<"========================================="<<endl;
+	cout<<"# ATTRIBUTE lea_jmp_target_count="<<std::dec<<lea_jmp_target_count<<endl;
+	cout<<"========================================="<<endl;
 
 
 
@@ -791,6 +960,8 @@ main(int argc, char* argv[])
 		assert(pidp->IsRegistered()==true);
 
 		cout<<"New Variant, after reading registration, is: "<<*pidp << endl;
+
+		record_instruction_addresses(pidp);
 
                 for(set<File_t*>::iterator it=pidp->GetFiles().begin();
                         it!=pidp->GetFiles().end();
