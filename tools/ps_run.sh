@@ -36,6 +36,7 @@ APP_LD_PRELOAD="$LD_PRELOAD"
 DO_APPFW=0
 if [ "$DO_APPFW" = "1" ]; then 
 	command="$command 
+		APPFW_LOG_FILE=$datapath/appfw.log
 		APPFW_DB=$datapath/appfw.db
 		APPFW_SIGNATURE_FILE=$datapath/a.ncexe.sigs.$$
 	"
