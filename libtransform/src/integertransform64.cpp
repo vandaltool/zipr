@@ -4,11 +4,12 @@
 #include "integertransform64.hpp"
 #include "Rewrite_Utility.hpp"
 
-// fixed popfq bug
-// v305   test with OF/UF -- no lea: PASS
-// v306   test with OF/UF/Sign/Trunc -- no lea: PASS
-// v307   full monty: FAIL
-// v308   no (leg reg+*k): PASS
+//#define INSTRUMENT_LEA
+//#define INSTRUMENT_TRUNCATION
+//#define INSTRUMENT_SIGNEDNESS
+
+#define INSTRUMENT_OVERFLOW
+#define INSTRUMENT_UNDERFLOW
 
 using namespace libTransform;
 
@@ -141,25 +142,33 @@ int IntegerTransform64::execute()
 
 				if (annotation.isOverflow())
 				{
+#ifdef INSTRUMENT_OVERFLOW
 					m_numTotalOverflows++;
 					handleOverflowCheck(insn, annotation, policy);
+#endif
 				}
+#ifdef INSTRUMENT_UNDERFLOW
 				else 
 				if (annotation.isUnderflow())
 				{
 					m_numTotalUnderflows++;
 					handleUnderflowCheck(insn, annotation, policy);
 				}
+#endif
+#ifdef INSTRUMENT_TRUNCATION
 				else if (annotation.isTruncation())
 				{
 					m_numTotalTruncations++;
 					handleTruncation(insn, annotation, policy);
 				}
+#endif
+#ifdef INSTRUMENT_SIGNEDNESS
 				else if (annotation.isSignedness())
 				{
 					m_numTotalSignedness++;
 					handleSignedness(insn, annotation, policy);
 				}
+#endif
 			}
 		} // end iterate over all instructions in a function
 	} // end iterate over all functions
@@ -176,6 +185,7 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 		// handle signed/unsigned add/sub overflows (non lea)
 		result = addOverflowUnderflowCheck(p_instruction, p_annotation, p_policy);
 	}
+#ifdef INSTRUMENT_LEA
 	else 
 	if (p_annotation.isNoFlag())
 	{
@@ -185,6 +195,7 @@ void IntegerTransform64::handleOverflowCheck(Instruction_t *p_instruction, const
 			result = addOverflowCheckNoFlag(p_instruction, p_annotation, p_policy);
 		}
 	}
+#endif
 
 	if (result)
 	{
