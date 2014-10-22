@@ -5,11 +5,11 @@
 #include "Rewrite_Utility.hpp"
 
 //#define INSTRUMENT_LEA
-//#define INSTRUMENT_TRUNCATION
 //#define INSTRUMENT_SIGNEDNESS
 
 #define INSTRUMENT_OVERFLOW
 #define INSTRUMENT_UNDERFLOW
+#define INSTRUMENT_TRUNCATION
 
 using namespace libTransform;
 
@@ -1118,16 +1118,18 @@ bool IntegerTransform64::addTruncationCheck32(Instruction_t *p_instruction, cons
 	test = addNewAssembly(save, buf);
 */
 /*--------------*/
-	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, std::string("pushf"), NULL);
+//	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, std::string("pushf"), NULL);
+	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, "lea rsp, [rsp-128]" , NULL);
 	p_instruction->SetComment("start truncation sequence");
-//	instr = addNewAssembly(p_instruction, "pushf");
-	test = addNewAssembly(p_instruction, buf);
+	instr = addNewAssembly(p_instruction, "pushf");
+	test = addNewAssembly(instr, buf);
 /*--------------*/
  //   p_instruction->SetFallthrough(test);
 
 //	save->SetFallthrough(test);
 
-	restore->SetFallthrough(originalInstrumentInstr);
+    instr = addNewAssembly(restore, "lea rsp, [rsp+128]");
+	instr->SetFallthrough(originalInstrumentInstr);
 
 	if (p_annotation.isUnsigned())
 	{
@@ -1451,9 +1453,12 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 	test = addNewAssembly(instr, buf);
 	*/
 /*--------------*/
-	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, std::string("push ") + Register::toString(borrowReg), NULL);
+//	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, std::string("push ") + Register::toString(borrowReg), NULL);
+//	Instruction_t* lea = addNewAssembly("lea rsp, [rsp-128]");  // red zone 
+	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, "lea rsp, [rsp-128]" , NULL);
 	p_instruction->SetComment("start truncation sequence");
-	instr = addNewAssembly(p_instruction, "pushf");
+	instr = addNewAssembly(p_instruction, std::string("push ") + Register::toString(borrowReg));
+	instr = addNewAssembly(instr, "pushf");
 	if (p_annotation.isSigned())
 		sprintf(buf, "mov %s, 0x%16llx", Register::toString(borrowReg).c_str(), mask2);
 	else
@@ -1469,8 +1474,9 @@ bool IntegerTransform64::addTruncationCheck64(Instruction_t *p_instruction, cons
 
 //	save->SetFallthrough(pushf);
 
-	restore->SetFallthrough(restoreReg);
-	restoreReg->SetFallthrough(originalInstrumentInstr);
+    restore->SetFallthrough(restoreReg);
+	instr = addNewAssembly(restoreReg, "lea rsp, [rsp+128]");
+	instr->SetFallthrough(originalInstrumentInstr);
 
 	if (p_annotation.isUnsigned())
 	{
