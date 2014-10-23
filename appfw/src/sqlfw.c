@@ -178,14 +178,15 @@ int sqlfw_verify(const char *zSql, char **errMsg)
     if (is_tautology) 
     {
 		success = 0;
-		if (verbose)
-			appfw_display_taint("SQL Injection detected (tautology)", zSql, tainted);
+		appfw_log_taint("SQL Injection detected (tautology)", zSql, tainted);
 	}
 	else
 	{
 		success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
-		if (!success && verbose)
-			appfw_display_taint("SQL Injection detected", zSql, tainted);
+		if (!success)
+		{
+			appfw_log_taint("SQL Injection detected", zSql, tainted);
+		}
 	}
 
 	free(tainted);

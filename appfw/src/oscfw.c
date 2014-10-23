@@ -64,16 +64,20 @@ int oscfw_verify_fast(const char *p_command, char *p_taint)
 
 		if (is_security_violation(p_taint[i]) )
 		{
+			appfw_log("OSC: first critical token is tainted, but bless anyways");
 			OK = 1;
 			break;
 		}
 	}
 
-	if(getenv("APPFW_VERBOSE"))
-		if (OK)
-			fprintf(stderr,"verify OK\n");
-		else
-			fprintf(stderr,"verify NOT okay\n");
+	if (OK)
+	{
+		appfw_log("OSC: command verify OK");
+	}
+	else
+	{
+		appfw_log_taint("OS Command Injection detected", p_command, p_taint);
+	}
 
 	return OK;
 }

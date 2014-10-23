@@ -22,6 +22,9 @@ void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_t
 extern void appfw_establish_blessed(const char *input, char *taint, int case_sensitive); 
 int appfw_establish_taint_fast2(const char *input, char *taint, int case_sensitive); 
 void appfw_empty_taint(const char *command, char *taint);
+void appfw_log(const char *p_msg);
+void appfw_log_taint(const char *p_msg, const char *p_query, const char *p_taint);
+void appfw_log_taint_f(FILE *p_fp, const char *p_msg, const char *p_query, const char *p_taint);
 
 int is_security_violation(char c);
 int is_blessed(char c);

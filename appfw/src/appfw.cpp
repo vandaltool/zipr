@@ -24,6 +24,8 @@ static unsigned int fw_size = 512;
 static char **fw_sigs = NULL;
 static int appfw_initialized = 0;
 
+static FILE* LOGFD = NULL;
+
 static void reset_sig_file_env_var()
 {
 	extern char **environ;
@@ -107,7 +109,7 @@ void appfw_init_ctor()
 		}
 		else
 		{
-			fprintf(stderr, "Prod %d: Unable to print command line\n", getpid());
+			fprintf(stderr, "Proc %d: Unable to print command line\n", getpid());
 		}	
 		fprintf(stderr, "Proc %d: library constructor initialization finished\n", getpid());
 	}
@@ -233,6 +235,14 @@ extern "C" void appfw_init()
 	}
 
 	fflush(stderr);
+
+	char *logfile = getenv("APPFW_LOG_FILE");
+	if (logfile)
+			LOGFD = fopen(logfile, "a");
+
+	char msg[1024];
+	sprintf(msg, "\nProc %d: appfw initialized: %d signatures", getpid(), numSigs);
+	appfw_log(msg);
 }
 
 extern "C" void appfw_init_from_file(const char *p_file)
@@ -342,33 +352,6 @@ void appfw_establish_blessed(const char *command, char *taint, int case_sensitiv
 		}
 		pos++;
 	}
-}
-
-// enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_SECURITY_VIOLATION2, APPFW_BLESSED_KEYWORD };
-extern "C" void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
-{
-		int i;
-		fprintf(stderr,"proc %d: %s: %s\n", getpid(), p_msg, p_query);
-		fprintf(stderr,"proc %d: %s: ", getpid(), p_msg);
-		for (i = 0; i < strlen(p_query); ++i)
-		{
-				if (p_taint[i] == APPFW_BLESSED)
-						fprintf(stderr,"b");
-				else if (p_taint[i] == APPFW_SECURITY_VIOLATION)
-						fprintf(stderr,"v");
-				else if (p_taint[i] == APPFW_SECURITY_VIOLATION2)
-						fprintf(stderr,"w");
-				else if (p_taint[i] == APPFW_BLESSED_KEYWORD)
-						fprintf(stderr,"k");
-				else if (p_taint[i] == APPFW_CRITICAL_TOKEN)
-						fprintf(stderr,"c");
-				else if (p_taint[i] == APPFW_UNKNOWN)
-						fprintf(stderr,"-");
-				else // APPFW_TAINTED
-						fprintf(stderr,"t");
-		}
-		fprintf(stderr,"\n");
-		fflush(stderr);
 }
 
 extern "C" 
@@ -677,4 +660,59 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 		fprintf(stderr,"failed to fix all violations, %d remain\n", violations);
 	}
 	return FALSE;
+}
+
+extern "C" void appfw_log(const char *p_msg)
+{
+	if (LOGFD)			
+	{
+		fputs(p_msg, LOGFD);	
+		fputs("\n", LOGFD);
+	}
+}
+
+// enum { APPFW_BLESSED, APPFW_TAINTED, APPFW_SECURITY_VIOLATION, APPFW_SECURITY_VIOLATION2, APPFW_BLESSED_KEYWORD };
+extern "C" void appfw_log_taint_f(FILE *p_fp, const char *p_msg, const char *p_query, const char *p_taint)
+{
+		int i;
+		fprintf(p_fp,"proc %d: %s: %s\n", getpid(), p_msg, p_query);
+		fprintf(p_fp,"proc %d: %s: ", getpid(), p_msg);
+		for (i = 0; i < strlen(p_query); ++i)
+		{
+				if (p_taint[i] == APPFW_BLESSED)
+						fprintf(p_fp,"b");
+				else if (p_taint[i] == APPFW_SECURITY_VIOLATION)
+						fprintf(p_fp,"v");
+				else if (p_taint[i] == APPFW_SECURITY_VIOLATION2)
+						fprintf(p_fp,"w");
+				else if (p_taint[i] == APPFW_BLESSED_KEYWORD)
+						fprintf(p_fp,"k");
+				else if (p_taint[i] == APPFW_CRITICAL_TOKEN)
+						fprintf(p_fp,"c");
+				else if (p_taint[i] == APPFW_UNKNOWN)
+						fprintf(p_fp,"-");
+				else // APPFW_TAINTED
+						fprintf(p_fp,"t");
+		}
+		fprintf(p_fp,"\n");
+		fflush(p_fp);
+}
+
+extern "C" void appfw_log_taint(const char *p_msg, const char *p_query, const char *p_taint)
+{
+		int verbose = getenv("APPFW_VERBOSE") ? 1 : 0;
+
+		if (verbose)
+				appfw_log_taint_f(stderr, p_msg, p_query, p_taint);
+
+		if (LOGFD)
+		{					
+			appfw_log_taint_f(LOGFD, p_msg, p_query, p_taint);
+			fflush(LOGFD);
+		}
+}
+
+extern "C" void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint)
+{
+		appfw_log_taint_f(stderr, p_msg, p_query, p_taint);
 }
