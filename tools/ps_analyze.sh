@@ -905,9 +905,11 @@ if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool
 	perform_step toctou none $CONCURRENCY_HOME/do_toctou.sh
 fi
 
-# copy deadlock tool here if it exists
 if [[ "$CONCURRENCY_HOME/deadlock" != "" && -d "$CONCURRENCY_HOME/deadlock" ]]; then
+    # copy deadlock tool here if it exists
 	perform_step deadlock none $CONCURRENCY_HOME/do_deadlock.sh
+    # enable some jitter in the scheduling
+	perform_step schedperturb none $CONCURRENCY_HOME/do_schedperturb.sh
 fi
 
 #
