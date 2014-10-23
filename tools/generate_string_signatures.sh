@@ -81,10 +81,19 @@ else
 	grep -i "found string:" $stringLogFile | sed "s/Found string: \"//" | sed "s/\" at.*$//" > $tmpFile2
 fi
 
-cat $defaultSigs >> $tmpFile2                                          # add signatures from sqlite itself
+# convert parameterized arguments of the form ?1 or (?1) to %s so that we split the fragments
+# split fragments on ;
+grep "(?[0-9][0-9]*)" $tmpFile2 | sed "s/(?[0-9][0-9]*)/\n/g" >> $tmpFile
+grep "?[0-9][0-9]*" $tmpFile2 | sed "s/?[0-9][0-9]*/\n/g" >> $tmpFile
+grep ";" $tmpFile2 | sed "s/;/\n/g" >> $tmpFile
+cat $tmpFile >> $tmpFile2
+rm $tmpFile
+
+cat $defaultSigs >> $tmpFile2        # add signatures from sqlite itself
 sort  $tmpFile2 | uniq  > $tmpFile                                 
 
 nm -a $inputFile | grep -v " U " | grep -v " w " | cut -d' ' -f3 | sort | uniq > $tmpSymbols # get symbol names
+
 
 #
 # break up strings with potential format specifiers
