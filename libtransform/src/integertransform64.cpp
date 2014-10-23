@@ -5,11 +5,12 @@
 #include "Rewrite_Utility.hpp"
 
 //#define INSTRUMENT_LEA
-//#define INSTRUMENT_SIGNEDNESS
 
 #define INSTRUMENT_OVERFLOW
 #define INSTRUMENT_UNDERFLOW
 #define INSTRUMENT_TRUNCATION
+#define INSTRUMENT_SIGNEDNESS
+
 
 using namespace libTransform;
 
@@ -1592,20 +1593,19 @@ bool IntegerTransform64::addSignednessCheck(Instruction_t *p_instruction, const 
 	string detector = p_annotation.isSigned() ? SIGNEDNESS64_DETECTOR_SIGNED : SIGNEDNESS64_DETECTOR_UNSIGNED;
 	Instruction_t *origFallthrough = p_instruction->GetFallthrough();
 
-	Instruction_t *save = addNewAssembly("pushf");
-
+	Instruction_t* originalInstrumentInstr = IRDBUtility::insertAssemblyBefore(getFileIR(), p_instruction, std::string("lea rsp, [rsp-128]"), NULL);
+	Instruction_t *save = addNewAssembly(p_instruction, "pushf");
 	// TEST <reg>, <reg>
 	std::ostringstream s;
 	s << "test " << Register::toString(p_annotation.getRegister()) << "," << Register::toString(p_annotation.getRegister());
-	Instruction_t* originalInstrumentInstr = carefullyInsertBefore(p_instruction, save);
 	Instruction_t *test = addNewAssembly(save, s.str());
-	save->SetFallthrough(test);
 	originalInstrumentInstr->SetFallthrough(origFallthrough);
 
 	Instruction_t *jns = addNewAssembly(test, "jns 0x22");
 	Instruction_t *nop = addNewAssembly(jns, "nop");
 	Instruction_t *restore = addNewAssembly("popf");
-	restore->SetFallthrough(originalInstrumentInstr);
+	Instruction_t *learestore = addNewAssembly(restore, "lea rsp, [rsp+128]");
+	learestore->SetFallthrough(originalInstrumentInstr);
 
 	jns->SetTarget(restore);
 
