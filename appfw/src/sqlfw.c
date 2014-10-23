@@ -271,6 +271,7 @@ static char *CRITICAL_FUNCTIONS[] = {
 	"UNHEX", 
 	"UPPER",
 	"USER", 
+	"USERNAME", 
 	"USER_NAME", 
 	"VERSION", 
 	"WEEK", 
