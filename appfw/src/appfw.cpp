@@ -594,6 +594,9 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 	list<char*>::iterator next;
 
 	int list_depth=0;
+
+	if (violations == 0)
+		return TRUE;
 	
 	/* iterate the list */
 	for(list<char*>::iterator it=mru_sigs->begin(); it!=mru_sigs->end();  it=next)

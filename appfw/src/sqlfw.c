@@ -170,6 +170,8 @@ int sqlfw_verify(const char *zSql, char **errMsg)
 		return 0;
 	}
 
+	appfw_log(zSql);
+
 	int is_tautology = 0;
 	int success = 1;
 
