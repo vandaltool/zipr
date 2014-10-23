@@ -1,6 +1,6 @@
 
 
-DIRS=transforms spasm meds2pdb cover ret_shadow_stack
+DIRS=safefr transforms spasm meds2pdb cover ret_shadow_stack
 
 all:
 	for i in $(DIRS); do cd $$i; make all; cd ..; done
