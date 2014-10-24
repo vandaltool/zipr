@@ -519,9 +519,17 @@ else
 
 	if(regexec(&(pn_regex->regex_push_anything), disasm_str.c_str(), max, pmatch, 0)==0)
 	{
-		if(!in_prologue[instr])
+		Instruction_t* ft=instr->GetFallthrough();
+		if(ft && !ft->GetFallthrough() && 
+			(ft->GetTarget()==NULL || ft->GetTarget()->GetFunction()!=instr->GetFunction()))
 		{
-			cerr<<"Found push instruction not in prologue, marking as not canary safe\n";
+			/* probably a push/jmp converted by fix calls */
+			/* can ignore this push */
+		}
+		else if(!in_prologue[instr])
+		{
+			cerr<<"Found push instruction not in prologue, marking as not canary safe";
+			cerr<<"Insn="<<disasm_str<<endl;
 			pn_direct_offsets->SetCanarySafe(false);
 			pn_scaled_offsets->SetCanarySafe(false);
 			pn_all_offsets->SetCanarySafe(false);
