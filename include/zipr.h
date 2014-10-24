@@ -40,7 +40,7 @@ class Zipr_t
 {
 	public:
 		Zipr_t(libIRDB::FileIR_t* p_firp, Options_t &p_opts)
-			: m_firp(p_firp), m_opts(p_opts)
+			: m_firp(p_firp), m_opts(p_opts), memory_space()
 		{ 
  		};
 
@@ -66,17 +66,6 @@ class Zipr_t
 		void PlopTheUnpinnedInstructions();
 		void UpdateCallbacks();
 		void PrintStats();
-
-
-		// range operatations
-		void SplitFreeRange(RangeAddress_t addr);
-		void MergeFreeRange(RangeAddress_t addr);
-		std::list<Range_t>::iterator FindFreeRange(RangeAddress_t addr);
-		Range_t GetFreeRange(int size);
-
-		// queries about free areas.
-		bool AreBytesFree(RangeAddress_t addr, int num_bytes);
-		bool IsByteFree(RangeAddress_t addr);
 
 		//  emitting bytes.
 		void PlopByte(RangeAddress_t addr, char the_byte);
@@ -118,9 +107,7 @@ class Zipr_t
 	private:
 		// structures necessary for ZIPR algorithm.
 		std::set<UnresolvedUnpinned_t> unresolved_unpinned_addrs;
-		std::list<Range_t> free_ranges;   // keep ordered
 		std::set<UnresolvedPinned_t> unresolved_pinned_addrs; 
-		std::list<Range_t> pinned_ranges; // keep ordered
 		std::multimap<UnresolvedUnpinned_t,Patch_t> patch_list;
 
 		// map of where bytes will actually go.
@@ -144,8 +131,7 @@ class Zipr_t
 		// records where we will insert extra bytes into the program.
 		RangeAddress_t start_of_new_space;
 
-
-
+		MemorySpace_t memory_space;
 };
 
 #endif

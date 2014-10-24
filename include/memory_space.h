@@ -28,31 +28,30 @@
  * E-mail: jwd@zephyr-software.com
  **************************************************************************/
 
-#ifndef zipr_all_h
-#define zipr_all_h
+#ifndef memory_space_h
+#define memory_space_h
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <set>
-#include <list>
-#include <map>
-#include <libIRDB-core.hpp>
-
-#include "elfio/elfio.hpp"
-#include "elfio/elfio_dump.hpp"
-
-
-namespace zipr
+class MemorySpace_t
 {
+	public:
+		MemorySpace_t() { }
 
-#include <range.h>
-#include <unresolved.h>
-#include <memory_space.h>
-#include <zipr.h>
-#include <zipr_optimizations.h>
-#include <zipr_options.h>
-#include <zipr_stats.h>
+		// range operatations
+		void SplitFreeRange(RangeAddress_t addr);
+		void MergeFreeRange(RangeAddress_t addr);
+		std::list<Range_t>::iterator FindFreeRange(RangeAddress_t addr);
+		Range_t GetFreeRange(int size);
+		void AddFreeRange(Range_t newRange);
 
+		// queries about free areas.
+		bool AreBytesFree(RangeAddress_t addr, int num_bytes);
+		bool IsByteFree(RangeAddress_t addr);
+		bool IsValidRange(std::list<Range_t>::iterator it);
+
+		int GetRangeCount();
+
+	protected:
+		std::list<Range_t> free_ranges;   // keep ordered
 };
 
 #endif

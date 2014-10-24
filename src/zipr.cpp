@@ -107,7 +107,7 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	// go ahead and update any callback sites with the new locations 
 	UpdateCallbacks();
 
-	m_stats->total_free_ranges = free_ranges.length();
+	m_stats->total_free_ranges = memory_space.GetRangeCount();
 
 	// write binary file to disk 
 	OutputBinaryFile(name);
@@ -198,7 +198,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 			last_end=end;
 			if(m_opts.GetVerbose())
 				printf("Adding free range 0x%p to 0x%p\n", (void*)start,(void*)end);
-			free_ranges.push_back(Range_t(start,end));
+			memory_space.AddFreeRange(Range_t(start,end));
 		}
 	}
 
@@ -208,7 +208,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 	// now that we've looked at the sections, add a (mysterious) extra section in case we need to overflow 
 	// the sections existing in the ELF.
 	RangeAddress_t new_free_page=PAGE_ROUND_UP(max_addr);
-	free_ranges.push_back( Range_t(new_free_page,(RangeAddress_t)-1));
+	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1));
 	if(m_opts.GetVerbose())
 		printf("Adding (mysterious) free range 0x%p to EOF\n", (void*)new_free_page);
 	start_of_new_space=new_free_page;
@@ -232,166 +232,6 @@ void Zipr_t::AddPinnedInstructions()
 		unresolved_pinned_addrs.insert(UnresolvedPinned_t(insn));
 	}
 
-}
-
-
-Range_t Zipr_t::GetFreeRange(int size)
-{
-	for( list<Range_t>::iterator it=free_ranges.begin();
-		it!=free_ranges.end();
-		++it)
-	{
-		Range_t r=*it;
-		if(r.GetEnd() - r.GetStart() > size)
-			return r;
-	}
-	assert(0);// assume we find a big enough range.
-}
-
-list<Range_t>::iterator Zipr_t::FindFreeRange(RangeAddress_t addr)
-{
-	for( list<Range_t>::iterator it=free_ranges.begin();
-		it!=free_ranges.end();
-		++it)
-	{
-		Range_t r=*it;
-		if(r.GetStart() <= addr && addr <=r.GetEnd())
-			return it;
-	}
-	return free_ranges.end();
-}
-
-void Zipr_t::MergeFreeRange(RangeAddress_t addr)
-{
-	/*
-	 * Make a new range of one byte.
-	 * 
-	 * Then, look to see whether or not it
-	 * can be merged with another range. 
-	 *
-	 * If not, add it as a one byte range.
-	 */
-
-	Range_t nr(addr, addr);
-	bool merged = false;
-	list<Range_t>::iterator it=free_ranges.begin();
-	for(;it!=free_ranges.end();++it)
-	{
-		Range_t r=*it;
-		if ((addr+1) == r.GetStart()) {
-			/*
-			 * Make the beginning of this range
-			 * one byte smaller!
-			 */
-			Range_t nnr(addr, r.GetEnd());
-			if(m_opts.GetVerbose())
-			{
-				printf("Expanded range:\n");
-				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
-			}
-			free_ranges.insert(it, nnr);
-			free_ranges.erase(it);
-			nr = nnr;
-			merged = true;
-			break;
-		} else if ((addr-1) == r.GetEnd()) {
-			/*
-			 * Make the end of this range one byte
-			 * bigger
-			 */
-			Range_t nnr(r.GetStart(), addr);
-			if(m_opts.GetVerbose())
-			{
-				printf("Expanded range:\n");
-				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
-			}
-			free_ranges.insert(it, nnr);
-			free_ranges.erase(it);
-			nr = nnr;
-			merged = true;
-			break;
-		}
-	}
-
-	if (!merged)
-		free_ranges.insert(it, nr);
-
-	/*
-	 * Correctness: 
-	 * Take a pass through and see if there are
-	 * free ranges that can now be merged. This
-	 * is important because it's possible that
-	 * we added the byte to the end of a range
-	 * where it could also have gone at the
-	 * beginning of another.
-	 */
-	for(it=free_ranges.begin();it!=free_ranges.end();++it)
-	{
-		Range_t r = *it;
-		if ((
-				/*
-				 * <--r-->
-				 *    <--nr-->
-				 */
-				(r.GetEnd() >= nr.GetStart() &&
-				r.GetEnd() <= nr.GetEnd()) ||
-				/*
-				 *     <--r-->
-				 * <--nr-->
-				 */
-				(r.GetStart() <= nr.GetEnd() &&
-				r.GetEnd() >= nr.GetEnd())
-				) &&
-				(r.GetStart() != nr.GetStart() ||
-				r.GetEnd() != nr.GetEnd()))
-		{
-			/*
-			 * merge.
-			 */
-			Range_t merged_range(std::min(r.GetStart(), nr.GetStart()), std::max(r.GetEnd(), nr.GetEnd()));
-			if(m_opts.GetVerbose())
-			{
-				printf("Merged two ranges:\n");
-				printf("1: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("2: %p to %p\n", (void*)nr.GetStart(), (void*)nr.GetEnd());
-			}
-			free_ranges.insert(it, merged_range);
-			free_ranges.erase(it);
-			return;
-		}
-	}
-}
-
-void Zipr_t::SplitFreeRange(RangeAddress_t addr)
-{
-	list<Range_t>::iterator it=FindFreeRange(addr);
-	assert(it!=free_ranges.end());
-
-	Range_t r=*it;
-
-	if(r.GetStart()==r.GetEnd())
-	{
-		assert(addr==r.GetEnd());
-		free_ranges.erase(it);
-	}
-	else if(addr==r.GetStart())
-	{
-		free_ranges.insert(it, Range_t(r.GetStart()+1, r.GetEnd()));
-		free_ranges.erase(it);
-	}
-	else if(addr==r.GetEnd())
-	{
-		free_ranges.insert(it, Range_t(r.GetStart(), r.GetEnd()-1));
-		free_ranges.erase(it);
-	}
-	else // split range 
-	{
-		free_ranges.insert(it, Range_t(r.GetStart(), addr-1));
-		free_ranges.insert(it, Range_t(addr+1, r.GetEnd()));
-		free_ranges.erase(it);
-	}
 }
 
 Instruction_t *Zipr_t::FindPinnedInsnAtAddr(RangeAddress_t addr)
@@ -520,7 +360,7 @@ void Zipr_t::OptimizePinnedFallthroughs()
 			 */
 			for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
 			{
-				MergeFreeRange(j);
+				memory_space.MergeFreeRange(j);
 			}
 			up.SetRange(Range_t(0,0));
 
@@ -570,7 +410,7 @@ void Zipr_t::PreReserve2ByteJumpTargets()
 				printf("Looking for %d-byte jump targets to pre-reserve.\n", size);
 			for(int i=120;i>=-120;i--)
 			{
-				if(AreBytesFree(addr+i,size))
+				if(memory_space.AreBytesFree(addr+i,size))
 				{
 					if(m_opts.GetVerbose())
 						printf("Found location for 2-byte->%d-byte conversion "
@@ -585,7 +425,7 @@ void Zipr_t::PreReserve2ByteJumpTargets()
 					up.SetRange(Range_t(addr+i, addr+i+size));
 					for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
 					{
-						SplitFreeRange(j);
+						memory_space.SplitFreeRange(j);
 					}
 					found_close_target = true;
 					break;
@@ -650,7 +490,7 @@ void Zipr_t::ReservePinnedInstructions()
 			for(int i=0;i<upinsn->GetDataBits().size();i++)
 			{
 				byte_map[addr+i]=upinsn->GetDataBits()[i];
-				SplitFreeRange(addr+i);
+				memory_space.SplitFreeRange(addr+i);
 				m_stats->total_other_space++;
 			}
 			continue;
@@ -672,7 +512,7 @@ void Zipr_t::ReservePinnedInstructions()
 		{
 			assert(byte_map.find(addr+i) == byte_map.end() );
 			byte_map[addr+i]=bytes[i];
-			SplitFreeRange(addr+i);
+			memory_space.SplitFreeRange(addr+i);
 		}
 	}
 }
@@ -691,7 +531,7 @@ void Zipr_t::ExpandPinnedInstructions()
 		RangeAddress_t addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
 
 		char bytes[]={0xe9,0,0,0,0}; // jmp rel8
-		bool can_update=AreBytesFree(addr+2,sizeof(bytes)-2);
+		bool can_update=memory_space.AreBytesFree(addr+2,sizeof(bytes)-2);
 		if(can_update)
 		{
 			if(m_opts.GetVerbose())
@@ -703,7 +543,7 @@ void Zipr_t::ExpandPinnedInstructions()
 			 */
 			for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
 			{
-				MergeFreeRange(j);
+				memory_space.MergeFreeRange(j);
 			}
 			up.SetRange(Range_t(0,0));
 
@@ -754,7 +594,7 @@ void Zipr_t::Fix2BytePinnedInstructions()
 			 */
 			for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
 			{
-				MergeFreeRange(j);
+				memory_space.MergeFreeRange(j);
 			}
 
 			if (up.GetRange().Is5ByteRange()) 
@@ -795,8 +635,8 @@ void Zipr_t::Fix2BytePinnedInstructions()
 				{
 					assert(byte_map.find(up.GetRange().GetStart()+i) == byte_map.end() );
 					byte_map[up.GetRange().GetStart()+i]=bytes[i];
-					SplitFreeRange(up.GetRange().GetStart()+i);
-					assert(!IsByteFree(up.GetRange().GetStart()+i));
+					memory_space.SplitFreeRange(up.GetRange().GetStart()+i);
+					assert(!memory_space.IsByteFree(up.GetRange().GetStart()+i));
 				}
 
 				if(m_opts.GetVerbose())
@@ -818,23 +658,6 @@ void Zipr_t::Fix2BytePinnedInstructions()
 		}
 	}
 }
-
-
-bool Zipr_t::AreBytesFree(RangeAddress_t addr, int num_bytes)
-{
-	for(int i=0;i<num_bytes;i++)
-		if(!IsByteFree(addr+i))
-			return false;
-	return true;
-}
-
-bool Zipr_t::IsByteFree(RangeAddress_t addr)
-{
-	if(FindFreeRange(addr)!=free_ranges.end())
-		return true;
-	return false;
-}
-
 
 void Zipr_t::OptimizePinnedInstructions()
 {
@@ -895,7 +718,7 @@ void Zipr_t::PlopBytes(RangeAddress_t addr, const char the_byte[], int num)
 void Zipr_t::PlopByte(RangeAddress_t addr, char the_byte)
 {
 	if(byte_map.find(addr) == byte_map.end() )
-		SplitFreeRange(addr);
+		memory_space.SplitFreeRange(addr);
 	byte_map[addr]=the_byte;
 }
 
@@ -944,7 +767,7 @@ void Zipr_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
 	uintptr_t off=to_addr-at_addr-2;
 
-	assert(!IsByteFree(at_addr));
+	assert(!memory_space.IsByteFree(at_addr));
 	
 	switch(byte_map[at_addr])
 	{
@@ -956,7 +779,7 @@ void Zipr_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 		{
 			assert(off==(uintptr_t)(char)off);
 
-			assert(!IsByteFree(at_addr+1));
+			assert(!memory_space.IsByteFree(at_addr+1));
 			byte_map[at_addr+1]=(char)off;
 		}
 	}
@@ -1028,7 +851,7 @@ static int DetermineWorseCaseInsnSize(Instruction_t* insn)
 void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p)
 {
 	int req_size=DetermineWorseCaseInsnSize(uu.GetInstruction());
-	Range_t r=GetFreeRange(req_size);
+	Range_t r=memory_space.GetFreeRange(req_size);
 	int insn_count=0;
 	const char* truncated="not truncated.";
 
@@ -1390,7 +1213,7 @@ void Zipr_t::FillSection(section* sec, FILE* fexe)
 		printf("Dumping addrs %p-%p\n", (void*)start, (void*)end);
 	for(RangeAddress_t i=start;i<end;i++)
 	{
-		if(!IsByteFree(i))
+		if(!memory_space.IsByteFree(i))
 		{
 			// get byte and write it into exe.
 			char  b=byte_map[i];
@@ -1441,8 +1264,8 @@ void Zipr_t::OutputBinaryFile(const string &name)
 		perror( "void Zipr_t::OutputBinaryFile(const string &name)");
 
 	// first byte of this range is the last used byte.
-	list<Range_t>::iterator it=FindFreeRange((RangeAddress_t) -1);
-	assert(it!=free_ranges.end());
+	list<Range_t>::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
+	assert(memory_space.IsValidRange(it));
 
 	RangeAddress_t end_of_new_space=it->GetStart();
 
@@ -1450,7 +1273,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	for(RangeAddress_t i=start_of_new_space;i<end_of_new_space;i++)
 	{
 		char b=0;
-		if(!IsByteFree(i))
+		if(!memory_space.IsByteFree(i))
 		{
 			b=byte_map[i];
 		}

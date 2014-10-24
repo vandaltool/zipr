@@ -18,6 +18,7 @@ callbacks/libc/src/Makefile.in -text
 callbacks/libc/src/cgc.s -text
 callbacks/libc/src/malloc.c -text
 callbacks/libc/src/unistd.c -text
+include/memory_space.h -text
 include/range.h -text
 include/unresolved.h -text
 include/zipr.h -text
@@ -27,6 +28,7 @@ include/zipr_options.h -text
 include/zipr_stats.h -text
 src/Makefile -text
 src/main.cpp -text
+src/memory_space.cpp -text
 src/zipr.cpp -text
 src/zipr_options.cpp -text
 src/zipr_stats.cpp -text
