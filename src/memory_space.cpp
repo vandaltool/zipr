@@ -59,7 +59,7 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 			 * one byte smaller!
 			 */
 			Range_t nnr(addr, r.GetEnd());
-			if (true) //if(m_opts.GetVerbose())
+			if(m_opts != NULL && m_opts->GetVerbose())
 			{
 				printf("Expanded range:\n");
 				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
@@ -76,7 +76,7 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 			 * bigger
 			 */
 			Range_t nnr(r.GetStart(), addr);
-			if (true) //if(m_opts.GetVerbose())
+			if(m_opts != NULL && m_opts->GetVerbose())
 			{
 				printf("Expanded range:\n");
 				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
@@ -126,11 +126,12 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 			 * merge.
 			 */
 			Range_t merged_range(std::min(r.GetStart(), nr.GetStart()), std::max(r.GetEnd(), nr.GetEnd()));
-			if (true) //if(m_opts.GetVerbose())
+			if(m_opts != NULL && m_opts->GetVerbose())
 			{
 				printf("Merged two ranges:\n");
-				printf("1: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
-				printf("2: %p to %p\n", (void*)nr.GetStart(), (void*)nr.GetEnd());
+				printf("r:  %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
+				printf("nr: %p to %p\n", (void*)nr.GetStart(), (void*)nr.GetEnd());
+				printf("to: %p to %p\n", (void*)merged_range.GetStart(), (void*)merged_range.GetEnd());
 			}
 			free_ranges.insert(it, merged_range);
 			free_ranges.erase(it);

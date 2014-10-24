@@ -31,10 +31,13 @@
 #ifndef memory_space_h
 #define memory_space_h
 
+class Options_t;
+
 class MemorySpace_t
 {
 	public:
-		MemorySpace_t() { }
+		MemorySpace_t():m_opts(NULL) { }
+		MemorySpace_t(Options_t *opts):m_opts(opts) { }
 
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
@@ -50,8 +53,10 @@ class MemorySpace_t
 
 		int GetRangeCount();
 
+		void PrintMemorySpace(std::ostream &out);
 	protected:
 		std::list<Range_t> free_ranges;   // keep ordered
+		Options_t *m_opts;
 };
 
 #endif
