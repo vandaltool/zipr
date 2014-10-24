@@ -743,14 +743,14 @@ void Zipr_t::PatchCall(RangeAddress_t at_addr, RangeAddress_t to_addr)
 {
 	uintptr_t off=to_addr-at_addr-5;
 
-	assert(!IsByteFree(at_addr));
+	assert(!memory_space.IsByteFree(at_addr));
 	
 	switch(byte_map[at_addr])
 	{
 		case (char)0xe8:	/* 5byte call */
 		{
 			assert(off==(uintptr_t)off);
-			assert(!AreBytesFree(at_addr+1,4));
+			assert(!memory_space.AreBytesFree(at_addr+1,4));
 
 			byte_map[at_addr+1]=(char)(off>> 0)&0xff;
 			byte_map[at_addr+2]=(char)(off>> 8)&0xff;
@@ -1464,8 +1464,8 @@ RangeAddress_t Zipr_t::FindCallbackAddress(RangeAddress_t end_of_new_space, Rang
 void Zipr_t::UpdateCallbacks()
 {
         // first byte of this range is the last used byte.
-        list<Range_t>::iterator it=FindFreeRange((RangeAddress_t) -1);
-        assert(it!=free_ranges.end());
+        set<Range_t>::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
+        assert(memory_space.IsValidRange(it));
 
         RangeAddress_t end_of_new_space=it->GetStart();
 	RangeAddress_t start_addr=GetCallbackStartAddr();
