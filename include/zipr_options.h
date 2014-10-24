@@ -43,7 +43,7 @@ class Options_t
 			m_outname("b.out"), 
 			m_objcopy_path("/usr/bin/objcopy")
 		{
-			verbose=false; 
+			m_verbose=false; 
 			m_var_id=-1;
 		}
 
@@ -53,7 +53,7 @@ class Options_t
 		std::string GetOutputFileName(libIRDB::File_t* p_file) { return m_outname; }
 		std::string GetCallbackFileName() { return m_callbackname; }
 		int GetVariantID() { return m_var_id; }
-		int GetVerbose() { return verbose; }
+		int GetVerbose() { return m_verbose; }
 		std::string GetObjcopyPath() { return m_objcopy_path; };
 		
 		void EnableOptimization(Optimizations_t::OptimizationName_t opt) 
@@ -66,11 +66,16 @@ class Options_t
 			return EnabledOptimizations[opt] == 1; 
 		};
 
+		void SetVerbose(bool verbose)
+		{
+			m_verbose = verbose;
+		}
+
 	private:
 		std::string m_outname;
 		std::string m_callbackname;
 		std::string m_objcopy_path;
-		bool verbose;
+		bool m_verbose;
 		int m_var_id;
 		int EnabledOptimizations[Optimizations_t::NumberOfOptimizations];
 };

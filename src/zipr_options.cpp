@@ -27,7 +27,7 @@ void Options_t::print_usage(int p_argc, char *p_argv[])
 Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 {
 	Options_t *opt=new Options_t;
-	opt->verbose=true;
+	opt->SetVerbose(true);
 	extern char *optarg;
 	extern int optind, opterr, optopt;
 	int option = 0;
@@ -56,12 +56,12 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 		{
 			case '!':
 			{
-				opt->verbose = true;
+				opt->SetVerbose(true);
 				break;
 			}
 			case 'q':
 			{
-				opt->verbose = false;
+				opt->SetVerbose(false);
 				break;
 			}
 			case 'z':
