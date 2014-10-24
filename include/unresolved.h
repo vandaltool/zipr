@@ -72,7 +72,7 @@ class UnresolvedPinned_t : public UnresolvedInfo_t
 {
 	public:
 		UnresolvedPinned_t(libIRDB::Instruction_t* p_from) : from_instruction(p_from), m_range(0,0), m_updated_address(0) {}
-		UnresolvedPinned_t(libIRDB::Instruction_t* p_from, Range_t range) : from_instruction(p_from), m_range(range) {}
+		UnresolvedPinned_t(libIRDB::Instruction_t* p_from, Range_t range) : from_instruction(p_from), m_range(range), m_updated_address(0) {}
 		libIRDB::Instruction_t* GetInstruction() const { return from_instruction; }
 
 		/*

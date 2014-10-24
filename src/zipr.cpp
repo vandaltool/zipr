@@ -353,7 +353,9 @@ void Zipr_t::OptimizePinnedFallthroughs()
 				 ft_ibta->GetVirtualOffset())
 		{
 			if (m_opts.GetVerbose())
-				printf("Emitting pinned instruction with pinned fallthrough next.\n");
+				printf("Emitting pinned instruction (0x%p) "
+				       "with pinned fallthrough next.\n",
+				       (void*)up_ibta->GetVirtualOffset());
 			m_stats->Hit(Optimizations_t::OptimizationFallthroughPinned);
 
 			/*
