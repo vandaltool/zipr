@@ -234,6 +234,11 @@ void PNStackLayout::AddCanaryPadding()
 
 	unsigned int size = 8;
 
+// Twitcher adds another guard
+#ifdef TWITCHER_GUARD
+        size += 8;
+#endif
+
 	sort(mem_objects.begin(),mem_objects.end(),CompareRangeDisplacedOffset);
 	//counts the additional padding added, does not take into consideration previous padding
 	unsigned int total_padding =0;
