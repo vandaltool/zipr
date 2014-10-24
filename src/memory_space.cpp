@@ -6,12 +6,43 @@
 using namespace zipr;
 using namespace std;
 
+static bool range_compare(const Range_t first, const Range_t second)
+{
+	return first.GetStart() < second.GetStart();
+}
+
+void MemorySpace_t::Sort()
+{
+	int i = 0;
+	list<Range_t>::iterator it;
+
+	if (free_ranges_ptrs != NULL)
+	{
+		for (int j = 0; j<free_ranges_ptrs_size; j++)
+			delete free_ranges_ptrs[j];
+		free(free_ranges_ptrs);
+	}
+
+	free_ranges.sort(range_compare);
+
+	free_ranges_ptrs = (std::list<Range_t>::iterator**)malloc(sizeof(std::list<Range_t>::iterator*)*free_ranges.size());
+	for(i=0,it=free_ranges.begin();it!=free_ranges.end();++it,++i)
+	{
+		free_ranges_ptrs[i] = new std::list<Range_t>::iterator(it);
+	}
+
+	m_is_sorted = true;
+	free_ranges_ptrs_size = free_ranges.size();
+}
+
 void MemorySpace_t::SplitFreeRange(RangeAddress_t addr)
 {
 	list<Range_t>::iterator it=FindFreeRange(addr);
 	assert(IsValidRange(it));
 
 	Range_t r=*it;
+
+	m_is_sorted = false;
 
 	if(r.GetStart()==r.GetEnd())
 	{
@@ -50,6 +81,9 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 	Range_t nr(addr, addr);
 	bool merged = false;
 	list<Range_t>::iterator it=free_ranges.begin();
+
+	m_is_sorted = false;
+
 	for(;it!=free_ranges.end();++it)
 	{
 		Range_t r=*it;
@@ -154,8 +188,48 @@ void MemorySpace_t::PrintMemorySpace(std::ostream &out)
 	}
 }
 
+std::list<Range_t>::iterator MemorySpace_t::FindFreeRangeB(
+	int startIndex,
+	int stopIndex,
+	RangeAddress_t addr)
+{
+	std::list<Range_t>::iterator *start = free_ranges_ptrs[startIndex];
+	std::list<Range_t>::iterator *stop = free_ranges_ptrs[stopIndex];
+	Range_t startRange = **start;
+	Range_t stopRange = **stop;
+	if (startIndex == stopIndex)
+		return free_ranges.end();
+	else if (startRange.GetStart() <= addr && addr <=startRange.GetEnd())
+		return *start;
+	else if (stopRange.GetStart() <= addr && addr <=stopRange.GetEnd())
+		return *stop;
+	else
+	{
+		/*
+		 * mid startIndex - stopIndex 
+		 */
+		int midIndex = startIndex + ((stopIndex-startIndex)/2);
+		Range_t mid = **(free_ranges_ptrs[midIndex]);
+
+		if (mid.GetStart() <= addr && addr <=mid.GetEnd())
+			return *free_ranges_ptrs[midIndex];
+		else if (addr <= mid.GetStart()) {
+			return FindFreeRangeB(startIndex, std::max(0, std::max(--midIndex, startIndex)), addr);
+		}
+		else
+		{
+			return FindFreeRangeB(std::min(++midIndex, stopIndex), stopIndex, addr);
+		}
+	}
+}
+
 std::list<Range_t>::iterator MemorySpace_t::FindFreeRange(RangeAddress_t addr)
 {
+	if (m_is_sorted)
+	{
+		return FindFreeRangeB(0, free_ranges.size()-1, addr);
+	}
+
 	for( list<Range_t>::iterator it=free_ranges.begin();
 		it!=free_ranges.end();
 		++it)
@@ -203,6 +277,7 @@ bool MemorySpace_t::IsByteFree(RangeAddress_t addr)
 
 void MemorySpace_t::AddFreeRange(Range_t newRange)
 {
+	m_is_sorted = false;
 	free_ranges.push_back(Range_t(newRange.GetStart(), newRange.GetEnd()));
 }
 int MemorySpace_t::GetRangeCount()

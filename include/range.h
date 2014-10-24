@@ -40,8 +40,8 @@ class Range_t
 		Range_t(RangeAddress_t p_s, RangeAddress_t p_e) : m_start(p_s), m_end(p_e) { }
 		Range_t() : m_start(0), m_end(0) { }
 
-		RangeAddress_t GetStart() { return m_start; }
-		RangeAddress_t GetEnd() { return m_end; }
+		RangeAddress_t GetStart() const { return m_start; }
+		RangeAddress_t GetEnd() const { return m_end; }
 
 		bool Is2ByteRange()
 		{

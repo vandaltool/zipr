@@ -95,7 +95,9 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 			printf("Going to Re PreReserve2ByteJumpTargets.\n");
 			PreReserve2ByteJumpTargets();
 		}
+		memory_space.Sort();
 	}
+
 
 	// Convert all 5-byte pins into full fragments
 	OptimizePinnedInstructions();
@@ -108,6 +110,7 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	UpdateCallbacks();
 
 	m_stats->total_free_ranges = memory_space.GetRangeCount();
+	memory_space.Sort();
 
 	// write binary file to disk 
 	OutputBinaryFile(name);

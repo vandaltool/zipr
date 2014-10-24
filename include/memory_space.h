@@ -36,8 +36,8 @@ class Options_t;
 class MemorySpace_t
 {
 	public:
-		MemorySpace_t():m_opts(NULL) { }
-		MemorySpace_t(Options_t *opts):m_opts(opts) { }
+		MemorySpace_t():m_opts(NULL),m_is_sorted(false),free_ranges_ptrs(NULL) { }
+		MemorySpace_t(Options_t *opts):m_opts(opts),m_is_sorted(false),free_ranges_ptrs(NULL) { }
 
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
@@ -53,10 +53,18 @@ class MemorySpace_t
 
 		int GetRangeCount();
 
+		void Sort();
+
 		void PrintMemorySpace(std::ostream &out);
 	protected:
 		std::list<Range_t> free_ranges;   // keep ordered
 		Options_t *m_opts;
+		bool m_is_sorted;
+	private:
+		std::list<Range_t>::iterator FindFreeRangeB(int startIndex, int stopIndex,
+			RangeAddress_t addr);
+		std::list<Range_t>::iterator **free_ranges_ptrs;
+		int free_ranges_ptrs_size;
 };
 
 #endif
