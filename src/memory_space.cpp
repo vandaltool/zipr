@@ -65,10 +65,8 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
 				printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
 			}
-			free_ranges.insert(it, nnr);
-			free_ranges.erase(it);
 			nr = nnr;
-			merged = true;
+			free_ranges.erase(it);
 			break;
 		} else if ((addr-1) == r.GetEnd()) {
 			/*
@@ -82,16 +80,11 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 				printf("from: %p to %p\n", (void*)r.GetStart(), (void*)r.GetEnd());
 				printf("to: %p to %p\n", (void*)nnr.GetStart(), (void*)nnr.GetEnd());
 			}
-			free_ranges.insert(it, nnr);
-			free_ranges.erase(it);
 			nr = nnr;
-			merged = true;
+			free_ranges.erase(it);
 			break;
 		}
 	}
-
-	if (!merged)
-		free_ranges.insert(it, nr);
 
 	/*
 	 * Correctness: 
@@ -110,15 +103,19 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 				 * <--r-->
 				 *    <--nr-->
 				 */
-				(r.GetEnd() >= nr.GetStart() &&
+				((r.GetEnd()+1) >= nr.GetStart() &&
 				r.GetEnd() <= nr.GetEnd()) ||
 				/*
-				 *     <--r-->
 				 * <--nr-->
+				 *     <--r-->
 				 */
-				(r.GetStart() <= nr.GetEnd() &&
-				r.GetEnd() >= nr.GetEnd())
+				((nr.GetEnd()+1) >= r.GetStart() &&
+				nr.GetEnd() <= r.GetEnd())
 				) &&
+				/*
+				 * The ranges themselves are not
+				 * identical.
+				 */
 				(r.GetStart() != nr.GetStart() ||
 				r.GetEnd() != nr.GetEnd()))
 		{
@@ -135,9 +132,17 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 			}
 			free_ranges.insert(it, merged_range);
 			free_ranges.erase(it);
-			return;
+			merged = true;
+			break;
 		}
 	}
+
+	if (!merged)
+	{
+		free_ranges.push_back(nr);
+	}
+}
+
 }
 
 std::list<Range_t>::iterator MemorySpace_t::FindFreeRange(RangeAddress_t addr)
