@@ -1195,6 +1195,7 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 	char b=insn->GetDataBits()[0];
 	switch(b)
 	{
+		case (char)0x70:
 		case (char)0x71:
 		case (char)0x72:
 		case (char)0x73:
