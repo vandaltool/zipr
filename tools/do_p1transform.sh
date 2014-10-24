@@ -278,14 +278,15 @@ $SECURITY_TRANSFORMS_HOME/tools/cover/cover $CLONE_ID $EXECUTED_ADDRESSES_FINAL 
 touch $COVERAGE_FILE
 
 
-command="$PEASOUP_HOME/tools/my_timeout.sh $TIMEOUT_VALUE $PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT \
+c1="$PEASOUP_HOME/tools/my_timeout.sh $TIMEOUT_VALUE "
+c2="$PN_BINARY --variant_id=$CLONE_ID --bed_script=$BED_SCRIPT \
 		--coverage_file=$COVERAGE_FILE --pn_threshold=$P1THRESHOLD \
 		--canaries=$DO_CANARIES --blacklist=$LIBC_FILTER  --shared_object_protection   --no_p1_validate --align_stack"
 
 if [ ! -z $DEBUG_P1 ]; then
-	gdb --args                                      $command
+	gdb --args                                      $c2
 else
-	$command
+	$c1 $c2
 fi
 
 

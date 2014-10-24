@@ -401,7 +401,8 @@ perform_step()
 	if [[ "$mandatory" != "none" && "$mandatory" != "mandatory" ]]; then
 		check_dependencies $mandatory
 		if [ $? -eq 0 ]; then 
-			echo Skipping step $step because of failed dependencies. [dependencies=$mandatory]
+			echo Skipping step $step because of failed dependencies. [dependencies=$mandatory] "*************************************************"
+			errors=1
 			if [ $record_stats -eq 1 ]; then
 				$PEASOUP_HOME/tools/db/job_status_report.sh "$JOBID" "$step" "$stepnum" completed "$starttime" error
 			fi
