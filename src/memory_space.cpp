@@ -143,6 +143,15 @@ void MemorySpace_t::MergeFreeRange(RangeAddress_t addr)
 	}
 }
 
+void MemorySpace_t::PrintMemorySpace(std::ostream &out)
+{
+	for( list<Range_t>::iterator it=free_ranges.begin();
+		it!=free_ranges.end();
+		++it)
+	{
+		Range_t r = *it;
+		out <<"0x"<<std::hex<<r.GetStart()<<" - 0x"<<std::hex<<r.GetEnd()<<endl;
+	}
 }
 
 std::list<Range_t>::iterator MemorySpace_t::FindFreeRange(RangeAddress_t addr)
