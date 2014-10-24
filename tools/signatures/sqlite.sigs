@@ -1,12 +1,130 @@
+) || ', ' || 
+) + 1, 1)
++18) ELSE name END WHERE tbl_name=
+AND block IS NULL
+AND idx < 
+AND idx = 
+AND rootpage=
+AND type='index'
+' AND type='index' THEN 'sqlite_autoindex_' || 
+AND type='index' THEN 'sqlite_autoindex_' || 
+COLLATE nocase AND (type='table' OR type='index' OR type='trigger');
 CREATE INDEX
 CREATE TABLE 
 CREATE TABLE sqlite_master(
 CREATE TEMP TABLE sqlite_temp_master(
-INSERT INTO vacuum_db.sqlite_master
-SELECT name, rootpage, sql FROM 
-SELECT type, name, tbl_name, rootpage, sql
+'CREATE TRIGGER 
+ELSE name END WHERE tbl_name=
+ELSE sqlite_rename_table(sql,
+ELSE sqlite_rename_table(sql, 
+) END, tbl_name = 
+END, tbl_name = 
 FROM main.sqlite_master
-WHERE type='view'
-OR type='trigger'
+FROM main.sqlite_master WHERE type = 'table' AND name!='sqlite_sequence'   AND rootpage>0
+FROM vacuum_db.sqlite_master WHERE name=='sqlite_sequence';
+FROM vacuum_db.sqlite_master WHERE name='sqlite_sequence'
+GROUP BY level HAVING count(*)>=
+INSERT INTO vacuum_db.sqlite_master
+INSERT INTO vacuum_db.sqlite_master   SELECT type, name, tbl_name, rootpage, sql    FROM main.sqlite_master   WHERE type='view' OR type='trigger'      OR (type='table' AND rootpage=0)
+INSERT OR REPLACE INTO
+', name=
+, name = CASE WHEN type='table' THEN 
+(nodeno INTEGER PRIMARY KEY, data BLOB);CREATE TABLE 
+(nodeno INTEGER PRIMARY KEY, parentnode INTEGER);
+ORDER BY 1 ASC
+ORDER BY idx ASC
+ORDER BY (level %% 1024) ASC LIMIT 1
+ORDER BY level DESC, idx ASC
+ORDER BY rowid
 OR (type='table' AND rootpage=0)
+OR type='trigger'
+quote(name) || ' SELECT * FROM main.' || quote(name) || ';'
+, root = 
+, rootpage=
+rootpage=
+, rootpage=0, sql=
+(rowid INTEGER PRIMARY KEY, nodeno INTEGER);
+SELECT 1 FROM 
+SELECT 2 * total(1 + leaves_end_block - start_block)   FROM
+SELECT coalesce((SELECT max(blockid) FROM
+SELECT count(*) FROM 
+SELECT 'CREATE INDEX vacuum_db.'
+SELECT 'CREATE INDEX vacuum_db.' || substr(sql,14)  FROM sqlite_master WHERE sql LIKE 'CREATE INDEX
+SELECT 'CREATE INDEX vacuum_db.' || substr(sql,14)  FROM sqlite_master WHERE sql LIKE 'CREATE INDEX %' 
+SELECT 'CREATE TABLE vacuum_db.'
+SELECT 'CREATE TABLE vacuum_db.' || substr(sql,14)   FROM sqlite_master WHERE type='table' AND name!='sqlite_sequence'   AND rootpage>0
+SELECT 'CREATE UNIQUE INDEX vacuum_db.'
+SELECT 'CREATE UNIQUE INDEX vacuum_db.' || substr(sql,21)   FROM sqlite_master WHERE sql LIKE 'CREATE UNIQUE INDEX 
+SELECT 'CREATE UNIQUE INDEX vacuum_db.' || substr(sql,21)   FROM sqlite_master WHERE sql LIKE 'CREATE UNIQUE INDEX %'
+SELECT data FROM 
+SELECT 'DELETE FROM vacuum_db.' || quote(name) || ';'
+SELECT 'DELETE FROM vacuum_db.' || quote(name) || ';' FROM vacuum_db.sqlite_master WHERE name='sqlite_sequence' 
+SELECT DISTINCT level / (1024 *
+SELECT idx FROM 
+SELECT idx, start_block, leaves_end_block, end_block, root FROM 
+SELECT idx, start_block, leaves_end_block, end_block, root FROM %Q.'%q_segdir' WHERE level BETWEEN ? AND ?ORDER BY level DESC, idx ASC
+SELECT idx, start_block, leaves_end_block, end_block, root FROM %Q.'%q_segdir' WHERE level = ? ORDER BY idx ASC
+SELECT 'INSERT INTO vacuum_db.' || 
+SELECT 'INSERT INTO vacuum_db.' || quote(name) || ' SELECT * FROM main.' || quote(name) || ';'
+SELECT 'INSERT INTO vacuum_db.' || quote(name) || ' SELECT * FROM main.' || quote(name) || ';' 
+SELECT 'INSERT INTO vacuum_db.' || quote(name) || ' SELECT * FROM main.' || quote(name) || ';'FROM main.sqlite_master WHERE type = 'table' AND name!='sqlite_sequence'   AND rootpage>0
+SELECT 'INSERT INTO vacuum_db.' || quote(name) || ' SELECT * FROM main.' || quote(name) || ';' FROM vacuum_db.sqlite_master WHERE name=='sqlite_sequence';
+SELECT length(data) FROM 
+SELECT level FROM 
+SELECT max( level %% 1024 ) FROM 
+SELECT max(level) FROM 
+SELECT name, rootpage, sql FROM 
+SELECT name, rootpage, sql FROM '%q'.%s WHERE %s ORDER BY rowid
+SELECT nodeno FROM 
+SELECT NOT EXISTS(SELECT docid FROM 
+SELECT NOT EXISTS(SELECT docid FROM %Q.'%q_content' WHERE rowid!=?)
+SELECT parentnode FROM 
+SELECT (SELECT max(idx) FROM 
+SELECT size FROM 
+SELECT tbl,idx,stat FROM %Q.sqlite_stat1
+SELECT type, name, tbl_name, rootpage, sql
+SELECT value FROM
+SELECT value FROM 
+SET sql = CASE WHEN type = 'trigger' THEN sqlite_rename_trigger(sql, 
+SET sql = sqlite_rename_parent(sql, 
+SET sql = substr(sql,1,
+SET start_block = 
+SET type='table', name=
+, sql=
+sqlite_master ORDER BY
 .sqlite_master ORDER BY rowid
+sqlite_master WHERE
+sqlite_sequence set name = 
+sqlite_temp_master ORDER BY
+sqlite_temp_master WHERE
+|| substr(name,
+substr(name,
+|| substr(sql,
+|| substr(sql,14)  FROM sqlite_master WHERE sql LIKE 'CREATE INDEX 
+substr(sql,14)   FROM sqlite_master WHERE type='table' AND name!='sqlite_sequence'   AND rootpage>0
+|| substr(sql,21)   FROM sqlite_master WHERE sql LIKE 'CREATE UNIQUE INDEX
+, tbl_name=
+, tbl_name = 
+UPDATE sqlite_temp_master SET sql = sqlite_rename_trigger(sql, 
+VALUES(1, zeroblob(
+VALUES('index',
+VALUES('trigger',
+WHEN name LIKE 'sqlite_autoindex
+WHERE blockid BETWEEN 
+WHERE docid=
+WHERE docid = 
+WHERE id=2
+WHERE level =
+WHERE level = 
+WHERE level BETWEEN
+WHERE level BETWEEN 
+WHERE name = 
+WHERE nodeno = 
+WHERE nodeno = 1
+WHERE rowid=
+WHERE rowid!=
+WHERE tbl_name=
+WHERE tbl_name =
+) WHERE type = 'table' AND name = 
+WHERE type = 'table' AND name = 
+WHERE type='view'
