@@ -65,6 +65,13 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	// reserve space for pins
 	ReservePinnedInstructions();
 
+	// Emit instruction immediately?
+
+	if (m_opts.IsEnabledOptimization(Optimizations_t::OptimizationFallthroughPinned))
+	{
+		OptimizePinnedFallthroughs();
+	}
+
 	PreReserve2ByteJumpTargets();
 
 	// expand 2-byte pins into 4-byte pins
@@ -415,19 +422,23 @@ bool Zipr_t::ShouldPinImmediately(Instruction_t *upinsn)
 	DISASM d;
 	upinsn->Disassemble(d);
 	Instruction_t *pin_at_next_byte = NULL;
+	AddressID_t *upinsn_ibta = NULL, *ft_ibta = NULL;
 
 	if(d.Instruction.BranchType==RetType)
 		return true;
 
-	AddressID_t* upinsn_ibta=upinsn->GetIndirectBranchTargetAddress();
+	upinsn_ibta=upinsn->GetIndirectBranchTargetAddress();
 	assert(upinsn_ibta!=NULL);
+
+	if (upinsn->GetFallthrough() != NULL)
+		ft_ibta=upinsn->GetFallthrough()->GetIndirectBranchTargetAddress();
 
 	/* careful with 1 byte instructions that have a pinned fallthrough */ 
 	if(upinsn->GetDataBits().length()==1)
 	{
 		if(upinsn->GetFallthrough()==NULL)
 			return true;
-		AddressID_t* ft_ibta=upinsn->GetFallthrough()->GetIndirectBranchTargetAddress();
+		ft_ibta=upinsn->GetFallthrough()->GetIndirectBranchTargetAddress();
 		if(ft_ibta && (upinsn_ibta->GetVirtualOffset()+1) == ft_ibta->GetVirtualOffset())
 			return true;
 	}
@@ -471,6 +482,55 @@ bool Zipr_t::ShouldPinImmediately(Instruction_t *upinsn)
 		return true;
 	}
 	return false;
+}
+
+void Zipr_t::OptimizePinnedFallthroughs()
+{
+	for(set<UnresolvedPinned_t>::const_iterator it=two_byte_pins.begin();
+		it!=two_byte_pins.end();
+		)
+	{
+		UnresolvedPinned_t up=*it;
+		Instruction_t *up_insn = up.GetInstruction();
+		AddressID_t *up_ibta = NULL, *ft_ibta = NULL;
+
+		up_ibta=up_insn->GetIndirectBranchTargetAddress();
+		assert(up_ibta!=NULL);
+
+		if (up_insn->GetFallthrough() != NULL)
+			ft_ibta=up_insn->GetFallthrough()->GetIndirectBranchTargetAddress();
+
+		/*
+		 * has a fallthrough and
+		 * that fallthrough is next and
+		 * that fallthrough is pinned.
+		 */
+		if (ft_ibta != NULL &&
+		    (up_ibta->GetVirtualOffset() + up_insn->GetDataBits().length()) == 
+				 ft_ibta->GetVirtualOffset())
+		{
+			if (m_opts.GetVerbose())
+				printf("Emitting pinned instruction with pinned fallthrough next.\n");
+			m_stats->Hit(Optimizations_t::OptimizationFallthroughPinned);
+
+			/*
+			 * Unreserve any reserved space for this instructions.
+			 */
+			for (int j = up.GetRange().GetStart(); j<up.GetRange().GetEnd(); j++)
+			{
+				MergeFreeRange(j);
+			}
+			up.SetRange(Range_t(0,0));
+
+			PlopInstruction(up_insn,up_ibta->GetVirtualOffset());
+			two_byte_pins.erase(it++);
+		}
+		else
+		{
+			m_stats->Missed(Optimizations_t::OptimizationFallthroughPinned);
+			it++;
+		}
+	}
 }
 
 void Zipr_t::PreReserve2ByteJumpTargets()

@@ -62,6 +62,7 @@ class Zipr_t
 		void ExpandPinnedInstructions();
 		void Fix2BytePinnedInstructions();
 		void OptimizePinnedInstructions();
+		void OptimizePinnedFallthroughs();
 		void PlopTheUnpinnedInstructions();
 		void UpdateCallbacks();
 		void PrintStats();

@@ -3,6 +3,6 @@
 
 class Optimizations_t {
 	public:
-		enum OptimizationName_t { OptimizationPlopNotJump = 0 , NumberOfOptimizations};
+		enum OptimizationName_t { OptimizationPlopNotJump = 0, OptimizationFallthroughPinned = 1, NumberOfOptimizations};
 };
 #endif

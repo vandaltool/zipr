@@ -70,6 +70,11 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 				{
 					opt->EnableOptimization(
 						Optimizations_t::OptimizationPlopNotJump);
+				} 
+				else if (!strcmp("fallthroughpinned", ::optarg))
+				{
+					opt->EnableOptimization(
+						Optimizations_t::OptimizationFallthroughPinned);
 				}
 				else
 				{
