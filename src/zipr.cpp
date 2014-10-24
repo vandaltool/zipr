@@ -589,7 +589,7 @@ void Zipr_t::ReservePinnedInstructions()
 			{
 				byte_map[addr+i]=upinsn->GetDataBits()[i];
 				SplitFreeRange(addr+i);
-				total_other_space++;
+				m_stats->total_other_space++;
 			}
 			continue;
 		}
@@ -647,17 +647,17 @@ void Zipr_t::ExpandPinnedInstructions()
 
 			five_byte_pins[up]=addr;
 			two_byte_pins.erase(it++);
-			total_5byte_pins++;
-			total_trampolines++;
+			m_stats->total_5byte_pins++;
+			m_stats->total_trampolines++;
 		}
 		else
 		{
 			++it;
 			if(m_opts.GetVerbose())
 				printf("Found %p can NOT be updated to 5-byte jmp\n", (void*)addr);
-			total_2byte_pins++;
-			total_trampolines++;
-			total_tramp_space+=2;
+			m_stats->total_2byte_pins++;
+			m_stats->total_trampolines++;
+			m_stats->total_tramp_space+=2;
 		}
 	}
 
@@ -812,7 +812,7 @@ void Zipr_t::OptimizePinnedInstructions()
 			if(m_opts.GetVerbose())
 				printf("Converting 5-byte pinned jump at %p-%p to patch to %d:%s\n", 
 				(void*)addr,(void*)(addr+4), uu.GetInstruction()->GetBaseID(), d.CompleteInstr);
-			total_tramp_space+=5;
+			m_stats->total_tramp_space+=5;
 		}
 
 		// remove and move to next pin
@@ -1029,14 +1029,14 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 		patch_list.insert(pair<UnresolvedUnpinned_t,Patch_t>(uu,thepatch));
 		PlopJump(cur_addr);
 		truncated="truncated due to lack of space.";
-		total_tramp_space+=5;
-		truncated_dollops++;
-		total_trampolines++;
+		m_stats->total_tramp_space+=5;
+		m_stats->truncated_dollops++;
+		m_stats->total_trampolines++;
 	}
 
-	total_dollops++;
-	total_dollop_instructions+=insn_count;
-	total_dollop_space+=(cur_addr-fr_start);
+	m_stats->total_dollops++;
+	m_stats->total_dollop_instructions+=insn_count;
+	m_stats->total_dollop_space+=(cur_addr-fr_start);
 
 	if(m_opts.GetVerbose())
 		printf("Ending dollop.  size=%d, %s.  space_remaining=%lld, req'd=%d\n", insn_count, truncated,
@@ -1408,20 +1408,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 
 void Zipr_t::PrintStats()
 {
-	cout<<"Total dollops: "<<std::dec << total_dollops <<endl;
-	cout<<"Total dollop size: "<<std::dec << total_dollop_space <<endl;
-	cout<<"Total dollop instructions: "<<std::dec << total_dollop_instructions <<endl;
-	cout<<"Truncated dollops: "<<std::dec << truncated_dollops <<endl;
-	cout<<"Ave dollop size: "<<std::dec << (double)total_dollop_space/(double)total_dollops <<endl;
-	cout<<"Ave dollop instructions: "<<std::dec << (double)total_dollop_instructions/(double)total_dollops <<endl;
-	cout<<"Truncated dollop fraction: "<<std::dec << (double)truncated_dollops/(double)total_dollops <<endl;
-
-	cout<<"Total trampolines: "<<std::dec << total_trampolines <<endl;
-	cout<<"Total 2-byte pin trampolines: "<<std::dec << total_2byte_pins <<endl;
-	cout<<"Total 5-byte pin trampolines: "<<std::dec << total_5byte_pins <<endl;
-	cout<<"Total trampoline space pins: "<<std::dec << total_tramp_space <<endl;
-
-	cout<<"Other space: "<<total_other_space<<endl;
+	m_stats->PrintStats(m_opts, cout);
 }
 
 template < typename T > std::string to_hex_string( const T& n )

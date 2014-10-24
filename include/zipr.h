@@ -42,16 +42,7 @@ class Zipr_t
 		Zipr_t(libIRDB::FileIR_t* p_firp, Options_t &p_opts)
 			: m_firp(p_firp), m_opts(p_opts)
 		{ 
-                	total_dollops=0;
-                	total_dollop_space=0;
-                	total_dollop_instructions=0;
-                	total_trampolines=0;
-                	total_2byte_pins=0;
-                	total_5byte_pins=0;
-                	total_tramp_space=0;
-                	total_other_space=0;
-			truncated_dollops=0;
-		};
+ 		};
 
 		void CreateBinaryFile(const std::string &name);
 
@@ -148,17 +139,6 @@ class Zipr_t
 
 		// way to read elf headers, etc.
 		ELFIO::elfio*    elfiop;
-
-		// stats
-		int total_dollops;
-		int total_dollop_space;
-		int total_dollop_instructions;
-		int total_trampolines;
-		int total_2byte_pins;
-		int total_5byte_pins;
-		int total_tramp_space;
-		int total_other_space;
-		int truncated_dollops;
 
 		// records where we will insert extra bytes into the program.
 		RangeAddress_t start_of_new_space;

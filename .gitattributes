@@ -29,6 +29,7 @@ src/Makefile -text
 src/main.cpp -text
 src/zipr.cpp -text
 src/zipr_options.cpp -text
+src/zipr_stats.cpp -text
 third_party/ELFIO/elfio-2.2/AUTHORS -text
 third_party/ELFIO/elfio-2.2/COPYING -text
 third_party/ELFIO/elfio-2.2/ChangeLog -text
