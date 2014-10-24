@@ -33,38 +33,39 @@
 
 class Options_t;
 
+struct Range_tCompare
+{
+	bool operator()(const Range_t first, const Range_t second)
+	{
+		return first.GetEnd() < second.GetStart();
+	}
+};
+
 class MemorySpace_t
 {
 	public:
-		MemorySpace_t():m_opts(NULL),m_is_sorted(false),free_ranges_ptrs(NULL) { }
-		MemorySpace_t(Options_t *opts):m_opts(opts),m_is_sorted(false),free_ranges_ptrs(NULL) { }
+		MemorySpace_t():m_opts(NULL) { }
+		MemorySpace_t(Options_t *opts):m_opts(opts) { }
 
 		// range operatations
 		void SplitFreeRange(RangeAddress_t addr);
 		void MergeFreeRange(RangeAddress_t addr);
-		std::list<Range_t>::iterator FindFreeRange(RangeAddress_t addr);
+		std::set<Range_t>::iterator FindFreeRange(RangeAddress_t addr);
 		Range_t GetFreeRange(int size);
 		void AddFreeRange(Range_t newRange);
 
 		// queries about free areas.
 		bool AreBytesFree(RangeAddress_t addr, int num_bytes);
 		bool IsByteFree(RangeAddress_t addr);
-		bool IsValidRange(std::list<Range_t>::iterator it);
+		bool IsValidRange(std::set<Range_t>::iterator it);
 
 		int GetRangeCount();
 
-		void Sort();
-
 		void PrintMemorySpace(std::ostream &out);
 	protected:
-		std::list<Range_t> free_ranges;   // keep ordered
+		std::set<Range_t, Range_tCompare> free_ranges;   // keep ordered
 		Options_t *m_opts;
-		bool m_is_sorted;
 	private:
-		std::list<Range_t>::iterator FindFreeRangeB(int startIndex, int stopIndex,
-			RangeAddress_t addr);
-		std::list<Range_t>::iterator **free_ranges_ptrs;
-		int free_ranges_ptrs_size;
 };
 
 #endif

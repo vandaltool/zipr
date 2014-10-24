@@ -95,7 +95,6 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 			printf("Going to Re PreReserve2ByteJumpTargets.\n");
 			PreReserve2ByteJumpTargets();
 		}
-		memory_space.Sort();
 	}
 
 
@@ -110,7 +109,6 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	UpdateCallbacks();
 
 	m_stats->total_free_ranges = memory_space.GetRangeCount();
-	memory_space.Sort();
 
 	// write binary file to disk 
 	OutputBinaryFile(name);
@@ -1267,7 +1265,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 		perror( "void Zipr_t::OutputBinaryFile(const string &name)");
 
 	// first byte of this range is the last used byte.
-	list<Range_t>::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
+	std::set<Range_t>::iterator it=memory_space.FindFreeRange((RangeAddress_t) -1);
 	assert(memory_space.IsValidRange(it));
 
 	RangeAddress_t end_of_new_space=it->GetStart();

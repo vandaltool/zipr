@@ -33,7 +33,7 @@ bool TestSplitMemorySpace()
 
 bool TestBinarySearchMaxRange()
 {
-	std::list<Range_t>::iterator foundRange;
+	std::set<Range_t>::iterator foundRange;
 	Options_t opts;
 	opts.SetVerbose(true);
 	MemorySpace_t m(&opts);
@@ -46,7 +46,6 @@ bool TestBinarySearchMaxRange()
 	m.SplitFreeRange(375);
 	m.SplitFreeRange(385);
 
-	m.Sort();
 
 	cout << "Looking for 0x" << std::hex << (RangeAddress_t)-1 << ":" << endl;
 	foundRange = m.FindFreeRange(RangeAddress_t((RangeAddress_t)-1));
@@ -59,7 +58,7 @@ bool TestBinarySearchMaxRange()
 
 bool TestBinarySearch()
 {
-	std::list<Range_t>::iterator foundRange;
+	std::set<Range_t>::iterator foundRange;
 	Options_t opts;
 	opts.SetVerbose(true);
 	MemorySpace_t m(&opts);
@@ -72,7 +71,6 @@ bool TestBinarySearch()
 	m.SplitFreeRange(400);
 
 	m.PrintMemorySpace(cout);
-	m.Sort();
 	m.PrintMemorySpace(cout);
 	
 	cout << "Looking for 0x" << std::hex << 258 << ":" << endl;
@@ -142,7 +140,6 @@ bool TestSort()
 	m.MergeFreeRange(315);
 
 	m.PrintMemorySpace(cout);
-	m.Sort();
 	m.PrintMemorySpace(cout);
 
 	return true;

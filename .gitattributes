@@ -33,7 +33,6 @@ src/zipr.cpp -text
 src/zipr_options.cpp -text
 src/zipr_stats.cpp -text
 test/MemorySpace.cpp -text
-test/MemorySpace.o -text
 third_party/ELFIO/elfio-2.2/AUTHORS -text
 third_party/ELFIO/elfio-2.2/COPYING -text
 third_party/ELFIO/elfio-2.2/ChangeLog -text
