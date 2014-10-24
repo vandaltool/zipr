@@ -18,6 +18,7 @@ class Stats_t
 			total_5byte_pins = 0;
 			total_tramp_space = 0;
 			total_other_space = 0;
+			total_free_ranges = 0;
 		};
 
 		void PrintStats(Options_t opts, std::ostream &out);
@@ -35,6 +36,7 @@ class Stats_t
 		int total_5byte_pins;
 		int total_tramp_space;
 		int total_other_space;
+		int total_free_ranges;
 
 		/*
 		 * Optimization stats tracking.

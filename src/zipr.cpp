@@ -107,6 +107,8 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	// go ahead and update any callback sites with the new locations 
 	UpdateCallbacks();
 
+	m_stats->total_free_ranges = free_ranges.length();
+
 	// write binary file to disk 
 	OutputBinaryFile(name);
 
