@@ -50,6 +50,9 @@
 
 defaultSigs=$PEASOUP_HOME/tools/signatures/sqlite.sigs
 
+# copy sqlite sigs for debugging
+cp $defaultSigs .
+
 inputFile=$1
 if [ -z $2 ];then
 	finalSigFile=$1.sigs
