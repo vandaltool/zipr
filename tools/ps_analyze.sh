@@ -273,10 +273,10 @@ check_options()
 		fi
 	done
 
-	# turn off heaprand and double_free if twitcher is on for now
+	# turn off heaprand, signconv_func_monitor, and watchdog double_free if twitcher is on for now
 	is_step_on twitchertransform
 	if [[ $? = 1 && "$TWITCHER_HOME" != "" ]]; then
-		phases_off="$phases_off heaprand=off double_free=off"
+		phases_off="$phases_off heaprand=off signconv_func_monitor=off watchdog=off double_free=off"
 	fi
 
 	#
