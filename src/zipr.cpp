@@ -789,7 +789,8 @@ void Zipr_t::PatchJump(RangeAddress_t at_addr, RangeAddress_t to_addr)
 }
 
 
-static int DetermineWorseCaseInsnSize(Instruction_t* insn)
+#define CALLBACK_TRAMPOLINE_SIZE 9
+static int DetermineWorstCaseInsnSize(Instruction_t* insn)
 {
 
 	int required_size=0;
@@ -843,6 +844,7 @@ static int DetermineWorseCaseInsnSize(Instruction_t* insn)
 		default:
 		{
 			required_size=insn->GetDataBits().size();
+			if (insn->GetCallback()!="") required_size+=CALLBACK_TRAMPOLINE_SIZE;
 			break;
 		}
 	}
@@ -853,7 +855,7 @@ static int DetermineWorseCaseInsnSize(Instruction_t* insn)
 
 void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p)
 {
-	int req_size=DetermineWorseCaseInsnSize(uu.GetInstruction());
+	int req_size=DetermineWorstCaseInsnSize(uu.GetInstruction());
 	Range_t r=memory_space.GetFreeRange(req_size);
 	int insn_count=0;
 	const char* truncated="not truncated.";
@@ -871,7 +873,7 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 	/* while we still have an instruction, and we can fit that instruction,
 	 * plus a jump into the current free section, plop down instructions sequentially.
 	 */
-	while(cur_insn && fr_end>(cur_addr+DetermineWorseCaseInsnSize(cur_insn)))
+	while(cur_insn && fr_end>(cur_addr+DetermineWorstCaseInsnSize(cur_insn)))
 	{
 		// some useful bits about how we might do real optimization for pinned instructions.
 		DISASM d;
@@ -928,7 +930,7 @@ void Zipr_t::ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Pa
 
 	if(m_opts.GetVerbose())
 		printf("Ending dollop.  size=%d, %s.  space_remaining=%lld, req'd=%d\n", insn_count, truncated,
-		(long long)(fr_end-cur_addr), cur_insn ? DetermineWorseCaseInsnSize(cur_insn) : -1 );
+		(long long)(fr_end-cur_addr), cur_insn ? DetermineWorstCaseInsnSize(cur_insn) : -1 );
 }
 
 void Zipr_t::PlopTheUnpinnedInstructions()
@@ -1399,6 +1401,7 @@ void Zipr_t::AddCallbacksTONewSegment(const string& tmpname, RangeAddress_t end_
 
 RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 {
+	RangeAddress_t originalAt = at;
 	// emit call <callback>
 	{
 	char bytes[]={0xe8,0,0,0,0}; // call rel32
@@ -1409,11 +1412,13 @@ RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 
 	// pop bogus ret addr
 	{
-	char bytes[]={0x8d,0x64 ,0x24, 0x08}; // lea esp, [esp+4]
+	char bytes[]={0x8d,0x64,0x24,0x08}; // lea esp, [esp+4]
 	PlopBytes(at, bytes, sizeof(bytes)); 
 	at+=sizeof(bytes);
 	}
-	
+
+	assert(CALLBACK_TRAMPOLINE_SIZE<=(at-originalAt));
+	return at;
 }
 
 
