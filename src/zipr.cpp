@@ -136,8 +136,8 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 	 * Make an ordered list of the sections
 	 * by their starting address.
 	 */
-	Elf_Half n = elfiop->sections.size();
-	for ( Elf_Half i = 0; i < n; ++i ) 
+	ELFIO::Elf_Half n = elfiop->sections.size();
+	for ( ELFIO::Elf_Half i = 0; i < n; ++i ) 
 	{ 
 		section* sec = elfiop->sections[i];
 		assert(sec);
@@ -347,10 +347,16 @@ void Zipr_t::OptimizePinnedFallthroughs()
 		 * has a fallthrough and
 		 * that fallthrough is next and
 		 * that fallthrough is pinned.
+		 *
+		 * Do NOT use this optimization
+		 * in the case that the instruction 
+		 * has a target or a callback!
 		 */
 		if (ft_ibta != NULL &&
 		    (up_ibta->GetVirtualOffset() + up_insn->GetDataBits().length()) == 
-				 ft_ibta->GetVirtualOffset())
+				 ft_ibta->GetVirtualOffset() &&
+			  (up_insn->GetCallback()=="") &&
+			  (!up_insn->GetTarget()))
 		{
 			if (m_opts.GetVerbose())
 				printf("Emitting pinned instruction (0x%p) "
@@ -366,7 +372,6 @@ void Zipr_t::OptimizePinnedFallthroughs()
 				memory_space.MergeFreeRange(j);
 			}
 			up.SetRange(Range_t(0,0));
-
 			PlopInstruction(up_insn,up_ibta->GetVirtualOffset());
 			two_byte_pins.erase(it++);
 		}
@@ -499,7 +504,7 @@ void Zipr_t::ReservePinnedInstructions()
 			continue;
 		}
 
-		char bytes[]={0xeb,0}; // jmp rel8
+		char bytes[]={(char)0xeb,(char)0}; // jmp rel8
 
 		if(m_opts.GetVerbose())
 		{
@@ -533,7 +538,7 @@ void Zipr_t::ExpandPinnedInstructions()
 		Instruction_t* upinsn=up.GetInstruction();
 		RangeAddress_t addr=upinsn->GetIndirectBranchTargetAddress()->GetVirtualOffset();
 
-		char bytes[]={0xe9,0,0,0,0}; // jmp rel8
+		char bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0}; // jmp rel8
 		bool can_update=memory_space.AreBytesFree(addr+2,sizeof(bytes)-2);
 		if(can_update)
 		{
@@ -633,7 +638,7 @@ void Zipr_t::Fix2BytePinnedInstructions()
 					UnresolvedPinned_t(up.GetInstruction());
 				new_up.SetUpdatedAddress(up.GetRange().GetStart());
 
-				char bytes[]={0xeb,0}; // jmp rel8
+				char bytes[]={(char)0xeb,(char)0}; // jmp rel8
 				for(int i=0;i<sizeof(bytes);i++)
 				{
 					assert(byte_map.find(up.GetRange().GetStart()+i) == byte_map.end() );
@@ -727,7 +732,7 @@ void Zipr_t::PlopByte(RangeAddress_t addr, char the_byte)
 
 void Zipr_t::PlopJump(RangeAddress_t addr)
 {
-	char bytes[]={0xe9,0,0,0,0}; // jmp rel8
+	char bytes[]={(char)0xe9,(char)0,(char)0,(char)0,(char)0}; // jmp rel8
 	for(int i=0;i<sizeof(bytes);i++)        // don't check bytes 0-1, because they've got the short byte jmp
 	{
 		PlopByte(addr+i,bytes[i]);
@@ -737,7 +742,7 @@ void Zipr_t::PlopJump(RangeAddress_t addr)
 
 void Zipr_t::CallToNop(RangeAddress_t at_addr)
 {
-	char bytes[]={0x90,0x90,0x90,0x90,0x90}; // nop;nop;nop;nop;nop
+	char bytes[]={(char)0x90,(char)0x90,(char)0x90,(char)0x90,(char)0x90}; // nop;nop;nop;nop;nop
 	PlopBytes(at_addr,bytes,sizeof(bytes));
 }
 
@@ -1103,7 +1108,7 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 		case (char)0x7f:
 		{
 		// two byte JCC
-			char bytes[]={0x0f,0xc0,0x0,0x0,0x0,0x0 }; 	// 0xc0 is a placeholder, overwritten next statement
+			char bytes[]={(char)0x0f,(char)0xc0,(char)0x0,(char)0x0,(char)0x0,(char)0x0 }; 	// 0xc0 is a placeholder, overwritten next statement
 			bytes[1]=insn->GetDataBits()[0]+0x10;		// convert to jcc with 4-byte offset.
 			PlopBytes(ret,bytes, sizeof(bytes));
 			PatchInstruction(ret, insn->GetTarget());	
@@ -1114,7 +1119,7 @@ RangeAddress_t Zipr_t::PlopWithTarget(Instruction_t* insn, RangeAddress_t at)
 		case (char)0xeb:
 		{
 			// two byte JMP
-			char bytes[]={0xe9,0x0,0x0,0x0,0x0 }; 	
+			char bytes[]={(char)0xe9,(char)0x0,(char)0x0,(char)0x0,(char)0x0 }; 	
 			bytes[1]=insn->GetDataBits()[0]+0x10;		// convert to jcc with 4-byte offset.
 			PlopBytes(ret,bytes, sizeof(bytes));
 			PatchInstruction(ret, insn->GetTarget());	
@@ -1246,8 +1251,8 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	assert(fexe);
 
         // For all sections
-        Elf_Half n = elfiop->sections.size();
-        for ( Elf_Half i = 0; i < n; ++i )
+        ELFIO::Elf_Half n = elfiop->sections.size();
+        for ( ELFIO::Elf_Half i = 0; i < n; ++i )
         {
                 section* sec = elfiop->sections[i];
                 assert(sec);
@@ -1404,7 +1409,7 @@ RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 	RangeAddress_t originalAt = at;
 	// emit call <callback>
 	{
-	char bytes[]={0xe8,0,0,0,0}; // call rel32
+	char bytes[]={(char)0xe8,(char)0,(char)0,(char)0,(char)0}; // call rel32
 	PlopBytes(at, bytes, sizeof(bytes)); 
 	unpatched_callbacks.insert(pair<Instruction_t*,RangeAddress_t>(insn,at));
 	at+=sizeof(bytes);
@@ -1412,7 +1417,7 @@ RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 
 	// pop bogus ret addr
 	{
-	char bytes[]={0x8d,0x64,0x24,0x08}; // lea esp, [esp+4]
+	char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)0x08}; // lea esp, [esp+4]
 	PlopBytes(at, bytes, sizeof(bytes)); 
 	at+=sizeof(bytes);
 	}
