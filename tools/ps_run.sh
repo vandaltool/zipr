@@ -95,7 +95,6 @@ STRATA_ANNOT_FILE=$datapath/a.ncexe.annot
 STRATA_IS_SO=0
 STRATA_EXE_FILE=$datapath/a.stratafied
 STRATA_MAX_WARNINGS=500000
-TWITCHER_USE_READ_GUARD=0
 	exec -a $origbinpath $datapath/a.stratafied \"\$@\""
 
 if [ "$DO_APPFW" = "1" ]; then
