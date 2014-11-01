@@ -139,7 +139,7 @@ int oscfw_verify_args(char* const argv[])
 
 			strcpy(cmd, argv[i]);
 			appfw_taint_range(taint, APPFW_SECURITY_VIOLATION, 0, length);
-			int success = appfw_establish_taint_fast2(cmd, taint, FALSE);
+			int success = appfw_establish_taint_fast2(cmd, taint, FALSE, FALSE);
 
 			if (!success)
 				appfw_display_taint("OS Command Injection detected (options): ", argv[i], taint);

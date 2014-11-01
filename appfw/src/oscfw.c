@@ -53,7 +53,7 @@ int oscfw_verify_fast(const char *p_command, char *p_taint)
 	//       critical keyword
 
 
-  	int OK = appfw_establish_taint_fast2(p_command, p_taint, TRUE);
+  	int OK = appfw_establish_taint_fast2(p_command, p_taint, TRUE, FALSE);
 
 	// heuristic -- if first critical token is tainted (a security violation)
 	//              then allow the command through

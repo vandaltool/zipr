@@ -6,8 +6,11 @@
 #include <assert.h>
 #include <ctype.h>
 #include <list>
+#include <set>
 #include <sys/time.h>
 
+// force two consecutive single fragment tokens (poentially with whitespace in between) to come from the same signature fragment
+#define CONSECUTIVE_SINGLECHAR_SFOP
 
 extern "C" 
 {
@@ -512,6 +515,62 @@ extern "C" void appfw_dump_signatures(FILE *fp)
 	}
 }
 
+/* returns true iff only whitespace in range [start_pos+1..end_pos-1] */
+static int allwhitespace(const char *command, int start_pos, int end_pos)
+{
+	int i;
+
+	if (start_pos < 0)
+		return 0;
+
+	for (i = start_pos+1; i <= end_pos-1; ++i)
+			if (!isspace(command[i]))
+					return 0;
+
+	return 1;
+}
+
+/* returns true iff taint[pos] is a single character security-critical token */
+static int is_single_security_token(const char *taint, int pos)
+{
+	int length = strlen(taint);
+
+	if (length == 0)
+		return 0;
+	else if (length==1)
+		return is_security_violation(taint[pos]);
+	else if (pos >= length)
+		return 0;
+
+	if (!is_security_violation(taint[pos]))
+		return 0;
+
+    // 3 cases to consider:
+	//    pos = 0, pos = length - 1, anywhere in between
+	if (pos > 0 && pos < length - 1)
+		return (taint[pos] != taint[pos+1]) && (taint[pos] != taint[pos-1]);
+	else if (pos == 0 && pos < length - 1)
+		return taint[pos] != taint[pos+1];
+	else if (pos == length - 1)
+		return taint[pos] != taint[pos-1];
+
+    return 0;
+}
+
+static void coalesce_security_tokens(char *taint, int start_pos, int end_pos)
+{
+	int k;
+	for (k = start_pos+1; k <= end_pos; ++k)
+	{
+		taint[k] = taint[start_pos];
+	}
+}
+
+static void	copy_taint(char *dst, const char *src, int n)
+{
+	for (int i = 0; i < n; ++i)
+		dst[i] = src[i];					
+}
 
 /*
  * appfw_establish_taint_fast2 - quickly establish taint markings to verify the command is OK
@@ -539,7 +598,7 @@ extern "C" void appfw_dump_signatures(FILE *fp)
  *
  * return TRUE if command is OK.
  */
-extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int case_sensitive)
+extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int case_sensitive, int p_coalesce_single_tokens)
 {
 	static char **fw_sigs = appfw_getSignatures();
 
@@ -549,7 +608,18 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 	taint[commandLength] = '\0';
 	int verbose=getenv("APPFW_VERBOSE")!=NULL;
 	int very_verbose=getenv("VERY_VERBOSE")!=NULL;
+	std::set<int> single_sigs;
 	verbose+=very_verbose;
+
+#ifdef CONSECUTIVE_SINGLECHAR_SFOP
+	char *taint2 = NULL;
+	if (p_coalesce_single_tokens)
+	{
+		taint2 = (char*)malloc(strlen(command)+1);
+		taint2[commandLength] = '\0';
+		copy_taint(taint2, taint, commandLength);
+	}
+#endif
 
 	struct timeval blah, blah2;
 	if(verbose)
@@ -620,12 +690,16 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 			if (((case_sensitive  && strncmp    (&command[pos], sig, length_signature) == 0)) || 
 			    ((!case_sensitive && strncasecmp(&command[pos], sig, length_signature) == 0)) )
 			{
-
 				/* fix any violations we found with the match */
 				int fixed_violations=fix_violations_sfop(taint, APPFW_BLESSED, pos, sig);
 		
 				if(fixed_violations)
 				{
+					if (fixed_violations == 1)
+					{
+						single_sigs.insert(pos);
+					}
+
 					if(verbose)
 					{
 						fprintf(stderr,"fixed %d violations at %d sig[%s]\n", fixed_violations,pos,sig);
@@ -642,6 +716,58 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 					violations-=fixed_violations;
 					if(violations<=0)
 					{
+#ifdef CONSECUTIVE_SINGLECHAR_SFOP
+/*
+	proc 31273: : INSERT INTO Shippers (ShipperID, CompanyName) VALUES ('5', 'BadShipper' ) ,     ('80'    ,    'BadShipper2');
+	proc 31273: : vvvvvv-wwww----------v---------w------------v--------w---v--------------w-v-----w--------v-----------------wv
+
+	policy: 2 consecutive 1-character security-critical tokens matched w/ single-character fragment must come from the same signature fragment (the 2 tokens may be separated by whitespaces)
+*/
+	if (p_coalesce_single_tokens && single_sigs.size() >= 2)
+	{
+		if (verbose) {
+			fprintf(stderr, "coalescing mode is on\n");
+		    appfw_log_taint("pre-coalesced: ", command, taint2);
+		}
+		int previous_critical_token_pos = -1;
+		int coalesced_counter = 0;
+		int k;
+		// nb: let's not bother with the last character
+		for (k = 0; k < commandLength-1; ++k)
+		{
+			if(is_single_security_token(taint2, k))
+			{
+				if (verbose)
+					fprintf(stderr, "single critical token at [%d] prev [%d]\n", k, previous_critical_token_pos);
+				if (previous_critical_token_pos >= 0 && allwhitespace(command, previous_critical_token_pos, k) && single_sigs.count(previous_critical_token_pos) > 0 && single_sigs.count(k) > 0)
+				{
+					if (verbose)
+						fprintf(stderr,"--> coalescing from [%d] to [%d]\n", previous_critical_token_pos, k);
+					coalesce_security_tokens(taint2, previous_critical_token_pos, k);	
+					previous_critical_token_pos = -1; 
+					coalesced_counter++;
+				}
+
+				previous_critical_token_pos = k;
+			}
+		}
+
+		if (coalesced_counter > 0)
+		{
+			if (verbose)
+			{
+				fprintf(stderr, "hey we coalesced (%d times), so let's try again with single-fragment origin policy\n", coalesced_counter);
+	        	appfw_log_taint("coalesced: ", command, taint);
+			}
+
+			int success = appfw_establish_taint_fast2(command, taint2, case_sensitive, FALSE);
+			copy_taint(taint, taint2, commandLength);
+			if (taint2) free(taint2);
+			return success;
+		}									
+	}
+
+#endif
 						if(verbose)
 						{
 							fprintf(stderr,"fixed ALL violations, list size=%d, iterated to %d\n", mru_sigs->size(), list_depth);
@@ -651,9 +777,8 @@ extern "C" int appfw_establish_taint_fast2(const char *command, char *taint, int
 						}
 						return TRUE;
 					}
+
 				}
-
-
 			}
 			pos++;
 		} // end while loop over command string

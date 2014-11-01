@@ -20,7 +20,7 @@ void appfw_taint_range(char *taint, char taintValue, int from, int len); // set 
 void appfw_taint_range_by_pos(char *taint, char taintValue, int beg, int end); // set taint markings
 void appfw_display_taint(const char *p_msg, const char *p_query, const char *p_taint);
 extern void appfw_establish_blessed(const char *input, char *taint, int case_sensitive); 
-int appfw_establish_taint_fast2(const char *input, char *taint, int case_sensitive); 
+int appfw_establish_taint_fast2(const char *input, char *taint, int case_sensitive, int coalesce); 
 void appfw_empty_taint(const char *command, char *taint);
 void appfw_log(const char *p_msg);
 void appfw_log_taint(const char *p_msg, const char *p_query, const char *p_taint);

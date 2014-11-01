@@ -108,7 +108,7 @@ int sqlfw_verify_s(const char *zSql, char *p_critical)
 		fprintf(stdout, "query structure: %s\n", structure);
 
 	// are all the critical keywords blessed?
-	if (!appfw_establish_taint_fast2(zSql, markings, FALSE))
+	if (!appfw_establish_taint_fast2(zSql, markings, FALSE, TRUE))
 		result_flag |= S3_SQL_ATTACK_DETECTED;
 	else
 	{
@@ -184,7 +184,25 @@ int sqlfw_verify(const char *zSql, char **errMsg)
 	}
 	else
 	{
-		success = appfw_establish_taint_fast2(zSql, tainted, FALSE);
+		success = appfw_establish_taint_fast2(zSql, tainted, FALSE, TRUE);
+
+#ifdef IGNORE_IF_CRITICAL_FIRST_TOKEN
+		// heuristic -- if first critical token is tainted (a security violation)
+		//              then allow the command through
+		for (i = 0; i < len; ++i)
+		{
+			if (is_blessed(p_taint[i]))
+				break;
+
+			if (is_security_violation(p_taint[i]) )
+			{
+				appfw_log("SQL: first critical token is tainted, but bless anyways");
+				success = 1;
+				break;
+			}
+		}
+#endif
+
 		if (!success)
 		{
 			appfw_log_taint("SQL Injection detected", zSql, tainted);
@@ -658,8 +676,10 @@ int sqlfw_get_structure(const char *zSql, char *p_annot, char *p_structure, int 
 		  case TK_DROP:
 		  case TK_INSERT:
 		  case TK_REPLACE:
+		  case TK_VALUES:
 		  case TK_LP:
 		  case TK_RP:
+		  case TK_COMMA:
 		  case TK_INTO:
 		  case TK_UPDATE:
 		  case TK_IF:
