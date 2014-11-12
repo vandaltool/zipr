@@ -7,6 +7,8 @@
 #include <map>
 #include <assert.h>
 #include <sys/mman.h>
+#include <sys/types.h>
+#include <regex.h>
 // #include <elf.h>
 #include <ctype.h>
 
@@ -364,10 +366,13 @@ void add_num_handle_fn_watches(FileIR_t * firp)
 
 }
 
-bool backup_until(const char* insn_type, Instruction_t *& prev, Instruction_t* orig)
+bool backup_until(const char* insn_type_regex, Instruction_t *& prev, Instruction_t* orig)
 {
 	DISASM disasm;
 	prev=orig;
+	regex_t preg;
+
+        assert(0 == regcomp(&preg, insn_type_regex, REG_EXTENDED));
 
 	while(preds[prev].size()==1)
 	{
@@ -378,12 +383,16 @@ bool backup_until(const char* insn_type, Instruction_t *& prev, Instruction_t* o
         	prev->Disassemble(disasm);
 
         	// check it's the requested type
-        	if(strstr(disasm.Instruction.Mnemonic, insn_type)!=NULL)
+        	if(regexec(&preg, disasm.Instruction.Mnemonic, 0, NULL, 0) == 0)
+                {
+                        regfree(&preg);
                 	return true;
+                }
 
 		// otherwise, try backing up again.
 
 	}
+        regfree(&preg);
 	return false;
 }
 
@@ -534,7 +543,7 @@ I3:   0x0000000000444264 <+228>:        mov    rdi,rbp // default case, also jum
 I4:   0x0000000000444320 <+416>:        mov    edx,DWORD PTR [rax+0x8]
 I5:   0x0000000000444323 <+419>:        lea    rax,[rip+0x3e1b6]        # 0x4824e0
 I6:   0x000000000044432a <+426>:        movsxd rdx,DWORD PTR [rax+rdx*4]
-I7:   0x000000000044432e <+430>:        add    rax,rdx
+I7:   0x000000000044432e <+430>:        add    rax,rdx  // OR: lea rax, [rdx+rax]
 I8:   0x0000000000444331 <+433>:        jmp    rax      // relatively standard switch dispatch code
 
 
@@ -565,9 +574,19 @@ DN:   0x4824e0: .long 0x4824e0-LN
 
 	// has to be a jump to a register now
 
-	// backup and find the instruction that's an add before I8 
-	if(!backup_until("add", I7, I8))
+	// backup and find the instruction that's an add or lea before I8 
+	if(!backup_until("(add|lea)", I7, I8))
 		return;
+
+        I7->Disassemble(disasm);
+
+        // Check if lea instruction is being used as add (scale=1, disp=0)
+        if(strstr(disasm.Instruction.Mnemonic, "lea"))
+        {
+                if(!(disasm.Argument2.ArgType&MEMORY_TYPE))
+                if(!(disasm.Argument2.Memory.Scale == 1 && disasm.Argument2.Memory.Displacement == 0))
+                        return;
+        }
 
 	// backup and find the instruction that's an movsxd before I7
 	if(!backup_until("movsxd", I6, I7))
