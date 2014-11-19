@@ -1044,15 +1044,78 @@ void Zipr_t::PatchInstruction(RangeAddress_t from_addr, Instruction_t* to_insn)
 	}
 }
 
+#define IS_RELATIVE(A) \
+((A.ArgType & MEMORY_TYPE) && (A.ArgType & RELATIVE_))
 
 RangeAddress_t Zipr_t::PlopInstruction(Instruction_t* insn,RangeAddress_t addr)
 {
 	DISASM d;
 	insn->Disassemble(d);
 	RangeAddress_t ret=addr;
+	bool is_instr_relative = false;
 
 
 	final_insn_locations[insn]=addr;
+
+	is_instr_relative = IS_RELATIVE(d.Argument1) ||
+	                    IS_RELATIVE(d.Argument2) ||
+											IS_RELATIVE(d.Argument3);
+	if (is_instr_relative) {
+		ARGTYPE *relative_arg = NULL;
+		uint32_t abs_displacement;
+		uint32_t *displacement;
+		char instr_raw[20] = {0,};
+		int size;
+		int offset;
+		string raw_data;
+
+		raw_data = insn->GetDataBits();
+		assert(raw_data.length() <= 20);
+
+		/*
+		 * Which argument is relative? There must be one.
+		 */
+		if (IS_RELATIVE(d.Argument1)) relative_arg = &d.Argument1;
+		if (IS_RELATIVE(d.Argument2)) relative_arg = &d.Argument2;
+		if (IS_RELATIVE(d.Argument3)) relative_arg = &d.Argument3;
+		assert(relative_arg);
+
+		/*
+		 * Calculate the offset into the instruction
+		 * of the displacement address.
+		 */
+		offset = relative_arg->Memory.DisplacementAddr - d.EIP;
+
+		/*
+		 * The size of the displacement address must be
+		 * four at this point.
+		 */
+		size = relative_arg->Memory.DisplacementSize;
+		assert(size == 4);
+
+		/*
+		 * Copy the instruction raw bytes to a place
+		 * where we can modify them.
+		 */
+		memcpy(instr_raw,raw_data.c_str(),raw_data.length());
+
+		/*
+		 * Calculate absolute displacement and relative
+		 * displacement.
+		 */
+		displacement = (uint32_t*)(&instr_raw[offset]);
+		abs_displacement = *displacement;
+		*displacement = abs_displacement - addr;
+
+		printf("absolute displacement: 0x%x\n", abs_displacement);
+		printf("relative displacement: 0x%x\n", *displacement);
+
+		/*
+		 * Update the instruction with the relative displacement.
+		 */
+		raw_data.replace(0, raw_data.length(), instr_raw, raw_data.length());
+		insn->SetDataBits(raw_data);
+	}
 
 	if(insn->GetTarget())
 	{
