@@ -18,6 +18,8 @@ void Options_t::print_usage(int p_argc, char *p_argv[])
 		"Set the path of objcopy to use. Optional. \n");
 	printf("\t-c callback.exe\t\t--path to callbacks file: "
 		"Set the path of the file which contains any required callacks.  Missing callbacks elided. \n");
+	printf("\t-m [32|64]\t--architecture [32|64]: "
+		"Override default system architecture detection.\n");
 	printf("\t-!\t\t--verbose: "
 		"Enable verbose output. \n");
 	printf("\t-q\t\t--quiet: "
@@ -31,15 +33,16 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 	extern char *optarg;
 	extern int optind, opterr, optopt;
 	int option = 0;
-	char options[] = "!qz:o:v:c:";
+	char options[] = "!qz:o:v:c:m:";
 	struct option long_options[] = {
-		{"verbose",   no_argument,       NULL, '!'}, 
-		{"quiet",     no_argument,       NULL, 'q'}, 
-		{"optimize",  required_argument, NULL, 'z'},
-		{"output",    required_argument, NULL, 'o'},
-		{"variant",   required_argument, NULL, 'v'},
-		{"callbacks", required_argument, NULL, 'c'},
-		{"objcopy",   required_argument, NULL, 'j'},
+		{"verbose",     no_argument,       NULL, '!'},
+		{"quiet",       no_argument,       NULL, 'q'},
+		{"optimize",    required_argument, NULL, 'z'},
+		{"output",      required_argument, NULL, 'o'},
+		{"variant",     required_argument, NULL, 'v'},
+		{"callbacks",   required_argument, NULL, 'c'},
+		{"objcopy",     required_argument, NULL, 'j'},
+		{"architecture",required_argument, NULL, 'm'},
 		{NULL, no_argument, NULL, '\0'},	 // end-of-array marker
 	};
 
@@ -109,6 +112,20 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 				printf("Error: Invalid variant id (%s).\n", ::optarg);
 				break;
 			}
+			case 'm':
+			{
+				char *valid = NULL;
+				long int architecture = ::strtol(::optarg,
+								&valid,
+								10);
+				if (*valid == '\0' && (architecture == 32 || architecture == 64)) {
+					opt->m_architecture = architecture;
+					break;
+				}
+				printf("Error: Invalid architecture (%s); Must be 32 or 64. "
+					"Will use detection to determine architecture. \n", ::optarg);
+				break;
+			}
 			case '?':
 			{
 				// getopt_long printed message
@@ -122,4 +139,14 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 		}
 	}
 	return opt;
+}
+
+int Options_t::GetArchitecture() {
+	/*
+	 * If the user specified an architecture, return it.
+	 * Otherwise, return the one detected.
+	 */
+	if (m_architecture != -1)
+		return m_architecture;
+	return libIRDB::FileIR_t::GetArchitectureBitWidth();
 }

@@ -45,6 +45,7 @@ class Options_t
 		{
 			m_verbose=false; 
 			m_var_id=-1;
+			m_architecture=-1;
 		}
 
 		static Options_t* parse_args(int p_argc, char* p_argv[]);
@@ -54,6 +55,7 @@ class Options_t
 		std::string GetCallbackFileName() { return m_callbackname; }
 		int GetVariantID() { return m_var_id; }
 		int GetVerbose() { return m_verbose; }
+		int GetArchitecture();
 		std::string GetObjcopyPath() { return m_objcopy_path; };
 		
 		void EnableOptimization(Optimizations_t::OptimizationName_t opt) 
@@ -77,6 +79,7 @@ class Options_t
 		std::string m_objcopy_path;
 		bool m_verbose;
 		int m_var_id;
+		int m_architecture;
 		int EnabledOptimizations[Optimizations_t::NumberOfOptimizations];
 };
 

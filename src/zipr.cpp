@@ -1343,7 +1343,11 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 		perror(__FUNCTION__);
 	}
 
-	cmd="$STRATAFIER/add_strata_segment "+rewritten_file+ " " + rewritten_file +".addseg";
+	cmd="$STRATAFIER/add_strata_segment";
+	if (m_opts.GetArchitecture() == 64) {
+		cmd += "64";
+	}
+	cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
 	printf("Attempting: %s\n", cmd.c_str());
 	if(-1 == system(cmd.c_str()))
 	{
