@@ -4,7 +4,7 @@
 PROG=$(basename $0 .install.sh)
 
 # Default installation directory
-INSTALL_DIR=/tmp
+INSTALL_DIR=/tmp/protected/bin
 
 echo "Installing protected version of $PROG"
 echo "Installation directory: $INSTALL_DIR"
@@ -13,6 +13,8 @@ echo "Fully qualified path: $INSTALL_DIR/$PROG"
 echo
 echo "Type any key to continue"
 read anykey
+
+mkdir -p $INSTALL_DIR
 
 chmod +x analysis_dir/a.stratafied
 
