@@ -13,7 +13,7 @@
 # set default values for 
 ##################################################################################
 
-initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr"
+initial_off_phases="isr ret_shadow_stack determine_program stats fill_in_safefr zipr installer"
 
 
 ##################################################################################
@@ -32,6 +32,9 @@ errors=0
 
 # record statistics in database?
 record_stats=0
+
+# DEFAULT USER NAME
+USER=default
 
 # DEFAULT TIMEOUT VALUE
 INTEGER_TRANSFORM_TIMEOUT_VALUE=1800
@@ -52,7 +55,7 @@ intxform_instrument_idioms=0  # default: do not instrument instructions marked a
 
 # JOBID
 
-JOBID="$(basename $1)-$$"
+JOBID="$(basename $1).$$"
 
 # 
 # By default, big data approach is off
@@ -175,7 +178,7 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long id: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long id: --long name: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -233,6 +236,10 @@ check_options()
 			;;
 		--id) 
 			JOBID=$2
+			shift 2 
+			;;
+		--name) 
+			DB_PROGRAM_NAME=$2
 			shift 2 
 			;;
 		--) 	shift 
@@ -635,7 +642,8 @@ check_options $*
 # new program
 #
 name=`basename $orig_exe`
-newdir=peasoup_executable_directory.$name.$$
+#newdir=peasoup_executable_directory.$name.$$
+newdir=peasoup_executable_directory.$JOBID
 
 # create a working dir for all our files using the pid
 mkdir $newdir
@@ -745,11 +753,11 @@ perform_step concolic none $PEASOUP_HOME/tools/do_concolic.sh a -z $PEASOUP_UMBR
 #
 # get some simple info for the program
 #	
-DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
-DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
+if [ -z $DB_PROGRAM_NAME ]; then
+	DB_PROGRAM_NAME=`basename $orig_exe.$$ | sed "s/[^a-zA-Z0-9]/_/g"`
+	DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
+fi
 MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
-
-INSTALLER=`pwd`
 
 #
 # register the program
@@ -916,14 +924,19 @@ fi
 #
 # create a report for all of ps_analyze.
 #
-ps_endtime=`date --iso-8601=seconds`
+ps_endtime=`date --iso-8601=seconds` 
 report_logs
-
 
 # go back to original directory
 cd - > /dev/null 2>&1
 
 cp $newdir/$name.sh $stratafied_exe
+
+# make sure we only do this once there are no more updates to the peasoup_dir
+cd $newdir
+perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $USER $DB_PROGRAM_NAME $JOBID $PWD
+cd -
+
 
 # we're done; cancel timer
 if [ ! -z $TIMER_PID ]; then
@@ -939,11 +952,11 @@ if [ -f $stratafied_exe ]; then
 		echo "*Warning: Some steps failed!*"
 		echo "*****************************"
 		if [ $record_stats -eq 1 ]; then
-			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" "$INSTALLER"
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'partial' "$ps_endtime" 
 		fi
 	else
 		if [ $record_stats -eq 1 ]; then
-			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime" "$INSTALLER"
+			$PEASOUP_HOME/tools/db/job_spec_update.sh "$JOBID" 'success' "$ps_endtime" 
 		fi
 	fi
 

@@ -9,6 +9,8 @@ USER_DOWNLOAD_DIR=/tmp/zest/$USER/download
 
 INSTALLER_SCRIPT=$PROG.install.sh
 
+INSTALLER="/download/$JOBID.tgz"
+
 # scrub the peasoup directory before making a tarball
 $PEASOUP_HOME/tools/ps_scrub.sh $ANALYSIS_DIR
 
@@ -35,3 +37,6 @@ cd $USER_DOWNLOAD_DIR
 tar -hcvf $JOBID.tar $INSTALLER_DIR
 gzip $JOBID.tar
 mv $JOBID.tar.gz $JOBID.tgz
+
+# update the database
+$PEASOUP_HOME/tools/db/job_spec_update_installer.sh $JOBID $INSTALLER
