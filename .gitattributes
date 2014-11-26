@@ -3178,6 +3178,7 @@ tools/do_appfw.sh -text
 tools/do_concolic.sh -text
 tools/do_gatherlibs.sh -text
 tools/do_idapro.sh -text
+tools/do_installer.sh -text
 tools/do_integertransform.sh -text
 tools/do_makepeasoupbinary.sh -text
 tools/do_manual_cover.sh -text
