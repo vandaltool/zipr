@@ -398,6 +398,7 @@ tools/db/job.create.tbl -text
 tools/db/job.drop.tbl -text
 tools/db/job_spec_register.sh -text
 tools/db/job_spec_update.sh -text
+tools/db/job_spec_update_installer.sh -text
 tools/db/job_status_report.sh -text
 tools/db/pdb.create.tbl -text
 tools/db/pdb.createprogram.tbl -text
