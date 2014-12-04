@@ -47,10 +47,10 @@ cleanup()
 		report_test_failure $outfile "Intermediate step failed, exit code is $exit_code, msg='$msg'"
 	fi
 
-	cd $TESTLOC
-	rm -f $tmp 2>/dev/null
-	make clean
-	cd -
+#	cd $TESTLOC
+#	rm -f $tmp 2>/dev/null
+#	make clean
+#	cd -
 
  	rm -f $tmp
 	exit $exit_code

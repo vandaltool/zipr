@@ -30,35 +30,35 @@ run2: all
 
 # this should fail
 test_semi: testosc_semi.exe
-	APPFW_VERBOSE=1 DATA="ls" LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_semi.exe.sigs ./testosc_semi.exe 
+	APPFW_LOG_FILE=appfw.out APPFW_VERBOSE=1 DATA="ls" LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_semi.exe.sigs ./testosc_semi.exe 
 
 # this should fail
 test_samesig: testosc_samesig.exe
-	APPFW_VERBOSE=1 DATA="-foobar" LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_samesig.exe.sigs ./testosc_samesig.exe 
+	APPFW_LOG_FILE=appfw.out APPFW_VERBOSE=1 DATA="-foobar" LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_samesig.exe.sigs ./testosc_samesig.exe 
 
 # this should fail
 test_exec_args: testosc_exec_args.exe
-	VERY_VERBOSE=1 VERBOSE=1 APPFW_VERBOSE=1 DATA="-ltar" LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_exec_args.exe.sigs ./testosc_exec_args.exe 
+	APPFW_LOG_FILE=appfw.out VERY_VERBOSE=1 VERBOSE=1 APPFW_VERBOSE=1 DATA="-ltar" LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_exec_args.exe.sigs ./testosc_exec_args.exe 
 
 # this should fail
 test_fp: testosc_fp.exe
-	APPFW_VERBOSE=1 DATA="  cat Makefile " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_fp.exe.sigs ./testosc_fp.exe 
+	APPFW_LOG_FILE=appfw.out APPFW_VERBOSE=1 DATA="  cat Makefile " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_fp.exe.sigs ./testosc_fp.exe 
 
 # this should succeed
 test_normal_good: testosc_normal.exe
-	APPFW_VERBOSE=1 DATA="  ls -lt " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
+	APPFW_LOG_FILE=appfw.out APPFW_VERBOSE=1 DATA="  ls -lt " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
 
 # this should succeed
 test_normal_inject: testosc_normal.exe
-	APPFW_VERBOSE=1 DATA="  cat Makefile " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
+	APPFW_LOG_FILE=appfw.out APPFW_VERBOSE=1 DATA="  cat Makefile " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
 
 # this should fail
 test_normal_inject_flags: testosc_normal.exe
-	APPFW_VERBOSE=1 DATA="  ls -lta " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
+	APPFW_LOG_FILE=appfw.out APPFW_VERBOSE=1 DATA="  ls -lta " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_normal.exe.sigs ./testosc_normal.exe 
 
 # should succeed
 test_intentional: testosc_intentional.exe
-	APPFW_VERBOSE=1 DATA="ls    " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_intentional.exe.sigs ./testosc_intentional.exe 
+	APPFW_LOG_FILE=appfw.out APPFW_VERBOSE=1 DATA="ls    " LD_PRELOAD=$(APPFW_LIB64) APPFW_DB=appfw.db APPFW_SIGNATURE_FILE=testosc_intentional.exe.sigs ./testosc_intentional.exe 
 
 speed_test:
 	gcc speed_test.c  -O3 -o speed_test.exe

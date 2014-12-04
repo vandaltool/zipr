@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "\tQuery failed: %s\n", query);
 		fprintf(stderr, "-------------------------------------------\n");
 	}			
-																		    }
+																		    
 	/* output fields 1 and 2 of each row */
         int i;
         for (i = 0; i < PQntuples(result); ++i)

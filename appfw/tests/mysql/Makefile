@@ -3,6 +3,13 @@ generate_signatures=$(PEASOUP_HOME)/tools/generate_string_signatures.sh
 
 all: testmysql.exe testintercept.exe testintercept2.exe testintercept3.exe testintercept4.exe testintercept.pstmt.exe testtautology.exe
 
+testmoi.o: testmoi.c
+	gcc -I/usr/include/mysql -c testmoi.c
+
+testmoi.exe: testmoi.o
+	gcc testmoi.o -o testmoi.exe -lmysqlclient
+	$(generate_signatures) testmoi.exe
+
 testtautology.o: testtautology.c
 	gcc -I/usr/include/mysql -c testtautology.c
 
@@ -56,6 +63,7 @@ clean:
 	rm -rf *.o *.tmp *.exe peasoup_executable_directory* test*.peasoup messages_to_tne.log ps_tne_logfile.txt appfw.db *.sigs
 
 peasoup: all
+	$(PEASOUP_HOME)/tools/ps_analyze.sh testmoi.exe testmoi.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off --step toctou=off --step deadlock=off
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept.exe testintercept.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testintercept2.exe testintercept2.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off
 	$(PEASOUP_HOME)/tools/ps_analyze.sh testmysql.exe testmysql.exe.peasoup --step concolic=off --step integertransform=off --step p1transform=off --step ilr=off --step determine_program=off --step twitchertransform=off

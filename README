@@ -1,3 +1,15 @@
+Subdirectories contain the following extensions to the Strata infrastructure, e.g.:
+* SPRI (Strata Program Rewriting Interface)
+* SPASM (SPRI Assembler)
+* IRDB (API and tools to produce SPRI rules)
+
+Other subdirectories contain transformations and various security protections, e.g.:
+* Integer transforms
+* P1/Pn transforms
+* Application Firewall (aka: Software DNA Shotgun Sequencing)
+
+###################################################################
+
 Must define env var
 SECURITY_TRANSFORM_HOME
 
