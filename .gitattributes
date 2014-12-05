@@ -1,4 +1,5 @@
 * text=auto !eol
+/LICENSE.txt -text
 /Makefile -text
 c++_examples/Makefile -text
 c++_examples/hanoi++.cpp -text
