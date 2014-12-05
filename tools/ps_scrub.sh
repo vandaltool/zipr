@@ -17,8 +17,18 @@
 # e-mail: jwd@zephyr-software.com
 # URL   : http://www.zephyr-software.com/
 #
-
-
+#
+# This software was developed with SBIR funding and is subject to SBIR Data Rights, 
+# as detailed below.
+#
+# SBIR DATA RIGHTS
+#
+# Contract No. __N00014-14-C-0197___W31P4Q-14-C-0086________.
+# Contractor Name __Zephyr Software LLC_____________________.
+# Address __2040 Tremont Road, Charlottesville, VA 22911____.
+# Expiration of SBIR Data Rights Period __16-JUNE-2021______.
+#
+#
 # Script to scrub PEASOUP directory
 
 usage()
