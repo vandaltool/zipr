@@ -1,4 +1,5 @@
 * text=auto !eol
+/LICENSE.txt -text
 /Makefile -text
 /README -text
 /README.p1 -text
@@ -177,6 +178,7 @@ beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/progress.marks -text
 /distclean.sh -text
 include/i686/config.h -text
 include/x86_64/config.h -text
+libIRDB/LICENSE.txt -text
 libIRDB/Makefile -text
 libIRDB/include/cfg/BasicBlock.hpp -text
 libIRDB/include/cfg/CFG.hpp -text
@@ -233,6 +235,7 @@ libIRDB/test/read_ehframe.cpp -text
 libIRDB/test/read_variantir.cpp -text
 libIRDB/test/unfix_calls.cpp -text
 libIRDB/test/unwind-pe.h -text
+libMEDSannotation/LICENSE.txt -text
 libMEDSannotation/Makefile -text
 libMEDSannotation/include/FuncExitAnnotation.hpp -text
 libMEDSannotation/include/MEDS.hpp -text
@@ -403,10 +406,12 @@ tools/memcover/General_Utility.cpp -text
 tools/memcover/General_Utility.hpp -text
 tools/memcover/Makefile -text
 tools/memcover/memcover.cpp -text
+tools/ret_shadow_stack/LICENSE.txt -text
 tools/ret_shadow_stack/Makefile -text
 tools/ret_shadow_stack/rss_driver.cpp -text
 tools/ret_shadow_stack/rss_instrument.cpp -text
 tools/ret_shadow_stack/rss_instrument.hpp -text
+tools/safefr/LICENSE.txt -text
 tools/safefr/Makefile -text
 tools/safefr/fill_in_safefr.cpp -text
 tools/spasm/Makefile -text
