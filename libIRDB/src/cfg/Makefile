@@ -1,7 +1,7 @@
 
 LIB=../../lib/libIRDB-cfg.a
 
-OBJS=BasicBlock.o CFG.o
+OBJS=BasicBlock.o CFG.o callgraph.o
 
 all: $(OBJS)
 

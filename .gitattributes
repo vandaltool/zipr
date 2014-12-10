@@ -182,6 +182,7 @@ libIRDB/LICENSE.txt -text
 libIRDB/Makefile -text
 libIRDB/include/cfg/BasicBlock.hpp -text
 libIRDB/include/cfg/CFG.hpp -text
+libIRDB/include/cfg/callgraph.hpp -text
 libIRDB/include/core/address.hpp -text
 libIRDB/include/core/archdesc.hpp -text
 libIRDB/include/core/baseobj.hpp -text
@@ -203,6 +204,7 @@ libIRDB/src/Makefile -text
 libIRDB/src/cfg/BasicBlock.cpp -text
 libIRDB/src/cfg/CFG.cpp -text
 libIRDB/src/cfg/Makefile -text
+libIRDB/src/cfg/callgraph.cpp -text
 libIRDB/src/core/Makefile -text
 libIRDB/src/core/address.cpp -text
 libIRDB/src/core/all.hpp -text
@@ -216,6 +218,7 @@ libIRDB/src/core/instruction.cpp -text
 libIRDB/src/core/pqxxdb.cpp -text
 libIRDB/src/core/variantid.cpp -text
 libIRDB/test/Makefile -text
+libIRDB/test/build_callgraph.cpp -text
 libIRDB/test/calc_conflicts.cpp -text
 libIRDB/test/check_thunks.cpp -text
 libIRDB/test/check_thunks.hpp -text
