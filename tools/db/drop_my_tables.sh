@@ -57,3 +57,5 @@ do
 done
 echo dropping bonus tabs
 psql -t -q -c "$droptabs" || true
+
+psql -f $PEASOUP_HOME/tools/db/job.drop.tbl
