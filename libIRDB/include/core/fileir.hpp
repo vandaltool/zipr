@@ -19,6 +19,8 @@
  */
 
 
+typedef std::set<Function_t*> FunctionSet_t;
+typedef std::set<AddressID_t*> AddressSet_t;;
 
 // A variant of a problem, this
 // may be an original variant
@@ -35,10 +37,10 @@ class FileIR_t : public BaseObj_t
 	void WriteToDB();
 
 	// accessors and mutators in one
-	std::set<Function_t*>& GetFunctions() { return funcs; }
-	std::set<Instruction_t*>& GetInstructions() { return insns; }
-	std::set<AddressID_t*>&	   GetAddresses() { return addrs; }
-	std::set<Relocation_t*>&	GetRelocations() { return relocs; }
+	FunctionSet_t& GetFunctions() { return funcs; }
+	InstructionSet_t& GetInstructions() { return insns; }
+	AddressSet_t& GetAddresses() { return addrs; }
+	RelocationSet_t&	GetRelocations() { return relocs; }
 
 	// generate the spri rules into the output file, fout.
 	void GenerateSPRI(std::ostream &fout, bool with_ilr=false);
@@ -84,10 +86,10 @@ class FileIR_t : public BaseObj_t
 
 	void ReadFromDB();	//accesses DB
 
-	std::set<Function_t*> funcs;
-	std::set<Instruction_t*> insns;
-	std::set<AddressID_t*> addrs;
-	std::set<Relocation_t*> relocs;
+	FunctionSet_t funcs;
+	InstructionSet_t insns;
+	AddressSet_t addrs;
+	RelocationSet_t relocs;
 	VariantID_t progid;
 	File_t* fileptr;
 

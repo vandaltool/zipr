@@ -61,14 +61,9 @@ void Callgraph_t::MarkCallSite(Instruction_t* insn)
 	Instruction_t* to_insn=insn->GetTarget();
 	Function_t* to_func= to_insn==NULL? NULL : to_insn->GetFunction();
 
-	if(to_insn)
-		call_sites[from_func].insert(to_insn);
-	if(to_func)
-	{
-		callers[from_func].insert(to_func);
-		if(from_func)
-			callees[to_func].insert(from_func);
-	}
+	call_sites[from_func].insert(insn);
+	callers[from_func].insert(to_func);
+	callees[to_func].insert(from_func);
 }
 
 void Callgraph_t::AddFile(libIRDB::FileIR_t *firp)
@@ -86,6 +81,10 @@ void Callgraph_t::AddFile(libIRDB::FileIR_t *firp)
 			MarkCallSite(insn);
 		if(IsPushJmpSite(insn))
 			MarkCallSite(insn->GetFallthrough());
+
+		if(insn->GetFunction() && insn->GetFunction()->GetEntryPoint()==insn
+			&& insn->GetIndirectBranchTargetAddress())
+				callers[NULL].insert(insn->GetFunction());
 	}
 
 
@@ -107,17 +106,23 @@ void Callgraph_t::Dump(std::ostream& fout)
 	{
 		Function_t* f=it->first;
 
-		fout<<"Function "<<f->GetName()<<" calls: ";
+		fout<<"Function "<<GetNodeName(f)<<" calls: ";
 		CallGraphNodeSet_t &node_callees=it->second;
 		for(CallGraphNodeSet_t::iterator it2=node_callees.begin();
 			node_callees.end()!=it2;
 			++it2)
 		{
 			Function_t* the_callee=*it2;
-			fout<<the_callee->GetName()<<", ";
-
+			fout<<GetNodeName(the_callee)<<", ";
 		}
 		fout<<endl;
+		for(CallSiteSet_t::iterator it2=GetCallSites(f).begin();
+			GetCallSites(f).end() != it2; 
+			++it2)
+		{
+			CallSite_t the_call_site=*it2;
+			fout<<"\t"<<GetCallsiteDisassembly(the_call_site)<<endl;
+		}
 	}
 
 	fout<<"Mapping the other way ..."<<endl;
@@ -127,15 +132,36 @@ void Callgraph_t::Dump(std::ostream& fout)
 	{
 		Function_t* f=it->first;
 
-		fout<<"Function "<<f->GetName()<<" called by: ";
+		fout<<"Function "<<GetNodeName(f)<<" called by: ";
 		CallGraphNodeSet_t &node_callers=it->second;
 		for(CallGraphNodeSet_t::iterator it2=node_callers.begin();
 			node_callers.end()!=it2;
 			++it2)
 		{
 			Function_t* the_caller=*it2;
-			fout<<the_caller->GetName()<<", ";
+			fout<<GetNodeName(the_caller)<<", ";
 
+		}
+		fout<<endl;
+	}
+
+
+	fout<<"Printing call sites..."<<endl;
+	for(NodeToCallSiteSetMap_t::iterator it=call_sites.begin();
+			call_sites.end()!=it;
+			++it)
+	{
+		CallGraphNode_t from_func=it->first;
+		CallSiteSet_t  call_sites_for_func=it->second;
+
+		fout<<"Call Sites for "<<GetNodeName(from_func)<<": ";
+
+		for(CallSiteSet_t::iterator it2=call_sites_for_func.begin();
+			call_sites_for_func.end() != it2; 
+			++it2)
+		{
+			CallSite_t the_call_site=*it2;
+			fout<<GetCallsiteDisassembly(the_call_site)<<", ";
 		}
 		fout<<endl;
 	}

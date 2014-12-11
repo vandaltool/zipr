@@ -23,6 +23,8 @@ class Function_t; // forward decls.
 #define MAX_INSN_SIZE 32	// x86 really declares this as 16, but we'll allow 
 				// for bigger instructions, maybe from other machines?
 
+typedef	std::set<Relocation_t*> RelocationSet_t; 
+
 // The basic instruction of a variant.
 class Instruction_t : public BaseObj_t
 {
@@ -62,7 +64,7 @@ class Instruction_t : public BaseObj_t
 
 	bool IsFunctionExit() const;
 
-	std::set<Relocation_t*>& GetRelocations() { return relocs; }
+	RelocationSet_t& GetRelocations() { return relocs; }
 
 	static bool SetsStackPointer(DISASM *disasm);
 	static bool SetsStackPointer(ARGTYPE* arg);
@@ -78,5 +80,5 @@ class Instruction_t : public BaseObj_t
         std::string callback;    // name of callback handler (if any)
         std::string comment;
 	AddressID_t* indTarg;
-	std::set<Relocation_t*> relocs;
+	RelocationSet_t relocs;
 };

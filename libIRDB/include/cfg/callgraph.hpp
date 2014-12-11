@@ -39,6 +39,12 @@ class Callgraph_t
 
 		void Dump(std::ostream& fout);
 
+		std::string GetNodeName(const CallGraphNode_t& n1) const
+			{ return n1 ? n1->GetName() : "HELLNODE"; }
+
+		std::string GetCallsiteDisassembly(const CallSite_t &c) const
+			{ return c ? c->getDisassembly() : "NOFROMFUNC"; } 
+
 	private:
 		// mark the given insn as a call site.
 		void MarkCallSite(Instruction_t* insn);
