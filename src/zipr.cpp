@@ -1434,6 +1434,7 @@ static RangeAddress_t GetCallbackStartAddr()
 {
 	// add option later, or write code to fix this
 	const RangeAddress_t callback_start_addr=0x8048000;
+return 0;
 	return callback_start_addr;
 }
 
@@ -1484,7 +1485,7 @@ RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
 
 	// pop bogus ret addr
 	{
-	char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)0x08}; // lea esp, [esp+4]
+	char bytes[]={(char)0x8d,(char)0x64,(char)0x24,(char)m_firp->GetArchitectureBitWidth()/0x08}; // lea esp, [esp+4]
 	PlopBytes(at, bytes, sizeof(bytes)); 
 	at+=sizeof(bytes);
 	}
@@ -1501,12 +1502,18 @@ static RangeAddress_t getSymbolAddress(const string &symbolFilename, const strin
 
 // nm -a stratafier.o.exe | egrep " integer_overflow_detector$" | cut -f1 -d' '
         string command = "nm -a " + symbolFilename + " | egrep \" " + symbol + "$\" | cut -f1 -d' '";
-        char address[1024];
+        char address[1024]="";
+
+	cerr<<"Attempting: "<<command<<endl;
 
         FILE *fp = popen(command.c_str(), "r");
 
         fscanf(fp,"%s", address);
+	cerr<<"Looking for "<<symbol<<".  Address string is "<<address<<endl;
         string addressString = string(address);
+        pclose(fp);
+
+        RangeAddress_t ret= (uintptr_t) strtoull(addressString.c_str(),NULL,16);
 
         //TODO: throw exception if address is not found.
         //for now assert the address string isn't empty
@@ -1514,11 +1521,14 @@ static RangeAddress_t getSymbolAddress(const string &symbolFilename, const strin
         {
                 cerr<<"Cannot find symbol "<< symbol << " in " << symbolFilename << "."<<endl;
 		addressString="0x0";
+		return 0;
         }
+	else
+	{
+		cerr<<"Found symbol "<< symbol << " in " << symbolFilename << " at " << std::hex << ret << "."<<endl;
+		return ret;
+	}
 
-        pclose(fp);
-
-        return (uintptr_t) strtoull(addressString.c_str(),NULL,16);
 }
 
 
@@ -1534,6 +1544,7 @@ RangeAddress_t Zipr_t::FindCallbackAddress(RangeAddress_t end_of_new_space, Rang
 			/* adjust by start of new location, - beginning of old location */
 			addr=addr+end_of_new_space-start_addr;
 		}
+		cout<<" Addr adjusted to "<<std::hex<<addr<<endl;
 		callback_addrs[callback]=addr;
 	}
 	return callback_addrs[callback];
@@ -1558,7 +1569,10 @@ void Zipr_t::UpdateCallbacks()
 		RangeAddress_t at=it->second;
 		RangeAddress_t to=FindCallbackAddress(end_of_new_space,start_addr,insn->GetCallback());
 		if(to)
+		{
+			cout<<"Patching callback "<< insn->GetCallback()<<"at "<<std::hex<<at<<" to jump to "<<to<<endl;
 			PatchCall(at,to);
+		}
 		else
 			CallToNop(at);
 	}

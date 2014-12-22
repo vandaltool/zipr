@@ -1,0 +1,1 @@
+./configure --enable-watchsyscall --enable-libc --enable-cgc --enable-p1 $*

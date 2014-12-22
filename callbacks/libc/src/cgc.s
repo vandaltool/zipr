@@ -86,7 +86,7 @@ cgc_allocate:
 	pop    ebx
 	ret    
 
-global deallocate
+global cgc_deallocate
 cgc_deallocate:
 	mov    eax,0x6
 	push   ebx

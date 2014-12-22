@@ -53,7 +53,7 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 	extern char *optarg;
 	extern int optind, opterr, optopt;
 	int option = 0;
-	char options[] = "!qz:o:v:c:m:";
+	char options[] = "!qz:o:v:c:j:m:";
 	struct option long_options[] = {
 		{"verbose",     no_argument,       NULL, '!'},
 		{"quiet",       no_argument,       NULL, 'q'},
@@ -75,6 +75,7 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 		long_options, 
 		NULL)) != -1)
 	{
+		printf("Found option %c\n", option);
 		switch (option) 	
 		{
 			case '!':
@@ -107,7 +108,9 @@ Options_t* Options_t::parse_args(int p_argc, char* p_argv[])
 			}
 			case 'j':
 			{
+				printf("Found option -j %s\n", ::optarg);
 				opt->m_objcopy_path = std::string(::optarg);
+				break;
 			}
 			case 'o':
 			{
