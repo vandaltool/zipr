@@ -889,6 +889,9 @@ if [[ "$TWITCHER_HOME" != "" && -d "$TWITCHER_HOME" ]]; then
 	perform_step twitchertransform none $TWITCHER_HOME/twitcher-transform/do_twitchertransform.sh $cloneid $program $CONCOLIC_DIR $TWITCHER_TRANSFORM_TIMEOUT_VALUE
 fi
 
+# watch syscalls
+perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  $cloneid 
+
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR
 if [ $($PEASOUP_HOME/tools/is_so.sh a.ncexe) = 0 ]; then
@@ -907,6 +910,7 @@ perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfil
 
 # put a front end in front of a.stratafied which opens file 990 for strata to read.
 perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh 
+
 
 # zipr
 perform_step zipr clone,fill_in_indtargs,fill_in_cfg,meds2pdb $ZIPR_HOME/src/zipr.exe -v $cloneid -c $ZIPR_HOME/callbacks/lib/callbacks.exe -j $PS_OBJCOPY
