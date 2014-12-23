@@ -44,6 +44,7 @@ class VirtualOffset
 		VirtualOffset& operator = (const VirtualOffset &p_other);
 
 		const std::string to_string() const { std::ostringstream oss; oss<<getLibraryName() << "+0x"<<std::hex<<getOffset(); return oss.str(); }
+		const std::string toString() const { return to_string(); }
 
 	private:
 		ApplicationAddress   m_offset;

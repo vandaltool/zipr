@@ -27,6 +27,7 @@
 #include "MEDS_SafeFuncAnnotation.hpp"
 #include "MEDS_ProblemFuncAnnotation.hpp"
 #include "MEDS_FRSafeAnnotation.hpp"
+#include "MEDS_FPTRShadowAnnotation.hpp"
 
 // @todo: multiple annotation per instruction
 
@@ -81,6 +82,7 @@ void MEDS_AnnotationParser::parseFile(istream &p_inputStream)
 				delete annot; \
 		}
 
+		ADD_AND_CONTINUE_IF_VALID(MEDS_FPTRShadowAnnotation);
 		ADD_AND_CONTINUE_IF_VALID(MEDS_InstructionCheckAnnotation);
 		ADD_AND_CONTINUE_IF_VALID(MEDS_SafeFuncAnnotation);
 		ADD_AND_CONTINUE_IF_VALID(MEDS_ProblemFuncAnnotation);
