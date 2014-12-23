@@ -1,1 +1,8 @@
-./configure --enable-watchsyscall --enable-libc --enable-cgc --enable-p1 $*
+#!/bin/bash
+
+
+./configure --enable-watchsyscall --enable-libc --enable-cgc $*
+
+
+# enable p1 only if it's needed.
+#./configure --enable-watchsyscall --enable-libc --enable-cgc --enable-p1 $*

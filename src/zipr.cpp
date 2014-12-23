@@ -151,7 +151,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 		assert(sec);
 
 		RangeAddress_t start=sec->get_address();
-		RangeAddress_t end=sec->get_size()+start-1;
+		RangeAddress_t end=sec->get_size()+start;
 
 		if(m_opts.GetVerbose())
 			printf("Section %s:\n", sec->get_name().c_str());
@@ -208,7 +208,9 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 
 	// now that we've looked at the sections, add a (mysterious) extra section in case we need to overflow 
 	// the sections existing in the ELF.
+// skip round up?  not needed if callbacks are PIC/PIE.
 	RangeAddress_t new_free_page=PAGE_ROUND_UP(max_addr);
+//	RangeAddress_t new_free_page=max_addr+1;
 	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1));
 	if(m_opts.GetVerbose())
 		printf("Adding (mysterious) free range 0x%p to EOF\n", (void*)new_free_page);
@@ -1332,6 +1334,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	string tmpname=name+string(".to_insert");
 	printf("Opening %s\n", tmpname.c_str());
 	FILE* to_insert=fopen(tmpname.c_str(),"w");
+	string tmpname3=tmpname+"3";	
 
 	if(!to_insert)
 		perror( "void Zipr_t::OutputBinaryFile(const string &name)");
@@ -1360,8 +1363,8 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	}
 	fclose(to_insert);
 
-	AddCallbacksTONewSegment(tmpname,end_of_new_space);
-	InsertNewSegmentIntoExe(name,tmpname,start_of_new_space);
+	AddCallbacksToNewSegment(tmpname,end_of_new_space);
+	InsertNewSegmentIntoExe(name,tmpname3,start_of_new_space);
 }
 
 
@@ -1394,9 +1397,9 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 //        system("$stratafier/add_strata_segment $newfile $exe_copy ") == 0 or die (" command failed : $? \n");
 
 	string  cmd=
-		m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+ 
-		string(" --change-section-address .strata=")+to_string(sec_start)+
-		string(" --set-section-flags .strata=alloc,code ")+ 
+		m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
+		string("--change-section-address .strata=")+to_string(sec_start)+" "+
+		string("--set-section-flags .strata=alloc,code ")+" "+
 		// --set-start $textoffset // set-start not needed, as we aren't changing the entry point.
 		rewritten_file;  // editing file in place, no $newfile needed. 
 
@@ -1439,7 +1442,7 @@ return 0;
 }
 
 
-void Zipr_t::AddCallbacksTONewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
+void Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
 {
 	const RangeAddress_t callback_start_addr=GetCallbackStartAddr();
 
@@ -1458,13 +1461,6 @@ void Zipr_t::AddCallbacksTONewSegment(const string& tmpname, RangeAddress_t end_
 	}
 
 	cmd="cat "+tmpname+" "+tmpname2+" > "+tmpname3;
-	printf("Attempting: %s\n", cmd.c_str());
-	if(-1 == system(cmd.c_str()))
-	{
-		perror(__FUNCTION__);
-	}
-
-	cmd="mv "+tmpname3+" "+tmpname;
 	printf("Attempting: %s\n", cmd.c_str());
 	if(-1 == system(cmd.c_str()))
 	{

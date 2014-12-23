@@ -9,6 +9,7 @@ callbacks/example/Makefile.in -text
 callbacks/example/callback.c -text
 callbacks/lib/Makefile.in -text
 callbacks/lib/crt.s -text
+callbacks/lib/tiny_linker_script -text
 callbacks/libc/Makefile.in -text
 callbacks/libc/include/cgc.h -text
 callbacks/libc/include/itoa.h -text

@@ -89,12 +89,13 @@ void add_to_list(int start, int end)
 	print_str_debug("OK list = ");
 	print_int((int)OK_list);
 	print_str_debug("\n");
-#endif
+
 	print_str_debug("adding to OK list, start = ");
 	print_int((int)start);
 	print_str_debug(", end = ");
 	print_int((int)end);
 	print_str_debug("\n");
+#endif
 
 
 	addr_list_t* al=OK_list;	
@@ -230,7 +231,8 @@ int zipr_is_addr_ok(int ret, unsigned int to_check)
                 al=al->next;
         }
 
+#ifdef DEBUG
 	print_str("Detected about-to-segfault\n");
-//	cgc_terminate(199);
+#endif
 	return 0;
 }

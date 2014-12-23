@@ -1,0 +1,21 @@
+
+/*  
+  [ 1] .text             PROGBITS        00000000 000040 000022 00  AX  0   0 16
+  [ 2] .eh_frame         PROGBITS        00000000 000064 000040 00   A  0   0  4
+  [ 4] .data             PROGBITS        00000000 0000a4 000000 00  WA  0   0  4
+  [ 5] .bss              NOBITS          00000000 0000a4 000000 00  WA  0   0  4
+*/
+
+SECTIONS
+{
+ 	. = 0x0;
+	.text	:
+	{ 
+		*(.text) 
+		*(.eh_frame) 
+		*(.data) 
+		*(.bss)  
+	}
+}
+
+

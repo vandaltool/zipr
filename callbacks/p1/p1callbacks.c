@@ -69,9 +69,11 @@ typedef struct
 
 void buffer_overflow_detector(volatile int p_retaddress, volatile int p_addressInstrOverflowed, volatile int p_exitPolicy, reg_values_t rv)
 {
+#ifdef DEBUG
 	print_str("Detected buffer overflow at ");
 	print_int(p_addressInstrOverflowed);
 	print_str("\n");
+#endif
 	cgc_terminate(3);
 }
 
