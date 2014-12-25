@@ -70,98 +70,95 @@ static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, str
 static Instruction_t* registerCallbackHandler64(FileIR_t* firp, Instruction_t *p_orig, string p_callbackHandler, int p_numArgs)
 {
 
-        Instruction_t *instr;
-        Instruction_t *first;
-        char tmpbuf[1024];
+	Instruction_t *instr;
+	Instruction_t *first;
+	char tmpbuf[1024];
 
-        // save flags and 16 registers (136 bytes)
-        // call pushes 8 bytes
-        // Total: 8 * 18 = 144
-        first = instr = addNewAssembly(firp,NULL, "push rsp");
-        instr = addNewAssembly(firp,instr, "push rbp");
-        instr = addNewAssembly(firp,instr, "push rdi");
-        instr = addNewAssembly(firp,instr, "push rsi");
-        instr = addNewAssembly(firp,instr, "push rdx");
-        instr = addNewAssembly(firp,instr, "push rcx");
-        instr = addNewAssembly(firp,instr, "push rbx");
-        instr = addNewAssembly(firp,instr, "push rax");
-        instr = addNewAssembly(firp,instr, "push r8");
-        instr = addNewAssembly(firp,instr, "push r9");
-        instr = addNewAssembly(firp,instr, "push r10");
-        instr = addNewAssembly(firp,instr, "push r11");
-        instr = addNewAssembly(firp,instr, "push r12");
-        instr = addNewAssembly(firp,instr, "push r13");
-        instr = addNewAssembly(firp,instr, "push r14");
-        instr = addNewAssembly(firp,instr, "push r15");
-        instr = addNewAssembly(firp,instr, "pushf");
+	// call pushes 8 bytes
+	// save 16 registers (136 bytes) and flags
+	// Total: 8 * 18 = 144
+	first = instr = addNewAssembly(firp,NULL, "push rsp");
+	instr = addNewAssembly(firp,instr, "push rbp");
+	instr = addNewAssembly(firp,instr, "push rdi");
+	instr = addNewAssembly(firp,instr, "push rsi");
+	instr = addNewAssembly(firp,instr, "push rdx");
+	instr = addNewAssembly(firp,instr, "push rcx");
+	instr = addNewAssembly(firp,instr, "push rbx");
+	instr = addNewAssembly(firp,instr, "push rax");
+	instr = addNewAssembly(firp,instr, "push r8");
+	instr = addNewAssembly(firp,instr, "push r9");
+	instr = addNewAssembly(firp,instr, "push r10");
+	instr = addNewAssembly(firp,instr, "push r11");
+	instr = addNewAssembly(firp,instr, "push r12");
+	instr = addNewAssembly(firp,instr, "push r13");
+	instr = addNewAssembly(firp,instr, "push r14");
+	instr = addNewAssembly(firp,instr, "push r15");
+	instr = addNewAssembly(firp,instr, "pushf");
 
-        // handle the arguments (if any): rdi, rsi, rdx, rcx, r8, r9
-        // first arg starts at byte +144
-        instr = addNewAssembly(firp,instr, "mov rdi, rsp");
+	// handle the arguments (if any): rdi, rsi, rdx, rcx, r8, r9
+	// first arg starts at byte +144
+	instr = addNewAssembly(firp,instr, "mov rdi, rsp");
 
 	if (p_numArgs >= 1)
-                instr = addNewAssembly(firp,instr,  "mov rsi, [rsp+144]");
-        if (p_numArgs >= 2)
-                instr = addNewAssembly(firp,instr,  "mov rdx, [rsp+152]");
-        if (p_numArgs >= 3)
-                instr = addNewAssembly(firp,instr,  "mov rcx, [rsp+160]");
-        if (p_numArgs >= 4)
-                instr = addNewAssembly(firp,instr,  "mov r8, [rsp+168]");
-        if (p_numArgs > 4)
-                assert(0); // only handle up to 5 args
+		instr = addNewAssembly(firp,instr,  "mov rsi, [rsp+144]");
+	if (p_numArgs >= 2)
+		instr = addNewAssembly(firp,instr,  "mov rdx, [rsp+152]");
+	if (p_numArgs >= 3)
+		instr = addNewAssembly(firp,instr,  "mov rcx, [rsp+160]");
+	if (p_numArgs >= 4)
+		instr = addNewAssembly(firp,instr,  "mov r8, [rsp+168]");
+	if (p_numArgs > 4)
+		assert(0); // only handle up to 5 args
 
-        // pin the instruction that follows the callback handler
-        Instruction_t* postCallback = allocateNewInstruction(firp, BaseObj_t::NOT_IN_DATABASE, NULL);
-        virtual_offset_t postCallbackReturn = getAvailableAddress(firp);
-        postCallback->GetAddress()->SetVirtualOffset(postCallbackReturn);
+	// pin the instruction that follows the callback handler
+	Instruction_t* postCallback = allocateNewInstruction(firp, BaseObj_t::NOT_IN_DATABASE, NULL);
+	virtual_offset_t postCallbackReturn = getAvailableAddress(firp);
+	postCallback->GetAddress()->SetVirtualOffset(postCallbackReturn);
 
-        // push the address to return to once the callback handler is invoked
-        sprintf(tmpbuf,"mov rax, 0x%x", postCallbackReturn);
-        instr = addNewAssembly(firp,instr, tmpbuf);
+	// push the address to return to once the callback handler is invoked
+	sprintf(tmpbuf,"mov rax, 0x%x", postCallbackReturn);
+	instr = addNewAssembly(firp,instr, tmpbuf);
 
-        instr = addNewAssembly(firp,instr, "push rax");
+	instr = addNewAssembly(firp,instr, "push rax");
 
-        // use a nop instruction for the actual callback
-        instr = addNewAssembly(firp,instr, "nop");
-        instr->SetComment(" -- callback: " + p_callbackHandler);
-        instr->SetCallback(p_callbackHandler);
-        instr->SetFallthrough(postCallback);
+	// use a nop instruction for the actual callback
+	instr = addNewAssembly(firp,instr, "nop");
+	instr->SetComment(" -- callback: " + p_callbackHandler);
+	instr->SetCallback(p_callbackHandler);
+	instr->SetFallthrough(postCallback);
 
+	// need to make sure the post callback address is pinned
+	// (so that ILR and other transforms do not relocate it)
+	AddressID_t *indTarg = new AddressID_t();
+	firp->GetAddresses().insert(indTarg);
+	indTarg->SetVirtualOffset(postCallback->GetAddress()->GetVirtualOffset());
+	indTarg->SetFileID(BaseObj_t::NOT_IN_DATABASE); // SPRI global namespace
+	postCallback->SetIndirectBranchTargetAddress(indTarg);
 
-        // need to make sure the post callback address is pinned
-        // (so that ILR and other transforms do not relocate it)
-        AddressID_t *indTarg = new AddressID_t();
-        firp->GetAddresses().insert(indTarg);
-        indTarg->SetVirtualOffset(postCallback->GetAddress()->GetVirtualOffset());
-        indTarg->SetFileID(BaseObj_t::NOT_IN_DATABASE); // SPRI global namespace
-        postCallback->SetIndirectBranchTargetAddress(indTarg);
+	// restore registers
+	firp->RegisterAssembly(postCallback, "popf");
 
-        // restore registers
-        firp->RegisterAssembly(postCallback, "popf");
+	instr = addNewAssembly(firp,postCallback, "pop r15");
+	instr = addNewAssembly(firp,instr, "pop r14");
+	instr = addNewAssembly(firp,instr, "pop r13");
+	instr = addNewAssembly(firp,instr, "pop r12");
+	instr = addNewAssembly(firp,instr, "pop r11");
+	instr = addNewAssembly(firp,instr, "pop r10");
+	instr = addNewAssembly(firp,instr, "pop r9");
+	instr = addNewAssembly(firp,instr, "pop r8");
+	instr = addNewAssembly(firp,instr, "pop rax");
+	instr = addNewAssembly(firp,instr, "pop rbx");
+	instr = addNewAssembly(firp,instr, "pop rcx");
+	instr = addNewAssembly(firp,instr, "pop rdx");
+	instr = addNewAssembly(firp,instr, "pop rsi");
+	instr = addNewAssembly(firp,instr, "pop rdi");
+	instr = addNewAssembly(firp,instr, "pop rbp");
+	instr = addNewAssembly(firp,instr, "lea rsp, [rsp+8]");
 
+	instr = addNewAssembly(firp,instr, "ret");
 
-        instr = addNewAssembly(firp,postCallback, "pop r15");
-        instr = addNewAssembly(firp,instr, "pop r14");
-        instr = addNewAssembly(firp,instr, "pop r13");
-        instr = addNewAssembly(firp,instr, "pop r12");
-        instr = addNewAssembly(firp,instr, "pop r11");
-        instr = addNewAssembly(firp,instr, "pop r10");
-        instr = addNewAssembly(firp,instr, "pop r9");
-        instr = addNewAssembly(firp,instr, "pop r8");
-        instr = addNewAssembly(firp,instr, "pop rax");
-        instr = addNewAssembly(firp,instr, "pop rbx");
-        instr = addNewAssembly(firp,instr, "pop rcx");
-        instr = addNewAssembly(firp,instr, "pop rdx");
-        instr = addNewAssembly(firp,instr, "pop rsi");
-        instr = addNewAssembly(firp,instr, "pop rdi");
-        instr = addNewAssembly(firp,instr, "pop rbp");
-        instr = addNewAssembly(firp,instr, "lea rsp, [rsp+8]");
-
-        instr = addNewAssembly(firp,instr, "ret");
-
-        // return first instruction in the callback handler chain
-        return first;
-
+	// return first instruction in the callback handler chain
+	return first;
 }
 
 
@@ -216,17 +213,6 @@ static Instruction_t* addShadowDefine64CallbackHandler(FileIR_t* p_firp, Instruc
     Instruction_t* saveFlags = addNewAssembly(p_firp, lea, "pushf");
 
 	// push the 3 arguments
-	// arg#1: push PC
-	unsigned PC = p_insn->GetAddress()->GetVirtualOffset(); 
-	sprintf(tmp,"push 0x%016x", PC);
-    Instruction_t* i = insertAssemblyAfter(p_firp, saveFlags, tmp);
-	cout << "addShadowDefine(): PC: " << hex << PC << dec << endl;
-
-	// arg#2: push shadowId
-	sprintf(tmp,"push 0x%016x", shadowId);
-    i = insertAssemblyAfter(p_firp, i, tmp);
-	cout << "addShadowDefine(): shadowId: " << shadowId << endl;
-
 	// arg#3: push shadow value given in [reg+offset]
 	const int registerOffset = p_annot->getRegisterOffset();
 	const char *reg = Register::toString(p_annot->getRegister()).c_str();
@@ -236,8 +222,22 @@ static Instruction_t* addShadowDefine64CallbackHandler(FileIR_t* p_firp, Instruc
 		sprintf(tmp,"push qword [%s+%d]", reg, registerOffset);
 	else
 		sprintf(tmp,"push qword [%s%d]", reg, registerOffset);
-    i = insertAssemblyAfter(p_firp, i, tmp);
+    Instruction_t *i = insertAssemblyAfter(p_firp, saveFlags, tmp);
+	i->SetComment("push shadow value");
 	cout << "addShadowDefine(): reg+offset: " << tmp << endl;
+
+	// arg#2: push shadowId
+	sprintf(tmp,"push 0x%016x", shadowId);
+    i = insertAssemblyAfter(p_firp, i, tmp);
+	cout << "addShadowDefine(): shadowId: " << shadowId << endl;
+	i->SetComment("push shadow id");
+
+	// arg#1: push PC
+	unsigned PC = p_insn->GetAddress()->GetVirtualOffset(); 
+	sprintf(tmp,"push 0x%016x", PC);
+    i = insertAssemblyAfter(p_firp, i, tmp);
+	cout << "addShadowDefine(): PC: " << hex << PC << dec << endl;
+	i->SetComment("push PC");
 
 	// call the callback handler sequence
 	Instruction_t* ch = addCallbackHandlerSequence(p_firp, i, CALLBACK_FPTR_SHADOW_DEFINE_64, numArgs);
@@ -245,6 +245,8 @@ static Instruction_t* addShadowDefine64CallbackHandler(FileIR_t* p_firp, Instruc
 	// pop the args
 	sprintf(tmp, "lea rsp, [rsp+%d]", numArgs * 8);
 	i = insertAssemblyAfter(p_firp, ch, tmp);  
+	i->SetComment("pop args");
+
 	// restore flags
 	i = insertAssemblyAfter(p_firp, i, "popf");  
 	// undo the red zone
@@ -255,10 +257,80 @@ static Instruction_t* addShadowDefine64CallbackHandler(FileIR_t* p_firp, Instruc
 	return lea;
 }
 
-static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruction_t *p_orig, MEDS_FPTRShadowAnnotation* p_annot)
+static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruction_t* p_insn, const MEDS_FPTRShadowAnnotation* p_annot)
 {
-	// need to push the 4 args: PC, shadowId, shadowValue, (OUT) success
-	return NULL;
+	char tmp[1024];
+	// need to push the 3 args: PC, shadowId, shadowValue
+	// rsi <- PC
+	// rdx <- shadowId
+	// rcx <- value
+	const int numArgs = 3;
+	int shadowId = p_annot->getShadowId();
+	
+	Instruction_t* originalFallthrough = p_insn->GetFallthrough();
+
+	// red zone + flags
+	Instruction_t* lea = insertAssemblyBefore(p_firp,p_insn,"lea rsp, [rsp-128]");
+	p_insn->SetComment("callback: " + string(CALLBACK_FPTR_SHADOW_DEFINE_64));
+    Instruction_t* saveFlags = addNewAssembly(p_firp, lea, "pushf");
+
+	// before:   push reg
+	const int registerOffset = p_annot->getRegisterOffset();
+	const char *reg = Register::toString(p_annot->getRegister()).c_str();
+	if (registerOffset == 0)
+	{
+		sprintf(tmp,"push %s", reg); // assume we're calling via register, i.e. no offsets
+	}			
+	else
+	{
+		cerr << "only handle call via register right now" << endl;
+		assert(0);
+	}
+
+	// push the 3 arguments
+    Instruction_t *i = insertAssemblyAfter(p_firp, saveFlags, tmp);
+	i->SetComment("push shadow value");
+	cout << "addShadowCheck(): reg+offset: " << tmp << endl;
+
+	// arg#3: push pointer to shadow value
+    i = insertAssemblyAfter(p_firp, i, "push rsp");
+	i->SetComment("push pointer to shadow value (on stack)");
+
+	// arg#2: push shadowId
+	sprintf(tmp,"push 0x%016x", shadowId);
+    i = insertAssemblyAfter(p_firp, i, tmp);
+	cout << "addShadowCheck(): shadowId: " << shadowId << endl;
+	i->SetComment("push shadow id");
+
+	// arg#1: push PC
+	unsigned PC = p_insn->GetAddress()->GetVirtualOffset(); 
+	sprintf(tmp,"push 0x%016x", PC);
+    i = insertAssemblyAfter(p_firp, i, tmp);
+	cout << "addShadowCheck(): PC: " << hex << PC << dec << endl;
+	i->SetComment("push PC");
+
+	// call the callback handler sequence
+	Instruction_t* ch = addCallbackHandlerSequence(p_firp, i, CALLBACK_FPTR_SHADOW_CHECK_64, numArgs);
+
+	// pop the args
+	sprintf(tmp, "lea rsp, [rsp+%d]", numArgs * 8);
+	i = insertAssemblyAfter(p_firp, ch, tmp);  
+	i->SetComment("pop args");
+
+	const char *reg2 = Register::toString(p_annot->getRegister()).c_str();
+	sprintf(tmp,"mov %s, [rsp]", reg2);
+	i = insertAssemblyAfter(p_firp, i, tmp);  
+
+	i = insertAssemblyAfter(p_firp, i, "lea rsp, [rsp+8]");  
+
+	// restore flags
+	i = insertAssemblyAfter(p_firp, i, "popf");  
+	// undo the red zone
+	i = insertAssemblyAfter(p_firp, i, "lea rsp, [rsp+128]");  
+
+	i->SetFallthrough(originalFallthrough);
+
+	return lea;
 }
 
 //--------------------------------------------------------------
@@ -326,14 +398,10 @@ bool FPTRShadow_Instrument64::execute()
 			// here we have a valid annotation, what's the type?
 			if (annotation->isDefineShadowId())
 			{
-				cout << "would add shadow entry: " << annotation->toString();
 				success = addShadowEntry(insn, annotation);
 			}
 			else if (annotation->isCheckShadowId())
 			{
-				cout << "would check shadow entry: " << annotation->toString();
-				cout << "not yet implemented -- skip";
-				continue;
 				success = checkShadowEntry(insn, annotation);
 			}
 			else
@@ -352,14 +420,6 @@ bool FPTRShadow_Instrument64::execute()
 	return true;
 }
 
-// refactor into utility library
-//
-//     insertBefore();
-//     insertCallbackHandlerBefore();
-//	Instruction_t* tmp=insertAssemblyAfter(firp,insn,"push rcx");
-//	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [rsp+16]");	// load return address 
-// 
-
 bool FPTRShadow_Instrument64::addShadowEntry(Instruction_t *p_insn, const MEDS_FPTRShadowAnnotation *p_annot)
 {
 	addShadowDefine64CallbackHandler(m_firp, p_insn, p_annot);
@@ -368,5 +428,6 @@ bool FPTRShadow_Instrument64::addShadowEntry(Instruction_t *p_insn, const MEDS_F
 
 bool FPTRShadow_Instrument64::checkShadowEntry(Instruction_t *p_insn, const MEDS_FPTRShadowAnnotation *p_annot)
 {
+	addShadowCheck64CallbackHandler(m_firp, p_insn, p_annot);
 	return true;
 }
