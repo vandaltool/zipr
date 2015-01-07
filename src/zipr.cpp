@@ -117,6 +117,42 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
 	PrintStats();
 }
 
+static bool in_same_segment(ELFIO::section* sec1, ELFIO::section* sec2, ELFIO::elfio* elfiop)
+{
+	ELFIO::Elf_Half n = elfiop->segments.size();
+	for ( ELFIO::Elf_Half i = 0; i < n; ++i ) 
+	{
+		uintptr_t segstart=elfiop->segments[i]->get_virtual_address();
+		uintptr_t segsize=elfiop->segments[i]->get_file_size();
+
+		/* sec1 in segment i? */
+		if(segstart <= sec1->get_address() && sec1->get_address() < (segstart+segsize))
+		{
+			/* return true if sec2 also in segment */
+			/* else return false */
+			return (segstart <= sec2->get_address() && sec2->get_address() < (segstart+segsize));
+		}
+	}
+
+	return false;
+}
+
+
+//
+// check if there's padding we can use between this section and the next section.
+//
+RangeAddress_t Zipr_t::extend_section(ELFIO::section *sec, ELFIO::section *next_sec)
+{
+	RangeAddress_t start=sec->get_address();
+	RangeAddress_t end=sec->get_size()+start;
+	if( (next_sec->get_flags() & SHF_ALLOC) != 0 && in_same_segment(sec,next_sec,elfiop))
+	{
+		end=next_sec->get_address()-1;
+		cout<<"Extending range to "<<std::hex<<end<<endl;
+	}
+	return end;
+}
+
 void Zipr_t::FindFreeRanges(const std::string &name)
 {
 	/* use ELFIO to load the sections */
@@ -155,6 +191,20 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 
 		if(m_opts.GetVerbose())
 			printf("Section %s:\n", sec->get_name().c_str());
+
+#if 1
+
+		std::map<RangeAddress_t, int>::iterator next_sec_it = it;
+		++next_sec_it;
+		if(next_sec_it!=ordered_sections.end())
+		{
+			section* next_sec = elfiop->sections[next_sec_it->second];
+			end=extend_section(sec,next_sec);
+		}
+#endif
+
+
+
 
 		++it;
 		if (false)
@@ -1279,10 +1329,16 @@ void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 }
 
 
-void Zipr_t::FillSection(section* sec, FILE* fexe)
+void Zipr_t::FillSection(section* sec, FILE* fexe, section* next_sec)
 {
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
+
+	if(next_sec)
+	{
+		end=extend_section(sec,next_sec);
+	}
+
 
 	if(m_opts.GetVerbose())
 		printf("Dumping addrs %p-%p\n", (void*)start, (void*)end);
@@ -1326,8 +1382,13 @@ void Zipr_t::OutputBinaryFile(const string &name)
                         continue;
                 if( (sec->get_flags() & SHF_EXECINSTR) == 0)
                         continue;
+	
 
-		FillSection(sec, fexe);
+		section* next_sec = NULL;
+		if(i+1<n)
+			next_sec=elfiop->sections[i+1];
+
+		FillSection(sec, fexe, next_sec);
         }
 	fclose(fexe);
 

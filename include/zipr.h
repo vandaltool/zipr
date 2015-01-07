@@ -91,7 +91,7 @@ class Zipr_t
 
 
 		// outputing new .exe
-		void FillSection(ELFIO::section* sec, FILE* fexe);
+		void FillSection(ELFIO::section* sec, FILE* fexe, ELFIO::section* next_sec);
 		void OutputBinaryFile(const std::string &name);
 
 
@@ -102,6 +102,10 @@ class Zipr_t
 		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
 		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
 		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
+
+		// support
+		RangeAddress_t extend_section(ELFIO::section *sec, ELFIO::section *next_sec);
+
 
 
 	private:
