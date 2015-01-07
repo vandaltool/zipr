@@ -19,4 +19,5 @@
  */
 
 
+#define SYS_read 3
 #define SYS_write 4
