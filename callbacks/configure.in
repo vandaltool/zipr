@@ -5,6 +5,7 @@ AC_PROG_CC
 
 AC_ARG_ENABLE([debugging],              [  --enable-debugging                enable -g when compiling])
 AC_ARG_ENABLE([cgc],              	[  --enable-cgc                enable -DCGC when compiling for CGC binaries])
+AC_ARG_ENABLE([inferfn],              	[  --enable-inferfn                enable -DCGC when compiling for CGC binaries])
 #AC_ARG_ENABLE([example],              	[  --enable-debugging                enable -g when compiling])
 #AC_ARG_ENABLE([libc],              	[  --enable-libc                enable $1 for building ])
 
@@ -59,6 +60,7 @@ enable_dir libc src/
 enable_dir example
 enable_dir watchsyscall
 enable_dir p1
+enable_dir inferfn
 
 AC_OUTPUT(Makefile)
 

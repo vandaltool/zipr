@@ -63,12 +63,10 @@ typedef struct
 } reg_values_t;
 
 
-void test_handler(volatile int p_retaddress, volatile int p_address, volatile int p_exitPolicy, reg_values_t rv)
+void inference_handler(volatile int p_retaddress, volatile int p_address, volatile int p_exitPolicy, reg_values_t rv)
 {
 #ifdef DEBUG
-	print_str("Detected buffer overflow at ");
-	print_int(p_address);
-	print_str("\n");
+	print_str("infer_handler() invoked\n");
 #endif
 
 	commandLoop();
