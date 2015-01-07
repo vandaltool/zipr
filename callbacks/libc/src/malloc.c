@@ -25,7 +25,7 @@ void *malloc(size_t size)
 {
 #ifdef CGC
 	void* ret=0;
-	if(cgc_allocate(size+sizeof(int), FALSE, &ret));
+	if(cgc_allocate(size+sizeof(int), FALSE, &ret) == 0)
 	{
 		*(size_t*)ret=size;
 		return ret;
