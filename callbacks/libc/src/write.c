@@ -18,12 +18,18 @@
  *
  */
 
-#ifndef unistd_h
-#define unistd_h
+#include <write.h>
+#include <syscall.h>
 
-#include <stdint.h>
-
-ssize_t write(int fd, const void*buf, size_t count);
-
+ssize_t write(int fd, const void* buf, size_t count)
+{
+#ifdef CGC
+	ssize_t ret=0;
+	cgc_transmit(fd,buf,count,&ret);
+	return ret;
+#else
+	syscall(SYS_write,fd,buf,count);
 #endif
+	
+}
 

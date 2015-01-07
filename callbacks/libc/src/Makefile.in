@@ -7,7 +7,7 @@ AR=@AR@
 AS=@AS@
 ASFLAGS=@ASFLAGS@
 
-OBJS=cgc.o malloc.o unistd.o itoa.o strlen.o
+OBJS=cgc.o malloc.o read.o write.o itoa.o strlen.o
 
 
 .SUFFIXES: .o .s .c
