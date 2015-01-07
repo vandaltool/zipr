@@ -7,6 +7,10 @@ callbacks/configure.in -text
 callbacks/configure_for_cgc -text
 callbacks/example/Makefile.in -text
 callbacks/example/callback.c -text
+callbacks/inferfn/Makefile.in -text
+callbacks/inferfn/infer.c -text
+callbacks/inferfn/infer.h -text
+callbacks/inferfn/infercallback.c -text
 callbacks/lib/Makefile.in -text
 callbacks/lib/crt.s -text
 callbacks/lib/tiny_linker_script -text
