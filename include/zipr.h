@@ -31,8 +31,6 @@
 #ifndef zipr_h
 #define zipr_h
 
-#include <utility>
-
 class Options_t;
 class Stats_t;
 
