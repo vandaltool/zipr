@@ -43,6 +43,7 @@ class segment
     ELFIO_GET_SET_ACCESS_DECL( Elf64_Addr, physical_address );
     ELFIO_GET_SET_ACCESS_DECL( Elf_Xword,  file_size        );
     ELFIO_GET_SET_ACCESS_DECL( Elf_Xword,  memory_size      );
+    ELFIO_GET_SET_ACCESS_DECL( Elf_Xword,  file_offset      );
 
     virtual const char* get_data() const = 0;
 
@@ -86,6 +87,7 @@ class segment_impl : public segment
     ELFIO_GET_SET_ACCESS( Elf64_Addr, physical_address, ph.p_paddr  );
     ELFIO_GET_SET_ACCESS( Elf_Xword,  file_size,        ph.p_filesz );
     ELFIO_GET_SET_ACCESS( Elf_Xword,  memory_size,      ph.p_memsz  );
+    ELFIO_GET_SET_ACCESS( Elf_Xword,  file_offset,      ph.p_offset  );
 
 //------------------------------------------------------------------------------
     Elf_Half

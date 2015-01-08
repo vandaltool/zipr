@@ -39,12 +39,12 @@
 #include <ctype.h>
 #include <iostream>   // std::cout
 #include <string>     // std::string, std::to_string
+#include <fstream>
 
 #include "elfio/elfio.hpp"
 #include "elfio/elfio_dump.hpp"
 #include "targ-config.h"
 #include "beaengine/BeaEngine.h"
-
 
 using namespace libIRDB;
 using namespace std;
@@ -52,9 +52,38 @@ using namespace zipr;
 using namespace ELFIO;
 
 
+int find_magic_segment_index(ELFIO::elfio *elfiop);
+
+
+static std::ifstream::pos_type filesize(const char* filename)
+{
+    	std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
+
+	if(!in.is_open())
+	{
+		cerr<<"Cannot open file: "<<filename<<endl;
+		throw string("Cannot open file\n");
+	}
+   	return in.tellg();
+}
+
+
 void Zipr_t::CreateBinaryFile(const std::string &name)
 {
 	m_stats = new Stats_t();
+
+/* have to figure this out.  we'll want to really strip the binary
+ * but also remember the strings. 
+ */
+#ifdef CGC
+	string cmd=string("cp ")+name+" "+name+".stripped ; ~/Downloads/ELFkickers-3.0a/sstrip/sstrip "+name+".stripped";
+	printf("Attempting: %s\n", cmd.c_str());
+	if(-1 == system(cmd.c_str()))
+	{
+		perror(__FUNCTION__);
+	}
+#endif
+
 
 	// create ranges, including extra range that's def. big enough.
 	FindFreeRanges(name);
@@ -259,8 +288,43 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 	// now that we've looked at the sections, add a (mysterious) extra section in case we need to overflow 
 	// the sections existing in the ELF.
 // skip round up?  not needed if callbacks are PIC/PIE.
+#ifndef CGC
 	RangeAddress_t new_free_page=PAGE_ROUND_UP(max_addr);
-//	RangeAddress_t new_free_page=max_addr+1;
+#else
+	int i=find_magic_segment_index(elfiop);
+	RangeAddress_t bytes_remaining_in_file=(RangeAddress_t)filesize((name+".stripped").c_str())-(RangeAddress_t)elfiop->segments[i]->get_file_offset();
+	RangeAddress_t bytes_in_seg=elfiop->segments[i]->get_memory_size();
+	RangeAddress_t new_free_page=-1;
+
+	if(bytes_remaining_in_file>=bytes_in_seg)
+	{
+		cout<<"Note: Found that segment can be extended for free because bss_needed==0"<<endl;
+		bss_needed=0;
+		new_free_page=elfiop->segments[i]->get_virtual_address()+bytes_remaining_in_file;
+
+		// the end of the file has to be loadable into the bss segment.
+		assert(bytes_remaining_in_file==elfiop->segments[i]->get_file_size());
+	}
+	else
+	{
+/* experimentally, we add 2 pages using the "add_strata_segment" method. */
+/* the "bss_needed" method works pretty well unless there is significantly more than 8k of bss space */
+#define BSS_NEEDED_THRESHOLD 8096
+		bss_needed=bytes_in_seg-bytes_remaining_in_file;
+
+		if(bss_needed < BSS_NEEDED_THRESHOLD)
+		{
+			new_free_page=elfiop->segments[i]->get_virtual_address()+bytes_in_seg;
+			cout<<"Note: Found that segment can be extended with penalty bss_needed=="<<std::dec<<bss_needed<<endl;
+		}
+		else
+		{
+			new_free_page=PAGE_ROUND_UP(max_addr);
+			use_stratafier_mode=true;
+		}
+	}
+#endif
+
 	memory_space.AddFreeRange(Range_t(new_free_page,(RangeAddress_t)-1));
 	if(m_opts.GetVerbose())
 		printf("Adding (mysterious) free range 0x%p to EOF\n", (void*)new_free_page);
@@ -1367,8 +1431,14 @@ void Zipr_t::OutputBinaryFile(const string &name)
 //	elfiop->load(name);
 //	ELFIO::dump::section_headers(cout,*elfiop);
 
-	printf("Opening %s\n", name.c_str());
-	FILE* fexe=fopen(name.c_str(),"r+");
+	string myfn=name;
+#ifdef CGC
+	if(!use_stratafier_mode)
+		myfn+=".stripped";
+#endif
+
+	printf("Opening %s\n", myfn.c_str());
+	FILE* fexe=fopen(myfn.c_str(),"r+");
 	assert(fexe);
 
         // For all sections
@@ -1449,6 +1519,39 @@ template < typename T > std::string to_string( const T& n )
 }
 
 
+int find_magic_segment_index(ELFIO::elfio *elfiop)
+{
+        ELFIO::Elf_Half n = elfiop->segments.size();
+	ELFIO::Elf_Half i=0;
+	ELFIO::segment* last_seg=NULL;
+	int last_seg_index=-1;
+        for ( i = 0; i < n; ++i )
+        {
+                ELFIO::segment* seg = elfiop->segments[i];
+                assert(seg);
+#if 0
+                if( (seg->get_flags() & PF_X) == 0 )
+                        continue;
+                if( (seg->get_flags() & PF_R) == 0)
+                        continue;
+		last_seg=seg;
+		last_seg_index=i;
+		break;
+#else
+		if(seg->get_type() != PT_LOAD)
+			continue;
+		if(last_seg && (last_seg->get_virtual_address() + last_seg->get_memory_size()) > (seg->get_virtual_address() + seg->get_memory_size())) 
+			continue;
+		if(seg->get_file_size()==0)
+			continue;
+		last_seg=seg;
+		last_seg_index=i;
+#endif
+        }
+	cout<<"Found magic Seg #"<<std::dec<<last_seg_index<<" has file offset "<<last_seg->get_file_offset()<<endl;
+	return last_seg_index;
+}
+
 void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, RangeAddress_t sec_start)
 {
 
@@ -1457,28 +1560,96 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 
 //        system("$stratafier/add_strata_segment $newfile $exe_copy ") == 0 or die (" command failed : $? \n");
 
-	string  cmd=
-		m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
-		string("--change-section-address .strata=")+to_string(sec_start)+" "+
-		string("--set-section-flags .strata=alloc,code ")+" "+
-		// --set-start $textoffset // set-start not needed, as we aren't changing the entry point.
-		rewritten_file;  // editing file in place, no $newfile needed. 
+	string cmd="";
 
-	printf("Attempting: %s\n", cmd.c_str());
-	if(-1 == system(cmd.c_str()))
+	if(use_stratafier_mode)
 	{
-		perror(__FUNCTION__);
+		cmd= m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
+			string("--change-section-address .strata=")+to_string(sec_start)+" "+
+			string("--set-section-flags .strata=alloc,code ")+" "+
+			// --set-start $textoffset // set-start not needed, as we aren't changing the entry point.
+			rewritten_file;  // editing file in place, no $newfile needed. 
+	
+		printf("Attempting: %s\n", cmd.c_str());
+		if(-1 == system(cmd.c_str()))
+		{
+			perror(__FUNCTION__);
+		}
+	
+		cmd="$STRATAFIER/add_strata_segment";
+		if (m_opts.GetArchitecture() == 64) {
+			cmd += "64";
+		}
+		cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
+		printf("Attempting: %s\n", cmd.c_str());
+		if(-1 == system(cmd.c_str()))
+		{
+			perror(__FUNCTION__);
+		}
+	
 	}
-
-	cmd="$STRATAFIER/add_strata_segment";
-	if (m_opts.GetArchitecture() == 64) {
-		cmd += "64";
-	}
-	cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
-	printf("Attempting: %s\n", cmd.c_str());
-	if(-1 == system(cmd.c_str()))
+	else
 	{
-		perror(__FUNCTION__);
+#ifndef CGC
+		assert(0); // stratafier mode available only for CGC
+#else
+		string zeroes_file=rewritten_file+".zeroes";
+		cout<<"Note: bss_needed=="<<std::dec<<bss_needed<<endl;
+		cmd="cat /dev/zero | head -c "+to_string(bss_needed)+" > "+zeroes_file;
+        	printf("Attempting: %s\n", cmd.c_str());
+        	if(-1 == system(cmd.c_str()))
+        	{
+                	perror(__FUNCTION__);
+		}
+	
+        	cmd="cat "+rewritten_file+".stripped "+zeroes_file+" "+bin_to_add+" > "+rewritten_file+".addseg";
+        	printf("Attempting: %s\n", cmd.c_str());
+        	if(-1 == system(cmd.c_str()))
+        	{
+                	perror(__FUNCTION__);
+        	}
+	
+        	std::ifstream::pos_type orig_size=filesize((rewritten_file+".stripped").c_str());
+        	std::ifstream::pos_type incr_size=bss_needed+filesize(bin_to_add.c_str());
+	
+        	assert(orig_size+incr_size=filesize((rewritten_file+".addseg").c_str()));
+		std::ifstream::pos_type  total_size=orig_size+incr_size;
+	
+        	ELFIO::elfio *boutaddseg=new ELFIO::elfio;
+        	boutaddseg->load(rewritten_file+".addseg");
+        	ELFIO::dump::header(cout,*boutaddseg);
+        	ELFIO::dump::segment_headers(cout,*boutaddseg);
+	
+		cout<<"Segments offset is "<<boutaddseg->get_segments_offset()<<endl;
+		
+	
+		ELFIO::Elf_Half i=find_magic_segment_index(boutaddseg);
+	
+	
+		FILE* fboutaddseg=fopen((rewritten_file+".addseg").c_str(),"r+");
+		assert(fboutaddseg);
+	
+		ELFIO::Elf32_Phdr myphdr;
+	
+		int file_off=boutaddseg->get_segments_offset()+sizeof(ELFIO::Elf32_Phdr)*(i);
+	
+	cout<<"Seeking to "<<std::hex<<file_off<<endl;
+		fseek(fboutaddseg, file_off, SEEK_SET);
+		fread(&myphdr, sizeof(myphdr), 1, fboutaddseg);
+	cout<<"My phdr has vaddr="<<std::hex<<myphdr.p_vaddr<<endl;
+	cout<<"My phdr has phys addr="<<std::hex<<myphdr.p_paddr<<endl;
+	cout<<"My phdr has file size="<<std::hex<<myphdr.p_filesz<<endl;
+		myphdr.p_filesz=(int)((int)total_size-(int)myphdr.p_offset);
+		myphdr.p_memsz=myphdr.p_filesz;
+		myphdr.p_flags|=PF_X|PF_R|PF_W;
+	cout<<"Updated file size="<<std::hex<<myphdr.p_filesz<<endl;
+		fseek(fboutaddseg, file_off, SEEK_SET);
+		fwrite(&myphdr, sizeof(myphdr), 1, fboutaddseg);
+		fclose(fboutaddseg);
+		
+		
+		ELFIO::Elf32_Shdr myseg_header;
+#endif	// #else from #ifndef CGC
 	}
 
 	cmd=string("chmod +x ")+rewritten_file+".addseg";

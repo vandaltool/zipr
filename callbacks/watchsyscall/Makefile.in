@@ -7,7 +7,7 @@ AR=@AR@
 AS=@AS@
 ASFLAGS=@ASFLAGS@
 
-OBJS=wa_callbacks.o
+OBJS=wa_callbacks.o cgc.o
 
 
 .SUFFIXES: .o .s .c

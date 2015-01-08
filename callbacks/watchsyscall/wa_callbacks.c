@@ -18,10 +18,17 @@
  *
  */
 
+#ifdef DEBUG
 #include "malloc.h"
 #include "itox.h"
 #include "strlen.h"
 #include "null.h"
+#else
+
+typedef unsigned uintptr_t;
+#define NULL 0L
+
+#endif
 
 
 #ifdef DEBUG
@@ -130,7 +137,7 @@ void add_to_list(int start, int end)
 #endif
 	// no space in any list item.
 	assert(sizeof(addr_list_t));
-	al=malloc(sizeof(addr_list_t));
+	cgc_allocate(sizeof(addr_list_t), 0==0, &al);
 	al->next=OK_list;
 	al->pairs=1;
 	al->addrs[0].start=start;

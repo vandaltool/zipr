@@ -38,8 +38,11 @@ class Zipr_t
 {
 	public:
 		Zipr_t(libIRDB::FileIR_t* p_firp, Options_t &p_opts)
-			: m_firp(p_firp), m_opts(p_opts), memory_space()
+			: m_firp(p_firp), m_opts(p_opts), memory_space(), 
+			  m_stats(NULL), elfiop(NULL), start_of_new_space(0)
 		{ 
+			bss_needed=0;
+			use_stratafier_mode=false;
  		};
 
 		void CreateBinaryFile(const std::string &name);
@@ -134,6 +137,10 @@ class Zipr_t
 		RangeAddress_t start_of_new_space;
 
 		MemorySpace_t memory_space;
+
+	        RangeAddress_t bss_needed;
+		bool use_stratafier_mode;
+
 };
 
 #endif
