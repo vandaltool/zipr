@@ -1433,6 +1433,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 //	ELFIO::dump::section_headers(cout,*elfiop);
 
 	string myfn=name;
+	string callback_file_name;
 #ifdef CGC
 	if(!use_stratafier_mode)
 		myfn+=".stripped";
@@ -1466,7 +1467,6 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	string tmpname=name+string(".to_insert");
 	printf("Opening %s\n", tmpname.c_str());
 	FILE* to_insert=fopen(tmpname.c_str(),"w");
-	string tmpname3=tmpname+"3";	
 
 	if(!to_insert)
 		perror( "void Zipr_t::OutputBinaryFile(const string &name)");
@@ -1495,8 +1495,8 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	}
 	fclose(to_insert);
 
-	AddCallbacksToNewSegment(tmpname,end_of_new_space);
-	InsertNewSegmentIntoExe(name,tmpname3,start_of_new_space);
+	callback_file_name = AddCallbacksToNewSegment(tmpname,end_of_new_space);
+	InsertNewSegmentIntoExe(name,callback_file_name,start_of_new_space);
 }
 
 
@@ -1675,12 +1675,12 @@ return 0;
 }
 
 
-void Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
+string Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
 {
 	const RangeAddress_t callback_start_addr=GetCallbackStartAddr();
 
 	if(m_opts.GetCallbackFileName() == "" )
-		return;
+		return tmpname;
 	string tmpname2=tmpname+"2";	
 	string tmpname3=tmpname+"3";	
 	printf("Setting strata library at: %p\n", (void*)end_of_new_space);
@@ -1691,6 +1691,7 @@ void Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_
 	if(-1 == system(cmd.c_str()))
 	{
 		perror(__FUNCTION__);
+		return tmpname;
 	}
 
 	cmd="cat "+tmpname+" "+tmpname2+" > "+tmpname3;
@@ -1698,7 +1699,9 @@ void Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_
 	if(-1 == system(cmd.c_str()))
 	{
 		perror(__FUNCTION__);
+		return tmpname;
 	}
+	return tmpname3;
 }
 
 RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
