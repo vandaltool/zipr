@@ -290,6 +290,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 // skip round up?  not needed if callbacks are PIC/PIE.
 #ifndef CGC
 	RangeAddress_t new_free_page=PAGE_ROUND_UP(max_addr);
+	use_stratafier_mode = true;
 #else
 	int i=find_magic_segment_index(elfiop);
 	RangeAddress_t bytes_remaining_in_file=(RangeAddress_t)filesize((name+".stripped").c_str())-(RangeAddress_t)elfiop->segments[i]->get_file_offset();
