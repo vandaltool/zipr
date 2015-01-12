@@ -1598,7 +1598,7 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 		}
 
 		output_elfiop->load(rewritten_file);
-		strata_segment = output_elfiop->segments.add();
+		strata_segment = output_elfiop->segments[1];
 		strata_section = NULL;
 		total_sections = output_elfiop->sections.size();
 		for ( ELFIO::Elf_Half i = 0; i < total_sections; ++i )
