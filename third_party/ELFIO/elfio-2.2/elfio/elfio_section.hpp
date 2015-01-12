@@ -46,7 +46,7 @@ class section
     ELFIO_GET_SET_ACCESS_DECL( Elf64_Addr,  address            );
     ELFIO_GET_SET_ACCESS_DECL( Elf_Xword,   size               );
     ELFIO_GET_SET_ACCESS_DECL( Elf_Word,    name_string_offset );
-    ELFIO_GET_ACCESS_DECL( Elf_Word,    offset );
+    ELFIO_GET_SET_ACCESS_DECL( Elf64_Off,   offset );
 
     virtual const char* get_data() const                                = 0;
     virtual void        set_data( const char* pData, Elf_Word size )    = 0;
@@ -95,7 +95,7 @@ class section_impl : public section
     ELFIO_GET_SET_ACCESS( Elf_Xword,  entry_size,         header.sh_entsize   );
     ELFIO_GET_SET_ACCESS( Elf_Word,   name_string_offset, header.sh_name      );
     ELFIO_GET_ACCESS    ( Elf64_Addr, address,            header.sh_addr      );
-    ELFIO_GET_ACCESS    ( Elf_Word,   offset,             header.sh_offset    );
+    ELFIO_GET_SET_ACCESS( Elf64_Off,   offset,            header.sh_offset    );
 
 //------------------------------------------------------------------------------
     Elf_Half
