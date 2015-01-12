@@ -162,12 +162,12 @@ class elfio
         }
 
         bool is_still_good = true;
-        fill_final_attributes();
-        set_current_file_position();
+        header->set_segments_num( segments.size() );
+        header->set_sections_num( sections.size() );
 
         is_still_good = is_still_good && save_header( f );
-        is_still_good = is_still_good && save_sections_without_segments( f );
-        is_still_good = is_still_good && save_segments_and_their_sections( f );
+        is_still_good = is_still_good && save_sections( f );
+        is_still_good = is_still_good && save_segments( f );
 
         f.close();
 
@@ -316,7 +316,7 @@ class elfio
         else {
             return 0;
         }
-
+        new_segment->set_index( (Elf_Half)segments_.size() );
         segments_.push_back( new_segment );
 
         return new_segment;
@@ -422,6 +422,34 @@ class elfio
         return header->save( f );
     }
 
+//------------------------------------------------------------------------------
+    bool save_sections( std::ofstream& f )
+    {
+        for ( unsigned int i = 0; i < sections_.size(); ++i ) {
+            section *sec = sections_.at(i);
+
+            std::streampos headerPosition =
+                (std::streamoff)header->get_sections_offset() +
+                header->get_section_entry_size() * sec->get_index();
+
+            sec->save(f,headerPosition,sec->get_offset());
+        }
+        return true;
+    }
+
+//------------------------------------------------------------------------------
+    bool save_segments( std::ofstream& f )
+    {
+        for ( unsigned int i = 0; i < segments_.size(); ++i ) {
+            segment *seg = segments_.at(i);
+
+            std::streampos headerPosition = header->get_segments_offset()  +
+                header->get_segment_entry_size()*seg->get_index();
+
+            seg->save( f, headerPosition, seg->get_offset() );
+        }
+        return true;
+    }
 
 //------------------------------------------------------------------------------
     void set_current_file_position()
