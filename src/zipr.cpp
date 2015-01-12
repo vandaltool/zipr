@@ -177,7 +177,8 @@ RangeAddress_t Zipr_t::extend_section(ELFIO::section *sec, ELFIO::section *next_
 	if( (next_sec->get_flags() & SHF_ALLOC) != 0 && in_same_segment(sec,next_sec,elfiop))
 	{
 		end=next_sec->get_address()-1;
-		cout<<"Extending range to "<<std::hex<<end<<endl;
+		cout<<"Extending range of " << sec->get_name() <<" to "<<std::hex<<end<<endl;
+		sec->set_size(next_sec->get_address() - sec->get_address() - 1);
 	}
 	return end;
 }
@@ -216,7 +217,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 		assert(sec);
 
 		RangeAddress_t start=sec->get_address();
-		RangeAddress_t end=sec->get_size()+start;
+		RangeAddress_t end=sec->get_size()+start-1;
 
 		if(m_opts.GetVerbose())
 			printf("Section %s:\n", sec->get_name().c_str());
@@ -293,7 +294,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 	use_stratafier_mode = true;
 #else
 	int i=find_magic_segment_index(elfiop);
-	RangeAddress_t bytes_remaining_in_file=(RangeAddress_t)filesize((name+".stripped").c_str())-(RangeAddress_t)elfiop->segments[i]->get_file_offset();
+	RangeAddress_t bytes_remaining_in_file=(RangeAddress_t)filesize((name+".stripped").c_str())-(RangeAddress_t)elfiop->segments[i]->get_offset();
 	RangeAddress_t bytes_in_seg=elfiop->segments[i]->get_memory_size();
 	RangeAddress_t new_free_page=-1;
 
@@ -1394,16 +1395,10 @@ void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 }
 
 
-void Zipr_t::FillSection(section* sec, FILE* fexe, section* next_sec)
+void Zipr_t::FillSection(section* sec, FILE* fexe)
 {
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
-
-	if(next_sec)
-	{
-		end=extend_section(sec,next_sec);
-	}
-
 
 	if(m_opts.GetVerbose())
 		printf("Dumping addrs %p-%p\n", (void*)start, (void*)end);
@@ -1419,7 +1414,7 @@ void Zipr_t::FillSection(section* sec, FILE* fexe, section* next_sec)
 			if(i-start<200)// keep verbose output short enough.
 			{
 				if(m_opts.GetVerbose())
-					printf("Writing byte %#2x at %p, fileoffset=%d\n", 
+					printf("Writing byte %#2x at %p, fileoffset=%x\n", 
 						((unsigned)b)&0xff, (void*)i, file_off);
 			}
 		}
@@ -1429,15 +1424,40 @@ void Zipr_t::FillSection(section* sec, FILE* fexe, section* next_sec)
 void Zipr_t::OutputBinaryFile(const string &name)
 {
 	assert(elfiop);
-//	elfiop->load(name);
 //	ELFIO::dump::section_headers(cout,*elfiop);
 
 	string myfn=name;
 	string callback_file_name;
+	ELFIO::elfio *rewrite_headers_elfiop = new ELFIO::elfio;
+	ELFIO::Elf_Half total_sections; 
 #ifdef CGC
 	if(!use_stratafier_mode)
 		myfn+=".stripped";
 #endif
+
+	/*
+	 * Unfortunately, we need to have a special 
+	 * "pass" to rewrite section header lengths.
+	 * Elfio does not work properly otherwise.
+	 */
+	rewrite_headers_elfiop->load(myfn);
+	total_sections = rewrite_headers_elfiop->sections.size();
+	for ( ELFIO::Elf_Half i = 0; i < total_sections; ++i )
+	{
+		section* sec = rewrite_headers_elfiop->sections[i];
+		assert(sec);
+
+		if( (sec->get_flags() & SHF_ALLOC) == 0 )
+			continue;
+		if( (sec->get_flags() & SHF_EXECINSTR) == 0)
+			continue;
+	
+		section* next_sec = NULL;
+		if(i+1<total_sections)
+			next_sec=rewrite_headers_elfiop->sections[i+1];
+		extend_section(sec, next_sec);
+	}
+	rewrite_headers_elfiop->save(myfn);
 
 	printf("Opening %s\n", myfn.c_str());
 	FILE* fexe=fopen(myfn.c_str(),"r+");
@@ -1455,12 +1475,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
                 if( (sec->get_flags() & SHF_EXECINSTR) == 0)
                         continue;
 	
-
-		section* next_sec = NULL;
-		if(i+1<n)
-			next_sec=elfiop->sections[i+1];
-
-		FillSection(sec, fexe, next_sec);
+		FillSection(sec, fexe);
         }
 	fclose(fexe);
 
@@ -1488,7 +1503,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 		if(i-start_of_new_space<200)// keep verbose output short enough.
 		{
 			if(m_opts.GetVerbose())
-				printf("Writing byte %#2x at %p, fileoffset=%lld\n", ((unsigned)b)&0xff, 
+				printf("Writing byte %#2x at %p, fileoffset=%x\n", ((unsigned)b)&0xff, 
 				(void*)i, (long long)(i-start_of_new_space));
 		}
 		fwrite(&b,1,1,to_insert);
@@ -1496,7 +1511,7 @@ void Zipr_t::OutputBinaryFile(const string &name)
 	fclose(to_insert);
 
 	callback_file_name = AddCallbacksToNewSegment(tmpname,end_of_new_space);
-	InsertNewSegmentIntoExe(name,callback_file_name,start_of_new_space);
+	InsertNewSegmentIntoExe(myfn,callback_file_name,start_of_new_space);
 }
 
 
@@ -1549,7 +1564,7 @@ int find_magic_segment_index(ELFIO::elfio *elfiop)
 		last_seg_index=i;
 #endif
         }
-	cout<<"Found magic Seg #"<<std::dec<<last_seg_index<<" has file offset "<<last_seg->get_file_offset()<<endl;
+	cout<<"Found magic Seg #"<<std::dec<<last_seg_index<<" has file offset "<<last_seg->get_offset()<<endl;
 	return last_seg_index;
 }
 
@@ -1565,6 +1580,11 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 
 	if(use_stratafier_mode)
 	{
+		ELFIO::elfio *output_elfiop = new ELFIO::elfio;
+		ELFIO::segment *strata_segment = NULL;
+		ELFIO::section *strata_section = NULL;
+		ELFIO::Elf_Half total_sections;
+
 		cmd= m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
 			string("--change-section-address .strata=")+to_string(sec_start)+" "+
 			string("--set-section-flags .strata=alloc,code ")+" "+
@@ -1576,18 +1596,35 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 		{
 			perror(__FUNCTION__);
 		}
-	
-		cmd="$STRATAFIER/add_strata_segment";
-		if (m_opts.GetArchitecture() == 64) {
-			cmd += "64";
-		}
-		cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
-		printf("Attempting: %s\n", cmd.c_str());
-		if(-1 == system(cmd.c_str()))
+
+		output_elfiop->load(rewritten_file);
+		strata_segment = output_elfiop->segments.add();
+		strata_section = NULL;
+		total_sections = output_elfiop->sections.size();
+		for ( ELFIO::Elf_Half i = 0; i < total_sections; ++i )
 		{
-			perror(__FUNCTION__);
+			section* sec = output_elfiop->sections[i];
+			assert(sec);
+
+			if( (sec->get_flags() & SHF_ALLOC) == 0 )
+				continue;
+			if( (sec->get_flags() & SHF_EXECINSTR) == 0)
+				continue;
+			if (sec->get_name() == ".strata")
+				strata_section = sec;	
 		}
-	
+		assert(strata_section);
+		strata_segment->add_section_index(strata_section->get_index(),
+			0x1000);
+		strata_segment->set_memory_size(strata_section->get_size());
+		strata_segment->set_file_size(strata_section->get_size());
+		strata_segment->set_virtual_address(start_of_new_space);
+		strata_segment->set_physical_address(start_of_new_space);
+		strata_segment->set_type(PT_LOAD);
+		strata_segment->set_flags(PF_X|PF_R|PF_W);
+		strata_segment->set_offset(strata_section->get_offset());
+		output_elfiop->save(rewritten_file+".addseg");
+
 	}
 	else
 	{

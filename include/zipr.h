@@ -92,7 +92,7 @@ class Zipr_t
 
 
 		// outputing new .exe
-		void FillSection(ELFIO::section* sec, FILE* fexe, ELFIO::section* next_sec);
+		void FillSection(ELFIO::section* sec, FILE* fexe);
 		void OutputBinaryFile(const std::string &name);
 
 
