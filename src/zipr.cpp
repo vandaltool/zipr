@@ -1576,61 +1576,40 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 
 //        system("$stratafier/add_strata_segment $newfile $exe_copy ") == 0 or die (" command failed : $? \n");
 
-	string cmd="";
+	string chmod_cmd="";
 
 	if(use_stratafier_mode)
 	{
-		ELFIO::elfio *output_elfiop = new ELFIO::elfio;
-		ELFIO::segment *strata_segment = NULL;
-		ELFIO::section *strata_section = NULL;
-		ELFIO::Elf_Half total_sections;
-
-		cmd= m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
+		string objcopy_cmd = "", stratafier_cmd = "";
+		objcopy_cmd= m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
 			string("--change-section-address .strata=")+to_string(sec_start)+" "+
 			string("--set-section-flags .strata=alloc,code ")+" "+
 			// --set-start $textoffset // set-start not needed, as we aren't changing the entry point.
 			rewritten_file;  // editing file in place, no $newfile needed. 
 	
-		printf("Attempting: %s\n", cmd.c_str());
-		if(-1 == system(cmd.c_str()))
+		printf("Attempting: %s\n", objcopy_cmd.c_str());
+		if(-1 == system(objcopy_cmd.c_str()))
 		{
 			perror(__FUNCTION__);
 		}
 
-		output_elfiop->load(rewritten_file);
-		strata_segment = output_elfiop->segments[1];
-		strata_section = NULL;
-		total_sections = output_elfiop->sections.size();
-		for ( ELFIO::Elf_Half i = 0; i < total_sections; ++i )
-		{
-			section* sec = output_elfiop->sections[i];
-			assert(sec);
-
-			if( (sec->get_flags() & SHF_ALLOC) == 0 )
-				continue;
-			if( (sec->get_flags() & SHF_EXECINSTR) == 0)
-				continue;
-			if (sec->get_name() == ".strata")
-				strata_section = sec;	
+		stratafier_cmd="$STRATAFIER/add_strata_segment";
+		if (m_opts.GetArchitecture() == 64) {
+			stratafier_cmd += "64";
 		}
-		assert(strata_section);
-		strata_segment->add_section_index(strata_section->get_index(),
-			0x1000);
-		strata_segment->set_memory_size(strata_section->get_size());
-		strata_segment->set_file_size(strata_section->get_size());
-		strata_segment->set_virtual_address(start_of_new_space);
-		strata_segment->set_physical_address(start_of_new_space);
-		strata_segment->set_type(PT_LOAD);
-		strata_segment->set_flags(PF_X|PF_R|PF_W);
-		strata_segment->set_offset(strata_section->get_offset());
-		output_elfiop->save(rewritten_file+".addseg");
-
+		stratafier_cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
+		printf("Attempting: %s\n", stratafier_cmd.c_str());
+		if(-1 == system(stratafier_cmd.c_str()))
+		{
+			perror(__FUNCTION__);
+		}
 	}
 	else
 	{
 #ifndef CGC
 		assert(0); // stratafier mode available only for CGC
 #else
+		string cmd="";
 		string zeroes_file=rewritten_file+".zeroes";
 		cout<<"Note: bss_needed=="<<std::dec<<bss_needed<<endl;
 		cmd="cat /dev/zero | head -c "+to_string(bss_needed)+" > "+zeroes_file;
@@ -1690,9 +1669,9 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 #endif	// #else from #ifndef CGC
 	}
 
-	cmd=string("chmod +x ")+rewritten_file+".addseg";
-	printf("Attempting: %s\n", cmd.c_str());
-	if(-1 == system(cmd.c_str()))
+	chmod_cmd=string("chmod +x ")+rewritten_file+".addseg";
+	printf("Attempting: %s\n", chmod_cmd.c_str());
+	if(-1 == system(chmod_cmd.c_str()))
 	{
 		perror(__FUNCTION__);
 	}
