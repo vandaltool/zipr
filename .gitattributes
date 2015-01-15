@@ -36,6 +36,7 @@ callbacks/libc/src/write.c -text
 callbacks/p1/Makefile.in -text
 callbacks/p1/p1callbacks.c -text
 callbacks/watchsyscall/Makefile.in -text
+callbacks/watchsyscall/cgc.s -text
 callbacks/watchsyscall/wa_callbacks.c -text
 include/memory_space.h -text
 include/range.h -text

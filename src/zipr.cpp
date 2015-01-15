@@ -76,7 +76,14 @@ void Zipr_t::CreateBinaryFile(const std::string &name)
  * but also remember the strings. 
  */
 #ifdef CGC
-	string cmd=string("cp ")+name+" "+name+".stripped ; ~/Downloads/ELFkickers-3.0a/sstrip/sstrip "+name+".stripped";
+	char* sec_tran=getenv("SECURITY_TRANSFORMS_HOME");
+	if(sec_tran==NULL)
+	{
+		cerr<<"Cannot find $SECURITY_TRANSFORMS_HOME variable"<<endl;
+		exit(100);
+	}
+	string cmd=string("cp ")+name+" "+name+".stripped ; "+ sec_tran+"/third_party/ELFkickers-3.0a/sstrip/sstrip"
+		" "+name+".stripped";
 	printf("Attempting: %s\n", cmd.c_str());
 	if(-1 == system(cmd.c_str()))
 	{
@@ -1586,6 +1593,16 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 		{
 			perror(__FUNCTION__);
 		}
+
+#ifdef CGC
+		cmd=string("")+getenv("SECURITY_TRANSFORMS_HOME")+"/third_party/ELFkickers-3.0a/sstrip/sstrip "+rewritten_file+".addseg";
+		printf("Attempting: %s\n", cmd.c_str());
+		if(-1 == system(cmd.c_str()))
+		{
+			perror(__FUNCTION__);
+		}
+
+#endif
 	
 	}
 	else
