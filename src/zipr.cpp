@@ -184,7 +184,8 @@ RangeAddress_t Zipr_t::extend_section(ELFIO::section *sec, ELFIO::section *next_
 	if( (next_sec->get_flags() & SHF_ALLOC) != 0 && in_same_segment(sec,next_sec,elfiop))
 	{
 		end=next_sec->get_address()-1;
-		cout<<"Extending range to "<<std::hex<<end<<endl;
+		cout<<"Extending range of " << sec->get_name() <<" to "<<std::hex<<end<<endl;
+		sec->set_size(next_sec->get_address() - sec->get_address() - 1);
 	}
 	return end;
 }
@@ -223,7 +224,7 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 		assert(sec);
 
 		RangeAddress_t start=sec->get_address();
-		RangeAddress_t end=sec->get_size()+start;
+		RangeAddress_t end=sec->get_size()+start-1;
 
 		if(m_opts.GetVerbose())
 			printf("Section %s:\n", sec->get_name().c_str());
@@ -297,9 +298,10 @@ void Zipr_t::FindFreeRanges(const std::string &name)
 // skip round up?  not needed if callbacks are PIC/PIE.
 #ifndef CGC
 	RangeAddress_t new_free_page=PAGE_ROUND_UP(max_addr);
+	use_stratafier_mode = true;
 #else
 	int i=find_magic_segment_index(elfiop);
-	RangeAddress_t bytes_remaining_in_file=(RangeAddress_t)filesize((name+".stripped").c_str())-(RangeAddress_t)elfiop->segments[i]->get_file_offset();
+	RangeAddress_t bytes_remaining_in_file=(RangeAddress_t)filesize((name+".stripped").c_str())-(RangeAddress_t)elfiop->segments[i]->get_offset();
 	RangeAddress_t bytes_in_seg=elfiop->segments[i]->get_memory_size();
 	RangeAddress_t new_free_page=-1;
 
@@ -1400,16 +1402,10 @@ void Zipr_t::ApplyPatch(RangeAddress_t from_addr, RangeAddress_t to_addr)
 }
 
 
-void Zipr_t::FillSection(section* sec, FILE* fexe, section* next_sec)
+void Zipr_t::FillSection(section* sec, FILE* fexe)
 {
 	RangeAddress_t start=sec->get_address();
 	RangeAddress_t end=sec->get_size()+start;
-
-	if(next_sec)
-	{
-		end=extend_section(sec,next_sec);
-	}
-
 
 	if(m_opts.GetVerbose())
 		printf("Dumping addrs %p-%p\n", (void*)start, (void*)end);
@@ -1425,7 +1421,7 @@ void Zipr_t::FillSection(section* sec, FILE* fexe, section* next_sec)
 			if(i-start<200)// keep verbose output short enough.
 			{
 				if(m_opts.GetVerbose())
-					printf("Writing byte %#2x at %p, fileoffset=%d\n", 
+					printf("Writing byte %#2x at %p, fileoffset=%x\n", 
 						((unsigned)b)&0xff, (void*)i, file_off);
 			}
 		}
@@ -1435,14 +1431,40 @@ void Zipr_t::FillSection(section* sec, FILE* fexe, section* next_sec)
 void Zipr_t::OutputBinaryFile(const string &name)
 {
 	assert(elfiop);
-//	elfiop->load(name);
 //	ELFIO::dump::section_headers(cout,*elfiop);
 
 	string myfn=name;
+	string callback_file_name;
+	ELFIO::elfio *rewrite_headers_elfiop = new ELFIO::elfio;
+	ELFIO::Elf_Half total_sections; 
 #ifdef CGC
 	if(!use_stratafier_mode)
 		myfn+=".stripped";
 #endif
+
+	/*
+	 * Unfortunately, we need to have a special 
+	 * "pass" to rewrite section header lengths.
+	 * Elfio does not work properly otherwise.
+	 */
+	rewrite_headers_elfiop->load(myfn);
+	total_sections = rewrite_headers_elfiop->sections.size();
+	for ( ELFIO::Elf_Half i = 0; i < total_sections; ++i )
+	{
+		section* sec = rewrite_headers_elfiop->sections[i];
+		assert(sec);
+
+		if( (sec->get_flags() & SHF_ALLOC) == 0 )
+			continue;
+		if( (sec->get_flags() & SHF_EXECINSTR) == 0)
+			continue;
+	
+		section* next_sec = NULL;
+		if(i+1<total_sections)
+			next_sec=rewrite_headers_elfiop->sections[i+1];
+		extend_section(sec, next_sec);
+	}
+	rewrite_headers_elfiop->save(myfn);
 
 	printf("Opening %s\n", myfn.c_str());
 	FILE* fexe=fopen(myfn.c_str(),"r+");
@@ -1460,19 +1482,13 @@ void Zipr_t::OutputBinaryFile(const string &name)
                 if( (sec->get_flags() & SHF_EXECINSTR) == 0)
                         continue;
 	
-
-		section* next_sec = NULL;
-		if(i+1<n)
-			next_sec=elfiop->sections[i+1];
-
-		FillSection(sec, fexe, next_sec);
+		FillSection(sec, fexe);
         }
 	fclose(fexe);
 
 	string tmpname=name+string(".to_insert");
 	printf("Opening %s\n", tmpname.c_str());
 	FILE* to_insert=fopen(tmpname.c_str(),"w");
-	string tmpname3=tmpname+"3";	
 
 	if(!to_insert)
 		perror( "void Zipr_t::OutputBinaryFile(const string &name)");
@@ -1494,15 +1510,15 @@ void Zipr_t::OutputBinaryFile(const string &name)
 		if(i-start_of_new_space<200)// keep verbose output short enough.
 		{
 			if(m_opts.GetVerbose())
-				printf("Writing byte %#2x at %p, fileoffset=%lld\n", ((unsigned)b)&0xff, 
+				printf("Writing byte %#2x at %p, fileoffset=%x\n", ((unsigned)b)&0xff, 
 				(void*)i, (long long)(i-start_of_new_space));
 		}
 		fwrite(&b,1,1,to_insert);
 	}
 	fclose(to_insert);
 
-	AddCallbacksToNewSegment(tmpname,end_of_new_space);
-	InsertNewSegmentIntoExe(name,tmpname3,start_of_new_space);
+	callback_file_name = AddCallbacksToNewSegment(tmpname,end_of_new_space);
+	InsertNewSegmentIntoExe(myfn,callback_file_name,start_of_new_space);
 }
 
 
@@ -1555,7 +1571,7 @@ int find_magic_segment_index(ELFIO::elfio *elfiop)
 		last_seg_index=i;
 #endif
         }
-	cout<<"Found magic Seg #"<<std::dec<<last_seg_index<<" has file offset "<<last_seg->get_file_offset()<<endl;
+	cout<<"Found magic Seg #"<<std::dec<<last_seg_index<<" has file offset "<<last_seg->get_offset()<<endl;
 	return last_seg_index;
 }
 
@@ -1567,49 +1583,49 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 
 //        system("$stratafier/add_strata_segment $newfile $exe_copy ") == 0 or die (" command failed : $? \n");
 
-	string cmd="";
+	string chmod_cmd="";
 
 	if(use_stratafier_mode)
 	{
-		cmd= m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
+		string objcopy_cmd = "", stratafier_cmd = "", sstrip_cmd;
+		objcopy_cmd= m_opts.GetObjcopyPath() + string(" --add-section .strata=")+bin_to_add+" "+
 			string("--change-section-address .strata=")+to_string(sec_start)+" "+
 			string("--set-section-flags .strata=alloc,code ")+" "+
 			// --set-start $textoffset // set-start not needed, as we aren't changing the entry point.
 			rewritten_file;  // editing file in place, no $newfile needed. 
 	
-		printf("Attempting: %s\n", cmd.c_str());
-		if(-1 == system(cmd.c_str()))
-		{
-			perror(__FUNCTION__);
-		}
-	
-		cmd="$STRATAFIER/add_strata_segment";
-		if (m_opts.GetArchitecture() == 64) {
-			cmd += "64";
-		}
-		cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
-		printf("Attempting: %s\n", cmd.c_str());
-		if(-1 == system(cmd.c_str()))
+		printf("Attempting: %s\n", objcopy_cmd.c_str());
+		if(-1 == system(objcopy_cmd.c_str()))
 		{
 			perror(__FUNCTION__);
 		}
 
+		stratafier_cmd="$STRATAFIER/add_strata_segment";
+		if (m_opts.GetArchitecture() == 64) {
+			stratafier_cmd += "64";
+		}
+		stratafier_cmd += " " + rewritten_file+ " " + rewritten_file +".addseg";
+		printf("Attempting: %s\n", stratafier_cmd.c_str());
+		if(-1 == system(stratafier_cmd.c_str()))
+		{
+			perror(__FUNCTION__);
+		}
 #ifdef CGC
-		cmd=string("")+getenv("SECURITY_TRANSFORMS_HOME")+"/third_party/ELFkickers-3.0a/sstrip/sstrip "+rewritten_file+".addseg";
-		printf("Attempting: %s\n", cmd.c_str());
-		if(-1 == system(cmd.c_str()))
+		sstrip_cmd=string("")+getenv("SECURITY_TRANSFORMS_HOME")+"/third_party/ELFkickers-3.0a/sstrip/sstrip "+rewritten_file+".addseg";
+		printf("Attempting: %s\n", sstrip_cmd.c_str());
+		if(-1 == system(sstrip_cmd.c_str()))
 		{
 			perror(__FUNCTION__);
 		}
 
 #endif
-	
 	}
 	else
 	{
 #ifndef CGC
 		assert(0); // stratafier mode available only for CGC
 #else
+		string cmd="";
 		string zeroes_file=rewritten_file+".zeroes";
 		cout<<"Note: bss_needed=="<<std::dec<<bss_needed<<endl;
 		cmd="cat /dev/zero | head -c "+to_string(bss_needed)+" > "+zeroes_file;
@@ -1669,9 +1685,9 @@ void Zipr_t::InsertNewSegmentIntoExe(string rewritten_file, string bin_to_add, R
 #endif	// #else from #ifndef CGC
 	}
 
-	cmd=string("chmod +x ")+rewritten_file+".addseg";
-	printf("Attempting: %s\n", cmd.c_str());
-	if(-1 == system(cmd.c_str()))
+	chmod_cmd=string("chmod +x ")+rewritten_file+".addseg";
+	printf("Attempting: %s\n", chmod_cmd.c_str());
+	if(-1 == system(chmod_cmd.c_str()))
 	{
 		perror(__FUNCTION__);
 	}
@@ -1691,12 +1707,12 @@ return 0;
 }
 
 
-void Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
+string Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_of_new_space)
 {
 	const RangeAddress_t callback_start_addr=GetCallbackStartAddr();
 
 	if(m_opts.GetCallbackFileName() == "" )
-		return;
+		return tmpname;
 	string tmpname2=tmpname+"2";	
 	string tmpname3=tmpname+"3";	
 	printf("Setting strata library at: %p\n", (void*)end_of_new_space);
@@ -1707,6 +1723,7 @@ void Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_
 	if(-1 == system(cmd.c_str()))
 	{
 		perror(__FUNCTION__);
+		return tmpname;
 	}
 
 	cmd="cat "+tmpname+" "+tmpname2+" > "+tmpname3;
@@ -1714,7 +1731,9 @@ void Zipr_t::AddCallbacksToNewSegment(const string& tmpname, RangeAddress_t end_
 	if(-1 == system(cmd.c_str()))
 	{
 		perror(__FUNCTION__);
+		return tmpname;
 	}
+	return tmpname3;
 }
 
 RangeAddress_t Zipr_t::PlopWithCallback(Instruction_t* insn, RangeAddress_t at)
