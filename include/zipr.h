@@ -92,14 +92,14 @@ class Zipr_t
 
 
 		// outputing new .exe
-		void FillSection(ELFIO::section* sec, FILE* fexe, ELFIO::section* next_sec);
+		void FillSection(ELFIO::section* sec, FILE* fexe);
 		void OutputBinaryFile(const std::string &name);
 
 
 		// helpers.
 		void ProcessUnpinnedInstruction(const UnresolvedUnpinned_t &uu, const Patch_t &p);
 		void InsertNewSegmentIntoExe(std::string old_file, std::string new_file, RangeAddress_t sec_start);
-		void AddCallbacksToNewSegment(const std::string& tmpname, RangeAddress_t end_of_new_space);
+		std::string AddCallbacksToNewSegment(const std::string& tmpname, RangeAddress_t end_of_new_space);
 		RangeAddress_t FindCallbackAddress(RangeAddress_t end_of_new_space,RangeAddress_t start_addr, const std::string &callback);
 		libIRDB::Instruction_t *FindPinnedInsnAtAddr(RangeAddress_t addr);
 		bool ShouldPinImmediately(libIRDB::Instruction_t *upinsn);
