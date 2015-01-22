@@ -39,7 +39,7 @@ if [ `uname -m` = 'x86_64' ]; then
 
 else
 	cd $STRATA_HOME
-	./build
+	./build_cgc
 fi
 
 # smp-static-analyzer

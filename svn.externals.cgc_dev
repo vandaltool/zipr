@@ -1,9 +1,8 @@
+security_transforms  http://svn.zephyr-software.com/repos/security_transforms/branches/cgc_dev/
 diablo_toolchain     http://svn.zephyr-software.com/repos/diablo_toolchain/trunk/
 idapro66             http://svn.zephyr-software.com/repos/idapro66/trunk/
 idapro66_sdk         http://svn.zephyr-software.com/repos/idapro66_sdk/trunk/
-peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/branches/cgc_dev/
-stratafier           http://svn.zephyr-software.com/repos/stratafier/branches/cgc_dev/
-binutils           http://svn.zephyr-software.com/repos/stratafier/branches/cgc_dev/
-security_transforms  http://svn.zephyr-software.com/repos/security_transforms/branches/cgc_dev/
-SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/branches/cgc_dev/
+peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/trunk/
+SMPStaticAnalyzer    http://svn.zephyr-software.com/repos/SMPStaticAnalyzer/trunk
 strata               http://svn.zephyr-software.com/repos/strata/branches/cgc_dev/
+stratafier           http://svn.zephyr-software.com/repos/stratafier/branches/cgc_dev/
