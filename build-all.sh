@@ -57,6 +57,7 @@ if [ ! "$SECURITY_TRANSFORMS_HOME" ]; then
     exit 1; 
 fi
 cd $SECURITY_TRANSFORMS_HOME
+./configure --enable-cgc
 ./build.sh
 
 cd $PEASOUP_HOME

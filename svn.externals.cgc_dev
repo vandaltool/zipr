@@ -1,4 +1,4 @@
-security_transforms  http://svn.zephyr-software.com/repos/security_transforms/branches/cgc_dev/
+security_transforms  http://svn.zephyr-software.com/repos/security_transforms/trunk/
 diablo_toolchain     http://svn.zephyr-software.com/repos/diablo_toolchain/trunk/
 idapro66             http://svn.zephyr-software.com/repos/idapro66/trunk/
 idapro66_sdk         http://svn.zephyr-software.com/repos/idapro66_sdk/trunk/
