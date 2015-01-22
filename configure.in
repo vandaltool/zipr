@@ -15,4 +15,6 @@ AC_SUBST(CXX)
 AC_SUBST(LD)
 
 AC_OUTPUT(tools/watch_syscall/Makefile
+	tools/transforms/Makefile
 )
+
