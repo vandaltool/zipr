@@ -281,7 +281,8 @@ static 	bool add_rss_push(FileIR_t* firp, Instruction_t* insn)
 
 static 	bool add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 {
-	Instruction_t *jmp_insn=NULL, *ret_to_app=NULL, *tmp=NULL;
+	Instruction_t *jmp_insn=NULL, *ret_to_app=NULL, *tmp=NULL, *pop_chk=NULL;
+	Instruction_t *jmp_insn2=NULL, *hlt_insn=NULL;
 
 	if(getenv("RSS_VERBOSE")!=NULL)
 	{
@@ -297,7 +298,7 @@ static 	bool add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 
 	/* now we insert after that insn */
 	tmp=insertAssemblyAfter(firp,insn,"pushfq");
-	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [fs:0x12345678] "); create_tls_reloc(firp,tmp);
+	pop_chk=tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [fs:0x12345678] "); create_tls_reloc(firp,tmp);
 	tmp=insertAssemblyAfter(firp,tmp,"lea rcx, [rcx-8]");
 	tmp=insertAssemblyAfter(firp,tmp,"mov [fs:0x12345678], rcx "); create_tls_reloc(firp,tmp);
 
@@ -320,13 +321,25 @@ static 	bool add_rss_pop(FileIR_t* firp, Instruction_t* insn)
 	}
 	tmp=insertAssemblyAfter(firp,tmp,"sub rcx, [rsp+16]");
 	jmp_insn=tmp=insertDataBitsAfter(firp,tmp,getJecxzDataBits()); // jecxz L1
-	tmp=insertAssemblyAfter(firp,tmp,"hlt");
+
+/* 
+ * here we've failed the fast check, try the slow check for longjmp and exception handling.
+ */
+	/* reload rcx */
+	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [fs:0x12345678] "); create_tls_reloc(firp,tmp);
+	tmp=insertAssemblyAfter(firp,tmp,"mov rcx, [rcx]");		// reload the TOS pointer
+	jmp_insn2=tmp=insertDataBitsAfter(firp,tmp,getJecxzDataBits()); // jecxz L2
+/*L2*/	hlt_insn=tmp=insertAssemblyAfter(firp,tmp,"hlt");
 /*L1*/	ret_to_app=
 	tmp=insertAssemblyAfter(firp,tmp,"popfq");
 	tmp=insertAssemblyAfter(firp,tmp,"pop rcx");
 
 	/* link jump instruction to restore code */
 	jmp_insn->SetTarget(ret_to_app);
+
+	/* link jmp2 instruction to hlt if rcx is zero, and back to pop another value if non-zero */
+	jmp_insn2->SetTarget(hlt_insn);
+	jmp_insn2->SetFallthrough(pop_chk);
 
 
 	/* add a call to print_stack after the push */

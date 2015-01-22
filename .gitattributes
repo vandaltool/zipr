@@ -425,6 +425,10 @@ tools/ret_shadow_stack/rss_instrument.hpp -text
 tools/safefr/LICENSE.txt -text
 tools/safefr/Makefile -text
 tools/safefr/fill_in_safefr.cpp -text
+tools/selective_cfi/Makefile -text
+tools/selective_cfi/scfi_driver.cpp -text
+tools/selective_cfi/scfi_instr.cpp -text
+tools/selective_cfi/scfi_instr.hpp -text
 tools/spasm/Makefile -text
 tools/spasm/ben_lib.cpp -text
 tools/spasm/ben_lib.h -text
