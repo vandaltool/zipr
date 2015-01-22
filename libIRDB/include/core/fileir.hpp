@@ -31,7 +31,7 @@ class FileIR_t : public BaseObj_t
 
 		// Create a Variant from the database
 	FileIR_t(const VariantID_t &newprogid, File_t* fid=NULL);
-	~FileIR_t();
+	virtual ~FileIR_t();
   
 	// DB operations
 	void WriteToDB();
