@@ -1,6 +1,6 @@
 diablo_toolchain     http://svn.zephyr-software.com/repos/diablo_toolchain/trunk/
-idapro66             http://svn.zephyr-software.com/repos/idapro65/branches/cgc_dev/
-idapro66_sdk         http://svn.zephyr-software.com/repos/idapro65_sdk/branches/cgc_dev/
+idapro66             http://svn.zephyr-software.com/repos/idapro66/trunk/
+idapro66_sdk         http://svn.zephyr-software.com/repos/idapro66_sdk/trunk/
 peasoup_examples     http://svn.zephyr-software.com/repos/peasoup_examples/branches/cgc_dev/
 stratafier           http://svn.zephyr-software.com/repos/stratafier/branches/cgc_dev/
 binutils           http://svn.zephyr-software.com/repos/stratafier/branches/cgc_dev/
