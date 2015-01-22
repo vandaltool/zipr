@@ -3,8 +3,8 @@ LIB=../../lib/libIRDB-syscall.a
 
 OBJS=syscall.o
 
-CXX=g++ 
-EXTRA_CXXFLAGS=-g -c -I. -I../../include -I../../../beaengine/include
+CXX=@CXX@
+EXTRA_CXXFLAGS=-g -c -I. -I../../include -I../../../beaengine/include @EXTRA_CXXFLAGS@
 
 all: $(OBJS)
 
