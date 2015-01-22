@@ -22,17 +22,19 @@ class Callgraph_t
 				CallGraphNode_t from=edge.first;
 				CallGraphNode_t to=edge.second;
 				
-				// note that this callees[from] may allocate an empty set -- probably can do better.
-				const CallGraphNodeSet_t &calleeSet=callees[from];	
+				// note that this callers[from] may allocate an empty set -- probably can do better.
+				const CallGraphNodeSet_t &calleeSet=callers[from];	
 				return calleeSet.find(to)!=calleeSet.end();
 			}
 		bool EdgeExists(const CallGraphNode_t& n1, const CallGraphNode_t& n2) 
 			{ return EdgeExists(CallGraphEdge_t(n1,n2));}
 
-		CallGraphNodeSet_t& GetCalleesOfCaller(const CallGraphNode_t& caller)
-			{ return callees[caller]; }
-		CallGraphNodeSet_t& GetCallersOfCallee(const CallGraphNode_t& callee)
-			{ return callers[callee]; }
+		CallGraphNodeSet_t& GetCallersOfNode(const CallGraphNode_t& node)
+			{ return callers[node]; }
+		CallGraphNodeSet_t& GetCalleesOfNode(const CallGraphNode_t& node)
+			{ return callees[node]; }
+		
+		void GetAncestors(const CallGraphNode_t& node, CallGraphNodeSet_t& ancestors, bool skipHellNode = false);
 
 		CallSiteSet_t& GetCallSites(const CallGraphNode_t& n1)
 			{ return call_sites[n1]; }
@@ -45,15 +47,20 @@ class Callgraph_t
 		std::string GetCallsiteDisassembly(const CallSite_t &c) const
 			{ return c ? c->getDisassembly() : "NOFROMFUNC"; } 
 
+		bool Reachable(const CallGraphNode_t& from, const CallGraphNode_t &to, bool skipHellNode = false);
+
 	private:
 		// mark the given insn as a call site.
 		void MarkCallSite(Instruction_t* insn);
 
+		// traverse graph to retrieve all ancestors
+		void _GetAncestors(const CallGraphNode_t& node, CallGraphNodeSet_t &ancestors, CallGraphNodeSet_t &visited, bool skipHellNode);
+
 		typedef	std::map<CallGraphNode_t, CallGraphNodeSet_t > CGNodeToCGNodeSetMap_t;
 		typedef std::map<CallGraphNode_t, CallSiteSet_t > NodeToCallSiteSetMap_t;
 
-		CGNodeToCGNodeSetMap_t callees; // map a callee to it's callers.
-		CGNodeToCGNodeSetMap_t callers; // map a caller to it's callees
+		CGNodeToCGNodeSetMap_t callers; // map a callee to its callees
+		CGNodeToCGNodeSetMap_t callees; // map a caller to its callers
 		NodeToCallSiteSetMap_t call_sites;
 };
 
