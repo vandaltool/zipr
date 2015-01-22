@@ -590,6 +590,7 @@ tools/transforms/DirectOffsetInference.hpp -text
 tools/transforms/General_Utility.cpp -text
 tools/transforms/General_Utility.hpp -text
 tools/transforms/Makefile -text
+tools/transforms/Makefile.in -text
 tools/transforms/OffsetInference.cpp -text
 tools/transforms/OffsetInference.hpp -text
 tools/transforms/P1Inference.cpp -text
