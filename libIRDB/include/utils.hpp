@@ -33,6 +33,15 @@ inline std::string to_string (const T& t)
 	ss << t;
 	return ss.str();
 }
+
+template <class T>
+inline std::string to_hex_string (const T& t)
+{
+        std::stringstream ss;
+        ss << std::hex << t;
+        return ss.str();
+}
+
  
 
 /*

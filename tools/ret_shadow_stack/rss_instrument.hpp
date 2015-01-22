@@ -32,6 +32,8 @@ class RSS_Instrument
 		RSS_Instrument(libIRDB::FileIR_t *the_firp, MEDS_Annotation::MEDS_AnnotationParser* the_meds_ap) : firp(the_firp), meds_ap(the_meds_ap) { };
 		bool execute();
 
+		virtual ~RSS_Instrument() {}
+
 	private:
 		libIRDB::FileIR_t* firp;
 		MEDS_Annotation::MEDS_AnnotationParser* meds_ap;

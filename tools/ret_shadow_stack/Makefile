@@ -17,9 +17,11 @@ all: $(programs)
 	@echo "- Return Shadow Stack directory -- Build complete -"
 	@echo "---------------------------------------------------"
 
-$(all_objs): *hpp
+$(all_objs): *.hpp
 
-.cpp.o: *.hpp
+*.o: *.hpp
+
+.cpp.o: 
 	$(CC) $(INCLUDE) $(CFLAGS)  -c $< 
 
 clean:
