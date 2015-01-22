@@ -411,6 +411,10 @@ third_party/elfio-2.2.tar.gz -text
 third_party/elfio.patch -text
 third_party/sqlite-autoconf-3071300.tar.gz -text
 tools/Makefile -text
+tools/cinderella/Makefile -text
+tools/cinderella/cinderella_prep.cpp -text
+tools/cinderella/cinderella_prep.hpp -text
+tools/cinderella/cinderella_prep_driver.cpp -text
 tools/cover/Makefile -text
 tools/cover/cover.cpp -text
 tools/cover/coverage.cpp -text
