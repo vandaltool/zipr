@@ -31,10 +31,10 @@ combined_sqlite3.c: appfw_sqlite3.c sqlfw.c
 	cat $^ > $@
 
 xqil_major:
-	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_//" -e "s/\..*//" > xqil_major
+	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_//" -e "s/\..*//" |head -1 > xqil_major
 
 xqil_minor:
-	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_..//" -e "s/\..*//" > xqil_minor
+	apt-cache show libxqilla-dev|grep Filename|sed -e "s/.*dev_..//" -e "s/\..*//" |head -1 > xqil_minor
 
 %.o32: %.c
 	$(CC) -m32 -c $(CFLAGS) -c $< -o $@
