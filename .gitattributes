@@ -175,6 +175,7 @@ beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/link
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/progress.make -text
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/progress.marks -text
 /build.sh -text
+/configure.in -text
 /distclean.sh -text
 include/i686/config.h -text
 include/x86_64/config.h -text
@@ -623,7 +624,7 @@ tools/transforms/sample_meds_int.annot -text
 tools/transforms/transformutils.cpp -text
 tools/transforms/transformutils.h -text
 tools/watch_syscall/LICENSE.txt -text
-tools/watch_syscall/Makefile -text
+tools/watch_syscall/Makefile.in -text
 tools/watch_syscall/wsc_driver.cpp -text
 tools/watch_syscall/wsc_instrument.cpp -text
 tools/watch_syscall/wsc_instrument.hpp -text
