@@ -94,6 +94,7 @@ STRATA_PC_CONFINE_XOR_KEY_LENGTH=1024
 STRATA_ANNOT_FILE=$datapath/a.ncexe.annot 
 STRATA_IS_SO=0
 STRATA_EXE_FILE=$datapath/a.stratafied
+SPAWNER_EXE_FILE=$datapath/spawned
 STRATA_MAX_WARNINGS=500000
 	exec -a $origbinpath $datapath/a.stratafied \"\$@\""
 

@@ -18,6 +18,8 @@ c++_examples/newdelete4.cpp -text
 c++_examples/newdelete5.cpp -text
 c++_examples/newdelete6.cpp -text
 c++_examples/throw.cpp -text
+cgc_spri/Makefile -text
+cgc_spri/spawn_with_spri_open.c -text
 chopzero_src/Makefile -text
 chopzero_src/chopzero.c -text
 demos/Makefile -text
@@ -3187,6 +3189,7 @@ tools/do_manual_cover.sh -text
 tools/do_manualtests.sh -text
 tools/do_p1transform.sh -text
 tools/do_rss.sh -text
+tools/do_spawner.sh -text
 tools/empty.json -text
 tools/fast_annot.sh -text
 tools/fast_spri.sh -text
@@ -6322,6 +6325,7 @@ tools/ps_analyze-lib.sh -text
 tools/ps_analyze.sh -text
 tools/ps_analyze4.sh -text
 tools/ps_analyze64.sh -text
+tools/ps_analyze_cgc.sh -text
 tools/ps_comp++.sh -text
 tools/ps_comp.sh -text
 tools/ps_create_installer.sh -text

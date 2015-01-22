@@ -42,6 +42,11 @@ TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
 # Setting PN timeout to 6 hours for TNE. 
 PN_TIMEOUT_VALUE=21600
 
+# 
+# set default values for 
+#
+initial_off_phases="isr ret_shadow_stack determine_program stats spawner fill_in_safefr"
+
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
 #on for on and off for off
@@ -178,7 +183,20 @@ check_options()
 	# Note that we use `"$@"' to let each command-line parameter expand to a 
 	# separate word. The quotes around `$@' are essential!
 	# We need TEMP as the `eval set --' would nuke the return value of getopt.
-	TEMP=`getopt -o s:t:w: --long step-option: --long integer_warnings_only --long integer_instrument_idioms --long integer_detect_fp --long no_integer_detect_fp --long step: --long timeout: --long id: --long name: --long manual_test_script: --long manual_test_coverage_file: --long watchdog: -n 'ps_analyze.sh' -- "$@"`
+	TEMP=`getopt -o s:t:w: 				\
+		--long step-option:  			\
+		--long integer_warnings_only  		\
+		--long integer_instrument_idioms  	\
+		--long integer_detect_fp  		\
+		--long no_integer_detect_fp  		\
+		--long step:  				\
+		--long timeout:	  			\
+		--long id:  				\
+		--long name:  				\
+		--long manual_test_script:  		\
+		--long manual_test_coverage_file:  	\
+		--long watchdog:  			\
+		-n 'ps_analyze.sh' -- "$@"`
 
 	# error check #
 	if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit -1 ; fi
@@ -666,10 +684,12 @@ fi
 # setup libstrata.so.  We'll setup two versions, one with symbols so we can debug, and a stripped, faster-loading version.
 # by default, use the faster version.  copy in the .symbosl version for debugging
 #
-cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
-cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
-strip $newdir/libstrata.so.nosymbols
-cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
+if [ -f $STRATA_HOME/lib/libstrata.so ]; then
+	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.symbols
+	cp $STRATA_HOME/lib/libstrata.so $newdir/libstrata.so.nosymbols
+	strip $newdir/libstrata.so.nosymbols
+	cp $newdir/libstrata.so.nosymbols $newdir/libstrata.so
+fi
 
 
 adjust_lib_path 
@@ -758,6 +778,8 @@ if [ -z $DB_PROGRAM_NAME ]; then
 	DB_PROGRAM_NAME="psprog_$DB_PROGRAM_NAME"
 fi
 MD5HASH=`md5sum $newname.ncexe | cut -f1 -d' '`
+
+INSTALLER=`pwd`
 
 #
 # register the program
@@ -891,6 +913,9 @@ if [[ "$TWITCHER_HOME" != "" && -d "$TWITCHER_HOME" ]]; then
 	perform_step twitchertransform none $TWITCHER_HOME/twitcher-transform/do_twitchertransform.sh $cloneid $program $CONCOLIC_DIR $TWITCHER_TRANSFORM_TIMEOUT_VALUE
 fi
 
+# watch syscalls
+perform_step watch_allocate clone,fill_in_indtargs,fill_in_cfg,meds2pdb $SECURITY_TRANSFORMS_HOME/tools/watch_syscall/watch_syscall.exe  $cloneid 
+
 # only do ILR for main objects that aren't relocatable.  reloc. objects 
 # are still buggy for ILR
 if [ $($PEASOUP_HOME/tools/is_so.sh a.ncexe) = 0 ]; then
@@ -899,15 +924,20 @@ fi
 
 # generate aspri, and assemble it to bspri
 perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/generate_spri.exe $($PEASOUP_HOME/tools/is_so.sh a.ncexe) $cloneid a.irdb.aspri
-perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri a.ncexe stratafier.o.exe libstrata.so.symbols 
+perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri a.ncexe `ls -1 *nostrip|head -1` libstrata.so.symbols 
 perform_step fast_spri spasm $PEASOUP_HOME/tools/fast_spri.sh a.irdb.bspri a.irdb.fbspri 
 
 # preLoaded_ILR step
 perform_step preLoaded_ILR1 fast_spri $STRATA_HOME/tools/preLoaded_ILR/generate_hashfiles.exe a.irdb.fbspri 
 perform_step preLoaded_ILR2 preLoaded_ILR1 $PEASOUP_HOME/tools/generate_relocfile.sh a.irdb.fbspri
 
+
+# put a front end in front of a.stratafied which opens file 990 for strata to read.
+perform_step spawner stratafy_with_pc_confine  $PEASOUP_HOME/tools/do_spawner.sh 
+
+
 # zipr
-perform_step zipr clone,fill_in_indtargs,fill_in_cfg,meds2pdb $ZIPR_HOME/bin/zipr.exe $cloneid
+perform_step zipr clone,fill_in_indtargs,fill_in_cfg,meds2pdb $ZIPR_HOME/src/zipr.exe -v $cloneid -c $ZIPR_HOME/callbacks/lib/callbacks.exe -j $PS_OBJCOPY
 
 # copy TOCTOU tool here if it exists
 if [[ "$CONCURRENCY_HOME/toctou_tool" != "" && -d "$CONCURRENCY_HOME/toctou_tool" ]]; then
@@ -926,6 +956,7 @@ fi
 #
 ps_endtime=`date --iso-8601=seconds` 
 report_logs
+
 
 # go back to original directory
 cd - > /dev/null 2>&1
