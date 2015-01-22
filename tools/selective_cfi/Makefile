@@ -14,9 +14,9 @@ programs=selective_cfi.exe
 .SUFFIXES: .o .c .exe .cpp .hpp
 
 all: $(programs)
-	@echo "---------------------------------------------------"
-	@echo "- Return Shadow Stack directory -- Build complete -"
-	@echo "---------------------------------------------------"
+	@echo "---------------------------------------------"
+	@echo "- Selective CFI directory -- Build complete -"
+	@echo "---------------------------------------------"
 
 
 -include $(OBJS:.o=.d)
