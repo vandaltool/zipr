@@ -500,6 +500,11 @@ tools/transforms/nulltransform.cpp -text
 tools/transforms/sample_meds_int.annot -text
 tools/transforms/transformutils.cpp -text
 tools/transforms/transformutils.h -text
+tools/watch_syscall/LICENSE.txt -text
+tools/watch_syscall/Makefile -text
+tools/watch_syscall/wsc_driver.cpp -text
+tools/watch_syscall/wsc_instrument.cpp -text
+tools/watch_syscall/wsc_instrument.hpp -text
 xform/Makefile -text
 xform/all.h -text
 xform/aspri.h -text
