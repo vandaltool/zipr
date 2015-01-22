@@ -411,6 +411,11 @@ third_party/elfio-2.2.tar.gz -text
 third_party/elfio.patch -text
 third_party/sqlite-autoconf-3071300.tar.gz -text
 tools/Makefile -text
+tools/cgclibc/Makefile -text
+tools/cgclibc/cgclibc.cpp -text
+tools/cgclibc/cgclibc.hpp -text
+tools/cgclibc/cgclibc_driver.cpp -text
+tools/cgclibc/display_functions.cpp -text
 tools/cinderella/Makefile -text
 tools/cinderella/cinderella_prep.cpp -text
 tools/cinderella/cinderella_prep.hpp -text
@@ -424,6 +429,10 @@ tools/fptr_shadow/Makefile -text
 tools/fptr_shadow/fptr_shadow_driver.cpp -text
 tools/fptr_shadow/fptr_shadow_instrument64.cpp -text
 tools/fptr_shadow/fptr_shadow_instrument64.hpp -text
+tools/inferfn/Makefile -text
+tools/inferfn/inferfn.cpp -text
+tools/inferfn/inferfn.hpp -text
+tools/inferfn/inferfn_driver.cpp -text
 tools/meds2pdb/Makefile -text
 tools/meds2pdb/meds2pdb.cpp -text
 tools/memcover/General_Utility.cpp -text
