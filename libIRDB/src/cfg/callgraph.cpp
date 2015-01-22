@@ -62,8 +62,8 @@ void Callgraph_t::MarkCallSite(Instruction_t* insn)
 	Function_t* to_func= to_insn==NULL? NULL : to_insn->GetFunction();
 
 	call_sites[from_func].insert(insn);
-	callers[from_func].insert(to_func);
-	callees[to_func].insert(from_func);
+	callees[from_func].insert(to_func);
+	callers[to_func].insert(from_func);
 }
 
 void Callgraph_t::AddFile(libIRDB::FileIR_t *firp)
@@ -84,13 +84,16 @@ void Callgraph_t::AddFile(libIRDB::FileIR_t *firp)
 
 		if(insn->GetFunction() && insn->GetFunction()->GetEntryPoint()==insn
 			&& insn->GetIndirectBranchTargetAddress())
-				callers[NULL].insert(insn->GetFunction());
+		{
+				callees[NULL].insert(insn->GetFunction());
+				callers[insn->GetFunction()].insert(NULL);
+		}
 	}
 
 
 
-//		CGNodeToCGNodeSetMap_t callees;
 //		CGNodeToCGNodeSetMap_t callers;
+//		CGNodeToCGNodeSetMap_t callees;
 //		NodeToCallSiteSetMap_t call_sites;
 }
 
@@ -100,16 +103,16 @@ void Callgraph_t::Dump(std::ostream& fout)
 	fout<<"Dumping callgraph ..."<<endl;
 
 	fout<<"Mapping one way ..."<<endl;
-	for(CGNodeToCGNodeSetMap_t::iterator it=callers.begin();
-		callers.end()!=it;
+	for(CGNodeToCGNodeSetMap_t::iterator it=callees.begin();
+		callees.end()!=it;
 		++it)
 	{
 		Function_t* f=it->first;
 
 		fout<<"Function "<<GetNodeName(f)<<" calls: ";
-		CallGraphNodeSet_t &node_callees=it->second;
-		for(CallGraphNodeSet_t::iterator it2=node_callees.begin();
-			node_callees.end()!=it2;
+		CallGraphNodeSet_t &node_callers=it->second;
+		for(CallGraphNodeSet_t::iterator it2=node_callers.begin();
+			node_callers.end()!=it2;
 			++it2)
 		{
 			Function_t* the_callee=*it2;
@@ -126,16 +129,16 @@ void Callgraph_t::Dump(std::ostream& fout)
 	}
 
 	fout<<"Mapping the other way ..."<<endl;
-	for(CGNodeToCGNodeSetMap_t::iterator it=callees.begin();
-		callees.end()!=it;
+	for(CGNodeToCGNodeSetMap_t::iterator it=callers.begin();
+		callers.end()!=it;
 		++it)
 	{
 		Function_t* f=it->first;
 
 		fout<<"Function "<<GetNodeName(f)<<" called by: ";
-		CallGraphNodeSet_t &node_callers=it->second;
-		for(CallGraphNodeSet_t::iterator it2=node_callers.begin();
-			node_callers.end()!=it2;
+		CallGraphNodeSet_t &node_callees=it->second;
+		for(CallGraphNodeSet_t::iterator it2=node_callees.begin();
+			node_callees.end()!=it2;
 			++it2)
 		{
 			Function_t* the_caller=*it2;
@@ -167,4 +170,48 @@ void Callgraph_t::Dump(std::ostream& fout)
 	}
 
 	fout<<"Done!"<<endl;
+}
+
+void Callgraph_t::_GetAncestors(const CallGraphNode_t& node, CallGraphNodeSet_t &ancestors, CallGraphNodeSet_t &visited, bool skipHellNode)
+{
+	if (visited.count(node) > 0)
+		return;
+
+cerr << "visiting node: " << GetNodeName(node) << " 0x" << hex << node << dec << " visited(size):" << visited.size() << endl;
+
+        // ancestor-traversal(node X)
+        //    mark X visited
+        //    get parents P of X
+        //    if P[i] not visited:
+        //         add P[i] to ancestors
+        //         ancestor-traversal(P[i])
+
+	visited.insert(node);
+
+	CallGraphNodeSet_t directPredecessors = GetCallersOfNode(node);
+	CallGraphNodeSet_t::iterator it;
+	for (it = directPredecessors.begin(); it != directPredecessors.end(); ++it)
+	{
+		if (visited.count(*it) == 0)
+		{
+			if (*it == NULL && skipHellNode) continue;
+
+cerr << "adding " << GetNodeName(*it) << " to ancestor list " << hex << *it << dec << endl;
+			ancestors.insert(*it);
+			_GetAncestors(*it, ancestors, visited, skipHellNode);
+		}
+	}
+}
+
+void Callgraph_t::GetAncestors(const CallGraphNode_t& node, CallGraphNodeSet_t &ancestors, bool skipHellNode)
+{
+	CallGraphNodeSet_t visited;
+	_GetAncestors(node, ancestors, visited, skipHellNode);
+}
+
+bool Callgraph_t::Reachable(const CallGraphNode_t& from, const CallGraphNode_t &to, bool skipHellNode)
+{
+	CallGraphNodeSet_t ancestors;
+	GetAncestors(to, ancestors, skipHellNode);
+	return (ancestors.count(from) > 0);
 }

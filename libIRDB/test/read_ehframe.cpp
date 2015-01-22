@@ -726,17 +726,22 @@ void read_ehframe(FileIR_t* virp, ELFIO::elfio* elfiop)
 	}
 	cout<<"Found .eh_frame is section "<<std::dec<<eh_frame_index<<endl;
 
+	eh_frame_addr=(void*)elfiop->sections[eh_frame_index]->get_address();
+	int total_size=0;
+
 // 	char *p=&strtab[ sechdrs[secndx+1].sh_name];
 	const char *p=elfiop->sections[secndx+1]->get_name().c_str(); 
         if (strcmp(".gcc_except_table",p)!=0)
 	{
 		cout<<"Did not find .gcc_except_table immediately after .eh_frame\n";
+		total_size=elfiop->sections[eh_frame_index]->get_size()+1;
 	}
-
-	eh_frame_addr=(void*)elfiop->sections[eh_frame_index]->get_address();
-	int total_size= 
+	else
+	{
+		total_size=
 		(elfiop->sections[eh_frame_index+1]->get_address()+
 		 elfiop->sections[eh_frame_index+1]->get_size()   ) - (uintptr_t)eh_frame_addr;
+	}
 	
 
 	// collect eh_frame and gcc_except_table into one memory region

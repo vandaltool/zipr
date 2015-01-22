@@ -1,13 +1,13 @@
 
 
 INCLUDES= -I ../../include -I../include/ -I../../beaengine/include 
-LIBS=-L ../lib/ -lIRDB-core -lIRDB-cfg -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d 
+LIBS=-L ../lib/ -lIRDB-core -lIRDB-cfg -lIRDB-util -lpqxx -L ../../beaengine/lib/Linux.gnu.Debug -lBeaEngine_s_d 
 OPT=-g
 .SUFFIXES: .exe .cpp 
 
 PROGS=print_variant.exe list_programs.exe create_variant.exe create_variantir.exe read_variantir.exe clone.exe ilr.exe \
 	drop_variant.exe generate_spri.exe fill_in_cfg.exe fix_calls.exe fill_in_indtargs.exe unfix_calls.exe \
-	calc_conflicts.exe find_strings.exe build_callgraph.exe
+	calc_conflicts.exe find_strings.exe build_callgraph.exe build_preds.exe
 
 all: $(PROGS)
 

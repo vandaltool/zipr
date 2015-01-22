@@ -1,0 +1,43 @@
+
+
+
+CC=g++
+CFLAGS= -g -Wall -DCGC
+INCLUDE=-I. -I ../../include/ -I../include -I../xform -I../../beaengine/include -I../../libIRDB/include/ -I../../libMEDSannotation/include/ -I../libtransform/include/ -I../transforms
+LIBS=-L../../lib -lxform -lIRDB-core -lIRDB-cfg -lIRDB-util -lIRDB-syscall -lBeaEngine_s_d -lpqxx  -lMEDSannotation -ltransform ../transforms/Rewrite_Utility.o
+
+program=watch_syscall.exe
+
+all: $(program)
+	@echo "----------------------------------------"
+	@echo "- Watch system calls -- Build complete -"
+	@echo "----------------------------------------"
+
+OBJS=wsc_driver.o wsc_instrument.o
+
+
+.SUFFIXES: .o .c .exe .cpp .hpp
+
+-include $(OBJS:.o=.d)
+
+
+%.o: %.cpp
+	$(CC) $(INCLUDE) $(CFLAGS)  -c $< 
+	@#
+	@# build dependencies --  http://scottmcpeak.com/autodepend/autodepend.html
+	@#
+	$(CC) -MM $(INCLUDE) $(CFLAGS) $*.cpp > $*.d
+	@cp -f $*.d $*.d.tmp
+	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@rm -f $*.d.tmp
+
+
+clean:
+	rm -f *.o core *.exe
+
+$(program): ../../lib/*.a
+
+
+$(program):  $(OBJS)
+	$(CC) $(CFLAGS) $^ $(INCLUDE) $(LIBS) -o $@
+

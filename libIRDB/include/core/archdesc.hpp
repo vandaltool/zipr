@@ -19,6 +19,7 @@
  */
 
 
+enum AD_FileType_t { AD_ELF, AD_CGC };
 
 class ArchitectureDescription_t
 {
@@ -29,8 +30,12 @@ class ArchitectureDescription_t
 	int GetBitWidth() 		{ return bits; }	
 	void SetBitWidth(int _bits) 	{ bits=_bits; }	
 
+	AD_FileType_t GetFileType() 		{ return ft; }	
+	void SetFileType(AD_FileType_t t) 	{ ft=t; }
+
 	private:
 
 		int bits;
+		AD_FileType_t ft;
 };
 

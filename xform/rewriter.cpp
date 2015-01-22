@@ -634,7 +634,10 @@ void Rewriter::readXrefsFile(char p_filename[])
 void Rewriter::readElfFile(char p_filename[])
 {
 	char buf[1000];
-	sprintf(buf, "objdump -d --prefix-addresses %s | grep \"^[0-9]\"", p_filename);
+	char* objdump=getenv("PS_OBJDUMP");
+	if(!objdump)
+		objdump=strdup("objdump");
+	sprintf(buf, "%s -d --prefix-addresses %s | grep \"^[0-9]\"", objdump, p_filename);
 	FILE* pin=popen(buf, "r");
 	int addr;
 

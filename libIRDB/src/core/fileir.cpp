@@ -609,16 +609,28 @@ void FileIR_t::SetArchitecture()
 
         loa.cread((char*)&e_ident, sizeof(e_ident));
 
-	if((e_ident[EI_MAG0]!=ELFMAG0) || 
-	   (e_ident[EI_MAG1]!=ELFMAG1) || 
-	   (e_ident[EI_MAG2]!=ELFMAG2) || 
-	   (e_ident[EI_MAG3]!=ELFMAG3))
+	archdesc=new ArchitectureDescription_t;
+
+	if((e_ident[EI_MAG0]==ELFMAG0) && 
+	   (e_ident[EI_MAG1]==ELFMAG1) && 
+	   (e_ident[EI_MAG2]==ELFMAG2) && 
+	   (e_ident[EI_MAG3]==ELFMAG3))
+	{
+		archdesc->SetFileType(AD_ELF);
+	}
+	else if((e_ident[EI_MAG0]==ELFMAG0) && 
+	   (e_ident[EI_MAG1]=='C') && 
+	   (e_ident[EI_MAG2]=='G') && 
+	   (e_ident[EI_MAG3]=='C'))
+	{
+		archdesc->SetFileType(AD_ELF);
+	}
+	else
 	{
 		cerr << "ELF magic number wrong:  is this an ELF file? " <<endl;
 		exit(-1);
 	}
 
-	archdesc=new ArchitectureDescription_t;
 
 	switch(e_ident[4])
 	{
