@@ -24,6 +24,15 @@ class SCFI_Instrument
 		// add instrumentation
 		bool add_scfi_instrumentation(libIRDB::Instruction_t* insn);
 		bool needs_scfi_instrumentation(libIRDB::Instruction_t* insn);
+
+		// return instrumentation
+		void  AddReturnCFI(libIRDB::Instruction_t* insn);
+
+
+		// Nonce Manipulation.
+		unsigned int GetNonce(libIRDB::Instruction_t* insn);
+		unsigned int GetNonceSize(libIRDB::Instruction_t* insn);
+
 	
 		libIRDB::FileIR_t* firp;
 

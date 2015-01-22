@@ -1,8 +1,6 @@
 
+#include "utils.hpp"
 #include "scfi_instr.hpp"
-#include "MEDS_SafeFuncAnnotation.hpp"
-#include "FuncExitAnnotation.hpp"
-#include "MEDS_ProblemFuncAnnotation.hpp"
 #include "Rewrite_Utility.hpp"
 #include <stdlib.h>
 
@@ -10,7 +8,6 @@
 
 using namespace std;
 using namespace libIRDB;
-using namespace MEDS_Annotation;
 
 virtual_offset_t getAvailableAddress(FileIR_t *p_virp)
 {
@@ -220,13 +217,125 @@ bool SCFI_Instrument::needs_scfi_instrumentation(Instruction_t* insn)
 
 }
 
+
+unsigned int SCFI_Instrument::GetNonce(Instruction_t* insn)
+{
+	/* in time we look up the nonce category for this insn */
+	/* for now, it's just f4 as the nonce */
+	return 0xf4;
+}
+
+unsigned int SCFI_Instrument::GetNonceSize(Instruction_t* insn)
+{
+	/* in time we look up the nonce size for this insn */
+	/* for now, it's just f4 as the nonce */
+	return 1;
+}
+
 bool SCFI_Instrument::mark_targets() 
 {
+	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end();
+		++it)
+	{
+		Instruction_t* insn=*it;
+		if(insn->GetIndirectBranchTargetAddress())
+		{
+			string type;
+			type="cfi_nonce=";
+			type+=to_string(GetNonce(insn));
+
+			Relocation_t* reloc=create_reloc(insn);
+			reloc->SetOffset(-GetNonceSize(insn));
+			reloc->SetType(type);
+		}
+	}
 	return true;
+}
+
+void SCFI_Instrument::AddReturnCFI(Instruction_t* insn)
+{
+	string reg="rcx";
+	string decoration="";
+	int nonce_size=GetNonceSize(insn);
+	unsigned int nonce=GetNonce(insn);
+	Instruction_t* jne=NULL, *tmp=NULL;
+	
+
+	// convert a return to:
+	// 	pop rcx
+	// 	cmp <nonce size> PTR [rcx-<nonce size>], Nonce
+	// 	jne slow	; reloc such that strata/zipr can convert slow to new code
+	//			; to handle places where nonce's can't be placed. 
+	// 	jmp rcx
+
+	switch(nonce_size)
+	{
+		case 1:
+			decoration="byte ";
+			break;
+		case 2:	// handle later
+		case 4: // handle later
+		default:
+			cerr<<"Cannot handle nonce of size "<<std::dec<<nonce_size<<endl;
+			assert(0);
+		
+	}
+
+	// insert the pop/checking code.
+	insertAssemblyBefore(firp,insn,string("pop ")+reg);
+	tmp=insertAssemblyAfter(firp,insn,string("cmp ")+decoration+" ["+reg+"], "+to_string(nonce));
+    jne=tmp=insertAssemblyAfter(firp,tmp,"jne 0");
+
+	// convert the ret instruction to a jmp ecx
+	setInstructionAssembly(firp,tmp->GetFallthrough(), string("jmp ")+reg, NULL,NULL);
+
+	// set the jne's target to itself, and create a reloc that zipr/strata will have to resolve.
+	jne->SetTarget(jne);	// needed so spri/spasm/irdb don't freak out about missing target for new insn.
+	Relocation_t* reloc=create_reloc(jne);
+	reloc->SetType("slow_cfi_path");
+	reloc->SetOffset(0);
+
+	return;
 }
 
 bool SCFI_Instrument::instrument_jumps() 
 {
+	InstructionSet_t to_instrument;
+
+	// we do this in two passes.  first pass:  find instructions.
+	for(InstructionSet_t::iterator it=firp->GetInstructions().begin();
+		it!=firp->GetInstructions().end();
+		++it)
+	{
+		Instruction_t* insn=*it;
+		DISASM d;
+		insn->Disassemble(d);
+	
+		switch(d.Instruction.BranchType)
+		{
+			case  JmpType:
+			case  CallType:
+				// not yet implemented.
+				break;
+			case  RetType: to_instrument.insert(insn);
+				break;
+
+			default:
+				break;
+		}
+	}
+
+
+	// second pass, insert checking.  can't do this on pass one because
+	// we add IBs, which we'd later decide instrument
+	for(InstructionSet_t::iterator it=to_instrument.begin();
+		it!=to_instrument.end();
+		++it)
+	{
+		Instruction_t* insn=*it;
+		AddReturnCFI(insn);
+	}
 	return true;
 }
 
