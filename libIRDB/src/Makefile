@@ -1,8 +1,9 @@
 
+
+dirs=core cfg util syscall 
+
 all:
-	cd core; make
-	cd cfg; make
+	for i in ${dirs};  do echo ${PWD}; cd $$i; make || exit 1; cd ..; done
 
 clean:
-	cd core; make clean
-	cd cfg; make clean
+	for i in ${dirs};  do echo ${PWD}; cd $$i; make clean || exit 1; cd ..; done

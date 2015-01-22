@@ -82,7 +82,7 @@ int Instruction_t::Disassemble(DISASM &disasm) const
   	return instr_len;  
 }
 
-std::string Instruction_t::getDisassembly()
+std::string Instruction_t::getDisassembly() const
 {
   	DISASM disasm;
   	Disassemble(disasm);

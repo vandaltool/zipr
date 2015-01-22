@@ -198,6 +198,10 @@ libIRDB/include/core/reloc.hpp -text
 libIRDB/include/core/variantid.hpp -text
 libIRDB/include/libIRDB-cfg.hpp -text
 libIRDB/include/libIRDB-core.hpp -text
+libIRDB/include/libIRDB-syscall.hpp -text
+libIRDB/include/libIRDB-util.hpp -text
+libIRDB/include/syscall/syscall.hpp -text
+libIRDB/include/util/insn_preds.hpp -text
 libIRDB/include/utils.hpp -text
 libIRDB/install_libs.sh -text
 libIRDB/src/Makefile -text
@@ -217,8 +221,13 @@ libIRDB/src/core/generate_spri.cpp -text
 libIRDB/src/core/instruction.cpp -text
 libIRDB/src/core/pqxxdb.cpp -text
 libIRDB/src/core/variantid.cpp -text
+libIRDB/src/syscall/Makefile -text
+libIRDB/src/syscall/syscall.cpp -text
+libIRDB/src/util/Makefile -text
+libIRDB/src/util/insn_preds.cpp -text
 libIRDB/test/Makefile -text
 libIRDB/test/build_callgraph.cpp -text
+libIRDB/test/build_preds.cpp -text
 libIRDB/test/calc_conflicts.cpp -text
 libIRDB/test/check_thunks.cpp -text
 libIRDB/test/check_thunks.hpp -text

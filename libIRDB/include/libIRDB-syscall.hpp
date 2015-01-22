@@ -18,24 +18,24 @@
  *
  */
 
+#ifndef libIRDB_syscall
+#define libIRDB_syscall
 
-enum AD_FileType_t { AD_ELF, AD_CGC };
 
-class ArchitectureDescription_t
+/* Building a CFG depends on core functionality */
+#include <libIRDB-core.hpp>
+#include <libIRDB-util.hpp>
+
+#include <vector>
+#include <set>
+#include <map>
+#include <ostream>
+
+namespace libIRDB 
 {
-	public:
 
-	ArchitectureDescription_t() : bits(0) {}
+#include <syscall/syscall.hpp>
 
-	int GetBitWidth() 		{ return bits; }	
-	void SetBitWidth(int _bits) 	{ bits=_bits; }	
-
-	AD_FileType_t GetFileType() 		{ return ft; }	
-	void SetFileType(AD_FileType_t t) 	{ ft=t; }
-
-	private:
-
-		int bits;
-		AD_FileType_t ft;
 };
 
+#endif
