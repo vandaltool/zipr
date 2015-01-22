@@ -175,6 +175,7 @@ beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/link
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/BeaEngine_s_d.dir/progress.make -text
 beaengine/obj/Linux.gnu.Debug/beaengineSources/CMakeFiles/progress.marks -text
 /build.sh -text
+/configure -text
 /configure.in -text
 /distclean.sh -text
 include/i686/config.h -text
