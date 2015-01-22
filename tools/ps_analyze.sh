@@ -42,11 +42,6 @@ TWITCHER_TRANSFORM_TIMEOUT_VALUE=1800
 # Setting PN timeout to 6 hours for TNE. 
 PN_TIMEOUT_VALUE=21600
 
-# 
-# set default values for 
-#
-initial_off_phases="isr ret_shadow_stack determine_program stats spawner fill_in_safefr"
-
 #non-zero to use canaries in PN/P1, 0 to turn off canaries
 #DO_CANARIES=1
 #on for on and off for off
@@ -966,7 +961,7 @@ cp $newdir/$name.sh $stratafied_exe
 # make sure we only do this once there are no more updates to the peasoup_dir
 cd $newdir
 perform_step installer none $PEASOUP_HOME/tools/do_installer.sh $USER $DB_PROGRAM_NAME $JOBID $PWD
-cd -
+cd - > /dev/null 2>&1
 
 
 # we're done; cancel timer
