@@ -240,6 +240,12 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 	Instruction_t *handler_code ;
 	if(virp->GetArchitectureBitWidth()==32)
 	{
+#ifdef CGC
+		handler_code = allocateNewInstruction(virp,fallthrough);
+		setInstructionAssembly(virp,handler_code,"mov eax, 1",NULL,NULL);
+		Instruction_t* int80 = insertAssemblyAfter(virp,handler_code,"int 0x80",NULL);
+		int80->SetFallthrough(fallthrough);
+#else
 		handler_code = allocateNewInstruction(virp,fallthrough);
 		setInstructionAssembly(virp,handler_code,"pusha",NULL,NULL);
 		Instruction_t* pushf = insertAssemblyAfter(virp,handler_code,"pushf",NULL);
@@ -261,6 +267,7 @@ Instruction_t* getHandlerCode(FileIR_t* virp, Instruction_t* fallthrough, mitiga
 		Instruction_t *popf = insertAssemblyAfter(virp,callback,"popf",NULL);
 		Instruction_t *popa = insertAssemblyAfter(virp,popf,"popa",NULL);
 		popa->SetFallthrough(fallthrough);
+#endif
 		
 	}
 	else
