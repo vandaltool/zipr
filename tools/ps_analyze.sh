@@ -923,7 +923,7 @@ perform_step generate_spri mandatory $SECURITY_TRANSFORMS_HOME/libIRDB/test/gene
 # hack to work with cgc file size restrictions.
 stratafier_file=`ls -1 *nostrip 2>/dev/null |head -1` 
 if [ "X$stratafier_file" = "X" ]; then 
-	stratafier.o.exe
+	stratafier_file=stratafier.o.exe
 fi
 perform_step spasm mandatory $SECURITY_TRANSFORMS_HOME/tools/spasm/spasm a.irdb.aspri a.irdb.bspri a.ncexe $stratafier_file libstrata.so.symbols 
 
