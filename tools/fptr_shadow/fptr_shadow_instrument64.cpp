@@ -24,6 +24,7 @@
  *      insertAssemblyAfter()
  *      design callbacks for def/check shadow
  */
+#include <algorithm>
 #include <stdlib.h>
 
 #include <libIRDB-core.hpp>
@@ -66,6 +67,36 @@ static Instruction_t* addNewAssembly(FileIR_t* firp, Instruction_t *p_instr, str
         return newinstr;
 }
 
+static string getFreeRegister(Instruction_t *p_insn)
+{
+	assert(p_insn);
+
+	string disasm = p_insn->getDisassembly();	
+	std::transform(disasm.begin(), disasm.end(), disasm.begin(), ::tolower);
+
+	size_t found = disasm.find("r11");
+    if (found!=std::string::npos)
+  		return string("r11");  
+
+	found = disasm.find("r12");
+    if (found!=std::string::npos)
+  		return string("r12");  
+	
+	found = disasm.find("r13");
+    if (found!=std::string::npos)
+  		return string("r13");  
+
+	found = disasm.find("r14");
+    if (found!=std::string::npos)
+  		return string("r14");  
+
+	found = disasm.find("r15");
+    if (found!=std::string::npos)
+  		return string("r15");  
+
+	assert(0);
+	return string();
+}
 
 static Instruction_t* registerCallbackHandler64(FileIR_t* firp, Instruction_t *p_orig, string p_callbackHandler, int p_numArgs)
 {
@@ -198,6 +229,8 @@ static Instruction_t* addCallbackHandlerSequence
 static Instruction_t* addShadowDefine64CallbackHandler(FileIR_t* p_firp, Instruction_t* p_insn, const MEDS_FPTRShadowAnnotation* p_annot)
 {
 	char tmp[1024];
+	Instruction_t* i;
+
 	// need to push the 3 args: PC, shadowId, shadowValue
 	// rsi <- PC
 	// rdx <- shadowId
@@ -212,19 +245,25 @@ static Instruction_t* addShadowDefine64CallbackHandler(FileIR_t* p_firp, Instruc
 	p_insn->SetComment("callback: " + string(CALLBACK_FPTR_SHADOW_DEFINE_64));
     Instruction_t* saveFlags = addNewAssembly(p_firp, lea, "pushf");
 
-	// push the 3 arguments
+/*
+push r15
+lea r15, {lower-case version of operand string}
+mov r15, [r15]
+{callback to shadowing function that maintains hash table, pass in r15 and INDEX}
+pop r15
+*/
+	string tempReg = getFreeRegister(p_insn);
+	sprintf(tmp, "push %s", tempReg.c_str());
+	i = insertAssemblyAfter(p_firp, saveFlags, tmp);
+	sprintf(tmp, "lea %s, %s", tempReg.c_str(), p_annot->getExpression().c_str());
+	i = insertAssemblyAfter(p_firp, i, tmp);
+	sprintf(tmp, "mov %s, [%s]", tempReg.c_str(), tempReg.c_str());
+	i = insertAssemblyAfter(p_firp, i, tmp);
+	sprintf(tmp, "push %s", tempReg.c_str());
+
 	// arg#3: push shadow value given in [reg+offset]
-	const int registerOffset = p_annot->getRegisterOffset();
-	const char *reg = Register::toString(p_annot->getRegister()).c_str();
-	if (registerOffset == 0)
-		sprintf(tmp,"push [%s]", reg);
-	else if (registerOffset > 0)
-		sprintf(tmp,"push qword [%s+%d]", reg, registerOffset);
-	else
-		sprintf(tmp,"push qword [%s%d]", reg, registerOffset);
-    Instruction_t *i = insertAssemblyAfter(p_firp, saveFlags, tmp);
+	i = insertAssemblyAfter(p_firp, i, tmp);
 	i->SetComment("push shadow value");
-	cout << "addShadowDefine(): reg+offset: " << tmp << endl;
 
 	// arg#2: push shadowId
 	sprintf(tmp,"push 0x%016x", shadowId);
@@ -247,8 +286,13 @@ static Instruction_t* addShadowDefine64CallbackHandler(FileIR_t* p_firp, Instruc
 	i = insertAssemblyAfter(p_firp, ch, tmp);  
 	i->SetComment("pop args");
 
+	// restore the temporary register we graphed
+	sprintf(tmp, "pop %s", tempReg.c_str());
+	i = insertAssemblyAfter(p_firp, saveFlags, tmp);
+
 	// restore flags
 	i = insertAssemblyAfter(p_firp, i, "popf");  
+
 	// undo the red zone
 	i = insertAssemblyAfter(p_firp, i, "lea rsp, [rsp+128]");  
 
@@ -275,9 +319,8 @@ static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruct
     Instruction_t* saveFlags = addNewAssembly(p_firp, lea, "pushf");
 
 	// before:   push reg
-	const int registerOffset = p_annot->getRegisterOffset();
-	const char *reg = Register::toString(p_annot->getRegister()).c_str();
-	if (registerOffset == 0)
+	const char *reg = p_annot->getRegister().c_str();
+	if (reg)
 	{
 		sprintf(tmp,"push %s", reg); // assume we're calling via register, i.e. no offsets
 	}			
@@ -317,7 +360,7 @@ static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruct
 	i = insertAssemblyAfter(p_firp, ch, tmp);  
 	i->SetComment("pop args");
 
-	const char *reg2 = Register::toString(p_annot->getRegister()).c_str();
+	const char *reg2 = p_annot->getRegister().c_str();
 	sprintf(tmp,"mov %s, [rsp]", reg2);
 	i = insertAssemblyAfter(p_firp, i, tmp);  
 
@@ -364,7 +407,6 @@ bool FPTRShadow_Instrument64::execute()
 			virtual_offset_t irdb_vo = insn->GetAddress()->GetVirtualOffset();
 			if (irdb_vo == 0) continue;
 
-
 			VirtualOffset vo(irdb_vo);
 
 			cout << endl << "Handling instruction: " << vo.toString() << " " << insn->getDisassembly() << endl;
@@ -377,7 +419,7 @@ bool FPTRShadow_Instrument64::execute()
 
 			std::pair<MEDS_Annotations_t::iterator,MEDS_Annotations_t::iterator> ret;
 			ret = getAnnotations().equal_range(vo);
-			MEDS_FPTRShadowAnnotation* annotation; 
+			MEDS_FPTRShadowAnnotation* annotation = NULL; 
 			for ( MEDS_Annotations_t::iterator it = ret.first; it != ret.second; ++it)
 			{
 				MEDS_AnnotationBase *base_type=(it->second);
@@ -388,12 +430,17 @@ bool FPTRShadow_Instrument64::execute()
 					break; // just handle one annotation for now 
 			}
 
+
 			bool success = false;
 			if (!annotation)
 			{
 				cout << "no FPTR annotation found" << endl;						
 				continue;
 			}
+
+			// make sure annotation is valid
+			if (!annotation->isValid()) 
+					continue;
 
 			// here we have a valid annotation, what's the type?
 			if (annotation->isDefineShadowId())
