@@ -565,6 +565,7 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 LD
 CXX
+BUILD_CGC
 EXTRA_CXXFLAGS
 target_alias
 host_alias
@@ -1664,13 +1665,15 @@ LD=g++
 
 if test "$enable_cgc" = yes; then
 	EXTRA_CXXFLAGS=-DCGC
+	BUILD_CGC="yes"
 fi
 
 
 
 
 
-ac_config_files="$ac_config_files tools/watch_syscall/Makefile tools/transforms/Makefile libIRDB/src/syscall/Makefile libIRDB/test/Makefile"
+
+ac_config_files="$ac_config_files tools/Makefile tools/watch_syscall/Makefile tools/transforms/Makefile libIRDB/src/syscall/Makefile libIRDB/test/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -2389,6 +2392,7 @@ cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
 for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
+    "tools/Makefile") CONFIG_FILES="$CONFIG_FILES tools/Makefile" ;;
     "tools/watch_syscall/Makefile") CONFIG_FILES="$CONFIG_FILES tools/watch_syscall/Makefile" ;;
     "tools/transforms/Makefile") CONFIG_FILES="$CONFIG_FILES tools/transforms/Makefile" ;;
     "libIRDB/src/syscall/Makefile") CONFIG_FILES="$CONFIG_FILES libIRDB/src/syscall/Makefile" ;;

@@ -534,7 +534,7 @@ third_party/do_bea_update.sh -text
 third_party/elfio-2.2.tar.gz -text
 third_party/elfio.hpp -text
 third_party/sqlite-autoconf-3071300.tar.gz -text
-tools/Makefile -text
+tools/Makefile.in -text
 tools/cgclibc/Makefile -text
 tools/cgclibc/cgclibc.cpp -text
 tools/cgclibc/cgclibc.hpp -text

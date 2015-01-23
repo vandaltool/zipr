@@ -8,13 +8,16 @@ LD=g++
 
 if test "$enable_cgc" = yes; then 
 	EXTRA_CXXFLAGS=-DCGC
+	BUILD_CGC="yes"
 fi
 
 AC_SUBST(EXTRA_CXXFLAGS)
+AC_SUBST(BUILD_CGC)
 AC_SUBST(CXX)
 AC_SUBST(LD)
 
-AC_OUTPUT(tools/watch_syscall/Makefile
+AC_OUTPUT(tools/Makefile
+	tools/watch_syscall/Makefile
 	tools/transforms/Makefile
 	libIRDB/src/syscall/Makefile
 	libIRDB/test/Makefile

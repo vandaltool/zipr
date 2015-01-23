@@ -1,0 +1,13 @@
+DIRS=safefr transforms spasm meds2pdb cover ret_shadow_stack selective_cfi 
+CGC_DIRS=cgclibc inferfn cinderella watch_syscall
+
+BUILD_CGC=@BUILD_CGC@
+
+all:
+	for i in $(DIRS); do cd $$i; make all;  cd ..;done
+	if [ $(BUILD_CGC) ]; then for i in $(CGC_DIRS); do cd $$i; make all; cd ..; done; fi
+
+clean:
+	for i in $(DIRS); do cd $$i; make clean;  cd ..;done
+	if [ $(BUILD_CGC) ]; then for i in $(CGC_DIRS); do cd $$i; make clean; cd ..; done; fi
+
