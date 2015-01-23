@@ -30,11 +30,37 @@
 using namespace std;
 using namespace MEDS_Annotation;
 
+/*
+	Example format -- subject to change:
+
+   804b3a6      5 INSTR FPTRSHADOW  [rsp+12] SHADOWID 7
+   804c941      5 INSTR FPTRCHECK  [rsp+12] SHADOWID 7
+   804c945      5 INSTR FPTRCHECK  [rsp] SHADOWID 8
+
+   0x4006ca   7    INSTR FPTRSHADOW  {memory addressing expression} SHADOWID <id>
+
+0x8098f00     e.g. INSTR FPTRSHADOW 0x8089f00  note absence of brackets
+
+0x80487a0[RBX]
+0x8047aa0[RBX+RCX]
+0x8098f80[RAX+RDX*2] (NOTE: could be *4 or *8 instead of *2)
+[RBX+RDX*4]
+[RAX+RCX*8+12]
+[RDX+RAX*2-64]
+[R8+R15]
+[R9+R11+48]
+[R13+72]
+[R12*4]
+[R14*2-12]
+*/
+
 MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation() : MEDS_ShadowAnnotation()
 {
 	setInvalid();	
+#ifdef TO_BE_DEPRECATED
 	m_registerOffset = 0;
 	m_register = Register::UNKNOWN;
+#endif
 }
 
 MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation(const string &p_rawLine)
@@ -43,14 +69,6 @@ MEDS_FPTRShadowAnnotation::MEDS_FPTRShadowAnnotation(const string &p_rawLine)
 	parse();
 }
 
-/*
-	Example format -- subject to change:
-
-   804b3a6      5 INSTR FPTRSHADOW  [rsp+12] SHADOWID 7
-   804c941      5 INSTR FPTRCHECK  [rsp+12] SHADOWID 7
-   804c945      5 INSTR FPTRCHECK  [rsp] SHADOWID 8
-
-*/
 void MEDS_FPTRShadowAnnotation::parse()
 {
 	if (m_rawInputLine.find(" INSTR ")==string::npos)
@@ -77,22 +95,44 @@ void MEDS_FPTRShadowAnnotation::parse()
 	int shadowId;
 	char buf[2048] = "";
 	// 804b3a6      5 INSTR FPTRSHADOW  [esp+12] SHADOWID 7
-    // 804c941      5 INSTR FPTRCHECK  [esp+12] SHADOWID 7
+    // 804c941      5 INSTR FPTRCHECK  [rdx] SHADOWID 7
 	sscanf(m_rawInputLine.c_str(), "%*s %*d %*s %*s %s SHADOWID %d", buf, &shadowId);
 
-	parseRegister(buf, &m_register, &m_registerOffset);
-
-	/*
-	m_register = Register::getRegister(buf);
-	m_registerOffset = parseRegisterOffset(buf);
-	*/
-
+	setExpression(std::string(buf));
 	setShadowId(shadowId);
+
+	if (shadowId < 0)
+		setInvalid();
+
+	if (isCheckShadowId())
+	{
+		if (!verifyCheckShadowExpression(getExpression()))
+			setInvalid();
+	}
+
+#ifdef TO_BE_DEPRECATED
+	parseRegister(buf, &m_register, &m_registerOffset);
+#endif
 	
-	cout<<"Found valid FPTR SHADOW annotation for "<<vo.to_string()<<"  register: " << Register::toString(m_register) << endl;
 	setValid();	
 }
 
+bool MEDS_FPTRShadowAnnotation::verifyCheckShadowExpression(const string& expression)
+{
+	// register expression is of the form: [reg]
+	string reg = m_expression.substr(1, expression.size()-2);
+	return Register::isValidRegister(reg);
+}
+
+const string MEDS_FPTRShadowAnnotation::getRegister() const
+{
+	if (Register::isValidRegister(m_expression))
+			return m_expression.substr(1, m_expression.size()-2);
+	else
+			return string();
+}
+
+#ifdef TO_BE_DEPRECATED
 int MEDS_FPTRShadowAnnotation::parseRegisterOffset(char *p_buf)
 {
 	// e.g.: [rsp] [esp+12] [esp-12] 
@@ -141,3 +181,4 @@ cout << "analyzing: " << p_buf << endl;
 
 	*p_registerOffset = parseRegisterOffset(p_buf);
 }
+#endif

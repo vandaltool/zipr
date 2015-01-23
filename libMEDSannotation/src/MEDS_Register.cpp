@@ -30,6 +30,11 @@ Register::RegisterName Register::getRegister(char *p_reg)
 	return Register::getRegister(std::string(p_reg));
 }
 
+bool Register::isValidRegister(std::string p_reg)
+{
+	return getRegister(p_reg) != UNKNOWN;
+}
+
 Register::RegisterName Register::getRegister(std::string p_reg)
 {
 	if (strcasecmp(p_reg.c_str(), "EFLAGS") ==0)
