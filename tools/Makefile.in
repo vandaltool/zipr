@@ -1,4 +1,4 @@
-DIRS=safefr transforms spasm meds2pdb cover ret_shadow_stack selective_cfi 
+DIRS=safefr transforms spasm meds2pdb cover ret_shadow_stack selective_cfi fptr_shadow
 CGC_DIRS=cgclibc inferfn cinderella watch_syscall
 
 BUILD_CGC=@BUILD_CGC@
