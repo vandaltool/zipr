@@ -87,8 +87,10 @@ int main(int argc, char **argv)
 			else
 				annotationFilename = string(SHARED_OBJECTS_DIR) + "/" + fileBasename ;
 
+			annotationFilename += ".fptrannot";
 			cerr << "annotation file: " << annotationFilename << endl;
-			annotationParser.parseFile(annotationFilename + ".fptrannot");
+			annotationParser.parseFile(annotationFilename);
+			cerr << "done parsing file" << endl;
 
 			FPTRShadow_Instrument64 fptrShadow64(firp, &annotationParser);
 

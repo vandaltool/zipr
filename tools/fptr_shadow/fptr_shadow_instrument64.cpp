@@ -75,23 +75,23 @@ static string getFreeRegister(Instruction_t *p_insn)
 	std::transform(disasm.begin(), disasm.end(), disasm.begin(), ::tolower);
 
 	size_t found = disasm.find("r11");
-    if (found!=std::string::npos)
+    if (found==std::string::npos)
   		return string("r11");  
 
 	found = disasm.find("r12");
-    if (found!=std::string::npos)
+    if (found==std::string::npos)
   		return string("r12");  
 	
 	found = disasm.find("r13");
-    if (found!=std::string::npos)
+    if (found==std::string::npos)
   		return string("r13");  
 
 	found = disasm.find("r14");
-    if (found!=std::string::npos)
+    if (found==std::string::npos)
   		return string("r14");  
 
 	found = disasm.find("r15");
-    if (found!=std::string::npos)
+    if (found==std::string::npos)
   		return string("r15");  
 
 	assert(0);
@@ -241,9 +241,10 @@ static Instruction_t* addShadowDefine64CallbackHandler(FileIR_t* p_firp, Instruc
 	Instruction_t* originalFallthrough = p_insn->GetFallthrough();
 
 	// red zone + flags
-	Instruction_t* lea = insertAssemblyBefore(p_firp,p_insn,"lea rsp, [rsp-128]");
+	Instruction_t* lea = addNewAssembly(p_firp,p_insn,"lea rsp, [rsp-128]");
 	p_insn->SetComment("callback: " + string(CALLBACK_FPTR_SHADOW_DEFINE_64));
     Instruction_t* saveFlags = addNewAssembly(p_firp, lea, "pushf");
+	saveFlags->SetComment("save flags -- shadow define");
 
 /*
 push r15
@@ -253,28 +254,33 @@ mov r15, [r15]
 pop r15
 */
 	string tempReg = getFreeRegister(p_insn);
+	cerr << "free register for instruction: " << tempReg << endl;
 	sprintf(tmp, "push %s", tempReg.c_str());
-	i = insertAssemblyAfter(p_firp, saveFlags, tmp);
+	i = addNewAssembly(p_firp, saveFlags, tmp);
+	i->SetComment("grab free register");
+
 	sprintf(tmp, "lea %s, %s", tempReg.c_str(), p_annot->getExpression().c_str());
-	i = insertAssemblyAfter(p_firp, i, tmp);
-	sprintf(tmp, "mov %s, [%s]", tempReg.c_str(), tempReg.c_str());
-	i = insertAssemblyAfter(p_firp, i, tmp);
-	sprintf(tmp, "push %s", tempReg.c_str());
+	i = addNewAssembly(p_firp, i, tmp);
+	i->SetComment("memory expression");
+//	sprintf(tmp, "mov %s, [%s]", tempReg.c_str(), tempReg.c_str());
+//	i = insertAssemblyAfter(p_firp, i, tmp);
+//	sprintf(tmp, "push %s", tempReg.c_str());
+	sprintf(tmp, "push qword[%s]", tempReg.c_str());
 
 	// arg#3: push shadow value given in [reg+offset]
-	i = insertAssemblyAfter(p_firp, i, tmp);
+	i = addNewAssembly(p_firp, i, tmp);
 	i->SetComment("push shadow value");
 
 	// arg#2: push shadowId
 	sprintf(tmp,"push 0x%016x", shadowId);
-    i = insertAssemblyAfter(p_firp, i, tmp);
+    i = addNewAssembly(p_firp, i, tmp);
 	cout << "addShadowDefine(): shadowId: " << shadowId << endl;
 	i->SetComment("push shadow id");
 
 	// arg#1: push PC
 	unsigned PC = p_insn->GetAddress()->GetVirtualOffset(); 
 	sprintf(tmp,"push 0x%016x", PC);
-    i = insertAssemblyAfter(p_firp, i, tmp);
+    i = addNewAssembly(p_firp, i, tmp);
 	cout << "addShadowDefine(): PC: " << hex << PC << dec << endl;
 	i->SetComment("push PC");
 
@@ -283,22 +289,21 @@ pop r15
 
 	// pop the args
 	sprintf(tmp, "lea rsp, [rsp+%d]", numArgs * 8);
-	i = insertAssemblyAfter(p_firp, ch, tmp);  
+	i = addNewAssembly(p_firp, ch, tmp);  
 	i->SetComment("pop args");
 
 	// restore the temporary register we graphed
 	sprintf(tmp, "pop %s", tempReg.c_str());
-	i = insertAssemblyAfter(p_firp, saveFlags, tmp);
+	i = addNewAssembly(p_firp, i, tmp);
 
 	// restore flags
-	i = insertAssemblyAfter(p_firp, i, "popf");  
+	i = addNewAssembly(p_firp, i, "popf");  
 
 	// undo the red zone
-	i = insertAssemblyAfter(p_firp, i, "lea rsp, [rsp+128]");  
-
+	i = addNewAssembly(p_firp, i, "lea rsp, [rsp+128]");  
 	i->SetFallthrough(originalFallthrough);
 
-	return lea;
+	return p_insn;
 }
 
 static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruction_t* p_insn, const MEDS_FPTRShadowAnnotation* p_annot)
@@ -311,12 +316,12 @@ static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruct
 	const int numArgs = 3;
 	int shadowId = p_annot->getShadowId();
 	
-	Instruction_t* originalFallthrough = p_insn->GetFallthrough();
+	p_insn->SetComment("callback: " + string(CALLBACK_FPTR_SHADOW_CHECK_64));
 
-	// red zone + flags
-	Instruction_t* lea = insertAssemblyBefore(p_firp,p_insn,"lea rsp, [rsp-128]");
-	p_insn->SetComment("callback: " + string(CALLBACK_FPTR_SHADOW_DEFINE_64));
+	Instruction_t* originalFallthrough = p_insn->GetFallthrough();
+	Instruction_t* lea = insertAssemblyAfter(p_firp,p_insn,"lea rsp, [rsp-128]");
     Instruction_t* saveFlags = addNewAssembly(p_firp, lea, "pushf");
+	saveFlags->SetComment("save flags -- shadow check");
 
 	// before:   push reg
 	const char *reg = p_annot->getRegister().c_str();
@@ -331,9 +336,10 @@ static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruct
 	}
 
 	// push the 3 arguments
-    Instruction_t *i = insertAssemblyAfter(p_firp, saveFlags, tmp);
+    Instruction_t *i = addNewAssembly(p_firp, saveFlags, tmp);
 	i->SetComment("push shadow value");
-	cout << "addShadowCheck(): reg+offset: " << tmp << endl;
+	cout << "addShadowCheck(): register: " << p_annot->getRegister() << endl;
+	cout << "addShadowCheck(): expression: " << p_annot->getExpression() << endl;
 
 	// arg#3: push pointer to shadow value
     i = insertAssemblyAfter(p_firp, i, "push rsp");
@@ -361,6 +367,7 @@ static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruct
 	i->SetComment("pop args");
 
 	const char *reg2 = p_annot->getRegister().c_str();
+	assert(reg2);
 	sprintf(tmp,"mov %s, [rsp]", reg2);
 	i = insertAssemblyAfter(p_firp, i, tmp);  
 
@@ -370,6 +377,7 @@ static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruct
 	i = insertAssemblyAfter(p_firp, i, "popf");  
 	// undo the red zone
 	i = insertAssemblyAfter(p_firp, i, "lea rsp, [rsp+128]");  
+	i->SetComment("check shadow - restore red zone");
 
 	i->SetFallthrough(originalFallthrough);
 
@@ -382,6 +390,7 @@ static Instruction_t* addShadowCheck64CallbackHandler(FileIR_t* p_firp, Instruct
 
 FPTRShadow_Instrument64::FPTRShadow_Instrument64(libIRDB::FileIR_t *p_firp, MEDS_AnnotationParser* p_ap) : m_firp(p_firp), m_annotationParser(p_ap)
 {
+		cout << "FPTRShadow_Instrument64(): Done with constructor" << endl;
 }
 
 MEDS_Annotations_t& FPTRShadow_Instrument64::getAnnotations() 
@@ -391,7 +400,7 @@ MEDS_Annotations_t& FPTRShadow_Instrument64::getAnnotations()
 
 bool FPTRShadow_Instrument64::execute()
 {
-///	FunctionSet_t func = m_firp->GetFunctions();
+	cout << "execution(): enter" << endl;
 	cout << "size of annotation set: " << getAnnotations().size() << endl;
 
 	InstructionSet_t func = m_firp->GetInstructions();
