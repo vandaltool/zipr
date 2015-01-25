@@ -553,6 +553,12 @@ tools/fptr_shadow/Makefile -text
 tools/fptr_shadow/fptr_shadow_driver.cpp -text
 tools/fptr_shadow/fptr_shadow_instrument64.cpp -text
 tools/fptr_shadow/fptr_shadow_instrument64.hpp -text
+tools/fptr_shadow/test/Makefile -text
+tools/fptr_shadow/test/bus.c -text
+tools/fptr_shadow/test/bus.fptrannot -text
+tools/fptr_shadow/test/sample.c -text
+tools/fptr_shadow/test/sample.fptrannot -text
+tools/fptr_shadow/test/sample_loop.c -text
 tools/inferfn/Makefile -text
 tools/inferfn/inferfn.cpp -text
 tools/inferfn/inferfn.hpp -text
