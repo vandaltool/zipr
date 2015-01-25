@@ -3180,6 +3180,7 @@ tools/db/sample_pgms/slash_usr_bin/zsoelim.strsig -text
 tools/db/sample_pgms/slash_usr_bin/zxpdf.strsig -text
 tools/do_appfw.sh -text
 tools/do_concolic.sh -text
+tools/do_fptr_shadow.sh -text
 tools/do_gatherlibs.sh -text
 tools/do_idapro.sh -text
 tools/do_installer.sh -text
@@ -6322,6 +6323,7 @@ tools/pin/source/tools/pintool.tscons-extension -text
 tools/pn_spec_always_only_validate.txt -text
 tools/ps_analyze-ilronly.sh -text
 tools/ps_analyze-lib.sh -text
+tools/ps_analyze.fptr.sh -text
 tools/ps_analyze.sh -text
 tools/ps_analyze4.sh -text
 tools/ps_analyze64.sh -text
